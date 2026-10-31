@@ -1,0 +1,82 @@
+name: ab
+# Paired comparison described by the sealed job spec jobs/ab.bin, split over
+# parallel runners. The bots (secret/code.bin) and the spec are opened with
+# the STRAT_KEY secret on the runners only; the merged result is sealed into
+# results/.
+on:
+  push:
+    paths: ['jobs/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      shards: ${{ steps.p.outputs.shards }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - id: p
+        env:
+          STRAT_KEY: ${{ secrets.STRAT_KEY }}
+        run: |
+          node tools/crypt.mjs open jobs/ab.bin .
+          echo "shards=$(node -e "console.log(JSON.stringify([...Array(require('./jobs/ab.json').shards).keys()]))")" >> "$GITHUB_OUTPUT"
+
+  run:
+    needs: plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.plan.outputs.shards) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - env:
+          STRAT_KEY: ${{ secrets.STRAT_KEY }}
+        run: |
+          node tools/crypt.mjs open secret/code.bin .
+          node tools/crypt.mjs open jobs/ab.bin .
+          node tools/shard.mjs jobs/ab.json ${{ matrix.shard }} out/shard-${{ matrix.shard }}.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shard-${{ matrix.shard }}
+          path: out/shard-${{ matrix.shard }}.json
+          retention-days: 1
+
+  merge:
+    needs: run
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@v4
+        with:
+          path: out
+          pattern: shard-*
+          merge-multiple: true
+      - env:
+          STRAT_KEY: ${{ secrets.STRAT_KEY }}
+        run: |
+          node tools/crypt.mjs open jobs/ab.bin .
+          node tools/merge.mjs jobs/ab.json out > summary.txt
+          mkdir -p results
+          node tools/crypt.mjs seal "results/$(date -u +%Y%m%d-%H%M%S)-${GITHUB_SHA::7}.bin" summary.txt jobs/ab.json
+          git config user.name "ab-bot"
+          git config user.email "ab-bot@users.noreply.github.com"
+          git add results
+          git commit -qm "results of ${GITHUB_SHA::7}"
+          for i in 1 2 3 4 5; do git pull -q --rebase && git push -q && break; sleep 5; done
