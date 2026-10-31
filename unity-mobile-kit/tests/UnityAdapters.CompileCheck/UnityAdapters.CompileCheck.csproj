@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Compiles unity/Runtime against the hand-written UnityEngine stand-ins in ../UnityApiStubs, with
+    the scripting defines Unity would set taken from the UNITY_DEFINES environment variable
+    (semicolon-separated). Run ../check-unity-adapters.sh to build every configuration.
+  -->
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <Nullable>disable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <DefineConstants>$(DefineConstants);$(UNITY_DEFINES)</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../unity/Runtime/**/*.cs" />
+    <Compile Include="../UnityApiStubs/**/*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../../core/UnityMobileKit.Core/UnityMobileKit.Core.csproj" />
+  </ItemGroup>
+
+</Project>

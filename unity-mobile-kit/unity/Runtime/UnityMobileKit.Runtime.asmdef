@@ -1,0 +1,29 @@
+{
+    "name": "UnityMobileKit.Runtime",
+    "rootNamespace": "UnityMobileKit.Runtime",
+    "references": [
+        "UnityMobileKit.Core",
+        "Unity.InputSystem",
+        "UnityEngine.UI"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.inputsystem",
+            "expression": "1.0.0",
+            "define": "UMK_INPUT_SYSTEM"
+        },
+        {
+            "name": "com.unity.ugui",
+            "expression": "1.0.0",
+            "define": "UMK_UGUI"
+        }
+    ],
+    "noEngineReferences": false
+}

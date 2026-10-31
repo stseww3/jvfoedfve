@@ -28,10 +28,13 @@ unity-mobile-kit/
       ScreenLayout/      Safe-area anchors, UI scale, touch-target sizing
       Performance/       Battery-, heat- and frame-time-aware frame-rate policy
       Lifecycle/         Focus/pause/quit -> one suspended state, save on suspend
-  tests/           Dependency-free test harness (dotnet run), fully offline
   unity/           Unity MonoBehaviour layer (depends on UnityEngine)
-    Runtime/             Thin adapters: touch/gamepad input, camera rig, safe area,
-                         landscape lock, lifecycle relay, frame-rate driver
+    Runtime/             Thin adapters: services + save-on-background, touch/controller input,
+                         pan/zoom camera rig, safe area, orientation lock, frame-rate driver
+  tests/           dotnet only, never copied into Unity
+    UnityMobileKit.Tests/       Dependency-free unit tests for core/ (dotnet run), fully offline
+    UnityApiStubs/              Hand-written stand-ins for the UnityEngine API, for the compile check
+    check-unity-adapters.sh     Compile-checks unity/Runtime against the stand-ins
 ```
 
 ## Components and status
@@ -47,9 +50,21 @@ unity-mobile-kit/
 | `Controllers/` | Standard-gamepad state, radial stick + trigger deadzones, button edges with D-pad auto-repeat, stick-driven virtual cursor, stick/trigger camera control, touch-vs-gamepad mode with pause on disconnect | Done, 15 dotnet tests |
 | `ScreenLayout/SafeArea` | Cleans up the platform safe area (empty, NaN or off-screen falls back to the full screen; overhang is clipped) and turns it into panel anchors; optional symmetric insets so centred UI doesn't jump when a landscape phone is rotated | Done, 3 dotnet tests |
 | `ScreenLayout/UiScale` | CanvasScaler-equivalent scale for a reference resolution; minimum 48 dp touch-target size in canvas units for the screen's density | Done, 2 dotnet tests |
-| `Performance/FrameRatePolicy` | Picks the frame-rate cap from the 30 / 60 / Auto setting, battery saver, low battery, heat and measured frame times; steps 90 -> 60 -> 30 when frames keep missing, ignores one-off hitches, retries later with backoff (30 s doubling to a 300 s cap) | Done, 10 dotnet tests |
+| `Performance/FrameRatePolicy` | Picks the frame-rate cap from the 30 / 60 / Auto setting, battery saver, low battery, heat and measured frame times; steps 90 -> 60 -> 30 when frames keep missing, ignores one-off hitches, retries later with backoff (30 s doubling to a 300 s cap). `ThermalMapping` maps Android and iOS thermal readings onto four heat levels | Done, 11 dotnet tests |
 | `Lifecycle/LifecycleCoordinator` | Merges focus / pause / quit callbacks into one suspended state; saves every dirty `ISaveable` once on suspend; one failing save doesn't block the others or throw out of the callback | Done, 4 dotnet tests |
-| `unity/` layer | Thin adapters: touch/gamepad input, camera, safe area, landscape lock, lifecycle, frame-rate driver | Next (will not be runtime-tested here) |
+
+The Unity layer (`unity/Runtime`) is **written and compile-checked only**: it compiles against
+hand-written stand-ins for the UnityEngine, Input System and uGUI APIs in 5 configurations of
+Unity's scripting defines, but it has **never run in Unity or on a device** (see Testing status).
+
+| `unity/Runtime` component | What it does |
+|---|---|
+| `MobileKitServices` | Creates the save store (under `Application.persistentDataPath`), settings, achievements (from an `AchievementCatalog` asset) and the lifecycle coordinator once per app; forwards focus / pause / quit so data is saved when the app loses focus or is backgrounded; `onSuspended` / `onRestored` events for the pause menu |
+| `MobileInput` | Touch (Input System, or the legacy Input Manager) to gestures, ignoring touches that start on UI; controllers through the Input System: buttons with auto-repeat, a virtual cursor kept inside the safe area, South (A / Cross) taps at the cursor, touch-vs-controller mode, a pause event when the controller in use disconnects |
+| `PanZoomCameraRig` | Orthographic camera on the XY or XZ plane, driven by drag, pinch, right stick and triggers; world bounds; auto-zoom on focus points, following the player's auto-zoom setting |
+| `SafeAreaFitter` | Fits a UI panel to the safe area and re-fits on rotation or resolution change |
+| `OrientationLock` | Landscape left/right only (or portrait only) at runtime |
+| `FrameRateDriver` | Applies `FrameRatePolicy` to `Application.targetFrameRate`; reads battery from Unity and battery saver / thermal status from Android's `PowerManager` every few seconds; uses the display's highest refresh rate for Auto |
 
 Achievements on top of the save store:
 
@@ -98,8 +113,29 @@ void Update()
 }
 ```
 
-`isCharging`, `isLowPowerMode` and `thermal` come from the platform (Android `PowerManager`, iOS
-`ProcessInfo`); the `unity/` layer will provide them.
+`isCharging`, `isLowPowerMode` and `thermal` come from the platform. In `unity/Runtime`,
+`MobileKitServices` and `FrameRateDriver` do this wiring, and `DeviceConditionsReader` reads those
+values on Android.
+
+## Using it in Unity (2021.3 LTS or newer)
+
+1. Copy exactly two folders into the project, for example under `Assets/UnityMobileKit/`:
+   `core/UnityMobileKit.Core` and `unity/Runtime`, without any `bin/` or `obj/` folders a local
+   dotnet build created. Their assembly definitions keep the core free of UnityEngine. Never copy
+   `tests/`: its stand-in UnityEngine types would clash with the real engine.
+2. Optional packages: **Input System** (needed for controllers; also used for touch when enabled
+   under Player Settings > Active Input Handling) and **uGUI** (to ignore touches that start on UI).
+3. Player Settings > Resolution and Presentation: Default Orientation = Auto Rotation, allowing
+   only Landscape Left and Landscape Right. The OS enforces this before Unity starts.
+4. Scene setup:
+   - On a root GameObject in the first scene: `MobileKitServices`, `MobileInput`,
+     `FrameRateDriver`, `OrientationLock`.
+   - On the orthographic camera: `PanZoomCameraRig`, with the `MobileInput` assigned.
+   - Under each Screen Space canvas: a full-screen panel with `SafeAreaFitter`; put the HUD inside it.
+   - From game code: handle `MobileInput.PointerTapped`, pass what matters to
+     `PanZoomCameraRig.SetFocusPoints`, report progress through
+     `MobileKitServices.Instance.Achievements`, and bind a settings menu to
+     `MobileKitServices.Instance.Settings`.
 
 ## Testing status (honest)
 
@@ -112,9 +148,19 @@ This repository is developed on a server with **no Unity install and no Android 
   dotnet run --project unity-mobile-kit/tests/UnityMobileKit.Tests
   ```
 
-- **`unity/`** depends on `UnityEngine` and the device. It is written to compile inside Unity and
-  is reviewed for correctness, but it is **not runtime-tested** in this environment. That is
-  stated at the top of each file. Nothing in `unity/` is reported as verified until it runs on a
+- **`unity/`** depends on `UnityEngine` and the device, so it is **not runtime-tested** here; that
+  is stated at the top of each file. What is checked: it compiles (warnings as errors) against
+  the real core and against hand-written stand-ins for the UnityEngine, Input System and uGUI
+  members it uses, in 5 combinations of Unity's scripting defines (legacy / new input, with and
+  without uGUI, Android device / Editor, before / after Unity 2022.2):
+
+  ```
+  unity-mobile-kit/tests/check-unity-adapters.sh
+  ```
+
+  The stand-ins are written from Unity's documentation, so this catches mistakes in the adapter
+  code and in its use of the core, but not a stand-in that differs from the real API, and nothing
+  about behaviour. Nothing in `unity/` is reported as verified until it runs in Unity and on a
   device.
 
 ## Scope / boundary
