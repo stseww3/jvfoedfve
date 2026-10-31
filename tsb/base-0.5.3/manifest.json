@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "Territorial.io 策略机器人",
+  "version": "0.5.3",
+  "description": "用模拟器的策略（自带 v1–v3，可导入新的）在游戏页面里自动选出生点、自动打，也可用本地 Python 后端；面板在游戏页面右下角，可自动开局。",
+  "minimum_chrome_version": "111",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Territorial.io 策略机器人：面板在游戏页面右下角"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "host_permissions": [
+    "http://127.0.0.1/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://territorial.io/*"
+      ],
+      "js": [
+        "page.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "https://territorial.io/*"
+      ],
+      "js": [
+        "relay.js"
+      ],
+      "run_at": "document_start"
+    }
+  ]
+}
