@@ -28,6 +28,7 @@ namespace UnityMobileKit.Performance
         /// <summary>0..1, or negative when unknown (Unity's <c>SystemInfo.batteryLevel</c> returns -1 then).</summary>
         public float BatteryLevel { get; }
 
+        /// <summary>On external power: charging, full, or plugged in but not charging.</summary>
         public bool IsCharging { get; }
 
         /// <summary>The OS battery saver is on.</summary>

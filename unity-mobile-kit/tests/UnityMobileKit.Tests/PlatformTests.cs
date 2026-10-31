@@ -156,6 +156,27 @@ namespace UnityMobileKit.Tests
                 Expect(new DeviceConditions(0.8f, false, false, ThermalLevel.Fair), 90, FrameRateReason.Preferred, "fair heat");
             });
 
+            TestHarness.Add("Android and iOS thermal readings map onto the four levels", _ =>
+            {
+                ThermalLevel[] android = { ThermalLevel.Nominal, ThermalLevel.Fair, ThermalLevel.Serious, ThermalLevel.Critical, ThermalLevel.Critical, ThermalLevel.Critical, ThermalLevel.Critical };
+                for (int status = 0; status < android.Length; status++)
+                {
+                    Assert.Equal(android[status], ThermalMapping.FromAndroidThermalStatus(status), $"Android status {status}");
+                }
+                Assert.Equal(ThermalLevel.Nominal, ThermalMapping.FromAndroidThermalStatus(-1), "Android unknown");
+                ThermalLevel[] ios = { ThermalLevel.Nominal, ThermalLevel.Fair, ThermalLevel.Serious, ThermalLevel.Critical };
+                for (int state = 0; state < ios.Length; state++)
+                {
+                    Assert.Equal(ios[state], ThermalMapping.FromIosThermalState(state), $"iOS state {state}");
+                }
+
+                var policy = new FrameRatePolicy();
+                var moderate = new DeviceConditions(0.8f, false, false, ThermalMapping.FromAndroidThermalStatus(2));
+                Assert.Equal(30, policy.Update(FrameRateMode.Auto, 90, moderate, 1f / 90f, 0.0), "Android MODERATE: Auto drops to 30");
+                var severe = new DeviceConditions(0.8f, false, false, ThermalMapping.FromAndroidThermalStatus(3));
+                Assert.Equal(30, policy.Update(FrameRateMode.Fps60, 90, severe, 1f / 60f, 0.1), "Android SEVERE caps fixed 60 too");
+            });
+
             TestHarness.Add("A device that can't hold 60 FPS drops to 30 after about 3 seconds", _ =>
             {
                 var changes = Simulate(new FrameRatePolicy(), 60, t => 0.025, 10.0);
