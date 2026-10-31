@@ -136,6 +136,7 @@ values on Android.
      `PanZoomCameraRig.SetFocusPoints`, report progress through
      `MobileKitServices.Instance.Achievements`, and bind a settings menu to
      `MobileKitServices.Instance.Settings`.
+5. To get a debug APK onto a phone, follow [`docs/ANDROID_BUILD.md`](docs/ANDROID_BUILD.md).
 
 ## Testing status (honest)
 
