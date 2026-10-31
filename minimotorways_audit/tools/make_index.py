@@ -46,6 +46,16 @@ for line in open(os.path.join(results, "pdbcheck_report.txt"), encoding="utf-8")
 
 data = json.load(open(os.path.join(results, "datascan_summary.json")))
 
+pkgsrc = {}
+for line in open(os.path.join(results, "pkgsrc_check_report.txt"), encoding="utf-8"):
+    m = re.match(r"(\S+)\.pdb: (\d+) documents \| (.*)$", line)
+    if m:
+        counts = dict(kv.split("=") for kv in m.group(3).split(" | "))
+        matched = sum(int(v) for k, v in counts.items() if k.startswith("MATCH"))
+        bad = sum(int(v) for k, v in counts.items() if k in ("MISMATCH", "NOT_FOUND", "NOT_IN_OFFICIAL_PACKAGE", "OTHER"))
+        gen = int(counts.get("GENERATED", 0))
+        pkgsrc[m.group(1) + ".dll"] = (matched, bad, gen)
+
 CAPINV = set("""App.dll Assembly-CSharp.dll Assembly-CSharp-firstpass.dll DinoPoloClub.Analytics.Runtime.dll
 Easing.dll Facepunch.Steamworks.Win32.dll FixedMath.dll G-Audio.dll MiniJson.dll MOAnalytics.Runtime.dll
 NaughtyAttributes.Core.dll Newtonsoft.Json.dll Rewired_Core.dll Rewired_Windows.dll Unity.Burst.dll
@@ -89,6 +99,16 @@ def managed_note(fn):
         methods, seq, bad, verdict = pdb[fn]
         v = "consistent" if verdict == "UNMODIFIED" else "1 flag: UnsafeUtility.SizeOf (known Unity rewrite; module is IL-identical to official)"
         parts.append(f"DLL<->PDB check: {methods} methods, {seq} line markers, {v}")
+    if fn in pkgsrc:
+        matched, bad, gen = pkgsrc[fn]
+        s = f"source files vs Unity's official package: {matched} identical, {bad} different"
+        if gen:
+            s += f" (+{gen} generated type-list file)"
+        parts.append(s)
+    if fn == "NaughtyAttributes.Core.dll":
+        parts.append("20/21 source files identical to the public NaughtyAttributes project; the 21st is a one-line attribute added by the developer")
+    if fn == "FixedMath.dll":
+        parts.append("customized FixedMath.Net (no public match); only file write is an uncalled lookup-table generator")
     if fn in CAPINV:
         parts.append("capability inventory reviewed")
     if fn == "Rewired_Core.dll":

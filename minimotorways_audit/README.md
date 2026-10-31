@@ -38,7 +38,8 @@ The real risks are not hidden code:
 | Facepunch.Steamworks | 1 DLL | IL compare with official NuGet 2.3.3 | **1,247 / 1,247 identical** |
 | Steam API | `steam_api.dll` | Authenticode | Genuine Valve file, digest matches Valve's signature of 2020-02-21 |
 | Game code (Dinosaur Polo Club) | `App.dll` (13,964 methods), `WebCore`, `Version`, analytics, `G-Audio`, … | DLL ↔ debug-symbol (.pdb) consistency + full capability inventory | Unmodified; PDBs come from the developer's CI (`/Users/mumbai/.buildkite-agent/.../mini-motorways/...`); network only to the developer, Steam, Apple |
-| Unity packages | UI, TextMeshPro, URP, SRP Core, Burst, Mathematics, MemoryProfiler | DLL ↔ .pdb consistency + capability inventory | No sensitive capabilities beyond their documented features |
+| Unity packages | UI, TextMeshPro, URP, SRP Core, Burst, Mathematics, MemoryProfiler | The .pdb records a SHA-256 of every source file the DLL was compiled from; each one compared with Unity's official package files (registry tarballs for Burst 1.8.21, Mathematics 1.2.6, MemoryProfiler 1.1.6, TextMeshPro 3.0.7; the official 2022.3.62f2 Editor installer for SRP Core/URP 14.0.12 and UGUI 1.0.0) + DLL ↔ .pdb consistency + capability inventory | **464 / 464 source files byte-identical to Unity's originals.** The only other inputs are 4 files from Unity's own type-list source generator (one method returning two data tables of file paths and type names) |
+| Other third-party code | NaughtyAttributes, FixedMath.Net, MiniJson, Easing, G-Audio | Source hashes vs every version in the public git history (where public) + DLL ↔ .pdb consistency + capability inventory | NaughtyAttributes: 20/21 files identical to the public project (the 21st is a one-line attribute the developer added). FixedMath.Net was customized by the developer; pure math, its only file write is an uncalled lookup-table generator. MiniJson, Easing, G-Audio (paid asset): no public reference; nothing sensitive beyond their features |
 | Rewired (paid controller library) | `Rewired_Core`, `Rewired_Windows` | Capability inventory + review of every native call | Controller/HID/XInput/DirectInput only; see notes |
 | Native plugins | `dpcPlatform`, `decompressAudio`, `lib_burst_generated`, `Rewired_DirectInput` | Full Ghidra decompile + review of every sensitive import's call sites | Clean |
 | **The crack** | `winmm.dll`, `SOVEREIGN.dll` | Full Ghidra decompile (628 + 2,500 functions, incl. hook routines Ghidra misses on a normal pass), every import and dynamically resolved API traced to its callers | Steam emulator, no backdoor (details below) |
@@ -101,7 +102,7 @@ library, the C runtime. No network library at all. 628 functions decompiled,
 
 ## Notes on the parts that could not be diffed against an official binary
 
-- **Game code and Unity packages** have no public binary to diff against. They were
+- **Game code** has no public binary or source to diff against. It was
   verified against the shipped debug symbols (every one of 73,187 source-line
   markers in `App.dll` still lands on a real instruction; method counts and PDB IDs
   match) and by listing every call to networking, process, code-loading, registry,
