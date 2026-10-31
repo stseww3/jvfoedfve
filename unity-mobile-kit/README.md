@@ -36,7 +36,7 @@ unity-mobile-kit/
 |---|---|---|
 | `Persistence/AtomicFileStore` | Temp-write + flush + atomic swap, CRC-32 framing, backup copy, crash-window recovery | Done, 18 dotnet tests |
 | `Achievements/AchievementTracker` | Offline progress, unlock exactly once, auto-save on unlock, keeps unknown ids, handles changed targets | Done, 25 dotnet tests |
-| `Settings/` | Frame-rate (30 / 60 / Auto), auto-zoom preference, generic prefs | Planned |
+| `Settings/GameSettings` | Frame-rate mode (30 / 60 / Auto), touch auto-zoom toggle, typed custom prefs, saved through the same store | Done, 18 dotnet tests |
 | `unity/` layer | Gestures, camera, gamepad, display, lifecycle | Planned (will not be runtime-tested here) |
 
 Achievements on top of the save store:
@@ -53,6 +53,17 @@ achievements.Unlocked += state => ShowToast(state.Definition.Title);
 achievements.Load();                    // once at startup; never throws on damaged data
 achievements.Report("veteran");         // +1 progress; unlocks (and auto-saves) at 100
 if (achievements.HasUnsavedChanges) achievements.Save();   // e.g. when the app is paused
+```
+
+Settings on the same store:
+
+```csharp
+var settings = new GameSettings(store);
+settings.Load();                        // defaults if missing or damaged
+int displayHz = Mathf.RoundToInt((float)Screen.currentResolution.refreshRateRatio.value);
+Application.targetFrameRate = FrameRate.Resolve(settings.FrameRate, displayHz);
+settings.SetFloat("music_volume", 0.8f);                   // custom prefs, any key not starting with "umk."
+if (settings.HasUnsavedChanges) settings.Save();
 ```
 
 ## Testing status (honest)
