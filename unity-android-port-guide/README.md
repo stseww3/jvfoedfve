@@ -220,6 +220,9 @@ This suggested map suits a game where you draw roads or lines on a map and drag 
   never draws a road.
 - Touches that start on UI never reach the map.
 
+**Testing in the Editor.** Turn on *Simulate Touch Input From Mouse or Pen* (Window → Analysis → Input
+Debugger → Options). Then the mouse drives one-finger gestures. Test pinch on the phone itself.
+
 ### Wiring it to your game
 
 Your PC version already has functions that the mouse calls: start a stroke, extend it, end it, click.
@@ -556,6 +559,10 @@ public class RunAutosave : MonoBehaviour
 
 On the title screen, offer **Continue** when
 `SaveSystem.TryLoad("run", out RunState state, out int version)` succeeds.
+
+`SaveSystem.Save` returns `false` if the write failed, for example because storage is full. The
+previous save is untouched in that case. Tell the player ("Couldn't save, free up some space") rather
+than failing silently.
 
 ### Changing the save format later
 

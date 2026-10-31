@@ -25,8 +25,9 @@ public static class SaveSystem
     /// <summary>
     /// Writes <paramref name="data"/> (any [Serializable] class JsonUtility can handle) to the slot.
     /// Bump <paramref name="version"/> whenever the data layout changes so loads can migrate old saves.
+    /// Returns false if the write failed (for example, storage full); the previous save is left intact.
     /// </summary>
-    public static void Save<T>(string slot, T data, int version = 1)
+    public static bool Save<T>(string slot, T data, int version = 1)
     {
         string path = PathFor(slot);
         string tempPath = path + ".tmp";
@@ -36,21 +37,30 @@ public static class SaveSystem
         var envelope = new Envelope { version = version, checksum = Hash(payload), payload = payload };
         byte[] bytes = Encoding.UTF8.GetBytes(JsonUtility.ToJson(envelope));
 
-        using (var stream = new FileStream(tempPath, FileMode.Create, FileAccess.Write, FileShare.None))
+        try
         {
-            stream.Write(bytes, 0, bytes.Length);
-            stream.Flush(true);
-        }
+            using (var stream = new FileStream(tempPath, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                stream.Write(bytes, 0, bytes.Length);
+                stream.Flush(true);
+            }
 
-        // File.Move is a single rename() on Android, so each step is atomic; Load() also checks .tmp
-        // in case the app dies between the two moves.
-        if (File.Exists(path))
-        {
-            if (File.Exists(backupPath))
-                File.Delete(backupPath);
-            File.Move(path, backupPath);
+            // File.Move is a single rename() on Android, so each step is atomic; Load() also checks .tmp
+            // in case the app dies between the two moves.
+            if (File.Exists(path))
+            {
+                if (File.Exists(backupPath))
+                    File.Delete(backupPath);
+                File.Move(path, backupPath);
+            }
+            File.Move(tempPath, path);
+            return true;
         }
-        File.Move(tempPath, path);
+        catch (Exception e) when (e is IOException || e is UnauthorizedAccessException)
+        {
+            Debug.LogError($"Saving '{slot}' failed: {e.Message}");
+            return false;
+        }
     }
 
     public static bool TryLoad<T>(string slot, out T data)

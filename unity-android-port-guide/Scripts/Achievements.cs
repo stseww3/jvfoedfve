@@ -62,7 +62,10 @@ public class Achievements : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         foreach (Definition definition in definitions)
-            byId[definition.id] = definition;
+        {
+            if (!string.IsNullOrEmpty(definition.id))
+                byId[definition.id] = definition;
+        }
         Load();
 
 #if PLAY_GAMES_SERVICES
