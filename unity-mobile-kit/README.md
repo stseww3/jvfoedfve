@@ -30,6 +30,31 @@ unity-mobile-kit/
       Lifecycle/         Pause/resume, save-on-background, frame-rate applier
 ```
 
+## Components and status
+
+| Component | What it does | Status |
+|---|---|---|
+| `Persistence/AtomicFileStore` | Temp-write + flush + atomic swap, CRC-32 framing, backup copy, crash-window recovery | Done, 18 dotnet tests |
+| `Achievements/AchievementTracker` | Offline progress, unlock exactly once, auto-save on unlock, keeps unknown ids, handles changed targets | Done, 25 dotnet tests |
+| `Settings/` | Frame-rate (30 / 60 / Auto), auto-zoom preference, generic prefs | Planned |
+| `unity/` layer | Gestures, camera, gamepad, display, lifecycle | Planned (will not be runtime-tested here) |
+
+Achievements on top of the save store:
+
+```csharp
+var store = new AtomicFileStore(Application.persistentDataPath);
+var achievements = new AchievementTracker(new[]
+{
+    new AchievementDefinition("first_win", "First win", "Win one match."),
+    new AchievementDefinition("veteran", "Veteran", "Play 100 matches.", target: 100),
+}, store);
+
+achievements.Unlocked += state => ShowToast(state.Definition.Title);
+achievements.Load();                    // once at startup; never throws on damaged data
+achievements.Report("veteran");         // +1 progress; unlocks (and auto-saves) at 100
+if (achievements.HasUnsavedChanges) achievements.Save();   // e.g. when the app is paused
+```
+
 ## Testing status (honest)
 
 This repository is developed on a server with **no Unity install and no Android device**.
