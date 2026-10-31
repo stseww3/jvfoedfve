@@ -10,7 +10,7 @@ namespace UnityMobileKit.Settings
     /// also use for their own game-specific preferences.
     /// <para>Not thread-safe: use it from one thread (normally Unity's main thread).</para>
     /// </summary>
-    public sealed class GameSettings
+    public sealed class GameSettings : ISaveable
     {
         // Known settings live under this prefix; the generic setters refuse it so user preferences
         // can never collide with or clobber a built-in setting.

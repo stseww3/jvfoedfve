@@ -13,7 +13,7 @@ namespace UnityMobileKit.Gestures
     public sealed class GestureRecognizer
     {
         /// <summary>Used when the platform reports an unknown screen density (Unity's <c>Screen.dpi</c> can be 0).</summary>
-        public const float FallbackDpi = 320f;
+        public const float FallbackDpi = ScreenDensity.FallbackDpi;
 
         // Two touch points closer than this give a meaningless scale ratio, so such frames don't zoom.
         private const float MinPinchDistance = 1f;
@@ -46,8 +46,7 @@ namespace UnityMobileKit.Gestures
         /// <param name="dpi">Screen density in dots per inch; 0 or less means unknown (see <see cref="FallbackDpi"/>).</param>
         public GestureRecognizer(float dpi)
         {
-            float usable = dpi > 0f && !float.IsInfinity(dpi) ? dpi : FallbackDpi;
-            _pixelsPerDp = usable / 160f;
+            _pixelsPerDp = ScreenDensity.PixelsPerDp(dpi);
         }
 
         /// <summary>How far (in dp, 1/160 inch) a finger may wander and still count as a tap.</summary>

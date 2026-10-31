@@ -16,7 +16,7 @@ namespace UnityMobileKit.Achievements
     /// temporarily removing a definition (or rolling back an update) does not erase progress.
     /// </para>
     /// </summary>
-    public sealed class AchievementTracker
+    public sealed class AchievementTracker : ISaveable
     {
         private const string Header = "UMK-ACH 1";
 
