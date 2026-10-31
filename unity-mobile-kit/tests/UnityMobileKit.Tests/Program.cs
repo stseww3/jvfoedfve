@@ -7,6 +7,7 @@ namespace UnityMobileKit.Tests
             AtomicFileStoreTests.Register();
             AchievementTrackerTests.Register();
             SettingsTests.Register();
+            GestureTests.Register();
             return TestHarness.RunAll();
         }
     }
