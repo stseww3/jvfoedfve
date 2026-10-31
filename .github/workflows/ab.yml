@@ -1,7 +1,7 @@
 name: ab
 # Paired comparison described by the sealed job spec jobs/ab.bin, split over
 # parallel runners. The bots (secret/code.bin) and the spec are opened with
-# the STRAT_KEY secret on the runners only; the merged result is sealed into
+# the SIM_KEY secret on the runners only; the merged result is sealed into
 # results/.
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
           node-version: 22
       - id: p
         env:
-          STRAT_KEY: ${{ secrets.STRAT_KEY }}
+          STRAT_KEY: ${{ secrets.SIM_KEY }}
         run: |
           node tools/crypt.mjs open jobs/ab.bin .
           echo "shards=$(node -e "console.log(JSON.stringify([...Array(require('./jobs/ab.json').shards).keys()]))")" >> "$GITHUB_OUTPUT"
@@ -42,7 +42,7 @@ jobs:
         with:
           node-version: 22
       - env:
-          STRAT_KEY: ${{ secrets.STRAT_KEY }}
+          STRAT_KEY: ${{ secrets.SIM_KEY }}
         run: |
           node tools/crypt.mjs open secret/code.bin .
           node tools/crypt.mjs open jobs/ab.bin .
@@ -69,7 +69,7 @@ jobs:
           pattern: shard-*
           merge-multiple: true
       - env:
-          STRAT_KEY: ${{ secrets.STRAT_KEY }}
+          STRAT_KEY: ${{ secrets.SIM_KEY }}
         run: |
           node tools/crypt.mjs open jobs/ab.bin .
           node tools/merge.mjs jobs/ab.json out > summary.txt
