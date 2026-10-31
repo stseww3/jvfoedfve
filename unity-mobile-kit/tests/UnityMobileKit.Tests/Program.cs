@@ -9,6 +9,7 @@ namespace UnityMobileKit.Tests
             SettingsTests.Register();
             GestureTests.Register();
             CameraTests.Register();
+            ControllerTests.Register();
             return TestHarness.RunAll();
         }
     }

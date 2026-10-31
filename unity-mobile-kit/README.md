@@ -24,6 +24,7 @@ unity-mobile-kit/
       Geometry/          Float2 (keeps the core free of UnityEngine types)
       Gestures/          Touch gesture recognition (tap, drag, pinch)
       CameraControl/     Pan/zoom camera math, auto-zoom framing
+      Controllers/       Gamepad deadzones, buttons, virtual cursor, input mode
   tests/           Dependency-free test harness (dotnet run), fully offline
   unity/           Unity MonoBehaviour layer (depends on UnityEngine)
     Runtime/
@@ -43,7 +44,8 @@ unity-mobile-kit/
 | `Gestures/GestureRecognizer` | Tap, one-finger drag, two-finger pinch + pan from raw touch points; density-aware tap slop, no camera jumps when fingers are added, removed or reordered, cancel on focus loss | Done, 18 dotnet tests |
 | `CameraControl/ZoomPanCamera` | Orthographic top-down camera: content follows the finger, pinch zooms around the fingers' midpoint, zoom limits, world bounds that survive rotation | Done, 9 dotnet tests |
 | `CameraControl/AutoZoom` | Smoothly frames points of interest with a screen margin; frame-rate independent; pauses while the player pans/pinches; bind to the auto-zoom setting | Done, 3 dotnet tests |
-| Controller input core | Stick deadzones, gamepad-driven cursor/camera, hot-plug state | Next |
+| `Controllers/` | Standard-gamepad state, radial stick + trigger deadzones, button edges with D-pad auto-repeat, stick-driven virtual cursor, stick/trigger camera control, touch-vs-gamepad mode with pause on disconnect | Done, 15 dotnet tests |
+| Display + lifecycle core | Safe-area anchors, UI scale for a reference resolution, battery/thermal-aware frame-rate policy, save-on-pause coordination | Next |
 | `unity/` layer | Thin adapters: touch/gamepad input, camera, display, lifecycle | Planned (will not be runtime-tested here) |
 
 Achievements on top of the save store:
