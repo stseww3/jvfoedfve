@@ -1,6 +1,6 @@
 using UnityMobileKit.Geometry;
 
-namespace UnityMobileKit.Input
+namespace UnityMobileKit.Gestures
 {
     /// <summary>What the fingers did during one frame, ready to apply to a camera.</summary>
     public readonly struct GestureFrame

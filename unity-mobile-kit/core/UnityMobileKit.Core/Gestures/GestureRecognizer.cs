@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityMobileKit.Geometry;
 
-namespace UnityMobileKit.Input
+namespace UnityMobileKit.Gestures
 {
     /// <summary>
     /// Turns the set of fingers that are down each frame into tap, one-finger drag and two-finger

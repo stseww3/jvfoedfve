@@ -1,6 +1,6 @@
 using System.Globalization;
 using UnityMobileKit.Geometry;
-using UnityMobileKit.Input;
+using UnityMobileKit.Gestures;
 
 namespace UnityMobileKit.Tests
 {

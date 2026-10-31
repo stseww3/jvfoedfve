@@ -22,7 +22,8 @@ unity-mobile-kit/
       Achievements/      Local achievement definitions, progress, persistence
       Settings/          Frame-rate model, auto-zoom preference, generic prefs
       Geometry/          Float2 (keeps the core free of UnityEngine types)
-      Input/             Touch gesture recognition (tap, drag, pinch)
+      Gestures/          Touch gesture recognition (tap, drag, pinch)
+      CameraControl/     Pan/zoom camera math, auto-zoom framing
   tests/           Dependency-free test harness (dotnet run), fully offline
   unity/           Unity MonoBehaviour layer (depends on UnityEngine)
     Runtime/
@@ -39,8 +40,10 @@ unity-mobile-kit/
 | `Persistence/AtomicFileStore` | Temp-write + flush + atomic swap, CRC-32 framing, backup copy, crash-window recovery | Done, 18 dotnet tests |
 | `Achievements/AchievementTracker` | Offline progress, unlock exactly once, auto-save on unlock, keeps unknown ids, handles changed targets | Done, 25 dotnet tests |
 | `Settings/GameSettings` | Frame-rate mode (30 / 60 / Auto), touch auto-zoom toggle, typed custom prefs, saved through the same store | Done, 18 dotnet tests |
-| `Input/GestureRecognizer` | Tap, one-finger drag, two-finger pinch + pan from raw touch points; density-aware tap slop, no camera jumps when fingers are added, removed or reordered, cancel on focus loss | Done, 18 dotnet tests |
-| Camera math | Pinch-to-zoom around the fingers' midpoint, zoom and pan limits, auto-zoom framing | Next |
+| `Gestures/GestureRecognizer` | Tap, one-finger drag, two-finger pinch + pan from raw touch points; density-aware tap slop, no camera jumps when fingers are added, removed or reordered, cancel on focus loss | Done, 18 dotnet tests |
+| `CameraControl/ZoomPanCamera` | Orthographic top-down camera: content follows the finger, pinch zooms around the fingers' midpoint, zoom limits, world bounds that survive rotation | Done, 9 dotnet tests |
+| `CameraControl/AutoZoom` | Smoothly frames points of interest with a screen margin; frame-rate independent; pauses while the player pans/pinches; bind to the auto-zoom setting | Done, 3 dotnet tests |
+| Controller input core | Stick deadzones, gamepad-driven cursor/camera, hot-plug state | Next |
 | `unity/` layer | Thin adapters: touch/gamepad input, camera, display, lifecycle | Planned (will not be runtime-tested here) |
 
 Achievements on top of the save store:

@@ -1,6 +1,6 @@
 using UnityMobileKit.Geometry;
 
-namespace UnityMobileKit.Input
+namespace UnityMobileKit.Gestures
 {
     /// <summary>One finger that is currently down, in screen pixels (origin bottom-left, as in Unity).</summary>
     public readonly struct TouchSample
