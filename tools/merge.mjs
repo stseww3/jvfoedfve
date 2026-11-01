@@ -9,12 +9,6 @@ import path from 'node:path';
 const [specFile, dir] = process.argv.slice(2);
 const spec = JSON.parse(fs.readFileSync(specFile, 'utf8'));
 const shards = fs.readdirSync(dir).filter((f) => f.endsWith('.json')).map((f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')));
-if (shards.some((s) => 'wrapped' in s)) {
-  fs.mkdirSync('results', { recursive: true });
-  fs.writeFileSync('results/c22-key.json', JSON.stringify({ wrapped: shards.find((s) => s.wrapped)?.wrapped ?? null }));
-  console.log('key hand-over written to results/c22-key.json');
-  process.exit(0);
-}
 const arms = spec.arms.map((params, i) => ({ params, res: shards.flatMap((s) => s.arms[i].res).sort((a, b) => a.seed - b.seed) }));
 const n = arms[0].res.length;
 const pct = (x) => (100 * x).toFixed(1);
@@ -34,3 +28,6 @@ for (const a of arms) {
   line += ` lead@2000 ${lead(2000)}% lead@3000 ${lead(3000)}% maxShare ${pct(mean(a.res.map((r) => r.maxShare)))}%`;
   console.log(`${line} ${JSON.stringify(a.params)}`);
 }
+// per-seed outcomes for offline analysis: [seed, win, deathT, maxShare]
+console.log('--- per seed');
+for (const a of arms) console.log(JSON.stringify(a.res.map((r) => [r.seed, r.win, r.deathT, r.maxShare])));

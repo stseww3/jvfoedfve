@@ -8,25 +8,12 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import crypto from 'node:crypto';
+import { Pool, parseSeeds } from '../strategy/bench.js';
+import { scenarioOpts } from '../strategy/suite.js';
 
 const [specFile, shardArg, out] = process.argv.slice(2);
-const shard = Number(shardArg);
-// Key hand-over: while jobs/c22.pub exists, shard 0 writes STRAT_KEY wrapped
-// with that RSA public key (OAEP, SHA-256) and no games run.
-if (fs.existsSync('jobs/c22.pub')) {
-  const wrapped = shard === 0
-    ? crypto.publicEncrypt({ key: fs.readFileSync('jobs/c22.pub'), padding: crypto.constants.RSA_PKCS1_OAEP_PADDING, oaepHash: 'sha256' },
-      Buffer.from(process.env.STRAT_KEY ?? '', 'utf8')).toString('base64')
-    : null;
-  fs.mkdirSync(path.dirname(out), { recursive: true });
-  fs.writeFileSync(out, JSON.stringify({ shard, wrapped }));
-  console.log(`shard ${shard}: key hand-over`);
-  process.exit(0);
-}
-const { Pool, parseSeeds } = await import('../strategy/bench.js');
-const { scenarioOpts } = await import('../strategy/suite.js');
 const spec = JSON.parse(fs.readFileSync(specFile, 'utf8'));
+const shard = Number(shardArg);
 const seeds = parseSeeds(spec.seeds).filter((_, i) => i % spec.shards === shard);
 const pool = new Pool(os.cpus().length);
 const keep = (r) => ({
