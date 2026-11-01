@@ -1,0 +1,22 @@
+[Unit]
+Description=tsb relay: command / result webhooks for the strategy bot extension (webhook.site stand-in)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=tgchat
+Group=tgchat
+WorkingDirectory=/opt/tsb-relay
+ExecStart=/usr/bin/python3 /opt/tsb-relay/relay.py --host 0.0.0.0 --port 8790 --data /opt/tsb-relay/data
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/opt/tsb-relay/data
+MemoryMax=256M
+
+[Install]
+WantedBy=multi-user.target
