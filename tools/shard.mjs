@@ -2,7 +2,7 @@
 // the seeds whose position in the seed list is SHARD modulo the spec's
 // shards, all games at once on every core.
 // node tools/shard.mjs SPEC SHARD OUT
-// SPEC: { policy, suite, seeds: "1-480", shards, arms: [params, ...] }
+// SPEC: { policy, suite, seeds: "1-480", shards, arms: [params, ...], maxTicks? }
 // (an arm may name its own policy: { policy: "v2", ... } and its own
 // scenario: { suite: "brv3", ... })
 import fs from 'node:fs';
@@ -24,7 +24,7 @@ const keep = (r) => ({
 const t0 = performance.now();
 // the output carries no parameters (it may be public)
 const arms = await Promise.all(spec.arms.map(async ({ suite = spec.suite, ...params }) => ({
-  res: (await Promise.all(seeds.map((seed) => pool.run({ seed, policy: spec.policy, params, ...scenarioOpts(suite, seed) })))).map(keep),
+  res: (await Promise.all(seeds.map((seed) => pool.run({ seed, policy: spec.policy, params, ...scenarioOpts(suite, seed), ...(spec.maxTicks ? { maxTicks: spec.maxTicks } : {}) })))).map(keep),
 })));
 pool.close();
 fs.mkdirSync(path.dirname(out), { recursive: true });
