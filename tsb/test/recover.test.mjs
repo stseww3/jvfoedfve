@@ -418,7 +418,7 @@ await test('ping state carries the recovery info', async () => {
 
 const DEAD = { kind: 'worker', ok: false, dead: true, error: '插件已更新或停用，请刷新页面' };
 
-await test('extension updated, bot out of a game: reload with the loop kept, not counted, no lobby opened', async () => {
+await test('extension updated, bot out of a game: reload with the loop kept, counted per hour but not in a row, no lobby opened', async () => {
     const t = env();
     await t.send('start', { mp: true });
     t.enterLobby();
@@ -433,7 +433,7 @@ await test('extension updated, bot out of a game: reload with the loop kept, not
     assert.equal(s.resume.open, false);
     assert.match(s.resume.why, /插件已更新或停用/);
     assert.equal(s.inRow, 0);
-    assert.equal(s.reloads.length, 0);
+    assert.equal(s.reloads.length, 1);
     assert.equal(reopen(t).Re.state.loop, 'mp');
     const w = env({ settings: { armed: false } });
     w.relay(DEAD);
@@ -470,6 +470,18 @@ await test('extension updated, the game never ends: reload after 30 minutes anyw
     const left = t.posts.find((p) => p.type === 'result');
     assert.equal(left.event, 'left');
     assert.equal(left.why, 'reload');
+});
+
+await test('extension updated with 10 automatic reloads in the last hour: waits, the panel says to refresh by hand', async () => {
+    const now = Date.UTC(2026, 10, 1, 3, 0, 0);
+    const reloads = Array.from({ length: 10 }, (_, i) => now - 50 * 60e3 + i * 60e3);
+    const t = env({ session: { territorialStrategyBotRecover: JSON.stringify({ reloads, inRow: 0, resume: null, last: null }) } });
+    t.relay(DEAD);
+    t.advance(60e3);
+    assert.equal(t.reloads.length, 0);
+    assert.equal(t.rows()['指令'], '插件已更新或停用，1 小时内已自动刷新 10 次，请手动刷新页面');
+    t.advance(10 * 60e3);
+    assert.equal(t.reloads.length, 1, 'the oldest reload is an hour old: room for this one');
 });
 
 await test('extension updated, hidden tab: the reload still happens', async () => {

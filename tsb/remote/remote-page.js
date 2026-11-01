@@ -753,8 +753,10 @@
     if (rw.pending) return;
     // in a hidden tab too: nothing else brings in the new scripts
     if (ue.manual && (state.update || state.worker && state.worker.dead)) {
-      state.update || (state.update = { at: now });
-      (!playing(d, g) || now - state.update.at >= UPDATE_WAIT_MS) && reloadPage("插件已更新或停用，刷新页面换上新版本", null, !0, !0);
+      const u = state.update || (state.update = { at: now, held: !1 });
+      if (playing(d, g) && now - u.at < UPDATE_WAIT_MS) return;
+      rec.reloads = rec.reloads.filter((t) => now - t < 36e5);
+      (u.held = rec.reloads.length >= RELOADS_PER_HOUR) || reloadPage("插件已更新或停用，刷新页面换上新版本", null, !0, !0);
       return;
     }
     if (!ue.manual || !ue.armed || !state.loop || "visible" !== document.visibilityState) return void(rw.progressAt = now);
@@ -786,14 +788,15 @@
   }
   // also called by the service worker of the new version right after it is installed
   function updateReload() {
-    state.update || (state.update = { at: Date.now() });
+    state.update || (state.update = { at: Date.now(), held: !1 });
   }
-  // update: a reload for an extension update, which keeps the loop but opens no lobby
+  // update: a reload for an extension update, which keeps the loop but opens no lobby; it counts
+  // toward the reloads per hour, not toward those in a row (reaching a lobby is up to the loop)
   function reloadPage(why, code, manual, update = !1) {
     const now = Date.now(), r = state.game, loop = ue.armed ? state.loop : null;
     r && !r.done && r.info && report(r, "left", "reload");
     rw.pending = !0;
-    manual ? rec.inRow = 0 : (rec.inRow++, rec.reloads.push(now));
+    update ? rec.reloads.push(now) : manual ? rec.inRow = 0 : (rec.inRow++, rec.reloads.push(now));
     rec.resume = { loop, open: manual && !update && !loop, at: now, why };
     rec.last = { action: "reload", why, code, at: now };
     saveRecover();
@@ -854,8 +857,8 @@
     rows.push(["远程", ue.armed ? "已接管" : "待命"]);
     const lp = loopText(s);
     lp && rows.push(["循环", lp]);
-    const p = state.poll;
-    rows.push(["指令", dead || state.update ? `插件已更新或停用，${rw.pending ? "正在刷新页面…" : "等这局打完自动刷新"}`
+    const p = state.poll, u = state.update;
+    rows.push(["指令", dead || u ? `插件已更新或停用，${rw.pending ? "正在刷新页面…" : u && u.held ? `1 小时内已自动刷新 ${RELOADS_PER_HOUR} 次，请手动刷新页面` : "等这局打完自动刷新"}`
       : pollUrl() ? p ? p.ok ? `正常 ${clock(p.at)}` : `失败：${ne(p.error || "?", 40)}` : "连接中…" : "没填指令地址"]);
     const l = state.last;
     l && rows.push(["上条指令", `${l.cmd || "?"} ${l.ok ? "✓" : `✗ ${ne(l.error || "", 40)}`} ${clock(l.at)}`]);

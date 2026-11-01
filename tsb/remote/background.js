@@ -132,6 +132,7 @@ function reloadWhenFree() {
         try {
             const now = Date.now(), why = '插件已更新或停用，刷新页面换上新版本';
             r.rw.pending = true;
+            r.rec.reloads.push(now);
             r.rec.resume = { loop: ext.settings.armed ? r.state.loop : null, open: false, at: now, why };
             r.rec.last = { action: 'reload', why, code: null, at: now };
             sessionStorage.setItem('territorialStrategyBotRecover', JSON.stringify(r.rec));

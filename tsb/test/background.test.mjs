@@ -234,7 +234,8 @@ await test('reload check, 0.6.7 page out of a game: reloads now and carries the 
     assert.equal(saved.resume.loop, 'mp');
     assert.equal(saved.resume.open, false);
     assert.match(saved.resume.why, /插件已更新/);
-    assert.equal(JSON.stringify(saved.reloads), '[1]', 'not counted as an automatic reload');
+    assert.equal(JSON.stringify(saved.reloads), `[1,${Date.UTC(2026, 10, 1, 4, 0, 0)}]`, 'counted toward the automatic reloads per hour');
+    assert.equal(saved.inRow, 0);
 });
 
 await test('reload check, 0.6.7 page in a game: waits for the game to be over, disarmed bot carries no loop', async () => {
