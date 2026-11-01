@@ -1,11 +1,11 @@
-// Builds 0.6.7 (manual / remote mode) from the 0.5.3 extension folder.
+// Builds 0.6.8 (manual / remote mode) from the 0.5.3 extension folder.
 // usage: node apply-remote.mjs [--single-only] <0.5.3 folder> <output folder> [cmdUrl resultUrl key]
 //   --single-only: remote mode plays singleplayer games only (no allowlist, no lobby)
 import fs from 'node:fs';
 import path from 'node:path';
 import { MENU_FROM, MENU_TO, LOBBY_PATCH, REPLAY_PATCH, CLOSE_PATCH, PATCH_END, patchEndWith } from './lobby-patch.mjs';
 
-const VERSION = '0.6.7';
+const VERSION = '0.6.8';
 const argv = process.argv.slice(2);
 const singleOnly = argv.includes('--single-only');
 const [src, out, cmdUrl = '', resultUrl = '', key = ''] = argv.filter((a) => a !== '--single-only');
@@ -42,6 +42,9 @@ once('"command"===t.type&&(this.eligible()?this.sync(!1):this.ctl.abandon())',
 once('window.__fx=window.__fx||{},window.__fx.strategyBot=Me,',
     `const Re=${remote};\nwindow.__fx=window.__fx||{},window.__fx.strategyBot=Object.assign(Me,Re.hooks),`);
 once('version:"0.5.2",setPort(t){', `version:"${VERSION}",remote:Re,setPort(t){`);
+// the backend port only with the backend strategy; without it the service worker opens no WebSocket
+once('ke=()=>be("tsb-control",JSON.stringify({kind:"connect",port:ue.port}))',
+    'ke=()=>be("tsb-control",JSON.stringify({kind:"connect",port:"backend"===ue.strategy?ue.port:null}))');
 if (!singleOnly) once(MENU_FROM, MENU_TO);
 once(PATCH_END, patchEndWith((singleOnly ? '' : LOBBY_PATCH) + REPLAY_PATCH + CLOSE_PATCH));
 once('for(const t of ye)t.options=()=>({spawn:ue.spawn,play:ue.play});',
@@ -59,7 +62,10 @@ new Function(page);
 
 const manifest = JSON.parse(fs.readFileSync(path.join(src, 'manifest.json'), 'utf8'));
 manifest.version = VERSION;
-manifest.host_permissions = [...new Set([...(manifest.host_permissions || []), 'https://webhook.site/*'])];
+// territorial.io (already granted through the content scripts) and scripting: after an install or
+// update the service worker finds the open game tabs and reloads the remote-mode ones
+manifest.host_permissions = [...new Set([...(manifest.host_permissions || []), 'https://webhook.site/*', 'https://territorial.io/*'])];
+manifest.permissions = [...new Set([...(manifest.permissions || []), 'scripting'])];
 manifest.version_name = singleOnly ? `${VERSION} 远程只管单人局` : `${VERSION} 远程+白名单`;
 manifest.description = manifest.description.replace(/。$/, '') + (singleOnly
     ? '；远程模式（只管单人局）：签名指令开始/结束，死了自动退出，卡住自动刷新，结果发 webhook。'
