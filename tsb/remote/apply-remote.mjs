@@ -32,7 +32,7 @@ if (singleOnly) {
 const q = JSON.stringify;
 
 once('Qt={spawn:!0,play:!0,autoStart:!1,folded:!1,left:null,top:null}',
-    'Qt={spawn:!0,play:!0,autoStart:!1,manual:!1,armed:!1,allow:"",cmdUrl:"",resultUrl:"",key:"",pollMs:3e3,folded:!1,left:null,top:null}');
+    'Qt={spawn:!0,play:!0,autoStart:!1,manual:!1,armed:!1,stay:!1,allow:"",cmdUrl:"",resultUrl:"",key:"",pollMs:3e3,folded:!1,left:null,top:null}');
 once('(ce,{port:8765,strategy:"v3"})',
     `(ce,{port:8765,strategy:"v3",cmdUrl:${q(cmdUrl)},resultUrl:${q(resultUrl)},key:${q(key)}})`);
 once('["autoStart","自动开局（打开页面时和每局结束后）"]]',

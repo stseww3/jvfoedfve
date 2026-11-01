@@ -8,12 +8,16 @@
 //                                                       (allowlist build only; the bot plays only when every other human is on the allowlist)
 //   node send-command.mjs start --strategy my.js        import my.js (class Policy), select it, arm
 //   node send-command.mjs start --use v3                select a strategy the extension already has, arm
+//   node send-command.mjs start --mp --stay             after dying the bot stays in the game until it is over, then goes on
+//                                                       (the replay covers the whole game); --leave: leave 3 s after dying again;
+//                                                       without either the extension keeps the last choice (the panel shows it too)
 //   node send-command.mjs stop                          the bot stops (un-readies in the lobby), the game goes on
 //   node send-command.mjs end                           the bot stops and leaves the game or the lobby
 //   node send-command.mjs lobby                         reload the game page (stuck on an error page, a frozen game);
 //                                                       a loop goes on afterwards, without one the allowlist build opens the battle royale lobby
 //
-// After I die or the game ends, an armed bot leaves the game by itself 3 seconds later.
+// After I die or the game ends, an armed bot leaves the game by itself 3 seconds later; with --stay it stays after
+// dying until the game is over (at most 30 minutes) and leaves 3 seconds after that.
 // With a loop on (--mp / --single), a page stuck for a while (1006, Lobby Timeout, a frozen game) reloads by itself;
 // the game's bot detection, bans, kicks and a second login stop the loop instead.
 //
@@ -31,8 +35,8 @@ import { basename } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const CMDS = ['ping', 'start', 'stop', 'end', 'lobby'];
-const FLAGS = ['single', 'mp', 'print', 'wait'];
-const USAGE = 'usage: node send-command.mjs <ping|start|stop|end|lobby> [--single | --mp] [--strategy file.js] [--use v3] [--seq n] [--key k] [--url u] [--wait [--result u] [--timeout s]] [--print]';
+const FLAGS = ['single', 'mp', 'stay', 'leave', 'print', 'wait'];
+const USAGE = 'usage: node send-command.mjs <ping|start|stop|end|lobby> [--single | --mp] [--stay | --leave] [--strategy file.js] [--use v3] [--seq n] [--key k] [--url u] [--wait [--result u] [--timeout s]] [--print]';
 const UUID = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
 // the extension polls every 3 s, but a minimized or background tab may poll only about once a minute
 const TIMEOUT_S = 90;
@@ -103,6 +107,8 @@ export async function main(argv, io = {}) {
         return 2;
     }
     if (opt.single && opt.mp) throw new Error('--single and --mp do not go together');
+    if (opt.stay && opt.leave) throw new Error('--stay and --leave do not go together');
+    if ((opt.stay || opt.leave) && cmd !== 'start') throw new Error('--stay and --leave go with start');
     const key = opt.key || env.TSB_KEY;
     const url = opt.url || env.TSB_CMD_URL;
     if (!key) throw new Error('no key: pass --key or set TSB_KEY');
@@ -122,6 +128,7 @@ export async function main(argv, io = {}) {
     if (opt.use) c.use = opt.use;
     if (opt.single) c.single = true;
     if (opt.mp) c.mp = true;
+    if (opt.stay || opt.leave) c.stay = !!opt.stay;
 
     const p = JSON.stringify(c);
     const sig = createHmac('sha256', key).update(p).digest('base64url');

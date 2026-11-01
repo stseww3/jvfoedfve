@@ -23,6 +23,7 @@ try {
         new Function(page);
         assert.ok(page.includes('ke=()=>be("tsb-control",JSON.stringify({kind:"connect",port:"backend"===ue.strategy?ue.port:null}))'));
         assert.ok(page.includes(`const SINGLE_ONLY = ${v === 'B' ? '!0' : '!1'};`));
+        assert.ok(page.includes('manual:!1,armed:!1,stay:!1,'), 'stay is off until chosen');
         assert.ok(page.includes('version:"0.6.8",remote:Re,setPort(t){'));
         for (const f of ['relay.js', 'background.js']) assert.equal(fs.readFileSync(path.join(dir, f), 'utf8'), fs.readFileSync(path.join(tsb, 'remote', f), 'utf8'));
         console.log(`ok ${v}: ${m.version_name}`);

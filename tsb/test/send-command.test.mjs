@@ -163,6 +163,15 @@ await test('usage: unknown command exits 2; --print sends nothing', async () => 
     assert.equal(JSON.parse(JSON.parse(b.out[0]).p).mp, true);
 });
 
+await test('--stay / --leave: stay true / false in the signed command, only with start', async () => {
+    const p = (r) => JSON.parse(JSON.parse(r.out[0]).p);
+    assert.equal(p(await run(['start', '--mp', '--stay', '--print'])).stay, true);
+    assert.equal(p(await run(['start', '--leave', '--print'])).stay, false);
+    assert.equal('stay' in p(await run(['start', '--print'])), false, 'neither: the extension keeps its choice');
+    await assert.rejects(run(['start', '--stay', '--leave']), /do not go together/);
+    await assert.rejects(run(['ping', '--stay']), /go with start/);
+});
+
 let failed = 0;
 for (const [s, name, e] of results) {
     console.log(`${s} ${name}`);

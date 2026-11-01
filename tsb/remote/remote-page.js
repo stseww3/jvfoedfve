@@ -37,6 +37,8 @@
   const AHEAD_MS = 12e4;
   // after I die or the game ends, wait this long, then leave
   const EXIT_MS = 3e3;
+  // with "stay" on, after I die the bot stays in the game until it is over, at most this long
+  const STAY_MAX_MS = 18e5;
   // lobby rooms: 0 team, 1 battle royale, 2 1v1, 3 zombie; room modes 7 and 10 are battle royale
   const BR_ROOM = 1;
   const BR_MODES = [7, 10];
@@ -60,6 +62,7 @@
     configured: null,
     box: null,
     armButton: null,
+    stayBox: null,
     info: null,
     // "single": a new singleplayer game after each game; "mp": back to the battle royale lobby and Ready
     loop: null,
@@ -215,7 +218,7 @@
   const modeOf = (d, g) => g[d.gIsReplay] ? "replay" : g[d.gIsSingleplayer] ? "single" : g[d.gIsTeamGame] ? "team" : "multi";
   function snapshot() {
     const d = dict(), g = read("game"),
-      s = { manual: !!ue.manual, armed: !!ue.armed, strategy: ue.strategy, phase: de.phase, loop: state.loop, replays: !!(d && d.replayData), inGame: false };
+      s = { manual: !!ue.manual, armed: !!ue.armed, stay: !!ue.stay, strategy: ue.strategy, phase: de.phase, loop: state.loop, replays: !!(d && d.replayData), inGame: false };
     SINGLE_ONLY || (s.lobby = lobbyInfo(d));
     s.recover = recoverInfo(d);
     if (!d || !g) return s;
@@ -565,6 +568,7 @@
           if (!Te.list().some(([id]) => id === c.use)) return { ok: !1, error: `no strategy "${c.use}"`, state: snapshot() };
           ue.strategy = c.use, fe(), Te.changed(c.use);
         }
+        "boolean" == typeof c.stay && (ue.stay = c.stay);
         syncBackend();
         ue.armed = !0, fe(), rec.inRow = 0, saveRecover(), rw.progressAt = Date.now();
         if (mp) {
@@ -691,6 +695,8 @@
       loop: state.loop,
       // what happens 3 s after a death or the end: leave, then queue again / a new singleplayer game / stop the loop
       next: "left" === event || !ue.armed ? null : !state.loop ? "leave" : gt.ok ? "mp" === state.loop ? "queue" : "single" : "stop",
+      // after a death: true when the bot stays until the game is over and does "next" then
+      stay: !!ue.stay,
       allowed: gt.ok,
       blocked: gt.blockedIds.map(tagger(m.id)),
       ...(team ? { team } : {}),
@@ -700,18 +706,21 @@
   function track(info) {
     const d = dict(), g = read("game");
     if (!ue.manual || !d || !g) return void(state.game = null);
-    const gs = g[d.gameState], pixels = read("sbPixels");
+    const gs = g[d.gameState], pixels = read("sbPixels"), now = Date.now();
     let r = state.game;
     r && (0 === gs || pixels !== r.pixels) && (r.done || !r.info || report(r, "left"), r = state.game = null);
-    if (1 !== gs && 2 !== gs || g[d.gIsReplay] || !info) return;
+    if (1 !== gs && 2 !== gs || g[d.gIsReplay]) return;
+    // dead with "stay" on: leave once the game is over, the option is turned off, or after STAY_MAX_MS
+    if (r && r.stayAt) return void((2 === gs || !ue.stay || now - r.stayAt >= STAY_MAX_MS) && (r.stayAt = 0, ue.armed && (r.exitAt = now + EXIT_MS)));
+    if (!info) return;
     if (!r) {
       if (2 === gs) return;
-      r = state.game = { pixels, id: `${Date.now().toString(36)}-${Math.floor(1e9 * Math.random()).toString(36)}`, t0: Date.now(), done: !1, info: null, lastAlive: null, wasAlive: !1, peak: 0, exitAt: 0 };
+      r = state.game = { pixels, id: `${now.toString(36)}-${Math.floor(1e9 * Math.random()).toString(36)}`, t0: now, done: !1, info: null, lastAlive: null, wasAlive: !1, peak: 0, exitAt: 0, stayAt: 0 };
     }
     if (r.done) return;
     r.info = info, r.meta = meta(d, g), r.gate = gate(), r.peak = Math.max(r.peak, info.territory | 0), info.alive && !info.spawnPhase && (r.wasAlive = !0, r.lastAlive = info);
     r.wasAlive && !info.alive && 1 === gs ? report(r, "died") : 2 === gs && report(r, "end");
-    r.done && ue.armed && (r.exitAt = Date.now() + EXIT_MS);
+    r.done && ue.armed && (ue.stay && 1 === gs ? r.stayAt = now : r.exitAt = now + EXIT_MS);
   }
   function frame(info) {
     state.info = info || null;
@@ -782,9 +791,10 @@
     disarm(), lobby.stopped = why, rec.last = { action: "stop", why, code, at: Date.now() }, saveRecover();
     post({ type: "recover", action: "stop", why, code, text: null === code ? null : codeText(code), loop, codes: rw.codes.slice(), state: snapshot() }, "recover");
   }
-  // a game the bot is still in: its result is not reported yet
+  // a game the bot is still in: its result is not reported yet, or it stays to the end after dying
   function playing(d, g) {
-    return !!(d && g && 1 === g[d.gameState] && !g[d.gIsReplay] && !(state.game && state.game.done));
+    const r = state.game;
+    return !!(d && g && 1 === g[d.gameState] && !g[d.gIsReplay] && !(r && r.done && !r.stayAt));
   }
   // also called by the service worker of the new version right after it is installed
   function updateReload() {
@@ -809,10 +819,11 @@
   function sync() {
     state.box && (state.box.style.display = ue.manual ? "" : "none");
     state.armButton && (state.armButton.textContent = ue.armed ? "停手（本地）" : "接管（本地）");
+    state.stayBox && (state.stayBox.checked = !!ue.stay);
   }
   function fields() {
     const css = ee("style");
-    css.textContent = "\n#tsb-panel .tsb-remote { margin-top: 4px; padding-top: 4px; border-top: 1px solid rgba(255, 255, 255, 0.12); }\n#tsb-panel .tsb-remote label { display: block; padding: 2px 0 0; color: #9aa3ad; cursor: default; }\n#tsb-panel .tsb-remote input, #tsb-panel .tsb-remote textarea { display: block; box-sizing: border-box; width: 100%; margin: 1px 0 0;\n  padding: 2px 4px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 4px; background: rgba(0, 0, 0, 0.35); color: #e8e8e8;\n  font: inherit; cursor: text; user-select: text; -webkit-user-select: text; }\n#tsb-panel .tsb-remote textarea { height: 54px; resize: vertical; }\n#tsb-panel .tsb-remote .tsb-files { margin-top: 4px; }\n", document.head.appendChild(css);
+    css.textContent = "\n#tsb-panel .tsb-remote { margin-top: 4px; padding-top: 4px; border-top: 1px solid rgba(255, 255, 255, 0.12); }\n#tsb-panel .tsb-remote label { display: block; padding: 2px 0 0; color: #9aa3ad; cursor: default; }\n#tsb-panel .tsb-remote input, #tsb-panel .tsb-remote textarea { display: block; box-sizing: border-box; width: 100%; margin: 1px 0 0;\n  padding: 2px 4px; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 4px; background: rgba(0, 0, 0, 0.35); color: #e8e8e8;\n  font: inherit; cursor: text; user-select: text; -webkit-user-select: text; }\n#tsb-panel .tsb-remote textarea { height: 54px; resize: vertical; }\n#tsb-panel .tsb-remote .tsb-files { margin-top: 4px; }\n#tsb-panel .tsb-remote label.tsb-check { display: flex; align-items: center; gap: 7px; padding: 1px 0; color: inherit; cursor: pointer; }\n#tsb-panel .tsb-remote label.tsb-check input { display: inline-block; width: auto; margin: 0; padding: 0; cursor: pointer; }\n", document.head.appendChild(css);
     const box = state.box = ee("div", "tsb-remote"),
       field = (key, title, type) => {
         const label = ee("label", "", title), input = ee("area" === type ? "textarea" : "input");
@@ -820,15 +831,20 @@
           ue[key] = input.value.trim(), fe(), configure();
         }), label.appendChild(input), label;
       },
+      stay = ee("label", "tsb-check"),
+      stayBox = state.stayBox = ee("input"),
       row = ee("div", "tsb-files"),
       arm = state.armButton = ee("button", "tsb-button"),
       back = ee("button", "tsb-button", SINGLE_ONLY ? "刷新游戏页" : "回大厅（刷新）");
     back.type = "button", back.title = "刷新游戏页；开着循环就接着循环", back.addEventListener("click", () => {
       back.blur(), rw.pending || reloadPage("面板按钮", null, !0);
     });
+    stayBox.type = "checkbox", stayBox.addEventListener("change", () => {
+      ue.stay = stayBox.checked, fe(), stayBox.blur();
+    }), stay.append(stayBox, ee("span", "", "死了不退，留到整局结束"));
     return arm.type = "button", arm.addEventListener("click", () => {
       ue.armed ? disarm() : (ue.armed = !0, fe()), sync(), arm.blur();
-    }), row.append(arm, back), SINGLE_ONLY || box.append(field("allow", "白名单（一行一个名字，自己不用填）", "area")), box.append(field("cmdUrl", "指令 webhook", "text"), field("resultUrl", "结果 webhook", "text"), field("key", "密钥", "password"), row), sync(), [box];
+    }), row.append(arm, back), box.append(stay), SINGLE_ONLY || box.append(field("allow", "白名单（一行一个名字，自己不用填）", "area")), box.append(field("cmdUrl", "指令 webhook", "text"), field("resultUrl", "结果 webhook", "text"), field("key", "密钥", "password"), row), sync(), [box];
   }
   function loopText(s) {
     if ("single" === state.loop) return "单人：一局完了自动开下一局";
@@ -857,6 +873,7 @@
     rows.push(["远程", ue.armed ? "已接管" : "待命"]);
     const lp = loopText(s);
     lp && rows.push(["循环", lp]);
+    state.game && state.game.stayAt && rows.push(["这局", "死了，留到整局结束再退"]);
     const p = state.poll, u = state.update;
     rows.push(["指令", dead || u ? `插件已更新或停用，${rw.pending ? "正在刷新页面…" : u && u.held ? `1 小时内已自动刷新 ${RELOADS_PER_HOUR} 次，请手动刷新页面` : "等这局打完自动刷新"}`
       : pollUrl() ? p ? p.ok ? `正常 ${clock(p.at)}` : `失败：${ne(p.error || "?", 60)}` : "连接中…" : "没填指令地址"]);

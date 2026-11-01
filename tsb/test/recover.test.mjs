@@ -1,5 +1,6 @@
 // Stuck-page recovery in remote-page.js (0.6.8), on a fake clock with a stubbed game:
-// reloads for stuck pages and for extension updates, and the remote rows of the panel.
+// reloads for stuck pages and for extension updates, leaving after a death or staying
+// to the end of the game, and the remote rows of the panel.
 // usage: node tsb/test/recover.test.mjs
 import assert from 'node:assert/strict';
 import { createHmac } from 'node:crypto';
@@ -75,7 +76,7 @@ function env({ session = null, settings = {}, single = false, hook = true } = {}
         get now() { return now; },
         get singles() { return singles; },
         // game ticks advance while running; lobby updates come twice a second while connected
-        running: false, lobbyOn: false,
+        running: false, lobbyOn: false, alive: true,
         enterLobby() { Re.hooks.lobbyInit(sel, [null, { lobbyRoomMode: 7 }]); t.lobbyOn = true; },
         advance(ms) {
             const end = now + ms;
@@ -85,7 +86,7 @@ function env({ session = null, settings = {}, single = false, hook = true } = {}
                 const shown = document.visibilityState === 'visible';
                 if (shown && t.running && G.gs === 1) tick++;
                 if (shown && t.lobbyOn && G.gs === 0) Re.hooks.lobbyTick();
-                shown && Re.frame(G.gs ? { tick, alive: true, territory: 10, players: 5, rank: 2, leader: 1, spawnPhase: false } : null);
+                shown && Re.frame(G.gs ? { tick, alive: t.alive, territory: 10, players: 5, rank: 2, leader: 1, spawnPhase: false } : null);
                 const due = timers.filter((x) => x.at <= now);
                 timers = timers.filter((x) => x.at > now);
                 for (const x of due) {
@@ -547,6 +548,122 @@ await test('backend link: the service worker is asked for the backend port only 
     t.ue.strategy = 'backend';
     await t.send('start');
     assert.equal(t.controls.at(-1).port, 8765, 'a remote start switches at once, without waiting for the panel');
+});
+
+// in a game with the battle royale loop on, alive for 5 s, then dead
+async function deadInGame(t, start = { mp: true }) {
+    const ack = await t.send('start', start);
+    t.G.gs = 1, t.running = true;
+    t.advance(5e3);
+    t.alive = false;
+    t.advance(1e3);
+    return ack;
+}
+
+await test('stay off (the default): 3 s after dying the bot leaves and queues again', async () => {
+    const t = env();
+    const ack = await deadInGame(t);
+    assert.equal(ack.state.stay, false);
+    const [result] = t.posts.filter((p) => p.type === 'result');
+    assert.equal(result.event, 'died');
+    assert.equal(result.stay, false);
+    assert.equal(result.next, 'queue');
+    assert.equal(t.leaves.length, 0);
+    t.advance(3e3);
+    assert.equal(t.leaves.length, 1);
+});
+
+await test('start --stay: after dying the bot stays until the game is over, then leaves 3 s later and queues again', async () => {
+    const t = env();
+    const ack = await deadInGame(t, { mp: true, stay: true });
+    assert.equal(ack.state.stay, true);
+    assert.equal(t.ue.stay, true, 'kept as a setting, so it survives a reload');
+    const [result] = t.posts.filter((p) => p.type === 'result');
+    assert.equal(result.event, 'died', 'the result still goes out at the death');
+    assert.equal(result.stay, true);
+    assert.equal(result.next, 'queue');
+    t.advance(10 * 60e3);
+    assert.equal(t.leaves.length, 0);
+    assert.equal(t.reloads.length, 0, 'the game goes on, so the page is not stuck');
+    assert.equal(t.rows()['这局'], '死了，留到整局结束再退');
+    t.G.gs = 2;
+    t.advance(2e3);
+    assert.equal(t.leaves.length, 0, 'not before 3 s after the end');
+    t.advance(2e3);
+    assert.equal(t.leaves.length, 1);
+    assert.equal(t.posts.filter((p) => p.type === 'result').length, 1, 'one result per game');
+    assert.equal(t.rows()['这局'], undefined);
+});
+
+await test('start --single --stay: the next singleplayer game starts once this one is over', async () => {
+    const t = env();
+    await t.send('start', { single: true, stay: true });
+    t.advance(1e3);
+    assert.equal(t.singles, 1);
+    t.running = true;
+    t.advance(5e3);
+    t.alive = false;
+    t.advance(60e3);
+    assert.equal(t.singles, 1);
+    t.G.gs = 2;
+    t.advance(4e3);
+    assert.equal(t.singles, 2);
+});
+
+await test('start --leave while staying after a death: the bot leaves 3 s later; a plain start keeps the choice', async () => {
+    const t = env({ settings: { stay: true } });
+    await deadInGame(t);
+    assert.equal(t.ue.stay, true, 'start without --stay / --leave keeps the choice');
+    t.advance(30e3);
+    assert.equal(t.leaves.length, 0);
+    const ack = await t.send('start', { stay: false });
+    assert.equal(ack.state.stay, false);
+    t.advance(4e3);
+    assert.equal(t.leaves.length, 1);
+});
+
+await test('staying after a death, the game never ends: the bot leaves after 30 minutes', async () => {
+    const t = env({ settings: { stay: true } });
+    await deadInGame(t);
+    t.advance(29 * 60e3);
+    assert.equal(t.leaves.length, 0);
+    t.advance(64e3);
+    assert.equal(t.leaves.length, 1);
+});
+
+await test('staying after a death, then stop: the bot stays on the end screen', async () => {
+    const t = env({ settings: { stay: true } });
+    await deadInGame(t);
+    await t.send('stop');
+    t.G.gs = 2;
+    t.advance(10e3);
+    assert.equal(t.leaves.length, 0);
+});
+
+await test('extension updated while staying after a death: the reload waits for the end of the game', async () => {
+    const t = env({ settings: { stay: true } });
+    await deadInGame(t);
+    t.relay(DEAD);
+    t.advance(5 * 60e3);
+    assert.equal(t.reloads.length, 0);
+    t.G.gs = 2;
+    t.advance(3e3);
+    assert.equal(t.reloads.length, 1);
+});
+
+await test('panel: the stay checkbox follows the remote choice and sets it', async () => {
+    const t = env();
+    t.Re.fields();
+    const box = t.Re.state.stayBox;
+    assert.equal(box.type, 'checkbox');
+    t.rows();
+    assert.equal(box.checked, false);
+    await t.send('start', { stay: true });
+    t.rows();
+    assert.equal(box.checked, true, 'a remote start --stay ticks it');
+    box.checked = false, box.on.change();
+    assert.equal(t.ue.stay, false);
+    assert.equal(t.Re.snapshot().stay, false);
 });
 
 let failed = 0;
