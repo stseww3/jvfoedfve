@@ -5,14 +5,22 @@
 // SPEC: { policy, suite, seeds: "1-480", shards, arms: [params, ...], maxTicks? }
 // (an arm may name its own policy: { policy: "v2", ... } and its own
 // scenario: { suite: "brv3", ... })
+// SPEC with kind "wg": war games from real states (tools/c22/wgbatch.mjs),
+// their states and replays sealed in secret/wg.bin.
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 import { Pool, parseSeeds } from '../strategy/bench.js';
 import { scenarioOpts } from '../strategy/suite.js';
 
 const [specFile, shardArg, out] = process.argv.slice(2);
 const spec = JSON.parse(fs.readFileSync(specFile, 'utf8'));
+if (spec.kind === 'wg') {
+  if (fs.existsSync('secret/wg.bin')) execFileSync(process.execPath, ['tools/crypt.mjs', 'open', 'secret/wg.bin', '.'], { stdio: 'inherit' });
+  execFileSync(process.execPath, ['tools/c22/wgbatch.mjs', specFile, shardArg, out], { stdio: 'inherit' });
+  process.exit(0);
+}
 const shard = Number(shardArg);
 const seeds = parseSeeds(spec.seeds).filter((_, i) => i % spec.shards === shard);
 const pool = new Pool(os.cpus().length);

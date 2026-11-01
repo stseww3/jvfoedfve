@@ -5,11 +5,20 @@
 // place among the people and how often we were the biggest living person
 // at tick 8000.
 // node tools/merge.mjs SPEC DIR
+// (SPEC with kind "wg": the war games' summary, tools/c22/wgsum.mjs)
 import fs from 'node:fs';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 
 const [specFile, dir] = process.argv.slice(2);
 const spec = JSON.parse(fs.readFileSync(specFile, 'utf8'));
+if (spec.kind === 'wg') {
+  const sum = new URL('./c22/wgsum.mjs', import.meta.url);
+  if (!fs.existsSync(sum) && fs.existsSync('secret/code.bin')) execFileSync(process.execPath, ['tools/crypt.mjs', 'open', 'secret/code.bin', '.'], { stdio: 'inherit' });
+  const { readRecs, summary } = await import(sum.href);
+  console.log(summary(readRecs([dir]), spec.arms.map(([n]) => n)));
+  process.exit(0);
+}
 const shards = fs.readdirSync(dir).filter((f) => f.endsWith('.json')).map((f) => JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')));
 const arms = spec.arms.map((params, i) => ({ params, res: shards.flatMap((s) => s.arms[i].res).sort((a, b) => a.seed - b.seed) }));
 const n = arms[0].res.length;
