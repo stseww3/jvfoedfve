@@ -72,7 +72,7 @@ function worker({ permitted = true, fetchImpl = null, tabs = [] } = {}) {
 }
 
 // a game page for the injected function, run from its source the way chrome.scripting does
-function page({ ext = null, playing = false } = {}) {
+function page({ ext = null, playing = false, stored = null } = {}) {
     let now = Date.UTC(2026, 10, 1, 4, 0, 0), timers = [], seq = 0;
     const reloads = [], session = new Map();
     const win = {};
@@ -82,6 +82,7 @@ function page({ ext = null, playing = false } = {}) {
         Date: class extends Date { static now() { return now; } },
         location: { reload: () => reloads.push(now) },
         sessionStorage: { setItem: (k, v) => session.set(k, v) },
+        localStorage: { getItem: (k) => (k === 'territorialStrategyBotExtension' && stored ? JSON.stringify(stored) : null) },
         setInterval: (fn, ms) => (timers.push({ id: ++seq, at: now + ms, fn, every: ms }), seq),
         clearInterval: (id) => (timers = timers.filter((x) => x.id !== id))
     });
@@ -206,13 +207,22 @@ w0.install('update');
 await flush();
 const reloadWhenFree = w0.injected[0].func;
 
-await test('reload check: no bot or not in manual mode: the tab is left alone', async () => {
+await test('reload check: not in manual mode, with or without the bot: the tab is left alone', async () => {
     const a = page();
     assert.equal(a.run(reloadWhenFree), 'skip');
+    assert.equal(page({ stored: { manual: false, strategy: 'v3' } }).run(reloadWhenFree), 'skip');
     const b = page({ ext: old067({ manual: false }) });
     assert.equal(b.run(reloadWhenFree), 'skip');
     b.advance(60e3);
     assert.equal(b.reloads.length, 0);
+});
+
+await test('reload check: no bot in the tab (loaded while the extension was away), manual mode saved: reloads now, once', async () => {
+    const p = page({ stored: { manual: true, armed: true, strategy: 'v3' } });
+    assert.equal(p.run(reloadWhenFree), 'reload');
+    assert.equal(p.reloads.length, 1);
+    assert.equal(p.run(reloadWhenFree), 'skip', 'once per page');
+    assert.equal(p.reloads.length, 1);
 });
 
 await test('reload check: a 0.6.8 page does it itself', async () => {

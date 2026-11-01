@@ -110,9 +110,22 @@ chrome.runtime.onConnect.addListener((port) => {
 // Remote-mode tabs are reloaded once the bot is not in a running game (at most 30 minutes
 // later), with the loop carried over; other tabs are left to the person in front of them.
 // Pages from 0.6.8 on do this themselves (remote.updateReload).
+// A tab without the bot was loaded while the extension was away (removed, then installed
+// again a while later; a 0.6.8 page reloads itself as soon as it is cut off): with manual
+// mode in the saved settings it is reloaded now.
 function reloadWhenFree() {
     const ext = window.__fx && window.__fx.strategyBotExtension;
-    if (!ext || !ext.settings || !ext.settings.manual || window.__tsbUpdateReload) return 'skip';
+    if (!ext) {
+        let saved = null;
+        try {
+            saved = JSON.parse(localStorage.getItem('territorialStrategyBotExtension'));
+        } catch { }
+        if (!saved || !saved.manual || window.__tsbUpdateReload) return 'skip';
+        window.__tsbUpdateReload = true;
+        location.reload();
+        return 'reload';
+    }
+    if (!ext.settings || !ext.settings.manual || window.__tsbUpdateReload) return 'skip';
     window.__tsbUpdateReload = true;
     const r = ext.remote;
     if (r && typeof r.updateReload === 'function') return r.updateReload(), 'page';
