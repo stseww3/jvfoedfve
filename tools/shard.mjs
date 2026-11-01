@@ -19,6 +19,7 @@ const pool = new Pool(os.cpus().length);
 const keep = (r) => ({
   seed: r.seed, map: r.map, humans: r.humans, win: r.win ? 1 : 0, deathT: r.deathT, t: r.t,
   maxShare: +r.maxShare.toFixed(4), at: r.at, bestRank: r.bestRank, top3T: r.top3T, duelT: r.duelT,
+  place: r.place, top: r.top,
 });
 const t0 = performance.now();
 // the output carries no parameters (it may be public)

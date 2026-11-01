@@ -1,7 +1,9 @@
 // Merges the shards of a paired comparison (see shard.mjs) and prints for
 // every arm the win rate, against the first arm the difference with its
 // standard error over the seeds and the seeds only one of the two won, how
-// often we led the people at 2000 / 3000 ticks and our mean best share.
+// often we led the people at 2000 / 3000 ticks, our mean best share, mean
+// place among the people and how often we were the biggest living person
+// at tick 8000.
 // node tools/merge.mjs SPEC DIR
 import fs from 'node:fs';
 import path from 'node:path';
@@ -26,8 +28,9 @@ for (const a of arms) {
   }
   const lead = (t) => pct(mean(a.res.map((r) => (r.at?.[t]?.rank === 1 ? 1 : 0))));
   line += ` lead@2000 ${lead(2000)}% lead@3000 ${lead(3000)}% maxShare ${pct(mean(a.res.map((r) => r.maxShare)))}%`;
+  if (a.res.some((r) => r.place)) line += ` place ${mean(a.res.map((r) => r.place)).toFixed(2)} top@8000 ${pct(mean(a.res.map((r) => r.top?.[8000] ?? 0)))}%`;
   console.log(`${line} ${JSON.stringify(a.params)}`);
 }
-// per-seed outcomes for offline analysis: [seed, win, deathT, maxShare]
+// per-seed outcomes for offline analysis: [seed, win, deathT, maxShare, place, top@8000]
 console.log('--- per seed');
-for (const a of arms) console.log(JSON.stringify(a.res.map((r) => [r.seed, r.win, r.deathT, r.maxShare])));
+for (const a of arms) console.log(JSON.stringify(a.res.map((r) => [r.seed, r.win, r.deathT, r.maxShare, r.place, r.top?.[8000]])));
