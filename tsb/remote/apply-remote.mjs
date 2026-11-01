@@ -1,11 +1,13 @@
-// Builds 0.6.9 (manual / remote mode) from the 0.5.3 extension folder.
+// Builds 0.7.0 (manual / remote mode) from the 0.5.3 extension folder.
 // usage: node apply-remote.mjs [--single-only] <0.5.3 folder> <output folder> [cmdUrl resultUrl key]
 //   --single-only: remote mode plays singleplayer games only (no allowlist, no lobby)
 import fs from 'node:fs';
 import path from 'node:path';
 import { MENU_FROM, MENU_TO, LOBBY_PATCH, REPLAY_PATCH, CLOSE_PATCH, PATCH_END, patchEndWith } from './lobby-patch.mjs';
 
-const VERSION = '0.6.9';
+const VERSION = '0.7.0';
+// the server running tsb/relay/relay.py (in place of webhook.site); match patterns cover every port
+const RELAY_HOST = 'http://173.249.205.165/*';
 const argv = process.argv.slice(2);
 const singleOnly = argv.includes('--single-only');
 const [src, out, cmdUrl = '', resultUrl = '', key = ''] = argv.filter((a) => a !== '--single-only');
@@ -64,7 +66,7 @@ const manifest = JSON.parse(fs.readFileSync(path.join(src, 'manifest.json'), 'ut
 manifest.version = VERSION;
 // territorial.io (already granted through the content scripts) and scripting: after an install or
 // update the service worker finds the open game tabs and reloads the remote-mode ones
-manifest.host_permissions = [...new Set([...(manifest.host_permissions || []), 'https://webhook.site/*', 'https://territorial.io/*'])];
+manifest.host_permissions = [...new Set([...(manifest.host_permissions || []), 'https://webhook.site/*', RELAY_HOST, 'https://territorial.io/*'])];
 manifest.permissions = [...new Set([...(manifest.permissions || []), 'scripting'])];
 manifest.version_name = singleOnly ? `${VERSION} 远程只管单人局` : `${VERSION} 远程+白名单`;
 manifest.description = manifest.description.replace(/。$/, '') + (singleOnly

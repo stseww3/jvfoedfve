@@ -2,7 +2,7 @@
   // Manual (remote) mode. Commands come from the command webhook (polled by
   // relay.js) as {"p": "<command JSON>", "sig": "<base64url HMAC-SHA256 of p>"};
   // the HMAC key is the key text from the panel, as UTF-8.
-  const VERSION = "0.6.9";
+  const VERSION = "0.7.0";
   const SINGLE_ONLY = !1;
   const SEEN_KEY = "territorialStrategyBotRemoteSeen";
   // Stuck pages. The lobby command and the panel button reload the page; with a loop on, a page
@@ -176,15 +176,29 @@
     return { spawn: !!ue.spawn && ok, play: !!ue.play && ok };
   };
 
+  // webhook.site, or the relay with its API (tsb/relay): commands and results are posted to
+  // <origin>/<uuid> and listed at <origin>/token/<uuid>/requests. A bare uuid is a webhook.site
+  // address; any address with a uuid in it (the webhook.site page's #!/view/ link too) is read so.
+  function hook(raw) {
+    raw = String(raw || "").trim();
+    const m = UUID.exec(raw);
+    if (m && raw === m[0]) return { origin: "https://webhook.site", id: m[0].toLowerCase() };
+    let u;
+    try {
+      u = new URL(raw);
+    } catch {
+      return null;
+    }
+    if (!/^https?:$/.test(u.protocol)) return null;
+    return { origin: /^(www\.)?webhook\.site$/i.test(u.hostname) ? "https://webhook.site" : u.origin, id: m && m[0].toLowerCase(), raw };
+  }
   function pollUrl() {
-    const raw = String(ue.cmdUrl || "").trim(), m = UUID.exec(raw);
-    if (m && (raw === m[0] || /^https:\/\/(www\.)?webhook\.site\//i.test(raw))) return `https://webhook.site/token/${m[0]}/requests?sorting=newest&per_page=20`;
-    return /^https:\/\//i.test(raw) ? raw : null;
+    const h = hook(ue.cmdUrl);
+    return h ? h.id ? `${h.origin}/token/${h.id}/requests?sorting=newest&per_page=20` : h.raw : null;
   }
   function postUrl() {
-    const raw = String(ue.resultUrl || "").trim(), m = UUID.exec(raw);
-    if (m && (raw === m[0] || /^https:\/\/(www\.)?webhook\.site\/token\//i.test(raw))) return `https://webhook.site/${m[0]}`;
-    return /^https:\/\//i.test(raw) ? raw : null;
+    const h = hook(ue.resultUrl);
+    return h ? h.id ? `${h.origin}/${h.id}` : h.raw : null;
   }
   function configure(force = false) {
     const url = ue.manual ? pollUrl() : null,

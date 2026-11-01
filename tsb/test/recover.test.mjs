@@ -14,7 +14,7 @@ const KEY = 'test-key';
 function env({ session = null, settings = {}, single = false, hook = true } = {}) {
     let now = Date.UTC(2026, 10, 1, 3, 0, 0);
     let timers = [];
-    const posts = [], reloads = [], opens = [], leaves = [], controls = [];
+    const posts = [], reloads = [], opens = [], leaves = [], controls = [], remotes = [];
     let tick = 0, singles = 0;
     const store = (init) => {
         const m = new Map(init ? Object.entries(init) : []);
@@ -48,7 +48,7 @@ function env({ session = null, settings = {}, single = false, hook = true } = {}
     }
     const ctx = vm.createContext({
         window: win, document, localStorage: local, sessionStorage: sessionStore, navigator: {}, console,
-        TextEncoder, atob, crypto: globalThis.crypto, Date: FakeDate,
+        TextEncoder, atob, crypto: globalThis.crypto, Date: FakeDate, URL,
         KeyboardEvent: class { constructor(type, o) { this.type = type; Object.assign(this, o); } },
         location: { reload: () => reloads.push(now) },
         setTimeout: (fn, ms = 0) => (timers.push({ at: now + ms, fn }), timers.length),
@@ -57,6 +57,7 @@ function env({ session = null, settings = {}, single = false, hook = true } = {}
         ue, fe() {},
         be: (type, detail) => {
             const c = JSON.parse(detail);
+            'tsb-remote' === type && remotes.push(c);
             'tsb-control' === type ? controls.push(c) : c.kind === 'post' && posts.push(JSON.parse(c.body));
         },
         de: { phase: 'ready' }, me: { ctl: { abandon() {} } },
@@ -69,7 +70,7 @@ function env({ session = null, settings = {}, single = false, hook = true } = {}
     Object.assign(win.__fx.strategyBot, Re.hooks, single ? {} : { openMultiplayer: (room) => opens.push(room), lobbyRoom() {} });
     const sel = [1, 0, 0, 0];
     const t = {
-        Re, G, ue, win, document, posts, reloads, opens, leaves, sel, sessionStore, controls,
+        Re, G, ue, win, document, posts, reloads, opens, leaves, sel, sessionStore, controls, remotes,
         // what relay.js tells the page about its line to the service worker and the webhook requests
         relay: (s) => document.dispatchEvent({ type: 'tsb-remote-status', detail: JSON.stringify(s) }),
         rows: () => Object.fromEntries(Re.decorate({ text: '', tone: 'ok', stats: [] }).stats),
@@ -532,6 +533,35 @@ await test('panel: no result address, and result posts being retried', async () 
     assert.equal(u.rows()['上报'], '失败：插件已更新或停用，请刷新页面');
     u.relay({ kind: 'post', ok: true, status: 200, tag: 'ack', error: null });
     assert.equal(u.rows()['上报'], undefined);
+});
+
+await test('addresses: webhook.site forms and the relay (plain http, any port) give the poll and post urls', async () => {
+    const a = '00000000-0000-4000-8000-000000000001', b = '00000000-0000-4000-8000-000000000002';
+    const relay = 'http://173.249.205.165:8790';
+    const hook = 'https://webhook.site';
+    const cases = [
+        [a, b, hook, hook],
+        [`${hook}/${a}`, `${hook}/token/${b}/requests`, hook, hook],
+        [`https://www.webhook.site/#!/view/${a}`, `${hook}/#!/view/${b}/x`, hook, hook],
+        [`${relay}/${a}`, `${relay}/${b}`, relay, relay],
+        [`${relay}/token/${a}/requests`, `${relay}/token/${b}/requests?sorting=newest&per_page=50`, relay, relay]
+    ];
+    for (const [cmdUrl, resultUrl, pollAt, postAt] of cases) {
+        const t = env({ settings: { cmdUrl, resultUrl } });
+        t.Re.configure(true);
+        assert.equal(t.remotes.filter((c) => c.kind === 'poll').pop().url, `${pollAt}/token/${a}/requests?sorting=newest&per_page=20`, cmdUrl);
+        const p = JSON.stringify({ cmd: 'ping', ts: t.now, nonce: `n${Math.random()}` });
+        const sig = createHmac('sha256', KEY).update(p).digest('base64url');
+        t.document.dispatchEvent({ type: 'tsb-remote-msg', detail: JSON.stringify([{ id: `r${Math.random()}`, at: new Date(t.now).toISOString().slice(0, 19).replace('T', ' '), content: JSON.stringify({ p, sig }) }]) });
+        for (let i = 0; i < 100 && !t.remotes.some((c) => c.kind === 'post'); i++) await new Promise((r) => setTimeout(r, 5));
+        const post = t.remotes.find((c) => c.kind === 'post');
+        assert.equal(post && post.url, `${postAt}/${b}`, resultUrl);
+        assert.equal(JSON.parse(post.body).ok, true);
+    }
+    const t = env({ settings: { cmdUrl: 'ftp://example.com/x', resultUrl: 'javascript:alert(1)' } });
+    t.Re.configure(true);
+    assert.equal(t.remotes.filter((c) => c.kind === 'poll').pop().url, null);
+    assert.equal(t.rows()['上报'], '没填结果地址，指令的回执发不出去');
 });
 
 await test('backend link: the service worker is asked for the backend port only with the backend strategy', async () => {

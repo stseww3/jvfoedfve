@@ -180,11 +180,17 @@ await test('failed fetch with site access withheld: says where to grant it', asy
     assert.match(p.got[0].error, /在所有网站上/);
 });
 
-await test('not an https url: refused', async () => {
-    const w = worker();
+await test('the relay over plain http is fetched; other schemes are refused', async () => {
+    const calls = [];
+    const w = worker({ fetchImpl: async (url) => (calls.push(url), { status: 200, text: async () => '{"data":[]}' }) });
     const p = w.connect();
-    p.send({ kind: 'http', id: 3, method: 'GET', url: 'http://webhook.site/x' });
-    assert.deepEqual(p.got, [{ kind: 'http', id: 3, error: 'bad url' }]);
+    p.send({ kind: 'http', id: 3, method: 'GET', url: 'http://173.249.205.165:8790/token/x/requests' });
+    await flush();
+    assert.deepEqual(p.got, [{ kind: 'http', id: 3, status: 200, text: '{"data":[]}' }]);
+    p.got.length = 0;
+    for (const url of ['ftp://webhook.site/x', 'javascript:alert(1)', 'chrome://extensions']) p.send({ kind: 'http', id: 4, method: 'GET', url });
+    assert.deepEqual(p.got, Array(3).fill({ kind: 'http', id: 4, error: 'bad url' }));
+    assert.deepEqual(calls, ['http://173.249.205.165:8790/token/x/requests']);
 });
 
 await test('install / update: every game tab gets the reload check in its main world; other reasons do nothing', async () => {

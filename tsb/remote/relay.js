@@ -26,7 +26,7 @@
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
     const httpText = (s) => `HTTP ${s}` + (404 === s || 410 === s ? '：地址不存在或已过期'
         : 401 === s || 403 === s ? '：地址要密码或 API key'
-            : 429 === s ? '：请求太频繁' : s >= 500 ? '：服务器出错' : '');
+            : 429 === s ? '：请求太频繁，或 webhook.site 免费地址的 50 条用完了（换新地址）' : s >= 500 ? '：服务器出错' : '');
     const alive = () => {
         try {
             return !!chrome.runtime.id;
@@ -128,8 +128,8 @@
         });
     }
 
-    // Only through the service worker, which has host permission for webhook.site: the
-    // webhook.site API sends no CORS headers, so the same request from this content
+    // Only through the service worker, which has host permission for webhook.site and the
+    // relay: the webhook.site API sends no CORS headers, so the same request from this content
     // script (it runs with the page's origin) is always blocked.
     function http(method, url, body) {
         port || open();
@@ -200,7 +200,7 @@
             return;
         }
         if (c.kind === 'poll') {
-            const url = typeof c.url === 'string' && /^https:\/\//i.test(c.url) ? c.url : null;
+            const url = typeof c.url === 'string' && /^https?:\/\//i.test(c.url) ? c.url : null;
             const ms = Math.max(1000, Number(c.ms) || 3000);
             if (poll && url === poll.url && ms === poll.ms) return;
             clearInterval(pollTimer);
@@ -211,7 +211,7 @@
                 pollTimer = setInterval(pollOnce, ms);
                 pollOnce();
             }
-        } else if (c.kind === 'post' && typeof c.url === 'string' && /^https:\/\//i.test(c.url) && typeof c.body === 'string') {
+        } else if (c.kind === 'post' && typeof c.url === 'string' && /^https?:\/\//i.test(c.url) && typeof c.body === 'string') {
             post(c.url, c.body, c.tag || null);
         }
     });

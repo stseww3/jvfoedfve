@@ -1,5 +1,5 @@
-// send-command.mjs (0.6.8): signed body, --wait finds the extension's ack on the result
-// webhook, or says why none came. Fake webhook.site, fake clock.
+// send-command.mjs (0.6.8, relay addresses from 0.7.0): signed body, --wait finds the extension's
+// ack on the result webhook, or says why none came. Fake webhook.site / relay, fake clock.
 // usage: node tsb/test/send-command.test.mjs
 import assert from 'node:assert/strict';
 import { createHmac } from 'node:crypto';
@@ -14,7 +14,7 @@ const T0 = Date.UTC(2026, 10, 1, 5, 0, 0);
 const stamp = (ms) => new Date(ms).toISOString().slice(0, 19).replace('T', ' ');
 
 // results(t): what the result webhook lists at time t, newest first
-function run(argv, { results = () => [], cmdStatus = 200, requestId = REQ, apiStatus = 200, env = {} } = {}) {
+function run(argv, { results = () => [], cmdStatus = 200, requestId = REQ, apiStatus = 200, env = {}, api = API } = {}) {
     let t = T0;
     const out = [], err = [], posts = [], gets = [];
     const fetch = async (url, init = {}) => {
@@ -23,7 +23,7 @@ function run(argv, { results = () => [], cmdStatus = 200, requestId = REQ, apiSt
             return { status: cmdStatus, ok: cmdStatus >= 200 && cmdStatus < 300, headers: { get: (h) => (h.toLowerCase() === 'x-request-id' ? requestId : null) } };
         }
         gets.push({ url, t });
-        assert.equal(url, API);
+        assert.equal(url, api);
         const status = typeof apiStatus === 'function' ? apiStatus(t) : apiStatus;
         return { status, json: async () => ({ data: results(t, posts) }) };
     };
@@ -149,9 +149,25 @@ await test('command webhook 404: says it does not exist or expired, exit 1, no w
     assert.equal(r.gets.length, 0);
 });
 
-await test('--wait needs a webhook.site result address', async () => {
+await test('command webhook 429: says a free webhook.site address is full', async () => {
+    const r = await run(['ping', '--wait', '--result', RESULT], { cmdStatus: 429 });
+    assert.equal(r.code, 1);
+    assert.match(r.out[0], /^ping: HTTP 429 \(a free webhook\.site address takes 50 requests, then it is full/);
+});
+
+await test('--wait needs a result address with a uuid in it: webhook.site, a bare token or the relay', async () => {
     await assert.rejects(run(['ping', '--wait']), /TSB_RESULT_URL/);
-    await assert.rejects(run(['ping', '--wait', '--result', 'https://example.com/00000000-0000-4000-8000-000000000002']), /webhook\.site/);
+    await assert.rejects(run(['ping', '--wait', '--result', 'https://example.com/results']), /relay address/);
+    await assert.rejects(run(['ping', '--wait', '--result', 'ftp://example.com/00000000-0000-4000-8000-000000000002']), /relay address/);
+    const relay = 'http://173.249.205.165:8790';
+    for (const result of [`${relay}/00000000-0000-4000-8000-000000000002`, `${relay}/token/00000000-0000-4000-8000-000000000002/requests`]) {
+        const r = await run(['ping', '--wait', '--result', result], { env: { TSB_CMD_URL: `${relay}/00000000-0000-4000-8000-000000000001` }, api: `${relay}/token/00000000-0000-4000-8000-000000000002/requests?sorting=newest&per_page=50`, results: () => [ack()] });
+        assert.equal(r.code, 0);
+        assert.equal(r.posts[0].url, `${relay}/00000000-0000-4000-8000-000000000001`);
+    }
+    for (const result of ['00000000-0000-4000-8000-000000000002', 'https://webhook.site/#!/view/00000000-0000-4000-8000-000000000002']) {
+        assert.equal((await run(['ping', '--wait', '--result', result], { results: () => [ack()] })).code, 0);
+    }
 });
 
 await test('usage: unknown command exits 2; --print sends nothing', async () => {

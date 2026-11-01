@@ -2,7 +2,7 @@
 // relay.js) while that tab uses the backend strategy, reconnected while the tab
 // stays open. Messages pass through as text both ways. It also makes the
 // remote-mode webhook requests for relay.js (host permission for webhook.site
-// means no CORS check here).
+// and the relay means no CORS check here).
 const RETRY_MS = 2000;
 const PING_MS = 20000;
 const GAME_TABS = 'https://territorial.io/*';
@@ -84,7 +84,7 @@ chrome.runtime.onConnect.addListener((port) => {
         } else if (m.kind === 'message') {
             if (ws && ws.readyState === WebSocket.OPEN) ws.send(m.data);
         } else if (m.kind === 'http') {
-            if (typeof m.url !== 'string' || !/^https:\/\//i.test(m.url)) return post({ kind: 'http', id: m.id, error: 'bad url' });
+            if (typeof m.url !== 'string' || !/^https?:\/\//i.test(m.url)) return post({ kind: 'http', id: m.id, error: 'bad url' });
             const init = { method: m.method === 'POST' ? 'POST' : 'GET', cache: 'no-store', credentials: 'omit' };
             if (init.method === 'POST') {
                 init.body = String(m.body ?? '');

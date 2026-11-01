@@ -22,8 +22,10 @@
 // the game's bot detection, bans, kicks and a second login stop the loop instead.
 //
 // The extension answers every command with an "ack" on the result webhook. With --wait this waits for that
-// answer and prints it, or says where it got stuck; the result webhook has to be a webhook.site address:
+// answer and prints it, or says where it got stuck; the result webhook has to be a webhook.site address or
+// one on the relay (tsb/relay/relay.py, same API, no request limit):
 //   node send-command.mjs ping --wait                   (result webhook from --result or env TSB_RESULT_URL)
+// The relay's addresses look like http://<server>:8790/<uuid>; the command and result webhooks are two of them.
 // exit codes: 0 sent (with --wait: answered ok), 1 not sent or answered with an error, 2 usage, 3 no answer in time
 //
 // options: --key <key> (or env TSB_KEY), --url <command webhook> (or env TSB_CMD_URL),
@@ -40,14 +42,24 @@ const USAGE = 'usage: node send-command.mjs <ping|start|stop|end|lobby> [--singl
 const UUID = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
 // the extension polls every 3 s, but a minimized or background tab may poll only about once a minute
 const TIMEOUT_S = 90;
+const POST_NOTES = {
+    404: ' (no such command webhook, or it has expired)',
+    429: ' (a free webhook.site address takes 50 requests, then it is full: make a new one or use the relay; or too many requests)'
+};
 
-// the webhook.site API address that lists what the result webhook received, newest first
+// the API address that lists what the result webhook received, newest first: on webhook.site
+// (a bare uuid is a webhook.site address) or on the relay
 function resultApi(raw) {
     const s = String(raw || '').trim(), m = UUID.exec(s);
-    if (!m || !(s === m[0] || /^https:\/\/(www\.)?webhook\.site\//i.test(s))) {
-        throw new Error('--wait reads the result webhook through the webhook.site API: pass --result <webhook.site address or token> or set TSB_RESULT_URL');
+    let u = null;
+    try {
+        u = new URL(s);
+    } catch { }
+    if (!m || (s !== m[0] && !(u && /^https?:$/.test(u.protocol)))) {
+        throw new Error('--wait reads what the result webhook received: pass --result <webhook.site or relay address, or a webhook.site token> or set TSB_RESULT_URL');
     }
-    return `https://webhook.site/token/${m[0]}/requests?sorting=newest&per_page=50`;
+    const origin = s === m[0] || /^(www\.)?webhook\.site$/i.test(u.hostname) ? 'https://webhook.site' : u.origin;
+    return `${origin}/token/${m[0].toLowerCase()}/requests?sorting=newest&per_page=50`;
 }
 
 const body = (x) => {
@@ -82,7 +94,7 @@ function diagnose(list, t, timeout) {
         // a post shows the tab was in manual mode then, not that it still polls
         lines.push(`The extension posted lately (last: ${last.b.type}, ${age(last.x)} s ago, version ${last.b.ext}), so a game tab was in manual mode, but it did not take this command. Either the extension was reloaded, updated or removed since and that tab still runs the old scripts, cut off from it (0.6.8 refreshes such a tab by itself once the bot is out of a game; older versions need F5); or the panel's 指令 webhook is not this command webhook; or the browser clock is off by more than 12 minutes (commands that look older are dropped unanswered); or the tab is minimized and polls slowly (try a longer --timeout). The panel's 指令 / 上条指令 rows show what it last did.`);
     } else {
-        lines.push('Nothing from the extension on the result webhook in the last 10 minutes: no game tab polls this command webhook (game page closed, 手动（远程） off, another 指令 address in the panel, or a tab left unrefreshed after the extension was reloaded or updated) or the extension cannot reach webhook.site. The panel\'s 指令 row says which.');
+        lines.push('Nothing from the extension on the result webhook in the last 10 minutes: no game tab polls this command webhook (game page closed, 手动（远程） off, another 指令 address in the panel, or a tab left unrefreshed after the extension was reloaded or updated) or the extension cannot reach the webhook host. The panel\'s 指令 row says which.');
     }
     return lines.join('\n');
 }
@@ -138,7 +150,7 @@ export async function main(argv, io = {}) {
         return 0;
     }
     const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: payload });
-    out(`${cmd}: HTTP ${r.status}${r.status === 404 ? ' (no such command webhook, or it has expired)' : ''}`);
+    out(`${cmd}: HTTP ${r.status}${POST_NOTES[r.status] || ''}`);
     if (!r.ok) return 1;
     if (!api) {
         err('the answer goes to the result webhook; --wait waits for it here');
@@ -160,7 +172,7 @@ export async function main(argv, io = {}) {
                 return ack.ok ? 0 : 1;
             }
         } else if (got.status === 404) {
-            err('result webhook: no such webhook.site address, or it has expired');
+            err('result webhook: no such address, or it has expired');
             return 1;
         } else if (got.status === 401 || got.status === 403) {
             err(`result webhook: HTTP ${got.status}, the address needs a password or an API key`);
