@@ -2,7 +2,7 @@
   // Manual (remote) mode. Commands come from the command webhook (polled by
   // relay.js) as {"p": "<command JSON>", "sig": "<base64url HMAC-SHA256 of p>"};
   // the HMAC key is the key text from the panel, as UTF-8.
-  const VERSION = "0.6.7";
+  const VERSION = "0.6.8";
   const SINGLE_ONLY = !1;
   const SEEN_KEY = "territorialStrategyBotRemoteSeen";
   // Stuck pages. The lobby command and the panel button reload the page; with a loop on, a page
@@ -20,6 +20,10 @@
   const STOP_TEXT = /Bot Detection|you are a bot|IP is banned|Account is blocked|been kicked|Kicked from lobby|Another login detected/i;
   const RELOADS_IN_A_ROW = 3;
   const RELOADS_PER_HOUR = 10;
+  // After the extension is updated, reloaded or disabled, this page keeps running the old scripts
+  // and the relay can no longer reach the service worker, so no command gets through. In manual mode
+  // the page reloads itself once the bot is not in a running game, at most this long after.
+  const UPDATE_WAIT_MS = 18e5;
   // the texts the game's error window shows
   const CODE_TEXT = {
     1006: "No Internet / No Server Response / Server Restart", 3249: "No Internet / No Server Response / Server Restart",
@@ -62,7 +66,11 @@
     startAt: 0,
     // after a reload by the extension: wait for the menu until then, and open the lobby once (lobby command without a loop)
     resumeAt: 0,
-    openOnce: !1
+    openOnce: !1,
+    // the relay's line to the service worker; dead once the extension is updated, reloaded or disabled
+    worker: null,
+    // { at }: a reload for an extension update is due
+    update: null
   };
   // sel is the game's lobbySelection, [room, ?, view, ready]; rooms its LobbyRoom objects
   const lobby = {
@@ -557,6 +565,7 @@
           if (!Te.list().some(([id]) => id === c.use)) return { ok: !1, error: `no strategy "${c.use}"`, state: snapshot() };
           ue.strategy = c.use, fe(), Te.changed(c.use);
         }
+        syncBackend();
         ue.armed = !0, fe(), rec.inRow = 0, saveRecover(), rw.progressAt = Date.now();
         if (mp) {
           const action = startMulti();
@@ -742,6 +751,12 @@
       (lob || 1 === gs) && rec.inRow && (rec.inRow = 0, saveRecover());
     }
     if (rw.pending) return;
+    // in a hidden tab too: nothing else brings in the new scripts
+    if (ue.manual && (state.update || state.worker && state.worker.dead)) {
+      state.update || (state.update = { at: now });
+      (!playing(d, g) || now - state.update.at >= UPDATE_WAIT_MS) && reloadPage("插件已更新或停用，刷新页面换上新版本", null, !0, !0);
+      return;
+    }
     if (!ue.manual || !ue.armed || !state.loop || "visible" !== document.visibilityState) return void(rw.progressAt = now);
     const c = rw.code, after = c && c.at > rw.progressAt - 2e3 ? Math.max(c.at, rw.progressAt) : 0;
     if (now - (after || rw.progressAt) < (after ? WAIT_MS[c.code] || CLOSED_MS : STUCK_MS)) return;
@@ -765,12 +780,21 @@
     disarm(), lobby.stopped = why, rec.last = { action: "stop", why, code, at: Date.now() }, saveRecover();
     post({ type: "recover", action: "stop", why, code, text: null === code ? null : codeText(code), loop, codes: rw.codes.slice(), state: snapshot() }, "recover");
   }
-  function reloadPage(why, code, manual) {
+  // a game the bot is still in: its result is not reported yet
+  function playing(d, g) {
+    return !!(d && g && 1 === g[d.gameState] && !g[d.gIsReplay] && !(state.game && state.game.done));
+  }
+  // also called by the service worker of the new version right after it is installed
+  function updateReload() {
+    state.update || (state.update = { at: Date.now() });
+  }
+  // update: a reload for an extension update, which keeps the loop but opens no lobby
+  function reloadPage(why, code, manual, update = !1) {
     const now = Date.now(), r = state.game, loop = ue.armed ? state.loop : null;
     r && !r.done && r.info && report(r, "left", "reload");
     rw.pending = !0;
     manual ? rec.inRow = 0 : (rec.inRow++, rec.reloads.push(now));
-    rec.resume = { loop, open: manual && !loop, at: now, why };
+    rec.resume = { loop, open: manual && !update && !loop, at: now, why };
     rec.last = { action: "reload", why, code, at: now };
     saveRecover();
     post({ type: "recover", action: "reload", why, code, text: null === code ? null : codeText(code), loop, manual, inRow: rec.inRow, lastHour: rec.reloads.length, codes: rw.codes.slice(), state: snapshot() }, "recover");
@@ -812,8 +836,17 @@
     if (!l.inLobby) return "大逃杀：正在进大厅…" + e;
     return (l.ready ? `大逃杀：已 Ready${l.startsIn > 0 ? `，约 ${l.startsIn} 秒后开` : "，等开局"}` : "大逃杀：在大厅，正在点 Ready") + e;
   }
+  // the service worker connects to the local backend only while the backend strategy is in use
+  let backendPort;
+  function syncBackend() {
+    const want = "backend" === ue.strategy ? ue.port : null;
+    want !== backendPort && (backendPort = want, be("tsb-control", JSON.stringify({ kind: "connect", port: want })));
+  }
   function decorate(view) {
-    if (sync(), configure(), pump(), !ue.manual || !view) return view;
+    sync(), configure(), syncBackend(), pump();
+    const dead = !!(state.worker && state.worker.dead);
+    if (!view) return view;
+    if (!ue.manual) return dead ? { ...view, stats: [...view.stats, ["插件", "已更新或停用，请刷新页面"]] } : view;
     const s = snapshot(), names = s.inGame ? gate().blocked : [], rows = [];
     let text = view.text, tone = view.tone;
     "bad" !== tone && (ue.armed ? s.inGame && "replay" !== s.mode && !s.allowed && (text = SINGLE_ONLY ? "已接管，但远程版只在单人局里动，这局机器人不动。" : `已接管，但这局有不在白名单里的真人（${names.slice(0, 3).map((n) => ne(n, 12)).join("、")}${names.length > 3 ? ` 等 ${names.length} 人` : ""}），机器人不动。`, tone = "off") : (text = "手动模式：等远程 start 指令，机器人不动。", tone = "off"));
@@ -822,11 +855,13 @@
     const lp = loopText(s);
     lp && rows.push(["循环", lp]);
     const p = state.poll;
-    rows.push(["指令", pollUrl() ? p ? p.ok ? `正常 ${clock(p.at)}` : `失败：${ne(p.error || "?", 40)}` : "连接中…" : "没填指令地址"]);
+    rows.push(["指令", dead || state.update ? `插件已更新或停用，${rw.pending ? "正在刷新页面…" : "等这局打完自动刷新"}`
+      : pollUrl() ? p ? p.ok ? `正常 ${clock(p.at)}` : `失败：${ne(p.error || "?", 40)}` : "连接中…" : "没填指令地址"]);
     const l = state.last;
     l && rows.push(["上条指令", `${l.cmd || "?"} ${l.ok ? "✓" : `✗ ${ne(l.error || "", 40)}`} ${clock(l.at)}`]);
     const q = state.post;
-    q && !q.ok && rows.push(["上报", `失败：${ne(q.error || `HTTP ${q.status}`, 40)}`]);
+    postUrl() ? q && !q.ok && rows.push(["上报", `失败：${ne(q.error || `HTTP ${q.status}`, 40)}${q.retry ? `，第 ${q.retry} 次重试` : ""}`])
+      : rows.push(["上报", "没填结果地址，指令的回执发不出去"]);
     const r = rec.last;
     rw.pending ? rows.push(["恢复", "正在刷新页面…"]) : r && Date.now() - r.at < 36e5 && rows.push(["恢复", `${clock(r.at)} ${"stop" === r.action ? "停了" : "刷新"}：${ne(r.why, 40)}`]);
     return { ...view, text, tone, stats: [...view.stats, ...rows] };
@@ -849,7 +884,8 @@
       return;
     }
     const v = { ok: !!s.ok, error: s.error || null, at: Date.now() };
-    "post" === s.kind ? state.post = { ...v, tag: s.tag || null, status: s.status || 0 } : state.poll = v;
+    "worker" === s.kind ? state.worker = { ...v, dead: !!s.dead }
+      : "post" === s.kind ? state.post = { ...v, tag: s.tag || null, status: s.status || 0, retry: s.retry | 0 } : state.poll = v;
   });
   document.addEventListener("tsb-status", (e) => {
     let s;
@@ -879,5 +915,5 @@
     }
   }, 1e3);
   configure(!0);
-  return { version: VERSION, state, lobby, rec, rw, hooks, options, allowed, gate, frame, watch, decorate, fields, configure, snapshot, handle, verify };
+  return { version: VERSION, state, lobby, rec, rw, hooks, options, allowed, gate, frame, watch, decorate, fields, configure, snapshot, handle, verify, updateReload };
 })()

@@ -1,4 +1,5 @@
-// Stuck-page recovery in remote-page.js (0.6.7), on a fake clock with a stubbed game.
+// Stuck-page recovery in remote-page.js (0.6.8), on a fake clock with a stubbed game:
+// reloads for stuck pages and for extension updates, and the remote rows of the panel.
 // usage: node tsb/test/recover.test.mjs
 import assert from 'node:assert/strict';
 import { createHmac } from 'node:crypto';
@@ -12,7 +13,7 @@ const KEY = 'test-key';
 function env({ session = null, settings = {}, single = false, hook = true } = {}) {
     let now = Date.UTC(2026, 10, 1, 3, 0, 0);
     let timers = [];
-    const posts = [], reloads = [], opens = [], leaves = [];
+    const posts = [], reloads = [], opens = [], leaves = [], controls = [];
     let tick = 0, singles = 0;
     const store = (init) => {
         const m = new Map(init ? Object.entries(init) : []);
@@ -53,7 +54,10 @@ function env({ session = null, settings = {}, single = false, hook = true } = {}
         setInterval: (fn, ms) => (timers.push({ at: now + ms, fn, every: ms }), timers.length),
         clearTimeout() {}, clearInterval() {},
         ue, fe() {},
-        be: (type, detail) => { const c = JSON.parse(detail); c.kind === 'post' && posts.push(JSON.parse(c.body)); },
+        be: (type, detail) => {
+            const c = JSON.parse(detail);
+            'tsb-control' === type ? controls.push(c) : c.kind === 'post' && posts.push(JSON.parse(c.body));
+        },
         de: { phase: 'ready' }, me: { ctl: { abandon() {} } },
         Te: { list: () => [['file:v5']], async add() {}, changed() {} },
         we: () => ({ canStartGames: () => true, startGame: () => (singles++, (G.gs = 1), (G.sp = true), true) }),
@@ -64,7 +68,10 @@ function env({ session = null, settings = {}, single = false, hook = true } = {}
     Object.assign(win.__fx.strategyBot, Re.hooks, single ? {} : { openMultiplayer: (room) => opens.push(room), lobbyRoom() {} });
     const sel = [1, 0, 0, 0];
     const t = {
-        Re, G, ue, win, document, posts, reloads, opens, leaves, sel, sessionStore,
+        Re, G, ue, win, document, posts, reloads, opens, leaves, sel, sessionStore, controls,
+        // what relay.js tells the page about its line to the service worker and the webhook requests
+        relay: (s) => document.dispatchEvent({ type: 'tsb-remote-status', detail: JSON.stringify(s) }),
+        rows: () => Object.fromEntries(Re.decorate({ text: '', tone: 'ok', stats: [] }).stats),
         get now() { return now; },
         get singles() { return singles; },
         // game ticks advance while running; lobby updates come twice a second while connected
@@ -407,6 +414,124 @@ await test('ping state carries the recovery info', async () => {
     assert.equal(JSON.stringify(ack.state.recover.codes), '[]');
     t.Re.hooks.closed(0, 4229);
     assert.equal(JSON.stringify(t.Re.snapshot().recover.codes), '[4229]');
+});
+
+const DEAD = { kind: 'worker', ok: false, dead: true, error: '插件已更新或停用，请刷新页面' };
+
+await test('extension updated, bot out of a game: reload with the loop kept, not counted, no lobby opened', async () => {
+    const t = env();
+    await t.send('start', { mp: true });
+    t.enterLobby();
+    t.advance(5e3);
+    t.relay(DEAD);
+    t.advance(1e3);
+    assert.equal(t.Re.rw.pending, true);
+    t.advance(2e3);
+    assert.equal(t.reloads.length, 1);
+    const s = t.resume();
+    assert.equal(s.resume.loop, 'mp');
+    assert.equal(s.resume.open, false);
+    assert.match(s.resume.why, /插件已更新或停用/);
+    assert.equal(s.inRow, 0);
+    assert.equal(s.reloads.length, 0);
+    assert.equal(reopen(t).Re.state.loop, 'mp');
+    const w = env({ settings: { armed: false } });
+    w.relay(DEAD);
+    w.advance(3e3);
+    assert.equal(w.resume().resume.open, false, 'without a loop the lobby is not opened either');
+});
+
+await test('extension updated mid-game: waits for the game to end, then reloads', async () => {
+    const t = env();
+    await t.send('start');
+    t.G.gs = 1, t.running = true;
+    t.advance(5e3);
+    t.relay(DEAD);
+    t.advance(10 * 60e3);
+    assert.equal(t.reloads.length, 0);
+    assert.equal(t.rows()['指令'], '插件已更新或停用，等这局打完自动刷新');
+    t.G.gs = 2;
+    t.advance(3e3);
+    assert.equal(t.reloads.length, 1);
+    assert.equal(t.resume().resume.loop, null, 'armed without a loop: nothing to carry over');
+    assert.equal(t.posts.filter((p) => p.type === 'result').length, 1, 'the game is reported once, as it ended');
+});
+
+await test('extension updated, the game never ends: reload after 30 minutes anyway', async () => {
+    const t = env();
+    await t.send('start');
+    t.G.gs = 1, t.running = true;
+    t.advance(5e3);
+    t.relay(DEAD);
+    t.advance(29 * 60e3);
+    assert.equal(t.reloads.length, 0);
+    t.advance(2 * 60e3);
+    assert.equal(t.reloads.length, 1);
+    const left = t.posts.find((p) => p.type === 'result');
+    assert.equal(left.event, 'left');
+    assert.equal(left.why, 'reload');
+});
+
+await test('extension updated, hidden tab: the reload still happens', async () => {
+    const t = env();
+    t.document.visibilityState = 'hidden';
+    t.relay(DEAD);
+    t.advance(3e3);
+    assert.equal(t.reloads.length, 1);
+});
+
+await test('extension updated, not in manual mode: no automatic reload, the panel says to refresh', async () => {
+    const t = env({ settings: { manual: false } });
+    t.relay(DEAD);
+    t.advance(60e3);
+    assert.equal(t.reloads.length, 0);
+    assert.equal(t.rows()['插件'], '已更新或停用，请刷新页面');
+});
+
+await test('the new service worker asks (remote.updateReload): the same reload, before the relay notices', async () => {
+    const t = env();
+    t.Re.updateReload();
+    t.advance(3e3);
+    assert.equal(t.reloads.length, 1);
+    assert.equal(t.resume().resume.open, false);
+});
+
+await test('panel: the reason a poll failed, as the relay gives it', async () => {
+    const t = env();
+    t.relay({ kind: 'poll', ok: false, error: 'HTTP 404：地址不存在或已过期' });
+    assert.equal(t.rows()['指令'], '失败：HTTP 404：地址不存在或已过期');
+    t.relay({ kind: 'worker', ok: false, dead: false, error: '后台重连中' });
+    t.relay({ kind: 'poll', ok: true });
+    assert.match(t.rows()['指令'], /^正常 /, 'a worker restart is not an update');
+});
+
+await test('panel: no result address, and result posts being retried', async () => {
+    const t = env({ settings: { resultUrl: '' } });
+    assert.equal(t.rows()['上报'], '没填结果地址，指令的回执发不出去');
+    const u = env();
+    assert.equal(u.rows()['上报'], undefined);
+    u.relay({ kind: 'post', ok: false, status: 500, tag: 'ack', error: 'HTTP 500：服务器出错', retry: 1 });
+    assert.equal(u.rows()['上报'], '失败：HTTP 500：服务器出错，第 1 次重试');
+    u.relay({ kind: 'post', ok: false, error: '插件已更新或停用，请刷新页面', tag: 'ack' });
+    assert.equal(u.rows()['上报'], '失败：插件已更新或停用，请刷新页面');
+    u.relay({ kind: 'post', ok: true, status: 200, tag: 'ack', error: null });
+    assert.equal(u.rows()['上报'], undefined);
+});
+
+await test('backend link: the service worker is asked for the backend port only with the backend strategy', async () => {
+    const t = env();
+    t.rows();
+    assert.deepEqual(t.controls.map((c) => c.port), [null]);
+    t.rows();
+    assert.equal(t.controls.length, 1, 'sent again only on a change');
+    t.ue.strategy = 'backend', t.ue.port = 8765;
+    t.rows();
+    t.ue.strategy = 'file:v5';
+    t.rows();
+    assert.deepEqual(t.controls.map((c) => c.port), [null, 8765, null]);
+    t.ue.strategy = 'backend';
+    await t.send('start');
+    assert.equal(t.controls.at(-1).port, 8765, 'a remote start switches at once, without waiting for the panel');
 });
 
 let failed = 0;
