@@ -7,11 +7,13 @@ import { CLOSE_PATCH } from '../remote/lobby-patch.mjs';
 const fx = process.env.FX_CLIENT || '/tmp/fxclient-src';
 const { default: ModUtils, minifyCode } = await import(`${fx}/modUtils.js`);
 
-// the close handler as FX Client's customLobby pattern expects it in the live game
-const source = `
+// the close handler as FX Client's customLobby patterns expect it in the live game:
+// 2.16.66 logs the close first, earlier versions start with the push
+const handler = (logged) => `
 var log = [];
 function SocketErrors() {
     this.uI = [], this.uJ = function(uK, cb) {
+        ${logged ? 'console.log("socket close index " + uK + " error " + cb);' : ''}
         this.uI.push(cb);
         if (cb === 4321) { log.push("reset") }
         if (cb === 4211) { log.push("update") } else { log.push("error " + cb) }
@@ -32,30 +34,33 @@ const apply = (script) => {
     return { m, warned };
 };
 
-{
+for (const logged of [true, false]) {
+    const source = handler(logged);
     const { m, warned } = apply(source);
     assert.equal(warned, null);
     assert.equal(m.dictionary.closeCodes, 'uI');
     const calls = [];
-    const run = new Function('__fx', `${m.script}; return { a88, log };`);
-    const { a88, log } = run({ strategyBot: { closed: (sock, code) => calls.push([sock, code]) } });
+    const run = new Function('__fx', 'console', `${m.script}; return { a88, log };`);
+    const quiet = { log() {} };
+    const { a88, log } = run({ strategyBot: { closed: (sock, code) => calls.push([sock, code]) } }, quiet);
     a88.uJ(0, 1006);
     a88.uJ(1, 4530);
     assert.deepEqual(calls, [[0, 1006], [1, 4530]]);
     assert.deepEqual(a88.uI, [1006, 4530]);
     assert.deepEqual(log, ['error 1006', 'error 4530']);
     // a hook that throws does not break the game's handler
-    const run2 = new Function('__fx', `${m.script}; return { a88, log };`);
-    const g2 = run2({ strategyBot: { closed: () => { throw new Error('boom') } } });
+    const g2 = run({ strategyBot: { closed: () => { throw new Error('boom') } } }, quiet);
     g2.a88.uJ(0, 4211);
     assert.deepEqual(g2.log, ['update']);
-    console.log('patched:', /this\.uJ=function\(uK,cb\)\{try\{__fx\.strategyBot\.closed\(uK,cb\)\}catch\(sbCloseError\)\{\}/.test(m.script.replace(/\s+/g, '')) ? 'yes' : m.script);
-}
+    const hooked = /try\{__fx\.strategyBot\.closed\(uK,cb\)\}catch\(sbCloseError\)\{\}this\.uI\.push\(cb\)/.test(m.script.replace(/\s+/g, ''));
+    console.log(`patched (${logged ? '2.16.66, logs first' : 'older'}):`, hooked ? 'yes' : m.script);
+    assert.ok(hooked);
 
-// FX Client's own pattern for the same function matches the same code
-{
-    const m = new ModUtils(minifyCode(source));
-    m.insertCode('this.b = function(id, t) { /* here */ this.a.push(t); if (t === 4321) {/*...*/}};', 'void 0;');
+    // FX Client's own pattern for the same function matches the same code
+    const fxm = new ModUtils(minifyCode(source));
+    fxm.insertCode(logged
+        ? 'this.b = function(id, t) { console.log("socket close index " + id + " error " + t); /* here */ this.a.push(t); if (t === 4321) {/*...*/}};'
+        : 'this.b = function(id, t) { /* here */ this.a.push(t); if (t === 4321) {/*...*/}};', 'void 0;');
 }
 
 // a game without that function: one warning, nothing else changes

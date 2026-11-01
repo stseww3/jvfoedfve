@@ -77,13 +77,15 @@ export const REPLAY_PATCH =
 
 // the socket close handler: every connection the game sees closing (a server code such as
 // 4530 Lobby Timeout, or 1006) is pushed to closeCodes here; FX Client hooks the same spot
-// (patches/customLobby.js)
-const SOCKET_CLOSE = `this.onSocketClose = function(socketIndex, code) { /* here */ this.closeCodes.push(code); if (code === 4321) {/*...*/}};`;
+// (patches/customLobby.js). 2.16.66 logs the close first; earlier versions start with the push.
+const SOCKET_CLOSE = `this.onSocketClose = function(socketIndex, code) { console.log("socket close index " + socketIndex + " error " + code); /* here */ this.closeCodes.push(code); if (code === 4321) {/*...*/}};`;
+const SOCKET_CLOSE_OLD = `this.onSocketClose = function(socketIndex, code) { /* here */ this.closeCodes.push(code); if (code === 4321) {/*...*/}};`;
+const CLOSED = 'try { __fx.strategyBot.closed(socketIndex, code) } catch (sbCloseError) {}';
 
 // Inserted after REPLAY_PATCH (both builds). Without it the extension cannot tell a dropped
 // connection from the game's bot detection or a ban, so stuck pages are not reloaded by themselves.
 export const CLOSE_PATCH =
-    `try{n(s(${q(SOCKET_CLOSE)},"try { __fx.strategyBot.closed(socketIndex, code) } catch (sbCloseError) {}"),["closeCodes"])}` +
+    `try{let r;try{r=s(${q(SOCKET_CLOSE)},${q(CLOSED)})}catch(t){r=s(${q(SOCKET_CLOSE_OLD)},${q(CLOSED)})}n(r,["closeCodes"])}` +
     `catch(t){console.warn("strategyBot: the socket close handler was not found, stuck pages are not reloaded by themselves:\\n"+t.message)}`;
 
 // the end of the menus' try/catch, which is the last statement of the patch function
