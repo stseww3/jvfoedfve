@@ -2,7 +2,7 @@
   // Manual (remote) mode. Commands come from the command webhook (polled by
   // relay.js) as {"p": "<command JSON>", "sig": "<base64url HMAC-SHA256 of p>"};
   // the HMAC key is the key text from the panel, as UTF-8.
-  const VERSION = "0.6.8";
+  const VERSION = "0.6.9";
   const SINGLE_ONLY = !1;
   const SEEN_KEY = "territorialStrategyBotRemoteSeen";
   // Stuck pages. The lobby command and the panel button reload the page; with a loop on, a page

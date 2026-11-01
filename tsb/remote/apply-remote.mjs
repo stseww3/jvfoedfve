@@ -1,11 +1,11 @@
-// Builds 0.6.8 (manual / remote mode) from the 0.5.3 extension folder.
+// Builds 0.6.9 (manual / remote mode) from the 0.5.3 extension folder.
 // usage: node apply-remote.mjs [--single-only] <0.5.3 folder> <output folder> [cmdUrl resultUrl key]
 //   --single-only: remote mode plays singleplayer games only (no allowlist, no lobby)
 import fs from 'node:fs';
 import path from 'node:path';
 import { MENU_FROM, MENU_TO, LOBBY_PATCH, REPLAY_PATCH, CLOSE_PATCH, PATCH_END, patchEndWith } from './lobby-patch.mjs';
 
-const VERSION = '0.6.8';
+const VERSION = '0.6.9';
 const argv = process.argv.slice(2);
 const singleOnly = argv.includes('--single-only');
 const [src, out, cmdUrl = '', resultUrl = '', key = ''] = argv.filter((a) => a !== '--single-only');
