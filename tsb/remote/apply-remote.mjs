@@ -1,10 +1,11 @@
-// Builds 0.6.6 (manual / remote mode) from the 0.5.3 extension folder.
+// Builds 0.6.7 (manual / remote mode) from the 0.5.3 extension folder.
 // usage: node apply-remote.mjs [--single-only] <0.5.3 folder> <output folder> [cmdUrl resultUrl key]
 //   --single-only: remote mode plays singleplayer games only (no allowlist, no lobby)
 import fs from 'node:fs';
 import path from 'node:path';
-import { MENU_FROM, MENU_TO, LOBBY_PATCH, REPLAY_PATCH, PATCH_END, patchEndWith } from './lobby-patch.mjs';
+import { MENU_FROM, MENU_TO, LOBBY_PATCH, REPLAY_PATCH, CLOSE_PATCH, PATCH_END, patchEndWith } from './lobby-patch.mjs';
 
+const VERSION = '0.6.7';
 const argv = process.argv.slice(2);
 const singleOnly = argv.includes('--single-only');
 const [src, out, cmdUrl = '', resultUrl = '', key = ''] = argv.filter((a) => a !== '--single-only');
@@ -23,6 +24,7 @@ const once = (from, to) => {
     page = page.replace(from, () => to);
 };
 let remote = fs.readFileSync(path.join(here, 'remote-page.js'), 'utf8').trim();
+if (!remote.includes(`const VERSION = "${VERSION}";`)) throw new Error(`remote-page.js is not ${VERSION}`);
 if (singleOnly) {
     if (!remote.includes('const SINGLE_ONLY = !1;')) throw new Error('no SINGLE_ONLY switch in remote-page.js');
     remote = remote.replace('const SINGLE_ONLY = !1;', 'const SINGLE_ONLY = !0;');
@@ -39,9 +41,9 @@ once('"command"===t.type&&(this.eligible()?this.sync(!1):this.ctl.abandon())',
     '"command"===t.type&&(this.eligible()&&Re.allowed()?this.sync(!1):this.ctl.abandon())');
 once('window.__fx=window.__fx||{},window.__fx.strategyBot=Me,',
     `const Re=${remote};\nwindow.__fx=window.__fx||{},window.__fx.strategyBot=Object.assign(Me,Re.hooks),`);
-once('version:"0.5.2",setPort(t){', 'version:"0.6.6",remote:Re,setPort(t){');
+once('version:"0.5.2",setPort(t){', `version:"${VERSION}",remote:Re,setPort(t){`);
 if (!singleOnly) once(MENU_FROM, MENU_TO);
-once(PATCH_END, patchEndWith((singleOnly ? '' : LOBBY_PATCH) + REPLAY_PATCH));
+once(PATCH_END, patchEndWith((singleOnly ? '' : LOBBY_PATCH) + REPLAY_PATCH + CLOSE_PATCH));
 once('for(const t of ye)t.options=()=>({spawn:ue.spawn,play:ue.play});',
     'for(const t of ye)t.options=()=>Re.options();');
 once('this.onPort&&n.appendChild(this.portField()),',
@@ -56,12 +58,12 @@ once('strategy:pe.name(ue.strategy)}))}function Be(){',
 new Function(page);
 
 const manifest = JSON.parse(fs.readFileSync(path.join(src, 'manifest.json'), 'utf8'));
-manifest.version = '0.6.6';
+manifest.version = VERSION;
 manifest.host_permissions = [...new Set([...(manifest.host_permissions || []), 'https://webhook.site/*'])];
-manifest.version_name = singleOnly ? '0.6.6 远程只管单人局' : '0.6.6 远程+白名单';
+manifest.version_name = singleOnly ? `${VERSION} 远程只管单人局` : `${VERSION} 远程+白名单`;
 manifest.description = manifest.description.replace(/。$/, '') + (singleOnly
-    ? '；远程模式（只管单人局）：签名指令开始/结束，死了自动退出，每局结果发到 webhook。'
-    : '；远程模式：签名指令控制，start --mp 进大逃杀，死了自动退出，多人局只跟白名单打，结果发 webhook。');
+    ? '；远程模式（只管单人局）：签名指令开始/结束，死了自动退出，卡住自动刷新，结果发 webhook。'
+    : '；远程模式：签名指令控制，start --mp 进大逃杀，卡住自动刷新，多人局只跟白名单打，结果发 webhook。');
 if (manifest.description.length > 132) throw new Error(`manifest description is ${manifest.description.length} characters, Chrome allows 132`);
 
 fs.rmSync(out, { recursive: true, force: true });

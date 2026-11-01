@@ -2,9 +2,33 @@
   // Manual (remote) mode. Commands come from the command webhook (polled by
   // relay.js) as {"p": "<command JSON>", "sig": "<base64url HMAC-SHA256 of p>"};
   // the HMAC key is the key text from the panel, as UTF-8.
-  const VERSION = "0.6.6";
+  const VERSION = "0.6.7";
   const SINGLE_ONLY = !1;
   const SEEN_KEY = "territorialStrategyBotRemoteSeen";
+  // Stuck pages. The lobby command and the panel button reload the page; with a loop on, a page
+  // without progress (no game ticks, no lobby updates) reloads by itself and the loop goes on.
+  // The loop carries over in sessionStorage: this tab only, the next page load only.
+  const RECOVER_KEY = "territorialStrategyBotRecover";
+  const STUCK_MS = 6e4;
+  // after the game reports a closed connection; "Player already in lobby" and "Please try again later!" wait longer
+  const CLOSED_MS = 2e4;
+  const WAIT_MS = { 4527: 3e4, 4557: 3e5, 4558: 3e5, 4559: 3e5, 4560: 3e5, 4589: 3e5 };
+  // these stop the loop and disarm instead of reloading: the game's bot detection, bans, blocks,
+  // kicks, a second login, account problems, not enough gold
+  const STOP_CODES = [4591, 4577, 4555, 4540, 4730, 4528, 4495, 4480, 4580];
+  // the same, from the text of the game's window, in case the close code was missed
+  const STOP_TEXT = /Bot Detection|you are a bot|IP is banned|Account is blocked|been kicked|Kicked from lobby|Another login detected/i;
+  const RELOADS_IN_A_ROW = 3;
+  const RELOADS_PER_HOUR = 10;
+  // the texts the game's error window shows
+  const CODE_TEXT = {
+    1006: "No Internet / No Server Response / Server Restart", 3249: "No Internet / No Server Response / Server Restart",
+    4211: "New Game Update", 4229: "Bad Internet / Unresponsive Client", 4480: "account error", 4495: "Account doesn't exist.",
+    4527: "Player already in lobby", 4528: "Lobby Kick: Another login detected.", 4530: "Lobby Timeout", 4540: "You have been kicked.",
+    4555: "This Account is blocked.", 4577: "Your IP is banned.", 4580: "More Gold needed", 4591: "The algo determined you are a bot.",
+    4705: "Lobby not found", 4730: "Kicked from lobby"
+  };
+  const codeText = (c) => CODE_TEXT[c] || (4557 <= c && c <= 4560 || 4589 === c ? "Please try again later!" : "Unknown error");
   const WINDOW_MS = 6e5;
   const AHEAD_MS = 12e4;
   // after I die or the game ends, wait this long, then leave
@@ -35,7 +59,10 @@
     info: null,
     // "single": a new singleplayer game after each game; "mp": back to the battle royale lobby and Ready
     loop: null,
-    startAt: 0
+    startAt: 0,
+    // after a reload by the extension: wait for the menu until then, and open the lobby once (lobby command without a loop)
+    resumeAt: 0,
+    openOnce: !1
   };
   // sel is the game's lobbySelection, [room, ?, view, ready]; rooms its LobbyRoom objects
   const lobby = {
@@ -53,6 +80,22 @@
     error: null,
     stopped: null
   };
+  // reloads: automatic reloads in the last hour; inRow: automatic reloads since the last lobby or running game
+  const rec = (() => {
+    let v = null;
+    try {
+      v = JSON.parse(sessionStorage.getItem(RECOVER_KEY));
+    } catch {}
+    v = v && "object" == typeof v ? v : {};
+    return { reloads: Array.isArray(v.reloads) ? v.reloads : [], inRow: v.inRow | 0, resume: v.resume || null, last: v.last || null };
+  })();
+  const saveRecover = () => {
+    try {
+      sessionStorage.setItem(RECOVER_KEY, JSON.stringify(rec));
+    } catch {}
+  };
+  // the watchdog: mark changes with the game state, the game tick and lobby updates
+  const rw = { mark: "", progressAt: Date.now(), code: null, codes: [], pending: !1 };
 
   const loadSeen = () => {
     try {
@@ -166,6 +209,7 @@
     const d = dict(), g = read("game"),
       s = { manual: !!ue.manual, armed: !!ue.armed, strategy: ue.strategy, phase: de.phase, loop: state.loop, replays: !!(d && d.replayData), inGame: false };
     SINGLE_ONLY || (s.lobby = lobbyInfo(d));
+    s.recover = recoverInfo(d);
     if (!d || !g) return s;
     const gs = g[d.gameState];
     if (s.inGame = 1 === gs || 2 === gs) {
@@ -185,6 +229,17 @@
     lobby.error && (o.error = lobby.error);
     lobby.stopped && (o.stopped = lobby.stopped);
     return o;
+  }
+  function recoverInfo(d) {
+    const now = Date.now();
+    return {
+      patched: !!(d && d.closeCodes),
+      idle: Math.round((now - rw.progressAt) / 1e3),
+      codes: rw.codes.slice(-3),
+      inRow: rec.inRow,
+      lastHour: rec.reloads.filter((t) => now - t < 36e5).length,
+      last: rec.last
+    };
   }
   function disarm() {
     ue.armed = !1, fe(), state.loop = null;
@@ -307,12 +362,18 @@
     const gs = g[d.gameState], now = Date.now();
     if (1 === gs || 2 === gs) return lobby.closing = null, void exitStep(d, g, now);
     if (lobby.closing) return void closeStep(now);
+    if (now < state.resumeAt) return;
+    if (state.openOnce) return state.openOnce = !1, void(inLobby() || !lobbyPatched() || openLobby(brRoom(d)));
     if (!ue.armed || !state.loop) return;
     if ("single" === state.loop) return void(inLobby() ? closeLobby() : now - state.startAt >= 5e3 && (state.startAt = now, startSingle()));
     if (inLobby()) return void readyStep(d, now);
     // leaving a multiplayer game rejoins the lobby by itself
     if (now - lobby.leftAt < 1e4 || now - lobby.openAt < 15e3) return;
-    if (lobby.opens >= 5) return void stopLoop(`进不了大厅（试了 ${lobby.opens} 次）`);
+    // the server asked to wait ("Please try again later!", "Player already in lobby"); the watchdog reloads afterwards
+    const c = rw.code;
+    if (c && WAIT_MS[c.code] && now - c.at < WAIT_MS[c.code]) return;
+    // with the close hook in, the watchdog reloads a page that does not get into the lobby
+    if (lobby.opens >= 5) return void(d.closeCodes || stopLoop(`进不了大厅（试了 ${lobby.opens} 次）`));
     openLobby(brRoom(d));
   }
   const hooks = {
@@ -322,6 +383,12 @@
     },
     lobbyTick() {
       lobby.tickAt = Date.now();
+    },
+    // the game calls this for every connection it sees closing, with the close code
+    closed(sock, code) {
+      const c = rw.code = { code: Number(code) | 0, sock: Number(sock) | 0, at: Date.now() };
+      rw.codes.push(c.code), rw.codes.length > 8 && rw.codes.shift();
+      STOP_CODES.includes(c.code) && setTimeout(() => ue.manual && ue.armed && giveUp(`服务器断开连接 [${c.code}] ${codeText(c.code)}`, c.code), 0);
     },
     // the game calls this when it leaves a game, with the replay text its Replay window shows
     replay(text) {
@@ -490,7 +557,7 @@
           if (!Te.list().some(([id]) => id === c.use)) return { ok: !1, error: `no strategy "${c.use}"`, state: snapshot() };
           ue.strategy = c.use, fe(), Te.changed(c.use);
         }
-        ue.armed = !0, fe();
+        ue.armed = !0, fe(), rec.inRow = 0, saveRecover(), rw.progressAt = Date.now();
         if (mp) {
           const action = startMulti();
           return { ok: !0, started: !1, action, state: snapshot() };
@@ -506,6 +573,13 @@
         disarm();
         const left = leave() || closeLobby();
         return { ok: !0, left, state: snapshot() };
+      }
+      // reload the page; a loop goes on afterwards, without one the A build opens the battle royale lobby
+      case "lobby": {
+        if (rw.pending) return { ok: !1, error: "already reloading", state: snapshot() };
+        const loop = ue.armed ? state.loop : null;
+        reloadPage("远程 lobby 指令", null, !0);
+        return { ok: !0, reloading: !0, resume: loop || (SINGLE_ONLY ? null : "lobby"), state: snapshot() };
       }
     }
     return { ok: !1, error: `unknown cmd "${c.cmd}"` };
@@ -573,7 +647,8 @@
     return { mode: modeOf(d, g), id: mine, name: tag(mine), humans: Array.from({ length: humans }, (_, i) => tag(i)), players: g[d.gMaxPlayers] | 0 };
   }
   // one report per game: when I die, else when the game ends, else when it is left
-  function report(r, event) {
+  // (why: "reload" when the extension reloads the page in the middle of it)
+  function report(r, event, why) {
     r.done = !0;
     const d = dict(), g = read("game"), info = r.info, last = r.lastAlive || info, m = r.meta,
       team = "left" === event ? null : teams(d, g), gt = r.gate || { ok: !1, blocked: [], blockedIds: [] };
@@ -609,7 +684,8 @@
       next: "left" === event || !ue.armed ? null : !state.loop ? "leave" : gt.ok ? "mp" === state.loop ? "queue" : "single" : "stop",
       allowed: gt.ok,
       blocked: gt.blockedIds.map(tagger(m.id)),
-      ...(team ? { team } : {})
+      ...(team ? { team } : {}),
+      ...(why ? { why } : {})
     }, "result");
   }
   function track(info) {
@@ -642,6 +718,66 @@
     }
   }
 
+  const tickNow = (d) => {
+    try {
+      const h = read("sbTickHolder");
+      return h && d.sbGetTick ? h[d.sbGetTick]() : null;
+    } catch {
+      return null;
+    }
+  };
+  // Runs every second on its own timer, since a stuck game may stop calling frame().
+  // A hidden tab freezes the game, so it only counts time while the tab is visible.
+  function watch() {
+    const now = Date.now(), d = dict(), g = read("game"), gs = d && g ? g[d.gameState] : -1, lob = inLobby();
+    let mark = `m${gs}`;
+    if (1 === gs || 2 === gs) {
+      const tick = tickNow(d);
+      // no tick to watch: never call a game stuck
+      mark = null == tick ? `g${now}` : `g${gs}:${tick}`;
+    } else if (lob) mark = `l${lobby.tickAt}`;
+    // dropping out of a lobby or a game to the menu is no progress
+    if (mark !== rw.mark && "m" !== (rw.mark = mark)[0]) {
+      rw.progressAt = now;
+      (lob || 1 === gs) && rec.inRow && (rec.inRow = 0, saveRecover());
+    }
+    if (rw.pending) return;
+    if (!ue.manual || !ue.armed || !state.loop || "visible" !== document.visibilityState) return void(rw.progressAt = now);
+    const c = rw.code, after = c && c.at > rw.progressAt - 2e3 ? Math.max(c.at, rw.progressAt) : 0;
+    if (now - (after || rw.progressAt) < (after ? WAIT_MS[c.code] || CLOSED_MS : STUCK_MS)) return;
+    recover(after ? c.code : null, now - rw.progressAt);
+  }
+  function recover(code, idle) {
+    const now = Date.now(), d = dict(), r = state.game,
+      why = null === code ? `卡住 ${Math.round(idle / 1e3)} 秒没有动静` : `连接断开 [${code}] ${codeText(code)}`;
+    if (!d) return giveUp(`${why}；游戏页面没加载出来（可能停在 Cloudflare 验证），不自动刷新`, code);
+    if (!d.closeCodes) return giveUp(`${why}；断线钩子没装上，分不清是断线还是被游戏拦了，不自动刷新`, code);
+    if (r && r.gate && !r.gate.ok) return giveUp(`${why}；这局有不在白名单里的真人，不自动刷新`, code);
+    const shown = STOP_TEXT.exec(document.body && document.body.innerText || "");
+    if (shown) return giveUp(`${why}；游戏提示「${shown[0]}」，不自动刷新`, code);
+    if (rec.inRow >= RELOADS_IN_A_ROW) return giveUp(`${why}；连续自动刷新 ${rec.inRow} 次都没回到大厅或对局（可能要人工处理，比如 Cloudflare 验证）`, code);
+    rec.reloads = rec.reloads.filter((t) => now - t < 36e5);
+    if (rec.reloads.length >= RELOADS_PER_HOUR) return giveUp(`${why}；1 小时内已经自动刷新 ${rec.reloads.length} 次`, code);
+    reloadPage(why, code, !1);
+  }
+  function giveUp(why, code = null) {
+    const loop = state.loop;
+    disarm(), lobby.stopped = why, rec.last = { action: "stop", why, code, at: Date.now() }, saveRecover();
+    post({ type: "recover", action: "stop", why, code, text: null === code ? null : codeText(code), loop, codes: rw.codes.slice(), state: snapshot() }, "recover");
+  }
+  function reloadPage(why, code, manual) {
+    const now = Date.now(), r = state.game, loop = ue.armed ? state.loop : null;
+    r && !r.done && r.info && report(r, "left", "reload");
+    rw.pending = !0;
+    manual ? rec.inRow = 0 : (rec.inRow++, rec.reloads.push(now));
+    rec.resume = { loop, open: manual && !loop, at: now, why };
+    rec.last = { action: "reload", why, code, at: now };
+    saveRecover();
+    post({ type: "recover", action: "reload", why, code, text: null === code ? null : codeText(code), loop, manual, inRow: rec.inRow, lastHour: rec.reloads.length, codes: rw.codes.slice(), state: snapshot() }, "recover");
+    // time for the report to reach the service worker
+    setTimeout(() => location.reload(), 1500);
+  }
+
   const clock = (t) => new Date(t).toTimeString().slice(0, 8);
   function sync() {
     state.box && (state.box.style.display = ue.manual ? "" : "none");
@@ -658,10 +794,14 @@
         }), label.appendChild(input), label;
       },
       row = ee("div", "tsb-files"),
-      arm = state.armButton = ee("button", "tsb-button");
+      arm = state.armButton = ee("button", "tsb-button"),
+      back = ee("button", "tsb-button", SINGLE_ONLY ? "刷新游戏页" : "回大厅（刷新）");
+    back.type = "button", back.title = "刷新游戏页；开着循环就接着循环", back.addEventListener("click", () => {
+      back.blur(), rw.pending || reloadPage("面板按钮", null, !0);
+    });
     return arm.type = "button", arm.addEventListener("click", () => {
       ue.armed ? disarm() : (ue.armed = !0, fe()), sync(), arm.blur();
-    }), row.append(arm), SINGLE_ONLY || box.append(field("allow", "白名单（一行一个名字，自己不用填）", "area")), box.append(field("cmdUrl", "指令 webhook", "text"), field("resultUrl", "结果 webhook", "text"), field("key", "密钥", "password"), row), sync(), [box];
+    }), row.append(arm, back), SINGLE_ONLY || box.append(field("allow", "白名单（一行一个名字，自己不用填）", "area")), box.append(field("cmdUrl", "指令 webhook", "text"), field("resultUrl", "结果 webhook", "text"), field("key", "密钥", "password"), row), sync(), [box];
   }
   function loopText(s) {
     if ("single" === state.loop) return "单人：一局完了自动开下一局";
@@ -687,6 +827,8 @@
     l && rows.push(["上条指令", `${l.cmd || "?"} ${l.ok ? "✓" : `✗ ${ne(l.error || "", 40)}`} ${clock(l.at)}`]);
     const q = state.post;
     q && !q.ok && rows.push(["上报", `失败：${ne(q.error || `HTTP ${q.status}`, 40)}`]);
+    const r = rec.last;
+    rw.pending ? rows.push(["恢复", "正在刷新页面…"]) : r && Date.now() - r.at < 36e5 && rows.push(["恢复", `${clock(r.at)} ${"stop" === r.action ? "停了" : "刷新"}：${ne(r.why, 40)}`]);
     return { ...view, text, tone, stats: [...view.stats, ...rows] };
   }
 
@@ -718,6 +860,24 @@
     }
     "relay" === s.kind && configure(!0);
   });
+  // after a reload by the extension the loop goes on ("armed" is a setting, so it is still on)
+  {
+    const now = Date.now(), r = rec.resume;
+    rec.reloads = rec.reloads.filter((t) => now - t < 36e5), rec.resume = null, saveRecover();
+    if (r && now - r.at < 3e5 && ue.manual) {
+      state.resumeAt = now + 5e3;
+      if (ue.armed && "mp" === r.loop && !SINGLE_ONLY) state.loop = "mp";
+      else if (ue.armed && "single" === r.loop) state.loop = "single", state.startAt = now;
+      else state.openOnce = !!r.open && !SINGLE_ONLY;
+    }
+  }
+  setInterval(() => {
+    try {
+      watch();
+    } catch (err) {
+      console.warn("strategyBot remote: stuck page check failed", err);
+    }
+  }, 1e3);
   configure(!0);
-  return { version: VERSION, state, lobby, hooks, options, allowed, gate, frame, decorate, fields, configure, snapshot, handle, verify };
+  return { version: VERSION, state, lobby, rec, rw, hooks, options, allowed, gate, frame, watch, decorate, fields, configure, snapshot, handle, verify };
 })()

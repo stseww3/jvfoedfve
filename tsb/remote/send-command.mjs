@@ -10,8 +10,12 @@
 //   node send-command.mjs start --use v3                select a strategy the extension already has, arm
 //   node send-command.mjs stop                          the bot stops (un-readies in the lobby), the game goes on
 //   node send-command.mjs end                           the bot stops and leaves the game or the lobby
+//   node send-command.mjs lobby                         reload the game page (stuck on an error page, a frozen game);
+//                                                       a loop goes on afterwards, without one the allowlist build opens the battle royale lobby
 //
 // After I die or the game ends, an armed bot leaves the game by itself 3 seconds later.
+// With a loop on (--mp / --single), a page stuck for a while (1006, Lobby Timeout, a frozen game) reloads by itself;
+// the game's bot detection, bans, kicks and a second login stop the loop instead.
 //
 // options: --key <key> (or env TSB_KEY), --url <command webhook> (or env TSB_CMD_URL),
 //          --seq <n>, --name <strategy name>, --print (print the body, do not send)
@@ -28,8 +32,8 @@ for (let i = 0; i < args.length; i++) {
     const k = a.slice(2);
     opt[k] = ['single', 'mp', 'print'].includes(k) ? true : args[++i];
 }
-if (!['ping', 'start', 'stop', 'end'].includes(cmd)) {
-    console.error('usage: node send-command.mjs <ping|start|stop|end> [--single | --mp] [--strategy file.js] [--use v3] [--seq n] [--key k] [--url u] [--print]');
+if (!['ping', 'start', 'stop', 'end', 'lobby'].includes(cmd)) {
+    console.error('usage: node send-command.mjs <ping|start|stop|end|lobby> [--single | --mp] [--strategy file.js] [--use v3] [--seq n] [--key k] [--url u] [--print]');
     process.exit(2);
 }
 if (opt.single && opt.mp) throw new Error('--single and --mp do not go together');
