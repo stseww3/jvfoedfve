@@ -106,12 +106,14 @@ await test('no answer, empty OPTIONS on the result webhook: an old or unrefreshe
     assert.ok(r.elapsed >= 10e3 && r.elapsed <= 12e3);
 });
 
-await test('no answer, the extension is posting: points at the address, the clock and slow tabs', async () => {
+await test('no answer, the extension posted lately: points at an unrefreshed tab, the address, the clock and slow tabs', async () => {
     const r = await run(['ping', '--wait', '--result', RESULT, '--timeout', '6'], {
         results: () => [{ uuid: 'p', method: 'POST', created_at: stamp(T0 - 30e3), content: JSON.stringify({ type: 'result', ext: '0.6.8' }) }]
     });
     assert.equal(r.code, 3);
     assert.match(r.err[0], /last: result, 3\d s ago, version 0\.6\.8/);
+    assert.match(r.err[0], /reloaded, updated or removed since/);
+    assert.match(r.err[0], /指令 webhook/);
     assert.match(r.err[0], /12 minutes/);
 });
 
@@ -121,6 +123,7 @@ await test('no answer, nothing from the extension lately: no tab is polling', as
     });
     assert.equal(r.code, 3);
     assert.match(r.err[0], /Nothing from the extension/);
+    assert.match(r.err[0], /unrefreshed after the extension was reloaded or updated/);
 });
 
 await test('result webhook 404 / 401: stops at once with the reason', async () => {

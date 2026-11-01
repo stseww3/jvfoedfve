@@ -75,9 +75,10 @@ function diagnose(list, t, timeout) {
     }
     const last = recent.map((x) => ({ x, b: body(x) })).find(({ b }) => b && b.ext);
     if (last) {
-        lines.push(`The extension is posting (last: ${last.b.type}, ${age(last.x)} s ago, version ${last.b.ext}), so a game tab is in manual mode, but it did not answer this command. Check that the panel's 指令 webhook is this command webhook, and that the browser clock is right (commands that look older than 12 minutes are dropped unanswered). A minimized tab polls slowly: try a longer --timeout. The panel's 指令 / 上条指令 rows show what it last did.`);
+        // a post shows the tab was in manual mode then, not that it still polls
+        lines.push(`The extension posted lately (last: ${last.b.type}, ${age(last.x)} s ago, version ${last.b.ext}), so a game tab was in manual mode, but it did not take this command. Either the extension was reloaded, updated or removed since and that tab still runs the old scripts, cut off from it (0.6.8 refreshes such a tab by itself once the bot is out of a game; older versions need F5); or the panel's 指令 webhook is not this command webhook; or the browser clock is off by more than 12 minutes (commands that look older are dropped unanswered); or the tab is minimized and polls slowly (try a longer --timeout). The panel's 指令 / 上条指令 rows show what it last did.`);
     } else {
-        lines.push('Nothing from the extension on the result webhook in the last 10 minutes: no game tab polls this command webhook (game page closed, 手动（远程） off, another 指令 address in the panel) or the extension cannot reach webhook.site. The panel\'s 指令 row says which.');
+        lines.push('Nothing from the extension on the result webhook in the last 10 minutes: no game tab polls this command webhook (game page closed, 手动（远程） off, another 指令 address in the panel, or a tab left unrefreshed after the extension was reloaded or updated) or the extension cannot reach webhook.site. The panel\'s 指令 row says which.');
     }
     return lines.join('\n');
 }
