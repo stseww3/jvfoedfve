@@ -859,11 +859,11 @@
     lp && rows.push(["循环", lp]);
     const p = state.poll, u = state.update;
     rows.push(["指令", dead || u ? `插件已更新或停用，${rw.pending ? "正在刷新页面…" : u && u.held ? `1 小时内已自动刷新 ${RELOADS_PER_HOUR} 次，请手动刷新页面` : "等这局打完自动刷新"}`
-      : pollUrl() ? p ? p.ok ? `正常 ${clock(p.at)}` : `失败：${ne(p.error || "?", 40)}` : "连接中…" : "没填指令地址"]);
+      : pollUrl() ? p ? p.ok ? `正常 ${clock(p.at)}` : `失败：${ne(p.error || "?", 60)}` : "连接中…" : "没填指令地址"]);
     const l = state.last;
     l && rows.push(["上条指令", `${l.cmd || "?"} ${l.ok ? "✓" : `✗ ${ne(l.error || "", 40)}`} ${clock(l.at)}`]);
     const q = state.post;
-    postUrl() ? q && !q.ok && rows.push(["上报", `失败：${ne(q.error || `HTTP ${q.status}`, 40)}${q.retry ? `，第 ${q.retry} 次重试` : ""}`])
+    postUrl() ? q && !q.ok && rows.push(["上报", `失败：${ne(q.error || `HTTP ${q.status}`, 60)}${q.retry ? `，第 ${q.retry} 次重试` : ""}`])
       : rows.push(["上报", "没填结果地址，指令的回执发不出去"]);
     const r = rec.last;
     rw.pending ? rows.push(["恢复", "正在刷新页面…"]) : r && Date.now() - r.at < 36e5 && rows.push(["恢复", `${clock(r.at)} ${"stop" === r.action ? "停了" : "刷新"}：${ne(r.why, 40)}`]);

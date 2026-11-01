@@ -512,6 +512,9 @@ await test('panel: the reason a poll failed, as the relay gives it', async () =>
     const t = env();
     t.relay({ kind: 'poll', ok: false, error: 'HTTP 404：地址不存在或已过期' });
     assert.equal(t.rows()['指令'], '失败：HTTP 404：地址不存在或已过期');
+    const access = '插件没有 webhook.site 的访问权限（扩展详情→网站访问权限→在所有网站上）';
+    t.relay({ kind: 'poll', ok: false, error: access });
+    assert.equal(t.rows()['指令'], `失败：${access}`, 'the whole hint, up to where to grant the access');
     t.relay({ kind: 'worker', ok: false, dead: false, error: '后台重连中' });
     t.relay({ kind: 'poll', ok: true });
     assert.match(t.rows()['指令'], /^正常 /, 'a worker restart is not an update');
