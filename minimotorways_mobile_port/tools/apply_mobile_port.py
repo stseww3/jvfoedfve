@@ -193,7 +193,13 @@ def apply_to_unity_project(project_dir: Path) -> list:
     shutil.copy2(PORT_ROOT / "android_manifest" / "AndroidManifest.xml", android_dir / "AndroidManifest.xml")
     for fn in ("libdpcPlatform.c", "libdecompressAudio.c", "CMakeLists.txt", "Android.mk", "Application.mk"):
         shutil.copy2(PORT_ROOT / "native" / fn, jni_dir / fn)
-    actions.append("Installed Assets/Plugins/Android/AndroidManifest.xml and JNI native plugin sources")
+    prebuilt_libs = PORT_ROOT / "native" / "libs"
+    if prebuilt_libs.exists():
+        dst_libs = android_dir / "libs"
+        if dst_libs.exists():
+            shutil.rmtree(dst_libs)
+        shutil.copytree(prebuilt_libs, dst_libs)
+    actions.append("Installed Assets/Plugins/Android/AndroidManifest.xml, JNI sources, and prebuilt arm64-v8a/armeabi-v7a .so plugins")
 
     # 3. Patch ProjectSettings/ProjectSettings.asset for Landscape Left + Landscape Right & ARM64 IL2CPP
     ps_path = project_dir / "ProjectSettings" / "ProjectSettings.asset"
