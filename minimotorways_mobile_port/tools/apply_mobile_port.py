@@ -159,6 +159,19 @@ def apply_to_source_tree(app_src_dir: Path) -> list:
         if patch_file_text(inp, patch_inp):
             actions.append(f"Patched {inp.name} -> MaxRecognizedTouchCount = 2")
 
+    # 6. Fix ILSpy decompilation quirks if applying to raw decompiled App folder
+    for fn in ("VehicleView.cs", "DestinationView.cs", "HouseView.cs", "TouchToggle.cs"):
+        for p in app_src_dir.rglob(fn):
+            patch_file_text(p, lambda t: re.sub(
+                r"Transform\s+(IAudioView|ICanvasElement)\.get_transform\(\)\s*\{\s*return\s+base\.transform;\s*\}",
+                r"Transform \1.transform => base.transform;", t))
+    for p in app_src_dir.rglob("Diagnostics.cs"):
+        patch_file_text(p, lambda t: re.sub(r"(?<!UnityEngine\.)\bDebug\.Log", "UnityEngine.Debug.Log", t))
+    for p in app_src_dir.rglob("ReleaseMothballedLanesProcess.cs"):
+        patch_file_text(p, lambda t: t.replace("doesWantHotswap: false", "false"))
+    for p in app_src_dir.rglob("MotorwayView.cs"):
+        patch_file_text(p, lambda t: t.replace("[list.Count - 1] = vector3", "[SplineResolution * 2 + 2] = vector3"))
+
     return actions
 
 

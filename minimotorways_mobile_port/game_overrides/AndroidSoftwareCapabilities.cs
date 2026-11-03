@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using Factory;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -93,10 +94,7 @@ public class AndroidReachability : IReachability
 	{
 		get
 		{
-			NetworkReachability current = Application.internetReachability;
-			InternetConnectivity mapped = (current == NetworkReachability.NotReachable)
-				? InternetConnectivity.Disconnected
-				: InternetConnectivity.Connected;
+			InternetConnectivity mapped = QueryInternetConnectivity();
 			if (mapped != _lastConnectivity)
 			{
 				_lastConnectivity = mapped;
@@ -123,21 +121,21 @@ public class AndroidReachability : IReachability
 	public void CloseConnection([NotNull] InternetConnectionHandle handle)
 	{
 	}
-}
 
-public class NullSteamCloudSyncService : ISteamCloudSyncService
-{
-	public bool IsSupported => false;
-
-	public AsyncRequestHandle Authenticate([NotNull] SteamCloudAuthenticationCompleted authenticationCompleted)
+	private static InternetConnectivity QueryInternetConnectivity()
 	{
-		authenticationCompleted?.Invoke(SteamCloudSyncError.NotSupported, null);
-		return AsyncRequestHandle.CompletedRequestHandle;
-	}
-
-	public AsyncRequestHandle DownloadProfiles([NotNull] string accessToken, [NotNull] SteamCloudProfileDownloadCompleted downloadCompleted)
-	{
-		downloadCompleted?.Invoke(SteamCloudSyncError.NotSupported, null, null);
-		return AsyncRequestHandle.CompletedRequestHandle;
+		try
+		{
+			PropertyInfo prop = typeof(Application).GetProperty("internetReachability", BindingFlags.Public | BindingFlags.Static);
+			if (prop != null)
+			{
+				int val = Convert.ToInt32(prop.GetValue(null));
+				return (val == 0) ? InternetConnectivity.Disconnected : InternetConnectivity.Connected;
+			}
+		}
+		catch (Exception)
+		{
+		}
+		return InternetConnectivity.Connected;
 	}
 }

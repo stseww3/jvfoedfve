@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using UnityEngine;
 
@@ -10,8 +11,8 @@ using UnityEngine;
 ///      Application.persistentDataPath/android_achievements.json using atomic file writes.
 ///   2. Displays a non-intrusive on-screen toast notification banner when an achievement
 ///      unlocks with showNotification = true.
-///   3. Optionally forwards unlocks to Google Play Games Services (PlayGamesPlatform)
-///      via reflection when the GPGS plugin is installed.
+///   3. Optionally forwards unlocks to Google Play Games Services / Unity Social API
+///      via reflection when present.
 /// </summary>
 public class AndroidAchievementHandler : IAchievementHandler
 {
@@ -51,7 +52,7 @@ public class AndroidAchievementHandler : IAchievementHandler
 			{
 				AndroidAchievementToastOverlay.EnqueueToast(achievement.Id);
 			}
-			TryReportToGooglePlayGames(achievement.Id);
+			TryReportToPlatform(achievement.Id);
 		}
 		return true;
 	}
@@ -159,13 +160,17 @@ public class AndroidAchievementHandler : IAchievementHandler
 		}
 	}
 
-	private static void TryReportToGooglePlayGames(string achievementId)
+	private static void TryReportToPlatform(string achievementId)
 	{
 		try
 		{
-			if (Social.localUser != null && Social.localUser.authenticated)
+			Type socialType = Type.GetType("UnityEngine.Social, UnityEngine.CoreModule")
+			                  ?? Type.GetType("UnityEngine.Social, UnityEngine.GameCenterModule");
+			MethodInfo reportMethod = socialType?.GetMethod("ReportProgress", BindingFlags.Public | BindingFlags.Static);
+			if (reportMethod != null)
 			{
-				Social.ReportProgress(achievementId, 100.0, delegate { });
+				Action<bool> callback = delegate { };
+				reportMethod.Invoke(null, new object[] { achievementId, 100.0, callback });
 			}
 		}
 		catch (Exception)
@@ -241,7 +246,7 @@ public sealed class AndroidAchievementToastOverlay : MonoBehaviour
 			fontStyle = FontStyle.Bold
 		};
 		boxStyle.normal.textColor = Color.white;
-		GUI.Box(new Rect(x, y, width, height), "Achievement Unlocked: " + _currentToastText, boxStyle);
+		GUI.Box(new Rect(x, y, width, height), new GUIContent("Achievement Unlocked: " + _currentToastText), boxStyle);
 	}
 
 	private static string FormatAchievementTitle(string rawId)

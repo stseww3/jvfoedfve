@@ -434,3 +434,32 @@ DPC_EXPORT bool decompressAudioSample(
     free(ch1_buf);
     return ok;
 }
+
+#if defined(__ANDROID__)
+#include <jni.h>
+
+JNIEXPORT jboolean JNICALL
+Java_com_dinopoloclub_minimotorways_MobilePortActivity_nativeDecompressFlac(
+    JNIEnv* env,
+    jclass clazz,
+    jbyteArray compressedBank,
+    jint compressedOffset,
+    jshortArray decompressedOut,
+    jint sampleCount)
+{
+    (void)clazz;
+    if (!compressedBank || !decompressedOut || sampleCount <= 0) return JNI_FALSE;
+    jbyte* bankPtr = (*env)->GetByteArrayElements(env, compressedBank, NULL);
+    jshort* outPtr = (*env)->GetShortArrayElements(env, decompressedOut, NULL);
+    bool ok = false;
+    if (bankPtr && outPtr) {
+        ok = decompressAudioSample(
+            (int16_t*)outPtr, 0, (int32_t)sampleCount, (int32_t)sampleCount,
+            48000, (const uint8_t*)bankPtr, (int32_t)compressedOffset, 48000);
+    }
+    if (bankPtr) (*env)->ReleaseByteArrayElements(env, compressedBank, bankPtr, JNI_ABORT);
+    if (outPtr) (*env)->ReleaseShortArrayElements(env, decompressedOut, outPtr, 0);
+    return ok ? JNI_TRUE : JNI_FALSE;
+}
+#endif
+

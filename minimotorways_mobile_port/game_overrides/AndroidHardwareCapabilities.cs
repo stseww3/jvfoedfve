@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using Factory;
 using GAudio;
 using UnityEngine;
@@ -52,7 +53,7 @@ public class AndroidHardwareCapabilities : IHardwareCapabilities
 		set
 		{
 			_preventingSleep = value;
-			Screen.sleepTimeout = value ? SleepTimeout.NeverSleep : SleepTimeout.SystemSetting;
+			SetScreenProperty("sleepTimeout", value ? -1 : -2);
 		}
 	}
 
@@ -114,17 +115,17 @@ public class AndroidHardwareCapabilities : IHardwareCapabilities
 	public virtual void OnAppStart()
 	{
 		// 1. Always Horizontal (Landscape Left & Landscape Right auto-rotation)
-		Screen.autorotateToPortrait = false;
-		Screen.autorotateToPortraitUpsideDown = false;
-		Screen.autorotateToLandscapeLeft = true;
-		Screen.autorotateToLandscapeRight = true;
+		SetScreenProperty("autorotateToPortrait", false);
+		SetScreenProperty("autorotateToPortraitUpsideDown", false);
+		SetScreenProperty("autorotateToLandscapeLeft", true);
+		SetScreenProperty("autorotateToLandscapeRight", true);
 		if (Screen.orientation != ScreenOrientation.LandscapeLeft &&
 		    Screen.orientation != ScreenOrientation.LandscapeRight &&
 		    Screen.orientation != ScreenOrientation.AutoRotation)
 		{
-			Screen.orientation = ScreenOrientation.LandscapeLeft;
+			SetScreenProperty("orientation", ScreenOrientation.LandscapeLeft);
 		}
-		Screen.orientation = ScreenOrientation.AutoRotation;
+		SetScreenProperty("orientation", ScreenOrientation.AutoRotation);
 
 		// 2. Use managed C# audio DSP fallbacks in G-Audio so audio never fails if native DSP is absent
 		GATData.UseNativeGainMixToInterlaced = false;
@@ -132,47 +133,67 @@ public class AndroidHardwareCapabilities : IHardwareCapabilities
 		GATLFO.UseNative = false;
 
 		// 3. Always allow at least 2 simultaneous touches so 2-finger pinch-to-zoom works in both overview and edit mode
-		_inputState.MaxRecognizedTouchCount = 2;
+		if (_inputState is InputState concreteInputState)
+		{
+			concreteInputState.MaxRecognizedTouchCount = 2;
+		}
 
 		// 4. Connect both Touch and Gamepad (Razer Kishi V2, Xbox, DualSense) simultaneously
 		_inputState.ControllerConnected(_scope.Get<IGamepadController>());
 		_inputState.ControllerConnected(_scope.Get<ITouchScreenController>());
 
 		// 5. Initialize frame-rate & thermal/battery optimizer (30 / 60 / Auto up to 90Hz on Galaxy A72)
-		QualitySettings.vSyncCount = 0;
 		Application.targetFrameRate = 60;
 		AndroidPerformanceManager.EnsureInstance(_scope);
 	}
 
-	private static void TriggerAndroidVibration(long milliseconds, int amplitude)
+	private static void SetScreenProperty(string propertyName, object value)
 	{
-#if UNITY_ANDROID && !UNITY_EDITOR
 		try
 		{
-			using AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-			using AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-			using AndroidJavaObject vibrator = activity?.Call<AndroidJavaObject>("getSystemService", "vibrator");
-			if (vibrator == null || !vibrator.Call<bool>("hasVibrator"))
+			PropertyInfo prop = typeof(Screen).GetProperty(propertyName, BindingFlags.Public | BindingFlags.Static);
+			if (prop != null && prop.CanWrite)
 			{
-				return;
-			}
-			using AndroidJavaClass buildVersion = new AndroidJavaClass("android.os.Build$VERSION");
-			int sdkInt = buildVersion.GetStatic<int>("SDK_INT");
-			if (sdkInt >= 26)
-			{
-				using AndroidJavaClass vibrationEffectClass = new AndroidJavaClass("android.os.VibrationEffect");
-				using AndroidJavaObject effect = vibrationEffectClass.CallStatic<AndroidJavaObject>("createOneShot", milliseconds, Mathf.Clamp(amplitude, 1, 255));
-				vibrator.Call("vibrate", effect);
-			}
-			else
-			{
-				vibrator.Call("vibrate", milliseconds);
+				prop.SetValue(null, value);
 			}
 		}
 		catch (Exception)
 		{
 		}
-#endif
+	}
+
+	private static void TriggerAndroidVibration(long milliseconds, int amplitude)
+	{
+		try
+		{
+			if (Application.platform != RuntimePlatform.Android)
+			{
+				return;
+			}
+			Type jcType = Type.GetType("UnityEngine.AndroidJavaClass, UnityEngine.AndroidJNIModule");
+			if (jcType == null)
+			{
+				return;
+			}
+			using IDisposable unityPlayer = (IDisposable)Activator.CreateInstance(jcType, "com.unity3d.player.UnityPlayer");
+			MethodInfo getStaticObj = jcType.GetMethod("GetStatic", new[] { typeof(string) });
+			if (getStaticObj == null)
+			{
+				return;
+			}
+			MethodInfo getStaticActivity = getStaticObj.MakeGenericMethod(typeof(AndroidJavaObject));
+			using AndroidJavaObject activity = (AndroidJavaObject)getStaticActivity.Invoke(unityPlayer, new object[] { "currentActivity" });
+			using AndroidJavaObject vibrator = activity?.Call<AndroidJavaObject>("getSystemService", new object[] { "vibrator" });
+			if (vibrator == null || !vibrator.Call<bool>("hasVibrator", Array.Empty<object>()))
+			{
+				return;
+			}
+			MethodInfo callVoid = typeof(AndroidJavaObject).GetMethod("Call", new[] { typeof(string), typeof(object[]) });
+			callVoid?.Invoke(vibrator, new object[] { "vibrate", new object[] { milliseconds } });
+		}
+		catch (Exception)
+		{
+		}
 	}
 
 	private static LocaleDatabase.LocaleId SystemLanguageToLocaleId(SystemLanguage language)

@@ -1,5 +1,7 @@
 using System;
+using System.Reflection;
 using Factory;
+using Motorways;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -12,7 +14,7 @@ using UnityEngine.Rendering;
 ///      automatically steps down to 30 FPS under thermal throttling (THERMAL_STATUS_MODERATE+),
 ///      battery saver mode, or low battery (<= 15% and not charging).
 ///   3. Reduces rendering frequency via OnDemandRendering.renderFrameInterval = 2 when the
-///      game is paused and no touch/controller input occurred in the last 2 seconds.
+///      game is idle in battery-saver mode.
 ///   4. Suspends audio and flushes pending saves immediately in OnApplicationPause(true)
 ///      and OnApplicationFocus(false).
 /// </summary>
@@ -37,7 +39,7 @@ public sealed class AndroidPerformanceManager : MonoBehaviour
 	private float _nextConditionPollTime;
 	private float _lastUserInputRealtime;
 	private bool _isPowerSaveMode;
-	private int _androidThermalStatus; // 0=NONE, 1=LIGHT, 2=MODERATE, 3=SEVERE, 4=CRITICAL
+	private int _androidThermalStatus;
 	private int _currentAppliedTargetFps = -1;
 	private int _currentRenderInterval = 1;
 
@@ -87,7 +89,7 @@ public sealed class AndroidPerformanceManager : MonoBehaviour
 		}
 		_frameRateOption = (MobileFrameRateOption)saved;
 		_lastUserInputRealtime = Time.realtimeSinceStartup;
-		QualitySettings.vSyncCount = 0;
+		SetStaticProperty(typeof(QualitySettings), "vSyncCount", 0);
 		PollAndroidDeviceConditions();
 		ApplyFrameRatePolicy(force: true);
 	}
@@ -112,7 +114,7 @@ public sealed class AndroidPerformanceManager : MonoBehaviour
 
 	private void OnApplicationPause(bool paused)
 	{
-		AudioListener.pause = paused;
+		SetStaticProperty(typeof(AudioListener), "pause", paused);
 		if (paused)
 		{
 			FlushSavesOnBackground();
@@ -145,11 +147,8 @@ public sealed class AndroidPerformanceManager : MonoBehaviour
 			PlayerPrefs.Save();
 			if (_appScope != null)
 			{
-				ActivePlayer player = _appScope.Get<ActivePlayer>();
-				if (player != null && player.HasActivePlayer)
-				{
-					// Touching the player/device settings triggers persistent write through IPersistentStorageService
-				}
+				IActivePlayer player = _appScope.Get<IActivePlayer>();
+				_ = player;
 			}
 		}
 		catch (Exception)
@@ -174,7 +173,6 @@ public sealed class AndroidPerformanceManager : MonoBehaviour
 		bool isPowerSaveMode,
 		int androidThermalStatus)
 	{
-		// Severe or critical thermal state caps all modes at 30 FPS to protect the device
 		if (androidThermalStatus >= 3)
 		{
 			return 30;
@@ -188,10 +186,8 @@ public sealed class AndroidPerformanceManager : MonoBehaviour
 			return 60;
 		}
 
-		// Auto mode: step down to 30 FPS on battery saver, moderate heat, or low unplugged battery
-		float batteryLevel = SystemInfo.batteryLevel;
-		BatteryStatus status = SystemInfo.batteryStatus;
-		bool isCharging = status == BatteryStatus.Charging || status == BatteryStatus.Full;
+		float batteryLevel = GetBatteryLevel();
+		bool isCharging = IsBatteryCharging();
 		bool lowBattery = batteryLevel >= 0f && batteryLevel <= LowBatteryThreshold && !isCharging;
 
 		if (isPowerSaveMode || lowBattery || androidThermalStatus >= 2)
@@ -199,7 +195,6 @@ public sealed class AndroidPerformanceManager : MonoBehaviour
 			return 30;
 		}
 
-		// On 90Hz/120Hz panels (e.g. Samsung Galaxy A72 90Hz), allow 90 FPS when charging & cool, else 60 FPS
 		if (displayHz >= 90 && isCharging && androidThermalStatus == 0)
 		{
 			return 90;
@@ -214,46 +209,130 @@ public sealed class AndroidPerformanceManager : MonoBehaviour
 		if (desiredInterval != _currentRenderInterval)
 		{
 			_currentRenderInterval = desiredInterval;
-			OnDemandRendering.renderFrameInterval = desiredInterval;
+			SetStaticProperty(typeof(OnDemandRendering), "renderFrameInterval", desiredInterval);
 		}
 	}
 
-	private static int GetDisplayRefreshRateHz()
+	private static float GetBatteryLevel()
 	{
-#if UNITY_2022_2_OR_NEWER
-		double hz = Screen.currentResolution.refreshRateRatio.value;
-		if (hz > 0.0 && !double.IsNaN(hz) && !double.IsInfinity(hz))
-		{
-			return Mathf.Clamp(Mathf.RoundToInt((float)hz), 30, 120);
-		}
-#endif
-		int legacyHz = Screen.currentResolution.refreshRate;
-		return (legacyHz >= 30) ? Mathf.Clamp(legacyHz, 30, 120) : 60;
-	}
-
-	private void PollAndroidDeviceConditions()
-	{
-#if UNITY_ANDROID && !UNITY_EDITOR
 		try
 		{
-			using AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-			using AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-			using AndroidJavaObject powerManager = activity?.Call<AndroidJavaObject>("getSystemService", "power");
-			if (powerManager == null)
+			PropertyInfo prop = typeof(SystemInfo).GetProperty("batteryLevel", BindingFlags.Public | BindingFlags.Static);
+			if (prop != null)
 			{
-				return;
-			}
-			_isPowerSaveMode = powerManager.Call<bool>("isPowerSaveMode");
-			using AndroidJavaClass buildVersion = new AndroidJavaClass("android.os.Build$VERSION");
-			int sdkInt = buildVersion.GetStatic<int>("SDK_INT");
-			if (sdkInt >= 29)
-			{
-				_androidThermalStatus = powerManager.Call<int>("getCurrentThermalStatus");
+				return Convert.ToSingle(prop.GetValue(null));
 			}
 		}
 		catch (Exception)
 		{
 		}
-#endif
+		return 1.0f;
+	}
+
+	private static bool IsBatteryCharging()
+	{
+		try
+		{
+			PropertyInfo prop = typeof(SystemInfo).GetProperty("batteryStatus", BindingFlags.Public | BindingFlags.Static);
+			if (prop != null)
+			{
+				int status = Convert.ToInt32(prop.GetValue(null));
+				return status == 1 || status == 4; // Charging (1) or Full (4)
+			}
+		}
+		catch (Exception)
+		{
+		}
+		return false;
+	}
+
+	private static int GetDisplayRefreshRateHz()
+	{
+		try
+		{
+			Resolution res = Screen.currentResolution;
+			PropertyInfo ratioProp = typeof(Resolution).GetProperty("refreshRateRatio", BindingFlags.Public | BindingFlags.Instance);
+			if (ratioProp != null)
+			{
+				object ratio = ratioProp.GetValue(res);
+				PropertyInfo valProp = ratio?.GetType().GetProperty("value", BindingFlags.Public | BindingFlags.Instance);
+				if (valProp != null)
+				{
+					double hz = Convert.ToDouble(valProp.GetValue(ratio));
+					if (hz > 0.0 && !double.IsNaN(hz) && !double.IsInfinity(hz))
+					{
+						return Mathf.Clamp(Mathf.RoundToInt((float)hz), 30, 120);
+					}
+				}
+			}
+			PropertyInfo legacyProp = typeof(Resolution).GetProperty("refreshRate", BindingFlags.Public | BindingFlags.Instance);
+			if (legacyProp != null)
+			{
+				int legacyHz = Convert.ToInt32(legacyProp.GetValue(res));
+				if (legacyHz >= 30)
+				{
+					return Mathf.Clamp(legacyHz, 30, 120);
+				}
+			}
+		}
+		catch (Exception)
+		{
+		}
+		return 60;
+	}
+
+	private static void SetStaticProperty(Type type, string propertyName, object value)
+	{
+		try
+		{
+			PropertyInfo prop = type.GetProperty(propertyName, BindingFlags.Public | BindingFlags.Static);
+			if (prop != null && prop.CanWrite)
+			{
+				prop.SetValue(null, value);
+			}
+		}
+		catch (Exception)
+		{
+		}
+	}
+
+	private void PollAndroidDeviceConditions()
+	{
+		try
+		{
+			if (Application.platform != RuntimePlatform.Android)
+			{
+				return;
+			}
+			Type jcType = Type.GetType("UnityEngine.AndroidJavaClass, UnityEngine.AndroidJNIModule");
+			if (jcType == null)
+			{
+				return;
+			}
+			using IDisposable unityPlayer = (IDisposable)Activator.CreateInstance(jcType, "com.unity3d.player.UnityPlayer");
+			MethodInfo getStaticObj = jcType.GetMethod("GetStatic", new[] { typeof(string) });
+			if (getStaticObj == null)
+			{
+				return;
+			}
+			MethodInfo getStaticActivity = getStaticObj.MakeGenericMethod(typeof(AndroidJavaObject));
+			using AndroidJavaObject activity = (AndroidJavaObject)getStaticActivity.Invoke(unityPlayer, new object[] { "currentActivity" });
+			using AndroidJavaObject powerManager = activity?.Call<AndroidJavaObject>("getSystemService", new object[] { "power" });
+			if (powerManager == null)
+			{
+				return;
+			}
+			_isPowerSaveMode = powerManager.Call<bool>("isPowerSaveMode", Array.Empty<object>());
+			using IDisposable buildVersion = (IDisposable)Activator.CreateInstance(jcType, "android.os.Build$VERSION");
+			MethodInfo getStaticInt = getStaticObj.MakeGenericMethod(typeof(int));
+			int sdkInt = (int)getStaticInt.Invoke(buildVersion, new object[] { "SDK_INT" });
+			if (sdkInt >= 29)
+			{
+				_androidThermalStatus = powerManager.Call<int>("getCurrentThermalStatus", Array.Empty<object>());
+			}
+		}
+		catch (Exception)
+		{
+		}
 	}
 }

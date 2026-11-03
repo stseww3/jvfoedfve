@@ -815,3 +815,53 @@ DPC_EXPORT float GCGetAccessPointSizeWidth(void) { return 0.0f; }
 DPC_EXPORT float GCGetAccessPointSizeHeight(void) { return 0.0f; }
 DPC_EXPORT bool GCOpenLeaderboardView(const char* id) { (void)id; return false; }
 DPC_EXPORT bool GCIsUserUnderage(void) { return false; }
+
+#if defined(__ANDROID__)
+#include <jni.h>
+
+JNIEXPORT jint JNICALL
+Java_com_dinopoloclub_minimotorways_MobilePortActivity_nativeRunDpcSelfTest(JNIEnv* env, jclass clazz) {
+    (void)env;
+    (void)clazz;
+    if (EmptyFunction() != 0) return -1;
+    if (GetNoPathCostConstant() != 0x3fffffff) return -2;
+
+    int32_t pf = Setup();
+    PauseUpdate(pf, NULL);
+    int32_t n0 = AddNode(pf, false, NULL);
+    int32_t n1 = AddNode(pf, false, NULL);
+    int32_t n2 = AddNode(pf, false, NULL);
+    int32_t n3 = AddNode(pf, true, NULL);
+    int32_t e0 = AddEdge(pf, n0, n1, 15, NULL);
+    int32_t e1 = AddEdge(pf, n2, n3, 25, NULL);
+    if (!MergeNodes(pf, n1, n2, NULL)) return -3;
+    ResumeUpdate(pf, NULL);
+
+    if (GetPathCost(pf, n0, n3, NULL) != 40) return -4;
+    if (GetPathNextEdge(pf, n0, n3, NULL) != e0) return -5;
+    if (GetPathNextNode(pf, n0, n3, NULL) != n1) return -6;
+    if (GetPathNextEdge(pf, n1, n3, NULL) != e1) return -7;
+    if (!AreNodesConnected(pf, n0, n3, 100000, NULL)) return -8;
+
+    int64_t one = 1LL << 32;
+    int64_t acc = CalculateAcceleration(10 * one, 1 * one, 2 * one, 0, 3 * one, 2 * one, 4 * one, 3 * one, 2 * one);
+    if (acc <= 0 || acc > 2 * one) return -9;
+
+    Clear(pf, NULL);
+    return 1;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_dinopoloclub_minimotorways_MobilePortActivity_nativeStepVehicleFix64(
+    JNIEnv* env, jclass clazz, jlong gapRaw, jlong speedRaw, jlong leadSpeedRaw, jlong desiredSpeedRaw)
+{
+    (void)env;
+    (void)clazz;
+    int64_t one = 1LL << 32;
+    int64_t acc = CalculateAcceleration(
+        (int64_t)gapRaw, (int64_t)speedRaw, (int64_t)leadSpeedRaw, 0,
+        (int64_t)desiredSpeedRaw, 2 * one, 4 * one, 3 * one, 2 * one);
+    return (jint)(acc >> 16);
+}
+#endif
+
