@@ -147,26 +147,16 @@
   const norm = (s) => String(s ?? "").normalize("NFKC").replace(/\s+/g, " ").trim().toLowerCase();
   const allowList = () => String(ue.allow || "").split(/\r?\n/).map(norm).filter(Boolean);
 
-  // In multiplayer games every human except me must be on the allowlist.
+  // In multiplayer games allow all games unless single-only build.
   function gate() {
     const d = dict(), g = read("game");
     if (!d || !g) return { ok: false, single: false, blocked: [], blockedIds: [] };
     const pixels = read("sbPixels"), now = Date.now(), c = state.gate;
-    if (c && c.pixels === pixels && c.allow === ue.allow && c.state === g[d.gameState] && now - c.at < 1e3) return c.result;
+    if (c && c.pixels === pixels && c.state === g[d.gameState] && now - c.at < 1e3) return c.result;
     let result;
     if (g[d.gIsSingleplayer]) result = { ok: true, single: true, blocked: [], blockedIds: [] };
     else if (SINGLE_ONLY) result = { ok: false, single: false, blocked: [], blockedIds: [] };
-    else {
-      const allow = new Set(allowList()),
-        pd = read("playerData"),
-        names = (pd && pd[d.rawPlayerNames]) || [],
-        mine = g[d.playerId],
-        humans = g[d.gHumans] | 0,
-        blocked = [],
-        blockedIds = [];
-      for (let i = 0; i < humans; i++) i === mine || allow.has(norm(names[i])) || (blocked.push(String(names[i] ?? `#${i}`)), blockedIds.push(i));
-      result = { ok: humans > 0 && 0 === blocked.length, single: false, blocked, blockedIds };
-    }
+    else result = { ok: (g[d.gHumans] | 0) > 0, single: false, blocked: [], blockedIds: [] };
     state.gate = { pixels, allow: ue.allow, state: g[d.gameState], at: now, result };
     return result;
   }
@@ -858,7 +848,7 @@
     }), stay.append(stayBox, ee("span", "", "死了不退，留到整局结束"));
     return arm.type = "button", arm.addEventListener("click", () => {
       ue.armed ? disarm() : (ue.armed = !0, fe()), sync(), arm.blur();
-    }), row.append(arm, back), box.append(stay), SINGLE_ONLY || box.append(field("allow", "白名单（一行一个名字，自己不用填）", "area")), box.append(field("cmdUrl", "指令 webhook", "text"), field("resultUrl", "结果 webhook", "text"), field("key", "密钥", "password"), row), sync(), [box];
+    }), row.append(arm, back), box.append(stay), box.append(field("cmdUrl", "指令 webhook", "text"), field("resultUrl", "结果 webhook", "text"), field("key", "密钥", "password"), row), sync(), [box];
   }
   function loopText(s) {
     if ("single" === state.loop) return "单人：一局完了自动开下一局";

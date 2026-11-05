@@ -3,7 +3,7 @@
 //   --single-only: remote mode plays singleplayer games only (no allowlist, no lobby)
 import fs from 'node:fs';
 import path from 'node:path';
-import { MENU_FROM, MENU_TO, LOBBY_PATCH, REPLAY_PATCH, CLOSE_PATCH, PATCH_END, patchEndWith } from './lobby-patch.mjs';
+import { MENU_FROM, MENU_TO, LOBBY_PATCH, REPLAY_PATCH, CLOSE_PATCH, EXTRAS_PATCH, PATCH_END, patchEndWith } from './lobby-patch.mjs';
 
 const VERSION = '0.7.0';
 // the server running tsb/relay/relay.py (in place of webhook.site); match patterns cover every port
@@ -47,8 +47,29 @@ once('version:"0.5.2",setPort(t){', `version:"${VERSION}",remote:Re,setPort(t){`
 // the backend port only with the backend strategy; without it the service worker opens no WebSocket
 once('ke=()=>be("tsb-control",JSON.stringify({kind:"connect",port:ue.port}))',
     'ke=()=>be("tsb-control",JSON.stringify({kind:"connect",port:"backend"===ue.strategy?ue.port:null}))');
-if (!singleOnly) once(MENU_FROM, MENU_TO);
-once(PATCH_END, patchEndWith((singleOnly ? '' : LOBBY_PATCH) + REPLAY_PATCH + CLOSE_PATCH));
+once('U={sbAttack:"sbSendAttack",sbBoat:"sbSendBoat",sbRetreat:"sbSendRetreat",sbSpawn:"sbSendSpawn"}',
+    'U={sbAttack:"sbSendAttack",sbBoat:"sbSendBoat",sbChase:"sbSendChase",sbMountain:"sbSendMountain",sbRetreat:"sbSendRetreat",sbSpawn:"sbSendSpawn"}');
+once('this.borderLists=new Array(512),this.coastLists=new Array(512)',
+    'this.borderLists=new Array(512),this.coastLists=new Array(512),this.frontLists=new Array(512),this.cliffLists=new Array(512)');
+once('this.bal=e[dictionary.playerBalances],this.x0=e[dictionary.sbX0]',
+    'this.bal=e[dictionary.playerBalances],this.debt=dictionary.sbDebt?e[dictionary.sbDebt]:null,this.aSo=dictionary.sbQuotaHolder&&dictionary.sbQuota&&I("sbQuotaHolder")?I("sbQuotaHolder")[dictionary.sbQuota]:null,this.x0=e[dictionary.sbX0]');
+once('this.boats=I("sbBoatsHolder")[dictionary.sbBoats],this.boatCount=this.boats[dictionary.sbBoatCount]',
+    'this.boats=I("sbBoatsHolder")[dictionary.sbBoats],this.boatCount=this.boats[dictionary.sbBoatCount],this.bSlot=dictionary.sbBoatSlot?this.boats[dictionary.sbBoatSlot]:null,this.bPos=dictionary.sbBoatPos?this.boats[dictionary.sbBoatPos]:null,this.bProg=dictionary.sbBoatProg?this.boats[dictionary.sbBoatProg]:null,this.bTroops=dictionary.sbBoatTroops?this.boats[dictionary.sbBoatTroops]:null,this.bId=dictionary.sbBoatId?this.boats[dictionary.sbBoatId]:null,this.bType=dictionary.sbBoatType?this.boats[dictionary.sbBoatType]:null,this.bHit=dictionary.sbBoatHit?this.boats[dictionary.sbBoatHit]:null,this.bRoute=dictionary.sbBoatRoute?this.boats[dictionary.sbBoatRoute]:null,this.bLeg=dictionary.sbBoatLeg?this.boats[dictionary.sbBoatLeg]:null,this.boatOf=dictionary.sbBoatOf?this.boats[dictionary.sbBoatOf]:null');
+once('const e=I("game").data;this.passableWater=e.passableWater?1:0,this.passableMountains=e.passableMountains?1:0;',
+    'const e=I("game").data;this.passableWater=e.passableWater?1:0,this.passableMountains=e.passableMountains?1:0,this.gameMode=e.gameMode|0,this.battleRoyaleMode=e.battleRoyaleMode|0,this.noFullSend=0===(e.gameMode|0)&&1===(e.battleRoyaleMode|0)?1:0;');
+once('get border(){return this.convertLists(),this.borderLists}get coast(){return this.convertLists(),this.coastLists}convertLists(){if(this.listsStamp===this.t&&this.decoded)return;const t=I("playerData"),e=t[dictionary.sbBorder],s=t[dictionary.sbCoast],i=t=>{const e=new Array(t.length);for(let s=t.length-1;s>=0;s--)e[s]=t[s]>>2;return e};for(let t=0;t<512;t++){const n=0!==this.alive[t]||t===this.me;this.borderLists[t]=n&&e&&e[t]?i(e[t]):[],this.coastLists[t]=n&&s&&s[t]?i(s[t]):[]}this.decoded||this.decode(),this.listsStamp=this.t}',
+    'get border(){return this.convertLists(),this.borderLists}get coast(){return this.convertLists(),this.coastLists}get front(){return this.convertLists(),this.frontLists}get cliff(){return this.convertLists(),this.cliffLists}convertLists(){if(this.listsStamp===this.t&&this.decoded)return;const t=I("playerData"),e=t[dictionary.sbBorder],s=t[dictionary.sbCoast],a=t[dictionary.sbFront],r=t[dictionary.sbCliff],i=t=>{const e=new Array(t.length);for(let s=t.length-1;s>=0;s--)e[s]=t[s]>>2;return e};for(let t=0;t<512;t++){const n=0!==this.alive[t]||t===this.me;this.borderLists[t]=n&&e&&e[t]?i(e[t]):[],this.coastLists[t]=n&&s&&s[t]?i(s[t]):[],this.frontLists[t]=n&&a&&a[t]?i(a[t]):[],this.cliffLists[t]=n&&r&&r[t]?i(r[t]):[]}this.decoded||this.decode(),this.listsStamp=this.t}');
+once('t.front=[],t.cliff=[]',
+    't.front=this.front.map(t=>t?t.slice():t),t.cliff=this.cliff.map(t=>t?t.slice():t)');
+once('retreat(t,e=this.me){return t=Math.min(t,512),!(!this.canAct(e)||!this.hasAttack(e,t))&&this.command("sbRetreat",e,[t],this.attackProbe(e,t))}',
+    'retreat(t,e=this.me){return t=Math.min(t,512),!(!this.canAct(e)||!this.hasAttack(e,t))&&this.command("sbRetreat",e,[t],this.attackProbe(e,t))}chase(t,e,s=this.me){return!!this.canAct(s)&&(t=Math.max(0,Math.min(1023,0|t)),849===t&&(t=850),this.command("sbChase",s,[t,0|e],()=>`${this.bal[s]} ${this.boatN} ${this.boatCount[s]}`))}recall(t,e=this.me){if(!this.canAct(e))return!1;const s=0|t;return this.online?this.send("sbChase",e,[849,s]):this.command("sbChase",e,[849,s],()=>{const t=this.bId?this.playerBoat(e,s):-1;return t<0?"":`${this.bType[t]} ${this.bLeg[t]}`})}mountainAttack(t,e,s,i=this.me){return!(!this.canAct(i)||i===s)&&(t=Math.max(0,Math.min(1023,0|t)),s=Math.min(s,512),this.command("sbMountain",i,[t,0|e,s],this.attackProbe(i,s)))}');
+once('for(const e of["sbAttack","sbBoat","sbRetreat"]){const s=t[dictionary[e]];if(s.tsbHook)continue;',
+    'for(const e of["sbAttack","sbBoat","sbChase","sbMountain","sbRetreat"]){const s=dictionary[e]&&t[dictionary[e]];if(!s||s.tsbHook)continue;');
+if (!singleOnly) {
+    once('(t=>{if(!dictionary.sbRoomId)return!0;const e=t[dictionary.sbRoomId];return null==e||""===e})(t)', '!0');
+    once(MENU_FROM, MENU_TO);
+}
+once(PATCH_END, patchEndWith((singleOnly ? '' : LOBBY_PATCH) + REPLAY_PATCH + CLOSE_PATCH + EXTRAS_PATCH));
 once('for(const t of ye)t.options=()=>({spawn:ue.spawn,play:ue.play});',
     'for(const t of ye)t.options=()=>Re.options();');
 once('this.onPort&&n.appendChild(this.portField()),',
@@ -68,10 +89,10 @@ manifest.version = VERSION;
 // update the service worker finds the open game tabs and reloads the remote-mode ones
 manifest.host_permissions = [...new Set([...(manifest.host_permissions || []), 'https://webhook.site/*', RELAY_HOST, 'https://territorial.io/*'])];
 manifest.permissions = [...new Set([...(manifest.permissions || []), 'scripting'])];
-manifest.version_name = singleOnly ? `${VERSION} 远程只管单人局` : `${VERSION} 远程+白名单`;
+manifest.version_name = singleOnly ? `${VERSION} 远程只管单人局` : `${VERSION} 远程版`;
 manifest.description = manifest.description.replace(/。$/, '') + (singleOnly
     ? '；远程模式（只管单人局）：签名指令开始/结束，死了自动退出，卡住自动刷新，结果发 webhook。'
-    : '；远程模式：签名指令控制，start --mp 进大逃杀，卡住自动刷新，多人局只跟白名单打，结果发 webhook。');
+    : '；远程模式：签名指令控制，start --mp 进大逃杀，卡住自动刷新，结果发 webhook。');
 if (manifest.description.length > 132) throw new Error(`manifest description is ${manifest.description.length} characters, Chrome allows 132`);
 
 fs.rmSync(out, { recursive: true, force: true });

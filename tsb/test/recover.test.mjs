@@ -245,17 +245,17 @@ await test('frozen game (ticks stop, 1006): result "left" with why=reload, then 
     assert.equal(t.reloads.length, 1);
 });
 
-await test('frozen game with someone off the allowlist: no reload, the loop stops', async () => {
+await test('multiplayer game with any humans: allowed without allowlist, reloads when frozen', async () => {
     const t = env({ settings: { allow: 'friend' } });
     await t.send('start', { mp: true });
     t.G.gs = 1, t.G.hum = 3, t.running = true;
     t.advance(10e3);
+    assert.equal(t.Re.gate().ok, true);
     t.running = false;
     t.advance(65e3);
-    assert.equal(t.reloads.length, 0);
+    assert.equal(t.reloads.length, 1);
     const [r] = t.recovers();
-    assert.equal(r.action, 'stop');
-    assert.match(r.why, /白名单/);
+    assert.equal(r.action, 'reload');
 });
 
 await test('3 reloads in a row without reaching a lobby or game: stop', async () => {
