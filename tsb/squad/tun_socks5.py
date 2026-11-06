@@ -20,10 +20,6 @@ async def pipe(reader, writer):
 
 def should_use_tun(host, local_port):
     h = host.lower()
-    # ONLY 1.territorial.io (Lobby Server 1) needs tunnel IP splitting!
-    # 4.territorial.io (Game Server 2) and 5.territorial.io (Game Server 3) MUST use 2ms DIRECT host connection!
-    if local_port >= 10811:
-        return h in ("territorial.io", "1.territorial.io", "api.ipify.org")
     return h in ("1.territorial.io", "api.ipify.org")
 
 async def handle_client(reader, writer, devs, local_port):
@@ -115,16 +111,16 @@ async def handle_client(reader, writer, devs, local_port):
 async def main():
     # 10 bots (10801..10805 + 10811..10815), each with its own dedicated primary + backup tunnel exit IP!
     mappings = [
-        (10801, ["tun66", "tun72"]),
-        (10802, ["tun13", "tun49"]),
-        (10803, ["tun21", "tun67"]),
-        (10804, ["tun47", "tun66"]),
-        (10805, ["tun22", "tun49"]),
-        (10811, ["tun52", "tun66"]),
-        (10812, ["tun53", "tun49"]),
-        (10813, ["tun60", "tun67"]),
-        (10814, ["tun68", "tun74"]),
-        (10815, ["tun70", "tun72"]),
+        (10801, ["tun90", "tun13"]),
+        (10802, ["tun50", "tun22"]),
+        (10803, ["tun55", "tun13"]),
+        (10804, ["tun58", "tun22"]),
+        (10805, ["tun66", "tun90"]),
+        (10811, ["tun67", "tun50"]),
+        (10812, ["tun78", "tun55"]),
+        (10813, ["tun80", "tun58"]),
+        (10814, ["tun83", "tun66"]),
+        (10815, ["tun86", "tun67"]),
     ]
     servers = []
     for port, devs in mappings:

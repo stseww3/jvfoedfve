@@ -89,7 +89,7 @@ if (!window.__tsbPageInjected) {
       play: true,
       autoStart: false,
       manual: true,
-      armed: false,
+      armed: true,
       stay: true,
       allow: '',
       cmdUrl: '',
@@ -257,22 +257,17 @@ async function attachChromeBot(bot) {
         window.__tsbSquadSlot = ${slot};
         const ext = window.__fx.strategyBotExtension;
         const sid = await ext.strategies.add({ name: "v27team.js", text: async () => ${JSON.stringify(src)} });
-        ext.settings.strategy = sid || "file:v27team";
-        if (ext.strategies.changed) ext.strategies.changed(sid || "file:v27team");
-        const snap = ext.remote?.snapshot?.();
-        if (snap?.inGame) {
-          ext.settings.armed = true;
-          ext.remote.state.loop = "team";
-        } else {
-          ext.settings.armed = false;
-          ext.remote.state.loop = null;
-        }
+        const targetSid = sid || "file:v27team";
+        ext.settings.strategy = targetSid;
+        ext.settings.armed = true;
+        ext.remote.state.loop = "team";
+        if (ext.strategies.changed) ext.strategies.changed(targetSid);
         return "OK";
       })()`,
       true
     );
     client.freshToken = true;
-    console.log(`[${name}] Fresh Turnstile token ready & Distributed-Spawn Boss-Guard v27team (slot=${slot}) imported!`);
+    console.log(`[${name}] Fresh Turnstile token ready & v30-team (slot=${slot}) imported!`);
   }
 
   ws.onopen = async () => {
@@ -308,13 +303,6 @@ async function attachChromeBot(bot) {
     })()`);
     if (alreadyPatched === 'YES') {
       await importStrategy();
-      await evalJs(`(() => {
-        const ext = window.__fx?.strategyBotExtension;
-        if (ext) {
-          ext.settings.armed = true;
-          ext.remote.state.loop = "team";
-        }
-      })()`);
       console.log(`[${name}] Hot-attached without Page.reload (existing Turnstile session preserved)!`);
       return;
     }
@@ -443,6 +431,7 @@ for (const bot of HEADLESS_BOTS) {
 let lastSyncLaunch = Date.now();
 let reloadingForFreshTokens = false;
 let currentChosenBot = null;
+let wantTenForCurrentLobby = false;
 
 setInterval(async () => {
   const chosen = currentChosenBot || { port: 9224 };
@@ -495,13 +484,23 @@ setInterval(async () => {
         if (ext?.bots?.local?.error) {
           ext.bots.local.error = null;
         }
+        if (ext?.settings) {
+          ext.settings.folded = true;
+          ext.settings.armed = true;
+          if (ext.strategies?.has?.("file:v27team") && ext.settings.strategy !== "file:v27team") {
+            ext.settings.strategy = "file:v27team";
+            ext.strategies.changed?.("file:v27team");
+          }
+        }
+        if (ext?.remote?.state) {
+          ext.remote.state.loop = "team";
+        }
         const panel = document.getElementById("tsb-panel");
         if (panel && !panel.classList.contains("tsb-folded")) {
           panel.classList.add("tsb-folded");
           const btn = panel.querySelector(".tsb-fold");
           if (btn) btn.textContent = "+";
         }
-        if (ext?.settings) ext.settings.folded = true;
         const s = ext?.remote?.snapshot?.() || {};
         const info = ext?.remote?.state?.info;
         const d = window.dictionary;
@@ -516,9 +515,29 @@ setInterval(async () => {
         if (g && g[d.gIsSingleplayer] && g[d.gameState] === 1 && g[d.sbLeave]) {
           g[d.sbLeave](true);
         }
+        let room0Players = 0;
+        const lob = ext?.remote?.lobby;
+        const mgr = lob?.mgr || (d && d.lobbyManager && window[d.lobbyManager]);
+        if (mgr) {
+          for (const v of Object.values(mgr)) {
+            if (v && typeof v === "object") {
+              if (d?.lobbyPlayers && Array.isArray(v[d.lobbyPlayers])) {
+                room0Players = (v[d.lobbyPlayers][0] || []).length;
+                break;
+              }
+              const vals = Object.values(v);
+              const arr4 = vals.find((x) => Array.isArray(x) && x.length === 4 && Array.isArray(x[0]));
+              if (arr4) {
+                room0Players = (arr4[0] || []).length;
+                break;
+              }
+            }
+          }
+        }
         const teams = d && window[d.sbTeamHolder]?.[d.sbTeams];
         const me = g && g[d.playerId];
         s.ok = true;
+        s.room0Players = room0Players;
         s.spawnPhase = !!info?.spawnPhase;
         s.tick = info?.tick || 0;
         s.terr = info?.territory || 0;
@@ -528,6 +547,15 @@ setInterval(async () => {
         s.players = info?.players || "-";
         s.meId = Number.isInteger(me) ? me : -1;
         s.team = teams && Number.isInteger(me) ? teams[me] : "-";
+        let roomPlayers = 0;
+        try {
+          const mgr2 = d && d.lobbyManager && window[d.lobbyManager];
+          const rooms = (mgr2 && d.lobbyRooms && mgr2[d.lobbyRooms]) || mgr2?.z?.tO || mgr2?.tO;
+          if (rooms && rooms[0] && Array.isArray(rooms[0].tP)) {
+            roomPlayers = rooms[0].tP.length;
+          }
+        } catch {}
+        s.room0Players = Math.max(room0Players, roomPlayers);
         if (s?.inGame && !s.over && s.alive) {
           const pd = d && window[d.playerData];
           const terr = pd && pd[d.playerTerritories];
@@ -539,7 +567,12 @@ setInterval(async () => {
             }
           }
           if (info?.land > 0 && teamLand >= 0.58 * info.land) {
-            document.dispatchEvent(new KeyboardEvent("keydown", { code: "KeyP", key: "p", bubbles: true, cancelable: true }));
+            const hz = d && window[d.sbCommands]?.hz;
+            if (window.ax?.iL && typeof window.ax.iM === "function" && window.ax.iM(me) && typeof hz?.iN === "function") {
+              hz.iN(1);
+            } else if (!window.ax?.iL && typeof window.ax?.iO === "function" && window.ax.iO(me) && typeof hz?.iK === "function") {
+              hz.iK();
+            }
           }
         }
         return JSON.stringify(s);
@@ -548,19 +581,35 @@ setInterval(async () => {
     })
   );
 
+  // Determine Room 0 player count and whether 10 bots (room >= 35 players) or 5 bots (< 35 players) should enter
+  const inRoom0 = states.filter((s) => s.lobby && s.lobby.inLobby && s.lobby.room === 0);
+  const chromeInRoom0 = states.filter((s, idx) => !clients[idx].isHeadless && s.lobby && s.lobby.inLobby && s.lobby.room === 0).length;
+  const maxRoom0Players = inRoom0.reduce((m, s) => Math.max(m, s.room0Players || 0), 0);
+  if (inRoom0.length === 0) {
+    wantTenForCurrentLobby = false;
+  } else if (maxRoom0Players >= 35) {
+    if (!wantTenForCurrentLobby) {
+      console.log(`[SQUAD-SYNC] Room 0 reached ${maxRoom0Players} players (>= 35)! Waking up 5 reserve Headless bots for 10-bot entry!`);
+    }
+    wantTenForCurrentLobby = true;
+  }
+
   // Send all 10 bots' stats + fallback JPEG screenshot to spectator server
   const allStats = [];
   for (let i = 0; i < clients.length; i++) {
     const c = clients[i];
     const s = states[i];
     if (s?.ok) {
+      const isStandby = c.isHeadless && !s.inGame && !(s.lobby?.inLobby) && !wantTenForCurrentLobby;
       allStats.push({
         port: c.port,
         slot: c.slot,
         name: c.name,
         meId: s.meId ?? -1,
         inGame: !!s.inGame,
+        standby: isStandby,
         lobby: s.lobby,
+        room0Players: s.room0Players || 0,
         tick: s.tick || 0,
         time: s.tick ? Math.floor(s.tick * 0.056 / 60) + ':' + String(Math.floor((s.tick * 0.056) % 60)).padStart(2, '0') : '-',
         alive: !!s.alive,
@@ -590,53 +639,77 @@ setInterval(async () => {
     } else {
       clients[idx].wasInGame = false;
     }
-    if (s.lobby?.stopped && s.lobby.stopped.includes('4591')) {
+    if (s.lobby?.stopped && (s.lobby.stopped.includes('4591') || s.lobby.stopped.includes('4577') || s.lobby.stopped.includes('4215'))) {
       clients[idx].freshToken = false;
       clients[idx].enteredLobbyAt = 0;
     }
   });
 
-  // Never reload or re-open lobby while ANY bot is in an active game (including spawnPhase or first 30s!)
-  const anyAliveInGame = states.some(
-    (s, idx) => s.inGame && !s.over && (s.alive || s.spawnPhase || s.tick < 50 || now - clients[idx].enteredGameAt < 30000)
+  // Never reload or re-open lobby while ANY bot has meaningful territory (> 80 px) or is in opening (< 30s)
+  const anyMeaningfulAlive = states.some(
+    (s, idx) =>
+      s.inGame &&
+      !s.over &&
+      (s.spawnPhase || s.tick < 60 || now - clients[idx].enteredGameAt < 30000 || (s.alive && (s.terr || 0) >= 80))
   );
-  if (anyAliveInGame) {
+  if (anyMeaningfulAlive) {
     reloadingForFreshTokens = false;
+    wantTenForCurrentLobby = false;
     return;
   }
 
-  // Allow bots to click Ready when >= 8 bots are in Team Room 0 together (or >= 6 when timer is getting low)!
-  const inRoom0 = states.filter((s) => s.lobby && s.lobby.inLobby && s.lobby.room === 0);
+  // If no bot has >= 80 territory anymore (match is effectively over for our squad), leave lingering dead/tiny games immediately!
+  for (let i = 0; i < clients.length; i++) {
+    if (states[i]?.inGame) {
+      clients[i].evalJs(`(() => {
+        const d = window.dictionary;
+        const g = d && window[d.game];
+        if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true);
+      })()`);
+    }
+  }
+
+  // Rule #5641 + #5645:
+  // - If Room 0 has < 35 players (!wantTenForCurrentLobby): 5 Chrome bots enter, ready ONLY when all 5/5 Chrome bots are in Room 0 (or >= 4 in final 8s)
+  // - If Room 0 has >= 35 players (wantTenForCurrentLobby): all 10 bots enter, ready ONLY when all 10/10 bots are in Room 0 (or >= 8 in final 8s)
   const readyCountInRoom0 = inRoom0.length;
   const minStartsIn = inRoom0.length ? Math.min(...inRoom0.map((s) => s.lobby.startsIn || 999)) : 999;
-  const allReadyInRoom0 =
-    (readyCountInRoom0 >= 8 || (readyCountInRoom0 >= 5 && minStartsIn <= 140)) &&
+  const timerSpreadOk =
+    inRoom0.length > 0 &&
     Math.max(...inRoom0.map((s) => s.lobby.startsIn || 0)) - Math.min(...inRoom0.map((s) => s.lobby.startsIn || 0)) <= 25;
 
+  const allReadyInRoom0 =
+    timerSpreadOk &&
+    (wantTenForCurrentLobby
+      ? (readyCountInRoom0 === 10 || (readyCountInRoom0 >= 8 && minStartsIn <= 8))
+      : (chromeInRoom0 === 5 || (chromeInRoom0 >= 4 && minStartsIn <= 8)));
+
   await Promise.all(
-    clients.map((c) =>
-      c.evalJs(`(() => {
+    clients.map((c) => {
+      const isStandby = c.isHeadless && !wantTenForCurrentLobby;
+      const allowReady = !isStandby && allReadyInRoom0 && !waitMode;
+      return c.evalJs(`(() => {
         window.__tsbPlayerName = ${JSON.stringify(c.name)};
         window.__tsbPlayerColor = 4095;
         window.__tsbSquadSlot = ${c.slot};
-        window.__tsbFollowLeader = ${waitMode || !allReadyInRoom0 ? JSON.stringify('npl') : JSON.stringify('')};
-        window.__tsbWaitForLeader = ${waitMode || !allReadyInRoom0 ? 'true' : 'false'};
+        window.__tsbFollowLeader = ${allowReady ? JSON.stringify('') : JSON.stringify('npl')};
+        window.__tsbWaitForLeader = ${allowReady ? 'false' : 'true'};
         const ext = window.__fx?.strategyBotExtension;
-        if (ext && ${allReadyInRoom0 ? 'true' : 'false'}) {
+        if (ext) {
           ext.settings.armed = true;
           ext.remote.state.loop = "team";
           const snap = ext.remote.snapshot?.();
-          if (snap?.lobby?.inLobby && !snap.lobby.ready && !${waitMode ? 'true' : 'false'}) {
+          if (snap?.lobby?.inLobby && !snap.lobby.ready && ${allowReady ? 'true' : 'false'}) {
             document.dispatchEvent(new KeyboardEvent("keyup", { code: "Enter", key: "Enter", bubbles: true, cancelable: true }));
+          } else if (snap?.lobby?.inLobby && snap.lobby.ready && !${allowReady ? 'true' : 'false'} && !${waitMode ? 'true' : 'false'}) {
+            document.dispatchEvent(new KeyboardEvent("keyup", { code: "Escape", key: "Escape", bubbles: true, cancelable: true }));
           }
         }
-      })()`)
-    )
+      })()`);
+    })
   );
 
-  if (readyCountInRoom0 >= 10) return;
-
-  // Reload/mint any bot that lacks a fresh token and is not already in the lobby
+  // Keep all 10 bots' Turnstile tokens fresh (including the 5 standby Headless bots so they can join instantly when room >= 35!)
   const needReload = clients.filter(
     (c, i) =>
       !c.freshToken &&
@@ -654,17 +727,22 @@ setInterval(async () => {
     setTimeout(() => { reloadingForFreshTokens = false; }, 6500);
   }
 
-  // Enter Team Room 0 for any bot that has a fresh token and is not in game or Room 0
+  // Enter Team Room 0:
+  // - Primary 5 Chrome bots (!c.isHeadless) always enter when ready
+  // - Reserve 5 Headless bots (c.isHeadless) ONLY enter when wantTenForCurrentLobby is true (Room 0 >= 35 players)!
   const readyToEnter = clients.filter(
     (c, i) =>
+      (!c.isHeadless || wantTenForCurrentLobby) &&
       !states[i]?.inGame &&
       !(states[i]?.lobby?.inLobby && states[i]?.lobby?.room === 0) &&
       c.freshToken &&
-      now - c.enteredLobbyAt > 22000
+      now - c.enteredLobbyAt > 18000
   );
   if (readyToEnter.length > 0 && !clients.some((c, i) => !c.isHeadless && !c.freshToken && !(states[i]?.lobby?.inLobby))) {
     lastSyncLaunch = now;
-    console.log(`[SQUAD-SYNC] Entering Team Room 0 for ${readyToEnter.map((c) => c.name).join(', ')} (waitForLeader=${waitMode})...`);
+    console.log(
+      `[SQUAD-SYNC] Entering Team Room 0 for ${readyToEnter.map((c) => c.name).join(', ')} (mode=${wantTenForCurrentLobby ? '10-BOT >=35p' : '5-BOT <35p'}, room0Players=${maxRoom0Players})...`
+    );
     for (let i = 0; i < readyToEnter.length; i++) {
       const c = readyToEnter[i];
       c.enteredLobbyAt = now;

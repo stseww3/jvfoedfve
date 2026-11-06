@@ -82,13 +82,12 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, get
     } else if (msg.type === 'need_token') {
       client.freshToken = false;
       client.enteredLobbyAt = 0;
-      client.mintToken();
     } else if (msg.type === 'token_imported') {
       client.freshToken = true;
       console.log(`[${name}] (Worker) Fresh Turnstile token ready & v27team (slot=${slot}) imported!`);
     } else if (msg.type === 'log') {
       console.log(`[${name}]`, msg.text);
-      if (msg.text.includes('error 4591') || msg.text.includes('error 4215')) {
+      if (msg.text.includes('error 4591') || msg.text.includes('error 4215') || msg.text.includes('error 4577')) {
         client.freshToken = false;
         client.enteredLobbyAt = 0;
       }
@@ -172,7 +171,7 @@ if (!isMainThread && workerData?.bot) {
         this.url = url;
         this.CONNECTING = 0; this.OPEN = 1; this.CLOSING = 2; this.CLOSED = 3;
         this.binaryType = 'blob';
-        const isProxied = typeof url === 'string' && (url.includes('//territorial.io') || url.includes('//1.territorial.io'));
+        const isProxied = typeof url === 'string' && !url.includes('game.territorial.io');
         this._ws = new WS(url, protocols, {
           agent: isProxied ? agent : undefined,
           headers: {
@@ -279,6 +278,8 @@ if (!isMainThread && workerData?.bot) {
         if (c && typeof c === 'object') c.parentNode = this;
         if (c && c.nodeName === 'SCRIPT' && c.src && c.src.includes('turnstile')) {
           setTimeout(() => { if (typeof c.onload === 'function') c.onload(); }, 10);
+        } else if (c && c.nodeName === 'SCRIPT' && c.textContent && typeof sandbox === 'object') {
+          try { vm.runInContext(c.textContent, sandbox); } catch {}
         }
         return c;
       },
@@ -449,6 +450,23 @@ if (!isMainThread && workerData?.bot) {
   if (typeof sandbox.onload === 'function') {
     sandbox.onload();
   }
+  if (workerData.strategySource) {
+    try {
+      vm.runInContext(
+        `(async () => {
+          const ext = window.__fx?.strategyBotExtension;
+          if (!ext) return;
+          const sid = await ext.strategies.add({ name: "v27team.js", text: async () => ${JSON.stringify(workerData.strategySource)} });
+          const targetSid = sid || "file:v27team";
+          ext.settings.strategy = targetSid;
+          ext.settings.armed = true;
+          ext.remote.state.loop = "team";
+          if (ext.strategies.changed) ext.strategies.changed(targetSid);
+        })()`,
+        sandbox
+      );
+    } catch {}
+  }
 
   // Hook bq.aF3.aFu and bi.a2Q.aWV (re-hooking bi.a2Q on every new game!)
   vm.runInContext(`(() => {
@@ -510,8 +528,11 @@ if (!isMainThread && workerData?.bot) {
             window.__tsbSquadSlot = ${slot};
             const ext = window.__fx.strategyBotExtension;
             const sid = await ext.strategies.add({ name: "v27team.js", text: async () => ${JSON.stringify(src)} });
-            ext.settings.strategy = sid || "file:v27team";
-            if (ext.strategies.changed) ext.strategies.changed(sid || "file:v27team");
+            const targetSid = sid || "file:v27team";
+            ext.settings.strategy = targetSid;
+            ext.settings.armed = true;
+            ext.remote.state.loop = "team";
+            if (ext.strategies.changed) ext.strategies.changed(targetSid);
             return "OK";
           })()`,
           sandbox

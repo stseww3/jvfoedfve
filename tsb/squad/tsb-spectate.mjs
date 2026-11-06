@@ -49,7 +49,8 @@ setInterval(async () => {
       document.getElementById('squad').innerHTML = m.squad.map(b => {
         const pct = b.land > 0 ? ((b.terr / b.land) * 100).toFixed(1) + '%' : (b.lobby?.inLobby ? '大厅' : '-');
         const cls = ['bot-pill', b.alive ? 'alive' : '', m.chosen?.port === b.port ? 'active' : ''].join(' ');
-        return \`<span class="\${cls}">\${b.name.replace('[NPL] ','')}: \${b.alive ? '#' + b.rank + ' (' + pct + ')' : (b.inGame ? '阵亡' : '大厅')}</span>\`;
+        const statusTxt = b.alive ? '#' + b.rank + ' (' + pct + ')' : (b.inGame ? '阵亡' : (b.lobby?.inLobby ? '大厅' : (b.standby ? '待机' : '大厅')));
+        return \`<span class="\${cls}">\${b.name.replace('[NPL] ','')}: \${statusTxt}</span>\`;
       }).join('');
     }
   } catch {}
