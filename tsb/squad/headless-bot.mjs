@@ -31,7 +31,7 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, get
     isHeadless: true,
     freshToken: false,
     wasInGame: false,
-    lastReloadAt: Date.now(),
+    lastReloadAt: 0,
     enteredLobbyAt: 0,
     enteredGameAt: 0,
     minting: false,
@@ -171,7 +171,11 @@ if (!isMainThread && workerData?.bot) {
         this.url = url;
         this.CONNECTING = 0; this.OPEN = 1; this.CLOSING = 2; this.CLOSED = 3;
         this.binaryType = 'blob';
-        const isProxied = typeof url === 'string' && !url.includes('game.territorial.io');
+        const isProxied =
+          typeof url === 'string' &&
+          !url.includes('4.territorial.io') &&
+          !url.includes('5.territorial.io') &&
+          !url.includes('game.territorial.io');
         this._ws = new WS(url, protocols, {
           agent: isProxied ? agent : undefined,
           headers: {
@@ -245,9 +249,7 @@ if (!isMainThread && workerData?.bot) {
       }
       return canvas.__imgData;
     },
-    putImageData(img) {
-      canvas.__imgData = { width: img.width, height: img.height, data: new Uint8ClampedArray(img.data) };
-    },
+    putImageData(img) {},
     createLinearGradient() { return { addColorStop() {} }; },
     createRadialGradient() { return { addColorStop() {} }; },
   });
@@ -344,7 +346,7 @@ if (!isMainThread && workerData?.bot) {
     for (const fn of batch) {
       try { fn(now); } catch {}
     }
-  }, 45);
+  }, 16);
 
   let turnstileCallback = null;
 

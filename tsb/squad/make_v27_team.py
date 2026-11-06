@@ -1,4 +1,4 @@
-with open("/tmp/fdvg-c58/territorial-sim/strategy/pool/v30-live.js") as f:
+with open("/tmp/fdvg-c58/territorial-sim/strategy/pool/v27-live.js") as f:
     s = f.read()
 
 # 1. Filter teammates out of analyze(g) so this.nb NEVER contains a teammate!

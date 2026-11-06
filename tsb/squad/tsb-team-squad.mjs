@@ -545,8 +545,28 @@ setInterval(async () => {
         s.bal = info?.balance || 0;
         s.rank = info?.rank || "-";
         s.players = info?.players || "-";
+        s.sent = info?.sent || 0;
+        s.accepted = info?.accepted || 0;
+        s.armed = !!ext?.settings?.armed;
+        s.strategy = ext?.settings?.strategy || "-";
+        s.err = ext?.status?.error || ext?.bots?.local?.error || info?.error || null;
         s.meId = Number.isInteger(me) ? me : -1;
         s.team = teams && Number.isInteger(me) ? teams[me] : "-";
+        // Auto-self-heal in game if unarmed or stuck at <= 16 territory after tick 30!
+        if (s?.inGame && !s.over && s.alive && ext) {
+          if (!ext.settings.armed || ext.settings.strategy !== "file:v27team") {
+            ext.settings.armed = true;
+            ext.settings.strategy = "file:v27team";
+            if (ext.strategies?.changed) ext.strategies.changed("file:v27team");
+          }
+          if (s.tick >= 30 && s.terr <= 16 && s.bal >= 256 && g && d?.sbCommands && d?.sbSendAttack) {
+            try {
+              if (ext.strategies?.changed && s.sent <= 1) ext.strategies.changed("file:v27team");
+              window[d.sbCommands]?.[d.sbSendAttack]?.(256, 512);
+              s.healedExpand = true;
+            } catch {}
+          }
+        }
         let roomPlayers = 0;
         try {
           const mgr2 = d && d.lobbyManager && window[d.lobbyManager];
@@ -618,7 +638,11 @@ setInterval(async () => {
         bal: s.bal || 0,
         rank: s.rank || '-',
         players: s.players || '-',
-        team: s.team || '-'
+        team: s.team || '-',
+        sent: s.sent || 0,
+        accepted: s.accepted || 0,
+        err: s.err || null,
+        healedExpand: !!s.healedExpand
       });
     }
   }
@@ -637,6 +661,10 @@ setInterval(async () => {
       clients[idx].wasInGame = true;
       clients[idx].enteredLobbyAt = 0;
     } else {
+      if (clients[idx].wasInGame) {
+        clients[idx].freshToken = false;
+        clients[idx].lastReloadAt = 0;
+      }
       clients[idx].wasInGame = false;
     }
     if (s.lobby?.stopped && (s.lobby.stopped.includes('4591') || s.lobby.stopped.includes('4577') || s.lobby.stopped.includes('4215'))) {
@@ -655,19 +683,44 @@ setInterval(async () => {
   if (anyMeaningfulAlive) {
     reloadingForFreshTokens = false;
     wantTenForCurrentLobby = false;
+    // Opening Watchdog:
+    // 1) Detect & auto-heal Case 1 ("delayed pass" stuck at tick===0 for >6.5s)
+    // 2) Log one-time [OPENING-CHECK] report at tick >= 180 verifying all active bots expanded!
+    const maxTickNow = Math.max(...states.map((s) => s?.tick || 0));
+    states.forEach((s, idx) => {
+      const c = clients[idx];
+      if (s?.healedExpand) {
+        console.log(`[OPENING-WATCHDOG] ${c.name} had terr=${s.terr} sent=${s.sent} at tick=${s.tick} -> auto-fired opening expansion pulse!`);
+      }
+    });
+    if (maxTickNow >= 180 && maxTickNow <= 450 && now - (globalThis.__lastOpeningCheckAt || 0) > 60000) {
+      globalThis.__lastOpeningCheckAt = now;
+      const inGameStates = allStats.filter((b) => b.inGame);
+      const summary = inGameStates
+        .map((b) => `${b.name.replace('[NPL] ', '')}:tick=${b.tick},terr=${b.terr},sent=${b.sent}${b.terr < 100 ? '(WARN:LOW_TERR!)' : '(OK)'}`)
+        .join(' | ');
+      console.log(`[OPENING-CHECK ${inGameStates.length} bots @ tick ${maxTickNow}] ${summary}`);
+    }
     return;
   }
 
-  // If no bot has >= 80 territory anymore (match is effectively over for our squad), leave lingering dead/tiny games immediately!
+  // If no bot has >= 80 territory anymore (match is effectively over for our squad), leave lingering dead/tiny games to main menu!
+  let leftAnyGame = false;
   for (let i = 0; i < clients.length; i++) {
     if (states[i]?.inGame) {
+      leftAnyGame = true;
+      clients[i].wasInGame = false;
+      clients[i].freshToken = false;
+      clients[i].lastReloadAt = 0;
       clients[i].evalJs(`(() => {
+        window.__tsbSquadSyncHold = true;
         const d = window.dictionary;
         const g = d && window[d.game];
-        if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true);
+        if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](false);
       })()`);
     }
   }
+  if (leftAnyGame) return;
 
   // Rule #5641 + #5645:
   // - If Room 0 has < 35 players (!wantTenForCurrentLobby): 5 Chrome bots enter, ready ONLY when all 5/5 Chrome bots are in Room 0 (or >= 4 in final 8s)
@@ -728,8 +781,7 @@ setInterval(async () => {
   }
 
   // Enter Team Room 0:
-  // - Primary 5 Chrome bots (!c.isHeadless) always enter when ready
-  // - Reserve 5 Headless bots (c.isHeadless) ONLY enter when wantTenForCurrentLobby is true (Room 0 >= 35 players)!
+  // - Require ALL 10 bots (5 Chrome + 5 Headless) to have fresh tokens ready before entering Room 0 so when Room 0 >= 35 players, the 5 Headless bots join in <1s without waiting for token minting!
   const readyToEnter = clients.filter(
     (c, i) =>
       (!c.isHeadless || wantTenForCurrentLobby) &&
@@ -738,7 +790,7 @@ setInterval(async () => {
       c.freshToken &&
       now - c.enteredLobbyAt > 18000
   );
-  if (readyToEnter.length > 0 && !clients.some((c, i) => !c.isHeadless && !c.freshToken && !(states[i]?.lobby?.inLobby))) {
+  if (readyToEnter.length > 0 && !clients.some((c, i) => !c.freshToken && !(states[i]?.lobby?.inLobby))) {
     lastSyncLaunch = now;
     console.log(
       `[SQUAD-SYNC] Entering Team Room 0 for ${readyToEnter.map((c) => c.name).join(', ')} (mode=${wantTenForCurrentLobby ? '10-BOT >=35p' : '5-BOT <35p'}, room0Players=${maxRoom0Players})...`
