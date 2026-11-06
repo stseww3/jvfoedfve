@@ -5,11 +5,11 @@ const pageJsSource = fs.readFileSync('/tmp/tsb-team-ext/page.js', 'utf8');
 const getV27TeamSource = () => fs.readFileSync('/tmp/v27-team-live.js', 'utf8');
 
 const BOTS = [
-  { port: 9223, name: 'Mishi', slot: 0, id: 'mTd7B', pw: 'vivELD0lOKgghLr' },
-  { port: 9224, name: 'Matzz', slot: 1, id: 'vgLjn', pw: 'Cl2xSE00tjOjVBq' },
-  { port: 9225, name: 'Kiholma', slot: 2, id: 'NJmJY', pw: 'zmUT69zzi_Rk80I' },
-  { port: 9226, name: 'Leo_99', slot: 3, id: 'byk85', pw: 'iLFHoRHz4rHvEt0' },
-  { port: 9227, name: 'Racoon', slot: 4, id: '5nvnY', pw: 'DzMzg9vRC1Qnj3z' },
+  { port: 9223, name: '[NPL] Mishi', slot: 0, id: 'mTd7B', pw: 'vivELD0lOKgghLr' },
+  { port: 9224, name: '[NPL] Matzz', slot: 1, id: 'vgLjn', pw: 'Cl2xSE00tjOjVBq' },
+  { port: 9225, name: '[NPL] Kiholma', slot: 2, id: 'NJmJY', pw: 'zmUT69zzi_Rk80I' },
+  { port: 9226, name: '[NPL] Leo_99', slot: 3, id: 'byk85', pw: 'iLFHoRHz4rHvEt0' },
+  { port: 9227, name: '[NPL] Racoon', slot: 4, id: '5nvnY', pw: 'DzMzg9vRC1Qnj3z' },
 ];
 
 const isWaitNplMode = () => fs.existsSync('/tmp/tsb-wait-npl.flag');
@@ -195,8 +195,14 @@ async function attachBot(bot) {
         window.__tsbSquadSlot = ${slot};
         const ext = window.__fx.strategyBotExtension;
         await ext.strategies.add({ name: "v27team.js", text: async () => ${JSON.stringify(src)} });
-        ext.settings.armed = false;
-        ext.remote.state.loop = null;
+        const snap = ext.remote?.snapshot?.();
+        if (snap?.inGame) {
+          ext.settings.armed = true;
+          ext.remote.state.loop = "team";
+        } else {
+          ext.settings.armed = false;
+          ext.remote.state.loop = null;
+        }
         return "OK";
       })()`,
       true
@@ -211,6 +217,43 @@ async function attachBot(bot) {
     send('Runtime.addBinding', { name: '__tsbReportResult' });
     const bootstrap = makeBootstrapScript(bot);
     send('Page.addScriptToEvaluateOnNewDocument', { source: bootstrap });
+    const alreadyPatched = await evalJs(`(() => {
+      if (!window.dictionary || !window.__fx?.strategyBotExtension) return "NO";
+      const ext = window.__fx.strategyBotExtension;
+      if (ext.status.phase === "failed") {
+        ext.status.phase = "patched";
+        ext.status.error = null;
+      }
+      if (!window.__tsbResultHooked) {
+        window.__tsbResultHooked = true;
+        document.addEventListener("tsb-remote", (e) => {
+          try {
+            const c = JSON.parse(e.detail);
+            if (c.kind === "post" && window.__tsbReportResult) window.__tsbReportResult(c.body);
+          } catch {}
+        });
+      }
+      localStorage.setItem("d122", ${JSON.stringify(name)});
+      localStorage.setItem("v122", "0");
+      localStorage.setItem("d121", "4095");
+      localStorage.setItem("v121", "0");
+      window.__tsbPlayerName = ${JSON.stringify(name)};
+      window.__tsbPlayerColor = 4095;
+      window.__tsbSquadSlot = ${slot};
+      return "YES";
+    })()`);
+    if (alreadyPatched === 'YES') {
+      await importStrategy();
+      await evalJs(`(() => {
+        const ext = window.__fx?.strategyBotExtension;
+        if (ext) {
+          ext.settings.armed = true;
+          ext.remote.state.loop = "team";
+        }
+      })()`);
+      console.log(`[${name}] Hot-attached without Page.reload (existing Turnstile session preserved)!`);
+      return;
+    }
     client.lastReloadAt = Date.now();
     client.freshToken = false;
     client.enteredLobbyAt = 0;
@@ -284,7 +327,34 @@ setInterval(async () => {
   const states = await Promise.all(
     clients.map(async (c) => {
       const raw = await c.evalJs(`(() => {
-        const s = window.__fx?.strategyBotExtension?.remote?.snapshot?.();
+        window.__tsbPlayerName = ${JSON.stringify(c.name)};
+        window.__tsbPlayerColor = 4095;
+        window.__tsbSquadSlot = ${c.slot};
+        const ext = window.__fx?.strategyBotExtension;
+        if (ext && ext.status.phase === "failed" && window.dictionary) {
+          ext.status.phase = "patched";
+          ext.status.error = null;
+        }
+        const s = ext?.remote?.snapshot?.();
+        if (s?.inGame && !s.over && s.alive) {
+          const info = ext?.remote?.state?.info;
+          const d = window.dictionary;
+          const g = d && window[d.game];
+          const pd = d && window[d.playerData];
+          const terr = pd && pd[d.playerTerritories];
+          const teams = d && window[d.sbTeamHolder]?.[d.sbTeams];
+          const me = g && g[d.playerId];
+          let teamLand = info?.territory || 0;
+          if (teams && terr && Number.isInteger(me) && teams[me] > 0) {
+            teamLand = 0;
+            for (let i = 0; i < 512; i++) {
+              if (terr[i] > 0 && teams[i] === teams[me]) teamLand += terr[i];
+            }
+          }
+          if (info?.land > 0 && teamLand >= 0.58 * info.land) {
+            document.dispatchEvent(new KeyboardEvent("keydown", { code: "KeyP", key: "p", bubbles: true, cancelable: true }));
+          }
+        }
         return JSON.stringify(s || {});
       })()`);
       try { return JSON.parse(raw || '{}'); } catch { return {}; }
