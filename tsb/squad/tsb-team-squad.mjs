@@ -35,18 +35,16 @@ function makeBootstrapScript(bot) {
   localStorage.setItem("v106", "0");
   localStorage.setItem("d140", "1");
   localStorage.setItem("v140", "0");
+  localStorage.setItem("d121", "4095");
+  localStorage.setItem("v121", "0");
+  localStorage.setItem("d122", ${JSON.stringify(bot.name)});
+  localStorage.setItem("v122", "0");
+  localStorage.setItem("d158", "0");
+  localStorage.setItem("v158", "0");
 }
 if (!window.__tsbPageInjected) {
   window.__tsbPageInjected = true;
-  const OrigWS = window.WebSocket;
-  window.WebSocket = function(url, protocols) {
-    if (typeof url === "string") {
-      url = url.replace("://4.territorial.io/", "://1.territorial.io/").replace("://5.territorial.io/", "://1.territorial.io/");
-    }
-    return protocols !== undefined ? new OrigWS(url, protocols) : new OrigWS(url);
-  };
-  window.WebSocket.prototype = OrigWS.prototype;
-  Object.assign(window.WebSocket, OrigWS);
+
 
   window.__tsbPlayerName = ${JSON.stringify(bot.name)};
   window.__tsbPlayerColor = 4095;
@@ -298,7 +296,6 @@ setInterval(async () => {
     if (s.inGame) {
       if (!clients[idx].wasInGame) clients[idx].enteredGameAt = now;
       clients[idx].wasInGame = true;
-      clients[idx].freshToken = false;
       clients[idx].enteredLobbyAt = 0;
     }
     if (s.lobby?.stopped && s.lobby.stopped.includes('4591')) {
@@ -309,7 +306,7 @@ setInterval(async () => {
 
   // Never reload while ANY bot is in an active game (including the first 15s spawnPhase when s.alive is still false!)
   const anyAliveInGame = states.some(
-    (s, idx) => s.inGame && !s.over && (s.alive || now - clients[idx].enteredGameAt < 20000)
+    (s, idx) => s.inGame && !s.over && (s.alive || s.spawnPhase || now - clients[idx].enteredGameAt < 25000)
   );
   if (anyAliveInGame) {
     reloadingForFreshTokens = false;

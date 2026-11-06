@@ -18,15 +18,11 @@ async def pipe(reader, writer):
         except Exception:
             pass
 
-def should_use_tun(host, dev):
-    if not dev:
-        return False
+def should_use_tun(host):
     h = host.lower()
-    # Only the lobby servers (1/4/5.territorial.io) need IP splitting (3 on Host + 2 on tun5)!
-    # game.territorial.io (in-game ticks) and territorial.io (HTML/Server 0) run on 10Gbps direct Host!
     return h in ("1.territorial.io", "4.territorial.io", "5.territorial.io", "api.ipify.org")
 
-async def handle_client(reader, writer, dev):
+async def handle_client(reader, writer, devs):
     try:
         hdr = await asyncio.wait_for(reader.readexactly(2), timeout=5)
         ver, nmethods = hdr[0], hdr[1]
@@ -65,26 +61,29 @@ async def handle_client(reader, writer, dev):
             return
         target_addr = infos[0][4]
 
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.setblocking(False)
-        if should_use_tun(host, dev):
-            try:
-                sock.setsockopt(socket.SOL_SOCKET, SO_BINDTODEVICE, dev.encode("utf-8") + b"\x00")
-            except Exception:
-                pass
+        connected_sock = None
+        if should_use_tun(host):
+            for dev in devs:
+                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                sock.setblocking(False)
+                try:
+                    sock.setsockopt(socket.SOL_SOCKET, SO_BINDTODEVICE, dev.encode("utf-8") + b"\x00")
+                    await asyncio.wait_for(loop.sock_connect(sock, target_addr), timeout=2.2)
+                    connected_sock = sock
+                    break
+                except Exception:
+                    try:
+                        sock.close()
+                    except Exception:
+                        pass
 
-        try:
-            await asyncio.wait_for(loop.sock_connect(sock, target_addr), timeout=4)
-        except Exception:
-            try:
-                sock.close()
-            except Exception:
-                pass
+        if connected_sock is None:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.setblocking(False)
             await asyncio.wait_for(loop.sock_connect(sock, target_addr), timeout=4)
+            connected_sock = sock
 
-        rem_reader, rem_writer = await asyncio.open_connection(sock=sock)
+        rem_reader, rem_writer = await asyncio.open_connection(sock=connected_sock)
         writer.write(b"\x05\x00\x00\x01\x00\x00\x00\x00\x00\x00")
         await writer.drain()
         await asyncio.gather(pipe(reader, rem_writer), pipe(rem_reader, writer))
@@ -95,14 +94,19 @@ async def handle_client(reader, writer, dev):
             pass
 
 async def main():
-    # 3 bots (10801, 10803, 10804) use direct Host IP ("" = no tunnel wait!);
-    # 2 bots (10802, 10805) use live tun5 for lobby!
-    mappings = [(10801, ""), (10802, "tun5"), (10803, ""), (10804, ""), (10805, "tun5")]
+    # Each bot gets its own dedicated primary + backup JP VPNGate tunnel from our 10 active tunnels!
+    mappings = [
+        (10801, ["tun10", "tun22"]),
+        (10802, ["tun13", "tun23"]),
+        (10803, ["tun21", "tun25"]),
+        (10804, ["tun30", "tun23", "tun25"]),
+        (10805, ["tun22", "tun23", "tun25"]),
+    ]
     servers = []
-    for port, dev in mappings:
-        srv = await asyncio.start_server(lambda r, w, d=dev: handle_client(r, w, d), "127.0.0.1", port)
+    for port, devs in mappings:
+        srv = await asyncio.start_server(lambda r, w, ds=devs: handle_client(r, w, ds), "127.0.0.1", port)
         servers.append(srv)
-        print(f"SOCKS5 listening on 127.0.0.1:{port} -> {dev or 'DIRECT_HOST'}", flush=True)
+        print(f"Dual-Tunnel SOCKS5 listening on 127.0.0.1:{port} -> {devs}", flush=True)
     await asyncio.gather(*(s.serve_forever() for s in servers))
 
 asyncio.run(main())
