@@ -6,10 +6,13 @@ const require = createRequire('/tmp/node_modules/ws/package.json');
 const { WebSocketServer } = require('ws');
 
 const rawGameJs = fs.readFileSync('/tmp/live_game_js.js', 'utf8');
-// Patch hostname check & disable auto-connecting to territorial.io/s52 in spectator client
+// Patch hostname check, disable Turnstile & external WebSockets, and add 2-packet jitter buffer in aeA() for buttery-smooth 56ms ticks!
 const spectatorGameJs = rawGameJs
   .replace('this.hostname=window.location.hostname.toLowerCase()', 'this.hostname="territorial.io"')
-  .replace('new WebSocket("wss://territorial.io/s52/")', '({onopen:null,onclose:null,send(){},close(){}})');
+  .replace('https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit', '')
+  .replace('b=new WebSocket(mF);', 'b={readyState:3,send(){},close(){}};return;')
+  .replace('b=new WebSocket("wss://territorial.io/s52/");', 'b={readyState:3,send(){},close(){}};return;')
+  .replace('if(this.ae7.length>0){for(aC=this.ae8-2', 'if(this.ae7.length>2){for(aC=this.ae8-2');
 
 let currentMatch = null; // { key, tN, aFq, aFr, packets: [base64...] }
 let latestStats = [];
@@ -27,199 +30,8 @@ function broadcastToViewers(obj) {
   }
 }
 
-const CHROME_BOTS = [
-  { port: 9223, name: '[NPL] Mishi', slot: 0 },
-  { port: 9224, name: '[NPL] Matzz', slot: 1 },
-  { port: 9225, name: '[NPL] Kiholma', slot: 2 },
-  { port: 9226, name: '[NPL] Leo_99', slot: 3 },
-  { port: 9227, name: '[NPL] Racoon', slot: 4 },
-];
-
-let headlessStats = [];
-
-function getJson(url) {
-  return new Promise((resolve, reject) => {
-    const req = http.get(url, (res) => {
-      let data = '';
-      res.on('data', (c) => data += c);
-      res.on('end', () => {
-        try { resolve(JSON.parse(data)); } catch (e) { reject(e); }
-      });
-    });
-    req.on('error', reject);
-    req.setTimeout(1200, () => { req.destroy(); reject(new Error('timeout')); });
-  });
-}
-
-const conns = new Map();
-
-async function ensureConn(bot) {
-  const cur = conns.get(bot.port);
-  if (cur && cur.ws && cur.ws.readyState === 1) return cur;
-  try {
-    const pages = await getJson(`http://127.0.0.1:${bot.port}/json`);
-    const page = pages.find((p) => p.type === 'page' && p.url.includes('territorial.io'));
-    if (!page) return null;
-    const ws = new WebSocket(page.webSocketDebuggerUrl);
-    let seq = 0;
-    const pending = new Map();
-    await new Promise((res, rej) => {
-      const t = setTimeout(() => rej(new Error('timeout')), 1200);
-      ws.onopen = () => { clearTimeout(t); res(); };
-      ws.onerror = (e) => { clearTimeout(t); rej(e); };
-    });
-    ws.onmessage = (ev) => {
-      try {
-        const msg = JSON.parse(ev.data);
-        if (msg.id && pending.has(msg.id)) {
-          const fn = pending.get(msg.id);
-          pending.delete(msg.id);
-          fn(msg.result);
-        }
-      } catch {}
-    };
-    const call = (method, params = {}) =>
-      new Promise((resolve) => {
-        if (ws.readyState !== 1) return resolve(null);
-        const id = ++seq;
-        const timer = setTimeout(() => {
-          pending.delete(id);
-          resolve(null);
-        }, 1200);
-        pending.set(id, (res) => {
-          clearTimeout(timer);
-          resolve(res);
-        });
-        ws.send(JSON.stringify({ id, method, params }));
-      });
-    const obj = { bot, ws, call };
-    conns.set(bot.port, obj);
-    return obj;
-  } catch {
-    return null;
-  }
-}
-
-setInterval(async () => {
-  const chromeStats = [];
-  for (const bot of CHROME_BOTS) {
-    const c = await ensureConn(bot);
-    if (!c) continue;
-    const st = await c.call('Runtime.evaluate', {
-      expression: `(() => {
-        const panel = document.getElementById("tsb-panel");
-        if (panel && !panel.classList.contains("tsb-folded")) {
-          panel.classList.add("tsb-folded");
-        }
-        const ext = window.__fx?.strategyBotExtension;
-        if (ext?.settings) ext.settings.folded = true;
-        // Also hook bq.aF3.aFu & bi.a2Q.aWV on Chrome so we capture packets even if only Chrome bots are in a game!
-        if (typeof bq === "object" && bq?.aF3?.aFu && !bq.aF3.__specHooked) {
-          bq.aF3.__specHooked = true;
-          const origAfu = bq.aF3.aFu.bind(bq.aF3);
-          bq.aF3.aFu = function(tN, aFq, aFr) {
-            origAfu(tN, aFq, aFr);
-            window.__specMatch = {
-              key: tN.fF + "_" + tN.mapSeed + "_" + tN.spawningSeed,
-              tN: { spawningSeed: tN.spawningSeed, aFp: tN.aFp, aFv: tN.aFv, fF: tN.fF, mapSeed: tN.mapSeed },
-              aFq: Array.from(aFq, p => ({ color: p.color, username: p.username, uY: p.uY, elo: p.elo || 0 })),
-              aFr,
-              pkts: []
-            };
-            if (bi?.a2Q?.aWV && !bi.a2Q.__specHooked) {
-              bi.a2Q.__specHooked = true;
-              const origAwv = bi.a2Q.aWV.bind(bi.a2Q);
-              bi.a2Q.aWV = function(aD) {
-                if (window.__specMatch && aD) {
-                  let bin = "";
-                  const u8 = new Uint8Array(aD);
-                  for (let i = 0; i < u8.length; i++) bin += String.fromCharCode(u8[i]);
-                  window.__specMatch.pkts.push(btoa(bin));
-                }
-                return origAwv(aD);
-              };
-            }
-          };
-        }
-        const info = ext?.remote?.state?.info;
-        const s = ext?.remote?.snapshot?.();
-        const d = window.dictionary;
-        const g = d && window[d.game];
-        const teams = d && window[d.sbTeamHolder]?.[d.sbTeams];
-        const me = g && g[d.playerId];
-        let specDelta = null;
-        if (window.__specMatch) {
-          const sentIdx = window.__specSentIdx || 0;
-          if (window.__specSentKey !== window.__specMatch.key) {
-            window.__specSentKey = window.__specMatch.key;
-            window.__specSentIdx = window.__specMatch.pkts.length;
-            specDelta = { init: true, ...window.__specMatch };
-          } else if (window.__specMatch.pkts.length > sentIdx) {
-            specDelta = {
-              init: false,
-              key: window.__specMatch.key,
-              newPkts: window.__specMatch.pkts.slice(sentIdx)
-            };
-            window.__specSentIdx = window.__specMatch.pkts.length;
-          }
-        }
-        return JSON.stringify({
-          port: ${bot.port},
-          slot: ${bot.slot},
-          name: ${JSON.stringify(bot.name)},
-          meId: Number.isInteger(me) ? me : -1,
-          inGame: !!s?.inGame,
-          lobby: s?.lobby,
-          tick: info?.tick || 0,
-          time: info?.tick ? Math.floor(info.tick * 0.056 / 60) + ":" + String(Math.floor((info.tick * 0.056) % 60)).padStart(2, "0") : "-",
-          alive: !!info?.alive,
-          terr: info?.territory || 0,
-          land: info?.land || 0,
-          bal: info?.balance || 0,
-          rank: info?.rank || "-",
-          players: info?.players || "-",
-          team: teams && Number.isInteger(me) ? teams[me] : "-",
-          specDelta: ${bot.port === 9223 ? 'specDelta' : 'null'}
-        });
-      })()`,
-      returnByValue: true,
-    });
-    if (st?.result?.value) {
-      try {
-        const parsed = JSON.parse(st.result.value);
-        if (parsed.specDelta) {
-          const sd = parsed.specDelta;
-          delete parsed.specDelta;
-          if (sd.init) {
-            if (!currentMatch || currentMatch.key !== sd.key) {
-              currentMatch = { key: sd.key, tN: sd.tN, aFq: sd.aFq, aFr: sd.aFr, packets: sd.pkts || [] };
-              broadcastToViewers({ type: 'init', ...currentMatch });
-            }
-          } else if (currentMatch && currentMatch.key === sd.key && sd.newPkts?.length) {
-            currentMatch.packets.push(...sd.newPkts);
-            broadcastToViewers({ type: 'pkts', key: sd.key, pkts: sd.newPkts });
-          }
-        }
-        chromeStats.push(parsed);
-      } catch {}
-    }
-  }
-
-  latestStats = [...chromeStats, ...headlessStats].sort((a, b) => (a.slot ?? 0) - (b.slot ?? 0));
-  broadcastToViewers({ type: 'stats', squad: latestStats });
-
-  if (chromeStats.length) {
-    const chosen = chromeStats.slice().sort((a, b) => (b.alive - a.alive) || (b.inGame - a.inGame) || (b.terr - a.terr))[0] || chromeStats[0];
-    latestChosen = chosen;
-    const c = conns.get(chosen.port);
-    if (c) {
-      const shot = await c.call('Page.captureScreenshot', { format: 'jpeg', quality: 75 });
-      if (shot?.data) {
-        latestJpeg = Buffer.from(shot.data, 'base64');
-      }
-    }
-  }
-}, 500);
+// All stats, screenshots, and real-time game packets are pushed to /ingest by tsb-team-squad.mjs
+// so tsb-spectate NEVER opens a competing CDP WebSocket to 9223..9227!
 
 const HTML = `<!doctype html>
 <html lang="zh">
@@ -277,6 +89,7 @@ const HTML = `<!doctype html>
 
 <script>
 window.dictionary = {};
+window.turnstile = { render() { return "spec"; }, remove() {}, reset() {} };
 window.__fx = {
   strategyBot: new Proxy({}, {
     get(t, k) {
@@ -348,9 +161,26 @@ async function startSpectatorMatch(msg) {
     }
     bq.aF3.aFu(msg.tN, msg.aFq, nplIdx);
     engineBooted = true;
+    if (viewMode === 'engine') {
+      document.getElementById('fallbackView').style.display = 'none';
+    }
     const pkts = msg.packets || [];
+    const origRender = (typeof be === 'object' && be && be.render) ? be.render.bind(be) : null;
+    if (origRender && pkts.length > 2) {
+      be.render = function() {};
+    }
     for (let i = 0; i < pkts.length; i++) {
       bi.a2Q.aWV(b64ToUint8(pkts[i]));
+    }
+    // Fast-forward all queued main-game packets right to the live edge!
+    if (bi.a2Q && Array.isArray(bi.a2Q.ae7)) {
+      while (bi.a2Q.ae7.length > 1) {
+        bi.a2Q.aeA();
+      }
+    }
+    if (origRender) {
+      be.render = origRender;
+      be.render();
     }
     // Zoom out to show full map initially
     setTimeout(() => {
@@ -414,7 +244,14 @@ setInterval(() => {
 }, 900);
 
 window.addEventListener('load', () => {
-  setTimeout(connectWS, 300);
+  // Hide main menu DOM elements immediately so spectator never sees the raw game menu
+  setTimeout(() => {
+    try { if (typeof u === 'object' && u && u.y) u.y(); } catch {}
+    if (!engineBooted) {
+      document.getElementById('fallbackView').style.display = 'flex';
+    }
+  }, 150);
+  setTimeout(connectWS, 200);
 });
 </script>
 </body>
@@ -438,17 +275,25 @@ const server = http.createServer((req, res) => {
     req.on('end', () => {
       try {
         const msg = JSON.parse(body);
-        if (msg.type === 'headless_stats') {
-          headlessStats = msg.stats || [];
+        if (msg.type === 'all_stats') {
+          latestStats = msg.stats || [];
+          latestChosen = msg.chosen || latestStats[0] || null;
+          if (msg.jpeg) latestJpeg = Buffer.from(msg.jpeg, 'base64');
+          broadcastToViewers({ type: 'stats', squad: latestStats });
         } else if (msg.type === 'init') {
           if (!currentMatch || currentMatch.key !== msg.key) {
-            currentMatch = { key: msg.key, tN: msg.tN, aFq: msg.aFq, aFr: msg.aFr, packets: [] };
+            currentMatch = { key: msg.key, tN: msg.tN, aFq: msg.aFq, aFr: msg.aFr, packets: msg.pkts || [] };
             broadcastToViewers({ type: 'init', ...currentMatch });
           }
         } else if (msg.type === 'pkt') {
-          if (currentMatch && currentMatch.key === msg.key && msg.b64) {
-            currentMatch.packets.push(msg.b64);
-            broadcastToViewers({ type: 'pkts', key: msg.key, pkts: [msg.b64] });
+          if (currentMatch && currentMatch.key === msg.key) {
+            if (msg.b64) {
+              currentMatch.packets.push(msg.b64);
+              broadcastToViewers({ type: 'pkts', key: msg.key, pkts: [msg.b64] });
+            } else if (Array.isArray(msg.pkts) && msg.pkts.length) {
+              currentMatch.packets.push(...msg.pkts);
+              broadcastToViewers({ type: 'pkts', key: msg.key, pkts: msg.pkts });
+            }
           }
         }
       } catch {}

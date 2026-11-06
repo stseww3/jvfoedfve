@@ -3,179 +3,24 @@ import vm from 'node:vm';
 import net from 'node:net';
 import tls from 'node:tls';
 import https from 'node:https';
-import http from 'node:http';
+import { Worker, isMainThread, parentPort, workerData } from 'node:worker_threads';
 import { createRequire } from 'node:module';
 
 const require = createRequire('/tmp/node_modules/ws/package.json');
 const WS = require('ws');
 
-const gameJsSource = fs.readFileSync('/tmp/live_game_js.js', 'utf8');
-const pageJsSource = fs.readFileSync('/tmp/tsb-team-ext/page.js', 'utf8');
-const dictSource = fs.readFileSync('/tmp/live_dictionary.json', 'utf8');
-
-function makeSocksAgent(socksPort) {
-  const agent = new https.Agent({ keepAlive: false });
-  agent.createConnection = (opts, cb) => {
-    const host = opts.host || opts.hostname;
-    const port = Number(opts.port) || 443;
-    const sock = net.connect(socksPort, '127.0.0.1');
-    let stage = 0;
-    let buf = Buffer.alloc(0);
-    sock.on('error', (err) => cb(err));
-    sock.on('connect', () => sock.write(Buffer.from([0x05, 0x01, 0x00])));
-    sock.on('data', (chunk) => {
-      buf = Buffer.concat([buf, chunk]);
-      if (stage === 0 && buf.length >= 2) {
-        buf = buf.subarray(2);
-        stage = 1;
-        const hb = Buffer.from(host, 'utf8');
-        const req = Buffer.alloc(4 + 1 + hb.length + 2);
-        req[0] = 0x05; req[1] = 0x01; req[2] = 0x00; req[3] = 0x03;
-        req[4] = hb.length;
-        hb.copy(req, 5);
-        req.writeUInt16BE(port, 5 + hb.length);
-        sock.write(req);
-      }
-      if (stage === 1 && buf.length >= 10) {
-        if (buf[1] !== 0x00) {
-          sock.destroy();
-          return cb(new Error('SOCKS5 connect failed: ' + buf[1]));
-        }
-        sock.removeAllListeners('data');
-        sock.removeAllListeners('error');
-        const tlsSock = tls.connect({
-          socket: sock,
-          servername: opts.servername || host,
-          rejectUnauthorized: false,
-        });
-        cb(null, tlsSock);
-      }
-    });
-  };
-  return agent;
-}
-
-function makeProxiedWebSocketClass(socksPort) {
-  const agent = makeSocksAgent(socksPort);
-  return class ProxiedWebSocket {
-    static CONNECTING = 0; static OPEN = 1; static CLOSING = 2; static CLOSED = 3;
-    constructor(url, protocols) {
-      this.url = url;
-      this.CONNECTING = 0; this.OPEN = 1; this.CLOSING = 2; this.CLOSED = 3;
-      this.binaryType = 'blob';
-      const isProxied = typeof url === 'string' && !url.includes('game.territorial.io');
-      this._ws = new WS(url, protocols, {
-        agent: isProxied ? agent : undefined,
-        headers: {
-          'Origin': 'https://territorial.io',
-          'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36'
-        }
-      });
-      this._ws.on('open', () => { if (typeof this.onopen === 'function') this.onopen({ target: this }); });
-      this._ws.on('message', (data, isBinary) => {
-        if (typeof this.onmessage === 'function') {
-          if (this.binaryType === 'arraybuffer' || isBinary) {
-            const b = Buffer.from(data);
-            this.onmessage({ data: b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength), target: this });
-          } else {
-            this.onmessage({ data: data.toString(), target: this });
-          }
-        }
-      });
-      this._ws.on('close', (code, reason) => {
-        if (typeof this.onclose === 'function') this.onclose({ code, reason: reason?.toString() || '', target: this });
-      });
-      this._ws.on('error', (err) => { if (typeof this.onerror === 'function') this.onerror(err); });
-    }
-    get readyState() { return this._ws.readyState; }
-    send(data) { if (this._ws.readyState === 1) this._ws.send(data); }
-    close(code) { try { this._ws.close(code); } catch {} }
-  };
-}
-
-export async function mintTurnstileOnChrome(chromePort) {
-  const pages = await new Promise((res, rej) => {
-    const req = http.get(`http://127.0.0.1:${chromePort}/json`, (r) => {
-      let d = ''; r.on('data', (c) => d += c); r.on('end', () => res(JSON.parse(d)));
-    });
-    req.on('error', rej);
-    req.setTimeout(2000, () => { req.destroy(); rej(new Error('timeout')); });
+// ============================================================================
+// MAIN THREAD API: spawns a dedicated Worker thread for each Headless Bot
+// so BFS / Voronoi calculations NEVER block the main thread or packet stream!
+// ============================================================================
+export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, getStrategySource, mintTurnstileToken }) {
+  const { port, socksPort, donorChromePort, name, slot } = bot;
+  const worker = new Worker(new URL(import.meta.url), {
+    workerData: { bot, strategySource: getStrategySource() }
   });
-  const page = pages.find((p) => p.type === 'page' && p.url.includes('territorial.io'));
-  if (!page) throw new Error(`No page on ${chromePort}`);
-  const ws = new WebSocket(page.webSocketDebuggerUrl);
+
   let seq = 0;
-  const send = (method, params = {}) => ws.send(JSON.stringify({ id: ++seq, method, params }));
-  return new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => { try { ws.close(); } catch {} reject(new Error('mint timeout')); }, 13000);
-    ws.onopen = async () => {
-      send('Page.bringToFront');
-      send('Emulation.setFocusEmulationEnabled', { enabled: true });
-      send('Runtime.evaluate', {
-        expression: `(() => {
-          window.__mintedToken = null;
-          const old = document.getElementById("mint-ts");
-          if (old) old.remove();
-          const d = document.createElement("div");
-          d.id = "mint-ts";
-          d.style.position = "fixed";
-          d.style.left = "0";
-          d.style.top = "0";
-          d.style.zIndex = "100";
-          document.body.appendChild(d);
-          const wid = window.turnstile.render(d, {
-            sitekey: "0x4AAAAAAEI8HZoG8nJMzxt1",
-            action: "enter_lobby",
-            appearance: "interaction-only",
-            callback: (tok) => {
-              window.__mintedToken = tok;
-              try { window.turnstile.remove(wid); d.remove(); } catch {}
-            }
-          });
-          return "RENDERED";
-        })()`
-      });
-      for (let i = 0; i < 11; i++) {
-        await new Promise((r) => setTimeout(r, 850));
-        if (ws.readyState !== 1) break;
-        send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 180, y: 180 });
-        send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 28, y: 32 });
-        send('Input.dispatchMouseEvent', { type: 'mousePressed', x: 28, y: 32, button: 'left', clickCount: 1 });
-        send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: 28, y: 32, button: 'left', clickCount: 1 });
-        send('Runtime.evaluate', { expression: 'window.__mintedToken || ""', returnByValue: true });
-      }
-    };
-    ws.onmessage = (ev) => {
-      try {
-        const m = JSON.parse(ev.data);
-        const val = m.result?.result?.value;
-        if (val && typeof val === 'string' && val.length > 100 && val !== 'RENDERED') {
-          clearTimeout(timeout);
-          ws.close();
-          resolve(val);
-        }
-      } catch {}
-    };
-  });
-}
-
-function findAll(root, pred, out = []) {
-  for (const c of root.children || []) {
-    if (pred(c)) out.push(c);
-    findAll(c, pred, out);
-  }
-  return out;
-}
-
-function matchSel(el, sel) {
-  if (!el || !el.tagName) return false;
-  if (sel === '.captcha-actions button') return el.tagName === 'BUTTON';
-  if (sel.startsWith('.')) return String(el.className || '').split(/\s+/).includes(sel.slice(1));
-  return el.tagName === sel.toUpperCase();
-}
-
-export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, getStrategySource }) {
-  const { port, socksPort, donorChromePort, name, slot, id, pw } = bot;
+  const pending = new Map();
 
   const client = {
     port,
@@ -190,62 +35,184 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, get
     enteredLobbyAt: 0,
     enteredGameAt: 0,
     minting: false,
-    sandbox: null,
+    worker,
     send() {},
-    async evalJs(expression, awaitPromise = false) {
-      try {
-        const res = vm.runInContext(expression, this.sandbox);
-        if (awaitPromise && res && typeof res.then === 'function') {
-          return await res;
-        }
-        return res;
-      } catch (e) {
-        return null;
-      }
-    },
-    async importStrategy() {
-      const src = getStrategySource();
-      await this.evalJs(
-        `(async () => {
-          window.__tsbPlayerName = ${JSON.stringify(name)};
-          window.__tsbPlayerColor = 4095;
-          window.__tsbSquadSlot = ${slot};
-          const ext = window.__fx.strategyBotExtension;
-          const sid = await ext.strategies.add({ name: "v27team.js", text: async () => ${JSON.stringify(src)} });
-          if (ext.strategies.changed) ext.strategies.changed(sid || "file:v27team");
-          const snap = ext.remote?.snapshot?.();
-          if (snap?.inGame) {
-            ext.settings.armed = true;
-            ext.remote.state.loop = "team";
-          } else {
-            ext.settings.armed = false;
-            ext.remote.state.loop = null;
-          }
-          return "OK";
-        })()`,
-        true
-      );
-      this.freshToken = true;
-      console.log(`[${name}] (Headless) Fresh Turnstile token ready & v27team (slot=${slot}) imported!`);
+    evalJs(expression, awaitPromise = false) {
+      return new Promise((resolve) => {
+        const id = ++seq;
+        const timer = setTimeout(() => {
+          pending.delete(id);
+          resolve(null);
+        }, 3000);
+        pending.set(id, (val) => {
+          clearTimeout(timer);
+          resolve(val);
+        });
+        worker.postMessage({ type: 'eval', id, expression, awaitPromise });
+      });
     },
     mintToken() {
       if (this.minting) return;
       this.minting = true;
-      console.log(`[${name}] (Headless) Requesting Turnstile token from Chrome :${donorChromePort}...`);
-      mintTurnstileOnChrome(donorChromePort)
-        .then(async (tok) => {
+      console.log(`[${name}] (Worker) Requesting Turnstile token from Chrome :${donorChromePort}...`);
+      mintTurnstileToken(donorChromePort)
+        .then((tok) => {
           this.minting = false;
-          if (this._turnstileCb) {
-            this._turnstileCb(tok);
-          }
-          await this.importStrategy();
+          this.freshToken = true;
+          worker.postMessage({
+            type: 'token',
+            token: tok,
+            strategySource: getStrategySource()
+          });
         })
         .catch((err) => {
           this.minting = false;
-          console.error(`[${name}] (Headless) Turnstile mint error on :${donorChromePort}:`, err.message);
+          console.error(`[${name}] (Worker) Turnstile mint error on :${donorChromePort}:`, err.message);
         });
     }
   };
+
+  worker.on('message', (msg) => {
+    if (msg.type === 'eval_res') {
+      const fn = pending.get(msg.id);
+      if (fn) {
+        pending.delete(msg.id);
+        fn(msg.value);
+      }
+    } else if (msg.type === 'need_token') {
+      client.freshToken = false;
+      client.enteredLobbyAt = 0;
+      client.mintToken();
+    } else if (msg.type === 'token_imported') {
+      client.freshToken = true;
+      console.log(`[${name}] (Worker) Fresh Turnstile token ready & v27team (slot=${slot}) imported!`);
+    } else if (msg.type === 'log') {
+      console.log(`[${name}]`, msg.text);
+      if (msg.text.includes('error 4591') || msg.text.includes('error 4215')) {
+        client.freshToken = false;
+        client.enteredLobbyAt = 0;
+      }
+    } else if (msg.type === 'result') {
+      if (onResult) onResult(client, msg.payload);
+    } else if (msg.type === 'game_init') {
+      if (onGameInit) onGameInit(client, msg.initData);
+    } else if (msg.type === 'game_pkt') {
+      if (onGamePacket) onGamePacket(client, msg.pkt);
+    }
+  });
+
+  worker.on('error', (err) => {
+    console.error(`[${name}] Worker error:`, err.message);
+  });
+
+  return client;
+}
+
+// ============================================================================
+// WORKER THREAD IMPLEMENTATION
+// ============================================================================
+if (!isMainThread && workerData?.bot) {
+  const { bot } = workerData;
+  const { socksPort, name, slot, id, pw } = bot;
+
+  const gameJsSource = fs.readFileSync('/tmp/live_game_js.js', 'utf8');
+  const pageJsSource = fs.readFileSync('/tmp/tsb-team-ext/page.js', 'utf8');
+  const dictSource = fs.readFileSync('/tmp/live_dictionary.json', 'utf8');
+
+  function makeSocksAgent(sp) {
+    const agent = new https.Agent({ keepAlive: false });
+    agent.createConnection = (opts, cb) => {
+      const host = opts.host || opts.hostname;
+      const port = Number(opts.port) || 443;
+      const sock = net.connect(sp, '127.0.0.1');
+      let stage = 0;
+      let buf = Buffer.alloc(0);
+      sock.on('error', (err) => cb(err));
+      sock.on('connect', () => sock.write(Buffer.from([0x05, 0x01, 0x00])));
+      sock.on('data', (chunk) => {
+        buf = Buffer.concat([buf, chunk]);
+        if (stage === 0 && buf.length >= 2) {
+          buf = buf.subarray(2);
+          stage = 1;
+          const hb = Buffer.from(host, 'utf8');
+          const req = Buffer.alloc(4 + 1 + hb.length + 2);
+          req[0] = 0x05; req[1] = 0x01; req[2] = 0x00; req[3] = 0x03;
+          req[4] = hb.length;
+          hb.copy(req, 5);
+          req.writeUInt16BE(port, 5 + hb.length);
+          sock.write(req);
+        }
+        if (stage === 1 && buf.length >= 10) {
+          if (buf[1] !== 0x00) {
+            sock.destroy();
+            return cb(new Error('SOCKS5 connect failed: ' + buf[1]));
+          }
+          sock.removeAllListeners('data');
+          sock.removeAllListeners('error');
+          const tlsSock = tls.connect({
+            socket: sock,
+            servername: opts.servername || host,
+            rejectUnauthorized: false,
+          });
+          cb(null, tlsSock);
+        }
+      });
+    };
+    return agent;
+  }
+
+  function makeProxiedWebSocketClass(sp) {
+    const agent = makeSocksAgent(sp);
+    return class ProxiedWebSocket {
+      static CONNECTING = 0; static OPEN = 1; static CLOSING = 2; static CLOSED = 3;
+      constructor(url, protocols) {
+        this.url = url;
+        this.CONNECTING = 0; this.OPEN = 1; this.CLOSING = 2; this.CLOSED = 3;
+        this.binaryType = 'blob';
+        const isProxied = typeof url === 'string' && !url.includes('game.territorial.io');
+        this._ws = new WS(url, protocols, {
+          agent: isProxied ? agent : undefined,
+          headers: {
+            'Origin': 'https://territorial.io',
+            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36'
+          }
+        });
+        this._ws.on('open', () => { if (typeof this.onopen === 'function') this.onopen({ target: this }); });
+        this._ws.on('message', (data, isBinary) => {
+          if (typeof this.onmessage === 'function') {
+            if (this.binaryType === 'arraybuffer' || isBinary) {
+              const b = Buffer.from(data);
+              this.onmessage({ data: b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength), target: this });
+            } else {
+              this.onmessage({ data: data.toString(), target: this });
+            }
+          }
+        });
+        this._ws.on('close', (code, reason) => {
+          if (typeof this.onclose === 'function') this.onclose({ code, reason: reason?.toString() || '', target: this });
+        });
+        this._ws.on('error', (err) => { if (typeof this.onerror === 'function') this.onerror(err); });
+      }
+      get readyState() { return this._ws.readyState; }
+      send(data) { if (this._ws.readyState === 1) this._ws.send(data); }
+      close(code) { try { this._ws.close(code); } catch {} }
+    };
+  }
+
+  function findAll(root, pred, out = []) {
+    for (const c of root.children || []) {
+      if (pred(c)) out.push(c);
+      findAll(c, pred, out);
+    }
+    return out;
+  }
+
+  function matchSel(el, sel) {
+    if (!el || !el.tagName) return false;
+    if (sel === '.captcha-actions button') return el.tagName === 'BUTTON';
+    if (sel.startsWith('.')) return String(el.className || '').split(/\s+/).includes(sel.slice(1));
+    return el.tagName === sel.toUpperCase();
+  }
 
   const makeStyle = () => new Proxy({ setProperty() {} }, {
     get(t, k) { return t[k] ?? ''; },
@@ -300,6 +267,7 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, get
       set height(v) { _h = v | 0; this.__imgData = null; },
       offsetWidth: 1280, offsetHeight: 900, clientWidth: 1280, clientHeight: 900,
       value: '', checked: false, textContent: '', innerHTML: '',
+      isConnected: true,
       sheet: { cssRules: [{ style: makeStyle() }, { style: makeStyle() }], insertRule() { this.cssRules.push({ style: makeStyle() }); return 0; }, deleteRule() {} },
       appendChild(c) {
         this.children.push(c); this.childNodes.push(c);
@@ -311,7 +279,6 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, get
         }
         return c;
       },
-      isConnected: true,
       replaceChildren(...cs) { this.children = [...cs]; this.childNodes = [...cs]; },
       insertBefore(c) { return this.appendChild(c); },
       replaceChild(n) { return this.appendChild(n); },
@@ -371,27 +338,28 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, get
     const batch = rafs.splice(0, rafs.length);
     const now = performance.now();
     for (const fn of batch) {
-      try { fn(now); } catch (e) {}
+      try { fn(now); } catch {}
     }
-  }, 50);
+  }, 45);
+
+  let turnstileCallback = null;
 
   const customConsole = {
     log(...args) {
       const text = args.join(' ');
       if (text.includes('sendTokenToLobby') || text.includes('Connection to Server') || text.includes('socket close')) {
-        console.log(`[${name}]`, text);
-        if (text.includes('error 4591') || text.includes('error 4215')) {
-          client.freshToken = false;
-          client.enteredLobbyAt = 0;
-        }
+        parentPort.postMessage({ type: 'log', text });
       }
     },
-    warn(...args) {},
-    error(...args) { console.error(`[${name}]`, ...args); }
+    warn() {},
+    error(...args) {
+      parentPort.postMessage({ type: 'log', text: 'ERROR: ' + args.join(' ') });
+    }
   };
 
   const sandbox = {
     console: customConsole,
+    queueMicrotask,
     setTimeout, clearTimeout, setInterval, clearInterval, performance, Date, Math, JSON,
     Array, Object, String, Number, Boolean, RegExp, Map, Set, WeakMap, WeakSet, Promise, Symbol,
     Error, TypeError, RangeError, SyntaxError, Uint8Array, Uint8ClampedArray, Uint16Array, Uint32Array,
@@ -404,8 +372,7 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, get
     Image: class {
       constructor() {
         const el = makeElement('img');
-        el.width = 64;
-        el.height = 64;
+        el.width = 64; el.height = 64;
         Object.defineProperty(el, 'src', {
           get() { return this._src || ''; },
           set(v) { this._src = v; setTimeout(() => el.onload?.({ target: el }), 1); }
@@ -427,7 +394,7 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, get
     navigator: { userAgent: 'Mozilla/5.0', language: 'en-US', locks: null, clipboard: { writeText: async () => {} } },
     location: {
       href: 'https://territorial.io/', hostname: 'territorial.io', origin: 'https://territorial.io', protocol: 'https:', search: '',
-      reload() { client.freshToken = false; client.enteredLobbyAt = 0; client.mintToken(); }
+      reload() { parentPort.postMessage({ type: 'need_token' }); }
     },
     history: { replaceState() {}, pushState() {} },
     screen: { width: 1280, height: 1024 }, innerWidth: 1280, innerHeight: 900, devicePixelRatio: 1,
@@ -443,14 +410,12 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, get
     __tsbWaitForLeader: true,
     __tsbSquadSyncHold: true,
     __tsbReportResult(payload) {
-      if (onResult) onResult(client, payload);
+      parentPort.postMessage({ type: 'result', payload });
     },
     turnstile: {
       render(el, opts) {
-        client._turnstileCb = opts.callback;
-        client.freshToken = false;
-        client.enteredLobbyAt = 0;
-        client.mintToken();
+        turnstileCallback = opts.callback;
+        parentPort.postMessage({ type: 'need_token' });
         return 'wid_1';
       },
       remove() {}
@@ -462,7 +427,6 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, get
   sandbox.globalThis = sandbox;
   sandbox.top = sandbox;
   sandbox.parent = sandbox;
-  client.sandbox = sandbox;
 
   document.addEventListener('tsb-remote', (e) => {
     try {
@@ -483,7 +447,7 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, get
     sandbox.onload();
   }
 
-  // Hook bq.aF3.aFu and bi.a2Q.aWV for live real-frontend spectator streaming!
+  // Hook bq.aF3.aFu and bi.a2Q.aWV (re-hooking bi.a2Q on every new game!)
   vm.runInContext(`(() => {
     if (typeof bq === "object" && bq?.aF3?.aFu) {
       const origAfu = bq.aF3.aFu.bind(bq.aF3);
@@ -513,11 +477,44 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, get
   })()`, sandbox);
 
   sandbox.__onHeadlessGameInit = (initData) => {
-    if (onGameInit) onGameInit(client, initData);
+    parentPort.postMessage({ type: 'game_init', initData });
   };
   sandbox.__onHeadlessGamePacket = (pkt) => {
-    if (onGamePacket) onGamePacket(client, pkt);
+    parentPort.postMessage({ type: 'game_pkt', pkt });
   };
 
-  return client;
+  parentPort.on('message', async (msg) => {
+    if (msg.type === 'eval') {
+      try {
+        let res = vm.runInContext(msg.expression, sandbox);
+        if (msg.awaitPromise && res && typeof res.then === 'function') {
+          res = await res;
+        }
+        parentPort.postMessage({ type: 'eval_res', id: msg.id, value: res });
+      } catch {
+        parentPort.postMessage({ type: 'eval_res', id: msg.id, value: null });
+      }
+    } else if (msg.type === 'token') {
+      if (turnstileCallback) {
+        try { turnstileCallback(msg.token); } catch {}
+      }
+      try {
+        const src = msg.strategySource;
+        const p = vm.runInContext(
+          `(async () => {
+            window.__tsbPlayerName = ${JSON.stringify(name)};
+            window.__tsbPlayerColor = 4095;
+            window.__tsbSquadSlot = ${slot};
+            const ext = window.__fx.strategyBotExtension;
+            const sid = await ext.strategies.add({ name: "v27team.js", text: async () => ${JSON.stringify(src)} });
+            if (ext.strategies.changed) ext.strategies.changed(sid || "file:v27team");
+            return "OK";
+          })()`,
+          sandbox
+        );
+        await p;
+        parentPort.postMessage({ type: 'token_imported' });
+      } catch {}
+    }
+  });
 }

@@ -113,7 +113,7 @@ async def handle_client(reader, writer, devs, local_port):
 async def main():
     # 10 bots (10801..10805 + 10811..10815), each with its own dedicated primary + backup tunnel exit IP!
     mappings = [
-        (10801, ["", "tun66"]),
+        (10801, ["tun66", "tun72"]),
         (10802, ["tun13", "tun49"]),
         (10803, ["tun21", "tun67"]),
         (10804, ["tun47", "tun66"]),

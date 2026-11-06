@@ -138,8 +138,9 @@ async function attachChromeBot(bot) {
     console.error(`[${name}] No territorial.io tab on port ${port}`);
     return null;
   }
-  console.log(`[${name}] Attaching on port ${port}:`, page.webSocketDebuggerUrl);
-  const ws = new WebSocket(page.webSocketDebuggerUrl);
+  const wsUrl = page.webSocketDebuggerUrl || `ws://127.0.0.1:${port}/devtools/page/${page.id}`;
+  console.log(`[${name}] Attaching on port ${port}:`, wsUrl);
+  const ws = new WebSocket(wsUrl);
   let seq = 0;
   let clicking = false;
   const pending = new Map();
@@ -153,12 +154,26 @@ async function attachChromeBot(bot) {
 
   const evalJs = (expression, awaitPromise = false) =>
     new Promise((resolve) => {
-      const id = send('Runtime.evaluate', { expression, awaitPromise });
+      const id = send('Runtime.evaluate', { expression, awaitPromise, returnByValue: true });
       if (id < 0) return resolve(null);
       const timer = setTimeout(() => {
         pending.delete(id);
         resolve(null);
       }, 4000);
+      pending.set(id, (res) => {
+        clearTimeout(timer);
+        resolve(res?.result?.value);
+      });
+    });
+
+  const callCdp = (method, params = {}) =>
+    new Promise((resolve) => {
+      const id = send(method, params);
+      if (id < 0) return resolve(null);
+      const timer = setTimeout(() => {
+        pending.delete(id);
+        resolve(null);
+      }, 2500);
       pending.set(id, (res) => {
         clearTimeout(timer);
         resolve(res);
@@ -173,6 +188,7 @@ async function attachChromeBot(bot) {
     ws,
     send,
     evalJs,
+    callCdp,
     freshToken: false,
     wasInGame: false,
     lastReloadAt: Date.now(),
@@ -305,7 +321,7 @@ async function attachChromeBot(bot) {
     if (msg.id && pending.has(msg.id)) {
       const fn = pending.get(msg.id);
       pending.delete(msg.id);
-      fn(msg.result?.result?.value);
+      fn(msg.result);
       return;
     }
     if (msg.method === 'Runtime.bindingCalled' && msg.params.name === '__tsbReportResult') {
@@ -344,9 +360,56 @@ for (const bot of CHROME_BOTS) {
 let activeStreamOwner = null;
 let activeStreamKey = null;
 
+async function mintViaDonorChrome(donorPort) {
+  for (let w = 0; w < 20; w++) {
+    const d = clients.find((c) => !c.isHeadless && c.port === donorPort);
+    if (d && d.freshToken) break;
+    await new Promise((r) => setTimeout(r, 1000));
+  }
+  const donor = clients.find((c) => !c.isHeadless && c.port === donorPort);
+  if (!donor) throw new Error(`No donor Chrome on ${donorPort}`);
+  donor.send('Page.bringToFront');
+  donor.send('Emulation.setFocusEmulationEnabled', { enabled: true });
+  await donor.evalJs(`(() => {
+    window.__mintedToken = null;
+    const old = document.getElementById("mint-ts");
+    if (old) old.remove();
+    const d = document.createElement("div");
+    d.id = "mint-ts";
+    d.style.position = "fixed";
+    d.style.left = "0";
+    d.style.top = "0";
+    d.style.zIndex = "100";
+    document.body.appendChild(d);
+    const wid = window.turnstile.render(d, {
+      sitekey: "0x4AAAAAAEI8HZoG8nJMzxt1",
+      action: "enter_lobby",
+      appearance: "interaction-only",
+      callback: (tok) => {
+        window.__mintedToken = tok;
+        try { window.turnstile.remove(wid); d.remove(); } catch {}
+      }
+    });
+    return "RENDERED";
+  })()`);
+  for (let i = 0; i < 12; i++) {
+    await new Promise((r) => setTimeout(r, 850));
+    donor.send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 180, y: 180 });
+    donor.send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 28, y: 32 });
+    donor.send('Input.dispatchMouseEvent', { type: 'mousePressed', x: 28, y: 32, button: 'left', clickCount: 1 });
+    donor.send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: 28, y: 32, button: 'left', clickCount: 1 });
+    const tok = await donor.evalJs('window.__mintedToken || ""');
+    if (tok && typeof tok === 'string' && tok.length > 100) {
+      return tok;
+    }
+  }
+  throw new Error('mint timeout');
+}
+
 for (const bot of HEADLESS_BOTS) {
   const hc = createHeadlessBot(bot, {
     getStrategySource: getV27TeamSource,
+    mintTurnstileToken: mintViaDonorChrome,
     onResult(c, payload) {
       recordResult(c.name, c.port, payload);
     },
@@ -398,10 +461,16 @@ setInterval(async () => {
           ext.status.phase = "patched";
           ext.status.error = null;
         }
+        if (ext?.bots?.local?.error) {
+          ext.bots.local.error = null;
+        }
         const s = ext?.remote?.snapshot?.() || {};
         const info = ext?.remote?.state?.info;
         const d = window.dictionary;
         const g = d && window[d.game];
+        if (g && g[d.gIsSingleplayer] && g[d.gameState] === 1 && g[d.sbLeave]) {
+          g[d.sbLeave](true);
+        }
         const teams = d && window[d.sbTeamHolder]?.[d.sbTeams];
         const me = g && g[d.playerId];
         s.ok = true;
@@ -434,13 +503,13 @@ setInterval(async () => {
     })
   );
 
-  // Send headless stats (slots 5..9) to spectator server
-  const hStats = [];
+  // Send all 10 bots' stats + fallback JPEG screenshot to spectator server
+  const allStats = [];
   for (let i = 0; i < clients.length; i++) {
     const c = clients[i];
     const s = states[i];
-    if (c.isHeadless && s?.ok) {
-      hStats.push({
+    if (s?.ok) {
+      allStats.push({
         port: c.port,
         slot: c.slot,
         name: c.name,
@@ -459,10 +528,20 @@ setInterval(async () => {
       });
     }
   }
-  postSpectatorIngest({ type: 'headless_stats', stats: hStats });
+  const chromeInStats = allStats.filter((b) => b.port < 9300);
+  const chosen = chromeInStats.slice().sort((a, b) => (b.alive - a.alive) || (b.inGame - a.inGame) || (b.terr - a.terr))[0] || chromeInStats[0];
+  let jpegB64 = null;
+  if (chosen) {
+    const chosenClient = clients.find((c) => c.port === chosen.port);
+    if (chosenClient?.callCdp) {
+      const shot = await chosenClient.callCdp('Page.captureScreenshot', { format: 'jpeg', quality: 72 });
+      if (shot?.data) jpegB64 = shot.data;
+    }
+  }
+  postSpectatorIngest({ type: 'all_stats', stats: allStats, chosen, jpeg: jpegB64 });
 
-  // If any evalJs timed out this tick, skip state transitions so we never misjudge an active game!
-  if (states.some((s) => !s.ok)) return;
+  // Only skip state transitions if ALL bots failed to respond
+  if (states.every((s) => !s.ok)) return;
 
   const now = Date.now();
   states.forEach((s, idx) => {
