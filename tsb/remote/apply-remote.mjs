@@ -48,7 +48,9 @@ once('version:"0.5.2",setPort(t){', `version:"${VERSION}",remote:Re,setPort(t){`
 once('ke=()=>be("tsb-control",JSON.stringify({kind:"connect",port:ue.port}))',
     'ke=()=>be("tsb-control",JSON.stringify({kind:"connect",port:"backend"===ue.strategy?ue.port:null}))');
 once('U={sbAttack:"sbSendAttack",sbBoat:"sbSendBoat",sbRetreat:"sbSendRetreat",sbSpawn:"sbSendSpawn"}',
-    'U={sbAttack:"sbSendAttack",sbBoat:"sbSendBoat",sbChase:"sbSendChase",sbMountain:"sbSendMountain",sbRetreat:"sbSendRetreat",sbSpawn:"sbSendSpawn"}');
+    'U={sbAttack:"sbSendAttack",sbDonate:"sbSendDonate",sbBoat:"sbSendBoat",sbChase:"sbSendChase",sbMountain:"sbSendMountain",sbRetreat:"sbSendRetreat",sbSpawn:"sbSendSpawn"}');
+once('else if (id === 2) { sbCommands.sbHandlers.d(player, b, c) }\\n            else if (id === 3) { sbCommands.sbHandlers.sbBoat(player, b, c) }\\n            else if (id === 4) { sbCommands.sbHandlers.sbChase(player, b, c) }\\n            else if (id === 5) { sbCommands.sbHandlers.sbRetreat(player, b) } /*...*/\\n        };",{addToDictionary:["sbCommands","sbHandlers","sbSpawn","sbAttack","sbBoat","sbChase","sbRetreat"]}',
+    'else if (id === 2) { sbCommands.sbHandlers.sbDonate(player, b, c) }\\n            else if (id === 3) { sbCommands.sbHandlers.sbBoat(player, b, c) }\\n            else if (id === 4) { sbCommands.sbHandlers.sbChase(player, b, c) }\\n            else if (id === 5) { sbCommands.sbHandlers.sbRetreat(player, b) } /*...*/\\n        };",{addToDictionary:["sbCommands","sbHandlers","sbSpawn","sbAttack","sbDonate","sbBoat","sbChase","sbRetreat"]}');
 once('this.borderLists=new Array(512),this.coastLists=new Array(512)',
     'this.borderLists=new Array(512),this.coastLists=new Array(512),this.frontLists=new Array(512),this.cliffLists=new Array(512)');
 once('this.bal=e[dictionary.playerBalances],this.x0=e[dictionary.sbX0]',
@@ -62,9 +64,9 @@ once('get border(){return this.convertLists(),this.borderLists}get coast(){retur
 once('t.front=[],t.cliff=[]',
     't.front=this.front.map(t=>t?t.slice():t),t.cliff=this.cliff.map(t=>t?t.slice():t)');
 once('retreat(t,e=this.me){return t=Math.min(t,512),!(!this.canAct(e)||!this.hasAttack(e,t))&&this.command("sbRetreat",e,[t],this.attackProbe(e,t))}',
-    'retreat(t,e=this.me){return t=Math.min(t,512),!(!this.canAct(e)||!this.hasAttack(e,t))&&this.command("sbRetreat",e,[t],this.attackProbe(e,t))}chase(t,e,s=this.me){return!!this.canAct(s)&&(t=Math.max(0,Math.min(1023,0|t)),849===t&&(t=850),this.command("sbChase",s,[t,0|e],()=>`${this.bal[s]} ${this.boatN} ${this.boatCount[s]}`))}recall(t,e=this.me){if(!this.canAct(e))return!1;const s=0|t;return this.online?this.send("sbChase",e,[849,s]):this.command("sbChase",e,[849,s],()=>{const t=this.bId?this.playerBoat(e,s):-1;return t<0?"":`${this.bType[t]} ${this.bLeg[t]}`})}mountainAttack(t,e,s,i=this.me){return!(!this.canAct(i)||i===s)&&(t=Math.max(0,Math.min(1023,0|t)),s=Math.min(s,512),this.command("sbMountain",i,[t,0|e,s],this.attackProbe(i,s)))}');
+    'retreat(t,e=this.me){return t=Math.min(t,512),!(!this.canAct(e)||!this.hasAttack(e,t))&&this.command("sbRetreat",e,[t],this.attackProbe(e,t))}donate(t,e,s=this.me){return!(!this.canAct(s)||s===e)&&(t=Math.max(0,Math.min(1023,0|t)),e=Math.min(e,512),this.command("sbDonate",s,[t,e],()=>`${this.bal[s]} ${this.bal[e]}`))}chase(t,e,s=this.me){return!!this.canAct(s)&&(t=Math.max(0,Math.min(1023,0|t)),849===t&&(t=850),this.command("sbChase",s,[t,0|e],()=>`${this.bal[s]} ${this.boatN} ${this.boatCount[s]}`))}recall(t,e=this.me){if(!this.canAct(e))return!1;const s=0|t;return this.online?this.send("sbChase",e,[849,s]):this.command("sbChase",e,[849,s],()=>{const t=this.bId?this.playerBoat(e,s):-1;return t<0?"":`${this.bType[t]} ${this.bLeg[t]}`})}mountainAttack(t,e,s,i=this.me){return!(!this.canAct(i)||i===s)&&(t=Math.max(0,Math.min(1023,0|t)),s=Math.min(s,512),this.command("sbMountain",i,[t,0|e,s],this.attackProbe(i,s)))}');
 once('for(const e of["sbAttack","sbBoat","sbRetreat"]){const s=t[dictionary[e]];if(s.tsbHook)continue;',
-    'for(const e of["sbAttack","sbBoat","sbChase","sbMountain","sbRetreat"]){const s=dictionary[e]&&t[dictionary[e]];if(!s||s.tsbHook)continue;');
+    'for(const e of["sbAttack","sbDonate","sbBoat","sbChase","sbMountain","sbRetreat"]){const s=dictionary[e]&&t[dictionary[e]];if(!s||s.tsbHook)continue;');
 if (!singleOnly) {
     once('(t=>{if(!dictionary.sbRoomId)return!0;const e=t[dictionary.sbRoomId];return null==e||""===e})(t)', '!0');
     once(MENU_FROM, MENU_TO);

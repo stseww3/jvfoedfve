@@ -37,8 +37,8 @@ import { basename } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const CMDS = ['ping', 'start', 'stop', 'end', 'lobby'];
-const FLAGS = ['single', 'mp', 'stay', 'leave', 'print', 'wait'];
-const USAGE = 'usage: node send-command.mjs <ping|start|stop|end|lobby> [--single | --mp] [--stay | --leave] [--strategy file.js] [--use v3] [--seq n] [--key k] [--url u] [--wait [--result u] [--timeout s]] [--print]';
+const FLAGS = ['single', 'mp', 'team', 'stay', 'leave', 'print', 'wait'];
+const USAGE = 'usage: node send-command.mjs <ping|start|stop|end|lobby> [--single | --mp | --team] [--clan name] [--color rgb] [--stay | --leave] [--strategy file.js] [--use v3] [--seq n] [--key k] [--url u] [--wait [--result u] [--timeout s]] [--print]';
 const UUID = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
 // the extension polls every 3 s, but a minimized or background tab may poll only about once a minute
 const TIMEOUT_S = 90;
@@ -118,7 +118,7 @@ export async function main(argv, io = {}) {
         err(USAGE);
         return 2;
     }
-    if (opt.single && opt.mp) throw new Error('--single and --mp do not go together');
+    if ((opt.single ? 1 : 0) + (opt.mp ? 1 : 0) + (opt.team ? 1 : 0) > 1) throw new Error('--single, --mp and --team do not go together');
     if (opt.stay && opt.leave) throw new Error('--stay and --leave do not go together');
     if ((opt.stay || opt.leave) && cmd !== 'start') throw new Error('--stay and --leave go with start');
     const key = opt.key || env.TSB_KEY;
@@ -140,6 +140,9 @@ export async function main(argv, io = {}) {
     if (opt.use) c.use = opt.use;
     if (opt.single) c.single = true;
     if (opt.mp) c.mp = true;
+    if (opt.team) c.team = true;
+    if (opt.clan) c.clan = String(opt.clan);
+    if (opt.color !== undefined) c.color = Number(opt.color) | 0;
     if (opt.stay || opt.leave) c.stay = !!opt.stay;
 
     const p = JSON.stringify(c);

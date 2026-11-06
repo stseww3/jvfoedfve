@@ -39,7 +39,9 @@
   const EXIT_MS = 3e3;
   // with "stay" on, after I die the bot stays in the game until it is over, at most this long
   const STAY_MAX_MS = 18e5;
-  // lobby rooms: 0 team, 1 battle royale, 2 1v1, 3 zombie; room modes 7 and 10 are battle royale
+  // lobby rooms: 0 team, 1 battle royale, 2 1v1, 3 zombie; room modes 0..6 are team, 7 and 10 are battle royale
+  const TEAM_ROOM = 0;
+  const TEAM_MODES = [0, 1, 2, 3, 4, 5, 6];
   const BR_ROOM = 1;
   const BR_MODES = [7, 10];
   // longer replay texts are reported without the text
@@ -288,15 +290,23 @@
   function press(code) {
     document.dispatchEvent(new KeyboardEvent("keyup", { code, key: code, bubbles: !0, cancelable: !0 }));
   }
-  // the battle royale room as far as the last lobby update tells
-  function brRoom(d) {
+  // the battle royale or team room as far as the last lobby update tells
+  function pickRoom(d, defRoom, wantModes) {
     const rooms = lobby.rooms;
-    if (!d.lobbyRoomMode || !rooms || !rooms.length) return BR_ROOM;
+    if (!d.lobbyRoomMode || !rooms || !rooms.length) return defRoom;
     const modes = Array.from(rooms, (r) => r ? r[d.lobbyRoomMode] : null);
-    if (BR_MODES.includes(modes[BR_ROOM])) return BR_ROOM;
-    const i = modes.findIndex((m) => BR_MODES.includes(m));
-    return i < 0 ? BR_ROOM : i;
+    if (wantModes.includes(modes[defRoom])) return defRoom;
+    const i = modes.findIndex((m) => wantModes.includes(m));
+    return i < 0 ? defRoom : i;
   }
+  function brRoom(d) {
+    return pickRoom(d, BR_ROOM, BR_MODES);
+  }
+  function teamRoom(d) {
+    return pickRoom(d, TEAM_ROOM, TEAM_MODES);
+  }
+  const isMpLoop = (l = state.loop) => "mp" === l || "team" === l;
+  const wantRoom = (d) => "team" === state.loop ? teamRoom(d) : brRoom(d);
   function lobbyRoom(room) {
     const b = sb();
     try {
@@ -322,7 +332,7 @@
     const c = lobby.closing;
     if (!inLobby()) {
       lobby.closing = null;
-      ue.armed && "mp" === state.loop && c.room >= 0 && openLobby(c.room);
+      ue.armed && isMpLoop() && c.room >= 0 && openLobby(c.room);
       return;
     }
     if (c.pressAt && (now - c.pressAt < 1500 || lobby.tickAt < c.pressAt + 1e3)) return;
@@ -334,12 +344,12 @@
   function stopLoop(reason) {
     state.loop = null, lobby.stopped = reason;
   }
-  function startMulti() {
+  function startMulti(mode = "mp") {
     const d = dict(), g = read("game"), now = Date.now();
     Object.assign(lobby, { opens: 0, reopens: 0, presses: 0, pressAt: 0, leftAt: 0, openAt: 0, closing: null, error: null, stopped: null });
-    state.loop = "mp";
+    state.loop = mode;
     if (!d || !g) return "waiting for the game";
-    const gs = g[d.gameState], room = brRoom(d);
+    const gs = g[d.gameState], room = wantRoom(d);
     if (1 === gs || 2 === gs) {
       const single = !!g[d.gIsSingleplayer];
       lobbyRoom(room);
@@ -349,7 +359,7 @@
     return openLobby(room) ? "opening the lobby" : lobby.error;
   }
   function readyStep(d, now) {
-    const sel = lobby.sel, want = brRoom(d);
+    const sel = lobby.sel, want = wantRoom(d);
     if (sel[0] !== want) {
       if (lobby.reopens >= 3) return void stopLoop(`大厅总进错房间（在 ${sel[0]} 号，要 ${want} 号）`);
       return lobby.reopens++, lobbyRoom(want), void closeLobby(want);
@@ -365,10 +375,10 @@
     if (!r || !r.exitAt || now < r.exitAt) return;
     r.exitAt = 0;
     if (!ue.armed) return;
-    state.loop && !(r.gate && r.gate.ok) && stopLoop(`上一局有不在白名单里的真人，停止自动${"mp" === state.loop ? "排队" : "开局"}`);
+    state.loop && !(r.gate && r.gate.ok) && stopLoop(`上一局有不在白名单里的真人，停止自动${isMpLoop() ? "排队" : "开局"}`);
     if ("single" === state.loop) return void(state.startAt = now, startSingle());
-    const single = !!g[d.gIsSingleplayer], mp = "mp" === state.loop;
-    mp && lobbyRoom(brRoom(d));
+    const single = !!g[d.gIsSingleplayer], mp = isMpLoop();
+    mp && lobbyRoom(wantRoom(d));
     leave() && mp && (lobby.leftAt = single ? 0 : now, lobby.opens = 0);
   }
   function step() {
@@ -378,18 +388,18 @@
     if (1 === gs || 2 === gs) return lobby.closing = null, void exitStep(d, g, now);
     if (lobby.closing) return void closeStep(now);
     if (now < state.resumeAt) return;
-    if (state.openOnce) return state.openOnce = !1, void(inLobby() || !lobbyPatched() || openLobby(brRoom(d)));
+    if (state.openOnce) return state.openOnce = !1, void(inLobby() || !lobbyPatched() || openLobby(wantRoom(d)));
     if (!ue.armed || !state.loop) return;
     if ("single" === state.loop) return void(inLobby() ? closeLobby() : now - state.startAt >= 5e3 && (state.startAt = now, startSingle()));
     if (inLobby()) return void readyStep(d, now);
     // leaving a multiplayer game rejoins the lobby by itself
-    if (now - lobby.leftAt < 1e4 || now - lobby.openAt < 15e3) return;
+    if (window.__tsbSquadSyncHold || now - lobby.leftAt < 1e4 || now - lobby.openAt < 15e3) return;
     // the server asked to wait ("Please try again later!", "Player already in lobby"); the watchdog reloads afterwards
     const c = rw.code;
     if (c && WAIT_MS[c.code] && now - c.at < WAIT_MS[c.code]) return;
     // with the close hook in, the watchdog reloads a page that does not get into the lobby
     if (lobby.opens >= 5) return void(d.closeCodes || stopLoop(`进不了大厅（试了 ${lobby.opens} 次）`));
-    openLobby(brRoom(d));
+    openLobby(wantRoom(d));
   }
   const hooks = {
     lobbyInit(sel, rooms) {
@@ -562,9 +572,11 @@
       case "ping":
         return { ok: !0, state: snapshot() };
       case "start": {
-        const mp = !!c.mp, single = !!c.single;
-        if (mp && single) return { ok: !1, error: "--mp and --single do not go together", state: snapshot() };
-        if (mp && !lobbyPatched()) return { ok: !1, error: SINGLE_ONLY ? "this build only plays singleplayer games, it has no --mp" : "the multiplayer lobby is not patched (see the browser console), --mp is off", state: snapshot() };
+        const mp = !!c.mp, team = !!c.team, single = !!c.single;
+        if ((mp ? 1 : 0) + (team ? 1 : 0) + (single ? 1 : 0) > 1) return { ok: !1, error: "--mp, --team and --single do not go together", state: snapshot() };
+        if ((mp || team) && !lobbyPatched()) return { ok: !1, error: SINGLE_ONLY ? "this build only plays singleplayer games, it has no --mp/--team" : "the multiplayer lobby is not patched (see the browser console), --mp/--team is off", state: snapshot() };
+        if ("string" == typeof c.clan && c.clan.trim()) window.__tsbPlayerName = c.clan.trim();
+        if (Number.isInteger(c.color)) window.__tsbPlayerColor = c.color;
         if ("string" == typeof c.strategy && c.strategy.trim()) {
           const name = String(c.name || "remote").replace(/[^\w.-]+/g, "_").slice(0, 40) || "remote";
           await Te.add({ name: `${name}.js`, text: async () => c.strategy });
@@ -575,8 +587,8 @@
         "boolean" == typeof c.stay && (ue.stay = c.stay);
         syncBackend();
         ue.armed = !0, fe(), rec.inRow = 0, saveRecover(), rw.progressAt = Date.now();
-        if (mp) {
-          const action = startMulti();
+        if (mp || team) {
+          const action = startMulti(team ? "team" : "mp");
           return { ok: !0, started: !1, action, state: snapshot() };
         }
         if (!single) return { ok: !0, started: !1, state: snapshot() };
@@ -698,7 +710,7 @@
       armed: !!ue.armed,
       loop: state.loop,
       // what happens 3 s after a death or the end: leave, then queue again / a new singleplayer game / stop the loop
-      next: "left" === event || !ue.armed ? null : !state.loop ? "leave" : gt.ok ? "mp" === state.loop ? "queue" : "single" : "stop",
+      next: "left" === event || !ue.armed ? null : !state.loop ? "leave" : gt.ok ? isMpLoop() ? "queue" : "single" : "stop",
       // after a death: true when the bot stays until the game is over and does "next" then
       stay: !!ue.stay,
       allowed: gt.ok,
@@ -852,12 +864,13 @@
   }
   function loopText(s) {
     if ("single" === state.loop) return "单人：一局完了自动开下一局";
-    if ("mp" !== state.loop) return lobby.stopped ? `已停：${ne(lobby.stopped, 40)}` : "";
+    if (!isMpLoop()) return lobby.stopped ? `已停：${ne(lobby.stopped, 40)}` : "";
+    const tag = "team" === state.loop ? "组队" : "大逃杀";
     const l = s.lobby || {}, e = lobby.error ? `（${ne(lobby.error, 30)}）` : "";
-    if (s.inGame) return "大逃杀：对局中，完了回大厅再排";
-    if (lobby.closing) return "大逃杀：换房间中…" + e;
-    if (!l.inLobby) return "大逃杀：正在进大厅…" + e;
-    return (l.ready ? `大逃杀：已 Ready${l.startsIn > 0 ? `，约 ${l.startsIn} 秒后开` : "，等开局"}` : "大逃杀：在大厅，正在点 Ready") + e;
+    if (s.inGame) return `${tag}：对局中，完了回大厅再排`;
+    if (lobby.closing) return `${tag}：换房间中…` + e;
+    if (!l.inLobby) return `${tag}：正在进大厅…` + e;
+    return (l.ready ? `${tag}：已 Ready${l.startsIn > 0 ? `，约 ${l.startsIn} 秒后开` : "，等开局"}` : `${tag}：在大厅，正在点 Ready`) + e;
   }
   // the service worker connects to the local backend only while the backend strategy is in use
   let backendPort;
@@ -873,7 +886,7 @@
     const s = snapshot(), names = s.inGame ? gate().blocked : [], rows = [];
     let text = view.text, tone = view.tone;
     "bad" !== tone && (ue.armed ? s.inGame && "replay" !== s.mode && !s.allowed && (text = SINGLE_ONLY ? "已接管，但远程版只在单人局里动，这局机器人不动。" : `已接管，但这局有不在白名单里的真人（${names.slice(0, 3).map((n) => ne(n, 12)).join("、")}${names.length > 3 ? ` 等 ${names.length} 人` : ""}），机器人不动。`, tone = "off") : (text = "手动模式：等远程 start 指令，机器人不动。", tone = "off"));
-    "bad" !== tone && ue.armed && !s.inGame && "mp" === state.loop && (text = `已接管：${loopText(s)}`, tone = "wait");
+    "bad" !== tone && ue.armed && !s.inGame && isMpLoop() && (text = `已接管：${loopText(s)}`, tone = "wait");
     rows.push(["远程", ue.armed ? "已接管" : "待命"]);
     const lp = loopText(s);
     lp && rows.push(["循环", lp]);
@@ -926,7 +939,7 @@
     rec.reloads = rec.reloads.filter((t) => now - t < 36e5), rec.resume = null, saveRecover();
     if (r && now - r.at < 3e5 && ue.manual) {
       state.resumeAt = now + 5e3;
-      if (ue.armed && "mp" === r.loop && !SINGLE_ONLY) state.loop = "mp";
+      if (ue.armed && isMpLoop(r.loop) && !SINGLE_ONLY) state.loop = r.loop;
       else if (ue.armed && "single" === r.loop) state.loop = "single", state.startAt = now;
       else state.openOnce = !!r.open && !SINGLE_ONLY;
     }
