@@ -1,4 +1,4 @@
-import asyncio, socket, struct
+import asyncio, os, socket, struct
 
 SO_BINDTODEVICE = 25
 
@@ -64,11 +64,27 @@ async def handle_client(reader, writer, devs):
         connected_sock = None
         if should_use_tun(host):
             for dev in devs:
+                if not dev:
+                    # Direct Host IP
+                    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                    sock.setblocking(False)
+                    try:
+                        await asyncio.wait_for(loop.sock_connect(sock, target_addr), timeout=1.5)
+                        connected_sock = sock
+                        break
+                    except Exception:
+                        try:
+                            sock.close()
+                        except Exception:
+                            pass
+                    continue
+                if not os.path.exists(f"/sys/class/net/{dev}"):
+                    continue
                 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                 sock.setblocking(False)
                 try:
                     sock.setsockopt(socket.SOL_SOCKET, SO_BINDTODEVICE, dev.encode("utf-8") + b"\x00")
-                    await asyncio.wait_for(loop.sock_connect(sock, target_addr), timeout=2.2)
+                    await asyncio.wait_for(loop.sock_connect(sock, target_addr), timeout=1.5)
                     connected_sock = sock
                     break
                 except Exception:
@@ -94,13 +110,13 @@ async def handle_client(reader, writer, devs):
             pass
 
 async def main():
-    # Each bot gets its own dedicated primary + backup JP VPNGate tunnel from our 10 active tunnels!
+    # Each bot gets its own dedicated primary + backup live tunnel (5 distinct exit IPs: DIRECT + tun13 + tun21 + tun25 + tun22)!
     mappings = [
-        (10801, ["tun10", "tun22"]),
-        (10802, ["tun13", "tun23"]),
-        (10803, ["tun21", "tun25"]),
-        (10804, ["tun30", "tun23", "tun25"]),
-        (10805, ["tun22", "tun23", "tun25"]),
+        (10801, ["", "tun22"]),
+        (10802, ["tun13", "tun21"]),
+        (10803, ["tun21", "tun13"]),
+        (10804, ["tun25", ""]),
+        (10805, ["tun22", "tun25"]),
     ]
     servers = []
     for port, devs in mappings:
