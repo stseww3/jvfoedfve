@@ -100,8 +100,9 @@ new_helpers = """  isTeammate(g, p) {
   }
 
   isOurSquadBot(g, p) {
-    const nm = String(g.names?.[p] ?? "").toUpperCase();
-    return nm.includes("[NPL]") || nm.includes("[OG]");
+    const raw = String(g.names?.[p] ?? "").trim();
+    const low = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
+    return low === "mishi" || low === "matzz" || low === "kiholma" || low === "leo_99" || low === "racoon" || raw.toUpperCase().includes("[NPL]");
   }
 
   // DISTRIBUTED BACKEND-COORDINATED TEAM SPAWNING:

@@ -5,11 +5,11 @@ const pageJsSource = fs.readFileSync('/tmp/tsb-team-ext/page.js', 'utf8');
 const getV27TeamSource = () => fs.readFileSync('/tmp/v27-team-live.js', 'utf8');
 
 const BOTS = [
-  { port: 9223, name: 'Mishi [NPL]', slot: 0 },
-  { port: 9224, name: '[NPL] Matzz', slot: 1 },
-  { port: 9225, name: 'Kiholma [NPL]', slot: 2 },
-  { port: 9226, name: 'Leo_99 [NPL]', slot: 3 },
-  { port: 9227, name: '[NPL] Racoon', slot: 4 },
+  { port: 9223, name: 'Mishi', slot: 0, id: 'mTd7B', pw: 'vivELD0lOKgghLr' },
+  { port: 9224, name: 'Matzz', slot: 1, id: 'vgLjn', pw: 'Cl2xSE00tjOjVBq' },
+  { port: 9225, name: 'Kiholma', slot: 2, id: 'NJmJY', pw: 'zmUT69zzi_Rk80I' },
+  { port: 9226, name: 'Leo_99', slot: 3, id: 'byk85', pw: 'iLFHoRHz4rHvEt0' },
+  { port: 9227, name: 'Racoon', slot: 4, id: '5nvnY', pw: 'DzMzg9vRC1Qnj3z' },
 ];
 
 const isWaitNplMode = () => fs.existsSync('/tmp/tsb-wait-npl.flag');
@@ -26,15 +26,33 @@ function getJson(url) {
   });
 }
 
-function makeBootstrapScript(botName, slot) {
+function makeBootstrapScript(bot) {
   return `
+{
+  localStorage.setItem("d105", ${JSON.stringify(bot.id)});
+  localStorage.setItem("d106", ${JSON.stringify(bot.pw)});
+  localStorage.setItem("v105", "0");
+  localStorage.setItem("v106", "0");
+  localStorage.setItem("d140", "1");
+  localStorage.setItem("v140", "0");
+}
 if (!window.__tsbPageInjected) {
   window.__tsbPageInjected = true;
-  window.__tsbPlayerName = ${JSON.stringify(botName)};
+  const OrigWS = window.WebSocket;
+  window.WebSocket = function(url, protocols) {
+    if (typeof url === "string") {
+      url = url.replace("://4.territorial.io/", "://1.territorial.io/").replace("://5.territorial.io/", "://1.territorial.io/");
+    }
+    return protocols !== undefined ? new OrigWS(url, protocols) : new OrigWS(url);
+  };
+  window.WebSocket.prototype = OrigWS.prototype;
+  Object.assign(window.WebSocket, OrigWS);
+
+  window.__tsbPlayerName = ${JSON.stringify(bot.name)};
   window.__tsbPlayerColor = 4095;
-  window.__tsbSquadSlot = ${slot};
-  window.__tsbFollowLeader = ${isWaitNplMode() ? JSON.stringify("npl") : JSON.stringify("")};
-  window.__tsbWaitForLeader = ${isWaitNplMode() ? 'true' : 'false'};
+  window.__tsbSquadSlot = ${bot.slot};
+  window.__tsbFollowLeader = "npl";
+  window.__tsbWaitForLeader = true;
   window.__tsbSquadSyncHold = true;
   try {
     sessionStorage.removeItem('territorialStrategyBotRecover');
@@ -69,9 +87,18 @@ if (!window.__tsbPageInjected) {
 `;
 }
 
+// Mutex so only 1 browser brings window to front & clicks Turnstile at a time on shared DISPLAY=:100
+let focusChain = Promise.resolve();
+function withWindowFocus(fn) {
+  const next = focusChain.then(fn, fn);
+  focusChain = next.catch(() => {});
+  return next;
+}
+
 const clients = [];
 
-async function attachBot({ port, name, slot }) {
+async function attachBot(bot) {
+  const { port, name, slot } = bot;
   const pages = await getJson(`http://127.0.0.1:${port}/json`);
   const page = pages.find((p) => p.type === 'page' && p.url.includes('territorial.io'));
   if (!page) {
@@ -103,16 +130,28 @@ async function attachBot({ port, name, slot }) {
       });
     });
 
-  const client = { port, name, slot, ws, send, evalJs, freshToken: false, wasInGame: false, lastReloadAt: Date.now() };
+  const client = {
+    port,
+    name,
+    slot,
+    ws,
+    send,
+    evalJs,
+    freshToken: false,
+    wasInGame: false,
+    lastReloadAt: Date.now(),
+    enteredLobbyAt: 0,
+    enteredGameAt: 0,
+  };
 
   function clickTurnstile() {
     if (clicking) return;
     clicking = true;
-    console.log(`[${name}] Turnstile render detected! Polling for widget & clicking checkbox...`);
+    console.log(`[${name}] Turnstile render detected! Queuing serialized focus & click...`);
     let tries = 0;
     const iv = setInterval(async () => {
       tries++;
-      if (client.freshToken || tries > 10) {
+      if (client.freshToken || tries > 12) {
         clearInterval(iv);
         clicking = false;
         return;
@@ -123,21 +162,30 @@ async function attachBot({ port, name, slot }) {
         const r = d.getBoundingClientRect();
         return JSON.stringify({ w: r.width, h: r.height });
       })()`);
-      if (rectStr === "GONE") {
+      if (rectStr === 'GONE') {
         clearInterval(iv);
         clicking = false;
         return;
       }
       try {
-        const { w, h } = JSON.parse(rectStr || "{}");
+        const { w, h } = JSON.parse(rectStr || '{}');
         if (w >= 100 && h >= 30) {
-          send("Input.dispatchMouseEvent", { type: "mouseMoved", x: 180, y: 180 });
-          setTimeout(() => send("Input.dispatchMouseEvent", { type: "mouseMoved", x: 28, y: 32 }), 250);
-          setTimeout(() => send("Input.dispatchMouseEvent", { type: "mousePressed", x: 28, y: 32, button: "left", clickCount: 1 }), 450);
-          setTimeout(() => send("Input.dispatchMouseEvent", { type: "mouseReleased", x: 28, y: 32, button: "left", clickCount: 1 }), 560);
+          await withWindowFocus(async () => {
+            if (client.freshToken) return;
+            send('Page.bringToFront');
+            send('Emulation.setFocusEmulationEnabled', { enabled: true });
+            send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 180, y: 180 });
+            await new Promise((r) => setTimeout(r, 140));
+            send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 28, y: 32 });
+            await new Promise((r) => setTimeout(r, 140));
+            send('Input.dispatchMouseEvent', { type: 'mousePressed', x: 28, y: 32, button: 'left', clickCount: 1 });
+            await new Promise((r) => setTimeout(r, 90));
+            send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: 28, y: 32, button: 'left', clickCount: 1 });
+            await new Promise((r) => setTimeout(r, 220));
+          });
         }
       } catch {}
-    }, 1800);
+    }, 2200);
   }
 
   async function importStrategy() {
@@ -147,12 +195,10 @@ async function attachBot({ port, name, slot }) {
         window.__tsbPlayerName = ${JSON.stringify(name)};
         window.__tsbPlayerColor = 4095;
         window.__tsbSquadSlot = ${slot};
-        window.__tsbFollowLeader = ${isWaitNplMode() ? JSON.stringify("npl") : JSON.stringify("")};
-        window.__tsbWaitForLeader = ${isWaitNplMode() ? 'true' : 'false'};
         const ext = window.__fx.strategyBotExtension;
         await ext.strategies.add({ name: "v27team.js", text: async () => ${JSON.stringify(src)} });
-        ext.settings.armed = true;
-        ext.remote.state.loop = "team";
+        ext.settings.armed = false;
+        ext.remote.state.loop = null;
         return "OK";
       })()`,
       true
@@ -165,18 +211,11 @@ async function attachBot({ port, name, slot }) {
     send('Page.enable');
     send('Runtime.enable');
     send('Runtime.addBinding', { name: '__tsbReportResult' });
-    const bootstrap = makeBootstrapScript(name, slot);
+    const bootstrap = makeBootstrapScript(bot);
     send('Page.addScriptToEvaluateOnNewDocument', { source: bootstrap });
-    // Check if already in game or in lobby before reloading!
-    const snapStr = await evalJs(`JSON.stringify(window.__fx?.strategyBotExtension?.remote?.snapshot?.() || {})`);
-    let snap = {};
-    try { snap = JSON.parse(snapStr || '{}'); } catch {}
-    if (snap.inGame && snap.alive && !snap.over) {
-      console.log(`[${name}] Already alive in an active game! Hot-updating strategy without reload.`);
-      await importStrategy();
-      return;
-    }
     client.lastReloadAt = Date.now();
+    client.freshToken = false;
+    client.enteredLobbyAt = 0;
     send('Page.reload', { ignoreCache: false });
   };
 
@@ -201,6 +240,8 @@ async function attachBot({ port, name, slot }) {
     } else if (msg.method === 'Runtime.consoleAPICalled') {
       const text = (msg.params.args || []).map((a) => a.value ?? a.description ?? '').join(' ');
       if (text.includes('turnstile render')) {
+        client.freshToken = false;
+        client.enteredLobbyAt = 0;
         clickTurnstile();
       } else if (text.includes('turnstile success')) {
         console.log(`[${name}]`, text);
@@ -213,6 +254,7 @@ async function attachBot({ port, name, slot }) {
         console.log(`[${name}]`, text);
         if (text.includes('error 4591') || text.includes('error 4215')) {
           client.freshToken = false;
+          client.enteredLobbyAt = 0;
         }
       }
     }
@@ -232,6 +274,7 @@ let reloadingForFreshTokens = false;
 function reloadClientForToken(c) {
   c.freshToken = false;
   c.wasInGame = false;
+  c.enteredLobbyAt = 0;
   c.lastReloadAt = Date.now();
   c.send('Page.reload', { ignoreCache: false });
 }
@@ -250,10 +293,34 @@ setInterval(async () => {
     })
   );
 
-  // Only allow bots to click Ready when ALL 5 bots are in Team Room 0 together (or when waiting for Boss npl)!
+  const now = Date.now();
+  states.forEach((s, idx) => {
+    if (s.inGame) {
+      if (!clients[idx].wasInGame) clients[idx].enteredGameAt = now;
+      clients[idx].wasInGame = true;
+      clients[idx].freshToken = false;
+      clients[idx].enteredLobbyAt = 0;
+    }
+    if (s.lobby?.stopped && s.lobby.stopped.includes('4591')) {
+      clients[idx].freshToken = false;
+      clients[idx].enteredLobbyAt = 0;
+    }
+  });
+
+  // Never reload while ANY bot is in an active game (including the first 15s spawnPhase when s.alive is still false!)
+  const anyAliveInGame = states.some(
+    (s, idx) => s.inGame && !s.over && (s.alive || now - clients[idx].enteredGameAt < 20000)
+  );
+  if (anyAliveInGame) {
+    reloadingForFreshTokens = false;
+    return;
+  }
+
+  // Only allow bots to click Ready when ALL 5 bots are in Team Room 0 together!
+  const inRoom0 = states.filter((s) => s.lobby && s.lobby.inLobby && s.lobby.room === 0);
   const all5InRoom0 =
-    states.every((s) => s.lobby && s.lobby.inLobby && s.lobby.room === 0) &&
-    Math.max(...states.map((s) => s.lobby.startsIn || 0)) - Math.min(...states.map((s) => s.lobby.startsIn || 0)) <= 20;
+    inRoom0.length >= 5 &&
+    Math.max(...inRoom0.map((s) => s.lobby.startsIn || 0)) - Math.min(...inRoom0.map((s) => s.lobby.startsIn || 0)) <= 20;
 
   await Promise.all(
     clients.map((c) =>
@@ -261,72 +328,35 @@ setInterval(async () => {
         window.__tsbPlayerName = ${JSON.stringify(c.name)};
         window.__tsbPlayerColor = 4095;
         window.__tsbSquadSlot = ${c.slot};
-        window.__tsbFollowLeader = ${waitMode || !all5InRoom0 ? JSON.stringify("npl") : JSON.stringify("")};
+        window.__tsbFollowLeader = ${waitMode || !all5InRoom0 ? JSON.stringify('npl') : JSON.stringify('')};
         window.__tsbWaitForLeader = ${waitMode || !all5InRoom0 ? 'true' : 'false'};
+        const ext = window.__fx?.strategyBotExtension;
+        if (ext && ${all5InRoom0 ? 'true' : 'false'}) {
+          ext.settings.armed = true;
+          ext.remote.state.loop = "team";
+          const snap = ext.remote.snapshot?.();
+          if (snap?.lobby?.inLobby && !snap.lobby.ready && !${waitMode ? 'true' : 'false'}) {
+            document.dispatchEvent(new KeyboardEvent("keyup", { code: "Enter", key: "Enter", bubbles: true, cancelable: true }));
+          }
+        }
       })()`)
     )
   );
 
-  // Unified Backend Spawn Coordinator: if bots are in spawnPhase, coordinate unique spawn positions!
-  const inSpawnIndices = states.map((s, idx) => (s.inGame && s.spawnPhase ? idx : -1)).filter((i) => i >= 0);
-  if (inSpawnIndices.length > 0) {
-    // Query top 10 spawn candidates from the first bot in spawn phase and assign distinct far-apart spots to each bot!
-    const firstClient = clients[inSpawnIndices[0]];
-    const candsJson = await firstClient.evalJs(`(() => {
-      const d = window.dictionary, g = window[d?.game];
-      const view = window.__fx?.strategyBotExtension?.bot?.view;
-      const pol = window.__fx?.strategyBotExtension?.bot?.ctl?.policy;
-      if (!view || !pol) return "[]";
-      view.refresh();
-      const cands = pol.spawnVsPeople ? pol.spawnVsPeople(view, 12) : pol.spawnCandidates(view, 12);
-      return JSON.stringify({ W: view.W, land: view.land, cands: cands || [] });
-    })()`);
-    try {
-      const { W, land, cands } = JSON.parse(candsJson || '{}');
-      if (Array.isArray(cands) && cands.length > 0 && W > 0) {
-        const minSep = Math.max(95, Math.min(165, 0.45 * Math.sqrt(land || 250000)));
-        const chosen = [];
-        for (const p of cands) {
-          const x = p % W, y = Math.floor(p / W);
-          if (chosen.every((q) => Math.hypot(x - (q % W), y - Math.floor(q / W)) >= minSep)) {
-            chosen.push(p);
-          }
-        }
-        while (chosen.length < 5) chosen.push(cands[chosen.length % cands.length]);
-        await Promise.all(
-          inSpawnIndices.map((idx, rank) => {
-            const targetPos = chosen[rank % chosen.length];
-            return clients[idx].evalJs(`(() => {
-              const view = window.__fx?.strategyBotExtension?.bot?.view;
-              if (view && view.spawnPhase) view.spawn(${targetPos}, view.me);
-            })()`);
-          })
-        );
-      }
-    } catch {}
-  }
+  if (all5InRoom0) return;
 
-  states.forEach((s, idx) => {
-    if (s.inGame) {
-      clients[idx].wasInGame = true;
-      clients[idx].freshToken = false;
-    }
-    if (s.lobby?.stopped && s.lobby.stopped.includes('4591')) {
-      clients[idx].freshToken = false;
-    }
-  });
-
-  const anyAliveInGame = states.some((s) => s.inGame && s.alive && !s.over);
-  if (anyAliveInGame) {
-    reloadingForFreshTokens = false;
-    return;
-  }
-
-  const needReload = clients.filter((c, i) => !c.freshToken && !(states[i]?.lobby?.inLobby) && Date.now() - c.lastReloadAt > 45000);
-  if (needReload.length > 0 && !reloadingForFreshTokens && Date.now() - lastSyncLaunch > 10000) {
+  // Reload any bot that lacks a fresh token and is not already in the lobby (and hasn't just launched into lobby)
+  const needReload = clients.filter(
+    (c, i) =>
+      !c.freshToken &&
+      !(states[i]?.lobby?.inLobby) &&
+      now - c.lastReloadAt > 90000 &&
+      now - c.enteredLobbyAt > 15000
+  );
+  if (needReload.length > 0 && !reloadingForFreshTokens && now - lastSyncLaunch > 10000) {
     reloadingForFreshTokens = true;
-    lastSyncLaunch = Date.now();
-    console.log(`[SQUAD-SYNC] Reloading ${needReload.map(c => c.name).join(', ')} to mint fresh Turnstile tokens...`);
+    lastSyncLaunch = now;
+    console.log(`[SQUAD-SYNC] Reloading ${needReload.map((c) => c.name).join(', ')} to mint fresh Turnstile tokens...`);
     for (const c of needReload) {
       reloadClientForToken(c);
     }
@@ -334,15 +364,22 @@ setInterval(async () => {
     return;
   }
 
+  // Wait until every bot either is already in the lobby OR has a fresh Turnstile token ready
   if (clients.some((c, i) => !c.freshToken && !(states[i]?.lobby?.inLobby))) return;
-  if (Date.now() - lastSyncLaunch < 10000) return;
 
-  const notInRoom0 = clients.filter((c, i) => !(states[i]?.lobby?.inLobby && states[i]?.lobby?.room === 0));
-  if (notInRoom0.length > 0) {
-    lastSyncLaunch = Date.now();
-    console.log(`[SQUAD-SYNC] Entering Team Room 0 for ${notInRoom0.map(c => c.name).join(', ')} (waitForLeader=${waitMode})...`);
-    for (let i = 0; i < notInRoom0.length; i++) {
-      const c = notInRoom0[i];
+  // Only call openMultiplayer(0) ONCE per fresh Turnstile token (never double-call while connecting!)
+  const readyToEnter = clients.filter(
+    (c, i) =>
+      !(states[i]?.lobby?.inLobby && states[i]?.lobby?.room === 0) &&
+      c.freshToken &&
+      now - c.enteredLobbyAt > 25000
+  );
+  if (readyToEnter.length > 0) {
+    lastSyncLaunch = now;
+    console.log(`[SQUAD-SYNC] Entering Team Room 0 for ${readyToEnter.map((c) => c.name).join(', ')} (waitForLeader=${waitMode})...`);
+    for (let i = 0; i < readyToEnter.length; i++) {
+      const c = readyToEnter[i];
+      c.enteredLobbyAt = now;
       setTimeout(() => {
         c.evalJs(`(() => {
           const d = window.dictionary;
@@ -356,7 +393,7 @@ setInterval(async () => {
           setTimeout(() => { window.__tsbSquadSyncHold = true; }, 5000);
           return "SYNC_LAUNCHED";
         })()`);
-      }, i * 1600);
+      }, i * 500);
     }
   }
 }, 2500);
