@@ -172,7 +172,7 @@ if (!isMainThread && workerData?.bot) {
         this.url = url;
         this.CONNECTING = 0; this.OPEN = 1; this.CLOSING = 2; this.CLOSED = 3;
         this.binaryType = 'blob';
-        const isProxied = typeof url === 'string' && !url.includes('game.territorial.io');
+        const isProxied = typeof url === 'string' && (url.includes('//territorial.io') || url.includes('//1.territorial.io'));
         this._ws = new WS(url, protocols, {
           agent: isProxied ? agent : undefined,
           headers: {
@@ -510,6 +510,7 @@ if (!isMainThread && workerData?.bot) {
             window.__tsbSquadSlot = ${slot};
             const ext = window.__fx.strategyBotExtension;
             const sid = await ext.strategies.add({ name: "v27team.js", text: async () => ${JSON.stringify(src)} });
+            ext.settings.strategy = sid || "file:v27team";
             if (ext.strategies.changed) ext.strategies.changed(sid || "file:v27team");
             return "OK";
           })()`,

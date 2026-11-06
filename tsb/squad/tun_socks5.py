@@ -20,9 +20,11 @@ async def pipe(reader, writer):
 
 def should_use_tun(host, local_port):
     h = host.lower()
+    # ONLY 1.territorial.io (Lobby Server 1) needs tunnel IP splitting!
+    # 4.territorial.io (Game Server 2) and 5.territorial.io (Game Server 3) MUST use 2ms DIRECT host connection!
     if local_port >= 10811:
-        return h in ("territorial.io", "1.territorial.io", "4.territorial.io", "5.territorial.io", "api.ipify.org")
-    return h in ("1.territorial.io", "4.territorial.io", "5.territorial.io", "api.ipify.org")
+        return h in ("territorial.io", "1.territorial.io", "api.ipify.org")
+    return h in ("1.territorial.io", "api.ipify.org")
 
 async def handle_client(reader, writer, devs, local_port):
     try:

@@ -257,6 +257,7 @@ async function attachChromeBot(bot) {
         window.__tsbSquadSlot = ${slot};
         const ext = window.__fx.strategyBotExtension;
         const sid = await ext.strategies.add({ name: "v27team.js", text: async () => ${JSON.stringify(src)} });
+        ext.settings.strategy = sid || "file:v27team";
         if (ext.strategies.changed) ext.strategies.changed(sid || "file:v27team");
         const snap = ext.remote?.snapshot?.();
         if (snap?.inGame) {
