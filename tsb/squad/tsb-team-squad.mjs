@@ -197,7 +197,8 @@ async function attachBot(bot) {
         window.__tsbPlayerColor = 4095;
         window.__tsbSquadSlot = ${slot};
         const ext = window.__fx.strategyBotExtension;
-        await ext.strategies.add({ name: "v27team.js", text: async () => ${JSON.stringify(src)} });
+        const id = await ext.strategies.add({ name: "v27team.js", text: async () => ${JSON.stringify(src)} });
+        if (ext.strategies.changed) ext.strategies.changed(id || "file:v27team");
         const snap = ext.remote?.snapshot?.();
         if (snap?.inGame) {
           ext.settings.armed = true;

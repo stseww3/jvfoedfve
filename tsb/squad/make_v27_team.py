@@ -111,7 +111,7 @@ new_helpers = """  isTeammate(g, p) {
   isOurSquadBot(g, p) {
     const raw = String(g.names?.[p] ?? "").trim();
     const low = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
-    return low === "mishi" || low === "matzz" || low === "kiholma" || low === "leo_99" || low === "racoon";
+    return low === "mishi" || low === "matzz" || low === "kiholma" || low === "leo_99" || low === "racoon" || raw.toUpperCase().includes("[NPL]");
   }
 
   // Check 8 compass directions from (px0, py0) to count how many outward land expansion
@@ -200,26 +200,6 @@ new_helpers = """  isTeammate(g, p) {
     for (let p = 0; p < h.humans; p++) {
       const t = h.teams ? h.teams[p] : 0;
       if (t > 0) teamCounts.set(t, (teamCounts.get(t) || 0) + 1);
-    }
-    let maxEnemyTeamSize = 1;
-    for (const [t, cnt] of teamCounts.entries()) {
-      if (t !== myTeam && cnt > maxEnemyTeamSize) maxEnemyTeamSize = cnt;
-    }
-
-    // WHEN MAX ENEMY TEAM SIZE <= 10:
-    // Directly run the proven original distributed Voronoi spawn (top 5 Voronoi regions from spawnVsPeople)!
-    if (maxEnemyTeamSize <= 10) {
-      let mySquadIdx = typeof window !== "undefined" && Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : 0;
-      let rankIdx = 0;
-      for (let p = 0; p < me; p++) {
-        if (this.isOurSquadBot(g, p) && !this.isBossNpl(g, p)) rankIdx++;
-      }
-      const slot = (rankIdx || mySquadIdx) % 5;
-      const cands = this.spawnVsPeople ? this.spawnVsPeople(g, 10) : this.spawnCandidates(g, 10);
-      if (cands && cands.length > 0) {
-        return cands[slot % cands.length];
-      }
-      return super.chooseSpawn(g, final);
     }
 
     const enemies = [];
@@ -869,36 +849,6 @@ new_mop = """  isMopUp(g) {
   }"""
 assert old_mop in s, "old_mop not found"
 s = s.replace(old_mop, new_mop, 1)
-
-old_safe_at = """  safeAt(g, q) {
-    let s = super.safeAt(g, q);
-    const P = this.p, me = this.me, L = Math.max(1, g.terr[me]);"""
-
-new_safe_at = """  safeAt(g, q) {
-    let s = super.safeAt(g, q);
-    const P = this.p, me = this.me, L = Math.max(1, g.terr[me]);
-    if (g.teams && g.teams[me] > 0 && g.t >= 900) {
-      // If we border >= 2 enemy humans from the SAME enemy team, guard against their coordinated focus fire
-      const teamBals = new Map();
-      const teamCnts = new Map();
-      for (const p of this.nb) {
-        if (p !== q && g.alive[p] && this.person(g, p) && !this.isTeammate(g, p)) {
-          const t = g.teams[p] || 0;
-          if (t > 0) {
-            teamBals.set(t, (teamBals.get(t) || 0) + g.bal[p]);
-            teamCnts.set(t, (teamCnts.get(t) || 0) + 1);
-          }
-        }
-      }
-      for (const [t, cnt] of teamCnts.entries()) {
-        if (cnt >= 2) {
-          const combBal = teamBals.get(t) || 0;
-          s = Math.max(s, Math.min(112 * L, 0.38 * combBal));
-        }
-      }
-    }"""
-assert old_safe_at in s, "old_safe_at not found"
-s = s.replace(old_safe_at, new_safe_at, 1)
 
 old_search_food = """  searchFood(g) {
     if (this.isMopUp(g)) {"""
