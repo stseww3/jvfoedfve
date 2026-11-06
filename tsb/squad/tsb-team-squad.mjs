@@ -243,16 +243,28 @@ setInterval(async () => {
   const states = await Promise.all(
     clients.map(async (c) => {
       const raw = await c.evalJs(`(() => {
-        window.__tsbPlayerName = ${JSON.stringify(c.name)};
-        window.__tsbPlayerColor = 4095;
-        window.__tsbSquadSlot = ${c.slot};
-        window.__tsbFollowLeader = ${isWaitNplMode() ? JSON.stringify("npl") : JSON.stringify("")};
-        window.__tsbWaitForLeader = ${waitMode ? 'true' : 'false'};
         const s = window.__fx?.strategyBotExtension?.remote?.snapshot?.();
         return JSON.stringify(s || {});
       })()`);
       try { return JSON.parse(raw || '{}'); } catch { return {}; }
     })
+  );
+
+  // Only allow bots to click Ready when ALL 5 bots are in Team Room 0 together (or when waiting for Boss npl)!
+  const all5InRoom0 =
+    states.every((s) => s.lobby && s.lobby.inLobby && s.lobby.room === 0) &&
+    Math.max(...states.map((s) => s.lobby.startsIn || 0)) - Math.min(...states.map((s) => s.lobby.startsIn || 0)) <= 20;
+
+  await Promise.all(
+    clients.map((c) =>
+      c.evalJs(`(() => {
+        window.__tsbPlayerName = ${JSON.stringify(c.name)};
+        window.__tsbPlayerColor = 4095;
+        window.__tsbSquadSlot = ${c.slot};
+        window.__tsbFollowLeader = ${waitMode || !all5InRoom0 ? JSON.stringify("npl") : JSON.stringify("")};
+        window.__tsbWaitForLeader = ${waitMode || !all5InRoom0 ? 'true' : 'false'};
+      })()`)
+    )
   );
 
   // Unified Backend Spawn Coordinator: if bots are in spawnPhase, coordinate unique spawn positions!
