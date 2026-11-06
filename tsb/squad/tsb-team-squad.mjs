@@ -23,7 +23,7 @@ const HEADLESS_BOTS = [
 
 const isWaitNplMode = () => fs.existsSync('/tmp/tsb-wait-npl.flag');
 
-function postSpectatorIngest(payload) {
+function postSpectatorIngest(payload, onReply = null) {
   try {
     const data = JSON.stringify(payload);
     const req = http.request({
@@ -32,7 +32,15 @@ function postSpectatorIngest(payload) {
       path: '/ingest',
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(data) }
-    }, (res) => res.resume());
+    }, (res) => {
+      let body = '';
+      res.on('data', (c) => body += c);
+      res.on('end', () => {
+        if (onReply) {
+          try { onReply(JSON.parse(body)); } catch {}
+        }
+      });
+    });
     req.on('error', () => {});
     req.end(data);
   } catch {}
@@ -433,6 +441,28 @@ for (const bot of HEADLESS_BOTS) {
 
 let lastSyncLaunch = Date.now();
 let reloadingForFreshTokens = false;
+let currentChosenBot = null;
+
+setInterval(async () => {
+  const chosen = currentChosenBot || { port: 9224 };
+  const chosenClient = clients.find((c) => c.port === chosen.port) || clients[0];
+  if (chosenClient?.callCdp) {
+    const shot = await chosenClient.callCdp('Page.captureScreenshot', { format: 'jpeg', quality: 78 });
+    if (shot?.data) {
+      postSpectatorIngest({ type: 'frame_only', jpeg: shot.data, chosen: currentChosenBot }, (reply) => {
+        if (reply?.zoom) {
+          const code = reply.zoom === 'out' ? 'NumpadSubtract' : 'NumpadAdd';
+          const key = reply.zoom === 'out' ? '-' : '+';
+          for (const c of clients) {
+            if (!c.isHeadless) {
+              c.evalJs(`for(let i=0;i<2;i++) document.dispatchEvent(new KeyboardEvent("keydown", { code: "${code}", key: "${key}", bubbles: true, cancelable: true }));`);
+            }
+          }
+        }
+      });
+    }
+  }
+}, 800);
 
 function reloadClientForToken(c) {
   c.freshToken = false;
@@ -464,10 +494,24 @@ setInterval(async () => {
         if (ext?.bots?.local?.error) {
           ext.bots.local.error = null;
         }
+        const panel = document.getElementById("tsb-panel");
+        if (panel && !panel.classList.contains("tsb-folded")) {
+          panel.classList.add("tsb-folded");
+          const btn = panel.querySelector(".tsb-fold");
+          if (btn) btn.textContent = "+";
+        }
+        if (ext?.settings) ext.settings.folded = true;
         const s = ext?.remote?.snapshot?.() || {};
         const info = ext?.remote?.state?.info;
         const d = window.dictionary;
         const g = d && window[d.game];
+        const pixels = d && window[d.sbPixels];
+        if (!${c.isHeadless ? 'true' : 'false'} && s?.inGame && info?.tick > 15 && pixels && window.__zoomedGamePixels !== pixels) {
+          window.__zoomedGamePixels = pixels;
+          for (let i = 0; i < 11; i++) {
+            document.dispatchEvent(new KeyboardEvent("keydown", { code: "NumpadSubtract", key: "-", bubbles: true, cancelable: true }));
+          }
+        }
         if (g && g[d.gIsSingleplayer] && g[d.gameState] === 1 && g[d.sbLeave]) {
           g[d.sbLeave](true);
         }
@@ -530,15 +574,8 @@ setInterval(async () => {
   }
   const chromeInStats = allStats.filter((b) => b.port < 9300);
   const chosen = chromeInStats.slice().sort((a, b) => (b.alive - a.alive) || (b.inGame - a.inGame) || (b.terr - a.terr))[0] || chromeInStats[0];
-  let jpegB64 = null;
-  if (chosen) {
-    const chosenClient = clients.find((c) => c.port === chosen.port);
-    if (chosenClient?.callCdp) {
-      const shot = await chosenClient.callCdp('Page.captureScreenshot', { format: 'jpeg', quality: 72 });
-      if (shot?.data) jpegB64 = shot.data;
-    }
-  }
-  postSpectatorIngest({ type: 'all_stats', stats: allStats, chosen, jpeg: jpegB64 });
+  currentChosenBot = chosen || null;
+  postSpectatorIngest({ type: 'all_stats', stats: allStats, chosen });
 
   // Only skip state transitions if ALL bots failed to respond
   if (states.every((s) => !s.ok)) return;

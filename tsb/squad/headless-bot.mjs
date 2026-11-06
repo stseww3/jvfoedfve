@@ -115,7 +115,10 @@ if (!isMainThread && workerData?.bot) {
   const { bot } = workerData;
   const { socksPort, name, slot, id, pw } = bot;
 
-  const gameJsSource = fs.readFileSync('/tmp/live_game_js.js', 'utf8');
+  const gameJsSource = fs.readFileSync('/tmp/live_game_js.js', 'utf8')
+    .replace('if(bi.ds){bi.ds=false;a0J()}', 'if(bi.ds){bi.ds=false}')
+    .replace('this.aeB=function(){bi.ds=true;nF();this.eI=0}', 'this.aeB=function(){this.eI=0}')
+    .replace('bV.ym.dk();', '');
   const pageJsSource = fs.readFileSync('/tmp/tsb-team-ext/page.js', 'utf8');
   const dictSource = fs.readFileSync('/tmp/live_dictionary.json', 'utf8');
 
