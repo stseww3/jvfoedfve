@@ -207,9 +207,8 @@ new_helpers = """  isTeammate(g, p) {
     }
 
     // WHEN MAX ENEMY TEAM SIZE <= 10:
-    // Directly run the proven original distributed Voronoi spawn (100% win rate in <=10/team games)!
+    // Directly run the proven original distributed Voronoi spawn (top 5 Voronoi regions from spawnVsPeople)!
     if (maxEnemyTeamSize <= 10) {
-      const minSep = Math.max(95, Math.min(165, 0.48 * Math.sqrt(g.land)));
       let mySquadIdx = typeof window !== "undefined" && Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : 0;
       let rankIdx = 0;
       for (let p = 0; p < me; p++) {
@@ -218,21 +217,6 @@ new_helpers = """  isTeammate(g, p) {
       const slot = (rankIdx || mySquadIdx) % 5;
       const cands = this.spawnVsPeople ? this.spawnVsPeople(g, 10) : this.spawnCandidates(g, 10);
       if (cands && cands.length > 0) {
-        const wellSpaced = cands.filter((pos) => {
-          const x = typeof pos === "number" ? (pos % W) : pos.x;
-          const y = typeof pos === "number" ? Math.floor(pos / W) : pos.y;
-          for (let p = 0; p < g.humans; p++) {
-            if (p === me || g.terr[p] === 0) continue;
-            if (this.isTeammate(g, p) || this.isOurSquadBot(g, p) || this.isBossNpl(g, p)) {
-              const hx = (g.x0[p] + g.x1[p]) >> 1, hy = (g.y0[p] + g.y1[p]) >> 1;
-              if (Math.hypot(x - hx, y - hy) < minSep) return false;
-            }
-          }
-          return true;
-        });
-        if (wellSpaced.length > 0) {
-          return wellSpaced[slot % wellSpaced.length];
-        }
         return cands[slot % cands.length];
       }
       return super.chooseSpawn(g, final);
