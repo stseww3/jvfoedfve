@@ -49,13 +49,22 @@ const LOBBY_INIT = `this.di = function () {
         /* here */
     }`;
 
+const LOBBY_PLAYERS = `function a() {
+        /*...*/
+        this.lobbyPlayers = [[], [], [], []];
+        this.lobbyReadyCounts = [0, 0, 0, 0];
+        this.b = [];
+        /*...*/
+    }`;
+
 // Inserted at the end of the patch function (matchCode e, insertCode s,
 // dictionary helper n). lobbySelection lands in the dictionary only when both
 // lobby hooks are in.
 export const LOBBY_PATCH =
     `try{e(${q(LOBBY_ROOM)},{addToDictionary:["lobbyRoomMode","lobbyRoomTimeLeft"]})}` +
     `catch(t){console.warn("strategyBot: LobbyRoom was not found, start --mp does not check the room's mode:\\n"+t.message)}` +
-    `try{s(${q(LOBBY_UPDATE)},"__fx.strategyBot.lobbyTick();"),` +
+    `try{e(${q(LOBBY_PLAYERS)},{addToDictionary:["lobbyPlayers","lobbyReadyCounts"]})}catch(t){}` +
+    `try{n(s(${q(LOBBY_UPDATE)},"__fx.strategyBot.lobbyTick(lobbyManager);"),["lobbyManager"]),` +
     `n(s(${q(LOBBY_INIT)},";__fx.strategyBot.lobbyInit(this.lobbySelection, this.lobbyRooms);"),["lobbySelection","lobbyRooms"])}` +
     `catch(t){console.warn("strategyBot: the multiplayer lobby was not found, start --mp is off:\\n"+t.message)}`;
 

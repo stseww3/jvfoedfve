@@ -364,10 +364,59 @@
       if (lobby.reopens >= 3) return void stopLoop(`大厅总进错房间（在 ${sel[0]} 号，要 ${want} 号）`);
       return lobby.reopens++, lobbyRoom(want), void closeLobby(want);
     }
+    const follow = followLeaderStatus(d, want);
+    if (follow && !follow.ready) {
+      if (sel[3] && (!lobby.pressAt || now - lobby.pressAt >= 1200)) {
+        lobby.pressAt = now, press("Escape");
+      }
+      return;
+    }
     if (sel[3]) return void(lobby.presses = 0, lobby.error = null);
     if (now - lobby.initAt < 1e3 || now - lobby.pressAt < (lobby.presses >= 5 ? 1e4 : 1500)) return;
     lobby.pressAt = now, press("Enter");
     lobby.sel[3] ? (lobby.presses = 0, lobby.error = null) : ++lobby.presses >= 5 && (lobby.error = `点 Ready 没反应（试了 ${lobby.presses} 次）`);
+  }
+  function parseClanTag(name) {
+    const s = String(name || "");
+    const i = s.indexOf("["), j = s.indexOf("]");
+    return i >= 0 && j - i > 1 && j - i <= 8 ? s.slice(i + 1, j).toUpperCase().trim() : null;
+  }
+  function followLeaderStatus(d, room) {
+    const leaderKey = String(window.__tsbFollowLeader ?? "").trim().toLowerCase();
+    const waitLeader = !!window.__tsbWaitForLeader;
+    if (!leaderKey && !waitLeader) return null;
+    const mgr = lobby.mgr || (d && d.lobbyManager && window[d.lobbyManager]);
+    if (!mgr) return waitLeader ? { found: false, ready: false } : null;
+    let vh = null, vi = null;
+    for (const v of Object.values(mgr)) {
+      if (v && "object" == typeof v) {
+        if (d.lobbyPlayers && Array.isArray(v[d.lobbyPlayers])) {
+          vh = v[d.lobbyPlayers], vi = v[d.lobbyReadyCounts];
+          break;
+        }
+        const vals = Object.values(v);
+        const arr4 = vals.find((x) => Array.isArray(x) && 4 === x.length && Array.isArray(x[0]));
+        const cnt4 = vals.find((x) => Array.isArray(x) && 4 === x.length && "number" == typeof x[0]);
+        if (arr4 && cnt4) {
+          vh = arr4, vi = cnt4;
+          break;
+        }
+      }
+    }
+    if (!vh || !vi) return waitLeader ? { found: false, ready: false } : null;
+    const list = vh[room] || [], readyCount = vi[room] | 0;
+    const myClan = parseClanTag(window.__tsbPlayerName || "");
+    const targetKey = leaderKey || "npl";
+    for (let idx = 0; idx < list.length; idx++) {
+      const p = list[idx];
+      const raw = String((p && (p.aFN || p.username)) || "");
+      const low = raw.toLowerCase();
+      const clan = parseClanTag(raw);
+      if (low.includes(targetKey) && (!myClan || !clan || clan === myClan)) {
+        return { found: true, ready: idx < readyCount, name: raw };
+      }
+    }
+    return waitLeader ? { found: false, ready: false } : null;
   }
   // after I die or the game ends: leave, then the loop starts the next game
   function exitStep(d, g, now) {
@@ -406,7 +455,8 @@
       const now = Date.now();
       Object.assign(lobby, { sel, rooms, initAt: now, tickAt: now, opens: 0, presses: 0, pressAt: 0 });
     },
-    lobbyTick() {
+    lobbyTick(mgr) {
+      mgr && (lobby.mgr = mgr);
       lobby.tickAt = Date.now();
     },
     // the game calls this for every connection it sees closing, with the close code
@@ -577,6 +627,8 @@
         if ((mp || team) && !lobbyPatched()) return { ok: !1, error: SINGLE_ONLY ? "this build only plays singleplayer games, it has no --mp/--team" : "the multiplayer lobby is not patched (see the browser console), --mp/--team is off", state: snapshot() };
         if ("string" == typeof c.clan && c.clan.trim()) window.__tsbPlayerName = c.clan.trim();
         if (Number.isInteger(c.color)) window.__tsbPlayerColor = c.color;
+        if ("string" == typeof c.follow) window.__tsbFollowLeader = c.follow.trim();
+        if ("boolean" == typeof c.waitLeader) window.__tsbWaitForLeader = c.waitLeader;
         if ("string" == typeof c.strategy && c.strategy.trim()) {
           const name = String(c.name || "remote").replace(/[^\w.-]+/g, "_").slice(0, 40) || "remote";
           await Te.add({ name: `${name}.js`, text: async () => c.strategy });

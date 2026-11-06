@@ -37,8 +37,8 @@ import { basename } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const CMDS = ['ping', 'start', 'stop', 'end', 'lobby'];
-const FLAGS = ['single', 'mp', 'team', 'stay', 'leave', 'print', 'wait'];
-const USAGE = 'usage: node send-command.mjs <ping|start|stop|end|lobby> [--single | --mp | --team] [--clan name] [--color rgb] [--stay | --leave] [--strategy file.js] [--use v3] [--seq n] [--key k] [--url u] [--wait [--result u] [--timeout s]] [--print]';
+const FLAGS = ['single', 'mp', 'team', 'wait-leader', 'no-wait-leader', 'stay', 'leave', 'print', 'wait'];
+const USAGE = 'usage: node send-command.mjs <ping|start|stop|end|lobby> [--single | --mp | --team] [--clan name] [--color rgb] [--follow leader] [--wait-leader | --no-wait-leader] [--stay | --leave] [--strategy file.js] [--use v3] [--seq n] [--key k] [--url u] [--wait [--result u] [--timeout s]] [--print]';
 const UUID = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
 // the extension polls every 3 s, but a minimized or background tab may poll only about once a minute
 const TIMEOUT_S = 90;
@@ -143,6 +143,8 @@ export async function main(argv, io = {}) {
     if (opt.team) c.team = true;
     if (opt.clan) c.clan = String(opt.clan);
     if (opt.color !== undefined) c.color = Number(opt.color) | 0;
+    if (opt.follow !== undefined) c.follow = String(opt.follow);
+    if (opt['wait-leader'] || opt['no-wait-leader']) c.waitLeader = !!opt['wait-leader'];
     if (opt.stay || opt.leave) c.stay = !!opt.stay;
 
     const p = JSON.stringify(c);
