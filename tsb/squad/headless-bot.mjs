@@ -87,9 +87,12 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, get
       console.log(`[${name}] (Worker) Fresh Turnstile token ready & v27team (slot=${slot}) imported!`);
     } else if (msg.type === 'log') {
       console.log(`[${name}]`, msg.text);
-      if (msg.text.includes('error 4591') || msg.text.includes('error 4215') || msg.text.includes('error 4577')) {
+      if (msg.text.includes('error 4591') || msg.text.includes('error 4215') || msg.text.includes('error 4577') || msg.text.includes('error 4229')) {
         client.freshToken = false;
         client.enteredLobbyAt = 0;
+        if (msg.text.includes('error 4229')) {
+          client.evalJs(`(() => { const d = window.dictionary, g = d && window[d.game]; if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true); })()`);
+        }
       }
     } else if (msg.type === 'result') {
       if (onResult) onResult(client, msg.payload);
@@ -117,6 +120,10 @@ if (!isMainThread && workerData?.bot) {
   const gameJsSource = fs.readFileSync('/tmp/live_game_js.js', 'utf8')
     .replace('if(bi.ds){bi.ds=false;a0J()}', 'if(bi.ds){bi.ds=false}')
     .replace('this.aeB=function(){bi.ds=true;nF();this.eI=0}', 'this.aeB=function(){this.eI=0}')
+    .replace(
+      'if(this.ae5!==this.aIt*7){n8();be.render();return}',
+      'if(this.ae5!==this.aIt*7){n8();while(this.ae7.length>0&&this.ae5<this.aIt*7&&aE.a2G!==2){n8()}if(this.ae7.length===0){be.render();return}}'
+    )
     .replace('bV.ym.dk();', '');
   const pageJsSource = fs.readFileSync('/tmp/tsb-team-ext/page.js', 'utf8');
   const dictSource = fs.readFileSync('/tmp/live_dictionary.json', 'utf8');

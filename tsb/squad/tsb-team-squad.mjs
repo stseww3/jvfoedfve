@@ -705,10 +705,8 @@ setInterval(async () => {
   }
 
   // If no bot has >= 80 territory anymore (match is effectively over for our squad), leave lingering dead/tiny games to main menu!
-  let leftAnyGame = false;
   for (let i = 0; i < clients.length; i++) {
     if (states[i]?.inGame) {
-      leftAnyGame = true;
       clients[i].wasInGame = false;
       clients[i].freshToken = false;
       clients[i].lastReloadAt = 0;
@@ -716,11 +714,10 @@ setInterval(async () => {
         window.__tsbSquadSyncHold = true;
         const d = window.dictionary;
         const g = d && window[d.game];
-        if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](false);
+        if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true);
       })()`);
     }
   }
-  if (leftAnyGame) return;
 
   // Rule #5641 + #5645:
   // - If Room 0 has < 35 players (!wantTenForCurrentLobby): 5 Chrome bots enter, ready ONLY when all 5/5 Chrome bots are in Room 0 (or >= 4 in final 8s)
@@ -781,7 +778,8 @@ setInterval(async () => {
   }
 
   // Enter Team Room 0:
-  // - Require ALL 10 bots (5 Chrome + 5 Headless) to have fresh tokens ready before entering Room 0 so when Room 0 >= 35 players, the 5 Headless bots join in <1s without waiting for token minting!
+  // - Primary 5 Chrome bots (!c.isHeadless) enter as soon as all 5 Chrome bots have fresh tokens (never blocked by Headless bots!)
+  // - Reserve 5 Headless bots (c.isHeadless) enter when wantTenForCurrentLobby is true (Room 0 >= 35 players)
   const readyToEnter = clients.filter(
     (c, i) =>
       (!c.isHeadless || wantTenForCurrentLobby) &&
@@ -790,7 +788,7 @@ setInterval(async () => {
       c.freshToken &&
       now - c.enteredLobbyAt > 18000
   );
-  if (readyToEnter.length > 0 && !clients.some((c, i) => !c.freshToken && !(states[i]?.lobby?.inLobby))) {
+  if (readyToEnter.length > 0 && !clients.some((c, i) => !c.isHeadless && !c.freshToken && !(states[i]?.lobby?.inLobby))) {
     lastSyncLaunch = now;
     console.log(
       `[SQUAD-SYNC] Entering Team Room 0 for ${readyToEnter.map((c) => c.name).join(', ')} (mode=${wantTenForCurrentLobby ? '10-BOT >=35p' : '5-BOT <35p'}, room0Players=${maxRoom0Players})...`
