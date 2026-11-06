@@ -173,20 +173,21 @@ new_helpers = """  isTeammate(g, p) {
     return { openCount, maxContig, terrainBlocked, openMask };
   }
 
-  // TEAM-SIZE-AWARE ARC CLUSTERING SPAWN:
-  // 1. Evaluates enemy team sizes (e.g. 20-player enemy mega-team) and vetoes any spot inside
-  //    an enemy pincer/surround or multi-octant cluster ("不要在人家20人中间生成").
-  // 2. Dynamically scales squad clustering spacing based on enemy team size & total human count.
-  // 3. Forms a 1-layer arc/crescent anchored on Boss [NPL]NPL or senior squadmate (p < me),
-  //    enforcing >= 3 open compass rays (135°~180°+ outward expansion) for BOTH self and every
-  //    teammate so nobody is EVER boxed in between teammates ("也别卡在队友中间出不去").
+  // TEAM-SIZE-AWARE HIGH-VORONOI REGIONAL FRONTLINE SPAWN:
+  // 1. Uses full 600-step Voronoi land integral (like v27 spawnVsPeople0) as the multiplicative base
+  //    so we NEVER sacrifice large territory (20k~50k land) for a cramped 4k pocket!
+  // 2. Enforces healthy squad spacing (minAllySep = 92~130px, ideal = 135~165px, max = 260px)
+  //    so each of the 5 brothers gets a full 20k~40k expansion circle before merging borders at t=1200~1600.
+  // 3. Vetoes enemy mega-team encirclements (pincer / multi-octant surround) and heavily discounts
+  //    spots that are 100% walled in behind wild teammates (enemyBorder === 0).
   chooseSpawn(g, final = true) {
-    const me = this.me;
+    const P = this.p, me = this.me;
     const h = g.terr[me] > 0 ? withoutPlayer(g, me) : g;
     const W = h.W, H = h.H, N = h.N, px = h.px, d4 = h.dir4;
     const mapScale = Math.sqrt(Math.max(10000, h.land));
 
-    if (!this.dEnemyBuf || this.dEnemyBuf.length !== N) {
+    if (!this.dPeopleBuf || this.dPeopleBuf.length !== N) {
+      this.dPeopleBuf = new Int32Array(N);
       this.dEnemyBuf = new Int32Array(N);
       this.dAllyBuf = new Int32Array(N);
       this.dMineBuf = new Int32Array(N).fill(-1);
@@ -200,18 +201,16 @@ new_helpers = """  isTeammate(g, p) {
       const t = h.teams ? h.teams[p] : 0;
       if (t > 0) teamCounts.set(t, (teamCounts.get(t) || 0) + 1);
     }
-    let maxEnemyTeamSize = 1;
-    for (const [t, cnt] of teamCounts.entries()) {
-      if (t !== myTeam && cnt > maxEnemyTeamSize) maxEnemyTeamSize = cnt;
-    }
 
     const enemies = [];
     const squadAllies = [];
     const wildAllies = [];
     let bossAlly = null;
+    let anyHumanPlaced = false;
 
     for (let p = 0; p < h.humans; p++) {
       if (p === me || h.terr[p] === 0) continue;
+      anyHumanPlaced = true;
       const hx = (h.x0[p] + h.x1[p]) >> 1, hy = (h.y0[p] + h.y1[p]) >> 1;
       const isBoss = this.isBossNpl(h, p);
       const isSquad = this.isOurSquadBot(h, p) && !isBoss;
@@ -229,56 +228,41 @@ new_helpers = """  isTeammate(g, p) {
       }
     }
 
+    if (!anyHumanPlaced) {
+      return this.spawnCandidates(g, 1)[0] ?? null;
+    }
+
     const seniorAllies = [];
     if (bossAlly) seniorAllies.push(bossAlly);
     for (const a of squadAllies) {
       if (a.isSenior) seniorAllies.push(a);
     }
-    const allPlacedAllies = [
-      ...(bossAlly ? [bossAlly] : []),
-      ...squadAllies,
-      ...wildAllies
-    ];
+    const ourSquadList = bossAlly ? [bossAlly, ...squadAllies] : squadAllies;
+    const allPlacedAllies = [...ourSquadList, ...wildAllies];
 
-    // Precompute existing open cones for our placed squadmates & Boss so we never choke them
-    const seniorBaseCones = new Map();
-    for (const a of (bossAlly ? [bossAlly, ...squadAllies] : squadAllies)) {
-      seniorBaseCones.set(a.p, this.evalOpenExpansionCone(h, a.x, a.y, allPlacedAllies, a.p));
-    }
+    // 2. Healthy Voronoi spacing: each brother needs ~50-75px radius of personal land (15k-35k pixels)
+    //    before borders merge, so center-to-center distance between squadmates is 95~240px (ideal ~140px).
+    const minAllySep = Math.round(Math.max(92, Math.min(130, 0.142 * mapScale)));
+    const idealAllySep = Math.round(Math.max(132, Math.min(180, 0.205 * mapScale)));
+    const maxAllySep = Math.round(Math.max(220, Math.min(310, 0.340 * mapScale)));
+    const minWildSep = Math.round(Math.max(54, 0.58 * minAllySep));
 
-    // 2. Dynamic spacing based on enemy team size & human count
-    let minAllySep, idealAllySep, maxAllySep;
-    if (maxEnemyTeamSize >= 10 || h.humans >= 20) {
-      // High-density / mega-team battle: tight arc clustering so 5 brothers fuse into a solid wall fast
-      minAllySep = Math.round(Math.max(36, 0.060 * mapScale));
-      idealAllySep = Math.round(Math.max(52, 0.086 * mapScale));
-      maxAllySep = Math.round(Math.max(86, 0.140 * mapScale));
-    } else if (maxEnemyTeamSize >= 5 || h.humans >= 12) {
-      minAllySep = Math.round(Math.max(44, 0.072 * mapScale));
-      idealAllySep = Math.round(Math.max(64, 0.104 * mapScale));
-      maxAllySep = Math.round(Math.max(104, 0.168 * mapScale));
-    } else {
-      minAllySep = Math.round(Math.max(52, 0.085 * mapScale));
-      idealAllySep = Math.round(Math.max(76, 0.125 * mapScale));
-      maxAllySep = Math.round(Math.max(124, 0.195 * mapScale));
-    }
-    const minWildSep = Math.round(Math.max(30, 0.72 * minAllySep));
-
-    // 3. BFS land distance maps to Enemies and to Teammates
+    // 3. BFS land distance maps:
+    //    distAll: distance to ANY placed human (gives true Voronoi cell size!)
+    //    dEnemy:  distance to nearest placed enemy human
+    //    dAlly:   distance to nearest placed teammate human
+    const distAll = Strategy.prototype.spawnDist.call(
+      this, h, this.dPeopleBuf, (o) => o < h.humans && o !== me
+    );
     const dEnemy = enemies.length > 0
       ? Strategy.prototype.spawnDist.call(
-          this,
-          h,
-          this.dEnemyBuf,
+          this, h, this.dEnemyBuf,
           (o) => o < h.humans && o !== me && !this.isTeammate(h, o) && !this.isOurSquadBot(h, o) && !this.isBossNpl(h, o)
         )
       : null;
-
     const dAlly = allPlacedAllies.length > 0
       ? Strategy.prototype.spawnDist.call(
-          this,
-          h,
-          this.dAllyBuf,
+          this, h, this.dAllyBuf,
           (o) => o < h.humans && o !== me && (this.isTeammate(h, o) || this.isOurSquadBot(h, o) || this.isBossNpl(h, o))
         )
       : null;
@@ -286,13 +270,13 @@ new_helpers = """  isTeammate(g, p) {
     const comp = this.compSize ? this.compSize(h) : null;
     const minLandmass = Math.min(25000, Math.floor(0.18 * h.land));
 
-    // Enemy surround / pincer / mega-team heat evaluator
-    const R_surr = Math.max(135, Math.min(240, 0.30 * mapScale));
-    const R_pincer = Math.max(105, Math.min(175, 0.22 * mapScale));
+    // Enemy mega-team encirclement & heat evaluator
+    const R_surr = Math.max(145, Math.min(250, 0.32 * mapScale));
+    const R_pincer = Math.max(110, Math.min(175, 0.22 * mapScale));
 
     const evalEnemyRisk = (x, y) => {
-      if (enemies.length === 0) return { veto: false, penalty: 0, minD: 999 };
-      let minD = Infinity, heat = 0, octMask = 0;
+      if (enemies.length === 0) return { veto: false, heat: 0, minD: 999 };
+      let minD = Infinity, heat = 0;
       const teamOcts = new Map();
       const near = [];
 
@@ -301,231 +285,135 @@ new_helpers = """  isTeammate(g, p) {
         const dx = e.x - x, dy = e.y - y;
         const d = Math.hypot(dx, dy);
         if (d < minD) minD = d;
-        const minSafeE = 34 + Math.min(30, (e.teamSize - 1) * 1.4);
-        if (d < minSafeE) return { veto: true, penalty: 1e9, minD: d };
+        const minSafeE = 40 + Math.min(26, (e.teamSize - 1) * 1.2);
+        if (d < minSafeE) return { veto: true, heat: 999, minD: d };
 
-        const tw = 1 + 0.35 * Math.min(25, e.teamSize - 1);
-        heat += tw * Math.exp(-(d * d) / (2 * 115 * 115));
+        const tw = 1 + 0.30 * Math.min(25, e.teamSize - 1);
+        heat += tw * Math.exp(-(d * d) / (2 * 125 * 125));
 
-        if (d <= R_surr) {
+        if (d <= R_surr && e.team > 0) {
           const oct = Math.floor(((Math.atan2(dy, dx) + Math.PI) / (2 * Math.PI)) * 8) & 7;
-          octMask |= (1 << oct);
-          if (e.team > 0) {
-            let rec = teamOcts.get(e.team);
-            if (!rec) { rec = { mask: 0, cnt: 0, size: e.teamSize }; teamOcts.set(e.team, rec); }
-            rec.mask |= (1 << oct);
-            rec.cnt++;
-          }
+          let rec = teamOcts.get(e.team);
+          if (!rec) { rec = { mask: 0, cnt: 0, size: e.teamSize }; teamOcts.set(e.team, rec); }
+          rec.mask |= (1 << oct);
+          rec.cnt++;
         }
         if (d <= R_pincer) {
           near.push({ ux: dx / Math.max(1, d), uy: dy / Math.max(1, d), d, team: e.team, teamSize: e.teamSize });
         }
       }
 
-      // Pincer / sandwich check: never spawn between two enemies!
+      // Pincer veto: never spawn sandwiched between two enemies of a big team within R_pincer
       for (let i = 0; i < near.length; i++) {
         for (let j = i + 1; j < near.length; j++) {
           const e1 = near[i], e2 = near[j];
           const cosA = e1.ux * e2.ux + e1.uy * e2.uy;
-          if (cosA < -0.38 && (e1.team === e2.team || e1.teamSize >= 5 || e2.teamSize >= 5 || (e1.d < 115 && e2.d < 115))) {
-            return { veto: true, penalty: 1e9, minD };
+          if (cosA < -0.45 && (e1.team === e2.team || e1.teamSize >= 6 || e2.teamSize >= 6) && e1.d < 135 && e2.d < 135) {
+            return { veto: true, heat: 999, minD };
           }
         }
       }
 
-      // Multi-octant surround check
-      let octCnt = 0;
-      for (let b = 0; b < 8; b++) if ((octMask >> b) & 1) octCnt++;
-      if (octCnt >= 4) return { veto: true, penalty: 1e9, minD };
-
+      // Single enemy team multi-octant surround veto (>= 3 members in >= 3 octants within R_surr)
       for (const rec of teamOcts.values()) {
         let tOcts = 0;
         for (let b = 0; b < 8; b++) if ((rec.mask >> b) & 1) tOcts++;
-        if (rec.cnt >= 3 && tOcts >= 3) return { veto: true, penalty: 1e9, minD };
+        if (rec.cnt >= 3 && tOcts >= 3) return { veto: true, heat: 999, minD };
       }
 
-      return { veto: false, penalty: heat * 170, minD };
+      return { veto: false, heat, minD };
     };
 
-    // 4. Generate candidate positions:
-    //    (a) Dense arc ring around seniorAllies (so followers always find the exact 45~90px frontline arc spots)
-    //    (b) Teammate-Enemy Frontline Boundary candidates (50 <= dEnemy <= 195 and not buried behind wild teammates!)
-    //    (c) Global open-land candidates (for small games or before enemies place)
-    const candSet = new Set();
-    const addCand = (x, y) => {
-      if (x < 6 || y < 6 || x >= W - 6 || y >= H - 6) return;
-      const c = y * W + x;
-      if (px[c] !== T_LAND) return;
-      if (comp && comp[c] > 0 && comp[c] < minLandmass) return;
-      candSet.add(c);
-    };
-
-    const curPos = g.terr[me] > 0 ? ((g.y0[me] + g.y1[me]) >> 1) * W + ((g.x0[me] + g.x1[me]) >> 1) : -1;
-    if (curPos >= 0) addCand(curPos % W, Math.floor(curPos / W));
-
-    if (seniorAllies.length > 0) {
-      const ringMax = maxAllySep + 32;
-      for (const a of seniorAllies) {
-        const x0 = Math.max(6, a.x - ringMax), x1 = Math.min(W - 7, a.x + ringMax);
-        const y0 = Math.max(6, a.y - ringMax), y1 = Math.min(H - 7, a.y + ringMax);
-        for (let y = y0; y <= y1; y += 8) {
-          for (let x = x0; x <= x1; x += 8) {
-            const d = Math.hypot(x - a.x, y - a.y);
-            if (d >= minAllySep && d <= ringMax) addCand(x, y);
-          }
-        }
-      }
-    }
-
-    const frontlineCands = [];
-    const globalFar = [];
-    for (let y = 8; y < H - 8; y += 10) {
-      for (let x = 8; x < W - 8; x += 10) {
+    // 4. Generate candidate spots:
+    //    (a) Standard v27 farthest-from-humans spots (spaced by 24px, plus islands/pockets and spawnCandidates)
+    //    (b) Regional ring [minAllySep, maxAllySep] around seniorAllies (spaced by 20px)
+    const far = [], cut = [];
+    for (let y = 6; y < H - 7; y += 4) {
+      for (let x = 6; x < W - 7; x += 4) {
         const c = y * W + x;
         if (px[c] !== T_LAND) continue;
         if (comp && comp[c] > 0 && comp[c] < minLandmass) continue;
-        const de = dEnemy ? dEnemy[c] : -1;
-        const da = dAlly ? dAlly[c] : -1;
-        if (de >= 48 && de <= 210 && (da < 0 || de <= da + 85)) {
-          frontlineCands.push(c);
-        } else if (de < 0 || de >= 45) {
-          globalFar.push(c);
+        if (distAll[c] >= 0) far.push(c);
+        else cut.push(c);
+      }
+    }
+    far.sort((a, b) => distAll[b] - distAll[a]);
+    const spaced = (list, k, gap) => {
+      const out = [];
+      for (const c of list) {
+        if (out.length >= k) break;
+        const x = c % W, y = iV(c, W);
+        if (out.some((o) => Math.abs((o % W) - x) + Math.abs(iV(o, W) - y) < gap)) continue;
+        out.push(c);
+      }
+      return out;
+    };
+
+    const candSet = new Set();
+    for (const c of spaced(far, 90, 22)) candSet.add(c);
+    for (const c of spaced(cut, 8, 64)) candSet.add(c);
+    for (const s of this.spawnCandidates(g, 10)) candSet.add(s.y * W + s.x);
+
+    if (seniorAllies.length > 0) {
+      for (const a of seniorAllies) {
+        const x0 = Math.max(8, a.x - maxAllySep), x1 = Math.min(W - 9, a.x + maxAllySep);
+        const y0 = Math.max(8, a.y - maxAllySep), y1 = Math.min(H - 9, a.y + maxAllySep);
+        for (let y = y0; y <= y1; y += 20) {
+          for (let x = x0; x <= x1; x += 20) {
+            const c = y * W + x;
+            if (px[c] !== T_LAND) continue;
+            if (comp && comp[c] > 0 && comp[c] < minLandmass) continue;
+            const d = Math.hypot(x - a.x, y - a.y);
+            if (d >= minAllySep && d <= maxAllySep && distAll[c] >= 36) candSet.add(c);
+          }
         }
       }
     }
-    // Sort frontline candidates to prefer the sweet-spot buffer (~95px from enemy, close to ally support)
-    if (dEnemy) {
-      frontlineCands.sort((a, b) => {
-        const scoreA = Math.abs(dEnemy[a] - 95) + (dAlly && dAlly[a] >= 0 ? Math.abs(dAlly[a] - 65) * 0.6 : 0);
-        const scoreB = Math.abs(dEnemy[b] - 95) + (dAlly && dAlly[b] >= 0 ? Math.abs(dAlly[b] - 65) * 0.6 : 0);
-        return scoreA - scoreB;
-      });
-      globalFar.sort((a, b) => (dEnemy[b] < 0 ? 400 : dEnemy[b]) - (dEnemy[a] < 0 ? 400 : dEnemy[a]));
-    }
-    for (let i = 0; i < Math.min(90, frontlineCands.length); i++) {
-      const c = frontlineCands[i];
-      addCand(c % W, Math.floor(c / W));
-    }
-    for (let i = 0; i < Math.min(35, globalFar.length); i++) {
-      const c = globalFar[i];
-      addCand(c % W, Math.floor(c / W));
-    }
-    for (const s of this.spawnCandidates(g, 10)) addCand(s.x, s.y);
 
-    // 5. Score candidates with strict True-Voronoi Frontline Boundary & Non-Enclosure Rules
+    const curPos = g.terr[me] > 0 ? ((g.y0[me] + g.y1[me]) >> 1) * W + ((g.x0[me] + g.x1[me]) >> 1) : -1;
+    if (curPos >= 0 && px[curPos] === T_LAND) candSet.add(curPos);
+
+    // 5. Evaluate full 600-step Voronoi land score (v27 spawnVsPeople0 formula) + perimeter contacts
     const dd = this.dMineBuf, q = this.spawnQBuf;
-    const scoreSpot = (s, strictCluster, requireFrontline) => {
-      if (px[s] !== T_LAND) return -1e9;
-      if (comp && comp[s] > 0 && comp[s] < minLandmass) return -1e9;
-      const x = s % W, y = Math.floor(s / W);
+    const lam = P.spawnP || 1000000000, maxD = P.spawnMaxD || 600, M = P.spawnM || 200;
 
-      // Check minimum distance to all placed allies
-      for (const a of (bossAlly ? [bossAlly, ...squadAllies] : squadAllies)) {
-        if (Math.hypot(x - a.x, y - a.y) < minAllySep) return -1e9;
+    const evalCandidate = (s) => {
+      if (px[s] !== T_LAND) return null;
+      if (comp && comp[s] > 0 && comp[s] < minLandmass) return null;
+      const x = s % W, y = iV(s, W);
+
+      // Enforce minimum separation from our squadmates / Boss and wild teammates
+      for (const a of ourSquadList) {
+        if (Math.hypot(x - a.x, y - a.y) < minAllySep) return null;
       }
       for (const w of wildAllies) {
-        if (Math.hypot(x - w.x, y - w.y) < minWildSep) return -1e9;
+        if (Math.hypot(x - w.x, y - w.y) < minWildSep) return null;
       }
 
-      // Check distance to seniorAllies when clustering
-      let minSenD = Infinity;
-      if (seniorAllies.length > 0) {
-        for (const a of seniorAllies) {
-          const d = Math.hypot(x - a.x, y - a.y);
-          if (d < minSenD) minSenD = d;
-        }
-        if (strictCluster && minSenD > maxAllySep + 32) return -1e9;
-      }
-
-      // Check Enemy Mega-Team Risk & Surround Veto
       const eRisk = evalEnemyRisk(x, y);
-      if (eRisk.veto) return -1e9;
+      if (eRisk.veto) return null;
 
-      // Never step directly between a senior squadmate/Boss and their nearest enemy (which would wall them into the rear!)
-      if (enemies.length > 0) {
-        for (const a of (bossAlly ? [bossAlly, ...squadAllies] : squadAllies)) {
-          const distAS = Math.hypot(x - a.x, y - a.y);
-          if (distAS > 110) continue;
-          let nearE = null, minED = Infinity;
-          for (const e of enemies) {
-            const de = Math.hypot(e.x - a.x, e.y - a.y);
-            if (de < minED) { minED = de; nearE = e; }
-          }
-          if (nearE && minED < 260) {
-            const ex = (nearE.x - a.x) / Math.max(1, minED), ey = (nearE.y - a.y) / Math.max(1, minED);
-            const sx = (x - a.x) / Math.max(1, distAS), sy = (y - a.y) / Math.max(1, distAS);
-            // If we spawn in a narrow 50° cone directly in front of ally 'a' toward their nearest enemy, veto!
-            if (ex * sx + ey * sy > 0.68 && Math.hypot(nearE.x - x, nearE.y - y) < minED) {
-              return -1e9;
-            }
-          }
-        }
-      }
+      const cone = this.evalOpenExpansionCone(h, x, y, allPlacedAllies, me);
+      if (cone.openCount < 3 || cone.maxContig < 2) return null;
 
-      // Check No-Sandwich & Open Expansion Cone for SELF
-      const selfCone = this.evalOpenExpansionCone(h, x, y, allPlacedAllies, me);
-      if (selfCone.openCount < 3 || selfCone.maxContig < 2) return -1e9;
-
-      // Check that we do NOT sandwich ourselves between two close allies
-      const closeAllies = [];
-      for (const a of allPlacedAllies) {
-        const dx = a.x - x, dy = a.y - y;
-        const d = Math.hypot(dx, dy);
-        if (d <= 98) closeAllies.push({ ...a, ux: dx / Math.max(1, d), uy: dy / Math.max(1, d), d });
-      }
-      for (let i = 0; i < closeAllies.length; i++) {
-        for (let j = i + 1; j < closeAllies.length; j++) {
-          const a1 = closeAllies[i], a2 = closeAllies[j];
-          if (a1.ux * a2.ux + a1.uy * a2.uy < -0.55 && a1.d < 88 && a2.d < 88 && selfCone.openCount < 4) {
-            return -1e9;
-          }
-        }
-      }
-
-      // Check that placing at (x, y) does NOT box in Boss or any placed squadmate!
-      const withMe = [...allPlacedAllies, { p: me, x, y }];
-      let allyChokePenalty = 0;
-      for (const a of (bossAlly ? [bossAlly, ...squadAllies] : squadAllies)) {
-        const d = Math.hypot(x - a.x, y - a.y);
-        if (d > 105) continue;
-        const before = seniorBaseCones.get(a.p);
-        const after = this.evalOpenExpansionCone(h, a.x, a.y, withMe, a.p);
-        const minReq = a.isBoss ? Math.min(4, before ? before.openCount : 4) : Math.min(3, before ? before.openCount : 3);
-        if (after.openCount < minReq || after.maxContig < 2) return -1e9;
-        if (before && after.openCount < before.openCount) {
-          allyChokePenalty += (before.openCount - after.openCount) * 140;
-        }
-      }
-
-      // True Voronoi BFS (stopping at BOTH enemy Voronoi cells AND teammate Voronoi cells!):
-      // Measures exact personal land `truePixels`, enemy frontline contact `enemyFront`, and teammate border `allyFront`.
-      let qh = 0, qt = 0, landSc = 0;
-      let truePixels = 0, enemyFront = 0, allyFront = 0;
+      let qh = 0, qt = 0, rawLandSc = 0, pixels = 0, enemyBorder = 0, allyBorder = 0;
       dd[s] = 0;
       q[qt++] = s;
       while (qh < qt) {
         const c = q[qh++];
         const dc = dd[c];
-        truePixels++;
-        const de = dEnemy ? dEnemy[c] : -1;
-        const da = dAlly ? dAlly[c] : -1;
-        const wE = de >= 0 ? Math.min(1, (de - dc) / 130) : 1;
-        landSc += (wE * 420) / (240 + dc);
-        if (dc >= 135) {
-          if (de >= 0 && (da < 0 || de <= da + 25)) enemyFront++;
-          else if (da >= 0) allyFront++;
-          continue;
-        }
+        pixels++;
+        const w = M > 0 && distAll[c] >= 0 ? Math.min(1, (distAll[c] - dc) / M) : 1;
+        rawLandSc += (w * lam) / (lam + dc);
+        if (dc >= maxD) continue;
         for (let k = 0; k < 4; k++) {
           const n = c + d4[k];
           if (dd[n] >= 0 || px[n] !== T_LAND) continue;
-          const deN = dEnemy ? dEnemy[n] : -1;
-          const daN = dAlly ? dAlly[n] : -1;
-          const hitEnemy = deN >= 0 && dc + 1 >= deN;
-          const hitAlly = daN >= 0 && dc + 1 >= daN;
-          if (hitEnemy || hitAlly) {
-            if (hitEnemy && (!hitAlly || deN <= daN + 6)) enemyFront++;
-            else allyFront++;
+          if (distAll[n] >= 0 && dc + 1 >= distAll[n]) {
+            const deN = dEnemy ? dEnemy[n] : -1;
+            const daN = dAlly ? dAlly[n] : -1;
+            if (deN >= 0 && (daN < 0 || deN <= daN + 6)) enemyBorder++;
+            else if (daN >= 0) allyBorder++;
             continue;
           }
           dd[n] = dc + 1;
@@ -534,117 +422,57 @@ new_helpers = """  isTeammate(g, p) {
       }
       for (let i = 0; i < qt; i++) dd[q[i]] = -1;
 
-      // Never pick a tiny pocket boxed in by teammates/enemies/water!
-      if (truePixels < 360) return -1e9;
+      // Never pick a tiny pocket (< 2200 Voronoi pixels) where we'd get starved!
+      if (pixels < 2200) return null;
 
-      // FRONTLINE BOUNDARY ENFORCEMENT ("最好都在队友和敌人的边界处，不要完全被队友围住"):
-      // If enemies exist on this landmass, we MUST have a direct Voronoi frontline facing the enemies (`enemyFront >= 12`)
-      // rather than being 100% walled in behind wild teammates (`enemyFront === 0`)!
+      let mult = 1.0 / (1.0 + 0.05 * eRisk.heat);
+
+      // Anti-Wall-In & Frontline Boundary multiplier:
+      // If enemies exist on this landmass, penalize spots that are 100% walled in behind wild teammates
+      // (enemyBorder === 0 and allyBorder > 20), and reward spots that have both teammate support AND enemy frontline!
       const deHere = dEnemy ? dEnemy[s] : -1;
-      const daHere = dAlly ? dAlly[s] : -1;
       if (deHere >= 0 && allPlacedAllies.length > 0) {
-        if (requireFrontline && enemyFront < 12) return -1e9;
-      }
-
-      let total = landSc - eRisk.penalty - allyChokePenalty;
-      total += selfCone.openCount * 95 + selfCone.maxContig * 75;
-
-      // Frontline Boundary Bonus: reward spots right on the Teammate-Enemy interface!
-      if (deHere >= 0) {
-        if (enemyFront < 12) {
-          // Heavily penalize being walled behind teammates with no path to enemies
-          total -= 3200;
-        } else {
-          // Ideal frontline exposure: direct enemy contact on the front + ally contact on the rear/flank
-          const frontScore = Math.min(450, enemyFront * 9);
-          const supportScore = allyFront >= 8 ? 380 : 0;
-          // Ideal buffer distance to nearest enemy on land: ~60..165 steps
-          const distBonus = deHere >= 52 && deHere <= 175
-            ? 620 - 4 * Math.abs(deHere - 100)
-            : deHere > 175
-              ? -Math.min(1400, (deHere - 175) * 8)
-              : -600;
-          // Ensure we are NOT deeper in the rear than our wild teammates (deHere <= daHere + 75)
-          const notInRearBonus = (daHere >= 0 && deHere > daHere + 90) ? -1200 : 260;
-          total += frontScore + supportScore + distBonus + notInRearBonus;
+        if (enemyBorder < 6 && allyBorder > 18) {
+          mult *= 0.35; // Walled in by teammates -> heavy discount!
+        } else if (enemyBorder >= 10 && allyBorder >= 8) {
+          mult *= 1.18; // Right on the Teammate-Enemy boundary with good Voronoi land!
         }
       }
 
-      // Safe backstop bonus: having 1~3 sectors backed by sea/map edge while >= 4 sectors are open land
-      if (selfCone.terrainBlocked >= 1 && selfCone.terrainBlocked <= 3 && selfCone.openCount >= 4) {
-        total += 190;
-      }
-
-      // Arc Cohesion Bonus around seniorAllies (lining up shoulder-to-shoulder along the frontline)
-      if (seniorAllies.length > 0 && Number.isFinite(minSenD)) {
-        if (minSenD <= maxAllySep + 32) {
-          total += 1900 - 14 * Math.abs(minSenD - idealAllySep);
-        } else {
-          total -= (minSenD - maxAllySep) * 18;
+      // Regional Squad Cohesion multiplier (only multiplicative on rawLandSc so tiny pockets NEVER win!)
+      let minSenD = Infinity;
+      if (seniorAllies.length > 0) {
+        for (const a of seniorAllies) {
+          const d = Math.hypot(x - a.x, y - a.y);
+          if (d < minSenD) minSenD = d;
+        }
+        if (minSenD >= minAllySep && minSenD <= maxAllySep) {
+          const closeness = 1.0 - Math.min(1.0, Math.abs(minSenD - idealAllySep) / (maxAllySep - minAllySep));
+          mult *= (1.18 + 0.22 * closeness);
         }
       }
 
-      // Hysteresis stability bonus for current spot (only if it still has frontline!)
-      if (s === curPos && (deHere < 0 || enemyFront >= 12)) total += 135;
+      if (s === curPos) mult *= 1.04;
 
-      return total;
+      return { s, x, y, rawLandSc, pixels, enemyBorder, allyBorder, minSenD, finalSc: rawLandSc * mult };
     };
 
-    let bestS = -1, bestVal = -1e9;
-    const useStrictCluster = seniorAllies.length > 0;
-    // Pass 1: Strict cluster + strict frontline boundary (both beside squadmates AND facing enemies!)
+    const evals = [];
+    let maxRawLand = 0;
     for (const c of candSet) {
-      const v = scoreSpot(c, useStrictCluster, true);
-      if (v > bestVal) {
-        bestVal = v;
-        bestS = c;
+      const res = evalCandidate(c);
+      if (res) {
+        evals.push(res);
+        if (res.rawLandSc > maxRawLand) maxRawLand = res.rawLandSc;
       }
     }
 
-    // Pass 2: If seniorAllies spawned buried in the rear where no cluster spot has frontline,
-    // break out to the nearest true Frontline Boundary spot!
-    if (bestS < 0) {
-      for (const c of candSet) {
-        const v = scoreSpot(c, false, true);
-        if (v > bestVal) {
-          bestVal = v;
-          bestS = c;
-        }
-      }
-    }
-
-    // Pass 3: Fallback if no enemies on landmass yet
-    if (bestS < 0) {
-      for (const c of candSet) {
-        const v = scoreSpot(c, false, false);
-        if (v > bestVal) {
-          bestVal = v;
-          bestS = c;
-        }
-      }
-    }
-
-    if (bestS >= 0) {
-      // Fine local refinement (step 4, then 2) preserving frontline & non-enclosure vetoes
-      for (const step of [4, 2]) {
-        let improved = true;
-        while (improved) {
-          improved = false;
-          const bx = bestS % W, by = Math.floor(bestS / W);
-          for (const [dx, dy] of [[step, 0], [-step, 0], [0, step], [0, -step]]) {
-            const nx = bx + dx, ny = by + dy;
-            if (nx < 6 || ny < 6 || nx >= W - 6 || ny >= H - 6) continue;
-            const nc = ny * W + nx;
-            const v = scoreSpot(nc, false, true);
-            if (v > bestVal) {
-              bestVal = v;
-              bestS = nc;
-              improved = true;
-            }
-          }
-        }
-      }
-      return { x: bestS % W, y: Math.floor(bestS / W) };
+    if (evals.length > 0) {
+      // Hard floor on Voronoi land size: never pick a spot with < 55% of the best available Voronoi land on the map!
+      const viable = evals.filter((r) => r.rawLandSc >= 0.55 * maxRawLand);
+      const pool = viable.length > 0 ? viable : evals;
+      pool.sort((a, b) => b.finalSc - a.finalSc);
+      return { x: pool[0].x, y: pool[0].y };
     }
 
     return super.chooseSpawn(g, final);

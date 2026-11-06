@@ -340,6 +340,7 @@ setInterval(async () => {
         }
         const s = ext?.remote?.snapshot?.() || {};
         const info = ext?.remote?.state?.info;
+        s.ok = true;
         s.spawnPhase = !!info?.spawnPhase;
         s.tick = info?.tick || 0;
         if (s?.inGame && !s.over && s.alive) {
@@ -380,6 +381,9 @@ setInterval(async () => {
       clients[idx].enteredLobbyAt = 0;
     }
   });
+
+  // If any evalJs timed out this tick, skip state transitions so we never misjudge an active game!
+  if (states.some((s) => !s.ok)) return;
 
   // Never reload or re-open lobby while ANY bot is in an active game (including spawnPhase or first 30s!)
   const anyAliveInGame = states.some(
@@ -459,7 +463,8 @@ setInterval(async () => {
         c.evalJs(`(() => {
           const d = window.dictionary;
           const g = window[d.game];
-          if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true);
+          if (g && g[d.gameState] === 1) return "ALREADY_IN_GAME";
+          if (g && g[d.sbLeave] && g[d.gameState] === 2) g[d.sbLeave](true);
           const ext = window.__fx.strategyBotExtension;
           ext.settings.armed = true;
           ext.remote.state.loop = "team";

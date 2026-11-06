@@ -829,7 +829,7 @@
     }
     if (rw.pending) return;
     // in a hidden tab too: nothing else brings in the new scripts
-    if (ue.manual && (state.update || state.worker && state.worker.dead)) {
+    if (false && ue.manual && (state.update || state.worker && state.worker.dead)) {
       const u = state.update || (state.update = { at: now, held: !1 });
       if (playing(d, g) && now - u.at < UPDATE_WAIT_MS) return;
       rec.reloads = rec.reloads.filter((t) => now - t < 36e5);
