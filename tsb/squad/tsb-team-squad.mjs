@@ -66,20 +66,23 @@ if (!window.__tsbPageInjected) {
       resultUrl: 'http://127.0.0.1/team-result',
       key: 'aKURzbiCpouWOcpOSOffKLXqTXPaVsLG',
       pollMs: 3000,
-      folded: false,
+      folded: true,
       port: 8765,
       strategy: 'file:v27team'
     };
     localStorage.setItem('territorialStrategyBotExtension', JSON.stringify(extCfg));
   } catch (e) {}
-  document.addEventListener('tsb-remote', (e) => {
-    try {
-      const c = JSON.parse(e.detail);
-      if (c.kind === 'post' && window.__tsbReportResult) {
-        window.__tsbReportResult(c.body);
-      }
-    } catch {}
-  });
+  if (!window.__tsbResultHooked) {
+    window.__tsbResultHooked = true;
+    document.addEventListener('tsb-remote', (e) => {
+      try {
+        const c = JSON.parse(e.detail);
+        if (c.kind === 'post' && window.__tsbReportResult) {
+          window.__tsbReportResult(c.body);
+        }
+      } catch {}
+    });
+  }
   ${pageJsSource}
 }
 `;
@@ -335,9 +338,11 @@ setInterval(async () => {
           ext.status.phase = "patched";
           ext.status.error = null;
         }
-        const s = ext?.remote?.snapshot?.();
+        const s = ext?.remote?.snapshot?.() || {};
+        const info = ext?.remote?.state?.info;
+        s.spawnPhase = !!info?.spawnPhase;
+        s.tick = info?.tick || 0;
         if (s?.inGame && !s.over && s.alive) {
-          const info = ext?.remote?.state?.info;
           const d = window.dictionary;
           const g = d && window[d.game];
           const pd = d && window[d.playerData];
@@ -355,7 +360,7 @@ setInterval(async () => {
             document.dispatchEvent(new KeyboardEvent("keydown", { code: "KeyP", key: "p", bubbles: true, cancelable: true }));
           }
         }
-        return JSON.stringify(s || {});
+        return JSON.stringify(s);
       })()`);
       try { return JSON.parse(raw || '{}'); } catch { return {}; }
     })
@@ -367,6 +372,8 @@ setInterval(async () => {
       if (!clients[idx].wasInGame) clients[idx].enteredGameAt = now;
       clients[idx].wasInGame = true;
       clients[idx].enteredLobbyAt = 0;
+    } else {
+      clients[idx].wasInGame = false;
     }
     if (s.lobby?.stopped && s.lobby.stopped.includes('4591')) {
       clients[idx].freshToken = false;
@@ -374,9 +381,9 @@ setInterval(async () => {
     }
   });
 
-  // Never reload while ANY bot is in an active game (including the first 15s spawnPhase when s.alive is still false!)
+  // Never reload or re-open lobby while ANY bot is in an active game (including spawnPhase or first 30s!)
   const anyAliveInGame = states.some(
-    (s, idx) => s.inGame && !s.over && (s.alive || s.spawnPhase || now - clients[idx].enteredGameAt < 25000)
+    (s, idx) => s.inGame && !s.over && (s.alive || s.spawnPhase || s.tick < 50 || now - clients[idx].enteredGameAt < 30000)
   );
   if (anyAliveInGame) {
     reloadingForFreshTokens = false;
@@ -434,9 +441,10 @@ setInterval(async () => {
   // Wait until every bot either is already in the lobby OR has a fresh Turnstile token ready
   if (clients.some((c, i) => !c.freshToken && !(states[i]?.lobby?.inLobby))) return;
 
-  // Only call openMultiplayer(0) ONCE per fresh Turnstile token (never double-call while connecting!)
+  // Only call openMultiplayer(0) ONCE per fresh Turnstile token when NOT in an active game!
   const readyToEnter = clients.filter(
     (c, i) =>
+      !states[i]?.inGame &&
       !(states[i]?.lobby?.inLobby && states[i]?.lobby?.room === 0) &&
       c.freshToken &&
       now - c.enteredLobbyAt > 25000

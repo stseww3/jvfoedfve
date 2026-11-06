@@ -102,7 +102,7 @@ new_helpers = """  isTeammate(g, p) {
   isOurSquadBot(g, p) {
     const raw = String(g.names?.[p] ?? "").trim();
     const low = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
-    return low === "mishi" || low === "matzz" || low === "kiholma" || low === "leo_99" || low === "racoon" || raw.toUpperCase().includes("[NPL]");
+    return low === "mishi" || low === "matzz" || low === "kiholma" || low === "leo_99" || low === "racoon";
   }
 
   // DISTRIBUTED BACKEND-COORDINATED TEAM SPAWNING:
@@ -374,7 +374,7 @@ new_helpers = """  isTeammate(g, p) {
 
     let bestAlly = -1, bestScore = -Infinity;
     for (let p = 0; p < g.humans; p++) {
-      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || g.terr[p] < 600) continue;
+      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || (!this.isBossNpl(g, p) && !this.isOurSquadBot(g, p)) || g.terr[p] < 600) continue;
       const dAlly = g.bal[p] / Math.max(1, g.terr[p]);
       if (dAlly >= 132) continue;
       let outAtk = 0, inAtk = 0;
