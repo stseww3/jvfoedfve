@@ -18,11 +18,13 @@ async def pipe(reader, writer):
         except Exception:
             pass
 
-def should_use_tun(host):
+def should_use_tun(host, local_port):
     h = host.lower()
+    if local_port >= 10811:
+        return h in ("territorial.io", "1.territorial.io", "4.territorial.io", "5.territorial.io", "api.ipify.org")
     return h in ("1.territorial.io", "4.territorial.io", "5.territorial.io", "api.ipify.org")
 
-async def handle_client(reader, writer, devs):
+async def handle_client(reader, writer, devs, local_port):
     try:
         hdr = await asyncio.wait_for(reader.readexactly(2), timeout=5)
         ver, nmethods = hdr[0], hdr[1]
@@ -62,10 +64,9 @@ async def handle_client(reader, writer, devs):
         target_addr = infos[0][4]
 
         connected_sock = None
-        if should_use_tun(host):
+        if should_use_tun(host, local_port):
             for dev in devs:
                 if not dev:
-                    # Direct Host IP
                     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
                     sock.setblocking(False)
                     try:
@@ -84,7 +85,7 @@ async def handle_client(reader, writer, devs):
                 sock.setblocking(False)
                 try:
                     sock.setsockopt(socket.SOL_SOCKET, SO_BINDTODEVICE, dev.encode("utf-8") + b"\x00")
-                    await asyncio.wait_for(loop.sock_connect(sock, target_addr), timeout=1.5)
+                    await asyncio.wait_for(loop.sock_connect(sock, target_addr), timeout=1.6)
                     connected_sock = sock
                     break
                 except Exception:
@@ -110,19 +111,24 @@ async def handle_client(reader, writer, devs):
             pass
 
 async def main():
-    # Each bot gets its own dedicated primary + backup live tunnel (5 distinct exit IPs: DIRECT + tun13 + tun21 + tun25 + tun22)!
+    # 10 bots (10801..10805 + 10811..10815), each with its own dedicated primary + backup tunnel exit IP!
     mappings = [
-        (10801, ["", "tun22"]),
-        (10802, ["tun13", "tun21"]),
-        (10803, ["tun21", "tun13"]),
-        (10804, ["tun25", ""]),
-        (10805, ["tun22", "tun25"]),
+        (10801, ["", "tun66"]),
+        (10802, ["tun13", "tun49"]),
+        (10803, ["tun21", "tun67"]),
+        (10804, ["tun47", "tun66"]),
+        (10805, ["tun22", "tun49"]),
+        (10811, ["tun52", "tun66"]),
+        (10812, ["tun53", "tun49"]),
+        (10813, ["tun60", "tun67"]),
+        (10814, ["tun68", "tun74"]),
+        (10815, ["tun70", "tun72"]),
     ]
     servers = []
     for port, devs in mappings:
-        srv = await asyncio.start_server(lambda r, w, ds=devs: handle_client(r, w, ds), "127.0.0.1", port)
+        srv = await asyncio.start_server(lambda r, w, ds=devs, lp=port: handle_client(r, w, ds, lp), "127.0.0.1", port)
         servers.append(srv)
-        print(f"Dual-Tunnel SOCKS5 listening on 127.0.0.1:{port} -> {devs}", flush=True)
+        print(f"10-Bot SOCKS5 listening on 127.0.0.1:{port} -> {devs}", flush=True)
     await asyncio.gather(*(s.serve_forever() for s in servers))
 
 asyncio.run(main())

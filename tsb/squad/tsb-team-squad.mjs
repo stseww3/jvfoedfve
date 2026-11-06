@@ -1,10 +1,11 @@
-import fs from 'fs';
-import http from 'http';
+import fs from 'node:fs';
+import http from 'node:http';
+import { createHeadlessBot } from './headless-bot.mjs';
 
 const pageJsSource = fs.readFileSync('/tmp/tsb-team-ext/page.js', 'utf8');
 const getV27TeamSource = () => fs.readFileSync('/tmp/v27-team-live.js', 'utf8');
 
-const BOTS = [
+const CHROME_BOTS = [
   { port: 9223, name: '[NPL] Mishi', slot: 0, id: 'mTd7B', pw: 'vivELD0lOKgghLr' },
   { port: 9224, name: '[NPL] Matzz', slot: 1, id: 'vgLjn', pw: 'Cl2xSE00tjOjVBq' },
   { port: 9225, name: '[NPL] Kiholma', slot: 2, id: 'NJmJY', pw: 'zmUT69zzi_Rk80I' },
@@ -12,7 +13,30 @@ const BOTS = [
   { port: 9227, name: '[NPL] Racoon', slot: 4, id: '5nvnY', pw: 'DzMzg9vRC1Qnj3z' },
 ];
 
+const HEADLESS_BOTS = [
+  { port: 9305, socksPort: 10811, donorChromePort: 9223, name: '[NPL] Zexos', slot: 5, id: 'JwG5J', pw: 'ASEvJoo4K862kll' },
+  { port: 9306, socksPort: 10812, donorChromePort: 9224, name: '[NPL] Talon', slot: 6, id: 'QNNy7', pw: 'UpqFcPh3MHISdPg' },
+  { port: 9307, socksPort: 10813, donorChromePort: 9225, name: '[NPL] Vortex', slot: 7, id: 'QcNb5', pw: 'oqHseyPLOB_VYfT' },
+  { port: 9308, socksPort: 10814, donorChromePort: 9226, name: '[NPL] Kronos', slot: 8, id: 'BRmym', pw: 'IAn4Vw-8_6_VhgK' },
+  { port: 9309, socksPort: 10815, donorChromePort: 9227, name: '[NPL] Nexus', slot: 9, id: 'qQGqw', pw: 'kh_nhYj46nGU6R3' },
+];
+
 const isWaitNplMode = () => fs.existsSync('/tmp/tsb-wait-npl.flag');
+
+function postSpectatorIngest(payload) {
+  try {
+    const data = JSON.stringify(payload);
+    const req = http.request({
+      hostname: '127.0.0.1',
+      port: 8199,
+      path: '/ingest',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(data) }
+    }, (res) => res.resume());
+    req.on('error', () => {});
+    req.end(data);
+  } catch {}
+}
 
 function getJson(url) {
   return new Promise((resolve, reject) => {
@@ -44,8 +68,6 @@ function makeBootstrapScript(bot) {
 }
 if (!window.__tsbPageInjected) {
   window.__tsbPageInjected = true;
-
-
   window.__tsbPlayerName = ${JSON.stringify(bot.name)};
   window.__tsbPlayerColor = 4095;
   window.__tsbSquadSlot = ${bot.slot};
@@ -88,7 +110,6 @@ if (!window.__tsbPageInjected) {
 `;
 }
 
-// Mutex so only 1 browser brings window to front & clicks Turnstile at a time on shared DISPLAY=:100
 let focusChain = Promise.resolve();
 function withWindowFocus(fn) {
   const next = focusChain.then(fn, fn);
@@ -98,7 +119,18 @@ function withWindowFocus(fn) {
 
 const clients = [];
 
-async function attachBot(bot) {
+function recordResult(name, port, rawPayload) {
+  try {
+    const data = typeof rawPayload === 'string' ? JSON.parse(rawPayload) : rawPayload;
+    if (data && data.type === 'result') {
+      const line = JSON.stringify({ bot: name, port, ...data });
+      fs.appendFileSync('/tmp/tsb-team-results.jsonl', line + '\n');
+      console.log(`[RESULT ${name}] result=${data.result} event=${data.event} place=${data.place} peak=${data.peak} team=${JSON.stringify(data.team || null)}`);
+    }
+  } catch {}
+}
+
+async function attachChromeBot(bot) {
   const { port, name, slot } = bot;
   const pages = await getJson(`http://127.0.0.1:${port}/json`);
   const page = pages.find((p) => p.type === 'page' && p.url.includes('territorial.io'));
@@ -113,6 +145,7 @@ async function attachBot(bot) {
   const pending = new Map();
 
   const send = (method, params = {}) => {
+    if (ws.readyState !== 1) return -1;
     const id = ++seq;
     ws.send(JSON.stringify({ id, method, params }));
     return id;
@@ -121,6 +154,7 @@ async function attachBot(bot) {
   const evalJs = (expression, awaitPromise = false) =>
     new Promise((resolve) => {
       const id = send('Runtime.evaluate', { expression, awaitPromise });
+      if (id < 0) return resolve(null);
       const timer = setTimeout(() => {
         pending.delete(id);
         resolve(null);
@@ -135,6 +169,7 @@ async function attachBot(bot) {
     port,
     name,
     slot,
+    isHeadless: false,
     ws,
     send,
     evalJs,
@@ -197,8 +232,8 @@ async function attachBot(bot) {
         window.__tsbPlayerColor = 4095;
         window.__tsbSquadSlot = ${slot};
         const ext = window.__fx.strategyBotExtension;
-        const id = await ext.strategies.add({ name: "v27team.js", text: async () => ${JSON.stringify(src)} });
-        if (ext.strategies.changed) ext.strategies.changed(id || "file:v27team");
+        const sid = await ext.strategies.add({ name: "v27team.js", text: async () => ${JSON.stringify(src)} });
+        if (ext.strategies.changed) ext.strategies.changed(sid || "file:v27team");
         const snap = ext.remote?.snapshot?.();
         if (snap?.inGame) {
           ext.settings.armed = true;
@@ -274,14 +309,7 @@ async function attachBot(bot) {
       return;
     }
     if (msg.method === 'Runtime.bindingCalled' && msg.params.name === '__tsbReportResult') {
-      try {
-        const data = JSON.parse(msg.params.payload);
-        if (data.type === 'result') {
-          const line = JSON.stringify({ bot: name, port, ...data });
-          fs.appendFileSync('/tmp/tsb-team-results.jsonl', line + '\n');
-          console.log(`[RESULT ${name}] result=${data.result} event=${data.event} place=${data.place} peak=${data.peak} team=${JSON.stringify(data.team || null)}`);
-        }
-      } catch {}
+      recordResult(name, port, msg.params.payload);
     } else if (msg.method === 'Runtime.consoleAPICalled') {
       const text = (msg.params.args || []).map((a) => a.value ?? a.description ?? '').join(' ');
       if (text.includes('turnstile render')) {
@@ -309,8 +337,35 @@ async function attachBot(bot) {
   return client;
 }
 
-for (const bot of BOTS) {
-  await attachBot(bot);
+for (const bot of CHROME_BOTS) {
+  await attachChromeBot(bot);
+}
+
+let activeStreamOwner = null;
+let activeStreamKey = null;
+
+for (const bot of HEADLESS_BOTS) {
+  const hc = createHeadlessBot(bot, {
+    getStrategySource: getV27TeamSource,
+    onResult(c, payload) {
+      recordResult(c.name, c.port, payload);
+    },
+    onGameInit(c, initData) {
+      const key = `${initData.tN.fF}_${initData.tN.mapSeed}_${initData.tN.spawningSeed}`;
+      if (activeStreamKey !== key) {
+        activeStreamKey = key;
+        activeStreamOwner = c.port;
+        postSpectatorIngest({ type: 'init', key, ...initData });
+      }
+    },
+    onGamePacket(c, pkt) {
+      if (activeStreamOwner === c.port && activeStreamKey) {
+        const b64 = Buffer.from(pkt).toString('base64');
+        postSpectatorIngest({ type: 'pkt', key: activeStreamKey, b64 });
+      }
+    }
+  });
+  clients.push(hc);
 }
 
 let lastSyncLaunch = Date.now();
@@ -321,11 +376,15 @@ function reloadClientForToken(c) {
   c.wasInGame = false;
   c.enteredLobbyAt = 0;
   c.lastReloadAt = Date.now();
-  c.send('Page.reload', { ignoreCache: false });
+  if (c.isHeadless) {
+    c.mintToken();
+  } else {
+    c.send('Page.reload', { ignoreCache: false });
+  }
 }
 
 setInterval(async () => {
-  if (clients.length < 5) return;
+  if (clients.length < 10) return;
   const waitMode = isWaitNplMode();
 
   const states = await Promise.all(
@@ -341,16 +400,23 @@ setInterval(async () => {
         }
         const s = ext?.remote?.snapshot?.() || {};
         const info = ext?.remote?.state?.info;
+        const d = window.dictionary;
+        const g = d && window[d.game];
+        const teams = d && window[d.sbTeamHolder]?.[d.sbTeams];
+        const me = g && g[d.playerId];
         s.ok = true;
         s.spawnPhase = !!info?.spawnPhase;
         s.tick = info?.tick || 0;
+        s.terr = info?.territory || 0;
+        s.land = info?.land || 0;
+        s.bal = info?.balance || 0;
+        s.rank = info?.rank || "-";
+        s.players = info?.players || "-";
+        s.meId = Number.isInteger(me) ? me : -1;
+        s.team = teams && Number.isInteger(me) ? teams[me] : "-";
         if (s?.inGame && !s.over && s.alive) {
-          const d = window.dictionary;
-          const g = d && window[d.game];
           const pd = d && window[d.playerData];
           const terr = pd && pd[d.playerTerritories];
-          const teams = d && window[d.sbTeamHolder]?.[d.sbTeams];
-          const me = g && g[d.playerId];
           let teamLand = info?.territory || 0;
           if (teams && terr && Number.isInteger(me) && teams[me] > 0) {
             teamLand = 0;
@@ -368,6 +434,36 @@ setInterval(async () => {
     })
   );
 
+  // Send headless stats (slots 5..9) to spectator server
+  const hStats = [];
+  for (let i = 0; i < clients.length; i++) {
+    const c = clients[i];
+    const s = states[i];
+    if (c.isHeadless && s?.ok) {
+      hStats.push({
+        port: c.port,
+        slot: c.slot,
+        name: c.name,
+        meId: s.meId ?? -1,
+        inGame: !!s.inGame,
+        lobby: s.lobby,
+        tick: s.tick || 0,
+        time: s.tick ? Math.floor(s.tick * 0.056 / 60) + ':' + String(Math.floor((s.tick * 0.056) % 60)).padStart(2, '0') : '-',
+        alive: !!s.alive,
+        terr: s.terr || 0,
+        land: s.land || 0,
+        bal: s.bal || 0,
+        rank: s.rank || '-',
+        players: s.players || '-',
+        team: s.team || '-'
+      });
+    }
+  }
+  postSpectatorIngest({ type: 'headless_stats', stats: hStats });
+
+  // If any evalJs timed out this tick, skip state transitions so we never misjudge an active game!
+  if (states.some((s) => !s.ok)) return;
+
   const now = Date.now();
   states.forEach((s, idx) => {
     if (s.inGame) {
@@ -383,9 +479,6 @@ setInterval(async () => {
     }
   });
 
-  // If any evalJs timed out this tick, skip state transitions so we never misjudge an active game!
-  if (states.some((s) => !s.ok)) return;
-
   // Never reload or re-open lobby while ANY bot is in an active game (including spawnPhase or first 30s!)
   const anyAliveInGame = states.some(
     (s, idx) => s.inGame && !s.over && (s.alive || s.spawnPhase || s.tick < 50 || now - clients[idx].enteredGameAt < 30000)
@@ -395,11 +488,13 @@ setInterval(async () => {
     return;
   }
 
-  // Only allow bots to click Ready when ALL 5 bots are in Team Room 0 together!
+  // Allow bots to click Ready when >= 8 bots are in Team Room 0 together (or >= 6 when timer is getting low)!
   const inRoom0 = states.filter((s) => s.lobby && s.lobby.inLobby && s.lobby.room === 0);
-  const all5InRoom0 =
-    inRoom0.length >= 5 &&
-    Math.max(...inRoom0.map((s) => s.lobby.startsIn || 0)) - Math.min(...inRoom0.map((s) => s.lobby.startsIn || 0)) <= 20;
+  const readyCountInRoom0 = inRoom0.length;
+  const minStartsIn = inRoom0.length ? Math.min(...inRoom0.map((s) => s.lobby.startsIn || 999)) : 999;
+  const allReadyInRoom0 =
+    (readyCountInRoom0 >= 8 || (readyCountInRoom0 >= 5 && minStartsIn <= 140)) &&
+    Math.max(...inRoom0.map((s) => s.lobby.startsIn || 0)) - Math.min(...inRoom0.map((s) => s.lobby.startsIn || 0)) <= 25;
 
   await Promise.all(
     clients.map((c) =>
@@ -407,10 +502,10 @@ setInterval(async () => {
         window.__tsbPlayerName = ${JSON.stringify(c.name)};
         window.__tsbPlayerColor = 4095;
         window.__tsbSquadSlot = ${c.slot};
-        window.__tsbFollowLeader = ${waitMode || !all5InRoom0 ? JSON.stringify('npl') : JSON.stringify('')};
-        window.__tsbWaitForLeader = ${waitMode || !all5InRoom0 ? 'true' : 'false'};
+        window.__tsbFollowLeader = ${waitMode || !allReadyInRoom0 ? JSON.stringify('npl') : JSON.stringify('')};
+        window.__tsbWaitForLeader = ${waitMode || !allReadyInRoom0 ? 'true' : 'false'};
         const ext = window.__fx?.strategyBotExtension;
-        if (ext && ${all5InRoom0 ? 'true' : 'false'}) {
+        if (ext && ${allReadyInRoom0 ? 'true' : 'false'}) {
           ext.settings.armed = true;
           ext.remote.state.loop = "team";
           const snap = ext.remote.snapshot?.();
@@ -422,39 +517,35 @@ setInterval(async () => {
     )
   );
 
-  if (all5InRoom0) return;
+  if (readyCountInRoom0 >= 10) return;
 
-  // Reload any bot that lacks a fresh token and is not already in the lobby (and hasn't just launched into lobby)
+  // Reload/mint any bot that lacks a fresh token and is not already in the lobby
   const needReload = clients.filter(
     (c, i) =>
       !c.freshToken &&
       !(states[i]?.lobby?.inLobby) &&
-      now - c.lastReloadAt > 90000 &&
+      now - c.lastReloadAt > (c.isHeadless ? 18000 : 75000) &&
       now - c.enteredLobbyAt > 15000
   );
-  if (needReload.length > 0 && !reloadingForFreshTokens && now - lastSyncLaunch > 10000) {
+  if (needReload.length > 0 && !reloadingForFreshTokens && now - lastSyncLaunch > 8000) {
     reloadingForFreshTokens = true;
     lastSyncLaunch = now;
-    console.log(`[SQUAD-SYNC] Reloading ${needReload.map((c) => c.name).join(', ')} to mint fresh Turnstile tokens...`);
+    console.log(`[SQUAD-SYNC] Minting fresh Turnstile tokens for ${needReload.map((c) => c.name).join(', ')}...`);
     for (const c of needReload) {
       reloadClientForToken(c);
     }
-    setTimeout(() => { reloadingForFreshTokens = false; }, 7500);
-    return;
+    setTimeout(() => { reloadingForFreshTokens = false; }, 6500);
   }
 
-  // Wait until every bot either is already in the lobby OR has a fresh Turnstile token ready
-  if (clients.some((c, i) => !c.freshToken && !(states[i]?.lobby?.inLobby))) return;
-
-  // Only call openMultiplayer(0) ONCE per fresh Turnstile token when NOT in an active game!
+  // Enter Team Room 0 for any bot that has a fresh token and is not in game or Room 0
   const readyToEnter = clients.filter(
     (c, i) =>
       !states[i]?.inGame &&
       !(states[i]?.lobby?.inLobby && states[i]?.lobby?.room === 0) &&
       c.freshToken &&
-      now - c.enteredLobbyAt > 25000
+      now - c.enteredLobbyAt > 22000
   );
-  if (readyToEnter.length > 0) {
+  if (readyToEnter.length > 0 && !clients.some((c, i) => !c.isHeadless && !c.freshToken && !(states[i]?.lobby?.inLobby))) {
     lastSyncLaunch = now;
     console.log(`[SQUAD-SYNC] Entering Team Room 0 for ${readyToEnter.map((c) => c.name).join(', ')} (waitForLeader=${waitMode})...`);
     for (let i = 0; i < readyToEnter.length; i++) {
@@ -474,7 +565,7 @@ setInterval(async () => {
           setTimeout(() => { window.__tsbSquadSyncHold = true; }, 5000);
           return "SYNC_LAUNCHED";
         })()`);
-      }, i * 500);
+      }, i * 350);
     }
   }
 }, 2500);
