@@ -7,22 +7,22 @@ const pageJsSource = fs.readFileSync('/tmp/tsb-team-ext/page.js', 'utf8');
 const getV27TeamSource = () => fs.readFileSync('/tmp/v27-team-live.js', 'utf8');
 
 const CHROME_BOTS = [
-  { port: 9223, name: '[NPL] 777', slot: 0, id: 'mTd7B', pw: 'vivELD0lOKgghLr' },
-  { port: 9224, name: '[NPL] Sayo', slot: 1, id: 'vgLjn', pw: 'Cl2xSE00tjOjVBq' },
-  { port: 9225, name: '[NPL] Kaito', slot: 2, id: 'NJmJY', pw: 'zmUT69zzi_Rk80I' },
-  { port: 9226, name: '[NPL] Riku', slot: 3, id: 'byk85', pw: 'iLFHoRHz4rHvEt0' },
-  { port: 9227, name: '[NPL] _alex', slot: 4, id: '5nvnY', pw: 'DzMzg9vRC1Qnj3z' },
+  { port: 9223, name: '[NPL] 777', slot: 0, id: 'VD9VN', pw: 'ulWJw8quV853upe' },
+  { port: 9224, name: '[NPL] Sayo', slot: 1, id: 'TvDLY', pw: 'oIXvZvABAsZS0KL' },
+  { port: 9225, name: '[NPL] Kaito', slot: 2, id: 'MTkjW', pw: 'v3ilPDACqV_L--V' },
+  { port: 9226, name: '[NPL] Riku', slot: 3, id: 'mD2Rt', pw: '4AGfcj98NGxPzXi' },
+  { port: 9227, name: '[NPL] _alex', slot: 4, id: 'RYYYG', pw: 'LekwkRallo8YtL6' },
 ];
 
 const HEADLESS_BOTS = [
-  { port: 9302, socksPort: 10803, donorChromePort: 9225, name: '[NPL] Kaito', slot: 2, id: 'NJmJY', pw: 'zmUT69zzi_Rk80I' },
-  { port: 9303, socksPort: 10804, donorChromePort: 9226, name: '[NPL] Riku', slot: 3, id: 'byk85', pw: 'iLFHoRHz4rHvEt0' },
-  { port: 9304, socksPort: 10805, donorChromePort: 9227, name: '[NPL] _alex', slot: 4, id: '5nvnY', pw: 'DzMzg9vRC1Qnj3z' },
-  { port: 9305, socksPort: 10811, donorChromePort: 9223, name: '[NPL] 777', slot: 5, id: 'JwG5J', pw: 'ASEvJoo4K862kll' },
-  { port: 9306, socksPort: 10812, donorChromePort: 9224, name: '[NPL] Sayo', slot: 6, id: 'QNNy7', pw: 'UpqFcPh3MHISdPg' },
-  { port: 9307, socksPort: 10813, donorChromePort: 9225, name: '[NPL] Tomo', slot: 7, id: 'QcNb5', pw: 'oqHseyPLOB_VYfT' },
-  { port: 9308, socksPort: 10814, donorChromePort: 9226, name: '[NPL] Zero_2', slot: 8, id: 'BRmym', pw: 'IAn4Vw-8_6_VhgK' },
-  { port: 9309, socksPort: 10815, donorChromePort: 9227, name: '[NPL] Sora', slot: 9, id: 'qQGqw', pw: 'kh_nhYj46nGU6R3' },
+  { port: 9302, socksPort: 10803, donorChromePort: 9225, name: '[NPL] Kaito', slot: 2, id: 'MTkjW', pw: 'v3ilPDACqV_L--V' },
+  { port: 9303, socksPort: 10804, donorChromePort: 9226, name: '[NPL] Riku', slot: 3, id: 'mD2Rt', pw: '4AGfcj98NGxPzXi' },
+  { port: 9304, socksPort: 10805, donorChromePort: 9227, name: '[NPL] _alex', slot: 4, id: 'RYYYG', pw: 'LekwkRallo8YtL6' },
+  { port: 9305, socksPort: 10811, donorChromePort: 9223, name: '[NPL] 777', slot: 5, id: 'Ln9gD', pw: 'n9-OcZHR2hVNfti' },
+  { port: 9306, socksPort: 10812, donorChromePort: 9224, name: '[NPL] Sayo', slot: 6, id: 'DQTCB', pw: 'ffOVdQrAC5LMJMB' },
+  { port: 9307, socksPort: 10813, donorChromePort: 9225, name: '[NPL] Tomo', slot: 7, id: 'cnbwG', pw: 'aBB3TwL67c8-pca' },
+  { port: 9308, socksPort: 10814, donorChromePort: 9226, name: '[NPL] Zero_2', slot: 8, id: '7tWqY', pw: 'TErCUUbZT3SZcNs' },
+  { port: 9309, socksPort: 10815, donorChromePort: 9227, name: '[NPL] Sora', slot: 9, id: 'g8vvj', pw: 'YLjCZ343ELAn9mV' },
 ];
 
 const isWaitNplMode = () => fs.existsSync('/tmp/tsb-wait-npl.flag');
@@ -306,10 +306,19 @@ async function attachChromeBot(bot) {
           } catch {}
         });
       }
+      localStorage.setItem("d105", ${JSON.stringify(bot.id)});
+      localStorage.setItem("d106", ${JSON.stringify(bot.pw)});
+      localStorage.setItem("v105", "0");
+      localStorage.setItem("v106", "0");
       localStorage.setItem("d122", ${JSON.stringify(name)});
       localStorage.setItem("v122", "0");
       localStorage.setItem("d121", "4095");
       localStorage.setItem("v121", "0");
+      if (typeof bm === "object" && bm?.qo?.qp) {
+        bm.qo.qp(105, ${JSON.stringify(bot.id)});
+        bm.qo.qp(106, ${JSON.stringify(bot.pw)});
+        bm.qo.qp(122, ${JSON.stringify(name)});
+      }
       window.__tsbPlayerName = ${JSON.stringify(name)};
       window.__tsbPlayerColor = 4095;
       window.__tsbSquadSlot = ${slot};
