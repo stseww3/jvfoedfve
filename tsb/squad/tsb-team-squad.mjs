@@ -752,9 +752,10 @@ setInterval(async () => {
             }
           }
           s.bossId = bossIdx;
-          // ONLY check if Boss is present and has NOT quit/disconnected (pStates[bossIdx] !== 2).
-          // Even if Boss died (terr === 0 / alive === 0), as long as Boss hasn't quit the match, keep fighting!
-          s.bossActiveInGame = bossIdx >= 0 && (!pStates || pStates[bossIdx] !== 2);
+          // ONLY trigger leave if Boss is not in this match at all (bossIdx < 0) OR Boss explicitly sent a quit/surrender/disconnect packet (r8 / rd in window.__quitPlayers)!
+          // If Boss died (terr === 0 / alive === 0) without sending quit packet, NEVER leave!
+          const bossExplicitQuit = !!(window.__quitPlayers && bossIdx >= 0 && window.__quitPlayers.has(bossIdx));
+          s.bossActiveInGame = bossIdx >= 0 && !bossExplicitQuit;
         }
         return JSON.stringify(s);
       })()`);

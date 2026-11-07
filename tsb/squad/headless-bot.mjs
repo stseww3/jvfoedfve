@@ -517,6 +517,24 @@ if (!isMainThread && workerData?.bot) {
         return origIk(player);
       };
     }
+    if (typeof bB === "object" && bB?.qg && !bB.qg.__hookedQuit) {
+      bB.qg.__hookedQuit = true;
+      window.__quitPlayers = new Set();
+      if (typeof bB.qg.r8 === "function") {
+        const origR8 = bB.qg.r8.bind(bB.qg);
+        bB.qg.r8 = function(player) {
+          window.__quitPlayers?.add(player);
+          return origR8(player);
+        };
+      }
+      if (typeof bB.qg.rd === "function") {
+        const origRd = bB.qg.rd.bind(bB.qg);
+        bB.qg.rd = function(player) {
+          window.__quitPlayers?.add(player);
+          return origRd(player);
+        };
+      }
+    }
     window.__hlPerf = { ticks: 0, totalMs: 0, maxMs: 0, lastTick: -1, dupTicks: 0, skippedTicks: 0 };
     if (window.__fx?.strategyBot?.afterTick) {
       const origAfterTick = window.__fx.strategyBot.afterTick.bind(window.__fx.strategyBot);
@@ -572,6 +590,7 @@ if (!isMainThread && workerData?.bot) {
         window.__hlPerf = { ticks: 0, totalMs: 0, maxMs: 0, lastTick: -1, dupTicks: 0, skippedTicks: 0 };
         window.__lastPeaceCaller = -1;
         window.__tsbAssignedSpawn = null;
+        window.__quitPlayers = new Set();
         origAfu(tN, aFq, aFr);
         try {
           if (window.__hlLog) {
