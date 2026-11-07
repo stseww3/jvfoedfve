@@ -679,7 +679,7 @@ new_helpers = """  isTeammate(g, p) {
     let bestWantTr = 0;
     let bestScore = -1;
 
-    for (const s of seaSample(g, me, 48, this.rng)) {
+    for (const s of seaSample(g, me, 48, Math.random)) {
       if (s.d < 4 || s.d > 85) continue;
       const landPix = s.land;
       const o = s.o;
