@@ -112,14 +112,14 @@ async def main():
     # 10 bots (10801..10805 + 10811..10815), each with its own dedicated primary + backup tunnel exit IP!
     # 5 verified healthy tunnels: tun55, tun58, tun66, tun78, tun80 (plus host direct "" fallback)
     mappings = [
-        (10801, ["tun55", "tun78"]),
+        (10801, ["", "tun78"]),
         (10802, ["tun58", "tun80"]),
-        (10803, ["tun66", "tun55"]),
+        (10803, ["tun66", "tun78"]),
         (10804, ["tun78", "tun58"]),
         (10805, ["tun80", "tun66"]),
-        (10811, ["tun55", "tun78"]),
+        (10811, ["", "tun78"]),
         (10812, ["tun58", "tun80"]),
-        (10813, ["tun66", "tun55"]),
+        (10813, ["tun66", "tun78"]),
         (10814, ["tun78", "tun58"]),
         (10815, ["tun80", "tun66"]),
     ]

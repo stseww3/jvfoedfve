@@ -596,14 +596,32 @@ setInterval(async () => {
           }
         }
         let roomPlayers = 0;
+        let bossReadyInRoom0 = false;
         try {
           const mgr2 = d && d.lobbyManager && window[d.lobbyManager];
           const rooms = (mgr2 && d.lobbyRooms && mgr2[d.lobbyRooms]) || mgr2?.z?.tO || mgr2?.tO;
           if (rooms && rooms[0] && Array.isArray(rooms[0].tP)) {
             roomPlayers = rooms[0].tP.length;
+            const list = rooms[0].tP;
+            const readyCnt = typeof rooms[0].tQ === "number" ? rooms[0].tQ : list.length;
+            for (let idx = 0; idx < list.length; idx++) {
+              const p = list[idx];
+              const raw = String((p && (p.aFN || p.username || p.name)) || "").trim();
+              const low = raw.toLowerCase();
+              if (
+                low.includes("mishi") || low.includes("matzz") || low.includes("kiholma") ||
+                low.includes("leo_99") || low.includes("racoon") || low.includes("zexos") ||
+                low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus")
+              ) continue;
+              const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
+              if (stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
+                if (idx < readyCnt || p?.ready) bossReadyInRoom0 = true;
+              }
+            }
           }
         } catch {}
         s.room0Players = Math.max(room0Players, roomPlayers);
+        s.bossReadyInRoom0 = bossReadyInRoom0;
         if (s?.inGame && !s.over && s.alive) {
           const pd = d && window[d.playerData];
           const terr = pd && pd[d.playerTerritories];
@@ -697,9 +715,18 @@ setInterval(async () => {
       }
       clients[idx].wasInGame = false;
     }
-    if (s.lobby?.stopped && (s.lobby.stopped.includes('4591') || s.lobby.stopped.includes('4577') || s.lobby.stopped.includes('4215'))) {
-      clients[idx].freshToken = false;
-      clients[idx].enteredLobbyAt = 0;
+    if (s.lobby?.stopped) {
+      clients[idx].evalJs(`(() => {
+        const ext = window.__fx?.strategyBotExtension;
+        if (ext?.remote?.state) {
+          ext.remote.state.loop = "team";
+          if (ext.remote.lobby) ext.remote.lobby.stopped = null;
+        }
+      })()`);
+      if (s.lobby.stopped.includes('4591') || s.lobby.stopped.includes('4577') || s.lobby.stopped.includes('4215')) {
+        clients[idx].freshToken = false;
+        clients[idx].enteredLobbyAt = 0;
+      }
     }
   });
 
@@ -766,11 +793,13 @@ setInterval(async () => {
         ? (readyCountInRoom0 === 10 || (readyCountInRoom0 >= 8 && minStartsIn <= 8))
         : (chromeInRoom0 === 5 || (chromeInRoom0 >= 4 && minStartsIn <= 8)));
 
+  const bossReadyNow = inRoom0.some((s) => !!s.bossReadyInRoom0);
+
   await Promise.all(
     clients.map((c) => {
       if (!c.isHeadless && headlessOnly) return Promise.resolve(null);
       const isStandby = !headlessOnly && c.isHeadless && !wantTenForCurrentLobby;
-      const allowReady = !isStandby && allReadyInRoom0 && !waitMode;
+      const allowReady = !isStandby && (waitMode ? bossReadyNow : allReadyInRoom0);
       return c.evalJs(`(() => {
         window.__tsbPlayerName = ${JSON.stringify(c.name)};
         window.__tsbPlayerColor = 4095;
@@ -784,7 +813,7 @@ setInterval(async () => {
           const snap = ext.remote.snapshot?.();
           if (snap?.lobby?.inLobby && !snap.lobby.ready && ${allowReady ? 'true' : 'false'}) {
             document.dispatchEvent(new KeyboardEvent("keyup", { code: "Enter", key: "Enter", bubbles: true, cancelable: true }));
-          } else if (snap?.lobby?.inLobby && snap.lobby.ready && !${allowReady ? 'true' : 'false'} && !${waitMode ? 'true' : 'false'}) {
+          } else if (snap?.lobby?.inLobby && snap.lobby.ready && !${allowReady ? 'true' : 'false'}) {
             document.dispatchEvent(new KeyboardEvent("keyup", { code: "Escape", key: "Escape", bubbles: true, cancelable: true }));
           }
         }
