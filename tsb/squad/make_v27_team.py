@@ -36,11 +36,26 @@ new_search_water = """          const o = own[n];
 assert old_search_water in s, "old_search_water not found"
 s = s.replace(old_search_water, new_search_water, 1)
 
-# 4. Filter teammates out of doorHarvestCandidates
+# 4. Filter teammates out of doorHarvestCandidates, seaPeople, and bankAct
 old_door_harvest = """              if (o !== me && o < H && g.alive[o] && g.terr[o] >= 600) {"""
 new_door_harvest = """              if (o !== me && o < H && g.alive[o] && g.terr[o] >= 600 && !(g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me])) {"""
 assert old_door_harvest in s, "old_door_harvest not found"
 s = s.replace(old_door_harvest, new_door_harvest, 1)
+
+old_sea_people = """    for (const s of seaSample(g, this.me, 64, rnd)) if (s.o >= 0 && g.alive[s.o] && this.person(g, s.o) && !out.includes(s.o)) out.push(s.o);"""
+new_sea_people = """    for (const s of seaSample(g, this.me, 64, rnd)) if (s.o >= 0 && g.alive[s.o] && this.person(g, s.o) && !(g.teams && g.teams[this.me] > 0 && g.teams[s.o] === g.teams[this.me]) && !out.includes(s.o)) out.push(s.o);"""
+assert old_sea_people in s, "old_sea_people not found"
+s = s.replace(old_sea_people, new_sea_people, 1)
+
+old_bank_act = """    for (const s of seaSample(g, me, 64, rnd)) {
+      if (s.d < P.bankMin || s.d > P.boatRange) continue;
+      const price = s.o < 0 ? 2 : this.price(g, s.o);"""
+new_bank_act = """    for (const s of seaSample(g, me, 64, rnd)) {
+      if (s.d < P.bankMin || s.d > P.boatRange) continue;
+      if (s.o >= 0 && g.teams && g.teams[me] > 0 && g.teams[s.o] === g.teams[me]) continue;
+      const price = s.o < 0 ? 2 : this.price(g, s.o);"""
+assert old_bank_act in s, "old_bank_act not found"
+s = s.replace(old_bank_act, new_bank_act, 1)
 
 # 5. Add Team + Boss-Guard + Distributed Spawn + Cash-First Rescue (10% light assist) + Auto Peace Vote!
 old_helpers = """  otherHumanMedDens(g) {
@@ -105,7 +120,7 @@ new_helpers = """  isTeammate(g, p) {
 
   isOurSquadBot(g, p) {
     const raw = String(g.names?.[p] ?? "").trim();
-    const low = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
+    const low = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
     return (
       low === "mishi" || low === "matzz" || low === "kiholma" || low === "leo_99" || low === "racoon" ||
       low === "zexos" || low === "talon" || low === "vortex" || low === "kronos" || low === "nexus" ||
@@ -122,13 +137,17 @@ new_helpers = """  isTeammate(g, p) {
     const minSep = Math.max(95, Math.min(165, 0.48 * Math.sqrt(g.land)));
 
     let mySquadIdx = typeof window !== "undefined" && Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : 0;
-    let rankIdx = 0;
-    for (let p = 0; p < me; p++) {
-      if (this.isOurSquadBot(g, p) && !this.isBossNpl(g, p)) rankIdx++;
+    let rankIdx = 0, squadCount = 0;
+    for (let p = 0; p < g.humans; p++) {
+      if (p === me || (this.isOurSquadBot(g, p) && !this.isBossNpl(g, p))) {
+        if (p < me) rankIdx++;
+        squadCount++;
+      }
     }
-    const slot = (rankIdx || mySquadIdx) % 10;
+    const slot = (squadCount >= 2 ? rankIdx : mySquadIdx) % 10;
 
-    const cands = this.spawnVsPeople ? this.spawnVsPeople(g, 12) : this.spawnCandidates(g, 12);
+    let cands = this.spawnVsPeople ? this.spawnVsPeople(g, 12) : [];
+    if (!cands || cands.length === 0) cands = this.spawnCandidates(g, 12);
     if (cands && cands.length > 0) {
       const wellSpaced = cands.filter((pos) => {
         const x = typeof pos === "object" ? pos.x : (pos % W);
@@ -143,7 +162,12 @@ new_helpers = """  isTeammate(g, p) {
         return true;
       });
       const picked = wellSpaced.length > 0 ? wellSpaced[slot % wellSpaced.length] : cands[slot % cands.length];
-      return typeof picked === "object" ? picked : { x: picked % W, y: Math.floor(picked / W) };
+      const res = typeof picked === "object" ? picked : { x: picked % W, y: Math.floor(picked / W) };
+      if (typeof window !== "undefined" && window.__hlLog && (!this._lastLogSpawn || Math.hypot(res.x - this._lastLogSpawn.x, res.y - this._lastLogSpawn.y) > 6)) {
+        this._lastLogSpawn = res;
+        window.__hlLog(`[HL-SPAWN] me=${me} slot=${slot} (squad=${squadCount},rankIdx=${rankIdx}) -> (${res.x},${res.y}) wellSpaced=${wellSpaced.length}/${cands.length} minSep=${Math.round(minSep)}`);
+      }
+      return res;
     }
     return super.chooseSpawn(g, final);
   }
@@ -197,10 +221,19 @@ new_helpers = """  isTeammate(g, p) {
     }
     const weLead = ourTeamLand >= 0.58 * Math.max(1, g.land) || this.isMopUp(g);
     if (window.ax.iL && typeof window.ax.iM === "function" && window.ax.iM(me)) {
-      if (weLead && typeof hz.iN === "function") hz.iN(1);
+      if (weLead && typeof hz.iN === "function") {
+        hz.iN(1);
+        if (window.__hlLog && g.t - (this._lastPeaceVoteLog ?? -999) >= 100) {
+          this._lastPeaceVoteLog = g.t;
+          window.__hlLog(`[HL-PEACE] t=${g.t} voted YES on peace (teamLand=${(100 * ourTeamLand / Math.max(1, g.land)).toFixed(1)}%)`);
+        }
+      }
     } else if (!window.ax.iL && weLead && g.t - (this.lastPeaceKeyTick ?? -999) >= 105 && typeof window.ax.iO === "function" && window.ax.iO(me)) {
       this.lastPeaceKeyTick = g.t;
-      if (typeof hz.iK === "function") hz.iK();
+      if (typeof hz.iK === "function") {
+        hz.iK();
+        if (window.__hlLog) window.__hlLog(`[HL-PEACE] t=${g.t} initiated peace vote (teamLand=${(100 * ourTeamLand / Math.max(1, g.land)).toFixed(1)}%)`);
+      }
     }
   }
 
@@ -272,6 +305,9 @@ new_helpers = """  isTeammate(g, p) {
             this.lastDonateTick = g.t;
             this.lastBossDonateTick = g.t;
             this.cmds++;
+            if (typeof window !== "undefined" && window.__hlLog) {
+              window.__hlLog(`[HL-DONATE] t=${g.t} emergency boss donate pct=${pct}/1024 -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)} dBoss=${Math.round(dBoss)}`);
+            }
             return true;
           }
         }
@@ -287,6 +323,9 @@ new_helpers = """  isTeammate(g, p) {
           if (g.attack(102, q, me)) { // ~10.0%B light assist!
             this.cmds++;
             this.hitTo.set(q, g.t);
+            if (typeof window !== "undefined" && window.__hlLog) {
+              window.__hlLog(`[HL-ASSIST] t=${g.t} 10% boss-assist poke -> target=${q}(${g.names?.[q] || ""}) myBal=${B} dMe=${Math.round(dMe)}`);
+            }
             return true;
           }
         }
@@ -339,6 +378,9 @@ new_helpers = """  isTeammate(g, p) {
           this.lastDonateTick = g.t;
           this.lastBossDonateTick = g.t;
           this.cmds++;
+          if (typeof window !== "undefined" && window.__hlLog) {
+            window.__hlLog(`[HL-DONATE] t=${g.t} boss donate pct=${pct}/1024 -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)}`);
+          }
           return true;
         }
       }
@@ -364,6 +406,9 @@ new_helpers = """  isTeammate(g, p) {
           if (pct >= 55 && g.donate(pct, p, me)) {
             this.lastDonateTick = g.t;
             this.cmds++;
+            if (typeof window !== "undefined" && window.__hlLog) {
+              window.__hlLog(`[HL-DONATE] t=${g.t} squad rescue donate pct=${pct}/1024 -> ally=${p}(${g.names?.[p] || ""}) myBal=${B} dMe=${Math.round(dMe)} dAlly=${Math.round(dAlly)}`);
+            }
             return true;
           }
         }
@@ -372,6 +417,9 @@ new_helpers = """  isTeammate(g, p) {
           if (g.attack(102, mainAttacker, me)) {
             this.cmds++;
             this.hitTo.set(mainAttacker, g.t);
+            if (typeof window !== "undefined" && window.__hlLog) {
+              window.__hlLog(`[HL-ASSIST] t=${g.t} 10% squad-rescue poke -> enemy=${mainAttacker}(${g.names?.[mainAttacker] || ""}) for ally=${p}(${g.names?.[p] || ""})`);
+            }
             return true;
           }
         }
@@ -409,6 +457,9 @@ new_helpers = """  isTeammate(g, p) {
     if (g.donate(pct, bestAlly, me)) {
       this.lastDonateTick = g.t;
       this.cmds++;
+      if (typeof window !== "undefined" && window.__hlLog) {
+        window.__hlLog(`[HL-DONATE] t=${g.t} surplus donate pct=${pct}/1024 -> ally=${bestAlly}(${g.names?.[bestAlly] || ""}) boxedIn=${boxedIn} myBal=${B} dMe=${Math.round(dMe)}`);
+      }
       return true;
     }
     return false;
@@ -476,6 +527,11 @@ old_early_act = """    if (g.t < P.coreFrom) {
 
 new_early_act = """    if (g.t < P.coreFrom) {
       this.analyze(g);
+      if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0) {
+        const pf = window.__hlPerf;
+        const pfStr = pf && pf.ticks > 0 ? ` avgMs=${(pf.totalMs / pf.ticks).toFixed(2)} maxMs=${pf.maxMs.toFixed(1)} skip=${pf.skippedTicks}` : "";
+        window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
+      }
       if (this.tryEmergencyBossRescue(g) && g.online) return;
       const before = this.cmds;"""
 assert old_early_act in s, "old_early_act not found"
@@ -486,6 +542,11 @@ old_main_analyze = """    this.analyze(g);
     this.updateWars(g);"""
 
 new_main_analyze = """    this.analyze(g);
+    if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0) {
+      const pf = window.__hlPerf;
+      const pfStr = pf && pf.ticks > 0 ? ` avgMs=${(pf.totalMs / pf.ticks).toFixed(2)} maxMs=${pf.maxMs.toFixed(1)} skip=${pf.skippedTicks}` : "";
+      window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
+    }
     this.tryPeaceVote(g);
     if (this.tryEmergencyBossRescue(g) && g.online) return;
     this.updateGrudges(g);
@@ -499,7 +560,17 @@ new_act_end = """    if (this.cmds === cmdsBefore) this.tryDonateToTeammate(g);
 assert old_act_end in s, "old_act_end not found"
 s = s.replace(old_act_end, new_act_end, 1)
 
-# 8. Team mop-up
+# 8. Team mop-up & Opening DP log
+old_dp_send = """    if (this.send(g, NEUTRAL, X)) this.dpCyc = cyc;"""
+new_dp_send = """    if (this.send(g, NEUTRAL, X)) {
+      this.dpCyc = cyc;
+      if (typeof window !== "undefined" && window.__hlLog) {
+        window.__hlLog(`[HL-OPENING] t=${g.t} cyc=${cyc} DP expand rings=${n} spend=${Math.round(X)}/${bal} terr=${g.terr[me]}`);
+      }
+    }"""
+assert old_dp_send in s, "old_dp_send not found"
+s = s.replace(old_dp_send, new_dp_send, 1)
+
 old_mop = """  isMopUp(g) {
     const me = this.me;
     return this.nb.length === 0 && this.neutral === 0 && g.terr[me] >= 0.80 * g.land && this.livingHumanCount(g) <= 1;

@@ -16,6 +16,7 @@ const WS = require('ws');
 export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, getStrategySource, mintTurnstileToken }) {
   const { port, socksPort, donorChromePort, name, slot } = bot;
   const worker = new Worker(new URL(import.meta.url), {
+    execArgv: [],
     workerData: { bot, strategySource: getStrategySource() }
   });
 
@@ -118,14 +119,46 @@ if (!isMainThread && workerData?.bot) {
   const { socksPort, name, slot, id, pw } = bot;
 
   const gameJsSource = fs.readFileSync('/tmp/live_game_js.js', 'utf8')
-    .replace('if(bi.ds){bi.ds=false;a0J()}', 'if(bi.ds){bi.ds=false}')
+    .replaceAll('if(bi.ds){bi.ds=false;a0J()}', 'if(bi.ds){bi.ds=false}')
     .replace('this.aeB=function(){bi.ds=true;nF();this.eI=0}', 'this.aeB=function(){this.eI=0}')
     .replace(
+      'this.aDe=function(aD){if(aE.a2G===2){return}bB.qi.ee(aD);bC.ee();',
+      'this.aDe=function(aD){if(aE.a2G===2){return}bB.qi.ee(aD);bC.ee();if(window.__fx?.strategyBot?.beforeFrame)window.__fx.strategyBot.beforeFrame();'
+    )
+    .replace(
+      'if(aE.hx){bi.ds=aX.aDe(-1)||bi.ds;nI()}',
+      'if(aE.hx){if(window.__fx?.strategyBot?.beforeFrame)window.__fx.strategyBot.beforeFrame();bi.ds=aX.aDe(-1)||bi.ds;nI()}'
+    )
+    .replace(
       'if(this.ae5!==this.aIt*7){n8();be.render();return}',
-      'if(this.ae5!==this.aIt*7){n8();while(this.ae7.length>0&&this.ae5<this.aIt*7&&aE.a2G!==2){n8()}if(this.ae7.length===0){be.render();return}}'
+      'if(this.ae5!==this.aIt*7){n8();while(this.ae7.length>0&&this.ae5<this.aIt*7&&aE.a2G!==2){n8()}if(this.ae7.length===0){return}}'
+    )
+    .replace(
+      'if(this.eI===0){if(bi.eZ>=this.eZ){this.eZ+=bi.aDd*Math.floor(1+(bi.eZ-this.eZ)/bi.aDd);if(aE.a2G===2){n6()}else{this.aeA()}this.eI++;if(bi.eZ-this.ae9>27){this.aeB()}}}else{this.aeB()}',
+      'while(bi.eZ>=this.eZ){this.eZ+=bi.aDd;if(aE.a2G===2){n6();break}this.aeA();if(this.ae5===this.aIt*7&&this.ae7.length===0){if(bi.eZ>=this.eZ)this.eZ=bi.eZ+8;break}}this.eI=0;'
+    )
+    .replace(
+      'this.ae7.push(aD);if(aE.a2G===2){',
+      'this.ae7.push(aD);if(aE.a2G===1&&!aE.hx&&(this.ae5===this.aIt*7||this.ae7.length>1)){bi.eZ=performance.now();this.ee();return}if(aE.a2G===2){'
     )
     .replace('bV.ym.dk();', '');
-  const pageJsSource = fs.readFileSync('/tmp/tsb-team-ext/page.js', 'utf8');
+  const pageJsSource = fs.readFileSync('/tmp/tsb-team-ext/page.js', 'utf8')
+    .replaceAll(
+      'queueMicrotask(()=>{this.afterQueued=!1,this.afterTick()})',
+      'queueMicrotask(()=>{this.afterQueued&&(this.afterQueued=!1,this.afterTick())})'
+    )
+    .replace(
+      'beforeTick(){if(this.eligible()&&this.options().play)try{const t=this.sync();t.online?this.queueAfterTick():!this.error&&t.canAct(t.me)&&this.strategy.act(t)}catch(t){this.fail(t)}}',
+      'beforeTick(){if(this.eligible()&&this.options().play)try{if(window[dictionary.game]&&!window[dictionary.game][dictionary.gIsSingleplayer])return;const t=this.sync();!this.error&&t.canAct(t.me)&&this.strategy.act(t)}catch(t){this.fail(t)}}'
+    )
+    .replace(
+      'i&&this.view.online&&"sbSpawn"!==t&&(this.inflight=Ct(),this.view.sendsHeld=!0)',
+      'i&&this.view.online&&"sbSpawn"!==t&&(this.inflight=Ct(),this.inflightTick=this.view.t,this.view.sendsHeld=!0)'
+    )
+    .replace(
+      'if(null!==this.inflight&&Ct()-this.inflight<450)return;',
+      'if(null!==this.inflight&&Ct()-this.inflight<450&&t.t-(this.inflightTick??0)<8)return;'
+    );
   const dictSource = fs.readFileSync('/tmp/live_dictionary.json', 'utf8');
 
   function makeSocksAgent(sp) {
@@ -316,7 +349,7 @@ if (!isMainThread && workerData?.bot) {
   };
 
   const extCfg = {
-    spawn: true, play: true, autoStart: false, manual: true, armed: false, stay: true,
+    spawn: true, play: true, autoStart: false, manual: true, armed: true, stay: true,
     allow: '', cmdUrl: '', resultUrl: 'http://127.0.0.1/team-result',
     key: 'aKURzbiCpouWOcpOSOffKLXqTXPaVsLG', pollMs: 3000, folded: true, port: 8765, strategy: 'file:v27team'
   };
@@ -422,6 +455,9 @@ if (!isMainThread && workerData?.bot) {
     __tsbFollowLeader: 'npl',
     __tsbWaitForLeader: true,
     __tsbSquadSyncHold: true,
+    __hlLog(text) {
+      parentPort.postMessage({ type: 'log', text: String(text) });
+    },
     __tsbReportResult(payload) {
       parentPort.postMessage({ type: 'result', payload });
     },
@@ -447,7 +483,9 @@ if (!isMainThread && workerData?.bot) {
       if (c.kind === 'post' && sandbox.__tsbReportResult) {
         sandbox.__tsbReportResult(c.body);
       }
-    } catch {}
+    } catch (err) {
+      parentPort.postMessage({ type: 'log', text: `[HL-ERR] tsb-remote parse: ${err?.message || err}` });
+    }
   });
 
   vm.createContext(sandbox);
@@ -459,6 +497,40 @@ if (!isMainThread && workerData?.bot) {
   if (typeof sandbox.onload === 'function') {
     sandbox.onload();
   }
+  // Strip canvas dirty-rect & putImageData work completely in Headless Worker
+  vm.runInContext(`(() => {
+    if (typeof be === "object" && be) {
+      be.render = function() {};
+      be.a6d = function() {};
+      be.a2S = function() {};
+    }
+    window.__hlPerf = { ticks: 0, totalMs: 0, maxMs: 0, lastTick: -1, dupTicks: 0, skippedTicks: 0 };
+    if (window.__fx?.strategyBot?.afterTick) {
+      const origAfterTick = window.__fx.strategyBot.afterTick.bind(window.__fx.strategyBot);
+      window.__fx.strategyBot.afterTick = function() {
+        const t0 = performance.now();
+        const curTick = typeof bi === "object" && bi?.kr ? bi.kr() : -1;
+        const pf = window.__hlPerf;
+        if (curTick >= 0) {
+          if (curTick === pf.lastTick) pf.dupTicks++;
+          else if (pf.lastTick >= 0 && curTick > pf.lastTick + 1) pf.skippedTicks += (curTick - pf.lastTick - 1);
+          pf.lastTick = curTick;
+        }
+        try {
+          return origAfterTick();
+        } finally {
+          const dt = performance.now() - t0;
+          pf.ticks++;
+          pf.totalMs += dt;
+          if (dt > pf.maxMs) pf.maxMs = dt;
+          if (dt > 25 && window.__hlLog) {
+            window.__hlLog(\`[HL-SLOW-TICK] t=\${curTick} took \${dt.toFixed(1)}ms (max=\${pf.maxMs.toFixed(1)}ms)\`);
+          }
+        }
+      };
+    }
+  })()`, sandbox);
+
   if (workerData.strategySource) {
     try {
       vm.runInContext(
@@ -474,7 +546,9 @@ if (!isMainThread && workerData?.bot) {
         })()`,
         sandbox
       );
-    } catch {}
+    } catch (err) {
+      parentPort.postMessage({ type: 'log', text: `[HL-ERR] init strategy import: ${err?.message || err}` });
+    }
   }
 
   // Hook bq.aF3.aFu and bi.a2Q.aWV (re-hooking bi.a2Q on every new game!)
@@ -482,8 +556,12 @@ if (!isMainThread && workerData?.bot) {
     if (typeof bq === "object" && bq?.aF3?.aFu) {
       const origAfu = bq.aF3.aFu.bind(bq.aF3);
       bq.aF3.aFu = function(tN, aFq, aFr) {
+        window.__hlPerf = { ticks: 0, totalMs: 0, maxMs: 0, lastTick: -1, dupTicks: 0, skippedTicks: 0 };
         origAfu(tN, aFq, aFr);
         try {
+          if (window.__hlLog) {
+            window.__hlLog(\`[HL-GAME-INIT] mode=\${tN.aFp} map=\${tN.fF} mapSeed=\${tN.mapSeed} players=\${aFq?.length || 0} me=\${aFr}\`);
+          }
           if (window.__onHeadlessGameInit) {
             window.__onHeadlessGameInit({
               tN: { spawningSeed: tN.spawningSeed, aFp: tN.aFp, aFv: tN.aFv, fF: tN.fF, mapSeed: tN.mapSeed },
@@ -501,7 +579,9 @@ if (!isMainThread && workerData?.bot) {
               return origAwv(aD);
             };
           }
-        } catch (e) {}
+        } catch (e) {
+          if (window.__hlLog) window.__hlLog(\`[HL-ERR] aFu hook: \${e?.message || e}\`);
+        }
       };
     }
   })()`, sandbox);
@@ -521,12 +601,15 @@ if (!isMainThread && workerData?.bot) {
           res = await res;
         }
         parentPort.postMessage({ type: 'eval_res', id: msg.id, value: res });
-      } catch {
+      } catch (err) {
+        parentPort.postMessage({ type: 'log', text: `[HL-ERR] eval failed: ${err?.message || err}` });
         parentPort.postMessage({ type: 'eval_res', id: msg.id, value: null });
       }
     } else if (msg.type === 'token') {
       if (turnstileCallback) {
-        try { turnstileCallback(msg.token); } catch {}
+        try { turnstileCallback(msg.token); } catch (err) {
+          parentPort.postMessage({ type: 'log', text: `[HL-ERR] turnstileCallback: ${err?.message || err}` });
+        }
       }
       try {
         const src = msg.strategySource;
@@ -548,7 +631,9 @@ if (!isMainThread && workerData?.bot) {
         );
         await p;
         parentPort.postMessage({ type: 'token_imported' });
-      } catch {}
+      } catch (err) {
+        parentPort.postMessage({ type: 'log', text: `[HL-ERR] token strategy import: ${err?.message || err}` });
+      }
     }
   });
 }

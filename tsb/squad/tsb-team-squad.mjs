@@ -559,9 +559,9 @@ setInterval(async () => {
             ext.settings.strategy = "file:v27team";
             if (ext.strategies?.changed) ext.strategies.changed("file:v27team");
           }
-          if (s.tick >= 30 && s.terr <= 16 && s.bal >= 256 && g && d?.sbCommands && d?.sbSendAttack) {
+          if (s.tick >= 115 && s.terr <= 16 && s.sent === 0 && s.bal >= 256 && g && d?.sbCommands && d?.sbSendAttack) {
             try {
-              if (ext.strategies?.changed && s.sent <= 1) ext.strategies.changed("file:v27team");
+              if (ext.strategies?.changed) ext.strategies.changed("file:v27team");
               window[d.sbCommands]?.[d.sbSendAttack]?.(256, 512);
               s.healedExpand = true;
             } catch {}

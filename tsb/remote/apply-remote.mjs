@@ -41,8 +41,22 @@ once('["autoStart","自动开局（打开页面时和每局结束后）"]]',
     '["autoStart","自动开局（打开页面时和每局结束后）"],["manual","手动（远程）：只听远程 start / end"]]');
 once('"command"===t.type&&(this.eligible()?this.sync(!1):this.ctl.abandon())',
     '"command"===t.type&&(this.eligible()&&Re.allowed()?this.sync(!1):this.ctl.abandon())');
+once('Te={list:()=>[...pe.list(),["backend","后端 general",!1]],changed(){ge.strategy=null},',
+    'Te={list:()=>[...pe.list(),["backend","后端 general",!1]],has:t=>pe.has(t),changed(){ge.strategy=null},');
 once('window.__fx=window.__fx||{},window.__fx.strategyBot=Me,',
     `const Re=${remote};\nwindow.__fx=window.__fx||{},window.__fx.strategyBot=Object.assign(Me,Re.hooks),`);
+once('beforeTick:()=>we().beforeTick(),beforeFrame:()=>we().beforeFrame(),',
+    'beforeTick:()=>we().beforeTick(),afterTick:()=>we().afterTick?.(),beforeFrame:()=>we().beforeFrame(),');
+once('if(null!==this.spawnAt&&(!t.online||e-this.spawnAt<1e3))return;',
+    'if(null!==this.spawnAt&&(!t.online||e-this.spawnAt<250))return;');
+once('queueAfterTick(){this.afterQueued||(this.afterQueued=!0,queueMicrotask(()=>{this.afterQueued=!1,this.afterTick()}))}',
+    'queueAfterTick(){this.afterQueued||(this.afterQueued=!0,queueMicrotask(()=>{this.afterQueued&&(this.afterQueued=!1,this.afterTick())}))}');
+once('beforeTick(){if(this.eligible()&&this.options().play)try{const t=this.sync();t.online?this.queueAfterTick():!this.error&&t.canAct(t.me)&&this.strategy.act(t)}catch(t){this.fail(t)}}',
+    'beforeTick(){if(this.eligible()&&this.options().play)try{if(window[dictionary.game]&&!window[dictionary.game][dictionary.gIsSingleplayer])return;const t=this.sync();!this.error&&t.canAct(t.me)&&this.strategy.act(t)}catch(t){this.fail(t)}}');
+once('i&&this.view.online&&"sbSpawn"!==t&&(this.inflight=Ct(),this.view.sendsHeld=!0)',
+    'i&&this.view.online&&"sbSpawn"!==t&&(this.inflight=Ct(),this.inflightTick=this.view.t,this.view.sendsHeld=!0)');
+once('afterTick(){if(this.eligible()&&this.options().play)try{const t=this.sync();if(null!==this.inflight&&Ct()-this.inflight<2e3)return;',
+    'afterTick(){if(this.afterQueued=!1,this.eligible()&&this.options().play)try{const t=this.sync();if(null!==this.inflight&&Ct()-this.inflight<450&&t.t-(this.inflightTick??0)<8)return;');
 once('version:"0.5.2",setPort(t){', `version:"${VERSION}",remote:Re,setPort(t){`);
 // the backend port only with the backend strategy; without it the service worker opens no WebSocket
 once('ke=()=>be("tsb-control",JSON.stringify({kind:"connect",port:ue.port}))',
