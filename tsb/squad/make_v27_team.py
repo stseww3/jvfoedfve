@@ -318,20 +318,14 @@ new_helpers = """  isTeammate(g, p) {
   }
 
   // AUTO PEACE VOTE CALL & ACCEPT:
-  // ONLY vote YES if the peace vote was initiated by OUR squad (or Boss npl)! Never auto-accept random players' peace votes!
+  // ONLY initiate or vote YES on peace when ALL enemies are completely wiped out (isMopUp(g) === true)!
+  // Never initiate or vote YES while any enemy still holds territory!
   tryPeaceVote(g) {
     if (typeof window === "undefined" || !window.ax || !window.dictionary || g.t < 1610) return;
     const me = this.me;
     const hz = window[window.dictionary.sbCommands]?.hz;
     if (!hz) return;
-    let ourTeamLand = g.terr[me] || 0;
-    if (g.teams && g.teams[me] > 0) {
-      ourTeamLand = 0;
-      for (let p = 0; p < g.players; p++) {
-        if (g.alive[p] && g.teams[p] === g.teams[me]) ourTeamLand += g.terr[p];
-      }
-    }
-    const weLead = ourTeamLand >= 0.58 * Math.max(1, g.land) || this.isMopUp(g);
+    if (!this.isMopUp(g)) return;
     const caller = window.__lastPeaceCaller;
     const callerIsOurs =
       Number.isInteger(caller) &&
@@ -343,26 +337,25 @@ new_helpers = """  isTeammate(g, p) {
         hz.iN(1);
         if (window.__hlLog && g.t - (this._lastPeaceVoteLog ?? -999) >= 100) {
           this._lastPeaceVoteLog = g.t;
-          window.__hlLog(`[HL-PEACE] t=${g.t} voted YES on our squad's peace call by p=${caller}(${g.names?.[caller] || ""}) (teamLand=${(100 * ourTeamLand / Math.max(1, g.land)).toFixed(1)}%)`);
+          window.__hlLog(`[HL-PEACE] t=${g.t} voted YES on our squad's mop-up peace call by p=${caller}(${g.names?.[caller] || ""})`);
         }
       }
-    } else if (!window.ax.iL && weLead && g.t - (this.lastPeaceKeyTick ?? -999) >= 105 && typeof window.ax.iO === "function" && window.ax.iO(me)) {
+    } else if (!window.ax.iL && g.t - (this.lastPeaceKeyTick ?? -999) >= 105 && typeof window.ax.iO === "function" && window.ax.iO(me)) {
       this.lastPeaceKeyTick = g.t;
       window.__lastPeaceCaller = me;
       if (typeof hz.iK === "function") {
         hz.iK();
-        if (window.__hlLog) window.__hlLog(`[HL-PEACE] t=${g.t} initiated peace vote (teamLand=${(100 * ourTeamLand / Math.max(1, g.land)).toFixed(1)}%)`);
+        if (window.__hlLog) window.__hlLog(`[HL-PEACE] t=${g.t} initiated mop-up peace vote (all enemies eliminated!)`);
       }
     }
   }
 
-  // BOSS SUPPORT: CASH DONATION FIRST, ~10% LIGHT ASSIST SECOND!
-  // "最好的解围是给钱，打人只是附和10个点左右"
+  // BOSS SUPPORT: ALL-OUT CASH DONATION + HEAVY COUNTER-ATTACK WHEN BOSS IS IN DANGER!
   tryEmergencyBossRescue(g) {
     const me = this.me;
     if (!g.teams || !(g.teams[me] > 0) || !g.canAct(me)) return false;
     const bossId = this.findBossId(g);
-    if (bossId < 0 || !g.alive[bossId] || g.terr[bossId] < 50) return false;
+    if (bossId < 0 || !g.alive[bossId] || g.terr[bossId] < 30) return false;
 
     const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
     const B_boss = g.bal[bossId], L_boss = Math.max(1, g.terr[bossId]), dBoss = B_boss / L_boss;
@@ -373,7 +366,7 @@ new_helpers = """  isTeammate(g, p) {
       if (a !== me && !this.isTeammate(g, a)) {
         const tr = g.attackTroopsOn(a, bossId);
         bossInAtk += tr;
-        if (!g.isBot(a) || tr > 0.08 * B_boss) bossAttackers.push({ q: a, tr, isEnemyAtk: true });
+        if (!g.isBot(a) || tr > 0.05 * B_boss) bossAttackers.push({ q: a, tr, isEnemyAtk: true });
       }
     }
     const sbB = g.slotBase(bossId);
@@ -386,67 +379,85 @@ new_helpers = """  isTeammate(g, p) {
       }
     }
 
-    // 1. PRIMARY: Give cash (donate) to Boss npl, distinguishing PURE INLAND LOCKED vs COASTAL REAR vs FRONTLINE!
-    if (typeof g.donate === "function" && g.t >= 350) {
+    const bossCritical = (bossInAtk > 0 && (bossInAtk >= 0.06 * B_boss || dBoss < 75)) || dBoss < 45;
+    const underEmergencyFire = bossCritical || (bossInAtk > 0 && (bossInAtk >= 0.02 * B_boss || dBoss < 105));
+    const bossFightingHuman = bossOutAtk > 0 && dBoss < 120;
+    const bossNeedsCash = g.t >= 600 && dBoss < 118;
+    const boxedIn = this.nb.length === 0 && this.neutral === 0 && dBoss < 145;
+
+    // 1. HEAVY COUNTER-ATTACK ON WHOEVER IS ATTACKING BOSS!
+    // If we share a land border with an enemy attacking Boss, immediately slam them!
+    // (When bossCritical, send 38%~45% heavy strike even if we are already attacking or have moderate density!)
+    if (bossAttackers.length > 0 && B >= 4000 && dMe >= (bossCritical ? 20 : 35)) {
+      bossAttackers.sort((a, b) => (b.isEnemyAtk - a.isEnemyAtk) || (b.tr - a.tr));
+      for (const { q, isEnemyAtk } of bossAttackers) {
+        if (!g.alive[q] || g.terr[q] < 50) continue;
+        if ((this.cnt[q] ?? 0) > 0) {
+          const alreadyAtking = g.hasAttack(me, q);
+          const rehitOk = bossCritical && isEnemyAtk && g.t - (this.hitTo.get(q) ?? -999) >= 18;
+          if ((!alreadyAtking && g.hasFreeSlot(me)) || rehitOk) {
+            const atkPct = bossCritical && isEnemyAtk ? (dMe >= 55 ? 450 : 340) : (underEmergencyFire ? 220 : 120);
+            if (g.attack(atkPct, q, me)) {
+              this.cmds++;
+              this.hitTo.set(q, g.t);
+              if (typeof window !== "undefined" && window.__hlLog) {
+                window.__hlLog(`[HL-ASSIST] t=${g.t} ${Math.round(atkPct * 100 / 1024)}% boss-rescue strike (critical=${bossCritical}) -> target=${q}(${g.names?.[q] || ""}) myBal=${B} dMe=${Math.round(dMe)} dBoss=${Math.round(dBoss)}`);
+              }
+              return true;
+            }
+          }
+        }
+      }
+    }
+
+    // 2. CASH DONATION TO BOSS (NEVER blocked by safeAt(g,-1) when Boss is under fire!)
+    if (typeof g.donate === "function" && g.t >= 300) {
       let myHumanInAtk = 0;
       for (const a of g.attackersOf(me)) {
         if (!g.isBot(a) && !this.isTeammate(g, a)) myHumanInAtk += g.attackTroopsOn(a, me);
       }
       const enemyHumanNbs = this.nb.filter((p) => g.alive[p] && this.person(g, p));
       const hasExposedCoast = (g.coast?.[me]?.length ?? 0) > 0;
-      // Coastal rear bots MUST keep >= 68*L anti-boat-sneak-attack reserve so their back is never stolen by sea!
-      const coastGuardFloor = hasExposedCoast && g.t >= 1100 ? 68 * L : 18 * L;
-      const safeFloor = Math.max(coastGuardFloor, enemyHumanNbs.length > 0 ? this.safeAt(g, -1) : 0);
       const isPureInlandSafe = enemyHumanNbs.length === 0 && !hasExposedCoast && myHumanInAtk === 0;
       const isCoastalRearSafe = enemyHumanNbs.length === 0 && hasExposedCoast && myHumanInAtk === 0;
-      const isUnderThreat = myHumanInAtk > 0 || B <= 1.10 * safeFloor;
 
-      if (!isUnderThreat) {
-        const underEmergencyFire = bossInAtk > 0 && (bossInAtk >= 0.03 * B_boss || dBoss < 95);
-        const bossFightingHuman = bossOutAtk > 0 && dBoss < 115;
-        const bossNeedsCash = g.t >= 950 && dBoss < 118;
-        const boxedIn = this.nb.length === 0 && this.neutral === 0 && dBoss < 142;
-
-        const minKeepDens = isPureInlandSafe ? (underEmergencyFire ? 15 : 22) : isCoastalRearSafe ? (underEmergencyFire ? 52 : 72) : (underEmergencyFire ? 58 : 78);
-        const canAfford = dMe >= minKeepDens && B > 1.10 * safeFloor;
-
-        const cooldown = isPureInlandSafe ? (underEmergencyFire ? 10 : 18) : (underEmergencyFire ? 15 : 25);
-        if ((underEmergencyFire || bossFightingHuman || bossNeedsCash || boxedIn) && canAfford && g.t - (this.lastBossDonateTick ?? -999) >= cooldown) {
-          const maxSurplus = Math.max(0, B - Math.max(safeFloor, (minKeepDens - 10) * L));
-          const maxPct = Math.floor((maxSurplus * 1024) / Math.max(1, B));
-          const targetPct = isPureInlandSafe
-            ? (underEmergencyFire ? 350 : boxedIn ? 320 : 220)
+      // When Boss is under fire (bossCritical / underEmergencyFire), do NOT let safeAt(g,-1) block frontline bots from donating!
+      // Only require that we ourselves aren't currently being crushed (myHumanInAtk < 0.20 * B) and keep a minimal density floor!
+      const minKeepDens = bossCritical
+        ? (isPureInlandSafe ? 10 : 22)
+        : underEmergencyFire
+          ? (isPureInlandSafe ? 14 : 32)
+          : isPureInlandSafe
+            ? 20
             : isCoastalRearSafe
-              ? (underEmergencyFire ? 220 : 160)
-              : (underEmergencyFire ? 150 : 115);
-          const pct = Math.min(maxPct, targetPct);
-          if (pct >= 55 && g.donate(pct, bossId, me)) {
-            this.lastDonateTick = g.t;
-            this.lastBossDonateTick = g.t;
-            this.cmds++;
-            if (typeof window !== "undefined" && window.__hlLog) {
-              window.__hlLog(`[HL-DONATE] t=${g.t} emergency boss donate pct=${pct}/1024 -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)} dBoss=${Math.round(dBoss)}`);
-            }
-            return true;
-          }
-        }
-      }
-    }
+              ? 55
+              : 62;
+      const selfBeingCrushed = myHumanInAtk > (bossCritical ? 0.25 * B : 0.08 * B);
+      const canAfford = !selfBeingCrushed && dMe >= minKeepDens && B >= 3000;
 
-    // 2. SECONDARY: Light ~10%B (pct=102/1024) assist poke ONLY if we share a land border and have healthy density!
-    if (bossAttackers.length > 0 && B >= 8000 && dMe >= 38) {
-      bossAttackers.sort((a, b) => (b.isEnemyAtk - a.isEnemyAtk) || (b.tr - a.tr));
-      for (const { q } of bossAttackers) {
-        if (!g.alive[q] || g.terr[q] < 100) continue;
-        if ((this.cnt[q] ?? 0) > 0 && !g.hasAttack(me, q) && g.hasFreeSlot(me)) {
-          if (g.attack(102, q, me)) { // ~10.0%B light assist!
-            this.cmds++;
-            this.hitTo.set(q, g.t);
-            if (typeof window !== "undefined" && window.__hlLog) {
-              window.__hlLog(`[HL-ASSIST] t=${g.t} 10% boss-assist poke -> target=${q}(${g.names?.[q] || ""}) myBal=${B} dMe=${Math.round(dMe)}`);
-            }
-            return true;
+      const cooldown = bossCritical ? 9 : underEmergencyFire ? 14 : isPureInlandSafe ? 18 : 24;
+      if ((bossCritical || underEmergencyFire || bossFightingHuman || bossNeedsCash || boxedIn) && canAfford && g.t - (this.lastBossDonateTick ?? -999) >= cooldown) {
+        const keepBal = (minKeepDens - 6) * L;
+        const maxSurplus = Math.max(0, B - keepBal);
+        const maxPct = Math.floor((maxSurplus * 1024) / Math.max(1, B));
+        const targetPct = bossCritical
+          ? (isPureInlandSafe ? 420 : 300)
+          : underEmergencyFire
+            ? (isPureInlandSafe ? 350 : 230)
+            : isPureInlandSafe
+              ? (boxedIn ? 320 : 220)
+              : isCoastalRearSafe
+                ? 170
+                : 140;
+        const pct = Math.min(maxPct, targetPct);
+        if (pct >= 55 && g.donate(pct, bossId, me)) {
+          this.lastDonateTick = g.t;
+          this.lastBossDonateTick = g.t;
+          this.cmds++;
+          if (typeof window !== "undefined" && window.__hlLog) {
+            window.__hlLog(`[HL-DONATE] t=${g.t} emergency boss donate pct=${pct}/1024 -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)} dBoss=${Math.round(dBoss)}`);
           }
+          return true;
         }
       }
     }
