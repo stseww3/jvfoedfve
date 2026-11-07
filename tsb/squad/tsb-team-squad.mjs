@@ -749,6 +749,12 @@ setInterval(async () => {
           }
         }
         const myLobbyUsername = typeof bq === "object" && bq?.aF0 ? bq.aF0.username : null;
+        if (myLobbyUsername && (myLobbyUsername.startsWith("Player ") || myLobbyUsername.includes("Redacted")) && typeof b1 === "object" && b1?.eg?.eh && b1?.z?.ef?.(0)) {
+          if (!window.__lastNameVerifyAsk || Date.now() - window.__lastNameVerifyAsk > 3000) {
+            window.__lastNameVerifyAsk = Date.now();
+            try { b1.eg.eh(5); } catch {}
+          }
+        }
         const myAccId = typeof bm === "object" && bm?.buffer?.data?.[105] ? bm.buffer.data[105].value : null;
         const teams = d && window[d.sbTeamHolder]?.[d.sbTeams];
         const me = g && g[d.playerId];
@@ -920,8 +926,8 @@ setInterval(async () => {
     if ((c.isHeadless || !headlessOnly) && s.lobby?.inLobby && s.lobby?.room === 0 && s.myLobbyUsername) {
       if (s.myLobbyUsername.includes('Redacted')) {
         if (!c.redactedDetectedAt) c.redactedDetectedAt = now;
-        if (now - c.redactedDetectedAt >= 3500) {
-          console.log(`[SELF-CHECK REDACTED] ${c.name} detected "${s.myLobbyUsername}" (acc=${s.myAccId}) in Room 0 -> rotating fresh account & re-entering!`);
+        if (now - c.redactedDetectedAt >= 20000) {
+          console.log(`[SELF-CHECK REDACTED] ${c.name} still "${s.myLobbyUsername}" (acc=${s.myAccId}) after 20s in Room 0 -> rotating fresh account & re-entering!`);
           c.redactedDetectedAt = 0;
           c.lastVerifiedLobbyName = null;
           c.freshToken = false;
