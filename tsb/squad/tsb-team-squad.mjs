@@ -324,9 +324,26 @@ async function attachChromeBot(bot) {
       window.__tsbSquadSlot = ${slot};
       return "YES";
     })()`);
-    if (alreadyPatched === 'YES') {
+    if (alreadyPatched === 'YES' && !isHeadlessOnlyMode()) {
       await importStrategy();
       console.log(`[${name}] Hot-attached without Page.reload (existing Turnstile session preserved)!`);
+      return;
+    }
+    if (alreadyPatched === 'YES' && isHeadlessOnlyMode()) {
+      await evalJs(`(() => {
+        const d = window.dictionary;
+        const g = d && window[d.game];
+        if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true);
+        if (typeof b1 === "object" && b1?.z?.close) b1.z.close(1, 3252);
+        const ext = window.__fx?.strategyBotExtension;
+        if (ext) {
+          ext.settings.armed = false;
+          if (ext.remote?.state) ext.remote.state.loop = null;
+        }
+        window.__tsbSquadSyncHold = true;
+      })()`);
+      client.freshToken = true;
+      console.log(`[${name}] Donor Chrome on :${port} silenced (left lobby so Headless workers own the room)!`);
       return;
     }
     client.lastReloadAt = Date.now();
@@ -714,6 +731,12 @@ setInterval(async () => {
           }
         }
         const myLobbyUsername = typeof bq === "object" && bq?.aF0 ? bq.aF0.username : null;
+        if (myLobbyUsername && (myLobbyUsername.startsWith("Player ") || myLobbyUsername.startsWith("Redacted ")) && typeof b1 === "object" && b1?.eg?.eh && b1?.z?.ef?.(0)) {
+          if (!window.__lastNameVerifyAsk || Date.now() - window.__lastNameVerifyAsk > 3500) {
+            window.__lastNameVerifyAsk = Date.now();
+            try { b1.eg.eh(5); } catch {}
+          }
+        }
         const myAccId = typeof bm === "object" && bm?.buffer?.data?.[105] ? bm.buffer.data[105].value : null;
         const teams = d && window[d.sbTeamHolder]?.[d.sbTeams];
         const me = g && g[d.playerId];
