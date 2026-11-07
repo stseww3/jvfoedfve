@@ -1,8 +1,17 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import http from 'node:http';
 import net from 'node:net';
+import { fileURLToPath } from 'node:url';
 import { createHeadlessBot } from './headless-bot.mjs';
 import { TeamSpawnCoordinator } from './spawn-coordinator.mjs';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+function resolveAssetPath(localName, tmpFallback) {
+  const localPath = path.join(__dirname, localName);
+  if (fs.existsSync(localPath)) return localPath;
+  return tmpFallback;
+}
 
 function rotateSocksSession(socksPort) {
   return new Promise((resolve) => {
@@ -37,8 +46,8 @@ function rotateSocksSession(socksPort) {
   });
 }
 
-const pageJsSource = fs.readFileSync('/tmp/tsb-team-ext/page.js', 'utf8');
-const getV27TeamSource = () => fs.readFileSync('/tmp/v27-team-live.js', 'utf8');
+const pageJsSource = fs.readFileSync(resolveAssetPath('page.js', '/tmp/tsb-team-ext/page.js'), 'utf8');
+const getV27TeamSource = () => fs.readFileSync(resolveAssetPath('v27-team-live.js', '/tmp/v27-team-live.js'), 'utf8');
 
 const CHROME_BOTS = [
   { port: 9223, name: '[Nope] lucas94', slot: 0, id: 'w7V8j', pw: 'M9IzNEQ6E0GLYyH' },
@@ -59,8 +68,8 @@ const HEADLESS_BOTS = [
   { port: 9309, socksPort: 10815, donorChromePort: 9227, name: '[Nope] leo_tx', slot: 9, id: '', pw: '' },
 ];
 
-const isWaitNplMode = () => fs.existsSync('/tmp/tsb-wait-npl.flag');
-const isHeadlessOnlyMode = () => !fs.existsSync('/tmp/tsb-enable-chrome-play.flag');
+const isWaitNplMode = () => fs.existsSync(path.join(__dirname, 'tsb-wait-npl.flag')) || fs.existsSync('/tmp/tsb-wait-npl.flag');
+const isHeadlessOnlyMode = () => !(fs.existsSync(path.join(__dirname, 'tsb-enable-chrome-play.flag')) || fs.existsSync('/tmp/tsb-enable-chrome-play.flag'));
 
 function postSpectatorIngest(payload, onReply = null) {
   try {
@@ -174,7 +183,8 @@ function recordResult(name, port, rawPayload) {
     const data = typeof rawPayload === 'string' ? JSON.parse(rawPayload) : rawPayload;
     if (data && data.type === 'result') {
       const line = JSON.stringify({ bot: name, port, ...data });
-      fs.appendFileSync('/tmp/tsb-team-results.jsonl', line + '\n');
+      const resFile = fs.existsSync(__dirname) ? path.join(__dirname, 'tsb-team-results.jsonl') : '/tmp/tsb-team-results.jsonl';
+      fs.appendFileSync(resFile, line + '\n');
       console.log(`[RESULT ${name}] result=${data.result} event=${data.event} place=${data.place} peak=${data.peak} team=${JSON.stringify(data.team || null)}`);
     }
   } catch {}
@@ -182,8 +192,13 @@ function recordResult(name, port, rawPayload) {
 
 async function attachChromeBot(bot) {
   const { port, name, slot } = bot;
-  const pages = await getJson(`http://127.0.0.1:${port}/json`);
-  const page = pages.find((p) => p.type === 'page' && p.url.includes('territorial.io'));
+  let pages;
+  try {
+    pages = await getJson(`http://127.0.0.1:${port}/json`);
+  } catch {
+    return null;
+  }
+  const page = Array.isArray(pages) ? pages.find((p) => p.type === 'page' && p.url.includes('territorial.io')) : null;
   if (!page) {
     console.error(`[${name}] No territorial.io tab on port ${port}`);
     return null;
@@ -454,72 +469,81 @@ let activeStreamKey = null;
 
 async function mintViaDonorChrome(donorPort) {
   for (let w = 0; w < 20; w++) {
-    const d = clients.find((c) => !c.isHeadless && c.port === donorPort);
-    if (d && d.freshToken) break;
+    const d = clients.find((c) => !c.isHeadless && c.port === donorPort && c.freshToken) ||
+              clients.find((c) => !c.isHeadless && c.freshToken);
+    if (d) break;
     await new Promise((r) => setTimeout(r, 1000));
   }
-  const donor = clients.find((c) => !c.isHeadless && c.port === donorPort);
+  const donor = clients.find((c) => !c.isHeadless && c.port === donorPort) ||
+                clients.find((c) => !c.isHeadless);
   if (!donor) throw new Error(`No donor Chrome on ${donorPort}`);
-  if (isHeadlessOnlyMode()) {
-    await donor.evalJs(`(() => {
-      const d = window.dictionary;
-      const g = d && window[d.game];
-      if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true);
-      if (typeof b1 === "object" && b1?.z?.close) b1.z.close(1, 3252);
-      const ext = window.__fx?.strategyBotExtension;
-      if (ext) {
-        ext.settings.armed = false;
-        if (ext.remote?.state) ext.remote.state.loop = null;
-      }
-      window.__tsbSquadSyncHold = true;
-    })()`);
-  }
-  await donor.evalJs(`(() => {
-    window.__mintedToken = null;
-    const old = document.getElementById("mint-ts");
-    if (old) old.remove();
-    const d = document.createElement("div");
-    d.id = "mint-ts";
-    d.style.position = "fixed";
-    d.style.left = "0";
-    d.style.top = "0";
-    d.style.zIndex = "100";
-    document.body.appendChild(d);
-    const wid = window.turnstile.render(d, {
-      sitekey: "0x4AAAAAAEI8HZoG8nJMzxt1",
-      action: "enter_lobby",
-      appearance: "interaction-only",
-      callback: (tok) => {
-        window.__mintedToken = tok;
-        try { window.turnstile.remove(wid); d.remove(); } catch {}
-      }
-    });
-    return "RENDERED";
-  })()`);
-  for (let i = 0; i < 12; i++) {
-    await new Promise((r) => setTimeout(r, 700));
-    const tok0 = await donor.evalJs('window.__mintedToken || ""');
-    if (tok0 && typeof tok0 === 'string' && tok0.length > 100) return tok0;
-    const tok = await withWindowFocus(async () => {
-      const pre = await donor.evalJs('window.__mintedToken || ""');
-      if (pre && typeof pre === 'string' && pre.length > 100) return pre;
-      donor.send('Page.bringToFront');
-      donor.send('Emulation.setFocusEmulationEnabled', { enabled: true });
-      donor.send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 180, y: 180 });
-      await new Promise((r) => setTimeout(r, 110));
-      donor.send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 28, y: 32 });
-      await new Promise((r) => setTimeout(r, 110));
-      donor.send('Input.dispatchMouseEvent', { type: 'mousePressed', x: 28, y: 32, button: 'left', clickCount: 1 });
-      await new Promise((r) => setTimeout(r, 80));
-      donor.send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: 28, y: 32, button: 'left', clickCount: 1 });
-      await new Promise((r) => setTimeout(r, 250));
-      return await donor.evalJs('window.__mintedToken || ""');
-    });
-    if (tok && typeof tok === 'string' && tok.length > 100) {
-      return tok;
+  const runMint = async () => {
+    if (isHeadlessOnlyMode()) {
+      await donor.evalJs(`(() => {
+        const d = window.dictionary;
+        const g = d && window[d.game];
+        if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true);
+        if (typeof b1 === "object" && b1?.z?.close) b1.z.close(1, 3252);
+        const ext = window.__fx?.strategyBotExtension;
+        if (ext) {
+          ext.settings.armed = false;
+          if (ext.remote?.state) ext.remote.state.loop = null;
+        }
+        window.__tsbSquadSyncHold = true;
+      })()`);
     }
-  }
-  throw new Error('mint timeout');
+    await donor.evalJs(`(() => {
+      window.__mintedToken = null;
+      const old = document.getElementById("mint-ts");
+      if (old) old.remove();
+      const d = document.createElement("div");
+      d.id = "mint-ts";
+      d.style.position = "fixed";
+      d.style.left = "0";
+      d.style.top = "0";
+      d.style.zIndex = "100";
+      document.body.appendChild(d);
+      const wid = window.turnstile.render(d, {
+        sitekey: "0x4AAAAAAEI8HZoG8nJMzxt1",
+        action: "enter_lobby",
+        appearance: "interaction-only",
+        callback: (tok) => {
+          window.__mintedToken = tok;
+          try { window.turnstile.remove(wid); d.remove(); } catch {}
+        }
+      });
+      return "RENDERED";
+    })()`);
+    for (let i = 0; i < 12; i++) {
+      await new Promise((r) => setTimeout(r, 700));
+      const tok0 = await donor.evalJs('window.__mintedToken || ""');
+      if (tok0 && typeof tok0 === 'string' && tok0.length > 100) return tok0;
+      const tok = await withWindowFocus(async () => {
+        const pre = await donor.evalJs('window.__mintedToken || ""');
+        if (pre && typeof pre === 'string' && pre.length > 100) return pre;
+        if (process.platform !== 'win32') {
+          donor.send('Page.bringToFront');
+        }
+        donor.send('Emulation.setFocusEmulationEnabled', { enabled: true });
+        donor.send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 180, y: 180 });
+        await new Promise((r) => setTimeout(r, 110));
+        donor.send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 28, y: 32 });
+        await new Promise((r) => setTimeout(r, 110));
+        donor.send('Input.dispatchMouseEvent', { type: 'mousePressed', x: 28, y: 32, button: 'left', clickCount: 1 });
+        await new Promise((r) => setTimeout(r, 80));
+        donor.send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: 28, y: 32, button: 'left', clickCount: 1 });
+        await new Promise((r) => setTimeout(r, 250));
+        return await donor.evalJs('window.__mintedToken || ""');
+      });
+      if (tok && typeof tok === 'string' && tok.length > 100) {
+        return tok;
+      }
+    }
+    throw new Error('mint timeout');
+  };
+  const next = (donor._mintChain || Promise.resolve()).then(runMint, runMint);
+  donor._mintChain = next.catch(() => {});
+  return next;
 }
 
 // Centralized Backend Spawn Coordinator (TeamSpawnCoordinator):

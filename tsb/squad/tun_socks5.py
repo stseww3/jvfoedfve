@@ -29,16 +29,20 @@ def get_port_session(local_port, rotate=False):
 
 def load_upstream_http_proxy():
     raw = os.environ.get("GPROXY_URL", "").strip()
-    if not raw and os.path.exists(GPROXY_CONF_PATH):
-        try:
-            with open(GPROXY_CONF_PATH, "r", encoding="utf-8") as f:
-                for line in f:
-                    line = line.strip()
-                    if line and not line.startswith("#"):
-                        raw = line
-                        break
-        except Exception:
-            pass
+    local_conf = os.path.join(os.path.dirname(os.path.abspath(__file__)), "gproxy.conf")
+    for p in (local_conf, GPROXY_CONF_PATH):
+        if raw:
+            break
+        if os.path.exists(p):
+            try:
+                with open(p, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if line and not line.startswith("#"):
+                            raw = line
+                            break
+            except Exception:
+                pass
     if not raw:
         return None
     parsed = urllib.parse.urlsplit(raw)

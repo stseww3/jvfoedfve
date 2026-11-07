@@ -1,13 +1,27 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import vm from 'node:vm';
 import net from 'node:net';
 import tls from 'node:tls';
 import https from 'node:https';
+import crypto from 'node:crypto';
+import { fileURLToPath } from 'node:url';
 import { Worker, isMainThread, parentPort, workerData } from 'node:worker_threads';
 import { createRequire } from 'node:module';
 
-const require = createRequire('/tmp/node_modules/ws/package.json');
-const WS = require('ws');
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+function resolveAssetPath(localName, tmpFallback) {
+  const localPath = path.join(__dirname, localName);
+  if (fs.existsSync(localPath)) return localPath;
+  return tmpFallback;
+}
+
+let WS = null;
+for (const cand of [path.join(__dirname, 'node_modules/ws/package.json'), '/tmp/node_modules/ws/package.json']) {
+  if (fs.existsSync(cand)) {
+    try { WS = createRequire(cand)('ws'); break; } catch {}
+  }
+}
 
 // ============================================================================
 // MAIN THREAD API: spawns a dedicated Worker thread for each Headless Bot
@@ -120,7 +134,7 @@ if (!isMainThread && workerData?.bot) {
   const { bot } = workerData;
   const { socksPort, name, slot, id, pw } = bot;
 
-  const gameJsSource = fs.readFileSync('/tmp/live_game_js.js', 'utf8')
+  const gameJsSource = fs.readFileSync(resolveAssetPath('live_game_js.js', '/tmp/live_game_js.js'), 'utf8')
     .replaceAll('if(bi.ds){bi.ds=false;a0J()}', 'if(bi.ds){bi.ds=false}')
     .replace('this.aeB=function(){bi.ds=true;nF();this.eI=0}', 'this.aeB=function(){this.eI=0}')
     .replace(
@@ -144,7 +158,7 @@ if (!isMainThread && workerData?.bot) {
       'this.ae7.push(aD);if(aE.a2G===1&&!aE.hx&&(this.ae5===this.aIt*7||this.ae7.length>1)){bi.eZ=performance.now();this.ee();return}if(aE.a2G===2){'
     )
     .replace('bV.ym.dk();', '');
-  const pageJsSource = fs.readFileSync('/tmp/tsb-team-ext/page.js', 'utf8')
+  const pageJsSource = fs.readFileSync(resolveAssetPath('page.js', '/tmp/tsb-team-ext/page.js'), 'utf8')
     .replaceAll(
       'queueMicrotask(()=>{this.afterQueued=!1,this.afterTick()})',
       'queueMicrotask(()=>{this.afterQueued&&(this.afterQueued=!1,this.afterTick())})'
@@ -161,7 +175,7 @@ if (!isMainThread && workerData?.bot) {
       'if(null!==this.inflight&&Ct()-this.inflight<450)return;',
       'if(null!==this.inflight&&Ct()-this.inflight<450&&t.t-(this.inflightTick??0)<8)return;'
     );
-  const dictSource = fs.readFileSync('/tmp/live_dictionary.json', 'utf8');
+  const dictSource = fs.readFileSync(resolveAssetPath('live_dictionary.json', '/tmp/live_dictionary.json'), 'utf8');
 
   function makeSocksAgent(sp) {
     const agent = new https.Agent({ keepAlive: false });
@@ -205,6 +219,200 @@ if (!isMainThread && workerData?.bot) {
     return agent;
   }
 
+  function createNativeWsOverAgent(urlStr, agent, useProxy) {
+    const u = new URL(urlStr);
+    const host = u.hostname;
+    const port = Number(u.port) || (u.protocol === 'wss:' ? 443 : 80);
+    const pathAndQuery = (u.pathname || '/') + (u.search || '');
+    const handlers = { open: [], message: [], close: [], error: [] };
+    const emit = (ev, ...args) => { for (const fn of handlers[ev] || []) { try { fn(...args); } catch {} } };
+    let state = 0; // 0=CONNECTING, 1=OPEN, 2=CLOSING, 3=CLOSED
+    let sockRef = null;
+    let upgraded = false;
+    let rxBuf = Buffer.alloc(0);
+    let fragOpcode = 0;
+    let fragChunks = [];
+
+    const sendFrame = (opcode, payloadBuf) => {
+      if (!sockRef || sockRef.destroyed) return;
+      const len = payloadBuf.length;
+      let hdrLen = 2 + 4;
+      if (len >= 126 && len <= 65535) hdrLen += 2;
+      else if (len > 65535) hdrLen += 8;
+      const frame = Buffer.allocUnsafe(hdrLen + len);
+      frame[0] = 0x80 | (opcode & 0x0f);
+      let offset = 2;
+      if (len < 126) {
+        frame[1] = 0x80 | len;
+      } else if (len <= 65535) {
+        frame[1] = 0x80 | 126;
+        frame.writeUInt16BE(len, 2);
+        offset = 4;
+      } else {
+        frame[1] = 0x80 | 127;
+        frame.writeBigUInt64BE(BigInt(len), 2);
+        offset = 10;
+      }
+      const mask = crypto.randomBytes(4);
+      mask.copy(frame, offset);
+      offset += 4;
+      for (let i = 0; i < len; i++) {
+        frame[offset + i] = payloadBuf[i] ^ mask[i & 3];
+      }
+      try { sockRef.write(frame); } catch {}
+    };
+
+    const parseFrames = () => {
+      while (rxBuf.length >= 2) {
+        const b0 = rxBuf[0];
+        const b1 = rxBuf[1];
+        const fin = (b0 & 0x80) !== 0;
+        const opcode = b0 & 0x0f;
+        const masked = (b1 & 0x80) !== 0;
+        let len = b1 & 0x7f;
+        let idx = 2;
+        if (len === 126) {
+          if (rxBuf.length < 4) return;
+          len = rxBuf.readUInt16BE(2);
+          idx = 4;
+        } else if (len === 127) {
+          if (rxBuf.length < 10) return;
+          len = Number(rxBuf.readBigUInt64BE(2));
+          idx = 10;
+        }
+        if (masked) idx += 4;
+        if (rxBuf.length < idx + len) return;
+        let payload = rxBuf.subarray(idx, idx + len);
+        if (masked) {
+          const m = rxBuf.subarray(idx - 4, idx);
+          const unmasked = Buffer.allocUnsafe(len);
+          for (let i = 0; i < len; i++) unmasked[i] = payload[i] ^ m[i & 3];
+          payload = unmasked;
+        }
+        rxBuf = rxBuf.subarray(idx + len);
+
+        if (opcode === 0x08) {
+          let code = 1000;
+          let reason = '';
+          if (payload.length >= 2) {
+            code = payload.readUInt16BE(0);
+            reason = payload.subarray(2).toString('utf8');
+          }
+          state = 3;
+          try { sockRef.destroy(); } catch {}
+          emit('close', code, Buffer.from(reason));
+          return;
+        } else if (opcode === 0x09) {
+          sendFrame(0x0a, payload);
+        } else if (opcode === 0x0a) {
+          // pong
+        } else if (opcode === 0x01 || opcode === 0x02 || opcode === 0x00) {
+          if (opcode !== 0x00) {
+            fragOpcode = opcode;
+            fragChunks = [Buffer.from(payload)];
+          } else {
+            fragChunks.push(Buffer.from(payload));
+          }
+          if (fin) {
+            const full = fragChunks.length === 1 ? fragChunks[0] : Buffer.concat(fragChunks);
+            fragChunks = [];
+            emit('message', full, fragOpcode === 0x02);
+          }
+        }
+      }
+    };
+
+    const onSocketReady = (err, tlsSock) => {
+      if (err || !tlsSock) {
+        state = 3;
+        emit('error', err || new Error('Socket connect failed'));
+        emit('close', 1006, Buffer.alloc(0));
+        return;
+      }
+      sockRef = tlsSock;
+      const key = crypto.randomBytes(16).toString('base64');
+      const req =
+        `GET ${pathAndQuery} HTTP/1.1\r\n` +
+        `Host: ${host}\r\n` +
+        `Upgrade: websocket\r\n` +
+        `Connection: Upgrade\r\n` +
+        `Sec-WebSocket-Key: ${key}\r\n` +
+        `Sec-WebSocket-Version: 13\r\n` +
+        `Origin: https://territorial.io\r\n` +
+        `User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36\r\n\r\n`;
+      tlsSock.write(req);
+
+      tlsSock.on('data', (chunk) => {
+        rxBuf = Buffer.concat([rxBuf, chunk]);
+        if (!upgraded) {
+          const sep = rxBuf.indexOf('\r\n\r\n');
+          if (sep < 0) return;
+          const hdrStr = rxBuf.subarray(0, sep).toString('utf8');
+          rxBuf = rxBuf.subarray(sep + 4);
+          if (!hdrStr.startsWith('HTTP/1.1 101') && !hdrStr.includes(' 101 ')) {
+            state = 3;
+            try { tlsSock.destroy(); } catch {}
+            emit('error', new Error('WS upgrade failed: ' + hdrStr.split('\r\n')[0]));
+            emit('close', 1006, Buffer.alloc(0));
+            return;
+          }
+          upgraded = true;
+          state = 1;
+          emit('open');
+        }
+        if (upgraded) parseFrames();
+      });
+
+      tlsSock.on('error', (e) => {
+        emit('error', e);
+      });
+      tlsSock.on('close', () => {
+        if (state !== 3) {
+          state = 3;
+          emit('close', 1006, Buffer.alloc(0));
+        }
+      });
+    };
+
+    if (useProxy) {
+      agent.createConnection({ host, port, servername: host }, onSocketReady);
+    } else {
+      const s = tls.connect({ host, port, servername: host, rejectUnauthorized: false }, () => onSocketReady(null, s));
+      s.on('error', (e) => onSocketReady(e, null));
+    }
+
+    return {
+      get readyState() { return state; },
+      on(ev, fn) { if (handlers[ev]) handlers[ev].push(fn); },
+      send(data) {
+        if (state !== 1) return;
+        if (typeof data === 'string') {
+          sendFrame(0x01, Buffer.from(data, 'utf8'));
+        } else if (data instanceof ArrayBuffer) {
+          sendFrame(0x02, Buffer.from(data));
+        } else if (ArrayBuffer.isView(data)) {
+          sendFrame(0x02, Buffer.from(data.buffer, data.byteOffset, data.byteLength));
+        } else {
+          sendFrame(0x02, Buffer.from(data));
+        }
+      },
+      close(code = 1000) {
+        if (state === 3) return;
+        state = 2;
+        const b = Buffer.allocUnsafe(2);
+        b.writeUInt16BE(code, 0);
+        sendFrame(0x08, b);
+        setTimeout(() => {
+          if (state !== 3) {
+            state = 3;
+            try { sockRef?.destroy(); } catch {}
+            emit('close', code, Buffer.alloc(0));
+          }
+        }, 200);
+      }
+    };
+  }
+
   function makeProxiedWebSocketClass(sp) {
     const agent = makeSocksAgent(sp);
     return class ProxiedWebSocket {
@@ -214,13 +422,15 @@ if (!isMainThread && workerData?.bot) {
         this.CONNECTING = 0; this.OPEN = 1; this.CLOSING = 2; this.CLOSED = 3;
         this.binaryType = 'blob';
         const isProxied = typeof url === 'string' && url.includes('territorial.io');
-        this._ws = new WS(url, protocols, {
-          agent: isProxied ? agent : undefined,
-          headers: {
-            'Origin': 'https://territorial.io',
-            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36'
-          }
-        });
+        this._ws = WS
+          ? new WS(url, protocols, {
+              agent: isProxied ? agent : undefined,
+              headers: {
+                'Origin': 'https://territorial.io',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36'
+              }
+            })
+          : createNativeWsOverAgent(url, agent, isProxied);
         this._ws.on('open', () => { if (typeof this.onopen === 'function') this.onopen({ target: this }); });
         this._ws.on('message', (data, isBinary) => {
           if (typeof this.onmessage === 'function') {
