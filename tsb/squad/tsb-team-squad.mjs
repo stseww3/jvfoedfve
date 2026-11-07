@@ -427,7 +427,78 @@ async function mintViaDonorChrome(donorPort) {
   throw new Error('mint timeout');
 }
 
+// Centralized Backend Spawn Coordinator:
+// Receives candidate pools + Boss position from Headless workers during the 6-second spawnPhase,
+// computes a single unified Farthest-Point map-wide assignment so all 5/10 bots NEVER pick the same region,
+// and pushes each bot's dedicated (x, y) back via worker.postMessage({ type: 'set_spawn', pos })!
+let spawnCoordState = { key: '', lastCalcAt: 0, assignments: new Map() };
+
+function handleBackendSpawnRequest(client, req) {
+  const { W, H, land, squadCount = 5, bossPts = [], cands = [] } = req;
+  if (!W || !H || !Array.isArray(cands) || cands.length === 0) return;
+  const now = Date.now();
+  const bossKey = bossPts.map((b) => `${b.x >> 4},${b.y >> 4}`).join(';');
+  const gameKey = `${W}x${H}_${land}_${bossKey}`;
+
+  if (spawnCoordState.key !== gameKey || now - spawnCoordState.lastCalcAt > 650) {
+    spawnCoordState.key = gameKey;
+    spawnCoordState.lastCalcAt = now;
+    spawnCoordState.assignments.clear();
+
+    const activeHeadless = clients.filter((c) => c.isHeadless);
+    const nBots = Math.max(activeHeadless.length, squadCount, 5);
+    const picked = [];
+    const bossMinSep = Math.max(115, Math.min(220, 0.16 * Math.hypot(W, H)));
+
+    for (let k = 0; k < nBots; k++) {
+      let bestPt = null;
+      let bestScore = -Infinity;
+      for (let i = 0; i < cands.length; i++) {
+        const pt = cands[i];
+        // Never crowd Boss npl
+        let bossDist = Infinity;
+        for (const b of bossPts) {
+          bossDist = Math.min(bossDist, Math.hypot(pt.x - b.x, pt.y - b.y));
+        }
+        if (bossPts.length > 0 && bossDist < bossMinSep) continue;
+
+        let minDistToPicked = Infinity;
+        for (const p of picked) {
+          minDistToPicked = Math.min(minDistToPicked, Math.hypot(pt.x - p.x, pt.y - p.y));
+        }
+        if (picked.length > 0 && minDistToPicked < 70) continue;
+
+        // First bot takes the highest-quality candidate; subsequent bots maximize distance from already-assigned brothers + candidate quality
+        const distScore = picked.length === 0 ? 260 : Math.min(480, minDistToPicked);
+        const qualScore = (pt.prio ?? (60 - i)) * 1.6;
+        const total = distScore + qualScore;
+        if (total > bestScore) {
+          bestScore = total;
+          bestPt = { x: pt.x, y: pt.y };
+        }
+      }
+      if (!bestPt) {
+        bestPt = cands[k % cands.length];
+      }
+      picked.push(bestPt);
+    }
+
+    const summary = [];
+    activeHeadless.forEach((hc, idx) => {
+      const pos = picked[idx % picked.length];
+      spawnCoordState.assignments.set(hc.port, pos);
+      hc.worker?.postMessage({ type: 'set_spawn', pos });
+      summary.push(`${hc.name.replace('[NPL] ', '')}->(${pos.x},${pos.y})`);
+    });
+    console.log(`[BACKEND-SPAWN-COORD] Assigned ${activeHeadless.length} mutually-separated spawns (map=${W}x${H}): ${summary.join(' | ')}`);
+  } else {
+    const pos = spawnCoordState.assignments.get(client.port);
+    if (pos) client.worker?.postMessage({ type: 'set_spawn', pos });
+  }
+}
+
 for (const bot of HEADLESS_BOTS) {
+  bot.onSpawnRequest = handleBackendSpawnRequest;
   const hc = createHeadlessBot(bot, {
     getStrategySource: getV27TeamSource,
     mintTurnstileToken: mintViaDonorChrome,

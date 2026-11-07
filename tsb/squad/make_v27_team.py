@@ -128,27 +128,21 @@ new_helpers = """  isTeammate(g, p) {
     );
   }
 
-  // DISTRIBUTED BACKEND-COORDINATED TEAM SPAWNING:
-  // 1) Never treat our own squad bots as "enemy people" in spawnVsPeople0 so their live movements don't cause all 5 bots' candidate lists to chase each other into one corner!
-  // 2) Deterministically partition candidate regions and enforce >= minSep separation between our squad slots AND Boss npl!
+  // CENTRALIZED BACKEND-COORDINATED TEAM SPAWNING:
+  // 1) Each bot sends its rich candidate pool (spawnCandidates(gClean, 48) + spawnVsPeople(gClean, 24)) + Boss position to the centralized backend coordinator in tsb-team-squad.mjs!
+  // 2) The backend coordinator assigns 100% mutually-exclusive, map-wide separated coordinates via window.__tsbAssignedSpawn!
   chooseSpawn(g, final = true) {
     const me = this.me;
     const W = g.W, H = g.H;
-    const minSep = Math.max(115, Math.min(220, 0.28 * Math.hypot(W, H)));
-
-    let mySquadIdx = typeof window !== "undefined" && Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : 0;
     const squadIds = [];
     for (let p = 0; p < g.humans; p++) {
       if (p === me || (this.isOurSquadBot(g, p) && !this.isBossNpl(g, p))) {
         squadIds.push(p);
       }
     }
-    const rankIdx = squadIds.indexOf(me);
-    const squadCount = squadIds.length;
-    const slot = (squadCount >= 2 && rankIdx >= 0 ? rankIdx : mySquadIdx) % 10;
+    const rankIdx = Math.max(0, squadIds.indexOf(me));
+    const squadCount = Math.max(1, squadIds.length);
 
-    // Build a view where OTHER squad guard bots are erased from the map so all 5 guard bots compute
-    // the EXACT same deterministic candidate list relative only to enemies + Boss npl!
     let gClean = g;
     for (const sid of squadIds) {
       if (sid !== me && gClean.terr[sid] > 0) {
@@ -156,43 +150,55 @@ new_helpers = """  isTeammate(g, p) {
       }
     }
 
-    let cands = this.spawnVsPeople ? this.spawnVsPeople(gClean, 16) : [];
-    if (!cands || cands.length < squadCount) {
-      const more = this.spawnCandidates(gClean, 16) || [];
-      cands = [...(cands || []), ...more];
-    }
-    if (cands && cands.length > 0) {
-      // Greedily pick mutually well-spaced candidates (>= minSep from Boss npl AND >= minSep from each earlier slot's picked spot!)
-      const bossIds = [];
-      for (let h = 0; h < g.humans; h++) {
-        if (h !== me && g.terr[h] > 0 && this.isBossNpl(g, h)) bossIds.push(h);
-      }
-      const chosenSlots = [];
-      for (const pos of cands) {
+    const nowMs = typeof performance !== "undefined" ? performance.now() : Date.now();
+    if (typeof window !== "undefined" && window.__hlSpawnReq && (!this._lastSpawnReqAt || nowMs - this._lastSpawnReqAt > 400)) {
+      this._lastSpawnReqAt = nowMs;
+      const rawA = this.spawnVsPeople ? (this.spawnVsPeople(gClean, 24) || []) : [];
+      const rawB = this.spawnCandidates(gClean, 48) || [];
+      const merged = [];
+      const addPt = (pos, prio) => {
         const x = typeof pos === "object" ? pos.x : (pos % W);
         const y = typeof pos === "object" ? pos.y : Math.floor(pos / W);
-        let tooClose = false;
-        for (const bh of bossIds) {
-          const hx = (g.x0[bh] + g.x1[bh]) >> 1, hy = (g.y0[bh] + g.y1[bh]) >> 1;
-          if (Math.hypot(x - hx, y - hy) < minSep) { tooClose = true; break; }
+        if (!merged.some((m) => Math.hypot(m.x - x, m.y - y) < 28)) {
+          merged.push({ x, y, prio });
         }
-        if (tooClose) continue;
-        for (const prev of chosenSlots) {
-          if (Math.hypot(x - prev.x, y - prev.y) < minSep) { tooClose = true; break; }
-        }
-        if (!tooClose) {
-          chosenSlots.push({ x, y });
-          if (chosenSlots.length > slot) break;
+      };
+      rawA.forEach((p, i) => addPt(p, 100 - i));
+      rawB.forEach((p, i) => addPt(p, 60 - i));
+      const bossPts = [];
+      for (let h = 0; h < g.humans; h++) {
+        if (h !== me && g.terr[h] > 0 && this.isBossNpl(g, h)) {
+          bossPts.push({ x: (g.x0[h] + g.x1[h]) >> 1, y: (g.y0[h] + g.y1[h]) >> 1 });
         }
       }
-      // Also check live positions of lower-ranked squad bots just in case
-      let res = chosenSlots[slot] || chosenSlots[slot % Math.max(1, chosenSlots.length)] || cands[slot % cands.length];
-      res = typeof res === "object" ? res : { x: res % W, y: Math.floor(res / W) };
-      if (typeof window !== "undefined" && window.__hlLog && (!this._lastLogSpawn || Math.hypot(res.x - this._lastLogSpawn.x, res.y - this._lastLogSpawn.y) > 6)) {
+      window.__hlSpawnReq({
+        W, H, land: g.land, me, rankIdx, squadCount, squadIds, bossPts, cands: merged
+      });
+    }
+
+    if (typeof window !== "undefined" && window.__tsbAssignedSpawn && Number.isInteger(window.__tsbAssignedSpawn.x)) {
+      const res = window.__tsbAssignedSpawn;
+      if (window.__hlLog && (!this._lastLogSpawn || Math.hypot(res.x - this._lastLogSpawn.x, res.y - this._lastLogSpawn.y) > 4)) {
         this._lastLogSpawn = res;
-        window.__hlLog(`[HL-SPAWN] me=${me} slot=${slot} (squad=${squadCount},rankIdx=${rankIdx}) -> (${res.x},${res.y}) chosenSlots=${chosenSlots.length}/${cands.length} minSep=${Math.round(minSep)}`);
+        window.__hlLog(`[HL-SPAWN-BACKEND] me=${me} rankIdx=${rankIdx}/${squadCount} -> (${res.x},${res.y}) assigned by backend coordinator!`);
       }
       return res;
+    }
+
+    // Fallback before first backend reply (< 10ms): use spawnCandidates(gClean, 48) with wide greedy separation
+    const rawFallback = this.spawnCandidates(gClean, 48) || [];
+    if (rawFallback.length > 0) {
+      const minSep = Math.max(110, Math.min(240, 0.55 * Math.sqrt((W * H) / Math.max(2, squadCount + 1))));
+      const chosen = [];
+      for (const pos of rawFallback) {
+        const x = typeof pos === "object" ? pos.x : (pos % W);
+        const y = typeof pos === "object" ? pos.y : Math.floor(pos / W);
+        if (chosen.every((p) => Math.hypot(p.x - x, p.y - y) >= minSep)) {
+          chosen.push({ x, y });
+        }
+      }
+      const res = chosen[rankIdx % chosen.length] || rawFallback[rankIdx % rawFallback.length];
+      return typeof res === "object" ? res : { x: res % W, y: Math.floor(res / W) };
     }
     return super.chooseSpawn(g, final);
   }

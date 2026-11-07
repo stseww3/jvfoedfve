@@ -101,6 +101,8 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, get
       if (onGameInit) onGameInit(client, msg.initData);
     } else if (msg.type === 'game_pkt') {
       if (onGamePacket) onGamePacket(client, msg.pkt);
+    } else if (msg.type === 'spawn_req') {
+      if (bot.onSpawnRequest) bot.onSpawnRequest(client, msg);
     }
   });
 
@@ -458,6 +460,9 @@ if (!isMainThread && workerData?.bot) {
     __hlLog(text) {
       parentPort.postMessage({ type: 'log', text: String(text) });
     },
+    __hlSpawnReq(payload) {
+      parentPort.postMessage({ type: 'spawn_req', ...payload });
+    },
     __tsbReportResult(payload) {
       parentPort.postMessage({ type: 'result', payload });
     },
@@ -566,6 +571,7 @@ if (!isMainThread && workerData?.bot) {
       bq.aF3.aFu = function(tN, aFq, aFr) {
         window.__hlPerf = { ticks: 0, totalMs: 0, maxMs: 0, lastTick: -1, dupTicks: 0, skippedTicks: 0 };
         window.__lastPeaceCaller = -1;
+        window.__tsbAssignedSpawn = null;
         origAfu(tN, aFq, aFr);
         try {
           if (window.__hlLog) {
@@ -614,6 +620,8 @@ if (!isMainThread && workerData?.bot) {
         parentPort.postMessage({ type: 'log', text: `[HL-ERR] eval failed: ${err?.message || err}` });
         parentPort.postMessage({ type: 'eval_res', id: msg.id, value: null });
       }
+    } else if (msg.type === 'set_spawn') {
+      sandbox.__tsbAssignedSpawn = msg.pos;
     } else if (msg.type === 'token') {
       if (turnstileCallback) {
         try { turnstileCallback(msg.token); } catch (err) {
