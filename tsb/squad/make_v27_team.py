@@ -471,28 +471,43 @@ new_helpers = """  isTeammate(g, p) {
     return false;
   }
 
-  // SEA RADAR & ENEMY BOAT INTERCEPTION (g.chase):
-  // Economically intercepts incoming enemy boats (1.15x enemy boat troops, capped at 8% B)
-  // before they can land on our / Boss's / teammate's coastline!
+  // UNIFIED 8-BROTHER SEA RADAR & OPTIMAL BOAT INTERCEPTION (g.chase):
+  // 1. Checks `bQ.mt.mu(p, boatId)` across all teammates so we know exact friendly troops already chasing `boatId`.
+  // 2. Deterministically evaluates all 8 squad brothers' interception cost:
+  //      totalCost(p) = requiredTroops(d_p) + boatTax(3.125% * bal[p]) + 18 * d_p
+  //    so the single closest & lowest-tax brother (`rank === 0`) intercepts first!
+  // 3. Fail-safe escalation ("必须达到，不能漏"): if `boatId` is still un-chased after 3 ticks (or within 55px of landing),
+  //    backup brothers (`rank >= 1`) immediately fire `g.chase` so zero enemy boats can ever touch our shore!
   tryInterceptEnemyBoats(g) {
     const me = this.me;
     if (!g.canAct(me) || typeof g.chase !== "function") return false;
     const myCoast = g.coast?.[me];
     if (!myCoast || myCoast.length === 0) return false;
-    if ((g.boatCount?.[me] ?? 0) >= 3) return false;
+    if ((g.boatCount?.[me] ?? 0) >= 4) return false;
     const boatN = g.boatN | 0;
     if (boatN <= 0 || !g.bSlot || !g.bId || !g.bTroops || !g.bPos) return false;
 
     const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
-    if (B < 6000 || dMe < 45) return false;
-    const fee = iV(32 * B, 1024);
+    if (B < 2500 || dMe < 22) return false;
 
     if (!this._chasedBoatTicks) this._chasedBoatTicks = new Map();
+    if (!this._boatFirstSeen) this._boatFirstSeen = new Map();
     const W = g.W, H = g.H, w16 = W << 4;
     const own = g.own;
 
-    const cLen = myCoast.length;
-    const cStep = Math.max(1, Math.floor(cLen / 32));
+    // Helper: minimum distance from player p's coastline to (tx, ty)
+    const minCoastDistOf = (p, tx, ty) => {
+      const cst = g.coast?.[p];
+      if (!cst || cst.length === 0) return 999999;
+      const step = Math.max(1, Math.floor(cst.length / 28));
+      let best = 999999;
+      for (let i = 0; i < cst.length; i += step) {
+        const cp = cst[i];
+        const d = Math.hypot(tx - (cp % W), ty - Math.floor(cp / W));
+        if (d < best) best = d;
+      }
+      return best;
+    };
 
     let bestBoatId = -1;
     let bestPct = 0;
@@ -503,17 +518,17 @@ new_helpers = """  isTeammate(g, p) {
     for (let b = 0; b < boatN; b++) {
       const owner = g.bSlot[b] >> 3;
       if (owner === me || owner >= 512 || this.isTeammate(g, owner)) continue;
+      // Ignore boats that are themselves chasing another boat in open water unless heading at us
       const boatId = g.bId[b];
       const bTr = g.bTroops[b];
-      if (bTr < 250) continue;
-      const lastChased = this._chasedBoatTicks.get(boatId) ?? -999;
-      if (g.t - lastChased < 45) continue;
+      if (bTr < 80) continue;
 
-      if (typeof window !== "undefined" && window.bQ?.iC?.qx) {
-        try {
-          if (!window.bQ.iC.qx(me, boatId)) continue;
-        } catch {}
+      if (!this._boatFirstSeen.has(boatId)) {
+        this._boatFirstSeen.set(boatId, g.t);
       }
+      const seenAge = g.t - (this._boatFirstSeen.get(boatId) ?? g.t);
+      const lastMyChase = this._chasedBoatTicks.get(boatId) ?? -999;
+      if (g.t - lastMyChase < 28) continue;
 
       const rawPos = g.bPos[b];
       const bx = (rawPos % w16) >> 4;
@@ -523,23 +538,12 @@ new_helpers = """  isTeammate(g, p) {
       const endPix = rb && rb.length > 0 ? rb[rb.length - 1] : -1;
       const ex = endPix >= 0 ? (endPix % W) : bx;
       const ey = endPix >= 0 ? Math.floor(endPix / W) : by;
+      const dBoatToLand = Math.hypot(ex - bx, ey - by);
 
-      let minDistNow = 999999;
-      let minDistEnd = 999999;
-      for (let i = 0; i < cLen; i += cStep) {
-        const cp = myCoast[i];
-        const cx = cp % W, cy = Math.floor(cp / W);
-        const dNow = Math.hypot(bx - cx, by - cy);
-        const dEnd = Math.hypot(ex - cx, ey - cy);
-        if (dNow < minDistNow) minDistNow = dNow;
-        if (dEnd < minDistEnd) minDistEnd = dEnd;
-      }
-
-      if (minDistNow > 135 && minDistEnd > 115) continue;
-
-      let threatensTeam = minDistEnd <= 80 || minDistNow <= 70;
-      if (!threatensTeam && endPix >= 0 && own) {
-        for (const [dx, dy] of [[0, 0], [6, 0], [-6, 0], [0, 6], [0, -6], [14, 0], [-14, 0], [0, 14], [0, -14]]) {
+      // 1. Check if this enemy boat threatens our team's coastline / territory (me, Boss, or any teammate)
+      let threatensTeam = false;
+      if (endPix >= 0 && own) {
+        for (const [dx, dy] of [[0, 0], [5, 0], [-5, 0], [0, 5], [0, -5], [14, 0], [-14, 0], [0, 14], [0, -14], [24, 0], [-24, 0], [0, 24], [0, -24]]) {
           const nx = ex + dx, ny = ey + dy;
           if (nx <= 0 || ny <= 0 || nx >= W - 1 || ny >= H - 1) continue;
           const o = own[ny * W + nx];
@@ -549,15 +553,85 @@ new_helpers = """  isTeammate(g, p) {
           }
         }
       }
+      if (!threatensTeam) {
+        for (let p = 0; p < g.humans; p++) {
+          if (g.alive[p] && (p === me || this.isTeammate(g, p))) {
+            if (minCoastDistOf(p, ex, ey) <= 95 || minCoastDistOf(p, bx, by) <= 80) {
+              threatensTeam = true;
+              break;
+            }
+          }
+        }
+      }
       if (!threatensTeam) continue;
 
-      // Economical ~1.15x enemy boat troops, strictly capped at 8% B so we never waste troops!
-      const wantTr = Math.max(500, Math.ceil(1.15 * bTr));
-      const maxAllow = Math.floor(0.08 * B);
-      if (wantTr > maxAllow || B - wantTr - fee < 40 * L) continue;
+      // 2. Sum friendly chaser troops ALREADY pursuing `boatId` via engine `bQ.mt.mu(p, boatId)`
+      let alreadyChasingTroops = 0;
+      if (typeof window !== "undefined" && window.bQ?.mt?.mu && window.bR?.gB) {
+        for (let p = 0; p < g.humans; p++) {
+          if (!g.alive[p] || (p !== me && !this.isTeammate(g, p))) continue;
+          try {
+            if (window.bQ.mt.mu(p, boatId)) {
+              const chaserSlot = window.bR.gB[2];
+              if (chaserSlot >= 0 && chaserSlot < boatN && (g.bSlot[chaserSlot] >> 3) === p) {
+                alreadyChasingTroops += g.bTroops[chaserSlot];
+              } else {
+                alreadyChasingTroops += bTr;
+              }
+            }
+          } catch {}
+        }
+      }
+      if (alreadyChasingTroops >= 1.02 * bTr) continue; // Already voldoende friendly interceptor on the way!
 
-      const pct = Math.max(4, Math.min(82, Math.ceil((wantTr * 1024) / Math.max(1, B))));
-      const score = bTr * 2 + Math.max(0, 160 - minDistNow) * 50;
+      const remNeed = Math.max(80, Math.ceil(1.12 * bTr) - alreadyChasingTroops);
+
+      // 3. Evaluate all eligible squad brothers `p` to find who is most convenient & cheapest (`rank === 0`)
+      const candidates = [];
+      for (let p = 0; p < g.humans; p++) {
+        if (!g.alive[p] || (p !== me && !this.isOurSquadBot(g, p))) continue;
+        if (p !== me && !this.isTeammate(g, p)) continue;
+        if ((g.boatCount?.[p] ?? 0) >= 4 || !(g.coast?.[p]?.length > 0)) continue;
+        const Bp = g.bal[p], Lp = Math.max(1, g.terr[p]);
+        if (Bp < 2500 || Bp / Lp < 22) continue;
+
+        if (typeof window !== "undefined" && window.bQ?.iC?.qx) {
+          try {
+            if (!window.bQ.iC.qx(p, boatId)) continue;
+          } catch {}
+        }
+
+        const dNowP = minCoastDistOf(p, bx, by);
+        const dEndP = minCoastDistOf(p, ex, ey);
+        const effDistP = Math.min(dNowP, dEndP + 10);
+        if (effDistP > 175) continue;
+        // Must be able to reach the boat before or right around landing
+        if (dNowP > dBoatToLand * 1.45 + 45 && dEndP > 95) continue;
+
+        const sendTrP = Math.ceil(remNeed * Math.exp(0.002 * Math.max(0, effDistP - 15))) + 60;
+        const feeP = iV(32 * Bp, 1024);
+        const urgentClose = dBoatToLand <= 55 || dEndP <= 55 || seenAge >= 5;
+        const maxAllowP = Math.floor((urgentClose ? 0.35 : 0.16) * Bp);
+        const keepFloorP = (urgentClose ? 12 : 28) * Lp;
+        if (sendTrP > maxAllowP || Bp - sendTrP - feeP < keepFloorP) continue;
+
+        const totalCostP = sendTrP + feeP + 18 * effDistP;
+        candidates.push({ p, sendTrP, effDistP, dNowP, totalCostP });
+      }
+
+      if (candidates.length === 0) continue;
+      candidates.sort((a, b) => a.totalCostP - b.totalCostP);
+
+      const myIdx = candidates.findIndex((c) => c.p === me);
+      if (myIdx < 0) continue;
+
+      const urgentLanding = dBoatToLand <= 55 || candidates[myIdx].effDistP <= 50;
+      const allowedRank = urgentLanding || seenAge >= 6 ? candidates.length - 1 : seenAge >= 3 ? 1 : 0;
+      if (myIdx > allowedRank) continue;
+
+      const myCand = candidates[myIdx];
+      const pct = Math.max(2, Math.min(360, Math.ceil((myCand.sendTrP * 1024) / Math.max(1, B))));
+      const score = bTr * 3 + Math.max(0, 200 - dBoatToLand) * 80 - myIdx * 500;
       if (score > bestScore) {
         bestScore = score;
         bestBoatId = boatId;
@@ -573,7 +647,120 @@ new_helpers = """  isTeammate(g, p) {
         this.cmds++;
         this.boats++;
         if (typeof window !== "undefined" && window.__hlLog) {
-          window.__hlLog(`[HL-INTERCEPT] t=${g.t} sea intercept chase pct=${bestPct}/1024 -> boatId=${bestBoatId} owner=${bestOwner}(${g.names?.[bestOwner] || ""}) boatTroops=${bestTroops}`);
+          window.__hlLog(`[HL-INTERCEPT] t=${g.t} unified sea intercept pct=${bestPct}/1024 -> boatId=${bestBoatId} owner=${bestOwner}(${g.names?.[bestOwner] || ""}) boatTroops=${bestTroops}`);
+        }
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // PREEMPTIVE NEAR-TEAM SMALL ISLAND OCCUPATION:
+  // Occupies small islands (<= 1800 px) within <= 85px of our team's coastline BEFORE enemies can claim them as stepping stones!
+  // Uses unified 8-brother cost scheduling (`boatTax + 20 * dist`) so the closest & lowest-tax brother claims each island.
+  tryClaimNearTeamIslands(g) {
+    const me = this.me;
+    if (g.t < 420 || !g.canAct(me)) return false;
+    const myCoast = g.coast?.[me];
+    if (!myCoast || myCoast.length === 0) return false;
+    if ((g.boatCount?.[me] ?? 0) >= 3) return false;
+    if (g.t - (this._lastNearIsleTick ?? -999) < 28) return false;
+
+    const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
+    if (B < 2500 || dMe < 22) return false;
+    const fee = iV(32 * B, 1024);
+
+    if (!this._claimedIsleLandings) this._claimedIsleLandings = new Map();
+    const W = g.W, w16 = W << 4;
+    const comp = this.compSize(g);
+    const boatN = g.boatN | 0;
+
+    let bestHit = null;
+    let bestWantTr = 0;
+    let bestScore = -1;
+
+    for (const s of seaSample(g, me, 48, this.rng)) {
+      if (s.d < 4 || s.d > 85) continue;
+      const landPix = s.land;
+      const o = s.o;
+      if (o === me || (o >= 0 && o < 512 && this.isTeammate(g, o))) continue;
+      // Only target unclaimed neutral islands or weak bot islands (never human-owned mainlands here)
+      const isNeutralIsle = o < 0 || o === 512;
+      const isWeakBotIsle = !isNeutralIsle && g.isBot(o) && g.terr[o] <= 1800 && g.bal[o] <= 12000;
+      if (!isNeutralIsle && !isWeakBotIsle) continue;
+
+      const sz = isNeutralIsle ? (comp?.[landPix] ?? 0) : g.terr[o];
+      if (sz <= 0 || sz > 2000) continue;
+
+      const lx = landPix % W, ly = Math.floor(landPix / W);
+      const isleKey = `${lx >> 3}_${ly >> 3}`;
+      if (g.t - (this._claimedIsleLandings.get(isleKey) ?? -999) < 160) continue;
+
+      // Check if ANY friendly boat at sea is already heading toward this island (within 20px)
+      let friendlyBoatEnRoute = false;
+      if (boatN > 0 && g.bSlot && g.bRoute) {
+        for (let b = 0; b < boatN; b++) {
+          const bOwner = g.bSlot[b] >> 3;
+          if (bOwner !== me && !this.isTeammate(g, bOwner)) continue;
+          const rb = g.bRoute[b];
+          if (rb && rb.length > 0) {
+            const endP = rb[rb.length - 1];
+            if (Math.hypot((endP % W) - lx, Math.floor(endP / W) - ly) <= 22) {
+              friendlyBoatEnRoute = true;
+              break;
+            }
+          }
+        }
+      }
+      if (friendlyBoatEnRoute) continue;
+
+      // Unified 8-brother scheduling: check if another squad brother is strictly closer + cheaper (lower boat tax)
+      const myCost = fee + 22 * s.d;
+      let betterBrotherCount = 0;
+      for (let p = 0; p < g.humans; p++) {
+        if (p === me || !g.alive[p] || !this.isOurSquadBot(g, p) || !this.isTeammate(g, p)) continue;
+        if ((g.boatCount?.[p] ?? 0) >= 3) continue;
+        const cstP = g.coast?.[p];
+        if (!cstP || cstP.length === 0) continue;
+        const Bp = g.bal[p], Lp = Math.max(1, g.terr[p]);
+        if (Bp < 2500 || Bp / Lp < 22) continue;
+        const stepP = Math.max(1, Math.floor(cstP.length / 20));
+        let dP = 999999;
+        for (let i = 0; i < cstP.length; i += stepP) {
+          const cp = cstP[i];
+          const d = Math.hypot(lx - (cp % W), ly - Math.floor(cp / W));
+          if (d < dP) dP = d;
+        }
+        if (dP <= 80) {
+          const costP = iV(32 * Bp, 1024) + 22 * dP;
+          if (costP + 150 < myCost) betterBrotherCount++;
+        }
+      }
+      // Allow rank 0 immediately; if island is still unclaimed after t >= 850 and very close (<= 55px), allow backup brother too!
+      if (betterBrotherCount > (g.t >= 850 && s.d <= 55 ? 1 : 0)) continue;
+
+      const rawNeed = isNeutralIsle ? (2 * Math.min(sz, 350) + 50) : (2 * g.terr[o] + 2 * g.bal[o] + 80);
+      const wantTr = Math.max(70, Math.ceil(rawNeed * Math.exp(0.002 * s.d)));
+      if (wantTr > 0.14 * B || B - wantTr - fee < 24 * L) continue;
+
+      const score = (100 - s.d) * 30 + Math.min(sz, 600);
+      if (score > bestScore) {
+        bestScore = score;
+        bestHit = { ...s, isleKey, sz };
+        bestWantTr = wantTr;
+      }
+    }
+
+    if (bestHit) {
+      const pct = Math.max(2, Math.min(160, Math.ceil((bestWantTr * 1024) / Math.max(1, B))));
+      const ok = g.boatTo ? g.boatTo(pct, bestHit.land, me) : g.boat(pct, bestHit.water, bestHit.dir, me);
+      if (ok) {
+        this._lastNearIsleTick = g.t;
+        this._claimedIsleLandings.set(bestHit.isleKey, g.t);
+        this.cmds++;
+        this.boats++;
+        if (typeof window !== "undefined" && window.__hlLog) {
+          window.__hlLog(`[HL-ISLAND-GUARD] t=${g.t} preemptively claimed near-shore island (${bestHit.sz}px, dist=${bestHit.d}) pct=${pct}/1024`);
         }
         return true;
       }
@@ -928,7 +1115,8 @@ s = s.replace(old_buyland_locks, new_buyland_locks, 1)
 old_early_act = """    if (g.t < P.coreFrom) {
       const before = this.cmds;"""
 
-new_early_act = """    if (g.t >= 500 && g.t % 2 === 0 && this.tryInterceptEnemyBoats(g) && g.online) return;
+new_early_act = """    if (g.t >= 350 && this.tryInterceptEnemyBoats(g) && g.online) return;
+    if (g.t >= 420 && g.t % 4 === 0 && this.neutral === 0 && this.tryClaimNearTeamIslands(g) && g.online) return;
     if (g.t < P.coreFrom) {
       if (g.t >= 600 && g.t % P.period === 0) {
         this.analyze(g);
@@ -970,7 +1158,8 @@ assert old_main_analyze in s, "old_main_analyze not found"
 s = s.replace(old_main_analyze, new_main_analyze, 1)
 
 old_act_end = """    if (this.cmds === cmdsBefore) this.idleBoats(g);"""
-new_act_end = """    if (this.cmds === cmdsBefore && this.tryEmergencyBossRescue(g) && g.online) return;
+new_act_end = """    if (this.cmds === cmdsBefore && this.tryClaimNearTeamIslands(g) && g.online) return;
+    if (this.cmds === cmdsBefore && this.tryEmergencyBossRescue(g) && g.online) return;
     if (this.cmds === cmdsBefore) this.tryDonateToTeammate(g);
     if (this.cmds === cmdsBefore) this.idleBoats(g);"""
 assert old_act_end in s, "old_act_end not found"
