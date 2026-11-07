@@ -83,7 +83,7 @@ async def handle_client(reader, writer, devs, local_port):
                 sock.setblocking(False)
                 try:
                     sock.setsockopt(socket.SOL_SOCKET, SO_BINDTODEVICE, dev.encode("utf-8") + b"\x00")
-                    await asyncio.wait_for(loop.sock_connect(sock, target_addr), timeout=1.6)
+                    await asyncio.wait_for(loop.sock_connect(sock, target_addr), timeout=3.5)
                     connected_sock = sock
                     break
                 except Exception:
@@ -93,6 +93,11 @@ async def handle_client(reader, writer, devs, local_port):
                         pass
 
         if connected_sock is None:
+            if should_use_tun(host, local_port):
+                writer.write(b"\x05\x04\x00\x01\x00\x00\x00\x00\x00\x00")
+                await writer.drain()
+                writer.close()
+                return
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             sock.setblocking(False)
             await asyncio.wait_for(loop.sock_connect(sock, target_addr), timeout=4)
@@ -109,26 +114,21 @@ async def handle_client(reader, writer, devs, local_port):
             pass
 
 async def main():
-    # 8 completely distinct, clean residential public exit IPs across 8 bots:
-    # 10803 -> tun22 (183.88.237.254)
-    # 10804 -> tun67 (106.177.117.146)
-    # 10805 -> tun33 (121.146.152.111)
-    # 10811 -> tun37 (175.113.163.59)
-    # 10812 -> tun58 (14.132.214.239)
-    # 10813 -> tun43 (119.194.46.117)
-    # 10814 -> tun44 (43.233.166.242)
-    # 10815 -> tun47 (61.82.162.106)
+    # Verified live residential public exit IPs across 8 bots (NEVER falls back to host IP):
+    # tun67 (106.177.117.146 JP), tun37 (175.113.163.59 KR), tun43 (119.194.46.117 KR),
+    # tun49 (180.65.115.60 KR), tun50 (113.154.84.113 JP), tun33 (121.146.152.111 KR),
+    # tun47 (61.82.162.106 KR), tun22 (183.88.237.254 TH), tun58 (14.132.214.239 JP)
     mappings = [
-        (10801, ["tun49", "tun50", "tun51"]),
-        (10802, ["tun50", "tun51", "tun49"]),
-        (10803, ["tun22", "tun49", "tun50"]),
-        (10804, ["tun67", "tun50", "tun51"]),
-        (10805, ["tun33", "tun51", "tun49"]),
+        (10801, ["tun49", "tun50", "tun37"]),
+        (10802, ["tun50", "tun49", "tun43"]),
+        (10803, ["tun50", "tun31", "tun49"]),
+        (10804, ["tun67", "tun50", "tun49"]),
+        (10805, ["tun33", "tun49", "tun50"]),
         (10811, ["tun37", "tun49", "tun50"]),
-        (10812, ["tun58", "tun50", "tun51"]),
-        (10813, ["tun43", "tun51", "tun49"]),
-        (10814, ["tun44", "tun49", "tun50"]),
-        (10815, ["tun47", "tun50", "tun51"]),
+        (10812, ["tun31", "tun58", "tun50"]),
+        (10813, ["tun43", "tun49", "tun37"]),
+        (10814, ["tun49", "tun50", "tun67"]),
+        (10815, ["tun47", "tun33", "tun43"]),
     ]
     servers = []
     for port, devs in mappings:

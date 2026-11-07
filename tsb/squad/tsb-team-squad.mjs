@@ -941,7 +941,11 @@ setInterval(async () => {
               bm.qo.qp(105, "");
               bm.qo.qp(106, "");
             }
-            if (typeof b1 === "object" && b1?.z?.close) b1.z.close(1, 3252);
+            if (typeof b1 === "object" && b1?.z?.close) {
+              b1.z.close(1, 3252);
+              b1.z.close(0, 3253);
+              if (typeof b1.z.aIR === "function") b1.z.aIR(0, 18, 0);
+            }
           })()`);
         }
       } else if (s.myLobbyUsername.startsWith('[Nope]')) {
@@ -1136,6 +1140,7 @@ setInterval(async () => {
           ext.settings.armed = true;
           ext.remote.state.loop = "team";
           window.__tsbSquadSyncHold = false;
+          if (typeof b1 === "object" && b1?.z) b1.z.f7 = 1;
           window.__fx.strategyBot.openMultiplayer(0);
           setTimeout(() => { window.__tsbSquadSyncHold = true; }, 5000);
           return "SYNC_LAUNCHED";
