@@ -646,7 +646,7 @@ new_early_act = """    if (g.t < P.coreFrom) {
         const pfStr = pf && pf.ticks > 0 ? ` avgMs=${(pf.totalMs / pf.ticks).toFixed(2)} maxMs=${pf.maxMs.toFixed(1)} skip=${pf.skippedTicks}` : "";
         window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
       }
-      if (!(this.neutral > 0 && g.attackTroopsOn(me, 512) === 0) && this.tryEmergencyBossRescue(g) && g.online) return;
+      if (this.tryEmergencyBossRescue(g) && g.online) return;
       const before = this.cmds;"""
 assert old_early_act in s, "old_early_act not found"
 s = s.replace(old_early_act, new_early_act, 1)
@@ -665,7 +665,7 @@ new_main_analyze = """    this.analyze(g);
       window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
     }
     this.tryPeaceVote(g);
-    if (!(this.neutral > 0 && g.attackTroopsOn(me, 512) === 0) && this.tryEmergencyBossRescue(g) && g.online) return;
+    if (this.tryEmergencyBossRescue(g) && g.online) return;
     this.updateGrudges(g);
     this.updateWars(g);"""
 assert old_main_analyze in s, "old_main_analyze not found"
