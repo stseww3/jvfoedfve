@@ -59,13 +59,13 @@ const CHROME_BOTS = [
 
 const HEADLESS_BOTS = [
   { port: 9302, socksPort: 10803, donorChromePort: 9225, name: '[Nope] mark07', slot: 2, id: '', pw: '' },
-  { port: 9303, socksPort: 10804, donorChromePort: 9226, name: '[Nope] kevin_k', slot: 3, id: '', pw: '' },
-  { port: 9304, socksPort: 10805, donorChromePort: 9227, name: '[Nope] ethan21', slot: 4, id: '', pw: '' },
-  { port: 9305, socksPort: 10811, donorChromePort: 9223, name: '[Nope] lucas94', slot: 5, id: '', pw: '' },
-  { port: 9306, socksPort: 10812, donorChromePort: 9224, name: '[Nope] dave_w', slot: 6, id: '', pw: '' },
+  { port: 9303, socksPort: 10804, donorChromePort: 9225, name: '[Nope] kevin_k', slot: 3, id: '', pw: '' },
+  { port: 9304, socksPort: 10805, donorChromePort: 9225, name: '[Nope] ethan21', slot: 4, id: '', pw: '' },
+  { port: 9305, socksPort: 10811, donorChromePort: 9225, name: '[Nope] lucas94', slot: 5, id: '', pw: '' },
+  { port: 9306, socksPort: 10812, donorChromePort: 9225, name: '[Nope] dave_w', slot: 6, id: '', pw: '' },
   { port: 9307, socksPort: 10813, donorChromePort: 9225, name: '[Nope] ryan_m', slot: 7, id: '', pw: '' },
-  { port: 9308, socksPort: 10814, donorChromePort: 9226, name: '[Nope] noah88', slot: 8, id: '', pw: '' },
-  { port: 9309, socksPort: 10815, donorChromePort: 9227, name: '[Nope] leo_tx', slot: 9, id: '', pw: '' },
+  { port: 9308, socksPort: 10814, donorChromePort: 9225, name: '[Nope] noah88', slot: 8, id: '', pw: '' },
+  { port: 9309, socksPort: 10815, donorChromePort: 9225, name: '[Nope] leo_tx', slot: 9, id: '', pw: '' },
 ];
 
 const isWaitNplMode = () => fs.existsSync(path.join(__dirname, 'tsb-wait-npl.flag')) || fs.existsSync('/tmp/tsb-wait-npl.flag');
@@ -474,9 +474,13 @@ async function mintViaDonorChrome(donorPort) {
     if (d) break;
     await new Promise((r) => setTimeout(r, 1000));
   }
-  const donor = clients.find((c) => !c.isHeadless && c.port === donorPort) ||
-                clients.find((c) => !c.isHeadless);
-  if (!donor) throw new Error(`No donor Chrome on ${donorPort}`);
+  const preferred = clients.find((c) => !c.isHeadless && c.port === donorPort);
+  const donors = [
+    ...(preferred ? [preferred] : []),
+    ...clients.filter((c) => !c.isHeadless && c !== preferred),
+  ];
+  if (donors.length === 0) throw new Error(`No donor Chrome on ${donorPort}`);
+  const donor = donors[0];
   const runMint = async () => {
     if (isHeadlessOnlyMode()) {
       await donor.evalJs(`(() => {
@@ -960,7 +964,7 @@ setInterval(async () => {
       clients[idx].enteredLobbyAt = 0;
     } else {
       if (clients[idx].wasInGame) {
-        clients[idx].freshToken = false;
+        // Turnstile verification in territorial.io (eU: ew=60min) is valid for 1 full hour per (account, lobbyServer)!
         clients[idx].lastReloadAt = 0;
       }
       clients[idx].wasInGame = false;
@@ -1027,10 +1031,9 @@ setInterval(async () => {
     for (let i = 0; i < clients.length; i++) {
       const s = states[i];
       if (s?.inGame && !s.bossActiveInGame) {
-        console.log(`[BOSS-SYNC] ${clients[i].name} is in a match without active Boss [NPL] npl (bossId=${s.bossId ?? -1}) -> leaving immediately to rejoin Lobby!`);
+        console.log(`[BOSS-SYNC] ${clients[i].name} is in a match without active Boss [Nope]kazerd183 (bossId=${s.bossId ?? -1}) -> leaving immediately to rejoin Lobby!`);
         s.inGame = false;
         clients[i].wasInGame = false;
-        clients[i].freshToken = false;
         clients[i].lastReloadAt = 0;
         clients[i].evalJs(`(() => {
           window.__tsbSquadSyncHold = true;
@@ -1077,7 +1080,6 @@ setInterval(async () => {
   for (let i = 0; i < clients.length; i++) {
     if (states[i]?.inGame) {
       clients[i].wasInGame = false;
-      clients[i].freshToken = false;
       clients[i].lastReloadAt = 0;
       clients[i].evalJs(`(() => {
         window.__tsbSquadSyncHold = true;
