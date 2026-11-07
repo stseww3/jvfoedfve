@@ -527,7 +527,8 @@ old_early_act = """    if (g.t < P.coreFrom) {
 
 new_early_act = """    if (g.t < P.coreFrom) {
       this.analyze(g);
-      if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0) {
+      if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
+        this._lastTickLog = g.t;
         const pf = window.__hlPerf;
         const pfStr = pf && pf.ticks > 0 ? ` avgMs=${(pf.totalMs / pf.ticks).toFixed(2)} maxMs=${pf.maxMs.toFixed(1)} skip=${pf.skippedTicks}` : "";
         window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
@@ -542,7 +543,8 @@ old_main_analyze = """    this.analyze(g);
     this.updateWars(g);"""
 
 new_main_analyze = """    this.analyze(g);
-    if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0) {
+    if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
+      this._lastTickLog = g.t;
       const pf = window.__hlPerf;
       const pfStr = pf && pf.ticks > 0 ? ` avgMs=${(pf.totalMs / pf.ticks).toFixed(2)} maxMs=${pf.maxMs.toFixed(1)} skip=${pf.skippedTicks}` : "";
       window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
