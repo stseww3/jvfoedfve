@@ -518,8 +518,9 @@ export class TeamSpawnCoordinator {
    * of scattering into 5 isolated corners.
    */
   findVirtualSquadAnchor(enemies, scales) {
-    const { W, H, landMask, dComp } = this;
+    const { W, H, landMask, dComp, compSize, maxCompSize } = this;
     const stride = W * H > 900000 ? 16 : 12;
+    const minAnchorContSize = Math.max(25000, Math.round(0.45 * (maxCompSize || 0)));
     let bestAnchor = null;
     let bestScore = -Infinity;
 
@@ -527,11 +528,13 @@ export class TeamSpawnCoordinator {
       for (let x = 24; x < W - 24; x += stride) {
         const c = y * W + x;
         if (!landMask[c]) continue;
+        if (compSize && maxCompSize > 0 && compSize[c] < minAnchorContSize) continue;
         const clearance = Math.min(dComp[c], 220);
         if (clearance < 24) continue;
         const pm = this.computePinchMetrics(x, y, enemies, null, [], scales);
-        // Prefer safe backstop regions with high clearance from enemies
-        const sc = clearance * pm.pinchMult * (pm.hasEdgeBackstop ? 1.18 : 1.0);
+        // Prefer safe backstop regions on the largest continent with high clearance from enemies
+        const contBonus = compSize && maxCompSize > 0 ? 0.85 + 0.30 * (compSize[c] / maxCompSize) : 1.0;
+        const sc = clearance * pm.pinchMult * (pm.hasEdgeBackstop ? 1.18 : 1.0) * contBonus;
         if (sc > bestScore) {
           bestScore = sc;
           bestAnchor = { id: -99, x, y, name: 'SQUAD_ANCHOR', isVirtualAnchor: true };
@@ -1037,16 +1040,19 @@ export class TeamSpawnCoordinator {
         picked = pickNextTarget('ECO_BANK');
       }
       if (!picked) {
-        let bestC = -1, bestMinD = -1;
+        let bestC = -1, bestScore = -Infinity;
         for (let y = 16; y < H - 16; y += 6) {
           for (let x = 16; x < W - 16; x += 6) {
             const c = y * W + x;
             if (!landMask[c]) continue;
+            if (bossCompId >= 0 && bossContinentSize >= 15000 && this.compId[c] !== bossCompId) continue;
             const dA = distToChosenSquad(x, y);
-            const dB = realBoss ? Math.hypot(x - realBoss.x, y - realBoss.y) : 999999;
-            const dMin = Math.min(dA, dB);
-            if (dMin > bestMinD) {
-              bestMinD = dMin;
+            if (dA < 48) continue;
+            const dClust = distToOurCluster(x, y);
+            const eClear = Math.min(distToEnemies(x, y), 180);
+            const sc = eClear * 2.0 + Math.min(dA, 140) - Math.max(0, dClust - 220) * 1.5;
+            if (sc > bestScore) {
+              bestScore = sc;
               bestC = c;
             }
           }
