@@ -366,10 +366,20 @@
     }
     const follow = followLeaderStatus(d, want);
     if (follow && !follow.ready) {
+      lobby.leaderReadySince = 0;
+      lobby.readyJitterMs = 0;
       if (sel[3] && (!lobby.pressAt || now - lobby.pressAt >= 1200)) {
         lobby.pressAt = now, press("Escape");
       }
       return;
+    }
+    if (follow && follow.ready) {
+      if (!lobby.leaderReadySince) {
+        lobby.leaderReadySince = now;
+        const slot = Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : Math.floor(Math.random() * 8);
+        lobby.readyJitterMs = 450 + ((slot * 370) % 2400) + Math.floor(Math.random() * 750);
+      }
+      if (now - lobby.leaderReadySince < lobby.readyJitterMs) return;
     }
     if (sel[3]) return void(lobby.presses = 0, lobby.error = null);
     if (now - lobby.initAt < 1e3 || now - lobby.pressAt < (lobby.presses >= 5 ? 1e4 : 1500)) return;
@@ -409,7 +419,7 @@
     if (!list) return waitLeader ? { found: false, ready: false } : null;
     const readyCount = vi && "number" == typeof vi[room] ? (vi[room] | 0) : (roomObj && "number" == typeof roomObj.tQ ? (roomObj.tQ | 0) : list.length);
     const myClan = parseClanTag(window.__tsbPlayerName || "");
-    const targetKey = leaderKey || "npl";
+    const targetKey = leaderKey || "kazerd183";
     for (let idx = 0; idx < list.length; idx++) {
       const p = list[idx];
       const raw = String((p && (p.aFN || p.username || p.name)) || "");
@@ -420,13 +430,16 @@
         low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus") ||
         low.includes("777") || low.includes("sayo") || low.includes("kaito") ||
         low.includes("riku") || low.includes("_alex") || low.includes("tomo") ||
-        low.includes("zero_2") || low.includes("sora")
+        low.includes("zero_2") || low.includes("sora") ||
+        low.includes("lucas94") || low.includes("dave_w") || low.includes("mark07") ||
+        low.includes("kevin_k") || low.includes("ethan21") || low.includes("ryan_m") ||
+        low.includes("noah88") || low.includes("leo_tx")
       ) {
         continue;
       }
       const clan = parseClanTag(raw);
       const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
-      if ((stripped === targetKey || stripped.includes(targetKey) || low === "[npl]npl") && (!myClan || !clan || clan === myClan)) {
+      if ((stripped === targetKey || stripped.includes(targetKey) || stripped.includes("kazerd") || stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") && (!myClan || !clan || clan === myClan)) {
         return { found: true, ready: idx < readyCount || !!(p && p.ready), name: raw };
       }
     }

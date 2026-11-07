@@ -122,7 +122,7 @@ new_helpers = """  isTeammate(g, p) {
     return !!(g.teams && g.teams[this.me] > 0 && g.teams[p] === g.teams[this.me]);
   }
 
-  // Identify our Boss ("[NPL] npl" / "[NPL]NPL", excluding our guard bot names)
+  // Identify our Boss ("[Nope]kazerd183" / "[NPL] npl", excluding our guard bot names)
   isBossNpl(g, p) {
     if (p === this.me || !g.alive[p]) return false;
     const raw = String(g.names?.[p] ?? "").trim();
@@ -133,12 +133,15 @@ new_helpers = """  isTeammate(g, p) {
       low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus") ||
       low.includes("777") || low.includes("sayo") || low.includes("kaito") ||
       low.includes("riku") || low.includes("_alex") || low.includes("tomo") ||
-      low.includes("zero_2") || low.includes("sora")
+      low.includes("zero_2") || low.includes("sora") ||
+      low.includes("lucas94") || low.includes("dave_w") || low.includes("mark07") ||
+      low.includes("kevin_k") || low.includes("ethan21") || low.includes("ryan_m") ||
+      low.includes("noah88") || low.includes("leo_tx")
     ) {
       return false;
     }
     const stripped = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
-    return stripped === "npl" || stripped.includes("npl") || low === "[npl]npl";
+    return stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low === "[npl]npl";
   }
 
   findBossId(g) {
@@ -155,7 +158,9 @@ new_helpers = """  isTeammate(g, p) {
       low === "mishi" || low === "matzz" || low === "kiholma" || low === "leo_99" || low === "racoon" ||
       low === "zexos" || low === "talon" || low === "vortex" || low === "kronos" || low === "nexus" ||
       low === "777" || low === "sayo" || low === "kaito" || low === "riku" ||
-      low === "_alex" || low === "tomo" || low === "zero_2" || low === "sora"
+      low === "_alex" || low === "tomo" || low === "zero_2" || low === "sora" ||
+      low === "lucas94" || low === "dave_w" || low === "mark07" || low === "kevin_k" ||
+      low === "ethan21" || low === "ryan_m" || low === "noah88" || low === "leo_tx"
     );
   }
 
@@ -322,15 +327,24 @@ new_helpers = """  isTeammate(g, p) {
     return bestP;
   }
 
-  // AUTO PEACE VOTE CALL & ACCEPT:
+  // AUTO PEACE VOTE CALL & ACCEPT (WITH HUMAN-LIKE JITTER DELAY):
   // ONLY initiate or vote YES on peace when ALL enemies are completely wiped out (isMopUp(g) === true)!
-  // Never initiate or vote YES while any enemy still holds territory!
+  // Stagger votes by 8~52 ticks (~0.5s to 2.9s) per bot so all 8 bots never vote on the exact same tick!
   tryPeaceVote(g) {
     if (typeof window === "undefined" || !window.ax || !window.dictionary || g.t < 1610) return;
     const me = this.me;
     const hz = window[window.dictionary.sbCommands]?.hz;
     if (!hz) return;
-    if (!this.isMopUp(g)) return;
+    if (!this.isMopUp(g)) {
+      this._peaceReadyTick = 0;
+      return;
+    }
+    if (!this._peaceReadyTick) {
+      const slot = Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : (me % 8);
+      const jitter = 8 + ((slot * 6 + (me % 5) * 3) % 44);
+      this._peaceReadyTick = g.t + jitter;
+    }
+    if (g.t < this._peaceReadyTick) return;
     const caller = window.__lastPeaceCaller;
     const callerIsOurs =
       Number.isInteger(caller) &&
@@ -340,12 +354,13 @@ new_helpers = """  isTeammate(g, p) {
     if (window.ax.iL && typeof window.ax.iM === "function" && window.ax.iM(me)) {
       if (callerIsOurs && typeof hz.iN === "function") {
         hz.iN(1);
+        this._peaceReadyTick = g.t + 35;
         if (window.__hlLog && g.t - (this._lastPeaceVoteLog ?? -999) >= 100) {
           this._lastPeaceVoteLog = g.t;
           window.__hlLog(`[HL-PEACE] t=${g.t} voted YES on our squad's mop-up peace call by p=${caller}(${g.names?.[caller] || ""})`);
         }
       }
-    } else if (!window.ax.iL && g.t - (this.lastPeaceKeyTick ?? -999) >= 105 && typeof window.ax.iO === "function" && window.ax.iO(me)) {
+    } else if (!window.ax.iL && g.t - (this.lastPeaceKeyTick ?? -999) >= 115 + (me % 7) * 5 && typeof window.ax.iO === "function" && window.ax.iO(me)) {
       this.lastPeaceKeyTick = g.t;
       window.__lastPeaceCaller = me;
       if (typeof hz.iK === "function") {

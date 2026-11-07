@@ -7,22 +7,22 @@ const pageJsSource = fs.readFileSync('/tmp/tsb-team-ext/page.js', 'utf8');
 const getV27TeamSource = () => fs.readFileSync('/tmp/v27-team-live.js', 'utf8');
 
 const CHROME_BOTS = [
-  { port: 9223, name: '[NPL] 777', slot: 0, id: 'VD9VN', pw: 'ulWJw8quV853upe' },
-  { port: 9224, name: '[NPL] Sayo', slot: 1, id: 'TvDLY', pw: 'oIXvZvABAsZS0KL' },
-  { port: 9225, name: '[NPL] Kaito', slot: 2, id: 'MTkjW', pw: 'v3ilPDACqV_L--V' },
-  { port: 9226, name: '[NPL] Riku', slot: 3, id: 'mD2Rt', pw: '4AGfcj98NGxPzXi' },
-  { port: 9227, name: '[NPL] _alex', slot: 4, id: 'RYYYG', pw: 'LekwkRallo8YtL6' },
+  { port: 9223, name: '[Nope] lucas94', slot: 0, id: 'w7V8j', pw: 'M9IzNEQ6E0GLYyH' },
+  { port: 9224, name: '[Nope] dave_w', slot: 1, id: 'Wgg7N', pw: 'uYomek27OY-ndDJ' },
+  { port: 9225, name: '[Nope] mark07', slot: 2, id: 'YQqLM', pw: 'ZerbXEIzTfnv_gk' },
+  { port: 9226, name: '[Nope] kevin_k', slot: 3, id: 'CjQcL', pw: 'bCevZwzI-d7xXea' },
+  { port: 9227, name: '[Nope] ethan21', slot: 4, id: 'cbtQj', pw: 'Y0cUCnzmkwaeP2g' },
 ];
 
 const HEADLESS_BOTS = [
-  { port: 9302, socksPort: 10803, donorChromePort: 9225, name: '[NPL] Kaito', slot: 2, id: 'MTkjW', pw: 'v3ilPDACqV_L--V' },
-  { port: 9303, socksPort: 10804, donorChromePort: 9226, name: '[NPL] Riku', slot: 3, id: 'mD2Rt', pw: '4AGfcj98NGxPzXi' },
-  { port: 9304, socksPort: 10805, donorChromePort: 9227, name: '[NPL] _alex', slot: 4, id: 'RYYYG', pw: 'LekwkRallo8YtL6' },
-  { port: 9305, socksPort: 10811, donorChromePort: 9223, name: '[NPL] 777', slot: 5, id: 'Ln9gD', pw: 'n9-OcZHR2hVNfti' },
-  { port: 9306, socksPort: 10812, donorChromePort: 9224, name: '[NPL] Sayo', slot: 6, id: 'DQTCB', pw: 'ffOVdQrAC5LMJMB' },
-  { port: 9307, socksPort: 10813, donorChromePort: 9225, name: '[NPL] Tomo', slot: 7, id: 'cnbwG', pw: 'aBB3TwL67c8-pca' },
-  { port: 9308, socksPort: 10814, donorChromePort: 9226, name: '[NPL] Zero_2', slot: 8, id: '7tWqY', pw: 'TErCUUbZT3SZcNs' },
-  { port: 9309, socksPort: 10815, donorChromePort: 9227, name: '[NPL] Sora', slot: 9, id: 'g8vvj', pw: 'YLjCZ343ELAn9mV' },
+  { port: 9302, socksPort: 10803, donorChromePort: 9225, name: '[Nope] mark07', slot: 2, id: 'YQqLM', pw: 'ZerbXEIzTfnv_gk' },
+  { port: 9303, socksPort: 10804, donorChromePort: 9226, name: '[Nope] kevin_k', slot: 3, id: 'CjQcL', pw: 'bCevZwzI-d7xXea' },
+  { port: 9304, socksPort: 10805, donorChromePort: 9227, name: '[Nope] ethan21', slot: 4, id: 'cbtQj', pw: 'Y0cUCnzmkwaeP2g' },
+  { port: 9305, socksPort: 10811, donorChromePort: 9223, name: '[Nope] lucas94', slot: 5, id: 'w7V8j', pw: 'M9IzNEQ6E0GLYyH' },
+  { port: 9306, socksPort: 10812, donorChromePort: 9224, name: '[Nope] dave_w', slot: 6, id: 'Wgg7N', pw: 'uYomek27OY-ndDJ' },
+  { port: 9307, socksPort: 10813, donorChromePort: 9225, name: '[Nope] ryan_m', slot: 7, id: 'vMnKm', pw: 'lfcW2zjcbrMjikn' },
+  { port: 9308, socksPort: 10814, donorChromePort: 9226, name: '[Nope] noah88', slot: 8, id: 'JYjQR', pw: '0IDl6rddOmp4Ag0' },
+  { port: 9309, socksPort: 10815, donorChromePort: 9227, name: '[Nope] leo_tx', slot: 9, id: '92QcK', pw: 'jVpEBoZ8TayQur9' },
 ];
 
 const isWaitNplMode = () => fs.existsSync('/tmp/tsb-wait-npl.flag');
@@ -84,7 +84,7 @@ if (!window.__tsbPageInjected) {
   window.__tsbPlayerName = ${JSON.stringify(bot.name)};
   window.__tsbPlayerColor = 4095;
   window.__tsbSquadSlot = ${bot.slot};
-  window.__tsbFollowLeader = "npl";
+  window.__tsbFollowLeader = "kazerd183";
   window.__tsbWaitForLeader = true;
   window.__tsbSquadSyncHold = true;
   window.__hlSpawnReq = (payload) => {
@@ -698,10 +698,13 @@ setInterval(async () => {
                 low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus") ||
                 low.includes("777") || low.includes("sayo") || low.includes("kaito") ||
                 low.includes("riku") || low.includes("_alex") || low.includes("tomo") ||
-                low.includes("zero_2") || low.includes("sora")
+                low.includes("zero_2") || low.includes("sora") ||
+                low.includes("lucas94") || low.includes("dave_w") || low.includes("mark07") ||
+                low.includes("kevin_k") || low.includes("ethan21") || low.includes("ryan_m") ||
+                low.includes("noah88") || low.includes("leo_tx")
               ) continue;
               const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
-              if (stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
+              if (stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
                 if (idx < readyCount) bossReadyInRoom0 = true;
               }
             }
@@ -760,10 +763,13 @@ setInterval(async () => {
                 low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus") ||
                 low.includes("777") || low.includes("sayo") || low.includes("kaito") ||
                 low.includes("riku") || low.includes("_alex") || low.includes("tomo") ||
-                low.includes("zero_2") || low.includes("sora")
+                low.includes("zero_2") || low.includes("sora") ||
+                low.includes("lucas94") || low.includes("dave_w") || low.includes("mark07") ||
+                low.includes("kevin_k") || low.includes("ethan21") || low.includes("ryan_m") ||
+                low.includes("noah88") || low.includes("leo_tx")
               ) continue;
               const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
-              if (stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
+              if (stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
                 bossIdx = p;
                 break;
               }
@@ -962,7 +968,7 @@ setInterval(async () => {
         window.__tsbPlayerName = ${JSON.stringify(c.name)};
         window.__tsbPlayerColor = 4095;
         window.__tsbSquadSlot = ${c.slot};
-        window.__tsbFollowLeader = ${allowReady ? JSON.stringify('') : JSON.stringify('npl')};
+        window.__tsbFollowLeader = ${allowReady ? JSON.stringify('') : JSON.stringify('kazerd183')};
         window.__tsbWaitForLeader = ${allowReady ? 'false' : 'true'};
         const ext = window.__fx?.strategyBotExtension;
         if (ext) {
@@ -976,8 +982,19 @@ setInterval(async () => {
           ext.remote.state.loop = "team";
           const snap = ext.remote.snapshot?.();
           if (snap?.lobby?.inLobby && !snap.lobby.ready && ${allowReady ? 'true' : 'false'}) {
-            document.dispatchEvent(new KeyboardEvent("keyup", { code: "Enter", key: "Enter", bubbles: true, cancelable: true }));
+            if (!window.__readyJitterScheduled) {
+              window.__readyJitterScheduled = true;
+              const delayMs = 450 + ((${c.slot} * 380) % 2400) + Math.floor(Math.random() * 850);
+              setTimeout(() => {
+                window.__readyJitterScheduled = false;
+                const s2 = window.__fx?.strategyBotExtension?.remote?.snapshot?.();
+                if (s2?.lobby?.inLobby && !s2.lobby.ready && !window.__tsbWaitForLeader) {
+                  document.dispatchEvent(new KeyboardEvent("keyup", { code: "Enter", key: "Enter", bubbles: true, cancelable: true }));
+                }
+              }, delayMs);
+            }
           } else if (snap?.lobby?.inLobby && snap.lobby.ready && !${allowReady ? 'true' : 'false'} && !${waitMode ? 'true' : 'false'}) {
+            window.__readyJitterScheduled = false;
             document.dispatchEvent(new KeyboardEvent("keyup", { code: "Escape", key: "Escape", bubbles: true, cancelable: true }));
           }
         }
@@ -1021,6 +1038,7 @@ setInterval(async () => {
     for (let i = 0; i < readyToEnter.length; i++) {
       const c = readyToEnter[i];
       c.enteredLobbyAt = now;
+      const enterJitterMs = i * 520 + Math.floor(Math.random() * 680);
       setTimeout(() => {
         c.evalJs(`(() => {
           const d = window.dictionary;
@@ -1035,7 +1053,7 @@ setInterval(async () => {
           setTimeout(() => { window.__tsbSquadSyncHold = true; }, 5000);
           return "SYNC_LAUNCHED";
         })()`);
-      }, i * 350);
+      }, enterJitterMs);
     }
   }
 }, 2500);

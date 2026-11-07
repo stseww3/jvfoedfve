@@ -454,7 +454,7 @@ if (!isMainThread && workerData?.bot) {
     __tsbPlayerName: name,
     __tsbPlayerColor: 4095,
     __tsbSquadSlot: slot,
-    __tsbFollowLeader: 'npl',
+    __tsbFollowLeader: 'kazerd183',
     __tsbWaitForLeader: true,
     __tsbSquadSyncHold: true,
     __hlLog(text) {
