@@ -822,17 +822,13 @@ export class TeamSpawnCoordinator {
     //   - First 3.8s of countdown (`isEarlyBullyPhase`): push guard ring 1.24x outward toward nearby enemies
     //     so enemy humans feel crowded and relocate away from Boss's sector.
     //   - Final 2.2s (`!isEarlyBullyPhase`): tighten back to the 1.0x optimal shield ring around Boss!
-    const phaseElapsedMs = this.matchStartMs > 0 ? Date.now() - this.matchStartMs : 9999;
-    const isEarlyBullyPhase = phaseElapsedMs >= 0 && phaseElapsedMs < 3800;
-    const bullyMult = isEarlyBullyPhase ? 1.22 : 1.0;
-
     const scales = {
       rCell: Math.round(rCell),
-      bossExcl: clamp(Math.round(Math.max(1.42 * rCell, 0.105 * diag) * bullyMult), 78, 175),
-      flankMax: clamp(Math.round(Math.max(2.85 * rCell, 0.230 * diag) * bullyMult), 150, 325),
-      allyMinSep: clamp(Math.round(Math.max(1.42 * rCell, 0.115 * diag)), 72, 175),
-      enemyMinClearance: clamp(Math.round((isEarlyBullyPhase ? 0.60 : 0.75) * rCell), 38, 88),
-      clusterMax: clamp(Math.round(Math.max(4.4 * rCell, 0.42 * diag)), 260, 560),
+      bossExcl: clamp(Math.round(Math.max(1.12 * rCell, 0.078 * diag)), 68, 120),
+      flankMax: clamp(Math.round(Math.max(2.30 * rCell, 0.170 * diag)), 135, 235),
+      allyMinSep: clamp(Math.round(Math.max(1.05 * rCell, 0.075 * diag)), 62, 112),
+      enemyMinClearance: clamp(Math.round(0.70 * rCell), 36, 78),
+      clusterMax: clamp(Math.round(Math.max(3.0 * rCell, 0.25 * diag)), 195, 350),
     };
 
     // Build initial distance fields with realBoss (if placed)
@@ -960,7 +956,9 @@ export class TeamSpawnCoordinator {
 
             const clearance = Math.min(dComp[c], 220);
             if (clearance < 12 * relax) continue;
-            rawSeeds.push({ c, x, y, clearance, bDist });
+            const geoD = this.dBoss[c] >= 0 ? this.dBoss[c] : bDist;
+            const seedPri = clearance - (anchorBoss ? Math.max(0, geoD - 150) * 0.32 : 0);
+            rawSeeds.push({ c, x, y, clearance, bDist, seedPri });
           }
         }
 
@@ -969,7 +967,7 @@ export class TeamSpawnCoordinator {
           continue;
         }
 
-        rawSeeds.sort((a, b) => b.clearance - a.clearance);
+        rawSeeds.sort((a, b) => b.seedPri - a.seedPri);
         const diverseSeeds = [];
         const seedGap = Math.max(24, Math.round(0.40 * scales.allyMinSep));
         for (const item of rawSeeds) {

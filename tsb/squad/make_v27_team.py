@@ -412,20 +412,21 @@ new_helpers = """  isTeammate(g, p) {
       const isPureInlandSafe = enemyHumanNbs.length === 0 && !hasExposedCoast && myHumanInAtk === 0;
       const isCoastalRearSafe = enemyHumanNbs.length === 0 && hasExposedCoast && myHumanInAtk === 0;
 
-      const underEmergencyFire = bossInAtk > 0 && (bossInAtk >= 0.05 * B_boss || dBoss < 85);
-      const bossFightingHuman = g.t >= 950 && bossOutAtk > 0 && dBoss < 105;
-      const bossNeedsCash = g.t >= 1100 && dBoss < 110;
-      const boxedIn = g.t >= 750 && this.nb.length === 0 && this.neutral === 0 && dBoss < 138;
+      const underEmergencyFire = bossInAtk > 0 && (bossInAtk >= 0.08 * B_boss || dBoss < 65);
+      const bossFightingHuman = g.t >= 1500 && bossOutAtk > 0.06 * B_boss && dBoss < 88;
+      const bossNeedsCash = g.t >= 1800 && dBoss < 82;
+      const boxedIn = g.t >= 900 && this.nb.length === 0 && this.neutral === 0 && dBoss < 138;
 
-      // Healthy density floor so guard bots stay strong & never suicide while feeding Boss cash
+      // Healthy density floor so frontline guard bots NEVER drain themselves down to 52~75 density!
+      // Frontline bots keep >= 98~105 density so they can snowball & crush enemies; boxed-in rear bots donate freely at >= 25.
       const minKeepDens = isPureInlandSafe
-        ? (underEmergencyFire ? 15 : 22)
+        ? (underEmergencyFire ? 18 : 26)
         : isCoastalRearSafe
-          ? (underEmergencyFire ? 48 : 65)
-          : (underEmergencyFire ? 52 : 70);
-      const canAfford = myHumanInAtk === 0 && dMe >= minKeepDens && B >= 4000;
+          ? (underEmergencyFire ? 78 : 94)
+          : (underEmergencyFire ? 86 : 102);
+      const canAfford = myHumanInAtk === 0 && dMe >= minKeepDens && B >= 12000;
 
-      const cooldown = isPureInlandSafe ? (underEmergencyFire ? 15 : 24) : (underEmergencyFire ? 20 : 30);
+      const cooldown = isPureInlandSafe ? 22 : (underEmergencyFire ? 35 : 50);
       if ((underEmergencyFire || bossFightingHuman || bossNeedsCash || boxedIn) && canAfford && g.t - (this.lastBossDonateTick ?? -999) >= cooldown) {
         const keepBal = (minKeepDens - 5) * L;
         const maxSurplus = Math.max(0, B - keepBal);
@@ -497,11 +498,11 @@ new_helpers = """  isTeammate(g, p) {
         if (g.atkTarget[sbB + i] !== 512) bossOutAtk += g.atkTroops[sbB + i];
       }
       const bossNeedsHelp =
-        (bossInAtk > 0 && dMe >= (isPureInlandSafe ? 25 : 65)) ||
-        (bossOutAtk > 0.04 * g.bal[bossId] && dBoss < 120 && dMe >= (isPureInlandSafe ? 32 : 75)) ||
-        (g.t >= 900 && dBoss < 118 && dMe >= (isPureInlandSafe ? 38 : 80)) ||
+        (bossInAtk > 0.06 * g.bal[bossId] && dMe >= (isPureInlandSafe ? 25 : 95)) ||
+        (bossOutAtk > 0.06 * g.bal[bossId] && dBoss < 95 && dMe >= (isPureInlandSafe ? 32 : 102)) ||
+        (g.t >= 1600 && dBoss < 90 && dMe >= (isPureInlandSafe ? 38 : 105)) ||
         (boxedIn && isPureInlandSafe && dBoss < 142 && dMe >= 25);
-      if (bossNeedsHelp && g.t - (this.lastBossDonateTick ?? -999) >= (isPureInlandSafe ? 20 : 30)) {
+      if (bossNeedsHelp && g.t - (this.lastBossDonateTick ?? -999) >= (isPureInlandSafe ? 22 : 45)) {
         const pct = Math.min(maxSafePct, 51);
         if (pct >= 40 && g.donate(pct, bossId, me)) {
           this.lastDonateTick = g.t;
@@ -515,10 +516,10 @@ new_helpers = """  isTeammate(g, p) {
       }
     }
 
-    // 2. SQUAD MUTUAL AID: Rescue any [NPL] squad brother who is under human attack or sneaky boat landing,
-    //    AND lightly poke (10%B) the attacker if we border them! (Strictly 5% = 51/1024 donate)
+    // 2. SQUAD MUTUAL AID: Rescue any [Nope] squad brother who is under heavy human attack,
+    //    ONLY when we have genuine surplus density (dMe >= 105 or boxedIn) so we don't starve the whole squad!
     for (let p = 0; p < g.humans; p++) {
-      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 300) continue;
+      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 1000) continue;
       const dAlly = g.bal[p] / Math.max(1, g.terr[p]);
       let inHumanAtk = 0, mainAttacker = -1, maxAtkTr = 0;
       for (const a of g.attackersOf(p)) {
@@ -528,9 +529,9 @@ new_helpers = """  isTeammate(g, p) {
           if (tr > maxAtkTr) { maxAtkTr = tr; mainAttacker = a; }
         }
       }
-      if (inHumanAtk > 0 && (inHumanAtk >= 0.08 * g.bal[p] || dAlly < 75)) {
-        // First donate 5% cash to save our brother (while keeping our own coastGuardFloor / safeFloor intact!)
-        if (dMe >= Math.max(65, dAlly + 18)) {
+      if (inHumanAtk > 0 && (inHumanAtk >= 0.12 * g.bal[p] || dAlly < 55)) {
+        // First donate 5% cash ONLY if we are boxedIn or have surplus density >= 106!
+        if (dMe >= (isPureInlandSafe ? 40 : 106) && dMe >= dAlly + 25) {
           const pct = Math.min(maxSafePct, 51);
           if (pct >= 40 && g.donate(pct, p, me)) {
             this.lastDonateTick = g.t;
