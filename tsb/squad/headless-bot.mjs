@@ -504,6 +504,14 @@ if (!isMainThread && workerData?.bot) {
       be.a6d = function() {};
       be.a2S = function() {};
     }
+    if (typeof ax === "object" && ax && typeof ax.iK === "function" && !ax.__hookedPeaceCaller) {
+      ax.__hookedPeaceCaller = true;
+      const origIk = ax.iK.bind(ax);
+      ax.iK = function(player) {
+        window.__lastPeaceCaller = player;
+        return origIk(player);
+      };
+    }
     window.__hlPerf = { ticks: 0, totalMs: 0, maxMs: 0, lastTick: -1, dupTicks: 0, skippedTicks: 0 };
     if (window.__fx?.strategyBot?.afterTick) {
       const origAfterTick = window.__fx.strategyBot.afterTick.bind(window.__fx.strategyBot);
@@ -557,6 +565,7 @@ if (!isMainThread && workerData?.bot) {
       const origAfu = bq.aF3.aFu.bind(bq.aF3);
       bq.aF3.aFu = function(tN, aFq, aFr) {
         window.__hlPerf = { ticks: 0, totalMs: 0, maxMs: 0, lastTick: -1, dupTicks: 0, skippedTicks: 0 };
+        window.__lastPeaceCaller = -1;
         origAfu(tN, aFq, aFr);
         try {
           if (window.__hlLog) {

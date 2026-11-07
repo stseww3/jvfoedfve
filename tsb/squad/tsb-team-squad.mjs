@@ -622,24 +622,35 @@ setInterval(async () => {
         } catch {}
         s.room0Players = Math.max(room0Players, roomPlayers);
         s.bossReadyInRoom0 = bossReadyInRoom0;
-        if (s?.inGame && !s.over && s.alive) {
+        if (s?.inGame) {
           const pd = d && window[d.playerData];
-          const terr = pd && pd[d.playerTerritories];
-          let teamLand = info?.territory || 0;
-          if (teams && terr && Number.isInteger(me) && teams[me] > 0) {
-            teamLand = 0;
-            for (let i = 0; i < 512; i++) {
-              if (terr[i] > 0 && teams[i] === teams[me]) teamLand += terr[i];
+          const rawNames = pd && pd[d.rawPlayerNames];
+          const pStates = pd && pd[d.playerStates];
+          const pAlive = pd && pd[d.sbAlive];
+          const pTerr = pd && pd[d.playerTerritories];
+          const H = (g && g[d.gHumans]) || 512;
+          let bossIdx = -1;
+          if (rawNames) {
+            for (let p = 0; p < H; p++) {
+              const raw = String(rawNames[p] ?? "").trim();
+              if (!raw) continue;
+              const low = raw.toLowerCase();
+              if (
+                low.includes("mishi") || low.includes("matzz") || low.includes("kiholma") ||
+                low.includes("leo_99") || low.includes("racoon") || low.includes("zexos") ||
+                low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus")
+              ) continue;
+              const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
+              if (stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
+                bossIdx = p;
+                break;
+              }
             }
           }
-          if (info?.land > 0 && teamLand >= 0.58 * info.land) {
-            const hz = d && window[d.sbCommands]?.hz;
-            if (window.ax?.iL && typeof window.ax.iM === "function" && window.ax.iM(me) && typeof hz?.iN === "function") {
-              hz.iN(1);
-            } else if (!window.ax?.iL && typeof window.ax?.iO === "function" && window.ax.iO(me) && typeof hz?.iK === "function") {
-              hz.iK();
-            }
-          }
+          s.bossId = bossIdx;
+          // ONLY check if Boss is present and has NOT quit/disconnected (pStates[bossIdx] !== 2).
+          // Even if Boss died (terr === 0 / alive === 0), as long as Boss hasn't quit the match, keep fighting!
+          s.bossActiveInGame = bossIdx >= 0 && (!pStates || pStates[bossIdx] !== 2);
         }
         return JSON.stringify(s);
       })()`);
@@ -730,13 +741,27 @@ setInterval(async () => {
     }
   });
 
+  // In Boss-Guard waitMode: if our bots are in a game where Boss [NPL] npl is NOT present or has QUIT (playerStates[bossId] === 2),
+  // all bots immediately leave the game too so they can re-queue for Boss! (If Boss died but is still watching, bots keep fighting!)
+  const inGameStatesNow = states.filter((s) => s?.inGame && !s.over);
+  const bossLeftOrMissingInWaitMode =
+    waitMode &&
+    inGameStatesNow.length > 0 &&
+    inGameStatesNow.every((s) => !s.bossActiveInGame);
+
+  if (bossLeftOrMissingInWaitMode) {
+    console.log(`[BOSS-SYNC] Boss [NPL] npl has quit/left the match -> all guard bots leaving immediately to follow Boss!`);
+  }
+
   // Never reload or re-open lobby while ANY bot has meaningful territory (> 80 px) or is in opening (< 30s)
-  const anyMeaningfulAlive = states.some(
-    (s, idx) =>
-      s.inGame &&
-      !s.over &&
-      (s.spawnPhase || s.tick < 60 || now - clients[idx].enteredGameAt < 30000 || (s.alive && (s.terr || 0) >= 80))
-  );
+  const anyMeaningfulAlive =
+    !bossLeftOrMissingInWaitMode &&
+    states.some(
+      (s, idx) =>
+        s.inGame &&
+        !s.over &&
+        (s.spawnPhase || s.tick < 60 || now - clients[idx].enteredGameAt < 30000 || (s.alive && (s.terr || 0) >= 80))
+    );
   if (anyMeaningfulAlive) {
     reloadingForFreshTokens = false;
     wantTenForCurrentLobby = false;

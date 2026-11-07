@@ -206,7 +206,7 @@ new_helpers = """  isTeammate(g, p) {
   }
 
   // AUTO PEACE VOTE CALL & ACCEPT:
-  // When our team controls >= 58% of the map (or in mop-up), call hz.iK() and vote YES via hz.iN(1)!
+  // ONLY vote YES if the peace vote was initiated by OUR squad (or Boss npl)! Never auto-accept random players' peace votes!
   tryPeaceVote(g) {
     if (typeof window === "undefined" || !window.ax || !window.dictionary || g.t < 1610) return;
     const me = this.me;
@@ -220,16 +220,23 @@ new_helpers = """  isTeammate(g, p) {
       }
     }
     const weLead = ourTeamLand >= 0.58 * Math.max(1, g.land) || this.isMopUp(g);
+    const caller = window.__lastPeaceCaller;
+    const callerIsOurs =
+      Number.isInteger(caller) &&
+      caller >= 0 &&
+      caller < g.humans &&
+      (caller === me || this.isOurSquadBot(g, caller) || this.isBossNpl(g, caller));
     if (window.ax.iL && typeof window.ax.iM === "function" && window.ax.iM(me)) {
-      if (weLead && typeof hz.iN === "function") {
+      if (callerIsOurs && typeof hz.iN === "function") {
         hz.iN(1);
         if (window.__hlLog && g.t - (this._lastPeaceVoteLog ?? -999) >= 100) {
           this._lastPeaceVoteLog = g.t;
-          window.__hlLog(`[HL-PEACE] t=${g.t} voted YES on peace (teamLand=${(100 * ourTeamLand / Math.max(1, g.land)).toFixed(1)}%)`);
+          window.__hlLog(`[HL-PEACE] t=${g.t} voted YES on our squad's peace call by p=${caller}(${g.names?.[caller] || ""}) (teamLand=${(100 * ourTeamLand / Math.max(1, g.land)).toFixed(1)}%)`);
         }
       }
     } else if (!window.ax.iL && weLead && g.t - (this.lastPeaceKeyTick ?? -999) >= 105 && typeof window.ax.iO === "function" && window.ax.iO(me)) {
       this.lastPeaceKeyTick = g.t;
+      window.__lastPeaceCaller = me;
       if (typeof hz.iK === "function") {
         hz.iK();
         if (window.__hlLog) window.__hlLog(`[HL-PEACE] t=${g.t} initiated peace vote (teamLand=${(100 * ourTeamLand / Math.max(1, g.land)).toFixed(1)}%)`);
