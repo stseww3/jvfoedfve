@@ -818,12 +818,15 @@ setInterval(async () => {
 
   const bossReadyNow = inRoom0.some((s) => !!s.bossReadyInRoom0);
 
+  const srcHash = getV27TeamSource().length;
   await Promise.all(
     clients.map((c) => {
       if (!c.isHeadless && headlessOnly) return Promise.resolve(null);
       const isStandby = !headlessOnly && c.isHeadless && !wantTenForCurrentLobby;
       const allowReady = !isStandby && (waitMode ? bossReadyNow : allReadyInRoom0);
-      return c.evalJs(`(() => {
+      const needHotImport = c.lastStrategyLen !== srcHash;
+      if (needHotImport) c.lastStrategyLen = srcHash;
+      return c.evalJs(`(async () => {
         window.__tsbPlayerName = ${JSON.stringify(c.name)};
         window.__tsbPlayerColor = 4095;
         window.__tsbSquadSlot = ${c.slot};
@@ -831,6 +834,12 @@ setInterval(async () => {
         window.__tsbWaitForLeader = ${allowReady ? 'false' : 'true'};
         const ext = window.__fx?.strategyBotExtension;
         if (ext) {
+          if (${needHotImport ? 'true' : 'false'}) {
+            const sid = await ext.strategies.add({ name: "v27team.js", text: async () => ${JSON.stringify(getV27TeamSource())} });
+            const targetSid = sid || "file:v27team";
+            ext.settings.strategy = targetSid;
+            if (ext.strategies.changed) ext.strategies.changed(targetSid);
+          }
           ext.settings.armed = true;
           ext.remote.state.loop = "team";
           const snap = ext.remote.snapshot?.();
@@ -840,7 +849,7 @@ setInterval(async () => {
             document.dispatchEvent(new KeyboardEvent("keyup", { code: "Escape", key: "Escape", bubbles: true, cancelable: true }));
           }
         }
-      })()`);
+      })()`, true);
     })
   );
 
