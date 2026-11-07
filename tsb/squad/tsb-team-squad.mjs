@@ -544,20 +544,44 @@ setInterval(async () => {
           g[d.sbLeave](true);
         }
         let room0Players = 0;
+        let bossReadyInRoom0 = false;
         const lob = ext?.remote?.lobby;
         const mgr = lob?.mgr || (d && d.lobbyManager && window[d.lobbyManager]);
         if (mgr) {
+          let vh = null, vi = null;
           for (const v of Object.values(mgr)) {
             if (v && typeof v === "object") {
               if (d?.lobbyPlayers && Array.isArray(v[d.lobbyPlayers])) {
-                room0Players = (v[d.lobbyPlayers][0] || []).length;
+                vh = v[d.lobbyPlayers];
+                vi = v[d.lobbyReadyCounts];
                 break;
               }
               const vals = Object.values(v);
               const arr4 = vals.find((x) => Array.isArray(x) && x.length === 4 && Array.isArray(x[0]));
+              const cnt4 = vals.find((x) => Array.isArray(x) && x.length === 4 && typeof x[0] === "number");
               if (arr4) {
-                room0Players = (arr4[0] || []).length;
+                vh = arr4;
+                vi = cnt4;
                 break;
+              }
+            }
+          }
+          if (vh && Array.isArray(vh[0])) {
+            const list = vh[0];
+            room0Players = list.length;
+            const readyCount = vi && typeof vi[0] === "number" ? (vi[0] | 0) : 0;
+            for (let idx = 0; idx < list.length; idx++) {
+              const p = list[idx];
+              const raw = String((p && (p.aFN || p.username || p.name)) || "").trim();
+              const low = raw.toLowerCase();
+              if (
+                low.includes("mishi") || low.includes("matzz") || low.includes("kiholma") ||
+                low.includes("leo_99") || low.includes("racoon") || low.includes("zexos") ||
+                low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus")
+              ) continue;
+              const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
+              if (stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
+                if (idx < readyCount) bossReadyInRoom0 = true;
               }
             }
           }
@@ -566,6 +590,7 @@ setInterval(async () => {
         const me = g && g[d.playerId];
         s.ok = true;
         s.room0Players = room0Players;
+        s.bossReadyInRoom0 = bossReadyInRoom0;
         s.spawnPhase = !!info?.spawnPhase;
         s.tick = info?.tick || 0;
         s.terr = info?.territory || 0;
@@ -595,33 +620,6 @@ setInterval(async () => {
             } catch {}
           }
         }
-        let roomPlayers = 0;
-        let bossReadyInRoom0 = false;
-        try {
-          const mgr2 = d && d.lobbyManager && window[d.lobbyManager];
-          const rooms = (mgr2 && d.lobbyRooms && mgr2[d.lobbyRooms]) || mgr2?.z?.tO || mgr2?.tO;
-          if (rooms && rooms[0] && Array.isArray(rooms[0].tP)) {
-            roomPlayers = rooms[0].tP.length;
-            const list = rooms[0].tP;
-            const readyCnt = typeof rooms[0].tQ === "number" ? rooms[0].tQ : list.length;
-            for (let idx = 0; idx < list.length; idx++) {
-              const p = list[idx];
-              const raw = String((p && (p.aFN || p.username || p.name)) || "").trim();
-              const low = raw.toLowerCase();
-              if (
-                low.includes("mishi") || low.includes("matzz") || low.includes("kiholma") ||
-                low.includes("leo_99") || low.includes("racoon") || low.includes("zexos") ||
-                low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus")
-              ) continue;
-              const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
-              if (stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
-                if (idx < readyCnt || p?.ready) bossReadyInRoom0 = true;
-              }
-            }
-          }
-        } catch {}
-        s.room0Players = Math.max(room0Players, roomPlayers);
-        s.bossReadyInRoom0 = bossReadyInRoom0;
         if (s?.inGame) {
           const pd = d && window[d.playerData];
           const rawNames = pd && pd[d.rawPlayerNames];
@@ -838,7 +836,7 @@ setInterval(async () => {
           const snap = ext.remote.snapshot?.();
           if (snap?.lobby?.inLobby && !snap.lobby.ready && ${allowReady ? 'true' : 'false'}) {
             document.dispatchEvent(new KeyboardEvent("keyup", { code: "Enter", key: "Enter", bubbles: true, cancelable: true }));
-          } else if (snap?.lobby?.inLobby && snap.lobby.ready && !${allowReady ? 'true' : 'false'}) {
+          } else if (snap?.lobby?.inLobby && snap.lobby.ready && !${allowReady ? 'true' : 'false'} && !${waitMode ? 'true' : 'false'}) {
             document.dispatchEvent(new KeyboardEvent("keyup", { code: "Escape", key: "Escape", bubbles: true, cancelable: true }));
           }
         }
