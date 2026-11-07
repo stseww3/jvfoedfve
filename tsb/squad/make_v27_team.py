@@ -122,6 +122,13 @@ new_helpers = """  isTeammate(g, p) {
     return !!(g.teams && g.teams[this.me] > 0 && g.teams[p] === g.teams[this.me]);
   }
 
+  myOutTroops(g) {
+    const me = this.me, sb = g.slotBase(me);
+    let out = 0;
+    for (let i = 0; i < g.atkCount[me]; i++) out += g.atkTroops[sb + i];
+    return out;
+  }
+
   // Identify our Boss ("[Nope]kazerd183" / "[NPL] npl", excluding our guard bot names)
   isBossNpl(g, p) {
     if (p === this.me || !g.alive[p]) return false;
@@ -838,12 +845,12 @@ old_expand_neutral = """  expandNeutral(g, spend) {
 
 new_expand_neutral = """  expandNeutral(g, spend) {
     if (g.t < this.p.dpEnd) return this.dpNeutral(g);
-    const B = g.bal[this.me];
+    const B = g.bal[this.me], totB = B + this.myOutTroops(g);
     const minGrab = Math.min(Math.floor(0.22 * B), Math.max(this.minCmd(g) + 50, 10 * this.neutral + 3000));
-    if (this.p.nFloor > 0) spend = Math.min(spend, B - this.reserve(g, 2));
-    if (this.p.pplK > 0 || this.p.hungryK > 0) spend = Math.min(spend, B - this.peopleFloor(g));
-    if (this.p.safeP > 0) spend = Math.min(spend, B - this.p.safeP * this.peopleSafe(g));
-    spend = Math.max(spend, minGrab);
+    if (this.p.nFloor > 0) spend = Math.min(spend, totB - this.reserve(g, 2));
+    if (this.p.pplK > 0 || this.p.hungryK > 0) spend = Math.min(spend, totB - this.peopleFloor(g));
+    if (this.p.safeP > 0) spend = Math.min(spend, totB - this.p.safeP * this.peopleSafe(g));
+    spend = Math.min(B, Math.max(spend, minGrab));
     super.expandNeutral(g, spend);
   }"""
 assert old_expand_neutral in s, "old_expand_neutral not found"
@@ -861,15 +868,14 @@ old_nonperson_buyland = """      const avail = B - fee - keep;
         return this.send(g, q, x);
       }"""
 
-new_nonperson_buyland = """      // Prime/juicy land override: when a neighbor is collapsed, surrendered [Bot], or super thin/cheap,
-      // never let ongoing human combat (`safeAt` / `keep`) freeze us from grabbing it!
+new_nonperson_buyland = """      // Count our own troops currently out on active attacks (`myOutTroops(g)`) as part of our total balance (`totB = B + myOut`)
+      // when computing spare budget (`avail = totB - fee - keep`), so ongoing attacks never falsely make `avail <= 0`!
+      const myOut = this.myOutTroops(g);
+      const totB = B + myOut;
       const dqNow = g.bal[q] / Math.max(1, g.terr[q]);
       const isPrimeLand = o.nearCollapse || dqNow < 24 || c < 0.45 * worth || (o.bleeding && o.tD < 0.52);
-      if (isPrimeLand && B >= 10 * L) {
-        keep = Math.min(keep, (o.nearCollapse || dqNow < 12 ? 6 : 18) * L);
-      }
 
-      const avail = B - fee - keep;
+      const avail = Math.min(B - fee, totB - fee - keep);
       if (avail <= 0) continue;
 
       if (!person) {
@@ -877,7 +883,6 @@ new_nonperson_buyland = """      // Prime/juicy land override: when a neighbor i
         const want = 1.25 * need + 3 * this.cnt[q];
         let x = Math.min(avail, want);
         if (x < want && (c < 0.70 * worth || dqNow < 32)) {
-          // Surrendered human [Bot] or fat bot while we are fighting: pulse with 10%~14% B instead of waiting for 20% B!
           x = Math.min(avail, Math.max(this.minCmd(g), Math.floor(0.12 * B)));
         }
         if (x <= 0 || (x < want && x < (isPrimeLand ? Math.max(this.minCmd(g), 0.05 * B) : P.chunk * B))) continue;
@@ -958,7 +963,7 @@ new_main_analyze = """    this.analyze(g);
     // Prioritize grabbing free neutral land FIRST before any boss donation!
     if (this.neutral > 0 && g.attackTroopsOn(me, NEUTRAL) === 0) {
       const beforeN = this.cmds;
-      this.expandNeutral(g, g.bal[me] - this.safeAt(g, -1));
+      this.expandNeutral(g, g.bal[me] + this.myOutTroops(g) - this.safeAt(g, -1));
       if (this.cmds > beforeN && g.online) return;
     }"""
 assert old_main_analyze in s, "old_main_analyze not found"
