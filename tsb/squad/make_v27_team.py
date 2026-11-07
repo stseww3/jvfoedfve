@@ -1,5 +1,32 @@
-with open("/tmp/fdvg-c58/territorial-sim/strategy/pool/v27-live.js") as f:
+with open("/tmp/fdvg-c58/territorial-sim/strategy/pool/v33-live.js") as f:
     s = f.read()
+
+# 0. Filter teammates out of v33's updatePokeState and tryDeterrentCounter, and disable solo tryPeaceVoteWin
+old_poke_loop = """  updatePokeState(g, checkCnt = false) {
+    const me = this.me, B = g.bal[me];
+    if (B <= 0) return;
+    for (let q = 0; q < g.humans; q++) {
+      if (q === me || !g.alive[q] || g.isBot(q)) continue;"""
+
+new_poke_loop = """  updatePokeState(g, checkCnt = false) {
+    const me = this.me, B = g.bal[me];
+    if (B <= 0) return;
+    for (let q = 0; q < g.humans; q++) {
+      if (q === me || !g.alive[q] || g.isBot(q) || (g.teams && g.teams[me] > 0 && g.teams[q] === g.teams[me])) continue;"""
+assert old_poke_loop in s, "old_poke_loop not found"
+s = s.replace(old_poke_loop, new_poke_loop, 1)
+
+old_deter_loop = """    for (let q = 0; q < g.humans; q++) {
+      if (q === me || !g.alive[q] || g.isBot(q)) continue;"""
+
+new_deter_loop = """    for (let q = 0; q < g.humans; q++) {
+      if (q === me || !g.alive[q] || g.isBot(q) || (g.teams && g.teams[me] > 0 && g.teams[q] === g.teams[me])) continue;"""
+assert old_deter_loop in s, "old_deter_loop not found"
+s = s.replace(old_deter_loop, new_deter_loop, 1)
+
+old_solo_peace = """    if (this.tryPeaceVoteWin(g) && g.online) return;"""
+assert old_solo_peace in s, "old_solo_peace not found"
+s = s.replace(old_solo_peace, "", 1)
 
 # 1. Filter teammates out of analyze(g) so this.nb NEVER contains a teammate!
 old_analyze = """          const o = own[c];
@@ -506,7 +533,7 @@ assert old_helpers in s, "old_helpers not found"
 s = s.replace(old_helpers, new_helpers, 1)
 
 # 6. Moderate focus-fire bias in offers(g) (no reckless over-retaliation)
-old_other_atk = """        let otherAtk = 0, otherAtkers = 0;
+old_other_atk = """        let otherAtk = 0, otherAtkers = 0, outOther = 0;
         for (const a of g.attackersOf(q)) {
           if (a !== me && !g.isBot(a)) {
             otherAtkers++;
@@ -515,7 +542,7 @@ old_other_atk = """        let otherAtk = 0, otherAtkers = 0;
         }"""
 
 new_other_atk = """        const bossId = this.findBossId(g);
-        let otherAtk = 0, otherAtkers = 0, allyAtk = 0, clanAllyAtkers = 0, bossAtkOnQ = 0;
+        let otherAtk = 0, otherAtkers = 0, outOther = 0, allyAtk = 0, clanAllyAtkers = 0, bossAtkOnQ = 0;
         for (const a of g.attackersOf(q)) {
           if (a !== me && !g.isBot(a)) {
             const tr = g.attackTroopsOn(a, q);
@@ -577,10 +604,12 @@ assert old_early_act in s, "old_early_act not found"
 s = s.replace(old_early_act, new_early_act, 1)
 
 old_main_analyze = """    this.analyze(g);
+    this.updatePokeState(g, true);
     this.updateGrudges(g);
     this.updateWars(g);"""
 
 new_main_analyze = """    this.analyze(g);
+    this.updatePokeState(g, true);
     if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
       this._lastTickLog = g.t;
       const pf = window.__hlPerf;
