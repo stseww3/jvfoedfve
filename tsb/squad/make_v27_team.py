@@ -401,7 +401,8 @@ new_helpers = """  isTeammate(g, p) {
     }
 
     // 1. PRIMARY: Give cash (donate) to Boss npl while keeping our own safe density so we never collapse ourselves!
-    if (typeof g.donate === "function" && g.t >= 350) {
+    // Never donate before tick 850 while we still have neutral/bot expansion to finish, unless Boss is under heavy human attack after tick 600!
+    if (typeof g.donate === "function" && g.t >= 600 && (g.t >= 900 || (this.neutral === 0 && bossInAtk >= 0.12 * B_boss))) {
       let myHumanInAtk = 0;
       for (const a of g.attackersOf(me)) {
         if (!g.isBot(a) && !this.isTeammate(g, a)) myHumanInAtk += g.attackTroopsOn(a, me);
@@ -411,10 +412,10 @@ new_helpers = """  isTeammate(g, p) {
       const isPureInlandSafe = enemyHumanNbs.length === 0 && !hasExposedCoast && myHumanInAtk === 0;
       const isCoastalRearSafe = enemyHumanNbs.length === 0 && hasExposedCoast && myHumanInAtk === 0;
 
-      const underEmergencyFire = bossInAtk > 0 && (bossInAtk >= 0.03 * B_boss || dBoss < 95);
-      const bossFightingHuman = bossOutAtk > 0 && dBoss < 115;
-      const bossNeedsCash = g.t >= 900 && dBoss < 118;
-      const boxedIn = this.nb.length === 0 && this.neutral === 0 && dBoss < 142;
+      const underEmergencyFire = bossInAtk > 0 && (bossInAtk >= 0.05 * B_boss || dBoss < 85);
+      const bossFightingHuman = g.t >= 950 && bossOutAtk > 0 && dBoss < 105;
+      const bossNeedsCash = g.t >= 1100 && dBoss < 110;
+      const boxedIn = g.t >= 750 && this.nb.length === 0 && this.neutral === 0 && dBoss < 138;
 
       // Healthy density floor so guard bots stay strong & never suicide while feeding Boss cash
       const minKeepDens = isPureInlandSafe
@@ -654,14 +655,16 @@ old_early_act = """    if (g.t < P.coreFrom) {
       const before = this.cmds;"""
 
 new_early_act = """    if (g.t < P.coreFrom) {
-      this.analyze(g);
-      if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
-        this._lastTickLog = g.t;
-        const pf = window.__hlPerf;
-        const pfStr = pf && pf.ticks > 0 ? ` avgMs=${(pf.totalMs / pf.ticks).toFixed(2)} maxMs=${pf.maxMs.toFixed(1)} skip=${pf.skippedTicks}` : "";
-        window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
+      if (g.t >= 600 && g.t % P.period === 0) {
+        this.analyze(g);
+        if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
+          this._lastTickLog = g.t;
+          const pf = window.__hlPerf;
+          const pfStr = pf && pf.ticks > 0 ? ` avgMs=${(pf.totalMs / pf.ticks).toFixed(2)} maxMs=${pf.maxMs.toFixed(1)} skip=${pf.skippedTicks}` : "";
+          window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
+        }
+        if (this.tryEmergencyBossRescue(g) && g.online) return;
       }
-      if (this.tryEmergencyBossRescue(g) && g.online) return;
       const before = this.cmds;"""
 assert old_early_act in s, "old_early_act not found"
 s = s.replace(old_early_act, new_early_act, 1)

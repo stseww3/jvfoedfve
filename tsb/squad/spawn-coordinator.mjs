@@ -852,28 +852,9 @@ export class TeamSpawnCoordinator {
       const bc = this.snapToLand(anchorBoss.x, anchorBoss.y, 16);
       if (bc >= 0) bossCompId = this.compId[bc];
     }
-    let spoilerCompId = -1;
-    if (K >= 6 && this.continents.length >= 2) {
-      const minMajorContinent = Math.max(45000, Math.round(0.18 * land));
-      for (const cont of this.continents) {
-        if (cont.rawId === bossCompId || cont.size < minMajorContinent) continue;
-        let enemiesOnCont = 0;
-        let alliesOnCont = 0;
-        for (const e of enemies) {
-          const ec = this.snapToLand(e.x, e.y, 12);
-          if (ec >= 0 && this.compId[ec] === cont.rawId) enemiesOnCont++;
-        }
-        for (const a of randomAllies) {
-          const ac = this.snapToLand(a.x, a.y, 12);
-          if (ac >= 0 && this.compId[ac] === cont.rawId) alliesOnCont++;
-        }
-        if (alliesOnCont <= 1 && enemiesOnCont <= 4 && cont.size / Math.max(1, enemiesOnCont + 1) >= 22000) {
-          spoilerCompId = cont.rawId;
-          break;
-        }
-      }
-    }
-    const targetSpoilerCount = spoilerCompId >= 0 ? 2 : 0;
+    const bossContinentSize = bossCompId >= 0 ? (this.continents.find((c) => c.rawId === bossCompId)?.size || 0) : 0;
+    const spoilerCompId = -1;
+    const targetSpoilerCount = 0;
 
     // Minimum viable landmass size so no bot is ever trapped on Greenland / small islands!
     const minViableCompSize = Math.min(
@@ -929,7 +910,7 @@ export class TeamSpawnCoordinator {
         const reqEnemyClear = scales.enemyMinClearance * Math.max(0.65, relax);
         // Cohesive cluster constraint: on first two passes (relax >= 0.80), keep ECO_BANK
         // within clusterMax of our Boss/Squad cluster so no bot is stranded across the map!
-        const enforceCluster = relax >= 0.80 && (anchorBoss || chosenTargets.length > 0);
+        const enforceCluster = relax >= 0.60 && (anchorBoss || chosenTargets.length > 0);
         const maxClusterDist = scales.clusterMax * (1.8 - 0.8 * relax);
 
         const stride = W * H > 900000 ? 8 : 6;
@@ -938,7 +919,12 @@ export class TeamSpawnCoordinator {
           for (let x = 16; x < W - 16; x += stride) {
             const c = y * W + x;
             if (!landMask[c]) continue;
-            if (relax >= 0.60 && this.compSize[c] < minViableCompSize) continue;
+            // Strictly keep ALL squad bots on Boss's continent whenever Boss is on a viable continent!
+            if (bossCompId >= 0 && bossContinentSize >= 15000 && relax >= 0.55) {
+              if (this.compId[c] !== bossCompId) continue;
+            } else if (relax >= 0.60 && this.compSize[c] < minViableCompSize) {
+              continue;
+            }
             if (distToChosenSquad(x, y) < reqAllySep) continue;
             if (distToEnemies(x, y) < reqEnemyClear) continue;
 
@@ -967,9 +953,9 @@ export class TeamSpawnCoordinator {
               }
               if (sectorConflict) continue;
             } else if (enforceCluster) {
-              // Keep outer wing connected to the same continent/sector as our squad cluster
+              // Keep outer wing connected to the same continent & geodesic distance from Boss
               if (distToOurCluster(x, y) > maxClusterDist) continue;
-              if (anchorBoss && this.dBoss[c] < 0 && relax >= 0.95) continue;
+              if (anchorBoss && (this.dBoss[c] < 0 || this.dBoss[c] > maxClusterDist * 1.35) && relax >= 0.60) continue;
             }
 
             const clearance = Math.min(dComp[c], 220);
