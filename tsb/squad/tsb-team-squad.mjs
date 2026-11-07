@@ -15,14 +15,14 @@ const CHROME_BOTS = [
 ];
 
 const HEADLESS_BOTS = [
-  { port: 9302, socksPort: 10803, donorChromePort: 9225, name: '[Nope] mark07', slot: 2, id: 'YQqLM', pw: 'ZerbXEIzTfnv_gk' },
-  { port: 9303, socksPort: 10804, donorChromePort: 9226, name: '[Nope] kevin_k', slot: 3, id: 'CjQcL', pw: 'bCevZwzI-d7xXea' },
-  { port: 9304, socksPort: 10805, donorChromePort: 9227, name: '[Nope] ethan21', slot: 4, id: 'cbtQj', pw: 'Y0cUCnzmkwaeP2g' },
-  { port: 9305, socksPort: 10811, donorChromePort: 9223, name: '[Nope] lucas94', slot: 5, id: 'w7V8j', pw: 'M9IzNEQ6E0GLYyH' },
-  { port: 9306, socksPort: 10812, donorChromePort: 9224, name: '[Nope] dave_w', slot: 6, id: 'Wgg7N', pw: 'uYomek27OY-ndDJ' },
-  { port: 9307, socksPort: 10813, donorChromePort: 9225, name: '[Nope] ryan_m', slot: 7, id: 'vMnKm', pw: 'lfcW2zjcbrMjikn' },
-  { port: 9308, socksPort: 10814, donorChromePort: 9226, name: '[Nope] noah88', slot: 8, id: 'JYjQR', pw: '0IDl6rddOmp4Ag0' },
-  { port: 9309, socksPort: 10815, donorChromePort: 9227, name: '[Nope] leo_tx', slot: 9, id: '92QcK', pw: 'jVpEBoZ8TayQur9' },
+  { port: 9302, socksPort: 10803, donorChromePort: 9225, name: '[Nope] mark07', slot: 2, id: '', pw: '' },
+  { port: 9303, socksPort: 10804, donorChromePort: 9226, name: '[Nope] kevin_k', slot: 3, id: '', pw: '' },
+  { port: 9304, socksPort: 10805, donorChromePort: 9227, name: '[Nope] ethan21', slot: 4, id: '', pw: '' },
+  { port: 9305, socksPort: 10811, donorChromePort: 9223, name: '[Nope] lucas94', slot: 5, id: '', pw: '' },
+  { port: 9306, socksPort: 10812, donorChromePort: 9224, name: '[Nope] dave_w', slot: 6, id: '', pw: '' },
+  { port: 9307, socksPort: 10813, donorChromePort: 9225, name: '[Nope] ryan_m', slot: 7, id: '', pw: '' },
+  { port: 9308, socksPort: 10814, donorChromePort: 9226, name: '[Nope] noah88', slot: 8, id: '', pw: '' },
+  { port: 9309, socksPort: 10815, donorChromePort: 9227, name: '[Nope] leo_tx', slot: 9, id: '', pw: '' },
 ];
 
 const isWaitNplMode = () => fs.existsSync('/tmp/tsb-wait-npl.flag');
@@ -684,12 +684,15 @@ setInterval(async () => {
               }
             }
           }
+          let room0NopeCount = 0;
           if (vh && Array.isArray(vh[0])) {
             const list = vh[0];
             room0Players = list.length;
             const readyCount = vi && typeof vi[0] === "number" ? (vi[0] | 0) : 0;
             for (let idx = 0; idx < list.length; idx++) {
               const p = list[idx];
+              const disp = String((p && p.username) || "").trim();
+              if (disp.toLowerCase().includes("[nope]")) room0NopeCount++;
               const raw = String((p && (p.aFN || p.username || p.name)) || "").trim();
               const low = raw.toLowerCase();
               if (
@@ -710,9 +713,14 @@ setInterval(async () => {
             }
           }
         }
+        const myLobbyUsername = typeof bq === "object" && bq?.aF0 ? bq.aF0.username : null;
+        const myAccId = typeof bm === "object" && bm?.buffer?.data?.[105] ? bm.buffer.data[105].value : null;
         const teams = d && window[d.sbTeamHolder]?.[d.sbTeams];
         const me = g && g[d.playerId];
         s.ok = true;
+        s.myLobbyUsername = myLobbyUsername;
+        s.myAccId = myAccId;
+        s.room0NopeCount = typeof room0NopeCount === "number" ? room0NopeCount : 0;
         s.room0Players = room0Players;
         s.bossReadyInRoom0 = bossReadyInRoom0;
         s.spawnPhase = !!info?.spawnPhase;
@@ -813,6 +821,9 @@ setInterval(async () => {
         port: c.port,
         slot: c.slot,
         name: c.name,
+        myLobbyUsername: s.myLobbyUsername || null,
+        myAccId: s.myAccId || null,
+        room0NopeCount: s.room0NopeCount || 0,
         meId: s.meId ?? -1,
         inGame: !!s.inGame,
         standby: isStandby,

@@ -509,6 +509,16 @@ if (!isMainThread && workerData?.bot) {
       be.a6d = function() {};
       be.a2S = function() {};
     }
+    if (typeof bX === "object" && bX?.eS && typeof bX.eS.ei === "function") {
+      bX.eS.ei = function(ej) {
+        if (ej && ej.id >= 0 && typeof b1 === "object" && b1?.z?.ef?.(0) && b1?.eg?.wC) {
+          b1.eg.wC(0, ej.id);
+          setTimeout(() => {
+            try { if (b1.z.ef(0)) b1.eg.wC(1, ej.id); } catch {}
+          }, 350 + Math.floor(Math.random() * 450));
+        }
+      };
+    }
     if (typeof ax === "object" && ax && typeof ax.iK === "function" && !ax.__hookedPeaceCaller) {
       ax.__hookedPeaceCaller = true;
       const origIk = ax.iK.bind(ax);

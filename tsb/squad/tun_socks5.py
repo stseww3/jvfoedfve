@@ -20,7 +20,7 @@ async def pipe(reader, writer):
 
 def should_use_tun(host, local_port):
     h = host.lower()
-    return h in ("1.territorial.io", "api.ipify.org")
+    return h in ("territorial.io", "1.territorial.io", "api.ipify.org")
 
 async def handle_client(reader, writer, devs, local_port):
     try:
@@ -109,19 +109,21 @@ async def handle_client(reader, writer, devs, local_port):
             pass
 
 async def main():
-    # 10 bots (10801..10805 + 10811..10815), each with its own dedicated primary + backup tunnel exit IP!
-    # 5 verified healthy tunnels: tun55, tun58, tun66, tun78, tun80 (plus host direct "" fallback)
+    # 8 distinct public exit IPs across 8 bots:
+    # host ("") = 18.118.243.20, tun22 = 183.88.237.254, tun55 = 126.36.20.200,
+    # tun58 = 14.132.214.239, tun67 = 106.177.117.146, tun80 = 111.97.197.128,
+    # tun83 = 101.142.46.106, tun86 = 219.115.25.86, tun90 = 106.179.172.250
     mappings = [
-        (10801, ["", "tun78"]),
-        (10802, ["tun58", "tun80"]),
-        (10803, ["tun66", "tun78"]),
-        (10804, ["tun78", "tun58"]),
-        (10805, ["tun80", "tun66"]),
-        (10811, ["", "tun78"]),
-        (10812, ["tun58", "tun80"]),
-        (10813, ["tun66", "tun78"]),
-        (10814, ["tun78", "tun58"]),
-        (10815, ["tun80", "tun66"]),
+        (10801, ["", "tun90"]),
+        (10802, ["tun58", "tun90"]),
+        (10803, ["tun22", "tun90"]),
+        (10804, ["tun67", "tun90"]),
+        (10805, ["tun80", "tun90"]),
+        (10811, ["", "tun90"]),
+        (10812, ["tun58", "tun90"]),
+        (10813, ["tun55", "tun90"]),
+        (10814, ["tun83", "tun90"]),
+        (10815, ["tun86", "tun90"]),
     ]
     servers = []
     for port, devs in mappings:
