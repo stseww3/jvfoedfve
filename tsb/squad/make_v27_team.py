@@ -793,7 +793,90 @@ new_rank_mult2 = """        let rankMult = 1.0;
 assert old_rank_mult2 in s, "old_rank_mult2 not found"
 s = s.replace(old_rank_mult2, new_rank_mult2, 1)
 
-# 6b. Eliminate 142*L ~ 150*L paralysis in buyLand(g) so frontline squad bots NEVER sit idle at 145 density!
+# 6b. Eliminate 142*L ~ 150*L paralysis in buyLand(g), unlock maxTargets for juicy land, and lower oppFloorCap/collapseFloorCap so bots immediately grab juicy land even while fighting!
+old_params_team = """  bleedDiscount: 1.0,
+  bleedSafeCap: 1,
+  collapseRatio: 1.40,
+  pulseFrac: 0.12,
+  pulseMinShare: 0.04,
+  zeroPulseMode: 1,
+  thinMaxTD: 0.48,
+  thinDiscount: 1.0,
+  pocket0Mult: 1.0,
+  pocket1Rank: 1.0,
+  contactStepsMax: 350,
+  contactPenalty: 0.002,
+  oppFloorCap: 128,"""
+
+new_params_team = """  period: 2,
+  maxTargets: 6,
+  bleedDiscount: 0.65,
+  bleedSafeCap: 1,
+  collapseRatio: 1.45,
+  pulseFrac: 0.12,
+  pulseMinShare: 0.03,
+  zeroPulseMode: 1,
+  thinMaxTD: 0.62,
+  thinDiscount: 0.72,
+  pocket0Mult: 1.0,
+  pocket1Rank: 1.0,
+  contactStepsMax: 350,
+  contactPenalty: 0.002,
+  oppFloorCap: 38,"""
+assert old_params_team in s, "old_params_team not found"
+s = s.replace(old_params_team, new_params_team, 1)
+
+old_collapse_cap = """  collapseFloorCap: 85,"""
+new_collapse_cap = """  collapseFloorCap: 16,"""
+assert old_collapse_cap in s, "old_collapse_cap not found"
+s = s.replace(old_collapse_cap, new_collapse_cap, 1)
+
+old_offers_slot = """      const already = g.hasAttack(me, q);
+      if (!already && (active >= P.maxTargets || !g.hasFreeSlot(me))) continue;"""
+
+new_offers_slot = """      const already = g.hasAttack(me, q);
+      if (!already && !g.hasFreeSlot(me)) continue;
+      const isJuicyCandidate = g.isBot(q) || g.bal[q] / Math.max(1, g.terr[q]) < 32 || g.terr[q] <= 1.45 * iV(g.peak[q], 4);
+      if (!already && active >= P.maxTargets && !isJuicyCandidate) continue;"""
+assert old_offers_slot in s, "old_offers_slot not found"
+s = s.replace(old_offers_slot, new_offers_slot, 1)
+
+old_bleeding_def = """        const bleeding =
+          (otherAtkers > 0 &&
+            ((tD < 0.75 && !(Lq >= 65000 && dq >= 85 && otherAtk < 0.12 * Bq)) || otherAtk >= 0.15 * Bq)) ||
+          outOverextended ||
+          emptyAllIn;"""
+
+new_bleeding_def = """        const bleeding =
+          (tD < 0.58 && dq < 45) ||
+          (otherAtkers > 0 &&
+            ((tD < 0.78 && !(Lq >= 65000 && dq >= 85 && otherAtk < 0.12 * Bq)) || otherAtk >= 0.12 * Bq)) ||
+          outOverextended ||
+          emptyAllIn;"""
+assert old_bleeding_def in s, "old_bleeding_def not found"
+s = s.replace(old_bleeding_def, new_bleeding_def, 1)
+
+old_expand_neutral = """  expandNeutral(g, spend) {
+    if (g.t < this.p.dpEnd) return this.dpNeutral(g);
+    if (this.p.nFloor > 0) spend = Math.min(spend, g.bal[this.me] - this.reserve(g, 2));
+    if (this.p.pplK > 0 || this.p.hungryK > 0) spend = Math.min(spend, g.bal[this.me] - this.peopleFloor(g));
+    if (this.p.safeP > 0) spend = Math.min(spend, g.bal[this.me] - this.p.safeP * this.peopleSafe(g));
+    super.expandNeutral(g, spend);
+  }"""
+
+new_expand_neutral = """  expandNeutral(g, spend) {
+    if (g.t < this.p.dpEnd) return this.dpNeutral(g);
+    const B = g.bal[this.me];
+    const minGrab = Math.min(Math.floor(0.20 * B), 8 * this.neutral + 3000);
+    if (this.p.nFloor > 0) spend = Math.min(spend, B - this.reserve(g, 2));
+    if (this.p.pplK > 0 || this.p.hungryK > 0) spend = Math.min(spend, B - this.peopleFloor(g));
+    if (this.p.safeP > 0) spend = Math.min(spend, B - this.p.safeP * this.peopleSafe(g));
+    spend = Math.max(spend, minGrab);
+    super.expandNeutral(g, spend);
+  }"""
+assert old_expand_neutral in s, "old_expand_neutral not found"
+s = s.replace(old_expand_neutral, new_expand_neutral, 1)
+
 old_buyland_locks = """      const isSoleHealthyBuffer =
         person && !o.isDoorSea && nHumans >= 3 && !o.nearCollapse && !o.bleeding && !o.onMe && o.newNbs > 0 && humanNbCount === 1;
       if (isSoleHealthyBuffer && c >= worth && c >= cheap && B < P.overHumanCap * 100 * L) {
@@ -861,14 +944,20 @@ new_main_analyze = """    this.analyze(g);
       window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
     }
     this.tryPeaceVote(g);
-    if (this.tryEmergencyBossRescue(g) && g.online) return;
     this.updateGrudges(g);
-    this.updateWars(g);"""
+    this.updateWars(g);
+    // Prioritize grabbing free neutral land FIRST before any boss donation!
+    if (this.neutral > 0 && g.attackTroopsOn(me, NEUTRAL) === 0) {
+      const beforeN = this.cmds;
+      this.expandNeutral(g, g.bal[me] - this.safeAt(g, -1));
+      if (this.cmds > beforeN && g.online) return;
+    }"""
 assert old_main_analyze in s, "old_main_analyze not found"
 s = s.replace(old_main_analyze, new_main_analyze, 1)
 
 old_act_end = """    if (this.cmds === cmdsBefore) this.idleBoats(g);"""
-new_act_end = """    if (this.cmds === cmdsBefore) this.tryDonateToTeammate(g);
+new_act_end = """    if (this.cmds === cmdsBefore && this.tryEmergencyBossRescue(g) && g.online) return;
+    if (this.cmds === cmdsBefore) this.tryDonateToTeammate(g);
     if (this.cmds === cmdsBefore) this.idleBoats(g);"""
 assert old_act_end in s, "old_act_end not found"
 s = s.replace(old_act_end, new_act_end, 1)

@@ -173,7 +173,11 @@ if (!isMainThread && workerData?.bot) {
     )
     .replace(
       'if(null!==this.inflight&&Ct()-this.inflight<450)return;',
-      'if(null!==this.inflight&&Ct()-this.inflight<450&&t.t-(this.inflightTick??0)<8)return;'
+      'if(null!==this.inflight&&Ct()-this.inflight<110&&t.t-(this.inflightTick??0)<2)return;'
+    )
+    .replace(
+      'if(null!==this.inflight&&Ct()-this.inflight<450&&t.t-(this.inflightTick??0)<8)return;',
+      'if(null!==this.inflight&&Ct()-this.inflight<110&&t.t-(this.inflightTick??0)<2)return;'
     );
   const dictSource = fs.readFileSync(resolveAssetPath('live_dictionary.json', '/tmp/live_dictionary.json'), 'utf8');
 

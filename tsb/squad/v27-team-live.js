@@ -530,7 +530,9 @@ class Strategy {
       const Tq = g.terr[q];
       if (Tq === 0) continue;
       const already = g.hasAttack(me, q);
-      if (!already && (active >= P.maxTargets || !g.hasFreeSlot(me))) continue;
+      if (!already && !g.hasFreeSlot(me)) continue;
+      const isJuicyCandidate = g.isBot(q) || g.bal[q] / Math.max(1, g.terr[q]) < 32 || g.terr[q] <= 1.45 * iV(g.peak[q], 4);
+      if (!already && active >= P.maxTargets && !isJuicyCandidate) continue;
       const perPx = 2 + 2 * g.bal[q] / (1 + iV(10 * Tq, 16));
       if (perPx > P.maxCost) continue;
       const snipe = g.bal[q] / Tq <= P.snipeK * dMe;
@@ -2346,9 +2348,12 @@ class V13 extends Style {
 
   expandNeutral(g, spend) {
     if (g.t < this.p.dpEnd) return this.dpNeutral(g);
-    if (this.p.nFloor > 0) spend = Math.min(spend, g.bal[this.me] - this.reserve(g, 2));
-    if (this.p.pplK > 0 || this.p.hungryK > 0) spend = Math.min(spend, g.bal[this.me] - this.peopleFloor(g));
-    if (this.p.safeP > 0) spend = Math.min(spend, g.bal[this.me] - this.p.safeP * this.peopleSafe(g));
+    const B = g.bal[this.me];
+    const minGrab = Math.min(Math.floor(0.20 * B), 8 * this.neutral + 3000);
+    if (this.p.nFloor > 0) spend = Math.min(spend, B - this.reserve(g, 2));
+    if (this.p.pplK > 0 || this.p.hungryK > 0) spend = Math.min(spend, B - this.peopleFloor(g));
+    if (this.p.safeP > 0) spend = Math.min(spend, B - this.p.safeP * this.peopleSafe(g));
+    spend = Math.max(spend, minGrab);
     super.expandNeutral(g, spend);
   }
 
@@ -3899,19 +3904,21 @@ export const PARAMS = {
   sharedBotMult: 1.0,
   marketFloor: 0.85,
   marketFrom: 2500,
-  bleedDiscount: 1.0,
+  period: 2,
+  maxTargets: 6,
+  bleedDiscount: 0.65,
   bleedSafeCap: 1,
-  collapseRatio: 1.40,
+  collapseRatio: 1.45,
   pulseFrac: 0.12,
-  pulseMinShare: 0.04,
+  pulseMinShare: 0.03,
   zeroPulseMode: 1,
-  thinMaxTD: 0.48,
-  thinDiscount: 1.0,
+  thinMaxTD: 0.62,
+  thinDiscount: 0.72,
   pocket0Mult: 1.0,
   pocket1Rank: 1.0,
   contactStepsMax: 350,
   contactPenalty: 0.002,
-  oppFloorCap: 128,
+  oppFloorCap: 38,
   focusBonus: 1.0,
   focusT: 350,
   defendDiscount: 0.85,
@@ -3953,7 +3960,7 @@ export const PARAMS = {
   seaRebateMode: 1,
   quotaGuardMode: 1,
   noFullSend: 0,
-  collapseFloorCap: 85,
+  collapseFloorCap: 16,
   emptyAllInMode: 1,
   latePocketMode: 0,
   widenStepsMin: 0,
@@ -5151,9 +5158,14 @@ export class Policy extends V17 {
       window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
     }
     this.tryPeaceVote(g);
-    if (this.tryEmergencyBossRescue(g) && g.online) return;
     this.updateGrudges(g);
     this.updateWars(g);
+    // Prioritize grabbing free neutral land FIRST before any boss donation!
+    if (this.neutral > 0 && g.attackTroopsOn(me, NEUTRAL) === 0) {
+      const beforeN = this.cmds;
+      this.expandNeutral(g, g.bal[me] - this.safeAt(g, -1));
+      if (this.cmds > beforeN && g.online) return;
+    }
 
     // Combo 2 (#7): If an active human attack target gained >= 8 new `P_BORDER` pixels
     // (e.g. from eating an adjacent bot or a secondary boat step) and our slot is large enough,
@@ -5186,6 +5198,7 @@ export class Policy extends V17 {
       }
     }
 
+    if (this.cmds === cmdsBefore && this.tryEmergencyBossRescue(g) && g.online) return;
     if (this.cmds === cmdsBefore) this.tryDonateToTeammate(g);
     if (this.cmds === cmdsBefore) this.idleBoats(g);
 
@@ -5355,8 +5368,9 @@ export class Policy extends V17 {
         const outOverextended = outOther >= 0.18 * Math.max(1, Bq + outOther) && tD < 0.72 && dq < 68 && Lq < 85000;
         const nearCollapse = Lq <= P.collapseRatio * left || (otherAtk > 0 && otherAtk >= 0.65 * rawNeed) || emptyAllIn;
         const bleeding =
+          (tD < 0.58 && dq < 45) ||
           (otherAtkers > 0 &&
-            ((tD < 0.75 && !(Lq >= 65000 && dq >= 85 && otherAtk < 0.12 * Bq)) || otherAtk >= 0.15 * Bq)) ||
+            ((tD < 0.78 && !(Lq >= 65000 && dq >= 85 && otherAtk < 0.12 * Bq)) || otherAtk >= 0.12 * Bq)) ||
           outOverextended ||
           emptyAllIn;
         const isRearBeachhead = Lq < 12000 && (atkOnBoss > 0 || atkOnAlly > 0 || bossAtkOnQ > 0 || clanAllyAtkers > 0);
