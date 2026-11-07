@@ -845,27 +845,34 @@ setInterval(async () => {
     }
   });
 
-  // In Boss-Guard waitMode: if our bots are in a game where Boss [NPL] npl is NOT present or has QUIT (playerStates[bossId] === 2),
-  // all bots immediately leave the game too so they can re-queue for Boss! (If Boss died but is still watching, bots keep fighting!)
-  const inGameStatesNow = states.filter((s) => s?.inGame && !s.over);
-  const bossLeftOrMissingInWaitMode =
-    waitMode &&
-    inGameStatesNow.length > 0 &&
-    inGameStatesNow.every((s) => !s.bossActiveInGame);
-
-  if (bossLeftOrMissingInWaitMode) {
-    console.log(`[BOSS-SYNC] Boss [NPL] npl has quit/left the match -> all guard bots leaving immediately to follow Boss!`);
+  // In Boss-Guard waitMode: ANY individual bot in a match where Boss [NPL] npl is NOT present or has QUIT (playerStates[bossId] === 2)
+  // immediately leaves that match so it never stays stranded in a wrong match!
+  if (waitMode) {
+    for (let i = 0; i < clients.length; i++) {
+      const s = states[i];
+      if (s?.inGame && !s.bossActiveInGame) {
+        console.log(`[BOSS-SYNC] ${clients[i].name} is in a match without active Boss [NPL] npl (bossId=${s.bossId ?? -1}) -> leaving immediately to rejoin Lobby!`);
+        s.inGame = false;
+        clients[i].wasInGame = false;
+        clients[i].freshToken = false;
+        clients[i].lastReloadAt = 0;
+        clients[i].evalJs(`(() => {
+          window.__tsbSquadSyncHold = true;
+          const d = window.dictionary;
+          const g = d && window[d.game];
+          if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true);
+        })()`);
+      }
+    }
   }
 
   // Never reload or re-open lobby while ANY bot has meaningful territory (> 80 px) or is in opening (< 30s)
-  const anyMeaningfulAlive =
-    !bossLeftOrMissingInWaitMode &&
-    states.some(
-      (s, idx) =>
-        s.inGame &&
-        !s.over &&
-        (s.spawnPhase || s.tick < 60 || now - clients[idx].enteredGameAt < 30000 || (s.alive && (s.terr || 0) >= 80))
-    );
+  const anyMeaningfulAlive = states.some(
+    (s, idx) =>
+      s.inGame &&
+      !s.over &&
+      (s.spawnPhase || s.tick < 60 || now - clients[idx].enteredGameAt < 30000 || (s.alive && (s.terr || 0) >= 80))
+  );
   if (anyMeaningfulAlive) {
     reloadingForFreshTokens = false;
     wantTenForCurrentLobby = false;
