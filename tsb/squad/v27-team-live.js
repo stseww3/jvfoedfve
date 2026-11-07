@@ -2349,7 +2349,7 @@ class V13 extends Style {
   expandNeutral(g, spend) {
     if (g.t < this.p.dpEnd) return this.dpNeutral(g);
     const B = g.bal[this.me];
-    const minGrab = Math.min(Math.floor(0.20 * B), 8 * this.neutral + 3000);
+    const minGrab = Math.min(Math.floor(0.22 * B), Math.max(this.minCmd(g) + 50, 10 * this.neutral + 3000));
     if (this.p.nFloor > 0) spend = Math.min(spend, B - this.reserve(g, 2));
     if (this.p.pplK > 0 || this.p.hungryK > 0) spend = Math.min(spend, B - this.peopleFloor(g));
     if (this.p.safeP > 0) spend = Math.min(spend, B - this.p.safeP * this.peopleSafe(g));
@@ -4459,38 +4459,19 @@ export class Policy extends V17 {
       }
     }
 
-    // 2. SECONDARY: Light ~10%B (pct=102/1024) assist poke if we share a land border,
-    //    OR amphibious counter-landing boat if we have coastline and no land border (e.g. boxed-in coastal rear guard)!
+    // 2. SECONDARY: Light ~10%B (pct=102/1024) assist poke ONLY if we share a land border and have healthy density (dMe >= 55)!
     if (bossAttackers.length > 0 && B >= 8000 && dMe >= 55) {
       bossAttackers.sort((a, b) => (b.isEnemyAtk - a.isEnemyAtk) || (b.tr - a.tr));
       for (const { q } of bossAttackers) {
-        if (!g.alive[q] || g.terr[q] < 60) continue;
+        if (!g.alive[q] || g.terr[q] < 100) continue;
         if ((this.cnt[q] ?? 0) > 0 && !g.hasAttack(me, q) && g.hasFreeSlot(me)) {
-          const pokePct = g.terr[q] < 8000 ? 154 : 102; // 15%B to crush small rear beachheads, 10%B standard assist!
-          if (g.attack(pokePct, q, me)) {
+          if (g.attack(102, q, me)) {
             this.cmds++;
             this.hitTo.set(q, g.t);
             if (typeof window !== "undefined" && window.__hlLog) {
-              window.__hlLog(`[HL-ASSIST] t=${g.t} boss-assist poke pct=${pokePct} -> target=${q}(${g.names?.[q] || ""}) myBal=${B} dMe=${Math.round(dMe)}`);
+              window.__hlLog(`[HL-ASSIST] t=${g.t} 10% boss-assist poke -> target=${q}(${g.names?.[q] || ""}) myBal=${B} dMe=${Math.round(dMe)}`);
             }
             return true;
-          }
-        }
-      }
-      // If we don't share a land border with Boss's attacker (e.g. rear beachhead behind Boss) and we have coastline + surplus:
-      if (this.nb.length === 0 && (g.coast?.[me]?.length ?? 0) > 0 && (g.boatCount?.[me] ?? 0) < 3 && dMe >= 75 && g.t - (this._lastRearBoatTick ?? -999) >= 35) {
-        for (const s of seaSample(g, me, 48, this.rng)) {
-          if (s.o >= 0 && s.d <= 160 && bossAttackers.some((x) => x.q === s.o)) {
-            const pct = g.terr[s.o] < 8000 ? 140 : 102;
-            if (g.boat(pct, s.water, s.dir, me)) {
-              this._lastRearBoatTick = g.t;
-              this.cmds++;
-              this.boats++;
-              if (typeof window !== "undefined" && window.__hlLog) {
-                window.__hlLog(`[HL-REAR-BOAT] t=${g.t} launched counter-beachhead boat pct=${pct} -> invader=${s.o}(${g.names?.[s.o] || ""}) dist=${s.d}`);
-              }
-              return true;
-            }
           }
         }
       }
@@ -4499,27 +4480,25 @@ export class Policy extends V17 {
   }
 
   // SEA RADAR & ENEMY BOAT INTERCEPTION (g.chase):
-  // Scans all in-flight boats (0 .. g.boatN - 1). Whenever an enemy boat is heading toward our coast,
-  // Boss's coast, or a teammate's coast (within 155px of our coastline), launch an interceptor boat
-  // via g.chase(pct, boatId, me) to ram and sink it at sea before it can land in our rear!
+  // Economically intercepts incoming enemy boats (1.15x enemy boat troops, capped at 8% B)
+  // before they can land on our / Boss's / teammate's coastline!
   tryInterceptEnemyBoats(g) {
     const me = this.me;
     if (!g.canAct(me) || typeof g.chase !== "function") return false;
     const myCoast = g.coast?.[me];
     if (!myCoast || myCoast.length === 0) return false;
-    if ((g.boatCount?.[me] ?? 0) >= 4) return false;
+    if ((g.boatCount?.[me] ?? 0) >= 3) return false;
     const boatN = g.boatN | 0;
     if (boatN <= 0 || !g.bSlot || !g.bId || !g.bTroops || !g.bPos) return false;
 
     const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
-    if (B < 4000 || dMe < 38) return false;
+    if (B < 6000 || dMe < 45) return false;
     const fee = iV(32 * B, 1024);
 
     if (!this._chasedBoatTicks) this._chasedBoatTicks = new Map();
     const W = g.W, H = g.H, w16 = W << 4;
     const own = g.own;
 
-    // Sample up to 32 of our coast pixels for fast distance checks
     const cLen = myCoast.length;
     const cStep = Math.max(1, Math.floor(cLen / 32));
 
@@ -4534,11 +4513,10 @@ export class Policy extends V17 {
       if (owner === me || owner >= 512 || this.isTeammate(g, owner)) continue;
       const boatId = g.bId[b];
       const bTr = g.bTroops[b];
-      if (bTr < 120) continue;
+      if (bTr < 250) continue;
       const lastChased = this._chasedBoatTicks.get(boatId) ?? -999;
-      if (g.t - lastChased < 35) continue;
+      if (g.t - lastChased < 45) continue;
 
-      // If in browser/worker with bQ.iC.qx, verify our coast is in the same water body and can legally chase this boat!
       if (typeof window !== "undefined" && window.bQ?.iC?.qx) {
         try {
           if (!window.bQ.iC.qx(me, boatId)) continue;
@@ -4554,7 +4532,6 @@ export class Policy extends V17 {
       const ex = endPix >= 0 ? (endPix % W) : bx;
       const ey = endPix >= 0 ? Math.floor(endPix / W) : by;
 
-      // Check distance from our coast to the boat's current position and landing target
       let minDistNow = 999999;
       let minDistEnd = 999999;
       for (let i = 0; i < cLen; i += cStep) {
@@ -4566,10 +4543,9 @@ export class Policy extends V17 {
         if (dEnd < minDistEnd) minDistEnd = dEnd;
       }
 
-      if (minDistNow > 155 && minDistEnd > 135) continue;
+      if (minDistNow > 135 && minDistEnd > 115) continue;
 
-      // Check if the boat's destination threatens us, Boss, or a teammate (within 24px of endPix)
-      let threatensTeam = minDistEnd <= 95 || minDistNow <= 85;
+      let threatensTeam = minDistEnd <= 80 || minDistNow <= 70;
       if (!threatensTeam && endPix >= 0 && own) {
         for (const [dx, dy] of [[0, 0], [6, 0], [-6, 0], [0, 6], [0, -6], [14, 0], [-14, 0], [0, 14], [0, -14]]) {
           const nx = ex + dx, ny = ey + dy;
@@ -4583,13 +4559,13 @@ export class Policy extends V17 {
       }
       if (!threatensTeam) continue;
 
-      // Need ~1.30x of enemy boat troops to guarantee sinking it at sea
-      const wantTr = Math.max(600, Math.ceil(1.30 * bTr));
-      const maxAllow = Math.floor((dMe >= 95 ? 0.22 : 0.15) * B);
-      if (wantTr > maxAllow || B - wantTr - fee < 32 * L) continue;
+      // Economical ~1.15x enemy boat troops, strictly capped at 8% B so we never waste troops!
+      const wantTr = Math.max(500, Math.ceil(1.15 * bTr));
+      const maxAllow = Math.floor(0.08 * B);
+      if (wantTr > maxAllow || B - wantTr - fee < 40 * L) continue;
 
-      const pct = Math.max(6, Math.min(225, Math.ceil((wantTr * 1024) / Math.max(1, B))));
-      const score = bTr * 2 + Math.max(0, 180 - minDistNow) * 50;
+      const pct = Math.max(4, Math.min(82, Math.ceil((wantTr * 1024) / Math.max(1, B))));
+      const score = bTr * 2 + Math.max(0, 160 - minDistNow) * 50;
       if (score > bestScore) {
         bestScore = score;
         bestBoatId = boatId;
@@ -5373,8 +5349,7 @@ export class Policy extends V17 {
             ((tD < 0.78 && !(Lq >= 65000 && dq >= 85 && otherAtk < 0.12 * Bq)) || otherAtk >= 0.12 * Bq)) ||
           outOverextended ||
           emptyAllIn;
-        const isRearBeachhead = Lq < 12000 && (atkOnBoss > 0 || atkOnAlly > 0 || bossAtkOnQ > 0 || clanAllyAtkers > 0);
-        const onMe = inAtk > 0 || atkOnBoss > 0 || atkOnAlly > 0 || isRearBeachhead;
+        const onMe = inAtk > 0 || atkOnBoss > 0 || atkOnAlly > 0;
 
         if (nearCollapse) {
           const effNeed = emptyAllIn ? Math.max(1, this.elimCost(g, q)) : rawNeed;
@@ -5408,18 +5383,15 @@ export class Policy extends V17 {
         }
 
         let rankMult = 1.0;
-        if (isRearBeachhead) {
-          c *= 0.45;
-          rankMult *= 0.40;
-        } else if (atkOnBoss > 0 || bossAtkOnQ > 0) {
-          c *= 0.72;
-          rankMult *= 0.65;
-        } else if (clanAllyAtkers > 0 || allyAtk > 0.06 * Bq) {
+        if (atkOnBoss > 0 || bossAtkOnQ > 0) {
           c *= 0.78;
-          rankMult *= 0.74;
+          rankMult *= 0.72;
+        } else if (clanAllyAtkers > 0 || allyAtk > 0.06 * Bq) {
+          c *= 0.82;
+          rankMult *= 0.78;
         } else if (atkOnAlly > 0.08 * Bq) {
-          c *= 0.80;
-          rankMult *= 0.76;
+          c *= 0.85;
+          rankMult *= 0.82;
         }
         if (
           (P.aggMemMode === 2 ||
@@ -5675,15 +5647,26 @@ export class Policy extends V17 {
       }
       keep = Math.max(keep, safe);
 
+      // Prime/juicy land override: when a neighbor is collapsed, surrendered [Bot], or super thin/cheap,
+      // never let ongoing human combat (`safeAt` / `keep`) freeze us from grabbing it!
+      const dqNow = g.bal[q] / Math.max(1, g.terr[q]);
+      const isPrimeLand = o.nearCollapse || dqNow < 24 || c < 0.45 * worth || (o.bleeding && o.tD < 0.52);
+      if (isPrimeLand && B >= 10 * L) {
+        keep = Math.min(keep, (o.nearCollapse || dqNow < 12 ? 6 : 18) * L);
+      }
+
       const avail = B - fee - keep;
       if (avail <= 0) continue;
 
       if (!person) {
         if (g.t >= 1800 && (this.cnt[q] ?? 0) <= 3 && g.terr[q] < 4000 && fee > 15000) continue;
         const want = 1.25 * need + 3 * this.cnt[q];
-        if (g.t >= 3000 && humanNbCount >= 1 && g.terr[q] < 8000 && want > 0.10 * B) continue;
-        const x = Math.min(avail, want);
-        if (x <= 0 || (x < want && x < P.chunk * B)) continue;
+        let x = Math.min(avail, want);
+        if (x < want && (c < 0.70 * worth || dqNow < 32)) {
+          // Surrendered human [Bot] or fat bot while we are fighting: pulse with 10%~14% B instead of waiting for 20% B!
+          x = Math.min(avail, Math.max(this.minCmd(g), Math.floor(0.12 * B)));
+        }
+        if (x <= 0 || (x < want && x < (isPrimeLand ? Math.max(this.minCmd(g), 0.05 * B) : P.chunk * B))) continue;
         return this.send(g, q, x);
       }
 

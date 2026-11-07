@@ -983,7 +983,7 @@ setInterval(async () => {
           if (ext.remote.lobby) ext.remote.lobby.stopped = null;
         }
       })()`);
-      if (s.lobby.stopped.includes('4591') || s.lobby.stopped.includes('4577') || s.lobby.stopped.includes('4215')) {
+      if (s.lobby.stopped.includes('4591') || s.lobby.stopped.includes('4577') || s.lobby.stopped.includes('4215') || s.lobby.stopped.includes('1006')) {
         clients[idx].freshToken = false;
         clients[idx].enteredLobbyAt = 0;
       }
@@ -1048,6 +1048,26 @@ setInterval(async () => {
           if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true);
         })()`);
       }
+    }
+  }
+
+  // Hot-import updated strategy file immediately even while bots are in-game!
+  const srcHashNow = getV27TeamSource().length;
+  for (const c of clients) {
+    if (!c.isHeadless && headlessOnly) continue;
+    if (c.lastStrategyLen && c.lastStrategyLen !== srcHashNow) {
+      c.lastStrategyLen = srcHashNow;
+      const newSrc = getV27TeamSource();
+      c.evalJs(`(async () => {
+        const ext = window.__fx?.strategyBotExtension;
+        if (ext) {
+          const sid = await ext.strategies.add({ name: "v27team.js", text: async () => ${JSON.stringify(newSrc)} });
+          const targetSid = sid || "file:v27team";
+          ext.settings.strategy = targetSid;
+          if (ext.strategies.changed) ext.strategies.changed(targetSid);
+        }
+      })()`, true);
+      console.log(`[HOT-IMPORT] Injected updated v27team.js (${srcHashNow} bytes) into ${c.name} live!`);
     }
   }
 
