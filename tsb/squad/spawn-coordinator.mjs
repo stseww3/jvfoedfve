@@ -1,17 +1,23 @@
 // ============================================================================
-// UNIFIED TEAM SPAWN COORDINATOR BACKEND (tsb/squad/spawn-coordinator.mjs)
+// UNIFIED TEAM SPAWN COORDINATOR BACKEND v2 (tsb/squad/spawn-coordinator.mjs)
 // ============================================================================
-// Centralizes spawn-phase decision making for all 5~10 squad bots in Team Mode:
-//   1. Single source of truth for map terrain (W, H, landMask) & live human positions.
-//   2. Carves out an exclusive opening growth zone (R_boss_excl) around Boss [NPL] npl
-//      so guard bots NEVER steal Boss's early neutral land or AI bots.
-//   3. Deploys a role-based team formation:
-//      - 1~2 FLANK_GUARD bots on Boss's outer ring [R_boss_excl, R_flank_max],
-//        preferring sectors that shield Boss from nearby enemy humans.
-//      - (K - K_flank) ECO_BANK bots across the largest disjoint Voronoi basins
-//        of the map via Sequential Geodesic BFS Distance-Field Injection.
-//   4. Assigns the K target coordinates to the K active bots via exact O(K * 2^K)
-//      bitmask DP minimum-displacement matching to prevent countdown jitter.
+// Anti-Pinch Backstop + Cohesive Boss Shield Wedge Formation:
+//   1. Explicitly computes 360-degree angular enemy encirclement (`computePinchMetrics`):
+//      heavily penalizes any candidate point trapped between 2+ enemy directions
+//      (span >= 105 deg or opposing enemies) and rewards "backstop" spots backed
+//      by map borders, coastlines, or friendly squadmates (safeArc >= 200 deg).
+//   2. Replaces scattered "orphan" spawns across the map with a Cohesive Squad
+//      Cluster / Wedge around Boss [NPL] npl (or a safe corner Squad Anchor when
+//      Boss hasn't clicked yet):
+//      - FLANK_GUARD (Inner Shield, 2~3 bots): placed at [bossExcl, flankMax] on
+//        distinct threat quadrants (>= 80 deg apart) to block multi-side enemy
+//        pincers on Boss while staying >= enemyMinClearance from enemies.
+//      - ECO_BANK (Outer Wing, 2~7 bots): placed in adjacent basins chained to
+//        our Boss + Inner Shield cluster (clusterDist <= clusterMax), strongly
+//        preferring map corners/edges behind our shield so all squad territories
+//        merge into a single unbreakable contiguous stronghold by tick 550!
+//   3. Uses exact O(K * 2^K) bitmask DP minimum-displacement matching to prevent
+//      jitter during the 6-second spawn countdown.
 // ============================================================================
 
 import http from 'node:http';
@@ -75,7 +81,7 @@ export class TeamSpawnCoordinator {
     this.dComp = null;      // Int32Array(N): geodesic land distance to nearest competitor/chosen slot
     this.whoKind = null;    // Uint8Array(N): KIND_* of nearest source in dComp
     this.whoId = null;      // Int16Array(N): player id of nearest source in dComp
-    this.dBoss = null;      // Int32Array(N): geodesic land distance from Boss npl
+    this.dBoss = null;      // Int32Array(N): geodesic land distance from Boss npl (or Squad Anchor)
     this.dScratch = null;   // Int32Array(N): local BFS distance scratch (kept at -1)
     this.bfsQ = null;       // Int32Array(N): BFS queue
 
@@ -85,6 +91,7 @@ export class TeamSpawnCoordinator {
     this.lastSolvedAt = 0;
     this.solveCount = 0;
     this.prevBotTargets = new Map(); // slot -> { x, y, role }
+    this.lastBossKey = '';
     this.server = null;
   }
 
@@ -105,9 +112,6 @@ export class TeamSpawnCoordinator {
 
   /**
    * Set or update the current match's static terrain map.
-   * Accepts either:
-   *   - mapType: Uint8Array(W*H) where 1 === T_LAND, 2 === T_WATER
-   *   - packedLandB64: base64-encoded bitpack of landMask (1 bit per pixel)
    */
   setMap({ matchKey, W, H, land, mapType, packedLandB64 }) {
     if (!W || !H || W <= 0 || H <= 0) return false;
@@ -147,6 +151,7 @@ export class TeamSpawnCoordinator {
 
     this.land = land || landCount;
     this.prevBotTargets.clear();
+    this.lastBossKey = '';
     this.lastPlan = null;
     this.solveCount = 0;
     return true;
@@ -177,16 +182,16 @@ export class TeamSpawnCoordinator {
 
   /**
    * Compute multi-source 4-neighbour geodesic land distance field dComp[N]
-   * from enemies, random teammates, and Boss npl.
+   * from enemies, random teammates, and Boss npl (or Squad Anchor).
    */
   buildInitialDistanceFields(enemies, randomAllies, boss, botSpawnPoints = []) {
-    const { W, H, N, landMask, dir4, dComp, whoKind, whoId, dBoss, bfsQ } = this;
+    const { N, landMask, dir4, dComp, whoKind, whoId, dBoss, bfsQ } = this;
     const INF = 1_000_000;
     dComp.fill(INF);
     whoKind.fill(KIND_NONE);
     whoId.fill(-1);
 
-    // 1. If Boss is present and placed on the map, compute exact geodesic dBoss[N]
+    // 1. If Boss (or Squad Anchor) is present, compute exact geodesic dBoss[N]
     dBoss.fill(-1);
     if (boss && boss.x >= 0 && boss.y >= 0) {
       const bc = this.snapToLand(boss.x, boss.y, 16);
@@ -210,8 +215,8 @@ export class TeamSpawnCoordinator {
 
     // 2. Seed multi-source bucket/offset BFS for dComp:
     //    - Enemy humans start at dist = 0 (strongest rival)
-    //    - Boss starts at dist = 0 (we must never steal Boss's Voronoi land)
-    //    - Random allies start at dist = 12 (compete for neutral land, but non-hostile)
+    //    - Real Boss starts at dist = 0 (we must never steal Boss's Voronoi land)
+    //    - Random allies start at dist = 10 (compete for neutral land, but non-hostile)
     const delayedSeeds = [];
     let qh = 0, qt = 0;
 
@@ -225,7 +230,7 @@ export class TeamSpawnCoordinator {
       }
     }
 
-    if (boss && boss.x >= 0 && boss.y >= 0) {
+    if (boss && !boss.isVirtualAnchor && boss.x >= 0 && boss.y >= 0) {
       const bc = this.snapToLand(boss.x, boss.y, 12);
       if (bc >= 0 && dComp[bc] > 0) {
         dComp[bc] = 0;
@@ -238,11 +243,10 @@ export class TeamSpawnCoordinator {
     for (const a of randomAllies) {
       const c = this.snapToLand(a.x, a.y, 12);
       if (c >= 0) {
-        delayedSeeds.push({ c, delay: 12, kind: KIND_RANDOM_ALLY, id: a.id });
+        delayedSeeds.push({ c, delay: 10, kind: KIND_RANDOM_ALLY, id: a.id });
       }
     }
 
-    // If no humans have placed a spawn marker yet, seed lightly from AI bots or map border
     if (qt === 0 && delayedSeeds.length === 0 && botSpawnPoints.length > 0) {
       for (const b of botSpawnPoints) {
         const c = this.snapToLand(b.x, b.y, 6);
@@ -297,8 +301,6 @@ export class TeamSpawnCoordinator {
 
   /**
    * Incrementally inject a newly chosen squad spawn point `seedCell` into dComp[N].
-   * This immediately claims its Voronoi basin so subsequent squad slots NEVER
-   * evaluate that same basin as empty/available!
    */
   injectChosenSquadPoint(seedCell, slotId, maxInjectRadius = 260) {
     const { N, landMask, dir4, dComp, whoKind, whoId, bfsQ } = this;
@@ -328,8 +330,7 @@ export class TeamSpawnCoordinator {
 
   /**
    * Effective distance from pixel c = (x, y) to Boss npl, combining geodesic land
-   * steps and Euclidean distance (so narrow rivers don't trick a bot into spawning
-   * 30px away from Boss).
+   * steps and Euclidean distance.
    */
   effectiveBossDist(c, boss) {
     if (!boss || boss.x < 0 || boss.y < 0) return 999999;
@@ -338,17 +339,188 @@ export class TeamSpawnCoordinator {
     const euclid = Math.hypot(x - boss.x, y - boss.y);
     const geo = this.dBoss[c];
     if (geo >= 0) {
-      // Must respect BOTH Euclidean clearance and geodesic land distance
       return Math.min(geo, 1.35 * euclid);
     }
     return 1.25 * euclid;
   }
 
   /**
-   * Evaluate a candidate pixel `s` against the current dynamic `dComp` field.
-   * Returns { totalScore, voronoiPixels, weightedArea, enemyNeighbors, enemyBorder, allyBorder }.
+   * Compute 360-degree anti-pinch (encirclement) & backstop metrics for a candidate (sx, sy):
+   *   - Checks nearby enemies within threatRadius (~3.2 * rCell):
+   *     * How many of the 8 octants around (sx, sy) contain threatening enemies?
+   *     * What is the widest enemy-free angular arc (`safeArcDeg`)?
+   *     * Are there two enemies on opposite sides of (sx, sy) (`maxEnemyPairAngleDeg >= 115`)?
+   *   - Checks whether (sx, sy) has a natural "backstop" (map border within 1.4*rCell,
+   *     water barrier, or friendly Boss/squadmate shielding its rear).
    */
-  evaluateCandidate(s, role, boss, enemies, scales) {
+  computePinchMetrics(sx, sy, enemies, boss, chosenTargets, scales) {
+    const { W, H } = this;
+    const threatR = Math.max(180, Math.min(360, 3.2 * scales.rCell));
+    const closeAngles = [];
+    const closeWeights = [];
+    let enemyThreatSum = 0;
+
+    for (const e of enemies) {
+      const dx = e.x - sx, dy = e.y - sy;
+      const d = Math.hypot(dx, dy);
+      if (d <= 1 || d > threatR) continue;
+      const ang = Math.atan2(dy, dx); // [-PI, PI]
+      const w = (threatR - d) / threatR;
+      closeAngles.push(ang);
+      closeWeights.push(w);
+      enemyThreatSum += w * w;
+    }
+
+    // Maximum angle between any pair of nearby enemies (180 deg = directly sandwiched!)
+    let maxPairAngle = 0;
+    for (let i = 0; i < closeAngles.length; i++) {
+      for (let j = i + 1; j < closeAngles.length; j++) {
+        let diff = Math.abs(closeAngles[i] - closeAngles[j]);
+        if (diff > Math.PI) diff = 2 * Math.PI - diff;
+        if (closeWeights[i] >= 0.28 && closeWeights[j] >= 0.28 && diff > maxPairAngle) {
+          maxPairAngle = diff;
+        }
+      }
+    }
+
+    // Widest continuous enemy-free angular arc (in radians, up to 2*PI)
+    let safeArc = 2 * Math.PI;
+    if (closeAngles.length === 1) {
+      safeArc = 2 * Math.PI;
+    } else if (closeAngles.length >= 2) {
+      const sorted = closeAngles.slice().sort((a, b) => a - b);
+      let maxGap = 0;
+      for (let i = 0; i < sorted.length; i++) {
+        const next = i + 1 < sorted.length ? sorted[i + 1] : sorted[0] + 2 * Math.PI;
+        const gap = next - sorted[i];
+        if (gap > maxGap) maxGap = gap;
+      }
+      safeArc = maxGap;
+    }
+
+    // Distance to nearest map edge (natural unattackable wall!)
+    const edgeDist = Math.min(sx, W - 1 - sx, sy, H - 1 - sy);
+    const hasEdgeBackstop = edgeDist <= Math.max(125, 1.35 * scales.rCell);
+
+    // Friendly shield check: how many friendly anchors (Boss + already placed squadmates)
+    // are within [0.85 * allyMinSep, 2.35 * allyMinSep]
+    let friendlyLinks = 0;
+    let minClusterDist = 999999;
+    if (boss && boss.x >= 0 && boss.y >= 0) {
+      const db = Math.hypot(sx - boss.x, sy - boss.y);
+      minClusterDist = Math.min(minClusterDist, db);
+      if (db >= 0.8 * scales.bossExcl && db <= 2.4 * scales.allyMinSep) friendlyLinks++;
+    }
+    for (const prev of chosenTargets) {
+      const dp = Math.hypot(sx - prev.x, sy - prev.y);
+      minClusterDist = Math.min(minClusterDist, dp);
+      if (dp >= 0.85 * scales.allyMinSep && dp <= 2.35 * scales.allyMinSep) friendlyLinks++;
+    }
+
+    // Pinch multiplier:
+    //   - Severe penalty (-45% to -65%) if sandwiched between opposing enemies (maxPairAngle >= 115 deg = 2.0 rad)
+    //     UNLESS we have >= 2 friendly links right beside us.
+    //   - Bonus (+18% to +32%) for having a clean backstop (map edge/corner + wide safeArc >= 210 deg)
+    let pinchMult = 1.0;
+    if (maxPairAngle >= 2.35) {
+      // >= 135 deg sandwich between nearby enemies!
+      pinchMult *= friendlyLinks >= 2 ? 0.72 : 0.45;
+    } else if (maxPairAngle >= 1.92) {
+      // >= 110 deg pincer
+      pinchMult *= friendlyLinks >= 2 ? 0.82 : 0.62;
+    }
+    if (safeArc < 2.6) {
+      // Enemies surround > 210 deg of our horizon
+      pinchMult *= 0.55;
+    } else if (safeArc >= 3.8 && hasEdgeBackstop) {
+      // Clean back-to-the-wall single-front pocket!
+      pinchMult *= 1.24;
+    } else if (hasEdgeBackstop) {
+      pinchMult *= 1.12;
+    }
+
+    // Mild penalty for high cumulative enemy density right on top of us
+    pinchMult /= 1 + 0.14 * enemyThreatSum;
+
+    return {
+      pinchMult,
+      maxPairAngleDeg: Math.round((maxPairAngle * 180) / Math.PI),
+      safeArcDeg: Math.round((safeArc * 180) / Math.PI),
+      hasEdgeBackstop,
+      friendlyLinks,
+      minClusterDist,
+    };
+  }
+
+  /**
+   * When Boss [NPL] npl has not clicked a spawn point yet (first 1~3s of spawnPhase
+   * or Boss-less match), pick a single safest, high-capacity corner/edge basin on the
+   * map as the "Virtual Squad Anchor" so all 5 bots deploy as a cohesive wedge instead
+   * of scattering into 5 isolated corners.
+   */
+  findVirtualSquadAnchor(enemies, scales) {
+    const { W, H, landMask, dComp } = this;
+    const stride = W * H > 900000 ? 16 : 12;
+    let bestAnchor = null;
+    let bestScore = -Infinity;
+
+    for (let y = 24; y < H - 24; y += stride) {
+      for (let x = 24; x < W - 24; x += stride) {
+        const c = y * W + x;
+        if (!landMask[c]) continue;
+        const clearance = Math.min(dComp[c], 220);
+        if (clearance < 24) continue;
+        const pm = this.computePinchMetrics(x, y, enemies, null, [], scales);
+        // Prefer safe backstop regions with high clearance from enemies
+        const sc = clearance * pm.pinchMult * (pm.hasEdgeBackstop ? 1.18 : 1.0);
+        if (sc > bestScore) {
+          bestScore = sc;
+          bestAnchor = { id: -99, x, y, name: 'SQUAD_ANCHOR', isVirtualAnchor: true };
+        }
+      }
+    }
+    return bestAnchor;
+  }
+
+  /**
+   * Compute the primary enemy threat directions (angles in radians) around Boss.
+   * Used so FLANK_GUARD bots interpose on ALL distinct enemy attack corridors
+   * (e.g. North AND South) rather than crowding on the same side of Boss.
+   */
+  computeBossThreatSectors(boss, enemies, scales) {
+    if (!boss || boss.x < 0 || boss.y < 0 || enemies.length === 0) return [];
+    const maxThreatDist = Math.max(260, 3.6 * scales.rCell);
+    const items = [];
+    for (const e of enemies) {
+      const dx = e.x - boss.x, dy = e.y - boss.y;
+      const d = Math.hypot(dx, dy);
+      if (d <= 4 || d > maxThreatDist) continue;
+      items.push({
+        angle: Math.atan2(dy, dx),
+        dist: d,
+        weight: (maxThreatDist - d) / maxThreatDist,
+      });
+    }
+    items.sort((a, b) => b.weight - a.weight);
+    // Cluster into distinct angular sectors (>= 75 deg apart)
+    const sectors = [];
+    for (const it of items) {
+      if (sectors.length >= 3) break;
+      const tooClose = sectors.some((s) => {
+        let diff = Math.abs(s.angle - it.angle);
+        if (diff > Math.PI) diff = 2 * Math.PI - diff;
+        return diff < 1.30; // ~75 deg
+      });
+      if (!tooClose) sectors.push(it);
+    }
+    return sectors;
+  }
+
+  /**
+   * Evaluate a candidate pixel `s` against the current dynamic `dComp` field,
+   * incorporating anti-pinch survival and cohesive cluster formation bonuses.
+   */
+  evaluateCandidate(s, role, boss, enemies, chosenTargets, threatSectors, scales) {
     const { W, H, N, landMask, waterMask, dir4, dComp, whoKind, whoId, dScratch, bfsQ } = this;
     if (s < 0 || s >= N || !landMask[s]) return null;
     const sx = s % W, sy = (s / W) | 0;
@@ -412,55 +584,78 @@ export class TeamSpawnCoordinator {
       if (hitAllyEdge) allyBorder++;
     }
 
-    // Reset dScratch for visited nodes in O(qt)
     for (let i = 0; i < qt; i++) {
       dScratch[bfsQ[i]] = -1;
     }
 
-    // Reject tiny cramped pockets (islands < 450 px, or < 3200 px for FLANK_GUARD)
     const minVoronoi =
       role === 'FLANK_GUARD'
-        ? Math.min(3200, this.land * 0.012)
-        : Math.min(450, this.land * 0.004);
+        ? Math.min(3000, this.land * 0.011)
+        : Math.min(1200, this.land * 0.006);
     if (voronoiPixels < minVoronoi) {
       return null;
     }
 
     const enemyNeighbors = seenEnemies.length;
-    // Penalize multi-front exposure to enemy humans, while NOT penalizing friendly borders!
-    const coastBonus = Math.min(18, coastPixels * 0.06);
+    // Heavy penalty for bordering >= 2 distinct enemy humans (multi-front pincer risk!),
+    // and mild reward for sharing a safe interior border with our own squad/Boss!
+    const coastBonus = Math.min(20, coastPixels * 0.07);
+    const allyWeldBonus = Math.min(26, allyBorder * 0.12);
     let score =
-      (weightedArea + coastBonus - 0.16 * enemyBorder) /
-      (1 + 0.20 * Math.max(0, enemyNeighbors - 1));
+      (weightedArea + coastBonus + allyWeldBonus - 0.22 * enemyBorder) /
+      (1 + 0.32 * Math.max(0, enemyNeighbors - 1));
 
-    // Role-specific tactical shaping
+    // Apply 360-degree Anti-Pinch & Backstop survival multiplier
+    const pm = this.computePinchMetrics(sx, sy, enemies, boss, chosenTargets, scales);
+    score *= pm.pinchMult;
+
     if (role === 'FLANK_GUARD' && boss && boss.x >= 0 && boss.y >= 0) {
       const bDist = this.effectiveBossDist(s, boss);
-      const idealFlankDist = 0.55 * scales.bossExcl + 0.45 * scales.flankMax;
+      const idealFlankDist = 0.58 * scales.bossExcl + 0.42 * scales.flankMax;
       const ringFit = Math.max(
-        0.65,
-        1.18 - 0.55 * Math.abs(bDist - idealFlankDist) / Math.max(40, scales.flankMax - scales.bossExcl)
+        0.68,
+        1.20 - 0.55 * Math.abs(bDist - idealFlankDist) / Math.max(40, scales.flankMax - scales.bossExcl)
       );
       score *= ringFit;
 
-      // Bonus for interposing on the threat vector between Boss and nearby enemy humans
-      const vx = sx - boss.x, vy = sy - boss.y;
-      const vLen = Math.hypot(vx, vy) || 1;
-      let maxThreatCos = 0;
-      for (const e of enemies) {
-        const ex = e.x - boss.x, ey = e.y - boss.y;
-        const eLen = Math.hypot(ex, ey);
-        if (eLen > 20 && eLen < scales.flankMax * 2.2) {
-          const cos = (vx * ex + vy * ey) / (vLen * eLen);
-          if (cos > maxThreatCos) maxThreatCos = cos;
+      // Align FLANK_GUARD with uncovered enemy threat sectors around Boss
+      const myAngle = Math.atan2(sy - boss.y, sx - boss.x);
+      const existingFlanks = chosenTargets.filter((t) => t.role === 'FLANK_GUARD');
+      const targetSector = threatSectors[existingFlanks.length];
+      if (targetSector) {
+        let diff = Math.abs(myAngle - targetSector.angle);
+        if (diff > Math.PI) diff = 2 * Math.PI - diff;
+        if (diff <= 0.85) {
+          score *= 1.28 - 0.20 * diff;
         }
       }
-      if (maxThreatCos > 0.25) {
-        score *= 1.0 + 0.25 * maxThreatCos;
+      // Also strongly reward wide angular separation from already-placed FLANK_GUARDs
+      // so 2 guards form a wide protective crescent/pincer shield around Boss!
+      for (const pf of existingFlanks) {
+        const a1 = Math.atan2(pf.y - boss.y, pf.x - boss.x);
+        let diff = Math.abs(myAngle - a1);
+        if (diff > Math.PI) diff = 2 * Math.PI - diff;
+        if (diff >= 1.65) score *= 1.15; // >= 95 deg apart
       }
-    } else if (role === 'ECO_BANK') {
-      // Deep eco banks love fewer enemy neighbors (0 or 1 enemy front) and huge land pockets
-      if (enemyNeighbors <= 1) score *= 1.12;
+    } else {
+      // ECO_BANK (Outer Wing):
+      // Instead of flying 1000px away to the opposite side of the map as an orphan,
+      // reward chaining adjacent to our Boss/Squad cluster (`minClusterDist` in [1.0*allyMinSep, 2.3*allyMinSep])
+      if (pm.minClusterDist < 900000) {
+        const idealWingDist = 1.45 * scales.allyMinSep;
+        if (pm.minClusterDist <= 2.6 * scales.allyMinSep) {
+          const chainFit = Math.max(
+            0.88,
+            1.26 - 0.28 * Math.abs(pm.minClusterDist - idealWingDist) / Math.max(50, scales.allyMinSep)
+          );
+          score *= chainFit;
+        } else if (pm.minClusterDist > 3.6 * scales.allyMinSep) {
+          // Penalize isolated orphan spawns far away from the squad stronghold!
+          score *= 0.72;
+        }
+      }
+      if (pm.friendlyLinks >= 1) score *= 1.10;
+      if (enemyNeighbors <= 1) score *= 1.15;
     }
 
     return {
@@ -473,17 +668,14 @@ export class TeamSpawnCoordinator {
       enemyNeighbors,
       enemyBorder,
       allyBorder,
+      maxPairAngleDeg: pm.maxPairAngleDeg,
+      safeArcDeg: pm.safeArcDeg,
+      hasEdgeBackstop: pm.hasEdgeBackstop,
     };
   }
 
   /**
    * Solve the globally optimal K spawn coordinates for the current match & squad.
-   *
-   * @param {Object} params
-   * @param {Array}  params.squadBots    [{ slot, port, name, meId, curX, curY }]
-   * @param {Array}  params.humans       [{ id, name, team, terr, x, y, alive }]
-   * @param {number} params.myTeam       Team ID of our squad (if known)
-   * @param {Object} params.bossOverride Optional explicit { id, x, y } for Boss npl
    */
   solve({ squadBots = [], humans = [], myTeam = 0, bossOverride = null }) {
     const t0 = performance.now();
@@ -492,17 +684,15 @@ export class TeamSpawnCoordinator {
       return { ok: false, error: 'Map not initialized or empty squad', assignments: {} };
     }
 
-    // 1. Identify our squad member player IDs so we NEVER treat our own bots as enemies
     const squadMeIds = new Set();
     for (const b of squadBots) {
       if (Number.isInteger(b.meId) && b.meId >= 0) squadMeIds.add(b.meId);
     }
 
-    let boss = bossOverride && bossOverride.x >= 0 ? { ...bossOverride } : null;
+    let realBoss = bossOverride && bossOverride.x >= 0 ? { ...bossOverride } : null;
     const enemies = [];
     const randomAllies = [];
 
-    // Infer our team ID if not explicitly passed
     let teamId = myTeam;
     if (!(teamId > 0)) {
       for (const h of humans) {
@@ -516,11 +706,11 @@ export class TeamSpawnCoordinator {
     for (const h of humans) {
       if (!h || h.id < 0) continue;
       if (squadMeIds.has(h.id) || isSquadBotName(h.name)) {
-        continue; // Our own squad guard bot — erased from competitor field!
+        continue;
       }
       if (isBossNplName(h.name)) {
-        if (!boss && h.terr > 0 && h.x >= 0 && h.y >= 0) {
-          boss = { id: h.id, x: h.x, y: h.y, name: h.name };
+        if (!realBoss && h.terr > 0 && h.x >= 0 && h.y >= 0) {
+          realBoss = { id: h.id, x: h.x, y: h.y, name: h.name };
         }
         continue;
       }
@@ -534,24 +724,39 @@ export class TeamSpawnCoordinator {
     }
 
     const K = squadBots.length;
-    const totalActiveHumans = Math.max(8, enemies.length + randomAllies.length + (boss ? 1 : 0) + K);
+    const totalActiveHumans = Math.max(8, enemies.length + randomAllies.length + (realBoss ? 1 : 0) + K);
     const rCell = Math.sqrt(Math.max(10000, land) / (Math.PI * totalActiveHumans));
     const diag = Math.hypot(W, H);
 
     const scales = {
       rCell: Math.round(rCell),
-      bossExcl: clamp(Math.round(Math.max(1.50 * rCell, 0.115 * diag)), 82, 160),
-      flankMax: clamp(Math.round(Math.max(2.90 * rCell, 0.235 * diag)), 155, 285),
-      allyMinSep: clamp(Math.round(Math.max(1.52 * rCell, 0.125 * diag)), 74, 185),
-      enemyMinClearance: clamp(Math.round(0.65 * rCell), 36, 75),
+      bossExcl: clamp(Math.round(Math.max(1.42 * rCell, 0.105 * diag)), 78, 155),
+      flankMax: clamp(Math.round(Math.max(2.85 * rCell, 0.230 * diag)), 150, 285),
+      allyMinSep: clamp(Math.round(Math.max(1.42 * rCell, 0.115 * diag)), 72, 175),
+      enemyMinClearance: clamp(Math.round(0.75 * rCell), 44, 88),
+      clusterMax: clamp(Math.round(Math.max(4.4 * rCell, 0.42 * diag)), 260, 560),
     };
 
-    // 2. Build initial multi-source geodesic distance fields (dComp, dBoss)
-    this.buildInitialDistanceFields(enemies, randomAllies, boss);
+    // Build initial distance fields with realBoss (if placed)
+    this.buildInitialDistanceFields(enemies, randomAllies, realBoss);
 
-    // 3. Determine how many FLANK_GUARD vs ECO_BANK slots to allocate
-    const targetFlankCount = boss ? (K >= 4 ? 2 : K >= 2 ? 1 : 0) : 0;
-    const chosenTargets = []; // [{ x, y, cell, role, voronoiPixels, score, bossDist, minAllyDist, minEnemyDist }]
+    // If Boss hasn't clicked on the map yet, pick a safe Virtual Squad Anchor so
+    // our 5 bots still form a cohesive anti-pinch wedge in the safest region!
+    const anchorBoss = realBoss || this.findVirtualSquadAnchor(enemies, scales);
+    if (!realBoss && anchorBoss) {
+      this.buildInitialDistanceFields(enemies, randomAllies, anchorBoss);
+    }
+
+    // Reset previous bot target hysteresis when Boss first clicks or jumps > 40px
+    const bossKeyNow = realBoss ? `${realBoss.x >> 4},${realBoss.y >> 4}` : 'none';
+    if (bossKeyNow !== this.lastBossKey) {
+      this.lastBossKey = bossKeyNow;
+      this.prevBotTargets.clear();
+    }
+
+    const threatSectors = realBoss ? this.computeBossThreatSectors(realBoss, enemies, scales) : [];
+    const targetFlankCount = realBoss ? (K >= 5 ? 2 : K >= 2 ? 1 : 0) : 0;
+    const chosenTargets = [];
 
     const distToChosenSquad = (x, y) => {
       let minD = 999999;
@@ -571,14 +776,27 @@ export class TeamSpawnCoordinator {
       return minD;
     };
 
-    // Helper to pick the next optimal target point for a given role
+    const distToOurCluster = (x, y) => {
+      let minD = 999999;
+      if (anchorBoss && anchorBoss.x >= 0 && anchorBoss.y >= 0) {
+        minD = Math.min(minD, Math.hypot(x - anchorBoss.x, y - anchorBoss.y));
+      }
+      for (const prev of chosenTargets) {
+        minD = Math.min(minD, Math.hypot(x - prev.x, y - prev.y));
+      }
+      return minD;
+    };
+
     const pickNextTarget = (wantRole) => {
-      // Try strict separation first, then gracefully relax if map is very small/crowded
-      const relaxFactors = [1.0, 0.78, 0.58, 0.38];
+      const relaxFactors = [1.0, 0.80, 0.62, 0.42];
       for (const relax of relaxFactors) {
         const reqAllySep = scales.allyMinSep * relax;
-        const reqBossExcl = scales.bossExcl * Math.max(0.72, relax);
-        const reqEnemyClear = scales.enemyMinClearance * Math.max(0.6, relax);
+        const reqBossExcl = realBoss ? scales.bossExcl * Math.max(0.74, relax) : 0;
+        const reqEnemyClear = scales.enemyMinClearance * Math.max(0.65, relax);
+        // Cohesive cluster constraint: on first two passes (relax >= 0.80), keep ECO_BANK
+        // within clusterMax of our Boss/Squad cluster so no bot is stranded across the map!
+        const enforceCluster = relax >= 0.80 && (anchorBoss || chosenTargets.length > 0);
+        const maxClusterDist = scales.clusterMax * (1.8 - 0.8 * relax);
 
         const stride = W * H > 900000 ? 8 : 6;
         const rawSeeds = [];
@@ -589,22 +807,32 @@ export class TeamSpawnCoordinator {
             if (distToChosenSquad(x, y) < reqAllySep) continue;
             if (distToEnemies(x, y) < reqEnemyClear) continue;
 
-            const bDist = boss ? this.effectiveBossDist(c, boss) : 999999;
-            if (boss && bDist < reqBossExcl) continue;
+            const bDist = realBoss ? this.effectiveBossDist(c, realBoss) : 999999;
+            if (realBoss && bDist < reqBossExcl) continue;
 
-            if (wantRole === 'FLANK_GUARD') {
-              // Must be on the SAME landmass as Boss (dBoss[c] > 0) and within flank ring!
+            if (wantRole === 'FLANK_GUARD' && realBoss) {
               const geoBoss = this.dBoss[c];
               const maxRing = scales.flankMax * (2 - relax * 0.8);
               if (geoBoss < reqBossExcl || geoBoss > maxRing || bDist > maxRing) continue;
-              // If we already picked 1 flank guard, require the 2nd flank guard to be on a different angular sector (>= 55 deg)
-              const prevFlank = chosenTargets.find((t) => t.role === 'FLANK_GUARD');
-              if (prevFlank && boss) {
-                const v1x = prevFlank.x - boss.x, v1y = prevFlank.y - boss.y;
-                const v2x = x - boss.x, v2y = y - boss.y;
+              // Require >= 78 deg angular separation between FLANK_GUARDs so they protect
+              // TWO DIFFERENT sides of Boss (e.g. North & South) instead of bunching!
+              const minCos = relax >= 0.80 ? 0.22 : 0.48; // cos(77 deg)=0.22, cos(61 deg)=0.48
+              let sectorConflict = false;
+              for (const prev of chosenTargets) {
+                if (prev.role !== 'FLANK_GUARD') continue;
+                const v1x = prev.x - realBoss.x, v1y = prev.y - realBoss.y;
+                const v2x = x - realBoss.x, v2y = y - realBoss.y;
                 const cos = (v1x * v2x + v1y * v2y) / ((Math.hypot(v1x, v1y) || 1) * (Math.hypot(v2x, v2y) || 1));
-                if (cos > 0.57) continue; // < ~55 degrees apart around Boss
+                if (cos > minCos) {
+                  sectorConflict = true;
+                  break;
+                }
               }
+              if (sectorConflict) continue;
+            } else if (enforceCluster) {
+              // Keep outer wing connected to the same continent/sector as our squad cluster
+              if (distToOurCluster(x, y) > maxClusterDist) continue;
+              if (anchorBoss && this.dBoss[c] < 0 && relax >= 0.95) continue;
             }
 
             const clearance = Math.min(dComp[c], 220);
@@ -614,23 +842,22 @@ export class TeamSpawnCoordinator {
         }
 
         if (rawSeeds.length === 0) {
-          if (wantRole === 'FLANK_GUARD') break; // Degrade to ECO_BANK if flank ring is full/water
+          if (wantRole === 'FLANK_GUARD') break;
           continue;
         }
 
-        // Sort raw seeds by clearance descending and pick up to 14 spatially diverse seeds
         rawSeeds.sort((a, b) => b.clearance - a.clearance);
         const diverseSeeds = [];
-        const seedGap = Math.max(24, Math.round(0.42 * scales.allyMinSep));
+        const seedGap = Math.max(24, Math.round(0.40 * scales.allyMinSep));
         for (const item of rawSeeds) {
-          if (diverseSeeds.length >= 14) break;
+          if (diverseSeeds.length >= 16) break;
           if (diverseSeeds.some((o) => Math.abs(o.x - item.x) + Math.abs(o.y - item.y) < seedGap)) continue;
           diverseSeeds.push(item);
         }
 
         let bestEval = null;
         for (const item of diverseSeeds) {
-          const ev = this.evaluateCandidate(item.c, wantRole, boss, enemies, scales);
+          const ev = this.evaluateCandidate(item.c, wantRole, realBoss || anchorBoss, enemies, chosenTargets, threatSectors, scales);
           if (ev && (!bestEval || ev.totalScore > bestEval.totalScore)) {
             bestEval = ev;
           }
@@ -641,7 +868,7 @@ export class TeamSpawnCoordinator {
           continue;
         }
 
-        // Fast local hill-climb refinement (steps 8, 4) respecting separation constraints
+        // Local hill-climb refinement (steps 8, 4)
         for (const step of [8, 4]) {
           let improved = true;
           let guard = 0;
@@ -655,9 +882,9 @@ export class TeamSpawnCoordinator {
               if (!landMask[nc]) continue;
               if (distToChosenSquad(nx, ny) < reqAllySep) continue;
               if (distToEnemies(nx, ny) < reqEnemyClear) continue;
-              if (boss && this.effectiveBossDist(nc, boss) < reqBossExcl) continue;
-              if (wantRole === 'FLANK_GUARD' && (this.dBoss[nc] < reqBossExcl || this.dBoss[nc] > scales.flankMax * 1.4)) continue;
-              const ev = this.evaluateCandidate(nc, wantRole, boss, enemies, scales);
+              if (realBoss && this.effectiveBossDist(nc, realBoss) < reqBossExcl) continue;
+              if (wantRole === 'FLANK_GUARD' && realBoss && (this.dBoss[nc] < reqBossExcl || this.dBoss[nc] > scales.flankMax * 1.4)) continue;
+              const ev = this.evaluateCandidate(nc, wantRole, realBoss || anchorBoss, enemies, chosenTargets, threatSectors, scales);
               if (ev && ev.totalScore > bestEval.totalScore) {
                 bestEval = ev;
                 improved = true;
@@ -669,7 +896,7 @@ export class TeamSpawnCoordinator {
         return {
           ...bestEval,
           role: wantRole,
-          bossDist: boss ? Math.round(this.effectiveBossDist(bestEval.cell, boss)) : -1,
+          bossDist: realBoss ? Math.round(this.effectiveBossDist(bestEval.cell, realBoss)) : -1,
           minAllyDist: chosenTargets.length ? Math.round(distToChosenSquad(bestEval.x, bestEval.y)) : -1,
           minEnemyDist: enemies.length ? Math.round(distToEnemies(bestEval.x, bestEval.y)) : -1,
         };
@@ -684,14 +911,13 @@ export class TeamSpawnCoordinator {
         picked = pickNextTarget('ECO_BANK');
       }
       if (!picked) {
-        // Ultimate safety fallback: farthest land pixel from all existing chosenTargets & Boss
         let bestC = -1, bestMinD = -1;
-        for (let y = 8; y < H - 8; y += 6) {
-          for (let x = 8; x < W - 8; x += 6) {
+        for (let y = 16; y < H - 16; y += 6) {
+          for (let x = 16; x < W - 16; x += 6) {
             const c = y * W + x;
             if (!landMask[c]) continue;
             const dA = distToChosenSquad(x, y);
-            const dB = boss ? Math.hypot(x - boss.x, y - boss.y) : 999999;
+            const dB = realBoss ? Math.hypot(x - realBoss.x, y - realBoss.y) : 999999;
             const dMin = Math.min(dA, dB);
             if (dMin > bestMinD) {
               bestMinD = dMin;
@@ -710,7 +936,7 @@ export class TeamSpawnCoordinator {
             voronoiPixels: 500,
             weightedArea: 100,
             enemyNeighbors: 0,
-            bossDist: boss ? Math.round(Math.hypot(fx - boss.x, fy - boss.y)) : -1,
+            bossDist: realBoss ? Math.round(Math.hypot(fx - realBoss.x, fy - realBoss.y)) : -1,
             minAllyDist: chosenTargets.length ? Math.round(distToChosenSquad(fx, fy)) : -1,
             minEnemyDist: enemies.length ? Math.round(distToEnemies(fx, fy)) : -1,
           };
@@ -718,13 +944,10 @@ export class TeamSpawnCoordinator {
       }
       if (picked) {
         chosenTargets.push(picked);
-        // CRITICAL: Immediately inject this chosen point into dComp[N] so the next
-        // squad bot sees this entire basin as already claimed!
         this.injectChosenSquadPoint(picked.cell, m, Math.max(220, Math.round(2.5 * scales.allyMinSep)));
       }
     }
 
-    // Recompute true mutual minAllyDist across all K chosen targets for diagnostics
     for (let i = 0; i < chosenTargets.length; i++) {
       let minD = 999999;
       for (let j = 0; j < chosenTargets.length; j++) {
@@ -735,8 +958,6 @@ export class TeamSpawnCoordinator {
       chosenTargets[i].minAllyDist = minD < 900000 ? Math.round(minD) : -1;
     }
 
-    // 4. Match K bots to K chosenTargets via exact Bitmask DP Minimum-Displacement Matching
-    //    so bots don't swap across the map during the 6-second spawn countdown!
     const sortedBots = squadBots.slice().sort((a, b) => (a.slot ?? 0) - (b.slot ?? 0));
     const M = chosenTargets.length;
     const matchOrder = this.matchBotsToTargets(sortedBots, chosenTargets);
@@ -754,7 +975,6 @@ export class TeamSpawnCoordinator {
       let finalX = tgt.x;
       let finalY = tgt.y;
       const prev = this.prevBotTargets.get(bot.slot);
-      // Anti-jitter hysteresis: if previous assigned spot is within 6px and valid, hold steady
       if (
         prev &&
         Math.hypot(prev.x - finalX, prev.y - finalY) <= 6 &&
@@ -781,6 +1001,8 @@ export class TeamSpawnCoordinator {
         minAllyDist: tgt.minAllyDist,
         minEnemyDist: tgt.minEnemyDist,
         enemyNeighbors: tgt.enemyNeighbors,
+        safeArcDeg: tgt.safeArcDeg ?? 360,
+        hasEdgeBackstop: !!tgt.hasEdgeBackstop,
       };
       assignments[bot.slot] = entry;
       if (Number.isInteger(bot.meId) && bot.meId >= 0) {
@@ -806,7 +1028,8 @@ export class TeamSpawnCoordinator {
       elapsedMs,
       map: { W, H, land },
       scales,
-      boss: boss || null,
+      boss: realBoss || null,
+      anchor: anchorBoss || null,
       enemyCount: enemies.length,
       randomAllyCount: randomAllies.length,
       squadCount: list.length,
@@ -821,8 +1044,6 @@ export class TeamSpawnCoordinator {
 
   /**
    * Exact O(K * 2^K) bitmask DP minimum-cost bipartite matching between bots and targets.
-   * For bots that already have a live position (curX, curY) or previous target, minimizes
-   * total movement distance so bots stay anchored to their nearest target basin.
    */
   matchBotsToTargets(bots, targets) {
     const K = bots.length;
@@ -832,7 +1053,6 @@ export class TeamSpawnCoordinator {
       return bots.map((_, i) => i % M);
     }
 
-    // Check if any bot has a known reference position (curX/curY or prevBotTargets)
     const refs = bots.map((b) => {
       const prev = this.prevBotTargets.get(b.slot);
       if (Number.isFinite(b.curX) && Number.isFinite(b.curY) && b.curX > 0 && b.curY > 0) {
@@ -853,11 +1073,9 @@ export class TeamSpawnCoordinator {
     const parentTarget = new Int8Array(totalMasks).fill(-1);
     dp[0] = 0;
 
-    // Precompute popcount order
     for (let mask = 0; mask < totalMasks - 1; mask++) {
       const baseCost = dp[mask];
       if (baseCost >= 1e17) continue;
-      // Count bits in mask = bot index i
       let m = mask, botIdx = 0;
       while (m) {
         m &= m - 1;
@@ -892,10 +1110,6 @@ export class TeamSpawnCoordinator {
     return result;
   }
 
-  /**
-   * Optional HTTP status & control server on 127.0.0.1:8198 so external tools,
-   * browser tabs, or operators can inspect or trigger the live spawn coordinator.
-   */
   startHttpServer() {
     if (this.server) return this.server;
     const cors = {
