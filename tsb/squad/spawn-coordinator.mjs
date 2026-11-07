@@ -36,6 +36,7 @@ const KIND_SQUAD = 4;
 const SQUAD_SHORT_NAMES = new Set([
   'mishi', 'matzz', 'kiholma', 'leo_99', 'racoon',
   'zexos', 'talon', 'vortex', 'kronos', 'nexus',
+  '777', 'sayo', 'kaito', 'riku', '_alex', 'tomo', 'zero_2', 'sora',
 ]);
 
 export function normalizePlayerName(raw) {

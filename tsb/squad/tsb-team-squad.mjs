@@ -7,19 +7,22 @@ const pageJsSource = fs.readFileSync('/tmp/tsb-team-ext/page.js', 'utf8');
 const getV27TeamSource = () => fs.readFileSync('/tmp/v27-team-live.js', 'utf8');
 
 const CHROME_BOTS = [
-  { port: 9223, name: '[NPL] Mishi', slot: 0, id: 'mTd7B', pw: 'vivELD0lOKgghLr' },
-  { port: 9224, name: '[NPL] Matzz', slot: 1, id: 'vgLjn', pw: 'Cl2xSE00tjOjVBq' },
-  { port: 9225, name: '[NPL] Kiholma', slot: 2, id: 'NJmJY', pw: 'zmUT69zzi_Rk80I' },
-  { port: 9226, name: '[NPL] Leo_99', slot: 3, id: 'byk85', pw: 'iLFHoRHz4rHvEt0' },
-  { port: 9227, name: '[NPL] Racoon', slot: 4, id: '5nvnY', pw: 'DzMzg9vRC1Qnj3z' },
+  { port: 9223, name: '[NPL] 777', slot: 0, id: 'mTd7B', pw: 'vivELD0lOKgghLr' },
+  { port: 9224, name: '[NPL] Sayo', slot: 1, id: 'vgLjn', pw: 'Cl2xSE00tjOjVBq' },
+  { port: 9225, name: '[NPL] Kaito', slot: 2, id: 'NJmJY', pw: 'zmUT69zzi_Rk80I' },
+  { port: 9226, name: '[NPL] Riku', slot: 3, id: 'byk85', pw: 'iLFHoRHz4rHvEt0' },
+  { port: 9227, name: '[NPL] _alex', slot: 4, id: '5nvnY', pw: 'DzMzg9vRC1Qnj3z' },
 ];
 
 const HEADLESS_BOTS = [
-  { port: 9305, socksPort: 10811, donorChromePort: 9223, name: '[NPL] Zexos', slot: 5, id: 'JwG5J', pw: 'ASEvJoo4K862kll' },
-  { port: 9306, socksPort: 10812, donorChromePort: 9224, name: '[NPL] Talon', slot: 6, id: 'QNNy7', pw: 'UpqFcPh3MHISdPg' },
-  { port: 9307, socksPort: 10813, donorChromePort: 9225, name: '[NPL] Vortex', slot: 7, id: 'QcNb5', pw: 'oqHseyPLOB_VYfT' },
-  { port: 9308, socksPort: 10814, donorChromePort: 9226, name: '[NPL] Kronos', slot: 8, id: 'BRmym', pw: 'IAn4Vw-8_6_VhgK' },
-  { port: 9309, socksPort: 10815, donorChromePort: 9227, name: '[NPL] Nexus', slot: 9, id: 'qQGqw', pw: 'kh_nhYj46nGU6R3' },
+  { port: 9302, socksPort: 10803, donorChromePort: 9225, name: '[NPL] Kaito', slot: 2, id: 'NJmJY', pw: 'zmUT69zzi_Rk80I' },
+  { port: 9303, socksPort: 10804, donorChromePort: 9226, name: '[NPL] Riku', slot: 3, id: 'byk85', pw: 'iLFHoRHz4rHvEt0' },
+  { port: 9304, socksPort: 10805, donorChromePort: 9227, name: '[NPL] _alex', slot: 4, id: '5nvnY', pw: 'DzMzg9vRC1Qnj3z' },
+  { port: 9305, socksPort: 10811, donorChromePort: 9223, name: '[NPL] 777', slot: 5, id: 'JwG5J', pw: 'ASEvJoo4K862kll' },
+  { port: 9306, socksPort: 10812, donorChromePort: 9224, name: '[NPL] Sayo', slot: 6, id: 'QNNy7', pw: 'UpqFcPh3MHISdPg' },
+  { port: 9307, socksPort: 10813, donorChromePort: 9225, name: '[NPL] Tomo', slot: 7, id: 'QcNb5', pw: 'oqHseyPLOB_VYfT' },
+  { port: 9308, socksPort: 10814, donorChromePort: 9226, name: '[NPL] Zero_2', slot: 8, id: 'BRmym', pw: 'IAn4Vw-8_6_VhgK' },
+  { port: 9309, socksPort: 10815, donorChromePort: 9227, name: '[NPL] Sora', slot: 9, id: 'qQGqw', pw: 'kh_nhYj46nGU6R3' },
 ];
 
 const isWaitNplMode = () => fs.existsSync('/tmp/tsb-wait-npl.flag');
@@ -597,7 +600,7 @@ function reloadClientForToken(c) {
 }
 
 setInterval(async () => {
-  if (clients.length < 10) return;
+  if (clients.length < HEADLESS_BOTS.length) return;
   const waitMode = isWaitNplMode();
   const headlessOnly = isHeadlessOnlyMode();
 
@@ -683,7 +686,10 @@ setInterval(async () => {
               if (
                 low.includes("mishi") || low.includes("matzz") || low.includes("kiholma") ||
                 low.includes("leo_99") || low.includes("racoon") || low.includes("zexos") ||
-                low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus")
+                low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus") ||
+                low.includes("777") || low.includes("sayo") || low.includes("kaito") ||
+                low.includes("riku") || low.includes("_alex") || low.includes("tomo") ||
+                low.includes("zero_2") || low.includes("sora")
               ) continue;
               const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
               if (stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
@@ -742,7 +748,10 @@ setInterval(async () => {
               if (
                 low.includes("mishi") || low.includes("matzz") || low.includes("kiholma") ||
                 low.includes("leo_99") || low.includes("racoon") || low.includes("zexos") ||
-                low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus")
+                low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus") ||
+                low.includes("777") || low.includes("sayo") || low.includes("kaito") ||
+                low.includes("riku") || low.includes("_alex") || low.includes("tomo") ||
+                low.includes("zero_2") || low.includes("sora")
               ) continue;
               const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
               if (stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
@@ -925,7 +934,7 @@ setInterval(async () => {
   const allReadyInRoom0 =
     timerSpreadOk &&
     (headlessOnly
-      ? (headlessInRoom0 === 5 || (headlessInRoom0 >= 4 && minStartsIn <= 8))
+      ? (headlessInRoom0 === HEADLESS_BOTS.length || (headlessInRoom0 >= HEADLESS_BOTS.length - 1 && minStartsIn <= 8))
       : wantTenForCurrentLobby
         ? (readyCountInRoom0 === 10 || (readyCountInRoom0 >= 8 && minStartsIn <= 8))
         : (chromeInRoom0 === 5 || (chromeInRoom0 >= 4 && minStartsIn <= 8)));

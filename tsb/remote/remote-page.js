@@ -417,7 +417,10 @@
       if (
         low.includes("mishi") || low.includes("matzz") || low.includes("kiholma") ||
         low.includes("leo_99") || low.includes("racoon") || low.includes("zexos") ||
-        low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus")
+        low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus") ||
+        low.includes("777") || low.includes("sayo") || low.includes("kaito") ||
+        low.includes("riku") || low.includes("_alex") || low.includes("tomo") ||
+        low.includes("zero_2") || low.includes("sora")
       ) {
         continue;
       }

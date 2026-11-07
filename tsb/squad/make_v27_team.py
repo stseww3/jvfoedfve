@@ -122,7 +122,7 @@ new_helpers = """  isTeammate(g, p) {
     return !!(g.teams && g.teams[this.me] > 0 && g.teams[p] === g.teams[this.me]);
   }
 
-  // Identify our Boss ("[NPL] npl" / "[NPL]NPL", excluding our 10 guard bot names)
+  // Identify our Boss ("[NPL] npl" / "[NPL]NPL", excluding our guard bot names)
   isBossNpl(g, p) {
     if (p === this.me || !g.alive[p]) return false;
     const raw = String(g.names?.[p] ?? "").trim();
@@ -130,7 +130,10 @@ new_helpers = """  isTeammate(g, p) {
     if (
       low.includes("mishi") || low.includes("matzz") || low.includes("kiholma") ||
       low.includes("leo_99") || low.includes("racoon") || low.includes("zexos") ||
-      low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus")
+      low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus") ||
+      low.includes("777") || low.includes("sayo") || low.includes("kaito") ||
+      low.includes("riku") || low.includes("_alex") || low.includes("tomo") ||
+      low.includes("zero_2") || low.includes("sora")
     ) {
       return false;
     }
@@ -150,7 +153,9 @@ new_helpers = """  isTeammate(g, p) {
     const low = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
     return (
       low === "mishi" || low === "matzz" || low === "kiholma" || low === "leo_99" || low === "racoon" ||
-      low === "zexos" || low === "talon" || low === "vortex" || low === "kronos" || low === "nexus"
+      low === "zexos" || low === "talon" || low === "vortex" || low === "kronos" || low === "nexus" ||
+      low === "777" || low === "sayo" || low === "kaito" || low === "riku" ||
+      low === "_alex" || low === "tomo" || low === "zero_2" || low === "sora"
     );
   }
 
