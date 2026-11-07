@@ -129,43 +129,68 @@ new_helpers = """  isTeammate(g, p) {
   }
 
   // DISTRIBUTED BACKEND-COORDINATED TEAM SPAWNING:
-  // Each bot picks its own optimal Voronoi expansion region, well separated (>= 115~165px)
-  // from Boss npl and other squad bots so nobody crowds Boss or each other!
+  // 1) Never treat our own squad bots as "enemy people" in spawnVsPeople0 so their live movements don't cause all 5 bots' candidate lists to chase each other into one corner!
+  // 2) Deterministically partition candidate regions and enforce >= minSep separation between our squad slots AND Boss npl!
   chooseSpawn(g, final = true) {
     const me = this.me;
     const W = g.W, H = g.H;
-    const minSep = Math.max(95, Math.min(165, 0.48 * Math.sqrt(g.land)));
+    const minSep = Math.max(115, Math.min(220, 0.28 * Math.hypot(W, H)));
 
     let mySquadIdx = typeof window !== "undefined" && Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : 0;
-    let rankIdx = 0, squadCount = 0;
+    const squadIds = [];
     for (let p = 0; p < g.humans; p++) {
       if (p === me || (this.isOurSquadBot(g, p) && !this.isBossNpl(g, p))) {
-        if (p < me) rankIdx++;
-        squadCount++;
+        squadIds.push(p);
       }
     }
-    const slot = (squadCount >= 2 ? rankIdx : mySquadIdx) % 10;
+    const rankIdx = squadIds.indexOf(me);
+    const squadCount = squadIds.length;
+    const slot = (squadCount >= 2 && rankIdx >= 0 ? rankIdx : mySquadIdx) % 10;
 
-    let cands = this.spawnVsPeople ? this.spawnVsPeople(g, 12) : [];
-    if (!cands || cands.length === 0) cands = this.spawnCandidates(g, 12);
+    // Build a view where OTHER squad guard bots are erased from the map so all 5 guard bots compute
+    // the EXACT same deterministic candidate list relative only to enemies + Boss npl!
+    let gClean = g;
+    for (const sid of squadIds) {
+      if (sid !== me && gClean.terr[sid] > 0) {
+        gClean = withoutPlayer(gClean, sid);
+      }
+    }
+
+    let cands = this.spawnVsPeople ? this.spawnVsPeople(gClean, 16) : [];
+    if (!cands || cands.length < squadCount) {
+      const more = this.spawnCandidates(gClean, 16) || [];
+      cands = [...(cands || []), ...more];
+    }
     if (cands && cands.length > 0) {
-      const wellSpaced = cands.filter((pos) => {
+      // Greedily pick mutually well-spaced candidates (>= minSep from Boss npl AND >= minSep from each earlier slot's picked spot!)
+      const bossIds = [];
+      for (let h = 0; h < g.humans; h++) {
+        if (h !== me && g.terr[h] > 0 && this.isBossNpl(g, h)) bossIds.push(h);
+      }
+      const chosenSlots = [];
+      for (const pos of cands) {
         const x = typeof pos === "object" ? pos.x : (pos % W);
         const y = typeof pos === "object" ? pos.y : Math.floor(pos / W);
-        for (let h = 0; h < g.humans; h++) {
-          if (h === me || g.terr[h] === 0) continue;
-          if (this.isTeammate(g, h) || this.isOurSquadBot(g, h) || this.isBossNpl(g, h)) {
-            const hx = (g.x0[h] + g.x1[h]) >> 1, hy = (g.y0[h] + g.y1[h]) >> 1;
-            if (Math.hypot(x - hx, y - hy) < minSep) return false;
-          }
+        let tooClose = false;
+        for (const bh of bossIds) {
+          const hx = (g.x0[bh] + g.x1[bh]) >> 1, hy = (g.y0[bh] + g.y1[bh]) >> 1;
+          if (Math.hypot(x - hx, y - hy) < minSep) { tooClose = true; break; }
         }
-        return true;
-      });
-      const picked = wellSpaced.length > 0 ? wellSpaced[slot % wellSpaced.length] : cands[slot % cands.length];
-      const res = typeof picked === "object" ? picked : { x: picked % W, y: Math.floor(picked / W) };
+        if (tooClose) continue;
+        for (const prev of chosenSlots) {
+          if (Math.hypot(x - prev.x, y - prev.y) < minSep) { tooClose = true; break; }
+        }
+        if (!tooClose) {
+          chosenSlots.push({ x, y });
+          if (chosenSlots.length > slot) break;
+        }
+      }
+      // Also check live positions of lower-ranked squad bots just in case
+      let res = chosenSlots[slot] || chosenSlots[slot % Math.max(1, chosenSlots.length)] || cands[slot % cands.length];
+      res = typeof res === "object" ? res : { x: res % W, y: Math.floor(res / W) };
       if (typeof window !== "undefined" && window.__hlLog && (!this._lastLogSpawn || Math.hypot(res.x - this._lastLogSpawn.x, res.y - this._lastLogSpawn.y) > 6)) {
         this._lastLogSpawn = res;
-        window.__hlLog(`[HL-SPAWN] me=${me} slot=${slot} (squad=${squadCount},rankIdx=${rankIdx}) -> (${res.x},${res.y}) wellSpaced=${wellSpaced.length}/${cands.length} minSep=${Math.round(minSep)}`);
+        window.__hlLog(`[HL-SPAWN] me=${me} slot=${slot} (squad=${squadCount},rankIdx=${rankIdx}) -> (${res.x},${res.y}) chosenSlots=${chosenSlots.length}/${cands.length} minSep=${Math.round(minSep)}`);
       }
       return res;
     }
