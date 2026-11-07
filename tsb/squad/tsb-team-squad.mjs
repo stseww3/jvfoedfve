@@ -257,6 +257,23 @@ async function attachChromeBot(bot) {
   }
 
   async function importStrategy() {
+    if (isHeadlessOnlyMode()) {
+      await evalJs(`(() => {
+        const d = window.dictionary;
+        const g = d && window[d.game];
+        if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true);
+        if (typeof b1 === "object" && b1?.z?.close) b1.z.close(1, 3252);
+        const ext = window.__fx?.strategyBotExtension;
+        if (ext) {
+          ext.settings.armed = false;
+          if (ext.remote?.state) ext.remote.state.loop = null;
+        }
+        window.__tsbSquadSyncHold = true;
+      })()`);
+      client.freshToken = true;
+      console.log(`[${name}] Donor Chrome on :${port} ready for Turnstile minting (lobby/game disabled)!`);
+      return;
+    }
     const src = getV27TeamSource();
     await evalJs(
       `(async () => {
@@ -414,6 +431,7 @@ async function mintViaDonorChrome(donorPort) {
       const d = window.dictionary;
       const g = d && window[d.game];
       if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true);
+      if (typeof b1 === "object" && b1?.z?.close) b1.z.close(1, 3252);
       const ext = window.__fx?.strategyBotExtension;
       if (ext) {
         ext.settings.armed = false;
@@ -679,6 +697,7 @@ setInterval(async () => {
           g[d.sbLeave](true);
         }
         let room0Players = 0;
+        let room0NopeCount = 0;
         let bossReadyInRoom0 = false;
         const lob = ext?.remote?.lobby;
         const mgr = lob?.mgr || (d && d.lobbyManager && window[d.lobbyManager]);
@@ -701,7 +720,6 @@ setInterval(async () => {
               }
             }
           }
-          let room0NopeCount = 0;
           if (vh && Array.isArray(vh[0])) {
             const list = vh[0];
             room0Players = list.length;
@@ -731,12 +749,6 @@ setInterval(async () => {
           }
         }
         const myLobbyUsername = typeof bq === "object" && bq?.aF0 ? bq.aF0.username : null;
-        if (myLobbyUsername && (myLobbyUsername.startsWith("Player ") || myLobbyUsername.startsWith("Redacted ")) && typeof b1 === "object" && b1?.eg?.eh && b1?.z?.ef?.(0)) {
-          if (!window.__lastNameVerifyAsk || Date.now() - window.__lastNameVerifyAsk > 3500) {
-            window.__lastNameVerifyAsk = Date.now();
-            try { b1.eg.eh(5); } catch {}
-          }
-        }
         const myAccId = typeof bm === "object" && bm?.buffer?.data?.[105] ? bm.buffer.data[105].value : null;
         const teams = d && window[d.sbTeamHolder]?.[d.sbTeams];
         const me = g && g[d.playerId];
@@ -901,6 +913,41 @@ setInterval(async () => {
         clients[idx].freshToken = false;
         clients[idx].enteredLobbyAt = 0;
       }
+    }
+    // Self-check each bot's own display username in Room 0 (#6694):
+    // Detect account-level or IP-level "Redacted XX" and auto-rotate account & re-enter!
+    const c = clients[idx];
+    if ((c.isHeadless || !headlessOnly) && s.lobby?.inLobby && s.lobby?.room === 0 && s.myLobbyUsername) {
+      if (s.myLobbyUsername.includes('Redacted')) {
+        if (!c.redactedDetectedAt) c.redactedDetectedAt = now;
+        if (now - c.redactedDetectedAt >= 3500) {
+          console.log(`[SELF-CHECK REDACTED] ${c.name} detected "${s.myLobbyUsername}" (acc=${s.myAccId}) in Room 0 -> rotating fresh account & re-entering!`);
+          c.redactedDetectedAt = 0;
+          c.lastVerifiedLobbyName = null;
+          c.freshToken = false;
+          c.enteredLobbyAt = 0;
+          c.evalJs(`(() => {
+            localStorage.setItem("d105", "");
+            localStorage.setItem("d106", "");
+            localStorage.setItem("v105", "0");
+            localStorage.setItem("v106", "0");
+            if (typeof bm === "object" && bm?.qo?.qp) {
+              bm.qo.qp(105, "");
+              bm.qo.qp(106, "");
+            }
+            if (typeof b1 === "object" && b1?.z?.close) b1.z.close(1, 3252);
+          })()`);
+        }
+      } else if (s.myLobbyUsername.startsWith('[Nope]')) {
+        c.redactedDetectedAt = 0;
+        if (c.lastVerifiedLobbyName !== s.myLobbyUsername) {
+          c.lastVerifiedLobbyName = s.myLobbyUsername;
+          console.log(`[SELF-CHECK OK] ${c.name} verified in Room 0 as "${s.myLobbyUsername}" (acc=${s.myAccId}, room0NopeCount=${s.room0NopeCount})`);
+        }
+      }
+    } else if (!s.lobby?.inLobby) {
+      c.redactedDetectedAt = 0;
+      c.lastVerifiedLobbyName = null;
     }
   });
 

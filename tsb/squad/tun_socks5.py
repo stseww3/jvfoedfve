@@ -20,7 +20,7 @@ async def pipe(reader, writer):
 
 def should_use_tun(host, local_port):
     h = host.lower()
-    return h in ("territorial.io", "1.territorial.io", "api.ipify.org")
+    return "territorial.io" in h or h == "api.ipify.org"
 
 async def handle_client(reader, writer, devs, local_port):
     try:

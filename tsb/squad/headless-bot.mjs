@@ -213,11 +213,7 @@ if (!isMainThread && workerData?.bot) {
         this.url = url;
         this.CONNECTING = 0; this.OPEN = 1; this.CLOSING = 2; this.CLOSED = 3;
         this.binaryType = 'blob';
-        const isProxied =
-          typeof url === 'string' &&
-          !url.includes('4.territorial.io') &&
-          !url.includes('5.territorial.io') &&
-          !url.includes('game.territorial.io');
+        const isProxied = typeof url === 'string' && url.includes('territorial.io');
         this._ws = new WS(url, protocols, {
           agent: isProxied ? agent : undefined,
           headers: {
@@ -513,9 +509,6 @@ if (!isMainThread && workerData?.bot) {
       bX.eS.ei = function(ej) {
         if (ej && ej.id >= 0 && typeof b1 === "object" && b1?.z?.ef?.(0) && b1?.eg?.wC) {
           b1.eg.wC(0, ej.id);
-          setTimeout(() => {
-            try { if (b1.z.ef(0)) b1.eg.wC(1, ej.id); } catch {}
-          }, 350 + Math.floor(Math.random() * 450));
         }
       };
     }
@@ -601,6 +594,14 @@ if (!isMainThread && workerData?.bot) {
         window.__lastPeaceCaller = -1;
         window.__tsbAssignedSpawn = null;
         window.__quitPlayers = new Set();
+        if (Array.isArray(aFq)) {
+          for (let i = 0; i < aFq.length; i++) {
+            const p = aFq[i];
+            if (p && (p.aFN || p.aFU)) {
+              p.username = p.aFN || p.aFU || p.username;
+            }
+          }
+        }
         origAfu(tN, aFq, aFr);
         try {
           if (window.__hlLog) {
