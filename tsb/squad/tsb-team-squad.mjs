@@ -498,10 +498,10 @@ function handleBackendSpawnRequest(client, req) {
 }
 
 for (const bot of HEADLESS_BOTS) {
-  bot.onSpawnRequest = handleBackendSpawnRequest;
   const hc = createHeadlessBot(bot, {
     getStrategySource: getV27TeamSource,
     mintTurnstileToken: mintViaDonorChrome,
+    onSpawnRequest: handleBackendSpawnRequest,
     onResult(c, payload) {
       recordResult(c.name, c.port, payload);
     },

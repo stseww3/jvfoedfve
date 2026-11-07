@@ -13,7 +13,7 @@ const WS = require('ws');
 // MAIN THREAD API: spawns a dedicated Worker thread for each Headless Bot
 // so BFS / Voronoi calculations NEVER block the main thread or packet stream!
 // ============================================================================
-export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, getStrategySource, mintTurnstileToken }) {
+export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onSpawnRequest, getStrategySource, mintTurnstileToken }) {
   const { port, socksPort, donorChromePort, name, slot } = bot;
   const worker = new Worker(new URL(import.meta.url), {
     execArgv: [],
@@ -102,7 +102,7 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, get
     } else if (msg.type === 'game_pkt') {
       if (onGamePacket) onGamePacket(client, msg.pkt);
     } else if (msg.type === 'spawn_req') {
-      if (bot.onSpawnRequest) bot.onSpawnRequest(client, msg);
+      if (onSpawnRequest) onSpawnRequest(client, msg);
     }
   });
 
