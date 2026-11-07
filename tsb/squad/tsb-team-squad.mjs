@@ -820,6 +820,12 @@ setInterval(async () => {
         const myAccId = typeof bm === "object" && bm?.buffer?.data?.[105] ? bm.buffer.data[105].value : null;
         const teams = d && window[d.sbTeamHolder]?.[d.sbTeams];
         const me = g && g[d.playerId];
+        if ((!g || g[d.gameState] === 0) && typeof bq === "object" && bq?.f6 === 1 && typeof b1 === "object" && b1?.z?.ef?.(1)) {
+          s.lobby = s.lobby || {};
+          s.lobby.inLobby = true;
+          s.lobby.room = bq?.z?.tM?.[0] ?? 0;
+          s.lobby.ready = !!(bq?.z?.tM?.[3]);
+        }
         s.ok = true;
         s.myLobbyUsername = myLobbyUsername;
         s.myAccId = myAccId;
@@ -1198,6 +1204,12 @@ setInterval(async () => {
           const g = window[d.game];
           if (g && g[d.gameState] === 1) return "ALREADY_IN_GAME";
           if (g && g[d.sbLeave] && g[d.gameState] === 2) g[d.sbLeave](true);
+          if (typeof bq === "object" && bq?.f6 === 1 && typeof b1 === "object" && b1?.z?.ef?.(1)) {
+            return "ALREADY_IN_LOBBY";
+          }
+          if (typeof b1 === "object" && b1?.z?.close) {
+            b1.z.close(1, 3252);
+          }
           const ext = window.__fx.strategyBotExtension;
           ext.settings.armed = true;
           ext.remote.state.loop = "team";
