@@ -404,23 +404,18 @@ new_helpers = """  isTeammate(g, p) {
           : (underEmergencyFire ? 52 : 70);
       const canAfford = myHumanInAtk === 0 && dMe >= minKeepDens && B >= 4000;
 
-      const cooldown = isPureInlandSafe ? (underEmergencyFire ? 10 : 18) : (underEmergencyFire ? 14 : 24);
+      const cooldown = isPureInlandSafe ? (underEmergencyFire ? 15 : 24) : (underEmergencyFire ? 20 : 30);
       if ((underEmergencyFire || bossFightingHuman || bossNeedsCash || boxedIn) && canAfford && g.t - (this.lastBossDonateTick ?? -999) >= cooldown) {
-        const keepBal = (minKeepDens - 8) * L;
+        const keepBal = (minKeepDens - 5) * L;
         const maxSurplus = Math.max(0, B - keepBal);
         const maxPct = Math.floor((maxSurplus * 1024) / Math.max(1, B));
-        const targetPct = isPureInlandSafe
-          ? (underEmergencyFire ? 350 : boxedIn ? 320 : 220)
-          : isCoastalRearSafe
-            ? (underEmergencyFire ? 220 : 160)
-            : (underEmergencyFire ? 160 : 120);
-        const pct = Math.min(maxPct, targetPct);
-        if (pct >= 55 && g.donate(pct, bossId, me)) {
+        const pct = Math.min(maxPct, 51); // Strictly 5% (51/1024) per bot so guards stay strong and win even if Boss dies!
+        if (pct >= 40 && g.donate(pct, bossId, me)) {
           this.lastDonateTick = g.t;
           this.lastBossDonateTick = g.t;
           this.cmds++;
           if (typeof window !== "undefined" && window.__hlLog) {
-            window.__hlLog(`[HL-DONATE] t=${g.t} emergency boss donate pct=${pct}/1024 -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)} dBoss=${Math.round(dBoss)}`);
+            window.__hlLog(`[HL-DONATE] t=${g.t} emergency boss donate pct=${pct}/1024 (~5%) -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)} dBoss=${Math.round(dBoss)}`);
           }
           return true;
         }
@@ -468,9 +463,9 @@ new_helpers = """  isTeammate(g, p) {
 
     const maxSurplus = Math.max(0, B - 1.08 * safeFloor);
     const maxSafePct = Math.floor((maxSurplus * 1024) / Math.max(1, B));
-    if (maxSafePct < 55) return false;
+    if (maxSafePct < 45) return false;
 
-    // 1. Always check Boss "npl" first!
+    // 1. Always check Boss "npl" first! (Strictly 5% = 51/1024 per bot)
     const bossId = this.findBossId(g);
     if (bossId >= 0 && g.alive[bossId] && g.terr[bossId] >= 100) {
       const dBoss = g.bal[bossId] / Math.max(1, g.terr[bossId]);
@@ -481,18 +476,18 @@ new_helpers = """  isTeammate(g, p) {
         if (g.atkTarget[sbB + i] !== 512) bossOutAtk += g.atkTroops[sbB + i];
       }
       const bossNeedsHelp =
-        (bossInAtk > 0 && dMe >= (isPureInlandSafe ? 16 : 55)) ||
-        (bossOutAtk > 0.04 * g.bal[bossId] && dBoss < 120 && dMe >= (isPureInlandSafe ? 25 : 68)) ||
-        (g.t >= 900 && dBoss < 118 && dMe >= (isPureInlandSafe ? 32 : 75)) ||
-        (boxedIn && isPureInlandSafe && dBoss < 142 && dMe >= 18);
-      if (bossNeedsHelp && g.t - (this.lastBossDonateTick ?? -999) >= (isPureInlandSafe ? 15 : 25)) {
-        const pct = Math.min(maxSafePct, isPureInlandSafe ? (bossInAtk > 0 ? 340 : 240) : 150);
-        if (pct >= 55 && g.donate(pct, bossId, me)) {
+        (bossInAtk > 0 && dMe >= (isPureInlandSafe ? 25 : 65)) ||
+        (bossOutAtk > 0.04 * g.bal[bossId] && dBoss < 120 && dMe >= (isPureInlandSafe ? 32 : 75)) ||
+        (g.t >= 900 && dBoss < 118 && dMe >= (isPureInlandSafe ? 38 : 80)) ||
+        (boxedIn && isPureInlandSafe && dBoss < 142 && dMe >= 25);
+      if (bossNeedsHelp && g.t - (this.lastBossDonateTick ?? -999) >= (isPureInlandSafe ? 20 : 30)) {
+        const pct = Math.min(maxSafePct, 51);
+        if (pct >= 40 && g.donate(pct, bossId, me)) {
           this.lastDonateTick = g.t;
           this.lastBossDonateTick = g.t;
           this.cmds++;
           if (typeof window !== "undefined" && window.__hlLog) {
-            window.__hlLog(`[HL-DONATE] t=${g.t} boss donate pct=${pct}/1024 -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)}`);
+            window.__hlLog(`[HL-DONATE] t=${g.t} boss donate pct=${pct}/1024 (~5%) -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)}`);
           }
           return true;
         }
@@ -500,7 +495,7 @@ new_helpers = """  isTeammate(g, p) {
     }
 
     // 2. SQUAD MUTUAL AID: Rescue any [NPL] squad brother who is under human attack or sneaky boat landing,
-    //    AND lightly poke (10%B) the attacker if we border them!
+    //    AND lightly poke (10%B) the attacker if we border them! (Strictly 5% = 51/1024 donate)
     for (let p = 0; p < g.humans; p++) {
       if (p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 300) continue;
       const dAlly = g.bal[p] / Math.max(1, g.terr[p]);
@@ -513,14 +508,14 @@ new_helpers = """  isTeammate(g, p) {
         }
       }
       if (inHumanAtk > 0 && (inHumanAtk >= 0.08 * g.bal[p] || dAlly < 75)) {
-        // First donate cash to save our brother (while keeping our own coastGuardFloor / safeFloor intact!)
-        if (dMe >= Math.max(55, dAlly + 15)) {
-          const pct = Math.min(maxSafePct, isPureInlandSafe ? 240 : 155);
-          if (pct >= 55 && g.donate(pct, p, me)) {
+        // First donate 5% cash to save our brother (while keeping our own coastGuardFloor / safeFloor intact!)
+        if (dMe >= Math.max(65, dAlly + 18)) {
+          const pct = Math.min(maxSafePct, 51);
+          if (pct >= 40 && g.donate(pct, p, me)) {
             this.lastDonateTick = g.t;
             this.cmds++;
             if (typeof window !== "undefined" && window.__hlLog) {
-              window.__hlLog(`[HL-DONATE] t=${g.t} squad rescue donate pct=${pct}/1024 -> ally=${p}(${g.names?.[p] || ""}) myBal=${B} dMe=${Math.round(dMe)} dAlly=${Math.round(dAlly)}`);
+              window.__hlLog(`[HL-DONATE] t=${g.t} squad rescue donate pct=${pct}/1024 (~5%) -> ally=${p}(${g.names?.[p] || ""}) myBal=${B} dMe=${Math.round(dMe)} dAlly=${Math.round(dAlly)}`);
             }
             return true;
           }
@@ -539,8 +534,8 @@ new_helpers = """  isTeammate(g, p) {
       }
     }
 
-    if (!boxedIn && dMe < 112) return false;
-    if (boxedIn && dMe < 55) return false;
+    if (!boxedIn && dMe < 115) return false;
+    if (boxedIn && dMe < 65) return false;
 
     let bestAlly = -1, bestScore = -Infinity;
     for (let p = 0; p < g.humans; p++) {
@@ -566,12 +561,12 @@ new_helpers = """  isTeammate(g, p) {
     }
     if (bestAlly < 0) return false;
 
-    const pct = boxedIn ? (dMe > 110 ? 280 : 185) : 153;
+    const pct = 51; // Strictly 5% (51/1024)
     if (g.donate(pct, bestAlly, me)) {
       this.lastDonateTick = g.t;
       this.cmds++;
       if (typeof window !== "undefined" && window.__hlLog) {
-        window.__hlLog(`[HL-DONATE] t=${g.t} surplus donate pct=${pct}/1024 -> ally=${bestAlly}(${g.names?.[bestAlly] || ""}) boxedIn=${boxedIn} myBal=${B} dMe=${Math.round(dMe)}`);
+        window.__hlLog(`[HL-DONATE] t=${g.t} surplus donate pct=${pct}/1024 (~5%) -> ally=${bestAlly}(${g.names?.[bestAlly] || ""}) boxedIn=${boxedIn} myBal=${B} dMe=${Math.round(dMe)}`);
       }
       return true;
     }
