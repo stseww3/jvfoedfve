@@ -1056,11 +1056,14 @@ old_nonperson_buyland = """      const avail = B - fee - keep;
       }"""
 
 new_nonperson_buyland = """      // Count our own troops currently out on active attacks (`myOutTroops(g)`) as part of our total balance (`totB = B + myOut`)
-      // when computing spare budget (`avail = totB - fee - keep`), so ongoing attacks never falsely make `avail <= 0`!
+      // when computing spare budget (`avail = totB - fee - keep`), AND cap `keep` on prime/juicy land so we NEVER miss prime land!
       const myOut = this.myOutTroops(g);
       const totB = B + myOut;
       const dqNow = g.bal[q] / Math.max(1, g.terr[q]);
-      const isPrimeLand = o.nearCollapse || dqNow < 24 || c < 0.45 * worth || (o.bleeding && o.tD < 0.52);
+      const isPrimeLand = o.nearCollapse || dqNow < 26 || c < 0.48 * worth || (o.bleeding && o.tD < 0.55);
+      if (isPrimeLand && B >= 12 * L) {
+        keep = Math.min(keep, (o.nearCollapse || dqNow < 14 ? 10 : 26) * L);
+      }
 
       const avail = Math.min(B - fee, totB - fee - keep);
       if (avail <= 0) continue;
@@ -1077,6 +1080,28 @@ new_nonperson_buyland = """      // Count our own troops currently out on active
       }"""
 assert old_nonperson_buyland in s, "old_nonperson_buyland not found"
 s = s.replace(old_nonperson_buyland, new_nonperson_buyland, 1)
+
+old_collapse_pulse = """        if (o.nearCollapse) {
+          if (curAtk >= 0.04 * B || curAtk >= 0.30 * need) continue;
+          const pulse = Math.min(avail, Math.max(Math.floor(P.pulseFrac * B), Math.min(avail, Math.floor(0.30 * need))));
+          if (pulse < Math.max(this.minCmd(g), P.pulseMinShare * B)) continue;
+          return this.send(g, q, pulse);
+        }
+
+        if (o.pulseMode) {
+          if (curAtk >= 0.04 * B) continue;"""
+
+new_collapse_pulse = """        if (o.nearCollapse) {
+          if (curAtk >= 0.16 * B || curAtk >= 0.85 * need) continue;
+          const pulse = Math.min(avail, Math.max(Math.floor(P.pulseFrac * B), Math.min(avail, Math.floor(0.75 * need))));
+          if (pulse < Math.max(this.minCmd(g), P.pulseMinShare * B)) continue;
+          return this.send(g, q, pulse);
+        }
+
+        if (o.pulseMode) {
+          if (curAtk >= (isPrimeLand ? 0.14 * B : 0.04 * B)) continue;"""
+assert old_collapse_pulse in s, "old_collapse_pulse not found"
+s = s.replace(old_collapse_pulse, new_collapse_pulse, 1)
 
 old_buyland_locks = """      const isSoleHealthyBuffer =
         person && !o.isDoorSea && nHumans >= 3 && !o.nearCollapse && !o.bleeding && !o.onMe && o.newNbs > 0 && humanNbCount === 1;
