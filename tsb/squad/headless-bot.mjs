@@ -137,7 +137,7 @@ if (!isMainThread && workerData?.bot) {
     )
     .replace(
       'if(this.eI===0){if(bi.eZ>=this.eZ){this.eZ+=bi.aDd*Math.floor(1+(bi.eZ-this.eZ)/bi.aDd);if(aE.a2G===2){n6()}else{this.aeA()}this.eI++;if(bi.eZ-this.ae9>27){this.aeB()}}}else{this.aeB()}',
-      'while(bi.eZ>=this.eZ){this.eZ+=bi.aDd;if(aE.a2G===2){n6();break}this.aeA();if(this.ae5===this.aIt*7&&this.ae7.length===0){if(bi.eZ>=this.eZ)this.eZ=bi.eZ+8;break}}this.eI=0;'
+      'var _steps=0;while(bi.eZ>=this.eZ&&_steps++<28){this.eZ+=bi.aDd;if(aE.a2G===2){n6();break}this.aeA();if(this.ae5===this.aIt*7&&this.ae7.length===0)break}if(bi.eZ>=this.eZ)this.eZ=bi.eZ+bi.aDd;this.eI=0;'
     )
     .replace(
       'this.ae7.push(aD);if(aE.a2G===2){',
