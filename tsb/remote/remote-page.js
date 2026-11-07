@@ -403,17 +403,28 @@
         }
       }
     }
-    if (!vh || !vi) return waitLeader ? { found: false, ready: false } : null;
-    const list = vh[room] || [], readyCount = vi[room] | 0;
+    const rooms = (mgr && d.lobbyRooms && mgr[d.lobbyRooms]) || mgr?.z?.tO || mgr?.tO;
+    const roomObj = rooms && rooms[room];
+    const list = (vh && Array.isArray(vh[room]) && vh[room].length > 0 ? vh[room] : null) || (roomObj && Array.isArray(roomObj.tP) ? roomObj.tP : null);
+    if (!list) return waitLeader ? { found: false, ready: false } : null;
+    const readyCount = vi && "number" == typeof vi[room] ? (vi[room] | 0) : (roomObj && "number" == typeof roomObj.tQ ? (roomObj.tQ | 0) : list.length);
     const myClan = parseClanTag(window.__tsbPlayerName || "");
     const targetKey = leaderKey || "npl";
     for (let idx = 0; idx < list.length; idx++) {
       const p = list[idx];
-      const raw = String((p && (p.aFN || p.username)) || "");
+      const raw = String((p && (p.aFN || p.username || p.name)) || "");
       const low = raw.toLowerCase();
+      if (
+        low.includes("mishi") || low.includes("matzz") || low.includes("kiholma") ||
+        low.includes("leo_99") || low.includes("racoon") || low.includes("zexos") ||
+        low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus")
+      ) {
+        continue;
+      }
       const clan = parseClanTag(raw);
-      if (low.includes(targetKey) && (!myClan || !clan || clan === myClan)) {
-        return { found: true, ready: idx < readyCount, name: raw };
+      const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
+      if ((stripped === targetKey || stripped.includes(targetKey) || low === "[npl]npl") && (!myClan || !clan || clan === myClan)) {
+        return { found: true, ready: idx < readyCount || !!(p && p.ready), name: raw };
       }
     }
     return waitLeader ? { found: false, ready: false } : null;

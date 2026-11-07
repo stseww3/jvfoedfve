@@ -110,17 +110,18 @@ async def handle_client(reader, writer, devs, local_port):
 
 async def main():
     # 10 bots (10801..10805 + 10811..10815), each with its own dedicated primary + backup tunnel exit IP!
+    # 5 verified healthy tunnels: tun55, tun58, tun66, tun78, tun80 (plus host direct "" fallback)
     mappings = [
-        (10801, ["tun90", "tun13"]),
-        (10802, ["tun50", "tun22"]),
-        (10803, ["tun55", "tun13"]),
-        (10804, ["tun58", "tun22"]),
-        (10805, ["tun66", "tun90"]),
-        (10811, ["tun67", "tun50"]),
-        (10812, ["tun78", "tun55"]),
-        (10813, ["tun80", "tun58"]),
-        (10814, ["tun83", "tun66"]),
-        (10815, ["tun86", "tun67"]),
+        (10801, ["tun55", "tun78"]),
+        (10802, ["tun58", "tun80"]),
+        (10803, ["tun66", "tun55"]),
+        (10804, ["tun78", "tun58"]),
+        (10805, ["tun80", "tun66"]),
+        (10811, ["tun55", "tun78"]),
+        (10812, ["tun58", "tun80"]),
+        (10813, ["tun66", "tun55"]),
+        (10814, ["tun78", "tun58"]),
+        (10815, ["tun80", "tun66"]),
     ]
     servers = []
     for port, devs in mappings:

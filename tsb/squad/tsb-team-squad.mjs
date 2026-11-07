@@ -22,6 +22,7 @@ const HEADLESS_BOTS = [
 ];
 
 const isWaitNplMode = () => fs.existsSync('/tmp/tsb-wait-npl.flag');
+const isHeadlessOnlyMode = () => !fs.existsSync('/tmp/tsb-enable-chrome-play.flag');
 
 function postSpectatorIngest(payload, onReply = null) {
   try {
@@ -365,6 +366,19 @@ async function mintViaDonorChrome(donorPort) {
   }
   const donor = clients.find((c) => !c.isHeadless && c.port === donorPort);
   if (!donor) throw new Error(`No donor Chrome on ${donorPort}`);
+  if (isHeadlessOnlyMode()) {
+    await donor.evalJs(`(() => {
+      const d = window.dictionary;
+      const g = d && window[d.game];
+      if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true);
+      const ext = window.__fx?.strategyBotExtension;
+      if (ext) {
+        ext.settings.armed = false;
+        if (ext.remote?.state) ext.remote.state.loop = null;
+      }
+      window.__tsbSquadSyncHold = true;
+    })()`);
+  }
   await donor.evalJs(`(() => {
     window.__mintedToken = null;
     const old = document.getElementById("mint-ts");
@@ -479,9 +493,13 @@ function reloadClientForToken(c) {
 setInterval(async () => {
   if (clients.length < 10) return;
   const waitMode = isWaitNplMode();
+  const headlessOnly = isHeadlessOnlyMode();
 
   const states = await Promise.all(
     clients.map(async (c) => {
+      if (!c.isHeadless && headlessOnly) {
+        return { ok: true, donorOnly: true, inGame: false, lobby: { inLobby: false }, room0Players: 0 };
+      }
       const raw = await c.evalJs(`(() => {
         window.__tsbPlayerName = ${JSON.stringify(c.name)};
         window.__tsbPlayerColor = 4095;
@@ -614,23 +632,25 @@ setInterval(async () => {
   // Determine Room 0 player count and whether 10 bots (room >= 35 players) or 5 bots (< 35 players) should enter
   const inRoom0 = states.filter((s) => s.lobby && s.lobby.inLobby && s.lobby.room === 0);
   const chromeInRoom0 = states.filter((s, idx) => !clients[idx].isHeadless && s.lobby && s.lobby.inLobby && s.lobby.room === 0).length;
+  const headlessInRoom0 = states.filter((s, idx) => clients[idx].isHeadless && s.lobby && s.lobby.inLobby && s.lobby.room === 0).length;
   const maxRoom0Players = inRoom0.reduce((m, s) => Math.max(m, s.room0Players || 0), 0);
   if (inRoom0.length === 0) {
     wantTenForCurrentLobby = false;
-  } else if (maxRoom0Players >= 35) {
+  } else if (!headlessOnly && maxRoom0Players >= 35) {
     if (!wantTenForCurrentLobby) {
       console.log(`[SQUAD-SYNC] Room 0 reached ${maxRoom0Players} players (>= 35)! Waking up 5 reserve Headless bots for 10-bot entry!`);
     }
     wantTenForCurrentLobby = true;
   }
 
-  // Send all 10 bots' stats + fallback JPEG screenshot to spectator server
+  // Send active bots' stats + fallback JPEG screenshot to spectator server
   const allStats = [];
   for (let i = 0; i < clients.length; i++) {
     const c = clients[i];
     const s = states[i];
+    if (!c.isHeadless && headlessOnly) continue;
     if (s?.ok) {
-      const isStandby = c.isHeadless && !s.inGame && !(s.lobby?.inLobby) && !wantTenForCurrentLobby;
+      const isStandby = !headlessOnly && c.isHeadless && !s.inGame && !(s.lobby?.inLobby) && !wantTenForCurrentLobby;
       allStats.push({
         port: c.port,
         slot: c.slot,
@@ -656,8 +676,8 @@ setInterval(async () => {
       });
     }
   }
-  const chromeInStats = allStats.filter((b) => b.port < 9300);
-  const chosen = chromeInStats.slice().sort((a, b) => (b.alive - a.alive) || (b.inGame - a.inGame) || (b.terr - a.terr))[0] || chromeInStats[0];
+  const primaryInStats = headlessOnly ? allStats : allStats.filter((b) => b.port < 9300);
+  const chosen = primaryInStats.slice().sort((a, b) => (b.alive - a.alive) || (b.inGame - a.inGame) || (b.terr - a.terr))[0] || allStats[0];
   currentChosenBot = chosen || null;
   postSpectatorIngest({ type: 'all_stats', stats: allStats, chosen });
 
@@ -740,13 +760,16 @@ setInterval(async () => {
 
   const allReadyInRoom0 =
     timerSpreadOk &&
-    (wantTenForCurrentLobby
-      ? (readyCountInRoom0 === 10 || (readyCountInRoom0 >= 8 && minStartsIn <= 8))
-      : (chromeInRoom0 === 5 || (chromeInRoom0 >= 4 && minStartsIn <= 8)));
+    (headlessOnly
+      ? (headlessInRoom0 === 5 || (headlessInRoom0 >= 4 && minStartsIn <= 8))
+      : wantTenForCurrentLobby
+        ? (readyCountInRoom0 === 10 || (readyCountInRoom0 >= 8 && minStartsIn <= 8))
+        : (chromeInRoom0 === 5 || (chromeInRoom0 >= 4 && minStartsIn <= 8)));
 
   await Promise.all(
     clients.map((c) => {
-      const isStandby = c.isHeadless && !wantTenForCurrentLobby;
+      if (!c.isHeadless && headlessOnly) return Promise.resolve(null);
+      const isStandby = !headlessOnly && c.isHeadless && !wantTenForCurrentLobby;
       const allowReady = !isStandby && allReadyInRoom0 && !waitMode;
       return c.evalJs(`(() => {
         window.__tsbPlayerName = ${JSON.stringify(c.name)};
@@ -769,39 +792,38 @@ setInterval(async () => {
     })
   );
 
-  // Keep all 10 bots' Turnstile tokens fresh (including the 5 standby Headless bots so they can join instantly when room >= 35!)
+  // Keep active bots' Turnstile tokens fresh
   const needReload = clients.filter(
     (c, i) =>
+      (c.isHeadless || !headlessOnly) &&
       !c.freshToken &&
       !(states[i]?.lobby?.inLobby) &&
-      now - c.lastReloadAt > (c.isHeadless ? 18000 : 75000) &&
-      now - c.enteredLobbyAt > 15000
+      now - c.lastReloadAt > (c.isHeadless ? 15000 : 75000) &&
+      now - c.enteredLobbyAt > 12000
   );
-  if (needReload.length > 0 && !reloadingForFreshTokens && now - lastSyncLaunch > 8000) {
+  if (needReload.length > 0 && !reloadingForFreshTokens && now - lastSyncLaunch > 6000) {
     reloadingForFreshTokens = true;
     lastSyncLaunch = now;
     console.log(`[SQUAD-SYNC] Minting fresh Turnstile tokens for ${needReload.map((c) => c.name).join(', ')}...`);
     for (const c of needReload) {
       reloadClientForToken(c);
     }
-    setTimeout(() => { reloadingForFreshTokens = false; }, 6500);
+    setTimeout(() => { reloadingForFreshTokens = false; }, 5500);
   }
 
   // Enter Team Room 0:
-  // - Primary 5 Chrome bots (!c.isHeadless) enter as soon as all 5 Chrome bots have fresh tokens (never blocked by Headless bots!)
-  // - Reserve 5 Headless bots (c.isHeadless) enter when wantTenForCurrentLobby is true (Room 0 >= 35 players)
   const readyToEnter = clients.filter(
     (c, i) =>
-      (!c.isHeadless || wantTenForCurrentLobby) &&
+      (headlessOnly ? c.isHeadless : (!c.isHeadless || wantTenForCurrentLobby)) &&
       !states[i]?.inGame &&
       !(states[i]?.lobby?.inLobby && states[i]?.lobby?.room === 0) &&
       c.freshToken &&
-      now - c.enteredLobbyAt > 18000
+      now - c.enteredLobbyAt > 15000
   );
-  if (readyToEnter.length > 0 && !clients.some((c, i) => !c.isHeadless && !c.freshToken && !(states[i]?.lobby?.inLobby))) {
+  if (readyToEnter.length > 0 && (headlessOnly || !clients.some((c, i) => !c.isHeadless && !c.freshToken && !(states[i]?.lobby?.inLobby)))) {
     lastSyncLaunch = now;
     console.log(
-      `[SQUAD-SYNC] Entering Team Room 0 for ${readyToEnter.map((c) => c.name).join(', ')} (mode=${wantTenForCurrentLobby ? '10-BOT >=35p' : '5-BOT <35p'}, room0Players=${maxRoom0Players})...`
+      `[SQUAD-SYNC] Entering Team Room 0 for ${readyToEnter.map((c) => c.name).join(', ')} (mode=${headlessOnly ? '5-HEADLESS-GUARD' : wantTenForCurrentLobby ? '10-BOT >=35p' : '5-BOT <35p'}, waitBoss=${waitMode}, room0Players=${maxRoom0Players})...`
     );
     for (let i = 0; i < readyToEnter.length; i++) {
       const c = readyToEnter[i];

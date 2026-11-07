@@ -49,8 +49,10 @@ once('beforeTick:()=>we().beforeTick(),beforeFrame:()=>we().beforeFrame(),',
     'beforeTick:()=>we().beforeTick(),afterTick:()=>we().afterTick?.(),beforeFrame:()=>we().beforeFrame(),');
 once('if(null!==this.spawnAt&&(!t.online||e-this.spawnAt<1e3))return;',
     'if(null!==this.spawnAt&&(!t.online||e-this.spawnAt<250))return;');
-once('queueAfterTick(){this.afterQueued||(this.afterQueued=!0,queueMicrotask(()=>{this.afterQueued=!1,this.afterTick()}))}',
-    'queueAfterTick(){this.afterQueued||(this.afterQueued=!0,queueMicrotask(()=>{this.afterQueued&&(this.afterQueued=!1,this.afterTick())}))}');
+page = page.replaceAll(
+    'queueAfterTick(){this.afterQueued||(this.afterQueued=!0,queueMicrotask(()=>{this.afterQueued=!1,this.afterTick()}))}',
+    'queueAfterTick(){this.afterQueued||(this.afterQueued=!0,queueMicrotask(()=>{this.afterQueued&&(this.afterQueued=!1,this.afterTick())}))}'
+);
 once('beforeTick(){if(this.eligible()&&this.options().play)try{const t=this.sync();t.online?this.queueAfterTick():!this.error&&t.canAct(t.me)&&this.strategy.act(t)}catch(t){this.fail(t)}}',
     'beforeTick(){if(this.eligible()&&this.options().play)try{if(window[dictionary.game]&&!window[dictionary.game][dictionary.gIsSingleplayer])return;const t=this.sync();!this.error&&t.canAct(t.me)&&this.strategy.act(t)}catch(t){this.fail(t)}}');
 once('i&&this.view.online&&"sbSpawn"!==t&&(this.inflight=Ct(),this.view.sendsHeld=!0)',
