@@ -85,8 +85,13 @@ export class TeamSpawnCoordinator {
     this.dBoss = null;      // Int32Array(N): geodesic land distance from Boss npl (or Squad Anchor)
     this.dScratch = null;   // Int32Array(N): local BFS distance scratch (kept at -1)
     this.bfsQ = null;       // Int32Array(N): BFS queue
+    this.compId = null;     // Int32Array(N): connected continent ID per land pixel (-1 for non-land)
+    this.compSize = null;   // Int32Array(N): total land pixel count of the continent containing pixel i
+    this.continents = [];   // [{ id, size, seedCell, cx, cy }] sorted by size desc
+    this.maxCompSize = 0;
 
     // Live match state
+    this.matchStartMs = 0;
     this.lastPlan = null;
     this.lastSolveMs = 0;
     this.lastSolvedAt = 0;
@@ -109,6 +114,8 @@ export class TeamSpawnCoordinator {
     this.dBoss = new Int32Array(N);
     this.dScratch = new Int32Array(N).fill(-1);
     this.bfsQ = new Int32Array(N);
+    this.compId = new Int32Array(N).fill(-1);
+    this.compSize = new Int32Array(N);
   }
 
   /**
@@ -151,11 +158,61 @@ export class TeamSpawnCoordinator {
     }
 
     this.land = land || landCount;
+    this.computeContinents();
+    this.matchStartMs = Date.now();
     this.prevBotTargets.clear();
     this.lastBossKey = '';
     this.lastPlan = null;
     this.solveCount = 0;
     return true;
+  }
+
+  /**
+   * Decompose the map into 4-connected land continents, recording compId[c] and compSize[c]
+   * so we never trap a bot on a tiny island (e.g. Greenland) and can detect uncontested
+   * major secondary continents (e.g. Americas on World Map).
+   */
+  computeContinents() {
+    const { W, N, landMask, dir4, compId, compSize, bfsQ } = this;
+    compId.fill(-1);
+    compSize.fill(0);
+    const rawList = [];
+
+    for (let s = 0; s < N; s++) {
+      if (!landMask[s] || compId[s] >= 0) continue;
+      const cid = rawList.length;
+      let qh = 0, qt = 0;
+      let sumX = 0, sumY = 0;
+      compId[s] = cid;
+      bfsQ[qt++] = s;
+      while (qh < qt) {
+        const c = bfsQ[qh++];
+        sumX += c % W;
+        sumY += (c / W) | 0;
+        for (let k = 0; k < 4; k++) {
+          const n = c + dir4[k];
+          if (n >= 0 && n < N && landMask[n] && compId[n] < 0) {
+            compId[n] = cid;
+            bfsQ[qt++] = n;
+          }
+        }
+      }
+      const sz = qt;
+      for (let i = 0; i < qt; i++) {
+        compSize[bfsQ[i]] = sz;
+      }
+      rawList.push({
+        rawId: cid,
+        size: sz,
+        seedCell: s,
+        cx: Math.round(sumX / Math.max(1, sz)),
+        cy: Math.round(sumY / Math.max(1, sz)),
+      });
+    }
+
+    rawList.sort((a, b) => b.size - a.size);
+    this.continents = rawList;
+    this.maxCompSize = rawList.length > 0 ? rawList[0].size : 0;
   }
 
   /**
@@ -536,7 +593,10 @@ export class TeamSpawnCoordinator {
     let coastPixels = 0;
     let enemyBorder = 0;
     let allyBorder = 0;
+    let stolenFromEnemy = 0;
+    let outwardReachPixels = 0;
     const seenEnemies = [];
+    const sBossD = boss && boss.x >= 0 && boss.y >= 0 ? this.dBoss[s] : -1;
 
     dScratch[s] = 0;
     bfsQ[qt++] = s;
@@ -546,6 +606,13 @@ export class TeamSpawnCoordinator {
       const dc = dScratch[c];
       const compD = dComp[c];
       voronoiPixels++;
+
+      if (whoKind[c] === KIND_ENEMY && compD < 155) {
+        stolenFromEnemy++;
+      }
+      if (sBossD >= 0 && this.dBoss[c] > sBossD + 18) {
+        outwardReachPixels++;
+      }
 
       const margin = compD < 500000 ? Math.min(1, Math.max(0.15, (compD - dc) / M)) : 1;
       weightedArea += (margin * lam) / (lam + dc);
@@ -598,12 +665,13 @@ export class TeamSpawnCoordinator {
     }
 
     const enemyNeighbors = seenEnemies.length;
-    // Heavy penalty for bordering >= 2 distinct enemy humans (multi-front pincer risk!),
-    // and mild reward for sharing a safe interior border with our own squad/Boss!
+    // Zero-sum denial bonus: reward positions that carve away prime territory from nearby enemy landlords
+    // (as long as we are not bordering >= 2 enemies in a pincer!)
+    const denialBonus = enemyNeighbors <= 1 ? Math.min(32, stolenFromEnemy * 0.011) : Math.min(12, stolenFromEnemy * 0.004);
     const coastBonus = Math.min(20, coastPixels * 0.07);
     const allyWeldBonus = Math.min(26, allyBorder * 0.12);
     let score =
-      (weightedArea + coastBonus + allyWeldBonus - 0.22 * enemyBorder) /
+      (weightedArea + denialBonus + coastBonus + allyWeldBonus - 0.22 * enemyBorder) /
       (1 + 0.32 * Math.max(0, enemyNeighbors - 1));
 
     // Apply 360-degree Anti-Pinch & Backstop survival multiplier
@@ -611,6 +679,11 @@ export class TeamSpawnCoordinator {
     score *= pm.pinchMult;
 
     if (role === 'FLANK_GUARD' && boss && boss.x >= 0 && boss.y >= 0) {
+      // Anti-Cul-De-Sac check (e.g. South Africa tip when Boss is in North Africa):
+      // A guard must have outward expansion room beyond Boss rather than being boxed in by Boss!
+      if (sBossD >= 0 && outwardReachPixels < Math.min(1800, 0.32 * voronoiPixels)) {
+        score *= 0.48;
+      }
       const bDist = this.effectiveBossDist(s, boss);
       const idealFlankDist = 0.58 * scales.bossExcl + 0.42 * scales.flankMax;
       const ringFit = Math.max(
@@ -638,6 +711,21 @@ export class TeamSpawnCoordinator {
         if (diff > Math.PI) diff = 2 * Math.PI - diff;
         if (diff >= 1.65) score *= 1.15; // >= 95 deg apart
       }
+    } else if (role === 'SPOILER_BANK') {
+      // SPOILER_BANK (Continent Denial Pair on an uncontested major secondary continent):
+      // The 2nd spoiler chains right beside the 1st spoiler so they form a 2-bot mutual-aid stronghold!
+      const existingSpoilers = chosenTargets.filter((t) => t.role === 'SPOILER_BANK');
+      if (existingSpoilers.length > 0) {
+        const sp0 = existingSpoilers[0];
+        const dSp = Math.hypot(sx - sp0.x, sy - sp0.y);
+        const idealPairDist = 1.35 * scales.allyMinSep;
+        if (dSp <= 2.4 * scales.allyMinSep) {
+          score *= Math.max(0.90, 1.30 - 0.30 * Math.abs(dSp - idealPairDist) / Math.max(50, scales.allyMinSep));
+        } else {
+          score *= 0.70;
+        }
+      }
+      if (enemyNeighbors <= 1) score *= 1.18;
     } else {
       // ECO_BANK (Outer Wing):
       // Instead of flying 1000px away to the opposite side of the map as an orphan,
@@ -729,12 +817,20 @@ export class TeamSpawnCoordinator {
     const rCell = Math.sqrt(Math.max(10000, land) / (Math.PI * totalActiveHumans));
     const diag = Math.hypot(W, H);
 
+    // Two-stage spawn-phase pressure:
+    //   - First 3.8s of countdown (`isEarlyBullyPhase`): push guard ring 1.24x outward toward nearby enemies
+    //     so enemy humans feel crowded and relocate away from Boss's sector.
+    //   - Final 2.2s (`!isEarlyBullyPhase`): tighten back to the 1.0x optimal shield ring around Boss!
+    const phaseElapsedMs = this.matchStartMs > 0 ? Date.now() - this.matchStartMs : 9999;
+    const isEarlyBullyPhase = phaseElapsedMs >= 0 && phaseElapsedMs < 3800;
+    const bullyMult = isEarlyBullyPhase ? 1.22 : 1.0;
+
     const scales = {
       rCell: Math.round(rCell),
-      bossExcl: clamp(Math.round(Math.max(1.42 * rCell, 0.105 * diag)), 78, 155),
-      flankMax: clamp(Math.round(Math.max(2.85 * rCell, 0.230 * diag)), 150, 285),
+      bossExcl: clamp(Math.round(Math.max(1.42 * rCell, 0.105 * diag) * bullyMult), 78, 175),
+      flankMax: clamp(Math.round(Math.max(2.85 * rCell, 0.230 * diag) * bullyMult), 150, 325),
       allyMinSep: clamp(Math.round(Math.max(1.42 * rCell, 0.115 * diag)), 72, 175),
-      enemyMinClearance: clamp(Math.round(0.75 * rCell), 44, 88),
+      enemyMinClearance: clamp(Math.round((isEarlyBullyPhase ? 0.60 : 0.75) * rCell), 38, 88),
       clusterMax: clamp(Math.round(Math.max(4.4 * rCell, 0.42 * diag)), 260, 560),
     };
 
@@ -742,11 +838,47 @@ export class TeamSpawnCoordinator {
     this.buildInitialDistanceFields(enemies, randomAllies, realBoss);
 
     // If Boss hasn't clicked on the map yet, pick a safe Virtual Squad Anchor so
-    // our 5 bots still form a cohesive anti-pinch wedge in the safest region!
+    // our bots still form a cohesive anti-pinch wedge in the safest region!
     const anchorBoss = realBoss || this.findVirtualSquadAnchor(enemies, scales);
     if (!realBoss && anchorBoss) {
       this.buildInitialDistanceFields(enemies, randomAllies, anchorBoss);
     }
+
+    // Detect if there is a major secondary continent (>= 18% of map land, e.g. Americas on World Map)
+    // that is distinct from Boss's continent and has <= 4 enemies (preventing enemy teams from free-farming 120k+ land!)
+    let bossCompId = -1;
+    if (anchorBoss && anchorBoss.x >= 0 && anchorBoss.y >= 0) {
+      const bc = this.snapToLand(anchorBoss.x, anchorBoss.y, 16);
+      if (bc >= 0) bossCompId = this.compId[bc];
+    }
+    let spoilerCompId = -1;
+    if (K >= 6 && this.continents.length >= 2) {
+      const minMajorContinent = Math.max(45000, Math.round(0.18 * land));
+      for (const cont of this.continents) {
+        if (cont.rawId === bossCompId || cont.size < minMajorContinent) continue;
+        let enemiesOnCont = 0;
+        let alliesOnCont = 0;
+        for (const e of enemies) {
+          const ec = this.snapToLand(e.x, e.y, 12);
+          if (ec >= 0 && this.compId[ec] === cont.rawId) enemiesOnCont++;
+        }
+        for (const a of randomAllies) {
+          const ac = this.snapToLand(a.x, a.y, 12);
+          if (ac >= 0 && this.compId[ac] === cont.rawId) alliesOnCont++;
+        }
+        if (alliesOnCont <= 1 && enemiesOnCont <= 4 && cont.size / Math.max(1, enemiesOnCont + 1) >= 22000) {
+          spoilerCompId = cont.rawId;
+          break;
+        }
+      }
+    }
+    const targetSpoilerCount = spoilerCompId >= 0 ? 2 : 0;
+
+    // Minimum viable landmass size so no bot is ever trapped on Greenland / small islands!
+    const minViableCompSize = Math.min(
+      Math.max(1, Math.round(0.55 * this.maxCompSize)),
+      Math.max(22000, Math.round(0.065 * land))
+    );
 
     // Reset previous bot target hysteresis when Boss first clicks or jumps > 40px
     const bossKeyNow = realBoss ? `${realBoss.x >> 4},${realBoss.y >> 4}` : 'none';
@@ -805,13 +937,16 @@ export class TeamSpawnCoordinator {
           for (let x = 16; x < W - 16; x += stride) {
             const c = y * W + x;
             if (!landMask[c]) continue;
+            if (relax >= 0.60 && this.compSize[c] < minViableCompSize) continue;
             if (distToChosenSquad(x, y) < reqAllySep) continue;
             if (distToEnemies(x, y) < reqEnemyClear) continue;
 
             const bDist = realBoss ? this.effectiveBossDist(c, realBoss) : 999999;
             if (realBoss && bDist < reqBossExcl) continue;
 
-            if (wantRole === 'FLANK_GUARD' && realBoss) {
+            if (wantRole === 'SPOILER_BANK' && spoilerCompId >= 0) {
+              if (this.compId[c] !== spoilerCompId) continue;
+            } else if (wantRole === 'FLANK_GUARD' && realBoss) {
               const geoBoss = this.dBoss[c];
               const maxRing = scales.flankMax * (2 - relax * 0.8);
               if (geoBoss < reqBossExcl || geoBoss > maxRing || bDist > maxRing) continue;
@@ -843,7 +978,7 @@ export class TeamSpawnCoordinator {
         }
 
         if (rawSeeds.length === 0) {
-          if (wantRole === 'FLANK_GUARD') break;
+          if (wantRole === 'FLANK_GUARD' || wantRole === 'SPOILER_BANK') break;
           continue;
         }
 
@@ -865,7 +1000,7 @@ export class TeamSpawnCoordinator {
         }
 
         if (!bestEval) {
-          if (wantRole === 'FLANK_GUARD') break;
+          if (wantRole === 'FLANK_GUARD' || wantRole === 'SPOILER_BANK') break;
           continue;
         }
 
@@ -906,9 +1041,14 @@ export class TeamSpawnCoordinator {
     };
 
     for (let m = 0; m < K; m++) {
-      const wantRole = m < targetFlankCount ? 'FLANK_GUARD' : 'ECO_BANK';
+      const wantRole =
+        m < targetFlankCount
+          ? 'FLANK_GUARD'
+          : m >= K - targetSpoilerCount
+            ? 'SPOILER_BANK'
+            : 'ECO_BANK';
       let picked = pickNextTarget(wantRole);
-      if (!picked && wantRole === 'FLANK_GUARD') {
+      if (!picked && (wantRole === 'FLANK_GUARD' || wantRole === 'SPOILER_BANK')) {
         picked = pickNextTarget('ECO_BANK');
       }
       if (!picked) {
