@@ -365,8 +365,6 @@ async function mintViaDonorChrome(donorPort) {
   }
   const donor = clients.find((c) => !c.isHeadless && c.port === donorPort);
   if (!donor) throw new Error(`No donor Chrome on ${donorPort}`);
-  donor.send('Page.bringToFront');
-  donor.send('Emulation.setFocusEmulationEnabled', { enabled: true });
   await donor.evalJs(`(() => {
     window.__mintedToken = null;
     const old = document.getElementById("mint-ts");
@@ -390,12 +388,24 @@ async function mintViaDonorChrome(donorPort) {
     return "RENDERED";
   })()`);
   for (let i = 0; i < 12; i++) {
-    await new Promise((r) => setTimeout(r, 850));
-    donor.send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 180, y: 180 });
-    donor.send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 28, y: 32 });
-    donor.send('Input.dispatchMouseEvent', { type: 'mousePressed', x: 28, y: 32, button: 'left', clickCount: 1 });
-    donor.send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: 28, y: 32, button: 'left', clickCount: 1 });
-    const tok = await donor.evalJs('window.__mintedToken || ""');
+    await new Promise((r) => setTimeout(r, 700));
+    const tok0 = await donor.evalJs('window.__mintedToken || ""');
+    if (tok0 && typeof tok0 === 'string' && tok0.length > 100) return tok0;
+    const tok = await withWindowFocus(async () => {
+      const pre = await donor.evalJs('window.__mintedToken || ""');
+      if (pre && typeof pre === 'string' && pre.length > 100) return pre;
+      donor.send('Page.bringToFront');
+      donor.send('Emulation.setFocusEmulationEnabled', { enabled: true });
+      donor.send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 180, y: 180 });
+      await new Promise((r) => setTimeout(r, 110));
+      donor.send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 28, y: 32 });
+      await new Promise((r) => setTimeout(r, 110));
+      donor.send('Input.dispatchMouseEvent', { type: 'mousePressed', x: 28, y: 32, button: 'left', clickCount: 1 });
+      await new Promise((r) => setTimeout(r, 80));
+      donor.send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: 28, y: 32, button: 'left', clickCount: 1 });
+      await new Promise((r) => setTimeout(r, 250));
+      return await donor.evalJs('window.__mintedToken || ""');
+    });
     if (tok && typeof tok === 'string' && tok.length > 100) {
       return tok;
     }
