@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import http from 'node:http';
 import { createHeadlessBot } from './headless-bot.mjs';
+import { TeamSpawnCoordinator } from './spawn-coordinator.mjs';
 
 const pageJsSource = fs.readFileSync('/tmp/tsb-team-ext/page.js', 'utf8');
 const getV27TeamSource = () => fs.readFileSync('/tmp/v27-team-live.js', 'utf8');
@@ -83,6 +84,9 @@ if (!window.__tsbPageInjected) {
   window.__tsbFollowLeader = "npl";
   window.__tsbWaitForLeader = true;
   window.__tsbSquadSyncHold = true;
+  window.__hlSpawnReq = (payload) => {
+    try { if (window.__tsbSpawnReq) window.__tsbSpawnReq(JSON.stringify(payload)); } catch {}
+  };
   try {
     sessionStorage.removeItem('territorialStrategyBotRecover');
     const extCfg = {
@@ -275,6 +279,7 @@ async function attachChromeBot(bot) {
     send('Page.enable');
     send('Runtime.enable');
     send('Runtime.addBinding', { name: '__tsbReportResult' });
+    send('Runtime.addBinding', { name: '__tsbSpawnReq' });
     const bootstrap = makeBootstrapScript(bot);
     send('Page.addScriptToEvaluateOnNewDocument', { source: bootstrap });
     const alreadyPatched = await evalJs(`(() => {
@@ -283,6 +288,11 @@ async function attachChromeBot(bot) {
       if (ext.status.phase === "failed") {
         ext.status.phase = "patched";
         ext.status.error = null;
+      }
+      if (!window.__hlSpawnReq) {
+        window.__hlSpawnReq = (payload) => {
+          try { if (window.__tsbSpawnReq) window.__tsbSpawnReq(JSON.stringify(payload)); } catch {}
+        };
       }
       if (!window.__tsbResultHooked) {
         window.__tsbResultHooked = true;
@@ -324,6 +334,10 @@ async function attachChromeBot(bot) {
     }
     if (msg.method === 'Runtime.bindingCalled' && msg.params.name === '__tsbReportResult') {
       recordResult(name, port, msg.params.payload);
+    } else if (msg.method === 'Runtime.bindingCalled' && msg.params.name === '__tsbSpawnReq') {
+      try {
+        handleBackendSpawnRequest(client, JSON.parse(msg.params.payload));
+      } catch {}
     } else if (msg.method === 'Runtime.consoleAPICalled') {
       const text = (msg.params.args || []).map((a) => a.value ?? a.description ?? '').join(' ');
       if (text.includes('turnstile render')) {
@@ -427,73 +441,94 @@ async function mintViaDonorChrome(donorPort) {
   throw new Error('mint timeout');
 }
 
-// Centralized Backend Spawn Coordinator:
-// Receives candidate pools + Boss position from Headless workers during the 6-second spawnPhase,
-// computes a single unified Farthest-Point map-wide assignment so all 5/10 bots NEVER pick the same region,
-// and pushes each bot's dedicated (x, y) back via worker.postMessage({ type: 'set_spawn', pos })!
-let spawnCoordState = { key: '', lastCalcAt: 0, assignments: new Map() };
+// Centralized Backend Spawn Coordinator (TeamSpawnCoordinator):
+// Receives map terrain (once per match) + live human positions (Boss npl, enemies, allies) during the 6s spawnPhase,
+// solves the global joint Geodesic Voronoi + Boss Flank Guard formation + Bitmask DP minimum-displacement assignment,
+// and pushes each bot's dedicated (x, y, role) back via worker.postMessage({ type: 'set_spawn', pos }) & CDP!
+const spawnCoordinator = new TeamSpawnCoordinator({ port: 8198 });
+spawnCoordinator.startHttpServer();
+const botSpawnMeta = new Map();
+let lastCoordLogKey = '';
+let lastCoordLogAt = 0;
 
 function handleBackendSpawnRequest(client, req) {
-  const { W, H, land, squadCount = 5, bossPts = [], cands = [] } = req;
-  if (!W || !H || !Array.isArray(cands) || cands.length === 0) return;
+  const { matchKey, W, H, land, me, myTeam = 0, curX = -1, curY = -1, humans = [], mapType, packedLandB64 } = req;
+  if (!W || !H) return;
+  const key = matchKey || `${W}x${H}_${land || 0}`;
+  if (spawnCoordinator.matchKey !== key) {
+    botSpawnMeta.clear();
+  }
+  if (mapType || packedLandB64) {
+    spawnCoordinator.setMap({ matchKey: key, W, H, land, mapType, packedLandB64 });
+  }
+  botSpawnMeta.set(client.port, { meId: me, curX, curY });
+
+  if (!spawnCoordinator.landMask) return;
+
   const now = Date.now();
-  const bossKey = bossPts.map((b) => `${b.x >> 4},${b.y >> 4}`).join(';');
-  const gameKey = `${W}x${H}_${land}_${bossKey}`;
-
-  if (spawnCoordState.key !== gameKey || now - spawnCoordState.lastCalcAt > 650) {
-    spawnCoordState.key = gameKey;
-    spawnCoordState.lastCalcAt = now;
-    spawnCoordState.assignments.clear();
-
-    const activeHeadless = clients.filter((c) => c.isHeadless);
-    const nBots = Math.max(activeHeadless.length, squadCount, 5);
-    const picked = [];
-    const bossMinSep = Math.max(115, Math.min(220, 0.16 * Math.hypot(W, H)));
-
-    for (let k = 0; k < nBots; k++) {
-      let bestPt = null;
-      let bestScore = -Infinity;
-      for (let i = 0; i < cands.length; i++) {
-        const pt = cands[i];
-        // Never crowd Boss npl
-        let bossDist = Infinity;
-        for (const b of bossPts) {
-          bossDist = Math.min(bossDist, Math.hypot(pt.x - b.x, pt.y - b.y));
-        }
-        if (bossPts.length > 0 && bossDist < bossMinSep) continue;
-
-        let minDistToPicked = Infinity;
-        for (const p of picked) {
-          minDistToPicked = Math.min(minDistToPicked, Math.hypot(pt.x - p.x, pt.y - p.y));
-        }
-        if (picked.length > 0 && minDistToPicked < 70) continue;
-
-        // First bot takes the highest-quality candidate; subsequent bots maximize distance from already-assigned brothers + candidate quality
-        const distScore = picked.length === 0 ? 260 : Math.min(480, minDistToPicked);
-        const qualScore = (pt.prio ?? (60 - i)) * 1.6;
-        const total = distScore + qualScore;
-        if (total > bestScore) {
-          bestScore = total;
-          bestPt = { x: pt.x, y: pt.y };
-        }
-      }
-      if (!bestPt) {
-        bestPt = cands[k % cands.length];
-      }
-      picked.push(bestPt);
+  if (!spawnCoordinator.lastPlan || spawnCoordinator.lastPlan.matchKey !== key || now - spawnCoordinator.lastSolvedAt >= 320) {
+    const headlessOnly = isHeadlessOnlyMode();
+    let activeClients = headlessOnly
+      ? clients.filter((c) => c.isHeadless)
+      : wantTenForCurrentLobby
+        ? clients
+        : clients.filter((c) => !c.isHeadless);
+    if (!activeClients.includes(client)) {
+      activeClients = clients.filter((c) => c.isHeadless === client.isHeadless);
     }
 
-    const summary = [];
-    activeHeadless.forEach((hc, idx) => {
-      const pos = picked[idx % picked.length];
-      spawnCoordState.assignments.set(hc.port, pos);
-      hc.worker?.postMessage({ type: 'set_spawn', pos });
-      summary.push(`${hc.name.replace('[NPL] ', '')}->(${pos.x},${pos.y})`);
+    const squadBots = activeClients.map((c) => {
+      const meta = botSpawnMeta.get(c.port) || {};
+      return {
+        slot: c.slot,
+        port: c.port,
+        name: c.name,
+        meId: meta.meId ?? -1,
+        curX: meta.curX ?? -1,
+        curY: meta.curY ?? -1,
+      };
     });
-    console.log(`[BACKEND-SPAWN-COORD] Assigned ${activeHeadless.length} mutually-separated spawns (map=${W}x${H}): ${summary.join(' | ')}`);
+
+    const plan = spawnCoordinator.solve({ squadBots, humans, myTeam });
+    if (plan.ok) {
+      const summary = [];
+      for (const c of activeClients) {
+        const pos = plan.assignments[c.slot];
+        if (!pos) continue;
+        if (c.isHeadless) {
+          c.worker?.postMessage({ type: 'set_spawn', pos });
+        } else {
+          c.evalJs(`(() => {
+            window.__tsbAssignedSpawn = ${JSON.stringify(pos)};
+            const bot = window.__fx?.strategyBot;
+            const v = bot?.view;
+            if (v && v.spawnPhase) {
+              const cur = bot.spawn;
+              if (!cur || Math.abs(${pos.x} - cur.x) + Math.abs(${pos.y} - cur.y) > 4) {
+                if (v.chooseSpawn(${pos.x}, ${pos.y})) bot.spawn = { x: ${pos.x}, y: ${pos.y} };
+              }
+            }
+          })()`);
+        }
+        summary.push(`${c.name.replace('[NPL] ', '')}(${pos.role === 'FLANK_GUARD' ? 'GUARD' : 'BANK'})->(${pos.x},${pos.y})`);
+      }
+      const sig = `${key}:${summary.join('|')}`;
+      if (sig !== lastCoordLogKey || now - lastCoordLogAt > 1500) {
+        lastCoordLogKey = sig;
+        lastCoordLogAt = now;
+        const bossInfo = plan.boss ? `(${plan.boss.x},${plan.boss.y})` : 'none';
+        console.log(
+          `[BACKEND-SPAWN-COORD] Solved ${plan.squadCount} bots in ${plan.elapsedMs}ms (map=${W}x${H}, minSep=${plan.minPairwiseDist}px, boss=${bossInfo}): ${summary.join(' | ')}`
+        );
+      }
+    }
   } else {
-    const pos = spawnCoordState.assignments.get(client.port);
-    if (pos) client.worker?.postMessage({ type: 'set_spawn', pos });
+    const pos = spawnCoordinator.lastPlan.assignments[client.slot];
+    if (pos) {
+      if (client.isHeadless) {
+        client.worker?.postMessage({ type: 'set_spawn', pos });
+      }
+    }
   }
 }
 

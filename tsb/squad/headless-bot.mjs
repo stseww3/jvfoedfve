@@ -622,6 +622,28 @@ if (!isMainThread && workerData?.bot) {
       }
     } else if (msg.type === 'set_spawn') {
       sandbox.__tsbAssignedSpawn = msg.pos;
+      try {
+        vm.runInContext(
+          `(() => {
+            const pos = window.__tsbAssignedSpawn;
+            const bot = window.__fx?.strategyBot;
+            const v = bot?.view;
+            if (pos && v && v.spawnPhase && Number.isInteger(pos.x) && Number.isInteger(pos.y)) {
+              const cur = bot.spawn;
+              if (!cur || Math.abs(pos.x - cur.x) + Math.abs(pos.y - cur.y) > 4) {
+                if (v.chooseSpawn(pos.x, pos.y)) {
+                  bot.spawn = { x: pos.x, y: pos.y };
+                  if (window.__hlLog && (!window.__lastImmediateSpawnLog || Math.hypot(pos.x - window.__lastImmediateSpawnLog.x, pos.y - window.__lastImmediateSpawnLog.y) > 6)) {
+                    window.__lastImmediateSpawnLog = { x: pos.x, y: pos.y };
+                    window.__hlLog(\`[HL-SPAWN-BACKEND] me=\${v.me} slot=\${pos.slot ?? window.__tsbSquadSlot} role=\${pos.role || "SQUAD"} -> (\${pos.x},\${pos.y}) bossDist=\${pos.bossDist ?? -1} minAllyDist=\${pos.minAllyDist ?? -1} voronoi=\${pos.voronoiPixels ?? -1}\`);
+                  }
+                }
+              }
+            }
+          })()`,
+          sandbox
+        );
+      } catch {}
     } else if (msg.type === 'token') {
       if (turnstileCallback) {
         try { turnstileCallback(msg.token); } catch (err) {

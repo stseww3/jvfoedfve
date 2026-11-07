@@ -150,14 +150,15 @@ new_helpers = """  isTeammate(g, p) {
     const low = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
     return (
       low === "mishi" || low === "matzz" || low === "kiholma" || low === "leo_99" || low === "racoon" ||
-      low === "zexos" || low === "talon" || low === "vortex" || low === "kronos" || low === "nexus" ||
-      raw.toUpperCase().includes("[NPL]")
+      low === "zexos" || low === "talon" || low === "vortex" || low === "kronos" || low === "nexus"
     );
   }
 
-  // CENTRALIZED BACKEND-COORDINATED TEAM SPAWNING:
-  // 1) Each bot sends its rich candidate pool (spawnCandidates(gClean, 48) + spawnVsPeople(gClean, 24)) + Boss position to the centralized backend coordinator in tsb-team-squad.mjs!
-  // 2) The backend coordinator assigns 100% mutually-exclusive, map-wide separated coordinates via window.__tsbAssignedSpawn!
+  // CENTRALIZED BACKEND-COORDINATED TEAM SPAWNING (TeamSpawnCoordinator):
+  // 1) Reports map terrain (once per match) + live human positions (Boss npl, enemies, allies)
+  //    to the unified backend coordinator in tsb-team-squad.mjs via window.__hlSpawnReq.
+  // 2) Returns the globally optimized, role-based (FLANK_GUARD / ECO_BANK) coordinate
+  //    assigned by the backend via window.__tsbAssignedSpawn.
   chooseSpawn(g, final = true) {
     const me = this.me;
     const W = g.W, H = g.H;
@@ -169,63 +170,116 @@ new_helpers = """  isTeammate(g, p) {
     }
     const rankIdx = Math.max(0, squadIds.indexOf(me));
     const squadCount = Math.max(1, squadIds.length);
-
-    let gClean = g;
-    for (const sid of squadIds) {
-      if (sid !== me && gClean.terr[sid] > 0) {
-        gClean = withoutPlayer(gClean, sid);
-      }
-    }
+    const mapKey = `${W}x${H}_${g.land}_${g.humans}`;
 
     const nowMs = typeof performance !== "undefined" ? performance.now() : Date.now();
-    if (typeof window !== "undefined" && window.__hlSpawnReq && (!this._lastSpawnReqAt || nowMs - this._lastSpawnReqAt > 400)) {
+    if (typeof window !== "undefined" && window.__hlSpawnReq && (!this._lastSpawnReqAt || nowMs - this._lastSpawnReqAt > 260)) {
       this._lastSpawnReqAt = nowMs;
-      const rawA = this.spawnVsPeople ? (this.spawnVsPeople(gClean, 24) || []) : [];
-      const rawB = this.spawnCandidates(gClean, 48) || [];
-      const merged = [];
-      const addPt = (pos, prio) => {
-        const x = typeof pos === "object" ? pos.x : (pos % W);
-        const y = typeof pos === "object" ? pos.y : Math.floor(pos / W);
-        if (!merged.some((m) => Math.hypot(m.x - x, m.y - y) < 28)) {
-          merged.push({ x, y, prio });
-        }
-      };
-      rawA.forEach((p, i) => addPt(p, 100 - i));
-      rawB.forEach((p, i) => addPt(p, 60 - i));
-      const bossPts = [];
-      for (let h = 0; h < g.humans; h++) {
-        if (h !== me && g.terr[h] > 0 && this.isBossNpl(g, h)) {
-          bossPts.push({ x: (g.x0[h] + g.x1[h]) >> 1, y: (g.y0[h] + g.y1[h]) >> 1 });
+      const humans = [];
+      for (let p = 0; p < g.humans; p++) {
+        const terr = g.terr[p] | 0;
+        humans.push({
+          id: p,
+          name: String(g.names?.[p] ?? ""),
+          team: g.teams ? (g.teams[p] | 0) : 0,
+          terr,
+          x: terr > 0 ? ((g.x0[p] + g.x1[p]) >> 1) : -1,
+          y: terr > 0 ? ((g.y0[p] + g.y1[p]) >> 1) : -1,
+        });
+      }
+      const needMap = window.__lastSentSpawnMapKey !== mapKey;
+      if (needMap) window.__lastSentSpawnMapKey = mapKey;
+      let mapType = undefined;
+      let packedLandB64 = undefined;
+      if (needMap) {
+        const rawMap = g.map?.type || g.px;
+        if (typeof window.__tsbSpawnReq === "function" && rawMap) {
+          const nBytes = (W * H + 7) >> 3;
+          const bytes = new Uint8Array(nBytes);
+          for (let i = 0; i < W * H; i++) {
+            const v = rawMap[i];
+            if (v === 1 || v >= 16) bytes[i >> 3] |= 1 << (i & 7);
+          }
+          let bin = "";
+          for (let i = 0; i < nBytes; i += 4096) {
+            bin += String.fromCharCode.apply(null, bytes.subarray(i, Math.min(nBytes, i + 4096)));
+          }
+          packedLandB64 = btoa(bin);
+        } else {
+          mapType = rawMap;
         }
       }
+      const curX = g.terr[me] > 0 ? ((g.x0[me] + g.x1[me]) >> 1) : -1;
+      const curY = g.terr[me] > 0 ? ((g.y0[me] + g.y1[me]) >> 1) : -1;
       window.__hlSpawnReq({
-        W, H, land: g.land, me, rankIdx, squadCount, squadIds, bossPts, cands: merged
+        matchKey: mapKey,
+        W,
+        H,
+        land: g.land,
+        me,
+        slot: window.__tsbSquadSlot ?? rankIdx,
+        rankIdx,
+        squadCount,
+        myTeam: g.teams ? (g.teams[me] | 0) : 0,
+        curX,
+        curY,
+        humans,
+        mapType,
+        packedLandB64,
       });
     }
 
-    if (typeof window !== "undefined" && window.__tsbAssignedSpawn && Number.isInteger(window.__tsbAssignedSpawn.x)) {
+    if (
+      typeof window !== "undefined" &&
+      window.__tsbAssignedSpawn &&
+      Number.isInteger(window.__tsbAssignedSpawn.x) &&
+      (!window.__tsbAssignedSpawn.mapW || (window.__tsbAssignedSpawn.mapW === W && window.__tsbAssignedSpawn.mapH === H))
+    ) {
       const res = window.__tsbAssignedSpawn;
       if (window.__hlLog && (!this._lastLogSpawn || Math.hypot(res.x - this._lastLogSpawn.x, res.y - this._lastLogSpawn.y) > 4)) {
-        this._lastLogSpawn = res;
-        window.__hlLog(`[HL-SPAWN-BACKEND] me=${me} rankIdx=${rankIdx}/${squadCount} -> (${res.x},${res.y}) assigned by backend coordinator!`);
+        this._lastLogSpawn = { x: res.x, y: res.y };
+        window.__hlLog(`[HL-SPAWN-BACKEND] me=${me} slot=${res.slot ?? rankIdx} role=${res.role || "SQUAD"} -> (${res.x},${res.y}) bossDist=${res.bossDist ?? -1} minAllyDist=${res.minAllyDist ?? -1} voronoi=${res.voronoiPixels ?? -1}`);
       }
-      return res;
+      return { x: res.x, y: res.y };
     }
 
-    // Fallback before first backend reply (< 10ms): use spawnCandidates(gClean, 48) with wide greedy separation
-    const rawFallback = this.spawnCandidates(gClean, 48) || [];
-    if (rawFallback.length > 0) {
-      const minSep = Math.max(110, Math.min(240, 0.55 * Math.sqrt((W * H) / Math.max(2, squadCount + 1))));
-      const chosen = [];
-      for (const pos of rawFallback) {
-        const x = typeof pos === "object" ? pos.x : (pos % W);
-        const y = typeof pos === "object" ? pos.y : Math.floor(pos / W);
-        if (chosen.every((p) => Math.hypot(p.x - x, p.y - y) >= minSep)) {
-          chosen.push({ x, y });
+    // Zero-gap synchronous fallback for Frame 1 before the 20ms backend reply arrives:
+    // Deterministic multi-basin Farthest-Point sampling across the interior land grid (margin >= 18px)
+    const mType = g.map?.type || g.px;
+    const bossPts = [];
+    const enemyPts = [];
+    for (let h = 0; h < g.humans; h++) {
+      if (h === me || g.terr[h] <= 0 || this.isOurSquadBot(g, h)) continue;
+      const hx = (g.x0[h] + g.x1[h]) >> 1, hy = (g.y0[h] + g.y1[h]) >> 1;
+      if (this.isBossNpl(g, h)) bossPts.push({ x: hx, y: hy });
+      else if (!this.isTeammate(g, h)) enemyPts.push({ x: hx, y: hy });
+    }
+    const bossMin = Math.max(95, Math.min(165, 0.12 * Math.hypot(W, H)));
+    const picked = [];
+    for (let sIdx = 0; sIdx <= rankIdx; sIdx++) {
+      let bestPt = null, bestScore = -Infinity;
+      for (let y = 18; y < H - 18; y += 12) {
+        for (let x = 18; x < W - 18; x += 12) {
+          const c = y * W + x;
+          if (mType[c] !== 1 && mType[c] < 16) continue;
+          let bDist = 999999;
+          for (const b of bossPts) bDist = Math.min(bDist, Math.hypot(x - b.x, y - b.y));
+          if (bossPts.length > 0 && bDist < bossMin) continue;
+          let eDist = 999999;
+          for (const e of enemyPts) eDist = Math.min(eDist, Math.hypot(x - e.x, y - e.y));
+          let aDist = 999999;
+          for (const p of picked) aDist = Math.min(aDist, Math.hypot(x - p.x, y - p.y));
+          const sc = Math.min(aDist, 320) * 1.8 + Math.min(eDist, 240) * 1.2 + (bossPts.length && sIdx < 2 ? -Math.abs(bDist - 190) * 0.6 : 0);
+          if (sc > bestScore) {
+            bestScore = sc;
+            bestPt = { x, y };
+          }
         }
       }
-      const res = chosen[rankIdx % chosen.length] || rawFallback[rankIdx % rawFallback.length];
-      return typeof res === "object" ? res : { x: res % W, y: Math.floor(res / W) };
+      if (bestPt) picked.push(bestPt);
+    }
+    if (picked.length > 0) {
+      return picked[picked.length - 1];
     }
     return super.chooseSpawn(g, final);
   }
