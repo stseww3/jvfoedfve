@@ -1,7 +1,41 @@
 import fs from 'node:fs';
 import http from 'node:http';
+import net from 'node:net';
 import { createHeadlessBot } from './headless-bot.mjs';
 import { TeamSpawnCoordinator } from './spawn-coordinator.mjs';
+
+function rotateSocksSession(socksPort) {
+  return new Promise((resolve) => {
+    if (!socksPort) return resolve(false);
+    const sock = net.connect(socksPort, '127.0.0.1');
+    let stage = 0;
+    let buf = Buffer.alloc(0);
+    const done = (ok) => {
+      try { sock.destroy(); } catch {}
+      resolve(ok);
+    };
+    const timer = setTimeout(() => done(false), 2000);
+    sock.on('error', () => { clearTimeout(timer); done(false); });
+    sock.on('connect', () => sock.write(Buffer.from([0x05, 0x01, 0x00])));
+    sock.on('data', (chunk) => {
+      buf = Buffer.concat([buf, chunk]);
+      if (stage === 0 && buf.length >= 2) {
+        buf = buf.subarray(2);
+        stage = 1;
+        const hb = Buffer.from('rotate.proxy.local', 'utf8');
+        const req = Buffer.alloc(4 + 1 + hb.length + 2);
+        req[0] = 0x05; req[1] = 0x01; req[2] = 0x00; req[3] = 0x03;
+        req[4] = hb.length;
+        hb.copy(req, 5);
+        req.writeUInt16BE(80, 5 + hb.length);
+        sock.write(req);
+      } else if (stage === 1 && buf.length >= 10) {
+        clearTimeout(timer);
+        done(buf[1] === 0x00);
+      }
+    });
+  });
+}
 
 const pageJsSource = fs.readFileSync('/tmp/tsb-team-ext/page.js', 'utf8');
 const getV27TeamSource = () => fs.readFileSync('/tmp/v27-team-live.js', 'utf8');
@@ -927,26 +961,28 @@ setInterval(async () => {
       if (s.myLobbyUsername.includes('Redacted')) {
         if (!c.redactedDetectedAt) c.redactedDetectedAt = now;
         if (now - c.redactedDetectedAt >= 20000) {
-          console.log(`[SELF-CHECK REDACTED] ${c.name} still "${s.myLobbyUsername}" (acc=${s.myAccId}) after 20s in Room 0 -> rotating fresh account & re-entering!`);
+          console.log(`[SELF-CHECK REDACTED] ${c.name} still "${s.myLobbyUsername}" (acc=${s.myAccId}) after 20s in Room 0 -> rotating sticky proxy IP & fresh account & re-entering!`);
           c.redactedDetectedAt = 0;
           c.lastVerifiedLobbyName = null;
           c.freshToken = false;
           c.enteredLobbyAt = 0;
-          c.evalJs(`(() => {
-            localStorage.setItem("d105", "");
-            localStorage.setItem("d106", "");
-            localStorage.setItem("v105", "0");
-            localStorage.setItem("v106", "0");
-            if (typeof bm === "object" && bm?.qo?.qp) {
-              bm.qo.qp(105, "");
-              bm.qo.qp(106, "");
-            }
-            if (typeof b1 === "object" && b1?.z?.close) {
-              b1.z.close(1, 3252);
-              b1.z.close(0, 3253);
-              if (typeof b1.z.aIR === "function") b1.z.aIR(0, 18, 0);
-            }
-          })()`);
+          rotateSocksSession(c.socksPort).then(() => {
+            c.evalJs(`(() => {
+              localStorage.setItem("d105", "");
+              localStorage.setItem("d106", "");
+              localStorage.setItem("v105", "0");
+              localStorage.setItem("v106", "0");
+              if (typeof bm === "object" && bm?.qo?.qp) {
+                bm.qo.qp(105, "");
+                bm.qo.qp(106, "");
+              }
+              if (typeof b1 === "object" && b1?.z?.close) {
+                b1.z.close(1, 3252);
+                b1.z.close(0, 3253);
+                if (typeof b1.z.aIR === "function") b1.z.aIR(0, 18, 0);
+              }
+            })()`);
+          });
         }
       } else if (s.myLobbyUsername.startsWith('[Nope]')) {
         c.redactedDetectedAt = 0;
