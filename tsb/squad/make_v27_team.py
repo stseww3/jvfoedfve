@@ -8,85 +8,14 @@ pool_names = [m.group(1).strip().lower() for m in re.finditer(r'"([^"]+)"', pool
 pool_set_js = """const SQUAD_POOL_SET = new Set(""" + json.dumps(sorted(list(set(pool_names)))) + """);
 try {
   if (typeof window === "object") {
-    if (window.__forceLeaveSeq !== 4) {
-      window.__forceLeaveSeq = 4;
-      const d = window.dictionary;
-      const g = d && window[d.game];
-      if (g && g[d.gameState] !== 0 && typeof g[d.sbLeave] === "function") {
-        g[d.sbLeave](true);
-      }
+    if (window.__bossLobbyWatcher) {
+      clearInterval(window.__bossLobbyWatcher);
+      window.__bossLobbyWatcher = null;
     }
-    const isBossReadyInLobby = () => {
-      const w1 = window.bq?.wZ?.w1;
-      const wa = window.bq?.wZ?.wa | 0;
-      if (!Array.isArray(w1) || wa <= 0) return false;
-      for (let i = 0; i < Math.min(wa, w1.length); i++) {
-        const p = w1[i];
-        if (!p) continue;
-        const raw = String(p.aGT || p.aGM || p.aFN || p.username || p.name || "").trim();
-        const low = raw.toLowerCase();
-        if (!low || SQUAD_POOL_SET.has(low)) continue;
-        const stripped = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
-        if (SQUAD_POOL_SET.has(stripped)) continue;
-        if (
-          stripped === "kazerd183" || stripped.includes("kazerd") ||
-          low.includes("kazerd") || stripped === "npl" ||
-          low === "[npl]npl" || low.includes("auouf")
-        ) {
-          return true;
-        }
-      }
-      return false;
-    };
-    const ensureLobbyHook = () => {
-      const sH = window.bq?.sH;
-      if (!sH || typeof sH.select !== "function") return;
-      if (!sH.__origSelect) {
-        sH.__origSelect = sH.select.bind(sH);
-        sH.select = function(id) {
-          if (id > 0) {
-            if (!isBossReadyInLobby()) {
-              if (this.wF > 0) return this.__origSelect(0);
-              return;
-            }
-            const firstId = this.sH?.[0]?.id || id;
-            if (this.wF === firstId) return;
-            return this.__origSelect(firstId);
-          }
-          if (this.wF > 0) return this.__origSelect(0);
-        };
-      }
-      if (window.bq?.f6 === 1) {
-        const bossReady = isBossReadyInLobby();
-        if ((window.__tsbSquadSlot | 0) === 0 && window.__hlLog && (!window.__lastLobbyWaitLog || Date.now() - window.__lastLobbyWaitLog > 8000)) {
-          window.__lastLobbyWaitLog = Date.now();
-          const w1 = window.bq?.wZ?.w1 || [];
-          const wa = window.bq?.wZ?.wa | 0;
-          const rdyNames = w1.slice(0, Math.min(wa, 25)).map(p => `${String(p?.aGT || p?.aGM || p?.username || "").trim()}(c=${p?.color})`).join(", ");
-          const bossInAll = w1.find(p => {
-            const r = String(p?.aGT || p?.aGM || p?.username || "").trim().toLowerCase();
-            return r.includes("kazerd") || r.includes("npl") || r.includes("auouf");
-          });
-          window.__hlLog(`[LOBBY-WAIT] total=${w1.length} ready=${wa} bossReady=${bossReady} bossFound=${bossInAll ? (bossInAll.aGM || bossInAll.username) : "none"} rdyList=[${rdyNames}]`);
-        }
-        const firstId = sH.sH?.[0]?.id || 0;
-        if (bossReady && firstId > 0 && sH.wF !== firstId && !sH.__joiningBoss) {
-          sH.__joiningBoss = true;
-          const slot = window.__tsbSquadSlot | 0;
-          setTimeout(() => {
-            sH.__joiningBoss = false;
-            if (window.bq?.f6 === 1 && isBossReadyInLobby() && sH.sH?.[0]?.id > 0 && sH.wF !== sH.sH[0].id) {
-              sH.__origSelect(sH.sH[0].id);
-            }
-          }, 40 + slot * 35);
-        } else if (!bossReady && sH.wF > 0) {
-          sH.__origSelect(0);
-        }
-      }
-    };
-    if (window.__bossLobbyWatcher) clearInterval(window.__bossLobbyWatcher);
-    window.__bossLobbyWatcher = setInterval(ensureLobbyHook, 200);
-    ensureLobbyHook();
+    if (window.bq?.sH?.__origSelect) {
+      window.bq.sH.select = window.bq.sH.__origSelect;
+      delete window.bq.sH.__origSelect;
+    }
   }
 } catch {}
 """
@@ -769,14 +698,7 @@ s = s.replace(old_rank_mult, new_rank_mult, 1)
 old_early_act = """    if (g.t < P.coreFrom) {
       const before = this.cmds;"""
 
-new_early_act = """    if (g.t >= 15 && !this.hasBossInMatch(g)) {
-      try {
-        const d = window.dictionary, gm = d && window[d.game];
-        if (gm && gm[d.gameState] !== 0 && typeof gm[d.sbLeave] === "function") gm[d.sbLeave](true);
-      } catch {}
-      return;
-    }
-    if (g.t < P.coreFrom) {
+new_early_act = """    if (g.t < P.coreFrom) {
       this.analyze(g);
       if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
         this._lastTickLog = g.t;
@@ -788,6 +710,36 @@ new_early_act = """    if (g.t >= 15 && !this.hasBossInMatch(g)) {
       const before = this.cmds;"""
 assert old_early_act in s, "old_early_act not found"
 s = s.replace(old_early_act, new_early_act, 1)
+
+old_bot_buy = """      const avail = B - fee - keep;
+      if (avail <= 0) continue;
+
+      if (!person) {
+        const want = 1.25 * need + 3 * this.cnt[q];
+        const x = Math.min(avail, want);
+        if (x <= 0 || (x < want && x < P.chunk * B)) continue;
+        return this.send(g, q, x);
+      }"""
+
+new_bot_buy = """      const avail = B - fee - keep;
+      if (avail <= 0) continue;
+
+      if (!person) {
+        if (g.hasAttack(me, q) && (!g.hasAttack(q, me) || g.attackTroopsOn(me, q) >= 0.35 * need)) continue;
+        const want = 1.25 * need + 3 * this.cnt[q];
+        const x = Math.min(avail, want);
+        if (x < this.minCmd(g) || (x < want && x < P.chunk * B)) continue;
+        return this.send(g, q, x);
+      }"""
+assert old_bot_buy in s, "old_bot_buy not found"
+s = s.replace(old_bot_buy, new_bot_buy, 1)
+
+old_zero_pulse = """        const canZeroPulse = (amt) =>
+          P.zeroPulseMode > 0 &&"""
+new_zero_pulse = """        const canZeroPulse = (amt) =>
+          !g.online && P.zeroPulseMode > 0 &&"""
+assert old_zero_pulse in s, "old_zero_pulse not found"
+s = s.replace(old_zero_pulse, new_zero_pulse, 1)
 
 old_main_analyze = """    this.analyze(g);
     this.updateGrudges(g);
