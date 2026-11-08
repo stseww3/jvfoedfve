@@ -4353,16 +4353,24 @@ export class Policy extends V17 {
       ? (hasExposedCoast ? 62 * L : 48 * L)
       : Math.max(92 * L, this.safeAt(g, -1));
 
-    let maxSquadTerr = L;
+    let maxSquadTerr = 0, topSquadId = -1, maxRandomTeamTerr = 0;
     for (let p = 0; p < g.humans; p++) {
-      if (g.alive[p] && this.isTeammate(g, p) && this.isOurSquadBot(g, p) && g.terr[p] > maxSquadTerr) {
-        maxSquadTerr = g.terr[p];
+      if (!g.alive[p] || !this.isTeammate(g, p)) continue;
+      if (typeof window !== "undefined" && window.__quitPlayers && window.__quitPlayers.has(p)) continue;
+      if (this.isOurSquadBot(g, p) || this.isBossNpl(g, p)) {
+        if (g.terr[p] > maxSquadTerr) {
+          maxSquadTerr = g.terr[p];
+          topSquadId = p;
+        }
+      } else if (!g.isBot(p) && g.terr[p] > maxRandomTeamTerr) {
+        maxRandomTeamTerr = g.terr[p];
       }
     }
     let bestTarget = -1, bestScore = -Infinity, bestKind = "prod_opt", bestFloor = prodOptFloor;
 
     for (let p = 0; p < g.humans; p++) {
       if (p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 2000 || g.bal[p] < 1500) continue;
+      if (typeof window !== "undefined" && window.__quitPlayers && window.__quitPlayers.has(p)) continue;
       if (typeof window !== "undefined" && window.ao?.iD && !window.ao.iD(p)) continue;
 
       const Lp = Math.max(1, g.terr[p]), Bp = g.bal[p], dAlly = Bp / Lp;
@@ -4392,7 +4400,8 @@ export class Policy extends V17 {
       }
 
       const allyHasCoast = (g.coast?.[p]?.length ?? 0) > 0;
-      if (enemyNbs === 0 && inHumanAtk === 0 && outHumanAtk === 0 && (!boxedIn || !allyHasCoast || dMe < 110 || dAlly > 82)) continue;
+      const isCrownContender = p === topSquadId && enemyNbs > 0 && maxRandomTeamTerr >= 0.70 * maxSquadTerr;
+      if (enemyNbs === 0 && inHumanAtk === 0 && outHumanAtk === 0 && (!boxedIn || !allyHasCoast || dMe < 118 || dAlly > 82 || (g.boatCount && g.boatCount[p] === 0 && g.t > 7500))) continue;
 
       const isDoomedPocket = inHumanAtk > 1.65 * Bp || (g.t >= 4500 && Lp < 0.22 * maxSquadTerr && inHumanAtk > 0.45 * Bp);
       if (isDoomedPocket) continue;
@@ -4422,11 +4431,12 @@ export class Policy extends V17 {
         const maxAllyD = boxedIn ? (activePush || hasPreyOpening ? 130 : 122) : 92;
         if (dMe < reqD || dAlly > maxAllyD || B <= 1.14 * prodOptFloor || (!boxedIn && dMe < dAlly + 16)) continue;
         const score = (activePush || hasPreyOpening ? 2500 : 1000) +
+          (isCrownContender ? 1800 : 0) +
           (outHumanAtk / Math.max(1, Bp)) * 1200 +
           (hasBleedingPrey ? 500 : 0) +
           (100 - dAlly) * 18 +
           enemyNbs * 80 +
-          Math.min(2200, Lp / 18);
+          Math.min(3500, Lp / 14);
         if (score > bestScore) {
           bestScore = score;
           bestTarget = p;
@@ -4852,21 +4862,6 @@ export class Policy extends V17 {
           minAtkShare: 0.08,
           maxBoats: 5,
           atkFreshBoats: P.atkFreshBoats > 0,
-          baseRatePer10: P.seaRebateMode > 0 ? this.baseRate(g) : 0,
-        })
-      ) {
-        this.seaState.lastWiden = g.t;
-        this.seaState.stats.widen.boats++;
-        this.seaState.stats.widen.fee += fee;
-      }
-    }
-
-    if (this.cmds === cmdsBefore) this.tryDonateToTeammate(g);
-    if (this.cmds === cmdsBefore) this.idleBoats(g);
-
-    // Line 1: Independent Island-Hopping Line ("算账再发" cost-benefit gate):
-    if (P.seaCore > 0 && g.t - this.seaState.lastFrogHop >= 30) {
-      const B = g.bal[me], L = Math.max(1, g.terr[me]), fee = iV(32 * B, 1024);
-      const negInterestCap = P.frogHopOverMode > 0 && B >= 112 * L ? Math.min(25000, Math.floor(0.036 * B)
+          baseRatePer
 
 （手上的事做完就回到 read_chat 等消息：这是用户的强制要求，不要结束回合。）
