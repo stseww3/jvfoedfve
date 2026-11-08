@@ -109,7 +109,8 @@ new_helpers = """  isTeammate(g, p) {
       low.includes("zero_2") || low.includes("sora") ||
       low.includes("lucas94") || low.includes("dave_w") || low.includes("mark07") ||
       low.includes("kevin_k") || low.includes("ethan21") || low.includes("ryan_m") ||
-      low.includes("noah88") || low.includes("leo_tx")
+      low.includes("noah88") || low.includes("leo_tx") || low.includes("alex_k") ||
+      low.includes("zero_7")
     ) {
       return false;
     }
@@ -134,7 +135,8 @@ new_helpers = """  isTeammate(g, p) {
       low === "_alex" || low === "tomo" || low === "zero_2" || low === "sora" ||
       low === "lucas94" || low === "dave_w" || low === "mark07" || low === "kevin_k" ||
       low === "ethan21" || low === "ryan_m" || low === "noah88" || low === "leo_tx" ||
-      raw.toUpperCase().includes("[NPL]") || raw.toUpperCase().includes("[NOPE]")
+      low === "alex_k" || low === "zero_7" ||
+      raw.toUpperCase().includes("[NPL]") || raw.toUpperCase().includes("[NOPE]") || raw.toUpperCase().includes("[APEX]")
     );
   }
 
@@ -471,7 +473,7 @@ new_helpers = """  isTeammate(g, p) {
     if (!g.teams || !(g.teams[me] > 0) || typeof g.donate !== "function") return false;
     if (g.t < 400 || g.t - (this.lastDonateTick ?? -999) < 18) return false;
     const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
-    const boxedIn = this.nb.length === 0 && this.neutral === 0;
+    const boxedIn = this.nb.length === 0 && (this.neutral === 0 || (g.t >= 850 && this.neutral <= 8 && dMe >= 55));
 
     let myHumanInAtk = 0;
     for (const a of g.attackersOf(me)) {
@@ -479,7 +481,7 @@ new_helpers = """  isTeammate(g, p) {
     }
     const enemyHumanNbs = this.nb.filter((p) => g.alive[p] && this.person(g, p));
     const hasExposedCoast = (g.coast?.[me]?.length ?? 0) > 0;
-    const coastGuardFloor = hasExposedCoast && g.t >= 1100 ? 68 * L : 18 * L;
+    const coastGuardFloor = boxedIn ? (hasExposedCoast ? 28 * L : 18 * L) : (hasExposedCoast && g.t >= 1100 ? 68 * L : 22 * L);
     const safeFloor = Math.max(coastGuardFloor, enemyHumanNbs.length > 0 ? this.safeAt(g, -1) : 0);
     const isPureInlandSafe = enemyHumanNbs.length === 0 && !hasExposedCoast && myHumanInAtk === 0;
     if (myHumanInAtk > 0 || B <= 1.10 * safeFloor) return false;
@@ -517,10 +519,12 @@ new_helpers = """  isTeammate(g, p) {
       }
     }
 
-    // 2. SQUAD MUTUAL AID: Rescue any [NPL] squad brother who is under human attack or sneaky boat landing,
-    //    AND lightly poke (10%B) the attacker if we border them!
+    // 2. SQUAD MUTUAL AID (S04/S07/S08/S09 verified):
+    //    - Boxed-in rear brothers (nb===0) act as low-tax Central Banks (pct=220..280 to amortize flat 6.25%B engine tax);
+    //    - Active frontline brothers (nb>0) protect their own 2:1 defense shield (only rescue-donate when dMe>=108);
+    //    - 10%B assist poke enforces a strict 90-tick per-bot & 60-tick per-target cooldown so RTT never triggers multi-shot bursts!
     for (let p = 0; p < g.humans; p++) {
-      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 300) continue;
+      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 400) continue;
       const dAlly = g.bal[p] / Math.max(1, g.terr[p]);
       let inHumanAtk = 0, mainAttacker = -1, maxAtkTr = 0;
       for (const a of g.attackersOf(p)) {
@@ -531,10 +535,11 @@ new_helpers = """  isTeammate(g, p) {
         }
       }
       if (inHumanAtk > 0 && (inHumanAtk >= 0.08 * g.bal[p] || dAlly < 75)) {
-        // First donate cash to save our brother (while keeping our own coastGuardFloor / safeFloor intact!)
-        if (dMe >= Math.max(55, dAlly + 15)) {
-          const pct = Math.min(maxSafePct, isPureInlandSafe ? 240 : 155);
-          if (pct >= 55 && g.donate(pct, p, me)) {
+        const minDonorDens = boxedIn ? 48 : 108;
+        const canAcceptDonate = typeof window === "undefined" || !window.ao?.iD || window.ao.iD(p);
+        if (canAcceptDonate && dMe >= Math.max(minDonorDens, dAlly + 18)) {
+          const pct = Math.min(maxSafePct, boxedIn ? 256 : 160);
+          if (pct >= 110 && g.donate(pct, p, me)) {
             this.lastDonateTick = g.t;
             this.cmds++;
             if (typeof window !== "undefined" && window.__hlLog) {
@@ -543,9 +548,18 @@ new_helpers = """  isTeammate(g, p) {
             return true;
           }
         }
-        // Second, if we border the attacker on land and aren't already attacking them, do a ~10%B light assist poke!
-        if (mainAttacker >= 0 && (this.cnt[mainAttacker] ?? 0) > 0 && !g.hasAttack(me, mainAttacker) && g.hasFreeSlot(me) && dMe >= 65) {
+        if (
+          mainAttacker >= 0 &&
+          (this.cnt[mainAttacker] ?? 0) > 0 &&
+          !g.hasAttack(me, mainAttacker) &&
+          g.hasFreeSlot(me) &&
+          dMe >= 88 &&
+          g.bal[mainAttacker] <= 1.35 * B &&
+          g.t - (this.lastAssistTick ?? -999) >= 90 &&
+          g.t - (this.hitTo.get(mainAttacker) ?? -999) >= 60
+        ) {
           if (g.attack(102, mainAttacker, me)) {
+            this.lastAssistTick = g.t;
             this.cmds++;
             this.hitTo.set(mainAttacker, g.t);
             if (typeof window !== "undefined" && window.__hlLog) {
@@ -557,14 +571,15 @@ new_helpers = """  isTeammate(g, p) {
       }
     }
 
-    if (!boxedIn && dMe < 112) return false;
-    if (boxedIn && dMe < 55) return false;
+    if (!boxedIn && dMe < 135) return false;
+    if (boxedIn && dMe < 48) return false;
 
     let bestAlly = -1, bestScore = -Infinity;
     for (let p = 0; p < g.humans; p++) {
       if (p === me || !g.alive[p] || !this.isTeammate(g, p) || (!this.isBossNpl(g, p) && !this.isOurSquadBot(g, p)) || g.terr[p] < 600) continue;
+      if (typeof window !== "undefined" && window.ao?.iD && !window.ao.iD(p)) continue;
       const dAlly = g.bal[p] / Math.max(1, g.terr[p]);
-      if (dAlly >= 132) continue;
+      if (dAlly >= 125) continue;
       let outAtk = 0, inAtk = 0;
       const sb = g.slotBase(p);
       for (let i = 0; i < g.atkCount[p]; i++) {
@@ -573,18 +588,19 @@ new_helpers = """  isTeammate(g, p) {
       }
       for (const a of g.attackersOf(p)) inAtk += g.attackTroopsOn(a, p);
       const allyEnemyNbs = this.peopleOf(g, p);
-      if (!allyEnemyNbs.length && outAtk === 0 && inAtk === 0 && g.t > 2200) continue;
+      if (!allyEnemyNbs.length && outAtk === 0 && inAtk === 0) continue;
       const isBoss = p === bossId;
       const isSquad = this.isOurSquadBot(g, p);
-      const score = (isBoss ? 5000 : isSquad ? 600 : 150) + (outAtk + inAtk) / 500 + (135 - dAlly) * 3 + Math.min(150, g.terr[p] / 500);
-      if (score > bestScore && (isBoss || boxedIn || outAtk + inAtk > 0.04 * g.bal[p] || (isSquad && dMe >= 120 && dAlly < 98))) {
+      const score = (isBoss ? 5000 : isSquad ? 700 : 150) + (outAtk + inAtk) / 400 + (130 - dAlly) * 4 + Math.min(200, g.terr[p] / 400);
+      if (score > bestScore && (isBoss || boxedIn || outAtk + inAtk > 0.04 * g.bal[p] || (isSquad && dMe >= 136 && dAlly < 95))) {
         bestScore = score;
         bestAlly = p;
       }
     }
     if (bestAlly < 0) return false;
 
-    const pct = boxedIn ? (dMe > 110 ? 280 : 185) : 153;
+    const pct = Math.min(maxSafePct, boxedIn ? (dMe > 95 ? 280 : 220) : 160);
+    if (pct < 110) return false;
     if (g.donate(pct, bestAlly, me)) {
       this.lastDonateTick = g.t;
       this.cmds++;
@@ -592,6 +608,81 @@ new_helpers = """  isTeammate(g, p) {
         window.__hlLog(`[HL-DONATE] t=${g.t} surplus donate pct=${pct}/1024 -> ally=${bestAlly}(${g.names?.[bestAlly] || ""}) boxedIn=${boxedIn} myBal=${B} dMe=${Math.round(dMe)}`);
       }
       return true;
+    }
+    return false;
+  }
+
+  // S05 Smart Sea-Defense Scheduler: Geometric bType===6 Chaser Deduplication + 3.125%B Boat Tax ROI Gate
+  tryInterceptEnemyBoats(g) {
+    const me = this.me;
+    if (!g.boatsAllowed || !g.boatsAllowed(me) || !g.chase || (g.boatCount?.[me] ?? 0) >= 4) return false;
+    const coastMe = g.coast?.[me];
+    if (!coastMe || coastMe.length === 0) return false;
+    const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
+    const myFee = iV(32 * B, 1024);
+    const keepFloor = Math.max(58 * L, Math.floor(0.75 * this.safeAt(g, -1)));
+    if (B - myFee <= keepFloor || dMe < 62) return false;
+    if (g.t - (this.lastInterceptTick ?? -999) < 15) return false;
+
+    const boatN = g.boatN | 0;
+    if (boatN <= 0) return false;
+    const W = g.W;
+
+    for (let b = 0; b < boatN; b++) {
+      const owner = g.bSlot[b] >> 3;
+      if (owner === me || owner >= 512 || this.isTeammate(g, owner) || this.isOurSquadBot(g, owner)) continue;
+      const bTr = g.bTroops[b] | 0;
+      const isExistential = bTr >= 0.65 * Math.max(1, B - 15 * L);
+      if (!isExistential && (bTr < 1500 || myFee > 0.625 * bTr)) continue;
+
+      const pos = g.bPos[b];
+      const bx = pos % W, by = Math.floor(pos / W);
+      const route = g.bRoute?.[b];
+      const endPos = route && route.length > 0 ? route[route.length - 1] : pos;
+      const ex = endPos % W, ey = Math.floor(endPos / W);
+
+      let minCoastDist = 999999;
+      const step = Math.max(1, Math.floor(coastMe.length / 48));
+      for (let i = 0; i < coastMe.length; i += step) {
+        const c = coastMe[i];
+        const cx = c % W, cy = Math.floor(c / W);
+        const d1 = Math.hypot(bx - cx, by - cy);
+        const d2 = Math.hypot(ex - cx, ey - cy);
+        const dMin = Math.min(d1, d2);
+        if (dMin < minCoastDist) minCoastDist = dMin;
+      }
+      if (minCoastDist > 125) continue;
+
+      let alreadyChasingTroops = 0;
+      for (let c = 0; c < boatN; c++) {
+        if (c === b) continue;
+        const cOwner = g.bSlot[c] >> 3;
+        if (cOwner !== me && !this.isTeammate(g, cOwner) && !this.isOurSquadBot(g, cOwner)) continue;
+        if ((g.bType?.[c] ?? 0) % 64 === 6) {
+          const cr = g.bRoute?.[c];
+          const cEnd = cr && cr.length > 0 ? cr[cr.length - 1] : -1;
+          if (cEnd >= 0 && Math.hypot((cEnd % W) - bx, Math.floor(cEnd / W) - by) <= 48) {
+            alreadyChasingTroops += g.bTroops[c] | 0;
+          }
+        }
+      }
+      if (alreadyChasingTroops >= 1.02 * bTr) continue;
+
+      const remNeed = Math.ceil((1.12 * bTr - alreadyChasingTroops) * Math.exp(0.002 * minCoastDist));
+      const maxSend = Math.min(Math.floor(0.12 * B), B - myFee - keepFloor);
+      if (maxSend <= 0 || remNeed > maxSend) continue;
+
+      const boatId = g.bId[b];
+      const pct = Math.max(4, Math.min(124, Math.ceil((remNeed * 1024) / Math.max(1, B))));
+      if (g.chase(pct, boatId, me)) {
+        this.lastInterceptTick = g.t;
+        this.boats++;
+        this.cmds++;
+        if (typeof window !== "undefined" && window.__hlLog) {
+          window.__hlLog(`[HL-INTERCEPT] t=${g.t} smart sea intercept pct=${pct}/1024 -> boatId=${boatId} owner=${owner} boatTroops=${bTr} fee=${myFee}`);
+        }
+        return true;
+      }
     }
     return false;
   }"""
@@ -637,17 +728,43 @@ assert old_other_atk in s, "old_other_atk not found"
 s = s.replace(old_other_atk, new_other_atk, 1)
 
 old_rank_mult = """        let rankMult = 1.0;"""
-new_rank_mult = """        let rankMult = 1.0;
+new_rank_mult = """        // S08 Joint-Kill Need Subtraction & Single-Team Focus-Fire Lock:
+        if (allyAtk > 0) {
+          const jointNeed = Math.max(1, rawNeed - Math.floor(0.85 * allyAtk));
+          c = (jointNeed + fee) / baseGain;
+        }
+        let squadWarTeams = 0, qTeamEngaged = false;
+        if (g.teams && g.teams[me] > 0) {
+          const engagedTeams = new Set();
+          for (let p = 0; p < g.humans; p++) {
+            if (!g.alive[p] || (!this.isTeammate(g, p) && !this.isOurSquadBot(g, p))) continue;
+            const sbP = g.slotBase(p);
+            for (let i = 0; i < g.atkCount[p]; i++) {
+              const tId = g.atkTarget[sbP + i];
+              if (tId >= 0 && tId < g.humans && !g.isBot(tId) && !this.isTeammate(g, tId)) {
+                engagedTeams.add(g.teams[tId]);
+              }
+            }
+          }
+          squadWarTeams = engagedTeams.size;
+          qTeamEngaged = engagedTeams.has(g.teams[q]);
+        }
+        let rankMult = 1.0;
         if (atkOnBoss > 0 || bossAtkOnQ > 0) {
-          // Moderate assist bias for Boss's target (10% poke already handled in tryEmergencyBossRescue)
-          c *= 0.78;
-          rankMult *= 0.72;
-        } else if (clanAllyAtkers > 0 || allyAtk > 0.06 * Bq) {
-          c *= 0.82;
-          rankMult *= 0.78;
-        } else if (atkOnAlly > 0.08 * Bq) {
-          c *= 0.85;
-          rankMult *= 0.82;
+          c *= 0.65;
+          rankMult *= 0.58;
+        } else if (clanAllyAtkers >= 2 || allyAtk >= 0.15 * Bq) {
+          c *= 0.58;
+          rankMult *= 0.50;
+        } else if (clanAllyAtkers > 0 || allyAtk > 0.04 * Bq) {
+          c *= 0.68;
+          rankMult *= 0.62;
+        } else if (atkOnAlly > 0.06 * Bq) {
+          c *= 0.75;
+          rankMult *= 0.70;
+        } else if (squadWarTeams >= 1 && !qTeamEngaged && !onMe && !nearCollapse) {
+          c *= 1.45;
+          rankMult *= 1.45;
         }"""
 assert old_rank_mult in s, "old_rank_mult not found"
 s = s.replace(old_rank_mult, new_rank_mult, 1)
@@ -681,6 +798,7 @@ new_main_analyze = """    this.analyze(g);
       window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
     }
     this.tryPeaceVote(g);
+    if (this.tryInterceptEnemyBoats(g) && g.online) return;
     if (this.tryEmergencyBossRescue(g) && g.online) return;
     this.updateGrudges(g);
     this.updateWars(g);"""
