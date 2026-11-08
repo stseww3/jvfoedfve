@@ -8,14 +8,154 @@ pool_names = [m.group(1).strip().lower() for m in re.finditer(r'"([^"]+)"', pool
 pool_set_js = """const SQUAD_POOL_SET = new Set(""" + json.dumps(sorted(list(set(pool_names)))) + """);
 try {
   if (typeof window === "object") {
-    if (window.__bossLobbyWatcher) {
-      clearInterval(window.__bossLobbyWatcher);
-      window.__bossLobbyWatcher = null;
+    if (typeof window.be === "object" && window.be) {
+      window.be.render = function() {};
+      window.be.a7W = function() {};
+      window.be.a3K = function() {};
     }
-    if (window.bq?.sH?.__origSelect) {
-      window.bq.sH.select = window.bq.sH.__origSelect;
-      delete window.bq.sH.__origSelect;
+    if (typeof window.nF === "function") window.nF = function() {};
+    if (typeof window.a1C === "function") window.a1C = function() {};
+    const sb = window.__fx?.strategyBot;
+    if (sb && typeof sb.afterTick === "function" && !sb.__fixedInflight450) {
+      sb.__fixedInflight450 = true;
+      const prevAfterTick = sb.afterTick.bind(sb);
+      sb.afterTick = function() {
+        const curT = typeof window.bi === "object" && window.bi?.kr ? window.bi.kr() : -1;
+        if (this.inflight !== null && performance.now() - this.inflight < 450 && curT >= 0 && curT - (this.inflightTick ?? 0) < 8) {
+          this.afterQueued = false;
+          return;
+        }
+        return prevAfterTick();
+      };
     }
+    const patchLoop = (loopObj) => {
+      if (!loopObj || loopObj.__patchedFast42) return;
+      loopObj.__patchedFast42 = true;
+      loopObj.aXQ = function(aD) {
+        if (window.aE?.hx) { this.aEZ(aD); return; }
+        this.af3.push(aD);
+        if (window.aE?.a38 === 1 && !window.aE.hx) {
+          window.bi.eZ = performance.now();
+          if (this.eZ > window.bi.eZ) this.eZ = window.bi.eZ;
+          this.ee();
+          return;
+        }
+        if (window.aE?.a38 === 2) {
+          for (var aC = 0; aC < this.af3.length; aC++) { window.bB.qk.ee(this.af3[aC]); }
+          this.af3 = [];
+        }
+      };
+      loopObj.ee = function() {
+        if (typeof window.i?.ee === "function") window.i.ee();
+        if (window.aE?.hx) {
+          if (window.__fx?.strategyBot?.beforeFrame) window.__fx.strategyBot.beforeFrame();
+          window.bi.ds = window.aX.aEZ(-1) || window.bi.ds;
+          window.nI();
+        } else {
+          if (this.af1 === this.aK3 * 7 && this.af3.length === 0) {
+            this.eZ = window.bi.eZ;
+            window.n6();
+          } else {
+            var _steps = 0;
+            while (window.bi.eZ >= this.eZ && _steps++ < 35) {
+              this.eZ += 42;
+              if (window.aE?.a38 === 2) { window.n6(); break; }
+              this.af6();
+              if (this.af1 === this.aK3 * 7 && this.af3.length === 0) {
+                this.eZ = window.bi.eZ;
+                break;
+              }
+            }
+            if (window.bi.eZ >= this.eZ) this.eZ = window.bi.eZ;
+          }
+          this.eI = 0;
+        }
+        window.nD();
+        if (window.bi) {
+          if (window.bi.ds) window.bi.ds = false;
+          this.af5 = window.bi.eZ;
+        }
+      };
+    };
+    if (window.bi?.a3I && Array.isArray(window.bi.a3I.af3)) patchLoop(window.bi.a3I);
+    if (window.bi && typeof window.bi.a7m === "function" && !window.bi.__patchedA7m) {
+      window.bi.__patchedA7m = true;
+      const origA7m = window.bi.a7m.bind(window.bi);
+      window.bi.a7m = function() {
+        origA7m();
+        if (this.a3I && Array.isArray(this.a3I.af3)) patchLoop(this.a3I);
+      };
+    }
+    const isBossReadyInLobby = () => {
+      const w1 = window.bq?.wZ?.w1;
+      const wa = window.bq?.wZ?.wa | 0;
+      if (!Array.isArray(w1) || wa <= 0) return false;
+      for (let i = 0; i < Math.min(wa, w1.length); i++) {
+        const p = w1[i];
+        if (!p) continue;
+        const raw = String(p.aGT || p.aGM || p.aFN || p.username || p.name || "").trim();
+        const low = raw.toLowerCase();
+        if (!low || SQUAD_POOL_SET.has(low)) continue;
+        const stripped = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
+        if (SQUAD_POOL_SET.has(stripped)) continue;
+        if (
+          stripped === "kazerd183" || stripped.includes("kazerd") ||
+          low.includes("kazerd") || stripped === "npl" ||
+          low === "[npl]npl" || low.includes("auouf")
+        ) {
+          return true;
+        }
+      }
+      return false;
+    };
+    const ensureLobbyHook = () => {
+      const sH = window.bq?.sH;
+      if (!sH || typeof sH.select !== "function") return;
+      if (!sH.__origSelect) {
+        sH.__origSelect = sH.select.bind(sH);
+        sH.select = function(id) {
+          if (id > 0) {
+            if (!isBossReadyInLobby()) {
+              if (this.wF > 0) return this.__origSelect(0);
+              return;
+            }
+            const firstId = this.sH?.[0]?.id || id;
+            if (this.wF === firstId) return;
+            return this.__origSelect(firstId);
+          }
+          if (this.wF > 0) return this.__origSelect(0);
+        };
+      }
+      if (window.bq?.f6 !== 1) return;
+      const bossReady = isBossReadyInLobby();
+      if ((window.__tsbSquadSlot | 0) === 0 && window.__hlLog && (!window.__lastLobbyWaitLog || Date.now() - window.__lastLobbyWaitLog > 8000)) {
+        window.__lastLobbyWaitLog = Date.now();
+        const w1 = window.bq?.wZ?.w1 || [];
+        const wa = window.bq?.wZ?.wa | 0;
+        const rdyNames = w1.slice(0, Math.min(wa, 25)).map(p => `${String(p?.aGT || p?.aGM || p?.username || "").trim()}(c=${p?.color})`).join(", ");
+        const bossInAll = w1.find(p => {
+          const r = String(p?.aGT || p?.aGM || p?.username || "").trim().toLowerCase();
+          return r.includes("kazerd") || r.includes("npl") || r.includes("auouf");
+        });
+        window.__hlLog(`[LOBBY-WAIT] total=${w1.length} ready=${wa} bossReady=${bossReady} bossFound=${bossInAll ? (bossInAll.aGM || bossInAll.username) : "none"} rdyList=[${rdyNames}]`);
+      }
+      const firstId = sH.sH?.[0]?.id || 0;
+      if (bossReady && firstId > 0 && sH.wF !== firstId && !sH.__joiningBoss) {
+        sH.__joiningBoss = true;
+        const slot = window.__tsbSquadSlot | 0;
+        setTimeout(() => {
+          sH.__joiningBoss = false;
+          if (window.bq?.f6 === 1 && isBossReadyInLobby() && sH.sH?.[0]?.id > 0 && sH.wF !== sH.sH[0].id) {
+            sH.__origSelect(sH.sH[0].id);
+          }
+        }, 40 + slot * 35);
+      } else if (!bossReady && sH.wF > 0) {
+        sH.__origSelect(0);
+      }
+    };
+    if (window.__bossLobbyWatcher) clearInterval(window.__bossLobbyWatcher);
+    window.__bossLobbyWatcher = setInterval(ensureLobbyHook, 200);
+    ensureLobbyHook();
   }
 } catch {}
 """
@@ -126,13 +266,14 @@ new_helpers = """  isTeammate(g, p) {
   }
 
   hasBossInMatch(g) {
+    if (this._bossEnteredMatch) return true;
     for (let p = 0; p < g.humans; p++) {
       const raw = String(g.names?.[p] ?? "").trim();
       const low = raw.toLowerCase();
       const stripped = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
       if (SQUAD_POOL_SET.has(stripped) || SQUAD_POOL_SET.has(low)) continue;
       if (stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || low === "[npl]npl" || low.includes("auouf")) {
-        if (typeof window === "object" && window.__quitPlayers && window.__quitPlayers.has(p)) return false;
+        this._bossEnteredMatch = true;
         return true;
       }
     }
@@ -698,7 +839,14 @@ s = s.replace(old_rank_mult, new_rank_mult, 1)
 old_early_act = """    if (g.t < P.coreFrom) {
       const before = this.cmds;"""
 
-new_early_act = """    if (g.t < P.coreFrom) {
+new_early_act = """    if (g.t >= 15 && g.t <= 90 && !this.hasBossInMatch(g)) {
+      try {
+        const d = window.dictionary, gm = d && window[d.game];
+        if (gm && gm[d.gameState] !== 0 && typeof gm[d.sbLeave] === "function") gm[d.sbLeave](true);
+      } catch {}
+      return;
+    }
+    if (g.t < P.coreFrom) {
       this.analyze(g);
       if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
         this._lastTickLog = g.t;

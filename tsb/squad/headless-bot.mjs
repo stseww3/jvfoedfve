@@ -106,6 +106,9 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onS
       if (msg.text.includes('socket close index 3') || msg.text.includes('socket close index 2')) {
         client.evalJs(`(() => { const d = window.dictionary, g = d && window[d.game]; if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true); })()`);
       }
+      if (msg.text.includes('error 4563') || msg.text.includes('error 4530')) {
+        client.enteredLobbyAt = 0;
+      }
       if (msg.text.includes('error 4591') || msg.text.includes('error 4215') || msg.text.includes('error 4577') || msg.text.includes('error 4229')) {
         client.freshToken = false;
         client.enteredLobbyAt = 0;
@@ -149,6 +152,8 @@ if (!isMainThread && workerData?.bot) {
   const gameJsSource = fs.readFileSync(resolveAssetPath('live_game_js.js', '/tmp/live_game_js.js'), 'utf8')
     .replaceAll('if(bi.ds){bi.ds=false;a0J()}', 'if(bi.ds){bi.ds=false}')
     .replaceAll('if(bi.ds){bi.ds=false;a1C()}', 'if(bi.ds){bi.ds=false}')
+    .replace('function nF(){aW.nG(false);aQ.nG();aX.nG(false);aV.nG();aS.nG();ax.nG();ag.nG(false);bk.nH()}', 'function nF(){}')
+    .replace('function nI(){if(ag.nG(false)){bi.ds=true}b1.z.ee()}', 'function nI(){b1.z.ee()}')
     .replace('this.aeB=function(){bi.ds=true;nF();this.eI=0}', 'this.aeB=function(){this.eI=0}')
     .replace('this.af7=function(){bi.ds=true;nF();this.eI=0}', 'this.af7=function(){this.eI=0}')
     .replace(
@@ -177,19 +182,19 @@ if (!isMainThread && workerData?.bot) {
     )
     .replace(
       'if(this.eI===0){if(bi.eZ>=this.eZ){this.eZ+=bi.aDd*Math.floor(1+(bi.eZ-this.eZ)/bi.aDd);if(aE.a2G===2){n6()}else{this.aeA()}this.eI++;if(bi.eZ-this.ae9>27){this.aeB()}}}else{this.aeB()}',
-      'var _steps=0;while(bi.eZ>=this.eZ&&_steps++<28){this.eZ+=bi.aDd;if(aE.a2G===2){n6();break}this.aeA();if(this.ae5===this.aIt*7&&this.ae7.length===0)break}if(bi.eZ>=this.eZ)this.eZ=bi.eZ+bi.aDd;this.eI=0;'
+      'if(this.ae5===this.aIt*7&&this.ae7.length===0){this.eZ=bi.eZ;n6()}else{var _steps=0;while(bi.eZ>=this.eZ&&_steps++<35){this.eZ+=42;if(aE.a2G===2){n6();break}this.aeA();if(this.ae5===this.aIt*7&&this.ae7.length===0){this.eZ=bi.eZ;break}}if(bi.eZ>=this.eZ)this.eZ=bi.eZ;}this.eI=0;'
     )
     .replace(
       'if(this.eI===0){if(bi.eZ>=this.eZ){this.eZ+=bi.aEY*Math.floor(1+(bi.eZ-this.eZ)/bi.aEY);if(aE.a38===2){n6()}else{this.af6()}this.eI++;if(bi.eZ-this.af5>27){this.af7()}}}else{this.af7()}',
-      'var _steps=0;while(bi.eZ>=this.eZ&&_steps++<28){this.eZ+=bi.aEY;if(aE.a38===2){n6();break}this.af6();if(this.af1===this.aK3*7&&this.af3.length===0)break}if(bi.eZ>=this.eZ)this.eZ=bi.eZ+bi.aEY;this.eI=0;'
+      'if(this.af1===this.aK3*7&&this.af3.length===0){this.eZ=bi.eZ;n6()}else{var _steps=0;while(bi.eZ>=this.eZ&&_steps++<35){this.eZ+=42;if(aE.a38===2){n6();break}this.af6();if(this.af1===this.aK3*7&&this.af3.length===0){this.eZ=bi.eZ;break}}if(bi.eZ>=this.eZ)this.eZ=bi.eZ;}this.eI=0;'
     )
     .replace(
       'this.ae7.push(aD);if(aE.a2G===2){',
-      'this.ae7.push(aD);if(aE.a2G===1&&!aE.hx&&(this.ae5===this.aIt*7||this.ae7.length>1)){bi.eZ=performance.now();this.ee();return}if(aE.a2G===2){'
+      'this.ae7.push(aD);if(aE.a2G===1&&!aE.hx){bi.eZ=performance.now();if(this.eZ>bi.eZ)this.eZ=bi.eZ;this.ee();return}if(aE.a2G===2){'
     )
     .replace(
       'this.af3.push(aD);if(aE.a38===2){',
-      'this.af3.push(aD);if(aE.a38===1&&!aE.hx&&(this.af1===this.aK3*7||this.af3.length>1)){bi.eZ=performance.now();this.ee();return}if(aE.a38===2){'
+      'this.af3.push(aD);if(aE.a38===1&&!aE.hx){bi.eZ=performance.now();if(this.eZ>bi.eZ)this.eZ=bi.eZ;this.ee();return}if(aE.a38===2){'
     )
     .replace('bV.ym.dk();', '')
     .replace('bV.zf.dk();', '');
@@ -208,11 +213,7 @@ if (!isMainThread && workerData?.bot) {
     )
     .replace(
       'if(null!==this.inflight&&Ct()-this.inflight<450)return;',
-      'if(null!==this.inflight&&Ct()-this.inflight<110&&t.t-(this.inflightTick??0)<2)return;'
-    )
-    .replace(
-      'if(null!==this.inflight&&Ct()-this.inflight<450&&t.t-(this.inflightTick??0)<8)return;',
-      'if(null!==this.inflight&&Ct()-this.inflight<110&&t.t-(this.inflightTick??0)<2)return;'
+      'if(null!==this.inflight&&Ct()-this.inflight<450&&t.t-(this.inflightTick??0)<8)return;'
     );
   const dictSource = fs.readFileSync(resolveAssetPath('live_dictionary.json', '/tmp/live_dictionary.json'), 'utf8');
 
@@ -753,6 +754,8 @@ if (!isMainThread && workerData?.bot) {
       be.render = function() {};
       be.a6d = function() {};
       be.a2S = function() {};
+      be.a7W = function() {};
+      be.a3K = function() {};
     }
     if (typeof bX === "object" && bX?.eS && typeof bX.eS.ei === "function") {
       bX.eS.ei = function(ej) {
