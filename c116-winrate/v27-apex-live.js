@@ -4364,8 +4364,9 @@ export class Policy extends V17 {
     let bestAlly = -1, bestScore = -Infinity;
     for (let p = 0; p < g.humans; p++) {
       if (p === me || !g.alive[p] || !this.isTeammate(g, p) || (!this.isBossNpl(g, p) && !this.isOurSquadBot(g, p)) || g.terr[p] < 600) continue;
+      if (typeof window !== "undefined" && window.ao?.iD && !window.ao.iD(p)) continue;
       const dAlly = g.bal[p] / Math.max(1, g.terr[p]);
-      if (dAlly >= 146) continue;
+      if (dAlly >= 142) continue;
       let outAtk = 0, inAtk = 0;
       const sb = g.slotBase(p);
       for (let i = 0; i < g.atkCount[p]; i++) {
@@ -4908,7 +4909,5 @@ export class Policy extends V17 {
 
     for (const q of this.nb) {
       if (!g.alive[q] || !g.terr[q]) continue;
-      const already = g.hasAttack(me, q);
-      if (!already && (active >= P.maxTargets || !g.hasFreeSlot(me))) continue;
-
+      const already = g.hasAttack(
 
