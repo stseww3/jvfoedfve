@@ -4292,7 +4292,9 @@ export class Policy extends V17 {
     const me = this.me;
     if (!g.teams || !(g.teams[me] > 0) || typeof g.donate !== "function") return false;
     // Rule #7671: Never transfer during the opening AI-bot phase (t < 1500)!
-    if (g.t < 1500 || g.terr[me] < 2500 || g.bal[me] < 50000 || g.t - (this.lastDonateTick ?? -999) < 16) return false;
+    if (g.t < 1500 || g.terr[me] < 1200 || g.bal[me] < 30000 || g.t - (this.lastDonateTick ?? -999) < 12) return false;
+    const mySlot = typeof window !== "undefined" && Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : (me % 10);
+    if (!emergencyOnly && ((g.t / 5) | 0) % 5 !== (mySlot % 5)) return false;
     const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
 
     let myHumanInAtk = 0, myHumanOutAtk = 0;
@@ -4389,8 +4391,8 @@ export class Policy extends V17 {
         }
       }
 
-      // Never send troops to a rear boxed-in territory that has no enemies and no combat!
-      if (enemyNbs === 0 && inHumanAtk === 0 && outHumanAtk === 0) continue;
+      const allyHasCoast = (g.coast?.[p]?.length ?? 0) > 0;
+      if (enemyNbs === 0 && inHumanAtk === 0 && outHumanAtk === 0 && (!boxedIn || !allyHasCoast || dMe < 110 || dAlly > 82)) continue;
 
       const isDoomedPocket = inHumanAtk > 1.65 * Bp || (g.t >= 4500 && Lp < 0.22 * maxSquadTerr && inHumanAtk > 0.45 * Bp);
       if (isDoomedPocket) continue;
@@ -4866,11 +4868,5 @@ export class Policy extends V17 {
     if (P.seaCore > 0 && g.t - this.seaState.lastFrogHop >= 30) {
       const B = g.bal[me], L = Math.max(1, g.terr[me]), fee = iV(32 * B, 1024);
       const negInterestCap = P.frogHopOverMode > 0 && B >= 112 * L ? Math.min(25000, Math.floor(0.036 * B)) : 550;
-      const maxAbsCost = !this.hasBorderFood(g) ? Math.max(1800, negInterestCap) : negInterestCap;
-      if (
-        frogHopStep(g, me, this.seaState, {
-          maxHopBoats: 2,
-          maxTotalBoats: 5,
-          maxAbsCost,
-          safe
+      cons
 

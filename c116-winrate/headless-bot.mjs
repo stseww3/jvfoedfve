@@ -414,6 +414,12 @@ if (!isMainThread && workerData?.bot) {
           }
           upgraded = true;
           state = 1;
+          try { tlsSock.setKeepAlive(true, 10000); } catch {}
+          const pingTimer = setInterval(() => {
+            if (state !== 1) { clearInterval(pingTimer); return; }
+            try { sendFrame(0x09, Buffer.alloc(0)); } catch {}
+          }, 12000);
+          if (pingTimer.unref) pingTimer.unref();
           emit('open');
         }
         if (upgraded) parseFrames();
