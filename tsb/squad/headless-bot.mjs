@@ -136,28 +136,51 @@ if (!isMainThread && workerData?.bot) {
 
   const gameJsSource = fs.readFileSync(resolveAssetPath('live_game_js.js', '/tmp/live_game_js.js'), 'utf8')
     .replaceAll('if(bi.ds){bi.ds=false;a0J()}', 'if(bi.ds){bi.ds=false}')
+    .replaceAll('if(bi.ds){bi.ds=false;a1C()}', 'if(bi.ds){bi.ds=false}')
     .replace('this.aeB=function(){bi.ds=true;nF();this.eI=0}', 'this.aeB=function(){this.eI=0}')
+    .replace('this.af7=function(){bi.ds=true;nF();this.eI=0}', 'this.af7=function(){this.eI=0}')
     .replace(
       'this.aDe=function(aD){if(aE.a2G===2){return}bB.qi.ee(aD);bC.ee();',
       'this.aDe=function(aD){if(aE.a2G===2){return}bB.qi.ee(aD);bC.ee();if(window.__fx?.strategyBot?.beforeFrame)window.__fx.strategyBot.beforeFrame();'
+    )
+    .replace(
+      'this.aEZ=function(aD){if(aE.a38===2){return}bB.qk.ee(aD);bC.ee();',
+      'this.aEZ=function(aD){if(aE.a38===2){return}bB.qk.ee(aD);bC.ee();if(window.__fx?.strategyBot?.beforeFrame)window.__fx.strategyBot.beforeFrame();'
     )
     .replace(
       'if(aE.hx){bi.ds=aX.aDe(-1)||bi.ds;nI()}',
       'if(aE.hx){if(window.__fx?.strategyBot?.beforeFrame)window.__fx.strategyBot.beforeFrame();bi.ds=aX.aDe(-1)||bi.ds;nI()}'
     )
     .replace(
+      'if(aE.hx){bi.ds=aX.aEZ(-1)||bi.ds;nI()}',
+      'if(aE.hx){if(window.__fx?.strategyBot?.beforeFrame)window.__fx.strategyBot.beforeFrame();bi.ds=aX.aEZ(-1)||bi.ds;nI()}'
+    )
+    .replace(
       'if(this.ae5!==this.aIt*7){n8();be.render();return}',
       'if(this.ae5!==this.aIt*7){n8();while(this.ae7.length>0&&this.ae5<this.aIt*7&&aE.a2G!==2){n8()}if(this.ae7.length===0){return}}'
+    )
+    .replace(
+      'if(this.af1!==this.aK3*7){n8();be.render();return}',
+      'if(this.af1!==this.aK3*7){n8();while(this.af3.length>0&&this.af1<this.aK3*7&&aE.a38!==2){n8()}if(this.af3.length===0){return}}'
     )
     .replace(
       'if(this.eI===0){if(bi.eZ>=this.eZ){this.eZ+=bi.aDd*Math.floor(1+(bi.eZ-this.eZ)/bi.aDd);if(aE.a2G===2){n6()}else{this.aeA()}this.eI++;if(bi.eZ-this.ae9>27){this.aeB()}}}else{this.aeB()}',
       'var _steps=0;while(bi.eZ>=this.eZ&&_steps++<28){this.eZ+=bi.aDd;if(aE.a2G===2){n6();break}this.aeA();if(this.ae5===this.aIt*7&&this.ae7.length===0)break}if(bi.eZ>=this.eZ)this.eZ=bi.eZ+bi.aDd;this.eI=0;'
     )
     .replace(
+      'if(this.eI===0){if(bi.eZ>=this.eZ){this.eZ+=bi.aEY*Math.floor(1+(bi.eZ-this.eZ)/bi.aEY);if(aE.a38===2){n6()}else{this.af6()}this.eI++;if(bi.eZ-this.af5>27){this.af7()}}}else{this.af7()}',
+      'var _steps=0;while(bi.eZ>=this.eZ&&_steps++<28){this.eZ+=bi.aEY;if(aE.a38===2){n6();break}this.af6();if(this.af1===this.aK3*7&&this.af3.length===0)break}if(bi.eZ>=this.eZ)this.eZ=bi.eZ+bi.aEY;this.eI=0;'
+    )
+    .replace(
       'this.ae7.push(aD);if(aE.a2G===2){',
       'this.ae7.push(aD);if(aE.a2G===1&&!aE.hx&&(this.ae5===this.aIt*7||this.ae7.length>1)){bi.eZ=performance.now();this.ee();return}if(aE.a2G===2){'
     )
-    .replace('bV.ym.dk();', '');
+    .replace(
+      'this.af3.push(aD);if(aE.a38===2){',
+      'this.af3.push(aD);if(aE.a38===1&&!aE.hx&&(this.af1===this.aK3*7||this.af3.length>1)){bi.eZ=performance.now();this.ee();return}if(aE.a38===2){'
+    )
+    .replace('bV.ym.dk();', '')
+    .replace('bV.zf.dk();', '');
   const pageJsSource = fs.readFileSync(resolveAssetPath('page.js', '/tmp/tsb-team-ext/page.js'), 'utf8')
     .replaceAll(
       'queueMicrotask(()=>{this.afterQueued=!1,this.afterTick()})',
@@ -721,10 +744,11 @@ if (!isMainThread && workerData?.bot) {
     }
     if (typeof bX === "object" && bX?.eS && typeof bX.eS.ei === "function") {
       bX.eS.ei = function(ej) {
-        if (ej && ej.id >= 0 && typeof b1 === "object" && b1?.z?.ef?.(0) && b1?.eg?.wC) {
-          b1.eg.wC(0, ej.id);
+        const sendAns = b1?.eg?.x6 || b1?.eg?.wC;
+        if (ej && ej.id >= 0 && typeof b1 === "object" && b1?.z?.ef?.(0) && sendAns) {
+          sendAns.call(b1.eg, 0, ej.id);
           setTimeout(() => {
-            try { if (b1.z.ef(0)) b1.eg.wC(1, ej.id); } catch {}
+            try { if (b1.z.ef(0)) sendAns.call(b1.eg, 1, ej.id); } catch {}
           }, 350 + Math.floor(Math.random() * 450));
         }
       };
@@ -737,22 +761,18 @@ if (!isMainThread && workerData?.bot) {
         return origIk(player);
       };
     }
-    if (typeof bB === "object" && bB?.qg && !bB.qg.__hookedQuit) {
-      bB.qg.__hookedQuit = true;
+    const hdl = (typeof bB === "object" && (bB?.qi || bB?.qg)) || null;
+    if (hdl && !hdl.__hookedQuit) {
+      hdl.__hookedQuit = true;
       window.__quitPlayers = new Set();
-      if (typeof bB.qg.r8 === "function") {
-        const origR8 = bB.qg.r8.bind(bB.qg);
-        bB.qg.r8 = function(player) {
-          window.__quitPlayers?.add(player);
-          return origR8(player);
-        };
-      }
-      if (typeof bB.qg.rd === "function") {
-        const origRd = bB.qg.rd.bind(bB.qg);
-        bB.qg.rd = function(player) {
-          window.__quitPlayers?.add(player);
-          return origRd(player);
-        };
+      for (const fnName of ["r8", "rd", "rA", "rf"]) {
+        if (typeof hdl[fnName] === "function") {
+          const origFn = hdl[fnName].bind(hdl);
+          hdl[fnName] = function(player) {
+            window.__quitPlayers?.add(player);
+            return origFn(player);
+          };
+        }
       }
     }
     window.__hlPerf = { ticks: 0, totalMs: 0, maxMs: 0, lastTick: -1, dupTicks: 0, skippedTicks: 0 };
@@ -802,11 +822,13 @@ if (!isMainThread && workerData?.bot) {
     }
   }
 
-  // Hook bq.aF3.aFu and bi.a2Q.aWV (re-hooking bi.a2Q on every new game!)
+  // Hook bq.aFy.aH4 / bq.aF3.aFu and bi.a3R.aXQ / bi.a2Q.aWV (re-hooking on every new game!)
   vm.runInContext(`(() => {
-    if (typeof bq === "object" && bq?.aF3?.aFu) {
-      const origAfu = bq.aF3.aFu.bind(bq.aF3);
-      bq.aF3.aFu = function(tN, aFq, aFr) {
+    const startHolder = (typeof bq === "object" && (bq?.aFy?.aH4 ? bq.aFy : bq?.aF3?.aFu ? bq.aF3 : null));
+    const startFnName = startHolder?.aH4 ? "aH4" : "aFu";
+    if (startHolder && typeof startHolder[startFnName] === "function") {
+      const origAfu = startHolder[startFnName].bind(startHolder);
+      startHolder[startFnName] = function(tN, aFq, aFr) {
         window.__hlPerf = { ticks: 0, totalMs: 0, maxMs: 0, lastTick: -1, dupTicks: 0, skippedTicks: 0 };
         window.__lastPeaceCaller = -1;
         window.__tsbAssignedSpawn = null;
@@ -814,27 +836,30 @@ if (!isMainThread && workerData?.bot) {
         if (Array.isArray(aFq)) {
           for (let i = 0; i < aFq.length; i++) {
             const p = aFq[i];
-            if (p && (p.aFN || p.aFU)) {
-              p.username = p.aFN || p.aFU || p.username;
+            if (p && (p.aGM || p.aGT || p.aFN || p.aFU)) {
+              p.username = p.aGM || p.aGT || p.aFN || p.aFU || p.username;
             }
           }
         }
         origAfu(tN, aFq, aFr);
         try {
+          const modeVal = tN.vz ?? tN.aFp;
           if (window.__hlLog) {
-            window.__hlLog(\`[HL-GAME-INIT] mode=\${tN.aFp} map=\${tN.fF} mapSeed=\${tN.mapSeed} players=\${aFq?.length || 0} me=\${aFr}\`);
+            window.__hlLog(\`[HL-GAME-INIT] mode=\${modeVal} map=\${tN.fF} mapSeed=\${tN.mapSeed} players=\${aFq?.length || 0} me=\${aFr}\`);
           }
           if (window.__onHeadlessGameInit) {
             window.__onHeadlessGameInit({
-              tN: { spawningSeed: tN.spawningSeed, aFp: tN.aFp, aFv: tN.aFv, fF: tN.fF, mapSeed: tN.mapSeed },
-              aFq: Array.from(aFq, p => ({ color: p.color, username: p.username, uY: p.uY, elo: p.elo || 0 })),
+              tN: { spawningSeed: tN.spawningSeed, aFp: modeVal, aFv: tN.wN ?? tN.aFv, fF: tN.fF, mapSeed: tN.mapSeed },
+              aFq: Array.from(aFq, p => ({ color: p.color, username: p.username, uY: p.uX ?? p.uY, elo: p.elo || 0 })),
               aFr
             });
           }
-          if (bi?.a2Q?.aWV && !bi.a2Q.__hooked) {
-            bi.a2Q.__hooked = true;
-            const origAwv = bi.a2Q.aWV.bind(bi.a2Q);
-            bi.a2Q.aWV = function(aD) {
+          const loopObj = bi?.a3R || bi?.a2Q;
+          const pktFn = loopObj?.aXQ ? "aXQ" : loopObj?.aWV ? "aWV" : null;
+          if (loopObj && pktFn && !loopObj.__hooked) {
+            loopObj.__hooked = true;
+            const origAwv = loopObj[pktFn].bind(loopObj);
+            loopObj[pktFn] = function(aD) {
               if (window.__onHeadlessGamePacket && aD) {
                 window.__onHeadlessGamePacket(new Uint8Array(aD));
               }
