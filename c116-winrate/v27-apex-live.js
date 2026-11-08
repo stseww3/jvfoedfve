@@ -2824,6 +2824,13 @@ class V17 extends V13 {
   // Boats when no land is bought, as v13: food over water, then idle troops.
   idleBoats(g) {
     const P = this.p, me = this.me;
+    if (this.nb.length === 0 && this.neutral === 0 && g.teams && g.teams[me] > 0) {
+      for (let p = 0; p < g.humans; p++) {
+        if (p !== me && g.alive[p] && this.isTeammate(g, p) && (this.isOurSquadBot(g, p) || this.isBossNpl(g, p)) && g.terr[p] >= 1500) {
+          return;
+        }
+      }
+    }
     if (P.boatFood > 0 && this.boatFood(g)) return;
     if (this.neutral > 0 || g.t - this.lastBoat < P.boatEvery) return;
     if (this.nb.length && g.bal[me] < P.idleCap * 100 * g.terr[me]) return;
@@ -4344,6 +4351,12 @@ export class Policy extends V17 {
       ? (hasExposedCoast ? 62 * L : 48 * L)
       : Math.max(92 * L, this.safeAt(g, -1));
 
+    let maxSquadTerr = L;
+    for (let p = 0; p < g.humans; p++) {
+      if (g.alive[p] && this.isTeammate(g, p) && this.isOurSquadBot(g, p) && g.terr[p] > maxSquadTerr) {
+        maxSquadTerr = g.terr[p];
+      }
+    }
     let bestTarget = -1, bestScore = -Infinity, bestKind = "prod_opt", bestFloor = prodOptFloor;
 
     for (let p = 0; p < g.humans; p++) {
@@ -4379,7 +4392,9 @@ export class Policy extends V17 {
       // Never send troops to a rear boxed-in territory that has no enemies and no combat!
       if (enemyNbs === 0 && inHumanAtk === 0 && outHumanAtk === 0) continue;
 
-      const underFire = inHumanAtk > 0 && (inHumanAtk >= 0.06 * Bp || dAlly < 86);
+      const isDoomedPocket = inHumanAtk > 1.65 * Bp || (g.t >= 4500 && Lp < 0.22 * maxSquadTerr && inHumanAtk > 0.45 * Bp);
+      if (isDoomedPocket) continue;
+      const underFire = inHumanAtk > 0 && (inHumanAtk >= 0.06 * Bp || dAlly < 88);
       const activePush = outHumanAtk >= 0.06 * Bp && dAlly < 96;
       const hasPreyOpening = enemyNbs > 0 && (hasBleedingPrey || minEnemyDens < 0.70 * dAlly) && dAlly < 96;
 
@@ -4389,7 +4404,7 @@ export class Policy extends V17 {
         // Case A: Emergency 2:1 Defense Dispatch
         const reqD = boxedIn ? (hasExposedCoast ? 72 : 58) : 108;
         if (dMe < reqD || B <= 1.12 * emergDefFloor || (!boxedIn && dMe < dAlly + 16)) continue;
-        const score = 5000 + (inHumanAtk / Math.max(1, Bp)) * 2000 + (100 - dAlly) * 25 + Math.min(600, Lp / 40);
+        const score = 5000 + (inHumanAtk / Math.max(1, Bp)) * 1200 + (105 - dAlly) * 20 + Math.min(2200, Lp / 18);
         if (score > bestScore) {
           bestScore = score;
           bestTarget = p;
@@ -4409,7 +4424,7 @@ export class Policy extends V17 {
           (hasBleedingPrey ? 500 : 0) +
           (100 - dAlly) * 18 +
           enemyNbs * 80 +
-          Math.min(500, Lp / 45);
+          Math.min(2200, Lp / 18);
         if (score > bestScore) {
           bestScore = score;
           bestTarget = p;
@@ -4857,23 +4872,5 @@ export class Policy extends V17 {
           maxHopBoats: 2,
           maxTotalBoats: 5,
           maxAbsCost,
-          safeFloor: this.safeAt(g, -1),
-          botPhaseMode: P.botPhaseMode > 0,
-        })
-      ) {
-        this.seaState.lastFrogHop = g.t;
-        this.seaState.stats.froghop.boats++;
-        this.seaState.stats.froghop.fee += fee;
-      }
-    }
-  }
-
-  compSize(g) {
-    if (!(this.p.seaFree > 0) || g.t < this.p.coreFrom) return super.compSize(g);
-    if (this.freeAt === g.t) return this.freeComp;
-    const N = g.N, px = g.px, own = g.own, d = g.dir4, me = this.me;
-    const c = this.freeComp?.length === N ? this.freeComp.fill(0) : new Int32Array(N);
-    const seen = new Uint8Array(N), q = new Int32Array(N);
-    for (let s = 0; s < N; s++) {
-      if (px[s] !== T_LAND || seen[s]) continu
+          safe
 
