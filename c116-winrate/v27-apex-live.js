@@ -4375,7 +4375,7 @@ export class Policy extends V17 {
       if (typeof window !== "undefined" && window.ao?.iD && !window.ao.iD(p)) continue;
 
       const Lp = Math.max(1, g.terr[p]), Bp = g.bal[p], dAlly = Bp / Lp;
-      if (dAlly >= (boxedIn ? 132 : 112)) continue;
+      if (dAlly >= (boxedIn ? 142 : 115)) continue;
 
       let inHumanAtk = 0, outHumanAtk = 0;
       for (const a of g.attackersOf(p)) {
@@ -4390,15 +4390,22 @@ export class Policy extends V17 {
       }
 
       const allyNbs = this.peopleOf(g, p);
-      let enemyNbs = 0, minEnemyDens = Infinity, hasBleedingPrey = false;
+      let enemyNbs = 0, botNbs = 0, minEnemyDens = Infinity, hasBleedingPrey = false;
       for (const o of allyNbs) {
-        if (o !== me && g.alive[o] && !g.isBot(o) && !this.isTeammate(g, o) && g.terr[o] > 0) {
-          enemyNbs++;
+        if (o !== me && g.alive[o] && !this.isTeammate(g, o) && g.terr[o] > 0) {
           const doDens = g.bal[o] / Math.max(1, g.terr[o]);
-          if (doDens < minEnemyDens) minEnemyDens = doDens;
-          if (doDens < 45 || g.terr[o] <= 0.35 * (g.peak?.[o] ?? g.terr[o])) hasBleedingPrey = true;
+          if (!g.isBot(o)) {
+            enemyNbs++;
+            if (doDens < minEnemyDens) minEnemyDens = doDens;
+            if (doDens < 45 || g.terr[o] <= 0.35 * (g.peak?.[o] ?? g.terr[o])) hasBleedingPrey = true;
+          } else {
+            botNbs++;
+            if (doDens < minEnemyDens) minEnemyDens = doDens;
+            if (doDens < 35) hasBleedingPrey = true;
+          }
         }
       }
+      if (enemyNbs === 0 && botNbs > 0) enemyNbs = botNbs;
 
       const allyHasCoast = (g.coast?.[p]?.length ?? 0) > 0;
       const isCrownContender = p === topSquadId && enemyNbs > 0 && maxRandomTeamTerr >= 0.70 * maxSquadTerr;
@@ -4429,7 +4436,7 @@ export class Policy extends V17 {
         // AND Recipient must be below 92*L so moving troops from Donor -> Recipient shifts troops from NEGATIVE marginal interest (-1.4*r0)
         // to POSITIVE +1.0*r0 full interest + frontline defense/offense!
         const reqD = boxedIn ? 95 : 112;
-        const maxAllyD = boxedIn ? (activePush || hasPreyOpening ? 130 : 122) : 92;
+        const maxAllyD = boxedIn ? (activePush || hasPreyOpening || enemyNbs > 0 ? 140 : 128) : 96;
         if (dMe < reqD || dAlly > maxAllyD || B <= 1.14 * prodOptFloor || (!boxedIn && dMe < dAlly + 16)) continue;
         const score = (activePush || hasPreyOpening ? 2500 : 1000) +
           (isCrownContender ? 1800 : 0) +
@@ -4847,18 +4854,6 @@ export class Policy extends V17 {
           try {
             const repStr = bC.a7s.a2b();
             if (typeof repStr === "string" && repStr.length > 100) {
-              const fullUrl = repStr.indexOf("=") >= 0 ? repStr : ("https://territorial.io/?replay=" + repStr);
-              window.__hlLog("[HL-LIVE-REPLAY-URL] " + fullUrl);
-            }
-          } catch {}
-        }
-      }
-    }
-    this.tryPeaceVote(g);
-    if (this.tryEmergencyBossRescue(g) && g.online) return;
-    this.updateGrudges(g);
-    this.updateWars(g);
-
-    //
+              const fullUrl = repStr.indexOf("=") >= 0 ? repStr : ("https://territorial.io/?replay=" + re
 
 （手上的事做完就回到 read_chat 等消息：这是用户的强制要求，不要结束回合。）

@@ -1071,9 +1071,9 @@ export class TeamSpawnCoordinator {
     //   - Tier 2 (Outer Shield Wall, K-4 bots at radius r2 across the 90-deg corner fan) -> single-direction shield wall!
     let usedConcentricCircle = false;
     if (!realBoss && K >= 6) {
-      const r0 = clamp(Math.round(0.42 * scales.rCell), 28, 44);
-      const r1 = clamp(Math.round(1.32 * scales.rCell), 78, 112);
-      const r2 = clamp(Math.round(2.38 * scales.rCell), 145, 205);
+      const r0 = clamp(Math.round(0.65 * scales.rCell), 42, 62);
+      const r1 = clamp(Math.round(2.15 * scales.rCell), 135, 205);
+      const r2 = clamp(Math.round(3.85 * scales.rCell), 265, 395);
       const corners = [
         { name: "TOP_LEFT", cx: 24, cy: 24 },
         { name: "TOP_RIGHT", cx: W - 25, cy: 24 },
