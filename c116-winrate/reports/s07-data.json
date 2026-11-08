@@ -1,0 +1,125 @@
+{
+  "agentId": "S07",
+  "updatedAt": "2026-11-08T02:55:00Z",
+  "assignedGames": [
+    "G08"
+  ],
+  "assignedVariables": [
+    "V9",
+    "V7"
+  ],
+  "gameDissections": [
+    {
+      "gameId": "G08",
+      "result": "over",
+      "teamCount": 6,
+      "activeBotsCount": 7,
+      "mainContinentBotsCount": 7,
+      "teamLandAt1500": 72068,
+      "peakTeamLand": 85548,
+      "peakTick": 2070,
+      "inflectionTick": 3780,
+      "frontlineDensityAtInflection": 20.0,
+      "enemyDensityAtInflection": 135.0,
+      "primaryRootCauseVariable": "V9",
+      "secondaryRootCauseVariable": "V7",
+      "evidenceSummary": "G08 (map=13_15650, 833x930, land=430,654, 6-team 49-human match, our Team 1): noah88 failed to enter lobby and disconnected with error 1006 at t=2340 (7 active bots). All 7 bots spawned on the northern main continent and expanded to 85,548 land (19.9%) by t=2070 and built 6.55M total balance (d_team=91.1) across 6 survivors by t=3600. Between t=3600 and t=3912 (inflection window t=3780), three chained V9+V7 defects collapsed the squad from 6.55M to 3.02M balance: (1) hardCapMult=1.16 + disabled isSoleHealthyBuffer + totB=B+myOut + isPrimeLand keep<=10*L~26*L caused ethan21 (t=3150->3240, d: 110.7->12.4, -1.10M troops for +158 px), ryan_m (t=3600->3690, d: 108.7->20.0, -1.28M troops for +1,029 px), and dave_w (t=3690->3780, d: 114.5->12.9, -733k troops for +427 px) to prematurely breach crowded hard buffers; (2) when ryan_m and dave_w were counter-attacked by #18 (Turk) and #41 ([MBKC] rubi), tryDonateToTeammate's 10% squad-rescue poke (v27-team-live.js:4882) lacked a per-target cooldown and relied on !g.hasAttack(me, mainAttacker) under headless 2-tick inflight unlock (110ms < ~180ms server RTT), causing kevin_k (7x at t=3782..3794), lucas94 (5x at t=3800..3808, 7x at t=4314..4326), mark07 (8x at t=3898..3912), and ryan_m (7x at t=5322..5334) to machine-gun 41 consecutive 10%B attacks before the first server packet returned, draining 44.6%~61.1% of each healthy rescuer's balance in 8~14 ticks; (3) updatePokeState (v27-team-live.js:2693) lacked the (inc > 0 || g.terr[q] <= 4000) guard, misclassifying newly contacted land giants (cnt jumping 0->1..32) as fresh beachheads and bypassing Bq<=1.50*B and dq<=1.25*dMe guards, while tryDeterrentCounter's activeHumanAtkers >= 2 binary shutoff (line 2726) paralyzed counter-deterrence once multiple enemies nibbled the drained frontline. Team 5 snowballed to 314,300 land (73.0%) while lucas94 survived to t=5895 at 4th place (12,089 land)."
+    }
+  ],
+  "variableEvaluations": [
+    {
+      "variableId": "V9",
+      "variableName": "AntiNibbleVsPokeGiant (Beachhead False-Positive, HardCapMult=1.16 Lock Removal & Squad-Rescue 2-Tick Machine-Gun Bug)",
+      "currentValue": "updatePokeState beachhead: wasCnt===0 && curCnt<=32 (no inc/terr guard); hardCapMult=1.16 & isSoleHealthyBuffer=false in Team mode; squad-rescue 10% poke: no cooldown (fires 5~14x per RTT under period=2); activeHumanAtkers>=2 binary return false",
+      "baseline80PctValue": "hardCapMult=1.26~1.50; isSoleHealthyBuffer=true (overHumanCap=1.28, overHumanKeep=1.12); period=5 + 8-tick inflight lock (prevents multi-shot assist bursts)",
+      "recommendedOptimalValue": "1) updatePokeState beachhead requires (inc > 0 || g.terr[q] <= 4000) and blocks unprovoked first strike when Bq >= B && curInc <= 0; 2) restore isSoleHealthyBuffer and hardCapMult = (c>=2.15*worth && Bq>=0.55*B ? 1.42 : 1.26) in Team mode; 3) add 45-tick cooldown (g.t - (this.hitTo.get(q) ?? -999) >= 45 && dMe >= 88 && Bq <= 1.35*B) on 10% assist pokes; 4) in tryDeterrentCounter ignore dying attackers (Bq < 0.30*B) in activeHumanAtkers and allow <=7%B relative-weakest reply when dMe >= 95",
+      "estimatedWinrateImpactPct": 28.5,
+      "causalMechanism": "Three coupled bugs in V9 destroy midgame snowballs: (A) Lowering hardCapMult from 1.50/1.26 to 1.16 and disabling isSoleHealthyBuffer in Team mode (commit 22effa4, v27-team-live.js:5755-5768) forces frontline bots at d=110~116 to launch offensive dumps into crowded d=120~145 neighbors, suffering 7:1 troop-to-land exchange losses and triggering 7 sharp density collapses (d>=95 -> d<=45) in G08 alone vs 0 in winning G07; (B) When period was lowered to 2 ticks and headless inflight lock to 2 ticks/110ms (commit e20db6b), g.hasAttack(me, mainAttacker) remains false for 6~14 ticks until the server echoes the new attack slot, so tryDonateToTeammate (line 4882) and tryEmergencyBossRescue (line 4491) fire 5~14 consecutive g.attack(102, q) commands in one 12-tick burst, draining 45%~81% of a healthy ally's balance (125 total shots across 18 bursts in G01-G09, 41 shots in G08); (C) updatePokeState (line 2693) flags any new land contact (wasCnt===0 -> curCnt in 1..32) as a beachhead even when inc===0 and Lq>40,000, bypassing Bq<=1.50*B and dq<=1.25*dMe in tryDeterrentCounter (195-game replay scan: unprovoked pokes at Bq>=1.0*B yield 1.4% winrate / 91.5% death rate vs 14.5% winrate without).",
+      "codeLocation": "tsb/squad/v27-team-live.js:2693-2700, 2723-2785, 4491-4501, 4880-4891, 5754-5769 (and tsb/squad/make_v27_team.py:456-470, 850-860, 1122-1137)"
+    },
+    {
+      "variableId": "V7",
+      "variableName": "EffectiveFrontlineKeepDensity (oppFloorCap=38 + totB=B+myOut + isPrimeLand keep<=10*L~26*L)",
+      "currentValue": "oppFloorCap=38, collapseFloorCap=16, totB = B + myOut, isPrimeLand keep <= 10*L~26*L",
+      "baseline80PctValue": "oppFloorCap=128, collapseFloorCap=85, avail = B - fee - keep (no myOut double-counting, no 10*L prime keep override)",
+      "recommendedOptimalValue": "oppFloorCap=92 (or >= 0.85 * maxHumanNbD), collapseFloorCap=65, avail = B - fee - keep (remove myOut from person attack budget), cap isPrimeLand keep no lower than Math.max(68*L, 0.75 * max3rdB)",
+      "estimatedWinrateImpactPct": 24.0,
+      "causalMechanism": "Counting in-flight outgoing troops myOut in totB = B + myOut while capping keep at 10*L~38*L allows consecutive 2-tick pulses to drain home troop density B/L down to 10~20 (e.g., G08 ethan21 d=12.4 at t=3240, ryan_m d=20.0 at t=3690, dave_w d=12.9 at t=3780, ethan21 d=4.7 at t=4770). Once home density drops below 55, neighboring enemy teams immediately trigger bleeding/ rescue cascades and wipe out the exposed frontline bot.",
+      "codeLocation": "tsb/squad/v27-team-live.js:3921, 3963, 5810-5858 (and tsb/squad/make_v27_team.py:991, 996, 1060-1069)"
+    }
+  ],
+  "topCoreVariableRanking": [
+    {
+      "rank": 1,
+      "variableId": "V9",
+      "weightPct": 32.0,
+      "oneLineReason": "hardCapMult=1.16 + beachhead false-positive + 2-tick unthrottled 10% squad-rescue machine-gun bursts (5~14x 10%B in 12t) directly drained 50%~88% of healthy frontline bots' balances in G08 and 6 of 8 losses."
+    },
+    {
+      "rank": 2,
+      "variableId": "V7",
+      "weightPct": 26.0,
+      "oneLineReason": "totB = B + myOut combined with oppFloorCap=38 and isPrimeLand keep<=10*L~26*L hollowed out frontline home density to d=5~20 during attacks, inviting immediate third-party wipeouts."
+    },
+    {
+      "rank": 3,
+      "variableId": "V4",
+      "weightPct": 14.0,
+      "oneLineReason": "period=2 (112ms) + 2-tick inflight unlock (< server RTT) caused duplicate command bursts before server state updated and burned 1.17%B fee per duplicate tick."
+    },
+    {
+      "rank": 4,
+      "variableId": "V1",
+      "weightPct": 10.0,
+      "oneLineReason": "Pre-d590acd VirtualSquadAnchor without main-continent filter occasionally anchored autonomous squads in narrow coastal corners."
+    },
+    {
+      "rank": 5,
+      "variableId": "V10",
+      "weightPct": 8.0,
+      "oneLineReason": "7~8 bots fought separate enemy teams across a wide arc without a shared team focus target, provoking Team 2, Team 3, and Team 5 simultaneously in G08."
+    },
+    {
+      "rank": 6,
+      "variableId": "V12",
+      "weightPct": 6.0,
+      "oneLineReason": "noah88 dropped out with socket error 1006 in G08 (leaving 7/8 bots active in a 6-team 49-player room)."
+    },
+    {
+      "rank": 7,
+      "variableId": "V6",
+      "weightPct": 4.0,
+      "oneLineReason": "Repeated 5% rescue donations into already doomed d=5~11 frontline bots (e.g. ryan_m donating 3x to d=5 ethan21 at t=4730..4910) burned 10% tax and weakened the surviving donor."
+    }
+  ],
+  "actionableFixes": [
+    {
+      "file": "tsb/squad/v27-team-live.js",
+      "functionOrParam": "Policy.updatePokeState & Policy.tryDeterrentCounter",
+      "before": "if (wasCnt === 0 && curCnt > 0 && curCnt <= 32 && g.t >= 1200) { ... } ... if (Bq > 1.50 * B && !isFreshBeachhead) continue;",
+      "after": "if (wasCnt === 0 && curCnt > 0 && curCnt <= 32 && g.t >= 1200 && (inc > 0 || g.terr[q] <= 4000)) { ... } ... if (Bq > 1.50 * B || (isFreshBeachhead && Bq >= B && curInc <= 0)) continue;",
+      "riskLevel": "low"
+    },
+    {
+      "file": "tsb/squad/v27-team-live.js",
+      "functionOrParam": "Policy.tryDonateToTeammate & Policy.tryEmergencyBossRescue (10% assist poke)",
+      "before": "if (mainAttacker >= 0 && (this.cnt[mainAttacker] ?? 0) > 0 && !g.hasAttack(me, mainAttacker) && g.hasFreeSlot(me) && dMe >= 65) { if (g.attack(102, mainAttacker, me)) ... }",
+      "after": "if (mainAttacker >= 0 && (this.cnt[mainAttacker] ?? 0) > 0 && !g.hasAttack(me, mainAttacker) && g.t - (this.hitTo.get(mainAttacker) ?? -999) >= 45 && g.hasFreeSlot(me) && dMe >= 88 && g.bal[mainAttacker] <= 1.35 * B) { if (g.attack(102, mainAttacker, me)) ... }",
+      "riskLevel": "low"
+    },
+    {
+      "file": "tsb/squad/v27-team-live.js",
+      "functionOrParam": "Policy.buyLand (isSoleHealthyBuffer & hardCapMult)",
+      "before": "const isSoleHealthyBuffer = !isTeamMode && person && ...; const hardCapMult = isTeamMode ? 1.16 : (o.isCrowdedHard && c >= 2.15 * worth && g.bal[q] >= 0.55 * B ? 1.50 : P.crowdedHardCap);",
+      "after": "const isSoleHealthyBuffer = person && !o.isDoorSea && nHumans >= 3 && !o.nearCollapse && !o.bleeding && !o.onMe && o.newNbs > 0 && humanNbCount === 1; const hardCapMult = o.isCrowdedHard && c >= 2.15 * worth && g.bal[q] >= 0.55 * B ? (isTeamMode ? 1.42 : 1.50) : P.crowdedHardCap;",
+      "riskLevel": "low"
+    },
+    {
+      "file": "tsb/squad/v27-team-live.js",
+      "functionOrParam": "Policy.tryDeterrentCounter (activeHumanAtkers multi-front filter)",
+      "before": "if (a < g.humans && !g.isBot(a) && g.attackTroopsOn(a, me) > 0.02 * B) activeHumanAtkers++;",
+      "after": "if (a < g.humans && !g.isBot(a) && g.attackTroopsOn(a, me) > 0.02 * B && g.bal[a] >= 0.30 * B) activeHumanAtkers++;",
+      "riskLevel": "low"
+    }
+  ]
+}
