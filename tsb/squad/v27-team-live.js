@@ -1,21 +1,74 @@
 const SQUAD_POOL_SET = new Set(["404 not found", "abbasid", "abyssinia", "aceh", "achaemenid", "admin", "afk", "afsharid", "ainz", "aizen", "akbar", "aksum", "akuma", "alaska", "alexander", "algiers", "almohad", "almoravid", "alonso", "alpha", "alphazero", "altf4", "alucard", "amogus", "andalusia", "angkor", "anon_42", "anya", "aragon", "archdukecharles", "area51", "argentina", "armenia", "arthurmorgan", "ashanti", "ashikaga", "ashoka", "askeladd", "assyria", "astrakhan", "augustus", "aurangzeb", "aurelian", "austria-hungary", "ayutthaya", "ayyubid", "aztec", "babylon", "baden", "baekje", "bagrationi", "baguette", "banana", "barbary", "based", "batman", "bavaria", "belgium", "belisarius", "bellingham", "bengal", "benin", "bhutan", "bigbrain", "bigsmoke", "bismarck", "bitcoin", "blackrock", "blucher", "bluescreen", "boer", "bohemia", "bolivar", "bongcloud", "boomer", "borsch", "bosnia", "bourbon", "bowser", "brabant", "brandenburg", "brazil", "british empire", "brittany", "broly", "bruh", "brunei", "bukhara", "bulgar", "burgerking", "burgundy", "byzantium", "caesar", "california", "cao cao", "capablanca", "carinthia", "carolus rex", "carthage", "cascadia", "castile", "casualplayer", "catalonia", "cataphract", "celtic", "centurion", "ceylon", "chad", "chagatai", "chainsawman", "champa", "charizard", "charlemagne", "cheems", "cheese", "chicago", "chile", "chola", "chosokabe", "chunli", "cia", "cj", "clausewitz", "cleopatra", "cloud", "cnut", "cocacola", "conde", "conquistador", "constantine", "corsica", "cossack", "courland", "creeper", "crimea", "cringe", "cristiano", "croatia", "croissant", "csa", "ctrlaltdel", "cuba", "cuirassier", "cumania", "curry", "cyberninja", "cyrenaica", "cyrus", "dahomey", "dai viet", "darius", "darkknight", "darthvader", "date masamune", "davout", "deadpool", "deepblue", "demonhunter", "denji", "denmark", "deruyter", "desertfox", "diamondhands", "diobrando", "ditto", "dixie", "doge", "dogecoin", "don", "doncic", "donitz", "donjuan", "doomer", "doomslayer", "dragonslayer", "dragoon", "dream", "drpepper", "dusan", "dutch republic", "dzungar", "east india co", "eisenhower", "enderman", "enpassant", "erenyeager", "error404", "erwin", "estonia", "ethereum", "ethiopia", "eugene", "ez_clap", "ezo", "farnese", "fatimid", "fbi_openup", "fedreserve", "fern", "ff15", "finland", "firelord", "first bulgarian", "first empire", "fischer", "flanders", "florence", "florida man", "frankia", "frederick", "freemason", "frieren", "frieza", "frisia", "galaxybrain", "ganondorf", "garibaldi", "garlicbread", "garou", "gaul", "gengar", "genoa", "genos", "georgia", "geralt", "german empire", "gg_wp", "ghana", "ghostrider", "giga_chad", "giorno", "gitgud", "gladiator", "goguryeo", "gojo", "goku", "golden horde", "gordonfreeman", "goryeo", "gran colombia", "greenland", "griffith", "guderian", "guest_104", "gupta", "gurkha", "gustavofring", "gustavus", "guts", "haaland", "habsburg", "hafsid", "halsey", "hamilton", "han", "hannibal", "hanover", "harald", "hashashin", "heian", "heihachi", "heisenberg", "helvetia", "herobrine", "hesse", "hetmanate", "highlander", "highping", "hikaru", "himmel", "hittite", "hodl", "hojo", "holy roman", "homelander", "hospitalier", "hungary", "hussite", "iberia", "iceking", "iceland", "ichigo", "illuminati", "impostor", "inca", "inosuke", "interpol", "ireland", "ironman", "irs", "ishowspeed", "itachi", "janissary", "jessepinkman", "jin", "jinkazama", "johnmarston", "joker", "jokic", "jordan", "joseon", "jotaro", "jurchen", "justinian", "kaicenat", "kaido", "kaiser", "kakashi", "kalmar union", "kamakura", "kamchatka", "kandy", "kanem-bornu", "kasparov", "kazakh", "kazan", "kazuya", "kebabremover", "ken", "kfc", "kgb", "khazar", "khiva", "khmer", "khosrow", "kievan rus", "kilwa", "king", "kirayoshikage", "kirby", "kobe", "kokand", "konbaung", "konev", "kongo", "kratos", "kuban", "kublai", "kuku", "kutuzov", "l_lawliet", "lagswitch", "lan xang", "landsknecht", "lannes", "latvia", "lebron", "leclerc", "legionnaire", "leif erikson", "lelouch", "leonidas", "levi", "lewandowski", "liao", "lightyagami", "link", "lithuania", "liu bei", "liukang", "livonian", "llxrscorpio", "loid", "lombardy", "londonsystem", "lowfps", "lu bu", "lucario", "luffy", "luigi", "lukeskywalker", "lusitania", "luxembourg", "lydia", "macarthur", "macedon", "madagascar", "madara", "magikarp", "magnuscarlsen", "magyar", "majapahit", "makima", "malacca", "mali", "mamluk", "mamlukguard", "manchu", "mandalorian", "mansa musa", "manstein", "maple leaf", "maradona", "maratha", "mario", "markiplier", "marlborough", "massena", "masterchief", "mataram", "matthias", "maurice", "maurya", "maxverstappen", "maya", "mbappe", "mcdonalds", "medici", "meiji", "merina", "messi", "mewtwo", "mexican", "mi6", "mikasa", "mindaugas", "ming", "mithridates", "mobileplayer", "modric", "moldavia", "moltke", "mongol horde", "monsterenergy", "montgomery", "moravia", "mori", "morocco", "morphy", "mossad", "mrbeast", "mughal", "murat", "musashi", "muscovy", "musketeer", "mutapa", "muzan", "mysore", "nader shah", "napol\u00e9on", "naruto", "nelson", "nepal", "netherlands", "new england", "new york", "ney", "neymar", "nightstalker", "nimitz", "nogai", "nolife", "noobslayer", "normandy", "north sea", "norway", "novgorod", "nullpointer", "obiwan", "oda nobunaga", "ohio", "oirat", "oldguard", "omniman", "orange", "oranje", "ottoman", "oyo", "pagan", "palatinate", "palmyra", "panama", "panzergrenadier", "papal states", "parthia", "pastalover", "patagonia", "patton", "pcmasterrace", "pecheneg", "pele", "pepe", "pepsi", "peru", "pewdiepie", "pharaoh", "phoenicia", "pikachu", "pineapple", "ping999", "pizzatime", "player_007", "polish-lithuanian", "polska gurom", "pomerania", "pontus", "portugal", "potato", "praetorian", "progamer99", "prussia", "ptolemy", "pyrrhus", "qin", "qing dynasty", "quebec", "raeder", "ragnar", "raiden", "rajput", "ramen", "ranjit singh", "rashidun", "rayquaza", "reconquista", "red army", "redbull", "redcoat", "rengoku", "rhineland", "rimuru", "rizzler", "rokossovsky", "roman empire", "rommel", "ronaldinho", "ronin", "root", "rossi", "rule britannia", "rum", "russian empire", "ryu", "ryuk", "ryukyu", "safavid", "saitama", "saladin", "salah", "salzburg", "samurai", "san marino", "sanada", "sanji", "sardinia", "sassanid", "sasuke", "satoshi", "saulgoodman", "savoy", "saxony", "schumacher", "scipio", "scorpion", "scotland", "segfault", "seljuk", "sengoku", "senna", "sephiroth", "serbia", "sever (rus)", "shadowhunter", "shaka", "shanks", "shaq", "shimazu", "shinobi", "shivaji", "shogunate", "siam", "siberia", "sicilian", "sigma", "sikh empire", "silentassassin", "silesia", "silla", "simeon", "simo hayha", "skibidi", "skillissue", "smurfaccount", "sniperwolf", "snorlax", "sokoto", "song", "songhai", "sonheungmin", "soviet union", "spanish empire", "sparta", "spartan", "spiderman", "spike", "spqr", "spruance", "srivijaya", "stackoverflow", "starbucks", "stark", "starlord", "steve", "stockfish", "stonks", "stormbringer", "streltsy", "styria", "subway", "subzero", "sudo_rm_rf", "sukuna", "sulu", "sumer", "sun quan", "suomi", "sus", "sushi", "suvorov", "swabia", "sweaty", "sweden", "swiss guard", "switzerland", "syntaxerror", "system32", "tacobell", "takeda", "tal", "tang", "tanjiro", "taxcollector", "teadrinker", "team destroyer", "technoblade", "templar", "tercios", "teutonic order", "texas", "thanos", "thorfinn", "three kingdoms", "thundergod", "tibet", "tifa", "tigranes", "tilly", "timurid", "tipu sultan", "tito", "togo", "toji", "tokugawa", "tokyoghoul", "tomato", "tondo", "touchgrass", "toungoo", "toyotomi", "trajan", "transvaal", "transylvania", "trevor", "tripoli", "tromp", "tryhard", "tsardom", "tunis", "turenne", "tuscany", "two sicilies", "tyrol", "uesugi", "ulan", "umayyad", "umbreon", "user_8821", "ussr", "uzbek", "vanguard", "varangian", "vasa", "vatican city", "vegeta", "venice", "venom", "vichy", "vijayanagara", "viking", "vinicius", "vinland", "vlad tepes", "voc", "vodka", "voidwalker", "vytautas", "wales", "wallachia", "wallenstein", "wallonia", "wallstreet", "walterwhite", "watermelon", "weimar", "wellington", "wembanyama", "wendy", "westphalia", "white death", "winged hussar", "wojak", "wolverine", "world empire", "wurttemberg", "xerxes", "xia", "xqc", "xx_killer_xx", "xx_shadow_xx", "yamamoto", "yamato", "yi sun-sin", "yisunsin", "yor", "yoshi", "yuan", "yugoslavia", "zanzibar", "zelda", "zenitsu", "zenobia", "zhuge liang", "zhukov", "zidane", "zizka", "zoomer", "zoro", "zouave", "zulu"]);
 try {
-  if (typeof window === "object" && window.bq?.sH && typeof window.bq.sH.select === "function") {
-    if (!window.bq.sH.__origSelect) window.bq.sH.__origSelect = window.bq.sH.select.bind(window.bq.sH);
-    window.bq.sH.select = function(id) {
-      if (id > 0 && Array.isArray(this.sH)) {
-        const rm = this.sH.find(r => r && r.id === id);
-        if (!rm || rm.vz < 0 || rm.vz > 3) {
-          const valid = this.sH.find(r => r && r.vz >= 0 && r.vz <= 3);
-          return this.__origSelect(valid ? valid.id : 0);
+  if (typeof window === "object") {
+    if (window.__forceLeaveSeq !== 3) {
+      window.__forceLeaveSeq = 3;
+      const d = window.dictionary;
+      const g = d && window[d.game];
+      if (g && g[d.gameState] !== 0 && typeof g[d.sbLeave] === "function") {
+        g[d.sbLeave](true);
+      }
+    }
+    const isBossReadyInLobby = () => {
+      const w1 = window.bq?.wZ?.w1;
+      const wa = window.bq?.wZ?.wa | 0;
+      if (!Array.isArray(w1) || wa <= 0) return false;
+      for (let i = 0; i < Math.min(wa, w1.length); i++) {
+        const p = w1[i];
+        if (!p) continue;
+        const raw = String(p.aGT || p.aGM || p.aFN || p.username || p.name || "").trim();
+        const low = raw.toLowerCase();
+        if (!low || SQUAD_POOL_SET.has(low)) continue;
+        const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
+        if (SQUAD_POOL_SET.has(stripped)) continue;
+        if (
+          p.color === 4095 ||
+          stripped === "kazerd183" || stripped.includes("kazerd") ||
+          low.includes("kazerd") || stripped === "npl" ||
+          stripped.includes("npl") || low.includes("nope") ||
+          low.includes("auouf")
+        ) {
+          return true;
         }
       }
-      return this.__origSelect(id);
+      return false;
     };
-    if (window.bq.sH.wF > 0 && Array.isArray(window.bq.sH.sH)) {
-      const cur = window.bq.sH.sH.find(r => r && r.id === window.bq.sH.wF);
-      if (!cur || cur.vz < 0 || cur.vz > 3) window.bq.sH.select(0);
-    }
+    const ensureLobbyHook = () => {
+      const sH = window.bq?.sH;
+      if (!sH || typeof sH.select !== "function") return;
+      if (!sH.__origSelect) {
+        sH.__origSelect = sH.select.bind(sH);
+        sH.select = function(id) {
+          if (id > 0) {
+            if (!isBossReadyInLobby()) {
+              return this.__origSelect(0);
+            }
+            const firstId = this.sH?.[0]?.id || id;
+            return this.__origSelect(firstId);
+          }
+          return this.__origSelect(0);
+        };
+      }
+      if (window.bq?.f6 === 1) {
+        const bossReady = isBossReadyInLobby();
+        const firstId = sH.sH?.[0]?.id || 0;
+        if (bossReady && firstId > 0 && sH.wF !== firstId && !sH.__joiningBoss) {
+          sH.__joiningBoss = true;
+          const slot = window.__tsbSquadSlot | 0;
+          setTimeout(() => {
+            sH.__joiningBoss = false;
+            if (window.bq?.f6 === 1 && isBossReadyInLobby() && sH.sH?.[0]?.id > 0 && sH.wF !== sH.sH[0].id) {
+              sH.__origSelect(sH.sH[0].id);
+            }
+          }, 40 + slot * 35);
+        } else if (!bossReady && sH.wF > 0) {
+          sH.__origSelect(0);
+        }
+      }
+    };
+    if (window.__bossLobbyWatcher) clearInterval(window.__bossLobbyWatcher);
+    window.__bossLobbyWatcher = setInterval(ensureLobbyHook, 200);
+    ensureLobbyHook();
   }
 } catch {}
 // Self-contained strategy v27 (Unified Synthesis of c81 A07 + c80 A06 Safety Clauses over v24, by c58).
@@ -3904,14 +3957,15 @@ export class Policy extends V17 {
     return !!(g.teams && g.teams[this.me] > 0 && g.teams[p] === g.teams[this.me]);
   }
 
-  // Identify our Boss ("[Nope]kazerd183" / "[NPL] npl", excluding our guard bot names)
+  // Identify our Boss ("[Nope]kazerd183" / "[NPL] npl" / color 4095 non-bot, excluding our guard bot names)
   isBossNpl(g, p) {
     if (p === this.me || !g.alive[p]) return false;
     const raw = String(g.names?.[p] ?? "").trim();
     const low = raw.toLowerCase();
     const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
     if (SQUAD_POOL_SET.has(stripped) || SQUAD_POOL_SET.has(low)) return false;
-    return stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low === "[npl]npl";
+    const isColor4095 = typeof window === "object" && window.aE?.data?.colorsData?.[p] === 4095;
+    return isColor4095 || stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low.includes("auouf") || low === "[npl]npl";
   }
 
   findBossId(g) {
@@ -3942,8 +3996,8 @@ export class Policy extends V17 {
   // While wild outsiders are alive on the map, protect all 20 squad brothers across teams so they cooperate;
   // Once all wild outsiders are dead (#7821), lift cross-team protection so only 1 team survives!
   isProtectedSquadMate(g, p) {
-    if (this.isTeammate(g, p)) return true;
-    return this.hasWildOutsidersAlive(g) && (this.isOurSquadBot(g, p) || this.isBossNpl(g, p));
+    if (this.isTeammate(g, p) || this.isBossNpl(g, p)) return true;
+    return this.hasWildOutsidersAlive(g) && this.isOurSquadBot(g, p);
   }
 
   // DISTRIBUTED BACKEND-COORDINATED TEAM SPAWNING:

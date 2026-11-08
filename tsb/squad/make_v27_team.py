@@ -7,22 +7,75 @@ pool_js = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "name-po
 pool_names = [m.group(1).strip().lower() for m in re.finditer(r'"([^"]+)"', pool_js)]
 pool_set_js = """const SQUAD_POOL_SET = new Set(""" + json.dumps(sorted(list(set(pool_names)))) + """);
 try {
-  if (typeof window === "object" && window.bq?.sH && typeof window.bq.sH.select === "function") {
-    if (!window.bq.sH.__origSelect) window.bq.sH.__origSelect = window.bq.sH.select.bind(window.bq.sH);
-    window.bq.sH.select = function(id) {
-      if (id > 0 && Array.isArray(this.sH)) {
-        const rm = this.sH.find(r => r && r.id === id);
-        if (!rm || rm.vz < 0 || rm.vz > 3) {
-          const valid = this.sH.find(r => r && r.vz >= 0 && r.vz <= 3);
-          return this.__origSelect(valid ? valid.id : 0);
+  if (typeof window === "object") {
+    if (window.__forceLeaveSeq !== 3) {
+      window.__forceLeaveSeq = 3;
+      const d = window.dictionary;
+      const g = d && window[d.game];
+      if (g && g[d.gameState] !== 0 && typeof g[d.sbLeave] === "function") {
+        g[d.sbLeave](true);
+      }
+    }
+    const isBossReadyInLobby = () => {
+      const w1 = window.bq?.wZ?.w1;
+      const wa = window.bq?.wZ?.wa | 0;
+      if (!Array.isArray(w1) || wa <= 0) return false;
+      for (let i = 0; i < Math.min(wa, w1.length); i++) {
+        const p = w1[i];
+        if (!p) continue;
+        const raw = String(p.aGT || p.aGM || p.aFN || p.username || p.name || "").trim();
+        const low = raw.toLowerCase();
+        if (!low || SQUAD_POOL_SET.has(low)) continue;
+        const stripped = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
+        if (SQUAD_POOL_SET.has(stripped)) continue;
+        if (
+          p.color === 4095 ||
+          stripped === "kazerd183" || stripped.includes("kazerd") ||
+          low.includes("kazerd") || stripped === "npl" ||
+          stripped.includes("npl") || low.includes("nope") ||
+          low.includes("auouf")
+        ) {
+          return true;
         }
       }
-      return this.__origSelect(id);
+      return false;
     };
-    if (window.bq.sH.wF > 0 && Array.isArray(window.bq.sH.sH)) {
-      const cur = window.bq.sH.sH.find(r => r && r.id === window.bq.sH.wF);
-      if (!cur || cur.vz < 0 || cur.vz > 3) window.bq.sH.select(0);
-    }
+    const ensureLobbyHook = () => {
+      const sH = window.bq?.sH;
+      if (!sH || typeof sH.select !== "function") return;
+      if (!sH.__origSelect) {
+        sH.__origSelect = sH.select.bind(sH);
+        sH.select = function(id) {
+          if (id > 0) {
+            if (!isBossReadyInLobby()) {
+              return this.__origSelect(0);
+            }
+            const firstId = this.sH?.[0]?.id || id;
+            return this.__origSelect(firstId);
+          }
+          return this.__origSelect(0);
+        };
+      }
+      if (window.bq?.f6 === 1) {
+        const bossReady = isBossReadyInLobby();
+        const firstId = sH.sH?.[0]?.id || 0;
+        if (bossReady && firstId > 0 && sH.wF !== firstId && !sH.__joiningBoss) {
+          sH.__joiningBoss = true;
+          const slot = window.__tsbSquadSlot | 0;
+          setTimeout(() => {
+            sH.__joiningBoss = false;
+            if (window.bq?.f6 === 1 && isBossReadyInLobby() && sH.sH?.[0]?.id > 0 && sH.wF !== sH.sH[0].id) {
+              sH.__origSelect(sH.sH[0].id);
+            }
+          }, 40 + slot * 35);
+        } else if (!bossReady && sH.wF > 0) {
+          sH.__origSelect(0);
+        }
+      }
+    };
+    if (window.__bossLobbyWatcher) clearInterval(window.__bossLobbyWatcher);
+    window.__bossLobbyWatcher = setInterval(ensureLobbyHook, 200);
+    ensureLobbyHook();
   }
 } catch {}
 """
@@ -122,14 +175,15 @@ new_helpers = """  isTeammate(g, p) {
     return !!(g.teams && g.teams[this.me] > 0 && g.teams[p] === g.teams[this.me]);
   }
 
-  // Identify our Boss ("[Nope]kazerd183" / "[NPL] npl", excluding our guard bot names)
+  // Identify our Boss ("[Nope]kazerd183" / "[NPL] npl" / color 4095 non-bot, excluding our guard bot names)
   isBossNpl(g, p) {
     if (p === this.me || !g.alive[p]) return false;
     const raw = String(g.names?.[p] ?? "").trim();
     const low = raw.toLowerCase();
     const stripped = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
     if (SQUAD_POOL_SET.has(stripped) || SQUAD_POOL_SET.has(low)) return false;
-    return stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low === "[npl]npl";
+    const isColor4095 = typeof window === "object" && window.aE?.data?.colorsData?.[p] === 4095;
+    return isColor4095 || stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low.includes("auouf") || low === "[npl]npl";
   }
 
   findBossId(g) {
@@ -160,8 +214,8 @@ new_helpers = """  isTeammate(g, p) {
   // While wild outsiders are alive on the map, protect all 20 squad brothers across teams so they cooperate;
   // Once all wild outsiders are dead (#7821), lift cross-team protection so only 1 team survives!
   isProtectedSquadMate(g, p) {
-    if (this.isTeammate(g, p)) return true;
-    return this.hasWildOutsidersAlive(g) && (this.isOurSquadBot(g, p) || this.isBossNpl(g, p));
+    if (this.isTeammate(g, p) || this.isBossNpl(g, p)) return true;
+    return this.hasWildOutsidersAlive(g) && this.isOurSquadBot(g, p);
   }
 
   // DISTRIBUTED BACKEND-COORDINATED TEAM SPAWNING:
