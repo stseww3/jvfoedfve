@@ -54,14 +54,16 @@ const CHROME_BOTS = [
 ];
 
 const HEADLESS_BOTS = [
-  { port: 9310, socksPort: 10801, donorChromePort: 9228, name: '[APEX] ryan_m', slot: 0, id: '', pw: '' },
-  { port: 9311, socksPort: 10802, donorChromePort: 9228, name: '[APEX] noah88', slot: 1, id: '', pw: '' },
-  { port: 9312, socksPort: 10803, donorChromePort: 9228, name: '[APEX] leo_tx', slot: 2, id: '', pw: '' },
-  { port: 9313, socksPort: 10804, donorChromePort: 9228, name: '[APEX] alex_k', slot: 3, id: '', pw: '' },
-  { port: 9314, socksPort: 10805, donorChromePort: 9228, name: '[APEX] zero_7', slot: 4, id: '', pw: '' },
-  { port: 9315, socksPort: 10801, donorChromePort: 9228, name: '[APEX] kaito9', slot: 5, id: '', pw: '' },
-  { port: 9316, socksPort: 10802, donorChromePort: 9228, name: '[APEX] riku_x', slot: 6, id: '', pw: '' },
-  { port: 9317, socksPort: 10803, donorChromePort: 9228, name: '[APEX] sora_w', slot: 7, id: '', pw: '' },
+  { port: 9310, socksPort: 10821, donorChromePort: 9228, name: '[APEX] ryan_m', slot: 0, id: '', pw: '' },
+  { port: 9311, socksPort: 10822, donorChromePort: 9228, name: '[APEX] noah88', slot: 1, id: '', pw: '' },
+  { port: 9312, socksPort: 10823, donorChromePort: 9228, name: '[APEX] leo_tx', slot: 2, id: '', pw: '' },
+  { port: 9313, socksPort: 10824, donorChromePort: 9228, name: '[APEX] alex_k', slot: 3, id: '', pw: '' },
+  { port: 9314, socksPort: 10825, donorChromePort: 9228, name: '[APEX] zero_7', slot: 4, id: '', pw: '' },
+  { port: 9315, socksPort: 10826, donorChromePort: 9228, name: '[APEX] kaito9', slot: 5, id: '', pw: '' },
+  { port: 9316, socksPort: 10827, donorChromePort: 9228, name: '[APEX] riku_x', slot: 6, id: '', pw: '' },
+  { port: 9317, socksPort: 10828, donorChromePort: 9228, name: '[APEX] sora_w', slot: 7, id: '', pw: '' },
+  { port: 9318, socksPort: 10829, donorChromePort: 9228, name: '[APEX] zexos1', slot: 8, id: '', pw: '' },
+  { port: 9319, socksPort: 10830, donorChromePort: 9228, name: '[APEX] talon5', slot: 9, id: '', pw: '' },
 ];
 
 // Cross-process anti-collision reader: checks if c110's v27 squad is currently in Lobby waiting to launch
@@ -1230,7 +1232,7 @@ setInterval(async () => {
     !avoidC110Collision &&
     timerSpreadOk &&
     (headlessOnly
-      ? (headlessInRoom0 === HEADLESS_BOTS.length || (headlessInRoom0 >= HEADLESS_BOTS.length - 1 && minStartsIn <= 10))
+      ? (headlessInRoom0 === HEADLESS_BOTS.length || (headlessInRoom0 >= HEADLESS_BOTS.length - 2 && minStartsIn <= 12))
       : wantTenForCurrentLobby
         ? (readyCountInRoom0 === 10 || (readyCountInRoom0 >= 8 && minStartsIn <= 8))
         : (chromeInRoom0 === 5 || (chromeInRoom0 >= 4 && minStartsIn <= 8)));

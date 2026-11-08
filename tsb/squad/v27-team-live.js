@@ -3959,8 +3959,8 @@ export class Policy extends V17 {
       }
     }
     const rankIdx = Math.max(0, squadIds.indexOf(me));
-    const squadCount = Math.max(5, squadIds.length);
-    const slot = mySquadIdx % 8;
+    const squadCount = Math.max(10, squadIds.length);
+    const slot = mySquadIdx % 10;
 
     // Check if Boss [Nope]kazerd183 is in this match
     const bossId = this.findBossId(g);
