@@ -1199,7 +1199,7 @@ export class TeamSpawnCoordinator {
         usedConcentricCircle = true;
         for (const pt of bestCornerPlan) {
           chosenTargets.push(pt);
-          this.injectSquadSeedIntoField(pt.cell, chosenTargets.length - 1, Math.round(1.6 * scales.allyMinSep));
+          this.injectChosenSquadPoint(pt.cell, chosenTargets.length - 1, Math.round(1.6 * scales.allyMinSep));
         }
       }
     }
