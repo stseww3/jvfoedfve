@@ -1,0 +1,100 @@
+{
+  "agentId": "S01",
+  "updatedAt": "2026-11-08T03:05:00Z",
+  "assignedGames": [
+    "G01"
+  ],
+  "assignedVariables": [
+    "V1",
+    "V2"
+  ],
+  "gameDissections": [
+    {
+      "gameId": "G01",
+      "result": "lost",
+      "teamCount": 6,
+      "activeBotsCount": 8,
+      "mainContinentBotsCount": 8,
+      "teamLandAt1500": 104930,
+      "peakTeamLand": 151096,
+      "peakTick": 5040,
+      "inflectionTick": 5040,
+      "frontlineDensityAtInflection": 7.1,
+      "enemyDensityAtInflection": 108.5,
+      "primaryRootCauseVariable": "V7",
+      "secondaryRootCauseVariable": "V2",
+      "evidenceSummary": "In G01 (00:30 CST, mode=5 map=10 931x959, L_map=546,152, 6 teams, end t=5858), all 8 bots spawned in a tight northeastern edge strip (x in [690,906], y in [16,466], minSep=101px) after 3 early voronoi=500 island fallback events. Due to V2 compression, 3 bots (kevin_k 14,712, dave_w 12,386, ethan21 6,403; total 33,501 land) were completely walled in (nb=0), andTeam 4 held 104,930 land (19.21% < 22% line) at t=1530. From t=1720 to t=4230, 6 coastal bots hit 'TypeError: rnd is not a function' in tryClaimNearTeamIslands (404996d bug), inadvertently hoarding 11,219,234 troops (d_team=92.3) by t=4320 when [HOT-IMPORT] injected 917e6b1. Immediately upon waking at t=4320->4500, V7 (oppFloorCap=38, keep<=10~26*L, totB=B+myOut) caused our frontline to dump 5.33M troops in 180 ticks (ryan_m bal 3.86M->605k, dens 107.5->14.6). Although Team 4 reached #1 in the match (151,096 land at t=5040~5139, with ryan_m peaking at 51,217, noah88 at 28,284, leo_tx at 19,686), at t=5040 ryan_m fired 13 commands in 90 ticks to drain his own density to 7.1 (bal=356,539 on 50,549 land) and leo_tx drained to 9.9, while boxed-in kevin_k (1.05M troops, d=71.5) and ethan21 (473k troops, d=73.8) were deadlocked from squad-rescue donating by coastGuardFloor=68*L and dMe>=106. Team 6 (Ottoman empire / COLD) breached our d=7.1 frontline and wiped all 8 bots between t=5139 and t=5858."
+    }
+  ],
+  "variableEvaluations": [
+    {
+      "variableId": "V1",
+      "variableName": "MainContinentSpawnRatio & VirtualSquadAnchor Continent/Basin Selection",
+      "currentValue": "Across all 10 live games (G00-G09) in tsb-team-squad.log, 7/10 games (70%) suffered severe V1 failures: 6 games (G00, G02, G04, G05, G07, G09) spawned 2~7 bots on tiny islands (5px to 30,481px) with 18/77 final bot spawns (and 208 countdown solves) hitting the voronoi=500 fallback; 1 game (G06, map=24) anchored all 8 bots on the 190,201px secondary continent (53.75% of the 353,876px main continent, which STILL passes d590acd's >=45% filter!), gifting the 353,876px main continent to Team 4.",
+      "baseline80PctValue": "Anchored on #1 largest main continent with SPOILER_BANK 2-bot pair on secondary continents >=18% map land and <=4 enemies.",
+      "recommendedOptimalValue": "Raise minAnchorContSize in findVirtualSquadAnchor from 0.45*maxCompSize to 0.75*maxCompSize (strictly locking anchor to continents[0]), require 8-directional openness openDirs(r=96px) >= 4, replace duplicate 1.18x hasEdgeBackstop multiplier with (0.72 + 0.06*openDirs), and enable targetFlankCount = K>=5 ? 2 : 1 around anchorBoss.",
+      "estimatedWinrateImpactPct": 25.0,
+      "causalMechanism": "In pre-d590acd autonomous games, unpopulated islands had dComp=1,000,000 (max clearance=220), attracting VirtualSquadAnchor in 60% of matches and triggering a deadlock between compSize<minViableCompSize and dBoss<0 that forced 23.4% of live spawns into the voronoi=500 fallback. Even after d590acd (>=45% maxCompSize), maps like map=24 (G06) have a secondary continent at 53.75% of maxCompSize, trapping all 8 bots on 25% of map land via aa1384b's strict bossCompId filter.",
+      "codeLocation": "tsb/squad/spawn-coordinator.mjs:520-544 (findVirtualSquadAnchor), 842-873 (anchorBoss & targetFlankCount), 922-926 (bossCompId lock), 1042-1075 (voronoi=500 fallback)"
+    },
+    {
+      "variableId": "V2",
+      "variableName": "AllySepAndInternalCrowd (allyMinSep, clusterMax & Boxed-In Coastal Donate Deadlock)",
+      "currentValue": "allyMinSep = clamp(round(max(1.05*rCell, 0.075*diag)), 62, 112) [live G01/G03/G06/G08 minSep = 48~112px]; clusterMax = clamp(round(max(3.0*rCell, 0.25*diag)), 195, 350); seedPri = clearance - max(0, geoD - 150)*0.32; boxedIn coastal bots locked by coastGuardFloor=68*L and rescue dMe>=106.",
+      "baseline80PctValue": "allyMinSep = clamp(round(max(1.42*rCell, 0.115*diag)), 72, 175) [avgMinSep=134px, medianAllyDist=149px]; clusterMax = clamp(round(max(4.4*rCell, 0.42*diag)), 260, 560); rawSeeds sorted by clearance.",
+      "recommendedOptimalValue": "allyMinSep = clamp(round(max(1.38*rCell, 0.110*diag)), 88, 168); clusterMax = clamp(round(max(4.20*rCell, 0.380*diag)), 260, 520); seedPri = clearance - (anchorBoss && relax >= 0.80 ? max(0, geoD - 240)*0.10 : 0); lower coastGuardFloor to 32*L and rescue threshold to dMe>=38 when boxedIn===true.",
+      "estimatedWinrateImpactPct": 28.0,
+      "causalMechanism": "Tightening allyMinSep to <=112px and clusterMax to <=350px in fd868f3 reduced average t=1500 team land across 30 real maps by -28% (from 93,738px / 21.33% share to 67,705px / 16.51% share, slashing the >=22% dominant opening rate from 30.4% to 10.9%) and boxed in 2~3 inner bots per game (in G01: kevin_k, dave_w, ethan21). Worse, boxed-in bots touching exterior water (hasExposedCoast=true -> isPureInlandSafe=false) get capped at dMe=70~78 by surplus donate and coastGuardFloor=68*L, so they never reach the dMe>=106 required by squad rescue donate, stranding 1.52M+ troops in G01 while the frontline died at d=7.1.",
+      "codeLocation": "tsb/squad/spawn-coordinator.mjs:828-835 (scales), 955-963 (seedPri); tsb/squad/make_v27_team.py:785 (coastGuardFloor), 838 (squad rescue donate dMe>=106)"
+    }
+  ],
+  "topCoreVariableRanking": [
+    {
+      "rank": 1,
+      "variableId": "V7",
+      "weightPct": 38.0,
+      "oneLineReason": "In G01, oppFloorCap=38 + keep<=10~26*L + totB=B+myOut caused frontline bots to dump 5.33M troops in 180 ticks (t=4320->4500) and drained ryan_m (51.2k land) to dens=7.1 at t=5040."
+    },
+    {
+      "rank": 2,
+      "variableId": "V1",
+      "weightPct": 30.0,
+      "oneLineReason": "In 7/10 live games (G00,G02,G04,G05,G06,G07,G09), VirtualSquadAnchor picked tiny islands (48~50 voronoi=500 fallbacks) or secondary continents (G06 190k vs 354k main continent)."
+    },
+    {
+      "rank": 3,
+      "variableId": "V2",
+      "weightPct": 22.0,
+      "oneLineReason": "fd868f3's allyMinSep<=112px & clusterMax<=350px cut t=1500 team land by -28% (0/9 multi-team games reached >=22% land at t=1530) and boxed in 3 bots in G01 with 2.02M stranded troops."
+    },
+    {
+      "rank": 4,
+      "variableId": "V6",
+      "weightPct": 10.0,
+      "oneLineReason": "Boxed-in coastal teammates (kevin_k 1.05M, ethan21 473k in G01) had isPureInlandSafe=false, deadlocking squad rescue donate (requires dMe>=106) below coastGuardFloor=68*L."
+    }
+  ],
+  "actionableFixes": [
+    {
+      "file": "tsb/squad/spawn-coordinator.mjs",
+      "functionOrParam": "TeamSpawnCoordinator.findVirtualSquadAnchor (minAnchorContSize & openDirs)",
+      "before": "const minAnchorContSize = Math.max(25000, Math.round(0.45 * (maxCompSize || 0))); ... const sc = clearance * pm.pinchMult * (pm.hasEdgeBackstop ? 1.18 : 1.0) * contBonus;",
+      "after": "const minAnchorContSize = Math.max(25000, Math.round(0.75 * (maxCompSize || 0))); ... check 8-dir land openness openDirs(r=96px) >= 4 and score with clearance * pm.pinchMult * (0.72 + 0.06 * openDirs) * contBonus;",
+      "riskLevel": "low"
+    },
+    {
+      "file": "tsb/squad/spawn-coordinator.mjs",
+      "functionOrParam": "TeamSpawnCoordinator.solve -> scales, targetFlankCount & seedPri",
+      "before": "bossExcl: clamp(..., 68, 120), flankMax: clamp(..., 135, 235), allyMinSep: clamp(Math.round(Math.max(1.05 * rCell, 0.075 * diag)), 62, 112), clusterMax: clamp(Math.round(Math.max(3.0 * rCell, 0.25 * diag)), 195, 350); targetFlankCount = realBoss ? ... : 0; seedPri = clearance - (anchorBoss ? Math.max(0, geoD - 150) * 0.32 : 0);",
+      "after": "bossExcl: clamp(Math.round(Math.max(1.35 * rCell, 0.095 * diag)), 76, 155), flankMax: clamp(Math.round(Math.max(2.70 * rCell, 0.210 * diag)), 150, 300), allyMinSep: clamp(Math.round(Math.max(1.38 * rCell, 0.110 * diag)), 88, 168), clusterMax: clamp(Math.round(Math.max(4.20 * rCell, 0.380 * diag)), 260, 520); targetFlankCount = anchorBoss ? (K >= 5 ? 2 : K >= 2 ? 1 : 0) : 0; seedPri = clearance - (anchorBoss && relax >= 0.80 ? Math.max(0, geoD - 240) * 0.10 : 0);",
+      "riskLevel": "low"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "Policy.tryDonateToTeammate (boxedIn coastal rescue unlock)",
+      "before": "const coastGuardFloor = hasExposedCoast && g.t >= 1100 ? 68 * L : 18 * L; ... if (dMe >= (isPureInlandSafe ? 40 : 106) && dMe >= dAlly + 25)",
+      "after": "const coastGuardFloor = hasExposedCoast && g.t >= 1100 ? (boxedIn ? 32 * L : 68 * L) : 18 * L; ... if (dMe >= (boxedIn || isPureInlandSafe ? 38 : 106) && dMe >= dAlly + 20)",
+      "riskLevel": "low"
+    }
+  ]
+}
