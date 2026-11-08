@@ -834,9 +834,9 @@ export class TeamSpawnCoordinator {
       rCell: Math.round(rCell),
       bossExcl: clamp(Math.round(Math.max(1.12 * rCell, 0.078 * diag)), 68, 120),
       flankMax: clamp(Math.round(Math.max(2.30 * rCell, 0.170 * diag)), 135, 235),
-      allyMinSep: clamp(Math.round(1.48 * rCell), 72, 118), 118, 168),
+      allyMinSep: clamp(Math.round(1.48 * rCell), 72, 118),
       enemyMinClearance: clamp(Math.round(0.70 * rCell), 36, 78),
-      clusterMax: clamp(Math.round(3.35 * rCell), 190, 320), 340, 580),
+      clusterMax: clamp(Math.round(3.35 * rCell), 190, 320),
     };
 
     // Build initial distance fields with realBoss (if placed)

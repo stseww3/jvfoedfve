@@ -513,11 +513,18 @@ let activeStreamOwner = null;
 let activeStreamKey = null;
 
 let firefoxDonor = null;
+let firefoxDonorInitPromise = null;
 
 async function ensureFirefoxDonor(port = 9228) {
   if (firefoxDonor && firefoxDonor.ws && firefoxDonor.ws.readyState === 1 && firefoxDonor.ctx) {
     return firefoxDonor;
   }
+  if (firefoxDonorInitPromise) return firefoxDonorInitPromise;
+  firefoxDonorInitPromise = _initFirefoxDonor(port).finally(() => { firefoxDonorInitPromise = null; });
+  return firefoxDonorInitPromise;
+}
+
+async function _initFirefoxDonor(port = 9228) {
   const { spawn } = await import('node:child_process');
   const ffExe = path.join(__dirname, 'firefox_bin', 'firefox.exe');
   const profDir = path.join(__dirname, 'firefox_donor_9228');
