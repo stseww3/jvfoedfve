@@ -1,6 +1,6 @@
 {
   "agentId": "S03",
-  "updatedAt": "2026-11-08T03:30:00Z",
+  "updatedAt": "2026-11-08T03:48:00Z",
   "assignedGames": [
     "G04"
   ],
@@ -17,24 +17,24 @@
       "teamLandAt1500": 61616,
       "peakTeamLand": 248433,
       "peakTick": 5422,
-      "inflectionTick": 6570,
+      "inflectionTick": 6594,
       "frontlineDensityAtInflection": 27.8,
       "enemyDensityAtInflection": 118.0,
       "primaryRootCauseVariable": "V7",
       "secondaryRootCauseVariable": "V10",
-      "evidenceSummary": "In G04 (3-team match, map=10, land=546,152), our Team 1 held #1 with 248,433 land (45.5% of map vs Team 2's 226,797 and collapsing Team 3's 66,931) at t=5422, led by leo_tx (28,816L), noah88 (20,018L), and lucas94 (18,243L). Between t=5042 and t=6660, V7 (oppFloorCap=38, collapseFloorCap=16, totB=B+myOut, isPrimeLand keep<=10~26*L) combined with V10 (14x10%B RTT assist machine-gunning by noah88 at t=6594..6622) caused noah88 to fire 18 commands in 90 ticks (crashing home density from 96.9 to 33.8) and lucas94 to drop to d=27.8 while bordering 3 enemies. Meanwhile, boxed-in rear carry leo_tx (27,199L, nb=0) was continuously bled down to d=70~76 by 5% micro-donations (paying 6.25%B flat engine tax). Team 2 counter-attacked the hollowed-out d=27.8~33.8 frontline at t=6660 and swept lucas94 (t=6988), leo_tx (t=7237), and noah88 (t=7404)."
+      "evidenceSummary": "In G04 (00:50 CST, 3-team match, map=10 931x959, land=546,152, H=48), Team 1 led through t=5422 with 248,433 team land (45.5% of map vs Team 2's 226,797 = 41.5% and collapsing Team 3's 66,931 = 12.3%), anchored by leo_tx (28,816L), noah88 (20,018L), and lucas94 (18,243L). Two lethal V7 frontline-draining cascades threw the match: (1) At t=4860->4950, frontline shield kevin_k (L=7,296, B=473,185, d=64.9) fired 7 consecutive buyLand pulses in 90 ticks under oppFloorCap=38 + totB=B+myOut + isPrimeLand keep<=10~26*L, draining his home balance to B=115 (d=0.02!) and dying at t=5422; (2) Between t=6300 and t=6660, while squad land peaked at 63,806 (leo_tx 28,816, noah88 20,018, lucas94 18,092), lucas94 bled his home density from 98.4 down to 27.8 (bordering nb=3 enemies) via buyLand over-extension, and at t=6594..6622 noah88 (L=17,259, B=1,673,120, d=96.9) fired 14 machine-gun 10%B assist pokes in 28 ticks (plus 1 buyLand pulse + 3 boats) against enemy=23([CN]) due to the 2-tick RTT inflight lock expiring before server echo, crashing his home density from 96.9 to 33.8. Meanwhile, boxed-in rear bank leo_tx (27,199L, nb=0) was bled to d=72.5~76.4 by 79 squad micro-donations. Team 2 counter-attacked the hollowed-out d=27.8~33.8 frontline at t=6660 and swept noah88 (collapsed by t=6840, died t=7404), lucas94 (t=6988), and leo_tx (hit by a 5-poke assist self-drain at t=6950..6958 from d=74.1 to 39.7, died t=7237)."
     }
   ],
   "variableEvaluations": [
     {
       "variableId": "V7",
       "variableName": "EffectiveFrontlineKeepDensity",
-      "currentValue": "oppFloorCap=38, collapseFloorCap=16, totB = B + myOut, isPrimeLand keep <= 10*L~26*L",
-      "baseline80PctValue": "oppFloorCap=128, collapseFloorCap=85, avail = B - fee - keep (home B only, no 10*L prime override)",
-      "recommendedOptimalValue": "oppFloorCap=112, collapseFloorCap=68, avail = B - fee - keep (never include in-flight myOut in person attack defense floor), thirdPartySafe floor >= max(68*L, (max3rdB - 1.5*L)/1.55)",
+      "currentValue": "oppFloorCap=38, collapseFloorCap=16, totB = B + myOut, avail = Math.min(B - fee, (B + myOut) - fee - keep), isPrimeLand keep <= 10*L~26*L, curAtk <= 14%~16%B, 0-cooldown 10%B assist poke",
+      "baseline80PctValue": "oppFloorCap=128, collapseFloorCap=85, avail = B - fee - keep (home B only, no 10*L prime override, curAtk <= 4%B, period=3..5, inflight=8 ticks)",
+      "recommendedOptimalValue": "oppFloorCap=112, collapseFloorCap=68, avail = B - fee - keep (strictly exclude in-flight myOut from buyLand budget), thirdPartySafe floor >= max(68*L, (max3rdB - 1.5*L)/1.55) when humanNbCount >= 2, and 55-tick RTT cooldown + dMe >= 92 floor on 10%B assist poke",
       "estimatedWinrateImpactPct": 31.0,
-      "causalMechanism": "When totB = B + myOut is used to compute avail = Math.min(B - fee, (B + myOut) - fee - keep) and keep is clamped to 10~38*L, every outgoing attack pulse myOut is double-counted as if it were still defending home territory. Under period=2 (112ms) and maxTargets=6, a frontline bot launches 3~5 concurrent pulses totaling myOut = 35%~65% of B, driving actual home balance B_home down to 0~28*L (181 hollow-out snapshots across G01-G09, 44/54 frontline deaths). Adjacent full-density enemies (d=100~135) immediately counter-sweep the defenseless frontline.",
-      "codeLocation": "tsb/squad/make_v27_team.py:976-998, 1060-1102 (tsb/squad/v27-team-live.js:3921, 3963, 5810-5868)"
+      "causalMechanism": "Counting in-flight outgoing troops (myOut) in totB when computing avail = Math.min(B - fee, (B + myOut) - fee - keep) violates conservation of home defense: every pulse X moved from B to myOut leaves totB unchanged (only decreasing by the 1.17% fee), so avail does not decrease across consecutive pulses! Combined with period=2 (112ms), inflight=2t (< WebSocket RTT 14..28t), maxTargets=6, oppFloorCap=38, and isPrimeLand keep=10*L..26*L, a frontline bot at d=100..120 fires 5..14 pulses in 90 ticks until home density B_home/L drops to 0..28 (181 hollow-out snapshots across G01-G09, 43 major frontline drain cascades across 8/8 losses vs 0 in winning G07). Worse, in tryDonateToTeammate, the 10%B assist poke runs every 2 ticks before server echo updates g.hasAttack(me, q), causing 7..14 consecutive 10%B pokes (0.89^14 = 19.3% balance left) that hollow out frontline anchors right in front of d=115..130 enemies.",
+      "codeLocation": "tsb/squad/make_v27_team.py:456-468, 850-860, 976-998, 1060-1102 (tsb/squad/v27-team-live.js:3921, 3963, 4600-4608, 4854-4862, 5810-6015)"
     }
   ],
   "topCoreVariableRanking": [
@@ -54,7 +54,7 @@
       "rank": 3,
       "variableId": "V6",
       "weightPct": 16.0,
-      "oneLineReason": "79 micro-donations (pct=51) in G04 burned 6.10M troops in flat 6.25%B engine tax to deliver 4.96M (55.2% loss) and drained frontline carry leo_tx."
+      "oneLineReason": "79 micro-donations (pct=51) in G04 burned 6.10M troops in flat 6.25%B engine tax to deliver 4.96M (55.2% loss) and drained frontline carry leo_tx down to d=70~78."
     },
     {
       "rank": 4,
@@ -72,9 +72,23 @@
   "actionableFixes": [
     {
       "file": "tsb/squad/make_v27_team.py",
-      "functionOrParam": "buyLand (remove totB=B+myOut double-counting & restore oppFloorCap=112, collapseFloorCap=68)",
+      "functionOrParam": "Policy.prototype.buyLand (remove totB=B+myOut double-counting & restore oppFloorCap=112, collapseFloorCap=68)",
       "before": "oppFloorCap: 38, collapseFloorCap: 16; const totB = B + myOut; if (isPrimeLand && B >= 12 * L) keep = Math.min(keep, (o.nearCollapse || dqNow < 14 ? 10 : 26) * L); const avail = Math.min(B - fee, totB - fee - keep);",
       "after": "oppFloorCap: 112, collapseFloorCap: 68; const avail = B - fee - keep; // enforce thirdPartySafe >= max(68*L, (max3rdB - 1.5*L)/1.55) when bordering any healthy enemy human",
+      "riskLevel": "low"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "Policy.prototype.tryDonateToTeammate & tryEmergencyBossRescue (10% assist poke RTT cooldown & dMe floor)",
+      "before": "if (mainAttacker >= 0 && (this.cnt[mainAttacker] ?? 0) > 0 && !g.hasAttack(me, mainAttacker) && g.hasFreeSlot(me) && dMe >= 65) { if (g.attack(102, mainAttacker, me)) { this.cmds++; this.hitTo.set(mainAttacker, g.t); ... } }",
+      "after": "if (mainAttacker >= 0 && (this.cnt[mainAttacker] ?? 0) > 0 && !g.hasAttack(me, mainAttacker) && g.t - (this.hitTo.get(mainAttacker) ?? -999) >= 55 && g.t - (this._lastAssistPokeTick ?? -999) >= 40 && g.hasFreeSlot(me) && dMe >= 92) { if (g.attack(102, mainAttacker, me)) { this._lastAssistPokeTick = g.t; this.cmds++; this.hitTo.set(mainAttacker, g.t); ... } }",
+      "riskLevel": "low"
+    },
+    {
+      "file": "tsb/squad/headless-bot.mjs",
+      "functionOrParam": "afterTick inflight lock duration",
+      "before": "if(null!==this.inflight&&Ct()-this.inflight<110&&t.t-(this.inflightTick??0)<2)return;",
+      "after": "if(null!==this.inflight&&Ct()-this.inflight<450&&t.t-(this.inflightTick??0)<6)return;",
       "riskLevel": "low"
     }
   ]
