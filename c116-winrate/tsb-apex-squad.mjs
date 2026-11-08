@@ -1307,7 +1307,7 @@ setInterval(async () => {
                 window.__readyJitterScheduled = false;
                 if (typeof bq === "object" && bq?.f6 === 1 && !window.__tsbWaitForLeader) {
                   if (bq?.sH?.sH?.[0] && typeof bq.sH.select === "function") {
-                    const targetRoom = (bq.sH.sH[0] && bq.sH.sH[0].vz < 7) ? bq.sH.sH[0] : bq.sH.sH.find(r => r && r.vz < 7);
+                    const targetRoom = (bq.sH.sH[0] && bq.sH.sH[0].vz < 7) ? bq.sH.sH[0] : (bq.sH.sH.find(r => r && r.vz < 7) || bq.sH.sH[0]);
                     if (targetRoom && bq.sH.wF !== targetRoom.id) {
                       bq.sH.select(targetRoom.id);
                     }

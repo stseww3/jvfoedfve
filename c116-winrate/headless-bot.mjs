@@ -645,13 +645,17 @@ if (!isMainThread && workerData?.bot) {
   };
 
   const rafs = [];
+  let lastRafRun = 0;
   setInterval(() => {
-    const batch = rafs.splice(0, rafs.length);
     const now = performance.now();
+    const inActiveGame = (typeof sandbox === 'object' && (sandbox.aE?.a38 === 1 || sandbox.aE?.a2G === 1));
+    if (!inActiveGame && now - lastRafRun < 120) return;
+    lastRafRun = now;
+    const batch = rafs.splice(0, rafs.length);
     for (const fn of batch) {
       try { fn(now); } catch {}
     }
-  }, 16);
+  }, 20);
 
   let turnstileCallback = null;
 
