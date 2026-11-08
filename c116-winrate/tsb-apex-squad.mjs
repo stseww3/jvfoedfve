@@ -1252,11 +1252,10 @@ setInterval(async () => {
   const allReadyInRoom0 =
     !avoidC110Collision &&
     timerSpreadOk &&
-    minStartsIn >= 5 &&
     (headlessOnly
-      ? (headlessInRoom0 === HEADLESS_BOTS.length || (headlessInRoom0 >= HEADLESS_BOTS.length - 1 && minStartsIn >= 5 && minStartsIn <= 14))
+      ? (headlessInRoom0 === HEADLESS_BOTS.length || (headlessInRoom0 >= HEADLESS_BOTS.length - 2 && minStartsIn <= 12))
       : wantTenForCurrentLobby
-        ? (readyCountInRoom0 === 10 || (readyCountInRoom0 >= 9 && minStartsIn >= 5 && minStartsIn <= 12))
+        ? (readyCountInRoom0 === 10 || (readyCountInRoom0 >= 8 && minStartsIn <= 8))
         : (chromeInRoom0 === 5 || (chromeInRoom0 >= 4 && minStartsIn <= 8)));
 
   const bossReadyNow = inRoom0.some((s) => !!s.bossReadyInRoom0);
