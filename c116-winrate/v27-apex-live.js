@@ -4835,6 +4835,22 @@ export class Policy extends V17 {
       const pf = window.__hlPerf;
       const pfStr = pf && pf.ticks > 0 ? ` avgMs=${(pf.totalMs / pf.ticks).toFixed(2)} maxMs=${pf.maxMs.toFixed(1)} skip=${pf.skippedTicks}` : "";
       window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
+      if (g.t >= 3960 && g.t - (window.__lastReplaySnapAt || 0) >= 1350 && typeof bC === "object" && bC?.a7s?.a2b) {
+        let minAliveSquadId = me;
+        for (let p = 0; p < g.humans; p++) {
+          if (g.alive[p] && this.isTeammate(g, p) && this.isOurSquadBot(g, p) && p < minAliveSquadId) minAliveSquadId = p;
+        }
+        if (me === minAliveSquadId) {
+          window.__lastReplaySnapAt = g.t;
+          try {
+            const repStr = bC.a7s.a2b();
+            if (typeof repStr === "string" && repStr.length > 100) {
+              const fullUrl = repStr.indexOf("=") >= 0 ? repStr : ("https://territorial.io/?replay=" + repStr);
+              window.__hlLog("[HL-LIVE-REPLAY-URL] " + fullUrl);
+            }
+          } catch {}
+        }
+      }
     }
     this.tryPeaceVote(g);
     if (this.tryEmergencyBossRescue(g) && g.online) return;
@@ -4842,26 +4858,6 @@ export class Policy extends V17 {
     this.updateWars(g);
 
     // Combo 2 (#7): If an active human attack target gained >= 8 new `P_BORDER` pixels
-    // (e.g. from eating an adjacent bot or a secondary boat step) and our slot is large enough,
-    // re-ignite those borders!
-    if (P.seaCore > 0 && P.reigniteBorders > 0) {
-      if (reigniteNewBorders(g, me, this.seaState, this.cnt, P.reigniteMinShare) && g.online) return;
-    }
-
-    const cmdsBefore = this.cmds;
-    if (P.flashLoanMode > 0 && this.tryStartFlashLoan(g)) return;
-    if (this.neutral > 0) this.expandNeutral(g, g.bal[me] - this.safeAt(g, -1));
-    this.buyLand(g);
-
-    if (P.seaCore > 0 && g.t - this.seaState.lastWiden >= 30) {
-      const fee = iV(32 * g.bal[me], 1024);
-      if (
-        widenFrontBoats(g, me, this.seaState, this.cnt, {
-          maxFront: 22,
-          minSteps: P.widenStepsMin ?? 0,
-          minAtkShare: 0.08,
-          maxBoats: 5,
-          atkFreshBoats: P.atkFreshBoats > 0,
-          baseRatePer
+    // (e.g. from eating an adjacent bot or a secondary boat step) and our slot is larg
 
 （手上的事做完就回到 read_chat 等消息：这是用户的强制要求，不要结束回合。）
