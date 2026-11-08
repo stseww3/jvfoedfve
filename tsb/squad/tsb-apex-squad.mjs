@@ -59,6 +59,9 @@ const HEADLESS_BOTS = [
   { port: 9312, socksPort: 10803, donorChromePort: 9228, name: '[APEX] leo_tx', slot: 2, id: '', pw: '' },
   { port: 9313, socksPort: 10804, donorChromePort: 9228, name: '[APEX] alex_k', slot: 3, id: '', pw: '' },
   { port: 9314, socksPort: 10805, donorChromePort: 9228, name: '[APEX] zero_7', slot: 4, id: '', pw: '' },
+  { port: 9315, socksPort: 10801, donorChromePort: 9228, name: '[APEX] kaito9', slot: 5, id: '', pw: '' },
+  { port: 9316, socksPort: 10802, donorChromePort: 9228, name: '[APEX] riku_x', slot: 6, id: '', pw: '' },
+  { port: 9317, socksPort: 10803, donorChromePort: 9228, name: '[APEX] sora_w', slot: 7, id: '', pw: '' },
 ];
 
 // Cross-process anti-collision reader: checks if c110's v27 squad is currently in Lobby waiting to launch

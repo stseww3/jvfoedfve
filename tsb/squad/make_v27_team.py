@@ -161,7 +161,7 @@ new_helpers = """  isTeammate(g, p) {
     }
     const rankIdx = Math.max(0, squadIds.indexOf(me));
     const squadCount = Math.max(5, squadIds.length);
-    const slot = mySquadIdx % 5;
+    const slot = mySquadIdx % 8;
 
     // Check if Boss [Nope]kazerd183 is in this match
     const bossId = this.findBossId(g);
@@ -946,9 +946,6 @@ old_over_pulse = """      keep = Math.max(keep, safe);
         P.pulseFrac > 0 && (!over || (P.overPulseMode > 0 && (o.nearCollapse || o.bleeding || avail < P.chunk * B)));"""
 
 new_over_pulse = """      keep = Math.max(keep, safe);
-      if (dMe >= 132) {
-        keep = Math.min(keep, 108 * L);
-      }
 
       const avail = B - fee - keep;
       if (avail <= 0) continue;
@@ -961,7 +958,7 @@ new_over_pulse = """      keep = Math.max(keep, safe);
       }
 
       const usePulseBlock =
-        P.pulseFrac > 0 && (!over || dMe >= 132 || (P.overPulseMode > 0 && (o.nearCollapse || o.bleeding || avail < P.chunk * B)));"""
+        P.pulseFrac > 0 && (!over || (P.overPulseMode > 0 && (o.nearCollapse || o.bleeding || avail < P.chunk * B)));"""
 assert old_over_pulse in s, "old_over_pulse not found"
 s = s.replace(old_over_pulse, new_over_pulse, 1)
 

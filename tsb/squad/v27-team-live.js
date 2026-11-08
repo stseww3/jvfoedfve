@@ -3960,7 +3960,7 @@ export class Policy extends V17 {
     }
     const rankIdx = Math.max(0, squadIds.indexOf(me));
     const squadCount = Math.max(5, squadIds.length);
-    const slot = mySquadIdx % 5;
+    const slot = mySquadIdx % 8;
 
     // Check if Boss [Nope]kazerd183 is in this match
     const bossId = this.findBossId(g);
@@ -5361,9 +5361,6 @@ export class Policy extends V17 {
         keep = Math.min(keep, overKeepMult * 100 * L);
       }
       keep = Math.max(keep, safe);
-      if (dMe >= 132) {
-        keep = Math.min(keep, 108 * L);
-      }
 
       const avail = B - fee - keep;
       if (avail <= 0) continue;
@@ -5376,7 +5373,7 @@ export class Policy extends V17 {
       }
 
       const usePulseBlock =
-        P.pulseFrac > 0 && (!over || dMe >= 132 || (P.overPulseMode > 0 && (o.nearCollapse || o.bleeding || avail < P.chunk * B)));
+        P.pulseFrac > 0 && (!over || (P.overPulseMode > 0 && (o.nearCollapse || o.bleeding || avail < P.chunk * B)));
       const inAtk = o.inAtk ?? 0;
       const curAtk = g.attackTroopsOn(me, q);
       const blockUndersized = (amt) => {
