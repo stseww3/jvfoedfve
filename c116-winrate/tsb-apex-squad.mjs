@@ -1076,6 +1076,9 @@ setInterval(async () => {
 
   const now = Date.now();
   states.forEach((s, idx) => {
+    if (s.inGame || s.lobby?.inLobby) {
+      clients[idx].lobbyFailCount = 0;
+    }
     if (s.inGame) {
       if (!clients[idx].wasInGame) clients[idx].enteredGameAt = now;
       clients[idx].wasInGame = true;
@@ -1198,7 +1201,7 @@ setInterval(async () => {
     } else {
       clients[idx].stalledPolls = 0;
     }
-    if ((clients[idx].stalledPolls || 0) >= 4) {
+    if ((clients[idx].stalledPolls || 0) >= 8) {
       clients[idx].evalJs(`(() => { const d = window.dictionary, g = d && window[d.game]; if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true); })()`);
       return false;
     }
@@ -1252,8 +1255,8 @@ setInterval(async () => {
     Math.max(...inRoom0.map((s) => s.lobby.startsIn || 0)) - Math.min(...inRoom0.map((s) => s.lobby.startsIn || 0)) <= 25;
 
   const maxC110NopeInLobby = inRoom0.reduce((m, s) => Math.max(m, s.c110NopeInLobby || 0), 0);
-  const c110Gathering = isC110GatheringInLobby();
-  const avoidC110Collision = maxC110NopeInLobby > 0 || c110Gathering;
+  const c110Gathering = false; // Never block on c110 log when c110 is in waitBoss=true LOBBY-WAIT mode!
+  const avoidC110Collision = maxC110NopeInLobby > 0;
   if (avoidC110Collision && inRoom0.length > 0 && Date.now() - (globalThis.__lastAntiColLog || 0) > 10000) {
     globalThis.__lastAntiColLog = Date.now();
     console.log(`[ANTI-COLLISION] Detected c110 v27 squad in lobby (nopeInLobby=${maxC110NopeInLobby}, logInLobby=${c110Gathering}) -> holding [APEX] Ready so we never enter the same match!`);
@@ -1304,7 +1307,7 @@ setInterval(async () => {
                 window.__readyJitterScheduled = false;
                 if (typeof bq === "object" && bq?.f6 === 1 && !window.__tsbWaitForLeader) {
                   if (bq?.sH?.sH?.[0] && typeof bq.sH.select === "function") {
-                    const targetRoom = (bq.sH.sH[0] && bq.sH.sH[0].vz < 7) ? bq.sH.sH[0] : (bq.sH.sH.find(r => r && r.vz < 7) || bq.sH.sH[0]);
+                    const targetRoom = (bq.sH.sH[0] && bq.sH.sH[0].vz < 7) ? bq.sH.sH[0] : bq.sH.sH.find(r => r && r.vz < 7);
                     if (targetRoom && bq.sH.wF !== targetRoom.id) {
                       bq.sH.select(targetRoom.id);
                     }
@@ -1363,7 +1366,7 @@ setInterval(async () => {
     for (let i = 0; i < readyToEnter.length; i++) {
       const c = readyToEnter[i];
       c.lobbyFailCount = (c.lobbyFailCount || 0) + 1;
-      if (c.lobbyFailCount >= 2) {
+      if (c.lobbyFailCount >= 4) {
         c.freshToken = false;
         c.lobbyFailCount = 0;
         continue;

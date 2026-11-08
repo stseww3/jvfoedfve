@@ -186,11 +186,11 @@ if (!isMainThread && workerData?.bot) {
     )
     .replace(
       'if(this.ae5!==this.aIt*7){n8();be.render();return}',
-      'if(this.ae5!==this.aIt*7){n8();while(this.ae7.length>0&&this.ae5<this.aIt*7&&aE.a2G!==2){n8()}if(this.ae7.length===0){return}}'
+      'if(this.ae5!==this.aIt*7){n8();var _w=0;while(this.ae7.length>0&&this.ae5<this.aIt*7&&aE.a2G===1&&bi.a3I===this&&++_w<64){var _p=this.ae5;n8();if(this.ae5===_p)break}if(this.ae7.length===0){return}}'
     )
     .replace(
       'if(this.af1!==this.aK3*7){n8();be.render();return}',
-      'if(this.af1!==this.aK3*7){n8();while(this.af3.length>0&&this.af1<this.aK3*7&&aE.a38!==2){n8()}if(this.af3.length===0){return}}'
+      'if(this.af1!==this.aK3*7){n8();var _w=0;while(this.af3.length>0&&this.af1<this.aK3*7&&aE.a38===1&&bi.a3I===this&&++_w<64){var _p=this.af1;n8();if(this.af1===_p)break}if(this.af3.length===0){return}}'
     )
     .replace(
       'if(this.eI===0){if(bi.eZ>=this.eZ){this.eZ+=bi.aDd*Math.floor(1+(bi.eZ-this.eZ)/bi.aDd);if(aE.a2G===2){n6()}else{this.aeA()}this.eI++;if(bi.eZ-this.ae9>27){this.aeB()}}}else{this.aeB()}',
@@ -415,11 +415,6 @@ if (!isMainThread && workerData?.bot) {
           upgraded = true;
           state = 1;
           try { tlsSock.setKeepAlive(true, 10000); } catch {}
-          const pingTimer = setInterval(() => {
-            if (state !== 1) { clearInterval(pingTimer); return; }
-            try { sendFrame(0x09, Buffer.alloc(0)); } catch {}
-          }, 12000);
-          if (pingTimer.unref) pingTimer.unref();
           emit('open');
         }
         if (upgraded) parseFrames();
