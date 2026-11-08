@@ -45,7 +45,7 @@ s = s.replace(old_search_water, new_search_water, 1)
 
 # 4. Filter teammates AND squad brothers out of doorHarvestCandidates, seaPeople, and bankAct
 old_door_harvest = """              if (o !== me && o < H && g.alive[o] && g.terr[o] >= 600) {"""
-new_door_harvest = """              if (o !== me && o < H && g.alive[o] && g.terr[o] >= 600 && !(g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me]) && !(g._wildAlive && SQUAD_POOL_SET.has(String(g.names?.[o] ?? "").replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase()))) {"""
+new_door_harvest = """              if (o !== me && o < H && g.alive[o] && g.terr[o] >= 600 && !(g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me]) && !(g._wildAlive && SQUAD_POOL_SET.has(String(g.names?.[o] ?? "").trim().toLowerCase()))) {"""
 assert old_door_harvest in s, "old_door_harvest not found"
 s = s.replace(old_door_harvest, new_door_harvest, 1)
 
@@ -121,8 +121,7 @@ new_helpers = """  isTeammate(g, p) {
 
   isOurSquadBot(g, p) {
     const raw = String(g.names?.[p] ?? "").trim();
-    const low = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
-    return SQUAD_POOL_SET.has(low) || raw.toUpperCase().includes("[NPL]") || raw.toUpperCase().includes("[NOPE]");
+    return SQUAD_POOL_SET.has(raw.toLowerCase()) || raw.toUpperCase().includes("[NPL]") || raw.toUpperCase().includes("[NOPE]");
   }
 
   hasWildOutsidersAlive(g) {
