@@ -1165,7 +1165,8 @@ setInterval(async () => {
       clients[idx].evalJs(`(() => { const d = window.dictionary, g = d && window[d.game]; if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true); })()`);
       continue;
     }
-    if (s.spawnPhase || s.tick < 60 || now - clients[idx].enteredGameAt < 30000 || (s.alive && (s.terr || 0) >= 80)) {
+    const minMeaningfulTerr = s.tick >= 3600 ? 1500 : 80;
+    if (s.spawnPhase || s.tick < 60 || now - clients[idx].enteredGameAt < 30000 || (s.alive && (s.terr || 0) >= minMeaningfulTerr)) {
       anyMeaningfulAlive = true;
     }
   }
