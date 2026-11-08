@@ -5,16 +5,10 @@ GPROXY_CONF_PATH = "/tmp/gproxy.conf"
 
 # Per-port sticky session & country config when using upstream HTTP proxy (gproxy)
 PORT_COUNTRY = {
-    10801: "us",
-    10802: "GB",
-    10803: "JP",
-    10804: "us",
-    10805: "GB",
-    10811: "DE",
-    10812: "JP",
-    10813: "us",
-    10814: "GB",
-    10815: "DE",
+    10801: "us", 10802: "GB", 10803: "JP", 10804: "us", 10805: "GB",
+    10806: "DE", 10807: "JP", 10808: "us", 10809: "GB", 10810: "DE",
+    10811: "DE", 10812: "JP", 10813: "us", 10814: "GB", 10815: "DE",
+    10816: "JP", 10817: "us", 10818: "GB", 10819: "DE", 10820: "JP",
 }
 PORT_SESSION = {}
 
@@ -235,16 +229,7 @@ async def main():
     # tun49 (180.65.115.60 KR), tun50 (113.154.84.113 JP), tun33 (121.146.152.111 KR),
     # tun47 (61.82.162.106 KR), tun22 (183.88.237.254 TH), tun58 (14.132.214.239 JP)
     mappings = [
-        (10801, ["tun49", "tun50", "tun37"]),
-        (10802, ["tun50", "tun49", "tun43"]),
-        (10803, ["tun50", "tun31", "tun49"]),
-        (10804, ["tun67", "tun50", "tun49"]),
-        (10805, ["tun33", "tun49", "tun50"]),
-        (10811, ["tun37", "tun49", "tun50"]),
-        (10812, ["tun31", "tun58", "tun50"]),
-        (10813, ["tun43", "tun49", "tun37"]),
-        (10814, ["tun49", "tun50", "tun67"]),
-        (10815, ["tun47", "tun33", "tun43"]),
+        (p, ["tun49", "tun50", "tun37"]) for p in range(10801, 10821)
     ]
     servers = []
     for port, devs in mappings:

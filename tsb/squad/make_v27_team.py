@@ -109,7 +109,10 @@ new_helpers = """  isTeammate(g, p) {
       low.includes("zero_2") || low.includes("sora") ||
       low.includes("lucas94") || low.includes("dave_w") || low.includes("mark07") ||
       low.includes("kevin_k") || low.includes("ethan21") || low.includes("ryan_m") ||
-      low.includes("noah88") || low.includes("leo_tx") || low.includes("jake_09") || low.includes("owen_h")
+      low.includes("noah88") || low.includes("leo_tx") || low.includes("jake_09") || low.includes("owen_h") ||
+      low.includes("liam_c") || low.includes("mason22") || low.includes("logan_b") || low.includes("caleb14") ||
+      low.includes("isaac_v") || low.includes("nolan81") || low.includes("eli_fox") || low.includes("wyatt04") ||
+      low.includes("carter7") || low.includes("luke_r")
     ) {
       return false;
     }
@@ -134,17 +137,19 @@ new_helpers = """  isTeammate(g, p) {
       low === "_alex" || low === "tomo" || low === "zero_2" || low === "sora" ||
       low === "lucas94" || low === "dave_w" || low === "mark07" || low === "kevin_k" ||
       low === "ethan21" || low === "ryan_m" || low === "noah88" || low === "leo_tx" ||
-      low === "jake_09" || low === "owen_h" ||
+      low === "jake_09" || low === "owen_h" || low === "liam_c" || low === "mason22" ||
+      low === "logan_b" || low === "caleb14" || low === "isaac_v" || low === "nolan81" ||
+      low === "eli_fox" || low === "wyatt04" || low === "carter7" || low === "luke_r" ||
       raw.toUpperCase().includes("[NPL]") || raw.toUpperCase().includes("[NOPE]")
     );
   }
 
   // DISTRIBUTED BACKEND-COORDINATED TEAM SPAWNING:
   // 1) Reports map terrain + live human positions to the unified backend coordinator in tsb-team-squad.mjs
-  //    ONLY when Boss [Nope]kazerd183 is present in the match (so 10 guards form a protective cluster around Boss).
-  // 2) In autonomous 10-brother matches (without Boss), uses the original 80%-winrate distributed Voronoi
+  //    ONLY when Boss [Nope]kazerd183 is present in the match (so 20 guards form a protective cluster around Boss).
+  // 2) In autonomous 20-brother matches (without Boss), uses the original 80%-winrate distributed Voronoi
   //    spawnVsPeople(gClean) with TWO critical fixes:
-  //      - Fixed slot = window.__tsbSquadSlot (0..9) so all 10 workers have deterministic, non-overlapping slots
+  //      - Fixed slot = window.__tsbSquadSlot (0..19) so all 20 workers have deterministic, non-overlapping slots
   //        even when joining on different frames;
   //      - Erase ALL squad bots from gClean AND include gClean's human count in spawnKey so cached spawnOut
   //        never leaks a squadmate's own coordinates!
@@ -159,8 +164,8 @@ new_helpers = """  isTeammate(g, p) {
       }
     }
     const rankIdx = Math.max(0, squadIds.indexOf(me));
-    const squadCount = Math.max(10, squadIds.length);
-    const slot = mySquadIdx % 10;
+    const squadCount = Math.max(20, squadIds.length);
+    const slot = mySquadIdx % 20;
 
     // Check if Boss [Nope]kazerd183 is in this match
     const bossId = this.findBossId(g);
@@ -206,8 +211,8 @@ new_helpers = """  isTeammate(g, p) {
       }
     }
 
-    // Autonomous 10-brother distributed Voronoi spawn (original 36b5718 logic with fixed slot 0..9 and clean cache):
-    const minSep = Math.max(110, Math.min(185, 0.20 * Math.hypot(W, H)));
+    // Autonomous 20-brother distributed Voronoi spawn (original 36b5718 logic with fixed slot 0..19 and clean cache):
+    const minSep = Math.max(85, Math.min(145, 0.14 * Math.hypot(W, H)));
     let gClean = g;
     for (const sid of squadIds) {
       if (sid !== me && gClean.terr[sid] > 0) {
@@ -220,9 +225,9 @@ new_helpers = """  isTeammate(g, p) {
     if (!this._cachedSpawnCands || !this._lastSpawnCalcMs || nowSpawnMs - this._lastSpawnCalcMs > 2200 || this._cachedSpawnW !== W) {
       this._lastSpawnCalcMs = nowSpawnMs;
       this._cachedSpawnW = W;
-      let rawCands = this.spawnVsPeople ? this.spawnVsPeople(gClean, 32) : [];
-      if (!rawCands || rawCands.length < 20) {
-        const more = this.spawnCandidates(gClean, 32) || [];
+      let rawCands = this.spawnVsPeople ? this.spawnVsPeople(gClean, 48) : [];
+      if (!rawCands || rawCands.length < 32) {
+        const more = this.spawnCandidates(gClean, 48) || [];
         rawCands = [...(rawCands || []), ...more];
       }
       this._cachedSpawnCands = rawCands;
