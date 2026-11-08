@@ -520,7 +520,7 @@ export class TeamSpawnCoordinator {
   findVirtualSquadAnchor(enemies, scales) {
     const { W, H, landMask, dComp, compSize, maxCompSize } = this;
     const stride = W * H > 900000 ? 16 : 12;
-    const minAnchorContSize = Math.max(25000, Math.round(0.45 * (maxCompSize || 0)));
+    const minAnchorContSize = Math.max(25000, Math.round(0.75 * (maxCompSize || 0)));
     let bestAnchor = null;
     let bestScore = -Infinity;
 
@@ -829,9 +829,9 @@ export class TeamSpawnCoordinator {
       rCell: Math.round(rCell),
       bossExcl: clamp(Math.round(Math.max(1.12 * rCell, 0.078 * diag)), 68, 120),
       flankMax: clamp(Math.round(Math.max(2.30 * rCell, 0.170 * diag)), 135, 235),
-      allyMinSep: clamp(Math.round(Math.max(1.05 * rCell, 0.075 * diag)), 62, 112),
+      allyMinSep: clamp(Math.round(Math.max(1.38 * rCell, 0.110 * diag)), 96, 172),
       enemyMinClearance: clamp(Math.round(0.70 * rCell), 36, 78),
-      clusterMax: clamp(Math.round(Math.max(3.0 * rCell, 0.25 * diag)), 195, 350),
+      clusterMax: clamp(Math.round(Math.max(4.20 * rCell, 0.380 * diag)), 280, 540),
     };
 
     // Build initial distance fields with realBoss (if placed)

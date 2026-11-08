@@ -165,7 +165,7 @@ new_helpers = """  isTeammate(g, p) {
 
     // Check if Boss [Nope]kazerd183 is in this match
     const bossId = this.findBossId(g);
-    if (bossId >= 0) {
+    if (true) {
       const mapKey = `${W}x${H}_${g.land}_${g.humans}`;
       const nowMs = typeof performance !== "undefined" ? performance.now() : Date.now();
       if (typeof window !== "undefined" && window.__hlSpawnReq && (!this._lastSpawnReqAt || nowMs - this._lastSpawnReqAt > 260)) {
