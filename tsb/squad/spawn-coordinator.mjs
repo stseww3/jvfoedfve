@@ -136,12 +136,18 @@ export class TeamSpawnCoordinator {
 
     let landCount = 0;
     if (mapType && mapType.length === N) {
+      let zeroCount = 0, oneCount = 0;
+      for (let i = 0; i < N; i += 17) {
+        if (mapType[i] === 0) zeroCount++;
+        else if (mapType[i] === 1) oneCount++;
+      }
+      const isLivePx = zeroCount > oneCount;
       for (let i = 0; i < N; i++) {
         const t = mapType[i];
-        if (t === T_LAND || t >= 16) {
+        if (isLivePx ? (t === 0 || t >= 16) : (t === T_LAND || t >= 16)) {
           this.landMask[i] = 1;
           landCount++;
-        } else if (t === T_WATER) {
+        } else if (isLivePx ? (t === 1) : (t === T_WATER)) {
           this.waterMask[i] = 1;
         }
       }
