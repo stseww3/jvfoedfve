@@ -916,7 +916,7 @@ setInterval(async () => {
           s.lobby.inLobby = true;
           s.lobby.room = 0;
           if (bq.sH && typeof bq.sH.wF === "number") {
-            const firstRoom = bq.sH.sH?.[0];
+            const firstRoom = bq.sH.sH?.find(r => r && r.vz >= 0 && r.vz <= 3);
             s.lobby.ready = !!(firstRoom && bq.sH.wF === firstRoom.id && firstRoom.id > 0);
             s.lobby.startsIn = firstRoom ? (firstRoom.wK ?? 99) : 99;
           } else {
@@ -1311,7 +1311,11 @@ setInterval(async () => {
           ext.settings.armed = true;
           ext.remote.state.loop = "team";
           const isInLobbyNow = (typeof bq === "object" && bq?.f6 === 1 && typeof b1 === "object" && b1?.z?.ef?.(1));
-          const isReadyNow = isInLobbyNow && (bq?.sH ? !!(bq.sH.sH?.[0] && bq.sH.wF === bq.sH.sH[0].id && bq.sH.sH[0].id > 0) : !!(bq?.z?.tM?.[3]));
+          const targetRoomNow = bq?.sH?.sH?.find?.(r => r && r.vz >= 0 && r.vz <= 3);
+          const isReadyNow = isInLobbyNow && (bq?.sH ? !!(targetRoomNow && bq.sH.wF === targetRoomNow.id && targetRoomNow.id > 0) : !!(bq?.z?.tM?.[3]));
+          if (isInLobbyNow && bq?.sH && typeof bq.sH.select === "function" && bq.sH.wF && (!targetRoomNow || bq.sH.wF !== targetRoomNow.id)) {
+            bq.sH.select(0);
+          }
           if (isInLobbyNow && !isReadyNow && ${allowReady ? 'true' : 'false'}) {
             if (!window.__readyJitterScheduled) {
               window.__readyJitterScheduled = true;
@@ -1320,7 +1324,7 @@ setInterval(async () => {
                 window.__readyJitterScheduled = false;
                 if (typeof bq === "object" && bq?.f6 === 1 && !window.__tsbWaitForLeader) {
                   if (bq?.sH?.sH?.[0] && typeof bq.sH.select === "function") {
-                    const targetRoom = bq.sH.sH.find(r => r && r.vz < 7);
+                    const targetRoom = bq.sH.sH.find(r => r && r.vz >= 0 && r.vz <= 3);
                     if (targetRoom && bq.sH.wF !== targetRoom.id) {
                       bq.sH.select(targetRoom.id);
                     } else if (!targetRoom && bq.sH.wF) {
