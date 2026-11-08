@@ -3886,14 +3886,14 @@ export const PARAMS = {
   collapseRatio: 1.40,
   pulseFrac: 0.12,
   pulseMinShare: 0.04,
-  zeroPulseMode: 1,
+  zeroPulseMode: 0,
   thinMaxTD: 0.48,
   thinDiscount: 1.0,
   pocket0Mult: 1.0,
   pocket1Rank: 1.0,
   contactStepsMax: 350,
   contactPenalty: 0.002,
-  oppFloorCap: 128,
+  oppFloorCap: 88,
   focusBonus: 1.0,
   focusT: 350,
   defendDiscount: 0.85,
@@ -3916,20 +3916,20 @@ export const PARAMS = {
   focusRankOnly: 0,
   defendFrom: 0,
   foodRebate: 1,
-  seaCore: 1,
+  seaCore: 0,
   seaEnd: 3200,
   ownWorthMinKeep: 1,
   ownWorthFrom: 4000,
   overPeerCap: 1.16,
   overPeerKeep: 1.04,
   aggMemMode: 8,
-  reigniteBorders: 1,
+  reigniteBorders: 0,
   reigniteMinShare: 0.10,
-  flashLoanMode: 3, // 50k debt cap flash-loan state machine with 1v1 / single-human-nb safety lock (#3698 / #3700)
+  flashLoanMode: 0,
   flashLoanMinCost: 160000,
   flashLoanMinRatio: 2.2,
-  atkFreshBoats: 1,
-  narrowBoatFirstMode: 1,
+  atkFreshBoats: 0,
+  narrowBoatFirstMode: 0,
   exactRingMode: 0,
   botPhaseMode: 1,
   seaRebateMode: 1,
@@ -3939,7 +3939,7 @@ export const PARAMS = {
   emptyAllInMode: 1,
   latePocketMode: 0,
   widenStepsMin: 0,
-  frogHopOverMode: 1,
+  frogHopOverMode: 0,
   leaderHardFrom: 5000,
   leaderMinShare: 0.16,
   siegeShrinkRatio: 0.72,
@@ -4396,6 +4396,7 @@ export class Policy extends V17 {
   // AUTO PEACE VOTE CALL & ACCEPT:
   // ONLY call or vote YES on peace once only 1 team remains alive (or while wild outsiders are still alive and our own team has >=58% land)!
   tryPeaceVote(g) {
+    if (this.findBossId(g) < 0) return;
     if (typeof window === "undefined" || !window.ax || !window.dictionary || g.t < 1610) return;
     const me = this.me;
     const hz = window[window.dictionary.sbCommands]?.hz;
@@ -4986,13 +4987,7 @@ export class Policy extends V17 {
       }
     }
 
-    if (g.t >= 15 && g.t <= 90 && !this.hasBossInMatch(g)) {
-      try {
-        const d = window.dictionary, gm = d && window[d.game];
-        if (gm && gm[d.gameState] !== 0 && typeof gm[d.sbLeave] === "function") gm[d.sbLeave](true);
-      } catch {}
-      return;
-    }
+    if (g.t % P.period !== 0) return;
     this.tryPrivateBossEmoji(g);
     if (g.t < P.coreFrom) {
       this.analyze(g);
