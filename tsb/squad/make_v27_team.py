@@ -1,7 +1,7 @@
 with open("/tmp/fdvg-c58/territorial-sim/strategy/pool/v27-live.js") as f:
     s = f.read()
 
-# 1. Filter teammates out of analyze(g) so this.nb NEVER contains a teammate!
+# 1. Filter teammates AND our own 20 squad brothers out of analyze(g) so this.nb NEVER contains a brother even if overflowed to another team!
 old_analyze = """          const o = own[c];
           if (o !== me) {
             mark[c] = st;
@@ -9,41 +9,41 @@ old_analyze = """          const o = own[c];
           }"""
 
 new_analyze = """          const o = own[c];
-          if (o !== me && !(g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me])) {
+          if (o !== me && !this.isTeammate(g, o) && !this.isOurSquadBot(g, o)) {
             mark[c] = st;
             if (cnt[o]++ === 0) this.nb.push(o);
           }"""
 assert old_analyze in s, "old_analyze not found"
 s = s.replace(old_analyze, new_analyze, 1)
 
-# 2. Filter teammates out of peopleOf(g, q)
+# 2. Filter teammates AND squad brothers out of peopleOf(g, q)
 old_people_of = """        if (o === q || seen[o] === st) continue;
         seen[o] = st;
         if (g.alive[o] && !g.isBot(o)) s.push(o);"""
 
 new_people_of = """        if (o === q || seen[o] === st) continue;
         seen[o] = st;
-        if (g.alive[o] && !g.isBot(o) && !(g.teams && g.teams[ this.me ] > 0 && g.teams[o] === g.teams[ this.me ])) s.push(o);"""
+        if (g.alive[o] && !g.isBot(o) && !this.isTeammate(g, o) && !this.isOurSquadBot(g, o)) s.push(o);"""
 assert old_people_of in s, "old_people_of not found"
 s = s.replace(old_people_of, new_people_of, 1)
 
-# 3. Filter teammates out of searchWater(g)
+# 3. Filter teammates AND squad brothers out of searchWater(g)
 old_search_water = """          const o = own[n];
           if (o === me || this.cnt[o] > 0 || (noBots && g.isBot(o) && !this.botOk(g, o))) continue;"""
 
 new_search_water = """          const o = own[n];
-          if (o === me || (g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me]) || this.cnt[o] > 0 || (noBots && g.isBot(o) && !this.botOk(g, o))) continue;"""
+          if (o === me || this.isTeammate(g, o) || this.isOurSquadBot(g, o) || this.cnt[o] > 0 || (noBots && g.isBot(o) && !this.botOk(g, o))) continue;"""
 assert old_search_water in s, "old_search_water not found"
 s = s.replace(old_search_water, new_search_water, 1)
 
-# 4. Filter teammates out of doorHarvestCandidates, seaPeople, and bankAct
+# 4. Filter teammates AND squad brothers out of doorHarvestCandidates, seaPeople, and bankAct
 old_door_harvest = """              if (o !== me && o < H && g.alive[o] && g.terr[o] >= 600) {"""
-new_door_harvest = """              if (o !== me && o < H && g.alive[o] && g.terr[o] >= 600 && !(g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me])) {"""
+new_door_harvest = """              if (o !== me && o < H && g.alive[o] && g.terr[o] >= 600 && !(g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me]) && !/^(lucas94|dave_w|mark07|kevin_k|ethan21|ryan_m|noah88|leo_tx|jake_09|owen_h|liam_c|mason22|logan_b|caleb14|isaac_v|nolan81|eli_fox|wyatt04|carter7|luke_r|kazerd183|npl)$/i.test(String(g.names?.[o] ?? "").replace(/\\[[^\\]]*\\]/g, "").trim())) {"""
 assert old_door_harvest in s, "old_door_harvest not found"
 s = s.replace(old_door_harvest, new_door_harvest, 1)
 
 old_sea_people = """    for (const s of seaSample(g, this.me, 64, rnd)) if (s.o >= 0 && g.alive[s.o] && this.person(g, s.o) && !out.includes(s.o)) out.push(s.o);"""
-new_sea_people = """    for (const s of seaSample(g, this.me, 64, rnd)) if (s.o >= 0 && g.alive[s.o] && this.person(g, s.o) && !(g.teams && g.teams[this.me] > 0 && g.teams[s.o] === g.teams[this.me]) && !out.includes(s.o)) out.push(s.o);"""
+new_sea_people = """    for (const s of seaSample(g, this.me, 64, rnd)) if (s.o >= 0 && g.alive[s.o] && this.person(g, s.o) && !this.isTeammate(g, s.o) && !this.isOurSquadBot(g, s.o) && !out.includes(s.o)) out.push(s.o);"""
 assert old_sea_people in s, "old_sea_people not found"
 s = s.replace(old_sea_people, new_sea_people, 1)
 
@@ -52,7 +52,7 @@ old_bank_act = """    for (const s of seaSample(g, me, 64, rnd)) {
       const price = s.o < 0 ? 2 : this.price(g, s.o);"""
 new_bank_act = """    for (const s of seaSample(g, me, 64, rnd)) {
       if (s.d < P.bankMin || s.d > P.boatRange) continue;
-      if (s.o >= 0 && g.teams && g.teams[me] > 0 && g.teams[s.o] === g.teams[me]) continue;
+      if (s.o >= 0 && (this.isTeammate(g, s.o) || this.isOurSquadBot(g, s.o))) continue;
       const price = s.o < 0 ? 2 : this.price(g, s.o);"""
 assert old_bank_act in s, "old_bank_act not found"
 s = s.replace(old_bank_act, new_bank_act, 1)
@@ -306,7 +306,7 @@ new_helpers = """  isTeammate(g, p) {
     const me = this.me, H = g.humans;
     const ds = [];
     for (let p = 0; p < H; p++) {
-      if (p !== me && !this.isTeammate(g, p) && g.alive[p] && g.terr[p] >= 100 && !g.isBot(p)) {
+      if (p !== me && !this.isTeammate(g, p) && !this.isOurSquadBot(g, p) && g.alive[p] && g.terr[p] >= 100 && !g.isBot(p)) {
         ds.push(g.bal[p] / g.terr[p]);
       }
     }
@@ -318,7 +318,7 @@ new_helpers = """  isTeammate(g, p) {
   livingHumanCount(g) {
     let n = 0;
     for (let p = 0; p < g.humans; p++) {
-      if (!this.isTeammate(g, p) && g.alive[p] && g.terr[p] >= 100 && !g.isBot(p)) n++;
+      if (!this.isTeammate(g, p) && !this.isOurSquadBot(g, p) && g.alive[p] && g.terr[p] >= 100 && !g.isBot(p)) n++;
     }
     return Math.max(1, n);
   }
@@ -327,7 +327,7 @@ new_helpers = """  isTeammate(g, p) {
     const me = this.me, H = g.humans;
     let bestP = -1, bestL = 0;
     for (let p = 0; p < H; p++) {
-      if (p !== me && !this.isTeammate(g, p) && g.alive[p] && g.terr[p] > bestL && !g.isBot(p)) {
+      if (p !== me && !this.isTeammate(g, p) && !this.isOurSquadBot(g, p) && g.alive[p] && g.terr[p] > bestL && !g.isBot(p)) {
         bestL = g.terr[p];
         bestP = p;
       }
@@ -526,19 +526,19 @@ new_helpers = """  isTeammate(g, p) {
     // 2. SQUAD MUTUAL AID: Rescue any [NPL] squad brother who is under human attack or sneaky boat landing,
     //    AND lightly poke (10%B) the attacker if we border them!
     for (let p = 0; p < g.humans; p++) {
-      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 300) continue;
+      if (p === me || !g.alive[p] || !this.isOurSquadBot(g, p) || g.terr[p] < 300) continue;
       const dAlly = g.bal[p] / Math.max(1, g.terr[p]);
       let inHumanAtk = 0, mainAttacker = -1, maxAtkTr = 0;
       for (const a of g.attackersOf(p)) {
-        if (!g.isBot(a) && !this.isTeammate(g, a)) {
+        if (!g.isBot(a) && !this.isTeammate(g, a) && !this.isOurSquadBot(g, a)) {
           const tr = g.attackTroopsOn(a, p);
           inHumanAtk += tr;
           if (tr > maxAtkTr) { maxAtkTr = tr; mainAttacker = a; }
         }
       }
       if (inHumanAtk > 0 && (inHumanAtk >= 0.08 * g.bal[p] || dAlly < 75)) {
-        // First donate cash to save our brother (while keeping our own coastGuardFloor / safeFloor intact!)
-        if (dMe >= Math.max(55, dAlly + 15)) {
+        // First donate cash to save our brother (if on same team, while keeping our own coastGuardFloor / safeFloor intact!)
+        if (this.isTeammate(g, p) && dMe >= Math.max(55, dAlly + 15)) {
           const pct = Math.min(maxSafePct, isPureInlandSafe ? 240 : 155);
           if (pct >= 55 && g.donate(pct, p, me)) {
             this.lastDonateTick = g.t;
@@ -549,7 +549,7 @@ new_helpers = """  isTeammate(g, p) {
             return true;
           }
         }
-        // Second, if we border the attacker on land and aren't already attacking them, do a ~10%B light assist poke!
+        // Second, if we border the attacker on land and aren't already attacking them, do a ~10%B light assist poke (even across teams)!
         if (mainAttacker >= 0 && (this.cnt[mainAttacker] ?? 0) > 0 && !g.hasAttack(me, mainAttacker) && g.hasFreeSlot(me) && dMe >= 65) {
           if (g.attack(102, mainAttacker, me)) {
             this.cmds++;
@@ -621,7 +621,7 @@ new_other_atk = """        const bossId = this.findBossId(g);
             otherAtkers++;
             otherAtk += tr;
             if (a === bossId) bossAtkOnQ += tr;
-            if (this.isTeammate(g, a)) {
+            if (this.isTeammate(g, a) || this.isOurSquadBot(g, a)) {
               allyAtk += tr;
               clanAllyAtkers += this.isOurSquadBot(g, a) ? 2 : 1;
             }
@@ -632,7 +632,7 @@ new_other_atk = """        const bossId = this.findBossId(g);
           const sbQ = g.slotBase(q);
           for (let i = 0; i < g.atkCount[q]; i++) {
             const tgt = g.atkTarget[sbQ + i];
-            if (tgt >= 0 && tgt < 512 && this.isTeammate(g, tgt)) {
+            if (tgt >= 0 && tgt < 512 && (this.isTeammate(g, tgt) || this.isOurSquadBot(g, tgt))) {
               const tr = g.atkTroops[sbQ + i];
               atkOnAlly += tr;
               if (tgt === bossId) atkOnBoss += tr;
