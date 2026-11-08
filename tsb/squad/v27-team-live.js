@@ -41,12 +41,14 @@ try {
         sH.select = function(id) {
           if (id > 0) {
             if (!isBossReadyInLobby()) {
-              return this.__origSelect(0);
+              if (this.wF > 0) return this.__origSelect(0);
+              return;
             }
             const firstId = this.sH?.[0]?.id || id;
+            if (this.wF === firstId) return;
             return this.__origSelect(firstId);
           }
-          return this.__origSelect(0);
+          if (this.wF > 0) return this.__origSelect(0);
         };
       }
       if (window.bq?.f6 === 1) {
