@@ -21,6 +21,7 @@
 // ============================================================================
 
 import http from 'node:http';
+import { SQUAD_NAME_SET } from './name-pool.mjs';
 
 export const T_LAND = 1;
 export const T_WATER = 2;
@@ -54,7 +55,7 @@ export function stripClanTag(raw) {
 
 export function isSquadBotName(raw) {
   const s = stripClanTag(raw);
-  return SQUAD_SHORT_NAMES.has(s);
+  return SQUAD_SHORT_NAMES.has(s) || SQUAD_NAME_SET.has(s);
 }
 
 export function isBossNplName(raw) {

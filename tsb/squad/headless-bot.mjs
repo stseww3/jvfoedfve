@@ -28,7 +28,7 @@ for (const cand of [path.join(__dirname, 'node_modules/ws/package.json'), '/tmp/
 // so BFS / Voronoi calculations NEVER block the main thread or packet stream!
 // ============================================================================
 export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onSpawnRequest, onRotateProxy, getStrategySource, mintTurnstileToken }) {
-  const { port, socksPort, donorChromePort, name, slot } = bot;
+  const { port, socksPort, donorChromePort, slot } = bot;
   const worker = new Worker(new URL(import.meta.url), {
     execArgv: [],
     workerData: { bot, strategySource: getStrategySource() }
@@ -41,7 +41,7 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onS
     port,
     socksPort,
     donorChromePort,
-    name,
+    name: bot.name,
     slot,
     isHeadless: true,
     freshToken: false,
@@ -69,7 +69,7 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onS
     mintToken() {
       if (this.minting) return;
       this.minting = true;
-      console.log(`[${name}] (Worker) Requesting Turnstile token from Chrome :${donorChromePort}...`);
+      console.log(`[${this.name}] (Worker) Requesting Turnstile token from Chrome :${donorChromePort}...`);
       mintTurnstileToken(donorChromePort)
         .then((tok) => {
           this.minting = false;
@@ -82,7 +82,7 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onS
         })
         .catch((err) => {
           this.minting = false;
-          console.error(`[${name}] (Worker) Turnstile mint error on :${donorChromePort}:`, err.message);
+          console.error(`[${this.name}] (Worker) Turnstile mint error on :${donorChromePort}:`, err.message);
         });
     }
   };
@@ -100,9 +100,9 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onS
       client.enteredLobbyAt = 0;
     } else if (msg.type === 'token_imported') {
       client.freshToken = true;
-      console.log(`[${name}] (Worker) Fresh Turnstile token ready & v27team (slot=${slot}) imported!`);
+      console.log(`[${client.name}] (Worker) Fresh Turnstile token ready & v27team (slot=${slot}) imported!`);
     } else if (msg.type === 'log') {
-      console.log(`[${name}]`, msg.text);
+      console.log(`[${client.name}]`, msg.text);
       if (msg.text.includes('socket close index 3') || msg.text.includes('socket close index 2')) {
         client.evalJs(`(() => { const d = window.dictionary, g = d && window[d.game]; if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true); })()`);
       }
@@ -133,7 +133,7 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onS
   });
 
   worker.on('error', (err) => {
-    console.error(`[${name}] Worker error:`, err.message);
+    console.error(`[${client.name}] Worker error:`, err.message);
   });
 
   return client;
@@ -938,7 +938,7 @@ if (!isMainThread && workerData?.bot) {
         const src = msg.strategySource;
         const p = vm.runInContext(
           `(async () => {
-            window.__tsbPlayerName = ${JSON.stringify(name)};
+            window.__tsbPlayerName = window.__tsbPlayerName || ${JSON.stringify(name)};
             window.__tsbPlayerColor = 4095;
             window.__tsbSquadSlot = ${slot};
             const ext = window.__fx.strategyBotExtension;

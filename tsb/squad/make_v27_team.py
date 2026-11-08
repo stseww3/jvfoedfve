@@ -1,5 +1,12 @@
+import os, re, json
+
 with open("/tmp/fdvg-c58/territorial-sim/strategy/pool/v27-live.js") as f:
     s = f.read()
+
+pool_js = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "name-pool.mjs"), encoding="utf-8").read()
+pool_names = [m.group(1).strip().lower() for m in re.finditer(r'"([^"]+)"', pool_js)]
+pool_set_js = "const SQUAD_POOL_SET = new Set(" + json.dumps(sorted(list(set(pool_names)))) + ");\n"
+s = pool_set_js + s
 
 # 1. Filter teammates AND our own 20 squad brothers out of analyze(g) so this.nb NEVER contains a brother even if overflowed to another team!
 old_analyze = """          const o = own[c];
@@ -38,7 +45,7 @@ s = s.replace(old_search_water, new_search_water, 1)
 
 # 4. Filter teammates AND squad brothers out of doorHarvestCandidates, seaPeople, and bankAct
 old_door_harvest = """              if (o !== me && o < H && g.alive[o] && g.terr[o] >= 600) {"""
-new_door_harvest = """              if (o !== me && o < H && g.alive[o] && g.terr[o] >= 600 && !(g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me]) && !/^(lucas94|dave_w|mark07|kevin_k|ethan21|ryan_m|noah88|leo_tx|jake_09|owen_h|liam_c|mason22|logan_b|caleb14|isaac_v|nolan81|eli_fox|wyatt04|carter7|luke_r|kfc|mexican|sever \\(rus\\)|kuku|world empire|llxrscorpio|team destroyer|spqr|xx_shadow_xx|polska gurom|bismarck|giga_chad|san marino|noobslayer|vatican city|napoléon|tokyoghoul|ottoman|bruh|404 not found|kazerd183|npl)$/i.test(String(g.names?.[o] ?? "").replace(/\\[[^\\]]*\\]/g, "").trim())) {"""
+new_door_harvest = """              if (o !== me && o < H && g.alive[o] && g.terr[o] >= 600 && !(g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me]) && !SQUAD_POOL_SET.has(String(g.names?.[o] ?? "").replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase())) {"""
 assert old_door_harvest in s, "old_door_harvest not found"
 s = s.replace(old_door_harvest, new_door_harvest, 1)
 
@@ -100,28 +107,8 @@ new_helpers = """  isTeammate(g, p) {
     if (p === this.me || !g.alive[p]) return false;
     const raw = String(g.names?.[p] ?? "").trim();
     const low = raw.toLowerCase();
-    if (
-      low.includes("mishi") || low.includes("matzz") || low.includes("kiholma") ||
-      low.includes("leo_99") || low.includes("racoon") || low.includes("zexos") ||
-      low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus") ||
-      low.includes("777") || low.includes("sayo") || low.includes("kaito") ||
-      low.includes("riku") || low.includes("_alex") || low.includes("tomo") ||
-      low.includes("zero_2") || low.includes("sora") ||
-      low.includes("lucas94") || low.includes("dave_w") || low.includes("mark07") ||
-      low.includes("kevin_k") || low.includes("ethan21") || low.includes("ryan_m") ||
-      low.includes("noah88") || low.includes("leo_tx") || low.includes("jake_09") || low.includes("owen_h") ||
-      low.includes("liam_c") || low.includes("mason22") || low.includes("logan_b") || low.includes("caleb14") ||
-      low.includes("isaac_v") || low.includes("nolan81") || low.includes("eli_fox") || low.includes("wyatt04") ||
-      low.includes("carter7") || low.includes("luke_r") ||
-      low === "kfc" || low === "mexican" || low === "sever (rus)" || low === "kuku" ||
-      low === "world empire" || low === "llxrscorpio" || low === "team destroyer" ||
-      low === "spqr" || low === "xx_shadow_xx" || low === "polska gurom" || low === "bismarck" ||
-      low === "giga_chad" || low === "san marino" || low === "noobslayer" || low === "vatican city" ||
-      low === "napoléon" || low === "tokyoghoul" || low === "ottoman" || low === "bruh" || low === "404 not found"
-    ) {
-      return false;
-    }
     const stripped = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
+    if (SQUAD_POOL_SET.has(stripped) || SQUAD_POOL_SET.has(low)) return false;
     return stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low === "[npl]npl";
   }
 
@@ -135,23 +122,7 @@ new_helpers = """  isTeammate(g, p) {
   isOurSquadBot(g, p) {
     const raw = String(g.names?.[p] ?? "").trim();
     const low = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
-    return (
-      low === "mishi" || low === "matzz" || low === "kiholma" || low === "leo_99" || low === "racoon" ||
-      low === "zexos" || low === "talon" || low === "vortex" || low === "kronos" || low === "nexus" ||
-      low === "777" || low === "sayo" || low === "kaito" || low === "riku" ||
-      low === "_alex" || low === "tomo" || low === "zero_2" || low === "sora" ||
-      low === "lucas94" || low === "dave_w" || low === "mark07" || low === "kevin_k" ||
-      low === "ethan21" || low === "ryan_m" || low === "noah88" || low === "leo_tx" ||
-      low === "jake_09" || low === "owen_h" || low === "liam_c" || low === "mason22" ||
-      low === "logan_b" || low === "caleb14" || low === "isaac_v" || low === "nolan81" ||
-      low === "eli_fox" || low === "wyatt04" || low === "carter7" || low === "luke_r" ||
-      low === "kfc" || low === "mexican" || low === "sever (rus)" || low === "kuku" ||
-      low === "world empire" || low === "llxrscorpio" || low === "team destroyer" ||
-      low === "spqr" || low === "xx_shadow_xx" || low === "polska gurom" || low === "bismarck" ||
-      low === "giga_chad" || low === "san marino" || low === "noobslayer" || low === "vatican city" ||
-      low === "napoléon" || low === "tokyoghoul" || low === "ottoman" || low === "bruh" || low === "404 not found" ||
-      raw.toUpperCase().includes("[NPL]") || raw.toUpperCase().includes("[NOPE]")
-    );
+    return SQUAD_POOL_SET.has(low) || raw.toUpperCase().includes("[NPL]") || raw.toUpperCase().includes("[NOPE]");
   }
 
   // DISTRIBUTED BACKEND-COORDINATED TEAM SPAWNING:

@@ -5,6 +5,35 @@ import net from 'node:net';
 import { fileURLToPath } from 'node:url';
 import { createHeadlessBot } from './headless-bot.mjs';
 import { TeamSpawnCoordinator } from './spawn-coordinator.mjs';
+import { SQUAD_NAME_POOL, SQUAD_NAME_SET } from './name-pool.mjs';
+
+let namePoolOrder = [];
+let namePoolCursor = 0;
+const activeBotNames = new Set();
+
+function pickNextUniqueSquadName(oldName = '') {
+  if (oldName) activeBotNames.delete(oldName);
+  for (let tries = 0; tries < SQUAD_NAME_POOL.length * 2; tries++) {
+    if (namePoolCursor >= namePoolOrder.length) {
+      namePoolOrder = SQUAD_NAME_POOL.slice();
+      for (let i = namePoolOrder.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const tmp = namePoolOrder[i];
+        namePoolOrder[i] = namePoolOrder[j];
+        namePoolOrder[j] = tmp;
+      }
+      namePoolCursor = 0;
+    }
+    const cand = namePoolOrder[namePoolCursor++];
+    if (!activeBotNames.has(cand) && cand !== oldName) {
+      activeBotNames.add(cand);
+      return cand;
+    }
+  }
+  const fallback = SQUAD_NAME_POOL[Math.floor(Math.random() * SQUAD_NAME_POOL.length)];
+  activeBotNames.add(fallback);
+  return fallback;
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 function resolveAssetPath(localName, tmpFallback) {
@@ -655,6 +684,7 @@ function handleBackendSpawnRequest(client, req) {
 }
 
 for (const bot of HEADLESS_BOTS) {
+  bot.name = pickNextUniqueSquadName(bot.name);
   const hc = createHeadlessBot(bot, {
     getStrategySource: getV27TeamSource,
     mintTurnstileToken: mintViaDonorChrome,
@@ -672,6 +702,18 @@ for (const bot of HEADLESS_BOTS) {
     },
     onResult(c, payload) {
       recordResult(c.name, c.port, payload);
+      if (c.isHeadless) {
+        c.name = pickNextUniqueSquadName(c.name);
+        c.evalJs(`(() => {
+          window.__tsbPlayerName = ${JSON.stringify(c.name)};
+          localStorage.setItem("d122", ${JSON.stringify(c.name)});
+          localStorage.setItem("v122", "0");
+          const setSetting = bm?.qq?.qr || bm?.qo?.qp;
+          if (typeof bm === "object" && typeof setSetting === "function") {
+            setSetting.call(bm.qq || bm.qo, 122, ${JSON.stringify(c.name)});
+          }
+        })()`);
+      }
     },
     onGameInit(c, initData) {
       const key = `${initData.tN.fF}_${initData.tN.mapSeed}_${initData.tN.spawningSeed}`;
@@ -825,6 +867,7 @@ setInterval(async () => {
               if (disp.toLowerCase().includes("[nope]")) room0NopeCount++;
               const raw = String((p && (p.aGM || p.aGT || p.aFN || p.username || p.name)) || "").trim();
               const low = raw.toLowerCase();
+              const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
               if (
                 low.includes("mishi") || low.includes("matzz") || low.includes("kiholma") ||
                 low.includes("leo_99") || low.includes("racoon") || low.includes("zexos") ||
@@ -844,7 +887,6 @@ setInterval(async () => {
                 low === "giga_chad" || low === "san marino" || low === "noobslayer" || low === "vatican city" ||
                 low === "napoléon" || low === "tokyoghoul" || low === "ottoman" || low === "bruh" || low === "404 not found"
               ) continue;
-              const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
               if (stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
                 if (idx < readyCount) bossReadyInRoom0 = true;
               }
@@ -1344,6 +1386,13 @@ setInterval(async () => {
           }
           if (typeof b1 === "object" && b1?.z?.close) {
             b1.z.close(1, 3252);
+          }
+          window.__tsbPlayerName = ${JSON.stringify(c.name)};
+          localStorage.setItem("d122", ${JSON.stringify(c.name)});
+          localStorage.setItem("v122", "0");
+          const setSetting = bm?.qq?.qr || bm?.qo?.qp;
+          if (typeof bm === "object" && typeof setSetting === "function") {
+            setSetting.call(bm.qq || bm.qo, 122, ${JSON.stringify(c.name)});
           }
           const ext = window.__fx.strategyBotExtension;
           ext.settings.armed = true;
