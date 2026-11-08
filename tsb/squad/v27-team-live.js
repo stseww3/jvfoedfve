@@ -3339,7 +3339,7 @@ function doorHarvestCandidates(g, me, state, opts = {}) {
           if (n >= 0 && n < N) {
             if (px[n] >= P_INNER) {
               const o = own[n];
-              if (o !== me && o < H && g.alive[o] && g.terr[o] >= 600 && !(g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me]) && !/^(lucas94|dave_w|mark07|kevin_k|ethan21|ryan_m|noah88|leo_tx|jake_09|owen_h|liam_c|mason22|logan_b|caleb14|isaac_v|nolan81|eli_fox|wyatt04|carter7|luke_r|kazerd183|npl)$/i.test(String(g.names?.[o] ?? "").replace(/\[[^\]]*\]/g, "").trim())) {
+              if (o !== me && o < H && g.alive[o] && g.terr[o] >= 600 && !(g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me]) && !/^(lucas94|dave_w|mark07|kevin_k|ethan21|ryan_m|noah88|leo_tx|jake_09|owen_h|liam_c|mason22|logan_b|caleb14|isaac_v|nolan81|eli_fox|wyatt04|carter7|luke_r|kfc|mexican|sever \(rus\)|kuku|world empire|llxrscorpio|team destroyer|spqr|xx_shadow_xx|polska gurom|bismarck|giga_chad|san marino|noobslayer|vatican city|napoléon|tokyoghoul|ottoman|bruh|404 not found|kazerd183|npl)$/i.test(String(g.names?.[o] ?? "").replace(/\[[^\]]*\]/g, "").trim())) {
                 let list = targetSpots.get(o);
                 if (!list) {
                   list = [];
@@ -3901,7 +3901,12 @@ export class Policy extends V17 {
       low.includes("noah88") || low.includes("leo_tx") || low.includes("jake_09") || low.includes("owen_h") ||
       low.includes("liam_c") || low.includes("mason22") || low.includes("logan_b") || low.includes("caleb14") ||
       low.includes("isaac_v") || low.includes("nolan81") || low.includes("eli_fox") || low.includes("wyatt04") ||
-      low.includes("carter7") || low.includes("luke_r")
+      low.includes("carter7") || low.includes("luke_r") ||
+      low === "kfc" || low === "mexican" || low === "sever (rus)" || low === "kuku" ||
+      low === "world empire" || low === "llxrscorpio" || low === "team destroyer" ||
+      low === "spqr" || low === "xx_shadow_xx" || low === "polska gurom" || low === "bismarck" ||
+      low === "giga_chad" || low === "san marino" || low === "noobslayer" || low === "vatican city" ||
+      low === "napoléon" || low === "tokyoghoul" || low === "ottoman" || low === "bruh" || low === "404 not found"
     ) {
       return false;
     }
@@ -3929,6 +3934,11 @@ export class Policy extends V17 {
       low === "jake_09" || low === "owen_h" || low === "liam_c" || low === "mason22" ||
       low === "logan_b" || low === "caleb14" || low === "isaac_v" || low === "nolan81" ||
       low === "eli_fox" || low === "wyatt04" || low === "carter7" || low === "luke_r" ||
+      low === "kfc" || low === "mexican" || low === "sever (rus)" || low === "kuku" ||
+      low === "world empire" || low === "llxrscorpio" || low === "team destroyer" ||
+      low === "spqr" || low === "xx_shadow_xx" || low === "polska gurom" || low === "bismarck" ||
+      low === "giga_chad" || low === "san marino" || low === "noobslayer" || low === "vatican city" ||
+      low === "napoléon" || low === "tokyoghoul" || low === "ottoman" || low === "bruh" || low === "404 not found" ||
       raw.toUpperCase().includes("[NPL]") || raw.toUpperCase().includes("[NOPE]")
     );
   }

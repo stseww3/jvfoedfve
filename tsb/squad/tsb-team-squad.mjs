@@ -50,35 +50,35 @@ const pageJsSource = fs.readFileSync(resolveAssetPath('page.js', '/tmp/tsb-team-
 const getV27TeamSource = () => fs.readFileSync(resolveAssetPath('v27-team-live.js', '/tmp/v27-team-live.js'), 'utf8');
 
 const CHROME_BOTS = [
-  { port: 9223, name: 'lucas94', slot: 0, id: '', pw: '' },
-  { port: 9224, name: 'dave_w', slot: 1, id: '', pw: '' },
-  { port: 9225, name: 'mark07', slot: 2, id: '', pw: '' },
-  { port: 9226, name: 'kevin_k', slot: 3, id: '', pw: '' },
-  { port: 9227, name: 'ethan21', slot: 4, id: '', pw: '' },
-  { port: 9228, name: 'nolan81', slot: 5, id: '', pw: '' },
+  { port: 9223, name: 'KFC', slot: 0, id: '', pw: '' },
+  { port: 9224, name: 'Mexican', slot: 1, id: '', pw: '' },
+  { port: 9225, name: 'Sever (rus)', slot: 2, id: '', pw: '' },
+  { port: 9226, name: 'KUKU', slot: 3, id: '', pw: '' },
+  { port: 9227, name: 'World empire', slot: 4, id: '', pw: '' },
+  { port: 9228, name: 'Napoléon', slot: 5, id: '', pw: '' },
 ];
 
 const HEADLESS_BOTS = [
-  { port: 9301, socksPort: 10801, donorChromePort: 9225, name: 'lucas94', slot: 0, id: '', pw: '' },
-  { port: 9302, socksPort: 10802, donorChromePort: 9225, name: 'dave_w', slot: 1, id: '', pw: '' },
-  { port: 9303, socksPort: 10803, donorChromePort: 9225, name: 'mark07', slot: 2, id: '', pw: '' },
-  { port: 9304, socksPort: 10804, donorChromePort: 9225, name: 'kevin_k', slot: 3, id: '', pw: '' },
-  { port: 9305, socksPort: 10805, donorChromePort: 9225, name: 'ethan21', slot: 4, id: '', pw: '' },
-  { port: 9306, socksPort: 10806, donorChromePort: 9226, name: 'ryan_m', slot: 5, id: '', pw: '' },
-  { port: 9307, socksPort: 10807, donorChromePort: 9226, name: 'noah88', slot: 6, id: '', pw: '' },
-  { port: 9308, socksPort: 10808, donorChromePort: 9226, name: 'leo_tx', slot: 7, id: '', pw: '' },
-  { port: 9309, socksPort: 10809, donorChromePort: 9226, name: 'jake_09', slot: 8, id: '', pw: '' },
-  { port: 9310, socksPort: 10810, donorChromePort: 9226, name: 'owen_h', slot: 9, id: '', pw: '' },
-  { port: 9311, socksPort: 10811, donorChromePort: 9227, name: 'liam_c', slot: 10, id: '', pw: '' },
-  { port: 9312, socksPort: 10812, donorChromePort: 9227, name: 'mason22', slot: 11, id: '', pw: '' },
-  { port: 9313, socksPort: 10813, donorChromePort: 9227, name: 'logan_b', slot: 12, id: '', pw: '' },
-  { port: 9314, socksPort: 10814, donorChromePort: 9227, name: 'caleb14', slot: 13, id: '', pw: '' },
-  { port: 9315, socksPort: 10815, donorChromePort: 9227, name: 'isaac_v', slot: 14, id: '', pw: '' },
-  { port: 9316, socksPort: 10816, donorChromePort: 9228, name: 'nolan81', slot: 15, id: '', pw: '' },
-  { port: 9317, socksPort: 10817, donorChromePort: 9228, name: 'eli_fox', slot: 16, id: '', pw: '' },
-  { port: 9318, socksPort: 10818, donorChromePort: 9228, name: 'wyatt04', slot: 17, id: '', pw: '' },
-  { port: 9319, socksPort: 10819, donorChromePort: 9228, name: 'carter7', slot: 18, id: '', pw: '' },
-  { port: 9320, socksPort: 10820, donorChromePort: 9228, name: 'luke_r', slot: 19, id: '', pw: '' },
+  { port: 9301, socksPort: 10801, donorChromePort: 9225, name: 'KFC', slot: 0, id: '', pw: '' },
+  { port: 9302, socksPort: 10802, donorChromePort: 9225, name: 'Mexican', slot: 1, id: '', pw: '' },
+  { port: 9303, socksPort: 10803, donorChromePort: 9225, name: 'Sever (rus)', slot: 2, id: '', pw: '' },
+  { port: 9304, socksPort: 10804, donorChromePort: 9225, name: 'KUKU', slot: 3, id: '', pw: '' },
+  { port: 9305, socksPort: 10805, donorChromePort: 9225, name: 'World empire', slot: 4, id: '', pw: '' },
+  { port: 9306, socksPort: 10806, donorChromePort: 9226, name: 'LLXRScorpio', slot: 5, id: '', pw: '' },
+  { port: 9307, socksPort: 10807, donorChromePort: 9226, name: 'Team destroyer', slot: 6, id: '', pw: '' },
+  { port: 9308, socksPort: 10808, donorChromePort: 9226, name: 'SPQR', slot: 7, id: '', pw: '' },
+  { port: 9309, socksPort: 10809, donorChromePort: 9226, name: 'xX_Shadow_Xx', slot: 8, id: '', pw: '' },
+  { port: 9310, socksPort: 10810, donorChromePort: 9226, name: 'Polska Gurom', slot: 9, id: '', pw: '' },
+  { port: 9311, socksPort: 10811, donorChromePort: 9227, name: 'Bismarck', slot: 10, id: '', pw: '' },
+  { port: 9312, socksPort: 10812, donorChromePort: 9227, name: 'giga_chad', slot: 11, id: '', pw: '' },
+  { port: 9313, socksPort: 10813, donorChromePort: 9227, name: 'San Marino', slot: 12, id: '', pw: '' },
+  { port: 9314, socksPort: 10814, donorChromePort: 9227, name: 'NoobSlayer', slot: 13, id: '', pw: '' },
+  { port: 9315, socksPort: 10815, donorChromePort: 9227, name: 'Vatican City', slot: 14, id: '', pw: '' },
+  { port: 9316, socksPort: 10816, donorChromePort: 9228, name: 'Napoléon', slot: 15, id: '', pw: '' },
+  { port: 9317, socksPort: 10817, donorChromePort: 9228, name: 'TokyoGhoul', slot: 16, id: '', pw: '' },
+  { port: 9318, socksPort: 10818, donorChromePort: 9228, name: 'Ottoman', slot: 17, id: '', pw: '' },
+  { port: 9319, socksPort: 10819, donorChromePort: 9228, name: 'bruh', slot: 18, id: '', pw: '' },
+  { port: 9320, socksPort: 10820, donorChromePort: 9228, name: '404 Not Found', slot: 19, id: '', pw: '' },
 ];
 
 const isWaitNplMode = () => fs.existsSync(path.join(__dirname, 'tsb-wait-npl.flag')) || fs.existsSync('/tmp/tsb-wait-npl.flag');
@@ -837,7 +837,12 @@ setInterval(async () => {
                 low.includes("noah88") || low.includes("leo_tx") || low.includes("jake_09") || low.includes("owen_h") ||
                 low.includes("liam_c") || low.includes("mason22") || low.includes("logan_b") || low.includes("caleb14") ||
                 low.includes("isaac_v") || low.includes("nolan81") || low.includes("eli_fox") || low.includes("wyatt04") ||
-                low.includes("carter7") || low.includes("luke_r")
+                low.includes("carter7") || low.includes("luke_r") ||
+                low === "kfc" || low === "mexican" || low === "sever (rus)" || low === "kuku" ||
+                low === "world empire" || low === "llxrscorpio" || low === "team destroyer" ||
+                low === "spqr" || low === "xx_shadow_xx" || low === "polska gurom" || low === "bismarck" ||
+                low === "giga_chad" || low === "san marino" || low === "noobslayer" || low === "vatican city" ||
+                low === "napoléon" || low === "tokyoghoul" || low === "ottoman" || low === "bruh" || low === "404 not found"
               ) continue;
               const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
               if (stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
@@ -945,7 +950,12 @@ setInterval(async () => {
                 low.includes("noah88") || low.includes("leo_tx") || low.includes("jake_09") || low.includes("owen_h") ||
                 low.includes("liam_c") || low.includes("mason22") || low.includes("logan_b") || low.includes("caleb14") ||
                 low.includes("isaac_v") || low.includes("nolan81") || low.includes("eli_fox") || low.includes("wyatt04") ||
-                low.includes("carter7") || low.includes("luke_r")
+                low.includes("carter7") || low.includes("luke_r") ||
+                low === "kfc" || low === "mexican" || low === "sever (rus)" || low === "kuku" ||
+                low === "world empire" || low === "llxrscorpio" || low === "team destroyer" ||
+                low === "spqr" || low === "xx_shadow_xx" || low === "polska gurom" || low === "bismarck" ||
+                low === "giga_chad" || low === "san marino" || low === "noobslayer" || low === "vatican city" ||
+                low === "napoléon" || low === "tokyoghoul" || low === "ottoman" || low === "bruh" || low === "404 not found"
               ) continue;
               const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
               if (stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
