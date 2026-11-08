@@ -2671,6 +2671,14 @@ class V17 extends V13 {
     if (g.t < P.coreFrom) return super.act(g);
     if (!g.canAct(me) || g.t % P.period !== 0) return;
     this.analyze(g);
+    if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
+      this._lastTickLog = g.t;
+      const pf = window.__hlPerf;
+      const pfStr = pf && pf.ticks > 0 ? ` avgMs=${(pf.totalMs / pf.ticks).toFixed(2)} maxMs=${pf.maxMs.toFixed(1)} skip=${pf.skippedTicks}` : "";
+      window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
+    }
+    this.tryPeaceVote(g);
+    if (this.tryEmergencyBossRescue(g) && g.online) return;
     this.updateGrudges(g);
     this.updateWars(g);
     const n = this.cmds;
@@ -3920,26 +3928,74 @@ export class Policy extends V17 {
   }
 
   // DISTRIBUTED BACKEND-COORDINATED TEAM SPAWNING:
-  // 1) Never treat our own squad bots as "enemy people" in spawnVsPeople0 so their live movements don't cause all 5 bots' candidate lists to chase each other into one corner!
-  // 2) Deterministically partition candidate regions and enforce >= minSep separation between our squad slots AND Boss npl!
+  // 1) Reports map terrain + live human positions to the unified backend coordinator in tsb-team-squad.mjs
+  //    ONLY when Boss [Nope]kazerd183 is present in the match (so 5 guards form a protective cluster around Boss).
+  // 2) In autonomous 5-brother matches (without Boss), uses the original 80%-winrate distributed Voronoi
+  //    spawnVsPeople(gClean) with TWO critical fixes:
+  //      - Fixed slot = window.__tsbSquadSlot (0..4) so all 5 workers have deterministic, non-overlapping slots
+  //        even when joining on different frames;
+  //      - Erase ALL squad bots from gClean AND include gClean's human count in spawnKey so cached spawnOut
+  //        never leaks a squadmate's own coordinates!
   chooseSpawn(g, final = true) {
     const me = this.me;
     const W = g.W, H = g.H;
-    const minSep = Math.max(115, Math.min(220, 0.28 * Math.hypot(W, H)));
-
-    let mySquadIdx = typeof window !== "undefined" && Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : 0;
+    const mySquadIdx = typeof window !== "undefined" && Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : 0;
     const squadIds = [];
     for (let p = 0; p < g.humans; p++) {
       if (p === me || (this.isOurSquadBot(g, p) && !this.isBossNpl(g, p))) {
         squadIds.push(p);
       }
     }
-    const rankIdx = squadIds.indexOf(me);
-    const squadCount = squadIds.length;
-    const slot = (squadCount >= 2 && rankIdx >= 0 ? rankIdx : mySquadIdx) % 10;
+    const rankIdx = Math.max(0, squadIds.indexOf(me));
+    const squadCount = Math.max(5, squadIds.length);
+    const slot = mySquadIdx % 5;
 
-    // Build a view where OTHER squad guard bots are erased from the map so all 5 guard bots compute
-    // the EXACT same deterministic candidate list relative only to enemies + Boss npl!
+    // Check if Boss [Nope]kazerd183 is in this match
+    const bossId = this.findBossId(g);
+    if (bossId >= 0) {
+      const mapKey = `${W}x${H}_${g.land}_${g.humans}`;
+      const nowMs = typeof performance !== "undefined" ? performance.now() : Date.now();
+      if (typeof window !== "undefined" && window.__hlSpawnReq && (!this._lastSpawnReqAt || nowMs - this._lastSpawnReqAt > 260)) {
+        this._lastSpawnReqAt = nowMs;
+        const humans = [];
+        for (let p = 0; p < g.humans; p++) {
+          const terr = g.terr[p] | 0;
+          humans.push({
+            id: p,
+            name: String(g.names?.[p] ?? ""),
+            team: g.teams ? (g.teams[p] | 0) : 0,
+            terr,
+            x: terr > 0 ? ((g.x0[p] + g.x1[p]) >> 1) : -1,
+            y: terr > 0 ? ((g.y0[p] + g.y1[p]) >> 1) : -1,
+          });
+        }
+        const needMap = window.__lastSentSpawnMapKey !== mapKey;
+        if (needMap) window.__lastSentSpawnMapKey = mapKey;
+        const mapType = needMap ? (g.map?.type || g.px) : undefined;
+        const curX = g.terr[me] > 0 ? ((g.x0[me] + g.x1[me]) >> 1) : -1;
+        const curY = g.terr[me] > 0 ? ((g.y0[me] + g.y1[me]) >> 1) : -1;
+        window.__hlSpawnReq({
+          matchKey: mapKey, W, H, land: g.land, me, slot, rankIdx, squadCount,
+          myTeam: g.teams ? (g.teams[me] | 0) : 0, curX, curY, humans, mapType,
+        });
+      }
+      if (
+        typeof window !== "undefined" &&
+        window.__tsbAssignedSpawn &&
+        Number.isInteger(window.__tsbAssignedSpawn.x) &&
+        (!window.__tsbAssignedSpawn.mapW || (window.__tsbAssignedSpawn.mapW === W && window.__tsbAssignedSpawn.mapH === H))
+      ) {
+        const res = window.__tsbAssignedSpawn;
+        if (window.__hlLog && (!this._lastLogSpawn || Math.hypot(res.x - this._lastLogSpawn.x, res.y - this._lastLogSpawn.y) > 4)) {
+          this._lastLogSpawn = { x: res.x, y: res.y };
+          window.__hlLog(`[HL-SPAWN-BACKEND] me=${me} slot=${res.slot ?? slot} role=${res.role || "SQUAD"} -> (${res.x},${res.y}) bossDist=${res.bossDist ?? -1} minAllyDist=${res.minAllyDist ?? -1} voronoi=${res.voronoiPixels ?? -1}`);
+        }
+        return { x: res.x, y: res.y };
+      }
+    }
+
+    // Autonomous 5-brother distributed Voronoi spawn (original 36b5718 logic with fixed slot 0..4 and clean cache):
+    const minSep = Math.max(135, Math.min(240, 0.28 * Math.hypot(W, H)));
     let gClean = g;
     for (const sid of squadIds) {
       if (sid !== me && gClean.terr[sid] > 0) {
@@ -3947,27 +4003,19 @@ export class Policy extends V17 {
       }
     }
 
-    let cands = this.spawnVsPeople ? this.spawnVsPeople(gClean, 16) : [];
-    if (!cands || cands.length < squadCount) {
-      const more = this.spawnCandidates(gClean, 16) || [];
+    // Invalidate spawnKey if squadIds changed so spawnVsPeople never returns stale cached points
+    this.spawnKey = null;
+    let cands = this.spawnVsPeople ? this.spawnVsPeople(gClean, 24) : [];
+    if (!cands || cands.length < 12) {
+      const more = this.spawnCandidates(gClean, 24) || [];
       cands = [...(cands || []), ...more];
     }
     if (cands && cands.length > 0) {
-      // Greedily pick mutually well-spaced candidates (>= minSep from Boss npl AND >= minSep from each earlier slot's picked spot!)
-      const bossIds = [];
-      for (let h = 0; h < g.humans; h++) {
-        if (h !== me && g.terr[h] > 0 && this.isBossNpl(g, h)) bossIds.push(h);
-      }
       const chosenSlots = [];
       for (const pos of cands) {
         const x = typeof pos === "object" ? pos.x : (pos % W);
         const y = typeof pos === "object" ? pos.y : Math.floor(pos / W);
         let tooClose = false;
-        for (const bh of bossIds) {
-          const hx = (g.x0[bh] + g.x1[bh]) >> 1, hy = (g.y0[bh] + g.y1[bh]) >> 1;
-          if (Math.hypot(x - hx, y - hy) < minSep) { tooClose = true; break; }
-        }
-        if (tooClose) continue;
         for (const prev of chosenSlots) {
           if (Math.hypot(x - prev.x, y - prev.y) < minSep) { tooClose = true; break; }
         }
@@ -3976,12 +4024,23 @@ export class Policy extends V17 {
           if (chosenSlots.length > slot) break;
         }
       }
-      // Also check live positions of lower-ranked squad bots just in case
-      let res = chosenSlots[slot] || chosenSlots[slot % Math.max(1, chosenSlots.length)] || cands[slot % cands.length];
+      // If fewer than slot+1 candidates pass minSep, relax minSep to 0.65x so slots never collide
+      if (chosenSlots.length <= slot) {
+        const relaxSep = minSep * 0.62;
+        for (const pos of cands) {
+          const x = typeof pos === "object" ? pos.x : (pos % W);
+          const y = typeof pos === "object" ? pos.y : Math.floor(pos / W);
+          if (chosenSlots.every((p) => Math.hypot(x - p.x, y - p.y) >= relaxSep)) {
+            chosenSlots.push({ x, y });
+            if (chosenSlots.length > slot) break;
+          }
+        }
+      }
+      let res = chosenSlots[slot] || cands[slot % cands.length];
       res = typeof res === "object" ? res : { x: res % W, y: Math.floor(res / W) };
       if (typeof window !== "undefined" && window.__hlLog && (!this._lastLogSpawn || Math.hypot(res.x - this._lastLogSpawn.x, res.y - this._lastLogSpawn.y) > 6)) {
         this._lastLogSpawn = res;
-        window.__hlLog(`[HL-SPAWN] me=${me} slot=${slot} (squad=${squadCount},rankIdx=${rankIdx}) -> (${res.x},${res.y}) chosenSlots=${chosenSlots.length}/${cands.length} minSep=${Math.round(minSep)}`);
+        window.__hlLog(`[HL-SPAWN] me=${me} slot=${slot} (squad=${squadIds.length},rankIdx=${rankIdx}) -> (${res.x},${res.y}) chosenSlots=${chosenSlots.length}/${cands.length} minSep=${Math.round(minSep)}`);
       }
       return res;
     }
@@ -4649,6 +4708,14 @@ export class Policy extends V17 {
     if (g.t % P.period !== 0) return;
 
     this.analyze(g);
+    if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
+      this._lastTickLog = g.t;
+      const pf = window.__hlPerf;
+      const pfStr = pf && pf.ticks > 0 ? ` avgMs=${(pf.totalMs / pf.ticks).toFixed(2)} maxMs=${pf.maxMs.toFixed(1)} skip=${pf.skippedTicks}` : "";
+      window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
+    }
+    this.tryPeaceVote(g);
+    if (this.tryEmergencyBossRescue(g) && g.online) return;
     this.updateGrudges(g);
     this.updateWars(g);
 
