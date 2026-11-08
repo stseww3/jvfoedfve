@@ -58,7 +58,7 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onS
         const timer = setTimeout(() => {
           pending.delete(id);
           resolve(null);
-        }, 3000);
+        }, 8000);
         pending.set(id, (val) => {
           clearTimeout(timer);
           resolve(val);
