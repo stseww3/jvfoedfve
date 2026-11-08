@@ -1,4 +1,4 @@
-// Self-contained strategy v30 (Pure v27 Base + c79 3-Tier nHumans Pulse/Hold/Collapse Scaling + R2-RC1/RC2 Surgical Bugfixes, by c58).
+// Self-contained strategy v27 (Unified Synthesis of c81 A07 + c80 A06 Safety Clauses over v24, by c58).
 // Inlines v17.js (V13 + V17), sea.js (trip/troopsFor), sea-core.js, and v24+A06 fixes into a single file
 // with zero external strategy imports, ready for live browser deployment.
 import { NEUTRAL, P_INNER, P_BORDER, MAX_PLAYERS, iV } from "../../sim/index.js";
@@ -530,9 +530,7 @@ class Strategy {
       const Tq = g.terr[q];
       if (Tq === 0) continue;
       const already = g.hasAttack(me, q);
-      if (!already && !g.hasFreeSlot(me)) continue;
-      const isJuicyCandidate = g.isBot(q) || g.bal[q] / Math.max(1, g.terr[q]) < 32 || g.terr[q] <= 1.45 * iV(g.peak[q], 4);
-      if (!already && active >= P.maxTargets && !isJuicyCandidate) continue;
+      if (!already && (active >= P.maxTargets || !g.hasFreeSlot(me))) continue;
       const perPx = 2 + 2 * g.bal[q] / (1 + iV(10 * Tq, 16));
       if (perPx > P.maxCost) continue;
       const snipe = g.bal[q] / Tq <= P.snipeK * dMe;
@@ -761,6 +759,14 @@ class General extends Strategy {
       this.floorK = P.planModes[chooseMode(this, g, P.planModes, P.planEvery, P.planH, P.rivalW, P.balW, copy)];
     } else if (g.t >= P.planEnd) this.floorK = 1;
     this.analyze(g);
+    if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
+      this._lastTickLog = g.t;
+      const pf = window.__hlPerf;
+      const pfStr = pf && pf.ticks > 0 ? ` avgMs=${(pf.totalMs / pf.ticks).toFixed(2)} maxMs=${pf.maxMs.toFixed(1)} skip=${pf.skippedTicks}` : "";
+      window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
+    }
+    this.tryPeaceVote(g);
+    if (this.tryEmergencyBossRescue(g) && g.online) return;
     this.updateGrudges(g);
     this.updateWars(g);
     const { cap, avgNb, floorAt } = this.floors(g);
@@ -2348,12 +2354,9 @@ class V13 extends Style {
 
   expandNeutral(g, spend) {
     if (g.t < this.p.dpEnd) return this.dpNeutral(g);
-    const B = g.bal[this.me], totB = B + this.myOutTroops(g);
-    const minGrab = Math.min(Math.floor(0.22 * B), Math.max(this.minCmd(g) + 50, 10 * this.neutral + 3000));
-    if (this.p.nFloor > 0) spend = Math.min(spend, totB - this.reserve(g, 2));
-    if (this.p.pplK > 0 || this.p.hungryK > 0) spend = Math.min(spend, totB - this.peopleFloor(g));
-    if (this.p.safeP > 0) spend = Math.min(spend, totB - this.p.safeP * this.peopleSafe(g));
-    spend = Math.min(B, Math.max(spend, minGrab));
+    if (this.p.nFloor > 0) spend = Math.min(spend, g.bal[this.me] - this.reserve(g, 2));
+    if (this.p.pplK > 0 || this.p.hungryK > 0) spend = Math.min(spend, g.bal[this.me] - this.peopleFloor(g));
+    if (this.p.safeP > 0) spend = Math.min(spend, g.bal[this.me] - this.p.safeP * this.peopleSafe(g));
     super.expandNeutral(g, spend);
   }
 
@@ -2663,217 +2666,6 @@ class V17 extends V13 {
     super({ ...P17, ...params }, me);
   }
 
-  // LAND & SEA ANTI-NIBBLE DETERRENCE + BEACHHEAD CRUSH + CROSS-SEA PINCER RETALIATION
-  // (Calibrated on 153 real games: 7,185 land provocations + 6,074 sea landing provocations):
-  // 1. Land Deterrence: replying within <= 25t with ~1.05x incoming troops (clamped to 5.5%~12%B)
-  //    cuts repeat nibbling from 57.0% to 36.1% and reduces 400t land loss from -27.7% to -2.8%.
-  // 2. Beachhead Instant Crush: when an enemy boat lands on our coast (cnt[q] jumps from 0 to 1..32),
-  //    crush the beachhead on the very first decision tick before it can widen or teleport main troops!
-  // 3. Cross-Sea Pincer Retaliation: when an enemy pokes us from across water and has cnt[q] === 0,
-  //    launch a 2-spot pincer bridgehead (or breacher boat) back onto their coastline!
-  // 4. Third-Party Backstab Guard: strictly keep B_after >= max3rdB / 1.32 and d_after >= (max3rdB > 0.8*B ? 72 : 58).
-  updatePokeState(g, checkCnt = false) {
-    const me = this.me, B = g.bal[me];
-    if (B <= 0) return;
-    for (let q = 0; q < g.humans; q++) {
-      if (q === me || !g.alive[q] || g.isBot(q) || (g.teams && g.teams[me] > 0 && g.teams[q] === g.teams[me])) continue;
-      const inc = g.attackTroopsOn(q, me);
-      const st = this.pokeState.get(q) || {
-        prevInc: 0,
-        lastPokeTick: -999,
-        lastPeakInc: 0,
-        strikes: 0,
-        lastReplyTick: -999,
-        beachheadTick: -999,
-      };
-      if (checkCnt) {
-        const curCnt = this.cnt?.[q] ?? 0;
-        const wasCnt = this.prevCnt[q];
-        // Detect new enemy beachhead landing on our coast (cnt jumped from 0 to 1..32)
-        if (wasCnt === 0 && curCnt > 0 && curCnt <= 32 && g.t >= 1200) {
-          st.beachheadTick = g.t;
-          if (g.t - st.lastPokeTick > 360) st.strikes = 1;
-          else if (g.t - st.lastPokeTick >= 8) st.strikes++;
-          st.lastPokeTick = g.t;
-          st.lastPeakInc = Math.max(st.lastPeakInc, inc, Math.round(0.03 * B));
-        }
-        this.prevCnt[q] = curCnt;
-      }
-      if (inc > st.prevInc + Math.max(300, 0.015 * B)) {
-        const added = inc - st.prevInc;
-        if (g.t - st.lastPokeTick > 360) st.strikes = 1;
-        else if (g.t - st.lastPokeTick >= 6) st.strikes++;
-        st.lastPokeTick = g.t;
-        st.lastPeakInc = Math.max(inc, added);
-      } else if (inc > st.lastPeakInc && g.t - st.lastPokeTick <= 35) {
-        st.lastPeakInc = inc;
-      }
-      st.prevInc = inc;
-      this.pokeState.set(q, st);
-    }
-  }
-
-  tryDeterrentCounter(g) {
-    const P = this.p, me = this.me;
-    if (g.t < 1650 || !g.canAct(me) || !g.hasFreeSlot(me)) return false;
-    const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
-    if (B < 6000 || dMe < 58) return false;
-
-    // Never fire deterrent poke if >= 2 humans are simultaneously attacking us with heavy troops
-    let activeHumanAtkers = 0;
-    for (const a of g.attackersOf(me)) {
-      if (a < g.humans && !g.isBot(a) && g.attackTroopsOn(a, me) > 0.02 * B) activeHumanAtkers++;
-    }
-    if (activeHumanAtkers >= 2) return false;
-
-    const fee = iV(12 * B, 1024);
-    let bestQ = -1, bestTroops = 0, bestScore = -1, bestIsSea = false;
-
-    for (let q = 0; q < g.humans; q++) {
-      if (q === me || !g.alive[q] || g.isBot(q) || (g.teams && g.teams[me] > 0 && g.teams[q] === g.teams[me])) continue;
-      const st = this.pokeState.get(q);
-      const curInc = g.attackTroopsOn(q, me);
-      const cntQ = this.cnt[q] ?? 0;
-      const recentAge = st ? g.t - st.lastPokeTick : 999;
-      const isFreshBeachhead = st && g.t - st.beachheadTick <= 32 && cntQ >= 3 && cntQ <= 35;
-
-      if (curInc <= 0 && recentAge > 28 && !isFreshBeachhead) continue;
-
-      const refInc = Math.max(curInc, recentAge <= 28 ? (st?.lastPeakInc ?? 0) : 0, isFreshBeachhead ? Math.round(0.035 * B) : 0);
-      const Bq = g.bal[q], Lq = Math.max(1, g.terr[q]), dq = Bq / Lq;
-      if (refInc < Math.max(400, 0.016 * B) || refInc > 0.32 * B) continue;
-      if (Bq > 1.50 * B && !isFreshBeachhead) continue;
-
-      const myCurAtk = g.attackTroopsOn(me, q);
-      if (myCurAtk >= 0.75 * refInc) continue;
-      if (st && g.t - st.lastReplyTick < (isFreshBeachhead ? 20 : 50)) continue;
-
-      // Scan all OTHER human land neighbors p !== q for Third-Party Backstab Guard!
-      let max3rdB = 0, otherHumanNbs = 0;
-      for (const p of this.nb) {
-        if (p !== q && p < g.humans && g.alive[p] && !g.isBot(p) && g.terr[p] >= 300) {
-          otherHumanNbs++;
-          if (g.bal[p] > max3rdB) max3rdB = g.bal[p];
-        }
-      }
-      if (max3rdB > 1.32 * B && !isFreshBeachhead && !(st && st.strikes >= 2 && dMe >= 95)) continue;
-
-      const thirdPartyFloor = max3rdB > 0 ? Math.ceil(max3rdB / 1.32) : 0;
-      const minDensFloor = (max3rdB > 0.8 * B ? 72 : 58) * L;
-      const baseSafe = this.safeAt(g, q);
-      const deterSafe = Math.max(minDensFloor, thirdPartyFloor, (isFreshBeachhead || (st && st.strikes >= 2) ? 0.82 : 0.88) * baseSafe);
-      const availDeter = B - fee - deterSafe;
-
-      // CASE A: Land neighbor or fresh enemy beachhead on our shore (cntQ > 0)
-      if (cntQ >= 8 || isFreshBeachhead) {
-        const ring1Def = iV(cntQ * Bq, 1 + iV(10 * Lq, 16));
-        const ring1Cost = cntQ * 2 + 2 * ring1Def + curInc + 1;
-        const beachCrushNeed = isFreshBeachhead
-          ? Math.min(Math.round(0.12 * B), Math.max(cntQ * 6 + 2 * ring1Def + curInc + 150, Math.round(0.035 * B)))
-          : 0;
-        const rawReply = Math.max(beachCrushNeed, Math.round(1.05 * refInc) - myCurAtk);
-        const minDeter = Math.max(this.minCmd(g), Math.round((isFreshBeachhead ? 0.035 : 0.055) * B));
-        const maxFrac = otherHumanNbs >= 2 ? 0.095 : otherHumanNbs === 1 ? 0.110 : 0.125;
-        const maxDeter = Math.round(maxFrac * B);
-        const want = Math.max(minDeter, Math.min(maxDeter, rawReply));
-        if (availDeter < minDeter) continue;
-        const sendAmt = Math.min(want, Math.floor(availDeter));
-        // Expected-vs-Actual Guard: never fire a land reply that cannot even break 1.15x of the first border ring
-        // or when target density is > 1.25x ours on a narrow front (prevents "send 100 troops, get 1 land"!)
-        if (!isFreshBeachhead && (sendAmt < 1.15 * ring1Cost || (dq > 1.25 * dMe && cntQ < 28))) continue;
-        const score = (isFreshBeachhead ? 5000 : 0) + (st?.strikes ?? 1) * 1000 + (refInc / Math.max(1, B)) * 500 + cntQ;
-        if (score > bestScore) {
-          bestScore = score;
-          bestQ = q;
-          bestTroops = sendAmt;
-          bestIsSea = false;
-        }
-      }
-      // CASE B: Cross-sea provoker with cntQ === 0 — strictly require strikes >= 2, high own density dMe >= 95,
-      // soft target dq <= 60, and sufficient balance so boats never arrive under-strength!
-      else if (
-        cntQ === 0 &&
-        P.seaCore > 0 &&
-        st &&
-        st.strikes >= 2 &&
-        B >= 25000 &&
-        g.boatsAllowed &&
-        g.boatsAllowed(me) &&
-        g.boatCount[me] <= 2 &&
-        !this.seaState.pendingHandoffs.has(q) &&
-        Bq <= 0.90 * B &&
-        dq <= 60 &&
-        dMe >= 95
-      ) {
-        const minDeter = Math.max(this.minCmd(g), Math.round(0.06 * B));
-        const maxFrac = otherHumanNbs >= 2 ? 0.085 : 0.105;
-        const want = Math.max(minDeter, Math.min(Math.round(maxFrac * B), Math.round(1.05 * refInc)));
-        const twoBoatFee = iV(76 * B, 1024);
-        if (B - twoBoatFee - deterSafe < minDeter) continue;
-        const score = (st.strikes ?? 1) * 900 + (refInc / Math.max(1, B)) * 400;
-        if (score > bestScore) {
-          bestScore = score;
-          bestQ = q;
-          bestTroops = Math.min(want, Math.floor(B - twoBoatFee - deterSafe));
-          bestIsSea = true;
-        }
-      }
-    }
-
-    if (bestQ >= 0 && bestTroops > 0) {
-      if (!bestIsSea) {
-        if (this.send(g, bestQ, bestTroops)) {
-          const st = this.pokeState.get(bestQ);
-          if (st) st.lastReplyTick = g.t;
-          this.hitTo.set(bestQ, g.t);
-          return true;
-        }
-      } else {
-        // Cross-sea pincer retaliation: find 1~2 landing spots on bestQ within 42 water pixels
-        const spots = findCoastalBridgeheads(g, me, this.seaState, bestQ, {
-          maxWaterDist: 42,
-          maxSpots: Math.min(2, 5 - g.boatCount[me]),
-          minSpacing: 22,
-        });
-        if (spots.length > 0) {
-          const wasIntercepted = (this.seaState.handoffFailed?.get(bestQ) ?? -999) > g.t - 180;
-          const dq = g.bal[bestQ] / Math.max(1, g.terr[bestQ]);
-          let launched = 0;
-          const landedList = [];
-          for (const sp of spots) {
-            const curB = g.bal[me];
-            if (curB < 1000 || g.boatCount[me] >= 5) break;
-            const needShore = wasIntercepted ? Math.max(120, Math.ceil(4 * (2 + 3.2 * dq) + 30)) : Math.max(35, Math.ceil(2 * (2 + 3.2 * dq) + 20));
-            const reqTr = troopsFor(needShore, sp.d, g.t);
-            if (!reqTr || reqTr > Math.floor(0.038 * curB)) continue;
-            const sendTr = Math.max(80, reqTr);
-            const pct = Math.max(0, Math.min(1023, Math.ceil((sendTr * 1024) / curB) - 1));
-            const ok = g.boatTo ? g.boatTo(pct, sp.landPix, me, 12) : g.boat(pct, sp.waterPix, sp.dir, me);
-            if (ok) {
-              this.boats++;
-              landedList.push(sp.landPix);
-              launched++;
-            }
-          }
-          if (launched > 0) {
-            this.seaState.pendingHandoffs.set(bestQ, {
-              launchTick: g.t,
-              expireTick: g.t + 70,
-              initialCnt: 0,
-              landings: landedList,
-              wantTroops: bestTroops,
-            });
-            const st = this.pokeState.get(bestQ);
-            if (st) st.lastReplyTick = g.t;
-            this.cmds++;
-            return true;
-          }
-        }
-      }
-    }
-    return false;
-  }
-
   act(g) {
     const P = this.p, me = this.me;
     if (g.t < P.coreFrom) return super.act(g);
@@ -3017,33 +2809,6 @@ class V17 extends V13 {
   }
 
   // Boats when no land is bought, as v13: food over water, then idle troops.
-  boatOut(g, floorAt, maxEff) {
-    const P = this.p, me = this.me;
-    if (!g.boatsAllowed(me) || g.boatCount[me] >= P.maxBoats) return false;
-    this.lastBoat = g.t;
-    const hit = this.searchWater(g);
-    if (!hit || hit.eff > maxEff) return false;
-    if (!this.isMopUp(g)) {
-      if (!hit.neutral) {
-        const o = g.own[hit.land];
-        if (o >= 0 && !g.isBot(o) && g.terr[o] >= 2500) return false;
-      } else if (hit.size < 45) {
-        return false;
-      }
-    }
-    const bal = g.bal[me], fee = iV(32 * bal, 1024);
-    const max = P.boatFrac * (bal - floorAt(hit.price));
-    const min = P.boatFee > 0 && hit.neutral ? Math.max(60, Math.floor(0.5 * fee)) : Math.max(60, P.feeK * fee);
-    if (max < min) return false;
-    const amount = hit.neutral ? Math.min(max, Math.max(3 * hit.size + 300, min)) : max;
-    if (!this.isMopUp(g) && hit.neutral && fee > 4 * hit.size) return false;
-    const pct = Math.max(0, Math.min(1023, Math.ceil((amount * 1024) / bal) - 1));
-    if (!g.boatTo(pct, hit.land, me)) return false;
-    this.boats++;
-    this.cmds++;
-    return true;
-  }
-
   idleBoats(g) {
     const P = this.p, me = this.me;
     if (P.boatFood > 0 && this.boatFood(g)) return;
@@ -3395,9 +3160,9 @@ function frogHopStep(g, me, state, opts = {}) {
   if (sendTr === null || B - fee - sendTr < safeFloor) return false;
 
   // Cost-benefit gate ("算账再发"): a small stepping-stone island hop must only cost a few hundred troops
-  // (`fee + sendTr <= maxAbsCost`, #2475: "就几百个兵 都不需要啥") and never pay > 1,500 boat tax for a micro-isle!
+  // (`fee + sendTr <= maxAbsCost`, #2475: "就几百个兵 都不需要啥") so we never pay 35,000+ boat tax for a 2-px rock!
   const maxAbsCost = opts.maxAbsCost ?? 600;
-  if (sendTr + fee > maxAbsCost || (!hasBotOnIsle && fee > Math.max(800, 12 * isle.size))) return false;
+  if (sendTr + fee > maxAbsCost) return false;
 
   const pct = Math.max(0, Math.min(1023, Math.ceil((sendTr * 1024) / B) - 1));
   const launched = g.boatTo ? g.boatTo(pct, hop.landPix, me, 12) : g.boat(pct, hop.waterPix, hop.dir, me);
@@ -3627,26 +3392,22 @@ function doorHarvestCandidates(g, me, state, opts = {}) {
       if (a !== me) atkIn += g.attackTroopsOn(a, q);
     }
 
-    const dMe = B / Math.max(1, g.terr[me]);
     const nearCollapse = Lq <= 1.45 * collapseLine || (atkIn > 0 && atkIn >= 0.65 * elim);
-    const bleedingWeak =
-      (atkIn > 0 && (tD < (opts.maxDoorTD ?? 0.68) || atkIn >= 0.16 * Bq)) ||
-      (tD < 0.38 && Bq < 0.65 * B && Lq >= 2500);
+    const bleedingWeak = (atkIn > 0 && (tD < (opts.maxDoorTD ?? 0.68) || atkIn >= 0.16 * Bq)) || (tD < 0.38 && Lq >= 2500);
     if (!nearCollapse && !bleedingWeak) continue;
 
-    // Anti-Intercept Breacher: if a previous bridgehead on `q` was intercepted/crushed within 180 ticks,
-    // send a meatier vanguard (150~600 troops on shore) AND launch 2~3 well-spaced pincer boats!
-    const wasIntercepted = (state.handoffFailed?.get(q) ?? -999) > g.t - 180;
-    const counterZero = !wasIntercepted && opts.atkFreshBoats && g.attackTroopsOn(q, me) === 0 && !g.hasAttack(me, q);
-    const needOnShore = counterZero ? 8 : Math.max(wasIntercepted ? 120 : 35, Math.ceil((wasIntercepted ? 4 : 2) * (2 + 3.2 * dq) + 25));
+    // Wait: if we are not currently attacking `q` and `q` is not attacking us (`counter === 0`),
+    // `landAt` sets `atkFresh = 1`, which draws the 1st-ring shore cost from `bal[me]` tax-free!
+    const counterZero = opts.atkFreshBoats && g.attackTroopsOn(q, me) === 0 && !g.hasAttack(me, q);
+    const needOnShore = counterZero ? 5 : Math.max(30, Math.ceil(2 * (2 + 3.2 * dq) + 15));
     const bridgeTroops = troopsFor(needOnShore, sh.d, g.t);
     if (!bridgeTroops) continue;
 
     const oneBoatFee = iV(32 * B, 1024);
     const maxBoatsAvail = Math.max(1, Math.min(spots.length, (opts.maxBoats ?? 6) - g.boatCount[me]));
     let numSpots = 1;
-    if (maxBoatsAvail >= 2 && (wasIntercepted || Lq >= 5000) && oneBoatFee * 2 <= 0.08 * B && spots[1].d <= sh.d + 16) {
-      numSpots = maxBoatsAvail >= 3 && (wasIntercepted || Lq >= 16000) && spots[2].d <= sh.d + 20 ? 3 : 2;
+    if (maxBoatsAvail >= 2 && Lq >= 8000 && oneBoatFee * 2 <= 0.08 * B && spots[1].d <= sh.d + 12) {
+      numSpots = maxBoatsAvail >= 3 && Lq >= 20000 && spots[2].d <= sh.d + 16 ? 3 : 2;
     }
     const chosenSpots = spots.slice(0, numSpots);
 
@@ -3694,16 +3455,7 @@ function handoffFootholds(g, me, state, safeFloorFn) {
       if (lp >= 0 && px[lp] >= P_INNER && own[lp] === me) landedSpots++;
     }
 
-    if (landedSpots === 0) {
-      // If we launched bridgehead boats >= 15 ticks ago and our boatCount is now 0, the bridgehead was intercepted!
-      // Clear pendingHandoffs immediately instead of waiting 75~90 ticks, and mark handoffFailed for pincer retry!
-      if (info.launchTick !== undefined && g.t - info.launchTick >= 15 && g.boatCount[me] === 0) {
-        state.handoffFailed ??= new Map();
-        state.handoffFailed.set(q, g.t);
-        state.pendingHandoffs.delete(q);
-      }
-      continue;
-    }
+    if (landedSpots === 0) continue;
 
     if (info.firstLandedTick === undefined || info.firstLandedTick < 0) {
       info.firstLandedTick = g.t;
@@ -3720,26 +3472,17 @@ function handoffFootholds(g, me, state, safeFloorFn) {
     const avail = B - fee - safe;
     if (info.reigniteOnly) {
       if (g.attackTroopsOn(me, q) >= 0.08 * B) {
-        if (g.attack(0, q, me)) {
-          state.pendingHandoffs.delete(q);
-          return true;
-        }
+        g.attack(0, q, me);
       }
     } else if (avail > fee * 2) {
       const want = info.wantTroops ? Math.min(avail, info.wantTroops) : Math.min(avail, Math.floor(0.12 * B));
       if (want > fee * 2) {
         const pct = Math.max(0, Math.min(1023, Math.ceil((want * 1024) / B) - 1));
-        if (g.attack(pct, q, me)) {
-          state.pendingHandoffs.delete(q);
-          return true;
-        }
+        g.attack(pct, q, me);
       }
     }
-    if (g.t - info.firstLandedTick >= 8) {
-      state.pendingHandoffs.delete(q);
-    }
+    state.pendingHandoffs.delete(q);
   }
-  return false;
 }
 
 // Exploit #7: Active Attack Slot `P_BORDER` Re-Igniter (`reigniteNewBorders`)
@@ -3904,21 +3647,19 @@ export const PARAMS = {
   sharedBotMult: 1.0,
   marketFloor: 0.85,
   marketFrom: 2500,
-  period: 2,
-  maxTargets: 6,
-  bleedDiscount: 0.65,
+  bleedDiscount: 1.0,
   bleedSafeCap: 1,
-  collapseRatio: 1.45,
+  collapseRatio: 1.40,
   pulseFrac: 0.12,
-  pulseMinShare: 0.03,
+  pulseMinShare: 0.04,
   zeroPulseMode: 1,
-  thinMaxTD: 0.62,
-  thinDiscount: 0.72,
+  thinMaxTD: 0.48,
+  thinDiscount: 1.0,
   pocket0Mult: 1.0,
   pocket1Rank: 1.0,
   contactStepsMax: 350,
   contactPenalty: 0.002,
-  oppFloorCap: 38,
+  oppFloorCap: 128,
   focusBonus: 1.0,
   focusT: 350,
   defendDiscount: 0.85,
@@ -3960,7 +3701,7 @@ export const PARAMS = {
   seaRebateMode: 1,
   quotaGuardMode: 1,
   noFullSend: 0,
-  collapseFloorCap: 16,
+  collapseFloorCap: 85,
   emptyAllInMode: 1,
   latePocketMode: 0,
   widenStepsMin: 0,
@@ -3979,8 +3720,6 @@ export class Policy extends V17 {
     super({ ...PARAMS, ...params }, me);
     this.hitTo = new Map();
     this.hitFrom = new Map();
-    this.pokeState = new Map();
-    this.prevCnt = new Int32Array(MAX_PLAYERS + 1);
     this.lastLandSpendTick = -999;
     this.shadowQuota = 0;
     this.lastQuotaTick = -1;
@@ -4137,13 +3876,6 @@ export class Policy extends V17 {
     return !!(g.teams && g.teams[this.me] > 0 && g.teams[p] === g.teams[this.me]);
   }
 
-  myOutTroops(g) {
-    const me = this.me, sb = g.slotBase(me);
-    let out = 0;
-    for (let i = 0; i < g.atkCount[me]; i++) out += g.atkTroops[sb + i];
-    return out;
-  }
-
   // Identify our Boss ("[Nope]kazerd183" / "[NPL] npl", excluding our guard bot names)
   isBossNpl(g, p) {
     if (p === this.me || !g.alive[p]) return false;
@@ -4182,136 +3914,76 @@ export class Policy extends V17 {
       low === "777" || low === "sayo" || low === "kaito" || low === "riku" ||
       low === "_alex" || low === "tomo" || low === "zero_2" || low === "sora" ||
       low === "lucas94" || low === "dave_w" || low === "mark07" || low === "kevin_k" ||
-      low === "ethan21" || low === "ryan_m" || low === "noah88" || low === "leo_tx"
+      low === "ethan21" || low === "ryan_m" || low === "noah88" || low === "leo_tx" ||
+      raw.toUpperCase().includes("[NPL]") || raw.toUpperCase().includes("[NOPE]")
     );
   }
 
-  // CENTRALIZED BACKEND-COORDINATED TEAM SPAWNING (TeamSpawnCoordinator):
-  // 1) Reports map terrain (once per match) + live human positions (Boss npl, enemies, allies)
-  //    to the unified backend coordinator in tsb-team-squad.mjs via window.__hlSpawnReq.
-  // 2) Returns the globally optimized, role-based (FLANK_GUARD / ECO_BANK) coordinate
-  //    assigned by the backend via window.__tsbAssignedSpawn.
+  // DISTRIBUTED BACKEND-COORDINATED TEAM SPAWNING:
+  // 1) Never treat our own squad bots as "enemy people" in spawnVsPeople0 so their live movements don't cause all 5 bots' candidate lists to chase each other into one corner!
+  // 2) Deterministically partition candidate regions and enforce >= minSep separation between our squad slots AND Boss npl!
   chooseSpawn(g, final = true) {
     const me = this.me;
     const W = g.W, H = g.H;
+    const minSep = Math.max(115, Math.min(220, 0.28 * Math.hypot(W, H)));
+
+    let mySquadIdx = typeof window !== "undefined" && Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : 0;
     const squadIds = [];
     for (let p = 0; p < g.humans; p++) {
       if (p === me || (this.isOurSquadBot(g, p) && !this.isBossNpl(g, p))) {
         squadIds.push(p);
       }
     }
-    const rankIdx = Math.max(0, squadIds.indexOf(me));
-    const squadCount = Math.max(1, squadIds.length);
-    const mapKey = `${W}x${H}_${g.land}_${g.humans}`;
+    const rankIdx = squadIds.indexOf(me);
+    const squadCount = squadIds.length;
+    const slot = (squadCount >= 2 && rankIdx >= 0 ? rankIdx : mySquadIdx) % 10;
 
-    const nowMs = typeof performance !== "undefined" ? performance.now() : Date.now();
-    if (typeof window !== "undefined" && window.__hlSpawnReq && (!this._lastSpawnReqAt || nowMs - this._lastSpawnReqAt > 260)) {
-      this._lastSpawnReqAt = nowMs;
-      const humans = [];
-      for (let p = 0; p < g.humans; p++) {
-        const terr = g.terr[p] | 0;
-        humans.push({
-          id: p,
-          name: String(g.names?.[p] ?? ""),
-          team: g.teams ? (g.teams[p] | 0) : 0,
-          terr,
-          x: terr > 0 ? ((g.x0[p] + g.x1[p]) >> 1) : -1,
-          y: terr > 0 ? ((g.y0[p] + g.y1[p]) >> 1) : -1,
-        });
+    // Build a view where OTHER squad guard bots are erased from the map so all 5 guard bots compute
+    // the EXACT same deterministic candidate list relative only to enemies + Boss npl!
+    let gClean = g;
+    for (const sid of squadIds) {
+      if (sid !== me && gClean.terr[sid] > 0) {
+        gClean = withoutPlayer(gClean, sid);
       }
-      const needMap = window.__lastSentSpawnMapKey !== mapKey;
-      if (needMap) window.__lastSentSpawnMapKey = mapKey;
-      let mapType = undefined;
-      let packedLandB64 = undefined;
-      if (needMap) {
-        const rawMap = g.map?.type || g.px;
-        if (typeof window.__tsbSpawnReq === "function" && rawMap) {
-          const nBytes = (W * H + 7) >> 3;
-          const bytes = new Uint8Array(nBytes);
-          for (let i = 0; i < W * H; i++) {
-            const v = rawMap[i];
-            if (v === 1 || v >= 16) bytes[i >> 3] |= 1 << (i & 7);
-          }
-          let bin = "";
-          for (let i = 0; i < nBytes; i += 4096) {
-            bin += String.fromCharCode.apply(null, bytes.subarray(i, Math.min(nBytes, i + 4096)));
-          }
-          packedLandB64 = btoa(bin);
-        } else {
-          mapType = rawMap;
+    }
+
+    let cands = this.spawnVsPeople ? this.spawnVsPeople(gClean, 16) : [];
+    if (!cands || cands.length < squadCount) {
+      const more = this.spawnCandidates(gClean, 16) || [];
+      cands = [...(cands || []), ...more];
+    }
+    if (cands && cands.length > 0) {
+      // Greedily pick mutually well-spaced candidates (>= minSep from Boss npl AND >= minSep from each earlier slot's picked spot!)
+      const bossIds = [];
+      for (let h = 0; h < g.humans; h++) {
+        if (h !== me && g.terr[h] > 0 && this.isBossNpl(g, h)) bossIds.push(h);
+      }
+      const chosenSlots = [];
+      for (const pos of cands) {
+        const x = typeof pos === "object" ? pos.x : (pos % W);
+        const y = typeof pos === "object" ? pos.y : Math.floor(pos / W);
+        let tooClose = false;
+        for (const bh of bossIds) {
+          const hx = (g.x0[bh] + g.x1[bh]) >> 1, hy = (g.y0[bh] + g.y1[bh]) >> 1;
+          if (Math.hypot(x - hx, y - hy) < minSep) { tooClose = true; break; }
+        }
+        if (tooClose) continue;
+        for (const prev of chosenSlots) {
+          if (Math.hypot(x - prev.x, y - prev.y) < minSep) { tooClose = true; break; }
+        }
+        if (!tooClose) {
+          chosenSlots.push({ x, y });
+          if (chosenSlots.length > slot) break;
         }
       }
-      const curX = g.terr[me] > 0 ? ((g.x0[me] + g.x1[me]) >> 1) : -1;
-      const curY = g.terr[me] > 0 ? ((g.y0[me] + g.y1[me]) >> 1) : -1;
-      window.__hlSpawnReq({
-        matchKey: mapKey,
-        W,
-        H,
-        land: g.land,
-        me,
-        slot: window.__tsbSquadSlot ?? rankIdx,
-        rankIdx,
-        squadCount,
-        myTeam: g.teams ? (g.teams[me] | 0) : 0,
-        curX,
-        curY,
-        humans,
-        mapType,
-        packedLandB64,
-      });
-    }
-
-    if (
-      typeof window !== "undefined" &&
-      window.__tsbAssignedSpawn &&
-      Number.isInteger(window.__tsbAssignedSpawn.x) &&
-      (!window.__tsbAssignedSpawn.mapW || (window.__tsbAssignedSpawn.mapW === W && window.__tsbAssignedSpawn.mapH === H))
-    ) {
-      const res = window.__tsbAssignedSpawn;
-      if (window.__hlLog && (!this._lastLogSpawn || Math.hypot(res.x - this._lastLogSpawn.x, res.y - this._lastLogSpawn.y) > 4)) {
-        this._lastLogSpawn = { x: res.x, y: res.y };
-        window.__hlLog(`[HL-SPAWN-BACKEND] me=${me} slot=${res.slot ?? rankIdx} role=${res.role || "SQUAD"} -> (${res.x},${res.y}) bossDist=${res.bossDist ?? -1} minAllyDist=${res.minAllyDist ?? -1} voronoi=${res.voronoiPixels ?? -1}`);
+      // Also check live positions of lower-ranked squad bots just in case
+      let res = chosenSlots[slot] || chosenSlots[slot % Math.max(1, chosenSlots.length)] || cands[slot % cands.length];
+      res = typeof res === "object" ? res : { x: res % W, y: Math.floor(res / W) };
+      if (typeof window !== "undefined" && window.__hlLog && (!this._lastLogSpawn || Math.hypot(res.x - this._lastLogSpawn.x, res.y - this._lastLogSpawn.y) > 6)) {
+        this._lastLogSpawn = res;
+        window.__hlLog(`[HL-SPAWN] me=${me} slot=${slot} (squad=${squadCount},rankIdx=${rankIdx}) -> (${res.x},${res.y}) chosenSlots=${chosenSlots.length}/${cands.length} minSep=${Math.round(minSep)}`);
       }
-      return { x: res.x, y: res.y };
-    }
-
-    // Zero-gap synchronous fallback for Frame 1 before the 20ms backend reply arrives:
-    // Deterministic multi-basin Farthest-Point sampling across the interior land grid (margin >= 18px)
-    const mType = g.map?.type || g.px;
-    const bossPts = [];
-    const enemyPts = [];
-    for (let h = 0; h < g.humans; h++) {
-      if (h === me || g.terr[h] <= 0 || this.isOurSquadBot(g, h)) continue;
-      const hx = (g.x0[h] + g.x1[h]) >> 1, hy = (g.y0[h] + g.y1[h]) >> 1;
-      if (this.isBossNpl(g, h)) bossPts.push({ x: hx, y: hy });
-      else if (!this.isTeammate(g, h)) enemyPts.push({ x: hx, y: hy });
-    }
-    const bossMin = Math.max(95, Math.min(165, 0.12 * Math.hypot(W, H)));
-    const picked = [];
-    for (let sIdx = 0; sIdx <= rankIdx; sIdx++) {
-      let bestPt = null, bestScore = -Infinity;
-      for (let y = 18; y < H - 18; y += 12) {
-        for (let x = 18; x < W - 18; x += 12) {
-          const c = y * W + x;
-          if (mType[c] !== 1 && mType[c] < 16) continue;
-          let bDist = 999999;
-          for (const b of bossPts) bDist = Math.min(bDist, Math.hypot(x - b.x, y - b.y));
-          if (bossPts.length > 0 && bDist < bossMin) continue;
-          let eDist = 999999;
-          for (const e of enemyPts) eDist = Math.min(eDist, Math.hypot(x - e.x, y - e.y));
-          let aDist = 999999;
-          for (const p of picked) aDist = Math.min(aDist, Math.hypot(x - p.x, y - p.y));
-          const sc = Math.min(aDist, 320) * 1.8 + Math.min(eDist, 240) * 1.2 + (bossPts.length && sIdx < 2 ? -Math.abs(bDist - 190) * 0.6 : 0);
-          if (sc > bestScore) {
-            bestScore = sc;
-            bestPt = { x, y };
-          }
-        }
-      }
-      if (bestPt) picked.push(bestPt);
-    }
-    if (picked.length > 0) {
-      return picked[picked.length - 1];
+      return res;
     }
     return super.chooseSpawn(g, final);
   }
@@ -4349,24 +4021,21 @@ export class Policy extends V17 {
     return bestP;
   }
 
-  // AUTO PEACE VOTE CALL & ACCEPT (WITH HUMAN-LIKE JITTER DELAY):
-  // ONLY initiate or vote YES on peace when ALL enemies are completely wiped out (isMopUp(g) === true)!
-  // Stagger votes by 8~52 ticks (~0.5s to 2.9s) per bot so all 8 bots never vote on the exact same tick!
+  // AUTO PEACE VOTE CALL & ACCEPT:
+  // ONLY vote YES if the peace vote was initiated by OUR squad (or Boss npl)! Never auto-accept random players' peace votes!
   tryPeaceVote(g) {
     if (typeof window === "undefined" || !window.ax || !window.dictionary || g.t < 1610) return;
     const me = this.me;
     const hz = window[window.dictionary.sbCommands]?.hz;
     if (!hz) return;
-    if (!this.isMopUp(g)) {
-      this._peaceReadyTick = 0;
-      return;
+    let ourTeamLand = g.terr[me] || 0;
+    if (g.teams && g.teams[me] > 0) {
+      ourTeamLand = 0;
+      for (let p = 0; p < g.players; p++) {
+        if (g.alive[p] && g.teams[p] === g.teams[me]) ourTeamLand += g.terr[p];
+      }
     }
-    if (!this._peaceReadyTick) {
-      const slot = Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : (me % 8);
-      const jitter = 8 + ((slot * 6 + (me % 5) * 3) % 44);
-      this._peaceReadyTick = g.t + jitter;
-    }
-    if (g.t < this._peaceReadyTick) return;
+    const weLead = ourTeamLand >= 0.58 * Math.max(1, g.land) || this.isMopUp(g);
     const caller = window.__lastPeaceCaller;
     const callerIsOurs =
       Number.isInteger(caller) &&
@@ -4376,18 +4045,17 @@ export class Policy extends V17 {
     if (window.ax.iL && typeof window.ax.iM === "function" && window.ax.iM(me)) {
       if (callerIsOurs && typeof hz.iN === "function") {
         hz.iN(1);
-        this._peaceReadyTick = g.t + 35;
         if (window.__hlLog && g.t - (this._lastPeaceVoteLog ?? -999) >= 100) {
           this._lastPeaceVoteLog = g.t;
-          window.__hlLog(`[HL-PEACE] t=${g.t} voted YES on our squad's mop-up peace call by p=${caller}(${g.names?.[caller] || ""})`);
+          window.__hlLog(`[HL-PEACE] t=${g.t} voted YES on our squad's peace call by p=${caller}(${g.names?.[caller] || ""}) (teamLand=${(100 * ourTeamLand / Math.max(1, g.land)).toFixed(1)}%)`);
         }
       }
-    } else if (!window.ax.iL && g.t - (this.lastPeaceKeyTick ?? -999) >= 115 + (me % 7) * 5 && typeof window.ax.iO === "function" && window.ax.iO(me)) {
+    } else if (!window.ax.iL && weLead && g.t - (this.lastPeaceKeyTick ?? -999) >= 105 && typeof window.ax.iO === "function" && window.ax.iO(me)) {
       this.lastPeaceKeyTick = g.t;
       window.__lastPeaceCaller = me;
       if (typeof hz.iK === "function") {
         hz.iK();
-        if (window.__hlLog) window.__hlLog(`[HL-PEACE] t=${g.t} initiated mop-up peace vote (all enemies eliminated!)`);
+        if (window.__hlLog) window.__hlLog(`[HL-PEACE] t=${g.t} initiated peace vote (teamLand=${(100 * ourTeamLand / Math.max(1, g.land)).toFixed(1)}%)`);
       }
     }
   }
@@ -4398,7 +4066,7 @@ export class Policy extends V17 {
     const me = this.me;
     if (!g.teams || !(g.teams[me] > 0) || !g.canAct(me)) return false;
     const bossId = this.findBossId(g);
-    if (bossId < 0 || !g.alive[bossId] || g.terr[bossId] < 30) return false;
+    if (bossId < 0 || !g.alive[bossId] || g.terr[bossId] < 50) return false;
 
     const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
     const B_boss = g.bal[bossId], L_boss = Math.max(1, g.terr[bossId]), dBoss = B_boss / L_boss;
@@ -4422,57 +4090,60 @@ export class Policy extends V17 {
       }
     }
 
-    // 1. PRIMARY: Give cash (donate) to Boss npl while keeping our own safe density so we never collapse ourselves!
-    // Never donate before tick 850 while we still have neutral/bot expansion to finish, unless Boss is under heavy human attack after tick 600!
-    if (typeof g.donate === "function" && g.t >= 600 && (g.t >= 900 || (this.neutral === 0 && bossInAtk >= 0.12 * B_boss))) {
+    // 1. PRIMARY: Give cash (donate) to Boss npl, distinguishing PURE INLAND LOCKED vs COASTAL REAR vs FRONTLINE!
+    if (typeof g.donate === "function" && g.t >= 350) {
       let myHumanInAtk = 0;
       for (const a of g.attackersOf(me)) {
         if (!g.isBot(a) && !this.isTeammate(g, a)) myHumanInAtk += g.attackTroopsOn(a, me);
       }
       const enemyHumanNbs = this.nb.filter((p) => g.alive[p] && this.person(g, p));
       const hasExposedCoast = (g.coast?.[me]?.length ?? 0) > 0;
+      // Coastal rear bots MUST keep >= 68*L anti-boat-sneak-attack reserve so their back is never stolen by sea!
+      const coastGuardFloor = hasExposedCoast && g.t >= 1100 ? 68 * L : 18 * L;
+      const safeFloor = Math.max(coastGuardFloor, enemyHumanNbs.length > 0 ? this.safeAt(g, -1) : 0);
       const isPureInlandSafe = enemyHumanNbs.length === 0 && !hasExposedCoast && myHumanInAtk === 0;
       const isCoastalRearSafe = enemyHumanNbs.length === 0 && hasExposedCoast && myHumanInAtk === 0;
+      const isUnderThreat = myHumanInAtk > 0 || B <= 1.10 * safeFloor;
 
-      const underEmergencyFire = bossInAtk > 0 && (bossInAtk >= 0.08 * B_boss || dBoss < 65);
-      const bossFightingHuman = g.t >= 1500 && bossOutAtk > 0.06 * B_boss && dBoss < 88;
-      const bossNeedsCash = g.t >= 1800 && dBoss < 82;
-      const boxedIn = g.t >= 900 && this.nb.length === 0 && this.neutral === 0 && dBoss < 138;
+      if (!isUnderThreat) {
+        const underEmergencyFire = bossInAtk > 0 && (bossInAtk >= 0.03 * B_boss || dBoss < 95);
+        const bossFightingHuman = bossOutAtk > 0 && dBoss < 115;
+        const bossNeedsCash = g.t >= 950 && dBoss < 118;
+        const boxedIn = this.nb.length === 0 && this.neutral === 0 && dBoss < 142;
 
-      // Healthy density floor so frontline guard bots NEVER drain themselves down to 52~75 density!
-      // Frontline bots keep >= 98~105 density so they can snowball & crush enemies; boxed-in rear bots donate freely at >= 25.
-      const minKeepDens = isPureInlandSafe
-        ? (underEmergencyFire ? 18 : 26)
-        : isCoastalRearSafe
-          ? (underEmergencyFire ? 78 : 94)
-          : (underEmergencyFire ? 86 : 102);
-      const canAfford = myHumanInAtk === 0 && dMe >= minKeepDens && B >= 12000;
+        const minKeepDens = isPureInlandSafe ? (underEmergencyFire ? 15 : 22) : isCoastalRearSafe ? (underEmergencyFire ? 52 : 72) : (underEmergencyFire ? 58 : 78);
+        const canAfford = dMe >= minKeepDens && B > 1.10 * safeFloor;
 
-      const cooldown = isPureInlandSafe ? 22 : (underEmergencyFire ? 35 : 50);
-      if ((underEmergencyFire || bossFightingHuman || bossNeedsCash || boxedIn) && canAfford && g.t - (this.lastBossDonateTick ?? -999) >= cooldown) {
-        const keepBal = (minKeepDens - 5) * L;
-        const maxSurplus = Math.max(0, B - keepBal);
-        const maxPct = Math.floor((maxSurplus * 1024) / Math.max(1, B));
-        const pct = Math.min(maxPct, 51); // Strictly 5% (51/1024) per bot so guards stay strong and win even if Boss dies!
-        if (pct >= 40 && g.donate(pct, bossId, me)) {
-          this.lastDonateTick = g.t;
-          this.lastBossDonateTick = g.t;
-          this.cmds++;
-          if (typeof window !== "undefined" && window.__hlLog) {
-            window.__hlLog(`[HL-DONATE] t=${g.t} emergency boss donate pct=${pct}/1024 (~5%) -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)} dBoss=${Math.round(dBoss)}`);
+        const cooldown = isPureInlandSafe ? (underEmergencyFire ? 10 : 18) : (underEmergencyFire ? 15 : 25);
+        if ((underEmergencyFire || bossFightingHuman || bossNeedsCash || boxedIn) && canAfford && g.t - (this.lastBossDonateTick ?? -999) >= cooldown) {
+          const maxSurplus = Math.max(0, B - Math.max(safeFloor, (minKeepDens - 10) * L));
+          const maxPct = Math.floor((maxSurplus * 1024) / Math.max(1, B));
+          const targetPct = isPureInlandSafe
+            ? (underEmergencyFire ? 350 : boxedIn ? 320 : 220)
+            : isCoastalRearSafe
+              ? (underEmergencyFire ? 220 : 160)
+              : (underEmergencyFire ? 150 : 115);
+          const pct = Math.min(maxPct, targetPct);
+          if (pct >= 55 && g.donate(pct, bossId, me)) {
+            this.lastDonateTick = g.t;
+            this.lastBossDonateTick = g.t;
+            this.cmds++;
+            if (typeof window !== "undefined" && window.__hlLog) {
+              window.__hlLog(`[HL-DONATE] t=${g.t} emergency boss donate pct=${pct}/1024 -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)} dBoss=${Math.round(dBoss)}`);
+            }
+            return true;
           }
-          return true;
         }
       }
     }
 
-    // 2. SECONDARY: Light ~10%B (pct=102/1024) assist poke ONLY if we share a land border and have healthy density (dMe >= 55)!
-    if (bossAttackers.length > 0 && B >= 8000 && dMe >= 55) {
+    // 2. SECONDARY: Light ~10%B (pct=102/1024) assist poke ONLY if we share a land border and have healthy density!
+    if (bossAttackers.length > 0 && B >= 8000 && dMe >= 38) {
       bossAttackers.sort((a, b) => (b.isEnemyAtk - a.isEnemyAtk) || (b.tr - a.tr));
       for (const { q } of bossAttackers) {
         if (!g.alive[q] || g.terr[q] < 100) continue;
         if ((this.cnt[q] ?? 0) > 0 && !g.hasAttack(me, q) && g.hasFreeSlot(me)) {
-          if (g.attack(102, q, me)) {
+          if (g.attack(102, q, me)) { // ~10.0%B light assist!
             this.cmds++;
             this.hitTo.set(q, g.t);
             if (typeof window !== "undefined" && window.__hlLog) {
@@ -4481,303 +4152,6 @@ export class Policy extends V17 {
             return true;
           }
         }
-      }
-    }
-    return false;
-  }
-
-  // UNIFIED 8-BROTHER SEA RADAR & OPTIMAL BOAT INTERCEPTION (g.chase):
-  // 1. Checks `bQ.mt.mu(p, boatId)` across all teammates so we know exact friendly troops already chasing `boatId`.
-  // 2. Deterministically evaluates all 8 squad brothers' interception cost:
-  //      totalCost(p) = requiredTroops(d_p) + boatTax(3.125% * bal[p]) + 18 * d_p
-  //    so the single closest & lowest-tax brother (`rank === 0`) intercepts first!
-  // 3. Fail-safe escalation ("必须达到，不能漏"): if `boatId` is still un-chased after 3 ticks (or within 55px of landing),
-  //    backup brothers (`rank >= 1`) immediately fire `g.chase` so zero enemy boats can ever touch our shore!
-  tryInterceptEnemyBoats(g) {
-    const me = this.me;
-    if (!g.canAct(me) || typeof g.chase !== "function") return false;
-    const myCoast = g.coast?.[me];
-    if (!myCoast || myCoast.length === 0) return false;
-    if ((g.boatCount?.[me] ?? 0) >= 4) return false;
-    const boatN = g.boatN | 0;
-    if (boatN <= 0 || !g.bSlot || !g.bId || !g.bTroops || !g.bPos) return false;
-
-    const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
-    if (B < 2500 || dMe < 22) return false;
-
-    if (!this._chasedBoatTicks) this._chasedBoatTicks = new Map();
-    if (!this._boatFirstSeen) this._boatFirstSeen = new Map();
-    const W = g.W, H = g.H, w16 = W << 4;
-    const own = g.own;
-
-    // Helper: minimum distance from player p's coastline to (tx, ty)
-    const minCoastDistOf = (p, tx, ty) => {
-      const cst = g.coast?.[p];
-      if (!cst || cst.length === 0) return 999999;
-      const step = Math.max(1, Math.floor(cst.length / 28));
-      let best = 999999;
-      for (let i = 0; i < cst.length; i += step) {
-        const cp = cst[i];
-        const d = Math.hypot(tx - (cp % W), ty - Math.floor(cp / W));
-        if (d < best) best = d;
-      }
-      return best;
-    };
-
-    let bestBoatId = -1;
-    let bestPct = 0;
-    let bestScore = -1;
-    let bestOwner = -1;
-    let bestTroops = 0;
-
-    for (let b = 0; b < boatN; b++) {
-      const owner = g.bSlot[b] >> 3;
-      if (owner === me || owner >= 512 || this.isTeammate(g, owner)) continue;
-      // Ignore boats that are themselves chasing another boat in open water unless heading at us
-      const boatId = g.bId[b];
-      const bTr = g.bTroops[b];
-      if (bTr < 80) continue;
-
-      if (!this._boatFirstSeen.has(boatId)) {
-        this._boatFirstSeen.set(boatId, g.t);
-      }
-      const seenAge = g.t - (this._boatFirstSeen.get(boatId) ?? g.t);
-      const lastMyChase = this._chasedBoatTicks.get(boatId) ?? -999;
-      if (g.t - lastMyChase < 28) continue;
-
-      const rawPos = g.bPos[b];
-      const bx = (rawPos % w16) >> 4;
-      const by = Math.floor(rawPos / w16) >> 4;
-
-      const rb = g.bRoute?.[b];
-      const endPix = rb && rb.length > 0 ? rb[rb.length - 1] : -1;
-      const ex = endPix >= 0 ? (endPix % W) : bx;
-      const ey = endPix >= 0 ? Math.floor(endPix / W) : by;
-      const dBoatToLand = Math.hypot(ex - bx, ey - by);
-
-      // 1. Check if this enemy boat threatens our team's coastline / territory (me, Boss, or any teammate)
-      let threatensTeam = false;
-      if (endPix >= 0 && own) {
-        for (const [dx, dy] of [[0, 0], [5, 0], [-5, 0], [0, 5], [0, -5], [14, 0], [-14, 0], [0, 14], [0, -14], [24, 0], [-24, 0], [0, 24], [0, -24]]) {
-          const nx = ex + dx, ny = ey + dy;
-          if (nx <= 0 || ny <= 0 || nx >= W - 1 || ny >= H - 1) continue;
-          const o = own[ny * W + nx];
-          if (o === me || (o < 512 && this.isTeammate(g, o))) {
-            threatensTeam = true;
-            break;
-          }
-        }
-      }
-      if (!threatensTeam) {
-        for (let p = 0; p < g.humans; p++) {
-          if (g.alive[p] && (p === me || this.isTeammate(g, p))) {
-            if (minCoastDistOf(p, ex, ey) <= 95 || minCoastDistOf(p, bx, by) <= 80) {
-              threatensTeam = true;
-              break;
-            }
-          }
-        }
-      }
-      if (!threatensTeam) continue;
-
-      // 2. Sum friendly chaser troops ALREADY pursuing `boatId` via engine `bQ.mt.mu(p, boatId)`
-      let alreadyChasingTroops = 0;
-      if (typeof window !== "undefined" && window.bQ?.mt?.mu && window.bR?.gB) {
-        for (let p = 0; p < g.humans; p++) {
-          if (!g.alive[p] || (p !== me && !this.isTeammate(g, p))) continue;
-          try {
-            if (window.bQ.mt.mu(p, boatId)) {
-              const chaserSlot = window.bR.gB[2];
-              if (chaserSlot >= 0 && chaserSlot < boatN && (g.bSlot[chaserSlot] >> 3) === p) {
-                alreadyChasingTroops += g.bTroops[chaserSlot];
-              } else {
-                alreadyChasingTroops += bTr;
-              }
-            }
-          } catch {}
-        }
-      }
-      if (alreadyChasingTroops >= 1.02 * bTr) continue; // Already voldoende friendly interceptor on the way!
-
-      const remNeed = Math.max(80, Math.ceil(1.12 * bTr) - alreadyChasingTroops);
-
-      // 3. Evaluate all eligible squad brothers `p` to find who is most convenient & cheapest (`rank === 0`)
-      const candidates = [];
-      for (let p = 0; p < g.humans; p++) {
-        if (!g.alive[p] || (p !== me && !this.isOurSquadBot(g, p))) continue;
-        if (p !== me && !this.isTeammate(g, p)) continue;
-        if ((g.boatCount?.[p] ?? 0) >= 4 || !(g.coast?.[p]?.length > 0)) continue;
-        const Bp = g.bal[p], Lp = Math.max(1, g.terr[p]);
-        if (Bp < 2500 || Bp / Lp < 22) continue;
-
-        if (typeof window !== "undefined" && window.bQ?.iC?.qx) {
-          try {
-            if (!window.bQ.iC.qx(p, boatId)) continue;
-          } catch {}
-        }
-
-        const dNowP = minCoastDistOf(p, bx, by);
-        const dEndP = minCoastDistOf(p, ex, ey);
-        const effDistP = Math.min(dNowP, dEndP + 10);
-        if (effDistP > 175) continue;
-        // Must be able to reach the boat before or right around landing
-        if (dNowP > dBoatToLand * 1.45 + 45 && dEndP > 95) continue;
-
-        const sendTrP = Math.ceil(remNeed * Math.exp(0.002 * Math.max(0, effDistP - 15))) + 60;
-        const feeP = iV(32 * Bp, 1024);
-        const urgentClose = dBoatToLand <= 55 || dEndP <= 55 || seenAge >= 5;
-        const maxAllowP = Math.floor((urgentClose ? 0.35 : 0.16) * Bp);
-        const keepFloorP = (urgentClose ? 12 : 28) * Lp;
-        if (sendTrP > maxAllowP || Bp - sendTrP - feeP < keepFloorP) continue;
-
-        const totalCostP = sendTrP + feeP + 18 * effDistP;
-        candidates.push({ p, sendTrP, effDistP, dNowP, totalCostP });
-      }
-
-      if (candidates.length === 0) continue;
-      candidates.sort((a, b) => a.totalCostP - b.totalCostP);
-
-      const myIdx = candidates.findIndex((c) => c.p === me);
-      if (myIdx < 0) continue;
-
-      const urgentLanding = dBoatToLand <= 55 || candidates[myIdx].effDistP <= 50;
-      const allowedRank = urgentLanding || seenAge >= 6 ? candidates.length - 1 : seenAge >= 3 ? 1 : 0;
-      if (myIdx > allowedRank) continue;
-
-      const myCand = candidates[myIdx];
-      const pct = Math.max(2, Math.min(360, Math.ceil((myCand.sendTrP * 1024) / Math.max(1, B))));
-      const score = bTr * 3 + Math.max(0, 200 - dBoatToLand) * 80 - myIdx * 500;
-      if (score > bestScore) {
-        bestScore = score;
-        bestBoatId = boatId;
-        bestPct = pct;
-        bestOwner = owner;
-        bestTroops = bTr;
-      }
-    }
-
-    if (bestBoatId >= 0) {
-      if (g.chase(bestPct, bestBoatId, me)) {
-        this._chasedBoatTicks.set(bestBoatId, g.t);
-        this.cmds++;
-        this.boats++;
-        if (typeof window !== "undefined" && window.__hlLog) {
-          window.__hlLog(`[HL-INTERCEPT] t=${g.t} unified sea intercept pct=${bestPct}/1024 -> boatId=${bestBoatId} owner=${bestOwner}(${g.names?.[bestOwner] || ""}) boatTroops=${bestTroops}`);
-        }
-        return true;
-      }
-    }
-    return false;
-  }
-
-  // PREEMPTIVE NEAR-TEAM SMALL ISLAND OCCUPATION:
-  // Occupies small islands (<= 1800 px) within <= 85px of our team's coastline BEFORE enemies can claim them as stepping stones!
-  // Uses unified 8-brother cost scheduling (`boatTax + 20 * dist`) so the closest & lowest-tax brother claims each island.
-  tryClaimNearTeamIslands(g) {
-    const me = this.me;
-    if (g.t < 420 || !g.canAct(me)) return false;
-    const myCoast = g.coast?.[me];
-    if (!myCoast || myCoast.length === 0) return false;
-    if ((g.boatCount?.[me] ?? 0) >= 3) return false;
-    if (g.t - (this._lastNearIsleTick ?? -999) < 28) return false;
-
-    const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
-    if (B < 2500 || dMe < 22) return false;
-    const fee = iV(32 * B, 1024);
-
-    if (!this._claimedIsleLandings) this._claimedIsleLandings = new Map();
-    const W = g.W, w16 = W << 4;
-    const comp = this.compSize(g);
-    const boatN = g.boatN | 0;
-
-    let bestHit = null;
-    let bestWantTr = 0;
-    let bestScore = -1;
-
-    for (const s of seaSample(g, me, 48, Math.random)) {
-      if (s.d < 4 || s.d > 85) continue;
-      const landPix = s.land;
-      const o = s.o;
-      if (o === me || (o >= 0 && o < 512 && this.isTeammate(g, o))) continue;
-      // Only target unclaimed neutral islands or weak bot islands (never human-owned mainlands here)
-      const isNeutralIsle = o < 0 || o === 512;
-      const isWeakBotIsle = !isNeutralIsle && g.isBot(o) && g.terr[o] <= 1800 && g.bal[o] <= 12000;
-      if (!isNeutralIsle && !isWeakBotIsle) continue;
-
-      const sz = isNeutralIsle ? (comp?.[landPix] ?? 0) : g.terr[o];
-      if (sz <= 0 || sz > 2000) continue;
-
-      const lx = landPix % W, ly = Math.floor(landPix / W);
-      const isleKey = `${lx >> 3}_${ly >> 3}`;
-      if (g.t - (this._claimedIsleLandings.get(isleKey) ?? -999) < 160) continue;
-
-      // Check if ANY friendly boat at sea is already heading toward this island (within 20px)
-      let friendlyBoatEnRoute = false;
-      if (boatN > 0 && g.bSlot && g.bRoute) {
-        for (let b = 0; b < boatN; b++) {
-          const bOwner = g.bSlot[b] >> 3;
-          if (bOwner !== me && !this.isTeammate(g, bOwner)) continue;
-          const rb = g.bRoute[b];
-          if (rb && rb.length > 0) {
-            const endP = rb[rb.length - 1];
-            if (Math.hypot((endP % W) - lx, Math.floor(endP / W) - ly) <= 22) {
-              friendlyBoatEnRoute = true;
-              break;
-            }
-          }
-        }
-      }
-      if (friendlyBoatEnRoute) continue;
-
-      // Unified 8-brother scheduling: check if another squad brother is strictly closer + cheaper (lower boat tax)
-      const myCost = fee + 22 * s.d;
-      let betterBrotherCount = 0;
-      for (let p = 0; p < g.humans; p++) {
-        if (p === me || !g.alive[p] || !this.isOurSquadBot(g, p) || !this.isTeammate(g, p)) continue;
-        if ((g.boatCount?.[p] ?? 0) >= 3) continue;
-        const cstP = g.coast?.[p];
-        if (!cstP || cstP.length === 0) continue;
-        const Bp = g.bal[p], Lp = Math.max(1, g.terr[p]);
-        if (Bp < 2500 || Bp / Lp < 22) continue;
-        const stepP = Math.max(1, Math.floor(cstP.length / 20));
-        let dP = 999999;
-        for (let i = 0; i < cstP.length; i += stepP) {
-          const cp = cstP[i];
-          const d = Math.hypot(lx - (cp % W), ly - Math.floor(cp / W));
-          if (d < dP) dP = d;
-        }
-        if (dP <= 80) {
-          const costP = iV(32 * Bp, 1024) + 22 * dP;
-          if (costP + 150 < myCost) betterBrotherCount++;
-        }
-      }
-      // Allow rank 0 immediately; if island is still unclaimed after t >= 850 and very close (<= 55px), allow backup brother too!
-      if (betterBrotherCount > (g.t >= 850 && s.d <= 55 ? 1 : 0)) continue;
-
-      const rawNeed = isNeutralIsle ? (2 * Math.min(sz, 350) + 50) : (2 * g.terr[o] + 2 * g.bal[o] + 80);
-      const wantTr = Math.max(70, Math.ceil(rawNeed * Math.exp(0.002 * s.d)));
-      if (wantTr > 0.14 * B || B - wantTr - fee < 24 * L) continue;
-
-      const score = (100 - s.d) * 30 + Math.min(sz, 600);
-      if (score > bestScore) {
-        bestScore = score;
-        bestHit = { ...s, isleKey, sz };
-        bestWantTr = wantTr;
-      }
-    }
-
-    if (bestHit) {
-      const pct = Math.max(2, Math.min(160, Math.ceil((bestWantTr * 1024) / Math.max(1, B))));
-      const ok = g.boatTo ? g.boatTo(pct, bestHit.land, me) : g.boat(pct, bestHit.water, bestHit.dir, me);
-      if (ok) {
-        this._lastNearIsleTick = g.t;
-        this._claimedIsleLandings.set(bestHit.isleKey, g.t);
-        this.cmds++;
-        this.boats++;
-        if (typeof window !== "undefined" && window.__hlLog) {
-          window.__hlLog(`[HL-ISLAND-GUARD] t=${g.t} preemptively claimed near-shore island (${bestHit.sz}px, dist=${bestHit.d}) pct=${pct}/1024`);
-        }
-        return true;
       }
     }
     return false;
@@ -4804,9 +4178,9 @@ export class Policy extends V17 {
 
     const maxSurplus = Math.max(0, B - 1.08 * safeFloor);
     const maxSafePct = Math.floor((maxSurplus * 1024) / Math.max(1, B));
-    if (maxSafePct < 45) return false;
+    if (maxSafePct < 55) return false;
 
-    // 1. Always check Boss "npl" first! (Strictly 5% = 51/1024 per bot)
+    // 1. Always check Boss "npl" first!
     const bossId = this.findBossId(g);
     if (bossId >= 0 && g.alive[bossId] && g.terr[bossId] >= 100) {
       const dBoss = g.bal[bossId] / Math.max(1, g.terr[bossId]);
@@ -4817,28 +4191,28 @@ export class Policy extends V17 {
         if (g.atkTarget[sbB + i] !== 512) bossOutAtk += g.atkTroops[sbB + i];
       }
       const bossNeedsHelp =
-        (bossInAtk > 0.06 * g.bal[bossId] && dMe >= (isPureInlandSafe ? 25 : 95)) ||
-        (bossOutAtk > 0.06 * g.bal[bossId] && dBoss < 95 && dMe >= (isPureInlandSafe ? 32 : 102)) ||
-        (g.t >= 1600 && dBoss < 90 && dMe >= (isPureInlandSafe ? 38 : 105)) ||
-        (boxedIn && isPureInlandSafe && dBoss < 142 && dMe >= 25);
-      if (bossNeedsHelp && g.t - (this.lastBossDonateTick ?? -999) >= (isPureInlandSafe ? 22 : 45)) {
-        const pct = Math.min(maxSafePct, 51);
-        if (pct >= 40 && g.donate(pct, bossId, me)) {
+        (bossInAtk > 0 && dMe >= (isPureInlandSafe ? 16 : 55)) ||
+        (bossOutAtk > 0.04 * g.bal[bossId] && dBoss < 120 && dMe >= (isPureInlandSafe ? 25 : 68)) ||
+        (g.t >= 900 && dBoss < 118 && dMe >= (isPureInlandSafe ? 32 : 75)) ||
+        (boxedIn && isPureInlandSafe && dBoss < 142 && dMe >= 18);
+      if (bossNeedsHelp && g.t - (this.lastBossDonateTick ?? -999) >= (isPureInlandSafe ? 15 : 25)) {
+        const pct = Math.min(maxSafePct, isPureInlandSafe ? (bossInAtk > 0 ? 340 : 240) : 150);
+        if (pct >= 55 && g.donate(pct, bossId, me)) {
           this.lastDonateTick = g.t;
           this.lastBossDonateTick = g.t;
           this.cmds++;
           if (typeof window !== "undefined" && window.__hlLog) {
-            window.__hlLog(`[HL-DONATE] t=${g.t} boss donate pct=${pct}/1024 (~5%) -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)}`);
+            window.__hlLog(`[HL-DONATE] t=${g.t} boss donate pct=${pct}/1024 -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)}`);
           }
           return true;
         }
       }
     }
 
-    // 2. SQUAD MUTUAL AID: Rescue any [Nope] squad brother who is under heavy human attack,
-    //    ONLY when we have genuine surplus density (dMe >= 105 or boxedIn) so we don't starve the whole squad!
+    // 2. SQUAD MUTUAL AID: Rescue any [NPL] squad brother who is under human attack or sneaky boat landing,
+    //    AND lightly poke (10%B) the attacker if we border them!
     for (let p = 0; p < g.humans; p++) {
-      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 1000) continue;
+      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 300) continue;
       const dAlly = g.bal[p] / Math.max(1, g.terr[p]);
       let inHumanAtk = 0, mainAttacker = -1, maxAtkTr = 0;
       for (const a of g.attackersOf(p)) {
@@ -4848,15 +4222,15 @@ export class Policy extends V17 {
           if (tr > maxAtkTr) { maxAtkTr = tr; mainAttacker = a; }
         }
       }
-      if (inHumanAtk > 0 && (inHumanAtk >= 0.12 * g.bal[p] || dAlly < 55)) {
-        // First donate 5% cash ONLY if we are boxedIn or have surplus density >= 106!
-        if (dMe >= (isPureInlandSafe ? 40 : 106) && dMe >= dAlly + 25) {
-          const pct = Math.min(maxSafePct, 51);
-          if (pct >= 40 && g.donate(pct, p, me)) {
+      if (inHumanAtk > 0 && (inHumanAtk >= 0.08 * g.bal[p] || dAlly < 75)) {
+        // First donate cash to save our brother (while keeping our own coastGuardFloor / safeFloor intact!)
+        if (dMe >= Math.max(55, dAlly + 15)) {
+          const pct = Math.min(maxSafePct, isPureInlandSafe ? 240 : 155);
+          if (pct >= 55 && g.donate(pct, p, me)) {
             this.lastDonateTick = g.t;
             this.cmds++;
             if (typeof window !== "undefined" && window.__hlLog) {
-              window.__hlLog(`[HL-DONATE] t=${g.t} squad rescue donate pct=${pct}/1024 (~5%) -> ally=${p}(${g.names?.[p] || ""}) myBal=${B} dMe=${Math.round(dMe)} dAlly=${Math.round(dAlly)}`);
+              window.__hlLog(`[HL-DONATE] t=${g.t} squad rescue donate pct=${pct}/1024 -> ally=${p}(${g.names?.[p] || ""}) myBal=${B} dMe=${Math.round(dMe)} dAlly=${Math.round(dAlly)}`);
             }
             return true;
           }
@@ -4875,8 +4249,8 @@ export class Policy extends V17 {
       }
     }
 
-    if (!boxedIn && dMe < 132) return false;
-    if (boxedIn && dMe < 72) return false;
+    if (!boxedIn && dMe < 112) return false;
+    if (boxedIn && dMe < 55) return false;
 
     let bestAlly = -1, bestScore = -Infinity;
     for (let p = 0; p < g.humans; p++) {
@@ -4902,12 +4276,12 @@ export class Policy extends V17 {
     }
     if (bestAlly < 0) return false;
 
-    const pct = 51; // Strictly 5% (51/1024)
+    const pct = boxedIn ? (dMe > 110 ? 280 : 185) : 153;
     if (g.donate(pct, bestAlly, me)) {
       this.lastDonateTick = g.t;
       this.cmds++;
       if (typeof window !== "undefined" && window.__hlLog) {
-        window.__hlLog(`[HL-DONATE] t=${g.t} surplus donate pct=${pct}/1024 (~5%) -> ally=${bestAlly}(${g.names?.[bestAlly] || ""}) boxedIn=${boxedIn} myBal=${B} dMe=${Math.round(dMe)}`);
+        window.__hlLog(`[HL-DONATE] t=${g.t} surplus donate pct=${pct}/1024 -> ally=${bestAlly}(${g.names?.[bestAlly] || ""}) boxedIn=${boxedIn} myBal=${B} dMe=${Math.round(dMe)}`);
       }
       return true;
     }
@@ -5194,52 +4568,10 @@ export class Policy extends V17 {
     return false;
   }
 
-  tryPeaceVoteWin(g) {
-    if (typeof window === 'undefined' || !window.ax || !window.dictionary) return false;
-    const me = this.me;
-    const hz = window[window.dictionary.sbCommands]?.hz;
-    if (!hz) return false;
-    let maxOtherL = 0, humanLandSum = 0;
-    for (let p = 0; p < g.humans; p++) {
-      if (g.alive[p] && !g.isBot(p)) {
-        humanLandSum += g.terr[p];
-        if (p !== me && g.terr[p] > maxOtherL) maxOtherL = g.terr[p];
-      }
-    }
-    const iAmRank1 = g.terr[me] > maxOtherL;
-    const isStalemate = typeof window.ai?.aAR === 'function' ? window.ai.aAR() : g.terr[me] < 0.50 * g.land;
-
-    if (window.ax.iL && typeof window.ax.iM === 'function' && window.ax.iM(me)) {
-      if (iAmRank1 && !isStalemate && typeof hz.iN === 'function') {
-        hz.iN(1);
-        return true;
-      } else if (!iAmRank1 && typeof hz.iN === 'function') {
-        hz.iN(0);
-        return true;
-      }
-    } else if (
-      !window.ax.iL &&
-      iAmRank1 &&
-      !isStalemate &&
-      g.terr[me] >= 0.55 * Math.max(1, humanLandSum) &&
-      g.t - (this.lastPeaceCallTick ?? -999) >= 105 &&
-      typeof window.ax.iO === 'function' &&
-      window.ax.iO(me) &&
-      typeof hz.iK === 'function'
-    ) {
-      this.lastPeaceCallTick = g.t;
-      hz.iK();
-      return true;
-    }
-    return false;
-  }
-
   act(g) {
     const P = this.p, me = this.me;
     if (!g.canAct(me)) return;
     if (P.quotaGuardMode > 0) this.updateShadowQuota(g);
-    this.updatePokeState(g, false);
-
 
     // 0. Every single tick: step the 50k debt cap flash-loan state machine if active!
     if (P.flashLoanMode > 0 && this.flState) {
@@ -5249,7 +4581,7 @@ export class Policy extends V17 {
 
     // 1. Every single tick: check 2-tick `P_BORDER` bridgehead handoffs (#6 / #8)!
     if (P.seaCore > 0 && this.seaState.pendingHandoffs.size > 0) {
-      if (handoffFootholds(g, me, this.seaState, (gm, q) => this.safeAt(gm, q)) && g.online) return;
+      handoffFootholds(g, me, this.seaState, (gm, q) => this.safeAt(gm, q));
     }
 
     // 2. Combo 1 (#2): In online `LiveGame` (where only 1 command can be sent per tick),
@@ -5273,19 +4605,15 @@ export class Policy extends V17 {
       }
     }
 
-    if (g.t >= 350 && this.tryInterceptEnemyBoats(g) && g.online) return;
-    if (g.t >= 420 && g.t % 4 === 0 && this.neutral === 0 && this.tryClaimNearTeamIslands(g) && g.online) return;
     if (g.t < P.coreFrom) {
-      if (g.t >= 600 && g.t % P.period === 0) {
-        this.analyze(g);
-        if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
-          this._lastTickLog = g.t;
-          const pf = window.__hlPerf;
-          const pfStr = pf && pf.ticks > 0 ? ` avgMs=${(pf.totalMs / pf.ticks).toFixed(2)} maxMs=${pf.maxMs.toFixed(1)} skip=${pf.skippedTicks}` : "";
-          window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
-        }
-        if (this.tryEmergencyBossRescue(g) && g.online) return;
+      this.analyze(g);
+      if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
+        this._lastTickLog = g.t;
+        const pf = window.__hlPerf;
+        const pfStr = pf && pf.ticks > 0 ? ` avgMs=${(pf.totalMs / pf.ticks).toFixed(2)} maxMs=${pf.maxMs.toFixed(1)} skip=${pf.skippedTicks}` : "";
+        window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
       }
+      if (this.tryEmergencyBossRescue(g) && g.online) return;
       const before = this.cmds;
       const balBefore = g.bal[me];
       super.act(g);
@@ -5321,22 +4649,8 @@ export class Policy extends V17 {
     if (g.t % P.period !== 0) return;
 
     this.analyze(g);
-    this.updatePokeState(g, true);
-    if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
-      this._lastTickLog = g.t;
-      const pf = window.__hlPerf;
-      const pfStr = pf && pf.ticks > 0 ? ` avgMs=${(pf.totalMs / pf.ticks).toFixed(2)} maxMs=${pf.maxMs.toFixed(1)} skip=${pf.skippedTicks}` : "";
-      window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
-    }
-    this.tryPeaceVote(g);
     this.updateGrudges(g);
     this.updateWars(g);
-    // Prioritize grabbing free neutral land FIRST before any boss donation!
-    if (this.neutral > 0 && g.attackTroopsOn(me, NEUTRAL) === 0) {
-      const beforeN = this.cmds;
-      this.expandNeutral(g, g.bal[me] + this.myOutTroops(g) - this.safeAt(g, -1));
-      if (this.cmds > beforeN && g.online) return;
-    }
 
     // Combo 2 (#7): If an active human attack target gained >= 8 new `P_BORDER` pixels
     // (e.g. from eating an adjacent bot or a secondary boat step) and our slot is large enough,
@@ -5349,7 +4663,6 @@ export class Policy extends V17 {
     if (P.flashLoanMode > 0 && this.tryStartFlashLoan(g)) return;
     if (this.neutral > 0) this.expandNeutral(g, g.bal[me] - this.safeAt(g, -1));
     this.buyLand(g);
-    if (this.cmds === cmdsBefore && this.tryDeterrentCounter(g) && g.online) return;
 
     if (P.seaCore > 0 && g.t - this.seaState.lastWiden >= 30) {
       const fee = iV(32 * g.bal[me], 1024);
@@ -5369,15 +4682,13 @@ export class Policy extends V17 {
       }
     }
 
-    if (this.cmds === cmdsBefore && this.tryClaimNearTeamIslands(g) && g.online) return;
-    if (this.cmds === cmdsBefore && this.tryEmergencyBossRescue(g) && g.online) return;
     if (this.cmds === cmdsBefore) this.tryDonateToTeammate(g);
     if (this.cmds === cmdsBefore) this.idleBoats(g);
 
     // Line 1: Independent Island-Hopping Line ("算账再发" cost-benefit gate):
     if (P.seaCore > 0 && g.t - this.seaState.lastFrogHop >= 30) {
       const B = g.bal[me], L = Math.max(1, g.terr[me]), fee = iV(32 * B, 1024);
-      const negInterestCap = P.frogHopOverMode > 0 && B >= 112 * L && g.t < 2600 ? Math.min(2500, Math.floor(0.036 * B)) : 550;
+      const negInterestCap = P.frogHopOverMode > 0 && B >= 112 * L ? Math.min(25000, Math.floor(0.036 * B)) : 550;
       const maxAbsCost = !this.hasBorderFood(g) ? Math.max(1800, negInterestCap) : negInterestCap;
       if (
         frogHopStep(g, me, this.seaState, {
@@ -5420,7 +4731,7 @@ export class Policy extends V17 {
           } else if (v >= P_INNER && own[n] !== me) taken = true;
         }
       }
-      const effSize = !taken ? t : 0;
+      const effSize = !taken ? t : t >= 120 ? Math.max(100, t >> 1) : 0;
       if (effSize > 0) for (let i = 0; i < t; i++) c[q[i]] = effSize;
     }
     this.freeAt = g.t;
@@ -5502,7 +4813,7 @@ export class Policy extends V17 {
       } else {
         const tD = dq / Math.max(0.1, dMed);
         const bossId = this.findBossId(g);
-        let otherAtk = 0, otherAtkers = 0, outOther = 0, allyAtk = 0, clanAllyAtkers = 0, bossAtkOnQ = 0;
+        let otherAtk = 0, otherAtkers = 0, allyAtk = 0, clanAllyAtkers = 0, bossAtkOnQ = 0;
         for (const a of g.attackersOf(q)) {
           if (a !== me && !g.isBot(a)) {
             const tr = g.attackTroopsOn(a, q);
@@ -5527,25 +4838,10 @@ export class Policy extends V17 {
             }
           }
         }
-        const qBase = g.slotBase(q);
-        for (let i = g.atkCount[q] - 1; i >= 0; i--) {
-          const tgt = g.atkTarget[qBase + i];
-          if (tgt !== me && tgt !== NEUTRAL) outOther += g.atkTroops[qBase + i];
-        }
-        const emptyAllIn =
-          P.emptyAllInMode > 0 &&
-          Lq >= 4000 &&
-          tD < 0.08 &&
-          ((inAtk > 0.15 * B && Bq < 0.08 * inAtk) || (outOther > 2.5 * Math.max(100, Bq) && dq < 5));
-        const outOverextended = outOther >= 0.18 * Math.max(1, Bq + outOther) && tD < 0.72 && dq < 68 && Lq < 85000;
+        const emptyAllIn = P.emptyAllInMode > 0 && inAtk > 0.15 * B && Bq < 0.08 * inAtk && tD < 0.06 && Lq >= 5000;
         const nearCollapse = Lq <= P.collapseRatio * left || (otherAtk > 0 && otherAtk >= 0.65 * rawNeed) || emptyAllIn;
-        const bleeding =
-          (tD < 0.58 && dq < 45) ||
-          (otherAtkers > 0 &&
-            ((tD < 0.78 && !(Lq >= 65000 && dq >= 85 && otherAtk < 0.12 * Bq)) || otherAtk >= 0.12 * Bq)) ||
-          outOverextended ||
-          emptyAllIn;
-        const onMe = inAtk > 0 || atkOnBoss > 0 || atkOnAlly > 0;
+        const bleeding = (otherAtkers > 0 && (tD < 0.75 || otherAtk >= 0.15 * Bq)) || emptyAllIn;
+        const onMe = inAtk > 0;
 
         if (nearCollapse) {
           const effNeed = emptyAllIn ? Math.max(1, this.elimCost(g, q)) : rawNeed;
@@ -5580,6 +4876,7 @@ export class Policy extends V17 {
 
         let rankMult = 1.0;
         if (atkOnBoss > 0 || bossAtkOnQ > 0) {
+          // Moderate assist bias for Boss's target (10% poke already handled in tryEmergencyBossRescue)
           c *= 0.78;
           rankMult *= 0.72;
         } else if (clanAllyAtkers > 0 || allyAtk > 0.06 * Bq) {
@@ -5633,10 +4930,11 @@ export class Policy extends V17 {
           }
         }
 
-        const shadowedByTop = P.leaderHardFrom > 0 && g.t >= P.leaderHardFrom && topRival >= 0 && g.terr[topRival] > L && g.bal[topRival] > B;
-        const isGiantTopRival = P.a06AloneSafe > 0 && q === topRival && g.t >= 4800 && Bq > 1.15 * B && dq >= 120 && rawNeed > 1.5 * B;
+        const shadowedByTop = P.leaderHardFrom > 0 && !this.isNoFullSend && g.t >= P.leaderHardFrom && topRival >= 0 && g.terr[topRival] > L && g.bal[topRival] > B;
+        const isGiantTopRival = P.a06AloneSafe > 0 && !this.isNoFullSend && q === topRival && g.t >= 4800 && Bq > 1.15 * B && dq >= 120 && rawNeed > 1.5 * B;
         const isLeaderFortress =
           P.leaderHardFrom > 0 &&
+          !this.isNoFullSend &&
           g.t >= P.leaderHardFrom &&
           L >= P.leaderMinShare * g.land &&
           nHumans >= 5 &&
@@ -5661,11 +4959,10 @@ export class Policy extends V17 {
           c *= P.crowdedHardPenalty;
         }
 
-        if (g.t < 2400 && !onMe && !nearCollapse && !bleeding && rawNeed > 0.35 * B) continue;
         const pulseMode =
           nearCollapse ||
           bleeding ||
-          (tD < P.thinMaxTD || rawNeed > 0.30 * B);
+          ((tD < P.thinMaxTD || rawNeed > 0.30 * B) && !(g.t < 2400 && !onMe && rawNeed > 0.35 * B));
         out.push({
           q,
           person: true,
@@ -5727,43 +5024,23 @@ export class Policy extends V17 {
     const over = P.surplus > 0 && B > 100 * L;
     const cheap = P.growth > 0 ? 0.1 / this.baseRate(g) : 0;
 
-    let totalHumanInAtk = 0;
-    for (const a of g.attackersOf(me)) {
-      if (a < g.humans && !g.isBot(a)) totalHumanInAtk += g.attackTroopsOn(a, me);
-    }
-
     for (const o of this.offers(g)) {
       const { q, c, need, person } = o;
 
       if (c >= worth && c >= cheap && !over) break;
-      if (
-        person &&
-        !o.isDoorSea &&
-        c >= worth &&
-        c >= cheap &&
-        nHumans >= 3 &&
-        totalHumanInAtk >= 0.03 * B &&
-        !o.onMe &&
-        !o.nearCollapse &&
-        !o.bleeding &&
-        B < 138 * L
-      ) {
-        continue;
-      }
 
-      const isTeamMode = !!(g.teams && g.teams[me] > 0);
       const isSoleHealthyBuffer =
-        !isTeamMode && person && !o.isDoorSea && nHumans >= 3 && !o.nearCollapse && !o.bleeding && !o.onMe && o.newNbs > 0 && humanNbCount === 1;
+        person && !o.isDoorSea && nHumans >= 3 && !o.nearCollapse && !o.bleeding && !o.onMe && o.newNbs > 0 && humanNbCount === 1;
       if (isSoleHealthyBuffer && c >= worth && c >= cheap && B < P.overHumanCap * 100 * L) {
         continue;
       }
 
-      if (person && !o.isDoorSea && g.terr[q] < 250 && !o.onMe && fee > 2 * need && c > 8 * worth && nHumans >= 3) {
+      if (person && !o.isDoorSea && g.terr[q] < 250 && fee > 2 * need && c > 8 * worth && nHumans >= 3) {
         continue;
       }
 
-      const hardCapMult = isTeamMode ? 1.16 : (o.isCrowdedHard && c >= 2.15 * worth && g.bal[q] >= 0.55 * B ? 1.50 : P.crowdedHardCap);
-      if (person && !o.isDoorSea && o.isCrowdedHard && !o.onMe && c >= worth && c >= cheap && B < hardCapMult * 100 * L) {
+      const hardCapMult = o.isCrowdedHard && c >= 2.15 * worth && g.bal[q] >= 0.55 * B ? 1.50 : P.crowdedHardCap;
+      if (person && !o.isDoorSea && o.isCrowdedHard && c >= worth && c >= cheap && B < hardCapMult * 100 * L) {
         continue;
       }
 
@@ -5794,8 +5071,7 @@ export class Policy extends V17 {
         }
         if (launched > 0) {
           this.seaState.pendingHandoffs.set(q, {
-            launchTick: g.t,
-            expireTick: g.t + 70,
+            expireTick: g.t + 90,
             initialCnt: 0,
             landings: spots.slice(0, launched).map((s) => s.landPix),
             wantTroops: Math.floor(P.pulseFrac * g.bal[me]),
@@ -5822,6 +5098,7 @@ export class Policy extends V17 {
       }
       const isSiegeShrink =
         P.siegeShrinkRatio > 0 &&
+        !this.isNoFullSend &&
         g.t >= P.leaderHardFrom &&
         L < P.siegeShrinkRatio * (g.peak?.[me] ?? L) &&
         nHumans >= 4 &&
@@ -5843,27 +5120,13 @@ export class Policy extends V17 {
       }
       keep = Math.max(keep, safe);
 
-      // Count our own troops currently out on active attacks (`myOutTroops(g)`) as part of our total balance (`totB = B + myOut`)
-      // when computing spare budget (`avail = totB - fee - keep`), AND cap `keep` on prime/juicy land so we NEVER miss prime land!
-      const myOut = this.myOutTroops(g);
-      const totB = B + myOut;
-      const dqNow = g.bal[q] / Math.max(1, g.terr[q]);
-      const isPrimeLand = o.nearCollapse || dqNow < 26 || c < 0.48 * worth || (o.bleeding && o.tD < 0.55);
-      if (isPrimeLand && B >= 12 * L) {
-        keep = Math.min(keep, (o.nearCollapse || dqNow < 14 ? 10 : 26) * L);
-      }
-
-      const avail = Math.min(B - fee, totB - fee - keep);
+      const avail = B - fee - keep;
       if (avail <= 0) continue;
 
       if (!person) {
-        if (g.t >= 1800 && (this.cnt[q] ?? 0) <= 3 && g.terr[q] < 4000 && fee > 15000) continue;
         const want = 1.25 * need + 3 * this.cnt[q];
-        let x = Math.min(avail, want);
-        if (x < want && (c < 0.70 * worth || dqNow < 32)) {
-          x = Math.min(avail, Math.max(this.minCmd(g), Math.floor(0.12 * B)));
-        }
-        if (x <= 0 || (x < want && x < (isPrimeLand ? Math.max(this.minCmd(g), 0.05 * B) : P.chunk * B))) continue;
+        const x = Math.min(avail, want);
+        if (x <= 0 || (x < want && x < P.chunk * B)) continue;
         return this.send(g, q, x);
       }
 
@@ -5912,8 +5175,7 @@ export class Policy extends V17 {
         for (const sp of spots) {
           const curB = g.bal[me];
           if (curB < 500 || iV(32 * curB, 1024) > 0.14 * wantLandTroops) break;
-          const wasInt = (this.seaState.handoffFailed?.get(q) ?? -999) > g.t - 180;
-          const sendTr = Math.max(wasInt ? 180 : 60, Math.ceil((wasInt ? 28 : 6) * Math.exp(P.boatDecay * sp.d)));
+          const sendTr = Math.max(60, Math.ceil(6 * Math.exp(P.boatDecay * sp.d)));
           const pct = Math.max(0, Math.min(1023, Math.ceil((sendTr * 1024) / curB) - 1));
           const ok = g.boatTo ? g.boatTo(pct, sp.landPix, me, 12) : g.boat(pct, sp.waterPix, sp.dir, me);
           if (ok) {
@@ -5931,8 +5193,7 @@ export class Policy extends V17 {
         }
         if (launched > 0) {
           this.seaState.pendingHandoffs.set(q, {
-            launchTick: g.t,
-            expireTick: g.t + 65,
+            expireTick: g.t + 75,
             initialCnt: this.cnt[q] ?? 0,
             landings: landedList,
             wantTroops: wantLandTroops,
@@ -6002,14 +5263,14 @@ export class Policy extends V17 {
         }
 
         if (o.nearCollapse) {
-          if (curAtk >= 0.16 * B || curAtk >= 0.85 * need) continue;
-          const pulse = Math.min(avail, Math.max(Math.floor(P.pulseFrac * B), Math.min(avail, Math.floor(0.75 * need))));
+          if (curAtk >= 0.04 * B || curAtk >= 0.30 * need) continue;
+          const pulse = Math.min(avail, Math.max(Math.floor(P.pulseFrac * B), Math.min(avail, Math.floor(0.30 * need))));
           if (pulse < Math.max(this.minCmd(g), P.pulseMinShare * B)) continue;
           return this.send(g, q, pulse);
         }
 
         if (o.pulseMode) {
-          if (curAtk >= (isPrimeLand ? 0.14 * B : 0.04 * B)) continue;
+          if (curAtk >= 0.04 * B) continue;
           let capFrac = Math.floor(P.pulseFrac * B);
           if (P.counterClearMode === 2 && inAtk > 0) {
             capFrac = Math.max(capFrac, Math.min(Math.floor(0.28 * B), Math.ceil(1.05 * inAtk - curAtk + 0.05 * B)));
@@ -6063,8 +5324,7 @@ export class Policy extends V17 {
         this.lastFood = g.t - P.boatEvery + P.period;
         return false;
       }
-      if (o >= 0 && this.seaState.pendingHandoffs.has(o)) return false;
-      if (fullAmount > 600 && o >= 0 && o !== me && g.alive[o] && g.terr[o] >= 200) {
+      if (fullAmount > 600 && o >= 0 && o !== me && g.alive[o] && g.terr[o] >= 200 && !this.seaState.pendingHandoffs.has(o)) {
         const landCost = this.elimCost(g, o);
         const grow = Math.max(1.0, hit.cost / Math.max(1, landCost));
         const seaLoss = fullAmount * (1 - 1 / grow);
@@ -6078,8 +5338,7 @@ export class Policy extends V17 {
           const pct = Math.max(0, Math.min(1023, Math.ceil((bridgeAmt * 1024) / bal) - 1));
           if (g.boatTo(pct, hit.land, me)) {
             this.seaState.pendingHandoffs.set(o, {
-              launchTick: g.t,
-              expireTick: g.t + 110,
+              expireTick: g.t + 160,
               initialCnt: 0,
               landings: [hit.land],
               wantTroops: Math.floor(fullAmount / grow),
