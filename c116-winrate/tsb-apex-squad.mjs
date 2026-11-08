@@ -1029,8 +1029,9 @@ setInterval(async () => {
         s.c110NopeInLobby = typeof c110NopeInLobby === "number" ? c110NopeInLobby : 0;
         s.room0Players = room0Players;
         s.bossReadyInRoom0 = bossReadyInRoom0;
-        s.spawnPhase = !!info?.spawnPhase;
-        s.tick = info?.tick || 0;
+        const liveTick = (d && d.sbTickHolder && d.sbGetTick && window[d.sbTickHolder]?.[d.sbGetTick]) ? (window[d.sbTickHolder][d.sbGetTick]() | 0) : (info?.tick || 0);
+        s.spawnPhase = !!(g && g[d.gameState] === 1 && g[d.gSelectableSpawn]);
+        s.tick = liveTick || info?.tick || 0;
         if (s.inGame) {
           if (s.tick > 0 && !s.spawnPhase && window.__lastObsTick === s.tick) {
             window.__stalledCount = (window.__stalledCount || 0) + 1;
@@ -1038,7 +1039,7 @@ setInterval(async () => {
             window.__lastObsTick = s.tick;
             window.__stalledCount = 0;
           }
-          if ((window.__stalledCount || 0) >= 6 && g && g[d.sbLeave]) {
+          if ((window.__stalledCount || 0) >= 12 && g && g[d.sbLeave]) {
             window.__stalledCount = 0;
             g[d.sbLeave](true);
             s.inGame = false;
