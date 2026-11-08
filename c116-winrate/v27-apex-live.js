@@ -4365,7 +4365,7 @@ export class Policy extends V17 {
     for (let p = 0; p < g.humans; p++) {
       if (p === me || !g.alive[p] || !this.isTeammate(g, p) || (!this.isBossNpl(g, p) && !this.isOurSquadBot(g, p)) || g.terr[p] < 600) continue;
       const dAlly = g.bal[p] / Math.max(1, g.terr[p]);
-      if (dAlly >= 132) continue;
+      if (dAlly >= 146) continue;
       let outAtk = 0, inAtk = 0;
       const sb = g.slotBase(p);
       for (let i = 0; i < g.atkCount[p]; i++) {
