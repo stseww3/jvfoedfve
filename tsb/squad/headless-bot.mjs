@@ -179,8 +179,8 @@ if (!isMainThread && workerData?.bot) {
       'if(this.af1!==this.aK3*7){n8();var _w=0;while(this.af3.length>0&&this.af1<this.aK3*7&&aE.a38===1&&bi.a3I===this&&++_w<64){var _p=this.af1;n8();if(this.af1===_p)break}if(this.af3.length===0){return}}'
     )
     .replace(
-      'if(aE.a38===2){break}if(this.af3.length>0){for(aC=this.af4-2;aC>=0;aC--){n8();if(aE.a38===2){break loop}}}',
-      'if(aE.a38!==1||bi.a3I!==this){break}if(this.af3.length>0){for(aC=this.af4-2;aC>=0;aC--){n8();if(aE.a38!==1||bi.a3I!==this){break loop}}}'
+      'loop:while(this.af8()){yZ=true;n8();if(aE.a38===2){break}if(this.af3.length>0){for(aC=this.af4-2;aC>=0;aC--){n8();if(aE.a38===2){break loop}}}else{break}}',
+      'var _w2=0;loop:while(aE.a38===1&&bi.a3I===this&&++_w2<64&&this.af8()){yZ=true;var _p2=this.af1;n8();if(aE.a38!==1||bi.a3I!==this||this.af1===_p2){break}if(this.af3.length>0){for(aC=this.af4-2;aC>=0;aC--){var _p3=this.af1;n8();if(aE.a38!==1||bi.a3I!==this||this.af1===_p3){break loop}}}else{break}}'
     )
     .replace(
       'if(this.eI===0){if(bi.eZ>=this.eZ){this.eZ+=bi.aDd*Math.floor(1+(bi.eZ-this.eZ)/bi.aDd);if(aE.a2G===2){n6()}else{this.aeA()}this.eI++;if(bi.eZ-this.ae9>27){this.aeB()}}}else{this.aeB()}',
