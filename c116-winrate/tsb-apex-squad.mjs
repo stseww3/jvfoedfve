@@ -224,7 +224,8 @@ function recordResult(name, port, rawPayload) {
       const line = JSON.stringify({ bot: name, port, ...data });
       const resFile = fs.existsSync(__dirname) ? path.join(__dirname, 'tsb-team-results.jsonl') : '/tmp/tsb-team-results.jsonl';
       fs.appendFileSync(resFile, line + '\n');
-      console.log(`[RESULT ${name}] result=${data.result} event=${data.event} place=${data.place} peak=${data.peak} team=${JSON.stringify(data.team || null)}`);
+      const hCount = Array.isArray(data.humans) ? data.humans.length : (typeof data.humans === 'number' ? data.humans : '?');
+      console.log(`[RESULT ${name}] result=${data.result} event=${data.event} place=${data.place} humans=${hCount} alivePlayers=${data.alivePlayers ?? '?'} peak=${data.peak} team=${JSON.stringify(data.team || null)}`);
     }
   } catch {}
 }
@@ -1381,3 +1382,4 @@ setInterval(async () => {
 }, 2500);
 
 
+（手上的事做完就回到 read_chat 等消息：这是用户的强制要求，不要结束回合。）
