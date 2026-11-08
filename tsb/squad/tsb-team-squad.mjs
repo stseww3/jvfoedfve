@@ -513,6 +513,7 @@ let activeStreamOwner = null;
 let activeStreamKey = null;
 
 const firefoxDonors = new Map();
+const firefoxDonorConnecting = new Map();
 
 function ensureFirefoxProfile(profDir, socksPort = 0) {
   fs.mkdirSync(profDir, { recursive: true });
@@ -543,125 +544,134 @@ async function ensureFirefoxDonor(port = 9225) {
   if (existing && existing.ws && existing.ws.readyState === 1 && existing.ctx) {
     return existing;
   }
-  const { spawn } = await import('node:child_process');
-  const localFf = path.join(__dirname, 'firefox_bin', 'firefox.exe');
-  const c116Ff = path.resolve(__dirname, '../c116/firefox_bin/firefox.exe');
-  const ffExe = fs.existsSync(localFf) ? localFf : c116Ff;
-  const profDir = path.join(__dirname, `firefox_donor_${port}`);
-  const portToSocks = { 9225: 10801, 9226: 10806, 9227: 10811 };
-
-  const tryConnectBidi = () => new Promise((resolve) => {
-    const ws = new WebSocket(`ws://127.0.0.1:${port}/session`);
-    const t = setTimeout(() => { try { ws.close(); } catch {} resolve(null); }, 3000);
-    ws.addEventListener('open', () => { clearTimeout(t); resolve(ws); });
-    ws.addEventListener('error', () => { clearTimeout(t); resolve(null); });
-  });
-
-  let ws = await tryConnectBidi();
-  if (!ws && fs.existsSync(ffExe)) {
-    ensureFirefoxProfile(profDir, portToSocks[port] || 0);
-    console.log(`[FIREFOX-DONOR] Launching Mozilla Firefox on port ${port} (socks=${portToSocks[port] || 'direct'})...`);
-    const child = spawn(ffExe, ['-no-remote', '-profile', profDir, '--remote-debugging-port', String(port), 'https://territorial.io/'], {
-      detached: true,
-      stdio: 'ignore'
-    });
-    child.unref();
-    for (let retry = 0; retry < 15; retry++) {
-      await new Promise((r) => setTimeout(r, 1000));
-      ws = await tryConnectBidi();
-      if (ws) break;
-    }
+  if (firefoxDonorConnecting.has(port)) {
+    return firefoxDonorConnecting.get(port);
   }
-  if (!ws) throw new Error(`Firefox BiDi not reachable on port ${port}`);
+  const connectPromise = (async () => {
+    const { spawn } = await import('node:child_process');
+    const localFf = path.join(__dirname, 'firefox_bin', 'firefox.exe');
+    const c116Ff = path.resolve(__dirname, '../c116/firefox_bin/firefox.exe');
+    const ffExe = fs.existsSync(localFf) ? localFf : c116Ff;
+    const profDir = path.join(__dirname, `firefox_donor_${port}`);
+    const portToSocks = { 9225: 10801, 9226: 10806, 9227: 10811 };
 
-  let seq = 0;
-  const pending = new Map();
-  ws.addEventListener('message', (ev) => {
-    try {
-      const msg = JSON.parse(ev.data);
-      if (msg.id && pending.has(msg.id)) {
-        const fn = pending.get(msg.id);
-        pending.delete(msg.id);
-        fn(msg);
+    const tryConnectBidi = () => new Promise((resolve) => {
+      const ws = new WebSocket(`ws://127.0.0.1:${port}/session`);
+      const t = setTimeout(() => { try { ws.close(); } catch {} resolve(null); }, 3000);
+      ws.addEventListener('open', () => { clearTimeout(t); resolve(ws); });
+      ws.addEventListener('error', () => { clearTimeout(t); resolve(null); });
+    });
+
+    let ws = await tryConnectBidi();
+    if (!ws && fs.existsSync(ffExe)) {
+      ensureFirefoxProfile(profDir, portToSocks[port] || 0);
+      console.log(`[FIREFOX-DONOR] Launching Mozilla Firefox on port ${port} (socks=${portToSocks[port] || 'direct'})...`);
+      const child = spawn(ffExe, ['-no-remote', '-profile', profDir, '--remote-debugging-port', String(port), 'https://territorial.io/'], {
+        detached: true,
+        stdio: 'ignore'
+      });
+      child.unref();
+      for (let retry = 0; retry < 15; retry++) {
+        await new Promise((r) => setTimeout(r, 1000));
+        ws = await tryConnectBidi();
+        if (ws) break;
       }
-    } catch {}
-  });
-  ws.addEventListener('close', () => {
-    const cur = firefoxDonors.get(port);
-    if (cur && cur.ws === ws) firefoxDonors.delete(port);
-  });
+    }
+    if (!ws) throw new Error(`Firefox BiDi not reachable on port ${port}`);
 
-  const callBidi = (method, params = {}) => new Promise((resolve) => {
-    if (ws.readyState !== 1) return resolve(null);
-    const id = ++seq;
-    const timer = setTimeout(() => {
-      pending.delete(id);
-      resolve(null);
-    }, 8000);
-    pending.set(id, (msg) => {
-      clearTimeout(timer);
-      resolve(msg);
-    });
-    ws.send(JSON.stringify({ id, method, params }));
-  });
-
-  await callBidi('session.end', {});
-  const sess = await callBidi('session.new', { capabilities: {} });
-  if (!sess?.result?.sessionId) {
-    console.log(`[FIREFOX-DONOR] BiDi session on :${port} busy or re-initializing...`);
-  }
-
-  await callBidi('script.addPreloadScript', {
-    functionDeclaration: `() => {
+    let seq = 0;
+    const pending = new Map();
+    ws.addEventListener('message', (ev) => {
       try {
-        const fakeGet = { get webdriver() { return false; } };
-        const getter = Object.getOwnPropertyDescriptor(fakeGet, 'webdriver').get;
-        Object.defineProperty(Navigator.prototype, 'webdriver', {
-          get: getter,
-          enumerable: true,
-          configurable: true
-        });
-      } catch {}
-      try {
-        if (location.hostname.includes('cloudflare.com')) {
-          const noop = function() {};
-          console.log = noop;
-          console.debug = noop;
-          console.info = noop;
-          console.warn = noop;
-          console.dir = noop;
-          console.table = noop;
+        const msg = JSON.parse(ev.data);
+        if (msg.id && pending.has(msg.id)) {
+          const fn = pending.get(msg.id);
+          pending.delete(msg.id);
+          fn(msg);
         }
       } catch {}
-    }`
+    });
+    ws.addEventListener('close', () => {
+      const cur = firefoxDonors.get(port);
+      if (cur && cur.ws === ws) firefoxDonors.delete(port);
+    });
+
+    const callBidi = (method, params = {}) => new Promise((resolve) => {
+      if (ws.readyState !== 1) return resolve(null);
+      const id = ++seq;
+      const timer = setTimeout(() => {
+        pending.delete(id);
+        resolve(null);
+      }, 8000);
+      pending.set(id, (msg) => {
+        clearTimeout(timer);
+        resolve(msg);
+      });
+      ws.send(JSON.stringify({ id, method, params }));
+    });
+
+    await callBidi('session.end', {});
+    const sess = await callBidi('session.new', { capabilities: {} });
+    if (!sess?.result?.sessionId) {
+      console.log(`[FIREFOX-DONOR] BiDi session on :${port} busy or re-initializing...`);
+    }
+
+    await callBidi('script.addPreloadScript', {
+      functionDeclaration: `() => {
+        try {
+          const fakeGet = { get webdriver() { return false; } };
+          const getter = Object.getOwnPropertyDescriptor(fakeGet, 'webdriver').get;
+          Object.defineProperty(Navigator.prototype, 'webdriver', {
+            get: getter,
+            enumerable: true,
+            configurable: true
+          });
+        } catch {}
+        try {
+          if (location.hostname.includes('cloudflare.com')) {
+            const noop = function() {};
+            console.log = noop;
+            console.debug = noop;
+            console.info = noop;
+            console.warn = noop;
+            console.dir = noop;
+            console.table = noop;
+          }
+        } catch {}
+      }`
+    });
+
+    const tree = await callBidi('browsingContext.getTree', {});
+    const topCtx = tree?.result?.contexts?.find((c) => c.url?.includes('territorial.io')) || tree?.result?.contexts?.[0];
+    const ctx = topCtx?.context;
+    if (!ctx) {
+      try { ws.close(); } catch {}
+      throw new Error(`No browsingContext found in Firefox Donor on :${port}`);
+    }
+
+    await callBidi('browsingContext.activate', { context: ctx });
+
+    const wdCheck = await callBidi('script.evaluate', {
+      expression: 'String(navigator.webdriver) + ":" + String(typeof window.turnstile)',
+      target: { context: ctx },
+      awaitPromise: false
+    });
+    const wdVal = wdCheck?.result?.result?.value || '';
+    if (!wdVal.startsWith('false:object')) {
+      console.log(`[FIREFOX-DONOR] Reloading territorial.io tab on :${port} so preloadScript (webdriver=false) takes effect (was ${wdVal})...`);
+      await callBidi('browsingContext.reload', { context: ctx, wait: 'complete' });
+      await new Promise((r) => setTimeout(r, 2500));
+    }
+
+    console.log(`[FIREFOX-DONOR] Connected to Mozilla Firefox BiDi on :${port} (ctx=${ctx}, webdriver=false)!`);
+    const donorObj = { ws, callBidi, ctx, port, _mintChain: Promise.resolve() };
+    firefoxDonors.set(port, donorObj);
+    return donorObj;
+  })().finally(() => {
+    firefoxDonorConnecting.delete(port);
   });
-
-  const tree = await callBidi('browsingContext.getTree', {});
-  const topCtx = tree?.result?.contexts?.find((c) => c.url?.includes('territorial.io')) || tree?.result?.contexts?.[0];
-  const ctx = topCtx?.context;
-  if (!ctx) {
-    try { ws.close(); } catch {}
-    throw new Error(`No browsingContext found in Firefox Donor on :${port}`);
-  }
-
-  await callBidi('browsingContext.activate', { context: ctx });
-
-  const wdCheck = await callBidi('script.evaluate', {
-    expression: 'String(navigator.webdriver) + ":" + String(typeof window.turnstile)',
-    target: { context: ctx },
-    awaitPromise: false
-  });
-  const wdVal = wdCheck?.result?.result?.value || '';
-  if (!wdVal.startsWith('false:object')) {
-    console.log(`[FIREFOX-DONOR] Reloading territorial.io tab on :${port} so preloadScript (webdriver=false) takes effect (was ${wdVal})...`);
-    await callBidi('browsingContext.reload', { context: ctx, wait: 'complete' });
-    await new Promise((r) => setTimeout(r, 2500));
-  }
-
-  console.log(`[FIREFOX-DONOR] Connected to Mozilla Firefox BiDi on :${port} (ctx=${ctx}, webdriver=false)!`);
-  const donorObj = { ws, callBidi, ctx, port, _mintChain: Promise.resolve() };
-  firefoxDonors.set(port, donorObj);
-  return donorObj;
+  firefoxDonorConnecting.set(port, connectPromise);
+  return connectPromise;
 }
 
 for (const ffPort of [9225, 9226, 9227]) {
