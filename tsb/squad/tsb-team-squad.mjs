@@ -613,7 +613,15 @@ async function ensureFirefoxDonor(port = 9225) {
     await callBidi('session.end', {});
     const sess = await callBidi('session.new', { capabilities: {} });
     if (!sess?.result?.sessionId) {
-      console.log(`[FIREFOX-DONOR] BiDi session on :${port} busy or re-initializing...`);
+      console.log(`[FIREFOX-DONOR] BiDi session on :${port} locked by previous process -> recycling Firefox donor on :${port}...`);
+      try { ws.close(); } catch {}
+      try {
+        const { execSync } = await import('node:child_process');
+        execSync(`powershell -NoProfile -Command "Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'firefox.exe' -and $_.CommandLine -match 'firefox_donor_${port}' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"`, { stdio: 'ignore' });
+      } catch {}
+      await new Promise((r) => setTimeout(r, 800));
+      firefoxDonorConnecting.delete(port);
+      return ensureFirefoxDonor(port);
     }
 
     await callBidi('script.addPreloadScript', {
