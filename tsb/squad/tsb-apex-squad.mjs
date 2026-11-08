@@ -50,15 +50,15 @@ const pageJsSource = fs.readFileSync(resolveAssetPath('page.js', '/tmp/tsb-team-
 const getV27TeamSource = () => fs.readFileSync(resolveAssetPath('v27-team-live.js', '/tmp/v27-team-live.js'), 'utf8');
 
 const CHROME_BOTS = [
-  { port: 9226, name: '[APEX] ryan_m', slot: 0, id: 'CjQcL', pw: 'bCevZwzI-d7xXea' },
+  { port: 9228, name: '[APEX] ryan_m', slot: 0, id: 'CjQcL', pw: 'bCevZwzI-d7xXea' },
 ];
 
 const HEADLESS_BOTS = [
-  { port: 9310, socksPort: 10801, donorChromePort: 9226, name: '[APEX] ryan_m', slot: 0, id: '', pw: '' },
-  { port: 9311, socksPort: 10802, donorChromePort: 9226, name: '[APEX] noah88', slot: 1, id: '', pw: '' },
-  { port: 9312, socksPort: 10803, donorChromePort: 9226, name: '[APEX] leo_tx', slot: 2, id: '', pw: '' },
-  { port: 9313, socksPort: 10804, donorChromePort: 9226, name: '[APEX] alex_k', slot: 3, id: '', pw: '' },
-  { port: 9314, socksPort: 10805, donorChromePort: 9226, name: '[APEX] zero_7', slot: 4, id: '', pw: '' },
+  { port: 9310, socksPort: 10801, donorChromePort: 9228, name: '[APEX] ryan_m', slot: 0, id: '', pw: '' },
+  { port: 9311, socksPort: 10802, donorChromePort: 9228, name: '[APEX] noah88', slot: 1, id: '', pw: '' },
+  { port: 9312, socksPort: 10803, donorChromePort: 9228, name: '[APEX] leo_tx', slot: 2, id: '', pw: '' },
+  { port: 9313, socksPort: 10804, donorChromePort: 9228, name: '[APEX] alex_k', slot: 3, id: '', pw: '' },
+  { port: 9314, socksPort: 10805, donorChromePort: 9228, name: '[APEX] zero_7', slot: 4, id: '', pw: '' },
 ];
 
 // Cross-process anti-collision reader: checks if c110's v27 squad is currently in Lobby waiting to launch
@@ -574,7 +574,7 @@ async function mintViaDonorChrome(donorPort) {
 // Receives map terrain (once per match) + live human positions (Boss npl, enemies, allies) during the 6s spawnPhase,
 // solves the global joint Geodesic Voronoi + Boss Flank Guard formation + Bitmask DP minimum-displacement assignment,
 // and pushes each bot's dedicated (x, y, role) back via worker.postMessage({ type: 'set_spawn', pos }) & CDP!
-const spawnCoordinator = new TeamSpawnCoordinator({ port: 8298 });
+const spawnCoordinator = new TeamSpawnCoordinator({ port: 8299 });
 spawnCoordinator.startHttpServer();
 const botSpawnMeta = new Map();
 let lastCoordLogKey = '';
