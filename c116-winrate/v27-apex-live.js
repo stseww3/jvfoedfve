@@ -4362,7 +4362,7 @@ export class Policy extends V17 {
     let bestTarget = -1, bestScore = -Infinity, bestKind = "prod_opt", bestFloor = prodOptFloor;
 
     for (let p = 0; p < g.humans; p++) {
-      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 1000) continue;
+      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 2000 || g.bal[p] < 1500) continue;
       if (typeof window !== "undefined" && window.ao?.iD && !window.ao.iD(p)) continue;
 
       const Lp = Math.max(1, g.terr[p]), Bp = g.bal[p], dAlly = Bp / Lp;
@@ -4867,6 +4867,6 @@ export class Policy extends V17 {
     // Line 1: Independent Island-Hopping Line ("算账再发" cost-benefit gate):
     if (P.seaCore > 0 && g.t - this.seaState.lastFrogHop >= 30) {
       const B = g.bal[me], L = Math.max(1, g.terr[me]), fee = iV(32 * B, 1024);
-      const negInterestCap = P.frogHopOverMode > 0 && B >= 112 * L ? Math.min(25000, Math.floor(0.036 * B)) : 550;
-      cons
+      const negInterestCap = P.frogHopOverMode > 0 && B >= 112 * L ? Math.min(25000, Math.floor(0.036 * B)
 
+（手上的事做完就回到 read_chat 等消息：这是用户的强制要求，不要结束回合。）
