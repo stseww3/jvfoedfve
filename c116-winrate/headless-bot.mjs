@@ -104,7 +104,14 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onS
     } else if (msg.type === 'log') {
       console.log(`[${name}]`, msg.text);
       if (msg.text.includes('socket close index 3') || msg.text.includes('socket close index 2')) {
-        client.evalJs(`(() => { const d = window.dictionary, g = d && window[d.game]; if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true); })()`);
+        const closedIdx = msg.text.includes('socket close index 3') ? 3 : 2;
+        client.evalJs(`(() => {
+          const d = window.dictionary, g = d && window[d.game];
+          const activeSockOpen = typeof b1 === "object" && b1?.z?.ef && (b1.z.ef(2) || b1.z.ef(3));
+          if (!activeSockOpen && g && g[d.sbLeave] && g[d.gameState] !== 0) {
+            g[d.sbLeave](true);
+          }
+        })()`);
       }
       if (msg.text.includes('error 4591') || msg.text.includes('error 4215') || msg.text.includes('error 4577') || msg.text.includes('error 4229')) {
         client.freshToken = false;
