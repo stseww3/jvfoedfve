@@ -76,7 +76,14 @@ function rotateSocksSession(socksPort) {
 }
 
 const pageJsSource = fs.readFileSync(resolveAssetPath('page.js', '/tmp/tsb-team-ext/page.js'), 'utf8');
-const getV27TeamSource = () => fs.readFileSync(resolveAssetPath('v27-team-live.js', '/tmp/v27-team-live.js'), 'utf8');
+let cachedV27TeamSource = '';
+const getV27TeamSource = () => {
+  try {
+    const s = fs.readFileSync(resolveAssetPath('v27-team-live.js', '/tmp/v27-team-live.js'), 'utf8');
+    if (s && s.length > 1000) cachedV27TeamSource = s;
+  } catch {}
+  return cachedV27TeamSource;
+};
 
 const CHROME_BOTS = [
   { port: 9223, name: 'KFC', slot: 0, id: '', pw: '' },
