@@ -3958,7 +3958,7 @@ export class Policy extends V17 {
     // ALWAYS use the Unified Backend Spawn Coordinator (:8299) so all 5 [APEX] brothers
     // spawn on the #1 Main Continent with geodesic Voronoi spacing and NEVER stack on the same point!
     const bossId = this.findBossId(g);
-    if (bossId >= 0) {
+    if (true) {
       const mapKey = `${W}x${H}_${g.land}_${g.humans}`;
       const nowMs = typeof performance !== "undefined" ? performance.now() : Date.now();
       if (typeof window !== "undefined" && window.__hlSpawnReq && (!this._lastSpawnReqAt || nowMs - this._lastSpawnReqAt > 260)) {
@@ -4909,5 +4909,6 @@ export class Policy extends V17 {
     for (const q of this.nb) {
       if (!g.alive[q] || !g.terr[q]) continue;
       const already = g.hasAttack(me, q);
-      if (!already && (active >= P.maxTargets || !g.hasFreeSlot(me))) con
+      if (!already && (active >= P.maxTargets || !g.hasFreeSlot(me))) continue;
+
 

@@ -739,7 +739,7 @@ export class TeamSpawnCoordinator {
       // ECO_BANK (Outer Wing):
       // Instead of flying 1000px away to the opposite side of the map as an orphan,
       // reward chaining adjacent to our Boss/Squad cluster (`minClusterDist` in [1.0*allyMinSep, 2.3*allyMinSep])
-      if (boss && pm.minClusterDist < 900000) {
+      if (pm.minClusterDist < 900000) {
         const idealWingDist = 1.45 * scales.allyMinSep;
         if (pm.minClusterDist <= 2.6 * scales.allyMinSep) {
           const chainFit = Math.max(
@@ -834,9 +834,9 @@ export class TeamSpawnCoordinator {
       rCell: Math.round(rCell),
       bossExcl: clamp(Math.round(Math.max(1.12 * rCell, 0.078 * diag)), 68, 120),
       flankMax: clamp(Math.round(Math.max(2.30 * rCell, 0.170 * diag)), 135, 235),
-      allyMinSep: clamp(Math.round(Math.max(1.48 * rCell, 0.115 * diag)), 108, 185),
+      allyMinSep: clamp(Math.round(Math.max(1.22 * rCell, 0.088 * diag)), 84, 142),
       enemyMinClearance: clamp(Math.round(0.70 * rCell), 36, 78),
-      clusterMax: clamp(Math.round(Math.max(5.80 * rCell, 0.580 * diag)), 420, 880),
+      clusterMax: clamp(Math.round(Math.max(3.60 * rCell, 0.320 * diag)), 260, 480),
     };
 
     // Build initial distance fields with realBoss (if placed)
@@ -844,7 +844,7 @@ export class TeamSpawnCoordinator {
 
     // If Boss hasn't clicked on the map yet, pick a safe Virtual Squad Anchor so
     // our bots still form a cohesive anti-pinch wedge in the safest region!
-    const anchorBoss = realBoss;
+    const anchorBoss = realBoss || this.findVirtualSquadAnchor(enemies, scales);
     if (!realBoss && anchorBoss) {
       this.buildInitialDistanceFields(enemies, randomAllies, anchorBoss);
     }
@@ -914,7 +914,7 @@ export class TeamSpawnCoordinator {
         const reqEnemyClear = scales.enemyMinClearance * Math.max(0.65, relax);
         // Cohesive cluster constraint: on first two passes (relax >= 0.80), keep ECO_BANK
         // within clusterMax of our Boss/Squad cluster so no bot is stranded across the map!
-        const enforceCluster = Boolean(realBoss) && relax >= 0.60;
+        const enforceCluster = relax >= 0.60 && (anchorBoss || chosenTargets.length > 0);
         const maxClusterDist = scales.clusterMax * (1.8 - 0.8 * relax);
 
         const stride = W * H > 900000 ? 8 : 6;
@@ -1078,7 +1078,7 @@ export class TeamSpawnCoordinator {
       }
       if (picked) {
         chosenTargets.push(picked);
-        this.injectChosenSquadPoint(picked.cell, m, Math.max(210, Math.round(2.10 * scales.allyMinSep)));
+        this.injectChosenSquadPoint(picked.cell, m, Math.max(145, Math.round(1.65 * scales.allyMinSep)));
       }
     }
 
