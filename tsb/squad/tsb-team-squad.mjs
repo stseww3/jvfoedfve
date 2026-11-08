@@ -926,7 +926,18 @@ setInterval(async () => {
         }
         return JSON.stringify(s);
       })()`);
-      try { return JSON.parse(raw || '{}'); } catch { return {}; }
+      try {
+        const parsed = JSON.parse(raw || '{}');
+        if (parsed && parsed.ok) {
+          c.lastGoodState = parsed;
+          c.lastGoodStateAt = Date.now();
+          return parsed;
+        }
+      } catch {}
+      if (c.lastGoodState && Date.now() - (c.lastGoodStateAt || 0) < 12000) {
+        return c.lastGoodState;
+      }
+      return {};
     })
   );
 
