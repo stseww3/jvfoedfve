@@ -759,35 +759,44 @@ setInterval(async () => {
         let room0NopeCount = 0;
         let bossReadyInRoom0 = false;
         const lob = ext?.remote?.lobby;
-        const mgr = lob?.mgr || (d && d.lobbyManager && window[d.lobbyManager]);
+        const mgr = lob?.mgr || (d && d.lobbyManager && window[d.lobbyManager]) || (typeof bq === "object" ? bq : null);
         if (mgr) {
-          let vh = null, vi = null;
-          for (const v of Object.values(mgr)) {
-            if (v && typeof v === "object") {
-              if (d?.lobbyPlayers && Array.isArray(v[d.lobbyPlayers])) {
-                vh = v[d.lobbyPlayers];
-                vi = v[d.lobbyReadyCounts];
-                break;
-              }
-              const vals = Object.values(v);
-              const arr4 = vals.find((x) => Array.isArray(x) && x.length === 4 && Array.isArray(x[0]));
-              const cnt4 = vals.find((x) => Array.isArray(x) && x.length === 4 && typeof x[0] === "number");
-              if (arr4) {
-                vh = arr4;
-                vi = cnt4;
-                break;
+          let list = null;
+          let readyCount = 0;
+          if (mgr.wZ && Array.isArray(mgr.wZ.w1)) {
+            list = mgr.wZ.w1;
+            readyCount = typeof mgr.wZ.wa === "number" ? (mgr.wZ.wa | 0) : 0;
+          } else {
+            let vh = null, vi = null;
+            for (const v of Object.values(mgr)) {
+              if (v && typeof v === "object") {
+                if (d?.lobbyPlayers && Array.isArray(v[d.lobbyPlayers])) {
+                  vh = v[d.lobbyPlayers];
+                  vi = v[d.lobbyReadyCounts];
+                  break;
+                }
+                const vals = Object.values(v);
+                const arr4 = vals.find((x) => Array.isArray(x) && x.length === 4 && Array.isArray(x[0]));
+                const cnt4 = vals.find((x) => Array.isArray(x) && x.length === 4 && typeof x[0] === "number");
+                if (arr4) {
+                  vh = arr4;
+                  vi = cnt4;
+                  break;
+                }
               }
             }
+            if (vh && Array.isArray(vh[0])) {
+              list = vh[0];
+              readyCount = vi && typeof vi[0] === "number" ? (vi[0] | 0) : 0;
+            }
           }
-          if (vh && Array.isArray(vh[0])) {
-            const list = vh[0];
+          if (Array.isArray(list)) {
             room0Players = list.length;
-            const readyCount = vi && typeof vi[0] === "number" ? (vi[0] | 0) : 0;
             for (let idx = 0; idx < list.length; idx++) {
               const p = list[idx];
               const disp = String((p && p.username) || "").trim();
               if (disp.toLowerCase().includes("[nope]")) room0NopeCount++;
-              const raw = String((p && (p.aFN || p.username || p.name)) || "").trim();
+              const raw = String((p && (p.aGM || p.aGT || p.aFN || p.username || p.name)) || "").trim();
               const low = raw.toLowerCase();
               if (
                 low.includes("mishi") || low.includes("matzz") || low.includes("kiholma") ||
@@ -807,7 +816,8 @@ setInterval(async () => {
             }
           }
         }
-        const myLobbyUsername = typeof bq === "object" && bq?.aF0 ? bq.aF0.username : null;
+        const myLobbyObj = typeof bq === "object" ? (bq?.aFv || bq?.aF0) : null;
+        const myLobbyUsername = myLobbyObj ? myLobbyObj.username : null;
         if (myLobbyUsername && (myLobbyUsername.startsWith("Player ") || myLobbyUsername.includes("Redacted")) && typeof b1 === "object" && b1?.eg?.eh && b1?.z?.ef?.(0)) {
           if (!window.__lastNameVerifyAsk || Date.now() - window.__lastNameVerifyAsk > 3000) {
             window.__lastNameVerifyAsk = Date.now();
@@ -820,8 +830,15 @@ setInterval(async () => {
         if ((!g || g[d.gameState] === 0) && typeof bq === "object" && bq?.f6 === 1 && typeof b1 === "object" && b1?.z?.ef?.(1)) {
           s.lobby = s.lobby || {};
           s.lobby.inLobby = true;
-          s.lobby.room = bq?.z?.tM?.[0] ?? 0;
-          s.lobby.ready = !!(bq?.z?.tM?.[3]);
+          s.lobby.room = 0;
+          if (bq.sH && typeof bq.sH.wF === "number") {
+            const firstRoom = bq.sH.sH?.[0];
+            s.lobby.ready = !!(firstRoom && bq.sH.wF === firstRoom.id && firstRoom.id > 0);
+            s.lobby.startsIn = firstRoom ? (firstRoom.wK ?? 99) : 99;
+          } else {
+            s.lobby.room = bq?.z?.tM?.[0] ?? 0;
+            s.lobby.ready = !!(bq?.z?.tM?.[3]);
+          }
         }
         s.ok = true;
         s.myLobbyUsername = myLobbyUsername;
@@ -1003,14 +1020,16 @@ setInterval(async () => {
               localStorage.setItem("d106", "");
               localStorage.setItem("v105", "0");
               localStorage.setItem("v106", "0");
-              if (typeof bm === "object" && bm?.qo?.qp) {
-                bm.qo.qp(105, "");
-                bm.qo.qp(106, "");
+              const setSetting = bm?.qq?.qr || bm?.qo?.qp;
+              if (typeof bm === "object" && typeof setSetting === "function") {
+                setSetting.call(bm.qq || bm.qo, 105, "");
+                setSetting.call(bm.qq || bm.qo, 106, "");
               }
               if (typeof b1 === "object" && b1?.z?.close) {
                 b1.z.close(1, 3252);
                 b1.z.close(0, 3253);
-                if (typeof b1.z.aIR === "function") b1.z.aIR(0, 18, 0);
+                const reconn = b1.z.aJc || b1.z.aIR;
+                if (typeof reconn === "function") reconn.call(b1.z, 0, 18, 0);
               }
             })()`);
           });
@@ -1156,22 +1175,33 @@ setInterval(async () => {
           }
           ext.settings.armed = true;
           ext.remote.state.loop = "team";
-          const snap = ext.remote.snapshot?.();
-          if (snap?.lobby?.inLobby && !snap.lobby.ready && ${allowReady ? 'true' : 'false'}) {
+          const isInLobbyNow = (typeof bq === "object" && bq?.f6 === 1 && typeof b1 === "object" && b1?.z?.ef?.(1));
+          const isReadyNow = isInLobbyNow && (bq?.sH ? !!(bq.sH.sH?.[0] && bq.sH.wF === bq.sH.sH[0].id && bq.sH.sH[0].id > 0) : !!(bq?.z?.tM?.[3]));
+          if (isInLobbyNow && !isReadyNow && ${allowReady ? 'true' : 'false'}) {
             if (!window.__readyJitterScheduled) {
               window.__readyJitterScheduled = true;
               const delayMs = 450 + ((${c.slot} * 380) % 2400) + Math.floor(Math.random() * 850);
               setTimeout(() => {
                 window.__readyJitterScheduled = false;
-                const s2 = window.__fx?.strategyBotExtension?.remote?.snapshot?.();
-                if (s2?.lobby?.inLobby && !s2.lobby.ready && !window.__tsbWaitForLeader) {
-                  document.dispatchEvent(new KeyboardEvent("keyup", { code: "Enter", key: "Enter", bubbles: true, cancelable: true }));
+                if (typeof bq === "object" && bq?.f6 === 1 && !window.__tsbWaitForLeader) {
+                  if (bq?.sH?.sH?.[0] && typeof bq.sH.select === "function") {
+                    const targetRoom = bq.sH.sH.find(r => r && r.vz < 7) || bq.sH.sH[0];
+                    if (targetRoom && bq.sH.wF !== targetRoom.id) {
+                      bq.sH.select(targetRoom.id);
+                    }
+                  } else {
+                    document.dispatchEvent(new KeyboardEvent("keyup", { code: "Enter", key: "Enter", bubbles: true, cancelable: true }));
+                  }
                 }
               }, delayMs);
             }
-          } else if (snap?.lobby?.inLobby && snap.lobby.ready && !${allowReady ? 'true' : 'false'} && !${waitMode ? 'true' : 'false'}) {
+          } else if (isInLobbyNow && isReadyNow && !${allowReady ? 'true' : 'false'} && !${waitMode ? 'true' : 'false'}) {
             window.__readyJitterScheduled = false;
-            document.dispatchEvent(new KeyboardEvent("keyup", { code: "Escape", key: "Escape", bubbles: true, cancelable: true }));
+            if (bq?.sH && typeof bq.sH.select === "function" && bq.sH.wF) {
+              bq.sH.select(0);
+            } else {
+              document.dispatchEvent(new KeyboardEvent("keyup", { code: "Escape", key: "Escape", bubbles: true, cancelable: true }));
+            }
           }
         }
       })()`, true);
