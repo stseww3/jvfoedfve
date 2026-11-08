@@ -1150,8 +1150,10 @@ setInterval(async () => {
   }
 
   // Never reload or re-open lobby while ANY bot has meaningful territory (> 80 px) or is in opening (< 30s)
-  const anyMeaningfulAlive = states.some((s, idx) => {
-    if (!s?.inGame || s.over) return false;
+  let anyMeaningfulAlive = false;
+  for (let idx = 0; idx < states.length; idx++) {
+    const s = states[idx];
+    if (!s?.inGame || s.over) continue;
     const prevTick = clients[idx].lastPollTick ?? -1;
     clients[idx].lastPollTick = s.tick;
     if (s.tick > 0 && s.tick === prevTick) {
@@ -1159,12 +1161,14 @@ setInterval(async () => {
     } else {
       clients[idx].stalledPolls = 0;
     }
-    if ((clients[idx].stalledPolls || 0) >= 4) {
+    if ((clients[idx].stalledPolls || 0) >= 6) {
       clients[idx].evalJs(`(() => { const d = window.dictionary, g = d && window[d.game]; if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true); })()`);
-      return false;
+      continue;
     }
-    return s.spawnPhase || s.tick < 60 || now - clients[idx].enteredGameAt < 30000 || (s.alive && (s.terr || 0) >= 80);
-  });
+    if (s.spawnPhase || s.tick < 60 || now - clients[idx].enteredGameAt < 30000 || (s.alive && (s.terr || 0) >= 80)) {
+      anyMeaningfulAlive = true;
+    }
+  }
   if (anyMeaningfulAlive) {
     reloadingForFreshTokens = false;
     wantTenForCurrentLobby = false;

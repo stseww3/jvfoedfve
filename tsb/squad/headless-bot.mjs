@@ -460,7 +460,12 @@ if (!isMainThread && workerData?.bot) {
         this.url = url;
         this.CONNECTING = 0; this.OPEN = 1; this.CLOSING = 2; this.CLOSED = 3;
         this.binaryType = 'blob';
-        const isProxied = typeof url === 'string' && url.includes('territorial.io');
+        const isProxied =
+          typeof url === 'string' &&
+          url.includes('territorial.io') &&
+          !url.includes('4.territorial.io') &&
+          !url.includes('5.territorial.io') &&
+          !url.includes('game.territorial.io');
         this._ws = WS
           ? new WS(url, protocols, {
               agent: isProxied ? agent : undefined,
