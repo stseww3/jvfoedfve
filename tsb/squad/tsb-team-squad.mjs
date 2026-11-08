@@ -63,6 +63,11 @@ const HEADLESS_BOTS = [
   { port: 9307, socksPort: 10813, donorChromePort: 9225, name: '[Nope] mark07', slot: 2, id: '', pw: '' },
   { port: 9308, socksPort: 10814, donorChromePort: 9225, name: '[Nope] kevin_k', slot: 3, id: '', pw: '' },
   { port: 9309, socksPort: 10815, donorChromePort: 9225, name: '[Nope] ethan21', slot: 4, id: '', pw: '' },
+  { port: 9310, socksPort: 10801, donorChromePort: 9226, name: '[Nope] ryan_m', slot: 5, id: '', pw: '' },
+  { port: 9311, socksPort: 10802, donorChromePort: 9226, name: '[Nope] noah88', slot: 6, id: '', pw: '' },
+  { port: 9312, socksPort: 10803, donorChromePort: 9226, name: '[Nope] leo_tx', slot: 7, id: '', pw: '' },
+  { port: 9313, socksPort: 10804, donorChromePort: 9226, name: '[Nope] jake_09', slot: 8, id: '', pw: '' },
+  { port: 9314, socksPort: 10805, donorChromePort: 9226, name: '[Nope] owen_h', slot: 9, id: '', pw: '' },
 ];
 
 const isWaitNplMode = () => fs.existsSync(path.join(__dirname, 'tsb-wait-npl.flag')) || fs.existsSync('/tmp/tsb-wait-npl.flag');
@@ -807,7 +812,7 @@ setInterval(async () => {
                 low.includes("zero_2") || low.includes("sora") ||
                 low.includes("lucas94") || low.includes("dave_w") || low.includes("mark07") ||
                 low.includes("kevin_k") || low.includes("ethan21") || low.includes("ryan_m") ||
-                low.includes("noah88") || low.includes("leo_tx")
+                low.includes("noah88") || low.includes("leo_tx") || low.includes("jake_09") || low.includes("owen_h")
               ) continue;
               const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
               if (stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
@@ -912,7 +917,7 @@ setInterval(async () => {
                 low.includes("zero_2") || low.includes("sora") ||
                 low.includes("lucas94") || low.includes("dave_w") || low.includes("mark07") ||
                 low.includes("kevin_k") || low.includes("ethan21") || low.includes("ryan_m") ||
-                low.includes("noah88") || low.includes("leo_tx")
+                low.includes("noah88") || low.includes("leo_tx") || low.includes("jake_09") || low.includes("owen_h")
               ) continue;
               const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
               if (stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
@@ -1182,7 +1187,7 @@ setInterval(async () => {
   const allReadyInRoom0 =
     timerSpreadOk &&
     (headlessOnly
-      ? (headlessInRoom0 === HEADLESS_BOTS.length || (headlessInRoom0 >= HEADLESS_BOTS.length - 1 && minStartsIn <= 10))
+      ? (headlessInRoom0 === HEADLESS_BOTS.length || (headlessInRoom0 >= HEADLESS_BOTS.length - 2 && minStartsIn <= 10))
       : wantTenForCurrentLobby
         ? (readyCountInRoom0 === 10 || (readyCountInRoom0 >= 8 && minStartsIn <= 8))
         : (chromeInRoom0 === 5 || (chromeInRoom0 >= 4 && minStartsIn <= 8)));

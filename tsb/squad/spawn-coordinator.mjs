@@ -37,7 +37,7 @@ const SQUAD_SHORT_NAMES = new Set([
   'mishi', 'matzz', 'kiholma', 'leo_99', 'racoon',
   'zexos', 'talon', 'vortex', 'kronos', 'nexus',
   '777', 'sayo', 'kaito', 'riku', '_alex', 'tomo', 'zero_2', 'sora',
-  'lucas94', 'dave_w', 'mark07', 'kevin_k', 'ethan21', 'ryan_m', 'noah88', 'leo_tx',
+  'lucas94', 'dave_w', 'mark07', 'kevin_k', 'ethan21', 'ryan_m', 'noah88', 'leo_tx', 'jake_09', 'owen_h',
 ]);
 
 export function normalizePlayerName(raw) {
