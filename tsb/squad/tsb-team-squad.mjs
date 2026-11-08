@@ -1223,9 +1223,11 @@ setInterval(async () => {
                 window.__readyJitterScheduled = false;
                 if (typeof bq === "object" && bq?.f6 === 1 && !window.__tsbWaitForLeader) {
                   if (bq?.sH?.sH?.[0] && typeof bq.sH.select === "function") {
-                    const targetRoom = bq.sH.sH.find(r => r && r.vz < 7) || bq.sH.sH[0];
+                    const targetRoom = bq.sH.sH.find(r => r && r.vz < 7);
                     if (targetRoom && bq.sH.wF !== targetRoom.id) {
                       bq.sH.select(targetRoom.id);
+                    } else if (!targetRoom && bq.sH.wF) {
+                      bq.sH.select(0);
                     }
                   } else {
                     document.dispatchEvent(new KeyboardEvent("keyup", { code: "Enter", key: "Enter", bubbles: true, cancelable: true }));
