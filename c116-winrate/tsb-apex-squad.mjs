@@ -1252,10 +1252,11 @@ setInterval(async () => {
   const allReadyInRoom0 =
     !avoidC110Collision &&
     timerSpreadOk &&
+    minStartsIn >= 5 &&
     (headlessOnly
-      ? (headlessInRoom0 === HEADLESS_BOTS.length || (headlessInRoom0 >= HEADLESS_BOTS.length - 2 && minStartsIn <= 12))
+      ? (headlessInRoom0 === HEADLESS_BOTS.length || (headlessInRoom0 >= HEADLESS_BOTS.length - 1 && minStartsIn >= 5 && minStartsIn <= 14))
       : wantTenForCurrentLobby
-        ? (readyCountInRoom0 === 10 || (readyCountInRoom0 >= 8 && minStartsIn <= 8))
+        ? (readyCountInRoom0 === 10 || (readyCountInRoom0 >= 9 && minStartsIn >= 5 && minStartsIn <= 12))
         : (chromeInRoom0 === 5 || (chromeInRoom0 >= 4 && minStartsIn <= 8)));
 
   const bossReadyNow = inRoom0.some((s) => !!s.bossReadyInRoom0);
@@ -1289,7 +1290,7 @@ setInterval(async () => {
           if (isInLobbyNow && !isReadyNow && ${allowReady ? 'true' : 'false'}) {
             if (!window.__readyJitterScheduled) {
               window.__readyJitterScheduled = true;
-              const delayMs = 450 + ((${c.slot} * 380) % 2400) + Math.floor(Math.random() * 850);
+              const delayMs = 120 + ((${c.slot} * 140) % 900) + Math.floor(Math.random() * 250);
               setTimeout(() => {
                 window.__readyJitterScheduled = false;
                 if (typeof bq === "object" && bq?.f6 === 1 && !window.__tsbWaitForLeader) {
