@@ -659,6 +659,17 @@ for (const bot of HEADLESS_BOTS) {
     getStrategySource: getV27TeamSource,
     mintTurnstileToken: mintViaDonorChrome,
     onSpawnRequest: handleBackendSpawnRequest,
+    onRotateProxy(c) {
+      rotateSocksSession(c.socksPort).then(() => {
+        c.evalJs(`(() => {
+          if (typeof b1 === "object" && b1?.z?.close) {
+            b1.z.close(0, 3253);
+            const reconn = b1.z.aJc || b1.z.aIR;
+            if (typeof reconn === "function") reconn.call(b1.z, 0, 18, 0);
+          }
+        })()`);
+      });
+    },
     onResult(c, payload) {
       recordResult(c.name, c.port, payload);
     },

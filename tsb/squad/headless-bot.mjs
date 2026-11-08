@@ -27,7 +27,7 @@ for (const cand of [path.join(__dirname, 'node_modules/ws/package.json'), '/tmp/
 // MAIN THREAD API: spawns a dedicated Worker thread for each Headless Bot
 // so BFS / Voronoi calculations NEVER block the main thread or packet stream!
 // ============================================================================
-export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onSpawnRequest, getStrategySource, mintTurnstileToken }) {
+export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onSpawnRequest, onRotateProxy, getStrategySource, mintTurnstileToken }) {
   const { port, socksPort, donorChromePort, name, slot } = bot;
   const worker = new Worker(new URL(import.meta.url), {
     execArgv: [],
@@ -109,6 +109,9 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onS
       if (msg.text.includes('error 4591') || msg.text.includes('error 4215') || msg.text.includes('error 4577') || msg.text.includes('error 4229')) {
         client.freshToken = false;
         client.enteredLobbyAt = 0;
+        if (msg.text.includes('error 4577') && typeof onRotateProxy === 'function') {
+          onRotateProxy(client);
+        }
         if (msg.text.includes('error 4229')) {
           client.evalJs(`(() => { const d = window.dictionary, g = d && window[d.game]; if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true); })()`);
         }
