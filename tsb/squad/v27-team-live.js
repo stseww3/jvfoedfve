@@ -4866,6 +4866,23 @@ export class Policy extends V17 {
       const pf = window.__hlPerf;
       const pfStr = pf && pf.ticks > 0 ? ` avgMs=${(pf.totalMs / pf.ticks).toFixed(2)} maxMs=${pf.maxMs.toFixed(1)} skip=${pf.skippedTicks}` : "";
       window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
+      if (g.t >= 3960 && g.t - (window.__lastReplaySnapAt || 0) >= 1350 && typeof window.bC === "object" && window.bC?.a7s?.a2b && window.__tsbReportResult) {
+        let minAliveSquadId = me;
+        for (let p = 0; p < g.humans; p++) {
+          if (g.alive[p] && this.isTeammate(g, p) && this.isOurSquadBot(g, p) && p < minAliveSquadId) minAliveSquadId = p;
+        }
+        if (me === minAliveSquadId) {
+          window.__lastReplaySnapAt = g.t;
+          try {
+            const repStr = window.bC.a7s.a2b();
+            if (typeof repStr === "string" && repStr.length > 100) {
+              const cut = repStr.indexOf("=");
+              const pure = (cut >= 0 ? repStr.slice(cut + 1) : repStr).trim();
+              window.__tsbReportResult(JSON.stringify({ type: "raw_replay", game: `t${g.t}`, replay: pure }));
+            }
+          } catch {}
+        }
+      }
     }
     this.tryPeaceVote(g);
     if (this.tryEmergencyBossRescue(g) && g.online) return;
