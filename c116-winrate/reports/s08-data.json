@@ -1,0 +1,146 @@
+{
+  "agentId": "S08",
+  "updatedAt": "2026-11-08T03:02:00Z",
+  "assignedGames": [
+    "G09"
+  ],
+  "assignedVariables": [
+    "V10"
+  ],
+  "gameDissections": [
+    {
+      "gameId": "G09 (01:28 CST, mw6nxm0q-ae5m7g..mw6nxmcw-3huux4)",
+      "result": "over",
+      "teamCount": 5,
+      "activeBotsCount": 6,
+      "mainContinentBotsCount": 2,
+      "teamLandAt1500": 49636,
+      "peakTeamLand": 49636,
+      "peakTick": 1530,
+      "inflectionTick": 2700,
+      "frontlineDensityAtInflection": 6.1,
+      "enemyDensityAtInflection": 88.5,
+      "primaryRootCauseVariable": "V10",
+      "secondaryRootCauseVariable": "V1",
+      "evidenceSummary": "In G09 (map=16, 956x873, land=423,950, 5 teams, t=14666), only 6/8 bots entered (dave_w blocked by Server 0 error 4577; noah88 silent). Worse, ethan21 (me=37) and ryan_m (me=33, logged as 'Redacted 8N') failed [Nope] tag verification in Room 0 and were placed on Team 3 while mark07/kevin_k/lucas94/leo_tx were on Team 2, AND pre-d590acd findVirtualSquadAnchor stranded 4 of 6 bots on tiny northern islands (leo_tx 1,286px, kevin_k 4,193px, ethan21 9,458px, ryan_m 13,657px). Because isTeammate(g,p) only checks g.teams[p]===g.teams[me], at t=2695..2806 ryan_m (Team 3) and lucas94 (Team 2) launched 7 sea-interception chase boats and land attacks at each other (burning 115,887 in-flight troops + ~42,000 boat/attack taxes), collapsing lucas94's density from 21.7 (365k bal) at t=2790 to 3.9 (77k bal) at t=3060 and ryan_m's from 23.5 (250k bal) to 3.7 (35k bal). With 0 squad-wide focus-fire coordination (0 HL-ASSIST events, P.focusBonus=1.0 disabled, maxTargets=6), Team 1 easily wiped out kevin_k (t=2012), mark07 (t=2085), ethan21 (t=3609), and ryan_m (t=3827), leaving lucas94 trapped in a 3,671px pocket at 150*L hard cap until t=14666 (place=3, 4,874px vs Team 1's 413,429px)."
+    },
+    {
+      "gameId": "G08 (01:13 CST, V10 Cross-Game Multi-Front Audit)",
+      "result": "over",
+      "teamCount": 6,
+      "activeBotsCount": 7,
+      "mainContinentBotsCount": 7,
+      "teamLandAt1500": 72068,
+      "peakTeamLand": 85548,
+      "peakTick": 2070,
+      "inflectionTick": 3782,
+      "frontlineDensityAtInflection": 14.8,
+      "enemyDensityAtInflection": 96.0,
+      "primaryRootCauseVariable": "V10",
+      "secondaryRootCauseVariable": "V7",
+      "evidenceSummary": "In G08 (6 teams, 7 bots on main continent), V10 exhibited two opposite failures: (1) Simultaneous multi-team provocation—between t=3648 and t=3912, kevin_k, lucas94, and mark07 simultaneously opened fronts against 3 different enemy teams (enemy=2 SGX union, enemy=18 Turk, enemy=41 rubi); (2) Infinite 2-tick assist-poke machine-gun bug—because tryDonateToTeammate lacked a per-bot assist cooldown and page.js/headless-bot.mjs only updated hasAttack(me,q) after WebSocket server round-trip (~12-20 ticks), kevin_k (7x at t=3782..3794), lucas94 (5x at t=3800..3808, 7x at t=4314..4326), mark07 (8x at t=3898..3912), and ryan_m (7x at t=5322..5334) each machine-gunned 5~8 consecutive 10%B commands in 8~14 ticks, draining 44.7%~61.2% of their own troop balances per burst!"
+    },
+    {
+      "gameId": "G03 & G04 (00:41 & 00:50 CST, V10 Assist-Burst Drain Audit)",
+      "result": "lost",
+      "teamCount": 4,
+      "activeBotsCount": 8,
+      "mainContinentBotsCount": 7,
+      "teamLandAt1500": 60593,
+      "peakTeamLand": 63806,
+      "peakTick": 5422,
+      "inflectionTick": 5042,
+      "frontlineDensityAtInflection": 24.5,
+      "enemyDensityAtInflection": 102.0,
+      "primaryRootCauseVariable": "V7",
+      "secondaryRootCauseVariable": "V10",
+      "evidenceSummary": "Across G03 (32 HL-ASSIST commands in 5 bursts) and G04 (29 HL-ASSIST commands in 3 bursts), every single squad-rescue assist triggered a 5~14 shot machine-gun burst at 2-tick intervals (112ms). In G04 at t=5042..5060 and t=6594..6622, noah88 fired 10x10%B (draining 69.4% of his balance) and 14x10%B (draining 81.0% of his balance in 28 ticks!) at enemy=23 ([CN]), hollowing out Team 1's second-largest pillar right as Team 2 launched its counter-offensive."
+    }
+  ],
+  "variableEvaluations": [
+    {
+      "variableId": "V10",
+      "variableName": "TeamFocusFireConcentration",
+      "currentValue": "P.focusBonus=1.0 (disabled); P.maxTargets=6 (unlocked for juicy land); offers(g) gives only 0.82x/0.78x mild discount when clanAllyAtkers>0, does NOT subtract allyAtk from rawNeed, and has zero penalty against opening fronts on 2nd/3rd enemy teams; tryDonateToTeammate fires g.attack(102, mainAttacker) with NO local cooldown, causing 5~14x 10%B machine-gun bursts (45%~81% B self-drain) over 2-tick periods before server RTT updates g.hasAttack; isTeammate(g,p) ignores isOurSquadBot when a bot is Redacted into another team (causing G09 Team 2 vs Team 3 fratricide)",
+      "baseline80PctValue": "Boss-centered cohesive wedge with P.period=5, P.maxTargets=3, oppFloorCap=128 (preventing reckless multi-front pokes and 2-tick RTT assist machine-gunning)",
+      "recommendedOptimalValue": "1) Deterministic 8-brother Focus-Fire Target & Team Lock in offers(g): subtract 0.85*allyAtk from rawNeed, apply c*=0.58 / rankMult*=0.52 when >=1 squad brother is attacking q (or 0.48x when >=2 brothers), and apply a 1.45x multi-team war penalty (c*=1.45) against opening new fronts on unengaged enemy teams while any squad brother is in active human war; 2) Activate P.focusBonus=0.78 and restore P.maxTargets=3; 3) Add strict 90-tick cooldown (this.lastAssistTick) on squad-rescue/boss-assist pokes so 10%B assist fires exactly ONCE per rescue instead of 5~14x machine-gun bursts; 4) Include this.isOurSquadBot(g,p) in non-aggression & sea-interception filters to prevent fratricide if a bot is Redacted",
+      "estimatedWinrateImpactPct": 22.0,
+      "causalMechanism": "In 5~6 team autonomous matches without a human Boss, 8 bots lack a shared target selector: (1) P.focusBonus=1.0 and P.maxTargets=6 allow adjacent brothers to attack 3~4 different enemy teams simultaneously, triggering multi-team dogpiles against our squad at t=3500~5500; (2) When brothers do share a target q, offers(g) computes rawNeed = elimCost(q) + inAtk - myAtk without subtracting teammate in-flight troops allyAtk, so brothers either fail the budget check individually or mildly discount c*=0.82 without synchronizing a lethal kill; (3) When tryDonateToTeammate triggers a 10%B squad-rescue poke, P.period=2 (112ms) re-fires g.attack(102) every 2 ticks during the ~15-tick WebSocket RTT before g.hasAttack(me,mainAttacker) turns true, turning a '10% light assist' into an 18-burst, 125-command self-liquidation across G01~G08 (draining 50%~81% B per bot); (4) When a bot fails Room 0 name verification ('Redacted'), isTeammate(g,p) returns false and brothers intercept each other's boats and wipe each other out (G09 t=2695..3060).",
+      "codeLocation": "tsb/squad/make_v27_team.py:121-123, 456-470, 520-521, 850-860, 913-959, 976-1009 (tsb/squad/v27-team-live.js:3907-3923, 4136-4138, 4470-4486, 4535-4536, 4865-4875, 5505-5610)"
+    }
+  ],
+  "topCoreVariableRanking": [
+    {
+      "rank": 1,
+      "variableId": "V7",
+      "weightPct": 26.0,
+      "oneLineReason": "oppFloorCap=38 + collapseFloorCap=16 + totB=B+myOut + prime keep<=10~26*L stripped frontline home density down to d=3.9~25, causing midgame leads in G01, G04, G06, G08 to collapse under enemy counter-attacks."
+    },
+    {
+      "rank": 2,
+      "variableId": "V10",
+      "weightPct": 22.0,
+      "oneLineReason": "Zero team-level focus-fire lock (focusBonus=1.0, maxTargets=6, unsubtracted allyAtk), 2-tick RTT assist machine-gunning (125 pokes draining 50%~81% B per burst), and Redacted cross-team fratricide (G09 t=2695..3060) destroyed squad synergy."
+    },
+    {
+      "rank": 3,
+      "variableId": "V1",
+      "weightPct": 18.0,
+      "oneLineReason": "Pre-d590acd VirtualSquadAnchor landed on tiny islands/peninsulas in Boss-less matches (stranding 4/6 bots on northern islands in G09 and 6/8 bots in G02/G05)."
+    },
+    {
+      "rank": 4,
+      "variableId": "V6",
+      "weightPct": 12.0,
+      "oneLineReason": "pct=51 (5% B) micro-donations paid a flat 6.25% B engine tax (55.2% loss rate across 382 donations) while starving boxed-in rear bots before t=1500."
+    },
+    {
+      "rank": 5,
+      "variableId": "V12",
+      "weightPct": 10.0,
+      "oneLineReason": "Server 0 error 4577 and unverified 'Redacted' names reduced active [Nope] bots to 6 in G09 (splitting them 4v2 across Team 2 and Team 3) and 7 in G08."
+    },
+    {
+      "rank": 6,
+      "variableId": "V2",
+      "weightPct": 6.0,
+      "oneLineReason": "Tightening allyMinSep<=112 and clusterMax<=350 compressed the squad into a small basin and triggered voronoi=500 fallbacks when crowded."
+    },
+    {
+      "rank": 7,
+      "variableId": "V5",
+      "weightPct": 6.0,
+      "oneLineReason": "Sea interception allowed up to 35% B per chase boat (e.g. G09 lucas94 burning 35.0% B at t=9120 and ryan_m burning 38.7% B across t=2695..2806)."
+    }
+  ],
+  "actionableFixes": [
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "offers (Team Focus-Fire Target Lock, Joint Kill-Need Subtraction, and Multi-Team War Penalty)",
+      "before": "let rankMult = 1.0;\n        if (atkOnBoss > 0 || bossAtkOnQ > 0) {\n          c *= 0.78;\n          rankMult *= 0.72;\n        } else if (clanAllyAtkers > 0 || allyAtk > 0.06 * Bq) {\n          c *= 0.82;\n          rankMult *= 0.78;\n        } else if (atkOnAlly > 0.08 * Bq) {\n          c *= 0.85;\n          rankMult *= 0.82;\n        }",
+      "after": "const jointNeed = Math.max(1, rawNeed - Math.floor(0.85 * allyAtk));\n        if (allyAtk > 0) c = (jointNeed + fee) / baseGain;\n        let squadWarTeams = 0, qTeamEngaged = false;\n        if (g.teams && g.teams[me] > 0) {\n          const engagedTeams = new Set();\n          for (let p = 0; p < g.humans; p++) {\n            if (!g.alive[p] || !this.isTeammate(g, p)) continue;\n            const sbP = g.slotBase(p);\n            for (let i = 0; i < g.atkCount[p]; i++) {\n              const tId = g.atkTarget[sbP + i];\n              if (tId >= 0 && tId < g.humans && !g.isBot(tId) && !this.isTeammate(g, tId)) engagedTeams.add(g.teams[tId]);\n            }\n          }\n          squadWarTeams = engagedTeams.size;\n          qTeamEngaged = engagedTeams.has(g.teams[q]);\n        }\n        let rankMult = 1.0;\n        if (atkOnBoss > 0 || bossAtkOnQ > 0) {\n          c *= 0.62;\n          rankMult *= 0.55;\n        } else if (clanAllyAtkers >= 2 || allyAtk >= 0.15 * Bq) {\n          c *= 0.55;\n          rankMult *= 0.48;\n        } else if (clanAllyAtkers > 0 || allyAtk > 0.04 * Bq) {\n          c *= 0.68;\n          rankMult *= 0.62;\n        } else if (atkOnAlly > 0.06 * Bq) {\n          c *= 0.75;\n          rankMult *= 0.70;\n        } else if (squadWarTeams >= 1 && !qTeamEngaged && !onMe && !nearCollapse) {\n          c *= 1.45;\n          rankMult *= 1.45;\n        }",
+      "riskLevel": "low"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "tryDonateToTeammate & tryEmergencyBossRescue (Fix 2-tick RTT Assist Machine-Gun Bug via lastAssistTick cooldown)",
+      "before": "if (mainAttacker >= 0 && (this.cnt[mainAttacker] ?? 0) > 0 && !g.hasAttack(me, mainAttacker) && g.hasFreeSlot(me) && dMe >= 65) {\n          if (g.attack(102, mainAttacker, me)) {\n            this.cmds++;\n            this.hitTo.set(mainAttacker, g.t);",
+      "after": "if (mainAttacker >= 0 && (this.cnt[mainAttacker] ?? 0) > 0 && !g.hasAttack(me, mainAttacker) && g.hasFreeSlot(me) && dMe >= 85 && g.t - (this.lastAssistTick ?? -999) >= 90 && g.t - (this.hitTo.get(mainAttacker) ?? -999) >= 60) {\n          if (g.attack(102, mainAttacker, me)) {\n            this.lastAssistTick = g.t;\n            this.cmds++;\n            this.hitTo.set(mainAttacker, g.t);",
+      "riskLevel": "low"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "PARAMS (Restore single-front focusBonus and maxTargets discipline)",
+      "before": "period: 2,\n  maxTargets: 6,\n  bleedDiscount: 0.65,\n  ...\n  focusBonus: 1.0,",
+      "after": "period: 4,\n  maxTargets: 3,\n  bleedDiscount: 0.65,\n  ...\n  focusBonus: 0.78,",
+      "riskLevel": "low"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "isTeammate & tryInterceptEnemyBoats (Prevent Redacted Squad Brother Fratricide)",
+      "before": "if (owner === me || owner >= 512 || this.isTeammate(g, owner)) continue;",
+      "after": "if (owner === me || owner >= 512 || this.isTeammate(g, owner) || this.isOurSquadBot(g, owner)) continue;",
+      "riskLevel": "low"
+    }
+  ]
+}
