@@ -4267,15 +4267,25 @@ export class Policy extends V17 {
     return false;
   }
 
-  // UNIFIED ORGANISM DYNAMIC DISPATCH ENGINE:
-  // Mid-to-late game treats all 10 [APEX] territories as ONE single organism:
-  //   1) Rapid Defense Dispatch: wherever an enemy attacks ANY brother, all unattacked brothers immediately pump troops to that front.
-  //   2) Opportunity Offense Dispatch: instead of blindly feeding one static giant, pump troops to whichever frontline brother is actively attacking (`outAtk > 0`) or borders the weakest/bleeding enemy!
-  //   3) Frontline Equalization: rear boxed-in banks (`dMe >= 32`) and high-density brothers (`dMe >= 98`) continuously equalize frontline density across all active fronts.
+  // UNIFIED ORGANISM: JOINT DEFENSE + TROOP PRODUCTION YIELD OPTIMIZER (t >= 1500 only):
+  // Mathematical foundation:
+  //   1) Early Game (t < 1500): Everyone expands on neutral land & AI bots with up to 7% compound interest.
+  //      Paying 6.25% flat transfer tax before t=1500 destroys early compound growth -> ZERO transfers before t=1500!
+  //   2) Marginal Troop Production Curve (t >= 1500):
+  //      Total interest I(B) = r0 * B for d <= 100, and r0 * B * (3 - 2*d/100) for 100 < d <= 150.
+  //      Taking the derivative dI/dB:
+  //        - For d < 100: marginal yield is +1.00 * r0 (every troop produces maximum interest).
+  //        - For d > 100: marginal yield is r0 * (3 - 4*d/100) -> NEGATIVE! (At d=110, -1.4*r0; at d=125, -2.0*r0!)
+  //      Therefore, draining a rear bank down to d=35 destroys its troop production capacity (losing 65*L * r0 every 10 ticks),
+  //      whereas keeping every territory in the [78*L, 100*L] sweet spot MAXIMIZES whole-squad troop production AND defense simultaneously!
+  //   3) Transfer Trigger Condition (Marginal Gain > 6.25% Tax):
+  //      - Normal Production-Optimal Dispatch: Donor is at `dMe >= 100` (negative marginal interest) and Recipient is at `dAlly <= 88` (+1.0*r0 marginal interest) or actively converting troops into land (`outHumanAtk > 0`). Moving troops from d>100 to d<88 flips marginal production from -1.5*r0 to +1.0*r0 (+2.5*r0 net gain per 10 ticks, paying back the 6.25% fee in ~25 ticks while boosting frontline defense!).
+  //      - Emergency Defense Dispatch: Recipient is under active human attack (`inHumanAtk > 0` and `dAlly < 88`), where every delivered troop absorbs 2.0 enemy troops (200% defensive value). Here rear banks can dip down to `48*L` (inland) / `65*L` (coastal) to save the territory!
   tryDonateToTeammate(g, emergencyOnly = false) {
     const me = this.me;
     if (!g.teams || !(g.teams[me] > 0) || typeof g.donate !== "function") return false;
-    if (g.t < 400 || g.terr[me] < 2000 || g.bal[me] < 35000 || g.t - (this.lastDonateTick ?? -999) < 14) return false;
+    // Rule #7671: Never transfer during the opening AI-bot phase (t < 1500)!
+    if (g.t < 1500 || g.terr[me] < 2500 || g.bal[me] < 50000 || g.t - (this.lastDonateTick ?? -999) < 16) return false;
     const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
 
     let myHumanInAtk = 0, myHumanOutAtk = 0;
@@ -4287,7 +4297,6 @@ export class Policy extends V17 {
       const tgt = g.atkTarget[sbMe + i];
       if (tgt >= 0 && tgt < g.humans && !g.isBot(tgt) && !this.isTeammate(g, tgt)) myHumanOutAtk += g.atkTroops[sbMe + i];
     }
-    // Never donate while we ourselves are under human attack or actively pushing a major offensive wave!
     if (myHumanInAtk > 0 || myHumanOutAtk > 0.08 * B) return false;
 
     const enemyHumanNbs = this.nb.filter((p) => g.alive[p] && this.person(g, p));
@@ -4300,52 +4309,51 @@ export class Policy extends V17 {
         }
       }
     }
-    const boxedIn = !anyEnemyNb && this.nb.length === 0 && (this.neutral === 0 || (g.t >= 850 && this.neutral <= 8 && dMe >= 55));
+    const boxedIn = !anyEnemyNb && this.nb.length === 0 && this.neutral === 0;
     const hasExposedCoast = (g.coast?.[me]?.length ?? 0) > 0;
-    const coastGuardFloor = boxedIn ? (hasExposedCoast ? 28 * L : 16 * L) : (hasExposedCoast && g.t >= 1100 ? 64 * L : 52 * L);
-    const safeFloor = boxedIn ? coastGuardFloor : Math.max(coastGuardFloor, enemyHumanNbs.length > 0 ? 0.82 * this.safeAt(g, -1) : 0);
-    if (B <= 1.06 * safeFloor) return false;
-
-    const maxSurplus = Math.max(0, B - 1.04 * safeFloor);
-    const maxSafePct = Math.floor((maxSurplus * 1024) / Math.max(1, B));
-    if (maxSafePct < 96) return false;
 
     // 1. Boss "npl" check (if present)
     const bossId = this.findBossId(g);
     if (bossId >= 0 && g.alive[bossId] && g.terr[bossId] >= 100 && (!window.ao?.iD || window.ao.iD(bossId))) {
       const dBoss = g.bal[bossId] / Math.max(1, g.terr[bossId]);
-      let bossInAtk = 0, bossOutAtk = 0;
+      let bossInAtk = 0;
       for (const a of g.attackersOf(bossId)) bossInAtk += g.attackTroopsOn(a, bossId);
-      const sbB = g.slotBase(bossId);
-      for (let i = 0; i < g.atkCount[bossId]; i++) {
-        if (g.atkTarget[sbB + i] !== 512) bossOutAtk += g.atkTroops[sbB + i];
-      }
-      if ((bossInAtk > 0 || bossOutAtk > 0.04 * g.bal[bossId] || dBoss < 118) && dMe >= (boxedIn ? 24 : 78)) {
-        const pct = Math.min(maxSafePct, boxedIn ? 320 : 180);
-        if (pct >= 96 && g.donate(pct, bossId, me)) {
+      const bossFloor = bossInAtk > 0 ? (boxedIn ? 40 * L : 72 * L) : (boxedIn ? 75 * L : 88 * L);
+      if ((bossInAtk > 0 || dBoss < 112) && B > 1.15 * bossFloor) {
+        const maxPct = Math.floor(((B - bossFloor) * 1024) / B);
+        const pct = Math.min(maxPct, boxedIn ? 260 : 180);
+        if (pct >= 120 && g.donate(pct, bossId, me)) {
           this.lastDonateTick = g.t;
           this.lastBossDonateTick = g.t;
           this.cmds++;
-          if (typeof window !== "undefined" && window.__hlLog) {
-            window.__hlLog(`[HL-DONATE] t=${g.t} boss dispatch pct=${pct}/1024 -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)}`);
-          }
           return true;
         }
       }
     }
 
-    // 2. RAPID DEFENSE & ACTIVE OFFENSE DISPATCH ACROSS ALL SQUAD BROTHERS:
-    // Scan every living [APEX] brother and score their immediate tactical need for troops:
-    //   - Under enemy human attack (`inHumanAtk > 0`): highest urgency! Any unattacked brother with `dMe >= 80` (or boxedIn `dMe >= 30`) dispatches immediately!
-    //   - Actively pushing an enemy (`outHumanAtk > 0`): high urgency! Feed the brother who is actively converting troops into enemy territory!
-    //   - Bordering a thin/bleeding enemy (`minEnemyDens < 55`): feed the brother who has the best offensive opening right now!
-    let bestTarget = -1, bestUrgency = -Infinity, bestKind = "equalize";
+    // 2. JOINT DEFENSE + PRODUCTION YIELD OPTIMIZATION ACROSS ALL [APEX] TERRITORIES:
+    // Production-optimal reserve floor (`prodOptFloor`):
+    //   - Even a boxed-in rear bank MUST keep `76 * L` during normal play so its land produces maximum interest (`+r0` on 76*L)
+    //     and only skims off the top when it hits `dMe >= 98` (right before the `100*L` negative-marginal-interest cliff)!
+    //   - Frontline territory keeps `Math.max(86 * L, this.safeAt(g, -1))` and only skims off surplus when `dMe >= 106` (where marginal interest is negative `-1.24*r0`).
+    const prodOptFloor = boxedIn
+      ? (hasExposedCoast ? 80 * L : 76 * L)
+      : Math.max(hasExposedCoast ? 86 * L : 84 * L, this.safeAt(g, -1));
+
+    // Emergency defense floor (`emergDefFloor`): when a brother is being attacked by an enemy human (`underFire`),
+    // his survival (preserving his L pixels of rent+interest capacity + 2:1 defensive trade) justifies dipping into rear reserves down to 48*L!
+    const emergDefFloor = boxedIn
+      ? (hasExposedCoast ? 62 * L : 46 * L)
+      : Math.max(76 * L, 0.85 * this.safeAt(g, -1));
+
+    let bestTarget = -1, bestScore = -Infinity, bestKind = "prod_opt", bestFloor = prodOptFloor;
+
     for (let p = 0; p < g.humans; p++) {
-      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 800) continue;
+      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 1000) continue;
       if (typeof window !== "undefined" && window.ao?.iD && !window.ao.iD(p)) continue;
 
       const Lp = Math.max(1, g.terr[p]), Bp = g.bal[p], dAlly = Bp / Lp;
-      if (dAlly >= 136) continue;
+      if (dAlly >= 105) continue; // Never dispatch to a territory already above the 100*L full-interest cap!
 
       let inHumanAtk = 0, outHumanAtk = 0;
       for (const a of g.attackersOf(p)) {
@@ -4366,57 +4374,61 @@ export class Policy extends V17 {
           enemyNbs++;
           const doDens = g.bal[o] / Math.max(1, g.terr[o]);
           if (doDens < minEnemyDens) minEnemyDens = doDens;
-          if (doDens < 42 || g.terr[o] <= 0.35 * (g.peak?.[o] ?? g.terr[o])) hasBleedingPrey = true;
+          if (doDens < 45 || g.terr[o] <= 0.35 * (g.peak?.[o] ?? g.terr[o])) hasBleedingPrey = true;
         }
       }
 
-      // A boxed-in brother in the rear never needs troops dispatched TO him!
-      if (enemyNbs === 0 && inHumanAtk === 0 && outHumanAtk === 0 && g.t >= 1600) continue;
+      // Never send troops to a rear boxed-in territory that has no enemies and no combat!
+      if (enemyNbs === 0 && inHumanAtk === 0 && outHumanAtk === 0) continue;
 
-      const underFire = inHumanAtk > 0 && (inHumanAtk >= 0.05 * Bp || dAlly < 92);
-      const activePush = outHumanAtk >= 0.06 * Bp && dAlly < 115;
-      const hasPreyOpening = enemyNbs > 0 && (hasBleedingPrey || minEnemyDens < 0.72 * dAlly) && dAlly < 112;
+      const underFire = inHumanAtk > 0 && (inHumanAtk >= 0.06 * Bp || dAlly < 86);
+      const activePush = outHumanAtk >= 0.06 * Bp && dAlly < 96;
+      const hasPreyOpening = enemyNbs > 0 && (hasBleedingPrey || minEnemyDens < 0.70 * dAlly) && dAlly < 96;
 
       if (emergencyOnly && !underFire) continue;
 
-      // Determine minimum donor density required for this dispatch type:
-      const reqDonorDens = underFire
-        ? (boxedIn ? 28 : 80)
-        : (activePush || hasPreyOpening)
-          ? (boxedIn ? 32 : 98)
-          : (boxedIn ? 38 : 114);
-
-      if (dMe < reqDonorDens || (!boxedIn && dMe < dAlly + 14)) continue;
-
-      let urgency = 0;
-      let kind = "equalize";
       if (underFire) {
-        kind = "defense_dispatch";
-        urgency = 5000 + (inHumanAtk / Math.max(1, Bp)) * 2000 + (110 - dAlly) * 22 + Math.min(600, Lp / 40);
-      } else if (activePush || hasPreyOpening) {
-        kind = "offense_dispatch";
-        urgency = 2500 + (outHumanAtk / Math.max(1, Bp)) * 1200 + (hasBleedingPrey ? 600 : 0) + (120 - dAlly) * 14 + Math.min(500, Lp / 45);
+        // Case A: Emergency 2:1 Defense Dispatch
+        const reqD = boxedIn ? (hasExposedCoast ? 72 : 58) : 92;
+        if (dMe < reqD || B <= 1.12 * emergDefFloor || (!boxedIn && dMe < dAlly + 16)) continue;
+        const score = 5000 + (inHumanAtk / Math.max(1, Bp)) * 2000 + (100 - dAlly) * 25 + Math.min(600, Lp / 40);
+        if (score > bestScore) {
+          bestScore = score;
+          bestTarget = p;
+          bestKind = "defense_dispatch";
+          bestFloor = emergDefFloor;
+        }
       } else {
-        kind = "front_equalize";
-        urgency = 800 + (125 - dAlly) * 12 + enemyNbs * 90 + Math.min(400, Lp / 50);
-      }
-
-      if (urgency > bestUrgency) {
-        bestUrgency = urgency;
-        bestTarget = p;
-        bestKind = kind;
+        // Case B: Joint Production + Offense Yield Optimization
+        // Donor MUST be at or above the 100*L negative-marginal-interest threshold (`dMe >= 98` if boxedIn, `dMe >= 106` if frontline)
+        // AND Recipient must be below 92*L so moving troops from Donor -> Recipient shifts troops from NEGATIVE marginal interest (-1.4*r0)
+        // to POSITIVE +1.0*r0 full interest + frontline defense/offense!
+        const reqD = boxedIn ? 98 : 106;
+        if (dMe < reqD || dAlly > 90 || B <= 1.14 * prodOptFloor || dMe < dAlly + 18) continue;
+        const score = (activePush || hasPreyOpening ? 2500 : 1000) +
+          (outHumanAtk / Math.max(1, Bp)) * 1200 +
+          (hasBleedingPrey ? 500 : 0) +
+          (100 - dAlly) * 18 +
+          enemyNbs * 80 +
+          Math.min(500, Lp / 45);
+        if (score > bestScore) {
+          bestScore = score;
+          bestTarget = p;
+          bestKind = activePush || hasPreyOpening ? "offense_dispatch" : "yield_opt_dispatch";
+          bestFloor = prodOptFloor;
+        }
       }
     }
 
     if (bestTarget < 0) return false;
 
-    const targetPct = bestKind === "defense_dispatch"
-      ? (boxedIn ? 300 : 200)
-      : bestKind === "offense_dispatch"
-        ? (boxedIn ? 260 : 175)
-        : (boxedIn ? 220 : 150);
-    const pct = Math.min(maxSafePct, targetPct);
-    if (pct < 96) return false;
+    const maxSurplus = Math.max(0, B - bestFloor);
+    const maxSafePct = Math.floor((maxSurplus * 1024) / Math.max(1, B));
+    const idealPct = bestKind === "defense_dispatch"
+      ? (boxedIn ? 260 : 190)
+      : (boxedIn ? 225 : 170);
+    const pct = Math.min(maxSafePct, idealPct);
+    if (pct < 128) return false; // Never send tiny transfers (<12.5%B) that suffer >33% tax loss!
 
     if (g.donate(pct, bestTarget, me)) {
       this.lastDonateTick = g.t;
@@ -4760,9 +4772,6 @@ export class Policy extends V17 {
       const before = this.cmds;
       const balBefore = g.bal[me];
       super.act(g);
-      if (this.cmds === before && g.t >= 850 && this.neutral === 0 && !this.hasBorderFood(g)) {
-        this.tryDonateToTeammate(g);
-      }
       if (this.cmds > before && g.bal[me] <= 0.75 * balBefore) {
         this.lastLandSpendTick = g.t;
       }
@@ -4863,47 +4872,5 @@ export class Policy extends V17 {
 
   compSize(g) {
     if (!(this.p.seaFree > 0) || g.t < this.p.coreFrom) return super.compSize(g);
-    if (this.freeAt === g.t) return this.freeComp;
-    const N = g.N, px = g.px, own = g.own, d = g.dir4, me = this.me;
-    const c = this.freeComp?.length === N ? this.freeComp.fill(0) : new Int32Array(N);
-    const seen = new Uint8Array(N), q = new Int32Array(N);
-    for (let s = 0; s < N; s++) {
-      if (px[s] !== T_LAND || seen[s]) continue;
-      let h = 0, t = 0, taken = false;
-      q[t++] = s;
-      seen[s] = 1;
-      while (h < t) {
-        const a = q[h++];
-        for (let k = 0; k < 4; k++) {
-          const n = a + d[k];
-          if (n < 0 || n >= N) continue;
-          const v = px[n];
-          if (v === T_LAND) {
-            if (!seen[n]) {
-              seen[n] = 1;
-              q[t++] = n;
-            }
-          } else if (v >= P_INNER && own[n] !== me) taken = true;
-        }
-      }
-      const effSize = !taken ? t : t >= 120 ? Math.max(100, t >> 1) : 0;
-      if (effSize > 0) for (let i = 0; i < t; i++) c[q[i]] = effSize;
-    }
-    this.freeAt = g.t;
-    this.freeComp = c;
-    return c;
-  }
-
-  idleBoats(g) {
-    const P = this.p, me = this.me;
-    if (this.isMopUp(g)) {
-      if (!g.boatsAllowed(me) || g.boatCount[me] >= 6) return;
-      const oldRange = P.boatRange;
-      P.boatRange = 2500;
-      this.boatOut(g, () => 0, Infinity);
-      P.boatRange = oldRange;
-      return;
-    }
-    if (P.a06BoatUnderAtk > 0 && g.t >= 3500 && g.bal[me] < 100 * g.terr[me]) {
-      let hum
+    if (this.freeAt 
 
