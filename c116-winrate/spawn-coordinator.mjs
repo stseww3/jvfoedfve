@@ -534,7 +534,7 @@ export class TeamSpawnCoordinator {
     for (let y = 24; y < H - 24; y += stride) {
       for (let x = 24; x < W - 24; x += stride) {
         const c = y * W + x;
-        if (!landMask[c]) continue;
+        if (!landMask[c] || (this.maxCompSize > 0 && this.compSize[c] < 0.75 * this.maxCompSize)) continue;
         const clearance = Math.min(dComp[c], 220);
         if (clearance < 24) continue;
         const pm = this.computePinchMetrics(x, y, enemies, null, [], scales);
@@ -923,11 +923,10 @@ export class TeamSpawnCoordinator {
           for (let x = 16; x < W - 16; x += stride) {
             const c = y * W + x;
             if (!landMask[c]) continue;
-            // Strictly keep ALL squad bots on Boss's continent whenever Boss is on a viable continent!
-            if (bossCompId >= 0 && bossContinentSize >= 15000 && relax >= 0.55) {
+            // Strictly keep ALL squad bots on the main continent (never on small islands)!
+            if (this.compSize[c] < minViableCompSize) continue;
+            if (realBoss && bossCompId >= 0 && bossContinentSize >= 15000 && relax >= 0.55) {
               if (this.compId[c] !== bossCompId) continue;
-            } else if (relax >= 0.60 && this.compSize[c] < minViableCompSize) {
-              continue;
             }
             if (distToChosenSquad(x, y) < reqAllySep) continue;
             if (distToEnemies(x, y) < reqEnemyClear) continue;
@@ -959,7 +958,7 @@ export class TeamSpawnCoordinator {
             } else if (enforceCluster) {
               // Keep outer wing connected to the same continent & geodesic distance from Boss
               if (distToOurCluster(x, y) > maxClusterDist) continue;
-              if (anchorBoss && (this.dBoss[c] < 0 || this.dBoss[c] > maxClusterDist * 1.35) && relax >= 0.60) continue;
+              if (realBoss && (this.dBoss[c] < 0 || this.dBoss[c] > maxClusterDist * 1.35) && relax >= 0.60) continue;
             }
 
             const clearance = Math.min(dComp[c], 220);
