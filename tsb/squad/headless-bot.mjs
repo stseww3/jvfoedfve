@@ -740,6 +740,23 @@ if (!isMainThread && workerData?.bot) {
       if (c.kind === 'post' && sandbox.__tsbReportResult) {
         sandbox.__tsbReportResult(c.body);
       }
+      if (c.kind === 'post' && c.body) {
+        const d = typeof c.body === 'string' ? JSON.parse(c.body) : c.body;
+        if (d && d.type === 'replay') {
+          const repDir = path.join(__dirname, 'replays');
+          if (!fs.existsSync(repDir)) fs.mkdirSync(repDir, { recursive: true });
+          const rawFull = (typeof sandbox.aE === 'object' && typeof sandbox.aE.a7f === 'string' && sandbox.aE.a7f.length > 100) ? sandbox.aE.a7f : (d.replay || '');
+          const cutIdx = rawFull.indexOf('=');
+          const pureCode = (cutIdx >= 0 ? rawFull.slice(cutIdx + 1) : rawFull).trim();
+          if (pureCode.length > 100) {
+            const safeName = String(name).replace(/[^\w.-]+/g, '_');
+            const repFile = path.join(repDir, `replay-${d.game || Date.now()}-${safeName}.txt`);
+            fs.writeFileSync(repFile, pureCode, 'utf8');
+            fs.writeFileSync(path.join(repDir, 'latest-replay.txt'), pureCode, 'utf8');
+            parentPort.postMessage({ type: 'log', text: `[REPLAY-SAVED] game=${d.game} len=${pureCode.length} -> ${repFile}` });
+          }
+        }
+      }
     } catch (err) {
       parentPort.postMessage({ type: 'log', text: `[HL-ERR] tsb-remote parse: ${err?.message || err}` });
     }

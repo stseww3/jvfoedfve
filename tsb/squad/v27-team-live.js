@@ -29,6 +29,20 @@ try {
         return prevAfterTick();
       };
     }
+    if (sb && !sb.__hookedReplayLog) {
+      sb.__hookedReplayLog = true;
+      const origReplay = sb.replay ? sb.replay.bind(sb) : null;
+      sb.replay = function(text) {
+        try {
+          if (typeof text === "string" && text.length > 100 && window.__tsbReportResult) {
+            const cut = text.indexOf("=");
+            const pure = (cut >= 0 ? text.slice(cut + 1) : text).trim();
+            window.__tsbReportResult(JSON.stringify({ type: "raw_replay", replay: pure }));
+          }
+        } catch {}
+        if (origReplay) return origReplay(text);
+      };
+    }
   }
 } catch {}
 // Self-contained strategy v27 (Unified Synthesis of c81 A07 + c80 A06 Safety Clauses over v24, by c58).

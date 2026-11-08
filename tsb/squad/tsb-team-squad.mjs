@@ -235,6 +235,16 @@ function recordResult(name, port, rawPayload) {
       const resFile = fs.existsSync(__dirname) ? path.join(__dirname, 'tsb-team-results.jsonl') : '/tmp/tsb-team-results.jsonl';
       fs.appendFileSync(resFile, line + '\n');
       console.log(`[RESULT ${name}] result=${data.result} event=${data.event} place=${data.place} peak=${data.peak} team=${JSON.stringify(data.team || null)}`);
+    } else if (data && (data.type === 'raw_replay' || data.type === 'replay') && typeof data.replay === 'string' && data.replay.length > 100) {
+      const repDir = path.join(__dirname, 'replays');
+      if (!fs.existsSync(repDir)) fs.mkdirSync(repDir, { recursive: true });
+      const cut = data.replay.indexOf('=');
+      const pure = (cut >= 0 ? data.replay.slice(cut + 1) : data.replay).trim();
+      const safeName = String(name).replace(/[^\w.-]+/g, '_');
+      const repFile = path.join(repDir, `replay-${data.game || Date.now()}-${safeName}.txt`);
+      fs.writeFileSync(repFile, pure, 'utf8');
+      fs.writeFileSync(path.join(repDir, 'latest-replay.txt'), pure, 'utf8');
+      console.log(`[REPLAY SAVED ${name}] len=${pure.length} -> ${repFile}`);
     }
   } catch {}
 }
