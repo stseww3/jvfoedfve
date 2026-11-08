@@ -4285,6 +4285,37 @@ export class Policy extends V17 {
     return bestP;
   }
 
+  // PRIVATELY SEND SCALES EMOJI (r5 = 1015) TO BOSS EVERY 10s (180 ticks) (#8051):
+  // Uses directed private emoji packet bB.gv.rJ(1015, bossId) / b1.qo.rK(1015, bossId) (NEVER public bB.hz.r4),
+  // so ONLY Boss sees the scales icon above all 20 undercover brothers on the map!
+  tryPrivateBossEmoji(g) {
+    if (typeof window === "undefined" || !g.online) return;
+    const me = this.me;
+    if (!g.alive[me] || g.terr[me] <= 0) return;
+    const slot = ((typeof window.__tsbSquadSlot === "number" ? window.__tsbSquadSlot : me) | 0) % 20;
+    if (g.t < 25 + slot * 4) return;
+    if (g.t - (this._lastBossEmojiTick ?? -999) < 180) return;
+    let bossId = -1;
+    for (let p = 0; p < g.humans; p++) {
+      if (this.isBossNpl(g, p) && g.alive[p] && g.terr[p] > 0) {
+        bossId = p;
+        break;
+      }
+    }
+    if (bossId < 0) return;
+    this._lastBossEmojiTick = g.t;
+    try {
+      const d = window.dictionary;
+      const bBCmd = (d && window[d.sbCommands]) || window.bB;
+      const b1Net = (d && window[d.sbNet]) || window.b1;
+      if (bBCmd?.gv && typeof bBCmd.gv.rJ === "function") {
+        bBCmd.gv.rJ(1015, bossId);
+      } else if (b1Net?.qo && typeof b1Net.qo.rK === "function") {
+        b1Net.qo.rK(1015, bossId);
+      }
+    } catch {}
+  }
+
   // AUTO PEACE VOTE CALL & ACCEPT:
   // ONLY call or vote YES on peace once only 1 team remains alive (or while wild outsiders are still alive and our own team has >=58% land)!
   tryPeaceVote(g) {
@@ -4885,6 +4916,7 @@ export class Policy extends V17 {
       } catch {}
       return;
     }
+    this.tryPrivateBossEmoji(g);
     if (g.t < P.coreFrom) {
       this.analyze(g);
       if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
