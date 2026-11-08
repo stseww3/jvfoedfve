@@ -834,9 +834,9 @@ export class TeamSpawnCoordinator {
       rCell: Math.round(rCell),
       bossExcl: clamp(Math.round(Math.max(1.12 * rCell, 0.078 * diag)), 68, 120),
       flankMax: clamp(Math.round(Math.max(2.30 * rCell, 0.170 * diag)), 135, 235),
-      allyMinSep: clamp(Math.round(Math.max(1.42 * rCell, 0.105 * diag)), 118, 168),
+      allyMinSep: clamp(Math.round(1.48 * rCell), 72, 118), 118, 168),
       enemyMinClearance: clamp(Math.round(0.70 * rCell), 36, 78),
-      clusterMax: clamp(Math.round(Math.max(4.40 * rCell, 0.380 * diag)), 340, 580),
+      clusterMax: clamp(Math.round(3.35 * rCell), 190, 320), 340, 580),
     };
 
     // Build initial distance fields with realBoss (if placed)
@@ -967,7 +967,7 @@ export class TeamSpawnCoordinator {
               if (sectorConflict) continue;
             } else if (enforceCluster) {
               // Keep 10-bot phalanx in a compact 2D disc (not a 900px 1D snake!)
-              if (distToOurCluster(x, y) > scales.allyMinSep * (2.6 - 0.8 * relax)) continue;
+              if (distToOurCluster(x, y) > scales.allyMinSep * (2.1 - 0.5 * relax)) continue;
               if (distToClusterCore(x, y) > maxClusterDist) continue;
               if (anchorBoss && (this.dBoss[c] < 0 || this.dBoss[c] > maxClusterDist * 1.35) && relax >= 0.60) continue;
             }

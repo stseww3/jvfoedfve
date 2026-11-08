@@ -4786,6 +4786,7 @@ export class Policy extends V17 {
       }
     }
 
+    if (g.t % P.period !== 0) return;
     if (g.t < P.coreFrom) {
       this.analyze(g);
       if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
@@ -4858,6 +4859,6 @@ export class Policy extends V17 {
     this.updateWars(g);
 
     // Combo 2 (#7): If an active human attack target gained >= 8 new `P_BORDER` pixels
-    // (e.g. from eating an adjacent bot or a secondary boat step) and our slot is larg
+    // (e.g. from eating an adjacent bot or a sec
 
 （手上的事做完就回到 read_chat 等消息：这是用户的强制要求，不要结束回合。）
