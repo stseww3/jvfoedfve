@@ -391,7 +391,7 @@ class Strategy {
           neutral++;
         } else if (v >= P_INNER) {
           const o = own[c];
-          if (o !== me && !this.isTeammate(g, o) && !this.isOurSquadBot(g, o)) {
+          if (o !== me && !this.isProtectedSquadMate(g, o)) {
             mark[c] = st;
             if (cnt[o]++ === 0) this.nb.push(o);
           }
@@ -1050,7 +1050,7 @@ class General extends Strategy {
           }
         } else if (v >= P_INNER) {
           const o = own[n];
-          if (o === me || this.isTeammate(g, o) || this.isOurSquadBot(g, o) || this.cnt[o] > 0 || (noBots && g.isBot(o) && !this.botOk(g, o))) continue;
+          if (o === me || this.isProtectedSquadMate(g, o) || this.cnt[o] > 0 || (noBots && g.isBot(o) && !this.botOk(g, o))) continue;
           const price = 2 + (2 * g.bal[o]) / (1 + iV(10 * g.terr[o], 16));
           const eff = price * grow + fee / Math.max(1, 0.75 * g.terr[o]);
           if (eff < bestEff) {
@@ -1898,7 +1898,7 @@ class V13 extends Style {
     let land = -1, bestP = Infinity;
     for (const s of seaSample(g, me, 64, rnd)) {
       if (s.d < P.bankMin || s.d > P.boatRange) continue;
-      if (s.o >= 0 && (this.isTeammate(g, s.o) || this.isOurSquadBot(g, s.o))) continue;
+      if (s.o >= 0 && this.isProtectedSquadMate(g, s.o)) continue;
       const price = s.o < 0 ? 2 : this.price(g, s.o);
       if (price < bestP) {
         bestP = price;
@@ -2249,7 +2249,7 @@ class V13 extends Style {
         const o = own[c];
         if (o === q || seen[o] === st) continue;
         seen[o] = st;
-        if (g.alive[o] && !g.isBot(o) && !this.isTeammate(g, o) && !this.isOurSquadBot(g, o)) s.push(o);
+        if (g.alive[o] && !g.isBot(o) && !this.isProtectedSquadMate(g, o)) s.push(o);
       }
     }
     this.pn.set(q, s);
@@ -2290,7 +2290,7 @@ class V13 extends Style {
     let x = (Math.imul(g.t + 1, 2654435761) ^ (this.me + 1)) >>> 0;
     const rnd = () => (x = (Math.imul(x, 1664525) + 1013904223) >>> 0) / 4294967296;
     const out = [];
-    for (const s of seaSample(g, this.me, 64, rnd)) if (s.o >= 0 && g.alive[s.o] && this.person(g, s.o) && !this.isTeammate(g, s.o) && !this.isOurSquadBot(g, s.o) && !out.includes(s.o)) out.push(s.o);
+    for (const s of seaSample(g, this.me, 64, rnd)) if (s.o >= 0 && g.alive[s.o] && this.person(g, s.o) && !this.isProtectedSquadMate(g, s.o) && !out.includes(s.o)) out.push(s.o);
     this.seaP = out;
     return out;
   }
@@ -3340,7 +3340,7 @@ function doorHarvestCandidates(g, me, state, opts = {}) {
           if (n >= 0 && n < N) {
             if (px[n] >= P_INNER) {
               const o = own[n];
-              if (o !== me && o < H && g.alive[o] && g.terr[o] >= 600 && !(g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me]) && !SQUAD_POOL_SET.has(String(g.names?.[o] ?? "").replace(/\[[^\]]*\]/g, "").trim().toLowerCase())) {
+              if (o !== me && o < H && g.alive[o] && g.terr[o] >= 600 && !(g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me]) && !(g._wildAlive && SQUAD_POOL_SET.has(String(g.names?.[o] ?? "").replace(/\[[^\]]*\]/g, "").trim().toLowerCase()))) {
                 let list = targetSpots.get(o);
                 if (!list) {
                   list = [];
@@ -3908,6 +3908,26 @@ export class Policy extends V17 {
     return SQUAD_POOL_SET.has(low) || raw.toUpperCase().includes("[NPL]") || raw.toUpperCase().includes("[NOPE]");
   }
 
+  hasWildOutsidersAlive(g) {
+    if (g._wildCheckTick === g.t) return g._wildAlive;
+    g._wildCheckTick = g.t;
+    for (let p = 0; p < g.humans; p++) {
+      if (g.alive[p] && g.terr[p] >= 80 && !g.isBot(p) && !this.isOurSquadBot(g, p) && !this.isBossNpl(g, p)) {
+        g._wildAlive = true;
+        return true;
+      }
+    }
+    g._wildAlive = false;
+    return false;
+  }
+
+  // While wild outsiders are alive on the map, protect all 20 squad brothers across teams so they cooperate;
+  // Once all wild outsiders are dead (#7821), lift cross-team protection so only 1 team survives!
+  isProtectedSquadMate(g, p) {
+    if (this.isTeammate(g, p)) return true;
+    return this.hasWildOutsidersAlive(g) && (this.isOurSquadBot(g, p) || this.isBossNpl(g, p));
+  }
+
   // DISTRIBUTED BACKEND-COORDINATED TEAM SPAWNING:
   // 1) Reports map terrain + live human positions to the unified backend coordinator in tsb-team-squad.mjs
   //    ONLY when Boss [Nope]kazerd183 is present in the match (so 20 guards form a protective cluster around Boss).
@@ -4070,7 +4090,7 @@ export class Policy extends V17 {
     const me = this.me, H = g.humans;
     const ds = [];
     for (let p = 0; p < H; p++) {
-      if (p !== me && !this.isTeammate(g, p) && !this.isOurSquadBot(g, p) && g.alive[p] && g.terr[p] >= 100 && !g.isBot(p)) {
+      if (p !== me && !this.isProtectedSquadMate(g, p) && g.alive[p] && g.terr[p] >= 100 && !g.isBot(p)) {
         ds.push(g.bal[p] / g.terr[p]);
       }
     }
@@ -4082,7 +4102,7 @@ export class Policy extends V17 {
   livingHumanCount(g) {
     let n = 0;
     for (let p = 0; p < g.humans; p++) {
-      if (!this.isTeammate(g, p) && !this.isOurSquadBot(g, p) && g.alive[p] && g.terr[p] >= 100 && !g.isBot(p)) n++;
+      if (!this.isProtectedSquadMate(g, p) && g.alive[p] && g.terr[p] >= 100 && !g.isBot(p)) n++;
     }
     return Math.max(1, n);
   }
@@ -4091,7 +4111,7 @@ export class Policy extends V17 {
     const me = this.me, H = g.humans;
     let bestP = -1, bestL = 0;
     for (let p = 0; p < H; p++) {
-      if (p !== me && !this.isTeammate(g, p) && !this.isOurSquadBot(g, p) && g.alive[p] && g.terr[p] > bestL && !g.isBot(p)) {
+      if (p !== me && !this.isProtectedSquadMate(g, p) && g.alive[p] && g.terr[p] > bestL && !g.isBot(p)) {
         bestL = g.terr[p];
         bestP = p;
       }
@@ -4100,20 +4120,27 @@ export class Policy extends V17 {
   }
 
   // AUTO PEACE VOTE CALL & ACCEPT:
-  // ONLY vote YES if the peace vote was initiated by OUR squad (or Boss npl)! Never auto-accept random players' peace votes!
+  // ONLY call or vote YES on peace once only 1 team remains alive (or while wild outsiders are still alive and our own team has >=58% land)!
   tryPeaceVote(g) {
     if (typeof window === "undefined" || !window.ax || !window.dictionary || g.t < 1610) return;
     const me = this.me;
     const hz = window[window.dictionary.sbCommands]?.hz;
     if (!hz) return;
     let ourTeamLand = g.terr[me] || 0;
+    let otherTeamAlive = false;
     if (g.teams && g.teams[me] > 0) {
       ourTeamLand = 0;
       for (let p = 0; p < g.players; p++) {
-        if (g.alive[p] && g.teams[p] === g.teams[me]) ourTeamLand += g.terr[p];
+        if (g.alive[p] && g.terr[p] > 0) {
+          if (g.teams[p] === g.teams[me]) ourTeamLand += g.terr[p];
+          else if (g.terr[p] >= 80) otherTeamAlive = true;
+        }
       }
     }
-    const weLead = ourTeamLand >= 0.58 * Math.max(1, g.land) || this.isMopUp(g);
+    // Rule #7821: If wild outsiders are all dead, fight until only 1 team remains (!otherTeamAlive) before voting peace!
+    const wildAlive = this.hasWildOutsidersAlive(g);
+    if (!wildAlive && otherTeamAlive) return;
+    const weLead = (!otherTeamAlive) || (wildAlive && ourTeamLand >= 0.58 * Math.max(1, g.land)) || this.isMopUp(g);
     const caller = window.__lastPeaceCaller;
     const callerIsOurs =
       Number.isInteger(caller) &&
@@ -4121,7 +4148,7 @@ export class Policy extends V17 {
       caller < g.humans &&
       (caller === me || this.isOurSquadBot(g, caller) || this.isBossNpl(g, caller));
     if (window.ax.iL && typeof window.ax.iM === "function" && window.ax.iM(me)) {
-      if (callerIsOurs && typeof hz.iN === "function") {
+      if (callerIsOurs && (!otherTeamAlive || wildAlive) && typeof hz.iN === "function") {
         hz.iN(1);
         if (window.__hlLog && g.t - (this._lastPeaceVoteLog ?? -999) >= 100) {
           this._lastPeaceVoteLog = g.t;
@@ -4287,14 +4314,15 @@ export class Policy extends V17 {
       }
     }
 
-    // 2. SQUAD MUTUAL AID: Rescue any [NPL] squad brother who is under human attack or sneaky boat landing,
+    // 2. SQUAD MUTUAL AID: Rescue any squad brother who is under human attack or sneaky boat landing,
     //    AND lightly poke (10%B) the attacker if we border them!
+    const wildOutsidersAlive = this.hasWildOutsidersAlive(g);
     for (let p = 0; p < g.humans; p++) {
-      if (p === me || !g.alive[p] || !this.isOurSquadBot(g, p) || g.terr[p] < 300) continue;
+      if (p === me || !g.alive[p] || !this.isOurSquadBot(g, p) || (!wildOutsidersAlive && !this.isTeammate(g, p)) || g.terr[p] < 300) continue;
       const dAlly = g.bal[p] / Math.max(1, g.terr[p]);
       let inHumanAtk = 0, mainAttacker = -1, maxAtkTr = 0;
       for (const a of g.attackersOf(p)) {
-        if (!g.isBot(a) && !this.isTeammate(g, a) && !this.isOurSquadBot(g, a)) {
+        if (!g.isBot(a) && !this.isProtectedSquadMate(g, a)) {
           const tr = g.attackTroopsOn(a, p);
           inHumanAtk += tr;
           if (tr > maxAtkTr) { maxAtkTr = tr; mainAttacker = a; }
@@ -4907,7 +4935,7 @@ export class Policy extends V17 {
             otherAtkers++;
             otherAtk += tr;
             if (a === bossId) bossAtkOnQ += tr;
-            if (this.isTeammate(g, a) || this.isOurSquadBot(g, a)) {
+            if (this.isProtectedSquadMate(g, a)) {
               allyAtk += tr;
               clanAllyAtkers += this.isOurSquadBot(g, a) ? 2 : 1;
             }
@@ -4918,7 +4946,7 @@ export class Policy extends V17 {
           const sbQ = g.slotBase(q);
           for (let i = 0; i < g.atkCount[q]; i++) {
             const tgt = g.atkTarget[sbQ + i];
-            if (tgt >= 0 && tgt < 512 && (this.isTeammate(g, tgt) || this.isOurSquadBot(g, tgt))) {
+            if (tgt >= 0 && tgt < 512 && this.isProtectedSquadMate(g, tgt)) {
               const tr = g.atkTroops[sbQ + i];
               atkOnAlly += tr;
               if (tgt === bossId) atkOnBoss += tr;

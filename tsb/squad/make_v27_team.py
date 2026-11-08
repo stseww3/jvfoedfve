@@ -8,7 +8,7 @@ pool_names = [m.group(1).strip().lower() for m in re.finditer(r'"([^"]+)"', pool
 pool_set_js = "const SQUAD_POOL_SET = new Set(" + json.dumps(sorted(list(set(pool_names)))) + ");\n"
 s = pool_set_js + s
 
-# 1. Filter teammates AND our own 20 squad brothers out of analyze(g) so this.nb NEVER contains a brother even if overflowed to another team!
+# 1. Filter teammates AND (while wild outsiders are still alive) our own 20 squad brothers out of analyze(g)!
 old_analyze = """          const o = own[c];
           if (o !== me) {
             mark[c] = st;
@@ -16,7 +16,7 @@ old_analyze = """          const o = own[c];
           }"""
 
 new_analyze = """          const o = own[c];
-          if (o !== me && !this.isTeammate(g, o) && !this.isOurSquadBot(g, o)) {
+          if (o !== me && !this.isProtectedSquadMate(g, o)) {
             mark[c] = st;
             if (cnt[o]++ === 0) this.nb.push(o);
           }"""
@@ -30,7 +30,7 @@ old_people_of = """        if (o === q || seen[o] === st) continue;
 
 new_people_of = """        if (o === q || seen[o] === st) continue;
         seen[o] = st;
-        if (g.alive[o] && !g.isBot(o) && !this.isTeammate(g, o) && !this.isOurSquadBot(g, o)) s.push(o);"""
+        if (g.alive[o] && !g.isBot(o) && !this.isProtectedSquadMate(g, o)) s.push(o);"""
 assert old_people_of in s, "old_people_of not found"
 s = s.replace(old_people_of, new_people_of, 1)
 
@@ -39,18 +39,18 @@ old_search_water = """          const o = own[n];
           if (o === me || this.cnt[o] > 0 || (noBots && g.isBot(o) && !this.botOk(g, o))) continue;"""
 
 new_search_water = """          const o = own[n];
-          if (o === me || this.isTeammate(g, o) || this.isOurSquadBot(g, o) || this.cnt[o] > 0 || (noBots && g.isBot(o) && !this.botOk(g, o))) continue;"""
+          if (o === me || this.isProtectedSquadMate(g, o) || this.cnt[o] > 0 || (noBots && g.isBot(o) && !this.botOk(g, o))) continue;"""
 assert old_search_water in s, "old_search_water not found"
 s = s.replace(old_search_water, new_search_water, 1)
 
 # 4. Filter teammates AND squad brothers out of doorHarvestCandidates, seaPeople, and bankAct
 old_door_harvest = """              if (o !== me && o < H && g.alive[o] && g.terr[o] >= 600) {"""
-new_door_harvest = """              if (o !== me && o < H && g.alive[o] && g.terr[o] >= 600 && !(g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me]) && !SQUAD_POOL_SET.has(String(g.names?.[o] ?? "").replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase())) {"""
+new_door_harvest = """              if (o !== me && o < H && g.alive[o] && g.terr[o] >= 600 && !(g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me]) && !(g._wildAlive && SQUAD_POOL_SET.has(String(g.names?.[o] ?? "").replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase()))) {"""
 assert old_door_harvest in s, "old_door_harvest not found"
 s = s.replace(old_door_harvest, new_door_harvest, 1)
 
 old_sea_people = """    for (const s of seaSample(g, this.me, 64, rnd)) if (s.o >= 0 && g.alive[s.o] && this.person(g, s.o) && !out.includes(s.o)) out.push(s.o);"""
-new_sea_people = """    for (const s of seaSample(g, this.me, 64, rnd)) if (s.o >= 0 && g.alive[s.o] && this.person(g, s.o) && !this.isTeammate(g, s.o) && !this.isOurSquadBot(g, s.o) && !out.includes(s.o)) out.push(s.o);"""
+new_sea_people = """    for (const s of seaSample(g, this.me, 64, rnd)) if (s.o >= 0 && g.alive[s.o] && this.person(g, s.o) && !this.isProtectedSquadMate(g, s.o) && !out.includes(s.o)) out.push(s.o);"""
 assert old_sea_people in s, "old_sea_people not found"
 s = s.replace(old_sea_people, new_sea_people, 1)
 
@@ -59,7 +59,7 @@ old_bank_act = """    for (const s of seaSample(g, me, 64, rnd)) {
       const price = s.o < 0 ? 2 : this.price(g, s.o);"""
 new_bank_act = """    for (const s of seaSample(g, me, 64, rnd)) {
       if (s.d < P.bankMin || s.d > P.boatRange) continue;
-      if (s.o >= 0 && (this.isTeammate(g, s.o) || this.isOurSquadBot(g, s.o))) continue;
+      if (s.o >= 0 && this.isProtectedSquadMate(g, s.o)) continue;
       const price = s.o < 0 ? 2 : this.price(g, s.o);"""
 assert old_bank_act in s, "old_bank_act not found"
 s = s.replace(old_bank_act, new_bank_act, 1)
@@ -123,6 +123,26 @@ new_helpers = """  isTeammate(g, p) {
     const raw = String(g.names?.[p] ?? "").trim();
     const low = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
     return SQUAD_POOL_SET.has(low) || raw.toUpperCase().includes("[NPL]") || raw.toUpperCase().includes("[NOPE]");
+  }
+
+  hasWildOutsidersAlive(g) {
+    if (g._wildCheckTick === g.t) return g._wildAlive;
+    g._wildCheckTick = g.t;
+    for (let p = 0; p < g.humans; p++) {
+      if (g.alive[p] && g.terr[p] >= 80 && !g.isBot(p) && !this.isOurSquadBot(g, p) && !this.isBossNpl(g, p)) {
+        g._wildAlive = true;
+        return true;
+      }
+    }
+    g._wildAlive = false;
+    return false;
+  }
+
+  // While wild outsiders are alive on the map, protect all 20 squad brothers across teams so they cooperate;
+  // Once all wild outsiders are dead (#7821), lift cross-team protection so only 1 team survives!
+  isProtectedSquadMate(g, p) {
+    if (this.isTeammate(g, p)) return true;
+    return this.hasWildOutsidersAlive(g) && (this.isOurSquadBot(g, p) || this.isBossNpl(g, p));
   }
 
   // DISTRIBUTED BACKEND-COORDINATED TEAM SPAWNING:
@@ -287,7 +307,7 @@ new_helpers = """  isTeammate(g, p) {
     const me = this.me, H = g.humans;
     const ds = [];
     for (let p = 0; p < H; p++) {
-      if (p !== me && !this.isTeammate(g, p) && !this.isOurSquadBot(g, p) && g.alive[p] && g.terr[p] >= 100 && !g.isBot(p)) {
+      if (p !== me && !this.isProtectedSquadMate(g, p) && g.alive[p] && g.terr[p] >= 100 && !g.isBot(p)) {
         ds.push(g.bal[p] / g.terr[p]);
       }
     }
@@ -299,7 +319,7 @@ new_helpers = """  isTeammate(g, p) {
   livingHumanCount(g) {
     let n = 0;
     for (let p = 0; p < g.humans; p++) {
-      if (!this.isTeammate(g, p) && !this.isOurSquadBot(g, p) && g.alive[p] && g.terr[p] >= 100 && !g.isBot(p)) n++;
+      if (!this.isProtectedSquadMate(g, p) && g.alive[p] && g.terr[p] >= 100 && !g.isBot(p)) n++;
     }
     return Math.max(1, n);
   }
@@ -308,7 +328,7 @@ new_helpers = """  isTeammate(g, p) {
     const me = this.me, H = g.humans;
     let bestP = -1, bestL = 0;
     for (let p = 0; p < H; p++) {
-      if (p !== me && !this.isTeammate(g, p) && !this.isOurSquadBot(g, p) && g.alive[p] && g.terr[p] > bestL && !g.isBot(p)) {
+      if (p !== me && !this.isProtectedSquadMate(g, p) && g.alive[p] && g.terr[p] > bestL && !g.isBot(p)) {
         bestL = g.terr[p];
         bestP = p;
       }
@@ -317,20 +337,27 @@ new_helpers = """  isTeammate(g, p) {
   }
 
   // AUTO PEACE VOTE CALL & ACCEPT:
-  // ONLY vote YES if the peace vote was initiated by OUR squad (or Boss npl)! Never auto-accept random players' peace votes!
+  // ONLY call or vote YES on peace once only 1 team remains alive (or while wild outsiders are still alive and our own team has >=58% land)!
   tryPeaceVote(g) {
     if (typeof window === "undefined" || !window.ax || !window.dictionary || g.t < 1610) return;
     const me = this.me;
     const hz = window[window.dictionary.sbCommands]?.hz;
     if (!hz) return;
     let ourTeamLand = g.terr[me] || 0;
+    let otherTeamAlive = false;
     if (g.teams && g.teams[me] > 0) {
       ourTeamLand = 0;
       for (let p = 0; p < g.players; p++) {
-        if (g.alive[p] && g.teams[p] === g.teams[me]) ourTeamLand += g.terr[p];
+        if (g.alive[p] && g.terr[p] > 0) {
+          if (g.teams[p] === g.teams[me]) ourTeamLand += g.terr[p];
+          else if (g.terr[p] >= 80) otherTeamAlive = true;
+        }
       }
     }
-    const weLead = ourTeamLand >= 0.58 * Math.max(1, g.land) || this.isMopUp(g);
+    // Rule #7821: If wild outsiders are all dead, fight until only 1 team remains (!otherTeamAlive) before voting peace!
+    const wildAlive = this.hasWildOutsidersAlive(g);
+    if (!wildAlive && otherTeamAlive) return;
+    const weLead = (!otherTeamAlive) || (wildAlive && ourTeamLand >= 0.58 * Math.max(1, g.land)) || this.isMopUp(g);
     const caller = window.__lastPeaceCaller;
     const callerIsOurs =
       Number.isInteger(caller) &&
@@ -338,7 +365,7 @@ new_helpers = """  isTeammate(g, p) {
       caller < g.humans &&
       (caller === me || this.isOurSquadBot(g, caller) || this.isBossNpl(g, caller));
     if (window.ax.iL && typeof window.ax.iM === "function" && window.ax.iM(me)) {
-      if (callerIsOurs && typeof hz.iN === "function") {
+      if (callerIsOurs && (!otherTeamAlive || wildAlive) && typeof hz.iN === "function") {
         hz.iN(1);
         if (window.__hlLog && g.t - (this._lastPeaceVoteLog ?? -999) >= 100) {
           this._lastPeaceVoteLog = g.t;
@@ -504,14 +531,15 @@ new_helpers = """  isTeammate(g, p) {
       }
     }
 
-    // 2. SQUAD MUTUAL AID: Rescue any [NPL] squad brother who is under human attack or sneaky boat landing,
+    // 2. SQUAD MUTUAL AID: Rescue any squad brother who is under human attack or sneaky boat landing,
     //    AND lightly poke (10%B) the attacker if we border them!
+    const wildOutsidersAlive = this.hasWildOutsidersAlive(g);
     for (let p = 0; p < g.humans; p++) {
-      if (p === me || !g.alive[p] || !this.isOurSquadBot(g, p) || g.terr[p] < 300) continue;
+      if (p === me || !g.alive[p] || !this.isOurSquadBot(g, p) || (!wildOutsidersAlive && !this.isTeammate(g, p)) || g.terr[p] < 300) continue;
       const dAlly = g.bal[p] / Math.max(1, g.terr[p]);
       let inHumanAtk = 0, mainAttacker = -1, maxAtkTr = 0;
       for (const a of g.attackersOf(p)) {
-        if (!g.isBot(a) && !this.isTeammate(g, a) && !this.isOurSquadBot(g, a)) {
+        if (!g.isBot(a) && !this.isProtectedSquadMate(g, a)) {
           const tr = g.attackTroopsOn(a, p);
           inHumanAtk += tr;
           if (tr > maxAtkTr) { maxAtkTr = tr; mainAttacker = a; }
@@ -603,7 +631,7 @@ new_other_atk = """        const bossId = this.findBossId(g);
             otherAtkers++;
             otherAtk += tr;
             if (a === bossId) bossAtkOnQ += tr;
-            if (this.isTeammate(g, a) || this.isOurSquadBot(g, a)) {
+            if (this.isProtectedSquadMate(g, a)) {
               allyAtk += tr;
               clanAllyAtkers += this.isOurSquadBot(g, a) ? 2 : 1;
             }
@@ -614,7 +642,7 @@ new_other_atk = """        const bossId = this.findBossId(g);
           const sbQ = g.slotBase(q);
           for (let i = 0; i < g.atkCount[q]; i++) {
             const tgt = g.atkTarget[sbQ + i];
-            if (tgt >= 0 && tgt < 512 && (this.isTeammate(g, tgt) || this.isOurSquadBot(g, tgt))) {
+            if (tgt >= 0 && tgt < 512 && this.isProtectedSquadMate(g, tgt)) {
               const tr = g.atkTroops[sbQ + i];
               atkOnAlly += tr;
               if (tgt === bossId) atkOnBoss += tr;
