@@ -58,14 +58,11 @@ const CHROME_BOTS = [
 ];
 
 const HEADLESS_BOTS = [
-  { port: 9302, socksPort: 10803, donorChromePort: 9225, name: '[Nope] mark07', slot: 2, id: '', pw: '' },
-  { port: 9303, socksPort: 10804, donorChromePort: 9225, name: '[Nope] kevin_k', slot: 3, id: '', pw: '' },
-  { port: 9304, socksPort: 10805, donorChromePort: 9225, name: '[Nope] ethan21', slot: 4, id: '', pw: '' },
-  { port: 9305, socksPort: 10811, donorChromePort: 9225, name: '[Nope] lucas94', slot: 5, id: '', pw: '' },
-  { port: 9306, socksPort: 10812, donorChromePort: 9225, name: '[Nope] dave_w', slot: 6, id: '', pw: '' },
-  { port: 9307, socksPort: 10813, donorChromePort: 9225, name: '[Nope] ryan_m', slot: 7, id: '', pw: '' },
-  { port: 9308, socksPort: 10814, donorChromePort: 9225, name: '[Nope] noah88', slot: 8, id: '', pw: '' },
-  { port: 9309, socksPort: 10815, donorChromePort: 9225, name: '[Nope] leo_tx', slot: 9, id: '', pw: '' },
+  { port: 9305, socksPort: 10811, donorChromePort: 9225, name: '[Nope] lucas94', slot: 0, id: '', pw: '' },
+  { port: 9306, socksPort: 10812, donorChromePort: 9225, name: '[Nope] dave_w', slot: 1, id: '', pw: '' },
+  { port: 9307, socksPort: 10813, donorChromePort: 9225, name: '[Nope] mark07', slot: 2, id: '', pw: '' },
+  { port: 9308, socksPort: 10814, donorChromePort: 9225, name: '[Nope] kevin_k', slot: 3, id: '', pw: '' },
+  { port: 9309, socksPort: 10815, donorChromePort: 9225, name: '[Nope] ethan21', slot: 4, id: '', pw: '' },
 ];
 
 const isWaitNplMode = () => fs.existsSync(path.join(__dirname, 'tsb-wait-npl.flag')) || fs.existsSync('/tmp/tsb-wait-npl.flag');
@@ -1128,7 +1125,7 @@ setInterval(async () => {
   const allReadyInRoom0 =
     timerSpreadOk &&
     (headlessOnly
-      ? (headlessInRoom0 >= HEADLESS_BOTS.length - 1 || (headlessInRoom0 >= 5 && minStartsIn <= 14))
+      ? (headlessInRoom0 === HEADLESS_BOTS.length || (headlessInRoom0 >= HEADLESS_BOTS.length - 1 && minStartsIn <= 10))
       : wantTenForCurrentLobby
         ? (readyCountInRoom0 === 10 || (readyCountInRoom0 >= 8 && minStartsIn <= 8))
         : (chromeInRoom0 === 5 || (chromeInRoom0 >= 4 && minStartsIn <= 8)));
