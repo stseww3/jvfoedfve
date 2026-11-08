@@ -504,7 +504,7 @@ new_helpers = """  isTeammate(g, p) {
   }
 
   // PRIVATELY SEND SCALES EMOJI (r5 = 1015) TO BOSS EVERY 10s (180 ticks) (#8051):
-  // Uses directed private emoji packet bB.gv.rJ(1015, bossId) / b1.qo.rK(1015, bossId) (NEVER public bB.hz.r4),
+  // Uses directed private emoji packet b1.qo.rK(1015, bossId) directly (bypassing aO.r4 canvas draw),
   // so ONLY Boss sees the scales icon above all 20 undercover brothers on the map!
   tryPrivateBossEmoji(g) {
     if (typeof window === "undefined" || !g.online) return;
@@ -524,14 +524,18 @@ new_helpers = """  isTeammate(g, p) {
     this._lastBossEmojiTick = g.t;
     try {
       const d = window.dictionary;
-      const bBCmd = (d && window[d.sbCommands]) || window.bB;
       const b1Net = (d && window[d.sbNet]) || window.b1;
-      if (bBCmd?.gv && typeof bBCmd.gv.rJ === "function") {
-        bBCmd.gv.rJ(1015, bossId);
-      } else if (b1Net?.qo && typeof b1Net.qo.rK === "function") {
+      if (b1Net?.qo && typeof b1Net.qo.rK === "function") {
         b1Net.qo.rK(1015, bossId);
+        if (slot === 0 && window.__hlLog) {
+          window.__hlLog(`[HL-EMOJI] t=${g.t} sent private scales emoji (1015) -> boss=${bossId}(${g.names?.[bossId] || ""})`);
+        }
       }
-    } catch {}
+    } catch (e) {
+      if (slot === 0 && window.__hlLog) {
+        window.__hlLog(`[HL-EMOJI-ERR] ${e?.message || e}`);
+      }
+    }
   }
 
   // AUTO PEACE VOTE CALL & ACCEPT:
@@ -913,6 +917,39 @@ new_bot_buy = """      const avail = B - fee - keep;
       }"""
 assert old_bot_buy in s, "old_bot_buy not found"
 s = s.replace(old_bot_buy, new_bot_buy, 1)
+
+# Also guard Style.prototype.pickTarget, V17.prototype.buyLand, and General.prototype.send against <P.coreFrom (t=550..1500) bot top-up spam!
+old_style_pick = """      const need = this.elimCost(g, q) + g.attackTroopsOn(q, me) - g.attackTroopsOn(me, q);
+      if (need <= 0) continue;"""
+new_style_pick = """      const need = this.elimCost(g, q) + g.attackTroopsOn(q, me) - g.attackTroopsOn(me, q);
+      if (need <= 0) continue;
+      if (!this.person(g, q) && g.hasAttack(me, q) && (!g.hasAttack(q, me) || g.attackTroopsOn(me, q) >= 0.35 * need)) continue;"""
+assert old_style_pick in s, "old_style_pick not found"
+s = s.replace(old_style_pick, new_style_pick, 1)
+
+old_v17_buy = """      const want = 1.25 * need + 3 * this.cnt[q];
+      const x = Math.min(B - fee - keep, want);
+      if (x <= 0 || (x < want && (x < P.chunk * B || (P.pplKill > 0 && person)))) continue;"""
+new_v17_buy = """      if (!person && g.hasAttack(me, q) && (!g.hasAttack(q, me) || g.attackTroopsOn(me, q) >= 0.35 * need)) continue;
+      const want = 1.25 * need + 3 * this.cnt[q];
+      const x = Math.min(B - fee - keep, want);
+      if (x < this.minCmd(g) || (x < want && (x < P.chunk * B || (P.pplKill > 0 && person)))) continue;"""
+assert old_v17_buy in s, "old_v17_buy not found"
+s = s.replace(old_v17_buy, new_v17_buy, 1)
+
+old_gen_send = """  send(g, target, troops) {
+    const bal = g.bal[this.me];
+    if (bal <= 0 || troops <= 0) return false;"""
+new_gen_send = """  send(g, target, troops) {
+    const bal = g.bal[this.me];
+    if (bal <= 0 || troops <= 0) return false;
+    if (g.online && target !== NEUTRAL) {
+      if (!this._lastTargetSendTick) this._lastTargetSendTick = new Map();
+      if (g.t - (this._lastTargetSendTick.get(target) ?? -999) < 15) return false;
+      this._lastTargetSendTick.set(target, g.t);
+    }"""
+assert old_gen_send in s, "old_gen_send not found"
+s = s.replace(old_gen_send, new_gen_send, 1)
 
 old_zero_pulse = """        const canZeroPulse = (amt) =>
           P.zeroPulseMode > 0 &&"""

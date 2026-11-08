@@ -632,6 +632,11 @@ class Strategy {
   send(g, target, troops) {
     const bal = g.bal[this.me];
     if (bal <= 0 || troops <= 0) return false;
+    if (g.online && target !== NEUTRAL) {
+      if (!this._lastTargetSendTick) this._lastTargetSendTick = new Map();
+      if (g.t - (this._lastTargetSendTick.get(target) ?? -999) < 15) return false;
+      this._lastTargetSendTick.set(target, g.t);
+    }
     let pct = Math.ceil((troops * 1024) / bal) - 1;
     pct = Math.max(0, Math.min(1023, pct));
     const ok = g.attack(pct, target, this.me);
@@ -1298,6 +1303,7 @@ class Style extends General {
       if (avail <= this.minShare(g, q) * bal || avail < min) continue;
       const need = this.elimCost(g, q) + g.attackTroopsOn(q, me) - g.attackTroopsOn(me, q);
       if (need <= 0) continue;
+      if (!this.person(g, q) && g.hasAttack(me, q) && (!g.hasAttack(q, me) || g.attackTroopsOn(me, q) >= 0.35 * need)) continue;
       const send = this.amount(g, q, avail, need, min);
       if (!(send >= min)) continue;
       const left = iV(g.peak[q], 4);
@@ -2919,9 +2925,10 @@ class V17 extends V13 {
       if (c < worth) keep = Math.min(keep, P.post > 0 ? B - fee - (m * (B - fee) - c * L) / (1 + m) : (c * L) / m);
       if (over) keep = Math.min(keep, P.hold * 100 * L);
       keep = Math.max(keep, safe);
+      if (!person && g.hasAttack(me, q) && (!g.hasAttack(q, me) || g.attackTroopsOn(me, q) >= 0.35 * need)) continue;
       const want = 1.25 * need + 3 * this.cnt[q];
       const x = Math.min(B - fee - keep, want);
-      if (x <= 0 || (x < want && (x < P.chunk * B || (P.pplKill > 0 && person)))) continue;
+      if (x < this.minCmd(g) || (x < want && (x < P.chunk * B || (P.pplKill > 0 && person)))) continue;
       if (P.peerMax > 0 && person && x < want && g.bal[q] >= P.peerMax * B && !g.hasAttack(me, q) && !g.hasAttack(q, me)) continue;
       return this.send(g, q, x);
     }
@@ -4286,7 +4293,7 @@ export class Policy extends V17 {
   }
 
   // PRIVATELY SEND SCALES EMOJI (r5 = 1015) TO BOSS EVERY 10s (180 ticks) (#8051):
-  // Uses directed private emoji packet bB.gv.rJ(1015, bossId) / b1.qo.rK(1015, bossId) (NEVER public bB.hz.r4),
+  // Uses directed private emoji packet b1.qo.rK(1015, bossId) directly (bypassing aO.r4 canvas draw),
   // so ONLY Boss sees the scales icon above all 20 undercover brothers on the map!
   tryPrivateBossEmoji(g) {
     if (typeof window === "undefined" || !g.online) return;
@@ -4306,14 +4313,18 @@ export class Policy extends V17 {
     this._lastBossEmojiTick = g.t;
     try {
       const d = window.dictionary;
-      const bBCmd = (d && window[d.sbCommands]) || window.bB;
       const b1Net = (d && window[d.sbNet]) || window.b1;
-      if (bBCmd?.gv && typeof bBCmd.gv.rJ === "function") {
-        bBCmd.gv.rJ(1015, bossId);
-      } else if (b1Net?.qo && typeof b1Net.qo.rK === "function") {
+      if (b1Net?.qo && typeof b1Net.qo.rK === "function") {
         b1Net.qo.rK(1015, bossId);
+        if (slot === 0 && window.__hlLog) {
+          window.__hlLog(`[HL-EMOJI] t=${g.t} sent private scales emoji (1015) -> boss=${bossId}(${g.names?.[bossId] || ""})`);
+        }
       }
-    } catch {}
+    } catch (e) {
+      if (slot === 0 && window.__hlLog) {
+        window.__hlLog(`[HL-EMOJI-ERR] ${e?.message || e}`);
+      }
+    }
   }
 
   // AUTO PEACE VOTE CALL & ACCEPT:
