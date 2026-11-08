@@ -4353,7 +4353,7 @@ export class Policy extends V17 {
       if (typeof window !== "undefined" && window.ao?.iD && !window.ao.iD(p)) continue;
 
       const Lp = Math.max(1, g.terr[p]), Bp = g.bal[p], dAlly = Bp / Lp;
-      if (dAlly >= 105) continue; // Never dispatch to a territory already above the 100*L full-interest cap!
+      if (dAlly >= (boxedIn ? 132 : 112)) continue;
 
       let inHumanAtk = 0, outHumanAtk = 0;
       for (const a of g.attackersOf(p)) {
@@ -4403,8 +4403,9 @@ export class Policy extends V17 {
         // Donor MUST be at or above the 100*L negative-marginal-interest threshold (`dMe >= 98` if boxedIn, `dMe >= 106` if frontline)
         // AND Recipient must be below 92*L so moving troops from Donor -> Recipient shifts troops from NEGATIVE marginal interest (-1.4*r0)
         // to POSITIVE +1.0*r0 full interest + frontline defense/offense!
-        const reqD = boxedIn ? 98 : 106;
-        if (dMe < reqD || dAlly > 90 || B <= 1.14 * prodOptFloor || dMe < dAlly + 18) continue;
+        const reqD = boxedIn ? 95 : 106;
+        const maxAllyD = boxedIn ? (activePush || hasPreyOpening ? 130 : 122) : 92;
+        if (dMe < reqD || dAlly > maxAllyD || B <= 1.14 * prodOptFloor || (!boxedIn && dMe < dAlly + 16)) continue;
         const score = (activePush || hasPreyOpening ? 2500 : 1000) +
           (outHumanAtk / Math.max(1, Bp)) * 1200 +
           (hasBleedingPrey ? 500 : 0) +
@@ -4871,6 +4872,5 @@ export class Policy extends V17 {
   }
 
   compSize(g) {
-    if (!(this.p.seaFree > 0) || g.t < this.p.coreFrom) return super.compSize(g);
-    if (this.freeAt 
+    if (!(this.p.seaFree > 0) || g.t < this.p.coreFrom) 
 
