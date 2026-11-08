@@ -5,7 +5,27 @@ with open("/tmp/fdvg-c58/territorial-sim/strategy/pool/v27-live.js") as f:
 
 pool_js = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "name-pool.mjs"), encoding="utf-8").read()
 pool_names = [m.group(1).strip().lower() for m in re.finditer(r'"([^"]+)"', pool_js)]
-pool_set_js = "const SQUAD_POOL_SET = new Set(" + json.dumps(sorted(list(set(pool_names)))) + ");\n"
+pool_set_js = """const SQUAD_POOL_SET = new Set(""" + json.dumps(sorted(list(set(pool_names)))) + """);
+try {
+  if (typeof window === "object" && window.bq?.sH && typeof window.bq.sH.select === "function") {
+    if (!window.bq.sH.__origSelect) window.bq.sH.__origSelect = window.bq.sH.select.bind(window.bq.sH);
+    window.bq.sH.select = function(id) {
+      if (id > 0 && Array.isArray(this.sH)) {
+        const rm = this.sH.find(r => r && r.id === id);
+        if (!rm || rm.vz < 0 || rm.vz > 3) {
+          const valid = this.sH.find(r => r && r.vz >= 0 && r.vz <= 3);
+          return this.__origSelect(valid ? valid.id : 0);
+        }
+      }
+      return this.__origSelect(id);
+    };
+    if (window.bq.sH.wF > 0 && Array.isArray(window.bq.sH.sH)) {
+      const cur = window.bq.sH.sH.find(r => r && r.id === window.bq.sH.wF);
+      if (!cur || cur.vz < 0 || cur.vz > 3) window.bq.sH.select(0);
+    }
+  }
+} catch {}
+"""
 s = pool_set_js + s
 
 # 1. Filter teammates AND (while wild outsiders are still alive) our own 20 squad brothers out of analyze(g)!
