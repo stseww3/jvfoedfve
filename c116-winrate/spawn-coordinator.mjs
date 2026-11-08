@@ -752,7 +752,7 @@ export class TeamSpawnCoordinator {
           score *= 0.72;
         }
       }
-      if (pm.friendlyLinks >= 1) score *= 1.10;
+      if (pm.friendlyLinks >= 2) score *= 1.24; else if (pm.friendlyLinks >= 1) score *= 1.10;
       if (enemyNeighbors <= 1) score *= 1.15;
     }
 
@@ -906,6 +906,16 @@ export class TeamSpawnCoordinator {
       return minD;
     };
 
+    const distToClusterCore = (x, y) => {
+      if (anchorBoss && anchorBoss.x >= 0 && anchorBoss.y >= 0) {
+        return Math.hypot(x - anchorBoss.x, y - anchorBoss.y);
+      }
+      if (chosenTargets.length > 0) {
+        return Math.hypot(x - chosenTargets[0].x, y - chosenTargets[0].y);
+      }
+      return 0;
+    };
+
     const pickNextTarget = (wantRole) => {
       const relaxFactors = [1.0, 0.80, 0.62, 0.42];
       for (const relax of relaxFactors) {
@@ -956,9 +966,10 @@ export class TeamSpawnCoordinator {
               }
               if (sectorConflict) continue;
             } else if (enforceCluster) {
-              // Keep outer wing connected to the same continent & geodesic distance from Boss
-              if (distToOurCluster(x, y) > maxClusterDist) continue;
-              if (realBoss && (this.dBoss[c] < 0 || this.dBoss[c] > maxClusterDist * 1.35) && relax >= 0.60) continue;
+              // Keep 10-bot phalanx in a compact 2D disc (not a 900px 1D snake!)
+              if (distToOurCluster(x, y) > scales.allyMinSep * (2.6 - 0.8 * relax)) continue;
+              if (distToClusterCore(x, y) > maxClusterDist) continue;
+              if (anchorBoss && (this.dBoss[c] < 0 || this.dBoss[c] > maxClusterDist * 1.35) && relax >= 0.60) continue;
             }
 
             const clearance = Math.min(dComp[c], 220);
