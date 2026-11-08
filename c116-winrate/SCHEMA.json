@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "C116SubAgentWinrateReport",
+  "description": "Standardized JSON output schema for S01-S10 (c116-winrate/reports/s0X-data.json)",
+  "type": "object",
+  "required": [
+    "agentId",
+    "updatedAt",
+    "assignedGames",
+    "assignedVariables",
+    "gameDissections",
+    "variableEvaluations",
+    "topCoreVariableRanking",
+    "actionableFixes"
+  ],
+  "properties": {
+    "agentId": {
+      "type": "string",
+      "enum": ["S01", "S02", "S03", "S04", "S05", "S06", "S07", "S08", "S09", "S10"]
+    },
+    "updatedAt": {
+      "type": "string",
+      "description": "ISO-8601 UTC timestamp"
+    },
+    "assignedGames": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "assignedVariables": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "gameDissections": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "gameId",
+          "result",
+          "teamCount",
+          "activeBotsCount",
+          "peakTeamLand",
+          "peakTick",
+          "inflectionTick",
+          "primaryRootCauseVariable",
+          "secondaryRootCauseVariable",
+          "evidenceSummary"
+        ],
+        "properties": {
+          "gameId": { "type": "string" },
+          "result": { "type": "string", "enum": ["won", "lost", "over"] },
+          "teamCount": { "type": "integer" },
+          "activeBotsCount": { "type": "integer" },
+          "mainContinentBotsCount": { "type": "integer" },
+          "teamLandAt1500": { "type": "integer" },
+          "peakTeamLand": { "type": "integer" },
+          "peakTick": { "type": "integer" },
+          "inflectionTick": { "type": "integer" },
+          "frontlineDensityAtInflection": { "type": "number" },
+          "enemyDensityAtInflection": { "type": "number" },
+          "primaryRootCauseVariable": { "type": "string" },
+          "secondaryRootCauseVariable": { "type": "string" },
+          "evidenceSummary": { "type": "string" }
+        }
+      }
+    },
+    "variableEvaluations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "variableId",
+          "variableName",
+          "currentValue",
+          "baseline80PctValue",
+          "recommendedOptimalValue",
+          "estimatedWinrateImpactPct",
+          "causalMechanism",
+          "codeLocation"
+        ],
+        "properties": {
+          "variableId": { "type": "string" },
+          "variableName": { "type": "string" },
+          "currentValue": { "type": "string" },
+          "baseline80PctValue": { "type": "string" },
+          "recommendedOptimalValue": { "type": "string" },
+          "estimatedWinrateImpactPct": {
+            "type": "number",
+            "description": "Estimated percentage point impact on winrate (e.g., +25.0 means fixing this variable raises winrate by ~25%)"
+          },
+          "causalMechanism": { "type": "string" },
+          "codeLocation": { "type": "string" }
+        }
+      }
+    },
+    "topCoreVariableRanking": {
+      "type": "array",
+      "description": "Ranked list of variables from most impactful to least impactful according to this agent's findings",
+      "items": {
+        "type": "object",
+        "required": ["rank", "variableId", "weightPct", "oneLineReason"],
+        "properties": {
+          "rank": { "type": "integer" },
+          "variableId": { "type": "string" },
+          "weightPct": { "type": "number" },
+          "oneLineReason": { "type": "string" }
+        }
+      }
+    },
+    "actionableFixes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["file", "functionOrParam", "before", "after", "riskLevel"],
+        "properties": {
+          "file": { "type": "string" },
+          "functionOrParam": { "type": "string" },
+          "before": { "type": "string" },
+          "after": { "type": "string" },
+          "riskLevel": { "type": "string", "enum": ["low", "medium", "high"] }
+        }
+      }
+    }
+  }
+}
