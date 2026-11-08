@@ -1,0 +1,660 @@
+{
+  "coordinator": "c116",
+  "completedSubAgents": 10,
+  "subAgents": [
+    "S01",
+    "S02",
+    "S03",
+    "S04",
+    "S05",
+    "S06",
+    "S07",
+    "S08",
+    "S09",
+    "S10"
+  ],
+  "globalCoreVariableRanking": [
+    {
+      "rank": 1,
+      "variableId": "V7",
+      "meanWeightPct": 28.9,
+      "citedByCount": 10,
+      "agentEvidence": [
+        {
+          "agentId": "S01",
+          "weightPct": 38.0,
+          "reason": "In G01, oppFloorCap=38 + keep<=10~26*L + totB=B+myOut caused frontline bots to dump 5.33M troops in 180 ticks (t=4320->4500) and drained ryan_m (51.2k land) to dens=7.1 at t=5040."
+        },
+        {
+          "agentId": "S02",
+          "weightPct": 26.0,
+          "reason": "oppFloorCap=38 + collapseFloorCap=16 + totB=B+myOut drained frontline home density to d=2.5..9.7 (ryan_m in G02, mark07/leo_tx in G03), causing instant frontline collapse against d=65..95 enemies."
+        },
+        {
+          "agentId": "S03",
+          "weightPct": 35.0,
+          "reason": "totB=B+myOut + oppFloorCap=38 + keep<=10*L hollowed out frontline home density to d=27.8~33.8 in G04 (and d=0~14.6 across G01-G09), causing 100% of midgame #1 leads to get counter-swept."
+        },
+        {
+          "agentId": "S04",
+          "weightPct": 30.0,
+          "reason": "oppFloorCap=38 + totB=B+myOut + keep<=10~26*L drained frontline home density to 0.3~18 (e.g., G05 dave_w d=0.0~3.4 on 16k land), making frontline bots defenseless against enemy counter-pushes."
+        },
+        {
+          "agentId": "S05",
+          "weightPct": 26.0,
+          "reason": "oppFloorCap=38 + collapseFloorCap=16 + totB=B+myOut + prime keep<=10~26*L stripped frontline home density to d=13~26 in G06 (ethan21 d=13..26 on 58k land), making midgame leads impossible to hold."
+        },
+        {
+          "agentId": "S06",
+          "weightPct": 26.0,
+          "reason": "oppFloorCap=38 + collapseFloorCap=16 + totB=B+myOut destroyed the frontline home density floor (d_home dropping to 0~18), causing midgame #1 leads in G01, G04, G06 to collapse upon first enemy counter-attack."
+        },
+        {
+          "agentId": "S07",
+          "weightPct": 26.0,
+          "reason": "totB = B + myOut combined with oppFloorCap=38 and isPrimeLand keep<=10*L~26*L hollowed out frontline home density to d=5~20 during attacks, inviting immediate third-party wipeouts."
+        },
+        {
+          "agentId": "S08",
+          "weightPct": 26.0,
+          "reason": "oppFloorCap=38 + collapseFloorCap=16 + totB=B+myOut + prime keep<=10~26*L stripped frontline home density down to d=3.9~25, causing midgame leads in G01, G04, G06, G08 to collapse under enemy counter-attacks."
+        },
+        {
+          "agentId": "S09",
+          "weightPct": 28.0,
+          "reason": "`oppFloorCap=38` + `totB=B+myOut` + `isPrimeLand keep<=10*L` drained frontline home density to 7.1~27.8 at the exact inflection tick in G01, G04, G06, and G08."
+        },
+        {
+          "agentId": "S10",
+          "weightPct": 28.0,
+          "reason": "e20db6b+32c5689+514a041 (oppFloorCap=38 + totB=B+myOut + keep<=10*L) caused 181 frontline hollow-outs (d=0~18) and threw G01, G04, G06."
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "variableId": "V1",
+      "meanWeightPct": 17.1,
+      "citedByCount": 10,
+      "agentEvidence": [
+        {
+          "agentId": "S01",
+          "weightPct": 30.0,
+          "reason": "In 7/10 live games (G00,G02,G04,G05,G06,G07,G09), VirtualSquadAnchor picked tiny islands (48~50 voronoi=500 fallbacks) or secondary continents (G06 190k vs 354k main continent)."
+        },
+        {
+          "agentId": "S02",
+          "weightPct": 20.0,
+          "reason": "Pre-d590acd VirtualSquadAnchor + relax<0.60 dropping minViableCompSize + voronoi=500 fallback scattered 4/8 bots in G02 across 6 islands (including 275px and 2,331px traps), forfeiting 63% of the main continent at t=0."
+        },
+        {
+          "agentId": "S03",
+          "weightPct": 14.0,
+          "reason": "2/8 bots in G04 hit voronoi=500 island fallback at spawn, reducing main-continent opening presence to 6 bots."
+        },
+        {
+          "agentId": "S04",
+          "weightPct": 24.0,
+          "reason": "Pre-d590acd VirtualSquadAnchor landed on small islands/peninsulas in Boss-less games, causing 6/8 bots in G05 to hit voronoi=500 fallback and lose the main continent at t=0."
+        },
+        {
+          "agentId": "S05",
+          "weightPct": 11.0,
+          "reason": "Pre-d590acd VirtualSquadAnchor in Boss-less games frequently anchored on peripheral corners or secondary landmasses, forfeiting central main-continent expansion."
+        },
+        {
+          "agentId": "S06",
+          "weightPct": 12.0,
+          "reason": "Pre-d590acd VirtualSquadAnchor in Boss-less games anchored on edge islands/peninsulas, forcing 5~6 bots into the voronoi=500 fallback (even in G07, 5/8 bots hit voronoi=500)."
+        },
+        {
+          "agentId": "S07",
+          "weightPct": 10.0,
+          "reason": "Pre-d590acd VirtualSquadAnchor without main-continent filter occasionally anchored autonomous squads in narrow coastal corners."
+        },
+        {
+          "agentId": "S08",
+          "weightPct": 18.0,
+          "reason": "Pre-d590acd VirtualSquadAnchor landed on tiny islands/peninsulas in Boss-less matches (stranding 4/6 bots on northern islands in G09 and 6/8 bots in G02/G05)."
+        },
+        {
+          "agentId": "S09",
+          "weightPct": 14.0,
+          "reason": "Pre-`d590acd` `findVirtualSquadAnchor` caused 4/8 bots in G02, G04, G05, G07 to hit the `voronoi=500` scattered corner fallback."
+        },
+        {
+          "agentId": "S10",
+          "weightPct": 18.0,
+          "reason": "Pre-d590acd VirtualSquadAnchor island trap + G06 53.75% secondary continent trap crippled opening in 7/10 games."
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "variableId": "V6",
+      "meanWeightPct": 11.5,
+      "citedByCount": 10,
+      "agentEvidence": [
+        {
+          "agentId": "S01",
+          "weightPct": 10.0,
+          "reason": "Boxed-in coastal teammates (kevin_k 1.05M, ethan21 473k in G01) had isPureInlandSafe=false, deadlocking squad rescue donate (requires dMe>=106) below coastGuardFloor=68*L."
+        },
+        {
+          "agentId": "S02",
+          "weightPct": 8.0,
+          "reason": "Boxed-in rear bots in G03 (kevin_k, dave_w, noah88) were blocked from donating until dMe>=72 (t=2700, 676 ticks after mark07 died) and burned 55.2% of donated troops to the flat 6.25%B engine tax via pct=51 micro-donations."
+        },
+        {
+          "agentId": "S03",
+          "weightPct": 16.0,
+          "reason": "79 micro-donations (pct=51) in G04 burned 6.10M troops in flat 6.25%B engine tax to deliver 4.96M (55.2% loss) and drained frontline carry leo_tx."
+        },
+        {
+          "agentId": "S04",
+          "weightPct": 20.0,
+          "reason": "pct=51 (5% B) micro-donations against the engine's flat 6.25% B tax burned 18.71M troops (55.2% loss), exhausted ao.ei quotas (55% rejected), starved G05 pre-t1500 at 150*L, and drained 4.47M from frontline pillars."
+        },
+        {
+          "agentId": "S05",
+          "weightPct": 15.0,
+          "reason": "pct=51 (5.08%B) donations paid a flat 64/1024 (6.25%B) engine donation tax (55.2% loss rate), burning 6.89M in tax across 108 donations in G06 while draining dave_w at d=40..57."
+        },
+        {
+          "agentId": "S06",
+          "weightPct": 9.0,
+          "reason": "5% micro-donations against a flat 6.25%B engine donation fee burned 55.2% of donated troops in tax and drained frontline fighters when safeAt was capped at 38*L."
+        },
+        {
+          "agentId": "S07",
+          "weightPct": 4.0,
+          "reason": "Repeated 5% rescue donations into already doomed d=5~11 frontline bots (e.g. ryan_m donating 3x to d=5 ethan21 at t=4730..4910) burned 10% tax and weakened the surviving donor."
+        },
+        {
+          "agentId": "S08",
+          "weightPct": 12.0,
+          "reason": "pct=51 (5% B) micro-donations paid a flat 6.25% B engine tax (55.2% loss rate across 382 donations) while starving boxed-in rear bots before t=1500."
+        },
+        {
+          "agentId": "S09",
+          "weightPct": 9.0,
+          "reason": "Boxed-in coastal rear bots (`nb=0, hasExposedCoast=true`) were blocked from feeding the frontline above d=75 while `[HL-ASSIST]` lacked a cooldown and fired 6~14 times per RTT window."
+        },
+        {
+          "agentId": "S10",
+          "weightPct": 12.0,
+          "reason": "d996be6 (pct=51) paid flat 6.25%B engine tax (55.2% loss, 18.71M burned) while coastal boxed-in rear bots deadlocked at d=70~78."
+        }
+      ]
+    },
+    {
+      "rank": 4,
+      "variableId": "V2",
+      "meanWeightPct": 9.4,
+      "citedByCount": 7,
+      "agentEvidence": [
+        {
+          "agentId": "S01",
+          "weightPct": 22.0,
+          "reason": "fd868f3's allyMinSep<=112px & clusterMax<=350px cut t=1500 team land by -28% (0/9 multi-team games reached >=22% land at t=1530) and boxed in 3 bots in G01 with 2.02M stranded troops."
+        },
+        {
+          "agentId": "S02",
+          "weightPct": 18.0,
+          "reason": "fd868f3 compressed allyMinSep to 62..112px (relaxing to 48px in G03) and clusterMax<=350px, boxing 3/8 bots in G03 (36.8% of squad land) into nb=0, neut=0 internal lockup by t=1260."
+        },
+        {
+          "agentId": "S04",
+          "weightPct": 14.0,
+          "reason": "Tightening allyMinSep<=112 and clusterMax<=350 boxed 2~4 interior bots into nb=0 early and starved the squad's total neutral land capture."
+        },
+        {
+          "agentId": "S05",
+          "weightPct": 18.0,
+          "reason": "allyMinSep=112 and clusterMax=350 crammed all 8 bots into a 380x230px eastern pocket in G06, boxing 5 of 8 bots into nb=0 by t=1800 and capping team land at 16.98% (21.04% peak)."
+        },
+        {
+          "agentId": "S06",
+          "weightPct": 4.0,
+          "reason": "allyMinSep<=112 and clusterMax<=350 compressed same-basin bots (e.g. G07 NW trio at 42~67px separation) into early internal boxing."
+        },
+        {
+          "agentId": "S08",
+          "weightPct": 6.0,
+          "reason": "Tightening allyMinSep<=112 and clusterMax<=350 compressed the squad into a small basin and triggered voronoi=500 fallbacks when crowded."
+        },
+        {
+          "agentId": "S10",
+          "weightPct": 12.0,
+          "reason": "fd868f3 (allyMinSep<=112, clusterMax<=350) cut t=1500 neutral land by -28% and boxed 3~5 inner bots into nb=0."
+        }
+      ]
+    },
+    {
+      "rank": 5,
+      "variableId": "V5",
+      "meanWeightPct": 8.1,
+      "citedByCount": 8,
+      "agentEvidence": [
+        {
+          "agentId": "S02",
+          "weightPct": 6.0,
+          "reason": "23 sea intercepts in G02 and 44 in G03 (up to 35%B per boat) drained lucas94 (B: 377k->237k at t=3000 in G02) and ryan_m (B: 530k->294k at t=3350..3510 in G03) right before enemy land pushes."
+        },
+        {
+          "agentId": "S03",
+          "weightPct": 15.0,
+          "reason": "145 boats (61 sea intercepts) in G04 burned >1.8M troops/tax due to broken bQ.mt.mu deduplication and 35%B chase cap."
+        },
+        {
+          "agentId": "S04",
+          "weightPct": 12.0,
+          "reason": "tryInterceptEnemyBoats allowed up to 35% B per chase boat (20 intercepts in G05), draining ryan_m from d=43.1 to d=14.2 right before his collapse."
+        },
+        {
+          "agentId": "S05",
+          "weightPct": 22.0,
+          "reason": "3.125%B boat tax + 35%B chase cap + broken bQ.mt.mu (20 duplicate chases in G06, 74 overall) + s.land undefined bug in tryClaimNearTeamIslands burned 4.08M troops (1.20M tax + 2.88M sent) in G06 and collapsed coastal pillars kevin_k and noah88."
+        },
+        {
+          "agentId": "S06",
+          "weightPct": 5.0,
+          "reason": "Sea interception saved G07 (sinking two 145k enemy boats at t=3004/3130), but unguarded 3.125%B boat fees on small boats/islands drained high-balance bots in multi-team games."
+        },
+        {
+          "agentId": "S08",
+          "weightPct": 6.0,
+          "reason": "Sea interception allowed up to 35% B per chase boat (e.g. G09 lucas94 burning 35.0% B at t=9120 and ryan_m burning 38.7% B across t=2695..2806)."
+        },
+        {
+          "agentId": "S09",
+          "weightPct": 7.0,
+          "reason": "61~63 `[HL-INTERCEPT]` chase boats in G04 and G06 (up to 35%B per boat, with duplicate same-tick chases before `bQ.mt.mu` RTT confirmation) burned >1.8M troops."
+        },
+        {
+          "agentId": "S10",
+          "weightPct": 8.0,
+          "reason": "404996d (bQ.mt.mu always false + 35%B chase cap + s.land undefined) burned 4.58M in 3.125%B boat tax across 673 boats."
+        }
+      ]
+    },
+    {
+      "rank": 6,
+      "variableId": "V10",
+      "meanWeightPct": 6.0,
+      "citedByCount": 4,
+      "agentEvidence": [
+        {
+          "agentId": "S03",
+          "weightPct": 20.0,
+          "reason": "2-tick RTT assist machine-gun bug caused noah88 to fire 10x10%B (t=5042) and 14x10%B (t=6594, -81% B) in G04 right before Team 2 counter-attacked."
+        },
+        {
+          "agentId": "S07",
+          "weightPct": 8.0,
+          "reason": "7~8 bots fought separate enemy teams across a wide arc without a shared team focus target, provoking Team 2, Team 3, and Team 5 simultaneously in G08."
+        },
+        {
+          "agentId": "S08",
+          "weightPct": 22.0,
+          "reason": "Zero team-level focus-fire lock (focusBonus=1.0, maxTargets=6, unsubtracted allyAtk), 2-tick RTT assist machine-gunning (125 pokes draining 50%~81% B per burst), and Redacted cross-team fratricide (G09 t=2695..3060) destroyed squad synergy."
+        },
+        {
+          "agentId": "S10",
+          "weightPct": 10.0,
+          "reason": "e20db6b (period=2 < RTT) caused 5~14x 10%B assist machine-gun bursts (125 shots) and multi-team war provocation."
+        }
+      ]
+    },
+    {
+      "rank": 7,
+      "variableId": "V12",
+      "meanWeightPct": 4.6,
+      "citedByCount": 5,
+      "agentEvidence": [
+        {
+          "agentId": "S06",
+          "weightPct": 6.0,
+          "reason": "Lobby team count and allied human mass determined baseline margin for error: G07 was won only because it was a 2-team game where ~21 allied humans held 43.4% of the map by t=1776."
+        },
+        {
+          "agentId": "S07",
+          "weightPct": 6.0,
+          "reason": "noah88 dropped out with socket error 1006 in G08 (leaving 7/8 bots active in a 6-team 49-player room)."
+        },
+        {
+          "agentId": "S08",
+          "weightPct": 10.0,
+          "reason": "Server 0 error 4577 and unverified 'Redacted' names reduced active [Nope] bots to 6 in G09 (splitting them 4v2 across Team 2 and Team 3) and 7 in G08."
+        },
+        {
+          "agentId": "S09",
+          "weightPct": 18.0,
+          "reason": "5~6 team lobby prior (6/9 games had 5~6 teams) compounded by G01 `rnd` crash (t=1620..4230), G08/G09 6~7 bot partial entry, mid-game 1006 disconnects, and G09 Team 2/3 split."
+        },
+        {
+          "agentId": "S10",
+          "weightPct": 6.0,
+          "reason": "Loose Room 0 entry gate (headlessInRoom0>=5) allowed 6~7 bot partial entries and Team 2/3 split fratricide in G09."
+        }
+      ]
+    },
+    {
+      "rank": 8,
+      "variableId": "V4",
+      "meanWeightPct": 3.8,
+      "citedByCount": 3,
+      "agentEvidence": [
+        {
+          "agentId": "S05",
+          "weightPct": 8.0,
+          "reason": "period=2 (112ms) + 2-tick inflight lock inflated total commands in G06 to 2,836 (354/bot), multiplying 1.17%B land attack tax burn during micro-pulses."
+        },
+        {
+          "agentId": "S06",
+          "weightPct": 16.0,
+          "reason": "period=2 + inflight<2t (smaller than 2~5t WebSocket RTT) caused duplicate pre-echo command bursts (+88% cmd rate, 285 burst windows), burning 23.8%~42.2% of troop production in attack fees."
+        },
+        {
+          "agentId": "S07",
+          "weightPct": 14.0,
+          "reason": "period=2 (112ms) + 2-tick inflight unlock (< server RTT) caused duplicate command bursts before server state updated and burned 1.17%B fee per duplicate tick."
+        }
+      ]
+    },
+    {
+      "rank": 9,
+      "variableId": "V9",
+      "meanWeightPct": 3.2,
+      "citedByCount": 1,
+      "agentEvidence": [
+        {
+          "agentId": "S07",
+          "weightPct": 32.0,
+          "reason": "hardCapMult=1.16 + beachhead false-positive + 2-tick unthrottled 10% squad-rescue machine-gun bursts (5~14x 10%B in 12t) directly drained 50%~88% of healthy frontline bots' balances in G08 and 6 of 8 losses."
+        }
+      ]
+    },
+    {
+      "rank": 10,
+      "variableId": "V3",
+      "meanWeightPct": 2.8,
+      "citedByCount": 2,
+      "agentEvidence": [
+        {
+          "agentId": "S02",
+          "weightPct": 22.0,
+          "reason": "Uncapped dpKeep + minCmd>=4.69%B blocked 53.9% of t=600..1499 neutral-border snapshots (73.2% in G03), and the t=1500 double-expandNeutral + minGrab bug burned 15k..35k troops, keeping L_team(1500)/L_map well below the 80%-winrate survival line."
+        },
+        {
+          "agentId": "S10",
+          "weightPct": 6.0,
+          "reason": "Uncapped dpKeep in dense team spawns froze 53.9% of t=600..1499 neutral expansion snapshots."
+        }
+      ]
+    },
+    {
+      "rank": 11,
+      "variableId": "V11",
+      "meanWeightPct": 2.4,
+      "citedByCount": 1,
+      "agentEvidence": [
+        {
+          "agentId": "S09",
+          "weightPct": 24.0,
+          "reason": "Zero lead-closing protocol when #1 (no frontline density lock, 46%~62% of squad land frozen in coastal rear bots at d=70~78, and unthrottled 2-tick [HL-ASSIST] spam)."
+        }
+      ]
+    },
+    {
+      "rank": 12,
+      "variableId": "V8",
+      "meanWeightPct": 2.2,
+      "citedByCount": 1,
+      "agentEvidence": [
+        {
+          "agentId": "S06",
+          "weightPct": 22.0,
+          "reason": "isPrimeLand unconditionally overwrote keep to 10~26*L and raised curAtk caps to 14~16%B without checking 3rd-party strong neighbors, causing 44/54 prime-land harvesters across G01..G09 to hollow out and die."
+        }
+      ]
+    }
+  ],
+  "gameDissectionsCount": 25,
+  "actionableFixesCount": 29,
+  "actionableFixes": [
+    {
+      "file": "tsb/squad/spawn-coordinator.mjs",
+      "functionOrParam": "TeamSpawnCoordinator.findVirtualSquadAnchor (minAnchorContSize & openDirs)",
+      "before": "const minAnchorContSize = Math.max(25000, Math.round(0.45 * (maxCompSize || 0))); ... const sc = clearance * pm.pinchMult * (pm.hasEdgeBackstop ? 1.18 : 1.0) * contBonus;",
+      "after": "const minAnchorContSize = Math.max(25000, Math.round(0.75 * (maxCompSize || 0))); ... check 8-dir land openness openDirs(r=96px) >= 4 and score with clearance * pm.pinchMult * (0.72 + 0.06 * openDirs) * contBonus;",
+      "riskLevel": "low",
+      "agentId": "S01"
+    },
+    {
+      "file": "tsb/squad/spawn-coordinator.mjs",
+      "functionOrParam": "TeamSpawnCoordinator.solve -> scales, targetFlankCount & seedPri",
+      "before": "bossExcl: clamp(..., 68, 120), flankMax: clamp(..., 135, 235), allyMinSep: clamp(Math.round(Math.max(1.05 * rCell, 0.075 * diag)), 62, 112), clusterMax: clamp(Math.round(Math.max(3.0 * rCell, 0.25 * diag)), 195, 350); targetFlankCount = realBoss ? ... : 0; seedPri = clearance - (anchorBoss ? Math.max(0, geoD - 150) * 0.32 : 0);",
+      "after": "bossExcl: clamp(Math.round(Math.max(1.35 * rCell, 0.095 * diag)), 76, 155), flankMax: clamp(Math.round(Math.max(2.70 * rCell, 0.210 * diag)), 150, 300), allyMinSep: clamp(Math.round(Math.max(1.38 * rCell, 0.110 * diag)), 88, 168), clusterMax: clamp(Math.round(Math.max(4.20 * rCell, 0.380 * diag)), 260, 520); targetFlankCount = anchorBoss ? (K >= 5 ? 2 : K >= 2 ? 1 : 0) : 0; seedPri = clearance - (anchorBoss && relax >= 0.80 ? Math.max(0, geoD - 240) * 0.10 : 0);",
+      "riskLevel": "low",
+      "agentId": "S01"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "Policy.tryDonateToTeammate (boxedIn coastal rescue unlock)",
+      "before": "const coastGuardFloor = hasExposedCoast && g.t >= 1100 ? 68 * L : 18 * L; ... if (dMe >= (isPureInlandSafe ? 40 : 106) && dMe >= dAlly + 25)",
+      "after": "const coastGuardFloor = hasExposedCoast && g.t >= 1100 ? (boxedIn ? 32 * L : 68 * L) : 18 * L; ... if (dMe >= (boxedIn || isPureInlandSafe ? 38 : 106) && dMe >= dAlly + 20)",
+      "riskLevel": "low",
+      "agentId": "S01"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "dpNeutral (cap dpKeep at 0.55*bal while neutral>0, allow finite-pocket cleanup below minCmd, and fire immediately on small pockets <=6 rings)",
+      "before": "const max = Math.min(P.dpSpend * bal, bal - this.dpKeep(g)) - fee; ... if (later >= n) return; const X = 2 * sum + rings[n - 1].r; if (X < this.minCmd(g)) return;",
+      "after": "const keepCap = this.neutral > 0 ? Math.min(this.dpKeep(g), Math.floor(0.55 * bal)) : this.dpKeep(g); const max = Math.min(P.dpSpend * bal, bal - keepCap) - fee; ... const isFinitePocket = n === rings.length && rings.length <= 6 && g.t >= 500; if (!isFinitePocket && later >= n) return; const X = 2 * sum + rings[n - 1].r; const effMin = (n === rings.length && g.t >= 600) ? Math.min(this.minCmd(g), Math.max(120, 2 * fee)) : this.minCmd(g); if (X < effMin) return;",
+      "riskLevel": "low",
+      "agentId": "S02"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "expandNeutral & act (remove duplicate pre-buyLand expandNeutral call and gate minGrab so it never over-sends 3000+ troops for tiny 3..15px neutral remnants)",
+      "before": "const minGrab = Math.min(Math.floor(0.22 * B), Math.max(this.minCmd(g) + 50, 10 * this.neutral + 3000)); ... spend = Math.min(B, Math.max(spend, minGrab)); super.expandNeutral(g, spend);",
+      "after": "const haveN = g.attackTroopsOn(this.me, NEUTRAL); const minGrab = (this.neutral > 0 && haveN === 0) ? Math.min(Math.floor(0.12 * B), Math.max(2 * this.neutral + 200, Math.min(this.minCmd(g), 6 * this.neutral + 400))) : 0; ... spend = Math.min(B - iV(12 * B, 1024), Math.max(spend, minGrab)); super.expandNeutral(g, spend);",
+      "riskLevel": "low",
+      "agentId": "S02"
+    },
+    {
+      "file": "tsb/squad/spawn-coordinator.mjs",
+      "functionOrParam": "scales (allyMinSep, clusterMax) & pickNextTarget (enforce minViableCompSize across all relax passes and fallback)",
+      "before": "allyMinSep: clamp(Math.round(Math.max(1.05 * rCell, 0.075 * diag)), 62, 112), ... clusterMax: clamp(Math.round(Math.max(3.0 * rCell, 0.25 * diag)), 195, 350), ... else if (relax >= 0.60 && this.compSize[c] < minViableCompSize) continue;",
+      "after": "allyMinSep: clamp(Math.round(Math.max(1.42 * rCell, 0.110 * diag)), 96, 172), ... clusterMax: clamp(Math.round(Math.max(4.4 * rCell, 0.40 * diag)), 280, 540), ... else if (this.compSize[c] < minViableCompSize) continue;",
+      "riskLevel": "low",
+      "agentId": "S02"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "buyLand (remove totB=B+myOut double-counting & restore oppFloorCap=112, collapseFloorCap=68)",
+      "before": "oppFloorCap: 38, collapseFloorCap: 16; const totB = B + myOut; if (isPrimeLand && B >= 12 * L) keep = Math.min(keep, (o.nearCollapse || dqNow < 14 ? 10 : 26) * L); const avail = Math.min(B - fee, totB - fee - keep);",
+      "after": "oppFloorCap: 112, collapseFloorCap: 68; const avail = B - fee - keep; // enforce thirdPartySafe >= max(68*L, (max3rdB - 1.5*L)/1.55) when bordering any healthy enemy human",
+      "riskLevel": "low",
+      "agentId": "S03"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "tryDonateToTeammate (boxedIn definition, coastGuardFloor, safeFloor, isPureInlandSafe)",
+      "before": "const boxedIn = this.nb.length === 0 && this.neutral === 0; ... const coastGuardFloor = hasExposedCoast && g.t >= 1100 ? 68 * L : 18 * L; const safeFloor = Math.max(coastGuardFloor, enemyHumanNbs.length > 0 ? this.safeAt(g, -1) : 0); const isPureInlandSafe = enemyHumanNbs.length === 0 && !hasExposedCoast && myHumanInAtk === 0;",
+      "after": "const boxedIn = this.nb.length === 0 && (this.neutral === 0 || (g.t >= 850 && this.neutral <= 8 && dMe >= 55)); ... const coastGuardFloor = boxedIn ? (hasExposedCoast ? 28 * L : 18 * L) : (hasExposedCoast && g.t >= 1100 ? 68 * L : 25 * L); const safeFloor = Math.max(coastGuardFloor, enemyHumanNbs.length > 0 ? super.safeAt(g, -1) : 0); const isPureInlandSafe = boxedIn && !hasExposedCoast && myHumanInAtk === 0;",
+      "riskLevel": "low",
+      "agentId": "S04"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "tryDonateToTeammate (batch size pct, frontline protection floor, ao.iD quota gate, and recipient border check)",
+      "before": "if (!boxedIn && dMe < 132) return false; if (boxedIn && dMe < 72) return false; ... if (!allyEnemyNbs.length && outAtk === 0 && inAtk === 0 && g.t > 2200) continue; ... const pct = 51;",
+      "after": "if (!boxedIn && dMe < 138) return false; if (boxedIn && dMe < 45) return false; ... if (typeof window !== 'undefined' && window.ao?.iD && !window.ao.iD(p)) continue; if (!allyEnemyNbs.length && outAtk === 0 && inAtk === 0 && (g.border?.[p]?.length ?? 0) === 0) continue; ... const pct = Math.min(maxSafePct, boxedIn ? 280 : 120);",
+      "riskLevel": "low",
+      "agentId": "S04"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "act (enable tryDonateToTeammate for boxedIn bots at t >= 720 when bossId < 0)",
+      "before": "if (this.tryEmergencyBossRescue(g) && g.online) return;",
+      "after": "if ((this.tryEmergencyBossRescue(g) || (g.t >= 720 && this.nb.length === 0 && this.tryDonateToTeammate(g))) && g.online) return;",
+      "riskLevel": "low",
+      "agentId": "S04"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "tryClaimNearTeamIslands (fix s.land -> s.c bug & add strict 3.125%B boat tax ROI gate)",
+      "before": "const landPix = s.land; ... const wantTr = Math.max(70, Math.ceil(rawNeed * Math.exp(0.002 * s.d))); if (wantTr > 0.14 * B || B - wantTr - fee < 24 * L) continue; ... const ok = g.boatTo ? g.boatTo(pct, bestHit.land, me) : g.boat(pct, bestHit.water, bestHit.dir, me);",
+      "after": "const landPix = s.c ?? s.land; if (landPix === undefined || landPix < 0) continue; ... const wantTr = Math.max(70, Math.ceil(rawNeed * Math.exp(0.002 * s.d))); const maxIsleTax = isNeutralIsle ? Math.min(2200, Math.floor(2.5 * sz)) : Math.min(3500, Math.floor(3.0 * sz)); if (fee > maxIsleTax || wantTr + fee > 0.06 * B || B - wantTr - fee < Math.max(65 * L, super.safeAt(g, -1))) continue; ... const ok = g.boatTo ? g.boatTo(pct, bestHit.c ?? bestHit.land, me) : false;",
+      "riskLevel": "low",
+      "agentId": "S05"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "tryInterceptEnemyBoats (minimum enemy boat threat vs 3.125%B fee gate, 14%B cap, 55*L keep floor, and real chaser deduplication)",
+      "before": "if (bTr < 80) continue; ... const urgentClose = dBoatToLand <= 55 || dEndP <= 55 || seenAge >= 5; const maxAllowP = Math.floor((urgentClose ? 0.35 : 0.16) * Bp); const keepFloorP = (urgentClose ? 12 : 28) * Lp; ... const pct = Math.max(2, Math.min(360, Math.ceil((myCand.sendTrP * 1024) / Math.max(1, B))));",
+      "after": "const myFee = iV(32 * B, 1024); const isExistentialThreat = bTr >= 0.65 * Math.max(1, B - 15 * L); if (!isExistentialThreat && (bTr < 1500 || myFee > 0.625 * bTr)) continue; ... const urgentClose = dBoatToLand <= 45 || dEndP <= 45; const maxAllowP = Math.floor((urgentClose ? 0.14 : 0.09) * Bp); const keepFloorP = Math.max((urgentClose ? 55 : 72) * Lp, Math.floor(0.75 * super.safeAt(g, -1))); ... const pct = Math.max(4, Math.min(144, Math.ceil((myCand.sendTrP * 1024) / Math.max(1, B))));",
+      "riskLevel": "low",
+      "agentId": "S05"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "tryInterceptEnemyBoats (replace broken bQ.mt.mu with geometric bType===6 route-endpoint chaser sum)",
+      "before": "if (typeof window !== \"undefined\" && window.bQ?.mt?.mu && window.bR?.gB) { for (let p = 0; p < g.humans; p++) { ... if (window.bQ.mt.mu(p, boatId)) ... } }",
+      "after": "for (let c = 0; c < boatN; c++) { if (c === b) continue; const cOwner = g.bSlot[c] >> 3; if (cOwner !== me && !this.isTeammate(g, cOwner)) continue; if ((g.bType?.[c] ?? 0) % 64 === 6) { const cr = g.bRoute?.[c]; const cEnd = cr && cr.length > 0 ? cr[cr.length - 1] : -1; if (cEnd >= 0 && Math.hypot((cEnd % W) - bx, Math.floor(cEnd / W) - by) <= 45) alreadyChasingTroops += g.bTroops[c]; } }",
+      "riskLevel": "low",
+      "agentId": "S05"
+    },
+    {
+      "file": "tsb/squad/headless-bot.mjs",
+      "functionOrParam": "afterTick inflight guard (Lines 176-181)",
+      "before": "if(null!==this.inflight&&Ct()-this.inflight<110&&t.t-(this.inflightTick??0)<2)return;",
+      "after": "if(null!==this.inflight&&Ct()-this.inflight<450&&t.t-(this.inflightTick??0)<6)return;",
+      "riskLevel": "low",
+      "agentId": "S06"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "PARAMS.period, oppFloorCap, collapseFloorCap (Lines 976-998)",
+      "before": "period: 2, maxTargets: 6, ... oppFloorCap: 38, ... collapseFloorCap: 16,",
+      "after": "period: 5, maxTargets: 4, ... oppFloorCap: 92, ... collapseFloorCap: 64,",
+      "riskLevel": "low",
+      "agentId": "S06"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "Policy.buyLand isPrimeLand keep override & totB in-flight accounting (Lines 1060-1102)",
+      "before": "const myOut = this.myOutTroops(g); const totB = B + myOut; const dqNow = g.bal[q] / Math.max(1, g.terr[q]); const isPrimeLand = o.nearCollapse || dqNow < 26 || c < 0.48 * worth || (o.bleeding && o.tD < 0.55); if (isPrimeLand && B >= 12 * L) { keep = Math.min(keep, (o.nearCollapse || dqNow < 14 ? 10 : 26) * L); } const avail = Math.min(B - fee, totB - fee - keep); ... if (o.nearCollapse) { if (curAtk >= 0.16 * B || curAtk >= 0.85 * need) continue; ... } if (o.pulseMode) { if (curAtk >= (isPrimeLand ? 0.14 * B : 0.04 * B)) continue;",
+      "after": "const dqNow = g.bal[q] / Math.max(1, g.terr[q]); let max3rdB = 0; for (const p of this.nb) { if (p !== q && g.alive[p] && this.person(g, p) && g.bal[p] / Math.max(1, g.terr[p]) >= 45) max3rdB = Math.max(max3rdB, g.bal[p] + g.attackTroopsOn(p, me)); } const thirdPartySafe = max3rdB > 0 ? Math.max(68 * L, (max3rdB - 1.5 * L) / 1.55) : 38 * L; const isPrimeLand = o.nearCollapse || (!person && dqNow < 24 && c < 0.42 * worth); if (isPrimeLand && B >= 45 * L && max3rdB < 0.65 * B) { keep = Math.max(thirdPartySafe, Math.min(keep, (o.nearCollapse ? 48 : 64) * L)); } const avail = B - fee - keep; ... if (o.nearCollapse) { if (curAtk >= 0.08 * B || curAtk >= 0.50 * need || g.t - (this.hitTo.get(q) ?? -999) < 8) continue; ... } if (o.pulseMode) { if (curAtk >= (isPrimeLand ? 0.06 * B : 0.04 * B) || g.t - (this.hitTo.get(q) ?? -999) < 8) continue;",
+      "riskLevel": "low",
+      "agentId": "S06"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "old_offers_slot target specificity (Lines 1001-1008)",
+      "before": "s = s.replace(old_offers_slot, new_offers_slot, 1)",
+      "after": "s = s.replace(old_offers_slot, new_offers_slot) # Replace both Strategy.act and Policy.offers (or anchor on Policy.offers context)",
+      "riskLevel": "low",
+      "agentId": "S06"
+    },
+    {
+      "file": "tsb/squad/v27-team-live.js",
+      "functionOrParam": "Policy.updatePokeState & Policy.tryDeterrentCounter",
+      "before": "if (wasCnt === 0 && curCnt > 0 && curCnt <= 32 && g.t >= 1200) { ... } ... if (Bq > 1.50 * B && !isFreshBeachhead) continue;",
+      "after": "if (wasCnt === 0 && curCnt > 0 && curCnt <= 32 && g.t >= 1200 && (inc > 0 || g.terr[q] <= 4000)) { ... } ... if (Bq > 1.50 * B || (isFreshBeachhead && Bq >= B && curInc <= 0)) continue;",
+      "riskLevel": "low",
+      "agentId": "S07"
+    },
+    {
+      "file": "tsb/squad/v27-team-live.js",
+      "functionOrParam": "Policy.tryDonateToTeammate & Policy.tryEmergencyBossRescue (10% assist poke)",
+      "before": "if (mainAttacker >= 0 && (this.cnt[mainAttacker] ?? 0) > 0 && !g.hasAttack(me, mainAttacker) && g.hasFreeSlot(me) && dMe >= 65) { if (g.attack(102, mainAttacker, me)) ... }",
+      "after": "if (mainAttacker >= 0 && (this.cnt[mainAttacker] ?? 0) > 0 && !g.hasAttack(me, mainAttacker) && g.t - (this.hitTo.get(mainAttacker) ?? -999) >= 45 && g.hasFreeSlot(me) && dMe >= 88 && g.bal[mainAttacker] <= 1.35 * B) { if (g.attack(102, mainAttacker, me)) ... }",
+      "riskLevel": "low",
+      "agentId": "S07"
+    },
+    {
+      "file": "tsb/squad/v27-team-live.js",
+      "functionOrParam": "Policy.buyLand (isSoleHealthyBuffer & hardCapMult)",
+      "before": "const isSoleHealthyBuffer = !isTeamMode && person && ...; const hardCapMult = isTeamMode ? 1.16 : (o.isCrowdedHard && c >= 2.15 * worth && g.bal[q] >= 0.55 * B ? 1.50 : P.crowdedHardCap);",
+      "after": "const isSoleHealthyBuffer = person && !o.isDoorSea && nHumans >= 3 && !o.nearCollapse && !o.bleeding && !o.onMe && o.newNbs > 0 && humanNbCount === 1; const hardCapMult = o.isCrowdedHard && c >= 2.15 * worth && g.bal[q] >= 0.55 * B ? (isTeamMode ? 1.42 : 1.50) : P.crowdedHardCap;",
+      "riskLevel": "low",
+      "agentId": "S07"
+    },
+    {
+      "file": "tsb/squad/v27-team-live.js",
+      "functionOrParam": "Policy.tryDeterrentCounter (activeHumanAtkers multi-front filter)",
+      "before": "if (a < g.humans && !g.isBot(a) && g.attackTroopsOn(a, me) > 0.02 * B) activeHumanAtkers++;",
+      "after": "if (a < g.humans && !g.isBot(a) && g.attackTroopsOn(a, me) > 0.02 * B && g.bal[a] >= 0.30 * B) activeHumanAtkers++;",
+      "riskLevel": "low",
+      "agentId": "S07"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "offers (Team Focus-Fire Target Lock, Joint Kill-Need Subtraction, and Multi-Team War Penalty)",
+      "before": "let rankMult = 1.0;\n        if (atkOnBoss > 0 || bossAtkOnQ > 0) {\n          c *= 0.78;\n          rankMult *= 0.72;\n        } else if (clanAllyAtkers > 0 || allyAtk > 0.06 * Bq) {\n          c *= 0.82;\n          rankMult *= 0.78;\n        } else if (atkOnAlly > 0.08 * Bq) {\n          c *= 0.85;\n          rankMult *= 0.82;\n        }",
+      "after": "const jointNeed = Math.max(1, rawNeed - Math.floor(0.85 * allyAtk));\n        if (allyAtk > 0) c = (jointNeed + fee) / baseGain;\n        let squadWarTeams = 0, qTeamEngaged = false;\n        if (g.teams && g.teams[me] > 0) {\n          const engagedTeams = new Set();\n          for (let p = 0; p < g.humans; p++) {\n            if (!g.alive[p] || !this.isTeammate(g, p)) continue;\n            const sbP = g.slotBase(p);\n            for (let i = 0; i < g.atkCount[p]; i++) {\n              const tId = g.atkTarget[sbP + i];\n              if (tId >= 0 && tId < g.humans && !g.isBot(tId) && !this.isTeammate(g, tId)) engagedTeams.add(g.teams[tId]);\n            }\n          }\n          squadWarTeams = engagedTeams.size;\n          qTeamEngaged = engagedTeams.has(g.teams[q]);\n        }\n        let rankMult = 1.0;\n        if (atkOnBoss > 0 || bossAtkOnQ > 0) {\n          c *= 0.62;\n          rankMult *= 0.55;\n        } else if (clanAllyAtkers >= 2 || allyAtk >= 0.15 * Bq) {\n          c *= 0.55;\n          rankMult *= 0.48;\n        } else if (clanAllyAtkers > 0 || allyAtk > 0.04 * Bq) {\n          c *= 0.68;\n          rankMult *= 0.62;\n        } else if (atkOnAlly > 0.06 * Bq) {\n          c *= 0.75;\n          rankMult *= 0.70;\n        } else if (squadWarTeams >= 1 && !qTeamEngaged && !onMe && !nearCollapse) {\n          c *= 1.45;\n          rankMult *= 1.45;\n        }",
+      "riskLevel": "low",
+      "agentId": "S08"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "tryDonateToTeammate & tryEmergencyBossRescue (Fix 2-tick RTT Assist Machine-Gun Bug via lastAssistTick cooldown)",
+      "before": "if (mainAttacker >= 0 && (this.cnt[mainAttacker] ?? 0) > 0 && !g.hasAttack(me, mainAttacker) && g.hasFreeSlot(me) && dMe >= 65) {\n          if (g.attack(102, mainAttacker, me)) {\n            this.cmds++;\n            this.hitTo.set(mainAttacker, g.t);",
+      "after": "if (mainAttacker >= 0 && (this.cnt[mainAttacker] ?? 0) > 0 && !g.hasAttack(me, mainAttacker) && g.hasFreeSlot(me) && dMe >= 85 && g.t - (this.lastAssistTick ?? -999) >= 90 && g.t - (this.hitTo.get(mainAttacker) ?? -999) >= 60) {\n          if (g.attack(102, mainAttacker, me)) {\n            this.lastAssistTick = g.t;\n            this.cmds++;\n            this.hitTo.set(mainAttacker, g.t);",
+      "riskLevel": "low",
+      "agentId": "S08"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "PARAMS (Restore single-front focusBonus and maxTargets discipline)",
+      "before": "period: 2,\n  maxTargets: 6,\n  bleedDiscount: 0.65,\n  ...\n  focusBonus: 1.0,",
+      "after": "period: 4,\n  maxTargets: 3,\n  bleedDiscount: 0.65,\n  ...\n  focusBonus: 0.78,",
+      "riskLevel": "low",
+      "agentId": "S08"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "isTeammate & tryInterceptEnemyBoats (Prevent Redacted Squad Brother Fratricide)",
+      "before": "if (owner === me || owner >= 512 || this.isTeammate(g, owner)) continue;",
+      "after": "if (owner === me || owner >= 512 || this.isTeammate(g, owner) || this.isOurSquadBot(g, owner)) continue;",
+      "riskLevel": "low",
+      "agentId": "S08"
+    },
+    {
+      "file": "tsb/squad/v27-team-live.js",
+      "functionOrParam": "Policy.buyLand (totB & oppFloorCap & isPrimeLand keep lock)",
+      "before": "oppFloorCap: 38, collapseFloorCap: 16; const myOut = this.myOutTroops(g); const totB = B + myOut; if (isPrimeLand && B >= 12 * L) keep = Math.min(keep, (o.nearCollapse || dqNow < 14 ? 10 : 26) * L); const avail = Math.min(B - fee, totB - fee - keep);",
+      "after": "oppFloorCap: 112, collapseFloorCap: 68; const avail = B - fee - keep; // Never count in-flight myOutTroops as home defense when humanNbCount >= 1, and when squad is #1 or L_team >= 0.20*g.land, lock frontline keep >= Math.max(68 * L, 0.78 * this.safeAt(g, q));",
+      "riskLevel": "low",
+      "agentId": "S09"
+    },
+    {
+      "file": "tsb/squad/v27-team-live.js",
+      "functionOrParam": "Policy.tryDonateToTeammate & Policy.tryEmergencyBossRescue ([HL-ASSIST] RTT Cooldown & Rear-to-Frontline Conveyor)",
+      "before": "if (mainAttacker >= 0 && (this.cnt[mainAttacker] ?? 0) > 0 && !g.hasAttack(me, mainAttacker) && g.hasFreeSlot(me) && dMe >= 65) { if (g.attack(102, mainAttacker, me)) ... } // plus `if (!boxedIn && dMe < 132) return false;` where coastal boxed-in bots keep safeFloor = 68*L",
+      "after": "Add `if (g.t - (this.lastAssistTick ?? -999) < 60) continue;` and set `this.lastAssistTick = g.t;` before `g.attack(102, ...)` so 2-tick period + 4-tick RTT never machine-guns 7x 10%B pokes in 12 ticks! For boxed-in rear bots (`enemyHumanNbs.length === 0 && this.neutral === 0`), lower coastal reserve to `38 * L` when no enemy boat is within 95px and stream 6%B (`pct=62`) every 24 ticks to the lowest-density frontline squadmate (`nb.length > 0 && dAlly < 95`).",
+      "riskLevel": "low",
+      "agentId": "S09"
+    },
+    {
+      "file": "tsb/squad/tsb-team-squad.mjs",
+      "functionOrParam": "allReadyInRoom0 (Strict 8-Bot / 7-Bot Entry Gate)",
+      "before": "headlessInRoom0 >= HEADLESS_BOTS.length - 1 || (headlessInRoom0 >= 5 && minStartsIn <= 14)",
+      "after": "headlessInRoom0 === HEADLESS_BOTS.length || (headlessInRoom0 >= HEADLESS_BOTS.length - 1 && minStartsIn <= 10) // Never launch with only 5~6 bots; ensures >= 7~8 bots enter every match!",
+      "riskLevel": "low",
+      "agentId": "S09"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "Complete 6-Variable Restoration & Guardrail Patch (V3, V4, V5, V6, V7, V8, V9, V10)",
+      "before": "period:2, oppFloorCap:38, collapseFloorCap:16, totB=B+myOut, pct=51, unthrottled 10%B assist, bQ.mt.mu chase dedup, s.land island claim",
+      "after": "period:5 (inflight>=6t), oppFloorCap:112, collapseFloorCap:68, avail=B-fee-keep, boxedIn donate pct=240..280 (frontline nb>0 no donate below d=138), 90t assist cooldown, geometric bType===6 chase dedup + fee<=0.625*bTr gate + 14%B cap, s.c island fix",
+      "riskLevel": "low",
+      "agentId": "S10"
+    }
+  ]
+}
