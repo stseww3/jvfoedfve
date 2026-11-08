@@ -102,6 +102,9 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onS
       console.log(`[${name}] (Worker) Fresh Turnstile token ready & v27team (slot=${slot}) imported!`);
     } else if (msg.type === 'log') {
       console.log(`[${name}]`, msg.text);
+      if (msg.text.includes('socket close index 3') || msg.text.includes('socket close index 2')) {
+        client.evalJs(`(() => { const d = window.dictionary, g = d && window[d.game]; if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true); })()`);
+      }
       if (msg.text.includes('error 4591') || msg.text.includes('error 4215') || msg.text.includes('error 4577') || msg.text.includes('error 4229')) {
         client.freshToken = false;
         client.enteredLobbyAt = 0;
