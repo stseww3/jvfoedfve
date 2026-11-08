@@ -1085,7 +1085,7 @@ setInterval(async () => {
           s.lobby.inLobby = true;
           s.lobby.room = 0;
           if (bq.sH && typeof bq.sH.wF === "number") {
-            const firstRoom = bq.sH.sH?.find(r => r && r.vz >= 0 && r.vz <= 3);
+            const firstRoom = bq.sH.sH?.[0];
             s.lobby.ready = !!(firstRoom && bq.sH.wF === firstRoom.id && firstRoom.id > 0);
             s.lobby.startsIn = firstRoom ? (firstRoom.wK ?? 99) : 99;
           } else {
@@ -1269,6 +1269,9 @@ setInterval(async () => {
 
   const now = Date.now();
   states.forEach((s, idx) => {
+    if (s.inGame || s.lobby?.inLobby) {
+      clients[idx].lobbyFailCount = 0;
+    }
     if (s.inGame) {
       if (!clients[idx].wasInGame) clients[idx].enteredGameAt = now;
       clients[idx].wasInGame = true;
@@ -1448,7 +1451,7 @@ setInterval(async () => {
   const allReadyInRoom0 =
     timerSpreadOk &&
     (headlessOnly
-      ? (headlessInRoom0 === HEADLESS_BOTS.length || (headlessInRoom0 >= HEADLESS_BOTS.length - 4 && minStartsIn <= 10))
+      ? (headlessInRoom0 >= HEADLESS_BOTS.length - 2 || (headlessInRoom0 >= HEADLESS_BOTS.length - 5 && minStartsIn <= 15))
       : wantTenForCurrentLobby
         ? (readyCountInRoom0 === 10 || (readyCountInRoom0 >= 8 && minStartsIn <= 8))
         : (chromeInRoom0 === 5 || (chromeInRoom0 >= 4 && minStartsIn <= 8)));
@@ -1480,24 +1483,18 @@ setInterval(async () => {
           ext.settings.armed = true;
           ext.remote.state.loop = "team";
           const isInLobbyNow = (typeof bq === "object" && bq?.f6 === 1 && typeof b1 === "object" && b1?.z?.ef?.(1));
-          const targetRoomNow = ${waitMode ? 'bq?.sH?.sH?.[0]' : 'bq?.sH?.sH?.find?.(r => r && r.vz >= 0 && r.vz <= 3)'};
-          const isReadyNow = isInLobbyNow && (bq?.sH ? !!(targetRoomNow && bq.sH.wF === targetRoomNow.id && targetRoomNow.id > 0) : !!(bq?.z?.tM?.[3]));
-          if (!${waitMode ? 'true' : 'false'} && isInLobbyNow && bq?.sH && typeof bq.sH.select === "function" && bq.sH.wF && (!targetRoomNow || bq.sH.wF !== targetRoomNow.id)) {
-            bq.sH.select(0);
-          }
+          const isReadyNow = isInLobbyNow && (bq?.sH ? !!(bq.sH.sH?.[0] && bq.sH.wF === bq.sH.sH[0].id && bq.sH.sH[0].id > 0) : !!(bq?.z?.tM?.[3]));
           if (isInLobbyNow && !isReadyNow && ${allowReady ? 'true' : 'false'}) {
             if (!window.__readyJitterScheduled) {
               window.__readyJitterScheduled = true;
-              const delayMs = 450 + ((${c.slot} * 380) % 2400) + Math.floor(Math.random() * 850);
+              const delayMs = 120 + ((${c.slot} * 110) % 900) + Math.floor(Math.random() * 250);
               setTimeout(() => {
                 window.__readyJitterScheduled = false;
                 if (typeof bq === "object" && bq?.f6 === 1 && !window.__tsbWaitForLeader) {
                   if (bq?.sH?.sH?.[0] && typeof bq.sH.select === "function") {
-                    const targetRoom = ${waitMode ? 'bq.sH.sH[0]' : 'bq.sH.sH.find(r => r && r.vz >= 0 && r.vz <= 3)'};
+                    const targetRoom = (bq.sH.sH[0] && bq.sH.sH[0].vz < 7) ? bq.sH.sH[0] : (bq.sH.sH.find(r => r && r.vz < 7) || bq.sH.sH[0]);
                     if (targetRoom && bq.sH.wF !== targetRoom.id) {
                       bq.sH.select(targetRoom.id);
-                    } else if (!targetRoom && bq.sH.wF) {
-                      bq.sH.select(0);
                     }
                   } else {
                     document.dispatchEvent(new KeyboardEvent("keyup", { code: "Enter", key: "Enter", bubbles: true, cancelable: true }));
@@ -1553,8 +1550,14 @@ setInterval(async () => {
     );
     for (let i = 0; i < readyToEnter.length; i++) {
       const c = readyToEnter[i];
+      c.lobbyFailCount = (c.lobbyFailCount || 0) + 1;
+      if (c.lobbyFailCount >= 3) {
+        c.freshToken = false;
+        c.lobbyFailCount = 0;
+        continue;
+      }
       c.enteredLobbyAt = now;
-      const enterJitterMs = i * 220 + Math.floor(Math.random() * 380);
+      const enterJitterMs = i * 160 + Math.floor(Math.random() * 160);
       setTimeout(() => {
         c.evalJs(`(() => {
           const d = window.dictionary;
