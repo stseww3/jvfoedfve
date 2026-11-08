@@ -260,14 +260,14 @@ new_helpers = """  isTeammate(g, p) {
       }
       let res = chosenSlots[slot] || cands[slot % cands.length];
       if (!chosenSlots[slot] && chosenSlots.length > 0) {
-        // Fallback: Farthest-Point Sampling across the main-continent free land grid (g.px === 0) so all 5 slots are guaranteed >= 160px apart!
+        // Fallback: Farthest-Point Sampling across the main-continent free land grid (pxArr[idx] === 1 = T_LAND) so all 10 slots are guaranteed >= 160px apart!
         const pxArr = gClean.px;
         for (let sIdx = chosenSlots.length; sIdx <= slot; sIdx++) {
           let bestPt = null, bestD = -1;
           for (let y = 18; y < H - 18; y += 16) {
             for (let x = 18; x < W - 18; x += 16) {
               const idx = y * W + x;
-              if (pxArr[idx] !== 0) continue;
+              if (pxArr[idx] !== 1) continue;
               if (comp && comp[idx] > 0 && comp[idx] < minMainLand) continue;
               let minD = 999999;
               for (const p of chosenSlots) minD = Math.min(minD, Math.hypot(x - p.x, y - p.y));
