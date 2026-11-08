@@ -28,92 +28,6 @@ try {
         return prevAfterTick();
       };
     }
-    const patchLoop = (loopObj) => {
-      if (!loopObj || loopObj.__patchedFast42) return;
-      loopObj.__patchedFast42 = true;
-      loopObj.aXQ = function(aD) {
-        if (window.aE?.hx) { this.aEZ(aD); return; }
-        this.af3.push(aD);
-        if (window.aE?.a38 === 1 && !window.aE.hx) {
-          window.bi.eZ = performance.now();
-          if (this.eZ > window.bi.eZ) this.eZ = window.bi.eZ;
-          this.ee();
-          return;
-        }
-        if (window.aE?.a38 === 2) {
-          for (var aC = 0; aC < this.af3.length; aC++) { window.bB.qk.ee(this.af3[aC]); }
-          this.af3 = [];
-        }
-      };
-      loopObj.ee = function() {
-        if (typeof window.i?.ee === "function") window.i.ee();
-        if (window.aE?.hx) {
-          if (window.__fx?.strategyBot?.beforeFrame) window.__fx.strategyBot.beforeFrame();
-          window.bi.ds = window.aX.aEZ(-1) || window.bi.ds;
-          window.nI();
-        } else {
-          if (this.af1 === this.aK3 * 7 && this.af3.length === 0) {
-            this.eZ = window.bi.eZ;
-            window.n6();
-          } else {
-            var _steps = 0;
-            while (window.bi.eZ >= this.eZ && _steps++ < 35 && window.bi.a3I === this) {
-              this.eZ += 42;
-              if (window.aE?.a38 !== 1) { if (window.aE?.a38 === 2) window.n6(); break; }
-              this.af6();
-              if (window.aE?.a38 !== 1 || window.bi.a3I !== this || (this.af1 === this.aK3 * 7 && this.af3.length === 0)) {
-                this.eZ = window.bi.eZ;
-                break;
-              }
-            }
-            if (window.bi.eZ >= this.eZ) this.eZ = window.bi.eZ;
-          }
-          this.eI = 0;
-        }
-        window.nD();
-        if (window.bi) {
-          if (window.bi.ds) window.bi.ds = false;
-          this.af5 = window.bi.eZ;
-        }
-      };
-      loopObj.af6 = function() {
-        var yZ, aC;
-        if (window.aE?.a38 !== 1 || window.bi?.a3I !== this) return;
-        if (this.af1 !== this.aK3 * 7) {
-          window.n8();
-          while (this.af3.length > 0 && this.af1 < this.aK3 * 7 && window.aE?.a38 === 1 && window.bi?.a3I === this) {
-            window.n8();
-          }
-          if (this.af3.length === 0 || window.aE?.a38 !== 1 || window.bi?.a3I !== this) return;
-        }
-        yZ = false;
-        loop: while (this.af8()) {
-          yZ = true;
-          window.n8();
-          if (window.aE?.a38 !== 1 || window.bi?.a3I !== this) break;
-          if (this.af3.length > 0) {
-            for (aC = this.af4 - 2; aC >= 0; aC--) {
-              window.n8();
-              if (window.aE?.a38 !== 1 || window.bi?.a3I !== this) break loop;
-            }
-          } else {
-            break;
-          }
-        }
-        if (!yZ && window.aE?.a38 === 1 && window.bi?.a3I === this) {
-          window.n6();
-        }
-      };
-    };
-    if (window.bi?.a3I && Array.isArray(window.bi.a3I.af3)) patchLoop(window.bi.a3I);
-    if (window.bi && typeof window.bi.a7m === "function" && !window.bi.__patchedA7m) {
-      window.bi.__patchedA7m = true;
-      const origA7m = window.bi.a7m.bind(window.bi);
-      window.bi.a7m = function() {
-        origA7m();
-        if (this.a3I && Array.isArray(this.a3I.af3)) patchLoop(this.a3I);
-      };
-    }
     const isBossReadyInLobby = () => {
       const w1 = window.bq?.wZ?.w1;
       const wa = window.bq?.wZ?.wa | 0;
@@ -970,7 +884,8 @@ s = s.replace(old_rank_mult, new_rank_mult, 1)
 old_early_act = """    if (g.t < P.coreFrom) {
       const before = this.cmds;"""
 
-new_early_act = """    this.tryPrivateBossEmoji(g);
+new_early_act = """    if (g.t % P.period !== 0) return;
+    this.tryPrivateBossEmoji(g);
     if (g.t < P.coreFrom) {
       this.analyze(g);
       if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
