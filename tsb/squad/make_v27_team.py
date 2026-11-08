@@ -214,13 +214,20 @@ new_helpers = """  isTeammate(g, p) {
       }
     }
 
-    // Invalidate spawnKey if squadIds changed so spawnVsPeople never returns stale cached points
-    this.spawnKey = null;
-    let cands = this.spawnVsPeople ? this.spawnVsPeople(gClean, 24) : [];
-    if (!cands || cands.length < 12) {
-      const more = this.spawnCandidates(gClean, 24) || [];
-      cands = [...(cands || []), ...more];
+    // Throttle expensive spawnVsPeople BFS to at most once every 950ms during spawnPhase so Worker never lags >3000ms!
+    const nowSpawnMs = typeof performance !== "undefined" ? performance.now() : Date.now();
+    if (!this._cachedSpawnCands || !this._lastSpawnCalcMs || nowSpawnMs - this._lastSpawnCalcMs > 950 || this._cachedSpawnW !== W) {
+      this._lastSpawnCalcMs = nowSpawnMs;
+      this._cachedSpawnW = W;
+      this.spawnKey = null;
+      let rawCands = this.spawnVsPeople ? this.spawnVsPeople(gClean, 24) : [];
+      if (!rawCands || rawCands.length < 12) {
+        const more = this.spawnCandidates(gClean, 24) || [];
+        rawCands = [...(rawCands || []), ...more];
+      }
+      this._cachedSpawnCands = rawCands;
     }
+    let cands = this._cachedSpawnCands;
     if (cands && cands.length > 0) {
       const chosenSlots = [];
       for (const pos of cands) {
