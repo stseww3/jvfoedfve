@@ -2217,10 +2217,7 @@ class V13 extends Style {
   floorFor0(g, q, f) {
     const P = this.p;
     if (P.winR > 0 && g.t < P.dpEnd && !this.person(g, q)) {
-      const L = Math.max(1, g.terr[this.me]), B = g.bal[this.me];
-      const botKeepCap = Math.min(35 * L, Math.floor(0.55 * B));
-      const baseWin = (this.botPx(g, q) * L) / (P.winR * Math.max(1, g.t));
-      return Math.max(baseWin, Math.min(Math.max(this.dpKeep(g), this.peopleFloor(g), this.sb || 0), botKeepCap));
+      return Math.max(this.winFloor(g, q), this.peopleFloor(g));
     }
     if (this.food(g, q)) return Math.max(g.t < P.dpEnd ? this.dpKeep(g) : this.reserve(g, this.price(g, q)), Math.min(f, this.foodRef(g, q) * (this.avgNb ?? Infinity)), this.peopleFloor(g));
     if (P.idleLo > 0 && this.idle(g)) return Math.min(f, P.idleLo * 100 * g.terr[this.me]);
@@ -2372,7 +2369,7 @@ class V13 extends Style {
     if (this.dpCyc === cyc) return;
     const bal = g.bal[me], u = g.t % 100;
     const fee = iV(12 * bal, 1024);
-    const keepCap = this.neutral > 0 ? Math.min(this.dpKeep(g), Math.floor(0.50 * bal)) : this.dpKeep(g);
+    const keepCap = this.dpKeep(g);
     const max = Math.min(P.dpSpend * bal, bal - keepCap) - fee;
     if (!(max > 0)) return;
     const rings = this.dpRings(g, u);
@@ -3663,33 +3660,33 @@ export const PARAMS = {
   sharedBotMult: 1.0,
   marketFloor: 0.85,
   marketFrom: 2500,
-  bleedDiscount: 1.0,
+  bleedDiscount: 0.72,
   bleedSafeCap: 1,
   collapseRatio: 1.40,
-  pulseFrac: 0.12,
+  pulseFrac: 0.22,
   pulseMinShare: 0.04,
-  zeroPulseMode: 1,
+  zeroPulseMode: 0,
   thinMaxTD: 0.48,
-  thinDiscount: 1.0,
-  pocket0Mult: 1.0,
-  pocket1Rank: 1.0,
+  thinDiscount: 0.78,
+  pocket0Mult: 0.76,
+  pocket1Rank: 0.88,
   contactStepsMax: 350,
   contactPenalty: 0.002,
-  oppFloorCap: 128,
-  focusBonus: 1.0,
+  oppFloorCap: 68,
+  focusBonus: 0.78,
   focusT: 350,
   defendDiscount: 0.85,
   defendDiscountMid: 0.88,
-  overHumanCap: 1.28,
-  overHumanKeep: 1.12,
-  soleBufferPenalty: 1.60,
+  overHumanCap: 1.12,
+  overHumanKeep: 0.92,
+  soleBufferPenalty: 1.15,
   topRivalMinShare: 0.52,
   topRivalFocusMult: 0.85,
   topRivalStrikeMult: 0.85,
   topRival3Mult: 0.90,
   guardMode: 1,
-  crowdedHardPenalty: 1.35,
-  crowdedHardCap: 1.26,
+  crowdedHardPenalty: 1.08,
+  crowdedHardCap: 1.10,
   absorbMode: 0,
   absorbWaveMin: 0.04,
   absorbMemory: 250,
@@ -3698,20 +3695,20 @@ export const PARAMS = {
   focusRankOnly: 0,
   defendFrom: 0,
   foodRebate: 1,
-  seaCore: 1,
+  seaCore: 0,
   seaEnd: 3200,
   ownWorthMinKeep: 1,
   ownWorthFrom: 4000,
   overPeerCap: 1.16,
   overPeerKeep: 1.04,
   aggMemMode: 8,
-  reigniteBorders: 1,
+  reigniteBorders: 0,
   reigniteMinShare: 0.10,
-  flashLoanMode: 3, // 50k debt cap flash-loan state machine with 1v1 / single-human-nb safety lock (#3698 / #3700)
+  flashLoanMode: 0, // 50k debt cap flash-loan state machine with 1v1 / single-human-nb safety lock (#3698 / #3700)
   flashLoanMinCost: 160000,
   flashLoanMinRatio: 2.2,
-  atkFreshBoats: 1,
-  narrowBoatFirstMode: 1,
+  atkFreshBoats: 0,
+  narrowBoatFirstMode: 0,
   exactRingMode: 0,
   botPhaseMode: 1,
   seaRebateMode: 1,
@@ -3721,13 +3718,13 @@ export const PARAMS = {
   emptyAllInMode: 1,
   latePocketMode: 0,
   widenStepsMin: 0,
-  frogHopOverMode: 1,
-  leaderHardFrom: 5000,
+  frogHopOverMode: 0,
+  leaderHardFrom: 0,
   leaderMinShare: 0.16,
-  siegeShrinkRatio: 0.72,
+  siegeShrinkRatio: 0,
   siegeOverKeep: 1.24,
-  a06AloneSafe: 1,
-  a06AggMemGate: 1,
+  a06AloneSafe: 0,
+  a06AggMemGate: 0,
   a06BoatUnderAtk: 0,
 };
 
@@ -4267,13 +4264,21 @@ export class Policy extends V17 {
     if (!g.teams || !(g.teams[me] > 0) || typeof g.donate !== "function") return false;
     if (g.t < 400 || g.terr[me] < 2500 || g.bal[me] < 45000 || g.t - (this.lastDonateTick ?? -999) < 22) return false;
     const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
-    const boxedIn = this.nb.length === 0 && (this.neutral === 0 || (g.t >= 850 && this.neutral <= 8 && dMe >= 55));
-
     let myHumanInAtk = 0;
     for (const a of g.attackersOf(me)) {
       if (!g.isBot(a) && !this.isTeammate(g, a)) myHumanInAtk += g.attackTroopsOn(a, me);
     }
     const enemyHumanNbs = this.nb.filter((p) => g.alive[p] && this.person(g, p));
+    let anyEnemyNb = enemyHumanNbs.length > 0;
+    if (!anyEnemyNb && this.cnt) {
+      for (let p = 0; p < g.humans; p++) {
+        if (p !== me && g.alive[p] && !this.isTeammate(g, p) && (this.cnt[p] ?? 0) > 0) {
+          anyEnemyNb = true;
+          break;
+        }
+      }
+    }
+    const boxedIn = !anyEnemyNb && this.nb.length === 0 && (this.neutral === 0 || (g.t >= 850 && this.neutral <= 8 && dMe >= 68));
     const hasExposedCoast = (g.coast?.[me]?.length ?? 0) > 0;
     const coastGuardFloor = boxedIn ? (hasExposedCoast ? 28 * L : 18 * L) : (hasExposedCoast && g.t >= 1100 ? 68 * L : 22 * L);
     const safeFloor = Math.max(coastGuardFloor, enemyHumanNbs.length > 0 ? this.safeAt(g, -1) : 0);
@@ -4327,7 +4332,7 @@ export class Policy extends V17 {
         }
       }
       if (inHumanAtk > 0 && (inHumanAtk >= 0.08 * g.bal[p] || dAlly < 75)) {
-        const minDonorDens = boxedIn ? 48 : 108;
+        const minDonorDens = boxedIn ? (hasExposedCoast ? 72 : 38) : 122;
         const canAcceptDonate = typeof window === "undefined" || !window.ao?.iD || window.ao.iD(p);
         if (canAcceptDonate && dMe >= Math.max(minDonorDens, dAlly + 18)) {
           const pct = Math.min(maxSafePct, boxedIn ? 256 : 160);
@@ -4340,31 +4345,12 @@ export class Policy extends V17 {
             return true;
           }
         }
-        if (
-          mainAttacker >= 0 &&
-          (this.cnt[mainAttacker] ?? 0) > 0 &&
-          !g.hasAttack(me, mainAttacker) &&
-          g.hasFreeSlot(me) &&
-          dMe >= 88 &&
-          g.bal[mainAttacker] <= 1.35 * B &&
-          g.t - (this.lastAssistTick ?? -999) >= 90 &&
-          g.t - (this.hitTo.get(mainAttacker) ?? -999) >= 60
-        ) {
-          if (g.attack(102, mainAttacker, me)) {
-            this.lastAssistTick = g.t;
-            this.cmds++;
-            this.hitTo.set(mainAttacker, g.t);
-            if (typeof window !== "undefined" && window.__hlLog) {
-              window.__hlLog(`[HL-ASSIST] t=${g.t} 10% squad-rescue poke -> enemy=${mainAttacker}(${g.names?.[mainAttacker] || ""}) for ally=${p}(${g.names?.[p] || ""})`);
-            }
-            return true;
-          }
-        }
+
       }
     }
 
-    if (!boxedIn && dMe < 135) return false;
-    if (boxedIn && dMe < 48) return false;
+    if (!boxedIn && dMe < 128) return false;
+    if (boxedIn && dMe < (hasExposedCoast ? 75 : 35)) return false;
 
     let bestAlly = -1, bestScore = -Infinity;
     for (let p = 0; p < g.humans; p++) {
@@ -4733,13 +4719,8 @@ export class Policy extends V17 {
       const before = this.cmds;
       const balBefore = g.bal[me];
       super.act(g);
-      if (this.cmds === before && g.t >= 600 && this.neutral > 0 && g.attackTroopsOn(me, NEUTRAL) === 0) {
-        const grab = Math.min(Math.floor(0.35 * g.bal[me]), Math.max(this.minCmd(g), 4 * this.neutral + 120));
-        if (grab > 0 && g.bal[me] - grab > 12 * Math.max(1, g.terr[me])) this.send(g, NEUTRAL, grab);
-      }
-      if (this.cmds === before && g.t >= 750 && this.neutral === 0 && !this.hasBorderFood(g)) {
-        this.buyLand(g);
-        if (this.cmds === before) this.tryDonateToTeammate(g);
+      if (this.cmds === before && g.t >= 850 && this.neutral === 0 && !this.hasBorderFood(g)) {
+        this.tryDonateToTeammate(g);
       }
       if (this.cmds > before && g.bal[me] <= 0.75 * balBefore) {
         this.lastLandSpendTick = g.t;
@@ -4902,5 +4883,30 @@ export class Policy extends V17 {
 
   offers(g) {
     const P = this.p, me = this.me;
-    let active =
+    let active = 0;
+    const base = g.slotBase(me);
+    for (let i = g.atkCount[me] - 1; i >= 0; i--) if (g.atkTarget[base + i] !== NEUTRAL) active++;
+    const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L, fee = iV(12 * B, 1024);
+    const dMed = this.otherHumanMedDens(g) ?? dMe;
+    const nHumans = this.livingHumanCount(g);
+    const humanNbs = this.nb.filter((p) => g.alive[p] && this.person(g, p));
+    const focusQ = this.activeFocus(g);
+    const aggQ = this.peerAggressor(g);
+    const topRival = this.topOtherHuman(g);
+    const out = [];
+
+    for (const q of this.nb) {
+      if (!g.alive[q] || !g.terr[q]) continue;
+      const already = g.hasAttack(me, q);
+      if (!already && (active >= P.maxTargets || !g.hasFreeSlot(me))) continue;
+
+      const Lq = g.terr[q], Bq = g.bal[q], dq = Bq / Math.max(1, Lq);
+      const person = this.person(g, q);
+      const inAtk = g.attackTroopsOn(q, me);
+      const myAtk = g.attackTroopsOn(me, q);
+      const rawNeed = this.elimCost(g, q) + inAtk - myAtk;
+      if (rawNeed <= 0) continue;
+      const left = iV(g.peak[q], 4);
+      const share = Math.min(1, this.cnt[q] / Math.max(1, g.border[q].length));
+      const baseGain = 
 

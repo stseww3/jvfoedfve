@@ -834,9 +834,9 @@ export class TeamSpawnCoordinator {
       rCell: Math.round(rCell),
       bossExcl: clamp(Math.round(Math.max(1.12 * rCell, 0.078 * diag)), 68, 120),
       flankMax: clamp(Math.round(Math.max(2.30 * rCell, 0.170 * diag)), 135, 235),
-      allyMinSep: clamp(Math.round(Math.max(1.38 * rCell, 0.110 * diag)), 96, 172),
+      allyMinSep: clamp(Math.round(Math.max(1.08 * rCell, 0.068 * diag)), 64, 112),
       enemyMinClearance: clamp(Math.round(0.70 * rCell), 36, 78),
-      clusterMax: clamp(Math.round(Math.max(4.20 * rCell, 0.380 * diag)), 280, 540),
+      clusterMax: clamp(Math.round(Math.max(2.90 * rCell, 0.250 * diag)), 210, 390),
     };
 
     // Build initial distance fields with realBoss (if placed)
@@ -1078,7 +1078,7 @@ export class TeamSpawnCoordinator {
       }
       if (picked) {
         chosenTargets.push(picked);
-        this.injectChosenSquadPoint(picked.cell, m, Math.max(220, Math.round(2.5 * scales.allyMinSep)));
+        this.injectChosenSquadPoint(picked.cell, m, Math.max(115, Math.round(1.45 * scales.allyMinSep)));
       }
     }
 
