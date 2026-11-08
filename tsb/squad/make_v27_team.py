@@ -58,6 +58,17 @@ try {
       }
       if (window.bq?.f6 === 1) {
         const bossReady = isBossReadyInLobby();
+        if ((window.__tsbSquadSlot | 0) === 0 && window.__hlLog && (!window.__lastLobbyWaitLog || Date.now() - window.__lastLobbyWaitLog > 8000)) {
+          window.__lastLobbyWaitLog = Date.now();
+          const w1 = window.bq?.wZ?.w1 || [];
+          const wa = window.bq?.wZ?.wa | 0;
+          const rdyNames = w1.slice(0, Math.min(wa, 25)).map(p => `${String(p?.aGT || p?.aGM || p?.username || "").trim()}(c=${p?.color})`).join(", ");
+          const bossInAll = w1.find(p => {
+            const r = String(p?.aGT || p?.aGM || p?.username || "").trim().toLowerCase();
+            return r.includes("kazerd") || r.includes("npl") || r.includes("auouf");
+          });
+          window.__hlLog(`[LOBBY-WAIT] total=${w1.length} ready=${wa} bossReady=${bossReady} bossFound=${bossInAll ? (bossInAll.aGM || bossInAll.username) : "none"} rdyList=[${rdyNames}]`);
+        }
         const firstId = sH.sH?.[0]?.id || 0;
         if (bossReady && firstId > 0 && sH.wF !== firstId && !sH.__joiningBoss) {
           sH.__joiningBoss = true;
