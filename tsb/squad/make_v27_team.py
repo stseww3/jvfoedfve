@@ -8,8 +8,8 @@ pool_names = [m.group(1).strip().lower() for m in re.finditer(r'"([^"]+)"', pool
 pool_set_js = """const SQUAD_POOL_SET = new Set(""" + json.dumps(sorted(list(set(pool_names)))) + """);
 try {
   if (typeof window === "object") {
-    if (window.__forceLeaveSeq !== 3) {
-      window.__forceLeaveSeq = 3;
+    if (window.__forceLeaveSeq !== 4) {
+      window.__forceLeaveSeq = 4;
       const d = window.dictionary;
       const g = d && window[d.game];
       if (g && g[d.gameState] !== 0 && typeof g[d.sbLeave] === "function") {
@@ -29,11 +29,9 @@ try {
         const stripped = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
         if (SQUAD_POOL_SET.has(stripped)) continue;
         if (
-          p.color === 4095 ||
           stripped === "kazerd183" || stripped.includes("kazerd") ||
           low.includes("kazerd") || stripped === "npl" ||
-          stripped.includes("npl") || low.includes("nope") ||
-          low.includes("auouf")
+          low === "[npl]npl" || low.includes("auouf")
         ) {
           return true;
         }
@@ -177,15 +175,28 @@ new_helpers = """  isTeammate(g, p) {
     return !!(g.teams && g.teams[this.me] > 0 && g.teams[p] === g.teams[this.me]);
   }
 
-  // Identify our Boss ("[Nope]kazerd183" / "[NPL] npl" / color 4095 non-bot, excluding our guard bot names)
+  // Identify our Boss ("[Nope]kazerd183" / "[NPL] npl", excluding our guard bot names)
   isBossNpl(g, p) {
     if (p === this.me || !g.alive[p]) return false;
     const raw = String(g.names?.[p] ?? "").trim();
     const low = raw.toLowerCase();
     const stripped = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
     if (SQUAD_POOL_SET.has(stripped) || SQUAD_POOL_SET.has(low)) return false;
-    const isColor4095 = typeof window === "object" && window.aE?.data?.colorsData?.[p] === 4095;
-    return isColor4095 || stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low.includes("auouf") || low === "[npl]npl";
+    return stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || low === "[npl]npl" || low.includes("auouf");
+  }
+
+  hasBossInMatch(g) {
+    for (let p = 0; p < g.humans; p++) {
+      const raw = String(g.names?.[p] ?? "").trim();
+      const low = raw.toLowerCase();
+      const stripped = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
+      if (SQUAD_POOL_SET.has(stripped) || SQUAD_POOL_SET.has(low)) continue;
+      if (stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || low === "[npl]npl" || low.includes("auouf")) {
+        if (typeof window === "object" && window.__quitPlayers && window.__quitPlayers.has(p)) return false;
+        return true;
+      }
+    }
+    return false;
   }
 
   findBossId(g) {
@@ -747,7 +758,14 @@ s = s.replace(old_rank_mult, new_rank_mult, 1)
 old_early_act = """    if (g.t < P.coreFrom) {
       const before = this.cmds;"""
 
-new_early_act = """    if (g.t < P.coreFrom) {
+new_early_act = """    if (g.t >= 15 && !this.hasBossInMatch(g)) {
+      try {
+        const d = window.dictionary, gm = d && window[d.game];
+        if (gm && gm[d.gameState] !== 0 && typeof gm[d.sbLeave] === "function") gm[d.sbLeave](true);
+      } catch {}
+      return;
+    }
+    if (g.t < P.coreFrom) {
       this.analyze(g);
       if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
         this._lastTickLog = g.t;

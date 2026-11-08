@@ -1192,7 +1192,7 @@ setInterval(async () => {
   const srcHashNow = getV27TeamSource().length;
   for (const c of clients) {
     if (!c.isHeadless && headlessOnly) continue;
-    if (c.lastStrategyLen && c.lastStrategyLen !== srcHashNow) {
+    if (c.lastStrategyLen !== srcHashNow) {
       c.lastStrategyLen = srcHashNow;
       const newSrc = getV27TeamSource();
       c.evalJs(`(async () => {
