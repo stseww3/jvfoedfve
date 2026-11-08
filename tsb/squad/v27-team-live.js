@@ -2216,7 +2216,12 @@ class V13 extends Style {
 
   floorFor0(g, q, f) {
     const P = this.p;
-    if (P.winR > 0 && g.t < P.dpEnd && !this.person(g, q)) return Math.max(this.winFloor(g, q), this.peopleFloor(g));
+    if (P.winR > 0 && g.t < P.dpEnd && !this.person(g, q)) {
+      const L = Math.max(1, g.terr[this.me]), B = g.bal[this.me];
+      const botKeepCap = Math.min(35 * L, Math.floor(0.55 * B));
+      const baseWin = (this.botPx(g, q) * L) / (P.winR * Math.max(1, g.t));
+      return Math.max(baseWin, Math.min(Math.max(this.dpKeep(g), this.peopleFloor(g), this.sb || 0), botKeepCap));
+    }
     if (this.food(g, q)) return Math.max(g.t < P.dpEnd ? this.dpKeep(g) : this.reserve(g, this.price(g, q)), Math.min(f, this.foodRef(g, q) * (this.avgNb ?? Infinity)), this.peopleFloor(g));
     if (P.idleLo > 0 && this.idle(g)) return Math.min(f, P.idleLo * 100 * g.terr[this.me]);
     return P.preyKill > 0 && this.person(g, q) && this.motive(g, q) === null ? P.preyFloor * f : f;
@@ -2367,7 +2372,8 @@ class V13 extends Style {
     if (this.dpCyc === cyc) return;
     const bal = g.bal[me], u = g.t % 100;
     const fee = iV(12 * bal, 1024);
-    const max = Math.min(P.dpSpend * bal, bal - this.dpKeep(g)) - fee;
+    const keepCap = this.neutral > 0 ? Math.min(this.dpKeep(g), Math.floor(0.50 * bal)) : this.dpKeep(g);
+    const max = Math.min(P.dpSpend * bal, bal - keepCap) - fee;
     if (!(max > 0)) return;
     const rings = this.dpRings(g, u);
     let n = 0, sum = 0;
@@ -2377,11 +2383,13 @@ class V13 extends Style {
       n++;
     }
     if (n === 0) return;
+    const isFinitePocket = n === rings.length && rings.length <= 8 && g.t >= 450;
     let later = 0;
     for (const { at } of rings) if (at + P.period <= 98) later++;
-    if (later >= n) return;
+    if (!isFinitePocket && later >= n) return;
     const X = 2 * sum + rings[n - 1].r;
-    if (X < this.minCmd(g)) return;
+    const effMin = isFinitePocket ? Math.min(this.minCmd(g), Math.max(80, 2 * fee)) : this.minCmd(g);
+    if (X < effMin) return;
     if (this.send(g, NEUTRAL, X)) {
       this.dpCyc = cyc;
       if (typeof window !== "undefined" && window.__hlLog) {
@@ -4017,10 +4025,13 @@ export class Policy extends V17 {
     }
     let cands = this._cachedSpawnCands;
     if (cands && cands.length > 0) {
+      const comp = this.compSize ? this.compSize(gClean) : null;
+      const minMainLand = Math.min(18000, Math.floor(0.18 * Math.max(1, g.land)));
       const chosenSlots = [];
       for (const pos of cands) {
         const x = typeof pos === "object" ? pos.x : (pos % W);
         const y = typeof pos === "object" ? pos.y : Math.floor(pos / W);
+        if (comp && comp[y * W + x] > 0 && comp[y * W + x] < minMainLand) continue;
         let tooClose = false;
         for (const prev of chosenSlots) {
           if (Math.hypot(x - prev.x, y - prev.y) < minSep) { tooClose = true; break; }
@@ -4036,6 +4047,7 @@ export class Policy extends V17 {
         for (const pos of cands) {
           const x = typeof pos === "object" ? pos.x : (pos % W);
           const y = typeof pos === "object" ? pos.y : Math.floor(pos / W);
+          if (comp && comp[y * W + x] > 0 && comp[y * W + x] < minMainLand) continue;
           if (chosenSlots.every((p) => Math.hypot(x - p.x, y - p.y) >= relaxSep)) {
             chosenSlots.push({ x, y });
             if (chosenSlots.length > slot) break;
@@ -4044,13 +4056,15 @@ export class Policy extends V17 {
       }
       let res = chosenSlots[slot] || cands[slot % cands.length];
       if (!chosenSlots[slot] && chosenSlots.length > 0) {
-        // Fallback: Farthest-Point Sampling across the land grid so all 5 slots are guaranteed >= 160px apart!
-        const mType = g.map?.type || g.px;
+        // Fallback: Farthest-Point Sampling across the main-continent free land grid (g.px === 0) so all 5 slots are guaranteed >= 160px apart!
+        const pxArr = gClean.px;
         for (let sIdx = chosenSlots.length; sIdx <= slot; sIdx++) {
           let bestPt = null, bestD = -1;
           for (let y = 18; y < H - 18; y += 16) {
             for (let x = 18; x < W - 18; x += 16) {
-              if (mType[y * W + x] !== 1 && mType[y * W + x] < 16) continue;
+              const idx = y * W + x;
+              if (pxArr[idx] !== 0) continue;
+              if (comp && comp[idx] > 0 && comp[idx] < minMainLand) continue;
               let minD = 999999;
               for (const p of chosenSlots) minD = Math.min(minD, Math.hypot(x - p.x, y - p.y));
               for (let h = 0; h < gClean.humans; h++) {
@@ -4405,6 +4419,7 @@ export class Policy extends V17 {
   safeAt(g, q) {
     let s = super.safeAt(g, q);
     const P = this.p, me = this.me, L = Math.max(1, g.terr[me]);
+    s = Math.min(s, P.oppFloorCap * L);
     if (q < 0 || !this.person(g, q)) {
       s = Math.min(s, P.oppFloorCap * L);
     } else if (P.a06AloneSafe > 0 && !this.isNoFullSend && g.t >= 4800 && g.attackTroopsOn(q, me) === 0 && g.bal[q] > 0.10 * g.bal[me]) {
@@ -4708,6 +4723,14 @@ export class Policy extends V17 {
       const before = this.cmds;
       const balBefore = g.bal[me];
       super.act(g);
+      if (this.cmds === before && g.t >= 600 && this.neutral > 0 && g.attackTroopsOn(me, NEUTRAL) === 0) {
+        const grab = Math.min(Math.floor(0.35 * g.bal[me]), Math.max(this.minCmd(g), 4 * this.neutral + 120));
+        if (grab > 0 && g.bal[me] - grab > 12 * Math.max(1, g.terr[me])) this.send(g, NEUTRAL, grab);
+      }
+      if (this.cmds === before && g.t >= 750 && this.neutral === 0 && !this.hasBorderFood(g)) {
+        this.buyLand(g);
+        if (this.cmds === before) this.tryDonateToTeammate(g);
+      }
       if (this.cmds > before && g.bal[me] <= 0.75 * balBefore) {
         this.lastLandSpendTick = g.t;
       }
@@ -5218,6 +5241,9 @@ export class Policy extends V17 {
         keep = Math.min(keep, overKeepMult * 100 * L);
       }
       keep = Math.max(keep, safe);
+      if (dMe >= 132) {
+        keep = Math.min(keep, 108 * L);
+      }
 
       const avail = B - fee - keep;
       if (avail <= 0) continue;
@@ -5230,7 +5256,7 @@ export class Policy extends V17 {
       }
 
       const usePulseBlock =
-        P.pulseFrac > 0 && (!over || (P.overPulseMode > 0 && (o.nearCollapse || o.bleeding || avail < P.chunk * B)));
+        P.pulseFrac > 0 && (!over || dMe >= 132 || (P.overPulseMode > 0 && (o.nearCollapse || o.bleeding || avail < P.chunk * B)));
       const inAtk = o.inAtk ?? 0;
       const curAtk = g.attackTroopsOn(me, q);
       const blockUndersized = (amt) => {
