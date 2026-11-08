@@ -582,12 +582,14 @@ async function _initFirefoxDonor(port = 9228) {
     ws.send(JSON.stringify({ id, method, params }));
   });
 
-  // End any stale BiDi session first, then create a fresh session
-  await callBidi('session.end', {});
   const sess = await callBidi('session.new', { capabilities: {} });
   if (!sess?.result?.sessionId) {
-    // If a previous process held a session on this Firefox instance, reconnect cleanly
-    console.log('[FIREFOX-DONOR] BiDi session busy or re-initializing...');
+    console.log('[FIREFOX-DONOR] BiDi session locked by previous process -> recycling Firefox donor on :9228...');
+    try { ws.close(); } catch {}
+    const { execSync } = await import('node:child_process');
+    try { execSync('taskkill /F /IM firefox.exe', { stdio: 'ignore' }); } catch {}
+    await new Promise((r) => setTimeout(r, 800));
+    return _initFirefoxDonor(port);
   }
 
   await callBidi('script.addPreloadScript', {
