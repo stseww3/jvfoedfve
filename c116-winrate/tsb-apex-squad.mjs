@@ -1362,6 +1362,12 @@ setInterval(async () => {
     );
     for (let i = 0; i < readyToEnter.length; i++) {
       const c = readyToEnter[i];
+      c.lobbyFailCount = (c.lobbyFailCount || 0) + 1;
+      if (c.lobbyFailCount >= 2) {
+        c.freshToken = false;
+        c.lobbyFailCount = 0;
+        continue;
+      }
       c.enteredLobbyAt = now;
       const enterJitterMs = i * 520 + Math.floor(Math.random() * 680);
       setTimeout(() => {
