@@ -739,7 +739,7 @@ export class TeamSpawnCoordinator {
       // ECO_BANK (Outer Wing):
       // Instead of flying 1000px away to the opposite side of the map as an orphan,
       // reward chaining adjacent to our Boss/Squad cluster (`minClusterDist` in [1.0*allyMinSep, 2.3*allyMinSep])
-      if (pm.minClusterDist < 900000) {
+      if (boss && pm.minClusterDist < 900000) {
         const idealWingDist = 1.45 * scales.allyMinSep;
         if (pm.minClusterDist <= 2.6 * scales.allyMinSep) {
           const chainFit = Math.max(
@@ -844,7 +844,7 @@ export class TeamSpawnCoordinator {
 
     // If Boss hasn't clicked on the map yet, pick a safe Virtual Squad Anchor so
     // our bots still form a cohesive anti-pinch wedge in the safest region!
-    const anchorBoss = realBoss || this.findVirtualSquadAnchor(enemies, scales);
+    const anchorBoss = realBoss;
     if (!realBoss && anchorBoss) {
       this.buildInitialDistanceFields(enemies, randomAllies, anchorBoss);
     }
@@ -914,7 +914,7 @@ export class TeamSpawnCoordinator {
         const reqEnemyClear = scales.enemyMinClearance * Math.max(0.65, relax);
         // Cohesive cluster constraint: on first two passes (relax >= 0.80), keep ECO_BANK
         // within clusterMax of our Boss/Squad cluster so no bot is stranded across the map!
-        const enforceCluster = relax >= 0.60 && (anchorBoss || chosenTargets.length > 0);
+        const enforceCluster = Boolean(realBoss) && relax >= 0.60;
         const maxClusterDist = scales.clusterMax * (1.8 - 0.8 * relax);
 
         const stride = W * H > 900000 ? 8 : 6;

@@ -3958,7 +3958,7 @@ export class Policy extends V17 {
     // ALWAYS use the Unified Backend Spawn Coordinator (:8299) so all 5 [APEX] brothers
     // spawn on the #1 Main Continent with geodesic Voronoi spacing and NEVER stack on the same point!
     const bossId = this.findBossId(g);
-    if (true) {
+    if (bossId >= 0) {
       const mapKey = `${W}x${H}_${g.land}_${g.humans}`;
       const nowMs = typeof performance !== "undefined" ? performance.now() : Date.now();
       if (typeof window !== "undefined" && window.__hlSpawnReq && (!this._lastSpawnReqAt || nowMs - this._lastSpawnReqAt > 260)) {
@@ -4001,7 +4001,7 @@ export class Policy extends V17 {
     }
 
     // Autonomous 5-brother distributed Voronoi spawn (original 36b5718 logic with fixed slot 0..4 and clean cache):
-    const minSep = Math.max(135, Math.min(240, 0.28 * Math.hypot(W, H)));
+    const minSep = Math.max(96, Math.min(175, 0.14 * Math.hypot(W, H)));
     let gClean = g;
     for (const sid of squadIds) {
       if (sid !== me && gClean.terr[sid] > 0) {
@@ -4014,7 +4014,7 @@ export class Policy extends V17 {
     if (!this._cachedSpawnCands || !this._lastSpawnCalcMs || nowSpawnMs - this._lastSpawnCalcMs > 2200 || this._cachedSpawnW !== W) {
       this._lastSpawnCalcMs = nowSpawnMs;
       this._cachedSpawnW = W;
-      let rawCands = this.spawnVsPeople ? this.spawnVsPeople(gClean, 24) : [];
+      let rawCands = this.spawnVsPeople ? this.spawnVsPeople(gClean, 36) : [];
       if (!rawCands || rawCands.length < 12) {
         const more = this.spawnCandidates(gClean, 24) || [];
         rawCands = [...(rawCands || []), ...more];
@@ -4909,5 +4909,5 @@ export class Policy extends V17 {
     for (const q of this.nb) {
       if (!g.alive[q] || !g.terr[q]) continue;
       const already = g.hasAttack(me, q);
-      if (!already && (active >= P.maxTargets || !g.hasFreeSlot(me))) continue;
+      if (!already && (active >= P.maxTargets || !g.hasFreeSlot(me))) con
 
