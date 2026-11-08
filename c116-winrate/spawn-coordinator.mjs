@@ -1062,83 +1062,147 @@ export class TeamSpawnCoordinator {
       return null;
     };
 
-    // When Boss is NOT present (!realBoss) and K >= 6, deploy a TRUE CONCENTRIC CIRCLE FORMATION:
-    //   - 1 Anchor Center (Cx, Cy) deep inside the safest mainland basin (clearance >= 140px from water/edges & enemies)
-    //   - 3 Inner Core Reservoirs on inner radius r1 (~44px, 120 deg apart) -> guaranteed 100% boxed-in nb=0 reservoirs!
-    //   - (K - 3) Outer Shield Ring on outer radius r2 (~108px, 360/(K-3) deg apart) -> 360-degree protective wall!
+    // Rule #8258-#8260: CORNER SECTOR PHALANX ("角落里展开一个阵法"):
+    // Never spawn in the middle of the map where enemies surround us 360 degrees!
+    // Instead, anchor in the safest mainland CORNER (backed by 2 orthogonal map borders/sea walls),
+    // and deploy a 90-degree 3-Tier Corner Fan/Sector facing the single inward direction:
+    //   - Tier 0 (Corner Apex Core, 1 bot at radius r0): deepest inside the corner
+    //   - Tier 1 (Inner Reservoir Arc, 3 bots at radius r1 across the 90-deg corner fan) -> 4 guaranteed nb=0 inner reservoirs!
+    //   - Tier 2 (Outer Shield Wall, K-4 bots at radius r2 across the 90-deg corner fan) -> single-direction shield wall!
     let usedConcentricCircle = false;
     if (!realBoss && K >= 6) {
-      const r1 = clamp(Math.round(0.72 * scales.rCell), 38, 54);
-      const r2 = clamp(Math.round(1.75 * scales.rCell), 92, 128);
-      let bestCenter = null, bestCenterScore = -Infinity;
-      const cStride = W * H > 900000 ? 16 : 12;
-      for (let cy = r2 + 24; cy < H - r2 - 24; cy += cStride) {
-        for (let cx = r2 + 24; cx < W - r2 - 24; cx += cStride) {
-          const cc = cy * W + cx;
-          if (!landMask[cc] || this.compSize[cc] < minViableCompSize) continue;
-          const dE = distToEnemies(cx, cy);
-          if (dE < r2 + 25) continue;
-          // Check how many of the 10 concentric circle points land on valid mainland
-          let validPts = 0, minEnemyD = dE;
-          const innerN = 3, outerN = K - innerN;
-          for (let i = 0; i < innerN; i++) {
-            const ang = (2 * Math.PI * i) / innerN;
-            const px = Math.round(cx + r1 * Math.cos(ang)), py = Math.round(cy + r1 * Math.sin(ang));
-            const sc = this.snapToLand(px, py, 16);
-            if (sc >= 0 && this.compId[sc] === this.compId[cc]) validPts++;
-          }
-          for (let j = 0; j < outerN; j++) {
-            const ang = (2 * Math.PI * j) / outerN + Math.PI / outerN;
-            const px = Math.round(cx + r2 * Math.cos(ang)), py = Math.round(cy + r2 * Math.sin(ang));
-            const sc = this.snapToLand(px, py, 20);
-            if (sc >= 0 && this.compId[sc] === this.compId[cc]) {
-              validPts++;
-              const sx = sc % W, sy = (sc / W) | 0;
-              minEnemyD = Math.min(minEnemyD, distToEnemies(sx, sy));
+      const r0 = clamp(Math.round(0.42 * scales.rCell), 28, 44);
+      const r1 = clamp(Math.round(1.32 * scales.rCell), 78, 112);
+      const r2 = clamp(Math.round(2.38 * scales.rCell), 145, 205);
+      const corners = [
+        { name: "TOP_LEFT", cx: 24, cy: 24 },
+        { name: "TOP_RIGHT", cx: W - 25, cy: 24 },
+        { name: "BOTTOM_RIGHT", cx: W - 25, cy: H - 25 },
+        { name: "BOTTOM_LEFT", cx: 24, cy: H - 25 },
+      ];
+      let bestCornerPlan = null, bestCornerScore = -Infinity;
+      for (const corner of corners) {
+        let anchorX = -1, anchorY = -1, anchorComp = -1, bestDistToCorner = 999999;
+        const maxSearch = Math.round(0.38 * Math.min(W, H));
+        for (let dy = 0; dy <= maxSearch; dy += 12) {
+          for (let dx = 0; dx <= maxSearch; dx += 12) {
+            const tx = corner.cx < W / 2 ? 20 + dx : W - 21 - dx;
+            const ty = corner.cy < H / 2 ? 20 + dy : H - 21 - dy;
+            if (tx < 16 || ty < 16 || tx >= W - 16 || ty >= H - 16) continue;
+            const tc = ty * W + tx;
+            if (!landMask[tc] || this.compSize[tc] < minViableCompSize) continue;
+            const dCorner = Math.hypot(tx - corner.cx, ty - corner.cy);
+            if (dCorner < bestDistToCorner) {
+              bestDistToCorner = dCorner;
+              anchorX = tx;
+              anchorY = ty;
+              anchorComp = this.compId[tc];
             }
           }
-          if (validPts < K - 1) continue;
-          const centerScore = validPts * 500 + Math.min(260, minEnemyD) * 2.5 + Math.min(180, dComp[cc]);
-          if (centerScore > bestCenterScore) {
-            bestCenterScore = centerScore;
-            bestCenter = { cx, cy, compId: this.compId[cc] };
+        }
+        if (anchorX < 0) continue;
+        const centerAng = Math.atan2(H / 2 - anchorY, W / 2 - anchorX);
+        const fanHalf = Math.PI / 3.6;
+        const innerCount = Math.min(3, Math.max(2, Math.floor((K - 1) * 0.34)));
+        const outerCount = Math.max(1, K - 1 - innerCount);
+        const specs = [];
+        specs.push({
+          wantX: Math.round(anchorX + r0 * Math.cos(centerAng)),
+          wantY: Math.round(anchorY + r0 * Math.sin(centerAng)),
+          role: "CORNER_APEX_BANK",
+          snapR: 32,
+        });
+        for (let i = 0; i < innerCount; i++) {
+          const frac = innerCount === 1 ? 0.5 : i / (innerCount - 1);
+          const ang = centerAng - fanHalf * 0.82 + frac * (2 * fanHalf * 0.82);
+          specs.push({
+            wantX: Math.round(anchorX + r1 * Math.cos(ang)),
+            wantY: Math.round(anchorY + r1 * Math.sin(ang)),
+            role: "INNER_ARC_BANK",
+            snapR: 36,
+          });
+        }
+        for (let j = 0; j < outerCount; j++) {
+          const frac = outerCount === 1 ? 0.5 : j / (outerCount - 1);
+          const ang = centerAng - fanHalf + frac * (2 * fanHalf);
+          specs.push({
+            wantX: Math.round(anchorX + r2 * Math.cos(ang)),
+            wantY: Math.round(anchorY + r2 * Math.sin(ang)),
+            role: "OUTER_SHIELD_WALL",
+            snapR: 42,
+          });
+        }
+        const candidatePts = [];
+        let enemyClearSum = 0, minEnemyD = 999999;
+        for (const sp of specs) {
+          const clampedX = clamp(sp.wantX, 18, W - 19);
+          const clampedY = clamp(sp.wantY, 18, H - 19);
+          let sc = this.snapToLand(clampedX, clampedY, sp.snapR);
+          if (sc < 0) sc = this.snapToLand(anchorX, anchorY, 60);
+          if (sc < 0 || this.compId[sc] !== anchorComp) continue;
+          const fx = sc % W, fy = (sc / W) | 0;
+          let tooClose = false;
+          for (const prev of candidatePts) {
+            if (Math.hypot(fx - prev.x, fy - prev.y) < 0.58 * scales.allyMinSep) {
+              tooClose = true;
+              break;
+            }
           }
+          if (tooClose) {
+            let bestAlt = -1, bestAltD = 999999;
+            for (let dy = -48; dy <= 48; dy += 8) {
+              for (let dx = -48; dx <= 48; dx += 8) {
+                const nx = clamp(clampedX + dx, 18, W - 19);
+                const ny = clamp(clampedY + dy, 18, H - 19);
+                const nc = ny * W + nx;
+                if (!landMask[nc] || this.compId[nc] !== anchorComp) continue;
+                if (candidatePts.some((p) => Math.hypot(nx - p.x, ny - p.y) < 0.62 * scales.allyMinSep)) continue;
+                const dWant = Math.hypot(nx - clampedX, ny - clampedY);
+                if (dWant < bestAltD) { bestAltD = dWant; bestAlt = nc; }
+              }
+            }
+            if (bestAlt >= 0) sc = bestAlt;
+          }
+          const finalX = sc % W, finalY = (sc / W) | 0;
+          const dEn = distToEnemies(finalX, finalY);
+          minEnemyD = Math.min(minEnemyD, dEn);
+          enemyClearSum += Math.min(240, dEn);
+          candidatePts.push({
+            cell: sc,
+            x: finalX,
+            y: finalY,
+            role: sp.role,
+            totalScore: 1000,
+            voronoiPixels: 5000,
+            bossDist: -1,
+            minAllyDist: candidatePts.length ? Math.round(Math.min(...candidatePts.map((p) => Math.hypot(finalX - p.x, finalY - p.y)))) : r1,
+            minEnemyDist: Math.round(dEn),
+          });
+        }
+        if (candidatePts.length < Math.max(5, K - 2)) continue;
+        let enemiesInCorner = 0;
+        for (const e of enemies) {
+          if (Math.hypot(e.x - anchorX, e.y - anchorY) <= r2 + 45) enemiesInCorner++;
+        }
+        const planScore =
+          candidatePts.length * 600 +
+          enemyClearSum * 1.8 +
+          Math.min(200, minEnemyD) * 4.0 -
+          enemiesInCorner * 450 -
+          bestDistToCorner * 1.5;
+        if (planScore > bestCornerScore) {
+          bestCornerScore = planScore;
+          bestCornerPlan = candidatePts;
         }
       }
-      if (bestCenter) {
+      if (bestCornerPlan && bestCornerPlan.length > 0) {
         usedConcentricCircle = true;
-        const { cx, cy, compId } = bestCenter;
-        const innerN = 3, outerN = K - innerN;
-        const ringSpecs = [];
-        for (let i = 0; i < innerN; i++) {
-          const ang = (2 * Math.PI * i) / innerN;
-          ringSpecs.push({ wantX: Math.round(cx + r1 * Math.cos(ang)), wantY: Math.round(cy + r1 * Math.sin(ang)), role: 'INNER_CORE', snapR: 22 });
-        }
-        for (let j = 0; j < outerN; j++) {
-          const ang = (2 * Math.PI * j) / outerN + Math.PI / outerN;
-          ringSpecs.push({ wantX: Math.round(cx + r2 * Math.cos(ang)), wantY: Math.round(cy + r2 * Math.sin(ang)), role: 'OUTER_RING', snapR: 28 });
-        }
-        for (const spec of ringSpecs) {
-          let sc = this.snapToLand(spec.wantX, spec.wantY, spec.snapR);
-          if (sc < 0) sc = this.snapToLand(cx, cy, 40);
-          if (sc >= 0) {
-            const fx = sc % W, fy = (sc / W) | 0;
-            chosenTargets.push({
-              cell: sc,
-              x: fx,
-              y: fy,
-              role: spec.role,
-              totalScore: 1000,
-              voronoiPixels: 5000,
-              bossDist: -1,
-              minAllyDist: chosenTargets.length ? Math.round(distToChosenSquad(fx, fy)) : r1,
-              minEnemyDist: Math.round(distToEnemies(fx, fy)),
-            });
-          }
+        for (const pt of bestCornerPlan) {
+          chosenTargets.push(pt);
+          this.injectSquadSeedIntoField(pt.cell, chosenTargets.length - 1, Math.round(1.6 * scales.allyMinSep));
         }
       }
     }
-
     for (let m = usedConcentricCircle ? K : 0; m < K; m++) {
       const wantRole =
         m < targetFlankCount

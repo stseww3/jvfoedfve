@@ -730,8 +730,9 @@ async function mintViaDonorChrome(donorPort = 9228) {
 // Receives map terrain (once per match) + live human positions (Boss npl, enemies, allies) during the 6s spawnPhase,
 // solves the global joint Geodesic Voronoi + Boss Flank Guard formation + Bitmask DP minimum-displacement assignment,
 // and pushes each bot's dedicated (x, y, role) back via worker.postMessage({ type: 'set_spawn', pos }) & CDP!
-const spawnCoordinator = new TeamSpawnCoordinator({ port: 8299 });
+let spawnCoordinator = new TeamSpawnCoordinator({ port: 8299 });
 spawnCoordinator.startHttpServer();
+let lastSpawnCoordSize = fs.existsSync(path.join(__dirname, 'spawn-coordinator.mjs')) ? fs.statSync(path.join(__dirname, 'spawn-coordinator.mjs')).size : 0;
 const botSpawnMeta = new Map();
 let lastCoordLogKey = '';
 let lastCoordLogAt = 0;
@@ -1294,6 +1295,21 @@ setInterval(async () => {
       }
     }
   }
+
+  // Hot-reload spawn-coordinator.mjs whenever it is updated on disk!
+  try {
+    const scPath = path.join(__dirname, 'spawn-coordinator.mjs');
+    const curScSize = fs.existsSync(scPath) ? fs.statSync(scPath).size : 0;
+    if (curScSize > 0 && typeof lastSpawnCoordSize === 'number' && curScSize !== lastSpawnCoordSize) {
+      lastSpawnCoordSize = curScSize;
+      import('./spawn-coordinator.mjs?t=' + Date.now()).then((mod) => {
+        if (mod && mod.TeamSpawnCoordinator) {
+          spawnCoordinator = new mod.TeamSpawnCoordinator({ port: 0 });
+          console.log(`[HOT-IMPORT] Reloaded TeamSpawnCoordinator (${curScSize} bytes) live!`);
+        }
+      }).catch(() => {});
+    }
+  } catch {}
 
   // Hot-import updated strategy file immediately even while bots are in-game!
   const srcHashNow = getV27TeamSource().length;
