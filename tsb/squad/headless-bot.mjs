@@ -174,19 +174,23 @@ if (!isMainThread && workerData?.bot) {
     )
     .replace(
       'if(this.ae5!==this.aIt*7){n8();be.render();return}',
-      'if(this.ae5!==this.aIt*7){n8();while(this.ae7.length>0&&this.ae5<this.aIt*7&&aE.a2G!==2){n8()}if(this.ae7.length===0){return}}'
+      'if(this.ae5!==this.aIt*7){n8();while(this.ae7.length>0&&this.ae5<this.aIt*7&&aE.a2G===1&&bi.a3I===this){n8()}if(this.ae7.length===0||aE.a2G!==1||bi.a3I!==this){return}}'
     )
     .replace(
       'if(this.af1!==this.aK3*7){n8();be.render();return}',
-      'if(this.af1!==this.aK3*7){n8();while(this.af3.length>0&&this.af1<this.aK3*7&&aE.a38!==2){n8()}if(this.af3.length===0){return}}'
+      'if(this.af1!==this.aK3*7){n8();while(this.af3.length>0&&this.af1<this.aK3*7&&aE.a38===1&&bi.a3I===this){n8()}if(this.af3.length===0||aE.a38!==1||bi.a3I!==this){return}}'
+    )
+    .replace(
+      'if(aE.a38===2){break}if(this.af3.length>0){for(aC=this.af4-2;aC>=0;aC--){n8();if(aE.a38===2){break loop}}}',
+      'if(aE.a38!==1||bi.a3I!==this){break}if(this.af3.length>0){for(aC=this.af4-2;aC>=0;aC--){n8();if(aE.a38!==1||bi.a3I!==this){break loop}}}'
     )
     .replace(
       'if(this.eI===0){if(bi.eZ>=this.eZ){this.eZ+=bi.aDd*Math.floor(1+(bi.eZ-this.eZ)/bi.aDd);if(aE.a2G===2){n6()}else{this.aeA()}this.eI++;if(bi.eZ-this.ae9>27){this.aeB()}}}else{this.aeB()}',
-      'if(this.ae5===this.aIt*7&&this.ae7.length===0){this.eZ=bi.eZ;n6()}else{var _steps=0;while(bi.eZ>=this.eZ&&_steps++<35){this.eZ+=42;if(aE.a2G===2){n6();break}this.aeA();if(this.ae5===this.aIt*7&&this.ae7.length===0){this.eZ=bi.eZ;break}}if(bi.eZ>=this.eZ)this.eZ=bi.eZ;}this.eI=0;'
+      'if(this.ae5===this.aIt*7&&this.ae7.length===0){this.eZ=bi.eZ;n6()}else{var _steps=0;while(bi.eZ>=this.eZ&&_steps++<35&&bi.a3I===this){this.eZ+=42;if(aE.a2G!==1){if(aE.a2G===2)n6();break}this.aeA();if(aE.a2G!==1||bi.a3I!==this||(this.ae5===this.aIt*7&&this.ae7.length===0)){this.eZ=bi.eZ;break}}if(bi.eZ>=this.eZ)this.eZ=bi.eZ;}this.eI=0;'
     )
     .replace(
       'if(this.eI===0){if(bi.eZ>=this.eZ){this.eZ+=bi.aEY*Math.floor(1+(bi.eZ-this.eZ)/bi.aEY);if(aE.a38===2){n6()}else{this.af6()}this.eI++;if(bi.eZ-this.af5>27){this.af7()}}}else{this.af7()}',
-      'if(this.af1===this.aK3*7&&this.af3.length===0){this.eZ=bi.eZ;n6()}else{var _steps=0;while(bi.eZ>=this.eZ&&_steps++<35){this.eZ+=42;if(aE.a38===2){n6();break}this.af6();if(this.af1===this.aK3*7&&this.af3.length===0){this.eZ=bi.eZ;break}}if(bi.eZ>=this.eZ)this.eZ=bi.eZ;}this.eI=0;'
+      'if(this.af1===this.aK3*7&&this.af3.length===0){this.eZ=bi.eZ;n6()}else{var _steps=0;while(bi.eZ>=this.eZ&&_steps++<35&&bi.a3I===this){this.eZ+=42;if(aE.a38!==1){if(aE.a38===2)n6();break}this.af6();if(aE.a38!==1||bi.a3I!==this||(this.af1===this.aK3*7&&this.af3.length===0)){this.eZ=bi.eZ;break}}if(bi.eZ>=this.eZ)this.eZ=bi.eZ;}this.eI=0;'
     )
     .replace(
       'this.ae7.push(aD);if(aE.a2G===2){',
@@ -628,9 +632,13 @@ if (!isMainThread && workerData?.bot) {
   };
 
   const rafs = [];
+  let lastIdleRafAt = 0;
   setInterval(() => {
-    const batch = rafs.splice(0, rafs.length);
     const now = performance.now();
+    const inGameNow = typeof sandbox === 'object' && sandbox.aE && sandbox.aE.a38 === 1;
+    if (!inGameNow && now - lastIdleRafAt < 115) return;
+    lastIdleRafAt = now;
+    const batch = rafs.splice(0, rafs.length);
     for (const fn of batch) {
       try { fn(now); } catch {}
     }
