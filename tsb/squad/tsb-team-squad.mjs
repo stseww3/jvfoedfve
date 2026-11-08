@@ -1459,7 +1459,7 @@ setInterval(async () => {
   const allReadyInRoom0 =
     timerSpreadOk &&
     (headlessOnly
-      ? (headlessInRoom0 >= HEADLESS_BOTS.length - 2 || (headlessInRoom0 >= HEADLESS_BOTS.length - 5 && minStartsIn <= 15))
+      ? (headlessInRoom0 >= HEADLESS_BOTS.length - 5 || (headlessInRoom0 >= 10 && minStartsIn <= 18))
       : wantTenForCurrentLobby
         ? (readyCountInRoom0 === 10 || (readyCountInRoom0 >= 8 && minStartsIn <= 8))
         : (chromeInRoom0 === 5 || (chromeInRoom0 >= 4 && minStartsIn <= 8)));
