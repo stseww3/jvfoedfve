@@ -849,16 +849,19 @@ setInterval(async () => {
         s.spawnPhase = !!info?.spawnPhase;
         s.tick = info?.tick || 0;
         if (s.inGame) {
-          if (s.lastObsTick === s.tick) {
-            s.stalledCount = (s.stalledCount || 0) + 1;
+          if (s.tick > 0 && !s.spawnPhase && window.__lastObsTick === s.tick) {
+            window.__stalledCount = (window.__stalledCount || 0) + 1;
           } else {
-            s.lastObsTick = s.tick;
-            s.stalledCount = 0;
+            window.__lastObsTick = s.tick;
+            window.__stalledCount = 0;
           }
-          if (s.stalledCount >= 5 && g && g[d.sbLeave]) {
+          if ((window.__stalledCount || 0) >= 6 && g && g[d.sbLeave]) {
+            window.__stalledCount = 0;
             g[d.sbLeave](true);
             s.inGame = false;
           }
+        } else {
+          window.__stalledCount = 0;
         }
         s.terr = info?.territory || 0;
         s.land = info?.land || 0;
@@ -934,8 +937,11 @@ setInterval(async () => {
           return parsed;
         }
       } catch {}
-      if (c.lastGoodState && Date.now() - (c.lastGoodStateAt || 0) < 12000) {
+      if (c.lastGoodState && Date.now() - (c.lastGoodStateAt || 0) < 15000) {
         return c.lastGoodState;
+      }
+      if (c.wasInGame && Date.now() - (c.enteredGameAt || 0) < 35000) {
+        return { ok: true, inGame: true, spawnPhase: true, tick: 0, alive: true, terr: 12 };
       }
       return {};
     })
