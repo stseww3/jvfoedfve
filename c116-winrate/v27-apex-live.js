@@ -4267,16 +4267,29 @@ export class Policy extends V17 {
     return false;
   }
 
-  // General Teammate Donation (prioritizing Boss npl first, then frontline squad teammates)
-  tryDonateToTeammate(g) {
+  // UNIFIED ORGANISM DYNAMIC DISPATCH ENGINE:
+  // Mid-to-late game treats all 10 [APEX] territories as ONE single organism:
+  //   1) Rapid Defense Dispatch: wherever an enemy attacks ANY brother, all unattacked brothers immediately pump troops to that front.
+  //   2) Opportunity Offense Dispatch: instead of blindly feeding one static giant, pump troops to whichever frontline brother is actively attacking (`outAtk > 0`) or borders the weakest/bleeding enemy!
+  //   3) Frontline Equalization: rear boxed-in banks (`dMe >= 32`) and high-density brothers (`dMe >= 98`) continuously equalize frontline density across all active fronts.
+  tryDonateToTeammate(g, emergencyOnly = false) {
     const me = this.me;
     if (!g.teams || !(g.teams[me] > 0) || typeof g.donate !== "function") return false;
-    if (g.t < 400 || g.terr[me] < 2500 || g.bal[me] < 45000 || g.t - (this.lastDonateTick ?? -999) < 22) return false;
+    if (g.t < 400 || g.terr[me] < 2000 || g.bal[me] < 35000 || g.t - (this.lastDonateTick ?? -999) < 14) return false;
     const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
-    let myHumanInAtk = 0;
+
+    let myHumanInAtk = 0, myHumanOutAtk = 0;
     for (const a of g.attackersOf(me)) {
       if (!g.isBot(a) && !this.isTeammate(g, a)) myHumanInAtk += g.attackTroopsOn(a, me);
     }
+    const sbMe = g.slotBase(me);
+    for (let i = 0; i < g.atkCount[me]; i++) {
+      const tgt = g.atkTarget[sbMe + i];
+      if (tgt >= 0 && tgt < g.humans && !g.isBot(tgt) && !this.isTeammate(g, tgt)) myHumanOutAtk += g.atkTroops[sbMe + i];
+    }
+    // Never donate while we ourselves are under human attack or actively pushing a major offensive wave!
+    if (myHumanInAtk > 0 || myHumanOutAtk > 0.08 * B) return false;
+
     const enemyHumanNbs = this.nb.filter((p) => g.alive[p] && this.person(g, p));
     let anyEnemyNb = enemyHumanNbs.length > 0;
     if (!anyEnemyNb && this.cnt) {
@@ -4287,20 +4300,19 @@ export class Policy extends V17 {
         }
       }
     }
-    const boxedIn = !anyEnemyNb && this.nb.length === 0 && (this.neutral === 0 || (g.t >= 850 && this.neutral <= 8 && dMe >= 68));
+    const boxedIn = !anyEnemyNb && this.nb.length === 0 && (this.neutral === 0 || (g.t >= 850 && this.neutral <= 8 && dMe >= 55));
     const hasExposedCoast = (g.coast?.[me]?.length ?? 0) > 0;
-    const coastGuardFloor = boxedIn ? (hasExposedCoast ? 28 * L : 18 * L) : (hasExposedCoast && g.t >= 1100 ? 68 * L : 22 * L);
-    const safeFloor = Math.max(coastGuardFloor, enemyHumanNbs.length > 0 ? this.safeAt(g, -1) : 0);
-    const isPureInlandSafe = enemyHumanNbs.length === 0 && !hasExposedCoast && myHumanInAtk === 0;
-    if (myHumanInAtk > 0 || B <= 1.10 * safeFloor) return false;
+    const coastGuardFloor = boxedIn ? (hasExposedCoast ? 28 * L : 16 * L) : (hasExposedCoast && g.t >= 1100 ? 64 * L : 52 * L);
+    const safeFloor = boxedIn ? coastGuardFloor : Math.max(coastGuardFloor, enemyHumanNbs.length > 0 ? 0.82 * this.safeAt(g, -1) : 0);
+    if (B <= 1.06 * safeFloor) return false;
 
-    const maxSurplus = Math.max(0, B - 1.08 * safeFloor);
+    const maxSurplus = Math.max(0, B - 1.04 * safeFloor);
     const maxSafePct = Math.floor((maxSurplus * 1024) / Math.max(1, B));
-    if (maxSafePct < 55) return false;
+    if (maxSafePct < 96) return false;
 
-    // 1. Always check Boss "npl" first!
+    // 1. Boss "npl" check (if present)
     const bossId = this.findBossId(g);
-    if (bossId >= 0 && g.alive[bossId] && g.terr[bossId] >= 100) {
+    if (bossId >= 0 && g.alive[bossId] && g.terr[bossId] >= 100 && (!window.ao?.iD || window.ao.iD(bossId))) {
       const dBoss = g.bal[bossId] / Math.max(1, g.terr[bossId]);
       let bossInAtk = 0, bossOutAtk = 0;
       for (const a of g.attackersOf(bossId)) bossInAtk += g.attackTroopsOn(a, bossId);
@@ -4308,93 +4320,110 @@ export class Policy extends V17 {
       for (let i = 0; i < g.atkCount[bossId]; i++) {
         if (g.atkTarget[sbB + i] !== 512) bossOutAtk += g.atkTroops[sbB + i];
       }
-      const bossNeedsHelp =
-        (bossInAtk > 0 && dMe >= (isPureInlandSafe ? 16 : 55)) ||
-        (bossOutAtk > 0.04 * g.bal[bossId] && dBoss < 120 && dMe >= (isPureInlandSafe ? 25 : 68)) ||
-        (g.t >= 900 && dBoss < 118 && dMe >= (isPureInlandSafe ? 32 : 75)) ||
-        (boxedIn && isPureInlandSafe && dBoss < 142 && dMe >= 18);
-      if (bossNeedsHelp && g.t - (this.lastBossDonateTick ?? -999) >= (isPureInlandSafe ? 15 : 25)) {
-        const pct = Math.min(maxSafePct, isPureInlandSafe ? (bossInAtk > 0 ? 340 : 240) : 150);
-        if (pct >= 55 && g.donate(pct, bossId, me)) {
+      if ((bossInAtk > 0 || bossOutAtk > 0.04 * g.bal[bossId] || dBoss < 118) && dMe >= (boxedIn ? 24 : 78)) {
+        const pct = Math.min(maxSafePct, boxedIn ? 320 : 180);
+        if (pct >= 96 && g.donate(pct, bossId, me)) {
           this.lastDonateTick = g.t;
           this.lastBossDonateTick = g.t;
           this.cmds++;
           if (typeof window !== "undefined" && window.__hlLog) {
-            window.__hlLog(`[HL-DONATE] t=${g.t} boss donate pct=${pct}/1024 -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)}`);
+            window.__hlLog(`[HL-DONATE] t=${g.t} boss dispatch pct=${pct}/1024 -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)}`);
           }
           return true;
         }
       }
     }
 
-    // 2. SQUAD MUTUAL AID: Rescue any [NPL] squad brother who is under human attack or sneaky boat landing,
-    //    AND lightly poke (10%B) the attacker if we border them!
+    // 2. RAPID DEFENSE & ACTIVE OFFENSE DISPATCH ACROSS ALL SQUAD BROTHERS:
+    // Scan every living [APEX] brother and score their immediate tactical need for troops:
+    //   - Under enemy human attack (`inHumanAtk > 0`): highest urgency! Any unattacked brother with `dMe >= 80` (or boxedIn `dMe >= 30`) dispatches immediately!
+    //   - Actively pushing an enemy (`outHumanAtk > 0`): high urgency! Feed the brother who is actively converting troops into enemy territory!
+    //   - Bordering a thin/bleeding enemy (`minEnemyDens < 55`): feed the brother who has the best offensive opening right now!
+    let bestTarget = -1, bestUrgency = -Infinity, bestKind = "equalize";
     for (let p = 0; p < g.humans; p++) {
-      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 300) continue;
-      const dAlly = g.bal[p] / Math.max(1, g.terr[p]);
-      let inHumanAtk = 0, mainAttacker = -1, maxAtkTr = 0;
-      for (const a of g.attackersOf(p)) {
-        if (!g.isBot(a) && !this.isTeammate(g, a)) {
-          const tr = g.attackTroopsOn(a, p);
-          inHumanAtk += tr;
-          if (tr > maxAtkTr) { maxAtkTr = tr; mainAttacker = a; }
-        }
-      }
-      if (inHumanAtk > 0 && (inHumanAtk >= 0.08 * g.bal[p] || dAlly < 75)) {
-        const minDonorDens = boxedIn ? (hasExposedCoast ? 72 : 38) : 122;
-        const canAcceptDonate = typeof window === "undefined" || !window.ao?.iD || window.ao.iD(p);
-        if (canAcceptDonate && dMe >= Math.max(minDonorDens, dAlly + 18)) {
-          const pct = Math.min(maxSafePct, boxedIn ? 256 : 160);
-          if (pct >= 110 && g.donate(pct, p, me)) {
-            this.lastDonateTick = g.t;
-            this.cmds++;
-            if (typeof window !== "undefined" && window.__hlLog) {
-              window.__hlLog(`[HL-DONATE] t=${g.t} squad rescue donate pct=${pct}/1024 -> ally=${p}(${g.names?.[p] || ""}) myBal=${B} dMe=${Math.round(dMe)} dAlly=${Math.round(dAlly)}`);
-            }
-            return true;
-          }
-        }
-
-      }
-    }
-
-    if (!boxedIn && dMe < 128) return false;
-    if (boxedIn && dMe < (hasExposedCoast ? 75 : 35)) return false;
-
-    let bestAlly = -1, bestScore = -Infinity;
-    for (let p = 0; p < g.humans; p++) {
-      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || (!this.isBossNpl(g, p) && !this.isOurSquadBot(g, p)) || g.terr[p] < 600) continue;
+      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 800) continue;
       if (typeof window !== "undefined" && window.ao?.iD && !window.ao.iD(p)) continue;
-      const dAlly = g.bal[p] / Math.max(1, g.terr[p]);
-      if (dAlly >= 142) continue;
-      let outAtk = 0, inAtk = 0;
-      const sb = g.slotBase(p);
-      for (let i = 0; i < g.atkCount[p]; i++) {
-        const tgt = g.atkTarget[sb + i];
-        if (tgt !== 512) outAtk += g.atkTroops[sb + i];
+
+      const Lp = Math.max(1, g.terr[p]), Bp = g.bal[p], dAlly = Bp / Lp;
+      if (dAlly >= 136) continue;
+
+      let inHumanAtk = 0, outHumanAtk = 0;
+      for (const a of g.attackersOf(p)) {
+        if (!g.isBot(a) && !this.isTeammate(g, a)) inHumanAtk += g.attackTroopsOn(a, p);
       }
-      for (const a of g.attackersOf(p)) inAtk += g.attackTroopsOn(a, p);
-      const allyEnemyNbs = this.peopleOf(g, p);
-      if (!allyEnemyNbs.length && outAtk === 0 && inAtk === 0 && g.t > 2200) continue;
-      const isBoss = p === bossId;
-      const isSquad = this.isOurSquadBot(g, p);
-      if (!isBoss && !isSquad) continue;
-      const crownBonus = Math.min(2500, Math.floor(g.terr[p] / 12));
-      const score = (isBoss ? 8000 : 600 + crownBonus) + (outAtk + inAtk) / 400 + (135 - dAlly) * 3;
-      if (score > bestScore && (isBoss || boxedIn || outAtk + inAtk > 0.04 * g.bal[p] || (isSquad && dMe >= 120 && dAlly < 98))) {
-        bestScore = score;
-        bestAlly = p;
+      const sbP = g.slotBase(p);
+      for (let i = 0; i < g.atkCount[p]; i++) {
+        const tgt = g.atkTarget[sbP + i];
+        if (tgt >= 0 && tgt < g.humans && !g.isBot(tgt) && !this.isTeammate(g, tgt)) {
+          outHumanAtk += g.atkTroops[sbP + i];
+        }
+      }
+
+      const allyNbs = this.peopleOf(g, p);
+      let enemyNbs = 0, minEnemyDens = Infinity, hasBleedingPrey = false;
+      for (const o of allyNbs) {
+        if (o !== me && g.alive[o] && !g.isBot(o) && !this.isTeammate(g, o) && g.terr[o] > 0) {
+          enemyNbs++;
+          const doDens = g.bal[o] / Math.max(1, g.terr[o]);
+          if (doDens < minEnemyDens) minEnemyDens = doDens;
+          if (doDens < 42 || g.terr[o] <= 0.35 * (g.peak?.[o] ?? g.terr[o])) hasBleedingPrey = true;
+        }
+      }
+
+      // A boxed-in brother in the rear never needs troops dispatched TO him!
+      if (enemyNbs === 0 && inHumanAtk === 0 && outHumanAtk === 0 && g.t >= 1600) continue;
+
+      const underFire = inHumanAtk > 0 && (inHumanAtk >= 0.05 * Bp || dAlly < 92);
+      const activePush = outHumanAtk >= 0.06 * Bp && dAlly < 115;
+      const hasPreyOpening = enemyNbs > 0 && (hasBleedingPrey || minEnemyDens < 0.72 * dAlly) && dAlly < 112;
+
+      if (emergencyOnly && !underFire) continue;
+
+      // Determine minimum donor density required for this dispatch type:
+      const reqDonorDens = underFire
+        ? (boxedIn ? 28 : 80)
+        : (activePush || hasPreyOpening)
+          ? (boxedIn ? 32 : 98)
+          : (boxedIn ? 38 : 114);
+
+      if (dMe < reqDonorDens || (!boxedIn && dMe < dAlly + 14)) continue;
+
+      let urgency = 0;
+      let kind = "equalize";
+      if (underFire) {
+        kind = "defense_dispatch";
+        urgency = 5000 + (inHumanAtk / Math.max(1, Bp)) * 2000 + (110 - dAlly) * 22 + Math.min(600, Lp / 40);
+      } else if (activePush || hasPreyOpening) {
+        kind = "offense_dispatch";
+        urgency = 2500 + (outHumanAtk / Math.max(1, Bp)) * 1200 + (hasBleedingPrey ? 600 : 0) + (120 - dAlly) * 14 + Math.min(500, Lp / 45);
+      } else {
+        kind = "front_equalize";
+        urgency = 800 + (125 - dAlly) * 12 + enemyNbs * 90 + Math.min(400, Lp / 50);
+      }
+
+      if (urgency > bestUrgency) {
+        bestUrgency = urgency;
+        bestTarget = p;
+        bestKind = kind;
       }
     }
-    if (bestAlly < 0) return false;
 
-    const pct = Math.min(maxSafePct, boxedIn ? (dMe > 95 ? 280 : 220) : 160);
-    if (pct < 110) return false;
-    if (g.donate(pct, bestAlly, me)) {
+    if (bestTarget < 0) return false;
+
+    const targetPct = bestKind === "defense_dispatch"
+      ? (boxedIn ? 300 : 200)
+      : bestKind === "offense_dispatch"
+        ? (boxedIn ? 260 : 175)
+        : (boxedIn ? 220 : 150);
+    const pct = Math.min(maxSafePct, targetPct);
+    if (pct < 96) return false;
+
+    if (g.donate(pct, bestTarget, me)) {
       this.lastDonateTick = g.t;
       this.cmds++;
       if (typeof window !== "undefined" && window.__hlLog) {
-        window.__hlLog(`[HL-DONATE] t=${g.t} surplus donate pct=${pct}/1024 -> ally=${bestAlly}(${g.names?.[bestAlly] || ""}) boxedIn=${boxedIn} myBal=${B} dMe=${Math.round(dMe)}`);
+        const dTarget = Math.round(g.bal[bestTarget] / Math.max(1, g.terr[bestTarget]));
+        window.__hlLog(`[HL-DISPATCH] t=${g.t} ${bestKind} pct=${pct}/1024 -> ally=${bestTarget}(${g.names?.[bestTarget] || ""}) boxedIn=${boxedIn} myBal=${B} dMe=${Math.round(dMe)} dAlly=${dTarget}`);
       }
       return true;
     }
@@ -4785,6 +4814,7 @@ export class Policy extends V17 {
     }
 
     const cmdsBefore = this.cmds;
+    if (g.t >= 1500 && this.tryDonateToTeammate(g, true) && g.online) return;
     if (P.flashLoanMode > 0 && this.tryStartFlashLoan(g)) return;
     if (this.neutral > 0) this.expandNeutral(g, g.bal[me] - this.safeAt(g, -1));
     this.buyLand(g);
@@ -4875,39 +4905,5 @@ export class Policy extends V17 {
       return;
     }
     if (P.a06BoatUnderAtk > 0 && g.t >= 3500 && g.bal[me] < 100 * g.terr[me]) {
-      let humanInAtk = 0;
-      for (const a of g.attackersOf(me)) if (a < g.humans && !g.isBot(a)) humanInAtk += g.attackTroopsOn(a, me);
-      if (humanInAtk >= 0.06 * g.bal[me]) return;
-    }
-    if (P.boatFood > 0 && this.boatFood(g)) return;
-    if (this.neutral > 0 || g.t - this.lastBoat < P.boatEvery) return;
-    if (this.nb.length && g.bal[me] < P.idleCap * 100 * g.terr[me]) return;
-    const { floorAt } = this.floors(g);
-    let activeHops = 0;
-    if (this.seaState.inFlightIsles) {
-      for (const [, expT] of this.seaState.inFlightIsles) if (g.t < expT) activeHops++;
-    }
-    const oldMax = P.maxBoats;
-    P.maxBoats = oldMax + activeHops;
-    this.boatOut(g, floorAt, P.boatFee > 0 && this.nb.length ? P.boatFee * this.minNbPrice(g) : Infinity);
-    P.maxBoats = oldMax;
-  }
-
-  offers(g) {
-    const P = this.p, me = this.me;
-    let active = 0;
-    const base = g.slotBase(me);
-    for (let i = g.atkCount[me] - 1; i >= 0; i--) if (g.atkTarget[base + i] !== NEUTRAL) active++;
-    const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L, fee = iV(12 * B, 1024);
-    const dMed = this.otherHumanMedDens(g) ?? dMe;
-    const nHumans = this.livingHumanCount(g);
-    const humanNbs = this.nb.filter((p) => g.alive[p] && this.person(g, p));
-    const focusQ = this.activeFocus(g);
-    const aggQ = this.peerAggressor(g);
-    const topRival = this.topOtherHuman(g);
-    const out = [];
-
-    for (const q of this.nb) {
-      if (!g.alive[q] || !g.terr[q]) continue;
-      const already = g.hasAttack(
+      let hum
 
