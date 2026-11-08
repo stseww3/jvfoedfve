@@ -885,7 +885,7 @@ setInterval(async () => {
             window.__lastObsTick = s.tick;
             window.__stalledCount = 0;
           }
-          if ((window.__stalledCount || 0) >= 6 && g && g[d.sbLeave]) {
+          if ((window.__stalledCount || 0) >= 20 && g && g[d.sbLeave]) {
             window.__stalledCount = 0;
             g[d.sbLeave](true);
             s.inGame = false;
@@ -1161,7 +1161,7 @@ setInterval(async () => {
     } else {
       clients[idx].stalledPolls = 0;
     }
-    if ((clients[idx].stalledPolls || 0) >= 6) {
+    if ((clients[idx].stalledPolls || 0) >= 20) {
       clients[idx].evalJs(`(() => { const d = window.dictionary, g = d && window[d.game]; if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true); })()`);
       continue;
     }
