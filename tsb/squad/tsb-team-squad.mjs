@@ -1014,10 +1014,7 @@ setInterval(async () => {
             }
           }
           s.bossId = bossIdx;
-          // ONLY trigger leave if Boss is not in this match at all (bossIdx < 0) OR Boss explicitly sent a quit/surrender/disconnect packet (r8 / rd in window.__quitPlayers)!
-          // If Boss died (terr === 0 / alive === 0) without sending quit packet, NEVER leave!
-          const bossExplicitQuit = !!(window.__quitPlayers && bossIdx >= 0 && window.__quitPlayers.has(bossIdx));
-          s.bossActiveInGame = bossIdx >= 0 && !bossExplicitQuit;
+          s.bossActiveInGame = bossIdx >= 0;
         }
         return JSON.stringify(s);
       })()`);
@@ -1311,9 +1308,9 @@ setInterval(async () => {
           ext.settings.armed = true;
           ext.remote.state.loop = "team";
           const isInLobbyNow = (typeof bq === "object" && bq?.f6 === 1 && typeof b1 === "object" && b1?.z?.ef?.(1));
-          const targetRoomNow = bq?.sH?.sH?.find?.(r => r && r.vz >= 0 && r.vz <= 3);
+          const targetRoomNow = ${waitMode ? 'bq?.sH?.sH?.[0]' : 'bq?.sH?.sH?.find?.(r => r && r.vz >= 0 && r.vz <= 3)'};
           const isReadyNow = isInLobbyNow && (bq?.sH ? !!(targetRoomNow && bq.sH.wF === targetRoomNow.id && targetRoomNow.id > 0) : !!(bq?.z?.tM?.[3]));
-          if (isInLobbyNow && bq?.sH && typeof bq.sH.select === "function" && bq.sH.wF && (!targetRoomNow || bq.sH.wF !== targetRoomNow.id)) {
+          if (!${waitMode ? 'true' : 'false'} && isInLobbyNow && bq?.sH && typeof bq.sH.select === "function" && bq.sH.wF && (!targetRoomNow || bq.sH.wF !== targetRoomNow.id)) {
             bq.sH.select(0);
           }
           if (isInLobbyNow && !isReadyNow && ${allowReady ? 'true' : 'false'}) {
@@ -1324,7 +1321,7 @@ setInterval(async () => {
                 window.__readyJitterScheduled = false;
                 if (typeof bq === "object" && bq?.f6 === 1 && !window.__tsbWaitForLeader) {
                   if (bq?.sH?.sH?.[0] && typeof bq.sH.select === "function") {
-                    const targetRoom = bq.sH.sH.find(r => r && r.vz >= 0 && r.vz <= 3);
+                    const targetRoom = ${waitMode ? 'bq.sH.sH[0]' : 'bq.sH.sH.find(r => r && r.vz >= 0 && r.vz <= 3)'};
                     if (targetRoom && bq.sH.wF !== targetRoom.id) {
                       bq.sH.select(targetRoom.id);
                     } else if (!targetRoom && bq.sH.wF) {
