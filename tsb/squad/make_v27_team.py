@@ -121,7 +121,9 @@ try {
       for (let i = 0; i < Math.min(wa, w1.length); i++) {
         const p = w1[i];
         if (!p) continue;
-        const raw = String(p.aGT || p.aGM || p.aFN || p.username || p.name || "").trim();
+        const gt = String(p.aGT || "").trim();
+        const gm = String(p.aGM || "").trim();
+        const raw = String((gt && !gt.includes("Redacted")) ? gt : (gm && !gm.includes("Redacted")) ? gm : (gt || gm || p.aFN || p.username || p.name || "")).trim();
         const low = raw.toLowerCase();
         if (!low || SQUAD_POOL_SET.has(low)) continue;
         const stripped = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
@@ -131,11 +133,30 @@ try {
           low.includes("kazerd") || stripped === "npl" ||
           low === "[npl]npl" || low.includes("auouf")
         ) {
+          if (typeof p.uX === "number" && p.uX > 0) window.__lastBossUx = p.uX;
+          window.__bossReadyDetectedAt = Date.now();
           return true;
         }
       }
       return false;
     };
+    if (window.bq?.aFy && typeof window.bq.aFy.aH4 === "function" && !window.bq.aFy.__patchedAgtOrder) {
+      window.bq.aFy.__patchedAgtOrder = true;
+      const prevH4 = window.bq.aFy.aH4.bind(window.bq.aFy);
+      window.bq.aFy.aH4 = function(aFp, aFq, aFr) {
+        if (Array.isArray(aFq)) {
+          for (let i = 0; i < aFq.length; i++) {
+            const p = aFq[i];
+            if (p && (p.aGT || p.aGM || p.aFN || p.aFU)) {
+              const gt = String(p.aGT || "").trim();
+              const gm = String(p.aGM || "").trim();
+              p.username = (gt && !gt.includes("Redacted")) ? gt : (gm && !gm.includes("Redacted")) ? gm : (gt || gm || p.aFN || p.aFU || p.username);
+            }
+          }
+        }
+        return prevH4(aFp, aFq, aFr);
+      };
+    }
     const ensureLobbyHook = () => {
       window.__tsbFollowLeader = "kazerd183";
       window.__tsbWaitForLeader = true;
@@ -151,6 +172,9 @@ try {
             window.bq?.sH?.click?.(0);
           }
         };
+      }
+      if (window.bq?.f6 === 1 && window.b1?.z && !window.b1.z.ef?.(1) && Date.now() - (window.__lastAutoEnterLobbyAt || 0) > 5000) {
+        try { window.bq.wr?.(); } catch {}
       }
       if (window.bq?.f6 !== 1) {
         const gState = window.aE ? (window.aE.a38 | 0) : 0;
@@ -324,6 +348,7 @@ new_helpers = """  isTeammate(g, p) {
   // Identify our Boss ("[Nope]kazerd183" / "[NPL] npl", excluding our guard bot names)
   isBossNpl(g, p) {
     if (p === this.me || !g.alive[p]) return false;
+    if (typeof window === "object" && window.__lastBossUx > 0 && window.aE?.data?.a7z?.[p] === window.__lastBossUx) return true;
     const raw = String(g.names?.[p] ?? "").trim();
     const low = raw.toLowerCase();
     const stripped = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
@@ -334,6 +359,10 @@ new_helpers = """  isTeammate(g, p) {
   hasBossInMatch(g) {
     if (this._bossEnteredMatch) return true;
     for (let p = 0; p < g.humans; p++) {
+      if (typeof window === "object" && window.__lastBossUx > 0 && window.aE?.data?.a7z?.[p] === window.__lastBossUx) {
+        this._bossEnteredMatch = true;
+        return true;
+      }
       const raw = String(g.names?.[p] ?? "").trim();
       const low = raw.toLowerCase();
       const stripped = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
@@ -593,8 +622,9 @@ new_helpers = """  isTeammate(g, p) {
       const b1Net = (d && window[d.sbNet]) || window.b1;
       if (b1Net?.qo && typeof b1Net.qo.rK === "function") {
         b1Net.qo.rK(1015, bossId);
-        if (slot === 0 && window.__hlLog) {
-          window.__hlLog(`[HL-EMOJI] t=${g.t} sent private scales emoji (1015) -> boss=${bossId}(${g.names?.[bossId] || ""})`);
+        if ((slot === 0 || !this._loggedFirstEmoji) && window.__hlLog) {
+          this._loggedFirstEmoji = true;
+          window.__hlLog(`[HL-EMOJI] t=${g.t} slot=${slot} sent private scales emoji (1015) -> boss=${bossId}(${g.names?.[bossId] || ""})`);
         }
       }
     } catch (e) {
@@ -940,14 +970,7 @@ s = s.replace(old_rank_mult, new_rank_mult, 1)
 old_early_act = """    if (g.t < P.coreFrom) {
       const before = this.cmds;"""
 
-new_early_act = """    if (g.t >= 15 && g.t <= 90 && !this.hasBossInMatch(g)) {
-      try {
-        const d = window.dictionary, gm = d && window[d.game];
-        if (gm && gm[d.gameState] !== 0 && typeof gm[d.sbLeave] === "function") gm[d.sbLeave](true);
-      } catch {}
-      return;
-    }
-    this.tryPrivateBossEmoji(g);
+new_early_act = """    this.tryPrivateBossEmoji(g);
     if (g.t < P.coreFrom) {
       this.analyze(g);
       if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {

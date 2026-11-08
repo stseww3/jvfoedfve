@@ -872,7 +872,9 @@ setInterval(async () => {
               const p = list[idx];
               const disp = String((p && p.username) || "").trim();
               if (disp.toLowerCase().includes("[nope]")) room0NopeCount++;
-              const raw = String((p && (p.aGM || p.aGT || p.aFN || p.username || p.name)) || "").trim();
+              const gt = String(p?.aGT || "").trim();
+              const gm = String(p?.aGM || "").trim();
+              const raw = String((gt && !gt.includes("Redacted")) ? gt : (gm && !gm.includes("Redacted")) ? gm : (gt || gm || p?.aFN || p?.username || p?.name || "")).trim();
               const low = raw.toLowerCase();
               const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
               if (
@@ -894,8 +896,11 @@ setInterval(async () => {
                 low === "giga_chad" || low === "san marino" || low === "noobslayer" || low === "vatican city" ||
                 low === "napoléon" || low === "tokyoghoul" || low === "ottoman" || low === "bruh" || low === "404 not found"
               ) continue;
-              if (stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
-                if (idx < readyCount) bossReadyInRoom0 = true;
+              if (stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || low === "[npl]npl" || low.includes("auouf")) {
+                if (idx < readyCount) {
+                  if (typeof p?.uX === "number" && p.uX > 0) window.__lastBossUx = p.uX;
+                  bossReadyInRoom0 = true;
+                }
               }
             }
           }
@@ -984,6 +989,10 @@ setInterval(async () => {
           let bossIdx = -1;
           if (rawNames) {
             for (let p = 0; p < H; p++) {
+              if (typeof window === "object" && window.__lastBossUx > 0 && window.aE?.data?.a7z?.[p] === window.__lastBossUx) {
+                bossIdx = p;
+                break;
+              }
               const raw = String(rawNames[p] ?? "").trim();
               if (!raw) continue;
               const low = raw.toLowerCase();
@@ -1007,7 +1016,7 @@ setInterval(async () => {
                 low === "napoléon" || low === "tokyoghoul" || low === "ottoman" || low === "bruh" || low === "404 not found"
               ) continue;
               const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
-              if (stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
+              if (stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || low === "[npl]npl" || low.includes("auouf")) {
                 bossIdx = p;
                 break;
               }
@@ -1165,9 +1174,8 @@ setInterval(async () => {
     }
   });
 
-  // In Boss-Guard waitMode: ANY individual bot in a match where Boss [NPL] npl is NOT present or has QUIT (playerStates[bossId] === 2)
-  // immediately leaves that match so it never stays stranded in a wrong match!
-  if (waitMode) {
+  // In Boss-Guard waitMode: never kick bots out of an active match once they entered!
+  if (false && waitMode) {
     for (let i = 0; i < clients.length; i++) {
       const s = states[i];
       if (s?.inGame && !s.bossActiveInGame) {

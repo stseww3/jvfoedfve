@@ -859,8 +859,10 @@ if (!isMainThread && workerData?.bot) {
         if (Array.isArray(aFq)) {
           for (let i = 0; i < aFq.length; i++) {
             const p = aFq[i];
-            if (p && (p.aGM || p.aGT || p.aFN || p.aFU)) {
-              p.username = p.aGM || p.aGT || p.aFN || p.aFU || p.username;
+            if (p && (p.aGT || p.aGM || p.aFN || p.aFU)) {
+              const gt = String(p.aGT || "").trim();
+              const gm = String(p.aGM || "").trim();
+              p.username = (gt && !gt.includes("Redacted")) ? gt : (gm && !gm.includes("Redacted")) ? gm : (gt || gm || p.aFN || p.aFU || p.username);
             }
           }
         }
