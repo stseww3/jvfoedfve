@@ -88,6 +88,7 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onS
   };
 
   worker.on('message', (msg) => {
+    client.lastMsgAt = Date.now();
     if (msg.type === 'eval_res') {
       const fn = pending.get(msg.id);
       if (fn) {
@@ -113,8 +114,13 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onS
         }
       }
     } else if (msg.type === 'result') {
+      client.wasInGame = false;
+      client.enteredGameAt = 0;
       if (onResult) onResult(client, msg.payload);
     } else if (msg.type === 'game_init') {
+      client.wasInGame = true;
+      client.enteredGameAt = Date.now();
+      client.enteredLobbyAt = 0;
       if (onGameInit) onGameInit(client, msg.initData);
     } else if (msg.type === 'game_pkt') {
       if (onGamePacket) onGamePacket(client, msg.pkt);

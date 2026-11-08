@@ -214,12 +214,11 @@ new_helpers = """  isTeammate(g, p) {
       }
     }
 
-    // Throttle expensive spawnVsPeople BFS to at most once every 950ms during spawnPhase so Worker never lags >3000ms!
+    // Throttle expensive spawnVsPeople BFS to at most once every 2200ms during spawnPhase so Worker never lags >3000ms!
     const nowSpawnMs = typeof performance !== "undefined" ? performance.now() : Date.now();
-    if (!this._cachedSpawnCands || !this._lastSpawnCalcMs || nowSpawnMs - this._lastSpawnCalcMs > 950 || this._cachedSpawnW !== W) {
+    if (!this._cachedSpawnCands || !this._lastSpawnCalcMs || nowSpawnMs - this._lastSpawnCalcMs > 2200 || this._cachedSpawnW !== W) {
       this._lastSpawnCalcMs = nowSpawnMs;
       this._cachedSpawnW = W;
-      this.spawnKey = null;
       let rawCands = this.spawnVsPeople ? this.spawnVsPeople(gClean, 24) : [];
       if (!rawCands || rawCands.length < 12) {
         const more = this.spawnCandidates(gClean, 24) || [];
