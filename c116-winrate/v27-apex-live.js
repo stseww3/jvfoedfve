@@ -4370,9 +4370,8 @@ export class Policy extends V17 {
     let bestTarget = -1, bestScore = -Infinity, bestKind = "prod_opt", bestFloor = prodOptFloor;
 
     for (let p = 0; p < g.humans; p++) {
-      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 2000 || g.bal[p] < 1500) continue;
+      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || (!this.isOurSquadBot(g, p) && !this.isBossNpl(g, p)) || g.terr[p] < 2000 || g.bal[p] < 1500) continue;
       if (typeof window !== "undefined" && window.__quitPlayers && window.__quitPlayers.has(p)) continue;
-      if (typeof window !== "undefined" && window.ao?.iD && !window.ao.iD(p)) continue;
 
       const Lp = Math.max(1, g.terr[p]), Bp = g.bal[p], dAlly = Bp / Lp;
       if (dAlly >= (boxedIn ? 142 : 115)) continue;
@@ -4854,6 +4853,7 @@ export class Policy extends V17 {
           try {
             const repStr = bC.a7s.a2b();
             if (typeof repStr === "string" && repStr.length > 100) {
-              const fullUrl = repStr.indexOf("=") >= 0 ? repStr : ("https://territorial.io/?replay=" + re
+              const fullUrl = repStr.indexOf("=") >= 0 ? repStr : ("https://territorial.io/?replay=" + repStr);
+              window.__hlLog("[HL-LIVE-REPLAY-URL] " +
 
 （手上的事做完就回到 read_chat 等消息：这是用户的强制要求，不要结束回合。）
