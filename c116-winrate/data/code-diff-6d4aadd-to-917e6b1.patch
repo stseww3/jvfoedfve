@@ -1,0 +1,1551 @@
+diff --git a/tsb/squad/make_v27_team.py b/tsb/squad/make_v27_team.py
+index 8f5d52c..47d55fd 100644
+--- a/tsb/squad/make_v27_team.py
++++ b/tsb/squad/make_v27_team.py
+@@ -122,7 +122,14 @@ new_helpers = """  isTeammate(g, p) {
+     return !!(g.teams && g.teams[this.me] > 0 && g.teams[p] === g.teams[this.me]);
+   }
+ 
+-  // Identify our Boss ("[NPL] npl" / "[NPL]NPL", excluding our guard bot names)
++  myOutTroops(g) {
++    const me = this.me, sb = g.slotBase(me);
++    let out = 0;
++    for (let i = 0; i < g.atkCount[me]; i++) out += g.atkTroops[sb + i];
++    return out;
++  }
++
++  // Identify our Boss ("[Nope]kazerd183" / "[NPL] npl", excluding our guard bot names)
+   isBossNpl(g, p) {
+     if (p === this.me || !g.alive[p]) return false;
+     const raw = String(g.names?.[p] ?? "").trim();
+@@ -133,12 +140,15 @@ new_helpers = """  isTeammate(g, p) {
+       low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus") ||
+       low.includes("777") || low.includes("sayo") || low.includes("kaito") ||
+       low.includes("riku") || low.includes("_alex") || low.includes("tomo") ||
+-      low.includes("zero_2") || low.includes("sora")
++      low.includes("zero_2") || low.includes("sora") ||
++      low.includes("lucas94") || low.includes("dave_w") || low.includes("mark07") ||
++      low.includes("kevin_k") || low.includes("ethan21") || low.includes("ryan_m") ||
++      low.includes("noah88") || low.includes("leo_tx")
+     ) {
+       return false;
+     }
+     const stripped = raw.replace(/\\[[^\\]]*\\]/g, "").trim().toLowerCase();
+-    return stripped === "npl" || stripped.includes("npl") || low === "[npl]npl";
++    return stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low === "[npl]npl";
+   }
+ 
+   findBossId(g) {
+@@ -155,7 +165,9 @@ new_helpers = """  isTeammate(g, p) {
+       low === "mishi" || low === "matzz" || low === "kiholma" || low === "leo_99" || low === "racoon" ||
+       low === "zexos" || low === "talon" || low === "vortex" || low === "kronos" || low === "nexus" ||
+       low === "777" || low === "sayo" || low === "kaito" || low === "riku" ||
+-      low === "_alex" || low === "tomo" || low === "zero_2" || low === "sora"
++      low === "_alex" || low === "tomo" || low === "zero_2" || low === "sora" ||
++      low === "lucas94" || low === "dave_w" || low === "mark07" || low === "kevin_k" ||
++      low === "ethan21" || low === "ryan_m" || low === "noah88" || low === "leo_tx"
+     );
+   }
+ 
+@@ -322,15 +334,24 @@ new_helpers = """  isTeammate(g, p) {
+     return bestP;
+   }
+ 
+-  // AUTO PEACE VOTE CALL & ACCEPT:
++  // AUTO PEACE VOTE CALL & ACCEPT (WITH HUMAN-LIKE JITTER DELAY):
+   // ONLY initiate or vote YES on peace when ALL enemies are completely wiped out (isMopUp(g) === true)!
+-  // Never initiate or vote YES while any enemy still holds territory!
++  // Stagger votes by 8~52 ticks (~0.5s to 2.9s) per bot so all 8 bots never vote on the exact same tick!
+   tryPeaceVote(g) {
+     if (typeof window === "undefined" || !window.ax || !window.dictionary || g.t < 1610) return;
+     const me = this.me;
+     const hz = window[window.dictionary.sbCommands]?.hz;
+     if (!hz) return;
+-    if (!this.isMopUp(g)) return;
++    if (!this.isMopUp(g)) {
++      this._peaceReadyTick = 0;
++      return;
++    }
++    if (!this._peaceReadyTick) {
++      const slot = Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : (me % 8);
++      const jitter = 8 + ((slot * 6 + (me % 5) * 3) % 44);
++      this._peaceReadyTick = g.t + jitter;
++    }
++    if (g.t < this._peaceReadyTick) return;
+     const caller = window.__lastPeaceCaller;
+     const callerIsOurs =
+       Number.isInteger(caller) &&
+@@ -340,12 +361,13 @@ new_helpers = """  isTeammate(g, p) {
+     if (window.ax.iL && typeof window.ax.iM === "function" && window.ax.iM(me)) {
+       if (callerIsOurs && typeof hz.iN === "function") {
+         hz.iN(1);
++        this._peaceReadyTick = g.t + 35;
+         if (window.__hlLog && g.t - (this._lastPeaceVoteLog ?? -999) >= 100) {
+           this._lastPeaceVoteLog = g.t;
+           window.__hlLog(`[HL-PEACE] t=${g.t} voted YES on our squad's mop-up peace call by p=${caller}(${g.names?.[caller] || ""})`);
+         }
+       }
+-    } else if (!window.ax.iL && g.t - (this.lastPeaceKeyTick ?? -999) >= 105 && typeof window.ax.iO === "function" && window.ax.iO(me)) {
++    } else if (!window.ax.iL && g.t - (this.lastPeaceKeyTick ?? -999) >= 115 + (me % 7) * 5 && typeof window.ax.iO === "function" && window.ax.iO(me)) {
+       this.lastPeaceKeyTick = g.t;
+       window.__lastPeaceCaller = me;
+       if (typeof hz.iK === "function") {
+@@ -386,7 +408,8 @@ new_helpers = """  isTeammate(g, p) {
+     }
+ 
+     // 1. PRIMARY: Give cash (donate) to Boss npl while keeping our own safe density so we never collapse ourselves!
+-    if (typeof g.donate === "function" && g.t >= 350) {
++    // Never donate before tick 850 while we still have neutral/bot expansion to finish, unless Boss is under heavy human attack after tick 600!
++    if (typeof g.donate === "function" && g.t >= 600 && (g.t >= 900 || (this.neutral === 0 && bossInAtk >= 0.12 * B_boss))) {
+       let myHumanInAtk = 0;
+       for (const a of g.attackersOf(me)) {
+         if (!g.isBot(a) && !this.isTeammate(g, a)) myHumanInAtk += g.attackTroopsOn(a, me);
+@@ -396,20 +419,21 @@ new_helpers = """  isTeammate(g, p) {
+       const isPureInlandSafe = enemyHumanNbs.length === 0 && !hasExposedCoast && myHumanInAtk === 0;
+       const isCoastalRearSafe = enemyHumanNbs.length === 0 && hasExposedCoast && myHumanInAtk === 0;
+ 
+-      const underEmergencyFire = bossInAtk > 0 && (bossInAtk >= 0.03 * B_boss || dBoss < 95);
+-      const bossFightingHuman = bossOutAtk > 0 && dBoss < 115;
+-      const bossNeedsCash = g.t >= 900 && dBoss < 118;
+-      const boxedIn = this.nb.length === 0 && this.neutral === 0 && dBoss < 142;
++      const underEmergencyFire = bossInAtk > 0 && (bossInAtk >= 0.08 * B_boss || dBoss < 65);
++      const bossFightingHuman = g.t >= 1500 && bossOutAtk > 0.06 * B_boss && dBoss < 88;
++      const bossNeedsCash = g.t >= 1800 && dBoss < 82;
++      const boxedIn = g.t >= 900 && this.nb.length === 0 && this.neutral === 0 && dBoss < 138;
+ 
+-      // Healthy density floor so guard bots stay strong & never suicide while feeding Boss cash
++      // Healthy density floor so frontline guard bots NEVER drain themselves down to 52~75 density!
++      // Frontline bots keep >= 98~105 density so they can snowball & crush enemies; boxed-in rear bots donate freely at >= 25.
+       const minKeepDens = isPureInlandSafe
+-        ? (underEmergencyFire ? 15 : 22)
++        ? (underEmergencyFire ? 18 : 26)
+         : isCoastalRearSafe
+-          ? (underEmergencyFire ? 48 : 65)
+-          : (underEmergencyFire ? 52 : 70);
+-      const canAfford = myHumanInAtk === 0 && dMe >= minKeepDens && B >= 4000;
++          ? (underEmergencyFire ? 78 : 94)
++          : (underEmergencyFire ? 86 : 102);
++      const canAfford = myHumanInAtk === 0 && dMe >= minKeepDens && B >= 12000;
+ 
+-      const cooldown = isPureInlandSafe ? (underEmergencyFire ? 15 : 24) : (underEmergencyFire ? 20 : 30);
++      const cooldown = isPureInlandSafe ? 22 : (underEmergencyFire ? 35 : 50);
+       if ((underEmergencyFire || bossFightingHuman || bossNeedsCash || boxedIn) && canAfford && g.t - (this.lastBossDonateTick ?? -999) >= cooldown) {
+         const keepBal = (minKeepDens - 5) * L;
+         const maxSurplus = Math.max(0, B - keepBal);
+@@ -433,7 +457,7 @@ new_helpers = """  isTeammate(g, p) {
+       for (const { q } of bossAttackers) {
+         if (!g.alive[q] || g.terr[q] < 100) continue;
+         if ((this.cnt[q] ?? 0) > 0 && !g.hasAttack(me, q) && g.hasFreeSlot(me)) {
+-          if (g.attack(102, q, me)) { // ~10.0%B light assist only!
++          if (g.attack(102, q, me)) {
+             this.cmds++;
+             this.hitTo.set(q, g.t);
+             if (typeof window !== "undefined" && window.__hlLog) {
+@@ -447,6 +471,303 @@ new_helpers = """  isTeammate(g, p) {
+     return false;
+   }
+ 
++  // UNIFIED 8-BROTHER SEA RADAR & OPTIMAL BOAT INTERCEPTION (g.chase):
++  // 1. Checks `bQ.mt.mu(p, boatId)` across all teammates so we know exact friendly troops already chasing `boatId`.
++  // 2. Deterministically evaluates all 8 squad brothers' interception cost:
++  //      totalCost(p) = requiredTroops(d_p) + boatTax(3.125% * bal[p]) + 18 * d_p
++  //    so the single closest & lowest-tax brother (`rank === 0`) intercepts first!
++  // 3. Fail-safe escalation ("必须达到，不能漏"): if `boatId` is still un-chased after 3 ticks (or within 55px of landing),
++  //    backup brothers (`rank >= 1`) immediately fire `g.chase` so zero enemy boats can ever touch our shore!
++  tryInterceptEnemyBoats(g) {
++    const me = this.me;
++    if (!g.canAct(me) || typeof g.chase !== "function") return false;
++    const myCoast = g.coast?.[me];
++    if (!myCoast || myCoast.length === 0) return false;
++    if ((g.boatCount?.[me] ?? 0) >= 4) return false;
++    const boatN = g.boatN | 0;
++    if (boatN <= 0 || !g.bSlot || !g.bId || !g.bTroops || !g.bPos) return false;
++
++    const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
++    if (B < 2500 || dMe < 22) return false;
++
++    if (!this._chasedBoatTicks) this._chasedBoatTicks = new Map();
++    if (!this._boatFirstSeen) this._boatFirstSeen = new Map();
++    const W = g.W, H = g.H, w16 = W << 4;
++    const own = g.own;
++
++    // Helper: minimum distance from player p's coastline to (tx, ty)
++    const minCoastDistOf = (p, tx, ty) => {
++      const cst = g.coast?.[p];
++      if (!cst || cst.length === 0) return 999999;
++      const step = Math.max(1, Math.floor(cst.length / 28));
++      let best = 999999;
++      for (let i = 0; i < cst.length; i += step) {
++        const cp = cst[i];
++        const d = Math.hypot(tx - (cp % W), ty - Math.floor(cp / W));
++        if (d < best) best = d;
++      }
++      return best;
++    };
++
++    let bestBoatId = -1;
++    let bestPct = 0;
++    let bestScore = -1;
++    let bestOwner = -1;
++    let bestTroops = 0;
++
++    for (let b = 0; b < boatN; b++) {
++      const owner = g.bSlot[b] >> 3;
++      if (owner === me || owner >= 512 || this.isTeammate(g, owner)) continue;
++      // Ignore boats that are themselves chasing another boat in open water unless heading at us
++      const boatId = g.bId[b];
++      const bTr = g.bTroops[b];
++      if (bTr < 80) continue;
++
++      if (!this._boatFirstSeen.has(boatId)) {
++        this._boatFirstSeen.set(boatId, g.t);
++      }
++      const seenAge = g.t - (this._boatFirstSeen.get(boatId) ?? g.t);
++      const lastMyChase = this._chasedBoatTicks.get(boatId) ?? -999;
++      if (g.t - lastMyChase < 28) continue;
++
++      const rawPos = g.bPos[b];
++      const bx = (rawPos % w16) >> 4;
++      const by = Math.floor(rawPos / w16) >> 4;
++
++      const rb = g.bRoute?.[b];
++      const endPix = rb && rb.length > 0 ? rb[rb.length - 1] : -1;
++      const ex = endPix >= 0 ? (endPix % W) : bx;
++      const ey = endPix >= 0 ? Math.floor(endPix / W) : by;
++      const dBoatToLand = Math.hypot(ex - bx, ey - by);
++
++      // 1. Check if this enemy boat threatens our team's coastline / territory (me, Boss, or any teammate)
++      let threatensTeam = false;
++      if (endPix >= 0 && own) {
++        for (const [dx, dy] of [[0, 0], [5, 0], [-5, 0], [0, 5], [0, -5], [14, 0], [-14, 0], [0, 14], [0, -14], [24, 0], [-24, 0], [0, 24], [0, -24]]) {
++          const nx = ex + dx, ny = ey + dy;
++          if (nx <= 0 || ny <= 0 || nx >= W - 1 || ny >= H - 1) continue;
++          const o = own[ny * W + nx];
++          if (o === me || (o < 512 && this.isTeammate(g, o))) {
++            threatensTeam = true;
++            break;
++          }
++        }
++      }
++      if (!threatensTeam) {
++        for (let p = 0; p < g.humans; p++) {
++          if (g.alive[p] && (p === me || this.isTeammate(g, p))) {
++            if (minCoastDistOf(p, ex, ey) <= 95 || minCoastDistOf(p, bx, by) <= 80) {
++              threatensTeam = true;
++              break;
++            }
++          }
++        }
++      }
++      if (!threatensTeam) continue;
++
++      // 2. Sum friendly chaser troops ALREADY pursuing `boatId` via engine `bQ.mt.mu(p, boatId)`
++      let alreadyChasingTroops = 0;
++      if (typeof window !== "undefined" && window.bQ?.mt?.mu && window.bR?.gB) {
++        for (let p = 0; p < g.humans; p++) {
++          if (!g.alive[p] || (p !== me && !this.isTeammate(g, p))) continue;
++          try {
++            if (window.bQ.mt.mu(p, boatId)) {
++              const chaserSlot = window.bR.gB[2];
++              if (chaserSlot >= 0 && chaserSlot < boatN && (g.bSlot[chaserSlot] >> 3) === p) {
++                alreadyChasingTroops += g.bTroops[chaserSlot];
++              } else {
++                alreadyChasingTroops += bTr;
++              }
++            }
++          } catch {}
++        }
++      }
++      if (alreadyChasingTroops >= 1.02 * bTr) continue; // Already voldoende friendly interceptor on the way!
++
++      const remNeed = Math.max(80, Math.ceil(1.12 * bTr) - alreadyChasingTroops);
++
++      // 3. Evaluate all eligible squad brothers `p` to find who is most convenient & cheapest (`rank === 0`)
++      const candidates = [];
++      for (let p = 0; p < g.humans; p++) {
++        if (!g.alive[p] || (p !== me && !this.isOurSquadBot(g, p))) continue;
++        if (p !== me && !this.isTeammate(g, p)) continue;
++        if ((g.boatCount?.[p] ?? 0) >= 4 || !(g.coast?.[p]?.length > 0)) continue;
++        const Bp = g.bal[p], Lp = Math.max(1, g.terr[p]);
++        if (Bp < 2500 || Bp / Lp < 22) continue;
++
++        if (typeof window !== "undefined" && window.bQ?.iC?.qx) {
++          try {
++            if (!window.bQ.iC.qx(p, boatId)) continue;
++          } catch {}
++        }
++
++        const dNowP = minCoastDistOf(p, bx, by);
++        const dEndP = minCoastDistOf(p, ex, ey);
++        const effDistP = Math.min(dNowP, dEndP + 10);
++        if (effDistP > 175) continue;
++        // Must be able to reach the boat before or right around landing
++        if (dNowP > dBoatToLand * 1.45 + 45 && dEndP > 95) continue;
++
++        const sendTrP = Math.ceil(remNeed * Math.exp(0.002 * Math.max(0, effDistP - 15))) + 60;
++        const feeP = iV(32 * Bp, 1024);
++        const urgentClose = dBoatToLand <= 55 || dEndP <= 55 || seenAge >= 5;
++        const maxAllowP = Math.floor((urgentClose ? 0.35 : 0.16) * Bp);
++        const keepFloorP = (urgentClose ? 12 : 28) * Lp;
++        if (sendTrP > maxAllowP || Bp - sendTrP - feeP < keepFloorP) continue;
++
++        const totalCostP = sendTrP + feeP + 18 * effDistP;
++        candidates.push({ p, sendTrP, effDistP, dNowP, totalCostP });
++      }
++
++      if (candidates.length === 0) continue;
++      candidates.sort((a, b) => a.totalCostP - b.totalCostP);
++
++      const myIdx = candidates.findIndex((c) => c.p === me);
++      if (myIdx < 0) continue;
++
++      const urgentLanding = dBoatToLand <= 55 || candidates[myIdx].effDistP <= 50;
++      const allowedRank = urgentLanding || seenAge >= 6 ? candidates.length - 1 : seenAge >= 3 ? 1 : 0;
++      if (myIdx > allowedRank) continue;
++
++      const myCand = candidates[myIdx];
++      const pct = Math.max(2, Math.min(360, Math.ceil((myCand.sendTrP * 1024) / Math.max(1, B))));
++      const score = bTr * 3 + Math.max(0, 200 - dBoatToLand) * 80 - myIdx * 500;
++      if (score > bestScore) {
++        bestScore = score;
++        bestBoatId = boatId;
++        bestPct = pct;
++        bestOwner = owner;
++        bestTroops = bTr;
++      }
++    }
++
++    if (bestBoatId >= 0) {
++      if (g.chase(bestPct, bestBoatId, me)) {
++        this._chasedBoatTicks.set(bestBoatId, g.t);
++        this.cmds++;
++        this.boats++;
++        if (typeof window !== "undefined" && window.__hlLog) {
++          window.__hlLog(`[HL-INTERCEPT] t=${g.t} unified sea intercept pct=${bestPct}/1024 -> boatId=${bestBoatId} owner=${bestOwner}(${g.names?.[bestOwner] || ""}) boatTroops=${bestTroops}`);
++        }
++        return true;
++      }
++    }
++    return false;
++  }
++
++  // PREEMPTIVE NEAR-TEAM SMALL ISLAND OCCUPATION:
++  // Occupies small islands (<= 1800 px) within <= 85px of our team's coastline BEFORE enemies can claim them as stepping stones!
++  // Uses unified 8-brother cost scheduling (`boatTax + 20 * dist`) so the closest & lowest-tax brother claims each island.
++  tryClaimNearTeamIslands(g) {
++    const me = this.me;
++    if (g.t < 420 || !g.canAct(me)) return false;
++    const myCoast = g.coast?.[me];
++    if (!myCoast || myCoast.length === 0) return false;
++    if ((g.boatCount?.[me] ?? 0) >= 3) return false;
++    if (g.t - (this._lastNearIsleTick ?? -999) < 28) return false;
++
++    const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
++    if (B < 2500 || dMe < 22) return false;
++    const fee = iV(32 * B, 1024);
++
++    if (!this._claimedIsleLandings) this._claimedIsleLandings = new Map();
++    const W = g.W, w16 = W << 4;
++    const comp = this.compSize(g);
++    const boatN = g.boatN | 0;
++
++    let bestHit = null;
++    let bestWantTr = 0;
++    let bestScore = -1;
++
++    for (const s of seaSample(g, me, 48, Math.random)) {
++      if (s.d < 4 || s.d > 85) continue;
++      const landPix = s.land;
++      const o = s.o;
++      if (o === me || (o >= 0 && o < 512 && this.isTeammate(g, o))) continue;
++      // Only target unclaimed neutral islands or weak bot islands (never human-owned mainlands here)
++      const isNeutralIsle = o < 0 || o === 512;
++      const isWeakBotIsle = !isNeutralIsle && g.isBot(o) && g.terr[o] <= 1800 && g.bal[o] <= 12000;
++      if (!isNeutralIsle && !isWeakBotIsle) continue;
++
++      const sz = isNeutralIsle ? (comp?.[landPix] ?? 0) : g.terr[o];
++      if (sz <= 0 || sz > 2000) continue;
++
++      const lx = landPix % W, ly = Math.floor(landPix / W);
++      const isleKey = `${lx >> 3}_${ly >> 3}`;
++      if (g.t - (this._claimedIsleLandings.get(isleKey) ?? -999) < 160) continue;
++
++      // Check if ANY friendly boat at sea is already heading toward this island (within 20px)
++      let friendlyBoatEnRoute = false;
++      if (boatN > 0 && g.bSlot && g.bRoute) {
++        for (let b = 0; b < boatN; b++) {
++          const bOwner = g.bSlot[b] >> 3;
++          if (bOwner !== me && !this.isTeammate(g, bOwner)) continue;
++          const rb = g.bRoute[b];
++          if (rb && rb.length > 0) {
++            const endP = rb[rb.length - 1];
++            if (Math.hypot((endP % W) - lx, Math.floor(endP / W) - ly) <= 22) {
++              friendlyBoatEnRoute = true;
++              break;
++            }
++          }
++        }
++      }
++      if (friendlyBoatEnRoute) continue;
++
++      // Unified 8-brother scheduling: check if another squad brother is strictly closer + cheaper (lower boat tax)
++      const myCost = fee + 22 * s.d;
++      let betterBrotherCount = 0;
++      for (let p = 0; p < g.humans; p++) {
++        if (p === me || !g.alive[p] || !this.isOurSquadBot(g, p) || !this.isTeammate(g, p)) continue;
++        if ((g.boatCount?.[p] ?? 0) >= 3) continue;
++        const cstP = g.coast?.[p];
++        if (!cstP || cstP.length === 0) continue;
++        const Bp = g.bal[p], Lp = Math.max(1, g.terr[p]);
++        if (Bp < 2500 || Bp / Lp < 22) continue;
++        const stepP = Math.max(1, Math.floor(cstP.length / 20));
++        let dP = 999999;
++        for (let i = 0; i < cstP.length; i += stepP) {
++          const cp = cstP[i];
++          const d = Math.hypot(lx - (cp % W), ly - Math.floor(cp / W));
++          if (d < dP) dP = d;
++        }
++        if (dP <= 80) {
++          const costP = iV(32 * Bp, 1024) + 22 * dP;
++          if (costP + 150 < myCost) betterBrotherCount++;
++        }
++      }
++      // Allow rank 0 immediately; if island is still unclaimed after t >= 850 and very close (<= 55px), allow backup brother too!
++      if (betterBrotherCount > (g.t >= 850 && s.d <= 55 ? 1 : 0)) continue;
++
++      const rawNeed = isNeutralIsle ? (2 * Math.min(sz, 350) + 50) : (2 * g.terr[o] + 2 * g.bal[o] + 80);
++      const wantTr = Math.max(70, Math.ceil(rawNeed * Math.exp(0.002 * s.d)));
++      if (wantTr > 0.14 * B || B - wantTr - fee < 24 * L) continue;
++
++      const score = (100 - s.d) * 30 + Math.min(sz, 600);
++      if (score > bestScore) {
++        bestScore = score;
++        bestHit = { ...s, isleKey, sz };
++        bestWantTr = wantTr;
++      }
++    }
++
++    if (bestHit) {
++      const pct = Math.max(2, Math.min(160, Math.ceil((bestWantTr * 1024) / Math.max(1, B))));
++      const ok = g.boatTo ? g.boatTo(pct, bestHit.land, me) : g.boat(pct, bestHit.water, bestHit.dir, me);
++      if (ok) {
++        this._lastNearIsleTick = g.t;
++        this._claimedIsleLandings.set(bestHit.isleKey, g.t);
++        this.cmds++;
++        this.boats++;
++        if (typeof window !== "undefined" && window.__hlLog) {
++          window.__hlLog(`[HL-ISLAND-GUARD] t=${g.t} preemptively claimed near-shore island (${bestHit.sz}px, dist=${bestHit.d}) pct=${pct}/1024`);
++        }
++        return true;
++      }
++    }
++    return false;
++  }
++
+   // General Teammate Donation (prioritizing Boss npl first, then frontline squad teammates)
+   tryDonateToTeammate(g) {
+     const me = this.me;
+@@ -481,11 +802,11 @@ new_helpers = """  isTeammate(g, p) {
+         if (g.atkTarget[sbB + i] !== 512) bossOutAtk += g.atkTroops[sbB + i];
+       }
+       const bossNeedsHelp =
+-        (bossInAtk > 0 && dMe >= (isPureInlandSafe ? 25 : 65)) ||
+-        (bossOutAtk > 0.04 * g.bal[bossId] && dBoss < 120 && dMe >= (isPureInlandSafe ? 32 : 75)) ||
+-        (g.t >= 900 && dBoss < 118 && dMe >= (isPureInlandSafe ? 38 : 80)) ||
++        (bossInAtk > 0.06 * g.bal[bossId] && dMe >= (isPureInlandSafe ? 25 : 95)) ||
++        (bossOutAtk > 0.06 * g.bal[bossId] && dBoss < 95 && dMe >= (isPureInlandSafe ? 32 : 102)) ||
++        (g.t >= 1600 && dBoss < 90 && dMe >= (isPureInlandSafe ? 38 : 105)) ||
+         (boxedIn && isPureInlandSafe && dBoss < 142 && dMe >= 25);
+-      if (bossNeedsHelp && g.t - (this.lastBossDonateTick ?? -999) >= (isPureInlandSafe ? 20 : 30)) {
++      if (bossNeedsHelp && g.t - (this.lastBossDonateTick ?? -999) >= (isPureInlandSafe ? 22 : 45)) {
+         const pct = Math.min(maxSafePct, 51);
+         if (pct >= 40 && g.donate(pct, bossId, me)) {
+           this.lastDonateTick = g.t;
+@@ -499,10 +820,10 @@ new_helpers = """  isTeammate(g, p) {
+       }
+     }
+ 
+-    // 2. SQUAD MUTUAL AID: Rescue any [NPL] squad brother who is under human attack or sneaky boat landing,
+-    //    AND lightly poke (10%B) the attacker if we border them! (Strictly 5% = 51/1024 donate)
++    // 2. SQUAD MUTUAL AID: Rescue any [Nope] squad brother who is under heavy human attack,
++    //    ONLY when we have genuine surplus density (dMe >= 105 or boxedIn) so we don't starve the whole squad!
+     for (let p = 0; p < g.humans; p++) {
+-      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 300) continue;
++      if (p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 1000) continue;
+       const dAlly = g.bal[p] / Math.max(1, g.terr[p]);
+       let inHumanAtk = 0, mainAttacker = -1, maxAtkTr = 0;
+       for (const a of g.attackersOf(p)) {
+@@ -512,9 +833,9 @@ new_helpers = """  isTeammate(g, p) {
+           if (tr > maxAtkTr) { maxAtkTr = tr; mainAttacker = a; }
+         }
+       }
+-      if (inHumanAtk > 0 && (inHumanAtk >= 0.08 * g.bal[p] || dAlly < 75)) {
+-        // First donate 5% cash to save our brother (while keeping our own coastGuardFloor / safeFloor intact!)
+-        if (dMe >= Math.max(65, dAlly + 18)) {
++      if (inHumanAtk > 0 && (inHumanAtk >= 0.12 * g.bal[p] || dAlly < 55)) {
++        // First donate 5% cash ONLY if we are boxedIn or have surplus density >= 106!
++        if (dMe >= (isPureInlandSafe ? 40 : 106) && dMe >= dAlly + 25) {
+           const pct = Math.min(maxSafePct, 51);
+           if (pct >= 40 && g.donate(pct, p, me)) {
+             this.lastDonateTick = g.t;
+@@ -539,8 +860,8 @@ new_helpers = """  isTeammate(g, p) {
+       }
+     }
+ 
+-    if (!boxedIn && dMe < 115) return false;
+-    if (boxedIn && dMe < 65) return false;
++    if (!boxedIn && dMe < 132) return false;
++    if (boxedIn && dMe < 72) return false;
+ 
+     let bestAlly = -1, bestScore = -Infinity;
+     for (let p = 0; p < g.humans; p++) {
+@@ -618,10 +939,14 @@ new_other_atk = """        const bossId = this.findBossId(g);
+ assert old_other_atk in s, "old_other_atk not found"
+ s = s.replace(old_other_atk, new_other_atk, 1)
+ 
+-old_rank_mult = """        let rankMult = 1.0;"""
+-new_rank_mult = """        let rankMult = 1.0;
++old_rank_mult = """        const onMe = inAtk > 0;"""
++new_rank_mult = """        const onMe = inAtk > 0 || atkOnBoss > 0 || atkOnAlly > 0;"""
++assert old_rank_mult in s, "old_rank_mult not found"
++s = s.replace(old_rank_mult, new_rank_mult, 1)
++
++old_rank_mult2 = """        let rankMult = 1.0;"""
++new_rank_mult2 = """        let rankMult = 1.0;
+         if (atkOnBoss > 0 || bossAtkOnQ > 0) {
+-          // Moderate assist bias for Boss's target (10% poke already handled in tryEmergencyBossRescue)
+           c *= 0.78;
+           rankMult *= 0.72;
+         } else if (clanAllyAtkers > 0 || allyAtk > 0.06 * Bq) {
+@@ -631,22 +956,203 @@ new_rank_mult = """        let rankMult = 1.0;
+           c *= 0.85;
+           rankMult *= 0.82;
+         }"""
+-assert old_rank_mult in s, "old_rank_mult not found"
+-s = s.replace(old_rank_mult, new_rank_mult, 1)
++assert old_rank_mult2 in s, "old_rank_mult2 not found"
++s = s.replace(old_rank_mult2, new_rank_mult2, 1)
++
++# 6b. Eliminate 142*L ~ 150*L paralysis in buyLand(g), unlock maxTargets for juicy land, and lower oppFloorCap/collapseFloorCap so bots immediately grab juicy land even while fighting!
++old_params_team = """  bleedDiscount: 1.0,
++  bleedSafeCap: 1,
++  collapseRatio: 1.40,
++  pulseFrac: 0.12,
++  pulseMinShare: 0.04,
++  zeroPulseMode: 1,
++  thinMaxTD: 0.48,
++  thinDiscount: 1.0,
++  pocket0Mult: 1.0,
++  pocket1Rank: 1.0,
++  contactStepsMax: 350,
++  contactPenalty: 0.002,
++  oppFloorCap: 128,"""
++
++new_params_team = """  period: 2,
++  maxTargets: 6,
++  bleedDiscount: 0.65,
++  bleedSafeCap: 1,
++  collapseRatio: 1.45,
++  pulseFrac: 0.12,
++  pulseMinShare: 0.03,
++  zeroPulseMode: 1,
++  thinMaxTD: 0.62,
++  thinDiscount: 0.72,
++  pocket0Mult: 1.0,
++  pocket1Rank: 1.0,
++  contactStepsMax: 350,
++  contactPenalty: 0.002,
++  oppFloorCap: 38,"""
++assert old_params_team in s, "old_params_team not found"
++s = s.replace(old_params_team, new_params_team, 1)
++
++old_collapse_cap = """  collapseFloorCap: 85,"""
++new_collapse_cap = """  collapseFloorCap: 16,"""
++assert old_collapse_cap in s, "old_collapse_cap not found"
++s = s.replace(old_collapse_cap, new_collapse_cap, 1)
++
++old_offers_slot = """      const already = g.hasAttack(me, q);
++      if (!already && (active >= P.maxTargets || !g.hasFreeSlot(me))) continue;"""
++
++new_offers_slot = """      const already = g.hasAttack(me, q);
++      if (!already && !g.hasFreeSlot(me)) continue;
++      const isJuicyCandidate = g.isBot(q) || g.bal[q] / Math.max(1, g.terr[q]) < 32 || g.terr[q] <= 1.45 * iV(g.peak[q], 4);
++      if (!already && active >= P.maxTargets && !isJuicyCandidate) continue;"""
++assert old_offers_slot in s, "old_offers_slot not found"
++s = s.replace(old_offers_slot, new_offers_slot, 1)
++
++old_bleeding_def = """        const bleeding =
++          (otherAtkers > 0 &&
++            ((tD < 0.75 && !(Lq >= 65000 && dq >= 85 && otherAtk < 0.12 * Bq)) || otherAtk >= 0.15 * Bq)) ||
++          outOverextended ||
++          emptyAllIn;"""
++
++new_bleeding_def = """        const bleeding =
++          (tD < 0.58 && dq < 45) ||
++          (otherAtkers > 0 &&
++            ((tD < 0.78 && !(Lq >= 65000 && dq >= 85 && otherAtk < 0.12 * Bq)) || otherAtk >= 0.12 * Bq)) ||
++          outOverextended ||
++          emptyAllIn;"""
++assert old_bleeding_def in s, "old_bleeding_def not found"
++s = s.replace(old_bleeding_def, new_bleeding_def, 1)
++
++old_expand_neutral = """  expandNeutral(g, spend) {
++    if (g.t < this.p.dpEnd) return this.dpNeutral(g);
++    if (this.p.nFloor > 0) spend = Math.min(spend, g.bal[this.me] - this.reserve(g, 2));
++    if (this.p.pplK > 0 || this.p.hungryK > 0) spend = Math.min(spend, g.bal[this.me] - this.peopleFloor(g));
++    if (this.p.safeP > 0) spend = Math.min(spend, g.bal[this.me] - this.p.safeP * this.peopleSafe(g));
++    super.expandNeutral(g, spend);
++  }"""
++
++new_expand_neutral = """  expandNeutral(g, spend) {
++    if (g.t < this.p.dpEnd) return this.dpNeutral(g);
++    const B = g.bal[this.me], totB = B + this.myOutTroops(g);
++    const minGrab = Math.min(Math.floor(0.22 * B), Math.max(this.minCmd(g) + 50, 10 * this.neutral + 3000));
++    if (this.p.nFloor > 0) spend = Math.min(spend, totB - this.reserve(g, 2));
++    if (this.p.pplK > 0 || this.p.hungryK > 0) spend = Math.min(spend, totB - this.peopleFloor(g));
++    if (this.p.safeP > 0) spend = Math.min(spend, totB - this.p.safeP * this.peopleSafe(g));
++    spend = Math.min(B, Math.max(spend, minGrab));
++    super.expandNeutral(g, spend);
++  }"""
++assert old_expand_neutral in s, "old_expand_neutral not found"
++s = s.replace(old_expand_neutral, new_expand_neutral, 1)
++
++old_nonperson_buyland = """      const avail = B - fee - keep;
++      if (avail <= 0) continue;
++
++      if (!person) {
++        if (g.t >= 1800 && (this.cnt[q] ?? 0) <= 3 && g.terr[q] < 4000 && fee > 15000) continue;
++        const want = 1.25 * need + 3 * this.cnt[q];
++        if (g.t >= 3000 && humanNbCount >= 1 && g.terr[q] < 8000 && want > 0.10 * B) continue;
++        const x = Math.min(avail, want);
++        if (x <= 0 || (x < want && x < P.chunk * B)) continue;
++        return this.send(g, q, x);
++      }"""
++
++new_nonperson_buyland = """      // Count our own troops currently out on active attacks (`myOutTroops(g)`) as part of our total balance (`totB = B + myOut`)
++      // when computing spare budget (`avail = totB - fee - keep`), AND cap `keep` on prime/juicy land so we NEVER miss prime land!
++      const myOut = this.myOutTroops(g);
++      const totB = B + myOut;
++      const dqNow = g.bal[q] / Math.max(1, g.terr[q]);
++      const isPrimeLand = o.nearCollapse || dqNow < 26 || c < 0.48 * worth || (o.bleeding && o.tD < 0.55);
++      if (isPrimeLand && B >= 12 * L) {
++        keep = Math.min(keep, (o.nearCollapse || dqNow < 14 ? 10 : 26) * L);
++      }
++
++      const avail = Math.min(B - fee, totB - fee - keep);
++      if (avail <= 0) continue;
++
++      if (!person) {
++        if (g.t >= 1800 && (this.cnt[q] ?? 0) <= 3 && g.terr[q] < 4000 && fee > 15000) continue;
++        const want = 1.25 * need + 3 * this.cnt[q];
++        let x = Math.min(avail, want);
++        if (x < want && (c < 0.70 * worth || dqNow < 32)) {
++          x = Math.min(avail, Math.max(this.minCmd(g), Math.floor(0.12 * B)));
++        }
++        if (x <= 0 || (x < want && x < (isPrimeLand ? Math.max(this.minCmd(g), 0.05 * B) : P.chunk * B))) continue;
++        return this.send(g, q, x);
++      }"""
++assert old_nonperson_buyland in s, "old_nonperson_buyland not found"
++s = s.replace(old_nonperson_buyland, new_nonperson_buyland, 1)
++
++old_collapse_pulse = """        if (o.nearCollapse) {
++          if (curAtk >= 0.04 * B || curAtk >= 0.30 * need) continue;
++          const pulse = Math.min(avail, Math.max(Math.floor(P.pulseFrac * B), Math.min(avail, Math.floor(0.30 * need))));
++          if (pulse < Math.max(this.minCmd(g), P.pulseMinShare * B)) continue;
++          return this.send(g, q, pulse);
++        }
++
++        if (o.pulseMode) {
++          if (curAtk >= 0.04 * B) continue;"""
++
++new_collapse_pulse = """        if (o.nearCollapse) {
++          if (curAtk >= 0.16 * B || curAtk >= 0.85 * need) continue;
++          const pulse = Math.min(avail, Math.max(Math.floor(P.pulseFrac * B), Math.min(avail, Math.floor(0.75 * need))));
++          if (pulse < Math.max(this.minCmd(g), P.pulseMinShare * B)) continue;
++          return this.send(g, q, pulse);
++        }
++
++        if (o.pulseMode) {
++          if (curAtk >= (isPrimeLand ? 0.14 * B : 0.04 * B)) continue;"""
++assert old_collapse_pulse in s, "old_collapse_pulse not found"
++s = s.replace(old_collapse_pulse, new_collapse_pulse, 1)
++
++old_buyland_locks = """      const isSoleHealthyBuffer =
++        person && !o.isDoorSea && nHumans >= 3 && !o.nearCollapse && !o.bleeding && !o.onMe && o.newNbs > 0 && humanNbCount === 1;
++      if (isSoleHealthyBuffer && c >= worth && c >= cheap && B < P.overHumanCap * 100 * L) {
++        continue;
++      }
++
++      if (person && !o.isDoorSea && g.terr[q] < 250 && fee > 2 * need && c > 8 * worth && nHumans >= 3) {
++        continue;
++      }
++
++      const hardCapMult = o.isCrowdedHard && c >= 2.15 * worth && g.bal[q] >= 0.55 * B ? 1.50 : P.crowdedHardCap;
++      if (person && !o.isDoorSea && o.isCrowdedHard && c >= worth && c >= cheap && B < hardCapMult * 100 * L) {
++        continue;
++      }"""
++
++new_buyland_locks = """      const isTeamMode = !!(g.teams && g.teams[me] > 0);
++      const isSoleHealthyBuffer =
++        !isTeamMode && person && !o.isDoorSea && nHumans >= 3 && !o.nearCollapse && !o.bleeding && !o.onMe && o.newNbs > 0 && humanNbCount === 1;
++      if (isSoleHealthyBuffer && c >= worth && c >= cheap && B < P.overHumanCap * 100 * L) {
++        continue;
++      }
++
++      if (person && !o.isDoorSea && g.terr[q] < 250 && !o.onMe && fee > 2 * need && c > 8 * worth && nHumans >= 3) {
++        continue;
++      }
++
++      const hardCapMult = isTeamMode ? 1.16 : (o.isCrowdedHard && c >= 2.15 * worth && g.bal[q] >= 0.55 * B ? 1.50 : P.crowdedHardCap);
++      if (person && !o.isDoorSea && o.isCrowdedHard && !o.onMe && c >= worth && c >= cheap && B < hardCapMult * 100 * L) {
++        continue;
++      }"""
++assert old_buyland_locks in s, "old_buyland_locks not found"
++s = s.replace(old_buyland_locks, new_buyland_locks, 1)
+ 
+ # 7. Call tryEmergencyBossRescue, tryPeaceVote, and tryDonateToTeammate in act(g)
+ old_early_act = """    if (g.t < P.coreFrom) {
+       const before = this.cmds;"""
+ 
+-new_early_act = """    if (g.t < P.coreFrom) {
+-      this.analyze(g);
+-      if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
+-        this._lastTickLog = g.t;
+-        const pf = window.__hlPerf;
+-        const pfStr = pf && pf.ticks > 0 ? ` avgMs=${(pf.totalMs / pf.ticks).toFixed(2)} maxMs=${pf.maxMs.toFixed(1)} skip=${pf.skippedTicks}` : "";
+-        window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
++new_early_act = """    if (g.t >= 350 && this.tryInterceptEnemyBoats(g) && g.online) return;
++    if (g.t >= 420 && g.t % 4 === 0 && this.neutral === 0 && this.tryClaimNearTeamIslands(g) && g.online) return;
++    if (g.t < P.coreFrom) {
++      if (g.t >= 600 && g.t % P.period === 0) {
++        this.analyze(g);
++        if (typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t) {
++          this._lastTickLog = g.t;
++          const pf = window.__hlPerf;
++          const pfStr = pf && pf.ticks > 0 ? ` avgMs=${(pf.totalMs / pf.ticks).toFixed(2)} maxMs=${pf.maxMs.toFixed(1)} skip=${pf.skippedTicks}` : "";
++          window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
++        }
++        if (this.tryEmergencyBossRescue(g) && g.online) return;
+       }
+-      if (this.tryEmergencyBossRescue(g) && g.online) return;
+       const before = this.cmds;"""
+ assert old_early_act in s, "old_early_act not found"
+ s = s.replace(old_early_act, new_early_act, 1)
+@@ -665,14 +1171,21 @@ new_main_analyze = """    this.analyze(g);
+       window.__hlLog(`[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}`);
+     }
+     this.tryPeaceVote(g);
+-    if (this.tryEmergencyBossRescue(g) && g.online) return;
+     this.updateGrudges(g);
+-    this.updateWars(g);"""
++    this.updateWars(g);
++    // Prioritize grabbing free neutral land FIRST before any boss donation!
++    if (this.neutral > 0 && g.attackTroopsOn(me, NEUTRAL) === 0) {
++      const beforeN = this.cmds;
++      this.expandNeutral(g, g.bal[me] + this.myOutTroops(g) - this.safeAt(g, -1));
++      if (this.cmds > beforeN && g.online) return;
++    }"""
+ assert old_main_analyze in s, "old_main_analyze not found"
+ s = s.replace(old_main_analyze, new_main_analyze, 1)
+ 
+ old_act_end = """    if (this.cmds === cmdsBefore) this.idleBoats(g);"""
+-new_act_end = """    if (this.cmds === cmdsBefore) this.tryDonateToTeammate(g);
++new_act_end = """    if (this.cmds === cmdsBefore && this.tryClaimNearTeamIslands(g) && g.online) return;
++    if (this.cmds === cmdsBefore && this.tryEmergencyBossRescue(g) && g.online) return;
++    if (this.cmds === cmdsBefore) this.tryDonateToTeammate(g);
+     if (this.cmds === cmdsBefore) this.idleBoats(g);"""
+ assert old_act_end in s, "old_act_end not found"
+ s = s.replace(old_act_end, new_act_end, 1)
+diff --git a/tsb/squad/spawn-coordinator.mjs b/tsb/squad/spawn-coordinator.mjs
+index 9f79172..976be80 100644
+--- a/tsb/squad/spawn-coordinator.mjs
++++ b/tsb/squad/spawn-coordinator.mjs
+@@ -37,6 +37,7 @@ const SQUAD_SHORT_NAMES = new Set([
+   'mishi', 'matzz', 'kiholma', 'leo_99', 'racoon',
+   'zexos', 'talon', 'vortex', 'kronos', 'nexus',
+   '777', 'sayo', 'kaito', 'riku', '_alex', 'tomo', 'zero_2', 'sora',
++  'lucas94', 'dave_w', 'mark07', 'kevin_k', 'ethan21', 'ryan_m', 'noah88', 'leo_tx',
+ ]);
+ 
+ export function normalizePlayerName(raw) {
+@@ -58,7 +59,7 @@ export function isBossNplName(raw) {
+   if (isSquadBotName(norm)) return false;
+   const s = stripClanTag(norm);
+   const low = norm.toLowerCase();
+-  return s === 'npl' || s.includes('npl') || low === '[npl]npl';
++  return s === 'kazerd183' || s.includes('kazerd') || low.includes('kazerd183') || s === 'npl' || s.includes('npl') || low === '[npl]npl';
+ }
+ 
+ function clamp(v, lo, hi) {
+@@ -517,8 +518,9 @@ export class TeamSpawnCoordinator {
+    * of scattering into 5 isolated corners.
+    */
+   findVirtualSquadAnchor(enemies, scales) {
+-    const { W, H, landMask, dComp } = this;
++    const { W, H, landMask, dComp, compSize, maxCompSize } = this;
+     const stride = W * H > 900000 ? 16 : 12;
++    const minAnchorContSize = Math.max(25000, Math.round(0.45 * (maxCompSize || 0)));
+     let bestAnchor = null;
+     let bestScore = -Infinity;
+ 
+@@ -526,11 +528,13 @@ export class TeamSpawnCoordinator {
+       for (let x = 24; x < W - 24; x += stride) {
+         const c = y * W + x;
+         if (!landMask[c]) continue;
++        if (compSize && maxCompSize > 0 && compSize[c] < minAnchorContSize) continue;
+         const clearance = Math.min(dComp[c], 220);
+         if (clearance < 24) continue;
+         const pm = this.computePinchMetrics(x, y, enemies, null, [], scales);
+-        // Prefer safe backstop regions with high clearance from enemies
+-        const sc = clearance * pm.pinchMult * (pm.hasEdgeBackstop ? 1.18 : 1.0);
++        // Prefer safe backstop regions on the largest continent with high clearance from enemies
++        const contBonus = compSize && maxCompSize > 0 ? 0.85 + 0.30 * (compSize[c] / maxCompSize) : 1.0;
++        const sc = clearance * pm.pinchMult * (pm.hasEdgeBackstop ? 1.18 : 1.0) * contBonus;
+         if (sc > bestScore) {
+           bestScore = sc;
+           bestAnchor = { id: -99, x, y, name: 'SQUAD_ANCHOR', isVirtualAnchor: true };
+@@ -821,17 +825,13 @@ export class TeamSpawnCoordinator {
+     //   - First 3.8s of countdown (`isEarlyBullyPhase`): push guard ring 1.24x outward toward nearby enemies
+     //     so enemy humans feel crowded and relocate away from Boss's sector.
+     //   - Final 2.2s (`!isEarlyBullyPhase`): tighten back to the 1.0x optimal shield ring around Boss!
+-    const phaseElapsedMs = this.matchStartMs > 0 ? Date.now() - this.matchStartMs : 9999;
+-    const isEarlyBullyPhase = phaseElapsedMs >= 0 && phaseElapsedMs < 3800;
+-    const bullyMult = isEarlyBullyPhase ? 1.22 : 1.0;
+-
+     const scales = {
+       rCell: Math.round(rCell),
+-      bossExcl: clamp(Math.round(Math.max(1.42 * rCell, 0.105 * diag) * bullyMult), 78, 175),
+-      flankMax: clamp(Math.round(Math.max(2.85 * rCell, 0.230 * diag) * bullyMult), 150, 325),
+-      allyMinSep: clamp(Math.round(Math.max(1.42 * rCell, 0.115 * diag)), 72, 175),
+-      enemyMinClearance: clamp(Math.round((isEarlyBullyPhase ? 0.60 : 0.75) * rCell), 38, 88),
+-      clusterMax: clamp(Math.round(Math.max(4.4 * rCell, 0.42 * diag)), 260, 560),
++      bossExcl: clamp(Math.round(Math.max(1.12 * rCell, 0.078 * diag)), 68, 120),
++      flankMax: clamp(Math.round(Math.max(2.30 * rCell, 0.170 * diag)), 135, 235),
++      allyMinSep: clamp(Math.round(Math.max(1.05 * rCell, 0.075 * diag)), 62, 112),
++      enemyMinClearance: clamp(Math.round(0.70 * rCell), 36, 78),
++      clusterMax: clamp(Math.round(Math.max(3.0 * rCell, 0.25 * diag)), 195, 350),
+     };
+ 
+     // Build initial distance fields with realBoss (if placed)
+@@ -851,28 +851,9 @@ export class TeamSpawnCoordinator {
+       const bc = this.snapToLand(anchorBoss.x, anchorBoss.y, 16);
+       if (bc >= 0) bossCompId = this.compId[bc];
+     }
+-    let spoilerCompId = -1;
+-    if (K >= 6 && this.continents.length >= 2) {
+-      const minMajorContinent = Math.max(45000, Math.round(0.18 * land));
+-      for (const cont of this.continents) {
+-        if (cont.rawId === bossCompId || cont.size < minMajorContinent) continue;
+-        let enemiesOnCont = 0;
+-        let alliesOnCont = 0;
+-        for (const e of enemies) {
+-          const ec = this.snapToLand(e.x, e.y, 12);
+-          if (ec >= 0 && this.compId[ec] === cont.rawId) enemiesOnCont++;
+-        }
+-        for (const a of randomAllies) {
+-          const ac = this.snapToLand(a.x, a.y, 12);
+-          if (ac >= 0 && this.compId[ac] === cont.rawId) alliesOnCont++;
+-        }
+-        if (alliesOnCont <= 1 && enemiesOnCont <= 4 && cont.size / Math.max(1, enemiesOnCont + 1) >= 22000) {
+-          spoilerCompId = cont.rawId;
+-          break;
+-        }
+-      }
+-    }
+-    const targetSpoilerCount = spoilerCompId >= 0 ? 2 : 0;
++    const bossContinentSize = bossCompId >= 0 ? (this.continents.find((c) => c.rawId === bossCompId)?.size || 0) : 0;
++    const spoilerCompId = -1;
++    const targetSpoilerCount = 0;
+ 
+     // Minimum viable landmass size so no bot is ever trapped on Greenland / small islands!
+     const minViableCompSize = Math.min(
+@@ -928,7 +909,7 @@ export class TeamSpawnCoordinator {
+         const reqEnemyClear = scales.enemyMinClearance * Math.max(0.65, relax);
+         // Cohesive cluster constraint: on first two passes (relax >= 0.80), keep ECO_BANK
+         // within clusterMax of our Boss/Squad cluster so no bot is stranded across the map!
+-        const enforceCluster = relax >= 0.80 && (anchorBoss || chosenTargets.length > 0);
++        const enforceCluster = relax >= 0.60 && (anchorBoss || chosenTargets.length > 0);
+         const maxClusterDist = scales.clusterMax * (1.8 - 0.8 * relax);
+ 
+         const stride = W * H > 900000 ? 8 : 6;
+@@ -937,7 +918,12 @@ export class TeamSpawnCoordinator {
+           for (let x = 16; x < W - 16; x += stride) {
+             const c = y * W + x;
+             if (!landMask[c]) continue;
+-            if (relax >= 0.60 && this.compSize[c] < minViableCompSize) continue;
++            // Strictly keep ALL squad bots on Boss's continent whenever Boss is on a viable continent!
++            if (bossCompId >= 0 && bossContinentSize >= 15000 && relax >= 0.55) {
++              if (this.compId[c] !== bossCompId) continue;
++            } else if (relax >= 0.60 && this.compSize[c] < minViableCompSize) {
++              continue;
++            }
+             if (distToChosenSquad(x, y) < reqAllySep) continue;
+             if (distToEnemies(x, y) < reqEnemyClear) continue;
+ 
+@@ -966,14 +952,16 @@ export class TeamSpawnCoordinator {
+               }
+               if (sectorConflict) continue;
+             } else if (enforceCluster) {
+-              // Keep outer wing connected to the same continent/sector as our squad cluster
++              // Keep outer wing connected to the same continent & geodesic distance from Boss
+               if (distToOurCluster(x, y) > maxClusterDist) continue;
+-              if (anchorBoss && this.dBoss[c] < 0 && relax >= 0.95) continue;
++              if (anchorBoss && (this.dBoss[c] < 0 || this.dBoss[c] > maxClusterDist * 1.35) && relax >= 0.60) continue;
+             }
+ 
+             const clearance = Math.min(dComp[c], 220);
+             if (clearance < 12 * relax) continue;
+-            rawSeeds.push({ c, x, y, clearance, bDist });
++            const geoD = this.dBoss[c] >= 0 ? this.dBoss[c] : bDist;
++            const seedPri = clearance - (anchorBoss ? Math.max(0, geoD - 150) * 0.32 : 0);
++            rawSeeds.push({ c, x, y, clearance, bDist, seedPri });
+           }
+         }
+ 
+@@ -982,7 +970,7 @@ export class TeamSpawnCoordinator {
+           continue;
+         }
+ 
+-        rawSeeds.sort((a, b) => b.clearance - a.clearance);
++        rawSeeds.sort((a, b) => b.seedPri - a.seedPri);
+         const diverseSeeds = [];
+         const seedGap = Math.max(24, Math.round(0.40 * scales.allyMinSep));
+         for (const item of rawSeeds) {
+@@ -1052,16 +1040,19 @@ export class TeamSpawnCoordinator {
+         picked = pickNextTarget('ECO_BANK');
+       }
+       if (!picked) {
+-        let bestC = -1, bestMinD = -1;
++        let bestC = -1, bestScore = -Infinity;
+         for (let y = 16; y < H - 16; y += 6) {
+           for (let x = 16; x < W - 16; x += 6) {
+             const c = y * W + x;
+             if (!landMask[c]) continue;
++            if (bossCompId >= 0 && bossContinentSize >= 15000 && this.compId[c] !== bossCompId) continue;
+             const dA = distToChosenSquad(x, y);
+-            const dB = realBoss ? Math.hypot(x - realBoss.x, y - realBoss.y) : 999999;
+-            const dMin = Math.min(dA, dB);
+-            if (dMin > bestMinD) {
+-              bestMinD = dMin;
++            if (dA < 48) continue;
++            const dClust = distToOurCluster(x, y);
++            const eClear = Math.min(distToEnemies(x, y), 180);
++            const sc = eClear * 2.0 + Math.min(dA, 140) - Math.max(0, dClust - 220) * 1.5;
++            if (sc > bestScore) {
++              bestScore = sc;
+               bestC = c;
+             }
+           }
+diff --git a/tsb/squad/tsb-team-squad.mjs b/tsb/squad/tsb-team-squad.mjs
+index 0b06132..3d053e6 100644
+--- a/tsb/squad/tsb-team-squad.mjs
++++ b/tsb/squad/tsb-team-squad.mjs
+@@ -1,32 +1,75 @@
+ import fs from 'node:fs';
++import path from 'node:path';
+ import http from 'node:http';
++import net from 'node:net';
++import { fileURLToPath } from 'node:url';
+ import { createHeadlessBot } from './headless-bot.mjs';
+ import { TeamSpawnCoordinator } from './spawn-coordinator.mjs';
+ 
+-const pageJsSource = fs.readFileSync('/tmp/tsb-team-ext/page.js', 'utf8');
+-const getV27TeamSource = () => fs.readFileSync('/tmp/v27-team-live.js', 'utf8');
++const __dirname = path.dirname(fileURLToPath(import.meta.url));
++function resolveAssetPath(localName, tmpFallback) {
++  const localPath = path.join(__dirname, localName);
++  if (fs.existsSync(localPath)) return localPath;
++  return tmpFallback;
++}
++
++function rotateSocksSession(socksPort) {
++  return new Promise((resolve) => {
++    if (!socksPort) return resolve(false);
++    const sock = net.connect(socksPort, '127.0.0.1');
++    let stage = 0;
++    let buf = Buffer.alloc(0);
++    const done = (ok) => {
++      try { sock.destroy(); } catch {}
++      resolve(ok);
++    };
++    const timer = setTimeout(() => done(false), 2000);
++    sock.on('error', () => { clearTimeout(timer); done(false); });
++    sock.on('connect', () => sock.write(Buffer.from([0x05, 0x01, 0x00])));
++    sock.on('data', (chunk) => {
++      buf = Buffer.concat([buf, chunk]);
++      if (stage === 0 && buf.length >= 2) {
++        buf = buf.subarray(2);
++        stage = 1;
++        const hb = Buffer.from('rotate.proxy.local', 'utf8');
++        const req = Buffer.alloc(4 + 1 + hb.length + 2);
++        req[0] = 0x05; req[1] = 0x01; req[2] = 0x00; req[3] = 0x03;
++        req[4] = hb.length;
++        hb.copy(req, 5);
++        req.writeUInt16BE(80, 5 + hb.length);
++        sock.write(req);
++      } else if (stage === 1 && buf.length >= 10) {
++        clearTimeout(timer);
++        done(buf[1] === 0x00);
++      }
++    });
++  });
++}
++
++const pageJsSource = fs.readFileSync(resolveAssetPath('page.js', '/tmp/tsb-team-ext/page.js'), 'utf8');
++const getV27TeamSource = () => fs.readFileSync(resolveAssetPath('v27-team-live.js', '/tmp/v27-team-live.js'), 'utf8');
+ 
+ const CHROME_BOTS = [
+-  { port: 9223, name: '[NPL] 777', slot: 0, id: 'mTd7B', pw: 'vivELD0lOKgghLr' },
+-  { port: 9224, name: '[NPL] Sayo', slot: 1, id: 'vgLjn', pw: 'Cl2xSE00tjOjVBq' },
+-  { port: 9225, name: '[NPL] Kaito', slot: 2, id: 'NJmJY', pw: 'zmUT69zzi_Rk80I' },
+-  { port: 9226, name: '[NPL] Riku', slot: 3, id: 'byk85', pw: 'iLFHoRHz4rHvEt0' },
+-  { port: 9227, name: '[NPL] _alex', slot: 4, id: '5nvnY', pw: 'DzMzg9vRC1Qnj3z' },
++  { port: 9223, name: '[Nope] lucas94', slot: 0, id: 'w7V8j', pw: 'M9IzNEQ6E0GLYyH' },
++  { port: 9224, name: '[Nope] dave_w', slot: 1, id: 'Wgg7N', pw: 'uYomek27OY-ndDJ' },
++  { port: 9225, name: '[Nope] mark07', slot: 2, id: 'YQqLM', pw: 'ZerbXEIzTfnv_gk' },
++  { port: 9226, name: '[Nope] kevin_k', slot: 3, id: 'CjQcL', pw: 'bCevZwzI-d7xXea' },
++  { port: 9227, name: '[Nope] ethan21', slot: 4, id: 'cbtQj', pw: 'Y0cUCnzmkwaeP2g' },
+ ];
+ 
+ const HEADLESS_BOTS = [
+-  { port: 9302, socksPort: 10803, donorChromePort: 9225, name: '[NPL] Kaito', slot: 2, id: 'NJmJY', pw: 'zmUT69zzi_Rk80I' },
+-  { port: 9303, socksPort: 10804, donorChromePort: 9226, name: '[NPL] Riku', slot: 3, id: 'byk85', pw: 'iLFHoRHz4rHvEt0' },
+-  { port: 9304, socksPort: 10805, donorChromePort: 9227, name: '[NPL] _alex', slot: 4, id: '5nvnY', pw: 'DzMzg9vRC1Qnj3z' },
+-  { port: 9305, socksPort: 10811, donorChromePort: 9223, name: '[NPL] 777', slot: 5, id: 'JwG5J', pw: 'ASEvJoo4K862kll' },
+-  { port: 9306, socksPort: 10812, donorChromePort: 9224, name: '[NPL] Sayo', slot: 6, id: 'QNNy7', pw: 'UpqFcPh3MHISdPg' },
+-  { port: 9307, socksPort: 10813, donorChromePort: 9225, name: '[NPL] Tomo', slot: 7, id: 'QcNb5', pw: 'oqHseyPLOB_VYfT' },
+-  { port: 9308, socksPort: 10814, donorChromePort: 9226, name: '[NPL] Zero_2', slot: 8, id: 'BRmym', pw: 'IAn4Vw-8_6_VhgK' },
+-  { port: 9309, socksPort: 10815, donorChromePort: 9227, name: '[NPL] Sora', slot: 9, id: 'qQGqw', pw: 'kh_nhYj46nGU6R3' },
++  { port: 9302, socksPort: 10803, donorChromePort: 9225, name: '[Nope] mark07', slot: 2, id: '', pw: '' },
++  { port: 9303, socksPort: 10804, donorChromePort: 9225, name: '[Nope] kevin_k', slot: 3, id: '', pw: '' },
++  { port: 9304, socksPort: 10805, donorChromePort: 9225, name: '[Nope] ethan21', slot: 4, id: '', pw: '' },
++  { port: 9305, socksPort: 10811, donorChromePort: 9225, name: '[Nope] lucas94', slot: 5, id: '', pw: '' },
++  { port: 9306, socksPort: 10812, donorChromePort: 9225, name: '[Nope] dave_w', slot: 6, id: '', pw: '' },
++  { port: 9307, socksPort: 10813, donorChromePort: 9225, name: '[Nope] ryan_m', slot: 7, id: '', pw: '' },
++  { port: 9308, socksPort: 10814, donorChromePort: 9225, name: '[Nope] noah88', slot: 8, id: '', pw: '' },
++  { port: 9309, socksPort: 10815, donorChromePort: 9225, name: '[Nope] leo_tx', slot: 9, id: '', pw: '' },
+ ];
+ 
+-const isWaitNplMode = () => fs.existsSync('/tmp/tsb-wait-npl.flag');
+-const isHeadlessOnlyMode = () => !fs.existsSync('/tmp/tsb-enable-chrome-play.flag');
++const isWaitNplMode = () => fs.existsSync(path.join(__dirname, 'tsb-wait-npl.flag')) || fs.existsSync('/tmp/tsb-wait-npl.flag');
++const isHeadlessOnlyMode = () => !(fs.existsSync(path.join(__dirname, 'tsb-enable-chrome-play.flag')) || fs.existsSync('/tmp/tsb-enable-chrome-play.flag'));
+ 
+ function postSpectatorIngest(payload, onReply = null) {
+   try {
+@@ -84,7 +127,7 @@ if (!window.__tsbPageInjected) {
+   window.__tsbPlayerName = ${JSON.stringify(bot.name)};
+   window.__tsbPlayerColor = 4095;
+   window.__tsbSquadSlot = ${bot.slot};
+-  window.__tsbFollowLeader = "npl";
++  window.__tsbFollowLeader = "kazerd183";
+   window.__tsbWaitForLeader = true;
+   window.__tsbSquadSyncHold = true;
+   window.__hlSpawnReq = (payload) => {
+@@ -140,7 +183,8 @@ function recordResult(name, port, rawPayload) {
+     const data = typeof rawPayload === 'string' ? JSON.parse(rawPayload) : rawPayload;
+     if (data && data.type === 'result') {
+       const line = JSON.stringify({ bot: name, port, ...data });
+-      fs.appendFileSync('/tmp/tsb-team-results.jsonl', line + '\n');
++      const resFile = fs.existsSync(__dirname) ? path.join(__dirname, 'tsb-team-results.jsonl') : '/tmp/tsb-team-results.jsonl';
++      fs.appendFileSync(resFile, line + '\n');
+       console.log(`[RESULT ${name}] result=${data.result} event=${data.event} place=${data.place} peak=${data.peak} team=${JSON.stringify(data.team || null)}`);
+     }
+   } catch {}
+@@ -148,8 +192,13 @@ function recordResult(name, port, rawPayload) {
+ 
+ async function attachChromeBot(bot) {
+   const { port, name, slot } = bot;
+-  const pages = await getJson(`http://127.0.0.1:${port}/json`);
+-  const page = pages.find((p) => p.type === 'page' && p.url.includes('territorial.io'));
++  let pages;
++  try {
++    pages = await getJson(`http://127.0.0.1:${port}/json`);
++  } catch {
++    return null;
++  }
++  const page = Array.isArray(pages) ? pages.find((p) => p.type === 'page' && p.url.includes('territorial.io')) : null;
+   if (!page) {
+     console.error(`[${name}] No territorial.io tab on port ${port}`);
+     return null;
+@@ -257,6 +306,23 @@ async function attachChromeBot(bot) {
+   }
+ 
+   async function importStrategy() {
++    if (isHeadlessOnlyMode()) {
++      await evalJs(`(() => {
++        const d = window.dictionary;
++        const g = d && window[d.game];
++        if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true);
++        if (typeof b1 === "object" && b1?.z?.close) b1.z.close(1, 3252);
++        const ext = window.__fx?.strategyBotExtension;
++        if (ext) {
++          ext.settings.armed = false;
++          if (ext.remote?.state) ext.remote.state.loop = null;
++        }
++        window.__tsbSquadSyncHold = true;
++      })()`);
++      client.freshToken = true;
++      console.log(`[${name}] Donor Chrome on :${port} ready for Turnstile minting (lobby/game disabled)!`);
++      return;
++    }
+     const src = getV27TeamSource();
+     await evalJs(
+       `(async () => {
+@@ -306,20 +372,46 @@ async function attachChromeBot(bot) {
+           } catch {}
+         });
+       }
++      localStorage.setItem("d105", ${JSON.stringify(bot.id)});
++      localStorage.setItem("d106", ${JSON.stringify(bot.pw)});
++      localStorage.setItem("v105", "0");
++      localStorage.setItem("v106", "0");
+       localStorage.setItem("d122", ${JSON.stringify(name)});
+       localStorage.setItem("v122", "0");
+       localStorage.setItem("d121", "4095");
+       localStorage.setItem("v121", "0");
++      if (typeof bm === "object" && bm?.qo?.qp) {
++        bm.qo.qp(105, ${JSON.stringify(bot.id)});
++        bm.qo.qp(106, ${JSON.stringify(bot.pw)});
++        bm.qo.qp(122, ${JSON.stringify(name)});
++      }
+       window.__tsbPlayerName = ${JSON.stringify(name)};
+       window.__tsbPlayerColor = 4095;
+       window.__tsbSquadSlot = ${slot};
+       return "YES";
+     })()`);
+-    if (alreadyPatched === 'YES') {
++    if (alreadyPatched === 'YES' && !isHeadlessOnlyMode()) {
+       await importStrategy();
+       console.log(`[${name}] Hot-attached without Page.reload (existing Turnstile session preserved)!`);
+       return;
+     }
++    if (alreadyPatched === 'YES' && isHeadlessOnlyMode()) {
++      await evalJs(`(() => {
++        const d = window.dictionary;
++        const g = d && window[d.game];
++        if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true);
++        if (typeof b1 === "object" && b1?.z?.close) b1.z.close(1, 3252);
++        const ext = window.__fx?.strategyBotExtension;
++        if (ext) {
++          ext.settings.armed = false;
++          if (ext.remote?.state) ext.remote.state.loop = null;
++        }
++        window.__tsbSquadSyncHold = true;
++      })()`);
++      client.freshToken = true;
++      console.log(`[${name}] Donor Chrome on :${port} silenced (left lobby so Headless workers own the room)!`);
++      return;
++    }
+     client.lastReloadAt = Date.now();
+     client.freshToken = false;
+     client.enteredLobbyAt = 0;
+@@ -377,71 +469,85 @@ let activeStreamKey = null;
+ 
+ async function mintViaDonorChrome(donorPort) {
+   for (let w = 0; w < 20; w++) {
+-    const d = clients.find((c) => !c.isHeadless && c.port === donorPort);
+-    if (d && d.freshToken) break;
++    const d = clients.find((c) => !c.isHeadless && c.port === donorPort && c.freshToken) ||
++              clients.find((c) => !c.isHeadless && c.freshToken);
++    if (d) break;
+     await new Promise((r) => setTimeout(r, 1000));
+   }
+-  const donor = clients.find((c) => !c.isHeadless && c.port === donorPort);
+-  if (!donor) throw new Error(`No donor Chrome on ${donorPort}`);
+-  if (isHeadlessOnlyMode()) {
++  const preferred = clients.find((c) => !c.isHeadless && c.port === donorPort);
++  const donors = [
++    ...(preferred ? [preferred] : []),
++    ...clients.filter((c) => !c.isHeadless && c !== preferred),
++  ];
++  if (donors.length === 0) throw new Error(`No donor Chrome on ${donorPort}`);
++  const donor = donors[0];
++  const runMint = async () => {
++    if (isHeadlessOnlyMode()) {
++      await donor.evalJs(`(() => {
++        const d = window.dictionary;
++        const g = d && window[d.game];
++        if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true);
++        if (typeof b1 === "object" && b1?.z?.close) b1.z.close(1, 3252);
++        const ext = window.__fx?.strategyBotExtension;
++        if (ext) {
++          ext.settings.armed = false;
++          if (ext.remote?.state) ext.remote.state.loop = null;
++        }
++        window.__tsbSquadSyncHold = true;
++      })()`);
++    }
+     await donor.evalJs(`(() => {
+-      const d = window.dictionary;
+-      const g = d && window[d.game];
+-      if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true);
+-      const ext = window.__fx?.strategyBotExtension;
+-      if (ext) {
+-        ext.settings.armed = false;
+-        if (ext.remote?.state) ext.remote.state.loop = null;
+-      }
+-      window.__tsbSquadSyncHold = true;
++      window.__mintedToken = null;
++      const old = document.getElementById("mint-ts");
++      if (old) old.remove();
++      const d = document.createElement("div");
++      d.id = "mint-ts";
++      d.style.position = "fixed";
++      d.style.left = "0";
++      d.style.top = "0";
++      d.style.zIndex = "100";
++      document.body.appendChild(d);
++      const wid = window.turnstile.render(d, {
++        sitekey: "0x4AAAAAAEI8HZoG8nJMzxt1",
++        action: "enter_lobby",
++        appearance: "interaction-only",
++        callback: (tok) => {
++          window.__mintedToken = tok;
++          try { window.turnstile.remove(wid); d.remove(); } catch {}
++        }
++      });
++      return "RENDERED";
+     })()`);
+-  }
+-  await donor.evalJs(`(() => {
+-    window.__mintedToken = null;
+-    const old = document.getElementById("mint-ts");
+-    if (old) old.remove();
+-    const d = document.createElement("div");
+-    d.id = "mint-ts";
+-    d.style.position = "fixed";
+-    d.style.left = "0";
+-    d.style.top = "0";
+-    d.style.zIndex = "100";
+-    document.body.appendChild(d);
+-    const wid = window.turnstile.render(d, {
+-      sitekey: "0x4AAAAAAEI8HZoG8nJMzxt1",
+-      action: "enter_lobby",
+-      appearance: "interaction-only",
+-      callback: (tok) => {
+-        window.__mintedToken = tok;
+-        try { window.turnstile.remove(wid); d.remove(); } catch {}
++    for (let i = 0; i < 12; i++) {
++      await new Promise((r) => setTimeout(r, 700));
++      const tok0 = await donor.evalJs('window.__mintedToken || ""');
++      if (tok0 && typeof tok0 === 'string' && tok0.length > 100) return tok0;
++      const tok = await withWindowFocus(async () => {
++        const pre = await donor.evalJs('window.__mintedToken || ""');
++        if (pre && typeof pre === 'string' && pre.length > 100) return pre;
++        if (process.platform !== 'win32') {
++          donor.send('Page.bringToFront');
++        }
++        donor.send('Emulation.setFocusEmulationEnabled', { enabled: true });
++        donor.send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 180, y: 180 });
++        await new Promise((r) => setTimeout(r, 110));
++        donor.send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 28, y: 32 });
++        await new Promise((r) => setTimeout(r, 110));
++        donor.send('Input.dispatchMouseEvent', { type: 'mousePressed', x: 28, y: 32, button: 'left', clickCount: 1 });
++        await new Promise((r) => setTimeout(r, 80));
++        donor.send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: 28, y: 32, button: 'left', clickCount: 1 });
++        await new Promise((r) => setTimeout(r, 250));
++        return await donor.evalJs('window.__mintedToken || ""');
++      });
++      if (tok && typeof tok === 'string' && tok.length > 100) {
++        return tok;
+       }
+-    });
+-    return "RENDERED";
+-  })()`);
+-  for (let i = 0; i < 12; i++) {
+-    await new Promise((r) => setTimeout(r, 700));
+-    const tok0 = await donor.evalJs('window.__mintedToken || ""');
+-    if (tok0 && typeof tok0 === 'string' && tok0.length > 100) return tok0;
+-    const tok = await withWindowFocus(async () => {
+-      const pre = await donor.evalJs('window.__mintedToken || ""');
+-      if (pre && typeof pre === 'string' && pre.length > 100) return pre;
+-      donor.send('Page.bringToFront');
+-      donor.send('Emulation.setFocusEmulationEnabled', { enabled: true });
+-      donor.send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 180, y: 180 });
+-      await new Promise((r) => setTimeout(r, 110));
+-      donor.send('Input.dispatchMouseEvent', { type: 'mouseMoved', x: 28, y: 32 });
+-      await new Promise((r) => setTimeout(r, 110));
+-      donor.send('Input.dispatchMouseEvent', { type: 'mousePressed', x: 28, y: 32, button: 'left', clickCount: 1 });
+-      await new Promise((r) => setTimeout(r, 80));
+-      donor.send('Input.dispatchMouseEvent', { type: 'mouseReleased', x: 28, y: 32, button: 'left', clickCount: 1 });
+-      await new Promise((r) => setTimeout(r, 250));
+-      return await donor.evalJs('window.__mintedToken || ""');
+-    });
+-    if (tok && typeof tok === 'string' && tok.length > 100) {
+-      return tok;
+     }
+-  }
+-  throw new Error('mint timeout');
++    throw new Error('mint timeout');
++  };
++  const next = (donor._mintChain || Promise.resolve()).then(runMint, runMint);
++  donor._mintChain = next.catch(() => {});
++  return next;
+ }
+ 
+ // Centralized Backend Spawn Coordinator (TeamSpawnCoordinator):
+@@ -653,6 +759,7 @@ setInterval(async () => {
+           g[d.sbLeave](true);
+         }
+         let room0Players = 0;
++        let room0NopeCount = 0;
+         let bossReadyInRoom0 = false;
+         const lob = ext?.remote?.lobby;
+         const mgr = lob?.mgr || (d && d.lobbyManager && window[d.lobbyManager]);
+@@ -681,6 +788,8 @@ setInterval(async () => {
+             const readyCount = vi && typeof vi[0] === "number" ? (vi[0] | 0) : 0;
+             for (let idx = 0; idx < list.length; idx++) {
+               const p = list[idx];
++              const disp = String((p && p.username) || "").trim();
++              if (disp.toLowerCase().includes("[nope]")) room0NopeCount++;
+               const raw = String((p && (p.aFN || p.username || p.name)) || "").trim();
+               const low = raw.toLowerCase();
+               if (
+@@ -689,18 +798,38 @@ setInterval(async () => {
+                 low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus") ||
+                 low.includes("777") || low.includes("sayo") || low.includes("kaito") ||
+                 low.includes("riku") || low.includes("_alex") || low.includes("tomo") ||
+-                low.includes("zero_2") || low.includes("sora")
++                low.includes("zero_2") || low.includes("sora") ||
++                low.includes("lucas94") || low.includes("dave_w") || low.includes("mark07") ||
++                low.includes("kevin_k") || low.includes("ethan21") || low.includes("ryan_m") ||
++                low.includes("noah88") || low.includes("leo_tx")
+               ) continue;
+               const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
+-              if (stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
++              if (stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
+                 if (idx < readyCount) bossReadyInRoom0 = true;
+               }
+             }
+           }
+         }
++        const myLobbyUsername = typeof bq === "object" && bq?.aF0 ? bq.aF0.username : null;
++        if (myLobbyUsername && (myLobbyUsername.startsWith("Player ") || myLobbyUsername.includes("Redacted")) && typeof b1 === "object" && b1?.eg?.eh && b1?.z?.ef?.(0)) {
++          if (!window.__lastNameVerifyAsk || Date.now() - window.__lastNameVerifyAsk > 3000) {
++            window.__lastNameVerifyAsk = Date.now();
++            try { b1.eg.eh(5); } catch {}
++          }
++        }
++        const myAccId = typeof bm === "object" && bm?.buffer?.data?.[105] ? bm.buffer.data[105].value : null;
+         const teams = d && window[d.sbTeamHolder]?.[d.sbTeams];
+         const me = g && g[d.playerId];
++        if ((!g || g[d.gameState] === 0) && typeof bq === "object" && bq?.f6 === 1 && typeof b1 === "object" && b1?.z?.ef?.(1)) {
++          s.lobby = s.lobby || {};
++          s.lobby.inLobby = true;
++          s.lobby.room = bq?.z?.tM?.[0] ?? 0;
++          s.lobby.ready = !!(bq?.z?.tM?.[3]);
++        }
+         s.ok = true;
++        s.myLobbyUsername = myLobbyUsername;
++        s.myAccId = myAccId;
++        s.room0NopeCount = typeof room0NopeCount === "number" ? room0NopeCount : 0;
+         s.room0Players = room0Players;
+         s.bossReadyInRoom0 = bossReadyInRoom0;
+         s.spawnPhase = !!info?.spawnPhase;
+@@ -751,10 +880,13 @@ setInterval(async () => {
+                 low.includes("talon") || low.includes("vortex") || low.includes("kronos") || low.includes("nexus") ||
+                 low.includes("777") || low.includes("sayo") || low.includes("kaito") ||
+                 low.includes("riku") || low.includes("_alex") || low.includes("tomo") ||
+-                low.includes("zero_2") || low.includes("sora")
++                low.includes("zero_2") || low.includes("sora") ||
++                low.includes("lucas94") || low.includes("dave_w") || low.includes("mark07") ||
++                low.includes("kevin_k") || low.includes("ethan21") || low.includes("ryan_m") ||
++                low.includes("noah88") || low.includes("leo_tx")
+               ) continue;
+               const stripped = raw.replace(/\[[^\]]*\]/g, "").trim().toLowerCase();
+-              if (stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
++              if (stripped === "kazerd183" || stripped.includes("kazerd") || low.includes("kazerd183") || stripped === "npl" || stripped.includes("npl") || low === "[npl]npl") {
+                 bossIdx = p;
+                 break;
+               }
+@@ -798,6 +930,9 @@ setInterval(async () => {
+         port: c.port,
+         slot: c.slot,
+         name: c.name,
++        myLobbyUsername: s.myLobbyUsername || null,
++        myAccId: s.myAccId || null,
++        room0NopeCount: s.room0NopeCount || 0,
+         meId: s.meId ?? -1,
+         inGame: !!s.inGame,
+         standby: isStandby,
+@@ -835,7 +970,7 @@ setInterval(async () => {
+       clients[idx].enteredLobbyAt = 0;
+     } else {
+       if (clients[idx].wasInGame) {
+-        clients[idx].freshToken = false;
++        // Turnstile verification in territorial.io (eU: ew=60min) is valid for 1 full hour per (account, lobbyServer)!
+         clients[idx].lastReloadAt = 0;
+       }
+       clients[idx].wasInGame = false;
+@@ -848,11 +983,52 @@ setInterval(async () => {
+           if (ext.remote.lobby) ext.remote.lobby.stopped = null;
+         }
+       })()`);
+-      if (s.lobby.stopped.includes('4591') || s.lobby.stopped.includes('4577') || s.lobby.stopped.includes('4215')) {
++      if (s.lobby.stopped.includes('4591') || s.lobby.stopped.includes('4577') || s.lobby.stopped.includes('4215') || s.lobby.stopped.includes('1006')) {
+         clients[idx].freshToken = false;
+         clients[idx].enteredLobbyAt = 0;
+       }
+     }
++    // Self-check each bot's own display username in Room 0 (#6694):
++    // Detect account-level or IP-level "Redacted XX" and auto-rotate account & re-enter!
++    const c = clients[idx];
++    if ((c.isHeadless || !headlessOnly) && s.lobby?.inLobby && s.lobby?.room === 0 && s.myLobbyUsername) {
++      if (s.myLobbyUsername.includes('Redacted')) {
++        if (!c.redactedDetectedAt) c.redactedDetectedAt = now;
++        if (now - c.redactedDetectedAt >= 20000) {
++          console.log(`[SELF-CHECK REDACTED] ${c.name} still "${s.myLobbyUsername}" (acc=${s.myAccId}) after 20s in Room 0 -> rotating sticky proxy IP & fresh account & re-entering!`);
++          c.redactedDetectedAt = 0;
++          c.lastVerifiedLobbyName = null;
++          c.freshToken = false;
++          c.enteredLobbyAt = 0;
++          rotateSocksSession(c.socksPort).then(() => {
++            c.evalJs(`(() => {
++              localStorage.setItem("d105", "");
++              localStorage.setItem("d106", "");
++              localStorage.setItem("v105", "0");
++              localStorage.setItem("v106", "0");
++              if (typeof bm === "object" && bm?.qo?.qp) {
++                bm.qo.qp(105, "");
++                bm.qo.qp(106, "");
++              }
++              if (typeof b1 === "object" && b1?.z?.close) {
++                b1.z.close(1, 3252);
++                b1.z.close(0, 3253);
++                if (typeof b1.z.aIR === "function") b1.z.aIR(0, 18, 0);
++              }
++            })()`);
++          });
++        }
++      } else if (s.myLobbyUsername.startsWith('[Nope]')) {
++        c.redactedDetectedAt = 0;
++        if (c.lastVerifiedLobbyName !== s.myLobbyUsername) {
++          c.lastVerifiedLobbyName = s.myLobbyUsername;
++          console.log(`[SELF-CHECK OK] ${c.name} verified in Room 0 as "${s.myLobbyUsername}" (acc=${s.myAccId}, room0NopeCount=${s.room0NopeCount})`);
++        }
++      }
++    } else if (!s.lobby?.inLobby) {
++      c.redactedDetectedAt = 0;
++      c.lastVerifiedLobbyName = null;
++    }
+   });
+ 
+   // In Boss-Guard waitMode: ANY individual bot in a match where Boss [NPL] npl is NOT present or has QUIT (playerStates[bossId] === 2)
+@@ -861,10 +1037,9 @@ setInterval(async () => {
+     for (let i = 0; i < clients.length; i++) {
+       const s = states[i];
+       if (s?.inGame && !s.bossActiveInGame) {
+-        console.log(`[BOSS-SYNC] ${clients[i].name} is in a match without active Boss [NPL] npl (bossId=${s.bossId ?? -1}) -> leaving immediately to rejoin Lobby!`);
++        console.log(`[BOSS-SYNC] ${clients[i].name} is in a match without active Boss [Nope]kazerd183 (bossId=${s.bossId ?? -1}) -> leaving immediately to rejoin Lobby!`);
+         s.inGame = false;
+         clients[i].wasInGame = false;
+-        clients[i].freshToken = false;
+         clients[i].lastReloadAt = 0;
+         clients[i].evalJs(`(() => {
+           window.__tsbSquadSyncHold = true;
+@@ -876,6 +1051,26 @@ setInterval(async () => {
+     }
+   }
+ 
++  // Hot-import updated strategy file immediately even while bots are in-game!
++  const srcHashNow = getV27TeamSource().length;
++  for (const c of clients) {
++    if (!c.isHeadless && headlessOnly) continue;
++    if (c.lastStrategyLen && c.lastStrategyLen !== srcHashNow) {
++      c.lastStrategyLen = srcHashNow;
++      const newSrc = getV27TeamSource();
++      c.evalJs(`(async () => {
++        const ext = window.__fx?.strategyBotExtension;
++        if (ext) {
++          const sid = await ext.strategies.add({ name: "v27team.js", text: async () => ${JSON.stringify(newSrc)} });
++          const targetSid = sid || "file:v27team";
++          ext.settings.strategy = targetSid;
++          if (ext.strategies.changed) ext.strategies.changed(targetSid);
++        }
++      })()`, true);
++      console.log(`[HOT-IMPORT] Injected updated v27team.js (${srcHashNow} bytes) into ${c.name} live!`);
++    }
++  }
++
+   // Never reload or re-open lobby while ANY bot has meaningful territory (> 80 px) or is in opening (< 30s)
+   const anyMeaningfulAlive = states.some(
+     (s, idx) =>
+@@ -911,7 +1106,6 @@ setInterval(async () => {
+   for (let i = 0; i < clients.length; i++) {
+     if (states[i]?.inGame) {
+       clients[i].wasInGame = false;
+-      clients[i].freshToken = false;
+       clients[i].lastReloadAt = 0;
+       clients[i].evalJs(`(() => {
+         window.__tsbSquadSyncHold = true;
+@@ -934,7 +1128,7 @@ setInterval(async () => {
+   const allReadyInRoom0 =
+     timerSpreadOk &&
+     (headlessOnly
+-      ? (headlessInRoom0 === HEADLESS_BOTS.length || (headlessInRoom0 >= HEADLESS_BOTS.length - 1 && minStartsIn <= 8))
++      ? (headlessInRoom0 >= HEADLESS_BOTS.length - 1 || (headlessInRoom0 >= 5 && minStartsIn <= 14))
+       : wantTenForCurrentLobby
+         ? (readyCountInRoom0 === 10 || (readyCountInRoom0 >= 8 && minStartsIn <= 8))
+         : (chromeInRoom0 === 5 || (chromeInRoom0 >= 4 && minStartsIn <= 8)));
+@@ -953,7 +1147,7 @@ setInterval(async () => {
+         window.__tsbPlayerName = ${JSON.stringify(c.name)};
+         window.__tsbPlayerColor = 4095;
+         window.__tsbSquadSlot = ${c.slot};
+-        window.__tsbFollowLeader = ${allowReady ? JSON.stringify('') : JSON.stringify('npl')};
++        window.__tsbFollowLeader = ${allowReady ? JSON.stringify('') : JSON.stringify('kazerd183')};
+         window.__tsbWaitForLeader = ${allowReady ? 'false' : 'true'};
+         const ext = window.__fx?.strategyBotExtension;
+         if (ext) {
+@@ -967,8 +1161,19 @@ setInterval(async () => {
+           ext.remote.state.loop = "team";
+           const snap = ext.remote.snapshot?.();
+           if (snap?.lobby?.inLobby && !snap.lobby.ready && ${allowReady ? 'true' : 'false'}) {
+-            document.dispatchEvent(new KeyboardEvent("keyup", { code: "Enter", key: "Enter", bubbles: true, cancelable: true }));
++            if (!window.__readyJitterScheduled) {
++              window.__readyJitterScheduled = true;
++              const delayMs = 450 + ((${c.slot} * 380) % 2400) + Math.floor(Math.random() * 850);
++              setTimeout(() => {
++                window.__readyJitterScheduled = false;
++                const s2 = window.__fx?.strategyBotExtension?.remote?.snapshot?.();
++                if (s2?.lobby?.inLobby && !s2.lobby.ready && !window.__tsbWaitForLeader) {
++                  document.dispatchEvent(new KeyboardEvent("keyup", { code: "Enter", key: "Enter", bubbles: true, cancelable: true }));
++                }
++              }, delayMs);
++            }
+           } else if (snap?.lobby?.inLobby && snap.lobby.ready && !${allowReady ? 'true' : 'false'} && !${waitMode ? 'true' : 'false'}) {
++            window.__readyJitterScheduled = false;
+             document.dispatchEvent(new KeyboardEvent("keyup", { code: "Escape", key: "Escape", bubbles: true, cancelable: true }));
+           }
+         }
+@@ -1012,21 +1217,29 @@ setInterval(async () => {
+     for (let i = 0; i < readyToEnter.length; i++) {
+       const c = readyToEnter[i];
+       c.enteredLobbyAt = now;
++      const enterJitterMs = i * 520 + Math.floor(Math.random() * 680);
+       setTimeout(() => {
+         c.evalJs(`(() => {
+           const d = window.dictionary;
+           const g = window[d.game];
+           if (g && g[d.gameState] === 1) return "ALREADY_IN_GAME";
+           if (g && g[d.sbLeave] && g[d.gameState] === 2) g[d.sbLeave](true);
++          if (typeof bq === "object" && bq?.f6 === 1 && typeof b1 === "object" && b1?.z?.ef?.(1)) {
++            return "ALREADY_IN_LOBBY";
++          }
++          if (typeof b1 === "object" && b1?.z?.close) {
++            b1.z.close(1, 3252);
++          }
+           const ext = window.__fx.strategyBotExtension;
+           ext.settings.armed = true;
+           ext.remote.state.loop = "team";
+           window.__tsbSquadSyncHold = false;
++          if (typeof b1 === "object" && b1?.z) b1.z.f7 = 1;
+           window.__fx.strategyBot.openMultiplayer(0);
+           setTimeout(() => { window.__tsbSquadSyncHold = true; }, 5000);
+           return "SYNC_LAUNCHED";
+         })()`);
+-      }, i * 350);
++      }, enterJitterMs);
+     }
+   }
+ }, 2500);
