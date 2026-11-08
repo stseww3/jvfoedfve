@@ -4136,9 +4136,18 @@ export class Policy extends V17 {
         if (g.alive[p] && g.teams[p] === g.teams[me]) ourTeamLand += g.terr[p];
       }
     }
-    const weLead = ourTeamLand >= 0.58 * Math.max(1, g.land) || this.isMopUp(g);
+    let topPlayer = -1, topTerr = -1;
+    for (let p = 0; p < g.players; p++) {
+      if (g.alive[p] && g.terr[p] > topTerr) {
+        topTerr = g.terr[p];
+        topPlayer = p;
+      }
+    }
+    const weHoldCrown = topPlayer >= 0 && (topPlayer === me || this.isOurSquadBot(g, topPlayer) || this.isBossNpl(g, topPlayer));
+    const weLead = weHoldCrown && (ourTeamLand >= 0.65 * Math.max(1, g.land) || this.isMopUp(g));
     const caller = window.__lastPeaceCaller;
     const callerIsOurs =
+      weHoldCrown &&
       Number.isInteger(caller) &&
       caller >= 0 &&
       caller < g.humans &&
@@ -4368,7 +4377,9 @@ export class Policy extends V17 {
       if (!allyEnemyNbs.length && outAtk === 0 && inAtk === 0 && g.t > 2200) continue;
       const isBoss = p === bossId;
       const isSquad = this.isOurSquadBot(g, p);
-      const score = (isBoss ? 5000 : isSquad ? 600 : 150) + (outAtk + inAtk) / 500 + (135 - dAlly) * 3 + Math.min(150, g.terr[p] / 500);
+      if (!isBoss && !isSquad) continue;
+      const crownBonus = Math.min(2500, Math.floor(g.terr[p] / 12));
+      const score = (isBoss ? 8000 : 600 + crownBonus) + (outAtk + inAtk) / 400 + (135 - dAlly) * 3;
       if (score > bestScore && (isBoss || boxedIn || outAtk + inAtk > 0.04 * g.bal[p] || (isSquad && dMe >= 120 && dAlly < 98))) {
         bestScore = score;
         bestAlly = p;
@@ -4899,14 +4910,4 @@ export class Policy extends V17 {
       if (!g.alive[q] || !g.terr[q]) continue;
       const already = g.hasAttack(me, q);
       if (!already && (active >= P.maxTargets || !g.hasFreeSlot(me))) continue;
-
-      const Lq = g.terr[q], Bq = g.bal[q], dq = Bq / Math.max(1, Lq);
-      const person = this.person(g, q);
-      const inAtk = g.attackTroopsOn(q, me);
-      const myAtk = g.attackTroopsOn(me, q);
-      const rawNeed = this.elimCost(g, q) + inAtk - myAtk;
-      if (rawNeed <= 0) continue;
-      const left = iV(g.peak[q], 4);
-      const share = Math.min(1, this.cnt[q] / Math.max(1, g.border[q].length));
-      const baseGain = 
 
