@@ -1,0 +1,67 @@
+# S06 单局显微镜解剖与核心变量量化报告
+
+- **更新时间**: `2026-11-08T03:02:00Z`
+- **包干对局**: `G07`
+- **负责核心变量**: `V4, V8`
+
+## 一、单局时间线、胜负拐点与核心死因解剖
+
+### `G07 (01:07 CST, 2-Team Match, map=10 931x959 land=546,152, seed=3327, H=59)` (`result=won`, `2` 队局, 进场 `8` 号, 主陆 `2` 号)
+- **`t=1500` 团队领土**: `53877` | **峰值领土**: `545700` (`@t=5405`) | **崩盘拐点**: `t=3004`
+- **拐点前线密度 vs 敌方密度**: `d_front = 3.8` vs `d_enemy = 68.5`
+- **第一主因**: `V12` | **第二诱因**: `V8`
+- **逐拍取证摘要**: G07 is the sole winning game (1/9 = 11.1%) of the overnight autonomous batch, finishing at t=5405 with Team 2 holding 545,700 land (99.92%) vs Team 1's 7 land. However, microscopic log dissection (G01-G09-squad.log lines 5781..6506) proves our 8-bot squad did NOT carry this match—it suffered the exact same V1/V4/V7/V8 pathologies as the 8 losses and was saved by two structural factors: (1) V12 2-Team Lobby (~30v29 humans), where ~21 non-squad human teammates on Team 2 held 237,089 land (43.4% of map) at t=1776 while our 8 bots held only 53,877 land (9.86%), giving Team 2 an early 53.2% vs 45.7% global snowball; (2) V5/V6 Rear-Guard Shielding at t=2740..3130: when our two largest mainland frontline carries ryan_m (peak 21,912 land) and lucas94 (17,077 land) over-pulsed prime/bleeding targets under V8 (keep<=10~26*L + curAtk<14~16%B) and V4 (period=2, inflight<2t) down to d=3.8 (ryan_m died at t=3157) and d=0.0 (lucas94 had 5 troops on 17,076 land at t=3150!), rear banker dave_w (L=5,722, B=563,980, d=105.4) donated 4x5% cash to ryan_m and intercepted two massive 143,490 and 147,662 troop enemy invasion boats from Player #27 (KGZ) at t=3004 and t=3130, shielding lucas94's 0-density territory until allied Team 2 humans sealed the continent and boxed lucas94 into nb=0 at t=3240.
+
+### `G06 (01:01 CST, 5-Team Match, map=24 land=762,763, V4 & V8 Negative Control)` (`result=over`, `5` 队局, 进场 `8` 号, 主陆 `8` 号)
+- **`t=1500` 团队领土**: `103067` | **峰值领土**: `138757` (`@t=4611`) | **崩盘拐点**: `t=4680`
+- **拐点前线密度 vs 敌方密度**: `d_front = 10.4` vs `d_enemy = 108.0`
+- **第一主因**: `V4` | **第二诱因**: `V8`
+- **逐拍取证摘要**: In G06, our squad fired 2,836 total commands (58.63 cmds/1000t, 79 burst windows of >=10 cmds/90t, peaking at +45 cmds/90t = 1 cmd every 2.0 ticks) and burned ~13.18M troops (32.6% of total troop production) in command fees. Between t=4590 and t=5220, V8 isPrimeLand kept ethan21 (L=58,437), kevin_k (L=30,042), and mark07 (L=22,215) perpetually hollowed out at d=10.4~19.8 (+19 cmds/90t by mark07 at t=4590->4680 dropping d from 74.3 to 10.4), allowing full-density Team 4 to wipe out 5 brothers and crush our 110k+ land lead down to 1,854 land at t=6539.
+
+### `G01 (00:30 CST, 6-Team Match, map=10 land=546,152, V8 Lead-Throw Control)` (`result=lost`, `6` 队局, 进场 `8` 号, 主陆 `8` 号)
+- **`t=1500` 团队领土**: `115250` | **峰值领土**: `151096` (`@t=4950`) | **崩盘拐点**: `t=4950`
+- **拐点前线密度 vs 敌方密度**: `d_front = 7.1` vs `d_enemy = 112.0`
+- **第一主因**: `V8` | **第二诱因**: `V7`
+- **逐拍取证摘要**: Team 4 ranked #1 at t=4950 (151,096 land), led by ryan_m (51,089 land). Between t=4320 and t=5040, V8 isPrimeLand triggered 37 commands from ryan_m to chase bleeding/collapsed land (+15,210 px), collapsing his home density from d=107.5 (3.86M troops) at t=4320 to d=16.5 at t=4410, d=14.6 at t=4500, and finally d=7.1 (356k troops on 50,549 land after +13 cmds in 90t) at t=5040. Team 6 and Team 1 immediately counter-pushed our hollowed-out frontline and wiped all 8 bots by t=5858.
+
+## 二、专项核心变量全样本量化与因果机制
+
+### `V4` — CommandTaxBurnRate (预估胜率影响 `+22.0%`)
+- **当前劣化值**: `PARAMS.period = 2 (112ms); headless-bot.mjs inflight lock = Ct()-this.inflight<110 && t.t-(this.inflightTick??0)<2; super.act(g) in V13/General runs pickTarget() every 2 ticks at t=600..1500 with raceK=0.25`
+- **80% 胜率基线值**: `PARAMS.period = 5 (280ms); headless-bot.mjs inflight lock = Ct()-this.inflight<450 && t.t-(this.inflightTick??0)<8 (~16.25 in-game cmds/1000t, <9.5% tax burn rate)`
+- **推导最优阈值**: `PARAMS.period = 5 (or 4 with per-target hitTo cooldown >= 8 ticks); headless-bot.mjs inflight lock = Ct()-this.inflight<450 && t.t-(this.inflightTick??0)<6; gate pre-t1500 super.act(g) bot-clearing to t % 6 === 0`
+- **源码级因果机制**: In online multiplayer, client commands travel via WebSocket to the server and are broadcast back in 7-tick frame bundles (RTT = 2~5 ticks, 110~280ms). Lowering P.period to 2 and the inflight lock to <110ms & <2 ticks (e20db6b) means that when a command is sent at tick t0, at tick t0+2 the server echo has NOT arrived yet: this.inflight is cleared on line 1041 of page.js, g.bal[me] and g.attackTroopsOn(me,q) are still stale pre-command values, and the bot fires 2~3 duplicate commands at the exact same target before tick t0+4! Across G01..G09, in-game command frequency surged +88.1% (from 16.25 to 30.57 cmds/1000t; 285 burst windows of >=10 cmds/90t; up to +45 cmds/90t in G06), burning 23.8% of total troop production (up to 42.2% in G04 and 32.6% in G06) in 1.17%B land fees and 3.125%B boat fees, while triggering z4.aSo 25% No-Full-Sending penalties and 198 server-rejected commands.
+- **源码定位**: `tsb/squad/make_v27_team.py:976, 1143-1160; tsb/squad/v27-team-live.js:3907, 5279-5321; tsb/squad/headless-bot.mjs:176-181`
+
+### `V8` — PrimeLandConversionEfficiency (预估胜率影响 `+28.5%`)
+- **当前劣化值**: `isPrimeLand = o.nearCollapse || dqNow < 26 || c < 0.48 * worth || (o.bleeding && o.tD < 0.55); overrides keep = Math.min(keep, (o.nearCollapse || dqNow < 14 ? 10 : 26) * L) at B >= 12*L; raises curAtk cap from 0.04*B to 0.14*B (pulseMode) and 0.16*B (nearCollapse); coupled with totB = B + myOut (32c5689) and make_v27_team.py silently failing to patch Policy.offers maxTargets`
+- **80% 胜率基线值**: `No unconditional keep override below safeAt(g, q); oppFloorCap = 128; collapseFloorCap = 85; curAtk < 0.04 * B per pulse; avail = B - fee - keep`
+- **推导最优阈值**: `Remove totB = B + myOut from buyLand (or cap at 0.25*myOut when dMe>=85); require 3rd-party safety floor max3rdPartyKeep = max_{p!=q} (bal[p] - 1.5*L)/1.55 and keep >= Math.max(68*L, max3rdPartyKeep) whenever any healthy enemy human (dq>=50, Bp>=0.45*B) borders us; cap curAtk < (o.nearCollapse && humanNbCount<=1 ? 0.08*B : 0.04*B) with >=8t per-target cooldown; fix old_offers_slot in make_v27_team.py to patch Policy.offers`
+- **源码级因果机制**: Four compounding defects turn V8 prime-land harvesting into frontline suicide: (1) Over-broad trigger: because worth = m*dMe = 0.90*dMe after t=2500, c < 0.48*worth triggers whenever target cost c < 0.432*dMe (i.e. dq < 0.135*dMe + 0.05*dMe*share, plus bleeding discount 0.65x), classifying almost any bots or moderately worn humans as isPrimeLand; (2) Defense-floor erasure: keep = Math.min(keep, 10~26*L) unconditionally overwrites keep = Math.max(keep, safe), completely erasing third-party neighbor protection; (3) Double-counted in-flight troops: totB = B + myOut with curAtk < 0.14~0.16*B across multiple targets allows myOut to reach 25~45% of B, driving actual home density B/L down to 0.0~12.0 (181 hollow-out snapshots across G01..G09 where 44/54 affected frontline bots died, including G07 ryan_m at d=3.8 and lucas94 at d=0.0, G01 ryan_m at d=7.1, G06 mark07 at d=10.4); (4) Patch bug in make_v27_team.py: s.replace(old_offers_slot, new_offers_slot, 1) matched dead base class Strategy.act (line 534) instead of Policy.offers (line 5476).
+- **源码定位**: `tsb/squad/make_v27_team.py:1001-1008, 1058-1102; tsb/squad/v27-team-live.js:534-535, 5476, 5810-5868, 6004-6015`
+
+## 三、核心变量权重排序
+
+1. **`V7` (26.0%)**: oppFloorCap=38 + collapseFloorCap=16 + totB=B+myOut destroyed the frontline home density floor (d_home dropping to 0~18), causing midgame #1 leads in G01, G04, G06 to collapse upon first enemy counter-attack.
+2. **`V8` (22.0%)**: isPrimeLand unconditionally overwrote keep to 10~26*L and raised curAtk caps to 14~16%B without checking 3rd-party strong neighbors, causing 44/54 prime-land harvesters across G01..G09 to hollow out and die.
+3. **`V4` (16.0%)**: period=2 + inflight<2t (smaller than 2~5t WebSocket RTT) caused duplicate pre-echo command bursts (+88% cmd rate, 285 burst windows), burning 23.8%~42.2% of troop production in attack fees.
+4. **`V1` (12.0%)**: Pre-d590acd VirtualSquadAnchor in Boss-less games anchored on edge islands/peninsulas, forcing 5~6 bots into the voronoi=500 fallback (even in G07, 5/8 bots hit voronoi=500).
+5. **`V6` (9.0%)**: 5% micro-donations against a flat 6.25%B engine donation fee burned 55.2% of donated troops in tax and drained frontline fighters when safeAt was capped at 38*L.
+6. **`V12` (6.0%)**: Lobby team count and allied human mass determined baseline margin for error: G07 was won only because it was a 2-team game where ~21 allied humans held 43.4% of the map by t=1776.
+7. **`V5` (5.0%)**: Sea interception saved G07 (sinking two 145k enemy boats at t=3004/3130), but unguarded 3.125%B boat fees on small boats/islands drained high-balance bots in multi-team games.
+8. **`V2` (4.0%)**: allyMinSep<=112 and clusterMax<=350 compressed same-basin bots (e.g. G07 NW trio at 42~67px separation) into early internal boxing.
+
+## 四、最小可验证修复清单 (Actionable Fixes)
+
+- **文件**: `tsb/squad/headless-bot.mjs` (`afterTick inflight guard (Lines 176-181)`, 风险: `low`)
+  - 修改前: `if(null!==this.inflight&&Ct()-this.inflight<110&&t.t-(this.inflightTick??0)<2)return;`
+  - 修改后: `if(null!==this.inflight&&Ct()-this.inflight<450&&t.t-(this.inflightTick??0)<6)return;`
+- **文件**: `tsb/squad/make_v27_team.py` (`PARAMS.period, oppFloorCap, collapseFloorCap (Lines 976-998)`, 风险: `low`)
+  - 修改前: `period: 2, maxTargets: 6, ... oppFloorCap: 38, ... collapseFloorCap: 16,`
+  - 修改后: `period: 5, maxTargets: 4, ... oppFloorCap: 92, ... collapseFloorCap: 64,`
+- **文件**: `tsb/squad/make_v27_team.py` (`Policy.buyLand isPrimeLand keep override & totB in-flight accounting (Lines 1060-1102)`, 风险: `low`)
+  - 修改前: `const myOut = this.myOutTroops(g); const totB = B + myOut; const dqNow = g.bal[q] / Math.max(1, g.terr[q]); const isPrimeLand = o.nearCollapse || dqNow < 26 || c < 0.48 * worth || (o.bleeding && o.tD < 0.55); if (isPrimeLand && B >= 12 * L) { keep = Math.min(keep, (o.nearCollapse || dqNow < 14 ? 10 : 26) * L); } const avail = Math.min(B - fee, totB - fee - keep); ... if (o.nearCollapse) { if (curAtk >= 0.16 * B || curAtk >= 0.85 * need) continue; ... } if (o.pulseMode) { if (curAtk >= (isPrimeLand ? 0.14 * B : 0.04 * B)) continue;`
+  - 修改后: `const dqNow = g.bal[q] / Math.max(1, g.terr[q]); let max3rdB = 0; for (const p of this.nb) { if (p !== q && g.alive[p] && this.person(g, p) && g.bal[p] / Math.max(1, g.terr[p]) >= 45) max3rdB = Math.max(max3rdB, g.bal[p] + g.attackTroopsOn(p, me)); } const thirdPartySafe = max3rdB > 0 ? Math.max(68 * L, (max3rdB - 1.5 * L) / 1.55) : 38 * L; const isPrimeLand = o.nearCollapse || (!person && dqNow < 24 && c < 0.42 * worth); if (isPrimeLand && B >= 45 * L && max3rdB < 0.65 * B) { keep = Math.max(thirdPartySafe, Math.min(keep, (o.nearCollapse ? 48 : 64) * L)); } const avail = B - fee - keep; ... if (o.nearCollapse) { if (curAtk >= 0.08 * B || curAtk >= 0.50 * need || g.t - (this.hitTo.get(q) ?? -999) < 8) continue; ... } if (o.pulseMode) { if (curAtk >= (isPrimeLand ? 0.06 * B : 0.04 * B) || g.t - (this.hitTo.get(q) ?? -999) < 8) continue;`
+- **文件**: `tsb/squad/make_v27_team.py` (`old_offers_slot target specificity (Lines 1001-1008)`, 风险: `low`)
+  - 修改前: `s = s.replace(old_offers_slot, new_offers_slot, 1)`
+  - 修改后: `s = s.replace(old_offers_slot, new_offers_slot) # Replace both Strategy.act and Policy.offers (or anchor on Policy.offers context)`

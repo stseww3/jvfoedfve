@@ -1,0 +1,81 @@
+{
+  "agentId": "S03",
+  "updatedAt": "2026-11-08T03:30:00Z",
+  "assignedGames": [
+    "G04"
+  ],
+  "assignedVariables": [
+    "V7"
+  ],
+  "gameDissections": [
+    {
+      "gameId": "G04 (00:50 CST, 3-team map=10 931x959 land=546,152, t=8736 lost)",
+      "result": "lost",
+      "teamCount": 3,
+      "activeBotsCount": 8,
+      "mainContinentBotsCount": 6,
+      "teamLandAt1500": 61616,
+      "peakTeamLand": 248433,
+      "peakTick": 5422,
+      "inflectionTick": 6570,
+      "frontlineDensityAtInflection": 27.8,
+      "enemyDensityAtInflection": 118.0,
+      "primaryRootCauseVariable": "V7",
+      "secondaryRootCauseVariable": "V10",
+      "evidenceSummary": "In G04 (3-team match, map=10, land=546,152), our Team 1 held #1 with 248,433 land (45.5% of map vs Team 2's 226,797 and collapsing Team 3's 66,931) at t=5422, led by leo_tx (28,816L), noah88 (20,018L), and lucas94 (18,243L). Between t=5042 and t=6660, V7 (oppFloorCap=38, collapseFloorCap=16, totB=B+myOut, isPrimeLand keep<=10~26*L) combined with V10 (14x10%B RTT assist machine-gunning by noah88 at t=6594..6622) caused noah88 to fire 18 commands in 90 ticks (crashing home density from 96.9 to 33.8) and lucas94 to drop to d=27.8 while bordering 3 enemies. Meanwhile, boxed-in rear carry leo_tx (27,199L, nb=0) was continuously bled down to d=70~76 by 5% micro-donations (paying 6.25%B flat engine tax). Team 2 counter-attacked the hollowed-out d=27.8~33.8 frontline at t=6660 and swept lucas94 (t=6988), leo_tx (t=7237), and noah88 (t=7404)."
+    }
+  ],
+  "variableEvaluations": [
+    {
+      "variableId": "V7",
+      "variableName": "EffectiveFrontlineKeepDensity",
+      "currentValue": "oppFloorCap=38, collapseFloorCap=16, totB = B + myOut, isPrimeLand keep <= 10*L~26*L",
+      "baseline80PctValue": "oppFloorCap=128, collapseFloorCap=85, avail = B - fee - keep (home B only, no 10*L prime override)",
+      "recommendedOptimalValue": "oppFloorCap=112, collapseFloorCap=68, avail = B - fee - keep (never include in-flight myOut in person attack defense floor), thirdPartySafe floor >= max(68*L, (max3rdB - 1.5*L)/1.55)",
+      "estimatedWinrateImpactPct": 31.0,
+      "causalMechanism": "When totB = B + myOut is used to compute avail = Math.min(B - fee, (B + myOut) - fee - keep) and keep is clamped to 10~38*L, every outgoing attack pulse myOut is double-counted as if it were still defending home territory. Under period=2 (112ms) and maxTargets=6, a frontline bot launches 3~5 concurrent pulses totaling myOut = 35%~65% of B, driving actual home balance B_home down to 0~28*L (181 hollow-out snapshots across G01-G09, 44/54 frontline deaths). Adjacent full-density enemies (d=100~135) immediately counter-sweep the defenseless frontline.",
+      "codeLocation": "tsb/squad/make_v27_team.py:976-998, 1060-1102 (tsb/squad/v27-team-live.js:3921, 3963, 5810-5868)"
+    }
+  ],
+  "topCoreVariableRanking": [
+    {
+      "rank": 1,
+      "variableId": "V7",
+      "weightPct": 35.0,
+      "oneLineReason": "totB=B+myOut + oppFloorCap=38 + keep<=10*L hollowed out frontline home density to d=27.8~33.8 in G04 (and d=0~14.6 across G01-G09), causing 100% of midgame #1 leads to get counter-swept."
+    },
+    {
+      "rank": 2,
+      "variableId": "V10",
+      "weightPct": 20.0,
+      "oneLineReason": "2-tick RTT assist machine-gun bug caused noah88 to fire 10x10%B (t=5042) and 14x10%B (t=6594, -81% B) in G04 right before Team 2 counter-attacked."
+    },
+    {
+      "rank": 3,
+      "variableId": "V6",
+      "weightPct": 16.0,
+      "oneLineReason": "79 micro-donations (pct=51) in G04 burned 6.10M troops in flat 6.25%B engine tax to deliver 4.96M (55.2% loss) and drained frontline carry leo_tx."
+    },
+    {
+      "rank": 4,
+      "variableId": "V5",
+      "weightPct": 15.0,
+      "oneLineReason": "145 boats (61 sea intercepts) in G04 burned >1.8M troops/tax due to broken bQ.mt.mu deduplication and 35%B chase cap."
+    },
+    {
+      "rank": 5,
+      "variableId": "V1",
+      "weightPct": 14.0,
+      "oneLineReason": "2/8 bots in G04 hit voronoi=500 island fallback at spawn, reducing main-continent opening presence to 6 bots."
+    }
+  ],
+  "actionableFixes": [
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "buyLand (remove totB=B+myOut double-counting & restore oppFloorCap=112, collapseFloorCap=68)",
+      "before": "oppFloorCap: 38, collapseFloorCap: 16; const totB = B + myOut; if (isPrimeLand && B >= 12 * L) keep = Math.min(keep, (o.nearCollapse || dqNow < 14 ? 10 : 26) * L); const avail = Math.min(B - fee, totB - fee - keep);",
+      "after": "oppFloorCap: 112, collapseFloorCap: 68; const avail = B - fee - keep; // enforce thirdPartySafe >= max(68*L, (max3rdB - 1.5*L)/1.55) when bordering any healthy enemy human",
+      "riskLevel": "low"
+    }
+  ]
+}

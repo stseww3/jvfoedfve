@@ -1,0 +1,128 @@
+{
+  "agentId": "S10",
+  "updatedAt": "2026-11-08T03:31:00Z",
+  "assignedGames": [
+    "G01",
+    "G02",
+    "G03",
+    "G04",
+    "G05",
+    "G06",
+    "G07",
+    "G08",
+    "G09"
+  ],
+  "assignedVariables": [
+    "V1",
+    "V2",
+    "V3",
+    "V4",
+    "V5",
+    "V6",
+    "V7",
+    "V8",
+    "V9",
+    "V10",
+    "V11",
+    "V12"
+  ],
+  "gameDissections": [
+    {
+      "gameId": "ALL (G01-G09 vs 80% Baseline Commit Diff Audit 6d4aadd..917e6b1)",
+      "result": "lost",
+      "teamCount": 5,
+      "activeBotsCount": 8,
+      "mainContinentBotsCount": 5,
+      "teamLandAt1500": 71711,
+      "peakTeamLand": 124563,
+      "peakTick": 4500,
+      "inflectionTick": 4500,
+      "frontlineDensityAtInflection": 12.4,
+      "enemyDensityAtInflection": 104.2,
+      "primaryRootCauseVariable": "V7",
+      "secondaryRootCauseVariable": "V1",
+      "evidenceSummary": "Line-by-line regression audit of all 11 commits from 6d4aadd (80% winrate baseline) to 917e6b1 proves that the winrate collapse from 80% to 11.1% (1/9) was caused by 6 interacting negative-ROI patches introduced between fd868f3 and 514a041, compounded by running pre-d590acd spawn-coordinator.mjs in Boss-less mode: (1) e20db6b+32c5689+514a041 (V7/V8): oppFloorCap 128->38, collapseFloorCap 85->16, totB=B+myOut, keep<=10~26*L caused 181 frontline hollow-out events (d_home=0~18) and threw 100% (3/3) of midgame #1 leads (G01, G04, G06); (2) fd868f3+pre-d590acd (V1/V2): VirtualSquadAnchor island traps + allyMinSep<=112 / clusterMax<=350 caused 7/10 games to suffer island fallbacks (voronoi=500) or secondary-continent lockups and cut t=1500 land by -28%; (3) e20db6b+4b7408e (V4/V9/V10): period=2 + inflight<2t (< WebSocket RTT) triggered 18 bursts (125 shots) of 5~14x 10%B assist machine-gunning, draining 50~81% of healthy allies' balances; (4) d996be6+fd868f3 (V6): pct=51 (5%B) micro-donations paid a flat 64/1024 (6.25%B) engine tax (55.2% loss rate, burning 18.71M in tax across G01-G09) while coastGuardFloor=68*L deadlocked boxed-in coastal rear bots at d=70~78; (5) 404996d (V5): bQ.mt.mu is always false for human chases (74 duplicate chases) and 35%B chase cap + no fee<=bTr gate burned 4.58M in 3.125%B boat tax while s.land undefined broke tryClaimNearTeamIslands."
+    }
+  ],
+  "variableEvaluations": [
+    {
+      "variableId": "V7",
+      "variableName": "EffectiveFrontlineKeepDensity (Commits e20db6b, b594ea3, 32c5689, 514a041)",
+      "currentValue": "oppFloorCap=38, collapseFloorCap=16, totB=B+myOut, isPrimeLand keep<=10~26*L",
+      "baseline80PctValue": "oppFloorCap=128, collapseFloorCap=85, avail=B-fee-keep",
+      "recommendedOptimalValue": "oppFloorCap=112, collapseFloorCap=68, avail=B-fee-keep, thirdPartySafe>=max(68*L, (max3rdB-1.5*L)/1.55)",
+      "estimatedWinrateImpactPct": 31.0,
+      "causalMechanism": "Double-counting in-flight troops myOut in totB while slashing keep floors to 10~38*L stripped frontline home density to 0~18 during attacks.",
+      "codeLocation": "tsb/squad/make_v27_team.py:976-998, 1060-1102"
+    },
+    {
+      "variableId": "V1",
+      "variableName": "MainContinentSpawnRatio (Commits fd868f3, d590acd)",
+      "currentValue": "minAnchorContSize=0.45*maxCompSize, voronoi=500 fallback active when relax<0.60",
+      "baseline80PctValue": "Boss-anchored on #1 main continent + SPOILER_BANK pair",
+      "recommendedOptimalValue": "minAnchorContSize=0.75*maxCompSize (strictly #1 continent), enforce minViableCompSize across all relax passes, openDirs>=4",
+      "estimatedWinrateImpactPct": 24.0,
+      "causalMechanism": "Unpopulated islands had max clearance=220, trapping VirtualSquadAnchor on islands in 6/10 games and secondary continents in G06.",
+      "codeLocation": "tsb/squad/spawn-coordinator.mjs:520-544, 905-926, 1042-1075"
+    }
+  ],
+  "topCoreVariableRanking": [
+    {
+      "rank": 1,
+      "variableId": "V7",
+      "weightPct": 28.0,
+      "oneLineReason": "e20db6b+32c5689+514a041 (oppFloorCap=38 + totB=B+myOut + keep<=10*L) caused 181 frontline hollow-outs (d=0~18) and threw G01, G04, G06."
+    },
+    {
+      "rank": 2,
+      "variableId": "V1",
+      "weightPct": 18.0,
+      "oneLineReason": "Pre-d590acd VirtualSquadAnchor island trap + G06 53.75% secondary continent trap crippled opening in 7/10 games."
+    },
+    {
+      "rank": 3,
+      "variableId": "V2",
+      "weightPct": 12.0,
+      "oneLineReason": "fd868f3 (allyMinSep<=112, clusterMax<=350) cut t=1500 neutral land by -28% and boxed 3~5 inner bots into nb=0."
+    },
+    {
+      "rank": 4,
+      "variableId": "V6",
+      "weightPct": 12.0,
+      "oneLineReason": "d996be6 (pct=51) paid flat 6.25%B engine tax (55.2% loss, 18.71M burned) while coastal boxed-in rear bots deadlocked at d=70~78."
+    },
+    {
+      "rank": 5,
+      "variableId": "V10",
+      "weightPct": 10.0,
+      "oneLineReason": "e20db6b (period=2 < RTT) caused 5~14x 10%B assist machine-gun bursts (125 shots) and multi-team war provocation."
+    },
+    {
+      "rank": 6,
+      "variableId": "V5",
+      "weightPct": 8.0,
+      "oneLineReason": "404996d (bQ.mt.mu always false + 35%B chase cap + s.land undefined) burned 4.58M in 3.125%B boat tax across 673 boats."
+    },
+    {
+      "rank": 7,
+      "variableId": "V3",
+      "weightPct": 6.0,
+      "oneLineReason": "Uncapped dpKeep in dense team spawns froze 53.9% of t=600..1499 neutral expansion snapshots."
+    },
+    {
+      "rank": 8,
+      "variableId": "V12",
+      "weightPct": 6.0,
+      "oneLineReason": "Loose Room 0 entry gate (headlessInRoom0>=5) allowed 6~7 bot partial entries and Team 2/3 split fratricide in G09."
+    }
+  ],
+  "actionableFixes": [
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "Complete 6-Variable Restoration & Guardrail Patch (V3, V4, V5, V6, V7, V8, V9, V10)",
+      "before": "period:2, oppFloorCap:38, collapseFloorCap:16, totB=B+myOut, pct=51, unthrottled 10%B assist, bQ.mt.mu chase dedup, s.land island claim",
+      "after": "period:5 (inflight>=6t), oppFloorCap:112, collapseFloorCap:68, avail=B-fee-keep, boxedIn donate pct=240..280 (frontline nb>0 no donate below d=138), 90t assist cooldown, geometric bType===6 chase dedup + fee<=0.625*bTr gate + 14%B cap, s.c island fix",
+      "riskLevel": "low"
+    }
+  ]
+}
