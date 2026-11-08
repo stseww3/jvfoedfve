@@ -4314,7 +4314,8 @@ export class Policy extends V17 {
           }
         }
         // Second, if we border the attacker on land and aren't already attacking them, do a ~10%B light assist poke (even across teams)!
-        if (mainAttacker >= 0 && (this.cnt[mainAttacker] ?? 0) > 0 && !g.hasAttack(me, mainAttacker) && g.hasFreeSlot(me) && dMe >= 65) {
+        if (mainAttacker >= 0 && !this.isTeammate(g, mainAttacker) && (this.cnt[mainAttacker] ?? 0) > 0 && !g.hasAttack(me, mainAttacker) && g.hasFreeSlot(me) && dMe >= 65 && g.t - (this.lastAssistPokeTick ?? -999) >= 25) {
+          this.lastAssistPokeTick = g.t;
           if (g.attack(102, mainAttacker, me)) {
             this.cmds++;
             this.hitTo.set(mainAttacker, g.t);
