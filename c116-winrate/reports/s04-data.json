@@ -1,0 +1,127 @@
+{
+  "agentId": "S04",
+  "updatedAt": "2026-11-08T02:58:00Z",
+  "assignedGames": [
+    "G05"
+  ],
+  "assignedVariables": [
+    "V6"
+  ],
+  "gameDissections": [
+    {
+      "gameId": "G05 (00:54 CST, mw6n3e8i-4b5899..mw6n3eel-b77pff)",
+      "result": "lost",
+      "teamCount": 6,
+      "activeBotsCount": 8,
+      "mainContinentBotsCount": 2,
+      "teamLandAt1500": 51425,
+      "peakTeamLand": 57459,
+      "peakTick": 1710,
+      "inflectionTick": 1800,
+      "frontlineDensityAtInflection": 3.4,
+      "enemyDensityAtInflection": 78.5,
+      "primaryRootCauseVariable": "V1",
+      "secondaryRootCauseVariable": "V6",
+      "evidenceSummary": "In G05 (map=22, 1541x1080, land=664,497, 6 teams), pre-d590acd findVirtualSquadAnchor anchored on a small northern landmass and clusterMax<=350 forced 6 of 8 bots into the voronoi=500 fallback, trapping ethan21 on a 479px pocket (1180,1060). Because g.t<1500 only calls tryEmergencyBossRescue (which returns false when bossId=-1) and neut=3 (<minCmd) blocked boxedIn=true, ethan21 sat at d=111.9..150.0 (71,850 bal, 150*L hard cap, 0% interest) from t=990 to t=1500 without donating a single troop while frontline carry dave_w (L=11,350..16,065, 215 cmds) was drained to d=0.0..3.4 by totB=B+myOut and oppFloorCap=38. At t=1500..1526 ethan21 fired 7 duplicate expandNeutral commands burning 28,520 troops for 6px, then made only 2 tiny 5% donations (t=1528 rejected by ao.ei, t=1546 2.25k delivered / 2.77k tax) before dying via boats."
+    },
+    {
+      "gameId": "G04 (00:50 CST, V6 Cross-Game Audit)",
+      "result": "lost",
+      "teamCount": 3,
+      "activeBotsCount": 6,
+      "mainContinentBotsCount": 6,
+      "teamLandAt1500": 82410,
+      "peakTeamLand": 248433,
+      "peakTick": 4860,
+      "inflectionTick": 5422,
+      "frontlineDensityAtInflection": 38.0,
+      "enemyDensityAtInflection": 105.0,
+      "primaryRootCauseVariable": "V7",
+      "secondaryRootCauseVariable": "V6",
+      "evidenceSummary": "79 donations (69 accepted, 10 rejected by ao.ei; 15 rear-to-rear ping-pong donations). Because engine donation tax is a flat 64/1024 (6.25% of total donor balance B) per call, capping pct at 51 (~5.08% B) burned 6,101k troops in tax to deliver 4,957k troops (55.17% loss rate). Worse, frontline #1 carry leo_tx (L=28,816, B=3.38M) triggered squad-rescue donations at t=3966 and t=3984, draining 728k troops (402k burned in tax) from the main frontline."
+    },
+    {
+      "gameId": "G08 (01:13 CST, V6 Frontline Drain Audit)",
+      "result": "lost",
+      "teamCount": 6,
+      "activeBotsCount": 6,
+      "mainContinentBotsCount": 6,
+      "teamLandAt1500": 46820,
+      "peakTeamLand": 78080,
+      "peakTick": 3780,
+      "inflectionTick": 3870,
+      "frontlineDensityAtInflection": 42.0,
+      "enemyDensityAtInflection": 98.0,
+      "primaryRootCauseVariable": "V7",
+      "secondaryRootCauseVariable": "V6",
+      "evidenceSummary": "All 9 donations in G08 were fired by active frontline pillars mark07 (L=12,702, nb=2) and lucas94 (L=13,608, nb=2) between t=3620 and t=3870 because safeAt(g,-1) was clamped to oppFloorCap=38*L, draining 1,596k frontline troops (880k burned in 6.25%B tax) right before Team 5 overran them."
+    }
+  ],
+  "variableEvaluations": [
+    {
+      "variableId": "V6",
+      "variableName": "DonationDrainVsFrontlineDensity",
+      "currentValue": "pct=51 (5.08% B) per call (burning flat 64/1024=6.25% B engine tax => 55.17% tax loss); t<1500 tryDonateToTeammate disabled; boxedIn requires neutral===0 & dMe>=72 (coastGuardFloor=68*L); isPureInlandSafe ignores nb>0 (drains bot-bordering frontline at dMe>=40); safeFloor uses this.safeAt(g,-1) clamped to oppFloorCap=38*L; no window.ao.iD(p) check & t<=2200 allows rear-to-rear ping-pong",
+      "baseline80PctValue": "targetPct=220..320 (21.5%..31.3% B => 16.6%..22.5% tax loss) for boxedIn rear; safeFloor backed by oppFloorCap=128*L so frontline pillars never self-drain",
+      "recommendedOptimalValue": "boxedIn rear (nb===0 && (neutral===0 || (t>=850 && neutral<=8 && dMe>=55))): donate pct=280 (27.4% B, 18.55% tax loss) at dMe>=45 (keepFloor=22..28*L, cooldown=42t) starting at t>=720; frontline (nb>0): strictly forbid rescue/surplus donate unless dMe>=138 and B>=1.25*super.safeAt(g,-1); enforce window.ao.iD(p) quota check and require recipient p to have active border/combat at all ticks",
+      "estimatedWinrateImpactPct": 18.5,
+      "causalMechanism": "In live_game_js.js (bD.gv.rB & bD.gv.n4), donation fee is a flat 64/1024 = 6.25% of the donor's ENTIRE balance B on every call, plus ao.ei (function ca) adds a fixed +2/+4 per-donation anti-feeding quota penalty before t=4284. Capping pct at 51 (5.08% B) in d996be6 inverted the tax ratio so 6.25% B tax > 5.08% B delivered (burning 18.71M troops in tax to deliver 15.20M across G01-G09, and causing 55/100 rapid donations to be silently rejected by ao.ei). Meanwhile, missing tryDonateToTeammate before t=1500 and requiring neutral===0 trapped G05's ethan21 at 150*L hard cap (0% interest) for 540 ticks, while clamping safeAt(g,-1) to oppFloorCap=38*L and omitting nb===0 from isPureInlandSafe drained 4.47M troops from active frontline fighters.",
+      "codeLocation": "tsb/squad/make_v27_team.py:383-453, 772-900, 1145-1157 (tsb/squad/v27-team-live.js:4398-4468, 4787-4915, 5278-5288)"
+    }
+  ],
+  "topCoreVariableRanking": [
+    {
+      "rank": 1,
+      "variableId": "V7",
+      "weightPct": 30.0,
+      "oneLineReason": "oppFloorCap=38 + totB=B+myOut + keep<=10~26*L drained frontline home density to 0.3~18 (e.g., G05 dave_w d=0.0~3.4 on 16k land), making frontline bots defenseless against enemy counter-pushes."
+    },
+    {
+      "rank": 2,
+      "variableId": "V1",
+      "weightPct": 24.0,
+      "oneLineReason": "Pre-d590acd VirtualSquadAnchor landed on small islands/peninsulas in Boss-less games, causing 6/8 bots in G05 to hit voronoi=500 fallback and lose the main continent at t=0."
+    },
+    {
+      "rank": 3,
+      "variableId": "V6",
+      "weightPct": 20.0,
+      "oneLineReason": "pct=51 (5% B) micro-donations against the engine's flat 6.25% B tax burned 18.71M troops (55.2% loss), exhausted ao.ei quotas (55% rejected), starved G05 pre-t1500 at 150*L, and drained 4.47M from frontline pillars."
+    },
+    {
+      "rank": 4,
+      "variableId": "V2",
+      "weightPct": 14.0,
+      "oneLineReason": "Tightening allyMinSep<=112 and clusterMax<=350 boxed 2~4 interior bots into nb=0 early and starved the squad's total neutral land capture."
+    },
+    {
+      "rank": 5,
+      "variableId": "V5",
+      "weightPct": 12.0,
+      "oneLineReason": "tryInterceptEnemyBoats allowed up to 35% B per chase boat (20 intercepts in G05), draining ryan_m from d=43.1 to d=14.2 right before his collapse."
+    }
+  ],
+  "actionableFixes": [
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "tryDonateToTeammate (boxedIn definition, coastGuardFloor, safeFloor, isPureInlandSafe)",
+      "before": "const boxedIn = this.nb.length === 0 && this.neutral === 0; ... const coastGuardFloor = hasExposedCoast && g.t >= 1100 ? 68 * L : 18 * L; const safeFloor = Math.max(coastGuardFloor, enemyHumanNbs.length > 0 ? this.safeAt(g, -1) : 0); const isPureInlandSafe = enemyHumanNbs.length === 0 && !hasExposedCoast && myHumanInAtk === 0;",
+      "after": "const boxedIn = this.nb.length === 0 && (this.neutral === 0 || (g.t >= 850 && this.neutral <= 8 && dMe >= 55)); ... const coastGuardFloor = boxedIn ? (hasExposedCoast ? 28 * L : 18 * L) : (hasExposedCoast && g.t >= 1100 ? 68 * L : 25 * L); const safeFloor = Math.max(coastGuardFloor, enemyHumanNbs.length > 0 ? super.safeAt(g, -1) : 0); const isPureInlandSafe = boxedIn && !hasExposedCoast && myHumanInAtk === 0;",
+      "riskLevel": "low"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "tryDonateToTeammate (batch size pct, frontline protection floor, ao.iD quota gate, and recipient border check)",
+      "before": "if (!boxedIn && dMe < 132) return false; if (boxedIn && dMe < 72) return false; ... if (!allyEnemyNbs.length && outAtk === 0 && inAtk === 0 && g.t > 2200) continue; ... const pct = 51;",
+      "after": "if (!boxedIn && dMe < 138) return false; if (boxedIn && dMe < 45) return false; ... if (typeof window !== 'undefined' && window.ao?.iD && !window.ao.iD(p)) continue; if (!allyEnemyNbs.length && outAtk === 0 && inAtk === 0 && (g.border?.[p]?.length ?? 0) === 0) continue; ... const pct = Math.min(maxSafePct, boxedIn ? 280 : 120);",
+      "riskLevel": "low"
+    },
+    {
+      "file": "tsb/squad/make_v27_team.py",
+      "functionOrParam": "act (enable tryDonateToTeammate for boxedIn bots at t >= 720 when bossId < 0)",
+      "before": "if (this.tryEmergencyBossRescue(g) && g.online) return;",
+      "after": "if ((this.tryEmergencyBossRescue(g) || (g.t >= 720 && this.nb.length === 0 && this.tryDonateToTeammate(g))) && g.online) return;",
+      "riskLevel": "low"
+    }
+  ]
+}
