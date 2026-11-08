@@ -248,6 +248,32 @@ new_helpers = """  isTeammate(g, p) {
         }
       }
       let res = chosenSlots[slot] || cands[slot % cands.length];
+      if (!chosenSlots[slot] && chosenSlots.length > 0) {
+        // Fallback: Farthest-Point Sampling across the land grid so all 5 slots are guaranteed >= 160px apart!
+        const mType = g.map?.type || g.px;
+        for (let sIdx = chosenSlots.length; sIdx <= slot; sIdx++) {
+          let bestPt = null, bestD = -1;
+          for (let y = 18; y < H - 18; y += 16) {
+            for (let x = 18; x < W - 18; x += 16) {
+              if (mType[y * W + x] !== 1 && mType[y * W + x] < 16) continue;
+              let minD = 999999;
+              for (const p of chosenSlots) minD = Math.min(minD, Math.hypot(x - p.x, y - p.y));
+              for (let h = 0; h < gClean.humans; h++) {
+                if (h !== me && gClean.terr[h] > 0) {
+                  const hx = (gClean.x0[h] + gClean.x1[h]) >> 1, hy = (gClean.y0[h] + gClean.y1[h]) >> 1;
+                  minD = Math.min(minD, Math.hypot(x - hx, y - hy) * 1.15);
+                }
+              }
+              if (minD > bestD) {
+                bestD = minD;
+                bestPt = { x, y };
+              }
+            }
+          }
+          if (bestPt) chosenSlots.push(bestPt);
+        }
+        res = chosenSlots[slot] || res;
+      }
       res = typeof res === "object" ? res : { x: res % W, y: Math.floor(res / W) };
       if (typeof window !== "undefined" && window.__hlLog && (!this._lastLogSpawn || Math.hypot(res.x - this._lastLogSpawn.x, res.y - this._lastLogSpawn.y) > 6)) {
         this._lastLogSpawn = res;
