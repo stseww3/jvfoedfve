@@ -3663,7 +3663,7 @@ export const PARAMS = {
   bleedDiscount: 0.72,
   bleedSafeCap: 0,
   collapseRatio: 1.40,
-  pulseFrac: 0.16,
+  pulseFrac: 0.20,
   pulseMinShare: 0.04,
   zeroPulseMode: 0,
   thinMaxTD: 0.48,
@@ -3672,7 +3672,7 @@ export const PARAMS = {
   pocket1Rank: 0.88,
   contactStepsMax: 350,
   contactPenalty: 0.002,
-  oppFloorCap: 96,
+  oppFloorCap: 78,
   focusBonus: 0.78,
   focusT: 350,
   defendDiscount: 0.85,
@@ -4338,13 +4338,11 @@ export class Policy extends V17 {
     //   - Frontline territory keeps `Math.max(86 * L, this.safeAt(g, -1))` and only skims off surplus when `dMe >= 106` (where marginal interest is negative `-1.24*r0`).
     const prodOptFloor = boxedIn
       ? (hasExposedCoast ? 80 * L : 76 * L)
-      : Math.max(hasExposedCoast ? 86 * L : 84 * L, this.safeAt(g, -1));
+      : Math.max(96 * L, this.safeAt(g, -1));
 
-    // Emergency defense floor (`emergDefFloor`): when a brother is being attacked by an enemy human (`underFire`),
-    // his survival (preserving his L pixels of rent+interest capacity + 2:1 defensive trade) justifies dipping into rear reserves down to 48*L!
     const emergDefFloor = boxedIn
-      ? (hasExposedCoast ? 62 * L : 46 * L)
-      : Math.max(76 * L, 0.85 * this.safeAt(g, -1));
+      ? (hasExposedCoast ? 62 * L : 48 * L)
+      : Math.max(92 * L, this.safeAt(g, -1));
 
     let bestTarget = -1, bestScore = -Infinity, bestKind = "prod_opt", bestFloor = prodOptFloor;
 
@@ -4389,7 +4387,7 @@ export class Policy extends V17 {
 
       if (underFire) {
         // Case A: Emergency 2:1 Defense Dispatch
-        const reqD = boxedIn ? (hasExposedCoast ? 72 : 58) : 92;
+        const reqD = boxedIn ? (hasExposedCoast ? 72 : 58) : 108;
         if (dMe < reqD || B <= 1.12 * emergDefFloor || (!boxedIn && dMe < dAlly + 16)) continue;
         const score = 5000 + (inHumanAtk / Math.max(1, Bp)) * 2000 + (100 - dAlly) * 25 + Math.min(600, Lp / 40);
         if (score > bestScore) {
@@ -4403,7 +4401,7 @@ export class Policy extends V17 {
         // Donor MUST be at or above the 100*L negative-marginal-interest threshold (`dMe >= 98` if boxedIn, `dMe >= 106` if frontline)
         // AND Recipient must be below 92*L so moving troops from Donor -> Recipient shifts troops from NEGATIVE marginal interest (-1.4*r0)
         // to POSITIVE +1.0*r0 full interest + frontline defense/offense!
-        const reqD = boxedIn ? 95 : 106;
+        const reqD = boxedIn ? 95 : 112;
         const maxAllyD = boxedIn ? (activePush || hasPreyOpening ? 130 : 122) : 92;
         if (dMe < reqD || dAlly > maxAllyD || B <= 1.14 * prodOptFloor || (!boxedIn && dMe < dAlly + 16)) continue;
         const score = (activePush || hasPreyOpening ? 2500 : 1000) +
@@ -4824,7 +4822,6 @@ export class Policy extends V17 {
     }
 
     const cmdsBefore = this.cmds;
-    if (g.t >= 1500 && this.tryDonateToTeammate(g, true) && g.online) return;
     if (P.flashLoanMode > 0 && this.tryStartFlashLoan(g)) return;
     if (this.neutral > 0) this.expandNeutral(g, g.bal[me] - this.safeAt(g, -1));
     this.buyLand(g);
@@ -4872,5 +4869,11 @@ export class Policy extends V17 {
   }
 
   compSize(g) {
-    if (!(this.p.seaFree > 0) || g.t < this.p.coreFrom) 
+    if (!(this.p.seaFree > 0) || g.t < this.p.coreFrom) return super.compSize(g);
+    if (this.freeAt === g.t) return this.freeComp;
+    const N = g.N, px = g.px, own = g.own, d = g.dir4, me = this.me;
+    const c = this.freeComp?.length === N ? this.freeComp.fill(0) : new Int32Array(N);
+    const seen = new Uint8Array(N), q = new Int32Array(N);
+    for (let s = 0; s < N; s++) {
+      if (px[s] !== T_LAND || seen[s]) continu
 
