@@ -29,11 +29,7 @@ for (const cand of [path.join(__dirname, 'node_modules/ws/package.json'), '/tmp/
 // ============================================================================
 export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onSpawnRequest, onRotateProxy, getStrategySource, mintTurnstileToken }) {
   const { port, socksPort, donorChromePort, slot } = bot;
-  const worker = new Worker(new URL(import.meta.url), {
-    execArgv: [],
-    workerData: { bot, strategySource: getStrategySource() }
-  });
-
+  const name = bot.name;
   let seq = 0;
   const pending = new Map();
 
@@ -50,31 +46,70 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onS
     enteredLobbyAt: 0,
     enteredGameAt: 0,
     minting: false,
-    worker,
+    mintStartedAt: 0,
+    evalTimeouts: 0,
+    worker: null,
     send() {},
+    respawnWorker(reason = 'watchdog') {
+      console.warn(`[${this.name}] [WATCHDOG] Respawning Worker (${reason})...`);
+      for (const [, fn] of pending) {
+        try { fn(null); } catch {}
+      }
+      pending.clear();
+      this.evalTimeouts = 0;
+      this.freshToken = false;
+      this.wasInGame = false;
+      this.minting = false;
+      const oldW = this.worker;
+      this.worker = null;
+      if (oldW) {
+        try { oldW.removeAllListeners(); } catch {}
+        try { oldW.terminate(); } catch {}
+      }
+      spawnWorker();
+    },
     evalJs(expression, awaitPromise = false) {
       return new Promise((resolve) => {
+        if (!this.worker) return resolve(null);
         const id = ++seq;
         const timer = setTimeout(() => {
-          pending.delete(id);
-          resolve(null);
-        }, 8000);
+          if (pending.has(id)) {
+            pending.delete(id);
+            this.evalTimeouts = (this.evalTimeouts || 0) + 1;
+            if (this.evalTimeouts >= 3) {
+              this.respawnWorker(`${this.evalTimeouts} consecutive evalJs timeouts`);
+            }
+            resolve(null);
+          }
+        }, 4500);
         pending.set(id, (val) => {
           clearTimeout(timer);
+          this.evalTimeouts = 0;
           resolve(val);
         });
-        worker.postMessage({ type: 'eval', id, expression, awaitPromise });
+        try {
+          this.worker.postMessage({ type: 'eval', id, expression, awaitPromise });
+        } catch {
+          clearTimeout(timer);
+          pending.delete(id);
+          resolve(null);
+        }
       });
     },
     mintToken() {
-      if (this.minting) return;
+      const now = Date.now();
+      if (this.minting && now - (this.mintStartedAt || 0) < 95000) return;
       this.minting = true;
+      this.mintStartedAt = now;
       console.log(`[${this.name}] (Worker) Requesting Turnstile token from Chrome :${donorChromePort}...`);
-      mintTurnstileToken(donorChromePort)
+      Promise.race([
+        mintTurnstileToken(donorChromePort),
+        new Promise((_, rej) => setTimeout(() => rej(new Error('mintTurnstileToken hard timeout 90s')), 90000))
+      ])
         .then((tok) => {
           this.minting = false;
-          this.freshToken = true;
-          worker.postMessage({
+          // Wait for worker 'token_imported' before setting freshToken = true!
+          this.worker?.postMessage({
             type: 'token',
             token: tok,
             strategySource: getStrategySource()
@@ -87,58 +122,117 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onS
     }
   };
 
-  worker.on('message', (msg) => {
-    client.lastMsgAt = Date.now();
-    if (msg.type === 'eval_res') {
-      const fn = pending.get(msg.id);
-      if (fn) {
-        pending.delete(msg.id);
-        fn(msg.value);
-      }
-    } else if (msg.type === 'need_token') {
-      client.freshToken = false;
-      client.enteredLobbyAt = 0;
-    } else if (msg.type === 'token_imported') {
-      client.freshToken = true;
-      console.log(`[${client.name}] (Worker) Fresh Turnstile token ready & v27team (slot=${slot}) imported!`);
-    } else if (msg.type === 'log') {
-      console.log(`[${client.name}]`, msg.text);
-      if (msg.text.includes('socket close index 3') || msg.text.includes('socket close index 2')) {
-        client.evalJs(`(() => { const d = window.dictionary, g = d && window[d.game]; if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true); })()`);
-      }
-      if (msg.text.includes('error 4563') || msg.text.includes('error 4530')) {
-        client.enteredLobbyAt = 0;
-      }
-      if (msg.text.includes('error 4591') || msg.text.includes('error 4215') || msg.text.includes('error 4577') || msg.text.includes('error 4229')) {
+  function spawnWorker() {
+    const w = new Worker(new URL(import.meta.url), {
+      execArgv: [],
+      workerData: { bot, strategySource: getStrategySource() }
+    });
+    client.worker = w;
+
+    w.on('message', (msg) => {
+      client.lastMsgAt = Date.now();
+      client.evalTimeouts = 0;
+      if (msg.type === 'eval_res') {
+        const fn = pending.get(msg.id);
+        if (fn) {
+          pending.delete(msg.id);
+          fn(msg.value);
+        }
+      } else if (msg.type === 'need_token') {
         client.freshToken = false;
         client.enteredLobbyAt = 0;
-        if (msg.text.includes('error 4577') && typeof onRotateProxy === 'function') {
-          onRotateProxy(client);
+      } else if (msg.type === 'token_imported') {
+        client.freshToken = true;
+        console.log(`[${client.name}] (Worker) Fresh Turnstile token ready & v27team (slot=${slot}) imported!`);
+      } else if (msg.type === 'log') {
+        console.log(`[${client.name}]`, msg.text);
+        if (msg.text.includes('socket close index 3') || msg.text.includes('socket close index 2')) {
+          client.evalJs(`(() => {
+            const d = window.dictionary, g = d && window[d.game];
+            const activeSockOpen = typeof b1 === "object" && b1?.z?.ef && (b1.z.ef(2) || b1.z.ef(3));
+            if (!activeSockOpen && g && g[d.sbLeave] && g[d.gameState] !== 0) {
+              g[d.sbLeave](true);
+            }
+          })()`);
         }
-        if (msg.text.includes('error 4229')) {
-          client.evalJs(`(() => { const d = window.dictionary, g = d && window[d.game]; if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true); })()`);
+        if (msg.text.includes('error 4563') || msg.text.includes('error 4530')) {
+          // Stagger re-entry after 4563/4530 lobby disconnect to prevent reconnect stampede
+          client.enteredLobbyAt = Date.now() - 12000 + (slot * 300);
         }
+        if (msg.text.includes('error 4591') || msg.text.includes('error 4215') || msg.text.includes('error 4577') || msg.text.includes('error 4576') || msg.text.includes('error 4229')) {
+          client.freshToken = false;
+          client.enteredLobbyAt = 0;
+          if ((msg.text.includes('error 4577') || msg.text.includes('error 4576')) && typeof onRotateProxy === 'function') {
+            onRotateProxy(client);
+          } else if (msg.text.includes('error 4577') || msg.text.includes('error 4576')) {
+            if (socksPort) {
+              const s = net.connect(socksPort, '127.0.0.1');
+              let stg = 0, b = Buffer.alloc(0);
+              s.on('error', () => {});
+              s.on('connect', () => s.write(Buffer.from([0x05, 0x01, 0x00])));
+              s.on('data', (c) => {
+                b = Buffer.concat([b, c]);
+                if (stg === 0 && b.length >= 2) {
+                  stg = 1;
+                  const hb = Buffer.from('rotate.proxy.local', 'utf8');
+                  const req = Buffer.alloc(4 + 1 + hb.length + 2);
+                  req[0] = 0x05; req[1] = 0x01; req[2] = 0x00; req[3] = 0x03;
+                  req[4] = hb.length; hb.copy(req, 5); req.writeUInt16BE(80, 5 + hb.length);
+                  s.write(req);
+                } else if (stg === 1 && b.length >= 10) {
+                  try { s.destroy(); } catch {}
+                }
+              });
+            }
+          }
+          if (msg.text.includes('error 4577') && typeof onRotateProxy !== 'function') {
+            client.evalJs(`(() => {
+              localStorage.setItem("d105", "");
+              localStorage.setItem("d106", "");
+              localStorage.setItem("v105", "0");
+              localStorage.setItem("v106", "0");
+              const setSetting = bm?.qq?.qr || bm?.qo?.qp;
+              if (typeof bm === "object" && typeof setSetting === "function") {
+                setSetting.call(bm.qq || bm.qo, 105, "");
+                setSetting.call(bm.qq || bm.qo, 106, "");
+              }
+            })()`);
+          }
+          if (msg.text.includes('error 4229')) {
+            client.evalJs(`(() => { const d = window.dictionary, g = d && window[d.game]; if (g && g[d.sbLeave] && g[d.gameState] !== 0) g[d.sbLeave](true); })()`);
+          }
+        }
+      } else if (msg.type === 'result') {
+        client.wasInGame = false;
+        client.enteredGameAt = 0;
+        if (onResult) onResult(client, msg.payload);
+      } else if (msg.type === 'game_init') {
+        client.wasInGame = true;
+        client.enteredGameAt = Date.now();
+        client.enteredLobbyAt = 0;
+        if (onGameInit) onGameInit(client, msg.initData);
+      } else if (msg.type === 'game_pkt') {
+        if (onGamePacket) onGamePacket(client, msg.pkt);
+      } else if (msg.type === 'spawn_req') {
+        if (onSpawnRequest) onSpawnRequest(client, msg);
       }
-    } else if (msg.type === 'result') {
-      client.wasInGame = false;
-      client.enteredGameAt = 0;
-      if (onResult) onResult(client, msg.payload);
-    } else if (msg.type === 'game_init') {
-      client.wasInGame = true;
-      client.enteredGameAt = Date.now();
-      client.enteredLobbyAt = 0;
-      if (onGameInit) onGameInit(client, msg.initData);
-    } else if (msg.type === 'game_pkt') {
-      if (onGamePacket) onGamePacket(client, msg.pkt);
-    } else if (msg.type === 'spawn_req') {
-      if (onSpawnRequest) onSpawnRequest(client, msg);
-    }
-  });
+    });
 
-  worker.on('error', (err) => {
-    console.error(`[${client.name}] Worker error:`, err.message);
-  });
+    w.on('error', (err) => {
+      console.error(`[${client.name}] Worker error:`, err.message);
+    });
 
+    w.on('exit', (code) => {
+      if (client.worker === w) {
+        console.warn(`[${client.name}] Worker exited unexpectedly (code=${code}), respawning in 1s...`);
+        setTimeout(() => {
+          if (client.worker === w) client.respawnWorker(`exit code ${code}`);
+        }, 1000);
+      }
+    });
+  }
+
+  spawnWorker();
   return client;
 }
 
@@ -988,3 +1082,4 @@ if (!isMainThread && workerData?.bot) {
     }
   });
 }
+

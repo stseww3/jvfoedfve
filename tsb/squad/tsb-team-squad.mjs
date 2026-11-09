@@ -1,5 +1,19 @@
 import fs from 'node:fs';
 import path from 'node:path';
+const __logStream = fs.createWriteStream('tsb-team-squad.log', { flags: 'a' });
+__logStream.on('error', () => {});
+const __origLog = console.log.bind(console);
+const __origErr = console.error.bind(console);
+console.log = (...args) => {
+  const s = args.map((x) => (typeof x === 'string' ? x : JSON.stringify(x))).join(' ');
+  __logStream.write(s + '\n');
+  __origLog(...args);
+};
+console.error = (...args) => {
+  const s = args.map((x) => (typeof x === 'string' ? x : String(x))).join(' ');
+  __logStream.write('[ERR] ' + s + '\n');
+  __origErr(...args);
+};
 import http from 'node:http';
 import net from 'node:net';
 import { fileURLToPath } from 'node:url';
@@ -574,14 +588,21 @@ async function ensureFirefoxDonor(port = 9225) {
 
     let ws = await tryConnectBidi();
     if (!ws && fs.existsSync(ffExe)) {
-      ensureFirefoxProfile(profDir, portToSocks[port] || 0);
-      console.log(`[FIREFOX-DONOR] Launching Mozilla Firefox on port ${port} (socks=${portToSocks[port] || 'direct'})...`);
+      try {
+        const { execSync } = await import('node:child_process');
+        execSync(`powershell -NoProfile -Command "Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'firefox.exe' -and $_.CommandLine -match 'firefox_donor_${port}' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"`, { stdio: 'ignore' });
+      } catch {}
+      await new Promise((r) => setTimeout(r, 600));
+      try { fs.unlinkSync(path.join(profDir, 'parent.lock')); } catch {}
+      try { fs.unlinkSync(path.join(profDir, '.startup-incomplete')); } catch {}
+      if (typeof ensureFirefoxProfile === 'function') ensureFirefoxProfile(profDir, (typeof portToSocks === 'object' && portToSocks[port]) || 0);
+      console.log(`[FIREFOX-DONOR] Launching Mozilla Firefox on port ${port}...`);
       const child = spawn(ffExe, ['-no-remote', '-profile', profDir, '--remote-debugging-port', String(port), 'https://territorial.io/'], {
         detached: true,
         stdio: 'ignore'
       });
       child.unref();
-      for (let retry = 0; retry < 15; retry++) {
+      for (let retry = 0; retry < 18; retry++) {
         await new Promise((r) => setTimeout(r, 1000));
         ws = await tryConnectBidi();
         if (ws) break;
@@ -753,6 +774,7 @@ async function mintViaDonorChrome(donorPort = 9225) {
       });
       const tok0 = check?.result?.result?.value || '';
       if (typeof tok0 === 'string' && tok0.length > 100) {
+        donor._mintFailCount = 0;
         return tok0;
       }
       await callBidi('input.performActions', {
@@ -772,6 +794,16 @@ async function mintViaDonorChrome(donorPort = 9225) {
           }
         ]
       });
+    }
+    donor._mintFailCount = (donor._mintFailCount || 0) + 1;
+    if (donor._mintFailCount >= 2) {
+      donor._mintFailCount = 0;
+      console.warn('[FIREFOX-DONOR] 2 consecutive mint timeouts on :' + donor.port + ' -> recycling Firefox donor...');
+      try { donor.ws.close(); } catch {}
+      firefoxDonors.delete(donor.port);
+      import('node:child_process').then(({ execSync }) => {
+        try { execSync(`powershell -NoProfile -Command "Get-CimInstance Win32_Process | Where-Object { $_.Name -eq 'firefox.exe' -and $_.CommandLine -match 'firefox_donor_${donor.port}' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }"`, { stdio: 'ignore' }); } catch {}
+      }).catch(() => {});
     }
     throw new Error('Firefox BiDi mint timeout');
   };
@@ -960,8 +992,16 @@ function reloadClientForToken(c) {
   }
 }
 
+let __syncTickBusy = false;
 setInterval(async () => {
-  if (clients.length < HEADLESS_BOTS.length) return;
+  if (__syncTickBusy || clients.length < HEADLESS_BOTS.length) return;
+  __syncTickBusy = true;
+  try {
+    const rssMB = Math.round(process.memoryUsage().rss / 1048576);
+    if (rssMB > 3200 && !clients.some((c) => c.wasInGame)) {
+      console.warn(`[MEM-WATCHDOG] RSS=${rssMB}MB (>3200MB) while idle -> recycling all Worker threads!`);
+      for (const c of clients) { if (c.respawnWorker) c.respawnWorker('RSS memory guard'); }
+    }
   const waitMode = isWaitNplMode();
   const headlessOnly = isHeadlessOnlyMode();
 
@@ -1607,4 +1647,8 @@ setInterval(async () => {
       }, enterJitterMs);
     }
   }
+  } finally {
+    __syncTickBusy = false;
+  }
 }, 2500);
+
