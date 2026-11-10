@@ -1,0 +1,202 @@
+# M1 引用核对（模拟器 c117 版 sim/，行号针对 97124c5c）
+
+## A1 组队局判定注释 / teams 数组
+  L115: // Team games (live gGameType < 7 or 9): teams[p] is the team of p, 0 for
+  L119: this.teams = new Uint8Array(P);
+  L124: this.donCap = 15;
+
+## A2 AI 轮流入队
+  L261: if (opts.botTeams !== false) for (let p = this.humans; p < this.players; p++) teams[p] = 1 + (p % this.nTeams);
+
+## A3 isEnemy / isEnemyOf / isTeammate
+  L267: return this.teams[p] === 0 || this.teams[p] !== this.teams[q];
+  L272: return p !== q && (this.teams[p] === 0 || this.teams[p] !== this.teams[q]);
+  L276: return p !== q && this.teams[p] !== 0 && this.teams[p] === this.teams[q];
+
+## A4 不能陆攻队友
+  L1269: // live bD.gv.ri: no land attack on a teammate
+  L1270: if (target < NEUTRAL && !this.isEnemy(p, target)) return false;
+
+## A5 边界判定 hostileTo（队友像素也算）
+  L174: return v === T_LAND || (v >= P_INNER && this.own[p] !== player);
+
+## A7 领先队 / 存活队数
+  L312: leadingTeam() {
+  L320: teamMembers(team) {
+  L328: teamsAlive() {
+
+## B1 捐款手续费 64/1024
+  L390: const fee = iV(64 * B, 1024);
+  L410: const fee = iV(64 * B, 1024);
+  L424: const fee = iV(64 * B, 1024);
+
+## B2 接收方余量 150x / 1.5e9
+  L342: v = Math.min(v, this.terr[q] * 150 - b);
+  L343: v = Math.min(v, 1.5e9 - b);
+
+## B3 配额成本分段
+  L350: if (t >= 3213) return 4 + iV(100 * v, Math.max(this.softCap(q), 1));
+  L352: if (t < 357) return 2 + iV(100 * v, uw);
+  L353: if (t < 714) return 2 + iV(100 * v, 4 * uw);
+  L354: if (t < 1071) return 2 + iV(100 * v, 10 * uw);
+  L355: if (t < 2142) return 2 + iV(100 * v, 30 * uw);
+  L356: return 2 + iV(100 * v, 100 * uw);
+
+## B3 配额上限增长
+  L382: this.donCap += t < 1071 ? 4 : t < 2142 ? 6 : t < 3213 ? 8 : 10;
+
+## B3 免配额条件
+  L361: return this.t >= 4284 || this.isBot(q);
+
+## B7 船到队友岸边交兵
+  L273: // live abQ -> bB.kw.rC: a boat reaching a teammate's shore hands its
+  L277: const v = this.receiverRoom(target, troops);
+
+## B8 AI 捐款
+  L180: botDonate(p, dn, diff, cap) {
+  L185: if (p < this.humans) dn = B;
+  L187: if ((diff === 5 && B < cap) || (diff === 4 && B < iV(cap, 2))) return;
+  L194: if (this.recentWar[q]) return this.botGive(p, q, dn);
+  L198: if (this.boatCount[q] && q !== p) return this.botGive(p, q, dn);
+
+## C1 发船手续费 32/1024、最少 60 兵
+  L105: if (troops < 60) {
+  L786: if (!(this.quote(p, pct, 32) >= 0)) return false;
+  L871: if (!(this.quote(p, pct, 32) >= 0)) return false;
+
+## C1 陆攻手续费 12/1024
+  L1230: const fee = iV(12 * this.bal[p], 1024);
+  L1266: if (!(this.quote(p, pct, 12) >= 0)) return false;
+
+## C2 船数上限
+  L6: const MAX_BOATS = 512;
+  L7: const PLAYER_BOATS = 8;
+  L8: const MAX_ROUTES = 65536;
+
+## C3 航速
+  L303: const speed = hit[b] ? 4e4 : 25e4 + Math.min(20 * tr, 3e5) + Math.min(tr >> 3, 5e4);
+
+## C4 海上损耗
+  L208: if (this.t % 5 === 3) this.decayBoats();
+  L364: troops[b] = Math.max(v - Math.max(1, v >> 7), 0);
+
+## C5 船战
+  L10: const FIGHT_RANGE2 = 14400;
+  L207: if (this.t % 2 === 1) this.fightBoats();
+  L351: const dmg = v <= mine ? Math.max(1, iV(v + iV(mine - v, 10), 10)) : Math.max(1, iV(mine, 10));
+
+## C6 登陆
+  L262: landAt(p, troops, c, at) {
+  L282: if (this.hasAttack(p, target) || this.hasFreeSlot(p)) {
+
+## C7 召回
+  L406: if (type % 64 === 5) return false;
+
+## C8 追船
+  L505: if (limit && 120 < dist) return false;
+  L870: if (pct === 849) pct = 850;
+
+## C9 进攻槽
+  L106: this.slotsHuman = this.humans < 16 ? 12 : 8;
+  L107: this.slotsBot = 4;
+
+## D1 难度表 / 初始兵
+  L18: const HUMAN_START_BALANCE = 512;
+  L19: const BOT_START_BALANCE = [60, 74, 112, 200, 256, 512, 512];
+  L22: timerSpeed: [97, 94, 70, 40, 20, 0, 100],
+  L23: boatPct: [500, 450, 400, 300, 80, 50, 100],
+  L24: weakestPct: [0, 0, 5, 25, 50, 100, 0],
+  L25: boatLimit: [1, 2, 3, 4, 6, 8, 1],
+  L27: interceptPermille: [100, 150, 250, 400, 600, 1000, 100],
+
+## D2 AI 决策节拍
+  L107: this.botTimer[p] = iV(this.botPeriod[p], 10);
+  L108: this.botAttack(p, iV(this.botPct[p] * this.bal[p], 1e3));
+
+## D3 AI 选目标
+  L128: else if (rng.chance(DIFFICULTY.weakestPct[diff])) this.botAttackPlayer(p, dn, this.weakestTarget(p), diff);
+  L131: if (this.anyBotTarget() && rng.chance(DIFFICULTY.timerSpeed[diff])) this.keepBotTargets();
+  L142: botAttackTeam(p, dn, diff, cap) {
+  L152: if (rng.chance(DIFFICULTY.weakestPct[diff])) {
+  L156: if (this.anyBotTarget() && rng.chance(DIFFICULTY.timerSpeed[diff])) this.keepBotTargets();
+
+## D4 AI 组队局：陆攻 > 船 > 山 > 捐
+  L167: if (this.botBoat(p)) return;
+  L168: if (this.botMountain(p)) return;
+  L169: this.botDonate(p, dn, diff, cap);
+
+## D6 离开的真人按难度 6 运行
+  L225: // (difficulty 6: a send every 80 ticks at a random neighbour, 1.5% of its
+  L229: leave(p) {
+  L231: this.state[p] = 2;
+
+## D7 AI 拦船
+  L653: if (this.t % 51 !== 45) return;
+  L684: return len <= 60;
+
+## D9 领先队占 80% 后的追猎
+  L1418: if (!this.teamGame || this.t % 109 !== 9 || this.aliveCount < 20) return;
+  L1422: if (lead === 0 || lands[lead] < iV(8 * this.land, 10)) return;
+
+## E1 出生格
+  L15: const SPAWN_CELL = 10;
+  L16: const SPAWN_BLOCK = 6;
+
+## E2 出生形状（4x4 去四角）
+  L615: if (!((fb < x && x < fb + 3) || (fc < y && y < fc + 3))) continue;
+
+## E3 选点：点击处向外最多 20 圈
+  L670: for (let r = 0; r < 20; r++) {
+
+## F1 胜利判定
+  L122: this.winnerTeam = 0;
+  L1406: if (this.leaderLand < this.land) return;
+  L1408: if (this.enemyBoatsOf(this.rank[0]) > 0) return;
+  L1411: this.winnerTeam = this.teams[this.winner];
+
+## F2 淘汰：领土 <= 峰值/4
+  L1303: if (bx <= iV(jP, 4)) this.collapse(p);
+  L1307: } else this.peak[p] = jP - Math.max(1, iV(jP - bx, 1e3));
+
+# 录像解码器（fdvg c58 tools/c102-replay-lib.mjs @2d3bbd36）
+
+## G1 头部字段
+  L60: i2(12); i2(12); i2(31); // version, vs, stated size
+  L79: vu.numberTeams = i2(4);
+  L88: vu.teamPlayerCount = aHn(4, 10, 9);
+  L92: vu.botDifficultyTeam = aHn(4, 4, 9);
+
+## G2 指令编码
+  L109: const id = i2(4), player = i2(9);
+  L111: if (id === 0) dX = i2(22);
+  L112: else if (id === 1) { dX = i2(10); dZ = i2(10); }
+  L113: else if (id === 2) { dX = i2(10); dZ = i2(9); }
+  L114: else if (id === 3) { dX = i2(10); dZ = i2(27); }
+  L115: else if (id === 4) { dX = i2(10); dZ = i2(16); }
+  L116: else if (id === 5 || id === 6) dX = i2(10);
+  L117: else if (id === 7) dX = i2(1);
+  L118: else if (id === 10) { dX = i2(20); dZ = i2(22); }
+  L192: } else if (id === 1) {
+  L200: } else if (id === 3) {
+  L211: } else if (id === 4) {
+  L214: } else if (id === 5) {
+
+## G3 出生阶段帧数
+  L244: const jJ = H <= 2 ? 30 : H <= 50 ? 40 : 50;
+
+## G4 旧工具里多人局 AI 难度的假设
+  L146: difficulty: H > 1 ? 0 : vu.botDifficultyValue,
+
+# 海洋笔记 / c6 笔记
+
+## N1 船手续费、船战距离的旧说法
+  L40: - 发船：带 (pct+1)/1024 的家里兵，另收手续费 32/1024（3.1%）的家里兵（陆攻 12/1024 = 1.2%）。
+  L42: - 每人海上最多 8 艘，全场最多 512 艘。
+  L45: - 海上损耗：每 5 tick 掉 max(1, 兵/128)。大船每 100 tick 掉 14.5%。
+  L46: 兵 < 256 的小船每 5 tick 掉 1，能走约 1.2×兵 像素：60 兵约 72 像素，120 兵约 144 像素。
+  L51: - 船战：两船相距 7.5 像素内每 2 tick 互打一次，小船掉 10% 自己的兵 + 1% 兵差，大船掉小船兵的 10%。
+  L53: - 拦截：派船追敌船（chase），追到 7.5 像素内开打；被追的船没了，追船自动回家。
+
+## N2 单人局逐拍吻合的旧说法
+  L20: 2:14071 --seed <spawningSeed>` tick for tick (land, troops, rank, players
+
