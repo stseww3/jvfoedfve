@@ -1,0 +1,938 @@
+{
+  "exportedAt": "2026-11-10T15:08:06.139Z",
+  "c116": [
+    {
+      "path": "c116/add_live_replay_hook.mjs",
+      "size": 1109,
+      "mtimeIso": "2026-11-08T12:15:59.050Z",
+      "mtimeMs": 1794140159050.3074,
+      "sha256": "69f16872e97ff648133226895fd3c4a52c9cb999e505a44da9be8cafe672f88f"
+    },
+    {
+      "path": "c116/add_sc_hotreload.mjs",
+      "size": 733,
+      "mtimeIso": "2026-11-08T15:35:45.199Z",
+      "mtimeMs": 1794152145199.1711,
+      "sha256": "c248cb3c00edf13237a5a91ce4fd3c17e872536a2688983341c634db82cabd16"
+    },
+    {
+      "path": "c116/apply_s01_s10_fixes.mjs",
+      "size": 4822,
+      "mtimeIso": "2026-11-09T23:34:05.485Z",
+      "mtimeMs": 1794267245485.2314,
+      "sha256": "9c54056bc2ef6797977231e06d85c839b9b8ad937e1422a74e0b9e751e200217"
+    },
+    {
+      "path": "c116/build_apex_local.mjs",
+      "size": 6622,
+      "mtimeIso": "2026-11-08T04:45:07.164Z",
+      "mtimeMs": 1794113107164.1206,
+      "sha256": "7eaa6574f5cfa90b0c68cb2e835057616bc4a1b180dca7f417c2ea82a43ada02"
+    },
+    {
+      "path": "c116/build_c136_export.mjs",
+      "size": 6200,
+      "mtimeIso": "2026-11-10T15:07:39.961Z",
+      "mtimeMs": 1794323259960.9512,
+      "sha256": "d6f6da6d0ca9cef0824eee7200b68e30b2c8a26d6a5ae28379c40aba36fbede4"
+    },
+    {
+      "path": "c116/check_donor_9228.mjs",
+      "size": 1119,
+      "mtimeIso": "2026-11-08T13:41:10.688Z",
+      "mtimeMs": 1794145270687.8684,
+      "sha256": "37baba17bd139799367a3e41b7b5be2c33c851adcc269f168148eded9ea5bf24"
+    },
+    {
+      "path": "c116/check_ff_iframe.mjs",
+      "size": 1661,
+      "mtimeIso": "2026-11-08T14:13:37.123Z",
+      "mtimeMs": 1794147217123.4956,
+      "sha256": "d2652f1d2a1ec55d589ea03414e312f1e804a4d78753528d13344763c50f0706"
+    },
+    {
+      "path": "c116/check_ff_ts_state.mjs",
+      "size": 2562,
+      "mtimeIso": "2026-11-08T14:18:49.070Z",
+      "mtimeMs": 1794147529070.471,
+      "sha256": "6373e7fddf22614d444ee90e83ef8a2e6dee1179faa28811f5a76086d4ec892c"
+    },
+    {
+      "path": "c116/check_live_ver.mjs",
+      "size": 1910,
+      "mtimeIso": "2026-11-09T23:21:36.981Z",
+      "mtimeMs": 1794266496980.6355,
+      "sha256": "45c2a46d570279120ff3fc37c460135ff7ee44081195ac8d2b41e984675872ae"
+    },
+    {
+      "path": "c116/diff_v2_17_3.mjs",
+      "size": 1286,
+      "mtimeIso": "2026-11-09T23:24:12.749Z",
+      "mtimeMs": 1794266652748.7483,
+      "sha256": "ea04bfc91326dbe9807138d8732228b406723b46b893407c9c2d44a09775ce84"
+    },
+    {
+      "path": "c116/dump_live_replay_url.mjs",
+      "size": 1082,
+      "mtimeIso": "2026-11-08T12:18:25.777Z",
+      "mtimeMs": 1794140305776.507,
+      "sha256": "8257fbfdcad8b3f70d1add7636618af8c60f9855d733a8799db5fbc9889dbb36"
+    },
+    {
+      "path": "c116/enable_backend_spawn.mjs",
+      "size": 1837,
+      "mtimeIso": "2026-11-08T05:13:45.099Z",
+      "mtimeMs": 1794114825098.681,
+      "sha256": "a49b26bf5182254bc02b1dbc8132b0883d728e15023be03d739d016bed64ac8e"
+    },
+    {
+      "path": "c116/enable_sc_hotreload.mjs",
+      "size": 1297,
+      "mtimeIso": "2026-11-08T15:41:14.754Z",
+      "mtimeMs": 1794152474754.0608,
+      "sha256": "5bd6a6e861bc4a243a99ead57ea398281e32928184ca68cba090625ba7a0b785"
+    },
+    {
+      "path": "c116/ff_turnstile_clip.png",
+      "size": 7117,
+      "mtimeIso": "2026-11-08T14:19:16.203Z",
+      "mtimeMs": 1794147556202.8525,
+      "sha256": "3bc7611af9051771a2f91613d92730d15eeb4b04b87f311870fd8aaa542e1074"
+    },
+    {
+      "path": "c116/ff_turnstile_clip2.png",
+      "size": 7025,
+      "mtimeIso": "2026-11-08T14:20:33.628Z",
+      "mtimeMs": 1794147633628.3337,
+      "sha256": "14bf951276e6e53b0466ab9fa8813c8f56507f0c2e50b83116a7658621624363"
+    },
+    {
+      "path": "c116/fix_10bot_spawn_and_leadlock.mjs",
+      "size": 2832,
+      "mtimeIso": "2026-11-08T06:33:13.378Z",
+      "mtimeMs": 1794119593377.9163,
+      "sha256": "daf8604a1d68ce3945acbe1bd7ae2432640622972f07d4b9a7b831155a9dc606"
+    },
+    {
+      "path": "c116/fix_2d_centroid_disc.mjs",
+      "size": 4080,
+      "mtimeIso": "2026-11-08T15:04:06.314Z",
+      "mtimeMs": 1794150246314.4836,
+      "sha256": "acf88e31199bb354a4fdcda293c772006c857be72e24c4fbb4e6ec379bbe7b68"
+    },
+    {
+      "path": "c116/fix_2d_disc_phalanx.mjs",
+      "size": 2921,
+      "mtimeIso": "2026-11-08T10:11:34.250Z",
+      "mtimeMs": 1794132694250.049,
+      "sha256": "a6bb62f5d0aa7fe7e958d4a2b0592a7d53eb11b0de3f80a849df2c2d314ef0d4"
+    },
+    {
+      "path": "c116/fix_4576_rotate.mjs",
+      "size": 2051,
+      "mtimeIso": "2026-11-08T14:58:16.123Z",
+      "mtimeMs": 1794149896122.7424,
+      "sha256": "62bb8465cd2551c032ec26b42d3f9693d838168c8cbb07cf0c65e0e16b06c94d"
+    },
+    {
+      "path": "c116/fix_4577_rotate.mjs",
+      "size": 1666,
+      "mtimeIso": "2026-11-08T07:34:37.673Z",
+      "mtimeMs": 1794123277673.4067,
+      "sha256": "06332eba1ef27e2515cc530fd024493ed4727a4bbb9c5c75bb051cde6deb88bb"
+    },
+    {
+      "path": "c116/fix_act_replay_snap.mjs",
+      "size": 1928,
+      "mtimeIso": "2026-11-08T12:37:51.142Z",
+      "mtimeMs": 1794141471141.7854,
+      "sha256": "4ac7dde5cd36e472f3b2aa120e18d7789603ac86ddbe5d484d6338be946ea3f6"
+    },
+    {
+      "path": "c116/fix_anticollision.mjs",
+      "size": 2001,
+      "mtimeIso": "2026-11-08T06:04:40.768Z",
+      "mtimeMs": 1794117880767.572,
+      "sha256": "050c55d50aabefc973783ec175186bcd728ff60d81c18841a654e6c206a5c15d"
+    },
+    {
+      "path": "c116/fix_anti_hang_both.mjs",
+      "size": 14434,
+      "mtimeIso": "2026-11-09T14:48:51.548Z",
+      "mtimeMs": 1794235731547.9724,
+      "sha256": "9359118d58fe0a040c8b9377d5d97737b369beecc4f398294bbaa6a3ca2a5fde"
+    },
+    {
+      "path": "c116/fix_boxedin_skimming.mjs",
+      "size": 1338,
+      "mtimeIso": "2026-11-08T07:48:46.597Z",
+      "mtimeMs": 1794124126597.079,
+      "sha256": "e76dee2559861ba4cff24a88c7fe2ab885d333b30c5835336933c44002b5f17e"
+    },
+    {
+      "path": "c116/fix_broken_ao_id.mjs",
+      "size": 1160,
+      "mtimeIso": "2026-11-08T16:02:54.138Z",
+      "mtimeMs": 1794153774138.3713,
+      "sha256": "cd75540b9c90cbc8576da9617ba8755512390655a9ddf18f6846e92a3614f4e6"
+    },
+    {
+      "path": "c116/fix_buyland_first_and_frontline_floor.mjs",
+      "size": 3067,
+      "mtimeIso": "2026-11-08T07:58:30.872Z",
+      "mtimeMs": 1794124710872.2388,
+      "sha256": "8f1ed6b69138c3049955dd9beb2b44f68cd2929caf7fb085c717b159ed23edd2"
+    },
+    {
+      "path": "c116/fix_c110_log_lock.mjs",
+      "size": 935,
+      "mtimeIso": "2026-11-08T13:08:34.535Z",
+      "mtimeMs": 1794143314535.272,
+      "sha256": "9281a775ae86c1613799551fdfadd089917802ca9261086b993fbf3d5dd9f154"
+    },
+    {
+      "path": "c116/fix_c116_daytime_rootcause.mjs",
+      "size": 4476,
+      "mtimeIso": "2026-11-10T14:16:33.086Z",
+      "mtimeMs": 1794320193086.1758,
+      "sha256": "fc49b0c1d6fa423c396c78744ec6a432da47375cc2178c93a4ed3565029ad663"
+    },
+    {
+      "path": "c116/fix_coastal_breakout.mjs",
+      "size": 2284,
+      "mtimeIso": "2026-11-08T11:33:54.924Z",
+      "mtimeMs": 1794137634923.7622,
+      "sha256": "eb8ef901faf90cf5ad666f7aaaff3da2932c8684d6a5247a14a95fa21fae86f8"
+    },
+    {
+      "path": "c116/fix_corner_fan_radius.mjs",
+      "size": 1821,
+      "mtimeIso": "2026-11-08T15:54:46.665Z",
+      "mtimeMs": 1794153286664.5208,
+      "sha256": "7122c2cf8d23212980c9b3b1d55be0336a64e18c8bde8a789022851717cb99e1"
+    },
+    {
+      "path": "c116/fix_corner_sector_phalanx.mjs",
+      "size": 8194,
+      "mtimeIso": "2026-11-08T15:42:02.489Z",
+      "mtimeMs": 1794152522489.44,
+      "sha256": "0eac4089dabeb0102158a2140663e199ad017ce852ccc834bead4220d2716c91"
+    },
+    {
+      "path": "c116/fix_cpu_and_ready.mjs",
+      "size": 3032,
+      "mtimeIso": "2026-11-08T14:00:57.302Z",
+      "mtimeMs": 1794146457302.1326,
+      "sha256": "a3191651e11e1a755729707cf20be1587b78d0762167ce8c2d8454ad26f15703"
+    },
+    {
+      "path": "c116/fix_crown_priority.mjs",
+      "size": 2691,
+      "mtimeIso": "2026-11-08T07:00:26.496Z",
+      "mtimeMs": 1794121226496.1538,
+      "sha256": "ba7df9b464487a6e895298cb548adaa81091f6fdbe0207a5336f5316932cc959"
+    },
+    {
+      "path": "c116/fix_crown_snipe_and_spacing.mjs",
+      "size": 3370,
+      "mtimeIso": "2026-11-08T07:11:39.365Z",
+      "mtimeMs": 1794121899364.9846,
+      "sha256": "c045b181c3ae87721a03e5ca3f9281ec4eec96d39281b83096ab3e828443171f"
+    },
+    {
+      "path": "c116/fix_delayed_socket_close.mjs",
+      "size": 1170,
+      "mtimeIso": "2026-11-08T08:19:12.885Z",
+      "mtimeMs": 1794125952885.138,
+      "sha256": "d40fc775daaa74d3660956af5f37300e44b896411ff7a612fba759b15b29acf3"
+    },
+    {
+      "path": "c116/fix_disc_radius.mjs",
+      "size": 698,
+      "mtimeIso": "2026-11-08T11:40:21.708Z",
+      "mtimeMs": 1794138021707.7957,
+      "sha256": "4a7596d6e73cf45c4d47d28b79be0260334eff218ab86f8858bf311a0f3eae5c"
+    },
+    {
+      "path": "c116/fix_donate_quota_check.mjs",
+      "size": 3020,
+      "mtimeIso": "2026-11-08T07:22:41.213Z",
+      "mtimeMs": 1794122561213.3684,
+      "sha256": "0f398bcb4483d04012d6a03e1dca58932eac0c28d0b894da6f400777890850fb"
+    },
+    {
+      "path": "c116/fix_every_match_replay.mjs",
+      "size": 1804,
+      "mtimeIso": "2026-11-08T12:20:18.783Z",
+      "mtimeMs": 1794140418782.629,
+      "sha256": "adba83d3cc4b55fbf0155c074bc21970e1a46905a7a5eb6ea882922a00f9dc72"
+    },
+    {
+      "path": "c116/fix_ff_recycle.mjs",
+      "size": 1337,
+      "mtimeIso": "2026-11-08T15:05:03.049Z",
+      "mtimeMs": 1794150303048.937,
+      "sha256": "c0661e790cc8d93c0bcc1383f6272b9c189b33f032dd257eb49597502baadfac"
+    },
+    {
+      "path": "c116/fix_ff_singleton.mjs",
+      "size": 1173,
+      "mtimeIso": "2026-11-08T14:55:10.453Z",
+      "mtimeMs": 1794149710452.886,
+      "sha256": "1185fe0c30f923dbcb5e407cf924a7bff043f0dde8cb5a3abe9c64edbc16d3ae"
+    },
+    {
+      "path": "c116/fix_frontline_suicide_dump.mjs",
+      "size": 1317,
+      "mtimeIso": "2026-11-08T07:26:39.412Z",
+      "mtimeMs": 1794122799412.0479,
+      "sha256": "19006aa47d02938370dcb01b99c14b8cbdfd0376ddb7f7c58dce56ccdab9e0a3"
+    },
+    {
+      "path": "c116/fix_ghost_donate.mjs",
+      "size": 698,
+      "mtimeIso": "2026-11-08T11:43:08.165Z",
+      "mtimeMs": 1794138188164.6292,
+      "sha256": "875bb4e98e80023de1b11b15547dc9fcf09fada5d956b56cb0c54e774479105c"
+    },
+    {
+      "path": "c116/fix_headless_4577.mjs",
+      "size": 1877,
+      "mtimeIso": "2026-11-08T07:35:53.438Z",
+      "mtimeMs": 1794123353437.7532,
+      "sha256": "c0351a3d8c2c2441d3b03ee9e416c562b7dbe68b0ada6823bd7eff7539572654"
+    },
+    {
+      "path": "c116/fix_human_stats.mjs",
+      "size": 1005,
+      "mtimeIso": "2026-11-08T11:48:12.150Z",
+      "mtimeMs": 1794138492149.6545,
+      "sha256": "a6ef78ae6395294b48b374f9c1b1d28b58e10f50b0a94d766adceda655b63802"
+    },
+    {
+      "path": "c116/fix_idle_boats_strict.mjs",
+      "size": 1635,
+      "mtimeIso": "2026-11-08T12:04:57.120Z",
+      "mtimeMs": 1794139497119.7397,
+      "sha256": "59cecd0fe5d99b5548c53df65393a4aa642e97db61395ed478b1221d7f8423bd"
+    },
+    {
+      "path": "c116/fix_inject_method.mjs",
+      "size": 493,
+      "mtimeIso": "2026-11-08T15:50:27.044Z",
+      "mtimeMs": 1794153027043.8303,
+      "sha256": "5715e97d5d9400cdcaf88b161aedee448263a807635b3d018261d4dca3b04c84"
+    },
+    {
+      "path": "c116/fix_live_tick_stall.mjs",
+      "size": 3571,
+      "mtimeIso": "2026-11-08T14:50:59.949Z",
+      "mtimeMs": 1794149459949.0325,
+      "sha256": "8d68b717121d9a6eeff4fb8ae5ec144a04ec5f41032266074a85f33efa9c0208"
+    },
+    {
+      "path": "c116/fix_lobby_split.mjs",
+      "size": 1511,
+      "mtimeIso": "2026-11-08T07:42:29.982Z",
+      "mtimeMs": 1794123749981.77,
+      "sha256": "98e64b9e0c8d38f217aeb66cdb3e035d36658891e2469573cb904ec0a2709bfa"
+    },
+    {
+      "path": "c116/fix_mint_queue_and_c110_log.mjs",
+      "size": 1812,
+      "mtimeIso": "2026-11-09T14:52:25.372Z",
+      "mtimeMs": 1794235945371.9565,
+      "sha256": "0b7de49a0c2ba3b1e3adb5347a259031746409b771a8c46c736bc48d9c6f3452"
+    },
+    {
+      "path": "c116/fix_no_boss_voronoi_spawn.mjs",
+      "size": 2168,
+      "mtimeIso": "2026-11-08T07:13:22.819Z",
+      "mtimeMs": 1794122002818.7837,
+      "sha256": "9eec83031b66e71dd1f588470259cc65143786b436ff21aa119dbf91ee9342cb"
+    },
+    {
+      "path": "c116/fix_opening_cpu_5x.mjs",
+      "size": 653,
+      "mtimeIso": "2026-11-08T14:35:05.914Z",
+      "mtimeMs": 1794148505913.64,
+      "sha256": "3b4c792b93692ea1987ba3b97f9b0f84b30ada0caac201493e886398f28bc052"
+    },
+    {
+      "path": "c116/fix_peace_and_true_circle.mjs",
+      "size": 5942,
+      "mtimeIso": "2026-11-08T15:28:46.717Z",
+      "mtimeMs": 1794151726717.154,
+      "sha256": "4c6edbb0c4bb3fea4f7571bbcf82bcc165602189e52d750d627c9f3ac625b642"
+    },
+    {
+      "path": "c116/fix_peopleof_bot_nbs.mjs",
+      "size": 1830,
+      "mtimeIso": "2026-11-08T15:55:34.506Z",
+      "mtimeMs": 1794153334506.3777,
+      "sha256": "f82025b67caaaa25460601719392e6945064b611f74c5a026ef425d9a59b7edc"
+    },
+    {
+      "path": "c116/fix_phalanx_and_boxedin.mjs",
+      "size": 3080,
+      "mtimeIso": "2026-11-08T06:41:48.569Z",
+      "mtimeMs": 1794120108569.01,
+      "sha256": "e14dba85a6537f5e3f950325718c71447988f97c4761e767f93612bbb07f480a"
+    },
+    {
+      "path": "c116/fix_policy_idleboats.mjs",
+      "size": 1001,
+      "mtimeIso": "2026-11-08T10:58:12.629Z",
+      "mtimeMs": 1794135492628.7131,
+      "sha256": "7911ffdd6edb80f19538ad02a4aec0a3a8c89932e3c9658b7c640d83ca0bd18e"
+    },
+    {
+      "path": "c116/fix_quit_and_crown.mjs",
+      "size": 3879,
+      "mtimeIso": "2026-11-08T11:55:55.531Z",
+      "mtimeMs": 1794138955530.7634,
+      "sha256": "5c726a73dddf51c67dd723c0de4e4162e6d027a3c907a53acc4fc8c25421c2b1"
+    },
+    {
+      "path": "c116/fix_rcell_scaling.mjs",
+      "size": 729,
+      "mtimeIso": "2026-11-08T14:37:05.289Z",
+      "mtimeMs": 1794148625289.284,
+      "sha256": "b9e40a25beef6946880b945b46bee8e88eeef52dc74b6a4bbf2e5e64f8717cfa"
+    },
+    {
+      "path": "c116/fix_ready_cond.mjs",
+      "size": 1265,
+      "mtimeIso": "2026-11-08T08:30:32.665Z",
+      "mtimeMs": 1794126632664.5793,
+      "sha256": "cdc929a83136e925115be4c61984e2a7e9cbe3c1c9865d77d78aedaf7c9b9035"
+    },
+    {
+      "path": "c116/fix_rear_boats_and_sunkcost.mjs",
+      "size": 3208,
+      "mtimeIso": "2026-11-08T08:40:37.824Z",
+      "mtimeMs": 1794127237824.1196,
+      "sha256": "ff13fb6ff37568f82824bc0902c87b80ddc005cc5b10ead7b71632f5dbd80c15"
+    },
+    {
+      "path": "c116/fix_reservoir_stagger.mjs",
+      "size": 1720,
+      "mtimeIso": "2026-11-08T11:33:21.740Z",
+      "mtimeMs": 1794137601739.5745,
+      "sha256": "2d0811195c2ea1d8fc39fff34af38de62cc6abee011fdeaa967027991ceae877"
+    },
+    {
+      "path": "c116/fix_save_replays.mjs",
+      "size": 2868,
+      "mtimeIso": "2026-11-08T12:15:00.329Z",
+      "mtimeMs": 1794140100329.231,
+      "sha256": "b85daf469be7ac481fac130fdee9e6fa947282721a9cb222844b015b1c3a14ee"
+    },
+    {
+      "path": "c116/fix_sc_syntax.mjs",
+      "size": 542,
+      "mtimeIso": "2026-11-08T14:54:11.637Z",
+      "mtimeMs": 1794149651637.1943,
+      "sha256": "3179dd5026d80d52de1a77d44bc5bff178f7e08d8be66f4a8bccabef35764028"
+    },
+    {
+      "path": "c116/fix_spawn_landmask.mjs",
+      "size": 1237,
+      "mtimeIso": "2026-11-08T05:35:52.214Z",
+      "mtimeMs": 1794116152213.7563,
+      "sha256": "4ab89710dc93ad8e8a25b6f1b5e200b983d0597171457dfd2573650d3b9c8fa3"
+    },
+    {
+      "path": "c116/fix_stale_token_retry.mjs",
+      "size": 2403,
+      "mtimeIso": "2026-11-08T13:01:18.855Z",
+      "mtimeMs": 1794142878854.7585,
+      "sha256": "02e01a7d64dfa4343c86a0a08fc0aa21911fcc6e2bf9f9c0a57e7bdc0108a847"
+    },
+    {
+      "path": "c116/fix_v27_deadlock_params.mjs",
+      "size": 2455,
+      "mtimeIso": "2026-11-08T06:48:20.191Z",
+      "mtimeMs": 1794120500190.667,
+      "sha256": "c11b1d25f72e9fe08b3e683a9a6e7ecb4921b564733d06317a2853a4a5389e9c"
+    },
+    {
+      "path": "c116/fix_virtual_anchor_continent.mjs",
+      "size": 2348,
+      "mtimeIso": "2026-11-08T07:30:55.771Z",
+      "mtimeMs": 1794123055770.6655,
+      "sha256": "1a9ea879ff191bf8517dd75a23a3c68a7edb39671e29f90418e34563e3841fe3"
+    },
+    {
+      "path": "c116/fix_worker_infinite_loop_and_team_room.mjs",
+      "size": 3329,
+      "mtimeIso": "2026-11-08T13:46:09.685Z",
+      "mtimeMs": 1794145569685.244,
+      "sha256": "09a376c813c08c4a1448a22adcd959cbc65b7d818b67cc77afc2cc6af312c1e6"
+    },
+    {
+      "path": "c116/fix_worker_replays.mjs",
+      "size": 2025,
+      "mtimeIso": "2026-11-08T12:15:16.285Z",
+      "mtimeMs": 1794140116284.8438,
+      "sha256": "562794293fe39dc2ecc1cc120cff2d3846c8c960f60eec8959af8fcc5ec4bc89"
+    },
+    {
+      "path": "c116/fix_ws_ping_keepalive.mjs",
+      "size": 878,
+      "mtimeIso": "2026-11-08T11:32:48.024Z",
+      "mtimeMs": 1794137568024.2036,
+      "sha256": "c15cea3bf9705bbd6b35c932cf5ae0289131fdb6c6c649530e3b911665c43f26"
+    },
+    {
+      "path": "c116/fresh_9225.html",
+      "size": 715609,
+      "mtimeIso": "2026-11-10T15:01:31.608Z",
+      "mtimeMs": 1794322891608.1328,
+      "sha256": "7c74af3e1bd96fea5216f8ba6b513bedcbb5a1aadc8ff7c59a6e4c434f499a76"
+    },
+    {
+      "path": "c116/gproxy.conf",
+      "size": 81,
+      "mtimeIso": "2026-11-07T14:34:47.997Z",
+      "mtimeMs": 1794062087997.46,
+      "sha256": "37b42c8b6c003560039f51a7dd00a7c71f3978eb91355192d74a715b92a45de6"
+    },
+    {
+      "path": "c116/headless-bot.mjs",
+      "size": 45757,
+      "mtimeIso": "2026-11-09T14:52:37.694Z",
+      "mtimeMs": 1794235957693.6636,
+      "sha256": "5295ca924014092441748453d6b9a5c634e62cf5fdc12da455532b17191e90da"
+    },
+    {
+      "path": "c116/inspect_donate.mjs",
+      "size": 416,
+      "mtimeIso": "2026-11-08T11:42:42.264Z",
+      "mtimeMs": 1794138162264.0024,
+      "sha256": "3d630c4f2ee1723db2b0151dde58d492b5a25eb56a24f680166dd183e5c7ae07"
+    },
+    {
+      "path": "c116/install_joint_yield_optimizer.mjs",
+      "size": 13030,
+      "mtimeIso": "2026-11-08T07:45:09.476Z",
+      "mtimeMs": 1794123909475.825,
+      "sha256": "62cb6804856c7e9eae1dc9c67b649128898f2ed36478b5150044cf09512cf446"
+    },
+    {
+      "path": "c116/install_organism_dispatch.mjs",
+      "size": 11004,
+      "mtimeIso": "2026-11-08T07:39:39.327Z",
+      "mtimeMs": 1794123579326.6372,
+      "sha256": "372fb34a0a989fa2b8cc7d36636b7ad85f466ee7be2bbf6ad63211b868975979"
+    },
+    {
+      "path": "c116/live_dictionary.json",
+      "size": 1465,
+      "mtimeIso": "2026-11-08T03:09:48.774Z",
+      "mtimeMs": 1794107388774.1821,
+      "sha256": "711ea82ea687de0f90868a8014b3cda1acadd3b5bd2be56a2b852c473b3f0966"
+    },
+    {
+      "path": "c116/live_game_js.js",
+      "size": 681660,
+      "mtimeIso": "2026-11-10T15:01:58.140Z",
+      "mtimeMs": 1794322918139.5366,
+      "sha256": "c7d41fee823185ea4d0ffaf6557141bce9d5b387fea67b5502b63d7139f5f551"
+    },
+    {
+      "path": "c116/page.js",
+      "size": 592630,
+      "mtimeIso": "2026-11-07T14:37:06.915Z",
+      "mtimeMs": 1794062226914.524,
+      "sha256": "c51044b417a2a4f8b86026d73a26d9c532a926832bf54d11ed54b7117e9888f5"
+    },
+    {
+      "path": "c116/patch_c110_anticollision.mjs",
+      "size": 1030,
+      "mtimeIso": "2026-11-10T15:03:29.518Z",
+      "mtimeMs": 1794323009518.2532,
+      "sha256": "b59f4f95ac8ff1c060159ba6657cd19fa877cce31bd03a2a429c14e77f948699"
+    },
+    {
+      "path": "c116/patch_v27_expand.mjs",
+      "size": 9133,
+      "mtimeIso": "2026-11-08T04:19:20.338Z",
+      "mtimeMs": 1794111560337.7937,
+      "sha256": "1485b25fd4d4e327e3cf7d8e9bbb0e3a149d117b5de0ff1ead8b05c736792bd4"
+    },
+    {
+      "path": "c116/patch_v2_17_3.mjs",
+      "size": 12374,
+      "mtimeIso": "2026-11-09T23:27:52.732Z",
+      "mtimeMs": 1794266872732.2026,
+      "sha256": "36b7bfa2678905fd6d076fd2281cbd3705eb74a814fa5c723da20f762548489f"
+    },
+    {
+      "path": "c116/restore_pure_v27_core.mjs",
+      "size": 4984,
+      "mtimeIso": "2026-11-08T06:47:48.251Z",
+      "mtimeMs": 1794120468250.5225,
+      "sha256": "5ec592b2a78942c71ff471782574550875d7d3792a76125334c3a4a1b7ca976b"
+    },
+    {
+      "path": "c116/restore_winning_phalanx.mjs",
+      "size": 2102,
+      "mtimeIso": "2026-11-08T07:16:41.701Z",
+      "mtimeMs": 1794122201700.6875,
+      "sha256": "fbd3f47c1df43c03157e2fe0f63d89e50837682624ded0c840ad49fd159ce557"
+    },
+    {
+      "path": "c116/setup_ff_autoconfig.mjs",
+      "size": 5003,
+      "mtimeIso": "2026-11-08T14:14:36.132Z",
+      "mtimeMs": 1794147276131.8108,
+      "sha256": "215849e1d445e6fd971f7a5634b7dee8bf7c0b924bd0b018d91936f4ee416559"
+    },
+    {
+      "path": "c116/setup_firefox_profile.mjs",
+      "size": 856,
+      "mtimeIso": "2026-11-08T14:10:39.205Z",
+      "mtimeMs": 1794147039205.1548,
+      "sha256": "88d4267f42f2323694516e08d9cc9a3569511084c957293be0b13ec75786ec0c"
+    },
+    {
+      "path": "c116/spawn-coordinator.mjs",
+      "size": 59817,
+      "mtimeIso": "2026-11-10T14:16:48.690Z",
+      "mtimeMs": 1794320208690.2979,
+      "sha256": "a391b30de58b8fe50590a8a33a749ba2d08b4aaef13afcc721f4fecb1ff0655d"
+    },
+    {
+      "path": "c116/switch_to_firefox_donor.mjs",
+      "size": 8553,
+      "mtimeIso": "2026-11-08T14:21:39.611Z",
+      "mtimeMs": 1794147699610.7495,
+      "sha256": "d4f02eecbbe39bd58b74d3675c83b588e85577317e8b042f96c14ee33fbb962c"
+    },
+    {
+      "path": "c116/test_cfg_dbg.mjs",
+      "size": 910,
+      "mtimeIso": "2026-11-08T14:16:13.723Z",
+      "mtimeMs": 1794147373722.981,
+      "sha256": "2345f9bce0e069364f7ee9a10f49fe62435f36bc61622afa4483b8e58a7bda38"
+    },
+    {
+      "path": "c116/test_ff_click2.mjs",
+      "size": 3756,
+      "mtimeIso": "2026-11-08T14:17:12.211Z",
+      "mtimeMs": 1794147432211.2307,
+      "sha256": "bd6bdfb3beb803a9126c9adc06fc24bb1d2f272fc50504da29a7c32219a5e404"
+    },
+    {
+      "path": "c116/test_ff_framescript.mjs",
+      "size": 6969,
+      "mtimeIso": "2026-11-08T14:15:23.717Z",
+      "mtimeMs": 1794147323716.5215,
+      "sha256": "efdb8952cb1aed9713f41417cc9ce5d3adfcd2c5a666d6afcba307ac8b9afdb4"
+    },
+    {
+      "path": "c116/test_ff_preload.mjs",
+      "size": 5508,
+      "mtimeIso": "2026-11-08T14:20:09.577Z",
+      "mtimeMs": 1794147609577.0183,
+      "sha256": "a04b473acf75eac12ce1b1a97e1d5d9142a1dc790b5dae625657961b0eb2a286"
+    },
+    {
+      "path": "c116/test_firefox_bidi.mjs",
+      "size": 3036,
+      "mtimeIso": "2026-11-08T14:11:46.147Z",
+      "mtimeMs": 1794147106147.209,
+      "sha256": "5b4349bdfe6ef3d2b6716cc1bb25c1ca34db56e0ef62f730aeeb0894b6fff758"
+    },
+    {
+      "path": "c116/test_firefox_dom.mjs",
+      "size": 2286,
+      "mtimeIso": "2026-11-08T14:12:27.595Z",
+      "mtimeMs": 1794147147595.4763,
+      "sha256": "45b5b936d992f6ca40092d624ffc4126cfcc5dd2201f99c592c254d6b5e15526"
+    },
+    {
+      "path": "c116/tsb-apex-squad.err",
+      "size": 615,
+      "mtimeIso": "2026-11-08T13:08:50.258Z",
+      "mtimeMs": 1794143330257.806,
+      "sha256": "2b23422623c89f649831c600a459c618c3af5ac449724eb39cb6831f3bf77339"
+    },
+    {
+      "path": "c116/tsb-apex-squad.mjs",
+      "size": 66901,
+      "mtimeIso": "2026-11-09T15:08:41.185Z",
+      "mtimeMs": 1794236921185.067,
+      "sha256": "f902a9a60b45d0cfe04d148cba73b0003fcde1f528310596ff30818485d4ec08"
+    },
+    {
+      "path": "c116/tsb-apex.pid",
+      "size": 5,
+      "mtimeIso": "2026-11-10T15:01:58.336Z",
+      "mtimeMs": 1794322918335.7876,
+      "sha256": "a15fb939aeb2db3d8e2c3915e41218e5da49011b2f9d37b60a1a2fdc24b21867"
+    },
+    {
+      "path": "c116/tsb-team-results.jsonl",
+      "size": 1851682,
+      "mtimeIso": "2026-11-10T15:06:30.962Z",
+      "mtimeMs": 1794323190961.5386,
+      "sha256": "c3b25c6c427189aba49e2244fa3d2df605d6a4fdc09905248f4c7b49007de243"
+    },
+    {
+      "path": "c116/tsb-team-squad.err.log",
+      "size": 410,
+      "mtimeIso": "2026-11-08T18:59:26.714Z",
+      "mtimeMs": 1794164366713.5244,
+      "sha256": "a258573afb9cc37095e29cc92f926b23ce76925b725c27022ac570be1264ec86"
+    },
+    {
+      "path": "c116/tun_apex_socks5.py",
+      "size": 7725,
+      "mtimeIso": "2026-11-10T14:26:08.397Z",
+      "mtimeMs": 1794320768397.0537,
+      "sha256": "c8c34815ddf28c8aba0d089bd23150d595e7c3884c005606d5b042b5b45efb30"
+    },
+    {
+      "path": "c116/tun_socks5.py",
+      "size": 7792,
+      "mtimeIso": "2026-11-07T14:35:25.573Z",
+      "mtimeMs": 1794062125573.4226,
+      "sha256": "97526629c72e736ba6875e512905b8ab5e32ad3294a71e8e979a1de2fc6d3f6f"
+    },
+    {
+      "path": "c116/upgrade_to_10_apex.mjs",
+      "size": 2708,
+      "mtimeIso": "2026-11-08T05:49:44.374Z",
+      "mtimeMs": 1794116984373.6602,
+      "sha256": "2e5334f16f420a2eaef1f5f38f19257d4d4518af908f6e03f7d5ee50d0b89b88"
+    },
+    {
+      "path": "c116/upgrade_to_8_apex.mjs",
+      "size": 3602,
+      "mtimeIso": "2026-11-08T05:44:28.284Z",
+      "mtimeMs": 1794116668284.175,
+      "sha256": "cc7e8a603983f3aeebf21ed8253825b1192bdf30f6d834261a29ce28ace570a3"
+    },
+    {
+      "path": "c116/v27-team-live.js",
+      "size": 236579,
+      "mtimeIso": "2026-11-10T14:16:48.674Z",
+      "mtimeMs": 1794320208674.168,
+      "sha256": "164e4c46a26799800b7e99cf63f8051bf55703748e16791efc06e0faaeaacf93"
+    },
+    {
+      "path": "c116/tsb-apex-squad.log",
+      "size": 348547916,
+      "mtimeIso": "2026-11-10T15:08:05.788Z",
+      "mtimeMs": 1794323285787.9666,
+      "sha256": "031a9c67cdad4eef264140f9794ea97008b2b4de8ba5c4ad4b25a8fd597c56a7"
+    }
+  ],
+  "c110": [
+    {
+      "path": "c110/gproxy.conf",
+      "size": 81,
+      "mtimeIso": "2026-11-07T14:34:47.997Z",
+      "mtimeMs": 1794062087997.46,
+      "sha256": "37b42c8b6c003560039f51a7dd00a7c71f3978eb91355192d74a715b92a45de6"
+    },
+    {
+      "path": "c110/headless-bot.mjs",
+      "size": 47152,
+      "mtimeIso": "2026-11-10T14:09:10.303Z",
+      "mtimeMs": 1794319750303.4597,
+      "sha256": "fa272e3d3042b8dc1d8f597a8c60480ff495c460d02f68736f8aeb2a3695f97a"
+    },
+    {
+      "path": "c110/live_dictionary.json",
+      "size": 1465,
+      "mtimeIso": "2026-11-08T03:09:48.774Z",
+      "mtimeMs": 1794107388774.1821,
+      "sha256": "711ea82ea687de0f90868a8014b3cda1acadd3b5bd2be56a2b852c473b3f0966"
+    },
+    {
+      "path": "c110/live_game_js.js",
+      "size": 681660,
+      "mtimeIso": "2026-11-10T15:01:58.147Z",
+      "mtimeMs": 1794322918146.6548,
+      "sha256": "c7d41fee823185ea4d0ffaf6557141bce9d5b387fea67b5502b63d7139f5f551"
+    },
+    {
+      "path": "c110/make_v27_team.py",
+      "size": 52119,
+      "mtimeIso": "2026-11-10T14:09:10.305Z",
+      "mtimeMs": 1794319750305.4956,
+      "sha256": "95a813782affa038bba43123748ab4ca3b175c2c643073fe16b3279d08af1944"
+    },
+    {
+      "path": "c110/name-pool.mjs",
+      "size": 8856,
+      "mtimeIso": "2026-11-08T08:18:15.171Z",
+      "mtimeMs": 1794125895170.988,
+      "sha256": "60d12847d077434e15466e534e7b16b2e4afd19aa2d712a3b0638b13ee4d4033"
+    },
+    {
+      "path": "c110/page.js",
+      "size": 592630,
+      "mtimeIso": "2026-11-07T14:37:06.915Z",
+      "mtimeMs": 1794062226914.524,
+      "sha256": "c51044b417a2a4f8b86026d73a26d9c532a926832bf54d11ed54b7117e9888f5"
+    },
+    {
+      "path": "c110/patch_100pct_winrate.mjs",
+      "size": 10908,
+      "mtimeIso": "2026-11-10T14:08:38.651Z",
+      "mtimeMs": 1794319718650.8313,
+      "sha256": "e8880073d742dea3a9ff891745523f9135d040597e3d0e6c782f7baa38f37e48"
+    },
+    {
+      "path": "c110/patch_cpu.py",
+      "size": 2139,
+      "mtimeIso": "2026-11-08T14:03:13.103Z",
+      "mtimeMs": 1794146593102.8987,
+      "sha256": "73221fd44c7eb210255e8852e11382dc49316566499af658e48420b0659b51be"
+    },
+    {
+      "path": "c110/patch_donor_failover.mjs",
+      "size": 3491,
+      "mtimeIso": "2026-11-10T14:17:26.224Z",
+      "mtimeMs": 1794320246223.9165,
+      "sha256": "b15c61e51e407ad26383e0c049695e98997f5aae6ed16152831aa37d21404467"
+    },
+    {
+      "path": "c110/patch_donor_mint.mjs",
+      "size": 3334,
+      "mtimeIso": "2026-11-10T14:12:29.274Z",
+      "mtimeMs": 1794319949273.9192,
+      "sha256": "0220e15bfb7f9c9b2f5305f57f5f66ba978e137859ce56a002c466ceb1275254"
+    },
+    {
+      "path": "c110/patch_emoji.py",
+      "size": 1730,
+      "mtimeIso": "2026-11-08T13:06:16.898Z",
+      "mtimeMs": 1794143176898.0913,
+      "sha256": "b32b971384c3705e54038893e8cb38a8a71719844d46d27a33f2c2c2068808f8"
+    },
+    {
+      "path": "c110/patch_emoji2.py",
+      "size": 3178,
+      "mtimeIso": "2026-11-08T13:36:56.334Z",
+      "mtimeMs": 1794145016333.8638,
+      "sha256": "a7cd1a4e1d65bf4c9fd6a36106f721a8e0479650295d3a60f573b9fa8e3507e6"
+    },
+    {
+      "path": "c110/patch_ff_lock.mjs",
+      "size": 1906,
+      "mtimeIso": "2026-11-09T15:08:20.102Z",
+      "mtimeMs": 1794236900101.7805,
+      "sha256": "04c6ccc5357a59804f34b69c3a55bbb0237ec9dca04e90cf218766dbd91aea26"
+    },
+    {
+      "path": "c110/patch_lobby.py",
+      "size": 3405,
+      "mtimeIso": "2026-11-08T13:45:57.402Z",
+      "mtimeMs": 1794145557402.2131,
+      "sha256": "f365be3f74500d2e65bcd67301fdc2ca9d1253d2c94695685a12f99335b6de2f"
+    },
+    {
+      "path": "c110/patch_squad_mjs.py",
+      "size": 1484,
+      "mtimeIso": "2026-11-08T13:52:32.864Z",
+      "mtimeMs": 1794145952864.3772,
+      "sha256": "d4ad06ee9b283705a838beace14735dab52b4922e4077d4642c5d3b7fbd4f320"
+    },
+    {
+      "path": "c110/patch_v2_17_1.mjs",
+      "size": 9045,
+      "mtimeIso": "2026-11-09T15:14:57.842Z",
+      "mtimeMs": 1794237297841.6262,
+      "sha256": "fb93e0798d52624d6720d3539cf097504102bee1154d03d6a49957e2c7c33f61"
+    },
+    {
+      "path": "c110/spawn-coordinator.mjs",
+      "size": 49373,
+      "mtimeIso": "2026-11-10T14:09:10.306Z",
+      "mtimeMs": 1794319750306.4954,
+      "sha256": "cf609b3510e6664e8430e98de95694b78eef288eef6e9783cd8d3144e3a19c56"
+    },
+    {
+      "path": "c110/start_local_squad.ps1",
+      "size": 3005,
+      "mtimeIso": "2026-11-07T14:36:27.012Z",
+      "mtimeMs": 1794062187011.6753,
+      "sha256": "19a65f2e1187fb30c1408c0afcdd3c60feaf868b7862b718665e19106baa3cd5"
+    },
+    {
+      "path": "c110/tsb-team-results.jsonl",
+      "size": 2071527,
+      "mtimeIso": "2026-11-10T15:07:40.979Z",
+      "mtimeMs": 1794323260979.2249,
+      "sha256": "83977a5ec6c2ca28a26f627333f4d77a95c24dc7453e07ba3fb5b48b05b4f92a"
+    },
+    {
+      "path": "c110/tsb-team-squad.err.log",
+      "size": 22201,
+      "mtimeIso": "2026-11-09T15:02:28.054Z",
+      "mtimeMs": 1794236548054.4766,
+      "sha256": "0c165cec1706d1737c13d599d85146649f79111e2aee8ff271daf4118030466c"
+    },
+    {
+      "path": "c110/tsb-team-squad.mjs",
+      "size": 72377,
+      "mtimeIso": "2026-11-10T14:17:51.016Z",
+      "mtimeMs": 1794320271015.6782,
+      "sha256": "ed9e3058604884ef8ccdb29b2d14266d1bd636975c6592eb0344aa8b585e02c8"
+    },
+    {
+      "path": "c110/tsb-team-squad.pre-reboot.log",
+      "size": 1603805,
+      "mtimeIso": "2026-11-08T09:25:59.568Z",
+      "mtimeMs": 1794129959568.4602,
+      "sha256": "308d1710e9f752b4b9f929f24b64641a4bbd84f0d91443d43560aa95f8906bb3"
+    },
+    {
+      "path": "c110/tun_socks5.err.log",
+      "size": 3550,
+      "mtimeIso": "2026-11-09T20:13:36.772Z",
+      "mtimeMs": 1794255216772.2556,
+      "sha256": "0184b0716821c6e0e7f535395151826b646dfd3ebd6fa4b7cc4cbea903c8a6e1"
+    },
+    {
+      "path": "c110/tun_socks5.log",
+      "size": 2928,
+      "mtimeIso": "2026-11-10T08:45:43.116Z",
+      "mtimeMs": 1794300343116.3582,
+      "sha256": "01257f60092e27193c49f7b2c0221563b12603f1ccc530200495369093f07c67"
+    },
+    {
+      "path": "c110/tun_socks5.py",
+      "size": 9566,
+      "mtimeIso": "2026-11-08T07:05:58.133Z",
+      "mtimeMs": 1794121558133.4019,
+      "sha256": "bb896307809fef0451c187af99dd2e336c06c17fc6ef37533a21a4598318a41d"
+    },
+    {
+      "path": "c110/update_squad.ps1",
+      "size": 955,
+      "mtimeIso": "2026-11-08T03:21:12.666Z",
+      "mtimeMs": 1794108072665.9014,
+      "sha256": "434905935ebaf85c0a0383b08e0ca640b3aabaf772e132f2a88cfe7574aa2304"
+    },
+    {
+      "path": "c110/v27-team-live.js",
+      "size": 237854,
+      "mtimeIso": "2026-11-10T14:09:10.304Z",
+      "mtimeMs": 1794319750304.4966,
+      "sha256": "7863ad706df61ead16b007bd9205b358ee9980193293aabd40df16c5e38e2657"
+    },
+    {
+      "path": "c110/tsb-team-squad.log",
+      "size": 326310105,
+      "mtimeIso": "2026-11-10T15:08:04.754Z",
+      "mtimeMs": 1794323284754.1565,
+      "sha256": "d7da67bba937c6bfdd46e00ceffdfdfec314e05038a1ae4db93ab4ab84a7b50a"
+    }
+  ]
+}
