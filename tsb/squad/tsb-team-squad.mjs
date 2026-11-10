@@ -727,7 +727,7 @@ for (const ffPort of [9225, 9226, 9227]) {
 
 const donorMintChains = new Map();
 async function mintViaDonorChrome(donorPort = 9225) {
-  const targetPort = (donorPort === 9228 || !donorPort) ? 9225 : donorPort;
+  let targetPort = (donorPort === 9228 || !donorPort) ? 9225 : donorPort;
   const runMint = async () => {
     let donor;
     try {
@@ -814,9 +814,13 @@ async function mintViaDonorChrome(donorPort = 9225) {
       });
     }
     donor._mintFailCount = (donor._mintFailCount || 0) + 1;
-    if (donor._mintFailCount >= 4) {
+    if (donor._mintFailCount >= 2) {
       donor._mintFailCount = 0;
-      console.warn('[FIREFOX-DONOR] 2 consecutive mint timeouts on :' + donor.port + ' -> recycling Firefox donor...');
+      const pToSocks = { 9225: 10801, 9226: 10806, 9227: 10811 };
+      if (pToSocks[donor.port]) {
+        rotateSocksSession(pToSocks[donor.port]).catch(() => {});
+      }
+      console.warn('[FIREFOX-DONOR] 2 consecutive mint timeouts on :' + donor.port + ' -> rotating proxy & recycling Firefox donor...');
       try { donor.ws.close(); } catch {}
       firefoxDonors.delete(donor.port);
       import('node:child_process').then(({ execSync }) => {
@@ -826,10 +830,21 @@ async function mintViaDonorChrome(donorPort = 9225) {
     throw new Error('Firefox BiDi mint timeout');
   };
 
-  const prevChain = donorMintChains.get(targetPort) || Promise.resolve();
-  const next = prevChain.then(runMint, runMint);
-  donorMintChains.set(targetPort, next.catch(() => {}));
-  return next;
+  const enqueueOnPort = (p) => {
+    const fn = () => {
+      targetPort = p;
+      return runMint();
+    };
+    const prev = donorMintChains.get(p) || Promise.resolve();
+    const nxt = prev.then(fn, fn);
+    donorMintChains.set(p, nxt.catch(() => {}));
+    return nxt;
+  };
+  return enqueueOnPort(targetPort).catch(() => {
+    const alts = [9226, 9227, 9225].filter((p) => p !== targetPort);
+    const altPort = alts[Math.floor(Math.random() * alts.length)];
+    return enqueueOnPort(altPort);
+  });
 }
 
 // Centralized Backend Spawn Coordinator (TeamSpawnCoordinator):
