@@ -150,10 +150,24 @@ export function createHeadlessBot(bot, { onResult, onGameInit, onGamePacket, onS
           client.evalJs(`(() => {
             const d = window.dictionary, g = d && window[d.game];
             const activeSockOpen = typeof b1 === "object" && b1?.z?.ef && (b1.z.ef(2) || b1.z.ef(3));
-            if (!activeSockOpen && g && g[d.sbLeave] && g[d.gameState] !== 0) {
-              g[d.sbLeave](true);
+            if (!activeSockOpen && g && g[d.gameState] === 1) {
+              const curTick = typeof bi === "object" && bi?.kr ? bi.kr() : 0;
+              if (curTick === 0 && typeof b1 === "object" && b1?.z?.aJc && b1.z.a4P >= 2) {
+                b1.z.aJc(b1.z.a4P, 5, 2);
+                return "RECONNECTING_GAME_SERVER";
+              }
             }
           })()`);
+          setTimeout(() => {
+            client.evalJs(`(() => {
+              const d = window.dictionary, g = d && window[d.game];
+              const activeSockOpen = typeof b1 === "object" && b1?.z?.ef && (b1.z.ef(2) || b1.z.ef(3));
+              const curTick = typeof bi === "object" && bi?.kr ? bi.kr() : 0;
+              if (!activeSockOpen && curTick > 30 && g && g[d.sbLeave] && g[d.gameState] !== 0) {
+                g[d.sbLeave](true);
+              }
+            })()`);
+          }, 4000);
         }
         if (msg.text.includes('error 4563') || msg.text.includes('error 4530')) {
           // Stagger re-entry after 4563/4530 lobby disconnect to prevent reconnect stampede
@@ -293,7 +307,9 @@ if (!isMainThread && workerData?.bot) {
       'this.af3.push(aD);if(aE.a38===1&&!aE.hx&&(this.af1===this.aK3*7||this.af3.length>1)){bi.eZ=performance.now();this.ee();return}if(aE.a38===2){'
     )
     .replace('bV.ym.dk();', '')
-    .replace('bV.zf.dk();', '');
+    .replace('bV.zf.dk();', '')
+    .replaceAll('aJw=bi.eZ+4500', 'aJw=bi.eZ+1800')
+    .replaceAll('aJw+=4500', 'aJw+=1800');
   const pageJsSource = fs.readFileSync(resolveAssetPath('page.js', '/tmp/tsb-team-ext/page.js'), 'utf8')
     .replaceAll(
       'queueMicrotask(()=>{this.afterQueued=!1,this.afterTick()})',

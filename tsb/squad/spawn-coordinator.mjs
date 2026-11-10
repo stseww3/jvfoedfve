@@ -830,13 +830,14 @@ export class TeamSpawnCoordinator {
     //   - First 3.8s of countdown (`isEarlyBullyPhase`): push guard ring 1.24x outward toward nearby enemies
     //     so enemy humans feel crowded and relocate away from Boss's sector.
     //   - Final 2.2s (`!isEarlyBullyPhase`): tighten back to the 1.0x optimal shield ring around Boss!
+    const kScale = Math.sqrt(Math.max(1, K) / 6);
     const scales = {
       rCell: Math.round(rCell),
       bossExcl: clamp(Math.round(Math.max(1.12 * rCell, 0.078 * diag)), 68, 120),
       flankMax: clamp(Math.round(Math.max(2.30 * rCell, 0.170 * diag)), 135, 235),
-      allyMinSep: clamp(Math.round(Math.max(1.05 * rCell, 0.075 * diag)), 62, 112),
+      allyMinSep: clamp(Math.round(Math.max(1.15 * rCell, 0.068 * diag)), 64, 110),
       enemyMinClearance: clamp(Math.round(0.70 * rCell), 36, 78),
-      clusterMax: clamp(Math.round(Math.max(3.0 * rCell, 0.25 * diag)), 195, 350),
+      clusterMax: clamp(Math.round(Math.max(2.8 * rCell * kScale, 0.22 * diag * Math.min(1.45, kScale))), 220, 460),
     };
 
     // Build initial distance fields with realBoss (if placed)
@@ -906,6 +907,23 @@ export class TeamSpawnCoordinator {
       return minD;
     };
 
+    const distToClusterCore = (x, y) => {
+      if (chosenTargets.length >= 2) {
+        let sx = 0, sy = 0;
+        for (const t of chosenTargets) { sx += t.x; sy += t.y; }
+        sx /= chosenTargets.length;
+        sy /= chosenTargets.length;
+        return Math.hypot(x - sx, y - sy);
+      }
+      if (anchorBoss && anchorBoss.x >= 0 && anchorBoss.y >= 0) {
+        return Math.hypot(x - anchorBoss.x, y - anchorBoss.y);
+      }
+      if (chosenTargets.length > 0) {
+        return Math.hypot(x - chosenTargets[0].x, y - chosenTargets[0].y);
+      }
+      return 0;
+    };
+
     const pickNextTarget = (wantRole) => {
       const relaxFactors = [1.0, 0.80, 0.62, 0.42];
       for (const relax of relaxFactors) {
@@ -957,8 +975,9 @@ export class TeamSpawnCoordinator {
               }
               if (sectorConflict) continue;
             } else if (enforceCluster) {
-              // Keep outer wing connected to the same continent & geodesic distance from Boss
-              if (distToOurCluster(x, y) > maxClusterDist) continue;
+              // Keep 20-bot phalanx in a compact 2D sector disc (adjacent link <= 2.2*allyMinSep AND core radius <= maxClusterDist)
+              if (distToOurCluster(x, y) > scales.allyMinSep * (2.25 - 0.45 * relax)) continue;
+              if (distToClusterCore(x, y) > maxClusterDist) continue;
               if (anchorBoss && (this.dBoss[c] < 0 || this.dBoss[c] > maxClusterDist * 1.35) && relax >= 0.60) continue;
             }
 
@@ -1309,3 +1328,4 @@ export class TeamSpawnCoordinator {
     return this.server;
   }
 }
+

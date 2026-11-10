@@ -699,7 +699,15 @@ async function ensureFirefoxDonor(port = 9225) {
     if (!wdVal.startsWith('false:object')) {
       console.log(`[FIREFOX-DONOR] Reloading territorial.io tab on :${port} so preloadScript (webdriver=false) takes effect (was ${wdVal})...`);
       await callBidi('browsingContext.reload', { context: ctx, wait: 'complete' });
-      await new Promise((r) => setTimeout(r, 2500));
+      for (let w = 0; w < 15; w++) {
+        await new Promise((r) => setTimeout(r, 700));
+        const chk = await callBidi('script.evaluate', {
+          expression: 'String(navigator.webdriver) + ":" + String(typeof window.turnstile?.render)',
+          target: { context: ctx },
+          awaitPromise: false
+        });
+        if ((chk?.result?.result?.value || '').startsWith('false:function')) break;
+      }
     }
 
     console.log(`[FIREFOX-DONOR] Connected to Mozilla Firefox BiDi on :${port} (ctx=${ctx}, webdriver=false)!`);
@@ -717,16 +725,26 @@ for (const ffPort of [9225, 9226, 9227]) {
   await ensureFirefoxDonor(ffPort).catch((e) => console.error(`[FIREFOX-DONOR :${ffPort}] Init warn:`, e.message));
 }
 
+const donorMintChains = new Map();
 async function mintViaDonorChrome(donorPort = 9225) {
   const targetPort = (donorPort === 9228 || !donorPort) ? 9225 : donorPort;
-  let donor;
-  try {
-    donor = await ensureFirefoxDonor(targetPort);
-  } catch {
-    donor = await ensureFirefoxDonor(9225);
-  }
   const runMint = async () => {
+    let donor;
+    try {
+      donor = await ensureFirefoxDonor(targetPort);
+    } catch {
+      donor = await ensureFirefoxDonor(9225);
+    }
     const { callBidi, ctx } = donor;
+    for (let w = 0; w < 10; w++) {
+      const tsChk = await callBidi('script.evaluate', {
+        expression: 'typeof window.turnstile?.render',
+        target: { context: ctx },
+        awaitPromise: false
+      });
+      if (tsChk?.result?.result?.value === 'function') break;
+      await new Promise((r) => setTimeout(r, 600));
+    }
     await callBidi('script.evaluate', {
       expression: `(() => {
         try { if (typeof bX === "object" && bX?.turnstile?.close) bX.turnstile.close(); } catch {}
@@ -796,7 +814,7 @@ async function mintViaDonorChrome(donorPort = 9225) {
       });
     }
     donor._mintFailCount = (donor._mintFailCount || 0) + 1;
-    if (donor._mintFailCount >= 2) {
+    if (donor._mintFailCount >= 4) {
       donor._mintFailCount = 0;
       console.warn('[FIREFOX-DONOR] 2 consecutive mint timeouts on :' + donor.port + ' -> recycling Firefox donor...');
       try { donor.ws.close(); } catch {}
@@ -808,8 +826,9 @@ async function mintViaDonorChrome(donorPort = 9225) {
     throw new Error('Firefox BiDi mint timeout');
   };
 
-  const next = (donor._mintChain || Promise.resolve()).then(runMint, runMint);
-  donor._mintChain = next.catch(() => {});
+  const prevChain = donorMintChains.get(targetPort) || Promise.resolve();
+  const next = prevChain.then(runMint, runMint);
+  donorMintChains.set(targetPort, next.catch(() => {}));
   return next;
 }
 
@@ -1160,6 +1179,14 @@ setInterval(async () => {
         s.spawnPhase = !!info?.spawnPhase;
         s.tick = info?.tick || 0;
         if (s.inGame) {
+          if (s.tick === 0 && !s.spawnPhase) {
+            window.__zeroTickPolls = (window.__zeroTickPolls || 0) + 1;
+            if (window.__zeroTickPolls >= 2 && typeof b1 === "object" && b1?.z?.aJc && b1.z.a4P >= 2) {
+              b1.z.aJc(b1.z.a4P, 5, 2);
+            }
+          } else {
+            window.__zeroTickPolls = 0;
+          }
           if (s.tick > 0 && !s.spawnPhase && window.__lastObsTick === s.tick) {
             window.__stalledCount = (window.__stalledCount || 0) + 1;
           } else {
@@ -1509,7 +1536,7 @@ setInterval(async () => {
   const allReadyInRoom0 =
     timerSpreadOk &&
     (headlessOnly
-      ? (headlessInRoom0 >= HEADLESS_BOTS.length - 5 || (headlessInRoom0 >= 10 && minStartsIn <= 18))
+      ? (headlessInRoom0 >= HEADLESS_BOTS.length - 2 || (headlessInRoom0 >= 16 && minStartsIn <= 14))
       : wantTenForCurrentLobby
         ? (readyCountInRoom0 === 10 || (readyCountInRoom0 >= 8 && minStartsIn <= 8))
         : (chromeInRoom0 === 5 || (chromeInRoom0 >= 4 && minStartsIn <= 8)));
@@ -1542,6 +1569,12 @@ setInterval(async () => {
           ext.remote.state.loop = "team";
           const isInLobbyNow = (typeof bq === "object" && bq?.f6 === 1 && typeof b1 === "object" && b1?.z?.ef?.(1));
           const isReadyNow = isInLobbyNow && (bq?.sH ? !!(bq.sH.sH?.[0] && bq.sH.wF === bq.sH.sH[0].id && bq.sH.sH[0].id > 0) : !!(bq?.z?.tM?.[3]));
+          // Unready if squad is incomplete (<16 bots) and countdown is getting close
+          if (isInLobbyNow && isReadyNow && !${allowReady ? 'true' : 'false'}) {
+            if (bq?.sH && typeof bq.sH.select === "function" && bq.sH.wF !== 0) {
+              bq.sH.select(0);
+            }
+          }
           if (isInLobbyNow && !isReadyNow && ${allowReady ? 'true' : 'false'}) {
             if (!window.__readyJitterScheduled) {
               window.__readyJitterScheduled = true;
