@@ -1,0 +1,256 @@
+# logcalls g09.js  共 14 处 __hlLog 调用
+
+## L2385  V13.dpNeutral  [HL-OPENING]
+template: [HL-OPENING] t=${g.t} cyc=${cyc} DP expand rings=${n} spend=${Math.round(X)}/${bal} terr=${g.terr[me]}
+  field t = g.t
+  field cyc = cyc
+  field rings = n
+  field spend = Math.round(X)
+  field ? = bal
+  field terr = g.terr[me]
+  fn             L2362: dpNeutral
+  prior-exit     L2364: this.dpCyc === cyc  -> return
+  prior-exit     L2368: !(max > 0)  -> return
+  prior-exit     L2376: n === 0  -> return
+  prior-exit     L2379: later >= n  -> return
+  prior-exit     L2381: X < this.minCmd(g)  -> return
+  if             L2382: this.send(g, NEUTRAL, X)
+  if             L2384: typeof window !== "undefined" && window.__hlLog
+
+## L4273  Policy.chooseSpawn  [HL-SPAWN-BACKEND]
+template: [HL-SPAWN-BACKEND] me=${me} slot=${res.slot ?? rankIdx} role=${res.role || "SQUAD"} -> (${res.x},${res.y}) bossDist=${res.bossDist ?? -1} minAllyDist=${res.minAllyDist ?? -1} voronoi=${res.voronoiPixels ?? -1}
+  field me = me
+  field slot = res.slot ?? rankIdx
+  field role = res.role || "SQUAD"
+  field ? = res.x
+  field ? = res.y
+  field bossDist = res.bossDist ?? -1
+  field minAllyDist = res.minAllyDist ?? -1
+  field voronoi = res.voronoiPixels ?? -1
+  fn             L4194: chooseSpawn
+  if             L4264: typeof window !== "undefined" && window.__tsbAssignedSpawn && Number.isInteger(window.__tsbAssignedSpawn.x) && (!window.__tsbAssignedSpawn.mapW || (window.__tsbAssignedSpawn.mapW === W && window.__tsbAssignedSpawn.mapH === H))
+  if             L4271: window.__hlLog && (!this._lastLogSpawn || Math.hypot(res.x - this._lastLogSpawn.x, res.y - this._lastLogSpawn.y) > 4)
+
+## L4382  Policy.tryPeaceVote  [HL-PEACE]
+template: [HL-PEACE] t=${g.t} voted YES on our squad's mop-up peace call by p=${caller}(${g.names?.[caller] || ""})
+  field t = g.t
+  field p = caller
+  field ? = g.names?.[caller] || ""
+  fn             L4355: tryPeaceVote
+  prior-exit     L4356: typeof window === "undefined" || !window.ax || !window.dictionary || g.t < 1610  -> return
+  prior-exit     L4359: !hz  -> return
+  prior-exit     L4360: !this.isMopUp(g)  -> return
+  prior-exit     L4369: g.t < this._peaceReadyTick  -> return
+  if             L4376: window.ax.iL && typeof window.ax.iM === "function" && window.ax.iM(me)
+  if             L4377: callerIsOurs && typeof hz.iN === "function"
+  if             L4380: window.__hlLog && g.t - (this._lastPeaceVoteLog ?? -999) >= 100
+
+## L4390  Policy.tryPeaceVote  [HL-PEACE]
+template: [HL-PEACE] t=${g.t} initiated mop-up peace vote (all enemies eliminated!)
+  field t = g.t
+  fn             L4355: tryPeaceVote
+  prior-exit     L4356: typeof window === "undefined" || !window.ax || !window.dictionary || g.t < 1610  -> return
+  prior-exit     L4359: !hz  -> return
+  prior-exit     L4360: !this.isMopUp(g)  -> return
+  prior-exit     L4369: g.t < this._peaceReadyTick  -> return
+  else-of        L4376: window.ax.iL && typeof window.ax.iM === "function" && window.ax.iM(me)
+  if             L4385: !window.ax.iL && g.t - (this.lastPeaceKeyTick ?? -999) >= 115 + (me % 7) * 5 && typeof window.ax.iO === "function" && window.ax.iO(me)
+  if             L4388: typeof hz.iK === "function"
+  if             L4390: window.__hlLog
+
+## L4462  Policy.tryEmergencyBossRescue  [HL-DONATE]
+template: [HL-DONATE] t=${g.t} emergency boss donate pct=${pct}/1024 (~5%) -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)} dBoss=${Math.round(dBoss)}
+  field t = g.t
+  field pct = pct
+  field boss = bossId
+  field ? = g.names?.[bossId] || "npl"
+  field myBal = B
+  field dMe = Math.round(dMe)
+  field dBoss = Math.round(dBoss)
+  fn             L4397: tryEmergencyBossRescue
+  prior-exit     L4399: !g.teams || !(g.teams[me] > 0) || !g.canAct(me)  -> return
+  prior-exit     L4401: bossId < 0 || !g.alive[bossId] || g.terr[bossId] < 30  -> return
+  if             L4427: typeof g.donate === "function" && g.t >= 600 && (g.t >= 900 || (this.neutral === 0 && bossInAtk >= 0.12 * B_boss))
+  if             L4452: (underEmergencyFire || bossFightingHuman || bossNeedsCash || boxedIn) && canAfford && g.t - (this.lastBossDonateTick ?? -999) >= cooldown
+  if             L4457: pct >= 40 && g.donate(pct, bossId, me)
+  if             L4461: typeof window !== "undefined" && window.__hlLog
+
+## L4479  Policy.tryEmergencyBossRescue  [HL-ASSIST]
+template: [HL-ASSIST] t=${g.t} 10% boss-assist poke -> target=${q}(${g.names?.[q] || ""}) myBal=${B} dMe=${Math.round(dMe)}
+  field t = g.t
+  field target = q
+  field ? = g.names?.[q] || ""
+  field myBal = B
+  field dMe = Math.round(dMe)
+  fn             L4397: tryEmergencyBossRescue
+  prior-exit     L4399: !g.teams || !(g.teams[me] > 0) || !g.canAct(me)  -> return
+  prior-exit     L4401: bossId < 0 || !g.alive[bossId] || g.terr[bossId] < 30  -> return
+  prior-may-exit L4427: typeof g.donate === "function" && g.t >= 600 && (g.t >= 900 || (this.neutral === 0 && bossInAtk >= 0.12 * B_boss))
+  if             L4470: bossAttackers.length > 0 && B >= 8000 && dMe >= 55
+  for            L4472: const { q } of bossAttackers
+  prior-exit     L4473: !g.alive[q] || g.terr[q] < 100  -> continue
+  if             L4474: (this.cnt[q] ?? 0) > 0 && !g.hasAttack(me, q) && g.hasFreeSlot(me)
+  if             L4475: g.attack(102, q, me)
+  if             L4478: typeof window !== "undefined" && window.__hlLog
+
+## L4665  Policy.tryInterceptEnemyBoats  [HL-INTERCEPT]
+template: [HL-INTERCEPT] t=${g.t} unified sea intercept pct=${bestPct}/1024 -> boatId=${bestBoatId} owner=${bestOwner}(${g.names?.[bestOwner] || ""}) boatTroops=${bestTroops}
+  field t = g.t
+  field pct = bestPct
+  field boatId = bestBoatId
+  field owner = bestOwner
+  field ? = g.names?.[bestOwner] || ""
+  field boatTroops = bestTroops
+  fn             L4496: tryInterceptEnemyBoats
+  prior-exit     L4498: !g.canAct(me) || typeof g.chase !== "function"  -> return
+  prior-exit     L4500: !myCoast || myCoast.length === 0  -> return
+  prior-exit     L4501: (g.boatCount?.[me] ?? 0) >= 4  -> return
+  prior-exit     L4503: boatN <= 0 || !g.bSlot || !g.bId || !g.bTroops || !g.bPos  -> return
+  prior-exit     L4506: B < 2500 || dMe < 22  -> return
+  if             L4659: bestBoatId >= 0
+  if             L4660: g.chase(bestPct, bestBoatId, me)
+  if             L4664: typeof window !== "undefined" && window.__hlLog
+
+## L4778  Policy.tryClaimNearTeamIslands  [HL-ISLAND-GUARD]
+template: [HL-ISLAND-GUARD] t=${g.t} preemptively claimed near-shore island (${bestHit.sz}px, dist=${bestHit.d}) pct=${pct}/1024
+  field t = g.t
+  field ? = bestHit.sz
+  field dist = bestHit.d
+  field pct = pct
+  fn             L4676: tryClaimNearTeamIslands
+  prior-exit     L4678: g.t < 420 || !g.canAct(me)  -> return
+  prior-exit     L4680: !myCoast || myCoast.length === 0  -> return
+  prior-exit     L4681: (g.boatCount?.[me] ?? 0) >= 3  -> return
+  prior-exit     L4682: g.t - (this._lastNearIsleTick ?? -999) < 28  -> return
+  prior-exit     L4685: B < 2500 || dMe < 22  -> return
+  if             L4769: bestHit
+  if             L4772: ok
+  if             L4777: typeof window !== "undefined" && window.__hlLog
+
+## L4831  Policy.tryDonateToTeammate  [HL-DONATE]
+template: [HL-DONATE] t=${g.t} boss donate pct=${pct}/1024 (~5%) -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)}
+  field t = g.t
+  field pct = pct
+  field boss = bossId
+  field ? = g.names?.[bossId] || "npl"
+  field myBal = B
+  field dMe = Math.round(dMe)
+  fn             L4787: tryDonateToTeammate
+  prior-exit     L4789: !g.teams || !(g.teams[me] > 0) || typeof g.donate !== "function"  -> return
+  prior-exit     L4790: g.t < 400 || g.t - (this.lastDonateTick ?? -999) < 18  -> return
+  prior-exit     L4803: myHumanInAtk > 0 || B <= 1.10 * safeFloor  -> return
+  prior-exit     L4807: maxSafePct < 45  -> return
+  if             L4811: bossId >= 0 && g.alive[bossId] && g.terr[bossId] >= 100
+  if             L4824: bossNeedsHelp && g.t - (this.lastBossDonateTick ?? -999) >= (isPureInlandSafe ? 22 : 45)
+  if             L4826: pct >= 40 && g.donate(pct, bossId, me)
+  if             L4830: typeof window !== "undefined" && window.__hlLog
+
+## L4859  Policy.tryDonateToTeammate  [HL-DONATE]
+template: [HL-DONATE] t=${g.t} squad rescue donate pct=${pct}/1024 (~5%) -> ally=${p}(${g.names?.[p] || ""}) myBal=${B} dMe=${Math.round(dMe)} dAlly=${Math.round(dAlly)}
+  field t = g.t
+  field pct = pct
+  field ally = p
+  field ? = g.names?.[p] || ""
+  field myBal = B
+  field dMe = Math.round(dMe)
+  field dAlly = Math.round(dAlly)
+  fn             L4787: tryDonateToTeammate
+  prior-exit     L4789: !g.teams || !(g.teams[me] > 0) || typeof g.donate !== "function"  -> return
+  prior-exit     L4790: g.t < 400 || g.t - (this.lastDonateTick ?? -999) < 18  -> return
+  prior-exit     L4803: myHumanInAtk > 0 || B <= 1.10 * safeFloor  -> return
+  prior-exit     L4807: maxSafePct < 45  -> return
+  prior-may-exit L4811: bossId >= 0 && g.alive[bossId] && g.terr[bossId] >= 100
+  for            L4840: let p = 0; p < g.humans; p++
+  prior-exit     L4841: p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 1000  -> continue
+  if             L4851: inHumanAtk > 0 && (inHumanAtk >= 0.12 * g.bal[p] || dAlly < 55)
+  if             L4853: dMe >= (isPureInlandSafe ? 40 : 106) && dMe >= dAlly + 25
+  if             L4855: pct >= 40 && g.donate(pct, p, me)
+  if             L4858: typeof window !== "undefined" && window.__hlLog
+
+## L4870  Policy.tryDonateToTeammate  [HL-ASSIST]
+template: [HL-ASSIST] t=${g.t} 10% squad-rescue poke -> enemy=${mainAttacker}(${g.names?.[mainAttacker] || ""}) for ally=${p}(${g.names?.[p] || ""})
+  field t = g.t
+  field enemy = mainAttacker
+  field ? = g.names?.[mainAttacker] || ""
+  field ally = p
+  field ? = g.names?.[p] || ""
+  fn             L4787: tryDonateToTeammate
+  prior-exit     L4789: !g.teams || !(g.teams[me] > 0) || typeof g.donate !== "function"  -> return
+  prior-exit     L4790: g.t < 400 || g.t - (this.lastDonateTick ?? -999) < 18  -> return
+  prior-exit     L4803: myHumanInAtk > 0 || B <= 1.10 * safeFloor  -> return
+  prior-exit     L4807: maxSafePct < 45  -> return
+  prior-may-exit L4811: bossId >= 0 && g.alive[bossId] && g.terr[bossId] >= 100
+  for            L4840: let p = 0; p < g.humans; p++
+  prior-exit     L4841: p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 1000  -> continue
+  if             L4851: inHumanAtk > 0 && (inHumanAtk >= 0.12 * g.bal[p] || dAlly < 55)
+  prior-may-exit L4853: dMe >= (isPureInlandSafe ? 40 : 106) && dMe >= dAlly + 25
+  if             L4865: mainAttacker >= 0 && (this.cnt[mainAttacker] ?? 0) > 0 && !g.hasAttack(me, mainAttacker) && g.hasFreeSlot(me) && dMe >= 65
+  if             L4866: g.attack(102, mainAttacker, me)
+  if             L4869: typeof window !== "undefined" && window.__hlLog
+
+## L4910  Policy.tryDonateToTeammate  [HL-DONATE]
+template: [HL-DONATE] t=${g.t} surplus donate pct=${pct}/1024 (~5%) -> ally=${bestAlly}(${g.names?.[bestAlly] || ""}) boxedIn=${boxedIn} myBal=${B} dMe=${Math.round(dMe)}
+  field t = g.t
+  field pct = pct
+  field ally = bestAlly
+  field ? = g.names?.[bestAlly] || ""
+  field boxedIn = boxedIn
+  field myBal = B
+  field dMe = Math.round(dMe)
+  fn             L4787: tryDonateToTeammate
+  prior-exit     L4789: !g.teams || !(g.teams[me] > 0) || typeof g.donate !== "function"  -> return
+  prior-exit     L4790: g.t < 400 || g.t - (this.lastDonateTick ?? -999) < 18  -> return
+  prior-exit     L4803: myHumanInAtk > 0 || B <= 1.10 * safeFloor  -> return
+  prior-exit     L4807: maxSafePct < 45  -> return
+  prior-may-exit L4811: bossId >= 0 && g.alive[bossId] && g.terr[bossId] >= 100
+  prior-exit     L4878: !boxedIn && dMe < 132  -> return
+  prior-exit     L4879: boxedIn && dMe < 72  -> return
+  prior-exit     L4903: bestAlly < 0  -> return
+  if             L4906: g.donate(pct, bestAlly, me)
+  if             L4909: typeof window !== "undefined" && window.__hlLog
+
+## L5285  Policy.act  [HL-TICK]
+template: [HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}
+  field t = g.t
+  field terr = g.terr[me]
+  field ? = (100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)
+  field bal = g.bal[me]
+  field dens = (g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)
+  field nb = this.nb.length
+  field neut = this.neutral
+  field cmds = this.cmds
+  field boats = this.boats
+  field ? = pfStr
+  fn             L5237: act
+  prior-exit     L5239: !g.canAct(me)  -> return
+  prior-may-exit L5245: P.flashLoanMode > 0 && this.flState
+  prior-may-exit L5251: P.seaCore > 0 && this.seaState.pendingHandoffs.size > 0
+  prior-may-exit L5258: P.seaCore > 0 && g.online && g.t - this.lastLandSpendTick === 1 && g.t >= 750 && this.neutral === 0 && g.t - this.seaState.lastFrogHop >= 35 && g.canAct(me)
+  prior-exit     L5276: g.t >= 350 && this.tryInterceptEnemyBoats(g) && g.online  -> return
+  prior-exit     L5277: g.t >= 420 && g.t % 4 === 0 && this.neutral === 0 && this.tryClaimNearTeamIslands(g) && g.online  -> return
+  if             L5278: g.t < P.coreFrom
+  if             L5279: g.t >= 600 && g.t % P.period === 0
+  if             L5281: typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t
+
+## L5329  Policy.act  [HL-TICK]
+template: [HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}
+  field t = g.t
+  field terr = g.terr[me]
+  field ? = (100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)
+  field bal = g.bal[me]
+  field dens = (g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)
+  field nb = this.nb.length
+  field neut = this.neutral
+  field cmds = this.cmds
+  field boats = this.boats
+  field ? = pfStr
+  fn             L5237: act
+  prior-exit     L5239: !g.canAct(me)  -> return
+  prior-may-exit L5245: P.flashLoanMode > 0 && this.flState
+  prior-may-exit L5251: P.seaCore > 0 && this.seaState.pendingHandoffs.size > 0
+  prior-may-exit L5258: P.seaCore > 0 && g.online && g.t - this.lastLandSpendTick === 1 && g.t >= 750 && this.neutral === 0 && g.t - this.seaState.lastFrogHop >= 35 && g.canAct(me)
+  prior-exit     L5276: g.t >= 350 && this.tryInterceptEnemyBoats(g) && g.online  -> return
+  prior-exit     L5277: g.t >= 420 && g.t % 4 === 0 && this.neutral === 0 && this.tryClaimNearTeamIslands(g) && g.online  -> return
+  prior-exit     L5278: g.t < P.coreFrom  -> return
+  prior-exit     L5321: g.t % P.period !== 0  -> return
+  if             L5325: typeof window !== "undefined" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t
