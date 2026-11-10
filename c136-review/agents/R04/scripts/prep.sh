@@ -44,5 +44,5 @@ if [ ! -d "$T/nodetools/node_modules/prettier" ]; then
 fi
 
 mkdir -p "$T/pretty"
-NODE_PATH="$T/nodetools/node_modules" timeout 110 node "$HERE/jsindex.cjs" "$T/c99-squad/live_game_js.js" "$T/pretty" || exit 2
+NODE_PATH="$T/nodetools/node_modules" HEAVY_QUEUE=90 timeout 115 bash "$TOP/c136-review/tools/run-heavy.sh" node "$HERE/jsindex.cjs" "$T/c99-squad/live_game_js.js" "$T/pretty" || exit 2
 echo "PREP: OK  $T/pretty/live.pretty.js  $T/pretty/index.json"

@@ -1,0 +1,30 @@
+# team-count：引擎规则预测的队伍数 vs 结算记录里出现过的队号
+# 输入 /tmp/c136-r04/c116/data/G01-G09-squad.log
+局	日志行	mode(vz)	真人数	我方在场	配置队数	预测队数	记录里的队号(非0)	出现过队号0	我方队号(mine)分布	预测=观察
+G00	85	1	62	8	3	3	1,2,3	是	3队:noah88/lucas94/ethan21/ryan_m/kevin_k/dave_w/mark07	是
+G01	755	5	50	8	7	6	1,2,3,4,5,6	否	4队:mark07/noah88/dave_w/lucas94/ethan21/ryan_m/kevin_k/leo_tx	是
+G02	1817	3	61	8	5	5	1,2,3,4,5	是	2队:ryan_m/noah88/leo_tx/lucas94/ethan21/mark07/kevin_k	是
+G03	2393	2	58	8	4	4	1,2,3,4	否	3队:mark07/lucas94/leo_tx/ryan_m/ethan21/noah88/kevin_k	是
+G04	3207	1	48	8	3	3	1,2,3	是	1队:dave_w/ethan21/kevin_k/lucas94/leo_tx/noah88/mark07	是
+G05	4160	5	55	8	7	6	1,2,3,4,5,6	是	2队:lucas94/ryan_m/noah88/ethan21/dave_w/leo_tx	是
+G06	4650	4	44	8	6	5	1,2,3,4,5	否	1队:ryan_m/lucas94/dave_w/mark07/leo_tx/kevin_k/ethan21/noah88	是
+G07	5782	0	59	8	2	2	1,2	是	2队:leo_tx/ryan_m/dave_w/ethan21/kevin_k/lucas94/mark07	是
+G08	6508	4	49	7	6	6	1,2,3,4,5,6	否	1队:leo_tx/kevin_k/mark07/dave_w/ethan21/ryan_m/lucas94	是
+G09	7160	3	41	6	5	5	1,2,3,4,5	是	2队:kevin_k/mark07/lucas94; 3队:ethan21/ryan_m	是
+# 预测与观察一致：10 / 10 局
+# 说明
+#  G00：真人 62 / 3 队 → 每队人数上限 21（ceil）
+#  G01：7队时每队基准 7 人 < 最大战队 8 人 → 减为 6 队
+#  G01：真人 50 / 6 队 → 每队人数上限 9（ceil）
+#  G02：真人 61 / 5 队 → 每队人数上限 13（ceil）
+#  G03：真人 58 / 4 队 → 每队人数上限 15（ceil）
+#  G04：真人 48 / 3 队 → 每队人数上限 16（ceil）
+#  G05：7队时每队基准 7 人 < 最大战队 8 人 → 减为 6 队
+#  G05：真人 55 / 6 队 → 每队人数上限 10（ceil）
+#  G06：6队时每队基准 7 人 < 最大战队 8 人 → 减为 5 队
+#  G06：真人 44 / 5 队 → 每队人数上限 9（ceil）
+#  G07：真人 59 / 2 队 → 每队人数上限 30（ceil）
+#  G08：真人 49 / 6 队 → 每队人数上限 9（ceil）
+#  G09：我方成员的 mine 不是同一个队号（2队 3 人; 3队 2 人）——这一局小队被分在了不同队伍
+#  G09：真人 41 / 5 队 → 每队人数上限 9（ceil）
+# 注：局号 G00 是日志里第一局（旧报告的 G01-G09 对应这里的 G01-G09，G00 是旧报告没编号的那一局）。
