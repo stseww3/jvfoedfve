@@ -22,6 +22,9 @@ stats.py — c136 复盘项目的统计口径工具（R10，裁判用）。只�
     excess_test(wins, exps)               实际胜局数相对基础期望的超额及精确双侧/单侧 p 值
     logit_shift(wins, exps, conf)         单参数「实力」估计：logit(p_i) = logit(e_i) + delta，
                                           给出 delta 的极大似然估计和似然比区间
+  独立性与分层
+    runs_test(seq)                        游程检验（精确）：输赢是否成串，验证「局与局独立」
+    cmh(strata)                           Cochran–Mantel–Haenszel 分层检验：按队伍数等分层后比较两组
 
 用法：
   python3 stats.py selftest
@@ -550,6 +553,102 @@ def logit_shift(wins: list[int], exps: list[float], conf: float = 0.95) -> dict:
 
 
 # ----------------------------------------------------------------------------
+# 独立性与分层
+# ----------------------------------------------------------------------------
+
+def runs_test(seq: list[int]) -> dict:
+    """
+    Wald–Wolfowitz 游程检验（精确分布）。seq 是按时间排序的 0/1 序列（例如逐局输赢）。
+    游程 = 连续相同结果的一段。零假设：给定赢和输的总数，所有排列等可能（局与局独立、胜率不漂移）。
+
+    返回 runs（实际游程数）、expected（期望游程数）、
+        p_few  = P(游程数 <= 实际)   游程太少 = 输赢成串，说明相邻的局相关或胜率随时段漂移
+        p_many = P(游程数 >= 实际)   游程太多 = 输赢交替过于规律
+    精确分布：r = 2k 时      P = 2·C(n1−1,k−1)·C(n0−1,k−1) / C(n,n1)
+              r = 2k+1 时    P = [C(n1−1,k)·C(n0−1,k−1) + C(n1−1,k−1)·C(n0−1,k)] / C(n,n1)
+    全赢或全输时无法检验，返回 p = None。
+    用途：验证「局与局独立」这个前提；p_few 很小时，区间和样本量公式都偏乐观。
+    """
+    n1 = sum(1 for x in seq if x)
+    n0 = len(seq) - n1
+    n = n0 + n1
+    if n == 0:
+        return {"n": 0, "n1": 0, "n0": 0, "runs": 0, "expected": None, "p_few": None, "p_many": None}
+    runs = 1 + sum(1 for a, b in zip(seq, seq[1:]) if bool(a) != bool(b))
+    if n1 == 0 or n0 == 0:
+        return {"n": n, "n1": n1, "n0": n0, "runs": runs, "expected": 1.0, "p_few": None, "p_many": None}
+    total = math.comb(n, n1)
+
+    def pr(r: int) -> float:
+        if r < 2:
+            return 0.0
+        if r % 2 == 0:
+            k = r // 2
+            return 2.0 * math.comb(n1 - 1, k - 1) * math.comb(n0 - 1, k - 1) / total
+        k = (r - 1) // 2
+        return (math.comb(n1 - 1, k) * math.comb(n0 - 1, k - 1)
+                + math.comb(n1 - 1, k - 1) * math.comb(n0 - 1, k)) / total
+
+    rmax = 2 * min(n0, n1) + (1 if n0 != n1 else 0)
+    pmf = {r: pr(r) for r in range(2, rmax + 1)}
+    return {
+        "n": n, "n1": n1, "n0": n0, "runs": runs,
+        "expected": 1.0 + 2.0 * n0 * n1 / n,
+        "p_few": min(1.0, math.fsum(p for r, p in pmf.items() if r <= runs)),
+        "p_many": min(1.0, math.fsum(p for r, p in pmf.items() if r >= runs)),
+        "pmf_sum": math.fsum(pmf.values()),
+    }
+
+
+def cmh(strata: list[tuple[int, int, int, int]]) -> dict:
+    """
+    Cochran–Mantel–Haenszel 分层检验。每个分层一个四元组 (k1, n1, k2, n2)：
+    第一组（对照）n1 局胜 k1 局，第二组（处理）n2 局胜 k2 局。
+    零假设：在每个分层内两组胜率相同。分层 = 队伍数等事先定下的环境变量。
+
+    返回：
+      or_mh        Mantel–Haenszel 合并赔率比（第二组对第一组；>1 表示第二组更强）
+      rd_mh        Mantel–Haenszel 合并胜率差（第二组减第一组），权重 n1·n2/(n1+n2)
+      chi2, p      CMH 统计量（不带连续性校正，自由度 1）及双侧 p 值
+      used         实际参与的分层数（某一组为空或全胜/全负使方差为 0 的分层不提供信息）
+    性质：各分层内的比较先做，再合并，所以两组在各分层的局数比例不同时也不会被分层变量混杂。
+    单个分层时 chi2 = (N−1)/N × 不校正的 Pearson 卡方。
+    """
+    num = 0.0      # sum(a − E[a])，a = 第二组的胜局数
+    var = 0.0
+    or_num = or_den = 0.0
+    rd_num = rd_den = 0.0
+    used = 0
+    for (k1, n1, k2, n2) in strata:
+        _check_kn(k1, n1)
+        _check_kn(k2, n2)
+        N = n1 + n2
+        if n1 == 0 or n2 == 0:
+            continue
+        m1 = k1 + k2            # 胜局合计
+        m0 = N - m1
+        a = k2
+        e = n2 * m1 / N
+        v = (n1 * n2 * m1 * m0) / (N * N * (N - 1)) if N > 1 else 0.0
+        num += a - e
+        var += v
+        or_num += k2 * (n1 - k1) / N
+        or_den += k1 * (n2 - k2) / N
+        w = n1 * n2 / N
+        rd_num += w * (k2 / n2 - k1 / n1)
+        rd_den += w
+        if v > 0:
+            used += 1
+    chi2 = (num * num / var) if var > 0 else float("nan")
+    p = (2.0 * (1.0 - _ND.cdf(math.sqrt(chi2)))) if var > 0 else float("nan")
+    return {
+        "or_mh": (or_num / or_den) if or_den > 0 else (math.inf if or_num > 0 else float("nan")),
+        "rd_mh": (rd_num / rd_den) if rd_den > 0 else float("nan"),
+        "chi2": chi2, "p": p, "used": used, "strata": len(strata),
+    }
+
+
+# ----------------------------------------------------------------------------
 # 自测
 # ----------------------------------------------------------------------------
 
@@ -696,6 +795,52 @@ def selftest(verbose: bool = True) -> int:
     r = logit_shift(wins, exps)
     resid = sum(y - _expit(_logit(e) + r["delta_hat"]) for y, e in zip(wins, exps))
     ck("logit_shift 异质时得分方程为 0", _close(resid, 0.0, 1e-8), f"{resid:.2e}")
+
+    # --- 游程检验
+    r = runs_test([1, 1, 1, 0, 0, 0])
+    # n1=n0=3：总排列 20；游程数 2 的排列有 2 个（111000、000111）
+    ck("runs_test 111000：游程 2，p_few = 2/20", r["runs"] == 2 and _close(r["p_few"], 0.1, 1e-12) and _close(r["p_many"], 1.0, 1e-12))
+    r = runs_test([1, 0, 1, 0, 1, 0])
+    ck("runs_test 101010：游程 6，p_many = 2/20", r["runs"] == 6 and _close(r["p_many"], 0.1, 1e-12))
+    for seq in ([1, 0, 0, 1, 1, 0, 0, 0, 1, 0], [0] * 7 + [1] * 3, [1, 0] * 9 + [1]):
+        r = runs_test(seq)
+        ck(f"runs_test 分布归一 (n={len(seq)})", _close(r["pmf_sum"], 1.0, 1e-12), f"{r['pmf_sum']:.12f}")
+    # 暴力枚举核对：n1=3, n0=4 的全部 35 个排列
+    import itertools
+    cnt: dict[int, int] = {}
+    for pos in itertools.combinations(range(7), 3):
+        seq = [1 if i in pos else 0 for i in range(7)]
+        rr = 1 + sum(1 for a, b in zip(seq, seq[1:]) if a != b)
+        cnt[rr] = cnt.get(rr, 0) + 1
+    r = runs_test([1, 1, 0, 0, 0, 1, 0])     # 游程数 4
+    brute_few = sum(c for k, c in cnt.items() if k <= 4) / 35.0
+    ck("runs_test 与暴力枚举一致 (3 胜 4 负)", r["runs"] == 4 and _close(r["p_few"], brute_few, 1e-12), f"{r['p_few']:.6f} vs {brute_few:.6f}")
+    ck("runs_test 期望 = 1 + 2·n0·n1/n", _close(r["expected"], 1 + 2 * 3 * 4 / 7, 1e-12))
+    ck("runs_test 全负返回 None", runs_test([0, 0, 0])["p_few"] is None)
+
+    # --- CMH
+    # 单个分层：chi2 = (N−1)/N × Pearson 卡方；OR = ad/bc
+    k1, n1, k2, n2 = 10, 74, 35, 53
+    a, b, c_, d = k2, n2 - k2, k1, n1 - k1
+    N = n1 + n2
+    pearson = N * (a * d - b * c_) ** 2 / ((a + b) * (c_ + d) * (a + c_) * (b + d))
+    r = cmh([(k1, n1, k2, n2)])
+    ck("cmh 单层 chi2 = (N−1)/N·Pearson", _close(r["chi2"], (N - 1) / N * pearson, 1e-9), f"{r['chi2']:.4f}")
+    ck("cmh 单层 OR = ad/bc", _close(r["or_mh"], (a * d) / (b * c_), 1e-12), f"{r['or_mh']:.4f}")
+    ck("cmh 单层 RD = p2 − p1", _close(r["rd_mh"], k2 / n2 - k1 / n1, 1e-12))
+    # 两个完全相同的分层：OR 不变，chi2 介于单层的 1 倍和 2.1 倍之间（信息量翻倍）
+    r2 = cmh([(k1, n1, k2, n2), (k1, n1, k2, n2)])
+    ck("cmh 两个相同分层 OR 不变、chi2 约翻倍", _close(r2["or_mh"], r["or_mh"], 1e-12) and _close(r2["chi2"], 2 * r["chi2"], 1e-9))
+    # 辛普森悖论的例子：每层内第二组都更强，合并后看起来更弱；CMH 应给出 OR > 1
+    simpson = [(1, 10, 20, 90), (60, 90, 8, 10)]     # 层 1：10% vs 22%；层 2：67% vs 80%
+    pooled_diff = (20 + 8) / 100 - (1 + 60) / 100
+    r = cmh(simpson)
+    ck("cmh 辛普森悖论：合并差为负，分层 OR>1 且 RD>0", pooled_diff < 0 and r["or_mh"] > 1 and r["rd_mh"] > 0,
+       f"pooled {pooled_diff:+.2f}, or_mh {r['or_mh']:.2f}, rd_mh {r['rd_mh']:+.3f}")
+    r = cmh([(5, 10, 5, 10), (2, 8, 2, 8)])
+    ck("cmh 两组相同：chi2 = 0，p = 1", _close(r["chi2"], 0.0, 1e-12) and _close(r["p"], 1.0, 1e-12))
+    r = cmh([(0, 0, 3, 5), (1, 4, 2, 4)])
+    ck("cmh 空分层被跳过", r["used"] == 1 and r["strata"] == 2)
 
     bad = [c for c in checks if not c[1]]
     if verbose:

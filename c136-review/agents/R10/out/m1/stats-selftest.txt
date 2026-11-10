@@ -63,5 +63,20 @@ PASS logit_shift 区间端点满足似然比方程
 PASS logit_shift 全负：估计 −inf，上界有限
 PASS logit_shift 全负上界闭式  [0.318968 vs 0.318968]
 PASS logit_shift 异质时得分方程为 0  [5.55e-17]
+PASS runs_test 111000：游程 2，p_few = 2/20
+PASS runs_test 101010：游程 6，p_many = 2/20
+PASS runs_test 分布归一 (n=10)  [1.000000000000]
+PASS runs_test 分布归一 (n=10)  [1.000000000000]
+PASS runs_test 分布归一 (n=19)  [1.000000000000]
+PASS runs_test 与暴力枚举一致 (3 胜 4 负)  [0.542857 vs 0.542857]
+PASS runs_test 期望 = 1 + 2·n0·n1/n
+PASS runs_test 全负返回 None
+PASS cmh 单层 chi2 = (N−1)/N·Pearson  [36.9463]
+PASS cmh 单层 OR = ad/bc  [12.4444]
+PASS cmh 单层 RD = p2 − p1
+PASS cmh 两个相同分层 OR 不变、chi2 约翻倍
+PASS cmh 辛普森悖论：合并差为负，分层 OR>1 且 RD>0  [pooled -0.33, or_mh 2.21, rd_mh +0.128]
+PASS cmh 两组相同：chi2 = 0，p = 1
+PASS cmh 空分层被跳过
 
-selftest: 65/65 通过
+selftest: 80/80 通过
