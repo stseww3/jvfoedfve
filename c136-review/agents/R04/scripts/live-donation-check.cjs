@@ -11,13 +11,14 @@
 // 用法（先跑 prep.sh）：
 //   HEAVY_QUEUE=90 timeout 115 bash c136-review/tools/run-heavy.sh node c136-review/agents/R04/scripts/live-donation-check.cjs \
 //     > c136-review/agents/R04/out/live-donation-check.txt
-// 不依赖 acorn/prettier；只读 /tmp/c136-r04/c99-squad/live_game_js.js 和 /tmp/c136-r04/pretty/index.json。
+// 不依赖 acorn/prettier；只读 /agent/repos/c136-data/src/engine/live_game_js.js 和 ../tmp/pretty/index.json（prep.sh 生成）。
 const fs = require('fs');
 const vm = require('vm');
 const crypto = require('crypto');
 
-const LIVE = process.env.R04_LIVE || '/tmp/c136-r04/c99-squad/live_game_js.js';
-const INDEX = process.env.R04_INDEX || '/tmp/c136-r04/pretty/index.json';
+const path = require('path');
+const LIVE = process.env.R04_LIVE || '/agent/repos/c136-data/src/engine/live_game_js.js';
+const INDEX = process.env.R04_INDEX || path.join(__dirname, '..', 'tmp', 'pretty', 'index.json');
 const src = fs.readFileSync(LIVE, 'utf8');
 const sha = crypto.createHash('sha256').update(fs.readFileSync(LIVE)).digest('hex');
 const index = JSON.parse(fs.readFileSync(INDEX, 'utf8'));

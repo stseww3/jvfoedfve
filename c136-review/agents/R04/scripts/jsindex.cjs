@@ -58,6 +58,12 @@ for (const stmt of ast.body) {
       }
     },
   });
+  // 构造函数体内直接声明的嵌套函数（例如 ca 里的 aOc / aOb），kind = 'nfn'
+  for (const inner of stmt.body.body) {
+    if (inner.type === 'FunctionDeclaration' && !info.members[inner.id.name]) {
+      info.members[inner.id.name] = { start: inner.start, end: inner.end, kind: 'nfn' };
+    }
+  }
   ctors[name] = info;
   topFns[name] = { start: stmt.start, end: stmt.end };
 }

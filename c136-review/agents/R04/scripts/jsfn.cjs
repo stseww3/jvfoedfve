@@ -1,18 +1,19 @@
 #!/usr/bin/env node
 // jsfn.cjs — 从压缩过的游戏客户端代码里取出一个函数（或一段偏移区间），排版后打印。
 //
-// 用法（先跑 prep.sh）：
-//   NODE_PATH=/tmp/c136-r04/nodetools/node_modules node jsfn.cjs a5M.rD            # 构造函数.成员
+// 用法（先跑 prep.sh；NODE_PATH=c136-review/agents/R04/tmp/nodetools/node_modules）：
+//   NODE_PATH=... node jsfn.cjs a5M.rD                                            # 构造函数.成员
 //   NODE_PATH=... node jsfn.cjs bD.gv.rD                                          # 全局访问路径（自动解析到构造函数）
 //   NODE_PATH=... node jsfn.cjs @123456+800                                       # 原文件字符串下标 + 长度（原样打印）
 //   NODE_PATH=... node jsfn.cjs --who rD                                          # 哪些构造函数有叫 rD 的成员
 //   NODE_PATH=... node jsfn.cjs --path a5M                                        # 构造函数 a5M 的全局访问路径
-// 环境变量：R04_LIVE（原文件，默认 /tmp/c136-r04/c99-squad/live_game_js.js）、R04_INDEX（默认 /tmp/c136-r04/pretty/index.json）
+// 环境变量：R04_LIVE（原文件，默认 /agent/repos/c136-data/src/engine/live_game_js.js）、R04_INDEX（默认 ../tmp/pretty/index.json）
 const fs = require('fs');
 const prettier = require('prettier');
 
-const LIVE = process.env.R04_LIVE || '/tmp/c136-r04/c99-squad/live_game_js.js';
-const INDEX = process.env.R04_INDEX || '/tmp/c136-r04/pretty/index.json';
+const path = require('path');
+const LIVE = process.env.R04_LIVE || '/agent/repos/c136-data/src/engine/live_game_js.js';
+const INDEX = process.env.R04_INDEX || path.join(__dirname, '..', 'tmp', 'pretty', 'index.json');
 const src = fs.readFileSync(LIVE, 'utf8');
 const index = JSON.parse(fs.readFileSync(INDEX, 'utf8'));
 const { ctors, globals } = index;
@@ -76,11 +77,12 @@ async function main() {
       console.log(`// ${spec}: 找不到`);
       continue;
     }
-    const { start, end } = ctors[r.ctor].members[r.member];
+    const { start, end, kind } = ctors[r.ctor].members[r.member];
     const code = src.slice(start, end);
     let out;
     try {
-      out = await prettier.format(`_ = { ${r.member}: ${code.replace(/^this\.[A-Za-z0-9_$]+\s*=\s*/, '')} }`, { parser: 'babel', printWidth: 140 });
+      const wrapped = kind === 'nfn' ? code : `_ = { ${r.member}: ${code.replace(/^this\.[A-Za-z0-9_$]+\s*=\s*/, '')} }`;
+      out = await prettier.format(wrapped, { parser: 'babel', printWidth: 140 });
     } catch (e) {
       out = code;
     }
