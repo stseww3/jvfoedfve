@@ -110,15 +110,22 @@ print_found() {
 
 TGPID=""
 TGOUT=""
+TGHDR=""
 TG_ON=0
 if [ -n "${TG_AGENT:-}" ] && [ -n "${TG_WAIT_URL:-}" ] && [ "$MAX" -gt 0 ]; then
   TG_ON=1
   TGOUT="$(mktemp)"
+  # 身份只写进一个仅本人可读的临时文件，由 curl 从文件读请求头：不出现在进程参数里，也不传给子进程。
+  TGHDR="$(mktemp)"
+  chmod 600 "$TGHDR"
+  printf 'X-Agent: %s\n' "$TG_AGENT" > "$TGHDR"
 fi
+unset TG_AGENT
 
 cleanup() {
   [ -n "$TGPID" ] && kill "$TGPID" 2>/dev/null
   [ -n "$TGOUT" ] && rm -f "$TGOUT"
+  [ -n "$TGHDR" ] && rm -f "$TGHDR"
 }
 trap cleanup EXIT
 
@@ -127,7 +134,7 @@ start_tg() {
   local left=$(( MAX - ( $(date +%s) - START ) ))
   [ "$left" -lt 5 ] && return 1
   : > "$TGOUT"
-  curl -sSN -m "$left" -H "X-Agent: $TG_AGENT" "$TG_WAIT_URL" > "$TGOUT" 2>&1 &
+  curl -sSN -m "$left" -H @"$TGHDR" "$TG_WAIT_URL" > "$TGOUT" 2>&1 &
   TGPID=$!
   return 0
 }
