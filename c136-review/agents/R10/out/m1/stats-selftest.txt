@@ -78,5 +78,9 @@ PASS cmh 两个相同分层 OR 不变、chi2 约翻倍
 PASS cmh 辛普森悖论：合并差为负，分层 OR>1 且 RD>0  [pooled -0.33, or_mh 2.21, rd_mh +0.128]
 PASS cmh 两组相同：chi2 = 0，p = 1
 PASS cmh 空分层被跳过
+PASS holm 校正值  [[0.03, 0.06, 0.06, 0.02]]
+PASS holm 拒绝判定
+PASS holm 单个假设不变
+PASS holm 不超过 1
 
-selftest: 80/80 通过
+selftest: 84/84 通过

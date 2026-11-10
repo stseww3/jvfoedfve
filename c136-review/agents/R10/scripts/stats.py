@@ -25,6 +25,7 @@ stats.py — c136 复盘项目的统计口径工具（R10，裁判用）。只�
   独立性与分层
     runs_test(seq)                        游程检验（精确）：输赢是否成串，验证「局与局独立」
     cmh(strata)                           Cochran–Mantel–Haenszel 分层检验：按队伍数等分层后比较两组
+    holm(pvalues, alpha)                  Holm–Bonferroni 多重检验校正
 
 用法：
   python3 stats.py selftest
@@ -600,6 +601,24 @@ def runs_test(seq: list[int]) -> dict:
     }
 
 
+def holm(pvalues: list[float], alpha: float = 0.05) -> list[dict]:
+    """
+    Holm–Bonferroni 逐步校正。同一批（同一道闸门）里检验了 m 条假设时用它控制「至少一条假阳性」的概率。
+    做法：p 值从小到大排，第 i 小的（i 从 1 起）和 alpha/(m−i+1) 比；第一次不通过之后全部不通过。
+    返回与输入同序的列表：{"p", "p_adj", "reject"}，p_adj 是校正后的 p 值（单调化，不超过 1）。
+    m 必须是这一批**实际检验过**的全部假设数，包括没写进报告的。
+    """
+    m = len(pvalues)
+    order = sorted(range(m), key=lambda i: pvalues[i])
+    adj = [0.0] * m
+    running = 0.0
+    for rank, i in enumerate(order):
+        val = min(1.0, (m - rank) * pvalues[i])
+        running = max(running, val)
+        adj[i] = running
+    return [{"p": pvalues[i], "p_adj": adj[i], "reject": adj[i] <= alpha} for i in range(m)]
+
+
 def cmh(strata: list[tuple[int, int, int, int]]) -> dict:
     """
     Cochran–Mantel–Haenszel 分层检验。每个分层一个四元组 (k1, n1, k2, n2)：
@@ -841,6 +860,14 @@ def selftest(verbose: bool = True) -> int:
     ck("cmh 两组相同：chi2 = 0，p = 1", _close(r["chi2"], 0.0, 1e-12) and _close(r["p"], 1.0, 1e-12))
     r = cmh([(0, 0, 3, 5), (1, 4, 2, 4)])
     ck("cmh 空分层被跳过", r["used"] == 1 and r["strata"] == 2)
+
+    # --- Holm
+    h = holm([0.01, 0.04, 0.03, 0.005])
+    # 排序 0.005,0.01,0.03,0.04 → ×4,×3,×2,×1 = 0.02,0.03,0.06,0.04 → 单调化 0.02,0.03,0.06,0.06
+    ck("holm 校正值", [round(x["p_adj"], 10) for x in h] == [0.03, 0.06, 0.06, 0.02], str([x["p_adj"] for x in h]))
+    ck("holm 拒绝判定", [x["reject"] for x in h] == [True, False, False, True])
+    ck("holm 单个假设不变", holm([0.03])[0]["p_adj"] == 0.03)
+    ck("holm 不超过 1", all(x["p_adj"] <= 1.0 for x in holm([0.9, 0.8, 0.7])))
 
     bad = [c for c in checks if not c[1]]
     if verbose:
