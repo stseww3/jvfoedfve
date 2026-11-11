@@ -111,6 +111,38 @@ def main():
             print(f"   通道干净的 {len(C)} 局按天然份额/人头排：低的一半 中位 {statistics.median(r['natRatio'] for r in C[:h]):.2f} → 1530 拍人均相对值中位 {statistics.median(r['rel1530'] for r in C[:h]):.2f}；"
                   f"高的一半 {statistics.median(r['natRatio'] for r in C[h:]):.2f} → {statistics.median(r['rel1530'] for r in C[h:]):.2f}")
 
+        def spearman(P):
+            def rank(v):
+                order = sorted(range(len(v)), key=lambda i: v[i])
+                out = [0.0] * len(v)
+                i = 0
+                while i < len(order):
+                    j = i
+                    while j + 1 < len(order) and v[order[j + 1]] == v[order[i]]:
+                        j += 1
+                    for k in range(i, j + 1):
+                        out[order[k]] = (i + j) / 2
+                    i = j + 1
+                return out
+            if len(P) < 6:
+                return None
+            rx, ry = rank([p[0] for p in P]), rank([p[1] for p in P])
+            mx, my = statistics.mean(rx), statistics.mean(ry)
+            den = (sum((a - mx) ** 2 for a in rx) * sum((b - my) ** 2 for b in ry)) ** 0.5
+            return sum((a - mx) * (b - my) for a, b in zip(rx, ry)) / den if den else None
+
+        def corr(name, L2, kx, ky):
+            P = [(r[kx], r[ky]) for r in L2 if r[kx] is not None and r[ky] is not None]
+            s = spearman(P)
+            if s is not None:
+                print(f'   秩相关 {name}：{len(P)} 局，ρ = {s:.2f}')
+
+        corr('通道干净的局里 天然份额/人头 × 1530 拍人均相对值', C, 'natRatio', 'rel1530')
+        corr('全部局 600–1500 落地/放行 × 1530 拍人均相对值', L, 'nd600_1500', 'rel1530')
+        corr('全部局 600–1500 落地/放行 × 1500 拍本队拿到率', L, 'nd600_1500', 'cap1500s')
+        corr('全部局 600–1500 落地/放行 × AI 地份额/人头', L, 'nd600_1500', 'aiShare')
+        corr('全部局 天然份额/人头 × 1530 拍人均相对值', L, 'natRatio', 'rel1530')
+
 
 if __name__ == '__main__':
     main()

@@ -18,6 +18,9 @@
   don / rej  events.csv 的捐兵行数、其中 likelyRejected 的行数；3213 拍前、3213–4284、4284 拍后三段  → DN05
   doomed     捐兵对象在这笔之后 400 拍内写了 died 的 RESULT 行的笔数（两边都是本地拍）               → DN04
   smallPct   pct < 150 的捐兵行数（手续费按捐出方全部余额的 64/1024 收，捐得越少税率越高：pct 150 ≈ 30%）
+  d1/d2/d3_* 相邻两个快照（90 拍）余额掉 ≥30%（起点余额 ≥1000）的次数，按起点拍分 1500 前 / 1500–3000 / 3000 后，再按同一区间里发生了什么分四类（依次判）：
+             lost = 领土同时掉 ≥3%（在挨打）；don = 没丢地、区间里有没被标 likelyRejected 的捐兵行；cmd = 没丢地、只放行了陆攻/船（cmdGain = 其中领土涨 ≥3%）；
+             none = 这 90 拍页面一条指令也没放行（余额是被更早放行、现在才落地的令划走的，或被别人的船/陆攻换掉而领土没掉到 3%）   → IO02 / DN / AT08 的全量上限
 用法：python3 scripts/m6_all_traj.py [局号 ...] [--csv]      不给局号 = 全部；--csv 写 out/_all/traj.csv。末尾按编队 × 输赢汇总。
 说明：这是只靠日志的上限估计——“有对象不发令”不区分保底线、价格线还是在等 DP 租期；逐拍的原因要用影子策略（attrib3.py、shadow_report --section idle）。
 """
@@ -37,10 +40,11 @@ def one(mid):
     snaps = defaultdict(list)
     for x in csv.DictReader(open(tp)):
         try:
-            snaps[x['bot']].append((int(x['t']), int(x['cmds']), int(x['nb']), int(x['neut']), float(x['dens'])))
+            snaps[x['bot']].append((int(x['t']), int(x['cmds']), int(x['nb']), int(x['neut']), float(x['dens']), int(x['terr']), int(x['bal'])))
         except ValueError:
             continue
     don = defaultdict(list)
+    don_ok = defaultdict(list)
     ev = []
     ep = os.path.join(DATA, mid, 'events.csv')
     if os.path.exists(ep):
@@ -51,6 +55,8 @@ def one(mid):
                 except ValueError:
                     continue
                 don[e['bot']].append(t)
+                if e['likelyRejected'] != 'True':
+                    don_ok[e['bot']].append(t)
                 try:
                     pc = int(e['pct'])
                 except (ValueError, KeyError):
@@ -68,14 +74,28 @@ def one(mid):
     out = {'mid': mid, 'cohort': card['cohort'], 'result': card['outcome']['resultLabel'], 'won': int(bool(card['outcome']['primaryTeamWon'])),
            'teams': card.get('actualTeams'), 'drop30': card['anomaliesSummary'].get('drop30Count')}
     acc = {k: defaultdict(float) for k, _, _ in PHASES}
+    d30 = {k: defaultdict(int) for k in ('d1', 'd2', 'd3')}
     for bot, L in snaps.items():
         for i in range(1, len(L)):
-            t0, c0, nb, neut, dens = L[i - 1]
-            t1, c1 = L[i][0], L[i][1]
+            t0, c0, nb, neut, dens, terr0, bal0 = L[i - 1]
+            t1, c1, terr1, bal1 = L[i][0], L[i][1], L[i][5], L[i][6]
             if t1 - t0 != 90:      # 快照缺口、或一个包里的第二场
                 continue
             dn = sum(1 for t in don.get(bot, []) if t0 < t <= t1)
             nd = max(0, (c1 - c0) - dn)
+            if bal0 >= 1000 and bal1 <= 0.7 * bal0:
+                D = d30['d1' if t0 < 1500 else ('d2' if t0 < 3000 else 'd3')]
+                D['n'] += 1
+                if terr1 < 0.97 * terr0:
+                    D['lost'] += 1
+                elif any(t0 < t <= t1 for t in don_ok.get(bot, [])):
+                    D['don'] += 1
+                elif nd > 0:
+                    D['cmd'] += 1
+                    if terr1 > 1.03 * terr0:
+                        D['cmdGain'] += 1
+                else:
+                    D['none'] += 1
             for k, a, b in PHASES:
                 if a <= t0 < b:
                     A = acc[k]
@@ -98,6 +118,9 @@ def one(mid):
         for key in ('boxed', 'idleTgt', 'idleNeut', 'full', 'boxedFull'):
             out[f'{k}_{key}'] = round(A[key] / n, 3) if n else None
         out[f'{k}_cmdRate'] = round(A['cmd'] / n, 2) if n else None
+    for k in ('d1', 'd2', 'd3'):
+        for key in ('n', 'lost', 'don', 'cmd', 'cmdGain', 'none'):
+            out[f'{k}_{key}'] = d30[k][key]
     for name, a, b in (('q1', 0, 3213), ('q2', 3213, 4284), ('q3', 4284, 10 ** 9)):
         L = [e for e in ev if a <= e[0] < b]
         out[f'{name}_don'] = len(L)
@@ -152,6 +175,11 @@ def main():
         print(f"#   {co} 捐兵行：3213 拍前 {d1} 行（疑似被拒 {j1} = {pc(j1, d1)}），3213–4284 拍 {d2} 行（{j2} = {pc(j2, d2)}），4284 拍后 {d3} 行（{j3} = {pc(j3, d3)}）；"
               f"对象 400 拍内阵亡的 {sum(r['doomed'] for r in L)} 行（{pc(sum(r['doomed'] for r in L), sum(r['don'] for r in L))}）；"
               f"pct < 150 的 {sum(r['smallPct'] for r in L)} 行（{pc(sum(r['smallPct'] for r in L), sum(r['don'] for r in L))}）")
+        for k, nm in (('d1', '1500 拍前'), ('d2', '1500–3000'), ('d3', '3000 拍后')):
+            n = sum(r[f'{k}_n'] for r in L)
+            g = lambda key: sum(r[f'{k}_{key}'] for r in L)
+            print(f"#   {co} 90 拍内余额掉 ≥30%（{nm}）：{n} 次 = 同时丢地 ≥3% 的 {g('lost')}（{pc(g('lost'), n)}）+ 没丢地、有没被拒的捐兵行 {g('don')}（{pc(g('don'), n)}）"
+                  f" + 没丢地、只放行了陆攻/船 {g('cmd')}（{pc(g('cmd'), n)}；其中领土涨 ≥3% 的 {g('cmdGain')}）+ 这 90 拍一条没放行 {g('none')}（{pc(g('none'), n)}）")
 
 
 if __name__ == '__main__':

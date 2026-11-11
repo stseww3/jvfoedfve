@@ -6,7 +6,8 @@
 输出：
   1. 2×2：±W 分钟内有 / 没有 squad20 的包 × 通道比值（中位、< 0.7 的局数、≥ 0.9 的局数）、1530 拍人均相对值、决策耗时 avgMs 中位；
   2. 同一张表按大厅人数（card.seededPlayers < 50 / 50–80 / > 80）再分，看是不是人多的局本来就慢；
-  3. 按日期、按时间顺序的清单（--list）。
+  3. 按时间顺序切段：squad10 的包一段有 squad20 同时开局、一段没有，各段的比值（看是不是跟着“有/没有”来回变）；
+  4. 按日期、按时间顺序的清单（--list）。
 用法：python3 scripts/m6_all_coload.py [--win 10] [--list]
 先跑：python3 scripts/m6_all_outcomes.py --csv
 说明：这是时间上的并排，不是因果检验。“没有 squad20 的包”只说明数据集里那个时段没有 squad20 的对局包，不保证机器上没有别的负载
@@ -42,7 +43,7 @@ def main():
             return
         rel = [r['rel'] for r in L if r['rel'] is not None]
         ms = [r['ms'] for r in L if r['ms'] is not None]
-        print(f"   {name:<38s} {len(v):3d} 局 | 落地/放行 中位 {statistics.median(v):.2f}，< 0.7 的 {sum(1 for x in v if x < 0.7)} 局（{100 * sum(1 for x in v if x < 0.7) / len(v):.0f}%），≥ 0.9 的 {sum(1 for x in v if x >= 0.9)} 局"
+        print(f"   {name:<38s} {len(v):3d} 局 | 落地/放行 中位 {statistics.median(v):.2f}，< 0.7 的 {sum(1 for x in v if x < 0.7)} 局（{100 * sum(1 for x in v if x < 0.7) / len(v):.0f}%；其中 < 0.45 的 {sum(1 for x in v if x < 0.45)} 局），≥ 0.9 的 {sum(1 for x in v if x >= 0.9)} 局"
               f" | 1530 拍人均相对值 {statistics.median(rel):.2f} | 决策耗时 {statistics.median(ms):.2f} 毫秒/拍 | 主队赢 {sum(r['won'] for r in L if r['nd'] is not None)}")
 
     A = [r for r in rows if r['co'] == 'squad10' and not r['multi'] and r['nd'] is not None]
@@ -56,6 +57,19 @@ def main():
     for name, lo, hi in (('< 50 人', 0, 50), ('50–80 人', 50, 81), ('> 80 人', 81, 10 ** 6)):
         line(f'{name}，有 squad20', [r for r in rest if r['near'] and lo <= r['humans'] < hi])
         line(f'{name}，没有 squad20', [r for r in rest if not r['near'] and lo <= r['humans'] < hi])
+    print('   —— 按时间顺序把 squad10 的包切成段（相邻的包 W 内有没有 squad20 这一点相同、且间隔不到两小时就并成一段；混了两场的包不计比值）')
+    seg = []
+    for r in rows:
+        if r['co'] != 'squad10':
+            continue
+        if seg and seg[-1][0]['near'] == r['near'] and r['t0'] - seg[-1][-1]['t0'] < 7200:
+            seg[-1].append(r)
+        else:
+            seg.append([r])
+    for g in seg:
+        v = [r['nd'] for r in g if r['nd'] is not None and not r['multi']]
+        txt = f"落地/放行 中位 {statistics.median(v):.2f}，< 0.7 的 {sum(1 for x in v if x < 0.7)}/{len(v)} 局" if v else '没有可用的比值'
+        print(f"   {g[0]['time']} – {g[-1]['time'][6:]}  {'有' if g[0]['near'] else '没有'} squad20  {len(g):2d} 个包 | {txt}")
     S = [r for r in rows if r['co'] == 'squad20' and not r['multi'] and r['nd'] is not None]
     print(f'#### squad20，有通道比值的 {len(S)} 局')
     line('全部', S)
