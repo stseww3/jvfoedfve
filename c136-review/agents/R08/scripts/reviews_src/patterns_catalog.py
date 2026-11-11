@@ -318,6 +318,20 @@ CATALOG = [
          definition="HL-TICK 里连续 ≥3 条快照（≥270 拍）nb=0、neut=0、领土 ≥98% 陆地但 < 陆地总格数、boats 不变，且这段时间里没有 HL-SLOW-TICK（找船的水路搜索一次没做）；"
                     "记空档拍数、剩下的格数，以及这段时间之后是赢了还是又冒出敌邻",
          detect="scripts/aigate.py [GJ]"),
+    dict(id="NEW-DN-15", prefix="DN", name="银行没处捐：盈余捐款的收款方只认同队的编队名字 / Boss（c110 L4467），这些号都 ≥132 密度（L4469）或太平无战事（L4477-4478）时，被围的号顶着硬上限空转；同队野人前线拿不到一兵",
+         definition="同一队 ≥2 个在线编队号连续 ≥900 拍 nb=0、neut=0 且密度 ≥140，这段时间全队 HL-DONATE 0 条、这些号的 cmds 不变；"
+                    "记段长、号数、合计兵力、被截掉的利息，以及同期结果行里两队的全队份额",
+         detect="scripts/squadfog.py [HE][HH]；scripts/logstats.py [QB]"),
+    dict(id="NEW-MT-06", prefix="MT", name="看不见的失地（只看日志）：快照窗两端都是 nb=0、neut=0，领土却在掉——吃它的号在受保护名单里（按名字保护的异队编队账号，停摆后由引擎托管），"
+                                           "analyze 不把它算进 nb，反击、买地、『正在挨真人打』的判断都看不到它",
+         definition="HL-TICK 相邻两条快照都是 nb=0 且 neut=0、后一条领土比前一条少的窗 ≥5 个且合计丢 ≥1000 格；记窗数、丢的格数、这些窗里的陆攻指令数，"
+                    "以及同期成交的、收款方是异队停摆编队账号的捐款（按 450 拍分桶）。有录像时对应 NEW-MT-03",
+         detect="scripts/squadfog.py [HC][HF]"),
+    dict(id="NEW-IO-13", prefix="IO", name="部分账号停摆（只看日志）：≥3 个号的 HL-TICK 在终局前断掉、没有结果行，对局照常打完；停摆的号在别的号眼里仍是活着的编队友（照样受保护、收捐款），"
+                                           "队友救援日志里它们的密度不随时间涨（没有利息 = 引擎里已是离开状态）",
+         definition="HL-GAME-INIT 的 me 里，HL-TICK 最后一拍比终局拍早 ≥500 且没有结果行的号 ≥3 个；记号数、停摆的本地拍、当时的领土合计，"
+                    "以及之后 squad rescue donate 行里它们的 dAlly 读数（最小 / 中位 / 最大）对照在线号同期密度",
+         detect="scripts/squadfog.py [HA][HL]"),
 ]
 
 BY_ID = {p["id"]: p for p in CATALOG}

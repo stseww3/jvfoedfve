@@ -352,6 +352,19 @@ export function resim(mid, opts = {}) {
     if (r && r.meId !== undefined && r.meId !== '' && +r.meId !== id) squad[b] = { id, meId: +r.meId, mismatch: true };
     else squad[b] = { id, meId: r ? +r.meId : id };
   }
+  // 日志标签和录像里的名字对不上的号（B019 有 7 个）：按 facts.json 里还原出的玩家号认；认得对不对由下面的 traj 核对把关
+  const factsPath = path.join(OUT, mid, 'facts.json');
+  if (!opts.replayFrom && fs.existsSync(factsPath)) {
+    const fb = Object.values(JSON.parse(fs.readFileSync(factsPath, 'utf8')).bots || {});
+    const used = new Set(Object.values(squad).map((s) => s.id).filter((x) => x >= 0));
+    for (const [b, s] of Object.entries(squad)) {
+      if (s.id >= 0) continue;
+      const f = fb.find((x) => (x.labels || []).includes(b));
+      if (!f || !(f.me >= 0 && f.me < H) || used.has(f.me)) continue;
+      used.add(f.me);
+      squad[b] = { id: f.me, meId: f.me, byMe: true, replayName: names[f.me] };
+    }
+  }
   if (opts.peer) {
     const pdir = path.join(DATA, 'bundles', opts.peer);
     const ptraj = readCsv(path.join(pdir, 'traj.csv'));
