@@ -237,6 +237,9 @@ if on(8):
         mt = sorted((HS['terr'][i][x] for x in al if x not in sq and P[x]['team'] == OUR), reverse=True)
         en = sorted((HS['terr'][i][x] for x in al if P[x]['team'] != OUR), reverse=True)
         ranks = ' '.join(f'{b} {1 + sum(1 for x in v if x > HS["terr"][i][pid[b]])}' for b in ORDER if HS['terr'][i][pid[b]] > 0)
+        if not s or not o:
+            print(f'   t={t} 在场 {len(al)} 人：其他真人中位 {o[len(o)//2] if o else "-"}｜我方号已全部不在场')
+            continue
         print(f'   t={t} 在场 {len(al)} 人：其他真人中位 {o[len(o)//2]}（上四分位 {o[len(o)//4]}、下四分位 {o[3*len(o)//4]}）｜我方号中位 {s[len(s)//2]}（{s[-1]}–{s[0]}）｜本队路人中位 {mt[len(mt)//2] if mt else "-"}（{len(mt)} 人）｜敌方真人中位 {en[len(en)//2] if en else "-"}（{len(en)} 人）｜名次：{ranks}')
 
 if on(11):
