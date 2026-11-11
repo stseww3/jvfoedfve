@@ -12,14 +12,19 @@
 //
 // 用法：node shadow.mjs <matchId> [--replay other] [--log id1,id2] [--bots a,b|all] [--strategy va|vb|c110|c116|g09]
 //                        [--to T] [--accept always|sim] [--per-tick 1] [--quit 1|0] [--probe bot:t0:t1] [--tag x] [--nocut] [--pin-no-full] [--quiet]
-//   --pc-shift 1（默认）：Policy.send 记下的 pendingQuotaCheck.t 往后挪 1 拍，即“发令后第 2 拍才开始核对余额”。
-//       依据：A057 riku_x 11905 拍发令后正被 [ua] 打、余额逐拍下降；按原样（--pc-shift 0）影子在 11906 拍把 isNoFullSend 置真，
-//       随后 4 条指令变成 pct=0，而录像里这 4 条是 pct=122；挪 1 拍后影子与录像一致（唯一配上 41→53 条），
-//       其余所有号、所有 HL-TICK 点、A059 全部结果都不变。真实客户端为什么晚一拍，镜像里没有外壳源码，查不到。
-//   --pc-end keep（默认）：核对窗口的终点不跟着后移，仍是“发令拍 + 7”，即窗口 = [发令拍+2, 发令拍+7]；--pc-end shift 则是 [发令拍+2, 发令拍+8]。
-//       依据：A094 noah88 560 拍发令（余额 5494），余额到 568 拍才掉到 5168。窗口若延到 568 拍，影子把这次判成“被限额”、额度清零，
-//       570 拍的下一条被拦，cmds 从 630 拍起比日志少 1（12 个 HL-TICK 点只对上 6 个）；终点留在 567 拍则 12/12。
-//       三种口径对三局日志的结果：原样 [t+1,t+7]：A057 riku_x 末段 4 条 pct 对不上；[t+2,t+8]：A094 noah88 对不上；[t+2,t+7]：A057 586/586、A059 290/290、A094 86/86 全对。
+//   --pc-shift auto（默认）| 0 | 1：Policy.send 记下的 pendingQuotaCheck（isNoFullSend 的核对记录）从哪一拍开始核对。
+//       0    = 代码原样：发令拍 +1 到 +7。
+//       1    = 一律晚 1 拍：发令拍 +2 到 +7（--pc-end shift 则到 +8）。
+//       auto = 代码原样，但“本拍受理了一条、同一拍策略又下了第二条被适配层拒掉”时，这条记录晚 1 拍才开始核对。
+//       四局的对照（都是机械对比，命令见 notes/PROGRESS.md）：
+//         A055：0 → 539/539 个 HL-TICK 点全同；1 → kaito9（900 拍起）、riku_x（1260 拍起）、alex_k（4140 拍起）的 cmds 各少 1；auto → 539/539。
+//               例：kaito9 875 拍发令，876 拍余额因更早一条指令落地而下降 → 876 拍额度清零，到 880 拍回到 727，下一条（门槛 697）放行；
+//               若 877 拍才清零，880 拍只有 547，下一条被拦，和日志（cmds=25）、录像（896 拍落地 pct=73）都对不上。
+//         A057：0 → HL-TICK 全同，但 riku_x 最后 4 条对 [ua] 的指令影子是 pct=0、录像是 pct=122（11905、11910 拍发令后 +1 拍余额正被 [ua] 打掉，
+//               原样会把 isNoFullSend 置真）；1 和 auto → 53/53 条全部配上。这两次发令都是“同拍第二条被拒”的情形。
+//         A059、A094：三种口径的 HL-TICK 点全同（290/290、86/86）；置真拍号最多差 1 拍。
+//       所以默认用 auto：它是唯一一种四局都对得上的口径。线上外壳为什么在这种情形下少核对 1 拍，镜像里没有外壳源码，查不到（记为 unknown）。
+//   --pc-end keep（默认）：核对窗口的终点不后移，仍是“发令拍 + 7”（A094 noah88 560 拍发令、余额 568 拍才掉：窗口若延到 568 拍，570 拍的下一条被拦，对不上日志）。
 //   --pc-trace：把每条待检记录的去向（pcEval 被核对 / pcDrop 超时作废 / pcOver 被下一条覆盖）记进 shadow_flags.csv
 //   --act-every N：对照用，假设外壳每 N 拍才调一次 act（N=5 时 A057 有 4 个号的 cmds 对不上日志，已排除）
 //   --per-tick N：每拍最多受理几条指令（默认 1；N=5 时 A057 有 4 个号的 cmds 对不上日志，已排除）
@@ -347,10 +352,15 @@ export async function runShadow(mid, o = {}) {
       globalThis.window = s.win;
       if (o.pinNoFull) { s.pol.isNoFullSend = false; s.pol.pendingQuotaCheck = null; }
       // --pc-end keep：核对窗口的起点按 --pc-shift 后移，终点仍是“发令拍 + 7”（原代码的终点），即窗口 = [发令拍+1+shift, 发令拍+7]。
-      if (o.pcEnd === 'keep' && s.pol.pendingQuotaCheck?._sh && g.t > s.pol.pendingQuotaCheck.t + 6 - o.pcShift) s.pol.pendingQuotaCheck = null;
+      if (o.pcEnd === 'keep' && s.pol.pendingQuotaCheck?._sh && g.t > s.pol.pendingQuotaCheck.t + 6 - s.pol.pendingQuotaCheck._sh) s.pol.pendingQuotaCheck = null;
       const nf0 = !!s.pol.isNoFullSend, pc0 = s.pol.pendingQuotaCheck ? { ...s.pol.pendingQuotaCheck } : null, bal0 = g.bal[p];
       const nCmd0 = cmds.length;
-      try { s.pol.act(s.gv); if (o.pcShift && s.pol.pendingQuotaCheck && s.pol.pendingQuotaCheck.t === g.t + 1 && !s.pol.pendingQuotaCheck._sh) { s.pol.pendingQuotaCheck.t += o.pcShift; s.pol.pendingQuotaCheck._sh = 1; }
+      try { s.pol.act(s.gv);
+        // --pc-shift auto：只有“本拍受理了一条、同拍又有一条被适配层拒掉”时才把核对起点后移 1 拍（见文件头）。
+        let shiftBy = o.pcShift;
+        if (o.pcAuto) { let nOk = 0, nNo = 0; for (let k = nCmd0; k < cmds.length; k++) { if (cmds[k].ok) nOk++; else nNo++; } shiftBy = nOk > 0 && nNo > 0 ? 1 : 0; }
+        if (shiftBy && s.pol.pendingQuotaCheck && s.pol.pendingQuotaCheck.t === g.t + 1 && !s.pol.pendingQuotaCheck._sh && !s.pol.pendingQuotaCheck._seen) { s.pol.pendingQuotaCheck.t += shiftBy; s.pol.pendingQuotaCheck._sh = shiftBy; }
+        if (s.pol.pendingQuotaCheck) s.pol.pendingQuotaCheck._seen = 1;
         if (s.probeState) s.probeState(); idleAudit(s, cmds.length - nCmd0); } catch (e) { if (errN++ < 5) console.error(`影子出错 t=${g.t} ${s.label}: ${e.stack.split('\n').slice(0, 3).join(' | ')}`); }
       // 待检记录的去向（--pc-trace 才记，量大）：pcEval = 本拍被核对（置真或扣额度）；pcDrop = 超过 6 拍作废；pcOver = 没等到核对就被下一条指令的记录覆盖。
       if (o.pcTrace && pc0) {
@@ -359,11 +369,11 @@ export async function runShadow(mid, o = {}) {
         const sent = Math.max(0, pc0.bal0 - bal0 - pc0.fee);
         const ev = due && late ? 'pcDrop' : due && low ? 'pcEval' : (pc1 && pc1 !== pc0 && (pc1.bal0 !== pc0.bal0 || pc1.want !== pc0.want || pc1.t !== pc0.t)) ? 'pcOver' : null;
         if (ev) s.flags.push({ t: g.t, bot: s.label, ev, target: -1, troops: Math.round(pc0.want), bal: bal0, noFull: s.pol.isNoFullSend ? 1 : 0, shadowQuota: Math.round(s.pol.shadowQuota ?? -1),
-          note: `发令拍=${pc0.t - 1 - (pc0._sh ? o.pcShift : 0)} 发令时余额=${pc0.bal0} 手续费=${pc0.fee} 想发=${Math.round(pc0.want)} 本拍余额=${bal0}` + (ev === 'pcEval' ? ` 算出实发=${sent} ${pc0.want >= 1.12 * sent && sent < pc0.bal0 - pc0.fee - 50 ? '判为被限额' : '判为正常'}` : '') });
+          note: `发令拍=${pc0.t - 1 - (pc0._sh || 0)} 发令时余额=${pc0.bal0} 手续费=${pc0.fee} 想发=${Math.round(pc0.want)} 本拍余额=${bal0}` + (ev === 'pcEval' ? ` 算出实发=${sent} ${pc0.want >= 1.12 * sent && sent < pc0.bal0 - pc0.fee - 50 ? '判为被限额' : '判为正常'}` : '') });
       }
       if (!nf0 && s.pol.isNoFullSend) {
         s.flags.push({ t: g.t, bot: s.label, ev: 'isNoFullSend', target: -1, troops: pc0 ? Math.round(pc0.want) : 0, bal: bal0, noFull: 1, shadowQuota: Math.round(s.pol.shadowQuota ?? -1),
-          note: pc0 ? `发令拍=${pc0.t - 1 - (pc0._sh ? o.pcShift : 0)} 发令时余额=${pc0.bal0} 手续费=${pc0.fee} 想发=${Math.round(pc0.want)} 检查时余额=${bal0} 算出实发=${Math.max(0, pc0.bal0 - bal0 - pc0.fee)}` : '无待检记录' });
+          note: pc0 ? `发令拍=${pc0.t - 1 - (pc0._sh || 0)} 发令时余额=${pc0.bal0} 手续费=${pc0.fee} 想发=${Math.round(pc0.want)} 检查时余额=${bal0} 算出实发=${Math.max(0, pc0.bal0 - bal0 - pc0.fee)}` : '无待检记录' });
       }
     }
   }
@@ -493,7 +503,7 @@ if (IS_MAIN) {
   const t0 = Date.now();
   const r = await runShadow(mid, {
     replay: opt('replay', mid), log: opt('log', mid).split(','), bots: opt('bots', 'all'), strategy: opt('strategy', null),
-    nocut: argv.includes('--nocut'), pinNoFull: argv.includes('--pin-no-full'), to: opt('to', null) ? +opt('to') : undefined, accept: opt('accept', 'always'), perTick: +opt('per-tick', 1), actEvery: +opt('act-every', 1), pcShift: +opt('pc-shift', 1), pcTrace: argv.includes('--pc-trace'), pcEnd: opt('pc-end', 'keep'), quit: +opt('quit', 1), probe: opt('probe', null),
+    nocut: argv.includes('--nocut'), pinNoFull: argv.includes('--pin-no-full'), to: opt('to', null) ? +opt('to') : undefined, accept: opt('accept', 'always'), perTick: +opt('per-tick', 1), actEvery: +opt('act-every', 1), pcShift: opt('pc-shift', 'auto') === 'auto' ? 0 : +opt('pc-shift', 0), pcAuto: opt('pc-shift', 'auto') === 'auto', pcTrace: argv.includes('--pc-trace'), pcEnd: opt('pc-end', 'keep'), quit: +opt('quit', 1), probe: opt('probe', null),
   });
   const { m, sh, cmds, slog, check, probeOut, idleAgg } = r;
   const dir = path.join(OUT_ROOT, mid);
