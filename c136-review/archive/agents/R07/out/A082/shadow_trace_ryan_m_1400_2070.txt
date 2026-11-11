@@ -1,0 +1,416 @@
+# A082 ryan_m 影子决策明细 t=1400~2070（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没走到 buyLand: 20 拍（t=1400~1495）
+#   出手打人/bot: 24 拍（t=1500~1905）；可用兵 4504~235281，一条指令下限(20%余额) 1287~59469，比值 118%~494%
+#   没有可打的邻居: 17 拍（t=1585~1955）
+#   首选目标价高（c>=worth）: 40 拍（t=1625~2070）
+#   首选目标无可用兵（avail<=0）: 24 拍（t=1710~1895）；可用兵 -39514~0，一条指令下限(20%余额) 0~2620，比值 NaN%~NaN%
+#   有可用兵但没发（其他）: 3 拍（t=1805~1815）；可用兵 5440~8034，一条指令下限(20%余额) 3541~3695，比值 147%~227%
+#   首选目标已有在途进攻（curAtk 过门槛）: 6 拍（t=1825~1865）；可用兵 45~6641，一条指令下限(20%余额) 9~2625，比值 86%~500%
+#   只打无主地: 1 拍（t=1910~1910）
+#   └ 「出手打人/bot」里：24 条对人/bot 的出兵共约 2094245 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1400 ryan_m B=193727 L=3631 d=53.4 nb=1 neut=0 cmds=56 noFull=1 shQ=47583 | m=1.400 worth=74.7 cheap=3.8 over=0 dMedOther=9.2 safe(-1)=43827
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1405 ryan_m B=193727 L=3631 d=53.4 nb=1 neut=0 cmds=56 noFull=1 shQ=48431 | m=1.405 worth=75.0 cheap=3.8 over=0 dMedOther=9.0 safe(-1)=43847
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1410 ryan_m B=198744 L=3631 d=54.7 nb=1 neut=0 cmds=56 noFull=1 shQ=49686 | m=1.410 worth=77.2 cheap=3.9 over=0 dMedOther=9.2 safe(-1)=42101
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1415 ryan_m B=198744 L=3631 d=54.7 nb=1 neut=0 cmds=56 noFull=1 shQ=49686 | m=1.415 worth=77.5 cheap=3.9 over=0 dMedOther=9.2 safe(-1)=41508
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1420 ryan_m B=203831 L=3631 d=56.1 nb=1 neut=0 cmds=56 noFull=1 shQ=50957 | m=1.420 worth=79.7 cheap=3.9 over=0 dMedOther=9.4 safe(-1)=42649
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1425 ryan_m B=203831 L=3631 d=56.1 nb=1 neut=0 cmds=56 noFull=1 shQ=50957 | m=1.425 worth=80.0 cheap=3.9 over=0 dMedOther=9.2 safe(-1)=42649
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1430 ryan_m B=208987 L=3631 d=57.6 nb=1 neut=0 cmds=56 noFull=1 shQ=52246 | m=1.430 worth=82.3 cheap=4.0 over=0 dMedOther=9.4 safe(-1)=43805
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1435 ryan_m B=208987 L=3631 d=57.6 nb=1 neut=0 cmds=56 noFull=1 shQ=52246 | m=1.435 worth=82.6 cheap=4.0 over=0 dMedOther=9.4 safe(-1)=43805
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1440 ryan_m B=214211 L=3631 d=59.0 nb=1 neut=0 cmds=56 noFull=1 shQ=53552 | m=1.440 worth=85.0 cheap=4.0 over=0 dMedOther=9.7 safe(-1)=42022
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1445 ryan_m B=214211 L=3631 d=59.0 nb=1 neut=0 cmds=56 noFull=1 shQ=53552 | m=1.445 worth=85.2 cheap=4.0 over=0 dMedOther=9.7 safe(-1)=42037
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1450 ryan_m B=219502 L=3631 d=60.5 nb=1 neut=0 cmds=56 noFull=1 shQ=54875 | m=1.450 worth=87.7 cheap=4.1 over=0 dMedOther=9.9 safe(-1)=43151
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1455 ryan_m B=219502 L=3631 d=60.5 nb=1 neut=0 cmds=56 noFull=1 shQ=54875 | m=1.455 worth=88.0 cheap=4.1 over=0 dMedOther=9.8 safe(-1)=43151
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1460 ryan_m B=224857 L=3631 d=61.9 nb=1 neut=0 cmds=56 noFull=1 shQ=56214 | m=1.460 worth=90.4 cheap=4.1 over=0 dMedOther=10.1 safe(-1)=44278
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1465 ryan_m B=224857 L=3631 d=61.9 nb=1 neut=0 cmds=56 noFull=1 shQ=56214 | m=1.465 worth=90.7 cheap=4.1 over=0 dMedOther=10.1 safe(-1)=44278
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1470 ryan_m B=230253 L=3631 d=63.4 nb=1 neut=0 cmds=56 noFull=1 shQ=57563 | m=1.470 worth=93.2 cheap=4.2 over=0 dMedOther=10.3 safe(-1)=45190
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1475 ryan_m B=230253 L=3631 d=63.4 nb=1 neut=0 cmds=56 noFull=1 shQ=57563 | m=1.475 worth=93.5 cheap=4.2 over=0 dMedOther=10.3 safe(-1)=45095
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1480 ryan_m B=235709 L=3631 d=64.9 nb=1 neut=0 cmds=56 noFull=1 shQ=58927 | m=1.480 worth=96.1 cheap=4.2 over=0 dMedOther=10.6 safe(-1)=46236
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1485 ryan_m B=235709 L=3631 d=64.9 nb=1 neut=0 cmds=56 noFull=1 shQ=58927 | m=1.485 worth=96.4 cheap=4.2 over=0 dMedOther=10.6 safe(-1)=46236
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1490 ryan_m B=241224 L=3631 d=66.4 nb=1 neut=0 cmds=56 noFull=1 shQ=60306 | m=1.490 worth=99.0 cheap=4.3 over=0 dMedOther=10.9 safe(-1)=47390
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1495 ryan_m B=241224 L=3631 d=66.4 nb=1 neut=0 cmds=56 noFull=1 shQ=60306 | m=1.495 worth=99.3 cheap=4.3 over=0 dMedOther=10.9 safe(-1)=44286
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1500 ryan_m B=250427 L=3631 d=69.0 nb=1 neut=0 cmds=57 noFull=1 shQ=61752 | m=1.500 worth=103.5 cheap=4.3 over=0 dMedOther=12.1 safe(-1)=53455
+    → bigdi#1[T7] terr=19677 bal=100596 dq=5.1 cnt=133 | c=14.3 rankC=14.3 need=208816 tD=0.42 人 | safe=53455 keep=119725 avail=127768 chunkB=50085 pulseB=30051  x=127768 sole hNb=1
+    ⇒ 影子指令 attack pct=522 → bigdi#1[T7]（约 127903 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1505 ryan_m B=250427 L=3631 d=69.0 nb=1 neut=0 cmds=58 noFull=1 shQ=62606 | m=1.499 worth=103.4 cheap=4.4 over=0 dMedOther=12.1 safe(-1)=53455
+    → bigdi#1[T7] terr=20283 bal=100596 dq=5.0 cnt=133 | c=13.9 rankC=13.9 need=209730 tD=0.41 人 | safe=53455 keep=119227 avail=128266 chunkB=50085 pulseB=30051  x=128266 sole hNb=1
+    ⇒ 影子指令 attack pct=524 → bigdi#1[T7]（约 128392 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1510 ryan_m B=256136 L=3631 d=70.5 nb=1 neut=0 cmds=59 noFull=1 shQ=64034 | m=1.498 worth=105.7 cheap=4.4 over=0 dMedOther=12.4 safe(-1)=54743
+    → bigdi#1[T7] terr=20657 bal=102889 dq=5.0 cnt=133 | c=14.0 rankC=14.0 need=214373 tD=0.40 人 | safe=54743 keep=121594 avail=131541 chunkB=51227 pulseB=30736  x=131541 sole hNb=1
+    ⇒ 影子指令 attack pct=525 → bigdi#1[T7]（约 131569 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1515 ryan_m B=256136 L=3631 d=70.5 nb=1 neut=0 cmds=60 noFull=1 shQ=64034 | m=1.498 worth=105.7 cheap=4.4 over=0 dMedOther=12.4 safe(-1)=54832
+    → bigdi#1[T7] terr=20790 bal=103048 dq=5.0 cnt=133 | c=13.9 rankC=13.9 need=214858 tD=0.40 人 | safe=54832 keep=121544 avail=131591 chunkB=51227 pulseB=30736  x=131591 sole hNb=1
+    ⇒ 影子指令 attack pct=526 → bigdi#1[T7]（约 131819 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1520 ryan_m B=261899 L=3631 d=72.1 nb=1 neut=0 cmds=61 noFull=1 shQ=65474 | m=1.497 worth=108.0 cheap=4.4 over=0 dMedOther=12.7 safe(-1)=55508
+    → bigdi#1[T7] terr=20726 bal=104250 dq=5.0 cnt=133 | c=14.1 rankC=14.1 need=216679 tD=0.40 人 | safe=55508 keep=124131 avail=134699 chunkB=52380 pulseB=31428  x=134699 sole hNb=1
+    ⇒ 影子指令 attack pct=526 → bigdi#1[T7]（约 134785 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1525 ryan_m B=261899 L=3631 d=72.1 nb=1 neut=0 cmds=62 noFull=1 shQ=65474 | m=1.496 worth=107.9 cheap=4.5 over=0 dMedOther=12.7 safe(-1)=55819
+    → bigdi#1[T7] terr=20810 bal=104804 dq=5.0 cnt=133 | c=14.1 rankC=14.1 need=217991 tD=0.40 人 | safe=55819 keep=124178 avail=134652 chunkB=52380 pulseB=31428  x=134652 sole hNb=1
+    ⇒ 影子指令 attack pct=526 → bigdi#1[T7]（约 134785 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1530 ryan_m B=267713 L=3631 d=73.7 nb=1 neut=0 cmds=63 noFull=1 shQ=66928 | m=1.496 worth=110.3 cheap=4.5 over=0 dMedOther=13.8 safe(-1)=57126
+    → bigdi#1[T7] terr=20856 bal=107130 dq=5.1 cnt=133 | c=14.3 rankC=14.3 need=222228 tD=0.37 人 | safe=57126 keep=126867 avail=137709 chunkB=53543 pulseB=32126  x=137709 sole hNb=1
+    ⇒ 影子指令 attack pct=526 → bigdi#1[T7]（约 137778 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1535 ryan_m B=267713 L=3631 d=73.7 nb=1 neut=0 cmds=64 noFull=1 shQ=66928 | m=1.495 worth=110.2 cheap=4.5 over=0 dMedOther=13.0 safe(-1)=57126
+    → bigdi#1[T7] terr=20924 bal=107130 dq=5.1 cnt=133 | c=14.3 rankC=14.3 need=222330 tD=0.39 人 | safe=57126 keep=126847 avail=137729 chunkB=53543 pulseB=32126  x=137729 sole hNb=1
+    ⇒ 影子指令 attack pct=526 → bigdi#1[T7]（约 137778 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1540 ryan_m B=273575 L=3631 d=75.3 nb=1 neut=0 cmds=65 noFull=1 shQ=68393 | m=1.494 worth=112.6 cheap=4.6 over=0 dMedOther=13.3 safe(-1)=58444
+    → bigdi#1[T7] terr=20971 bal=109476 dq=5.2 cnt=133 | c=14.5 rankC=14.5 need=226589 tD=0.39 人 | safe=58444 keep=129559 avail=140811 chunkB=54715 pulseB=32829  x=140811 sole hNb=1
+    ⇒ 影子指令 attack pct=527 → bigdi#1[T7]（约 141062 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1545 ryan_m B=273575 L=3631 d=75.3 nb=1 neut=0 cmds=66 noFull=1 shQ=68393 | m=1.493 worth=112.5 cheap=4.6 over=0 dMedOther=13.2 safe(-1)=58444
+    → bigdi#1[T7] terr=21042 bal=109476 dq=5.2 cnt=133 | c=14.5 rankC=14.5 need=226694 tD=0.39 人 | safe=58444 keep=129537 avail=140833 chunkB=54715 pulseB=32829  x=140833 sole hNb=1
+    ⇒ 影子指令 attack pct=527 → bigdi#1[T7]（约 141062 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1550 ryan_m B=279456 L=3631 d=77.0 nb=1 neut=0 cmds=67 noFull=1 shQ=69864 | m=1.492 worth=114.9 cheap=4.6 over=0 dMedOther=13.5 safe(-1)=55901
+    → bigdi#1[T7] terr=21230 bal=104950 dq=4.9 cnt=133 | c=13.9 rankC=13.9 need=218908 tD=0.37 人 | safe=55901 keep=131019 avail=145163 chunkB=55891 pulseB=33535  x=145163 sole hNb=1
+    ⇒ 影子指令 attack pct=531 → bigdi#1[T7]（约 145186 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1555 ryan_m B=279456 L=3631 d=77.0 nb=1 neut=0 cmds=68 noFull=1 shQ=69864 | m=1.492 worth=114.8 cheap=4.7 over=0 dMedOther=13.5 safe(-1)=55901
+    → bigdi#1[T7] terr=21694 bal=104950 dq=4.8 cnt=133 | c=13.6 rankC=13.6 need=219604 tD=0.36 人 | safe=55901 keep=130688 avail=145494 chunkB=55891 pulseB=33535  x=145494 sole hNb=1
+    ⇒ 影子指令 attack pct=533 → bigdi#1[T7]（约 145731 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1560 ryan_m B=285380 L=3631 d=78.6 nb=1 neut=0 cmds=69 noFull=1 shQ=71345 | m=1.491 worth=117.2 cheap=4.7 over=0 dMedOther=13.8 safe(-1)=57150
+    → bigdi#1[T7] terr=21972 bal=107174 dq=4.9 cnt=133 | c=13.7 rankC=13.7 need=223981 tD=0.35 人 | safe=57150 keep=133215 avail=148821 chunkB=57076 pulseB=34246  x=148821 sole hNb=1
+    ⇒ 影子指令 attack pct=533 → bigdi#1[T7]（约 148821 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1565 ryan_m B=285380 L=3631 d=78.6 nb=1 neut=0 cmds=70 noFull=1 shQ=71345 | m=1.490 worth=117.1 cheap=4.7 over=0 dMedOther=13.8 safe(-1)=57150
+    → bigdi#1[T7] terr=22323 bal=107174 dq=4.8 cnt=133 | c=1.2 rankC=0.6 need=224514 tD=0.35 人 pulse nearCollapse bleeding | safe=57150 keep=57150 avail=224886 chunkB=57076 pulseB=34246  x=67354 hNb=1
+    ⇒ 影子指令 attack pct=241 → bigdi#1[T7]（约 67443 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1570 ryan_m B=291344 L=3631 d=80.2 nb=1 neut=0 cmds=71 noFull=1 shQ=72836 | m=1.490 worth=119.5 cheap=4.8 over=0 dMedOther=14.1 safe(-1)=58141
+    → bigdi#1[T7] terr=22471 bal=108938 dq=4.8 cnt=133 | c=1.4 rankC=0.7 need=227880 tD=0.34 人 pulse nearCollapse bleeding | safe=58141 keep=58141 avail=229789 chunkB=58269 pulseB=34961  x=68364 hNb=1
+    ⇒ 影子指令 attack pct=240 → bigdi#1[T7]（约 68568 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1575 ryan_m B=291344 L=3631 d=80.2 nb=1 neut=0 cmds=72 noFull=1 shQ=72836 | m=1.489 worth=119.5 cheap=4.8 over=0 dMedOther=14.1 safe(-1)=57605
+    → bigdi#1[T7] terr=22624 bal=107984 dq=4.8 cnt=132 | c=1.4 rankC=0.7 need=226403 tD=0.34 人 pulse nearCollapse bleeding | safe=57605 keep=57605 avail=230325 chunkB=58269 pulseB=34961  x=67920 hNb=1
+    ⇒ 影子指令 attack pct=238 → bigdi#1[T7]（约 67999 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1580 ryan_m B=297345 L=3631 d=81.9 nb=1 neut=0 cmds=73 noFull=1 shQ=74336 | m=1.488 worth=121.9 cheap=4.8 over=0 dMedOther=13.8 safe(-1)=58580
+    → bigdi#1[T7] terr=22692 bal=109719 dq=4.8 cnt=131 | c=1.5 rankC=0.7 need=229597 tD=0.35 人 pulse nearCollapse bleeding | safe=58580 keep=58580 avail=235281 chunkB=59469 pulseB=35681  x=68879 hNb=1
+    ⇒ 影子指令 attack pct=237 → bigdi#1[T7]（约 69109 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1585 ryan_m B=363 L=3631 d=0.1 nb=1 neut=0 cmds=73 noFull=1 shQ=82 | m=1.487 worth=0.1 cheap=4.9 over=0 dMedOther=13.3 safe(-1)=58031
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1590 ryan_m B=370 L=3761 d=0.1 nb=1 neut=0 cmds=73 noFull=1 shQ=287 | m=1.486 worth=0.1 cheap=4.9 over=0 dMedOther=13.6 safe(-1)=57332
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1595 ryan_m B=370 L=3892 d=0.1 nb=1 neut=0 cmds=73 noFull=1 shQ=492 | m=1.486 worth=0.1 cheap=5.0 over=0 dMedOther=13.6 safe(-1)=55732
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1600 ryan_m B=4534 L=4157 d=1.1 nb=1 neut=0 cmds=73 noFull=1 shQ=695 | m=1.485 worth=1.6 cheap=5.0 over=0 dMedOther=14.9 safe(-1)=65809
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1605 ryan_m B=4534 L=4426 d=1.0 nb=1 neut=0 cmds=73 noFull=1 shQ=895 | m=1.484 worth=1.5 cheap=5.0 over=0 dMedOther=14.9 safe(-1)=63081
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1610 ryan_m B=4623 L=4559 d=1.0 nb=1 neut=0 cmds=73 noFull=1 shQ=1095 | m=1.484 worth=1.5 cheap=5.1 over=0 dMedOther=15.2 safe(-1)=62332
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1615 ryan_m B=4623 L=4828 d=1.0 nb=1 neut=0 cmds=73 noFull=1 shQ=1294 | m=1.483 worth=1.4 cheap=5.1 over=0 dMedOther=15.2 safe(-1)=59001
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1620 ryan_m B=4712 L=5078 d=0.9 nb=1 neut=0 cmds=73 noFull=1 shQ=1489 | m=1.482 worth=1.4 cheap=5.2 over=0 dMedOther=15.5 safe(-1)=57362
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1625 ryan_m B=4712 L=5196 d=0.9 nb=2 neut=0 cmds=73 noFull=1 shQ=1684 | m=1.481 worth=1.3 cheap=5.2 over=0 dMedOther=15.5 safe(-1)=84110
+    → öylesine#23[T7] terr=9928 bal=157509 dq=15.9 cnt=1 | c=10.3 rankC=5.2 need=290830 tD=1.03 人 pulse nearCollapse bleeding | safe=84110 keep=Inf avail=-Inf chunkB=942 pulseB=565 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1630 ryan_m B=4801 L=5415 d=0.9 nb=2 neut=0 cmds=73 noFull=1 shQ=1879 | m=1.480 worth=1.3 cheap=5.2 over=0 dMedOther=15.8 safe(-1)=80879
+    → öylesine#23[T7] terr=9601 bal=152088 dq=15.8 cnt=5 | c=11.0 rankC=5.5 need=278661 tD=1.01 人 pulse bleeding | safe=80879 keep=Inf avail=-Inf chunkB=960 pulseB=576 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1635 ryan_m B=4801 L=5622 d=0.9 nb=2 neut=0 cmds=73 noFull=1 shQ=2048 | m=1.480 worth=1.3 cheap=5.3 over=0 dMedOther=15.6 safe(-1)=76398
+    → öylesine#23[T7] terr=9297 bal=144422 dq=15.5 cnt=9 | c=10.7 rankC=5.4 need=262756 tD=1.00 人 pulse bleeding | safe=76398 keep=Inf avail=-Inf chunkB=960 pulseB=576 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1640 ryan_m B=4890 L=5719 d=0.9 nb=2 neut=0 cmds=73 noFull=1 shQ=2048 | m=1.479 worth=1.3 cheap=5.3 over=0 dMedOther=15.8 safe(-1)=75899
+    → öylesine#23[T7] terr=9161 bal=143679 dq=15.7 cnt=12 | c=11.2 rankC=5.6 need=260292 tD=0.99 人 pulse bleeding | safe=75899 keep=Inf avail=-Inf chunkB=978 pulseB=587 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1645 ryan_m B=4890 L=5902 d=0.8 nb=2 neut=0 cmds=73 noFull=1 shQ=2048 | m=1.478 worth=1.2 cheap=5.4 over=0 dMedOther=15.8 safe(-1)=72362
+    → öylesine#23[T7] terr=8920 bal=137657 dq=15.4 cnt=17 | c=11.5 rankC=5.7 need=247799 tD=0.97 人 pulse bleeding | safe=72362 keep=Inf avail=-Inf chunkB=978 pulseB=587 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1650 ryan_m B=4979 L=6073 d=0.8 nb=2 neut=0 cmds=73 noFull=1 shQ=2048 | m=1.478 worth=1.2 cheap=5.4 over=0 dMedOther=16.1 safe(-1)=70587
+    → öylesine#23[T7] terr=8703 bal=134754 dq=15.5 cnt=22 | c=12.1 rankC=6.1 need=240881 tD=0.96 人 pulse bleeding | safe=70587 keep=Inf avail=-Inf chunkB=996 pulseB=597 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1655 ryan_m B=4979 L=6158 d=0.8 nb=2 neut=0 cmds=73 noFull=1 shQ=2048 | m=1.477 worth=1.2 cheap=5.5 over=0 dMedOther=16.1 safe(-1)=69054
+    → öylesine#23[T7] terr=8598 bal=132154 dq=15.4 cnt=26 | c=12.3 rankC=6.1 need=235526 tD=0.95 人 pulse bleeding | safe=69054 keep=Inf avail=-Inf chunkB=996 pulseB=597 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1660 ryan_m B=5069 L=6324 d=0.8 nb=2 neut=0 cmds=73 noFull=1 shQ=2048 | m=1.476 worth=1.2 cheap=5.5 over=0 dMedOther=16.4 safe(-1)=67624
+    → öylesine#23[T7] terr=8410 bal=129856 dq=15.4 cnt=31 | c=10.7 rankC=5.3 need=229877 tD=0.94 人 pulse bleeding | safe=67624 keep=Inf avail=-Inf chunkB=1014 pulseB=608 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1665 ryan_m B=5069 L=6486 d=0.8 nb=2 neut=0 cmds=73 noFull=1 shQ=2048 | m=1.475 worth=1.2 cheap=5.6 over=0 dMedOther=16.3 safe(-1)=65633
+    → öylesine#23[T7] terr=8276 bal=126555 dq=15.3 cnt=37 | c=10.8 rankC=5.4 need=223089 tD=0.94 人 pulse bleeding | safe=65633 keep=Inf avail=-Inf chunkB=1014 pulseB=608 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1670 ryan_m B=5159 L=6563 d=0.8 nb=2 neut=0 cmds=73 noFull=1 shQ=2048 | m=1.474 worth=1.2 cheap=5.6 over=0 dMedOther=16.5 safe(-1)=65243
+    → öylesine#23[T7] terr=8162 bal=125977 dq=15.4 cnt=40 | c=9.2 rankC=4.6 need=221027 tD=0.93 人 pulse nearCollapse bleeding | safe=65243 keep=Inf avail=-Inf chunkB=1032 pulseB=619 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1675 ryan_m B=5159 L=6707 d=0.8 nb=2 neut=0 cmds=73 noFull=1 shQ=2048 | m=1.474 worth=1.1 cheap=5.7 over=0 dMedOther=15.3 safe(-1)=63090
+    → öylesine#23[T7] terr=8015 bal=122361 dq=15.3 cnt=54 | c=9.4 rankC=4.7 need=213584 tD=1.00 人 pulse nearCollapse bleeding | safe=63090 keep=Inf avail=-Inf chunkB=1032 pulseB=619 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1680 ryan_m B=5249 L=6838 d=0.8 nb=2 neut=0 cmds=73 noFull=1 shQ=2048 | m=1.473 worth=1.1 cheap=5.7 over=0 dMedOther=15.3 safe(-1)=61766
+    → öylesine#23[T7] terr=7841 bal=120200 dq=15.3 cnt=57 | c=9.9 rankC=4.9 need=208239 tD=1.00 人 pulse nearCollapse bleeding | safe=61766 keep=Inf avail=-Inf chunkB=1050 pulseB=630 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1685 ryan_m B=5249 L=6904 d=0.8 nb=2 neut=0 cmds=73 noFull=1 shQ=2048 | m=1.472 worth=1.1 cheap=5.8 over=0 dMedOther=15.1 safe(-1)=52504
+    → öylesine#23[T7] terr=7729 bal=103813 dq=13.4 cnt=58 | c=7.4 rankC=3.7 need=180258 tD=0.89 人 pulse nearCollapse bleeding | safe=52504 keep=Inf avail=-Inf chunkB=1050 pulseB=630 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1690 ryan_m B=5339 L=7035 d=0.8 nb=2 neut=0 cmds=73 noFull=1 shQ=2048 | m=1.472 worth=1.1 cheap=5.8 over=0 dMedOther=15.3 safe(-1)=51590
+    → öylesine#23[T7] terr=7606 bal=102383 dq=13.5 cnt=59 | c=7.9 rankC=3.9 need=176781 tD=0.88 人 pulse nearCollapse bleeding | safe=51590 keep=Inf avail=-Inf chunkB=1068 pulseB=641 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1695 ryan_m B=5339 L=7161 d=0.7 nb=2 neut=0 cmds=73 noFull=1 shQ=2048 | m=1.471 worth=1.1 cheap=5.9 over=0 dMedOther=15.3 safe(-1)=49388
+    → öylesine#23[T7] terr=7479 bal=98653 dq=13.2 cnt=62 | c=8.0 rankC=4.0 need=169525 tD=0.86 人 pulse nearCollapse bleeding | safe=49388 keep=Inf avail=-Inf chunkB=1068 pulseB=641 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1700 ryan_m B=12652 L=7223 d=1.8 nb=2 neut=0 cmds=73 noFull=1 shQ=2101 | m=1.470 worth=2.6 cheap=5.9 over=0 dMedOther=16.6 safe(-1)=53710
+    → öylesine#23[T7] terr=7365 bal=105247 dq=14.3 cnt=62 | c=9.9 rankC=4.9 need=179095 tD=0.86 人 pulse bleeding | safe=53710 keep=Inf avail=-Inf chunkB=2530 pulseB=1518 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1705 ryan_m B=12652 L=7346 d=1.7 nb=2 neut=0 cmds=73 noFull=1 shQ=2365 | m=1.469 worth=2.5 cheap=6.0 over=0 dMedOther=16.6 safe(-1)=52488
+    → öylesine#23[T7] terr=7218 bal=90060 dq=12.5 cnt=63 | c=8.8 rankC=4.4 need=153270 tD=0.75 人 pulse bleeding | safe=52488 keep=Inf avail=-Inf chunkB=2530 pulseB=1518 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1710 ryan_m B=12860 L=7467 d=1.7 nb=2 neut=0 cmds=73 noFull=1 shQ=2626 | m=1.468 worth=2.5 cheap=6.0 over=0 dMedOther=16.9 safe(-1)=52224
+    → öylesine#23[T7] terr=7043 bal=88016 dq=12.5 cnt=64 | c=3.4 rankC=1.7 need=148337 tD=0.74 人 pulse nearCollapse bleeding | safe=52224 keep=52224 avail=-39514 chunkB=2572 pulseB=1543 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1715 ryan_m B=12860 L=7527 d=1.7 nb=2 neut=0 cmds=73 noFull=1 shQ=2889 | m=1.468 worth=2.5 cheap=6.1 over=0 dMedOther=16.9 safe(-1)=51612
+    → öylesine#23[T7] terr=6919 bal=85547 dq=12.4 cnt=65 | c=3.4 rankC=1.7 need=143224 tD=0.73 人 pulse nearCollapse bleeding | safe=51612 keep=51612 avail=-38902 chunkB=2572 pulseB=1543 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1720 ryan_m B=13068 L=7645 d=1.7 nb=2 neut=0 cmds=73 noFull=1 shQ=3150 | m=1.467 worth=2.5 cheap=6.2 over=0 dMedOther=17.1 safe(-1)=51315
+    → öylesine#23[T7] terr=6740 bal=83358 dq=12.4 cnt=64 | c=0.0 rankC=0.0 need=137998 tD=0.72 人 pulse nearCollapse bleeding | safe=51315 keep=51315 avail=-38400 chunkB=2614 pulseB=1568 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1725 ryan_m B=13068 L=7761 d=1.7 nb=2 neut=0 cmds=73 noFull=1 shQ=3267 | m=1.466 worth=2.5 cheap=6.2 over=0 dMedOther=17.0 safe(-1)=37767
+    → öylesine#23[T7] terr=6550 bal=70374 dq=10.7 cnt=64 | c=0.0 rankC=0.0 need=124524 tD=0.63 人 pulse nearCollapse bleeding onMe | safe=37767 keep=37767 avail=-24852 chunkB=2614 pulseB=1568 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1730 ryan_m B=13099 L=7754 d=1.7 nb=2 neut=0 cmds=73 noFull=1 shQ=3274 | m=1.466 worth=2.5 cheap=6.3 over=0 dMedOther=17.0 safe(-1)=37039
+    → öylesine#23[T7] terr=6503 bal=69550 dq=10.7 cnt=64 | c=0.0 rankC=0.0 need=122396 tD=0.63 人 pulse nearCollapse bleeding onMe | safe=37039 keep=37039 avail=-24093 chunkB=2620 pulseB=1572 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1735 ryan_m B=12925 L=7807 d=1.7 nb=2 neut=0 cmds=73 noFull=1 shQ=3231 | m=1.465 worth=2.4 cheap=6.3 over=0 dMedOther=16.7 safe(-1)=35406
+    → öylesine#23[T7] terr=6429 bal=67200 dq=10.5 cnt=67 | c=0.0 rankC=0.0 need=117695 tD=0.63 人 pulse nearCollapse bleeding onMe | safe=35406 keep=35406 avail=-22632 chunkB=2585 pulseB=1551 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1740 ryan_m B=12775 L=7799 d=1.6 nb=2 neut=0 cmds=73 noFull=1 shQ=3193 | m=1.464 worth=2.4 cheap=6.4 over=0 dMedOther=16.9 safe(-1)=33926
+    → öylesine#23[T7] terr=6396 bal=65509 dq=10.2 cnt=62 | c=0.0 rankC=0.0 need=113942 tD=0.61 人 pulse nearCollapse bleeding onMe | safe=33926 keep=33926 avail=-21300 chunkB=2555 pulseB=1533 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1745 ryan_m B=12456 L=7742 d=1.6 nb=2 neut=0 cmds=73 noFull=1 shQ=3114 | m=1.463 worth=2.4 cheap=6.5 over=0 dMedOther=16.9 safe(-1)=32446
+    → öylesine#23[T7] terr=6405 bal=63673 dq=9.9 cnt=63 | c=0.0 rankC=0.0 need=110450 tD=0.59 人 pulse nearCollapse bleeding onMe | safe=32446 keep=32446 avail=-20135 chunkB=2491 pulseB=1495 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1750 ryan_m B=12484 L=7815 d=1.6 nb=2 neut=0 cmds=73 noFull=1 shQ=3121 | m=1.462 worth=2.3 cheap=6.5 over=0 dMedOther=17.1 safe(-1)=31444
+    → öylesine#23[T7] terr=6330 bal=62446 dq=9.9 cnt=65 | c=0.0 rankC=0.0 need=107521 tD=0.58 人 pulse nearCollapse bleeding onMe | safe=31444 keep=31444 avail=-19106 chunkB=2497 pulseB=1498 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1755 ryan_m B=12155 L=7827 d=1.6 nb=2 neut=0 cmds=73 noFull=1 shQ=3038 | m=1.462 worth=2.3 cheap=6.6 over=0 dMedOther=17.1 safe(-1)=25533
+    → öylesine#23[T7] terr=6289 bal=52860 dq=8.4 cnt=68 | c=0.0 rankC=0.0 need=91789 tD=0.49 人 pulse nearCollapse bleeding onMe | safe=25533 keep=25533 avail=-13520 chunkB=2431 pulseB=1459 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1760 ryan_m B=11997 L=7764 d=1.5 nb=2 neut=0 cmds=73 noFull=1 shQ=2999 | m=1.461 worth=2.3 cheap=6.7 over=0 dMedOther=17.4 safe(-1)=24626
+    → öylesine#23[T7] terr=6309 bal=52098 dq=8.3 cnt=69 | c=0.0 rankC=0.0 need=89945 tD=0.47 人 pulse nearCollapse bleeding onMe | safe=24626 keep=24626 avail=-12769 chunkB=2399 pulseB=1440 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1765 ryan_m B=11826 L=7845 d=1.5 nb=2 neut=0 cmds=73 noFull=1 shQ=2956 | m=1.460 worth=2.2 cheap=6.7 over=0 dMedOther=17.4 safe(-1)=19923
+    → öylesine#23[T7] terr=6230 bal=44329 dq=7.1 cnt=72 | c=0.0 rankC=0.0 need=77148 tD=0.41 人 pulse nearCollapse bleeding onMe | safe=19923 keep=19923 avail=-8235 chunkB=2365 pulseB=1419 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1770 ryan_m B=11648 L=7858 d=1.5 nb=2 neut=0 cmds=73 noFull=1 shQ=2912 | m=1.460 worth=2.2 cheap=6.8 over=0 dMedOther=17.6 safe(-1)=18577
+    → öylesine#23[T7] terr=6192 bal=42935 dq=6.9 cnt=75 | c=0.0 rankC=0.0 need=73854 tD=0.39 人 pulse nearCollapse bleeding onMe | safe=18577 keep=18577 avail=-7065 chunkB=2330 pulseB=1398 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1775 ryan_m B=11292 L=7788 d=1.4 nb=2 neut=0 cmds=73 noFull=1 shQ=2823 | m=1.459 worth=2.1 cheap=6.9 over=0 dMedOther=17.6 safe(-1)=17320
+    → öylesine#23[T7] terr=6222 bal=41609 dq=6.7 cnt=77 | c=0.0 rankC=0.0 need=71130 tD=0.38 人 pulse nearCollapse bleeding onMe | safe=17320 keep=17320 avail=-6160 chunkB=2258 pulseB=1355 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1780 ryan_m B=11270 L=7881 d=1.4 nb=2 neut=0 cmds=73 noFull=1 shQ=2817 | m=1.458 worth=2.1 cheap=7.0 over=0 dMedOther=17.8 safe(-1)=16319
+    → öylesine#23[T7] terr=6140 bal=40486 dq=6.6 cnt=81 | c=0.0 rankC=0.0 need=68397 tD=0.37 人 pulse nearCollapse bleeding onMe | safe=16319 keep=16319 avail=-5181 chunkB=2254 pulseB=1352 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1785 ryan_m B=11188 L=8064 d=1.4 nb=2 neut=0 cmds=73 noFull=1 shQ=2797 | m=1.457 worth=2.0 cheap=7.0 over=0 dMedOther=17.8 safe(-1)=14829
+    → öylesine#23[T7] terr=5944 bal=38491 dq=6.5 cnt=80 | c=0.0 rankC=0.0 need=63677 tD=0.36 人 pulse nearCollapse bleeding | safe=14829 keep=14829 avail=-3772 chunkB=2238 pulseB=1343 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1790 ryan_m B=11344 L=8160 d=1.4 nb=2 neut=0 cmds=73 noFull=1 shQ=2836 | m=1.457 worth=2.0 cheap=7.1 over=0 dMedOther=16.7 safe(-1)=14088
+    → öylesine#23[T7] terr=5814 bal=33295 dq=5.7 cnt=80 | c=0.0 rankC=0.0 need=59196 tD=0.34 人 pulse nearCollapse bleeding onMe | safe=14088 keep=14088 avail=-2876 chunkB=2269 pulseB=1361 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1795 ryan_m B=11164 L=8278 d=1.3 nb=2 neut=0 cmds=73 noFull=1 shQ=2791 | m=1.456 worth=2.0 cheap=7.2 over=0 dMedOther=16.5 safe(-1)=12635
+    → öylesine#23[T7] terr=5717 bal=28001 dq=4.9 cnt=84 | c=0.0 rankC=0.0 need=53795 tD=0.30 人 pulse nearCollapse bleeding onMe | safe=12635 keep=12635 avail=-1601 chunkB=2233 pulseB=1340 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1800 ryan_m B=19146 L=8317 d=2.3 nb=2 neut=0 cmds=74 noFull=1 shQ=2763 | m=1.455 worth=3.3 cheap=7.3 over=0 dMedOther=17.5 safe(-1)=14418
+    → öylesine#23[T7] terr=5673 bal=32329 dq=5.7 cnt=92 | c=0.0 rankC=0.0 need=58726 tD=0.33 人 pulse nearCollapse bleeding onMe | safe=14418 keep=14418 avail=4504 chunkB=3829 pulseB=2298  x=4504 hNb=2
+    ⇒ 影子指令 attack pct=240 → öylesine#23[T7]（约 4506 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1805 ryan_m B=18473 L=8244 d=2.2 nb=2 neut=0 cmds=74 noFull=1 shQ=189 | m=1.454 worth=3.3 cheap=7.4 over=0 dMedOther=17.4 safe(-1)=12817
+    → öylesine#23[T7] terr=5718 bal=31086 dq=5.4 cnt=92 | c=0.0 rankC=0.0 need=55586 tD=0.31 人 pulse nearCollapse bleeding onMe | safe=12817 keep=12817 avail=5440 chunkB=3695 pulseB=2217  x=5440 hNb=2
+    ⇒ 本拍没有指令
+t=1810 ryan_m B=18384 L=8385 d=2.2 nb=2 neut=0 cmds=74 noFull=1 shQ=496 | m=1.454 worth=3.2 cheap=7.4 over=0 dMedOther=17.2 safe(-1)=11511
+    → öylesine#23[T7] terr=5618 bal=29825 dq=5.3 cnt=96 | c=0.0 rankC=0.0 need=52298 tD=0.31 人 pulse nearCollapse bleeding onMe | safe=11511 keep=11511 avail=6658 chunkB=3677 pulseB=2206  x=6658 hNb=2
+    ⇒ 本拍没有指令
+t=1815 ryan_m B=17705 L=8430 d=2.1 nb=2 neut=0 cmds=74 noFull=1 shQ=791 | m=1.453 worth=3.1 cheap=7.5 over=0 dMedOther=17.0 safe(-1)=9464
+    → öylesine#23[T7] terr=5591 bal=27999 dq=5.0 cnt=101 | c=0.0 rankC=0.0 need=47806 tD=0.29 人 pulse nearCollapse bleeding onMe | safe=9464 keep=9464 avail=8034 chunkB=3541 pulseB=2125  x=8034 hNb=2
+    ⇒ 本拍没有指令
+t=1820 ryan_m B=17434 L=8452 d=2.1 nb=2 neut=0 cmds=75 noFull=1 shQ=1077 | m=1.452 worth=3.0 cheap=7.6 over=0 dMedOther=17.1 safe(-1)=8228
+    → öylesine#23[T7] terr=5551 bal=27324 dq=4.9 cnt=104 | c=0.0 rankC=0.0 need=45146 tD=0.29 人 pulse nearCollapse bleeding | safe=8228 keep=8228 avail=9002 chunkB=3487 pulseB=2092  x=9002 hNb=2
+    ⇒ 影子指令 attack pct=528 → öylesine#23[T7]（约 9006 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1825 ryan_m B=13127 L=8903 d=1.5 nb=2 neut=0 cmds=75 noFull=1 shQ=168 | m=1.451 worth=2.1 cheap=7.7 over=0 dMedOther=17.0 safe(-1)=6333
+    → öylesine#23[T7] terr=5203 bal=24627 dq=4.7 cnt=100 | c=0.0 rankC=0.0 need=38545 tD=0.28 人 pulse nearCollapse bleeding | safe=6333 keep=6333 avail=6641 chunkB=2625 pulseB=1575 在途(curAtk=575)→continue hNb=2
+    ⇒ 本拍没有指令
+t=1830 ryan_m B=6315 L=9251 d=0.7 nb=2 neut=0 cmds=75 noFull=1 shQ=330 | m=1.451 worth=1.0 cheap=7.8 over=0 dMedOther=16.9 safe(-1)=5154
+    → öylesine#23[T7] terr=4972 bal=23050 dq=4.6 cnt=96 | c=0.0 rankC=0.0 need=30284 tD=0.27 人 pulse nearCollapse bleeding | safe=5154 keep=5154 avail=1087 chunkB=1263 pulseB=758 在途(curAtk=5179)→continue hNb=2
+    ⇒ 本拍没有指令
+t=1835 ryan_m B=6315 L=9470 d=0.7 nb=2 neut=0 cmds=75 noFull=1 shQ=460 | m=1.450 worth=1.0 cheap=7.9 over=0 dMedOther=16.8 safe(-1)=2765
+    → öylesine#23[T7] terr=4780 bal=19126 dq=4.0 cnt=94 | c=0.0 rankC=0.0 need=25509 tD=0.24 人 pulse nearCollapse bleeding | safe=2765 keep=2765 avail=3476 chunkB=1263 pulseB=758 在途(curAtk=3593)→continue hNb=2
+    ⇒ 本拍没有指令
+t=1840 ryan_m B=6393 L=9881 d=0.6 nb=2 neut=0 cmds=75 noFull=1 shQ=585 | m=1.449 worth=0.9 cheap=8.0 over=0 dMedOther=16.8 safe(-1)=1576
+    → öylesine#23[T7] terr=4508 bal=17627 dq=3.9 cnt=85 | c=0.0 rankC=0.0 need=24481 tD=0.23 人 pulse nearCollapse bleeding | safe=1576 keep=1576 avail=4743 chunkB=1279 pulseB=767 在途(curAtk=977)→continue hNb=2
+    ⇒ 本拍没有指令
+t=1845 ryan_m B=6435 L=10106 d=0.6 nb=2 neut=0 cmds=76 noFull=1 shQ=710 | m=1.448 worth=0.9 cheap=8.1 over=0 dMedOther=16.8 safe(-1)=762
+    → öylesine#23[T7] terr=4459 bal=16515 dq=3.7 cnt=85 | c=0.0 rankC=0.0 need=23851 tD=0.22 人 pulse nearCollapse bleeding | safe=762 keep=762 avail=5598 chunkB=1287 pulseB=772  x=5598 hNb=2
+    ⇒ 影子指令 attack pct=890 → öylesine#23[T7]（约 5599 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1850 ryan_m B=6513 L=10303 d=0.6 nb=2 neut=0 cmds=77 noFull=1 shQ=833 | m=1.448 worth=0.9 cheap=8.2 over=0 dMedOther=17.4 safe(-1)=376
+    → öylesine#23[T7] terr=4397 bal=16123 dq=3.7 cnt=87 | c=0.0 rankC=0.0 need=23026 tD=0.21 人 pulse nearCollapse bleeding | safe=376 keep=376 avail=6061 chunkB=1303 pulseB=782  x=6061 hNb=2
+    ⇒ 影子指令 attack pct=953 → öylesine#23[T7]（约 6067 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1855 ryan_m B=6513 L=10472 d=0.6 nb=2 neut=0 cmds=78 noFull=1 shQ=953 | m=1.447 worth=0.9 cheap=8.3 over=0 dMedOther=17.3 safe(-1)=0
+    → öylesine#23[T7] terr=4386 bal=15559 dq=3.5 cnt=87 | c=0.0 rankC=0.0 need=22342 tD=0.20 人 pulse nearCollapse bleeding | safe=0 keep=0 avail=6437 chunkB=1303 pulseB=782  x=6437 hNb=2
+    ⇒ 影子指令 attack pct=1012 → öylesine#23[T7]（约 6443 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1860 ryan_m B=779 L=10974 d=0.1 nb=2 neut=0 cmds=78 noFull=1 shQ=96 | m=1.446 worth=0.1 cheap=8.3 over=0 dMedOther=18.3 safe(-1)=0
+    → öylesine#23[T7] terr=4081 bal=13522 dq=3.3 cnt=84 | c=0.0 rankC=0.0 need=15712 tD=0.18 人 pulse nearCollapse bleeding | safe=0 keep=0 avail=770 chunkB=156 pulseB=93 在途(curAtk=2315)→continue hNb=2
+    ⇒ 本拍没有指令
+t=1865 ryan_m B=45 L=11308 d=0.0 nb=2 neut=0 cmds=78 noFull=1 shQ=216 | m=1.445 worth=0.0 cheap=8.3 over=0 dMedOther=18.2 safe(-1)=0
+    → öylesine#23[T7] terr=3828 bal=12014 dq=3.1 cnt=82 | c=0.0 rankC=0.0 need=13782 tD=0.17 人 pulse nearCollapse bleeding | safe=0 keep=0 avail=45 chunkB=9 pulseB=5 在途(curAtk=984)→continue hNb=2
+    ⇒ 本拍没有指令
+t=1870 ryan_m B=0 L=11727 d=0.0 nb=2 neut=0 cmds=78 noFull=1 shQ=336 | m=1.445 worth=0.0 cheap=8.2 over=0 dMedOther=18.3 safe(-1)=0
+    → öylesine#23[T7] terr=3623 bal=10821 dq=3.0 cnt=81 | c=0.0 rankC=0.0 need=12242 tD=0.16 人 pulse nearCollapse bleeding | safe=0 keep=0 avail=0 chunkB=0 pulseB=0 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1875 ryan_m B=0 L=11899 d=0.0 nb=2 neut=0 cmds=78 noFull=1 shQ=456 | m=1.444 worth=0.0 cheap=8.2 over=0 dMedOther=18.2 safe(-1)=0
+    → öylesine#23[T7] terr=3448 bal=9764 dq=2.8 cnt=82 | c=0.0 rankC=0.0 need=10117 tD=0.16 人 pulse nearCollapse bleeding | safe=0 keep=0 avail=0 chunkB=0 pulseB=0 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1880 ryan_m B=0 L=12159 d=0.0 nb=2 neut=0 cmds=78 noFull=1 shQ=576 | m=1.443 worth=0.0 cheap=8.2 over=0 dMedOther=18.3 safe(-1)=0
+    → öylesine#23[T7] terr=3270 bal=7912 dq=2.4 cnt=77 | c=0.0 rankC=0.0 need=7468 tD=0.13 人 pulse nearCollapse bleeding | safe=0 keep=0 avail=0 chunkB=0 pulseB=0 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1885 ryan_m B=0 L=12327 d=0.0 nb=2 neut=0 cmds=78 noFull=1 shQ=696 | m=1.442 worth=0.0 cheap=8.2 over=0 dMedOther=17.6 safe(-1)=0
+    → öylesine#23[T7] terr=3100 bal=7201 dq=2.3 cnt=69 | c=0.0 rankC=0.0 need=5852 tD=0.13 人 pulse nearCollapse bleeding | safe=0 keep=0 avail=0 chunkB=0 pulseB=0 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1890 ryan_m B=0 L=12581 d=0.0 nb=2 neut=0 cmds=78 noFull=1 shQ=816 | m=1.442 worth=0.0 cheap=8.2 over=0 dMedOther=17.8 safe(-1)=0
+    → öylesine#23[T7] terr=2903 bal=7847 dq=2.7 cnt=66 | c=0.0 rankC=0.0 need=4755 tD=0.15 人 pulse nearCollapse bleeding | safe=0 keep=0 avail=0 chunkB=0 pulseB=0 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1895 ryan_m B=0 L=12743 d=0.0 nb=2 neut=0 cmds=78 noFull=1 shQ=936 | m=1.441 worth=0.0 cheap=8.2 over=0 dMedOther=17.8 safe(-1)=0
+    → öylesine#23[T7] terr=2727 bal=7100 dq=2.6 cnt=72 | c=0.0 rankC=0.0 need=2977 tD=0.15 人 pulse nearCollapse bleeding | safe=0 keep=0 avail=0 chunkB=0 pulseB=0 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1900 ryan_m B=11804 L=12982 d=0.9 nb=2 neut=0 cmds=79 noFull=1 shQ=1067 | m=1.440 worth=1.3 cheap=8.2 over=0 dMedOther=19.0 safe(-1)=0
+    → öylesine#23[T7] terr=2612 bal=9312 dq=3.6 cnt=73 | c=0.3 rankC=0.1 need=2500 tD=0.19 人 pulse nearCollapse bleeding agg | safe=0 keep=0 avail=11666 chunkB=2361 pulseB=1416  x=1416 hNb=2
+    ⇒ 影子指令 attack pct=122 → öylesine#23[T7]（约 1417 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1905 ryan_m B=11804 L=13143 d=0.9 nb=2 neut=0 cmds=80 noFull=1 shQ=1246 | m=1.439 worth=1.3 cheap=8.2 over=0 dMedOther=19.0 safe(-1)=0
+    → öylesine#23[T7] terr=2461 bal=8467 dq=3.4 cnt=72 | c=0.6 rankC=0.3 need=621 tD=0.18 人 pulse nearCollapse bleeding agg | safe=0 keep=0 avail=11666 chunkB=2361 pulseB=1416  x=1416 hNb=2
+    ⇒ 影子指令 attack pct=122 → öylesine#23[T7]（约 1417 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1910 ryan_m B=11948 L=13390 d=0.9 nb=1 neut=73 cmds=81 noFull=1 shQ=1426 | m=1.439 worth=1.3 cheap=8.2 over=0 dMedOther=18.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → 无主地（约 560 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=1915 ryan_m B=10373 L=13691 d=0.8 nb=1 neut=59 cmds=81 noFull=1 shQ=151 | m=1.438 worth=1.1 cheap=8.2 over=0 dMedOther=19.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1920 ryan_m B=8582 L=14072 d=0.6 nb=1 neut=34 cmds=81 noFull=1 shQ=295 | m=1.437 worth=0.9 cheap=8.2 over=0 dMedOther=19.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1925 ryan_m B=8582 L=14319 d=0.6 nb=1 neut=34 cmds=81 noFull=1 shQ=425 | m=1.436 worth=0.9 cheap=8.1 over=0 dMedOther=19.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1930 ryan_m B=8687 L=14706 d=0.6 nb=1 neut=34 cmds=81 noFull=1 shQ=555 | m=1.435 worth=0.8 cheap=8.1 over=0 dMedOther=19.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1935 ryan_m B=8687 L=14969 d=0.6 nb=1 neut=33 cmds=81 noFull=1 shQ=685 | m=1.435 worth=0.8 cheap=8.1 over=0 dMedOther=19.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1940 ryan_m B=8793 L=15332 d=0.6 nb=1 neut=29 cmds=81 noFull=1 shQ=816 | m=1.434 worth=0.8 cheap=8.1 over=0 dMedOther=20.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1945 ryan_m B=8793 L=15548 d=0.6 nb=1 neut=30 cmds=81 noFull=1 shQ=951 | m=1.433 worth=0.8 cheap=8.1 over=0 dMedOther=20.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1950 ryan_m B=8902 L=15876 d=0.6 nb=1 neut=30 cmds=81 noFull=1 shQ=1086 | m=1.433 worth=0.8 cheap=8.0 over=0 dMedOther=20.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1955 ryan_m B=8902 L=16100 d=0.6 nb=1 neut=28 cmds=81 noFull=1 shQ=1221 | m=1.432 worth=0.8 cheap=8.0 over=0 dMedOther=19.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1960 ryan_m B=9012 L=16411 d=0.5 nb=2 neut=15 cmds=81 noFull=1 shQ=1357 | m=1.431 worth=0.8 cheap=8.0 over=0 dMedOther=20.0 safe(-1)=193422
+    → yoo#8[T5] terr=21481 bal=368907 dq=17.2 cnt=5 | c=150.8 rankC=218.7 need=689754 tD=0.86 人 crowdedHard | safe=193422 keep=Inf avail=-Inf chunkB=1802 pulseB=1081 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1965 ryan_m B=9012 L=16590 d=0.5 nb=2 neut=6 cmds=81 noFull=1 shQ=1497 | m=1.430 worth=0.8 cheap=8.0 over=0 dMedOther=20.0 safe(-1)=193271
+    → yoo#8[T5] terr=21499 bal=368907 dq=17.2 cnt=8 | c=150.7 rankC=218.5 need=689794 tD=0.86 人 crowdedHard | safe=193271 keep=Inf avail=-Inf chunkB=1802 pulseB=1081 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1970 ryan_m B=9115 L=16824 d=0.5 nb=2 neut=4 cmds=81 noFull=1 shQ=1637 | m=1.429 worth=0.8 cheap=8.0 over=0 dMedOther=20.2 safe(-1)=202641
+    → yoo#8[T5] terr=21510 bal=362196 dq=16.8 cnt=9 | c=32.6 rankC=22.8 need=701583 tD=0.83 人 pulse onMe | safe=202641 keep=Inf avail=-Inf chunkB=1823 pulseB=1094 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1975 ryan_m B=9089 L=16948 d=0.5 nb=2 neut=1 cmds=81 noFull=1 shQ=1777 | m=1.429 worth=0.8 cheap=8.0 over=0 dMedOther=18.8 safe(-1)=202471
+    → yoo#8[T5] terr=21542 bal=362196 dq=16.8 cnt=11 | c=32.5 rankC=22.8 need=701515 tD=0.89 人 pulse onMe | safe=202471 keep=Inf avail=-Inf chunkB=1818 pulseB=1091 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1980 ryan_m B=9181 L=17154 d=0.5 nb=2 neut=4 cmds=81 noFull=1 shQ=1917 | m=1.428 worth=0.8 cheap=8.0 over=0 dMedOther=19.1 safe(-1)=204851
+    → yoo#8[T5] terr=21567 bal=366832 dq=17.0 cnt=13 | c=32.9 rankC=23.0 need=709730 tD=0.89 人 pulse onMe | safe=204851 keep=Inf avail=-Inf chunkB=1836 pulseB=1102 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1985 ryan_m B=9139 L=17262 d=0.5 nb=2 neut=5 cmds=81 noFull=1 shQ=2057 | m=1.427 worth=0.8 cheap=8.0 over=0 dMedOther=19.1 safe(-1)=204655
+    → yoo#8[T5] terr=21618 bal=366832 dq=17.0 cnt=19 | c=32.8 rankC=23.0 need=709614 tD=0.89 人 pulse onMe | safe=204655 keep=Inf avail=-Inf chunkB=1828 pulseB=1097 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1990 ryan_m B=9220 L=17470 d=0.5 nb=2 neut=3 cmds=81 noFull=1 shQ=2198 | m=1.427 worth=0.8 cheap=8.0 over=0 dMedOther=19.3 safe(-1)=207037
+    → yoo#8[T5] terr=21658 bal=371527 dq=17.2 cnt=19 | c=33.1 rankC=23.2 need=717899 tD=0.89 人 pulse onMe | safe=207037 keep=Inf avail=-Inf chunkB=1844 pulseB=1106 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1995 ryan_m B=9171 L=17576 d=0.5 nb=2 neut=3 cmds=81 noFull=1 shQ=2292 | m=1.426 worth=0.7 cheap=8.0 over=0 dMedOther=19.3 safe(-1)=206825
+    → yoo#8[T5] terr=21718 bal=371527 dq=17.1 cnt=21 | c=33.0 rankC=23.1 need=717771 tD=0.89 人 pulse onMe | safe=206825 keep=Inf avail=-Inf chunkB=1834 pulseB=1101 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2000 ryan_m B=26944 L=17781 d=1.5 nb=2 neut=2 cmds=81 noFull=1 shQ=2367 | m=1.425 worth=2.2 cheap=8.0 over=0 dMedOther=22.0 safe(-1)=221455
+    → yoo#8[T5] terr=21765 bal=398047 dq=18.3 cnt=24 | c=46.8 rankC=46.8 need=764933 tD=0.83 人 pulse onMe | safe=221455 keep=Inf avail=-Inf chunkB=5389 pulseB=3233 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2005 ryan_m B=26738 L=17867 d=1.5 nb=2 neut=2 cmds=81 noFull=1 shQ=2787 | m=1.420 worth=2.1 cheap=8.0 over=0 dMedOther=22.0 safe(-1)=221055
+    → yoo#8[T5] terr=21851 bal=398047 dq=18.2 cnt=31 | c=46.6 rankC=46.6 need=764492 tD=0.83 人 pulse onMe | safe=221055 keep=Inf avail=-Inf chunkB=5348 pulseB=3209 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2010 ryan_m B=26917 L=18067 d=1.5 nb=2 neut=0 cmds=81 noFull=1 shQ=3204 | m=1.415 worth=2.1 cheap=8.0 over=0 dMedOther=22.2 safe(-1)=223504
+    → yoo#8[T5] terr=21916 bal=403142 dq=18.4 cnt=32 | c=47.0 rankC=47.0 need=773214 tD=0.83 人 pulse onMe | safe=223504 keep=Inf avail=-Inf chunkB=5383 pulseB=3230 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2015 ryan_m B=27827 L=18142 d=1.5 nb=2 neut=0 cmds=81 noFull=1 shQ=3637 | m=1.409 worth=2.2 cheap=8.0 over=0 dMedOther=22.2 safe(-1)=223028
+    → yoo#8[T5] terr=22023 bal=403142 dq=18.3 cnt=38 | c=46.7 rankC=46.7 need=772661 tD=0.82 人 pulse onMe | safe=223028 keep=Inf avail=-Inf chunkB=5565 pulseB=3339 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2020 ryan_m B=27977 L=18334 d=1.5 nb=2 neut=0 cmds=81 noFull=1 shQ=4075 | m=1.404 worth=2.1 cheap=7.9 over=0 dMedOther=21.5 safe(-1)=225451
+    → yoo#8[T5] terr=22105 bal=408302 dq=18.5 cnt=42 | c=47.0 rankC=47.0 need=781408 tD=0.86 人 pulse onMe | safe=225451 keep=Inf avail=-Inf chunkB=5595 pulseB=3357 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2025 ryan_m B=27680 L=18391 d=1.5 nb=2 neut=0 cmds=81 noFull=1 shQ=4514 | m=1.399 worth=2.1 cheap=7.9 over=0 dMedOther=21.5 safe(-1)=224931
+    → yoo#8[T5] terr=22228 bal=408302 dq=18.4 cnt=41 | c=46.7 rankC=46.7 need=780745 tD=0.85 人 pulse onMe | safe=224931 keep=Inf avail=-Inf chunkB=5536 pulseB=3322 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2030 ryan_m B=27824 L=18583 d=1.5 nb=1 neut=95 cmds=81 noFull=1 shQ=4950 | m=1.393 worth=2.1 cheap=7.9 over=0 dMedOther=21.8 safe(-1)=227405
+    → yoo#8[T5] terr=22313 bal=413569 dq=18.5 cnt=43 | c=47.1 rankC=47.1 need=789693 tD=0.85 人 pulse onMe | safe=227405 keep=Inf avail=-Inf chunkB=5565 pulseB=3339 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2035 ryan_m B=27518 L=18644 d=1.5 nb=1 neut=96 cmds=81 noFull=1 shQ=5387 | m=1.388 worth=2.0 cheap=7.9 over=0 dMedOther=21.8 safe(-1)=226865
+    → yoo#8[T5] terr=22442 bal=413569 dq=18.4 cnt=42 | c=46.8 rankC=46.8 need=789024 tD=0.85 人 pulse onMe | safe=226865 keep=Inf avail=-Inf chunkB=5504 pulseB=3302 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2040 ryan_m B=27663 L=18848 d=1.5 nb=1 neut=102 cmds=81 noFull=1 shQ=5821 | m=1.383 worth=2.0 cheap=7.9 over=0 dMedOther=21.6 safe(-1)=229371
+    → yoo#8[T5] terr=22527 bal=418904 dq=18.6 cnt=42 | c=47.1 rankC=47.1 need=798099 tD=0.86 人 pulse onMe | safe=229371 keep=Inf avail=-Inf chunkB=5533 pulseB=3320 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2045 ryan_m B=27361 L=18922 d=1.4 nb=1 neut=98 cmds=81 noFull=1 shQ=6255 | m=1.378 worth=2.0 cheap=7.9 over=0 dMedOther=21.1 safe(-1)=228824
+    → yoo#8[T5] terr=22657 bal=418904 dq=18.5 cnt=45 | c=46.8 rankC=46.8 need=797416 tD=0.88 人 pulse onMe | safe=228824 keep=Inf avail=-Inf chunkB=5472 pulseB=3283 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2050 ryan_m B=27497 L=19129 d=1.4 nb=1 neut=100 cmds=81 noFull=1 shQ=6686 | m=1.373 worth=2.0 cheap=7.9 over=0 dMedOther=21.3 safe(-1)=231352
+    → yoo#8[T5] terr=22747 bal=424307 dq=18.7 cnt=46 | c=47.2 rankC=47.2 need=806603 tD=0.88 人 pulse onMe | safe=231352 keep=Inf avail=-Inf chunkB=5499 pulseB=3300 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2055 ryan_m B=27167 L=19185 d=1.4 nb=1 neut=102 cmds=81 noFull=1 shQ=6791 | m=1.367 worth=1.9 cheap=7.9 over=0 dMedOther=21.3 safe(-1)=230771
+    → yoo#8[T5] terr=22892 bal=424307 dq=18.5 cnt=48 | c=46.8 rankC=46.8 need=805850 tD=0.87 人 pulse onMe | safe=230771 keep=Inf avail=-Inf chunkB=5433 pulseB=3260 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2060 ryan_m B=27278 L=19384 d=1.4 nb=1 neut=96 cmds=81 noFull=1 shQ=6819 | m=1.362 worth=1.9 cheap=7.9 over=0 dMedOther=21.5 safe(-1)=233307
+    → yoo#8[T5] terr=22994 bal=429780 dq=18.7 cnt=50 | c=47.1 rankC=47.1 need=815112 tD=0.87 人 pulse onMe | safe=233307 keep=Inf avail=-Inf chunkB=5456 pulseB=3273 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2065 ryan_m B=26929 L=19418 d=1.4 nb=1 neut=93 cmds=81 noFull=1 shQ=6732 | m=1.357 worth=1.9 cheap=7.9 over=0 dMedOther=21.5 safe(-1)=232710
+    → yoo#8[T5] terr=23151 bal=429780 dq=18.6 cnt=53 | c=46.8 rankC=46.8 need=814342 tD=0.86 人 pulse onMe | safe=232710 keep=Inf avail=-Inf chunkB=5386 pulseB=3231 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2070 ryan_m B=27022 L=19584 d=1.4 nb=1 neut=90 cmds=81 noFull=1 shQ=6755 | m=1.352 worth=1.9 cheap=7.8 over=0 dMedOther=21.8 safe(-1)=235287
+    → yoo#8[T5] terr=23262 bal=435324 dq=18.7 cnt=56 | c=47.1 rankC=47.1 need=823675 tD=0.86 人 pulse onMe | safe=235287 keep=Inf avail=-Inf chunkB=5404 pulseB=3243 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令

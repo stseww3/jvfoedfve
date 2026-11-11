@@ -1,0 +1,78 @@
+A087 tryDonateToTeammate 调用 13418 次；照抄判定与真调用一致 13418 次（100.00%）
+  全队卡点：slotPhase 8622，cooldown12 2096，sent 1048，B:dMe 959，A:dMe 329，busy 180，noFront 111，pct<180 25，terr<1200 18，allyDense 12，A:gap 11，bal<30000 6，B:allyD 1
+  正在被真人打的候选受捐人被判成什么（只计轮到自己且不忙的调用；doomed:x1.65 = 被压 > 1.65×余额，doomed:small = t≥4500 且领土 < 0.22×编队最大号 且被压 > 0.45×余额）
+    合计：A:dMe 539，ok 191，doomed:x1.65 157，B:dMe 31，A:gap 16，A:dMe(滩头豁免:small) 11，doomed:small 7，ok(滩头豁免:x1.65) 4，A:dMe(滩头豁免:x1.65) 1
+    [APEX] alex_k：A:dMe 466，ok 183，B:dMe 31，A:gap 16，doomed:x1.65 3
+    [APEX] riku_x：A:dMe 55，A:dMe(滩头豁免:small) 11，ok 7，ok(滩头豁免:x1.65) 4，doomed:small 4，A:dMe(滩头豁免:x1.65) 1，doomed:x1.65 1
+    [APEX] zexos1：doomed:x1.65 55
+    [APEX] leo_tx：doomed:x1.65 31
+    [APEX] kaito9：doomed:x1.65 24
+    [APEX] noah88：doomed:x1.65 33
+    [APEX] zero_7：A:dMe 18，doomed:small 3，ok 1
+    [APEX] sora_w：doomed:x1.65 9
+    [APEX] talon5：doomed:x1.65 1
+  noah88  调用  1127 一致  1127 | slotPhase 674，cooldown12 226，sent 113，B:dMe 66，A:dMe 37，busy 5，noFront 4，bal<30000 2 | 发给：[APEX] alex_k×111 [APEX] riku_x×2
+           1500-2141: 围:slotPhase 69，·:cooldown12 34，围:sent 17，围:B:dMe 9
+           2142-3212: 围:slotPhase 86，·:cooldown12 85，围:sent 43
+           3213-4283: 围:slotPhase 88，·:cooldown12 83，围:sent 42，围:noFront 1
+           4284-5999: 围:slotPhase 257，围:B:dMe 29，围:A:dMe 28，·:cooldown12 18，围:sent 8，围:noFront 3
+           6000-7999: 围:slotPhase 139，边:slotPhase 35，围:B:dMe 24，围:A:dMe 9，·:cooldown12 6，边:busy 5，边:B:dMe 4，围:sent 3，·:bal<30000 2
+  alex_k  调用  1482 一致  1482 | slotPhase 1188，busy 141，noFront 74，B:dMe 62，allyDense 12，A:dMe 5
+           1500-2141: 边:slotPhase 103，边:noFront 26
+           2142-3212: 边:slotPhase 166，边:busy 16，边:noFront 13，边:allyDense 11
+           3213-4283: 边:slotPhase 154，边:noFront 20，边:busy 19，边:allyDense 1
+           4284-5999: 边:slotPhase 242，边:busy 47，边:noFront 12，边:B:dMe 2
+           6000-7999: 边:slotPhase 304，边:B:dMe 43，边:busy 23，边:A:dMe 5，边:noFront 3
+           8000+: 边:slotPhase 219，边:busy 36，边:B:dMe 17
+  kaito9  调用  1109 一致  1109 | slotPhase 644，cooldown12 236，sent 118，B:dMe 59，A:dMe 35，terr<1200 8，noFront 5，busy 4 | 发给：[APEX] alex_k×117 [APEX] riku_x×1
+           1500-2141: ·:cooldown12 52，围:slotPhase 51，围:sent 26
+           2142-3212: ·:cooldown12 86，围:slotPhase 85，围:sent 43
+           3213-4283: 围:slotPhase 90，·:cooldown12 81，围:sent 41，围:noFront 2
+           4284-5999: 围:slotPhase 262，围:B:dMe 32，围:A:dMe 27，·:cooldown12 13，围:sent 6，围:noFront 3
+           6000-7999: 围:slotPhase 138，围:B:dMe 26，边:slotPhase 18，围:A:dMe 8，·:terr<1200 8，·:cooldown12 4，边:busy 4，围:sent 2，边:B:dMe 1
+  zexos1  调用  1050 一致  1050 | slotPhase 595，cooldown12 240，sent 120，B:dMe 43，A:dMe 36，busy 5，noFront 4，bal<30000 4，terr<1200 3 | 发给：[APEX] alex_k×118 [APEX] sora_w×1 [APEX] riku_x×1
+           1500-2141: 围:slotPhase 53，·:cooldown12 50，围:sent 26
+           2142-3212: ·:cooldown12 86，围:slotPhase 86，围:sent 42
+           3213-4283: 围:slotPhase 89，·:cooldown12 82，围:sent 41，围:noFront 2
+           4284-5999: 围:slotPhase 256，围:B:dMe 31，围:A:dMe 27，·:cooldown12 18，围:sent 9，围:noFront 2
+           6000-7999: 围:slotPhase 86，边:slotPhase 25，围:B:dMe 11，围:A:dMe 9，边:busy 5，·:cooldown12 4，·:bal<30000 4，·:terr<1200 3，围:sent 2，边:B:dMe 1
+  ryan_m  调用  1593 一致  1593 | slotPhase 1024，cooldown12 250，B:dMe 145，sent 125，A:dMe 34，pct<180 6，noFront 5，A:gap 3，busy 1 | 发给：[APEX] alex_k×121 [APEX] riku_x×2 [APEX] talon5×2
+           1500-2141: ·:cooldown12 52，围:slotPhase 51，围:sent 26
+           2142-3212: ·:cooldown12 86，围:slotPhase 85，围:sent 43
+           3213-4283: 围:slotPhase 90，·:cooldown12 81，围:sent 41，围:noFront 2
+           4284-5999: 围:slotPhase 211，边:slotPhase 47，围:A:dMe 26，围:B:dMe 20，·:cooldown12 15，边:B:dMe 11，围:sent 7，围:noFront 3
+           6000-7999: 边:slotPhase 234，围:slotPhase 78，边:B:dMe 49，围:B:dMe 18，边:A:dMe 7，·:cooldown12 6，围:sent 2，围:A:dMe 1，边:pct<180 1，边:sent 1
+           8000+: 边:slotPhase 228，边:B:dMe 47，·:cooldown12 10，边:pct<180 5，边:sent 5，边:A:gap 3，边:busy 1
+  zero_7  调用  1595 一致  1595 | slotPhase 1043，cooldown12 234，B:dMe 147，sent 117，A:dMe 36，busy 5，pct<180 5，noFront 4，A:gap 4 | 发给：[APEX] alex_k×114 [APEX] sora_w×1 [APEX] riku_x×2
+           1500-2141: 围:slotPhase 74，·:cooldown12 30，围:sent 15，围:B:dMe 10
+           2142-3212: ·:cooldown12 86，围:slotPhase 85，围:sent 43
+           3213-4283: 围:slotPhase 89，·:cooldown12 82，围:sent 41，围:noFront 2
+           4284-5999: 围:slotPhase 254，围:B:dMe 29，围:A:dMe 28，·:cooldown12 20，围:sent 10，围:noFront 2
+           6000-7999: 围:slotPhase 173，边:slotPhase 141，围:B:dMe 34，边:B:dMe 30，围:A:dMe 8，·:cooldown12 6，边:busy 4，围:sent 2，边:pct<180 1，边:sent 1
+           8000+: 边:slotPhase 227，边:B:dMe 44，·:cooldown12 10，边:sent 5，边:A:gap 4，边:pct<180 4，边:busy 1
+  talon5  调用  1593 一致  1593 | slotPhase 1039，cooldown12 236，B:dMe 150，sent 118，A:dMe 37，pct<180 7，noFront 4，A:gap 1，busy 1 | 发给：[APEX] alex_k×115 [APEX] sora_w×1 [APEX] riku_x×1 [APEX] ryan_m×1
+           1500-2141: 围:slotPhase 74，·:cooldown12 30，围:sent 15，围:B:dMe 10
+           2142-3212: ·:cooldown12 86，围:slotPhase 85，围:sent 43
+           3213-4283: 围:slotPhase 89，·:cooldown12 82，围:sent 41，围:noFront 2
+           4284-5999: 围:slotPhase 208，边:slotPhase 46，围:A:dMe 27，·:cooldown12 18，围:B:dMe 18，边:B:dMe 10，围:sent 9，围:noFront 2，边:A:dMe 2
+           6000-7999: 边:slotPhase 226，围:slotPhase 83，边:B:dMe 51，围:B:dMe 16，·:cooldown12 8，边:A:dMe 4，围:A:dMe 4，围:sent 3，边:pct<180 1，边:sent 1
+           8000+: 边:slotPhase 228，边:B:dMe 45，·:cooldown12 12，边:pct<180 6，边:sent 6，边:A:gap 1，边:busy 1
+  riku_x  调用  1592 一致  1592 | slotPhase 1041，cooldown12 232，B:dMe 141，sent 116，A:dMe 36，busy 12，pct<180 7，noFront 4，A:gap 3 | 发给：[APEX] alex_k×113 [APEX] zero_7×2 [APEX] talon5×1
+           1500-2141: 围:slotPhase 77，·:cooldown12 26，围:B:dMe 13，围:sent 13
+           2142-3212: 围:slotPhase 88，·:cooldown12 83，围:sent 42，围:B:dMe 1
+           3213-4283: 围:slotPhase 88，·:cooldown12 83，围:sent 42，围:noFront 1
+           4284-5999: 围:slotPhase 255，围:B:dMe 28，围:A:dMe 28，·:cooldown12 20，围:sent 9，围:noFront 3
+           6000-7999: 边:slotPhase 252，围:slotPhase 52，边:B:dMe 46，·:cooldown12 12，边:busy 11，围:A:dMe 8，围:B:dMe 5，边:sent 5，边:pct<180 4，围:sent 1
+           8000+: 边:slotPhase 229，边:B:dMe 48，·:cooldown12 8，边:sent 4，边:pct<180 3，边:A:gap 3，边:busy 1
+  sora_w  调用  1196 一致  1196 | slotPhase 747，cooldown12 210，sent 105，B:dMe 90，A:dMe 37，noFront 4，busy 2，B:allyD 1 | 发给：[APEX] alex_k×103 [APEX] riku_x×2
+           1500-2141: 围:slotPhase 85，围:B:dMe 17，·:cooldown12 15，围:sent 8，边:slotPhase 1
+           2142-3212: 围:slotPhase 88，·:cooldown12 83，围:sent 42，围:noFront 1
+           3213-4283: ·:cooldown12 86，围:slotPhase 86，围:sent 42
+           4284-5999: 围:slotPhase 254，围:A:dMe 29，围:B:dMe 26，·:cooldown12 20，围:sent 10，围:noFront 3，围:B:allyD 1
+           6000-7999: 边:slotPhase 127，围:slotPhase 106，边:B:dMe 30，围:B:dMe 17，围:A:dMe 8，·:cooldown12 6，围:sent 3，边:busy 2
+  leo_tx  调用  1081 一致  1081 | slotPhase 627，cooldown12 232，sent 116，B:dMe 56，A:dMe 36，terr<1200 7，busy 4，noFront 3 | 发给：[APEX] alex_k×114 [APEX] sora_w×1 [APEX] riku_x×1
+           1500-2141: 围:slotPhase 52，·:cooldown12 51，围:sent 26
+           2142-3212: 围:slotPhase 86，·:cooldown12 85，围:sent 43
+           3213-4283: 围:slotPhase 94，·:cooldown12 78，围:sent 38，围:B:dMe 4
+           4284-5999: 围:slotPhase 260，围:B:dMe 31，围:A:dMe 28，·:cooldown12 14，围:sent 7，围:noFront 3
+           6000-7999: 围:slotPhase 116，围:B:dMe 20，边:slotPhase 19，围:A:dMe 8，·:terr<1200 7，·:cooldown12 4，边:busy 4，围:sent 2，边:B:dMe 1

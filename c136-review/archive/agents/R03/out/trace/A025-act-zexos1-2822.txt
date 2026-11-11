@@ -1,0 +1,64 @@
+t=2825 B=1.31M L=64530 密=20.3 在途中立=0 槽=0 nfs=1 sq=328k | 决策后 nb=3 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→false
+    offers→3
+        报价 Russia#8：c=25.26 need=987k inAtk=0 tD=1 person
+        报价 Player 691#5：c=30.59 need=2.31M inAtk=0 tD=1.07 person
+        报价 Player 804#11：c=233.56 need=582k inAtk=0 tD=8.62 person
+    tryDonateToTeammate→false
+    idleBoats→undef
+    boatFood→false
+    safeFinite→0
+    dpKeep→626k
+      · Russia#8 地 45922 兵 515k 我压它 0 它压我 0 接壤 168：elimCost=987k×2
+      · Player 804#11 地 3349 兵 324k 我压它 0 它压我 0 接壤 33：elimCost=582k
+      · Player 691#5 地 100787 兵 1.21M 我压它 0 它压我 0 接壤 170：elimCost=2.31M
+      · （不针对目标）：safeAt=626k
+t=2830 B=1.33M L=64530 密=20.7 在途中立=0 槽=0 nfs=1 sq=328k | 决策后 nb=3 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→true
+    offers→3
+        报价 Russia#8：c=15.55 need=908k inAtk=101k tD=0.83 person/onMe
+        报价 Player 691#5：c=31.11 need=2.35M inAtk=0 tD=1.13 person
+        报价 Player 804#11：c=236.23 need=588k inAtk=0 tD=9.04 person
+    safeFinite→0
+    dpKeep→638k
+      send(Russia#8, 96k)→true
+    safeFinite→0
+    dpKeep→638k
+      · Russia#8 地 45922 兵 414k 我压它 0 它压我 101k 接壤 168：elimCost=807k×2 safeAt=638k
+      · Player 804#11 地 3349 兵 327k 我压它 0 它压我 0 接壤 33：elimCost=588k
+      · Player 691#5 地 100787 兵 1.23M 我压它 0 它压我 0 接壤 170：elimCost=2.35M
+      · （不针对目标）：safeAt=638k
+t=2835 B=1.33M L=64530 密=20.7 在途中立=0 槽=0 nfs=1 sq=334k | 决策后 nb=3 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→true
+    offers→3
+        报价 Russia#8：c=15.55 need=908k inAtk=101k tD=0.83 person/onMe
+        报价 Player 691#5：c=31.11 need=2.35M inAtk=0 tD=1.13 person
+        报价 Player 804#11：c=236.23 need=588k inAtk=0 tD=9.04 person
+    safeFinite→0
+    dpKeep→638k
+      send(Russia#8, 96k)→true
+    safeFinite→0
+    dpKeep→638k
+      · Russia#8 地 45922 兵 414k 我压它 0 它压我 101k 接壤 168：elimCost=807k×2 safeAt=638k
+      · Player 804#11 地 3349 兵 327k 我压它 0 它压我 0 接壤 33：elimCost=588k
+      · Player 691#5 地 100787 兵 1.23M 我压它 0 它压我 0 接壤 170：elimCost=2.35M
+      · （不针对目标）：safeAt=638k
+t=2840 B=1.34M L=64035 密=20.9 在途中立=0 槽=0 nfs=1 sq=331k | 决策后 nb=3 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→true
+    offers→3
+        报价 Russia#8：c=15.62 need=886k inAtk=67k tD=0.83 person/onMe
+        报价 Player 691#5：c=31.65 need=2.39M inAtk=0 tD=1.14 person
+        报价 Player 804#11：c=238.85 need=595k inAtk=0 tD=9.01 person
+    safeFinite→0
+    dpKeep→651k
+      send(Russia#8, 101k)→true
+    safeFinite→0
+    dpKeep→651k
+      · Russia#8 地 46417 兵 421k 我压它 0 它压我 67k 接壤 162：elimCost=819k×2 safeAt=651k
+      · Player 804#11 地 3349 兵 331k 我压它 0 它压我 0 接壤 33：elimCost=595k
+      · Player 691#5 地 100787 兵 1.26M 我压它 0 它压我 0 接壤 169：elimCost=2.39M
+      · （不针对目标）：safeAt=651k

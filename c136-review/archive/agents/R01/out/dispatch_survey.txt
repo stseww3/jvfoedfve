@@ -1,0 +1,77 @@
+== A057 events=21 types={'DISPATCH': 21}
+  defense_dispatch     boxedIn=True  n=   2 rej=   0 pct[380x2] pctMin=380 pctMax=380 dMe[min=90 med=150 max=150] dAlly[min=94 med=96 max=96] myBalMin=283834 dMe<dAlly=1
+  offense_dispatch     boxedIn=True  n=   6 rej=   0 pct[320x6] pctMin=320 pctMax=320 dMe[min=60 med=101 max=150] dAlly[min=47 med=83 max=91] myBalMin=127413 dMe<dAlly=2
+  yield_opt_dispatch   boxedIn=True  n=  13 rej=   0 pct[320x13] pctMin=320 pctMax=320 dMe[min=58 med=59 max=150] dAlly[min=51 med=103 max=139] myBalMin=85094 dMe<dAlly=10
+  per-bot min interval between DISPATCH: 25  t range: 4070 - 11885
+== A059 events=100 types={'DISPATCH': 100}
+  defense_dispatch     boxedIn=False n=   1 rej=   0 pct[197x1] pctMin=197 pctMax=197 dMe[min=109 med=109 max=109] dAlly[min=84 med=84 max=84] myBalMin=1089300 dMe<dAlly=0
+  defense_dispatch     boxedIn=True  n=  47 rej=  33 pct[380x38, 344x2, 257x1, 317x1, 342x1, 311x1] pctMin=257 pctMax=380 dMe[min=31 med=59 max=98] dAlly[min=1 med=7 max=99] myBalMin=112161 dMe<dAlly=8
+  offense_dispatch     boxedIn=False n=   3 rej=   0 pct[220x2, 192x1] pctMin=192 pctMax=220 dMe[min=113 med=132 max=134] dAlly[min=5 med=69 max=86] myBalMin=297691 dMe<dAlly=0
+  offense_dispatch     boxedIn=True  n=  47 rej=  39 pct[320x46, 247x1] pctMin=247 pctMax=320 dMe[min=58 med=81 max=136] dAlly[min=0 med=51 max=90] myBalMin=198698 dMe<dAlly=3
+  yield_opt_dispatch   boxedIn=False n=   2 rej=   0 pct[191x1, 217x1] pctMin=191 pctMax=217 dMe[min=113 med=117 max=117] dAlly[min=40 med=88 max=88] myBalMin=455387 dMe<dAlly=0
+  per-bot min interval between DISPATCH: 25  t range: 1525 - 5140
+== A094 events=26 types={'DISPATCH': 26}
+  defense_dispatch     boxedIn=True  n=  21 rej=   4 pct[380x12, 353x2, 277x1, 327x1, 313x1, 371x1] pctMin=249 pctMax=380 dMe[min=30 med=46 max=80] dAlly[min=2 med=68 max=139] myBalMin=162235 dMe<dAlly=13
+  offense_dispatch     boxedIn=True  n=   2 rej=   0 pct[320x1, 270x1] pctMin=270 pctMax=320 dMe[min=60 med=82 max=82] dAlly[min=16 med=83 max=83] myBalMin=441220 dMe<dAlly=1
+  yield_opt_dispatch   boxedIn=False n=   1 rej=   0 pct[197x1] pctMin=197 pctMax=197 dMe[min=114 med=114 max=114] dAlly[min=68 med=68 max=68] myBalMin=17654901 dMe<dAlly=0
+  yield_opt_dispatch   boxedIn=True  n=   2 rej=   0 pct[320x2] pctMin=320 pctMax=320 dMe[min=70 med=90 max=90] dAlly[min=77 med=117 max=117] myBalMin=10893152 dMe<dAlly=2
+  per-bot min interval between DISPATCH: 25  t range: 2225 - 5695
+== A055 events=713 types={'DISPATCH': 713}
+  defense_dispatch     boxedIn=True  n= 183 rej= 153 pct[380x164, 378x2, 347x1, 376x1, 362x1, 340x1] pctMin=251 pctMax=380 dMe[min=30 med=104 max=150] dAlly[min=8 med=45 max=140] myBalMin=85053 dMe<dAlly=27
+  offense_dispatch     boxedIn=False n=   4 rej=   3 pct[220x4] pctMin=220 pctMax=220 dMe[min=121 med=124 max=126] dAlly[min=47 med=51 max=53] myBalMin=589943 dMe<dAlly=0
+  offense_dispatch     boxedIn=True  n= 449 rej= 423 pct[320x434, 311x2, 283x1, 270x1, 287x1, 261x1] pctMin=249 pctMax=320 dMe[min=58 med=115 max=150] dAlly[min=4 med=47 max=96] myBalMin=165252 dMe<dAlly=19
+  yield_opt_dispatch   boxedIn=True  n=  77 rej=  63 pct[320x77] pctMin=320 pctMax=320 dMe[min=72 med=112 max=150] dAlly[min=5 med=103 max=132] myBalMin=243955 dMe<dAlly=27
+  per-bot min interval between DISPATCH: 25  t range: 1500 - 4550
+== A075 events=89 types={'DISPATCH': 89}
+  defense_dispatch     boxedIn=True  n=   1 rej=   0 pct[380x1] pctMin=380 pctMax=380 dMe[min=61 med=61 max=61] dAlly[min=51 med=51 max=51] myBalMin=488240 dMe<dAlly=0
+  offense_dispatch     boxedIn=False n=  15 rej=  10 pct[220x7, 183x2, 204x1, 217x1, 186x1, 188x1] pctMin=183 pctMax=220 dMe[min=112 med=117 max=126] dAlly[min=23 med=29 max=92] myBalMin=464956 dMe<dAlly=0
+  offense_dispatch     boxedIn=True  n=  13 rej=   3 pct[320x7, 257x1, 258x1, 266x1, 255x1, 281x1] pctMin=255 pctMax=320 dMe[min=59 med=68 max=106] dAlly[min=39 med=81 max=95] myBalMin=354525 dMe<dAlly=8
+  yield_opt_dispatch   boxedIn=False n=   3 rej=   2 pct[191x1, 208x1, 220x1] pctMin=191 pctMax=220 dMe[min=113 med=116 max=121] dAlly[min=51 med=72 max=89] myBalMin=1576540 dMe<dAlly=0
+  yield_opt_dispatch   boxedIn=True  n=  57 rej=  10 pct[320x48, 290x1, 257x1, 256x1, 275x1, 250x1] pctMin=248 pctMax=320 dMe[min=58 med=109 max=150] dAlly[min=6 med=71 max=131] myBalMin=354572 dMe<dAlly=14
+  per-bot min interval between DISPATCH: 25  t range: 1925 - 6535
+== A054 events=370 types={'DISPATCH': 370}
+  defense_dispatch     boxedIn=False n=  13 rej=  12 pct[240x6, 195x1, 211x1, 203x1, 234x1, 226x1] pctMin=181 pctMax=240 dMe[min=107 med=114 max=122] dAlly[min=54 med=72 max=97] myBalMin=1131418 dMe<dAlly=0
+  defense_dispatch     boxedIn=True  n= 100 rej=  71 pct[380x77, 328x2, 268x2, 309x2, 371x2, 366x1] pctMin=259 pctMax=380 dMe[min=30 med=61 max=150] dAlly[min=16 med=79 max=97] myBalMin=93905 dMe<dAlly=68
+  offense_dispatch     boxedIn=False n=  10 rej=   8 pct[220x6, 192x1, 184x1, 194x1, 208x1] pctMin=184 pctMax=220 dMe[min=112 med=118 max=127] dAlly[min=30 med=59 max=91] myBalMin=777099 dMe<dAlly=0
+  offense_dispatch     boxedIn=True  n= 169 rej= 154 pct[320x165, 283x1, 252x1, 291x1, 308x1] pctMin=252 pctMax=320 dMe[min=58 med=84 max=150] dAlly[min=1 med=51 max=96] myBalMin=179973 dMe<dAlly=30
+  yield_opt_dispatch   boxedIn=False n=  12 rej=   5 pct[220x9, 206x1, 211x1, 185x1] pctMin=185 pctMax=220 dMe[min=112 med=124 max=146] dAlly[min=57 med=70 max=87] myBalMin=187597 dMe<dAlly=0
+  yield_opt_dispatch   boxedIn=True  n=  66 rej=  61 pct[320x64, 301x1, 317x1] pctMin=301 pctMax=320 dMe[min=59 med=106 max=150] dAlly[min=17 med=61 max=121] myBalMin=182459 dMe<dAlly=6
+  per-bot min interval between DISPATCH: 25  t range: 1580 - 4500
+== A031 events=56 types={'DISPATCH': 56}
+  defense_dispatch     boxedIn=False n=   5 rej=   0 pct[189x1, 184x1, 188x1, 204x1, 232x1] pctMin=184 pctMax=232 dMe[min=107 med=108 max=114] dAlly[min=49 med=81 max=90] myBalMin=480467 dMe<dAlly=0
+  defense_dispatch     boxedIn=True  n=  29 rej=  12 pct[380x17, 310x2, 332x1, 356x1, 371x1, 315x1] pctMin=279 pctMax=380 dMe[min=30 med=36 max=146] dAlly[min=6 med=71 max=105] myBalMin=52267 dMe<dAlly=18
+  offense_dispatch     boxedIn=False n=   2 rej=   0 pct[197x1, 220x1] pctMin=197 pctMax=220 dMe[min=114 med=125 max=125] dAlly[min=70 med=76 max=76] myBalMin=390373 dMe<dAlly=0
+  offense_dispatch     boxedIn=True  n=  17 rej=  11 pct[320x17] pctMin=320 pctMax=320 dMe[min=58 med=140 max=148] dAlly[min=1 med=26 max=74] myBalMin=96697 dMe<dAlly=1
+  yield_opt_dispatch   boxedIn=False n=   3 rej=   0 pct[201x1, 186x1, 198x1] pctMin=186 pctMax=201 dMe[min=112 med=114 max=115] dAlly[min=23 med=71 max=93] myBalMin=609038 dMe<dAlly=0
+  per-bot min interval between DISPATCH: 25  t range: 1810 - 5705
+== A019 events=53 types={'DISPATCH': 53}
+  defense_dispatch     boxedIn=False n=   5 rej=   0 pct[191x2, 182x1, 190x1, 181x1] pctMin=181 pctMax=191 dMe[min=107 med=108 max=108] dAlly[min=49 med=60 max=90] myBalMin=1006777 dMe<dAlly=0
+  defense_dispatch     boxedIn=True  n=  21 rej=   5 pct[380x4, 280x1, 257x1, 319x1, 315x1, 327x1] pctMin=256 pctMax=380 dMe[min=30 med=44 max=65] dAlly[min=2 med=38 max=106] myBalMin=52413 dMe<dAlly=9
+  offense_dispatch     boxedIn=False n=   7 rej=   5 pct[220x4, 190x1, 193x1, 214x1] pctMin=190 pctMax=220 dMe[min=113 med=119 max=126] dAlly[min=1 med=42 max=47] myBalMin=422444 dMe<dAlly=0
+  offense_dispatch     boxedIn=True  n=   8 rej=   4 pct[320x4, 283x1, 250x1, 290x1, 308x1] pctMin=250 pctMax=320 dMe[min=58 med=67 max=150] dAlly[min=12 med=40 max=44] myBalMin=672467 dMe<dAlly=0
+  yield_opt_dispatch   boxedIn=False n=  12 rej=  10 pct[220x7, 180x1, 196x1, 216x1, 190x1, 213x1] pctMin=180 pctMax=220 dMe[min=112 med=119 max=127] dAlly[min=84 med=91 max=94] myBalMin=1038689 dMe<dAlly=0
+  per-bot min interval between DISPATCH: 25  t range: 2000 - 6410
+== A009 events=83 types={'DISPATCH': 83}
+  defense_dispatch     boxedIn=False n=   1 rej=   0 pct[179x1] pctMin=179 pctMax=179 dMe[min=107 med=107 max=107] dAlly[min=89 med=89 max=89] myBalMin=2270621 dMe<dAlly=0
+  defense_dispatch     boxedIn=True  n=  28 rej=  11 pct[260x28] pctMin=260 pctMax=260 dMe[min=30 med=52 max=137] dAlly[min=19 med=33 max=89] myBalMin=86657 dMe<dAlly=9
+  offense_dispatch     boxedIn=True  n=  54 rej=  50 pct[225x54] pctMin=225 pctMax=225 dMe[min=90 med=131 max=150] dAlly[min=0 med=8 max=53] myBalMin=260390 dMe<dAlly=0
+  per-bot min interval between DISPATCH: 25  t range: 2165 - 4345
+== A023 events=348 types={'DISPATCH': 348}
+  defense_dispatch     boxedIn=False n=  17 rej=   1 pct[184x2, 240x2, 189x2, 188x2, 222x1, 229x1] pctMin=180 pctMax=240 dMe[min=107 med=108 max=118] dAlly[min=20 med=73 max=85] myBalMin=286290 dMe<dAlly=0
+  defense_dispatch     boxedIn=True  n=  99 rej=  82 pct[380x82, 327x2, 302x1, 273x1, 357x1, 291x1] pctMin=246 pctMax=380 dMe[min=42 med=109 max=150] dAlly[min=11 med=20 max=138] myBalMin=59813 dMe<dAlly=10
+  offense_dispatch     boxedIn=False n=   6 rej=   3 pct[189x1, 211x1, 220x1, 215x1, 186x1, 191x1] pctMin=186 pctMax=220 dMe[min=113 med=116 max=118] dAlly[min=69 med=73 max=89] myBalMin=571964 dMe<dAlly=0
+  offense_dispatch     boxedIn=True  n= 226 rej= 209 pct[320x212, 249x2, 290x1, 264x1, 309x1, 270x1] pctMin=249 pctMax=320 dMe[min=58 med=120 max=150] dAlly[min=8 med=20 max=96] myBalMin=139634 dMe<dAlly=12
+  per-bot min interval between DISPATCH: 25  t range: 1515 - 5490
+== A050 events=315 types={'DISPATCH': 315}
+  defense_dispatch     boxedIn=False n=   1 rej=   0 pct[240x1] pctMin=240 pctMax=240 dMe[min=127 med=127 max=127] dAlly[min=108 med=108 max=108] myBalMin=1555792 dMe<dAlly=0
+  defense_dispatch     boxedIn=True  n=  30 rej=  11 pct[380x25, 303x1, 287x1, 347x1, 281x1, 320x1] pctMin=281 pctMax=380 dMe[min=30 med=48 max=126] dAlly[min=2 med=61 max=139] myBalMin=93393 dMe<dAlly=17
+  offense_dispatch     boxedIn=False n=  19 rej=  13 pct[220x9, 183x2, 185x1, 193x1, 188x1, 198x1] pctMin=180 pctMax=220 dMe[min=112 med=117 max=149] dAlly[min=19 med=76 max=95] myBalMin=306808 dMe<dAlly=0
+  offense_dispatch     boxedIn=True  n= 255 rej= 226 pct[320x250, 252x1, 278x1, 306x1, 268x1, 269x1] pctMin=252 pctMax=320 dMe[min=58 med=101 max=150] dAlly[min=1 med=18 max=95] myBalMin=174786 dMe<dAlly=18
+  yield_opt_dispatch   boxedIn=False n=   2 rej=   0 pct[198x1, 182x1] pctMin=182 pctMax=198 dMe[min=112 med=114 max=114] dAlly[min=46 med=93 max=93] myBalMin=1094814 dMe<dAlly=0
+  yield_opt_dispatch   boxedIn=True  n=   8 rej=   5 pct[320x4, 269x1, 264x1, 280x1, 305x1] pctMin=264 pctMax=320 dMe[min=59 med=65 max=150] dAlly[min=49 med=62 max=93] myBalMin=251079 dMe<dAlly=2
+  per-bot min interval between DISPATCH: 25  t range: 1510 - 4850
+== A003 events=1 types={'DISPATCH': 1}
+  defense_dispatch     boxedIn=False n=   1 rej=   0 pct[145x1] pctMin=145 pctMax=145 dMe[min=103 med=103 max=103] dAlly[min=20 med=20 max=20] myBalMin=558526 dMe<dAlly=0
+== A005 events=0 types={}
+== B039 events=52 types={'DONATE': 48, 'ASSIST': 4}
+== B043 events=92 types={'DONATE': 78, 'ASSIST': 14}

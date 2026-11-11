@@ -1,0 +1,173 @@
+# mech-b-anchors  live sha256=c7d41fee823185ea4d0ffaf6557141bce9d5b387fea67b5502b63d7139f5f551 chars=679968
+# 名称	@下标+长度	文本sha256前10位	全局路径	开头
+# ---- 0 版本、节拍、指令通道
+dM	@5927+616	ab189031bf	m	function dM(){this.dw=2;this.dx=1772;this.dy=0;var dz=2;var e0=17;var 
+n8	@36934+347	065d7f3098	-	function n8() {             if (__fx.strategyBot.beforeTick() === fals
+dX	@674140+678	e31192dee2	bi	function dX(){this.a3I=null;this.ds=false;this.eZ=0;this.aEY=56;var af
+afN	@673571+569	7869aa8aff	-	function afN() {             var eI = 0;             var eZ = bi.eZ;  
+af2	@670729+1294	e85c6c0ad4	-	function af2(){this.eZ=bi.eZ;this.eI=0;this.af1=0;this.aK3=0;this.af3=
+af2.af6	@671622+282	c345e23ed8	-	this.af6=function(){var yZ,aC;if(this.af1!==this.aK3*7){n8();be.render
+af2.af8	@671905+117	b3b1f2cc52	-	this.af8=function(){if(this.af3.length>0){this.aK3++;bB.qk.ee(this.af3
+af2.aXQ	@670890+166	72927dbdf8	-	this.aXQ=function(aD){if(aE.hx){this.aEZ(aD);return}this.af3.push(aD);
+ql.ee	@50269+544	d0155cb130	bB.qk	this.ee=function(aD){var id,gI,oD;bK.dk(aD);bK.eI+=2;oD=8*bK.size;whil
+ql.rV	@51086+400	9e83333d88	bB.qk	this.rV=function(id,gI,gK,gM){if(id===0){bB.qi.i0(gI,gK)}else if(id===
+c1.g0	@494351+54	1973934231	bO	this.g0=function(fs,ft){return Math.floor((fs+.5)/ft)}
+c5.a7g	@153618+1580	8d4df5e263	aE	this.a7g=function(){bX.turnstile.close();bR.dk();bU.dk();bt.clear();th
+# ---- 1 组队
+dP.dk	@662279+150	e35bbbadcc	bj	this.dk=function(){this.fX.fill(0);this.aDn.fill(0);this.aec();if(!aE.
+dP.ee	@662686+239	de96d38124	bj	this.ee=function(){var a2F=new Uint8Array(aE.ku);var a2G=new Uint8Arra
+dP.aej	@663777+547	b30cd147ae	bj	this.aej=function(a2F,a2G,aeo,aeq){var aC,ft,e,aer;var fZ=this.lH.leng
+dP.aKa	@664325+234	77aa9f6557	bj	this.aKa=function(aeo){var aC,ft,lr;var fZ=this.lH.length-1;for(aC=fZ;
+dP.aek	@664560+1064	4bb7686bfb	bj	this.aek=function(aei,a2F,a2G){var ft,a3q,ej,fc,e,o7,uv;var aes=this.l
+dP.ael	@665625+557	3fdf5f36ac	bj	this.ael=function(a2F,a2G,aei){var aC,ft,iv;var fZ=this.lH.length-1;va
+dP.aem	@666183+123	75ed4b9f4c	bj	this.aem=function(){if(aE.a0L<8){aE.a0L++;aE.lC++;aE.a0M=1;return}for(
+dh.fS	@669310+80	e411d4ccb4	bv	this.fS=function(player,k3){return bj.fX[player]===0||bj.fX[player]!==
+a5M.lY	@144899+95	6aebd190f6	bD.gv	this.lY=function(player,k3){return player!==k3&&(bj.fX[player]===0||bj
+a5M.rn	@147572+83	2e85893e87	bD.gv	this.rn=function(player,qu){if(ah.nU[qu]===0){return false}return!bv.f
+a5M.kH	@145422+66	b37d4b6de7	bD.gv	this.kH=function(player){return player>=aE.ku||ah.a6S[player]===2}
+a5M.hl	@144759+70	36ad3e0e2b	bD.gv	this.hl=function(player){return ah.nU[player]!==0&&ah.a6S[player]!==2}
+a5M.hk	@144643+115	11e26e2f12	bD.gv	this.hk=function(a4B){if(a4B===0){return aE.a38===1&&aE.hx}if(a4B===1)
+# ---- 2 捐款：指令、税、上限
+qg.qt	@48792+78	843dfd11d0	bB.hz	this.qt=function(jC,qu){if(aE.lE){bB.qi.qv(aE.fJ,jC,qu)}else{b1.qo.qw(
+aWM.qw	@588542+113	1f492cabd1	b1.qo	this.qw=function(jC,qu){bG.a8(1+4+10+9);bG.a9(1,1);bG.a9(4,2);bG.a9(10
+qj.qv	@52024+291	964dd5f3c7	bB.qi	this.qv=function(player,jC,qu){if(!bD.gv.hk(1)){return}if(!bD.gv.hl(pl
+a5M.jB	@146531+70	c3c538ce05	bD.gv	this.jB=function(player,a6k){return bO.g0(ah.hb[player]*(a6k+1),1024)}
+a5M.rD	@146160+161	2c2aea9b3e	bD.gv	this.rD=function(player,qv,qu){var a6c=ah.hb[player];var a6h=bO.g0(64*
+a5M.a6a	@145816+141	3d8b3911ae	bD.gv	this.a6a=function(player,g1){var a6c=ah.hb[player];g1=Math.min(g1,ah.h
+a5M.gy	@145631+184	1d8170ee05	bD.gv	this.gy=function(player,g1){g1=this.a6a(player,g1);ah.hb[player]+=g1;i
+a5M.rj	@145587+43	e6a40006c9	bD.gv	this.rj=function(a6Y,a6Z){return a6Y!==a6Z}
+cd.qt	@348892+164	e4efc6b3e3	af	this.qt=function(player,qu){bt.rG(player,qu,bR.g6[0],0);bD.gv.gy(qu,bR
+a5M.n4	@147349+86	2dd4afff7d	bD.gv	this.n4=function(player){var iI=bR.g6[0];ah.hb[player]-=iI+bR.g6[1];b5
+cM.i3	@195551+65	21022e4d18	aS	this.i3=function(){return bO.ij(Math.floor(jC*1024+.5)-1,0,1023)}
+# ---- 3 反喂养配额
+ca	@372839+1023	fd5c7c46f3	ao	function ca(){var aOX=new Uint16Array(aE.fW);var aOY=0;this.dk=functio
+ca.iD	@372933+186	ee750c268a	ao	this.iD=function(qu){var player=aE.fJ;if(!bD.gv.rn(player,qu)){return 
+ca.ei	@373526+129	77baa1f28f	ao	this.ei=function(a9h,aOa){if(aOb(a9h)){return true}var g1=aOc(a9h,aOa)
+ca.ee	@373656+143	52c02b9987	ao	this.ee=function(){if(bi.kr()%100!==99){return}if(bi.kr()<1071){aOY+=4
+ca.aOb	@373800+61	dcb0c8f09b	ao	function aOb(a9h){return aE.lE||bi.kr()>=4284||bD.gv.kH(a9h)}
+ca.aOc	@373222+304	6ae53f6f01	ao	function aOc(a9h,aOa){var ej=bi.kr();if(ej>=3213){return 4+bO.g0(100*a
+ca.aOZ	@373120+102	fddb03bf20	ao	function aOZ(a9h,aOa){if(aOb(a9h)){return true}if(aOX[a9h]+aOc(a9h,aOa
+cz	@337489+661	437f51fbe9	b5	function cz(){this.aLk=new Uint32Array(aE.fW);this.dk=function(){if(aE
+# ---- 4 内置 AI 的捐款与移交
+qm.kx	@49660+131	9351651f74	bB.kw	this.kx=function(player,qu,iI){if(!bD.gv.rD(player,iI,qu)){return}af.q
+qm.rE	@49792+196	39a7588951	bB.kw	this.rE=function(player,qu,iI){if(!bD.gv.rF(iI,qu)){bg.gz(player,iI,12
+a5M.rF	@146451+79	78ec71ac1f	bD.gv	this.rF=function(qv,qu){qv=this.a6a(qu,qv);bR.g6[0]=qv;bR.g6[1]=0;retu
+ji.kX	@24791+421	6bb51d2c10	ap.jh	this.kX=function(player,iI){if(!ae.kY(player)){return}var kZ=af.ka(pla
+ji.kh	@25213+467	8121fb4b09	ap.jh	function kh(player,iI,kb,kZ){var k3;if(ap.jf.k7(player,false)||ap.jf.k
+ji.kq	@25797+503	5fbcce8543	ap.jh	function kq(player,iI,kb,kZ){var kW=ap.jh.kW;kW[player]=0;var fX=bj.fX
+ji.kj	@26300+397	8e08181d28	ap.jh	function kj(player,iI,kb){if(!ap.jf.k7(player,true)&&!ap.jf.kC(player,
+ji.ko	@26697+212	4f188e332a	ap.jh	function ko(player,iI,k3,kb){if(kb>=3&&kb<6&&bO.g0(ah.hb[player],8)>ah
+ji.kk	@26909+162	7daea90a84	ap.jh	function kk(player,iI){var k3=aE.fW;var fZ=ah.h1[player].length;ap.jf.
+ji.kl	@25680+117	e8c93dbd3d	ap.jh	function kl(player,k3,kb){if(kb>=3&&bi.kr()>2142&&(k3===aE.fW||ah.hb[k
+cc.ei	@347183+427	d7d65392cd	ae	this.ei=function(player,aMf,aMb){ap.jh.kW[player]=ap.jh.kW[aMb]=8;if(b
+cc.kY	@346385+79	ff7482b10f	ae	this.kY=function(player){return player<aE.ku?size[player]<aMX:size[pla
+cc.kF	@346249+135	a0f4ce26de	ae	this.kF=function(player,aMb){var aC;var lp=aMa(player);for(aC=size[pla
+# ---- 5 内置 AI 其余
+cp	@21098+320	4f79530ff7	ap	function cp(){this.jY=new jZ;this.ja=new jb;this.jc=new jd;this.perfor
+cB	@38422+354	bf1d7e7846	aH	function cB(){var size;var ki;this.dk=function(){size=aE.lG;ki=new Uin
+cB.nS	@38639+97	77e214dd6c	aH	function nS(){for(var aC=size-1;aC>=0;aC--){if(ah.nU[ki[aC]]===0){nV(a
+cB.nT	@38603+35	2bec9161b9	aH	this.nT=function(h7){ki[size++]=h7}
+cy.aGG	@371980+171	44da679731	b4	this.aGG=function(player){aH.nT(player);aE.a3A++;ah.a6S[player]=2;ah.a
+c9	@27072+2516	4686fbc370	aF	function c9(){var kz=new Uint8Array(aE.fW);var l0=new Uint16Array(aE.f
+c9.dk	@27607+1321	f2ee6b218c	aF	this.dk=function(){var aC;kz.fill(0);l0.fill(0);l1.fill(0);l2.fill(0);
+c9.lM	@29285+64	f9c4c4d489	aF	function lM(h7){lN(h7);ap.jh.kX(h7,bO.g0(l0[h7]*ah.hb[h7],1e3))}
+c9.lN	@29349+197	2138226eae	aF	function lN(h7){if(l3[h7]!==l4[h7]){l3[h7]+=l3[h7]<l4[h7]?3:-3}if(l0[h
+c9.kg	@29180+57	85f292f663	aF	this.kg=function(h7,value){kz[h7]=Math.min(value,kz[h7])}
+c9.lO	@29546+41	a46fb1fcd4	aF	this.lO=function(h7,h2){l3[h7]=l4[h7]=h2}
+jg.k2	@21905+181	88f789b264	ap.jf	this.k2=function(player,k3,fZ,iI){var k4=bO.g0(12*ah.hb[player],1024);
+jg.k7	@22683+454	eec4eac0f3	ap.jf	this.k7=function(player,k8){var aC,fs,iQ,iS;var fZ=ah.hF[player].lengt
+jg.kC	@23138+319	24ae8bb279	ap.jf	this.kC=function(player,k8){var aC,iQ,iS;var fb=ad.fb;jq=0;for(aC=ah.h
+jg.kJ	@23944+181	dbb0c3ae60	ap.jf	this.kJ=function(player){var aC,ft;var kK=js[0];var kL=ah.hb[kK]+ae.hc
+jg.kM	@24126+384	408a5bba69	ap.jf	this.kM=function(player){var aC,k;var kN=js[0];if(jq===1){return kN}va
+jd.jp	@29667+378	5cc3fda6ca	ap.jc	this.jp=function(){if(bi.kr()%109!==9){return}if(am.lQ<20){return}if(!
+jd.ee	@30046+405	edda2de5cf	ap.jc	this.ee=function(player){var lZ=la(player);lb(player);if(bR.g4[0]===0)
+je.mP	@34648+108	3758945a87	ap.performance	function mP(){if(bi.kr()%30!==7){return false}if(bD.gv.mR(90)){ap.perf
+je.mS	@34790+184	018902372d	ap.performance	function mS(){var lS=bk.lT();if(!bj.lH[lS]){return}bk.kv(lS);var h=bR.
+je.mT	@34974+31	b3bcd58146	ap.performance	function mT(){aF.lO(mV[0],100)}
+jo.ee	@36014+51	85e1d5a69b	ap.jn	this.ee=function(){if(bi.kr()%51!==45){return}mj()}
+jo.mj	@36066+422	e7641ff0d5	ap.jn	function mj(){var fZ=bQ.z.mk;var ml=bQ.z.ml;var mm=bQ.z.mm;var mn=bQ.z
+jo.mv	@36662+223	9a81094d21	ap.jn	function mv(player,mF,ms,mw,mp){if(!bQ.n0.n1(player)){return}if(!bD.gv
+jb.ee	@33185+60	eab452da1c	ap.ja	this.ee=function(player){return bQ.lh.li(player,m7(player))}
+aaN.ee	@616687+345	a232126ef6	bQ.ki	this.ee=function(player){if(!bQ.n0.n1(player)){return false}var ky=bQ.
+# ---- 6 进攻指令（陆上）
+qj.i6	@51647+376	6bbc8c71d4	bB.qi	this.i6=function(player,jC,k3){if(!bD.gv.hk(1)){return}if(!bD.gv.hl(pl
+a5M.n2	@145958+201	65363d437b	bD.gv	this.n2=function(player,jC,a6f,a6g){var a6c=ah.hb[player];var iI=bO.g0
+a5M.rk	@147436+135	dae63b020e	bD.gv	this.rk=function(player,k3){k3=Math.min(k3,aE.fW);if(k3<aE.fW&&ah.nU[k
+a5M.m6	@147005+343	bb84813b8d	bD.gv	this.m6=function(player,jC){var hb=ah.hb;var a6c=hb[player];var iI=bO.
+qj.i2	@53845+412	65e2d26e52	bB.qi	this.i2=function(player,jC,fL,k3){if(!bD.gv.hk(1)){return}if(!bD.gv.hl
+qj.r2	@53086+207	4a7e75ed49	bB.qi	this.r2=function(player,k3){if(k3===513){this.iK(player);return}if(!bD
+cc.ru	@345714+118	bee9e922e1	ae	this.ru=function(aB1,aMb){var aMc=this.hc(aB1,aMb);this.ha(aB1,aMb,0);
+# ---- 7 船
+qj.iB	@52316+347	60f2535e5c	bB.qi	this.iB=function(player,jC,qx){bR.gB[1]=qx&7;var fL=qx>>3;if(!bD.gv.hk
+qj.iE	@52664+281	a4fe86ddc8	bB.qi	this.iE=function(player,jC,ns){if(jC===849){this.r1(player,ns);return}
+qj.r1	@52946+139	321cd0a314	bB.qi	this.r1=function(player,ns){if(!bD.gv.hk(1)){return}if(!bD.gv.hl(playe
+aaJ	@631508+3527	4a70ba793d	bQ.z	function aaJ(){this.l8=512;this.ab1=8;this.mk=0;this.n3=0;this.mo=new 
+aaJ.n5	@632038+501	aaa404cc90	bQ.z	this.n5=function(player){var iI=bR.g6[0];var mp=bR.gB[1];var mF=bR.h[0
+aaJ.acU	@632675+823	a052142535	bQ.z	function acU(ts){var acY,h8;var mz=ts.mz;var a9g=ts.a9g;var abA=ts.abA
+aaJ.acV	@633849+889	715f615a3a	bQ.z	function acV(ts){if(bi.kr()%2!==1){return}var aC,iR,lp,ft,ej,acm,a24,a
+aaJ.acW	@634738+152	ce1123afdc	bQ.z	function acW(ts){if(bi.kr()%5!==3){return}var a9g=ts.a9g;var fZ=ts.mk;
+aaJ.acX	@634890+144	e31cccfc50	bQ.z	function acX(ts){var a9g=ts.a9g;var abA=ts.abA;for(var aC=ts.mk-1;aC>=
+aaM	@629469+2039	3ae6ee6a5c	bQ.mp	function aaM(){this.ee=function(){var ml=bQ.z.ml;var mz=bQ.z.mz;var ab
+aaM.acN	@631178+329	a7af5838e9	bQ.mp	function acN(player,iI,acL,aae){var k3;if(ad.fQ(acL)){k3=aE.fW}else{k3
+aaM.acO	@630537+321	b837792a79	bQ.mp	function acO(player,iI,aae){var aC,fd;var ip=bP.ig;var fO=bP.fP(aae);f
+aaM.acP	@630858+320	34c070707a	bQ.mp	function acP(player,iI,aae){var aC,fd;var ip=bP.ig;var fO=bP.fP(aae);f
+aaX.rs	@628024+151	410f6c6b52	bQ.iC	this.rs=function(player,ns,acA){if(!acB(player,ns,acA)){return false}v
+aaT.n1	@619139+198	820734daf2	bQ.n0	this.n1=function(player){if(!aE.data.passableWater){return false}if(bQ
+aaT.ro	@619338+136	d3733298cd	bQ.n0	this.ro=function(aYX){var mp=bR.gB[1];if(mp>=4){return false}if(!bQ.lj
+aaY.aay	@618903+220	c2c8bc0722	bQ.mt	this.aay=function(aaz){var lp=bQ.z;var mp=lp.ml[aaz];if(mp%64===5){ret
+aaZ.ee	@639317+135	61976a7a83	bQ.rt	this.ee=function(player,ns){var mw=bQ.lj.nu(player,ns);if(mw<0){return
+aaU.iA	@640183+292	08d29fa882	bQ.i9	this.iA=function(player,aYX){if(!bQ.n0.n1(player)){return false}var aY
+aaO.rp	@635898+119	d13f912f7b	bQ.lh	this.rp=function(player,ad3,ad4){var mD=ad5(player,ad3,ad4);if(mD===-1
+aaO.li	@635774+123	c8287ab07d	bQ.lh	this.li=function(player,ad3){if(ad3===-1){return false}if(!bQ.lj.mK(pl
+a5M.gw	@146703+301	87a3e8b34e	bD.gv	this.gw=function(player,a6m){var ft=ah.hb[player];if(a6m<=ft){ah.hb[pl
+# ---- 8 存活、崩溃、离场
+cZ.n9	@372386+36	69194ed555	am	this.n9=function(){aOV();this.aOW()}
+cZ.aOV	@372566+272	7c101bfede	am	function aOV(){var hN=ah.hN;var a0i=ah.a0i;var a3h=ah.a3h;var lV=am.lV
+cZ.aOW	@372423+142	6dba8f7cd8	am	this.aOW=function(){var nU=ah.nU;var lo=this.lV;var aF1=this.lQ;for(va
+cY.dt	@333688+155	1b9a65bd9a	al	this.dt=function(h7){var ea=ah.hN[h7]+ah.a0i[h7];if(bQ.z.ky[h7]){if(ea
+cY.aL4	@334245+139	470cc9d7c2	al	this.aL4=function(player){aLC(player);ag.aL7(player);aL8(player);aL9(p
+dF.rA	@660209+79	976f0e6a7a	bT	this.rA=function(player){aO.a3L(player,player===aE.fJ?21:22);aeY(playe
+dF.rf	@660289+160	0968218369	bT	this.rf=function(player){if(aE.a38===1&&ah.nU[player]!==0&&ah.a6S[play
+dF.aeY	@660505+98	389ce74767	bT	function aeY(player){if(aE.hx){al.aL4(player);am.aOW();if(aE.lE){aE.ri
+qj.rA	@53545+151	dc5c77f45c	bB.qi	this.rA=function(player){if(!bD.gv.hk(0)&&!bD.gv.hk(1)){return}if(!bD.
+qj.rf	@53697+58	28d79c654b	bB.qi	this.rf=function(player){bC.rg.rh(9,player);bT.rf(player)}
+# ---- 9 和平投票与终局
+qg.iK	@49492+65	e27e38aaba	bB.hz	this.iK=function(){if(aE.lE){bB.qi.iK(aE.fJ)}else{b1.qo.r3(513)}}
+qg.iN	@49359+69	9b3eac886d	bB.hz	this.iN=function(r8){if(aE.lE){bB.qi.iN(aE.fJ,r8)}else{b1.qo.r9(r8)}}
+aWM.r3	@588888+96	b96845e149	b1.qo	this.r3=function(k3){bG.a8(1+4+10);bG.a9(1,1);bG.a9(4,5);bG.a9(10,k3);
+aWM.r9	@589082+94	afe541b5e7	b1.qo	this.r9=function(r8){bG.a8(1+4+1);bG.a9(1,1);bG.a9(4,7);bG.a9(1,r8);b1
+aWM.r7	@588985+96	52b0d29c78	b1.qo	this.r7=function(eI){bG.a8(1+4+10);bG.a9(1,1);bG.a9(4,6);bG.a9(10,eI);
+qj.iK	@53756+88	1929609efc	bB.qi	this.iK=function(player){if(!ax.iO(player)){return}bC.rg.rh(5,player,5
+qj.iN	@53451+93	5dd09750b5	bB.qi	this.iN=function(player,r8){if(!ax.iM(player)){return}bC.rg.rh(7,playe
+qj.r6	@53294+156	8eb33c783b	bB.qi	this.r6=function(player,r5){if(!bD.gv.hk(1)&&!bD.gv.hk(2)){return}if(!
+cu	@189203+4148	a56f9e5653	ax	function cu(){var k;var canvas;var ou;var aB8;var aB9;var aBA;var aBB;
+cu.ee	@190794+125	8bc233da6f	ax	this.ee=function(){if(aBD>0){aBD--;if(aBD===0){aBH()}return}if(this.iL
+cu.aBJ	@191013+301	c58fe344c9	ax	function aBJ(){var aBO=bi.kr();if(aBO%40!==14){return 0}if(aBG){if(aBO
+cu.aBL	@190920+93	8700afc469	ax	function aBL(){aBF=-1;a9l=ai.aBM();aO.a7S(257);aO.a9k(a9l);ax.iL=true;
+cu.aBN	@191390+516	ba98c6ed36	ax	function aBN(){var ea=0;for(var aC=am.lQ-1;aC>=0;aC--){if(!bD.gv.kH(am
+cu.aBI	@191906+180	22250cc153	ax	function aBI(){aBC--;if(aBC===180&&3*aB9[0]<aBA[0]){aBH();return}if(aB
+cu.aBH	@192086+107	5837e8d6f8	ax	function aBH(){aBE=bi.kr();aAN=true;aB8=0;aBC=0;aBB=[];ax.iL=false;aO.
+cu.rw	@192248+326	e1a00b5758	ax	this.rw=function(player,aBP){var aBQ;if(aBP){aBQ=L(116,[ah.a1c[player]
+cu.iO	@192803+205	145f4d7452	ax	this.iO=function(player){if(aBC!==0){return false}if(!bD.gv.hk(1)){ret
+cu.aBR	@193009+117	a195815db4	ax	function aBR(){if(aE.lE){return true}var ej=bi.kr();if(ej<aBE+100){ret
+cu.iM	@193126+187	9db8c02c12	ax	this.iM=function(h7){if(!bD.gv.hk(1)){return false}if(!bD.gv.hl(h7)){r
+cu.iK	@193314+36	db67a7ed53	ax	this.iK=function(player){aBF=player}
+cu.a39	@192193+54	9555704871	ax	this.a39=function(){if(this.iL&&aB9[0]<aBA[0]){aBH()}}
+ce.aBM	@645029+127	35fdb72404	ai	this.aBM=function(){if(am.lQ<3){return false}if(ah.hN[mV[0]]>=aE.ke>>1
+ce.add	@645157+108	31742ddc17	ai	function add(){if(aE.lC===8){return false}var ade=af.aMl();if(2*ah.hb[
+ce.adc	@645265+123	6b3af767b9	ai	function adc(){if(aE.lC===9){return false}var ade=af.aMl();var adf=af.
+a5M.a6V	@145095+218	8080523554	bD.gv	this.a6V=function(){var lQ=am.lQ;if(lQ===0){return 0}if(!aE.iT){return
+a5M.a6p	@147656+193	ef9f48e9e6	bD.gv	this.a6p=function(player,a6q){var aC,h7;var fZ=am.lQ;var a6r=0;var a6s
+a2m.a33	@121360+52	0262fdd68c	bU.a2l	this.a33=function(){if(a34()){return}aE.a35=2;a36()}
+a2m.a37	@121413+52	d1e4616991	bU.a2l	this.a37=function(){if(a34()){return}aE.a35=1;a36()}
+a2m.a34	@121466+87	6f994859fb	bU.a2l	function a34(){if(aE.a38===2){return true}ax.a39();aE.a38=2;aE.a3A=aE.
+dQ.lR	@596038+173	5da7aae601	bk	this.lR=function(aYI){if(aYI){aYJ()}var lS=this.lT();if(bj.lH[lS]){ret
+dQ.lT	@596266+94	88690fa88b	bk	this.lT=function(){var lS=0;for(var aC=aE.a0L;aC>0;aC--){if(a5c[aC]>a5
+dQ.aYJ	@597047+131	9ff694015e	bk	function aYJ(){for(var aC=aE.a0L;aC>=0;aC--){a5c[aC]=0}for(aC=am.lQ-1;
+a5M.mR	@147850+105	2f27582efd	bD.gv	this.mR=function(h7){var a6t;if(aE.iT){a6t=bk.lR()}else{a6t=ah.hN[mV[0
+a5M.mf	@144995+99	f709d34f52	bD.gv	this.mf=function(){var lQ=am.lQ;if(lQ<2){return 0}if(!aE.iT){return ah
+cR.aER	@219112+165	d73afb627a	aX	function aER(){if(aE.lC===8&&aET()){return}if(aE9[3]<aE.ke){return}if(
+cR.aEU	@219277+102	c725583db4	aX	function aEU(){for(var aC=am.lQ-1;aC>=0;aC--){if(ah.h1[am.lV[aC]].leng
+cR.aET	@219379+96	f530dae392	aX	function aET(){for(var aC=0;aC<2;aC++){if(!bD.gv.hl(aC)){bU.a2l.a37();
+cR.aEQ	@218909+160	90ca0644aa	aX	function aEQ(){var a6t,per;if(aE.iT){a6t=bk.lR()}else{a6t=ah.hN[mV[0]]
+# 共 0 个未找到

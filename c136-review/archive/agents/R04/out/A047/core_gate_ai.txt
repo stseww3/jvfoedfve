@@ -1,0 +1,12 @@
+# A047 核心期贴着内置 AI 的行动拍 [1500,9895)：共 1689 个号·行动拍，其中贴着弱 AI（兵 < 地）的 806 个
+第一条 AI 报价的去向：price 405（24%），covered 369（22%），floor/cap+dp 321（19%），chunk 162（10%），behind 161（10%），floor/dp 141（8%），send 72（4%），floor/sf/enemy 24（1%），floor/cap+sf/enemy 21（1%），nobuy 7（0%），floor/sf/squad 4（0%），floor/keep 2（0%）
+其中贴着弱 AI 的：price 11（1%），covered 281（35%），floor/cap+dp 259（32%），chunk 59（7%），floor/dp 119（15%），send 30（4%），floor/sf/enemy 24（3%），floor/cap+sf/enemy 19（2%），floor/sf/squad 4（0%）
+safeFinite 顶住时参照的是谁（类别:引擎编号 次数）：enemy:1 24，enemy:37 21，squad:13 3，squad:17 1
+  kaito9    453 拍（1555~9890）：price 14，covered 155，floor/cap+dp 209，chunk 51，send 3，floor/cap+sf/enemy 21
+  riku_x    335 拍（1500~6195）：price 70，covered 84，floor/cap+dp 6，chunk 5，behind 9，floor/dp 141，send 19，floor/sf/squad 1
+  zexos1    319 拍（1500~9890）：price 73，covered 32，chunk 22，behind 152，send 9，floor/sf/enemy 24，nobuy 7
+  sora_w    217 拍（1500~6030）：price 42，covered 36，floor/cap+dp 106，chunk 8，send 25
+  ryan_m    144 拍（3495~4210）：price 117，chunk 24，send 3
+  noah88    144 拍（3495~4210）：price 89，chunk 52，send 1，floor/keep 2
+  leo_tx     41 拍（1500~1775）：covered 36，send 5
+  talon5     36 拍（1500~5020）：covered 26，send 7，floor/sf/squad 3

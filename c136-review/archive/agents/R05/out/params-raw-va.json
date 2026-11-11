@@ -1,0 +1,3647 @@
+{
+ "file": "v27-team-c116-va.js",
+ "truncated": null,
+ "layerOrder": [
+  "DEFAULT_PARAMS",
+  "BASE",
+  "GENERAL_PARAMS",
+  "STYLE_PARAMS",
+  "PARAMS13",
+  "P17",
+  "PARAMS"
+ ],
+ "layerSpreads": {
+  "DEFAULT_PARAMS": [],
+  "BASE": [],
+  "GENERAL_PARAMS": [
+   "BASE"
+  ],
+  "STYLE_PARAMS": [],
+  "PARAMS13": [],
+  "P17": [],
+  "PARAMS": [
+   "P17"
+  ]
+ },
+ "count": 226,
+ "readButUndefined": [],
+ "neverRead": [
+  "overPeerCap",
+  "overPeerKeep",
+  "overPulseMode",
+  "seaEnd",
+  "siegeOverKeep"
+ ],
+ "params": {
+  "a06AggMemGate": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5162
+    ]
+   }
+  },
+  "a06AloneSafe": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.safeAt": [
+     4548
+    ],
+    "Policy.offers": [
+     5262
+    ]
+   }
+  },
+  "a06BoatUnderAtk": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.idleBoats": [
+     5052
+    ]
+   }
+  },
+  "absorbMemory": {
+   "value": 250,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "250"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.peerAggressor": [
+     4616
+    ]
+   }
+  },
+  "absorbMode": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.peerAggressor": [
+     4615
+    ],
+    "Policy.buyLand": [
+     5375
+    ]
+   }
+  },
+  "absorbWaveMin": {
+   "value": 0.04,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.04"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.buyLand": [
+     5375
+    ]
+   }
+  },
+  "aggMemMode": {
+   "value": 8,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "8"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.peerAggressor": [
+     4638
+    ],
+    "Policy.offers": [
+     5218,
+     5219
+    ],
+    "Policy.buyLand": [
+     5573
+    ]
+   }
+  },
+  "aiFrom": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "bots are not attacked, by land or boat, before tick aiFrom unless our troops are idle (0 = any time): troops at home earn the interest floor (13440 - 6 t) / 1920 % per 10 ticks, early on more than bot land pays back at 2 + 1.78 x its troop density per pixel (a collapse, the quarter left neutral taken at 2; 4.4 at ticks 500-1000 in the v10 games). From aiFrom to dpEnd bots keep no nFloor reserve and get at most dpSpend of the balance per send. dpLand > 0: before dpEnd a bot is also bought only while its land costs at most what a pixel bought now is worth at dpEnd in troops held from now: dpLand plus the rents until dpEnd, each grown by the interest floor, over what a troop held grows to (2.96 at tick 700, 4.59 at 900, 5.80 at 1000, 9.25 at 1200). V = troops + 17 x land at tick 1500 over v10's in the simulator (8 seeds of brm15x / brmw4): bots at any time 0.71 / -, from tick 900 1.07 / 1.01, from 1000 1.14 / 1.08, from 1200 0.88 / 0.86 (the DP's pick under the land cap of the real games, 96% of its optimum against 90% from 900), dpLand 17 alone 1.03 / 0.93, with aiFrom 900 1.06 / 1.01",
+   "readBy": {
+    "V13.botOk": [
+     2470
+    ]
+   }
+  },
+  "aloneK": {
+   "value": 1,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.defenseNeed": [
+     908
+    ]
+   }
+  },
+  "atkFreshBoats": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.send": [
+     3900
+    ],
+    "Policy.act": [
+     4951
+    ],
+    "Policy.offers": [
+     5316
+    ],
+    "Policy.boatFood": [
+     5657
+    ]
+   }
+  },
+  "balW": {
+   "value": 0.05,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "0.05"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.act": [
+     759
+    ]
+   }
+  },
+  "bank": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "boat bank (0 = off): interest is highest at the soft cap and falls to nothing at 1.5 x, while a boat loses 1/128 of its troops every 5 ticks. Troops beyond what keeps us at bankTo x the soft cap and nobody's weakest neighbour (see peopleSafe, bank x that) sail off once they come to bankFee x the boat fee (32/1024 of the balance), towards the shore, bankMin to boatRange pixels away, of the cheapest land per pixel we reach; home earns the full rate meanwhile. Within bankNear pixels of its landing a boat lands if it takes free land, a bot we would buy, or a person we may attack with bankKill x what collapses it; else it turns back (Game.recall) and its troops join the balance at home (up to the hard cap). All turn back, and none sails, while people attack us with bankThreat x our balance. Needs Game.recall and the boat arrays (bRoute, ...); without them nothing happens",
+   "readBy": {
+    "V13.act": [
+     1818
+    ],
+    "V13.bankAct": [
+     1908
+    ]
+   }
+  },
+  "bankFee": {
+   "value": 8,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "8"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.bankAct": [
+     1910
+    ]
+   }
+  },
+  "bankKill": {
+   "value": 1.25,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "1.25"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.bankLands": [
+     1953
+    ]
+   }
+  },
+  "bankMin": {
+   "value": 30,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "30"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.bankAct": [
+     1915
+    ]
+   }
+  },
+  "bankNear": {
+   "value": 4,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "4"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.bankAct": [
+     1904
+    ]
+   }
+  },
+  "bankThreat": {
+   "value": 0.2,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0.2"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.bankAct": [
+     1896
+    ]
+   }
+  },
+  "bankTo": {
+   "value": 1,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.bankAct": [
+     1908
+    ]
+   }
+  },
+  "bleedDiscount": {
+   "value": 0.72,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.72"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5156
+    ],
+    "Policy.buyLand": [
+     5424
+    ]
+   }
+  },
+  "bleedSafeCap": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.buyLand": [
+     5414
+    ]
+   }
+  },
+  "boatDecay": {
+   "value": 0.004,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "0.004"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.searchWater": [
+     1022
+    ],
+    "V13.searchFood": [
+     2053
+    ],
+    "Policy.send": [
+     3905
+    ],
+    "Policy.buyLand.tryNarrowBoatFirst": [
+     5500
+    ]
+   }
+  },
+  "boatEvery": {
+   "value": 60,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "60"
+   },
+   "authorComment": "boats: ticks between launches, share of the free balance per boat, search radius over water in pixels, troop loss rate per pixel of water, boats at sea at once; with no affordable land target, boats also go out when land over water costs (distance-grown) at most boxRatio x the cheapest land neighbour",
+   "readBy": {
+    "General.act": [
+     804
+    ],
+    "V13.bankAct": [
+     1906
+    ],
+    "V13.boatFood": [
+     2003
+    ],
+    "V17.idleBoats": [
+     2867
+    ],
+    "Policy.idleBoats": [
+     5032,
+     5058
+    ],
+    "Policy.boatFood": [
+     5623,
+     5646
+    ]
+   }
+  },
+  "boatFee": {
+   "value": 1,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "GENERAL_PARAMS": "0",
+    "PARAMS13": "1"
+   },
+   "authorComment": "set for this version over the general machinery's default",
+   "readBy": {
+    "General.act": [
+     806,
+     806
+    ],
+    "General.boatOut": [
+     1007
+    ],
+    "General.searchWater": [
+     1043
+    ],
+    "V17.idleBoats": [
+     2870,
+     2870
+    ],
+    "Policy.idleBoats": [
+     5067,
+     5067
+    ]
+   }
+  },
+  "boatFood": {
+   "value": 1,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "1"
+   },
+   "authorComment": "with no neutral land and no bot to buy by land, boats go for the cheapest neutral land or bot over water by troops per pixel (troops lost at sea and the boat fee counted) up to botMax: the beachhead makes the rest of it land we border (0 = off; boats otherwise go out only from idleCap x the soft cap, to the land cheapest per pixel whatever its size)",
+   "readBy": {
+    "V13.act": [
+     1822
+    ],
+    "V17.idleBoats": [
+     2866
+    ],
+    "Policy.idleBoats": [
+     5057
+    ]
+   }
+  },
+  "boatFrac": {
+   "value": 0.5,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "0.5"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.boatOut": [
+     1006
+    ],
+    "V13.boatFood": [
+     2012
+    ],
+    "Policy.idleBoats": [
+     5036
+    ],
+    "Policy.boatFood": [
+     5636
+    ]
+   },
+   "writtenBy": {
+    "Policy.idleBoats": [
+     5038,
+     5041
+    ]
+   }
+  },
+  "boatRange": {
+   "value": 200,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "200"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.searchWater": [
+     1046
+    ],
+    "V13.bankAct": [
+     1915
+    ],
+    "V13.searchFood": [
+     2054
+    ],
+    "Policy.idleBoats": [
+     5035,
+     5046
+    ],
+    "Policy.searchFood": [
+     5685
+    ]
+   },
+   "writtenBy": {
+    "Policy.idleBoats": [
+     5037,
+     5040,
+     5047,
+     5049
+    ],
+    "Policy.searchFood": [
+     5686,
+     5688
+    ]
+   }
+  },
+  "botMax": {
+   "value": 60,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "60"
+   },
+   "authorComment": "bots only while cheaper than this per pixel; from idleCap x the soft cap, spare troops go to people and costly bots too",
+   "readBy": {
+    "V13.bankLands": [
+     1951
+    ],
+    "V13.boatFood": [
+     2005,
+     2008
+    ],
+    "V13.allow": [
+     2112
+    ],
+    "V13.food": [
+     2179
+    ],
+    "V13.hoardFood": [
+     2189
+    ],
+    "Policy.boatFood": [
+     5629,
+     5632
+    ]
+   }
+  },
+  "botOff": {
+   "value": 16,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "16"
+   },
+   "authorComment": "spawn: land near bots counts as if the bots were botOff pixels farther away (Very Easy bots grow slowly and their land is food; 0 = off)",
+   "readBy": {
+    "V13.spawnDist": [
+     2361
+    ]
+   }
+  },
+  "botPhaseMode": {
+   "value": 1,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.act": [
+     4975
+    ],
+    "Policy.boatFood": [
+     5645
+    ]
+   }
+  },
+  "botRegen": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "what collapses a bot counts botRegen x the land income it earns while we take it: an attack takes one ring per expansion step (every 4, 3, 2 or 1 ticks at our land < 1k, < 10k, < 60k, more), so 3/4 of its land T falls in D = ticks per step x 0.75 T / ring width, rings as wide as our contact or as a blob of T pixels; meanwhile it earns ~0.625 T D / 100 (its land shrinks to T / 4) and every troop it holds costs us two to break. Without it bot attacks ran dry and took 2 to 7 commands (12 / 1024 of our balance each), using 1.4 to 3 x the collapse cost seen at the first send (0 = off)",
+   "readBy": {
+    "V13.elimCost": [
+     2574,
+     2575
+    ]
+   }
+  },
+  "botSkip": {
+   "value": 0,
+   "setBy": "P17",
+   "perLayer": {
+    "P17": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V17.safeAt": [
+     2731
+    ]
+   }
+  },
+  "botWait": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "a bot whose next dump we expect (it attacks with 98% of its balance every ~104 ticks, timed from the last drop of its balance we saw) is bought after it while breaking 98% of its balance B (~1.75 B) costs more than the land income of its land T over the w ticks to wait (T w / 100): a bot is cheapest in the first third of its cycle. Not while another person attacks it (it would take the land) or our balance is at the cap (troops held there lower our interest) (0 = off)",
+   "readBy": {
+    "V13.analyze": [
+     2531
+    ],
+    "V13.waitDump": [
+     2562
+    ]
+   }
+  },
+  "boxRatio": {
+   "value": 0,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.act": [
+     807,
+     807
+    ]
+   }
+  },
+  "byRate": {
+   "value": 1,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "1"
+   },
+   "authorComment": "the nFloor reserve is kept only for land costing more per pixel than 0.1 / r (r: our interest per 10 ticks below the cap). Holding c x the cap and spending the rest of the income on land at p per pixel, land grows by (100 c r + 0.1) / (100 c + p) per 10 ticks (0.1: the land income of a pixel), which falls as c rises when r p < 0.1: neutral land after tick ~640, bots at 5 per pixel after ~1600 (0 = off; 480 seeds with v3 in the league, 44.0% vs 21.7%, +22.3 +- 2.3; first in land at tick 2000 in 69% of the games instead of 16%)",
+   "readBy": {
+    "V13.reserve": [
+     2588
+    ]
+   }
+  },
+  "cRef": {
+   "value": 60,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "GENERAL_PARAMS": "60",
+    "PARAMS13": "60"
+   },
+   "authorComment": "full reserve for any land costing cRef per pixel or more, defence floor kDef x what would make us a neighbour's weakest or cheapest target",
+   "readBy": {
+    "General.floors.floorAt": [
+     829
+    ]
+   }
+  },
+  "capMin": {
+   "value": 0.1,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "0.1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.defenseNeed": [
+     905
+    ]
+   }
+  },
+  "chunk": {
+   "value": 0.2,
+   "setBy": "P17",
+   "perLayer": {
+    "P17": "0.2"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V17.buyLand": [
+     2808
+    ],
+    "Policy.buyLand": [
+     5451,
+     5456,
+     5612
+    ]
+   }
+  },
+  "collapseFloorCap": {
+   "value": 85,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "85"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.buyLand": [
+     5415
+    ]
+   }
+  },
+  "collapseRatio": {
+   "value": 1.4,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "1.40"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5146
+    ]
+   }
+  },
+  "contactPenalty": {
+   "value": 0.002,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.002"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5178
+    ]
+   }
+  },
+  "contactStepsMax": {
+   "value": 350,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "350"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5177,
+     5178
+    ]
+   }
+  },
+  "contestW": {
+   "value": 0.68,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS13": "0.7",
+    "PARAMS": "0.68"
+   },
+   "authorComment": "target score x contestW for bots that another person borders too (if we do not take them, they will). Replays of 25 v10 games (exact owner changes): of a bot we first touch in t1000-1500 that another person borders too, other people take 17% of its land within 50 ticks, 26% within 100, 42% within 300; of a bot only we border, 0%, 3%, 6%. When both of us hit it, we got 44% of the people's take hitting first, 27% hitting second. Taking the contested one first loses ~26% less of it per 100 ticks the other waits, so it wins at up to 1 / 0.74 x the cost",
+   "readBy": {
+    "V13.targetBias": [
+     2604,
+     2604
+    ]
+   }
+  },
+  "coreFrom": {
+   "value": 1500,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "P17": "1500",
+    "PARAMS": "1500"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V17.act": [
+     2692
+    ],
+    "V17.compSize": [
+     2818
+    ],
+    "V17.floors": [
+     2851
+    ],
+    "Policy.act": [
+     4838
+    ],
+    "Policy.compSize": [
+     4986
+    ]
+   }
+  },
+  "counterClearMode": {
+   "value": 6,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "6"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.peerAggressor": [
+     4632
+    ],
+    "Policy.buyLand.blockUndersized": [
+     5460,
+     5461,
+     5462,
+     5463
+    ],
+    "Policy.buyLand": [
+     5577,
+     5597
+    ]
+   }
+  },
+  "counterFloor": {
+   "value": 0.5,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "0.5"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.counterAttack": [
+     848
+    ]
+   }
+  },
+  "counterK": {
+   "value": 0,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "0"
+   },
+   "authorComment": "an attack on us by a person is answered at once with counterK x the troops they still have on the way, if we can at least match them while keeping counterFloor x the floor: our attack wipes theirs out first and ends the fight the others would join (0 = off)",
+   "readBy": {
+    "General.act": [
+     789
+    ],
+    "General.counterAttack": [
+     848
+    ]
+   }
+  },
+  "crowdedHardCap": {
+   "value": 1.1,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "1.10"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.buyLand": [
+     5370,
+     5436
+    ]
+   }
+  },
+  "crowdedHardPenalty": {
+   "value": 1.08,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "1.08"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5286,
+     5287
+    ]
+   }
+  },
+  "defCap": {
+   "value": 1,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.defenseNeed": [
+     912
+    ]
+   }
+  },
+  "defPile": {
+   "value": 1,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "1"
+   },
+   "authorComment": "while a person attacks us, the defence floor is defPile x higher (the others see it and pile on)",
+   "readBy": {
+    "General.defenseNeed": [
+     911,
+     911
+    ]
+   }
+  },
+  "defendDiscount": {
+   "value": 0.85,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.85"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.peerAggressor": [
+     4614
+    ],
+    "Policy.offers": [
+     5172
+    ]
+   }
+  },
+  "defendDiscountMid": {
+   "value": 0.88,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.88"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5172
+    ]
+   }
+  },
+  "defendFrom": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.peerAggressor": [
+     4614
+    ]
+   }
+  },
+  "denW": {
+   "value": 1,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "1"
+   },
+   "authorComment": "weight of the price-per-pixel comparison, cap of the defence floor (x soft cap)",
+   "readBy": {
+    "General.defenseNeed": [
+     909
+    ]
+   }
+  },
+  "denseD": {
+   "value": 20,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "20"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.warBias": [
+     883,
+     885
+    ]
+   }
+  },
+  "dpEnd": {
+   "value": 1500,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "1500"
+   },
+   "authorComment": "early phase (0 = off): until tick dpEnd, free land is bought with one command per rent cycle instead of top-ups above the nFloor reserve. Rent (+ our land) comes at tick 99 of every 100 and interest every 10 ticks on the troops at home only (up to 7% early on), so the command goes at the latest act tick from which its rings all land by tick 98: the first 7 ticks after the command, the next every 4 / 3 / 2 / 1 ticks at land < 1k / 10k / 60k / more. Rings are the breadth-first layers of free land from our border (an attack takes every free pixel next to its front), at 2 per pixel plus one more for the last ring (it needs 3 and the rest comes back). As many rings as fit in dpSpend x the balance with the fee counted, keeping what the strongest neighbour person would need to collapse us with its whole balance (1.5 x land + 1.78 x troops). On the 15 v10 games this rule (bots from tick 1200) reaches 96% of the DP optimum of troops + 17 x land at tick 1500, 1.78 x what v10 did",
+   "readBy": {
+    "V13.floorFor0": [
+     2235,
+     2238
+    ],
+    "V13.amount0": [
+     2335
+    ],
+    "V13.expandNeutral": [
+     2374
+    ],
+    "V13.botOk": [
+     2469
+    ],
+    "V13.dpValue": [
+     2518,
+     2520
+    ]
+   }
+  },
+  "dpLand": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.botOk": [
+     2472
+    ],
+    "V13.dpValue": [
+     2523
+    ]
+   }
+  },
+  "dpSpend": {
+   "value": 0.5,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0.5"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.amount0": [
+     2335
+    ],
+    "V13.dpNeutral": [
+     2389
+    ]
+   }
+  },
+  "duelCap": {
+   "value": 1.45,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "1.45"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.duelOk": [
+     2134
+    ]
+   }
+  },
+  "duelK": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "duel (0 = off): a person we may attack (grudge, idle troops) is attacked only while its density (its troops on us counted) is at most duelK x ours, or once our balance reaches duelCap x the soft cap (troops there earn nothing). An attack costs the attacker twice what the defender loses, so a strike on a person as dense as us leaves us the thinner and the cheaper to hit back. The troops sent collapse it if we can, else are the most that leave our density at least duelM x its own once the land has changed hands. Only while at most duelN people (us included) are alive (0 = any number): earlier, troops held back earn nothing above the cap while the people around grow",
+   "readBy": {
+    "V13.duelOn": [
+     2124
+    ],
+    "V13.duelOk": [
+     2136
+    ],
+    "V13.amount0": [
+     2354
+    ]
+   }
+  },
+  "duelM": {
+   "value": 1,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.duelSend.gap": [
+     2155
+    ]
+   }
+  },
+  "duelN": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.duelOn": [
+     2125,
+     2127
+    ]
+   }
+  },
+  "earlyEnd": {
+   "value": 513,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "600",
+    "BASE": "513"
+   },
+   "authorComment": "balance floor = max(reserve * soft cap, ref * neighbour balance, safeK * threat-safe balance)",
+   "readBy": {
+    "Strategy.act": [
+     498
+    ],
+    "General.floors": [
+     822
+    ]
+   }
+  },
+  "elimW": {
+   "value": 0.8998,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "1.0",
+    "BASE": "0.8998"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.act": [
+     543,
+     543
+    ],
+    "General.pickTarget": [
+     984,
+     984
+    ],
+    "Style.pickTarget": [
+     1169,
+     1169
+    ]
+   }
+  },
+  "emptyAllInMode": {
+   "value": 1,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5145
+    ]
+   }
+  },
+  "exactRingMode": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.buyLand.canZeroPulse": [
+     5541
+    ],
+    "Policy.buyLand.alignMultiRing": [
+     5555
+    ]
+   }
+  },
+  "feeK": {
+   "value": 4,
+   "setBy": "DEFAULT_PARAMS",
+   "perLayer": {
+    "DEFAULT_PARAMS": "4"
+   },
+   "authorComment": "every command costs a fee of 12/1024 of the whole balance (boats 32/1024) whatever it sends: a command sends at least feeK x its fee or is skipped",
+   "readBy": {
+    "Strategy.minCmd": [
+     475
+    ],
+    "General.boatOut": [
+     1007
+    ],
+    "V13.boatFood": [
+     2013
+    ],
+    "Policy.boatFood": [
+     5637
+    ]
+   }
+  },
+  "flashLoanMinCost": {
+   "value": 160000,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "160000"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.tryStartFlashLoan": [
+     4773
+    ]
+   }
+  },
+  "flashLoanMinRatio": {
+   "value": 2.2,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "2.2"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.tryStartFlashLoan": [
+     4773
+    ]
+   }
+  },
+  "flashLoanMode": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "50k debt cap flash-loan state machine with 1v1 / single-human-nb safety lock (#3698 / #3700)",
+   "readBy": {
+    "Policy.tryStartFlashLoan": [
+     4722,
+     4728,
+     4753,
+     4780
+    ],
+    "Policy.act": [
+     4806,
+     4939
+    ]
+   }
+  },
+  "floorCap": {
+   "value": 0,
+   "setBy": "P17",
+   "perLayer": {
+    "P17": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V17.safeAt": [
+     2736,
+     2736
+    ]
+   }
+  },
+  "focusBonus": {
+   "value": 0.78,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.78"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.activeFocus": [
+     4592
+    ],
+    "Policy.offers": [
+     5231,
+     5233
+    ]
+   }
+  },
+  "focusRankOnly": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5228,
+     5229
+    ]
+   }
+  },
+  "focusT": {
+   "value": 350,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS13": "600",
+    "PARAMS": "350"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.focusOf": [
+     2619
+    ],
+    "Policy.activeFocus": [
+     4593
+    ]
+   }
+  },
+  "focusW": {
+   "value": 1,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "1"
+   },
+   "authorComment": "one front at a time (1 = off): the person we have the most troops on (else the one we hit last, within focusT ticks) gets its target score x focusW, every other person (food aside) x focusX. A person we attack holds a grudge and sends us its spare troops for thousands of ticks, so hitting a different neighbour every few hundred ticks turns all of them against us, while the winners fight one neighbour at a time",
+   "readBy": {
+    "V13.targetBias": [
+     2606,
+     2608
+    ]
+   }
+  },
+  "focusX": {
+   "value": 1,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.targetBias": [
+     2606,
+     2608
+    ]
+   }
+  },
+  "foodK": {
+   "value": 1.25,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "1.25"
+   },
+   "authorComment": "bots costing at most botMax per pixel are bought like neutral land, with the floor of the neutral front instead of the defence floor, and sent only foodK x what collapses them: an attack takes one ring per step however many troops it carries, and troops on the way earn no interest (up to 7% per 10 ticks early on) until they come back at its end (0 = off; 480 seeds, 52.3% vs 30.6%, +21.7 +- 2.5). Keeping only nFloor x the soft cap for them instead did worse (-2.3 +- 0.8)",
+   "readBy": {
+    "V13.boatFood": [
+     2015
+    ],
+    "V13.food": [
+     2178
+    ],
+    "V13.amount0": [
+     2336,
+     2338
+    ],
+    "Policy.boatFood": [
+     5639
+    ]
+   }
+  },
+  "foodMin": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "least share of the balance for a send on food (bots and people we buy like them), instead of minSend (-1 = minSend). With minSend (21%) and the food floor at refN x the neighbours' mean balance, a seat whose neighbour people were richer than its bots never bought the bots: at tick 2000 of mvxgsaz5 three bots (32k pixels, 127k troops to collapse) stayed next to 213k troops of ours for 500 ticks, 36k above the floor",
+   "readBy": {
+    "V13.minShare": [
+     2096,
+     2096
+    ]
+   }
+  },
+  "foodMinPpl": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "foodMin covers those people too, whatever foodPpl",
+   "readBy": {
+    "V13.minShare": [
+     2096
+    ]
+   }
+  },
+  "foodPpl": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "foodMin and foodRef also cover the people we buy like food (0 = bots only): on hoardBuy, small sends at people under the lower floor left the seat the weakest person around by troops (-3 points of survival)",
+   "readBy": {
+    "V13.lowFood": [
+     2101
+    ]
+   }
+  },
+  "foodRebate": {
+   "value": 1,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.searchFood": [
+     5693
+    ]
+   }
+  },
+  "foodRef": {
+   "value": 0.3,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0.3"
+   },
+   "authorComment": "the food floor is foodRef x the mean balance of our neighbours, bots counted (-1 = refN): the people around hold 0.1-0.2 x the soft cap from tick ~2000 while racing, which held ours above its balance and left the bots next to us to them",
+   "readBy": {
+    "V13.foodRef": [
+     2107,
+     2107
+    ]
+   }
+  },
+  "foodT": {
+   "value": 2000,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "2000"
+   },
+   "authorComment": "foodMin and foodRef only from this tick on: before it, sprayed at the bots, they left a seat first by land with a fifth of its neighbours' troops, eaten by the first that went for its weakest (brm15x seed 117)",
+   "readBy": {
+    "V13.lowFood": [
+     2101
+    ]
+   }
+  },
+  "frogHopOverMode": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.act": [
+     4967
+    ]
+   }
+  },
+  "front2": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "second front (0 = off): an attack on a neighbour q that would take over frontT ticks to take 3/4 of its land (an attack takes one ring of our contact per step) sends front2 of its troops by boat to q's shore at most frontD pixels from our coast and at least frontGap pixels from our front with q, if that comes to frontFee x the boat fee (32/1024 of the balance): the attack goes on from the beachhead too (the troops of both fronts are one pool), so q falls sooner and others take less of it. One beachhead per target every frontEvery ticks",
+   "readBy": {
+    "V13.send": [
+     1826
+    ],
+    "V13.frontBoat": [
+     1839
+    ]
+   }
+  },
+  "frontD": {
+   "value": 80,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "80"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.beachhead": [
+     1872
+    ]
+   }
+  },
+  "frontEvery": {
+   "value": 300,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "300"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.frontBoat": [
+     1838
+    ]
+   }
+  },
+  "frontFee": {
+   "value": 4,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "4"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.frontBoat": [
+     1840
+    ]
+   }
+  },
+  "frontGap": {
+   "value": 40,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "40"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.beachhead": [
+     1870
+    ]
+   }
+  },
+  "frontT": {
+   "value": 200,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "200"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.frontBoat": [
+     1838
+    ]
+   }
+  },
+  "growth": {
+   "value": 1,
+   "setBy": "P17",
+   "perLayer": {
+    "P17": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V17.buyLand": [
+     2796
+    ],
+    "Policy.buyLand": [
+     5353
+    ]
+   }
+  },
+  "grudgeRatio": {
+   "value": 1000000000,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "1e9"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.motive": [
+     2171
+    ]
+   }
+  },
+  "grudgeT": {
+   "value": 3000,
+   "setBy": "STYLE_PARAMS",
+   "perLayer": {
+    "DEFAULT_PARAMS": "0",
+    "STYLE_PARAMS": "3000"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.updateGrudges": [
+     237,
+     238
+    ],
+    "Strategy.targetBias": [
+     245
+    ],
+    "Style.updateGrudges": [
+     1118,
+     1119
+    ]
+   }
+  },
+  "grudgeW": {
+   "value": 0.25,
+   "setBy": "STYLE_PARAMS",
+   "perLayer": {
+    "DEFAULT_PARAMS": "1",
+    "STYLE_PARAMS": "0.25"
+   },
+   "authorComment": "grudges: a neighbour that attacked us stays a preferred target (target score x grudgeW) for grudgeT ticks; a leader above leaderShare of the land gets score x leaderW (ganging up); a neighbour someone else is attacking gets score x pileW (piling on whoever is being beaten)",
+   "readBy": {
+    "Strategy.targetBias": [
+     245
+    ]
+   }
+  },
+  "guardMode": {
+   "value": 1,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5280,
+     5282,
+     5284
+    ]
+   }
+  },
+  "hoardBuy": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "with no neutral land on our border and our troops short of idleCap x the soft cap, a person whose land costs at most 338 c / idleCap per pixel (c: our balance / soft cap) is food: a troop held grows with interest to that threshold and then buys land of people kept near the cap at ~338 per pixel (1.05 x the cap). Meanwhile nobody attacks a person unprovoked before its own troops reach the threshold, and a victim cannot hit back from below its floor. Only up to botMax: near the threshold the saving vanishes while the troops spent leave us the cheapest of neighbours about to reach theirs (without that cap, 480 seeds: 17.3% vs 23.8%, -6.5 +- 1.5, half the balance sent at 333 per pixel) (0 = off)",
+   "readBy": {
+    "V13.food": [
+     2180
+    ]
+   }
+  },
+  "hold": {
+   "value": 0.9,
+   "setBy": "P17",
+   "perLayer": {
+    "P17": "0.9"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V17.buyLand": [
+     2804
+    ],
+    "Policy.buyLand": [
+     5440
+    ]
+   }
+  },
+  "holdOn": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "while a person's attack on us runs, our attacks on people come home and none is started (0 = off): against that attack, troops at home lose one for every two it spends while troops attacking it cancel one for one, and a balance back above 1.05 x the cap (338 per pixel) is out of reach for most people, so the others cannot pile on",
+   "readBy": {
+    "V13.act": [
+     1816
+    ]
+   }
+  },
+  "humanR": {
+   "value": 1.5,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "GENERAL_PARAMS": "0.5",
+    "PARAMS13": "1.5"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.spawnWeight": [
+     738,
+     739
+    ]
+   }
+  },
+  "hungryAll": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.peopleFloor": [
+     2211
+    ]
+   }
+  },
+  "hungryEnd": {
+   "value": 1000000000,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "1e9"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.peopleFloor": [
+     2205,
+     2211
+    ]
+   }
+  },
+  "hungryK": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.peopleFloor": [
+     2205,
+     2211,
+     2211
+    ],
+    "V13.expandNeutral": [
+     2376
+    ]
+   }
+  },
+  "idleCap": {
+   "value": 1.25,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "GENERAL_PARAMS": "1.3",
+    "PARAMS13": "1.25"
+   },
+   "authorComment": "balance (x soft cap) from which spare troops are spent even on costly targets",
+   "readBy": {
+    "General.act": [
+     803
+    ],
+    "General.searchWater": [
+     1044
+    ],
+    "V13.idle": [
+     1810
+    ],
+    "V13.hoardFood": [
+     2189
+    ],
+    "V17.idleBoats": [
+     2868
+    ],
+    "Policy.idleBoats": [
+     5059
+    ]
+   }
+  },
+  "idleKill": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.amount0": [
+     2350,
+     2350
+    ]
+   }
+  },
+  "idleLo": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "spare troops (from idleCap x the soft cap) are sent in one command down to idleLo x the soft cap: interest is highest at the cap and falls off twice as fast above it, and every command costs 12/1024 of the balance, so few large sends swinging around the cap waste the least (0 = keep the usual floor and send sendFrac of what is above it)",
+   "readBy": {
+    "V13.floorFor0": [
+     2239,
+     2239
+    ],
+    "V13.amount0": [
+     2346
+    ]
+   }
+  },
+  "idleRatio": {
+   "value": 1000000000,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "1e9"
+   },
+   "authorComment": "unprovoked attacks on a person only if its land is at most idleRatio x ours and the troops we can send reach idleKill x what collapses it (0 = any); grudge attacks only if its land is at most grudgeRatio x ours. Land, not balance: income goes with land, so it decides who can keep a war going, and a person we attack holds a grudge and comes back at us",
+   "readBy": {
+    "V13.motive": [
+     2172
+    ]
+   }
+  },
+  "idleSafe": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "spare troops are sent only as far as leaves idleSafe x the soft cap once the fee, the first ring of a fresh attack (taken from the balance when the troops sent fall short) and the cap raised by the land bought are counted: most people attack only land costing at most ~338 per pixel, which is what a balance of 1.05 x the cap costs (0 = off)",
+   "readBy": {
+    "V13.amount": [
+     2317
+    ],
+    "V13.boatOut": [
+     2326
+    ]
+   }
+  },
+  "kDef": {
+   "value": 4,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "GENERAL_PARAMS": "4",
+    "PARAMS13": "4"
+   },
+   "authorComment": "defence: keep kDef x the balance at which a neighbour holding at least capMin x our balance would find us its weakest or cheapest neighbour; a neighbour bordering no other player can only turn on us: keep aloneK x its balance",
+   "readBy": {
+    "General.defenseNeed": [
+     909
+    ]
+   }
+  },
+  "keepCap": {
+   "value": 1,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "DEFAULT_PARAMS": "1.0",
+    "BASE": "0.873",
+    "PARAMS13": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.act": [
+     507
+    ],
+    "General.floors.floorAt": [
+     829
+    ]
+   }
+  },
+  "killF": {
+   "value": 0,
+   "setBy": "P17",
+   "perLayer": {
+    "P17": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V17.safeAt": [
+     2733,
+     2733
+    ]
+   }
+  },
+  "killK": {
+   "value": 0,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "0"
+   },
+   "authorComment": "a person is attacked only when the troops we can send reach killK x what it takes to collapse them, and then with 1.25 x that (0 = any time); a half-beaten person holds a grudge and draws the others in",
+   "readBy": {
+    "General.pickTarget": [
+     979,
+     980
+    ]
+   }
+  },
+  "killW": {
+   "value": 1,
+   "setBy": "P17",
+   "perLayer": {
+    "P17": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V17.safeAt": [
+     2734,
+     2734
+    ]
+   }
+  },
+  "latePocketMode": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5242
+    ]
+   }
+  },
+  "leaderHardFrom": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5261,
+     5261,
+     5264,
+     5266
+    ],
+    "Policy.buyLand": [
+     5430
+    ]
+   }
+  },
+  "leaderMinShare": {
+   "value": 0.16,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.16"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5267
+    ]
+   }
+  },
+  "leaderShare": {
+   "value": 0.3,
+   "setBy": "DEFAULT_PARAMS",
+   "perLayer": {
+    "DEFAULT_PARAMS": "0.3"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.targetBias": [
+     246
+    ]
+   }
+  },
+  "leaderW": {
+   "value": 1,
+   "setBy": "DEFAULT_PARAMS",
+   "perLayer": {
+    "DEFAULT_PARAMS": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.targetBias": [
+     246,
+     246
+    ]
+   }
+  },
+  "lonely": {
+   "value": 1,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "1"
+   },
+   "authorComment": "with no neighbour yet, reference balance = lonely x average balance of all players",
+   "readBy": {
+    "General.floors": [
+     826
+    ]
+   }
+  },
+  "marketFloor": {
+   "value": 0.85,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.85"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.buyLand": [
+     5350
+    ]
+   }
+  },
+  "marketFrom": {
+   "value": 2500,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "2500"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.buyLand": [
+     5350
+    ]
+   }
+  },
+  "maxBoats": {
+   "value": 2,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "2"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.boatOut": [
+     1001
+    ],
+    "V13.frontBoat": [
+     1836
+    ],
+    "V13.bankAct": [
+     1906
+    ],
+    "V13.boatFood": [
+     2004
+    ],
+    "Policy.idleBoats": [
+     5065
+    ],
+    "Policy.boatFood": [
+     5628
+    ]
+   },
+   "writtenBy": {
+    "Policy.idleBoats": [
+     5066,
+     5068
+    ]
+   }
+  },
+  "maxCost": {
+   "value": 338.1478,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "400",
+    "BASE": "338.1478"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.act": [
+     535
+    ],
+    "General.act": [
+     794
+    ]
+   }
+  },
+  "maxTargets": {
+   "value": 4,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "3",
+    "BASE": "4"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.act": [
+     533
+    ],
+    "General.pickTarget": [
+     969
+    ],
+    "Style.pickTarget": [
+     1156
+    ],
+    "V17.offers": [
+     2781
+    ],
+    "Policy.offers": [
+     5088
+    ]
+   }
+  },
+  "maxW": {
+   "value": 0.5,
+   "setBy": "P17",
+   "perLayer": {
+    "P17": "0.5"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V17.buyLand": [
+     2795
+    ],
+    "Policy.buyLand": [
+     5349
+    ]
+   }
+  },
+  "minComp": {
+   "value": 0.05,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "0.05"
+   },
+   "authorComment": "spawn: land components smaller than minComp x all land are discounted; spots within humanR x the mean spacing of the people in the game from one already placed are discounted in proportion to the distance",
+   "readBy": {
+    "General.spawnWeight": [
+     736
+    ]
+   }
+  },
+  "minSend": {
+   "value": 0.2141,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "0.04",
+    "BASE": "0.2141"
+   },
+   "authorComment": "player attacks",
+   "readBy": {
+    "Strategy.act": [
+     538
+    ],
+    "General.pickTarget": [
+     975
+    ],
+    "Style.minShare": [
+     1135
+    ],
+    "V13.minShare": [
+     2096
+    ]
+   }
+  },
+  "nFloor": {
+   "value": 0.1,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0.1"
+   },
+   "authorComment": "neutral expansion keeps at least nFloor x the soft cap (troops at home earn up to 7% per 10 ticks early on: 960 seeds, +3.2 +- 1.6 points)",
+   "readBy": {
+    "V13.expandNeutral": [
+     2375
+    ],
+    "V13.reserve": [
+     2589
+    ]
+   }
+  },
+  "nGrow": {
+   "value": 1.7099,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "6",
+    "BASE": "1.7099"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.act": [
+     515,
+     516
+    ],
+    "General.expandNeutral": [
+     950,
+     951
+    ]
+   }
+  },
+  "nHigh": {
+   "value": 2.2523,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "4",
+    "BASE": "2.2523"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.act": [
+     516,
+     516
+    ],
+    "General.expandNeutral": [
+     951,
+     951
+    ]
+   }
+  },
+  "nLow": {
+   "value": 2.0404,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "1",
+    "BASE": "2.0404"
+   },
+   "authorComment": "neutral expansion: troops held for the next ring, top-up in batches",
+   "readBy": {
+    "Strategy.act": [
+     515
+    ],
+    "General.expandNeutral": [
+     950
+    ]
+   }
+  },
+  "narrowBoatFirstMode": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.buyLand.tryNarrowBoatFirst": [
+     5471
+    ]
+   }
+  },
+  "noFullSend": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.constructor": [
+     3778
+    ]
+   }
+  },
+  "oppFloorCap": {
+   "value": 78,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "78"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.safeAt": [
+     4545,
+     4547
+    ],
+    "Policy.buyLand": [
+     5382,
+     5415,
+     5415
+    ]
+   }
+  },
+  "overHumanCap": {
+   "value": 1.12,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "1.12"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.buyLand": [
+     5362
+    ]
+   }
+  },
+  "overHumanKeep": {
+   "value": 0.92,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.92"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.buyLand": [
+     5440
+    ]
+   }
+  },
+  "overPeerCap": {
+   "value": 1.16,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "1.16"
+   },
+   "authorComment": "",
+   "readBy": {}
+  },
+  "overPeerKeep": {
+   "value": 1.04,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "1.04"
+   },
+   "authorComment": "",
+   "readBy": {}
+  },
+  "overPulseMode": {
+   "value": 1,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "1"
+   },
+   "authorComment": "",
+   "readBy": {}
+  },
+  "overshoot": {
+   "value": 1000000000,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "1e9"
+   },
+   "authorComment": "send at most overshoot x the troops needed to collapse the target",
+   "readBy": {
+    "General.pickTarget": [
+     988
+    ],
+    "Style.amount": [
+     1141
+    ]
+   }
+  },
+  "ownWorthFrom": {
+   "value": 4000,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "4000"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.buyLand": [
+     5422
+    ]
+   }
+  },
+  "ownWorthMinKeep": {
+   "value": 1,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.buyLand": [
+     5422
+    ]
+   }
+  },
+  "pKill": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "attacks on people other than food only when the troops we can send reach pKill x what collapses them, sending that (0 = off): drip attacks pay the fee (12/1024 of the balance) every time, leave the land to whoever finishes the kill and the victim's troops to the others",
+   "readBy": {
+    "V13.amount0": [
+     2342,
+     2343
+    ]
+   }
+  },
+  "peerMax": {
+   "value": 0,
+   "setBy": "P17",
+   "perLayer": {
+    "P17": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V17.buyLand": [
+     2809,
+     2809
+    ]
+   }
+  },
+  "period": {
+   "value": 5,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "3",
+    "BASE": "5"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.act": [
+     493
+    ],
+    "General.act": [
+     756
+    ],
+    "V13.act": [
+     1816,
+     1817
+    ],
+    "V13.dpNeutral": [
+     2401
+    ],
+    "V13.watchDumps": [
+     2543
+    ],
+    "V13.waitDump": [
+     2566
+    ],
+    "V17.act": [
+     2693
+    ],
+    "Policy.act": [
+     4837,
+     4860,
+     4879
+    ],
+    "Policy.boatFood": [
+     5646
+    ]
+   }
+  },
+  "personMax": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "people as thin as a bot we would eat (at most personMax per pixel) are food too (0 = off)",
+   "readBy": {
+    "V13.motive": [
+     2173
+    ]
+   }
+  },
+  "pileW": {
+   "value": 0.5,
+   "setBy": "STYLE_PARAMS",
+   "perLayer": {
+    "DEFAULT_PARAMS": "1",
+    "STYLE_PARAMS": "0.5"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.targetBias": [
+     247,
+     247
+    ]
+   }
+  },
+  "planEnd": {
+   "value": 6000,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "6000"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.act": [
+     757,
+     760
+    ]
+   }
+  },
+  "planEvery": {
+   "value": 0,
+   "setBy": "STYLE_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "0",
+    "STYLE_PARAMS": "0"
+   },
+   "authorComment": "in-game lookahead until planEnd: every planEvery ticks, each multiplier of the balance floor in planModes is played out for planH ticks and the best is kept for the next planEvery ticks (value as above plus balW x balance; 0 = off)",
+   "readBy": {
+    "General.act": [
+     757,
+     757,
+     759
+    ]
+   }
+  },
+  "planH": {
+   "value": 1200,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "1200"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.act": [
+     759
+    ]
+   }
+  },
+  "planModes": {
+   "value": [
+    1,
+    0.5,
+    2
+   ],
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "[1, 0.5, 2]"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.act": [
+     759,
+     759
+    ]
+   }
+  },
+  "pocket0Mult": {
+   "value": 0.76,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.76"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5239
+    ]
+   }
+  },
+  "pocket1Rank": {
+   "value": 0.88,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.88"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5240
+    ]
+   }
+  },
+  "post": {
+   "value": 1,
+   "setBy": "P17",
+   "perLayer": {
+    "P17": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V17.buyLand": [
+     2803
+    ],
+    "Policy.buyLand": [
+     5425
+    ]
+   }
+  },
+  "postKill": {
+   "value": 0,
+   "setBy": "P17",
+   "perLayer": {
+    "P17": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V17.safeAt": [
+     2732
+    ]
+   }
+  },
+  "pplK": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "buying neutral land and food keeps our troop density at least pplK x that of the densest neighbour person: people with no neutral land left buy the thinnest person next to them (a v5 buys a person whose land costs at most 2.7 x its own density), and growing fast leaves us at a fifth of a troop per pixel (0 = off); hungryK: the same only against neighbour people with no neutral land, at hungryK x the density below which a v5 there would buy our land (0 = off); hungryAll: against every neighbour person (a neighbour runs out of neutral land faster than our troops grow back), until tick hungryEnd",
+   "readBy": {
+    "V13.peopleFloor": [
+     2205,
+     2210,
+     2210
+    ],
+    "V13.expandNeutral": [
+     2376
+    ]
+   }
+  },
+  "pplKill": {
+   "value": 0,
+   "setBy": "P17",
+   "perLayer": {
+    "P17": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V17.buyLand": [
+     2808
+    ],
+    "Policy.buyLand": [
+     5612
+    ]
+   }
+  },
+  "preyFloor": {
+   "value": 0.5,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0.5"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.floorFor0": [
+     2240
+    ]
+   }
+  },
+  "preyK": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "people as thin as a bot we would eat (at most botMax per pixel) are bought like bots, but only when we can send preyK x what collapses them, counting the troops they have out (which come back to their balance): a dead person holds no grudge, a live one hits back (0 = off)",
+   "readBy": {
+    "V13.food": [
+     2179
+    ],
+    "V13.amount0": [
+     2338,
+     2339
+    ]
+   }
+  },
+  "preyKill": {
+   "value": 1,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "1"
+   },
+   "authorComment": "a person we have no other reason to attack is struck when the troops we can send, keeping preyFloor x the usual floor, reach preyKill x what collapses it, and then with 1.25 x that: a dead person holds no grudge (0 = off)",
+   "readBy": {
+    "V13.allow": [
+     2118
+    ],
+    "V13.floorFor0": [
+     2240
+    ],
+    "V13.amount0": [
+     2349
+    ]
+   }
+  },
+  "pulseFrac": {
+   "value": 0.2,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.20"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.peerAggressor": [
+     4632,
+     4643
+    ],
+    "Policy.buyLand": [
+     5405,
+     5456,
+     5575,
+     5589,
+     5596
+    ]
+   }
+  },
+  "pulseMinShare": {
+   "value": 0.04,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.04"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.buyLand.alignMultiRing": [
+     5568
+    ],
+    "Policy.buyLand": [
+     5582,
+     5590,
+     5604
+    ]
+   }
+  },
+  "quotaGuardMode": {
+   "value": 1,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.send": [
+     3844
+    ],
+    "Policy.act": [
+     4803
+    ]
+   }
+  },
+  "raceEnd": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "race (0 = off): until tick raceEnd every balance floor (defence, the reserve for land, nFloor, the food floor) is raceK x the usual. In the real games the people race for bots and free land until ~2500 and seldom attack people meanwhile; the fastest growers sent 0.6-1 x their balance at bots while holding 4-7% of the soft cap, and the war-game deaths were mostly at the hands of a neighbour 4-5 x our land that found us its weakest",
+   "readBy": {
+    "V13.act": [
+     1815,
+     1815
+    ],
+    "V13.foodRef": [
+     2107
+    ],
+    "V13.reserve": [
+     2589
+    ]
+   }
+  },
+  "raceK": {
+   "value": 0.25,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0.25"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.act": [
+     1815
+    ],
+    "V13.foodRef": [
+     2107
+    ],
+    "V13.reserve": [
+     2589
+    ]
+   }
+  },
+  "reachBan": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.allow": [
+     2117
+    ]
+   }
+  },
+  "reachK": {
+   "value": 1,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.outOfReach": [
+     2642
+    ]
+   }
+  },
+  "reachW": {
+   "value": 1,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "1"
+   },
+   "authorComment": "target score x reachW for a person whose collapse costs more than reachK x our balance (see outOfReach; 1 = off); reachBan: such a person is not attacked at all, our troops wait above the cap instead (0 = off)",
+   "readBy": {
+    "V13.targetBias": [
+     2605,
+     2605
+    ]
+   }
+  },
+  "ref": {
+   "value": 0,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "0.0",
+    "BASE": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.act": [
+     505
+    ],
+    "General.floors": [
+     828
+    ]
+   }
+  },
+  "refEarly": {
+   "value": 1.3295,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "1.0",
+    "BASE": "1.3295"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.act": [
+     505
+    ],
+    "General.floors": [
+     828
+    ]
+   }
+  },
+  "refN": {
+   "value": 1.2124,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "1.0",
+    "BASE": "1.2124"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.act": [
+     512
+    ],
+    "General.act": [
+     792
+    ],
+    "V13.foodRef": [
+     2107
+    ]
+   }
+  },
+  "reigniteBorders": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.act": [
+     4934
+    ]
+   }
+  },
+  "reigniteMinShare": {
+   "value": 0.1,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.10"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.act": [
+     4935
+    ]
+   }
+  },
+  "reserve": {
+   "value": 1,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "DEFAULT_PARAMS": "1.0",
+    "BASE": "0.9351",
+    "PARAMS13": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.act": [
+     505
+    ],
+    "General.floors": [
+     827
+    ]
+   }
+  },
+  "reserveEarly": {
+   "value": 0.882,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "0.0",
+    "BASE": "0.882"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.act": [
+     505
+    ],
+    "General.floors": [
+     827
+    ]
+   }
+  },
+  "retW": {
+   "value": 1,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.warBias": [
+     882,
+     882
+    ]
+   }
+  },
+  "rivalW": {
+   "value": 0.5,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "GENERAL_PARAMS": "0.5",
+    "PARAMS13": "0.5"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.chooseSpawn": [
+     724
+    ],
+    "General.act": [
+     759
+    ],
+    "V13.chooseSpawn": [
+     1643,
+     1647
+    ]
+   }
+  },
+  "safeCapD": {
+   "value": 100,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "100"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.peopleSafe": [
+     2293
+    ]
+   }
+  },
+  "safeK": {
+   "value": 0,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "DEFAULT_PARAMS": "0.0",
+    "BASE": "0.632",
+    "GENERAL_PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.act": [
+     506,
+     506
+    ]
+   }
+  },
+  "safeMax": {
+   "value": 1,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.peopleSafe": [
+     2296
+    ]
+   }
+  },
+  "safeP": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "safety from the people (0 = off): the people of the real battle royale attack the neighbour person with the fewest troops, once they hold safeRatio x its troops or sit near the cap (safeCapD troops per pixel, where they hit their weakest whatever the ratio), and leave the others alone. Every spending keeps safeP x the balance below which a neighbour person (or, for an attack on person q, a person bordering q, who borders us once q is gone) would find us its weakest, up to safeMax x the hard cap (150 per pixel)",
+   "readBy": {
+    "V13.floorFor": [
+     2229,
+     2229
+    ],
+    "V13.expandNeutral": [
+     2377,
+     2377
+    ]
+   }
+  },
+  "safeRatio": {
+   "value": 2.5,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "2.5"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.peopleSafe": [
+     2293
+    ]
+   }
+  },
+  "safeSea": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "the people who reach our coast over water count as neighbours too: in the real games half of their boats at people went where no land path led, up to 125 pixels across, at the weakest they reached (0 = off)",
+   "readBy": {
+    "V13.peopleSafe": [
+     2287
+    ]
+   }
+  },
+  "safeW": {
+   "value": 0,
+   "setBy": "P17",
+   "perLayer": {
+    "P17": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V17.safeAt": [
+     2735,
+     2735
+    ]
+   }
+  },
+  "seaCore": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.send": [
+     3886
+    ],
+    "Policy.act": [
+     4812,
+     4820,
+     4855,
+     4934,
+     4943,
+     4965
+    ],
+    "Policy.offers": [
+     5313
+    ],
+    "Policy.buyLand.tryNarrowBoatFirst": [
+     5472
+    ],
+    "Policy.boatFood": [
+     5622
+    ]
+   }
+  },
+  "seaEnd": {
+   "value": 3200,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "3200"
+   },
+   "authorComment": "",
+   "readBy": {}
+  },
+  "seaFree": {
+   "value": 1,
+   "setBy": "P17",
+   "perLayer": {
+    "P17": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V17.compSize": [
+     2818
+    ],
+    "Policy.compSize": [
+     4986
+    ]
+   }
+  },
+  "seaRebateMode": {
+   "value": 1,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.act": [
+     4952
+    ],
+    "Policy.offers": [
+     5317
+    ]
+   }
+  },
+  "seaSafe": {
+   "value": 0,
+   "setBy": "P17",
+   "perLayer": {
+    "P17": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V17.floors": [
+     2851
+    ]
+   }
+  },
+  "sendFrac": {
+   "value": 0.746,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "1.0",
+    "BASE": "0.746"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.act": [
+     553,
+     553
+    ],
+    "General.pickTarget": [
+     975,
+     980,
+     988
+    ],
+    "Style.amount": [
+     1141
+    ],
+    "V13.amount0": [
+     2336,
+     2338,
+     2340,
+     2349,
+     2349,
+     2350
+    ]
+   }
+  },
+  "shareW": {
+   "value": 0.1055,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "0.5",
+    "BASE": "0.1055"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.act": [
+     541
+    ],
+    "General.pickTarget": [
+     983
+    ],
+    "Style.pickTarget": [
+     1168
+    ],
+    "V17.offers": [
+     2786
+    ],
+    "Policy.offers": [
+     5098
+    ]
+   }
+  },
+  "sharedBotMult": {
+   "value": 1,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "1.0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.winFloor": [
+     4567
+    ]
+   }
+  },
+  "siegeOverKeep": {
+   "value": 1.24,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "1.24"
+   },
+   "authorComment": "",
+   "readBy": {}
+  },
+  "siegeShrinkRatio": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.buyLand": [
+     5428,
+     5431
+    ]
+   }
+  },
+  "snipeF": {
+   "value": 0.9773,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "0.5",
+    "BASE": "0.9773"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.act": [
+     537,
+     552
+    ],
+    "General.pickTarget": [
+     974
+    ]
+   }
+  },
+  "snipeK": {
+   "value": 0,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "DEFAULT_PARAMS": "0.0",
+    "BASE": "0.1014",
+    "GENERAL_PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.act": [
+     536
+    ],
+    "General.pickTarget": [
+     973
+    ]
+   }
+  },
+  "soleBufferPenalty": {
+   "value": 1.15,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "1.15"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5248
+    ]
+   }
+  },
+  "spawnB": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "the spot's score less spawnB per pixel of its land touching land a person reaches first (the front we hold), divided by 1 + spawnN per neighbour person beyond the first: the people who win sit in corners and peninsulas with one or two people next to them and eat those one at a time, while the open middle has five to nine (0 = off)",
+   "readBy": {
+    "V13.spawnVsPeople0": [
+     1712
+    ],
+    "V13.spawnVsPeople0.score": [
+     1750
+    ]
+   }
+  },
+  "spawnCoast": {
+   "value": 0,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "0.0",
+    "BASE": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.scoreSpawns": [
+     321
+    ]
+   }
+  },
+  "spawnGap": {
+   "value": 24,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "24"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.spawnVsPeople0": [
+     1709,
+     1756,
+     1776
+    ]
+   }
+  },
+  "spawnH": {
+   "value": 2000,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "GENERAL_PARAMS": "2000",
+    "PARAMS13": "2000"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.chooseSpawn": [
+     724
+    ],
+    "V13.chooseSpawn": [
+     1643,
+     1647
+    ]
+   }
+  },
+  "spawnK": {
+   "value": 400,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "400"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.spawnVsPeople0": [
+     1709
+    ]
+   }
+  },
+  "spawnM": {
+   "value": 200,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "200"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.spawnVsPeople0": [
+     1711
+    ]
+   }
+  },
+  "spawnMaxD": {
+   "value": 600,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "600"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.spawnVsPeople0": [
+     1711
+    ]
+   }
+  },
+  "spawnN": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.spawnVsPeople0": [
+     1712
+    ],
+    "V13.spawnVsPeople0.score": [
+     1750
+    ]
+   }
+  },
+  "spawnP": {
+   "value": 1000000000,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "1000000000"
+   },
+   "authorComment": "spawn against the people (see spawnVsPeople; 0 = off): distance scale, candidates farthest from the people, search radius; a pixel only spawnM pixels nearer to us than to the nearest person counts that share of a pixel (it is fought over; 0 = off)",
+   "readBy": {
+    "V13.chooseSpawn": [
+     1641
+    ],
+    "V13.spawnVsPeople0": [
+     1711
+    ]
+   }
+  },
+  "spawnRadius": {
+   "value": 45,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "48",
+    "BASE": "45"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.scoreSpawns": [
+     321
+    ]
+   }
+  },
+  "spawnRoll": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "GENERAL_PARAMS": "8",
+    "STYLE_PARAMS": "0",
+    "PARAMS13": "0"
+   },
+   "authorComment": "spawn by lookahead (see rollout.js): the best of spawnRoll candidates after spawnH ticks played out, by our land minus rivalW x the land of the strongest other person (0 = off)",
+   "readBy": {
+    "General.chooseSpawn": [
+     723,
+     724
+    ],
+    "V13.chooseSpawn": [
+     1639,
+     1642,
+     1647
+    ]
+   }
+  },
+  "spawnSlack": {
+   "value": 2,
+   "setBy": "BASE",
+   "perLayer": {
+    "DEFAULT_PARAMS": "1",
+    "BASE": "2"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Strategy.scoreSpawns": [
+     321
+    ]
+   }
+  },
+  "surplus": {
+   "value": 1,
+   "setBy": "P17",
+   "perLayer": {
+    "P17": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V17.buyLand": [
+     2795
+    ],
+    "Policy.buyLand": [
+     5352
+    ]
+   }
+  },
+  "thinDiscount": {
+   "value": 0.78,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.78"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5157,
+     5158
+    ],
+    "Policy.buyLand": [
+     5424
+    ]
+   }
+  },
+  "thinMaxTD": {
+   "value": 0.48,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.48"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5157,
+     5293
+    ],
+    "Policy.buyLand": [
+     5424
+    ]
+   }
+  },
+  "topRival3Mult": {
+   "value": 0.9,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.90"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5255
+    ]
+   }
+  },
+  "topRivalFocusMult": {
+   "value": 0.85,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.85"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5253
+    ]
+   }
+  },
+  "topRivalMinShare": {
+   "value": 0.52,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.52"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5251
+    ]
+   }
+  },
+  "topRivalStrikeMult": {
+   "value": 0.85,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0.85"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.offers": [
+     5256,
+     5257
+    ]
+   }
+  },
+  "waitEnd": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "no attack on a person while its attack on us runs (the defender pays half of what the attacker does; we hit back once it has spent itself)",
+   "readBy": {
+    "V13.allow": [
+     2115
+    ]
+   }
+  },
+  "warK": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "war on thin people (0 = off): people growing fast keep almost no troops (a person of 23k pixels may hold 9k troops at tick 1250), so collapsing one costs about as much per pixel as neutral land and bots, takes all its land at once and removes a rival for the rest. A neighbour person whose collapse costs at most warPx per pixel of its land, with land at least warMin x ours, is struck with warK x that cost (its attack on us counted) once we can send it keeping warKeep x the soft cap, and the attack is topped up to warK x the cost until it collapses",
+   "readBy": {
+    "V13.warAct": [
+     1960,
+     1975,
+     1980,
+     1985
+    ]
+   }
+  },
+  "warKeep": {
+   "value": 0,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.warAct": [
+     1962
+    ]
+   }
+  },
+  "warMin": {
+   "value": 0.3,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0.3"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.warAct": [
+     1980
+    ]
+   }
+  },
+  "warPx": {
+   "value": 8,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "8"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V13.warAct": [
+     1980
+    ]
+   }
+  },
+  "warT": {
+   "value": 1500,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "1500"
+   },
+   "authorComment": "wars (a neighbour attacked us or we attacked it within warT ticks): target score x retW for neighbours that attacked us, x warW for opening a war with a player of density >= denseD while at war with another",
+   "readBy": {
+    "General.atWar": [
+     872
+    ],
+    "General.warBias": [
+     882
+    ]
+   }
+  },
+  "warW": {
+   "value": 1,
+   "setBy": "GENERAL_PARAMS",
+   "perLayer": {
+    "GENERAL_PARAMS": "1"
+   },
+   "authorComment": "",
+   "readBy": {
+    "General.warBias": [
+     883,
+     886
+    ]
+   }
+  },
+  "widenStepsMin": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.send": [
+     3888,
+     3888
+    ],
+    "Policy.act": [
+     4948
+    ]
+   }
+  },
+  "winR": {
+   "value": 0.002,
+   "setBy": "PARAMS13",
+   "perLayer": {
+    "PARAMS13": "0.002"
+   },
+   "authorComment": "winR > 0: before dpEnd a bot is bought only while its land costs at most winR x tick x our troops per pixel of ours, and down to that troop density at most (with dpKeep and the balance at which no neighbouring bot prefers us as its target). What a pixel is worth in troops for winning, from the 33 recorded games with a winner (conditional logit of the winner on log land and log troops among the people alive at a tick): land / troops weight 0.71 at tick 500, 1.50 at 700, 2.33 at 850, 1.92 at 1000, 2.24 at 1200, 3.00 at 1500 (fit 0.04 + 0.002 t), times troops / land. Bots cost 3.6-4.5 per pixel at ticks 700-1200 against 10-18 that a pixel was worth at our median state; the winners held 2.5 troops per pixel at tick 700, we held 11.4",
+   "readBy": {
+    "V13.floorFor0": [
+     2235
+    ],
+    "V13.botOk": [
+     2471
+    ],
+    "V13.winWorth": [
+     2483
+    ],
+    "V13.winFloor": [
+     2495
+    ],
+    "V17.winRatio": [
+     2877
+    ],
+    "Policy.winFloor": [
+     4568
+    ]
+   }
+  },
+  "winT": {
+   "value": [
+    [
+     1500,
+     3
+    ],
+    [
+     2000,
+     2.85
+    ],
+    [
+     2500,
+     1.8
+    ]
+   ],
+   "setBy": "P17",
+   "perLayer": {
+    "P17": "[[1500, 3], [2000, 2.85], [2500, 1.8]]"
+   },
+   "authorComment": "",
+   "readBy": {
+    "V17.winRatio": [
+     2876
+    ]
+   }
+  },
+  "zeroPulseMode": {
+   "value": 0,
+   "setBy": "PARAMS",
+   "perLayer": {
+    "PARAMS": "0"
+   },
+   "authorComment": "",
+   "readBy": {
+    "Policy.buyLand.canZeroPulse": [
+     5539
+    ]
+   }
+  }
+ }
+}

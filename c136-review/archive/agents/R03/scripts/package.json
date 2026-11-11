@@ -1,0 +1,10 @@
+{
+  "name": "c136-r03-scripts",
+  "private": true,
+  "type": "module",
+  "description": "R03 引擎机制 A 的脚本。依赖只用于解析和排版游戏客户端代码（不改动它）。",
+  "dependencies": {
+    "acorn": "8.14.0",
+    "astring": "1.9.0"
+  }
+}

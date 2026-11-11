@@ -1,0 +1,346 @@
+# A033 sora_w 影子决策明细 t=6060~7740（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   出手打人/bot: 51 拍（t=6060~7725）；可用兵 106742~1257606，一条指令下限(20%余额) 248389~587969，比值 38%~214%
+#   有可用兵但没发（脉冲下限/冷却/其他）: 67 拍（t=6070~7735）；可用兵 3849~1044289，一条指令下限(20%余额) 240186~536327，比值 1%~196%
+#   首选目标价高（c>=worth）: 201 拍（t=6165~7705）
+#   首选目标无可用兵（avail<=0）: 18 拍（t=7250~7740）；可用兵 -261490~-16408，一条指令下限(20%余额) 164843~259204，比值 -157%~-7%
+#   └ 「出手打人/bot」里：51 条对人/bot 的出兵共约 11973493 兵；其中超过软上限（over=1）时发的 41 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 36 条约 9175106 兵，c/worth = 1.15~11.17
+t=6060 sora_w B=2525560 L=17848 d=141.5 nb=1 neut=0 cmds=124 noFull=1 shQ=388689 | m=0.900 worth=127.4 cheap=7.8 over=1 dMedOther=111.7 safe(-1)=1570624
+    → Holy British Empire#31[T3] terr=32563 bal=4629982 dq=142.2 cnt=20 | c=1422.3 rankC=2062.3 need=8301300 tD=1.27 人 pulse | safe=1570624 keep=1570624 avail=925340 chunkB=505112 pulseB=303067 
+    ⇒ 影子指令 attack pct=122 → Holy British Empire#31[T3]（约 303363 兵）
+t=6065 sora_w B=2525560 L=17848 d=141.5 nb=1 neut=0 cmds=125 noFull=1 shQ=420254 | m=0.900 worth=127.4 cheap=7.8 over=1 dMedOther=111.6 safe(-1)=1570624
+    → Holy British Empire#31[T3] terr=32563 bal=4629982 dq=142.2 cnt=20 | c=1422.3 rankC=2062.3 need=8301300 tD=1.27 人 pulse | safe=1570624 keep=1570624 avail=925340 chunkB=505112 pulseB=303067 
+    ⇒ 影子指令 attack pct=122 → Holy British Empire#31[T3]（约 303363 兵）
+t=6090 sora_w B=2649898 L=18000 d=147.2 nb=1 neut=0 cmds=125 noFull=1 shQ=279059 | m=0.900 worth=132.5 cheap=7.8 over=1 dMedOther=113.7 safe(-1)=1584000
+    → Holy British Empire#31[T3] terr=32411 bal=4625380 dq=142.7 cnt=24 | c=925.8 rankC=925.8 need=7786895 tD=1.26 人 pulse | safe=1584000 keep=1584000 avail=1034845 chunkB=529980 pulseB=317988 
+    ⇒ 本拍没有指令
+t=6120 sora_w B=2677085 L=18451 d=145.1 nb=1 neut=0 cmds=125 noFull=1 shQ=478957 | m=0.900 worth=130.6 cheap=7.7 over=1 dMedOther=116.3 safe(-1)=1623688
+    → Holy British Empire#31[T3] terr=31960 bal=4582345 dq=143.4 cnt=38 | c=530.6 rankC=530.6 need=7895772 tD=1.23 人 pulse | safe=1623688 keep=1623688 avail=1022025 chunkB=535417 pulseB=321250 
+    ⇒ 本拍没有指令
+t=6140 sora_w B=2687267 L=18876 d=142.4 nb=1 neut=0 cmds=126 noFull=1 shQ=612943 | m=0.900 worth=128.1 cheap=7.7 over=1 dMedOther=118.3 safe(-1)=1661088
+    → Holy British Empire#31[T3] terr=31535 bal=4177082 dq=132.5 cnt=48 | c=501.9 rankC=501.9 need=7340403 tD=1.12 人 pulse | safe=1661088 keep=1661088 avail=994688 chunkB=537453 pulseB=322472 
+    ⇒ 影子指令 attack pct=122 → Holy British Empire#31[T3]（约 322786 兵）
+t=6145 sora_w B=2687267 L=19021 d=141.3 nb=1 neut=0 cmds=127 noFull=1 shQ=646533 | m=0.900 worth=127.2 cheap=7.7 over=1 dMedOther=118.3 safe(-1)=1673848
+    → Holy British Empire#31[T3] terr=31393 bal=4146385 dq=132.1 cnt=49 | c=504.9 rankC=504.9 need=7340747 tD=1.12 人 pulse | safe=1673848 keep=1673848 avail=981928 chunkB=537453 pulseB=322472 
+    ⇒ 影子指令 attack pct=122 → Holy British Empire#31[T3]（约 322786 兵）
+t=6150 sora_w B=2693985 L=19120 d=140.9 nb=1 neut=0 cmds=128 noFull=1 shQ=673496 | m=0.900 worth=126.8 cheap=7.7 over=1 dMedOther=119.3 safe(-1)=1682560
+    → Holy British Empire#31[T3] terr=31295 bal=4349020 dq=139.0 cnt=50 | c=534.2 rankC=534.2 need=7737498 tD=1.16 人 pulse | safe=1682560 keep=1682560 avail=979855 chunkB=538797 pulseB=323278 
+    ⇒ 影子指令 attack pct=122 → Holy British Empire#31[T3]（约 323593 兵）
+t=6180 sora_w B=1829570 L=19645 d=93.1 nb=1 neut=0 cmds=128 noFull=1 shQ=150929 | m=0.900 worth=93.4 cheap=7.7 over=0 dMedOther=122.1 safe(-1)=1728760
+    → Holy British Empire#31[T3] terr=30770 bal=4272253 dq=138.8 cnt=55 | c=662.6 rankC=662.6 need=6960450 tD=1.14 人 pulse crowdedHard | safe=1728760 keep=Inf avail=-Inf chunkB=365914 pulseB=219548 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6210 sora_w B=2103569 L=20100 d=104.7 nb=1 neut=0 cmds=128 noFull=1 shQ=332548 | m=0.900 worth=94.2 cheap=7.7 over=1 dMedOther=107.1 safe(-1)=1768800
+    → Holy British Empire#31[T3] terr=30315 bal=3815042 dq=125.8 cnt=57 | c=950.7 rankC=1378.5 need=6750610 tD=1.18 人 pulse crowdedHard | safe=1768800 keep=1809000 avail=269918 chunkB=420714 pulseB=252428 
+    ⇒ 本拍没有指令
+t=6225 sora_w B=2128391 L=20100 d=105.9 nb=1 neut=0 cmds=129 noFull=1 shQ=425107 | m=0.900 worth=95.3 cheap=7.7 over=1 dMedOther=108.3 safe(-1)=1768800
+    → Holy British Empire#31[T3] terr=30315 bal=3409285 dq=112.5 cnt=57 | c=216.6 rankC=151.7 need=6424990 tD=1.04 人 pulse onMe | safe=1768800 keep=1809000 avail=294449 chunkB=425678 pulseB=255407 
+    ⇒ 影子指令 attack pct=122 → Holy British Empire#31[T3]（约 255656 兵）
+t=6230 sora_w B=2152867 L=20100 d=107.1 nb=1 neut=0 cmds=130 noFull=1 shQ=455611 | m=0.900 worth=96.4 cheap=7.7 over=1 dMedOther=109.5 safe(-1)=1768800
+    → Holy British Empire#31[T3] terr=30315 bal=3444400 dq=113.6 cnt=57 | c=218.7 rankC=153.1 need=6487062 tD=1.04 人 pulse onMe | safe=1768800 keep=1809000 avail=318639 chunkB=430573 pulseB=258344 
+    ⇒ 影子指令 attack pct=122 → Holy British Empire#31[T3]（约 258596 兵）
+t=6240 sora_w B=1850088 L=19812 d=93.4 nb=1 neut=0 cmds=130 noFull=1 shQ=29933 | m=0.900 worth=84.6 cheap=7.7 over=0 dMedOther=110.6 safe(-1)=1743456
+    → Holy British Empire#31[T3] terr=30603 bal=3479877 dq=113.7 cnt=57 | c=275.6 rankC=275.6 need=6212960 tD=1.03 人 pulse onMe | safe=1743456 keep=Inf avail=-Inf chunkB=370018 pulseB=222011 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6270 sora_w B=1779792 L=20321 d=87.6 nb=1 neut=0 cmds=130 noFull=1 shQ=201145 | m=0.900 worth=78.8 cheap=7.6 over=0 dMedOther=100.9 safe(-1)=1788248
+    → Holy British Empire#31[T3] terr=30094 bal=3467181 dq=115.2 cnt=52 | c=871.5 rankC=1263.7 need=6132872 tD=1.14 人 pulse crowdedHard | safe=1788248 keep=Inf avail=-Inf chunkB=355958 pulseB=213575 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6280 sora_w B=2042957 L=20321 d=100.5 nb=1 neut=0 cmds=131 noFull=1 shQ=265668 | m=0.900 worth=90.5 cheap=7.6 over=1 dMedOther=102.3 safe(-1)=1788248
+    → Holy British Empire#31[T3] terr=30094 bal=3118120 dq=103.6 cnt=52 | c=199.8 rankC=139.9 need=5869386 tD=1.01 人 pulse onMe | safe=1788248 keep=1828890 avail=190127 chunkB=408591 pulseB=245155 
+    ⇒ 影子指令 attack pct=95 → Holy British Empire#31[T3]（约 191527 兵）
+t=6285 sora_w B=2042957 L=20321 d=100.5 nb=1 neut=0 cmds=132 noFull=1 shQ=298863 | m=0.900 worth=90.5 cheap=7.6 over=1 dMedOther=102.3 safe(-1)=1788248
+    → Holy British Empire#31[T3] terr=30094 bal=3118120 dq=103.6 cnt=52 | c=199.8 rankC=139.9 need=5869691 tD=1.01 人 pulse onMe | safe=1788248 keep=1828890 avail=190127 chunkB=408591 pulseB=245155 
+    ⇒ 影子指令 attack pct=95 → Holy British Empire#31[T3]（约 191527 兵）
+t=6290 sora_w B=2052257 L=20215 d=101.5 nb=1 neut=0 cmds=133 noFull=1 shQ=331672 | m=0.900 worth=91.4 cheap=7.7 over=1 dMedOther=103.7 safe(-1)=1778920
+    → Holy British Empire#31[T3] terr=30200 bal=3158343 dq=104.6 cnt=53 | c=200.2 rankC=140.2 need=5911045 tD=1.01 人 pulse onMe | safe=1778920 keep=1819350 avail=208858 chunkB=410451 pulseB=246271 
+    ⇒ 影子指令 attack pct=104 → Holy British Empire#31[T3]（约 210436 兵）
+t=6300 sora_w B=1840009 L=19945 d=92.3 nb=1 neut=0 cmds=133 noFull=1 shQ=184419 | m=0.900 worth=83.0 cheap=7.7 over=0 dMedOther=106.0 safe(-1)=1755160
+    → Holy British Empire#31[T3] terr=30470 bal=3228923 dq=106.0 cnt=55 | c=257.5 rankC=257.5 need=5774001 tD=1.00 人 pulse onMe | safe=1755160 keep=Inf avail=-Inf chunkB=368002 pulseB=220801 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6330 sora_w B=2498029 L=20054 d=124.6 nb=1 neut=0 cmds=134 noFull=1 shQ=340628 | m=0.900 worth=112.1 cheap=7.7 over=1 dMedOther=102.6 safe(-1)=1657356
+    → Holy British Empire#31[T3] terr=30361 bal=2922926 dq=96.3 cnt=54 | c=198.0 rankC=162.4 need=5248398 tD=0.94 人 pulse onMe agg | safe=1657356 keep=1657356 avail=811400 chunkB=499606 pulseB=299763 
+    ⇒ 影子指令 attack pct=122 → Holy British Empire#31[T3]（约 300056 兵）
+t=6335 sora_w B=2476324 L=19945 d=124.2 nb=1 neut=0 cmds=135 noFull=1 shQ=371689 | m=0.900 worth=111.7 cheap=7.7 over=1 dMedOther=102.6 safe(-1)=1632937
+    → Holy British Empire#31[T3] terr=30470 bal=2922926 dq=95.9 cnt=55 | c=197.2 rankC=161.7 need=5209127 tD=0.93 人 pulse onMe agg | safe=1632937 keep=1635490 avail=811815 chunkB=495265 pulseB=297159 
+    ⇒ 影子指令 attack pct=122 → Holy British Empire#31[T3]（约 297449 兵）
+t=6340 sora_w B=2939846 L=19945 d=147.4 nb=1 neut=0 cmds=136 noFull=1 shQ=408410 | m=0.900 worth=132.7 cheap=7.7 over=1 dMedOther=103.9 safe(-1)=1647789
+    → Holy British Empire#31[T3] terr=30470 bal=2962982 dq=97.2 cnt=55 | c=464.1 rankC=551.8 need=5266234 tD=0.94 人 pulse agg | safe=1647789 keep=1647789 avail=1257606 chunkB=587969 pulseB=352782 
+    ⇒ 影子指令 attack pct=122 → Holy British Empire#31[T3]（约 353126 兵）
+t=6360 sora_w B=1974008 L=20268 d=97.4 nb=1 neut=0 cmds=136 noFull=1 shQ=184387 | m=0.900 worth=87.7 cheap=7.7 over=0 dMedOther=109.6 safe(-1)=1664506
+    → Holy British Empire#31[T3] terr=30147 bal=2993222 dq=99.3 cnt=53 | c=324.8 rankC=324.8 need=4484143 tD=0.91 人 pulse | safe=1664506 keep=Inf avail=-Inf chunkB=394802 pulseB=236881 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6390 sora_w B=2051998 L=21012 d=97.7 nb=1 neut=0 cmds=136 noFull=1 shQ=381054 | m=0.900 worth=87.9 cheap=7.6 over=0 dMedOther=110.0 safe(-1)=1664763
+    → Holy British Empire#31[T3] terr=29403 bal=2994797 dq=101.9 cnt=51 | c=299.1 rankC=245.3 need=4698252 tD=0.93 人 pulse agg | safe=1664763 keep=Inf avail=-Inf chunkB=410400 pulseB=246240 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6420 sora_w B=2212449 L=21784 d=101.6 nb=1 neut=0 cmds=136 noFull=1 shQ=553093 | m=0.900 worth=91.4 cheap=7.6 over=1 dMedOther=114.3 safe(-1)=1488416
+    → Holy British Empire#31[T3] terr=28631 bal=2682056 dq=93.7 cnt=50 | c=307.2 rankC=251.9 need=4653010 tD=0.82 人 pulse agg | safe=1488416 keep=1960560 avail=225962 chunkB=442490 pulseB=265494 
+    ⇒ 本拍没有指令
+t=6435 sora_w B=2240994 L=21930 d=102.2 nb=1 neut=0 cmds=137 noFull=1 shQ=560248 | m=0.900 worth=92.0 cheap=7.6 over=1 dMedOther=111.4 safe(-1)=1475979
+    → Holy British Empire#31[T3] terr=28485 bal=2389393 dq=83.9 cnt=48 | c=163.7 rankC=114.6 need=4464194 tD=0.75 人 pulse onMe | safe=1475979 keep=1973700 avail=241033 chunkB=448199 pulseB=268919 
+    ⇒ 影子指令 attack pct=110 → Holy British Empire#31[T3]（约 242920 兵）
+t=6440 sora_w B=2269230 L=21930 d=103.5 nb=1 neut=0 cmds=138 noFull=1 shQ=567225 | m=0.900 worth=93.1 cheap=7.6 over=1 dMedOther=112.5 safe(-1)=1494235
+    → Holy British Empire#31[T3] terr=28485 bal=2421888 dq=85.0 cnt=48 | c=132.5 rankC=76.0 need=4521053 tD=0.76 人 pulse onMe agg | safe=1494235 keep=1973700 avail=268938 chunkB=453846 pulseB=272308 
+    ⇒ 影子指令 attack pct=121 → Holy British Empire#31[T3]（约 270357 兵）
+t=6445 sora_w B=2245258 L=21785 d=103.1 nb=1 neut=0 cmds=139 noFull=1 shQ=561314 | m=0.900 worth=92.8 cheap=7.6 over=1 dMedOther=112.5 safe(-1)=1467259
+    → Holy British Empire#31[T3] terr=28630 bal=2421888 dq=84.6 cnt=49 | c=131.7 rankC=75.6 need=4478754 tD=0.75 人 pulse onMe agg | safe=1467259 keep=1960650 avail=258297 chunkB=449052 pulseB=269431 
+    ⇒ 影子指令 attack pct=117 → Holy British Empire#31[T3]（约 258730 兵）
+t=6450 sora_w B=1994389 L=21737 d=91.8 nb=1 neut=0 cmds=139 noFull=1 shQ=254881 | m=0.900 worth=87.0 cheap=7.6 over=0 dMedOther=113.7 safe(-1)=1360821
+    → Holy British Empire#31[T3] terr=28678 bal=2454867 dq=85.6 cnt=48 | c=281.6 rankC=230.9 need=4279882 tD=0.75 人 pulse agg | safe=1360821 keep=Inf avail=-Inf chunkB=398878 pulseB=239327 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6480 sora_w B=1573600 L=22399 d=70.3 nb=1 neut=0 cmds=139 noFull=1 shQ=393400 | m=0.900 worth=89.5 cheap=7.6 over=0 dMedOther=117.0 safe(-1)=1364601
+    → Holy British Empire#31[T3] terr=28016 bal=2462589 dq=87.9 cnt=58 | c=432.5 rankC=432.5 need=4017842 tD=0.75 人 pulse crowdedHard | safe=1364601 keep=Inf avail=-Inf chunkB=314720 pulseB=188832 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6510 sora_w B=1660079 L=23393 d=71.0 nb=1 neut=0 cmds=139 noFull=1 shQ=415019 | m=0.900 worth=82.1 cheap=7.5 over=0 dMedOther=107.3 safe(-1)=1354882
+    → Holy British Empire#31[T3] terr=27022 bal=2446780 dq=90.5 cnt=74 | c=406.7 rankC=333.5 need=4237468 tD=0.84 人 pulse crowdedHard agg | safe=1354882 keep=Inf avail=-Inf chunkB=332016 pulseB=199209 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6540 sora_w B=1631317 L=22577 d=72.3 nb=1 neut=0 cmds=139 noFull=1 shQ=407829 | m=0.900 worth=83.0 cheap=7.5 over=0 dMedOther=108.5 safe(-1)=1280801
+    → Holy British Empire#31[T3] terr=27838 bal=2261152 dq=81.2 cnt=61 | c=168.7 rankC=138.3 need=4010969 tD=0.75 人 pulse onMe agg | safe=1280801 keep=Inf avail=-Inf chunkB=326263 pulseB=195758 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6570 sora_w B=1669221 L=22401 d=74.5 nb=1 neut=0 cmds=139 noFull=1 shQ=417305 | m=0.900 worth=80.9 cheap=7.6 over=0 dMedOther=105.8 safe(-1)=1303996
+    → Holy British Empire#31[T3] terr=28014 bal=2354715 dq=84.1 cnt=57 | c=546.0 rankC=649.2 need=4130174 tD=0.79 人 pulse crowdedHard agg | safe=1303996 keep=Inf avail=-Inf chunkB=333844 pulseB=200307 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6600 sora_w B=1758084 L=22401 d=78.5 nb=1 neut=0 cmds=139 noFull=1 shQ=434111 | m=0.900 worth=84.6 cheap=7.6 over=0 dMedOther=110.5 safe(-1)=1374445
+    → Holy British Empire#31[T3] terr=28014 bal=2480113 dq=88.5 cnt=57 | c=396.2 rankC=324.9 need=4350933 tD=0.80 人 pulse crowdedHard agg | safe=1374445 keep=Inf avail=-Inf chunkB=351617 pulseB=210970 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6630 sora_w B=1828084 L=22401 d=81.6 nb=1 neut=0 cmds=139 noFull=1 shQ=457021 | m=0.900 worth=80.9 cheap=7.6 over=0 dMedOther=105.7 safe(-1)=1432068
+    → Holy British Empire#31[T3] terr=28014 bal=2582683 dq=92.2 cnt=57 | c=597.8 rankC=710.8 need=4532417 tD=0.87 人 pulse crowdedHard agg | safe=1432068 keep=Inf avail=-Inf chunkB=365617 pulseB=219370 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6660 sora_w B=1900871 L=22401 d=84.9 nb=1 neut=0 cmds=139 noFull=1 shQ=475217 | m=0.900 worth=77.1 cheap=7.6 over=0 dMedOther=100.8 safe(-1)=1492075
+    → Holy British Empire#31[T3] terr=28014 bal=2689495 dq=96.0 cnt=57 | c=429.0 rankC=351.8 need=4721385 tD=0.95 人 pulse crowdedHard agg | safe=1492075 keep=Inf avail=-Inf chunkB=380174 pulseB=228105 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6690 sora_w B=1976557 L=22401 d=88.2 nb=1 neut=0 cmds=139 noFull=1 shQ=494139 | m=0.900 worth=79.4 cheap=7.6 over=0 dMedOther=103.6 safe(-1)=1554563
+    → Holy British Empire#31[T3] terr=28014 bal=2800724 dq=100.0 cnt=57 | c=525.2 rankC=525.2 need=4918440 tD=0.97 人 pulse crowdedHard | safe=1554563 keep=Inf avail=-Inf chunkB=395311 pulseB=237187 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6720 sora_w B=2078248 L=22401 d=92.8 nb=1 neut=0 cmds=139 noFull=1 shQ=519562 | m=0.900 worth=83.5 cheap=7.6 over=0 dMedOther=107.9 safe(-1)=1633357
+    → Holy British Empire#31[T3] terr=28014 bal=2940977 dq=105.0 cnt=57 | c=551.1 rankC=551.1 need=5166190 tD=0.97 人 pulse crowdedHard | safe=1633357 keep=Inf avail=-Inf chunkB=415650 pulseB=249390 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6750 sora_w B=2160997 L=22401 d=96.5 nb=1 neut=0 cmds=139 noFull=1 shQ=540249 | m=0.900 worth=86.8 cheap=7.6 over=0 dMedOther=108.8 safe(-1)=1693215
+    → Holy British Empire#31[T3] terr=28014 bal=3047524 dq=108.8 cnt=57 | c=827.5 rankC=1199.9 need=5355476 tD=1.00 人 pulse crowdedHard | safe=1693215 keep=Inf avail=-Inf chunkB=432199 pulseB=259320 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6780 sora_w B=2247040 L=22401 d=100.3 nb=1 neut=0 cmds=139 noFull=1 shQ=561760 | m=0.900 worth=90.3 cheap=7.6 over=1 dMedOther=112.4 safe(-1)=1749987
+    → Holy British Empire#31[T3] terr=28014 bal=3148578 dq=112.4 cnt=57 | c=589.3 rankC=589.3 need=5534240 tD=1.00 人 pulse crowdedHard | safe=1749987 keep=2016090 avail=204618 chunkB=449408 pulseB=269645 
+    ⇒ 本拍没有指令
+t=6810 sora_w B=2355954 L=22401 d=105.2 nb=1 neut=0 cmds=139 noFull=1 shQ=588897 | m=0.900 worth=94.7 cheap=7.6 over=1 dMedOther=116.8 safe(-1)=1818929
+    → Holy British Empire#31[T3] terr=28014 bal=3271295 dq=116.8 cnt=57 | c=612.0 rankC=612.0 need=5750977 tD=1.00 人 pulse crowdedHard | safe=1818929 keep=2016090 avail=312256 chunkB=471191 pulseB=282714 
+    ⇒ 本拍没有指令
+t=6830 sora_w B=2410995 L=22400 d=107.6 nb=2 neut=0 cmds=140 noFull=1 shQ=602646 | m=0.900 worth=96.9 cheap=7.6 over=1 dMedOther=118.9 safe(-1)=1948660
+    → rey playa#40[T3] terr=29177 bal=3151795 dq=108.0 cnt=1 | c=207.1 rankC=145.0 need=6006368 tD=0.91 人 pulse onMe | safe=1948660 keep=2016000 avail=366742 chunkB=482199 pulseB=289319 
+    → Holy British Empire#31[T3] terr=28014 bal=3330112 dq=118.9 cnt=57 | c=389.3 rankC=389.3 need=5855423 tD=1.00 人 pulse crowdedHard | safe=1948660 keep=2016000 avail=366742 chunkB=482199 pulseB=289319 
+    ⇒ 影子指令 attack pct=122 → rey playa#40[T3]（约 289601 兵）
+t=6835 sora_w B=2409102 L=22389 d=107.6 nb=2 neut=0 cmds=141 noFull=1 shQ=602275 | m=0.900 worth=96.8 cheap=7.6 over=1 dMedOther=108.0 safe(-1)=1946530
+    → rey playa#40[T3] terr=29188 bal=3151795 dq=108.0 cnt=6 | c=206.8 rankC=144.8 need=6003304 tD=1.00 人 pulse onMe | safe=1946530 keep=2015010 avail=365861 chunkB=481820 pulseB=289092 
+    → Holy British Empire#31[T3] terr=28014 bal=3330112 dq=118.9 cnt=57 | c=389.2 rankC=389.2 need=5855778 tD=1.10 人 pulse crowdedHard | safe=1946530 keep=2015010 avail=365861 chunkB=481820 pulseB=289092 
+    ⇒ 影子指令 attack pct=122 → rey playa#40[T3]（约 289374 兵）
+t=6840 sora_w B=2178545 L=22371 d=97.4 nb=2 neut=0 cmds=141 noFull=1 shQ=0 | m=0.900 worth=87.6 cheap=7.6 over=0 dMedOther=109.2 safe(-1)=1963406
+    → rey playa#40[T3] terr=29206 bal=3188040 dq=109.2 cnt=10 | c=198.3 rankC=138.8 need=5764979 tD=1.00 人 pulse onMe | safe=1963406 keep=Inf avail=-Inf chunkB=435709 pulseB=261425 价高(c>=worth)→break
+    → Holy British Empire#31[T3] terr=28014 bal=3358417 dq=119.9 cnt=57 | c=392.3 rankC=392.3 need=5905742 tD=1.10 人 pulse crowdedHard | safe=1963406 keep=Inf avail=-Inf chunkB=435709 pulseB=261425 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6870 sora_w B=2250491 L=22389 d=100.5 nb=2 neut=0 cmds=142 noFull=1 shQ=211039 | m=0.900 worth=90.5 cheap=7.6 over=1 dMedOther=97.3 safe(-1)=1895507
+    → rey playa#40[T3] terr=29188 bal=2689948 dq=92.2 cnt=6 | c=178.4 rankC=124.9 need=5180295 tD=0.95 人 pulse onMe | safe=1895507 keep=2015010 avail=209109 chunkB=450098 pulseB=270059 
+    → Holy British Empire#31[T3] terr=28014 bal=3064282 dq=109.4 cnt=57 | c=211.7 rankC=148.2 need=5737819 tD=1.12 人 pulse onMe | safe=1895507 keep=2015010 avail=209109 chunkB=450098 pulseB=270059 
+    ⇒ 影子指令 attack pct=95 → rey playa#40[T3]（约 210983 兵）
+t=6875 sora_w B=2238436 L=22314 d=100.3 nb=2 neut=0 cmds=143 noFull=1 shQ=247661 | m=0.900 worth=90.3 cheap=7.6 over=1 dMedOther=97.3 safe(-1)=1885212
+    → rey playa#40[T3] terr=29206 bal=2689948 dq=92.1 cnt=10 | c=178.0 rankC=124.6 need=5175350 tD=0.95 人 pulse onMe | safe=1885212 keep=2008260 avail=203945 chunkB=447687 pulseB=268612 
+    → Holy British Empire#31[T3] terr=28071 bal=3064282 dq=109.2 cnt=57 | c=210.5 rankC=147.3 need=5722335 tD=1.12 人 pulse onMe | safe=1885212 keep=2008260 avail=203945 chunkB=447687 pulseB=268612 
+    ⇒ 影子指令 attack pct=93 → rey playa#40[T3]（约 205481 兵）
+t=6880 sora_w B=2243081 L=22162 d=101.2 nb=2 neut=0 cmds=144 noFull=1 shQ=284116 | m=0.900 worth=91.1 cheap=7.6 over=1 dMedOther=98.6 safe(-1)=1884676
+    → rey playa#40[T3] terr=29247 bal=2726531 dq=93.2 cnt=12 | c=179.5 rankC=125.6 need=5228794 tD=0.95 人 pulse onMe | safe=1884676 keep=1994580 avail=222215 chunkB=448616 pulseB=269170 
+    → Holy British Empire#31[T3] terr=28182 bal=3098908 dq=110.0 cnt=51 | c=210.5 rankC=147.4 need=5752683 tD=1.12 人 pulse onMe | safe=1884676 keep=1994580 avail=222215 chunkB=448616 pulseB=269170 
+    ⇒ 影子指令 attack pct=101 → rey playa#40[T3]（约 223431 兵）
+t=6900 sora_w B=1867246 L=21722 d=86.0 nb=2 neut=0 cmds=144 noFull=1 shQ=115117 | m=0.900 worth=82.9 cheap=7.6 over=0 dMedOther=108.4 safe(-1)=1867026
+    → Holy British Empire#31[T3] terr=28631 bal=3197029 dq=111.7 cnt=45 | c=277.6 rankC=277.6 need=5816695 tD=1.03 人 pulse onMe | safe=1867026 keep=Inf avail=-Inf chunkB=373449 pulseB=224070 价高(c>=worth)→break
+    → rey playa#40[T3] terr=29238 bal=2820502 dq=96.5 cnt=5 | c=531.2 rankC=531.2 need=4771640 tD=0.89 人 pulse crowdedHard | safe=1867026 keep=Inf avail=-Inf chunkB=373449 pulseB=224070 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6920 sora_w B=2137059 L=21232 d=100.7 nb=1 neut=0 cmds=145 noFull=1 shQ=245981 | m=0.900 worth=90.6 cheap=7.6 over=1 dMedOther=100.1 safe(-1)=1805263
+    → Holy British Empire#31[T3] terr=29135 bal=2915705 dq=100.1 cnt=48 | c=192.8 rankC=135.0 need=5514448 tD=1.00 人 pulse onMe | safe=1805263 keep=1910880 avail=201136 chunkB=427412 pulseB=256447 
+    ⇒ 影子指令 attack pct=96 → Holy British Empire#31[T3]（约 202436 兵）
+t=6925 sora_w B=2145259 L=21084 d=101.7 nb=1 neut=0 cmds=146 noFull=1 shQ=280253 | m=0.900 worth=91.6 cheap=7.6 over=1 dMedOther=99.6 safe(-1)=1778346
+    → Holy British Empire#31[T3] terr=29283 bal=2915705 dq=99.6 cnt=50 | c=190.0 rankC=133.0 need=5472463 tD=1.00 人 pulse onMe | safe=1778346 keep=1897560 avail=222560 chunkB=429052 pulseB=257431 
+    ⇒ 影子指令 attack pct=106 → Holy British Empire#31[T3]（约 224162 兵）
+t=6930 sora_w B=2155866 L=20983 d=102.7 nb=1 neut=0 cmds=147 noFull=1 shQ=314020 | m=0.900 worth=92.5 cheap=7.6 over=1 dMedOther=100.6 safe(-1)=1782135
+    → Holy British Empire#31[T3] terr=29384 bal=2955358 dq=100.6 cnt=50 | c=154.7 rankC=88.8 need=5513567 tD=1.00 人 pulse onMe agg | safe=1782135 keep=1888470 avail=242132 chunkB=431173 pulseB=258704 
+    ⇒ 影子指令 attack pct=115 → Holy British Empire#31[T3]（约 244219 兵）
+t=6960 sora_w B=1531158 L=21428 d=71.5 nb=1 neut=0 cmds=147 noFull=1 shQ=155583 | m=0.900 worth=70.7 cheap=7.6 over=0 dMedOther=92.4 safe(-1)=1517686
+    → Holy British Empire#31[T3] terr=28939 bal=2651059 dq=91.6 cnt=50 | c=225.3 rankC=225.3 need=4794924 tD=0.99 人 pulse onMe | safe=1517686 keep=Inf avail=-Inf chunkB=306232 pulseB=183739 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6990 sora_w B=2281856 L=21084 d=108.2 nb=1 neut=0 cmds=147 noFull=1 shQ=320687 | m=0.900 worth=97.4 cheap=7.6 over=1 dMedOther=96.1 safe(-1)=1533201
+    → Holy British Empire#31[T3] terr=29283 bal=2760724 dq=94.3 cnt=50 | c=449.2 rankC=534.0 need=4919650 tD=0.98 人 pulse agg | safe=1533201 keep=1897560 avail=357556 chunkB=456371 pulseB=273823 
+    ⇒ 本拍没有指令
+t=6995 sora_w B=2281510 L=21082 d=108.2 nb=2 neut=0 cmds=148 noFull=1 shQ=351776 | m=0.900 worth=97.4 cheap=7.6 over=1 dMedOther=96.1 safe(-1)=1679475
+    → rey playa#40[T3] terr=29226 bal=2538053 dq=86.8 cnt=2 | c=173.7 rankC=121.6 need=5050666 tD=0.90 人 pulse onMe | safe=1679475 keep=1897380 avail=357394 chunkB=456302 pulseB=273781 
+    → Holy British Empire#31[T3] terr=29283 bal=2760724 dq=94.3 cnt=50 | c=280.7 rankC=333.8 need=4919787 tD=0.98 人 pulse agg | safe=1679475 keep=1897380 avail=357394 chunkB=456302 pulseB=273781 
+    ⇒ 影子指令 attack pct=122 → rey playa#40[T3]（约 274048 兵）
+t=7000 sora_w B=2326053 L=21074 d=110.4 nb=2 neut=0 cmds=149 noFull=1 shQ=382683 | m=0.900 worth=99.3 cheap=7.6 over=1 dMedOther=98.3 safe(-1)=1713733
+    → rey playa#40[T3] terr=29234 bal=2601804 dq=89.0 cnt=5 | c=177.4 rankC=124.2 need=5161522 tD=0.91 人 pulse onMe | safe=1713733 keep=1896660 avail=402135 chunkB=465211 pulseB=279126 
+    → Holy British Empire#31[T3] terr=29283 bal=2827552 dq=96.6 cnt=50 | c=287.4 rankC=341.8 need=5037971 tD=0.98 人 pulse agg | safe=1713733 keep=1896660 avail=402135 chunkB=465211 pulseB=279126 
+    ⇒ 影子指令 attack pct=122 → rey playa#40[T3]（约 279398 兵）
+t=7005 sora_w B=2320759 L=21044 d=110.3 nb=2 neut=0 cmds=150 noFull=1 shQ=412882 | m=0.900 worth=99.3 cheap=7.6 over=1 dMedOther=98.3 safe(-1)=1707776
+    → rey playa#40[T3] terr=29264 bal=2601804 dq=88.9 cnt=12 | c=176.7 rankC=123.7 need=5150857 tD=0.90 人 pulse onMe | safe=1707776 keep=1893960 avail=399603 chunkB=464152 pulseB=278491 
+    → Holy British Empire#31[T3] terr=29283 bal=2827552 dq=96.6 cnt=50 | c=287.4 rankC=341.7 need=5038252 tD=0.98 人 pulse agg | safe=1707776 keep=1893960 avail=399603 chunkB=464152 pulseB=278491 
+    ⇒ 影子指令 attack pct=122 → rey playa#40[T3]（约 278763 兵）
+t=7020 sora_w B=1550027 L=21030 d=73.7 nb=2 neut=0 cmds=150 noFull=1 shQ=220623 | m=0.900 worth=77.2 cheap=7.6 over=0 dMedOther=100.9 safe(-1)=1614291
+    → Holy British Empire#31[T3] terr=29283 bal=2904983 dq=99.2 cnt=50 | c=322.7 rankC=322.7 need=5175468 tD=0.98 人 pulse crowdedHard | safe=1614291 keep=Inf avail=-Inf chunkB=310005 pulseB=186003 价高(c>=worth)→break
+    → rey playa#40[T3] terr=29278 bal=2664894 dq=91.0 cnt=14 | c=501.9 rankC=501.9 need=4521526 tD=0.90 人 pulse crowdedHard | safe=1614291 keep=Inf avail=-Inf chunkB=310005 pulseB=186003 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7050 sora_w B=1571683 L=20749 d=75.7 nb=2 neut=0 cmds=150 noFull=1 shQ=374376 | m=0.900 worth=79.6 cheap=7.6 over=0 dMedOther=104.0 safe(-1)=1630168
+    → rey playa#40[T3] terr=29358 bal=2262874 dq=77.1 cnt=24 | c=118.3 rankC=67.9 need=4243918 tD=0.74 人 pulse onMe agg | safe=1630168 keep=Inf avail=-Inf chunkB=314337 pulseB=188602 价高(c>=worth)→break
+    → Holy British Empire#31[T3] terr=29484 bal=2685389 dq=91.1 cnt=50 | c=173.1 rankC=121.2 need=5043224 tD=0.88 人 pulse onMe | safe=1630168 keep=Inf avail=-Inf chunkB=314337 pulseB=188602 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7080 sora_w B=1574689 L=19607 d=80.3 nb=2 neut=0 cmds=150 noFull=1 shQ=393672 | m=0.900 worth=81.5 cheap=7.7 over=0 dMedOther=106.6 safe(-1)=1585632
+    → rey playa#40[T3] terr=29866 bal=1926130 dq=64.5 cnt=35 | c=131.0 rankC=91.7 need=3905541 tD=0.61 人 pulse onMe | safe=1585632 keep=Inf avail=-Inf chunkB=314938 pulseB=188963 价高(c>=worth)→break
+    → Holy British Empire#31[T3] terr=30118 bal=2482885 dq=82.4 cnt=35 | c=161.2 rankC=112.8 need=4827623 tD=0.77 人 pulse onMe | safe=1585632 keep=Inf avail=-Inf chunkB=314938 pulseB=188963 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7110 sora_w B=2535785 L=18663 d=135.9 nb=2 neut=0 cmds=151 noFull=1 shQ=449718 | m=0.900 worth=122.3 cheap=7.7 over=1 dMedOther=99.7 safe(-1)=1597393
+    → rey playa#40[T3] terr=30405 bal=2036984 dq=67.0 cnt=36 | c=103.3 rankC=59.3 need=3941871 tD=0.67 人 pulse onMe agg | safe=1597393 keep=1597393 avail=908676 chunkB=507157 pulseB=304294 
+    → Holy British Empire#31[T3] terr=30523 bal=2617164 dq=85.7 cnt=20 | c=163.4 rankC=114.4 need=4964800 tD=0.86 人 pulse onMe | safe=1597393 keep=1597393 avail=908676 chunkB=507157 pulseB=304294 
+    ⇒ 影子指令 attack pct=122 → rey playa#40[T3]（约 304591 兵）
+t=7115 sora_w B=2650690 L=18537 d=143.0 nb=2 neut=0 cmds=152 noFull=1 shQ=482275 | m=0.900 worth=128.7 cheap=7.7 over=1 dMedOther=98.7 safe(-1)=1583789
+    → rey playa#40[T3] terr=30477 bal=2036984 dq=66.8 cnt=36 | c=103.1 rankC=59.2 need=3909693 tD=0.68 人 pulse onMe agg | safe=1583789 keep=1583789 avail=1035839 chunkB=530138 pulseB=318083 
+    → Holy British Empire#31[T3] terr=30577 bal=2617164 dq=85.6 cnt=17 | c=162.4 rankC=113.7 need=4940416 tD=0.87 人 pulse onMe | safe=1583789 keep=1583789 avail=1035839 chunkB=530138 pulseB=318083 
+    ⇒ 影子指令 attack pct=122 → rey playa#40[T3]（约 318393 兵）
+t=7120 sora_w B=2296313 L=18434 d=124.6 nb=2 neut=0 cmds=153 noFull=1 shQ=191045 | m=0.900 worth=112.1 cheap=7.7 over=1 dMedOther=99.6 safe(-1)=1596033
+    → Holy British Empire#31[T3] terr=30608 bal=2653019 dq=86.7 cnt=15 | c=133.2 rankC=76.4 need=4990123 tD=0.87 人 pulse onMe agg | safe=1596033 keep=1596033 avail=673371 chunkB=459263 pulseB=275558 
+    → rey playa#40[T3] terr=30549 bal=2064910 dq=67.6 cnt=36 | c=158.3 rankC=158.3 need=3610859 tD=0.68 人 pulse | safe=1596033 keep=1596033 avail=673371 chunkB=459263 pulseB=275558 
+    ⇒ 影子指令 attack pct=122 → Holy British Empire#31[T3]（约 275826 兵）
+t=7125 sora_w B=2287749 L=18391 d=124.4 nb=2 neut=0 cmds=154 noFull=1 shQ=219682 | m=0.900 worth=112.0 cheap=7.7 over=1 dMedOther=99.1 safe(-1)=1586398
+    → Holy British Empire#31[T3] terr=30651 bal=2653019 dq=86.6 cnt=14 | c=133.0 rankC=76.3 need=4973066 tD=0.87 人 pulse onMe agg | safe=1586398 keep=1586398 avail=674542 chunkB=457550 pulseB=274530 
+    → rey playa#40[T3] terr=30549 bal=2064910 dq=67.6 cnt=34 | c=158.3 rankC=158.3 need=3610859 tD=0.68 人 pulse | safe=1586398 keep=1586398 avail=674542 chunkB=457550 pulseB=274530 
+    ⇒ 影子指令 attack pct=122 → Holy British Empire#31[T3]（约 274797 兵）
+t=7130 sora_w B=2397844 L=18430 d=130.1 nb=2 neut=0 cmds=155 noFull=1 shQ=249295 | m=0.900 worth=117.1 cheap=7.7 over=1 dMedOther=99.7 safe(-1)=1600230
+    → Holy British Empire#31[T3] terr=30679 bal=2689365 dq=87.7 cnt=14 | c=134.7 rankC=77.3 need=5026225 tD=0.88 人 pulse onMe agg | safe=1600230 keep=1600230 avail=769515 chunkB=479569 pulseB=287741 
+    → rey playa#40[T3] terr=30482 bal=2085858 dq=68.4 cnt=32 | c=146.6 rankC=146.6 need=3330400 tD=0.69 人 pulse | safe=1600230 keep=1600230 avail=769515 chunkB=479569 pulseB=287741 
+    ⇒ 影子指令 attack pct=122 → Holy British Empire#31[T3]（约 288022 兵）
+t=7140 sora_w B=1947123 L=18600 d=104.7 nb=2 neut=0 cmds=155 noFull=1 shQ=34454 | m=0.900 worth=94.2 cheap=7.7 over=1 dMedOther=96.6 safe(-1)=1512554
+    → rey playa#40[T3] terr=30326 bal=2097145 dq=69.2 cnt=33 | c=127.1 rankC=104.2 need=3381141 tD=0.72 人 pulse agg | safe=1512554 keep=1674000 avail=250306 chunkB=389425 pulseB=233655 
+    → Holy British Empire#31[T3] terr=30665 bal=2720246 dq=88.7 cnt=14 | c=355.8 rankC=355.8 need=4526721 tD=0.92 人 pulse | safe=1512554 keep=1674000 avail=250306 chunkB=389425 pulseB=233655 
+    ⇒ 本拍没有指令
+t=7170 sora_w B=1756693 L=19050 d=92.2 nb=2 neut=0 cmds=155 noFull=1 shQ=200318 | m=0.900 worth=83.0 cheap=7.7 over=0 dMedOther=98.7 safe(-1)=1376703
+    → Holy British Empire#31[T3] terr=30388 bal=2479106 dq=81.6 cnt=26 | c=157.8 rankC=129.4 need=4206084 tD=0.83 人 pulse agg | safe=1376703 keep=Inf avail=-Inf chunkB=351339 pulseB=210803 价高(c>=worth)→break
+    → rey playa#40[T3] terr=30153 bal=1767192 dq=58.6 cnt=44 | c=141.9 rankC=141.9 need=3187642 tD=0.59 人 pulse | safe=1376703 keep=Inf avail=-Inf chunkB=351339 pulseB=210803 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7200 sora_w B=1757433 L=18645 d=94.3 nb=2 neut=0 cmds=155 noFull=1 shQ=370172 | m=0.900 worth=84.8 cheap=7.7 over=0 dMedOther=103.6 safe(-1)=1281006
+    → rey playa#40[T3] terr=30597 bal=1535254 dq=50.2 cnt=45 | c=77.6 rankC=44.5 need=2951966 tD=0.48 人 pulse onMe agg | safe=1281006 keep=1675336 avail=61503 chunkB=351487 pulseB=210892 
+    → Holy British Empire#31[T3] terr=30349 bal=2302107 dq=75.9 cnt=17 | c=183.4 rankC=183.4 need=4146909 tD=0.73 人 pulse onMe | safe=1281006 keep=Inf avail=-Inf chunkB=351487 pulseB=210892 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7225 sora_w B=1749059 L=18098 d=96.6 nb=2 neut=0 cmds=156 noFull=1 shQ=435234 | m=0.900 worth=87.0 cheap=7.8 over=0 dMedOther=91.8 safe(-1)=1313747
+    → rey playa#40[T3] terr=31128 bal=1577782 dq=50.7 cnt=33 | c=40.3 rankC=12.1 need=2858871 tD=0.55 人 pulse bleeding agg | safe=1313747 keep=1313747 avail=414816 chunkB=349812 pulseB=209887 
+    → Holy British Empire#31[T3] terr=30365 bal=2365616 dq=77.9 cnt=11 | c=338.6 rankC=338.6 need=4254981 tD=0.85 人 pulse | safe=1313747 keep=Inf avail=-Inf chunkB=349812 pulseB=209887 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=122 → rey playa#40[T3]（约 210092 兵）
+t=7230 sora_w B=1771446 L=18098 d=97.9 nb=2 neut=0 cmds=157 noFull=1 shQ=442861 | m=0.900 worth=88.1 cheap=7.8 over=0 dMedOther=92.1 safe(-1)=1331953
+    → rey playa#40[T3] terr=31128 bal=1599555 dq=51.4 cnt=33 | c=41.0 rankC=12.3 need=2897679 tD=0.56 人 pulse bleeding agg | safe=1331953 keep=1331953 avail=418734 chunkB=354289 pulseB=212574 
+    → Holy British Empire#31[T3] terr=30365 bal=2398024 dq=79.0 cnt=11 | c=343.1 rankC=343.1 need=4312875 tD=0.86 人 pulse | safe=1331953 keep=Inf avail=-Inf chunkB=354289 pulseB=212574 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=122 → rey playa#40[T3]（约 212781 兵）
+t=7235 sora_w B=1771446 L=18098 d=97.9 nb=2 neut=0 cmds=158 noFull=1 shQ=442861 | m=0.900 worth=88.1 cheap=7.8 over=0 dMedOther=90.8 safe(-1)=1331953
+    → rey playa#40[T3] terr=31056 bal=1593639 dq=51.3 cnt=32 | c=41.1 rankC=12.3 need=2885776 tD=0.57 人 pulse bleeding agg | safe=1331953 keep=1331953 avail=418734 chunkB=354289 pulseB=212574 
+    → Holy British Empire#31[T3] terr=30365 bal=2398024 dq=79.0 cnt=11 | c=343.1 rankC=343.1 need=4312988 tD=0.87 人 pulse | safe=1331953 keep=Inf avail=-Inf chunkB=354289 pulseB=212574 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=122 → rey playa#40[T3]（约 212781 兵）
+t=7260 sora_w B=1195883 L=18258 d=65.5 nb=2 neut=0 cmds=158 noFull=1 shQ=82936 | m=0.900 worth=60.5 cheap=7.7 over=0 dMedOther=79.0 safe(-1)=1356407
+    → rey playa#40[T3] terr=30358 bal=1600737 dq=52.7 cnt=31 | c=34.3 rankC=10.3 need=2365256 tD=0.67 人 pulse bleeding agg | safe=1356407 keep=1356407 avail=-174538 chunkB=239177 pulseB=143506 无可用(avail<=0)
+    → Holy British Empire#31[T3] terr=30445 bal=2217408 dq=72.8 cnt=10 | c=139.1 rankC=97.4 need=4218779 tD=0.92 人 pulse onMe | safe=1356407 keep=Inf avail=-Inf chunkB=239177 pulseB=143506 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7290 sora_w B=1226189 L=18384 d=66.7 nb=2 neut=0 cmds=158 noFull=1 shQ=199502 | m=0.900 worth=63.0 cheap=7.7 over=0 dMedOther=82.4 safe(-1)=1389824
+    → rey playa#40[T3] terr=29623 bal=1310260 dq=44.2 cnt=10 | c=37.4 rankC=13.9 need=1879232 tD=0.54 人 pulse bleeding | safe=1389824 keep=1389824 avail=-178004 chunkB=245238 pulseB=147143 无可用(avail<=0)
+    → Holy British Empire#31[T3] terr=30599 bal=2309796 dq=75.5 cnt=15 | c=142.6 rankC=99.8 need=4354539 tD=0.92 人 pulse onMe | safe=1389824 keep=Inf avail=-Inf chunkB=245238 pulseB=147143 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7310 sora_w B=1897042 L=18248 d=104.0 nb=2 neut=0 cmds=159 noFull=1 shQ=284536 | m=0.900 worth=93.6 cheap=7.7 over=1 dMedOther=78.0 safe(-1)=1411539
+    → rey playa#40[T3] terr=29314 bal=1353367 dq=46.2 cnt=10 | c=40.5 rankC=15.1 need=1964293 tD=0.59 人 pulse bleeding | safe=1411539 keep=1411539 avail=463273 chunkB=379408 pulseB=227645 
+    → Holy British Empire#31[T3] terr=30835 bal=2404608 dq=78.0 cnt=32 | c=159.7 rankC=130.9 need=4467521 tD=1.00 人 pulse onMe agg | safe=1411539 keep=1642320 avail=232492 chunkB=379408 pulseB=227645 
+    ⇒ 影子指令 attack pct=122 → Holy British Empire#31[T3]（约 227867 兵）
+t=7315 sora_w B=1887071 L=18208 d=103.6 nb=2 neut=0 cmds=160 noFull=1 shQ=312757 | m=0.900 worth=93.3 cheap=7.7 over=1 dMedOther=77.8 safe(-1)=1400302
+    → rey playa#40[T3] terr=29284 bal=1351153 dq=46.1 cnt=10 | c=40.5 rankC=15.1 need=1962865 tD=0.59 人 pulse bleeding | safe=1400302 keep=1400302 avail=464655 chunkB=377414 pulseB=226449 
+    → Holy British Empire#31[T3] terr=30895 bal=2404608 dq=77.8 cnt=32 | c=159.4 rankC=130.7 need=4447549 tD=1.00 人 pulse onMe agg | safe=1400302 keep=1638720 avail=226237 chunkB=377414 pulseB=226449 
+    ⇒ 影子指令 attack pct=122 → Holy British Empire#31[T3]（约 226669 兵）
+t=7320 sora_w B=1894638 L=18148 d=104.4 nb=2 neut=0 cmds=161 noFull=1 shQ=340852 | m=0.900 worth=94.0 cheap=7.8 over=1 dMedOther=78.7 safe(-1)=1401952
+    → rey playa#40[T3] terr=29245 bal=1366613 dq=46.7 cnt=10 | c=41.3 rankC=15.4 need=1993961 tD=0.59 人 pulse bleeding | safe=1401952 keep=1401952 avail=470484 chunkB=378928 pulseB=227357 
+    → Holy British Empire#31[T3] terr=30985 bal=2437551 dq=78.7 cnt=32 | c=161.1 rankC=132.1 need=4476250 tD=1.00 人 pulse onMe agg | safe=1401952 keep=1633320 avail=239116 chunkB=378928 pulseB=227357 
+    ⇒ 影子指令 attack pct=122 → Holy British Empire#31[T3]（约 227578 兵）
+t=7350 sora_w B=1951238 L=18923 d=103.1 nb=1 neut=0 cmds=161 noFull=1 shQ=279018 | m=0.900 worth=92.8 cheap=7.7 over=1 dMedOther=80.6 safe(-1)=1353024
+    → Holy British Empire#31[T3] terr=30228 bal=2436768 dq=80.6 cnt=62 | c=245.2 rankC=201.1 need=4048472 tD=1.00 人 pulse agg | safe=1353024 keep=1703070 avail=225302 chunkB=390248 pulseB=234149 
+    ⇒ 本拍没有指令
+t=7380 sora_w B=2025726 L=19735 d=102.6 nb=1 neut=0 cmds=162 noFull=1 shQ=462889 | m=0.900 worth=92.4 cheap=7.7 over=1 dMedOther=82.6 safe(-1)=1348287
+    → Holy British Empire#31[T3] terr=29416 bal=2429554 dq=82.6 cnt=54 | c=67.8 rankC=20.3 need=4223239 tD=1.00 人 pulse bleeding agg | safe=1348287 keep=1757936 avail=244052 chunkB=405145 pulseB=243087 
+    ⇒ 影子指令 attack pct=81 → Holy British Empire#31[T3]（约 162216 兵）
+t=7385 sora_w B=2025726 L=19844 d=102.1 nb=1 neut=0 cmds=163 noFull=1 shQ=494336 | m=0.900 worth=91.9 cheap=7.7 over=1 dMedOther=82.4 safe(-1)=1340109
+    → Holy British Empire#31[T3] terr=29307 bal=2415160 dq=82.4 cnt=56 | c=68.1 rankC=20.4 need=4223361 tD=1.00 人 pulse bleeding agg | safe=1340109 keep=1765268 avail=236720 chunkB=405145 pulseB=243087 
+    ⇒ 影子指令 attack pct=84 → Holy British Empire#31[T3]（约 168151 兵）
+t=7390 sora_w B=2051452 L=20009 d=102.5 nb=1 neut=0 cmds=164 noFull=1 shQ=512790 | m=0.900 worth=92.3 cheap=7.7 over=1 dMedOther=83.2 safe(-1)=1344479
+    → Holy British Empire#31[T3] terr=29121 bal=2423186 dq=83.2 cnt=55 | c=69.8 rankC=20.9 need=4275336 tD=1.00 人 pulse bleeding agg | safe=1344479 keep=1800810 avail=226602 chunkB=410290 pulseB=246174 
+    ⇒ 影子指令 attack pct=106 → Holy British Empire#31[T3]（约 214360 兵）
+t=7410 sora_w B=1550130 L=20505 d=75.6 nb=2 neut=0 cmds=164 noFull=1 shQ=168894 | m=0.900 worth=68.0 cheap=7.6 over=0 dMedOther=85.6 safe(-1)=1358921
+    → rey playa#40[T3] terr=29224 bal=1571129 dq=53.8 cnt=6 | c=236.8 rankC=236.8 need=2810454 tD=0.63 人 pulse | safe=1358921 keep=Inf avail=-Inf chunkB=310026 pulseB=186016 价高(c>=worth)→break
+    → Holy British Empire#31[T3] terr=28616 bal=2449636 dq=85.6 cnt=47 | c=255.1 rankC=255.1 need=3944646 tD=1.00 人 pulse crowdedHard | safe=1358921 keep=Inf avail=-Inf chunkB=310026 pulseB=186016 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7440 sora_w B=1785857 L=20897 d=85.5 nb=2 neut=0 cmds=164 noFull=1 shQ=326600 | m=0.900 worth=76.9 cheap=7.6 over=0 dMedOther=86.7 safe(-1)=1214599
+    → rey playa#40[T3] terr=29377 bal=1337325 dq=45.5 cnt=28 | c=91.6 rankC=64.1 need=2631352 tD=0.53 人 pulse onMe | safe=1214599 keep=Inf avail=-Inf chunkB=357171 pulseB=214303 价高(c>=worth)→break
+    → Holy British Empire#31[T3] terr=28071 bal=2193331 dq=78.1 cnt=53 | c=161.8 rankC=132.7 need=3872140 tD=0.90 人 pulse agg | safe=1214599 keep=Inf avail=-Inf chunkB=357171 pulseB=214303 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7470 sora_w B=1789126 L=20217 d=88.5 nb=2 neut=0 cmds=164 noFull=1 shQ=447281 | m=0.900 worth=79.6 cheap=7.7 over=0 dMedOther=97.7 safe(-1)=1203194
+    → rey playa#40[T3] terr=29788 bal=1392631 dq=46.8 cnt=30 | c=89.6 rankC=62.7 need=2622229 tD=0.48 人 pulse onMe | safe=1203194 keep=Inf avail=-Inf chunkB=357825 pulseB=214695 价高(c>=worth)→break
+    → Holy British Empire#31[T3] terr=28340 bal=2027532 dq=71.5 cnt=30 | c=111.3 rankC=63.9 need=3736905 tD=0.73 人 pulse onMe agg | safe=1203194 keep=Inf avail=-Inf chunkB=357825 pulseB=214695 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7500 sora_w B=1757537 L=19389 d=90.6 nb=2 neut=0 cmds=164 noFull=1 shQ=435667 | m=0.900 worth=81.6 cheap=7.7 over=0 dMedOther=102.7 safe(-1)=1196956
+    → Holy British Empire#31[T3] terr=28777 bal=2140133 dq=74.4 cnt=28 | c=153.8 rankC=126.1 need=3824451 tD=0.72 人 pulse onMe agg | safe=1196956 keep=Inf avail=-Inf chunkB=351507 pulseB=210904 价高(c>=worth)→break
+    → rey playa#40[T3] terr=30179 bal=1480843 dq=49.1 cnt=22 | c=312.3 rankC=452.8 need=2672684 tD=0.48 人 pulse | safe=1196956 keep=Inf avail=-Inf chunkB=351507 pulseB=210904 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7530 sora_w B=1793333 L=19175 d=93.5 nb=2 neut=0 cmds=164 noFull=1 shQ=448333 | m=0.900 worth=84.2 cheap=7.7 over=0 dMedOther=106.5 safe(-1)=1191784
+    → Holy British Empire#31[T3] terr=28991 bal=1978366 dq=68.2 cnt=25 | c=105.9 rankC=60.8 need=3699045 tD=0.64 人 pulse onMe agg | safe=1191784 keep=Inf avail=-Inf chunkB=358667 pulseB=215200 价高(c>=worth)→break
+    → rey playa#40[T3] terr=30179 bal=1542542 dq=51.1 cnt=18 | c=325.1 rankC=471.4 need=2782687 tD=0.48 人 pulse | safe=1191784 keep=Inf avail=-Inf chunkB=358667 pulseB=215200 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7560 sora_w B=1870474 L=18864 d=99.2 nb=2 neut=0 cmds=164 noFull=1 shQ=467618 | m=0.900 worth=89.2 cheap=7.7 over=0 dMedOther=109.4 safe(-1)=1184326
+    → Holy British Empire#31[T3] terr=29302 bal=2060184 dq=70.3 cnt=17 | c=145.3 rankC=119.1 need=3757363 tD=0.64 人 pulse onMe agg | safe=1184326 keep=Inf avail=-Inf chunkB=374095 pulseB=224457 价高(c>=worth)→break
+    → rey playa#40[T3] terr=30179 bal=1606811 dq=53.2 cnt=11 | c=338.6 rankC=491.0 need=2897370 tD=0.49 人 pulse | safe=1184326 keep=Inf avail=-Inf chunkB=374095 pulseB=224457 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7570 sora_w B=1881925 L=18785 d=100.2 nb=2 neut=0 cmds=165 noFull=1 shQ=470481 | m=0.900 worth=90.2 cheap=7.7 over=1 dMedOther=110.2 safe(-1)=1185981
+    → Holy British Empire#31[T3] terr=29381 bal=2088202 dq=71.1 cnt=15 | c=146.8 rankC=120.4 need=3784114 tD=0.65 人 pulse onMe agg | safe=1185981 keep=1690650 avail=169222 chunkB=376385 pulseB=225831 
+    → rey playa#40[T3] terr=30179 bal=1628824 dq=54.0 cnt=8 | c=236.7 rankC=236.7 need=2936604 tD=0.49 人 pulse | safe=1185981 keep=1690650 avail=169222 chunkB=376385 pulseB=225831 
+    ⇒ 影子指令 attack pct=92 → Holy British Empire#31[T3]（约 170917 兵）
+t=7575 sora_w B=1874716 L=18740 d=100.0 nb=2 neut=0 cmds=166 noFull=1 shQ=468679 | m=0.900 worth=90.0 cheap=7.7 over=1 dMedOther=109.9 safe(-1)=1177869
+    → Holy British Empire#31[T3] terr=29426 bal=2088202 dq=71.0 cnt=15 | c=174.1 rankC=174.1 need=3771093 tD=0.65 人 pulse onMe | safe=1177869 keep=1686600 avail=166147 chunkB=374943 pulseB=224966 
+    → rey playa#40[T3] terr=30179 bal=1628824 dq=54.0 cnt=5 | c=236.8 rankC=236.8 need=2936682 tD=0.49 人 pulse | safe=1177869 keep=1686600 avail=166147 chunkB=374943 pulseB=224966 
+    ⇒ 影子指令 attack pct=90 → Holy British Empire#31[T3]（约 166600 兵）
+t=7580 sora_w B=1894038 L=18710 d=101.2 nb=2 neut=0 cmds=167 noFull=1 shQ=473445 | m=0.900 worth=91.1 cheap=7.7 over=1 dMedOther=111.0 safe(-1)=1188422
+    → Holy British Empire#31[T3] terr=29456 bal=2116601 dq=71.9 cnt=15 | c=175.8 rankC=175.8 need=3812599 tD=0.65 人 pulse onMe | safe=1188422 keep=1683900 avail=187943 chunkB=378808 pulseB=227285 
+    → rey playa#40[T3] terr=30179 bal=1651138 dq=54.7 cnt=5 | c=239.9 rankC=239.9 need=2976455 tD=0.49 人 pulse | safe=1188422 keep=1683900 avail=187943 chunkB=378808 pulseB=227285 
+    ⇒ 影子指令 attack pct=101 → Holy British Empire#31[T3]（约 188663 兵）
+t=7590 sora_w B=1374289 L=18710 d=73.5 nb=2 neut=0 cmds=167 noFull=1 shQ=291684 | m=0.900 worth=81.9 cheap=7.7 over=0 dMedOther=107.0 safe(-1)=1188465
+    → rey playa#40[T3] terr=30179 bal=1673758 dq=55.5 cnt=5 | c=242.7 rankC=242.7 need=3016776 tD=0.52 人 pulse | safe=1188465 keep=Inf avail=-Inf chunkB=274858 pulseB=164915 价高(c>=worth)→break
+    → Holy British Empire#31[T3] terr=29456 bal=2143533 dq=72.8 cnt=15 | c=280.5 rankC=280.5 need=3383952 tD=0.68 人 pulse | safe=1188465 keep=Inf avail=-Inf chunkB=274858 pulseB=164915 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7620 sora_w B=1444010 L=18927 d=76.3 nb=2 neut=0 cmds=167 noFull=1 shQ=361002 | m=0.900 worth=85.5 cheap=7.7 over=0 dMedOther=111.7 safe(-1)=1238242
+    → rey playa#40[T3] terr=30207 bal=1450452 dq=48.0 cnt=17 | c=97.3 rankC=68.1 need=2909686 tD=0.43 人 pulse onMe | safe=1238242 keep=Inf avail=-Inf chunkB=288802 pulseB=173281 价高(c>=worth)→break
+    → Holy British Empire#31[T3] terr=29211 bal=2232462 dq=76.4 cnt=20 | c=301.0 rankC=301.0 need=3593391 tD=0.68 人 pulse | safe=1238242 keep=Inf avail=-Inf chunkB=288802 pulseB=173281 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7640 sora_w B=1445551 L=18857 d=76.7 nb=2 neut=0 cmds=168 noFull=1 shQ=361387 | m=0.900 worth=87.2 cheap=7.7 over=0 dMedOther=114.0 safe(-1)=1114186
+    → rey playa#40[T3] terr=30497 bal=1490466 dq=48.9 cnt=42 | c=40.8 rankC=12.2 need=2915537 tD=0.43 人 pulse bleeding onMe | safe=1114186 keep=1156482 avail=272129 chunkB=289110 pulseB=173466 
+    → Holy British Empire#31[T3] terr=28991 bal=2011537 dq=69.4 cnt=25 | c=138.8 rankC=113.8 need=3475301 tD=0.61 人 pulse agg | safe=1114186 keep=Inf avail=-Inf chunkB=289110 pulseB=173466 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=122 → rey playa#40[T3]（约 173635 兵）
+t=7645 sora_w B=1428919 L=18797 d=76.0 nb=2 neut=0 cmds=169 noFull=1 shQ=357229 | m=0.900 worth=78.6 cheap=7.7 over=0 dMedOther=102.7 safe(-1)=1109500
+    → rey playa#40[T3] terr=30591 bal=1487192 dq=48.6 cnt=47 | c=40.0 rankC=12.0 need=2878040 tD=0.47 人 pulse bleeding onMe | safe=1109500 keep=1139302 avail=272872 chunkB=285784 pulseB=171470 
+    → Holy British Empire#31[T3] terr=28915 bal=2003106 dq=69.3 cnt=26 | c=139.3 rankC=114.2 need=3475403 tD=0.67 人 pulse agg | safe=1109500 keep=Inf avail=-Inf chunkB=285784 pulseB=171470 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=122 → rey playa#40[T3]（约 171637 兵）
+t=7650 sora_w B=1436159 L=18759 d=76.6 nb=2 neut=0 cmds=170 noFull=1 shQ=359039 | m=0.900 worth=79.6 cheap=7.7 over=0 dMedOther=104.1 safe(-1)=1121493
+    → rey playa#40[T3] terr=30590 bal=1500321 dq=49.0 cnt=48 | c=40.3 rankC=12.1 need=2879192 tD=0.47 人 pulse bleeding onMe agg | safe=1121493 keep=1144546 avail=274784 chunkB=287232 pulseB=172339 
+    → Holy British Empire#31[T3] terr=28862 bal=2024396 dq=70.1 cnt=27 | c=166.5 rankC=166.5 need=3523341 tD=0.67 人 pulse | safe=1121493 keep=Inf avail=-Inf chunkB=287232 pulseB=172339 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=122 → rey playa#40[T3]（约 172507 兵）
+t=7655 sora_w B=1241947 L=18837 d=65.9 nb=2 neut=0 cmds=171 noFull=1 shQ=145100 | m=0.900 worth=79.6 cheap=7.7 over=0 dMedOther=104.1 safe(-1)=1062483
+    → rey playa#40[T3] terr=30383 bal=1480559 dq=48.7 cnt=45 | c=37.4 rankC=11.2 need=2672147 tD=0.47 人 pulse bleeding | safe=1062483 keep=1062483 avail=164910 chunkB=248389 pulseB=149034 
+    → Holy British Empire#31[T3] terr=28835 bal=1794359 dq=62.2 cnt=28 | c=96.5 rankC=55.4 need=3327200 tD=0.60 人 pulse onMe agg | safe=1062483 keep=Inf avail=-Inf chunkB=248389 pulseB=149034 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=117 → rey playa#40[T3]（约 143114 兵）
+t=7680 sora_w B=832288 L=18778 d=44.3 nb=2 neut=0 cmds=171 noFull=1 shQ=58075 | m=0.900 worth=78.3 cheap=7.7 over=0 dMedOther=102.4 safe(-1)=1084025
+    → rey playa#40[T3] terr=29591 bal=1205610 dq=40.7 cnt=15 | c=24.9 rankC=7.5 need=1818178 tD=0.40 人 pulse bleeding | safe=1084025 keep=1084025 avail=-261490 chunkB=166458 pulseB=99875 无可用(avail<=0)
+    → Holy British Empire#31[T3] terr=29072 bal=1868568 dq=64.3 cnt=18 | c=160.2 rankC=160.2 need=3428776 tD=0.63 人 pulse onMe | safe=1084025 keep=Inf avail=-Inf chunkB=166458 pulseB=99875 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7710 sora_w B=1230943 L=18576 d=66.3 nb=1 neut=0 cmds=171 noFull=1 shQ=168396 | m=0.900 worth=70.6 cheap=7.7 over=0 dMedOther=92.3 safe(-1)=1119600
+    → Holy British Empire#31[T3] terr=29300 bal=1975480 dq=67.4 cnt=12 | c=55.4 rankC=16.6 need=3580438 tD=0.73 人 pulse bleeding onMe | safe=1119600 keep=1182046 avail=34472 chunkB=246189 pulseB=147713 
+    ⇒ 本拍没有指令
+t=7715 sora_w B=1388147 L=18547 d=74.8 nb=1 neut=0 cmds=172 noFull=1 shQ=188728 | m=0.900 worth=69.9 cheap=7.7 over=0 dMedOther=91.4 safe(-1)=1112095
+    → Holy British Empire#31[T3] terr=29264 bal=1968474 dq=67.3 cnt=7 | c=55.4 rankC=16.6 need=3560881 tD=0.74 人 pulse bleeding onMe agg | safe=1112095 keep=1263022 avail=108858 chunkB=277629 pulseB=166578 
+    ⇒ 影子指令 attack pct=80 → Holy British Empire#31[T3]（约 109804 兵）
+t=7720 sora_w B=1404356 L=18533 d=75.8 nb=1 neut=0 cmds=173 noFull=1 shQ=211152 | m=0.900 worth=69.9 cheap=7.7 over=0 dMedOther=91.3 safe(-1)=1117044
+    → Holy British Empire#31[T3] terr=29144 bal=1980641 dq=68.0 cnt=7 | c=56.5 rankC=16.9 need=3575822 tD=0.74 人 pulse bleeding onMe agg | safe=1117044 keep=1281157 avail=106742 chunkB=280871 pulseB=168523 
+    ⇒ 影子指令 attack pct=77 → Holy British Empire#31[T3]（约 106972 兵）
+t=7725 sora_w B=1430596 L=18512 d=77.3 nb=1 neut=0 cmds=174 noFull=1 shQ=234142 | m=0.900 worth=69.6 cheap=7.7 over=0 dMedOther=90.4 safe(-1)=1101275
+    → Holy British Empire#31[T3] terr=28954 bal=1957739 dq=67.6 cnt=7 | c=56.8 rankC=17.0 need=3525079 tD=0.75 人 pulse bleeding onMe agg | safe=1101275 keep=1297051 avail=116781 chunkB=286119 pulseB=171672 
+    ⇒ 影子指令 attack pct=83 → Holy British Empire#31[T3]（约 117353 兵）
+t=7740 sora_w B=1102383 L=18526 d=59.5 nb=1 neut=0 cmds=174 noFull=1 shQ=64425 | m=0.900 worth=71.1 cheap=7.7 over=0 dMedOther=93.0 safe(-1)=1078160
+    → Holy British Empire#31[T3] terr=28378 bal=1946913 dq=68.6 cnt=7 | c=53.7 rankC=16.1 need=3182578 tD=0.74 人 pulse bleeding | safe=1078160 keep=1105873 avail=-16408 chunkB=220477 pulseB=132286 无可用(avail<=0)
+    ⇒ 本拍没有指令

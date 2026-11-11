@@ -1,0 +1,56 @@
+# A033 zero_7 影子决策明细 t=6280~6760（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没有可打的邻居: 10 拍（t=6280~6330）
+#   捐兵: 1 拍（t=6320~6320）
+#   首选目标价高（c>=worth）: 86 拍（t=6335~6760）
+t=6300 zero_7 B=2037756 L=34341 d=59.3 nb=0 neut=0 cmds=93 noFull=1 shQ=501070 | m=0.900 worth=81.1 cheap=7.1 over=0 dMedOther=106.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6320 zero_7 B=2095211 L=34341 d=61.0 nb=0 neut=0 cmds=94 noFull=1 shQ=523802 | m=0.900 worth=79.0 cheap=7.1 over=0 dMedOther=103.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] sora_w#49[T2]（约 779565 兵）
+t=6330 zero_7 B=1201281 L=34341 d=35.0 nb=0 neut=0 cmds=94 noFull=1 shQ=300320 | m=0.900 worth=78.5 cheap=7.1 over=0 dMedOther=102.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6360 zero_7 B=1263267 L=33955 d=37.2 nb=1 neut=0 cmds=94 noFull=1 shQ=315816 | m=0.900 worth=83.9 cheap=7.2 over=0 dMedOther=109.6 safe(-1)=2275303
+    → [furry]嗷呜#18[T1] terr=30948 bal=3668105 dq=118.5 cnt=41 | c=229.1 rankC=160.4 need=6922492 tD=1.08 人 pulse onMe | safe=2275303 keep=Inf avail=-Inf chunkB=252653 pulseB=151592 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6390 zero_7 B=1277313 L=33317 d=38.3 nb=1 neut=0 cmds=94 noFull=1 shQ=319328 | m=0.900 worth=84.1 cheap=7.2 over=0 dMedOther=110.0 safe(-1)=2280438
+    → [furry]嗷呜#18[T1] terr=31586 bal=3202476 dq=101.4 cnt=41 | c=212.6 rankC=148.8 need=6606026 tD=0.92 人 pulse onMe | safe=2280438 keep=Inf avail=-Inf chunkB=255463 pulseB=153278 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6420 zero_7 B=1331752 L=32803 d=40.6 nb=1 neut=0 cmds=94 noFull=1 shQ=332938 | m=0.900 worth=87.5 cheap=7.2 over=0 dMedOther=114.3 safe(-1)=2334985
+    → [furry]嗷呜#18[T1] terr=32100 bal=3364263 dq=104.8 cnt=23 | c=215.8 rankC=151.1 need=6848366 tD=0.92 人 pulse onMe | safe=2334985 keep=Inf avail=-Inf chunkB=266350 pulseB=159810 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6450 zero_7 B=1402646 L=32368 d=43.3 nb=1 neut=0 cmds=94 noFull=1 shQ=350661 | m=0.900 worth=87.0 cheap=7.2 over=0 dMedOther=113.7 safe(-1)=2373566
+    → [furry]嗷呜#18[T1] terr=32535 bal=3490970 dq=107.3 cnt=29 | c=217.6 rankC=152.3 need=7033226 tD=0.94 人 pulse onMe | safe=2373566 keep=Inf avail=-Inf chunkB=280529 pulseB=168318 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6480 zero_7 B=1464054 L=31896 d=45.9 nb=1 neut=0 cmds=94 noFull=1 shQ=366013 | m=0.900 worth=89.5 cheap=7.2 over=0 dMedOther=117.0 safe(-1)=2338278
+    → [furry]嗷呜#18[T1] terr=32307 bal=3494834 dq=108.2 cnt=39 | c=128.7 rankC=47.9 need=6964501 tD=0.92 人 pulse onMe | safe=2338278 keep=Inf avail=-Inf chunkB=292811 pulseB=175686 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6510 zero_7 B=1499670 L=31143 d=48.2 nb=1 neut=0 cmds=94 noFull=1 shQ=374917 | m=0.900 worth=82.1 cheap=7.2 over=0 dMedOther=107.3 safe(-1)=2247607
+    → [furry]嗷呜#18[T1] terr=32019 bal=2966804 dq=92.7 cnt=60 | c=201.5 rankC=141.0 need=6383900 tD=0.86 人 pulse onMe | safe=2247607 keep=Inf avail=-Inf chunkB=299934 pulseB=179960 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6540 zero_7 B=1484603 L=30168 d=49.2 nb=1 neut=0 cmds=94 noFull=1 shQ=371150 | m=0.900 worth=83.0 cheap=7.3 over=0 dMedOther=108.5 safe(-1)=2232484
+    → [furry]嗷呜#18[T1] terr=32994 bal=3091330 dq=93.7 cnt=60 | c=196.7 rankC=137.7 need=6487170 tD=0.86 人 pulse onMe | safe=2232484 keep=Inf avail=-Inf chunkB=296921 pulseB=178152 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6570 zero_7 B=1457949 L=29083 d=50.1 nb=1 neut=0 cmds=94 noFull=1 shQ=364487 | m=0.900 worth=80.9 cheap=7.3 over=0 dMedOther=105.8 safe(-1)=2153395
+    → [furry]嗷呜#18[T1] terr=33423 bal=3122697 dq=93.4 cnt=81 | c=112.4 rankC=41.8 need=6362038 tD=0.88 人 pulse onMe | safe=2153395 keep=Inf avail=-Inf chunkB=291590 pulseB=174954 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6600 zero_7 B=1750817 L=27858 d=62.8 nb=1 neut=0 cmds=94 noFull=1 shQ=430912 | m=0.900 worth=84.6 cheap=7.3 over=0 dMedOther=110.5 safe(-1)=2022606
+    → [furry]嗷呜#18[T1] terr=33620 bal=3119914 dq=92.8 cnt=82 | c=182.5 rankC=127.7 need=6132964 tD=0.84 人 pulse onMe | safe=2022606 keep=Inf avail=-Inf chunkB=350163 pulseB=210098 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6630 zero_7 B=1947601 L=27228 d=71.5 nb=1 neut=0 cmds=94 noFull=1 shQ=486900 | m=0.900 worth=80.9 cheap=7.4 over=0 dMedOther=105.7 safe(-1)=1983752
+    → [furry]嗷呜#18[T1] terr=33793 bal=3571920 dq=105.7 cnt=67 | c=242.3 rankC=90.1 need=6400404 tD=1.00 人 pulse crowdedHard | safe=1983752 keep=Inf avail=-Inf chunkB=389520 pulseB=233712 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6660 zero_7 B=2027547 L=27228 d=74.5 nb=1 neut=0 cmds=94 noFull=1 shQ=506886 | m=0.900 worth=77.1 cheap=7.4 over=0 dMedOther=100.8 safe(-1)=2396064
+    → [furry]嗷呜#18[T1] terr=32864 bal=4604134 dq=140.1 cnt=61 | c=727.7 rankC=727.7 need=8188291 tD=1.39 人 pulse crowdedHard | safe=2396064 keep=Inf avail=-Inf chunkB=405509 pulseB=243306 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6690 zero_7 B=2110774 L=27228 d=77.5 nb=1 neut=0 cmds=94 noFull=1 shQ=527693 | m=0.900 worth=79.2 cheap=7.4 over=0 dMedOther=103.6 safe(-1)=2396064
+    → [furry]嗷呜#18[T1] terr=32864 bal=4641526 dq=141.2 cnt=61 | c=733.5 rankC=733.5 need=8256024 tD=1.36 人 pulse crowdedHard | safe=2396064 keep=Inf avail=-Inf chunkB=422155 pulseB=253293 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6720 zero_7 B=2225386 L=27228 d=81.7 nb=1 neut=0 cmds=94 noFull=1 shQ=556346 | m=0.900 worth=82.5 cheap=7.4 over=0 dMedOther=107.9 safe(-1)=2188542
+    → [furry]嗷呜#18[T1] terr=32864 bal=3936446 dq=119.8 cnt=61 | c=623.2 rankC=623.2 need=7010475 tD=1.11 人 pulse crowdedHard | safe=2188542 keep=Inf avail=-Inf chunkB=445077 pulseB=267046 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6750 zero_7 B=2316735 L=27228 d=85.1 nb=1 neut=0 cmds=94 noFull=1 shQ=579183 | m=0.900 worth=83.2 cheap=7.4 over=0 dMedOther=108.8 safe(-1)=2242942
+    → [furry]嗷呜#18[T1] terr=32975 bal=4033278 dq=122.3 cnt=61 | c=477.0 rankC=333.9 need=7188379 tD=1.12 人 pulse crowdedHard | safe=2242942 keep=Inf avail=-Inf chunkB=463347 pulseB=278008 价高(c>=worth)→break
+    ⇒ 本拍没有指令

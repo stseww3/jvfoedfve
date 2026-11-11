@@ -1,0 +1,162 @@
+[FA] B049 捐款定案（余额序列拟合）：日志 124 笔；成交 109，没成交 4，定不了 11
+     成交的到账合计 17788239，税合计 8620822（税占捐出方付出的 32.6%）
+     其中到账被收款方 150 倍上限夹小的 6 笔：到账 2024357，税 1938625（税占 49%）
+     与 facts.py [G]「只看发令 20 拍后那条余额」的判定对照（旧判定→新定案：笔数）：ACC→EXEC:62；REJ→EXEC:26；?→EXEC:21；ACC→AMB:6；REJ→NOEXEC:4；?→AMB:4；REJ→AMB:1
+     成交的 109 笔里，发令 20 拍后的观测仍未扣款（时延 ≥20 拍）的 25 笔（23%）；时延上界 中位 55 拍
+     连发（同号 ≤25 拍内第二笔，发令时前一笔还没落地，两笔都成交）：24 笔，多付出 到账 3763031 + 税 1711034
+[FB] 按捐出方：号 | 日志笔数 | 成交 / 没成交 / 定不了 | 到账合计 | 税合计 | 连发笔数 | 时延≥20 的成交笔数
+     Portugal       |  35 | 34 / 0 / 1 |   9369932 |  3308780 | 11 | 11
+     Lannes         |  33 | 30 / 0 / 3 |   1806839 |   746849 | 7 | 7
+     EnPassant      |  26 | 21 / 0 / 5 |   2361266 |  1379314 | 1 | 1
+     Golden Horde   |  16 | 13 / 1 / 2 |   3246894 |  2717261 | 1 | 1
+     Brittany       |  14 | 11 / 3 / 0 |   1003308 |   468618 | 4 | 5
+[FC] 按收款方：号 | 成交笔数 | 到账合计 | 捐出方付的税 | 首末拍
+     Dzungar(39)        |  34 |   9369932 |  3308780 | 4040~10660
+     EnPassant(50)      |  10 |   2380616 |  1999328 | 2900~9655
+     Golden Horde(46)   |  20 |   2158131 |   852194 | 5470~10820
+     Tomato(48)         |  18 |   1657647 |   969791 | 3400~4540
+     Palmyra(44)        |  11 |    916605 |   653604 | 4015~4875
+     SmurfAccount(37)   |   7 |    609242 |   362387 | 3630~4780
+     Ghana(40)          |   6 |    403170 |   324845 | 3060~4710
+     Brittany(47)       |   3 |    292896 |   149893 | 5025~5190
+[FQ] 引擎受捐额度对账（归属口径：先取过得了额度的，再取发令最晚的；--fifo 可换回旧的队首口径）：成交的 109 笔里记账后超出额度的 0 笔（编队外队友的捐款看不到，已用点数是下限；超出 = 余额拟合和额度模型对不上，这几笔的到账额或归属存疑）
+     受捐方 | t<2142 成交 笔数 / 到账 / 点数 | 2142~3212 | 3213~4283 | t≥4284 笔数 / 到账（不查额度）| t=4283 累计点数（额度 309）
+     Dzungar        | 0 / 0 / 0 | 0 / 0 / 0 | 2 / 524249 / 61 | 32 / 8845683 | 61
+     EnPassant      | 0 / 0 / 0 | 4 / 298776 / 124 | 0 / 0 / 0 | 6 / 2081840 | 124
+     Golden Horde   | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 20 / 2158131 | 0
+     Tomato         | 0 / 0 / 0 | 0 / 0 / 0 | 13 / 1170521 / 0 | 5 / 487126 | 0
+     Palmyra        | 0 / 0 / 0 | 0 / 0 / 0 | 4 / 381451 / 0 | 7 / 535154 | 0
+     SmurfAccount   | 0 / 0 / 0 | 0 / 0 / 0 | 3 / 418300 / 0 | 4 / 190942 | 0
+     Ghana          | 0 / 0 / 0 | 1 / 156921 / 63 | 0 / 0 / 0 | 5 / 246249 | 63
+     Brittany       | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 3 / 292896 | 0
+[FE] 盈余捐款成交后的密度（捐后余额 = 发令时余额 − 到账 − 税；连发的第二笔再减去第一笔）：号 | 成交笔数 | 发令时密度 中位 | 捐后密度 中位 / 最低 | 捐后 <68 的笔数 | 捐后 <55 的笔数
+     Portugal       |  34 | 80.0 | 58.6 / 44.7 | 29 | 10
+     Lannes         |  16 | 82.8 | 60.4 / 44.5 | 10 | 3
+     EnPassant      |   8 | 117.9 | 92.6 / 88.3 | 0 | 0
+     Brittany       |   5 | 79.8 | 57.6 / 44.0 | 5 | 2
+     Golden Horde   |   4 | 111.6 | 100.0 / 85.2 | 0 | 0
+[FD] 逐笔：拍 捐出→收款 类型 pct | 发令时余额 | 定案 | 时延区间(拍) | 到账 / 税 | 旧判定 | 连发
+      2900 Lannes→EnPassant(50) squad rescue 155 | 537635 | EXEC | (0,20] | 81905 / 33602 | ACC |  L8648795
+      2920 Lannes→EnPassant(50) squad rescue 148 | 430996 | EXEC | (20,50] | 62245 / 26736 | REJ |  L8648796
+      2940 Lannes→EnPassant(50) squad rescue 155 | 427784 | EXEC | (0,30] | 51614 / 21175 | ? | 连发@2920 L8648798
+      2980 Brittany→EnPassant(50) squad rescue 65 | 750022 | NOEXEC | (>170) | None / None | REJ |  L8648809
+      3000 Brittany→EnPassant(50) squad rescue 99 | 777232 | NOEXEC | (>150) | None / None | REJ |  L8648810
+      3060 Brittany→Ghana(40) surplus 185 | 815513 | EXEC | (40,90] | 156921 / 53994 | REJ |  L8648820
+      3080 Brittany→EnPassant(50) squad rescue 155 | 834707 | NOEXEC | (>160) | None / None | REJ |  L8648822
+      3100 Brittany→EnPassant(50) squad rescue 155 | 863911 | EXEC | (0,50] | 103012 / 42261 | ? |  L8648824
+      3400 Brittany→Tomato(48) surplus 185 | 759147 | EXEC | (20,110] | 142788 / 49131 | REJ |  L8648856
+      3420 Brittany→Tomato(48) surplus 185 | 777014 | EXEC | (0,90] | 110468 / 38010 | ? | 连发@3400 L8648864
+      3435 Lannes→Tomato(48) squad rescue 155 | 437291 | EXEC | (0,75] | 68881 / 28259 | ACC |  L8648867
+      3630 EnPassant→SmurfAccount(37) surplus 153 | 1160041 | EXEC | (0,60] | 174459 / 72502 | ACC |  L8648887
+      3810 Brittany→Tomato(48) surplus 185 | 745186 | EXEC | (60,150] | 145139 / 49940 | REJ |  L8648908
+      3825 EnPassant→SmurfAccount(37) surplus 153 | 1126007 | EXEC | (0,45] | 170678 / 70931 | ACC |  L8648904
+      3825 Lannes→SmurfAccount(37) surplus 153 | 478704 | EXEC | (0,20] | 73163 / 30405 | ACC |  L8648905
+      3830 Brittany→Tomato(48) surplus 185 | 762724 | EXEC | (40,130] | 109705 / 37748 | REJ | 连发@3810 L8648909
+      3840 Golden Horde→Tomato(48) squad rescue 82 | 1760788 | EXEC | (0,25] | 142720 / 110049 | ACC |  L8648906
+      3845 Lannes→Tomato(48) squad rescue 155 | 382922 | EXEC | (0,25] | 58977 / 24195 | ACC |  L8648907
+      3850 Brittany→Tomato(48) squad rescue 103 | 780675 | EXEC | (20,110] | 46907 / 28866 | REJ | 连发@3830 L8648916
+      3865 Golden Horde→Tomato(48) squad rescue 90 | 1545650 | EXEC | (0,95] | 139060 / 97801 | ACC |  L8648910
+      3870 Brittany→Tomato(48) squad rescue 124 | 799048 | EXEC | (0,90] | 49405 / 25295 | ? | 连发@3850 L8648918
+      3900 EnPassant→Tomato(48) squad rescue 63 | 978724 | EXEC | (20,60] | 62560 / 62560 | REJ |  L8648920
+      3920 EnPassant→Tomato(48) squad rescue 85 | 1000967 | EXEC | (0,40] | 73557 / 54740 | ? | 连发@3900 L8648921
+      3930 Lannes→Tomato(48) squad rescue 63 | 325668 | EXEC | (0,30] | 20354 / 20354 | ACC |  L8648922
+      4015 Golden Horde→Palmyra(44) squad rescue 133 | 1619397 | EXEC | (0,35] | 214540 / 102467 | ACC |  L8648931
+      4040 Portugal→Dzungar(39) surplus 185 | 1566655 | EXEC | (20,100] | 295373 / 101633 | REJ |  L8648932
+      4050 Lannes→Palmyra(44) squad rescue 62 | 318859 | EXEC | (0,90] | 19617 / 19928 | ACC |  L8648938
+      4060 Portugal→Dzungar(39) surplus 185 | 1606065 | EXEC | (0,80] | 228876 / 78753 | ? | 连发@4040 L8648940
+      4110 Golden Horde→Palmyra(44) squad rescue 60 | 1497007 | EXEC | (0,30] | 89177 / 93562 | ACC |  L8648943
+      4130 EnPassant→Palmyra(44) squad rescue 60 | 975613 | EXEC | (0,10] | 58117 / 60975 | ACC |  L8648944
+      4265 EnPassant→Palmyra(44) squad rescue 89 | 1005501 | EXEC | (0,55] | 89328 / 63522 | ACC |  L8648961
+      4265 Lannes→Palmyra(44) squad rescue 152 | 337456 | EXEC | (0,55] | 50975 / 21323 | ACC |  L8648962
+      4275 Golden Horde→Palmyra(44) squad rescue 134 | 1621629 | EXEC | (0,45] | 216439 / 102608 | ACC |  L8648963
+      4370 EnPassant→Tomato(48) squad rescue 65 | 980500 | EXEC | (0,40] | 63196 / 61281 | ACC |  L8648972
+      4400 Lannes→Tomato(48) squad rescue 75 | 296775 | EXEC | (10,100] | 22761 / 19167 | ACC |  L8648973
+      4440 Portugal→Dzungar(39) surplus 185 | 1574269 | EXEC | (20,60] | 293144 / 100866 | REJ |  L8648982
+      4450 Golden Horde→Tomato(48) squad rescue 155 | 1674427 | EXEC | (0,50] | 264695 / 108593 | ACC |  L8648983
+      4460 Portugal→Dzungar(39) surplus 185 | 1613871 | EXEC | (0,40] | 221576 / 76241 | ? | 连发@4440 L8648984
+      4470 EnPassant→Tomato(48) squad rescue 57 | 971805 | EXEC | (0,30] | 55043 / 60737 | ACC |  L8648985
+      4510 Brittany→Palmyra(44) squad rescue 65 | 750078 | EXEC | (0,80] | 50061 / 48544 | ACC |  L8648993
+      4520 Lannes→Palmyra(44) squad rescue 60 | 285386 | EXEC | (0,70] | 17567 / 18431 | ACC |  L8648995
+      4540 Golden Horde→Tomato(48) squad rescue 55 | 1489042 | EXEC | (0,50] | 81431 / 93065 | ACC |  L8648996
+      4570 EnPassant→Palmyra(44) squad rescue 57 | 971994 | EXEC | (0,20] | 55054 / 60749 | ACC |  L8648997
+      4610 Brittany→Ghana(40) squad rescue 59 | 745298 | EXEC | (0,70] | 45220 / 48235 | ACC |  L8649007
+      4630 Golden Horde→Ghana(40) squad rescue 55 | 1488640 | EXEC | (0,50] | 84476 / 96544 | ACC |  L8649008
+      4640 Lannes→Ghana(40) squad rescue 60 | 278807 | EXEC | (0,40] | 17162 / 18006 | ACC |  L8649009
+      4670 EnPassant→Ghana(40) squad rescue 57 | 972278 | EXEC | (10,100] | 55709 / 61472 | ACC |  L8649010
+      4710 Brittany→Ghana(40) squad rescue 59 | 745517 | EXEC | (0,60] | 43682 / 46594 | ACC |  L8649019
+      4730 Golden Horde→SmurfAccount(37) squad rescue 66 | 1506449 | EXEC | (0,40] | 98566 / 94153 | ACC |  L8649020
+      4760 Lannes→SmurfAccount(37) squad rescue 60 | 272589 | EXEC | (20,100] | 16779 / 17605 | REJ |  L8649021
+      4770 EnPassant→SmurfAccount(37) squad rescue 57 | 972463 | EXEC | (0,90] | 55080 / 60778 | ACC |  L8649026
+      4780 Lannes→SmurfAccount(37) squad rescue 81 | 278618 | EXEC | (0,80] | 20517 / 16013 | ? | 连发@4760 L8649030
+      4835 Golden Horde→SmurfAccount(37) squad rescue 66 | 1505926 | AMB | (>0) | None / None | ACC |  L8649033
+      4875 EnPassant→Palmyra(44) squad rescue 57 | 972648 | EXEC | (0,75] | 55730 / 61495 | ACC |  L8649042
+      4895 Portugal→Dzungar(39) surplus 185 | 1682754 | EXEC | (0,55] | 321017 / 110457 | ACC |  L8649044
+      5025 EnPassant→Brittany(47) squad rescue 117 | 1037075 | EXEC | (0,15] | 120701 / 65465 | ACC |  L8649054
+      5040 Portugal→Dzungar(39) surplus 185 | 1571785 | EXEC | (0,90] | 285500 / 98236 | ACC |  L8649063
+      5190 EnPassant→Brittany(47) squad rescue 122 | 1042590 | EXEC | (0,30] | 125232 / 65161 | ACC |  L8649077
+      5190 Lannes→Brittany(47) squad rescue 155 | 295283 | EXEC | (0,30] | 46963 / 19267 | ACC |  L8649078
+      5290 Lannes→Brittany(47) squad rescue 100 | 250254 | AMB | (>20) | None / None | REJ |  L8649087
+      5465 Portugal→Dzungar(39) surplus 185 | 2105035 | EXEC | (40,115] | 306707 / 105533 | REJ |  L8649106
+      5470 EnPassant→Golden Horde(46) surplus 153 | 1161014 | EXEC | (0,20] | 174605 / 72563 | ACC |  L8649105
+      5485 Portugal→Dzungar(39) surplus 185 | 2153089 | EXEC | (0,5] | 395351 / 136034 | ACC | 连发@5465 L8649111
+      5505 Portugal→Dzungar(39) surplus 185 | 1688541 | EXEC | (0,75] | 234725 / 80765 | ? |  L8649115
+      5700 EnPassant→Golden Horde(46) surplus 153 | 1170081 | EXEC | (0,60] | 175969 / 73130 | ACC |  L8649130
+      5720 Lannes→Golden Horde(46) surplus 153 | 330781 | EXEC(夹小) | (40,130] | 52240 / 16098 | REJ |  L8649131
+      5740 Lannes→Golden Horde(46) surplus 153 | 320355 | EXEC | (0,20] | 48178 / 20022 | ACC | 连发@5720 L8649132
+      5855 EnPassant→Golden Horde(46) surplus 153 | 1086344 | EXEC | (0,85] | 164813 / 68493 | ACC |  L8649148
+      5900 Portugal→Dzungar(39) surplus 185 | 1683722 | EXEC | (0,40] | 317444 / 109228 | ACC |  L8649151
+      6065 EnPassant→Golden Horde(46) surplus 153 | 1093096 | EXEC | (0,55] | 165821 / 68912 | ACC |  L8649168
+      6120 Portugal→Dzungar(39) surplus 185 | 1716711 | EXEC | (0,90] | 311824 / 107294 | ACC |  L8649175
+      6160 Lannes→Golden Horde(46) surplus 153 | 268580 | EXEC | (0,50] | 40391 / 16786 | ACC |  L8649179
+      6285 Portugal→Dzungar(39) surplus 185 | 1605187 | EXEC(夹小) | (15,80] | 56327 / 104108 | REJ |  L8649189
+      6365 Portugal→Dzungar(39) surplus 185 | 1626141 | EXEC | (0,25] | 299065 / 102904 | ? |  L8649198
+      6410 EnPassant→Golden Horde(46) surplus 153 | 1230292 | EXEC | (0,55] | 185024 / 76893 | ACC |  L8649208
+      6410 Lannes→Golden Horde(46) surplus 153 | 256497 | EXEC | (0,55] | 39413 / 16379 | ACC |  L8649209
+      6465 EnPassant→Golden Horde(46) squad rescue 105 | 1023525 | EXEC | (15,105] | 108123 / 65281 | ACC |  L8649212
+      6465 Lannes→Golden Horde(46) squad rescue 155 | 203694 | AMB | (>15) | None / None | ACC |  L8649213
+      6710 Portugal→Dzungar(39) surplus 185 | 1997910 | EXEC | (0,40] | 362901 / 124869 | ACC |  L8649238
+      6715 EnPassant→Golden Horde(46) surplus 153 | 1138146 | EXEC | (0,35] | 172467 / 71674 | ACC |  L8649239
+      6835 EnPassant→Golden Horde(46) squad rescue 113 | 1032387 | AMB | (>0) | None / None | ? |  L8649255
+      6955 Portugal→Dzungar(39) surplus 185 | 2079409 | EXEC | (0,35] | 382162 / 131496 | ACC |  L8649270
+      6990 Portugal→Dzungar(39) surplus 185 | 1649042 | EXEC | (0,30] | 314661 / 108270 | ACC |  L8649271
+      7005 Golden Horde→EnPassant(50) squad rescue 155 | 3964175 | AMB | (>195) | None / None | ? |  L8649272
+      7035 EnPassant→Golden Horde(46) surplus 153 | 338244 | AMB | (>0) | None / None | ? |  L8649279
+      7160 Portugal→Dzungar(39) surplus 185 | 1579849 | EXEC | (0,40] | 286964 / 98740 | ACC |  L8649288
+      7360 Portugal→Dzungar(39) surplus 185 | 1577261 | EXEC | (20,110] | 293701 / 101058 | REJ |  L8649308
+      7380 Portugal→Dzungar(39) surplus 185 | 1616938 | EXEC | (0,90] | 221997 / 76386 | ? | 连发@7360 L8649314
+      7420 Lannes→EnPassant(50) surplus 185 | 508973 | EXEC | (20,50] | 94569 / 32540 | REJ |  L8649317
+      7440 Lannes→EnPassant(50) surplus 185 | 520643 | EXEC | (0,30] | 71481 / 24595 | ? | 连发@7420 L8649318
+      7750 Portugal→Dzungar(39) surplus 185 | 1567232 | EXEC | (20,80] | 291834 / 100416 | REJ |  L8649348
+      7770 Portugal→Dzungar(39) surplus 185 | 1606657 | EXEC | (0,60] | 220585 / 75900 | ? | 连发@7750 L8649350
+      7850 Lannes→Golden Horde(46) surplus 185 | 506352 | EXEC | (20,70] | 95155 / 32741 | REJ |  L8649359
+      7870 Lannes→Golden Horde(46) surplus 185 | 517962 | EXEC | (0,50] | 74756 / 25722 | ? | 连发@7850 L8649360
+      8150 Portugal→Dzungar(39) surplus 185 | 1576096 | EXEC | (0,40] | 297153 / 102246 | ACC |  L8649386
+      8290 Lannes→Golden Horde(46) surplus 185 | 508343 | AMB | (>0) | None / None | ? |  L8649399
+      8350 Portugal→Dzungar(39) surplus 185 | 1573048 | EXEC | (20,110] | 292917 / 100788 | REJ |  L8649400
+      8370 Portugal→Dzungar(39) surplus 185 | 1612619 | EXEC | (0,90] | 221404 / 76182 | ? | 连发@8350 L8649406
+      8500 EnPassant→Golden Horde(46) surplus 185 | 1196093 | AMB | (>0) | None / None | ACC |  L8649414
+      8825 EnPassant→Golden Horde(46) surplus 185 | 1186849 | AMB | (>0) | None / None | ACC |  L8649440
+      8845 Portugal→Dzungar(39) surplus 185 | 1614780 | EXEC | (20,65] | 300688 / 103462 | REJ |  L8649441
+      8865 Portugal→Dzungar(39) surplus 185 | 1655401 | EXEC | (0,45] | 230118 / 79180 | ? | 连发@8845 L8649442
+      9170 EnPassant→Golden Horde(46) surplus 185 | 1185073 | AMB | (>190) | None / None | ACC |  L8649465
+      9220 Portugal→Dzungar(39) surplus 185 | 1579721 | EXEC | (20,50] | 294159 / 101216 | REJ |  L8649473
+      9240 Portugal→Dzungar(39) surplus 185 | 1619460 | EXEC | (0,30] | 222343 / 76505 | ? | 连发@9220 L8649476
+      9555 Golden Horde→EnPassant(50) surplus 280 | 8571000 | NOEXEC | (>165) | None / None | REJ |  L8649513
+      9575 Golden Horde→EnPassant(50) surplus 280 | 8670710 | EXEC(夹小) | (0,30] | 1188729 / 544845 | ACC |  L8649514
+      9605 Golden Horde→EnPassant(50) surplus 185 | 7173668 | EXEC(夹小) | (25,50] | 176221 / 414495 | REJ |  L8649518
+      9620 Portugal→Dzungar(39) surplus 185 | 1584011 | AMB | (>190) | None / None | ACC |  L8649519
+      9625 Golden Horde→EnPassant(50) surplus 280 | 7345416 | EXEC(夹小) | (0,5] | 332213 / 464276 | ACC | 连发@9605 L8649520
+      9655 Golden Horde→EnPassant(50) surplus 185 | 6225349 | EXEC(夹小) | (0,65] | 218627 / 394803 | ACC |  L8649528
+      9840 Portugal→Dzungar(39) surplus 185 | 1568060 | EXEC | (20,60] | 295637 / 101724 | REJ |  L8649549
+      9860 Portugal→Dzungar(39) surplus 185 | 1607505 | EXEC | (0,40] | 229082 / 78824 | ? | 连发@9840 L8649550
+     10120 Lannes→Golden Horde(46) surplus 185 | 681134 | EXEC | (0,20] | 123721 / 42570 | ACC |  L8649573
+     10140 Lannes→Golden Horde(46) surplus 185 | 526126 | EXEC | (0,30] | 98871 / 34020 | ACC |  L8649575
+     10240 Portugal→Dzungar(39) surplus 185 | 1575585 | EXEC | (20,110] | 297056 / 102213 | REJ |  L8649586
+     10260 Portugal→Dzungar(39) surplus 185 | 1615219 | EXEC | (0,90] | 230181 / 79202 | ? | 连发@10240 L8649591
+     10520 Lannes→Golden Horde(46) surplus 185 | 643605 | EXEC | (10,40] | 118237 / 40683 | ACC |  L8649618
+     10560 Lannes→Golden Horde(46) surplus 185 | 509040 | EXEC | (0,60] | 92462 / 31815 | ACC |  L8649626
+     10640 Portugal→Dzungar(39) surplus 185 | 1582651 | EXEC | (20,70] | 294705 / 101404 | REJ |  L8649637
+     10660 Portugal→Dzungar(39) surplus 185 | 1622464 | EXEC | (0,50] | 222755 / 76647 | ? | 连发@10640 L8649638
+     10780 Lannes→Golden Horde(46) surplus 185 | 508844 | EXEC | (40,110] | 97923 / 33694 | REJ |  L8649653
+     10800 Lannes→Golden Horde(46) surplus 185 | 527022 | EXEC | (20,90] | 74016 / 25468 | REJ | 连发@10780 L8649656
+     10820 Lannes→Golden Horde(46) surplus 185 | 539106 | EXEC | (0,70] | 55946 / 19250 | ? | 连发@10800 L8649659

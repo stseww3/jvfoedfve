@@ -1,0 +1,374 @@
+# A033 zero_7 影子决策明细 t=4400~7000（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   出手打人/bot: 21 拍（t=4400~6975）；可用兵 149710~1432234，一条指令下限(20%余额) 537097~826591，比值 26%~173%
+#   首选目标价高（c>=worth）: 305 拍（t=4415~7000）
+#   有可用兵但没发（脉冲下限/冷却/其他）: 42 拍（t=4840~6965）；可用兵 268349~597150，一条指令下限(20%余额) 550222~708965，比值 44%~97%
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 11 拍（t=4910~5050）；可用兵 435098~688205，一条指令下限(20%余额) 677165~728387，比值 64%~94%
+#   捐兵: 9 拍（t=4920~6970）；可用兵 627627~688205，一条指令下限(20%余额) 622929~728387，比值 94%~101%
+#   没有可打的邻居: 132 拍（t=5070~6330）
+#   其他指令: 1 拍（t=5230~5230）
+#   └ 「出手打人/bot」里：21 条对人/bot 的出兵共约 8876766 兵；其中超过软上限（over=1）时发的 19 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 18 条约 8228867 兵，c/worth = 1.13~3.59
+t=4400 zero_7 B=2685486 L=26598 d=101.0 nb=2 neut=0 cmds=66 noFull=1 shQ=664794 | m=0.900 worth=90.9 cheap=7.4 over=1 dMedOther=100.2 safe(-1)=1687565
+    → Thy Hoarders#15[T3] terr=7036 bal=944894 dq=134.3 cnt=32 | c=326.1 rankC=326.1 need=1694697 tD=1.34 人 pulse | safe=1687565 keep=2393820 avail=260196 chunkB=537097 pulseB=322258 
+    → [furry]嗷呜#18[T1] terr=30372 bal=3043763 dq=100.2 cnt=63 | c=296.7 rankC=430.2 need=5470647 tD=1.00 人 pulse agg | safe=1687565 keep=2393820 avail=260196 chunkB=537097 pulseB=322258 
+    ⇒ 影子指令 attack pct=99 → Thy Hoarders#15[T3]（约 262254 兵）
+t=4405 zero_7 B=2685486 L=26598 d=101.0 nb=2 neut=0 cmds=67 noFull=1 shQ=671371 | m=0.900 worth=90.9 cheap=7.4 over=1 dMedOther=100.2 safe(-1)=1687565
+    → Thy Hoarders#15[T3] terr=7036 bal=944894 dq=134.3 cnt=32 | c=326.1 rankC=326.1 need=1694697 tD=1.34 人 pulse | safe=1687565 keep=2393820 avail=260196 chunkB=537097 pulseB=322258 
+    → [furry]嗷呜#18[T1] terr=30372 bal=3043763 dq=100.2 cnt=63 | c=296.7 rankC=430.2 need=5470647 tD=1.00 人 pulse agg | safe=1687565 keep=2393820 avail=260196 chunkB=537097 pulseB=322258 
+    ⇒ 影子指令 attack pct=99 → Thy Hoarders#15[T3]（约 262254 兵）
+t=4410 zero_7 B=2720934 L=26598 d=102.3 nb=2 neut=0 cmds=68 noFull=1 shQ=680146 | m=0.900 worth=92.1 cheap=7.4 over=1 dMedOther=101.6 safe(-1)=1710992
+    → Thy Hoarders#15[T3] terr=7036 bal=948390 dq=134.8 cnt=32 | c=327.4 rankC=327.4 need=1700929 tD=1.33 人 pulse | safe=1710992 keep=2393820 avail=295229 chunkB=544187 pulseB=326512 
+    → [furry]嗷呜#18[T1] terr=30375 bal=3085462 dq=101.6 cnt=63 | c=300.7 rankC=436.0 need=5545081 tD=1.00 人 pulse agg | safe=1710992 keep=2393820 avail=295229 chunkB=544187 pulseB=326512 
+    ⇒ 影子指令 attack pct=111 → Thy Hoarders#15[T3]（约 297602 兵）
+t=4440 zero_7 B=1974599 L=27026 d=73.1 nb=2 neut=0 cmds=68 noFull=1 shQ=493649 | m=0.900 worth=80.4 cheap=7.4 over=0 dMedOther=105.1 safe(-1)=1779115
+    → Thy Hoarders#15[T3] terr=6608 bal=868080 dq=131.4 cnt=42 | c=206.3 rankC=206.3 need=982760 tD=1.25 人 pulse | safe=1779115 keep=Inf avail=-Inf chunkB=394920 pulseB=236952 价高(c>=worth)→break
+    → [furry]嗷呜#18[T1] terr=30531 bal=3207364 dq=105.1 cnt=63 | c=339.9 rankC=339.9 need=5762593 tD=1.00 人 pulse crowdedHard | safe=1779115 keep=Inf avail=-Inf chunkB=394920 pulseB=236952 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4470 zero_7 B=2055653 L=27615 d=74.4 nb=2 neut=0 cmds=68 noFull=1 shQ=513913 | m=0.900 worth=82.7 cheap=7.4 over=0 dMedOther=108.1 safe(-1)=1845015
+    → Thy Hoarders#15[T3] terr=6019 bal=759238 dq=126.1 cnt=34 | c=240.0 rankC=240.0 need=1006049 tD=1.17 人 pulse | safe=1845015 keep=Inf avail=-Inf chunkB=411131 pulseB=246678 价高(c>=worth)→break
+    → [furry]嗷呜#18[T1] terr=30769 bal=3325550 dq=108.1 cnt=63 | c=349.7 rankC=349.7 need=5973527 tD=1.00 人 pulse crowdedHard | safe=1845015 keep=Inf avail=-Inf chunkB=411131 pulseB=246678 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4500 zero_7 B=2168566 L=28147 d=77.0 nb=2 neut=0 cmds=68 noFull=1 shQ=535307 | m=0.900 worth=81.4 cheap=7.3 over=0 dMedOther=106.4 safe(-1)=1699202
+    → Thy Hoarders#15[T3] terr=5487 bal=672501 dq=122.6 cnt=38 | c=282.3 rankC=282.3 need=1039261 tD=1.15 人 pulse | safe=1699202 keep=Inf avail=-Inf chunkB=433713 pulseB=260228 价高(c>=worth)→break
+    → [furry]嗷呜#18[T1] terr=30863 bal=3066800 dq=99.4 cnt=63 | c=466.8 rankC=676.8 need=5512549 tD=0.93 人 pulse crowdedHard | safe=1699202 keep=Inf avail=-Inf chunkB=433713 pulseB=260228 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4530 zero_7 B=2563292 L=28265 d=90.7 nb=2 neut=0 cmds=68 noFull=1 shQ=564387 | m=0.900 worth=81.6 cheap=7.3 over=0 dMedOther=105.4 safe(-1)=1753611
+    → Thy Hoarders#15[T3] terr=4832 bal=509503 dq=105.4 cnt=35 | c=123.4 rankC=45.9 need=828219 tD=1.00 人 pulse | safe=1753611 keep=Inf avail=-Inf chunkB=512658 pulseB=307595 价高(c>=worth)→break
+    → [furry]嗷呜#18[T1] terr=30981 bal=3163825 dq=102.1 cnt=63 | c=331.3 rankC=331.3 need=5679088 tD=0.97 人 pulse crowdedHard | safe=1753611 keep=Inf avail=-Inf chunkB=512658 pulseB=307595 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4560 zero_7 B=2669301 L=28265 d=94.4 nb=2 neut=0 cmds=68 noFull=1 shQ=667325 | m=0.900 worth=85.0 cheap=7.3 over=0 dMedOther=104.4 safe(-1)=1806683
+    → [furry]嗷呜#18[T1] terr=30830 bal=3258294 dq=105.7 cnt=63 | c=342.9 rankC=342.9 need=5842558 tD=1.01 人 pulse crowdedHard | safe=1806683 keep=Inf avail=-Inf chunkB=533860 pulseB=320316 价高(c>=worth)→break
+    → Thy Hoarders#15[T3] terr=4765 bal=510522 dq=107.1 cnt=35 | c=405.8 rankC=588.4 need=828092 tD=1.03 人 pulse | safe=1806683 keep=Inf avail=-Inf chunkB=533860 pulseB=320316 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4590 zero_7 B=2779695 L=28265 d=98.3 nb=2 neut=0 cmds=68 noFull=1 shQ=694923 | m=0.900 worth=88.5 cheap=7.3 over=0 dMedOther=101.9 safe(-1)=1617966
+    → [furry]嗷呜#18[T1] terr=30938 bal=2922377 dq=94.5 cnt=63 | c=227.3 rankC=227.3 need=5249724 tD=0.93 人 pulse | safe=1617966 keep=Inf avail=-Inf chunkB=555939 pulseB=333563 价高(c>=worth)→break
+    → Thy Hoarders#15[T3] terr=4765 bal=525314 dq=110.2 cnt=35 | c=417.0 rankC=604.7 need=854797 tD=1.08 人 pulse | safe=1617966 keep=Inf avail=-Inf chunkB=555939 pulseB=333563 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4600 zero_7 B=2845763 L=28265 d=100.7 nb=2 neut=0 cmds=69 noFull=1 shQ=704456 | m=0.900 worth=90.6 cheap=7.3 over=1 dMedOther=104.2 safe(-1)=1658104
+    → [furry]嗷呜#18[T1] terr=31169 bal=2993823 dq=96.1 cnt=63 | c=231.0 rankC=231.0 need=5382865 tD=0.92 人 pulse | safe=1658104 keep=2543850 avail=268565 chunkB=569153 pulseB=341492 
+    → Thy Hoarders#15[T3] terr=4765 bal=534859 dq=112.2 cnt=35 | c=424.4 rankC=615.4 need=871195 tD=1.08 人 pulse | safe=1658104 keep=2543850 avail=268565 chunkB=569153 pulseB=341492 
+    ⇒ 影子指令 attack pct=96 → [furry]嗷呜#18[T1]（约 269569 兵）
+t=4605 zero_7 B=2845763 L=28265 d=100.7 nb=2 neut=0 cmds=70 noFull=1 shQ=711440 | m=0.900 worth=90.6 cheap=7.3 over=1 dMedOther=104.2 safe(-1)=1658104
+    → [furry]嗷呜#18[T1] terr=31276 bal=2993823 dq=95.7 cnt=63 | c=230.2 rankC=230.2 need=5382991 tD=0.92 人 pulse | safe=1658104 keep=2543850 avail=268565 chunkB=569153 pulseB=341492 
+    → Thy Hoarders#15[T3] terr=4765 bal=534859 dq=112.2 cnt=35 | c=424.3 rankC=615.2 need=871780 tD=1.08 人 pulse | safe=1658104 keep=2543850 avail=268565 chunkB=569153 pulseB=341492 
+    ⇒ 影子指令 attack pct=96 → [furry]嗷呜#18[T1]（约 269569 兵）
+t=4610 zero_7 B=2884180 L=28265 d=102.0 nb=2 neut=0 cmds=71 noFull=1 shQ=720885 | m=0.900 worth=91.8 cheap=7.3 over=1 dMedOther=105.4 safe(-1)=1681314
+    → [furry]嗷呜#18[T1] terr=31447 bal=3035137 dq=96.5 cnt=63 | c=232.1 rankC=232.1 need=5456987 tD=0.92 人 pulse | safe=1681314 keep=2543850 avail=306532 chunkB=576836 pulseB=346102 
+    → Thy Hoarders#15[T3] terr=4765 bal=539512 dq=113.2 cnt=35 | c=427.9 rankC=620.5 need=879704 tD=1.07 人 pulse | safe=1681314 keep=2543850 avail=306532 chunkB=576836 pulseB=346102 
+    ⇒ 影子指令 attack pct=108 → [furry]嗷呜#18[T1]（约 307007 兵）
+t=4620 zero_7 B=2334165 L=28265 d=82.6 nb=2 neut=0 cmds=71 noFull=1 shQ=75257 | m=0.900 worth=81.6 cheap=7.3 over=0 dMedOther=106.6 safe(-1)=1704845
+    → [furry]嗷呜#18[T1] terr=31771 bal=3077021 dq=96.8 cnt=63 | c=284.8 rankC=284.8 need=5014792 tD=0.91 人 pulse crowdedHard | safe=1704845 keep=Inf avail=-Inf chunkB=466833 pulseB=280100 价高(c>=worth)→break
+    → Thy Hoarders#15[T3] terr=4765 bal=544043 dq=114.2 cnt=35 | c=428.2 rankC=620.9 need=887436 tD=1.07 人 pulse | safe=1704845 keep=Inf avail=-Inf chunkB=466833 pulseB=280100 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4650 zero_7 B=2143479 L=29218 d=73.4 nb=2 neut=0 cmds=71 noFull=1 shQ=288982 | m=0.900 worth=81.6 cheap=7.3 over=0 dMedOther=106.7 safe(-1)=1674812
+    → [furry]嗷呜#18[T1] terr=30890 bal=3024992 dq=97.9 cnt=60 | c=291.1 rankC=291.1 need=4937622 tD=0.92 人 pulse crowdedHard | safe=1674812 keep=Inf avail=-Inf chunkB=428696 pulseB=257217 价高(c>=worth)→break
+    → Thy Hoarders#15[T3] terr=4765 bal=557204 dq=116.9 cnt=35 | c=436.8 rankC=633.4 need=910375 tD=1.10 人 pulse | safe=1674812 keep=Inf avail=-Inf chunkB=428696 pulseB=257217 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4680 zero_7 B=2232346 L=29979 d=74.5 nb=2 neut=0 cmds=71 noFull=1 shQ=512747 | m=0.900 worth=77.9 cheap=7.3 over=0 dMedOther=101.8 safe(-1)=1441615
+    → [furry]嗷呜#18[T1] terr=30604 bal=2611043 dq=85.3 cnt=44 | c=264.0 rankC=264.0 need=4417158 tD=0.84 人 pulse crowdedHard | safe=1441615 keep=Inf avail=-Inf chunkB=446469 pulseB=267882 价高(c>=worth)→break
+    → Thy Hoarders#15[T3] terr=4765 bal=569664 dq=119.6 cnt=35 | c=446.4 rankC=647.3 need=932040 tD=1.17 人 pulse | safe=1441615 keep=Inf avail=-Inf chunkB=446469 pulseB=267882 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4710 zero_7 B=2562750 L=30535 d=83.9 nb=2 neut=0 cmds=71 noFull=1 shQ=640687 | m=0.900 worth=80.0 cheap=7.3 over=0 dMedOther=104.5 safe(-1)=1412977
+    → [furry]嗷呜#18[T1] terr=30720 bal=2560902 dq=83.4 cnt=33 | c=89.4 rankC=33.3 need=4483815 tD=0.80 人 pulse | safe=1412977 keep=Inf avail=-Inf chunkB=512550 pulseB=307530 价高(c>=worth)→break
+    → Thy Hoarders#15[T3] terr=4765 bal=586042 dq=123.0 cnt=35 | c=460.3 rankC=667.4 need=960352 tD=1.18 人 pulse | safe=1412977 keep=Inf avail=-Inf chunkB=512550 pulseB=307530 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4740 zero_7 B=2669537 L=30872 d=86.5 nb=2 neut=0 cmds=71 noFull=1 shQ=667384 | m=0.900 worth=77.8 cheap=7.3 over=0 dMedOther=101.2 safe(-1)=1406944
+    → [furry]嗷呜#18[T1] terr=31262 bal=2550668 dq=81.6 cnt=30 | c=86.5 rankC=32.2 need=4580742 tD=0.81 人 pulse | safe=1406944 keep=Inf avail=-Inf chunkB=533907 pulseB=320344 价高(c>=worth)→break
+    → Thy Hoarders#15[T3] terr=4265 bal=492053 dq=115.4 cnt=28 | c=443.8 rankC=643.5 need=773353 tD=1.14 人 | safe=1406944 keep=Inf avail=-Inf chunkB=533907 pulseB=320344 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4755 zero_7 B=2911263 L=30872 d=94.3 nb=2 neut=0 cmds=72 noFull=1 shQ=696613 | m=0.900 worth=84.9 cheap=7.3 over=0 dMedOther=102.5 safe(-1)=1200847
+    → [furry]嗷呜#18[T1] terr=31532 bal=2183816 dq=69.3 cnt=26 | c=74.7 rankC=27.8 need=3936199 tD=0.68 人 pulse bleeding | safe=1200847 keep=2727437 avail=149710 chunkB=582253 pulseB=349352 
+    → Thy Hoarders#15[T3] terr=4265 bal=495891 dq=116.3 cnt=28 | c=448.3 rankC=650.0 need=781043 tD=1.13 人 | safe=1200847 keep=Inf avail=-Inf chunkB=582253 pulseB=349352 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=52 → [furry]嗷呜#18[T1]（约 150680 兵）
+t=4760 zero_7 B=2951147 L=30872 d=95.6 nb=2 neut=0 cmds=73 noFull=1 shQ=737786 | m=0.900 worth=86.0 cheap=7.3 over=0 dMedOther=103.8 safe(-1)=1207409
+    → [furry]嗷呜#18[T1] terr=31669 bal=2195496 dq=69.3 cnt=25 | c=75.3 rankC=28.0 need=3960698 tD=0.67 人 pulse bleeding | safe=1207409 keep=2759009 avail=157555 chunkB=590229 pulseB=354138 
+    → Thy Hoarders#15[T3] terr=4265 bal=499659 dq=117.2 cnt=28 | c=451.7 rankC=654.9 need=787365 tD=1.13 人 | safe=1207409 keep=Inf avail=-Inf chunkB=590229 pulseB=354138 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=54 → [furry]嗷呜#18[T1]（约 158508 兵）
+t=4765 zero_7 B=3153098 L=30872 d=102.1 nb=2 neut=0 cmds=74 noFull=1 shQ=788274 | m=0.900 worth=91.9 cheap=7.3 over=1 dMedOther=103.7 safe(-1)=1200321
+    → [furry]嗷呜#18[T1] terr=31756 bal=2182879 dq=68.7 cnt=24 | c=75.2 rankC=28.0 need=3938315 tD=0.66 人 pulse bleeding | safe=1200321 keep=2778480 avail=337668 chunkB=630620 pulseB=378372 
+    → Thy Hoarders#15[T3] terr=4265 bal=499659 dq=117.2 cnt=28 | c=452.8 rankC=656.6 need=788005 tD=1.13 人 | safe=1200321 keep=2778480 avail=337668 chunkB=630620 pulseB=378372 不够一条
+    ⇒ 影子指令 attack pct=109 → [furry]嗷呜#18[T1]（约 338711 兵）
+t=4770 zero_7 B=2797550 L=30872 d=90.6 nb=2 neut=0 cmds=74 noFull=1 shQ=352701 | m=0.900 worth=81.6 cheap=7.3 over=0 dMedOther=104.9 safe(-1)=1205955
+    → [furry]嗷呜#18[T1] terr=31850 bal=2192908 dq=68.9 cnt=22 | c=102.4 rankC=61.5 need=3634507 tD=0.66 人 pulse bleeding | safe=1205955 keep=Inf avail=-Inf chunkB=559510 pulseB=335706 价高(c>=worth)→break
+    → Thy Hoarders#15[T3] terr=4265 bal=503356 dq=118.0 cnt=28 | c=453.6 rankC=657.7 need=794227 tD=1.13 人 | safe=1205955 keep=Inf avail=-Inf chunkB=559510 pulseB=335706 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4800 zero_7 B=2734742 L=31183 d=87.7 nb=2 neut=0 cmds=74 noFull=1 shQ=625080 | m=0.900 worth=78.9 cheap=7.2 over=0 dMedOther=102.5 safe(-1)=1234276
+    → [furry]嗷呜#18[T1] terr=32583 bal=2243786 dq=68.9 cnt=29 | c=144.1 rankC=144.1 need=3493848 tD=0.67 人 pulse | safe=1234276 keep=Inf avail=-Inf chunkB=546948 pulseB=328169 价高(c>=worth)→break
+    → Thy Hoarders#15[T3] terr=4265 bal=518264 dq=121.5 cnt=28 | c=465.2 rankC=674.6 need=820900 tD=1.19 人 pulse | safe=1234276 keep=Inf avail=-Inf chunkB=546948 pulseB=328169 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4830 zero_7 B=2939049 L=31675 d=92.8 nb=2 neut=0 cmds=74 noFull=1 shQ=734762 | m=0.900 worth=85.2 cheap=7.2 over=0 dMedOther=111.4 safe(-1)=1255898
+    → [furry]嗷呜#18[T1] terr=33368 bal=2283011 dq=68.4 cnt=29 | c=147.9 rankC=147.9 need=3673227 tD=0.61 人 pulse | safe=1255898 keep=Inf avail=-Inf chunkB=587810 pulseB=352686 价高(c>=worth)→break
+    → Thy Hoarders#15[T3] terr=4265 bal=528066 dq=123.8 cnt=28 | c=474.1 rankC=687.5 need=839675 tD=1.11 人 | safe=1255898 keep=Inf avail=-Inf chunkB=587810 pulseB=352686 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4860 zero_7 B=3062411 L=32017 d=95.6 nb=2 neut=0 cmds=74 noFull=1 shQ=765602 | m=0.900 worth=86.1 cheap=7.2 over=0 dMedOther=97.6 safe(-1)=1259509
+    → [furry]嗷呜#18[T1] terr=33090 bal=2289952 dq=69.2 cnt=16 | c=67.8 rankC=25.2 need=3749272 tD=0.71 人 pulse bleeding | safe=1259509 keep=2734712 avail=291812 chunkB=612482 pulseB=367489 
+    → Thy Hoarders#15[T3] terr=4265 bal=537252 dq=126.0 cnt=28 | c=481.9 rankC=698.8 need=857577 tD=1.29 人 | safe=1259509 keep=Inf avail=-Inf chunkB=612482 pulseB=367489 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4890 zero_7 B=3190951 L=32291 d=98.8 nb=2 neut=0 cmds=74 noFull=1 shQ=797737 | m=0.900 worth=88.9 cheap=7.2 over=0 dMedOther=112.2 safe(-1)=1255960
+    → [furry]嗷呜#18[T1] terr=32338 bal=2284046 dq=70.6 cnt=11 | c=107.0 rankC=64.2 need=3780434 tD=0.63 人 pulse bleeding | safe=1255960 keep=Inf avail=-Inf chunkB=638190 pulseB=382914 价高(c>=worth)→break
+    → Thy Hoarders#15[T3] terr=3767 bal=443481 dq=117.7 cnt=21 | c=466.5 rankC=676.5 need=670904 tD=1.05 人 | safe=1255960 keep=Inf avail=-Inf chunkB=638190 pulseB=382914 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4920 zero_7 B=3641933 L=32345 d=112.6 nb=1 neut=0 cmds=75 noFull=1 shQ=910313 | m=0.900 worth=101.3 cheap=7.2 over=1 dMedOther=109.0 safe(-1)=229278
+    → Thy Hoarders#15[T3] terr=3767 bal=456632 dq=121.2 cnt=21 | c=482.1 rankC=699.0 need=694141 tD=1.11 人 | safe=229278 keep=2911050 avail=688205 chunkB=728387 pulseB=437032 不够一条
+    ⇒ 影子指令 donate pct=187 → [APEX] zexos1#50[T2]（约 668636 兵）
+t=4950 zero_7 B=2860923 L=32345 d=88.5 nb=1 neut=0 cmds=75 noFull=1 shQ=715230 | m=0.900 worth=86.3 cheap=7.2 over=0 dMedOther=112.8 safe(-1)=234156
+    → Thy Hoarders#15[T3] terr=3767 bal=465316 dq=123.5 cnt=21 | c=333.6 rankC=333.6 need=710776 tD=1.10 人 | safe=234156 keep=Inf avail=-Inf chunkB=572185 pulseB=343311 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4980 zero_7 B=2981005 L=32345 d=92.2 nb=1 neut=0 cmds=75 noFull=1 shQ=745251 | m=0.900 worth=82.9 cheap=7.2 over=0 dMedOther=101.4 safe(-1)=238757
+    → Thy Hoarders#15[T3] terr=3767 bal=473505 dq=125.7 cnt=21 | c=339.1 rankC=339.1 need=726765 tD=1.24 人 | safe=238757 keep=Inf avail=-Inf chunkB=596201 pulseB=357721 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5010 zero_7 B=3202974 L=32345 d=99.0 nb=1 neut=0 cmds=75 noFull=1 shQ=800743 | m=0.900 worth=89.1 cheap=7.2 over=0 dMedOther=106.2 safe(-1)=245108
+    → Thy Hoarders#15[T3] terr=3767 bal=484810 dq=128.7 cnt=21 | c=347.3 rankC=347.3 need=747631 tD=1.21 人 | safe=245108 keep=Inf avail=-Inf chunkB=640595 pulseB=384357 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5040 zero_7 B=3511262 L=32345 d=108.6 nb=1 neut=0 cmds=75 noFull=1 shQ=877672 | m=0.900 worth=97.7 cheap=7.2 over=1 dMedOther=109.8 safe(-1)=248938
+    → Thy Hoarders#15[T3] terr=3767 bal=491628 dq=130.5 cnt=21 | c=352.8 rankC=352.8 need=761732 tD=1.19 人 | safe=248938 keep=2911050 avail=559065 chunkB=702252 pulseB=421351 不够一条
+    ⇒ 本拍没有指令
+t=5055 zero_7 B=4106675 L=32345 d=127.0 nb=1 neut=0 cmds=76 noFull=1 shQ=898176 | m=0.900 worth=114.3 cheap=7.2 over=1 dMedOther=110.2 safe(-1)=250154
+    → Thy Hoarders#15[T3] terr=3767 bal=493791 dq=131.1 cnt=21 | c=356.9 rankC=356.9 need=767010 tD=1.19 人 | safe=250154 keep=2652290 avail=1406260 chunkB=821335 pulseB=492801 
+    ⇒ 影子指令 attack pct=239 → Thy Hoarders#15[T3]（约 962501 兵）
+t=5060 zero_7 B=4132957 L=32345 d=127.8 nb=1 neut=0 cmds=77 noFull=1 shQ=949572 | m=0.900 worth=115.0 cheap=7.2 over=1 dMedOther=119.9 safe(-1)=251346
+    → Thy Hoarders#15[T3] terr=3767 bal=495914 dq=131.6 cnt=21 | c=358.4 rankC=358.4 need=770776 tD=1.10 人 | safe=251346 keep=2652290 avail=1432234 chunkB=826591 pulseB=495955 
+    ⇒ 影子指令 attack pct=238 → Thy Hoarders#15[T3]（约 964625 兵）
+t=5065 zero_7 B=4132957 L=32345 d=127.8 nb=1 neut=0 cmds=78 noFull=1 shQ=1001232 | m=0.900 worth=115.0 cheap=7.2 over=1 dMedOther=119.8 safe(-1)=251346
+    → Thy Hoarders#15[T3] terr=3767 bal=495914 dq=131.6 cnt=21 | c=358.2 rankC=358.2 need=771507 tD=1.10 人 | safe=251346 keep=2652290 avail=1432234 chunkB=826591 pulseB=495955 
+    ⇒ 影子指令 attack pct=238 → Thy Hoarders#15[T3]（约 964625 兵）
+t=5070 zero_7 B=2384571 L=32345 d=73.7 nb=1 neut=0 cmds=78 noFull=1 shQ=8286 | m=0.900 worth=92.4 cheap=7.2 over=0 dMedOther=120.7 safe(-1)=252516
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5100 zero_7 B=2278263 L=32610 d=69.9 nb=1 neut=0 cmds=78 noFull=1 shQ=240478 | m=0.900 worth=98.9 cheap=7.2 over=0 dMedOther=129.3 safe(-1)=226847
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5130 zero_7 B=2868295 L=32970 d=87.0 nb=1 neut=0 cmds=78 noFull=1 shQ=494196 | m=0.900 worth=89.8 cheap=7.2 over=0 dMedOther=117.4 safe(-1)=172534
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5160 zero_7 B=3201827 L=33555 d=95.4 nb=1 neut=0 cmds=78 noFull=1 shQ=800456 | m=0.900 worth=89.1 cheap=7.2 over=0 dMedOther=116.5 safe(-1)=119758
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5190 zero_7 B=3337207 L=34098 d=97.9 nb=0 neut=24 cmds=78 noFull=1 shQ=834301 | m=0.900 worth=88.1 cheap=7.2 over=0 dMedOther=113.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5220 zero_7 B=3523112 L=34323 d=102.6 nb=0 neut=8 cmds=78 noFull=1 shQ=880588 | m=0.900 worth=92.4 cheap=7.1 over=1 dMedOther=113.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5230 zero_7 B=5151150 L=34341 d=150.0 nb=0 neut=0 cmds=79 noFull=1 shQ=893655 | m=0.900 worth=135.0 cheap=7.1 over=1 dMedOther=115.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 boatTo pct=197 → 水/岸#631875（约 996023 兵）
+t=5245 zero_7 B=3994154 L=34341 d=116.3 nb=0 neut=0 cmds=80 noFull=1 shQ=998538 | m=0.900 worth=104.7 cheap=7.1 over=1 dMedOther=116.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] sora_w#49[T2]（约 1252073 兵）
+t=5250 zero_7 B=4032098 L=34341 d=117.4 nb=0 neut=0 cmds=80 noFull=1 shQ=1008024 | m=0.900 worth=105.7 cheap=7.1 over=1 dMedOther=117.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5270 zero_7 B=3624377 L=34341 d=105.5 nb=0 neut=0 cmds=81 noFull=1 shQ=905880 | m=0.900 worth=95.0 cheap=7.1 over=1 dMedOther=119.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] sora_w#49[T2]（约 1136157 兵）
+t=5280 zero_7 B=2899602 L=34341 d=84.4 nb=0 neut=0 cmds=81 noFull=1 shQ=724900 | m=0.900 worth=89.3 cheap=7.1 over=0 dMedOther=116.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5310 zero_7 B=3057918 L=34341 d=89.0 nb=0 neut=0 cmds=81 noFull=1 shQ=764479 | m=0.900 worth=90.2 cheap=7.1 over=0 dMedOther=117.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5320 zero_7 B=3100728 L=34341 d=90.3 nb=0 neut=0 cmds=82 noFull=1 shQ=775182 | m=0.900 worth=91.0 cheap=7.1 over=0 dMedOther=119.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] sora_w#49[T2]（约 972005 兵）
+t=5340 zero_7 B=2294949 L=34341 d=66.8 nb=0 neut=0 cmds=82 noFull=1 shQ=573737 | m=0.900 worth=92.6 cheap=7.1 over=0 dMedOther=121.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5370 zero_7 B=2392692 L=34341 d=69.7 nb=0 neut=0 cmds=83 noFull=1 shQ=598173 | m=0.900 worth=93.2 cheap=7.1 over=0 dMedOther=121.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] sora_w#49[T2]（约 750052 兵）
+t=5400 zero_7 B=1591029 L=34341 d=46.3 nb=0 neut=0 cmds=83 noFull=1 shQ=389367 | m=0.900 worth=90.7 cheap=7.1 over=0 dMedOther=118.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5430 zero_7 B=1658791 L=34341 d=48.3 nb=0 neut=0 cmds=83 noFull=1 shQ=414697 | m=0.900 worth=86.8 cheap=7.1 over=0 dMedOther=113.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5460 zero_7 B=1739454 L=34341 d=50.7 nb=0 neut=0 cmds=83 noFull=1 shQ=434863 | m=0.900 worth=93.5 cheap=7.1 over=0 dMedOther=122.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5490 zero_7 B=2301868 L=34228 d=67.3 nb=1 neut=0 cmds=83 noFull=1 shQ=512909 | m=0.900 worth=95.7 cheap=7.1 over=0 dMedOther=125.1 safe(-1)=2367862
+    → [furry]嗷呜#18[T1] terr=32372 bal=3745637 dq=115.7 cnt=23 | c=224.9 rankC=157.4 need=7222840 tD=0.92 人 pulse onMe | safe=2367862 keep=Inf avail=-Inf chunkB=460374 pulseB=276224 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5520 zero_7 B=2898298 L=33531 d=86.4 nb=1 neut=0 cmds=83 noFull=1 shQ=724574 | m=0.900 worth=84.4 cheap=7.2 over=0 dMedOther=110.3 safe(-1)=2335270
+    → [furry]嗷呜#18[T1] terr=33069 bal=3303617 dq=99.9 cnt=49 | c=207.4 rankC=145.2 need=6841341 tD=0.91 人 pulse onMe | safe=2335270 keep=Inf avail=-Inf chunkB=579660 pulseB=347796 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5540 zero_7 B=3559650 L=33104 d=107.5 nb=1 neut=0 cmds=84 noFull=1 shQ=732577 | m=0.900 worth=96.8 cheap=7.2 over=1 dMedOther=112.7 safe(-1)=2320020
+    → [furry]嗷呜#18[T1] terr=33499 bal=3396095 dq=101.4 cnt=38 | c=206.4 rankC=144.5 need=6886624 tD=0.90 人 pulse onMe | safe=2320020 keep=2979360 avail=538576 chunkB=711930 pulseB=427158 
+    ⇒ 影子指令 attack pct=122 → [furry]嗷呜#18[T1]（约 427575 兵）
+t=5545 zero_7 B=3540396 L=32992 d=107.3 nb=1 neut=0 cmds=85 noFull=1 shQ=784995 | m=0.900 worth=96.6 cheap=7.2 over=1 dMedOther=112.6 safe(-1)=2298354
+    → [furry]嗷呜#18[T1] terr=33611 bal=3396095 dq=101.0 cnt=37 | c=204.6 rankC=143.2 need=6848059 tD=0.90 人 pulse onMe | safe=2298354 keep=2969280 avail=529627 chunkB=708079 pulseB=424848 
+    ⇒ 影子指令 attack pct=122 → [furry]嗷呜#18[T1]（约 425262 兵）
+t=5550 zero_7 B=3569501 L=32917 d=108.4 nb=1 neut=0 cmds=86 noFull=1 shQ=837309 | m=0.900 worth=97.6 cheap=7.2 over=1 dMedOther=113.8 safe(-1)=2310009
+    → [furry]嗷呜#18[T1] terr=33686 bal=3442621 dq=102.2 cnt=38 | c=205.8 rankC=144.1 need=6905169 tD=0.90 人 pulse onMe | safe=2310009 keep=2962530 avail=565141 chunkB=713900 pulseB=428340 
+    ⇒ 影子指令 attack pct=122 → [furry]嗷呜#18[T1]（约 428758 兵）
+t=5580 zero_7 B=2415759 L=33178 d=72.8 nb=1 neut=0 cmds=86 noFull=1 shQ=584205 | m=0.900 worth=80.4 cheap=7.2 over=0 dMedOther=105.0 safe(-1)=1944365
+    → [furry]嗷呜#18[T1] terr=33425 bal=3510737 dq=105.0 cnt=38 | c=441.1 rankC=361.7 need=5982939 tD=1.00 人 pulse crowdedHard agg | safe=1944365 keep=Inf avail=-Inf chunkB=483152 pulseB=289891 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5610 zero_7 B=2528801 L=33255 d=76.0 nb=1 neut=0 cmds=86 noFull=1 shQ=632200 | m=0.900 worth=77.8 cheap=7.2 over=0 dMedOther=101.7 safe(-1)=1837879
+    → [furry]嗷呜#18[T1] terr=33348 bal=3144862 dq=94.3 cnt=37 | c=193.2 rankC=158.4 need=5817026 tD=0.93 人 pulse onMe agg | safe=1837879 keep=Inf avail=-Inf chunkB=505760 pulseB=303456 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5640 zero_7 B=2736401 L=32699 d=83.7 nb=1 neut=0 cmds=86 noFull=1 shQ=684100 | m=0.900 worth=75.3 cheap=7.2 over=0 dMedOther=96.7 safe(-1)=1834705
+    → [furry]嗷呜#18[T1] terr=33904 bal=3277833 dq=96.7 cnt=24 | c=234.2 rankC=234.2 need=5930132 tD=1.00 人 pulse onMe | safe=1834705 keep=Inf avail=-Inf chunkB=547280 pulseB=328368 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5670 zero_7 B=2832168 L=32567 d=87.0 nb=1 neut=0 cmds=86 noFull=1 shQ=708042 | m=0.900 worth=80.3 cheap=7.2 over=0 dMedOther=104.9 safe(-1)=1891901
+    → [furry]嗷呜#18[T1] terr=34036 bal=3416434 dq=100.4 cnt=28 | c=443.4 rankC=363.6 need=6140377 tD=0.96 人 pulse crowdedHard agg | safe=1891901 keep=Inf avail=-Inf chunkB=566434 pulseB=339860 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5700 zero_7 B=2983611 L=32567 d=91.6 nb=1 neut=0 cmds=86 noFull=1 shQ=738086 | m=0.900 worth=82.5 cheap=7.2 over=0 dMedOther=105.5 safe(-1)=1989612
+    → [furry]嗷呜#18[T1] terr=34036 bal=3590359 dq=105.5 cnt=28 | c=465.8 rankC=382.0 need=6450375 tD=1.00 人 pulse crowdedHard agg | safe=1989612 keep=Inf avail=-Inf chunkB=596722 pulseB=358033 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5730 zero_7 B=3108844 L=32567 d=95.5 nb=1 neut=0 cmds=86 noFull=1 shQ=777211 | m=0.900 worth=85.9 cheap=7.2 over=0 dMedOther=109.4 safe(-1)=2063513
+    → [furry]嗷呜#18[T1] terr=34036 bal=3721903 dq=109.4 cnt=28 | c=700.0 rankC=832.3 need=6684834 tD=1.00 人 pulse crowdedHard agg | safe=2063513 keep=Inf avail=-Inf chunkB=621769 pulseB=373061 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5760 zero_7 B=3238857 L=32564 d=99.5 nb=1 neut=0 cmds=86 noFull=1 shQ=809714 | m=0.900 worth=89.5 cheap=7.2 over=0 dMedOther=102.9 safe(-1)=2133491
+    → [furry]嗷呜#18[T1] terr=34036 bal=3846460 dq=113.0 cnt=28 | c=723.3 rankC=860.0 need=6906840 tD=1.10 人 pulse crowdedHard agg | safe=2133491 keep=Inf avail=-Inf chunkB=647771 pulseB=388663 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5780 zero_7 B=3328209 L=32564 d=102.2 nb=1 neut=0 cmds=87 noFull=1 shQ=831954 | m=0.900 worth=92.0 cheap=7.2 over=1 dMedOther=102.1 safe(-1)=2156332
+    → [furry]嗷呜#18[T1] terr=34036 bal=3397563 dq=99.8 cnt=28 | c=194.7 rankC=136.3 need=6596296 tD=0.98 人 pulse onMe | safe=2156332 keep=2930760 avail=358447 chunkB=665642 pulseB=399385 
+    ⇒ 影子指令 attack pct=110 → [furry]嗷呜#18[T1]（约 360772 兵）
+t=5785 zero_7 B=3319055 L=32508 d=102.1 nb=1 neut=0 cmds=88 noFull=1 shQ=829763 | m=0.900 worth=91.9 cheap=7.2 over=1 dMedOther=102.1 safe(-1)=2146031
+    → [furry]嗷呜#18[T1] terr=34092 bal=3397563 dq=99.7 cnt=26 | c=193.8 rankC=135.7 need=6577960 tD=0.98 人 pulse onMe | safe=2146031 keep=2925720 avail=354440 chunkB=663811 pulseB=398287 
+    ⇒ 影子指令 attack pct=109 → [furry]嗷呜#18[T1]（约 356539 兵）
+t=5790 zero_7 B=2952671 L=32453 d=91.0 nb=1 neut=0 cmds=88 noFull=1 shQ=410678 | m=0.900 worth=81.9 cheap=7.2 over=0 dMedOther=103.4 safe(-1)=2162456
+    → [furry]嗷呜#18[T1] terr=34147 bal=3444789 dq=100.9 cnt=28 | c=145.8 rankC=83.7 need=6285446 tD=0.98 人 pulse onMe agg | safe=2162456 keep=Inf avail=-Inf chunkB=590534 pulseB=354321 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5820 zero_7 B=3156017 L=32688 d=96.5 nb=1 neut=0 cmds=88 noFull=1 shQ=720664 | m=0.900 worth=86.9 cheap=7.2 over=0 dMedOther=105.1 safe(-1)=1974848
+    → [furry]嗷呜#18[T1] terr=33912 bal=3564261 dq=105.1 cnt=27 | c=454.7 rankC=372.9 need=6252241 tD=1.00 人 pulse crowdedHard agg | safe=1974848 keep=Inf avail=-Inf chunkB=631203 pulseB=378722 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5850 zero_7 B=3288487 L=33069 d=99.4 nb=1 neut=0 cmds=88 noFull=1 shQ=822121 | m=0.900 worth=89.5 cheap=7.2 over=0 dMedOther=111.5 safe(-1)=2012109
+    → [furry]嗷呜#18[T1] terr=33531 bal=3631158 dq=108.3 cnt=29 | c=478.8 rankC=392.6 need=6487086 tD=0.97 人 pulse crowdedHard agg | safe=2012109 keep=Inf avail=-Inf chunkB=657697 pulseB=394618 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5880 zero_7 B=3424202 L=33098 d=103.5 nb=1 neut=0 cmds=88 noFull=1 shQ=855857 | m=0.900 worth=93.1 cheap=7.2 over=1 dMedOther=111.5 safe(-1)=2079312
+    → [furry]嗷呜#18[T1] terr=33502 bal=3750823 dq=112.0 cnt=28 | c=495.7 rankC=406.5 need=6709766 tD=1.00 人 pulse crowdedHard agg | safe=2079312 keep=2978820 avail=405255 chunkB=684840 pulseB=410904 
+    ⇒ 本拍没有指令
+t=5910 zero_7 B=3587009 L=33098 d=108.4 nb=1 neut=0 cmds=89 noFull=1 shQ=896608 | m=0.900 worth=97.5 cheap=7.2 over=1 dMedOther=114.2 safe(-1)=2140024
+    → [furry]嗷呜#18[T1] terr=33476 bal=3327463 dq=99.4 cnt=28 | c=196.1 rankC=137.3 need=6489502 tD=0.87 人 pulse onMe | safe=2140024 keep=2978820 avail=566154 chunkB=717402 pulseB=430441 
+    ⇒ 影子指令 attack pct=122 → [furry]嗷呜#18[T1]（约 430861 兵）
+t=5915 zero_7 B=3587009 L=33098 d=108.4 nb=1 neut=0 cmds=90 noFull=1 shQ=896752 | m=0.900 worth=97.5 cheap=7.2 over=1 dMedOther=114.2 safe(-1)=2138862
+    → [furry]嗷呜#18[T1] terr=33463 bal=3325396 dq=99.4 cnt=28 | c=196.1 rankC=137.2 need=6485626 tD=0.87 人 pulse onMe | safe=2138862 keep=2978820 avail=566154 chunkB=717402 pulseB=430441 
+    ⇒ 影子指令 attack pct=122 → [furry]嗷呜#18[T1]（约 430861 兵）
+t=5920 zero_7 B=3614067 L=33015 d=109.5 nb=1 neut=0 cmds=91 noFull=1 shQ=903516 | m=0.900 worth=98.5 cheap=7.2 over=1 dMedOther=115.4 safe(-1)=2146142
+    → [furry]嗷呜#18[T1] terr=33519 bal=3367275 dq=100.5 cnt=28 | c=197.0 rankC=137.9 need=6533212 tD=0.87 人 pulse onMe | safe=2146142 keep=2971350 avail=600365 chunkB=722813 pulseB=433688 
+    ⇒ 影子指令 attack pct=122 → [furry]嗷呜#18[T1]（约 434111 兵）
+t=5940 zero_7 B=2581569 L=33156 d=77.9 nb=1 neut=0 cmds=91 noFull=1 shQ=154233 | m=0.900 worth=90.0 cheap=7.2 over=0 dMedOther=117.6 safe(-1)=1889998
+    → [furry]嗷呜#18[T1] terr=33263 bal=3413930 dq=102.6 cnt=30 | c=409.4 rankC=335.7 need=5494884 tD=0.87 人 pulse crowdedHard agg | safe=1889998 keep=Inf avail=-Inf chunkB=516314 pulseB=309788 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5970 zero_7 B=2888142 L=33704 d=85.7 nb=1 neut=0 cmds=91 noFull=1 shQ=433551 | m=0.900 worth=87.7 cheap=7.2 over=0 dMedOther=114.6 safe(-1)=1879596
+    → [furry]嗷呜#18[T1] terr=32362 bal=3396237 dq=104.9 cnt=40 | c=433.7 rankC=355.6 need=5610972 tD=0.92 人 pulse crowdedHard agg | safe=1879596 keep=Inf avail=-Inf chunkB=577628 pulseB=346577 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6000 zero_7 B=3044352 L=34112 d=89.2 nb=1 neut=0 cmds=91 noFull=1 shQ=741568 | m=0.900 worth=80.3 cheap=7.2 over=0 dMedOther=99.2 safe(-1)=1877328
+    → [furry]嗷呜#18[T1] terr=31420 bal=3392812 dq=108.0 cnt=19 | c=972.8 rankC=972.8 need=5704896 tD=1.09 人 pulse crowdedHard | safe=1877328 keep=Inf avail=-Inf chunkB=608870 pulseB=365322 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6030 zero_7 B=3183853 L=34335 d=92.7 nb=1 neut=0 cmds=91 noFull=1 shQ=795963 | m=0.900 worth=83.5 cheap=7.1 over=0 dMedOther=108.2 safe(-1)=2285092
+    → [furry]嗷呜#18[T1] terr=31197 bal=4118966 dq=132.0 cnt=3 | c=1213.7 rankC=1213.7 need=7053221 tD=1.22 人 pulse crowdedHard | safe=2285092 keep=Inf avail=-Inf chunkB=636771 pulseB=382062 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6045 zero_7 B=3432405 L=34341 d=100.0 nb=0 neut=0 cmds=92 noFull=1 shQ=858101 | m=0.900 worth=90.0 cheap=7.1 over=0 dMedOther=109.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] sora_w#49[T2]（约 1075978 兵）
+t=6060 zero_7 B=2202294 L=34341 d=64.1 nb=0 neut=0 cmds=92 noFull=1 shQ=550573 | m=0.900 worth=85.4 cheap=7.1 over=0 dMedOther=111.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6070 zero_7 B=2233126 L=34341 d=65.0 nb=0 neut=0 cmds=93 noFull=1 shQ=558281 | m=0.900 worth=86.0 cheap=7.1 over=0 dMedOther=112.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] sora_w#49[T2]（约 700032 兵）
+t=6090 zero_7 B=1432815 L=34341 d=41.7 nb=0 neut=0 cmds=93 noFull=1 shQ=358203 | m=0.900 worth=87.0 cheap=7.1 over=0 dMedOther=113.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6120 zero_7 B=1529148 L=34341 d=44.5 nb=0 neut=0 cmds=93 noFull=1 shQ=382287 | m=0.900 worth=89.0 cheap=7.1 over=0 dMedOther=116.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6150 zero_7 B=1594274 L=34341 d=46.4 nb=0 neut=0 cmds=93 noFull=1 shQ=398568 | m=0.900 worth=91.3 cheap=7.1 over=0 dMedOther=119.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6180 zero_7 B=1662174 L=34341 d=48.4 nb=0 neut=0 cmds=93 noFull=1 shQ=415543 | m=0.900 worth=93.4 cheap=7.1 over=0 dMedOther=122.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6210 zero_7 B=1767788 L=34341 d=51.5 nb=0 neut=0 cmds=93 noFull=1 shQ=441947 | m=0.900 worth=81.9 cheap=7.1 over=0 dMedOther=107.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6240 zero_7 B=1843078 L=34341 d=53.7 nb=0 neut=0 cmds=93 noFull=1 shQ=460769 | m=0.900 worth=84.6 cheap=7.1 over=0 dMedOther=110.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6270 zero_7 B=1921575 L=34341 d=56.0 nb=0 neut=0 cmds=93 noFull=1 shQ=480393 | m=0.900 worth=77.2 cheap=7.1 over=0 dMedOther=100.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6300 zero_7 B=2037756 L=34341 d=59.3 nb=0 neut=0 cmds=93 noFull=1 shQ=501070 | m=0.900 worth=81.1 cheap=7.1 over=0 dMedOther=106.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6320 zero_7 B=2095211 L=34341 d=61.0 nb=0 neut=0 cmds=94 noFull=1 shQ=523802 | m=0.900 worth=79.0 cheap=7.1 over=0 dMedOther=103.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] sora_w#49[T2]（约 779565 兵）
+t=6330 zero_7 B=1201281 L=34341 d=35.0 nb=0 neut=0 cmds=94 noFull=1 shQ=300320 | m=0.900 worth=78.5 cheap=7.1 over=0 dMedOther=102.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6360 zero_7 B=1263267 L=33955 d=37.2 nb=1 neut=0 cmds=94 noFull=1 shQ=315816 | m=0.900 worth=83.9 cheap=7.2 over=0 dMedOther=109.6 safe(-1)=2275303
+    → [furry]嗷呜#18[T1] terr=30948 bal=3668105 dq=118.5 cnt=41 | c=229.1 rankC=160.4 need=6922492 tD=1.08 人 pulse onMe | safe=2275303 keep=Inf avail=-Inf chunkB=252653 pulseB=151592 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6390 zero_7 B=1277313 L=33317 d=38.3 nb=1 neut=0 cmds=94 noFull=1 shQ=319328 | m=0.900 worth=84.1 cheap=7.2 over=0 dMedOther=110.0 safe(-1)=2280438
+    → [furry]嗷呜#18[T1] terr=31586 bal=3202476 dq=101.4 cnt=41 | c=212.6 rankC=148.8 need=6606026 tD=0.92 人 pulse onMe | safe=2280438 keep=Inf avail=-Inf chunkB=255463 pulseB=153278 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6420 zero_7 B=1331752 L=32803 d=40.6 nb=1 neut=0 cmds=94 noFull=1 shQ=332938 | m=0.900 worth=87.5 cheap=7.2 over=0 dMedOther=114.3 safe(-1)=2334985
+    → [furry]嗷呜#18[T1] terr=32100 bal=3364263 dq=104.8 cnt=23 | c=215.8 rankC=151.1 need=6848366 tD=0.92 人 pulse onMe | safe=2334985 keep=Inf avail=-Inf chunkB=266350 pulseB=159810 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6450 zero_7 B=1402646 L=32368 d=43.3 nb=1 neut=0 cmds=94 noFull=1 shQ=350661 | m=0.900 worth=87.0 cheap=7.2 over=0 dMedOther=113.7 safe(-1)=2373566
+    → [furry]嗷呜#18[T1] terr=32535 bal=3490970 dq=107.3 cnt=29 | c=217.6 rankC=152.3 need=7033226 tD=0.94 人 pulse onMe | safe=2373566 keep=Inf avail=-Inf chunkB=280529 pulseB=168318 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6480 zero_7 B=1464054 L=31896 d=45.9 nb=1 neut=0 cmds=94 noFull=1 shQ=366013 | m=0.900 worth=89.5 cheap=7.2 over=0 dMedOther=117.0 safe(-1)=2338278
+    → [furry]嗷呜#18[T1] terr=32307 bal=3494834 dq=108.2 cnt=39 | c=128.7 rankC=47.9 need=6964501 tD=0.92 人 pulse onMe | safe=2338278 keep=Inf avail=-Inf chunkB=292811 pulseB=175686 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6510 zero_7 B=1499670 L=31143 d=48.2 nb=1 neut=0 cmds=94 noFull=1 shQ=374917 | m=0.900 worth=82.1 cheap=7.2 over=0 dMedOther=107.3 safe(-1)=2247607
+    → [furry]嗷呜#18[T1] terr=32019 bal=2966804 dq=92.7 cnt=60 | c=201.5 rankC=141.0 need=6383900 tD=0.86 人 pulse onMe | safe=2247607 keep=Inf avail=-Inf chunkB=299934 pulseB=179960 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6540 zero_7 B=1484603 L=30168 d=49.2 nb=1 neut=0 cmds=94 noFull=1 shQ=371150 | m=0.900 worth=83.0 cheap=7.3 over=0 dMedOther=108.5 safe(-1)=2232484
+    → [furry]嗷呜#18[T1] terr=32994 bal=3091330 dq=93.7 cnt=60 | c=196.7 rankC=137.7 need=6487170 tD=0.86 人 pulse onMe | safe=2232484 keep=Inf avail=-Inf chunkB=296921 pulseB=178152 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6570 zero_7 B=1457949 L=29083 d=50.1 nb=1 neut=0 cmds=94 noFull=1 shQ=364487 | m=0.900 worth=80.9 cheap=7.3 over=0 dMedOther=105.8 safe(-1)=2153395
+    → [furry]嗷呜#18[T1] terr=33423 bal=3122697 dq=93.4 cnt=81 | c=112.4 rankC=41.8 need=6362038 tD=0.88 人 pulse onMe | safe=2153395 keep=Inf avail=-Inf chunkB=291590 pulseB=174954 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6600 zero_7 B=1750817 L=27858 d=62.8 nb=1 neut=0 cmds=94 noFull=1 shQ=430912 | m=0.900 worth=84.6 cheap=7.3 over=0 dMedOther=110.5 safe(-1)=2022606
+    → [furry]嗷呜#18[T1] terr=33620 bal=3119914 dq=92.8 cnt=82 | c=182.5 rankC=127.7 need=6132964 tD=0.84 人 pulse onMe | safe=2022606 keep=Inf avail=-Inf chunkB=350163 pulseB=210098 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6630 zero_7 B=1947601 L=27228 d=71.5 nb=1 neut=0 cmds=94 noFull=1 shQ=486900 | m=0.900 worth=80.9 cheap=7.4 over=0 dMedOther=105.7 safe(-1)=1983752
+    → [furry]嗷呜#18[T1] terr=33793 bal=3571920 dq=105.7 cnt=67 | c=242.3 rankC=90.1 need=6400404 tD=1.00 人 pulse crowdedHard | safe=1983752 keep=Inf avail=-Inf chunkB=389520 pulseB=233712 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6660 zero_7 B=2027547 L=27228 d=74.5 nb=1 neut=0 cmds=94 noFull=1 shQ=506886 | m=0.900 worth=77.1 cheap=7.4 over=0 dMedOther=100.8 safe(-1)=2396064
+    → [furry]嗷呜#18[T1] terr=32864 bal=4604134 dq=140.1 cnt=61 | c=727.7 rankC=727.7 need=8188291 tD=1.39 人 pulse crowdedHard | safe=2396064 keep=Inf avail=-Inf chunkB=405509 pulseB=243306 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6690 zero_7 B=2110774 L=27228 d=77.5 nb=1 neut=0 cmds=94 noFull=1 shQ=527693 | m=0.900 worth=79.2 cheap=7.4 over=0 dMedOther=103.6 safe(-1)=2396064
+    → [furry]嗷呜#18[T1] terr=32864 bal=4641526 dq=141.2 cnt=61 | c=733.5 rankC=733.5 need=8256024 tD=1.36 人 pulse crowdedHard | safe=2396064 keep=Inf avail=-Inf chunkB=422155 pulseB=253293 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6720 zero_7 B=2225386 L=27228 d=81.7 nb=1 neut=0 cmds=94 noFull=1 shQ=556346 | m=0.900 worth=82.5 cheap=7.4 over=0 dMedOther=107.9 safe(-1)=2188542
+    → [furry]嗷呜#18[T1] terr=32864 bal=3936446 dq=119.8 cnt=61 | c=623.2 rankC=623.2 need=7010475 tD=1.11 人 pulse crowdedHard | safe=2188542 keep=Inf avail=-Inf chunkB=445077 pulseB=267046 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6750 zero_7 B=2316735 L=27228 d=85.1 nb=1 neut=0 cmds=94 noFull=1 shQ=579183 | m=0.900 worth=83.2 cheap=7.4 over=0 dMedOther=108.8 safe(-1)=2242942
+    → [furry]嗷呜#18[T1] terr=32975 bal=4033278 dq=122.3 cnt=61 | c=477.0 rankC=333.9 need=7188379 tD=1.12 人 pulse crowdedHard | safe=2242942 keep=Inf avail=-Inf chunkB=463347 pulseB=278008 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6780 zero_7 B=2411834 L=27228 d=88.6 nb=1 neut=0 cmds=94 noFull=1 shQ=602958 | m=0.900 worth=86.0 cheap=7.4 over=0 dMedOther=112.4 safe(-1)=2295687
+    → [furry]嗷呜#18[T1] terr=33420 bal=4127164 dq=123.5 cnt=61 | c=480.6 rankC=336.5 need=7376824 tD=1.10 人 pulse crowdedHard | safe=2295687 keep=Inf avail=-Inf chunkB=482367 pulseB=289420 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6810 zero_7 B=2538432 L=27228 d=93.2 nb=1 neut=0 cmds=94 noFull=1 shQ=634608 | m=0.900 worth=89.3 cheap=7.4 over=0 dMedOther=116.8 safe(-1)=2335852
+    → [furry]嗷呜#18[T1] terr=33222 bal=4198659 dq=126.4 cnt=60 | c=656.3 rankC=656.3 need=7495788 tD=1.08 人 pulse crowdedHard | safe=2335852 keep=Inf avail=-Inf chunkB=507686 pulseB=304612 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6840 zero_7 B=2642631 L=27228 d=97.1 nb=1 neut=0 cmds=94 noFull=1 shQ=660657 | m=0.900 worth=87.4 cheap=7.4 over=0 dMedOther=109.2 safe(-1)=2381431
+    → [furry]嗷呜#18[T1] terr=33222 bal=4279789 dq=128.8 cnt=60 | c=668.9 rankC=668.9 need=7640962 tD=1.18 人 pulse crowdedHard | safe=2381431 keep=Inf avail=-Inf chunkB=528526 pulseB=317116 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6870 zero_7 B=2751108 L=27228 d=101.0 nb=1 neut=0 cmds=94 noFull=1 shQ=687762 | m=0.900 worth=90.9 cheap=7.4 over=1 dMedOther=97.3 safe(-1)=2396064
+    → [furry]嗷呜#18[T1] terr=33222 bal=4353389 dq=131.0 cnt=60 | c=680.3 rankC=680.3 need=7773011 tD=1.35 人 pulse crowdedHard | safe=2396064 keep=2450520 avail=268349 chunkB=550222 pulseB=330133 
+    ⇒ 本拍没有指令
+t=6900 zero_7 B=2886181 L=27228 d=106.0 nb=1 neut=0 cmds=94 noFull=1 shQ=714500 | m=0.900 worth=95.4 cheap=7.4 over=1 dMedOther=108.4 safe(-1)=2396064
+    → [furry]嗷呜#18[T1] terr=33222 bal=4453556 dq=134.1 cnt=60 | c=695.8 rankC=695.8 need=7952062 tD=1.24 人 pulse crowdedHard | safe=2396064 keep=2450520 avail=401839 chunkB=577236 pulseB=346342 
+    ⇒ 本拍没有指令
+t=6930 zero_7 B=2987788 L=27228 d=109.7 nb=1 neut=0 cmds=94 noFull=1 shQ=746742 | m=0.900 worth=98.8 cheap=7.4 over=1 dMedOther=100.6 safe(-1)=2396064
+    → [furry]嗷呜#18[T1] terr=33219 bal=4511051 dq=135.8 cnt=60 | c=304.9 rankC=113.4 need=8055480 tD=1.35 人 pulse crowdedHard | safe=2396064 keep=2450520 avail=502255 chunkB=597558 pulseB=358535 
+    ⇒ 本拍没有指令
+t=6960 zero_7 B=3083808 L=27228 d=113.3 nb=1 neut=0 cmds=94 noFull=1 shQ=770801 | m=0.900 worth=101.9 cheap=7.4 over=1 dMedOther=92.4 safe(-1)=2396064
+    → [furry]嗷呜#18[T1] terr=33042 bal=4525190 dq=137.0 cnt=60 | c=310.5 rankC=115.5 need=8072840 tD=1.48 人 pulse crowdedHard | safe=2396064 keep=2450520 avail=597150 chunkB=616762 pulseB=370057 
+    ⇒ 本拍没有指令
+t=6970 zero_7 B=3114646 L=27228 d=114.4 nb=1 neut=0 cmds=95 noFull=1 shQ=778661 | m=0.900 worth=103.0 cheap=7.4 over=1 dMedOther=93.6 safe(-1)=2396064
+    → [furry]嗷呜#18[T1] terr=32954 bal=4522594 dq=137.2 cnt=60 | c=312.5 rankC=116.3 need=8064262 tD=1.47 人 pulse crowdedHard | safe=2396064 keep=2450520 avail=627627 chunkB=622929 pulseB=373758 
+    ⇒ 影子指令 donate pct=236 → [APEX] sora_w#49[T2]（约 720870 兵）
+t=6975 zero_7 B=3114646 L=27228 d=114.4 nb=1 neut=0 cmds=96 noFull=1 shQ=778661 | m=0.900 worth=103.0 cheap=7.4 over=1 dMedOther=93.6 safe(-1)=2396064
+    → [furry]嗷呜#18[T1] terr=32900 bal=4510742 dq=137.1 cnt=60 | c=116.2 rankC=34.8 need=8040647 tD=1.47 人 pulse bleeding | safe=2396064 keep=2450520 avail=627627 chunkB=622929 pulseB=373758 
+    ⇒ 影子指令 attack pct=122 → [furry]嗷呜#18[T1]（约 374122 兵）
+t=6990 zero_7 B=1961086 L=27228 d=72.0 nb=1 neut=0 cmds=96 noFull=1 shQ=71340 | m=0.900 worth=73.5 cheap=7.4 over=0 dMedOther=96.1 safe(-1)=2396064
+    → [furry]嗷呜#18[T1] terr=32103 bal=4370078 dq=136.1 cnt=57 | c=115.5 rankC=34.7 need=7482990 tD=1.42 人 pulse bleeding | safe=2396064 keep=Inf avail=-Inf chunkB=392217 pulseB=235330 价高(c>=worth)→break
+    ⇒ 本拍没有指令
