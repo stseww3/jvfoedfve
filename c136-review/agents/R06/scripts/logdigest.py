@@ -2034,6 +2034,14 @@ def build_json(M):
     doc['harvest'] = harvest_rows(M)
     doc['noeffect'] = noeffect_rows(M)
     doc['freezebound'] = [{k: v for k, v in r.items() if k != 'rows'} for r in freezebound_rows(M)]
+    doc['noefftl'] = noefftl_rows(M)
+    doc['gaps'] = gaps_rows(M)
+    doc['sentchk'] = sentchk_rows(M)
+    doc['zerodrop'] = zerodrop_rows(M)
+    try:
+        doc['wallms'] = wallms_rows(M)
+    except Exception as e:  # 结算行没有毫秒时间戳的局
+        doc['wallms'] = dict(error=str(e))
     return doc
 
 
