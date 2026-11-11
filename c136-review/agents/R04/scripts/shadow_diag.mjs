@@ -89,6 +89,74 @@ export function diagWinFloor(pol, g, nm) {
   return out;
 }
 
+// 核心期之前，贴着内置 AI 却没出手的那一拍：对「底线最低的那个 AI 邻居」，底线是被哪一项顶住的。
+// 返回 { bind, ref, floor, avail, need }：
+//   bind = 't1'（项1 = mult×botPx×地/(winR×t)）| 'dp'（项2 dpKeep）| 'sb'（项3 safeFinite）| 'pf'（peopleFloor）| 'ok'（底线没卡住，是别的原因）
+//   ref  = bind 为 sb 时，给出 safeFinite 取到最大值的那个 AI 的「最弱的别的邻居」：'squad:号'（我方编队的号）、'ally:号'（同队其他真人）、
+//          'enemy:号'（外队真人）、'ai:号'（另一个内置 AI）；其余情况为空串。
+//   floor / avail / need = 那个 AI 的底线、余额 − 底线、出手至少要有的可用兵（max(minShare×余额, 最小指令)）。
+// 公式照抄 V13.floorFor0 L2233~2241（核心期前、打内置 AI：max(winFloor, peopleFloor)）、winFloor L4562~4570、safeFinite L2500~2510、threatOf L417~444。
+export function floorBind(pol, g, ourSet) {
+  const P = pol.p, me = pol.me, L = Math.max(1, g.terr[me]), bal = g.bal[me];
+  let fl;
+  try { fl = pol.floors(g); } catch (e) { return null; }
+  const min = pol.minCmd(g);
+  let bestQ = -1, bestF = Infinity;
+  for (const q of pol.nb) {
+    if (!g.alive[q] || !g.terr[q] || pol.person(g, q)) continue;
+    let f0 = NaN;
+    try { f0 = pol.floorFor(g, q, fl.floorAt(pol.price(g, q))); } catch (e) { f0 = NaN; }
+    if (Number.isFinite(f0) && f0 < bestF) { bestF = f0; bestQ = q; }
+  }
+  if (bestQ < 0) return null;
+  const q0 = bestQ;
+  let ms = 0;
+  try { ms = pol.minShare(g, q0); } catch (e) { ms = 0; }
+  const need = Math.max(ms * bal, min), avail = bal - bestF;
+  if (avail > ms * bal && avail >= min) return { bind: 'ok', ref: '', floor: bestF, avail, need };
+  let t1 = NaN, dp = NaN, sb = NaN, pf = NaN;
+  try {
+    const mult = pol.contested && pol.contested(g, q0) ? P.sharedBotMult : 1.0;
+    t1 = (mult * pol.botPx(g, q0) * L) / (P.winR * Math.max(1, g.t));
+    dp = pol.dpKeep(g); sb = pol.safeFinite(g); pf = pol.peopleFloor ? pol.peopleFloor(g) : 0;
+  } catch (e) { return { bind: '?', ref: '', floor: bestF, avail, need }; }
+  const terms = [['t1', t1], ['dp', dp], ['sb', sb], ['pf', pf]].filter((x) => Number.isFinite(x[1]));
+  terms.sort((a, b) => b[1] - a[1]);
+  const bind = terms.length ? terms[0][0] : '?';
+  let ref = '';
+  if (bind === 'sb') {
+    // 找出 safeFinite 取到最大值的那个 AI，以及它「最弱的别的邻居」
+    let top = -Infinity, who = -1;
+    for (const q of pol.nb) {
+      if (g.alive[q] === 0 || !g.isBot(q) || !g.hasFreeSlot(q) || g.hasAttack(q, me)) continue;
+      const B = g.border[q], px = g.px, own = g.own, d = g.dir4;
+      const busyNeutral = g.hasAttack(q, NEUTRAL);
+      let neutral = false, best = -1, bestS = Infinity;
+      const seen = new Set();
+      const n = B.length, step = n > 1024 ? Math.ceil(n / 1024) : 1;
+      for (let i = n - 1; i >= 0 && !neutral; i -= step) {
+        const b = B[i];
+        for (let k = 0; k < 4; k++) {
+          const c = b + d[k], v = px[c];
+          if (v === 1) { if (!busyNeutral) { neutral = true; break; } continue; }
+          if (v < 16) continue;
+          const o = own[c];
+          if (o === q || o === me || seen.has(o)) continue;
+          seen.add(o);
+          if (g.hasAttack(q, o)) continue;
+          const s2 = g.bal[o] + g.attackTroopsOn(o, q);
+          if (s2 < bestS) { bestS = s2; best = o; }
+        }
+      }
+      if (neutral || best < 0) continue;
+      const keep = bestS - g.attackTroopsOn(me, q);
+      if (keep > top) { top = keep; who = best; }
+    }
+    if (who >= 0) ref = (ourSet && ourSet.has(who) ? 'squad:' : g.isTeammate(me, who) ? 'ally:' : g.isBot(who) ? 'ai:' : 'enemy:') + who;
+  }
+  return { bind, ref, floor: bestF, avail, need };
+}
+
 // 核心期（t ≥ coreFrom）：Policy.buyLand（L5342~5619）开头的几个量 + 每条报价的底线/可用兵
 export function diagCore(pol, g, nm, offers) {
   const P = pol.p, me = pol.me;
@@ -117,6 +185,107 @@ export function diagCore(pol, g, nm, offers) {
     out.push(`      ${nm(o.q)}${person ? '(真人)' : ''} 地 ${g.terr[o.q]} 兵 ${f(g.bal[o.q])} 单价 c=${o.c.toFixed(1)} 需 ${f(o.need)} 底线 safeAt=${f(safe)}→封顶后 ${f(capped)}（${(capped / L).toFixed(0)}×地） 余额−费−底线=${f(B - fee - capped)}${o.nearCollapse ? ' 濒崩' : ''}${o.bleeding ? ' 流血' : ''}${o.pulseMode ? ' 脉冲' : ''}${o.onMe ? ' 正打我' : ''}${o.isCrowdedHard ? ' 拥挤硬目标' : ''}${stop ? ' ⇒ c≥worth 且不便宜且未超上限：到此为止（L5359 break）' : ''}`);
   }
   return out;
+}
+
+// 核心期这一拍没有对真人出手时，Policy.buyLand（L5356~5617）在每条报价上是被哪一道门拦下的。
+// 只照抄判定条件，不发指令、不发船。返回 [[目标, 标签], …]，顺序同报价单；标签：
+//   price   L5359  c ≥ worth 且不便宜、余额没过 100×地：整张报价单到此为止
+//   sole    L5361~5365 唯一的真人邻居、对方健康、打穿会露出新真人：余额 < overHumanCap×100×地 之前不打
+//   tiny    L5367  对方地 < 250、手续费 > 2×所需、单价 > 8×worth
+//   crowded L5371~5374 「拥挤硬目标」：余额 < crowdedHardCap×100×地 之前不打
+//   absorb  L5376  对方正大举打我，先吃下这一波
+//   doorSea L5380  隔海的门口目标（走船，另算）
+//   siege   L5429~5441 自己缩到峰值的 siegeShrinkRatio 以下
+//   floor   L5446~5447 余额 − 手续费 − 要留的兵 ≤ 0
+//   inflight L5575/L5589/L5596 已有在途的兵
+//   small   L5583/L5591/L5605 这一发 < max(最小指令, pulseMinShare×余额)
+//   chunk   L5612  不走脉冲、兵不够一次打穿且 < chunk×余额
+//   send    这些门都过了（若这一拍仍没有意图：被 send 的守卫拦了，或 tryDonate / 发船先返回）
+export function coreGate(pol, g, offers) {
+  const P = pol.p, me = pol.me;
+  const B = g.bal[me], L = Math.max(1, g.terr[me]), fee = iV(12 * B, 1024), dMe = B / L;
+  const dMed = pol.otherHumanMedDens(g);
+  const nHumans = pol.livingHumanCount(g);
+  const humanNbCount = pol.nb.filter((p) => g.alive[p] && pol.person(g, p)).length;
+  const m = P.maxW * pol.winRatio(g.t);
+  const refDens = dMed !== null && g.t >= P.marketFrom ? Math.max(dMe, P.marketFloor * dMed) : dMe;
+  const worth = m * refDens;
+  const over = P.surplus > 0 && B > 100 * L;
+  const cheap = P.growth > 0 ? 0.1 / pol.baseRate(g) : 0;
+  const res = [];
+  for (const o of offers) {
+    const { q, c, need, person } = o;
+    if (c >= worth && c >= cheap && !over) { res.push([q, 'price']); break; }
+    const sole = person && !o.isDoorSea && nHumans >= 3 && !o.nearCollapse && !o.bleeding && !o.onMe && o.newNbs > 0 && humanNbCount === 1;
+    if (sole && c >= worth && c >= cheap && B < P.overHumanCap * 100 * L) { res.push([q, 'sole']); continue; }
+    if (person && !o.isDoorSea && g.terr[q] < 250 && fee > 2 * need && c > 8 * worth && nHumans >= 3) { res.push([q, 'tiny']); continue; }
+    if (person && !o.isDoorSea && o.isCrowdedHard && c >= worth && c >= cheap && B < P.crowdedHardCap * 100 * L) { res.push([q, 'crowded']); continue; }
+    if (P.absorbMode >= 1 && person && !o.isDoorSea && !o.nearCollapse && (o.inAtk ?? 0) >= P.absorbWaveMin * B) { res.push([q, 'absorb']); continue; }
+    if (o.isDoorSea) { res.push([q, 'doorSea']); continue; }
+    let safe = pol.safeAt(g, q);
+    if (!person || o.nearCollapse || (P.bleedSafeCap > 0 && (o.bleeding || o.tD < 0.45))) {
+      const capPerPx = person && o.nearCollapse && (o.inAtk ?? 0) < 0.02 * B && ((c < 0.25 * worth && need <= 0.10 * B) || (g.bal[q] <= 0.05 * B && c < 25)) ? Math.min(P.oppFloorCap, P.collapseFloorCap ?? 85) : P.oppFloorCap;
+      safe = Math.min(safe, capPerPx * L);
+    }
+    let keep = Infinity;
+    if (c < cheap) keep = 0;
+    if (c < worth) {
+      const worthOwn = P.ownWorthMinKeep > 0 && g.t >= P.ownWorthFrom && !o.nearCollapse ? m * dMe : worth;
+      const budget = Math.max(0, (worthOwn * L - fee * m - c * L) / (1 + m));
+      const minKeep = person && (o.nearCollapse || (P.bleedDiscount < 1 && o.bleeding) || (P.thinDiscount < 1 && o.tD < P.thinMaxTD)) ? (0.70 * c * L) / m : (c * L) / m;
+      keep = Math.min(keep, P.post > 0 ? Math.max(minKeep, B - fee - budget) : minKeep);
+    }
+    const isSiegeShrink = P.siegeShrinkRatio > 0 && !pol.isNoFullSend && g.t >= P.leaderHardFrom && L < P.siegeShrinkRatio * (g.peak?.[me] ?? L) && nHumans >= 4 && person && !o.nearCollapse && !o.bleeding;
+    if (isSiegeShrink && c >= worth && c >= cheap && B < P.crowdedHardCap * 100 * L) { res.push([q, 'siege']); continue; }
+    if (over) {
+      const overKeepMult = dMe >= 122 ? 0.82 : sole ? P.overHumanKeep : P.hold;
+      keep = Math.min(keep, overKeepMult * 100 * L);
+    }
+    keep = Math.max(keep, safe);
+    const avail = B - fee - keep;
+    if (avail <= 0) { res.push([q, 'floor']); continue; }
+    if (!person) {
+      const want = 1.25 * need + 3 * pol.cnt[q];
+      const x = Math.min(avail, want);
+      if (x <= 0 || (x < want && x < P.chunk * B)) { res.push([q, 'chunk']); continue; }
+      res.push([q, 'send']);
+      break;
+    }
+    const usePulseBlock = P.pulseFrac > 0 && (!over || o.nearCollapse || o.bleeding || need > 0.30 * B || avail < P.chunk * B);
+    const curAtk = g.attackTroopsOn(me, q);
+    const minPulse = Math.max(pol.minCmd(g), P.pulseMinShare * B);
+    if (usePulseBlock) {
+      if (g.t >= 3800 && (o.nearCollapse || o.bleeding || (P.aggMemMode === 2 && o.isAgg))) {
+        if (curAtk >= 0.08 * B || curAtk >= 0.65 * need) { res.push([q, 'inflight']); continue; }
+        const targetSlot = Math.min(0.85 * need + 3 * pol.cnt[q], Math.floor(P.pulseFrac * B));
+        const pulse = Math.min(avail, Math.max(targetSlot - curAtk, Math.floor(0.08 * B)));
+        if (pulse < minPulse) { res.push([q, 'small']); continue; }
+        res.push([q, 'send']);
+        break;
+      }
+      if (o.nearCollapse) {
+        if (curAtk >= 0.04 * B || curAtk >= 0.30 * need) { res.push([q, 'inflight']); continue; }
+        const pulse = Math.min(avail, Math.max(Math.floor(P.pulseFrac * B), Math.min(avail, Math.floor(0.30 * need))));
+        if (pulse < minPulse) { res.push([q, 'small']); continue; }
+        res.push([q, 'send']);
+        break;
+      }
+      if (o.pulseMode) {
+        if (curAtk >= 0.04 * B) { res.push([q, 'inflight']); continue; }
+        const want = Math.min(1.20 * need + 3 * pol.cnt[q], Math.floor(P.pulseFrac * B));
+        const x = Math.min(avail, want);
+        if (x < minPulse) { res.push([q, 'small']); continue; }
+        res.push([q, 'send']);
+        break;
+      }
+    }
+    const want = 1.25 * need + 3 * pol.cnt[q];
+    const x = Math.min(avail, want);
+    if (x <= 0 || (x < want && (x < P.chunk * B || (P.pplKill > 0 && person)))) { res.push([q, 'chunk']); continue; }
+    res.push([q, 'send']);
+    break;
+  }
+  return res;
 }
 
 // 捐款/调度门槛（Policy.tryDonateToTeammate L4325~4518 的入口判定）

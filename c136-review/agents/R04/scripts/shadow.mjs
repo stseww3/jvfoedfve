@@ -268,6 +268,7 @@ async function main() {
   }
   const rowsOn = has('--rows');
   const rowsOut = [];
+  const ourSet = new Set(pols.map((S) => S.p));
   let lastPix = -1;
   const outLines = [];
   const cmp = { nbOk: 0, nbBad: 0, disBoth: 0, disOnlyShadow: 0, disOnlyReal: 0, disSame: 0 };
@@ -284,13 +285,14 @@ async function main() {
       let offers = null, safeNone = null;
       const detail = trace || at.has(t);
       const origOffers = pol.offers;
-      if (detail) {
+      const capture = detail || (rowsOn && t % 5 === 0);
+      if (capture) {
         pol.offers = function (gg) { const r = origOffers.call(this, gg); offers = r; return r; };
       }
       g.me = p;
       if (S.slot !== null) globalThis.window.__tsbSquadSlot = S.slot; else delete globalThis.window.__tsbSquadSlot;
       try { pol.act(g); } catch (e) { S.errs++; S.lastErr = `t=${t} ${String(e && e.stack || e).split('\n').slice(0, 3).join(' | ')}`; }
-      if (detail) pol.offers = origOffers;
+      if (capture) pol.offers = origOffers;
       if (S.lockAt === null && pol.isNoFullSend) S.lockAt = t;
       if (rowsOn && t % 5 === 0) {
         // 每个行动拍一行：邻居构成、最弱的 AI 邻居、打 AI 时要守的底线、有没有出手
@@ -308,7 +310,28 @@ async function main() {
           if (f0 >= 0 && (minFloor < 0 || f0 < minFloor)) minFloor = f0;
         }
         const ints2 = M.intents.length - i0;
-        rowsOut.push([t, b, g.terr[p], g.bal[p], pol.nb.length, nAI, nAIweak, weakLand, nHum, pol.neutral, g.coast[p].length, ints2, Math.round(minFloor), pol.isNoFullSend ? 1 : 0, g.totalAttackTroops(p)].join('\t'));
+        // 核心期前、贴着内置 AI、这一拍没出手：底线是被哪一项顶住的（shadow_diag.floorBind）
+        let fb = null;
+        if (t < coreFrom && nAI > 0 && ints2 === 0) { try { fb = DIAG.floorBind(pol, g, ourSet); } catch (e) { fb = null; } }
+        // 核心期、这一拍没有陆攻意图：buyLand 在第一条真人报价上被哪道门拦下（shadow_diag.coreGate）
+        let gate = '';
+        if (t >= coreFrom) {
+          const kinds = M.intents.slice(i0).map((x) => x.kind);
+          if (kinds.includes('attack')) gate = '';
+          else if (kinds.includes('donate')) gate = 'donate';
+          else if (kinds.includes('boat')) gate = 'boat';
+          else if (offers === null) gate = 'nobuy';
+          else if (!offers.length) gate = 'nooffer';
+          else {
+            try {
+              const res = DIAG.coreGate(pol, g, offers);
+              const hit = res.find((r) => pol.person(g, r[0])) || res[0];
+              gate = hit ? hit[1] + ':' + hit[0] : 'unreached';
+            } catch (e) { gate = 'err'; }
+          }
+        }
+        rowsOut.push([t, b, g.terr[p], g.bal[p], pol.nb.length, nAI, nAIweak, weakLand, nHum, pol.neutral, g.coast[p].length, ints2, Math.round(minFloor), pol.isNoFullSend ? 1 : 0, g.totalAttackTroops(p),
+          fb ? fb.bind : '', fb ? fb.ref : '', fb ? Math.round(fb.avail) : '', fb ? Math.round(fb.need) : '', gate].join('\t'));
       }
       const ints = M.intents.slice(i0);
       const newLogs = logs.slice(l0);
@@ -378,7 +401,7 @@ async function main() {
     const nameOf = new Map(pols.map((S) => [S.p, S.b]));
     fs.writeFileSync(path.join(outDir, 'intents.tsv'), 't\tp\tbot\tkind\tpct\ttarget\ttroops\n' + M.intents.map((x) => [x.t, x.p, nameOf.get(x.p), x.kind, x.pct, x.target, x.troops].join('\t')).join('\n') + '\n');
     fs.writeFileSync(path.join(outDir, 'logs.txt'), logs.join('\n') + '\n');
-    if (rowsOn) fs.writeFileSync(path.join(outDir, 'rows.tsv'), 't\tbot\tterr\tbal\tnb\tnAI\tnAIweak\tweakLand\tnHum\tneut\tcoast\tintents\tfloorAI\tnfs\tatkOut\n' + rowsOut.join('\n') + '\n');
+    if (rowsOn) fs.writeFileSync(path.join(outDir, 'rows.tsv'), 't\tbot\tterr\tbal\tnb\tnAI\tnAIweak\tweakLand\tnHum\tneut\tcoast\tintents\tfloorAI\tnfs\tatkOut\tbind\tsbRef\tavail\tneed\tgate\n' + rowsOut.join('\n') + '\n');
     fs.writeFileSync(path.join(outDir, 'check.json'), JSON.stringify({ match: mid, ver: VERS[ver], from, to: st[0], ku: info.ku, bots: pols.map((S) => ({ bot: S.b, p: S.p, slot: S.slot, cmds: S.pol.cmds, boats: S.pol.boats, errs: S.errs, lockAt: S.lockAt, blocked: S.blocked, probes: S.probes })), cmp }, null, 1) + '\n');
   }
   for (const l of outLines) console.log(l);

@@ -71,6 +71,7 @@ def main():
     names, intents, cmds = load(mid)
     print(f'# {mid} 成批落地的形状（同号同拍落地 ≥{mn} 条陆攻算一批）')
     tot = collections.Counter()
+    all_sizes = collections.Counter()
     by_band = collections.defaultdict(lambda: collections.Counter())
     for p in sorted(names):
         ints = intents[p]
@@ -95,6 +96,12 @@ def main():
             bal0, bal1 = cmds[(p, T)][0][2], cmds[(p, T)][-1][3]
             frac = 1 - bal1 / bal0 if bal0 else 0
             drained.append(frac)
+            all_sizes[len(seq)] += 1
+            if bal1 == bal0:
+                tot['没花批'] += 1
+                tot['没花条'] += len(seq)
+            if bal0 and bal1 < 0.4 * bal0:
+                tot['抽干批'] += 1
             b = band(T)
             by_band[b]['批'] += 1
             by_band[b]['条'] += len(seq)
@@ -129,6 +136,8 @@ def main():
     print('按时段：' + '；'.join(f'{b} {c["批"]} 批 {c["条"]} 条、对上 {c["对上"]} 批' + (f'（最新一条平均晚 {c["dn"] / c["对上"]:.0f} 拍）' if c['对上'] else '')
                             for b, c in sorted(by_band.items(), key=lambda kv: ['<630', '630~1499', '1500~2999', '3000~4283', '≥4284'].index(kv[0]))))
     print(f'合计 {tot["批"]} 批，对上 {tot["对上"]} 批')
+    print('批的大小（条数: 批数）：' + '，'.join(f'{k}: {v}' for k, v in sorted(all_sizes.items()))
+          + f'；余额一兵没动的批 {tot["没花批"]} 个共 {tot["没花条"]} 条；一批把余额抽到四成以下的 {tot["抽干批"]} 个')
 
 
 if __name__ == '__main__':

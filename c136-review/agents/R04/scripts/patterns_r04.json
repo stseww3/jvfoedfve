@@ -31,7 +31,7 @@
   "prefix": "OP",
   "name": "打内置 AI 的底线被队友的余额顶住（队友互锁）",
   "definition": "核心期之前（t < coreFrom=1500）某号贴着「兵比地少」的内置 AI、这一拍没有出手，且对该 AI 的出兵底线高于自己的余额；底线来自 winFloor 的第 3 项 safeFinite = 这个 AI 的其他邻居里「余额 + 正在打它的兵」最小者，不排除队友、也不看这个 AI 自己有没有兵。",
-  "detector": "scripts/idle_scan.py（「贴弱AI不出手」列）；scripts/shadow.mjs --at <拍>（winFloor 拆解会标出最弱邻居是不是队友）",
+  "detector": "scripts/idle_scan.py（「贴弱AI不出手」列）；scripts/shadow.mjs --at <拍>（winFloor 拆解会标出最弱邻居是不是队友）；scripts/floor_bind_tally.py <局号> [t0 t1]（rows.tsv 的 bind / sbRef 列：底线是 winFloor 的哪一项顶住的，项 3 的参照对象分成 编队号 / 同队真人 / 外队真人 / 另一个 AI 四类计数）",
   "codePath": "Style.pickTarget L1160~1161 ← V13.floorFor0 L2233~2236 ← Policy.winFloor L4562~4570 ← V13.safeFinite L2500~2510 ← Strategy.threatOf L417~444"
  },
  "NEW-EC-HOARD": {
@@ -334,5 +334,19 @@
   "definition": "核心期之前（t < coreFrom=1500）某号的非队友陆上邻居只剩真人（没有内置 AI、没有无主地），这一拍没有出手，影子诊断里对这个真人的底线（约 1.5×邻居均兵，封顶 50×自己的领土）高于「余额 −（最小出兵比例×余额）」；同一拍贴着同一个真人的我方号合计余额 ≥ 这个真人余额的 2 倍。计数 = 号·拍数（window_tally.py 的「只贴真人」类 ×5）、段首段末我方合计余额与对方余额之比、对方在这段时间的领土变化、核心期接手后的第一次出手拍。",
   "detector": "scripts/window_tally.py <局号> <t0> <t1>（「只贴真人」列）；scripts/shadow.mjs <局号> --bots <号> --at <拍>（[核心期前] 一段逐个邻居给出 需 / 底线 / 可用兵）；scripts/truth_query.py <局号> bal <号> t0 t1",
   "codePath": "Policy.act L4850（coreFrom 之前走 super.act）→ Style.pickTarget L1144~1161（avail = 余额 − floorFor(…, floorAt(单价))，要 > minShare×余额 = 21.4%×余额）← V13.floorFor L2228~2231 / floorFor0 L2233~2240（真人目标直接用 floorAt）← General.floors L819~830（refFloor = ref×邻居均兵；floorAt = floorK×min(keepCap×100×领土, max(reserve…, refFloor))）；每个号只看自己的余额，没有「几个号合起来够」的判断"
+ },
+ "NEW-IO-DEADTARGET": {
+  "prefix": "IO",
+  "name": "指令迟到、目标已经出局：引擎把这条陆攻改成打无主地（或什么都不做）",
+  "definition": "[630,1500) 落地的陆攻指令里，影子策略发令时的目标是内置 AI 或真人、落地时该目标已经出局的条数。引擎执行陆攻前先把目标规整一遍：目标号已不在场就改成无主地（512），比例不变、按落地那一拍的余额计兵；身边有无主地就真的出一发（照收手续费），没有就什么都不做。计数 = 改了目标的条数（出了兵的 / 没出兵的）、改成打无主地的出兵与手续费、打在原目标上的条数占比、目标出局到指令落地的拍数（中位）。",
+  "detector": "scripts/ai_life.mjs <局号>（每个内置 AI 的出局拍，写 tmp/truth/<局号>/ai_life.tsv）；scripts/batch_targets.py <局号> [--list] [--t0 630 --t1 1500]",
+  "codePath": "引擎 live_game_js.js：qj.i6（执行陆攻）→ bD.gv.rk（k3<512 且 ah.nU[k3]===0 时 k3=512）；策略侧 Strategy.send L479~487（发的是「比例 + 目标号」，落地时按当时余额和当时的目标状态结算）、Policy.act L4838（每 5 拍一个决策拍，不知道前面的指令还没落地）"
+ },
+ "NEW-AT-SOLEHOLD": {
+  "prefix": "AT",
+  "name": "只贴着一个健康的真人：没过 100×领土嫌贵不打，过了又要等到 128×领土，中间靠捐款把兵放掉",
+  "definition": "核心期某号的非队友陆上邻居只有一个真人（或报价单上的真人都被标成「拥挤硬目标」），连续 ≥ 900 拍没有一条陆攻落地；这些决策拍在 core_gate_tally.py 里分在 price（余额 ≤ 100×领土，单价 ≥ worth，L5359 break）和 sole / crowded（余额 > 100×领土，但 < overHumanCap=1.28 / crowdedHardCap=1.26 × 100×领土，L5361~5374 continue）两类；同期该号的调度（密度 ≥ 108 触发、一次捐掉约两成）落地 ≥ 3 笔。计数 = 号·拍数、两类决策拍数、同期捐出的到账与税、对方同期从我方编队净拿的地。",
+  "detector": "scripts/core_gate_tally.py <局号> t0 t1 --by-target（rows.tsv 的 gate 列，判定照抄在 shadow_diag.coreGate）；scripts/truth_query.py <局号> cmds <号> t0 t1；scripts/shadow.mjs <局号> --bots <号> --at <拍>；scripts/enemy_ledger.py <局号> --p <对方>",
+  "codePath": "Policy.buyLand L5353（over）、L5359（price break）、L5361~5365（isSoleHealthyBuffer：唯一真人邻居、对方不濒崩不流血没在打我、打穿会露出新真人 → 余额 < 1.28×100×领土 就 continue）、L5371~5374（拥挤硬目标 1.26×）；Policy.offers L5248~5250（同一条件下报价再乘 soleBufferPenalty=1.6）；Policy.tryDonateToTeammate L4479~4508（一般调度：捐款人密度 ≥ 108）"
  }
 }
