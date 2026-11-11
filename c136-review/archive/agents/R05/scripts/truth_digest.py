@@ -6,6 +6,7 @@
       6 阵亡/离场号最后 600 拍 ｜7 捐兵真账与调度对账 ｜8 兵力骤降窗口(90 拍跌 ≥30%)收支分解 ｜9 每号每 300 拍经济体检 ｜10 客户端落后与指令延迟
 可选：--bots a,b 只看这些号（6/8/9 节）；--t0 --t1 限定 9 节的时间范围
 """
+import os
 import json
 import sys
 from collections import defaultdict
@@ -22,7 +23,7 @@ J = json.load(open(f'{tdir}/{mid}.json'))
 only = set(args[args.index('--bots') + 1].split(',')) if '--bots' in args else None
 T0 = int(args[args.index('--t0') + 1]) if '--t0' in args else 0
 T1 = int(args[args.index('--t1') + 1]) if '--t1' in args else 10 ** 9
-DATA = '/agent/repos/c136-data'
+DATA = os.environ.get('C136_DATA', '/agent/repos/c136-data')
 H = J['humans']
 land = J['map']['land']
 P = J['players']

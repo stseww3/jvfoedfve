@@ -1,0 +1,556 @@
+{
+ "matchId": "B029",
+ "side": "own",
+ "walkEvery": 30,
+ "withHumanNb": [
+  {
+   "period": "1500~3000",
+   "n": 535,
+   "sendHuman": 27,
+   "sendAi": 0,
+   "priceBreak": 426,
+   "allSkip": 79,
+   "allSkipWhy": {
+    "skip:x<chunk": 33,
+    "skip:avail<=0(safe)": 28,
+    "skip:pulseB:alreadyOn": 4,
+    "skip:pulseC:alreadyOn": 3,
+    "skip:soleBuffer": 11
+   }
+  },
+  {
+   "period": "3000~4284",
+   "n": 364,
+   "sendHuman": 4,
+   "sendAi": 0,
+   "priceBreak": 206,
+   "allSkip": 150,
+   "allSkipWhy": {
+    "skip:pulseC:<min": 1,
+    "skip:soleBuffer": 52,
+    "skip:avail<=0(safe)": 79,
+    "skip:x<chunk": 18
+   }
+  },
+  {
+   "period": "4284~6300",
+   "n": 599,
+   "sendHuman": 9,
+   "sendAi": 0,
+   "priceBreak": 350,
+   "allSkip": 238,
+   "allSkipWhy": {
+    "skip:x<chunk": 63,
+    "skip:avail<=0(safe)": 83,
+    "skip:crowdedHard": 9,
+    "skip:soleBuffer": 70,
+    "skip:siegeShrink": 7,
+    "skip:avail<=0(keep)": 1,
+    "skip:pulseA:alreadyOn": 4,
+    "skip:pulseC:alreadyOn": 1
+   }
+  },
+  {
+   "period": "6300~8100",
+   "n": 329,
+   "sendHuman": 5,
+   "sendAi": 1,
+   "priceBreak": 161,
+   "allSkip": 149,
+   "allSkipWhy": {
+    "skip:avail<=0(safe)": 56,
+    "skip:crowdedHard": 4,
+    "skip:siegeShrink": 18,
+    "skip:x<chunk": 27,
+    "skip:soleBuffer": 43,
+    "skip:pulseC:alreadyOn": 1
+   }
+  },
+  {
+   "period": "8100~终",
+   "n": 388,
+   "sendHuman": 19,
+   "sendAi": 0,
+   "priceBreak": 204,
+   "allSkip": 164,
+   "allSkipWhy": {
+    "skip:x<chunk": 6,
+    "skip:soleBuffer": 37,
+    "skip:siegeShrink": 5,
+    "skip:avail<=0(safe)": 105,
+    "skip:crowdedHard": 7,
+    "skip:pulseC:alreadyOn": 3,
+    "skip:pulseA:alreadyOn": 1
+   }
+  },
+  {
+   "period": "all",
+   "n": 2215,
+   "sendHuman": 64,
+   "sendAi": 1,
+   "priceBreak": 1347,
+   "allSkip": 780,
+   "allSkipWhy": {
+    "skip:x<chunk": 147,
+    "skip:avail<=0(safe)": 351,
+    "skip:pulseC:<min": 1,
+    "skip:soleBuffer": 213,
+    "skip:crowdedHard": 20,
+    "skip:siegeShrink": 30,
+    "skip:avail<=0(keep)": 1,
+    "skip:pulseB:alreadyOn": 4,
+    "skip:pulseC:alreadyOn": 8,
+    "skip:pulseA:alreadyOn": 5
+   }
+  }
+ ],
+ "underAttack": [
+  {
+   "period": "1500~3000",
+   "n": 65,
+   "send": 2,
+   "why": {
+    "break:price>=worth（更便宜的报价已截断）": 11,
+    "break:price>=worth": 31,
+    "skip:avail<=0(safe)": 11,
+    "不在报价表里（不接壤 / 受保护）": 10
+   }
+  },
+  {
+   "period": "3000~4284",
+   "n": 33,
+   "send": 0,
+   "why": {
+    "skip:pulseC:<min": 1,
+    "skip:chunk": 2,
+    "不在报价表里（不接壤 / 受保护）": 5,
+    "skip:avail<=0(safe)": 8,
+    "break:price>=worth": 13,
+    "skip:x<chunk": 1,
+    "break:price>=worth（更便宜的报价已截断）": 3
+   }
+  },
+  {
+   "period": "4284~6300",
+   "n": 99,
+   "send": 3,
+   "why": {
+    "skip:avail<=0(safe)": 22,
+    "break:price>=worth": 39,
+    "skip:x<chunk": 2,
+    "break:price>=worth（更便宜的报价已截断）": 25,
+    "不在报价表里（不接壤 / 受保护）": 2,
+    "skip:siegeShrink": 6
+   }
+  },
+  {
+   "period": "6300~8100",
+   "n": 90,
+   "send": 3,
+   "why": {
+    "skip:avail<=0(safe)": 26,
+    "break:price>=worth": 32,
+    "skip:siegeShrink": 8,
+    "break:price>=worth（更便宜的报价已截断）": 6,
+    "skip:pulseA:<min": 2,
+    "skip:x<chunk": 4,
+    "不在报价表里（不接壤 / 受保护）": 8,
+    "先发给了更便宜的目标": 1
+   }
+  },
+  {
+   "period": "8100~终",
+   "n": 34,
+   "send": 1,
+   "why": {
+    "break:price>=worth": 13,
+    "不在报价表里（不接壤 / 受保护）": 4,
+    "skip:siegeShrink": 4,
+    "skip:avail<=0(safe)": 6,
+    "break:price>=worth（更便宜的报价已截断）": 6
+   }
+  },
+  {
+   "period": "all",
+   "n": 321,
+   "send": 9,
+   "why": {
+    "break:price>=worth（更便宜的报价已截断）": 51,
+    "break:price>=worth": 128,
+    "skip:avail<=0(safe)": 73,
+    "skip:pulseC:<min": 1,
+    "skip:chunk": 2,
+    "不在报价表里（不接壤 / 受保护）": 29,
+    "skip:siegeShrink": 18,
+    "skip:x<chunk": 7,
+    "skip:pulseA:<min": 2,
+    "先发给了更便宜的目标": 1
+   }
+  }
+ ],
+ "underAttackByDensity": [
+  {
+   "band": "<60",
+   "n": 78,
+   "send": 2,
+   "why": {
+    "break:price>=worth（更便宜的报价已截断）": 17,
+    "break:price>=worth": 36,
+    "skip:avail<=0(safe)": 13,
+    "不在报价表里（不接壤 / 受保护）": 10
+   }
+  },
+  {
+   "band": "60~100",
+   "n": 151,
+   "send": 2,
+   "why": {
+    "break:price>=worth": 92,
+    "skip:avail<=0(safe)": 4,
+    "skip:pulseC:<min": 1,
+    "skip:chunk": 2,
+    "不在报价表里（不接壤 / 受保护）": 14,
+    "break:price>=worth（更便宜的报价已截断）": 34,
+    "skip:pulseA:<min": 2
+   }
+  },
+  {
+   "band": "100~126",
+   "n": 69,
+   "send": 1,
+   "why": {
+    "不在报价表里（不接壤 / 受保护）": 3,
+    "skip:avail<=0(safe)": 40,
+    "skip:siegeShrink": 18,
+    "skip:x<chunk": 7
+   }
+  },
+  {
+   "band": "≥126",
+   "n": 23,
+   "send": 4,
+   "why": {
+    "skip:avail<=0(safe)": 16,
+    "不在报价表里（不接壤 / 受保护）": 2,
+    "先发给了更便宜的目标": 1
+   }
+  }
+ ],
+ "priceGate": {
+  "n": 179,
+  "nRow": 128,
+  "ratioMed": 2.38,
+  "ratioQ1": 1.85,
+  "ratioQ3": 3.0,
+  "le125": 6,
+  "le150": 10,
+  "le200": 41,
+  "priceMed": 180.4,
+  "worthMed": 85.7,
+  "densMed": 82.2
+ },
+ "safeGate": {
+  "n": 73,
+  "safeOverBalMed": 2.91,
+  "ge2": 54,
+  "ge5": 26
+ },
+ "lostTilesByVerdict": {
+  "total": 188554,
+  "by": {
+   "没有采样点（1500 拍前 / 已不在线）": 4281,
+   "进攻者是异队编队友（受保护，不在报价表里）": 5434,
+   "skip:avail<=0(safe)": 38747,
+   "break:price>=worth": 107908,
+   "不在报价表里（当拍不接壤）": 7100,
+   "SEND（会打它）": 1599,
+   "skip:pulseC:<min": 15,
+   "skip:chunk": 198,
+   "skip:pulseB:<min": 41,
+   "skip:x<minCmd": 286,
+   "skip:soleBuffer": 7243,
+   "skip:x<chunk": 4992,
+   "skip:crowdedHard": 122,
+   "skip:siegeShrink": 8820,
+   "skip:pulseA:<min": 1482,
+   "先发给了更便宜的目标": 286
+  },
+  "byPeriod": {
+   "<1500": {
+    "没有采样点（1500 拍前 / 已不在线）": 1,
+    "进攻者是异队编队友（受保护，不在报价表里）": 421
+   },
+   "1500~3000": {
+    "进攻者是异队编队友（受保护，不在报价表里）": 2791,
+    "skip:avail<=0(safe)": 4284,
+    "break:price>=worth": 22297,
+    "不在报价表里（当拍不接壤）": 47,
+    "SEND（会打它）": 192
+   },
+   "3000~4284": {
+    "skip:avail<=0(safe)": 5693,
+    "break:price>=worth": 8201,
+    "skip:pulseC:<min": 15,
+    "skip:chunk": 198,
+    "不在报价表里（当拍不接壤）": 90,
+    "skip:pulseB:<min": 41,
+    "skip:x<minCmd": 40,
+    "skip:soleBuffer": 120,
+    "进攻者是异队编队友（受保护，不在报价表里）": 125,
+    "skip:x<chunk": 151
+   },
+   "4284~6300": {
+    "break:price>=worth": 33721,
+    "不在报价表里（当拍不接壤）": 617,
+    "skip:avail<=0(safe)": 9017,
+    "skip:crowdedHard": 122,
+    "SEND（会打它）": 58,
+    "skip:x<chunk": 1538,
+    "skip:siegeShrink": 3385,
+    "skip:x<minCmd": 34,
+    "skip:soleBuffer": 872,
+    "没有采样点（1500 拍前 / 已不在线）": 1121
+   },
+   "6300~8100": {
+    "break:price>=worth": 24505,
+    "skip:x<minCmd": 212,
+    "skip:x<chunk": 3303,
+    "不在报价表里（当拍不接壤）": 547,
+    "SEND（会打它）": 1060,
+    "skip:avail<=0(safe)": 10330,
+    "进攻者是异队编队友（受保护，不在报价表里）": 919,
+    "没有采样点（1500 拍前 / 已不在线）": 2589,
+    "skip:siegeShrink": 2911,
+    "skip:soleBuffer": 382,
+    "skip:pulseA:<min": 1482
+   },
+   "8100~终": {
+    "SEND（会打它）": 289,
+    "先发给了更便宜的目标": 286,
+    "进攻者是异队编队友（受保护，不在报价表里）": 1178,
+    "break:price>=worth": 19184,
+    "skip:soleBuffer": 5869,
+    "skip:avail<=0(safe)": 9423,
+    "skip:siegeShrink": 2524,
+    "不在报价表里（当拍不接壤）": 5799,
+    "没有采样点（1500 拍前 / 已不在线）": 570
+   }
+  }
+ },
+ "perBot": [
+  {
+   "bot": "Erwin",
+   "n": 15,
+   "humanNb": 15,
+   "underAttack": 6,
+   "send": 0,
+   "why": {
+    "break:price>=worth（更便宜的报价已截断）": 6
+   }
+  },
+  {
+   "bot": "Anya",
+   "n": 340,
+   "humanNb": 244,
+   "underAttack": 36,
+   "send": 0,
+   "why": {
+    "break:price>=worth": 14,
+    "skip:avail<=0(safe)": 11,
+    "skip:siegeShrink": 5
+   }
+  },
+  {
+   "bot": "Interpol",
+   "n": 318,
+   "humanNb": 38,
+   "underAttack": 7,
+   "send": 0,
+   "why": {
+    "不在报价表里（不接壤 / 受保护）": 5,
+    "skip:avail<=0(safe)": 1,
+    "break:price>=worth": 1
+   }
+  },
+  {
+   "bot": "Angkor",
+   "n": 315,
+   "humanNb": 277,
+   "underAttack": 22,
+   "send": 0,
+   "why": {
+    "skip:avail<=0(safe)": 8,
+    "break:price>=worth": 8,
+    "skip:siegeShrink": 3
+   }
+  },
+  {
+   "bot": "Moldavia",
+   "n": 249,
+   "humanNb": 249,
+   "underAttack": 28,
+   "send": 0,
+   "why": {
+    "break:price>=worth": 12,
+    "skip:avail<=0(safe)": 6,
+    "break:price>=worth（更便宜的报价已截断）": 5
+   }
+  },
+  {
+   "bot": "Scorpion",
+   "n": 273,
+   "humanNb": 199,
+   "underAttack": 30,
+   "send": 1,
+   "why": {
+    "skip:avail<=0(safe)": 17,
+    "break:price>=worth": 9,
+    "break:price>=worth（更便宜的报价已截断）": 2
+   }
+  },
+  {
+   "bot": "Cumania",
+   "n": 148,
+   "humanNb": 98,
+   "underAttack": 19,
+   "send": 0,
+   "why": {
+    "break:price>=worth": 12,
+    "skip:siegeShrink": 4,
+    "skip:avail<=0(safe)": 2
+   }
+  },
+  {
+   "bot": "Tomato",
+   "n": 142,
+   "humanNb": 142,
+   "underAttack": 23,
+   "send": 0,
+   "why": {
+    "skip:avail<=0(safe)": 8,
+    "break:price>=worth（更便宜的报价已截断）": 6,
+    "break:price>=worth": 6
+   }
+  },
+  {
+   "bot": "Conde",
+   "n": 122,
+   "humanNb": 122,
+   "underAttack": 13,
+   "send": 0,
+   "why": {
+    "break:price>=worth": 8,
+    "break:price>=worth（更便宜的报价已截断）": 5
+   }
+  },
+  {
+   "bot": "Marlborough",
+   "n": 273,
+   "humanNb": 44,
+   "underAttack": 11,
+   "send": 0,
+   "why": {
+    "不在报价表里（不接壤 / 受保护）": 5,
+    "break:price>=worth": 5,
+    "skip:avail<=0(safe)": 1
+   }
+  },
+  {
+   "bot": "Goku",
+   "n": 325,
+   "humanNb": 31,
+   "underAttack": 7,
+   "send": 0,
+   "why": {
+    "skip:avail<=0(safe)": 4,
+    "不在报价表里（不接壤 / 受保护）": 3
+   }
+  },
+  {
+   "bot": "Lelouch",
+   "n": 276,
+   "humanNb": 39,
+   "underAttack": 9,
+   "send": 0,
+   "why": {
+    "break:price>=worth": 6,
+    "不在报价表里（不接壤 / 受保护）": 1,
+    "skip:x<chunk": 1
+   }
+  },
+  {
+   "bot": "DioBrando",
+   "n": 65,
+   "humanNb": 65,
+   "underAttack": 8,
+   "send": 0,
+   "why": {
+    "break:price>=worth": 3,
+    "break:price>=worth（更便宜的报价已截断）": 3,
+    "skip:avail<=0(safe)": 2
+   }
+  },
+  {
+   "bot": "Senna",
+   "n": 279,
+   "humanNb": 235,
+   "underAttack": 21,
+   "send": 1,
+   "why": {
+    "break:price>=worth": 12,
+    "不在报价表里（不接壤 / 受保护）": 2,
+    "break:price>=worth（更便宜的报价已截断）": 2
+   }
+  },
+  {
+   "bot": "SyntaxError",
+   "n": 324,
+   "humanNb": 76,
+   "underAttack": 27,
+   "send": 5,
+   "why": {
+    "不在报价表里（不接壤 / 受保护）": 7,
+    "break:price>=worth": 6,
+    "skip:avail<=0(safe)": 4
+   }
+  },
+  {
+   "bot": "Two Sicilies",
+   "n": 316,
+   "humanNb": 117,
+   "underAttack": 10,
+   "send": 0,
+   "why": {
+    "break:price>=worth": 7,
+    "skip:avail<=0(safe)": 3
+   }
+  },
+  {
+   "bot": "Khazar",
+   "n": 298,
+   "humanNb": 186,
+   "underAttack": 31,
+   "send": 0,
+   "why": {
+    "break:price>=worth（更便宜的报价已截断）": 18,
+    "break:price>=worth": 12,
+    "不在报价表里（不接壤 / 受保护）": 1
+   }
+  },
+  {
+   "bot": "Iceland",
+   "n": 42,
+   "humanNb": 38,
+   "underAttack": 13,
+   "send": 2,
+   "why": {
+    "break:price>=worth": 7,
+    "skip:avail<=0(safe)": 4
+   }
+  }
+ ],
+ "selfCheck": {
+  "sendSamples": 77,
+  "shadowSentWithin": 68
+ }
+}

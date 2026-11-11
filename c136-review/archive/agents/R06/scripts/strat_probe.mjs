@@ -16,6 +16,9 @@
 //   --nfs     强制 isNoFullSend 的取值（缺省：让影子自己按代码演化）
 //   --offline 让策略以为自己在离线模拟器里（g.online=false）；缺省按线上（g.online=true）
 //   --win     汇总窗口（拍），打印每个窗口影子想发的指令数和录像里实际执行的指令数
+//   --part i/n  长局分片跑：只给 --me 名单里第 i 片（按名单下标 % n）的号挂影子，结果写 probe.part<i>of<n>.json；
+//             每个影子只读局面、指令不执行，所以分片与一次跑完逐字节相同（B021 前 3000 拍核对过）。全部片跑完后
+//             strat_probe.mjs <matchId> --merge n 合成 probe.json（不重演，只拼文件）
 //   --tally   每个决策拍（t%period==0）给每个影子号记一行「卡在哪道闸」，写进 probe.json 的 tally（配 --json）：
 //             t<coreFrom 走 General.act → Style.pickTarget 的路径（打内置 AI 的底线 winFloor=max(winR 项, dpKeep, safeFinite)）；
 //             t>=coreFrom 走 Policy.buyLand 的路径（真人报价的出口行号）。--dump 在 t<coreFrom 的拍也打印这条路径的逐邻居账
@@ -54,6 +57,34 @@ const DUMPS = (opt('dump', '') || '').split(',').filter(Boolean).map((s) => {
   const [p, a, b, st] = s.split(':').map(Number);
   return { p, a, b: b ?? a, st: st || 5 };
 });
+
+const PART = has('part') ? opt('part', '1/1').split('/').map(Number) : null;
+if (has('merge')) {
+  const n = +opt('merge', 0);
+  const parts = [];
+  for (let i = 1; i <= n; i++) parts.push(JSON.parse(fs.readFileSync(path.join(OUT, mid, `probe.part${i}of${n}.json`), 'utf8')));
+  const base = parts[0];
+  for (const q of parts) {
+    if (q.to !== base.to || q.strategy !== base.strategy || q.online !== base.online || JSON.stringify(q.meAll) !== JSON.stringify(base.meAll)) {
+      console.error(`分片不一致：to/strategy/online/名单 对不上（${q.part} vs ${base.part}）`);
+      process.exit(3);
+    }
+    if (JSON.stringify(q.actual) !== JSON.stringify(base.actual) || JSON.stringify(q.check) !== JSON.stringify(base.check)) {
+      console.error(`分片不一致：录像侧的 actual/check 对不上（${q.part} vs ${base.part}）`);
+      process.exit(3);
+    }
+  }
+  const order = new Map(base.meAll.map((p, i) => [p, i]));
+  const shadowsAll = {};
+  for (const p of base.meAll) for (const q of parts) if (q.shadows[p]) shadowsAll[p] = q.shadows[p];
+  const miss = base.meAll.filter((p) => !shadowsAll[p]);
+  if (miss.length) { console.error(`分片不全：缺 ${miss.join(',')}`); process.exit(3); }
+  const tallyAll = parts.flatMap((q) => q.tally).sort((a, b) => a.t - b.t || order.get(a.p) - order.get(b.p));
+  const out = { matchId: base.matchId, strategy: base.strategy, online: base.online, to: base.to, check: base.check, simVsEngine: base.simVsEngine, shadows: shadowsAll, actual: base.actual, tally: tallyAll };
+  fs.writeFileSync(path.join(OUT, mid, 'probe.json'), JSON.stringify(out));
+  console.log(`${mid}: 合并 ${n} 片 → probe.json（影子 ${Object.keys(shadowsAll).length} 个，tally ${tallyAll.length} 行，actual ${base.actual.length} 条，到 t=${base.to}，日志快照核对 ${base.check[0]}/${base.check[1]}）`);
+  process.exit(0);
+}
 
 // ---- 策略源码：只改两行 import 的路径，其余原样 ----------------------------------------------
 const stratSrc = fs.readFileSync(path.join(SRC, 'strategy', `v27-team-${VER}.js`), 'utf8')
@@ -204,15 +235,15 @@ const execCmd = (c) => {
   else if (id === 1) {
     const B0 = g.bal[player];
     const ok = g.attack(dX, dZ, player);
-    if (shadows.has(player)) actual.push({ t: g.t, p: player, k: 'atk', to: Math.min(dZ, NEUTRAL), pct: dX, ok, B0 });
+    if (actualFor.has(player)) actual.push({ t: g.t, p: player, k: 'atk', to: Math.min(dZ, NEUTRAL), pct: dX, ok, B0 });
   } else if (id === 2) {
     const B0 = g.bal[player];
     const ok = g.donate(dX, dZ, player);
-    if (shadows.has(player)) actual.push({ t: g.t, p: player, k: 'don', to: dZ, pct: dX, ok, B0 });
+    if (actualFor.has(player)) actual.push({ t: g.t, p: player, k: 'don', to: dZ, pct: dX, ok, B0 });
   } else if (id === 3) {
     const B0 = g.bal[player];
     const ok = g.boat(dX, dZ >> 3, dZ & 7, player);
-    if (shadows.has(player)) actual.push({ t: g.t, p: player, k: 'boat', to: -1, pct: dX, ok, B0 });
+    if (actualFor.has(player)) actual.push({ t: g.t, p: player, k: 'boat', to: -1, pct: dX, ok, B0 });
   } else if (id === 4) {
     if (dX === 849) g.recall(dZ, player);
     else g.chase(dX, dZ, player);
@@ -231,7 +262,9 @@ const execCmd = (c) => {
 };
 
 // ---- 影子：策略实例 + 只读视图 ---------------------------------------------------------------
-const meList = opt('me', 'squad') === 'squad' ? [...squad] : opt('me', '').split(',').map(Number);
+const meAll = opt('me', 'squad') === 'squad' ? [...squad] : opt('me', '').split(',').map(Number);
+const meList = PART ? meAll.filter((_, i) => i % PART[1] === PART[0] - 1) : meAll;
+const actualFor = new Set(meAll); // 录像侧的 actual 按完整名单记，各片相同
 const shadows = new Map();
 class Probe extends Policy {
   send(gv, target, troops, hint) {
@@ -826,5 +859,5 @@ if (WIN > 0) {
 if (has('json')) {
   const o = {};
   for (const sh of shadows.values()) o[sh.me] = { cmds: sh.cmds, sends: sh.pol._sends, nfs: sh.pol.isNoFullSend ? 1 : 0, nfsT: sh.nfsT ?? -1, err: sh.err };
-  fs.writeFileSync(path.join(OUT, mid, 'probe.json'), JSON.stringify({ matchId: mid, strategy: VER, online: ONLINE, to: g.t, check: [chkOk, chkN], simVsEngine: truth ? { lastOkT: div.lastOkT, firstT: div.firstT, firstWho: div.firstWho, squadFirst: div.squadFirst, drift: div.drift } : null, shadows: o, actual, tally }));
+  fs.writeFileSync(path.join(OUT, mid, PART ? `probe.part${PART[0]}of${PART[1]}.json` : 'probe.json'), JSON.stringify({ matchId: mid, strategy: VER, online: ONLINE, to: g.t, ...(PART ? { part: `${PART[0]}/${PART[1]}`, meAll } : {}), check: [chkOk, chkN], simVsEngine: truth ? { lastOkT: div.lastOkT, firstT: div.firstT, firstWho: div.firstWho, squadFirst: div.squadFirst, drift: div.drift } : null, shadows: o, actual, tally }));
 }

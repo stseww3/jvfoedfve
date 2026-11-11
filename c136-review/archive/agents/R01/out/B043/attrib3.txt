@@ -1,0 +1,24 @@
+== B043 三分账 [600,1500)
+   ① 出生：本队 20 个号，天然份额中位 5810 格（其他真人中位 6150）；低于其他真人中位一半的 4 个：Hussite 2767、KGB 2786、Yoshi 2450、Spiderman 2616
+      决策拍合计 2652：下令 470（17.7%） boxed 372（14.0%） 开局按租期等 461（17.4%） 保底线 431（16.3%） 其余 918（34.6%：价格线 0 / 其他闸门 0 / 没目标或没空槽 0 / 没走到 offers 918）
+      boxed 决策拍按号：Hussite 118、Zenobia 62、Itachi 61、Spiderman 47、Trajan 45、Bongcloud 39
+   ② 保底线锁死：431 个决策拍（身边只剩机器人地 189 / 身边还有无主地 242），保底线取自 safeFinite 265 / dpKeep 89 / 回本线 77
+      Itachi：74 拍（safeFinite 74 / dpKeep 0 / 回本线 0），同窗口下令 6 次，身边机器人地均值 478 格
+      Jordan：71 拍（safeFinite 21 / dpKeep 49 / 回本线 1），同窗口下令 10 次，身边机器人地均值 1736 格
+      ProGamer99：66 拍（safeFinite 3 / dpKeep 36 / 回本线 27），同窗口下令 19 次，身边机器人地均值 4358 格
+      Zhuge Liang：37 拍（safeFinite 37 / dpKeep 0 / 回本线 0），同窗口下令 17 次，身边机器人地均值 2309 格
+      Spiderman：31 拍（safeFinite 30 / dpKeep 0 / 回本线 1），同窗口下令 4 次，身边机器人地均值 333 格
+      Celtic：24 拍（safeFinite 24 / dpKeep 0 / 回本线 0），同窗口下令 8 次，身边机器人地均值 1680 格
+      Zenobia：21 拍（safeFinite 2 / dpKeep 0 / 回本线 19），同窗口下令 12 次，身边机器人地均值 1360 格
+      Trajan：19 拍（safeFinite 13 / dpKeep 0 / 回本线 6），同窗口下令 8 次，身边机器人地均值 2228 格
+      Kokand：17 拍（safeFinite 12 / dpKeep 2 / 回本线 3），同窗口下令 6 次，身边机器人地均值 1696 格
+      KGB：16 拍（safeFinite 12 / dpKeep 2 / 回本线 2），同窗口下令 6 次，身边机器人地均值 591 格
+      Janissary：13 拍（safeFinite 9 / dpKeep 0 / 回本线 4），同窗口下令 15 次，身边机器人地均值 1271 格
+      Barbary：12 拍（safeFinite 3 / dpKeep 0 / 回本线 9），同窗口下令 0 次，身边机器人地均值 986 格
+      deRuyter：10 拍（safeFinite 10 / dpKeep 0 / 回本线 0），同窗口下令 4 次，身边机器人地均值 1699 格
+      Srivijaya：7 拍（safeFinite 7 / dpKeep 0 / 回本线 0），同窗口下令 24 次，身边机器人地均值 3282 格
+      Yoshi：7 拍（safeFinite 7 / dpKeep 0 / 回本线 0），同窗口下令 3 次，身边机器人地均值 827 格
+      Timurid：5 拍（safeFinite 0 / dpKeep 0 / 回本线 5），同窗口下令 7 次，身边机器人地均值 1345 格
+      Bongcloud：1 拍（safeFinite 1 / dpKeep 0 / 回本线 0），同窗口下令 7 次，身边机器人地均值 897 格
+   ③ 动了但迟到：落地陆攻 257 条，其中目标已不在 106 条（41.2%），一兵未扣 91 条（35.4%）；一兵未扣的令决策时想出 109626 兵 = 同期全部落地令想出的 346580 兵的 31.6%；延迟中位 172 拍
+# 已写 out/B043/attrib3.json

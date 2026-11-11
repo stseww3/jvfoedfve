@@ -84,6 +84,19 @@ def cells(mid):
         sl = json.load(open(sp_, encoding='utf8'))
         mx = max([v['max'] for v in sl['bots'].values()], default=0)
         c['慢拍行数（一次决策 ≥25 毫秒）/ 最大毫秒'] = '%d / %.0f' % (sl['lines'], mx)
+    cp_ = os.path.join(ROOT, 'tmp', 'chunks', mid + '.json')
+    if os.path.exists(cp_):
+        ck = json.load(open(cp_, encoding='utf8'))
+        if ck.get('big'):
+            c['装满的批（8~9 条）：个数 / 后面紧跟着丢掉意图的'] = '%d / %d' % (ck['big']['n'], ck['big']['withTail'])
+            c['不到 8 条的批：个数 / 后面紧跟着丢掉意图的'] = '%d / %d' % (ck['small']['n'], ck['small']['withTail'])
+            for nm in ('600~1499', '1500~2999'):
+                v = ck['bands'].get(nm)
+                c['%s 每补完一截离落地拍还差（中位 / P90 拍）' % nm] = ('%s / %s' % (v['shortP50'], v['shortP90'])) if v and v.get('matched') else '—'
+    wp_ = os.path.join(ROOT, 'tmp', 'wall', mid + '.json')
+    if os.path.exists(wp_):
+        wl = json.load(open(wp_, encoding='utf8'))
+        c['墙上时钟：报告出局时落后服务器 ≥35 拍 / ≥90 拍的号（共几个号）；最大'] = '%d / %d（%d）；%d 拍' % (wl['ge35'], wl['ge90'], wl['n'], round(wl['max']))
     for b, w in att['windows'].items():
         c['三层归因 %s 拍：出生 / 策略闸门 / 迟到（对数占比）' % b] = '%.0f%% / %.0f%% / %.0f%%' % (w['shareSpawn'], w['shareLock'], w['shareLate'])
         c['同上的四个折扣：出生 × 没被锁 × 受理后落地 × 到站时目标还在'] = c.get('同上的四个折扣：出生 × 没被锁 × 受理后落地 × 到站时目标还在', '') + ('%s：%.2f × %.2f × %.2f × %.2f = %.3f　' % (

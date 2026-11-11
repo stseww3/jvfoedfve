@@ -5,10 +5,11 @@
 # 用法：python3 scripts/review_build/A095.py
 import os, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from common import skel, pick_timeline, dump, check
+from common import skel, pick_timeline, dump, check, accounts, account_scripts
 
 M = 'A095'
 S = skel(M)
+ACC = accounts(M)   # 广播 0007 的三本账（延迟 / 好地 / 600–1500 决策拍归因）+ 配额闸计数，原样取自脚本输出
 SRC = 'src/strategy/v27-team-c116-vb.js'
 SPAWN = 'src/strategy/spawn-coordinator-c116-vb.mjs'
 SIM = 'src/sim/sim/game.js'
@@ -148,7 +149,7 @@ turning = [
              'codePath': f'{SRC}: Policy.boatFood L5621-5623 → V13.boatFood L2001-2023；{BOATS}: landAt L262-287'},
         ],
         'statementType': 'inferred',
-        'note': '四个因素各占多少没有拆分：没有做「解开留底」或「指令准时」的重放对照。68 人的图人均 7,608 格，本来就挤；可以确定的是这 900 拍编队手里的兵比别人多、拿到的地比别人少。',
+        'note': '四个因素按决策拍的占比见 tickAttribution（结构 39.3%、留底 37.9%、发了没用 4.7%、有效 9.6%），各自少拿多少地没有拆分：没有做「解开留底」或「指令准时」的重放对照。68 人的图人均 7,608 格，本来就挤；可以确定的是这 900 拍编队手里的兵比别人多、拿到的地比别人少。',
     },
     {
         'id': 'TP2', 't0': 1500, 't1': 2400, 'shareBefore': 11.3, 'shareAfter': 12.2, 'shareOf': 'T1（我方队伍）',
@@ -585,6 +586,7 @@ doc = {
                                          'notExecuted': '69 条＝66 条没落地的捐兵（64 条四个试算拍全被配额拒、2 条有通过有被拒）+ zexos1 3 条',
                                          'oneCmdPerTickSqueezed': '12 条：9 条打真人 710k（leo_tx 2100 段 4 条 641k→Hi、ryan_m 3 条 13k、noah88 2 条 56k），3 条打机器人',
                                          'unlockShadowIssued': 644, 'guardRefusals': 44}),
+    **ACC,
     'squadVsRealHumans': S['cmp'],
     'teamTroops': {
         'note': 'A095_facts.py §8（HS 每 300 拍采样）：各队 占图/总兵；squadShareOfTeamTroops = 编队占 T1 兵的比例；squadVsBiggestEnemyTeam = 编队兵 ÷ 最大敌队兵',
@@ -653,7 +655,7 @@ doc = {
         'sora_w 一个号在 T1 全灭后独活了 3,400 拍。',
     ],
     'unknowns': [
-        'TP1 的四个因素（出生位置、机器人锁、指令成批迟到、被围）各占多少没有拆分：没有做「解开留底」或「指令准时」的重放对照；68 人的图人均 7,608 格，本来就挤。',
+        'TP1 的四个因素（出生位置、机器人锁、指令成批迟到、被围）各自少拿多少地没有拆分（按决策拍的占比见 tickAttribution）：没有做「解开留底」或「指令准时」的重放对照；68 人的图人均 7,608 格，本来就挤。',
         '900–1500 拍指令为什么成批迟到、1500 拍那几条为什么晚 33 拍才被执行：策略自身每拍耗时 1 ms 上下，t=1530 自报的存兵与重放相等（看到的局面是新的），原因在指令上行的链路上，策略代码里只能看到后果。',
         'over 放行与对方其后出兵的因果：10 轮里 8 轮之后 100 拍内对方对我方号出了兵，这只是时间上的先后；Nice Guy 18 条出手里有 9 条不在放行之后，Palestine、5feet 本来就在扩张，没有对照组。',
         '留底（dpKeep、88×地 封顶）挡住的 135 个样本里，放开之后是赚是亏没有推演：talon5、kaito9 的邻居兵力是它们的 2–10 倍，出手未必有好结果；能确定的只有它让过了价格门的目标（34 个样本）没有成交。',
@@ -670,6 +672,7 @@ doc = {
         '除名线 = 引擎 peak÷4，peak 在地低于它时每拍只回落 max(1,(peak−地)÷1000) 格（aliveTick L1298-1312）：ryan_m 808 拍内地翻 3.1 倍后，除名时还有约 2,300 格；zexos1 峰值 6,309 格 → 1,552 格除名。',
     ],
     'scripts': [
+        *account_scripts(M),
         'scripts/sim_replay.mjs A095 --check（逐拍精确重放；与 488 条 [HL-TICK] 的地、兵逐条相等）', 'scripts/match_truth.mjs A095 → /tmp/c136-r05/truth/A095.json', 'scripts/review_skel.py A095 → /tmp/c136-r05/skel/A095.json',
         'scripts/truth_digest.py A095', 'scripts/match_facts.py A095 [--sec bots,line,hits,batch,don,cap,ledger,top,cmds,enc,deaths]', 'scripts/match_extra.py A095 [--sec disp,team,mates,grab,active,rate,form,quota,qeff]',
         'scripts/review_build/A095_facts.py（§1 出生与邻居、§2 抢地进度、§3 围死与存兵、§4 1533/1554 两批、§5 调度与配额、§6 打真人账、§7 各号阵亡前、§8 各队、§9 sora_w 独活、§11 易手与交换比、§12 最后一条指令到阵亡、§13 t<1500 的小仗、§14 ryan_m、§15 选点期最后 12 拍的落子、§16 捐兵之后、§17 过软上限放行与其后对方的出兵、§18 buyLand 分支汇总、§19 调度日志按受赠方逐条、§20 零散核对与 88×地 线、§21 邻居的地归谁）',

@@ -1,0 +1,113 @@
+[FA] B035 捐款定案（余额序列拟合）：日志 79 笔；成交 65，没成交 1，定不了 13
+     成交的到账合计 33640347，税合计 15933967（税占捐出方付出的 32.1%）
+     其中到账被收款方 150 倍上限夹小的 6 笔：到账 3286353，税 2634471（税占 44%）
+     与 facts.py [G]「只看发令 20 拍后那条余额」的判定对照（旧判定→新定案：笔数）：ACC→EXEC:61；?→AMB:7；ACC→AMB:5；REJ→EXEC:2；?→EXEC:2；REJ→AMB:1；REJ→NOEXEC:1
+     成交的 65 笔里，发令 20 拍后的观测仍未扣款（时延 ≥20 拍）的 1 笔（2%）；时延上界 中位 45 拍
+     连发（同号 ≤25 拍内第二笔，发令时前一笔还没落地，两笔都成交）：1 笔，多付出 到账 363389 + 税 125037
+     没成交的 1 笔里，收款方在这笔捐款落地前已经出局的 1 笔：t=8615 Panzergrenadier→Alaska
+[FB] 按捐出方：号 | 日志笔数 | 成交 / 没成交 / 定不了 | 到账合计 | 税合计 | 连发笔数 | 时延≥20 的成交笔数
+     Alaska         |  25 | 21 / 0 / 4 |   8988042 |  3519900 | 1 | 1
+     Panzergrenadier |  25 | 20 / 1 / 4 |  11432530 |  5250834 | 0 | 0
+     Lucario        |  20 | 18 / 0 / 2 |  11328385 |  6176800 | 0 | 0
+     Afsharid       |   6 | 4 / 0 / 2 |   1162979 |   677036 | 0 | 0
+     Impostor       |   3 | 2 / 0 / 1 |    728411 |   309397 | 0 | 0
+[FC] 按收款方：号 | 成交笔数 | 到账合计 | 捐出方付的税 | 首末拍
+     Lucario(13)        |  24 |  13754847 |  5321034 | 3595~8170
+     Panzergrenadier(12) |   9 |   6318097 |  2967611 | 5140~8850
+     Alaska(17)         |   8 |   6295271 |  3211984 | 4915~8610
+     Zoro(21)           |  18 |   5380742 |  3446905 | 3700~4520
+     Impostor(20)       |   4 |   1162979 |   677036 | 4480~6550
+     Afsharid(10)       |   2 |    728411 |   309397 | 5150~5560
+[FQ] 引擎受捐额度对账（归属口径：先取过得了额度的，再取发令最晚的；--fifo 可换回旧的队首口径）：成交的 65 笔里记账后超出额度的 0 笔（编队外队友的捐款看不到，已用点数是下限；超出 = 余额拟合和额度模型对不上，这几笔的到账额或归属存疑）
+     受捐方 | t<2142 成交 笔数 / 到账 / 点数 | 2142~3212 | 3213~4283 | t≥4284 笔数 / 到账（不查额度）| t=4283 累计点数（额度 309）
+     Lucario        | 0 / 0 / 0 | 0 / 0 / 0 | 4 / 1731025 / 65 | 20 / 12023822 | 65
+     Panzergrenadier | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 9 / 6318097 | 0
+     Alaska         | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 8 / 6295271 | 0
+     Zoro           | 0 / 0 / 0 | 0 / 0 / 0 | 9 / 3073560 / 0 | 9 / 2307182 | 0
+     Impostor       | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 4 / 1162979 | 0
+     Afsharid       | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 2 / 728411 | 0
+[FE] 盈余捐款成交后的密度（捐后余额 = 发令时余额 − 到账 − 税；连发的第二笔再减去第一笔）：号 | 成交笔数 | 发令时密度 中位 | 捐后密度 中位 / 最低 | 捐后 <68 的笔数 | 捐后 <55 的笔数
+     Alaska         |  16 | 78.7 | 59.1 / 45.9 | 11 | 1
+     Panzergrenadier |  14 | 113.2 | 89.1 / 58.7 | 4 | 0
+     Lucario        |   7 | 113.3 | 93.5 / 88.2 | 0 | 0
+     Afsharid       |   2 | 116.7 | 91.6 / 88.6 | 0 | 0
+[FD] 逐笔：拍 捐出→收款 类型 pct | 发令时余额 | 定案 | 时延区间(拍) | 到账 / 税 | 旧判定 | 连发
+      3595 Alaska→Lucario(13) surplus 153 | 2830889 | EXEC | (0,95] | 433808 / 180284 | ACC |  L8614377
+      3700 Panzergrenadier→Zoro(21) surplus 153 | 2844071 | EXEC | (0,80] | 427721 / 177754 | ACC |  L8614395
+      3735 Impostor→Afsharid(10) surplus 153 | 1828098 | AMB | (>225) | None / None | ? |  L8614397
+      3760 Alaska→Lucario(13) surplus 153 | 2808584 | EXEC | (0,20] | 422384 / 175536 | ACC |  L8614398
+      3925 Panzergrenadier→Lucario(13) surplus 153 | 2964402 | EXEC | (0,35] | 449696 / 186887 | ACC |  L8614421
+      3940 Alaska→Lucario(13) surplus 153 | 2826891 | EXEC | (0,20] | 425137 / 176680 | ACC |  L8614422
+      4005 Lucario→Zoro(21) squad rescue 155 | 4723363 | EXEC | (0,25] | 727490 / 298457 | ACC |  L8614432
+      4030 Alaska→Zoro(21) squad rescue 63 | 2538817 | EXEC | (0,20] | 158676 / 158676 | ACC |  L8614434
+      4030 Lucario→Zoro(21) squad rescue 155 | 3860412 | EXEC | (0,20] | 588109 / 241275 | ACC |  L8614435
+      4080 Lucario→Zoro(21) squad rescue 58 | 3260454 | EXEC | (0,60] | 187858 / 203778 | ACC |  L8614445
+      4090 Panzergrenadier→Zoro(21) squad rescue 67 | 2614676 | EXEC | (0,50] | 173630 / 163417 | ACC |  L8614446
+      4185 Lucario→Zoro(21) squad rescue 89 | 3366578 | EXEC | (0,45] | 300240 / 213504 | ACC |  L8614456
+      4185 Panzergrenadier→Zoro(21) squad rescue 60 | 2595996 | EXEC | (0,45] | 156716 / 164423 | ACC |  L8614457
+      4185 Alaska→Zoro(21) squad rescue 130 | 2729695 | EXEC | (0,45] | 353120 / 172516 | ACC |  L8614459
+      4295 Panzergrenadier→Zoro(21) squad rescue 87 | 2670344 | EXEC | (0,25] | 234583 / 170606 | ACC |  L8614469
+      4305 Alaska→Zoro(21) squad rescue 101 | 2643009 | EXEC | (0,15] | 266480 / 167203 | ACC |  L8614471
+      4385 Panzergrenadier→Zoro(21) squad rescue 57 | 2589783 | EXEC | (0,25] | 148652 / 164030 | ACC |  L8614480
+      4385 Lucario→Zoro(21) squad rescue 155 | 3931109 | EXEC | (0,25] | 607683 / 249306 | ACC |  L8614481
+      4400 Alaska→Zoro(21) squad rescue 69 | 2556409 | EXEC | (10,100] | 177043 / 161868 | ACC |  L8614482
+      4440 Lucario→Zoro(21) squad rescue 101 | 3413332 | EXEC | (0,60] | 339999 / 213333 | ACC |  L8614492
+      4470 Panzergrenadier→Zoro(21) squad rescue 63 | 2603883 | EXEC | (0,30] | 162742 / 162742 | ACC |  L8614496
+      4480 Afsharid→Impostor(20) surplus 153 | 2708000 | EXEC | (0,20] | 407257 / 169250 | ACC |  L8614497
+      4500 Alaska→Zoro(21) squad rescue 73 | 2567042 | EXEC | (0,90] | 185508 / 160440 | ACC |  L8614500
+      4520 Lucario→Zoro(21) squad rescue 57 | 3257244 | EXEC | (0,70] | 184492 / 203577 | ACC |  L8614508
+      4750 Alaska→Lucario(13) surplus 153 | 3031388 | EXEC | (0,20] | 455892 / 189461 | ACC |  L8614529
+      4750 Panzergrenadier→Lucario(13) surplus 153 | 2910001 | EXEC | (0,20] | 437636 / 181875 | ACC |  L8614530
+      4915 Lucario→Alaska(17) surplus 153 | 5608645 | EXEC | (0,35] | 847620 / 352257 | ACC |  L8614555
+      4970 Lucario→Alaska(17) surplus 153 | 4715867 | EXEC | (0,70] | 709222 / 294741 | ACC |  L8614570
+      5140 Lucario→Panzergrenadier(12) surplus 153 | 4763011 | EXEC | (0,80] | 716312 / 297688 | ACC |  L8614591
+      5150 Impostor→Afsharid(10) squad rescue 147 | 2302551 | EXEC | (0,70] | 332790 / 143909 | ACC |  L8614592
+      5215 Alaska→Panzergrenadier(12) surplus 185 | 3074724 | AMB | (>0) | None / None | ? |  L8614595
+      5350 Lucario→Panzergrenadier(12) surplus 153 | 4992803 | EXEC | (0,50] | 750870 / 312050 | ACC |  L8614617
+      5480 Lucario→Alaska(17) surplus 153 | 4708689 | EXEC | (0,10] | 708142 / 294293 | ACC |  L8614630
+      5490 Afsharid→Impostor(20) surplus 153 | 3029787 | AMB | (>0) | None / None | ACC |  L8614634
+      5560 Impostor→Afsharid(10) squad rescue 152 | 2647823 | EXEC | (0,20] | 395621 / 165488 | ACC |  L8614642
+      5580 Panzergrenadier→Alaska(17) surplus 153 | 3777238 | AMB | (>0) | None / None | REJ |  L8614648
+      5620 Alaska→Panzergrenadier(12) surplus 280 | 3919729 | EXEC | (0,20] | 1075628 / 244983 | ACC |  L8614654
+      5640 Alaska→Lucario(13) surplus 185 | 2672402 | EXEC | (0,30] | 485416 / 167025 | ACC |  L8614657
+      5645 Lucario→Panzergrenadier(12) surplus 153 | 4716306 | EXEC(夹小) | (0,25] | 336880 / 298070 | ACC |  L8614659
+      5750 Lucario→Panzergrenadier(12) surplus 153 | 4748569 | AMB | (>190) | None / None | ACC |  L8614670
+      5780 Alaska→Lucario(13) surplus 185 | 2489633 | EXEC | (0,70] | 452218 / 155602 | ACC |  L8614680
+      5960 Alaska→Lucario(13) surplus 185 | 2491394 | EXEC | (0,70] | 452538 / 155712 | ACC |  L8614704
+      6010 Panzergrenadier→Lucario(13) surplus 153 | 4684716 | EXEC | (0,20] | 704537 / 292794 | ACC |  L8614707
+      6115 Afsharid→Impostor(20) surplus 153 | 2909772 | EXEC | (0,95] | 441584 / 183515 | ACC |  L8614720
+      6140 Lucario→Panzergrenadier(12) surplus 153 | 5793346 | EXEC | (0,70] | 871264 / 362084 | ACC |  L8614728
+      6140 Alaska→Panzergrenadier(12) surplus 185 | 2491060 | AMB | (>0) | None / None | ? |  L8614729
+      6285 Afsharid→Impostor(20) surplus 153 | 2843539 | AMB | (>175) | None / None | ACC |  L8614745
+      6340 Panzergrenadier→Lucario(13) surplus 153 | 5673661 | AMB | (>230) | None / None | ? |  L8614754
+      6370 Panzergrenadier→Lucario(13) surplus 185 | 3951711 | AMB | (>200) | None / None | ? |  L8614759
+      6460 Afsharid→Impostor(20) squad rescue 61 | 2593003 | EXEC | (0,20] | 156998 / 162062 | ACC |  L8614769
+      6510 Alaska→Lucario(13) surplus 185 | 2559249 | EXEC | (0,60] | 464863 / 159953 | ACC |  L8614777
+      6550 Afsharid→Impostor(20) squad rescue 61 | 2595350 | EXEC | (0,20] | 157140 / 162209 | ACC |  L8614779
+      6700 Panzergrenadier→Lucario(13) surplus 185 | 3952318 | EXEC(夹小) | (0,50] | 475824 / 258379 | ACC |  L8614800
+      6700 Alaska→Lucario(13) surplus 185 | 2594867 | EXEC | (0,50] | 471333 / 162179 | ACC |  L8614801
+      6820 Panzergrenadier→Lucario(13) surplus 185 | 3958996 | EXEC | (0,20] | 719114 / 247437 | ACC |  L8614814
+      6880 Alaska→Lucario(13) surplus 185 | 2560402 | EXEC | (0,50] | 465073 / 160025 | ACC |  L8614825
+      7000 Panzergrenadier→Lucario(13) surplus 185 | 4028367 | EXEC | (0,20] | 753979 / 259433 | ACC |  L8614840
+      7060 Alaska→Lucario(13) surplus 185 | 2567103 | EXEC | (0,50] | 466290 / 160443 | ACC |  L8614851
+      7160 Panzergrenadier→Lucario(13) surplus 185 | 3925310 | EXEC | (0,40] | 712995 / 245331 | ACC |  L8614864
+      7240 Alaska→Lucario(13) surplus 185 | 2571492 | EXEC | (0,50] | 467087 / 160718 | ACC |  L8614876
+      7420 Alaska→Panzergrenadier(12) surplus 185 | 2573692 | EXEC | (20,50] | 480762 / 165423 | REJ |  L8614902
+      7440 Alaska→Panzergrenadier(12) surplus 185 | 2646781 | EXEC | (0,30] | 363389 / 125037 | ? | 连发@7420 L8614906
+      7470 Panzergrenadier→Lucario(13) surplus 153 | 5756230 | EXEC | (0,90] | 865683 / 359764 | ACC |  L8614911
+      7775 Panzergrenadier→Lucario(13) surplus 153 | 6541713 | EXEC | (0,55] | 990010 / 411432 | ACC |  L8614955
+      7780 Alaska→Lucario(13) surplus 185 | 2562191 | EXEC | (0,50] | 465397 / 160136 | ACC |  L8614956
+      7850 Panzergrenadier→Lucario(13) surplus 153 | 5722180 | EXEC | (0,70] | 860562 / 357636 | ACC |  L8614967
+      8000 Panzergrenadier→Alaska(17) surplus 153 | 5664611 | EXEC | (10,100] | 861701 / 358109 | ACC |  L8614980
+      8170 Panzergrenadier→Lucario(13) surplus 153 | 5700992 | EXEC | (0,20] | 857375 / 356312 | ACC |  L8615001
+      8390 Panzergrenadier→Alaska(17) surplus 153 | 6074771 | EXEC | (0,70] | 913588 / 379673 | ACC |  L8615030
+      8405 Lucario→Alaska(17) squad rescue 155 | 8536741 | AMB | (>205) | None / None | ACC |  L8615031
+      8415 Alaska→Lucario(13) surplus 153 | 4751700 | AMB | (>0) | None / None | ? |  L8615035
+      8500 Panzergrenadier→Alaska(17) squad rescue 155 | 5644814 | EXEC(夹小) | (0,50] | 525786 / 352800 | ACC |  L8615044
+      8505 Lucario→Alaska(17) squad rescue 155 | 8886297 | EXEC(夹小) | (0,45] | 224871 / 562946 | REJ |  L8615045
+      8515 Alaska→Panzergrenadier(12) surplus 153 | 2014998 | AMB | (>0) | None / None | ACC |  L8615048
+      8610 Lucario→Alaska(17) squad rescue 155 | 9504970 | EXEC | (0,30] | 1504341 / 617165 | ? |  L8615058
+      8615 Panzergrenadier→Alaska(17) squad rescue 145 | 5600086 | NOEXEC(收款方已出局) | (>0) | None / None | REJ |  L8615059
+      8740 Lucario→Panzergrenadier(12) squad rescue 155 | 9248513 | EXEC(夹小) | (0,80] | 881525 / 578032 | ACC |  L8615074
+      8755 Panzergrenadier→Lucario(13) surplus 153 | 3534299 | AMB | (>0) | None / None | ? |  L8615076
+      8850 Lucario→Panzergrenadier(12) squad rescue 155 | 9347909 | EXEC(夹小) | (0,60] | 841467 / 584244 | ACC |  L8615082

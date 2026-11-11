@@ -37,6 +37,9 @@ COMMON_SCRIPTS = [
     "scripts/freeze-scan.mjs（t<1500：safeFinite 冻结计数与反事实；t≥1500：buyLand 每个决策拍为什么没出手的九类计数）",
     "scripts/donate-why.mjs（tryDonateToTeammate 每次调用卡在哪一道闸；照抄判定与真调用逐次对账）",
     "scripts/dbg/act-trace.mjs（逐决策拍打印各分支的输入与返回值）",
+    "scripts/delay-ledger.py（延迟账：选点落地、发令→落地延迟分段、漏斗、目标已死改道、落地前重发与同拍成批落地）",
+    "scripts/land-ledger.mjs（抢地账：出生份额 Voronoi、各拍 实际领土÷出生份额、名下范围归谁、身边内置 AI 的地去向）",
+    "scripts/ledger-brief.py（两套账的摘要与 600~1500 拍三层对账恒等式）",
     "scripts/mkreview.py（合成本文件并自检）",
 ]
 
@@ -224,6 +227,19 @@ def build(mid):
                         crowd_human += 1
     if exec_layer is not None:
         exec_layer["sameTickRejected"] = {"byPair": crowd, "total": sum(crowd.values()), "withHumanTarget": crowd_human}
+    lb = _import(os.path.join(HERE, "ledger-brief.py"), "ledger_brief")
+    brief_txt, ledgers = lb.brief(mid)
+    latency_land = None
+    if ledgers.get("delay") or ledgers.get("land"):
+        latency_land = {
+            "brief": [ln for ln in brief_txt.splitlines()[1:] if ln.strip()],
+            "threeLayer": ledgers.get("threeLayer"),
+            "notes": notes.get("ledgerNotes"),
+            "delay": ledgers.get("delay"),
+            "land": ledgers.get("land"),
+            "legend": "延迟 = 服务器处理拍 − 页面发令拍；名下 = 每格陆地归直线最近的真人出生点（Voronoi）后落到该号头上的格数；"
+                      "三层对账恒等式：编队人均地÷其他真人人均地 = 出生份额（人均名下之比）× 转化（地÷名下 之比）。详见 scripts/ledger-brief.py 文件头",
+        }
     doc = {
         "matchId": mid, "reviewer": "R03", "protocol": "v2.0",
         "context": context, "outcome": outcome, "timeline": tl,
@@ -242,6 +258,7 @@ def build(mid):
         "teamFall": facts.get("teamFall"),
         "interestEfficiency": facts.get("interest"),
         "dumpBatches": [b for b in facts.get("dumpBatches", []) if b.get("dump")],
+        "latencyAndLand": latency_land,
         "scripts": COMMON_SCRIPTS + notes.get("scripts", []),
         "confidenceOverall": notes["confidenceOverall"],
     }

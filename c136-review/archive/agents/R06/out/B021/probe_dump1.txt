@@ -1,0 +1,246 @@
+[探针·开局段] t=700 Takeda(27·队6) 地 3178 兵 9481 密 3.0 ｜策略眼里 nb=4 neut=2 ｜dpKeep=0 safeFinite=10k（经由 Kingdom of Prussia(423·AI)；它的另一个邻居 Abyssinia(39·队3)·我方号·异队）
+        邻居 Kingdom of Prussia(423·AI) 非真人 接31 地562 兵580 price=5.3 → L1197 可用兵 -786 <= minSend(0.2141)×兵=2030：底线 10k = max(winR 项 8710, dpKeep 0, safeFinite 10k〔经由 Kingdom of Prussia(423·AI) 的另一个邻居 Abyssinia(39·队3)·我方号·异队〕)；去掉 safeFinite 项仍不够
+        邻居 Vijayanagara Empire(488·AI) 非真人 接12 地104 兵135 price=6.1 → L2147 botOk=false：botPx=4.3 > winWorth=4.2（=winR×t×自己密度）
+        邻居 Inca Empire(360·AI) 非真人 接46 地510 兵538 price=5.4 → L1197 可用兵 -786 <= minSend(0.2141)×兵=2030：底线 10k = max(winR 项 8802, dpKeep 0, safeFinite 10k〔经由 Kingdom of Prussia(423·AI) 的另一个邻居 Abyssinia(39·队3)·我方号·异队〕)；去掉 safeFinite 项仍不够
+        邻居 Qara Qoyunlu(426·AI) 非真人 接36 地422 兵441 price=5.3 → L1197 可用兵 -786 <= minSend(0.2141)×兵=2030：底线 10k = max(winR 项 8763, dpKeep 0, safeFinite 10k〔经由 Kingdom of Prussia(423·AI) 的另一个邻居 Abyssinia(39·队3)·我方号·异队〕)；去掉 safeFinite 项仍不够
+        影子 act() 这一拍发出：无
+[探针·开局段] t=700 Kasparov(30·队5) 地 2819 兵 11k 密 3.9 ｜策略眼里 nb=4 neut=0 ｜dpKeep=0 safeFinite=13k（经由 Nungu(75·AI)；它的另一个邻居 Ayutthaya(31·队3)·我方号·异队）
+        邻居 Idrisid Dynasty(356·AI) 非真人 接47 地758 兵775 price=5.3 → L1197 可用兵 -1928 <= minSend(0.2141)×兵=2370：底线 13k = max(winR 项 7692, dpKeep 0, safeFinite 13k〔经由 Nungu(75·AI) 的另一个邻居 Ayutthaya(31·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Jolof Empire(365·AI) 非真人 接3 地207 兵221 price=5.4 → L1197 可用兵 -1928 <= minSend(0.2141)×兵=2370：底线 13k = max(winR 项 7854, dpKeep 0, safeFinite 13k〔经由 Nungu(75·AI) 的另一个邻居 Ayutthaya(31·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Cherokee Nation(224·AI) 非真人 接36 地266 兵238 price=4.9 → L1197 可用兵 -1928 <= minSend(0.2141)×兵=2370：底线 13k = max(winR 项 7234, dpKeep 0, safeFinite 13k〔经由 Nungu(75·AI) 的另一个邻居 Ayutthaya(31·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Nungu(75·AI) 非真人 接29 地402 兵1086 price=10.6 → L2147 botOk=false：botPx=6.8 > winWorth=5.5（=winR×t×自己密度）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=700 Streltsy(40·队2) 地 3111 兵 10k 密 3.2 ｜策略眼里 nb=7 neut=20 ｜dpKeep=0 safeFinite=779（经由 Republic of Venice(489·AI)；它的另一个邻居 Aq Qoyunlu(276·AI)·内置AI）
+        邻居 Mahdist State(51·AI) 非真人 接10 地492 兵506 price=5.3 → L1197 可用兵 1491 <= minSend(0.2141)×兵=2142：底线 8512 = max(winR 项 8512, dpKeep 0, safeFinite 779〔经由 Republic of Venice(489·AI) 的另一个邻居 Aq Qoyunlu(276·AI)·内置AI〕)
+        邻居 Oyo Empire(415·AI) 非真人 接6 地421 兵788 price=8.0 → L2147 botOk=false：botPx=5.3 > winWorth=4.5（=winR×t×自己密度）
+        邻居 Kingdom of Majorca(216·AI) 非真人 接18 地623 兵647 price=5.3 → L1197 可用兵 1451 <= minSend(0.2141)×兵=2142：底线 8552 = max(winR 项 8552, dpKeep 0, safeFinite 779〔经由 Republic of Venice(489·AI) 的另一个邻居 Aq Qoyunlu(276·AI)·内置AI〕)
+        邻居 Aq Qoyunlu(276·AI) 非真人 接23 地748 兵779 price=5.3 → L1197 可用兵 1439 <= minSend(0.2141)×兵=2142：底线 8564 = max(winR 项 8564, dpKeep 0, safeFinite 779〔经由 Republic of Venice(489·AI) 的另一个邻居 Aq Qoyunlu(276·AI)·内置AI〕)
+        邻居 Rozvi Empire(507·AI) 非真人 接25 地687 兵678 price=5.2 → L1197 可用兵 1655 <= minSend(0.2141)×兵=2142：底线 8348 = max(winR 项 8348, dpKeep 0, safeFinite 779〔经由 Republic of Venice(489·AI) 的另一个邻居 Aq Qoyunlu(276·AI)·内置AI〕)
+        邻居 Republic of Venice(489·AI) 非真人 接17 地286 兵749 price=10.4 → L2147 botOk=false：botPx=6.7 > winWorth=4.5（=winR×t×自己密度）
+        邻居 Pandya Dynasty(157·AI) 非真人 接52 地607 兵1424 price=9.5 → L2147 botOk=false：botPx=6.2 > winWorth=4.5（=winR×t×自己密度）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=700 Ayutthaya(31·队3) 地 2920 兵 13k 密 4.5 ｜策略眼里 nb=5 neut=0 ｜dpKeep=0 safeFinite=11k（经由 Nungu(75·AI)；它的另一个邻居 Kasparov(30·队5)·我方号·异队）
+        邻居 Sultanate of Serdang(195·AI) 非真人 接30 地375 兵394 price=5.4 → L1197 可用兵 1928 <= minSend(0.2141)×兵=2782：底线 11k = max(winR 项 8072, dpKeep 0, safeFinite 11k〔经由 Nungu(75·AI) 的另一个邻居 Kasparov(30·队5)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Singhanavati(178·AI) 非真人 接61 地532 兵551 price=5.3 → L1197 可用兵 1928 <= minSend(0.2141)×兵=2782：底线 11k = max(winR 项 8017, dpKeep 0, safeFinite 11k〔经由 Nungu(75·AI) 的另一个邻居 Kasparov(30·队5)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Nungu(75·AI) 非真人 接20 地402 兵1086 price=10.6 → L2147 botOk=false：botPx=6.8 > winWorth=6.2（=winR×t×自己密度）
+        邻居 Thonburi Kingdom(188·AI) 非真人 接34 地456 兵923 price=8.5 → L1197 可用兵 1310 <= minSend(0.2141)×兵=2782：底线 12k = max(winR 项 12k, dpKeep 0, safeFinite 11k〔经由 Nungu(75·AI) 的另一个邻居 Kasparov(30·队5)·我方号·异队〕)
+        邻居 Wari Empire(490·AI) 非真人 接25 地322 兵382 price=5.8 → L1197 可用兵 1928 <= minSend(0.2141)×兵=2782：底线 11k = max(winR 项 8576, dpKeep 0, safeFinite 11k〔经由 Nungu(75·AI) 的另一个邻居 Kasparov(30·队5)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=750 Takeda(27·队6) 地 3470 兵 12k 密 3.5 ｜策略眼里 nb=4 neut=0 ｜dpKeep=0 safeFinite=13k（经由 Kingdom of Prussia(423·AI)；它的另一个邻居 Abyssinia(39·队3)·我方号·异队）
+        邻居 Kingdom of Prussia(423·AI) 非真人 接35 地576 兵1624 price=11.0 → L2147 botOk=false：botPx=7.0 > winWorth=5.2（=winR×t×自己密度）
+        邻居 Vijayanagara Empire(488·AI) 非真人 接12 地126 兵6 price=2.2 → L1197 可用兵 -823 <= minSend(0.2141)×兵=2599：底线 13k = max(winR 项 4823, dpKeep 0, safeFinite 13k〔经由 Kingdom of Prussia(423·AI) 的另一个邻居 Abyssinia(39·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Qara Qoyunlu(426·AI) 非真人 接40 地401 兵509 price=6.1 → L1197 可用兵 -823 <= minSend(0.2141)×兵=2599：底线 13k = max(winR 项 9853, dpKeep 0, safeFinite 13k〔经由 Kingdom of Prussia(423·AI) 的另一个邻居 Abyssinia(39·队3)·我方号·异队〕)；去掉 safeFinite 项仍不够
+        邻居 Inca Empire(360·AI) 非真人 接36 地245 兵191 price=4.5 → L1197 可用兵 -823 <= minSend(0.2141)×兵=2599：底线 13k = max(winR 项 7837, dpKeep 0, safeFinite 13k〔经由 Kingdom of Prussia(423·AI) 的另一个邻居 Abyssinia(39·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=750 Kasparov(30·队5) 地 3058 兵 11k 密 3.5 ｜策略眼里 nb=4 neut=13 ｜dpKeep=0 safeFinite=12k（经由 Nungu(75·AI)；它的另一个邻居 Ayutthaya(31·队3)·我方号·异队）
+        邻居 Nungu(75·AI) 非真人 接21 地231 兵13 price=2.2 → L1197 可用兵 -1213 <= minSend(0.2141)×兵=2300：底线 12k = max(winR 项 4282, dpKeep 0, safeFinite 12k〔经由 Nungu(75·AI) 的另一个邻居 Ayutthaya(31·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Idrisid Dynasty(356·AI) 非真人 接62 地957 兵974 price=5.3 → L1197 可用兵 -1213 <= minSend(0.2141)×兵=2300：底线 12k = max(winR 项 7771, dpKeep 0, safeFinite 12k〔经由 Nungu(75·AI) 的另一个邻居 Ayutthaya(31·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Kanem–Bornu Empire(504·AI) 非真人 接2 地250 兵12 price=2.2 → L1197 可用兵 -1213 <= minSend(0.2141)×兵=2300：底线 12k = max(winR 项 4252, dpKeep 0, safeFinite 12k〔经由 Nungu(75·AI) 的另一个邻居 Ayutthaya(31·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Cherokee Nation(224·AI) 非真人 接36 地266 兵297 price=5.6 → L1197 可用兵 -1213 <= minSend(0.2141)×兵=2300：底线 12k = max(winR 项 8129, dpKeep 0, safeFinite 12k〔经由 Nungu(75·AI) 的另一个邻居 Ayutthaya(31·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=750 Streltsy(40·队2) 地 4294 兵 7493 密 1.7 ｜策略眼里 nb=8 neut=17 ｜dpKeep=0 safeFinite=388（经由 Rozvi Empire(507·AI)；它的另一个邻居 Kingdom of Majorca(216·AI)·内置AI）
+        邻居 Oyo Empire(415·AI) 非真人 接3 地375 兵31 price=2.3 → L1197 可用兵 1346 <= minSend(0.2141)×兵=1604：底线 6147 = max(winR 项 6147, dpKeep 0, safeFinite 388〔经由 Rozvi Empire(507·AI) 的另一个邻居 Kingdom of Majorca(216·AI)·内置AI〕)
+        邻居 Udaipur State(162·AI) 非真人 接8 地290 兵51 price=2.6 → L1197 可用兵 872 <= minSend(0.2141)×兵=1604：底线 6621 = max(winR 项 6621, dpKeep 0, safeFinite 388〔经由 Rozvi Empire(507·AI) 的另一个邻居 Kingdom of Majorca(216·AI)·内置AI〕)
+        邻居 Kingdom of Majorca(216·AI) 非真人 接27 地506 兵388 price=4.4 → L2147 botOk=false：botPx=3.4 > winWorth=2.6（=winR×t×自己密度）
+        邻居 Rozvi Empire(507·AI) 非真人 接33 地331 兵229 price=4.2 → L2147 botOk=false：botPx=3.2 > winWorth=2.6（=winR×t×自己密度）
+        邻居 Mahdist State(51·AI) 非真人 接24 地492 兵636 price=6.1 → L2147 botOk=false：botPx=4.3 > winWorth=2.6（=winR×t×自己密度）
+        邻居 Pandya Dynasty(157·AI) 非真人 接39 地284 兵30 price=2.3 → L1197 可用兵 1229 <= minSend(0.2141)×兵=1604：底线 6264 = max(winR 项 6264, dpKeep 0, safeFinite 388〔经由 Rozvi Empire(507·AI) 的另一个邻居 Kingdom of Majorca(216·AI)·内置AI〕)
+        邻居 Aq Qoyunlu(276·AI) 非真人 接29 地627 兵712 price=5.6 → L2147 botOk=false：botPx=4.0 > winWorth=2.6（=winR×t×自己密度）
+        邻居 Republic of Venice(489·AI) 非真人 接11 地93 兵7 price=2.2 → L1197 可用兵 1384 <= minSend(0.2141)×兵=1604：底线 6109 = max(winR 项 6109, dpKeep 0, safeFinite 388〔经由 Rozvi Empire(507·AI) 的另一个邻居 Kingdom of Majorca(216·AI)·内置AI〕)
+        影子 act() 这一拍发出：无
+[探针·开局段] t=750 Ayutthaya(31·队3) 地 3029 兵 13k 密 4.4 ｜策略眼里 nb=5 neut=0 ｜dpKeep=0 safeFinite=12k（经由 Nungu(75·AI)；它的另一个邻居 Kasparov(30·队5)·我方号·异队）
+        邻居 Thonburi Kingdom(188·AI) 非真人 接40 地455 兵20 price=2.1 → L1197 可用兵 1213 <= minSend(0.2141)×兵=2846：底线 12k = max(winR 项 4197, dpKeep 0, safeFinite 12k〔经由 Nungu(75·AI) 的另一个邻居 Kasparov(30·队5)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Nungu(75·AI) 非真人 接18 地231 兵13 price=2.2 → L1197 可用兵 1213 <= minSend(0.2141)×兵=2846：底线 12k = max(winR 项 4241, dpKeep 0, safeFinite 12k〔经由 Nungu(75·AI) 的另一个邻居 Kasparov(30·队5)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Singhanavati(178·AI) 非真人 接64 地596 兵448 price=4.4 → L1197 可用兵 1213 <= minSend(0.2141)×兵=2846：底线 12k = max(winR 项 6741, dpKeep 0, safeFinite 12k〔经由 Nungu(75·AI) 的另一个邻居 Kasparov(30·队5)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Sultanate of Serdang(195·AI) 非真人 接30 地375 兵493 price=6.2 → L1197 可用兵 1213 <= minSend(0.2141)×兵=2846：底线 12k = max(winR 项 8764, dpKeep 0, safeFinite 12k〔经由 Nungu(75·AI) 的另一个邻居 Kasparov(30·队5)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Wari Empire(490·AI) 非真人 接21 地230 兵8 price=2.1 → L1197 可用兵 1213 <= minSend(0.2141)×兵=2846：底线 12k = max(winR 项 4164, dpKeep 0, safeFinite 12k〔经由 Nungu(75·AI) 的另一个邻居 Kasparov(30·队5)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=800 Takeda(27·队6) 地 3470 兵 19k 密 5.4 ｜策略眼里 nb=4 neut=0 ｜dpKeep=0 safeFinite=754（经由 Inca Empire(360·AI)；它的另一个邻居 Qara Qoyunlu(426·AI)·内置AI）
+        邻居 Kingdom of Prussia(423·AI) 非真人 接35 地576 兵616 price=5.4 → L1208 可出兵 4906
+        邻居 Vijayanagara Empire(488·AI) 非真人 接12 地174 兵193 price=5.5 → L1208 可出兵 872
+        邻居 Qara Qoyunlu(426·AI) 非真人 接41 地417 兵415 price=5.2 → L1208 可出兵 1831
+        邻居 Inca Empire(360·AI) 非真人 接35 地229 兵237 price=5.3 → L1208 可出兵 872
+        影子 act() 这一拍发出：攻→Qara Qoyunlu(426·AI) 100‰ 1838
+[探针·开局段] t=800 Kasparov(30·队5) 地 3484 兵 15k 密 4.2 ｜策略眼里 nb=4 neut=0 ｜dpKeep=0 safeFinite=755（经由 Kanem–Bornu Empire(504·AI)；它的另一个邻居 Duchy of Urbino(257·AI)·内置AI）
+        邻居 Kanem–Bornu Empire(504·AI) 非真人 接8 地202 兵554 price=10.7 → L2147 botOk=false：botPx=6.9 > winWorth=6.7（=winR×t×自己密度）
+        邻居 Duchy of Urbino(257·AI) 非真人 接22 地867 兵891 price=5.3 → L1208 可出兵 3680
+        邻居 Cherokee Nation(224·AI) 非真人 接24 地139 兵0 price=2.0 → L1199 need<=0
+        邻居 Idrisid Dynasty(356·AI) 非真人 接63 地954 兵978 price=5.3 → L1200 已在打它
+        影子 act() 这一拍发出：攻→Duchy of Urbino(257·AI) 259‰ 3687
+[探针·开局段] t=800 Streltsy(40·队2) 地 4655 兵 11k 密 2.5 ｜策略眼里 nb=4 neut=57 ｜dpKeep=0 safeFinite=461（经由 Mahdist State(51·AI)；它的另一个邻居 Konbaung Dynasty(379·AI)·内置AI）
+        邻居 Kingdom of Majorca(216·AI) 非真人 接37 地530 兵519 price=5.1 → L1197 可用兵 522 <= minSend(0.2141)×兵=2443：底线 11k = max(winR 项 11k, dpKeep 0, safeFinite 461〔经由 Mahdist State(51·AI) 的另一个邻居 Konbaung Dynasty(379·AI)·内置AI〕)
+        邻居 Aq Qoyunlu(276·AI) 非真人 接42 地726 兵745 price=5.3 → L1197 可用兵 279 <= minSend(0.2141)×兵=2443：底线 11k = max(winR 项 11k, dpKeep 0, safeFinite 461〔经由 Mahdist State(51·AI) 的另一个邻居 Konbaung Dynasty(379·AI)·内置AI〕)
+        邻居 Pandya Dynasty(157·AI) 非真人 接46 地284 兵319 price=5.6 → L2147 botOk=false：botPx=4.0 > winWorth=3.9（=winR×t×自己密度）
+        邻居 Mahdist State(51·AI) 非真人 接32 地447 兵462 price=5.3 → L1197 可用兵 241 <= minSend(0.2141)×兵=2443：底线 11k = max(winR 项 11k, dpKeep 0, safeFinite 461〔经由 Mahdist State(51·AI) 的另一个邻居 Konbaung Dynasty(379·AI)·内置AI〕)
+        影子 act() 这一拍发出：无
+[探针·开局段] t=800 Ayutthaya(31·队3) 地 3790 兵 18k 密 4.8 ｜策略眼里 nb=3 neut=0 ｜dpKeep=0 safeFinite=0
+        邻居 Sultanate of Serdang(195·AI) 非真人 接25 地264 兵290 price=5.5 → L1200 已在打它
+        邻居 Singhanavati(178·AI) 非真人 接64 地596 兵608 price=5.3 → L1208 可出兵 3310
+        邻居 Thonburi Kingdom(188·AI) 非真人 接41 地213 兵220 price=5.3 → L1199 need<=0
+        影子 act() 这一拍发出：攻→Singhanavati(178·AI) 187‰ 3324
+[探针·开局段] t=850 Takeda(27·队6) 地 3826 兵 16k 密 4.2 ｜策略眼里 nb=3 neut=9 ｜dpKeep=0 safeFinite=158（经由 Inca Empire(360·AI)；它的另一个邻居 Qara Qoyunlu(426·AI)·内置AI）
+        邻居 Qara Qoyunlu(426·AI) 非真人 接5 地223 兵158 price=4.3 → L1199 need<=0
+        邻居 Inca Empire(360·AI) 非真人 接34 地169 兵178 price=5.4 → L1208 可出兵 744
+        邻居 Vijayanagara Empire(488·AI) 非真人 接12 地198 兵8 price=2.1 → L1208 可出兵 744
+        影子 act() 这一拍发出：无
+[探针·开局段] t=850 Kasparov(30·队5) 地 4711 兵 11k 密 2.3 ｜策略眼里 nb=3 neut=0 ｜dpKeep=0 safeFinite=21k（经由 Kanem–Bornu Empire(504·AI)；它的另一个邻居 Abyssinia(39·队3)·我方号·异队）
+        邻居 Duchy of Urbino(257·AI) 非真人 接42 地645 兵472 price=4.3 → L1197 可用兵 -10k <= minSend(0.2141)×兵=2339：底线 21k = max(winR 项 9152, dpKeep 0, safeFinite 21k〔经由 Kanem–Bornu Empire(504·AI) 的另一个邻居 Abyssinia(39·队3)·我方号·异队〕)；去掉 safeFinite 项仍不够
+        邻居 Kanem–Bornu Empire(504·AI) 非真人 接16 地200 兵13 price=2.2 → L1197 可用兵 -10k <= minSend(0.2141)×兵=2339：底线 21k = max(winR 项 5863, dpKeep 0, safeFinite 21k〔经由 Kanem–Bornu Empire(504·AI) 的另一个邻居 Abyssinia(39·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Idrisid Dynasty(356·AI) 非真人 接35 地385 兵202 price=3.7 → L1197 可用兵 -10k <= minSend(0.2141)×兵=2339：底线 21k = max(winR 项 8130, dpKeep 0, safeFinite 21k〔经由 Kanem–Bornu Empire(504·AI) 的另一个邻居 Abyssinia(39·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=850 Streltsy(40·队2) 地 5023 兵 13k 密 2.6 ｜策略眼里 nb=6 neut=17 ｜dpKeep=760 safeFinite=934（经由 Pandya Dynasty(157·AI)；它的另一个邻居 Aq Qoyunlu(276·AI)·内置AI）
+        邻居 Aq Qoyunlu(276·AI) 非真人 接51 地758 兵1426 price=8.0 → L2147 botOk=false：botPx=5.3 > winWorth=4.5（=winR×t×自己密度）
+        邻居 Pandya Dynasty(157·AI) 非真人 接41 地189 兵124 price=4.1 → L1199 need<=0
+        邻居 Konbaung Dynasty(379·AI) 非真人 接14 地470 兵815 price=7.5 → L2147 botOk=false：botPx=5.1 > winWorth=4.5（=winR×t×自己密度）
+        邻居 Kingdom of Majorca(216·AI) 非真人 接45 地380 兵713 price=8.0 → L2147 botOk=false：botPx=5.3 > winWorth=4.5（=winR×t×自己密度）
+        邻居 Mahdist State(51·AI) 非真人 接36 地348 兵1069 price=11.8 → L2147 botOk=false：botPx=7.5 > winWorth=4.5（=winR×t×自己密度）
+        邻居 Player 796(17·队3) 真人 接3 地4089 兵8888 price=9.0 → L1197 可用兵 -24k 不足（底线 37k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=850 Ayutthaya(31·队3) 地 4692 兵 16k 密 3.5 ｜策略眼里 nb=2 neut=33 ｜dpKeep=0 safeFinite=0
+        邻居 Bophuthatswana(110·AI) 非真人 接3 地141 兵172 price=5.9 → L1208 可出兵 760
+        邻居 Sultanate of Serdang(195·AI) 非真人 接16 地130 兵112 price=4.7 → L1208 可出兵 760
+        影子 act() 这一拍发出：无
+[探针·开局段] t=900 Takeda(27·队6) 地 4208 兵 18k 密 4.3 ｜策略眼里 nb=3 neut=10 ｜dpKeep=0 safeFinite=2208（经由 Vijayanagara Empire(488·AI)；它的另一个邻居 Hanseatic League(347·AI)·内置AI）
+        邻居 Vijayanagara Empire(488·AI) 非真人 接8 地50 兵56 price=5.5 → L1199 need<=0
+        邻居 Hanseatic League(347·AI) 非真人 接16 地1141 兵3664 price=12.3 → L1197 可用兵 55 <= minSend(0.2141)×兵=3874：底线 18k = max(winR 项 18k, dpKeep 0, safeFinite 2208〔经由 Vijayanagara Empire(488·AI) 的另一个邻居 Hanseatic League(347·AI)·内置AI〕)
+        邻居 Inca Empire(360·AI) 非真人 接39 地127 兵144 price=5.6 → L1199 need<=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=900 Kasparov(30·队5) 地 5440 兵 19k 密 3.5 ｜策略眼里 nb=3 neut=17 ｜dpKeep=0 safeFinite=721（经由 Kanem–Bornu Empire(504·AI)；它的另一个邻居 Chola Dynasty(313·AI)·内置AI）
+        邻居 Idrisid Dynasty(356·AI) 非真人 接32 地265 兵281 price=5.4 → L1208 可出兵 884
+        邻居 Chola Dynasty(313·AI) 非真人 接41 地677 兵721 price=5.4 → L1208 可出兵 2573
+        邻居 Kanem–Bornu Empire(504·AI) 非真人 接22 地129 兵141 price=5.5 → L1208 可出兵 884
+        影子 act() 这一拍发出：攻→Kanem–Bornu Empire(504·AI) 47‰ 886
+[探针·开局段] t=900 Streltsy(40·队2) 地 5223 兵 21k 密 4.1 ｜策略眼里 nb=5 neut=0 ｜dpKeep=1066 safeFinite=25k（经由 Aq Qoyunlu(276·AI)；它的另一个邻居 Transvaal(38·队6)·我方号·异队）
+        邻居 Aq Qoyunlu(276·AI) 非真人 接68 地764 兵2348 price=11.8 → L2147 botOk=false：botPx=7.5 > winWorth=7.3（=winR×t×自己密度）
+        邻居 Kingdom of Majorca(216·AI) 非真人 接41 地257 兵267 price=5.3 → L1197 可用兵 -3652 <= minSend(0.2141)×兵=4551：底线 25k = max(winR 项 11k, dpKeep 1066, safeFinite 25k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Transvaal(38·队6)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Mahdist State(51·AI) 非真人 接36 地348 兵375 price=5.4 → L1197 可用兵 -3652 <= minSend(0.2141)×兵=4551：底线 25k = max(winR 项 11k, dpKeep 1066, safeFinite 25k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Transvaal(38·队6)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Player 796(17·队3) 真人 接7 地4250 兵9732 price=9.3 → L1197 可用兵 -30k 不足（底线 52k）
+        邻居 Konbaung Dynasty(379·AI) 非真人 接14 地387 兵402 price=5.3 → L1197 可用兵 -3652 <= minSend(0.2141)×兵=4551：底线 25k = max(winR 项 11k, dpKeep 1066, safeFinite 25k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Transvaal(38·队6)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=900 Ayutthaya(31·队3) 地 4892 兵 24k 密 4.9 ｜策略眼里 nb=1 neut=7 ｜dpKeep=0 safeFinite=0
+        邻居 Bophuthatswana(110·AI) 非真人 接19 地141 兵350 price=9.9 → L1208 可出兵 1116
+        影子 act() 这一拍发出：攻→Bophuthatswana(110·AI) 47‰ 1118
+[探针·开局段] t=950 Takeda(27·队6) 地 4902 兵 18k 密 3.7 ｜策略眼里 nb=1 neut=0 ｜dpKeep=0 safeFinite=13k（经由 Hanseatic League(347·AI)；它的另一个邻居 Mataram(28·队5)·我方号·异队）
+        邻居 Hanseatic League(347·AI) 非真人 接26 地688 兵2088 price=11.7 → L2147 botOk=false：botPx=7.4 > winWorth=7.1（=winR×t×自己密度）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=950 Kasparov(30·队5) 地 5765 兵 21k 密 3.6 ｜策略眼里 nb=2 neut=35 ｜dpKeep=0 safeFinite=509（经由 Zirid Dynasty(60·AI)；它的另一个邻居 Chola Dynasty(313·AI)·内置AI）
+        邻居 Chola Dynasty(313·AI) 非真人 接38 地487 兵509 price=5.3 → L1208 可出兵 1546
+        邻居 Zirid Dynasty(60·AI) 非真人 接8 地1504 兵1704 price=5.6 → L1208 可出兵 6208
+        影子 act() 这一拍发出：攻→Chola Dynasty(313·AI) 77‰ 1562
+[探针·开局段] t=950 Streltsy(40·队2) 地 5223 兵 26k 密 5.0 ｜策略眼里 nb=4 neut=4 ｜dpKeep=2277 safeFinite=30k（经由 Aq Qoyunlu(276·AI)；它的另一个邻居 Transvaal(38·队6)·我方号·异队）
+        邻居 Aq Qoyunlu(276·AI) 非真人 接68 地764 兵2867 price=14.0 → L1197 可用兵 -4460 <= minSend(0.2141)×兵=5561：底线 30k = max(winR 项 24k, dpKeep 2277, safeFinite 30k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Transvaal(38·队6)·我方号·异队〕)；去掉 safeFinite 项仍不够
+        邻居 Player 796(17·队3) 真人 接44 地4600 兵12k price=10.3 → L1197 可用兵 -37k 不足（底线 63k）
+        邻居 Mahdist State(51·AI) 非真人 接36 地377 兵485 price=6.1 → L1197 可用兵 -4460 <= minSend(0.2141)×兵=5561：底线 30k = max(winR 项 12k, dpKeep 2277, safeFinite 30k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Transvaal(38·队6)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Konbaung Dynasty(379·AI) 非真人 接14 地446 兵420 price=5.0 → L1197 可用兵 -4460 <= minSend(0.2141)×兵=5561：底线 30k = max(winR 项 10k, dpKeep 2277, safeFinite 30k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Transvaal(38·队6)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=950 Ayutthaya(31·队3) 地 5064 兵 30k 密 5.9 ｜策略眼里 nb=0 neut=0 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1000 Takeda(27·队6) 地 5259 兵 27k 密 5.2 ｜策略眼里 nb=1 neut=0 ｜dpKeep=0 safeFinite=32k（经由 Hanseatic League(347·AI)；它的另一个邻居 Mataram(28·队5)·我方号·异队）
+        邻居 Hanseatic League(347·AI) 非真人 接23 地331 兵1035 price=12.0 → L1197 可用兵 -4538 <= minSend(0.2141)×兵=5858：底线 32k = max(winR 项 20k, dpKeep 0, safeFinite 32k〔经由 Hanseatic League(347·AI) 的另一个邻居 Mataram(28·队5)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1000 Kasparov(30·队5) 地 6423 兵 22k 密 3.4 ｜策略眼里 nb=1 neut=9 ｜dpKeep=0 safeFinite=0
+        邻居 Zirid Dynasty(60·AI) 非真人 接45 地1400 兵1433 price=5.3 → L1199 need<=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1000 Streltsy(40·队2) 地 5081 兵 33k 密 6.6 ｜策略眼里 nb=4 neut=0 ｜dpKeep=8365 safeFinite=40k（经由 Aq Qoyunlu(276·AI)；它的另一个邻居 Transvaal(38·队6)·我方号·异队）
+        邻居 Aq Qoyunlu(276·AI) 非真人 接71 地906 兵994 price=5.5 → L1197 可用兵 -6383 <= minSend(0.2141)×兵=7154：底线 40k = max(winR 项 10k, dpKeep 8365, safeFinite 40k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Transvaal(38·队6)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Mahdist State(51·AI) 非真人 接36 地377 兵390 price=5.3 → L1197 可用兵 -6383 <= minSend(0.2141)×兵=7154：底线 40k = max(winR 项 9759, dpKeep 8365, safeFinite 40k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Transvaal(38·队6)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Player 796(17·队3) 真人 接48 地4723 兵23k price=17.3 → L1197 可用兵 -40k 不足（底线 73k）
+        邻居 Konbaung Dynasty(379·AI) 非真人 接14 地285 兵291 price=5.3 → L1197 可用兵 -6383 <= minSend(0.2141)×兵=7154：底线 40k = max(winR 项 9698, dpKeep 8365, safeFinite 40k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Transvaal(38·队6)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1000 Ayutthaya(31·队3) 地 5197 兵 28k 密 5.4 ｜策略眼里 nb=0 neut=17 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1050 Takeda(27·队6) 地 5212 兵 30k 密 5.8 ｜策略眼里 nb=1 neut=0 ｜dpKeep=0 safeFinite=36k（经由 Hanseatic League(347·AI)；它的另一个邻居 Mataram(28·队5)·我方号·异队）
+        邻居 Hanseatic League(347·AI) 非真人 接22 地317 兵28 price=2.3 → L1197 可用兵 -5686 <= minSend(0.2141)×兵=6492：底线 36k = max(winR 项 5354, dpKeep 0, safeFinite 36k〔经由 Hanseatic League(347·AI) 的另一个邻居 Mataram(28·队5)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1050 Kasparov(30·队5) 地 7401 兵 24k 密 3.3 ｜策略眼里 nb=1 neut=0 ｜dpKeep=0 safeFinite=0
+        邻居 Zirid Dynasty(60·AI) 非真人 接57 地506 兵787 price=7.0 → L1199 need<=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1050 Streltsy(40·队2) 地 5882 兵 36k 密 6.2 ｜策略眼里 nb=4 neut=6 ｜dpKeep=10k safeFinite=46k（经由 Aq Qoyunlu(276·AI)；它的另一个邻居 Transvaal(38·队6)·我方号·异队）
+        邻居 Player 796(17·队3) 真人 接59 地4723 兵27k price=20.4 → L1197 可用兵 -63k 不足（底线 100k）
+        邻居 Sheikhdom of Kuwait(141·AI) 非真人 接15 地819 兵21 price=2.1 → L1197 可用兵 -9973 <= minSend(0.2141)×兵=7806：底线 46k = max(winR 项 5730, dpKeep 10k, safeFinite 46k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Transvaal(38·队6)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Mahdist State(51·AI) 非真人 接41 地318 兵319 price=5.2 → L1197 可用兵 -9973 <= minSend(0.2141)×兵=7806：底线 46k = max(winR 项 11k, dpKeep 10k, safeFinite 46k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Transvaal(38·队6)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Aq Qoyunlu(276·AI) 非真人 接52 地350 兵248 price=4.3 → L1197 可用兵 -9973 <= minSend(0.2141)×兵=7806：底线 46k = max(winR 项 9135, dpKeep 10k, safeFinite 46k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Transvaal(38·队6)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1050 Ayutthaya(31·队3) 地 5650 兵 34k 密 6.0 ｜策略眼里 nb=0 neut=37 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1100 Takeda(27·队6) 地 5407 兵 43k 密 7.9 ｜策略眼里 nb=0 neut=0 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1100 Kasparov(30·队5) 地 7757 兵 37k 密 4.8 ｜策略眼里 nb=0 neut=39 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1100 Streltsy(40·队2) 地 5919 兵 44k 密 7.5 ｜策略眼里 nb=4 neut=0 ｜dpKeep=16k safeFinite=52k（经由 Aq Qoyunlu(276·AI)；它的另一个邻居 Transvaal(38·队6)·我方号·异队）
+        邻居 Sheikhdom of Kuwait(141·AI) 非真人 接17 地317 兵646 price=8.5 → L1197 可用兵 -8033 <= minSend(0.2141)×兵=9456：底线 52k = max(winR 项 15k, dpKeep 16k, safeFinite 52k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Transvaal(38·队6)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Mahdist State(51·AI) 非真人 接42 地318 兵697 price=9.0 → L1197 可用兵 -8033 <= minSend(0.2141)×兵=9456：底线 52k = max(winR 项 16k, dpKeep 16k, safeFinite 52k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Transvaal(38·队6)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Aq Qoyunlu(276·AI) 非真人 接52 地350 兵0 price=2.0 → L1197 可用兵 -8033 <= minSend(0.2141)×兵=9456：底线 52k = max(winR 项 5381, dpKeep 16k, safeFinite 52k〔经由 Aq Qoyunlu(276·AI) 的另一个邻居 Transvaal(38·队6)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Player 796(17·队3) 真人 接64 地4723 兵37k price=27.1 → L1197 可用兵 -90k 不足（底线 134k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1100 Ayutthaya(31·队3) 地 5862 兵 47k 密 7.9 ｜策略眼里 nb=0 neut=8 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1150 Takeda(27·队6) 地 5407 兵 33k 密 6.1 ｜策略眼里 nb=0 neut=0 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1150 Kasparov(30·队5) 地 7747 兵 44k 密 5.6 ｜策略眼里 nb=0 neut=39 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1150 Streltsy(40·队2) 地 6529 兵 43k 密 6.5 ｜策略眼里 nb=2 neut=13 ｜dpKeep=19k safeFinite=0
+        邻居 Kwararafa(90·AI) 非真人 接36 地958 兵1057 price=5.5 → L1199 need<=0
+        邻居 Player 796(17·队3) 真人 接64 地4723 兵44k price=31.8 → L1197 可用兵 -130k 不足（底线 173k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1150 Ayutthaya(31·队3) 地 6013 兵 55k 密 9.2 ｜策略眼里 nb=0 neut=6 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1200 Takeda(27·队6) 地 5397 兵 44k 密 8.1 ｜策略眼里 nb=0 neut=0 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1200 Kasparov(30·队5) 地 7622 兵 58k 密 7.6 ｜策略眼里 nb=0 neut=39 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1200 Streltsy(40·队2) 地 6524 兵 60k 密 9.2 ｜策略眼里 nb=1 neut=0 ｜dpKeep=20k safeFinite=0
+        邻居 Player 796(17·队3) 真人 接60 地5088 兵31k price=21.5 → L1197 可用兵 -174k 不足（底线 234k）
+        影子 act() 这一拍发出：船→无主地 276‰ 16k
+[探针·开局段] t=1200 Ayutthaya(31·队3) 地 6215 兵 73k 密 11.7 ｜策略眼里 nb=0 neut=0 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：船→无主地 366‰ 26k
+[探针·开局段] t=1250 Takeda(27·队6) 地 5405 兵 50k 密 9.2 ｜策略眼里 nb=0 neut=0 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1250 Kasparov(30·队5) 地 7589 兵 67k 密 8.8 ｜策略眼里 nb=0 neut=39 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1250 Streltsy(40·队2) 地 5525 兵 35k 密 6.4 ｜策略眼里 nb=1 neut=0 ｜dpKeep=0 safeFinite=0
+        邻居 Player 796(17·队3) 真人 接62 地6088 兵1145 price=2.6 → L1208 可出兵 8323
+        影子 act() 这一拍发出：攻→Player 796(17·队3) 242‰ 8332
+[探针·开局段] t=1250 Ayutthaya(31·队3) 地 6248 兵 37k 密 6.0 ｜策略眼里 nb=0 neut=0 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1300 Takeda(27·队6) 地 5229 兵 27k 密 5.2 ｜策略眼里 nb=0 neut=0 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1300 Kasparov(30·队5) 地 7589 兵 85k 密 11.2 ｜策略眼里 nb=0 neut=39 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1300 Streltsy(40·队2) 地 6159 兵 24k 密 4.0 ｜策略眼里 nb=1 neut=0 ｜dpKeep=0 safeFinite=0
+        邻居 Player 796(17·队3) 真人 接53 地5387 兵5974 price=5.5 → L1197 可用兵 -33k 不足（底线 57k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1300 Ayutthaya(31·队3) 地 6248 兵 50k 密 7.9 ｜策略眼里 nb=0 neut=0 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1350 Takeda(27·队6) 地 5229 兵 31k 密 6.0 ｜策略眼里 nb=0 neut=0 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1350 Kasparov(30·队5) 地 7589 兵 98k 密 12.9 ｜策略眼里 nb=0 neut=36 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1350 Streltsy(40·队2) 地 7012 兵 34k 密 4.9 ｜策略眼里 nb=1 neut=2 ｜dpKeep=0 safeFinite=0
+        邻居 Player 796(17·队3) 真人 接41 地4136 兵0 price=2.0 → L1208 可出兵 7956
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1350 Ayutthaya(31·队3) 地 6266 兵 57k 密 9.1 ｜策略眼里 nb=0 neut=5 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1400 Takeda(27·队6) 地 5229 兵 41k 密 7.8 ｜策略眼里 nb=0 neut=0 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1400 Kasparov(30·队5) 地 7589 兵 119k 密 15.7 ｜策略眼里 nb=0 neut=27 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1400 Streltsy(40·队2) 地 7575 兵 37k 密 4.9 ｜策略眼里 nb=1 neut=3 ｜dpKeep=0 safeFinite=0
+        邻居 Player 796(17·队3) 真人 接30 地2158 兵1913 price=4.8 → L1197 可用兵 -24k 不足（底线 61k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1400 Ayutthaya(31·队3) 地 6352 兵 83k 密 13.1 ｜策略眼里 nb=0 neut=1 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1450 Takeda(27·队6) 地 5229 兵 46k 密 8.9 ｜策略眼里 nb=0 neut=0 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1450 Kasparov(30·队5) 地 7589 兵 135k 密 17.8 ｜策略眼里 nb=0 neut=26 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1450 Streltsy(40·队2) 地 7945 兵 42k 密 5.3 ｜策略眼里 nb=1 neut=23 ｜dpKeep=25k safeFinite=0
+        邻居 Sakrand(15·队5) 真人 接6 地15031 兵56k price=13.9 → L1197 可用兵 -50k 不足（底线 92k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1450 Ayutthaya(31·队3) 地 6354 兵 67k 密 10.6 ｜策略眼里 nb=0 neut=0 ｜dpKeep=0 safeFinite=0
+        影子 act() 这一拍发出：无
+B021: 干净模拟器 vs 真引擎重放：全体真人在采样拍一致到 t=1470，没有不同
+        我方号分叉后的最大偏差（兵力相对值@拍，领土格数@拍）：没有
+        我方号逐拍第一处不同：没有
+B021: 影子重演到 t=1500，耗时 2.0s；日志快照核对 182/182；策略 c110，g.online=true
+影子的 isNoFullSend 置真拍（按代码 L3831-3843 的条件在真实余额轨迹上演化；影子的指令不执行，余额下跌只来自录像里真实执行的指令和挨打）：Takeda@803，Kasparov@462，Streltsy@770，Ayutthaya@773｜始终为假：无

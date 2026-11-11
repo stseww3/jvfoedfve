@@ -97,6 +97,30 @@ DEFS["NEW-R03-SE03"] = {
     "detect": "boat-audit.py <局> [--cuts ..] [--burst 60]（重放 cmdLog 的发船行按 dZ 同落点分串 + landings 按落点归属分类）；dbg/idle-boats.mjs <局> <号> <t0> <t1>（影子逐决策拍归类：哪个分支、被哪一道拦、落点水路步数与岛的大小）。",
 }
 
+# ---- A067 起新增 ----
+DEFS["NEW-R03-AT04"] = {
+    "prefix": "AT",
+    "name": "同队任何一个号（含路人）在打某一队的真人时，全编队对其它队真人的报价整体 ×1.45",
+    "sameAs": ["暂无对应条目（R03 在 A067 第一次看到；请统筹归并）"],
+    "definition": "Policy.offers（Vb L5186-5199）把全队——路人队友和编队号——所有进攻槽的目标所在的队收进 engagedTeams；L5214-5216："
+                  "engagedTeams 非空、报价对象所在的队不在其中、对象没有在打我、也不是 nearCollapse，且前面几档「队友正在打它」的折扣都没命中时，报价 c 与 rankMult 各 ×1.45。"
+                  "窗口 = 某个队友对另一队真人的进攻槽存在的那一段。计：窗口数与起因（哪个号哪一拍对谁的哪条指令）、窗口里各号对其它队目标的报价跳变（相邻两个决策拍 c 的比值，need 不变）、"
+                  "窗口里因此不出手的决策拍数（dbg/buy-why 的分类）。",
+    "detect": "acts.py <局> <号> <t0> <t1>（逐决策拍报价：同一目标相邻两拍 c 的比值 ≈1.45 而 need 不变）+ cmdq.py <局> <路人席位> <t0> <t1> --kind 1（那一拍哪个队友对哪个队的真人落了一条进攻）"
+              "+ dbg/buy-why.mjs（跳变后被哪一道闸拦）。",
+}
+
+DEFS["NEW-R03-SE04"] = {
+    "prefix": "SE",
+    "name": "船靠在编队友的岸上：按捐款移交，对方额度或硬上限装不下的整条蒸发",
+    "sameAs": ["NEW-R03-SE01（船靠路人队友的岸，整船并入对方余额；这条是靠编队友的岸、被额度拒收）", "NEW:BT-own-shore（R06，船靠回自己的岸）", "统筹 0005 号广播第 ⑥ 项（船）"],
+    "definition": "引擎 src/sim/sim/boats.js landAt L262-285：船靠岸时落点属于队友 → receiverRoom（对方 150×领土 的余量）截短后调 bookDonation（占对方的受捐额度，整条要么全收要么不收），"
+                  "不收的兵直接消失（源码注释：what the quota or the 150 x land cap refuses is lost at sea）。"
+                  "发船时落点还是 AI/无主地，船在路上或指令在页面里排队的时候被编队友打下来，就会走到这条路。"
+                  "计：靠编队友岸的船数、船上兵、对方到账、蒸发的兵、船费；其中发令时落点不是队友的地的条数，以及发令→落地的延迟。",
+    "detect": "dossier.py [H]「船靠队友岸移交」+ boat-audit.py（按出港时/靠岸时的落点归属分类）+ cmdq.py --kind 3 与 issueq.py（每条船的本地发令拍、落地拍、源码行）+ dbg/idle-boats.mjs（发令那一拍落点的归属）。",
+}
+
 
 def pat(pid, instances, note, extra_same=None):
     d = DEFS[pid]

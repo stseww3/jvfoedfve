@@ -12,6 +12,7 @@
   - 死窗 = 同一个号相邻两条已执行指令之间 ≥ --gap 拍（默认 60），且这段里影子想发 ≥ --min 条（默认 5）陆攻/出船。
   - 连发批 = 同一个号在同一拍执行 ≥3 条陆攻/出船。
 """
+import os
 import json
 import re
 import sys
@@ -68,7 +69,7 @@ for e in T['events']:
 # 真实客户端自报 cmds=
 selfc = defaultdict(list)
 rx = re.compile(r'\[(\w+)\] \[HL-TICK\] t=(\d+) .*?cmds=(\d+)')
-for line in open(f'/agent/repos/c136-data/bundles/{mid}/in_game.log', encoding='utf8', errors='replace'):
+for line in open(os.environ.get('C136_DATA', '/agent/repos/c136-data') + f'/bundles/{mid}/in_game.log', encoding='utf8', errors='replace'):
     m = rx.search(line)
     if m:
         selfc[m.group(1)].append((int(m.group(2)), int(m.group(3))))

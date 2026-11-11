@@ -4,7 +4,7 @@
 - M1 完成：A057、A059、A094；M2 完成：A055、A075、A054。全部通过本地机械检查（`python3 scripts/check_my_review.py`）。
 - M3 完成：A031（never-grew）、A019（mid-collapse）、A009（never-grew，Va）；m3-reviews 报告已发（里面更正了 A075 的判定数：错 10 / 不清 5 / 对 5）。
 - M4 完成：A023（never-grew；错 9 / 不清 8 / 对 3；新模式 AT12、AT13）；A050（external；错 9 / 不清 5 / 对 6；新模式 EG03）；A003（never-grew，Va；错 7 / 不清 9 / 对 3；新模式 SP04、DN13）。
-- M5 进行中：A005 完成（external，Va；错 4 / 不清 6 / 对 2；新模式 SP05、OP04）→ B039 → B043；然后 M6。
+- M5 完成：A005（external，Va；错 4 / 不清 6 / 对 2；新模式 SP05、OP04）；B039（external，c110；错 12 / 不清 2 / 对 4；新模式 SP06、EC03、DF05、DN14）；B043（external，c110；错 10 / 不清 4 / 对 5；新模式 OP05、AT14）。15/15 局都过了机械检查。接着 M6（CROSS-MATCH-SUMMARY + 全量计数脚本 + cards/），再写 COUNCIL-PROPOSAL（总部 0008）。
   A005 的图镜像里没有（5_9294）：`run-heavy.sh node scripts/map_from_engine.cjs A005` 从真引擎的状态数组 aFA 取出写 out/A005/map_5_9294.bin，
   `resim_lib.mjs` 的 loadMapOrLocal 在镜像缺图时读它（A003 --verify 12_0 逐像素全同）。之后流水线照常：重演 125/125、影子 125/125。**以后缺图的局都这么办。**
 - 总部 0006：所有 node 重演/影子命令必须 `bash ../../tools/run-heavy.sh node scripts/...`（在 agents/R01 下），串行、一次一局，结果缓存在 out/。
@@ -133,7 +133,7 @@ A003 的主线：7 个号随机出生散在全图（开局人均反而全场最�
 - [x] A055（outscaled）  - [x] A075（win）  - [x] A054（mid-collapse）   （M2）
 - [x] A031（never-grew）  - [x] A019（mid-collapse）  - [x] A009（never-grew）   （M3）
 - [x] A023（never-grew）  - [x] A050（external）  - [x] A003（never-grew）   （M4）
-- [ ] A005  - [ ] B039  - [ ] B043   （M5）
+- [x] A005（external）  - [x] B039（external）  - [x] B043（external）   （M5）
 - [ ] M6：reports/CROSS-MATCH-SUMMARY.md、全量模式计数脚本、cards/
 A005 新增脚本：`map_from_engine.cjs <mid> [--verify 图_种子]`（见上）；`page_speed.py <mid> [--ref 600]`（只读日志：按行序 + RESULT 的 at + 名义的钟，
   给每个页面在各 RESULT 时刻的本地拍区间、落后拍/秒、平均速度占正常速度的比例；HL-SLOW-TICK 行；avgMs/maxMs 前后）；
@@ -154,3 +154,37 @@ M6 要全量做的（A005 带出来的）：
   5. “每号每组最多 9 条”的全量核对（shadow_report chunks 的 n 最大值，A009、A005 都是 9）；
   6. IO04（shadow_report repeat）、OP02（probe --safe 太重，只能抽样）。
 
+## B 组（c110，squad20）怎么跑（B039 做完后的笔记）
+- B 包自带的录像是截断的，用同局 A 包的录像：B039 ↔ A058，B043 ↔ A062。命令一律 `--replay A058 --log B039`。
+  先 `run-heavy.sh node scripts/engine_names.cjs A058 --out B039`（512 个席位名 → out/B039/names512.json），再 resim、replay_cmds（`--replay`）、shadow（`--strategy c110`）。
+- 日志里的号名会轮换（Bohemia→ErenYeager；离场号的 RESULT 行换了名字）：`seat_table.py` 按 [HL-SPAWN] me= 和 results.csv 的 meId 对席位；resim_lib 的 logAliases 已处理。
+- c110 的影子只是近似：外壳在上一拍没跑完时跳过决策拍（L19–31），影子每拍都跑；B039 nb/neut 475 个全同，cmds 影子多 92 条（794 对 702）。硬数字取录像和日志。
+- c110 代码地图（`v27-team-c110.js`）：SQUAD_POOL_SET L1（740 个名字）；外壳 L19–31；Strategy.analyze L420–448（L440 受保护席位不进 nb、不计 cnt）；threatOf L464–491；
+  minCmd L521–523（feeK×12/1024×余额 = 4.69%）；Strategy.send L526–539（15 拍同目标冷却 L529–533）；General.act L804–846（L832）；General.boatOut L1035–1051（L1047）；
+  searchWater L1056–1116（L1104 查保护）；person L1145–1147；V13.act L1850–1860；V13.boatFood L2038–2058（L2054）；searchFood L2065–（L2107 不查保护）；floorFor0 L2270–2276（L2272）；
+  V13.expandNeutral L2408–2414；dpNeutral L2418–2444（L2438）；botOk L2499–2505；V13.winFloor L2521–2528；safeFinite L2532–2542；V17.safeAt L2744–2754；
+  isOurSquadBot L3973–3976；isProtectedSquadMate L3993–3996；chooseSpawn L4007–4152（后端 L4023–4062，本地分槽 L4065–4149）；tryDonateToTeammate L4369–4499（L4424 候选、L4428、L4438 rescue、
+  L4450 poke、L4467/L4490 surplus）；Policy.safeAt L4524–4540；Policy.winFloor L4542–4550；Policy.act L4781–4944（L4901 expandNeutral、L4902 buyLand、L4922 捐、L4923 idleBoats）；
+  idleBoats L4979–5006（L4994 boatFood、L4996 idleCap、L5004 boatOut）；buyLand L5250–5534（L5358 keep=max(keep,safe)、L5360 avail、L5363–5368 打 AI：x<minCmd 跳过、L5531 预算分支）；Policy.boatFood L5536–5597（L5538）。
+  参数：dpEnd 1500、dpSpend 0.5、winR 0.002、maxBoats 2、boatEvery 60、boatFrac 0.5、botMax 60、idleCap 1.25/1.3、foodK 1.25、feeK 4、seaCore 0。
+- B039 新增脚本：`voronoi_share.mjs`（天然份额、吃到率、份额里的地归谁、AI 地去向）、`pool_ai.mjs [--seats --tag]`（名字撞池 + 指定 AI 席位的去向）、`lag_periods.py [--json]`（四段延迟、漏斗、迟到损失、重复/成批）、
+  `spawn_local.py`（c110 本地分槽出生）、`attrib3.py [--json]`（600–1500 拍三分账）、`xteam_frontier.py`（拆队后的跨队边界）、`donate_recon.py`（HL-DONATE/ASSIST 对录像；离场壳/400 拍内阵亡/回捐小计）、
+  `boat_trace.mjs`（加了 hitLoss/hitTicks/hitBy：海上被敌船打掉的兵）。
+- B039 新增模式：SP06 本地分槽出生各算各的候选表 | EC03 跨队保护墙（别队本队号和它的壳不可打） | DF05 名字撞池的 AI 蚕食不还手 | DN14 给离场壳捐兵。
+  复用：OP02 在这局有两种跨队形态（1500 拍前 winFloor：Pomerania–Sus；1500 拍后 safeAt：404 Not Found–Algiers，两边 safeAt 正好等于对方余额）；AT07 最小出兵量（余额的 4.69%）让有钱的号买不了便宜的 AI 地。
+- B039 的主线：20 个席位拆三队 → slot 15–19 开局就没了、另 8 个 1099–2016 拍离场（页面本地 600 拍起只有正常速度的 13–73%）→ 剩 7 个号正好是四对跨队贴着出生的，互相当墙 →
+  长地全靠船吃离场壳 → 3897–4960 拍被周围 2–4 万格的真人逐个吃掉；Pomerania 在赢的 T2 里活到收场。
+- M6 要全量做的（B039 带出来的）：6. 每局 `lag_periods.py --json`、`attrib3.py --json`、`voronoi_share.mjs`（串行）；7. 机器人席位 vs 其他真人的离场率（B039：30 个少 20 个 vs 44 个少 6 个）；
+  8. 船的手续费/装兵比、被打沉的船（boat_trace 的 hitLoss）；9. 捐兵手续费占比（donate_recon 只对 c110；c116 用 dispatch_audit）。
+- B043 做完后的笔记（c110，--replay A062 --log B043；重演 600/604，另 4 个快照是 6241 拍后壳自动捐兵的收款人，`engine_bal.cjs --check` 用真引擎核对过）：
+  新脚本 `pairs_view.py <mid> victim|attacker <席位…>`（resim_pairs 按对手汇总格数、起止拍；resim_pairs 只有和本队席位有关的行）；`scripts/steps/b043-{a,b,c,d}.txt` 是成批步骤文件
+  （`run_batch.sh` 的输入）。run-heavy 排队太深时内联命令 118 秒内拿不到槽：改在 tmux 里 `HEAVY_QUEUE=3000 bash ../../tools/run-heavy.sh bash scripts/run_batch.sh <步骤文件> > 日志 2>&1`，回头读日志。
+  新模式：OP05 1500 拍前 dpKeep 按最强真人邻居的全部余额留兵（Jordan 1285–1495 拍；dpKeep L2491–2496）| AT14 进攻线上的兵不撤回（Srivijaya 1800–2040 拍 30 万兵压在进攻线上，家里 0.4–2.4 万；
+  hold() L2120–2130 因 holdOn=0 不执行，本队全场 0 条 retreat）。复用：AT13 在 c110 里的行号是 buyLand L5269–5273（isSoleHealthyBuffer）/ L5279–5282（isCrowdedHard）/ L5267（价格线）；
+  DN14 的机理读清了：rescue 分支 L4424 不查 isBot，L4434 的条件（被真人打且密度 < 75）对壳永远成立，L4436 dMe ≥ max(55, dAlly+15) 就捐 pct 155——Yoshi 的壳一家收了 18 笔 1170526。
+  船落在同队岸上 = 捐款且“一笔收不下整船作废”（boats.js landAt L273–279 + game.js bookDonation L370–376）；过期船令按执行时余额装兵，额度一超就整船没了（Itachi 1596 拍 97653 兵）。
+- B043 的主线：20 个席位拆三队（T3 8 / T1 7 / T2 5）→ 630 拍和路人并排（吃到天然地盘 0.41 对 0.44）→ 页面本地 600 拍起只有正常速度的 4–89%，600–1500 拍的令 44.2% 落地、延迟中位 224 →
+  最慢的 7 个页面 1043–1526 拍被 leave → 1560–1800 拍过期令、过期船成批落地，1755–2503 拍死 6 个 → 中期 Janissary、Barbary、KGB、Hussite 两三千拍没打过真人（价格线 + 唯一健康邻居等 128 倍 + safeAt），
+  46 笔捐兵 350 万里 23 笔 152 万进了壳 → 3591–5892 拍被 Art raffiné、Mongol Empire 等逐个吃掉 → T1 99.87% 收场，Trajan（第 7）、Zenobia（第 10）在赢的队里活到最后。
+- M6 要全量做的（B043 带出来的）：10. 船落在同队岸上的条数、到岸、到账（boat_trace 的 landedOn=mate / mateGot）和出海当拍落点已是同队岸的条数（aimAtLaunch）；
+  11. 进攻线上的兵对家里余额的比（resim_squad 的 atkOut 对 bal）≥5 倍且持续 ≥90 拍的号数（AT14）；12. 给离场壳的捐兵（c110 用 donate_recon；c116 用 dispatch_audit 的 to 席位 state=2）。

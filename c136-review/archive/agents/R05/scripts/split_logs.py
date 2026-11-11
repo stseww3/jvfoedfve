@@ -12,6 +12,7 @@
 #   box   每号：nb=0 且 neut=0 的快照数（被围）、密度 >100 / >130 的快照数、最高密度、90 拍内存兵掉 ≥30% 的次数
 #   cmds  每号每 600 拍下发的指令数（[HL-TICK] cmds 字段的增量）
 #   lag   两盘开局的日志行号差：各号第一条 [HL-OPENING] 的行号与拍号
+import os
 import csv, json, re, sys
 from collections import defaultdict, Counter
 
@@ -20,7 +21,7 @@ MID = a[0]
 val = lambda k, d: (a[a.index(k) + 1] if k in a else d)
 SEC = val('--sec', 'tl,sum,res,disp,quota,box,cmds,lag').split(',')
 DONE_FRAC = float(val('--done-frac', 0.5))
-DATA = '/agent/repos/c136-data/bundles/' + MID
+DATA = os.environ.get('C136_DATA', '/agent/repos/c136-data') + '/bundles/' + MID
 card = json.load(open(DATA + '/card.json'))
 LAND = card['mapLand']
 ticks = defaultdict(list)   # bot -> [(t, terr, bal, dens, nb, neut, cmds, boats, line)]

@@ -181,8 +181,11 @@ PATTERN_DEFS = {
     "R07-MT-NOFULL-LOCK": {
         "category": "MT",
         "definition": "`isNoFullSend` 被误锁：出兵后的 1~6 拍内余额因为别的原因下降（挨打掉兵、更早的指令晚到），updateShadowQuota 把它当成「引擎没让我发全额」，把标记永久置真。"
-                      "之后对真人的出兵要先等影子额度回满，不够就整条不发（或改成 1 兵试探）。",
-        "detectionSketch": "65_shadow.mjs 的 shadow_nofull.tsv：影子策略里标记第一次置真的拍与当时的待核对出兵、之后被挡掉/改成试探的出兵（前提：影子日志与真日志逐条对得上，见 shadow_check.txt）。",
+                      "之后对真人的出兵要先等影子额度回满，不够就整条不发（或改成 1 兵试探）。"
+                      "锁上之后同一段核对还会一次次把影子额度清零（A082 起用 99_quota_checks.py 逐次列出）：发令后 7 拍内余额只要比「发令时余额 − 手续费」少就核对，"
+                      "落差不到想发的 1/1.12 就归零——挨打的号指令还没落地就被判；落地了的，同段入账的利息也会把落差抹到线下（指令越小越容易，pct=47 的捡地指令一拍利息就够）。",
+        "detectionSketch": "65_shadow.mjs 的 shadow_nofull.tsv：影子策略里标记第一次置真的拍与当时的待核对出兵、之后被挡掉/改成试探的出兵（前提：影子日志与真日志逐条对得上，见 shadow_check.txt）；"
+                           "shadow_quota_checks.tsv + 99_quota_checks.py：每次核对是过期 / 扣减 / 清零、清零时真号那条指令落地了没有、之后 60 拍被挡的指令。",
     },
     "R07-SP-SWAP-CHURN": {
         "category": "SP",
@@ -400,7 +403,8 @@ PATTERN_DEFS = {
         "definition": "t≥1500 捡零碎无主地的指令被最小指令垫高。General.expandNeutral（Vb L944-953；t≥dpEnd 时由 V13.expandNeutral L2373 转进来）先算吃一圈要的兵 want，再和 minCmd 取大（L951 `Math.max(…, min)`）；"
                       "minCmd = feeK(4)×手续费 = 余额的 4.69%（Strategy.minCmd L474-476），折成比例恒为 pct=47。引擎对陆上进攻另收全部余额 12/1024 的手续费，和发多少兵无关——"
                       "所以每一条都是「发出去余额的 4.6%、手续费是发兵的四分之一」。余额几十万到两百万的号为了几十格到几百格空地，一条付几千到两万七的手续费；"
-                      "吃一圈用不完的兵转一圈退回。邻居一倒、地一块块空出来（清场）时，每个决策拍来一条，而且它排在 buyLand 前面，同拍打真人的那条发不出去（见 R07-IO-ONE-CMD-DROP）。",
+                      "吃一圈用不完的兵转一圈退回。邻居一倒、地一块块空出来（清场）时，每个决策拍来一条，而且它排在 buyLand 前面（Policy.act L4941 / L4942），同拍打真人的那条发不出去（见 R07-IO-ONE-CMD-DROP）；"
+                      "isNoFullSend 已经锁上的号，这条小指令落地时同拍有利息入账，出兵后的核对就把影子额度清零，之后几个决策拍对真人的指令被挡（见 R07-MT-NOFULL-LOCK）。",
         "detectionSketch": "humans_cmd.tsv（或 replay 的逐条指令）：我方号 t≥1500、目标是无主地（tt=N）、pct=47 的进攻；按号合计条数 / 发兵 / 手续费，"
                            "对 94_conquest.mjs 同期从「清场放掉」的地里吃进的格数。影子侧：shadow_cmds.tsv 里发令位置是 expandNeutral:952 的指令。"
                            "只有日志时：HL-TICK 的 neut>0 且 cmds 增加、领土几乎不动、余额每 90 拍多掉 1%~5%。",
@@ -411,6 +415,27 @@ PATTERN_DEFS = {
                       "中间的 B 往往正是因为这笔到账才越过调度的密度门槛（协防 102 / 余粮 108）。调度每次只看「我够不够密、谁在挨打或更稀」，不看这笔兵是不是刚从别人那里收来的。",
         "detectionSketch": "[HL-DISPATCH] 序列（或 69_quota_truth.mjs 的引擎记账）：某一笔的收方在其后 120 拍内作为捐方出现、收方不是原来的捐方；"
                            "统计接力对数、第一手的到账、第二手的到账与手续费，以及中间那个号在第一手到账前后的密度。",
+    },
+    "R07-SP-FAN-FACING": {
+        "category": "SP",
+        "definition": "角扇阵的朝向不看敌人。出生协调器在 K≥6、没有真 Boss 时排「角上扇形」（Va / Vb L1065-1170）：尖顶 1 个（CORNER_APEX_BANK）、里圈 3 个（INNER_ARC_BANK）、其余在外圈（OUTER_SHIELD_WALL），"
+                      "半径随 rCell 缩（r0 / r1 / r2 的下限 28 / 78 / 142 像素，同圈间距下限 42）。锚点只按「陆地样本多、离地图角近」打分（L1122 `metric = landSamples * 18 - dCorner * 2.2`），"
+                      "扇轴取锚点周围陆地样本的平均方向（L1129），选定的角还会锁住（L1276 lockedCornerName）——三处都不看敌方出生点在哪。"
+                      "陆地的平均方向和敌人的方向不是一回事：扇轴指向一片半岛或海湾时，外圈那一排「盾墙」对着海，尖顶和里圈两翼反而对着敌人，"
+                      "人最多的外圈没有可打的 AI、也没有前线，全队的陆上前沿只有尖顶和两翼那几个号。",
+        "detectionSketch": "66_spawn_truth.mjs：各号最后指派的角色与真实落点；46_voronoi.mjs E 节：以全队落点重心为圆心、八个方向 60~160 / 160~260 像素两圈的陆地占比和敌方出生点个数，"
+                           "再看外圈号落在哪几个方向；93_frontier.mjs / 89_squad_perimeter.py：990~1530 各号的 AI 边界、敌方边界和围死的号数。",
+    },
+    "R07-EC-NEUT-FLOOR": {
+        "category": "EC",
+        "definition": "对真人的留底把捡无主地也挡住。t≥1500 捡无主地的预算是 `g.bal[me] - this.safeAt(g, -1)`（Va Policy.act L4940 / Vb L4941），"
+                      "safeAt(g, −1) = min(oppFloorCap×领土, max(safeFinite, killW×dpKeep))，dpKeep 按最强的那个真人邻居折算（V13.dpKeep L2459-2464）；"
+                      "General.expandNeutral 里预算小于 minCmd 就直接返回（L946-947）。贴着一个兵多几倍的真人的号，余额长期在这条留底以下："
+                      "身边的弱邻居被清场、地成片变成无主地时，它一条指令都不发，这些地被别的队捡走；等队友的捐款把它顶过留底，才开始一条条 pct=47 地捡。"
+                      "和 R07-AT-CARCASS-FLOOR 是同一条留底的两个出口：那边挡的是只剩空壳的真人，这边挡的是空壳倒下之后放出来的地。",
+        "detectionSketch": "48_neutral_floor.py（输入 65_shadow.mjs --trace 的逐拍明细）：t≥1500、neut>0 的决策拍里没有指令且 `B − safe(-1) < 4×(12×B // 1024)` 的拍数，"
+                           "按号、按连续段列出贴着的无主地格数、余额、留底和差额；94_conquest.mjs：同一时间段「清场放掉」的格数和它们归了谁。"
+                           "只有日志时：HL-TICK 的 neut>0、nb≥1、cmds 不变、领土不变，持续 ≥2 个快照。",
     },
 }
 

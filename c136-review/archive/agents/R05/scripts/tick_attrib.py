@@ -20,7 +20,9 @@
 三层合计：
   ① 结构（出生位置/被围）= 只贴敌方真人 + 围在里面        ② 策略留底 = 留底锁·无在途 + 留底·有在途（纯锁只算前者）
   ③ 执行（迟到/没到）= 迟到·目标已死 + 迟到·不接壤 + 没落地   有效 = 有效；其余 = 有目标没发 + 只剩中立边
-用法：python3 scripts/tick_attrib.py <matchId> [--json FILE] [--by-bot]
+  --exits：没发指令的各类决策拍，影子当拍走到哪个函数的哪一行返回（出口行前 6 个）。留底复刻是按 Vb 写的，
+           别的版本（c110 / Va）「有目标没发」偏多时，用这一项看实际是哪道门没过。
+用法：python3 scripts/tick_attrib.py <matchId> [--json FILE] [--by-bot] [--exits]
 """
 import json
 import os
@@ -43,6 +45,40 @@ pc = lambda x, y: f'{100 * x / y:.1f}%' if y else '-'
 k = lambda v: (f'{v / 1e6:.2f}M' if abs(v) >= 1e6 else f'{v / 1e3:.0f}k' if abs(v) >= 1e4 else f'{v:.0f}')
 CATS = ['有效', '迟到·目标已死', '迟到·不接壤', '没落地', '留底锁·无在途', '留底·有在途', '有目标没发', '只剩中立边', '只贴敌方真人', '围在里面']
 LAYER = {'有效': '有效', '迟到·目标已死': '③执行', '迟到·不接壤': '③执行', '没落地': '③执行', '留底锁·无在途': '②留底', '留底·有在途': '②留底', '有目标没发': '其余', '只剩中立边': '其余', '只贴敌方真人': '①结构', '围在里面': '①结构'}
+# 「有目标没发」再分四类要用的源码行号：按版本从策略源码里按特征找（不写死）
+SRC_OF = {'c110': 'v27-team-c110.js', 'va': 'v27-team-c116-va.js', 'vb': 'v27-team-c116-vb.js', 'vc': 'v27-team-c116.js', 'g09': 'v27-team-g09.js'}
+
+
+def gate_lines(ver):
+    base = os.environ.get('C136_SRC', '/agent/repos/c136-data/src')
+    fp = os.path.join(base, 'strategy', SRC_OF.get(ver, ''))
+    out = {'cooldown': set(), 'guard': set(), 'enough': set()}
+    if not os.path.isfile(fp):
+        return out
+    L = open(fp, encoding='utf-8').read().split('\n')
+    in_guard = False
+    in_pick = False
+    for i, ln in enumerate(L, 1):
+        if '_lastTargetSendTick.get(target)' in ln and 'return false' in ln:
+            out['cooldown'].add(i)          # 同一目标的发送冷却（c110 才有）
+        if 'quotaGuardMode > 0 && this.isNoFullSend' in ln:
+            in_guard = True
+        elif in_guard and 'super.send(g, target, troops)' in ln:
+            in_guard = False
+        elif in_guard and 'return false' in ln:
+            out['guard'].add(i)             # 配额闸拒发
+        if ln.strip().startswith('pickTarget(g, floorAt, maxCost)'):
+            in_pick = True
+        elif in_pick and ln.rstrip() == '  }':
+            in_pick = False
+        elif in_pick and ('if (need <= 0) continue' in ln or ('g.hasAttack(me, q)' in ln and 'attackTroopsOn(me, q) >=' in ln and 'continue' in ln)):
+            out['enough'].add(i)            # 在途的兵已够吃下 / 这个机器人已经在打
+    return out
+
+
+GL = gate_lines(S.get('ver') or '')
+split = Counter()
+split_bot = defaultdict(Counter)
 half = Counter()
 cnt = Counter()
 by_bot = defaultdict(Counter)
@@ -52,6 +88,12 @@ issued_cls = defaultdict(Counter)
 bank = defaultdict(list)
 skipped = 0
 rows = 0
+exits = defaultdict(Counter)
+gates = defaultdict(Counter)
+gaex = defaultdict(Counter)
+psx = defaultdict(Counter)      # 没发指令的拍里 Policy.send 被调用过：出口行（配额闸拒发等）
+psbot = defaultdict(Counter)
+nfs_rows = Counter()            # isNoFullSend=1 的决策拍数（全部决策拍 / 没发指令的）
 for r in tc:
     b, t = r['bot'], r['t']
     if t > last.get(b, 10 ** 9):
@@ -81,6 +123,37 @@ for r in tc:
     if not cmds and (r['busyBot'] or r['busyNeut']):
         busy[cat] += 1
     cnt[cat] += 1
+    if not cmds:
+        exits[cat][r.get('exit') or '?'] += 1
+        if r.get('pt') is not None or r.get('ga') is not None:
+            pt = set(int(x) for x in (r.get('pt') or []))
+            # pickTarget 循环里各道门（行号各版本相同的相对位置：c110 1192/1193/1195/1197/1199/1200/1202；Va/Vb 行号差几行，按出现的行号原样列）
+            gates[cat][','.join(str(x) for x in sorted(pt)) or '(循环里没有 continue)'] += 1
+            gaex[cat][str(r.get('ga'))] += 1
+        if r.get('ps'):
+            key = 'Policy.send ' + ','.join(str(x) for x in r['ps']) + (' → Strategy.send ' + ','.join(str(x) for x in r['ss']) if r.get('ss') else ' → 没到 Strategy.send') + ('｜isNoFullSend=1' if r.get('nfs') else '｜isNoFullSend=0')
+            psx[cat][key] += 1
+            psbot[b][key] += 1
+    if cat == '有目标没发' and (r.get('pt') is not None or r.get('ps') is not None):
+        ssx = set(x for x in (r.get('ss') or []) if isinstance(x, int))
+        psl = set(x for x in (r.get('ps') or []) if isinstance(x, int))
+        ptl = set(int(x) for x in (r.get('pt') or []))
+        if ssx & GL['cooldown']:
+            sk = '冷却空过'
+        elif psl & GL['guard']:
+            sk = '配额闸拒发'
+        elif r.get('ps'):
+            sk = 'send 返回 false（其他）'
+        elif ptl & GL['enough']:
+            sk = '在途已够'
+        else:
+            sk = '其他'
+        split[sk] += 1
+        split_bot[b][sk] += 1
+    if r.get('nfs') is not None:
+        nfs_rows['all'] += 1
+        if r.get('nfs'): nfs_rows['nfs1'] += 1
+        if not cmds and r.get('nfs'): nfs_rows['nfs1_nocmd'] += 1
     by_bot[b][cat] += 1
     bank[cat].append(r['B'])
 print(f'===== {mid} 决策拍归因 t={T0}–{T1}：{rows} 个 (号×决策拍)（另有 {skipped} 个是客户端没跑到的拍，不计）=====')
@@ -121,6 +194,35 @@ if os.path.exists(lp):
     v = L['voronoi']
     print(f'   结构旁证（出生份额）：我方号名下 {v["squadCells"]} 格 = 全图 {100 * v["landShare"]:.1f}%，人数占 {100 * v["headShare"]:.1f}% → 份额÷人数 {v["ratio"]:.2f}；每号中位 {v["squadMedian"]:.0f} 对其他真人 {v["othersMedian"]:.0f}')
     OUT['voronoiRatio'] = v['ratio']
+if '--exits' in a:
+    print('   -- 没发指令的决策拍，影子当拍的出口（函数:行；前 6 个）')
+    for c in CATS:
+        if exits.get(c):
+            print(f'      {c}（{sum(exits[c].values())}）: ' + '；'.join(f'{x} ×{v}' for x, v in exits[c].most_common(6)))
+    OUT['exits'] = {c: dict(v.most_common(12)) for c, v in exits.items()}
+    if gates:
+        print('   -- 没发指令的决策拍：General.act 的出口行｜pickTarget 循环里命中过的 continue 行组合（前 6 个）')
+        for c in CATS:
+            if gates.get(c):
+                print(f'      {c}（{sum(gates[c].values())}）: 出口 ' + '、'.join(f'L{x} ×{v}' for x, v in gaex[c].most_common(4)) + '｜continue 行 ' + '；'.join(f'[{x}] ×{v}' for x, v in gates[c].most_common(6)))
+        OUT['ptGates'] = {c: dict(v.most_common(12)) for c, v in gates.items()}
+        OUT['gaExit'] = {c: dict(v) for c, v in gaex.items()}
+    if psx:
+        tot = sum(sum(v.values()) for v in psx.values())
+        print(f'   -- 没发指令、但当拍调用过 Policy.send 的决策拍 {tot} 个（{100 * tot / max(1, rows):.1f}%；send 返回 false）：Policy.send 出口行 → 最底层 Strategy.send 出口行｜当拍 isNoFullSend')
+        for c in CATS:
+            if psx.get(c):
+                print(f'      {c}（{sum(psx[c].values())}）: ' + '；'.join(f'[{x}] ×{v}' for x, v in psx[c].most_common(6)))
+        print('      逐号：' + '；'.join(f'{b} {sum(v.values())}' for b, v in sorted(psbot.items(), key=lambda kv: -sum(kv[1].values()))))
+        OUT['sendRefused'] = {'rows': tot, 'share': tot / max(1, rows), 'byCat': {c: dict(v) for c, v in psx.items()}, 'byBot': {b: sum(v.values()) for b, v in psbot.items()}}
+    if split:
+        tot2 = sum(split.values())
+        print(f'   -- 「有目标没发」{tot2} 拍再分（行号按版本从源码找：冷却 {sorted(GL["cooldown"])}、配额闸 {sorted(GL["guard"])}、在途已够 {sorted(GL["enough"])}）：' + '；'.join(f'{x} {v}（占全部决策拍 {pc(v, rows)}）' for x, v in split.most_common()))
+        print('      逐号 冷却空过/配额闸拒发/在途已够/其他：' + '；'.join(f"{b} {v['冷却空过']}/{v['配额闸拒发']}/{v['在途已够']}/{v['其他'] + v['send 返回 false（其他）']}" for b, v in split_bot.items()))
+        OUT['notSentSplit'] = {'rows': tot2, 'split': dict(split), 'lines': {x: sorted(v) for x, v in GL.items()}, 'byBot': {b: dict(v) for b, v in split_bot.items()}}
+    if nfs_rows['all']:
+        print(f"   -- isNoFullSend=1 的决策拍 {nfs_rows['nfs1']}/{nfs_rows['all']}（{100 * nfs_rows['nfs1'] / nfs_rows['all']:.1f}%）；其中没发指令的 {nfs_rows['nfs1_nocmd']}")
+        OUT['noFullSendRows'] = dict(nfs_rows)
 if '--by-bot' in a:
     print('   -- 逐号（决策拍数：' + ' / '.join(CATS) + '）')
     for b, v in by_bot.items():

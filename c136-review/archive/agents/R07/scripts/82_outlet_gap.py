@@ -85,7 +85,9 @@ def main():
                 q = int(tok.split(":")[0])
                 pl = players.get(q)
                 if pl is None or q not in human:
-                    ha = True
+                    # 实际队数 ≥8 的局内置 AI 也分队：和我方同队的 AI 打不了，不算出口
+                    if not (pl is not None and pl["team"] not in ("", "0") and pl["team"] == my_team):
+                        ha = True
                 elif pl["team"] != my_team:
                     if st and at(q, t)[3] == 2:
                         ha = True

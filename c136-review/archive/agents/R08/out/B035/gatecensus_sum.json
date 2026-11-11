@@ -1,0 +1,222 @@
+{
+ "matchId": "B035",
+ "side": "own",
+ "walkEvery": 30,
+ "withHumanNb": [
+  {
+   "period": "1500~3000",
+   "n": 274,
+   "sendHuman": 6,
+   "sendAi": 3,
+   "priceBreak": 226,
+   "allSkip": 35,
+   "allSkipWhy": {
+    "skip:x<chunk": 25,
+    "skip:avail<=0(keep)": 6,
+    "skip:avail<=0(safe)": 1,
+    "skip:pulseC:<min": 1,
+    "skip:pulseB:alreadyOn": 2
+   }
+  },
+  {
+   "period": "all",
+   "n": 274,
+   "sendHuman": 6,
+   "sendAi": 3,
+   "priceBreak": 226,
+   "allSkip": 35,
+   "allSkipWhy": {
+    "skip:x<chunk": 25,
+    "skip:avail<=0(keep)": 6,
+    "skip:avail<=0(safe)": 1,
+    "skip:pulseC:<min": 1,
+    "skip:pulseB:alreadyOn": 2
+   }
+  }
+ ],
+ "underAttack": [
+  {
+   "period": "1500~3000",
+   "n": 15,
+   "send": 0,
+   "why": {
+    "break:price>=worth（更便宜的报价已截断）": 5,
+    "skip:pulseC:<min": 2,
+    "skip:avail<=0(safe)": 6,
+    "break:price>=worth": 1,
+    "skip:pulseB:<min": 1
+   }
+  },
+  {
+   "period": "all",
+   "n": 15,
+   "send": 0,
+   "why": {
+    "break:price>=worth（更便宜的报价已截断）": 5,
+    "skip:pulseC:<min": 2,
+    "skip:avail<=0(safe)": 6,
+    "break:price>=worth": 1,
+    "skip:pulseB:<min": 1
+   }
+  }
+ ],
+ "underAttackByDensity": [
+  {
+   "band": "<60",
+   "n": 15,
+   "send": 0,
+   "why": {
+    "break:price>=worth（更便宜的报价已截断）": 5,
+    "skip:pulseC:<min": 2,
+    "skip:avail<=0(safe)": 6,
+    "break:price>=worth": 1,
+    "skip:pulseB:<min": 1
+   }
+  }
+ ],
+ "priceGate": {
+  "n": 6,
+  "nRow": 1,
+  "ratioMed": 1.09,
+  "ratioQ1": 1.09,
+  "ratioQ3": 1.09,
+  "le125": 1,
+  "le150": 1,
+  "le200": 1,
+  "priceMed": 33.5,
+  "worthMed": 30.8,
+  "densMed": 20.7
+ },
+ "safeGate": {
+  "n": 6,
+  "safeOverBalMed": 1.36,
+  "ge2": 2,
+  "ge5": 0
+ },
+ "lostTilesByVerdict": {
+  "total": 9856,
+  "by": {
+   "没有采样点（1500 拍前 / 已不在线）": 1046,
+   "skip:pulseB:<min": 48,
+   "break:price>=worth": 150,
+   "skip:avail<=0(safe)": 6215,
+   "进攻者是异队编队友（受保护，不在报价表里）": 1125,
+   "skip:x<chunk": 123,
+   "skip:pulseC:<min": 1149
+  },
+  "byPeriod": {
+   "<1500": {
+    "没有采样点（1500 拍前 / 已不在线）": 37
+   },
+   "1500~3000": {
+    "没有采样点（1500 拍前 / 已不在线）": 1009,
+    "skip:pulseB:<min": 48,
+    "break:price>=worth": 150,
+    "skip:avail<=0(safe)": 6215,
+    "进攻者是异队编队友（受保护，不在报价表里）": 1125,
+    "skip:x<chunk": 123,
+    "skip:pulseC:<min": 1149
+   }
+  }
+ },
+ "perBot": [
+  {
+   "bot": "Maurya",
+   "n": 32,
+   "humanNb": 32,
+   "underAttack": 7,
+   "send": 0,
+   "why": {
+    "skip:avail<=0(safe)": 5,
+    "break:price>=worth（更便宜的报价已截断）": 1,
+    "skip:pulseC:<min": 1
+   }
+  },
+  {
+   "bot": "Wales",
+   "n": 31,
+   "humanNb": 31,
+   "underAttack": 1,
+   "send": 0,
+   "why": {
+    "skip:pulseC:<min": 1
+   }
+  },
+  {
+   "bot": "Lucario",
+   "n": 31,
+   "humanNb": 31,
+   "underAttack": 0,
+   "send": 0,
+   "why": {}
+  },
+  {
+   "bot": "Sicilian",
+   "n": 32,
+   "humanNb": 32,
+   "underAttack": 1,
+   "send": 0,
+   "why": {
+    "skip:avail<=0(safe)": 1
+   }
+  },
+  {
+   "bot": "Alaska",
+   "n": 29,
+   "humanNb": 2,
+   "underAttack": 4,
+   "send": 0,
+   "why": {
+    "break:price>=worth（更便宜的报价已截断）": 4
+   }
+  },
+  {
+   "bot": "San Marino",
+   "n": 32,
+   "humanNb": 32,
+   "underAttack": 1,
+   "send": 0,
+   "why": {
+    "break:price>=worth": 1
+   }
+  },
+  {
+   "bot": "Panzergrenadier",
+   "n": 29,
+   "humanNb": 29,
+   "underAttack": 1,
+   "send": 0,
+   "why": {
+    "skip:pulseB:<min": 1
+   }
+  },
+  {
+   "bot": "Turenne",
+   "n": 32,
+   "humanNb": 32,
+   "underAttack": 0,
+   "send": 0,
+   "why": {}
+  },
+  {
+   "bot": "Afsharid",
+   "n": 22,
+   "humanNb": 22,
+   "underAttack": 0,
+   "send": 0,
+   "why": {}
+  },
+  {
+   "bot": "Impostor",
+   "n": 31,
+   "humanNb": 31,
+   "underAttack": 0,
+   "send": 0,
+   "why": {}
+  }
+ ],
+ "selfCheck": {
+  "sendSamples": 16,
+  "shadowSentWithin": 16
+ }
+}

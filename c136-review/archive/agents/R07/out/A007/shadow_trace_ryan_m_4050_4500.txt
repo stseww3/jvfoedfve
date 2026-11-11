@@ -1,0 +1,289 @@
+# A007 ryan_m 影子决策明细 t=4050~4500（策略 v27-team-c116-va.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 37 拍（t=4050~4500）
+#   只打无主地: 10 拍（t=4080~4130）；可用兵 31615~36453，一条指令下限(20%余额) 86661~87640，比值 36%~42%
+#   出手打人/bot: 29 拍（t=4120~4345）；可用兵 40237~173954，一条指令下限(20%余额) 86661~106742，比值 46%~163%
+#   过了软上限，但首选目标是唯一的真人邻居（isSoleHealthyBuffer：余额 < overHumanCap×100×领土 不打）: 12 拍（t=4135~4215）；可用兵 36453~77824，一条指令下限(20%余额) 87640~96012，比值 42%~81%
+#   捐兵: 3 拍（t=4150~4200）；可用兵 46588~73546，一条指令下限(20%余额) 89691~95146，比值 52%~77%
+#   └ 「出手打人/bot」里：29 条对人/bot 的出兵共约 2730394 兵；其中超过软上限（over=1）时发的 29 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 27 条约 2610024 兵，c/worth = 1.38~2.77
+t=4050 ryan_m B=396182 L=4311 d=91.9 nb=1 neut=0 cmds=70 noFull=1 shQ=99045 | m=0.900 worth=86.8 cheap=8.8 over=0 dMedOther=113.4 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21668 bal=2125580 dq=98.1 cnt=64 | c=202.4 rankC=141.7 need=3821056 tD=0.86 人 pulse | safe=336258 keep=Inf avail=-Inf chunkB=79236 pulseB=79236 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4055 ryan_m B=396182 L=4311 d=91.9 nb=1 neut=0 cmds=70 noFull=1 shQ=99045 | m=0.900 worth=86.8 cheap=8.8 over=0 dMedOther=113.4 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21801 bal=2125580 dq=97.5 cnt=65 | c=201.2 rankC=140.8 need=3821290 tD=0.86 人 pulse | safe=336258 keep=Inf avail=-Inf chunkB=79236 pulseB=79236 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4060 ryan_m B=400698 L=4311 d=92.9 nb=1 neut=0 cmds=70 noFull=1 shQ=100174 | m=0.900 worth=87.6 cheap=8.8 over=0 dMedOther=114.5 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=22002 bal=2153637 dq=97.9 cnt=66 | c=202.0 rankC=141.4 need=3871634 tD=0.86 人 pulse | safe=336258 keep=Inf avail=-Inf chunkB=80140 pulseB=80140 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4065 ryan_m B=400698 L=4311 d=92.9 nb=1 neut=0 cmds=70 noFull=1 shQ=100174 | m=0.900 worth=87.6 cheap=8.8 over=0 dMedOther=114.5 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=22130 bal=2153637 dq=97.3 cnt=67 | c=149.9 rankC=74.9 need=3871825 tD=0.85 人 pulse | safe=336258 keep=Inf avail=-Inf chunkB=80140 pulseB=80140 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4070 ryan_m B=405265 L=4311 d=94.0 nb=1 neut=0 cmds=70 noFull=1 shQ=101316 | m=0.900 worth=87.5 cheap=8.8 over=0 dMedOther=114.4 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=22188 bal=2161037 dq=97.4 cnt=69 | c=151.4 rankC=75.7 need=3885033 tD=0.85 人 pulse | safe=336258 keep=Inf avail=-Inf chunkB=81053 pulseB=81053 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4075 ryan_m B=405265 L=4311 d=94.0 nb=1 neut=0 cmds=70 noFull=1 shQ=101316 | m=0.900 worth=86.5 cheap=8.8 over=0 dMedOther=113.1 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=22174 bal=2138963 dq=96.5 cnt=70 | c=146.3 rankC=73.2 need=3845327 tD=0.85 人 pulse | safe=336258 keep=Inf avail=-Inf chunkB=81053 pulseB=81053 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4080 ryan_m B=409885 L=4311 d=95.1 nb=1 neut=22 cmds=71 noFull=1 shQ=102471 | m=0.900 worth=86.3 cheap=8.8 over=0 dMedOther=112.8 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=22140 bal=2132188 dq=96.3 cnt=66 | c=148.5 rankC=74.3 need=3832179 tD=0.85 人 pulse | safe=336258 keep=Inf avail=-Inf chunkB=81977 pulseB=81977 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 19213 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=4085 ryan_m B=409885 L=4311 d=95.1 nb=1 neut=20 cmds=72 noFull=1 shQ=102471 | m=0.900 worth=85.6 cheap=8.8 over=0 dMedOther=105.3 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=22116 bal=2109286 dq=95.4 cnt=65 | c=148.6 rankC=74.3 need=3790662 tD=0.91 人 pulse | safe=336258 keep=Inf avail=-Inf chunkB=81977 pulseB=81977 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 19213 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=4090 ryan_m B=414557 L=4311 d=96.2 nb=1 neut=18 cmds=73 noFull=1 shQ=103639 | m=0.900 worth=86.5 cheap=8.8 over=0 dMedOther=106.6 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=22028 bal=2104784 dq=95.6 cnt=56 | c=151.2 rankC=75.6 need=3779793 tD=0.90 人 pulse | safe=336258 keep=Inf avail=-Inf chunkB=82911 pulseB=82911 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 19432 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=4095 ryan_m B=414557 L=4311 d=96.2 nb=1 neut=16 cmds=74 noFull=1 shQ=103639 | m=0.900 worth=86.5 cheap=8.8 over=0 dMedOther=106.6 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21964 bal=2084792 dq=94.9 cnt=57 | c=151.7 rankC=75.8 need=3742072 tD=0.89 人 pulse | safe=336258 keep=Inf avail=-Inf chunkB=82911 pulseB=82911 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 19432 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=4100 ryan_m B=423593 L=4311 d=98.3 nb=1 neut=14 cmds=75 noFull=1 shQ=104846 | m=0.900 worth=88.4 cheap=8.8 over=0 dMedOther=108.8 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=22052 bal=2133229 dq=96.7 cnt=59 | c=266.4 rankC=266.4 need=3831568 tD=0.89 人 pulse | safe=336258 keep=Inf avail=-Inf chunkB=84719 pulseB=84719 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 19855 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=4105 ryan_m B=423593 L=4311 d=98.3 nb=1 neut=13 cmds=76 noFull=1 shQ=105898 | m=0.900 worth=88.4 cheap=8.8 over=0 dMedOther=108.7 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=22116 bal=2133229 dq=96.5 cnt=60 | c=120.6 rankC=60.3 need=3833997 tD=0.89 人 pulse bleeding | safe=336258 keep=Inf avail=-Inf chunkB=84719 pulseB=84719 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 19855 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=4110 ryan_m B=428421 L=4311 d=99.4 nb=1 neut=10 cmds=77 noFull=1 shQ=107105 | m=0.900 worth=89.4 cheap=8.8 over=0 dMedOther=109.4 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=22127 bal=2151093 dq=97.2 cnt=63 | c=122.2 rankC=61.1 need=3865808 tD=0.89 人 pulse bleeding | safe=336258 keep=Inf avail=-Inf chunkB=85684 pulseB=85684 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 20082 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=4115 ryan_m B=428421 L=4311 d=99.4 nb=1 neut=8 cmds=78 noFull=1 shQ=107105 | m=0.900 worth=89.4 cheap=8.8 over=0 dMedOther=108.5 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=22044 bal=2130438 dq=96.6 cnt=64 | c=122.7 rankC=61.3 need=3826173 tD=0.89 人 pulse bleeding | safe=336258 keep=Inf avail=-Inf chunkB=85684 pulseB=85684 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 20082 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=4120 ryan_m B=433304 L=4311 d=100.5 nb=1 neut=7 cmds=80 noFull=1 shQ=108326 | m=0.900 worth=90.5 cheap=8.8 over=1 dMedOther=108.4 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21906 bal=2126228 dq=97.1 cnt=62 | c=125.2 rankC=62.6 need=3813826 tD=0.90 人 pulse bleeding | safe=336258 keep=387990 avail=40237 chunkB=86661 pulseB=86661  x=40237 hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 20311 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=95 → [Off] Skull#2[T5]（约 40622 兵） 〔send:484<send:1827<send:3865<buyLand:5584〕
+t=4125 ryan_m B=433304 L=4311 d=100.5 nb=1 neut=5 cmds=81 noFull=1 shQ=108326 | m=0.900 worth=90.5 cheap=8.8 over=1 dMedOther=108.2 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21811 bal=2104365 dq=96.5 cnt=61 | c=112.8 rankC=56.4 need=3771777 tD=0.89 人 pulse | safe=336258 keep=396612 avail=31615 chunkB=86661 pulseB=86661 唯一真人邻居(B<1.12×100×L)→continue sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 20311 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=4130 ryan_m B=438200 L=4311 d=101.6 nb=1 neut=1 cmds=82 noFull=1 shQ=109531 | m=0.900 worth=91.5 cheap=8.8 over=1 dMedOther=109.3 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21668 bal=2098466 dq=96.8 cnt=60 | c=115.2 rankC=57.6 need=3756194 tD=0.89 人 pulse | safe=336258 keep=396612 avail=36453 chunkB=87640 pulseB=87640 唯一真人邻居(B<1.12×100×L)→continue sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 20540 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=4135 ryan_m B=438200 L=4311 d=101.6 nb=1 neut=0 cmds=82 noFull=1 shQ=109550 | m=0.900 worth=91.5 cheap=8.8 over=1 dMedOther=109.3 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21560 bal=2075724 dq=96.3 cnt=58 | c=115.8 rankC=57.9 need=3712003 tD=0.88 人 pulse | safe=336258 keep=396612 avail=36453 chunkB=87640 pulseB=87640 唯一真人邻居(B<1.12×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4140 ryan_m B=443064 L=4311 d=102.8 nb=1 neut=0 cmds=82 noFull=1 shQ=110746 | m=0.900 worth=92.5 cheap=8.8 over=1 dMedOther=110.4 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21518 bal=1853646 dq=86.1 cnt=55 | c=105.1 rankC=52.5 need=3317015 tD=0.78 人 pulse | safe=336258 keep=396612 avail=41260 chunkB=88613 pulseB=88613 唯一真人邻居(B<1.12×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4145 ryan_m B=443064 L=4311 d=102.8 nb=1 neut=0 cmds=82 noFull=1 shQ=110766 | m=0.900 worth=92.5 cheap=8.8 over=1 dMedOther=110.4 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21514 bal=1831933 dq=85.2 cnt=54 | c=105.1 rankC=52.5 need=3278649 tD=0.77 人 pulse | safe=336258 keep=396612 avail=41260 chunkB=88613 pulseB=88613 唯一真人邻居(B<1.12×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4150 ryan_m B=448455 L=4311 d=104.0 nb=1 neut=0 cmds=83 noFull=1 shQ=112093 | m=0.900 worth=93.6 cheap=8.8 over=1 dMedOther=111.5 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21526 bal=1827556 dq=84.9 cnt=53 | c=137.5 rankC=96.2 need=3271409 tD=0.76 人 pulse | safe=336258 keep=396612 avail=46588 chunkB=89691 pulseB=89691 唯一真人邻居(B<1.12×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=157 → [APEX] riku_x#78[T1]（约 69195 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=4155 ryan_m B=448455 L=4311 d=104.0 nb=1 neut=0 cmds=83 noFull=1 shQ=112113 | m=0.900 worth=93.6 cheap=8.8 over=1 dMedOther=111.5 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21620 bal=1736107 dq=80.3 cnt=53 | c=130.0 rankC=91.0 need=3112358 tD=0.72 人 pulse | safe=336258 keep=396612 avail=46588 chunkB=89691 pulseB=89691 唯一真人邻居(B<1.12×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4160 ryan_m B=453163 L=4311 d=105.1 nb=1 neut=0 cmds=84 noFull=1 shQ=113279 | m=0.900 worth=94.6 cheap=8.8 over=1 dMedOther=112.5 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21731 bal=1759023 dq=80.9 cnt=53 | c=86.5 rankC=43.2 need=3156595 tD=0.72 人 pulse bleeding | safe=336258 keep=387990 avail=59863 chunkB=90633 pulseB=90633  x=59863 hNb=1
+    ⇒ 影子指令 attack pct=135 → [Off] Skull#2[T5]（约 60185 兵） 〔send:484<send:1827<send:3865<buyLand:5584〕
+t=4165 ryan_m B=453163 L=4311 d=105.1 nb=1 neut=0 cmds=85 noFull=1 shQ=113290 | m=0.900 worth=94.6 cheap=8.8 over=1 dMedOther=112.5 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21789 bal=1759023 dq=80.7 cnt=53 | c=86.2 rankC=43.1 need=3158618 tD=0.72 人 pulse bleeding | safe=336258 keep=387990 avail=59863 chunkB=90633 pulseB=90633  x=59863 hNb=1
+    ⇒ 影子指令 attack pct=135 → [Off] Skull#2[T5]（约 60185 兵） 〔send:484<send:1827<send:3865<buyLand:5584〕
+t=4170 ryan_m B=457830 L=4311 d=106.2 nb=1 neut=0 cmds=85 noFull=1 shQ=114434 | m=0.900 worth=95.6 cheap=8.8 over=1 dMedOther=112.8 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21669 bal=1748699 dq=80.7 cnt=53 | c=130.6 rankC=91.4 need=3136688 tD=0.72 人 pulse | safe=336258 keep=396612 avail=55853 chunkB=91566 pulseB=91566 唯一真人邻居(B<1.12×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4175 ryan_m B=457830 L=4311 d=106.2 nb=1 neut=0 cmds=86 noFull=1 shQ=114457 | m=0.900 worth=95.6 cheap=8.8 over=1 dMedOther=112.8 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21709 bal=1936011 dq=89.2 cnt=53 | c=111.5 rankC=55.7 need=3470706 tD=0.79 人 pulse | safe=336258 keep=396612 avail=55853 chunkB=91566 pulseB=91566 唯一真人邻居(B<1.12×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=175 → [APEX] riku_x#78[T1]（约 78689 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=4180 ryan_m B=462408 L=4311 d=107.3 nb=1 neut=0 cmds=86 noFull=1 shQ=115602 | m=0.900 worth=96.5 cheap=8.8 over=1 dMedOther=113.8 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21564 bal=1932272 dq=89.6 cnt=53 | c=112.1 rankC=56.1 need=3459238 tD=0.79 人 pulse | safe=336258 keep=396612 avail=60378 chunkB=92482 pulseB=92482 唯一真人邻居(B<1.12×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4185 ryan_m B=462408 L=4311 d=107.3 nb=1 neut=0 cmds=86 noFull=1 shQ=115602 | m=0.900 worth=96.5 cheap=8.8 over=1 dMedOther=113.8 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21603 bal=1932272 dq=89.4 cnt=53 | c=192.9 rankC=192.9 need=3460835 tD=0.79 人 pulse | safe=336258 keep=396612 avail=60378 chunkB=92482 pulseB=92482 唯一真人邻居(B<1.12×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4190 ryan_m B=466939 L=4311 d=108.3 nb=1 neut=0 cmds=86 noFull=1 shQ=116734 | m=0.900 worth=97.5 cheap=8.8 over=1 dMedOther=113.3 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21627 bal=1957777 dq=90.5 cnt=53 | c=195.1 rankC=195.1 need=3507053 tD=0.80 人 pulse | safe=336258 keep=396612 avail=64856 chunkB=93388 pulseB=93388 唯一真人邻居(B<1.12×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4195 ryan_m B=466939 L=4311 d=108.3 nb=1 neut=0 cmds=86 noFull=1 shQ=116734 | m=0.900 worth=97.5 cheap=8.8 over=1 dMedOther=113.3 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21634 bal=1957777 dq=90.5 cnt=53 | c=195.1 rankC=195.1 need=3507425 tD=0.80 人 pulse | safe=336258 keep=396612 avail=64856 chunkB=93388 pulseB=93388 唯一真人邻居(B<1.12×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4200 ryan_m B=475732 L=4311 d=110.4 nb=1 neut=0 cmds=87 noFull=1 shQ=117923 | m=0.900 worth=99.3 cheap=8.8 over=1 dMedOther=115.3 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21637 bal=2173758 dq=100.5 cnt=53 | c=216.3 rankC=216.3 need=3891066 tD=0.87 人 pulse | safe=336258 keep=396612 avail=73546 chunkB=95146 pulseB=95146 唯一真人邻居(B<1.12×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=190 → [APEX] riku_x#78[T1]（约 88735 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=4205 ryan_m B=475732 L=4311 d=110.4 nb=1 neut=0 cmds=87 noFull=1 shQ=118933 | m=0.900 worth=99.3 cheap=8.8 over=1 dMedOther=115.3 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21637 bal=2173758 dq=100.5 cnt=53 | c=125.4 rankC=62.7 need=3891353 tD=0.87 人 pulse | safe=336258 keep=396612 avail=73546 chunkB=95146 pulseB=95146 唯一真人邻居(B<1.12×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4210 ryan_m B=480061 L=4311 d=111.4 nb=1 neut=0 cmds=87 noFull=1 shQ=120015 | m=0.900 worth=100.2 cheap=8.8 over=1 dMedOther=116.2 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21427 bal=2168252 dq=101.2 cnt=53 | c=126.5 rankC=63.3 need=3873642 tD=0.87 人 pulse | safe=336258 keep=396612 avail=77824 chunkB=96012 pulseB=96012 唯一真人邻居(B<1.12×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4215 ryan_m B=480061 L=4311 d=111.4 nb=1 neut=0 cmds=87 noFull=1 shQ=120015 | m=0.900 worth=100.2 cheap=8.8 over=1 dMedOther=116.0 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21427 bal=2168252 dq=101.2 cnt=53 | c=218.2 rankC=218.2 need=3873787 tD=0.87 人 pulse | safe=336258 keep=396612 avail=77824 chunkB=96012 pulseB=96012 唯一真人邻居(B<1.12×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4220 ryan_m B=484333 L=4311 d=112.3 nb=1 neut=0 cmds=88 noFull=1 shQ=121083 | m=0.900 worth=101.1 cheap=8.8 over=1 dMedOther=116.3 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21427 bal=2196222 dq=102.5 cnt=53 | c=220.9 rankC=220.9 need=3923495 tD=0.88 人 pulse | safe=336258 keep=396612 avail=82046 chunkB=96867 pulseB=96867  x=82046 sole hNb=1
+    ⇒ 影子指令 attack pct=173 → [Off] Skull#2[T5]（约 82298 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4225 ryan_m B=484333 L=4311 d=112.3 nb=1 neut=0 cmds=89 noFull=1 shQ=121083 | m=0.900 worth=101.1 cheap=8.8 over=1 dMedOther=115.9 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21427 bal=2196222 dq=102.5 cnt=53 | c=220.9 rankC=220.9 need=3923790 tD=0.88 人 pulse | safe=336258 keep=396612 avail=82046 chunkB=96867 pulseB=96867  x=82046 sole hNb=1
+    ⇒ 影子指令 attack pct=173 → [Off] Skull#2[T5]（约 82298 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4230 ryan_m B=488498 L=4311 d=113.3 nb=1 neut=0 cmds=90 noFull=1 shQ=122124 | m=0.900 worth=102.0 cheap=8.8 over=1 dMedOther=116.4 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21427 bal=2223894 dq=103.8 cnt=53 | c=223.7 rankC=223.7 need=3972977 tD=0.89 人 pulse | safe=336258 keep=396612 avail=86162 chunkB=97700 pulseB=97700  x=86162 sole hNb=1
+    ⇒ 影子指令 attack pct=180 → [Off] Skull#2[T5]（约 86345 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4235 ryan_m B=488498 L=4311 d=113.3 nb=1 neut=0 cmds=91 noFull=1 shQ=122124 | m=0.900 worth=102.0 cheap=8.8 over=1 dMedOther=116.4 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21427 bal=2223894 dq=103.8 cnt=53 | c=223.7 rankC=223.7 need=3973126 tD=0.89 人 pulse | safe=336258 keep=396612 avail=86162 chunkB=97700 pulseB=97700  x=86162 sole hNb=1
+    ⇒ 影子指令 attack pct=180 → [Off] Skull#2[T5]（约 86345 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4240 ryan_m B=492601 L=4311 d=114.3 nb=1 neut=0 cmds=92 noFull=1 shQ=123150 | m=0.900 worth=102.8 cheap=8.8 over=1 dMedOther=117.3 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21427 bal=2251025 dq=105.1 cnt=53 | c=226.4 rankC=226.4 need=4021359 tD=0.90 人 pulse | safe=336258 keep=396612 avail=90217 chunkB=98520 pulseB=98520  x=90217 sole hNb=1
+    ⇒ 影子指令 attack pct=187 → [Off] Skull#2[T5]（约 90438 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4245 ryan_m B=492601 L=4311 d=114.3 nb=1 neut=0 cmds=93 noFull=1 shQ=123150 | m=0.900 worth=102.8 cheap=8.8 over=1 dMedOther=115.7 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21427 bal=2018009 dq=94.2 cnt=53 | c=152.4 rankC=106.7 need=3608652 tD=0.81 人 pulse | safe=336258 keep=396612 avail=90217 chunkB=98520 pulseB=98520  x=90217 sole hNb=1
+    ⇒ 影子指令 attack pct=187 → [Off] Skull#2[T5]（约 90438 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4250 ryan_m B=496640 L=4311 d=115.2 nb=1 neut=0 cmds=94 noFull=1 shQ=124160 | m=0.900 worth=103.7 cheap=8.8 over=1 dMedOther=116.7 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21474 bal=2044646 dq=95.2 cnt=53 | c=154.0 rankC=107.8 need=3657724 tD=0.82 人 pulse | safe=336258 keep=396612 avail=94208 chunkB=99328 pulseB=99328  x=94208 sole hNb=1
+    ⇒ 影子指令 attack pct=194 → [Off] Skull#2[T5]（约 94575 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4255 ryan_m B=496640 L=4311 d=115.2 nb=1 neut=0 cmds=95 noFull=1 shQ=124160 | m=0.900 worth=103.7 cheap=8.8 over=1 dMedOther=116.7 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21572 bal=2044646 dq=94.8 cnt=53 | c=153.2 rankC=107.2 need=3661420 tD=0.81 人 pulse | safe=336258 keep=396612 avail=94208 chunkB=99328 pulseB=99328  x=94208 sole hNb=1
+    ⇒ 影子指令 attack pct=194 → [Off] Skull#2[T5]（约 94575 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4260 ryan_m B=500613 L=4311 d=116.1 nb=1 neut=0 cmds=96 noFull=1 shQ=125153 | m=0.900 worth=104.5 cheap=8.8 over=1 dMedOther=117.6 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21729 bal=2071635 dq=95.3 cnt=53 | c=153.9 rankC=107.7 need=3715153 tD=0.81 人 pulse | safe=336258 keep=396612 avail=98135 chunkB=100123 pulseB=100123  x=98135 sole hNb=1
+    ⇒ 影子指令 attack pct=200 → [Off] Skull#2[T5]（约 98264 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4265 ryan_m B=500613 L=4311 d=116.1 nb=1 neut=0 cmds=97 noFull=1 shQ=125153 | m=0.900 worth=104.5 cheap=8.8 over=1 dMedOther=117.6 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=21846 bal=2071635 dq=94.8 cnt=53 | c=153.0 rankC=107.1 need=3719596 tD=0.81 人 pulse | safe=336258 keep=396612 avail=98135 chunkB=100123 pulseB=100123  x=98135 sole hNb=1
+    ⇒ 影子指令 attack pct=200 → [Off] Skull#2[T5]（约 98264 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4270 ryan_m B=504517 L=4311 d=117.0 nb=1 neut=0 cmds=98 noFull=1 shQ=126129 | m=0.900 worth=105.3 cheap=8.8 over=1 dMedOther=118.6 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=22040 bal=2098980 dq=95.2 cnt=53 | c=153.5 rankC=107.4 need=3774203 tD=0.80 人 pulse | safe=336258 keep=396612 avail=101993 chunkB=100903 pulseB=100903  x=100903 sole hNb=1
+    ⇒ 影子指令 attack pct=204 → [Off] Skull#2[T5]（约 101001 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4275 ryan_m B=504517 L=4311 d=117.0 nb=1 neut=0 cmds=99 noFull=1 shQ=126129 | m=0.900 worth=105.3 cheap=8.8 over=1 dMedOther=118.0 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=22182 bal=2098980 dq=94.6 cnt=53 | c=203.4 rankC=203.4 need=3774483 tD=0.80 人 pulse | safe=336258 keep=396612 avail=101993 chunkB=100903 pulseB=100903  x=100903 sole hNb=1
+    ⇒ 影子指令 attack pct=204 → [Off] Skull#2[T5]（约 101001 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4280 ryan_m B=508351 L=4311 d=117.9 nb=1 neut=0 cmds=100 noFull=1 shQ=127087 | m=0.900 worth=106.1 cheap=8.8 over=1 dMedOther=118.9 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=22401 bal=2126896 dq=94.9 cnt=53 | c=204.0 rankC=204.0 need=3824534 tD=0.80 人 pulse | safe=336258 keep=396612 avail=105782 chunkB=101670 pulseB=101670  x=101670 sole hNb=1
+    ⇒ 影子指令 attack pct=204 → [Off] Skull#2[T5]（约 101769 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4285 ryan_m B=508351 L=4311 d=117.9 nb=1 neut=0 cmds=101 noFull=1 shQ=127087 | m=0.900 worth=106.1 cheap=8.8 over=1 dMedOther=118.9 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=22545 bal=2126896 dq=94.3 cnt=53 | c=202.8 rankC=202.8 need=3824750 tD=0.79 人 pulse | safe=336258 keep=396612 avail=105782 chunkB=101670 pulseB=101670  x=101670 sole hNb=1
+    ⇒ 影子指令 attack pct=204 → [Off] Skull#2[T5]（约 101769 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4290 ryan_m B=512112 L=4311 d=118.8 nb=1 neut=0 cmds=102 noFull=1 shQ=128028 | m=0.900 worth=106.9 cheap=8.8 over=1 dMedOther=119.8 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=22753 bal=2155183 dq=94.7 cnt=53 | c=203.6 rankC=203.6 need=3875480 tD=0.79 人 pulse | safe=336258 keep=396612 avail=109499 chunkB=102422 pulseB=102422  x=102422 sole hNb=1
+    ⇒ 影子指令 attack pct=204 → [Off] Skull#2[T5]（约 102522 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4295 ryan_m B=512112 L=4311 d=118.8 nb=1 neut=0 cmds=103 noFull=1 shQ=128028 | m=0.900 worth=106.9 cheap=8.8 over=1 dMedOther=119.8 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=22894 bal=2155183 dq=94.1 cnt=53 | c=202.3 rankC=202.3 need=3875725 tD=0.79 人 pulse | safe=336258 keep=396612 avail=109499 chunkB=102422 pulseB=102422  x=102422 sole hNb=1
+    ⇒ 影子指令 attack pct=204 → [Off] Skull#2[T5]（约 102522 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4300 ryan_m B=520110 L=4311 d=120.6 nb=1 neut=0 cmds=104 noFull=1 shQ=129328 | m=0.900 worth=108.6 cheap=8.8 over=1 dMedOther=121.7 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=23111 bal=2206884 dq=95.5 cnt=53 | c=205.2 rankC=205.2 need=3968235 tD=0.78 人 pulse | safe=336258 keep=396612 avail=117403 chunkB=104022 pulseB=104022  x=104022 sole hNb=1
+    ⇒ 影子指令 attack pct=204 → [Off] Skull#2[T5]（约 104123 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4305 ryan_m B=520110 L=4311 d=120.6 nb=1 neut=0 cmds=105 noFull=1 shQ=130027 | m=0.900 worth=108.6 cheap=8.8 over=1 dMedOther=121.6 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=23258 bal=2206884 dq=94.9 cnt=53 | c=203.9 rankC=203.9 need=3968421 tD=0.78 人 pulse | safe=336258 keep=396612 avail=117403 chunkB=104022 pulseB=104022  x=104022 sole hNb=1
+    ⇒ 影子指令 attack pct=204 → [Off] Skull#2[T5]（约 104123 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4310 ryan_m B=523594 L=4311 d=121.5 nb=1 neut=0 cmds=106 noFull=1 shQ=130898 | m=0.900 worth=109.3 cheap=8.8 over=1 dMedOther=122.4 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=23333 bal=2236461 dq=95.8 cnt=53 | c=298.7 rankC=433.1 need=4021217 tD=0.78 人 pulse | safe=336258 keep=396612 avail=120847 chunkB=104719 pulseB=104719  x=104718 sole hNb=1
+    ⇒ 影子指令 attack pct=204 → [Off] Skull#2[T5]（约 104821 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4315 ryan_m B=523594 L=4311 d=121.5 nb=1 neut=0 cmds=107 noFull=1 shQ=130898 | m=0.900 worth=109.3 cheap=8.8 over=1 dMedOther=122.3 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=23333 bal=2236461 dq=95.8 cnt=53 | c=298.7 rankC=433.1 need=4021217 tD=0.78 人 pulse | safe=336258 keep=396612 avail=120847 chunkB=104719 pulseB=104719  x=104718 sole hNb=1
+    ⇒ 影子指令 attack pct=204 → [Off] Skull#2[T5]（约 104821 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4320 ryan_m B=527049 L=4311 d=122.3 nb=1 neut=0 cmds=108 noFull=1 shQ=131762 | m=0.900 worth=110.0 cheap=8.8 over=1 dMedOther=115.2 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=23333 bal=2266429 dq=97.1 cnt=53 | c=302.6 rankC=438.8 need=4074632 tD=0.84 人 pulse | safe=336258 keep=353502 avail=167371 chunkB=105410 pulseB=105410  x=105409 sole hNb=1
+    ⇒ 影子指令 attack pct=204 → [Off] Skull#2[T5]（约 105512 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4325 ryan_m B=527049 L=4311 d=122.3 nb=1 neut=0 cmds=109 noFull=1 shQ=131762 | m=0.900 worth=110.0 cheap=8.8 over=1 dMedOther=115.2 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=23333 bal=2266429 dq=97.1 cnt=53 | c=302.6 rankC=438.8 need=4074632 tD=0.84 人 pulse | safe=336258 keep=353502 avail=167371 chunkB=105410 pulseB=105410  x=105409 sole hNb=1
+    ⇒ 影子指令 attack pct=204 → [Off] Skull#2[T5]（约 105512 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4330 ryan_m B=530422 L=4311 d=123.0 nb=1 neut=0 cmds=110 noFull=1 shQ=132605 | m=0.900 worth=110.7 cheap=8.8 over=1 dMedOther=116.2 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=23333 bal=2296799 dq=98.4 cnt=53 | c=306.7 rankC=444.6 need=4128762 tD=0.85 人 pulse | safe=336258 keep=353502 avail=170705 chunkB=106084 pulseB=106084  x=106084 sole hNb=1
+    ⇒ 影子指令 attack pct=204 → [Off] Skull#2[T5]（约 106187 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4335 ryan_m B=530422 L=4311 d=123.0 nb=1 neut=0 cmds=111 noFull=1 shQ=132605 | m=0.900 worth=110.7 cheap=8.8 over=1 dMedOther=116.2 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=23333 bal=2059046 dq=88.2 cnt=53 | c=275.2 rankC=399.1 need=3704997 tD=0.76 人 pulse | safe=336258 keep=353502 avail=170705 chunkB=106084 pulseB=106084  x=106084 sole hNb=1
+    ⇒ 影子指令 attack pct=204 → [Off] Skull#2[T5]（约 106187 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4340 ryan_m B=533710 L=4311 d=123.8 nb=1 neut=0 cmds=112 noFull=1 shQ=133427 | m=0.900 worth=111.4 cheap=8.8 over=1 dMedOther=117.1 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=23333 bal=2086637 dq=89.4 cnt=53 | c=192.3 rankC=192.3 need=3754174 tD=0.76 人 pulse | safe=336258 keep=353502 avail=173954 chunkB=106742 pulseB=106742  x=106742 sole hNb=1
+    ⇒ 影子指令 attack pct=204 → [Off] Skull#2[T5]（约 106846 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4345 ryan_m B=533710 L=4311 d=123.8 nb=1 neut=0 cmds=113 noFull=1 shQ=133427 | m=0.900 worth=111.4 cheap=8.8 over=1 dMedOther=117.1 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=23470 bal=2086637 dq=88.9 cnt=53 | c=191.2 rankC=191.2 need=3754411 tD=0.76 人 pulse | safe=336258 keep=353502 avail=173954 chunkB=106742 pulseB=106742  x=106742 sole hNb=1
+    ⇒ 影子指令 attack pct=204 → [Off] Skull#2[T5]（约 106846 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4350 ryan_m B=395037 L=4311 d=91.6 nb=1 neut=0 cmds=113 noFull=1 shQ=2238 | m=0.900 worth=91.2 cheap=8.8 over=0 dMedOther=119.2 safe(-1)=336258
+    → [Off] Skull#2[T5] terr=23506 bal=2114597 dq=90.0 cnt=53 | c=186.7 rankC=186.7 need=3672780 tD=0.75 人 pulse | safe=336258 keep=Inf avail=-Inf chunkB=79007 pulseB=79007 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4355 ryan_m B=395037 L=4364 d=90.5 nb=1 neut=0 cmds=113 noFull=1 shQ=7863 | m=0.900 worth=90.2 cheap=8.8 over=0 dMedOther=118.0 safe(-1)=340392
+    → [Off] Skull#2[T5] terr=23468 bal=2106973 dq=89.8 cnt=55 | c=187.1 rankC=187.1 need=3672899 tD=0.76 人 pulse | safe=340392 keep=Inf avail=-Inf chunkB=79007 pulseB=79007 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4360 ryan_m B=399540 L=4419 d=90.4 nb=1 neut=0 cmds=113 noFull=1 shQ=13501 | m=0.900 worth=90.9 cheap=8.8 over=0 dMedOther=118.8 safe(-1)=344682
+    → [Off] Skull#2[T5] terr=23419 bal=2127201 dq=90.8 cnt=55 | c=190.2 rankC=190.2 need=3723450 tD=0.76 人 pulse | safe=344682 keep=Inf avail=-Inf chunkB=79908 pulseB=79908 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4365 ryan_m B=399540 L=4530 d=88.2 nb=1 neut=0 cmds=113 noFull=1 shQ=19191 | m=0.900 worth=90.8 cheap=8.8 over=0 dMedOther=118.8 safe(-1)=353340
+    → [Off] Skull#2[T5] terr=23310 bal=2320721 dq=99.6 cnt=56 | c=210.6 rankC=210.6 need=4098306 tD=0.84 人 pulse | safe=353340 keep=Inf avail=-Inf chunkB=79908 pulseB=79908 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4370 ryan_m B=404094 L=4644 d=87.0 nb=1 neut=0 cmds=113 noFull=1 shQ=24894 | m=0.900 worth=90.7 cheap=8.8 over=0 dMedOther=118.6 safe(-1)=362232
+    → [Off] Skull#2[T5] terr=23196 bal=2333199 dq=100.6 cnt=58 | c=214.8 rankC=214.8 need=4153137 tD=0.85 人 pulse | safe=362232 keep=Inf avail=-Inf chunkB=80819 pulseB=80819 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4375 ryan_m B=404094 L=4702 d=85.9 nb=1 neut=0 cmds=113 noFull=1 shQ=30649 | m=0.900 worth=90.1 cheap=8.8 over=0 dMedOther=117.8 safe(-1)=366756
+    → [Off] Skull#2[T5] terr=23138 bal=2323865 dq=100.4 cnt=60 | c=215.5 rankC=215.5 need=4153282 tD=0.85 人 pulse | safe=366756 keep=Inf avail=-Inf chunkB=80819 pulseB=80819 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4380 ryan_m B=408717 L=4702 d=86.9 nb=1 neut=0 cmds=113 noFull=1 shQ=36417 | m=0.900 worth=89.0 cheap=8.8 over=0 dMedOther=116.4 safe(-1)=366756
+    → [Off] Skull#2[T5] terr=23138 bal=2349452 dq=101.5 cnt=60 | c=218.4 rankC=218.4 need=4209675 tD=0.87 人 pulse | safe=366756 keep=Inf avail=-Inf chunkB=81743 pulseB=81743 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4385 ryan_m B=408717 L=4702 d=86.9 nb=1 neut=0 cmds=113 noFull=1 shQ=42237 | m=0.900 worth=87.0 cheap=8.8 over=0 dMedOther=113.8 safe(-1)=366756
+    → [Off] Skull#2[T5] terr=23138 bal=2349452 dq=101.5 cnt=60 | c=218.4 rankC=218.4 need=4209820 tD=0.89 人 pulse | safe=366756 keep=Inf avail=-Inf chunkB=81743 pulseB=81743 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4390 ryan_m B=413376 L=4702 d=87.9 nb=1 neut=0 cmds=113 noFull=1 shQ=48071 | m=0.900 worth=87.9 cheap=8.8 over=0 dMedOther=115.0 safe(-1)=366756
+    → [Off] Skull#2[T5] terr=23138 bal=2379759 dq=102.9 cnt=60 | c=221.2 rankC=221.2 need=4263826 tD=0.89 人 pulse | safe=366756 keep=Inf avail=-Inf chunkB=82675 pulseB=82675 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4395 ryan_m B=413376 L=4702 d=87.9 nb=1 neut=0 cmds=113 noFull=1 shQ=53961 | m=0.900 worth=87.1 cheap=8.8 over=0 dMedOther=113.8 safe(-1)=366756
+    → [Off] Skull#2[T5] terr=23138 bal=2379759 dq=102.9 cnt=60 | c=221.2 rankC=221.2 need=4263973 tD=0.90 人 pulse | safe=366756 keep=Inf avail=-Inf chunkB=82675 pulseB=82675 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4400 ryan_m B=422790 L=4702 d=89.9 nb=1 neut=0 cmds=113 noFull=1 shQ=59877 | m=0.900 worth=88.0 cheap=8.8 over=0 dMedOther=115.1 safe(-1)=366756
+    → [Off] Skull#2[T5] terr=23138 bal=2432881 dq=105.1 cnt=60 | c=226.0 rankC=226.0 need=4358683 tD=0.91 人 pulse | safe=366756 keep=Inf avail=-Inf chunkB=84558 pulseB=84558 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4405 ryan_m B=422790 L=4702 d=89.9 nb=1 neut=0 cmds=113 noFull=1 shQ=65897 | m=0.900 worth=87.0 cheap=8.8 over=0 dMedOther=113.7 safe(-1)=366756
+    → [Off] Skull#2[T5] terr=23138 bal=2432881 dq=105.1 cnt=60 | c=226.0 rankC=226.0 need=4358833 tD=0.92 人 pulse | safe=366756 keep=Inf avail=-Inf chunkB=84558 pulseB=84558 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4410 ryan_m B=427609 L=4702 d=90.9 nb=1 neut=0 cmds=113 noFull=1 shQ=71931 | m=0.900 worth=88.8 cheap=8.8 over=0 dMedOther=116.1 safe(-1)=366756
+    → [Off] Skull#2[T5] terr=23138 bal=2462075 dq=106.4 cnt=60 | c=228.7 rankC=228.7 need=4410875 tD=0.92 人 pulse | safe=366756 keep=Inf avail=-Inf chunkB=85522 pulseB=85522 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4415 ryan_m B=427609 L=4702 d=90.9 nb=1 neut=0 cmds=113 noFull=1 shQ=78021 | m=0.900 worth=88.8 cheap=8.8 over=0 dMedOther=116.1 safe(-1)=366756
+    → [Off] Skull#2[T5] terr=23138 bal=2113442 dq=91.3 cnt=60 | c=147.5 rankC=103.2 need=3791311 tD=0.79 人 pulse | safe=366756 keep=Inf avail=-Inf chunkB=85522 pulseB=85522 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4420 ryan_m B=432483 L=4702 d=92.0 nb=1 neut=0 cmds=113 noFull=1 shQ=84125 | m=0.900 worth=89.6 cheap=8.8 over=0 dMedOther=117.1 safe(-1)=366756
+    → [Off] Skull#2[T5] terr=23294 bal=2141550 dq=91.9 cnt=61 | c=148.3 rankC=103.8 need=3846942 tD=0.79 人 pulse | safe=366756 keep=Inf avail=-Inf chunkB=86497 pulseB=86497 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4425 ryan_m B=432483 L=4702 d=92.0 nb=1 neut=0 cmds=113 noFull=1 shQ=90285 | m=0.900 worth=89.6 cheap=8.8 over=0 dMedOther=117.1 safe(-1)=366756
+    → [Off] Skull#2[T5] terr=23450 bal=2141550 dq=91.3 cnt=62 | c=147.2 rankC=103.0 need=3852258 tD=0.78 人 pulse | safe=366756 keep=Inf avail=-Inf chunkB=86497 pulseB=86497 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4430 ryan_m B=437413 L=4702 d=93.0 nb=1 neut=0 cmds=113 noFull=1 shQ=96459 | m=0.900 worth=90.3 cheap=8.8 over=0 dMedOther=118.1 safe(-1)=366756
+    → [Off] Skull#2[T5] terr=23683 bal=2170246 dq=91.6 cnt=66 | c=147.6 rankC=103.4 need=3903787 tD=0.78 人 pulse | safe=366756 keep=Inf avail=-Inf chunkB=87483 pulseB=87483 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4435 ryan_m B=437413 L=4702 d=93.0 nb=1 neut=0 cmds=113 noFull=1 shQ=102689 | m=0.900 worth=89.6 cheap=8.8 over=0 dMedOther=117.1 safe(-1)=366756
+    → [Off] Skull#2[T5] terr=23830 bal=2170246 dq=91.1 cnt=68 | c=146.7 rankC=102.7 need=3903974 tD=0.78 人 pulse | safe=366756 keep=Inf avail=-Inf chunkB=87483 pulseB=87483 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4440 ryan_m B=442399 L=4702 d=94.1 nb=1 neut=0 cmds=113 noFull=1 shQ=108933 | m=0.900 worth=90.4 cheap=8.8 over=0 dMedOther=118.1 safe(-1)=366756
+    → [Off] Skull#2[T5] terr=24046 bal=2199327 dq=91.5 cnt=71 | c=147.3 rankC=103.1 need=3956131 tD=0.77 人 pulse | safe=366756 keep=Inf avail=-Inf chunkB=88480 pulseB=88480 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4445 ryan_m B=442399 L=4702 d=94.1 nb=1 neut=0 cmds=113 noFull=1 shQ=110599 | m=0.900 worth=90.4 cheap=8.8 over=0 dMedOther=118.1 safe(-1)=366756
+    → [Off] Skull#2[T5] terr=24187 bal=2199327 dq=90.9 cnt=73 | c=146.5 rankC=102.5 need=3956375 tD=0.77 人 pulse | safe=366756 keep=Inf avail=-Inf chunkB=88480 pulseB=88480 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4450 ryan_m B=81348 L=4702 d=17.3 nb=1 neut=0 cmds=113 noFull=1 shQ=20337 | m=0.900 worth=90.6 cheap=8.8 over=0 dMedOther=118.4 safe(-1)=366756
+    → [Off] Skull#2[T5] terr=24393 bal=2228797 dq=91.4 cnt=76 | c=179.4 rankC=179.4 need=3668882 tD=0.77 人 pulse | safe=366756 keep=Inf avail=-Inf chunkB=16270 pulseB=16270 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4455 ryan_m B=81348 L=4775 d=17.0 nb=1 neut=0 cmds=113 noFull=1 shQ=20337 | m=0.900 worth=86.5 cheap=8.8 over=0 dMedOther=113.0 safe(-1)=372450
+    → [Off] Skull#2[T5] terr=24456 bal=2218156 dq=90.7 cnt=80 | c=179.0 rankC=179.0 need=3671406 tD=0.80 人 pulse | safe=372450 keep=Inf avail=-Inf chunkB=16270 pulseB=16270 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4460 ryan_m B=82275 L=4927 d=16.7 nb=1 neut=0 cmds=113 noFull=1 shQ=20568 | m=0.900 worth=85.4 cheap=8.8 over=0 dMedOther=111.6 safe(-1)=384306
+    → [Off] Skull#2[T5] terr=24499 bal=2225608 dq=90.8 cnt=84 | c=181.5 rankC=181.5 need=3728719 tD=0.81 人 pulse | safe=384306 keep=Inf avail=-Inf chunkB=16455 pulseB=16455 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4465 ryan_m B=82275 L=5090 d=16.2 nb=1 neut=0 cmds=113 noFull=1 shQ=20568 | m=0.900 worth=84.9 cheap=8.6 over=0 dMedOther=110.9 safe(-1)=397020
+    → [Off] Skull#2[T5] terr=24465 bal=2202004 dq=90.0 cnt=90 | c=182.0 rankC=182.0 need=3731903 tD=0.81 人 pulse | safe=397020 keep=Inf avail=-Inf chunkB=16455 pulseB=16455 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4470 ryan_m B=83221 L=5177 d=16.1 nb=2 neut=0 cmds=113 noFull=1 shQ=20805 | m=0.900 worth=85.4 cheap=8.6 over=0 dMedOther=111.7 safe(-1)=403806
+    → [Off] Skull#2[T5] terr=24442 bal=2218870 dq=90.8 cnt=91 | c=160.8 rankC=160.8 need=3786461 tD=0.81 人 pulse | safe=403806 keep=Inf avail=-Inf chunkB=16644 pulseB=16644 价高(c>=worth)→break hNb=2
+    → Pilof empire#1[T6] terr=31087 bal=3098773 dq=99.7 cnt=8 | c=347.7 rankC=243.4 need=5569872 tD=0.89 人 pulse crowdedHard | safe=403806 keep=Inf avail=-Inf chunkB=16644 pulseB=16644 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4475 ryan_m B=83221 L=5354 d=15.5 nb=2 neut=0 cmds=113 noFull=1 shQ=20805 | m=0.900 worth=85.4 cheap=8.6 over=0 dMedOther=111.7 safe(-1)=417612
+    → [Off] Skull#2[T5] terr=24265 bal=2193190 dq=90.4 cnt=95 | c=162.3 rankC=162.3 need=3786595 tD=0.81 人 pulse | safe=417612 keep=Inf avail=-Inf chunkB=16644 pulseB=16644 价高(c>=worth)→break hNb=2
+    → Pilof empire#1[T6] terr=31270 bal=3098773 dq=99.1 cnt=10 | c=345.6 rankC=241.9 need=5570111 tD=0.89 人 pulse crowdedHard | safe=417612 keep=Inf avail=-Inf chunkB=16644 pulseB=16644 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4480 ryan_m B=84178 L=5541 d=15.2 nb=2 neut=0 cmds=113 noFull=1 shQ=21044 | m=0.900 worth=86.2 cheap=8.6 over=0 dMedOther=112.7 safe(-1)=432198
+    → [Off] Skull#2[T5] terr=24078 bal=2195206 dq=91.2 cnt=98 | c=166.2 rankC=166.2 need=3838642 tD=0.81 人 pulse | safe=432198 keep=Inf avail=-Inf chunkB=16836 pulseB=16836 价高(c>=worth)→break hNb=2
+    → Pilof empire#1[T6] terr=31528 bal=3141845 dq=99.7 cnt=19 | c=346.9 rankC=242.8 need=5647198 tD=0.88 人 pulse crowdedHard | safe=432198 keep=Inf avail=-Inf chunkB=16836 pulseB=16836 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4485 ryan_m B=84178 L=5637 d=14.9 nb=2 neut=0 cmds=113 noFull=1 shQ=21044 | m=0.900 worth=85.8 cheap=8.6 over=0 dMedOther=112.1 safe(-1)=439686
+    → [Off] Skull#2[T5] terr=23982 bal=2181203 dq=91.0 cnt=100 | c=167.1 rankC=167.1 need=3838906 tD=0.81 人 pulse | safe=439686 keep=Inf avail=-Inf chunkB=16836 pulseB=16836 价高(c>=worth)→break hNb=2
+    → Pilof empire#1[T6] terr=31676 bal=3141845 dq=99.2 cnt=22 | c=345.1 rankC=241.6 need=5647420 tD=0.88 人 pulse crowdedHard | safe=439686 keep=Inf avail=-Inf chunkB=16836 pulseB=16836 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4490 ryan_m B=85146 L=5837 d=14.6 nb=2 neut=0 cmds=113 noFull=1 shQ=21286 | m=0.900 worth=86.3 cheap=8.6 over=0 dMedOther=112.8 safe(-1)=455286
+    → [Off] Skull#2[T5] terr=23782 bal=2180974 dq=91.7 cnt=103 | c=171.2 rankC=171.2 need=3890130 tD=0.81 人 pulse | safe=455286 keep=Inf avail=-Inf chunkB=17029 pulseB=17029 价高(c>=worth)→break hNb=2
+    → Pilof empire#1[T6] terr=31929 bal=2849545 dq=89.2 cnt=24 | c=310.7 rankC=217.5 need=5126847 tD=0.79 人 pulse crowdedHard | safe=455286 keep=Inf avail=-Inf chunkB=17029 pulseB=17029 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4495 ryan_m B=85168 L=5837 d=14.6 nb=2 neut=0 cmds=113 noFull=1 shQ=21292 | m=0.900 worth=87.0 cheap=8.6 over=0 dMedOther=113.7 safe(-1)=455286
+    → Pilof empire#1[T6] terr=32111 bal=2849545 dq=88.7 cnt=27 | c=171.6 rankC=120.1 need=5127182 tD=0.78 人 pulse crowdedHard | safe=455286 keep=Inf avail=-Inf chunkB=17034 pulseB=17034 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=23782 bal=2176751 dq=91.5 cnt=103 | c=171.3 rankC=171.3 need=3891455 tD=0.80 人 pulse | safe=455286 keep=Inf avail=-Inf chunkB=17034 pulseB=17034 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4500 ryan_m B=91984 L=5837 d=15.8 nb=2 neut=21 cmds=113 noFull=1 shQ=21558 | m=0.900 worth=88.5 cheap=8.6 over=0 dMedOther=115.7 safe(-1)=455286
+    → Pilof empire#1[T6] terr=32382 bal=2921445 dq=90.2 cnt=30 | c=174.4 rankC=122.0 need=5255710 tD=0.78 人 pulse crowdedHard | safe=455286 keep=Inf avail=-Inf chunkB=18397 pulseB=18397 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=23782 bal=2229701 dq=93.8 cnt=103 | c=175.4 rankC=175.4 need=3985392 tD=0.81 人 pulse | safe=455286 keep=Inf avail=-Inf chunkB=18397 pulseB=18397 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令

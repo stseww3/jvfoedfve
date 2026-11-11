@@ -269,7 +269,17 @@ async function main() {
   }
   const rowsOn = has('--rows');
   const rowsOut = [];
+  // 编队号的全集：优先取 tmp/truth/<局号>/meta.json 的 ours（这样只带一部分号跑时，没带的队友仍然标成 squad 而不是 ally）
+  //   --ours id,id,…（引擎编号）可以显式给出全集（B 组一局里有两支编队时用）。
   const ourSet = new Set(pols.map((S) => S.p));
+  const oursOpt = opt('--ours', null);
+  if (oursOpt) for (const k of oursOpt.split(',').filter(Boolean)) ourSet.add(+k);
+  else {
+    try {
+      const metaOurs = JSON.parse(fs.readFileSync(path.join(HERE, '..', 'tmp', 'truth', mid, 'meta.json'), 'utf8')).ours;
+      for (const k of Object.keys(metaOurs)) ourSet.add(+k);
+    } catch (e) { /* 没有 meta.json 就只用本次带的号 */ }
+  }
   let lastPix = -1;
   const outLines = [];
   const cmp = { nbOk: 0, nbBad: 0, disBoth: 0, disOnlyShadow: 0, disOnlyReal: 0, disSame: 0 };

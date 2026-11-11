@@ -1,0 +1,45 @@
+[QA] B027 出生点离地图边的距离（地图 1756×1000，短边的 12% = 120 像素）
+  编队 19 个号：中位 122、下四分位 66、上四分位 298；离边 ≤120 的 9 个（47%）
+  其他真人 48 个：中位 250、下四分位 184、上四分位 338；离边 ≤120 的 7 个（15%）
+  逐号（离边从近到远）：Savoy(T0) 10（下）；Hashashin(T0) 14（下）；Phoenicia(T0) 33（下）；New England(T0) 54（下）；Liao(T0) 66（下）；King(T0) 66（下）；Davout(T0) 98（上）；Cringe(T0) 98（上）；Sparta(T0) 98（上）；Vinland(T0) 122（右）；Tripoli(T0) 154（右）；Habsburg(T0) 166（上）；Doge(T0) 166（下）；Kuban(T0) 226（上）；Ronin(T0) 298（右）；SyntaxError(T0) 298（右）；player_007(T0) 334（上）；Raeder(T0) 378（右）；Mewtwo(T0) 386（左）
+
+[QB] 最近的真人（像素）
+  编队：最近的任意真人 中位 94｜最近的编队友 中位 116｜最近的非编队真人 中位 109｜最近的真人就是编队友的 9/19 个
+  其他真人：最近的任意真人 中位 71
+
+[QC] 编队号的团（相距 ≤260 像素连成一团）：9 团；≥3 个号的团 3 个，装了 11 个号
+  5 个号（中心 1272,953）：Liao(T0) King(T0) Hashashin(T0) Phoenicia(T0) New England(T0)｜队的构成 T0×5｜≤260 像素的号对：异队 7、同队 0
+  3 个号（中心 1431,381）：Raeder(T0) Ronin(T0) SyntaxError(T0)｜队的构成 T0×3｜≤260 像素的号对：异队 3、同队 0
+  3 个号（中心 1225,121）：Habsburg(T0) Davout(T0) Cringe(T0)｜队的构成 T0×3｜≤260 像素的号对：异队 3、同队 0
+  2 个号（中心 442,338）：Mewtwo(T0) Kuban(T0)｜队的构成 T0×2｜≤260 像素的号对：异队 1、同队 0
+  2 个号（中心 1618,650）：Tripoli(T0) Vinland(T0)｜队的构成 T0×2｜≤260 像素的号对：异队 1、同队 0
+  1 个号（中心 450,834）：Doge(T0)｜队的构成 T0×1｜≤260 像素的号对：异队 0、同队 0
+  1 个号（中心 770,990）：Savoy(T0)｜队的构成 T0×1｜≤260 像素的号对：异队 0、同队 0
+  1 个号（中心 862,334）：player_007(T0)｜队的构成 T0×1｜≤260 像素的号对：异队 0、同队 0
+  1 个号（中心 1602,98）：Sparta(T0)｜队的构成 T0×1｜≤260 像素的号对：异队 0、同队 0
+
+[QD] 贴同一条边排成一排（离这条边 ≤120 像素；沿边相邻间距 ≤520）
+  上沿 3 个号：Davout(T0)@1306 Cringe(T0)@1306 Sparta(T0)@1602｜相邻间距 [0, 296]｜队 T0
+  下沿 6 个号：Savoy(T0)@770 Liao(T0)@1198 Hashashin(T0)@1198 King(T0)@1198 Phoenicia(T0)@1304 New England(T0)@1462｜相邻间距 [428, 0, 0, 106, 158]｜队 T0
+
+[QE] 每个编队号最近的 3 个真人：号 | 最近 3 个（距离；* = 编队友；= 同队 / ≠ 异队）
+    Phoenicia        | Hashashin*T0 108≠；Liao*T0 111≠；King*T0 111≠
+    Ronin            | SyntaxError*T0 0≠；[TW] SamLGT0 78≠；Raeder*T0 113≠
+    Liao             | King*T0 0≠；Hashashin*T0 52≠；meng孬到T0 99≠
+    Hashashin        | Liao*T0 52≠；King*T0 52≠；meng孬到T0 92≠
+    Habsburg         | GloriousPurposT0 81≠；ImperiumT0 134≠；Sup [✝️]T0 134≠
+    Doge             | Player 644T0 148≠；神T0 152≠；Bad ChickenT0 179≠
+    Savoy            | PrincesoT0 152≠；神T0 303≠；国防科大T0 322≠
+    Kuban            | Player 551T0 96≠；PastaPirate [C~T0 118≠；ItalyT0 175≠
+    Davout           | Cringe*T0 0≠；BarfyT0 110≠；ImperiumT0 120≠
+    Mewtwo           | MexT0 112≠；ItalyT0 115≠；PastaPirate [C~T0 180≠
+    player_007       | 𝖁𝖆𝖙𝖎𝖈𝖆𝖓 𝕾𝖙T0 94≠；RielT0 101≠；The MongolsT0 107≠
+    King             | Liao*T0 0≠；Hashashin*T0 52≠；meng孬到T0 99≠
+    Cringe           | Davout*T0 0≠；BarfyT0 110≠；ImperiumT0 120≠
+    Raeder           | [TW] SamLGT0 91≠；LAMIRAN EMPIRET0 103≠；BigT0 103≠
+    SyntaxError      | Ronin*T0 0≠；[TW] SamLGT0 78≠；Raeder*T0 113≠
+    New England      | Phoenicia*T0 159≠；Liao*T0 264≠；King*T0 264≠
+    Tripoli          | 四大发明T0 109≠；Vinland*T0 116≠；VOLTA COMIGO LT0 166≠
+    Vinland          | 四大发明T0 109≠；Tripoli*T0 116≠；VOLTA COMIGO LT0 184≠
+    Sparta           | [corgi] DiamonT0 152≠；Harris [MEME]T0 190≠；Player 600T0 199≠
+  最近 3 个真人里是异队编队友的：20 / 57

@@ -1,0 +1,48 @@
+# A007 影子运行（策略 v27-team-c116-va.js；重演 5546 拍，用时 13.9 秒）
+# 重演与 traj.csv 快照核对：441 行，领土一致 441，余额一致 441，都一致 441
+# HL-TICK 比对：真日志 441 条；影子同拍 领土余额一致 441，nb 一致 441，neut 一致 441，cmds 计数一致 195，三项全一致 195
+#   noah88: 54 条，影子缺 0，nb 一致 54，neut 一致 54，cmds 一致 0；最后一条 cmds 差（影子-真）2
+#       变化点 (0,90] 差 0→1；这一段影子指令：60:attack 181→AI#110、65:attack 415→无主地、65:attack 218→AI#110、70:attack 212→AI#110
+#       变化点 (450,540] 差 1→2；这一段影子指令：455:attack 144→AI#329、460:attack 474→无主地、460:attack 155→AI#329
+#   alex_k: 37 条，影子缺 0，nb 一致 37，neut 一致 37，cmds 一致 37；最后一条 cmds 差（影子-真）0
+#   zexos1: 45 条，影子缺 0，nb 一致 45，neut 一致 45，cmds 一致 5；最后一条 cmds 差（影子-真）1
+#       变化点 (450,540] 差 0→1；这一段影子指令：470:attack 449→无主地、470:attack 106→AI#199、475:attack 116→AI#199、480:attack 118→AI#199
+#   sora_w: 54 条，影子缺 0，nb 一致 54，neut 一致 54，cmds 一致 4；最后一条 cmds 差（影子-真）3
+#       变化点 (360,450] 差 0→1；这一段影子指令：370:attack 453→无主地、370:attack 135→AI#471、375:attack 149→AI#471
+#       变化点 (450,540] 差 1→2；这一段影子指令：460:attack 170→AI#486、465:attack 456→无主地、465:attack 162→AI#422
+#       变化点 (4140,4230] 差 2→3；这一段影子指令：4145:attack 0→[Off] Skull#2[T5]、4150:attack 0→[Off] Skull#2[T5]、4155:attack 47→无主地、4155:attack 0→[Off] Skull#2[T5]、4160:attack 47→无主地、4165:attack 47→无主地、4170:attack 47→无主地
+#   zero_7: 49 条，影子缺 0，nb 一致 49，neut 一致 49，cmds 一致 6；最后一条 cmds 差（影子-真）2
+#       变化点 (540,630] 差 0→1；这一段影子指令：545:attack 493→无主地、545:attack 154→AI#206、550:attack 124→AI#364、560:attack 96→AI#364、605:attack 488→无主地
+#       变化点 (3690,3780] 差 1→2；这一段影子指令：无
+#   kaito9: 53 条，影子缺 0，nb 一致 53，neut 一致 53，cmds 一致 53；最后一条 cmds 差（影子-真）0
+#   talon5: 48 条，影子缺 0，nb 一致 48，neut 一致 48，cmds 一致 34；最后一条 cmds 差（影子-真）8
+#       变化点 (3060,3150] 差 0→2；这一段影子指令：3085:boatTo 127→水/岸#789951、3100:attack 108→Nice Guy [PL]#10[T3]、3105:attack 108→Nice Guy [PL]#10[T3]、3145:boatTo 127→水/岸#789951
+#       变化点 (3150,3240] 差 2→3；这一段影子指令：3205:boatTo 127→水/岸#789951
+#       变化点 (3240,3330] 差 3→5；这一段影子指令：3265:boatTo 127→水/岸#789951、3285:attack 54→Nice Guy [PL]#10[T3]、3290:attack 86→Nice Guy [PL]#10[T3]、3295:attack 86→Nice Guy [PL]#10[T3]、3325:boatTo 127→水/岸#789951
+#       变化点 (3330,3420] 差 5→6；这一段影子指令：3385:boatTo 127→水/岸#789951
+#       变化点 (3510,3600] 差 6→8；这一段影子指令：3515:boatTo 127→水/岸#702126、3575:boatTo 127→水/岸#702126
+#   ryan_m: 51 条，影子缺 0，nb 一致 51，neut 一致 51，cmds 一致 6；最后一条 cmds 差（影子-真）2
+#       变化点 (540,630] 差 0→1；这一段影子指令：620:attack 102→AI#147、625:attack 104→AI#147、630:attack 101→AI#147
+#       变化点 (4050,4140] 差 1→2；这一段影子指令：4080:attack 47→无主地、4085:attack 47→无主地、4090:attack 47→无主地、4095:attack 47→无主地、4100:attack 47→无主地、4105:attack 47→无主地、4110:attack 47→无主地、4115:attack 47→无主地、4120:attack 47→无主地、4120:attack 95→[Off] Skull#2[T5]、4125:attack 47→无主地、4130:attack 47→无主地
+#   riku_x: 48 条，影子缺 0，nb 一致 48，neut 一致 48，cmds 一致 48；最后一条 cmds 差（影子-真）0
+#   leo_tx: 2 条，影子缺 0，nb 一致 2，neut 一致 2，cmds 一致 2；最后一条 cmds 差（影子-真）0
+# HL-DISPATCH 比对：真日志 109 条；影子在同一拍给出同对象同比例 109 条（其中种类也相同 109）；影子多出 1 条
+#   影子多出（前 8）：ryan_m@2700:offense_dispatch pct=225→78
+# HL-OPENING 比对：真日志 68 条；影子同拍同金额 68 条；影子共 73 条
+# 影子策略报错 0 条
+# 影子指令计数：alex_k:attack×36 kaito9:attack×31 kaito9:boatTo×6 kaito9:donate×36 leo_tx:attack×72 noah88:attack×46 noah88:boatTo×8 noah88:donate×3 riku_x:attack×39 riku_x:donate×1 ryan_m:attack×66 ryan_m:donate×47 sora_w:attack×64 talon5:attack×42 talon5:boatTo×20 talon5:donate×2 zero_7:attack×34 zero_7:boatTo×5 zero_7:donate×21 zexos1:attack×49
+# 影子指令的发令位置（策略源码行号）：
+#   attack→内置AI 〔send:484<send:1827<send:3865<act:796〕：158 条，约 257,587 兵，t=60~1405
+#   attack→真人 〔send:484<send:1827<send:3865<buyLand:5606〕：120 条，约 10,937,903 兵，t=1515~4805
+#   donate 〔tryDonateToTeammate:4507<act:4961〕：110 条，约 14,413,979 兵，t=1600~4755
+#   attack→无主地 〔send:484<send:1827<send:3865<dpNeutral:2406〕：73 条，约 83,524 兵，t=50~700
+#   attack→真人 〔send:484<send:1827<send:3865<act:796〕：68 条，约 211,775 兵，t=345~825
+#   attack→无主地 〔send:484<send:1827<send:3865<expandNeutral:952〕：43 条，约 940,814 兵，t=2165~4640
+#   boatTo 〔boatFood:2017<boatFood:5622<idleBoats:5057<act:4962〕：29 条，约 1,329,245 兵，t=1715~4405
+#   attack→真人 〔send:484<send:1827<send:3865<buyLand:5615〕：12 条，约 983,229 兵，t=1500~1950
+#   boatTo 〔boatFood:2017<boatFood:5622<act:1822<act:2692〕：5 条，约 57,229 兵，t=995~1475
+#   attack→真人 〔send:484<send:1827<send:3865<buyLand:5584〕：5 条，约 494,216 兵，t=3825~4165
+#   boatTo 〔boatOut:1011<boatOut:2327<act:806<act:1820〕：4 条，约 88,432 兵，t=1165~1470
+#   boatTo 〔boatOut:1011<boatOut:2327<idleBoats:5039<act:4962〕：1 条，约 142,572 兵，t=3180~3180
+# 出兵后的余额核对（影子）：188 次，清零 50 次（策略对象里的影子配额当拍不是 0 的 0 次）；明细 shadow_quota_checks.tsv，汇总用 99_quota_checks.py
+# isNoFullSend（影子）：noah88: 锁上@71 之后被挡 0 次、改 1 兵试探 0 次；leo_tx: 锁上@351 之后被挡 4 次、改 1 兵试探 0 次（t=470~645）；sora_w: 锁上@470 之后被挡 3 次、改 1 兵试探 4 次（t=895~4155）；kaito9: 锁上@540 之后被挡 2 次、改 1 兵试探 0 次（t=845~865）；ryan_m: 锁上@645 之后被挡 6 次、改 1 兵试探 0 次（t=645~3550）；zexos1: 锁上@680 之后被挡 3 次、改 1 兵试探 0 次（t=1655~3045）；talon5: 锁上@771 之后被挡 9 次、改 1 兵试探 0 次（t=4085~4130）；zero_7: 锁上@784 之后被挡 6 次、改 1 兵试探 0 次（t=785~4160）；alex_k: 锁上@855 之后被挡 3 次、改 1 兵试探 0 次（t=855~2930）；riku_x: 锁上@3382 之后被挡 0 次、改 1 兵试探 0 次

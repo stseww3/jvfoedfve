@@ -1,0 +1,811 @@
+{
+ "matchId": "B029",
+ "total": {
+  "logged": 349,
+  "executed": 349,
+  "arrived": 35786333,
+  "tax": 16240168,
+  "clamped": 62,
+  "clampedArrived": 5063997,
+  "clampedTax": 4600615,
+  "taxGeArrived": 45,
+  "netMoved": 15013575,
+  "churned": 20772758,
+  "pairCount": 26,
+  "twoWayPairs": 22,
+  "pingPong": 68,
+  "ppMin": 5772880,
+  "ppTax": 6995845,
+  "donorSealedN": 196,
+  "donorSealedArrived": 22396552,
+  "donorSealedTax": 9868585,
+  "recvSealedN": 55,
+  "recvSealedArrived": 6563112,
+  "bothSealedN": 34,
+  "bothSealedArrived": 4423315,
+  "bothSealedTax": 2142121
+ },
+ "periods": [
+  {
+   "t0": 0,
+   "t1": 2142,
+   "n": 4,
+   "arrived": 72667,
+   "tax": 25024
+  },
+  {
+   "t0": 2142,
+   "t1": 3213,
+   "n": 18,
+   "arrived": 1662042,
+   "tax": 779505
+  },
+  {
+   "t0": 3213,
+   "t1": 4284,
+   "n": 60,
+   "arrived": 6181697,
+   "tax": 2703416
+  },
+  {
+   "t0": 4284,
+   "t1": 6300,
+   "n": 111,
+   "arrived": 11869220,
+   "tax": 4902249
+  },
+  {
+   "t0": 6300,
+   "t1": 9000,
+   "n": 108,
+   "arrived": 11469966,
+   "tax": 5315630
+  },
+  {
+   "t0": 9000,
+   "t1": 11888,
+   "n": 48,
+   "arrived": 4530741,
+   "tax": 2514344
+  }
+ ],
+ "teams": {
+  "T2": {
+   "bots": 4,
+   "n": 92,
+   "arrived": 14122476,
+   "tax": 6233969,
+   "netMoved": 7225950,
+   "churned": 6896526
+  },
+  "T3": {
+   "bots": 7,
+   "n": 108,
+   "arrived": 8683789,
+   "tax": 4835427,
+   "netMoved": 3748855,
+   "churned": 4934934
+  },
+  "T4": {
+   "bots": 4,
+   "n": 89,
+   "arrived": 9372344,
+   "tax": 3652634,
+   "netMoved": 2800392,
+   "churned": 6571952
+  },
+  "T5": {
+   "bots": 3,
+   "n": 60,
+   "arrived": 3607724,
+   "tax": 1518138,
+   "netMoved": 1238378,
+   "churned": 2369346
+  }
+ },
+ "pairs": [
+  {
+   "a": "Goku",
+   "b": "SyntaxError",
+   "team": 2,
+   "ab": [
+    26,
+    5023752,
+    1969323
+   ],
+   "ba": [
+    6,
+    2292928,
+    655450
+   ],
+   "pingPong": 6,
+   "ppMin": 1063207,
+   "ppTax": 1113882
+  },
+  {
+   "a": "Two Sicilies",
+   "b": "SyntaxError",
+   "team": 2,
+   "ab": [
+    13,
+    691107,
+    251758
+   ],
+   "ba": [
+    17,
+    2639551,
+    1783798
+   ],
+   "pingPong": 4,
+   "ppMin": 266474,
+   "ppTax": 571094
+  },
+  {
+   "a": "Two Sicilies",
+   "b": "Goku",
+   "team": 2,
+   "ab": [
+    5,
+    309570,
+    118430
+   ],
+   "ba": [
+    18,
+    2539602,
+    1139107
+   ],
+   "pingPong": 2,
+   "ppMin": 197152,
+   "ppTax": 208736
+  },
+  {
+   "a": "Senna",
+   "b": "Lelouch",
+   "team": 4,
+   "ab": [
+    8,
+    1300008,
+    441158
+   ],
+   "ba": [
+    13,
+    1322175,
+    463838
+   ],
+   "pingPong": 5,
+   "ppMin": 431707,
+   "ppTax": 484457
+  },
+  {
+   "a": "Angkor",
+   "b": "Moldavia",
+   "team": 5,
+   "ab": [
+    8,
+    970918,
+    444844
+   ],
+   "ba": [
+    9,
+    1021474,
+    442887
+   ],
+   "pingPong": 5,
+   "ppMin": 567776,
+   "ppTax": 569330
+  },
+  {
+   "a": "Marlborough",
+   "b": "Scorpion",
+   "team": 3,
+   "ab": [
+    28,
+    1514672,
+    1639354
+   ],
+   "ba": [
+    8,
+    297428,
+    119368
+   ],
+   "pingPong": 6,
+   "ppMin": 201104,
+   "ppTax": 401917
+  },
+  {
+   "a": "Senna",
+   "b": "Anya",
+   "team": 4,
+   "ab": [
+    5,
+    674044,
+    319965
+   ],
+   "ba": [
+    14,
+    1106261,
+    434388
+   ],
+   "pingPong": 5,
+   "ppMin": 353614,
+   "ppTax": 450219
+  },
+  {
+   "a": "Cumania",
+   "b": "Conde",
+   "team": 3,
+   "ab": [
+    4,
+    835651,
+    287535
+   ],
+   "ba": [
+    5,
+    837931,
+    358701
+   ],
+   "pingPong": 4,
+   "ppMin": 656416,
+   "ppTax": 571769
+  },
+  {
+   "a": "Lelouch",
+   "b": "Khazar",
+   "team": 4,
+   "ab": [
+    11,
+    1319517,
+    464039
+   ],
+   "ba": [
+    2,
+    241148,
+    122909
+   ],
+   "pingPong": 2,
+   "ppMin": 221730,
+   "ppTax": 209506
+  },
+  {
+   "a": "Cumania",
+   "b": "Scorpion",
+   "team": 3,
+   "ab": [
+    6,
+    1117651,
+    463805
+   ],
+   "ba": [
+    5,
+    351228,
+    146184
+   ],
+   "pingPong": 4,
+   "ppMin": 280510,
+   "ppTax": 430750
+  },
+  {
+   "a": "Senna",
+   "b": "Khazar",
+   "team": 4,
+   "ab": [
+    6,
+    617289,
+    293959
+   ],
+   "ba": [
+    7,
+    813879,
+    338234
+   ],
+   "pingPong": 6,
+   "ppMin": 604223,
+   "ppTax": 573616
+  },
+  {
+   "a": "Lelouch",
+   "b": "Anya",
+   "team": 4,
+   "ab": [
+    9,
+    1029612,
+    328998
+   ],
+   "ba": [
+    1,
+    25416,
+    25416
+   ],
+   "pingPong": 1,
+   "ppMin": 25416,
+   "ppTax": 65930
+  },
+  {
+   "a": "Scorpion",
+   "b": "Conde",
+   "team": 3,
+   "ab": [
+    7,
+    582551,
+    249551
+   ],
+   "ba": [
+    3,
+    463551,
+    216570
+   ],
+   "pingPong": 3,
+   "ppMin": 314894,
+   "ppTax": 347434
+  },
+  {
+   "a": "Khazar",
+   "b": "Anya",
+   "team": 4,
+   "ab": [
+    5,
+    494924,
+    218444
+   ],
+   "ba": [
+    8,
+    428071,
+    201286
+   ],
+   "pingPong": 3,
+   "ppMin": 134188,
+   "ppTax": 192916
+  },
+  {
+   "a": "Interpol",
+   "b": "Moldavia",
+   "team": 5,
+   "ab": [
+    18,
+    746664,
+    256912
+   ],
+   "ba": [
+    1,
+    120421,
+    76306
+   ],
+   "pingPong": 1,
+   "ppMin": 46377,
+   "ppTax": 92263
+  },
+  {
+   "a": "Angkor",
+   "b": "Interpol",
+   "team": 5,
+   "ab": [
+    5,
+    93334,
+    71848
+   ],
+   "ba": [
+    19,
+    654913,
+    225341
+   ],
+   "pingPong": 1,
+   "ppMin": 3645,
+   "ppTax": 7948
+  },
+  {
+   "a": "Marlborough",
+   "b": "Cumania",
+   "team": 3,
+   "ab": [
+    6,
+    646959,
+    258680
+   ],
+   "ba": [
+    1,
+    31265,
+    31761
+   ],
+   "pingPong": 1,
+   "ppMin": 31265,
+   "ppTax": 76890
+  },
+  {
+   "a": "Tomato",
+   "b": "Scorpion",
+   "team": 3,
+   "ab": [
+    6,
+    229670,
+    102130
+   ],
+   "ba": [
+    5,
+    328999,
+    165406
+   ],
+   "pingPong": 4,
+   "ppMin": 139530,
+   "ppTax": 204130
+  },
+  {
+   "a": "Goku",
+   "b": "DioBrando",
+   "team": 2,
+   "ab": [
+    2,
+    306168,
+    105348
+   ],
+   "ba": [
+    1,
+    131387,
+    54602
+   ],
+   "pingPong": 1,
+   "ppMin": 131387,
+   "ppTax": 107811
+  },
+  {
+   "a": "Tomato",
+   "b": "Cumania",
+   "team": 3,
+   "ab": [
+    5,
+    169911,
+    81199
+   ],
+   "ba": [
+    2,
+    256164,
+    106860
+   ],
+   "pingPong": 1,
+   "ppMin": 33289,
+   "ppTax": 86229
+  },
+  {
+   "a": "Marlborough",
+   "b": "Conde",
+   "team": 3,
+   "ab": [
+    4,
+    411921,
+    170795
+   ],
+   "ba": [
+    0,
+    0,
+    0
+   ],
+   "pingPong": 0,
+   "ppMin": 0,
+   "ppTax": 0
+  },
+  {
+   "a": "Tomato",
+   "b": "Conde",
+   "team": 3,
+   "ab": [
+    4,
+    88763,
+    66758
+   ],
+   "ba": [
+    4,
+    225002,
+    240989
+   ],
+   "pingPong": 2,
+   "ppMin": 45705,
+   "ppTax": 169653
+  },
+  {
+   "a": "Marlborough",
+   "b": "Tomato",
+   "team": 3,
+   "ab": [
+    2,
+    251808,
+    86643
+   ],
+   "ba": [
+    0,
+    0,
+    0
+   ],
+   "pingPong": 0,
+   "ppMin": 0,
+   "ppTax": 0
+  },
+  {
+   "a": "Two Sicilies",
+   "b": "DioBrando",
+   "team": 2,
+   "ab": [
+    1,
+    23271,
+    9671
+   ],
+   "ba": [
+    3,
+    165140,
+    146482
+   ],
+   "pingPong": 1,
+   "ppMin": 23271,
+   "ppTax": 59365
+  },
+  {
+   "a": "Marlborough",
+   "b": "Iceland",
+   "team": 3,
+   "ab": [
+    1,
+    42330,
+    43002
+   ],
+   "ba": [
+    0,
+    0,
+    0
+   ],
+   "pingPong": 0,
+   "ppMin": 0,
+   "ppTax": 0
+  },
+  {
+   "a": "Tomato",
+   "b": "Erwin",
+   "team": 3,
+   "ab": [
+    0,
+    0,
+    0
+   ],
+   "ba": [
+    2,
+    334,
+    136
+   ],
+   "pingPong": 0,
+   "ppMin": 0,
+   "ppTax": 0
+  }
+ ],
+ "recvDensity": [
+  {
+   "band": "<50",
+   "n": 25,
+   "arrived": 1943235,
+   "tax": 792062,
+   "recvDiedIn600": 2,
+   "diedArrived": 243764
+  },
+  {
+   "band": "50~80",
+   "n": 71,
+   "arrived": 9444468,
+   "tax": 3447144,
+   "recvDiedIn600": 2,
+   "diedArrived": 42107
+  },
+  {
+   "band": "80~100",
+   "n": 127,
+   "arrived": 13159154,
+   "tax": 5460284,
+   "recvDiedIn600": 11,
+   "diedArrived": 734218
+  },
+  {
+   "band": "100~132",
+   "n": 108,
+   "arrived": 10554234,
+   "tax": 5310348,
+   "recvDiedIn600": 3,
+   "diedArrived": 411025
+  },
+  {
+   "band": "≥132",
+   "n": 18,
+   "arrived": 685242,
+   "tax": 1230330,
+   "recvDiedIn600": 1,
+   "diedArrived": 15514
+  }
+ ],
+ "donorDensity": [
+  {
+   "band": "<60",
+   "n": 18,
+   "arrived": 475029,
+   "tax": 165016,
+   "sealedN": 6,
+   "sealedArrived": 351582,
+   "sealedTax": 120974
+  },
+  {
+   "band": "60~80",
+   "n": 92,
+   "arrived": 8222657,
+   "tax": 3323365,
+   "sealedN": 87,
+   "sealedArrived": 7962540,
+   "sealedTax": 3191292
+  },
+  {
+   "band": "80~100",
+   "n": 75,
+   "arrived": 8073029,
+   "tax": 4004209,
+   "sealedN": 52,
+   "sealedArrived": 6029877,
+   "sealedTax": 2844752
+  },
+  {
+   "band": "100~132",
+   "n": 124,
+   "arrived": 12911393,
+   "tax": 6359754,
+   "sealedN": 37,
+   "sealedArrived": 4721508,
+   "sealedTax": 2516391
+  },
+  {
+   "band": "≥132",
+   "n": 40,
+   "arrived": 6104225,
+   "tax": 2387824,
+   "sealedN": 14,
+   "sealedArrived": 3331045,
+   "sealedTax": 1195176
+  }
+ ],
+ "perBot": {
+  "SyntaxError": {
+   "team": 2,
+   "outN": 23,
+   "outArrived": 4932479,
+   "tax": 2439248,
+   "inN": 39,
+   "inArrived": 5714859
+  },
+  "Goku": {
+   "team": 2,
+   "outN": 46,
+   "outArrived": 7869522,
+   "tax": 3213778,
+   "inN": 12,
+   "inArrived": 2733885
+  },
+  "Two Sicilies": {
+   "team": 2,
+   "outN": 19,
+   "outArrived": 1023948,
+   "tax": 379859,
+   "inN": 38,
+   "inArrived": 5344293
+  },
+  "Senna": {
+   "team": 4,
+   "outN": 19,
+   "outArrived": 2591341,
+   "tax": 1055082,
+   "inN": 34,
+   "inArrived": 3242315
+  },
+  "Lelouch": {
+   "team": 4,
+   "outN": 33,
+   "outArrived": 3671304,
+   "tax": 1256875,
+   "inN": 11,
+   "inArrived": 1566572
+  },
+  "Scorpion": {
+   "team": 3,
+   "outN": 25,
+   "outArrived": 1560206,
+   "tax": 680509,
+   "inN": 43,
+   "inArrived": 3325544
+  },
+  "Cumania": {
+   "team": 3,
+   "outN": 13,
+   "outArrived": 2240731,
+   "tax": 889961,
+   "inN": 21,
+   "inArrived": 2006029
+  },
+  "Khazar": {
+   "team": 4,
+   "outN": 14,
+   "outArrived": 1549951,
+   "tax": 679587,
+   "inN": 25,
+   "inArrived": 2364877
+  },
+  "Anya": {
+   "team": 4,
+   "outN": 23,
+   "outArrived": 1559748,
+   "tax": 661090,
+   "inN": 19,
+   "inArrived": 2198580
+  },
+  "Conde": {
+   "team": 3,
+   "outN": 12,
+   "outArrived": 1526484,
+   "tax": 816260,
+   "inN": 19,
+   "inArrived": 1918886
+  },
+  "Marlborough": {
+   "team": 3,
+   "outN": 41,
+   "outArrived": 2867690,
+   "tax": 2198474,
+   "inN": 9,
+   "inArrived": 328693
+  },
+  "Moldavia": {
+   "team": 5,
+   "outN": 10,
+   "outArrived": 1141895,
+   "tax": 519193,
+   "inN": 26,
+   "inArrived": 1717582
+  },
+  "Angkor": {
+   "team": 5,
+   "outN": 13,
+   "outArrived": 1064252,
+   "tax": 516692,
+   "inN": 28,
+   "inArrived": 1676387
+  },
+  "Interpol": {
+   "team": 5,
+   "outN": 37,
+   "outArrived": 1401577,
+   "tax": 482253,
+   "inN": 6,
+   "inArrived": 213755
+  },
+  "Tomato": {
+   "team": 3,
+   "outN": 15,
+   "outArrived": 488344,
+   "tax": 250087,
+   "inN": 15,
+   "inArrived": 1062307
+  },
+  "DioBrando": {
+   "team": 2,
+   "outN": 4,
+   "outArrived": 296527,
+   "tax": 201084,
+   "inN": 3,
+   "inArrived": 329439
+  },
+  "Iceland": {
+   "team": 3,
+   "outN": 0,
+   "outArrived": 0,
+   "tax": 0,
+   "inN": 1,
+   "inArrived": 42330
+  },
+  "Erwin": {
+   "team": 3,
+   "outN": 2,
+   "outArrived": 334,
+   "tax": 136,
+   "inN": 0,
+   "inArrived": 0
+  }
+ }
+}
