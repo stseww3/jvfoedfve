@@ -1,9 +1,607 @@
 [
  {
+  "matchId": "A009",
+  "file": "A009",
+  "reviewer": "R01",
+  "sha": "2d0fc642",
+  "result": "lost",
+  "archetype": "never-grew",
+  "context": {
+   "cohort": "squad10（协调器名单 10 个号，本局进图 8 个，同在 T1；noah88、leo_tx 不在这一局）",
+   "map": "10_0（931x959，陆地 546152，种子 3633）",
+   "teams": 3,
+   "seededHumans": 48,
+   "aiBots": 464,
+   "ourTeam": "T1（16 个席位：本队 8 个 + 路人 8 个：Player 980、Bass Persuades、mort、Alone、Dark Continent、777、Ottoman、Adamcewicz）",
+   "teamSplit": false,
+   "peer": "无（单实例局）",
+   "squadBots": {
+    "kaito9": 0,
+    "zero_7": 1,
+    "ryan_m": 4,
+    "sora_w": 5,
+    "alex_k": 6,
+    "zexos1": 7,
+    "riku_x": 12,
+    "talon5": 13
+   },
+   "versionNote": "策略 Va（`v27-team-c116-va.js` + `spawn-coordinator-c116-va.mjs`）。整局重演对日志 406 个快照全部相等；影子策略 406/406 个快照全同（含 cmds、boats 计数），OPENING/DISPATCH 行 8 个号逐字相同。Va 与 Vb 两个文件只差参数表（L3702–3763）和 L4291、L4296、L4382–4383、L4478、L4502–4505 这几行（Vb 在 4297 行后多一行，之后 Va 的行号比 Vb 小 1）：Va 脉冲 20%、oppFloorCap 78。",
+   "dataCaveats": [
+    "card.json 的 endTick=6721（kaito9 的 RESULT 行；重演里它 6716 拍阵亡），录像到 7287 拍，对局没有打完：T3 86.71%、T1 10.26%、T2 2.95%。card 的 winnerTeam=3。",
+    "card 的 peakSquadLandShare=11.14%；重演按 90 拍采样的峰值是 2520 拍 10.99%，按 30 拍采样是 2550 拍 60930 格。alex_k 1890 拍离场后它的壳不算本队在场领土（时间线另列“+壳”）；`resim_report percap` 的本队人均与密度含离场壳。",
+    "“受理”= 影子策略里本地 g.attack / g.donate 返回成功的指令（与日志的 cmds 计数一致）；“落地”= 录像里出现并执行的指令（进攻和捐兵全场 661 条）；“能定位”= 落地的令能唯一对上影子里的某个决策拍（634 条）。延迟 = 落地拍 − 决策拍。",
+    "“实扣”指进攻令落地时从余额划走的兵；打无主地或目标死掉后线上剩的兵会回到余额，所以“每格实扣”是上限。单价 c、愿付价 worth、need 是策略 buyLand 自己算的报价：need = 把对方打到阵亡线要花的兵，c = need ÷ 到手的格数，worth = maxW×winRatio×自己的密度（Va L5349–5351）。"
+   ]
+  },
+  "outcome": {
+   "result": "lost",
+   "endTick": 6721,
+   "label": "lost",
+   "winnerTeam": "T3（card 口径；对局没有打完）",
+   "note": "录像结束的 7287 拍 T3 86.71%、T1 10.26%、T2 2.95%。本队 7 个号阵亡（3553–6716 拍），alex_k 1890 拍被 leave 指令移出对局，留下的壳 4397 拍被吃掉。"
+  },
+  "turningPoints": [
+   {
+    "t0": 360,
+    "t1": 1170,
+    "shareBefore": 0.94,
+    "shareAfter": 7.11,
+    "what": "指令开始掉队的 810 拍。360 拍人均 645 格，和别人持平（路人队友 594、T2 780、T3 591）；1170 拍 4855 格，别人是 8185、8846、9591。这是全场分地最快的一段（AI 地 900 拍 58.47%、1170 拍 34.43%），本队的兵却越攒越多：密度 3.2→12.8，T2、T3 是 3.5、3.9。延迟在下令还很稀的时候就出现了：300–399 拍 8 个号一共下 18 条令，延迟中位已经 60 拍、最大 228。",
+    "evidence": [
+     "resim_report timeline、percap：360/630/900/1170 拍本队人均 645/1980/3607/4855，T3 591/3012/5435/9591；密度本队 3.2/3.3/5.8/12.8，T3 3.9/1.8/3.6/3.9",
+     "shadow_report lagcurve --win 100（发/落/延迟 最小·中位·最大）：0–299 拍 30/30、10–33；300–399 拍 18/18、15·60·228；500–599 拍 44/29、90·281·347；900–999 拍 111/45、154·326·573；1100–1199 拍 144/15、238·604·713",
+     "land_ticks --t0 600 --t1 2400：各号落地拍 6–15 个，相邻间隔中位 88–217 拍；8 个号都有一拍落地 ≥8 条的组（3–7 组）；落地/受理 17.0%–52.4%",
+     "resim_report top --ticks 630：8 个号在 45 个存活人类里排第 13–44 名；zero_7、ryan_m、alex_k、zexos1、talon5 各有 6766–9819 兵没花出去（榜首 [OPG] 4416 格、4680 兵）",
+     "region_share --radius 100（圈内 89221 格）：630 拍本队 15844、AI 33213、无主地 38458；1170 拍本队 38840、AI 41876、敌队 6319",
+     "q.py resim_squad：1170 拍 8 个号都还贴着 AI 地（接壤 41–459 格）"
+    ],
+    "priorDecisions": [
+     {
+      "t": 0,
+      "bot": "全体",
+      "what": "三层扇形密集阵：最近队友 61–74 像素，两个号同像素",
+      "codePath": "spawn-coordinator-c116-va.mjs solve() L790 → L1073–1077 → matchBotsToTargets L1430"
+     },
+     {
+      "t": 300,
+      "bot": "全体",
+      "what": "DP 开局之后每 5 拍下一条令；本地受理就计数，不核对有没有落地",
+      "codePath": "v27-team-c116-va.js General.act L792–796 → Strategy.send L479–487"
+     }
+    ],
+    "statementType": "observed"
+   },
+   {
+    "t0": 1170,
+    "t1": 1890,
+    "shareBefore": 7.11,
+    "shareAfter": 8.8,
+    "what": "AI 地分完的 720 拍：AI 地 34.43%→7.45%，本队 38840→48088 格，T2 21.06%→30.07%、T3 24.59%→38.68%。这段延迟最长：1300–1399 拍决策的令 586–799 拍后才落地，1596–1799 拍连续 203 拍没有一条本队指令落地。1890 拍全队 2557599 兵（密度 53.2，T2 15.8、T3 15.0），人均 6011 格，T2、T3 是 13687、16250。",
+    "evidence": [
+     "resim_report timeline、percap：1170/1530/1890 拍本队 38840/45020/48088 格，人均 4855/5628/6011，T3 9591/14405/16250；1530 拍 8 个号在 42 个存活人类里排第 23–41 名（top）",
+     "shadow_report lagcurve：1200–1499 拍发 404 落 56（延迟中位 637），1500–1799 拍发 333 落 39；q.py shadow_match：1500–1799 拍落地的进攻令 34 条、生效 8 条、实扣 149230",
+     "cmd_gaps --min 60：1596–1799 拍 203 拍断档里 7 个号受理 216 条，同窗口其他玩家落地 53 条；1253–1337 拍 84 拍断档、受理 118 条",
+     "q.py shadow_match（600–2400 拍落地、能定位的 435 条）：目标已死改打无主地 267 条（生效 85 条、182 条一兵未扣，延迟 121·365·799）；目标没变的 139 条生效 121 条；zexos1 落地 57 条生效 4 条、实扣 6542",
+     "region_share：圈内 AI 地 1170 拍 41876 格→1530 拍 20331 格；本队 38840→44965，敌队 6319→16023，路人队友 1711→7738",
+     "log_sync：alex_k 的 RESULT 行写下时（服务器约 1890 拍），kaito9、riku_x、sora_w、zero_7 的日志在本地 1530–1620 拍，talon5 1440–1530，ryan_m 1350–1440",
+     "recon_facts leave：alex_k 最后一条落地指令在 1372 拍，1890 拍 leave；q.py resim_squad：它 1170–1890 拍一直是 8955 格，AI 邻居接壤 230–459 格"
+    ],
+    "priorDecisions": [
+     {
+      "t": 600,
+      "bot": "全体",
+      "what": "掉队期间照常每 5 拍下令",
+      "codePath": "v27-team-c116-va.js General.act L792–796；Policy.act L4940–4941 → Policy.send L3838–3865 → Strategy.send L479–487"
+     },
+     {
+      "t": 1500,
+      "bot": "talon5 ryan_m kaito9 zero_7",
+      "what": "1500 拍后对 AI 走 buyLand 非真人分支，每个决策拍一条",
+      "codePath": "v27-team-c116-va.js Policy.buyLand L5448–5453"
+     },
+     {
+      "t": 1695,
+      "bot": "zexos1 riku_x",
+      "what": "对 clankerfights.ai 走预算分支，每条 28–47% 余额，每个决策拍重发",
+      "codePath": "v27-team-c116-va.js Policy.buyLand L5419–5426 → L5610–5615"
+     },
+     {
+      "t": 1890,
+      "bot": "alex_k",
+      "what": "leave 指令（策略三处自退都要求 t>8500，不出自策略文件）",
+      "codePath": "v27-team-c116-va.js General.act L769–784；V13.act L2702–2717；Policy.act L4911–4926"
+     }
+    ],
+    "statementType": "observed"
+   },
+   {
+    "t0": 1890,
+    "t1": 2520,
+    "shareBefore": 8.8,
+    "shareAfter": 10.99,
+    "what": "延迟回落、占比到峰值的 630 拍。1890 拍本队 2557599 兵，紧邻的 clankerfights.ai、Player 187、Yaz 各 367820、274988、309732 兵；到 2520 拍本队 2327385 兵，这三家是 762336、704381、630895。拿到的地主要来自过期批次；内圈三个号 1290742 兵没有出口；alex_k 的 367307 兵随它离场。",
+    "evidence": [
+     "resim_report timeline：1890/2250/2520 拍本队 48088/51364/60013 格、兵 2557599/2217334/2327385；target_price：三个邻居 1890、2520 拍的余额",
+     "shadow_report bursts：riku_x 2093 拍 9 条（决策拍 1520–1560，延迟 533–573）实扣 424834 = 落地前余额 428166 的 99.2%；zero_7 2226 拍 9 条打 AI#344 249463、2317 拍 9 条打 clankerfights.ai 182190；zexos1 2324 拍 9 条（决策拍 1830–1870）一兵未扣",
+     "exchange_price：1890–2250 拍夺 7456 格、丢 0；2250–2520 拍夺 6765、丢 1191",
+     "q.py resim_squad：2250 拍 zexos1、ryan_m、talon5 合计 10588 格、1290742 兵；zexos1、ryan_m 已经没有敌方和 AI 邻居，talon5 只剩 78 格 AI 边界",
+     "recon_facts dispatch；q.py dispatch_audit：第一条调度在 2165 拍（zexos1）；到 3212 拍 74 条落地 20 条，没落地的 54 条里 32 条超配额、22 条按决策拍状态本该通过",
+     "q.py resim_squad、resim_pairs：alex_k 的壳 1890 拍 8955 格→2520 拍 19867 格，其中 7492 格来自 AI#380（1890–2250 拍）"
+    ],
+    "priorDecisions": [
+     {
+      "t": 0,
+      "bot": "zexos1 ryan_m talon5",
+      "what": "内圈落点（INNER_ARC_BANK 等），1170 拍起被队友围住",
+      "codePath": "spawn-coordinator-c116-va.mjs solve() L1073–1077"
+     },
+     {
+      "t": 1520,
+      "bot": "riku_x",
+      "what": "预算分支每个决策拍一条 28–45% 的令，9 条同拍落地",
+      "codePath": "v27-team-c116-va.js Policy.buyLand L5610–5615"
+     },
+     {
+      "t": 2165,
+      "bot": "zexos1 ryan_m talon5",
+      "what": "调度每 25 拍一个槽、pct=225，算捐多少时不看受赠方配额",
+      "codePath": "v27-team-c116-va.js tryDonateToTeammate L4330、L4474–4507"
+     },
+     {
+      "t": 1890,
+      "bot": "alex_k",
+      "what": "leave 指令，367307 兵随壳离开",
+      "codePath": "v27-team-c116-va.js Policy.act L4911–4926（自退要求 t>8500）"
+     }
+    ],
+    "statementType": "observed"
+   },
+   {
+    "t0": 2520,
+    "t1": 3600,
+    "shareBefore": 10.99,
+    "shareAfter": 8.73,
+    "what": "邻居的兵追上来，本队开始掉地：60013→47687 格。sora_w 2700 拍被 Player 187 反打，先是 8 条令被 isNoFullSend 按下，接着 295 拍 safeAt 高于余额不出手，11737 格（2550 拍）掉到 5848 格（3060 拍），3553 拍阵亡；zexos1 3325 拍领土清零。同期 zero_7 的兵从 53915 涨到 1871277，241 个决策拍里 230 个停在价格线。",
+    "evidence": [
+     "resim_report timeline：2520/3060/3600 拍 60013/54093/47687 格；exchange_price：2520–3060 拍夺 6090、丢 10894；3060–3600 拍夺 8395、丢 16338",
+     "probe_view psw --gate 11（sora_w 对 Player 187，2765–3060 拍）：60 个决策拍 59 个过了价格线但 avail ≤ 0；c 8.6–34.9、worth 26.2–35.0；余额 185969–399987，safeAt 389038–538980",
+     "probe_view pz7 --gate 20（zero_7 对 clankerfights.ai，2400–3600 拍）：241 个决策拍 230 个卡在价格线，c/worth 中位 1.91，余额 53915–1871277",
+     "target_price：clankerfights.ai 2520/3060/3600 拍 762336/1547030/2120768 兵；NASSER 702026/942090/1545205",
+     "q.py shadow_flags；shadow_diff nf0：sora_w 2715–2760 拍 8 条对真人的令被按下，不置 isNoFullSend 的对照组这段多发 10 条",
+     "death_ledger：sora_w 3553 拍阵亡，Player 187 夺 5543 格、NASSER 4021、Santos 1076；阵亡前 25 拍内又到账 3 笔调度 80264"
+    ],
+    "priorDecisions": [
+     {
+      "t": 972,
+      "bot": "sora_w",
+      "what": "下令后 1–5 拍余额没按数减少就置 isNoFullSend，之后对真人的令要等 shadowQuota",
+      "codePath": "v27-team-c116-va.js Policy.send L3876 → L3821–3833 → L3844–3863"
+     },
+     {
+      "t": 2765,
+      "bot": "sora_w",
+      "what": "safeAt 取相邻兵最多的真人算出的 dpKeep（封顶 78×领土），高于余额就跳过目标",
+      "codePath": "v27-team-c116-va.js V13.dpKeep L2459–2464 → V13.safeAt L2728–2738 → Policy.safeAt L4542–4545 → Policy.buyLand L5443–5446"
+     },
+     {
+      "t": 2400,
+      "bot": "zero_7",
+      "what": "单价不低于 worth 且余额没过 100 倍领土就不打",
+      "codePath": "v27-team-c116-va.js Policy.offers L5071 → Policy.buyLand L5349–5358"
+     },
+     {
+      "t": 2429,
+      "bot": "zexos1",
+      "what": "过期的调度和船令同拍落地，余额 336900→32506",
+      "codePath": "v27-team-c116-va.js tryDonateToTeammate L4507；Policy.idleBoats L5039 → General.boatOut L999–1014"
+     }
+    ],
+    "statementType": "observed"
+   },
+   {
+    "t0": 4320,
+    "t1": 4500,
+    "shareBefore": 9.37,
+    "shareAfter": 7.36,
+    "what": "163 拍里掉了三个：ryan_m 4350 拍、alex_k 的壳 4397 拍、riku_x 4513 拍。riku_x 是当时全队第二大的号（15037 格、882139 兵），clankerfights.ai 和 TURCHland 各有 276 万兵；4350 拍起两家轮番打（TURCHland 来兵 556292、4417 拍再从海上登陆 447567，clankerfights.ai 329041、375506），riku_x 45 个决策拍一条令没发，4500 拍剩 4473 格。",
+    "evidence": [
+     "resim_report timeline：4320/4500 拍 51158/40171 格，在场 6→5 个号，壳 5594→0 格",
+     "q.py resim_squad（riku_x 的 atkIn）：4350 拍 TURCHland 556292，4440 拍 TURCHland 297105 + clankerfights.ai 329041，4470 拍 clankerfights.ai 375506，4500 拍 TURCHland 423453；landing_math：4417 拍 TURCHland 登陆 447567",
+     "probe_view prx --gate 47 / 24 / 20（4290–4515 拍）：45 个决策拍对 TURCHland、NASSER 全部卡在价格线（TURCHland c/worth 中位 2.94），对 clankerfights.ai 36 个卡在价格线、9 个 safeAt 高于余额",
+     "q.py resim_players：4320 拍 TURCHland 22169 格、2756562 兵，clankerfights.ai 34087 格、2758079 兵",
+     "death_ledger：riku_x 4513 拍剩 3547 格、114151 兵时清除（clankerfights.ai 夺 7555、TURCHland 6228、NASSER 1386）；ryan_m 4350 拍（NASSER 2846）；alex_k 的壳 4397 拍（Yaz 20961）"
+    ],
+    "priorDecisions": [
+     {
+      "t": 4245,
+      "bot": "zero_7",
+      "what": "全场唯一一笔调度：协防 riku_x，到账 403642、手续费 143517",
+      "codePath": "v27-team-c116-va.js tryDonateToTeammate L4462–4472 → L4507"
+     },
+     {
+      "t": 4260,
+      "bot": "riku_x",
+      "what": "余额过 100 倍领土后不看价格，连发 3 条 20% 脉冲对掉 724091 兵的登陆",
+      "codePath": "v27-team-c116-va.js Policy.buyLand L5352、L5358 → L5594–5606"
+     },
+     {
+      "t": 4290,
+      "bot": "riku_x",
+      "what": "来兵超过自己余额 20% 的进攻者不算 peerAggressor，价格没有防守折扣，卡在价格线",
+      "codePath": "v27-team-c116-va.js Policy.peerAggressor L4605–4652（L4632–4633）→ Policy.buyLand L5358"
+     },
+     {
+      "t": 2471,
+      "bot": "ryan_m",
+      "what": "后排把兵捐出去，3960 拍面对 NASSER 时只有 63439 兵",
+      "codePath": "v27-team-c116-va.js tryDonateToTeammate L4354、L4381–4387、L4462–4507"
+     }
+    ],
+    "statementType": "observed"
+   }
+  ],
+  "deaths": [
+   {
+    "bot": "alex_k",
+    "event": "left",
+    "t": 1890,
+    "cause": "录像 1890 拍一条 leave 指令；策略的三处自退都要求 t>8500。1170 拍起停在 8955 格，940–985 拍决策的 9 条令 1372 拍才落地、全部被拒，之后 518 拍没有指令落地；日志最后一行是本地 t=1350，results.csv 的离场行记 tick=1064。走时 8955 格、367307 兵。壳归服务器 AI 接管，3330 拍涨到 22267 格（从 AI#380 拿 7492、AI#344 2002、Yaz 4115），2430–4410 拍被 Yaz 吃掉 20961 格，4397 拍清除。",
+    "killer": "—",
+    "statementType": "observed"
+   },
+   {
+    "bot": "sora_w",
+    "event": "died",
+    "t": 3553,
+    "cause": "2485–2499 拍 6 条脉冲打 Player 187（184938 兵），涨到 11737 格（2550 拍）。2700 拍 Player 187 反打（来兵 195788、235657），2709 拍两笔协防调度到账 287184；2715–2760 拍 8 条令被 isNoFullSend 按下，2765–3060 拍 safeAt 高于余额、60 个决策拍里 59 个不出手，Player 187（来兵 193371–277106）和 NASSER（42939–114156）轮番打，3060 拍剩 5848 格。3420 拍起 NASSER、Santos、Player 187 再打，3528–3535 拍又到账 3 笔调度 80264，3553 拍剩 2143 格、143064 兵时清除。夺地：Player 187 5543、NASSER 4021、Santos 1076。",
+    "killer": "Player 187/T2、[OG] NASSER/T3、Santos/T2",
+    "statementType": "observed"
+   },
+   {
+    "bot": "zexos1",
+    "event": "died",
+    "t": 5065,
+    "cause": "和 zero_7 同像素出生，750 拍起停在 2246 格；600–2400 拍落地的 57 条进攻令只生效 4 条，2220 拍满仓（336900 兵）。2429–2457 拍过期的 7 笔调度和 8 条船令落地后只剩 7070 兵。3210 拍 clankerfights.ai 用 104392 兵打进来，3325 拍领土清零（clankerfights.ai 拿走 1738 格）；海上还有船所以没有清号，5065 拍最后一条船靠岸时清除。",
+    "killer": "clankerfights.ai/T3",
+    "statementType": "observed"
+   },
+   {
+    "bot": "ryan_m",
+    "event": "died",
+    "t": 4350,
+    "cause": "被队友围在 2886 格，2471–3535 拍捐出 10 笔、到账 449032（另付手续费 115962），余额 423650（2250 拍）→38535（3600 拍）。sora_w 阵亡后 3660 拍开始有敌邻，3870 拍贴上 NASSER；3960 拍 63439 兵对 NASSER 的 1544831 兵（来兵 61913），4320 拍来兵 138020，4350 拍剩 789 格、11808 兵时清除；NASSER 共夺 2846 格。",
+    "killer": "[OG] NASSER/T3",
+    "statementType": "observed"
+   },
+   {
+    "bot": "riku_x",
+    "event": "died",
+    "t": 4513,
+    "cause": "2093、2205 拍两个过期批次后到 13103 格、只剩 500 兵，2429 拍收到 zexos1 的 151416 兵。4240 拍 clankerfights.ai 从海上登陆 752735 兵，4256 拍 zero_7、talon5 的协防到账 461254，4277–4284 拍 3 条脉冲（886263 兵）对掉。4350 拍起 TURCHland（来兵 556292，4417 拍再登陆 447567）和 clankerfights.ai（329041、375506）夹击，45 个决策拍没有发令：4410→4500 拍 13046→4473 格、余额 835494→163903，4513 拍剩 3547 格、114151 兵时清除。夺地：clankerfights.ai 7555、TURCHland 6228、NASSER 1386。",
+    "killer": "clankerfights.ai/T3、TURCHland/T3",
+    "statementType": "observed"
+   },
+   {
+    "bot": "talon5",
+    "event": "died",
+    "t": 5098,
+    "cause": "2340 拍起被队友围在 5456 格，2709–4368 拍捐出 11 笔（本队 10 笔到账 770592、手续费 193556；另一笔付出 198394 给了路人 777）。4410 拍开始贴上 Yaz 和 NASSER；4980 拍 NASSER 来兵 310312（talon5 291120 兵、5494 格），5010 拍 NASSER 203348 + Yaz 158762，5098 拍剩 1330 格、32485 兵时清除。夺地：NASSER 2367、Yaz 1949。",
+    "killer": "[OG] NASSER/T3、[TR]Yazİsmine/T2",
+    "statementType": "observed"
+   },
+   {
+    "bot": "zero_7",
+    "event": "died",
+    "t": 6440,
+    "cause": "全队最大的号（5190 拍 27407 格、2280363 兵）。2400–6440 拍对 clankerfights.ai 812 个有报价的决策拍里 758 个卡在价格线。5250–5370 拍 clankerfights.ai 四次来兵 184175–991480（5228–5304 拍三次从海上登陆），32 个决策拍没还手，掉到 21233 格；5760 拍来兵 1322391，6090–6420 拍又四波（238486–810178），6440 拍剩 5283 格、288237 兵时清除。夺地：clankerfights.ai 31440。",
+    "killer": "clankerfights.ai/T3",
+    "statementType": "observed"
+   },
+   {
+    "bot": "kaito9",
+    "event": "died",
+    "t": 6716,
+    "cause": "3840–4580 拍停在 7840 格（safeAt 611520 高于余额），之后靠脉冲涨到 18578 格（6540 拍，1092721 兵）。6630 拍 clankerfights.ai 来兵 509491、6690 拍 426020，6540 拍之后 NASSER 夺 9000 格、clankerfights.ai 5102 格；6716 拍剩 4476 格、138468 兵时清除。更早 2700–3900 拍被 Player 187 夺过 5460 格。",
+    "killer": "[OG] NASSER/T3、clankerfights.ai/T3",
+    "statementType": "observed"
+   }
+  ],
+  "decisions": [
+   {
+    "id": "D1",
+    "t": 0,
+    "bot": "全体",
+    "what": "协调器求解 34 次（minSep 86→61 像素），每个号收到 15–31 版落点（13–20 个不同位置，相邻两版位移中位 70–135 像素）；zero_7 与 zexos1 同落 (722,150)；zero_7、alex_k、talon5 最后落地的不是最后一版，各号手里的最后一版有重复位置 (759,222)。zexos1 750 拍起停在 2246 格，1170 拍和 zero_7 的边界 177 格",
+    "codePath": "spawn-coordinator-c116-va.mjs POST /solve L1526–1541 → solve() L790 → matchBotsToTargets L1430",
+    "branch": "每次有号上报就整体重排并下发新落点",
+    "verdict": "error",
+    "patternId": "NEW-R01-SP03",
+    "evidence": "resim_report spawn,spawnseq --radius 100；resim_report bots；q.py resim_squad（zexos1 的 allyNb）",
+    "statementType": "observed"
+   },
+   {
+    "id": "D2",
+    "t": 0,
+    "bot": "全体",
+    "what": "协调器名单 10 个号，noah88、leo_tx 不在这一局：最后一次求解给它们留的落点 (644,134)、(678,78) 离 riku_x、zero_7、zexos1 的出生点 66–84 像素，没有人去",
+    "codePath": "spawn-coordinator-c116-va.mjs solve() L790–799（squadBots 名单）",
+    "branch": "按名单人数 K=10 排阵",
+    "verdict": "unclear",
+    "patternId": "NEW-R01-SP02",
+    "evidence": "resim_report spawnseq（名单 10 人、计划位）",
+    "statementType": "observed"
+   },
+   {
+    "id": "D3",
+    "t": 0,
+    "bot": "zexos1 ryan_m talon5",
+    "what": "三层扇形阵把 zexos1、ryan_m、talon5 排在内圈：1170 拍 zexos1 2246 格、ryan_m 2885 格，邻居里已经没有敌方；2250 拍三个号合计 10588 格、1290742 兵，全队在场 7 个号一共 51364 格、2217334 兵。三个号 600–2399 拍的下令最密（360 个决策拍里 324、311、311 条）",
+    "codePath": "spawn-coordinator-c116-va.mjs solve() L1073–1077（r0/r1/r2 三层扇形）",
+    "branch": "!realBoss && K ≥ 6 → 角落三层扇形",
+    "verdict": "unclear",
+    "patternId": "NEW-R01-SP01",
+    "evidence": "resim_report spawnseq（角色）；q.py resim_squad（--agg sum:terr,sum:bal）、shadow_idle",
+    "statementType": "observed"
+   },
+   {
+    "id": "D4",
+    "t": 60,
+    "bot": "全体",
+    "what": "0–299 拍决策的 30 条令（其中 DP 的 24 条）全部落地生效，延迟 10–33 拍；360 拍人均 645 格，路人队友 594、T2 780、T3 591",
+    "codePath": "v27-team-c116-va.js V13.dpNeutral L2383–2406",
+    "branch": "DP 选环 → send",
+    "verdict": "good",
+    "patternId": "NEW-R01-OP01",
+    "evidence": "shadow_report lagcurve --win 100；q.py shadow_match（path 含 dpNeutral:2406 且 tDecide<300）；resim_report percap",
+    "statementType": "observed"
+   },
+   {
+    "id": "D5",
+    "t": 300,
+    "bot": "全体",
+    "what": "300 拍起客户端落后服务器，策略照常每 5 拍下令：600–2399 拍受理进攻令 1804 条，同期落地 453 条。每个号的令隔 88–217 拍（中位）成组落地一次，一组最多 9 条、是连续 9 个决策拍的令；zexos1 的 6 组之间有 25、23、26、48、87 条受理的令没有出现在录像里。下令最密的四个号（zexos1、ryan_m、talon5、alex_k）最新一条的延迟中位 224–356 拍，其余四个 149–177 拍",
+    "codePath": "v27-team-c116-va.js General.act L792–796；Policy.act L4940–4941 → Policy.send L3838–3865 → Strategy.send L479–487",
+    "branch": "g.attack 在本地返回 true 就 cmds++，不核对有没有落地",
+    "verdict": "error",
+    "patternId": "NEW-R01-IO01",
+    "evidence": "shadow_report lagcurve；land_ticks --t0 600 --t1 2400（--list --bot zexos1）；cmd_gaps；log_sync；q.py shadow_idle",
+    "statementType": "observed"
+   },
+   {
+    "id": "D6",
+    "t": 600,
+    "bot": "全体",
+    "what": "600–2400 拍落地、能定位的 435 条进攻令里，267 条下令时的目标（AI 或玩家）到落地时已经死了，引擎改成打无主地：182 条没有接壤的无主地、一兵未扣，85 条实扣 604140；目标没变的 139 条生效 121 条、实扣 1513812。zexos1 落地 57 条只生效 4 条（实扣 6542）：它 1695–2090 拍对 clankerfights.ai 下了 72 条预算令（每条 41–47% 余额，当时接壤 17 格），只有 1830–1870 拍决策的 9 条 2324 拍落地，那时已经不接壤",
+    "codePath": "game.js attack L1263–1285（L1268、L1277–1279）；v27-team-c116-va.js Policy.buyLand L5448–5453、L5610–5615",
+    "branch": "目标已死 → NEUTRAL；没有前线 → 拒绝",
+    "verdict": "error",
+    "patternId": "NEW-R01-IO02",
+    "evidence": "q.py shadow_match（shTarget!=512 and target==512）；shadow_report bursts、paths；q.py shadow_cmds（site 含 buyLand:5615）",
+    "statementType": "observed"
+   },
+   {
+    "id": "D7",
+    "t": 1520,
+    "bot": "riku_x",
+    "what": "riku_x 1500–2090 拍对 clankerfights.ai 下了 119 条预算令（每条 28–45% 余额），1520–1560 拍决策的 9 条 2093 拍同拍落地（延迟 533–573），划走落地前余额 428166 的 99.2%；2205 拍又一批 9 条 19517。1890–2250 拍从 clankerfights.ai 手里拿到 7456 格（本队全场从真人手里拿得最多的一段），2250 拍只剩 500 兵守 13103 格；clankerfights.ai 当时 34415 格、508661 兵，2790 拍前 riku_x 没有掉地",
+    "codePath": "v27-team-c116-va.js Policy.buyLand L5419–5426 → L5610–5615",
+    "branch": "x = min(avail, want) 不低于 chunk×余额 → send；每个决策拍重算重发",
+    "verdict": "unclear",
+    "patternId": "NEW-R01-IO02",
+    "evidence": "shadow_report bursts；q.py shadow_cmds；exchange_price --windows 1890-2250；resim_report top --ticks 2250",
+    "statementType": "observed"
+   },
+   {
+    "id": "D8",
+    "t": 1890,
+    "bot": "alex_k",
+    "what": "alex_k 1170–1890 拍停在 8955 格，旁边的 AI 邻居接壤 230–459 格；940–985 拍决策的 9 条令 1372 拍才落地（延迟 387–432）、全部被拒，之后 518 拍没有指令落地。1890 拍一条 leave 把它移出对局（8955 格、367307 兵）。壳归服务器 AI 接管后 360 拍从 AI#380 拿了 7492 格，3330 拍 22267 格",
+    "codePath": "v27-team-c116-va.js General.act L769–784；V13.act L2702–2717；Policy.act L4911–4926",
+    "branch": "三处 sbLeave 都在 g.t > 8500 之后，1890 拍的 leave 不出自策略",
+    "verdict": "unclear",
+    "patternId": "NEW-R01-EG02",
+    "evidence": "recon_facts leave；q.py shadow_match（alex_k, tick>=1100）、resim_pairs（attacker==6）、resim_squad",
+    "statementType": "observed"
+   },
+   {
+    "id": "D9",
+    "t": 2429,
+    "bot": "zexos1",
+    "what": "zexos1 2220 拍起满仓（336900 兵）。2429 拍 8 条过期的令同拍落地：4 笔 pct=225 的调度给 riku_x（到账 151416，延迟 114–189 拍）和 4 条 pct=197 的船令（装兵 95087、手续费 15366），余额 336900→32506；船的目标岸离出发点 9 像素，发船时已是 zero_7 的地，92762 兵上岸后并给了 zero_7。2457 拍又落地 3 笔调度（给 zero_7 10602）和 4 条船令（13081 兵，目标 429 像素外，4793–5065 拍到岸时剩 0–222 兵）。之后 zexos1 只剩 7070 兵守 2246 格，3210 拍被 clankerfights.ai 打，3325 拍领土清零",
+    "codePath": "v27-team-c116-va.js tryDonateToTeammate L4330 → L4507；Policy.idleBoats L5039 → V13.boatOut L2325–2327 → General.boatOut L999–1014",
+    "branch": "每 25 拍一个调度槽 / 一条船令，各按当时余额的百分比；落地时逐条按剩余余额计",
+    "verdict": "unclear",
+    "patternId": "NEW-R01-IO05",
+    "evidence": "q.py boat_trace、shadow_match（zexos1, tick>=2400）、shadow_cmds（kind=='boatTo'）；resim_report drops；death_ledger",
+    "statementType": "observed"
+   },
+   {
+    "id": "D10",
+    "t": 2200,
+    "bot": "ryan_m talon5 zexos1",
+    "what": "内圈号满仓：ryan_m 2100–3599 拍、talon5 2300–4399 拍、zexos1 2100–3199 拍（按 100 拍一窗）共 794 个决策拍判围死；少拿利息 880608（应拿的 4.7%），其中 ryan_m 325353（35.8%）、zexos1 318738（49.4%）、talon5 172455（11.4%），1800–2699 拍这一窗 656508。满仓之前 1500–2300 拍 ryan_m 密度 86.7–144.2、身边的 AI 地 2717–14069 格，它每 100 拍下 16–20 条令",
+    "codePath": "v27-team-c116-va.js tryDonateToTeammate L4354（boxedIn）、L4381–4387",
+    "branch": "boxedIn → 只剩调度一个出口",
+    "verdict": "unclear",
+    "patternId": "NEW-R01-EC01",
+    "evidence": "resim_report capidle；q.py shadow_idle（boxed>0）；recon_facts ainb",
+    "statementType": "observed"
+   },
+   {
+    "id": "D11",
+    "t": 2470,
+    "bot": "talon5 ryan_m",
+    "what": "调度 83 条落地 29 条。没落地的 54 条里 32 条按决策拍状态重算超过引擎的受赠配额：talon5 21 条、ryan_m 11 条，给 zero_7 的 24 条（2470–3045 拍）、给 sora_w 的 8 条（2750–3020 拍），名义额/配额余量中位 2.28；同一个槽每 25 拍照原样再发。另 22 条本该通过，20 条在 2165–2445 拍丢在通道里",
+    "codePath": "v27-team-c116-va.js tryDonateToTeammate L4474–4507；game.js donate L404–416",
+    "branch": "pct 只按密度差算（L4499–4505），不看受赠方配额",
+    "verdict": "error",
+    "patternId": "NEW-R01-DN05",
+    "evidence": "recon_facts dispatch；q.py dispatch_audit（would、executed 列）",
+    "statementType": "observed"
+   },
+   {
+    "id": "D12",
+    "t": 972,
+    "bot": "全体（sora_w）",
+    "what": "8 个号的 isNoFullSend 都被置真（alex_k 50 拍、kaito9 498、zexos1 525、sora_w 972、ryan_m 1076、zero_7 1254、talon5 1705、riku_x 3620 拍）：下令后 1–5 拍余额没有按数减少就判定全额出兵被限，而延迟正常时一条令也要 7–25 拍才落地。置真后全场 38 条对真人的令被按下。sora_w 2700 拍被 Player 187 反打（来兵 195788、235657），2715–2760 拍 8 条令（想出 78911–122261 兵）被按下，只发出 2735、2755 拍两条；不置真的对照组这段多发 10 条",
+    "codePath": "v27-team-c116-va.js Policy.send L3876 → L3821–3833 → L3844–3863",
+    "branch": "isNoFullSend 且 shadowQuota < min(0.55×兵, 0.06×余额)；对方正压着我或不满足绕过条件 → return false",
+    "verdict": "error",
+    "patternId": "NEW-R01-IO03",
+    "evidence": "q.py shadow_flags；shadow.mjs --pin-no-full --tag nf0 + shadow_diff；q.py resim_squad（sora_w 的 atkIn）",
+    "statementType": "observed"
+   },
+   {
+    "id": "D13",
+    "t": 2450,
+    "bot": "kaito9 zero_7 riku_x sora_w",
+    "what": "延迟恢复后的 20% 脉冲：2400 拍后 L5606 落地 72 条、全部生效，实扣 7834367，延迟 7–25 拍（中位 12）。sora_w 2485–2499 拍 6 条打 Player 187（184938 兵），9935→11737 格。全场对 Player 187 实扣 1298963 换 13260 格（每格 98），对 clankerfights.ai 3958076 换 23803 格（每格 166）",
+    "codePath": "v27-team-c116-va.js Policy.buyLand L5594–5606",
+    "branch": "pulseMode：已有进攻线不到 4% 余额 → 发 20% 余额",
+    "verdict": "good",
+    "patternId": "NEW-R01-AT01",
+    "evidence": "q.py shadow_match（path 含 buyLand:5606 且 tick>=2400）；target_price --targets 20,11,2,24",
+    "statementType": "observed"
+   },
+   {
+    "id": "D14",
+    "t": 2400,
+    "bot": "zero_7",
+    "what": "1500 拍后 4704 个决策拍里 1882 个停在价格线，zero_7 占 707 个。zero_7 对 clankerfights.ai：2400–6440 拍 812 个有报价的决策拍里 758 个卡在价格线，c/worth 中位 1.91–2.96；余额 53915（2400 拍）涨到 1871277（3600 拍）、2527194（5280 拍）。2400 拍后它对真人落地 17 条令，其中 6 条（1390079 兵）是余额过 100 倍领土、不看价格时发的",
+    "codePath": "v27-team-c116-va.js Policy.offers L5071 → Policy.buyLand L5349–5358",
+    "branch": "c ≥ worth 且余额没过 100 倍领土 → break",
+    "verdict": "unclear",
+    "patternId": "NEW-R01-AT05",
+    "evidence": "recon_facts safe；q.py shadow_idle；probe_view pz7 --gate 20（四段）；shadow_report overprice。没有反事实",
+    "statementType": "observed"
+   },
+   {
+    "id": "D15",
+    "t": 2765,
+    "bot": "sora_w",
+    "what": "sora_w 2765–3060 拍：Player 187 的单价 c 8.6–34.9 已经低于 worth 26.2–35.0（中位 13.2 对 28.2），但 safeAt 389038–538980 高于余额 185969–399987，60 个决策拍里 59 个 avail ≤ 0、不出手。2880 拍的 safeAt 492470 来自相邻的 NASSER（787796 兵，另有 104549 兵正压在 sora_w 身上）；当拍 Player 187 只有 99034 兵在家、277106 兵压在 sora_w 身上。2850→3060 拍 sora_w 11043→5848 格",
+    "codePath": "v27-team-c116-va.js V13.dpKeep L2459–2464 → V13.safeAt L2728–2738 → Policy.safeAt L4542–4545 → Policy.buyLand L5443–5446",
+    "branch": "keep = max(keep, safe)；avail = B − fee − keep ≤ 0 → continue",
+    "verdict": "unclear",
+    "patternId": "NEW-R01-DF03",
+    "evidence": "probe_view psw --gate 11 --t0 2765 --t1 3060；q.py resim_players（p==24、p==11, t==2880）、resim_squad（sora_w）。没有反事实",
+    "statementType": "observed"
+   },
+   {
+    "id": "D16",
+    "t": 3800,
+    "bot": "kaito9",
+    "what": "kaito9 3800–4580 拍对 Player 187：157 个决策拍里 143 个过了价格线（c 中位 13.6 对 worth 61.2）却因 safeAt 高于余额不出手，其中 91 个它的余额已经高于 need（策略自己算的、把对方打到阵亡线要的兵）。3960 拍：kaito9 281248 兵、7840 格，Player 187 26266 格、120295 兵，need 253787（引擎算式 248838），safeAt 611520 = 78×7840；相邻的 NASSER 1544831 兵、接壤 39 格。3840–4560 拍 kaito9 一直是 7840 格，这段采样到的来兵只有 4560 拍 Player 187 的 3537 兵；4487 拍 Player 187 收到一笔 492804 兵的捐款，4500 拍已是 569002 兵",
+    "codePath": "v27-team-c116-va.js Policy.safeAt L4542–4545（min(…, oppFloorCap×L)）→ Policy.buyLand L5443–5446",
+    "branch": "keep = max(keep, safe)；avail ≤ 0 → continue",
+    "verdict": "error",
+    "patternId": "NEW-R01-DF03",
+    "evidence": "probe_view pk9 --gate 11 --t0 3800 --t1 4580；decay_check --kill 11:3870,11:3960,11:4320,11:4410；q.py resim_squad（kaito9）、resim_players（p==11）、resim_transfers（to==11）。没有反事实，判“错”依据的是策略自己的 need",
+    "statementType": "inference"
+   },
+   {
+    "id": "D17",
+    "t": 3528,
+    "bot": "talon5 ryan_m",
+    "what": "sora_w 阵亡前 25 拍内又到账 3 笔协防调度 80264（付出 99944）：3528 拍 talon5 42109、ryan_m 22575，3535 拍 ryan_m 15580。sora_w 3510、3540 拍采样 2554、2402 格，按采样重算的阵亡线约 2169 格，Santos、Player 187 正在打；3553 拍清除时 143064 兵一起清零。isDoomedPocket 没触发：采样点上来兵/余额最大 1.09，第一分支要 1.65",
+    "codePath": "v27-team-c116-va.js tryDonateToTeammate L4454（isDoomedPocket）→ L4462–4472 → L4507",
+    "branch": "inHumanAtk > 1.65×Bp 才算必死；不看领土离阵亡线多远",
+    "verdict": "error",
+    "patternId": "NEW-R01-DN04",
+    "evidence": "q.py resim_transfers（to==5）；death_ledger；recon_facts doomed,peak",
+    "statementType": "observed"
+   },
+   {
+    "id": "D18",
+    "t": 4290,
+    "bot": "riku_x zero_7",
+    "what": "riku_x 4290–4513 拍 45 个决策拍一条令没发：对 TURCHland、NASSER 全部卡在价格线（TURCHland c/worth 中位 2.94），对 clankerfights.ai 36 个卡在价格线、9 个 safeAt 高于余额；余额 907628→163903、15037→4473 格（4500 拍）。zero_7 5245–5400 拍同样：clankerfights.ai 来兵 184175–991480，32 个决策拍全部卡在价格线（c/worth 中位 1.74），27407→21233 格、余额 2527194→1996368",
+    "codePath": "v27-team-c116-va.js Policy.peerAggressor L4605–4652（L4632–4633）→ Policy.offers L5071（L5172 防守折扣）→ Policy.buyLand L5358",
+    "branch": "来兵 > 20% 余额 + 我压在它身上的兵 → 不算 peerAggressor；c ≥ worth → break",
+    "verdict": "unclear",
+    "patternId": "NEW-R01-DF02",
+    "evidence": "probe_view prx --gate 47/24/20 --t0 4290 --t1 4515；probe_view pz7 --gate 20 --t0 5245 --t1 5400；q.py resim_squad；landing_math。没有反事实",
+    "statementType": "observed"
+   },
+   {
+    "id": "D19",
+    "t": 2870,
+    "bot": "talon5",
+    "what": "isOurSquadBot 的名单里有旧号名 777，同队路人 777（席位 30）被当成本队号：talon5 2870 拍给它发协防调度 pct=260，2884 拍落地，付出 198394、到账 159326。777 当时 9149 格、239152 兵，3060 拍剩 3033 格、0 兵，3196 拍阵亡",
+    "codePath": "v27-team-c116-va.js isOurSquadBot L3960–3972 → tryDonateToTeammate L4413 → L4462–4472 → L4507",
+    "branch": "去掉方括号前缀后名字全等于名单里的 777 → 当本队号",
+    "verdict": "error",
+    "patternId": "NEW-R01-DN12",
+    "evidence": "q.py dispatch_audit（toName==777）、resim_transfers（to==30）、resim_players（p==30）、resim_events（p==30）",
+    "statementType": "observed"
+   },
+   {
+    "id": "D20",
+    "t": 2793,
+    "bot": "talon5 ryan_m → kaito9",
+    "what": "被围住的 talon5、ryan_m 给前排 kaito9 的 7 笔协防调度（2793–3808 拍）到账 390994；kaito9 2780–3700 拍 12 条令全部生效、花掉 463609，2700–3690 拍从 Player 187 手里拿 8096 格，5617 格（2700 拍）涨到 11358 格（3750 拍）",
+    "codePath": "v27-team-c116-va.js tryDonateToTeammate L4354、L4462–4472 → L4507",
+    "branch": "boxedIn 的后排对正在交战的队友 Case A 协防，pct=260",
+    "verdict": "good",
+    "patternId": "NEW-R01-DN01",
+    "evidence": "q.py resim_transfers（to==0）、shadow_match（kaito9, 2780<=tick<=3700）、resim_pairs（attacker==0）、resim_squad",
+    "statementType": "observed"
+   },
+   {
+    "id": "D21",
+    "t": 4260,
+    "bot": "riku_x（zero_7）",
+    "what": "riku_x 4240 拍被 clankerfights.ai 从海上登陆 752735 兵（当时 riku_x 1331382 兵）。4256 拍 zero_7 的协防调度到账 403642（它全场唯一一笔，手续费 143517）、talon5 57612，riku_x 余额 1807978、过了 100 倍领土（14805 格），buyLand 不再看价格：4260–4270 拍连发 3 条 20% 脉冲打 clankerfights.ai，4277–4284 拍落地共 886263 兵，对掉了压在身上的 724091 兵；4320 拍 15037 格",
+    "codePath": "v27-team-c116-va.js tryDonateToTeammate L4462–4472 → L4507；Policy.buyLand L5352、L5358 → L5594–5606；game.js expandAttack L1007–1025、damage L1062–1074",
+    "branch": "over（B > 100×L）跳过价格线 → pulseMode",
+    "verdict": "good",
+    "patternId": "NEW-R01-AT08",
+    "evidence": "landing_math；q.py dispatch_audit（t>=3795）、shadow_match（riku_x, tick>=2400）、resim_squad（riku_x 4200–4320 拍）；shadow_report overprice",
+    "statementType": "observed"
+   },
+   {
+    "id": "D22",
+    "t": 4260,
+    "bot": "riku_x zero_7 kaito9",
+    "what": "延迟正常（<60 拍）时，脉冲在第一条落地前又重发：同一目标连续决策拍的令 2 条以上且本意 ≥5% 的 22 组，整组实扣是第一条本意的 3.11 倍（中位，最大 7.35）。riku_x 4260 拍本意 20%、实际 50.5%（这一次正好够对掉来兵）；zero_7 4480–4494 拍 3 条 859156",
+    "codePath": "v27-team-c116-va.js Policy.buyLand L5594–5606",
+    "branch": "已有进攻线 ≥ 4% 余额才不重发；令还没落地时本地的进攻线是 0",
+    "verdict": "unclear",
+    "patternId": "NEW-R01-IO04",
+    "evidence": "shadow_report repeat；q.py shadow_match（zero_7, tick>=2200）",
+    "statementType": "observed"
+   },
+   {
+    "id": "D23",
+    "t": 2471,
+    "bot": "ryan_m talon5",
+    "what": "被围住的后排把兵捐出去：ryan_m 10 笔到账 449032（手续费 115962），余额 423650（2250 拍）→72191（2880 拍）→38535（3600 拍）；sora_w 阵亡后它贴上 NASSER，3960 拍 63439 兵对 1544831 兵，4350 拍阵亡。talon5 本队内 10 笔到账 770592（手续费 193556），4980 拍 291120 兵对 NASSER 的来兵 310312，5098 拍阵亡",
+    "codePath": "v27-team-c116-va.js tryDonateToTeammate L4354、L4381–4387、L4462–4507",
+    "branch": "boxedIn 时保底线降到 22–32×领土（协防）/ 66–72×领土（进攻）",
+    "verdict": "unclear",
+    "patternId": "NEW-R01-DN08",
+    "evidence": "resim_report donflow；death_ledger；q.py resim_squad（ryan_m、talon5）",
+    "statementType": "observed"
+   }
+  ],
+  "unknowns": [
+   "客户端为什么落后服务器：alex_k 的 RESULT 行写下时（服务器约 1890 拍）其余 7 个号的日志还停在本地 1350–1620 拍；8 个号同时变慢，策略单次决策平均不超过 3.96 毫秒，断档里其他玩家的指令照常落地，2400 拍后自己恢复。为什么每个号每次最多落地 9 条、其余的令不在录像里，也看不出。延迟出现在下令还很稀的时候（300–399 拍），但下令最密的四个号后来也落后最多；是页面跑不动、发令被限流，还是本机整体卡住，对局包里分不开。",
+   "alex_k 的 leave 是谁发的：不出自策略文件。results.csv 的离场行记 tick=1064、accepted=106（31 版出生落点 + 75 条令，和日志里本地 990、1080 拍的 cmds=61、77 对得上），但日志在这之后还有本地 1080–1350 拍的 4 行 HL-TICK，RESULT 行写下时服务器已到约 1890 拍。结果行像是本地 1064 拍定格的、leave 826 拍后才落地；触发它的外层代码不在对局包里。",
+   "没有做反事实重演：kaito9 3870–4410 拍打 Player 187（D16）、sora_w 2765 拍后还手（D15）、riku_x 与 zero_7 挨打时还手（D18）、zexos1 留着兵（D9）各会怎样，不知道。过期批次在 riku_x 身上拿到 7456 格（D7），同样的批次在 zexos1 身上一兵未扣（D6），两种结果各占多少也分不开。"
+  ],
+  "mechanicsQuestions": [
+   "进攻指令是余额的百分比（game.js attack L1263–1285），同拍多条逐条按剩余余额计：riku_x 2093 拍 9 条 28–45% 合计 99.2%。目标已死时改成打无主地（L1268），没有接壤就拒绝、不扣兵（L1277–1279）：本局 267 条改打无主地的令里 182 条这样作废。策略看到的是自己客户端的本地局面，客户端落后服务器几百拍时，令是照几百拍前的局面下的。",
+   "对攻抵消（expandAttack L1007–1025、damage L1062–1074）：打一个正在打我的人，每一圈的价钱里要先加上它压在我身上的兵（counter），这些兵 1:1 抵掉之后才轮到它的余额：riku_x 886263 兵对掉 724091。不还手时进攻方每格付 2 + 2×def（def ≈ 1.6×守方密度），守方每格掉 def 的兵：zero_7 5250–5400 拍密度 91–99、没还手，丢 6174 格、余额 2527194→1996368。把一个号吃到阵亡线（峰值/4）约要它余额的 2 倍：Player 187 3960 拍 26266 格、120295 兵，算式价 248838。",
+   "safeAt（Va：V13.safeAt L2728–2738 → Policy.safeAt L4542–4545）= min(max(safeFinite, dpKeep), 78×领土)，dpKeep =（相邻兵最多的真人的余额 + 它压在我身上的兵 − 1.5×我的领土）÷ 1.78（L2459–2464）。buyLand 里 keep 不低于 safeAt（L5443），余额减手续费不超过它就跳过这个目标（L5445–5446）。邻居里有一个兵多得多的大号时，本号余额不到 78 倍领土对谁都出不了手：kaito9 3865–4525 拍探针每 60 拍抽一行，safeAt 都是 611520。",
+   "捐款手续费是捐出方余额的 64/1024，与捐多少无关（donate L404–416）：pct=260 的调度手续费是到账额的 24.5%，pct=225 是 28.3%，zero_7 那笔 pct=179 是 35.6%。离场的席位由服务器 AI 接管，会自己打地（alex_k 的壳 1890→3330 拍 8955→22267 格）。海上有船时不清号（collapse L1316–1330）：zexos1 3325 拍没有地了，5065 拍最后一条船靠岸才清除。"
+  ],
+  "checklistFails": []
+ },
+ {
   "matchId": "A019",
   "file": "A019",
   "reviewer": "R01",
-  "sha": "29c104fc",
+  "sha": "2d0fc642",
   "result": "lost",
   "archetype": "mid-collapse",
   "context": {
@@ -606,7 +1204,7 @@
   "matchId": "A031",
   "file": "A031",
   "reviewer": "R01",
-  "sha": "29c104fc",
+  "sha": "2d0fc642",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -1160,7 +1758,7 @@
   "matchId": "A054",
   "file": "A054",
   "reviewer": "R01",
-  "sha": "29c104fc",
+  "sha": "2d0fc642",
   "result": "lost",
   "archetype": "mid-collapse",
   "context": {
@@ -1741,7 +2339,7 @@
   "matchId": "A055",
   "file": "A055",
   "reviewer": "R01",
-  "sha": "29c104fc",
+  "sha": "2d0fc642",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -2275,7 +2873,7 @@
   "matchId": "A057",
   "file": "A057",
   "reviewer": "R01",
-  "sha": "29c104fc",
+  "sha": "2d0fc642",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -2676,7 +3274,7 @@
   "matchId": "A059",
   "file": "A059",
   "reviewer": "R01",
-  "sha": "29c104fc",
+  "sha": "2d0fc642",
   "result": "lost",
   "archetype": "never-grew",
   "context": {
@@ -3061,7 +3659,7 @@
   "matchId": "A075",
   "file": "A075",
   "reviewer": "R01",
-  "sha": "29c104fc",
+  "sha": "2d0fc642",
   "result": "won",
   "archetype": "win",
   "context": {
@@ -3430,7 +4028,7 @@
   "matchId": "A094",
   "file": "A094",
   "reviewer": "R01",
-  "sha": "29c104fc",
+  "sha": "2d0fc642",
   "result": "lost",
   "archetype": "lead-thrown",
   "context": {
@@ -5821,7 +6419,7 @@
   "matchId": "A022",
   "file": "A022",
   "reviewer": "R04",
-  "sha": "3136f183",
+  "sha": "b4f74cc4",
   "result": "won",
   "archetype": "win",
   "context": {
@@ -6207,7 +6805,7 @@
   "matchId": "A029",
   "file": "A029",
   "reviewer": "R04",
-  "sha": "3136f183",
+  "sha": "b4f74cc4",
   "result": "lost",
   "archetype": "outscaled",
   "context": {
@@ -6924,7 +7522,7 @@
   "matchId": "A038",
   "file": "A038",
   "reviewer": "R04",
-  "sha": "3136f183",
+  "sha": "b4f74cc4",
   "result": "lost",
   "archetype": "lead-thrown",
   "context": {
@@ -7559,6 +8157,2059 @@
    "利息公式已用真引擎余额核对（interest_rate.py A038 --verify：5076 次相等、4 次不等）：每 10 拍的利率只看领土占比（1% + 约 1.6%×√占比）和软上限折扣，与余额多少无关。所以「地大兵少」的 sora_w 利率更高（6680 拍 40.9% 的地、2.02%，UA 22.8% 的地、1.72%），但本金小：每 10 拍进账 11.5 万对 UA 的 19.1 万。没算清的是回本期：sora_w 6000~6670 拍把 1338 万兵换成 9.4 万格地，靠更高的利率和上限要多少拍才能把这笔本金挣回来。",
    "防守方每丢一格地同时损失多少兵？UA 打密度 21~44 的号实付约 130~230 兵/格，打密度 82~103 的 alex_k、noah88 约 240~340 兵/格，差距没有密度差那么大。这关系到「后排只留 30 密度」究竟让对方省了多少。",
    "真人离场后变成的 AI 号（Che 在 8338 拍离场时有 115,854 格、1082 万兵）还会不会主动进攻？本局它离场后没有再出兵。"
+  ],
+  "checklistFails": []
+ },
+ {
+  "matchId": "A047",
+  "file": "A047",
+  "reviewer": "R04",
+  "sha": "b4f74cc4",
+  "result": "lost",
+  "archetype": "mid-collapse",
+  "context": {
+   "strategyVersion": "Vb（v27-team-c116-vb.js + spawn-coordinator-c116-vb.mjs）",
+   "cohort": "squad10",
+   "map": 22,
+   "mapSize": [
+    1541,
+    1080
+   ],
+   "mapLand": 664497,
+   "humans": 52,
+   "players": 512,
+   "teams": {
+    "1": 11,
+    "2": 11,
+    "3": 11,
+    "4": 8,
+    "5": 11
+   },
+   "actualTeams": 5,
+   "cardActualTeams": 5,
+   "ourTeam": 3,
+   "ourBots": 10,
+   "teamSplit": {
+    "3": 10
+   },
+   "baselineWinRate": 0.2,
+   "structureNote": "对局卡写 mode 5（名义 7 队），引擎里实际 5 支队伍：队 1 11 人、队 2 11 人、队 3 11 人、队 4 8 人（7 人在玩）、队 5 11 人（10 人在玩），共 52 个真人，另有 460 个内置 AI。我方 10 个号全部在队 3，没有拆队；同队还有一个真人 Player 233#2（全场没有收过也没有捐过一笔，9338 拍出局）。地图 22（1541×1080，陆地 664,497 格，357 块陆地）：最大的陆块 L1 有 244,592 格，我方 10 个号和另外 12 个真人的主体都在 L1 上（L1 人均 11,118 格，全图人均 12,779 格）。赢家队 2 出生在别的陆块上（Ebb、OFN 在 L3，BLEUET 在 L4，RONiN 在 1.18 万格的小岛 L7），是坐船过来的；到 6030 拍，L1 上原有的 12 个其他真人只剩 Lebanon 和队友 Player 233，另有 5.58 万格在 6 个从别的陆块坐船过来的真人手里（BLEUET 22,738、RONiN 10,973、Player 228 10,522、Kayser 9,380、Hippo Raj 1,397、Kürdistan 743）。我方 10 个号全场的地都在 L1 上，没有一条船是登陆敌方真人的。引擎设置 aE.lC=4（不是 10），不存在单次出兵 25% 的限额。",
+   "rCell": 63.8,
+   "tools": "全场真值来自未改动的线上客户端重放（engine_truth.cjs）；我方每一拍的决策由影子策略（shadow.mjs）逐拍复现，自检：nb/neut 820/820 一致，调度 168/168 条对上，发令数增量 810 段里 797 段相同、12 段相近、1 段不同。执行层：想发陆攻 731 条、落地 698 条（95%）；630~1499 拍落地延迟中位 46 拍（1000~1249 拍中位 71 拍、p90 186 拍），指令被攒成一摞倒序落地 24 批（D07）；1500 拍以后延迟中位 11~13 拍；客户端之间没有相对落后，没有号中途离场。调度 168 条落地 84 条，没落地的 84 条都发在 4284 拍之前（D10）。本文里的「兵」都是实际出征的兵，不含陆攻手续费（余额的 12/1024）、发船手续费（32/1024）和捐款税（捐款人余额的 6.25%）。"
+  },
+  "outcome": {
+   "result": "lost",
+   "endTick": 9892,
+   "cardOutcome": {
+    "primaryTeamWon": false,
+    "anyBotWon": false,
+    "resultLabel": "lost",
+    "winnerTeam": 2,
+    "endTick": 9852,
+    "peakSquadLandShare": 0.256,
+    "peakPrimaryTeamShareSeen": 0.2615,
+    "ourFinalTeamShare": 0.141
+   },
+   "ourTeamFinalSharePct": 3.3,
+   "squadPeakSharePct": 24.9,
+   "botsDead": 8,
+   "botsLeft": [
+    {
+     "bot": "zexos1",
+     "p": 13,
+     "t": 9871
+    },
+    {
+     "bot": "kaito9",
+     "p": 21,
+     "t": 9864
+    }
+   ],
+   "note": "队 2 获胜，引擎终局拍 9892（对局卡 9852），没有投票。我方 8 个号出局（6030~8269 拍），zexos1 和 kaito9 撑到终局（客户端在 9871 / 9864 拍随对局结束离开，当时 23,982 格 / 1,496 格）。我方 10 个号占地在 5410 拍见顶：170,150 格，占全图 25.6%（对局卡 25.6%；本文件时间线的采样点最高是 5220 拍的 24.9%）；队 3 同一拍 28.8%，是当时占地最多的队，但兵只有 1140 万，队 1 有 1960 万、队 2 有 1930 万。终局队 2 61.2%、队 1 22.5%、队 4 7.4%、队 5 3.5%、队 3 3.3%。"
+  },
+  "turningPoints": [
+   {
+    "id": "TP1",
+    "t0": 930,
+    "t1": 1530,
+    "title": "内置 AI 被瓜分的 600 拍：同一块陆地上别人人均多拿一倍多",
+    "shareBasis": "队 3 占全图陆地的百分比（另给我方 10 个号的占比和头号敌队队 1 的占比）",
+    "shareBefore": 8.6,
+    "shareAfter": 13.6,
+    "squadShareBefore": 8.0,
+    "squadShareAfter": 12.4,
+    "topEnemyShareBefore": 9.5,
+    "topEnemyShareAfter": 22.2,
+    "statementType": "observed",
+    "evidence": [
+     "各队占比（team.tsv，930→1530 拍）：队 1 9.5%→22.2%，队 2 8.5%→19.4%，队 5 8.6%→21.0%，队 4 5.1%→11.2%，队 3 8.6%→13.6%；内置 AI 55.0%→9.2%。我方 10 个号 52,829→82,332 格（8.0%→12.4%），余额 24.3 万→125.4 万。",
+     "同一块陆地上的对照（ascii_map.mjs A047 --at 630,930,1230,1530 --heads --brief）：L1 上 930 拍我方 52,829 格、其他真人 63,149 格、内置 AI 126,016 格；1530 拍我方 82,332、其他真人 146,491、内置 AI 13,782。我方 +2.95 万格，其他真人 +8.33 万格。主体在 L1 的 12 个其他真人领土中位 4,802→10,905，我方中位 5,193→6,887；1530 拍两边余额几乎一样（我方 125.4 万，12 个其他真人 124.4 万）。",
+     "决策拍分类（window_tally.py A047 930 1500，共 1,140 个决策拍）：出手 226（20%）；封死 177（16%）；只贴着真人 186（16%）；贴着兵比地少的内置 AI、底线高于余额 265（23%）；还贴着 AI 没出手 273（24%）。前一段 630~930 拍「底线高于余额」占 52%，但那时全队只有 5.6 万~24.3 万兵，占地还跟得上。",
+     "talon5（truth_query.py A047 cmds talon5 930 1560；tmp/shadow/A047/rows.tsv）：959 拍之后到 1442 拍没有任何指令落地，领土 7.3~8.0 千格，余额 1.5 万→14.9 万；1080 拍底线 52,410 对余额 38,292（贴着 7,626 格弱 AI），1240 拍 102,096 对 79,475，1360 拍 143,281 对 114,878。同期它的三个邻居 Tukki 9,225→24,069 格、Acalcucum 5,125→16,078 格、AIRWAYS 7,097→24,108 格。",
+     "兵力流水（squad_ledger.py，(930,1530]）：出征无主地 15.5 万、内置 AI 48.2 万、真人 3.9 万，装船 14.1 万（13 条）；余额净增 101 万。弱 AI 的单价是 2~5.3 兵/格。",
+     "执行层（exec_gap.py / burst_runs.py）：630~1499 拍想发 298 条陆攻、落地 277 条（93%），延迟中位 46 拍；1000~1249 拍中位 71 拍、p90 186 拍；指令攒成一摞倒序落地 24 批，其中 6 批把余额抽到四成以下（sora_w 1302 拍 9 条：3.46 万→1,677）。"
+    ],
+    "priorDecisions": [
+     {
+      "t": "选点阶段（第 1~351 步）",
+      "bots": "全部",
+      "decision": "10 个号按角落扇形阵出生：三圈半径 32 / 95 / 158 像素，扇形面积约 1.92 个人均地盘；630 拍已经互相贴上。",
+      "why": "没有 boss 且 ≥6 个号时走角落扇形阵，点间距下限 clamp(0.95×rCell, 42, 68)；代码注释把内圈的号当作没有敌邻的「蓄水池」。",
+      "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L1065~1077、L1093~1133、L1135~1170"
+     },
+     {
+      "t": "630~930",
+      "bots": "全部",
+      "decision": "核心期前（t<1500）每个决策拍只在「余额 − 底线 > 21.4%×余额」时打内置 AI。这 300 拍 600 个决策拍里出手 83 个（14%），贴着弱 AI 而底线高于余额的 313 个（52%）。",
+      "why": "打内置 AI 的底线 = max(winFloor, peopleFloor)；winFloor 的第 3 项 safeFinite 对每个贴着的 AI 取「它的其他邻居里余额 + 正在打它的兵最小的那个」，再在所有 AI 里取最大值，不排除队友。",
+      "codePath": "Policy.act L4850（coreFrom=1500 之前 super.act）→ Style.pickTarget L1144~1161 ← V13.floorFor0 L2233~2236 ← Policy.winFloor L4562~4570 ← V13.safeFinite L2500~2510"
+     },
+     {
+      "t": "855~938",
+      "bots": "kaito9",
+      "decision": "855 拍起没有任何非队友邻居也没有无主地；938 拍开始发船（到 1533 拍 10 条）。",
+      "why": "出生在外弧，但外侧是海，四周是 sora_w、alex_k、zero_7、riku_x。没有任何邻居时陆上没有目标，只剩往海对面发船。",
+      "codePath": "Style.pickTarget L1144~1161（只遍历 this.nb）；General.act L804~807 → General.boatOut L999~1015；V13.act L1822 → Policy.boatFood L5621 → V13.boatFood L2001~2021"
+     },
+     {
+      "t": "945~959",
+      "bots": "talon5",
+      "decision": "945、959 拍对 AI#500 出了最后两条，之后 483 拍没有任何指令落地。",
+      "why": "它贴着的 AI 里有和 Tukki、zexos1 共享的（AI#298、AI#86、AI#418），底线跟着这两家的余额涨：多数决策拍比自己的余额高 1~3 万，少数几拍（1200、1300 拍）低于余额但可用兵只有 0.5~0.8 万，不到余额的 21.4%。",
+      "codePath": "V13.safeFinite L2500~2510 ← Strategy.threatOf L417~444"
+     }
+    ]
+   },
+   {
+    "id": "TP2",
+    "t0": 5360,
+    "t1": 6030,
+    "title": "见顶回落：后排的兵都送去了前锋，RONiN 的船在密度 31 的 sora_w 身上登陆",
+    "shareBasis": "我方 10 个号合计占全图陆地的百分比（另给队 3、队 2 的占比和余额）",
+    "shareBefore": 25.3,
+    "shareAfter": 22.2,
+    "teamShareBefore": 28.5,
+    "teamShareAfter": 26.5,
+    "topEnemyShareBefore": 23.8,
+    "topEnemyShareAfter": 30.1,
+    "statementType": "observed",
+    "evidence": [
+     "真引擎（team.tsv / truth_query.py A047 gain 5360 6030）：我方 168,443→147,381 格，余额 984 万→976 万；队 3 28.5%→26.5%，队 2 23.8%→30.1%（1880 万→1900 万兵），队 1 27.5%→21.7%。这 670 拍队 3 从外面拿到 23,323 格、被拿走 36,258 格：BLEUET 11,063、RONiN 10,973、Player 228 5,132、Lebanon 4,331。",
+     "RONiN 的账（enemy_ledger.py A047 --p 37）：5360 拍船登陆 sora_w 65.7 万兵（RONiN 20,797 格、180 万兵；sora_w 13,611 格、42.4 万兵、密度 31），之后 5495、5572、5691、5971 拍 4 发陆攻共 105.5 万；(5400,6030] 从 sora_w 净拿 10,529 格，我方对它出兵 0。",
+     "登陆之前 sora_w 的三笔捐款（donation_list.py A047 5040 6230）：5068 拍给 talon5 45.6 万（密度 107→67）、5096 拍给 talon5 29.5 万（69→43）、5271 拍给 riku_x 28.4 万（56→32）。RONiN 同期 5100→5300 拍密度 92→117。",
+     "登陆前后的调度（同上）：5348~5362 拍 zexos1、alex_k、zero_7、kaito9 四笔共 110 万给 talon5（talon5 当时密度 81~102），捐完各剩密度 29~32；5362 拍 talon5 对 [37C] 连发 3 条 143.2 万兵。sora_w 只在 5390 拍收到 noah88 的 16.2 万。",
+     "影子诊断（shadow.mjs A047 --bots ryan_m,noah88,alex_k --at 5375,5385,5510,5515,5620,5640）：5375~5385 拍 ryan_m（密度 36）、alex_k（密度 30）对挨打的 sora_w「不够格（要求密度 ≥42）」；5500~5515 拍三个号都把 sora_w「判为弃子，跳过（被攻 22.4 万 > 0.45×余额 41.0 万，地 9,005 < 弃子线）」，改选 talon5。",
+     "sora_w 自己（shadow.mjs A047 --bots sora_w --at 5365,5500）：贴上 RONiN 后底线回到 88×领土 = 120 万（余额 42.4 万），RONiN 的报价 c=189.8 高于 worth 95.7（L5359 break）；5355 拍之后没有发出任何指令。",
+     "决策拍分类（window_tally.py A047 5360 6030，1,340 个决策拍）：出手 28（2%），封死 676（50%），只贴着真人没出手 524（39%）。"
+    ],
+    "priorDecisions": [
+     {
+      "t": "5068、5096、5271",
+      "bots": "sora_w",
+      "decision": "滩头清掉、重新封死之后三笔捐款把 103.5 万兵送走（talon5 75.1 万、riku_x 28.4 万），密度 107→32。",
+      "why": "5065 拍：nb=0 → boxedIn=true，增产调度留底 44×领土 = 59.9 万、救急调度留底 32×领土 = 43.6 万；候选里 talon5 得分最高（5,111，其中领土项 3,045），比例 min(602, 320) = 320/1024。封死分支不发船：有兄弟号在陆上接敌且自己密度 < 115。",
+      "codePath": "Policy.tryDonateToTeammate L4355（boxedIn）、L4382~4388（prodOptFloor / emergDefFloor）、L4482~4488（得分）、L4500~4506（比例）；Policy.idleBoats L5031"
+     },
+     {
+      "t": "5348~5362",
+      "bots": "zexos1、alex_k、zero_7、kaito9",
+      "decision": "四个封死号在 15 拍内给 talon5 捐了 4 笔共 110 万（zexos1 一笔 85.1 万，密度 56→32）；收款时 talon5 密度 81~102。",
+      "why": "talon5 正在挨打（underFire），走救急调度：封死号只要密度 ≥42（有海岸）、余额 > 1.12×32×领土；收款人密度上限是 142。",
+      "codePath": "Policy.tryDonateToTeammate L4418（dAlly ≥ 142 才跳过）、L4463~4473（Case A：reqD = 42 / 30）、L4502~4506（封死号比例上限 380）"
+     },
+     {
+      "t": "5236、5362",
+      "bots": "talon5",
+      "decision": "余额过 100×领土 时对 [37C]（队 1，密度 88~89）出 147.2 万、143.2 万兵（各占余额三成）。",
+      "why": "over=true 时不比较单价，按报价从低到高出手。",
+      "codePath": "Policy.buyLand L5353（over）、L5359（over 时不 break）、L5455~5609"
+     },
+     {
+      "t": "4284~5360",
+      "bots": "全部",
+      "decision": "配额解除后的 1,100 拍里，全队把利息的 118% 花了出去（打真人 1210 万、手续费 146 万、捐款税 260 万），余额 1000 万→888 万。",
+      "why": "后排的兵经调度集中到 talon5、riku_x、sora_w、zexos1（到账 1080 万），收款号过 100×领土 就出手；没有任何一条规则看全队合计的兵和对手的差距。",
+      "codePath": "Policy.tryDonateToTeammate L4414~4508；Policy.buyLand L5353~5359"
+     }
+    ]
+   },
+   {
+    "id": "TP3",
+    "t0": 6030,
+    "t1": 6724,
+    "title": "内圈被逐个打穿：694 拍里 5 个号出局，两个大号攥着 600 多万兵",
+    "shareBasis": "我方 10 个号合计占全图陆地的百分比（另给队 3、队 1、队 2 的占比）",
+    "shareBefore": 22.2,
+    "shareAfter": 16.0,
+    "teamShareBefore": 26.5,
+    "teamShareAfter": 20.5,
+    "topEnemyShareBefore": 30.1,
+    "topEnemyShareAfter": 31.0,
+    "statementType": "observed",
+    "evidence": [
+     "真引擎（truth_query.py A047 gain 6030 6724）：我方 147,381→106,365 格，有地的号 10→5 个，余额 976 万→813 万。队 3 被拿走 66,696 格：Kürdistan 29,850、RONiN 8,592、Player 228 5,138、BLEUET 4,874，另有 10,891 格在号出局时变成无主地（领土跌到峰值的四分之一就出局，剩下的地变无主）。队 1 21.7%→26.6%。",
+     "Kürdistan 的账（enemy_ledger.py A047 --p 27 --strikes 5800 6800）：5905 拍船登陆 leo_tx 75.5 万兵，6139~6713 拍 11 发陆攻 751.6 万兵：riku_x 89.3 万 / 86.4 万，leo_tx 75.4 万 / 70.9 万，ryan_m 89.1 万（它 41.1 万兵、密度 37），zexos1 75.9 万，noah88 66.7 万 / 48.7 万（它 48 万兵、密度 47），zero_7 57.6 万，alex_k 46.8 万 / 44.8 万。每发陆攻都是它当时余额的 15%。它自己 508 万兵→246 万兵。",
+     "最后一轮挨打的账（hollow_rear.py A047）：ryan_m 第一发后 213 拍出局，noah88 111 拍，zero_7 197 拍，alex_k 214 拍，kaito9 207 拍后本土清空；这五个号挨打期间收到的捐款是 0。ryan_m、noah88、zero_7、kaito9 此前 600 拍的最后一笔捐款都把自己捐到密度 29~30（5929~6216 拍）。",
+     "两个大号（truth_query.py A047 cmds zexos1 5400 6730 / talon5）：6390 拍 zexos1 42,307 格、311 万兵，talon5 42,360 格、362 万兵，合计占我方余额的七成。zexos1 5523~6314 拍没有任何指令；6314~6321 拍 3 条共 55.4 万兵打无主地（117 格），6342 拍打 Kürdistan 41.2 万，6349 拍打 Lebanon 73.3 万，6566~6573 拍打 Kürdistan 88.7 万。talon5 打 BLEUET 108.4 万、Lebanon 37 万、Hippo Raj 107.6 万。",
+     "影子诊断（shadow.mjs A047 --bots zexos1,talon5,riku_x --at 6375）：zexos1（密度 72.7）对 Kürdistan 的报价 c=135.4、Lebanon 173.6，都高于 worth 86.1，未过软上限 → 不出手；调度：ryan_m「判为弃子（被攻 89.1 万 > 1.65×余额 41.1 万）」、kaito9 弃子、noah88「没有敌邻也没在挨打，跳过」、zero_7 / alex_k / riku_x「我密度 73，要求 ≥108」、talon5「要求 ≥102 且比对方高 16」→ 没有合格的收款人。",
+     "同拍第二条指令被挤掉（same_tick.py A047 --list）：zexos1 6305 拍（无主地 19.3 万在前，Kürdistan 39.7 万没落地）、6310 拍（无主地 19.5 万在前，Kürdistan 45.5 万没落地）、riku_x 6590 拍（Kürdistan 7.1 万没落地），合计 92.4 万兵。",
+     "决策拍分类（window_tally.py A047 6030 6724，1,098 个决策拍）：出手 45（4%），封死 186（17%），只贴着真人没出手 653（59%）。"
+    ],
+    "priorDecisions": [
+     {
+      "t": "5817~5831",
+      "bots": "leo_tx",
+      "decision": "余额刚过 100×领土，对 Player 228（27,420 格、密度 94）连发 4 条共 48.7 万兵（余额的 40%），密度 108→63；300 拍净得地 −342。",
+      "why": "over=true 时不比较单价；上一条还没在引擎里生效，下一个决策拍又照样下一条。7 拍后 Kayser 28 万兵打过来，74 拍后 Kürdistan 的船 75.5 万兵登陆。",
+      "codePath": "Policy.buyLand L5353、L5359、L5459、L5575 / L5589 / L5596；Policy.act L4838"
+     },
+     {
+      "t": "5789~6216",
+      "bots": "ryan_m、noah88、zero_7、kaito9",
+      "decision": "封死的四个号继续按「攒到 42~48、捐回 29~30」的节奏捐：ryan_m 5789 拍给 talon5 11.6 万、6160 拍给 riku_x 20.7 万；noah88 5943 拍给 leo_tx 13.8 万、6216 拍给 talon5 11.9 万；zero_7 5929 拍、kaito9 5936 拍给 leo_tx 8.7 万、5.0 万。",
+      "why": "boxedIn 时救急调度的门槛是密度 ≥42（有海岸），留底 32×领土，比例取「留底允许的最大值」与 380 里小的那个。",
+      "codePath": "Policy.tryDonateToTeammate L4355、L4386~4388（emergDefFloor）、L4465（reqD）、L4500~4506"
+     },
+     {
+      "t": "5523~6314",
+      "bots": "zexos1",
+      "decision": "5348、5523 拍给 talon5 两笔共 128 万之后密度只剩 30；此后 791 拍没有任何指令，余额 121 万→416 万。",
+      "why": "5695 拍贴上 Lebanon 后不再算封死：留底 88~92×领土，捐款要密度 ≥102；对邻居的报价高于 worth，余额没过 100×领土 就不出手。",
+      "codePath": "Policy.tryDonateToTeammate L4382~4388、L4465、L4479；Policy.buyLand L5350~5359"
+     },
+     {
+      "t": "5905",
+      "bots": "leo_tx（被登陆）",
+      "decision": "Kürdistan（主体在 L2 和 L6，此前和我方没有交过手）用船在 leo_tx 身上登陆 75.5 万兵；6030 拍它在 L1 上有 743 格，之后沿内圈扩出去。",
+      "why": "策略只读自己的船数，没有任何读取别人船只的代码；leo_tx 当时 11,431 格、64.3 万兵（密度 56），刚把四成余额打给 Player 228。",
+      "codePath": "Policy.idleBoats L5032（g.boatCount[me]）；Policy.tryDonateToTeammate L4420~4423（只数已经压在队友身上的进攻兵）"
+     }
+    ]
+   }
+  ],
+  "deaths": [
+   {
+    "bot": "ryan_m",
+    "p": 10,
+    "t": 6583,
+    "detail": "peak:10424;boats:0;out:0;by:27:8720:80139",
+    "peakTerr": 11163,
+    "peakTick": 6362,
+    "last300Takers": [
+     {
+      "who": "Kürdistan ✌️#27(队1)",
+      "px": 8370
+     },
+     {
+      "who": "zexos1",
+      "px": 29
+     }
+    ],
+    "donationsIn500": {
+     "n": 0,
+     "credited": 0
+    },
+    "donationsOut500": {
+     "n": 1,
+     "left": 242067
+    },
+    "cause": "扇形内弧，4250~6295 拍封死，密度长期 30~55（5264 拍给 riku_x 21.8 万、5516 / 5789 拍给 talon5 13.6 万 / 11.6 万、6160 拍给 riku_x 20.7 万，每次捐到密度 29~31）。leo_tx 6299 拍出局后它直接贴上 Kürdistan；6370 拍 Kürdistan 一发 89.1 万兵（它 11,163 格、41.1 万兵、密度 37；Kürdistan 密度 92），6583 拍剩 2,764 格时跌破峰值的四分之一出局。挨打期间没有收到捐款：队友眼里它被攻兵 89.1 万 > 1.65×余额，判为弃子。它自己只在 6314~6321 拍对 leo_tx 留下的无主地出过 3 条共 5.3 万兵，没有对 Kürdistan 出过手（余额低于 88×领土 的底线）。"
+   },
+   {
+    "bot": "sora_w",
+    "p": 11,
+    "t": 6030,
+    "detail": "peak:10024;boats:0;out:0;by:37:122909:31816",
+    "peakTerr": 13618,
+    "peakTick": 1798,
+    "last300Takers": [
+     {
+      "who": "RONiN#37(队2)",
+      "px": 2424
+     },
+     {
+      "who": "AI#52",
+      "px": 60
+     }
+    ],
+    "donationsIn500": {
+     "n": 0,
+     "credited": 0
+    },
+    "donationsOut500": {
+     "n": 0,
+     "left": 0
+    },
+    "cause": "出生在扇形最东端的外弧，1800~4425 拍封死。4417 拍它给 talon5 捐了 19.1 万（密度 46→29），6 拍后（4423 拍）RONiN（队 2，主体在小岛 L7 上，当时 182 万兵）第一条船 22 万兵登陆；到 4937 拍 RONiN 4 条船加 2 发陆攻共 128 万兵。sora_w 靠 10 笔救急到账 205 万、回击 9 条 142 万兵把滩头清掉，5045 拍重新封死。随后按封死号的规则把兵捐走：5068、5096 拍给 talon5 45.6 万、29.5 万，5271 拍给 riku_x 28.4 万，密度 107→32。5360 拍 RONiN 第 5 条船 65.7 万兵登陆（它 13,611 格、42.4 万兵、密度 31；RONiN 密度 117→90）。贴上真人后它的底线回到 88×领土（120 万），RONiN 的报价 189.8 高于 worth 95.7，不还手，5355 拍之后再没有发出任何指令。救急只到了 noah88 的 16.2 万（5390 拍）：其他后排号密度 30~37，不到门槛 42；等它们攒回 42（5500 拍起），sora_w 已经缩到 9,005 格 < 0.22×talon5 的领土，被判为弃子。RONiN 又打 4 发共 105.5 万，6030 拍剩 2,465 格、跌破峰值的四分之一出局。"
+   },
+   {
+    "bot": "noah88",
+    "p": 12,
+    "t": 6642,
+    "detail": "peak:9891;boats:0;out:0;by:27:224352:80975",
+    "peakTerr": 10286,
+    "peakTick": 4240,
+    "last300Takers": [
+     {
+      "who": "Kürdistan ✌️#27(队1)",
+      "px": 7440
+     }
+    ],
+    "donationsIn500": {
+     "n": 0,
+     "credited": 0
+    },
+    "donationsOut500": {
+     "n": 1,
+     "left": 146847
+    },
+    "cause": "扇形顶点，1010~1554 拍只贴着 Player 621 不出手（领土 4,339 格不动）；4245~6450 拍封死，5040~6216 拍 5 笔捐款每次捐到密度 29~30（最后一笔 6216 拍给 talon5 11.9 万）。ryan_m 丢地后它贴上 Kürdistan：6531 拍 66.7 万兵（它 10,286 格、48.0 万兵、密度 47），6622 拍 48.7 万兵，6642 拍出局。期间没有收到捐款：6375 拍它「没有敌邻也没在挨打」不在候选里；6535 拍挨打后，zexos1（密度 85）、talon5（72）、riku_x（88）都「不够格（要求密度 ≥102 且比对方高 16）」。"
+   },
+   {
+    "bot": "zero_7",
+    "p": 15,
+    "t": 6595,
+    "detail": "peak:6485;boats:0;out:0;by:27:372978:79994,23:151232:30096,37:311494:38672",
+    "peakTerr": 6825,
+    "peakTick": 1093,
+    "last300Takers": [
+     {
+      "who": "Player 228#23(队4)",
+      "px": 3497
+     },
+     {
+      "who": "Kürdistan ✌️#27(队1)",
+      "px": 1245
+     }
+    ],
+    "donationsIn500": {
+     "n": 0,
+     "credited": 0
+    },
+    "donationsOut500": {
+     "n": 0,
+     "left": 0
+    },
+    "cause": "扇形内弧，1095~6115 拍封死，6,825 格五千拍没变过，兵一直在捐（最后一笔 5929 拍给 leo_tx 8.7 万，密度 45→29）。6398 拍 Player 228 38.7 万兵打过来（它 6,825 格、37.7 万兵、密度 55），6538 拍 Player 228 36.4 万、6552 拍 Kürdistan 57.6 万、6594 拍 RONiN 31.8 万：三家 4 发共 165 万兵，6595 拍出局。期间没有收到捐款，自己没有任何指令。"
+   },
+   {
+    "bot": "talon5",
+    "p": 16,
+    "t": 8269,
+    "detail": "peak:33965;boats:0;out:0;by:30:176572:37727,31:756507:68663,47:278120:34920",
+    "peakTerr": 47161,
+    "peakTick": 5452,
+    "last300Takers": [
+     {
+      "who": "BLEUET [qc]#31(队2)",
+      "px": 7687
+     },
+     {
+      "who": "[OG] Hippo Raj#30(队1)",
+      "px": 4511
+     },
+     {
+      "who": "[TR] Kayser-i R…#47(队1)",
+      "px": 3188
+     },
+     {
+      "who": "zexos1",
+      "px": 46
+     }
+    ],
+    "donationsIn500": {
+     "n": 0,
+     "credited": 0
+    },
+    "donationsOut500": {
+     "n": 0,
+     "left": 0
+    },
+    "cause": "扇形西端外弧，959~1442 拍被底线锁住，1710~3150 拍和 Tukki、Acalcucum 对峙；4284 拍后是全队的头号收款人（全场到账 861 万），4641~4844 拍吃掉 Tukki，5452 拍到 47,161 格。5400~6030 拍 BLEUET 5 发 244 万兵拿走 11,063 格。最后一轮（7145~8269 拍）：BLEUET 12 发 845 万兵（其中 6 发是船登陆，410 万），Hippo Raj 7 发 356 万，Kayser 5 发 218 万，Lebanon 6 发 109 万，共 30 发 1530 万兵；它 7145 拍 45,321 格、478 万兵（密度 105）。7448 拍对 BLEUET 连发 3 条 105 万兵之后，余额只在 7810 拍碰到过一次 100×领土（7819 拍对 Lebanon 出了一条 28.2 万），其余时间密度 72~97，对 BLEUET 的报价 205 高于 worth 84，不出手；7448→8269 拍领土 39,852→8,414 格，丢给 BLEUET 15,019 格、Hippo Raj 9,969 格、Kayser 6,260 格，8269 拍出局。旁边的 zexos1 7910 拍有 554 万兵（密度 89），对它「不够格（要求密度 ≥102 且比对方高 16）」，一笔没捐。"
+   },
+   {
+    "bot": "leo_tx",
+    "p": 17,
+    "t": 6299,
+    "detail": "peak:10654;boats:0;out:0;by:27:1095193:62134",
+    "peakTerr": 12478,
+    "peakTick": 5861,
+    "last300Takers": [
+     {
+      "who": "Kürdistan ✌️#27(队1)",
+      "px": 2714
+     },
+     {
+      "who": "Player 228#23(队4)",
+      "px": 1859
+     },
+     {
+      "who": "[TR] Kayser-i R…#47(队1)",
+      "px": 1033
+     }
+    ],
+    "donationsIn500": {
+     "n": 3,
+     "credited": 274206
+    },
+    "donationsOut500": {
+     "n": 0,
+     "left": 0
+    },
+    "cause": "扇形南侧外弧，1830~2465、3325~4095 拍两度封死，全场捐出 191 万（税 48 万）。5278~5292、5817~5831 拍两次在余额刚过 100×领土 时对 Player 228（队 4，密度 85~94）连发 4 条：42.0 万、48.7 万兵（都是余额的 40%，后一次密度 108→63，300 拍净得地 −342）。5838 拍 Kayser（队 1）28 万兵打过来；5905 拍 Kürdistan（队 1）的船 75.5 万兵登陆（它 11,431 格、64.3 万兵、密度 56）；之后 Player 228 49.0 万（5929 拍）、Kayser 25.9 万 / 25.1 万、Player 228 31.3 万、Kürdistan 75.4 万（6209 拍）/ 70.9 万（6286 拍）：三家 8 发共 381 万兵。5929~5943 拍收到 zero_7、kaito9、noah88 三笔共 27.4 万。6299 拍出局。"
+   },
+   {
+    "bot": "alex_k",
+    "p": 19,
+    "t": 6724,
+    "detail": "peak:8000;boats:0;out:0;by:27:345026:81148",
+    "peakTerr": 8517,
+    "peakTick": 2066,
+    "last300Takers": [
+     {
+      "who": "RONiN#37(队2)",
+      "px": 4270
+     },
+     {
+      "who": "Kürdistan ✌️#27(队1)",
+      "px": 1746
+     }
+    ],
+    "donationsIn500": {
+     "n": 0,
+     "credited": 0
+    },
+    "donationsOut500": {
+     "n": 0,
+     "left": 0
+    },
+    "cause": "扇形内弧，2070~5770 拍封死，8,517 格没变过；5299~5621 拍给 talon5 三笔共 32.4 万（最后一笔捐到密度 30）。sora_w 的地被 RONiN 占去后它从 5770 拍起贴上 RONiN、不再算封死，此后没有再捐，密度从 30 攒到 93。6510、6559、6671 拍 RONiN 三发 41.5 万 / 37.7 万 / 34.9 万，6650、6713 拍 Kürdistan 两发 46.8 万 / 44.8 万（第一发到时它 8,517 格、79.0 万兵）：5 发共 206 万兵，6724 拍出局。期间没有收到捐款（6535 拍 zexos1、talon5、riku_x 密度 72~88，不到一般调度要求的 108；6655 拍它只剩 5,492 格，被判为弃子）。它自己只在 6503、6510 拍对无主地出过 2 条共 7.6 万兵，没有对 RONiN、Kürdistan 出过手（余额低于 88×领土 的底线，对方报价高于 worth）。"
+   },
+   {
+    "bot": "riku_x",
+    "p": 22,
+    "t": 7383,
+    "detail": "peak:15310;boats:0;out:0;by:23:107648:47922,37:362857:52371,47:338019:31540",
+    "peakTerr": 28303,
+    "peakTick": 2168,
+    "last300Takers": [
+     {
+      "who": "RONiN#37(队2)",
+      "px": 6358
+     },
+     {
+      "who": "Player 228#23(队4)",
+      "px": 3909
+     },
+     {
+      "who": "[TR] Kayser-i R…#47(队1)",
+      "px": 2472
+     }
+    ],
+    "donationsIn500": {
+     "n": 0,
+     "credited": 0
+    },
+    "donationsOut500": {
+     "n": 0,
+     "left": 0
+    },
+    "cause": "扇形南侧外弧，开局吃 AI 最快的号（2168 拍 28,303 格）。Player 228（队 4）的主体在隔海的 L5 上，3060 拍在 L1 上只有 859 格、和 riku_x 接壤 7 像素；它从 2947 拍起每 250 拍左右打 riku_x 一发，riku_x 到 3738 拍丢了 7,218 格才第一次还手（余额过 100×领土）；全场和 Player 228 对打，对方 18 发 877 万兵、净拿我方 10,553 格，我方 31 发 782 万兵。全场收到捐款 376 万、又捐出 234 万。6139、6188 拍 Kürdistan 两发 176 万兵。最后一轮：7053 拍 RONiN 的船 61.4 万兵登陆（它 15,915 格、108 万兵、密度 68），之后 RONiN 3 发 137 万、Kayser 3 发 114 万、Player 228 79.1 万，三家 8 发共 392 万兵，7383 拍出局。期间没有收到捐款：zexos1 密度 62~93、talon5 密度 92~100，都不到捐款门槛 102。"
+   }
+  ],
+  "decisions": [
+   {
+    "id": "D01",
+    "t": "选点阶段",
+    "bot": "全部",
+    "what": "10 个号按角落扇形阵出生：锚点 (1248,212)，三圈半径 32 / 95 / 158 像素；最近队友 63~74 像素（中位 67 = 1.05×rCell），9 个号在 1.5×rCell 内有 ≥2 个队友。扇形面积约 24,508 格 = 1.92 个人均地盘。",
+    "why": "没有 boss 且 ≥6 个号时走角落扇形阵：点间距下限 clamp(0.95×rCell, 42, 68)；注释把内圈的号当作没有敌邻的「蓄水池」。锚点按陆地采样打分，落在 L1 东段，离最近的地图角 327 像素。",
+    "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L1065~1077（角落扇形阵、r0/r1/r2、minReqSep）、L1093~1133（锚点打分）、L1135~1170",
+    "evidence": "spawn_churn.py A047 --fan；spawn_geometry.py（A047 行：间距 63/67/74、领土中位比 630 拍 1.26 / 1530 拍 0.64、2100 拍 5/10 个号封死）；ascii_map.mjs A047 --at 630 --map（630 拍我方号已互相接壤）；idle_scan.py A047（全场封死 23,320 号·拍）。后果指标：1530 拍中位比 0.64，差一点不到 0.60 的线；2100 拍正好一半的号封死。同一张图同一个角的 A029 扇形是 1.65 个人均地盘，1530 拍中位比 0.54。",
+    "verdict": "error",
+    "patternId": "NEW-SP-DISC",
+    "statementType": "observed"
+   },
+   {
+    "id": "D02",
+    "t": "第 1~351 步",
+    "bot": "全部（leo_tx、kaito9、riku_x 到最后一步）",
+    "what": "协调器 51 次整体求解，阵型中心搬了多次；每个号被执行 21~37 条出生指令；leo_tx、kaito9、riku_x 的最后一条在最后一步才发出，落点离最后一轮点位 147 / 78 / 81 像素。",
+    "why": "每次大厅状态变化都整体重算并重新配对：rCell 按「当时已选点的真人数」算，半径和锚点跟着变；锁的只是角落名；配对按各号当前位置重新求最小总距离。",
+    "codePath": "spawn-coordinator-c116-vb.mjs solve L837~838、L1103、L1276、L1346 → matchBotsToTargets L1431~1446",
+    "evidence": "spawn_churn.py A047（求解轮数、互换点位：kaito9↔leo_tx 4 次、kaito9↔riku_x 3 次等；第 39 轮起锚点稳定在 (1248,212)）；match_digest.py 第 1 节。没有看到由此造成的损失。",
+    "verdict": "unclear",
+    "patternId": "NEW-SP-RESOLVE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D03",
+    "t": "90~930",
+    "bot": "全部",
+    "what": "按圈数买无主地、再吃身边的 AI：270 拍领土中位 364 对 310，630 拍 3,271 对 2,596，930 拍我方占地 8.0%（各队 8.5~9.5%）。",
+    "why": "开局逻辑在余额很小的阶段不吃亏：全队 630 拍只有 5.6 万兵，谁都是有多少花多少。",
+    "codePath": "V13.expandNeutral L2373 / dpNeutral L2383；Style.pickTarget L1144~1161",
+    "evidence": "match_digest.py A047 第 3b 节（270 / 630 拍中位与名次）；window_tally.py A047 630 930。",
+    "verdict": "good",
+    "patternId": "NEW-OP-DPGOOD",
+    "statementType": "observed"
+   },
+   {
+    "id": "D04",
+    "t": "930~1500",
+    "bot": "talon5、leo_tx、zexos1、sora_w 等",
+    "what": "贴着兵比地少的内置 AI 不出手：930~1500 拍 265 个决策拍（23%），1500 拍前合计 4,260 号·拍。talon5 959~1442 拍一条都没落地，余额 1.5 万→14.9 万，身边 9 个弱 AI 约 8.4 千格。",
+    "why": "winFloor 的 safeFinite 对所有贴着的 AI 取最大值：1100 拍 leo_tx（4.88 万）要留 zexos1 的 5.28 万（AI#451），zexos1（5.12 万）要留 talon5 的 4.91 万（AI#418）和 leo_tx 的 4.88 万，talon5（4.91 万）要留 Tukki 的 6.12 万（AI#298）和 zexos1 的 5.12 万（AI#418）。一个 0 兵、除自己外没有别的邻居的 AI#81（470 格）也被同一个底线锁住。",
+    "codePath": "Style.pickTarget L1160~1161 ← V13.floorFor0 L2233~2236 ← Policy.winFloor L4562~4570 ← V13.safeFinite L2500~2510 ← Strategy.threatOf L417~444",
+    "evidence": "window_tally.py A047 930 1500；idle_scan.py A047；shadow.mjs A047 --bots leo_tx,zexos1,talon5 --from 600 --to 1460 --at 1100,1200,1300（out/A047/shadow_600_1460_outer.txt 的 winFloor 拆解）；truth_query.py A047 cmds talon5 930 1560。本局绑住底线的既有队友也有敌方真人（Tukki、Acalcucum、AIRWAYS）。",
+    "verdict": "error",
+    "patternId": "NEW-OP-ALLYLOCK",
+    "statementType": "observed"
+   },
+   {
+    "id": "D05",
+    "t": "1010~1554",
+    "bot": "noah88、alex_k、ryan_m",
+    "what": "三个号只贴着 Player 621（队 2）不出手：930~1500 拍 186 个决策拍。1120 拍对方 10,445 格、5.6 万兵（密度 5.4），三个号合计 17.7 万兵；1400 拍对方 15.4 万兵，三个号 44.7 万兵。noah88 的领土 1120~1560 拍停在 4,339 格，密度 17→50。",
+    "why": "核心期前打真人要「余额 − 底线 > 21.4%×余额」，底线 = 约 1.5×邻居均兵、封顶 50×自己的领土：1400 拍 noah88 底线 21.7 万（余额 18.9 万）、ryan_m 23.0 万（14.0 万）、alex_k 23.0 万（11.8 万）。对方的兵涨多快底线涨多快；每个号只看自己的余额。",
+    "codePath": "Policy.act L4850 → Style.pickTarget L1144~1161 ← V13.floorFor L2228~2231 / floorFor0 L2233~2240 ← General.floors L819~830",
+    "evidence": "window_tally.py A047 930 1500（只贴真人列）；shadow.mjs A047 --bots noah88,ryan_m,alex_k,talon5 --at 1000,1200,1400,1500,1550（out/A047/shadow_600_1620_inner.txt）；truth_query.py A047 bal 38 900 1560 110 与 bal noah88 / alex_k / ryan_m。1500 拍核心期一接手，noah88 立刻对它出手（D06）。",
+    "verdict": "error",
+    "patternId": "NEW-OP-REFCHASE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D06",
+    "t": "1554~2027",
+    "bot": "noah88、ryan_m、alex_k、zexos1；riku_x",
+    "what": "核心期接手后挑密度远低于自己的邻居打：noah88 1554 拍 4 条 20.9 万兵打 Player 621（密度 63 对 18），ryan_m、alex_k、zexos1 跟上，2027 拍打掉；riku_x 1561~1589 拍 3 条共 4.0 万兵打 kurunegala（密度 0.4），1979 拍打掉。1530→3060 拍从这两家拿到 10,398 + 10,132 格。",
+    "why": "buyLand 的 worth = 1.5×自己密度（1500 拍 m=1.5）：noah88 worth 84.9 对 Player 621 的报价 39.7，成交。",
+    "codePath": "Policy.buyLand L5350~5359（c < worth 才买）、L5455~5609",
+    "evidence": "human_strikes.py A047 --list 200（1554 拍 noah88 密度比 3.57、300 拍净得地 +3,517；riku_x 三轮密度比 7.6~11.0）；truth_query.py A047 on 38 1450 2030；truth_query.py A047 gain 1530 3060。noah88 那 4 条是积压后同一拍落地的，一次花掉余额的 79%（27.4 万→5.7 万）。",
+    "verdict": "good",
+    "patternId": "NEW-AT-CHEAPKILL",
+    "statementType": "observed"
+   },
+   {
+    "id": "D07",
+    "t": "950~1560",
+    "bot": "riku_x、sora_w、leo_tx、ryan_m、zexos1、noah88",
+    "what": "指令在路上被攒成一摞再倒序一起落地：24 批 147 条（最多一批 9 条；630~1499 拍 23 批 143 条），最新一条意图到落地平均晚 57 拍；6 批把余额抽到四成以下（riku_x 1393 拍 9 条 2.37 万→6,281；sora_w 1302 拍 9 条 3.46 万→1,677）。",
+    "why": "策略每 5 拍照发一条，不记「已发未落地」；落地时引擎按当时余额重新计价。传输层为什么攒不在仓库里。",
+    "codePath": "Strategy.send L479~487；Policy.act L4838",
+    "evidence": "burst_runs.py A047（24 批全部能和影子策略的连续决策拍倒序对上）；exec_gap.py A047（1000~1249 拍想出 39.4 万兵、实际 28.1 万；1250~1499 拍 44.5 万对 26.4 万）；client_lag.py A047（客户端之间没有相对落后）。对占地的影响分不出来：同期更大的缺口来自 D04、D05。",
+    "verdict": "unclear",
+    "patternId": "NEW-IO-STACK9",
+    "statementType": "observed"
+   },
+   {
+    "id": "D08",
+    "t": "1710~3150",
+    "bot": "talon5、zexos1",
+    "what": "外圈两个号和邻居对峙 1,440 拍：talon5 13,377 格不动（密度 11→82），zexos1 16,446 格不动（密度 28→82）。",
+    "why": "2500 拍 talon5 的 worth = 0.9×自己密度 43.0 = 38.7，Tukki 的报价 53.4（29,484 格、64.2 万兵、密度 21.8）、Acalcucum 66.4，都高于 worth 且余额没过 100×领土 → L5359 break。",
+    "codePath": "Policy.offers L5072~5100；Policy.buyLand L5350~5359",
+    "evidence": "flat_windows.py A047；shadow.mjs A047 --bots talon5,zexos1 --at 2000,2500,3000,3200,3400（out/A047/shadow_1600_3450_front.txt）。对面的 Tukki、AIRWAYS、Acalcucum 同期也没有打过来；3171 拍起 zexos1、talon5 先过软上限先出手。",
+    "verdict": "unclear",
+    "patternId": "NEW-AT-STANDOFF",
+    "statementType": "observed"
+   },
+   {
+    "id": "D09",
+    "t": "2947~3738",
+    "bot": "riku_x",
+    "what": "Player 228（队 4，16,470 格、177 万兵、密度 107；主体在隔海的 L5，3060 拍在 L1 上只有 859 格、和 riku_x 接壤 7 像素）2947、3115、3465、3717 拍打过来 4 发（40.2 万~52.8 万，各是它余额的两成左右）；riku_x 791 拍没有对任何真人出兵，丢了 7,218 格，余额 80 万→217 万，3738 拍过了 100×领土 才第一次还手（2 条 52.1 万）。Player 228 在 L1 上的地 859 格（3060 拍）→10,522 格（6030 拍）→33,349 格（7500 拍）。",
+    "why": "riku_x 密度 30→102，对 Player 228 的报价（按对方整个号的密度算）高于 worth，未过软上限 → 不出手；底线封顶 88×领土。报价不看对方在这块陆地上只有一小块滩头。",
+    "codePath": "Policy.buyLand L5350~5359；Policy.safeAt L4543~4560",
+    "evidence": "enemy_ledger.py A047 --p 23 --strikes 2900 7400（out/A047/enemy_23_p228.txt）；truth_query.py A047 flow riku_x 2940 3738；truth_query.py A047 bal riku_x 2900 3800 150。全场 Player 228 对我方 18 发 877 万兵、净拿 10,553 格。",
+    "verdict": "error",
+    "patternId": "NEW-AT-PRICEGATE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D10",
+    "t": "2142~4283",
+    "bot": "后排各号",
+    "what": "配额解除前发出的 119 笔调度只落地 35 笔：2142~3212 拍 59 笔落地 6 笔，3213~4283 拍 60 笔落地 29 笔。",
+    "why": "选定收款人后按固定比例直接 g.donate，不看收款人的累计配额：没落地的 84 笔里 82 笔是累计配额用满（riku_x 278/279、zexos1 275/309、talon5 136/279）。",
+    "codePath": "Policy.tryDonateToTeammate L4499~4508",
+    "evidence": "quota_truth.py A047 --list 20；exec_gap.py A047（调度 168 → 84）。没落地的捐款不扣兵，损失是这些决策拍没干别的。",
+    "verdict": "error",
+    "patternId": "NEW-DN-QUOTABLIND",
+    "statementType": "observed"
+   },
+   {
+    "id": "D11",
+    "t": "938~1533、3339~3381",
+    "bot": "kaito9、zero_7；leo_tx",
+    "what": "船白送。(a) 开局封死的 kaito9、zero_7 14 条船 15.7 万兵（比例 77~401/1024）：9 条到岸时落点已是队友 riku_x 的地，移交 13.9 万兵只到账 3.7 万（4 条到岸 6.5 万、到账 0）；2 条沉没、1 条回到自己地上作废、2 条登陆 AI 得 15 格。(b) leo_tx 3339~3381 拍 3 条 4/1024 的船：各载 6 千多兵，各付手续费约 4 万，走了 1,150 拍后沉没。",
+    "why": "(a) 核心期前没有任何邻居的号每 60 拍往海对面最便宜的落点（内置 AI 或无主地）发船；船在海上走几十到几百拍，到岸时那块地已经被队友占了，按捐款处理、受配额限制。(b) 封死且密度 ≥115 时往无主地发船，载兵只按「3×那块地的格数 + 300」算，发船手续费却按整笔余额的 32/1024 收。",
+    "codePath": "(a) General.act L804~807（nb.length === 0 时 boatOut）→ General.boatOut L999~1015 → searchWater L1020~1079；V13.act L1822 → Policy.boatFood L5621 → V13.boatFood L2001~2021 → searchFood L2028~2080；(b) Policy.idleBoats L5022~5043（L5031、L5040）→ General.boatOut L999~1015（L1009 amount）",
+    "evidence": "boat_list.py A047（27 条船：载兵 23.2 万、手续费 15.0 万；移交队友 9 条 13.9 万兵，回到自己地上作废 5 条，沉没 5 条；手续费比载兵多的 3 条：载兵 1.88 万、手续费 12.0 万）；tmp/shadow/A047/intents.tsv（kind=boat 的行）。量很小，对结果没有可见影响。",
+    "verdict": "error",
+    "patternId": "NEW-SE-BOATWASTE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D12",
+    "t": "4746~4844",
+    "bot": "talon5",
+    "what": "Tukki 把兵打空（密度 77.7→6.2→0）后，talon5 在没过软上限时连出三轮 76.1 万、81.7 万、28.0 万兵，4284→5410 拍从它拿到 23,212 格。",
+    "why": "对方密度一掉，报价 c 低于 worth，价格规则自己就会出手。",
+    "codePath": "Policy.buyLand L5350~5359、L5455~5609",
+    "evidence": "human_strikes.py A047 --list 200（4746 拍密度比 15.0、300 拍净得地 +9,870；4844 拍 +8,013）；truth_query.py A047 gain 4284 5410。Tukki 4922 拍离场，5020 拍被 [37C] 打掉。同类的还有 zexos1 3423~4109 拍对 AIRWAYS（3494 拍离场）的 225 万兵、+23,044 格。",
+    "verdict": "good",
+    "patternId": "NEW-AT-DENSEDGE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D13",
+    "t": "4423~5045",
+    "bot": "sora_w（+ 捐款的队友）",
+    "what": "RONiN 4 条船加 2 发陆攻共 128 万兵登陆 sora_w（首发时 RONiN 182 万兵，sora_w 40.1 万兵）；10 笔救急到账 205 万，sora_w 回击 9 条 142 万兵，滩头清掉，领土 4400 拍 13,618 格、5100 拍 13,618 格。",
+    "why": "配额解除后救急调度每笔都到；sora_w 被登陆后不再算封死，余额过 100×领土 时对 RONiN 出手。",
+    "codePath": "Policy.tryDonateToTeammate L4463~4473（defense_dispatch）；Policy.buyLand L5353~5359、L5455~5609",
+    "evidence": "enemy_ledger.py A047 --p 37；donation_list.py A047 4400 5000；human_strikes.py A047 --list 200（4718 拍 5 条 75.8 万、4949 拍 3 条 51.2 万）。truth_query.py A047 bal sora_w 4400 5400 100 / bal 37 4400 5400 100。按 HOLDFED 的口径：4423~5359 拍 936 拍里被同一个真人打 6 次、收到 10 笔捐款，领土没跌；RONiN 的兵首发时是它的 4.5 倍，救急到账后缩到 1.3~1.7 倍。第 7 发（5360 拍）来的时候它已经把兵捐回密度 31，见 D15、D17。",
+    "verdict": "good",
+    "patternId": "NEW-DF-HOLDFED",
+    "statementType": "observed"
+   },
+   {
+    "id": "D14",
+    "t": "4284~5410",
+    "bot": "7 个后排号 → talon5、riku_x、sora_w、zexos1",
+    "what": "配额解除后调度 49 发 49 落地；4284~5410 拍到账 1080 万（税 263 万），talon5 收 550 万，同期 talon5 净得地 21,441 格，我方占地 22.3%→25.6%。",
+    "why": "封死号按 32~44×领土 留底，其余的兵按 320 / 380 的比例给有战线的号。",
+    "codePath": "Policy.tryDonateToTeammate L4414~4508",
+    "evidence": "donation_list.py A047 4284 5410；squad_ledger.py A047；interest_rate.py A047 --win 4284,5410。代价：这 1,126 拍全队花掉利息的 118%，余额 1000 万→888 万；talon5 的 2.1 万格大半来自正在离场的 Tukki。",
+    "verdict": "unclear",
+    "patternId": "NEW-DN-CARRIER",
+    "statementType": "observed"
+   },
+   {
+    "id": "D15",
+    "t": "5040~6216",
+    "bot": "ryan_m、sora_w、noah88、zero_7、kaito9、alex_k、zexos1",
+    "what": "封死的后排号反复把兵捐到密度 29~32：4284 拍后落地的 51 笔里 36 笔捐后密度 ≤32。5400 拍 7 个号密度 31~49。五个号（ryan_m、sora_w、noah88、zero_7、kaito9）最后一轮挨打前的最后一笔捐款都把自己捐到 29~32。",
+    "why": "boxedIn 时留底 32×领土（有海岸）或 22×领土，门槛密度 ≥42，比例取「留底允许的最大值」与 380 里小的那个；一攒到 42~48 就再捐一次。",
+    "codePath": "Policy.tryDonateToTeammate L4355、L4382~4388、L4465、L4500~4506",
+    "evidence": "donation_list.py A047 5040 6230；hollow_rear.py A047（按严格口径 400 拍内没地、挨第一发时密度 ≤45：ryan_m、kaito9；放到 700 拍加 sora_w；不限挨第一发时的密度共 5 个号）。",
+    "verdict": "error",
+    "patternId": "NEW-DN-HOLLOWREAR",
+    "statementType": "observed"
+   },
+   {
+    "id": "D16",
+    "t": "5222~5362、4627",
+    "bot": "riku_x、alex_k、zero_7、kaito9、zexos1 → talon5",
+    "what": "给已经快到软上限的 talon5 继续捐：5222 拍 riku_x 40.0 万（收款时 talon5 密度 97）、5348 拍 alex_k 10.0 万（密度 99）、5355 拍 zero_7 9.4 万（密度 102）；全场 25 笔 810 万到账后收款人余额 > 100×领土，其中 5 笔 265 万 > 128×领土。talon5 5236~5243、5362~5369 拍把过线的兵打给 [37C]（各 3 条：147.2 万、143.2 万）。",
+    "why": "封死号给收款人设的密度上限是 142（救急）/ 128~140（一般）；不看到账后对方会不会过 100×领土。",
+    "codePath": "Policy.tryDonateToTeammate L4418、L4479~4481、L4499~4508",
+    "evidence": "donation_list.py A047（末尾汇总：过软上限 25 笔 810 万；300 拍内来回倒手 204 万 = 到账的 11%；二传手 zexos1 收 328 万又捐出 498 万、再交税 114 万）。",
+    "verdict": "error",
+    "patternId": "NEW-DN-CAPLOOP",
+    "statementType": "observed"
+   },
+   {
+    "id": "D17",
+    "t": "5360、5905、7053",
+    "bot": "sora_w、leo_tx、riku_x（被登陆）",
+    "what": "敌方用船开战线：RONiN 5360 拍在 sora_w 身上登陆 65.7 万兵（登陆前 300 拍 sora_w 没有任何敌邻，密度 31，登陆兵是它余额的 1.55 倍），670 拍后出局；Kürdistan 5905 拍在 leo_tx 身上登陆 75.5 万兵；RONiN 7053 拍在 riku_x 身上登陆 61.4 万兵；BLEUET 7145 拍起在 talon5 身上登陆 6 发 410 万兵。全场敌方真人的船在我方号身上登陆后进攻 31 发 1300 万兵：BLEUET 8 发 536 万、Hippo Raj 5 发 239 万、RONiN 6 发 215 万、Kayser 4 发 87 万、[37C] 4 发 76 万、Kürdistan 1 发 75.5 万、Lebanon 2 发 39 万、Tukki 1 发 31 万；挨的最多的是 talon5（17 发 742 万）。我方的船没有一条登陆敌方真人。",
+    "why": "封死号的留底（32~44×领土）不看海岸对面是谁；策略里没有读取别人船只的代码。",
+    "codePath": "Policy.tryDonateToTeammate L4355、L4382~4388；Policy.idleBoats L5032",
+    "evidence": "hollow_rear.py A047（按 SEAFLANK 口径：400 拍内 0 个号；放到 700 拍 1 个号 sora_w、登陆兵 65.7 万）；enemy_ledger.py A047 --p 37 / --p 27 / --p 31。",
+    "verdict": "error",
+    "patternId": "NEW-DF-SEAFLANK",
+    "statementType": "observed"
+   },
+   {
+    "id": "D18",
+    "t": "5400~6000",
+    "bot": "后排各号 → talon5",
+    "what": "这 600 拍落地 10 笔 128.6 万，talon5（当时领土最大，4.4~4.7 万格；zexos1 4.07 万格）收 101.2 万（79%）；同一窗口 sora_w 被 RONiN 从 13.2 千格打到 2.5 千格，一笔没收到。",
+    "why": "5500 拍起 sora_w 的领土 < 0.22×talon5 的领土且被攻兵 > 0.45×余额，被判为弃子、先排除；剩下的挨打号里 talon5 的领土项最大。",
+    "codePath": "Policy.tryDonateToTeammate L4455~4456（弃子）、L4467（救急得分含 min(2200, 领土/18)）",
+    "evidence": "donation_list.py A047 5400 6000；shadow.mjs A047 --bots ryan_m,noah88,alex_k --from 5370 --to 5650 --at 5375,5385,5510,5515,5620,5640（out/A047/shadow_5370_5650_rear.txt：5380 拍 sora_w 的救急得分 8,738~8,781 排第一，5500 拍起「判为弃子」）。",
+    "verdict": "error",
+    "patternId": "NEW-DN-BIGFIRST",
+    "statementType": "observed"
+   },
+   {
+    "id": "D19",
+    "t": "5278~5292、5817~5831",
+    "bot": "leo_tx",
+    "what": "两次在余额刚过 100×领土 时对地是自己两倍半、密度和自己差不多的 Player 228 连发 4 条：42.0 万、48.7 万兵（都是余额的 40%）；后一次打完密度 108→63，300 拍净得地 −342，之后 470 拍被三家打掉。",
+    "why": "over=true 时不比较单价；出兵闸门读引擎状态，上一条没生效就再下一条，一发 12% 的脉冲变成四发。",
+    "codePath": "Policy.buyLand L5353、L5359、L5459、L5575 / L5589 / L5596；Policy.act L4838",
+    "evidence": "human_strikes.py A047 --list 200（5278 拍密度比 1.27、+1,444；5817 拍密度比 1.15、−342）；全场 over 的出手 55 轮 4585 万兵，密度比中位 1.23，其中出手时地比对方少的 34 轮 1836 万兵、9 轮净得地为负；不过软上限的 46 轮 1266 万兵，密度比中位 2.18，44 轮净得地为正。",
+    "verdict": "error",
+    "patternId": "NEW-AT-OVERSTRIKE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D20",
+    "t": "6293~6724（另 5360~6030、7053~7383、7145~8269）",
+    "bot": "zexos1、talon5（对挨打的队友）",
+    "what": "挨打的号救不到：ryan_m、noah88、zero_7、alex_k、kaito9 从挨第一发到没地 111~214 拍，收到的捐款是 0；出局或本土被清空的 9 个号最后一轮共挨约 3090 万兵，收到 43.6 万（sora_w 16.2 万、leo_tx 27.4 万）。6375 拍 zexos1 303 万兵、talon5 355 万兵都发不出一笔。",
+    "why": "不封死的捐款人要密度 ≥102（救急）/ ≥108（一般）且比对方高 16、余额 > 1.12×88×领土；被攻兵 > 1.65×余额的号判为弃子；没有敌邻也没在挨打的号不在候选里。",
+    "codePath": "Policy.tryDonateToTeammate L4343（自己挨打就不捐）、L4453、L4455~4456、L4463~4473、L4479~4481",
+    "evidence": "hollow_rear.py A047；shadow.mjs A047 --bots zexos1,talon5,riku_x --from 5850 --to 6730 --at 5910,6215,6375,6535,6655（out/A047/shadow_5850_6730_carriers.txt）；shadow.mjs … --at 7420,7760,7910,8080,8190（7910 拍 zexos1 对 talon5：「我密度 89，要求 ≥102 且比对方高 16」）。",
+    "verdict": "error",
+    "patternId": "NEW-DF-NORESCUE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D21",
+    "t": "6305、6310、6590",
+    "bot": "zexos1、riku_x",
+    "what": "同一个决策拍先发无主地扩张、再发打 Kürdistan 的陆攻，后一条没被受理：zexos1 6305 拍 39.7 万、6310 拍 45.5 万，riku_x 6590 拍 7.1 万，合计 92.4 万兵。挤掉 zexos1 那两条的是去占 leo_tx 出局后留下的无主地的指令（3 条共 55.4 万兵，占到 117 格，其余的兵退回，手续费 13.9 万）。6030~6724 拍全队这样按余额的 47/1024 对无主地出了 14 条共 87 万兵，从无主地拿到 1,534 格；同期队友出局留下的无主地有 10,891 格。",
+    "why": "expandNeutral 和 buyLand 之间没有「本拍已发过」的守卫；线上一拍只受理一条。无主地指令固定按余额的 47/1024 出，不看贴着的无主地有多大。",
+    "codePath": "Policy.act L4941（expandNeutral）→ L4942（buyLand）、L4817、L4962~4963；Strategy.send L479~487",
+    "evidence": "same_tick.py A047 --list（15 个号·拍出 2 条，第 2 条落地 0 次；≥4284 拍 3 次 92.4 万兵）；truth_query.py A047 cmds zexos1 6300 6360（及 ryan_m、alex_k、kaito9、riku_x 同期的无主地指令）；truth_query.py A047 gain 6030 6724；squad_ledger.py A047。这两拍在 Kürdistan 打 ryan_m（6370 拍）之前 60 拍；zexos1 对 Kürdistan 的第一条到 6342 拍才落地（41.2 万）。",
+    "verdict": "error",
+    "patternId": "NEW-IO-ONECMD",
+    "statementType": "observed"
+   },
+   {
+    "id": "D22",
+    "t": "6305~6349、6500~6517",
+    "bot": "zexos1、talon5",
+    "what": "攒到 100×领土 才出手，出的是过线的那一截，打的是报价单上最便宜的邻居：zexos1 791 拍不动之后 6342 拍打 Kürdistan 41.2 万、6349 拍打 Lebanon 73.3 万；talon5 6307~6314 拍打 BLEUET 41.1 万、Lebanon 37.0 万，6510~6517 拍打 Hippo Raj 107.6 万。同一段时间 Kürdistan、RONiN、Player 228 在内圈打掉 5 个号。",
+    "why": "余额没过 100×领土 时对这些邻居的报价（135~174）都高于 worth（86）不出手；过线后不比单价、按报价排序出手。talon5 不接壤 Kürdistan 和 RONiN。",
+    "codePath": "Policy.buyLand L5353（over）、L5359；Policy.offers L5072~5340",
+    "evidence": "tmp/shadow/A047/intents.tsv（zexos1 6300~6340、6555~6565、6640 拍；talon5 6110~6115、6300~6305、6500~6510 拍）；truth_query.py A047 cmds zexos1 5400 6730 / talon5。6030~6724 拍我方对真人出兵 544 万，其中打 Kürdistan 217 万。",
+    "verdict": "unclear",
+    "patternId": "NEW-AT-CAPDUMP",
+    "statementType": "observed"
+   },
+   {
+    "id": "D23",
+    "t": "7819~8269",
+    "bot": "talon5（旁边的 zexos1）",
+    "what": "talon5 7819 拍对 Lebanon 出了最后一条（28.2 万兵），此后 450 拍没有对任何真人出兵，丢给 BLEUET 11,810 格、Hippo Raj 6,176 格、Kayser 4,700 格，8269 拍出局（7448→8269 拍领土 39,852→8,414 格）。旁边的 zexos1 7910 拍有 554 万兵（扣掉手续费和底线还有 198 万可用）也不出手；它 8015 拍过线后 4 条 245.4 万兵打 BLEUET 是空打（进攻 40 拍内结束、兵回到余额，手续费 25.5 万，对方领土 62,174→63,325）。",
+    "why": "7910 拍 talon5 密度 92、余额没过 100×领土，BLEUET 的报价 205.3 高于 worth 84.1 → break；zexos1 密度 89、报价 262.3 高于 worth 84.1，同样 break。worth 是 0.9×自己的密度，报价是对方密度的两倍多：两边密度差不多时，没过软上限就永远不成交。",
+    "codePath": "Policy.buyLand L5350~5359；Policy.offers L5072~5100",
+    "evidence": "shadow.mjs A047 --bots zexos1,talon5 --from 7300 --to 8300 --at 7420,7760,7910,8080,8190（out/A047/shadow_7300_8300_last2.txt）；truth_query.py A047 cmds talon5 7300 8270、flow talon5 7500 8269；refund_strikes.py A047；enemy_ledger.py A047 --p 31 --strikes 7300 9890。",
+    "verdict": "error",
+    "patternId": "NEW-AT-PRICEGATE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D24",
+    "t": "6299~8269",
+    "bot": "leo_tx、zero_7、riku_x、talon5",
+    "what": "出局前 300 拍同时被 3 家打的号有 4 个：leo_tx（Kürdistan、Player 228、Kayser）、zero_7（Player 228、Kürdistan、RONiN）、riku_x（RONiN、Player 228、Kayser）、talon5（BLEUET、Hippo Raj、Kayser）。队 1、队 2、队 4 三支队都在打队 3。",
+    "why": "6030 拍我方是 L1 上连成一片的一块：西面贴着 BLEUET（队 2）、Lebanon、Hippo Raj（队 1），南面贴着 Player 228（队 4）、Kürdistan、Kayser（队 1），东岸贴着 RONiN（队 2）；除 Lebanon 外都是从别的陆块坐船过来的。队 1、队 2、队 4 三支队都在打队 3。底线按单个邻居估，没有按「几家一起来」估。",
+    "codePath": "Policy.safeAt L4543~4560",
+    "evidence": "hollow_rear.py A047（每个号最后一轮的出手方）；review_base.py A047（deaths[].detail 的 by: 字段、last300Takers）；ascii_map.mjs A047 --at 5400,6030,6390,6724 --map（out/A047/map_5400_6724.txt 的接壤像素）。",
+    "verdict": "unclear",
+    "patternId": "NEW-MT-OUTNUMBERED",
+    "statementType": "observed"
+   },
+   {
+    "id": "D25",
+    "t": "1554~9611",
+    "bot": "zexos1、talon5、riku_x、leo_tx 等",
+    "what": "上一条陆攻还没在引擎里执行，下一个决策拍又对同一个目标照原样下一条。落地的打真人 / 内置 AI 的陆攻 497 条 5988 万兵里，重复单 262 条 3303 万兵（55%）；余额 ≥10 万的出兵串第一条占余额的中位 10%，整串 26%、最大 76%。",
+    "why": "出兵闸门读引擎里已生效的在途兵；指令从发出到生效中位 14 拍，期间每 5 拍照发。",
+    "codePath": "Policy.buyLand L5459、L5575 / L5589 / L5596、L5352、L5446；Strategy.send L479~487；Policy.act L4838",
+    "evidence": "blind_reorders.py A047 --lag（关闸串 136 个、重复单 251 条 3200 万兵；≥4284 拍 84 条 2564 万兵；zexos1 51 条 1702 万、talon5 45 条 1012 万）。",
+    "verdict": "error",
+    "patternId": "NEW-IO-ACKREPEAT",
+    "statementType": "observed"
+   },
+   {
+    "id": "D26",
+    "t": "477~1183（上锁）；715~7350（被拦）",
+    "bot": "riku_x、talon5、zexos1",
+    "what": "isNoFullSend 误锁后出兵被自己的守卫拦掉，全场 70 次 540 万兵：riku_x 44 次 360 万兵（其中对 Player 228 14 次 341 万，3730~5810 拍）、talon5 8 次 119 万、zexos1 5 次 54 万，其余 5 个号 13 次 7.9 万。",
+    "why": "发令后 6 拍内余额少掉的量比想发的小就上锁，永不解锁；本局引擎没有 25% 限额（aE.lC=4）。",
+    "codePath": "Policy.updateShadowQuota L3821~3834；Policy.send L3844~3862",
+    "evidence": "tmp/shadow/A047/check.json（lockAt、blocked）；idle_scan.py A047；engine_settings.cjs。被拦的每一次前后几拍都有同目标的指令落地，等于给连发降了速，没有看到由此丢地。",
+    "verdict": "unclear",
+    "patternId": "NEW-AT-NFSLOCK",
+    "statementType": "observed"
+   },
+   {
+    "id": "D27",
+    "t": "1500~7300",
+    "bot": "riku_x（11 条）等",
+    "what": "12 条陆攻出的兵比这条指令的手续费还少（riku_x 11 条，目标是 AI#273 / AI#52；例：6181~6195 拍 4 条各出 4~5 千兵、各付手续费 1.6~1.7 万），白付手续费 17.5 万。",
+    "why": "内置 AI 目标按 1.25×需要量 + 3×接触数 出（目标只剩一点地时需要量很小），不和手续费（整笔余额的 12/1024）比。",
+    "codePath": "Policy.buyLand L5449~5454 → Strategy.send L479~487",
+    "evidence": "fee_ledger.py A047（668 条陆攻、出征 6410 万、手续费 803 万；出兵 < 手续费 12 条）。量很小。",
+    "verdict": "error",
+    "patternId": "NEW-AT-TINYFEE",
+    "statementType": "observed"
+   }
+  ],
+  "unknowns": [
+   "换一种用兵能不能守住，没有做反事实重放。5410 拍我方 888 万兵对队 1 的 1960 万、队 2 的 1930 万；就算后排不捐到密度 30，10 个号平均密度也只有 52，对面是 107~135。差距有多少来自 930~1530 拍少拿的地、多少来自 4284~5410 拍花掉的利息，分不开。",
+   "RONiN、Kürdistan、BLEUET 的船为什么都落在刚捐完兵的号身上：是对面的人看着密度挑的，还是碰巧，录像里分不出来。sora_w 5271 拍捐到密度 32，89 拍后船到；leo_tx 5831 拍打完密度 63，74 拍后船到。",
+   "930~1500 拍别的真人具体是怎么吃 AI 的（每个人花了多少兵、用了多少条指令）没有逐个去算；只知道 L1 上 12 个真人和我方 10 个号兵一样多、地多了一倍多。",
+   "指令在 950~1560 拍被攒成一摞再落地（24 批）的原因：客户端之间没有相对落后，录像里看不出是网络、适配层还是服务器。",
+   "同队的真人 Player 233（5400 拍 21,370 格、密度 118，6030 拍 340 万兵）和我方没有任何兵力往来；它 6724~7500 拍从 Kürdistan 手里拿回 7,089 格。它如果被纳入调度会怎样不知道。"
+  ],
+  "mechanicsQuestions": [
+   "出局线：领土 ≤ 峰值/4 就出局（峰值缓慢回落），剩下的地变成无主地、余额清零。本局 ryan_m 6583 拍出局时还有 2,764 格、5.9 万兵，sora_w 2,465 格、9.95 万兵；6030~6724 拍我方因此有 10,891 格直接变成无主地。挨打的号在跌到四分之一之前把兵花掉或捐掉，和带着兵出局，对全队的差别有多大没有算。",
+   "同一块地由一个号持有和由十个号分着持有，利息差多少：5400 拍我方 10 个号合计每 10 拍进账 11.6 万（按合计余额算 1.32%），同样的地和兵在一个号手里按利率表是 1.80%；interest_rate.py 给的 4284~5410 拍「分散持有少拿的利息」是 546 万。这个数依赖「合并后不超过软上限」的假设，没有用真引擎验证过。",
+   "进攻方每拿一格地要付多少兵、和防守方的密度是什么关系：6030~6724 拍 Kürdistan 打 ryan_m（挨打时密度 37）89.1 万兵、净拿 8,898 格（每格约 100 兵），打 noah88（密度 47）115 万兵、净拿 8,670 格（每格约 133 兵）；打 zexos1（密度 74）75.9 万兵，这一段反被 zexos1 净拿 6,798 格。后排只留密度 30 让对方省了多少，需要用引擎的进攻结算公式逐发复算。",
+   "船到岸时落点已经是队友的地，按捐款处理并受配额限制（4 条船到岸 6.5 万兵、到账 0）：这部分兵是退回发船人、还是直接消失，没有逐条核对余额。"
+  ],
+  "checklistFails": []
+ },
+ {
+  "matchId": "A073",
+  "file": "A073",
+  "reviewer": "R04",
+  "sha": "b4f74cc4",
+  "result": "won",
+  "archetype": "win",
+  "context": {
+   "strategyVersion": "Vb（v27-team-c116-vb.js + spawn-coordinator-c116-vb.mjs）",
+   "cohort": "squad10",
+   "map": 22,
+   "mapSize": [
+    1541,
+    1080
+   ],
+   "mapLand": 664497,
+   "humans": 2,
+   "players": 512,
+   "teams": {},
+   "actualTeams": 0,
+   "cardActualTeams": 2,
+   "ourTeam": 0,
+   "ourBots": 2,
+   "teamSplit": {
+    "0": 2
+   },
+   "baselineWinRate": null,
+   "structureNote": "这不是组队局。对局卡 mode=8，引擎里 lC=8：1v1，不分队（a0L=0），不能捐款（iT=false），每个房间 2 个真人 + 510 个内置 AI，同一张地图（22 号，1541×1080，陆地 664,497 格）同一个种子（5103）。有日志的 9 个号分在 5 个房间：alex_k#0 对 kaito9#1（只有这个房间有录像，下文叫 A 房间）；noah88#0 对 leo_tx#1；sora_w#0 对 zexos1#1；zero_7#0 对 talon5#1；ryan_m#1 对一个没有日志的 #0（协调器名单里的第 10 个号 riku_x，推断）。5 个房间里至少 4 个是编队内互打。",
+   "rooms": "按 results.csv 的 meId / tick / result 两两配对：noah88 won@4943 ↔ leo_tx lost@4942；sora_w won@5547 ↔ zexos1 lost@5547；zero_7 won@5657 ↔ talon5 lost@5657；ryan_m won@4181（日志末行 244,107 格）；alex_k left@11504 ↔ kaito9 left@11494（661 / 660 秒，两个号同时离场，没人赢）。",
+   "landmasses": "地图有 357 块陆地，最大的几块：L1 244,592 格（两个号都出生在这块上）、L2 133,512、L3 96,941、L4 76,804、L5 34,446、L6 30,481、L7 11,828。块与块之间只能坐船（ascii_map.mjs）。",
+   "tools": "A 房间的全场真值来自未改动的线上客户端重放（engine_truth.cjs）；两个号每一拍的决策由影子策略（shadow.mjs）逐拍复现，自检：nb/neut 254 点全部一致，指令计数增量 252 段里 240 段相同、5 段差 1、7 段不同。影子策略的内部状态（冷却、floorK 所在的计划模式）和真号不完全相同，下文凡是依赖它的判定都注明。其余 4 个房间只有日志（traj.csv），凡是这 4 个房间的数字都是日志口径。"
+  },
+  "outcome": {
+   "result": "won",
+   "endTick": 11509,
+   "cardOutcome": {
+    "primaryTeamWon": true,
+    "anyBotWon": true,
+    "resultLabel": "won",
+    "winnerTeam": null,
+    "endTick": 11504,
+    "peakSquadLandShare": 1.9249,
+    "peakPrimaryTeamShareSeen": 0.0,
+    "ourFinalTeamShare": 0.0
+   },
+   "ourTeamFinalSharePct": 96.89,
+   "squadPeakSharePct": 96.89,
+   "botsDead": 0,
+   "botsLeft": [
+    {
+     "bot": "kaito9",
+     "p": 1,
+     "t": 11509
+    }
+   ],
+   "note": "卡片的 won 只是 anyBotWon：3 个房间里 #0 号把同编队的 #1 号打出局，ryan_m 赢了第 5 个房间。A 房间到第 11,509 拍（660 秒，两个号同时离场）没有分出胜负：alex_k 617,634 格（全图 92.9%）、8,480 万兵；kaito9 26,191 格（3.9%）、177 万兵，仍在场。这一局不能算进组队胜率。"
+  },
+  "turningPoints": [
+   {
+    "id": "TP1",
+    "t0": 3330,
+    "t1": 4410,
+    "title": "L1 分完之后 alex_k 一千拍没发一条指令，kaito9 坐船上了 L2",
+    "shareBasis": "alex_k 占全图陆地的百分比（另给 kaito9 的）",
+    "shareBefore": 20.7,
+    "shareAfter": 20.9,
+    "otherBefore": "kaito9 16.0%",
+    "otherAfter": "kaito9 31.7%",
+    "statementType": "observed",
+    "evidence": [
+     "真引擎（state.tsv）：alex_k 3330 拍 137,702 格、30.5 万兵 → 4410 拍 139,048 格、616.4 万兵（密度 2.2→44.3）；kaito9 106,407 格、59.7 万兵 → 210,633 格、353.0 万兵。",
+     "flat_windows.py A073：alex_k 3330~4410 拍指令 +0、发船 +0；影子 rows.tsv：这段 217 个决策拍 alex_k 想发的指令是 0 条；exec_gap.py --profile 250：3250~4249 拍两个号合计只想发 15 条陆攻。",
+     "买地这道门（out/A073/shadow_3300_4460.txt）：3500 拍 worth=7.2，kaito9 c=24.5；3800 拍 worth=10.9，kaito9 c=34.4，AI#283 c=20.0（吃掉它只需 6,688 兵，可用 97.9 万）；4100 拍 worth=21.5，kaito9 c=38.6，AI#283 c=28.7，AI#121 c=55.4。都是「c ≥ worth 且 c ≥ 便宜线 5.8 且未 over」→ L5359 break。4400 拍 worth=39.2 第一次高过 kaito9 的 c=37.3。",
+     "AI#283 是海岛 AI（out/A073/landmass_283.txt）：主体在 L11（2,060 格的小岛，离 alex_k 的岸 5 格水），3580 拍起在 L1 上有一块滩头：72 格（3600 拍）→ 327（3800）→ 512（4400）→ 725（5700）。flow.tsv：3580~4410 拍它从 alex_k 手里一点点拿地，alex_k 没有还手。",
+     "发船这两道门，3580~4410 拍的 167 个决策拍都关着（rows.tsv：每一拍陆上邻居里都有内置 AI）。以 3800 拍为例：boatFood「陆上邻居里有单价 ≤ botMax 60 的内置 AI：AI#283 单价 6.3」直接返回（L2005）；boatOut「有陆上邻居且余额 169 万 < 闲置线 1,740 万」（L5060）。同一拍 searchWater 最便宜的落点是 L2 上的 AI#82（53,453 格、5.8 万兵，水程 168，折算 12.0）。",
+     "3340~3575 拍 AI#283 的滩头还没上来（nb=1，只有 kaito9），这 48 个决策拍也没发船：影子策略（从 3330 拍起跑，out/A073/shadow_3330_3620_boatgate.txt）45 个拍卡在「可装 = boatFrac×(余额 − 底线) < 最小船量」（余额 31 万~79 万，底线 66 万~391 万，L2014），3565~3575 拍 3 个拍能过但落在 boatFood 自己的 60 拍冷却里。这一段依赖影子的内部状态（另一次从 3300 拍起跑，3500 拍判定为能发），真号卡在哪道门不确定。",
+     "kaito9 同期：3731~3738 拍打掉 AI#403 在它岸上的那块地（3 条 91 / 81 / 86 per 1024，共 37.6 万兵），3800 拍陆上邻居只剩 alex_k → boatFood 放行，影子 3800 拍发船 24.2 万兵（170/1024；L2 离它的岸只有 1~2 格水）；真引擎 3808 拍 29.4 万兵登陆 AI#211，3871 拍 23.6 万兵登陆 AI#82，之后陆攻跟进，4410 拍它在 L2 上已有 105,812 格（out/A073/landmass.txt）。"
+    ],
+    "priorDecisions": [
+     {
+      "t": "3192~3248",
+      "bots": "alex_k",
+      "decision": "两批 14 条陆攻 58.3 万兵落在刚被抽空的 kaito9 身上，净得 4.0 万格，把 L1 的分界推到 139k 对 104k。此后到 4400 拍两个号的密度比一直不到 2.6，谁都过不了买地的门槛。",
+      "why": "真人目标的单价按对方余额算，对方越空越便宜；c < worth 或 c < 便宜线时按 12% 的脉冲出兵。",
+      "codePath": "Policy.buyLand L5350~5359（worth、cheap 与 c 的比较）、L5455~5609（脉冲）"
+     },
+     {
+      "t": "3300~3315",
+      "bots": "alex_k",
+      "decision": "对 AI#283 发了 4 条 1/1024~2/1024 的指令（566~864 兵，当时 c=4.5 低于便宜线 5.8）。4 条都落地了（3395 拍 1 条、3444 拍 3 条，晚 95~139 拍），那时两家已经不接壤，没有产生进攻。3320 拍 c 涨到 6.1，过了便宜线，此后再没对它下过单。",
+      "why": "内置 AI 目标的出兵量 want = 1.25×need + 3×接触数（need 只有 352~493）；c 里的手续费是自己整笔余额的 12/1024，余额一涨 c 就过线。",
+      "codePath": "Policy.buyLand L5449~5454 → Strategy.send L479~487；Policy.offers L5072~5100"
+     },
+     {
+      "t": "3580~4410",
+      "bots": "alex_k",
+      "decision": "每个决策拍报价单第一条就 break：不打 kaito9，不吃 AI#283 的滩头，不发船。",
+      "why": "c = (rawNeed + fee) / baseGain，fee 取整笔余额的 12/1024：余额从 169 万（3800 拍）涨到 606 万（4400 拍），AI#283 的 c 从 20.0 涨到 46.5；worth = 0.9×自己密度，跟着涨但追不上小目标的手续费摊销。boatFood 用的是不含手续费的单价（6.3 ≤ 60），认定「陆上还有便宜的 AI」。两处口径相反。",
+      "codePath": "Policy.offers L5072~5100、Policy.buyLand L5350~5359、V13.boatFood L2005、Policy.idleBoats L5058~5060"
+     }
+    ]
+   },
+   {
+    "id": "TP2",
+    "t0": 5313,
+    "t1": 7560,
+    "title": "alex_k 余额过 100×领土后连续出手：先清掉 L1，再靠一条小船在 L2 上开出陆上战线",
+    "shareBasis": "alex_k 占全图陆地的百分比（另给 kaito9 的）",
+    "shareBefore": 28.8,
+    "shareAfter": 57.0,
+    "otherBefore": "kaito9 35.1%",
+    "otherAfter": "kaito9 11.6%",
+    "statementType": "observed",
+    "evidence": [
+     "state.tsv：alex_k 5310 拍 191,379 格、1,964 万兵（密度 102.6）→ 5760 拍 244,592 格（整块 L1）→ 7560 拍 378,750 格；kaito9 233,505 → 206,614 → 76,900 格。",
+     "human_strikes.py A073 --list 45：alex_k 5313 拍 3 条 537.9 万兵（密度比 2.61）净得 4.3 万格；5628 拍 800.4 万兵；5999~7441 拍 7 轮 636 万~1,099 万兵（余额的 19%~40%），密度比 0.99~1.34，每轮 300 拍净得 0.9 万~4.3 万格（相邻几轮的窗口有重叠，不能相加）。全场 alex_k 在 over 状态下打 kaito9 16 轮 2.91 亿兵。",
+     "boat_list.py：5803 拍 alex_k 同一拍两条船：466/1024 载 1,340 万兵，5981 拍回到自己地上作废（退回 1,007 万）；127/1024 载 187.8 万兵，5968 拍登陆 kaito9（到岸 144.9 万），300 拍净得 10,056 格。",
+     "out/A073/landmass.txt：5760 拍 alex_k 在 L1 上 244,592 格、没有任何接壤；kaito9 在 L2 129,714 + L4 76,804；7560 拍 alex_k 在 L2 上 133,230 格，kaito9 只剩 L4（76,804 格，一格没少）。",
+     "kaito9 的还手（human_strikes.py）：6132~7308 拍 7 轮 120 万~521 万兵，密度比 0.98~1.43，每轮之后 300 拍它对 alex_k 的净得地都是负的（−0.8 万~−4.3 万）。"
+    ],
+    "priorDecisions": [
+     {
+      "t": "4770~5310",
+      "bots": "alex_k",
+      "decision": "L1 上还剩 kaito9 的 4 万多格，停手 540 拍，等余额涨到 100×领土。",
+      "why": "kaito9 的密度回到 20.9~39.3，密度比只有 1.7~2.6，c ≥ worth。这 109 个决策拍陆上邻居里一直有内置 AI（AI#283 / AI#121 的滩头），船也发不出去。",
+      "codePath": "Policy.buyLand L5350~5359；V13.boatFood L2005；Policy.idleBoats L5060"
+     },
+     {
+      "t": "5313",
+      "bots": "alex_k",
+      "decision": "余额 1,964 万 > 100×191,379：不再比较单价，对 kaito9 连续出手。",
+      "why": "over = P.surplus > 0 && B > 100×L；over 为真时 L5359 的 break 不触发。",
+      "codePath": "Policy.buyLand L5353、L5359"
+     },
+     {
+      "t": "5750~5755（影子）/ 5803（落地）",
+      "bots": "alex_k",
+      "decision": "没有陆上邻居了，相邻两个决策拍各发一条船：127/1024（boatFood）和 466/1024（boatOut），去的是同一个落点。",
+      "why": "boatFood 和 boatOut 各有各的冷却（lastFood / lastBoat），后一条不知道前一条已经在路上。",
+      "codePath": "Policy.idleBoats L5058~5068、V13.boatFood L2001~2021、General.boatOut L999~1015（L1002 lastBoat）"
+     }
+    ]
+   },
+   {
+    "id": "TP3",
+    "t0": 9360,
+    "t1": 10920,
+    "title": "只剩一个对手、兵是它的 5 倍以上，1,560 拍里 9 条大船全去了只剩碎岛的内置 AI",
+    "shareBasis": "alex_k 占全图陆地的百分比（另给 kaito9 的）",
+    "shareBefore": 74.6,
+    "shareAfter": 80.7,
+    "otherBefore": "kaito9 16.2%",
+    "otherAfter": "kaito9 16.2%",
+    "statementType": "observed",
+    "evidence": [
+     "state.tsv：alex_k 9360 拍 495,589 格、2,956 万兵 → 10920 拍 536,447 格、7,791 万兵（密度 145）；kaito9 107,381 格 → 107,384 格，余额 530 万 → 1,383 万。",
+     "boat_list.py：9968、10094、10234、10290、10353、10423、10479、10542、10598 拍 alex_k 9 条船，比例 425~498/1024，每条载 3,060 万~3,870 万兵、手续费 221 万~248 万，全部登陆 AI#488，每条 300 拍净得 1,105~3,447 格；boat_pairs.py：这 9 条合计载兵 3.20 亿、手续费 2,150 万，9973~10919 拍从 AI#488 净得 6,423 格。",
+     "finish_ledger.py A073 --until 10919：过线拍 9620（alex_k 占 75.4%，2,670 万兵对 kaito9 448 万）；到 10919 拍的 1,290 拍 alex_k 出兵 4.585 亿：船 9 条 3.195 亿全部登陆内置 AI，陆攻 kaito9 8 条 1.376 亿；手续费 3,710 万；净得地 内置 AI +32,156、无主地 +6,800、kaito9 +233。",
+     "影子诊断（out/A073/shadow_9300_10990.txt）9965 拍 searchWater 候选：AI#488（13,574 格、3.1 万兵，水程 3）单价 9.4、折算 226.8；kaito9（107,208 格、871 万兵）单价 262.1、折算 290.6，排第 2。10090 拍：240.8 对 356.9。10420 拍：307.8 对 419.2。",
+     "装船量对得上底线公式（General.floors L829）：9960 拍余额 7,080 万、领土 530,024，落点单价 9.4 → 底线 100×530,024×9.4/60 = 830 万 → 装 (7,080 − 830)/2 = 3,125 万（实际 3,130 万，452/1024）；10905 拍落点 kaito9 单价 411 ≥ 60 → 底线 100×536,447 = 5,364 万 → 装 (7,750 − 5,364)/2 = 1,193 万（实际 1,200 万，157/1024）。",
+     "10395 拍：kaito9 的一条 180 万兵的船在 L1 上占了 58 格。alex_k 两条陆攻 2,850 万 + 1,850 万兵（余额的 60%）；10400 拍在途 2,673 万（抵消了对方 179 万），10410 拍在途 0、领土 532,948→533,006（收回那 58 格），余额 7,784 万 → 7,650 万。kaito9 的本土一格没丢。10822 拍同样的事又发生一次（2,917 万 + 1,809 万）。refund_strikes.py：这样的空打 2 次 9,426 万兵，手续费 300 万。",
+     "10915 拍 searchWater 第一次把 kaito9 排到第 1（折算 442.9），因为 AI#488 被吃到 7,151 格后折算涨到 462.5。10920、10976 拍两条船（1,200 万 + 1,190 万兵，157 / 156 per 1024）登陆 L4，10997 拍 3 条陆攻 3,716 万兵跟进，11160 拍 kaito9 只剩 34,035 格。",
+     "cap_time.py：alex_k 密度 >100 共 2,260 拍。",
+     "前 300 拍（boat_list.py A073 9150 9340 --bot alex_k；human_strikes.py A073 --list 45 的拍 9156 一行；out/A073/landmass.txt 9360 拍）：9156 拍 alex_k 7 条 2,564 万兵打 kaito9，300 拍净得 60,082 格；9177、9268、9331 拍三条 127/1024 的船都去 AI#154。"
+    ],
+    "priorDecisions": [
+     {
+      "t": "9156~9331",
+      "bots": "alex_k",
+      "decision": "9156 拍 7 条 2,564 万兵（余额的 54%）打掉 kaito9 在 L3 上的地：到 9360 拍 L3 的 96,941 格全归 alex_k，kaito9 回到 L4 + L6 的 107,381 格，两个号不再有陆上接壤。之后 9177、9268、9331 拍三条 127/1024 的小船（245 万~297 万兵）去的都是内置 AI#154：9177 拍那条换来 8 格，9268 拍那条回到自己地上作废，9331 拍那条 9594 拍登陆，300 拍从 AI#154 净得 27,401 格（L5）。",
+      "why": "over 状态下对陆上邻居 kaito9 直接出手。陆上没有 kaito9 之后，boatFood 只找海对面的内置 AI 和无主地（searchFood 跳过真人）；这几拍陆上邻居只剩 kaito9 在 L3 上的残地，余额只有 37~60×领土，能去真人那里的 boatOut 过不了闲置线（有陆上邻居时要余额 ≥ 125×领土），发出去的都是 boatFood 的小船。",
+      "codePath": "Policy.buyLand L5353、L5359；V13.boatFood L2001~2021、V13.searchFood L2071；Policy.idleBoats L5058~5060"
+     },
+     {
+      "t": "9960、10085、10220 …（每 60 拍左右一条）",
+      "bots": "alex_k",
+      "decision": "nb=0，余额过闲置线：boatOut 把 boatFrac×(余额 − 底线) 装船，去 searchWater 折算最低的落点 AI#488。",
+      "why": "折算 = 单价×grow + 船费 ÷ (0.75×对方总领土)。AI#488 兵少所以单价低；kaito9 密度 81~128 所以单价 262~411。装船量不看需要多少，只看底线 floorAt = 100×领土×min(1, 落点单价/60)：对 AI#488（单价 9.4）装 452/1024，对 kaito9 只装 157/1024。nb=0 时不设折算上限（maxEff = Infinity）。",
+      "codePath": "General.searchWater L1069~1070、General.boatOut L1006~1009、General.floors L819~830（L829）、Policy.idleBoats L5059~5068"
+     },
+     {
+      "t": "10385~10395、10810~10820",
+      "bots": "alex_k",
+      "decision": "kaito9 的船一靠岸就成了陆上邻居，over 状态下对它出 374~380/1024。",
+      "why": "over 时不比单价，也不走脉冲；出兵量 = 1.25×需要量，需要量按对方全部领土和余额算（10395 拍「需 2,300 万」），不看能打到的只有滩头那几十格。",
+      "codePath": "Policy.buyLand L5353~5359、L5456~5457（over 且 need ≤ 0.30×余额时不走脉冲）、L5612~5617；Policy.offers L5096~5100"
+     },
+     {
+      "t": "10730~10780（影子）/ 10780（落地）",
+      "bots": "alex_k",
+      "decision": "对 AI#121 连续 11 个决策拍各发一条 0/1024 的陆攻；落地并产生进攻的 2 条，每条出 7.8 万兵、付约 94 万手续费。",
+      "why": "内置 AI 目标按 want 出兵，pct 向下取整到 0；手续费按整笔余额收。",
+      "codePath": "Policy.buyLand L5449~5454 → Strategy.send L479~487"
+     }
+    ]
+   }
+  ],
+  "deaths": [
+   {
+    "bot": "leo_tx",
+    "p": 1,
+    "t": 4942,
+    "detail": "只有日志（另一个 1v1 房间，对手是同编队的 noah88#0）",
+    "cause": "被同编队的 noah88 在 1v1 房间里打出局。日志：leo_tx 3690~4680 拍 78k 格不动、指令 +4，余额 144 万→797 万（密度 18→101）；noah88 4410~4680 拍 299.9k 格不动，密度 47→84。leo_tx 4680 拍先过 100×领土，4770 拍涨到 86,315 格、余额 797 万→556 万（noah88 同期 299,894→292,107 格）；noah88 4770 拍密度 100.7，随后出手，4860 拍 leo_tx 65,161 格、noah88 313,208 格，4942 拍 leo_tx 出局。"
+   },
+   {
+    "bot": "zexos1",
+    "p": 1,
+    "t": 5547,
+    "detail": "只有日志（另一个 1v1 房间，对手是同编队的 sora_w#0）",
+    "cause": "被同编队的 sora_w 在 1v1 房间里打出局。日志：zexos1 3060 拍 94,013 格，3420~5220 拍一条指令都没发（cmds 267 不变），领土 74,541→41,298（同期 sora_w 3510~4590 拍只从 157k 到 160k，这 3 万多格被谁拿走日志里看不出来），密度 2.8→86。sora_w 3690~4590 拍 157k~160k 格不动（密度 11→62），4950 拍密度 100.5，5130~5490 拍 200,565→336,384 格；zexos1 5490 拍 34,787 格，5547 拍出局。"
+   },
+   {
+    "bot": "talon5",
+    "p": 1,
+    "t": 5657,
+    "detail": "只有日志（另一个 1v1 房间，对手是同编队的 zero_7#0）",
+    "cause": "被同编队的 zero_7 在 1v1 房间里打出局。日志：talon5 3600~4410 拍 74k 格不动、指令 +0（密度 7.5→57）；zero_7 3240~4050 拍 155k 格不动（密度 9.6→51.8），4410 拍密度 95.5，之后出手：4500~4590 拍 zero_7 164,875→176,575 格，talon5 64,719→53,105 格。talon5 5040 拍密度 104 后反打到 86,067 格（5310 拍，余额 597 万→285 万），5580 拍 62,374 格，5657 拍出局。"
+   }
+  ],
+  "decisions": [
+   {
+    "id": "D01",
+    "t": "选点阶段",
+    "bot": "全部 9 个号",
+    "what": "对局是 1v1（mode=8，每房 2 个真人），协调器仍 10 次按「10 个号同一房间」求解扇形阵（minSep=69px），给每个号发 INNER_ARC_BANK / OUTER_SHIELD_WALL 这类组队点位；实际上 9 个号分在 5 个房间，其中 4 个房间的对手就是同编队的号。",
+    "why": "选点入口不看对局模式：只要协调器给了点就用。进了对局之后 g.teams[me] 是 0，队友判断、调度、封死分支都不会触发，策略把同编队的号当普通真人打。",
+    "codePath": "Policy.chooseSpawn L3983~4129（总是向协调器要点）；spawn-coordinator-c116-vb.mjs 的 TeamSpawnCoordinator（L71 起）；Policy.isTeammate L3927、Policy.idleBoats L5022（封死分支要求 g.teams[me] > 0）",
+    "evidence": "in_game.log：9 行 [HL-GAME-INIT] mode=8 … seeded=2；10 行 [BACKEND-SPAWN-COORD] Solved 10 bots；engine_settings.cjs A073（lC=8、ku=2、a0L=0、iT=false）；results.csv 两两配对（context.rooms）。",
+    "verdict": "error",
+    "patternId": "NEW-EX-MODE1V1",
+    "statementType": "observed"
+   },
+   {
+    "id": "D02",
+    "t": "选点阶段",
+    "bot": "alex_k、kaito9",
+    "what": "两个号都记了选点日志（alex_k → (1340,237)；kaito9 → (1423,931) 再改 (1207,68)），录像里一条选点指令都没有；出生点是引擎随机给的 (1205,155) 和 (935,235)，相距 282 像素，同在 L1 上。",
+    "why": "不知道。引擎的选点处理（指令 0 → i0）只查阶段、存活、格子可用，不看模式；1v1 的出生阶段只有 30 步（约 11.8 秒），多人局是 40~50 步。指令是没发出去还是到得太晚，录像里看不出来。",
+    "codePath": "Policy.chooseSpawn L3983~4129；引擎 rV 分发的 0 号指令（i0）、出生阶段步数 a7a（ku ≤ 2 时 30）",
+    "evidence": "tmp/truth/A073/cmd.tsv 没有 spawnStep ≥ 0 的行；meta.json 的 spawn 坐标；对局包 spawn.csv。",
+    "verdict": "unclear",
+    "patternId": "NEW-SP-NOEXEC",
+    "statementType": "observed"
+   },
+   {
+    "id": "D03",
+    "t": "0~630",
+    "bot": "alex_k、kaito9",
+    "what": "开局只占无主地：270 拍各 364 格，630 拍 3,526 / 3,556 格，是内置 AI 平均领土（575 格）的 6 倍；陆攻想发 20 条落地 18 条，延迟中位 10 拍。房间里没有别的真人，这里拿内置 AI 当参照。",
+    "why": "核心期前走 super.act 的开局扩张（日志 [HL-OPENING] DP expand），每轮按圈数出一条。",
+    "codePath": "Policy.act L4839~4850 → V13.expandNeutral L2373（日志在 L2409）",
+    "evidence": "state.tsv；team.tsv（630 拍 510 个 AI 合计 293,368 格）；exec_gap.py A073 --profile 250（<630 拍 20→18）。",
+    "verdict": "good",
+    "patternId": "NEW-OP-DPGOOD",
+    "statementType": "observed"
+   },
+   {
+    "id": "D04",
+    "t": "1290~1620",
+    "bot": "alex_k",
+    "what": "领土 19,512→18,821 停了 270 拍，余额 2.9 万→14.7 万。1309~1484 拍 175 拍没有一条指令产生进攻：其间只落地过 1379 拍那一批 8 条，是 1250~1285 拍发的（晚 94~129 拍），目标 AI#268 已经出局，引擎把目标改成无主地，没有可打的边。影子策略 1320~1395 拍连着 16 个决策拍都对 AI#178（375 格、347 兵，12 个 AI 邻居里单价最低 5.0，需要量 1,183）发一条最小指令 47/1024，1430~1480 拍又是 11 条。1484 拍 9 条 47/1024 一起落地：3.45 万兵打一个 375 格的 AI，领土 +295 格，兵大半退回。1554 拍又落地 9 条 47/1024，AI#178 已出局，4.20 万兵打进无主地，换来 28 格。两批手续费约 1.9 万。",
+    "why": "两层。策略每个决策拍对单价最低的目标发一条最小指令（最小指令 = feeK×手续费 = 余额的 47/1024），不管上一条到没到，目标没死就一直重发；传输层把指令攒成一摞（最多 9 条）晚几十上百拍倒序放出来，多出来的丢掉。",
+    "codePath": "General.act L752 起 → Style.pickTarget L1144 → Strategy.minCmd L474~476、Strategy.send L479~487；传输层不在仓库里",
+    "evidence": "burst_runs.py A073 --list（1232 拍 = 意图 1135~1175 倒序；1309 拍 = 1195~1240；1379 拍 = 1250~1285；1624 拍 = 1505~1550；1484、1554 两批都是 9×47/1024 打 AI#178，和 1320~1395、1430~1480 两段意图都对得上，分不清各是哪一段）；truth_query.py A073 cmds alex_k 1290 1630；truth_query.py A073 bal alex_k 1480 1630 10；tmp/shadow/A073/intents.tsv；out/A073/shadow_0_1700.txt（1400 拍 12 个 AI 邻居的报价）。",
+    "verdict": "error",
+    "patternId": "NEW-IO-STACK9",
+    "statementType": "observed"
+   },
+   {
+    "id": "D05",
+    "t": "1620~3250",
+    "bot": "alex_k、kaito9",
+    "what": "吃 AI 的整个阶段，出兵是一批一批落地的：alex_k 40 批 277 条（全部落地陆攻 452 条），每批花掉余额的中位 45%；1911 拍 9 条把 18.1 万打到 5,366（−97%），2170 拍 8 条 17.3 万→2,071（−99%），3080 拍 6 条 9.5 万→0。kaito9 34 批 230 条，1540 拍 −93%、1610 拍 −90%。被抽空后的几十拍里对方的买地条件立刻成立：2870 拍 kaito9 咬走 alex_k 3.6 万格，3192 拍 alex_k 咬走 kaito9 4.0 万格。",
+    "why": "指令带的是比例。策略按发令那一拍的余额换算比例，一摞落地时引擎逐条按当时的余额计价，每条再收一次手续费。策略没有「已发未落地」的账，摞在路上的时候它每个决策拍还在照发。",
+    "codePath": "Strategy.send L479~487；Policy.act L4838、L4941~4942；Policy.buyLand L5446（avail 不扣在路上的指令）",
+    "evidence": "burst_runs.py A073 --list；match_digest.py A073 第 6 节（同拍 ≥3 条的批次 74 个，把余额打到四成以下的 22 个）；blind_reorders.py A073 --lag（延迟中位 71 拍，>25 拍的 207/294 条）；human_strikes.py A073 --list 45。",
+    "verdict": "error",
+    "patternId": "NEW-IO-DRAINBATCH",
+    "statementType": "observed"
+   },
+   {
+    "id": "D06",
+    "t": "2870",
+    "bot": "kaito9",
+    "what": "alex_k 刚被两批指令抽空（2800 拍 59.6 万→10.7 万，2849 拍 →3.7 万；108,809 格、密度 0.4），kaito9 6 条 122/1024 的陆攻 9.2 万兵（余额的 52%）落地，密度比 5.83，300 拍净得 35,920 格。这 6 条是 2810~2835 拍发的（晚 35~60 拍），下单和落地时对方都是空的。",
+    "why": "真人目标的单价跟对方余额走；对方密度远低于自己时 c < worth，按 12% 的脉冲出兵。",
+    "codePath": "Policy.offers L5072~5100、Policy.buyLand L5350~5359、L5455~5609",
+    "evidence": "human_strikes.py A073 --list 45（拍 2870 一行）；burst_runs.py A073 --list（kaito9 拍 2870 = 意图 2810~2835；alex_k 拍 2800、2849）；truth_query.py A073 cmds kaito9 2865 2875。",
+    "verdict": "good",
+    "patternId": "NEW-AT-DENSEDGE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D07",
+    "t": "3030~3065（下单）/ 3192（落地）",
+    "bot": "alex_k",
+    "what": "3030~3065 拍 alex_k 每 5 拍对 kaito9 发一条 122/1024 的脉冲，下单时每条 1.06 万~1.11 万兵（自己密度 1.0，kaito9 1.3；c=4.9 低于便宜线 6.3 所以下单）。这 8 条晚 127~162 拍在 3192 拍一起落地，那时 alex_k 的余额已经是 66.6 万：实际出兵 41.1 万（余额的 62%），正好撞上 kaito9 自己刚落地一批、密度 0.9 的空档，密度比 7.93。加上 3248 拍下一批 6 条 17.2 万兵，3190~3550 拍从 kaito9 净得 40,398 格。",
+    "why": "结果是好的，但不是下单时想要的那一手：想出的是 8 条共 8.7 万兵的小脉冲，落地的是 41 万兵的一把。同一机制 7 拍之前刚让 kaito9 吃了亏：3185 拍 kaito9 落地的 6 条（14.8 万兵，余额的 52%）是 3055~3080 拍下的单，落地时密度比 0.29；7 拍后 alex_k 的 41 万兵落地，两边对冲，300 拍 kaito9 净丢 38,179 格。",
+    "codePath": "Policy.buyLand L5350~5359（c < cheap）、L5455~5609（脉冲 pulseFrac=0.12）；Strategy.send L479~487；传输层不在仓库里",
+    "evidence": "human_strikes.py A073 --list 45（拍 3192、3248、3185）；truth_query.py A073 flow alex_k 3190 3550；burst_runs.py A073 --list（alex_k 拍 3192 = 意图 3030~3065；kaito9 拍 3185 = 意图 3055~3080）；out/A073/shadow_3000_3320.txt；tmp/shadow/A073/intents.tsv（3030~3065 拍 8 条合计 86,572 兵）。",
+    "verdict": "unclear",
+    "patternId": "NEW-IO-STACK9",
+    "statementType": "observed"
+   },
+   {
+    "id": "D08",
+    "t": "3420~4410",
+    "bot": "alex_k",
+    "what": "和 kaito9 接壤 160 像素，一千拍不打它：3500 拍 kaito9 c=24.5 对 worth=7.2；3800 拍 34.4 对 10.9；4100 拍 38.6 对 21.5。余额从 50 万涨到 616 万，领土不动。4400 拍 kaito9 把兵花在 L2 上、密度 16.7，alex_k 密度 43.6，worth=39.2 第一次高过 c=37.3；4459 拍出手（密度比 2.96）。同种子的其余 4 个房间里 6 个号各有一段 720~990 拍同样的停顿。",
+    "why": "未 over 时只有 c < worth（或 c < 便宜线 5.8）才打。worth = 0.9×max(自己的密度, 0.85×其他真人密度中位)；真人目标的 c 约是对方密度的 2.2~2.6 倍（3500 拍 24.5 / 9.5，4100 拍 38.6 / 15.6，4400 拍 37.3 / 16.7）。所以实际门槛是「我的密度 ≥ 对方的两倍半到三倍」。两个号都在攒兵时，谁也过不了这个门槛，直到有一方先过 100×领土。",
+    "codePath": "Policy.offers L5072~5100、Policy.buyLand L5350~5359（L5359 break）",
+    "evidence": "out/A073/shadow_3300_4460.txt（shadow.mjs A073 --bots alex_k,kaito9 --from 3300 --to 4460 --at 3500,3800,4100,4400 --water）；human_strikes.py A073 --list 45（拍 4459）；flat_windows.py A073。",
+    "verdict": "error",
+    "patternId": "NEW-AT-STANDOFF",
+    "statementType": "observed"
+   },
+   {
+    "id": "D09",
+    "t": "3580~4410",
+    "bot": "alex_k",
+    "what": "海岛 AI#283（主体在 L11，2,060 格）3580 拍在 alex_k 的岸上登了一块滩头，72 格→327 格→512 格一点点长。吃掉它的需要量只有 6,700~10,700 兵，alex_k 有 169 万~606 万，一直不吃：c 从 20.0（3800 拍）涨到 28.7（4100 拍）、46.5（4400 拍），始终 ≥ worth。同一时间发船的两道门都因为它关着：boatFood 看到「陆上邻居里有单价 ≤ 60 的内置 AI（6.3）」直接返回；boatOut 要余额 ≥ 1,740 万。167 个决策拍，一条指令都没有。5705~5712 拍（over 之后）才用 3 条 0/1024 的指令把滩头收回，每条出 2.5 万兵、付 30 万~33 万手续费。",
+    "why": "报价里的 fee 是自己整笔余额的 12/1024，need 按这个 AI 的全部领土算，gain 还要打折：余额越多，这块地越「贵」。worth 只按自己的密度涨。发船分支用的是另一个不含手续费的单价。两处口径相反：买地说它太贵，发船说它很便宜、不用出海。",
+    "codePath": "Policy.offers L5072~5100（fee = iV(12*B,1024)；c = (rawNeed + fee)/baseGain）、Policy.buyLand L5359、V13.boatFood L2005、Policy.idleBoats L5058~5060",
+    "evidence": "out/A073/shadow_3300_4460.txt 的 [buyLand]、[idleBoats] 两段（3800、4100、4400 拍）；out/A073/landmass_283.txt（ascii_map.mjs A073 --at 3420,3600,3800,4400,5700 --ours 0,1 --also 283,121）；tmp/shadow/A073/rows.tsv（3580~4410 拍 167 行 nAI>0、intents=0）；tmp/truth/A073/flow.tsv（0→283）。truth_query.py A073 cmds alex_k 5680 5730。对照 kaito9：3731~3738 拍打掉了岸上的 AI#403（truth_query.py A073 cmds kaito9 3700 3745），3800 拍 boatFood 就放行了。",
+    "verdict": "error",
+    "patternId": "NEW-AT-FEELOCK",
+    "statementType": "observed"
+   },
+   {
+    "id": "D10",
+    "t": "3808~3871、4942~5068",
+    "bot": "kaito9",
+    "what": "L1 上没有内置 AI 邻居了，用余额的 12.5%~17% 发船去吃海对面的 AI：3808 拍 29.4 万兵 → AI#211（300 拍净得 9,050 格），3871 拍 23.6 万兵 → AI#82（8,490 格），陆攻跟进后 4410 拍在 L2 上有 105,812 格；4942、5068 拍 71.0 万 / 73.9 万兵 → AI#224，5010~5426 拍从它净得 60,840 格，5760 拍整块 L4 在它手里。5760 拍它在 L1 上的地全丢了，靠这两块岛活到终场。",
+    "why": "boatFood：陆上没有便宜的内置 AI 邻居时找海对面单价最低的 AI / 无主地，装 max(foodK×需要量, 余额的 12.5%)。L2 上的 AI 很弱（AI#82：53,453 格、5.8 万兵），离 kaito9 的岸只有 1~2 格水。",
+    "codePath": "Policy.idleBoats L5058 → V13.boatFood L2001~2021 → V13.searchFood L2028",
+    "evidence": "boat_list.py A073（前 8 行）；boat_pairs.py A073 --list（kaito9 → AI#224 一行）；out/A073/landmass.txt（4410、5760 拍）；out/A073/shadow_3300_4460.txt（kaito9 3800 拍）。",
+    "verdict": "good",
+    "patternId": "NEW-SE-FOODBOAT",
+    "statementType": "observed"
+   },
+   {
+    "id": "D11",
+    "t": "4459、4592",
+    "bot": "alex_k",
+    "what": "密度比过线后对 kaito9 出手：4459 拍 2 条 90.4 万兵（余额的 14%，密度比 2.96）、4592 拍 3 条 228.4 万兵（31%，密度比 4.97）；4455~4895 拍从 kaito9 净得 52,387 格（其中 4592 拍之后 37,474 格），领土 139,048（4410 拍）→191,270（4770 拍）。这一段指令稀，延迟只有 11~19 拍，落地的就是下单时想要的。",
+    "why": "c < worth，按脉冲比例出兵。",
+    "codePath": "Policy.buyLand L5350~5359、L5455~5609",
+    "evidence": "human_strikes.py A073 --list 45；truth_query.py A073 flow alex_k 4455 4895；state.tsv；exec_gap.py A073 --profile 250（4250~4749 拍 18 条全部落地）。",
+    "verdict": "good",
+    "patternId": "NEW-AT-DENSEDGE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D12",
+    "t": "5313~7441",
+    "bot": "alex_k",
+    "what": "余额过 100×领土后不再比较单价，对 kaito9 一轮一轮出手：5313 拍 537.9 万兵（密度比 2.61）、5628 拍 800.4 万兵、5999~7441 拍 7 轮 636 万~1,099 万兵（密度比 0.99~1.34）。9 轮里每轮 300 拍净得 0.8 万~4.3 万格（相邻几轮的窗口有重叠，不能相加；合起来是 kaito9 233,505→76,900 格），L1 和 L2 都是这样拿下的。",
+    "why": "over = 余额 > 100×领土；over 时 L5359 不 break。5999 拍起 alex_k 的地是对方的 1.2~3.3 倍，密度相当，同样的比例换出来的兵比对方多。全场 over 的出手里，出手时地不比对方少的 15 轮有 14 轮净得地为正。",
+    "codePath": "Policy.buyLand L5353、L5359",
+    "evidence": "human_strikes.py A073 --list 45（alex_k over 状态 16 轮 2.91 亿兵；「over 的出手里，出手时地不比对方少的」一行）；state.tsv。",
+    "verdict": "good",
+    "patternId": "NEW-AT-OVERSTRIKE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D13",
+    "t": "6132~7308、8995、9156、10997",
+    "bot": "kaito9",
+    "what": "同一条规则在小的那个号身上：kaito9 余额一过 100×领土就对 alex_k 出手，8 轮 3,932 万兵，密度比 0.79~1.43，对方的地是自己的 1.5~5 倍。每一轮之后 300 拍它对 alex_k 的净得地都是负的（−0.8 万~−9.2 万格）。9156 拍 7 条 974 万兵（余额的 55%）之后，9360 拍领土从 167,443 掉到 107,381。",
+    "why": "over 时不看单价，也不看对方比自己大多少。其中 7308、8995、9156、10997 拍是两个号同一拍对打，小号的损失里有多少是自己这一手造成的分不开；没有反事实重放。别的局里「地比对方少时 over 出手」多数是净得地的（A022 10 轮 9 正，A038 31 轮 21 正），所以不能当成一般规律。",
+    "codePath": "Policy.buyLand L5353、L5359",
+    "evidence": "human_strikes.py A073 --list 45（kaito9 over 状态 8 轮，净得地合计 −348,793，重叠窗口有重复计；「over 的出手里，出手时地比对方少的」9 轮 8 负）；human_strikes.py A022、A038（同一行）；state.tsv。",
+    "verdict": "unclear",
+    "patternId": "NEW-AT-OVERSTRIKE",
+    "statementType": "inferred"
+   },
+   {
+    "id": "D14",
+    "t": "5803、7693~8946",
+    "bot": "alex_k",
+    "what": "没有陆上邻居时，相邻两个决策拍各发一条船去同一个落点：先 127/1024（余额的 12.5%），5 拍后再 373~498/1024（影子：5750/5755、7680/7685、7740/7745、7800/7805 … 每 60 拍一对）。13 对里 11 对的第二条到的时候那一格已经是自己的，兵退回：第二条合计载兵 1.73 亿、手续费 1,260 万、海上损耗 728 万。全场 19 条船回到自己地上作废（2.43 亿兵、手续费 2,030 万）。",
+    "why": "boatFood 用 lastFood 冷却，boatOut 用 lastBoat 冷却，互不知道；boatOut 选落点时不看已经在路上的船。",
+    "codePath": "Policy.idleBoats L5058~5068、V13.boatFood L2001~2021（L2006 lastFood）、General.boatOut L999~1015（L1002 lastBoat）",
+    "evidence": "boat_pairs.py A073 --list；boat_list.py A073；out/A073/shadow_7600_8300.txt（7680 拍 4.86M 127/1024、7685 拍 17.4M 456/1024 …）。",
+    "verdict": "error",
+    "patternId": "NEW-SE-BOATWASTE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D15",
+    "t": "7560~8300",
+    "bot": "alex_k",
+    "what": "378,750 格、3,500 万~4,500 万兵，740 拍领土只到 382,620。20 条船载兵 2.107 亿、手续费 2,270 万：9 条回到自己地上（1.138 亿）；登陆 AI#304 / AI#154 的 11 条里，8300 拍前到岸的 9 条拿到的全是小岛：7709 拍 481 万兵登上的是 AI#304 一块 12 格的岛（L147），7784 拍 483 万兵登上 16 格的 L115，8074 拍 1,794 万兵登上 AI#154 一块 12 格的岛（L150），8218 拍 1,666 万兵登陆后到 8300 拍 alex_k 多出来的只有 6 格的 L230（boat_list 那一行的 +11,834 是 300 拍窗口把 8432 拍登陆的 L7 也算了进去）；最大的一块是 L9（2,992 格）。最后一对（8295 拍，2,190 万 + 277 万兵）8432 拍登上 L7（11,828 格）。AI#304 的主体 L3（96,941 格）当时只有 915~16 万兵守着，一格没碰。kaito9（L4，7.8 万~9.7 万格、600 万~1,140 万兵）离 alex_k 的岸只隔 1 格水，在候选里排第 3~5。8274 拍 kaito9 一条 606 万兵的船登上了 L3 本体，9000 拍它涨到 196,252 格。",
+    "why": "两种船用的两个搜索（127/1024 的小船走 searchFood，大船走 searchWater）是同一个做法：从自己的岸在水上做广搜，每个对象取最先碰到的那一格当落点；折算按对方的总领土摊（searchFood：(吃掉它的兵 + 船费) ÷ (总领土 − 峰值/4)；searchWater：单价 + 船费 ÷ (0.75×总领土)），AI#304 当时 11 万格，所以排第 1，不看落点所在的那块陆地有多大。离 alex_k 最近的 AI#304 的地是它的小岛（水程 9、50、91，越吃越远），L3 本体更远。无主地是按那一片的大小摊的（L1061、L2067~2068），有主的地不是。",
+    "codePath": "General.searchWater L1020~1079（L1061 对无主地用 comp[n]；L1069~1073 对有主的地用 g.terr[o]，落点 land: n = 最先碰到的一格）；V13.searchFood L2028~2080（L2067~2068 无主地用 comp[n]；L2071~2074 内置 AI 用 g.terr[o] − peak/4）；Policy.boatFood L5623（seaCore=0 → V13.boatFood L2001~2021）",
+    "evidence": "out/A073/landmass_7690_8440.txt（ascii_map.mjs A073 --at 7690,7730,7800,7840,8060,8110,8210,8300,8440 --ours 0,1 --also 304,154 --top 14：每个采样拍 alex_k 新到手的陆块）；boat_list.py A073 7560 8300 --bot alex_k；tmp/truth/A073/ev.tsv（land 事件的到岸兵）；out/A073/shadow_7600_8300.txt（7680、8015、8140、8290 拍的 [searchWater 候选]：AI#304 折算 16.5~32.1 排第 1，kaito9 水程 1、折算 227~422）。",
+    "verdict": "error",
+    "patternId": "NEW-SE-WRONGISLAND",
+    "statementType": "observed"
+   },
+   {
+    "id": "D16",
+    "t": "9968~10598",
+    "bot": "alex_k",
+    "what": "9 条船，每条 3,060 万~3,870 万兵（余额的 42%~49%），全部登陆 AI#488（1.06 万~1.36 万格，守兵 0.2 万~5.2 万，分在十几块小岛上；最大的一块 L8 只有 3,116 格，10400 拍、5 条船 1.75 亿兵之后还一格没动）：合计载兵 3.20 亿、手续费 2,150 万，净得地 6,423 格。这 650 拍里 kaito9（107,384 格）是场上唯一的对手，searchWater 把它排在第 2。",
+    "why": "折算 = 单价×grow + 船费 ÷ (0.75×对方总领土)：AI#488 226.8，kaito9 290.6（9965 拍）。装多少兵不看目标需要多少：目标不是无主地时一律装 boatFrac×(余额 − floorAt)，floorAt = 100×领土×min(1, 落点单价/60)，落点单价 9.4 时底线只有 15.7×领土，所以装了 44%。",
+    "codePath": "General.searchWater L1069~1070、General.boatOut L1006~1009、General.floors L819~830（L829；keepCap=1、reserve=1、cRef=60）、Policy.idleBoats L5059~5068",
+    "evidence": "boat_list.py A073；boat_pairs.py A073 --list（→ AI#488 一行）；out/A073/landmass_488.txt（ascii_map.mjs A073 --at 9960,10400,10900 --ours 0,1 --also 488 --top 14）；out/A073/shadow_9300_10990.txt（9965、10090、10420 拍的 [searchWater 候选]；9960 拍发船 3,130 万 452/1024）。",
+    "verdict": "error",
+    "patternId": "NEW-SE-WRONGISLAND",
+    "statementType": "observed"
+   },
+   {
+    "id": "D17",
+    "t": "10395、10822",
+    "bot": "alex_k",
+    "what": "kaito9 的船在 L1 上占了 58 格，alex_k 两条陆攻 2,850 万 + 1,850 万兵（余额的 60%）。收回那 58 格后进攻就结束了，兵退回，kaito9 的本土（在 L4、L6 上）一格没丢；两条指令的手续费 150 万。10822 拍又来一次（2,917 万 + 1,809 万，手续费 150 万）。9620~10919 拍 alex_k 对 kaito9 的 8 条陆攻 1.376 亿兵全是打滩头的，从 kaito9 净得地 +233 格。代价是手续费和那十来拍余额只剩四成；这段时间场上没有别的对手来利用。",
+    "why": "over 时不比单价、不走脉冲，出兵量 = 1.25×需要量；需要量按对方全部领土和余额算（「需 2,300 万」），不看两家只在滩头那几十格上接壤（接壤 6~7 像素）。",
+    "codePath": "Policy.buyLand L5353~5359、L5456~5457、L5612~5617；Policy.offers L5096~5100",
+    "evidence": "refund_strikes.py A073 --list（空打 2 次 9,426 万兵，手续费 300 万）；truth_query.py A073 cmds alex_k 10380 10420；truth_query.py A073 bal alex_k 10370 10430 10；truth_query.py A073 bal kaito9 10370 10430 10；out/A073/landmass.txt（10400 拍：kaito9 在 L1 上 58 格）；out/A073/shadow_9300_10990.txt（10395 拍）；finish_ledger.py A073 --until 10919。",
+    "verdict": "error",
+    "patternId": "NEW-AT-BEACHDUMP",
+    "statementType": "observed"
+   },
+   {
+    "id": "D18",
+    "t": "2639~11501（54 条在 5000 拍以后）",
+    "bot": "alex_k",
+    "what": "62 条陆攻出的兵比手续费少：合计出兵 466 万，手续费 3,090 万（AI#121 21 条、AI#488 11 条、AI#304 7 条、无主地 7 条）。例：10780 拍对 AI#121 两条 0/1024，每条出 7.8 万兵、付约 94 万手续费。AI#121 和 AI#283 一样是海岛 AI 登在岸上的滩头（4400 拍 98 格，5700 拍 4 格）。",
+    "why": "内置 AI 目标的出兵量只按需要量算，不和手续费比；手续费是整笔余额的 12/1024，余额 8,000 万时每条 94 万。",
+    "codePath": "Policy.buyLand L5449~5454 → Strategy.send L479~487",
+    "evidence": "fee_ledger.py A073；truth_query.py A073 cmds alex_k 10690 10840；out/A073/landmass_283.txt（AI#121 的滩头）。",
+    "verdict": "error",
+    "patternId": "NEW-AT-TINYFEE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D19",
+    "t": "10920~11160",
+    "bot": "alex_k",
+    "what": "头两条去 kaito9 本土的船：10920、10976 拍 157 / 156 per 1024，各载 1,200 万 / 1,190 万兵，登陆 L4；10997 拍 3 条陆攻 3,716 万兵跟进（余额的 57%）；11160 拍 kaito9 只剩 34,035 格，11200 拍 L4 上已经没有它的地（30,484 格 = L6 + 3 格）。从第一条船登陆到 kaito9 被赶下 L4 用了 280 拍左右。",
+    "why": "10915 拍 AI#488 被吃到 7,151 格，折算涨到 462.5，kaito9（442.9）第一次排到第 1。登陆后 kaito9 成了陆上邻居，over 状态直接出手。",
+    "codePath": "General.searchWater L1069~1070、General.boatOut L999~1015；Policy.buyLand L5353~5359",
+    "evidence": "boat_list.py A073（10920、10976 拍）；out/A073/shadow_9300_10990.txt（10915、10920 拍）；human_strikes.py A073 --list 45（拍 10997）；truth_query.py A073 bal kaito9 11150 11260 10；out/A073/landmass.txt（11400 拍）。",
+    "verdict": "good",
+    "patternId": "NEW-SE-BOATOK",
+    "statementType": "observed"
+   },
+   {
+    "id": "D20",
+    "t": "9620~11509",
+    "bot": "alex_k",
+    "what": "9620 拍 alex_k 占全图 75.4%，2,670 万兵对 kaito9 的 448 万。之后 1,880 拍没把它打出局：出兵 5.319 亿，落在 kaito9 身上的 2.106 亿（40%，其中 1.376 亿是打滩头后退回的），手续费 5,010 万。kaito9 终场还有 26,191 格。最后一段：11230 拍起 alex_k 没有陆上邻居，kaito9 只剩 L6 的 3 万格、150 万~177 万兵，searchWater 把它排第 1，可船到 11350 拍才发出去（影子；真引擎 11368 拍，1,190 万兵，11428 拍登陆），660 秒到点。",
+    "why": "没有「只剩一个对手、集中把它打出局」的分支：不分队时清场分支要求场上只剩自己一个真人。平常的发船分支对单价 ≥ 60 的落点底线是 100×领土，最小船量是余额的 12.5%，所以密度不到 133 发不出船；每次没发成也把 60 拍冷却重置。11230、11290 拍两次评估时密度 122.2、131.4，都差一点；11350 拍密度 138.6 才发出去，装的是超出 100×领土部分的一半（142/1024）。",
+    "codePath": "Policy.isMopUp L4520~4533、Policy.idleBoats L5045~5070、General.boatOut L999~1015（L1002 先记 lastBoat；L1006~1008 max < min 返回）、General.floors L829、General.searchWater L1069~1070",
+    "evidence": "finish_ledger.py A073；out/A073/shadow_11150_11400.txt（11230、11290、11345 拍 nb=0、kaito9 折算第 1、不出手；11350 拍发船 142/1024）；boat_list.py A073（11368 拍）；state.tsv；results.csv（left@660 秒）。",
+    "verdict": "error",
+    "patternId": "NEW-EG-SLOWFINISH",
+    "statementType": "observed"
+   }
+  ],
+  "unknowns": [
+   "指令成摞落地的成因。外形很清楚（最多 9 条、倒序、晚 60~130 拍、两个号各有各的节奏、都从 959 拍开始、只在连续每拍下单的时段出现），但引擎客户端发指令是直接写 WebSocket，适配层和服务器的代码不在仓库里。results.csv 里 alex_k sent=604 / accepted=599，而录像里它只有 508 条（陆攻 452 + 船 56）：有 91 条是在适配层接受之后丢的。",
+   "选点指令为什么一条都没落地。",
+   "ryan_m 的对手是谁（推断是没有日志的 riku_x）；其余 4 个房间没有录像，谁在什么时候打了谁只能从日志快照推。zexos1 3420~5220 拍丢的 3.3 万格是被谁拿走的，看不出来。",
+   "同种子的房间里 #0 号 3 胜 0 负（另一个房间 #1 的 ryan_m 胜）。A 房间 kaito9（#1）3060 拍还领先，所以不像是座位本身的差别；没有录像，无法查。",
+   "3340~3575 拍（AI#283 的滩头还没上来）alex_k 为什么没发船：影子策略两次运行的判定不同（依赖内部状态），真号卡在底线还是冷却不确定。",
+   "alex_k 如果 9620 拍就去 kaito9 本土登陆能不能在 660 秒内打完，没有做反事实重放。10920 拍那一次从登陆（10922 拍）到把 kaito9 赶下 L4（11200 拍）用了 280 拍左右。"
+  ],
+  "mechanicsQuestions": [
+   "陆攻打到没有相邻的地就结束，剩下的兵退回余额（10395 拍：出 4,700 万，10400 拍在途 2,673 万，10410 拍在途 0，余额比出手前少 134 万）。退回时如果余额已经顶在 150×领土，超出的部分是不是丢掉？本局那一刻密度 143.5，没顶到，看不出来。",
+   "每个玩家每一拍最多落地 9 条指令，是服务器的上限还是适配层的上限？13 局录像里我方号同一拍落地的指令（不含选点）从没有超过 9 条，11 局到过 9 条；其他玩家一般最多 2~6 条，只有 A022、B034 里有别的玩家也到过 9 条（max_per_tick.py）。",
+   "1v1 的出生阶段只有 30 步；选点指令要在第几步之前到才算数？",
+   "陆攻指令落地时如果和目标没有可打的边（引擎里找不到自己这边贴着目标的边界格），指令被录进录像但不扣手续费、不产生进攻。本局这样的陆攻 147 条（落地的 802 条里）。这条规则对不对，请对接人核一下。"
+  ],
+  "checklistFails": []
+ },
+ {
+  "matchId": "A083",
+  "file": "A083",
+  "reviewer": "R04",
+  "sha": "b4f74cc4",
+  "result": "lost",
+  "archetype": "never-grew",
+  "context": {
+   "strategyVersion": "Vb（v27-team-c116-vb.js + spawn-coordinator-c116-vb.mjs）",
+   "cohort": "squad10",
+   "map": 10,
+   "mapSize": [
+    931,
+    959
+   ],
+   "mapLand": 546152,
+   "humans": 55,
+   "players": 512,
+   "teams": {
+    "1": 17,
+    "2": 19,
+    "3": 19
+   },
+   "actualTeams": 3,
+   "cardActualTeams": 3,
+   "ourTeam": 3,
+   "ourBots": 10,
+   "teamSplit": {
+    "3": 10
+   },
+   "baselineWinRate": 0.333,
+   "structureNote": "三队局：队 1 17 人、队 2 19 人、队 3 19 人（55 个真人名额，53 个在玩；队 3 的 Minoans 没有出生），另有 457 个有过地的内置 AI。我方 10 个号全部在队 3，没有拆队；同队还有 8 个在玩的真人（Player 312、𝓔𝓿𝓪、Astron、ezezez、naimor7、Player 190、Twin Islandia、Fantasy），其中 4 个在 1816~2010 拍出局。地图 10（931×959，陆地 546,152 格，117 块陆地）：最大的陆块 L1 有 525,294 格（96%），630 拍时 51 个真人的主体在 L1 上，全图人均 9,930 格。我方 10 个号出生在 L1 的东北角，全场的地都在 L1 上。贴着我方的敌方真人：队 2 的 Moose#10（出生在扇形里面）、water#38（北侧）、QYRGYZ#36（南侧）；队 1 的 Player 752#13（西北）、PERU#34、gaijin#11、Player 620#5、kaan#33、422烈士万岁#7（西侧）。东南是同队真人 Fantasy#51（15,313 格，3600 拍以后余额长期顶在 150×领土）。引擎设置 aE.lC=2（不是 10），不存在单次出兵 25% 的限额。",
+   "rCell": 56.2,
+   "tools": "全场真值来自未改动的线上客户端重放（engine_truth.cjs）；我方每一拍的决策由影子策略（shadow.mjs）逐拍复现，自检：nb/neut 751/751 一致，调度 303/303 条对上，发令数增量 741 段里 736 段相同、5 段差 1。执行层：想发陆攻 818 条、落地 753 条（92%）；630~1499 拍想发 443 条、落地 383 条（86%），落地延迟中位 66 拍、九成位 148 拍，指令被攒成一摞倒序落地 45 批 284 条（D05、D06）；1500 拍以后延迟中位 10~12 拍。客户端之间没有相对落后，没有号中途离场。调度 303 条落地 102 条，没落地的 201 条里 200 条发在 4284 拍之前（D11）。本文里的「兵」都是实际出征的兵，不含陆攻手续费（余额的 12/1024）、发船手续费（32/1024）和捐款税（捐款人余额的 6.25%）。"
+  },
+  "outcome": {
+   "result": "lost",
+   "endTick": 8542,
+   "cardOutcome": {
+    "primaryTeamWon": false,
+    "anyBotWon": false,
+    "resultLabel": "lost",
+    "winnerTeam": 1,
+    "endTick": 8432,
+    "peakSquadLandShare": 0.152,
+    "peakPrimaryTeamShareSeen": 0.2144,
+    "ourFinalTeamShare": 0.0001
+   },
+   "ourTeamFinalSharePct": 0.01,
+   "squadPeakSharePct": 15.14,
+   "botsDead": 10,
+   "botsLeft": [],
+   "note": "队 1 获胜，引擎终局拍 8542（对局卡 8432），没有投票。我方 10 个号全部出局（2939、3861、5459、7245、7665、7863、7909、8303、8401、8430 拍）。我方 10 个号占地在 4500 拍见顶：82,713 格，占全图 15.14%（对局卡 15.2%）；队 3 的峰值在 1860 拍，25.3%。1530 拍队 1 / 队 2 / 队 3 = 37.4% / 37.2% / 21.7%，此后队 3 没有再涨过；队 1 从 6030 拍的 56.5% 涨到 7500 拍的 73.3%（吃掉队 2），7500~8430 拍把我方剩下的 6 个号打完。终局队 1 99.8%。"
+  },
+  "turningPoints": [
+   {
+    "id": "TP1",
+    "t0": 630,
+    "t1": 1530,
+    "title": "内置 AI 被分完的 900 拍：别人的领土中位从 2,472 长到 12,203，我方从 2,743 长到 5,999",
+    "shareBasis": "队 3 占全图陆地的百分比（另给我方 10 个号的占比和后来的赢家队 1 的占比）",
+    "shareBefore": 7.85,
+    "shareAfter": 21.7,
+    "squadShareBefore": 4.9,
+    "squadShareAfter": 9.84,
+    "topEnemyShareBefore": 7.21,
+    "topEnemyShareAfter": 37.37,
+    "statementType": "observed",
+    "evidence": [
+     "各队占比（team.tsv，630→1530 拍）：队 1 7.2%→37.4%，队 2 8.8%→37.2%，队 3 7.9%→21.7%；内置 AI 41.0%→3.4%，无主地 35.2%→0.3%。我方 10 个号 26,768→53,746 格（4.90%→9.84%），余额 4.9 万→161.6 万。",
+     "同一块陆地上的对照（ascii_map.mjs A083 --at 630,1080,1530,2100 --map，out/A083/map_630_2100.txt）：L1 上 630 拍我方 26,767 格、其他真人 100,866、内置 AI 218,940、无主地 178,721；1530 拍我方 53,745、其他真人 453,842、内置 AI 17,228、无主地 479。AI 和无主地少了 379,954 格，我方拿到 26,978 格（7%），其他真人拿到 352,976 格。领土中位：630 拍我方 2,743 对其他真人 2,472，1080 拍 4,519 对 7,192，1530 拍 5,999 对 12,203；1530 拍余额中位 16.4 万对 12.8 万。",
+     "决策拍分类（window_tally.py、floor_bind_tally.py）：[630,900) 540 个决策拍，出手 164（30%），贴着内置 AI 而底线高于可用兵 335（62%：winFloor 第 1 项 135，第 3 项 safeFinite 200，参照对象是编队号 80、同队真人 40、敌方真人 80）；[900,1200) 600 个，出手 274（46%），已经没有 AI 邻居 147（24%），底线卡住 143（24%）；[1200,1500) 600 个，出手 5（1%），只贴着真人 415（69%），封死 113（19%）。",
+     "执行层（exec_gap.py、burst_runs.py、batch_targets.py）：630~1499 拍影子策略想发 443 条陆攻，落地 383 条（86%），延迟中位 66 拍、九成位 148 拍；同号同拍落地 ≥3 条的 45 批共 284 条（一批最多 9 条，全部是此前连续几个决策拍的意图倒序）。落地的指令里，打在原来瞄的内置 AI / 真人身上的 151 条 26.7 万兵（意图的 35%）；221 条落地时目标已经出局，被引擎改成打无主地：71 条真的出了兵（17.1 万兵、手续费 2.2 万），150 条什么都没发生（当初想出 38.3 万兵）。目标没变的指令延迟中位 33 拍，改了目标的 108 拍，落地时目标已经出局 42 拍（中位）。",
+     "按意图拍分段（exec_gap.py 的分段）：800~899 拍想出 11.5 万兵、实际 7.6 万；900~999 拍 23.4 万→12.7 万；1000~1099 拍 34.5 万→9.4 万（106 条意图落地 71 条，延迟中位 112 拍、最大 242 拍）；1100~1199 拍 23.5 万→7.2 万。",
+     "邻居怎么吃的（enemy_ledger.py A083 --p 38 / --p 10）：water#38（队 2）630→1500 拍 2,419→17,896 格，一共 22 条陆攻 9.4 万兵；Moose#10 2,559→7,140 格，19 条 4.1 万兵。我方 10 个号 (630,1530] 对无主地出 17.9 万兵、对内置 AI 出 25.8 万兵，落地 383 条指令，拿到 26,978 格。",
+     "1200~1500 拍（shadow.mjs --at 1100,1400，out/A083/shadow_at_1100_1400.txt）：Moose 1100 拍 5,626 格、5.0 万兵，贴着它的 noah88、alex_k、kaito9、zero_7 各有 6.3 万、6.5 万、4.8 万、4.8 万兵（合计 22.4 万），各自对它的底线是 8.3 万、11.4 万、7.8 万、11.1 万；1400 拍 Moose 7,140 格、12.5 万兵，四个号 17.0 万、17.3 万、14.1 万、13.8 万（合计 62.2 万），底线 16.5 万、22.0 万、15.6 万、21.3 万。这 300 拍全队余额 68.8 万→174.8 万，领土 +805 格。"
+    ],
+    "priorDecisions": [
+     {
+      "t": "选点阶段（第 1~351 步）",
+      "bots": "全部",
+      "decision": "10 个号按角落扇形阵出生：三圈半径 29 / 87 / 145 像素，面积约 2.08 个人均地盘；最近队友 6~75 像素（中位 56 = 0.99×rCell）。扇形里面还有敌方真人 Moose#10。",
+      "why": "没有 boss 且 ≥6 个号时走角落扇形阵，点间距下限 clamp(0.95×rCell, 42, 68)；代码注释把内圈的号当作没有敌邻的「蓄水池」。锚点按陆地采样打分，不看别的真人已经选在哪里。",
+      "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L1065~1077、L1093~1133、L1135~1170"
+     },
+     {
+      "t": "选点阶段第 337~351 步",
+      "bots": "talon5、leo_tx、kaito9、riku_x",
+      "decision": "talon5 和 leo_tx 选了同一个像素 (721,255)，kaito9 和 riku_x 选了同一个像素 (828,214)；最后一轮的另外两个点位没人去。",
+      "why": "每一轮整体求解都按各号当前位置重新配对点位；最后几步 7 个号还在改点，talon5 落在第 50 轮分给 leo_tx 的点上、riku_x 落在第 50 轮分给 kaito9 的点上；第 51 轮又换了配对，选点阶段已经结束。",
+      "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L1276（只锁角落名，不锁锚点和配对）、L1346 → matchBotsToTargets L1431~1446"
+     },
+     {
+      "t": "305~630",
+      "bots": "全部",
+      "decision": "核心期前（t<1500）每个决策拍只在「余额 − 底线 > 21.4%×余额」时打内置 AI；底线取 winFloor 三项的最大值。",
+      "why": "winFloor 第 1 项 = 这个 AI 的单价×自己的领土 /(0.002×当前拍)，开局拍数小时很高；第 3 项 safeFinite 对每个贴着的 AI 取「它的其他邻居里余额 + 正在打它的兵最小的那个」，再在所有 AI 里取最大值，一条线管所有 AI 目标，不分这个邻居是队友还是敌人。",
+      "codePath": "Policy.act L4850（coreFrom=1500 之前 super.act）→ Style.pickTarget L1144~1161 ← V13.floorFor0 L2233~2241 ← Policy.winFloor L4562~4570 ← V13.safeFinite L2500~2510 ← Strategy.threatOf L417~444"
+     },
+     {
+      "t": "630 起",
+      "bots": "全部",
+      "decision": "每 5 拍一个决策拍，只要闸门开着就照发一条；指令在路上的时间从 13 拍（600~699 拍）涨到 130 拍（1100~1199 拍），策略不知道。",
+      "why": "发的是「比例 + 目标号」，落地时引擎按当时的余额和当时的目标状态结算；策略里没有「已发未落地」的账，同一个 AI 会被连着下 5~9 条。",
+      "codePath": "Strategy.send L479~487；Policy.act L4838；引擎 live_game_js.js qj.i6 → bD.gv.rk（目标已出局就改成无主地）"
+     }
+    ]
+   },
+   {
+    "id": "TP2",
+    "t0": 2250,
+    "t1": 3060,
+    "title": "长到 14% 就停了：后排的兵送不到前面，zexos1 被三家磨掉",
+    "shareBasis": "我方 10 个号合计占全图陆地的百分比（另给队 3、队 1 的占比）",
+    "shareBefore": 14.14,
+    "shareAfter": 13.71,
+    "teamShareBefore": 22.07,
+    "teamShareAfter": 19.47,
+    "topEnemyShareBefore": 39.9,
+    "topEnemyShareAfter": 41.31,
+    "statementType": "observed",
+    "evidence": [
+     "兵力流水（squad_ledger.py A083 --win …2250,3060…）：我方 77,240→74,895 格，余额 294.1 万→501.2 万（+207 万）；对真人出兵 133.3 万，陆攻手续费 14.2 万，落地的捐款 6 笔 70.9 万（税 12.2 万）。利息约 337 万，其中因为余额超过 100×领土少拿 43.1 万（zero_7 21.1 万、leo_tx 17.0 万）。3060 拍 zero_7 密度 143.9（实际利率 0.14%，查表是 1.14%）、kaito9 114.1。",
+     "3060 拍的接壤（ascii_map.mjs A083 --at 3060 --map，out/A083/map_3060_7500.txt）：9 个号里 ryan_m、sora_w、zero_7、kaito9、riku_x 五个只贴着同队的号（编队号或同队真人 Fantasy），合计 206 万兵（全队的 41%）；有敌邻的是 noah88（Moose 130 像素）、talon5（gaijin 94、kaan 98、PERU 18、QYRGYZ 3）、leo_tx（QYRGYZ 131）、alex_k（Moose 94、PERU 59）。L1 上我方 9 个号领土中位 7,488，其他 31 个真人中位 16,605。",
+     "决策拍（window_tally.py A083 2250 3060；core_gate_tally.py A083 1500 3000）：[2250,3060) 1,596 个决策拍，封死 599（38%），只贴着真人 847（53%）。[1500,3000) 2,988 个决策拍里嫌贵不打 1,216（41%）、没有非队友邻居 998（33%）、有陆攻意图 84（3%）、调度意图 147（5%，落地 8 笔）。",
+     "zexos1（match_digest.py 第 5 节；hollow_rear.py）：1862~2926 拍挨了 Player 620 9 发 46.3 万、PERU 3 发 20.7 万、gaijin 7 发 15.5 万等 22 发 88.6 万兵（其中船登陆 4 发 16.4 万），自己的余额一直在 11~16 万；领土 9,116（2039 拍）→4,928（2639 拍）→1,849（2939 拍出局）。队友想给它的调度 72 次（1770~2935 拍），落地 2 笔：2142 拍 sora_w 19.4 万、2520 拍 riku_x 7.5 万；第 2 笔之后它的配额已用 151 点 / 上限 153 点（quota_truth.py）。",
+     "Moose（shadow.mjs --at 1800,2100,2400,2700，out/A083/shadow_moose_1800_2700.txt；ascii_map.mjs --also 10 --heads）：2400 拍 2,697 格、14.7 万兵，四周只有 noah88（144 像素）、alex_k（100）、kaito9（5）；吃掉它要 21.1 万兵，alex_k 一个号扣掉底线后有 25.0 万可用。三个号的报价 c = 204~238，每像素值 worth = 17~56，都在 L5359 break。"
+    ],
+    "priorDecisions": [
+     {
+      "t": "2142",
+      "bots": "sora_w → zexos1",
+      "decision": "封死的 sora_w 按 380/1024 给 zexos1 捐 19.4 万兵（救急调度）。这一笔用掉 zexos1 108 点配额；2520 拍 riku_x 的 7.5 万之后配额只剩 2 点，此后想给它的调度全部被引擎拒绝。",
+      "why": "调度按固定比例定额（封死号救急 380/1024），不看收款人还剩多少配额点；2142~3212 拍一笔捐款要的点数 = 2 + 到账兵 /(1 + 全图陆地/300)，本图每 1,821 兵 1 点，配额每 100 拍只涨 8 点。",
+      "codePath": "Policy.tryDonateToTeammate L4463~4473（defense_dispatch）、L4499~4508（按 idealPct 定额直接 g.donate）"
+     },
+     {
+      "t": "2191~2240",
+      "bots": "zexos1",
+      "decision": "对 Player 620（队 1，22,278 格、密度 16）连出两轮 11.7 万、8.1 万兵（余额的 32%、31%），密度 46→31→21；随后 300 拍净得地 −1,115、−1,965。",
+      "why": "对方密度是自己的三分之一，报价低于 worth，按脉冲出手；Player 620 的地是它的 2.8 倍，同时 gaijin、PERU 也在打它。",
+      "codePath": "Policy.buyLand L5350~5359、L5596~5609（pulseMode）"
+     },
+     {
+      "t": "1617~2250",
+      "bots": "noah88、alex_k、kaito9",
+      "decision": "1526~1617 拍把 Moose 从 7,140 格打到 3,257 格（1700 拍）之后停手；Moose 1800 拍起剩 2,697 格，此后没人再打。",
+      "why": "报价 c =（吃掉它要的兵 + 手续费）/（它的领土 − 出局线以下的部分）。Moose 越接近出局线，分母越小：1800 拍只要 7.4 万兵就能吃掉，报价却是 67~86，比 worth（10~35）高。出局线是峰值的四分之一，它剩 2,697 格时还没到「濒崩」的 1.4 倍线。",
+      "codePath": "Policy.offers L5093~5100（left、baseGain、c）、L5147（nearCollapse：领土 ≤ 1.4×出局线）；Policy.buyLand L5359"
+     },
+     {
+      "t": "1950",
+      "bots": "ryan_m",
+      "decision": "water 1843 拍出局后，ryan_m（14,312 格）四周只剩 noah88、zero_7，没有海岸；到 7985 拍为止 6,040 拍没有任何敌邻。",
+      "why": "出生在扇形最东北的角上，北、东是地图边缘，吃完 water 之后前面是队友。报价单只遍历非队友陆上邻居，发船要有海岸。",
+      "codePath": "Policy.offers L5072（报价单为空）、Policy.idleBoats L5019~5070（L5032 boatsAllowed）"
+     }
+    ]
+   },
+   {
+    "id": "TP3",
+    "t0": 4500,
+    "t1": 6030,
+    "title": "见顶回落：talon5 被队 1 五家打掉；这一段进账 784 万兵，净丢 1.24 万格",
+    "shareBasis": "我方号合计占全图陆地的百分比（另给队 3、队 1 的占比和余额）",
+    "shareBefore": 15.14,
+    "shareAfter": 12.87,
+    "teamShareBefore": 18.01,
+    "teamShareAfter": 16.05,
+    "topEnemyShareBefore": 48.25,
+    "topEnemyShareAfter": 56.48,
+    "statementType": "observed",
+    "evidence": [
+     "兵力流水（squad_ledger.py）：(4500,6030] 我方 82,713→70,270 格，余额 583.4 万→532.7 万；残差（约等于利息减挨打损失）784.0 万；对真人出兵 577.3 万、对无主地 26.4 万，陆攻手续费 71.5 万，落地的捐款 32 笔到账 538.3 万、税 152.6 万。队 1 48.3%→56.5%（2080 万→1740 万兵），队 2 33.7%→27.0%。",
+     "地块流动（truth_query.py A083 gain 4500 6030）：队 3 从外面拿到 20,641 格（422烈士万岁 10,618、Player 620 7,284），被拿走 31,372 格（Player 752 9,372、422烈士万岁 7,230、Player 620 6,211、kaan 3,054、gaijin 2,632，变成无主地 2,839）。talon5 拿 4,916 丢 20,078；alex_k 拿 14,013 丢 11,294。",
+     "talon5（match_digest.py 第 5 节；hollow_rear.py）：4500 拍 15,188 格、110.8 万兵，贴着 5 个队 1 的真人（gaijin 179 像素、422烈士万岁 111、kaan 98、Player 752 85）和 QYRGYZ（38）。4189~5459 拍挨了 41 发 777.8 万兵（船登陆 3 发 44.3 万）；最后 900 拍：422烈士万岁 12 发 191.9 万、Player 752 3 发 158.0 万、Player 620 4 发 98.6 万、kaan 5 发 88.2 万、gaijin 7 发 72.4 万。同一轮里收到捐款 384.7 万，自己最后 900 拍出兵 21 发 231.8 万。5459 拍剩 2,839 格、18.8 万兵出局。",
+     "核心期决策拍去向（core_gate_tally.py A083 4500 6030 --by-target）：2,334 个决策拍，没有非队友邻居 903（39%：ryan_m、zero_7、riku_x 各 301），嫌贵不打 805（34%），过了软上限但没到 128×领土 389（17%：noah88 125、sora_w 121、kaito9 116、alex_k 27），有陆攻意图 49（2%：alex_k 28、talon5 21），调度 32。",
+     "Player 752 的账（enemy_ledger.py A083 --p 13）：4284 拍 21,306 格、199 万兵；(4284,6030] 对 talon5、alex_k 出 5 发 321 万兵，净拿 9,387 格；我方只对它出过 1 发 11.2 万（talon5 4984 拍）。贴着它的 noah88（4500 拍接壤 41 像素，6030 拍 133 像素；175.6 万→219.0 万兵）这一段的 306 个决策拍：嫌贵 175、过软上限没到 128× 125、调度 6，陆攻 0（truth_query.py A083 cmds noah88 3600 8310：3654 拍之后的下一条陆攻在 8239 拍）。"
+    ],
+    "priorDecisions": [
+     {
+      "t": "4256~4452",
+      "bots": "alex_k、talon5",
+      "decision": "对 kaan（队 1，21,410~19,152 格、密度 48~70）连出 4 轮（3 轮在过了软上限之后）：alex_k 56.8 万（4256 拍），talon5 28.2 万、34.2 万、48.0 万（4270、4389、4452 拍），净得地 +411、+3,378、+2,044、+1,140。talon5 4296 拍到 15,528 格（峰值），战线上同时贴着 5 个队 1 的真人。",
+      "why": "余额过 100×领土时不比单价，对报价单上最便宜的邻居出 1.25×需要量或一发脉冲；打下来的地让战线更长，底线只按单个邻居估威胁。",
+      "codePath": "Policy.buyLand L5353（over）、L5456~5457、L5612~5617；Policy.safeAt L4543~4560"
+     },
+     {
+      "t": "4242~4438",
+      "bots": "noah88、alex_k → alex_k、talon5",
+      "decision": "noah88 给 alex_k 54.1 万（4242 拍，税 14.4 万），alex_k 给 talon5 38.3 万（4375 拍，税 11.1 万），noah88 给 talon5 38.1 万（4438 拍，税 13.1 万）。",
+      "why": "捐款人密度 ≥108 且收款人密度 ≤96 就按余额的两成左右捐给有战线的号；4284 拍之后配额解除，每笔都落地。",
+      "codePath": "Policy.tryDonateToTeammate L4414~4418、L4479~4488、L4499~4508"
+     },
+     {
+      "t": "4091 起",
+      "bots": "noah88",
+      "decision": "吃完 PERU 的一块之后 19,523 格，唯一的敌邻是 Player 752。4500 拍对它的报价 c = 608，worth = 87.6，不出手；余额过 100×领土后又因为「唯一的真人邻居」要等到 128×领土。",
+      "why": "没过软上限：c ≥ worth 就 break。过了软上限：对方是唯一的真人邻居、健康、没在打我、打穿会露出新真人时，余额 < 1.28×100×领土 就跳过；报价还要再乘 1.6。",
+      "codePath": "Policy.buyLand L5359、L5361~5365；Policy.offers L5248~5250"
+     },
+     {
+      "t": "4284",
+      "bots": "全部",
+      "decision": "引擎的捐款配额在 4284 拍解除：此前发出的 231 次调度落地 31 次，此后 72 次落地 71 次。",
+      "why": "引擎规则，不是策略的选择；策略两段用的是同一套定额。",
+      "codePath": "Policy.tryDonateToTeammate L4499~4508"
+     }
+    ]
+   }
+  ],
+  "deaths": [
+   {
+    "bot": "ryan_m",
+    "p": 14,
+    "t": 8430,
+    "detail": "peak:13870;boats:0;out:0;by:13:456041:99591",
+    "peakTerr": 15028,
+    "peakTick": 1730,
+    "last300Takers": [
+     {
+      "who": "Player 752#13(队1)",
+      "px": 10813
+     },
+     {
+      "who": "zero_7",
+      "px": 4
+     }
+    ],
+    "donationsIn500": {
+     "n": 1,
+     "credited": 51218
+    },
+    "donationsOut500": {
+     "n": 0,
+     "left": 0
+    },
+    "cause": "扇形最东北角，1950~7985 拍被队友围死（14,312 格、没有海岸），兵一直在捐，密度 20~53。最后一个出局：8330 拍 Player 752 同一拍两发 138.1 万兵（它 76.2 万兵、密度 53），8421 拍第三发 56.0 万。它没有对 Player 752 出过手。8430 拍剩 3,391 格出局。"
+   },
+   {
+    "bot": "noah88",
+    "p": 15,
+    "t": 8303,
+    "detail": "peak:17812;boats:0;out:0;by:13:1625968:82092",
+    "peakTerr": 19523,
+    "peakTick": 4091,
+    "last300Takers": [
+     {
+      "who": "Player 752#13(队1)",
+      "px": 10499
+     }
+    ],
+    "donationsIn500": {
+     "n": 0,
+     "credited": 0
+    },
+    "donationsOut500": {
+     "n": 1,
+     "left": 638746
+    },
+    "cause": "4091 拍起 19,523 格（我方最大的一块），唯一的敌邻是 Player 752。3654~8239 拍没有发过一条陆攻，19 笔调度捐出到账 785.7 万（税 262.2 万），最后一笔在 7868 拍（49.9 万给 alex_k，捐后密度 82）。91 拍后（7959 拍）Player 752 一发 154.1 万兵（它 181.1 万兵、密度 93），8225 拍第二发 423.9 万兵。8239 拍它回了 15.8 万。8303 拍剩 4,402 格、22.7 万兵出局，这一轮没有收到捐款。"
+   },
+   {
+    "bot": "sora_w",
+    "p": 16,
+    "t": 7863,
+    "detail": "peak:6246;boats:0;out:0;by:50:1928431:302179",
+    "peakTerr": 6578,
+    "peakTick": 7333,
+    "last300Takers": [
+     {
+      "who": "Player 752#13(队1)",
+      "px": 4006
+     },
+     {
+      "who": "Ｅｍｐｅｒｙ 🇸🇿#50(队1)",
+      "px": 1347
+     }
+    ],
+    "donationsIn500": {
+     "n": 2,
+     "credited": 212471
+    },
+    "donationsOut500": {
+     "n": 0,
+     "left": 0
+    },
+    "cause": "1235~3795 拍被队友围死，之后唯一的敌邻是 QYRGYZ（接壤 32 像素），5,999 格从 3510 拍到 7110 拍没变过：嫌贵不打、过了软上限又没到 128×领土。7553 拍起 Player 752 6 发 109.4 万兵，7847 拍Ｅｍｐｅｒｙ 一发 235.1 万兵（它 4,502 格、34.1 万兵）。期间收到捐款 21.2 万。7863 拍剩 1,441 格出局。"
+   },
+   {
+    "bot": "zexos1",
+    "p": 17,
+    "t": 2939,
+    "detail": "peak:7487;boats:0;out:0;by:11:30030:8718",
+    "peakTerr": 9865,
+    "peakTick": 1848,
+    "last300Takers": [
+     {
+      "who": "PERU#34(队1)",
+      "px": 2172
+     },
+     {
+      "who": "[FIN] gaijin🐌#11(队1)",
+      "px": 520
+     },
+     {
+      "who": "Player 620#5(队1)",
+      "px": 214
+     },
+     {
+      "who": "talon5",
+      "px": 56
+     }
+    ],
+    "donationsIn500": {
+     "n": 1,
+     "credited": 75189
+    },
+    "donationsOut500": {
+     "n": 0,
+     "left": 0
+    },
+    "cause": "扇形最西端（出生点 (671,201)，最近队友 75 像素），核心期起贴着队 1 的 Player 620、PERU、gaijin。1729~1757 拍打 PERU 两轮 19.9 万兵（净得地 +3,284、+2,686），1848 拍到 9,865 格。1862 拍起三家轮流打它：Player 620 9 发 46.3 万、PERU 3 发 20.7 万、gaijin 7 发 15.5 万，连同船登陆共 22 发 88.6 万兵，它自己的余额 2039~2639 拍只有 11~16 万；2191、2240 拍它对 Player 620 回了 19.8 万兵，净丢地。队友想给它的调度 72 次只落地 2 笔 26.9 万（配额用到 151/153 点）。2939 拍剩 1,849 格出局。"
+   },
+   {
+    "bot": "talon5",
+    "p": 18,
+    "t": 5459,
+    "detail": "peak:11460;boats:0;out:0;by:13:302435:25340,11:55879:9802,5:57341:26396,33:37849:13286",
+    "peakTerr": 15528,
+    "peakTick": 4296,
+    "last300Takers": [
+     {
+      "who": "Player 752#13(队1)",
+      "px": 2167
+     },
+     {
+      "who": "kaan#33(队1)",
+      "px": 1067
+     },
+     {
+      "who": "[FIN] gaijin🐌#11(队1)",
+      "px": 806
+     },
+     {
+      "who": "422烈士万岁#7(队1)",
+      "px": 654
+     }
+    ],
+    "donationsIn500": {
+     "n": 6,
+     "credited": 985006
+    },
+    "donationsOut500": {
+     "n": 0,
+     "left": 0
+    },
+    "cause": "3199~4452 拍吃 PERU、kaan 的地长到 15,528 格（4296 拍），战线上同时贴着队 1 的 gaijin、422烈士万岁、kaan、Player 752 和队 2 的 QYRGYZ。4189 拍起五家轮流打：41 发 777.8 万兵（船登陆 3 发 44.3 万），最后 900 拍 422烈士万岁 12 发 191.9 万、Player 752 3 发 158.0 万、Player 620 4 发 98.6 万、kaan 5 发 88.2 万、gaijin 7 发 72.4 万。这一轮它收到捐款 384.7 万，自己回击 231.8 万（过了软上限后对 422烈士万岁、Player 620 的出手净得地多数为负）。5459 拍剩 2,839 格、18.8 万兵出局。"
+   },
+   {
+    "bot": "leo_tx",
+    "p": 19,
+    "t": 3861,
+    "detail": "peak:6299;boats:0;out:0;by:36:15730:14192",
+    "peakTerr": 7619,
+    "peakTick": 2767,
+    "last300Takers": [
+     {
+      "who": "kaan#33(队1)",
+      "px": 2651
+     },
+     {
+      "who": "QYRGYZ#36(队2)",
+      "px": 1468
+     }
+    ],
+    "donationsIn500": {
+     "n": 5,
+     "credited": 372611
+    },
+    "donationsOut500": {
+     "n": 0,
+     "left": 0
+    },
+    "cause": "和 talon5 出生在同一个点上，扇形西南。1530~2700 拍只贴着 QYRGYZ（队 2）不动：6,830 格，余额 16.4 万→86.3 万，密度 24→126。2744、3017 拍过了软上限后对 QYRGYZ（地是它的 1.8 倍、密度 100~108）出 27.9 万、35.7 万兵，净得地 +789、−126；3423 拍对 kaan 出 23.6 万（净 −2,007）。2793 拍起 QYRGYZ 7 发 139.7 万、kaan 4 发 106.7 万打过来，期间收到捐款 68.0 万（想给它的调度 25 次落地 8 笔）。3861 拍剩 1,562 格、10.8 万兵出局。"
+   },
+   {
+    "bot": "alex_k",
+    "p": 20,
+    "t": 7909,
+    "detail": "peak:25513;boats:0;out:172925;by:13:1369726:49636,50:30033:320032",
+    "peakTerr": 25974,
+    "peakTick": 7677,
+    "last300Takers": [
+     {
+      "who": "Ｅｍｐｅｒｙ 🇸🇿#50(队1)",
+      "px": 14508
+     },
+     {
+      "who": "Player 620#5(队1)",
+      "px": 776
+     }
+    ],
+    "donationsIn500": {
+     "n": 3,
+     "credited": 1367027
+    },
+    "donationsOut500": {
+     "n": 0,
+     "left": 0
+    },
+    "cause": "全队的兵都往它这里送：全场收到 891.6 万，对真人出 42 轮 1168 万兵。7462 拍吃 QYRGYZ 到 21,603 格，7677 拍 25,974 格（我方单号最大）。7847~7896 拍 62 拍内挨了 Player 620 2 发 49.3 万、Ｅｍｐｅｒｙ 2 发 412.4 万、Player 752 1 发 148.2 万，合计 610 万兵，它当时 183 万兵（密度 70）。7909 拍剩 6,283 格、27.9 万兵出局。"
+   },
+   {
+    "bot": "zero_7",
+    "p": 21,
+    "t": 8401,
+    "detail": "peak:3435;boats:0;out:0;by:13:243344:95025",
+    "peakTerr": 4430,
+    "peakTick": 1563,
+    "last300Takers": [
+     {
+      "who": "Player 752#13(队1)",
+      "px": 1626
+     }
+    ],
+    "donationsIn500": {
+     "n": 0,
+     "credited": 0
+    },
+    "donationsOut500": {
+     "n": 1,
+     "left": 67942
+    },
+    "cause": "1565~7050 拍被队友围死（4,430 格、没有海岸），兵一直在捐（全场捐出的调度 84 次，落地 18 笔）。7406、7525 拍 Player 752 两发 43.0 万兵把它打到 2,335 格；8386 拍一发 59.4 万兵（它当时 20.1 万兵，是它余额的 2.96 倍），15 拍后（8401 拍）出局。"
+   },
+   {
+    "bot": "kaito9",
+    "p": 22,
+    "t": 7245,
+    "detail": "peak:4081;boats:0;out:0;by:13:65446:40229",
+    "peakTerr": 4883,
+    "peakTick": 3898,
+    "last300Takers": [
+     {
+      "who": "Player 752#13(队1)",
+      "px": 2677
+     }
+    ],
+    "donationsIn500": {
+     "n": 5,
+     "credited": 738492
+    },
+    "donationsOut500": {
+     "n": 1,
+     "left": 123891
+    },
+    "cause": "和 riku_x 出生在同一个点上，630 拍只有 1,941 格。2970~3780 拍被队友围着（4,864 格），之后只贴着 QYRGYZ 一点边（4500 拍接壤 2 像素），嫌贵不打、过了软上限又没到 128×领土，4,883 格一直没变。6146~6307 拍 Player 752 把 alex_k 的地打穿后贴上它：6412 拍 25.2 万，6797~7196 拍 4 发 178.0 万兵。它 6447~7077 拍对 Player 752（地是它的 8~17 倍）回了 9 轮 77.1 万兵，随后 300 拍净得地 8 轮为负；期间收到捐款 73.8 万，其中 noah88 的 3 笔被 150×领土的上限截短（想送 140 万只到账 72.1 万）。7245 拍剩 986 格出局。"
+   },
+   {
+    "bot": "riku_x",
+    "p": 24,
+    "t": 7665,
+    "detail": "peak:3618;boats:0;out:0;by:13:341843:45426",
+    "peakTerr": 4039,
+    "peakTick": 865,
+    "last300Takers": [
+     {
+      "who": "Player 752#13(队1)",
+      "px": 1896
+     }
+    ],
+    "donationsIn500": {
+     "n": 1,
+     "credited": 251045
+    },
+    "donationsOut500": {
+     "n": 0,
+     "left": 0
+    },
+    "cause": "和 kaito9 出生在同一个点上，1155~7240 拍被队友围死（4,028 格、没有海岸），兵一直在捐，密度长期 20~35。kaito9 出局后直接贴上 Player 752：7280 拍挨 19.0 万兵（它当时 17.5 万兵），随后收到 ryan_m 25.1 万，7357 拍过了软上限对 Player 752 出 13.7 万（净 −1,269）；7602~7637 拍 4 发 82.1 万兵打过来，这一轮没有再收到捐款。7665 拍剩 860 格出局。"
+   }
+  ],
+  "decisions": [
+   {
+    "id": "D01",
+    "t": "选点阶段",
+    "bot": "全部",
+    "what": "10 个号按角落扇形阵出生：锚点约 (801,131)，三圈半径 29 / 87 / 145 像素；最近队友 6~75 像素（中位 56 = 0.99×rCell），9 个号在 1.5×rCell 内有 ≥2 个队友。扇形面积约 20,641 格 = 2.08 个人均地盘，里面还有敌方真人 Moose#10。",
+    "why": "没有 boss 且 ≥6 个号时走角落扇形阵：点间距下限 clamp(0.95×rCell, 42, 68)；注释把内圈的号当作没有敌邻的「蓄水池」。锚点按陆地采样打分，离最近的地图角 149 像素。",
+    "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L1065~1077（角落扇形阵、r0/r1/r2、minReqSep）、L1093~1133（锚点打分）、L1135~1170",
+    "evidence": "spawn_churn.py A083 --fan（out/A083/spawn_churn.txt）；spawn_geometry.py（A083 行：间距 6/56/75、领土中位比 630 拍 1.11 / 1530 拍 0.49、1530 拍密度中位比 3.01）；idle_scan.py A083（全场封死 21,555 号·拍，其中没有海岸 21,165）；spawn_geometry.py 的最后一列（2100 拍 4/10 个号封死）。几何条件和后果指标（1530 拍中位比 < 0.60）都满足。",
+    "verdict": "error",
+    "patternId": "NEW-SP-DISC",
+    "statementType": "observed"
+   },
+   {
+    "id": "D02",
+    "t": "第 1~351 步",
+    "bot": "全部（talon5 / leo_tx、kaito9 / riku_x）",
+    "what": "协调器 51 轮整体求解，阵型中心搬了 9 次；每个号被执行 15~39 条出生指令，7 个号的最后一条在第 337~351 步。talon5 和 leo_tx 最后选在同一个像素 (721,255)，kaito9 和 riku_x 选在同一个像素 (828,214)；最后一轮的另外两个点位空着。",
+    "why": "rCell 按「当时已选点的真人数」算，每轮都变；每轮按各号当前位置重新配对点位，相邻两轮 talon5↔zexos1 互换了 7 次。最后几步发出的指令用的是上一轮的配对。",
+    "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L837~838、L1276（只锁角落名）、L1346 → matchBotsToTargets L1431~1446",
+    "evidence": "spawn_churn.py A083 --fan（各号最后落点离最后一轮点位 1~79 像素：leo_tx 69、riku_x 79、zero_7 55、zexos1 37）；match_digest.py A083 第 3b 节（同一像素被两个号选中：(721,255)×2、(828,214)×2）。后果：630 拍 kaito9 1,941 格（第 42/53 名）、riku_x 1,731 格（第 44 名），我方中位 2,743；riku_x 1155 拍第一个被围死。talon5、leo_tx 630 拍 2,875 / 2,802 格，没有受影响。",
+    "verdict": "error",
+    "patternId": "NEW-SP-RESOLVE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D03",
+    "t": "90~630",
+    "bot": "全部",
+    "what": "按圈数买无主地：270 拍领土中位 364 对其他真人 312，630 拍 2,743 对 2,472（1.11 倍），名次 8~44/53。",
+    "why": "开局的无主地扩张不看邻居的兵，只看圈数和自己的余额；指令延迟只有 11 拍（中位）。",
+    "codePath": "V13.expandNeutral L2373 / dpNeutral L2383",
+    "evidence": "match_digest.py A083 第 3b 节（拍 270、630 的中位与名次）；exec_gap.py A083（<630 拍陆攻 97 条落地 94 条，延迟中位 11 拍）。",
+    "verdict": "good",
+    "patternId": "NEW-OP-DPGOOD",
+    "statementType": "observed"
+   },
+   {
+    "id": "D04",
+    "t": "630~1200",
+    "bot": "全部（被卡的决策拍：ryan_m 88、leo_tx 70、kaito9 65、riku_x 64）",
+    "what": "贴着内置 AI 不出手：[630,900) 540 个决策拍里 335 个（62%）底线高于可用兵，[900,1200) 600 个里 143 个（24%）。顶住底线的：winFloor 第 1 项 149 个决策拍（leo_tx 52、talon5 29、zexos1 21），第 2 项 32 个，第 3 项 safeFinite 333 个。safeFinite 的参照对象：编队号 111 次、同队真人 Fantasy 67 次、敌方真人 155 次（Moose 83、water 54）。例：800 拍 kaito9（2,718 格、1.58 万兵）贴着 5 个内置 AI（共 2,711 格，单价 5.2~6.0，每个只要 1,000~3,000 兵），底线 1.50 万，来自 AI#466（290 格、327 兵）的另一个邻居 Moose 的余额；talon5（1.15 万兵）贴着 7 个 AI（5,630 格），底线 1.49 万来自 AI#312（83 格）的另一个邻居、队友 zexos1；sora_w（1.94 万兵）贴着 8 个 AI（5,260 格），底线 2.15 万来自 AI#264（502 格）的另一个邻居、同队真人 Fantasy。",
+    "why": "safeFinite 对每个贴着的 AI 取「它的其他邻居里余额 + 正在打它的兵最小的那个」，再在所有 AI 邻居里取最大值，当成打任何一个 AI 的底线。不看那个邻居是队友还是敌人，也不看要打的这个 AI 是不是它贴着的那个。",
+    "codePath": "Style.pickTarget L1160~1161 ← V13.floorFor0 L2233~2241 ← Policy.winFloor L4562~4570 ← V13.safeFinite L2500~2510 ← Strategy.threatOf L417~444",
+    "evidence": "floor_bind_tally.py A083 630 900 | 900 1200 | 630 1500（out/A083/floor_bind_tally.txt；rows.tsv 的 bind / sbRef 列由 shadow_diag.floorBind 照原公式重算）；window_tally.py A083 630 900；shadow.mjs A083 --bots kaito9,talon5,sora_w --at 800（out/A083/shadow_at_800.txt，三个例子）。",
+    "verdict": "error",
+    "patternId": "NEW-OP-ALLYLOCK",
+    "statementType": "observed"
+   },
+   {
+    "id": "D05",
+    "t": "700~1344",
+    "bot": "全部",
+    "what": "指令在路上被攒成一摞再倒序一起落地：45 批 284 条（一批最多 9 条：9 条的 13 批、8 条的 8 批），最新一条意图到落地平均晚 65 拍。6 批一次抽掉余额的六成以上（ryan_m 1022 拍 9 条：3.46 万→4,818）；15 批 111 条一兵没花（目标已经没了，身边也没有无主地）。落地延迟按意图拍分段：600~699 拍中位 13，700~799 拍 28，800~899 拍 50，900~999 拍 93，1000~1099 拍 112，1100~1199 拍 130，1200 拍以后回到 13。",
+    "why": "录像里别的玩家一拍最多 2 条指令，我方一拍 9 条；客户端之间没有相对落后。策略每 5 拍照发一条，传输层在仓库里看不到。",
+    "codePath": "Strategy.send L479~487；Policy.act L4838；传输层（适配层 / 服务器）不在仓库里",
+    "evidence": "burst_runs.py A083 --list（46 批全部和影子策略的连续意图倒序对上）；exec_gap.py A083（按时段、按意图拍分段）；max_per_tick.py；client_lag.py A083。",
+    "verdict": "unclear",
+    "patternId": "NEW-IO-STACK9",
+    "statementType": "observed"
+   },
+   {
+    "id": "D06",
+    "t": "630~1500",
+    "bot": "全部（sora_w 33 条、zexos1 32、alex_k 32、ryan_m 29）",
+    "what": "迟到的指令落地时目标已经出局：443 条陆攻意图里 436 条瞄的是内置 AI 或真人，落在原目标上的只有 151 条 26.7 万兵（35%）。221 条被引擎改成打无主地：71 条真的出了兵（17.1 万兵，手续费 2.2 万），150 条什么都没发生（当初想出 38.3 万兵）。例：ryan_m 905~955 拍连着 11 个决策拍对 AI#75 下单（比例 218→130），AI#75 1018 拍出局，其中 9 条 1022 拍一起落地，变成 9 条打无主地、2.79 万兵，1030~1070 拍它的余额只剩 5 千，+151 格，1080 拍没用完的兵退回。alex_k 966、1036、1218 拍的三批（4、8、9 条）落地时目标已经出局 28、25、20 拍，身边没有无主地，什么都没发生。",
+    "why": "策略每个决策拍只看引擎当前状态：上一条还没落地，闸门还开着，就对同一个 AI 再下一条。引擎执行陆攻前先看目标还在不在，不在就改成无主地，比例不变。",
+    "codePath": "引擎 live_game_js.js qj.i6 → bD.gv.rk；Strategy.send L479~487；Policy.act L4838",
+    "evidence": "ai_life.mjs A083（内置 AI 的出局拍）；batch_targets.py A083 --list（out/A083/batch_targets.txt、batch_targets_list.txt）；truth_query.py A083 bal ryan_m 990 1130 10。同口径的另外 5 局（[630,1500) 打在原目标上的比例）：A022 8%、A029 48%、A038 84%、A047 60%、A073 47%。",
+    "verdict": "error",
+    "patternId": "NEW-IO-DEADTARGET",
+    "statementType": "observed"
+   },
+   {
+    "id": "D07",
+    "t": "1200~1500",
+    "bot": "noah88、alex_k、kaito9、zero_7（Moose）；ryan_m、noah88（water）",
+    "what": "只贴着真人不出手：[1200,1500) 600 个决策拍里 415 个（69%）。Moose 1100 拍 5,626 格、5.0 万兵，四个邻居合计 22.4 万兵；1400 拍 7,140 格、12.5 万兵，四个邻居合计 62.2 万兵（5 倍）。water 1100 拍 7,952 格、5.3 万兵，1500 拍 17,896 格、13.9 万兵（密度 7.8）；1400 拍 ryan_m 9.8 万兵、底线 13.3 万。这 300 拍全队余额 68.8 万→174.8 万，领土 +805 格。",
+    "why": "核心期前打真人的底线约为 1.5×邻居均兵，封顶 50×自己的领土；邻居（包括队友）的兵都在涨，底线跟着涨，每个号各算各的都够不着。noah88 的底线就是 50×领土的封顶（3,291 格→16.5 万）。",
+    "codePath": "Policy.act L4850 → Style.pickTarget L1144~1161 ← V13.floorFor L2228~2231 / floorFor0 L2233~2241；General floors L819~831",
+    "evidence": "window_tally.py A083 1200 1500（out/A083/window_tally_sub.txt）；shadow.mjs A083 --bots noah88,alex_k,kaito9,zero_7,ryan_m --at 1100,1400（out/A083/shadow_at_1100_1400.txt）；truth_query.py A083 bal 10 / bal 38；enemy_ledger.py A083 --p 38。1512~1540 拍核心期一接手这 5 个号就出手了（D08）。",
+    "verdict": "error",
+    "patternId": "NEW-OP-REFCHASE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D08",
+    "t": "1512~1843",
+    "bot": "noah88、ryan_m",
+    "what": "核心期接手后第一发就打密度只有自己九分之一的 water：noah88 1512 拍 3 条 17.7 万兵（余额的 79%，密度 68 对 7.9），300 拍净得地 +8,371；ryan_m 1526~1610 拍 3 轮 12.4 万兵（净得地 +4,030、+2,726、+787）。water 17,896 格（1500 拍）→6,523 格（1700 拍），1843 拍出局；(1530,2250] 我方从它手里拿到 16,759 格。",
+    "why": "buyLand 的 worth = 1.5×自己密度（1500 拍），water 的报价远低于 worth，成交。",
+    "codePath": "Policy.buyLand L5350~5359（c < worth 才买）、L5455~5609",
+    "evidence": "human_strikes.py A083 --list 200（1512 拍密度比 8.59）；enemy_ledger.py A083 --p 38（out/A083/enemy_38_water.txt）；truth_query.py A083 gain 1530 2250。ryan_m 1638~1736 拍又连出 5 轮，把自己的余额打到 3 兵（密度 0.0），被 water 反手拿回一些地（300 拍净得地 −348~−2,473），最后停在 14,312 格。",
+    "verdict": "good",
+    "patternId": "NEW-AT-CHEAPKILL",
+    "statementType": "observed"
+   },
+   {
+    "id": "D09",
+    "t": "1700~3658",
+    "bot": "noah88、alex_k、kaito9",
+    "what": "1526~1617 拍把 Moose 从 7,140 格打到 3,257 格（16 发 35.4 万兵）之后停手。Moose 剩 2,697 格，1800 拍只要 7.4 万兵就能吃掉（kaito9 一个号有 8.2 万可用），2400 拍起四周全是我方号。此后 1,650 拍只有 kaito9 2877 拍出过一轮 8.4 万（+67 格）；Moose 的兵从 6.5 万（1800 拍）养到 35.6 万（3300 拍，密度 137）。3353 拍 noah88 过了软上限才动手（39.8 万兵），alex_k 跟上，3353~3647 拍 9 发 68.4 万兵，3658 拍吃掉。",
+    "why": "报价 c =（吃掉它要的兵 + 手续费）/（它的领土 − 出局线以下的部分 + 少量折算）。Moose 贴近出局线时分母只有约 1,000 格，报价 67~238，worth 只有 10~74，三个号各自在 L5359 break；它又没到「濒崩」线（领土 ≤ 1.4×出局线）。出局后剩下的地变成无主地、只有我方号够得着，这一点报价里没有算。",
+    "codePath": "Policy.offers L5093~5100（left = 峰值/4、baseGain = Lq − left + left×shareW×share、c）、L5147（nearCollapse）；Policy.buyLand L5350~5359（各号各自比价；over=true 才不看单价）",
+    "evidence": "shadow.mjs A083 --bots noah88,alex_k,kaito9 --at 1800,2100,2400,2700（out/A083/shadow_moose_1800_2700.txt：需 7.4 万 / 13.2 万 / 21.1 万 / 32.3 万；2700 拍 noah88、alex_k 各有 44.3 万、37.7 万可用）；ascii_map.mjs A083 --at 1700,…,3300 --also 10 --heads（out/A083/moose_heads.txt：2400 拍起只接壤 noah88 144、alex_k 100、kaito9 5）；enemy_ledger.py A083 --p 10（1500 拍以后 Moose 没有对任何人出过兵）；core_gate_tally.py A083 1500 3000 --by-target（price→10：noah88 164、alex_k 120、kaito9 259 个决策拍）。",
+    "verdict": "error",
+    "patternId": "NEW-AT-ENCLAVE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D10",
+    "t": "1155~7985",
+    "bot": "ryan_m、zero_7、riku_x、sora_w、kaito9",
+    "what": "被队友围死、没有海岸：ryan_m 6,040 拍（1950~7985）、riku_x 6,090 拍（1155~7240）、zero_7 5,490 拍（1565~7050）、sora_w 2,565 拍（1235~3795）、kaito9 980 拍；合计 21,165 号·拍。3060 拍这 5 个号有 206 万兵（全队的 41%）。全队因余额超过 100×领土少拿的利息：(2250,3060] 43.1 万（zero_7 21.1 万、leo_tx 17.0 万、riku_x 4.1 万）、(3060,4500] 68.0 万、(4500,6030] 49.8 万、(6030,7500] 55.3 万；3060 拍 zero_7 密度 143.9，实际利率 0.14%（查表 1.14%）；kaito9 6745~7075 拍有 35 拍顶在 150×领土。",
+    "why": "扇形内圈和靠地图边的号，外面的队友把路堵上之后没有任何非队友邻居；没有海岸发不了船，兵只能靠调度出去，4284 拍前调度又落不了地。",
+    "codePath": "Policy.offers L5072（只遍历 this.nb，报价单为空）、Policy.idleBoats L5019~5070（L5032 要求有海岸）",
+    "evidence": "idle_scan.py A083；cap_time.py A083；interest_rate.py A083 --win 1530,2250,3060,4500,6030,7500（out/A083/interest_rate.txt）；ascii_map.mjs A083 --at 3060 --map。",
+    "verdict": "error",
+    "patternId": "NEW-EC-LANDLOCK",
+    "statementType": "observed"
+   },
+   {
+    "id": "D11",
+    "t": "1770~4283",
+    "bot": "后排各号（zero_7 84 次、sora_w 59、riku_x 52）",
+    "what": "配额解除前发出的 231 次调度只落地 31 次（13%）：2142 拍前 47 次落地 1 次（45 次是单笔就超过上限），2142~3212 拍 122 次落地 12 次（107 次是收款人累计配额用满），3213~4283 拍 62 次落地 18 次。zexos1 出局前 72 次想给它的调度落地 2 笔 26.9 万；leo_tx 25 次落地 8 笔 68.0 万。",
+    "why": "调度按固定比例定额（封死号救急 380/1024、进攻 320/1024），不看收款人还剩多少配额点；引擎对超额的捐款整笔拒绝。",
+    "codePath": "Policy.tryDonateToTeammate L4499~4508（选定收款人后按 idealPct 定额直接 g.donate，没有用配额）",
+    "evidence": "quota_truth.py A083 --list 20（out/A083/quota_truth.txt：没落地的 201 次里累计用满 151、单笔超上限 45、解释不了 3、当事人已不在场 2）；exec_gap.py A083（捐款 1500~2999 拍 147 发 8 落，3000~4283 拍 84 发 23 落）；tmp/shadow/A083/intents.tsv（按收款人数意图）。",
+    "verdict": "error",
+    "patternId": "NEW-DN-QUOTABLIND",
+    "statementType": "observed"
+   },
+   {
+    "id": "D12",
+    "t": "3892",
+    "bot": "noah88",
+    "what": "吃完 Moose 后一度没有任何非队友邻居（3780、3870 拍的两个快照），3892 拍发船 26.2 万兵（余额的 128/1024，手续费 6.5 万），3923 拍登陆 PERU 25.0 万兵，300 拍内净得 2,004 格；talon5 同时从陆上打，PERU 4046 拍出局。",
+    "why": "封死分支：没有非队友邻居、没有无主地、有海岸时把一部分余额装船去最便宜的落点。",
+    "codePath": "Policy.idleBoats L5019~5070 → General.boatOut L999~1015",
+    "evidence": "boat_list.py A083（out/A083/boat_list.txt）；tmp/shadow/A083/intents.tsv（3885 拍影子策略的发船意图 26.05 万兵）；truth_query.py A083 gain 3060 4500（从 PERU 拿到 10,269 格）。",
+    "verdict": "good",
+    "patternId": "NEW-SE-BOATOK",
+    "statementType": "observed"
+   },
+   {
+    "id": "D13",
+    "t": "3654~8239（noah88）；3510~7110（sora_w）；3510~6030（kaito9）；1530~2700（leo_tx）",
+    "bot": "noah88、sora_w、kaito9、leo_tx",
+    "what": "只贴着一个真人的号长期不出手。noah88（19,523 格，唯一敌邻 Player 752）4,585 拍没有一条陆攻：[4500,7500) 600 个决策拍里嫌贵 310、过软上限没到 128× 276、调度 14。它的密度在 81~118 之间来回：到 107~118 就捐掉两成（19 笔到账 785.7 万、税 262.2 万，税是到账的三分之一），捐完回到 81~86。同期 Player 752 从我方净拿 2.0 万格（(4284,7500]）。sora_w、kaito9 对 QYRGYZ 同样：[4500,6030) 各 306 个决策拍，嫌贵 180 / 185、过软上限没到 128× 121 / 116。",
+    "why": "没过软上限：报价 c ≥ worth 就 break（4500 拍 noah88 对 Player 752 的 c = 608，worth = 87.6）。过了软上限：对方是唯一的真人邻居、健康、没在打我、打穿会露出新真人，余额 < 1.28×100×领土 就跳过，报价再乘 1.6。调度的门槛是密度 ≥108，比 128 低，兵在到线之前就被捐走了。",
+    "codePath": "Policy.buyLand L5353、L5359、L5361~5365（isSoleHealthyBuffer，overHumanCap=1.28）；Policy.offers L5248~5250（soleBufferPenalty=1.6）；Policy.tryDonateToTeammate L4479~4508",
+    "evidence": "core_gate_tally.py A083 4500 6030 | 6030 7500 --by-target（out/A083/core_gate_tally.txt）；truth_query.py A083 cmds noah88 3600 8310；shadow.mjs A083 --bots noah88 --at 3400,…,7900（out/A083/shadow_noah88_3400_7900.txt）；enemy_ledger.py A083 --p 13；flat_windows.py A083。这样做换来了什么：alex_k 用这些兵净拿了地（D14）；noah88 自己打 Player 752 会怎样没有做反事实。",
+    "verdict": "unclear",
+    "patternId": "NEW-AT-SOLEHOLD",
+    "statementType": "observed"
+   },
+   {
+    "id": "D14",
+    "t": "4284~7868",
+    "bot": "后排各号 → alex_k、talon5、kaito9",
+    "what": "配额解除后调度 72 发 71 落地：到账 1,280 万、税 382.9 万（到账的 30%）。alex_k 收 713.7 万、talon5 365.5 万、kaito9 121.6 万。alex_k 用这些兵 (4500,6030] 拿 14,013 丢 11,294，(6030,7500] 拿 13,232 丢 6,774（主要是从被队 1 打残的 QYRGYZ 手里拿了 9,074 格），7677 拍到 25,974 格；talon5 收了 365.5 万还是出局。全队占地 4500 拍 82,713 格，7500 拍 69,929 格。",
+    "why": "没有敌邻的号把兵捐给有战线的号；有战线的号按密度门槛（捐款人 ≥108、收款人 ≤96）互相捐。",
+    "codePath": "Policy.tryDonateToTeammate L4414~4508",
+    "evidence": "donation_list.py A083 4284 8542 --quiet；truth_query.py A083 gain 4500 6030 | 6030 7500；squad_ledger.py A083 --win …（out/A083/squad_ledger_tp.txt）。",
+    "verdict": "unclear",
+    "patternId": "NEW-DN-CARRIER",
+    "statementType": "observed"
+   },
+   {
+    "id": "D15",
+    "t": "4284~7070",
+    "bot": "noah88、sora_w、kaito9、ryan_m 等 → alex_k、talon5、kaito9",
+    "what": "给已经快到软上限的号继续捐：4284 拍后落地的 71 笔里 33 笔（790.8 万）到账后把收款人推过 100×领土，其中 7 笔（161.1 万）推过 128×领土。noah88 6741、6888、7063 拍给 kaito9 的 3 笔被 150×领土的上限截短：到账 24.2 万、31.6 万、16.3 万，税 14.0 万、13.9 万、13.9 万（全场 4 笔想送 140 万只到账 72.1 万）。riku_x 7070 拍给 kaito9 的一笔到账 321 兵、税 8,756。30 笔捐完捐款人密度 ≤32。",
+    "why": "选定收款人后按捐款人余额的固定比例捐，不看对方离 150×领土还有多少空间；税是按捐款人余额的 6.25% 收的，和到账多少无关。封死号的密度门槛只有 30~42。",
+    "codePath": "Policy.tryDonateToTeammate L4463~4473（封死号救急 reqD 30 / 42）、L4479~4481、L4499~4508",
+    "evidence": "donation_list.py A083 4284 8542 --quiet（到账 < 税 1 笔；推过软上限 33 笔；被上限截短 4 笔；4284 拍后二传手 kaito9 收 121.6 万又捐出 102.7 万、再交税 29.4 万）；truth_query.py A083 cmds noah88 3600 8310。",
+    "verdict": "error",
+    "patternId": "NEW-DN-CAPLOOP",
+    "statementType": "observed"
+   },
+   {
+    "id": "D16",
+    "t": "2744~8344",
+    "bot": "kaito9、talon5、leo_tx、noah88、sora_w、riku_x（alex_k 是反例）",
+    "what": "余额过 100×领土之后的出手 56 次 1,496 万兵，随后 300 拍净得地合计 +6,062 格；没过软上限的 56 次 598 万兵，净得地合计 +61,386 格。过软上限且地比对方少的 49 次 1,309 万兵：净得地为正 28 次、为负 21 次。kaito9 6482~7077 拍过了软上限后对 Player 752（36,300~37,900 格，是它的 9~17 倍）8 次 73.0 万兵：1 次 +305，7 次 −1,373~−2,567，7245 拍出局；talon5 12 次 283 万兵合计 +157 格；leo_tx 3 次 87.2 万兵 −1,344 格。alex_k 25 次 921.7 万兵合计 +35,187 格（打的主要是密度不到它一半的 422烈士万岁、Player 620、kaan，和正被队 1 围攻的 QYRGYZ；25 次里只有 6202 拍打 Player 752 的一次为负）。",
+    "why": "余额过 100×领土时 buyLand 不再比单价，对报价单上的邻居出 1.25×需要量或一发 12% 的脉冲；不看对方的地和兵是不是比自己多。",
+    "codePath": "Policy.buyLand L5353（over）、L5359（over 时不 break）、L5456~5457、L5612~5617",
+    "evidence": "human_strikes.py A083 --list 200（out/A083/human_strikes.txt 的汇总行与逐次列表；300 拍窗口有重叠，合计数只用来比较两组）。",
+    "verdict": "error",
+    "patternId": "NEW-AT-OVERSTRIKE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D17",
+    "t": "4189~5459；7847~7909",
+    "bot": "talon5、alex_k",
+    "what": "出局前 300 拍同时被 ≥3 家打的号有 2 个：talon5（422烈士万岁、Player 752、Player 620、kaan、gaijin 五家，全程 41 发 777.8 万兵）、alex_k（Ｅｍｐｅｒｙ、Player 752、Player 620 三家 5 发 610 万兵）。zexos1 最后 900 拍是三家（Player 620、PERU、gaijin 22 发 88.6 万兵），最后 300 拍两家。打我方的几乎都是队 1 的人；队 2 只有 QYRGYZ 打过 leo_tx，water 还过手。",
+    "why": "我方的西、北两面全是队 1 的真人；底线按单个邻居估威胁，战线上有几家不影响出手。",
+    "codePath": "不是单一分支：Policy.safeAt L4543~4560 按单个邻居估威胁",
+    "evidence": "match_digest.py A083 第 5 节；hollow_rear.py A083（out/A083/hollow_rear.txt）；enemy_ledger.py A083 --p 13 | --p 50。",
+    "verdict": "unclear",
+    "patternId": "NEW-MT-OUTNUMBERED",
+    "statementType": "observed"
+   },
+   {
+    "id": "D18",
+    "t": "456~1802（上锁）；745~7020（被拦）",
+    "bot": "alex_k、talon5、kaito9 等",
+    "what": "isNoFullSend 误锁后出兵被自己的守卫拦掉，全场 85 次 690 万兵：alex_k 26 次 388.3 万兵（885~6550 拍，另有 4 次改成 1 兵试探）、talon5 18 次 177.5 万、kaito9 16 次 89.1 万（1090~7020 拍）、noah88 3 次 21.0 万、zexos1 6 次 11.3 万，其余 4 个号 16 次 2.8 万。",
+    "why": "发令后 6 拍内看到余额少掉的量比想发的小就认定引擎有 25% 限额并上锁，永不解锁；本局引擎 aE.lC=2，没有这个限额。指令晚到时余额还没变，就会触发。",
+    "codePath": "Policy.updateShadowQuota L3821~3834、Policy.send L3844~3862",
+    "evidence": "tmp/shadow/A083/check.json（每个号的 lockAt / blocked）；shadow_all.sh A083 的自检行；core_gate_tally.py（send 标签：门都过了但这一拍没有意图的决策拍，[1500,7500) 合计 55 个）。被拦的出兵前后几拍多数有同目标的指令落地，没有看到由此丢地。",
+    "verdict": "unclear",
+    "patternId": "NEW-AT-NFSLOCK",
+    "statementType": "observed"
+   },
+   {
+    "id": "D19",
+    "t": "1512~8344",
+    "bot": "alex_k（62 条 608 万兵）、talon5（35 条 241 万）等",
+    "what": "上一条陆攻还没在引擎里执行，下一个决策拍又对同一个目标照原样下一条。落地的打真人 / 内置 AI 的陆攻 416 条 2,121 万兵里，重复单 216 条 1,082 万兵（51%）。余额 ≥10 万的出兵串 74 个：第一条占余额的中位 12%，整串 26%、最大 79%；串长 2 条的 30 个、3 条的 41 个、4 条的 3 个。",
+    "why": "出兵闸门读的是引擎状态（在途进攻兵 ≥ 4%~8% 余额才不再加），指令 7~15 拍后才生效，这期间每 5 拍照发一条。",
+    "codePath": "Policy.buyLand L5459、L5575 / L5589 / L5596、L5352、L5446；Strategy.send L479~487；Policy.act L4838",
+    "evidence": "blind_reorders.py A083 --lag（out/A083/blind_reorders.txt）；human_strikes.py A083 --list 200（每轮的条数与占余额的比例）。",
+    "verdict": "error",
+    "patternId": "NEW-IO-ACKREPEAT",
+    "statementType": "observed"
+   },
+   {
+    "id": "D20",
+    "t": "465~550、3160、5545",
+    "bot": "leo_tx、zero_7、zexos1；talon5、alex_k",
+    "what": "同一个决策拍先发无主地扩张、再发另一条陆攻的有 5 个号·拍，第 2 条一次也没落地：630 拍前 3 次共 1,537 兵；talon5 3160 拍打 PERU 的 8.7 万兵、alex_k 5545 拍打 422烈士万岁的 13.7 万兵。",
+    "why": "expandNeutral 和 buyLand 之间没有「本拍已发过」的守卫，线上一拍只受理一条。",
+    "codePath": "Policy.act L4941（expandNeutral）→ L4942（buyLand）；L4817 的注释；Strategy.send L479~487",
+    "evidence": "same_tick.py A083 --list（out/A083/same_tick.txt）；cmds_delta_check.py。",
+    "verdict": "error",
+    "patternId": "NEW-IO-ONECMD",
+    "statementType": "observed"
+   },
+   {
+    "id": "D21",
+    "t": "5866",
+    "bot": "alex_k",
+    "what": "5866 拍发船比例 1/1024：载 4,053 兵，手续费 6.49 万（按余额的 32/1024 收），313 拍后（6179 拍）登陆 gaijin 2,498 兵。另一条不够本模式的口径、只记事实：7728 拍发船 22.8 万兵（余额的 12.5%，不到 15%；手续费 5.7 万），7901 拍登陆 422烈士万岁 17.3 万兵，净得地 0（8 拍后 alex_k 出局）。",
+    "why": "给陆上战线加一个登陆点的小船，载兵量不和手续费比。",
+    "codePath": "Policy.buyLand L5380~5412（doorSea 分支）；Policy.idleBoats L5019~5070 → General.boatOut L999~1015",
+    "evidence": "boat_list.py A083（out/A083/boat_list.txt：手续费比载兵多的船 1 条）。",
+    "verdict": "error",
+    "patternId": "NEW-SE-BOATWASTE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D22",
+    "t": "3640~6545",
+    "bot": "alex_k（7 条）、noah88（1 条）",
+    "what": "8 条陆攻出的兵比这条指令的手续费还少：合计出兵 2.3 万、手续费 12.5 万。目标是 Moose 4 条（3640~3647 拍它只剩 1,414 格、密度 1.0）、Player 752 3 条（6545 拍 4,340 兵）、gaijin 1 条。",
+    "why": "出兵量按需要量算，换成比例时可以是 0~4/1024；手续费按余额的 12/1024 收，和出多少兵无关。",
+    "codePath": "Policy.buyLand L5449~5454；Strategy.send L479~487",
+    "evidence": "fee_ledger.py A083（out/A083/fee_ledger.txt）。全场陆攻 593 条出征 2,260 万兵，手续费 270.4 万（12.0%）。",
+    "verdict": "error",
+    "patternId": "NEW-AT-TINYFEE",
+    "statementType": "observed"
+   },
+   {
+    "id": "D23",
+    "t": "7553~8430",
+    "bot": "noah88、ryan_m、zero_7、sora_w（alex_k、riku_x 不够口径）",
+    "what": "最后 6 个号从挨最后一轮的第一发到没地 15~344 拍，这一轮挨的兵是自己余额的 2.5~5.6 倍。这一轮里收到的捐款：noah88（挨 578 万）、ryan_m（挨 194 万）、zero_7（挨 59.4 万）0，sora_w 21.2 万（挨 344.5 万，6%）；另外两个不到「没人救」的口径：alex_k 收到 49.9 万（挨 610 万，此前 500 拍共收 136.7 万），riku_x 第一发之后收到 ryan_m 25.1 万（共挨 101.1 万）。7500 拍我方 6 个号合计 498 万兵，队 1 3,010 万兵；Ｅｍｐｅｒｙ 一发就是 200~350 万。",
+    "why": "被攻兵 > 1.65×余额的号被判为弃子，不再给它捐；能捐的号自己也只有密度 20~90，全队合起来不到对面一个号一发的量。",
+    "codePath": "Policy.tryDonateToTeammate L4455~4456（弃子规则）、L4463~4473",
+    "evidence": "hollow_rear.py A083；match_digest.py A083 第 5 节；enemy_ledger.py A083 --p 13 --strikes 6000 8540、--p 50 --strikes 7500 8540。",
+    "verdict": "unclear",
+    "patternId": "NEW-DF-NORESCUE",
+    "statementType": "observed"
+   }
+  ],
+  "unknowns": [
+   "630~1530 拍少拿的地里，出生阵型、底线、指令迟到各占多少，没有做反事实重放。能确定的是：630~900 拍 62% 的决策拍被底线拦住；900~1199 拍想出的 81.4 万兵只有 29.3 万打在原目标上；1200 拍以后已经没有内置 AI 可贴。",
+   "指令为什么在 700~1344 拍越来越晚（中位 13 拍→130 拍）、1200 拍以后又恢复：录像里别的玩家没有这个现象，我方 10 个号同时出现、号与号之间没有相对落后。传输层不在仓库里，看不出是哪一层在排队。6 局里都有（打在原目标上的比例 8%~84%），不是这一局特有的。",
+   "noah88 如果不捐、自己打 Player 752 会怎样不知道：4500 拍对方 21,321 格、251 万兵、密度 118，比它密；但 Player 752 每次打完我方别的号之后密度会掉到 83~97。",
+   "同队的 Fantasy 顶在 150×领土上的 230 万~304 万兵如果动起来会怎样不知道；它和我方之间没有任何捐款。",
+   "Player 752 为什么总是在我方的号刚出完手、刚捐完之后打过来（noah88 7868 拍捐完 91 拍后挨打）：是人看着密度挑的还是碰巧，录像里分不出来。"
+  ],
+  "mechanicsQuestions": [
+   "引擎执行陆攻前把已出局的目标改成无主地（qj.i6 → bD.gv.rk）：改了之后身边有无主地就按原比例×当时余额出兵，没用完的兵在没有无主地可占时退回。本局 71 条这样的指令出了 17.1 万兵；退回了多少、退回前这些兵有没有利息，没有逐条核对（ryan_m 1022 拍的 2.79 万兵 58 拍后退回，期间余额只剩 5 千）。",
+   "出局线是「峰值/4」，但引擎的峰值会回落：ryan_m 领土最高 15,028 格，出局时引擎记的峰值是 13,870；Moose 最高 7,140 格，影子策略 1800 拍看到的出局线约 1,618 格（对应峰值约 6,470）。峰值按什么规则回落没有查。",
+   "被围住的敌方真人出局后剩下的地变成无主地：Moose 3658 拍出局时还有 829 格。这些地后来被谁、花了多少兵拿走，没有单独核对；它决定了「吃掉孤岛」的实际收益该怎么算。",
+   "一笔捐款的税是捐款人余额的 6.25%，和到账多少无关；到账被 150×领土截短时税照收。noah88 给 kaito9 的 3 笔到账 72.1 万、税 41.8 万。捐款人如果先把比例降下来能不能少交税，没有在引擎里试。"
   ],
   "checklistFails": []
  },
