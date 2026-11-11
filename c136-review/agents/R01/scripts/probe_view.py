@@ -10,6 +10,9 @@
         价格 keep = max(c×领土/m（nearCollapse 的真人打 7 折）, 余额 − 手续费 − 预算)，c < cheap(=0.1/baseRate) 时为 0；c ≥ worth 时没有价格 keep（记 inf，除非 over）；
         over（余额 > 100×领土）时 keep 不超过 0.9×100×领土（密度 ≥122 时 0.82；isSoleHealthyBuffer 的 1.12 探针里看不到，没有算）；
         保底 = safeAt(目标)，非真人 / nearCollapse / bleeding / tD<0.45 的目标再封顶 88×领土；keep = max(价格 keep, 保底)；avail = 余额 − 手续费 − keep；
+        Va（A003/A005/A009，v27-team-c116-va.js L5413–5425）与 Vb 的三处不同已按局号自动切换：封顶 78×领土（Vb 88）；
+        封顶只对非真人 / nearCollapse 的目标生效（Vb 还包括 bleeding / tD<0.45）；价格 keep 的 7 折对 nearCollapse / bleeding / tD<0.48 的真人都生效（Vb 只对 nearCollapse）。
+        末尾另打一行汇总：决策拍数、卡在价格线（c ≥ worth 且不 over）、过了价格线但 avail ≤ 0（其中 keep 取自 safeAt 的）、avail > 0 但没出手、出手。
         20% 线 = chunk(0.2)×余额：非真人分支和预算分支凑不够 want 且 x 低于它就不发；脉冲想出的兵 ≥ 1.2×need（不含 3×接壤格数）；最小出兵量 = max(4×手续费, 0.04×余额)。
 """
 import json, os, re, sys
@@ -51,6 +54,10 @@ gate = opt('gate')
 if gate is not None:
     gq = int(gate)
     INF = float('inf')
+    VA = mid in ('A003', 'A005', 'A009')
+    CAP = 78 if VA else 88
+    cnt = {'n': 0, 'price': 0, 'noavail': 0, 'bysafe': 0, 'held': 0, 'sent': 0, 'canKill': 0, 'canKillBlocked': 0}
+    cs, ws, rs, bs, ss = [], [], [], [], []
     print(f"== {mid} 探针[{tag}] 对 {nm(gq)}（席位 {gq}）的闸门复算")
     print("      t     余额   领土  密度 |  单价c  worth |    need | safeAt(封顶后)    预算  价格keep |    avail    20%线  最小出兵量 | 标记 | buyLand")
     for t in order:
@@ -74,14 +81,15 @@ if gate is not None:
             m2 = re.match(r'safeAt\((\d+)\) -> ([\d.eE+-]+)', s)
             if m2 and int(m2.group(1)) == gq: sv = float(m2.group(2)); break
         safe = sv
-        if safe is not None and (not person or nc or o.get('bleeding') or o.get('tD', 9) < 0.45):
-            safe = min(safe, 88 * L)
+        if safe is not None and (not person or nc or (not VA and (o.get('bleeding') or o.get('tD', 9) < 0.45))):
+            safe = min(safe, CAP * L)
         keep = INF; budget = None
         if c < cheap: keep = 0
         if c < worth and m > 0:
             worth_own = m * dMe if (t >= 4000 and not nc) else worth
             budget = max(0, (worth_own * L - fee * m - c * L) / (1 + m))
-            min_keep = (0.7 if (person and nc) else 1.0) * c * L / m
+            soft = nc or (VA and (o.get('bleeding') or o.get('tD', 9) < 0.48))
+            min_keep = (0.7 if (person and soft) else 1.0) * c * L / m
             keep = min(keep, max(min_keep, B - fee - budget))
         if over:
             keep = min(keep, (0.82 if dMe >= 122 else 0.9) * 100 * L)
@@ -90,8 +98,27 @@ if gate is not None:
         avail = (B - fee - keep) if keep != INF else None
         fl = ''.join(k for k, f in (('M', o.get('onMe')), ('N', nc), ('B', o.get('bleeding')), ('H', o.get('isCrowdedHard')), ('O', over), ('A', not person)) if f)
         f0 = lambda v, w: (f"{v:{w}.0f}" if v is not None and v != INF else f"{'-':>{w}s}")
+        sent = str(d.get('buy')) == 'true'
+        cnt['n'] += 1
+        cs.append(c); ws.append(worth); rs.append(c / worth if worth else 0); bs.append(B)
+        if safe is not None: ss.append(safe)
+        if o['need'] < B: cnt['canKill'] += 1
+        if sent: cnt['sent'] += 1
+        elif c >= worth and c >= cheap and not over: cnt['price'] += 1
+        elif avail is not None and avail <= 0:
+            cnt['noavail'] += 1
+            if safe is not None and safe >= pk: cnt['bysafe'] += 1
+            if o['need'] < B: cnt['canKillBlocked'] += 1
+        else: cnt['held'] += 1
         print(f"  {t:5d} {B:8d} {L:6d} {dMe:5.1f} | {c:6.1f} {worth:6.1f} | {o['need']:7.0f} | {f0(safe, 14)} {f0(budget, 7)} {f0(pk, 9)} | {f0(avail, 8)} {0.2 * B:8.0f} {max(4 * fee, 0.04 * B):9.0f} | {fl:4s} | {d.get('buy')}")
-    print('（标记：M=对方正在打我 N=nearCollapse B=bleeding H=isCrowdedHard O=余额过 100 倍领土 A=非真人（离场壳或 AI）；c ≥ worth 且不 over 时 buyLand 在 L5359 直接退出）')
+    print('（标记：M=对方正在打我 N=nearCollapse B=bleeding H=isCrowdedHard O=余额过 100 倍领土 A=非真人（离场壳或 AI）；c ≥ worth 且不 over 时 buyLand 在价格线（Vb L5359 / Va L5358）直接退出）')
+    print(f"汇总 [{t0},{min(t1, 99999)}] 对 {nm(gq)}：有报价的决策拍 {cnt['n']}；这一拍 buyLand 出手 {cnt['sent']}（不一定是打它）；没出手的：卡在价格线 {cnt['price']}，"
+          f"过了价格线但 avail ≤ 0 的 {cnt['noavail']}（其中 keep 取自 safeAt 的 {cnt['bysafe']}），avail > 0 但没出手 {cnt['held']}")
+    if cs:
+        import statistics as _st
+        print(f"   单价 c {min(cs):.1f}–{max(cs):.1f}（中位 {_st.median(cs):.1f}），worth {min(ws):.1f}–{max(ws):.1f}（中位 {_st.median(ws):.1f}），c/worth {min(rs):.2f}–{max(rs):.2f}（中位 {_st.median(rs):.2f}）；"
+              f"余额 {min(bs):.0f}–{max(bs):.0f}" + (f"；过了价格线的拍里 safeAt(封顶后) {min(ss):.0f}–{max(ss):.0f}" if ss else ''))
+        print(f"   need（策略自己算的、把对方打到阵亡线要的兵）低于本号余额的决策拍 {cnt['canKill']} 个，其中过了价格线却因 avail ≤ 0 没出手的 {cnt['canKillBlocked']} 个")
     sys.exit(0)
 for t in order:
     d = cur[t]

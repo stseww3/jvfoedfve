@@ -2,8 +2,8 @@
 
 ## 状态
 - M1 完成：A057、A059、A094；M2 完成：A055、A075、A054。全部通过本地机械检查（`python3 scripts/check_my_review.py`）。
-- M3 进行中：A031（never-grew）、A019（mid-collapse）完成；下一步 A009（Va），做完发 m3-reviews 报告。其余见下方「逐局进度」。
-- M2 报告 `outbox/0006-m2-reviews.md` 里 A075 的判定数写错了（写成 11/4/5），实际是 错 10 / 不清 5 / 对 5，M3 报告里要更正。
+- M3 完成：A031（never-grew）、A019（mid-collapse）、A009（never-grew，Va）；m3-reviews 报告已发（里面更正了 A075 的判定数：错 10 / 不清 5 / 对 5）。
+- 下一步 M4：A023、A050（Vb）、A003（Va）。其余见下方「逐局进度」。
 - 总部 0006：所有 node 重演/影子命令必须 `bash ../../tools/run-heavy.sh node scripts/...`（在 agents/R01 下），串行、一次一局，结果缓存在 out/。
 
 ## 每局流水线
@@ -27,6 +27,11 @@
 - A019 新增：`cmd_gaps.py <mid> [--min 60] [--bots]`（全队指令断档：连续 N 拍没有任何本队指令落地的窗口，对照窗口内受理条数、其他玩家落地条数、断档后 70 拍的批次）、
   `decay_check.py <mid> --cases bot:t0:t1 --kill 席位:拍`（挨打时余额按领土的 1.6 次方掉；吃到阵亡线的算式价 ≈ 1.8×对方余额，与策略的 need 对得上）；
   `shadow_report.py --section check` 多一行“差异是否只在船计数”；`resim_report.py --section ledger` 不再把离场壳的船算进出海两项（boat_trace 对壳的 balBefore 不可靠）。
+- A009 新增：`land_ticks.py <mid> [--t0 --t1] [--bot 名] [--list] [--win 300]`（每个号的落地拍分组：间隔、每组条数、最新一条的延迟、两组之间丢了几条受理的令）；
+  `probe_view.py --gate` 对 Va 局（A003/A005/A009）自动换参数（封顶 78、bleeding/thin 折扣），末尾多三行汇总（出手/价格线/avail≤0/keep 来自 safeAt 各几拍；c、worth、余额、safeAt 的范围；
+  need 低于余额的拍数及其中被拦下的拍数）——判 DF03 时直接引这三行；`recon_facts.py --section leave` 多了 results.csv 的 accepted = 出生版数 + cmds 的核对；
+  `recon_facts.py --section peak` 末行有“阵亡时还剩多少格多少兵”的合计。
+- q.py 的坑：数字样子的字符串会被当成数（`toName==777`）；dispatch_audit 的 would 是 'accept'/'quota'，executed 是 0/1；resim_transfers 的 `from` 列不能写进 --where。
 - 影子对 boatTo 的受理比真实客户端宽（A019：影子 42 条、日志 10 条），**船指令的“受理”不能引用**；进攻、捐兵两类与日志 cmds 计数一致。cmd_gaps、lagcurve、flow 都不含船。
 - 批次落地的兵不都是净损失：打无主地（目标已死改打无主地、pct=47 中立令成批）的兵在进攻结束后流回余额；写“实扣”时要分开打真人和打无主地
   （`q.py <mid> shadow_match --where "... n>=3" --agg sum:spent --by targetName`）。
@@ -55,6 +60,14 @@ Policy.winFloor L4562；Policy.act L4801…（L4941 expandNeutral、L4942 buyLan
 Policy.buyLand L5342–5619（L5358 价格线、L5361–5365 唯一健康缓冲、L5440–5443 over 留兵、L5449–5453 打 AI、L5611–5616 满预算）。
 参数：maxW 0.5，winT→2500 拍后 1.8（m=0.9），hold 0.9，marketFloor 0.85，overHumanCap 1.28，pulseFrac 0.12，quotaGuardMode 1。
 
+## Va 代码地图（`v27-team-c116-va.js`；4297 行之前与 Vb 同号，之后 = Vb − 1）
+两个文件只差参数表 L3702–3763 和 L4291、L4296、L4382–4383、L4478、L4502–4505。Strategy.send L479–487；General.act L752（L792 expandNeutral、L796 打 AI；自退 L769–784）；
+General.boatOut L999–1014；V13.dpNeutral L2383–2406、dpKeep L2459–2464、safeAt L2728–2738、自退 L2702–2717；Policy.send L3838–3925（闸门 L3844–3863；检查 L3821–3833）；
+isOurSquadBot L3960–3972（名单里有旧号名 777、mishi、leo_99 等）；tryDonateToTeammate L4324–4517（L4330 槽、L4354 boxedIn、L4381–4387 底线、L4413 受赠者筛选、L4454 doomed、
+L4462–4472 协防、L4474–4493 进攻、L4499–4505 pct、L4507 donate）；Policy.safeAt L4542–4559（L4545 封顶 78×L）；peerAggressor L4605–4652（L4632–4633）；Policy.act L4800（自退 L4911–4926）；
+idleBoats L5018（L5039）；offers L5071（L5172 防守折扣）；buyLand L5341–5617（L5349–5358 价格线、L5413–5417 封顶、L5419–5426 预算、L5443–5446 keep/avail、L5448–5453 打 AI、
+L5594–5606 脉冲、L5610–5615 预算分支）。三处自退都要求 g.t > 8500。Va 参数：pulseFrac 0.20，oppFloorCap 78，其余同 Vb。
+
 ## 模式编号（提议，跨局复用）
 SP01 密集阵/被队友围住 | SP02 出生名单跨实例 | OP01 DP 开局(对) | OP02 保底线死锁 | IO01 掉队期间照常下令 | IO02 过期指令成批落地 |
 IO03 isNoFullSend 误置真 | AT01 12% 脉冲(对) | AT02 零星中立令占名额 | AT04 开战首击 | AT05 价格线空等 | AT06 中期吃 AI 地(对) |
@@ -66,13 +79,16 @@ DN08 后排捐空后被打 | DN09 幽灵前线 | DN10 为利息而捐净负 | SE
 SE04 装兵比手续费少的小船 | SE05 远程船被拦截船打沉。
 M3 新增：AT10 身边的离场壳按预算吃掉(对) | DN11 两波进攻之间把兵捐走 | EG02 8500 拍前被 leave 指令移出对局（不出自策略）；IO01 在 A031 补了定义；
 AT11 单价过了价格线但预算不到余额 20%（buyLand L5611–5616），对真人不出手（A019 riku_x）。AT08 在 A019 有一处判“对”（延迟正常时吃 Player 917）、一处判“错”（断档时清仓）。
+A009 新增：DN12 名单里的旧号名撞上同队路人，把路人当本队号捐兵（talon5 → 777）。A009 里 AT08 判“对”（riku_x 过 100 倍后连发脉冲对掉登陆）；
+DF03 有两处：sora_w（挨打中，不清）、kaito9（3800–4580 拍 143/157 拍被 safeAt 拦下，其中 91 拍 need < 余额，判错/推断）。
+A009 的主因是客户端落后服务器（300–2400 拍，延迟中位到 764 拍，每号每次最多落地 9 条，其余丢失），不在策略文件里；M6 要做“每局指令延迟”的全量计数。
 
 ## 逐局进度
 - [x] A057（never-grew）
 - [x] A059
 - [x] A094（lead-thrown；两个实例）
 - [x] A055（outscaled）  - [x] A075（win）  - [x] A054（mid-collapse）   （M2）
-- [x] A031（never-grew）  - [x] A019（mid-collapse）  - [ ] A009   （M3）
+- [x] A031（never-grew）  - [x] A019（mid-collapse）  - [x] A009（never-grew）   （M3）
 - [ ] A023  - [ ] A050  - [ ] A003   （M4）
 - [ ] A005  - [ ] B039  - [ ] B043   （M5）
 - [ ] M6：reports/CROSS-MATCH-SUMMARY.md、全量模式计数脚本、cards/

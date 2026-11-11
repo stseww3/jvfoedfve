@@ -309,6 +309,26 @@ def sec_leave(mid, meta):
             later = [t for t in ticks_logged.get(b, []) if t > rt]
             print(f"     {b:8s} tick={rt} 领土 {r['territory']} 余额 {r['balance']} 在场玩家 {r['alivePlayers']}；比 leave 落地拍 {tl} 早 {tl - rt} 拍；"
                   f"重演相邻快照：{st(lo)} / {st(hi)}；日志里本地拍大于 {rt} 的 HL-TICK 行 {len(later)} 行{('（' + ','.join(map(str, later)) + '）') if later else ''}")
+        # results.csv 的 accepted 计数 = 出生阶段收到的落点版数（HL-SPAWN-BACKEND 行）+ 策略本地受理的指令数（HL-TICK 的 cmds）？逐号对照
+        spawn_n, cmds_at = {}, {}
+        for line in open(lp, encoding='utf8'):
+            m = re.search(r'\[([a-z0-9_]+)\] \[HL-SPAWN-BACKEND\]', line)
+            if m:
+                spawn_n[m.group(1)] = spawn_n.get(m.group(1), 0) + 1
+            m = re.search(r'\[([a-z0-9_]+)\] \[HL-TICK\] t=(\d+) .*cmds=(\d+)', line)
+            if m:
+                cmds_at.setdefault(m.group(1), []).append((I(m.group(2)), I(m.group(3))))
+        print('   results.csv 的 sent/accepted 对 日志：出生落点版数（HL-SPAWN-BACKEND 行）+ HL-TICK 的 cmds 计数（结果行 tick 之前最后一行 / 之后第一行 / 日志最后一行）')
+        for r in rows:
+            b = r['bot']; rt = I(r['tick']); cc = cmds_at.get(b, [])
+            before = max((x for x in cc if x[0] <= rt), default=None)
+            after = min((x for x in cc if x[0] > rt), default=None)
+            last = cc[-1] if cc else None
+            g = lambda x: f"t={x[0]} cmds={x[1]}" if x else '-'
+            acc = I(r['accepted']) if r.get('accepted') not in (None, '') else None
+            sp = spawn_n.get(b, 0)
+            print(f"     {b:8s} {r['event']:5s} tick={rt} sent={r.get('sent')} accepted={r.get('accepted')}；出生版数 {sp}；accepted−出生版数 = {acc - sp if acc is not None else '-'}；"
+                  f"cmds：之前 {g(before)} / 之后 {g(after)} / 最后一行 {g(last)}")
         # 墙上时间：相邻两条 RESULT 之间每拍多少毫秒（离场行用 leave 落地拍 / 用 results 的 tick 各算一遍）
         ev = []
         for r in rows:
