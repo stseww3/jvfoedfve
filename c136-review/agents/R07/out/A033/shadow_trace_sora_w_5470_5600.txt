@@ -1,0 +1,87 @@
+# A033 sora_w 影子决策明细 t=5470~5600（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   有可用兵但没发（脉冲下限/冷却/其他）: 16 拍（t=5470~5575）；可用兵 271822~831439，一条指令下限(20%余额) 156209~410991，比值 66%~494%
+#   出手打人/bot: 9 拍（t=5475~5590）；可用兵 577101~814728，一条指令下限(20%余额) 157753~427421，比值 180%~494%
+#   没有可打的邻居: 2 拍（t=5595~5600）
+#   └ 「出手打人/bot」里：9 条对人/bot 的出兵共约 1355244 兵；其中超过软上限（over=1）时发的 3 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=5470 sora_w B=2054953 L=19545 d=105.1 nb=1 neut=0 cmds=114 noFull=1 shQ=399063 | m=0.900 worth=94.6 cheap=7.7 over=1 dMedOther=123.2 safe(-1)=1011436
+    → REVOLUTION#28[T1] terr=16305 bal=1829674 dq=112.2 cnt=67 | c=659.2 rankC=955.8 need=2906069 tD=0.91 人 pulse | safe=1011436 keep=1759050 avail=271822 chunkB=410991 pulseB=246594 
+    ⇒ 本拍没有指令
+t=5475 sora_w B=2054953 L=19545 d=105.1 nb=1 neut=0 cmds=115 noFull=1 shQ=429113 | m=0.900 worth=94.6 cheap=7.7 over=1 dMedOther=123.2 safe(-1)=999391
+    → REVOLUTION#28[T1] terr=16305 bal=0 dq=0.0 cnt=67 | c=16.6 rankC=8.3 need=1828517 tD=0.00 人 pulse nearCollapse bleeding onMe | safe=999391 keep=1239293 avail=791579 chunkB=410991 pulseB=246594 
+    ⇒ 影子指令 attack pct=122 → REVOLUTION#28[T1]（约 246835 兵）
+t=5480 sora_w B=2078995 L=19545 d=106.4 nb=1 neut=0 cmds=116 noFull=1 shQ=459078 | m=0.900 worth=95.7 cheap=7.7 over=1 dMedOther=124.1 safe(-1)=999391
+    → REVOLUTION#28[T1] terr=16305 bal=1 dq=0.0 cnt=67 | c=21.7 rankC=15.2 need=1828539 tD=0.00 人 pulse nearCollapse bleeding onMe | safe=999391 keep=1304148 avail=750484 chunkB=415799 pulseB=249479 
+    ⇒ 影子指令 attack pct=122 → REVOLUTION#28[T1]（约 249723 兵）
+t=5485 sora_w B=2137104 L=19411 d=110.1 nb=1 neut=0 cmds=117 noFull=1 shQ=487181 | m=0.900 worth=99.1 cheap=7.7 over=1 dMedOther=124.1 safe(-1)=972750
+    → REVOLUTION#28[T1] terr=16439 bal=1 dq=0.0 cnt=67 | c=22.2 rankC=15.6 need=1781205 tD=0.00 人 pulse nearCollapse bleeding onMe | safe=972750 keep=1338618 avail=773442 chunkB=427421 pulseB=256452 
+    ⇒ 影子指令 attack pct=122 → REVOLUTION#28[T1]（约 256702 兵）
+t=5490 sora_w B=1604185 L=19206 d=83.5 nb=1 neut=0 cmds=117 noFull=1 shQ=5173 | m=0.900 worth=95.7 cheap=7.7 over=0 dMedOther=125.1 safe(-1)=669024
+    → REVOLUTION#28[T1] terr=16644 bal=2 dq=0.0 cnt=69 | c=16.6 rankC=11.6 need=1240692 tD=0.00 人 pulse nearCollapse bleeding onMe | safe=669024 keep=794792 avail=790594 chunkB=320837 pulseB=192502 
+    ⇒ 本拍没有指令
+t=5495 sora_w B=1585631 L=19067 d=83.2 nb=1 neut=0 cmds=117 noFull=1 shQ=30858 | m=0.900 worth=95.7 cheap=7.7 over=0 dMedOther=125.1 safe(-1)=648137
+    → REVOLUTION#28[T1] terr=16783 bal=2 dq=0.0 cnt=70 | c=16.2 rankC=11.3 need=1203602 tD=0.00 人 pulse nearCollapse bleeding onMe | safe=648137 keep=778209 avail=788841 chunkB=317126 pulseB=190276 
+    ⇒ 本拍没有指令
+t=5500 sora_w B=1388707 L=18857 d=73.6 nb=1 neut=0 cmds=117 noFull=1 shQ=52936 | m=0.900 worth=88.6 cheap=7.7 over=0 dMedOther=115.8 safe(-1)=523260
+    → REVOLUTION#28[T1] terr=16993 bal=16926 dq=1.0 cnt=70 | c=15.0 rankC=10.5 need=991770 tD=0.01 人 pulse nearCollapse bleeding onMe | safe=523260 keep=649650 avail=722784 chunkB=277741 pulseB=166645 
+    ⇒ 本拍没有指令
+t=5505 sora_w B=1372231 L=18717 d=73.3 nb=1 neut=0 cmds=117 noFull=1 shQ=75166 | m=0.900 worth=86.6 cheap=7.7 over=0 dMedOther=113.2 safe(-1)=504709
+    → REVOLUTION#28[T1] terr=17133 bal=16926 dq=1.0 cnt=70 | c=14.8 rankC=10.4 need=958937 tD=0.01 人 pulse nearCollapse bleeding onMe | safe=504709 keep=656749 avail=699402 chunkB=274446 pulseB=164668 
+    ⇒ 本拍没有指令
+t=5510 sora_w B=1365040 L=18507 d=73.8 nb=1 neut=0 cmds=118 noFull=1 shQ=97108 | m=0.900 worth=83.4 cheap=7.7 over=0 dMedOther=109.0 safe(-1)=477040
+    → REVOLUTION#28[T1] terr=17343 bal=17142 dq=1.0 cnt=70 | c=23.4 rankC=7.0 need=910081 tD=0.01 人 pulse nearCollapse bleeding onMe | safe=477040 keep=771943 avail=577101 chunkB=273008 pulseB=163805 
+    ⇒ 影子指令 attack pct=122 → REVOLUTION#28[T1]（约 163964 兵）
+t=5515 sora_w B=1348539 L=18367 d=73.4 nb=1 neut=0 cmds=118 noFull=1 shQ=4349 | m=0.900 worth=83.4 cheap=7.7 over=0 dMedOther=109.0 safe(-1)=458460
+    → REVOLUTION#28[T1] terr=17483 bal=17142 dq=1.0 cnt=70 | c=21.9 rankC=6.6 need=877190 tD=0.01 人 pulse nearCollapse bleeding onMe | safe=458460 keep=746204 avail=586532 chunkB=269708 pulseB=161825 
+    ⇒ 本拍没有指令
+t=5520 sora_w B=1340533 L=18153 d=73.8 nb=1 neut=0 cmds=118 noFull=1 shQ=25872 | m=0.900 worth=84.4 cheap=7.8 over=0 dMedOther=110.3 safe(-1)=430099
+    → REVOLUTION#28[T1] terr=17556 bal=17140 dq=1.0 cnt=72 | c=20.1 rankC=6.0 need=826602 tD=0.01 人 pulse nearCollapse bleeding onMe | safe=430099 keep=717943 avail=606881 chunkB=268107 pulseB=160864 
+    ⇒ 本拍没有指令
+t=5525 sora_w B=1148949 L=18008 d=63.8 nb=1 neut=0 cmds=118 noFull=1 shQ=46037 | m=0.900 worth=84.4 cheap=7.8 over=0 dMedOther=110.3 safe(-1)=322021
+    → REVOLUTION#28[T1] terr=17471 bal=16785 dq=1.0 cnt=73 | c=13.6 rankC=4.1 need=633589 tD=0.01 人 pulse nearCollapse bleeding onMe | safe=322021 keep=471000 avail=664485 chunkB=229790 pulseB=137874 
+    ⇒ 本拍没有指令
+t=5530 sora_w B=1141071 L=17789 d=64.1 nb=1 neut=0 cmds=118 noFull=1 shQ=64248 | m=0.900 worth=85.4 cheap=7.8 over=0 dMedOther=111.6 safe(-1)=296778
+    → REVOLUTION#28[T1] terr=17525 bal=16746 dq=1.0 cnt=68 | c=12.0 rankC=3.6 need=588471 tD=0.01 人 pulse nearCollapse bleeding onMe | safe=296778 keep=447512 avail=680188 chunkB=228214 pulseB=136929 
+    ⇒ 本拍没有指令
+t=5535 sora_w B=1127131 L=17653 d=63.8 nb=1 neut=0 cmds=119 noFull=1 shQ=82369 | m=0.900 worth=85.3 cheap=7.8 over=0 dMedOther=111.5 safe(-1)=280848
+    → REVOLUTION#28[T1] terr=17392 bal=16339 dq=0.9 cnt=68 | c=11.2 rankC=3.4 need=559340 tD=0.01 人 pulse nearCollapse bleeding onMe | safe=280848 keep=431542 avail=682381 chunkB=225426 pulseB=135256 
+    ⇒ 影子指令 attack pct=122 → REVOLUTION#28[T1]（约 135387 兵）
+t=5540 sora_w B=1120502 L=17449 d=64.2 nb=1 neut=0 cmds=119 noFull=1 shQ=7147 | m=0.900 worth=86.2 cheap=7.8 over=0 dMedOther=112.7 safe(-1)=257087
+    → REVOLUTION#28[T1] terr=17166 bal=15903 dq=0.9 cnt=68 | c=9.9 rankC=3.0 need=515917 tD=0.01 人 pulse nearCollapse bleeding onMe | safe=257087 keep=412749 avail=694623 chunkB=224100 pulseB=134460 
+    ⇒ 本拍没有指令
+t=5545 sora_w B=960487 L=17311 d=55.5 nb=1 neut=0 cmds=119 noFull=1 shQ=24469 | m=0.900 worth=86.1 cheap=7.8 over=0 dMedOther=112.6 safe(-1)=240702
+    → REVOLUTION#28[T1] terr=16773 bal=15128 dq=0.9 cnt=69 | c=4.3 rankC=1.3 need=352202 tD=0.01 人 pulse nearCollapse bleeding onMe | safe=240702 keep=240702 avail=708530 chunkB=192097 pulseB=115258 
+    ⇒ 本拍没有指令
+t=5550 sora_w B=954126 L=17103 d=55.8 nb=1 neut=0 cmds=119 noFull=1 shQ=39696 | m=0.900 worth=87.0 cheap=7.8 over=0 dMedOther=113.8 safe(-1)=144873
+    → REVOLUTION#28[T1] terr=16441 bal=14543 dq=0.9 cnt=69 | c=3.0 rankC=0.9 need=313032 tD=0.01 人 pulse nearCollapse bleeding onMe | safe=144873 keep=144873 avail=798072 chunkB=190825 pulseB=114495 
+    ⇒ 本拍没有指令
+t=5555 sora_w B=941914 L=16966 d=55.5 nb=1 neut=0 cmds=119 noFull=1 shQ=54747 | m=0.900 worth=86.9 cheap=7.8 over=0 dMedOther=113.6 safe(-1)=130690
+    → REVOLUTION#28[T1] terr=16038 bal=13790 dq=0.9 cnt=68 | c=2.1 rankC=0.6 need=286132 tD=0.01 人 pulse nearCollapse bleeding onMe | safe=130690 keep=130690 avail=800186 chunkB=188383 pulseB=113030 
+    ⇒ 本拍没有指令
+t=5560 sora_w B=935303 L=16759 d=55.8 nb=1 neut=0 cmds=120 noFull=1 shQ=69560 | m=0.900 worth=87.0 cheap=7.8 over=0 dMedOther=113.7 safe(-1)=109615
+    → REVOLUTION#28[T1] terr=15699 bal=13216 dq=0.8 cnt=70 | c=0.7 rankC=0.2 need=247139 tD=0.01 人 pulse nearCollapse bleeding onMe | safe=109615 keep=109615 avail=814728 chunkB=187061 pulseB=112236 
+    ⇒ 影子指令 attack pct=122 → REVOLUTION#28[T1]（约 112345 兵）
+t=5565 sora_w B=922552 L=16616 d=55.5 nb=1 neut=0 cmds=120 noFull=1 shQ=2929 | m=0.900 worth=86.3 cheap=7.8 over=0 dMedOther=112.8 safe(-1)=94830
+    → REVOLUTION#28[T1] terr=15280 bal=12471 dq=0.8 cnt=72 | c=0.5 rankC=0.1 need=219142 tD=0.01 人 pulse nearCollapse bleeding onMe | safe=94830 keep=94830 avail=816911 chunkB=184510 pulseB=110706 
+    ⇒ 本拍没有指令
+t=5570 sora_w B=913905 L=16389 d=55.8 nb=1 neut=0 cmds=120 noFull=1 shQ=17418 | m=0.900 worth=86.2 cheap=7.8 over=0 dMedOther=112.6 safe(-1)=71757
+    → REVOLUTION#28[T1] terr=14949 bal=11903 dq=0.8 cnt=77 | c=0.5 rankC=0.1 need=176601 tD=0.01 人 pulse nearCollapse bleeding onMe | safe=71757 keep=71757 avail=831439 chunkB=182781 pulseB=109669 
+    ⇒ 本拍没有指令
+t=5575 sora_w B=781047 L=16229 d=48.1 nb=1 neut=0 cmds=120 noFull=1 shQ=30655 | m=0.900 worth=79.4 cheap=7.8 over=0 dMedOther=103.8 safe(-1)=0
+    → REVOLUTION#28[T1] terr=14521 bal=11166 dq=0.8 cnt=81 | c=0.4 rankC=0.1 need=38551 tD=0.01 人 pulse nearCollapse bleeding onMe agg | safe=0 keep=0 avail=771895 chunkB=156209 pulseB=93726 
+    ⇒ 本拍没有指令
+t=5580 sora_w B=788765 L=16229 d=48.6 nb=1 neut=0 cmds=121 noFull=1 shQ=43047 | m=0.900 worth=80.4 cheap=7.8 over=0 dMedOther=105.0 safe(-1)=0
+    → REVOLUTION#28[T1] terr=13949 bal=10645 dq=0.8 cnt=81 | c=0.4 rankC=0.1 need=31762 tD=0.01 人 pulse nearCollapse bleeding agg | safe=0 keep=0 avail=779522 chunkB=157753 pulseB=94652 
+    ⇒ 影子指令 attack pct=81 → REVOLUTION#28[T1]（约 63162 兵）
+t=5585 sora_w B=788765 L=16229 d=48.6 nb=1 neut=0 cmds=122 noFull=1 shQ=55567 | m=0.900 worth=80.2 cheap=7.8 over=0 dMedOther=104.8 safe(-1)=0
+    → REVOLUTION#28[T1] terr=13312 bal=9877 dq=0.7 cnt=81 | c=0.5 rankC=0.1 need=28994 tD=0.01 人 pulse nearCollapse bleeding agg | safe=0 keep=0 avail=779522 chunkB=157753 pulseB=94652 
+    ⇒ 影子指令 attack pct=81 → REVOLUTION#28[T1]（约 63162 兵）
+t=5590 sora_w B=798782 L=16229 d=49.2 nb=1 neut=0 cmds=123 noFull=1 shQ=68119 | m=0.900 worth=81.1 cheap=7.8 over=0 dMedOther=106.0 safe(-1)=0
+    → REVOLUTION#28[T1] terr=12701 bal=9275 dq=0.7 cnt=81 | c=0.5 rankC=0.2 need=26545 tD=0.01 人 pulse nearCollapse bleeding agg | safe=0 keep=0 avail=789422 chunkB=159756 pulseB=95854 
+    ⇒ 影子指令 attack pct=81 → REVOLUTION#28[T1]（约 63964 兵）
+t=5595 sora_w B=658864 L=16229 d=40.6 nb=1 neut=0 cmds=123 noFull=1 shQ=2091 | m=0.900 worth=76.7 cheap=7.8 over=0 dMedOther=100.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5600 sora_w B=683460 L=16229 d=42.1 nb=1 neut=0 cmds=123 noFull=1 shQ=12624 | m=0.900 worth=78.5 cheap=7.8 over=0 dMedOther=102.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令

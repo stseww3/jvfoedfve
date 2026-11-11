@@ -3,6 +3,7 @@
 #   首选目标价高（c>=worth）: 62 拍（t=4230~4560）
 #   只打无主地: 3 拍（t=4495~4505）
 #   出手打人/bot: 2 拍（t=4550~4555）；可用兵 191354~191354，一条指令下限(20%余额) 411226~411226，比值 47%~47%
+#   └ 「出手打人/bot」里：2 条对人/bot 的出兵共约 385524 兵；其中超过软上限（over=1）时发的 2 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 2 条约 385524 兵，c/worth = 2.17~3.15
 t=4230 ryan_m B=1366797 L=20069 d=68.1 nb=1 neut=0 cmds=104 noFull=0 shQ=341699 | m=0.900 worth=69.0 cheap=7.7 over=0 dMedOther=90.2 safe(-1)=1418431
     → [FLR] さっしー#43[T3] terr=29986 bal=2554911 dq=85.2 cnt=257 | c=71.4 rankC=21.4 need=4473604 tD=0.94 人 pulse bleeding | safe=1418431 keep=Inf avail=-Inf chunkB=273359 pulseB=164016 价高(c>=worth)→break
     ⇒ 本拍没有指令

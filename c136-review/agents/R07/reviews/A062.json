@@ -529,7 +529,7 @@
     "61_truth_view.py D：さっしー→alex_k 2410~2770（进攻槽峰值 75,115 兵）、→zero_7 3390~3450（57,110）、→talon5 3470~3640（56,267）、→zexos1 3680~3800（58,519）、→sora_w 3860~3970（61,098）、→leo_tx 3890~4000（60,636）",
     "61_truth_view.py A：已离开席位 29,021 格（2340）→21,180（3060）→8,502（3780）→0（4140）；T2 31.7%→29.2%→28.3%→25.7%",
     "61_truth_view.py B：AI 接管后 leo_tx / sora_w / zexos1 的余额从 1620 起在 0~4 千；zero_7 离开时 327,314 兵，3060 剩 8.1 万、3420 为 0；alex_k 的 AI 曾涨到 9,661 格（2380）、余额 8 万",
-    "63_replay_ledger.py C：同一段时间 kaito9 / noah88 / riku_x 的 161 条调度（t=2150~3780）因为收方累计额度不够被拒；truth_border.tsv：三个号到 2970 仍然只和队友接壤",
+    "63_replay_ledger.py C：同一段时间 kaito9 / noah88 / riku_x 的 160 条调度（t=2150~3780）因为收方累计额度不够被拒；truth_border.tsv：三个号到 2970 仍然只和队友接壤",
     "shadow_trace_noah88_3440_3520.txt：noah88 t=3470 第一次有敌邻（さっしー，3 格接壤，zero_7 的地刚被吃完），当拍发出 12% 脉冲"
    ],
    "priorDecisions": [
@@ -628,6 +628,10 @@
      "dens": 34.9
     }
    ],
+   "killersTruth": [
+    "[OFF] Art raffiné#4（T1） 5680~5760 进攻槽峰值 1912354"
+   ],
+   "troopsLostDefending500": 464948,
    "assistedTimes500": 0,
    "assistsSent500": 0
   },
@@ -704,6 +708,10 @@
      "dens": 76.8
     }
    ],
+   "killersTruth": [
+    "[OFF] Art raffiné#4（T1） 5820~5880 进攻槽峰值 1132583"
+   ],
+   "troopsLostDefending500": 334802,
    "assistedTimes500": 0,
    "assistsSent500": 0
   },
@@ -781,6 +789,10 @@
      "dens": 89.9
     }
    ],
+   "killersTruth": [
+    "[OFF] Art raffiné#4（T1） 5860~5900 进攻槽峰值 393814"
+   ],
+   "troopsLostDefending500": 252672,
    "assistedTimes500": 0,
    "assistsSent500": 0
   },
@@ -859,6 +871,12 @@
      "dens": 70.1
     }
    ],
+   "killersTruth": [
+    "[OFF] Art raffiné#4（T1） 5710~5720 进攻槽峰值 2819170",
+    "I ❤️ Bhavya [IND]#7（T1） 5700~5960 进攻槽峰值 1477020",
+    "[FLR] さっしー#43（T3） 5820~5820 进攻槽峰值 65653"
+   ],
+   "troopsLostDefending500": 2776949,
    "assistedTimes500": 0,
    "assistsSent500": 0
   }
@@ -931,7 +949,7 @@
    "verdict": "error",
    "state": "三个围死号密度 97~129，每 25 拍向 ryan_m 调度 pct=320（31.3% 余额，8.7~14.4 万兵）；全场上限 85 点 ≈ 4.5 万兵",
    "codePath": "v27-team-c116-vb.js:Policy.tryDonateToTeammate:L4500-4508（`idealPct = boxedIn ? 320 : 220`，`pct < 180 → return false`，`g.donate(...)` 后不看结果）；L4329-4331（12 拍冷却 + 25 拍相位）",
-   "why": "249 次调度只执行 19 次。66 次（t≤2105）单笔就超过全场上限；161 次超过收方剩余额度；3 次卡在换档拍或被同拍先到的另一笔占掉。成功的 9 笔（t<4284）有 7 笔落在上限每 100 拍加点之后的第一个相位拍，2 笔在计点公式换档的那一拍",
+   "why": "249 次调度只执行 19 次。66 次（t≤2105）单笔就超过全场上限；160 次超过收方剩余额度；4 次卡在换档拍或额度边界上。成功的 9 笔（t<4284）有 7 笔落在上限每 100 拍加点之后的第一个相位拍，2 笔在计点公式换档的那一拍",
    "estCost": "三个号在软上限以上合计 5,950 拍",
    "patternId": "NEW:R07-DN-QUOTA-OVERSIZE",
    "evidenceRef": "replay_ledger.txt B / C 节；in_game.log L432~L440"
@@ -1175,7 +1193,7 @@
      "bot": "riku_x"
     }
    ],
-   "note": "A062：249 条日志、执行 19 条；66 条单笔超全场上限，161 条超剩余额度，3 条卡在换档拍 / 同拍"
+   "note": "A062：249 条日志、执行 19 条；66 条单笔超全场上限，160 条超剩余额度，4 条卡在换档拍 / 额度边界"
   },
   {
    "name": "R07-EC-HARDCAP",
@@ -1385,6 +1403,44 @@
    "note": "A062：2 次，+4,808 格"
   },
   {
+   "name": "R07-OP-WINFLOOR-MATE",
+   "category": "OP",
+   "definition": "t<1500 打内置 AI 的留底互锁（统筹广播 0004-①）：winFloor 取 safeFinite，而 safeFinite 是「这个 AI 的其他邻居里余额最小的那个」的余额——不排除队友，也不看 AI 自己有没有兵。两个我方号夹着一个 0 兵的 AI 时，各自要求自己的余额高过对方才肯出手，谁也不动。",
+   "detectionSketch": "65_shadow.mjs 的 shadow_early.txt：t=300~1499 有 AI 邻居的决策拍里，零指令拍按绑定的底线分类（safeFinite / 价格项 / dpKeep / 不让打），safeFinite 再按参照对象（我方队友 / 同队真人 / 敌方真人）分。",
+   "instances": [
+    {
+     "t": 390,
+     "bot": "noah88"
+    },
+    {
+     "t": 300,
+     "bot": "zexos1"
+    },
+    {
+     "t": 300,
+     "bot": "ryan_m"
+    }
+   ],
+   "note": "A062（影子）：t=300~1499 有内置 AI 邻居的零指令决策拍 936 个，415 个卡在以我方队友余额为准的 safeFinite 留底上（noah88 161、zexos1 102、ryan_m 98、talon5 35、riku_x 10、leo_tx 8、sora_w 1），其中 350 个最便宜的目标每格不到 3 兵"
+  },
+  {
+   "name": "R07-AT-INFLIGHT-REPEAT",
+   "category": "AT",
+   "definition": "上一条进攻还没生效就照原样再发：策略每 5 拍决策一次，指令 6~19 拍后才生效，期间 `attackTroopsOn(me,q)` 仍是 0、余额没变，于是相邻决策拍对同一目标连发 2~4 条同比例的指令。几条一起落地后发兵合计超过吃掉整块目标所需，多出的兵压在进攻槽里（不算防守、不吃利息），目标死后转去打它留下的无主地，退回时可能撞上硬上限。",
+   "detectionSketch": "72_repeat_sends.py：cmd_effect.tsv 里同一个号对同一目标、落地拍相差 ≤12 的进攻分组；组内第 2 条起的兵与手续费；发兵合计 − (1.5×目标领土 + 1.78×目标余额)。逐拍原因看 65_shadow.mjs --trace（相邻决策拍的 need 相同）。",
+   "instances": [
+    {
+     "t": 2394,
+     "bot": "ryan_m"
+    },
+    {
+     "t": 5236,
+     "bot": "ryan_m"
+    }
+   ],
+   "note": "A062：对真人 19 组连发 56 条，第 2 条起 2,744,271 兵 / 手续费 360,820；超出吃掉整块所需 287,052 兵（2 组）"
+  },
+  {
    "name": "R07-GOOD-OPENING-DP",
    "category": "OP",
    "definition": "（正例）开局按地租周期整圈扩张（[HL-OPENING] DP expand），8/10 个号在 t≈220 的 OPENING-CHECK 全部 OK，t=1530 前把周边中立地吃完。",
@@ -1446,7 +1502,8 @@
    "labels": [
     "捐款"
    ],
-   "note": "3213 调度执行：到账 119,622、手续费 23,850（余额 381,600→238,128），结束 1,020 拍硬上限"
+   "note": "3213 调度执行：到账 119,622、手续费 23,850（余额 381,600→238,128），结束 1,020 拍硬上限",
+   "noteSource": "人工"
   },
   {
    "bot": "kaito9",
@@ -1471,7 +1528,8 @@
    "labels": [
     "捐款"
    ],
-   "note": "3311 调度执行：到账 83,958、手续费 16,739"
+   "note": "3311 调度执行：到账 83,958、手续费 16,739",
+   "noteSource": "人工"
   },
   {
    "bot": "kaito9",
@@ -1496,7 +1554,8 @@
    "labels": [
     "捐款"
    ],
-   "note": "3409 调度执行：到账 58,608、手续费 11,685；三笔之后密度 150→47"
+   "note": "3409 调度执行：到账 58,608、手续费 11,685；三笔之后密度 150→47",
+   "noteSource": "人工"
   },
   {
    "bot": "noah88",
@@ -1521,7 +1580,8 @@
    "labels": [
     "捐款"
    ],
-   "note": "2415 调度执行：到账 100,955、手续费 20,128（余额 322,050→200,967）"
+   "note": "2415 调度执行：到账 100,955、手续费 20,128（余额 322,050→200,967）",
+   "noteSource": "人工"
   },
   {
    "bot": "noah88",
@@ -1546,7 +1606,8 @@
    "labels": [
     "捐款"
    ],
-   "note": "3017 调度执行：到账 95,662、手续费 19,072；收方累计用到 193/193 点"
+   "note": "3017 调度执行：到账 95,662、手续费 19,072；收方累计用到 193/193 点",
+   "noteSource": "人工"
   },
   {
    "bot": "noah88",
@@ -1571,7 +1632,8 @@
    "labels": [
     "被打/失地"
    ],
-   "note": "被 Art raffiné 打：进攻槽峰值 1,132,583 兵，3,472→2,373 格；36 拍后出局"
+   "note": "被 Art raffiné 打：进攻槽峰值 1,132,583 兵，3,472→2,373 格；36 拍后出局",
+   "noteSource": "人工"
   },
   {
    "bot": "riku_x",
@@ -1596,7 +1658,8 @@
    "labels": [
     "捐款"
    ],
-   "note": "2142 调度执行（全局第一笔成功的）：到账 145,901、手续费 29,089"
+   "note": "2142 调度执行（全局第一笔成功的）：到账 145,901、手续费 29,089",
+   "noteSource": "人工"
   },
   {
    "bot": "riku_x",
@@ -1621,7 +1684,8 @@
    "labels": [
     "捐款"
    ],
-   "note": "3619 调度执行：到账 207,223、手续费 41,315（余额 661,050→417,214），结束 220 拍硬上限"
+   "note": "3619 调度执行：到账 207,223、手续费 41,315（余额 661,050→417,214），结束 220 拍硬上限",
+   "noteSource": "人工"
   },
   {
    "bot": "riku_x",
@@ -1646,7 +1710,8 @@
    "labels": [
     "捐款"
    ],
-   "note": "3717 调度执行：到账 145,970、手续费 29,103"
+   "note": "3717 调度执行：到账 145,970、手续费 29,103",
+   "noteSource": "人工"
   },
   {
    "bot": "riku_x",
@@ -1671,7 +1736,8 @@
    "labels": [
     "被打/失地"
    ],
-   "note": "被さっしー打：进攻槽峰值 506,061 兵，4,750→3,509 格，余额 437,922→301,153；没有崩"
+   "note": "被さっしー打：进攻槽峰值 506,061 兵，4,750→3,509 格，余额 437,922→301,153；没有崩",
+   "noteSource": "人工"
   },
   {
    "bot": "riku_x",
@@ -1696,7 +1762,8 @@
    "labels": [
     "被打/失地"
    ],
-   "note": "被 Art raffiné 打：进攻槽峰值 1,912,354 兵，6,283→1,649 格；15 拍后出局"
+   "note": "被 Art raffiné 打：进攻槽峰值 1,912,354 兵，6,283→1,649 格；15 拍后出局",
+   "noteSource": "人工"
   },
   {
    "bot": "ryan_m",
@@ -1721,7 +1788,8 @@
    "labels": [
     "陆攻扩张"
    ],
-   "note": "两批晚到的指令（1470 ×8、1512 ×9，pct=47 打 103 号 bot + 无主地）：160,352→111,624、129,012→74,932，+477 格；手续费 20,556，多发的约 8.1 万兵 1560 前退回"
+   "note": "两批晚到的指令（1470 ×8、1512 ×9，pct=47 打 103 号 bot + 无主地）：160,352→111,624、129,012→74,932，+477 格；手续费 20,556，多发的约 8.1 万兵 1560 前退回",
+   "noteSource": "人工"
   },
   {
    "bot": "ryan_m",
@@ -1746,11 +1814,12 @@
    "labels": [
     "被打/失地"
    ],
-   "note": "被 Bhavya 打（进攻槽峰值 1,477,020 兵）：15,858→9,399 格，余额 136.7 万→65.9 万；80 拍后出局"
+   "note": "被 Bhavya 打（进攻槽峰值 1,477,020 兵）：15,858→9,399 格，余额 136.7 万→65.9 万；80 拍后出局",
+   "noteSource": "人工"
   }
  ],
  "mechanismChecks": {
-  "1_quotaRejections": "证实，而且是本局储备号囤兵的直接原因。249 条调度日志、录像里执行 19 条（7.6%）：66 条单笔需点（93~257）超过全场上限（85~121），161 条超过收方剩余额度，3 条卡在换档拍或被同拍先到的另一笔占掉——230 条没执行的全部对得上账。被拒的捐款不扣款、不进录像，策略没有任何反馈。t<4284 成功的 9 笔里 7 笔落在上限加点（t%100==99）之后的 10~23 拍，另 2 笔正好在计点公式换档的 2142 和 3213；t≥4284 免检后 10/10 执行。",
+  "1_quotaRejections": "证实，而且是本局储备号囤兵的直接原因。249 条调度日志、录像里执行 19 条（7.6%）：66 条单笔需点（93~257）超过全场上限（85~121），160 条超过收方剩余额度，4 条卡在换档拍或额度边界上——230 条没执行的全部对得上账。被拒的捐款不扣款、不进录像，策略没有任何反馈。t<4284 成功的 9 笔里 7 笔落在上限加点（t%100==99）之后的 10~23 拍，另 2 笔正好在计点公式换档的 2142 和 3213；t≥4284 免检后 10/10 执行。",
   "2_donationTax": "证实。19 笔到账 1,728,135、手续费 434,318（费 / 到账 = 0.251）；其中 pct=320 的 9 笔为 0.200，pct=183~202 的 10 笔为 0.334。",
   "3_inlandStagnation": "证实，本局最典型的现象。kaito9 t=630 起 nb=0&neut=0，硬上限 1,020 拍、软上限以上 2,350 拍；noah88 软上限以上 2,180 拍；riku_x 1,420 拍。nb=0&neut=0 且密度 ≥60 的快照 68 个。三个号都没有海岸，闲置船那条路不存在；捐款被第 1 项挡住。",
   "4_spawnOpening": "Vb 协调器的角落扇形阵：10 个号最近队友 43~52 像素。开局逻辑正常（t=209 10/10 OK，t=540 名次中位数 37/88），但扇形里的地 t=630~900 分完，t=1080 名次中位数 66/80。这一段同时有客户端卡顿，两个因素分不开；本地进度没落后的 kaito9 也是 t=630 就围死。",
@@ -1759,7 +1828,11 @@
   "7_lagBatches": "证实。同一拍落地 ≥3 条的批 24 个，分布在 t=595~1722 和 4473 / 4767；6 个丢掉的席位 600~1200 拍「想发 462 / 收下 69」。1500 之后 4 个活号的延迟回到 7~20 拍。",
   "8_noFullSendLock": "影子里证实：8/10 个号的 isNoFullSend 被锁上（zero_7 372、talon5 470、noah88 542、alex_k 622、zexos1 654、riku_x 827、ryan_m 5153、kaito9 5846），前 6 个（t=372~827）触发时「推算实发」只有 30~769 兵——是挨打掉的兵或别的指令落地，不是这条指令被截；后 2 个发生在被围攻时。本局后果很小：之后只挡掉 10 次出兵（8 次对内置 bot，另 2 次是 noah88@3475、riku_x@5260 各一次脉冲）。",
   "9_invertedFeeding": "有意图、没执行。16 条调度日志的捐方密度低于收方（66~90 → 77~114），全部被配额拒绝；执行的 19 笔里捐方密度都高于收方。",
-  "10_spawnRecompute": "证实，有一对重叠。我方 190 条出生指令（每号 11~26 条），其中 21 条指向已被占的点、被引擎挪开 >6 像素。leo_tx / zexos1 生效的最后一条都指向 (814,270)，实际相距 5.7 像素出生；协调器最后指派给 leo_tx 的 (813,219) 空着。其余 8 个号的真实落点与最后指派一致（差 <1 像素）。我方最后一条出生指令在 −17 拍，出生阶段到 −1 拍结束。"
+  "10_spawnRecompute": "证实，有一对重叠。我方 190 条出生指令（每号 11~26 条），其中 21 条指向已被占的点、被引擎挪开 >6 像素。leo_tx / zexos1 生效的最后一条都指向 (814,270)，实际相距 5.7 像素出生；协调器最后指派给 leo_tx 的 (813,219) 空着。其余 8 个号的真实落点与最后指派一致（差 <1 像素）。我方最后一条出生指令在 −17 拍，出生阶段到 −1 拍结束。",
+  "11_winFloorMateLock": "影子里证实。t=300~1499 有内置 AI 邻居的 1,723 个决策拍：出手 755、只打无主地 32、零指令 936。零指令里 safeFinite 留底绑定 427 拍，其中 415 拍参照的「AI 最弱的其他邻居」是我方队友（占零指令的 44.3%），这 415 拍里 350 拍最便宜的目标每格不到 3 兵（平均 398 格）；另有 391 拍是 AI 单价高于当拍出价，98 拍是价格项或 dpKeep。",
+  "12_oneCmdPerTick": "证实 5 例。影子与真号的 cmds 计数在 4 个号上差 1~2（6 处变化点）：leo_tx 365、talon5 465 / 615、alex_k 600、zexos1 600 这 5 个决策拍影子发了「打无主地 + 打内置 AI」两条，真号的计数只加 1；alex_k 450~540 那一处没有同拍两条，原因不明。都发生在开局阶段，被挤掉的是对内置 AI 的小单。",
+  "13_inflightRepeat": "证实，量不大。255 条生效的进攻里 163 条在「同一目标、落地间隔 ≤12 拍」的连发组里（49 组）。对真人 19 组 56 条：发兵 4,456,126，其中第 2 条起 2,744,271（手续费 360,820），几乎都是 ryan_m（12 组 3,941,960 兵）；发兵超过吃掉整块所需的只有 2 组、多出 287,052 兵（ryan_m 5236~5243 四条打 zim 多 193,235；2394~2415 五条打 Jordan 多 93,817）。卡顿期的同拍成批（ryan_m 1470 六条、1512 九条 pct=47 打同一个空 AI）也在这一类里。",
+  "14_capTruncPingPong": "本局没有。19 笔执行的调度没有一笔被收方硬上限截断；300 拍内来回倒手 0 笔；捐出前 300 拍内自己刚收过捐款的只有 1 笔（到账 71,446，占 4.1%）。原因是配额把 92% 的调度挡在了外面。"
  },
  "patternCounts": {
   "R07-IO-CRASH": {
@@ -1941,22 +2014,27 @@
   }
  },
  "scripts": [
-  "c136-review/agents/R07/scripts/r07lib.py@91ced41",
-  "c136-review/agents/R07/scripts/r07replay.py@91ced41",
-  "c136-review/agents/R07/scripts/40_game_digest.py@91ced41",
-  "c136-review/agents/R07/scripts/30_donation_ledger.py@91ced41",
-  "c136-review/agents/R07/scripts/42_patterns.py@91ced41",
-  "c136-review/agents/R07/scripts/50_build_review.py@91ced41",
-  "c136-review/agents/R07/scripts/r07md.py@91ced41",
-  "c136-review/agents/R07/scripts/60_truth.cjs@91ced41",
-  "c136-review/agents/R07/scripts/61_truth_view.py@91ced41",
-  "c136-review/agents/R07/scripts/62_rank.py@91ced41",
-  "c136-review/agents/R07/scripts/63_replay_ledger.py@91ced41",
-  "c136-review/agents/R07/scripts/64_cmd_loss.py@91ced41",
-  "c136-review/agents/R07/scripts/65_shadow.mjs@91ced41",
-  "c136-review/agents/R07/scripts/66_spawn_truth.mjs@91ced41",
-  "c136-review/agents/R07/scripts/review_src/A062.py@91ced41",
-  "c136-review/agents/R07/scripts/review_src/common.py@91ced41",
+  "c136-review/agents/R07/scripts/r07lib.py@6888758",
+  "c136-review/agents/R07/scripts/r07replay.py@6888758",
+  "c136-review/agents/R07/scripts/40_game_digest.py@6888758",
+  "c136-review/agents/R07/scripts/30_donation_ledger.py@6888758",
+  "c136-review/agents/R07/scripts/42_patterns.py@6888758",
+  "c136-review/agents/R07/scripts/50_build_review.py@6888758",
+  "c136-review/agents/R07/scripts/r07md.py@6888758",
+  "c136-review/agents/R07/scripts/60_truth.cjs@6888758",
+  "c136-review/agents/R07/scripts/61_truth_view.py@6888758",
+  "c136-review/agents/R07/scripts/62_rank.py@6888758",
+  "c136-review/agents/R07/scripts/63_replay_ledger.py@6888758",
+  "c136-review/agents/R07/scripts/64_cmd_loss.py@6888758",
+  "c136-review/agents/R07/scripts/65_shadow.mjs@6888758",
+  "c136-review/agents/R07/scripts/66_spawn_truth.mjs@6888758",
+  "c136-review/agents/R07/scripts/67_troop_flow.mjs@6888758",
+  "c136-review/agents/R07/scripts/69_quota_truth.mjs@6888758",
+  "c136-review/agents/R07/scripts/70_team_density.py@6888758",
+  "c136-review/agents/R07/scripts/71_death_chain.py@6888758",
+  "c136-review/agents/R07/scripts/72_repeat_sends.py@6888758",
+  "c136-review/agents/R07/scripts/review_src/A062.py@6888758",
+  "c136-review/agents/R07/scripts/review_src/common.py@6888758",
   "c136-review/agents/R07/out/A062/digest.txt",
   "c136-review/agents/R07/out/A062/donation_ledger.txt",
   "c136-review/agents/R07/out/A062/patterns.json",
@@ -1969,6 +2047,13 @@
   "c136-review/agents/R07/out/A062/shadow_check.txt",
   "c136-review/agents/R07/out/A062/shadow_nofull.tsv",
   "c136-review/agents/R07/out/A062/shadow_coast.tsv",
+  "c136-review/agents/R07/out/A062/shadow_early.txt",
+  "c136-review/agents/R07/out/A062/troop_flow.txt",
+  "c136-review/agents/R07/out/A062/drop30_recon.txt",
+  "c136-review/agents/R07/out/A062/quota_truth.txt",
+  "c136-review/agents/R07/out/A062/team_density.txt",
+  "c136-review/agents/R07/out/A062/death_chain.txt",
+  "c136-review/agents/R07/out/A062/repeat_sends.txt",
   "c136-review/agents/R07/out/A062/shadow_trace_ryan_m_1515_2379.txt",
   "c136-review/agents/R07/out/A062/shadow_trace_ryan_m_1500_2420.txt",
   "c136-review/agents/R07/out/A062/shadow_trace_ryan_m_2370_2420.txt",
