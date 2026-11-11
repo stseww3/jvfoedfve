@@ -20,6 +20,9 @@
 // 输出：out/<matchId>/shadow_log.txt（影子日志）、shadow_cmds.tsv（影子指令）、shadow_check.txt（与真日志比对）、
 //       shadow_coast.tsv（每 90 拍各号的海岸格数与能否出船，取自模拟器 g.coast / g.boatsAllowed）、
 //       shadow_nofull.tsv（isNoFullSend 何时被锁上、之后挡掉了哪些出兵）、
+//       shadow_quota_checks.tsv（Policy.updateShadowQuota 里每一次「出兵后核对余额」的结果：过期 / 扣减 / 清零，
+//         以及被核对的那条指令打的是谁、想发多少、核对时余额少了多少；判定按源码（Vb L3821-3835）的条件在脚本里重算；
+//         汇总成文字用 99_quota_checks.py）、
 //       shadow_trace_<bot>_<t0>_<t1>.txt（--trace）
 import fs from 'node:fs';
 import path from 'node:path';
@@ -146,6 +149,8 @@ for (const b of bots) {
 const shadowCmds = [];
 const coastRows = [];
 const nfEvents = [];
+const qcRows = [];
+const lastAtkCmd = new Map();
 const pname = (g, q) => (q === NEUTRAL ? '无主地' : q < H ? `${names[q]}#${q}[T${g.teams[q]}${g.state[q] === 2 ? '离' : ''}]` : `AI#${q}`);
 
 // 按 buyLand 的源码公式重算每个报价的 安全底 / 留底 / 可用兵（Vb：L5350-5446；Va/Vc 行号略有出入，公式相同）
@@ -829,6 +834,7 @@ proto.tick = function () {
       }
       c.site = fr.join('<');
       cmdsNow.push(c); shadowCmds.push(c);
+      if (kind === 'attack') lastAtkCmd.set(b, c);
     };
     g.attack = (pct, target, pl = me) => {
       if (pl !== me) return false;
@@ -846,10 +852,26 @@ proto.tick = function () {
     p.__offers = null;
     const ld0 = p.lastDonateTick;
     const nf0 = p.isNoFullSend, pc0 = p.pendingQuotaCheck ? { ...p.pendingQuotaCheck } : null;
+    const sq0 = p.shadowQuota, lc0 = lastAtkCmd.get(b) || null;
     try { p.act(g); } catch (e) { shadowLog.push({ bot: b, t: g.t, text: `[SHADOW-ERROR] ${e && e.message}` }); }
     if (nf0 === false && p.isNoFullSend) {
       const B = g.bal[me];
       nfEvents.push([g.t, b, '锁上isNoFullSend', pc0 ? `待核对出兵:发令拍=${pc0.t - 1} 想发=${Math.round(pc0.want)} 发令时余额=${pc0.bal0} 手续费=${pc0.fee} 本拍余额=${B} 推算实发=${Math.max(0, pc0.bal0 - B - pc0.fee)}` : '无待核对记录', '', '', B].join('\t'));
+    }
+    if (pc0 && g.t >= pc0.t && 'shadowQuota' in p) {
+      // 复算 updateShadowQuota 末尾那段核对（余额在 act 里不变：影子指令只记不执行）
+      const B = g.bal[me];
+      let outcome = null, actual = '';
+      if (g.t > pc0.t + 6) outcome = '过期';
+      else if (B < pc0.bal0 - pc0.fee) {
+        actual = Math.max(0, pc0.bal0 - B - pc0.fee);
+        outcome = pc0.want >= 1.12 * actual && actual < pc0.bal0 - pc0.fee - 50 ? '清零' : '扣减';
+      }
+      if (outcome) {
+        const lc = lc0 && lc0.t === pc0.t - 1 ? lc0 : null;
+        qcRows.push({ t: g.t, bot: b, issueT: pc0.t - 1, target: lc ? lc.targetName : '?', pct: lc ? lc.pct : '', want: Math.round(pc0.want), bal0: pc0.bal0, fee: pc0.fee, bal: B, actual, outcome,
+          sq0: Math.round(sq0 ?? 0), sq1: Math.round(p.shadowQuota ?? 0), noFull0: nf0 ? 1 : 0, terr: g.terr[me] });
+      }
     }
     delete g.attack; delete g.donate; delete g.boat; delete g.boatTo; delete g.chase; delete g.recall; delete g.retreat;
     try { earlyDiag(g, b, p, cmdsNow); } catch (e) { if (!earlyDiag.err) { earlyDiag.err = String(e && e.message); } }
@@ -1000,6 +1022,13 @@ fs.writeFileSync(path.join(OUT, 'shadow_check.txt'), chk.join('\n') + '\n');
 fs.writeFileSync(path.join(OUT, 'shadow_log.txt'), shadowLog.map((l) => `${l.t}\t[${l.bot}] ${l.text}`).join('\n') + '\n');
 fs.writeFileSync(path.join(OUT, 'shadow_cmds.tsv'), 't\tbot\tkind\tpct\ttarget\ttargetName\tbal\tterr\ttroops\tsite\n' + shadowCmds.map((c) => [c.t, c.bot, c.kind, c.pct, c.target, c.targetName, c.bal, c.terr, c.troops, c.site || ''].join('\t')).join('\n') + '\n');
 fs.writeFileSync(path.join(OUT, 'shadow_nofull.tsv'), 't\tbot\tevent\tdetail_or_target\twantTroops\tshadowQuota\tbal\n' + nfEvents.join('\n') + '\n');
+{
+  // 出兵后的余额核对（Policy.updateShadowQuota 末尾）：每次核对的结果
+  const cols = ['t', 'bot', 'issueT', 'target', 'pct', 'want', 'bal0', 'fee', 'bal', 'actual', 'outcome', 'sq0', 'sq1', 'noFull0', 'terr'];
+  fs.writeFileSync(path.join(OUT, 'shadow_quota_checks.tsv'), cols.join('\t') + '\n' + qcRows.map((r) => cols.map((c) => r[c]).join('\t')).join('\n') + '\n');
+  const nz = qcRows.filter((r) => r.outcome === '清零'), bad = nz.filter((r) => r.sq1 !== 0).length;
+  fs.appendFileSync(path.join(OUT, 'shadow_check.txt'), `# 出兵后的余额核对（影子）：${qcRows.length} 次，清零 ${nz.length} 次（策略对象里的影子配额当拍不是 0 的 ${bad} 次）；明细 shadow_quota_checks.tsv，汇总用 99_quota_checks.py\n`);
+}
 {
   const per = new Map();
   for (const r of nfEvents) { const [t, b, ev] = r.split('\t'); const o = per.get(b) || { lock: null, block: 0, poke: 0, firstBlock: null, lastBlock: null }; per.set(b, o); if (ev.startsWith('锁上')) { if (o.lock === null) o.lock = +t; } else { if (ev === '挡掉') o.block++; else o.poke++; if (o.firstBlock === null) o.firstBlock = +t; o.lastBlock = +t; } }
