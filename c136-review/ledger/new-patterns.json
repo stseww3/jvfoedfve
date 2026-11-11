@@ -238,6 +238,96 @@
   ]
  },
  {
+  "matchId": "A094",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-SP02",
+  "prefix": "SP",
+  "name": "出生名单跨实例",
+  "definition": "协调器一次求解的名单里，有号不在同一个对局实例里（seeded、席位对不上同一份录像）或根本没进图。",
+  "detect": "log_only.py --section spawn（名单人数、各号 seeded 与席位）；resim_report.py --section spawn（计划位附近实际站着谁）。",
+  "instances": [
+   {
+    "matchId": "A094",
+    "t": 0,
+    "note": "10 人名单：6 个在 X、3 个在 Y、1 个缺席"
+   }
+  ]
+ },
+ {
+  "matchId": "A094",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-AT05",
+  "prefix": "AT",
+  "name": "价格线空等",
+  "definition": "有人类邻居、没有中立地、余额不超过 100 倍领土，buyLand 因最便宜目标的单价 c >= worth 在 L5358 退出，连续 >=50 个决策拍。",
+  "detect": "有录像：shadow_idle.csv 的 oPrice 列（shadow_report.py --section idle）。没有录像：log_only.py --section idle、late（nb>=1、neut=0、cmds 不动，密度涨到 100 左右才出手）。",
+  "instances": [
+   {
+    "matchId": "A094",
+    "t": 2250,
+    "note": "Y ryan_m 385 个决策拍"
+   },
+   {
+    "matchId": "A094",
+    "t": 2700,
+    "note": "X riku_x 2700–4320 拍；talon5 3510–4050 拍；alex_k 6030–8280 拍"
+   }
+  ]
+ },
+ {
+  "matchId": "A094",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-AT06",
+  "prefix": "AT",
+  "name": "中期吃完自己一侧的 AI 地",
+  "definition": "1500 拍以后编队领土在 1500 拍内翻倍以上，增量来自机器人地。",
+  "detect": "log_squad.csv 或 resim_squad.csv 的领土曲线；shadow_cmds.csv 里 site=Policy.buyLand L5453 的指令。",
+  "instances": [
+   {
+    "matchId": "A094",
+    "t": 2340,
+    "note": "X 141759→385529 格"
+   }
+  ]
+ },
+ {
+  "matchId": "A094",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-EC02",
+  "prefix": "EC",
+  "name": "一个小邻居卡住后排大号",
+  "definition": "某号 nb=1、neut=0、连续 >=5 个快照不发指令，余额占编队合计 >=30%：邻居的单价过不了价格线所以不打，nb 不为 0 又不算围死，捐款门槛是密度约 111.6。",
+  "detect": "log_ticks.csv（nb、neut、cmds、余额占比）；[HL-DISPATCH] 的 boxedIn 字段。",
+  "instances": [
+   {
+    "matchId": "A094",
+    "t": 3960,
+    "note": "X zero_7 900 拍，余额 2972502→17421747"
+   }
+  ]
+ },
+ {
+  "matchId": "A094",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-DF02",
+  "prefix": "DF",
+  "name": "挨打时不出手",
+  "definition": "正被人类进攻、领土在掉的连续 >=20 个决策拍里没有发令，而余额不低于领土的 30 倍。",
+  "detect": "有录像：shadow_idle.csv 的 priceOnMe 列。没有录像：log_only.py --section idle 里领土下降而 cmds 不动的区间。",
+  "instances": [
+   {
+    "matchId": "A094",
+    "t": 3900,
+    "note": "Y ryan_m 22 个决策拍"
+   },
+   {
+    "matchId": "A094",
+    "t": 5940,
+    "note": "X zero_7 到 6343 拍阵亡"
+   }
+  ]
+ },
+ {
   "matchId": "A022",
   "reviewer": "R04",
   "prefix": "SP",
@@ -371,8 +461,8 @@
   "matchId": "B039",
   "reviewer": "R06",
   "name": "NEW:IO-disconnect-husk",
-  "definition": "我方号在存活状态下离开对局（录像指令 9 或结算 left），领土和兵留在场上由内置 AI 托管，仍算原队成员",
-  "detectionSketch": "录像：id=9 且该号此后仍被捐款/被攻击；无录像：results.csv event=left 且 lastTerritory>0，或日志在终局前 300 拍以上中断且没有 died 结算",
+  "definition": "我方号在存活状态下被登记离开（录像指令 9 或结算 left），领土和兵留在场上由内置 AI 托管、利息为 0，仍算原队成员",
+  "detectionSketch": "重放：号从在场变成离开状态且仍存活；无录像：results.csv event=left 且 lastTerritory>0，或日志在终局前 300 拍以上中断且没有 died 结算",
   "instances": [
    {
     "t": 112,
@@ -431,10 +521,87 @@
  {
   "matchId": "B039",
   "reviewer": "R06",
-  "name": "NEW:IO-lag-burst",
-  "definition": "指令晚到并在同一拍成批执行（同号同拍 >=4 条陆攻/发船/捐款），每条按执行时余额的百分比连乘，实际花掉的兵远多于策略想花的",
-  "detectionSketch": "录像：同号同拍指令数>=4；日志侧：相邻快照余额跌>=30% 且 boats/cmds 计数在此前多个快照里已经涨过",
+  "name": "NEW:IO-cmd-blackout",
+  "definition": "指令断档：某个号相邻两次有指令进录像的拍相隔 >=300，而这段时间它的日志 cmds 计数涨了 >=5（策略在发令、引擎没收到）",
+  "detectionSketch": "simdigest gaps：录像里该号指令的执行拍序列 + 日志快照的 cmds 字段；无录像时用「cmds 在涨而领土/余额走势与发令无关」近似",
   "instances": [
+   {
+    "t": 980,
+    "bot": "Bohemia"
+   },
+   {
+    "t": 847,
+    "bot": "ArthurMorgan"
+   },
+   {
+    "t": 1204,
+    "bot": "ArthurMorgan"
+   },
+   {
+    "t": 994,
+    "bot": "Pomerania"
+   },
+   {
+    "t": 1050,
+    "bot": "DoomSlayer"
+   },
+   {
+    "t": 798,
+    "bot": "404 Not Found"
+   },
+   {
+    "t": 1169,
+    "bot": "404 Not Found"
+   },
+   {
+    "t": 987,
+    "bot": "Kazuya"
+   },
+   {
+    "t": 1085,
+    "bot": "Sus"
+   },
+   {
+    "t": 1225,
+    "bot": "Thanos"
+   }
+  ]
+ },
+ {
+  "matchId": "B039",
+  "reviewer": "R06",
+  "name": "NEW:IO-lag-burst",
+  "definition": "同号同拍 >=3 条生效指令且一拍内出兵+手续费 >= 拍前余额的 50%（攒下的指令成批执行，每条按执行时余额的百分比连乘）",
+  "detectionSketch": "重放：同号同拍生效指令 >=3 且合计花费 >= 50% 余额（simdigest cmds）；日志侧：相邻快照余额跌 >=30% 且 boats/cmds 计数在此前多个快照里已经涨过",
+  "instances": [
+   {
+    "t": 903,
+    "bot": "Belgium"
+   },
+   {
+    "t": 931,
+    "bot": "Kazuya"
+   },
+   {
+    "t": 1008,
+    "bot": "Thanos"
+   },
+   {
+    "t": 1022,
+    "bot": "Algiers"
+   },
+   {
+    "t": 1022,
+    "bot": "DoomSlayer"
+   },
+   {
+    "t": 1169,
+    "bot": "ArthurMorgan"
+   },
+   {
+    "t": 1176,
+    "bot": "Maple Leaf"
+   },
    {
     "t": 1722,
     "bot": "Sus"
@@ -444,16 +611,12 @@
     "bot": "ArthurMorgan"
    },
    {
-    "t": 2170,
-    "bot": "ArthurMorgan"
+    "t": 2100,
+    "bot": "Thanos"
    },
    {
-    "t": 2177,
-    "bot": "404 Not Found"
-   },
-   {
-    "t": 1666,
-    "bot": "404 Not Found"
+    "t": 2268,
+    "bot": "Thanos"
    }
   ]
  },
@@ -461,7 +624,7 @@
   "matchId": "B039",
   "reviewer": "R06",
   "name": "NEW:SP-cross-team-stack",
-  "definition": "两个我方号最终出生点相距 <60 px（含分属不同队的情况）",
+  "definition": "两个我方号最终出生点相距 <60 格（含分属不同队的情况）",
   "detectionSketch": "录像选点指令取每号最后一次落点，两两算距离；无录像用 HL-SPAWN 最后一行近似",
   "instances": [
    {
@@ -479,6 +642,97 @@
    {
     "t": 40,
     "bot": "DoomSlayer"
+   },
+   {
+    "t": 40,
+    "bot": "Chile"
+   }
+  ]
+ },
+ {
+  "matchId": "B039",
+  "reviewer": "R06",
+  "name": "NEW:PL-protect-box",
+  "definition": "被保护名单围住：我方在场号连续 >=180 拍没有可打的邻居、也没有无主邻格（策略 nb=0 且 neut=0），而它实际挨着名字在池里的异队号/空壳或撞名内置 AI",
+  "detectionSketch": "重放邻居采样（每 90 拍）按策略的 isProtectedSquadMate 规则分类（simdigest protbox）；无录像：日志 nb=0 && neut=0 且同局有异队编队号",
+  "instances": [
+   {
+    "t": 1260,
+    "bot": "Thanos"
+   },
+   {
+    "t": 1350,
+    "bot": "ArthurMorgan"
+   },
+   {
+    "t": 1260,
+    "bot": "Sus"
+   },
+   {
+    "t": 2970,
+    "bot": "Sus"
+   },
+   {
+    "t": 2970,
+    "bot": "404 Not Found"
+   },
+   {
+    "t": 2520,
+    "bot": "Pomerania"
+   },
+   {
+    "t": 3510,
+    "bot": "Pomerania"
+   },
+   {
+    "t": 1710,
+    "bot": "DoomSlayer"
+   }
+  ]
+ },
+ {
+  "matchId": "B039",
+  "reviewer": "R06",
+  "name": "NEW:PL-pool-ai",
+  "definition": "内置 AI 的名字在编队名字池里（isOurSquadBot 只比名字）：我方号与它接壤却整局不打它",
+  "detectionSketch": "重放：引擎名字表里编号 >= 真人数且名字小写在 SQUAD_POOL_SET 里的号；与我方在场号的接壤采样（simdigest poolai）",
+  "instances": [
+   {
+    "t": 360,
+    "bot": "Pomerania"
+   },
+   {
+    "t": 1080,
+    "bot": "Sus"
+   },
+   {
+    "t": 720,
+    "bot": "Manstein"
+   },
+   {
+    "t": 990,
+    "bot": "Kazuya"
+   },
+   {
+    "t": 270,
+    "bot": "HighPing"
+   }
+  ]
+ },
+ {
+  "matchId": "B039",
+  "reviewer": "R06",
+  "name": "NEW:HK-husk-eats-us",
+  "definition": "我方空壳（内置 AI 托管）对我方在场号出兵并拿走领土，而在场号因保护名单不能陆攻它",
+  "detectionSketch": "重放 ledger：空壳离开后对我方在场号的 耗兵/得地（simdigest husks）",
+  "instances": [
+   {
+    "t": 2107,
+    "bot": "Bohemia"
+   },
+   {
+    "t": 2520,
+    "bot": "Pomerania"
    }
   ]
  },
@@ -486,8 +740,8 @@
   "matchId": "B039",
   "reviewer": "R06",
   "name": "NEW:DN-husk-donate",
-  "definition": "捐款的收款人当时已经离开对局（AI 托管的空壳）",
-  "detectionSketch": "捐款执行拍 >= 收款人的离开拍（录像 id=9 / 结算 left）",
+  "definition": "捐款的收款人当时已经离开对局（内置 AI 托管的空壳）",
+  "detectionSketch": "捐款执行拍 >= 收款人的离开拍",
   "instances": [
    {
     "t": 2177,
@@ -516,34 +770,38 @@
   "reviewer": "R06",
   "name": "NEW:DN-small-pct",
   "definition": "已执行的捐款 pct<150（到账/(到账+手续费) < 70%）；pct<64 时到账小于手续费",
-  "detectionSketch": "HL-DONATE 的 pct 字段 <150 且未被判拒",
+  "detectionSketch": "HL-DONATE 的 pct 字段 <150 且录像里有对应指令",
   "instances": [
    {
-    "t": 3160,
+    "t": 3178,
     "bot": "Sus"
    },
    {
-    "t": 3470,
+    "t": 3479,
     "bot": "Algiers"
    },
    {
-    "t": 3500,
+    "t": 3514,
     "bot": "Sus"
    },
    {
-    "t": 3840,
+    "t": 3682,
+    "bot": "Algiers"
+   },
+   {
+    "t": 3857,
     "bot": "Sus"
    },
    {
-    "t": 3950,
+    "t": 3969,
     "bot": "Sus"
    },
    {
-    "t": 2375,
+    "t": 2387,
     "bot": "Bohemia"
    },
    {
-    "t": 4840,
+    "t": 4851,
     "bot": "Pomerania"
    }
   ]
@@ -553,22 +811,22 @@
   "reviewer": "R06",
   "name": "NEW:DN-pingpong",
   "definition": "A 捐给 B 之后 150 拍内 B 又捐回 A（两笔都执行）",
-  "detectionSketch": "按 (捐款人, 收款人) 配对相反方向的两条 HL-DONATE，间隔<=150 拍",
+  "detectionSketch": "按 (捐款人, 收款人) 配对相反方向的两条已执行捐款，间隔 <=150 拍",
   "instances": [
    {
-    "t": 4470,
+    "t": 4480,
     "bot": "Algiers"
    },
    {
-    "t": 4575,
+    "t": 4585,
     "bot": "Bohemia"
    },
    {
-    "t": 4820,
+    "t": 4837,
     "bot": "Sus"
    },
    {
-    "t": 4865,
+    "t": 4879,
     "bot": "Algiers"
    }
   ]
@@ -576,9 +834,34 @@
  {
   "matchId": "B039",
   "reviewer": "R06",
+  "name": "NEW:DN-to-overcap",
+  "definition": "收款人收款时密度已 >=100（超软上限，利率已降档）；撞 150×领土硬上限时到账被截而手续费照收",
+  "detectionSketch": "捐款执行拍收款人 兵/地 >= 100；到账 < floor(余额×(pct+1)/1024) 即被截",
+  "instances": [
+   {
+    "t": 4305,
+    "bot": "Sus"
+   },
+   {
+    "t": 4459,
+    "bot": "Pomerania"
+   },
+   {
+    "t": 4529,
+    "bot": "Sus"
+   },
+   {
+    "t": 4732,
+    "bot": "Bohemia"
+   }
+  ]
+ },
+ {
+  "matchId": "B039",
+  "reviewer": "R06",
   "name": "NEW:DN-not-executed",
-  "definition": "日志里有 HL-DONATE，录像里对应拍段没有这条捐款指令（未扣费、未到账）",
-  "detectionSketch": "录像真值配对（digest donations）；无录像时用 40 拍内余额读数>=0.97×原余额近似",
+  "definition": "日志里有 HL-DONATE，录像里没有这条捐款，且引擎校验重演表明它到了引擎会被执行（指令没送达）",
+  "detectionSketch": "重放 probes：日志拍后 7/14/21/28 拍用引擎校验函数判；无录像时用 40 拍内余额读数 >=0.97×原余额近似「没执行」",
   "instances": [
    {
     "t": 1640,
@@ -594,15 +877,15 @@
   "matchId": "B039",
   "reviewer": "R06",
   "name": "NEW:DN-dying-donor",
-  "definition": "捐款人自己正在被真人进攻、领土在 300 拍内已跌 >=25%，仍然往外捐",
-  "detectionSketch": "HL-DONATE 时刻回看 300 拍快照的领土跌幅",
+  "definition": "捐款人自己的领土在 300 拍内已跌 >=25%，仍然往外捐",
+  "detectionSketch": "捐款执行拍回看 300 拍的领土跌幅",
   "instances": [
    {
-    "t": 4865,
+    "t": 4879,
     "bot": "Algiers"
    },
    {
-    "t": 4820,
+    "t": 4837,
     "bot": "Sus"
    }
   ]
@@ -611,27 +894,23 @@
   "matchId": "B039",
   "reviewer": "R06",
   "name": "NEW:DN-rear-to-front",
-  "definition": "被围（nb=0、neut=0）的后排号把兵以 pct>=185 捐给有敌邻且正在挨打的同队编队号，且捐款被执行",
-  "detectionSketch": "HL-DONATE surplus 且 boxedIn=true、pct>=185、录像里有对应指令",
+  "definition": "没有可打邻居的后排号把兵以 pct>=185 捐给有敌邻且正在挨打、密度低于 100 的同队编队号，且捐款被执行",
+  "detectionSketch": "HL-DONATE surplus 且 boxedIn=true、pct>=185、录像里有对应指令、收款人密度 <100",
   "instances": [
    {
-    "t": 3870,
+    "t": 3878,
     "bot": "Pomerania"
    },
    {
-    "t": 4070,
+    "t": 4088,
     "bot": "Pomerania"
    },
    {
-    "t": 4260,
+    "t": 4270,
     "bot": "Pomerania"
    },
    {
-    "t": 4450,
-    "bot": "Pomerania"
-   },
-   {
-    "t": 3610,
+    "t": 3626,
     "bot": "Sus"
    }
   ]
@@ -639,25 +918,100 @@
  {
   "matchId": "B039",
   "reviewer": "R06",
-  "name": "NEW:AT-boat-dump",
-  "definition": "没有敌邻的号把 >=30% 的兵装船，之后 300 拍领土增长不到装船兵数的 1%",
-  "detectionSketch": "相邻快照余额跌>=30% 且 boats 计数增加、领土基本不变",
+  "name": "NEW:BT-sunk",
+  "definition": "船没靠岸就在海上被敌船打光（消失时船上 0 兵）",
+  "detectionSketch": "重放：按引擎船编号跟踪，船被移除时没有靠岸记录且兵力为 0（simdigest boats）",
   "instances": [
    {
-    "t": 1722,
-    "bot": "Sus"
+    "t": 2919,
+    "bot": "Bohemia"
    },
    {
-    "t": 2023,
-    "bot": "ArthurMorgan"
+    "t": 3017,
+    "bot": "Bohemia"
    },
    {
-    "t": 2880,
+    "t": 4459,
+    "bot": "Bohemia"
+   },
+   {
+    "t": 4816,
+    "bot": "Bohemia"
+   },
+   {
+    "t": 2919,
     "bot": "404 Not Found"
    },
    {
-    "t": 1980,
+    "t": 2933,
+    "bot": "404 Not Found"
+   }
+  ]
+ },
+ {
+  "matchId": "B039",
+  "reviewer": "R06",
+  "name": "NEW:BT-gift",
+  "definition": "船靠上同队玩家的岸：船上的兵直接归了对方（引擎当作一次不收手续费的移交，占对方受捐配额）",
+  "detectionSketch": "重放：bB.kw.rE 被调用（simdigest gifts）",
+  "instances": [
+   {
+    "t": 1525,
+    "bot": "Sus"
+   },
+   {
+    "t": 2141,
+    "bot": "ArthurMorgan"
+   },
+   {
+    "t": 3144,
+    "bot": "Pomerania"
+   },
+   {
+    "t": 3500,
+    "bot": "404 Not Found"
+   }
+  ]
+ },
+ {
+  "matchId": "B039",
+  "reviewer": "R06",
+  "name": "NEW:BT-own-shore",
+  "definition": "船靠回自己的岸：兵回到余额，白付一次 32/1024 的手续费",
+  "detectionSketch": "重放：靠岸时登陆格的主人是发船人自己",
+  "instances": [
+   {
+    "t": 2268,
     "bot": "Thanos"
+   },
+   {
+    "t": 2576,
+    "bot": "Pomerania"
+   },
+   {
+    "t": 2170,
+    "bot": "ArthurMorgan"
+   }
+  ]
+ },
+ {
+  "matchId": "B039",
+  "reviewer": "R06",
+  "name": "NEW:FE-tiny-cmd-fee",
+  "definition": "出兵不到余额 5% 的指令（陆攻手续费固定为余额的 1.17%、发船 3.125%）；余额 >=100 万时单条手续费上万",
+  "detectionSketch": "重放：squadCmds 里 sent < 0.05×B0（simdigest fees）；无录像无法精确统计",
+  "instances": [
+   {
+    "t": 6657,
+    "bot": "Pomerania"
+   },
+   {
+    "t": 6860,
+    "bot": "Pomerania"
+   },
+   {
+    "t": 7630,
+    "bot": "Pomerania"
    }
   ]
  },
@@ -665,20 +1019,153 @@
   "matchId": "B039",
   "reviewer": "R06",
   "name": "NEW:DF-passive-death",
-  "definition": "阵亡号死前 600 拍被真人下过 >=3 条陆攻指令，自己这段时间对进攻者 0 条陆攻，且死前 600 拍内余额曾 >=20 万",
-  "detectionSketch": "录像：死前 600 拍内 cmds_on 与 cmds_of 对比；无录像：死前快照 cmds 计数不变而领土连续下跌",
+  "definition": "阵亡号死前 900 拍被真人拿走 >=1,000 格，而自己死前 600 拍对真人 0 条陆攻",
+  "detectionSketch": "重放：ledger 里死前 900 拍按对手类别的失地 + 死前 600 拍 squadCmds 里对真人的陆攻条数（simdigest deaths、cmdlist）；无录像：死前快照 nb>=1、cmds 计数不变而领土连续下跌",
   "instances": [
    {
-    "t": 4958,
+    "t": 3898,
+    "bot": "ArthurMorgan"
+   },
+   {
+    "t": 3956,
+    "bot": "Thanos"
+   },
+   {
+    "t": 4011,
+    "bot": "404 Not Found"
+   },
+   {
+    "t": 4954,
     "bot": "Algiers"
    },
    {
-    "t": 4967,
+    "t": 4961,
+    "bot": "Sus"
+   }
+  ]
+ },
+ {
+  "matchId": "B039",
+  "reviewer": "R06",
+  "name": "NEW:AT-worth-gate",
+  "definition": "有真人在打我，而 buyLand 对每个真人邻居的报价都停在 L5267（c >= worth=0.9×max(自己密度, 0.85×其余真人密度中位) 且没超软上限）→ 整段挨打期间 0 条还击",
+  "detectionSketch": "有录像：strat_probe 的逐报价出口（真人报价 L5267/L5361/L5280/L5528 各占多少、有没有 L5531/L5500 出兵）；无录像：日志 nb>=1 且 cmds 计数 >=300 拍不变而 terr 下跌 >=20%",
+  "instances": [
+   {
+    "t": 3416,
+    "bot": "ArthurMorgan"
+   },
+   {
+    "t": 3479,
+    "bot": "Thanos"
+   },
+   {
+    "t": 3651,
+    "bot": "404 Not Found"
+   },
+   {
+    "t": 4487,
+    "bot": "Algiers"
+   },
+   {
+    "t": 4571,
+    "bot": "Sus"
+   }
+  ]
+ },
+ {
+  "matchId": "B039",
+  "reviewer": "R06",
+  "name": "NEW:EG-giant-neighbor-freeze",
+  "definition": "自己超软上限（兵>100×地），邻居表里最强真人的兵让 dpKeep=(对方兵−1.5×我的地)/1.78 >= 自己的全部兵 → 对所有不在 bleeding/将崩状态的目标 avail<=0（L5361），包括比自己弱的那个邻居",
+  "detectionSketch": "重放每 90 拍采样：我密度>=100 且 max(真人邻居兵)−1.5×我的地 >= 1.78×我的兵；strat_probe 可直接读 safe/avail；无录像：dens>=100、nb>=1 且 cmds 计数 >=300 拍不变",
+  "instances": [
+   {
+    "t": 3690,
+    "bot": "ArthurMorgan"
+   },
+   {
+    "t": 4420,
+    "bot": "Algiers"
+   },
+   {
+    "t": 4640,
     "bot": "Sus"
    },
    {
-    "t": 3903,
+    "t": 5940,
+    "bot": "Bohemia"
+   },
+   {
+    "t": 7500,
+    "bot": "Bohemia"
+   }
+  ]
+ },
+ {
+  "matchId": "B039",
+  "reviewer": "R06",
+  "name": "NEW:AT-narrow-contact-skip",
+  "definition": "邻居表里唯一的真人密度不到自己的 1/3，但接壤 <25 格 → 报价被窄接触加价（最多 ×1.8）抬到贴近 worth，保底线之上的可用兵不足余额的 20% → L5528 跳过",
+  "detectionSketch": "strat_probe：真人报价 c<worth、出口 L5528 且该邻居 cnt<25；无录像无法判定（日志不打印 offers）",
+  "instances": [
+   {
+    "t": 1700,
+    "bot": "Bohemia"
+   }
+  ]
+ },
+ {
+  "matchId": "B039",
+  "reviewer": "R06",
+  "name": "NEW:DF-sea-landing",
+  "definition": "外人的船在我方在场号的岸上登陆，船上兵 >= 我方号当时兵力的 50%（且 >=2 万）：对面从海上开一条新战线",
+  "detectionSketch": "重放：引擎靠岸钩子记录的登陆事件（simdigest landings）；无录像：日志 nb 从 0 变 >=1 的同时领土开始下跌（近似）",
+  "instances": [
+   {
+    "t": 1953,
+    "bot": "Sus"
+   },
+   {
+    "t": 2105,
+    "bot": "Sus"
+   },
+   {
+    "t": 3651,
+    "bot": "404 Not Found"
+   },
+   {
+    "t": 4571,
+    "bot": "Sus"
+   },
+   {
+    "t": 6709,
+    "bot": "Bohemia"
+   }
+  ]
+ },
+ {
+  "matchId": "B039",
+  "reviewer": "R06",
+  "name": "NEW:BT-hit-squadmate",
+  "definition": "我方在场号的船靠上「异队的我方在场号」的岸：保护名单只管陆攻和选目标，引擎照样按进攻结算",
+  "detectionSketch": "重放：登陆事件里发船人和登陆格主人都是在场的我方号且不同队（simdigest landings）",
+  "instances": [
+   {
+    "t": 210,
+    "bot": "Thanos"
+   },
+   {
+    "t": 2017,
+    "bot": "Sus"
+   },
+   {
+    "t": 2321,
     "bot": "ArthurMorgan"
+   },
+   {
+    "t": 2620,
+    "bot": "Algiers"
    }
   ]
  },
@@ -686,11 +1173,15 @@
   "matchId": "B039",
   "reviewer": "R06",
   "name": "NEW:EG-cap-idle-death",
-  "definition": "号的密度到 150/px 硬上限（利息为 0）后仍然 0 指令，随后被打死",
-  "detectionSketch": "快照 dens>=149 连续 >=2 个且 cmds 计数不变，之后 300 拍内阵亡",
+  "definition": "连续 >=600 拍没有任何指令、期间密度升到 >=140（硬上限 150，利息趋零），随后 600 拍内被打掉 >=25% 领土或被打死",
+  "detectionSketch": "快照 cmds/boats 计数 >=600 拍不变且期间 dens>=140，之后 600 拍内领土跌 >=25% 或阵亡",
   "instances": [
    {
-    "t": 7920,
+    "t": 5845,
+    "bot": "Bohemia"
+   },
+   {
+    "t": 6993,
     "bot": "Bohemia"
    }
   ]
@@ -699,15 +1190,11 @@
   "matchId": "B039",
   "reviewer": "R06",
   "name": "NEW:EC-boxed-cap",
-  "definition": "nb=0、neut=0 且密度 >=95 的快照（内陆被围闲兵）",
-  "detectionSketch": "traj：nb==0 && neut==0 && dens>=95",
+  "definition": "没有敌方真人邻居、没有无主邻格且密度 >=95 的时段（内陆闲兵）；按该时段因超软上限少拿的利息计量",
+  "detectionSketch": "重放邻居采样（每 90 拍）：敌方真人接触 0 且 neut==0 且 dens>=95；日志：nb==0 && neut==0 && dens>=95",
   "instances": [
    {
-    "t": 6660,
-    "bot": "Pomerania"
-   },
-   {
-    "t": 7560,
+    "t": 6930,
     "bot": "Pomerania"
    }
   ]
@@ -716,8 +1203,8 @@
   "matchId": "B039",
   "reviewer": "R06",
   "name": "NEW:OP-cycle-open",
-  "definition": "开局周期出兵按时执行（指令延迟 <30 拍）且 t=630 单号领土不低于同局对照组中位",
-  "detectionSketch": "HL-OPENING 配录像无主地指令的延迟；t=630 领土",
+  "definition": "开局周期出兵按时执行（指令延迟 <50 拍）且 t=630 单号领土中位不低于同局其余真人中位",
+  "detectionSketch": "HL-OPENING 配录像无主地指令的延迟；重放 t=630 各真人领土（simdigest medians）",
   "instances": [
    {
     "t": 630,
@@ -729,12 +1216,189 @@
   "matchId": "B039",
   "reviewer": "R06",
   "name": "NEW:AT-bot-farm",
-  "definition": "对内置 AI/无主地的连续出兵使领土在 500 拍内翻倍以上",
-  "detectionSketch": "录像目标为 AI/512 的陆攻 + 快照领土",
+  "definition": "对内置 AI / 无主地 / 空壳 / 密度 <5 的真人出兵，每格花费 <25 兵且 500 拍内领土 +30% 以上",
+  "detectionSketch": "重放 ledger：按对手类别的 耗兵/得地（simdigest ledger、pair）",
   "instances": [
    {
     "t": 1890,
     "bot": "Pomerania"
+   },
+   {
+    "t": 2457,
+    "bot": "Pomerania"
+   },
+   {
+    "t": 2471,
+    "bot": "Thanos"
+   },
+   {
+    "t": 2814,
+    "bot": "Bohemia"
+   },
+   {
+    "t": 3115,
+    "bot": "Bohemia"
+   }
+  ]
+ },
+ {
+  "matchId": "B039",
+  "reviewer": "R06",
+  "name": "NEW:AT-over-cap-dump",
+  "definition": "兵超过 100×领土后对真人邻居一次打出 >=20% 余额的陆攻并拿到地",
+  "detectionSketch": "重放：对敌方真人的陆攻 sent>=0.2×B0 且 B0>100×myTerr，之后 300 拍 ledger 对该目标得地 >0",
+  "instances": [
+   {
+    "t": 6069,
+    "bot": "Pomerania"
+   },
+   {
+    "t": 6195,
+    "bot": "Pomerania"
+   },
+   {
+    "t": 5383,
+    "bot": "Bohemia"
+   },
+   {
+    "t": 6783,
+    "bot": "Bohemia"
+   }
+  ]
+ },
+ {
+  "matchId": "B039",
+  "reviewer": "R06",
+  "name": "NEW:NF-lock",
+  "definition": "isNoFullSend 被置真的条件成立：陆攻发令后 1~7 拍内余额跌幅（来自上一条指令落地或挨打）被当成本条指令的实际出兵，且想发的兵 >= 1.12×跌幅",
+  "detectionSketch": "重放逐拍余额 + HL-OPENING 的发令拍与 spend（simdigest nfs）",
+  "instances": [
+   {
+    "t": 555,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 560,
+    "bot": "Bohemia"
+   },
+   {
+    "t": 700,
+    "bot": "Pomerania"
+   },
+   {
+    "t": 710,
+    "bot": "Ashanti"
+   }
+  ]
+ },
+ {
+  "matchId": "B039",
+  "reviewer": "R06",
+  "name": "NEW:OP-safefinite-squad-lock",
+  "definition": "打内置 AI 的底线取到 safeFinite，而它的值是「某个内置 AI 邻居的另一个邻居」的兵，那个邻居是我方在场号（同队或异队）；去掉这一项当拍就能出兵",
+  "detectionSketch": "影子探针逐决策拍（strat_probe.mjs --tally → simdigest gates）：t<1500 gate=floor:sb 且 sbKind 以「我方号」开头且 passNoSb=1；t>=1500 非真人报价出口 L5361 且 safeBy=sb。无录像的局只能用日志近似：nb>=1、neut=0、cmds 不涨、密度在涨",
+  "instances": [
+   {
+    "t": 900,
+    "bot": "Algiers"
+   },
+   {
+    "t": 1100,
+    "bot": "Algiers"
+   },
+   {
+    "t": 1200,
+    "bot": "Algiers"
+   },
+   {
+    "t": 1500,
+    "bot": "Algiers"
+   },
+   {
+    "t": 1000,
+    "bot": "Bohemia"
+   },
+   {
+    "t": 1100,
+    "bot": "Pomerania"
+   },
+   {
+    "t": 1000,
+    "bot": "Belgium"
+   },
+   {
+    "t": 1000,
+    "bot": "Sus"
+   },
+   {
+    "t": 1000,
+    "bot": "Ashanti"
+   },
+   {
+    "t": 1000,
+    "bot": "404 Not Found"
+   }
+  ]
+ },
+ {
+  "matchId": "B039",
+  "reviewer": "R06",
+  "name": "NEW:AT-ai-order-too-small",
+  "definition": "t>=1500 对非真人邻居（内置 AI / 空壳）的报价在 buyLand L5367 因 x=min(avail, 1.25×need+3×接壤) < minCmd（4×手续费=余额的 4.7%）被跳过",
+  "detectionSketch": "影子探针 tally：t>=1500、ai>0、排第一的非真人报价出口 = L5367a（simdigest gates 第三段）",
+  "instances": [
+   {
+    "t": 1800,
+    "bot": "Algiers"
+   },
+   {
+    "t": 1850,
+    "bot": "Algiers"
+   },
+   {
+    "t": 1900,
+    "bot": "Algiers"
+   }
+  ]
+ },
+ {
+  "matchId": "B039",
+  "reviewer": "R06",
+  "name": "NEW:CMD-repeat-before-effect",
+  "definition": "同一个号对同一玩家目标的两条生效陆攻相隔 <=21 拍（3 个服务器回合）：第二条是在第一条落地前后下的，各自按当拍余额的百分比出兵",
+  "detectionSketch": "重放 squadCmds：同 p 同 raw 目标、ok=1、间隔 1~21 拍（simdigest dups）",
+  "instances": [
+   {
+    "t": 5383,
+    "bot": "Bohemia"
+   },
+   {
+    "t": 2814,
+    "bot": "Bohemia"
+   },
+   {
+    "t": 2226,
+    "bot": "Algiers"
+   },
+   {
+    "t": 2233,
+    "bot": "Algiers"
+   },
+   {
+    "t": 2240,
+    "bot": "Algiers"
+   },
+   {
+    "t": 2443,
+    "bot": "Algiers"
+   },
+   {
+    "t": 2247,
+    "bot": "Pomerania"
+   },
+   {
+    "t": 2247,
+    "bot": "Sus"
    }
   ]
  },
