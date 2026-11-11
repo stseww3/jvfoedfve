@@ -3,7 +3,9 @@
 //   1) 每个我方号 / 其他真人的领土按「陆块」（地图上连成一片的陆地）拆开：在每块陆块上有多少格；
 //   2) 两两之间的陆上接壤像素数（我方号 ↔ 其他真人；我方号 ↔ 内置 AI 合计）；
 //   3) （加 --map）一张粗网格图：每格取占格最多的归属（A~J = 我方号按引擎编号顺序，x = 其他真人，o = 内置 AI，: = 无主陆地，空格 = 水/山）。
-// 用法：node scripts/ascii_map.mjs <局号> --at t1,t2,... [--ours id,id,...] [--map] [--cell 24] [--top 4] [--also 号,号]
+// 用法：node scripts/ascii_map.mjs <局号> --at t1,t2,... [--ours id,id,...] [--map] [--cell 24] [--top 4] [--also 号,号] [--heads] [--brief]
+//   --heads  对我方号所在的每块陆块（≥2000 格的），列出主体在这块陆块上的真人：我方号 / 其他真人各几个、各自总领土的中位与合计，以及其他真人的名单
+//   --brief  不打印逐号的接壤明细，只留陆块归属（配合 --heads 用）
 //   --also 304,154  另外打印这些玩家（通常是内置 AI）在各陆块上的格数和外接框
 // 口径：陆块 = 地图静态地形里 4 邻接连通的陆地像素（山、水不算）；接壤 = 我方像素的 4 邻格属于对方。
 // 重活，请用：HEAVY_QUEUE=90 timeout 118 bash ../../tools/run-heavy.sh node scripts/ascii_map.mjs ...
@@ -19,6 +21,7 @@ const opt = (k, d) => { const i = args.indexOf(k); return i >= 0 ? args[i + 1] :
 const at = (opt('--at', '') || '').split(',').filter(Boolean).map(Number).sort((a, b) => a - b);
 const cell = +opt('--cell', 24), top = +opt('--top', 4);
 const wantMap = args.includes('--map');
+const wantHeads = args.includes('--heads'), brief = args.includes('--brief');
 const also = (opt('--also', '') || '').split(',').filter(Boolean).map(Number);
 if (!mid || !at.length) { console.error('用法：node scripts/ascii_map.mjs <局号> --at t1,t2,... [--ours id,...] [--map] [--cell 24]'); process.exit(2); }
 
@@ -90,6 +93,7 @@ for (const T of at) {
   }
   console.log(`\n== 拍 ${t} ==`);
   for (const p of humans) {
+    if (brief) break;
     const mp = per.get(p) || new Map();
     const parts = [...mp.entries()].sort((a, b) => b[1] - a[1]);
     const mine = ours.includes(p);
@@ -117,6 +121,22 @@ for (const T of at) {
     for (const p of humans) { const n = (per.get(p) || new Map()).get(m) || 0; if (ours.includes(p)) a += n; else b += n; }
     return `L${rank.get(m)} ${a}/${b}/${aiOn.get(m) || 0}/${neutOn.get(m) || 0}`;
   }).join('；'));
+  if (wantHeads) {
+    const med = (a) => { if (!a.length) return 0; const b = [...a].sort((x, y) => x - y); return b[(b.length - 1) >> 1]; };
+    for (const m of rows) {
+      if (massSize[m] < 2000) continue;
+      const a = [], b = [];
+      for (const p of humans) {
+        const mp = per.get(p); if (!mp) continue;
+        const parts = [...mp.entries()].sort((x, y) => y[1] - x[1]);
+        if (parts[0][0] !== m) continue;      // 主体不在这块陆块上
+        (ours.includes(p) ? a : b).push(p);
+      }
+      const sum = (l) => l.reduce((s2, p) => s2 + g.terr[p], 0), sb = (l) => l.reduce((s2, p) => s2 + g.bal[p], 0);
+      console.log(`  主体在 L${rank.get(m)} 上的真人：我方号 ${a.length} 个，领土合计 ${sum(a)}、中位 ${med(a.map((p) => g.terr[p]))}、余额合计 ${sb(a)}；其他真人 ${b.length} 个，领土合计 ${sum(b)}、中位 ${med(b.map((p) => g.terr[p]))}、余额合计 ${sb(b)}`);
+      console.log('    其他真人：' + b.sort((x, y) => g.terr[y] - g.terr[x]).map((p) => `${nm(p)}(队${g.teams ? g.teams[p] : '?'}) ${g.terr[p]}/${g.bal[p]}`).join('；'));
+    }
+  }
   if (wantMap) {
     const letter = new Map(ours.map((p, k) => [p, String.fromCharCode(65 + k)]));
     console.log('  图例：' + ours.map((p) => `${letter.get(p)}=${nm(p)}`).join(' ') + ' x=其他真人 o=内置AI :=无主陆地');

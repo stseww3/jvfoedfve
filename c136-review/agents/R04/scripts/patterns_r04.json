@@ -327,5 +327,12 @@
   "definition": "对真人的一轮大笔出手（整串出兵 ≥ 余额的 10% 且 ≥ 1 万兵），同时满足：进攻在串尾之后 40 拍内结束；目标领土少了不到 100 格；不是对打（同期目标打过来的在途兵 < 整串出兵的 25%）；兵回到了余额（串尾 30 拍后的余额 + 其间别的指令的花费 ≥ 出手前余额 − 整串出兵的 25%）。计数 = 轮数、出兵、手续费。",
   "detector": "scripts/refund_strikes.py <局号> --list",
   "codePath": "Policy.offers L5072~5100（need 按对方全部领土和余额算，不看接壤多长）、Policy.buyLand L5353~5359（over 时不比单价）、L5456~5457、L5612~5617（want = 1.25×need + 3×接触数）"
+ },
+ "NEW-OP-REFCHASE": {
+  "prefix": "OP",
+  "name": "核心期前打真人的底线跟着邻居的兵一起涨：几个号围着一个密度更低的真人，各算各的都够不着",
+  "definition": "核心期之前（t < coreFrom=1500）某号的非队友陆上邻居只剩真人（没有内置 AI、没有无主地），这一拍没有出手，影子诊断里对这个真人的底线（约 1.5×邻居均兵，封顶 50×自己的领土）高于「余额 −（最小出兵比例×余额）」；同一拍贴着同一个真人的我方号合计余额 ≥ 这个真人余额的 2 倍。计数 = 号·拍数（window_tally.py 的「只贴真人」类 ×5）、段首段末我方合计余额与对方余额之比、对方在这段时间的领土变化、核心期接手后的第一次出手拍。",
+  "detector": "scripts/window_tally.py <局号> <t0> <t1>（「只贴真人」列）；scripts/shadow.mjs <局号> --bots <号> --at <拍>（[核心期前] 一段逐个邻居给出 需 / 底线 / 可用兵）；scripts/truth_query.py <局号> bal <号> t0 t1",
+  "codePath": "Policy.act L4850（coreFrom 之前走 super.act）→ Style.pickTarget L1144~1161（avail = 余额 − floorFor(…, floorAt(单价))，要 > minShare×余额 = 21.4%×余额）← V13.floorFor L2228~2231 / floorFor0 L2233~2240（真人目标直接用 floorAt）← General.floors L819~830（refFloor = ref×邻居均兵；floorAt = floorK×min(keepCap×100×领土, max(reserve…, refFloor))）；每个号只看自己的余额，没有「几个号合起来够」的判断"
  }
 }
