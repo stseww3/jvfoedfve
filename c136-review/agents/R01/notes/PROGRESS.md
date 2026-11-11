@@ -4,7 +4,9 @@
 - M1 完成：A057、A059、A094；M2 完成：A055、A075、A054。全部通过本地机械检查（`python3 scripts/check_my_review.py`）。
 - M3 完成：A031（never-grew）、A019（mid-collapse）、A009（never-grew，Va）；m3-reviews 报告已发（里面更正了 A075 的判定数：错 10 / 不清 5 / 对 5）。
 - M4 完成：A023（never-grew；错 9 / 不清 8 / 对 3；新模式 AT12、AT13）；A050（external；错 9 / 不清 5 / 对 6；新模式 EG03）；A003（never-grew，Va；错 7 / 不清 9 / 对 3；新模式 SP04、DN13）。
-- M5 进行中：A005（Va，没有地图，只有日志）→ B039 → B043；然后 M6。
+- M5 进行中：A005 完成（external，Va；错 4 / 不清 6 / 对 2；新模式 SP05、OP04）→ B039 → B043；然后 M6。
+  A005 的图镜像里没有（5_9294）：`run-heavy.sh node scripts/map_from_engine.cjs A005` 从真引擎的状态数组 aFA 取出写 out/A005/map_5_9294.bin，
+  `resim_lib.mjs` 的 loadMapOrLocal 在镜像缺图时读它（A003 --verify 12_0 逐像素全同）。之后流水线照常：重演 125/125、影子 125/125。**以后缺图的局都这么办。**
 - 总部 0006：所有 node 重演/影子命令必须 `bash ../../tools/run-heavy.sh node scripts/...`（在 agents/R01 下），串行、一次一局，结果缓存在 out/。
   **一次 Shell 调用只跑一条 node 命令**（机器 load 高时一条 shadow 就要 30–90 秒，两条串在一起会被 timeout 120 杀掉）。
 
@@ -17,7 +19,7 @@
    `shadow_report.py --section check,lagcurve,chunks,bursts,paths,repeat,donate,idle`（idle 里有价格线细分）；`shadow_diff.py <mid> nf0`。
 4. `burst_audit.mjs`、`dispatch_audit.mjs`、`tick_cost.py`、`q.py <mid> <表> --where .. --show ..`。
 5. 手写 `analysis/<mid>.json` → `build_review.py <mid>` → `check_my_review.py <mid>`（md ≤150 行）。
-- 没有录像的实例（A094 的 X、A005）：`log_only.py`（spawn/squad/idle/dispatch/results/drops/share/late/chain）、`log_sync.py`；
+- 没有录像的实例（A094 的 X）：`log_only.py`（spawn/squad/idle/dispatch/results/drops/share/late/chain）、`log_sync.py`；
   build_review 的 `timelineLog` 从日志填时间线，`timelineSpecB` 给第二个实例另填一张表。
 - 总部共享工具：`/agent/repos/c136-data/src/tools/engine_replay.cjs`（真引擎）、`engine_vs_resim.py` 对比。
 - `match_facts.py`（M1 的旧底稿脚本，读 bundle）的按席位对账在混了两个实例的包上不能用（A094）。**别覆盖它**：A057、A059 的复盘引用它；A003 起的席位小表在 `seat_facts.py`。
@@ -133,3 +135,22 @@ A003 的主线：7 个号随机出生散在全图（开局人均反而全场最�
 - [x] A023（never-grew）  - [x] A050（external）  - [x] A003（never-grew）   （M4）
 - [ ] A005  - [ ] B039  - [ ] B043   （M5）
 - [ ] M6：reports/CROSS-MATCH-SUMMARY.md、全量模式计数脚本、cards/
+A005 新增脚本：`map_from_engine.cjs <mid> [--verify 图_种子]`（见上）；`page_speed.py <mid> [--ref 600]`（只读日志：按行序 + RESULT 的 at + 名义的钟，
+  给每个页面在各 RESULT 时刻的本地拍区间、落后拍/秒、平均速度占正常速度的比例；HL-SLOW-TICK 行；avgMs/maxMs 前后）；
+  `spawn_layouts.py <mid> [--log a,b] [--near 40]`（协调器每次求解的整份落点表 [BACKEND-SPAWN-COORD] 编号 v1…，每条落地的出生指令属于哪一份，
+  收场的阵是哪几份拼的，落点离“当时已落地的”敌方真人多近 → SP03/SP04/SP05 的机械计数）；`leave_grid.py [mid ...]`（本队 leave 拍对 112 取余）；
+  `probe_view.py --tag x --safe`（1500 拍前对 AI 地的保底线出自谁：按探针里“机器人邻居…其他邻居”行复算 safeFinite，和 winFloor 实际值对上才算；
+  输出保底线 ≥ 余额的拍里出自队友余额 / 敌方真人余额 / dpKeep / 每格价项各几拍）。shadow_flags.csv 的 targetName 已修（AI 席位显示 AI#n）。
+A005 新增模式：SP05 扇形阵逐点不查敌距（talon5 离 Charles V 14 像素；协调器扇形阵分支 L1175–1207 只查陆地/连通块/队友间距，敌距只进 planScore，角锁定后评分不起作用）；
+  OP04 DP 结束后按每格价吃 AI 地（对）（kaito9 640–725 拍 9 条令 630→900 拍 3338→8737 格）。
+A005 的主线：630 拍人均并排 → 本地 600 拍起 10 个页面只有正常速度的 26–58%，决策窗 700–999 拍的令到一小半、1000 拍后 430 条 0 落地（每号每组最多 9 条）
+  → 本队 1000 拍原地不动（密度 6→40），别的队和路人 Ronaldo 把 AI 地分完 → 1428/1540/1652 拍 4 条 leave（相隔 112 拍），120–158 秒 9 行 RESULT 全 left。
+  同一晚 A002、A006 也是；mass_leave 的 17 个簇里 15 个在开局 91–170 秒 = 页面掉队最深的时段。
+M6 要全量做的（A005 带出来的）：
+  1. 每局掉队曲线（lagcurve --win 100/300 的落地率、延迟中位）对“地图填充速度”（resim_teams 的有主地占比每 90 拍增量）——掉队是不是总在填得最快的那段开始；
+  2. `leave_grid.py` 扩到所有有录像的包（先 `run-heavy.sh node scripts/replay_cmds.mjs <mid>` 逐局展开，不模拟，很轻）；A005/A031 全同余、A057/A059 各一对，四局两两同余 10/27；
+  3. `page_speed.py` 对所有有 left 簇的局；RESULT 行 tick 是不是“某批过期令落地的拍(+7)”（A005 9 行里 5 行）；
+  4. `spawn_layouts.py` 全量：第一份表落地 0 的局数（SP04）、收场阵由几份表拼成（SP03）、40 像素内有已落地敌方真人的号数（SP05）；
+  5. “每号每组最多 9 条”的全量核对（shadow_report chunks 的 n 最大值，A009、A005 都是 9）；
+  6. IO04（shadow_report repeat）、OP02（probe --safe 太重，只能抽样）。
+

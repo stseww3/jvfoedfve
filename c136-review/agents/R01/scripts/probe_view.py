@@ -108,6 +108,76 @@ if '--pick' in a:
             s += f"；卡在保底线的拍里 余额 {min(g_['B']):.0f}–{max(g_['B']):.0f}，floorFor {min(g_['floor']):.0f}–{max(g_['floor']):.0f}，每格价 {min(g_['price']):.1f}–{max(g_['price']):.1f}"
         print(s)
     sys.exit(0)
+if '--safe' in a:
+    # 1500 拍前对 AI 地的保底线 winFloor = max(每格价项, dpKeep, safeFinite)（Va/Vb V13.winFloor L2489–2496）。
+    # safeFinite（L2500–2510）= 对每个有空槽、没在打我的机器人邻居 q，取 threatOf(q).minOther（L417–445：q 的其他邻居里
+    # “余额 + 打在 q 身上的在途兵”最小的一个，q 正在打的那个不算）减去我打在 q 身上的在途兵，再取各 q 的最大值。
+    # 探针的“机器人邻居 … 的其他邻居按余额从小到大”行给了每个 q 的前三个其他邻居；这里据此复算出“是谁的余额定了保底线”，
+    # 并和探针记下的 winFloor 实际值对一遍（对得上 = 相差 ≤1；对不上的拍多半是 q 贴着无主地被 threatOf 判成 neutral，或我有在途兵）。
+    lines = {}
+    wf = {}
+    for line in open(fn, encoding='utf8'):
+        m = re.match(r't=(\d+) (.*)', line.rstrip('\n'))
+        if not m: continue
+        t = int(m.group(1)); rest = m.group(2)
+        if t < t0 or t > t1: continue
+        mq = re.match(r'\s*机器人邻居 (.+?)（地(\d+) 兵(\d+) 空槽(\d) 正打我(\d)）的其他邻居按余额从小到大：(.*)$', rest)
+        if mq:
+            others = []
+            for part in mq.group(6).split(' , '):
+                mo = re.match(r'(.+)\[T(\S+?)( 壳)?( 正被它打)?\]=(-?\d+)$', part.strip())
+                if mo: others.append({'name': mo.group(1), 'team': mo.group(2), 'husk': bool(mo.group(3)), 'hit': bool(mo.group(4)), 'v': int(mo.group(5))})
+            lines.setdefault(t, []).append({'q': mq.group(1), 'terr': int(mq.group(2)), 'bal': int(mq.group(3)), 'slot': mq.group(4) == '1', 'onMe': mq.group(5) == '1', 'others': others})
+        mw = re.match(r'winFloor\((\d+)\) -> ([\d.eE+-]+)', rest)
+        if mw: wf.setdefault(t, []).append(float(mw.group(2)))
+        mk = re.match(r'dpKeep\(\) -> ([\d.eE+-]+)', rest)
+        if mk: cur.setdefault(t, {})['dpKeep'] = float(mk.group(1))
+    my_team = str(meta['teams'][str(next(iter(meta['squad'].values())))])
+    print(f"== {mid} 探针[{tag}] 1500 拍前对 AI 地的保底线出自谁（winFloor = max(每格价项, dpKeep, safeFinite)；只列走到 winFloor 的决策拍）")
+    print("      t     余额   领土 | winFloor    dpKeep | safeFinite 复算：哪块 AI 地 → 它的其他邻居里余额最小的（不算它正在打的） | 对得上 | 保底线 ≥ 余额")
+    cnt = {'n': 0, 'ge': 0, 'match': 0, 'mate': 0, 'foe': 0, 'ai': 0, 'keep': 0, 'px': 0, 'nomatch': 0}
+    run = best_run = 0; who = {}
+    for t in sorted(wf):
+        d = cur.get(t, {}); st = d.get('state', '')
+        mB = re.search(r'bal=(\d+) terr=(\d+)', st)
+        if not mB: continue
+        B, L = int(mB.group(1)), int(mB.group(2))
+        floor = max(wf[t]); keep = d.get('dpKeep', 0.0)
+        best = None
+        for e in lines.get(t, []):
+            if not e['slot'] or e['onMe']: continue
+            cand = next((o for o in e['others'] if not o['hit']), None)
+            if cand and (best is None or cand['v'] > best[1]['v']): best = (e, cand)
+        cnt['n'] += 1
+        ge = floor >= B
+        src = '-'; ok = ''
+        if best and abs(best[1]['v'] - floor) <= 1:
+            o = best[1]
+            kind = 'ai' if o['team'] == '0' else ('mate' if o['team'] == my_team else 'foe')
+            src = f"{best[0]['q']}（地{best[0]['terr']} 兵{best[0]['bal']}）→ {o['name']}[T{o['team']}{' 壳' if o['husk'] else ''}]={o['v']}"
+            ok = '是'; cnt['match'] += 1
+            if ge:
+                cnt[kind] += 1; who[o['name']] = who.get(o['name'], 0) + 1
+        elif abs(keep - floor) <= 1:
+            src = 'dpKeep'; ok = '是'
+            if ge: cnt['keep'] += 1
+        elif min(wf[t]) != max(wf[t]):
+            src = '每格价项（各目标不同）'; ok = '是'
+            if ge: cnt['px'] += 1
+        else:
+            src = (f"复算得 {best[1]['name']}={best[1]['v']}" if best else '没有可算的机器人邻居'); ok = '否'
+            if ge: cnt['nomatch'] += 1
+        if ge:
+            cnt['ge'] += 1; run += 1; best_run = max(best_run, run)
+        else:
+            run = 0
+        if t % every == 0:
+            print(f"  {t:5d} {B:8d} {L:6d} | {floor:8.0f} {keep:9.0f} | {src} | {ok} | {'是' if ge else ''}")
+    print(f"汇总 [{t0},{min(t1, 99999)}]：走到 winFloor 的决策拍 {cnt['n']} 个，保底线 ≥ 余额的 {cnt['ge']} 个（最长连续 {best_run} 个）；"
+          f"其中保底线出自 safeFinite 且复算对得上的：队友的余额 {cnt['mate']}、敌方真人的余额 {cnt['foe']}、别的 AI {cnt['ai']}；出自 dpKeep {cnt['keep']}；出自每格价项 {cnt['px']}；对不上 {cnt['nomatch']}")
+    if who:
+        print('   定下保底线的席位（保底线 ≥ 余额的拍数）：' + '，'.join(f'{k} {v}' for k, v in sorted(who.items(), key=lambda kv: -kv[1])))
+    sys.exit(0)
 gate = opt('gate')
 if gate is not None:
     gq = int(gate)
