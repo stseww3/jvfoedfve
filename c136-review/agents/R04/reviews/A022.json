@@ -856,7 +856,7 @@
    "what": "ryan_m 向 zero_7 调度 11.37 万、kaito9 调度 14.12 万（都是 pct=320）。zero_7 当时配额 83/145：11.37 万要 64 点（差 2 点），14.12 万要 79 点，两笔都被拒。2142 拍前 73 次调度落地 0 次，2142~4283 拍 370 次落地 19 次。",
    "why": "定额只看自己的底线和固定比例，不看收款人剩余配额；7 个号抢同一个收款人的额度，谁的金额恰好塞得进去谁落地。候选收款人还限定在本编队的号里，本队其他前线真人（例如当时已有 3 万格以上的 Popeye）不在名单上。",
    "codePath": "Policy.tryDonateToTeammate L4414（候选）、L4499~4508（定额与发出）",
-   "evidence": "shadow.mjs A022 --at 2400 的调度诊断；match_digest.py 第 7 节；cmd.tsv 的 used/cap 列。被拒的调度本身不扣兵不扣税，损失是兵过不去：4284 拍前一共只到账 191 万。",
+   "evidence": "shadow.mjs A022 --at 2400 的调度诊断；match_digest.py 第 7 节；cmd.tsv 的 used/cap 列。被拒的调度本身不扣兵不扣税，损失是兵过不去：4284 拍前一共只到账 191 万。 quota_truth.py A022（用真引擎记的收款人配额重判）：424 次没落地的调度里 348 次是累计用满、71 次单笔就超上限、5 次解释不了；zero_7 到 4102 拍已用 297 点 / 上限 299。",
    "verdict": "error",
    "patternId": "NEW-DN-QUOTABLIND",
    "statementType": "observed"
@@ -868,7 +868,7 @@
    "what": "ryan_m 2419 格、余额 362,850 = 150×领土，顶在硬上限 565 拍，利息为零；它没有敌邻、没有无主地、没有一格海岸，报价单是空的，船也不允许发。全局五个内陆号这样封死且无海岸共 33,115 号·拍。",
    "why": "买地只遍历 this.nb；闲置发船要求有海岸；调度被配额挡住。三条出路都不通。",
    "codePath": "Policy.offers L5072（只看 nb）；Policy.idleBoats L5031~5032；Policy.tryDonateToTeammate",
-   "evidence": "idle_scan.py A022；shadow.mjs A022 --at 2400（coast=0，boatsAllowed=false）。",
+   "evidence": "idle_scan.py A022；shadow.mjs A022 --at 2400（coast=0，boatsAllowed=false）。 interest_rate.py A022（利息公式已用真引擎余额逐 10 拍核对）：1500~4284 拍编队实拿利息 617 万，因余额超过 100×领土 被折扣少拿 329 万（ryan_m、noah88、kaito9、sora_w 最多）。",
    "verdict": "error",
    "patternId": "NEW-EC-LANDLOCK",
    "statementType": "observed"
@@ -1043,7 +1043,9 @@
   "scripts/exec_gap.py A022 [--bot 名字 --list t0 t1]（想发 vs 落地）",
   "scripts/client_lag.py A022（日志行序估客户端落后量）",
   "scripts/idle_scan.py A022（贴弱 AI 不出手 / 封死 / 无海岸 / 顶硬上限 的拍数）",
-  "scripts/truth_query.py A022 cmds|bal|gain|team …（逐条指令、余额轨迹、窗口得失）"
+  "scripts/truth_query.py A022 cmds|bal|gain|team …（逐条指令、余额轨迹、窗口得失）",
+  "scripts/quota_truth.py A022（没落地的调度用真引擎配额账重判原因）",
+  "scripts/interest_rate.py A022 --verify | --at … | --win …（利息公式核对、各号利率、软上限折扣少拿的利息）"
  ],
  "leavers": [
   {
