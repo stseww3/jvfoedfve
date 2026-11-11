@@ -39,7 +39,7 @@ def main():
     sel = opt("--bots", "all")
     bots = sorted({r["bot"] for r in rows}) if sel == "all" else sel.split(",")
     L = [f"# {mid} 前线宽度（truth_border.tsv，每 90 拍一采样；t={t0}~{t1 if t1 < 10 ** 9 else '终局'}）",
-         "# 贴敌 = 与敌队真人接壤的边界格数；AI = 与内置 AI（无队）接壤；同队 = 与同队但不是我方号的真人接壤；我方 = 与我方其他号接壤"]
+         "# 贴敌 = 与敌队真人接壤的边界格数；AI = 与打得了的内置 AI（无队，或 ≥8 队局里别队的 AI）接壤；同队 = 与同队但不是我方号的真人、以及同队的内置 AI（打不了）接壤；我方 = 与我方其他号接壤"]
     for b in bots:
         rs = [r for r in rows if r["bot"] == b and t0 <= int(r["t"]) <= t1]
         if not rs:

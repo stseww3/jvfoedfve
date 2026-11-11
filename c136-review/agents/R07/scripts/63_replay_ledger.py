@@ -187,10 +187,20 @@ def main():
 
     # ---- C. 没执行的日志捐款分类
     P("")
-    lags = [e["lag"] for e in mine_exec if e.get("lag") is not None]
+    lags_all = [e["lag"] for e in mine_exec if e.get("lag") is not None]
+    # 配对只按「同号、同 pct、同对象、最近一条」，没有日志的执行会配到很早的一条上；卡在链路里很久才落地的也有。
+    # 这两种都不拿来撑窗口：窗口只取 <=60 拍的实测延迟，>60 拍的单列。
+    LAG_CAP = 60
+    lags = [x for x in lags_all if x <= LAG_CAP]
     lag0, lag1 = (min(lags), max(lags)) if lags else (7, 17)
     lag0, lag1 = min(lag0, 7), max(lag1, 12)
-    P(f"C. 没被执行的日志捐款（落地拍未知：对「发令拍 + {lag0}~{lag1} 拍」里的每一拍都算一遍需点 / 上限 / 累计——这个范围取自本局已执行捐款的实测延迟；表里的需点、上限取 +12 拍那一档）")
+    P(f"C. 没被执行的日志捐款（落地拍未知：对「发令拍 + {lag0}~{lag1} 拍」里的每一拍都算一遍需点 / 上限 / 累计——这个范围取自本局已执行捐款里 <= {LAG_CAP} 拍的实测延迟；表里的需点、上限取 +12 拍那一档）")
+    far = sorted((e for e in mine_exec if e.get("lag") is not None and e["lag"] > LAG_CAP), key=lambda e: e["T"])
+    if far:
+        P(f"   配上的日志离执行拍超过 {LAG_CAP} 拍的 {len(far)} 笔（不进窗口；要么这一笔没有自己的日志、配到了更早的同款日志，要么指令在链路里卡了这么久）："
+          + "；".join(f"{e['T']} {e['donor']}→{e['toName']} pct={e['pct']}（日志 t={e['T'] - e['lag']}，+{e['lag']}）" for e in far))
+    J.setdefault("donations", {})["lagWindow"] = [lag0, lag1]
+    J["donations"]["farLag"] = [{"T": e["T"], "donor": e["donor"], "to": e["toName"], "pct": e["pct"], "lag": e["lag"]} for e in far]
     cls = defaultdict(list)
     exec_sorted = sorted(execs, key=lambda e: e["T"])
     bots_by = defaultdict(dict)

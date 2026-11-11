@@ -416,6 +416,27 @@ PATTERN_DEFS = {
         "detectionSketch": "[HL-DISPATCH] 序列（或 69_quota_truth.mjs 的引擎记账）：某一笔的收方在其后 120 拍内作为捐方出现、收方不是原来的捐方；"
                            "统计接力对数、第一手的到账、第二手的到账与手续费，以及中间那个号在第一手到账前后的密度。",
     },
+    "R07-SP-FAN-FACING": {
+        "category": "SP",
+        "definition": "角扇阵的朝向不看敌人。出生协调器在 K≥6、没有真 Boss 时排「角上扇形」（Va / Vb L1065-1170）：尖顶 1 个（CORNER_APEX_BANK）、里圈 3 个（INNER_ARC_BANK）、其余在外圈（OUTER_SHIELD_WALL），"
+                      "半径随 rCell 缩（r0 / r1 / r2 的下限 28 / 78 / 142 像素，同圈间距下限 42）。锚点只按「陆地样本多、离地图角近」打分（L1122 `metric = landSamples * 18 - dCorner * 2.2`），"
+                      "扇轴取锚点周围陆地样本的平均方向（L1129），选定的角还会锁住（L1276 lockedCornerName）——三处都不看敌方出生点在哪。"
+                      "陆地的平均方向和敌人的方向不是一回事：扇轴指向一片半岛或海湾时，外圈那一排「盾墙」对着海，尖顶和里圈两翼反而对着敌人，"
+                      "人最多的外圈没有可打的 AI、也没有前线，全队的陆上前沿只有尖顶和两翼那几个号。",
+        "detectionSketch": "66_spawn_truth.mjs：各号最后指派的角色与真实落点；46_voronoi.mjs E 节：以全队落点重心为圆心、八个方向 60~160 / 160~260 像素两圈的陆地占比和敌方出生点个数，"
+                           "再看外圈号落在哪几个方向；93_frontier.mjs / 89_squad_perimeter.py：990~1530 各号的 AI 边界、敌方边界和围死的号数。",
+    },
+    "R07-EC-NEUT-FLOOR": {
+        "category": "EC",
+        "definition": "对真人的留底把捡无主地也挡住。t≥1500 捡无主地的预算是 `g.bal[me] - this.safeAt(g, -1)`（Va Policy.act L4940 / Vb L4941），"
+                      "safeAt(g, −1) = min(oppFloorCap×领土, max(safeFinite, killW×dpKeep))，dpKeep 按最强的那个真人邻居折算（V13.dpKeep L2459-2464）；"
+                      "General.expandNeutral 里预算小于 minCmd 就直接返回（L946-947）。贴着一个兵多几倍的真人的号，余额长期在这条留底以下："
+                      "身边的弱邻居被清场、地成片变成无主地时，它一条指令都不发，这些地被别的队捡走；等队友的捐款把它顶过留底，才开始一条条 pct=47 地捡。"
+                      "和 R07-AT-CARCASS-FLOOR 是同一条留底的两个出口：那边挡的是只剩空壳的真人，这边挡的是空壳倒下之后放出来的地。",
+        "detectionSketch": "48_neutral_floor.py（输入 65_shadow.mjs --trace 的逐拍明细）：t≥1500、neut>0 的决策拍里没有指令且 `B − safe(-1) < 4×(12×B // 1024)` 的拍数，"
+                           "按号、按连续段列出贴着的无主地格数、余额、留底和差额；94_conquest.mjs：同一时间段「清场放掉」的格数和它们归了谁。"
+                           "只有日志时：HL-TICK 的 neut>0、nb≥1、cmds 不变、领土不变，持续 ≥2 个快照。",
+    },
 }
 
 
