@@ -2,10 +2,11 @@
 # 用法：python3 scripts/review_build/A030.py
 import sys
 sys.path.insert(0, '/agent/repos/c136-r05/c136-review/agents/R05/scripts/review_build')
-from common import skel, pick_timeline, dump, check
+from common import skel, pick_timeline, dump, check, accounts, account_scripts
 
 M = 'A030'
 S = skel(M)
+ACC = accounts(M)   # 广播 0007 的三本账（延迟 / 好地 / 600–1500 决策拍归因）+ 配额闸计数，原样取自脚本输出
 SRC = 'src/strategy/v27-team-c116-vb.js'
 SPAWN = 'src/strategy/spawn-coordinator-c116-vb.mjs'
 SIM = 'src/sim/sim/game.js'
@@ -582,6 +583,7 @@ doc = {
         'dispatchLag': '调度日志拍 → 落地拍：中位 11 拍、最大 49 拍',
         'clientClock': 'client_clock.py：服务器每拍 55.87 ms',
     },
+    **ACC,
     'squadVsRealHumans': S['cmp'],
     'teamTroops': {
         'note': 'game_facts.py --sec 1、30（T30）：占图/总兵；squadVsT1 = 编队兵 ÷ T1 兵；randoms = T2 的路人',
@@ -689,6 +691,7 @@ doc = {
         '除名线是历史峰值地的 1/4（game.js aliveTick L1298-1312）：十个号被除名时手里合计还有 928k。除名时这些兵去哪了？',
     ],
     'scripts': [
+        *account_scripts(M),
         'scripts/sim_replay.mjs A030 --check（逐拍精确重放；与 455 条 [HL-TICK] 的地、兵逐条相等）', 'scripts/match_truth.mjs A030 → /tmp/c136-r05/truth/A030.json', 'scripts/review_skel.py A030 → /tmp/c136-r05/skel/A030.json',
         'scripts/truth_digest.py A030', 'scripts/match_facts.py A030 [--sec bots,line,hits,batch,don,cap,ledger,top,cmds,enc,deaths]', 'scripts/match_extra.py A030',
         'scripts/game_facts.py A030 [--sec 1,…,31]（通用逐局事实：§1 各队兵力、§2 接敌面、§3 路人队友、§4 捐兵、§5 打真人的同拍批、§6 阵亡、§7 机器人的地、§8 名次、§11 分段收支、§12 交换比、§13 谁拿了谁的地、§15 多号打同一人、§17 时间线与谁先动手、§23 指令对账、§25 除名时的存兵、§26 分段攻防合计、§28 放行轮与捐兵去向、§29 被围、§30 编队/路人/敌队、§31 没发育的路人）；本局用法：--sec 17 --tl 3213:4360 --min 100000；--sec 26,12,25 --wins 1500:2141,2142:3212,3213:3600,3601:4340,4341:5204 --ids 35,36,22,25,0；--sec 23,5,11 --segs 0,900,1500,2100,3213,3600,4340,5616',

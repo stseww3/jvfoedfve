@@ -3,10 +3,11 @@
 # 用法：python3 scripts/review_build/A058.py
 import os, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from common import skel, pick_timeline, dump, check
+from common import skel, pick_timeline, dump, check, accounts, account_scripts
 
 M = 'A058'
 S = skel(M)
+ACC = accounts(M)   # 广播 0007 的三本账（延迟 / 好地 / 600–1500 决策拍归因）+ 配额闸计数，原样取自脚本输出
 SRC = 'src/strategy/v27-team-c116-vb.js'
 
 notes = {
@@ -313,6 +314,7 @@ doc = {
     'dispatchAudit': S['dispatch'],
     'delivery': S['delivery'],
     'shadow': S['shadow'],
+    **ACC,
     'squadVsRealHumans': S['cmp'],
     'decisions': decisions,
     'newPatterns': new_patterns,
@@ -339,6 +341,7 @@ doc = {
         '离线账号由引擎 AI 托管后还留在原队伍：它的地对队友不可进攻、不可穿过——有没有任何机制（投票踢人、并地）能让队友接手？',
     ],
     'scripts': [
+        *account_scripts(M),
         'scripts/sim_replay.mjs（逐拍精确重放；A058 校验 100%）', 'scripts/match_truth.mjs A058 → /tmp/c136-r05/truth/A058.json', 'scripts/review_skel.py A058 → 骨架（时间线、阵亡骨架、DROP30、调度对账、落地率、真人对照、赢家）',
         'scripts/truth_digest.py A058 [--win bot,t0,t1]', 'scripts/shadow_prep.cjs vb；scripts/shadow.mjs A058 --quiet --match（下发对账与陈旧度）', 'scripts/shadow.mjs A058 --cold --quiet --t0 790 --t1 1410 --floor 805,905,1005,1105,1205,1305,1405（机器人锁）',
         'scripts/shadow.mjs A058 --bots talon5,sora_w,noah88 --t0 1500（各窗口出口行）', 'scripts/border_owners.mjs A058 --at 600,900,...,3900（邻格构成）', 'scripts/cmd_bursts.mjs（全量连发统计）', 'scripts/volleys.py A058 --t0 2400（连续下单）', 'scripts/review_build/A058.py（本文件）',

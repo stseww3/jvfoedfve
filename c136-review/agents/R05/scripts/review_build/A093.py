@@ -2,10 +2,11 @@
 # 用法：python3 scripts/review_build/A093.py
 import sys
 sys.path.insert(0, '/agent/repos/c136-r05/c136-review/agents/R05/scripts/review_build')
-from common import skel, pick_timeline, dump, check
+from common import skel, pick_timeline, dump, check, accounts, account_scripts
 
 M = 'A093'
 S = skel(M)
+ACC = accounts(M)   # 广播 0007 的三本账（延迟 / 好地 / 600–1500 决策拍归因）+ 配额闸计数，原样取自脚本输出
 SRC = 'src/strategy/v27-team-c116-vb.js'
 SPAWN = 'src/strategy/spawn-coordinator-c116-vb.mjs'
 SIM = 'src/sim/sim/game.js'
@@ -574,6 +575,7 @@ doc = {
         'selfReportedVsExecutedPeakGap': 'alex_k 108（1800 拍）、riku_x 93、zero_7 47、zexos1 26（1080 拍）',
         'strategyCost': '[HL-SLOW-TICK] 19 条、最大 96.7 ms（alex_k t=3320）；[HL-TICK] avgMs 约 0.92',
     },
+    **ACC,
     'squadVsRealHumans': S['cmp'],
     'teamTroops': {
         'note': 'A093_facts.py §1（T30）：各队 占图/总兵/密度；squadVsT2 = 编队兵 ÷ T2 兵',
@@ -672,6 +674,7 @@ doc = {
         '离场的号按机器人处理（game.js isBot L215）：zero_7 5740 拍离场后它的 5,516 格/463k 对队友的 safeFinite、对敌人的进攻有什么不同？',
     ],
     'scripts': [
+        *account_scripts(M),
         'scripts/sim_replay.mjs A093 --check（逐拍精确重放；与 596 条 [HL-TICK] 的地、兵逐条相等）', 'scripts/match_truth.mjs A093 → /tmp/c136-r05/truth/A093.json', 'scripts/review_skel.py A093 → /tmp/c136-r05/skel/A093.json',
         'scripts/truth_digest.py A093', 'scripts/match_facts.py A093 [--sec bots,line,hits,batch,don,cap,ledger,top,cmds,enc,deaths]', 'scripts/match_extra.py A093',
         'scripts/review_build/A093_facts.py（§1 各队兵力、§2 接敌面、§3 路人队友、§4 调度受赠方、§5 1806/1841 批前后、§6 后排密度与致命指令、§7 机器人的地、§8 1500 拍名次、§9 zero_7、§10 alex_k 与硬上限、§11 分段收支、§12 交换比、§13 邻居的地归谁、§14 捐兵之后、§15 多号打同一真人、§16 四个没打过真人的号）',

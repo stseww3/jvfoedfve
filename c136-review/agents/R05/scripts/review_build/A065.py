@@ -3,10 +3,11 @@
 # 用法：python3 scripts/review_build/A065.py
 import os, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from common import skel, pick_timeline, dump, check
+from common import skel, pick_timeline, dump, check, accounts, account_scripts
 
 M = 'A065'
 S = skel(M)
+ACC = accounts(M)   # 广播 0007 的三本账（延迟 / 好地 / 600–1500 决策拍归因）+ 配额闸计数，原样取自脚本输出
 SRC = 'src/strategy/v27-team-c116-vb.js'
 SIM = 'src/sim/sim/game.js'
 
@@ -366,6 +367,7 @@ doc = {
     }, note='引擎在 t≥4284 取消对真人的捐兵配额（game.js donationFree L360）。此前 85% 的调度被配额拒（不扣税、不进录像）；此后 100% 落地。全程落地 90 笔：到账 39,615,866、税 9,003,143（税/到账 22.7%）；后排 8 号捐出 81 笔 26.9M（税 6.18M），前排 2 号捐出 9 笔 12.7M（税 2.82M）；捐给后排的只有 11 笔 3.75M。'),
     'delivery': S['delivery'],
     'shadow': S['shadow'],
+    **ACC,
     'squadVsRealHumans': S['cmp'],
     'teamTroops': {
         'note': '各队 地%/总兵（match_truth.mjs T30）',
@@ -405,6 +407,7 @@ doc = {
         '受赠方到 150×地 硬上限时捐兵到账被截断，但 6.25% 的税仍按捐出方全部存兵收取——有无任何查询接口能在发令前知道对方余量？',
     ],
     'scripts': [
+        *account_scripts(M),
         'scripts/sim_replay.mjs（逐拍精确重放）', 'scripts/match_truth.mjs A065 → /tmp/c136-r05/truth/A065.json', 'scripts/review_skel.py A065 → /tmp/c136-r05/skel/A065.json',
         'scripts/truth_digest.py A065 [--sec 99 --win bot,t0,t1,step,maxEvents]', 'scripts/spawn_truth.mjs A065',
         'scripts/shadow_prep.cjs vb；scripts/shadow.mjs A065 --quiet --match --match-json …（下发对账、陈旧度、lockT）',

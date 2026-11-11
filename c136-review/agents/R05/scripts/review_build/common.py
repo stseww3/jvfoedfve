@@ -85,4 +85,23 @@ def accounts(mid, work='/tmp/c136-r05/work'):
             **{k: A.get(k) for k in ('window', 'rows', 'cats', 'layers', 'floorSetter', 'safeFiniteHalf', 'issuedByClass', 'byBot')},
             **{k: A[k] for k in ('exits', 'ptGates', 'gaExit', 'notSentSplit', 'sendRefused', 'noFullSendRows') if k in A},
         })
+    p = f'{work}/{mid}-quota.json'
+    if os.path.exists(p):
+        Q = json.load(open(p))
+        out['quotaGuard'] = _rd({
+            'source': f'scripts/quota_guard.py {mid}（影子策略里 Policy.send 的调用数、没走到 return ok 的次数、isNoFullSend 被置位的拍）',
+            **{k: Q.get(k) for k in ('ver', 'okLine', 'calls', 'refused', 'nfsAt', 'byPeriod', 'byBot')},
+        })
     return out
+
+
+def account_scripts(mid):
+    """三本账的复现命令（写进复盘 JSON 的 scripts 字段）。"""
+    w = '/tmp/c136-r05/work'
+    return [
+        f'scripts/replay_cmds.mjs {mid} → scripts/shadow.mjs {mid} --quiet --tc 600:1500 --json {w}/{mid}-shadow.json → scripts/atk_fate.mjs {mid} --json（三本账的输入；批量见 scripts/accounts_batch.sh、scripts/shadow_refresh.sh）',
+        f'scripts/delay_account.py {mid} --json {w}/{mid}-delay.json --list-batches（延迟硬账：出生执行、分时段延迟、漏斗、迟到落空、同拍批、在途重复）；scripts/delay_detail.py {mid}（按号 × 300 拍摊开）',
+        f'scripts/land_account.mjs {mid} --json {w}/{mid}-land.json（好地账：名下份额、实际地 ÷ 份额、机器人地去向）',
+        f'scripts/tick_attrib.py {mid} --json {w}/{mid}-attrib.json --by-bot --exits（600–1500 拍每个决策拍归一类）；scripts/quota_guard.py {mid} --by-bot（Policy.send 拒发与 isNoFullSend 置位拍）',
+        f'scripts/accounts_md.py {mid}（把三本账渲染成 .md 的 6b 节）',
+    ]
