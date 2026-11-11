@@ -1,8 +1,8 @@
-# 逐局复盘汇总（机械检查，2026-11-11 22:06 UTC）
+# 逐局复盘汇总（机械检查，2026-11-11 22:38 UTC）
 
 只查字段、数量和取值；内容对不对由 R10 抽查和 c136 复核。
 
-共 93 份复盘，来自 7 名复盘员。
+共 95 份复盘，来自 7 名复盘员。
 
 | 对局 | 复盘员 | 结果 | 分型 | 时间线 | 转折点 | 阵亡 | 决策（错/对/不清） | 新模式 | 未解 | 清单未过 |
 | :-- | :-: | :-: | :-- | --: | --: | --: | :-- | --: | --: | :-- |
@@ -41,6 +41,7 @@
 | A083 | R04 | lost | never-grew | 27 | 3 | 10 | 23（14/3/6） | 23 | 5 | 全过 |
 | A086 | R04 | lost | outscaled | 21 | 5 | 9 | 26（19/3/4） | 25 | 6 | 全过 |
 | A099 | R04 | lost | outscaled | 26 | 4 | 10 | 26（17/4/5） | 26 | 7 | 全过 |
+| B034 | R04 | lost | external | 27 | 5 | 18 | 25（18/4/3） | 22 | 7 | 全过 |
 | A014 | R05 | lost | lead-thrown | 25 | 3 | 10 | 18（11/4/3） | 18 | 5 | 全过 |
 | A017 | R05 | lost | external | 17 | 5 | 10 | 18（7/2/9） | 19 | 8 | 全过 |
 | A021 | R05 | lost | mid-collapse | 33 | 6 | 8 | 25（14/4/7） | 25 | 7 | 全过 |
@@ -62,6 +63,7 @@
 | B017 | R06 | lost | never-grew | 31 | 6 | 17 | 25（19/3/3） | 10 | 6 | 全过 |
 | B018 | R06 | lost | mid-collapse | 33 | 5 | 15 | 26（15/5/6） | 27 | 10 | 全过 |
 | B021 | R06 | lost | outscaled | 30 | 6 | 12 | 28（19/4/5） | 10 | 6 | 全过 |
+| B022 | R06 | lost | outscaled | 21 | 6 | 7 | 29（20/4/5） | 18 | 7 | 全过 |
 | B023 | R06 | lost | lead-thrown | 25 | 3 | 9 | 25（15/4/6） | 39 | 8 | 全过 |
 | B025 | R06 | lost | never-grew | 36 | 4 | 15 | 18（13/4/1） | 8 | 8 | 全过 |
 | B038 | R06 | lost | mid-collapse | 34 | 3 | 15 | 17（14/2/1） | 35 | 5 | 全过 |
@@ -108,6 +110,8 @@
 | B039 | R06 | external | 847~2016 |
 | B043 | R01 | external | 1560~2520 |
 | B043 | R08 | external | 1260~2520 |
+| B034 | R04 | external | 1900~2200 |
+| B034 | R08 | mid-collapse | 1603~2520 |
 | B010 | R05 | external | -51~0 |
 | B010 | R06 | external | 4500~6123 |
 
@@ -125,20 +129,20 @@
 | NEW-AT-BEACHDUMP | 2 | 0 | 0 |
 | NEW-AT-CAPDUMP | 5 | 0 | 7 |
 | NEW-AT-CHEAPKILL | 0 | 11 | 0 |
-| NEW-AT-DENSEDGE | 0 | 8 | 0 |
+| NEW-AT-DENSEDGE | 0 | 9 | 0 |
 | NEW-AT-ENCLAVE | 3 | 0 | 0 |
-| NEW-AT-ENEMYFLOOR | 1 | 0 | 0 |
+| NEW-AT-ENEMYFLOOR | 2 | 0 | 0 |
 | NEW-AT-FEELOCK | 1 | 0 | 0 |
 | NEW-AT-G1 | 0 | 13 | 0 |
 | NEW-AT-G2 | 0 | 2 | 0 |
 | NEW-AT-G3 | 0 | 3 | 0 |
 | NEW-AT-NEUTFEE | 2 | 0 | 0 |
-| NEW-AT-NFSLOCK | 8 | 0 | 2 |
-| NEW-AT-OVERSTRIKE | 5 | 1 | 2 |
-| NEW-AT-PARTALLIN | 2 | 0 | 0 |
+| NEW-AT-NFSLOCK | 9 | 0 | 2 |
+| NEW-AT-OVERSTRIKE | 6 | 2 | 2 |
+| NEW-AT-PARTALLIN | 3 | 0 | 0 |
 | NEW-AT-PRICEGATE | 5 | 0 | 0 |
 | NEW-AT-SOLEHOLD | 0 | 0 | 3 |
-| NEW-AT-STANDOFF | 3 | 0 | 1 |
+| NEW-AT-STANDOFF | 3 | 0 | 2 |
 | NEW-AT-TINYFEE | 7 | 0 | 0 |
 | NEW-DF-01 | 14 | 0 | 0 |
 | NEW-DF-02 | 1 | 0 | 0 |
@@ -155,7 +159,7 @@
 | NEW-DF-NORESCUE | 6 | 0 | 2 |
 | NEW-DF-NORESCUE / R08:挨打的小号被判弃子 | 0 | 0 | 4 |
 | NEW-DF-SEAFLANK | 2 | 0 | 0 |
-| NEW-DF-THIN | 1 | 0 | 0 |
+| NEW-DF-THIN | 2 | 0 | 0 |
 | NEW-DN-01 | 4 | 0 | 0 |
 | NEW-DN-02 | 6 | 0 | 0 |
 | NEW-DN-03 | 1 | 0 | 0 |
@@ -180,7 +184,7 @@
 | NEW-DN-G2 | 0 | 3 | 0 |
 | NEW-DN-G3 | 0 | 1 | 0 |
 | NEW-DN-HOLLOWREAR | 8 | 0 | 0 |
-| NEW-DN-QUOTABLIND | 9 | 0 | 1 |
+| NEW-DN-QUOTABLIND | 10 | 0 | 1 |
 | NEW-DN-SQUADONLY | 1 | 0 | 2 |
 | NEW-EC-01 | 2 | 0 | 0 |
 | NEW-EC-02 | 3 | 0 | 2 |
@@ -192,6 +196,7 @@
 | NEW-EC-08 | 5 | 0 | 0 |
 | NEW-EC-09 | 5 | 0 | 0 |
 | NEW-EC-10 | 1 | 0 | 0 |
+| NEW-EC-CAPFLOOR | 1 | 0 | 0 |
 | NEW-EC-G1 | 0 | 2 | 0 |
 | NEW-EC-HOARD | 2 | 0 | 0 |
 | NEW-EC-LANDLOCK | 7 | 0 | 0 |
@@ -207,9 +212,11 @@
 | NEW-EX-04 | 0 | 0 | 5 |
 | NEW-EX-05 | 1 | 0 | 4 |
 | NEW-EX-06 | 1 | 0 | 0 |
-| NEW-EX-LEAVER | 0 | 0 | 1 |
+| NEW-EX-LEAVER | 0 | 0 | 2 |
 | NEW-EX-MODE1V1 | 1 | 0 | 0 |
+| NEW-EX-NAMEPOOL | 2 | 0 | 0 |
 | NEW-EX-SPLITGAME | 1 | 0 | 1 |
+| NEW-EX-SPLITTEAMS | 2 | 0 | 0 |
 | NEW-IO-01 | 6 | 0 | 2 |
 | NEW-IO-02 | 6 | 0 | 0 |
 | NEW-IO-03 | 2 | 0 | 1 |
@@ -222,13 +229,13 @@
 | NEW-IO-13 | 0 | 0 | 1 |
 | NEW-IO-14 | 2 | 0 | 0 |
 | NEW-IO-15 | 1 | 0 | 0 |
-| NEW-IO-ACKREPEAT | 9 | 0 | 1 |
-| NEW-IO-DEADTARGET | 6 | 0 | 0 |
-| NEW-IO-DRAINBATCH | 6 | 0 | 2 |
-| NEW-IO-LAGLOSS | 5 | 0 | 1 |
-| NEW-IO-ONECMD | 10 | 0 | 0 |
+| NEW-IO-ACKREPEAT | 10 | 0 | 1 |
+| NEW-IO-DEADTARGET | 7 | 0 | 0 |
+| NEW-IO-DRAINBATCH | 7 | 0 | 2 |
+| NEW-IO-LAGLOSS | 6 | 0 | 1 |
+| NEW-IO-ONECMD | 11 | 0 | 0 |
 | NEW-IO-STACK9 | 4 | 0 | 3 |
-| NEW-IO-STRIKELAG | 1 | 0 | 0 |
+| NEW-IO-STRIKELAG | 2 | 0 | 0 |
 | NEW-MT-01 | 0 | 1 | 2 |
 | NEW-MT-02 | 0 | 0 | 7 |
 | NEW-MT-03 | 1 | 0 | 0 |
@@ -244,10 +251,10 @@
 | NEW-OP-01 | 2 | 0 | 0 |
 | NEW-OP-02 | 1 | 0 | 0 |
 | NEW-OP-ALLYLOCK | 12 | 0 | 0 |
-| NEW-OP-DPGOOD | 0 | 12 | 0 |
+| NEW-OP-DPGOOD | 0 | 13 | 0 |
 | NEW-OP-G1 | 0 | 15 | 0 |
 | NEW-OP-G2 | 0 | 1 | 0 |
-| NEW-OP-REFCHASE | 5 | 0 | 1 |
+| NEW-OP-REFCHASE | 5 | 0 | 2 |
 | NEW-R01-AT01 | 0 | 10 | 0 |
 | NEW-R01-AT02 | 6 | 0 | 0 |
 | NEW-R01-AT04 | 0 | 9 | 0 |
@@ -342,7 +349,7 @@
 | NEW-SE-05 | 3 | 0 | 3 |
 | NEW-SE-06 | 2 | 0 | 0 |
 | NEW-SE-BOATOK | 0 | 5 | 0 |
-| NEW-SE-BOATWASTE | 10 | 0 | 0 |
+| NEW-SE-BOATWASTE | 11 | 0 | 0 |
 | NEW-SE-FOODBOAT | 0 | 1 | 0 |
 | NEW-SE-G1 | 0 | 3 | 0 |
 | NEW-SE-G2 | 0 | 1 | 0 |
@@ -362,24 +369,25 @@
 | NEW-SP-FIRSTLOST | 0 | 0 | 1 |
 | NEW-SP-NOEXEC | 1 | 0 | 1 |
 | NEW-SP-RESOLVE | 5 | 0 | 4 |
-| NEW-SP-SPREAD | 0 | 1 | 0 |
+| NEW-SP-SPREAD | 0 | 2 | 0 |
 | NEW:AS-cross-team-poke | 1 | 0 | 7 |
 | NEW:AS-poke-for-husk | 2 | 0 | 0 |
 | NEW:AS-poke-then-hit | 1 | 1 | 2 |
 | NEW:AT-ai-order-too-small | 3 | 0 | 0 |
 | NEW:AT-allin-thin-buy | 0 | 0 | 1 |
-| NEW:AT-bot-farm | 0 | 6 | 0 |
+| NEW:AT-bot-farm | 0 | 7 | 0 |
 | NEW:AT-cheap-burst | 0 | 5 | 0 |
-| NEW:AT-collapse-harvest | 0 | 7 | 2 |
+| NEW:AT-collapse-harvest | 0 | 9 | 3 |
 | NEW:AT-counter-into-allin | 0 | 0 | 1 |
-| NEW:AT-dump-then-dead | 7 | 0 | 0 |
-| NEW:AT-over-cap-dump | 1 | 12 | 1 |
+| NEW:AT-dump-then-dead | 8 | 0 | 0 |
+| NEW:AT-over-cap-dump | 1 | 12 | 2 |
 | NEW:AT-overcap-price-skip | 0 | 0 | 4 |
 | NEW:AT-redirect-parked | 0 | 0 | 1 |
+| NEW:AT-return-overflow | 1 | 0 | 0 |
 | NEW:AT-thin-human-pulse | 0 | 3 | 0 |
 | NEW:AT-thin-self-pricelock | 1 | 0 | 0 |
-| NEW:AT-worth-gate | 9 | 0 | 3 |
-| NEW:BT-boxed-breakout | 0 | 9 | 1 |
+| NEW:AT-worth-gate | 9 | 0 | 4 |
+| NEW:BT-boxed-breakout | 0 | 10 | 1 |
 | NEW:BT-boxed-floor-cap | 1 | 0 | 0 |
 | NEW:BT-boxed-no-gain | 3 | 0 | 1 |
 | NEW:BT-food-husk | 0 | 0 | 1 |
@@ -389,13 +397,13 @@
 | NEW:BT-min-boat-overkill | 1 | 0 | 0 |
 | NEW:BT-own-shore | 2 | 0 | 0 |
 | NEW:BT-sunk | 2 | 0 | 0 |
-| NEW:CMD-repeat-before-effect | 3 | 0 | 0 |
+| NEW:CMD-repeat-before-effect | 4 | 0 | 0 |
 | NEW:DF-main-attacker-unanswered | 3 | 0 | 0 |
-| NEW:DF-passive-death | 8 | 0 | 0 |
+| NEW:DF-passive-death | 10 | 0 | 0 |
 | NEW:DN-debt-sink | 1 | 0 | 0 |
 | NEW:DN-donate-preempts-attack | 1 | 0 | 0 |
 | NEW:DN-dying-donor | 3 | 0 | 1 |
-| NEW:DN-fee-exceeds-delivery | 8 | 0 | 0 |
+| NEW:DN-fee-exceeds-delivery | 9 | 0 | 0 |
 | NEW:DN-floor-mismatch | 1 | 0 | 0 |
 | NEW:DN-frozen-recipient | 4 | 0 | 0 |
 | NEW:DN-husk-donate | 9 | 0 | 0 |
@@ -404,35 +412,35 @@
 | NEW:DN-pingpong | 11 | 0 | 0 |
 | NEW:DN-pingpong / NEW-R03-DN02 | 1 | 0 | 0 |
 | NEW:DN-quota-retry-loop | 8 | 0 | 0 |
-| NEW:DN-rear-to-front | 0 | 7 | 3 |
+| NEW:DN-rear-to-front | 0 | 7 | 4 |
 | NEW:DN-small-pct | 5 | 0 | 1 |
 | NEW:DN-small-pct / NEW-DN-CARRIER | 0 | 0 | 1 |
-| NEW:DN-to-overcap | 3 | 0 | 1 |
+| NEW:DN-to-overcap | 4 | 0 | 1 |
 | NEW:DP-cheap-offer-floor-block | 1 | 0 | 0 |
 | NEW:DP-empty-neighbor-missed | 1 | 0 | 0 |
-| NEW:EC-thin-big-target | 1 | 0 | 1 |
+| NEW:EC-thin-big-target | 2 | 0 | 1 |
 | NEW:EG-boxed-hardcap | 2 | 0 | 2 |
-| NEW:EG-cap-idle-death | 7 | 0 | 0 |
-| NEW:EG-giant-neighbor-freeze | 13 | 0 | 4 |
-| NEW:EG-mincmd-skips-small-ai | 1 | 0 | 0 |
-| NEW:FE-tiny-cmd-fee | 6 | 0 | 1 |
+| NEW:EG-cap-idle-death | 8 | 0 | 0 |
+| NEW:EG-giant-neighbor-freeze | 14 | 0 | 4 |
+| NEW:EG-mincmd-skips-small-ai | 2 | 0 | 0 |
+| NEW:FE-tiny-cmd-fee | 7 | 0 | 1 |
 | NEW:HK-husk-eats-us | 1 | 0 | 0 |
 | NEW:IO-cmd-blackout | 0 | 0 | 3 |
 | NEW:IO-disconnect-husk | 0 | 0 | 2 |
 | NEW:IO-disconnect-husk（对方的空壳）/ NEW-R03-AT01 | 0 | 1 | 0 |
 | NEW:IO-lag-burst | 8 | 0 | 5 |
 | NEW:IO-lag-burst / NEW-R03-IO01 | 5 | 0 | 0 |
-| NEW:IO-stale-pulse-dump | 9 | 0 | 2 |
+| NEW:IO-stale-pulse-dump | 9 | 0 | 3 |
 | NEW:MT-no-mountain-cmd | 0 | 0 | 1 |
 | NEW:OP-cycle-open | 0 | 14 | 6 |
-| NEW:OP-dead-cycle | 0 | 0 | 1 |
+| NEW:OP-dead-cycle | 1 | 0 | 1 |
 | NEW:OP-dpkeep-freeze-ai | 3 | 0 | 0 |
 | NEW:OP-neutral-crumb-lock | 2 | 0 | 0 |
 | NEW:OP-safefinite-human-lock | 2 | 0 | 0 |
-| NEW:OP-safefinite-squad-lock | 9 | 0 | 0 |
-| NEW:PL-pool-ai | 2 | 0 | 0 |
+| NEW:OP-safefinite-squad-lock | 10 | 0 | 0 |
+| NEW:PL-pool-ai | 3 | 0 | 0 |
 | NEW:PL-pool-outsider | 2 | 0 | 1 |
-| NEW:PL-protect-box | 2 | 0 | 0 |
+| NEW:PL-protect-box | 3 | 0 | 0 |
 | NEW:PV-cross-team-peace-call | 0 | 0 | 3 |
 | NEW:R07-AT-BIG-BURN | 3 | 0 | 6 |
 | NEW:R07-AT-BOAT-FAR | 2 | 0 | 0 |
@@ -498,9 +506,10 @@
 | NEW:R07-SP-SWAP-CHURN | 0 | 0 | 3 |
 | NEW:SP-high-slot-single-pick | 0 | 0 | 1 |
 | NEW:SP-seat-never-starts | 0 | 0 | 2 |
-| NEW:SP-squad-stack | 11 | 0 | 2 |
-| NEW:SP-stale-pick-lands | 3 | 0 | 2 |
-| NEW:TS-truce-no-target | 1 | 0 | 0 |
+| NEW:SP-squad-stack | 12 | 0 | 2 |
+| NEW:SP-stale-pick-lands | 4 | 0 | 2 |
+| NEW:TS-squad-wall | 1 | 0 | 0 |
+| NEW:TS-truce-no-target | 2 | 0 | 0 |
 | R07-DF-PASSIVE-BLEED | 0 | 0 | 1 |
 | R07-DF-RICH-BLEED | 0 | 0 | 2 |
 | R07-EC-BOXED-RICH | 1 | 0 | 1 |

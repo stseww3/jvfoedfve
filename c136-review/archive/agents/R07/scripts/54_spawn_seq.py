@@ -73,10 +73,10 @@ def run(mid):
             solves.append((i, ln.split("):", 1)[-1].strip()))
             continue
         if "[OPENING-CHECK" in ln and not check:
-            for mm in re.finditer(r"\] (\w+):tick=(\d+),terr=\d+,sent=(\d+)", ln):
+            for mm in re.finditer(r"(?:\] |\| )(?:\[[^\]]*\] )?([^:|\]\[]+):tick=(\d+),terr=\d+,sent=(\d+)", ln):
                 check[mm.group(1)] = (int(mm.group(2)), int(mm.group(3)))
             continue
-        m = re.match(r"^\d+\t\[([A-Za-z0-9_]+)\] (.*)$", ln)
+        m = re.match(r"^\d+\t\[([A-Za-z0-9_]+)\] (.*)$", ln) or re.match(r"^\d+\t\[([^\]\[]+)\] (\[HL-.*)$", ln)
         if not m:
             continue
         mo = re.search(r"\[HL-OPENING\] t=(\d+) ", m.group(2))

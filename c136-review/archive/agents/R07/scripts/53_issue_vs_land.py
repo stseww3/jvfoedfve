@@ -27,7 +27,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # R07_OUT_ROOT：换一个放 <matchId>/humans_cmd.tsv、spawn_cmds.tsv 的根目录（57_exec_census.py 做全量普查时用 out/_cache/census）
 OUT_ROOT = os.environ.get("R07_OUT_ROOT") or os.path.join(HERE, "..", "out")
 DATA = "/agent/repos/c136-data"
-TICK_RE = re.compile(r"\[(\w+)\] \[HL-TICK\] t=(\d+) .*?cmds=(\d+)")
+TICK_RE = re.compile(r"\[([^\]\[]+)\] \[HL-TICK\] t=(\d+) .*?cmds=(\d+)")
 
 
 def allowed_bots(mid):
@@ -43,9 +43,23 @@ def allowed_bots(mid):
     return out
 
 
+def player_bot_map(mid):
+    """squad_players.tsv 里的「席位号 → 号名」；没有这个文件时返回 None（按名字对）。"""
+    p = os.path.join(OUT_ROOT, mid, "squad_players.tsv")
+    if not os.path.exists(p):
+        return None
+    out = {}
+    for ln in open(p, encoding="utf-8"):
+        c = ln.rstrip("\n").split("\t")
+        if len(c) == 2 and c[0].isdigit():
+            out[c[0]] = c[1]
+    return out
+
+
 def load(mid):
     issued = defaultdict(dict)
     allow = allowed_bots(mid)
+    pmap = player_bot_map(mid)
     ok = (lambda b: True) if allow is None else (lambda b: b in allow)
     # results.csv 的 accepted 是宿主数的，含出生阶段的选点指令；[HL-TICK] 的 cmds 是策略自己数的，不含。
     # 选点指令条数 = [OPENING-CHECK] 的 sent − 到那一拍为止的开局指令（[HL-OPENING]）；没有核对行的号用日志里的指派次数。
@@ -59,20 +73,20 @@ def load(mid):
                     issued[m.group(1)][int(m.group(2))] = int(m.group(3))
                 continue
             if "[HL-DISPATCH]" in line:
-                md = re.match(r"^\d+\t\[(\w+)\] ", line)
+                md = re.match(r"^\d+\t\[([^\]\[]+)\] ", line)
                 if md is None or ok(md.group(1)):
                     n_dispatch += 1
                 continue
             if "[OPENING-CHECK" in line and not check:
-                for mm in re.finditer(r"\] (\w+):tick=(\d+),terr=\d+,sent=(\d+)", line):
+                for mm in re.finditer(r"(?:\] |\| )(?:\[[^\]]*\] )?([^:|\]\[]+):tick=(\d+),terr=\d+,sent=(\d+)", line):
                     if ok(mm.group(1)):
                         check[mm.group(1)] = (int(mm.group(2)), int(mm.group(3)))
                 continue
-            mo = re.search(r"\[(\w+)\] \[HL-OPENING\] t=(\d+) ", line)
+            mo = re.search(r"\[([^\]\[]+)\] \[HL-OPENING\] t=(\d+) ", line)
             if mo:
                 opening[mo.group(1)].append(int(mo.group(2)))
                 continue
-            ms = re.search(r"\[(\w+)\] \[HL-SPAWN(?:-BACKEND)?\] me=", line)
+            ms = re.search(r"\[([^\]\[]+)\] \[HL-SPAWN(?:-BACKEND)?\] me=", line)
             if ms and ok(ms.group(1)):
                 asg[ms.group(1)] += 1
     spawn_sent = {}
@@ -101,7 +115,9 @@ def load(mid):
         for r in csv.DictReader(f, delimiter="\t"):
             if r.get("squad") != "1":
                 continue
-            name = r["name"].split("] ")[-1].strip()
+            name = pmap.get(r.get("p", "")) if pmap else r["name"].split("] ")[-1].strip()
+            if name is None:
+                continue
             land[name].append(int(r["t"]))
             if r.get("kind") == "donate":
                 n_don_land += 1

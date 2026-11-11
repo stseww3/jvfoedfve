@@ -24,6 +24,8 @@
 //       ais = 挨着的内置 AI [号, botPx×100, price×100, 打垮它还差多少兵 need, 我压在它身上的兵, 它压在我身上的兵, 接触格数, 它的地, 它的余额]，按 need 从小到大最多 6 个；
 //       slotFree / active = 我还有没有空的进攻槽、正在打的非无主地目标数（pickTarget L1185-1192 的原料）。
 //     每个样本一行 locks：[t, 席位, 白给, 买得起, 90 拍内出手, 余额, 地, sb, sbSrc, slotFree, active, persons, ais]。
+//   · 逐对账 pairs（600~1500）：每个 [真人 → 内置 AI] 一行（条数、派出的兵、吃到的格、烧掉的兵、下手时 AI 的地和余额），见下面代码里的注释。
+//   · 无主地：接壤普查的第 11~13 列——挨着无主地的样本里 90 拍内有没有一条生效的陆攻落在无主地上。
 // 每局一个文件，默认写到 out/_run/xtruth/（不进 git；几秒一局，随时能重出）。只读 bundles/（发现集）。
 import fs from 'node:fs';
 import path from 'node:path';
@@ -172,8 +174,12 @@ for (const mid of argv) {
     if (kind !== 1 || !ok || p >= H || dZ < H || dZ === NEUTRAL || t < 600 || t >= 1500) continue;
     const key = p * 1024 + dZ;
     let e = pairMap.get(key);
-    if (!e) { e = [p, dZ, 0, 0, t, t, 0, 0, 0, 0, 0, -1]; pairMap.set(key, e); }
-    e[2]++; e[3] += troops; e[5] = t;
+    if (!e) { e = [p, dZ, 0, 0, t, t, 0, 0, 0, 0, 0, -1, 0, 0, 0]; pairMap.set(key, e); }
+    e[2]++; e[3] += troops;
+    // [12] 落地时这个号已经有兵压在这个 AI 身上的条数（续兵）；[13] 和这一对的上一条落在同一拍的条数；[14] 续兵那些条派出的兵
+    if (c[10] > 0) { e[12]++; e[14] += troops; }
+    if (e[2] > 1 && t === e[5]) e[13]++;
+    e[5] = t;
   }
   for (const [t, atk, dfd, tiles, burnt] of R.pairLog) {
     if (atk >= H || dfd < H || dfd === NEUTRAL) continue;
@@ -200,9 +206,12 @@ for (const mid of argv) {
   // 接壤普查 → 按席位、按窗累计
   const hits = Array.from({ length: H }, () => []);
   for (const c of R.cmdLog) if (c[2] === 1 && c[5] && c[1] < H && c[4] >= H && c[4] !== NEUTRAL) hits[c[1]].push(c[0]);
+  const hitsN = Array.from({ length: H }, () => []);
+  for (const c of R.cmdLog) if (c[2] === 1 && c[5] && c[1] < H && c[4] === NEUTRAL) hitsN[c[1]].push(c[0]);
   const nR = RW.length - 1;
+  // 第 11~13 列见下面循环里的注释（无主地）
   // [样本, 有 AI 邻居, 有无主地邻居, 只剩真人, 白给, 白给且 90 拍内出手, 买得起, 买得起且 90 拍内出手, 有 AI 邻居且 90 拍内出手, 挨着的 AI 地合计, 买得起的 AI 地合计]
-  const reach = Array.from({ length: nR }, () => Array.from({ length: H }, () => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
+  const reach = Array.from({ length: nR }, () => Array.from({ length: H }, () => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
   for (const [t, p, hasAi, hasN, ratio, aiLand, cheapLand] of samples) {
     let k = -1;
     for (let i = 0; i < nR; i++) if (t >= RW[i] && (t < RW[i + 1] || (i === nR - 1 && t === RW[i + 1]))) { k = i; break; }
@@ -216,6 +225,10 @@ for (const mid of argv) {
     if (hasAi && ratio <= 100) { row[4]++; row[5] += hit; }
     if (hasAi && ratio <= 250) { row[6]++; row[7] += hit; }
     row[9] += aiLand; row[10] += cheapLand;
+    // [11] 挨着无主地且 90 拍内有一条生效的陆攻落在无主地上；[12] 挨着无主地、不挨内置 AI 的样本；[13] 其中 90 拍内打了无主地
+    const hitN = hitsN[p].some((x) => x > t && x <= t + 90) ? 1 : 0;
+    if (hasN) row[11] += hitN;
+    if (hasN && !hasAi) { row[12]++; row[13] += hitN; }
   }
   for (const row of lockRows) {
     const t = row[0], p = row[1];

@@ -226,6 +226,17 @@ def main():
             parts.append('队%d %.1f%%（S %.1f%%，全队兵 %s）' % (tm, 100 * tt / ke, 100 * ss / ke, wan(tb)))
         print('    %d：%s' % (t, '；'.join(parts)))
 
+    import statistics
+    print('  各类在场单号的中位（领土 / 密度 = 余额÷领土）：')
+    for t in pts:
+        st = state[t]
+        parts = []
+        for k in 'SLXH':
+            ps = [p for p in range(ku) if cls[p] == k and st.get(p) and st[p][2] and st[p][0] > 0]
+            if ps:
+                parts.append('%s %s 格 / %.1f' % (k, format(int(statistics.median(st[p][0] for p in ps)), ','), statistics.median(st[p][1] / st[p][0] for p in ps)))
+        print('    %d：%s' % (t, '；'.join(parts)))
+
     def peak(sel):
         best = (0, 0)
         for t in sorted(state):
@@ -295,6 +306,27 @@ def main():
         net = sum(px for (t, a_, b_, px) in flow if a_ == y and b_ == x) - sum(px for (t, a_, b_, px) in flow if a_ == x and b_ == y)
         print('  %s[%s] → %s[%s]：%d 条 %s 兵（%d~%d 拍），全场从它净拿 %+d 格；反方向 %d 条 %s 兵' % (
             nm(x), cls[x], nm(y), cls[y], e[0], wan(e[1]), e[2], e[3], net, back[0], wan(back[1])))
+    # 离场的号由引擎接管，它出的兵不在录像的指令里；只能从易手的格数看
+    print('  S 号和名池里的别的号（L、P）之间易手的地（格；L 按它离场的那一拍分前后；只列某一栏 ≥200 格的）：')
+    pair = collections.defaultdict(lambda: [0, 0, 0, 0])
+    for (t, x, y, px) in flow:
+        if x < ku and y < ku and x != y:
+            if cls[x] == 'S' and cls[y] in 'LP':
+                pair[(x, y)][1 if (cls[y] == 'L' and t > left.get(y, 10 ** 9)) else 0] += px
+            elif cls[y] == 'S' and cls[x] in 'LP':
+                pair[(y, x)][3 if (cls[x] == 'L' and t > left.get(x, 10 ** 9)) else 2] += px
+    shown = 0
+    for (s, q), e in sorted(pair.items(), key=lambda kv: -(kv[1][0] + kv[1][1])):
+        if max(e) < 200:
+            continue
+        shown += 1
+        if q in left:
+            print('    %s[S] 丢给 %s[%s]：它离场（%d 拍）前 %s 格、之后 %s 格；从它拿回：之前 %s 格、之后 %s 格' % (
+                nm(s), nm(q), cls[q], left[q], format(e[0], ','), format(e[1], ','), format(e[2], ','), format(e[3], ',')))
+        else:
+            print('    %s[S] 丢给 %s[%s]：全场 %s 格；从它拿回 %s 格' % (nm(s), nm(q), cls[q], format(e[0] + e[1], ','), format(e[2] + e[3], ',')))
+    if not shown:
+        print('    没有')
 
     print('## 6 S 号和别的队里的人：谁打了谁（全场；兵 / 净得地）')
     S = [p for p in range(ku) if cls[p] == 'S']

@@ -34,6 +34,19 @@ out/_run/ 不入库，随时可以按上面两步重建。
   [XT-A] 覆盖与核对  [XT-B] 人均对照走势  [XT-C] AI 的地 / 无主地  [XT-D] 陆攻生效率  [XT-E] 出生点  [XT-F] 发出 vs 落地
   [XT-G] 1800 拍前出局 / 离开  [XT-H] 逐局  [XT-I] 接壤普查（挨着白给的内置 AI 出不出手；不跑策略）
   [XT-J] 买 AI 地规则重算（把 1500 拍前买内置 AI 地的规则照抄到每个样本上：放行 / 已在打 / 槽满 / 不值 / 留底三项）
+  [XT-C] 里另有三张表（600~1500，和吃地账同一批席位）：
+    · 地的收支：人均净增拆成 从内置 AI 吃 / 从无主地吃 / 从真人吃 / 被真人吃走 / 其余
+    · 一条打内置 AI 的生效陆攻换回多少地：人均条数、每条派出的兵、每条吃到的格、烧掉 ÷ 派出
+    · 逐对账：把每个号对同一个内置 AI 的生效陆攻合成一对——人均对几个 AI 下过手、每对几条、派出 ÷ 打垮价、
+      吃到 ÷ 可吃、下手时 AI 有多大；按「独吃 / 和机器号同吃 / 和野人同吃」分
+  [XT-I] 里另有无主地一栏：挨着无主地的样本，90 拍内有没有一条生效的陆攻落在无主地上
+规则重算的口径（[XT-J]）：
+  · 规则 = 1500 拍前（coreFrom = dpEnd = 1500）买非真人邻居的那条路：General.act → Style.pickTarget → V13.allow / floorFor0 →
+    Policy.winFloor → minShare。只重算「对内置 AI 这一拍放不放行」，不重算打分和别的分支（打真人、扩无主地、船）。
+  · 输入全部取自引擎状态（xtruth.mjs 在重演里每 30 拍记一次），不跑策略、不依赖日志；所以野人席位也能套同一把尺子当对照。
+  · c110（squad20）的邻居表不含「受保护的队友」（名字池 / [NPL] / [NOPE]；analyze L440），dpKeep 里不算它们；
+    c116 系（squad10）只排除同队。sb（threatOf）两档都不排除任何人。
+  · 核对：几乎不卡的局里，规则放行的样本 90 拍内出手的比例应当接近 100%（放行了就该发得出去）——见 [XT-J] 的分开看。
 """
 import json
 import math
@@ -60,10 +73,10 @@ COHORTS = ("squad10", "squad20", "squad8")
 
 
 # 1500 拍前买内置 AI 地的规则用到的参数（dump_params.mjs 核过：c110 / c116 / c116-va / c116-vb 这几项取值相同）
-RULE = dict(winR=0.002, minSend=0.2141, botMax=60, idleCap=1.25, feeK=4, maxTargets=4)
-RULE_CLASSES = ("allowed", "engaged", "slot", "worth", "px", "dp", "sb", "other")
-RULE_CN = dict(allowed="规则放行", engaged="已有兵压在挨着的内置 AI 身上", slot="进攻槽 / 目标数占满", worth="AI 的地不值（allow 不过）",
-               px="留底·地价项", dp="留底·防真人项 dpKeep", sb="留底·AI 仇恨项 sb", other="其它")
+RULE = dict(winR=0.002, minSend=0.2141, botMax=60, idleCap=1.25, feeK=4, maxTargets=4, maxCost=338.1478)
+RULE_CLASSES = ("allowed", "again", "engaged", "slot", "worth", "px", "dp", "sb", "other")
+RULE_CN = dict(allowed="规则放行（有新目标）", again="规则放行，但放行的都是已经压着兵的 AI（续兵）", engaged="挨着的 AI 都已在打、按 L1200 跳过", slot="进攻槽 / 目标数占满",
+               worth="AI 的地不值（allow 不过）", px="留底·地价项", dp="留底·防真人项 dpKeep", sb="留底·AI 仇恨项 sb", other="其它")
 SRC_GROUPS = ("own", "apex", "pool", "wild", "shell", "ai", "none")
 SRC_CN = dict(own="本编队的号", apex="[APEX]", pool="名字池", wild="野人", shell="离开者的空壳", ai="内置 AI", none="无")
 
@@ -72,17 +85,21 @@ def med(v):
     return statistics.median(v) if v else None
 
 
-def rule_eval(rw, protected):
+def rule_eval(rw, protected, engaged_rule):
     """把 1500 拍前买内置 AI 地的规则照抄到一个样本上（不跑策略，只用引擎状态）。
-    代码位置（c110；c116-vb 对应行见 CROSS-MATCH-SUMMARY 的对照表）：General.act L804-843 → Style.pickTarget L1180-1212 →
-    V13.allow L2147-2150（botOk L2499-2505、price L1141）→ V13.floorFor0 L2270-2276 → Policy.winFloor L4542-4550
-    （dpKeep L2491-2496、safeFinite L2532-2541 / threatOf L464-492）→ minShare L2131-2134 / minCmd L521-523。
+    代码位置（c110；别的档对应行见 out/_cross/codemap.txt）：General.act L804-846 → Style.pickTarget L1180-1214 →
+    V13.allow L2147-2156（botOk L2499-2505、price L1141-1143）→ V13.floorFor0 L2270-2276 → Policy.winFloor L4542-4550
+    （dpKeep L2491-2496、safeFinite L2532-2542 / threatOf L464-491）→ minShare L2131-2134 / minCmd L521-523。
+    engaged_rule：pickTarget L1200「已经在打的非真人目标跳过（除非它在反打我、且我压上去的兵还不到 0.35·need）」只有 c110 有；
+    c116 / c116-va / c116-vb / g09 的 pickTarget 没有这一行（codemap.txt [CM-C]），已经在打的 AI 每个决策拍都重新当候选。
     返回 (类别, 细节)：
-      allowed  至少有一个挨着的内置 AI 通过全部条件（这一拍规则会对它发兵）
-      engaged  没有放行的目标，但这个号已经有兵压在某个挨着的内置 AI 身上
+      allowed  至少有一个还没压兵的内置 AI 通过全部条件（这一拍规则会对一个新目标发兵）
+      again    有通过全部条件的 AI，但都是已经压着兵的（规则会再发一条到同一个 AI 上）
+      engaged  （只 c110）候选全被 L1200 跳过：挨着的、还打得动的 AI 都已经在打
       slot     进攻槽满，或同时在打的非无主地目标数到了 maxTargets
       worth    挨着的内置 AI 都过不了 allow（botPx > winWorth 或 price > botMax，且余额没到 idle 线）
       px / dp / sb  过了 allow，但 avail = 余额 − max(地价项, dpKeep, sb) 不超过余额的 minSend（21.41%）；按三项里最大的那一项归类
+      other    挨着的 AI 的 need 都 ≤ 0（已经压够了兵）
     """
     t, _p, _free, _afford, _hit, bal, L, sb, sb_src, slot_free, active, persons, ais = rw
     dp_src, m = -1, 0
@@ -94,31 +111,38 @@ def rule_eval(rw, protected):
     min_cmd = RULE["feeK"] * (12 * bal // 1024)
     idle = bal >= RULE["idleCap"] * 100 * L
     worth = RULE["winR"] * t * bal / max(1, L)
-    det = dict(dp=dp, dpSrc=dp_src, sb=sb, sbSrc=sb_src)
-    engaged = any(a[4] > 0 for a in ais)
+    det = dict(dp=dp, dpSrc=dp_src, sb=sb, sbSrc=sb_src, eng=any(a[4] > 0 for a in ais))
     cands = []
+    skipped = 0
     for q, px100, pr100, need, mine, theirs, _cnt, _tq, _bq in ais:
-        if mine > 0 and (theirs == 0 or mine >= 0.35 * need):
-            continue
         if need <= 0:
+            continue
+        if engaged_rule and mine > 0 and (theirs == 0 or mine >= 0.35 * need):
+            skipped += 1
             continue
         cands.append((q, px100 / 100, pr100 / 100, mine))
     new_ok = bool(slot_free) and active < RULE["maxTargets"]
     ok_slot = [c for c in cands if c[3] > 0 or new_ok]
-    ok_allow = [c for c in ok_slot if (c[1] <= worth and c[2] <= RULE["botMax"]) or idle]
+    ok_allow = [c for c in ok_slot if ((c[1] <= worth and c[2] <= RULE["botMax"]) or idle) and c[2] <= RULE["maxCost"]]
+    passes = lambda a: a > RULE["minSend"] * bal and a >= min_cmd
     best = None
+    fire_new = fire_again = False
     for c in ok_allow:
         px_floor = c[1] * L / (RULE["winR"] * max(1, t))
         avail = bal - max(px_floor, dp, sb)
+        if passes(avail):
+            if c[3] > 0:
+                fire_again = True
+            else:
+                fire_new = True
         if best is None or avail > best[0]:
             best = (avail, px_floor)
-    passes = lambda a: a > RULE["minSend"] * bal and a >= min_cmd
-    if best is not None and passes(best[0]):
+    if fire_new:
         return "allowed", det
-    if engaged:
-        return "engaged", det
+    if fire_again:
+        return "again", det
     if not cands:
-        return "other", det
+        return ("engaged" if skipped else "other"), det
     if not ok_slot:
         return "slot", det
     if not ok_allow:
@@ -339,9 +363,11 @@ def scan(mid, row, pool):
         by_q = defaultdict(list)
         for e in X["pairs"]:
             by_q[e[1]].append(e)
-        pr = {g: {c: [0] * 11 for c in ("alone", "mate", "wild")} for g in GROUPS}
+        pr = {g: {c: [0] * 14 for c in ("alone", "mate", "wild")} for g in GROUPS}
+        # 按第一条落地的窗（600~900 / 900~1260 / 1260~1500）：[对数, 条数, 下手时 AI 的地, 下手时 AI 的余额, 吃到的格, 独吃的对数, 派出的兵]
+        pwin = {g: [[0] * 7 for _ in range(3)] for g in GROUPS}
         for e in X["pairs"]:
-            a_, q, n, sent, t0, t1, cells, burnt, T0, B0q, peak0, _gone = e
+            a_, q, n, sent, t0, t1, cells, burnt, T0, B0q, peak0, _gone = e[:12]
             if a_ not in keep:
                 continue
             co = [o for o in by_q[q] if o[0] != a_ and o[4] <= t1 + 90 and o[5] >= t0 - 90]
@@ -350,8 +376,17 @@ def scan(mid, row, pool):
             acc = pr[grp[a_]][cls]
             for i, v in enumerate((1, n, sent, burnt, cells, max(0, T0 - peak0 // 4), 2 * B0q * (1 - x ** 1.6) + 2 * T0 * (1 - x), T0)):
                 acc[i] += v
-            acc[8 + (0 if t0 < 900 else 1 if t0 < 1260 else 2)] += 1
+            wi = 0 if t0 < 900 else 1 if t0 < 1260 else 2
+            acc[8 + wi] += 1
+            for i, v in enumerate((1, n, T0, B0q, cells, 1 if cls == "alone" else 0, sent)):
+                pwin[grp[a_]][wi][i] += v
+            # [11] 续兵条数（落地时已有兵压在这个 AI 身上）；[12] 和上一条同拍落地的条数；[13] 续兵那些条派出的兵
+            if len(e) >= 15:
+                acc[11] += e[12]
+                acc[12] += e[13]
+                acc[13] += e[14]
     rec["pairs"] = pr
+    rec["pairwin"] = pwin if pr is not None else None
 
     # ---- 出生点 ----
     W, Hh = X["W"], X["Hh"]
@@ -439,10 +474,10 @@ def scan(mid, row, pool):
         for k in range(len(X["reach"])):
             cell = {}
             for g in GROUPS:
-                acc = [0] * 11
+                acc = [0] * 14
                 for q in spawned:
                     if grp[q] == g:
-                        for i in range(11):
+                        for i in range(len(X["reach"][k][q])):
                             acc[i] += X["reach"][k][q][i]
                 cell[g] = acc
             rc.append(cell)
@@ -464,16 +499,29 @@ def scan(mid, row, pool):
             return grp.get(q, "wild")
 
         rule = {g: dict(cls={c: [0] * 6 for c in RULE_CLASSES}, sbSrc={k: 0 for k in SRC_GROUPS}, dpSrc={k: 0 for k in SRC_GROUPS},
-                        over=dict(px=0, dp=0, sb=0), sole=dict(px=0, dp=0, sb=0), sbShare=[],
-                        win=[{c: [0, 0] for c in RULE_CLASSES} for _ in range(3)]) for g in GROUPS}
+                        over=dict(px=0, dp=0, sb=0), sole=dict(px=0, dp=0, sb=0), sbShare=[], eng={c: 0 for c in RULE_CLASSES},
+                        win=[{c: [0, 0] for c in RULE_CLASSES} for _ in range(3)],
+                        # 挨着的内置 AI 有多大（每窗）：[样本, 平均地之和, 最大的那个的地之和, 打垮最便宜的那个的地之和, 挨着的 AI 个数之和（最多记 6 个）, 本号的地之和, 本号的兵之和]
+                        adj=[[0] * 7 for _ in range(3)]) for g in GROUPS}
         for rw in X["locks"]:
             t, q = rw[0], rw[1]
             if not xy[q]:
                 continue
             g = grp[q]
+            if rw[12]:
+                av = rule[g]["adj"][0 if t < 900 else 1 if t < 1260 else 2]
+                lands = [a[7] for a in rw[12]]
+                av[0] += 1
+                av[1] += sum(lands) / len(lands)
+                av[2] += max(lands)
+                av[3] += rw[12][0][7]
+                av[4] += len(lands)
+                av[5] += rw[6]
+                av[6] += rw[5]
             # c110（squad20）的邻居表不含「受保护的队友」（analyze L440 / isProtectedSquadMate L3993-3996）；c116 系只排除同队（引擎那一侧已排除）
             protected = {o for o, _ in rw[11] if is_prot[o]} if (g == "own" and c110) else ()
-            cls, det = rule_eval(rw, protected)
+            # 同一局里各组用同一把尺子（这一局主编队那一档的规则）
+            cls, det = rule_eval(rw, protected, c110)
             a = rule[g]["cls"][cls]
             a[0] += 1
             a[1] += rw[4]
@@ -486,6 +534,8 @@ def scan(mid, row, pool):
             if rw[3]:
                 a[4] += 1
                 a[5] += rw[4]
+            if rw[2] and det["eng"]:
+                rule[g]["eng"][cls] += 1
             if rw[2] and cls in ("px", "dp", "sb"):
                 rule[g]["over"][cls] += 1 if det["over"] else 0
                 rule[g]["sole"][cls] += 1 if det["sole"] else 0
@@ -693,6 +743,8 @@ def main():
     # 地的收支
     bsel = [r for r in full if r.get("budget600_1500")]
     P(f"  地的收支（600 → 1500，人均；{len(bsel)} 局；人头 = t=600 还有地、到 1500 拍没离开的席位，中途出局的按 0 格算）：")
+    P("    读法：合计行是各局的人头和格数直接相加——own 每局人头差不多，野人的人头集中在大房间（人均地小），所以合计口径对 own 偏乐观，只用来拆构成；")
+    P("    比高低以「逐局」行为准（每局先各自算人均，再取各局的中位）。下面的「一条生效陆攻」「逐对账」「续兵」几张表的合计行同理。")
     P("    范围 | 组 | 人头 | t=600 人均地 | t=1500 人均地 | 净增 | 从内置 AI 吃 | 从无主地吃 | 从真人吃 | 被真人吃走 | 其余（被 AI 吃走、出局时变成无主地等） | t=600 人均兵 | t=1500 人均兵 | 这批人里 1500 拍前出局的")
     agg_bd = {}
     for nm, sel in (("全部", bsel), ("几乎不卡的局", [r for r in bsel if calm_of(r)]), ("其余的局", [r for r in bsel if not calm_of(r)]),
@@ -716,6 +768,27 @@ def main():
                 dv = (w[k] / w["heads"] - o[k] / o["heads"]) * (-1 if k == "lost" else 1)
                 parts.append(f"{kn} {dv:+.0f}（{100 * dv / (gw - go):.0f}%）" if gw != go else f"{kn} {dv:+.0f}")
             P(f"      {nm}：野人人均净增比 own 多 {gw - go:.0f} 格，拆开：" + "；".join(parts))
+        # 逐局口径（上面是各局人头相加；大地图小房间的局人均地大，会把合计往上带）
+        pmb = []
+        for r in sel:
+            o, w = r["budget600_1500"]["own"], r["budget600_1500"]["wild"]
+            if o["heads"] < 3 or w["heads"] < 5:
+                continue
+            go = (o["t1500"] - o["t600"]) / o["heads"]
+            gw = (w["t1500"] - w["t600"]) / w["heads"]
+            if gw <= 0:
+                continue
+            dai = w["ai"] / w["heads"] - o["ai"] / o["heads"]
+            dn = w["neutral"] / w["heads"] - o["neutral"] / o["heads"]
+            dh = (w["human"] - w["lost"]) / w["heads"] - (o["human"] - o["lost"]) / o["heads"]
+            pmb.append((go / gw, (gw - go) / gw, dai / gw, dn / gw, dh / gw, (o["ai"] / o["heads"]) / max(1e-9, w["ai"] / w["heads"]),
+                        (o["neutral"] / o["heads"]) / max(1e-9, w["neutral"] / w["heads"])))
+        if pmb:
+            P(f"      {nm}·逐局（own ≥3 人头、野人 ≥5 人头的 {len(pmb)} 局；每局先各自算人均，再取各局的中位）：own 人均净增 ÷ 野人人均净增 中位 {med([x[0] for x in pmb]):.2f}；"
+              f"差额占野人净增 中位 {100 * med([x[1] for x in pmb]):.0f}%，其中 内置 AI {100 * med([x[2] for x in pmb]):.0f}%、无主地 {100 * med([x[3] for x in pmb]):.0f}%、真人之间的净额 {100 * med([x[4] for x in pmb]):.0f}%；"
+              f"own 人均从内置 AI 吃到的 ÷ 野人的 中位 {med([x[5] for x in pmb]):.2f}（<1 的 {sum(1 for x in pmb if x[5] < 1)} 局）；从无主地吃到的 ÷ 野人的 中位 {med([x[6] for x in pmb]):.2f}（<1 的 {sum(1 for x in pmb if x[6] < 1)} 局）")
+            agg_bd[f"{nm}|perMatch"] = dict(n=len(pmb), gainRatio=med([x[0] for x in pmb]), gapShare=med([x[1] for x in pmb]), ai=med([x[2] for x in pmb]),
+                                           neutral=med([x[3] for x in pmb]), human=med([x[4] for x in pmb]), aiRatio=med([x[5] for x in pmb]), neutralRatio=med([x[6] for x in pmb]))
 
     # 一条陆攻换回多少地
     ysel = [r for r in full if r.get("yield600_1500")]
@@ -756,7 +829,7 @@ def main():
 
     def pair_sum(sel, g, c):
         cs = ("alone", "mate", "wild") if c == "all" else (c,)
-        return [sum(r["pairs"][g][k][i] for r in sel for k in cs) for i in range(11)]
+        return [sum(r["pairs"][g][k][i] for r in sel for k in cs) for i in range(14)]
 
     def pair_rows(nm, sel, groups=GROUPS, classes=("alone", "mate", "wild", "all")):
         for g in groups:
@@ -774,11 +847,38 @@ def main():
     pair_rows("其余的局·", [r for r in psel if not calm_of(r)], ("own", "wild"), ("all",))
     pair_rows("squad10·", [r for r in psel if r["cohort"] == "squad10"], ("own", "wild"), ("all",))
     pair_rows("squad20·", [r for r in psel if r["cohort"] == "squad20"], ("own", "wild"), ("all",))
+    P("    续兵和同拍重复（打内置 AI 的生效陆攻）：组 | 条数 | 落地时已有兵压在这个 AI 身上的（续兵）| 续兵派出的兵占全部派出 | 和这一对的上一条同拍落地的 | 每对里第 2 条起的条数占比")
+    for nm, sel in (("", psel), ("几乎不卡的局·", [r for r in psel if calm_of(r)]), ("其余的局·", [r for r in psel if not calm_of(r)]),
+                    ("squad10·", [r for r in psel if r["cohort"] == "squad10"]), ("squad20·", [r for r in psel if r["cohort"] == "squad20"])):
+        for g in (GROUPS if not nm else ("own", "wild")):
+            a = pair_sum(sel, g, "all")
+            if a[1]:
+                P(f"    {nm}{GROUP_CN[g]} | {a[1]} | {a[11]}（{pct(a[11], a[1])}）| {pct(a[13], a[2])} | {a[12]}（{pct(a[12], a[1])}）| {pct(a[1] - a[0], a[1])}")
+                agg_p[f"dup|{nm}{g}"] = dict(cmds=a[1], reinforce=a[11], reinforceTroops=a[13], sent=a[2], sameTick=a[12], pairs=a[0])
     P("    第一条落在哪一段（人均对数）：组 | 600~900 | 900~1260 | 1260~1500")
     for g in ("own", "wild"):
         heads = sum(r["yield600_1500"][g]["heads"] for r in psel)
         a = pair_sum(psel, g, "all")
         P(f"    {GROUP_CN[g]} | {a[8] / heads:.2f} | {a[9] / heads:.2f} | {a[10] / heads:.2f}")
+    P("    按第一条落地的窗：窗 | 组 | 对数 | 人均对数 | 下手时 AI 的地 | 下手时 AI 的兵密度 | 每对条数 | 每对派出的兵 | 每对吃到的格 | 独吃的占比")
+    WN = ("600~900", "900~1260", "1260~1500")
+    for wi in range(3):
+        for g in ("own", "wild"):
+            heads = sum(r["yield600_1500"][g]["heads"] for r in psel)
+            a = [sum(r["pairwin"][g][wi][i] for r in psel) for i in range(7)]
+            if a[0]:
+                P(f"    {WN[wi]} | {GROUP_CN[g]} | {a[0]} | {a[0] / heads:.2f} | {a[2] / a[0]:.0f} | {a[3] / max(1, a[2]):.1f} | {a[1] / a[0]:.2f} | {a[6] / a[0]:.0f} | {a[4] / a[0]:.0f} | {pct(a[5], a[0])}")
+                agg_p[f"win|{WN[wi]}|{g}"] = dict(heads=heads, pairs=a[0], cmds=a[1], aiLand=a[2], aiBal=a[3], cells=a[4], alone=a[5], sent=a[6])
+    for wi in range(3):
+        rows = []
+        for r in psel:
+            ho, hw = r["yield600_1500"]["own"]["heads"], r["yield600_1500"]["wild"]["heads"]
+            o, w = r["pairwin"]["own"][wi], r["pairwin"]["wild"][wi]
+            if ho >= 3 and hw >= 5 and o[0] >= 5 and w[0] >= 5:
+                rows.append(((o[0] / ho) / (w[0] / hw), (o[2] / o[0]) / (w[2] / w[0]), (o[4] / o[0]) / max(1e-9, w[4] / w[0])))
+        if rows:
+            P(f"    逐局·{WN[wi]}（这一窗 own 和野人各 ≥5 对的 {len(rows)} 局），own ÷ 野人：人均对数 中位 {med([x[0] for x in rows]):.2f}（<1 的 {sum(1 for x in rows if x[0] < 1)} 局）；"
+              f"下手时 AI 的地 中位 {med([x[1] for x in rows]):.2f}（<1 的 {sum(1 for x in rows if x[1] < 1)} 局）；每对吃到的格 中位 {med([x[2] for x in rows]):.2f}（<1 的 {sum(1 for x in rows if x[2] < 1)} 局）")
     pmp = []
     for r in psel:
         ho, hw = r["yield600_1500"]["own"]["heads"], r["yield600_1500"]["wild"]["heads"]
@@ -932,11 +1032,11 @@ def main():
     agg_i = {}
 
     def reach_sum(sel, k, g):
-        acc = [0] * 11
+        acc = [0] * 14
         for r in sel:
             ks = range(3) if k == 3 else [k]
             for kk in ks:
-                for i in range(11):
+                for i in range(14):
                     acc[i] += r["reach"][kk][g][i]
         return acc
 
@@ -949,6 +1049,20 @@ def main():
                 continue
             P(f"  {nm} | {GROUP_CN[g]} | {sel_n} | {a[0]} | {pct(a[1], a[0])} | {pct(a[2], a[0])} | {pct(a[3], a[0])} || {a[4]} | {pct(a[5], a[4])} | {a[6]} | {pct(a[7], a[6])} | {pct(a[8], a[1])}")
             agg_i[f"{nm}|{g}"] = dict(matches=sel_n, samples=a[0], hasAi=a[1], hasNeutral=a[2], locked=a[3], free=a[4], freeHit=a[5], cheap=a[6], cheapHit=a[7], aiHit=a[8], aiLandAdj=a[9], aiLandCheap=a[10])
+    P("  无主地（挨着无主地的样本里，之后 90 拍内有一条生效的陆攻落在无主地上）：窗 | 组 | 挨着无主地的样本 | 其中 90 拍内打了无主地 | 只挨无主地、不挨内置 AI 的样本 | 其中打了无主地")
+    for k, nm in enumerate(RWN):
+        for g in ("own", "wild"):
+            sel = [r for r in (full if g == "own" else recs) if r.get("reach")]
+            a = reach_sum(sel, k, g)
+            if a[2]:
+                P(f"    {nm} | {GROUP_CN[g]} | {a[2]} | {pct(a[11], a[2])} | {a[12]} | {pct(a[13], a[12])}")
+                agg_i[f"neutral|{nm}|{g}"] = dict(hasNeutral=a[2], hitNeutral=a[11], onlyNeutral=a[12], onlyNeutralHit=a[13])
+    for nm, sel in (("几乎不卡的局", [r for r in full if calm_of(r)]), ("其余的局", [r for r in full if not calm_of(r)])):
+        for g in ("own", "wild"):
+            a = reach_sum([r for r in sel if r.get("reach")], 3, g)
+            if a[2]:
+                P(f"    600~1500·{nm} | {GROUP_CN[g]} | {a[2]} | {pct(a[11], a[2])} | {a[12]} | {pct(a[13], a[12])}")
+                agg_i[f"neutral|{nm}|{g}"] = dict(hasNeutral=a[2], hitNeutral=a[11], onlyNeutral=a[12], onlyNeutralHit=a[13])
     P("  分开看（600~1500 合计）：组 | 局 | 白给的样本 | 其中 90 拍内出手 | 买得起的样本 | 其中出手 | 只剩真人的样本占比")
     splits = [("squad10 的局", [r for r in full if r["cohort"] == "squad10"]), ("squad20 的局", [r for r in full if r["cohort"] == "squad20"]),
               ("几乎不卡的局（own 600~1500 陆攻没生效 ≤5%）", [r for r in full if calm_of(r)]), ("其余的局", [r for r in full if not calm_of(r)]),
@@ -981,13 +1095,16 @@ def main():
     P("    avail = 余额 − max( botPx(q)·我的地 ÷ (winR·t)，dpKeep，sb )（floorFor0 L2270-2276 → winFloor L4542-4550）；avail ≤ minSend(21.41%)·余额 就跳过（L1197）；")
     P("    dpKeep L2491-2496 = (最强的邻居真人的余额 + 它压在我身上的兵 − 1.5·我的地) ÷ 1.78；sb = safeFinite L2532-2541 = 我挨着的 AI 里，")
     P("    「它别的邻居中最弱的那个的余额」的最大值（低于它，AI 下一手就会挑我）。参数 winR=0.002、minSend=0.2141、botMax=60、maxTargets=4、feeK=4，各档相同。")
-    P("  类别互斥，按这个顺序判：规则放行 → 已有兵压在挨着的内置 AI 身上 → 槽满 → AI 的地不值 → 留底三项里最大的那一项。")
+    P("  两档规则只差一行：c110（squad20）的 pickTarget L1200 把已经在打的 AI 跳过（除非它在反打、且我压上去的兵不到 0.35·need）；")
+    P("    c116 系（squad10）没有这一行，已经在打的 AI 每个决策拍（period=5）都重新当候选——所以多一类「规则放行，但放行的都是已经压着兵的 AI」。")
+    P("  类别互斥，按这个顺序判：有新目标放行 → 只有续兵放行 → 候选全被 L1200 跳过（只 c110）→ 槽满 → AI 的地不值 → 留底三项里最大的那一项。")
     P("  野人不跑这套规则，野人那几行是「同一把尺子量出来的对照」：同样的处境下，不受这条规则约束的人出不出手。")
     agg_j = {}
 
     def rule_sum(sel, g):
         acc = {c: [0] * 6 for c in RULE_CLASSES}
-        extra = dict(sbSrc={k: 0 for k in SRC_GROUPS}, dpSrc={k: 0 for k in SRC_GROUPS}, over=dict(px=0, dp=0, sb=0), sole=dict(px=0, dp=0, sb=0))
+        extra = dict(sbSrc={k: 0 for k in SRC_GROUPS}, dpSrc={k: 0 for k in SRC_GROUPS}, over=dict(px=0, dp=0, sb=0), sole=dict(px=0, dp=0, sb=0),
+                     eng={c: 0 for c in RULE_CLASSES})
         for r in sel:
             ru = (r.get("rule") or {}).get(g)
             if not ru:
@@ -995,7 +1112,7 @@ def main():
             for c in RULE_CLASSES:
                 for i in range(6):
                     acc[c][i] += ru["cls"][c][i]
-            for k in ("sbSrc", "dpSrc", "over", "sole"):
+            for k in ("sbSrc", "dpSrc", "over", "sole", "eng"):
                 for kk, v in ru[k].items():
                     extra[k][kk] += v
         return acc, extra
@@ -1034,6 +1151,8 @@ def main():
         blocked = sum(acc[c][2] for c in ("px", "dp", "sb"))
         P(f"  own 白给样本里被留底挡住的 {blocked} 个（{pct(blocked, tot)}）：" + "；".join(
             f"{RULE_CN[c]} {acc[c][2]}（其中留底已超过余额 {extra['over'][c]}、只差这一项就放行 {extra['sole'][c]}）" for c in ("sb", "dp", "px")))
+        P("  own 白给样本里，这个号当时已经有兵压在某个挨着的内置 AI 身上的：" + "；".join(
+            f"{RULE_CN[c]} {extra['eng'][c]}/{acc[c][2]}（{pct(extra['eng'][c], acc[c][2])}）" for c in RULE_CLASSES if acc[c][2]))
         sbn = acc["sb"][2]
         P(f"  AI 仇恨项挡住的 {sbn} 个样本里，sb 取的是谁的余额（那个 AI 别的邻居里最弱的）：" + "；".join(
             f"{SRC_CN[k]} {v}（{pct(v, sbn)}）" for k, v in extra["sbSrc"].items() if v))
@@ -1044,16 +1163,33 @@ def main():
             qv = lambda f: allv[min(len(allv) - 1, int(f * len(allv)))]
             P(f"  own 白给样本的 sb ÷ 余额：25/50/75/90 分位 {qv(0.25):.2f} / {qv(0.5):.2f} / {qv(0.75):.2f} / {qv(0.9):.2f}；≥0.7859（= 1 − minSend，单这一项就挡住）的 {sum(1 for x in allv if x >= 0.7859)} 个（{pct(sum(1 for x in allv if x >= 0.7859), len(allv))}）；"
               f"sb = 0 的 {sum(1 for x in allv if x == 0)} 个（{pct(sum(1 for x in allv if x == 0), len(allv))}）")
-    P("  白给的样本按窗：窗 | 组 | 样本 | 规则放行（出手） | 已有兵压着（出手） | 不值 | 留底·地价 | 留底·防真人 | 留底·AI 仇恨（出手）")
+    P("  白给的样本按窗：窗 | 组 | 样本 | 有新目标放行（出手） | 只有续兵放行（出手） | 都已在打、跳过（出手） | 不值 | 留底·地价 | 留底·防真人 | 留底·AI 仇恨（出手）")
     for k, nm in enumerate(("600~900", "900~1260", "1260~1500")):
         for g, sel in (("own", with_rule), ("wild", with_rule_all)):
             w = {c: [sum(r["rule"][g]["win"][k][c][i] for r in sel) for i in range(2)] for c in RULE_CLASSES}
             tot = sum(w[c][0] for c in RULE_CLASSES)
             if not tot:
                 continue
-            P(f"    {nm} | {GROUP_CN[g]} | {tot} | {pct(w['allowed'][0], tot)}（{pct(w['allowed'][1], w['allowed'][0])}） | {pct(w['engaged'][0], tot)}（{pct(w['engaged'][1], w['engaged'][0])}） | "
+            P(f"    {nm} | {GROUP_CN[g]} | {tot} | {pct(w['allowed'][0], tot)}（{pct(w['allowed'][1], w['allowed'][0])}） | {pct(w['again'][0], tot)}（{pct(w['again'][1], w['again'][0])}） | {pct(w['engaged'][0], tot)}（{pct(w['engaged'][1], w['engaged'][0])}） | "
               f"{pct(w['worth'][0], tot)} | {pct(w['px'][0], tot)} | {pct(w['dp'][0], tot)} | {pct(w['sb'][0], tot)}（{pct(w['sb'][1], w['sb'][0])}）")
             agg_j[f"win|{nm}|{g}"] = dict(total=tot, cls={c: dict(n=w[c][0], hit=w[c][1]) for c in RULE_CLASSES})
+    P("  挨着的内置 AI 有多大（挨着内置 AI 的全部样本；每个样本最多记 6 个、按打垮价从小到大）：窗 | 组 | 样本 | 挨着的 AI 平均地 | 其中最大的那个 | 打垮最便宜的那个 | 记到的 AI 个数 | 这个号自己的地 | 自己的兵")
+    for k, nm in enumerate(("600~900", "900~1260", "1260~1500")):
+        for g, sel in (("own", with_rule), ("wild", with_rule_all)):
+            a = [sum(r["rule"][g]["adj"][k][i] for r in sel) for i in range(7)]
+            if a[0]:
+                P(f"    {nm} | {GROUP_CN[g]} | {a[0]} | {a[1] / a[0]:.0f} | {a[2] / a[0]:.0f} | {a[3] / a[0]:.0f} | {a[4] / a[0]:.1f} | {a[5] / a[0]:.0f} | {a[6] / a[0]:.0f}")
+                agg_j[f"adj|{nm}|{g}"] = dict(n=a[0], mean=a[1] / a[0], largest=a[2] / a[0], cheapest=a[3] / a[0], count=a[4] / a[0], terr=a[5] / a[0], bal=a[6] / a[0])
+    pma = []
+    for r in with_rule:
+        o = [sum(r["rule"]["own"]["adj"][k][i] for k in range(3)) for i in range(7)]
+        w = [sum(r["rule"]["wild"]["adj"][k][i] for k in range(3)) for i in range(7)]
+        if o[0] >= 20 and w[0] >= 20:
+            pma.append(((o[1] / o[0]) / (w[1] / w[0]), (o[2] / o[0]) / (w[2] / w[0]), (o[3] / o[0]) / (w[3] / w[0])))
+    if pma:
+        P(f"    逐局（own 和野人各 ≥20 个样本的 {len(pma)} 局），own ÷ 野人：挨着的 AI 平均地 中位 {med([x[0] for x in pma]):.2f}（<1 的 {sum(1 for x in pma if x[0] < 1)} 局）；"
+          f"最大的那个 中位 {med([x[1] for x in pma]):.2f}（<1 的 {sum(1 for x in pma if x[1] < 1)} 局）；打垮最便宜的那个 中位 {med([x[2] for x in pma]):.2f}（<1 的 {sum(1 for x in pma if x[2] < 1)} 局）")
+        agg_j["adj|perMatch"] = dict(n=len(pma), mean=med([x[0] for x in pma]), largest=med([x[1] for x in pma]), cheapest=med([x[2] for x in pma]))
     pmj = []
     for r in with_rule:
         acc, _ = rule_sum([r], "own")
@@ -1061,11 +1197,12 @@ def main():
         if tot >= 20:
             r["gateShare"] = sum(acc[c][2] for c in ("px", "dp", "sb")) / tot
             r["sbShare"] = acc["sb"][2] / tot
-            r["allowedHit"] = (acc["allowed"][3] / acc["allowed"][2]) if acc["allowed"][2] >= 10 else None
+            fire_n, fire_h = acc["allowed"][2] + acc["again"][2], acc["allowed"][3] + acc["again"][3]
+            r["allowedHit"] = (fire_h / fire_n) if fire_n >= 10 else None
             pmj.append(r)
     P(f"  逐局（own ≥20 个白给样本的 {len(pmj)} 局）：被留底挡住的占比 中位 {100 * med([r['gateShare'] for r in pmj]):.0f}%"
       f"（四分位 {100 * sorted(r['gateShare'] for r in pmj)[len(pmj) // 4]:.0f}%~{100 * sorted(r['gateShare'] for r in pmj)[(3 * len(pmj)) // 4]:.0f}%）；"
-      f"其中 AI 仇恨项 中位 {100 * med([r['sbShare'] for r in pmj]):.0f}%；规则放行的样本里 90 拍内出手 中位 {100 * med([r['allowedHit'] for r in pmj if r['allowedHit'] is not None]):.0f}%")
+      f"其中 AI 仇恨项 中位 {100 * med([r['sbShare'] for r in pmj]):.0f}%；规则放行（含续兵）的样本里 90 拍内出手 中位 {100 * med([r['allowedHit'] for r in pmj if r['allowedHit'] is not None]):.0f}%")
     for nm, sel in (("squad10", [r for r in pmj if r["cohort"] == "squad10"]), ("squad20", [r for r in pmj if r["cohort"] == "squad20"]),
                     ("几乎不卡的局", [r for r in pmj if calm_of(r)]), ("其余的局", [r for r in pmj if not calm_of(r)]),
                     ("主队赢", [r for r in pmj if r["won"]]), ("没赢", [r for r in pmj if not r["won"]])):

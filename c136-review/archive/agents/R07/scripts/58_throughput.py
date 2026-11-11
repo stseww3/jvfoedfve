@@ -22,9 +22,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = "/agent/repos/c136-data"
 ROOT = os.path.join(HERE, "..", "out", "_cache", "census")
 CROSS = os.path.join(HERE, "..", "out", "_cross")
-TICK_RE = re.compile(r"^\d+\t\[(\w+)\] \[HL-TICK\] t=(\d+) .*?cmds=(\d+)")
-DISP_RE = re.compile(r"^\d+\t\[(\w+)\] \[HL-DISPATCH\] t=(\d+) ")
+TICK_RE = re.compile(r"^\d+\t\[([^\]\[]+)\] \[HL-TICK\] t=(\d+) .*?cmds=(\d+)")
+DISP_RE = re.compile(r"^\d+\t\[([^\]\[]+)\] \[HL-DISPATCH\] t=(\d+) ")
 PERIODS = [(0, 600), (600, 1500), (1500, 3000), (3000, 10 ** 9)]
+BATCH_GAPS = {}
 
 
 def plabel(p):
@@ -33,10 +34,12 @@ def plabel(p):
 
 def load_game(mid):
     allow = set()
+    pmap = {}
     for ln in open(os.path.join(ROOT, mid, "squad_players.tsv"), encoding="utf-8"):
         c = ln.rstrip("\n").split("\t")
         if len(c) == 2 and c[0].isdigit():
             allow.add(c[1])
+            pmap[c[0]] = c[1]
     snaps = defaultdict(dict)
     disp = defaultdict(list)
     with open(os.path.join(DATA, "bundles", mid, "in_game.log"), encoding="utf-8", errors="replace") as f:
@@ -52,8 +55,8 @@ def load_game(mid):
     land = defaultdict(list)
     with open(os.path.join(ROOT, mid, "humans_cmd.tsv"), newline="", encoding="utf-8") as f:
         for r in csv.DictReader(f, delimiter="\t"):
-            if r["squad"] == "1":
-                land[r["name"].split("] ")[-1].strip()].append(int(r["t"]))
+            if r["squad"] == "1" and r["p"] in pmap:
+                land[pmap[r["p"]]].append(int(r["t"]))
     for b in land:
         land[b].sort()
     for b in disp:
@@ -67,6 +70,20 @@ def load_game(mid):
             lt = land.get(b, [])
             dp = disp.get(b, [])
             wins.append((b, a, z, sn[z] - sn[a], bisect.bisect_right(lt, z) - bisect.bisect_right(lt, a), bisect.bisect_right(dp, z) - bisect.bisect_right(dp, a)))
+    # 同一个号相邻两个 ≥8 条的批（中间零星落地 ≤2 条）：(后一个批的落地拍, 间隔的回合数)
+    BATCH_GAPS[mid] = []
+    for b, lt in land.items():
+        cnt = defaultdict(int)
+        for t in lt:
+            cnt[t] += 1
+        last, between = None, 0
+        for t in sorted(cnt):
+            if cnt[t] >= 8:
+                if last is not None and between <= 2:
+                    BATCH_GAPS[mid].append((t, (t - last) // 7))
+                last, between = t, 0
+            else:
+                between += cnt[t]
     return wins
 
 
@@ -221,6 +238,25 @@ def main():
     P(f"  一窗发出 ≥17 条（差不多每个决策拍一条）且没有捐款的窗口：{len(k18):,} 个，发出 {sum(r[4] for r in k18):,}、落地 {sum(r[5] for r in k18):,}；分布在 {len({r[0] for r in k18})} 局、{len({(r[0], r[1]) for r in k18})} 个号次")
 
     P("")
+    P("## I2. 逐个号（一局一个号算一个）在 600~3000 拍里：这个号发出合计分档（只算起点在 600~3000、没有捐款的窗口；这样的窗口不足 10 个的号次不列）")
+    P("   发出合计 | 号次 | 发出合计 | 落地合计 | 落地 ÷ 发出 | 每个号落地条数的中位 / P90 / 最大")
+    bl = []
+    for (m, b), ws0 in seq.items():
+        ws = [w for w in ws0 if w[4] == 0 and 600 <= w[0] < 3000]
+        if len(ws) >= 10:
+            bl.append((sum(w[2] for w in ws), sum(w[3] for w in ws), m, b))
+    for lo, hi in ((0, 19), (20, 39), (40, 79), (80, 149), (150, 249), (250, 10 ** 6)):
+        sel = [x for x in bl if lo <= x[0] <= hi]
+        if not sel:
+            continue
+        si, sl = sum(x[0] for x in sel), sum(x[1] for x in sel)
+        ls = sorted(x[1] for x in sel)
+        lab = f"{lo}~{hi}" if hi < 10 ** 6 else f"≥{lo}"
+        P(f"  {lab}\t{len(sel)}\t{si:,}\t{sl:,}\t{(sl / si if si else 0):.2f}\t{statistics.median(ls):.0f} / {ls[int(0.9 * (len(ls) - 1))]} / {ls[-1]}")
+    topl = sorted(bl, key=lambda x: -x[1])[:5]
+    P("  落地最多的 5 个号次：" + "、".join(f"{m} {b}（发出 {i}、落地 {l}）" for i, l, m, b in topl))
+
+    P("")
     P("## J. 逐局的「连发窗口」（单个号一窗发出 ≥10 条、窗口里没有捐款）：局 | 这样的窗口数（其中 ≥17 条的）| 窗口里发出 / 落地 | 按窗口起点分 0~600 / 600~1500 / 1500~3000 / 3000+ 的窗口数 | 涉及的号数")
     fl = defaultdict(list)
     for r in all_w:
@@ -271,6 +307,27 @@ def main():
             if r and r[0] >= 20:
                 P(f"  {tag}\t{plabel(p)}\t{r[0]:,}\t{r[1]:,} / {r[2]:,}（{r[2] / r[1]:.2f}）\t{r[3] / r[0]:.0%}")
     P("  （不足 20 个窗口的格子不列）")
+
+    P("")
+    P("## M. 同一个号相邻两个 ≥8 条的批隔几个回合，和全队当时发得多少的关系（后一个批落在 600~3000 拍；全队发出 = 后一个批所在的 90 拍窗口里全队 cmds 的增量）")
+    P("   全队这一窗发出 | 对数 | 间隔（回合）中位 / P90 | 涉及的局数")
+    mg = []
+    for g, w, team in per_game:
+        mid = g["matchId"]
+        for t, gap in BATCH_GAPS.get(mid, []):
+            if not (600 <= t < 3000):
+                continue
+            a = (t - 1) // 90 * 90
+            v = team.get((a, a + 90))
+            if v:
+                mg.append((v[0], gap, mid))
+    for lo, hi in ((0, 19), (20, 39), (40, 79), (80, 129), (130, 10 ** 6)):
+        sel = sorted(x[1] for x in mg if lo <= x[0] <= hi)
+        if not sel:
+            continue
+        lab = f"{lo}~{hi}" if hi < 10 ** 6 else f"≥{lo}"
+        P(f"  {lab}\t{len(sel)}\t{statistics.median(sel):.0f} / {sel[int(0.9 * (len(sel) - 1))]}\t{len({x[2] for x in mg if lo <= x[0] <= hi})}")
+    P(f"  （合计 {len(mg)} 对；只算能对账的局）")
 
     os.makedirs(CROSS, exist_ok=True)
     open(os.path.join(CROSS, "throughput.txt"), "w", encoding="utf-8").write("\n".join(L) + "\n")

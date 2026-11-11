@@ -19,8 +19,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = "/agent/repos/c136-data"
 ROOT = os.path.join(HERE, "..", "out", "_cache", "census")
 CROSS = os.path.join(HERE, "..", "out", "_cross")
-TICK_RE = re.compile(r"^\d+\t\[(\w+)\] \[HL-TICK\] t=(\d+) terr=(\d+)\S* bal=(-?\d+) dens=([\d.]+) nb=(\d+) neut=(\d+) cmds=(\d+)")
-DISP_RE = re.compile(r"^\d+\t\[(\w+)\] \[HL-DISPATCH\] t=(\d+) ")
+TICK_RE = re.compile(r"^\d+\t\[([^\]\[]+)\] \[HL-TICK\] t=(\d+) terr=(\d+)\S* bal=(-?\d+) dens=([\d.]+) nb=(\d+) neut=(\d+) cmds=(\d+)")
+DISP_RE = re.compile(r"^\d+\t\[([^\]\[]+)\] \[HL-DISPATCH\] t=(\d+) ")
 
 
 def main():
@@ -40,10 +40,15 @@ def main():
             m = DISP_RE.match(ln)
             if m and m.group(1) == bot:
                 disp.append(int(m.group(2)))
+    pid = None
+    for ln in open(os.path.join(ROOT, mid, "squad_players.tsv"), encoding="utf-8"):
+        c = ln.rstrip("\n").split("\t")
+        if len(c) == 2 and c[0].isdigit() and c[1] == bot:
+            pid = c[0]
     land = []
     with open(os.path.join(ROOT, mid, "humans_cmd.tsv"), newline="", encoding="utf-8") as f:
         for r in csv.DictReader(f, delimiter="\t"):
-            if r["squad"] == "1" and r["name"].split("] ")[-1].strip() == bot:
+            if r["squad"] == "1" and r["p"] == pid:
                 land.append((int(r["t"]), r["kind"]))
     L = []
     P = L.append

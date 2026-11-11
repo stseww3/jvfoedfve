@@ -14,6 +14,8 @@
   [XD-A] 样本   [XD-B] 秩相关（Spearman）   [XD-C] 按剂量三分位看结果   [XD-D] 几乎没有卡顿的局   [XD-E] 赢的局和没赢的局
   [XD-F] 贴边 / 房间大小 和结果的秩相关（混杂项）   [XD-G] 不靠卡顿的两个量（挨着白给的 AI 出不出手、每条派多少）
   [XD-H] 留底门槛的剂量（被留底挡住的样本占比）和结果、和卡顿剂量的关系；门槛 × 卡顿 两层交叉
+  [XD-I] 别的解释量（门槛、贴边、扎堆、续兵、对数、每条派多少）和结果的秩相关：原始 / 扣掉卡顿剂量 B 之后的偏相关 / 只看几乎不卡的局
+         偏相关 = 两个量各自对 B 取秩回归后的残差之间的相关（秩口径）；AIRATIO = own 人均从内置 AI 吃到的格 ÷ 同局野人人均
 """
 import json
 import os
@@ -48,6 +50,30 @@ def spearman(x, y):
     if sx == 0 or sy == 0:
         return None
     return sum((a - mx) * (b - my) for a, b in zip(rx, ry)) / (sx * sy)
+
+
+def partial_spearman(x, y, z):
+    """秩口径的偏相关：x、y 各自对 z 的秩做一元线性回归，取残差的 Pearson 相关。"""
+    if len(x) < 8:
+        return None
+    rx, ry, rz = rank(x), rank(y), rank(z)
+    n = len(rz)
+    mz = sum(rz) / n
+    szz = sum((c - mz) ** 2 for c in rz)
+    if szz == 0:
+        return None
+
+    def resid(r):
+        m = sum(r) / n
+        b = sum((c - mz) * (a - m) for a, c in zip(r, rz)) / szz
+        return [(a - m) - b * (c - mz) for a, c in zip(r, rz)]
+
+    ex, ey = resid(rx), resid(ry)
+    sx = sum(a * a for a in ex) ** 0.5
+    sy = sum(b * b for b in ey) ** 0.5
+    if sx == 0 or sy == 0:
+        return None
+    return sum(a * b for a, b in zip(ex, ey)) / (sx * sy)
 
 
 def med(v):
@@ -106,6 +132,24 @@ def main():
         for k_src, k_dst in (("gateShare", "GATE"), ("sbShare", "SB"), ("allowedHit", "ALLOWHIT")):
             if r.get(k_src) is not None:
                 d[k_dst] = r[k_src]
+        if sp["n"]:
+            d["CLUSTER"] = sp["nnBot"] / sp["n"]
+        spw = r["spawn"]["wild"]
+        if sp.get("nnMed") and spw.get("nnMed"):
+            d["NNDIST"] = sp["nnMed"] / spw["nnMed"]
+        pr_, yl_, bd_ = r.get("pairs"), r.get("yield600_1500"), r.get("budget600_1500")
+        if pr_ and yl_ and yl_["own"]["heads"] >= 3 and yl_["wild"]["heads"] >= 5:
+            po = [sum(pr_["own"][c][i] for c in ("alone", "mate", "wild")) for i in range(14)]
+            pw = [sum(pr_["wild"][c][i] for c in ("alone", "mate", "wild")) for i in range(14)]
+            if po[0] >= 10 and pw[0] >= 10:
+                d["PAIRS"] = (po[0] / yl_["own"]["heads"]) / (pw[0] / yl_["wild"]["heads"])
+                d["REINF"] = po[11] / po[1]
+                d["CMDSPAIR"] = po[1] / po[0]
+                d["AISIZE"] = (po[7] / po[0]) / (pw[7] / pw[0])
+        if bd_ and bd_["own"]["heads"] >= 3 and bd_["wild"]["heads"] >= 5 and bd_["wild"]["ai"] > 0:
+            d["AIRATIO"] = (bd_["own"]["ai"] / bd_["own"]["heads"]) / (bd_["wild"]["ai"] / bd_["wild"]["heads"])
+            if bd_["wild"]["neutral"] > 0:
+                d["NEUTRATIO"] = (bd_["own"]["neutral"] / bd_["own"]["heads"]) / (bd_["wild"]["neutral"] / bd_["wild"]["heads"])
         rows.append(d)
     out = []
     P = out.append
@@ -229,10 +273,44 @@ def main():
     for d in sorted(lowlag, key=lambda d: d.get("GATE", 9)):
         P(f"    {d['matchId']}（{d['cohort']}{'，赢' if d['won'] else ''}） | {f2(d.get('GATE'))} | {f2(d.get('SB'))} | {f2(d.get('ALLOWHIT'))} | {f2(d.get('ACT'))} | {f2(d.get('R1500'))} | {f2(d.get('AISHARE'))}")
 
+    P("")
+    P("[XD-I] 别的解释量和结果（秩相关）：量 | 局数 | × R1500：原始 / 扣掉 B 的偏相关 | × AISHARE：原始 / 偏 | × AIRATIO：原始 / 偏 || 只看几乎不卡的局（局数）：× R1500 | × AISHARE | × AIRATIO")
+    P("  GATE = 白给样本里被留底挡住的占比；SB = 其中 AI 仇恨项；EDGE = 贴边比例；CLUSTER = own 的号里最近的真人是机器号的比例；NNDIST = own 最近真人距离中位 ÷ 野人的；")
+    P("  H = 房间真人数；R630 = t=630 人均对照；SIZE = 打 AI 每条派出占余额；REINF = 打 AI 的生效陆攻里续兵的占比；CMDSPAIR = 每对（号 → AI）的条数；")
+    P("  PAIRS = 人均对几个 AI 下过手 ÷ 野人的；AISIZE = 下手时 AI 的地 ÷ 野人下手时的；AIRATIO = own 人均从内置 AI 吃到的格 ÷ 野人人均（600~1500）；NEUTRATIO = 无主地同口径")
+    other = {}
+    XV = ("B", "GATE", "SB", "EDGE", "CLUSTER", "NNDIST", "H", "R630", "SIZE", "REINF", "CMDSPAIR", "PAIRS", "AISIZE", "ACT", "ALLOWHIT")
+    for k in XV:
+        cells = []
+        nmax = 0
+        for res in ("R1500", "AISHARE", "AIRATIO"):
+            tr = [(d[k], d[res], d["B"]) for d in rows if d.get(k) is not None and d.get(res) is not None and "B" in d]
+            nmax = max(nmax, len(tr))
+            raw = spearman([a for a, _, _ in tr], [b for _, b, _ in tr]) if len(tr) >= 8 else None
+            par = partial_spearman([a for a, _, _ in tr], [b for _, b, _ in tr], [c for _, _, c in tr]) if (len(tr) >= 8 and k != "B") else None
+            cells.append(f"{f2(raw)} / {f2(par)}")
+            other[f"{k}|{res}"] = dict(n=len(tr), raw=raw, partial=par)
+        ccells = []
+        ncalm = 0
+        for res in ("R1500", "AISHARE", "AIRATIO"):
+            pr = [(d[k], d[res]) for d in lowlag if d.get(k) is not None and d.get(res) is not None]
+            ncalm = max(ncalm, len(pr))
+            rho = spearman(*zip(*pr)) if len(pr) >= 8 else None
+            ccells.append(f2(rho))
+            other[f"calm|{k}|{res}"] = dict(n=len(pr), rho=rho)
+        P(f"  {k} | {nmax} | " + " | ".join(cells) + f" || （{ncalm}）" + " | ".join(ccells))
+    P("  解释量之间（全部局）：" + "；".join(
+        f"{a}×{b} {f2(spearman(*zip(*[(d[a], d[b]) for d in rows if d.get(a) is not None and d.get(b) is not None])))}"
+        for a, b in (("GATE", "B"), ("GATE", "CLUSTER"), ("GATE", "EDGE"), ("GATE", "H"), ("SB", "CLUSTER"), ("REINF", "B"), ("PAIRS", "B"), ("PAIRS", "GATE"), ("AISIZE", "B"),
+                     ("CLUSTER", "EDGE"), ("CLUSTER", "H"), ("EDGE", "H"))))
+    P("  几乎不卡的局（没生效占比 ≤5%）各量的中位：" + "；".join(f"{k} {f2(med([d[k] for d in lowlag if d.get(k) is not None]))}" for k in XV + ("AIRATIO", "NEUTRATIO", "R1500", "AISHARE")))
+    rest_ = [d for d in rows if d not in lowlag]
+    P("  其余的局各量的中位：" + "；".join(f"{k} {f2(med([d[k] for d in rest_ if d.get(k) is not None]))}" for k in XV + ("AIRATIO", "NEUTRATIO", "R1500", "AISHARE")))
+
     with open(os.path.join(OUT, "xdose.txt"), "w", encoding="utf-8") as f:
         f.write("\n".join(out) + "\n")
     with open(os.path.join(OUT, "xdose.json"), "w", encoding="utf-8") as f:
-        json.dump(dict(rows=rows, corr=corr, terciles=terc, calm=[d["matchId"] for d in calm], gate=gate), f, ensure_ascii=False, separators=(",", ":"))
+        json.dump(dict(rows=rows, corr=corr, terciles=terc, calm=[d["matchId"] for d in calm], gate=gate, other=other), f, ensure_ascii=False, separators=(",", ":"))
     if not quiet:
         print("\n".join(out))
 

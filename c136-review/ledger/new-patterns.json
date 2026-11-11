@@ -6054,6 +6054,226 @@
   "id": "NEW-AT-CAPDUMP"
  },
  {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "EX",
+  "name": "不带战队标签的编队被大厅拆进好几支队伍：各号各为其队，互为对手，编队层面的得失互相抵消",
+  "definition": "组队局里，同一支编队（按 [HL-GAME-INIT] 日志认出的号）在引擎里的队号 ≥2 种。记：每支队里有几个编队号、几个掉线的编队号；编队号向「主队」（编队号最多的那支队）其他成员出的兵（条数 / 兵）和从它们净拿的地；主队 300 拍跌幅最大的窗口里，净拿走主队地的各方里编队号占多少；另一支本方编队（另一套战队标签）被整队分到对面时，两边互相出的兵和净易手的地。这种局的对局卡把所有号加在一起算 peakSquadLandShare / ourFinalTeamShare，不能当成「一支队」的数。",
+  "detector": "scripts/split_roster.py <局号>（第 1 节花名册与队号、第 3 节各类号占比、第 4~5 节类别之间的出兵与净得地、第 7 节主队跌得最狠的 300 拍里地给了谁）；tmp/truth/<局号>/meta.json 的 players[].team；对局卡 card.json 的 teamSplitCounts",
+  "codePath": "分队发生在策略代码之外（大厅 / 上线适配层，不在对局包里）。策略侧与此有关的三处（v27-team-c110.js）：Policy.isTeammate L3937~3939（只认引擎的队号）；Policy.isProtectedSquadMate L3993~3996（场上还有「野生真人」时，名字在默认名池里的号跨队也不打）；Policy.offers / buyLand 对其余真人一视同仁——主队里不在名池里的真人，对分到别队的编队号来说就是普通目标。",
+  "id": "NEW-EX-SPLITTEAMS"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "EX",
+  "name": "我方号中途离场，变成不生息的内置 AI",
+  "definition": "引擎里该号状态变成 2（离开）；记录离场拍、当时领土与余额、离场前客户端落后量。",
+  "detector": "scripts/match_digest.py 第 5、10 节（ev.tsv 的 state 事件）；scripts/client_lag.py",
+  "codePath": "不在策略代码里：引擎 dF.aeY 把离场号标成已离开并交给内置 AI（规格书 B 第 9.4 节）",
+  "id": "NEW-EX-LEAVER"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "SP",
+  "name": "出生阵型没有让号吃亏（对照组）",
+  "definition": "t=630 与 t=1530 时我方号领土中位都 ≥ 其他真人领土中位的 80%（不论最近队友距离是多少；间距与 rCell 的比例照列）。",
+  "detector": "scripts/spawn_geometry.py；scripts/match_digest.py 第 1 节与第 3b 节",
+  "codePath": "spawn-coordinator-*.mjs TeamSpawnCoordinator.solve",
+  "id": "NEW-SP-SPREAD"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "EX",
+  "name": "靠默认名池认「兄弟」：名字撞池的真人和已经掉线的编队号都被当成不能打、也看不见的邻居",
+  "definition": "c110 的 isOurSquadBot 只看名字是否在 740 个默认名的池里（或带 [NPL] / [NOPE]）。三种后果各自计数：(a) 名字撞池的真人（没有 [HL-GAME-INIT] 日志的号）对编队号出的兵、净拿的地，编队号对它的还手条数；(b) 已经离场（引擎状态 2、由内置 AI 接管）的编队号对在场编队号出的兵、净拿的地，在场号影子表里的邻居数是否漏掉它；(c) 日志里 [HL-ASSIST] 的「squad-rescue poke」里 ally 不是本队成员的条数（替别队的名池号去戳人）。另记选点：chooseSpawn 给名池号排位时把它们从地图上摘掉再打分，落点离撞名真人 / 掉线号的距离。",
+  "detector": "scripts/split_roster.py <局号>（第 1 节 P 类 = 名字在池里但没有日志的号；第 5 节「兄弟」之间的进攻；第 6 节逐号的出手与挨打；第 8 节出生点）；tmp/shadow/<局号>/rows.tsv 的 nb / nHum 两列（看不见的邻居不计入）；对局包 in_game.log 的 [HL-ASSIST] / [HL-DONATE] 行",
+  "codePath": "v27-team-c110.js：SQUAD_POOL_SET L1；Policy.isOurSquadBot L3973~3976（只比名字，不看有没有离场）；Policy.isProtectedSquadMate L3993~3996；Strategy.analyze L440（受保护的号不进 this.nb：不进报价单，也不进 dpKeep / safeFinite 的威胁估计）；Policy.chooseSpawn L4067~4072（gClean = withoutPlayer(g, sid)：名池号已选的点在打分前被摘掉）；Policy.tryDonateToTeammate L4423~4460（救援对象 = 名池号，跨队；L4448~4457 对主攻者出 102/1024 的一戳，不要求是队友）。",
+  "id": "NEW-EX-NAMEPOOL"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "OP",
+  "name": "开局占无主地的节奏不落后",
+  "definition": "t=270 或 t=630 时我方号领土中位 ≥ 其他真人领土中位（两个时刻的数都列出）。",
+  "detector": "scripts/match_digest.py 第 3b 节（拍 270、630 的中位与名次）",
+  "codePath": "V13.expandNeutral L2373 / dpNeutral L2383（开局按圈数买无主地）",
+  "id": "NEW-OP-DPGOOD"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "AT",
+  "name": "核心期贴着 0 兵 / 弱的内置 AI 残地不吃：留兵底线取「它的其他邻居里余额最小者」，那个邻居是敌方大号时底线就是对方的整个余额（封顶 88×领土）",
+  "definition": "t ≥ 1500 的号·决策拍里，第一条内置 AI 报价（含离场后按 AI 算的真人）被 safeAt → safeFinite 顶住、且参照对象是敌方真人（core_gate_tally.py --ai 的 floor/sf/enemy 与 floor/cap+sf/enemy 两类）。计数 = 号·决策拍数、参照对象分布、其中封顶 oppFloorCap×领土 之后仍不够的拍数。参照对象是队友的另记 NEW-AT-ALLYFLOOR。",
+  "detector": "scripts/core_gate_tally.py <局号> t0 t1 --ai [--by-target] [--bots …]；scripts/shadow.mjs <局号> --bots <号> --at <拍>（[buyLand] 一段每条报价的 safeAt 与「余额−费−底线」）；scripts/idle_scan.py（「贴弱AI不出手」列）",
+  "codePath": "V17.safeAt L2728~2737（botSkip = 0：不排除要买的这个 AI）← V13.safeFinite L2500~2510 ← Strategy.threatOf L417~444（minOther）；Policy.buyLand L5413~5417（非真人目标的 safe 封顶 capPerPx×领土）、L5445（avail = 余额 − 手续费 − max(keep, safe)，不分这一单要多少兵）。Vb / Vc 的行号。",
+  "id": "NEW-AT-ENEMYFLOOR"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "OP",
+  "name": "核心期前对真人只有「一次吃到出局」一种打法，留兵底线又跟着对方别的邻居（含队友）的余额涨：几个号围着一个密度更低的真人，各算各的都够不着",
+  "definition": "核心期之前（t < coreFrom=1500）某号的非队友陆上邻居只剩真人（没有内置 AI、没有无主地），这一拍没有出手。两道门：① 留兵底线 = preyFloor(0.5)×min(100×领土, max(100×领土×min(1, 单价/60), defenseNeed))，defenseNeed = kDef(4)×「这个真人别的邻居里余额最小者」（队友也算），要 余额 − 底线 > 21.4%×余额；② 对没打过自己的真人（motive 为 null）要 sendFrac(0.746)×(余额 − 底线) ≥ 出局价（elimCost ≈ 1.8×对方余额 + 1.5×对方领土），否则这一拍出兵量为 0。计数 = 「只贴真人」没出手的号·决策拍数；其中两道门都过不了 / 只差底线 / 底线过了但一次吃不到出局 的拍数；底线被 defenseNeed 顶住且参照对象是我方编队号的拍数；按「同一拍、同一个目标」归组后，≥2 个我方号贴着同一个真人、合计余额的 74.6% ≥ 出局价的组数占比（合起来够、各算各的不够）。另列段首段末我方合计余额与对方余额之比、对方在这段时间的领土变化、核心期接手后的第一次出手拍。（2.0 版之前这条的说明写成「底线约 1.5×邻居均兵」，是按现象估的；四个版本 ref 在 513 拍以后都是 0，实际是上面两道门。）",
+  "detector": "scripts/window_tally.py <局号> <t0> <t1>（「只贴真人」列）；scripts/pre_human_floor_tally.py <局号> [t0 t1] [--only-human]（rows.tsv 的 hbind / href / hkneed 列：底线被哪一项顶住、参照对象、出局价、归组后合起来够不够）；scripts/shadow.mjs <局号> --bots <号> --at <拍>（[核心期前] 一段逐个邻居给出 需 / 底线 / 可用兵，[底线拆解] 一行给出各项和参照对象）；scripts/truth_query.py <局号> bal <号> t0 t1",
+  "codePath": "Policy.act L4850（coreFrom 之前走 super.act）→ Style.pickTarget L1144~1165（L1160~1161：avail = 余额 − floorFor(…, floorAt(单价))，要 > minShare×余额 = 21.4%×余额；L1162 出局价 need）→ V13.amount0 L2347~2349（motive 为 null：sendFrac×avail ≥ preyKill×need 才出手）；V13.floorFor0 L2233~2240（真人、motive 为 null：preyFloor×floorAt）← General.floors L819~830 ← General.defenseNeed L899~913 ← General.altOf L918~940（不排除队友）；Strategy.elimCost L464~469。每个号只看自己的余额，没有「几个号合起来够」的判断",
+  "id": "NEW-OP-REFCHASE"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "AT",
+  "name": "isNoFullSend 误锁，出兵被自己的守卫拦掉",
+  "definition": "影子策略里 isNoFullSend 变成 true（引擎的 25% 限额只在 aE.lC==10 的模式存在，团队局没有），此后 Policy.send 的守卫拦掉对非无主目标的出兵（返回 false）。计数 = 被拦次数与想出的兵。",
+  "detector": "scripts/shadow.mjs <局号> --out（check.json 里每个号的 lockAt / blocked）",
+  "codePath": "Policy.updateShadowQuota L3821~3834（发令后 6 拍内看到余额少掉的量比想发的小就上锁，永不解锁）、Policy.send L3844~3862（守卫）",
+  "id": "NEW-AT-NFSLOCK"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "IO",
+  "name": "客户端落后，指令晚到或丢失",
+  "definition": "某 250 拍时段我方陆攻指令落地率 < 60%，或落地延迟（落地拍 − 影子策略的决策拍）中位 ≥ 90 拍。全队一起落后时号与号之间的相对落后量看不出差别，另列。",
+  "detector": "scripts/exec_gap.py <局号> --profile 250；scripts/client_lag.py <局号>",
+  "codePath": "Strategy.send L479~487（发出即计数，不跟踪是否落地）+ Policy.act L4838（每 5 拍重新决策，同一指令反复重发）",
+  "id": "NEW-IO-LAGLOSS"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "IO",
+  "name": "指令迟到、目标已经出局：引擎把这条陆攻改成打无主地（或什么都不做）",
+  "definition": "[630,1500) 落地的陆攻指令里，影子策略发令时的目标是内置 AI 或真人、落地时该目标已经出局的条数。引擎执行陆攻前先把目标规整一遍：目标号已不在场就改成无主地（512），比例不变、按落地那一拍的余额计兵；身边有无主地就真的出一发（照收手续费），没有就什么都不做。计数 = 改了目标的条数（出了兵的 / 没出兵的）、改成打无主地的出兵与手续费、打在原目标上的条数占比、目标出局到指令落地的拍数（中位）。",
+  "detector": "scripts/ai_life.mjs <局号>（每个内置 AI 的出局拍，写 tmp/truth/<局号>/ai_life.tsv）；scripts/batch_targets.py <局号> [--list] [--t0 630 --t1 1500]",
+  "codePath": "引擎 live_game_js.js：qj.i6（执行陆攻）→ bD.gv.rk（k3<512 且 ah.nU[k3]===0 时 k3=512）；策略侧 Strategy.send L479~487（发的是「比例 + 目标号」，落地时按当时余额和当时的目标状态结算）、Policy.act L4838（每 5 拍一个决策拍，不知道前面的指令还没落地）",
+  "id": "NEW-IO-DEADTARGET"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "IO",
+  "name": "对真人的第一次出手晚到：策略想打的那一拍目标还弱，第一串落地时已经隔了几百拍，落下来的是攒成一摞的全压",
+  "definition": "我方某号对某个真人：影子策略第一次想打它的拍（第一条想出 ≥2 万兵）到录像里第一条真的出了兵的陆攻之间隔了 ≥90 拍。每对记：想打的拍、落地的拍、这段时间影子重复下了多少条、想打时双方的 领土 / 余额、落地时双方的 领土 / 余额、第一串（相邻落地拍 ≤7 拍）真出的兵占落地前余额的比例。计数 = 这样的（号, 目标）对数、晚的拍数中位 / 最大、其中第一串 ≥60% 余额的对数、没落地的对数。成因在上线适配层（指令迟到、成摞落地、同拍第 2 条不受理）和出兵闸门读引擎状态（上一条没生效就重发同一条，便宜的内置 AI 小单一直排在真人前面）两头，逐对写清是哪一头。",
+  "detector": "scripts/first_strike_lag.py <局号> [<局号> …] [--min 兵]（要有 tmp/shadow/<局号>/intents.tsv 和 tmp/truth/<局号>/）；逐拍看那个号在等什么：scripts/batch_targets.py <局号> --list --t0 … --t1 …、scripts/same_tick.py <局号> --list、scripts/big_batches.py <局号>",
+  "codePath": "Policy.buyLand（Va L5355~5616：报价单按单价从低到高，第一条发得出去的就 return，一拍一条）；L5448~5452（内置 AI 目标：出 1.25×需要量，常只有余额的 2%）；L5458（curAtk = g.attackTroopsOn(me, q) 读引擎状态，上一条没生效就当没下过）；Policy.act L4940~4941（expandNeutral 在前、buyLand 在后，线上一拍只受理一条）；传输层不在仓库里。",
+  "id": "NEW-IO-STRIKELAG"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "IO",
+  "name": "上一条指令还没在引擎里生效就又下一条：出兵闸门读的是引擎状态，一发脉冲变成两三发",
+  "definition": "出兵串 = 同一个号对同一个目标（真人或内置 AI）的陆攻，相邻两条的落地拍相隔 ≤7 拍。串首那条生效后的两个决策拍里影子策略不再对这个目标下单的叫关闸串（策略一看到第一条生效就停手），串里第 2 条起算重复单。计数 = 重复单的条数与兵、占全部打人/AI 出征兵的比例；整串出兵占串首执行前余额的比例（对比第一条单独的比例）。串里某一拍落 ≥3 条的（指令积压过）同时记 NEW-IO-DRAINBATCH。",
+  "detector": "scripts/blind_reorders.py <局号> [--list N] [--lag]",
+  "codePath": "Policy.buyLand L5459（curAtk = g.attackTroopsOn(me, q)）、L5575 / L5589 / L5596（在途进攻兵 ≥ 4%~8% 余额才不再加）、L5352（over 读当前余额）、L5446（avail 不扣已发未生效的兵）；Strategy.send L479~487（发出后不记「已发未生效」的账）；Policy.act L4838（每 5 拍一个决策拍，而线上指令最快 7 拍、一般 7~15 拍后才在引擎里执行）",
+  "id": "NEW-IO-ACKREPEAT"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "IO",
+  "name": "追帧后同一拍连发，把余额抽干",
+  "definition": "同一拍落地 ≥ 5 条同目标陆攻，批后余额 < 批前的 40%（每条都按当时余额重新计价）。",
+  "detector": "scripts/match_digest.py 第 6 节（同拍批次）",
+  "codePath": "Strategy.send L479~487（比例按决策拍的余额换算）+ Policy.act L4838（每 5 拍重发）；策略里没有「已发未落地」的账",
+  "id": "NEW-IO-DRAINBATCH"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "AT",
+  "name": "对真人一把全压却吃不死：2400 拍前对「没在打我、吃到出局要 >35% 余额」的真人不走脉冲，底线以上的兵一条指令全送出去",
+  "definition": "同一个号对同一个真人的出兵串（相邻落地拍 ≤7 拍）合计 ≥ 串首执行前余额的 60%，串首落地后 300 拍内目标没有出局，且 450 拍后本号的地比出手前少（或已出局）。计数 = 串数、出兵合计；同时给出打完的密度、密度 <5 的拍数、450 拍内被真人拿走的地。",
+  "detector": "scripts/allin_strikes.py <局号>… [--list]",
+  "codePath": "Policy.offers L5291~5294（pulseMode = nearCollapse || bleeding || ((tD < thinMaxTD || rawNeed > 0.30×B) && !(t < 2400 && !onMe && rawNeed > 0.35×B))）→ Policy.buyLand L5611~5616（非脉冲分支：want = 1.25×need + 3×接触数，x = min(avail, want)；pplKill = 0 时只要 x ≥ chunk×B（20%）就发，不要求 x ≥ want）；avail = B − 手续费 − max(keep, safeAt)。Vb / Vc 的行号，Va 各减 1。",
+  "id": "NEW-AT-PARTALLIN"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "DF",
+  "name": "出兵后留守太薄，被邻居反手打穿",
+  "definition": "某号余额在 90 拍内因自己的陆攻/捐款跌到 20×领土 以下，随后 300 拍内被敌方真人净拿走 ≥ 25% 领土或出局。",
+  "detector": "scripts/thin_after_spend.py <局号> [--all]（每个变薄点：前 90 拍自己花掉的兵、变薄后的密度、随后 300 拍出局 / 被敌方真人净拿走的地）；scripts/match_digest.py 第 5 节（出局链）与第 6 节（DROP30 对账）",
+  "codePath": "Policy.safeAt L4543~4560、Policy.buyLand L5414~5418（底线封顶 oppFloorCap×地）",
+  "id": "NEW-DF-THIN"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "IO",
+  "name": "同一个决策拍出两条指令，后一条不被受理（无主地扩张挤掉买地）",
+  "definition": "影子策略在同一个决策拍对同一个号给出 ≥2 条陆攻（实际都是 expandNeutral 的无主地扩张在前，buyLand 或开局打内置 AI 的陆攻在后），录像里第 2 条没有落地，且真实日志 [HL-TICK] 的 cmds 计数在这一段比影子少 1。计数 = 这样的号·拍数、没落地的第 2 条想出的兵（分 1500 拍前后）。",
+  "detector": "scripts/same_tick.py <局号> [--list]（第 2 条落地 / 没落地 / 分不清）；scripts/cmds_delta_check.py <局号>（策略自己的发令计数：影子比真实多出来的条数 = 同拍第 2 条的条数）",
+  "codePath": "Policy.act L4941（expandNeutral）→ L4942（buyLand），两句之间没有「本拍已发过」的守卫（L4962~4963 的调度和闲置发船有 this.cmds === cmdsBefore）；L4817 的注释写明线上一拍只能发一条；1500 拍前走 L4850 super.act；Strategy.send L479~487（g.attack 不受理时返回 false，本拍不再重发）",
+  "id": "NEW-IO-ONECMD"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "DN",
+  "name": "调度不看收款人的反喂养配额",
+  "definition": "t<4284 时 tryDonateToTeammate 一般分支按固定比例（220/240/320/380）定额，不比较收款人剩余配额点数；某号 t<4284 的调度落地率 < 30%。",
+  "detector": "scripts/quota_truth.py <局号>（没落地的调度用真引擎记的收款人配额重判原因）；scripts/match_digest.py 第 7 节",
+  "codePath": "Policy.tryDonateToTeammate L4499~4508（选定收款人后按 idealPct 定额直接 g.donate，没有用 g.donQuota / g.donCap）",
+  "id": "NEW-DN-QUOTABLIND"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "AT",
+  "name": "自己密度是对方两倍以上时出手并净得地（有效）",
+  "definition": "对某真人目标的一轮出兵（human_strikes.py 的一轮）落地时未 over、我方密度 ≥ 对方的 2.2 倍，随后 300 拍从它净得地 > 5000 格且 ≥ 出兵量 / 100。计数 = 轮数、出兵、净得地。",
+  "detector": "scripts/human_strikes.py <局号> --list",
+  "codePath": "Policy.buyLand L5350~5359（c < worth 或 c < cheap 才买）、L5455~5609（对真人的脉冲出兵量）",
+  "id": "NEW-AT-DENSEDGE"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "AT",
+  "name": "余额过 100×领土后不比单价，对接壤真人一轮一轮出手：结果看谁的地多",
+  "definition": "human_strikes.py 的一轮出手，串首执行前余额 > 100×领土（buyLand 的 over=true）。计数 = 轮数、出兵、随后 300 拍从目标净得地为正 / 为负的轮数，按「出手时自己的领土不比对方少 / 比对方少」分两组。两个号同一拍对打的轮次净得地互为相反数，分不开是谁造成的，单列。",
+  "detector": "scripts/human_strikes.py <局号> --list N（「over 的出手里，出手时地不比对方少的 / 地比对方少的」两行）",
+  "codePath": "Policy.buyLand L5353（over = surplus>0 && B > 100×L）、L5359（over 时不 break）、L5456~5457 与 L5612~5617（over 且需要量 ≤ 0.30×余额时不走脉冲，一次出 1.25×需要量）",
+  "id": "NEW-AT-OVERSTRIKE"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "EC",
+  "name": "顶着 150×领土 的硬上限不动：唯一的邻居是兵多于自己 1.78 倍的健康真人，留兵底线不封顶；同队又没有名池里的号可捐",
+  "definition": "核心期某号密度（余额 ÷ 领土）≥ 149 连续 ≥ 300 拍（利息为 0），这段时间的决策拍在 core_gate_tally.py 里记为 floor:<目标>:cap+dp 或 floor:<目标>:dp（底线 = dpKeep，对方「余额 + 压在我身上的兵 − 1.5×我的领土」÷ 1.78 ≥ 我的余额），同期捐款意图 0。记：号·拍数、当时的余额、对方的余额、同队在场真人的地和兵、这段时间少拿的利息（按同期密度 100 的利率估，标 inferred）、解套的那一次出手的去向与结果。",
+  "detector": "scripts/cap_time.py <局号>；scripts/core_gate_tally.py <局号> t0 t1 --by-target；scripts/flat_windows.py <局号>；tmp/shadow/<局号>/intents.tsv（同期有没有捐款意图）；scripts/human_strikes.py <局号> --list N（解套那一次出手）",
+  "codePath": "v27-team-c110.js：Policy.buyLand L5322~5326（真人目标的 safe 只有在对方 nearCollapse 或 bleeding / tD<0.45 时才封顶到 oppFloorCap×领土，健康真人不封顶）、L5358~5361（keep = max(keep, safe)；avail = B − 手续费 − keep ≤ 0 就 continue）；V13.dpKeep L2491~2496（(对方余额 + 它打我的兵 − 1.5×L) ÷ 1.78）；Policy.tryDonateToTeammate L4462（没被围住且密度 <112 才不捐——这里密度够）、L4467（候选必须是队友，且是 boss 或名池号）；Policy.idleBoats L4996（有陆上邻居时余额 ≥ idleCap×100×领土 才发船）。",
+  "id": "NEW-EC-CAPFLOOR"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "SE",
+  "name": "发船白送：登陆即被吃或回到自己地上作废",
+  "definition": "(a) 一条船的载兵 ≥ 发船时余额的 15%，登陆后 300 拍内从登陆目标净得地 ≤ 100 像素，或船回到自己地上作废；(b) 载兵 < 发船手续费（引擎按余额的 32/1024 收，与载多少无关）。计数 = 条数、载兵、手续费。",
+  "detector": "scripts/boat_list.py（每条船的载兵、手续费、到岸兵、结果、登陆后净得地）",
+  "codePath": "Policy.idleBoats L5019~5070（封死分支把 boatRange 放到 2500）→ General.boatOut L999~1015：L1007 目标是无主地时最低载兵只有 60，不和手续费挂钩；L1009 载兵 = 3×目标块大小 + 300",
+  "id": "NEW-SE-BOATWASTE"
+ },
+ {
+  "matchId": "B034",
+  "reviewer": "R04",
+  "prefix": "AT",
+  "name": "两个真人接壤对峙：没过 100×领土时要自己的密度是对方的两倍半以上才出手，双方都攒兵不动，谁先过线谁先打",
+  "definition": "某号与某真人接壤，buyLand 对它的报价 c ≥ worth、c ≥ cheap 且未 over，连续 ≥ 300 拍没有任何落地的陆攻，同期自己余额翻倍以上、领土变化 ≤ 4%。计数 = 号·拍数、段首段末双方密度、段末谁的余额先过 100×领土。只有日志的房间用 flat_windows.py 的口径（地不动、指令增量 ≤ 12、≥ 360 拍）。对方同期从我方净拿地 ≥ 5000 格的情形另记 NEW-AT-PRICEGATE。",
+  "detector": "scripts/flat_windows.py <局号>；scripts/shadow.mjs <局号> --bots <号> --at <拍>（[buyLand] 一段的 worth、c）；scripts/human_strikes.py <局号> --list（出手时的密度比）",
+  "codePath": "Policy.offers L5072~5100（真人目标的 c 约为对方密度的 2.2~2.6 倍）、Policy.buyLand L5350~5359（worth = maxW×winRatio×max(自己密度, marketFloor×其他真人密度中位)；L5353 over = 余额 > 100×领土；L5359 break）",
+  "id": "NEW-AT-STANDOFF"
+ },
+ {
   "matchId": "A014",
   "reviewer": "R05",
   "key": "SP-ENCLOSED",
@@ -12774,6 +12994,344 @@
    {
     "t": 6120,
     "bot": "Kasparov"
+   }
+  ]
+ },
+ {
+  "matchId": "B022",
+  "reviewer": "R06",
+  "name": "NEW:SP-squad-stack",
+  "definition": "两个编队号的出生点相距 <80 格（含同一个像素），或一个号最近的真人是另一个编队号",
+  "detectionSketch": "latency.py <id> spawn；landcap.py <id> voronoi 的「最近的真人」列",
+  "instances": [
+   {
+    "t": 0,
+    "bot": "Ethereum / Heisenberg（同像素）"
+   },
+   {
+    "t": 0,
+    "bot": "BigBrain / LeBron（同像素）"
+   },
+   {
+    "t": 0,
+    "bot": "Rommel（离前一对 16 格）"
+   }
+  ]
+ },
+ {
+  "matchId": "B022",
+  "reviewer": "R06",
+  "name": "NEW:OP-dead-cycle",
+  "definition": "开局周期的指令落地时身边已没有无主地（没生效），该号在 t=300 时领土 <= 出生时的格数",
+  "detectionSketch": "simdigest.py <id> cmdlist <me> 0 400 的「没生效」行 + logdigest.py <id> oplag",
+  "instances": [
+   {
+    "t": 217,
+    "bot": "BigBrain（整局 12 格）"
+   }
+  ]
+ },
+ {
+  "matchId": "B022",
+  "reviewer": "R06",
+  "name": "NEW:IO-client-behind",
+  "definition": "某个 150 拍的下令窗口里，指令从「策略下令」到「进录像执行」的延迟中位 >=90 拍（约 5 秒）",
+  "detectionSketch": "latency.py <id> delay / bots",
+  "instances": [
+   {
+    "t": 900,
+    "bot": "11 个号（中位 127→252，t=900~2100）"
+   },
+   {
+    "t": 65,
+    "bot": "第一个开局周期 8 个号 133~238 拍"
+   }
+  ]
+ },
+ {
+  "matchId": "B022",
+  "reviewer": "R06",
+  "name": "NEW:CMD-repeat-before-effect",
+  "definition": "一条指令的下令拍落在同一个号前一条「已下令、还没进录像」的窗口里",
+  "detectionSketch": "latency.py <id> dups",
+  "instances": [
+   {
+    "t": 1050,
+    "bot": "10 个号（57% / 80%）"
+   }
+  ]
+ },
+ {
+  "matchId": "B022",
+  "reviewer": "R06",
+  "name": "NEW:IO-stale-pulse-dump",
+  "definition": "同一个号同一个服务器回合进录像 >=3 条指令，出兵+手续费 >= 批前余额的 50%；这些指令是 70 拍以前按当时的局面下的",
+  "detectionSketch": "latency.py <id> batches；simdigest.py <id> bursts",
+  "instances": [
+   {
+    "t": 1904,
+    "bot": "Sever（99.5%）"
+   },
+   {
+    "t": 2079,
+    "bot": "MasterChief（69.4%）"
+   },
+   {
+    "t": 2170,
+    "bot": "Ethereum"
+   },
+   {
+    "t": 4466,
+    "bot": "Eisenhower（65.9%）"
+   }
+  ]
+ },
+ {
+  "matchId": "B022",
+  "reviewer": "R06",
+  "name": "NEW:AT-dump-then-dead",
+  "definition": "一批清仓（>=50% 余额）打在真人身上，之后 900 拍内被同一个真人清地",
+  "detectionSketch": "latency.py <id> batches + simdigest.py <id> deaths",
+  "instances": [
+   {
+    "t": 2079,
+    "bot": "MasterChief ← Player 771"
+   },
+   {
+    "t": 2170,
+    "bot": "Ethereum ← Player 569"
+   }
+  ]
+ },
+ {
+  "matchId": "B022",
+  "reviewer": "R06",
+  "name": "NEW:PL-protect-box",
+  "definition": "策略眼里 nb=0 且 neut=0，而真实邻居里有保护名单上的异队编队号（或撞名的内置 AI）",
+  "detectionSketch": "simdigest.py <id> protbox；strat_probe.mjs --dump 的「不在 nb 里的真实邻居」行",
+  "instances": [
+   {
+    "t": 1620,
+    "bot": "Rommel（6,390 拍）"
+   },
+   {
+    "t": 2250,
+    "bot": "Eisenhower"
+   },
+   {
+    "t": 2250,
+    "bot": "Kamakura"
+   },
+   {
+    "t": 630,
+    "bot": "BigBrain"
+   }
+  ]
+ },
+ {
+  "matchId": "B022",
+  "reviewer": "R06",
+  "name": "NEW:TS-squad-wall",
+  "definition": "异队的编队号互相贴边 >=100 格：按规则是敌人，按保护名单互不出手，各自少一段可扩张的边",
+  "detectionSketch": "simdigest.py <id> protbox 的贴边明细；simdigest.py <id> contact",
+  "instances": [
+   {
+    "t": 3000,
+    "bot": "Eisenhower ↔ Kamakura 420 格 / Dixie 382 格 / Sever 374 格"
+   },
+   {
+    "t": 3900,
+    "bot": "Heisenberg ↔ Manchu 338 格 / Rommel 189 格"
+   }
+  ]
+ },
+ {
+  "matchId": "B022",
+  "reviewer": "R06",
+  "name": "NEW:TS-truce-no-target",
+  "definition": "场上剩下的野生外人全是自己的队友：跨队保护不会解除，本队的编队号没有任何合法目标，捐款候选（同队的 Boss / 编队号且有敌方邻居）也为空",
+  "detectionSketch": "simdigest.py <id> contact（贴着敌方真人的号数）+ gates 3000（有真人报价的决策拍 = 0）+ ledger 的顶格少拿",
+  "instances": [
+   {
+    "t": 4530,
+    "bot": "Eisenhower"
+   },
+   {
+    "t": 4420,
+    "bot": "Rommel"
+   },
+   {
+    "t": 4860,
+    "bot": "LeBron"
+   }
+  ]
+ },
+ {
+  "matchId": "B022",
+  "reviewer": "R06",
+  "name": "NEW:EG-boxed-hardcap",
+  "definition": "被围（nb=0、neut=0）且密度 >=133 的决策拍里什么都不发，余额顶在 150×领土",
+  "detectionSketch": "simdigest.py <id> boxedout / protbox 的顶格少拿",
+  "instances": [
+   {
+    "t": 5760,
+    "bot": "Rommel（259 万）"
+   },
+   {
+    "t": 4530,
+    "bot": "Eisenhower（425 万）"
+   },
+   {
+    "t": 6000,
+    "bot": "Kamakura（712 万）"
+   }
+  ]
+ },
+ {
+  "matchId": "B022",
+  "reviewer": "R06",
+  "name": "NEW:EG-cap-idle-death",
+  "definition": "顶在硬上限 >=900 拍的号，在第一次接敌后 900 拍内阵亡",
+  "detectionSketch": "logdigest.py <id> overcap + simdigest.py <id> deaths",
+  "instances": [
+   {
+    "t": 7165,
+    "bot": "Kamakura"
+   }
+  ]
+ },
+ {
+  "matchId": "B022",
+  "reviewer": "R06",
+  "name": "NEW:AT-return-overflow",
+  "definition": "进攻线结束（目标出局或不再接壤）时退回的兵把余额顶过硬上限，超出的部分作废（录像账本的「回兵溢出」）",
+  "detectionSketch": "simdigest.py <id> ledger 的回兵溢出列；逐拍余额 = 150×领土 的那一拍",
+  "instances": [
+   {
+    "t": 4530,
+    "bot": "Eisenhower（221 万）"
+   }
+  ]
+ },
+ {
+  "matchId": "B022",
+  "reviewer": "R06",
+  "name": "NEW:DN-to-overcap",
+  "definition": "捐款的收款人在 300 拍内超软上限，或到账被收款人离硬上限的余量截断",
+  "detectionSketch": "simdigest.py <id> don 的「收款人: 密 / 余量」列",
+  "instances": [
+   {
+    "t": 3017,
+    "bot": "Rommel / Eisenhower → LeBron"
+   },
+   {
+    "t": 4319,
+    "bot": "LeBron → Eisenhower（到账 30.5 万 / 手续费 46.0 万）"
+   }
+  ]
+ },
+ {
+  "matchId": "B022",
+  "reviewer": "R06",
+  "name": "NEW:DN-fee-exceeds-delivery",
+  "definition": "一笔捐款的到账 < 手续费（手续费按捐款人余额的 6.25% 收，与 pct 无关）",
+  "detectionSketch": "simdigest.py <id> don 的「手续费 > 到账」行",
+  "instances": [
+   {
+    "t": 4319,
+    "bot": "LeBron → Eisenhower"
+   },
+   {
+    "t": 4403,
+    "bot": "LeBron → Eisenhower"
+   },
+   {
+    "t": 4487,
+    "bot": "Kamakura → Manchu"
+   },
+   {
+    "t": 4669,
+    "bot": "Kamakura → Manchu"
+   }
+  ]
+ },
+ {
+  "matchId": "B022",
+  "reviewer": "R06",
+  "name": "NEW:FE-tiny-cmd-fee",
+  "definition": "出兵 / 载兵不足余额的 5% 而余额 >=100 万的指令：手续费按整份余额收，大于出兵量",
+  "detectionSketch": "simdigest.py <id> fees 的小额指令行；simdigest.py <id> boats <me>",
+  "instances": [
+   {
+    "t": 3941,
+    "bot": "LeBron（37 条 0‰ 的船，手续费是载兵的 32 倍）"
+   }
+  ]
+ },
+ {
+  "matchId": "B022",
+  "reviewer": "R06",
+  "name": "NEW:EG-giant-neighbor-freeze",
+  "definition": "保底线（dpKeep，按最强邻居的兵）>= 自己的余额：对所有邻居都不出兵，包括兵少的那一个",
+  "detectionSketch": "strat_probe.mjs --tally 的 L5361 计数；simdigest.py <id> contact <t>",
+  "instances": [
+   {
+    "t": 3900,
+    "bot": "Heisenberg"
+   },
+   {
+    "t": 7300,
+    "bot": "Dixie（GYRO 密度 18）"
+   },
+   {
+    "t": 7400,
+    "bot": "Kamakura"
+   },
+   {
+    "t": 4700,
+    "bot": "Manchu"
+   }
+  ]
+ },
+ {
+  "matchId": "B022",
+  "reviewer": "R06",
+  "name": "NEW:DF-main-attacker-unanswered",
+  "definition": "一个敌方真人在 [首条, 末条] 内对同一个号出兵 >=20 万，而这个号对它的还手 <= 对方出兵的 10%",
+  "detectionSketch": "simdigest.py <id> sieges",
+  "instances": [
+   {
+    "t": 4249,
+    "bot": "Heisenberg ← GYRO"
+   },
+   {
+    "t": 7399,
+    "bot": "Kamakura ← Player 569"
+   },
+   {
+    "t": 4774,
+    "bot": "Manchu ← Player 569"
+   }
+  ]
+ },
+ {
+  "matchId": "B022",
+  "reviewer": "R06",
+  "name": "NEW:PL-pool-ai",
+  "definition": "名字在编队名字池里的内置 AI：策略把它当编队号（不进 nb、不打）",
+  "detectionSketch": "simdigest.py <id> poolai",
+  "instances": [
+   {
+    "t": 360,
+    "bot": "Heisenberg ↔ Kalmar Union（峰值 9,850 格）"
+   },
+   {
+    "t": 810,
+    "bot": "Eisenhower ↔ Goguryeo"
+   },
+   {
+    "t": 630,
+    "bot": "MasterChief ↔ Yugoslavia"
    }
   ]
  },
