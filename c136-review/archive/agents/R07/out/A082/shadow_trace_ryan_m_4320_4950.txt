@@ -1,0 +1,598 @@
+# A082 ryan_m 影子决策明细 t=4320~4950（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 93 拍（t=4320~4950）
+#   过了软上限，但首选目标是唯一的真人邻居（isSoleHealthyBuffer：余额 < overHumanCap×100×领土 不打）: 21 拍（t=4420~4530）；可用兵 -267218~-28473，一条指令下限(20%余额) 410477~458792，比值 -65%~-6%
+#   只打无主地: 4 拍（t=4520~4570）；可用兵 -6483~204715，一条指令下限(20%余额) 416480~463242，比值 -1%~49%
+#   有可用兵但没发（其他）: 4 拍（t=4535~4550）；可用兵 225716~334224，一条指令下限(20%余额) 420292~440940，比值 54%~76%
+#   出手打人/bot: 5 拍（t=4555~4660）；可用兵 218294~479633，一条指令下限(20%余额) 425420~472115，比值 49%~102%
+#   └ 「出手打人/bot」里：5 条对人/bot 的出兵共约 1219407 兵；其中超过软上限（over=1）时发的 5 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 5 条约 1219407 兵，c/worth = 1.52~1.87
+t=4320 ryan_m B=1790528 L=20496 d=87.4 nb=1 neut=0 cmds=87 noFull=1 shQ=447632 | m=0.900 worth=85.1 cheap=7.8 over=0 dMedOther=111.3 safe(-1)=1023564
+    → yoo#8[T5] terr=24475 bal=1852688 dq=75.7 cnt=85 | c=222.4 rankC=155.7 need=3250566 tD=0.68 人 pulse | safe=1023564 keep=Inf avail=-Inf chunkB=358106 pulseB=214863 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4325 ryan_m B=1790528 L=20496 d=87.4 nb=1 neut=0 cmds=87 noFull=1 shQ=447632 | m=0.900 worth=84.6 cheap=7.8 over=0 dMedOther=110.6 safe(-1)=1023564
+    → yoo#8[T5] terr=24530 bal=1852688 dq=75.5 cnt=86 | c=221.8 rankC=155.3 need=3252777 tD=0.68 人 pulse | safe=1023564 keep=Inf avail=-Inf chunkB=358106 pulseB=214863 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4330 ryan_m B=1813267 L=20496 d=88.5 nb=1 neut=0 cmds=87 noFull=1 shQ=453316 | m=0.900 worth=84.6 cheap=7.8 over=0 dMedOther=110.6 safe(-1)=1037094
+    → yoo#8[T5] terr=24618 bal=1876772 dq=76.2 cnt=88 | c=223.8 rankC=156.6 need=3298066 tD=0.69 人 pulse | safe=1037094 keep=Inf avail=-Inf chunkB=362653 pulseB=217592 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4335 ryan_m B=1813267 L=20496 d=88.5 nb=1 neut=0 cmds=87 noFull=1 shQ=453316 | m=0.900 worth=82.0 cheap=7.8 over=0 dMedOther=107.1 safe(-1)=1037094
+    → yoo#8[T5] terr=24679 bal=1876772 dq=76.0 cnt=89 | c=431.3 rankC=625.4 need=3300474 tD=0.71 人 pulse | safe=1037094 keep=Inf avail=-Inf chunkB=362653 pulseB=217592 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4340 ryan_m B=1836295 L=20496 d=89.6 nb=1 neut=0 cmds=87 noFull=1 shQ=459073 | m=0.900 worth=82.7 cheap=7.8 over=0 dMedOther=108.1 safe(-1)=1050801
+    → yoo#8[T5] terr=24772 bal=1901170 dq=76.7 cnt=90 | c=435.0 rankC=630.8 need=3346306 tD=0.71 人 pulse | safe=1050801 keep=Inf avail=-Inf chunkB=367259 pulseB=220355 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4345 ryan_m B=1836295 L=20496 d=89.6 nb=1 neut=0 cmds=87 noFull=1 shQ=459073 | m=0.900 worth=82.5 cheap=7.8 over=0 dMedOther=107.9 safe(-1)=1050801
+    → yoo#8[T5] terr=24836 bal=1901170 dq=76.5 cnt=92 | c=433.7 rankC=628.8 need=3348807 tD=0.71 人 pulse | safe=1050801 keep=Inf avail=-Inf chunkB=367259 pulseB=220355 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4350 ryan_m B=1859615 L=20496 d=90.7 nb=1 neut=0 cmds=87 noFull=1 shQ=464903 | m=0.900 worth=83.2 cheap=7.8 over=0 dMedOther=108.8 safe(-1)=919932
+    → yoo#8[T5] terr=25430 bal=1668223 dq=65.6 cnt=94 | c=192.1 rankC=134.5 need=2960200 tD=0.60 人 pulse | safe=919932 keep=Inf avail=-Inf chunkB=371923 pulseB=223154 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4355 ryan_m B=1859615 L=20496 d=90.7 nb=1 neut=0 cmds=87 noFull=1 shQ=464903 | m=0.900 worth=83.1 cheap=7.8 over=0 dMedOther=108.6 safe(-1)=919932
+    → yoo#8[T5] terr=25971 bal=1668223 dq=64.2 cnt=95 | c=362.7 rankC=525.9 need=2975161 tD=0.59 人 pulse | safe=919932 keep=Inf avail=-Inf chunkB=371923 pulseB=223154 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4360 ryan_m B=1883232 L=20496 d=91.9 nb=1 neut=0 cmds=87 noFull=1 shQ=470808 | m=0.900 worth=83.8 cheap=7.8 over=0 dMedOther=109.6 safe(-1)=932322
+    → yoo#8[T5] terr=26024 bal=1690278 dq=65.0 cnt=96 | c=366.5 rankC=531.5 need=3015510 tD=0.59 人 pulse | safe=932322 keep=Inf avail=-Inf chunkB=376646 pulseB=225988 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4365 ryan_m B=1883232 L=20496 d=91.9 nb=1 neut=0 cmds=87 noFull=1 shQ=470808 | m=0.900 worth=83.6 cheap=7.8 over=0 dMedOther=109.3 safe(-1)=932322
+    → yoo#8[T5] terr=26024 bal=1690278 dq=65.0 cnt=96 | c=366.5 rankC=531.5 need=3015606 tD=0.59 人 pulse | safe=932322 keep=Inf avail=-Inf chunkB=376646 pulseB=225988 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4370 ryan_m B=1907149 L=20496 d=93.0 nb=1 neut=0 cmds=87 noFull=1 shQ=476787 | m=0.900 worth=84.5 cheap=7.8 over=0 dMedOther=110.4 safe(-1)=944762
+    → yoo#8[T5] terr=26024 bal=1712420 dq=65.8 cnt=96 | c=371.3 rankC=538.3 need=3054704 tD=0.60 人 pulse | safe=944762 keep=Inf avail=-Inf chunkB=381430 pulseB=228858 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4375 ryan_m B=1907149 L=20496 d=93.0 nb=1 neut=0 cmds=87 noFull=1 shQ=476787 | m=0.900 worth=84.5 cheap=7.8 over=0 dMedOther=110.4 safe(-1)=944762
+    → yoo#8[T5] terr=26024 bal=1712420 dq=65.8 cnt=96 | c=256.0 rankC=256.0 need=3054898 tD=0.60 人 pulse | safe=944762 keep=Inf avail=-Inf chunkB=381430 pulseB=228858 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4380 ryan_m B=1931369 L=20496 d=94.2 nb=1 neut=0 cmds=87 noFull=1 shQ=482842 | m=0.900 worth=84.8 cheap=7.8 over=0 dMedOther=110.5 safe(-1)=957364
+    → yoo#8[T5] terr=26024 bal=1734852 dq=66.7 cnt=96 | c=259.3 rankC=259.3 need=3094513 tD=0.60 人 pulse | safe=957364 keep=Inf avail=-Inf chunkB=386274 pulseB=231764 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4385 ryan_m B=1931369 L=20496 d=94.2 nb=1 neut=0 cmds=87 noFull=1 shQ=482842 | m=0.900 worth=84.8 cheap=7.8 over=0 dMedOther=108.9 safe(-1)=957364
+    → yoo#8[T5] terr=26024 bal=1734852 dq=66.7 cnt=96 | c=259.3 rankC=259.3 need=3094611 tD=0.61 人 pulse | safe=957364 keep=Inf avail=-Inf chunkB=386274 pulseB=231764 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4390 ryan_m B=1955897 L=20496 d=95.4 nb=1 neut=0 cmds=87 noFull=1 shQ=488974 | m=0.900 worth=85.9 cheap=7.8 over=0 dMedOther=108.5 safe(-1)=970131
+    → yoo#8[T5] terr=26024 bal=1757578 dq=67.5 cnt=96 | c=262.7 rankC=262.7 need=3134747 tD=0.62 人 pulse | safe=970131 keep=Inf avail=-Inf chunkB=391179 pulseB=234708 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4395 ryan_m B=1955897 L=20496 d=95.4 nb=1 neut=0 cmds=87 noFull=1 shQ=488974 | m=0.900 worth=85.9 cheap=7.8 over=0 dMedOther=108.5 safe(-1)=970131
+    → yoo#8[T5] terr=26024 bal=1757578 dq=67.5 cnt=96 | c=262.7 rankC=262.7 need=3134946 tD=0.62 人 pulse | safe=970131 keep=Inf avail=-Inf chunkB=391179 pulseB=234708 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4400 ryan_m B=2001232 L=20496 d=97.6 nb=1 neut=0 cmds=87 noFull=1 shQ=495327 | m=0.900 worth=87.9 cheap=7.8 over=0 dMedOther=110.6 safe(-1)=863852
+    → yoo#8[T5] terr=26024 bal=1568401 dq=60.3 cnt=96 | c=176.2 rankC=123.4 need=2801725 tD=0.54 人 pulse | safe=863852 keep=Inf avail=-Inf chunkB=400246 pulseB=240148 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4405 ryan_m B=2001232 L=20496 d=97.6 nb=1 neut=0 cmds=87 noFull=1 shQ=500308 | m=0.900 worth=87.9 cheap=7.8 over=0 dMedOther=110.6 safe(-1)=863852
+    → yoo#8[T5] terr=26051 bal=1568401 dq=60.2 cnt=97 | c=176.0 rankC=123.2 need=2802487 tD=0.54 人 pulse | safe=863852 keep=Inf avail=-Inf chunkB=400246 pulseB=240148 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4410 ryan_m B=2026647 L=20496 d=98.9 nb=1 neut=0 cmds=87 noFull=1 shQ=506661 | m=0.900 worth=89.0 cheap=7.8 over=0 dMedOther=111.8 safe(-1)=875395
+    → yoo#8[T5] terr=26130 bal=1588947 dq=60.8 cnt=99 | c=177.7 rankC=124.4 need=2840769 tD=0.54 人 pulse | safe=875395 keep=Inf avail=-Inf chunkB=405329 pulseB=243198 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4415 ryan_m B=2026647 L=20496 d=98.9 nb=1 neut=0 cmds=87 noFull=1 shQ=506661 | m=0.900 worth=89.0 cheap=7.8 over=0 dMedOther=107.8 safe(-1)=875395
+    → yoo#8[T5] terr=26180 bal=1588947 dq=60.7 cnt=101 | c=177.3 rankC=124.1 need=2842194 tD=0.56 人 pulse | safe=875395 keep=Inf avail=-Inf chunkB=405329 pulseB=243198 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4420 ryan_m B=2052385 L=20496 d=100.1 nb=1 neut=0 cmds=87 noFull=1 shQ=513096 | m=0.900 worth=90.1 cheap=7.8 over=1 dMedOther=109.0 safe(-1)=887089
+    → yoo#8[T5] terr=26251 bal=1609762 dq=61.3 cnt=103 | c=179.0 rankC=125.3 need=2880792 tD=0.56 人 pulse | safe=887089 keep=2295552 avail=-267218 chunkB=410477 pulseB=246286 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4425 ryan_m B=2052385 L=20496 d=100.1 nb=1 neut=0 cmds=87 noFull=1 shQ=513096 | m=0.900 worth=90.1 cheap=7.8 over=1 dMedOther=108.0 safe(-1)=887089
+    → yoo#8[T5] terr=26300 bal=1609762 dq=61.2 cnt=104 | c=178.6 rankC=125.0 need=2882105 tD=0.57 人 pulse | safe=887089 keep=2295552 avail=-267218 chunkB=410477 pulseB=246286 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4430 ryan_m B=2078450 L=20496 d=101.4 nb=1 neut=0 cmds=87 noFull=1 shQ=519539 | m=0.900 worth=91.3 cheap=7.8 over=1 dMedOther=109.2 safe(-1)=898935
+    → yoo#8[T5] terr=26381 bal=1630849 dq=61.8 cnt=106 | c=180.3 rankC=126.2 need=2921473 tD=0.57 人 pulse | safe=898935 keep=2295552 avail=-241458 chunkB=415690 pulseB=249414 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4435 ryan_m B=2078450 L=20496 d=101.4 nb=1 neut=0 cmds=87 noFull=1 shQ=519612 | m=0.900 worth=91.3 cheap=7.8 over=1 dMedOther=106.8 safe(-1)=898935
+    → yoo#8[T5] terr=26440 bal=1630849 dq=61.7 cnt=107 | c=179.8 rankC=125.9 need=2923124 tD=0.58 人 pulse | safe=898935 keep=2295552 avail=-241458 chunkB=415690 pulseB=249414 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4440 ryan_m B=2104222 L=20496 d=102.7 nb=1 neut=0 cmds=87 noFull=1 shQ=525977 | m=0.900 worth=92.4 cheap=7.8 over=1 dMedOther=102.8 safe(-1)=910938
+    → yoo#8[T5] terr=26542 bal=1652213 dq=62.2 cnt=110 | c=181.4 rankC=126.9 need=2963549 tD=0.61 人 pulse | safe=910938 keep=2295552 avail=-215988 chunkB=420844 pulseB=252507 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4445 ryan_m B=2104222 L=20496 d=102.7 nb=1 neut=0 cmds=87 noFull=1 shQ=526055 | m=0.900 worth=92.4 cheap=7.8 over=1 dMedOther=101.8 safe(-1)=910938
+    → yoo#8[T5] terr=26619 bal=1652213 dq=62.1 cnt=112 | c=349.5 rankC=506.7 need=2965551 tD=0.61 人 pulse | safe=910938 keep=2295552 avail=-215988 chunkB=420844 pulseB=252507 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4450 ryan_m B=2129683 L=20496 d=103.9 nb=1 neut=0 cmds=87 noFull=1 shQ=532337 | m=0.900 worth=93.5 cheap=7.8 over=1 dMedOther=102.8 safe(-1)=923097
+    → yoo#8[T5] terr=26728 bal=1673856 dq=62.6 cnt=115 | c=352.3 rankC=510.9 need=3006687 tD=0.61 人 pulse | safe=923097 keep=2295552 avail=-190826 chunkB=425937 pulseB=255562 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4455 ryan_m B=2129683 L=20496 d=103.9 nb=1 neut=0 cmds=87 noFull=1 shQ=532420 | m=0.900 worth=93.5 cheap=7.8 over=1 dMedOther=102.8 safe(-1)=797286
+    → yoo#8[T5] terr=26960 bal=1449913 dq=53.8 cnt=117 | c=303.2 rankC=439.7 need=2614889 tD=0.52 人 pulse | safe=797286 keep=2295552 avail=-190826 chunkB=425937 pulseB=255562 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4460 ryan_m B=2154813 L=20496 d=105.1 nb=1 neut=0 cmds=87 noFull=1 shQ=538561 | m=0.900 worth=94.6 cheap=7.8 over=1 dMedOther=104.1 safe(-1)=807956
+    → yoo#8[T5] terr=27446 bal=1468906 dq=53.5 cnt=120 | c=301.0 rankC=436.5 need=2658947 tD=0.51 人 pulse | safe=807956 keep=2295552 avail=-165990 chunkB=430963 pulseB=258578 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4465 ryan_m B=2154813 L=20496 d=105.1 nb=1 neut=0 cmds=87 noFull=1 shQ=538703 | m=0.900 worth=94.6 cheap=7.8 over=1 dMedOther=104.1 safe(-1)=807956
+    → yoo#8[T5] terr=27739 bal=1468906 dq=53.0 cnt=122 | c=297.8 rankC=431.9 need=2659788 tD=0.51 人 pulse | safe=807956 keep=2295552 avail=-165990 chunkB=430963 pulseB=258578 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4470 ryan_m B=2179377 L=20496 d=106.3 nb=1 neut=0 cmds=87 noFull=1 shQ=544750 | m=0.900 worth=95.7 cheap=7.8 over=1 dMedOther=103.5 safe(-1)=818855
+    → yoo#8[T5] terr=28112 bal=1488306 dq=52.9 cnt=123 | c=297.8 rankC=431.8 need=2694869 tD=0.51 人 pulse | safe=818855 keep=2295552 avail=-141714 chunkB=435875 pulseB=261525 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4475 ryan_m B=2179377 L=20496 d=106.3 nb=1 neut=0 cmds=87 noFull=1 shQ=544844 | m=0.900 worth=95.7 cheap=7.8 over=1 dMedOther=104.2 safe(-1)=818855
+    → yoo#8[T5] terr=28291 bal=1488306 dq=52.6 cnt=123 | c=295.9 rankC=429.1 need=2695194 tD=0.50 人 pulse | safe=818855 keep=2295552 avail=-141714 chunkB=435875 pulseB=261525 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4480 ryan_m B=2203568 L=20496 d=107.5 nb=1 neut=0 cmds=87 noFull=1 shQ=550793 | m=0.900 worth=96.8 cheap=7.8 over=1 dMedOther=102.6 safe(-1)=829892
+    → yoo#8[T5] terr=28524 bal=1507951 dq=52.9 cnt=123 | c=205.1 rankC=205.1 need=2730501 tD=0.52 人 pulse | safe=829892 keep=2295552 avail=-117807 chunkB=440714 pulseB=264428 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4485 ryan_m B=2203568 L=20496 d=107.5 nb=1 neut=0 cmds=87 noFull=1 shQ=550892 | m=0.900 worth=96.8 cheap=7.8 over=1 dMedOther=102.6 safe(-1)=829892
+    → yoo#8[T5] terr=28642 bal=1507951 dq=52.6 cnt=123 | c=204.2 rankC=204.2 need=2730716 tD=0.51 人 pulse | safe=829892 keep=2295552 avail=-117807 chunkB=440714 pulseB=264428 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4490 ryan_m B=2227366 L=20496 d=108.7 nb=1 neut=0 cmds=87 noFull=1 shQ=556738 | m=0.900 worth=97.8 cheap=7.8 over=1 dMedOther=101.9 safe(-1)=841158
+    → yoo#8[T5] terr=28789 bal=1528006 dq=53.1 cnt=123 | c=205.8 rankC=205.8 need=2766663 tD=0.52 人 pulse | safe=841158 keep=2295552 avail=-94287 chunkB=445473 pulseB=267284 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4495 ryan_m B=2227366 L=20496 d=108.7 nb=1 neut=0 cmds=87 noFull=1 shQ=556841 | m=0.900 worth=97.8 cheap=7.8 over=1 dMedOther=101.9 safe(-1)=841158
+    → yoo#8[T5] terr=28883 bal=1528006 dq=52.9 cnt=123 | c=205.2 rankC=205.2 need=2766842 tD=0.52 人 pulse | safe=841158 keep=2295552 avail=-94287 chunkB=445473 pulseB=267284 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4500 ryan_m B=2271249 L=20496 d=110.8 nb=1 neut=0 cmds=87 noFull=1 shQ=562519 | m=0.900 worth=99.7 cheap=7.8 over=1 dMedOther=104.0 safe(-1)=868852
+    → yoo#8[T5] terr=29017 bal=1577301 dq=54.4 cnt=123 | c=210.7 rankC=210.7 need=2854867 tD=0.52 人 pulse | safe=868852 keep=2295552 avail=-50919 chunkB=454250 pulseB=272550 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4505 ryan_m B=2271249 L=20496 d=110.8 nb=1 neut=0 cmds=87 noFull=1 shQ=567812 | m=0.900 worth=99.7 cheap=7.8 over=1 dMedOther=103.5 safe(-1)=868852
+    → yoo#8[T5] terr=29104 bal=1577301 dq=54.2 cnt=123 | c=210.1 rankC=210.1 need=2854978 tD=0.52 人 pulse | safe=868852 keep=2295552 avail=-50919 chunkB=454250 pulseB=272550 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4510 ryan_m B=2293961 L=20496 d=111.9 nb=1 neut=0 cmds=87 noFull=1 shQ=573490 | m=0.900 worth=100.7 cheap=7.8 over=1 dMedOther=104.7 safe(-1)=880638
+    → yoo#8[T5] terr=29230 bal=1598279 dq=54.7 cnt=123 | c=211.9 rankC=211.9 need=2892596 tD=0.52 人 pulse | safe=880638 keep=2295552 avail=-28473 chunkB=458792 pulseB=275275 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4515 ryan_m B=2293961 L=20496 d=111.9 nb=1 neut=0 cmds=87 noFull=1 shQ=573490 | m=0.900 worth=100.7 cheap=7.8 over=1 dMedOther=104.7 safe(-1)=880638
+    → yoo#8[T5] terr=29302 bal=1598279 dq=54.5 cnt=123 | c=211.4 rankC=211.4 need=2892704 tD=0.52 人 pulse | safe=880638 keep=2295552 avail=-28473 chunkB=458792 pulseB=275275 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4520 ryan_m B=2316212 L=20496 d=113.0 nb=1 neut=33 cmds=88 noFull=1 shQ=579053 | m=0.900 worth=101.7 cheap=7.8 over=1 dMedOther=100.5 safe(-1)=892580
+    → yoo#8[T5] terr=29392 bal=1619536 dq=55.1 cnt=123 | c=213.6 rankC=213.6 need=2930688 tD=0.55 人 pulse | safe=892580 keep=2295552 avail=-6483 chunkB=463242 pulseB=277945 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 108572 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=4525 ryan_m B=2316212 L=20496 d=113.0 nb=1 neut=33 cmds=89 noFull=1 shQ=579053 | m=0.900 worth=101.7 cheap=7.8 over=1 dMedOther=91.6 safe(-1)=892580
+    → yoo#8[T5] terr=29437 bal=1619536 dq=55.0 cnt=123 | c=213.2 rankC=213.2 need=2930775 tD=0.60 人 pulse | safe=892580 keep=2295552 avail=-6483 chunkB=463242 pulseB=277945 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 108572 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=4530 ryan_m B=2204700 L=20496 d=107.6 nb=1 neut=33 cmds=89 noFull=1 shQ=0 | m=0.900 worth=96.8 cheap=7.8 over=1 dMedOther=87.8 safe(-1)=904680
+    → yoo#8[T5] terr=29476 bal=1641075 dq=55.7 cnt=123 | c=215.6 rankC=215.6 need=2969204 tD=0.63 人 pulse | safe=904680 keep=2295552 avail=-116688 chunkB=440940 pulseB=264564 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=4535 ryan_m B=2204700 L=20496 d=107.6 nb=2 neut=30 cmds=89 noFull=1 shQ=29760 | m=0.900 worth=96.8 cheap=7.8 over=1 dMedOther=87.6 safe(-1)=1803648
+    → yoo#8[T5] terr=29478 bal=1840513 dq=62.4 cnt=123 | c=150.8 rankC=150.8 need=3324723 tD=0.71 人 pulse | safe=1803648 keep=1844640 avail=334224 chunkB=440940 pulseB=264564  x=264564 hNb=2
+    → KUKU#18[T6] terr=35599 bal=3893196 dq=109.4 cnt=3 | c=473.1 rankC=473.1 need=6992600 tD=1.25 人 pulse | safe=1803648 keep=1844640 avail=334224 chunkB=440940 pulseB=264564  x=264564 hNb=2
+    ⇒ 本拍没有指令
+t=4540 ryan_m B=2101462 L=20550 d=102.3 nb=2 neut=10 cmds=89 noFull=1 shQ=61576 | m=0.900 worth=92.0 cheap=7.8 over=1 dMedOther=88.5 safe(-1)=1808400
+    → yoo#8[T5] terr=29478 bal=1864991 dq=63.3 cnt=123 | c=152.7 rankC=152.7 need=3368352 tD=0.71 人 pulse | safe=1808400 keep=1849500 avail=227336 chunkB=420292 pulseB=252175  x=227336 hNb=2
+    → KUKU#18[T6] terr=35792 bal=3936835 dq=110.0 cnt=26 | c=264.0 rankC=264.0 need=7070555 tD=1.24 人 pulse | safe=1808400 keep=1849500 avail=227336 chunkB=420292 pulseB=252175  x=227336 hNb=2
+    ⇒ 本拍没有指令
+t=4545 ryan_m B=2101462 L=20568 d=102.2 nb=2 neut=6 cmds=89 noFull=1 shQ=93621 | m=0.900 worth=92.0 cheap=7.8 over=1 dMedOther=88.5 safe(-1)=1809984
+    → yoo#8[T5] terr=29478 bal=1864991 dq=63.3 cnt=123 | c=152.7 rankC=152.7 need=3368352 tD=0.71 人 pulse | safe=1809984 keep=1851120 avail=225716 chunkB=420292 pulseB=252175  x=225716 hNb=2
+    → KUKU#18[T6] terr=35815 bal=3936835 dq=109.9 cnt=33 | c=263.8 rankC=263.8 need=7070705 tD=1.24 人 pulse | safe=1809984 keep=1851120 avail=225716 chunkB=420292 pulseB=252175  x=225716 hNb=2
+    ⇒ 本拍没有指令
+t=4550 ryan_m B=2127099 L=20578 d=103.4 nb=2 neut=5 cmds=89 noFull=1 shQ=125585 | m=0.900 worth=93.0 cheap=7.8 over=1 dMedOther=91.7 safe(-1)=1810864
+    → yoo#8[T5] terr=29478 bal=1889795 dq=64.1 cnt=123 | c=154.7 rankC=154.7 need=3412562 tD=0.70 人 pulse | safe=1810864 keep=1852020 avail=250153 chunkB=425420 pulseB=255252  x=250153 hNb=2
+    → KUKU#18[T6] terr=35845 bal=3980140 dq=111.0 cnt=36 | c=266.4 rankC=266.4 need=7147858 tD=1.21 人 pulse | safe=1810864 keep=1852020 avail=250153 chunkB=425420 pulseB=255252  x=250153 hNb=2
+    ⇒ 本拍没有指令
+t=4555 ryan_m B=2127099 L=20591 d=103.3 nb=2 neut=3 cmds=90 noFull=1 shQ=157225 | m=0.900 worth=93.0 cheap=7.8 over=1 dMedOther=89.6 safe(-1)=1812008
+    → yoo#8[T5] terr=29478 bal=1889795 dq=64.1 cnt=123 | c=154.7 rankC=154.7 need=3412562 tD=0.72 人 pulse | safe=1812008 keep=1853190 avail=248983 chunkB=425420 pulseB=255252  x=248983 hNb=2
+    → KUKU#18[T6] terr=35860 bal=3980140 dq=111.0 cnt=38 | c=266.3 rankC=266.3 need=7147842 tD=1.24 人 pulse | safe=1812008 keep=1853190 avail=248983 chunkB=425420 pulseB=255252  x=248983 hNb=2
+    ⇒ 影子指令 attack pct=119 → yoo#8[T5]（约 249269 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4560 ryan_m B=2360575 L=20592 d=114.6 nb=2 neut=25 cmds=92 noFull=1 shQ=187957 | m=0.900 worth=103.2 cheap=7.8 over=1 dMedOther=96.9 safe(-1)=1812096
+    → yoo#8[T5] terr=29478 bal=1914929 dq=65.0 cnt=123 | c=156.8 rankC=156.8 need=3457361 tD=0.67 人 pulse | safe=1812096 keep=1853280 avail=479633 chunkB=472115 pulseB=283269  x=283269 hNb=2
+    → KUKU#18[T6] terr=35863 bal=4029862 dq=112.4 cnt=40 | c=269.7 rankC=269.7 need=7236588 tD=1.16 人 pulse | safe=1812096 keep=1853280 avail=479633 chunkB=472115 pulseB=283269  x=283269 hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 110651 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=122 → yoo#8[T5]（约 283545 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4565 ryan_m B=2056284 L=20592 d=99.9 nb=2 neut=25 cmds=93 noFull=1 shQ=0 | m=0.900 worth=89.9 cheap=7.8 over=0 dMedOther=96.7 safe(-1)=1812096
+    → yoo#8[T5] terr=29478 bal=1914929 dq=65.0 cnt=123 | c=144.2 rankC=144.2 need=3180732 tD=0.67 人 pulse | safe=1812096 keep=Inf avail=-Inf chunkB=411257 pulseB=246754 价高(c>=worth)→break hNb=2
+    → KUKU#18[T6] terr=35863 bal=4029862 dq=112.4 cnt=40 | c=527.6 rankC=765.0 need=7236588 tD=1.16 人 pulse crowdedHard | safe=1812096 keep=Inf avail=-Inf chunkB=411257 pulseB=246754 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 96388 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=4570 ryan_m B=2082398 L=20592 d=101.1 nb=2 neut=25 cmds=94 noFull=1 shQ=32619 | m=0.900 worth=91.0 cheap=7.8 over=1 dMedOther=97.5 safe(-1)=1812096
+    → yoo#8[T5] terr=29478 bal=1940397 dq=65.8 cnt=123 | c=146.3 rankC=146.3 need=3226125 tD=0.68 人 pulse | safe=1812096 keep=1853280 avail=204715 chunkB=416480 pulseB=249888 在途(curAtk=276629)→continue hNb=2
+    → KUKU#18[T6] terr=35863 bal=4071369 dq=113.5 cnt=40 | c=533.0 rankC=772.8 need=7310569 tD=1.16 人 pulse crowdedHard | safe=1812096 keep=1853280 avail=204715 chunkB=416480 pulseB=249888 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 97612 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=4575 ryan_m B=1960383 L=20888 d=93.9 nb=2 neut=22 cmds=94 noFull=1 shQ=18770 | m=0.900 worth=84.5 cheap=7.8 over=0 dMedOther=96.9 safe(-1)=1838144
+    → yoo#8[T5] terr=29231 bal=1757375 dq=60.1 cnt=123 | c=134.9 rankC=134.9 need=2942510 tD=0.62 人 pulse | safe=1838144 keep=Inf avail=-Inf chunkB=392077 pulseB=235246 价高(c>=worth)→break hNb=2
+    → KUKU#18[T6] terr=35863 bal=4071369 dq=113.5 cnt=42 | c=532.8 rankC=772.6 need=7310569 tD=1.17 人 pulse crowdedHard | safe=1838144 keep=Inf avail=-Inf chunkB=392077 pulseB=235246 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4580 ryan_m B=1869140 L=21322 d=87.7 nb=2 neut=24 cmds=94 noFull=1 shQ=49475 | m=0.900 worth=78.9 cheap=7.8 over=0 dMedOther=97.8 safe(-1)=1876336
+    → yoo#8[T5] terr=28918 bal=1745380 dq=60.4 cnt=121 | c=138.8 rankC=138.8 need=2984781 tD=0.62 人 pulse | safe=1876336 keep=Inf avail=-Inf chunkB=373828 pulseB=224297 价高(c>=worth)→break hNb=2
+    → KUKU#18[T6] terr=35863 bal=4112082 dq=114.7 cnt=44 | c=538.0 rankC=780.1 need=7383136 tD=1.17 人 pulse crowdedHard | safe=1876336 keep=Inf avail=-Inf chunkB=373828 pulseB=224297 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4585 ryan_m B=1869140 L=21613 d=86.5 nb=2 neut=22 cmds=94 noFull=1 shQ=79380 | m=0.900 worth=77.8 cheap=7.8 over=0 dMedOther=97.3 safe(-1)=1901944
+    → yoo#8[T5] terr=28812 bal=1721810 dq=59.8 cnt=124 | c=139.6 rankC=139.6 need=2988157 tD=0.61 人 pulse | safe=1901944 keep=Inf avail=-Inf chunkB=373828 pulseB=224297 价高(c>=worth)→break hNb=2
+    → KUKU#18[T6] terr=35863 bal=4112082 dq=114.7 cnt=45 | c=538.0 rankC=780.1 need=7383136 tD=1.18 人 pulse crowdedHard | safe=1901944 keep=Inf avail=-Inf chunkB=373828 pulseB=224297 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4590 ryan_m B=1782145 L=22045 d=80.8 nb=3 neut=15 cmds=94 noFull=1 shQ=107602 | m=0.900 worth=73.8 cheap=7.8 over=0 dMedOther=96.5 safe(-1)=1939960
+    → yoo#8[T5] terr=28517 bal=1708717 dq=59.9 cnt=125 | c=143.4 rankC=143.4 need=3030211 tD=0.62 人 pulse | safe=1939960 keep=Inf avail=-Inf chunkB=356429 pulseB=213857 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28172 bal=1094877 dq=38.9 cnt=6 | c=248.8 rankC=360.7 need=1993726 tD=0.40 人 pulse | safe=1939960 keep=Inf avail=-Inf chunkB=356429 pulseB=213857 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4151969 dq=115.8 cnt=47 | c=543.0 rankC=787.4 need=7454230 tD=1.20 人 pulse crowdedHard | safe=1939960 keep=Inf avail=-Inf chunkB=356429 pulseB=213857 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4595 ryan_m B=1782166 L=22192 d=80.3 nb=3 neut=8 cmds=94 noFull=1 shQ=136292 | m=0.900 worth=72.9 cheap=7.7 over=0 dMedOther=95.3 safe(-1)=1952896
+    → yoo#8[T5] terr=28483 bal=1690049 dq=59.3 cnt=127 | c=143.8 rankC=143.8 need=3034295 tD=0.62 人 pulse | safe=1952896 keep=Inf avail=-Inf chunkB=356433 pulseB=213860 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28258 bal=1094877 dq=38.7 cnt=10 | c=171.0 rankC=171.0 need=1993883 tD=0.41 人 pulse | safe=1952896 keep=Inf avail=-Inf chunkB=356433 pulseB=213860 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4151969 dq=115.8 cnt=49 | c=374.5 rankC=374.5 need=7454230 tD=1.22 人 pulse crowdedHard | safe=1952896 keep=Inf avail=-Inf chunkB=356433 pulseB=213860 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4600 ryan_m B=2103961 L=22207 d=94.7 nb=3 neut=0 cmds=94 noFull=1 shQ=166065 | m=0.900 worth=85.3 cheap=7.7 over=0 dMedOther=97.0 safe(-1)=1954216
+    → yoo#8[T5] terr=28531 bal=1740888 dq=61.0 cnt=129 | c=147.9 rankC=147.9 need=3125560 tD=0.63 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=420792 pulseB=252475 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1137638 dq=40.2 cnt=18 | c=177.4 rankC=177.4 need=2070161 tD=0.41 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=420792 pulseB=252475 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4226860 dq=117.9 cnt=49 | c=381.3 rankC=381.3 need=7587715 tD=1.21 人 pulse crowdedHard | safe=1954216 keep=Inf avail=-Inf chunkB=420792 pulseB=252475 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4605 ryan_m B=2103961 L=22207 d=94.7 nb=3 neut=0 cmds=94 noFull=1 shQ=199990 | m=0.900 worth=85.3 cheap=7.7 over=0 dMedOther=97.0 safe(-1)=1954216
+    → yoo#8[T5] terr=28531 bal=1876506 dq=65.8 cnt=129 | c=159.2 rankC=159.2 need=3365844 tD=0.68 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=420792 pulseB=252475 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1380834 dq=48.8 cnt=18 | c=214.1 rankC=214.1 need=2503628 tD=0.50 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=420792 pulseB=252475 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4226860 dq=117.9 cnt=49 | c=381.3 rankC=381.3 need=7587715 tD=1.21 人 pulse crowdedHard | safe=1954216 keep=Inf avail=-Inf chunkB=420792 pulseB=252475 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4610 ryan_m B=2131102 L=22207 d=96.0 nb=3 neut=0 cmds=94 noFull=1 shQ=234002 | m=0.900 worth=86.4 cheap=7.7 over=0 dMedOther=98.2 safe(-1)=1954216
+    → yoo#8[T5] terr=28531 bal=1901275 dq=66.6 cnt=129 | c=161.3 rankC=161.3 need=3409905 tD=0.68 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=426220 pulseB=255732 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1399061 dq=49.4 cnt=18 | c=216.9 rankC=216.9 need=2536115 tD=0.50 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=426220 pulseB=255732 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4264056 dq=118.9 cnt=49 | c=384.7 rankC=384.7 need=7654013 tD=1.21 人 pulse crowdedHard | safe=1954216 keep=Inf avail=-Inf chunkB=426220 pulseB=255732 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4615 ryan_m B=2131102 L=22207 d=96.0 nb=3 neut=0 cmds=94 noFull=1 shQ=268362 | m=0.900 worth=86.4 cheap=7.7 over=0 dMedOther=98.0 safe(-1)=1954216
+    → yoo#8[T5] terr=28531 bal=1901275 dq=66.6 cnt=129 | c=161.3 rankC=161.3 need=3410002 tD=0.68 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=426220 pulseB=255732 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1399061 dq=49.4 cnt=18 | c=216.9 rankC=216.9 need=2536115 tD=0.50 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=426220 pulseB=255732 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4264056 dq=118.9 cnt=49 | c=384.7 rankC=384.7 need=7654013 tD=1.21 人 pulse crowdedHard | safe=1954216 keep=Inf avail=-Inf chunkB=426220 pulseB=255732 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4620 ryan_m B=2158593 L=22207 d=97.2 nb=3 neut=0 cmds=94 noFull=1 shQ=302811 | m=0.900 worth=87.5 cheap=7.7 over=0 dMedOther=98.5 safe(-1)=1954216
+    → yoo#8[T5] terr=28531 bal=1926371 dq=67.5 cnt=129 | c=163.4 rankC=163.4 need=3454551 tD=0.69 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=431719 pulseB=259031 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1417528 dq=50.1 cnt=18 | c=219.7 rankC=219.7 need=2569030 tD=0.51 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=431719 pulseB=259031 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4300300 dq=119.9 cnt=49 | c=387.9 rankC=387.9 need=7718614 tD=1.22 人 pulse crowdedHard | safe=1954216 keep=Inf avail=-Inf chunkB=431719 pulseB=259031 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4625 ryan_m B=2158593 L=22207 d=97.2 nb=3 neut=0 cmds=94 noFull=1 shQ=337616 | m=0.900 worth=87.5 cheap=7.7 over=0 dMedOther=98.0 safe(-1)=1954216
+    → yoo#8[T5] terr=28531 bal=1926371 dq=67.5 cnt=129 | c=163.4 rankC=163.4 need=3454649 tD=0.69 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=431719 pulseB=259031 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1417528 dq=50.1 cnt=18 | c=219.7 rankC=219.7 need=2569030 tD=0.51 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=431719 pulseB=259031 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4300300 dq=119.9 cnt=49 | c=387.9 rankC=387.9 need=7718614 tD=1.22 人 pulse crowdedHard | safe=1954216 keep=Inf avail=-Inf chunkB=431719 pulseB=259031 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4630 ryan_m B=2186438 L=22207 d=98.5 nb=3 neut=0 cmds=94 noFull=1 shQ=372511 | m=0.900 worth=88.6 cheap=7.7 over=0 dMedOther=98.5 safe(-1)=1954216
+    → yoo#8[T5] terr=28531 bal=1951799 dq=68.4 cnt=129 | c=165.5 rankC=165.5 need=3499890 tD=0.69 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=437288 pulseB=262373 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1436239 dq=50.7 cnt=18 | c=222.6 rankC=222.6 need=2602380 tD=0.51 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=437288 pulseB=262373 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4335562 dq=120.9 cnt=49 | c=391.1 rankC=391.1 need=7781465 tD=1.23 人 pulse crowdedHard | safe=1954216 keep=Inf avail=-Inf chunkB=437288 pulseB=262373 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4635 ryan_m B=2186438 L=22207 d=98.5 nb=3 neut=0 cmds=94 noFull=1 shQ=407766 | m=0.900 worth=88.6 cheap=7.7 over=0 dMedOther=98.5 safe(-1)=1954216
+    → yoo#8[T5] terr=28531 bal=1951799 dq=68.4 cnt=129 | c=165.5 rankC=165.5 need=3499989 tD=0.69 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=437288 pulseB=262373 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1436239 dq=50.7 cnt=18 | c=222.6 rankC=222.6 need=2602380 tD=0.51 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=437288 pulseB=262373 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4335562 dq=120.9 cnt=49 | c=391.1 rankC=391.1 need=7781465 tD=1.23 人 pulse crowdedHard | safe=1954216 keep=Inf avail=-Inf chunkB=437288 pulseB=262373 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4640 ryan_m B=2214643 L=22207 d=99.7 nb=3 neut=0 cmds=94 noFull=1 shQ=443112 | m=0.900 worth=89.8 cheap=7.7 over=0 dMedOther=99.8 safe(-1)=1954216
+    → yoo#8[T5] terr=28531 bal=1977562 dq=69.3 cnt=129 | c=167.7 rankC=167.7 need=3545728 tD=0.69 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=442929 pulseB=265757 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1455197 dq=51.4 cnt=18 | c=225.5 rankC=225.5 need=2636170 tD=0.52 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=442929 pulseB=265757 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4370246 dq=121.9 cnt=49 | c=394.2 rankC=394.2 need=7843285 tD=1.22 人 pulse crowdedHard | safe=1954216 keep=Inf avail=-Inf chunkB=442929 pulseB=265757 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4645 ryan_m B=2214643 L=22207 d=99.7 nb=3 neut=0 cmds=94 noFull=1 shQ=478822 | m=0.900 worth=89.8 cheap=7.7 over=0 dMedOther=95.9 safe(-1)=1954216
+    → yoo#8[T5] terr=28531 bal=1977562 dq=69.3 cnt=129 | c=167.7 rankC=167.7 need=3545829 tD=0.72 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=442929 pulseB=265757 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1455197 dq=51.4 cnt=18 | c=225.5 rankC=225.5 need=2636170 tD=0.54 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=442929 pulseB=265757 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4370246 dq=121.9 cnt=49 | c=394.2 rankC=394.2 need=7843285 tD=1.27 人 pulse crowdedHard | safe=1954216 keep=Inf avail=-Inf chunkB=442929 pulseB=265757 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4650 ryan_m B=2243211 L=22207 d=101.0 nb=3 neut=0 cmds=95 noFull=1 shQ=514512 | m=0.900 worth=90.9 cheap=7.7 over=1 dMedOther=97.2 safe(-1)=1954216
+    → yoo#8[T5] terr=28531 bal=2003665 dq=70.2 cnt=129 | c=169.8 rankC=169.8 need=3592276 tD=0.72 人 pulse | safe=1954216 keep=1998630 avail=218294 chunkB=448642 pulseB=269185  x=218294 hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1474405 dq=52.1 cnt=18 | c=228.4 rankC=228.4 need=2670406 tD=0.54 人 pulse | safe=1954216 keep=1998630 avail=218294 chunkB=448642 pulseB=269185  x=218294 hNb=3
+    → KUKU#18[T6] terr=35863 bal=4403896 dq=122.8 cnt=49 | c=397.2 rankC=397.2 need=7903263 tD=1.26 人 pulse crowdedHard | safe=1954216 keep=1998630 avail=218294 chunkB=448642 pulseB=269185 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 影子指令 attack pct=99 → yoo#8[T5]（约 219063 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4655 ryan_m B=2243211 L=22207 d=101.0 nb=3 neut=0 cmds=96 noFull=1 shQ=550122 | m=0.900 worth=90.9 cheap=7.7 over=1 dMedOther=97.2 safe(-1)=1954216
+    → yoo#8[T5] terr=28531 bal=2003665 dq=70.2 cnt=129 | c=169.8 rankC=169.8 need=3592378 tD=0.72 人 pulse | safe=1954216 keep=1998630 avail=218294 chunkB=448642 pulseB=269185  x=218294 hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1474405 dq=52.1 cnt=18 | c=228.4 rankC=228.4 need=2670406 tD=0.54 人 pulse | safe=1954216 keep=1998630 avail=218294 chunkB=448642 pulseB=269185  x=218294 hNb=3
+    → KUKU#18[T6] terr=35863 bal=4403896 dq=122.8 cnt=49 | c=397.2 rankC=397.2 need=7903263 tD=1.26 人 pulse crowdedHard | safe=1954216 keep=1998630 avail=218294 chunkB=448642 pulseB=269185 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 影子指令 attack pct=99 → yoo#8[T5]（约 219063 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4660 ryan_m B=2271699 L=22207 d=102.3 nb=3 neut=0 cmds=97 noFull=1 shQ=567787 | m=0.900 worth=92.1 cheap=7.7 over=1 dMedOther=97.6 safe(-1)=1954216
+    → yoo#8[T5] terr=28531 bal=2030113 dq=71.2 cnt=129 | c=172.0 rankC=172.0 need=3639340 tD=0.73 人 pulse | safe=1954216 keep=1998630 avail=246448 chunkB=454340 pulseB=272604  x=246448 hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1493867 dq=52.8 cnt=18 | c=231.4 rankC=231.4 need=2705095 tD=0.54 人 pulse | safe=1954216 keep=1998630 avail=246448 chunkB=454340 pulseB=272604  x=246448 hNb=3
+    → KUKU#18[T6] terr=35863 bal=4436484 dq=123.7 cnt=49 | c=400.2 rankC=400.2 need=7961347 tD=1.27 人 pulse crowdedHard | safe=1954216 keep=1998630 avail=246448 chunkB=454340 pulseB=272604 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 影子指令 attack pct=111 → yoo#8[T5]（约 248467 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4665 ryan_m B=1801943 L=22207 d=81.1 nb=3 neut=0 cmds=97 noFull=1 shQ=18972 | m=0.900 worth=74.5 cheap=7.7 over=0 dMedOther=97.4 safe(-1)=1954216
+    → yoo#8[T5] terr=28531 bal=2030113 dq=71.2 cnt=129 | c=152.1 rankC=152.1 need=3220017 tD=0.73 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=360389 pulseB=216233 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1493867 dq=52.8 cnt=18 | c=334.8 rankC=485.5 need=2705095 tD=0.54 人 pulse | safe=1954216 keep=Inf avail=-Inf chunkB=360389 pulseB=216233 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4436484 dq=123.7 cnt=49 | c=579.8 rankC=840.8 need=7961347 tD=1.27 人 pulse crowdedHard | safe=1954216 keep=Inf avail=-Inf chunkB=360389 pulseB=216233 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4670 ryan_m B=1604170 L=22336 d=71.8 nb=3 neut=0 cmds=97 noFull=1 shQ=47389 | m=0.900 worth=75.4 cheap=7.7 over=0 dMedOther=98.6 safe(-1)=1965568
+    → yoo#8[T5] terr=28402 bal=2042030 dq=71.9 cnt=129 | c=145.8 rankC=145.8 need=3070623 tD=0.73 人 pulse | safe=1965568 keep=Inf avail=-Inf chunkB=320834 pulseB=192500 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1513586 dq=53.5 cnt=18 | c=338.8 rankC=491.3 need=2740241 tD=0.54 人 pulse | safe=1965568 keep=Inf avail=-Inf chunkB=320834 pulseB=192500 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4468426 dq=124.6 cnt=49 | c=583.8 rankC=846.5 need=8018280 tD=1.26 人 pulse crowdedHard | safe=1965568 keep=Inf avail=-Inf chunkB=320834 pulseB=192500 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4675 ryan_m B=1604170 L=22594 d=71.0 nb=3 neut=0 cmds=97 noFull=1 shQ=73254 | m=0.900 worth=75.3 cheap=7.7 over=0 dMedOther=98.4 safe(-1)=1988272
+    → yoo#8[T5] terr=28144 bal=2012394 dq=71.5 cnt=130 | c=147.6 rankC=147.6 need=3070736 tD=0.73 人 pulse | safe=1988272 keep=Inf avail=-Inf chunkB=320834 pulseB=192500 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1513586 dq=53.5 cnt=19 | c=338.8 rankC=491.3 need=2740241 tD=0.54 人 pulse | safe=1988272 keep=Inf avail=-Inf chunkB=320834 pulseB=192500 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4468426 dq=124.6 cnt=49 | c=583.8 rankC=846.5 need=8018280 tD=1.27 人 pulse crowdedHard | safe=1988272 keep=Inf avail=-Inf chunkB=320834 pulseB=192500 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4680 ryan_m B=1624863 L=22986 d=70.7 nb=3 neut=0 cmds=97 noFull=1 shQ=99186 | m=0.900 worth=76.3 cheap=7.7 over=0 dMedOther=99.7 safe(-1)=2022768
+    → yoo#8[T5] terr=27752 bal=1993648 dq=71.8 cnt=131 | c=152.7 rankC=152.7 need=3117008 tD=0.72 人 pulse | safe=2022768 keep=Inf avail=-Inf chunkB=324973 pulseB=194984 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1533565 dq=54.2 cnt=21 | c=343.2 rankC=497.6 need=2775851 tD=0.54 人 pulse | safe=2022768 keep=Inf avail=-Inf chunkB=324973 pulseB=194984 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4265634 dq=118.9 cnt=49 | c=557.6 rankC=808.5 need=7656826 tD=1.19 人 pulse crowdedHard | safe=2022768 keep=Inf avail=-Inf chunkB=324973 pulseB=194984 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4685 ryan_m B=1624863 L=23246 d=69.9 nb=3 neut=0 cmds=97 noFull=1 shQ=125386 | m=0.900 worth=76.1 cheap=7.7 over=0 dMedOther=99.5 safe(-1)=2045648
+    → yoo#8[T5] terr=27492 bal=1963808 dq=71.4 cnt=129 | c=154.7 rankC=154.7 need=3117123 tD=0.72 人 pulse | safe=2045648 keep=Inf avail=-Inf chunkB=324973 pulseB=194984 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1533565 dq=54.2 cnt=23 | c=343.2 rankC=497.6 need=2775851 tD=0.54 人 pulse | safe=2045648 keep=Inf avail=-Inf chunkB=324973 pulseB=194984 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35889 bal=4265634 dq=118.9 cnt=49 | c=557.2 rankC=807.9 need=7656781 tD=1.19 人 pulse crowdedHard | safe=2045648 keep=Inf avail=-Inf chunkB=324973 pulseB=194984 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4690 ryan_m B=1645986 L=23631 d=69.7 nb=3 neut=0 cmds=97 noFull=1 shQ=151775 | m=0.900 worth=77.1 cheap=7.7 over=0 dMedOther=100.8 safe(-1)=2079528
+    → yoo#8[T5] terr=27107 bal=1945082 dq=71.8 cnt=127 | c=159.9 rankC=159.9 need=3161920 tD=0.71 人 pulse | safe=2079528 keep=Inf avail=-Inf chunkB=329197 pulseB=197518 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1553808 dq=54.9 cnt=26 | c=193.1 rankC=280.0 need=2811932 tD=0.54 人 pulse | safe=2079528 keep=Inf avail=-Inf chunkB=329197 pulseB=197518 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35971 bal=4302318 dq=119.6 cnt=49 | c=560.7 rankC=813.0 need=7722373 tD=1.19 人 pulse crowdedHard | safe=2079528 keep=Inf avail=-Inf chunkB=329197 pulseB=197518 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4695 ryan_m B=1645986 L=23884 d=68.9 nb=3 neut=0 cmds=97 noFull=1 shQ=178520 | m=0.900 worth=77.0 cheap=7.7 over=0 dMedOther=100.7 safe(-1)=2101792
+    → yoo#8[T5] terr=26854 bal=1916078 dq=71.4 cnt=126 | c=162.0 rankC=162.0 need=3162143 tD=0.71 人 pulse | safe=2101792 keep=Inf avail=-Inf chunkB=329197 pulseB=197518 价高(c>=worth)→break hNb=3
+    → 孙燕姿#15[T2] terr=28309 bal=1553808 dq=54.9 cnt=28 | c=193.1 rankC=279.9 need=2811932 tD=0.55 人 pulse | safe=2101792 keep=Inf avail=-Inf chunkB=329197 pulseB=197518 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=36024 bal=4302318 dq=119.4 cnt=49 | c=559.9 rankC=811.8 need=7722326 tD=1.19 人 pulse crowdedHard | safe=2101792 keep=Inf avail=-Inf chunkB=329197 pulseB=197518 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4700 ryan_m B=1691516 L=24246 d=69.8 nb=4 neut=0 cmds=97 noFull=1 shQ=205413 | m=0.900 worth=78.8 cheap=7.7 over=0 dMedOther=103.1 safe(-1)=2133648
+    → yoo#8[T5] terr=26492 bal=1925850 dq=72.7 cnt=109 | c=169.8 rankC=169.8 need=3252083 tD=0.71 人 pulse | safe=2133648 keep=Inf avail=-Inf chunkB=338303 pulseB=202982 价高(c>=worth)→break hNb=4
+    → 孙燕姿#15[T2] terr=28309 bal=1602627 dq=56.6 cnt=31 | c=199.0 rankC=288.6 need=2898946 tD=0.55 人 pulse | safe=2133648 keep=Inf avail=-Inf chunkB=338303 pulseB=202982 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=36103 bal=4374534 dq=121.2 cnt=49 | c=568.0 rankC=823.6 need=7851287 tD=1.18 人 pulse crowdedHard | safe=2133648 keep=Inf avail=-Inf chunkB=338303 pulseB=202982 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=22373 bal=2939208 dq=131.4 cnt=15 | c=1110.3 rankC=1609.9 need=5272339 tD=1.27 人 pulse crowdedHard | safe=2133648 keep=Inf avail=-Inf chunkB=338303 pulseB=202982 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4705 ryan_m B=1691516 L=24461 d=69.2 nb=4 neut=0 cmds=97 noFull=1 shQ=232898 | m=0.900 worth=78.7 cheap=7.7 over=0 dMedOther=102.9 safe(-1)=2152568
+    → 孙燕姿#15[T2] terr=28309 bal=1602627 dq=56.6 cnt=33 | c=137.2 rankC=137.2 need=2898946 tD=0.55 人 pulse | safe=2152568 keep=Inf avail=-Inf chunkB=338303 pulseB=202982 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=26277 bal=1900875 dq=72.3 cnt=104 | c=171.7 rankC=171.7 need=3252420 tD=0.70 人 pulse | safe=2152568 keep=Inf avail=-Inf chunkB=338303 pulseB=202982 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=36160 bal=4374534 dq=121.0 cnt=49 | c=567.1 rankC=822.3 need=7851245 tD=1.18 人 pulse crowdedHard | safe=2152568 keep=Inf avail=-Inf chunkB=338303 pulseB=202982 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=22373 bal=2939208 dq=131.4 cnt=18 | c=1110.1 rankC=1609.6 need=5272339 tD=1.28 人 pulse crowdedHard | safe=2152568 keep=Inf avail=-Inf chunkB=338303 pulseB=202982 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4710 ryan_m B=1713505 L=24767 d=69.2 nb=4 neut=0 cmds=97 noFull=1 shQ=260497 | m=0.900 worth=79.8 cheap=7.6 over=0 dMedOther=104.3 safe(-1)=2179496
+    → 孙燕姿#15[T2] terr=28309 bal=1623781 dq=57.4 cnt=34 | c=139.0 rankC=139.0 need=2936650 tD=0.55 人 pulse | safe=2179496 keep=Inf avail=-Inf chunkB=342701 pulseB=205621 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=1889981 dq=72.8 cnt=98 | c=176.8 rankC=176.8 need=3295483 tD=0.70 人 pulse | safe=2179496 keep=Inf avail=-Inf chunkB=342701 pulseB=205621 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=36248 bal=4409530 dq=121.6 cnt=49 | c=570.3 rankC=826.9 need=7913752 tD=1.17 人 pulse crowdedHard | safe=2179496 keep=Inf avail=-Inf chunkB=342701 pulseB=205621 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=22373 bal=2953610 dq=132.0 cnt=23 | c=1089.9 rankC=1580.3 need=5298009 tD=1.27 人 pulse crowdedHard | safe=2179496 keep=Inf avail=-Inf chunkB=342701 pulseB=205621 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4715 ryan_m B=1713534 L=24767 d=69.2 nb=4 neut=0 cmds=97 noFull=1 shQ=288552 | m=0.900 worth=79.7 cheap=7.6 over=0 dMedOther=104.2 safe(-1)=2179496
+    → 孙燕姿#15[T2] terr=28309 bal=1623781 dq=57.4 cnt=34 | c=139.0 rankC=139.0 need=2936650 tD=0.55 人 pulse | safe=2179496 keep=Inf avail=-Inf chunkB=342707 pulseB=205624 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=1878760 dq=72.3 cnt=98 | c=256.7 rankC=372.2 need=3299113 tD=0.69 人 pulse | safe=2179496 keep=Inf avail=-Inf chunkB=342707 pulseB=205624 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=36302 bal=4409530 dq=121.5 cnt=49 | c=569.4 rankC=825.7 need=7913919 tD=1.17 人 pulse crowdedHard | safe=2179496 keep=Inf avail=-Inf chunkB=342707 pulseB=205624 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=22373 bal=2953610 dq=132.0 cnt=23 | c=1089.9 rankC=1580.3 need=5298009 tD=1.27 人 pulse crowdedHard | safe=2179496 keep=Inf avail=-Inf chunkB=342707 pulseB=205624 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4720 ryan_m B=1735809 L=24767 d=70.1 nb=4 neut=0 cmds=97 noFull=1 shQ=316680 | m=0.900 worth=80.7 cheap=7.6 over=0 dMedOther=105.5 safe(-1)=2179496
+    → 孙燕姿#15[T2] terr=28309 bal=1645214 dq=58.1 cnt=34 | c=140.8 rankC=140.8 need=2974852 tD=0.55 人 pulse | safe=2179496 keep=Inf avail=-Inf chunkB=347162 pulseB=208297 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=1903183 dq=73.3 cnt=98 | c=259.9 rankC=376.9 need=3341961 tD=0.69 人 pulse | safe=2179496 keep=Inf avail=-Inf chunkB=347162 pulseB=208297 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=36373 bal=4444365 dq=122.2 cnt=49 | c=572.8 rankC=830.6 need=7976071 tD=1.16 人 pulse crowdedHard | safe=2179496 keep=Inf avail=-Inf chunkB=347162 pulseB=208297 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=22373 bal=2967491 dq=132.6 cnt=23 | c=1095.0 rankC=1587.7 need=5322750 tD=1.26 人 pulse crowdedHard | safe=2179496 keep=Inf avail=-Inf chunkB=347162 pulseB=208297 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4725 ryan_m B=1735809 L=24767 d=70.1 nb=4 neut=0 cmds=97 noFull=1 shQ=345100 | m=0.900 worth=80.6 cheap=7.6 over=0 dMedOther=105.4 safe(-1)=2179496
+    → 孙燕姿#15[T2] terr=28309 bal=1645214 dq=58.1 cnt=34 | c=140.8 rankC=140.8 need=2974852 tD=0.55 人 pulse | safe=2179496 keep=Inf avail=-Inf chunkB=347162 pulseB=208297 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=1903183 dq=73.3 cnt=98 | c=179.3 rankC=179.3 need=3342408 tD=0.70 人 pulse | safe=2179496 keep=Inf avail=-Inf chunkB=347162 pulseB=208297 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=36425 bal=4444365 dq=122.0 cnt=49 | c=394.5 rankC=394.5 need=7976149 tD=1.16 人 pulse crowdedHard | safe=2179496 keep=Inf avail=-Inf chunkB=347162 pulseB=208297 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=22373 bal=2967491 dq=132.6 cnt=23 | c=755.2 rankC=755.2 need=5322750 tD=1.26 人 pulse crowdedHard | safe=2179496 keep=Inf avail=-Inf chunkB=347162 pulseB=208297 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4730 ryan_m B=1758374 L=24767 d=71.0 nb=4 neut=0 cmds=97 noFull=1 shQ=373594 | m=0.900 worth=81.6 cheap=7.6 over=0 dMedOther=106.6 safe(-1)=2179496
+    → 孙燕姿#15[T2] terr=28309 bal=1666930 dq=58.9 cnt=34 | c=142.6 rankC=142.6 need=3013558 tD=0.55 人 pulse | safe=2179496 keep=Inf avail=-Inf chunkB=351675 pulseB=211005 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=1927924 dq=74.2 cnt=98 | c=181.5 rankC=181.5 need=3385713 tD=0.70 人 pulse | safe=2179496 keep=Inf avail=-Inf chunkB=351675 pulseB=211005 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=36513 bal=4479031 dq=122.7 cnt=49 | c=396.6 rankC=396.6 need=8038069 tD=1.15 人 pulse crowdedHard | safe=2179496 keep=Inf avail=-Inf chunkB=351675 pulseB=211005 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=22373 bal=2980844 dq=133.2 cnt=23 | c=758.6 rankC=758.6 need=5346551 tD=1.25 人 pulse crowdedHard | safe=2179496 keep=Inf avail=-Inf chunkB=351675 pulseB=211005 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4735 ryan_m B=1758374 L=24767 d=71.0 nb=4 neut=0 cmds=97 noFull=1 shQ=402384 | m=0.900 worth=81.4 cheap=7.6 over=0 dMedOther=106.5 safe(-1)=2179496
+    → 孙燕姿#15[T2] terr=28309 bal=1666930 dq=58.9 cnt=34 | c=142.6 rankC=142.6 need=3013558 tD=0.55 人 pulse | safe=2179496 keep=Inf avail=-Inf chunkB=351675 pulseB=211005 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=22373 bal=2587863 dq=115.7 cnt=23 | c=224.3 rankC=157.0 need=5004160 tD=1.09 人 pulse onMe | safe=2179496 keep=Inf avail=-Inf chunkB=351675 pulseB=211005 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=1927924 dq=74.2 cnt=98 | c=181.5 rankC=181.5 need=3386165 tD=0.70 人 pulse | safe=2179496 keep=Inf avail=-Inf chunkB=351675 pulseB=211005 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=36579 bal=4479031 dq=122.4 cnt=49 | c=395.9 rankC=395.9 need=8038254 tD=1.15 人 pulse crowdedHard | safe=2179496 keep=Inf avail=-Inf chunkB=351675 pulseB=211005 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4740 ryan_m B=1778586 L=24744 d=71.9 nb=4 neut=0 cmds=97 noFull=1 shQ=431240 | m=0.900 worth=82.4 cheap=7.6 over=0 dMedOther=107.8 safe(-1)=2177472
+    → 孙燕姿#15[T2] terr=28309 bal=1688933 dq=59.7 cnt=34 | c=144.5 rankC=144.5 need=3052775 tD=0.55 人 pulse | safe=2177472 keep=Inf avail=-Inf chunkB=355717 pulseB=213430 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=22396 bal=2610894 dq=116.6 cnt=23 | c=225.7 rankC=158.0 need=5039865 tD=1.08 人 pulse onMe | safe=2177472 keep=Inf avail=-Inf chunkB=355717 pulseB=213430 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=1952987 dq=75.2 cnt=98 | c=183.9 rankC=183.9 need=3430158 tD=0.70 人 pulse | safe=2177472 keep=Inf avail=-Inf chunkB=355717 pulseB=213430 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=36691 bal=4513519 dq=123.0 cnt=49 | c=397.7 rankC=397.7 need=8099893 tD=1.14 人 pulse crowdedHard | safe=2177472 keep=Inf avail=-Inf chunkB=355717 pulseB=213430 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4745 ryan_m B=1773069 L=24696 d=71.8 nb=4 neut=0 cmds=97 noFull=1 shQ=443267 | m=0.900 worth=82.3 cheap=7.7 over=0 dMedOther=107.5 safe(-1)=2173248
+    → 孙燕姿#15[T2] terr=28309 bal=1688933 dq=59.7 cnt=34 | c=144.5 rankC=144.5 need=3052775 tD=0.55 人 pulse | safe=2173248 keep=Inf avail=-Inf chunkB=354614 pulseB=212768 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=22444 bal=2610894 dq=116.3 cnt=25 | c=224.7 rankC=157.3 need=5028807 tD=1.08 人 pulse onMe | safe=2173248 keep=Inf avail=-Inf chunkB=354614 pulseB=212768 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=1952987 dq=75.2 cnt=96 | c=183.9 rankC=183.9 need=3430615 tD=0.70 人 pulse | safe=2173248 keep=Inf avail=-Inf chunkB=354614 pulseB=212768 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=36762 bal=4513519 dq=122.8 cnt=49 | c=397.0 rankC=397.0 need=8099956 tD=1.14 人 pulse crowdedHard | safe=2173248 keep=Inf avail=-Inf chunkB=354614 pulseB=212768 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4750 ryan_m B=1786584 L=24614 d=72.6 nb=4 neut=0 cmds=97 noFull=1 shQ=446646 | m=0.900 worth=83.0 cheap=7.7 over=0 dMedOther=108.5 safe(-1)=2166032
+    → 孙燕姿#15[T2] terr=28309 bal=1711226 dq=60.4 cnt=34 | c=146.4 rankC=146.4 need=3092510 tD=0.56 人 pulse | safe=2166032 keep=Inf avail=-Inf chunkB=357317 pulseB=214390 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=22526 bal=2633869 dq=116.9 cnt=29 | c=224.8 rankC=157.3 need=5050888 tD=1.08 人 pulse onMe | safe=2166032 keep=Inf avail=-Inf chunkB=357317 pulseB=214390 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=1978375 dq=76.2 cnt=93 | c=186.2 rankC=186.2 need=3475074 tD=0.70 人 pulse | safe=2166032 keep=Inf avail=-Inf chunkB=357317 pulseB=214390 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=36854 bal=4547821 dq=123.4 cnt=49 | c=399.0 rankC=399.0 need=8161233 tD=1.14 人 pulse crowdedHard | safe=2166032 keep=Inf avail=-Inf chunkB=357317 pulseB=214390 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4755 ryan_m B=1779155 L=24550 d=72.5 nb=4 neut=0 cmds=97 noFull=1 shQ=444788 | m=0.900 worth=77.7 cheap=7.7 over=0 dMedOther=101.5 safe(-1)=2160400
+    → 孙燕姿#15[T2] terr=28309 bal=1711226 dq=60.4 cnt=34 | c=146.4 rankC=146.4 need=3092510 tD=0.60 人 pulse | safe=2160400 keep=Inf avail=-Inf chunkB=355831 pulseB=213499 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=22590 bal=2633869 dq=116.6 cnt=33 | c=223.4 rankC=156.4 need=5035998 tD=1.15 人 pulse onMe | safe=2160400 keep=Inf avail=-Inf chunkB=355831 pulseB=213499 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=1978375 dq=76.2 cnt=91 | c=186.2 rankC=186.2 need=3475537 tD=0.75 人 pulse | safe=2160400 keep=Inf avail=-Inf chunkB=355831 pulseB=213499 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=36914 bal=4547821 dq=123.2 cnt=49 | c=398.3 rankC=398.3 need=8161323 tD=1.21 人 pulse crowdedHard | safe=2160400 keep=Inf avail=-Inf chunkB=355831 pulseB=213499 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4760 ryan_m B=1789142 L=24438 d=73.2 nb=4 neut=0 cmds=97 noFull=1 shQ=447285 | m=0.900 worth=78.7 cheap=7.7 over=0 dMedOther=102.9 safe(-1)=2150544
+    → 孙燕姿#15[T2] terr=28309 bal=1733814 dq=61.2 cnt=34 | c=148.3 rankC=148.3 need=3132770 tD=0.60 人 pulse | safe=2150544 keep=Inf avail=-Inf chunkB=357828 pulseB=214697 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=22702 bal=2657047 dq=117.0 cnt=39 | c=222.9 rankC=156.1 need=5051190 tD=1.14 人 pulse onMe | safe=2150544 keep=Inf avail=-Inf chunkB=357828 pulseB=214697 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=2004093 dq=77.2 cnt=88 | c=188.6 rankC=188.6 need=3520701 tD=0.75 人 pulse | safe=2150544 keep=Inf avail=-Inf chunkB=357828 pulseB=214697 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=36993 bal=4581474 dq=123.8 cnt=49 | c=400.4 rankC=400.4 need=8221380 tD=1.20 人 pulse crowdedHard | safe=2150544 keep=Inf avail=-Inf chunkB=357828 pulseB=214697 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4765 ryan_m B=1779192 L=24353 d=73.1 nb=4 neut=0 cmds=97 noFull=1 shQ=444798 | m=0.900 worth=75.2 cheap=7.7 over=0 dMedOther=98.4 safe(-1)=2143064
+    → 孙燕姿#15[T2] terr=28309 bal=1733814 dq=61.2 cnt=34 | c=148.3 rankC=148.3 need=3132770 tD=0.62 人 pulse | safe=2143064 keep=Inf avail=-Inf chunkB=355838 pulseB=213503 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=22787 bal=2657047 dq=116.6 cnt=43 | c=221.2 rankC=154.8 need=5031288 tD=1.19 人 pulse onMe | safe=2143064 keep=Inf avail=-Inf chunkB=355838 pulseB=213503 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=2004093 dq=77.2 cnt=86 | c=188.6 rankC=188.6 need=3521169 tD=0.78 人 pulse | safe=2143064 keep=Inf avail=-Inf chunkB=355838 pulseB=213503 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=37040 bal=4581474 dq=123.7 cnt=49 | c=399.9 rankC=399.9 need=8221407 tD=1.26 人 pulse crowdedHard | safe=2143064 keep=Inf avail=-Inf chunkB=355838 pulseB=213503 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4770 ryan_m B=1785173 L=24208 d=73.7 nb=4 neut=0 cmds=97 noFull=1 shQ=446293 | m=0.900 worth=75.7 cheap=7.7 over=0 dMedOther=99.0 safe(-1)=2130304
+    → 孙燕姿#15[T2] terr=28309 bal=1756700 dq=62.1 cnt=34 | c=150.2 rankC=150.2 need=3173562 tD=0.63 人 pulse | safe=2130304 keep=Inf avail=-Inf chunkB=357035 pulseB=214221 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=22932 bal=2680429 dq=116.9 cnt=51 | c=220.0 rankC=154.0 need=5038758 tD=1.18 人 pulse onMe | safe=2130304 keep=Inf avail=-Inf chunkB=357035 pulseB=214221 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=2030146 dq=78.2 cnt=82 | c=191.1 rankC=191.1 need=3566814 tD=0.79 人 pulse | safe=2130304 keep=Inf avail=-Inf chunkB=357035 pulseB=214221 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=37106 bal=4614918 dq=124.4 cnt=49 | c=402.1 rankC=402.1 need=8281203 tD=1.26 人 pulse crowdedHard | safe=2130304 keep=Inf avail=-Inf chunkB=357035 pulseB=214221 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4775 ryan_m B=1772204 L=24098 d=73.5 nb=4 neut=0 cmds=97 noFull=1 shQ=443051 | m=0.900 worth=75.6 cheap=7.7 over=0 dMedOther=98.8 safe(-1)=2120624
+    → 孙燕姿#15[T2] terr=28309 bal=1756700 dq=62.1 cnt=34 | c=150.2 rankC=150.2 need=3173562 tD=0.63 人 pulse | safe=2120624 keep=Inf avail=-Inf chunkB=354441 pulseB=212664 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23042 bal=2680429 dq=116.3 cnt=56 | c=217.8 rankC=152.5 need=5012847 tD=1.18 人 pulse onMe | safe=2120624 keep=Inf avail=-Inf chunkB=354441 pulseB=212664 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=2030146 dq=78.2 cnt=78 | c=191.1 rankC=191.1 need=3567289 tD=0.79 人 pulse | safe=2120624 keep=Inf avail=-Inf chunkB=354441 pulseB=212664 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=37151 bal=4614918 dq=124.2 cnt=49 | c=401.6 rankC=401.6 need=8281314 tD=1.26 人 pulse crowdedHard | safe=2120624 keep=Inf avail=-Inf chunkB=354441 pulseB=212664 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4780 ryan_m B=1774059 L=23920 d=74.2 nb=4 neut=0 cmds=97 noFull=1 shQ=443514 | m=0.900 worth=76.5 cheap=7.7 over=0 dMedOther=100.0 safe(-1)=2104960
+    → 孙燕姿#15[T2] terr=28309 bal=1779888 dq=62.9 cnt=34 | c=152.1 rankC=152.1 need=3214891 tD=0.63 人 pulse | safe=2104960 keep=Inf avail=-Inf chunkB=354812 pulseB=212887 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=2056537 dq=79.2 cnt=76 | c=193.6 rankC=193.6 need=3613656 tD=0.79 人 pulse | safe=2104960 keep=Inf avail=-Inf chunkB=354812 pulseB=212887 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23220 bal=2704284 dq=116.5 cnt=61 | c=288.1 rankC=288.1 need=5013186 tD=1.17 人 pulse onMe | safe=2104960 keep=Inf avail=-Inf chunkB=354812 pulseB=212887 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=37216 bal=4648145 dq=124.9 cnt=49 | c=403.8 rankC=403.8 need=8340503 tD=1.25 人 pulse crowdedHard | safe=2104960 keep=Inf avail=-Inf chunkB=354812 pulseB=212887 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4785 ryan_m B=1758765 L=23791 d=73.9 nb=4 neut=0 cmds=97 noFull=1 shQ=439691 | m=0.900 worth=75.7 cheap=7.7 over=0 dMedOther=99.0 safe(-1)=2093608
+    → 孙燕姿#15[T2] terr=28309 bal=1779888 dq=62.9 cnt=34 | c=152.1 rankC=152.1 need=3214891 tD=0.64 人 pulse | safe=2093608 keep=Inf avail=-Inf chunkB=351753 pulseB=211052 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=2056537 dq=79.2 cnt=74 | c=193.6 rankC=193.6 need=3614137 tD=0.80 人 pulse | safe=2093608 keep=Inf avail=-Inf chunkB=351753 pulseB=211052 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23349 bal=2704284 dq=115.8 cnt=65 | c=284.7 rankC=284.7 need=4982574 tD=1.17 人 pulse onMe | safe=2093608 keep=Inf avail=-Inf chunkB=351753 pulseB=211052 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=37255 bal=4648145 dq=124.8 cnt=49 | c=403.3 rankC=403.3 need=8340693 tD=1.26 人 pulse crowdedHard | safe=2093608 keep=Inf avail=-Inf chunkB=351753 pulseB=211052 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4790 ryan_m B=1756633 L=23582 d=74.5 nb=4 neut=0 cmds=97 noFull=1 shQ=439158 | m=0.900 worth=76.0 cheap=7.7 over=0 dMedOther=99.4 safe(-1)=2075216
+    → 孙燕姿#15[T2] terr=28309 bal=1803382 dq=63.7 cnt=34 | c=154.1 rankC=154.1 need=3256766 tD=0.64 人 pulse | safe=2075216 keep=Inf avail=-Inf chunkB=351327 pulseB=210796 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=2083271 dq=80.2 cnt=70 | c=196.1 rankC=196.1 need=3660997 tD=0.81 人 pulse | safe=2075216 keep=Inf avail=-Inf chunkB=351327 pulseB=210796 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23558 bal=2728892 dq=115.8 cnt=72 | c=235.8 rankC=235.8 need=4976801 tD=1.17 人 pulse onMe agg | safe=2075216 keep=Inf avail=-Inf chunkB=351327 pulseB=210796 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=37667 bal=4437196 dq=117.8 cnt=49 | c=381.0 rankC=381.0 need=7965316 tD=1.19 人 pulse crowdedHard | safe=2075216 keep=Inf avail=-Inf chunkB=351327 pulseB=210796 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4795 ryan_m B=1738893 L=23433 d=74.2 nb=4 neut=0 cmds=97 noFull=1 shQ=434723 | m=0.900 worth=75.6 cheap=7.7 over=0 dMedOther=98.8 safe(-1)=2062104
+    → 孙燕姿#15[T2] terr=28309 bal=1803382 dq=63.7 cnt=34 | c=154.1 rankC=154.1 need=3256766 tD=0.64 人 pulse | safe=2062104 keep=Inf avail=-Inf chunkB=347779 pulseB=208667 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23707 bal=2728892 dq=115.1 cnt=76 | c=234.3 rankC=234.3 need=4941287 tD=1.16 人 pulse onMe agg | safe=2062104 keep=Inf avail=-Inf chunkB=347779 pulseB=208667 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=2083271 dq=80.2 cnt=68 | c=264.7 rankC=264.7 need=3661483 tD=0.81 人 pulse crowdedHard | safe=2062104 keep=Inf avail=-Inf chunkB=347779 pulseB=208667 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38057 bal=4437410 dq=116.6 cnt=49 | c=377.1 rankC=377.1 need=7966199 tD=1.18 人 pulse crowdedHard | safe=2062104 keep=Inf avail=-Inf chunkB=347779 pulseB=208667 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4800 ryan_m B=1763755 L=23276 d=75.8 nb=4 neut=0 cmds=97 noFull=1 shQ=435756 | m=0.900 worth=77.3 cheap=7.7 over=0 dMedOther=101.0 safe(-1)=2048288
+    → 孙燕姿#15[T2] terr=28309 bal=1443308 dq=51.0 cnt=34 | c=106.5 rankC=74.6 need=3000664 tD=0.50 人 pulse onMe | safe=2048288 keep=Inf avail=-Inf chunkB=352751 pulseB=211651 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=2136324 dq=82.3 cnt=66 | c=271.3 rankC=271.3 need=3754273 tD=0.81 人 pulse crowdedHard | safe=2048288 keep=Inf avail=-Inf chunkB=352751 pulseB=211651 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2778177 dq=116.4 cnt=80 | c=376.2 rankC=376.2 need=4987514 tD=1.15 人 pulse crowdedHard | safe=2048288 keep=Inf avail=-Inf chunkB=352751 pulseB=211651 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38128 bal=4516781 dq=118.5 cnt=49 | c=383.1 rankC=383.1 need=8107732 tD=1.17 人 pulse crowdedHard | safe=2048288 keep=Inf avail=-Inf chunkB=352751 pulseB=211651 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4805 ryan_m B=1755273 L=23206 d=75.6 nb=4 neut=0 cmds=97 noFull=1 shQ=438818 | m=0.900 worth=77.3 cheap=7.7 over=0 dMedOther=101.0 safe(-1)=2042128
+    → 孙燕姿#15[T2] terr=28379 bal=1443308 dq=50.9 cnt=36 | c=105.7 rankC=74.0 need=2983701 tD=0.50 人 pulse onMe | safe=2042128 keep=Inf avail=-Inf chunkB=351055 pulseB=210633 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=2136324 dq=82.3 cnt=65 | c=271.3 rankC=271.3 need=3754770 tD=0.81 人 pulse crowdedHard | safe=2042128 keep=Inf avail=-Inf chunkB=351055 pulseB=210633 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2778177 dq=116.4 cnt=80 | c=376.2 rankC=376.2 need=4987514 tD=1.15 人 pulse crowdedHard | safe=2042128 keep=Inf avail=-Inf chunkB=351055 pulseB=210633 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38171 bal=4516781 dq=118.3 cnt=48 | c=382.7 rankC=382.7 need=8107922 tD=1.17 人 pulse crowdedHard | safe=2042128 keep=Inf avail=-Inf chunkB=351055 pulseB=210633 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4810 ryan_m B=1768850 L=23132 d=76.5 nb=4 neut=0 cmds=97 noFull=1 shQ=442212 | m=0.900 worth=78.1 cheap=7.7 over=0 dMedOther=102.0 safe(-1)=2035616
+    → 孙燕姿#15[T2] terr=28453 bal=1462359 dq=51.4 cnt=38 | c=105.9 rankC=74.2 need=2999684 tD=0.50 人 pulse onMe | safe=2035616 keep=Inf avail=-Inf chunkB=353770 pulseB=212262 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=1781576 dq=68.6 cnt=64 | c=168.1 rankC=168.1 need=3137799 tD=0.67 人 pulse | safe=2035616 keep=Inf avail=-Inf chunkB=353770 pulseB=212262 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2802624 dq=117.4 cnt=80 | c=379.5 rankC=379.5 need=5031088 tD=1.15 人 pulse crowdedHard | safe=2035616 keep=Inf avail=-Inf chunkB=353770 pulseB=212262 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38199 bal=4556528 dq=119.3 cnt=47 | c=385.8 rankC=385.8 need=8178809 tD=1.17 人 pulse crowdedHard | safe=2035616 keep=Inf avail=-Inf chunkB=353770 pulseB=212262 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4815 ryan_m B=1754306 L=23013 d=76.2 nb=4 neut=0 cmds=97 noFull=1 shQ=438576 | m=0.900 worth=78.1 cheap=7.7 over=0 dMedOther=102.0 safe(-1)=2025144
+    → 孙燕姿#15[T2] terr=28572 bal=1462359 dq=51.2 cnt=41 | c=104.5 rankC=73.1 need=2970518 tD=0.50 人 pulse onMe | safe=2025144 keep=Inf avail=-Inf chunkB=350861 pulseB=210517 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=1781576 dq=68.6 cnt=62 | c=168.1 rankC=168.1 need=3138215 tD=0.67 人 pulse | safe=2025144 keep=Inf avail=-Inf chunkB=350861 pulseB=210517 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2802624 dq=117.4 cnt=80 | c=379.5 rankC=379.5 need=5031088 tD=1.15 人 pulse crowdedHard | safe=2025144 keep=Inf avail=-Inf chunkB=350861 pulseB=210517 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38202 bal=4556528 dq=119.3 cnt=46 | c=385.8 rankC=385.8 need=8178771 tD=1.17 人 pulse crowdedHard | safe=2025144 keep=Inf avail=-Inf chunkB=350861 pulseB=210517 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4820 ryan_m B=1766442 L=22928 d=77.0 nb=4 neut=0 cmds=97 noFull=1 shQ=441610 | m=0.900 worth=79.2 cheap=7.7 over=0 dMedOther=103.5 safe(-1)=2017664
+    → 孙燕姿#15[T2] terr=28657 bal=1481808 dq=51.7 cnt=43 | c=104.6 rankC=73.2 need=2984439 tD=0.50 人 pulse onMe | safe=2017664 keep=Inf avail=-Inf chunkB=353288 pulseB=211973 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=1804736 dq=69.5 cnt=61 | c=170.3 rankC=170.3 need=3178946 tD=0.67 人 pulse | safe=2017664 keep=Inf avail=-Inf chunkB=353288 pulseB=211973 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2826446 dq=118.4 cnt=80 | c=382.7 rankC=382.7 need=5073547 tD=1.14 人 pulse crowdedHard | safe=2017664 keep=Inf avail=-Inf chunkB=353288 pulseB=211973 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38202 bal=4669993 dq=122.2 cnt=45 | c=395.3 rankC=395.3 need=8381009 tD=1.18 人 pulse crowdedHard | safe=2017664 keep=Inf avail=-Inf chunkB=353288 pulseB=211973 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4825 ryan_m B=1749823 L=22793 d=76.8 nb=4 neut=0 cmds=97 noFull=1 shQ=437455 | m=0.900 worth=79.0 cheap=7.7 over=0 dMedOther=103.2 safe(-1)=2005784
+    → 孙燕姿#15[T2] terr=28792 bal=1481808 dq=51.5 cnt=46 | c=103.0 rankC=72.1 need=2951115 tD=0.50 人 pulse onMe | safe=2005784 keep=Inf avail=-Inf chunkB=349965 pulseB=209979 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25971 bal=1804736 dq=69.5 cnt=60 | c=139.9 rankC=97.9 need=3485276 tD=0.67 人 pulse onMe | safe=2005784 keep=Inf avail=-Inf chunkB=349965 pulseB=209979 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2826446 dq=118.4 cnt=80 | c=382.7 rankC=382.7 need=5073547 tD=1.15 人 pulse crowdedHard | safe=2005784 keep=Inf avail=-Inf chunkB=349965 pulseB=209979 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38202 bal=4669993 dq=122.2 cnt=43 | c=395.3 rankC=395.3 need=8381009 tD=1.18 人 pulse crowdedHard | safe=2005784 keep=Inf avail=-Inf chunkB=349965 pulseB=209979 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4830 ryan_m B=1759718 L=22691 d=77.6 nb=4 neut=0 cmds=97 noFull=1 shQ=439929 | m=0.900 worth=79.9 cheap=7.7 over=0 dMedOther=104.4 safe(-1)=1996808
+    → 孙燕姿#15[T2] terr=28887 bal=1501516 dq=52.0 cnt=48 | c=103.0 rankC=72.1 need=2962932 tD=0.50 人 pulse onMe | safe=1996808 keep=Inf avail=-Inf chunkB=351944 pulseB=211166 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25978 bal=1828197 dq=70.4 cnt=63 | c=141.4 rankC=99.0 need=3524917 tD=0.67 人 pulse onMe | safe=1996808 keep=Inf avail=-Inf chunkB=351944 pulseB=211166 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2849905 dq=119.4 cnt=80 | c=385.8 rankC=385.8 need=5115359 tD=1.14 人 pulse crowdedHard | safe=1996808 keep=Inf avail=-Inf chunkB=351944 pulseB=211166 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38202 bal=4705951 dq=123.2 cnt=42 | c=398.3 rankC=398.3 need=8445100 tD=1.18 人 pulse crowdedHard | safe=1996808 keep=Inf avail=-Inf chunkB=351944 pulseB=211166 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4835 ryan_m B=1739157 L=22525 d=77.2 nb=4 neut=0 cmds=97 noFull=1 shQ=434789 | m=0.900 worth=79.6 cheap=7.7 over=0 dMedOther=104.0 safe(-1)=1982200
+    → 孙燕姿#15[T2] terr=29037 bal=1501516 dq=51.7 cnt=51 | c=80.0 rankC=56.0 need=2925658 tD=0.50 人 pulse onMe agg | safe=1982200 keep=Inf avail=-Inf chunkB=347831 pulseB=208699 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=25994 bal=1828197 dq=70.3 cnt=66 | c=141.1 rankC=98.8 need=3521636 tD=0.68 人 pulse onMe | safe=1982200 keep=Inf avail=-Inf chunkB=347831 pulseB=208699 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2849905 dq=119.4 cnt=80 | c=385.8 rankC=385.8 need=5115359 tD=1.15 人 pulse crowdedHard | safe=1982200 keep=Inf avail=-Inf chunkB=347831 pulseB=208699 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38202 bal=4705951 dq=123.2 cnt=41 | c=398.3 rankC=398.3 need=8445100 tD=1.18 人 pulse crowdedHard | safe=1982200 keep=Inf avail=-Inf chunkB=347831 pulseB=208699 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4840 ryan_m B=1743476 L=22380 d=77.9 nb=4 neut=0 cmds=97 noFull=1 shQ=435869 | m=0.900 worth=80.4 cheap=7.7 over=0 dMedOther=105.1 safe(-1)=1969440
+    → 孙燕姿#15[T2] terr=29142 bal=1521486 dq=52.2 cnt=53 | c=80.8 rankC=56.5 need=2935310 tD=0.50 人 pulse onMe agg | safe=1969440 keep=Inf avail=-Inf chunkB=348695 pulseB=209217 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=26034 bal=1852146 dq=71.1 cnt=72 | c=142.1 rankC=99.4 need=3554930 tD=0.68 人 pulse onMe | safe=1969440 keep=Inf avail=-Inf chunkB=348695 pulseB=209217 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38202 bal=4512265 dq=118.1 cnt=40 | c=382.1 rankC=382.1 need=8099878 tD=1.12 人 pulse crowdedHard | safe=1969440 keep=Inf avail=-Inf chunkB=348695 pulseB=209217 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2872704 dq=120.4 cnt=80 | c=388.9 rankC=388.9 need=5155995 tD=1.15 人 pulse crowdedHard | safe=1969440 keep=Inf avail=-Inf chunkB=348695 pulseB=209217 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4845 ryan_m B=1717981 L=22175 d=77.5 nb=4 neut=0 cmds=97 noFull=1 shQ=429495 | m=0.900 worth=80.0 cheap=7.7 over=0 dMedOther=104.6 safe(-1)=1951400
+    → 孙燕姿#15[T2] terr=29308 bal=1521486 dq=51.9 cnt=56 | c=80.3 rankC=56.2 need=2893895 tD=0.50 人 pulse onMe agg | safe=1951400 keep=Inf avail=-Inf chunkB=343596 pulseB=206158 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=26073 bal=1852146 dq=71.0 cnt=76 | c=141.4 rankC=99.0 need=3546591 tD=0.68 人 pulse onMe | safe=1951400 keep=Inf avail=-Inf chunkB=343596 pulseB=206158 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38541 bal=4512265 dq=117.1 cnt=38 | c=378.8 rankC=378.8 need=8100344 tD=1.12 人 pulse crowdedHard | safe=1951400 keep=Inf avail=-Inf chunkB=343596 pulseB=206158 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2872704 dq=120.4 cnt=80 | c=388.8 rankC=388.8 need=5155995 tD=1.15 人 pulse crowdedHard | safe=1951400 keep=Inf avail=-Inf chunkB=343596 pulseB=206158 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4850 ryan_m B=1716167 L=21985 d=78.1 nb=4 neut=0 cmds=97 noFull=1 shQ=429041 | m=0.900 worth=80.3 cheap=7.8 over=0 dMedOther=105.0 safe(-1)=1934680
+    → 孙燕姿#15[T2] terr=29425 bal=1541721 dq=52.4 cnt=59 | c=81.0 rankC=56.7 need=2900968 tD=0.50 人 pulse onMe agg | safe=1934680 keep=Inf avail=-Inf chunkB=343233 pulseB=205940 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=26146 bal=1876409 dq=71.8 cnt=80 | c=141.9 rankC=99.3 need=3573225 tD=0.68 人 pulse onMe | safe=1934680 keep=Inf avail=-Inf chunkB=343233 pulseB=205940 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38874 bal=4554724 dq=117.2 cnt=36 | c=379.1 rankC=379.1 need=8176562 tD=1.12 人 pulse crowdedHard | safe=1934680 keep=Inf avail=-Inf chunkB=343233 pulseB=205940 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2895111 dq=121.3 cnt=80 | c=391.8 rankC=391.8 need=5195933 tD=1.16 人 pulse crowdedHard | safe=1934680 keep=Inf avail=-Inf chunkB=343233 pulseB=205940 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4855 ryan_m B=1686025 L=21743 d=77.5 nb=4 neut=0 cmds=97 noFull=1 shQ=421506 | m=0.900 worth=78.7 cheap=7.8 over=0 dMedOther=102.8 safe(-1)=1913384
+    → yoo#8[T5] terr=26205 bal=1876409 dq=71.6 cnt=82 | c=140.9 rankC=98.6 need=3560475 tD=0.70 人 pulse onMe | safe=1913384 keep=Inf avail=-Inf chunkB=337205 pulseB=202323 价高(c>=worth)→break hNb=4
+    → 孙燕姿#15[T2] terr=29608 bal=1541721 dq=52.1 cnt=62 | c=107.3 rankC=107.3 need=2855265 tD=0.51 人 pulse onMe agg | safe=1913384 keep=Inf avail=-Inf chunkB=337205 pulseB=202323 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38874 bal=4554724 dq=117.2 cnt=34 | c=379.1 rankC=379.1 need=8176562 tD=1.14 人 pulse crowdedHard | safe=1913384 keep=Inf avail=-Inf chunkB=337205 pulseB=202323 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2895111 dq=121.3 cnt=80 | c=391.8 rankC=391.8 need=5195933 tD=1.18 人 pulse crowdedHard | safe=1913384 keep=Inf avail=-Inf chunkB=337205 pulseB=202323 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4860 ryan_m B=1679154 L=21516 d=78.0 nb=4 neut=0 cmds=97 noFull=1 shQ=419788 | m=0.900 worth=79.6 cheap=7.8 over=0 dMedOther=104.1 safe(-1)=1893408
+    → yoo#8[T5] terr=26307 bal=1900989 dq=72.3 cnt=87 | c=140.9 rankC=98.6 need=3581350 tD=0.69 人 pulse onMe | safe=1893408 keep=Inf avail=-Inf chunkB=335831 pulseB=201498 价高(c>=worth)→break hNb=4
+    → 孙燕姿#15[T2] terr=29733 bal=1562225 dq=52.5 cnt=63 | c=108.3 rankC=108.3 need=2860821 tD=0.50 人 pulse onMe agg | safe=1893408 keep=Inf avail=-Inf chunkB=335831 pulseB=201498 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38874 bal=4596171 dq=118.2 cnt=32 | c=382.5 rankC=382.5 need=8250437 tD=1.14 人 pulse crowdedHard | safe=1893408 keep=Inf avail=-Inf chunkB=335831 pulseB=201498 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2916824 dq=122.2 cnt=80 | c=394.7 rankC=394.7 need=5234633 tD=1.17 人 pulse crowdedHard | safe=1893408 keep=Inf avail=-Inf chunkB=335831 pulseB=201498 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4865 ryan_m B=1653883 L=21316 d=77.6 nb=4 neut=0 cmds=97 noFull=1 shQ=413470 | m=0.900 worth=79.6 cheap=7.8 over=0 dMedOther=104.1 safe(-1)=1875808
+    → yoo#8[T5] terr=26384 bal=1900989 dq=72.1 cnt=89 | c=139.6 rankC=97.7 need=3564642 tD=0.69 人 pulse onMe | safe=1875808 keep=Inf avail=-Inf chunkB=330777 pulseB=198466 价高(c>=worth)→break hNb=4
+    → 孙燕姿#15[T2] terr=29856 bal=1562227 dq=52.3 cnt=62 | c=107.8 rankC=107.8 need=2829239 tD=0.50 人 pulse agg | safe=1875808 keep=Inf avail=-Inf chunkB=330777 pulseB=198466 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38874 bal=4596171 dq=118.2 cnt=32 | c=382.5 rankC=382.5 need=8250437 tD=1.14 人 pulse crowdedHard | safe=1875808 keep=Inf avail=-Inf chunkB=330777 pulseB=198466 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2916824 dq=122.2 cnt=80 | c=394.7 rankC=394.7 need=5234633 tD=1.17 人 pulse crowdedHard | safe=1875808 keep=Inf avail=-Inf chunkB=330777 pulseB=198466 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4870 ryan_m B=1658604 L=21185 d=78.3 nb=4 neut=0 cmds=97 noFull=1 shQ=414651 | m=0.900 worth=80.6 cheap=7.8 over=0 dMedOther=105.4 safe(-1)=1864280
+    → yoo#8[T5] terr=26515 bal=1925891 dq=72.6 cnt=96 | c=112.7 rankC=78.9 need=3579705 tD=0.69 人 pulse onMe agg | safe=1864280 keep=Inf avail=-Inf chunkB=331721 pulseB=199032 价高(c>=worth)→break hNb=4
+    → 孙燕姿#15[T2] terr=29856 bal=1583004 dq=53.0 cnt=62 | c=128.5 rankC=128.5 need=2866271 tD=0.50 人 pulse | safe=1864280 keep=Inf avail=-Inf chunkB=331721 pulseB=199032 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38874 bal=4636617 dq=119.3 cnt=32 | c=385.9 rankC=385.9 need=8322527 tD=1.13 人 pulse crowdedHard | safe=1864280 keep=Inf avail=-Inf chunkB=331721 pulseB=199032 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2938116 dq=123.1 cnt=80 | c=397.5 rankC=397.5 need=5272583 tD=1.17 人 pulse crowdedHard | safe=1864280 keep=Inf avail=-Inf chunkB=331721 pulseB=199032 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4875 ryan_m B=1646213 L=21086 d=78.1 nb=4 neut=0 cmds=97 noFull=1 shQ=411553 | m=0.900 worth=80.6 cheap=7.8 over=0 dMedOther=105.4 safe(-1)=1855568
+    → yoo#8[T5] terr=26614 bal=1925891 dq=72.4 cnt=100 | c=112.2 rankC=78.6 need=3557995 tD=0.69 人 pulse onMe agg | safe=1855568 keep=Inf avail=-Inf chunkB=329243 pulseB=197546 价高(c>=worth)→break hNb=4
+    → 孙燕姿#15[T2] terr=29856 bal=1583004 dq=53.0 cnt=62 | c=128.5 rankC=128.5 need=2866271 tD=0.50 人 pulse | safe=1855568 keep=Inf avail=-Inf chunkB=329243 pulseB=197546 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38874 bal=4636617 dq=119.3 cnt=32 | c=385.9 rankC=385.9 need=8322527 tD=1.13 人 pulse crowdedHard | safe=1855568 keep=Inf avail=-Inf chunkB=329243 pulseB=197546 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2938116 dq=123.1 cnt=80 | c=397.5 rankC=397.5 need=5272583 tD=1.17 人 pulse crowdedHard | safe=1855568 keep=Inf avail=-Inf chunkB=329243 pulseB=197546 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4880 ryan_m B=1647327 L=20928 d=78.7 nb=4 neut=0 cmds=97 noFull=1 shQ=411831 | m=0.900 worth=82.5 cheap=7.8 over=0 dMedOther=107.8 safe(-1)=1841664
+    → 孙燕姿#15[T2] terr=29856 bal=1604057 dq=53.7 cnt=62 | c=130.2 rankC=130.2 need=2903795 tD=0.50 人 pulse | safe=1841664 keep=Inf avail=-Inf chunkB=329465 pulseB=197679 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=26772 bal=1951120 dq=72.9 cnt=102 | c=150.6 rankC=150.6 need=3567505 tD=0.68 人 pulse onMe agg | safe=1841664 keep=Inf avail=-Inf chunkB=329465 pulseB=197679 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38874 bal=4676028 dq=120.3 cnt=32 | c=389.1 rankC=389.1 need=8392772 tD=1.12 人 pulse crowdedHard | safe=1841664 keep=Inf avail=-Inf chunkB=329465 pulseB=197679 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2958682 dq=124.0 cnt=80 | c=400.3 rankC=400.3 need=5309239 tD=1.15 人 pulse crowdedHard | safe=1841664 keep=Inf avail=-Inf chunkB=329465 pulseB=197679 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4885 ryan_m B=1634492 L=20826 d=78.5 nb=4 neut=0 cmds=97 noFull=1 shQ=408623 | m=0.900 worth=82.5 cheap=7.8 over=0 dMedOther=107.8 safe(-1)=1832688
+    → 孙燕姿#15[T2] terr=29856 bal=1604057 dq=53.7 cnt=62 | c=130.1 rankC=130.1 need=2903795 tD=0.50 人 pulse | safe=1832688 keep=Inf avail=-Inf chunkB=326898 pulseB=196139 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=26874 bal=1951120 dq=72.6 cnt=99 | c=149.9 rankC=149.9 need=3544953 tD=0.67 人 pulse onMe agg | safe=1832688 keep=Inf avail=-Inf chunkB=326898 pulseB=196139 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38874 bal=4676028 dq=120.3 cnt=32 | c=389.1 rankC=389.1 need=8392772 tD=1.12 人 pulse crowdedHard | safe=1832688 keep=Inf avail=-Inf chunkB=326898 pulseB=196139 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2958682 dq=124.0 cnt=80 | c=400.3 rankC=400.3 need=5309239 tD=1.15 人 pulse crowdedHard | safe=1832688 keep=Inf avail=-Inf chunkB=326898 pulseB=196139 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4890 ryan_m B=1635825 L=20673 d=79.1 nb=4 neut=0 cmds=97 noFull=1 shQ=408956 | m=0.900 worth=83.3 cheap=7.8 over=0 dMedOther=108.9 safe(-1)=1819224
+    → 孙燕姿#15[T2] terr=29856 bal=1625390 dq=54.4 cnt=62 | c=131.8 rankC=131.8 need=2941818 tD=0.50 人 pulse | safe=1819224 keep=Inf avail=-Inf chunkB=327165 pulseB=196299 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=27027 bal=1976679 dq=73.1 cnt=102 | c=150.9 rankC=150.9 need=3555778 tD=0.67 人 pulse onMe agg | safe=1819224 keep=Inf avail=-Inf chunkB=327165 pulseB=196299 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=38874 bal=4487128 dq=115.4 cnt=32 | c=373.5 rankC=373.5 need=8056080 tD=1.06 人 pulse crowdedHard | safe=1819224 keep=Inf avail=-Inf chunkB=327165 pulseB=196299 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2978801 dq=124.8 cnt=80 | c=403.0 rankC=403.0 need=5345099 tD=1.15 人 pulse crowdedHard | safe=1819224 keep=Inf avail=-Inf chunkB=327165 pulseB=196299 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4895 ryan_m B=1622291 L=20566 d=78.9 nb=4 neut=0 cmds=97 noFull=1 shQ=405572 | m=0.900 worth=83.2 cheap=7.8 over=0 dMedOther=108.8 safe(-1)=1809808
+    → 孙燕姿#15[T2] terr=29856 bal=1625390 dq=54.4 cnt=62 | c=131.8 rankC=131.8 need=2941818 tD=0.50 人 pulse | safe=1809808 keep=Inf avail=-Inf chunkB=324458 pulseB=194675 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=27134 bal=1976679 dq=72.8 cnt=104 | c=150.2 rankC=150.2 need=3531825 tD=0.67 人 pulse onMe agg | safe=1809808 keep=Inf avail=-Inf chunkB=324458 pulseB=194675 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=39201 bal=4263649 dq=108.8 cnt=32 | c=264.1 rankC=184.9 need=7658207 tD=1.00 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=324458 pulseB=194675 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=2978801 dq=124.8 cnt=80 | c=403.0 rankC=403.0 need=5345099 tD=1.15 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=324458 pulseB=194675 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4900 ryan_m B=1657054 L=20566 d=80.6 nb=4 neut=0 cmds=97 noFull=1 shQ=409252 | m=0.900 worth=84.2 cheap=7.8 over=0 dMedOther=110.1 safe(-1)=1809808
+    → 孙燕姿#15[T2] terr=29856 bal=1676863 dq=56.2 cnt=62 | c=135.9 rankC=135.9 need=3033561 tD=0.51 人 pulse | safe=1809808 keep=Inf avail=-Inf chunkB=331411 pulseB=198846 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=27134 bal=2029745 dq=74.8 cnt=104 | c=154.1 rankC=154.1 need=3612539 tD=0.68 人 pulse agg | safe=1809808 keep=Inf avail=-Inf chunkB=331411 pulseB=198846 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=39549 bal=4353315 dq=110.1 cnt=35 | c=356.3 rankC=356.3 need=7818547 tD=1.00 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=331411 pulseB=198846 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=3022325 dq=126.6 cnt=80 | c=408.8 rankC=408.8 need=5422674 tD=1.15 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=331411 pulseB=198846 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4905 ryan_m B=1657054 L=20566 d=80.6 nb=4 neut=0 cmds=97 noFull=1 shQ=414263 | m=0.900 worth=84.1 cheap=7.8 over=0 dMedOther=110.0 safe(-1)=1809808
+    → 孙燕姿#15[T2] terr=29856 bal=1676863 dq=56.2 cnt=62 | c=135.9 rankC=135.9 need=3033561 tD=0.51 人 pulse | safe=1809808 keep=Inf avail=-Inf chunkB=331411 pulseB=198846 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=27134 bal=2029745 dq=74.8 cnt=104 | c=154.1 rankC=154.1 need=3612759 tD=0.68 人 pulse agg | safe=1809808 keep=Inf avail=-Inf chunkB=331411 pulseB=198846 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=39588 bal=4353315 dq=110.0 cnt=37 | c=356.0 rankC=356.0 need=7818567 tD=1.00 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=331411 pulseB=198846 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=3022325 dq=126.6 cnt=80 | c=408.8 rankC=408.8 need=5422674 tD=1.15 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=331411 pulseB=198846 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4910 ryan_m B=1678098 L=20566 d=81.6 nb=4 neut=0 cmds=97 noFull=1 shQ=419524 | m=0.900 worth=84.9 cheap=7.8 over=0 dMedOther=111.0 safe(-1)=1809808
+    → 孙燕姿#15[T2] terr=29856 bal=1699165 dq=56.9 cnt=62 | c=137.7 rankC=137.7 need=3073312 tD=0.51 人 pulse | safe=1809808 keep=Inf avail=-Inf chunkB=335620 pulseB=201372 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=27134 bal=2056334 dq=75.8 cnt=104 | c=156.1 rankC=156.1 need=3659675 tD=0.68 人 pulse agg | safe=1809808 keep=Inf avail=-Inf chunkB=335620 pulseB=201372 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=39654 bal=4401636 dq=111.0 cnt=38 | c=359.3 rankC=359.3 need=7904870 tD=1.00 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=335620 pulseB=201372 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=3040761 dq=127.4 cnt=80 | c=411.3 rankC=411.3 need=5455534 tD=1.15 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=335620 pulseB=201372 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4915 ryan_m B=1678098 L=20566 d=81.6 nb=4 neut=0 cmds=97 noFull=1 shQ=419524 | m=0.900 worth=84.5 cheap=7.8 over=0 dMedOther=110.5 safe(-1)=1809808
+    → KUKU#18[T6] terr=39703 bal=4401636 dq=110.9 cnt=38 | c=207.2 rankC=103.6 need=7904982 tD=1.00 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=335620 pulseB=201372 价高(c>=worth)→break hNb=4
+    → 孙燕姿#15[T2] terr=29856 bal=1699165 dq=56.9 cnt=62 | c=199.7 rankC=289.5 need=3073312 tD=0.52 人 pulse | safe=1809808 keep=Inf avail=-Inf chunkB=335620 pulseB=201372 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=27134 bal=2056334 dq=75.8 cnt=104 | c=226.4 rankC=328.3 need=3659786 tD=0.69 人 pulse agg | safe=1809808 keep=Inf avail=-Inf chunkB=335620 pulseB=201372 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=3040761 dq=127.4 cnt=80 | c=596.4 rankC=864.8 need=5455534 tD=1.15 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=335620 pulseB=201372 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4920 ryan_m B=1699409 L=20566 d=82.6 nb=4 neut=0 cmds=97 noFull=1 shQ=424852 | m=0.900 worth=85.4 cheap=7.8 over=0 dMedOther=111.7 safe(-1)=1809808
+    → KUKU#18[T6] terr=39784 bal=4449613 dq=111.8 cnt=38 | c=210.0 rankC=105.0 need=7990499 tD=1.00 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=339882 pulseB=203929 价高(c>=worth)→break hNb=4
+    → 孙燕姿#15[T2] terr=29856 bal=1721763 dq=57.7 cnt=62 | c=202.3 rankC=293.3 need=3113590 tD=0.52 人 pulse | safe=1809808 keep=Inf avail=-Inf chunkB=339882 pulseB=203929 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=27134 bal=2083271 dq=76.8 cnt=104 | c=229.3 rankC=332.5 need=3707318 tD=0.69 人 pulse agg | safe=1809808 keep=Inf avail=-Inf chunkB=339882 pulseB=203929 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=3058701 dq=128.2 cnt=80 | c=599.9 rankC=869.8 need=5487510 tD=1.15 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=339882 pulseB=203929 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4925 ryan_m B=1699409 L=20566 d=82.6 nb=4 neut=0 cmds=97 noFull=1 shQ=424852 | m=0.900 worth=80.4 cheap=7.8 over=0 dMedOther=105.1 safe(-1)=1809808
+    → 孙燕姿#15[T2] terr=29856 bal=1721763 dq=57.7 cnt=62 | c=139.5 rankC=139.5 need=3113590 tD=0.55 人 pulse | safe=1809808 keep=Inf avail=-Inf chunkB=339882 pulseB=203929 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=27134 bal=2083271 dq=76.8 cnt=104 | c=158.1 rankC=158.1 need=3707544 tD=0.73 人 pulse agg | safe=1809808 keep=Inf avail=-Inf chunkB=339882 pulseB=203929 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=39842 bal=4449613 dq=111.7 cnt=38 | c=361.5 rankC=361.5 need=7990665 tD=1.06 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=339882 pulseB=203929 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=3058701 dq=128.2 cnt=80 | c=413.7 rankC=413.7 need=5487510 tD=1.22 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=339882 pulseB=203929 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4930 ryan_m B=1720991 L=20566 d=83.7 nb=4 neut=0 cmds=97 noFull=1 shQ=430247 | m=0.900 worth=81.5 cheap=7.8 over=0 dMedOther=106.5 safe(-1)=1809808
+    → 孙燕姿#15[T2] terr=29856 bal=1744662 dq=58.4 cnt=62 | c=141.3 rankC=141.3 need=3154404 tD=0.55 人 pulse | safe=1809808 keep=Inf avail=-Inf chunkB=344198 pulseB=206519 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=27134 bal=2110561 dq=77.8 cnt=104 | c=160.2 rankC=160.2 need=3755703 tD=0.73 人 pulse agg | safe=1809808 keep=Inf avail=-Inf chunkB=344198 pulseB=206519 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=39924 bal=4497223 dq=112.6 cnt=38 | c=364.6 rankC=364.6 need=8075567 tD=1.06 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=344198 pulseB=206519 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=3076135 dq=128.9 cnt=80 | c=416.1 rankC=416.1 need=5518583 tD=1.21 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=344198 pulseB=206519 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4935 ryan_m B=1720991 L=20566 d=83.7 nb=4 neut=0 cmds=97 noFull=1 shQ=430247 | m=0.900 worth=81.5 cheap=7.8 over=0 dMedOther=106.5 safe(-1)=1809808
+    → 孙燕姿#15[T2] terr=29856 bal=1744662 dq=58.4 cnt=62 | c=141.3 rankC=141.3 need=3154404 tD=0.55 人 pulse | safe=1809808 keep=Inf avail=-Inf chunkB=344198 pulseB=206519 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=27134 bal=2110561 dq=77.8 cnt=104 | c=160.2 rankC=160.2 need=3755818 tD=0.73 人 pulse agg | safe=1809808 keep=Inf avail=-Inf chunkB=344198 pulseB=206519 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=39924 bal=4497227 dq=112.6 cnt=38 | c=364.6 rankC=364.6 need=8075574 tD=1.06 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=344198 pulseB=206519 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=3076135 dq=128.9 cnt=80 | c=416.1 rankC=416.1 need=5518583 tD=1.21 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=344198 pulseB=206519 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4940 ryan_m B=1742847 L=20566 d=84.7 nb=4 neut=0 cmds=97 noFull=1 shQ=435711 | m=0.900 worth=82.5 cheap=7.8 over=0 dMedOther=107.9 safe(-1)=1809808
+    → yoo#8[T5] terr=27134 bal=2138209 dq=78.8 cnt=104 | c=162.3 rankC=162.3 need=3804612 tD=0.73 人 pulse agg | safe=1809808 keep=Inf avail=-Inf chunkB=348569 pulseB=209142 价高(c>=worth)→break hNb=4
+    → 孙燕姿#15[T2] terr=29856 bal=1767866 dq=59.2 cnt=62 | c=207.6 rankC=301.1 need=3195762 tD=0.55 人 pulse | safe=1809808 keep=Inf avail=-Inf chunkB=348569 pulseB=209142 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=39924 bal=4543998 dq=113.8 cnt=38 | c=534.1 rankC=774.4 need=8158937 tD=1.06 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=348569 pulseB=209142 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=3093053 dq=129.6 cnt=80 | c=606.6 rankC=879.6 need=5548737 tD=1.20 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=348569 pulseB=209142 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4945 ryan_m B=1742847 L=20566 d=84.7 nb=4 neut=0 cmds=97 noFull=1 shQ=435711 | m=0.900 worth=82.5 cheap=7.8 over=0 dMedOther=107.8 safe(-1)=1809808
+    → 孙燕姿#15[T2] terr=29856 bal=1767866 dq=59.2 cnt=62 | c=143.2 rankC=143.2 need=3195762 tD=0.55 人 pulse | safe=1809808 keep=Inf avail=-Inf chunkB=348569 pulseB=209142 价高(c>=worth)→break hNb=4
+    → yoo#8[T5] terr=27134 bal=2138209 dq=78.8 cnt=104 | c=162.3 rankC=162.3 need=3804843 tD=0.73 人 pulse agg | safe=1809808 keep=Inf avail=-Inf chunkB=348569 pulseB=209142 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=39924 bal=4317687 dq=108.1 cnt=38 | c=350.2 rankC=350.2 need=7755569 tD=1.00 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=348569 pulseB=209142 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=3093053 dq=129.6 cnt=80 | c=418.4 rankC=418.4 need=5548737 tD=1.20 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=348569 pulseB=209142 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=4950 ryan_m B=1764981 L=20566 d=85.8 nb=4 neut=0 cmds=97 noFull=1 shQ=441245 | m=0.900 worth=80.3 cheap=7.8 over=0 dMedOther=104.9 safe(-1)=1809808
+    → yoo#8[T5] terr=27134 bal=2166219 dq=79.8 cnt=104 | c=164.4 rankC=164.4 need=3854281 tD=0.76 人 pulse agg | safe=1809808 keep=Inf avail=-Inf chunkB=352996 pulseB=211798 价高(c>=worth)→break hNb=4
+    → KUKU#18[T6] terr=40220 bal=4156391 dq=103.3 cnt=38 | c=251.1 rankC=175.8 need=7468525 tD=0.98 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=352996 pulseB=211798 价高(c>=worth)→break hNb=4
+    → 孙燕姿#15[T2] terr=29856 bal=1791378 dq=60.0 cnt=62 | c=210.4 rankC=305.0 need=3237669 tD=0.57 人 pulse | safe=1809808 keep=Inf avail=-Inf chunkB=352996 pulseB=211798 价高(c>=worth)→break hNb=4
+    → Playerok [FR]#61[T1] terr=23864 bal=3109755 dq=130.3 cnt=80 | c=609.9 rankC=884.3 need=5578506 tD=1.24 人 pulse crowdedHard | safe=1809808 keep=Inf avail=-Inf chunkB=352996 pulseB=211798 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令

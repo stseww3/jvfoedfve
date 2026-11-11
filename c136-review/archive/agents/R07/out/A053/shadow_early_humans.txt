@@ -1,0 +1,67 @@
+# A053 t=300~1499 身边既没有内置 AI、也没有无主地的决策拍：开局逻辑为什么不打贴着的敌方真人（策略 v27-team-c116-vb.js；Policy.act → super.act（V13 Style.act）→ pickTarget → allow / floorFor）
+# floorAt 复刻核对：455 次里不一致 0 次
+# 生效参数：preyKill=1 preyFloor=0.5 personMax=0 idleCap=1.25 minSend=0.2141 sendFrac=0.746 feeK=4 reserve=1 cRef=60 keepCap=1 kDef=4 capMin=0.1 denW=1 defCap=1 ref=0 earlyEnd=513 coreFrom=1500 dpEnd=1500
+noah88: 这样的决策拍 122（t=890~1495）；其中有指令 0；余额 16463→181501，领土 3861→3532
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是敌方真人: 70 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）: 38 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）: 14 拍
+    最便宜的敌方真人邻居 [VOID] Soviet onion#76：82 拍，每格 8.5~39.9 兵；它 4880 格 / 22035 兵 → 8415 格 / 99721 兵
+    最便宜的敌方真人邻居 Madine#56：40 拍，每格 13.8~39.8 兵；它 2679 格 / 9899 兵 → 3096 格 / 34874 兵
+leo_tx: 这样的决策拍 116（t=920~1495）；其中有指令 0；余额 20264→151297，领土 2894→2806
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）: 87 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）: 22 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是敌方真人: 7 拍
+    最便宜的敌方真人邻居 [TR] Oylesine#53：52 拍，每格 64.3~81.3 兵；它 3026 格 / 61901 兵 → 4745 格 / 105771 兵
+    最便宜的敌方真人邻居 Madine#56：35 拍，每格 26.4~39.8 兵；它 3008 格 / 31784 兵 → 3096 格 / 34874 兵
+    最便宜的敌方真人邻居 𝐓𝐞𝐧𝐧𝐞𝐬𝐬𝐞𝐞#33：29 拍，每格 17.0~23.5 兵；它 5040 格 / 24208 兵 → 5739 格 / 29805 兵
+sora_w: 这样的决策拍 72（t=935~1495）；其中有指令 10；余额 26332→88145，领土 3487→4513
+    四周只有队友（没有任何可打的邻居）: 51 拍
+    让打、也过了底线，但 need<=0: 11 拍
+    最便宜的敌方真人邻居 𝐓𝐞𝐧𝐧𝐞𝐬𝐬𝐞𝐞#33：11 拍，每格 2.0~2.0 兵；它 1953 格 / 4 兵 → 1465 格 / 0 兵
+zero_7: 这样的决策拍 104（t=980~1495）；其中有指令 5；余额 31708→131722，领土 3580→5217
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）: 46 拍
+    让打、也过了底线，但 need<=0: 27 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是敌方真人: 13 拍
+    让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发）: 7 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）: 6 拍
+    最便宜的敌方真人邻居 𝐓𝐞𝐧𝐧𝐞𝐬𝐬𝐞𝐞#33：92 拍，每格 2.0~31.4 兵；它 5611 格 / 32453 兵 → 1621 格 / 0 兵
+    最便宜的敌方真人邻居 [TR] Oylesine#53：7 拍，每格 59.4~61.9 兵；它 5804 格 / 104093 兵 → 5981 格 / 111670 兵
+kaito9: 这样的决策拍 100（t=995~1490）；其中有指令 6；余额 23967→10387，领土 3289→4318
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）: 59 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：价格留底（reserve×100×领土×min(1, 单价/cRef)）: 33 拍
+    让打、也过了底线、数额也够，但没发（pickTarget 之外的原因）: 1 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是敌方真人: 1 拍
+    最便宜的敌方真人邻居 𝐓𝐞𝐧𝐧𝐞𝐬𝐬𝐞𝐞#33：94 拍，每格 2.0~31.4 兵；它 5661 格 / 37367 兵 → 1409 格 / 0 兵
+talon5: 这样的决策拍 94（t=1030~1495）；其中有指令 0；余额 7305→49265，领土 1329→1329
+    四周只有队友（没有任何可打的邻居）: 94 拍
+alex_k: 这样的决策拍 59（t=1205~1495）；其中有指令 0；余额 74288→175649，领土 3880→3880
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）: 57 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）: 2 拍
+    最便宜的敌方真人邻居 F[eu]dal Empire#17：59 拍，每格 25.6~60.8 兵；它 11459 格 / 84372 兵 → 11651 格 / 213968 兵
+zexos1: 这样的决策拍 46（t=1270~1495）；其中有指令 2；余额 37553→127791，领土 5469→5469
+    四周只有队友（没有任何可打的邻居）: 44 拍
+# 合计：决策拍 713，有指令 23；零指令按原因：让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)） 198；四周只有队友（没有任何可打的邻居） 189；让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高） 133；让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是敌方真人 90；让打、也过了底线，但 need<=0 38；让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：价格留底（reserve×100×领土×min(1, 单价/cRef)） 33；让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发） 7；让打、也过了底线、数额也够，但没发（pickTarget 之外的原因） 1；让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是敌方真人 1
+# 例子（每 100 拍取一条）
+  t=900 noah88 B=24914 L=3861（密度 6.5）| 最便宜的敌方真人 [VOID] Soviet onion#76[T5]（4880 格 / 22035 兵）每格 16.4 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 52910（floorFor0 52910、safeP×peopleSafe 0、dpKeep 17645、peopleFloor 0、floorAt 105820〔价格留底 105820、ref×邻居均值 0、defenseNeed 83620、keepCap 封顶 386100〕）、可用 -27996、吃光要 46594
+  t=1000 zero_7 B=37798 L=3580（密度 10.6）| 最便宜的敌方真人 𝐓𝐞𝐧𝐧𝐞𝐬𝐬𝐞𝐞#33[T2]（5661 格 / 37367 兵）每格 23.1 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 68967（floorFor0 68967、safeP×peopleSafe 0、dpKeep 17976、peopleFloor 0、floorAt 137933〔价格留底 137933、ref×邻居均值 0、defenseNeed 0、keepCap 封顶 358000〕）、可用 -31169、吃光要 75096
+  t=1000 noah88 B=40779 L=3861（密度 10.6）| 最便宜的敌方真人 [VOID] Soviet onion#76[T5]（7534 格 / 23104 兵）每格 11.8 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是敌方真人；底线 46208（floorFor0 46208、safeP×peopleSafe 0、dpKeep 31495、peopleFloor 0、floorAt 92416〔价格留底 76015、ref×邻居均值 0、defenseNeed 92416、keepCap 封顶 386100〕，参照 [VOID] Soviet onion#76[T5] 的 23104 兵（经由 Madine#56[T5]））、可用 -5429、吃光要 52484
+  t=1000 leo_tx B=30584 L=2894（密度 10.6）| 最便宜的敌方真人 𝐓𝐞𝐧𝐧𝐞𝐬𝐬𝐞𝐞#33[T2]（5661 格 / 37367 兵）每格 23.1 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 55751（floorFor0 55751、safeP×peopleSafe 0、dpKeep 32310、peopleFloor 0、floorAt 111502〔价格留底 111502、ref×邻居均值 0、defenseNeed 87716、keepCap 封顶 289400〕）、可用 -25167、吃光要 75096
+  t=1000 kaito9 B=30068 L=3289（密度 9.1）| 最便宜的敌方真人 𝐓𝐞𝐧𝐧𝐞𝐬𝐬𝐞𝐞#33[T2]（5661 格 / 37367 兵）每格 23.1 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 63361（floorFor0 63361、safeP×peopleSafe 0、dpKeep 18221、peopleFloor 0、floorAt 126721〔价格留底 126721、ref×邻居均值 0、defenseNeed 0、keepCap 封顶 328900〕）、可用 -33293、吃光要 75096
+  t=1100 zero_7 B=57936 L=3580（密度 16.2）| 最便宜的敌方真人 𝐓𝐞𝐧𝐧𝐞𝐬𝐬𝐞𝐞#33[T2]（5542 格 / 33102 兵）每格 21.1 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是敌方真人；底线 66204（floorFor0 66204、safeP×peopleSafe 0、dpKeep 38926、peopleFloor 0、floorAt 132408〔价格留底 125968、ref×邻居均值 0、defenseNeed 132408、keepCap 封顶 358000〕，参照 𝐓𝐞𝐧𝐧𝐞𝐬𝐬𝐞𝐞#33[T2] 的 33102 兵（经由 [TR] Oylesine#53[T5]））、可用 -8268、吃光要 65957
+  t=1100 noah88 B=62503 L=3861（密度 16.2）| 最便宜的敌方真人 [VOID] Soviet onion#76[T5]（7883 格 / 40073 兵）每格 18.3 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是敌方真人；底线 80146（floorFor0 80146、safeP×peopleSafe 0、dpKeep 38690、peopleFloor 0、floorAt 160292〔价格留底 117546、ref×邻居均值 0、defenseNeed 160292、keepCap 封顶 386100〕，参照 [VOID] Soviet onion#76[T5] 的 40073 兵（经由 Madine#56[T5]））、可用 -17643、吃光要 83256
+  t=1100 leo_tx B=46874 L=2894（密度 16.2）| 最便宜的敌方真人 [TR] Oylesine#53[T5]（3339 格 / 74659 兵）每格 73.5 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）；底线 144700（floorFor0 144700、safeP×peopleSafe 0、dpKeep 39504、peopleFloor 0、floorAt 289400〔价格留底 289400、ref×邻居均值 0、defenseNeed 132408、keepCap 封顶 289400〕）、可用 -97826、吃光要 138103
+  t=1100 kaito9 B=46529 L=3289（密度 14.1）| 最便宜的敌方真人 𝐓𝐞𝐧𝐧𝐞𝐬𝐬𝐞𝐞#33[T2]（5542 格 / 33102 兵）每格 21.1 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 57864（floorFor0 57864、safeP×peopleSafe 0、dpKeep 15825、peopleFloor 0、floorAt 115729〔价格留底 115729、ref×邻居均值 0、defenseNeed 0、keepCap 封顶 328900〕）、可用 -11335、吃光要 65957
+  t=1200 zero_7 B=84427 L=3580（密度 23.6）| 最便宜的敌方真人 𝐓𝐞𝐧𝐧𝐞𝐬𝐬𝐞𝐞#33[T2]（5799 格 / 39789 兵）每格 24.0 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 71458（floorFor0 71458、safeP×peopleSafe 0、dpKeep 46225、peopleFloor 0、floorAt 142917〔价格留底 142917、ref×邻居均值 0、defenseNeed 132164、keepCap 封顶 358000〕）、可用 12969、吃光要 78403
+  t=1200 noah88 B=83125 L=3673（密度 22.6）| 最便宜的敌方真人 [VOID] Soviet onion#76[T5]（8409 格 / 64327 兵）每格 26.5 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是敌方真人；底线 128654（floorFor0 128654、safeP×peopleSafe 0、dpKeep 46146、peopleFloor 0、floorAt 257308〔价格留底 162087、ref×邻居均值 0、defenseNeed 257308、keepCap 封顶 367300〕，参照 [VOID] Soviet onion#76[T5] 的 64327 兵（经由 Madine#56[T5]））、可用 -45529、吃光要 127271
+  t=1200 leo_tx B=68301 L=2894（密度 23.6）| 最便宜的敌方真人 [TR] Oylesine#53[T5]（4098 格 / 87650 兵）每格 70.4 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）；底线 144700（floorFor0 144700、safeP×peopleSafe 0、dpKeep 46803、peopleFloor 0、floorAt 289400〔价格留底 289400、ref×邻居均值 0、defenseNeed 132164、keepCap 封顶 289400〕）、可用 -76399、吃光要 162387
+  t=1200 kaito9 B=29515 L=3289（密度 9.0）| 最便宜的敌方真人 𝐓𝐞𝐧𝐧𝐞𝐬𝐬𝐞𝐞#33[T2]（5799 格 / 39789 兵）每格 24.0 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 65650（floorFor0 65650、safeP×peopleSafe 0、dpKeep 19582、peopleFloor 0、floorAt 131300〔价格留底 131300、ref×邻居均值 0、defenseNeed 102864、keepCap 封顶 328900〕）、可用 -36135、吃光要 78403
+  t=1300 zero_7 B=117887 L=3580（密度 32.9）| 最便宜的敌方真人 𝐓𝐞𝐧𝐧𝐞𝐬𝐬𝐞𝐞#33[T2]（5282 格 / 48517 兵）每格 31.4 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是敌方真人；底线 95194（floorFor0 95194、safeP×peopleSafe 0、dpKeep 53120、peopleFloor 0、floorAt 190388〔价格留底 187272、ref×邻居均值 0、defenseNeed 190388、keepCap 封顶 358000〕，参照 Madine#56[T5] 的 47597 兵（经由 [TR] Oylesine#53[T5]））、可用 22693、吃光要 91205
+  t=1300 noah88 B=116218 L=3673（密度 31.6）| 最便宜的敌方真人 [VOID] Soviet onion#76[T5]（8415 格 / 99721 兵）每格 39.9 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）；底线 183650（floorFor0 183650、safeP×peopleSafe 0、dpKeep 53042、peopleFloor 0、floorAt 367300〔价格留底 244357、ref×邻居均值 0、defenseNeed 367300、keepCap 封顶 367300〕）、可用 -67432、吃光要 190375
+  t=1300 alex_k B=104460 L=3880（密度 26.9）| 最便宜的敌方真人 F[eu]dal Empire#17[T2]（11733 格 / 123393 兵）每格 35.6 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 115267（floorFor0 115267、safeP×peopleSafe 0、dpKeep 66052、peopleFloor 0、floorAt 230534〔价格留底 230534、ref×邻居均值 0、defenseNeed 190388、keepCap 封顶 388000〕）、可用 -10807、吃光要 237535
+  t=1300 leo_tx B=95368 L=2894（密度 33.0）| 最便宜的敌方真人 [TR] Oylesine#53[T5]（4745 格 / 99924 兵）每格 69.4 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）；底线 144700（floorFor0 144700、safeP×peopleSafe 0、dpKeep 53698、peopleFloor 0、floorAt 289400〔价格留底 289400、ref×邻居均值 0、defenseNeed 190388、keepCap 封顶 289400〕）、可用 -49332、吃光要 185226
+  t=1300 kaito9 B=43346 L=3388（密度 12.8）| 最便宜的敌方真人 𝐓𝐞𝐧𝐧𝐞𝐬𝐬𝐞𝐞#33[T2]（5282 格 / 48517 兵）每格 31.4 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 88614（floorFor0 88614、safeP×peopleSafe 0、dpKeep 24402、peopleFloor 0、floorAt 177229〔价格留底 177229、ref×邻居均值 0、defenseNeed 41942、keepCap 封顶 338800〕）、可用 -45268、吃光要 80869
+  t=1400 zero_7 B=102897 L=4935（密度 20.9）| 最便宜的敌方真人 𝐓𝐞𝐧𝐧𝐞𝐬𝐬𝐞𝐞#33[T2]（2171 格 / 1807 兵）每格 4.7 | 让打、也过了底线，但 need<=0；底线 19178（floorFor0 19178、safeP×peopleSafe 0）、可用 83719、吃光要 -19548、amount=4820、minCmd=4820
+  t=1400 noah88 B=145762 L=3532（密度 41.3）| 最便宜的敌方真人 Madine#56[T5]（3096 格 / 28011 兵）每格 30.9 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）；底线 176600（floorFor0 176600、safeP×peopleSafe 0、dpKeep 75322、peopleFloor 0、floorAt 353200〔价格留底 323726、ref×邻居均值 0、defenseNeed 353200、keepCap 封顶 353200〕）、可用 -30838、吃光要 261053
+  t=1400 alex_k B=141064 L=3880（密度 36.4）| 最便宜的敌方真人 F[eu]dal Empire#17[T2]（11733 格 / 173781 兵）每格 49.4 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 159696（floorFor0 159696、safeP×peopleSafe 0、dpKeep 94360、peopleFloor 0、floorAt 319392〔价格留底 319392、ref×邻居均值 0、defenseNeed 124853、keepCap 封顶 388000〕）、可用 -18632、吃光要 327346
+  t=1400 leo_tx B=121507 L=2806（密度 43.3）| 最便宜的敌方真人 Madine#56[T5]（3096 格 / 28011 兵）每格 30.9 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）；底线 140300（floorFor0 140300、safeP×peopleSafe 0、dpKeep 48019、peopleFloor 0、floorAt 280600〔价格留底 259976、ref×邻居均值 0、defenseNeed 280600、keepCap 封顶 280600〕）、可用 -18793、吃光要 167891
+  t=1400 kaito9 B=9189 L=4560（密度 2.0）| 最便宜的敌方真人 𝐓𝐞𝐧𝐧𝐞𝐬𝐬𝐞𝐞#33[T2]（2171 格 / 1807 兵）每格 4.7 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是敌方真人；底线 36920（floorFor0 36920、safeP×peopleSafe 0、dpKeep 0、peopleFloor 0、floorAt 36920〔价格留底 35441、ref×邻居均值 0、defenseNeed 36920、keepCap 封顶 456000〕，参照 The great Malay empa#66[T1] 的 9230 兵（经由 𝐓𝐞𝐧𝐧𝐞𝐬𝐬𝐞𝐞#33[T2]））、可用 -27731、吃光要 3030

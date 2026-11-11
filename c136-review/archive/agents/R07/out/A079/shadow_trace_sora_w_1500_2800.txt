@@ -1,0 +1,126 @@
+# A079 sora_w 影子决策明细 t=1500~2800（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 44 拍（t=1500~2355）；可用兵 1078~100315，一条指令下限(20%余额) 28609~103008，比值 3%~97%
+#   首选目标无可用兵（avail<=0）: 46 拍（t=1600~2790）；可用兵 -102456~-775，一条指令下限(20%余额) 36260~86795，比值 -143%~-2%
+#   首选目标价高（c>=worth）: 168 拍（t=1700~2800）
+#   出手打人/bot: 3 拍（t=2360~2370）；可用兵 104590~108798，一条指令下限(20%余额) 103873~104725，比值 101%~104%
+#   └ 「出手打人/bot」里：3 条对人/bot 的出兵共约 318895 兵；其中超过软上限（over=1）时发的 3 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 3 条约 318895 兵，c/worth = 2.25~2.27
+t=1500 sora_w B=143047 L=4541 d=31.5 nb=2 neut=0 cmds=26 noFull=1 shQ=34670 | m=1.500 worth=47.3 cheap=4.3 over=0 dMedOther=16.2 safe(-1)=118730
+    → Yellow Beast 2137#46[T3] terr=11773 bal=218151 dq=18.5 cnt=46 | c=46.1 rankC=46.1 need=406491 tD=1.15 人 | safe=118730 keep=140251 avail=1120 chunkB=28609 pulseB=17166 不够一条
+    → B-team [ZIM]#57[T1] terr=4859 bal=194831 dq=40.1 cnt=128 | c=189.3 rankC=274.5 need=354591 tD=2.48 人 crowdedHard | safe=118730 keep=Inf avail=-Inf chunkB=28609 pulseB=17166 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1550 sora_w B=159627 L=4541 d=35.2 nb=2 neut=0 cmds=26 noFull=1 shQ=39906 | m=1.492 worth=52.5 cheap=4.6 over=0 dMedOther=17.3 safe(-1)=132936
+    → Yellow Beast 2137#46[T3] terr=11773 bal=243438 dq=20.7 cnt=46 | c=51.2 rankC=51.2 need=451562 tD=1.19 人 | safe=132936 keep=156558 avail=1199 chunkB=31925 pulseB=19155 不够一条
+    → B-team [ZIM]#57[T1] terr=4859 bal=217416 dq=44.7 cnt=128 | c=210.8 rankC=305.6 need=394851 tD=2.58 人 crowdedHard | safe=132936 keep=Inf avail=-Inf chunkB=31925 pulseB=19155 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1600 sora_w B=181298 L=4541 d=39.9 nb=2 neut=0 cmds=26 noFull=1 shQ=44229 | m=1.485 worth=59.3 cheap=5.0 over=0 dMedOther=20.0 safe(-1)=154228
+    → Yellow Beast 2137#46[T3] terr=11773 bal=281337 dq=23.9 cnt=46 | c=58.8 rankC=58.8 need=519113 tD=1.19 人 | safe=154228 keep=179949 avail=-775 chunkB=36260 pulseB=21756 无可用(avail<=0)
+    → B-team [ZIM]#57[T1] terr=4859 bal=245609 dq=50.5 cnt=128 | c=237.6 rankC=344.5 need=445107 tD=2.52 人 crowdedHard | safe=154228 keep=Inf avail=-Inf chunkB=36260 pulseB=21756 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1650 sora_w B=199225 L=4541 d=43.9 nb=2 neut=0 cmds=26 noFull=1 shQ=49806 | m=1.478 worth=64.8 cheap=5.4 over=0 dMedOther=21.8 safe(-1)=169857
+    → Yellow Beast 2137#46[T3] terr=11773 bal=309157 dq=26.3 cnt=46 | c=64.5 rankC=64.5 need=568699 tD=1.20 人 | safe=169857 keep=198142 avail=-1251 chunkB=39845 pulseB=23907 无可用(avail<=0)
+    → B-team [ZIM]#57[T1] terr=4859 bal=269895 dq=55.5 cnt=128 | c=179.8 rankC=179.8 need=488399 tD=2.55 人 crowdedHard | safe=169857 keep=Inf avail=-Inf chunkB=39845 pulseB=23907 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1700 sora_w B=221815 L=4541 d=48.8 nb=2 neut=0 cmds=26 noFull=1 shQ=54353 | m=1.470 worth=71.8 cheap=5.9 over=0 dMedOther=24.8 safe(-1)=192208
+    → Yellow Beast 2137#46[T3] terr=11773 bal=348942 dq=29.6 cnt=46 | c=72.5 rankC=72.5 need=639611 tD=1.20 人 | safe=192208 keep=Inf avail=-Inf chunkB=44363 pulseB=26618 价高(c>=worth)→break
+    → B-team [ZIM]#57[T1] terr=4859 bal=299209 dq=61.6 cnt=128 | c=199.1 rankC=199.1 need=540653 tD=2.49 人 crowdedHard | safe=192208 keep=Inf avail=-Inf chunkB=44363 pulseB=26618 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1750 sora_w B=240016 L=4541 d=52.9 nb=2 neut=0 cmds=26 noFull=1 shQ=60004 | m=1.462 worth=77.3 cheap=6.5 over=0 dMedOther=26.4 safe(-1)=208295
+    → Yellow Beast 2137#46[T3] terr=11773 bal=377577 dq=32.1 cnt=46 | c=113.5 rankC=164.6 need=690650 tD=1.21 人 | safe=208295 keep=Inf avail=-Inf chunkB=48003 pulseB=28802 价高(c>=worth)→break
+    → B-team [ZIM]#57[T1] terr=4859 bal=323762 dq=66.6 cnt=128 | c=215.2 rankC=215.2 need=584421 tD=2.52 人 crowdedHard | safe=208295 keep=Inf avail=-Inf chunkB=48003 pulseB=28802 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1800 sora_w B=262290 L=4541 d=57.8 nb=2 neut=0 cmds=26 noFull=1 shQ=64470 | m=1.455 worth=84.0 cheap=7.3 over=0 dMedOther=29.0 safe(-1)=230581
+    → Yellow Beast 2137#46[T3] terr=11773 bal=417246 dq=35.4 cnt=46 | c=86.3 rankC=86.3 need=761356 tD=1.22 人 | safe=230581 keep=Inf avail=-Inf chunkB=52458 pulseB=31475 价高(c>=worth)→break
+    → B-team [ZIM]#57[T1] terr=4859 bal=352541 dq=72.6 cnt=128 | c=234.1 rankC=234.1 need=635722 tD=2.50 人 crowdedHard | safe=230581 keep=Inf avail=-Inf chunkB=52458 pulseB=31475 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1850 sora_w B=279509 L=4541 d=61.6 nb=2 neut=0 cmds=26 noFull=1 shQ=69877 | m=1.448 worth=89.1 cheap=8.2 over=0 dMedOther=28.6 safe(-1)=245996
+    → Yellow Beast 2137#46[T3] terr=11773 bal=444685 dq=37.8 cnt=46 | c=91.8 rankC=91.8 need=810263 tD=1.32 人 | safe=245996 keep=Inf avail=-Inf chunkB=55902 pulseB=33541 价高(c>=worth)→break
+    → B-team [ZIM]#57[T1] terr=4859 bal=375687 dq=77.3 cnt=128 | c=249.3 rankC=249.3 need=676981 tD=2.70 人 crowdedHard | safe=245996 keep=Inf avail=-Inf chunkB=55902 pulseB=33541 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1900 sora_w B=300523 L=4541 d=66.2 nb=2 neut=0 cmds=26 noFull=1 shQ=74017 | m=1.440 worth=95.3 cheap=8.8 over=0 dMedOther=30.2 safe(-1)=268355
+    → Yellow Beast 2137#46[T3] terr=11773 bal=484483 dq=41.2 cnt=46 | c=99.9 rankC=99.9 need=881199 tD=1.36 人 | safe=268355 keep=Inf avail=-Inf chunkB=60105 pulseB=36063 价高(c>=worth)→break
+    → B-team [ZIM]#57[T1] terr=4859 bal=402687 dq=82.9 cnt=128 | c=387.1 rankC=561.3 need=725111 tD=2.75 人 crowdedHard | safe=268355 keep=Inf avail=-Inf chunkB=60105 pulseB=36063 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1950 sora_w B=318045 L=4541 d=70.0 nb=2 neut=0 cmds=26 noFull=1 shQ=79511 | m=1.433 worth=100.3 cheap=8.8 over=0 dMedOther=32.1 safe(-1)=285509
+    → Yellow Beast 2137#46[T3] terr=11773 bal=515018 dq=43.7 cnt=46 | c=106.1 rankC=106.1 need=935624 tD=1.36 人 | safe=285509 keep=Inf avail=-Inf chunkB=63609 pulseB=38165 价高(c>=worth)→break
+    → B-team [ZIM]#57[T1] terr=4859 bal=426166 dq=87.7 cnt=128 | c=409.5 rankC=593.7 need=766964 tD=2.73 人 crowdedHard | safe=285509 keep=Inf avail=-Inf chunkB=63609 pulseB=38165 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2000 sora_w B=341130 L=4541 d=75.1 nb=2 neut=0 cmds=26 noFull=1 shQ=84171 | m=1.425 worth=107.0 cheap=8.8 over=0 dMedOther=35.1 safe(-1)=310359
+    → Yellow Beast 2137#46[T3] terr=11773 bal=559251 dq=47.5 cnt=46 | c=166.7 rankC=241.8 need=1014464 tD=1.35 人 | safe=310359 keep=Inf avail=-Inf chunkB=68226 pulseB=40936 价高(c>=worth)→break
+    → B-team [ZIM]#57[T1] terr=4859 bal=455874 dq=93.8 cnt=128 | c=301.9 rankC=301.9 need=819921 tD=2.67 人 crowdedHard | safe=310359 keep=Inf avail=-Inf chunkB=68226 pulseB=40936 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2050 sora_w B=361021 L=4541 d=79.5 nb=2 neut=0 cmds=26 noFull=1 shQ=90255 | m=1.373 worth=109.1 cheap=8.8 over=0 dMedOther=35.2 safe(-1)=330162
+    → Yellow Beast 2137#46[T3] terr=11773 bal=594499 dq=50.5 cnt=46 | c=122.1 rankC=122.1 need=1077290 tD=1.44 人 | safe=330162 keep=Inf avail=-Inf chunkB=72204 pulseB=43323 价高(c>=worth)→break
+    → B-team [ZIM]#57[T1] terr=4859 bal=482456 dq=99.3 cnt=128 | c=463.1 rankC=671.4 need=867305 tD=2.82 人 crowdedHard | safe=330162 keep=Inf avail=-Inf chunkB=72204 pulseB=43323 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2100 sora_w B=386611 L=4541 d=85.1 nb=2 neut=0 cmds=26 noFull=1 shQ=95542 | m=1.320 worth=112.4 cheap=8.8 over=0 dMedOther=41.7 safe(-1)=357826
+    → Yellow Beast 2137#46[T3] terr=11773 bal=643742 dq=54.7 cnt=46 | c=132.0 rankC=132.0 need=1165061 tD=1.31 人 | safe=357826 keep=Inf avail=-Inf chunkB=77322 pulseB=46393 价高(c>=worth)→break
+    → B-team [ZIM]#57[T1] terr=4859 bal=514589 dq=105.9 cnt=128 | c=340.4 rankC=340.4 need=924585 tD=2.54 人 crowdedHard | safe=357826 keep=Inf avail=-Inf chunkB=77322 pulseB=46393 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2150 sora_w B=409153 L=4541 d=90.1 nb=2 neut=0 cmds=26 noFull=1 shQ=102288 | m=1.268 worth=114.2 cheap=8.8 over=0 dMedOther=40.9 safe(-1)=380621
+    → Yellow Beast 2137#46[T3] terr=11773 bal=684316 dq=58.1 cnt=46 | c=140.2 rankC=140.2 need=1237379 tD=1.42 人 | safe=380621 keep=Inf avail=-Inf chunkB=81831 pulseB=49098 价高(c>=worth)→break
+    → B-team [ZIM]#57[T1] terr=4859 bal=539819 dq=111.1 cnt=128 | c=357.0 rankC=357.0 need=969559 tD=2.72 人 crowdedHard | safe=380621 keep=Inf avail=-Inf chunkB=81831 pulseB=49098 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2200 sora_w B=437551 L=4541 d=96.4 nb=2 neut=0 cmds=26 noFull=1 shQ=108279 | m=1.215 worth=117.1 cheap=8.8 over=0 dMedOther=43.2 safe(-1)=399608
+    → Yellow Beast 2137#46[T3] terr=11773 bal=739220 dq=62.8 cnt=46 | c=219.4 rankC=318.2 need=1335240 tD=1.45 人 | safe=399608 keep=Inf avail=-Inf chunkB=87510 pulseB=52506 价高(c>=worth)→break
+    → B-team [ZIM]#57[T1] terr=4859 bal=567956 dq=116.9 cnt=128 | c=375.5 rankC=375.5 need=1019715 tD=2.70 人 crowdedHard | safe=399608 keep=Inf avail=-Inf chunkB=87510 pulseB=52506 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2250 sora_w B=463018 L=4541 d=102.0 nb=2 neut=0 cmds=26 noFull=1 shQ=115734 | m=1.163 worth=118.5 cheap=8.8 over=1 dMedOther=43.0 safe(-1)=399608
+    → B-team [ZIM]#57[T1] terr=5088 bal=531001 dq=104.4 cnt=130 | c=248.7 rankC=248.7 need=954068 tD=2.43 人 | safe=399608 keep=408690 avail=48903 chunkB=92604 pulseB=55562 不够一条
+    → Yellow Beast 2137#46[T3] terr=11773 bal=785813 dq=66.7 cnt=46 | c=233.1 rankC=337.9 need=1418287 tD=1.55 人 | safe=399608 keep=408690 avail=48903 chunkB=92604 pulseB=55562 不够一条
+    ⇒ 本拍没有指令
+t=2300 sora_w B=492332 L=4541 d=108.4 nb=2 neut=0 cmds=26 noFull=1 shQ=121970 | m=1.110 worth=120.3 cheap=8.8 over=1 dMedOther=46.5 safe(-1)=399608
+    → Yellow Beast 2137#46[T3] terr=11773 bal=847114 dq=72.0 cnt=46 | c=173.1 rankC=173.1 need=1527549 tD=1.55 人 | safe=399608 keep=408690 avail=77873 chunkB=98466 pulseB=59080 不够一条
+    → B-team [ZIM]#57[T1] terr=4985 bal=532953 dq=106.9 cnt=130 | c=255.5 rankC=255.5 need=953636 tD=2.30 人 | safe=399608 keep=408690 avail=77873 chunkB=98466 pulseB=59080 不够一条
+    ⇒ 本拍没有指令
+t=2350 sora_w B=515040 L=4541 d=113.4 nb=2 neut=0 cmds=26 noFull=1 shQ=128760 | m=1.058 worth=119.9 cheap=8.8 over=1 dMedOther=49.4 safe(-1)=399608
+    → B-team [ZIM]#57[T1] terr=4985 bal=558474 dq=112.0 cnt=130 | c=267.3 rankC=267.3 need=1001018 tD=2.27 人 | safe=399608 keep=408690 avail=100315 chunkB=103008 pulseB=61805 不够一条
+    → Yellow Beast 2137#46[T3] terr=11773 bal=900506 dq=76.5 cnt=46 | c=266.6 rankC=386.6 need=1622715 tD=1.55 人 | safe=399608 keep=408690 avail=100315 chunkB=103008 pulseB=61805 不够一条
+    ⇒ 本拍没有指令
+t=2360 sora_w B=519366 L=4541 d=114.4 nb=2 neut=0 cmds=27 noFull=1 shQ=129841 | m=1.047 worth=119.7 cheap=8.8 over=1 dMedOther=50.0 safe(-1)=399608
+    → B-team [ZIM]#57[T1] terr=4985 bal=563332 dq=113.0 cnt=130 | c=269.5 rankC=269.5 need=1009981 tD=2.26 人 | safe=399608 keep=408690 avail=104590 chunkB=103873 pulseB=62324 
+    → Yellow Beast 2137#46[T3] terr=11773 bal=911582 dq=77.4 cnt=46 | c=269.9 rankC=391.3 need=1642456 tD=1.55 人 | safe=399608 keep=408690 avail=104590 chunkB=103873 pulseB=62324 
+    ⇒ 影子指令 attack pct=206 → B-team [ZIM]#57[T1]（约 104989 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2365 sora_w B=519366 L=4541 d=114.4 nb=2 neut=0 cmds=28 noFull=1 shQ=129841 | m=1.042 worth=119.1 cheap=8.8 over=1 dMedOther=50.0 safe(-1)=399608
+    → B-team [ZIM]#57[T1] terr=4985 bal=563332 dq=113.0 cnt=130 | c=269.5 rankC=269.5 need=1010302 tD=2.26 人 | safe=399608 keep=408690 avail=104590 chunkB=103873 pulseB=62324 
+    → Yellow Beast 2137#46[T3] terr=11773 bal=911582 dq=77.4 cnt=46 | c=269.9 rankC=391.3 need=1642456 tD=1.55 人 | safe=399608 keep=408690 avail=104590 chunkB=103873 pulseB=62324 
+    ⇒ 影子指令 attack pct=206 → B-team [ZIM]#57[T1]（约 104989 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2370 sora_w B=523624 L=4541 d=115.3 nb=2 neut=0 cmds=29 noFull=1 shQ=130906 | m=1.036 worth=119.5 cheap=8.8 over=1 dMedOther=50.6 safe(-1)=399608
+    → B-team [ZIM]#57[T1] terr=4985 bal=568120 dq=114.0 cnt=130 | c=271.7 rankC=271.7 need=1018986 tD=2.25 人 | safe=399608 keep=408690 avail=108798 chunkB=104725 pulseB=62835 
+    → Yellow Beast 2137#46[T3] terr=11773 bal=922794 dq=78.4 cnt=46 | c=273.2 rankC=396.1 need=1662441 tD=1.55 人 | safe=399608 keep=408690 avail=108798 chunkB=104725 pulseB=62835 
+    ⇒ 影子指令 attack pct=212 → B-team [ZIM]#57[T1]（约 108917 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2400 sora_w B=266497 L=5176 d=51.5 nb=2 neut=0 cmds=29 noFull=1 shQ=20204 | m=1.005 worth=51.7 cheap=8.8 over=0 dMedOther=53.5 safe(-1)=455488
+    → B-team [ZIM]#57[T1] terr=4221 bal=437040 dq=103.5 cnt=104 | c=115.6 rankC=57.8 need=755946 tD=1.94 人 pulse bleeding | safe=455488 keep=Inf avail=-Inf chunkB=53299 pulseB=31980 价高(c>=worth)→break
+    → Yellow Beast 2137#46[T3] terr=11773 bal=969037 dq=82.3 cnt=50 | c=386.2 rankC=560.0 need=1744864 tD=1.54 人 pulse crowdedHard | safe=455488 keep=Inf avail=-Inf chunkB=53299 pulseB=31980 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2450 sora_w B=282035 L=5176 d=54.5 nb=2 neut=0 cmds=29 noFull=1 shQ=59068 | m=0.953 worth=51.9 cheap=8.8 over=0 dMedOther=56.8 safe(-1)=455488
+    → B-team [ZIM]#57[T1] terr=3447 bal=271864 dq=78.9 cnt=80 | c=268.4 rankC=268.4 need=443198 tD=1.39 人 pulse crowdedHard | safe=455488 keep=Inf avail=-Inf chunkB=56407 pulseB=33844 价高(c>=worth)→break
+    → Yellow Beast 2137#46[T3] terr=11773 bal=1030115 dq=87.5 cnt=50 | c=283.0 rankC=283.0 need=1853729 tD=1.54 人 pulse crowdedHard | safe=455488 keep=Inf avail=-Inf chunkB=56407 pulseB=33844 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2500 sora_w B=303655 L=5176 d=58.7 nb=2 neut=0 cmds=29 noFull=1 shQ=74643 | m=0.900 worth=52.8 cheap=8.8 over=0 dMedOther=64.2 safe(-1)=455488
+    → B-team [ZIM]#57[T1] terr=3447 bal=290877 dq=84.4 cnt=80 | c=286.6 rankC=286.6 need=475651 tD=1.31 人 pulse crowdedHard | safe=455488 keep=Inf avail=-Inf chunkB=60731 pulseB=36439 价高(c>=worth)→break
+    → Yellow Beast 2137#46[T3] terr=11773 bal=1106816 dq=94.0 cnt=50 | c=303.8 rankC=303.8 need=1990440 tD=1.46 人 pulse crowdedHard | safe=455488 keep=Inf avail=-Inf chunkB=60731 pulseB=36439 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2550 sora_w B=321361 L=5176 d=62.1 nb=2 neut=0 cmds=29 noFull=1 shQ=80340 | m=0.900 worth=55.9 cheap=8.8 over=0 dMedOther=62.4 safe(-1)=455488
+    → B-team [ZIM]#57[T1] terr=3447 bal=251972 dq=73.1 cnt=80 | c=248.6 rankC=248.6 need=414280 tD=1.17 人 pulse crowdedHard | safe=455488 keep=Inf avail=-Inf chunkB=64272 pulseB=38563 价高(c>=worth)→break
+    → Yellow Beast 2137#46[T3] terr=11773 bal=1176578 dq=99.9 cnt=50 | c=468.1 rankC=678.7 need=2114783 tD=1.60 人 pulse crowdedHard | safe=455488 keep=Inf avail=-Inf chunkB=64272 pulseB=38563 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2600 sora_w B=345275 L=5176 d=66.7 nb=2 neut=0 cmds=29 noFull=1 shQ=85050 | m=0.900 worth=60.0 cheap=8.8 over=0 dMedOther=67.5 safe(-1)=455488
+    → B-team [ZIM]#57[T1] terr=3447 bal=269846 dq=78.3 cnt=80 | c=265.7 rankC=265.7 need=444972 tD=1.16 人 pulse crowdedHard | safe=455488 keep=Inf avail=-Inf chunkB=69055 pulseB=41433 价高(c>=worth)→break
+    → Yellow Beast 2137#46[T3] terr=11773 bal=1259300 dq=107.0 cnt=50 | c=345.3 rankC=345.3 need=2262226 tD=1.58 人 pulse crowdedHard | safe=455488 keep=Inf avail=-Inf chunkB=69055 pulseB=41433 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2650 sora_w B=365408 L=5176 d=70.6 nb=2 neut=0 cmds=29 noFull=1 shQ=91352 | m=0.900 worth=63.5 cheap=8.8 over=0 dMedOther=72.0 safe(-1)=455488
+    → B-team [ZIM]#57[T1] terr=2980 bal=195597 dq=65.6 cnt=80 | c=37.5 rankC=11.2 need=305576 tD=0.91 人 pulse bleeding | safe=455488 keep=455488 avail=-94362 chunkB=73082 pulseB=43849 无可用(avail<=0)
+    → Yellow Beast 2137#46[T3] terr=11773 bal=1324058 dq=112.5 cnt=50 | c=526.3 rankC=763.1 need=2377650 tD=1.56 人 pulse crowdedHard | safe=455488 keep=Inf avail=-Inf chunkB=73082 pulseB=43849 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2700 sora_w B=391890 L=5176 d=75.7 nb=2 neut=0 cmds=29 noFull=1 shQ=96705 | m=0.900 worth=68.1 cheap=8.8 over=0 dMedOther=73.0 safe(-1)=455488
+    → B-team [ZIM]#57[T1] terr=2289 bal=133922 dq=58.5 cnt=70 | c=60.5 rankC=30.2 need=179444 tD=0.80 人 pulse bleeding | safe=455488 keep=455488 avail=-68190 chunkB=78378 pulseB=47027 无可用(avail<=0)
+    → Yellow Beast 2137#46[T3] terr=11344 bal=1315416 dq=116.0 cnt=50 | c=212.7 rankC=106.4 need=2344709 tD=1.59 人 pulse crowdedHard | safe=455488 keep=Inf avail=-Inf chunkB=78378 pulseB=47027 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2750 sora_w B=414740 L=5176 d=80.1 nb=2 neut=0 cmds=29 noFull=1 shQ=103685 | m=0.900 worth=72.1 cheap=8.8 over=0 dMedOther=77.3 safe(-1)=455488
+    → B-team [ZIM]#57[T1] terr=1879 bal=78746 dq=41.9 cnt=65 | c=2.5 rankC=0.7 need=88374 tD=0.54 人 pulse nearCollapse bleeding | safe=455488 keep=455488 avail=-45608 chunkB=82948 pulseB=49769 无可用(avail<=0)
+    → Yellow Beast 2137#46[T3] terr=11208 bal=1335434 dq=119.2 cnt=50 | c=386.7 rankC=386.7 need=2375940 tD=1.54 人 pulse crowdedHard | safe=455488 keep=Inf avail=-Inf chunkB=82948 pulseB=49769 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2800 sora_w B=444099 L=5176 d=85.8 nb=1 neut=59 cmds=29 noFull=1 shQ=109759 | m=0.900 worth=77.2 cheap=8.8 over=0 dMedOther=81.7 safe(-1)=455488
+    → Yellow Beast 2137#46[T3] terr=11208 bal=1395000 dq=124.5 cnt=50 | c=936.4 rankC=1357.8 need=2483515 tD=1.52 人 pulse crowdedHard | safe=455488 keep=Inf avail=-Inf chunkB=88820 pulseB=53292 价高(c>=worth)→break
+    ⇒ 本拍没有指令

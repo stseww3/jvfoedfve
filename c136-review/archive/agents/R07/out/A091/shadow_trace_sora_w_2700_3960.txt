@@ -1,0 +1,1129 @@
+# A091 sora_w 影子决策明细 t=2700~3960（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标无可用兵（avail<=0）: 9 拍（t=2700~3890）；可用兵 -48533~0，一条指令下限(20%余额) 93288~179591，比值 -51%~0%
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 19 拍（t=2710~2810）；可用兵 4993~53826，一条指令下限(20%余额) 103179~113061，比值 5%~48%
+#   出手打人/bot: 27 拍（t=2800~3905）；可用兵 56448~250306，一条指令下限(20%余额) 115509~200416，比值 31%~160%
+#   首选目标价高（c>=worth）: 189 拍（t=2860~3960）
+#   有可用兵但没发（其他）: 3 拍（t=3005~3650）；可用兵 65923~158897，一条指令下限(20%余额) 143057~197352，比值 46%~81%
+#   过了软上限，但首选目标判为 crowdedHard（余额 < crowdedHardCap×100×领土 不打）: 1 拍（t=3300~3300）；可用兵 82966~82966，一条指令下限(20%余额) 160275~160275，比值 52%~52%
+#   首选目标要发的兵低于最小指令（x < max(minCmd, pulseMinShare×B)）: 4 拍（t=3870~3885）；可用兵 854~19343，一条指令下限(20%余额) 175322~177444，比值 0%~11%
+#   首选目标已有在途进攻（curAtk 过门槛）: 1 拍（t=3910~3910）；可用兵 46762~46762，一条指令下限(20%余额) 171898~171898，比值 27%~27%
+#   └ 「出手打人/bot」里：27 条对人/bot 的出兵共约 1963065 兵；其中超过软上限（over=1）时发的 24 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 22 条约 1454904 兵，c/worth = 1.14~3.89
+t=2700 sora_w B=510029 L=5737 d=88.9 nb=3 neut=0 cmds=45 noFull=0 shQ=126118 | m=0.900 worth=80.0 cheap=8.6 over=0 dMedOther=28.3 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3230 bal=64694 dq=20.0 cnt=32 | c=76.6 rankC=111.0 need=114595 tD=0.71 人 | safe=504856 keep=504856 avail=-803 chunkB=102006 pulseB=61203 无可用(avail<=0) hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1364262 dq=56.3 cnt=27 | c=197.0 rankC=285.6 need=2468003 tD=1.99 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=102006 pulseB=61203 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=7770 bal=707641 dq=91.1 cnt=236 | c=312.2 rankC=452.7 need=1272992 tD=3.22 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=102006 pulseB=61203 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2705 sora_w B=510029 L=5737 d=88.9 nb=3 neut=0 cmds=45 noFull=0 shQ=127507 | m=0.900 worth=80.0 cheap=8.6 over=0 dMedOther=28.3 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3232 bal=64694 dq=20.0 cnt=32 | c=52.8 rankC=52.8 need=114652 tD=0.71 人 | safe=504856 keep=504856 avail=-803 chunkB=102006 pulseB=61203 无可用(avail<=0) hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1364262 dq=56.3 cnt=27 | c=135.9 rankC=135.9 need=2468003 tD=1.99 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=102006 pulseB=61203 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=7875 bal=707641 dq=89.9 cnt=236 | c=212.5 rankC=212.5 need=1273181 tD=3.18 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=102006 pulseB=61203 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2710 sora_w B=515894 L=5737 d=89.9 nb=3 neut=0 cmds=45 noFull=0 shQ=128973 | m=0.900 worth=80.9 cheap=8.6 over=0 dMedOther=28.6 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3232 bal=67286 dq=20.8 cnt=32 | c=54.7 rankC=54.7 need=119134 tD=0.73 人 | safe=504856 keep=504856 avail=4993 chunkB=103179 pulseB=61907 不够一条(x=4993)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1382543 dq=57.0 cnt=27 | c=137.7 rankC=137.7 need=2500586 tD=1.99 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=103179 pulseB=61907 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=7929 bal=715991 dq=90.3 cnt=236 | c=213.6 rankC=213.6 need=1288081 tD=3.15 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=103179 pulseB=61907 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2715 sora_w B=515894 L=5737 d=89.9 nb=3 neut=0 cmds=45 noFull=0 shQ=128973 | m=0.900 worth=80.9 cheap=8.6 over=0 dMedOther=28.6 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3232 bal=67286 dq=20.8 cnt=32 | c=54.7 rankC=54.7 need=119169 tD=0.73 人 | safe=504856 keep=504856 avail=4993 chunkB=103179 pulseB=61907 不够一条(x=4993)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1382543 dq=57.0 cnt=27 | c=137.7 rankC=137.7 need=2500586 tD=1.99 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=103179 pulseB=61907 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8040 bal=715991 dq=89.1 cnt=236 | c=210.7 rankC=210.7 need=1288215 tD=3.11 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=103179 pulseB=61907 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2720 sora_w B=521826 L=5737 d=91.0 nb=3 neut=0 cmds=45 noFull=0 shQ=130456 | m=0.900 worth=81.9 cheap=8.6 over=0 dMedOther=29.0 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3239 bal=68039 dq=21.0 cnt=32 | c=55.1 rankC=55.1 need=120570 tD=0.72 人 | safe=504856 keep=504856 avail=10855 chunkB=104365 pulseB=62619 不够一条(x=10855)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1401069 dq=57.8 cnt=27 | c=139.5 rankC=139.5 need=2533607 tD=1.99 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=104365 pulseB=62619 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8154 bal=724439 dq=88.8 cnt=236 | c=210.2 rankC=210.2 need=1303507 tD=3.07 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=104365 pulseB=62619 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2725 sora_w B=521826 L=5737 d=91.0 nb=3 neut=0 cmds=45 noFull=0 shQ=130456 | m=0.900 worth=81.9 cheap=8.6 over=0 dMedOther=29.0 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3240 bal=68039 dq=21.0 cnt=32 | c=55.1 rankC=55.1 need=120617 tD=0.72 人 | safe=504856 keep=504856 avail=10855 chunkB=104365 pulseB=62619 不够一条(x=10855)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1401069 dq=57.8 cnt=27 | c=139.5 rankC=139.5 need=2533607 tD=1.99 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=104365 pulseB=62619 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8212 bal=724439 dq=88.2 cnt=236 | c=208.8 rankC=208.8 need=1303531 tD=3.04 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=104365 pulseB=62619 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2730 sora_w B=527826 L=5737 d=92.0 nb=3 neut=0 cmds=45 noFull=0 shQ=131956 | m=0.900 worth=82.8 cheap=8.6 over=0 dMedOther=29.3 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3247 bal=68801 dq=21.2 cnt=32 | c=55.5 rankC=55.5 need=122071 tD=0.72 人 | safe=504856 keep=504856 avail=16785 chunkB=105565 pulseB=63339 不够一条(x=16785)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1419843 dq=58.6 cnt=27 | c=141.3 rankC=141.3 need=2567069 tD=2.00 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=105565 pulseB=63339 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8331 bal=733132 dq=88.0 cnt=236 | c=208.3 rankC=208.3 need=1319297 tD=3.00 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=105565 pulseB=63339 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2735 sora_w B=527826 L=5737 d=92.0 nb=3 neut=0 cmds=45 noFull=0 shQ=131956 | m=0.900 worth=82.8 cheap=8.6 over=0 dMedOther=29.3 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3257 bal=68801 dq=21.1 cnt=32 | c=55.4 rankC=55.4 need=122224 tD=0.72 人 | safe=504856 keep=504856 avail=16785 chunkB=105565 pulseB=63339 不够一条(x=16785)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1419843 dq=58.6 cnt=27 | c=141.3 rankC=141.3 need=2567069 tD=2.00 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=105565 pulseB=63339 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8455 bal=733132 dq=86.7 cnt=236 | c=205.3 rankC=205.3 need=1319481 tD=2.96 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=105565 pulseB=63339 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2740 sora_w B=533895 L=5737 d=93.1 nb=3 neut=0 cmds=45 noFull=0 shQ=133473 | m=0.900 worth=83.8 cheap=8.6 over=0 dMedOther=29.7 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3262 bal=69571 dq=21.3 cnt=32 | c=55.8 rankC=55.8 need=123635 tD=0.72 人 | safe=504856 keep=504856 avail=22783 chunkB=106779 pulseB=64067 不够一条(x=22783)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1438868 dq=59.3 cnt=27 | c=143.2 rankC=143.2 need=2600979 tD=2.00 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=106779 pulseB=64067 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8518 bal=741929 dq=87.1 cnt=236 | c=206.2 rankC=206.2 need=1335225 tD=2.93 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=106779 pulseB=64067 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2745 sora_w B=533895 L=5737 d=93.1 nb=3 neut=0 cmds=45 noFull=0 shQ=133473 | m=0.900 worth=83.8 cheap=8.6 over=0 dMedOther=29.7 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3273 bal=69571 dq=21.3 cnt=32 | c=55.6 rankC=55.6 need=123800 tD=0.72 人 | safe=504856 keep=504856 avail=22783 chunkB=106779 pulseB=64067 不够一条(x=22783)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1438868 dq=59.3 cnt=27 | c=143.2 rankC=143.2 need=2600979 tD=2.00 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=106779 pulseB=64067 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8649 bal=741929 dq=85.8 cnt=236 | c=203.2 rankC=203.2 need=1335390 tD=2.89 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=106779 pulseB=64067 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2750 sora_w B=540034 L=5737 d=94.1 nb=3 neut=0 cmds=45 noFull=0 shQ=135008 | m=0.900 worth=84.7 cheap=8.6 over=0 dMedOther=30.1 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3293 bal=70350 dq=21.4 cnt=32 | c=55.9 rankC=55.9 need=125440 tD=0.71 人 | safe=504856 keep=504856 avail=28850 chunkB=108007 pulseB=64804 不够一条(x=28850)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1458148 dq=60.1 cnt=27 | c=145.1 rankC=145.1 need=2635343 tD=2.00 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=108007 pulseB=64804 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=750832 dq=85.5 cnt=236 | c=202.5 rankC=202.5 need=1351431 tD=2.84 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=108007 pulseB=64804 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2755 sora_w B=540034 L=5737 d=94.1 nb=3 neut=0 cmds=45 noFull=0 shQ=135008 | m=0.900 worth=84.7 cheap=8.6 over=0 dMedOther=30.1 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3303 bal=70350 dq=21.3 cnt=32 | c=55.7 rankC=55.7 need=125591 tD=0.71 人 | safe=504856 keep=504856 avail=28850 chunkB=108007 pulseB=64804 不够一条(x=28850)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1458148 dq=60.1 cnt=27 | c=145.1 rankC=145.1 need=2635343 tD=2.00 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=108007 pulseB=64804 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=750885 dq=85.5 cnt=236 | c=202.5 rankC=202.5 need=1351525 tD=2.84 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=108007 pulseB=64804 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2760 sora_w B=546244 L=5737 d=95.2 nb=3 neut=0 cmds=45 noFull=0 shQ=136561 | m=0.900 worth=85.7 cheap=8.6 over=0 dMedOther=30.4 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3316 bal=71137 dq=21.5 cnt=32 | c=56.0 rankC=56.0 need=127130 tD=0.70 人 | safe=504856 keep=504856 avail=34987 chunkB=109249 pulseB=65549 不够一条(x=34987)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1477687 dq=60.9 cnt=27 | c=147.0 rankC=147.0 need=2670169 tD=2.00 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=109249 pulseB=65549 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=759895 dq=86.5 cnt=236 | c=204.9 rankC=204.9 need=1367584 tD=2.84 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=109249 pulseB=65549 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2765 sora_w B=546244 L=5737 d=95.2 nb=3 neut=0 cmds=45 noFull=0 shQ=136561 | m=0.900 worth=85.7 cheap=8.6 over=0 dMedOther=30.4 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3329 bal=71137 dq=21.4 cnt=32 | c=55.8 rankC=55.8 need=127314 tD=0.70 人 | safe=504856 keep=504856 avail=34987 chunkB=109249 pulseB=65549 不够一条(x=34987)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1477687 dq=60.9 cnt=27 | c=147.0 rankC=147.0 need=2670169 tD=2.00 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=109249 pulseB=65549 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=759895 dq=86.5 cnt=236 | c=204.9 rankC=204.9 need=1367584 tD=2.84 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=109249 pulseB=65549 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2770 sora_w B=552525 L=5737 d=96.3 nb=3 neut=0 cmds=45 noFull=0 shQ=138131 | m=0.900 worth=86.7 cheap=8.6 over=0 dMedOther=30.8 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3334 bal=71933 dq=21.6 cnt=32 | c=56.2 rankC=56.2 need=128813 tD=0.70 人 | safe=504856 keep=504856 avail=41195 chunkB=110505 pulseB=66303 不够一条(x=41195)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1497488 dq=61.8 cnt=27 | c=148.9 rankC=148.9 need=2705462 tD=2.00 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=110505 pulseB=66303 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=769013 dq=87.5 cnt=236 | c=207.4 rankC=207.4 need=1383836 tD=2.84 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=110505 pulseB=66303 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2775 sora_w B=552525 L=5737 d=96.3 nb=3 neut=0 cmds=45 noFull=0 shQ=138131 | m=0.900 worth=86.7 cheap=8.6 over=0 dMedOther=30.8 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3340 bal=71933 dq=21.5 cnt=32 | c=56.1 rankC=56.1 need=128917 tD=0.70 人 | safe=504856 keep=504856 avail=41195 chunkB=110505 pulseB=66303 不够一条(x=41195)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1497488 dq=61.8 cnt=27 | c=148.9 rankC=148.9 need=2705462 tD=2.00 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=110505 pulseB=66303 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=769013 dq=87.5 cnt=236 | c=207.4 rankC=207.4 need=1383836 tD=2.84 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=110505 pulseB=66303 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2780 sora_w B=558879 L=5737 d=97.4 nb=3 neut=0 cmds=45 noFull=0 shQ=139719 | m=0.900 worth=87.7 cheap=8.6 over=0 dMedOther=31.2 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3341 bal=75004 dq=22.4 cnt=32 | c=58.3 rankC=58.3 need=134266 tD=0.72 人 | safe=504856 keep=504856 avail=47474 chunkB=111776 pulseB=67065 不够一条(x=47474)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1517554 dq=62.6 cnt=27 | c=150.9 rankC=150.9 need=2741227 tD=2.01 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=111776 pulseB=67065 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=778241 dq=88.6 cnt=236 | c=209.8 rankC=209.8 need=1400283 tD=2.84 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=111776 pulseB=67065 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2785 sora_w B=558879 L=5737 d=97.4 nb=3 neut=0 cmds=45 noFull=0 shQ=139719 | m=0.900 worth=87.7 cheap=8.6 over=0 dMedOther=31.2 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3341 bal=75004 dq=22.4 cnt=32 | c=58.3 rankC=58.3 need=134302 tD=0.72 人 | safe=504856 keep=504856 avail=47474 chunkB=111776 pulseB=67065 不够一条(x=47474)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1517554 dq=62.6 cnt=27 | c=150.9 rankC=150.9 need=2741227 tD=2.01 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=111776 pulseB=67065 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=778241 dq=88.6 cnt=236 | c=209.8 rankC=209.8 need=1400283 tD=2.84 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=111776 pulseB=67065 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2790 sora_w B=565306 L=5737 d=98.5 nb=3 neut=0 cmds=45 noFull=0 shQ=141326 | m=0.900 worth=88.7 cheap=8.6 over=0 dMedOther=31.6 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3341 bal=70586 dq=21.1 cnt=32 | c=55.1 rankC=55.1 need=126739 tD=0.67 人 | safe=504856 keep=504856 avail=53826 chunkB=113061 pulseB=67837 不够一条(x=53826)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1537889 dq=63.4 cnt=27 | c=152.9 rankC=152.9 need=2777472 tD=2.01 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=113061 pulseB=67837 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=787579 dq=89.7 cnt=236 | c=212.3 rankC=212.3 need=1416927 tD=2.84 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=113061 pulseB=67837 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2795 sora_w B=565306 L=5737 d=98.5 nb=3 neut=0 cmds=45 noFull=0 shQ=141326 | m=0.900 worth=88.7 cheap=8.6 over=0 dMedOther=31.6 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3341 bal=70586 dq=21.1 cnt=32 | c=55.1 rankC=55.1 need=126773 tD=0.67 人 | safe=504856 keep=504856 avail=53826 chunkB=113061 pulseB=67837 不够一条(x=53826)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1537889 dq=63.4 cnt=27 | c=152.9 rankC=152.9 need=2777472 tD=2.01 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=113061 pulseB=67837 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=787579 dq=89.7 cnt=236 | c=212.3 rankC=212.3 need=1416927 tD=2.84 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=113061 pulseB=67837 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2800 sora_w B=577544 L=5737 d=100.7 nb=3 neut=0 cmds=46 noFull=0 shQ=142972 | m=0.900 worth=90.6 cheap=8.6 over=1 dMedOther=33.0 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3341 bal=74717 dq=22.4 cnt=32 | c=58.1 rankC=58.1 need=133950 tD=0.68 人 | safe=504856 keep=504856 avail=65920 chunkB=115509 pulseB=69305 不够一条(x=65920)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1582745 dq=65.3 cnt=27 | c=157.3 rankC=157.3 need=2857422 tD=1.98 人 pulse | safe=504856 keep=516330 avail=54446 chunkB=115509 pulseB=69305  x=54446 hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=805813 dq=91.7 cnt=236 | c=217.2 rankC=217.2 need=1449427 tD=2.78 人 pulse | safe=504856 keep=516330 avail=54446 chunkB=115509 pulseB=69305  x=54446 hNb=3
+    ⇒ 影子指令 attack pct=96 → [f] Mean Little Girl#30[T1]（约 54708 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2805 sora_w B=577544 L=5737 d=100.7 nb=3 neut=0 cmds=47 noFull=0 shQ=144386 | m=0.900 worth=90.6 cheap=8.6 over=1 dMedOther=33.0 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3341 bal=74717 dq=22.4 cnt=32 | c=58.1 rankC=58.1 need=133985 tD=0.68 人 | safe=504856 keep=504856 avail=65920 chunkB=115509 pulseB=69305 不够一条(x=65920)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1582745 dq=65.3 cnt=27 | c=157.3 rankC=157.3 need=2857422 tD=1.98 人 pulse | safe=504856 keep=516330 avail=54446 chunkB=115509 pulseB=69305  x=54446 hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=805813 dq=91.7 cnt=236 | c=217.2 rankC=217.2 need=1449427 tD=2.78 人 pulse | safe=504856 keep=516330 avail=54446 chunkB=115509 pulseB=69305  x=54446 hNb=3
+    ⇒ 影子指令 attack pct=96 → [f] Mean Little Girl#30[T1]（约 54708 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2810 sora_w B=522002 L=5737 d=91.0 nb=3 neut=0 cmds=47 noFull=0 shQ=77318 | m=0.900 worth=81.9 cheap=8.6 over=0 dMedOther=33.4 safe(-1)=504856
+    → [IND]Magadha Empire#6[T1] terr=3341 bal=75553 dq=22.6 cnt=32 | c=58.4 rankC=58.4 need=135504 tD=0.68 人 | safe=504856 keep=504856 avail=11029 chunkB=104400 pulseB=62640 不够一条(x=11029)→continue hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24249 bal=1603953 dq=66.1 cnt=27 | c=156.3 rankC=156.3 need=2840514 tD=1.98 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=104400 pulseB=62640 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=815482 dq=92.8 cnt=236 | c=219.7 rankC=219.7 need=1466660 tD=2.78 人 pulse | safe=504856 keep=Inf avail=-Inf chunkB=104400 pulseB=62640 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2815 sora_w B=466438 L=5764 d=80.9 nb=3 neut=0 cmds=47 noFull=0 shQ=84722 | m=0.900 worth=72.8 cheap=8.6 over=0 dMedOther=33.4 safe(-1)=507232
+    → [IND]Magadha Empire#6[T1] terr=3341 bal=75553 dq=22.6 cnt=32 | c=58.1 rankC=58.1 need=135540 tD=0.68 人 | safe=507232 keep=507232 avail=-46260 chunkB=93288 pulseB=55973 无可用(avail<=0) hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24222 bal=1601096 dq=66.1 cnt=26 | c=153.8 rankC=153.8 need=2791068 tD=1.98 人 pulse | safe=507232 keep=Inf avail=-Inf chunkB=93288 pulseB=55973 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=815482 dq=92.8 cnt=236 | c=296.4 rankC=296.4 need=1466660 tD=2.78 人 pulse crowdedHard | safe=507232 keep=Inf avail=-Inf chunkB=93288 pulseB=55973 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2820 sora_w B=471802 L=5790 d=81.5 nb=3 neut=0 cmds=47 noFull=0 shQ=91498 | m=0.900 worth=73.3 cheap=8.6 over=0 dMedOther=33.8 safe(-1)=509520
+    → [IND]Magadha Empire#6[T1] terr=3342 bal=76399 dq=22.9 cnt=32 | c=58.8 rankC=58.8 need=137052 tD=0.68 人 | safe=509520 keep=509520 avail=-43246 chunkB=94360 pulseB=56616 无可用(avail<=0) hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24196 bal=1619764 dq=66.9 cnt=24 | c=281.1 rankC=281.1 need=2829415 tD=1.98 人 pulse | safe=509520 keep=Inf avail=-Inf chunkB=94360 pulseB=56616 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=825267 dq=94.0 cnt=238 | c=299.9 rankC=299.9 need=1484101 tD=2.78 人 pulse crowdedHard | safe=509520 keep=Inf avail=-Inf chunkB=94360 pulseB=56616 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2825 sora_w B=471802 L=5838 d=80.8 nb=3 neut=0 cmds=47 noFull=0 shQ=98338 | m=0.900 worth=72.7 cheap=8.6 over=0 dMedOther=33.8 safe(-1)=513744
+    → [IND]Magadha Empire#6[T1] terr=3350 bal=71103 dq=21.2 cnt=32 | c=54.9 rankC=54.9 need=128006 tD=0.63 人 | safe=513744 keep=513744 avail=-47470 chunkB=94360 pulseB=56616 无可用(avail<=0) hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24148 bal=1614625 dq=66.9 cnt=24 | c=281.8 rankC=281.8 need=2829511 tD=1.98 人 pulse | safe=513744 keep=Inf avail=-Inf chunkB=94360 pulseB=56616 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=825267 dq=94.0 cnt=239 | c=299.9 rankC=299.9 need=1484101 tD=2.78 人 pulse crowdedHard | safe=513744 keep=Inf avail=-Inf chunkB=94360 pulseB=56616 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2830 sora_w B=477227 L=5886 d=81.1 nb=3 neut=0 cmds=47 noFull=0 shQ=105193 | m=0.900 worth=73.0 cheap=8.6 over=0 dMedOther=34.2 safe(-1)=517968
+    → [IND]Magadha Empire#6[T1] terr=3357 bal=71899 dq=21.4 cnt=32 | c=55.3 rankC=55.3 need=129532 tD=0.63 人 | safe=517968 keep=517968 avail=-46333 chunkB=95445 pulseB=57267 无可用(avail<=0) hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24100 bal=1631059 dq=67.7 cnt=25 | c=159.1 rankC=159.1 need=2868073 tD=1.98 人 pulse | safe=517968 keep=Inf avail=-Inf chunkB=95445 pulseB=57267 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=835170 dq=95.1 cnt=241 | c=303.4 rankC=303.4 need=1501752 tD=2.78 人 pulse crowdedHard | safe=517968 keep=Inf avail=-Inf chunkB=95445 pulseB=57267 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2835 sora_w B=477227 L=5911 d=80.7 nb=3 neut=0 cmds=47 noFull=0 shQ=112108 | m=0.900 worth=72.7 cheap=8.6 over=0 dMedOther=34.2 safe(-1)=520168
+    → [IND]Magadha Empire#6[T1] terr=3370 bal=71899 dq=21.3 cnt=32 | c=55.1 rankC=55.1 need=129709 tD=0.62 人 | safe=520168 keep=520168 avail=-48533 chunkB=95445 pulseB=57267 无可用(avail<=0) hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24075 bal=1628352 dq=67.6 cnt=24 | c=286.8 rankC=286.8 need=2868170 tD=1.98 人 pulse | safe=520168 keep=Inf avail=-Inf chunkB=95445 pulseB=57267 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=835170 dq=95.1 cnt=243 | c=303.3 rankC=303.3 need=1501752 tD=2.78 人 pulse crowdedHard | safe=520168 keep=Inf avail=-Inf chunkB=95445 pulseB=57267 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2840 sora_w B=783973 L=5960 d=131.5 nb=3 neut=0 cmds=48 noFull=0 shQ=121871 | m=0.900 worth=118.4 cheap=8.6 over=1 dMedOther=34.6 safe(-1)=524480
+    → [IND]Magadha Empire#6[T1] terr=3379 bal=72704 dq=21.5 cnt=32 | c=56.9 rankC=56.9 need=131241 tD=0.62 人 | safe=524480 keep=524480 avail=250306 chunkB=156795 pulseB=94077  x=164147 hNb=3
+    → [f] Mean Little Girl#30[T1] terr=24026 bal=1644800 dq=68.5 cnt=25 | c=162.1 rankC=162.1 need=2907065 tD=1.98 人 pulse | safe=524480 keep=524480 avail=250306 chunkB=156795 pulseB=94077 在途(curAtk=55871)→continue hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=845192 dq=96.2 cnt=244 | c=227.9 rankC=227.9 need=1519614 tD=2.78 人 pulse | safe=524480 keep=524480 avail=250306 chunkB=156795 pulseB=94077  x=94076 hNb=3
+    ⇒ 影子指令 attack pct=214 → [IND]Magadha Empire#6[T1]（约 164603 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2845 sora_w B=783973 L=6010 d=130.4 nb=3 neut=0 cmds=49 noFull=0 shQ=131666 | m=0.900 worth=117.4 cheap=8.6 over=1 dMedOther=34.6 safe(-1)=528880
+    → [IND]Magadha Empire#6[T1] terr=3384 bal=72704 dq=21.5 cnt=32 | c=56.8 rankC=56.8 need=131330 tD=0.62 人 | safe=528880 keep=528880 avail=245906 chunkB=156795 pulseB=94077  x=164258 hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=845192 dq=96.2 cnt=247 | c=227.8 rankC=227.8 need=1519614 tD=2.78 人 pulse | safe=528880 keep=528880 avail=245906 chunkB=156795 pulseB=94077  x=94076 hNb=3
+    → [f] Mean Little Girl#30[T1] terr=23976 bal=1639326 dq=68.4 cnt=24 | c=292.3 rankC=292.3 need=2907163 tD=1.98 人 pulse | safe=528880 keep=528880 avail=245906 chunkB=156795 pulseB=94077 在途(curAtk=44823)→continue hNb=3
+    ⇒ 影子指令 attack pct=214 → [IND]Magadha Empire#6[T1]（约 164603 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2850 sora_w B=617078 L=6034 d=102.3 nb=3 neut=0 cmds=50 noFull=0 shQ=0 | m=0.900 worth=92.0 cheap=8.6 over=1 dMedOther=35.0 safe(-1)=530992
+    → [cat] 57#36[T1] terr=8784 bal=855334 dq=97.4 cnt=248 | c=230.2 rankC=230.2 need=1537691 tD=2.78 人 pulse | safe=530992 keep=543060 avail=66787 chunkB=123416 pulseB=74049  x=66787 hNb=3
+    → [f] Mean Little Girl#30[T1] terr=23952 bal=1658632 dq=69.2 cnt=24 | c=296.2 rankC=296.2 need=2946266 tD=1.98 人 pulse | safe=530992 keep=543060 avail=66787 chunkB=123416 pulseB=74049 在途(curAtk=39525)→continue hNb=3
+    ⇒ 影子指令 attack pct=110 → [cat] 57#36[T1]（约 66890 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2855 sora_w B=617078 L=6145 d=100.4 nb=3 neut=0 cmds=51 noFull=0 shQ=8852 | m=0.900 worth=90.4 cheap=8.5 over=1 dMedOther=35.0 safe(-1)=540760
+    → [f] Mean Little Girl#30[T1] terr=23904 bal=1653317 dq=69.2 cnt=26 | c=165.2 rankC=165.2 need=2946365 tD=1.97 人 pulse | safe=540760 keep=553050 avail=56797 chunkB=123416 pulseB=74049 在途(curAtk=28799)→continue hNb=3
+    → [cat] 57#36[T1] terr=8784 bal=855334 dq=97.4 cnt=248 | c=230.2 rankC=230.2 need=1537691 tD=2.78 人 pulse | safe=540760 keep=553050 avail=56797 chunkB=123416 pulseB=74049  x=56797 hNb=3
+    ⇒ 影子指令 attack pct=94 → [cat] 57#36[T1]（约 57248 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2860 sora_w B=485904 L=6252 d=77.7 nb=4 neut=0 cmds=51 noFull=0 shQ=4229 | m=0.900 worth=69.9 cheap=8.5 over=0 dMedOther=35.5 safe(-1)=550176
+    → [f] Mean Little Girl#30[T1] terr=23852 bal=1669642 dq=70.0 cnt=28 | c=167.8 rankC=167.8 need=2985876 tD=1.97 人 pulse | safe=550176 keep=Inf avail=-Inf chunkB=97181 pulseB=58308 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20270 bal=556173 dq=27.4 cnt=4 | c=176.4 rankC=255.7 need=1021727 tD=0.77 人 pulse | safe=550176 keep=Inf avail=-Inf chunkB=97181 pulseB=58308 价高(c>=worth)→break hNb=4
+    → [cat] 57#36[T1] terr=8784 bal=865598 dq=98.5 cnt=249 | c=314.1 rankC=314.1 need=1555985 tD=2.78 人 pulse crowdedHard | safe=550176 keep=Inf avail=-Inf chunkB=97181 pulseB=58308 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2865 sora_w B=382866 L=6305 d=60.7 nb=4 neut=0 cmds=51 noFull=0 shQ=10730 | m=0.900 worth=54.7 cheap=8.5 over=0 dMedOther=35.5 safe(-1)=554840
+    → [f] Mean Little Girl#30[T1] terr=23824 bal=1666507 dq=70.0 cnt=28 | c=226.8 rankC=226.8 need=2985977 tD=1.97 人 pulse crowdedHard | safe=554840 keep=Inf avail=-Inf chunkB=76573 pulseB=45944 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20274 bal=556173 dq=27.4 cnt=6 | c=176.1 rankC=255.3 need=1021733 tD=0.77 人 pulse | safe=554840 keep=Inf avail=-Inf chunkB=76573 pulseB=45944 价高(c>=worth)→break hNb=4
+    → [cat] 57#36[T1] terr=8784 bal=865598 dq=98.5 cnt=250 | c=295.3 rankC=295.3 need=1463740 tD=2.78 人 pulse crowdedHard | safe=554840 keep=Inf avail=-Inf chunkB=76573 pulseB=45944 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2870 sora_w B=387608 L=6635 d=58.4 nb=4 neut=0 cmds=51 noFull=0 shQ=16340 | m=0.900 worth=52.6 cheap=8.5 over=0 dMedOther=35.9 safe(-1)=583880
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1683436 dq=70.7 cnt=26 | c=230.2 rankC=230.2 need=3026185 tD=1.97 人 pulse crowdedHard | safe=583880 keep=Inf avail=-Inf chunkB=77522 pulseB=46513 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20275 bal=586523 dq=28.9 cnt=7 | c=185.4 rankC=268.8 need=1075841 tD=0.81 人 pulse | safe=583880 keep=Inf avail=-Inf chunkB=77522 pulseB=46513 价高(c>=worth)→break hNb=4
+    → [cat] 57#36[T1] terr=8534 bal=829930 dq=97.2 cnt=244 | c=310.9 rankC=310.9 need=1483651 tD=2.71 人 pulse crowdedHard | safe=583880 keep=Inf avail=-Inf chunkB=77522 pulseB=46513 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2875 sora_w B=387608 L=6686 d=58.0 nb=4 neut=0 cmds=51 noFull=0 shQ=22005 | m=0.900 worth=52.2 cheap=8.5 over=0 dMedOther=35.9 safe(-1)=588368
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1683436 dq=70.7 cnt=26 | c=230.2 rankC=230.2 need=3026287 tD=1.97 人 pulse crowdedHard | safe=588368 keep=Inf avail=-Inf chunkB=77522 pulseB=46513 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20275 bal=586523 dq=28.9 cnt=7 | c=185.4 rankC=268.8 need=1075841 tD=0.81 人 pulse | safe=588368 keep=Inf avail=-Inf chunkB=77522 pulseB=46513 价高(c>=worth)→break hNb=4
+    → [cat] 57#36[T1] terr=8534 bal=829930 dq=97.2 cnt=244 | c=310.9 rankC=310.9 need=1483791 tD=2.71 人 pulse crowdedHard | safe=588368 keep=Inf avail=-Inf chunkB=77522 pulseB=46513 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2880 sora_w B=392143 L=6710 d=58.4 nb=4 neut=0 cmds=51 noFull=0 shQ=27684 | m=0.900 worth=52.6 cheap=8.5 over=0 dMedOther=36.4 safe(-1)=590480
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1705994 dq=71.7 cnt=26 | c=233.3 rankC=233.3 need=3066569 tD=1.97 人 pulse crowdedHard | safe=590480 keep=Inf avail=-Inf chunkB=78429 pulseB=47057 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20275 bal=594206 dq=29.3 cnt=7 | c=187.7 rankC=272.2 need=1089535 tD=0.81 人 pulse | safe=590480 keep=Inf avail=-Inf chunkB=78429 pulseB=47057 价高(c>=worth)→break hNb=4
+    → [cat] 57#36[T1] terr=8534 bal=839889 dq=98.4 cnt=244 | c=314.6 rankC=314.6 need=1501585 tD=2.71 人 pulse crowdedHard | safe=590480 keep=Inf avail=-Inf chunkB=78429 pulseB=47057 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2885 sora_w B=392143 L=6754 d=58.1 nb=4 neut=0 cmds=51 noFull=0 shQ=33419 | m=0.900 worth=52.3 cheap=8.5 over=0 dMedOther=36.4 safe(-1)=594352
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1705994 dq=71.7 cnt=26 | c=233.3 rankC=233.3 need=3066672 tD=1.97 人 pulse crowdedHard | safe=594352 keep=Inf avail=-Inf chunkB=78429 pulseB=47057 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20275 bal=594206 dq=29.3 cnt=7 | c=187.7 rankC=272.2 need=1089535 tD=0.81 人 pulse | safe=594352 keep=Inf avail=-Inf chunkB=78429 pulseB=47057 价高(c>=worth)→break hNb=4
+    → [cat] 57#36[T1] terr=8534 bal=839889 dq=98.4 cnt=244 | c=314.5 rankC=314.5 need=1501727 tD=2.71 人 pulse crowdedHard | safe=594352 keep=Inf avail=-Inf chunkB=78429 pulseB=47057 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2890 sora_w B=396731 L=6797 d=58.4 nb=4 neut=0 cmds=51 noFull=0 shQ=39167 | m=0.900 worth=52.5 cheap=8.5 over=0 dMedOther=36.8 safe(-1)=598136
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1728854 dq=72.7 cnt=26 | c=236.3 rankC=236.3 need=3107393 tD=1.97 人 pulse crowdedHard | safe=598136 keep=Inf avail=-Inf chunkB=79346 pulseB=47608 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20275 bal=601990 dq=29.7 cnt=7 | c=190.1 rankC=275.7 need=1103409 tD=0.81 人 pulse | safe=598136 keep=Inf avail=-Inf chunkB=79346 pulseB=47608 价高(c>=worth)→break hNb=4
+    → [cat] 57#36[T1] terr=8534 bal=849967 dq=99.6 cnt=244 | c=318.3 rankC=318.3 need=1519880 tD=2.71 人 pulse crowdedHard | safe=598136 keep=Inf avail=-Inf chunkB=79346 pulseB=47608 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2895 sora_w B=396731 L=6818 d=58.2 nb=4 neut=0 cmds=51 noFull=0 shQ=44967 | m=0.900 worth=52.4 cheap=8.5 over=0 dMedOther=36.8 safe(-1)=599984
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1728854 dq=72.7 cnt=26 | c=236.3 rankC=236.3 need=3107497 tD=1.97 人 pulse crowdedHard | safe=599984 keep=Inf avail=-Inf chunkB=79346 pulseB=47608 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20275 bal=601990 dq=29.7 cnt=7 | c=190.1 rankC=275.7 need=1103409 tD=0.81 人 pulse | safe=599984 keep=Inf avail=-Inf chunkB=79346 pulseB=47608 价高(c>=worth)→break hNb=4
+    → [cat] 57#36[T1] terr=8534 bal=849967 dq=99.6 cnt=244 | c=318.2 rankC=318.2 need=1520023 tD=2.71 人 pulse crowdedHard | safe=599984 keep=Inf avail=-Inf chunkB=79346 pulseB=47608 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2900 sora_w B=408231 L=6859 d=59.5 nb=4 neut=0 cmds=51 noFull=0 shQ=50801 | m=0.900 worth=53.6 cheap=8.5 over=0 dMedOther=38.3 safe(-1)=603592
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1775816 dq=74.6 cnt=26 | c=242.7 rankC=242.7 need=3191157 tD=1.95 人 pulse crowdedHard | safe=603592 keep=Inf avail=-Inf chunkB=81646 pulseB=48988 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20275 bal=630151 dq=31.1 cnt=7 | c=198.8 rankC=288.2 need=1153604 tD=0.81 人 pulse | safe=603592 keep=Inf avail=-Inf chunkB=81646 pulseB=48988 价高(c>=worth)→break hNb=4
+    → [cat] 57#36[T1] terr=8534 bal=868700 dq=101.8 cnt=244 | c=325.2 rankC=325.2 need=1553390 tD=2.66 人 pulse crowdedHard | safe=603592 keep=Inf avail=-Inf chunkB=81646 pulseB=48988 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2905 sora_w B=408231 L=6898 d=59.2 nb=4 neut=0 cmds=51 noFull=0 shQ=56771 | m=0.900 worth=53.3 cheap=8.5 over=0 dMedOther=38.3 safe(-1)=607024
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1775816 dq=74.6 cnt=26 | c=242.7 rankC=242.7 need=3191264 tD=1.95 人 pulse crowdedHard | safe=607024 keep=Inf avail=-Inf chunkB=81646 pulseB=48988 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20275 bal=630151 dq=31.1 cnt=7 | c=198.8 rankC=288.2 need=1153604 tD=0.81 人 pulse | safe=607024 keep=Inf avail=-Inf chunkB=81646 pulseB=48988 价高(c>=worth)→break hNb=4
+    → [cat] 57#36[T1] terr=8534 bal=868700 dq=101.8 cnt=244 | c=325.2 rankC=325.2 need=1553536 tD=2.66 人 pulse crowdedHard | safe=607024 keep=Inf avail=-Inf chunkB=81646 pulseB=48988 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2910 sora_w B=413007 L=6916 d=59.7 nb=4 neut=0 cmds=51 noFull=0 shQ=62755 | m=0.900 worth=53.7 cheap=8.5 over=0 dMedOther=38.7 safe(-1)=608608
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1799611 dq=75.6 cnt=26 | c=245.9 rankC=245.9 need=3233658 tD=1.95 人 pulse crowdedHard | safe=608608 keep=Inf avail=-Inf chunkB=82601 pulseB=49561 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20275 bal=638405 dq=31.5 cnt=7 | c=201.3 rankC=291.9 need=1168316 tD=0.81 人 pulse | safe=608608 keep=Inf avail=-Inf chunkB=82601 pulseB=49561 价高(c>=worth)→break hNb=4
+    → [cat] 57#36[T1] terr=8534 bal=878776 dq=103.0 cnt=244 | c=328.9 rankC=328.9 need=1571703 tD=2.66 人 pulse crowdedHard | safe=608608 keep=Inf avail=-Inf chunkB=82601 pulseB=49561 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2915 sora_w B=413007 L=6953 d=59.4 nb=4 neut=0 cmds=51 noFull=0 shQ=68795 | m=0.900 worth=53.5 cheap=8.5 over=0 dMedOther=38.7 safe(-1)=611864
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1799611 dq=75.6 cnt=26 | c=245.9 rankC=245.9 need=3233766 tD=1.95 人 pulse crowdedHard | safe=611864 keep=Inf avail=-Inf chunkB=82601 pulseB=49561 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20275 bal=638405 dq=31.5 cnt=7 | c=201.3 rankC=291.9 need=1168316 tD=0.81 人 pulse | safe=611864 keep=Inf avail=-Inf chunkB=82601 pulseB=49561 价高(c>=worth)→break hNb=4
+    → [cat] 57#36[T1] terr=8534 bal=878776 dq=103.0 cnt=244 | c=328.9 rankC=328.9 need=1571850 tD=2.66 人 pulse crowdedHard | safe=611864 keep=Inf avail=-Inf chunkB=82601 pulseB=49561 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2920 sora_w B=417839 L=6987 d=59.8 nb=4 neut=0 cmds=51 noFull=0 shQ=74849 | m=0.900 worth=53.8 cheap=8.5 over=0 dMedOther=39.2 safe(-1)=614856
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1823725 dq=76.6 cnt=26 | c=249.1 rankC=249.1 need=3276841 tD=1.96 人 pulse crowdedHard | safe=614856 keep=Inf avail=-Inf chunkB=83568 pulseB=50141 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20275 bal=646768 dq=31.9 cnt=7 | c=203.9 rankC=295.6 need=1183222 tD=0.81 人 pulse | safe=614856 keep=Inf avail=-Inf chunkB=83568 pulseB=50141 价高(c>=worth)→break hNb=4
+    → [cat] 57#36[T1] terr=8534 bal=888706 dq=104.1 cnt=244 | c=332.5 rankC=332.5 need=1589617 tD=2.66 人 pulse crowdedHard | safe=614856 keep=Inf avail=-Inf chunkB=83568 pulseB=50141 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2925 sora_w B=417839 L=7004 d=59.7 nb=4 neut=0 cmds=51 noFull=0 shQ=80959 | m=0.900 worth=53.7 cheap=8.5 over=0 dMedOther=39.2 safe(-1)=616352
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1823725 dq=76.6 cnt=26 | c=249.1 rankC=249.1 need=3276950 tD=1.96 人 pulse crowdedHard | safe=616352 keep=Inf avail=-Inf chunkB=83568 pulseB=50141 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20275 bal=646768 dq=31.9 cnt=7 | c=203.9 rankC=295.6 need=1183222 tD=0.81 人 pulse | safe=616352 keep=Inf avail=-Inf chunkB=83568 pulseB=50141 价高(c>=worth)→break hNb=4
+    → [cat] 57#36[T1] terr=8534 bal=888706 dq=104.1 cnt=244 | c=332.5 rankC=332.5 need=1589766 tD=2.66 人 pulse crowdedHard | safe=616352 keep=Inf avail=-Inf chunkB=83568 pulseB=50141 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2930 sora_w B=422727 L=7036 d=60.1 nb=4 neut=0 cmds=51 noFull=0 shQ=87083 | m=0.900 worth=54.1 cheap=8.5 over=0 dMedOther=39.7 safe(-1)=619168
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1848162 dq=77.7 cnt=26 | c=252.4 rankC=252.4 need=3320495 tD=1.96 人 pulse crowdedHard | safe=619168 keep=Inf avail=-Inf chunkB=84545 pulseB=50727 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20275 bal=655240 dq=32.3 cnt=7 | c=206.5 rankC=299.4 need=1198323 tD=0.81 人 pulse | safe=619168 keep=Inf avail=-Inf chunkB=84545 pulseB=50727 价高(c>=worth)→break hNb=4
+    → [cat] 57#36[T1] terr=8534 bal=898570 dq=105.3 cnt=244 | c=336.1 rankC=336.1 need=1607572 tD=2.65 人 pulse crowdedHard | safe=619168 keep=Inf avail=-Inf chunkB=84545 pulseB=50727 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2935 sora_w B=422727 L=7066 d=59.8 nb=4 neut=0 cmds=51 noFull=0 shQ=93263 | m=0.900 worth=53.8 cheap=8.5 over=0 dMedOther=39.7 safe(-1)=621808
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1848162 dq=77.7 cnt=26 | c=252.4 rankC=252.4 need=3320606 tD=1.96 人 pulse crowdedHard | safe=621808 keep=Inf avail=-Inf chunkB=84545 pulseB=50727 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20275 bal=655240 dq=32.3 cnt=7 | c=206.5 rankC=299.4 need=1198323 tD=0.81 人 pulse | safe=621808 keep=Inf avail=-Inf chunkB=84545 pulseB=50727 价高(c>=worth)→break hNb=4
+    → [cat] 57#36[T1] terr=8534 bal=898570 dq=105.3 cnt=244 | c=336.1 rankC=336.1 need=1607722 tD=2.65 人 pulse crowdedHard | safe=621808 keep=Inf avail=-Inf chunkB=84545 pulseB=50727 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2940 sora_w B=427672 L=7079 d=60.4 nb=4 neut=0 cmds=51 noFull=0 shQ=99457 | m=0.900 worth=54.4 cheap=8.5 over=0 dMedOther=40.2 safe(-1)=622952
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1872927 dq=78.7 cnt=26 | c=255.7 rankC=255.7 need=3364850 tD=1.96 人 pulse crowdedHard | safe=622952 keep=Inf avail=-Inf chunkB=85534 pulseB=51321 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20275 bal=663823 dq=32.7 cnt=7 | c=209.1 rankC=303.2 need=1213621 tD=0.82 人 pulse | safe=622952 keep=Inf avail=-Inf chunkB=85534 pulseB=51321 价高(c>=worth)→break hNb=4
+    → [cat] 57#36[T1] terr=8534 bal=908274 dq=106.4 cnt=244 | c=339.7 rankC=339.7 need=1625099 tD=2.65 人 pulse crowdedHard | safe=622952 keep=Inf avail=-Inf chunkB=85534 pulseB=51321 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2945 sora_w B=427672 L=7100 d=60.2 nb=4 neut=0 cmds=51 noFull=0 shQ=105817 | m=0.900 worth=54.2 cheap=8.4 over=0 dMedOther=40.2 safe(-1)=624800
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1872927 dq=78.7 cnt=26 | c=255.7 rankC=255.7 need=3364963 tD=1.96 人 pulse crowdedHard | safe=624800 keep=Inf avail=-Inf chunkB=85534 pulseB=51321 价高(c>=worth)→break hNb=4
+    → [cat] 57#36[T1] terr=8534 bal=795628 dq=93.2 cnt=244 | c=298.0 rankC=298.0 need=1425262 tD=2.32 人 pulse crowdedHard | safe=624800 keep=Inf avail=-Inf chunkB=85534 pulseB=51321 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20275 bal=663823 dq=32.7 cnt=7 | c=209.1 rankC=303.2 need=1213621 tD=0.82 人 pulse | safe=624800 keep=Inf avail=-Inf chunkB=85534 pulseB=51321 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2950 sora_w B=432718 L=7110 d=60.9 nb=3 neut=0 cmds=51 noFull=0 shQ=108179 | m=0.900 worth=54.8 cheap=8.4 over=0 dMedOther=40.7 safe(-1)=625680
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1898024 dq=79.8 cnt=26 | c=259.1 rankC=259.1 need=3409691 tD=1.96 人 pulse crowdedHard | safe=625680 keep=Inf avail=-Inf chunkB=86544 pulseB=51926 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8603 bal=805175 dq=93.6 cnt=244 | c=298.9 rankC=298.9 need=1444931 tD=2.30 人 pulse crowdedHard | safe=625680 keep=Inf avail=-Inf chunkB=86544 pulseB=51926 价高(c>=worth)→break hNb=3
+    → [PL] AdiM#7[T3] terr=20275 bal=672519 dq=33.2 cnt=7 | c=211.8 rankC=307.0 need=1229121 tD=0.82 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=86544 pulseB=51926 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2955 sora_w B=686471 L=7110 d=96.6 nb=3 neut=0 cmds=51 noFull=0 shQ=114305 | m=0.900 worth=86.9 cheap=8.4 over=0 dMedOther=40.7 safe(-1)=625680
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1898024 dq=79.8 cnt=26 | c=192.1 rankC=192.1 need=3409805 tD=1.96 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=137294 pulseB=82377 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8743 bal=805175 dq=92.1 cnt=244 | c=218.1 rankC=218.1 need=1448326 tD=2.26 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=137294 pulseB=82377 价高(c>=worth)→break hNb=3
+    → [PL] AdiM#7[T3] terr=20275 bal=672519 dq=33.2 cnt=7 | c=212.3 rankC=307.8 need=1229121 tD=0.82 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=137294 pulseB=82377 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2960 sora_w B=694571 L=7110 d=97.7 nb=3 neut=0 cmds=51 noFull=0 shQ=124539 | m=0.900 worth=87.9 cheap=8.4 over=0 dMedOther=41.2 safe(-1)=625680
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1923457 dq=80.8 cnt=26 | c=194.6 rankC=194.6 need=3455250 tD=1.96 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=138914 pulseB=83349 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8887 bal=814837 dq=91.7 cnt=244 | c=217.2 rankC=217.2 need=1465763 tD=2.23 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=138914 pulseB=83349 价高(c>=worth)→break hNb=3
+    → [PL] AdiM#7[T3] terr=20275 bal=681328 dq=33.6 cnt=7 | c=215.0 rankC=311.7 need=1244822 tD=0.82 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=138914 pulseB=83349 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2965 sora_w B=694571 L=7110 d=97.7 nb=3 neut=0 cmds=51 noFull=0 shQ=134869 | m=0.900 worth=87.9 cheap=8.4 over=0 dMedOther=41.2 safe(-1)=625680
+    → [PL] AdiM#7[T3] terr=20275 bal=681328 dq=33.6 cnt=7 | c=148.3 rankC=148.3 need=1244822 tD=0.82 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=138914 pulseB=83349 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1923457 dq=80.8 cnt=26 | c=194.6 rankC=194.6 need=3455365 tD=1.96 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=138914 pulseB=83349 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=8961 bal=814837 dq=90.9 cnt=244 | c=215.4 rankC=215.4 need=1465808 tD=2.21 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=138914 pulseB=83349 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2970 sora_w B=702766 L=7110 d=98.8 nb=3 neut=0 cmds=51 noFull=0 shQ=145223 | m=0.900 worth=89.0 cheap=8.4 over=0 dMedOther=41.7 safe(-1)=625680
+    → [PL] AdiM#7[T3] terr=20275 bal=690253 dq=34.0 cnt=7 | c=150.2 rankC=150.2 need=1260731 tD=0.82 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=140553 pulseB=84332 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1949231 dq=81.9 cnt=26 | c=197.2 rankC=197.2 need=3501307 tD=1.97 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=140553 pulseB=84332 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=9113 bal=824696 dq=90.5 cnt=244 | c=214.4 rankC=214.4 need=1483609 tD=2.17 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=140553 pulseB=84332 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2975 sora_w B=702766 L=7110 d=98.8 nb=3 neut=0 cmds=51 noFull=0 shQ=155673 | m=0.900 worth=89.0 cheap=8.4 over=0 dMedOther=41.7 safe(-1)=625680
+    → [PL] AdiM#7[T3] terr=20275 bal=690253 dq=34.0 cnt=7 | c=150.2 rankC=150.2 need=1260731 tD=0.82 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=140553 pulseB=84332 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1949231 dq=81.9 cnt=26 | c=197.2 rankC=197.2 need=3501424 tD=1.97 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=140553 pulseB=84332 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=9271 bal=824696 dq=89.0 cnt=244 | c=210.9 rankC=210.9 need=1483908 tD=2.13 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=140553 pulseB=84332 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2980 sora_w B=711058 L=7110 d=100.0 nb=3 neut=0 cmds=52 noFull=0 shQ=166148 | m=0.900 worth=90.0 cheap=8.4 over=1 dMedOther=42.2 safe(-1)=625680
+    → [PL] AdiM#7[T3] terr=20275 bal=699295 dq=34.5 cnt=7 | c=152.1 rankC=152.1 need=1276847 tD=0.82 人 pulse | safe=625680 keep=639900 avail=62826 chunkB=142212 pulseB=85327  x=62826 hNb=3
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1975350 dq=83.0 cnt=26 | c=199.8 rankC=199.8 need=3548103 tD=1.97 人 pulse | safe=625680 keep=639900 avail=62826 chunkB=142212 pulseB=85327  x=62826 hNb=3
+    → [cat] 57#36[T1] terr=9352 bal=834674 dq=89.3 cnt=244 | c=211.6 rankC=211.6 need=1501720 tD=2.12 人 pulse | safe=625680 keep=639900 avail=62826 chunkB=142212 pulseB=85327  x=62826 hNb=3
+    ⇒ 影子指令 attack pct=90 → [PL] AdiM#7[T3]（约 63189 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2985 sora_w B=711058 L=7110 d=100.0 nb=3 neut=0 cmds=53 noFull=0 shQ=176723 | m=0.900 worth=90.0 cheap=8.4 over=1 dMedOther=42.2 safe(-1)=625680
+    → [PL] AdiM#7[T3] terr=20275 bal=699295 dq=34.5 cnt=7 | c=152.1 rankC=152.1 need=1276847 tD=0.82 人 pulse | safe=625680 keep=639900 avail=62826 chunkB=142212 pulseB=85327  x=62826 hNb=3
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=1975350 dq=83.0 cnt=26 | c=199.8 rankC=199.8 need=3548221 tD=1.97 人 pulse | safe=625680 keep=639900 avail=62826 chunkB=142212 pulseB=85327  x=62826 hNb=3
+    → [cat] 57#36[T1] terr=9519 bal=834674 dq=87.7 cnt=244 | c=207.9 rankC=207.9 need=1502063 tD=2.08 人 pulse | safe=625680 keep=639900 avail=62826 chunkB=142212 pulseB=85327  x=62826 hNb=3
+    ⇒ 影子指令 attack pct=90 → [PL] AdiM#7[T3]（约 63189 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2990 sora_w B=647083 L=7110 d=91.0 nb=3 neut=0 cmds=53 noFull=1 shQ=0 | m=0.900 worth=81.9 cheap=8.4 over=0 dMedOther=42.7 safe(-1)=625680
+    → [PL] AdiM#7[T3] terr=20275 bal=708455 dq=34.9 cnt=7 | c=146.4 rankC=146.4 need=1229985 tD=0.82 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=129417 pulseB=77650 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=2001819 dq=84.1 cnt=26 | c=293.5 rankC=425.6 need=3595410 tD=1.97 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=129417 pulseB=77650 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=9693 bal=844773 dq=87.2 cnt=244 | c=299.6 rankC=434.4 need=1520262 tD=2.04 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=129417 pulseB=77650 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2995 sora_w B=647083 L=7110 d=91.0 nb=3 neut=0 cmds=53 noFull=1 shQ=9625 | m=0.900 worth=81.9 cheap=8.4 over=0 dMedOther=42.7 safe(-1)=625680
+    → [PL] AdiM#7[T3] terr=20275 bal=708455 dq=34.9 cnt=7 | c=146.4 rankC=146.4 need=1229985 tD=0.82 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=129417 pulseB=77650 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=2001819 dq=84.1 cnt=26 | c=293.5 rankC=425.6 need=3595530 tD=1.97 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=129417 pulseB=77650 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=9693 bal=844802 dq=87.2 cnt=244 | c=299.6 rankC=434.4 need=1520314 tD=2.04 人 pulse | safe=625680 keep=Inf avail=-Inf chunkB=129417 pulseB=77650 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3000 sora_w B=595980 L=7122 d=83.7 nb=2 neut=0 cmds=53 noFull=1 shQ=18516 | m=0.900 worth=75.3 cheap=8.4 over=0 dMedOther=44.2 safe(-1)=626736
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=2052439 dq=86.3 cnt=26 | c=300.8 rankC=436.1 need=3685797 tD=1.95 人 pulse | safe=626736 keep=Inf avail=-Inf chunkB=119196 pulseB=71518 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=864717 dq=89.2 cnt=244 | c=306.4 rankC=444.3 need=1555810 tD=2.02 人 pulse | safe=626736 keep=Inf avail=-Inf chunkB=119196 pulseB=71518 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3005 sora_w B=715285 L=7122 d=100.4 nb=2 neut=0 cmds=53 noFull=1 shQ=28392 | m=0.900 worth=90.4 cheap=8.4 over=1 dMedOther=44.2 safe(-1)=626736
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=2052439 dq=86.3 cnt=26 | c=207.5 rankC=207.5 need=3685919 tD=1.95 人 pulse | safe=626736 keep=640980 avail=65923 chunkB=143057 pulseB=85834  x=65923 hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=864717 dq=89.2 cnt=244 | c=211.5 rankC=211.5 need=1555810 tD=2.02 人 pulse | safe=626736 keep=640980 avail=65923 chunkB=143057 pulseB=85834  x=65923 hNb=2
+    ⇒ 本拍没有指令
+t=3010 sora_w B=723653 L=7122 d=101.6 nb=2 neut=0 cmds=53 noFull=1 shQ=38912 | m=0.900 worth=91.4 cheap=8.4 over=1 dMedOther=44.8 safe(-1)=626736
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=2079941 dq=87.4 cnt=26 | c=210.2 rankC=210.2 need=3734958 tD=1.95 人 pulse | safe=626736 keep=640980 avail=74193 chunkB=144731 pulseB=86838  x=74193 hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=875180 dq=90.3 cnt=244 | c=214.1 rankC=214.1 need=1574459 tD=2.02 人 pulse | safe=626736 keep=640980 avail=74193 chunkB=144731 pulseB=86838  x=74193 hNb=2
+    ⇒ 本拍没有指令
+t=3015 sora_w B=723653 L=7122 d=101.6 nb=2 neut=0 cmds=54 noFull=1 shQ=49312 | m=0.900 worth=91.4 cheap=8.4 over=1 dMedOther=44.8 safe(-1)=626736
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=2079941 dq=87.4 cnt=26 | c=210.2 rankC=210.2 need=3735082 tD=1.95 人 pulse | safe=626736 keep=640980 avail=74193 chunkB=144731 pulseB=86838  x=74193 hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=875180 dq=90.3 cnt=244 | c=214.1 rankC=214.1 need=1574459 tD=2.02 人 pulse | safe=626736 keep=640980 avail=74193 chunkB=144731 pulseB=86838  x=74193 hNb=2
+    ⇒ 影子指令 attack pct=104 → [f] Mean Little Girl#30[T1]（约 74202 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3020 sora_w B=731975 L=7122 d=102.8 nb=2 neut=0 cmds=55 noFull=1 shQ=59681 | m=0.900 worth=92.5 cheap=8.4 over=1 dMedOther=45.3 safe(-1)=626736
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=2107812 dq=88.6 cnt=26 | c=213.0 rankC=213.0 need=3784908 tD=1.95 人 pulse | safe=626736 keep=640980 avail=82418 chunkB=146395 pulseB=87837  x=82418 hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=885769 dq=91.4 cnt=244 | c=216.6 rankC=216.6 need=1593333 tD=2.02 人 pulse | safe=626736 keep=640980 avail=82418 chunkB=146395 pulseB=87837  x=82418 hNb=2
+    ⇒ 影子指令 attack pct=115 → [f] Mean Little Girl#30[T1]（约 82919 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3025 sora_w B=648342 L=7122 d=91.0 nb=2 neut=0 cmds=55 noFull=1 shQ=0 | m=0.900 worth=81.9 cheap=8.4 over=0 dMedOther=38.0 safe(-1)=626736
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=2107812 dq=88.6 cnt=26 | c=208.7 rankC=208.7 need=3709978 tD=2.33 人 pulse | safe=626736 keep=Inf avail=-Inf chunkB=129668 pulseB=77801 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=885769 dq=91.4 cnt=244 | c=216.5 rankC=216.5 need=1593333 tD=2.41 人 pulse | safe=626736 keep=Inf avail=-Inf chunkB=129668 pulseB=77801 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3030 sora_w B=655992 L=7122 d=92.1 nb=2 neut=0 cmds=55 noFull=1 shQ=9663 | m=0.900 worth=82.9 cheap=8.4 over=0 dMedOther=38.4 safe(-1)=626736
+    → [f] Mean Little Girl#30[T1] terr=23796 bal=2136056 dq=89.8 cnt=26 | c=211.6 rankC=211.6 need=3760347 tD=2.34 人 pulse | safe=626736 keep=Inf avail=-Inf chunkB=131198 pulseB=78719 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=896486 dq=92.5 cnt=244 | c=219.1 rankC=219.1 need=1612435 tD=2.41 人 pulse | safe=626736 keep=Inf avail=-Inf chunkB=131198 pulseB=78719 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3035 sora_w B=573994 L=7174 d=80.0 nb=2 neut=0 cmds=55 noFull=1 shQ=18442 | m=0.900 worth=72.0 cheap=8.4 over=0 dMedOther=38.4 safe(-1)=631312
+    → [f] Mean Little Girl#30[T1] terr=23744 bal=2128591 dq=89.6 cnt=28 | c=280.7 rankC=280.7 need=3686164 tD=2.33 人 pulse crowdedHard | safe=631312 keep=Inf avail=-Inf chunkB=114799 pulseB=68879 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=896486 dq=92.5 cnt=245 | c=295.6 rankC=295.6 need=1612435 tD=2.41 人 pulse crowdedHard | safe=631312 keep=Inf avail=-Inf chunkB=114799 pulseB=68879 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3040 sora_w B=580767 L=7202 d=80.6 nb=2 neut=0 cmds=55 noFull=1 shQ=26997 | m=0.900 worth=72.6 cheap=8.4 over=0 dMedOther=38.9 safe(-1)=633776
+    → [f] Mean Little Girl#30[T1] terr=23716 bal=2153045 dq=90.8 cnt=28 | c=285.0 rankC=285.0 need=3737034 tD=2.33 人 pulse crowdedHard | safe=633776 keep=Inf avail=-Inf chunkB=116153 pulseB=69692 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=907333 dq=93.6 cnt=246 | c=299.1 rankC=299.1 need=1631769 tD=2.41 人 pulse crowdedHard | safe=633776 keep=Inf avail=-Inf chunkB=116153 pulseB=69692 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3045 sora_w B=580767 L=7260 d=80.0 nb=2 neut=0 cmds=55 noFull=1 shQ=35632 | m=0.900 worth=72.0 cheap=8.4 over=0 dMedOther=38.9 safe(-1)=638880
+    → [f] Mean Little Girl#30[T1] terr=23658 bal=2144624 dq=90.7 cnt=30 | c=285.9 rankC=285.9 need=3737164 tD=2.33 人 pulse crowdedHard | safe=638880 keep=Inf avail=-Inf chunkB=116153 pulseB=69692 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=907333 dq=93.6 cnt=247 | c=299.1 rankC=299.1 need=1631769 tD=2.41 人 pulse crowdedHard | safe=638880 keep=Inf avail=-Inf chunkB=116153 pulseB=69692 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3050 sora_w B=587620 L=7322 d=80.3 nb=2 neut=0 cmds=55 noFull=1 shQ=44288 | m=0.900 worth=72.2 cheap=8.4 over=0 dMedOther=39.4 safe(-1)=644336
+    → [f] Mean Little Girl#30[T1] terr=23596 bal=2164253 dq=91.7 cnt=32 | c=290.8 rankC=290.8 need=3788247 tD=2.33 人 pulse crowdedHard | safe=644336 keep=Inf avail=-Inf chunkB=117524 pulseB=70514 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=918311 dq=94.7 cnt=248 | c=302.6 rankC=302.6 need=1651336 tD=2.41 人 pulse crowdedHard | safe=644336 keep=Inf avail=-Inf chunkB=117524 pulseB=70514 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3055 sora_w B=587620 L=7354 d=79.9 nb=2 neut=0 cmds=55 noFull=1 shQ=53028 | m=0.900 worth=71.9 cheap=8.4 over=0 dMedOther=39.4 safe(-1)=647152
+    → [f] Mean Little Girl#30[T1] terr=23564 bal=2159558 dq=91.6 cnt=34 | c=291.3 rankC=291.3 need=3788379 tD=2.33 人 pulse crowdedHard | safe=647152 keep=Inf avail=-Inf chunkB=117524 pulseB=70514 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=918311 dq=94.7 cnt=248 | c=302.6 rankC=302.6 need=1651336 tD=2.41 人 pulse crowdedHard | safe=647152 keep=Inf avail=-Inf chunkB=117524 pulseB=70514 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3060 sora_w B=594553 L=7422 d=80.1 nb=2 neut=0 cmds=55 noFull=1 shQ=61788 | m=0.900 worth=72.1 cheap=8.4 over=0 dMedOther=39.9 safe(-1)=653136
+    → [f] Mean Little Girl#30[T1] terr=23496 bal=2178397 dq=92.7 cnt=36 | c=165.1 rankC=82.6 need=3839764 tD=2.33 人 pulse crowdedHard | safe=653136 keep=Inf avail=-Inf chunkB=118911 pulseB=71346 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=929422 dq=95.9 cnt=249 | c=306.2 rankC=306.2 need=1671140 tD=2.40 人 pulse crowdedHard | safe=653136 keep=Inf avail=-Inf chunkB=118911 pulseB=71346 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3065 sora_w B=594553 L=7488 d=79.4 nb=2 neut=0 cmds=55 noFull=1 shQ=70628 | m=0.900 worth=71.5 cheap=8.4 over=0 dMedOther=39.9 safe(-1)=658944
+    → [f] Mean Little Girl#30[T1] terr=23430 bal=2168612 dq=92.6 cnt=32 | c=165.8 rankC=82.9 need=3839897 tD=2.32 人 pulse crowdedHard | safe=658944 keep=Inf avail=-Inf chunkB=118911 pulseB=71346 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=929422 dq=95.9 cnt=256 | c=306.1 rankC=306.1 need=1671140 tD=2.40 人 pulse crowdedHard | safe=658944 keep=Inf avail=-Inf chunkB=118911 pulseB=71346 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3070 sora_w B=601568 L=7520 d=80.0 nb=2 neut=0 cmds=55 noFull=1 shQ=79489 | m=0.900 worth=72.0 cheap=8.4 over=0 dMedOther=40.4 safe(-1)=661760
+    → [f] Mean Little Girl#30[T1] terr=23101 bal=2148209 dq=93.0 cnt=32 | c=164.6 rankC=82.3 need=3801570 tD=2.30 人 pulse crowdedHard | safe=661760 keep=Inf avail=-Inf chunkB=120314 pulseB=72188 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=940668 dq=97.0 cnt=257 | c=309.7 rankC=309.7 need=1691185 tD=2.40 人 pulse crowdedHard | safe=661760 keep=Inf avail=-Inf chunkB=120314 pulseB=72188 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3075 sora_w B=601568 L=7586 d=79.3 nb=2 neut=0 cmds=55 noFull=1 shQ=88434 | m=0.900 worth=71.4 cheap=8.4 over=0 dMedOther=40.4 safe(-1)=667568
+    → [f] Mean Little Girl#30[T1] terr=22590 bal=2072559 dq=91.7 cnt=34 | c=168.7 rankC=84.4 need=3669058 tD=2.27 人 pulse crowdedHard | safe=667568 keep=Inf avail=-Inf chunkB=120314 pulseB=72188 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=940668 dq=97.0 cnt=258 | c=309.7 rankC=309.7 need=1691185 tD=2.40 人 pulse crowdedHard | safe=667568 keep=Inf avail=-Inf chunkB=120314 pulseB=72188 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3080 sora_w B=608687 L=7620 d=79.9 nb=2 neut=0 cmds=55 noFull=1 shQ=97400 | m=0.900 worth=71.9 cheap=8.4 over=0 dMedOther=40.9 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=22257 bal=2049225 dq=92.1 cnt=36 | c=173.8 rankC=86.9 need=3628474 tD=2.25 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=121737 pulseB=73042 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=952050 dq=98.2 cnt=258 | c=313.4 rankC=313.4 need=1711472 tD=2.40 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=121737 pulseB=73042 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3085 sora_w B=608687 L=7620 d=79.9 nb=2 neut=0 cmds=55 noFull=1 shQ=106450 | m=0.900 worth=71.9 cheap=8.4 over=0 dMedOther=40.9 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=22257 bal=2038347 dq=91.6 cnt=36 | c=167.9 rankC=84.0 need=3609521 tD=2.24 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=121737 pulseB=73042 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=952050 dq=98.2 cnt=258 | c=313.4 rankC=313.4 need=1711472 tD=2.40 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=121737 pulseB=73042 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3090 sora_w B=615869 L=7620 d=80.8 nb=2 neut=0 cmds=55 noFull=1 shQ=115522 | m=0.900 worth=72.7 cheap=8.4 over=0 dMedOther=40.9 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=22170 bal=2052337 dq=92.6 cnt=35 | c=119.6 rankC=59.8 need=3630872 tD=2.26 人 pulse bleeding | safe=670560 keep=Inf avail=-Inf chunkB=123174 pulseB=73904 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=963569 dq=99.4 cnt=258 | c=317.2 rankC=317.2 need=1732004 tD=2.43 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=123174 pulseB=73904 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3095 sora_w B=615869 L=7620 d=80.8 nb=2 neut=0 cmds=55 noFull=1 shQ=124682 | m=0.900 worth=72.7 cheap=8.4 over=0 dMedOther=40.9 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=22000 bal=2027188 dq=92.1 cnt=34 | c=162.7 rankC=81.4 need=3580378 tD=2.25 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=123174 pulseB=73904 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=963569 dq=99.4 cnt=258 | c=317.2 rankC=317.2 need=1732004 tD=2.43 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=123174 pulseB=73904 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3100 sora_w B=630756 L=7620 d=82.8 nb=2 neut=0 cmds=55 noFull=1 shQ=133886 | m=0.900 worth=74.5 cheap=8.4 over=0 dMedOther=42.4 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=21831 bal=2050513 dq=93.9 cnt=33 | c=168.3 rankC=84.1 need=3614934 tD=2.21 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=126151 pulseB=75691 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=984921 dq=101.6 cnt=258 | c=324.2 rankC=324.2 need=1770061 tD=2.39 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=126151 pulseB=75691 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3105 sora_w B=630756 L=7620 d=82.8 nb=2 neut=0 cmds=55 noFull=1 shQ=143266 | m=0.900 worth=74.5 cheap=8.4 over=0 dMedOther=42.4 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=21747 bal=2037890 dq=93.7 cnt=33 | c=169.0 rankC=84.5 need=3589804 tD=2.21 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=126151 pulseB=75691 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=984921 dq=101.6 cnt=258 | c=324.2 rankC=324.2 need=1770061 tD=2.39 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=126151 pulseB=75691 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3110 sora_w B=638198 L=7620 d=83.8 nb=2 neut=0 cmds=55 noFull=1 shQ=152668 | m=0.900 worth=75.4 cheap=8.4 over=0 dMedOther=43.0 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=21578 bal=2039148 dq=94.5 cnt=32 | c=172.8 rankC=86.4 need=3585585 tD=2.20 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=127640 pulseB=76584 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=996543 dq=102.8 cnt=258 | c=328.0 rankC=328.0 need=1790777 tD=2.39 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=127640 pulseB=76584 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3115 sora_w B=638198 L=7620 d=83.8 nb=2 neut=0 cmds=55 noFull=1 shQ=159549 | m=0.900 worth=75.4 cheap=8.4 over=0 dMedOther=43.0 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=21408 bal=2013477 dq=94.1 cnt=31 | c=174.3 rankC=87.1 need=3534195 tD=2.19 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=127640 pulseB=76584 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=996543 dq=102.8 cnt=258 | c=328.0 rankC=328.0 need=1790777 tD=2.39 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=127640 pulseB=76584 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3120 sora_w B=645728 L=7620 d=84.7 nb=2 neut=0 cmds=55 noFull=1 shQ=161432 | m=0.900 worth=76.3 cheap=8.4 over=0 dMedOther=43.6 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=21235 bal=2013512 dq=94.8 cnt=30 | c=178.2 rankC=89.1 need=3527499 tD=2.18 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=129146 pulseB=77487 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=1008003 dq=104.0 cnt=258 | c=331.7 rankC=331.7 need=1811203 tD=2.39 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=129146 pulseB=77487 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3125 sora_w B=645728 L=7620 d=84.7 nb=2 neut=0 cmds=55 noFull=1 shQ=161432 | m=0.900 worth=76.3 cheap=8.4 over=0 dMedOther=43.6 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=1979940 dq=94.0 cnt=29 | c=310.0 rankC=310.0 need=3462224 tD=2.16 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=129146 pulseB=77487 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=1008003 dq=104.0 cnt=258 | c=331.7 rankC=331.7 need=1811203 tD=2.39 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=129146 pulseB=77487 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3130 sora_w B=653347 L=7620 d=85.7 nb=2 neut=0 cmds=55 noFull=1 shQ=163336 | m=0.900 worth=77.2 cheap=8.4 over=0 dMedOther=44.1 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2005877 dq=95.2 cnt=29 | c=314.0 rankC=314.0 need=3507619 tD=2.16 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=130669 pulseB=78402 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=1019292 dq=105.2 cnt=258 | c=335.4 rankC=335.4 need=1831324 tD=2.38 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=130669 pulseB=78402 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3135 sora_w B=653347 L=7620 d=85.7 nb=2 neut=0 cmds=55 noFull=1 shQ=163336 | m=0.900 worth=77.2 cheap=8.4 over=0 dMedOther=44.1 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2005877 dq=95.2 cnt=29 | c=314.0 rankC=314.0 need=3507909 tD=2.16 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=130669 pulseB=78402 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=1019292 dq=105.2 cnt=258 | c=335.4 rankC=335.4 need=1831324 tD=2.38 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=130669 pulseB=78402 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3140 sora_w B=661056 L=7620 d=86.8 nb=2 neut=0 cmds=55 noFull=1 shQ=165264 | m=0.900 worth=78.1 cheap=8.4 over=0 dMedOther=44.7 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2032153 dq=96.5 cnt=29 | c=318.0 rankC=318.0 need=3553907 tD=2.16 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=132211 pulseB=79327 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=1033281 dq=106.6 cnt=258 | c=340.0 rankC=340.0 need=1856258 tD=2.38 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=132211 pulseB=79327 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3145 sora_w B=661056 L=7620 d=86.8 nb=2 neut=0 cmds=55 noFull=1 shQ=165264 | m=0.900 worth=78.1 cheap=8.4 over=0 dMedOther=44.7 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2032153 dq=96.5 cnt=29 | c=318.0 rankC=318.0 need=3554201 tD=2.16 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=132211 pulseB=79327 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=1033281 dq=106.6 cnt=258 | c=340.0 rankC=340.0 need=1856258 tD=2.38 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=132211 pulseB=79327 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3150 sora_w B=668856 L=7620 d=87.8 nb=2 neut=0 cmds=55 noFull=1 shQ=167214 | m=0.900 worth=79.0 cheap=8.4 over=0 dMedOther=45.3 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2058774 dq=97.8 cnt=29 | c=322.1 rankC=322.1 need=3600811 tD=2.16 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=133771 pulseB=80263 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=1044233 dq=107.7 cnt=258 | c=343.5 rankC=343.5 need=1875779 tD=2.38 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=133771 pulseB=80263 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3155 sora_w B=668856 L=7620 d=87.8 nb=2 neut=0 cmds=55 noFull=1 shQ=167214 | m=0.900 worth=79.0 cheap=8.4 over=0 dMedOther=45.3 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2058774 dq=97.8 cnt=29 | c=322.1 rankC=322.1 need=3601108 tD=2.16 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=133771 pulseB=80263 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=1044233 dq=107.7 cnt=258 | c=343.5 rankC=343.5 need=1875779 tD=2.38 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=133771 pulseB=80263 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3160 sora_w B=676748 L=7620 d=88.8 nb=2 neut=0 cmds=55 noFull=1 shQ=169187 | m=0.900 worth=79.9 cheap=8.4 over=0 dMedOther=45.9 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2085743 dq=99.0 cnt=29 | c=326.3 rankC=326.3 need=3648338 tD=2.16 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=135350 pulseB=81210 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=1054988 dq=108.8 cnt=258 | c=347.0 rankC=347.0 need=1894949 tD=2.37 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=135350 pulseB=81210 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3165 sora_w B=676748 L=7620 d=88.8 nb=2 neut=0 cmds=55 noFull=1 shQ=169187 | m=0.900 worth=79.9 cheap=8.4 over=0 dMedOther=45.9 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2085743 dq=99.0 cnt=29 | c=326.3 rankC=326.3 need=3648639 tD=2.16 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=135350 pulseB=81210 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=1054988 dq=108.8 cnt=258 | c=347.0 rankC=347.0 need=1894949 tD=2.37 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=135350 pulseB=81210 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3170 sora_w B=684733 L=7620 d=89.9 nb=2 neut=0 cmds=55 noFull=1 shQ=171183 | m=0.900 worth=80.9 cheap=8.4 over=0 dMedOther=46.5 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2113066 dq=100.3 cnt=29 | c=330.5 rankC=330.5 need=3696497 tD=2.16 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=136947 pulseB=82168 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=1065537 dq=109.9 cnt=258 | c=350.5 rankC=350.5 need=1913751 tD=2.36 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=136947 pulseB=82168 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3175 sora_w B=684733 L=7620 d=89.9 nb=2 neut=0 cmds=55 noFull=1 shQ=171183 | m=0.900 worth=80.9 cheap=8.4 over=0 dMedOther=46.5 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2113066 dq=100.3 cnt=29 | c=330.5 rankC=330.5 need=3696802 tD=2.16 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=136947 pulseB=82168 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=1065537 dq=109.9 cnt=258 | c=350.5 rankC=350.5 need=1913751 tD=2.36 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=136947 pulseB=82168 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3180 sora_w B=692812 L=7620 d=90.9 nb=2 neut=0 cmds=55 noFull=1 shQ=173203 | m=0.900 worth=81.8 cheap=8.4 over=0 dMedOther=47.1 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2140747 dq=101.6 cnt=29 | c=334.7 rankC=334.7 need=3745297 tD=2.16 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=138562 pulseB=83137 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=1075872 dq=111.0 cnt=258 | c=353.9 rankC=353.9 need=1932172 tD=2.36 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=138562 pulseB=83137 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3185 sora_w B=692812 L=7620 d=90.9 nb=2 neut=0 cmds=55 noFull=1 shQ=173203 | m=0.900 worth=81.8 cheap=8.4 over=0 dMedOther=47.1 safe(-1)=670560
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2140747 dq=101.6 cnt=29 | c=334.7 rankC=334.7 need=3745606 tD=2.16 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=138562 pulseB=83137 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9693 bal=1075872 dq=111.0 cnt=258 | c=353.9 rankC=353.9 need=1932172 tD=2.36 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=138562 pulseB=83137 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3190 sora_w B=700987 L=7620 d=92.0 nb=2 neut=0 cmds=55 noFull=1 shQ=175246 | m=0.900 worth=82.8 cheap=8.4 over=0 dMedOther=47.7 safe(-1)=670560
+    → [cat] 57#36[T1] terr=9693 bal=953843 dq=98.4 cnt=258 | c=232.8 rankC=232.8 need=1714668 tD=2.06 人 pulse | safe=670560 keep=Inf avail=-Inf chunkB=140197 pulseB=84118 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2167934 dq=102.9 cnt=29 | c=338.9 rankC=338.9 need=3793259 tD=2.16 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=140197 pulseB=84118 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3195 sora_w B=700987 L=7620 d=92.0 nb=2 neut=0 cmds=55 noFull=1 shQ=175246 | m=0.900 worth=82.8 cheap=8.4 over=0 dMedOther=47.7 safe(-1)=670560
+    → [cat] 57#36[T1] terr=9778 bal=953843 dq=97.5 cnt=258 | c=230.8 rankC=230.8 need=1714830 tD=2.04 人 pulse | safe=670560 keep=Inf avail=-Inf chunkB=140197 pulseB=84118 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2167934 dq=102.9 cnt=29 | c=338.9 rankC=338.9 need=3793571 tD=2.16 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=140197 pulseB=84118 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3200 sora_w B=716878 L=7620 d=94.1 nb=2 neut=0 cmds=55 noFull=1 shQ=177378 | m=0.900 worth=84.7 cheap=8.4 over=0 dMedOther=49.3 safe(-1)=670560
+    → [cat] 57#36[T1] terr=9949 bal=975333 dq=98.0 cnt=258 | c=231.9 rankC=231.9 need=1753355 tD=1.99 人 pulse | safe=670560 keep=Inf avail=-Inf chunkB=143376 pulseB=86025 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2215877 dq=105.2 cnt=29 | c=346.3 rankC=346.3 need=3877274 tD=2.13 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=143376 pulseB=86025 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3205 sora_w B=716878 L=7620 d=94.1 nb=2 neut=0 cmds=55 noFull=1 shQ=179219 | m=0.900 worth=84.7 cheap=8.4 over=0 dMedOther=49.3 safe(-1)=670560
+    → [cat] 57#36[T1] terr=10119 bal=975333 dq=96.4 cnt=258 | c=228.1 rankC=228.1 need=1753678 tD=1.95 人 pulse | safe=670560 keep=Inf avail=-Inf chunkB=143376 pulseB=86025 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2215877 dq=105.2 cnt=29 | c=346.3 rankC=346.3 need=3877593 tD=2.13 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=143376 pulseB=86025 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3210 sora_w B=725337 L=7620 d=95.2 nb=2 neut=0 cmds=55 noFull=1 shQ=181334 | m=0.900 worth=85.7 cheap=8.4 over=0 dMedOther=50.0 safe(-1)=670560
+    → [cat] 57#36[T1] terr=10189 bal=970169 dq=95.2 cnt=258 | c=225.4 rankC=225.4 need=1744510 tD=1.90 人 pulse | safe=670560 keep=Inf avail=-Inf chunkB=145067 pulseB=87040 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2242024 dq=106.5 cnt=29 | c=350.3 rankC=350.3 need=3923476 tD=2.13 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=145067 pulseB=87040 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3215 sora_w B=725337 L=7620 d=95.2 nb=2 neut=0 cmds=55 noFull=1 shQ=181334 | m=0.900 worth=85.7 cheap=8.4 over=0 dMedOther=50.0 safe(-1)=670560
+    → [cat] 57#36[T1] terr=10266 bal=942638 dq=91.8 cnt=258 | c=217.5 rankC=217.5 need=1695586 tD=1.84 人 pulse | safe=670560 keep=Inf avail=-Inf chunkB=145067 pulseB=87040 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2242024 dq=106.5 cnt=29 | c=350.3 rankC=350.3 need=3923798 tD=2.13 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=145067 pulseB=87040 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3220 sora_w B=733895 L=7620 d=96.3 nb=2 neut=0 cmds=55 noFull=1 shQ=183473 | m=0.900 worth=86.7 cheap=8.4 over=0 dMedOther=50.6 safe(-1)=670560
+    → [cat] 57#36[T1] terr=10289 bal=939634 dq=91.3 cnt=258 | c=216.4 rankC=216.4 need=1690234 tD=1.80 人 pulse | safe=670560 keep=Inf avail=-Inf chunkB=146779 pulseB=88067 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2270565 dq=107.8 cnt=29 | c=354.7 rankC=354.7 need=3973853 tD=2.13 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=146779 pulseB=88067 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3225 sora_w B=733895 L=7620 d=96.3 nb=2 neut=0 cmds=55 noFull=1 shQ=183473 | m=0.900 worth=86.7 cheap=8.4 over=0 dMedOther=50.6 safe(-1)=670560
+    → [cat] 57#36[T1] terr=10289 bal=939634 dq=91.3 cnt=258 | c=216.4 rankC=216.4 need=1690234 tD=1.80 人 pulse | safe=670560 keep=Inf avail=-Inf chunkB=146779 pulseB=88067 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2270565 dq=107.8 cnt=29 | c=354.7 rankC=354.7 need=3974179 tD=2.13 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=146779 pulseB=88067 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3230 sora_w B=742554 L=7620 d=97.4 nb=2 neut=0 cmds=55 noFull=1 shQ=185638 | m=0.900 worth=87.7 cheap=8.4 over=0 dMedOther=51.3 safe(-1)=670560
+    → [cat] 57#36[T1] terr=10289 bal=951097 dq=92.4 cnt=258 | c=219.0 rankC=219.0 need=1710666 tD=1.80 人 pulse | safe=670560 keep=Inf avail=-Inf chunkB=148511 pulseB=89106 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2295768 dq=109.0 cnt=29 | c=358.5 rankC=358.5 need=4018451 tD=2.12 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=148511 pulseB=89106 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3235 sora_w B=742554 L=7620 d=97.4 nb=2 neut=0 cmds=55 noFull=1 shQ=185638 | m=0.900 worth=87.7 cheap=8.4 over=0 dMedOther=51.3 safe(-1)=670560
+    → [cat] 57#36[T1] terr=10201 bal=938083 dq=92.0 cnt=258 | c=218.1 rankC=218.1 need=1684469 tD=1.79 人 pulse | safe=670560 keep=Inf avail=-Inf chunkB=148511 pulseB=89106 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2295768 dq=109.0 cnt=29 | c=358.5 rankC=358.5 need=4018781 tD=2.12 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=148511 pulseB=89106 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3240 sora_w B=751316 L=7620 d=98.6 nb=2 neut=0 cmds=55 noFull=1 shQ=187829 | m=0.900 worth=88.7 cheap=8.4 over=0 dMedOther=52.0 safe(-1)=670560
+    → [cat] 57#36[T1] terr=10034 bal=924630 dq=92.1 cnt=258 | c=218.9 rankC=218.9 need=1655002 tD=1.77 人 pulse | safe=670560 keep=Inf avail=-Inf chunkB=150263 pulseB=90158 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2320562 dq=110.2 cnt=29 | c=362.3 rankC=362.3 need=4062356 tD=2.12 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=150263 pulseB=90158 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3245 sora_w B=751316 L=7620 d=98.6 nb=2 neut=0 cmds=55 noFull=1 shQ=187829 | m=0.900 worth=88.7 cheap=8.4 over=0 dMedOther=52.0 safe(-1)=670560
+    → [cat] 57#36[T1] terr=10034 bal=921601 dq=91.8 cnt=258 | c=218.2 rankC=218.2 need=1649761 tD=1.77 人 pulse | safe=670560 keep=Inf avail=-Inf chunkB=150263 pulseB=90158 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2320562 dq=110.2 cnt=29 | c=362.3 rankC=362.3 need=4062690 tD=2.12 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=150263 pulseB=90158 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3250 sora_w B=760181 L=7620 d=99.8 nb=2 neut=0 cmds=55 noFull=1 shQ=190045 | m=0.900 worth=89.8 cheap=8.4 over=0 dMedOther=52.7 safe(-1)=670560
+    → [cat] 57#36[T1] terr=10034 bal=932752 dq=93.0 cnt=258 | c=220.8 rankC=220.8 need=1669675 tD=1.77 人 pulse | safe=670560 keep=Inf avail=-Inf chunkB=152036 pulseB=91222 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2344927 dq=111.3 cnt=29 | c=366.1 rankC=366.1 need=4105533 tD=2.11 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=152036 pulseB=91222 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3255 sora_w B=760181 L=7620 d=99.8 nb=2 neut=0 cmds=55 noFull=1 shQ=190045 | m=0.900 worth=89.8 cheap=8.4 over=0 dMedOther=52.7 safe(-1)=670560
+    → [cat] 57#36[T1] terr=10034 bal=932752 dq=93.0 cnt=258 | c=220.8 rankC=220.8 need=1669809 tD=1.77 人 pulse | safe=670560 keep=Inf avail=-Inf chunkB=152036 pulseB=91222 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2344927 dq=111.3 cnt=29 | c=366.1 rankC=366.1 need=4105870 tD=2.11 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=152036 pulseB=91222 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3260 sora_w B=769151 L=7620 d=100.9 nb=2 neut=0 cmds=56 noFull=1 shQ=192287 | m=0.900 worth=90.8 cheap=8.4 over=1 dMedOther=53.4 safe(-1)=670560
+    → [cat] 57#36[T1] terr=10034 bal=944038 dq=94.1 cnt=258 | c=223.4 rankC=223.4 need=1690102 tD=1.76 人 pulse | safe=670560 keep=685800 avail=74338 chunkB=153830 pulseB=92298  x=74338 hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2368845 dq=112.5 cnt=29 | c=369.7 rankC=369.7 need=4147950 tD=2.11 人 pulse crowdedHard | safe=670560 keep=685800 avail=74338 chunkB=153830 pulseB=92298 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 影子指令 attack pct=98 → [cat] 57#36[T1]（约 74361 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3265 sora_w B=769151 L=7620 d=100.9 nb=2 neut=0 cmds=57 noFull=1 shQ=192287 | m=0.900 worth=90.8 cheap=8.4 over=1 dMedOther=53.4 safe(-1)=670560
+    → [cat] 57#36[T1] terr=10034 bal=944038 dq=94.1 cnt=258 | c=223.4 rankC=223.4 need=1690237 tD=1.76 人 pulse | safe=670560 keep=685800 avail=74338 chunkB=153830 pulseB=92298  x=74338 hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2368845 dq=112.5 cnt=29 | c=369.7 rankC=369.7 need=4148290 tD=2.11 人 pulse crowdedHard | safe=670560 keep=685800 avail=74338 chunkB=153830 pulseB=92298 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 影子指令 attack pct=98 → [cat] 57#36[T1]（约 74361 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3270 sora_w B=693869 L=7620 d=91.1 nb=2 neut=0 cmds=57 noFull=1 shQ=0 | m=0.900 worth=82.0 cheap=8.4 over=0 dMedOther=54.1 safe(-1)=670560
+    → [cat] 57#36[T1] terr=10034 bal=955460 dq=95.2 cnt=258 | c=216.2 rankC=216.2 need=1636281 tD=1.76 人 pulse | safe=670560 keep=Inf avail=-Inf chunkB=138774 pulseB=83264 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2392296 dq=113.6 cnt=29 | c=373.2 rankC=373.2 need=4189571 tD=2.10 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=138774 pulseB=83264 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3275 sora_w B=693869 L=7620 d=91.1 nb=2 neut=0 cmds=57 noFull=1 shQ=10320 | m=0.900 worth=82.0 cheap=8.4 over=0 dMedOther=54.1 safe(-1)=670560
+    → [cat] 57#36[T1] terr=10034 bal=955460 dq=95.2 cnt=258 | c=216.2 rankC=216.2 need=1636418 tD=1.76 人 pulse | safe=670560 keep=Inf avail=-Inf chunkB=138774 pulseB=83264 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2392296 dq=113.6 cnt=29 | c=373.2 rankC=373.2 need=4189914 tD=2.10 人 pulse crowdedHard | safe=670560 keep=Inf avail=-Inf chunkB=138774 pulseB=83264 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3280 sora_w B=626029 L=7878 d=79.5 nb=2 neut=0 cmds=57 noFull=1 shQ=19766 | m=0.900 worth=71.5 cheap=8.4 over=0 dMedOther=54.8 safe(-1)=693264
+    → [cat] 57#36[T1] terr=9776 bal=896369 dq=91.7 cnt=251 | c=294.7 rankC=294.7 need=1597062 tD=1.67 人 pulse crowdedHard | safe=693264 keep=Inf avail=-Inf chunkB=125206 pulseB=75123 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2415262 dq=114.7 cnt=29 | c=376.7 rankC=376.7 need=4230365 tD=2.09 人 pulse crowdedHard | safe=693264 keep=Inf avail=-Inf chunkB=125206 pulseB=75123 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3285 sora_w B=785065 L=7878 d=99.7 nb=2 neut=0 cmds=57 noFull=1 shQ=30022 | m=0.900 worth=89.7 cheap=8.4 over=0 dMedOther=54.8 safe(-1)=693264
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2415262 dq=114.7 cnt=29 | c=202.8 rankC=101.4 need=4230711 tD=2.09 人 pulse crowdedHard | safe=693264 keep=Inf avail=-Inf chunkB=157013 pulseB=94208 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9776 bal=896369 dq=91.7 cnt=251 | c=218.5 rankC=218.5 need=1597195 tD=1.67 人 pulse | safe=693264 keep=Inf avail=-Inf chunkB=157013 pulseB=94208 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3290 sora_w B=794328 L=7878 d=100.8 nb=2 neut=0 cmds=58 noFull=1 shQ=41685 | m=0.900 worth=90.7 cheap=8.4 over=1 dMedOther=55.5 safe(-1)=693264
+    → [f] Mean Little Girl#30[T1] terr=21061 bal=2437723 dq=115.7 cnt=29 | c=204.8 rankC=102.4 need=4270297 tD=2.09 人 pulse crowdedHard | safe=693264 keep=709020 avail=76000 chunkB=158866 pulseB=95319 crowdedHard(B<1.26×100×L)→continue hNb=2
+    → [cat] 57#36[T1] terr=9776 bal=907215 dq=92.8 cnt=251 | c=221.1 rankC=221.1 need=1616481 tD=1.67 人 pulse | safe=693264 keep=709020 avail=76000 chunkB=158866 pulseB=95319  x=76000 hNb=2
+    ⇒ 影子指令 attack pct=0 → [cat] 57#36[T1]（约 775 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3295 sora_w B=794328 L=7878 d=100.8 nb=2 neut=0 cmds=59 noFull=1 shQ=53300 | m=0.900 worth=90.7 cheap=8.4 over=1 dMedOther=55.5 safe(-1)=693264
+    → [f] Mean Little Girl#30[T1] terr=20642 bal=2360443 dq=114.4 cnt=29 | c=202.7 rankC=101.4 need=4115288 tD=2.06 人 pulse crowdedHard | safe=693264 keep=709020 avail=76000 chunkB=158866 pulseB=95319 crowdedHard(B<1.26×100×L)→continue hNb=2
+    → [cat] 57#36[T1] terr=9521 bal=869559 dq=91.3 cnt=251 | c=218.4 rankC=218.4 need=1540816 tD=1.65 人 pulse | safe=693264 keep=709020 avail=76000 chunkB=158866 pulseB=95319  x=76000 hNb=2
+    ⇒ 影子指令 attack pct=97 → [cat] 57#36[T1]（约 76019 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3300 sora_w B=801377 L=7878 d=101.7 nb=2 neut=0 cmds=59 noFull=1 shQ=4636 | m=0.900 worth=91.6 cheap=8.4 over=1 dMedOther=57.2 safe(-1)=693264
+    → [f] Mean Little Girl#30[T1] terr=20366 bal=2352594 dq=115.5 cnt=29 | c=209.7 rankC=104.8 need=4088079 tD=2.02 人 pulse crowdedHard | safe=693264 keep=709020 avail=82966 chunkB=160275 pulseB=96165 crowdedHard(B<1.26×100×L)→continue hNb=2
+    → [cat] 57#36[T1] terr=9521 bal=887795 dq=93.2 cnt=251 | c=222.8 rankC=222.8 need=1572338 tD=1.63 人 pulse | safe=693264 keep=709020 avail=82966 chunkB=160275 pulseB=96165  x=82966 hNb=2
+    ⇒ 本拍没有指令
+t=3305 sora_w B=715292 L=8129 d=88.0 nb=2 neut=0 cmds=59 noFull=1 shQ=15993 | m=0.900 worth=79.2 cheap=8.3 over=0 dMedOther=57.2 safe(-1)=715352
+    → [f] Mean Little Girl#30[T1] terr=19947 bal=2275478 dq=114.1 cnt=29 | c=214.6 rankC=107.3 need=3933585 tD=1.99 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=143058 pulseB=85835 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9270 bal=850350 dq=91.7 cnt=243 | c=219.7 rankC=219.7 need=1495856 tD=1.60 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=143058 pulseB=85835 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3310 sora_w B=724010 L=8129 d=89.1 nb=2 neut=0 cmds=59 noFull=1 shQ=26747 | m=0.900 worth=80.2 cheap=8.3 over=0 dMedOther=58.0 safe(-1)=715352
+    → [cat] 57#36[T1] terr=9270 bal=859901 dq=92.8 cnt=243 | c=222.4 rankC=222.4 need=1514746 tD=1.60 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=144802 pulseB=86881 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=19803 bal=2249787 dq=113.6 cnt=29 | c=376.6 rankC=376.6 need=3882471 tD=1.96 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=144802 pulseB=86881 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3315 sora_w B=724010 L=8129 d=89.1 nb=2 neut=0 cmds=59 noFull=1 shQ=37607 | m=0.900 worth=80.2 cheap=8.3 over=0 dMedOther=58.0 safe(-1)=715352
+    → [f] Mean Little Girl#30[T1] terr=19803 bal=2249787 dq=113.6 cnt=29 | c=169.8 rankC=63.2 need=3883181 tD=1.96 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=144802 pulseB=86881 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9270 bal=859901 dq=92.8 cnt=243 | c=222.4 rankC=222.4 need=1514885 tD=1.60 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=144802 pulseB=86881 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3320 sora_w B=732698 L=8129 d=90.1 nb=2 neut=0 cmds=59 noFull=1 shQ=48493 | m=0.900 worth=81.1 cheap=8.3 over=0 dMedOther=53.8 safe(-1)=715352
+    → [f] Mean Little Girl#30[T1] terr=19796 bal=2269876 dq=114.7 cnt=29 | c=167.0 rankC=62.1 need=3917941 tD=2.13 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=146540 pulseB=87924 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9270 bal=870305 dq=93.9 cnt=243 | c=225.0 rankC=225.0 need=1533332 tD=1.75 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=146540 pulseB=87924 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3325 sora_w B=732698 L=8129 d=90.1 nb=2 neut=0 cmds=59 noFull=1 shQ=59483 | m=0.900 worth=81.1 cheap=8.3 over=0 dMedOther=53.8 safe(-1)=715352
+    → [f] Mean Little Girl#30[T1] terr=19774 bal=2265841 dq=114.6 cnt=29 | c=167.2 rankC=62.2 need=3910364 tD=2.13 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=146540 pulseB=87924 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9270 bal=870305 dq=93.9 cnt=243 | c=225.0 rankC=225.0 need=1533472 tD=1.75 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=146540 pulseB=87924 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3330 sora_w B=741490 L=8129 d=91.2 nb=2 neut=0 cmds=59 noFull=1 shQ=70499 | m=0.900 worth=82.1 cheap=8.3 over=0 dMedOther=59.5 safe(-1)=715352
+    → [f] Mean Little Girl#30[T1] terr=19712 bal=2275450 dq=115.4 cnt=29 | c=169.4 rankC=63.0 need=3924143 tD=1.94 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=148298 pulseB=88979 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9270 bal=880835 dq=95.0 cnt=243 | c=227.7 rankC=227.7 need=1552006 tD=1.60 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=148298 pulseB=88979 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3335 sora_w B=741490 L=8129 d=91.2 nb=2 neut=0 cmds=59 noFull=1 shQ=81619 | m=0.900 worth=82.1 cheap=8.3 over=0 dMedOther=59.5 safe(-1)=715352
+    → [f] Mean Little Girl#30[T1] terr=19652 bal=2264375 dq=115.2 cnt=29 | c=170.0 rankC=63.2 need=3902596 tD=1.94 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=148298 pulseB=88979 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9270 bal=880835 dq=95.0 cnt=243 | c=227.7 rankC=227.7 need=1552148 tD=1.60 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=148298 pulseB=88979 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3340 sora_w B=750387 L=8129 d=92.3 nb=2 neut=0 cmds=59 noFull=1 shQ=92766 | m=0.900 worth=83.1 cheap=8.3 over=0 dMedOther=60.3 safe(-1)=715352
+    → [f] Mean Little Girl#30[T1] terr=19529 bal=2262354 dq=115.8 cnt=29 | c=172.8 rankC=64.3 need=3893026 tD=1.92 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=150077 pulseB=90046 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9270 bal=891493 dq=96.2 cnt=243 | c=230.4 rankC=230.4 need=1571053 tD=1.60 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=150077 pulseB=90046 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3345 sora_w B=750387 L=8129 d=92.3 nb=2 neut=0 cmds=59 noFull=1 shQ=104021 | m=0.900 worth=83.1 cheap=8.3 over=0 dMedOther=60.3 safe(-1)=715352
+    → [f] Mean Little Girl#30[T1] terr=19426 bal=2243279 dq=115.5 cnt=29 | c=173.8 rankC=64.7 need=3855401 tD=1.92 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=150077 pulseB=90046 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9270 bal=891493 dq=96.2 cnt=243 | c=230.4 rankC=230.4 need=1571197 tD=1.60 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=150077 pulseB=90046 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3350 sora_w B=759391 L=8129 d=93.4 nb=2 neut=0 cmds=59 noFull=1 shQ=115303 | m=0.900 worth=84.1 cheap=8.3 over=0 dMedOther=61.0 safe(-1)=715352
+    → [f] Mean Little Girl#30[T1] terr=19251 bal=2231126 dq=115.9 cnt=29 | c=260.6 rankC=156.4 need=3825681 tD=1.90 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=151878 pulseB=91127 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9270 bal=902280 dq=97.3 cnt=243 | c=233.1 rankC=233.1 need=1590191 tD=1.59 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=151878 pulseB=91127 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3355 sora_w B=759391 L=8129 d=93.4 nb=2 neut=0 cmds=59 noFull=1 shQ=126693 | m=0.900 worth=84.1 cheap=8.3 over=0 dMedOther=61.0 safe(-1)=715352
+    → [cat] 57#36[T1] terr=9270 bal=902280 dq=97.3 cnt=243 | c=233.1 rankC=233.1 need=1590336 tD=1.59 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=151878 pulseB=91127 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=19187 bal=2217919 dq=115.6 cnt=29 | c=384.7 rankC=384.7 need=3800459 tD=1.89 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=151878 pulseB=91127 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3360 sora_w B=768503 L=8129 d=94.5 nb=2 neut=0 cmds=59 noFull=1 shQ=138110 | m=0.900 worth=85.1 cheap=8.3 over=0 dMedOther=61.8 safe(-1)=715352
+    → [cat] 57#36[T1] terr=9270 bal=913197 dq=98.5 cnt=243 | c=235.9 rankC=235.9 need=1609709 tD=1.59 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=153701 pulseB=92220 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=19187 bal=2237880 dq=116.6 cnt=29 | c=388.1 rankC=388.1 need=3835347 tD=1.89 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=153701 pulseB=92220 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3365 sora_w B=768503 L=8129 d=94.5 nb=2 neut=0 cmds=59 noFull=1 shQ=149635 | m=0.900 worth=85.1 cheap=8.3 over=0 dMedOther=61.8 safe(-1)=715352
+    → [cat] 57#36[T1] terr=9270 bal=913197 dq=98.5 cnt=243 | c=235.9 rankC=235.9 need=1609856 tD=1.59 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=153701 pulseB=92220 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=19187 bal=2237880 dq=116.6 cnt=29 | c=388.1 rankC=388.1 need=3836270 tD=1.89 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=153701 pulseB=92220 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3370 sora_w B=777725 L=8129 d=95.7 nb=2 neut=0 cmds=59 noFull=1 shQ=161188 | m=0.900 worth=86.1 cheap=8.3 over=0 dMedOther=62.7 safe(-1)=715352
+    → [cat] 57#36[T1] terr=9270 bal=924246 dq=99.7 cnt=243 | c=238.7 rankC=238.7 need=1629320 tD=1.59 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=155545 pulseB=93327 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=19187 bal=2257349 dq=117.6 cnt=29 | c=391.4 rankC=391.4 need=3870344 tD=1.88 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=155545 pulseB=93327 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3375 sora_w B=777725 L=8129 d=95.7 nb=2 neut=0 cmds=59 noFull=1 shQ=172853 | m=0.900 worth=86.1 cheap=8.3 over=0 dMedOther=62.7 safe(-1)=715352
+    → [cat] 57#36[T1] terr=9270 bal=924246 dq=99.7 cnt=243 | c=238.7 rankC=238.7 need=1629469 tD=1.59 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=155545 pulseB=93327 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=19187 bal=2257349 dq=117.6 cnt=29 | c=391.3 rankC=391.3 need=3871275 tD=1.88 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=155545 pulseB=93327 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3380 sora_w B=787057 L=8129 d=96.8 nb=2 neut=0 cmds=59 noFull=1 shQ=184546 | m=0.900 worth=87.1 cheap=8.3 over=0 dMedOther=63.5 safe(-1)=715352
+    → [cat] 57#36[T1] terr=9270 bal=935429 dq=100.9 cnt=243 | c=241.5 rankC=241.5 need=1649323 tD=1.59 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=157411 pulseB=94447 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=19187 bal=2276536 dq=118.6 cnt=29 | c=394.6 rankC=394.6 need=3904891 tD=1.87 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=157411 pulseB=94447 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3385 sora_w B=787057 L=8129 d=96.8 nb=2 neut=0 cmds=59 noFull=1 shQ=196351 | m=0.900 worth=87.1 cheap=8.3 over=0 dMedOther=63.5 safe(-1)=715352
+    → [cat] 57#36[T1] terr=9270 bal=935429 dq=100.9 cnt=243 | c=241.5 rankC=241.5 need=1649473 tD=1.59 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=157411 pulseB=94447 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=19187 bal=2276536 dq=118.6 cnt=29 | c=394.5 rankC=394.5 need=3905828 tD=1.87 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=157411 pulseB=94447 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3390 sora_w B=796501 L=8129 d=98.0 nb=2 neut=0 cmds=59 noFull=1 shQ=199125 | m=0.900 worth=88.2 cheap=8.3 over=0 dMedOther=64.3 safe(-1)=715352
+    → [cat] 57#36[T1] terr=9270 bal=946560 dq=102.1 cnt=243 | c=244.4 rankC=244.4 need=1669092 tD=1.59 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=159300 pulseB=95580 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=19187 bal=2295203 dq=119.6 cnt=29 | c=397.7 rankC=397.7 need=3938581 tD=1.86 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=159300 pulseB=95580 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3395 sora_w B=796501 L=8129 d=98.0 nb=2 neut=0 cmds=59 noFull=1 shQ=199125 | m=0.900 worth=88.2 cheap=8.3 over=0 dMedOther=64.3 safe(-1)=715352
+    → [cat] 57#36[T1] terr=9270 bal=946560 dq=102.1 cnt=243 | c=244.4 rankC=244.4 need=1669244 tD=1.59 人 pulse | safe=715352 keep=Inf avail=-Inf chunkB=159300 pulseB=95580 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=19187 bal=2295203 dq=119.6 cnt=29 | c=397.6 rankC=397.6 need=3939525 tD=1.86 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=159300 pulseB=95580 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3400 sora_w B=814188 L=8129 d=100.2 nb=2 neut=0 cmds=60 noFull=1 shQ=201567 | m=0.900 worth=90.1 cheap=8.3 over=1 dMedOther=66.2 safe(-1)=715352
+    → [cat] 57#36[T1] terr=9270 bal=966810 dq=104.3 cnt=243 | c=249.5 rankC=249.5 need=1704977 tD=1.58 人 pulse | safe=715352 keep=731610 avail=73037 chunkB=162838 pulseB=97703  x=73037 hNb=2
+    → [f] Mean Little Girl#30[T1] terr=19187 bal=2332522 dq=121.6 cnt=29 | c=404.0 rankC=404.0 need=4004104 tD=1.84 人 pulse crowdedHard | safe=715352 keep=731610 avail=73037 chunkB=162838 pulseB=97703 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 影子指令 attack pct=91 → [cat] 57#36[T1]（约 73149 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3405 sora_w B=814188 L=8129 d=100.2 nb=2 neut=0 cmds=61 noFull=1 shQ=203547 | m=0.900 worth=90.1 cheap=8.3 over=1 dMedOther=62.4 safe(-1)=715352
+    → [f] Mean Little Girl#30[T1] terr=19187 bal=2332522 dq=121.6 cnt=29 | c=219.2 rankC=109.6 need=4004870 tD=1.95 人 pulse crowdedHard | safe=715352 keep=731610 avail=73037 chunkB=162838 pulseB=97703 crowdedHard(B<1.26×100×L)→continue hNb=2
+    → [cat] 57#36[T1] terr=9270 bal=966810 dq=104.3 cnt=243 | c=249.5 rankC=249.5 need=1705132 tD=1.67 人 pulse | safe=715352 keep=731610 avail=73037 chunkB=162838 pulseB=97703  x=73037 hNb=2
+    ⇒ 影子指令 attack pct=91 → [cat] 57#36[T1]（约 73149 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3410 sora_w B=740275 L=8129 d=91.1 nb=2 neut=0 cmds=61 noFull=1 shQ=0 | m=0.900 worth=82.0 cheap=8.3 over=0 dMedOther=63.3 safe(-1)=715352
+    → [f] Mean Little Girl#30[T1] terr=19103 bal=2333323 dq=122.1 cnt=28 | c=159.8 rankC=79.9 need=4001999 tD=1.93 人 pulse bleeding | safe=715352 keep=Inf avail=-Inf chunkB=148055 pulseB=88833 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9270 bal=977541 dq=105.5 cnt=243 | c=326.0 rankC=326.0 need=1650916 tD=1.67 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=148055 pulseB=88833 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3415 sora_w B=740275 L=8129 d=91.1 nb=2 neut=0 cmds=61 noFull=1 shQ=11100 | m=0.900 worth=82.0 cheap=8.3 over=0 dMedOther=63.2 safe(-1)=715352
+    → [f] Mean Little Girl#30[T1] terr=18936 bal=2300731 dq=121.5 cnt=27 | c=217.9 rankC=108.9 need=3937458 tD=1.92 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=148055 pulseB=88833 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9270 bal=977541 dq=105.5 cnt=243 | c=326.0 rankC=326.0 need=1651073 tD=1.67 人 pulse crowdedHard | safe=715352 keep=Inf avail=-Inf chunkB=148055 pulseB=88833 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3420 sora_w B=673136 L=8372 d=80.4 nb=2 neut=0 cmds=61 noFull=1 shQ=21324 | m=0.900 worth=72.4 cheap=8.3 over=0 dMedOther=64.1 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=18710 bal=2274058 dq=121.5 cnt=27 | c=222.6 rankC=111.3 need=3879400 tD=1.90 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=134627 pulseB=80776 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9027 bal=918712 dq=101.8 cnt=236 | c=329.6 rankC=329.6 need=1611120 tD=1.59 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=134627 pulseB=80776 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3425 sora_w B=673136 L=8372 d=80.4 nb=2 neut=0 cmds=61 noFull=1 shQ=31419 | m=0.900 worth=72.4 cheap=8.3 over=0 dMedOther=64.1 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=18592 bal=2251135 dq=121.1 cnt=26 | c=159.6 rankC=79.8 need=3834295 tD=1.89 人 pulse bleeding | safe=736736 keep=Inf avail=-Inf chunkB=134627 pulseB=80776 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9027 bal=918712 dq=101.8 cnt=236 | c=329.6 rankC=329.6 need=1611273 tD=1.59 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=134627 pulseB=80776 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3430 sora_w B=681213 L=8372 d=81.4 nb=2 neut=0 cmds=61 noFull=1 shQ=41538 | m=0.900 worth=73.2 cheap=8.3 over=0 dMedOther=65.0 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=18444 bal=2239625 dq=121.4 cnt=24 | c=219.2 rankC=109.6 need=3806623 tD=1.87 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=136243 pulseB=81746 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9027 bal=929369 dq=103.0 cnt=236 | c=333.4 rankC=333.4 need=1629968 tD=1.58 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=136243 pulseB=81746 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3435 sora_w B=681213 L=8372 d=81.4 nb=2 neut=0 cmds=61 noFull=1 shQ=51753 | m=0.900 worth=73.2 cheap=8.3 over=0 dMedOther=65.0 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=17952 bal=2144619 dq=119.5 cnt=23 | c=149.3 rankC=44.8 need=3616860 tD=1.84 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=136243 pulseB=81746 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9027 bal=929369 dq=103.0 cnt=236 | c=333.4 rankC=333.4 need=1630124 tD=1.58 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=136243 pulseB=81746 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3440 sora_w B=689387 L=8372 d=82.3 nb=2 neut=0 cmds=61 noFull=1 shQ=61993 | m=0.900 worth=74.1 cheap=8.3 over=0 dMedOther=65.9 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=17835 bal=2137420 dq=119.8 cnt=22 | c=151.8 rankC=45.5 need=3598443 tD=1.82 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=137877 pulseB=82726 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9027 bal=939870 dq=104.1 cnt=236 | c=337.1 rankC=337.1 need=1648709 tD=1.58 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=137877 pulseB=82726 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3445 sora_w B=689387 L=8372 d=82.3 nb=2 neut=0 cmds=61 noFull=1 shQ=72333 | m=0.900 worth=74.1 cheap=8.3 over=0 dMedOther=65.9 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=17731 bal=2117504 dq=119.4 cnt=21 | c=152.8 rankC=45.8 need=3559586 tD=1.81 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=137877 pulseB=82726 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9027 bal=939870 dq=104.1 cnt=236 | c=337.1 rankC=337.1 need=1648866 tD=1.58 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=137877 pulseB=82726 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3450 sora_w B=697659 L=8372 d=83.3 nb=2 neut=0 cmds=61 noFull=1 shQ=82697 | m=0.900 worth=75.0 cheap=8.3 over=0 dMedOther=66.9 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=17661 bal=2112309 dq=119.6 cnt=20 | c=181.5 rankC=67.5 need=3547525 tD=1.79 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=139532 pulseB=83719 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9027 bal=950302 dq=105.3 cnt=236 | c=340.8 rankC=340.8 need=1667182 tD=1.57 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=139532 pulseB=83719 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3455 sora_w B=697659 L=8372 d=83.3 nb=2 neut=0 cmds=61 noFull=1 shQ=93157 | m=0.900 worth=75.0 cheap=8.3 over=0 dMedOther=66.9 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=17602 bal=2101029 dq=119.4 cnt=20 | c=267.9 rankC=160.7 need=3526227 tD=1.79 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=139532 pulseB=83719 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9027 bal=950302 dq=105.3 cnt=236 | c=340.7 rankC=340.7 need=1667341 tD=1.57 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=139532 pulseB=83719 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3460 sora_w B=706030 L=8372 d=84.3 nb=2 neut=0 cmds=61 noFull=1 shQ=103643 | m=0.900 worth=75.9 cheap=8.3 over=0 dMedOther=67.8 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=17544 bal=2106678 dq=120.1 cnt=20 | c=178.6 rankC=66.4 need=3533005 tD=1.77 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=141206 pulseB=84724 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9027 bal=960565 dq=106.4 cnt=236 | c=344.4 rankC=344.4 need=1685527 tD=1.57 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=141206 pulseB=84724 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3465 sora_w B=706030 L=8372 d=84.3 nb=2 neut=0 cmds=61 noFull=1 shQ=114233 | m=0.900 worth=75.9 cheap=8.3 over=0 dMedOther=67.8 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=17434 bal=2085573 dq=119.6 cnt=20 | c=179.9 rankC=66.9 need=3491769 tD=1.76 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=141206 pulseB=84724 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9027 bal=960565 dq=106.4 cnt=236 | c=344.3 rankC=344.3 need=1685687 tD=1.57 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=141206 pulseB=84724 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3470 sora_w B=714502 L=8372 d=85.3 nb=2 neut=0 cmds=61 noFull=1 shQ=124848 | m=0.900 worth=76.8 cheap=8.3 over=0 dMedOther=68.7 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=17346 bal=2085294 dq=120.2 cnt=20 | c=182.5 rankC=67.9 need=3486615 tD=1.75 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=142900 pulseB=85740 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9027 bal=970650 dq=107.5 cnt=236 | c=347.9 rankC=347.9 need=1703410 tD=1.57 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=142900 pulseB=85740 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3475 sora_w B=714502 L=8372 d=85.3 nb=2 neut=0 cmds=61 noFull=1 shQ=135563 | m=0.900 worth=76.8 cheap=8.3 over=0 dMedOther=68.7 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=17193 bal=2055920 dq=119.6 cnt=20 | c=271.1 rankC=162.7 need=3428967 tD=1.74 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=142900 pulseB=85740 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9027 bal=970650 dq=107.5 cnt=236 | c=347.9 rankC=347.9 need=1703572 tD=1.57 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=142900 pulseB=85740 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3480 sora_w B=723076 L=8372 d=86.4 nb=2 neut=0 cmds=61 noFull=1 shQ=146304 | m=0.900 worth=77.7 cheap=8.3 over=0 dMedOther=66.2 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=17081 bal=2050791 dq=120.1 cnt=20 | c=275.4 rankC=165.3 need=3414052 tD=1.81 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=144615 pulseB=86769 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=9027 bal=980550 dq=108.6 cnt=236 | c=351.4 rankC=351.4 need=1721141 tD=1.64 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=144615 pulseB=86769 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3485 sora_w B=723076 L=8372 d=86.4 nb=2 neut=0 cmds=61 noFull=1 shQ=157149 | m=0.900 worth=77.7 cheap=8.3 over=0 dMedOther=66.2 safe(-1)=736736
+    → [cat] 57#36[T1] terr=9027 bal=980550 dq=108.6 cnt=236 | c=509.5 rankC=738.8 need=1721304 tD=1.64 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=144615 pulseB=86769 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=17081 bal=2047782 dq=119.9 cnt=20 | c=928.5 rankC=1346.3 need=3410280 tD=1.81 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=144615 pulseB=86769 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3490 sora_w B=731752 L=8372 d=87.4 nb=2 neut=0 cmds=61 noFull=1 shQ=168020 | m=0.900 worth=78.7 cheap=8.3 over=0 dMedOther=66.7 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8926 bal=834679 dq=93.5 cnt=236 | c=326.0 rankC=472.7 need=1463205 tD=1.40 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=146350 pulseB=87810 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=17081 bal=2063754 dq=120.8 cnt=20 | c=935.5 rankC=1356.5 need=3437914 tD=1.81 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=146350 pulseB=87810 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3495 sora_w B=731752 L=8372 d=87.4 nb=2 neut=0 cmds=61 noFull=1 shQ=178995 | m=0.900 worth=78.7 cheap=8.3 over=0 dMedOther=66.2 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8777 bal=812464 dq=92.6 cnt=236 | c=323.4 rankC=468.9 need=1418628 tD=1.40 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=146350 pulseB=87810 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=17081 bal=2063754 dq=120.8 cnt=20 | c=935.3 rankC=1356.2 need=3439328 tD=1.82 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=146350 pulseB=87810 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3500 sora_w B=748905 L=8372 d=89.5 nb=2 neut=0 cmds=61 noFull=1 shQ=185184 | m=0.900 worth=80.5 cheap=8.3 over=0 dMedOther=67.8 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8679 bal=816230 dq=94.0 cnt=236 | c=329.0 rankC=477.0 need=1421254 tD=1.39 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=149781 pulseB=89869 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=17081 bal=2096313 dq=122.7 cnt=20 | c=949.8 rankC=1377.3 need=3494460 tD=1.81 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=149781 pulseB=89869 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3505 sora_w B=748905 L=8372 d=89.5 nb=2 neut=0 cmds=61 noFull=1 shQ=187226 | m=0.900 worth=80.5 cheap=8.3 over=0 dMedOther=67.6 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8629 bal=804600 dq=93.2 cnt=236 | c=326.5 rankC=473.4 need=1399176 tD=1.38 人 pulse bleeding | safe=736736 keep=Inf avail=-Inf chunkB=149781 pulseB=89869 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=17081 bal=2096313 dq=122.7 cnt=20 | c=949.7 rankC=1377.0 need=3495689 tD=1.82 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=149781 pulseB=89869 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3510 sora_w B=757891 L=8372 d=90.5 nb=2 neut=0 cmds=61 noFull=1 shQ=189472 | m=0.900 worth=81.5 cheap=8.3 over=0 dMedOther=68.5 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8507 bal=795879 dq=93.6 cnt=236 | c=328.2 rankC=475.8 need=1378979 tD=1.37 人 pulse bleeding | safe=736736 keep=Inf avail=-Inf chunkB=151578 pulseB=90947 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=17081 bal=2110987 dq=123.6 cnt=20 | c=956.1 rankC=1386.4 need=3521236 tD=1.80 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=151578 pulseB=90947 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3515 sora_w B=757891 L=8372 d=90.5 nb=2 neut=0 cmds=61 noFull=1 shQ=189472 | m=0.900 worth=81.5 cheap=8.3 over=0 dMedOther=68.5 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8381 bal=777062 dq=92.7 cnt=236 | c=325.9 rankC=472.5 need=1341250 tD=1.35 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=151578 pulseB=90947 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=17081 bal=2110987 dq=123.6 cnt=20 | c=955.9 rankC=1386.1 need=3522678 tD=1.80 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=151578 pulseB=90947 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3520 sora_w B=766985 L=8372 d=91.6 nb=2 neut=0 cmds=61 noFull=1 shQ=191746 | m=0.900 worth=82.5 cheap=8.3 over=0 dMedOther=69.4 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8182 bal=756660 dq=92.5 cnt=236 | c=326.1 rankC=472.8 need=1297666 tD=1.33 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=153397 pulseB=92038 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=17081 bal=2125341 dq=124.4 cnt=20 | c=962.2 rankC=1395.2 need=3547719 tD=1.79 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=153397 pulseB=92038 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3525 sora_w B=766985 L=8372 d=91.6 nb=2 neut=0 cmds=61 noFull=1 shQ=191746 | m=0.900 worth=82.5 cheap=8.3 over=0 dMedOther=64.5 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8113 bal=737351 dq=90.9 cnt=236 | c=320.9 rankC=465.3 need=1261831 tD=1.41 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=153397 pulseB=92038 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=17081 bal=2125341 dq=124.4 cnt=20 | c=962.1 rankC=1395.0 need=3548962 tD=1.93 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=153397 pulseB=92038 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3530 sora_w B=776188 L=8372 d=92.7 nb=2 neut=0 cmds=61 noFull=1 shQ=194047 | m=0.900 worth=83.4 cheap=8.3 over=0 dMedOther=65.4 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8113 bal=746199 dq=92.0 cnt=236 | c=324.7 rankC=470.8 need=1276985 tD=1.41 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=155238 pulseB=93143 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=17081 bal=2139368 dq=125.2 cnt=20 | c=968.2 rankC=1403.9 need=3573484 tD=1.91 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=155238 pulseB=93143 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3535 sora_w B=776188 L=8372 d=92.7 nb=2 neut=0 cmds=61 noFull=1 shQ=194047 | m=0.900 worth=83.4 cheap=8.3 over=0 dMedOther=65.4 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8113 bal=746199 dq=92.0 cnt=236 | c=324.7 rankC=470.8 need=1277132 tD=1.41 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=155238 pulseB=93143 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=17081 bal=2139368 dq=125.2 cnt=20 | c=968.0 rankC=1403.6 need=3574942 tD=1.91 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=155238 pulseB=93143 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3540 sora_w B=785502 L=8372 d=93.8 nb=2 neut=0 cmds=61 noFull=1 shQ=196375 | m=0.900 worth=84.4 cheap=8.3 over=0 dMedOther=74.8 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8113 bal=755153 dq=93.1 cnt=236 | c=328.5 rankC=476.3 need=1292620 tD=1.24 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=157100 pulseB=94260 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=17081 bal=2153059 dq=126.0 cnt=20 | c=974.0 rankC=1412.3 need=3598930 tD=1.68 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=157100 pulseB=94260 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3545 sora_w B=785502 L=8372 d=93.8 nb=2 neut=0 cmds=61 noFull=1 shQ=196375 | m=0.900 worth=84.4 cheap=8.3 over=0 dMedOther=74.7 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8113 bal=755153 dq=93.1 cnt=236 | c=328.5 rankC=476.3 need=1292769 tD=1.25 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=157100 pulseB=94260 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=17081 bal=2153059 dq=126.0 cnt=20 | c=973.8 rankC=1412.1 need=3600186 tD=1.69 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=157100 pulseB=94260 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3550 sora_w B=794928 L=8372 d=95.0 nb=2 neut=0 cmds=61 noFull=1 shQ=198732 | m=0.900 worth=85.5 cheap=8.3 over=0 dMedOther=75.6 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8113 bal=764214 dq=94.2 cnt=236 | c=332.4 rankC=482.0 need=1308296 tD=1.25 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=158986 pulseB=95391 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=17081 bal=2166407 dq=126.8 cnt=20 | c=979.7 rankC=1420.6 need=3623626 tD=1.68 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=158986 pulseB=95391 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3555 sora_w B=794928 L=8372 d=95.0 nb=2 neut=0 cmds=61 noFull=1 shQ=198732 | m=0.900 worth=85.5 cheap=8.3 over=0 dMedOther=75.6 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8113 bal=764214 dq=94.2 cnt=236 | c=332.4 rankC=481.9 need=1308447 tD=1.25 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=158986 pulseB=95391 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=17081 bal=2166407 dq=126.8 cnt=20 | c=979.5 rankC=1420.3 need=3625098 tD=1.68 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=158986 pulseB=95391 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3560 sora_w B=804467 L=8372 d=96.1 nb=2 neut=0 cmds=61 noFull=1 shQ=201116 | m=0.900 worth=86.5 cheap=8.3 over=0 dMedOther=76.5 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8113 bal=773384 dq=95.3 cnt=236 | c=336.3 rankC=487.6 need=1324317 tD=1.25 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=160893 pulseB=96536 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=17081 bal=2179405 dq=127.6 cnt=20 | c=985.2 rankC=1428.5 need=3647978 tD=1.67 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=160893 pulseB=96536 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3565 sora_w B=804467 L=8372 d=96.1 nb=2 neut=0 cmds=61 noFull=1 shQ=201116 | m=0.900 worth=86.5 cheap=8.3 over=0 dMedOther=76.4 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=17080 bal=2179201 dq=127.6 cnt=20 | c=192.9 rankC=71.8 need=3648836 tD=1.67 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=160893 pulseB=96536 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=8113 bal=773384 dq=95.3 cnt=236 | c=231.9 rankC=231.9 need=1324469 tD=1.25 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=160893 pulseB=96536 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3570 sora_w B=814120 L=8372 d=97.2 nb=2 neut=0 cmds=61 noFull=1 shQ=203530 | m=0.900 worth=87.5 cheap=8.3 over=0 dMedOther=77.4 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=17065 bal=2188762 dq=128.3 cnt=20 | c=194.2 rankC=72.3 need=3664953 tD=1.66 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=162824 pulseB=97694 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=8113 bal=782664 dq=96.5 cnt=236 | c=234.7 rankC=234.7 need=1340380 tD=1.25 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=162824 pulseB=97694 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3575 sora_w B=814120 L=8372 d=97.2 nb=2 neut=0 cmds=61 noFull=1 shQ=203530 | m=0.900 worth=87.5 cheap=8.3 over=0 dMedOther=77.3 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=17047 bal=2185070 dq=128.2 cnt=20 | c=194.4 rankC=72.3 need=3659018 tD=1.66 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=162824 pulseB=97694 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=8113 bal=782664 dq=96.5 cnt=236 | c=234.6 rankC=234.6 need=1340534 tD=1.25 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=162824 pulseB=97694 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3580 sora_w B=823889 L=8372 d=98.4 nb=2 neut=0 cmds=61 noFull=1 shQ=205972 | m=0.900 worth=88.6 cheap=8.3 over=0 dMedOther=78.2 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=17008 bal=2189486 dq=128.7 cnt=20 | c=196.1 rankC=72.9 need=3664867 tD=1.65 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=164778 pulseB=98867 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=8113 bal=792055 dq=97.6 cnt=236 | c=237.4 rankC=237.4 need=1356795 tD=1.25 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=164778 pulseB=98867 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3585 sora_w B=823889 L=8372 d=98.4 nb=2 neut=0 cmds=61 noFull=1 shQ=205972 | m=0.900 worth=88.6 cheap=8.3 over=0 dMedOther=78.1 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=16970 bal=2181663 dq=128.6 cnt=20 | c=289.1 rankC=173.4 need=3650424 tD=1.65 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=164778 pulseB=98867 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=8113 bal=792055 dq=97.6 cnt=236 | c=237.4 rankC=237.4 need=1356951 tD=1.25 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=164778 pulseB=98867 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3590 sora_w B=833775 L=8372 d=99.6 nb=2 neut=0 cmds=61 noFull=1 shQ=208443 | m=0.900 worth=89.6 cheap=8.3 over=0 dMedOther=79.1 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=16905 bal=2180447 dq=129.0 cnt=20 | c=292.0 rankC=175.2 need=3645029 tD=1.63 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=166755 pulseB=100053 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=8113 bal=801559 dq=98.8 cnt=236 | c=240.2 rankC=240.2 need=1373255 tD=1.25 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=166755 pulseB=100053 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3595 sora_w B=833775 L=8372 d=99.6 nb=2 neut=0 cmds=61 noFull=1 shQ=208443 | m=0.900 worth=89.6 cheap=8.3 over=0 dMedOther=79.0 safe(-1)=736736
+    → [f] Mean Little Girl#30[T1] terr=16856 bal=2170341 dq=128.8 cnt=20 | c=293.0 rankC=175.8 need=3626217 tD=1.63 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=166755 pulseB=100053 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=8113 bal=801559 dq=98.8 cnt=236 | c=240.2 rankC=240.2 need=1373413 tD=1.25 人 pulse | safe=736736 keep=Inf avail=-Inf chunkB=166755 pulseB=100053 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3600 sora_w B=852152 L=8372 d=101.8 nb=2 neut=0 cmds=62 noFull=1 shQ=210914 | m=0.900 worth=91.6 cheap=8.3 over=1 dMedOther=80.9 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8113 bal=819290 dq=101.0 cnt=236 | c=355.9 rankC=516.1 need=1403866 tD=1.25 人 pulse | safe=736736 keep=753480 avail=88686 chunkB=170430 pulseB=102258  x=88686 hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16802 bal=2183361 dq=129.9 cnt=20 | c=991.4 rankC=1437.5 need=3645208 tD=1.61 人 pulse crowdedHard | safe=736736 keep=753480 avail=88686 chunkB=170430 pulseB=102258 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 影子指令 attack pct=106 → [cat] 57#36[T1]（约 89043 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3605 sora_w B=852152 L=8372 d=101.8 nb=2 neut=0 cmds=63 noFull=1 shQ=213038 | m=0.900 worth=91.6 cheap=8.3 over=1 dMedOther=80.8 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8113 bal=819290 dq=101.0 cnt=236 | c=245.4 rankC=245.4 need=1404027 tD=1.25 人 pulse | safe=736736 keep=753480 avail=88686 chunkB=170430 pulseB=102258  x=88686 hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16802 bal=2183361 dq=129.9 cnt=20 | c=683.6 rankC=683.6 need=3646505 tD=1.61 人 pulse crowdedHard | safe=736736 keep=753480 avail=88686 chunkB=170430 pulseB=102258 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 影子指令 attack pct=106 → [cat] 57#36[T1]（约 89043 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3610 sora_w B=862036 L=8372 d=103.0 nb=2 neut=0 cmds=64 noFull=1 shQ=215473 | m=0.900 worth=92.7 cheap=8.3 over=1 dMedOther=81.9 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8113 bal=828957 dq=102.2 cnt=236 | c=248.3 rankC=248.3 need=1420623 tD=1.25 人 pulse | safe=736736 keep=753480 avail=98455 chunkB=172407 pulseB=103444  x=98455 hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16802 bal=2194714 dq=130.6 cnt=20 | c=687.0 rankC=687.0 need=3666651 tD=1.60 人 pulse crowdedHard | safe=736736 keep=753480 avail=98455 chunkB=172407 pulseB=103444 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 影子指令 attack pct=116 → [cat] 57#36[T1]（约 98494 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3615 sora_w B=673323 L=8372 d=80.4 nb=2 neut=0 cmds=64 noFull=1 shQ=4038 | m=0.900 worth=72.4 cheap=8.3 over=0 dMedOther=81.8 safe(-1)=736736
+    → [cat] 57#36[T1] terr=8113 bal=828957 dq=102.2 cnt=236 | c=294.9 rankC=294.9 need=1251101 tD=1.25 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=134665 pulseB=80799 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16802 bal=2194714 dq=130.6 cnt=20 | c=686.5 rankC=686.5 need=3668169 tD=1.60 人 pulse crowdedHard | safe=736736 keep=Inf avail=-Inf chunkB=134665 pulseB=80799 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3620 sora_w B=595563 L=8608 d=69.2 nb=2 neut=0 cmds=64 noFull=1 shQ=13900 | m=0.900 worth=63.4 cheap=8.3 over=0 dMedOther=82.9 safe(-1)=757504
+    → [cat] 57#36[T1] terr=7877 bal=799468 dq=101.5 cnt=233 | c=292.5 rankC=292.5 need=1190813 tD=1.22 人 pulse crowdedHard | safe=757504 keep=Inf avail=-Inf chunkB=119113 pulseB=71468 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16802 bal=2235022 dq=133.0 cnt=20 | c=698.7 rankC=698.7 need=3736449 tD=1.60 人 pulse crowdedHard | safe=757504 keep=Inf avail=-Inf chunkB=119113 pulseB=71468 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3625 sora_w B=595563 L=8841 d=67.4 nb=2 neut=0 cmds=64 noFull=1 shQ=22830 | m=0.900 worth=68.8 cheap=8.3 over=0 dMedOther=90.0 safe(-1)=778008
+    → [cat] 57#36[T1] terr=7644 bal=761638 dq=99.6 cnt=229 | c=305.4 rankC=305.4 need=1191250 tD=1.11 人 pulse crowdedHard | safe=778008 keep=Inf avail=-Inf chunkB=119113 pulseB=71468 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16802 bal=2235022 dq=133.0 cnt=21 | c=671.6 rankC=671.6 need=3737773 tD=1.48 人 pulse crowdedHard | safe=778008 keep=Inf avail=-Inf chunkB=119113 pulseB=71468 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3630 sora_w B=602794 L=9070 d=66.5 nb=2 neut=0 cmds=64 noFull=1 shQ=31782 | m=0.900 worth=69.8 cheap=8.3 over=0 dMedOther=91.3 safe(-1)=798160
+    → [cat] 57#36[T1] terr=7415 bal=724594 dq=97.7 cnt=222 | c=324.0 rankC=324.0 need=1209468 tD=1.07 人 pulse crowdedHard | safe=798160 keep=Inf avail=-Inf chunkB=120559 pulseB=72335 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16802 bal=2244856 dq=133.6 cnt=21 | c=674.4 rankC=674.4 need=3755448 tD=1.46 人 pulse crowdedHard | safe=798160 keep=Inf avail=-Inf chunkB=120559 pulseB=72335 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3635 sora_w B=992353 L=9070 d=109.4 nb=2 neut=0 cmds=65 noFull=1 shQ=42166 | m=0.900 worth=98.5 cheap=8.3 over=1 dMedOther=87.9 safe(-1)=798160
+    → [cat] 57#36[T1] terr=7415 bal=724594 dq=97.7 cnt=222 | c=125.4 rankC=62.7 need=1209795 tD=1.11 人 pulse bleeding | safe=798160 keep=816300 avail=164424 chunkB=198471 pulseB=119082  x=119082 hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16802 bal=2244856 dq=133.6 cnt=21 | c=675.1 rankC=675.1 need=3756996 tD=1.52 人 pulse crowdedHard | safe=798160 keep=816300 avail=164424 chunkB=198471 pulseB=119082 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 影子指令 attack pct=0 → [cat] 57#36[T1]（约 969 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3640 sora_w B=1002078 L=9070 d=110.5 nb=2 neut=0 cmds=66 noFull=1 shQ=54591 | m=0.900 worth=99.4 cheap=8.3 over=1 dMedOther=89.1 safe(-1)=798160
+    → [cat] 57#36[T1] terr=7415 bal=733144 dq=98.9 cnt=222 | c=127.0 rankC=63.5 need=1224450 tD=1.11 人 pulse bleeding | safe=798160 keep=816300 avail=174035 chunkB=200416 pulseB=120249  x=120249 hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16802 bal=2254284 dq=134.2 cnt=21 | c=677.8 rankC=677.8 need=3774012 tD=1.51 人 pulse crowdedHard | safe=798160 keep=816300 avail=174035 chunkB=200416 pulseB=120249 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 影子指令 attack pct=0 → [cat] 57#36[T1]（约 978 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3645 sora_w B=1002078 L=9070 d=110.5 nb=2 neut=0 cmds=67 noFull=1 shQ=67116 | m=0.900 worth=99.4 cheap=8.3 over=1 dMedOther=89.1 safe(-1)=798160
+    → [cat] 57#36[T1] terr=7160 bal=693130 dq=96.8 cnt=222 | c=113.4 rankC=56.7 need=1144276 tD=1.09 人 pulse bleeding | safe=798160 keep=816300 avail=174035 chunkB=200416 pulseB=120249  x=120249 hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16802 bal=2254284 dq=134.2 cnt=21 | c=677.7 rankC=677.7 need=3775343 tD=1.51 人 pulse crowdedHard | safe=798160 keep=816300 avail=174035 chunkB=200416 pulseB=120249 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 影子指令 attack pct=122 → [cat] 57#36[T1]（约 120366 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3650 sora_w B=986760 L=9070 d=108.8 nb=2 neut=0 cmds=67 noFull=1 shQ=4956 | m=0.900 worth=97.9 cheap=8.3 over=1 dMedOther=90.3 safe(-1)=798160
+    → [cat] 57#36[T1] terr=6972 bal=671945 dq=96.4 cnt=222 | c=113.5 rankC=56.7 need=1097172 tD=1.07 人 pulse bleeding | safe=798160 keep=816300 avail=158897 chunkB=197352 pulseB=118411  x=118411 hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16802 bal=2263526 dq=134.7 cnt=21 | c=680.3 rankC=680.3 need=3792064 tD=1.49 人 pulse crowdedHard | safe=798160 keep=816300 avail=158897 chunkB=197352 pulseB=118411 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 本拍没有指令
+t=3655 sora_w B=856671 L=9292 d=92.2 nb=2 neut=0 cmds=67 noFull=1 shQ=17411 | m=0.900 worth=83.0 cheap=8.2 over=0 dMedOther=90.3 safe(-1)=817696
+    → [cat] 57#36[T1] terr=6450 bal=592844 dq=91.9 cnt=217 | c=100.9 rankC=50.4 need=887810 tD=1.02 人 pulse bleeding | safe=817696 keep=Inf avail=-Inf chunkB=171334 pulseB=102801 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16802 bal=2263526 dq=134.7 cnt=22 | c=655.1 rankC=655.1 need=3793621 tD=1.49 人 pulse crowdedHard | safe=817696 keep=Inf avail=-Inf chunkB=171334 pulseB=102801 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3660 sora_w B=867051 L=9292 d=93.3 nb=2 neut=0 cmds=67 noFull=1 shQ=30397 | m=0.900 worth=84.0 cheap=8.2 over=0 dMedOther=88.0 safe(-1)=817696
+    → [cat] 57#36[T1] terr=6398 bal=563141 dq=88.0 cnt=217 | c=104.4 rankC=52.2 need=891236 tD=1.00 人 pulse bleeding | safe=817696 keep=Inf avail=-Inf chunkB=173410 pulseB=104046 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16802 bal=2272580 dq=135.3 cnt=22 | c=657.6 rankC=657.6 need=3810043 tD=1.54 人 pulse crowdedHard | safe=817696 keep=Inf avail=-Inf chunkB=173410 pulseB=104046 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3665 sora_w B=867051 L=9292 d=93.3 nb=2 neut=0 cmds=67 noFull=1 shQ=43507 | m=0.900 worth=84.0 cheap=8.2 over=0 dMedOther=87.3 safe(-1)=817696
+    → [cat] 57#36[T1] terr=6316 bal=551625 dq=87.3 cnt=217 | c=106.0 rankC=53.0 need=868687 tD=1.00 人 pulse bleeding | safe=817696 keep=Inf avail=-Inf chunkB=173410 pulseB=104046 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16802 bal=2272580 dq=135.3 cnt=22 | c=657.5 rankC=657.5 need=3811381 tD=1.55 人 pulse crowdedHard | safe=817696 keep=Inf avail=-Inf chunkB=173410 pulseB=104046 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3670 sora_w B=877542 L=9292 d=94.4 nb=2 neut=0 cmds=67 noFull=1 shQ=56649 | m=0.900 worth=85.0 cheap=8.2 over=0 dMedOther=87.9 safe(-1)=817696
+    → [cat] 57#36[T1] terr=6260 bal=550174 dq=87.9 cnt=217 | c=108.6 rankC=54.3 need=863328 tD=1.00 人 pulse bleeding | safe=817696 keep=Inf avail=-Inf chunkB=175508 pulseB=105305 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16802 bal=2281215 dq=135.8 cnt=22 | c=659.9 rankC=659.9 need=3827119 tD=1.54 人 pulse crowdedHard | safe=817696 keep=Inf avail=-Inf chunkB=175508 pulseB=105305 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3675 sora_w B=877542 L=9292 d=94.4 nb=2 neut=0 cmds=67 noFull=1 shQ=69919 | m=0.900 worth=85.0 cheap=8.2 over=0 dMedOther=87.2 safe(-1)=817696
+    → [cat] 57#36[T1] terr=6174 bal=538118 dq=87.2 cnt=217 | c=110.5 rankC=55.2 need=839698 tD=1.00 人 pulse bleeding | safe=817696 keep=Inf avail=-Inf chunkB=175508 pulseB=105305 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16802 bal=2281215 dq=135.8 cnt=22 | c=659.8 rankC=659.8 need=3828684 tD=1.56 人 pulse crowdedHard | safe=817696 keep=Inf avail=-Inf chunkB=175508 pulseB=105305 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3680 sora_w B=888160 L=9292 d=95.6 nb=2 neut=0 cmds=67 noFull=1 shQ=83221 | m=0.900 worth=86.0 cheap=8.2 over=0 dMedOther=87.6 safe(-1)=817696
+    → [cat] 57#36[T1] terr=6111 bal=535541 dq=87.6 cnt=217 | c=113.3 rankC=56.7 need=832223 tD=1.00 人 pulse bleeding | safe=817696 keep=Inf avail=-Inf chunkB=177632 pulseB=106579 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16800 bal=2289219 dq=136.3 cnt=22 | c=206.0 rankC=76.6 need=3843235 tD=1.55 人 pulse crowdedHard | safe=817696 keep=Inf avail=-Inf chunkB=177632 pulseB=106579 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3685 sora_w B=888160 L=9292 d=95.6 nb=2 neut=0 cmds=67 noFull=1 shQ=96651 | m=0.900 worth=86.0 cheap=8.2 over=0 dMedOther=85.5 safe(-1)=817696
+    → [cat] 57#36[T1] terr=6011 bal=521569 dq=86.8 cnt=217 | c=115.7 rankC=57.9 need=804742 tD=1.01 人 pulse bleeding | safe=817696 keep=Inf avail=-Inf chunkB=177632 pulseB=106579 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16788 bal=2286604 dq=136.2 cnt=22 | c=206.1 rankC=76.7 need=3839325 tD=1.59 人 pulse crowdedHard | safe=817696 keep=Inf avail=-Inf chunkB=177632 pulseB=106579 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3690 sora_w B=898906 L=9292 d=96.7 nb=2 neut=0 cmds=67 noFull=1 shQ=110114 | m=0.900 worth=87.1 cheap=8.2 over=0 dMedOther=86.6 safe(-1)=817696
+    → [cat] 57#36[T1] terr=5939 bal=517476 dq=87.1 cnt=217 | c=119.0 rankC=59.5 need=794092 tD=1.01 人 pulse | safe=817696 keep=Inf avail=-Inf chunkB=179781 pulseB=107869 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16744 bal=2285219 dq=136.5 cnt=22 | c=207.5 rankC=77.2 need=3835092 tD=1.58 人 pulse crowdedHard | safe=817696 keep=Inf avail=-Inf chunkB=179781 pulseB=107869 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3695 sora_w B=898906 L=9292 d=96.7 nb=2 neut=0 cmds=67 noFull=1 shQ=123709 | m=0.900 worth=87.1 cheap=8.2 over=0 dMedOther=86.1 safe(-1)=817696
+    → [cat] 57#36[T1] terr=5825 bal=501649 dq=86.1 cnt=217 | c=122.0 rankC=61.0 need=762883 tD=1.00 人 pulse | safe=817696 keep=Inf avail=-Inf chunkB=179781 pulseB=107869 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16694 bal=2274308 dq=136.2 cnt=22 | c=306.1 rankC=183.7 need=3814743 tD=1.58 人 pulse crowdedHard | safe=817696 keep=Inf avail=-Inf chunkB=179781 pulseB=107869 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3700 sora_w B=919074 L=9292 d=98.9 nb=2 neut=0 cmds=67 noFull=1 shQ=137365 | m=0.900 worth=89.0 cheap=8.2 over=0 dMedOther=87.4 safe(-1)=817696
+    → [cat] 57#36[T1] terr=5746 bal=502178 dq=87.4 cnt=217 | c=127.1 rankC=63.6 need=758731 tD=1.00 人 pulse | safe=817696 keep=Inf avail=-Inf chunkB=183815 pulseB=110289 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16592 bal=2277005 dq=137.2 cnt=22 | c=311.8 rankC=187.1 need=3812934 tD=1.57 人 pulse crowdedHard | safe=817696 keep=Inf avail=-Inf chunkB=183815 pulseB=110289 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3705 sora_w B=919074 L=9292 d=98.9 nb=2 neut=0 cmds=67 noFull=1 shQ=151265 | m=0.900 worth=89.0 cheap=8.2 over=0 dMedOther=86.6 safe(-1)=817696
+    → [cat] 57#36[T1] terr=5704 bal=494052 dq=86.6 cnt=217 | c=221.4 rankC=221.4 need=744217 tD=1.00 人 pulse | safe=817696 keep=Inf avail=-Inf chunkB=183815 pulseB=110289 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16551 bal=2260512 dq=136.6 cnt=22 | c=656.9 rankC=656.9 need=3783746 tD=1.58 人 pulse crowdedHard | safe=817696 keep=Inf avail=-Inf chunkB=183815 pulseB=110289 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3710 sora_w B=930194 L=9292 d=100.1 nb=2 neut=0 cmds=68 noFull=1 shQ=165198 | m=0.900 worth=90.1 cheap=8.2 over=1 dMedOther=87.6 safe(-1)=817696
+    → [cat] 57#36[T1] terr=5704 bal=499733 dq=87.6 cnt=217 | c=223.9 rankC=223.9 need=753208 tD=1.00 人 pulse | safe=817696 keep=836280 avail=83014 chunkB=186039 pulseB=111623  x=83014 hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16551 bal=2268423 dq=137.1 cnt=22 | c=659.0 rankC=659.0 need=3798269 tD=1.56 人 pulse crowdedHard | safe=817696 keep=836280 avail=83014 chunkB=186039 pulseB=111623 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 影子指令 attack pct=91 → [cat] 57#36[T1]（约 83572 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3715 sora_w B=930194 L=9292 d=100.1 nb=2 neut=0 cmds=69 noFull=1 shQ=179263 | m=0.900 worth=90.1 cheap=8.2 over=1 dMedOther=87.6 safe(-1)=817696
+    → [f] Mean Little Girl#30[T1] terr=16551 bal=2268423 dq=137.1 cnt=22 | c=206.8 rankC=76.9 need=3799854 tD=1.56 人 pulse crowdedHard | safe=817696 keep=836280 avail=83014 chunkB=186039 pulseB=111623 crowdedHard(B<1.26×100×L)→continue hNb=2
+    → [cat] 57#36[T1] terr=5704 bal=499733 dq=87.6 cnt=217 | c=223.9 rankC=223.9 need=753885 tD=1.00 人 pulse bleeding | safe=817696 keep=836280 avail=83014 chunkB=186039 pulseB=111623  x=83014 hNb=2
+    ⇒ 影子指令 attack pct=91 → [cat] 57#36[T1]（约 83572 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3720 sora_w B=845834 L=9292 d=91.0 nb=2 neut=0 cmds=69 noFull=1 shQ=108931 | m=0.900 worth=81.9 cheap=8.2 over=0 dMedOther=87.2 safe(-1)=817696
+    → [cat] 57#36[T1] terr=5549 bal=483597 dq=87.2 cnt=217 | c=197.6 rankC=197.6 need=635732 tD=1.00 人 pulse bleeding | safe=817696 keep=Inf avail=-Inf chunkB=169167 pulseB=101500 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16294 bal=2209416 dq=135.6 cnt=22 | c=645.3 rankC=645.3 need=3683681 tD=1.56 人 pulse crowdedHard | safe=817696 keep=Inf avail=-Inf chunkB=169167 pulseB=101500 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3725 sora_w B=759930 L=9509 d=79.9 nb=2 neut=0 cmds=69 noFull=1 shQ=121461 | m=0.900 worth=71.9 cheap=8.2 over=0 dMedOther=83.5 safe(-1)=836792
+    → [cat] 57#36[T1] terr=5174 bal=431940 dq=83.5 cnt=210 | c=181.6 rankC=181.6 need=516674 tD=1.00 人 pulse bleeding | safe=836792 keep=Inf avail=-Inf chunkB=151986 pulseB=91192 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16294 bal=2209416 dq=135.6 cnt=22 | c=645.0 rankC=645.0 need=3685036 tD=1.62 人 pulse crowdedHard | safe=836792 keep=Inf avail=-Inf chunkB=151986 pulseB=91192 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3730 sora_w B=769125 L=9719 d=79.1 nb=2 neut=0 cmds=69 noFull=1 shQ=132979 | m=0.900 worth=71.2 cheap=8.2 over=0 dMedOther=79.8 safe(-1)=855272
+    → [cat] 57#36[T1] terr=4717 bal=376303 dq=79.8 cnt=202 | c=191.8 rankC=191.8 need=458773 tD=1.00 人 pulse | safe=855272 keep=Inf avail=-Inf chunkB=153825 pulseB=92295 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16294 bal=2217590 dq=136.1 cnt=23 | c=625.1 rankC=625.1 need=3699948 tD=1.71 人 pulse crowdedHard | safe=855272 keep=Inf avail=-Inf chunkB=153825 pulseB=92295 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3735 sora_w B=769183 L=9719 d=79.1 nb=2 neut=0 cmds=69 noFull=1 shQ=144609 | m=0.900 worth=71.2 cheap=8.2 over=0 dMedOther=73.4 safe(-1)=855272
+    → [cat] 57#36[T1] terr=4631 bal=339779 dq=73.4 cnt=202 | c=193.8 rankC=193.8 need=447899 tD=1.00 人 pulse | safe=855272 keep=Inf avail=-Inf chunkB=153837 pulseB=92302 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16294 bal=2217590 dq=136.1 cnt=23 | c=625.0 rankC=625.0 need=3701532 tD=1.85 人 pulse crowdedHard | safe=855272 keep=Inf avail=-Inf chunkB=153837 pulseB=92302 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3740 sora_w B=778490 L=9719 d=80.1 nb=2 neut=0 cmds=69 noFull=1 shQ=156267 | m=0.900 worth=72.1 cheap=8.2 over=0 dMedOther=74.2 safe(-1)=855272
+    → [cat] 57#36[T1] terr=4631 bal=343652 dq=74.2 cnt=202 | c=195.9 rankC=195.9 need=453761 tD=1.00 人 pulse | safe=855272 keep=Inf avail=-Inf chunkB=155698 pulseB=93419 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16294 bal=2225573 dq=136.6 cnt=23 | c=627.1 rankC=627.1 need=3716141 tD=1.84 人 pulse crowdedHard | safe=855272 keep=Inf avail=-Inf chunkB=155698 pulseB=93419 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3745 sora_w B=778490 L=9719 d=80.1 nb=2 neut=0 cmds=69 noFull=1 shQ=168037 | m=0.900 worth=72.1 cheap=8.2 over=0 dMedOther=74.2 safe(-1)=855272
+    → [cat] 57#36[T1] terr=4631 bal=343652 dq=74.2 cnt=202 | c=195.8 rankC=195.8 need=454568 tD=1.00 人 pulse | safe=855272 keep=Inf avail=-Inf chunkB=155698 pulseB=93419 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16294 bal=2225573 dq=136.6 cnt=23 | c=627.0 rankC=627.0 need=3717502 tD=1.84 人 pulse crowdedHard | safe=855272 keep=Inf avail=-Inf chunkB=155698 pulseB=93419 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3750 sora_w B=787909 L=9719 d=81.1 nb=2 neut=0 cmds=69 noFull=1 shQ=179836 | m=0.900 worth=73.0 cheap=8.2 over=0 dMedOther=75.1 safe(-1)=855272
+    → [cat] 57#36[T1] terr=4631 bal=347569 dq=75.1 cnt=202 | c=198.0 rankC=198.0 need=460514 tD=1.00 人 pulse bleeding | safe=855272 keep=Inf avail=-Inf chunkB=157582 pulseB=94549 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16294 bal=2233362 dq=137.1 cnt=23 | c=629.1 rankC=629.1 need=3731801 tD=1.83 人 pulse crowdedHard | safe=855272 keep=Inf avail=-Inf chunkB=157582 pulseB=94549 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3755 sora_w B=787909 L=9719 d=81.1 nb=2 neut=0 cmds=69 noFull=1 shQ=191751 | m=0.900 worth=73.0 cheap=8.2 over=0 dMedOther=74.4 safe(-1)=855272
+    → [cat] 57#36[T1] terr=4564 bal=339543 dq=74.4 cnt=202 | c=196.4 rankC=196.4 need=445153 tD=1.00 人 pulse bleeding | safe=855272 keep=Inf avail=-Inf chunkB=157582 pulseB=94549 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16294 bal=2233362 dq=137.1 cnt=23 | c=628.9 rankC=628.9 need=3733392 tD=1.84 人 pulse crowdedHard | safe=855272 keep=Inf avail=-Inf chunkB=157582 pulseB=94549 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3760 sora_w B=797442 L=9719 d=82.0 nb=2 neut=0 cmds=69 noFull=1 shQ=199360 | m=0.900 worth=73.8 cheap=8.2 over=0 dMedOther=74.7 safe(-1)=855272
+    → [cat] 57#36[T1] terr=4508 bal=336686 dq=74.7 cnt=202 | c=286.1 rankC=414.9 need=437440 tD=1.00 人 pulse bleeding | safe=855272 keep=Inf avail=-Inf chunkB=159488 pulseB=95693 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16294 bal=2240955 dq=137.5 cnt=23 | c=914.9 rankC=1326.6 need=3747378 tD=1.84 人 pulse crowdedHard | safe=855272 keep=Inf avail=-Inf chunkB=159488 pulseB=95693 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3765 sora_w B=797442 L=9719 d=82.0 nb=2 neut=0 cmds=69 noFull=1 shQ=199360 | m=0.900 worth=73.8 cheap=8.2 over=0 dMedOther=73.9 safe(-1)=855272
+    → [cat] 57#36[T1] terr=4430 bal=327401 dq=73.9 cnt=202 | c=283.6 rankC=411.3 need=419545 tD=1.00 人 pulse bleeding | safe=855272 keep=Inf avail=-Inf chunkB=159488 pulseB=95693 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16294 bal=2240955 dq=137.5 cnt=23 | c=914.7 rankC=1326.3 need=3748744 tD=1.86 人 pulse crowdedHard | safe=855272 keep=Inf avail=-Inf chunkB=159488 pulseB=95693 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3770 sora_w B=807091 L=9719 d=83.0 nb=2 neut=0 cmds=69 noFull=1 shQ=201772 | m=0.900 worth=74.7 cheap=8.2 over=0 dMedOther=79.1 safe(-1)=855272
+    → [cat] 57#36[T1] terr=4380 bal=325166 dq=74.2 cnt=202 | c=285.2 rankC=413.6 need=413413 tD=0.94 人 pulse | safe=855272 keep=Inf avail=-Inf chunkB=161418 pulseB=96851 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16294 bal=2248126 dq=138.0 cnt=23 | c=917.5 rankC=1330.4 need=3762040 tD=1.74 人 pulse crowdedHard | safe=855272 keep=Inf avail=-Inf chunkB=161418 pulseB=96851 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3775 sora_w B=807091 L=9719 d=83.0 nb=2 neut=0 cmds=69 noFull=1 shQ=201772 | m=0.900 worth=74.7 cheap=8.2 over=0 dMedOther=79.1 safe(-1)=855272
+    → [cat] 57#36[T1] terr=4305 bal=316290 dq=73.5 cnt=202 | c=282.8 rankC=410.1 need=396514 tD=0.93 人 pulse | safe=855272 keep=Inf avail=-Inf chunkB=161418 pulseB=96851 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16294 bal=2248126 dq=138.0 cnt=23 | c=917.3 rankC=1330.1 need=3763637 tD=1.74 人 pulse crowdedHard | safe=855272 keep=Inf avail=-Inf chunkB=161418 pulseB=96851 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3780 sora_w B=816856 L=9719 d=84.0 nb=2 neut=0 cmds=69 noFull=1 shQ=204214 | m=0.900 worth=75.6 cheap=8.2 over=0 dMedOther=80.2 safe(-1)=855272
+    → [cat] 57#36[T1] terr=4255 bal=313963 dq=73.8 cnt=202 | c=284.3 rankC=412.3 need=390034 tD=0.92 人 pulse | safe=855272 keep=Inf avail=-Inf chunkB=163371 pulseB=98023 价高(c>=worth)→break hNb=2
+    → [f] Mean Little Girl#30[T1] terr=16294 bal=2255095 dq=138.4 cnt=23 | c=920.0 rankC=1334.0 need=3776609 tD=1.73 人 pulse crowdedHard | safe=855272 keep=Inf avail=-Inf chunkB=163371 pulseB=98023 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3785 sora_w B=816856 L=9719 d=84.0 nb=2 neut=0 cmds=69 noFull=1 shQ=204214 | m=0.900 worth=75.6 cheap=8.2 over=0 dMedOther=80.2 safe(-1)=855272
+    → [f] Mean Little Girl#30[T1] terr=16292 bal=2254653 dq=138.4 cnt=23 | c=209.1 rankC=77.8 need=3777092 tD=1.73 人 pulse crowdedHard | safe=855272 keep=Inf avail=-Inf chunkB=163371 pulseB=98023 价高(c>=worth)→break hNb=2
+    → [cat] 57#36[T1] terr=4205 bal=307023 dq=73.0 cnt=202 | c=194.3 rankC=194.3 need=377883 tD=0.91 人 pulse | safe=855272 keep=Inf avail=-Inf chunkB=163371 pulseB=98023 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3790 sora_w B=825924 L=9713 d=85.0 nb=3 neut=0 cmds=69 noFull=1 shQ=206481 | m=0.900 worth=76.5 cheap=8.2 over=0 dMedOther=81.3 safe(-1)=854744
+    → [f] Mean Little Girl#30[T1] terr=16281 bal=2258974 dq=138.7 cnt=23 | c=209.9 rankC=78.1 need=3784824 tD=1.71 人 pulse crowdedHard | safe=854744 keep=Inf avail=-Inf chunkB=165185 pulseB=99111 价高(c>=worth)→break hNb=3
+    → [PL] AdiM#7[T3] terr=20675 bal=1433817 dq=69.4 cnt=4 | c=172.7 rankC=172.7 need=2665800 tD=0.85 人 pulse onMe | safe=854744 keep=Inf avail=-Inf chunkB=165185 pulseB=99111 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=4205 bal=310523 dq=73.8 cnt=202 | c=196.4 rankC=196.4 need=383324 tD=0.91 人 pulse | safe=854744 keep=Inf avail=-Inf chunkB=165185 pulseB=99111 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3795 sora_w B=824157 L=9700 d=85.0 nb=3 neut=0 cmds=69 noFull=1 shQ=206039 | m=0.900 worth=76.5 cheap=8.2 over=0 dMedOther=81.3 safe(-1)=853600
+    → [f] Mean Little Girl#30[T1] terr=16264 bal=2255203 dq=138.7 cnt=23 | c=210.1 rankC=78.2 need=3778849 tD=1.71 人 pulse crowdedHard | safe=853600 keep=Inf avail=-Inf chunkB=164831 pulseB=98899 价高(c>=worth)→break hNb=3
+    → [PL] AdiM#7[T3] terr=20680 bal=1432932 dq=69.3 cnt=7 | c=172.3 rankC=172.3 need=2660893 tD=0.85 人 pulse bleeding onMe | safe=853600 keep=Inf avail=-Inf chunkB=164831 pulseB=98899 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=4205 bal=310523 dq=73.8 cnt=202 | c=196.4 rankC=196.4 need=384330 tD=0.91 人 pulse | safe=853600 keep=Inf avail=-Inf chunkB=164831 pulseB=98899 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3800 sora_w B=838837 L=9664 d=86.8 nb=3 neut=0 cmds=69 noFull=1 shQ=207829 | m=0.900 worth=78.1 cheap=8.2 over=0 dMedOther=83.4 safe(-1)=850432
+    → [f] Mean Little Girl#30[T1] terr=16250 bal=2275105 dq=140.0 cnt=23 | c=212.5 rankC=79.1 need=3812084 tD=1.68 人 pulse crowdedHard | safe=850432 keep=Inf avail=-Inf chunkB=167767 pulseB=100660 价高(c>=worth)→break hNb=3
+    → [PL] AdiM#7[T3] terr=20716 bal=1472405 dq=71.1 cnt=14 | c=175.8 rankC=175.8 need=2722343 tD=0.85 人 pulse onMe | safe=850432 keep=Inf avail=-Inf chunkB=167767 pulseB=100660 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=4208 bal=318268 dq=75.6 cnt=202 | c=201.0 rankC=201.0 need=395137 tD=0.91 人 pulse | safe=850432 keep=Inf avail=-Inf chunkB=167767 pulseB=100660 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3805 sora_w B=833981 L=9629 d=86.6 nb=3 neut=0 cmds=69 noFull=1 shQ=208495 | m=0.900 worth=78.0 cheap=8.2 over=0 dMedOther=83.4 safe(-1)=847352
+    → [f] Mean Little Girl#30[T1] terr=16226 bal=2269733 dq=139.9 cnt=23 | c=212.8 rankC=79.2 need=3802446 tD=1.68 人 pulse crowdedHard | safe=847352 keep=Inf avail=-Inf chunkB=166796 pulseB=100078 价高(c>=worth)→break hNb=3
+    → [PL] AdiM#7[T3] terr=20751 bal=1308486 dq=63.1 cnt=18 | c=156.0 rankC=156.0 need=2420720 tD=0.76 人 pulse onMe | safe=847352 keep=Inf avail=-Inf chunkB=166796 pulseB=100078 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=4210 bal=318268 dq=75.6 cnt=202 | c=200.8 rankC=200.8 need=396353 tD=0.91 人 pulse | safe=847352 keep=Inf avail=-Inf chunkB=166796 pulseB=100078 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3810 sora_w B=834551 L=9561 d=87.3 nb=3 neut=0 cmds=69 noFull=1 shQ=208637 | m=0.900 worth=78.6 cheap=8.2 over=0 dMedOther=84.6 safe(-1)=841368
+    → [PL] AdiM#7[T3] terr=20819 bal=1325627 dq=63.7 cnt=24 | c=156.2 rankC=156.2 need=2432344 tD=0.75 人 pulse onMe | safe=841368 keep=Inf avail=-Inf chunkB=166910 pulseB=100146 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=16208 bal=2271823 dq=140.2 cnt=23 | c=314.2 rankC=188.5 need=3805929 tD=1.66 人 pulse crowdedHard | safe=841368 keep=Inf avail=-Inf chunkB=166910 pulseB=100146 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=4213 bal=321896 dq=76.4 cnt=202 | c=202.8 rankC=202.8 need=402322 tD=0.90 人 pulse bleeding | safe=841368 keep=Inf avail=-Inf chunkB=166910 pulseB=100146 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3815 sora_w B=826738 L=9505 d=87.0 nb=3 neut=0 cmds=69 noFull=1 shQ=206684 | m=0.900 worth=78.3 cheap=8.2 over=0 dMedOther=88.1 safe(-1)=836440
+    → [PL] AdiM#7[T3] terr=20875 bal=1325627 dq=63.5 cnt=29 | c=154.8 rankC=154.8 need=2416690 tD=0.72 人 pulse onMe | safe=836440 keep=Inf avail=-Inf chunkB=165348 pulseB=99209 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=16189 bal=2267565 dq=140.1 cnt=23 | c=314.6 rankC=188.8 need=3798531 tD=1.59 人 pulse crowdedHard | safe=836440 keep=Inf avail=-Inf chunkB=165348 pulseB=99209 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=4213 bal=386951 dq=91.8 cnt=202 | c=242.3 rankC=242.3 need=483893 tD=1.04 人 pulse bleeding | safe=836440 keep=Inf avail=-Inf chunkB=165348 pulseB=99209 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3820 sora_w B=825452 L=9443 d=87.4 nb=3 neut=0 cmds=69 noFull=1 shQ=206363 | m=0.900 worth=78.7 cheap=8.2 over=0 dMedOther=89.1 safe(-1)=830984
+    → [f] Mean Little Girl#30[T1] terr=16182 bal=2271888 dq=140.4 cnt=23 | c=315.5 rankC=189.3 need=3806350 tD=1.57 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=165090 pulseB=99054 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=4138 bal=380258 dq=91.9 cnt=202 | c=242.8 rankC=242.8 need=468480 tD=1.03 人 pulse bleeding | safe=830984 keep=Inf avail=-Inf chunkB=165090 pulseB=99054 价高(c>=worth)→break hNb=3
+    → [PL] AdiM#7[T3] terr=20937 bal=1342992 dq=64.1 cnt=32 | c=224.5 rankC=325.5 need=2425127 tD=0.72 人 pulse | safe=830984 keep=Inf avail=-Inf chunkB=165090 pulseB=99054 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3825 sora_w B=825452 L=9443 d=87.4 nb=3 neut=0 cmds=69 noFull=1 shQ=206363 | m=0.900 worth=78.7 cheap=8.2 over=0 dMedOther=89.0 safe(-1)=830984
+    → [f] Mean Little Girl#30[T1] terr=16168 bal=2268746 dq=140.3 cnt=23 | c=315.8 rankC=189.5 need=3801195 tD=1.58 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=165090 pulseB=99054 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=4088 bal=372923 dq=91.2 cnt=202 | c=241.2 rankC=241.2 need=454967 tD=1.02 人 pulse bleeding | safe=830984 keep=Inf avail=-Inf chunkB=165090 pulseB=99054 价高(c>=worth)→break hNb=3
+    → [PL] AdiM#7[T3] terr=20937 bal=1342992 dq=64.1 cnt=32 | c=224.5 rankC=325.5 need=2425127 tD=0.72 人 pulse | safe=830984 keep=Inf avail=-Inf chunkB=165090 pulseB=99054 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3830 sora_w B=835439 L=9443 d=88.5 nb=3 neut=0 cmds=69 noFull=1 shQ=208859 | m=0.900 worth=79.6 cheap=8.2 over=0 dMedOther=90.1 safe(-1)=830984
+    → [PL] AdiM#7[T3] terr=20937 bal=1360585 dq=65.0 cnt=32 | c=156.8 rankC=156.8 need=2456484 tD=0.72 人 pulse | safe=830984 keep=Inf avail=-Inf chunkB=167088 pulseB=100253 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=16156 bal=2271719 dq=140.6 cnt=23 | c=316.9 rankC=190.1 need=3806382 tD=1.56 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=167088 pulseB=100253 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=4017 bal=366661 dq=91.3 cnt=202 | c=241.4 rankC=241.4 need=440275 tD=1.01 人 pulse | safe=830984 keep=Inf avail=-Inf chunkB=167088 pulseB=100253 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3835 sora_w B=835439 L=9443 d=88.5 nb=3 neut=0 cmds=69 noFull=1 shQ=208859 | m=0.900 worth=79.6 cheap=8.2 over=0 dMedOther=89.9 safe(-1)=830984
+    → [PL] AdiM#7[T3] terr=20936 bal=1360482 dq=65.0 cnt=32 | c=156.8 rankC=156.8 need=2456276 tD=0.72 人 pulse bleeding | safe=830984 keep=Inf avail=-Inf chunkB=167088 pulseB=100253 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=16134 bal=2266773 dq=140.5 cnt=23 | c=317.3 rankC=190.4 need=3797605 tD=1.56 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=167088 pulseB=100253 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=3976 bal=360684 dq=90.7 cnt=202 | c=239.9 rankC=239.9 need=429504 tD=1.01 人 pulse | safe=830984 keep=Inf avail=-Inf chunkB=167088 pulseB=100253 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3840 sora_w B=845547 L=9443 d=89.5 nb=3 neut=0 cmds=69 noFull=1 shQ=211386 | m=0.900 worth=80.6 cheap=8.2 over=0 dMedOther=90.9 safe(-1)=830984
+    → [PL] AdiM#7[T3] terr=20930 bal=1377674 dq=65.8 cnt=32 | c=158.8 rankC=158.8 need=2486862 tD=0.72 人 pulse bleeding | safe=830984 keep=Inf avail=-Inf chunkB=169109 pulseB=101466 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=16117 bal=2268610 dq=140.8 cnt=23 | c=318.5 rankC=191.1 need=3800513 tD=1.55 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=169109 pulseB=101466 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=3919 bal=356386 dq=90.9 cnt=202 | c=240.6 rankC=240.6 need=418976 tD=1.00 人 pulse | safe=830984 keep=Inf avail=-Inf chunkB=169109 pulseB=101466 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3845 sora_w B=845547 L=9443 d=89.5 nb=3 neut=0 cmds=69 noFull=1 shQ=211386 | m=0.900 worth=80.6 cheap=8.2 over=0 dMedOther=90.4 safe(-1)=830984
+    → [PL] AdiM#7[T3] terr=20907 bal=1222151 dq=58.5 cnt=32 | c=124.4 rankC=124.4 need=2209322 tD=0.65 人 pulse bleeding agg | safe=830984 keep=Inf avail=-Inf chunkB=169109 pulseB=101466 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=16088 bal=2262083 dq=140.6 cnt=23 | c=319.1 rankC=191.5 need=3788562 tD=1.55 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=169109 pulseB=101466 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=3883 bal=351158 dq=90.4 cnt=202 | c=239.3 rankC=239.3 need=409721 tD=1.00 人 pulse bleeding | safe=830984 keep=Inf avail=-Inf chunkB=169109 pulseB=101466 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3850 sora_w B=855778 L=9443 d=90.6 nb=3 neut=0 cmds=69 noFull=1 shQ=213944 | m=0.900 worth=81.6 cheap=8.2 over=0 dMedOther=91.1 safe(-1)=830984
+    → [PL] AdiM#7[T3] terr=20888 bal=1236361 dq=59.2 cnt=32 | c=126.0 rankC=126.0 need=2234299 tD=0.65 人 pulse bleeding agg | safe=830984 keep=Inf avail=-Inf chunkB=171156 pulseB=102693 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=16067 bal=2263004 dq=140.8 cnt=23 | c=320.4 rankC=192.2 need=3789632 tD=1.55 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=171156 pulseB=102693 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=3866 bal=352252 dq=91.1 cnt=202 | c=241.1 rankC=241.1 need=410142 tD=1.00 人 pulse bleeding | safe=830984 keep=Inf avail=-Inf chunkB=171156 pulseB=102693 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3855 sora_w B=855778 L=9443 d=90.6 nb=3 neut=0 cmds=69 noFull=1 shQ=213944 | m=0.900 worth=81.6 cheap=8.2 over=0 dMedOther=86.0 safe(-1)=830984
+    → [PL] AdiM#7[T3] terr=20872 bal=1234848 dq=59.2 cnt=32 | c=125.9 rankC=125.9 need=2231326 tD=0.69 人 pulse bleeding agg | safe=830984 keep=Inf avail=-Inf chunkB=171156 pulseB=102693 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=16033 bal=2255348 dq=140.7 cnt=23 | c=321.1 rankC=192.7 need=3775414 tD=1.63 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=171156 pulseB=102693 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=3676 bal=324838 dq=88.4 cnt=202 | c=235.0 rankC=235.0 need=356326 tD=1.03 人 pulse bleeding | safe=830984 keep=Inf avail=-Inf chunkB=171156 pulseB=102693 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3860 sora_w B=866132 L=9443 d=91.7 nb=3 neut=0 cmds=69 noFull=1 shQ=216533 | m=0.900 worth=82.5 cheap=8.2 over=0 dMedOther=87.2 safe(-1)=830984
+    → [PL] AdiM#7[T3] terr=20865 bal=1250354 dq=59.9 cnt=32 | c=127.5 rankC=127.5 need=2258876 tD=0.69 人 pulse bleeding agg | safe=830984 keep=Inf avail=-Inf chunkB=173226 pulseB=103936 价高(c>=worth)→break hNb=3
+    → [cat] 57#36[T1] terr=3546 bal=309993 dq=87.4 cnt=202 | c=338.2 rankC=490.4 need=324653 tD=1.00 人 pulse bleeding | safe=830984 keep=Inf avail=-Inf chunkB=173226 pulseB=103936 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=16020 bal=2256008 dq=140.8 cnt=23 | c=924.0 rankC=1339.8 need=3776667 tD=1.61 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=173226 pulseB=103936 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3865 sora_w B=866132 L=9443 d=91.7 nb=3 neut=0 cmds=69 noFull=1 shQ=216533 | m=0.900 worth=82.5 cheap=8.2 over=0 dMedOther=84.3 safe(-1)=830984
+    → [cat] 57#36[T1] terr=3343 bal=281940 dq=84.3 cnt=202 | c=81.8 rankC=40.9 need=269586 tD=1.00 人 pulse nearCollapse bleeding | safe=830984 keep=855983 avail=0 chunkB=173226 pulseB=103936 无可用(avail<=0) hNb=3
+    → [PL] AdiM#7[T3] terr=20858 bal=1249678 dq=59.9 cnt=32 | c=127.5 rankC=127.5 need=2257683 tD=0.71 人 pulse agg | safe=830984 keep=Inf avail=-Inf chunkB=173226 pulseB=103936 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=16020 bal=2256008 dq=140.8 cnt=23 | c=637.1 rankC=637.1 need=3777831 tD=1.67 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=173226 pulseB=103936 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3870 sora_w B=876612 L=9443 d=92.8 nb=3 neut=0 cmds=69 noFull=1 shQ=219153 | m=0.900 worth=83.5 cheap=8.2 over=0 dMedOther=84.8 safe(-1)=830984
+    → [cat] 57#36[T1] terr=3211 bal=260962 dq=81.3 cnt=202 | c=78.7 rankC=39.3 need=232422 tD=0.96 人 pulse nearCollapse bleeding | safe=830984 keep=846997 avail=19343 chunkB=175322 pulseB=105193 低于最小指令(x=19343<41088)→continue hNb=3
+    → [PL] AdiM#7[T3] terr=20865 bal=1266048 dq=60.7 cnt=32 | c=129.1 rankC=129.1 need=2287096 tD=0.72 人 pulse agg | safe=830984 keep=Inf avail=-Inf chunkB=175322 pulseB=105193 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=16020 bal=2261422 dq=141.2 cnt=23 | c=638.6 rankC=638.6 need=3788010 tD=1.66 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=175322 pulseB=105193 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3875 sora_w B=876612 L=9443 d=92.8 nb=3 neut=0 cmds=69 noFull=1 shQ=219153 | m=0.900 worth=83.5 cheap=8.2 over=0 dMedOther=84.5 safe(-1)=830984
+    → [cat] 57#36[T1] terr=3153 bal=253454 dq=80.4 cnt=202 | c=79.8 rankC=39.9 need=218563 tD=0.95 人 pulse nearCollapse bleeding | safe=830984 keep=852565 avail=13775 chunkB=175322 pulseB=105193 低于最小指令(x=13775<41088)→continue hNb=3
+    → [PL] AdiM#7[T3] terr=20876 bal=1266048 dq=60.6 cnt=32 | c=129.0 rankC=129.0 need=2287438 tD=0.72 人 pulse agg | safe=830984 keep=Inf avail=-Inf chunkB=175322 pulseB=105193 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=16020 bal=2261422 dq=141.2 cnt=23 | c=638.5 rankC=638.5 need=3789175 tD=1.67 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=175322 pulseB=105193 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3880 sora_w B=887219 L=9443 d=94.0 nb=3 neut=0 cmds=69 noFull=1 shQ=221804 | m=0.900 worth=84.6 cheap=8.2 over=0 dMedOther=85.3 safe(-1)=830984
+    → [cat] 57#36[T1] terr=3072 bal=245826 dq=80.0 cnt=202 | c=83.4 rankC=41.7 need=201401 tD=0.94 人 pulse nearCollapse bleeding | safe=830984 keep=875968 avail=854 chunkB=177444 pulseB=106466 低于最小指令(x=854<41588)→continue hNb=3
+    → [PL] AdiM#7[T3] terr=20890 bal=1282633 dq=61.4 cnt=32 | c=130.6 rankC=130.6 need=2317408 tD=0.72 人 pulse agg | safe=830984 keep=Inf avail=-Inf chunkB=177444 pulseB=106466 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=16020 bal=2266623 dq=141.5 cnt=23 | c=639.8 rankC=639.8 need=3799007 tD=1.66 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=177444 pulseB=106466 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3885 sora_w B=887219 L=9443 d=94.0 nb=3 neut=0 cmds=69 noFull=1 shQ=221804 | m=0.900 worth=84.6 cheap=8.2 over=0 dMedOther=85.1 safe(-1)=830984
+    → [cat] 57#36[T1] terr=2979 bal=234013 dq=78.6 cnt=202 | c=82.5 rankC=41.3 need=178881 tD=0.92 人 pulse nearCollapse bleeding | safe=830984 keep=871550 avail=5272 chunkB=177444 pulseB=106466 低于最小指令(x=5272<41588)→continue hNb=3
+    → [PL] AdiM#7[T3] terr=20900 bal=1282633 dq=61.4 cnt=32 | c=130.5 rankC=130.5 need=2317467 tD=0.72 人 pulse agg | safe=830984 keep=Inf avail=-Inf chunkB=177444 pulseB=106466 价高(c>=worth)→break hNb=3
+    → [f] Mean Little Girl#30[T1] terr=16020 bal=2266623 dq=141.5 cnt=23 | c=639.7 rankC=639.7 need=3800173 tD=1.66 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=177444 pulseB=106466 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3890 sora_w B=897954 L=9443 d=95.1 nb=4 neut=0 cmds=69 noFull=1 shQ=224488 | m=0.900 worth=85.6 cheap=8.2 over=0 dMedOther=85.9 safe(-1)=830984
+    → [cat] 57#36[T1] terr=2874 bal=223366 dq=77.7 cnt=198 | c=85.3 rankC=42.7 need=155493 tD=0.91 人 pulse nearCollapse bleeding | safe=830984 keep=887432 avail=0 chunkB=179591 pulseB=107754 无可用(avail<=0) hNb=4
+    → [f] Mean Little Girl#30[T1] terr=16020 bal=2271609 dq=141.8 cnt=23 | c=214.6 rankC=79.8 need=3809653 tD=1.65 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=179591 pulseB=107754 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20926 bal=1180153 dq=56.4 cnt=32 | c=120.1 rankC=120.1 need=2134890 tD=0.66 人 pulse agg | safe=830984 keep=Inf avail=-Inf chunkB=179591 pulseB=107754 价高(c>=worth)→break hNb=4
+    → [ANTI-OG]#1[T3] terr=36167 bal=1862587 dq=51.5 cnt=4 | c=224.5 rankC=224.5 need=3374111 tD=0.60 人 pulse | safe=830984 keep=Inf avail=-Inf chunkB=179591 pulseB=107754 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=3895 sora_w B=897954 L=9443 d=95.1 nb=4 neut=0 cmds=70 noFull=1 shQ=224488 | m=0.900 worth=85.6 cheap=8.2 over=0 dMedOther=85.7 safe(-1)=830984
+    → [cat] 57#36[T1] terr=2769 bal=180224 dq=65.1 cnt=189 | c=68.6 rankC=34.3 need=112309 tD=0.76 人 pulse nearCollapse bleeding | safe=830984 keep=830984 avail=56448 chunkB=179591 pulseB=107754  x=56448 hNb=4
+    → [f] Mean Little Girl#30[T1] terr=16011 bal=2269569 dq=141.8 cnt=23 | c=214.7 rankC=79.9 need=3806721 tD=1.65 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=179591 pulseB=107754 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20935 bal=1180156 dq=56.4 cnt=32 | c=120.1 rankC=120.1 need=2134929 tD=0.66 人 pulse bleeding agg | safe=830984 keep=Inf avail=-Inf chunkB=179591 pulseB=107754 价高(c>=worth)→break hNb=4
+    → [ANTI-OG]#1[T3] terr=36229 bal=1862587 dq=51.4 cnt=13 | c=224.1 rankC=224.1 need=3374167 tD=0.60 人 pulse | safe=830984 keep=Inf avail=-Inf chunkB=179591 pulseB=107754 价高(c>=worth)→break hNb=4
+    ⇒ 影子指令 attack pct=64 → [cat] 57#36[T1]（约 56999 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=3900 sora_w B=918262 L=9443 d=97.2 nb=4 neut=0 cmds=71 noFull=1 shQ=227265 | m=0.900 worth=87.5 cheap=8.2 over=0 dMedOther=87.8 safe(-1)=830984
+    → [cat] 57#36[T1] terr=2663 bal=173804 dq=65.3 cnt=185 | c=74.4 rankC=37.2 need=94148 tD=0.74 人 pulse nearCollapse bleeding | safe=830984 keep=847289 avail=60213 chunkB=183652 pulseB=110191  x=60213 hNb=4
+    → [f] Mean Little Girl#30[T1] terr=15995 bal=2286922 dq=143.0 cnt=23 | c=217.0 rankC=80.7 need=3835591 tD=1.63 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=183652 pulseB=110191 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20926 bal=1215715 dq=58.1 cnt=32 | c=123.7 rankC=123.7 need=2198109 tD=0.66 人 pulse bleeding agg | safe=830984 keep=Inf avail=-Inf chunkB=183652 pulseB=110191 价高(c>=worth)→break hNb=4
+    → [ANTI-OG]#1[T3] terr=36265 bal=1925114 dq=53.1 cnt=17 | c=231.2 rankC=231.2 need=3485667 tD=0.60 人 pulse | safe=830984 keep=Inf avail=-Inf chunkB=183652 pulseB=110191 价高(c>=worth)→break hNb=4
+    ⇒ 影子指令 attack pct=67 → [cat] 57#36[T1]（约 60978 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=3905 sora_w B=918262 L=9443 d=97.2 nb=4 neut=0 cmds=72 noFull=1 shQ=229565 | m=0.900 worth=87.5 cheap=8.2 over=0 dMedOther=87.8 safe(-1)=830984
+    → [cat] 57#36[T1] terr=2568 bal=163975 dq=63.9 cnt=180 | c=74.3 rankC=37.2 need=75637 tD=0.73 人 pulse nearCollapse bleeding | safe=830984 keep=846995 avail=60507 chunkB=183652 pulseB=110191  x=60507 hNb=4
+    → [PL] AdiM#7[T3] terr=20911 bal=1214322 dq=58.1 cnt=32 | c=123.6 rankC=123.6 need=2195376 tD=0.66 人 pulse bleeding agg | safe=830984 keep=Inf avail=-Inf chunkB=183652 pulseB=110191 价高(c>=worth)→break hNb=4
+    → [f] Mean Little Girl#30[T1] terr=15959 bal=2278692 dq=142.8 cnt=23 | c=319.9 rankC=192.0 need=3820236 tD=1.63 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=183652 pulseB=110191 价高(c>=worth)→break hNb=4
+    → [ANTI-OG]#1[T3] terr=36318 bal=1925114 dq=53.0 cnt=22 | c=230.8 rankC=230.8 need=3485766 tD=0.60 人 pulse | safe=830984 keep=Inf avail=-Inf chunkB=183652 pulseB=110191 价高(c>=worth)→break hNb=4
+    ⇒ 影子指令 attack pct=67 → [cat] 57#36[T1]（约 60978 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=3910 sora_w B=859489 L=9443 d=91.0 nb=4 neut=0 cmds=72 noFull=1 shQ=161750 | m=0.900 worth=81.9 cheap=8.2 over=0 dMedOther=81.3 safe(-1)=830984
+    → [cat] 57#36[T1] terr=2482 bal=156975 dq=63.2 cnt=177 | c=13.2 rankC=6.6 need=1924 tD=0.78 人 pulse nearCollapse bleeding | safe=802655 keep=802655 avail=46762 chunkB=171898 pulseB=103139 在途(curAtk=58288)→continue hNb=4
+    → [PL] AdiM#7[T3] terr=20891 bal=1228348 dq=58.8 cnt=32 | c=125.1 rankC=125.1 need=2220005 tD=0.72 人 pulse bleeding agg | safe=830984 keep=Inf avail=-Inf chunkB=171898 pulseB=103139 价高(c>=worth)→break hNb=4
+    → [ANTI-OG]#1[T3] terr=36356 bal=1952258 dq=53.7 cnt=25 | c=129.8 rankC=129.8 need=3534165 tD=0.66 人 pulse | safe=830984 keep=Inf avail=-Inf chunkB=171898 pulseB=103139 价高(c>=worth)→break hNb=4
+    → [f] Mean Little Girl#30[T1] terr=15930 bal=2276386 dq=142.9 cnt=23 | c=321.1 rankC=192.7 need=3815303 tD=1.76 人 pulse crowdedHard | safe=830984 keep=Inf avail=-Inf chunkB=171898 pulseB=103139 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=3915 sora_w B=730441 L=9616 d=76.0 nb=4 neut=0 cmds=72 noFull=1 shQ=173965 | m=0.900 worth=68.4 cheap=8.2 over=0 dMedOther=81.3 safe(-1)=846208
+    → [ANTI-OG]#1[T3] terr=36410 bal=1952258 dq=53.6 cnt=33 | c=129.5 rankC=129.5 need=3534285 tD=0.66 人 pulse | safe=846208 keep=Inf avail=-Inf chunkB=146088 pulseB=87653 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20881 bal=1227408 dq=58.8 cnt=32 | c=142.1 rankC=142.1 need=2218273 tD=0.72 人 pulse bleeding | safe=846208 keep=Inf avail=-Inf chunkB=146088 pulseB=87653 价高(c>=worth)→break hNb=4
+    → [f] Mean Little Girl#30[T1] terr=15881 bal=2265193 dq=142.6 cnt=23 | c=322.1 rankC=193.3 need=3793996 tD=1.76 人 pulse crowdedHard | safe=846208 keep=Inf avail=-Inf chunkB=146088 pulseB=87653 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=3920 sora_w B=739279 L=9934 d=74.4 nb=3 neut=148 cmds=72 noFull=1 shQ=184819 | m=0.900 worth=73.1 cheap=8.2 over=0 dMedOther=95.6 safe(-1)=874192
+    → [f] Mean Little Girl#30[T1] terr=15841 bal=2260582 dq=142.7 cnt=24 | c=323.7 rankC=194.2 need=3784358 tD=1.49 人 pulse crowdedHard | safe=874192 keep=Inf avail=-Inf chunkB=147856 pulseB=88713 价高(c>=worth)→break hNb=3
+    → [ANTI-OG]#1[T3] terr=36441 bal=1979784 dq=54.3 cnt=35 | c=190.2 rankC=275.8 need=3583373 tD=0.57 人 pulse | safe=874192 keep=Inf avail=-Inf chunkB=147856 pulseB=88713 价高(c>=worth)→break hNb=3
+    → [PL] AdiM#7[T3] terr=20870 bal=1242439 dq=59.5 cnt=32 | c=208.6 rankC=302.5 need=2244889 tD=0.62 人 pulse bleeding | safe=874192 keep=Inf avail=-Inf chunkB=147856 pulseB=88713 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3925 sora_w B=739279 L=10081 d=73.3 nb=4 neut=122 cmds=72 noFull=1 shQ=184819 | m=0.900 worth=73.1 cheap=8.2 over=0 dMedOther=95.6 safe(-1)=887128
+    → [f] Mean Little Girl#30[T1] terr=15771 bal=2244614 dq=142.3 cnt=25 | c=325.3 rankC=195.2 need=3753463 tD=1.49 人 pulse crowdedHard | safe=887128 keep=Inf avail=-Inf chunkB=147856 pulseB=88713 价高(c>=worth)→break hNb=4
+    → [PL] AdiM#7[T3] terr=20870 bal=1128388 dq=54.1 cnt=32 | c=189.8 rankC=275.2 need=2041766 tD=0.57 人 pulse | safe=887128 keep=Inf avail=-Inf chunkB=147856 pulseB=88713 价高(c>=worth)→break hNb=4
+    → [ANTI-OG]#1[T3] terr=36486 bal=1979784 dq=54.3 cnt=37 | c=190.0 rankC=275.5 need=3583460 tD=0.57 人 pulse | safe=887128 keep=Inf avail=-Inf chunkB=147856 pulseB=88713 价高(c>=worth)→break hNb=4
+    → Italian empire#28[T3] terr=25108 bal=1376241 dq=54.8 cnt=15 | c=350.4 rankC=508.0 need=2444215 tD=0.57 人 pulse | safe=887128 keep=Inf avail=-Inf chunkB=147856 pulseB=88713 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=3930 sora_w B=748298 L=10428 d=71.8 nb=4 neut=100 cmds=72 noFull=1 shQ=187074 | m=0.900 worth=74.1 cheap=8.2 over=0 dMedOther=96.9 safe(-1)=917664
+    → [PL] AdiM#7[T3] terr=20878 bal=1143169 dq=54.8 cnt=32 | c=132.5 rankC=132.5 need=2068349 tD=0.57 人 pulse | safe=917664 keep=Inf avail=-Inf chunkB=149660 pulseB=89796 价高(c>=worth)→break hNb=4
+    → [ANTI-OG]#1[T3] terr=36516 bal=2007896 dq=55.0 cnt=40 | c=132.7 rankC=132.7 need=3633572 tD=0.57 人 pulse | safe=917664 keep=Inf avail=-Inf chunkB=149660 pulseB=89796 价高(c>=worth)→break hNb=4
+    → Italian empire#28[T3] terr=25201 bal=1476141 dq=58.6 cnt=26 | c=143.1 rankC=143.1 need=2621531 tD=0.60 人 pulse | safe=917664 keep=Inf avail=-Inf chunkB=149660 pulseB=89796 价高(c>=worth)→break hNb=4
+    → [f] Mean Little Girl#30[T1] terr=15771 bal=2246953 dq=142.5 cnt=26 | c=479.3 rankC=479.3 need=3758531 tD=1.47 人 pulse crowdedHard | safe=917664 keep=Inf avail=-Inf chunkB=149660 pulseB=89796 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=3935 sora_w B=748298 L=10614 d=70.5 nb=4 neut=70 cmds=72 noFull=1 shQ=187074 | m=0.900 worth=74.1 cheap=8.2 over=0 dMedOther=96.9 safe(-1)=934032
+    → [PL] AdiM#7[T3] terr=20884 bal=1143169 dq=54.7 cnt=32 | c=132.5 rankC=132.5 need=2068633 tD=0.56 人 pulse | safe=934032 keep=Inf avail=-Inf chunkB=149660 pulseB=89796 价高(c>=worth)→break hNb=4
+    → [ANTI-OG]#1[T3] terr=36559 bal=2007896 dq=54.9 cnt=42 | c=132.6 rankC=132.6 need=3633696 tD=0.57 人 pulse | safe=934032 keep=Inf avail=-Inf chunkB=149660 pulseB=89796 价高(c>=worth)→break hNb=4
+    → Italian empire#28[T3] terr=25242 bal=1476141 dq=58.5 cnt=34 | c=142.8 rankC=142.8 need=2622830 tD=0.60 人 pulse | safe=934032 keep=Inf avail=-Inf chunkB=149660 pulseB=89796 价高(c>=worth)→break hNb=4
+    → [f] Mean Little Girl#30[T1] terr=15771 bal=2246953 dq=142.5 cnt=27 | c=479.2 rankC=479.2 need=3759710 tD=1.47 人 pulse crowdedHard | safe=934032 keep=Inf avail=-Inf chunkB=149660 pulseB=89796 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=3940 sora_w B=757427 L=10785 d=70.2 nb=4 neut=32 cmds=72 noFull=1 shQ=189356 | m=0.900 worth=75.1 cheap=8.2 over=0 dMedOther=98.2 safe(-1)=949080
+    → [PL] AdiM#7[T3] terr=20892 bal=1158144 dq=55.4 cnt=32 | c=134.1 rankC=134.1 need=2095570 tD=0.56 人 pulse | safe=949080 keep=Inf avail=-Inf chunkB=151485 pulseB=90891 价高(c>=worth)→break hNb=4
+    → [ANTI-OG]#1[T3] terr=36587 bal=2036408 dq=55.7 cnt=45 | c=134.3 rankC=134.3 need=3684557 tD=0.57 人 pulse | safe=949080 keep=Inf avail=-Inf chunkB=151485 pulseB=90891 价高(c>=worth)→break hNb=4
+    → Italian empire#28[T3] terr=25275 bal=1495921 dq=59.2 cnt=52 | c=144.3 rankC=144.3 need=2658501 tD=0.60 人 pulse | safe=949080 keep=Inf avail=-Inf chunkB=151485 pulseB=90891 价高(c>=worth)→break hNb=4
+    → [f] Mean Little Girl#30[T1] terr=15771 bal=2251446 dq=142.8 cnt=28 | c=480.0 rankC=480.0 need=3768365 tD=1.45 人 pulse crowdedHard | safe=949080 keep=Inf avail=-Inf chunkB=151485 pulseB=90891 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=3945 sora_w B=757427 L=10843 d=69.9 nb=4 neut=22 cmds=72 noFull=1 shQ=189356 | m=0.900 worth=75.1 cheap=8.2 over=0 dMedOther=98.2 safe(-1)=954184
+    → [PL] AdiM#7[T3] terr=20899 bal=1158144 dq=55.4 cnt=32 | c=134.1 rankC=134.1 need=2095640 tD=0.56 人 pulse | safe=954184 keep=Inf avail=-Inf chunkB=151485 pulseB=90891 价高(c>=worth)→break hNb=4
+    → [ANTI-OG]#1[T3] terr=36625 bal=2036408 dq=55.6 cnt=47 | c=134.1 rankC=134.1 need=3684574 tD=0.57 人 pulse | safe=954184 keep=Inf avail=-Inf chunkB=151485 pulseB=90891 价高(c>=worth)→break hNb=4
+    → Italian empire#28[T3] terr=25281 bal=1495921 dq=59.2 cnt=55 | c=144.2 rankC=144.2 need=2658919 tD=0.60 人 pulse | safe=954184 keep=Inf avail=-Inf chunkB=151485 pulseB=90891 价高(c>=worth)→break hNb=4
+    → [f] Mean Little Girl#30[T1] terr=15771 bal=2251446 dq=142.8 cnt=28 | c=480.0 rankC=480.0 need=3769544 tD=1.45 人 pulse crowdedHard | safe=954184 keep=Inf avail=-Inf chunkB=151485 pulseB=90891 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=3950 sora_w B=766667 L=10903 d=70.3 nb=4 neut=18 cmds=72 noFull=1 shQ=191666 | m=0.900 worth=76.2 cheap=8.2 over=0 dMedOther=99.6 safe(-1)=959464
+    → [PL] AdiM#7[T3] terr=20916 bal=1173315 dq=56.1 cnt=36 | c=135.7 rankC=135.7 need=2122646 tD=0.56 人 pulse | safe=959464 keep=Inf avail=-Inf chunkB=153333 pulseB=92000 价高(c>=worth)→break hNb=4
+    → [ANTI-OG]#1[T3] terr=36647 bal=2065324 dq=56.4 cnt=50 | c=135.9 rankC=135.9 need=3736187 tD=0.57 人 pulse | safe=959464 keep=Inf avail=-Inf chunkB=153333 pulseB=92000 价高(c>=worth)→break hNb=4
+    → Italian empire#28[T3] terr=25285 bal=1652445 dq=65.4 cnt=58 | c=159.0 rankC=159.0 need=2933580 tD=0.66 人 pulse | safe=959464 keep=Inf avail=-Inf chunkB=153333 pulseB=92000 价高(c>=worth)→break hNb=4
+    → [f] Mean Little Girl#30[T1] terr=15771 bal=2255723 dq=143.0 cnt=28 | c=480.8 rankC=480.8 need=3777846 tD=1.44 人 pulse crowdedHard | safe=959464 keep=Inf avail=-Inf chunkB=153333 pulseB=92000 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=3955 sora_w B=766667 L=10940 d=70.1 nb=4 neut=17 cmds=72 noFull=1 shQ=191666 | m=0.900 worth=76.2 cheap=8.2 over=0 dMedOther=99.6 safe(-1)=962720
+    → [PL] AdiM#7[T3] terr=20934 bal=1173315 dq=56.0 cnt=37 | c=135.5 rankC=135.5 need=2122714 tD=0.56 人 pulse | safe=962720 keep=Inf avail=-Inf chunkB=153333 pulseB=92000 价高(c>=worth)→break hNb=4
+    → [ANTI-OG]#1[T3] terr=36674 bal=2065324 dq=56.3 cnt=52 | c=135.8 rankC=135.8 need=3736207 tD=0.57 人 pulse | safe=962720 keep=Inf avail=-Inf chunkB=153333 pulseB=92000 价高(c>=worth)→break hNb=4
+    → Italian empire#28[T3] terr=25285 bal=1652445 dq=65.4 cnt=58 | c=158.9 rankC=158.9 need=2933872 tD=0.66 人 pulse | safe=962720 keep=Inf avail=-Inf chunkB=153333 pulseB=92000 价高(c>=worth)→break hNb=4
+    → [f] Mean Little Girl#30[T1] terr=15771 bal=2255723 dq=143.0 cnt=28 | c=480.7 rankC=480.7 need=3779026 tD=1.44 人 pulse crowdedHard | safe=962720 keep=Inf avail=-Inf chunkB=153333 pulseB=92000 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=3960 sora_w B=776020 L=10991 d=70.6 nb=4 neut=9 cmds=72 noFull=1 shQ=194005 | m=0.900 worth=77.2 cheap=8.2 over=0 dMedOther=100.9 safe(-1)=967208
+    → [PL] AdiM#7[T3] terr=20967 bal=1188685 dq=56.7 cnt=38 | c=137.1 rankC=137.1 need=2150179 tD=0.56 人 pulse | safe=967208 keep=Inf avail=-Inf chunkB=155204 pulseB=93122 价高(c>=worth)→break hNb=4
+    → [ANTI-OG]#1[T3] terr=36681 bal=2094651 dq=57.1 cnt=55 | c=137.7 rankC=137.7 need=3788469 tD=0.57 人 pulse | safe=967208 keep=Inf avail=-Inf chunkB=155204 pulseB=93122 价高(c>=worth)→break hNb=4
+    → Italian empire#28[T3] terr=25285 bal=1674587 dq=66.2 cnt=58 | c=161.0 rankC=161.0 need=2972888 tD=0.66 人 pulse | safe=967208 keep=Inf avail=-Inf chunkB=155204 pulseB=93122 价高(c>=worth)→break hNb=4
+    → [f] Mean Little Girl#30[T1] terr=15771 bal=2259783 dq=143.3 cnt=28 | c=481.5 rankC=481.5 need=3786971 tD=1.42 人 pulse crowdedHard | safe=967208 keep=Inf avail=-Inf chunkB=155204 pulseB=93122 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令

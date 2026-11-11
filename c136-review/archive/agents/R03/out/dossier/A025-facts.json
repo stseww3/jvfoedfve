@@ -1,0 +1,3208 @@
+{
+ "matchId": "A025",
+ "land": 374820,
+ "humans": 12,
+ "nTeams": 2,
+ "nTeamsHeader": 2,
+ "teamSizes": [
+  0,
+  6,
+  6
+ ],
+ "myTeam": 1,
+ "squadInRoom": [
+  "alex_k",
+  "kaito9",
+  "leo_tx",
+  "riku_x",
+  "talon5",
+  "zexos1"
+ ],
+ "foreign": [
+  "ryan_m",
+  "sora_w",
+  "noah88"
+ ],
+ "version": "Vb",
+ "timeline": [
+  {
+   "t": 90,
+   "alive": 6,
+   "sqTerr": 241,
+   "sqSharePct": 0.06,
+   "sqBal": 3399,
+   "sqDens": 14.1,
+   "teamOnlineBal": {
+    "T1": 3399,
+    "T2": 2534
+   },
+   "teamOnlineHumans": {
+    "T1": 6,
+    "T2": 6
+   },
+   "teamSharePct": {
+    "T1": 0.1,
+    "T2": 0.2
+   },
+   "aiSharePct": 3.6,
+   "neutralSharePct": 96.1
+  },
+  {
+   "t": 180,
+   "alive": 6,
+   "sqTerr": 879,
+   "sqSharePct": 0.23,
+   "sqBal": 6504,
+   "sqDens": 7.4,
+   "teamOnlineBal": {
+    "T1": 6504,
+    "T2": 4570
+   },
+   "teamOnlineHumans": {
+    "T1": 6,
+    "T2": 6
+   },
+   "teamSharePct": {
+    "T1": 0.2,
+    "T2": 0.4
+   },
+   "aiSharePct": 6.8,
+   "neutralSharePct": 92.6
+  },
+  {
+   "t": 270,
+   "alive": 6,
+   "sqTerr": 1872,
+   "sqSharePct": 0.5,
+   "sqBal": 8375,
+   "sqDens": 4.5,
+   "teamOnlineBal": {
+    "T1": 8375,
+    "T2": 3678
+   },
+   "teamOnlineHumans": {
+    "T1": 6,
+    "T2": 5
+   },
+   "teamSharePct": {
+    "T1": 0.5,
+    "T2": 0.6
+   },
+   "aiSharePct": 11.3,
+   "neutralSharePct": 87.6
+  },
+  {
+   "t": 630,
+   "alive": 6,
+   "sqTerr": 14991,
+   "sqSharePct": 4.0,
+   "sqBal": 26568,
+   "sqDens": 1.8,
+   "teamOnlineBal": {
+    "T1": 26568,
+    "T2": 21777
+   },
+   "teamOnlineHumans": {
+    "T1": 6,
+    "T2": 5
+   },
+   "teamSharePct": {
+    "T1": 4.0,
+    "T2": 2.8
+   },
+   "aiSharePct": 64.7,
+   "neutralSharePct": 28.6
+  },
+  {
+   "t": 1080,
+   "alive": 5,
+   "sqTerr": 42571,
+   "sqSharePct": 11.36,
+   "sqBal": 71052,
+   "sqDens": 1.7,
+   "husks": {
+    "n": 1,
+    "terr": 894,
+    "sharePct": 0.24,
+    "bal": 24499
+   },
+   "teamOnlineBal": {
+    "T1": 71052,
+    "T2": 68873
+   },
+   "teamOnlineHumans": {
+    "T1": 5,
+    "T2": 5
+   },
+   "teamSharePct": {
+    "T1": 11.6,
+    "T2": 7.6
+   },
+   "aiSharePct": 78.2,
+   "neutralSharePct": 2.6
+  },
+  {
+   "t": 1530,
+   "alive": 5,
+   "sqTerr": 85772,
+   "sqSharePct": 22.88,
+   "sqBal": 399649,
+   "sqDens": 4.7,
+   "husks": {
+    "n": 1,
+    "terr": 1519,
+    "sharePct": 0.41,
+    "bal": 1527
+   },
+   "teamOnlineBal": {
+    "T1": 399649,
+    "T2": 221435
+   },
+   "teamOnlineHumans": {
+    "T1": 5,
+    "T2": 5
+   },
+   "teamSharePct": {
+    "T1": 23.3,
+    "T2": 18.5
+   },
+   "aiSharePct": 55.6,
+   "neutralSharePct": 2.7
+  },
+  {
+   "t": 2130,
+   "alive": 5,
+   "sqTerr": 145953,
+   "sqSharePct": 38.94,
+   "sqBal": 1237209,
+   "sqDens": 8.5,
+   "husks": {
+    "n": 1,
+    "terr": 1519,
+    "sharePct": 0.41,
+    "bal": 1531
+   },
+   "teamOnlineBal": {
+    "T1": 1237209,
+    "T2": 681037
+   },
+   "teamOnlineHumans": {
+    "T1": 5,
+    "T2": 5
+   },
+   "teamSharePct": {
+    "T1": 39.3,
+    "T2": 41.7
+   },
+   "aiSharePct": 16.8,
+   "neutralSharePct": 2.2
+  },
+  {
+   "t": 2700,
+   "alive": 5,
+   "sqTerr": 151870,
+   "sqSharePct": 40.52,
+   "sqBal": 3593950,
+   "sqDens": 23.7,
+   "husks": {
+    "n": 1,
+    "terr": 1519,
+    "sharePct": 0.41,
+    "bal": 1524
+   },
+   "teamOnlineBal": {
+    "T1": 3593950,
+    "T2": 2230938
+   },
+   "teamOnlineHumans": {
+    "T1": 5,
+    "T2": 5
+   },
+   "teamSharePct": {
+    "T1": 40.9,
+    "T2": 57.0
+   },
+   "aiSharePct": 0.8,
+   "neutralSharePct": 1.3
+  },
+  {
+   "t": 3060,
+   "alive": 5,
+   "sqTerr": 153341,
+   "sqSharePct": 40.91,
+   "sqBal": 4942804,
+   "sqDens": 32.2,
+   "husks": {
+    "n": 1,
+    "terr": 1519,
+    "sharePct": 0.41,
+    "bal": 1
+   },
+   "teamOnlineBal": {
+    "T1": 4942804,
+    "T2": 2978344
+   },
+   "teamOnlineHumans": {
+    "T1": 5,
+    "T2": 5
+   },
+   "teamSharePct": {
+    "T1": 41.3,
+    "T2": 56.8
+   },
+   "aiSharePct": 0.8,
+   "neutralSharePct": 1.1
+  },
+  {
+   "t": 3600,
+   "alive": 4,
+   "sqTerr": 177407,
+   "sqSharePct": 47.33,
+   "sqBal": 4710980,
+   "sqDens": 26.6,
+   "husks": {
+    "n": 2,
+    "terr": 14729,
+    "sharePct": 3.93,
+    "bal": 510613
+   },
+   "teamOnlineBal": {
+    "T1": 4710980,
+    "T2": 2015410
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 4
+   },
+   "teamSharePct": {
+    "T1": 51.3,
+    "T2": 47.1
+   },
+   "aiSharePct": 0.5,
+   "neutralSharePct": 1.1
+  },
+  {
+   "t": 4500,
+   "alive": 4,
+   "sqTerr": 305836,
+   "sqSharePct": 81.6,
+   "sqBal": 14167314,
+   "sqDens": 46.3,
+   "husks": {
+    "n": 2,
+    "terr": 19431,
+    "sharePct": 5.18,
+    "bal": 76794
+   },
+   "teamOnlineBal": {
+    "T1": 14167314,
+    "T2": 458810
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 1
+   },
+   "teamSharePct": {
+    "T1": 86.8,
+    "T2": 8.2
+   },
+   "aiSharePct": 0.6,
+   "neutralSharePct": 4.4
+  },
+  {
+   "t": 5400,
+   "alive": 4,
+   "sqTerr": 345005,
+   "sqSharePct": 92.05,
+   "sqBal": 40066945,
+   "sqDens": 116.1,
+   "husks": {
+    "n": 2,
+    "terr": 20035,
+    "sharePct": 5.35,
+    "bal": 20055
+   },
+   "teamOnlineBal": {
+    "T1": 40066945,
+    "T2": 529572
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 1
+   },
+   "teamSharePct": {
+    "T1": 97.4,
+    "T2": 1.0
+   },
+   "aiSharePct": 0.4,
+   "neutralSharePct": 1.2
+  },
+  {
+   "t": 6300,
+   "alive": 4,
+   "sqTerr": 347916,
+   "sqSharePct": 92.82,
+   "sqBal": 31011891,
+   "sqDens": 89.1,
+   "husks": {
+    "n": 2,
+    "terr": 20156,
+    "sharePct": 5.38,
+    "bal": 29410
+   },
+   "teamOnlineBal": {
+    "T1": 31011891,
+    "T2": 200000
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 1
+   },
+   "teamSharePct": {
+    "T1": 98.2,
+    "T2": 0.4
+   },
+   "aiSharePct": 0.6,
+   "neutralSharePct": 0.8
+  },
+  {
+   "t": 7200,
+   "alive": 4,
+   "sqTerr": 348519,
+   "sqSharePct": 92.98,
+   "sqBal": 37676695,
+   "sqDens": 108.1,
+   "husks": {
+    "n": 2,
+    "terr": 21201,
+    "sharePct": 5.66,
+    "bal": 24646
+   },
+   "teamOnlineBal": {
+    "T1": 37676695,
+    "T2": 41348
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 1
+   },
+   "teamSharePct": {
+    "T1": 98.6,
+    "T2": 0.3
+   },
+   "aiSharePct": 0.2,
+   "neutralSharePct": 0.8
+  },
+  {
+   "t": 8100,
+   "alive": 4,
+   "sqTerr": 350584,
+   "sqSharePct": 93.53,
+   "sqBal": 36156863,
+   "sqDens": 103.1,
+   "husks": {
+    "n": 2,
+    "terr": 21324,
+    "sharePct": 5.69,
+    "bal": 21271
+   },
+   "teamOnlineBal": {
+    "T1": 36156863,
+    "T2": 0
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 0
+   },
+   "teamSharePct": {
+    "T1": 99.2,
+    "T2": 0.0
+   },
+   "aiSharePct": 0.1,
+   "neutralSharePct": 0.7
+  },
+  {
+   "t": 9000,
+   "alive": 4,
+   "sqTerr": 351029,
+   "sqSharePct": 93.65,
+   "sqBal": 39317694,
+   "sqDens": 112.0,
+   "husks": {
+    "n": 2,
+    "terr": 21435,
+    "sharePct": 5.72,
+    "bal": 21450
+   },
+   "teamOnlineBal": {
+    "T1": 39317694,
+    "T2": 0
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 0
+   },
+   "teamSharePct": {
+    "T1": 99.4,
+    "T2": 0.0
+   },
+   "aiSharePct": 0.0,
+   "neutralSharePct": 0.6
+  },
+  {
+   "t": 10800,
+   "alive": 4,
+   "sqTerr": 352700,
+   "sqSharePct": 94.1,
+   "sqBal": 34805583,
+   "sqDens": 98.7,
+   "husks": {
+    "n": 2,
+    "terr": 21549,
+    "sharePct": 5.75,
+    "bal": 23280
+   },
+   "teamOnlineBal": {
+    "T1": 34805583,
+    "T2": 0
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 0
+   },
+   "teamSharePct": {
+    "T1": 99.8,
+    "T2": 0.0
+   },
+   "aiSharePct": 0.0,
+   "neutralSharePct": 0.2
+  },
+  {
+   "t": 12600,
+   "alive": 4,
+   "sqTerr": 353099,
+   "sqSharePct": 94.2,
+   "sqBal": 30651507,
+   "sqDens": 86.8,
+   "husks": {
+    "n": 2,
+    "terr": 21605,
+    "sharePct": 5.76,
+    "bal": 21605
+   },
+   "teamOnlineBal": {
+    "T1": 30651507,
+    "T2": 0
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 0
+   },
+   "teamSharePct": {
+    "T1": 100.0,
+    "T2": 0.0
+   },
+   "aiSharePct": 0.0,
+   "neutralSharePct": 0.0
+  },
+  {
+   "t": 14689,
+   "alive": 4,
+   "sqTerr": 353205,
+   "sqSharePct": 94.23,
+   "sqBal": 35952347,
+   "sqDens": 101.8,
+   "husks": {
+    "n": 2,
+    "terr": 21615,
+    "sharePct": 5.77,
+    "bal": 12
+   },
+   "teamOnlineBal": {
+    "T1": 35952347,
+    "T2": 0
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 0
+   },
+   "teamSharePct": {
+    "T1": 100.0,
+    "T2": 0.0
+   },
+   "aiSharePct": 0.0,
+   "neutralSharePct": 0.0
+  }
+ ],
+ "deaths": [
+  {
+   "bot": "zexos1",
+   "event": "end",
+   "localTick": 14689,
+   "lastLogTick": 14670,
+   "leftServerTick": null,
+   "deathServerTick": null,
+   "peakTerr": 245999,
+   "peakTick": 14669
+  },
+  {
+   "bot": "leo_tx",
+   "event": "end",
+   "localTick": 14689,
+   "lastLogTick": 14670,
+   "leftServerTick": null,
+   "deathServerTick": null,
+   "peakTerr": 34069,
+   "peakTick": 13240
+  },
+  {
+   "bot": "talon5",
+   "event": "end",
+   "localTick": 14689,
+   "lastLogTick": 14670,
+   "leftServerTick": null,
+   "deathServerTick": null,
+   "peakTerr": 10953,
+   "peakTick": 13450
+  },
+  {
+   "bot": "kaito9",
+   "event": "end",
+   "localTick": 14689,
+   "lastLogTick": 14670,
+   "leftServerTick": null,
+   "deathServerTick": null,
+   "peakTerr": 62184,
+   "peakTick": 7680
+  },
+  {
+   "bot": "riku_x",
+   "event": "left",
+   "localTick": 3472,
+   "lastLogTick": 3420,
+   "leftServerTick": 3570,
+   "deathServerTick": null,
+   "peakTerr": 20096,
+   "peakTick": 14080
+  },
+  {
+   "bot": "alex_k",
+   "event": "left",
+   "localTick": 308,
+   "lastLogTick": 270,
+   "leftServerTick": 931,
+   "deathServerTick": null,
+   "peakTerr": 1519,
+   "peakTick": 1260
+  }
+ ],
+ "drops": [
+  {
+   "bot": "kaito9",
+   "t0": 1620,
+   "t1": 1710,
+   "bal0": 40368,
+   "bal1": 11641,
+   "dropPct": 71.2,
+   "main": "攻AI",
+   "parts": {
+    "攻中立": 2365,
+    "攻AI": 77350
+   },
+   "cmds": 10,
+   "tilesGained": 5346,
+   "burnt": 21706,
+   "target": ""
+  },
+  {
+   "bot": "kaito9",
+   "t0": 3600,
+   "t1": 3690,
+   "bal0": 868076,
+   "bal1": 295452,
+   "dropPct": 66.0,
+   "main": "攻真人",
+   "parts": {
+    "攻真人": 640367,
+    "挨打": 9775
+   },
+   "cmds": 7,
+   "tilesGained": 13418,
+   "burnt": 406368,
+   "target": "对 Player 845#9T2"
+  },
+  {
+   "bot": "kaito9",
+   "t0": 5400,
+   "t1": 5490,
+   "bal0": 9061050,
+   "bal1": 5747039,
+   "dropPct": 36.6,
+   "main": "捐款",
+   "parts": {
+    "捐款": 10220223
+   },
+   "cmds": 3,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "kaito9",
+   "t0": 5760,
+   "t1": 5850,
+   "bal0": 9061050,
+   "bal1": 5840826,
+   "dropPct": 35.5,
+   "main": "捐款",
+   "parts": {
+    "捐款": 10220223,
+    "挨打": 456
+   },
+   "cmds": 3,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "kaito9",
+   "t0": 6120,
+   "t1": 6210,
+   "bal0": 8802563,
+   "bal1": 5999942,
+   "dropPct": 31.8,
+   "main": "捐款",
+   "parts": {
+    "捐款": 6721262
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "kaito9",
+   "t0": 6480,
+   "t1": 6570,
+   "bal0": 9061050,
+   "bal1": 4598073,
+   "dropPct": 49.3,
+   "main": "发船",
+   "parts": {
+    "攻真人": 1328601,
+    "捐款": 3406741,
+    "发船": 4610162,
+    "挨打": 7107
+   },
+   "cmds": 5,
+   "tilesGained": 35,
+   "burnt": 9580,
+   "target": ""
+  },
+  {
+   "bot": "kaito9",
+   "t0": 6750,
+   "t1": 6840,
+   "bal0": 9073200,
+   "bal1": 4013122,
+   "dropPct": 55.8,
+   "main": "捐款",
+   "parts": {
+    "捐款": 3421348,
+    "发船": 1730183
+   },
+   "cmds": 2,
+   "tilesGained": 177,
+   "burnt": 1638940,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "kaito9",
+   "t0": 6930,
+   "t1": 7020,
+   "bal0": 9089050,
+   "bal1": 4409644,
+   "dropPct": 51.5,
+   "main": "捐款",
+   "parts": {
+    "攻AI": 342508,
+    "攻真人": 1082250,
+    "捐款": 2613958,
+    "发船": 2102536,
+    "挨打": 5036
+   },
+   "cmds": 8,
+   "tilesGained": 208,
+   "burnt": 2906077,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "kaito9",
+   "t0": 7200,
+   "t1": 7290,
+   "bal0": 9151200,
+   "bal1": 5840772,
+   "dropPct": 36.2,
+   "main": "发船",
+   "parts": {
+    "捐款": 4658170,
+    "发船": 4740902
+   },
+   "cmds": 5,
+   "tilesGained": 181,
+   "burnt": 1971224,
+   "target": ""
+  },
+  {
+   "bot": "kaito9",
+   "t0": 7380,
+   "t1": 7470,
+   "bal0": 8377299,
+   "bal1": 4412842,
+   "dropPct": 47.3,
+   "main": "发船",
+   "parts": {
+    "捐款": 2400551,
+    "发船": 2797853
+   },
+   "cmds": 2,
+   "tilesGained": 195,
+   "burnt": 464654,
+   "target": ""
+  },
+  {
+   "bot": "kaito9",
+   "t0": 7830,
+   "t1": 7920,
+   "bal0": 9327600,
+   "bal1": 5916682,
+   "dropPct": 36.6,
+   "main": "捐款",
+   "parts": {
+    "捐款": 7013916
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "kaito9",
+   "t0": 8460,
+   "t1": 8550,
+   "bal0": 9327600,
+   "bal1": 5743373,
+   "dropPct": 38.4,
+   "main": "捐款",
+   "parts": {
+    "攻AI": 350909,
+    "捐款": 6911191,
+    "挨打": 479
+   },
+   "cmds": 5,
+   "tilesGained": 2,
+   "burnt": 569,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "kaito9",
+   "t0": 8910,
+   "t1": 9000,
+   "bal0": 9327600,
+   "bal1": 6076491,
+   "dropPct": 34.9,
+   "main": "捐款",
+   "parts": {
+    "捐款": 7013916
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "kaito9",
+   "t0": 9180,
+   "t1": 9270,
+   "bal0": 9327600,
+   "bal1": 5916682,
+   "dropPct": 36.6,
+   "main": "捐款",
+   "parts": {
+    "捐款": 7013916
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "kaito9",
+   "t0": 9900,
+   "t1": 9990,
+   "bal0": 9327600,
+   "bal1": 4353554,
+   "dropPct": 53.3,
+   "main": "捐款",
+   "parts": {
+    "捐款": 6087412
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "kaito9",
+   "t0": 10350,
+   "t1": 10440,
+   "bal0": 9327600,
+   "bal1": 6480555,
+   "dropPct": 30.5,
+   "main": "捐款",
+   "parts": {
+    "捐款": 7013916
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "kaito9",
+   "t0": 10980,
+   "t1": 11070,
+   "bal0": 9327600,
+   "bal1": 5916682,
+   "dropPct": 36.6,
+   "main": "捐款",
+   "parts": {
+    "捐款": 7013916
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "kaito9",
+   "t0": 11430,
+   "t1": 11520,
+   "bal0": 9041448,
+   "bal1": 6278669,
+   "dropPct": 30.6,
+   "main": "捐款",
+   "parts": {
+    "捐款": 8916425,
+    "发船": 291374
+   },
+   "cmds": 4,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "kaito9",
+   "t0": 12780,
+   "t1": 12870,
+   "bal0": 9327600,
+   "bal1": 6214416,
+   "dropPct": 33.4,
+   "main": "捐款",
+   "parts": {
+    "捐款": 7013916
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "kaito9",
+   "t0": 13230,
+   "t1": 13320,
+   "bal0": 9327600,
+   "bal1": 6278669,
+   "dropPct": 32.7,
+   "main": "捐款",
+   "parts": {
+    "捐款": 7013916
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "kaito9",
+   "t0": 13680,
+   "t1": 13770,
+   "bal0": 9327600,
+   "bal1": 4235554,
+   "dropPct": 54.6,
+   "main": "捐款",
+   "parts": {
+    "捐款": 9524429
+   },
+   "cmds": 3,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 900,
+   "t1": 990,
+   "bal0": 16532,
+   "bal1": 6583,
+   "dropPct": 60.2,
+   "main": "攻AI",
+   "parts": {
+    "攻AI": 17875
+   },
+   "cmds": 11,
+   "tilesGained": 1739,
+   "burnt": 5840,
+   "target": ""
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 1170,
+   "t1": 1260,
+   "bal0": 24121,
+   "bal1": 14918,
+   "dropPct": 38.2,
+   "main": "攻AI",
+   "parts": {
+    "攻AI": 27308
+   },
+   "cmds": 7,
+   "tilesGained": 1332,
+   "burnt": 6106,
+   "target": ""
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 1620,
+   "t1": 1710,
+   "bal0": 65958,
+   "bal1": 43143,
+   "dropPct": 34.6,
+   "main": "攻AI",
+   "parts": {
+    "攻中立": 3927,
+    "攻AI": 53534,
+    "挨打": 1110
+   },
+   "cmds": 12,
+   "tilesGained": 4945,
+   "burnt": 19580,
+   "target": ""
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 3240,
+   "t1": 3330,
+   "bal0": 1527303,
+   "bal1": 1056483,
+   "dropPct": 30.8,
+   "main": "捐款",
+   "parts": {
+    "捐款": 689096
+   },
+   "cmds": 1,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 5580,
+   "t1": 5670,
+   "bal0": 4990350,
+   "bal1": 3447885,
+   "dropPct": 30.9,
+   "main": "捐款",
+   "parts": {
+    "捐款": 1876253
+   },
+   "cmds": 1,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 5670,
+   "t1": 5760,
+   "bal0": 3447885,
+   "bal1": 1538873,
+   "dropPct": 55.4,
+   "main": "捐款",
+   "parts": {
+    "捐款": 2235852
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 5940,
+   "t1": 6030,
+   "bal0": 3571256,
+   "bal1": 1604254,
+   "dropPct": 55.1,
+   "main": "捐款",
+   "parts": {
+    "捐款": 2284792
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 6120,
+   "t1": 6210,
+   "bal0": 4990350,
+   "bal1": 3467743,
+   "dropPct": 30.5,
+   "main": "捐款",
+   "parts": {
+    "捐款": 1876253,
+    "发船": 101831
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 7290,
+   "t1": 7380,
+   "bal0": 3206324,
+   "bal1": 1438355,
+   "dropPct": 55.1,
+   "main": "捐款",
+   "parts": {
+    "捐款": 2101820
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1,kaito9"
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 9360,
+   "t1": 9450,
+   "bal0": 5089016,
+   "bal1": 3019950,
+   "dropPct": 40.7,
+   "main": "捐款",
+   "parts": {
+    "捐款": 1920863,
+    "发船": 302739
+   },
+   "cmds": 4,
+   "tilesGained": 92,
+   "burnt": 184,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "riku_x",
+   "t0": 900,
+   "t1": 990,
+   "bal0": 11616,
+   "bal1": 6386,
+   "dropPct": 45.0,
+   "main": "攻AI",
+   "parts": {
+    "攻中立": 475,
+    "攻AI": 10212
+   },
+   "cmds": 6,
+   "tilesGained": 1601,
+   "burnt": 8708,
+   "target": ""
+  },
+  {
+   "bot": "riku_x",
+   "t0": 3150,
+   "t1": 3240,
+   "bal0": 633775,
+   "bal1": 443552,
+   "dropPct": 30.0,
+   "main": "捐款",
+   "parts": {
+    "捐款": 257857
+   },
+   "cmds": 1,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 kaito9"
+  },
+  {
+   "bot": "talon5",
+   "t0": 3330,
+   "t1": 3420,
+   "bal0": 1060649,
+   "bal1": 352746,
+   "dropPct": 66.7,
+   "main": "捐款",
+   "parts": {
+    "攻真人": 320384,
+    "捐款": 712578
+   },
+   "cmds": 5,
+   "tilesGained": 134,
+   "burnt": 49820,
+   "target": "给 zexos1,kaito9"
+  },
+  {
+   "bot": "talon5",
+   "t0": 5400,
+   "t1": 5490,
+   "bal0": 1057236,
+   "bal1": 735740,
+   "dropPct": 30.4,
+   "main": "捐款",
+   "parts": {
+    "捐款": 421631
+   },
+   "cmds": 1,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "talon5",
+   "t0": 5670,
+   "t1": 5760,
+   "bal0": 946189,
+   "bal1": 431493,
+   "dropPct": 54.4,
+   "main": "捐款",
+   "parts": {
+    "捐款": 608323
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "talon5",
+   "t0": 6480,
+   "t1": 6570,
+   "bal0": 808089,
+   "bal1": 538097,
+   "dropPct": 33.4,
+   "main": "捐款",
+   "parts": {
+    "捐款": 367110
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 kaito9"
+  },
+  {
+   "bot": "talon5",
+   "t0": 7020,
+   "t1": 7110,
+   "bal0": 951336,
+   "bal1": 454482,
+   "dropPct": 52.2,
+   "main": "捐款",
+   "parts": {
+    "捐款": 572031
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 kaito9"
+  },
+  {
+   "bot": "talon5",
+   "t0": 8550,
+   "t1": 8640,
+   "bal0": 1578300,
+   "bal1": 1022596,
+   "dropPct": 35.2,
+   "main": "捐款",
+   "parts": {
+    "捐款": 1015505,
+    "发船": 480887
+   },
+   "cmds": 3,
+   "tilesGained": 46,
+   "burnt": 156,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "talon5",
+   "t0": 9000,
+   "t1": 9090,
+   "bal0": 1068659,
+   "bal1": 744573,
+   "dropPct": 30.3,
+   "main": "捐款",
+   "parts": {
+    "捐款": 443024
+   },
+   "cmds": 1,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "talon5",
+   "t0": 9900,
+   "t1": 9990,
+   "bal0": 1102650,
+   "bal1": 767269,
+   "dropPct": 30.4,
+   "main": "捐款",
+   "parts": {
+    "捐款": 439700
+   },
+   "cmds": 1,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 kaito9"
+  },
+  {
+   "bot": "talon5",
+   "t0": 10620,
+   "t1": 10710,
+   "bal0": 1136691,
+   "bal1": 788700,
+   "dropPct": 30.6,
+   "main": "捐款",
+   "parts": {
+    "捐款": 469281
+   },
+   "cmds": 1,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "talon5",
+   "t0": 10980,
+   "t1": 11070,
+   "bal0": 1130969,
+   "bal1": 787302,
+   "dropPct": 30.4,
+   "main": "捐款",
+   "parts": {
+    "捐款": 462621
+   },
+   "cmds": 1,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "talon5",
+   "t0": 11430,
+   "t1": 11520,
+   "bal0": 1136279,
+   "bal1": 790825,
+   "dropPct": 30.4,
+   "main": "捐款",
+   "parts": {
+    "捐款": 464691
+   },
+   "cmds": 1,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 zexos1"
+  },
+  {
+   "bot": "zexos1",
+   "t0": 540,
+   "t1": 630,
+   "bal0": 5185,
+   "bal1": 3624,
+   "dropPct": 30.1,
+   "main": "攻中立",
+   "parts": {
+    "攻中立": 5475,
+    "攻AI": 1534
+   },
+   "cmds": 4,
+   "tilesGained": 1510,
+   "burnt": 3244,
+   "target": ""
+  },
+  {
+   "bot": "zexos1",
+   "t0": 1800,
+   "t1": 1890,
+   "bal0": 90559,
+   "bal1": 40615,
+   "dropPct": 55.2,
+   "main": "攻AI",
+   "parts": {
+    "攻AI": 58625
+   },
+   "cmds": 9,
+   "tilesGained": 12117,
+   "burnt": 58969,
+   "target": ""
+  },
+  {
+   "bot": "zexos1",
+   "t0": 8550,
+   "t1": 8640,
+   "bal0": 30059583,
+   "bal1": 17912167,
+   "dropPct": 40.4,
+   "main": "发船",
+   "parts": {
+    "捐款": 3170682,
+    "发船": 15878615
+   },
+   "cmds": 4,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": ""
+  }
+ ],
+ "drop30CountCard": 59,
+ "donations": {
+  "logged": 391,
+  "exec": 364,
+  "quota": 10,
+  "other": 17,
+  "amount": 849807973,
+  "fee": 304456695
+ },
+ "dumpBatches": [],
+ "squadLedger": {
+  "perBot": {
+   "zexos1": {
+    "inc": 544038137,
+    "burnN": 122648,
+    "burnAI": 3362967,
+    "burnH": 2671435,
+    "netH": 92283,
+    "atkFee": 1334343,
+    "defBal": 1032931,
+    "defSlot": 150924,
+    "donOut": 410824109,
+    "donTax": 214698385,
+    "donIn": 410027573,
+    "donOutNonSquad": 0,
+    "boatOut": 94204986,
+    "boatFee": 242105485,
+    "boatToMate": 21569852,
+    "boatToOutside": 4790874,
+    "boatOnEnemy": 30149624,
+    "balEnd": 26298737,
+    "outEnd": 26535,
+    "lostTiles": 37144,
+    "lostBurn": 2283964,
+    "tilesN": 61324,
+    "tilesAI": 158417,
+    "tilesH": 65003,
+    "end": 14669,
+    "husk": false,
+    "giftIn": 3469346
+   },
+   "leo_tx": {
+    "inc": 48188241,
+    "burnN": 595075,
+    "burnAI": 98929,
+    "burnH": 0,
+    "netH": 0,
+    "atkFee": 177074,
+    "defBal": 2003,
+    "defSlot": 0,
+    "donOut": 72335255,
+    "donTax": 14485819,
+    "donIn": 50273288,
+    "donOutNonSquad": 0,
+    "boatOut": 2822534,
+    "boatFee": 5763619,
+    "boatToMate": 773810,
+    "boatToOutside": 0,
+    "boatOnEnemy": 0,
+    "balEnd": 2452008,
+    "outEnd": 0,
+    "lostTiles": 0,
+    "lostBurn": 0,
+    "tilesN": 10340,
+    "tilesAI": 24510,
+    "tilesH": 0,
+    "end": 14669,
+    "husk": false,
+    "giftIn": 174763
+   },
+   "talon5": {
+    "inc": 14252211,
+    "burnN": 7122,
+    "burnAI": 99581,
+    "burnH": 403754,
+    "netH": 0,
+    "atkFee": 122125,
+    "defBal": 0,
+    "defSlot": 0,
+    "donOut": 13192295,
+    "donTax": 2832369,
+    "donIn": 645611,
+    "donOutNonSquad": 0,
+    "boatOut": 1147464,
+    "boatFee": 775229,
+    "boatToMate": 28167,
+    "boatToOutside": 0,
+    "boatOnEnemy": 0,
+    "balEnd": 1088059,
+    "outEnd": 0,
+    "lostTiles": 0,
+    "lostBurn": 0,
+    "tilesN": 3561,
+    "tilesAI": 6265,
+    "tilesH": 1120,
+    "end": 14669,
+    "husk": false,
+    "giftIn": 651768
+   },
+   "kaito9": {
+    "inc": 66979645,
+    "burnN": 2283648,
+    "burnAI": 6595528,
+    "burnH": 5834631,
+    "netH": 288977,
+    "atkFee": 5759333,
+    "defBal": 1003179,
+    "defSlot": 136679,
+    "donOut": 352925309,
+    "donTax": 72326045,
+    "donIn": 388861501,
+    "donOutNonSquad": 0,
+    "boatOut": 40096050,
+    "boatFee": 7138232,
+    "boatToMate": 40113,
+    "boatToOutside": 0,
+    "boatOnEnemy": 16410085,
+    "balEnd": 6113543,
+    "outEnd": 0,
+    "lostTiles": 37959,
+    "lostBurn": 2146110,
+    "tilesN": 17242,
+    "tilesAI": 40286,
+    "tilesH": 44112,
+    "end": 14669,
+    "husk": false,
+    "giftIn": 2117804
+   },
+   "riku_x": {
+    "inc": 1275897,
+    "burnN": 9698,
+    "burnAI": 90975,
+    "burnH": 4598,
+    "netH": 0,
+    "atkFee": 47511,
+    "defBal": 34983,
+    "defSlot": 1230,
+    "donOut": 531005,
+    "donTax": 114077,
+    "donIn": 0,
+    "donOutNonSquad": 0,
+    "boatOut": 38101,
+    "boatFee": 9071,
+    "boatToMate": 0,
+    "boatToOutside": 0,
+    "boatOnEnemy": 0,
+    "balEnd": 495874,
+    "outEnd": 0,
+    "lostTiles": 306,
+    "lostBurn": 21750,
+    "tilesN": 4849,
+    "tilesAI": 9217,
+    "tilesH": 306,
+    "end": 3570,
+    "husk": true,
+    "giftIn": 8616
+   },
+   "alex_k": {
+    "inc": 30017,
+    "burnN": 1496,
+    "burnAI": 0,
+    "burnH": 0,
+    "netH": 0,
+    "atkFee": 43,
+    "defBal": 0,
+    "defSlot": 0,
+    "donOut": 0,
+    "donTax": 0,
+    "donIn": 0,
+    "donOutNonSquad": 0,
+    "boatOut": 0,
+    "boatFee": 0,
+    "boatToMate": 0,
+    "boatToOutside": 0,
+    "boatOnEnemy": 0,
+    "balEnd": 28990,
+    "outEnd": 0,
+    "lostTiles": 0,
+    "lostBurn": 0,
+    "tilesN": 748,
+    "tilesAI": 0,
+    "tilesH": 0,
+    "end": 931,
+    "husk": true,
+    "giftIn": 0
+   }
+  },
+  "total": {
+   "inc": 674764148,
+   "burnN": 3019687,
+   "burnAI": 10247980,
+   "burnH": 8914418,
+   "netH": 381260,
+   "atkFee": 7440429,
+   "defBal": 2073096,
+   "defSlot": 288833,
+   "donOut": 849807973,
+   "donTax": 304456695,
+   "donIn": 849807973,
+   "donOutNonSquad": 0,
+   "boatOut": 138309135,
+   "boatFee": 255791636,
+   "boatToMate": 22411942,
+   "boatToOutside": 4790874,
+   "boatOnEnemy": 46559709,
+   "balEnd": 36477211,
+   "outEnd": 26535,
+   "lostTiles": 75409,
+   "lostBurn": 4451824,
+   "tilesN": 98064,
+   "tilesAI": 238695,
+   "tilesH": 110541
+  },
+  "giftIn": 6422297,
+  "gifts": [
+   [
+    6611,
+    "riku_x",
+    "zexos1",
+    2204126,
+    146941
+   ],
+   [
+    6671,
+    "riku_x",
+    "kaito9",
+    1072613,
+    126967
+   ],
+   [
+    6686,
+    "riku_x",
+    "kaito9",
+    779910,
+    51993
+   ],
+   [
+    3701,
+    "riku_x",
+    "talon5",
+    427675,
+    28511
+   ],
+   [
+    4521,
+    "riku_x",
+    "zexos1",
+    70564,
+    4704
+   ],
+   [
+    4021,
+    "riku_x",
+    "zexos1",
+    62885,
+    4192
+   ],
+   [
+    11201,
+    "riku_x",
+    "zexos1",
+    37775,
+    2518
+   ],
+   [
+    8531,
+    "riku_x",
+    "talon5",
+    37715,
+    2514
+   ],
+   [
+    14111,
+    "riku_x",
+    "talon5",
+    37634,
+    2508
+   ],
+   [
+    9911,
+    "riku_x",
+    "zexos1",
+    37352,
+    2490
+   ],
+   [
+    11711,
+    "riku_x",
+    "zexos1",
+    36975,
+    2465
+   ],
+   [
+    10511,
+    "riku_x",
+    "kaito9",
+    36894,
+    2459
+   ]
+  ]
+ },
+ "boatHandovers": [
+  {
+   "t": 2459,
+   "bot": "talon5",
+   "to": "riku_x",
+   "toSquad": true,
+   "landed": 22578,
+   "got": 22578,
+   "launchT": 2093,
+   "launched": 40288,
+   "fee": 10072,
+   "B0": 322311,
+   "pct": 127
+  },
+  {
+   "t": 2585,
+   "bot": "kaito9",
+   "to": "riku_x",
+   "toSquad": true,
+   "landed": 18210,
+   "got": 18210,
+   "launchT": 2254,
+   "launched": 30515,
+   "fee": 7628,
+   "B0": 244125,
+   "pct": 127
+  },
+  {
+   "t": 2732,
+   "bot": "kaito9",
+   "to": "riku_x",
+   "toSquad": true,
+   "landed": 19726,
+   "got": 19726,
+   "launchT": 2373,
+   "launched": 34650,
+   "fee": 8662,
+   "B0": 277205,
+   "pct": 127
+  },
+  {
+   "t": 5184,
+   "bot": "leo_tx",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 129603,
+   "got": 12967,
+   "launchT": 4480,
+   "launched": 391616,
+   "fee": 97145,
+   "B0": 3108648,
+   "pct": 128
+  },
+  {
+   "t": 5187,
+   "bot": "riku_x",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 51,
+   "got": 51
+  },
+  {
+   "t": 5548,
+   "bot": "zexos1",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 1217263,
+   "got": 1217263,
+   "launchT": 4900,
+   "launched": 3347923,
+   "fee": 749185,
+   "B0": 23973940,
+   "pct": 142
+  },
+  {
+   "t": 5549,
+   "bot": "talon5",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 3027,
+   "got": 3027,
+   "launchT": 4501,
+   "launched": 15447,
+   "fee": 27461,
+   "B0": 878771,
+   "pct": 17
+  },
+  {
+   "t": 5625,
+   "bot": "zexos1",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 1180808,
+   "got": 1180808,
+   "launchT": 4977,
+   "launched": 3273225,
+   "fee": 727383,
+   "B0": 23276273,
+   "pct": 143
+  },
+  {
+   "t": 5941,
+   "bot": "talon5",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 689,
+   "got": 689
+  },
+  {
+   "t": 6003,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 587,
+   "got": 587
+  },
+  {
+   "t": 6540,
+   "bot": "kaito9",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1329,
+   "got": 1329,
+   "launchT": 5306,
+   "launched": 8848,
+   "fee": 283157,
+   "B0": 9061050,
+   "pct": 0
+  },
+  {
+   "t": 6606,
+   "bot": "zexos1",
+   "to": "riku_x",
+   "toSquad": true,
+   "landed": 2298305,
+   "got": 2298305,
+   "launchT": 6223,
+   "launched": 4204193,
+   "fee": 791377,
+   "B0": 25324083,
+   "pct": 169
+  },
+  {
+   "t": 6630,
+   "bot": "zexos1",
+   "to": "riku_x",
+   "toSquad": true,
+   "landed": 2492569,
+   "got": 2492569,
+   "launchT": 6244,
+   "launched": 4559566,
+   "fee": 853252,
+   "B0": 27304071,
+   "pct": 170
+  },
+  {
+   "t": 6661,
+   "bot": "kaito9",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 848,
+   "got": 848
+  },
+  {
+   "t": 6785,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 439,
+   "got": 439
+  },
+  {
+   "t": 6818,
+   "bot": "riku_x",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 186767,
+   "got": 0
+  },
+  {
+   "t": 7192,
+   "bot": "zexos1",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 2125236,
+   "got": 2125236,
+   "launchT": 6622,
+   "launched": 5196508,
+   "fee": 894023,
+   "B0": 28608737,
+   "pct": 185
+  },
+  {
+   "t": 7255,
+   "bot": "zexos1",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 1314926,
+   "got": 0,
+   "launchT": 6685,
+   "launched": 3215152,
+   "fee": 729679,
+   "B0": 23349759,
+   "pct": 140
+  },
+  {
+   "t": 7890,
+   "bot": "zexos1",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 1654996,
+   "got": 0,
+   "launchT": 7357,
+   "launched": 3830508,
+   "fee": 950203,
+   "B0": 30406519,
+   "pct": 128
+  },
+  {
+   "t": 7932,
+   "bot": "zexos1",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 1372316,
+   "got": 1372316,
+   "launchT": 7399,
+   "launched": 3151403,
+   "fee": 715212,
+   "B0": 22886790,
+   "pct": 140
+  },
+  {
+   "t": 8220,
+   "bot": "riku_x",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 103,
+   "got": 103
+  },
+  {
+   "t": 8544,
+   "bot": "zexos1",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 1560265,
+   "got": 464981,
+   "launchT": 7903,
+   "launched": 4291351,
+   "fee": 803059,
+   "B0": 25697915,
+   "pct": 170
+  },
+  {
+   "t": 8586,
+   "bot": "zexos1",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 1597060,
+   "got": 877716,
+   "launchT": 7945,
+   "launched": 4358231,
+   "fee": 801513,
+   "B0": 25648443,
+   "pct": 173
+  },
+  {
+   "t": 8841,
+   "bot": "leo_tx",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 373193,
+   "got": 373193,
+   "launchT": 8008,
+   "launched": 1382684,
+   "fee": 158587,
+   "B0": 5074800,
+   "pct": 278
+  },
+  {
+   "t": 9030,
+   "bot": "riku_x",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 1182,
+   "got": 1182
+  },
+  {
+   "t": 9210,
+   "bot": "zexos1",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 2374543,
+   "got": 711677,
+   "launchT": 8554,
+   "launched": 6634243,
+   "fee": 939361,
+   "B0": 30059583,
+   "pct": 225
+  },
+  {
+   "t": 9320,
+   "bot": "zexos1",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 1137007,
+   "got": 512936,
+   "launchT": 8610,
+   "launched": 3462843,
+   "fee": 764213,
+   "B0": 24454839,
+   "pct": 144
+  },
+  {
+   "t": 9334,
+   "bot": "zexos1",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 1121473,
+   "got": 0,
+   "launchT": 8624,
+   "launched": 3415546,
+   "fee": 662409,
+   "B0": 21197089,
+   "pct": 164
+  },
+  {
+   "t": 9499,
+   "bot": "leo_tx",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 207797,
+   "got": 207797,
+   "launchT": 8589,
+   "launched": 865920,
+   "fee": 98962,
+   "B0": 3166795,
+   "pct": 279
+  },
+  {
+   "t": 9699,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2059,
+   "got": 2059,
+   "launchT": 9429,
+   "launched": 3113,
+   "fee": 99629,
+   "B0": 3188137,
+   "pct": 0
+  },
+  {
+   "t": 9707,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2024,
+   "got": 2024,
+   "launchT": 9436,
+   "launched": 3057,
+   "fee": 97845,
+   "B0": 3131058,
+   "pct": 0
+  },
+  {
+   "t": 9715,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1972,
+   "got": 1972,
+   "launchT": 9443,
+   "launched": 3002,
+   "fee": 96093,
+   "B0": 3075002,
+   "pct": 0
+  },
+  {
+   "t": 9804,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2479,
+   "got": 2479,
+   "launchT": 9730,
+   "launched": 2780,
+   "fee": 88966,
+   "B0": 2846942,
+   "pct": 0
+  },
+  {
+   "t": 9804,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2560,
+   "got": 2560,
+   "launchT": 9730,
+   "launched": 2872,
+   "fee": 91929,
+   "B0": 2941743,
+   "pct": 0
+  },
+  {
+   "t": 9812,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2398,
+   "got": 2398,
+   "launchT": 9737,
+   "launched": 2690,
+   "fee": 86099,
+   "B0": 2755196,
+   "pct": 0
+  },
+  {
+   "t": 9819,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2281,
+   "got": 2281,
+   "launchT": 9744,
+   "launched": 2557,
+   "fee": 81833,
+   "B0": 2618669,
+   "pct": 0
+  },
+  {
+   "t": 9819,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2356,
+   "got": 2356,
+   "launchT": 9744,
+   "launched": 2642,
+   "fee": 84558,
+   "B0": 2705869,
+   "pct": 0
+  },
+  {
+   "t": 9850,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2808,
+   "got": 2808,
+   "launchT": 9849,
+   "launched": 2808,
+   "fee": 89865,
+   "B0": 2875702,
+   "pct": 0
+  },
+  {
+   "t": 9850,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2901,
+   "got": 2901,
+   "launchT": 9849,
+   "launched": 2901,
+   "fee": 92858,
+   "B0": 2971461,
+   "pct": 0
+  },
+  {
+   "t": 9864,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2687,
+   "got": 2687,
+   "launchT": 9863,
+   "launched": 2708,
+   "fee": 86676,
+   "B0": 2773655,
+   "pct": 0
+  },
+  {
+   "t": 9864,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2777,
+   "got": 2777
+  },
+  {
+   "t": 10104,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1747,
+   "got": 1747,
+   "launchT": 9898,
+   "launched": 2403,
+   "fee": 76897,
+   "B0": 2460724,
+   "pct": 0
+  },
+  {
+   "t": 10114,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1832,
+   "got": 1832,
+   "launchT": 9870,
+   "launched": 2660,
+   "fee": 85124,
+   "B0": 2723998,
+   "pct": 0
+  },
+  {
+   "t": 10115,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1773,
+   "got": 1773,
+   "launchT": 9891,
+   "launched": 2483,
+   "fee": 79458,
+   "B0": 2542665,
+   "pct": 0
+  },
+  {
+   "t": 10117,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1716,
+   "got": 1716,
+   "launchT": 9870,
+   "launched": 2491,
+   "fee": 79726,
+   "B0": 2551259,
+   "pct": 0
+  },
+  {
+   "t": 10138,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1712,
+   "got": 1712,
+   "launchT": 9870,
+   "launched": 2574,
+   "fee": 82381,
+   "B0": 2636214,
+   "pct": 0
+  },
+  {
+   "t": 10147,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1591,
+   "got": 1591,
+   "launchT": 9898,
+   "launched": 2325,
+   "fee": 74419,
+   "B0": 2381424,
+   "pct": 0
+  },
+  {
+   "t": 11200,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 684,
+   "got": 684
+  },
+  {
+   "t": 11209,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 673,
+   "got": 673
+  },
+  {
+   "t": 11213,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 652,
+   "got": 652,
+   "launchT": 10157,
+   "launched": 3253,
+   "fee": 104118,
+   "B0": 3331794,
+   "pct": 0
+  },
+  {
+   "t": 11222,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 635,
+   "got": 635,
+   "launchT": 10164,
+   "launched": 3195,
+   "fee": 102254,
+   "B0": 3272144,
+   "pct": 0
+  },
+  {
+   "t": 11238,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 626,
+   "got": 626
+  },
+  {
+   "t": 11711,
+   "bot": "talon5",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 394,
+   "got": 394
+  },
+  {
+   "t": 11719,
+   "bot": "talon5",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 379,
+   "got": 379
+  },
+  {
+   "t": 11720,
+   "bot": "talon5",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 370,
+   "got": 370,
+   "launchT": 11151,
+   "launched": 861,
+   "fee": 27559,
+   "B0": 881904,
+   "pct": 0
+  },
+  {
+   "t": 11727,
+   "bot": "talon5",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 366,
+   "got": 366
+  },
+  {
+   "t": 13113,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 235,
+   "got": 235
+  },
+  {
+   "t": 13124,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 230,
+   "got": 230
+  },
+  {
+   "t": 13129,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 225,
+   "got": 225
+  },
+  {
+   "t": 13138,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 222,
+   "got": 222
+  },
+  {
+   "t": 13153,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 222,
+   "got": 222
+  },
+  {
+   "t": 13204,
+   "bot": "zexos1",
+   "to": "leo_tx",
+   "toSquad": true,
+   "landed": 15465,
+   "got": 15465,
+   "launchT": 12992,
+   "launched": 21591,
+   "fee": 690912,
+   "B0": 22109211,
+   "pct": 0
+  },
+  {
+   "t": 13211,
+   "bot": "zexos1",
+   "to": "leo_tx",
+   "toSquad": true,
+   "landed": 15307,
+   "got": 15307,
+   "launchT": 12985,
+   "launched": 21810,
+   "fee": 697937,
+   "B0": 22333992,
+   "pct": 0
+  },
+  {
+   "t": 13218,
+   "bot": "zexos1",
+   "to": "leo_tx",
+   "toSquad": true,
+   "landed": 14928,
+   "got": 14928,
+   "launchT": 12999,
+   "launched": 20895,
+   "fee": 668647,
+   "B0": 21396708,
+   "pct": 0
+  },
+  {
+   "t": 13219,
+   "bot": "zexos1",
+   "to": "leo_tx",
+   "toSquad": true,
+   "landed": 14339,
+   "got": 14339,
+   "launchT": 12999,
+   "launched": 20221,
+   "fee": 647098,
+   "B0": 20707166,
+   "pct": 0
+  },
+  {
+   "t": 13345,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2430,
+   "got": 2430,
+   "launchT": 13265,
+   "launched": 2747,
+   "fee": 87922,
+   "B0": 2813506,
+   "pct": 0
+  },
+  {
+   "t": 13345,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2511,
+   "got": 2511,
+   "launchT": 13265,
+   "launched": 2839,
+   "fee": 90849,
+   "B0": 2907194,
+   "pct": 0
+  },
+  {
+   "t": 13353,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2388,
+   "got": 2388,
+   "launchT": 13272,
+   "launched": 2698,
+   "fee": 86347,
+   "B0": 2763134,
+   "pct": 0
+  },
+  {
+   "t": 13360,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2236,
+   "got": 2236,
+   "launchT": 13174,
+   "launched": 2995,
+   "fee": 95856,
+   "B0": 3067400,
+   "pct": 0
+  },
+  {
+   "t": 13360,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2310,
+   "got": 2310,
+   "launchT": 13279,
+   "launched": 2611,
+   "fee": 83565,
+   "B0": 2674089,
+   "pct": 0
+  },
+  {
+   "t": 13405,
+   "bot": "talon5",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 126,
+   "got": 126
+  },
+  {
+   "t": 13407,
+   "bot": "talon5",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 121,
+   "got": 121
+  },
+  {
+   "t": 13415,
+   "bot": "talon5",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 117,
+   "got": 117
+  },
+  {
+   "t": 13458,
+   "bot": "zexos1",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 16452,
+   "got": 16452,
+   "launchT": 13335,
+   "launched": 19870,
+   "fee": 635863,
+   "B0": 20347630,
+   "pct": 0
+  },
+  {
+   "t": 13465,
+   "bot": "zexos1",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 15409,
+   "got": 15409,
+   "launchT": 13349,
+   "launched": 18446,
+   "fee": 590291,
+   "B0": 18889312,
+   "pct": 0
+  },
+  {
+   "t": 13465,
+   "bot": "zexos1",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 15925,
+   "got": 15925,
+   "launchT": 13349,
+   "launched": 19060,
+   "fee": 609947,
+   "B0": 19518319,
+   "pct": 0
+  },
+  {
+   "t": 13472,
+   "bot": "zexos1",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 15260,
+   "got": 15260,
+   "launchT": 13356,
+   "launched": 18263,
+   "fee": 584424,
+   "B0": 18701588,
+   "pct": 0
+  },
+  {
+   "t": 13756,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1610,
+   "got": 1610,
+   "launchT": 13377,
+   "launched": 2869,
+   "fee": 91832,
+   "B0": 2938624,
+   "pct": 0
+  },
+  {
+   "t": 13764,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1581,
+   "got": 1581,
+   "launchT": 13384,
+   "launched": 2818,
+   "fee": 90187,
+   "B0": 2886013,
+   "pct": 0
+  },
+  {
+   "t": 13772,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1554,
+   "got": 1554,
+   "launchT": 13391,
+   "launched": 2767,
+   "fee": 88573,
+   "B0": 2834344,
+   "pct": 0
+  },
+  {
+   "t": 13781,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1494,
+   "got": 1494,
+   "launchT": 13398,
+   "launched": 2678,
+   "fee": 85718,
+   "B0": 2743004,
+   "pct": 0
+  }
+ ],
+ "donationNetwork": {
+  "botGiftsByClass": {
+   "本编队": 6430903,
+   "队2": 176607
+  },
+  "botGiftPairs": [
+   {
+    "from": "riku_x",
+    "fromLeft": 3570,
+    "to": "zexos1",
+    "n": 46,
+    "delivered": 3345234,
+    "fee": 222991,
+    "t0": 4021,
+    "t1": 14606
+   },
+   {
+    "from": "riku_x",
+    "fromLeft": 3570,
+    "to": "kaito9",
+    "n": 14,
+    "delivered": 2095248,
+    "fee": 331674,
+    "t0": 6011,
+    "t1": 11906
+   },
+   {
+    "from": "riku_x",
+    "fromLeft": 3570,
+    "to": "talon5",
+    "n": 8,
+    "delivered": 627389,
+    "fee": 41821,
+    "t0": 3701,
+    "t1": 14306
+   },
+   {
+    "from": "riku_x",
+    "fromLeft": 3570,
+    "to": "leo_tx",
+    "n": 10,
+    "delivered": 148964,
+    "fee": 17160,
+    "t0": 8306,
+    "t1": 10301
+   },
+   {
+    "from": "يحيى#6T2",
+    "fromLeft": 3759,
+    "to": "Player 691#5T2",
+    "n": 3,
+    "delivered": 134096,
+    "fee": 8938,
+    "t0": 4087,
+    "t1": 4247
+   },
+   {
+    "from": "alex_k",
+    "fromLeft": 931,
+    "to": "zexos1",
+    "n": 71,
+    "delivered": 124112,
+    "fee": 8232,
+    "t0": 1292,
+    "t1": 14502
+   },
+   {
+    "from": "يحيى#6T2",
+    "fromLeft": 3759,
+    "to": "Player 804#11T2",
+    "n": 1,
+    "delivered": 42511,
+    "fee": 6942,
+    "t0": 4007,
+    "t1": 4007
+   },
+   {
+    "from": "alex_k",
+    "fromLeft": 931,
+    "to": "leo_tx",
+    "n": 18,
+    "delivered": 25799,
+    "fee": 1710,
+    "t0": 2412,
+    "t1": 14607
+   }
+  ],
+  "byClass": {
+   "本编队": {
+    "n": 364,
+    "delivered": 849807973,
+    "tax": 304456695,
+    "toHusk": 0,
+    "bands": {
+     "<2142": 0,
+     "2142~3212": 375804,
+     "3213~4283": 3566999,
+     "≥4284": 845865170
+    }
+   },
+   "队2": {
+    "n": 12,
+    "delivered": 857488,
+    "tax": 239526,
+    "toHusk": 204543,
+    "bands": {
+     "<2142": 0,
+     "2142~3212": 201308,
+     "3213~4283": 656180,
+     "≥4284": 0
+    }
+   }
+  },
+  "topReceivers": [
+   {
+    "who": "zexos1",
+    "left": null,
+    "n": 201,
+    "delivered": 410027573,
+    "t0": 2842,
+    "t1": 14651,
+    "from": [
+     {
+      "who": "kaito9",
+      "delivered": 340228719
+     },
+     {
+      "who": "leo_tx",
+      "delivered": 60775740
+     },
+     {
+      "who": "talon5",
+      "delivered": 8864520
+     },
+     {
+      "who": "riku_x",
+      "delivered": 158594
+     }
+    ]
+   },
+   {
+    "who": "kaito9",
+    "left": null,
+    "n": 139,
+    "delivered": 388861501,
+    "t0": 3171,
+    "t1": 14623,
+    "from": [
+     {
+      "who": "zexos1",
+      "delivered": 372601800
+     },
+     {
+      "who": "leo_tx",
+      "delivered": 11559515
+     },
+     {
+      "who": "talon5",
+      "delivered": 4327775
+     },
+     {
+      "who": "riku_x",
+      "delivered": 372411
+     }
+    ]
+   },
+   {
+    "who": "leo_tx",
+    "left": null,
+    "n": 23,
+    "delivered": 50273288,
+    "t0": 5173,
+    "t1": 11207,
+    "from": [
+     {
+      "who": "zexos1",
+      "delivered": 38222309
+     },
+     {
+      "who": "kaito9",
+      "delivered": 12050979
+     }
+    ]
+   },
+   {
+    "who": "Player 845#9T2",
+    "left": 4088,
+    "n": 11,
+    "delivered": 652945,
+    "t0": 3178,
+    "t1": 3486,
+    "from": [
+     {
+      "who": "يحيى#6T2",
+      "delivered": 652945
+     }
+    ]
+   },
+   {
+    "who": "talon5",
+    "left": null,
+    "n": 1,
+    "delivered": 645611,
+    "t0": 5334,
+    "t1": 5334,
+    "from": [
+     {
+      "who": "kaito9",
+      "delivered": 645611
+     }
+    ]
+   },
+   {
+    "who": "Player 691#5T2",
+    "left": 3619,
+    "n": 1,
+    "delivered": 204543,
+    "t0": 3703,
+    "t1": 3703,
+    "from": [
+     {
+      "who": "يحيى#6T2",
+      "delivered": 204543
+     }
+    ]
+   }
+  ],
+  "toHusks": [
+   {
+    "from": "يحيى#6T2",
+    "to": "Player 691#5T2",
+    "n": 1,
+    "delivered": 204543,
+    "tax": 13636,
+    "t0": 3703,
+    "t1": 3703
+   }
+  ],
+  "leaveGifts": [
+   {
+    "t": 3703,
+    "from": "يحيى#6T2",
+    "to": "Player 691#5T2*",
+    "got": 204543,
+    "leftT": 3759
+   }
+  ]
+ },
+ "teamFall": {
+  "husks": [
+   {
+    "t": 1530,
+    "T1": {
+     "online": 5,
+     "onlineSharePct": 22.9,
+     "husks": 1,
+     "huskSharePct": 0.4
+    },
+    "T2": {
+     "online": 5,
+     "onlineSharePct": 18.5,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   },
+   {
+    "t": 3060,
+    "T1": {
+     "online": 5,
+     "onlineSharePct": 40.9,
+     "husks": 1,
+     "huskSharePct": 0.4
+    },
+    "T2": {
+     "online": 5,
+     "onlineSharePct": 56.8,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   },
+   {
+    "t": 4500,
+    "T1": {
+     "online": 4,
+     "onlineSharePct": 81.6,
+     "husks": 2,
+     "huskSharePct": 5.2
+    },
+    "T2": {
+     "online": 1,
+     "onlineSharePct": 0.9,
+     "husks": 1,
+     "huskSharePct": 7.4
+    }
+   },
+   {
+    "t": 6000,
+    "T1": {
+     "online": 4,
+     "onlineSharePct": 92.6,
+     "husks": 2,
+     "huskSharePct": 5.4
+    },
+    "T2": {
+     "online": 1,
+     "onlineSharePct": 0.4,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   },
+   {
+    "t": 7500,
+    "T1": {
+     "online": 4,
+     "onlineSharePct": 93.2,
+     "husks": 2,
+     "huskSharePct": 5.7
+    },
+    "T2": {
+     "online": 1,
+     "onlineSharePct": 0.2,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   },
+   {
+    "t": 9000,
+    "T1": {
+     "online": 4,
+     "onlineSharePct": 93.7,
+     "husks": 2,
+     "huskSharePct": 5.7
+    },
+    "T2": {
+     "online": 0,
+     "onlineSharePct": 0.0,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   },
+   {
+    "t": 10800,
+    "T1": {
+     "online": 4,
+     "onlineSharePct": 94.1,
+     "husks": 2,
+     "huskSharePct": 5.7
+    },
+    "T2": {
+     "online": 0,
+     "onlineSharePct": 0.0,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   },
+   {
+    "t": 12600,
+    "T1": {
+     "online": 4,
+     "onlineSharePct": 94.2,
+     "husks": 2,
+     "huskSharePct": 5.8
+    },
+    "T2": {
+     "online": 0,
+     "onlineSharePct": 0.0,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   }
+  ],
+  "windows": []
+ },
+ "interest": {
+  "phases": [
+   {
+    "from": 600,
+    "to": 1500,
+    "botTicks": 4840,
+    "ticksOverSoftCap": 0,
+    "ticksAtHardCap": 0,
+    "income": 748968,
+    "incomeAtSoftCap": 13071788,
+    "lostWhileOverSoftCap": 0
+   },
+   {
+    "from": 1500,
+    "to": 4284,
+    "botTicks": 13230,
+    "ticksOverSoftCap": 40,
+    "ticksAtHardCap": 0,
+    "income": 22538503,
+    "incomeAtSoftCap": 78724842,
+    "lostWhileOverSoftCap": 6234
+   },
+   {
+    "from": 4284,
+    "to": 14669,
+    "botTicks": 41516,
+    "ticksOverSoftCap": 13709,
+    "ticksAtHardCap": 3930,
+    "income": 651411298,
+    "incomeAtSoftCap": 781083906,
+    "lostWhileOverSoftCap": 58605812
+   }
+  ],
+  "perBot": {
+   "zexos1": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 2.0,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 173170,
+     "incomeAtSoftCap": 3347359,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 2790,
+     "meanDensity": 17.6,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 11034970,
+     "incomeAtSoftCap": 41111560,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 4284,
+     "to": 14669,
+     "ticks": 10379,
+     "meanDensity": 96.1,
+     "ticksOverSoftCap": 4399,
+     "ticksAtHardCap": 0,
+     "income": 532816533,
+     "incomeAtSoftCap": 599189517,
+     "lostWhileOverSoftCap": 23947651
+    }
+   ],
+   "leo_tx": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 2.1,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 142267,
+     "incomeAtSoftCap": 2692124,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 2790,
+     "meanDensity": 29.9,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 4924607,
+     "incomeAtSoftCap": 14470387,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 4284,
+     "to": 14669,
+     "ticks": 10379,
+     "meanDensity": 89.4,
+     "ticksOverSoftCap": 2490,
+     "ticksAtHardCap": 700,
+     "income": 43110506,
+     "incomeAtSoftCap": 55232734,
+     "lostWhileOverSoftCap": 3637359
+    }
+   ],
+   "talon5": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 3.9,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 149542,
+     "incomeAtSoftCap": 2188849,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 2790,
+     "meanDensity": 52.9,
+     "ticksOverSoftCap": 40,
+     "ticksAtHardCap": 0,
+     "income": 2097774,
+     "incomeAtSoftCap": 3865426,
+     "lostWhileOverSoftCap": 6234
+    },
+    {
+     "from": 4284,
+     "to": 14669,
+     "ticks": 10379,
+     "meanDensity": 81.5,
+     "ticksOverSoftCap": 1570,
+     "ticksAtHardCap": 140,
+     "income": 11993688,
+     "incomeAtSoftCap": 15191088,
+     "lostWhileOverSoftCap": 339080
+    }
+   ],
+   "kaito9": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 1.7,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 134808,
+     "incomeAtSoftCap": 2796816,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 2790,
+     "meanDensity": 15.5,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 3342233,
+     "incomeAtSoftCap": 15822497,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 4284,
+     "to": 14669,
+     "ticks": 10379,
+     "meanDensity": 109.7,
+     "ticksOverSoftCap": 5250,
+     "ticksAtHardCap": 3090,
+     "income": 63490571,
+     "incomeAtSoftCap": 111470567,
+     "lostWhileOverSoftCap": 30681722
+    }
+   ],
+   "riku_x": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 3.7,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 125827,
+     "incomeAtSoftCap": 1926123,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 2070,
+     "meanDensity": 27.7,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 1138919,
+     "incomeAtSoftCap": 3454972,
+     "lostWhileOverSoftCap": 0
+    },
+    null
+   ],
+   "alex_k": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 340,
+     "meanDensity": 19.4,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 23354,
+     "incomeAtSoftCap": 120517,
+     "lostWhileOverSoftCap": 0
+    },
+    null,
+    null
+   ]
+  }
+ }
+}

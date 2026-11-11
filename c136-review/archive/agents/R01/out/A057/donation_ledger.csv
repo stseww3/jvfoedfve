@@ -1,0 +1,22 @@
+bot,t,kind,pct,target,truth,replayTick,myBal,dMe,dAlly,nominal,feeAtLog,estDelivered,estFee,clampedPct,window,note
+leo_tx,4085,DISPATCH:yield_opt_dispatch,320,ryan_m,rejected,,301950,150,113,94654,18871,,,,,
+leo_tx,4135,DISPATCH:offense_dispatch,320,ryan_m,accepted,4151,301950,150,91,94654,18871,94654,18871,0.0,4135->4210,full (pred full=202881 none=288278 obs=202881)
+leo_tx,4210,DISPATCH:offense_dispatch,320,ryan_m,accepted,4228,202881,101,53,63598,12680,63598,12814,0.0,4210->4230,full (pred full=129314 none=194273 obs=129314)
+leo_tx,4235,DISPATCH:offense_dispatch,320,ryan_m,accepted,4249,129314,64,84,40536,8082,40536,8168,0.0,4235->4320,full (pred full=90859 none=135473 obs=90859)
+leo_tx,4510,DISPATCH:yield_opt_dispatch,320,ryan_m,accepted,4522,117844,59,83,36941,7365,36941,7444,0.0,4510->4590,full (pred full=80069 none=120293 obs=80069)
+leo_tx,11860,DISPATCH:defense_dispatch,380,zero_7,accepted,11872,471900,150,96,175579,29493,161661,29493,7.9,11860->11880,solved (pred full=269763 none=443336 obs=283834)
+leo_tx,11885,DISPATCH:defense_dispatch,380,riku_x,accepted,11900,283834,90,94,105606,17739,,,,11885->11970,dirty:terr-changed+own-attack
+riku_x,4080,DISPATCH:offense_dispatch,320,ryan_m,accepted,4095,375750,150,83,117788,23484,96874,23484,17.8,4080->4130,solved (pred full=247554 none=357396 obs=268446)
+riku_x,4130,DISPATCH:yield_opt_dispatch,320,ryan_m,accepted,4144,268446,107,126,84151,16777,84151,16937,0.0,4130->4205,full (pred full=183084 none=272431 obs=183084)
+riku_x,4205,DISPATCH:yield_opt_dispatch,320,ryan_m,accepted,4221,183084,73,139,57392,11442,57392,11695,0.0,4205->4230,full (pred full=118061 none=177367 obs=118061)
+riku_x,4405,DISPATCH:yield_opt_dispatch,320,ryan_m,accepted,4424,147482,59,116,46232,9217,46232,9421,0.0,4405->4500,full (pred full=105174 none=156749 obs=105174)
+riku_x,4780,DISPATCH:yield_opt_dispatch,320,leo_tx,accepted,4795,148640,59,51,46595,9290,46595,9392,0.0,4780->4860,full (pred full=103912 none=154766 obs=103912)
+riku_x,5130,DISPATCH:yield_opt_dispatch,320,ryan_m,accepted,5145,148304,59,77,46489,9269,46489,9370,0.0,5130->5220,full (pred full=104678 none=155979 obs=104678)
+riku_x,5480,DISPATCH:offense_dispatch,320,ryan_m,accepted,5495,149552,60,67,46881,9347,46881,9449,0.0,5480->5580,full (pred full=106842 none=159144 obs=106842)
+zero_7,4070,DISPATCH:yield_opt_dispatch,320,ryan_m,accepted,4081,218850,150,98,68604,13678,68604,13678,0.0,4070->4095,full (pred full=138029 none=205602 obs=138029)
+zero_7,4095,DISPATCH:yield_opt_dispatch,320,ryan_m,accepted,4102,138029,95,108,43268,8626,8068,8810,81.4,4095->4140,solved (pred full=91790 none=137900 obs=129480)
+zero_7,4145,DISPATCH:yield_opt_dispatch,320,ryan_m,accepted,4158,129480,89,117,40588,8092,5801,8179,85.7,4145->4220,solved (pred full=89467 none=133662 obs=127413)
+zero_7,4220,DISPATCH:offense_dispatch,320,ryan_m,accepted,4228,127413,87,47,39940,7963,39940,7963,0.0,4220->4230,full (pred full=80360 none=120728 obs=80360)
+zero_7,4295,DISPATCH:yield_opt_dispatch,320,ryan_m,accepted,4305,85656,59,87,26851,5353,26851,5501,0.0,4295->4320,full (pred full=56116 none=84305 obs=56116)
+zero_7,4620,DISPATCH:yield_opt_dispatch,320,ryan_m,accepted,4627,86185,59,103,27016,5386,27016,5386,0.0,4620->4680,full (pred full=57326 none=86124 obs=57326)
+zero_7,4995,DISPATCH:yield_opt_dispatch,320,ryan_m,accepted,5005,85094,58,62,26674,5318,26674,5466,0.0,4995->5040,full (pred full=56952 none=85561 obs=56952)

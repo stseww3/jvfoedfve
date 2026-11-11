@@ -1,0 +1,19 @@
+# G00 捐款去向：t 捐方(dMe,myBal) → 收方(快照拍/过期拍数, terr, bal, dens, nb) 之后90拍 dCmds/dTerr | 到账/费
+2240 ryan_m(d107,530279) squad rescue donate pct=51 → dave_w(snap2160/age80, terr9254, bal33369, d3.6, nb1) 之后: dCmds=0 dTerr=-561 | 26928/33142
+2340 ryan_m(d107,529941) squad rescue donate pct=51 → dave_w(snap2340/age0, terr8195, bal78534, d9.6, nb2) 之后: dCmds=0 dTerr=-1310 | 26911/33121
+2440 ryan_m(d107,528933) squad rescue donate pct=51 → dave_w(snap2430/age10, terr6885, bal95975, d13.9, nb2) 之后: dCmds=0 dTerr=-878 | 26859/33058
+3364 leo_tx(d102,359505) surplus donate pct=51 → kevin_k(snap3330/age34, terr6082, bal98862, d16.3, nb1) 之后: 无连续快照 | 18256/22469
+3382 leo_tx(d93,325799) surplus donate pct=51 → mark07(snap1710/age1672, terr9027, bal181994, d20.2, nb2) 之后: 无连续快照 | 16544/20362
+3400 leo_tx(d85,298910) surplus donate pct=51 → kevin_k(snap3330/age70, terr6082, bal98862, d16.3, nb1) 之后: 无连续快照 | 15179/18681
+3420 leo_tx(d77,271019) surplus donate pct=51 → kevin_k(snap3330/age90, terr6082, bal98862, d16.3, nb1) 之后: 无连续快照 | 13762/16938
+3550 leo_tx(d77,270197) surplus donate pct=51 → kevin_k(snap3330/age220, terr6082, bal98862, d16.3, nb1) 之后: 无连续快照 | 13720/16887
+3568 leo_tx(d78,273223) surplus donate pct=51 → kevin_k(snap3330/age238, terr6082, bal98862, d16.3, nb1) 之后: 无连续快照 | 13874/17076
+
+## 汇总（笔数 / 名义到账 / 手续费）
+  all: 9 笔 / 172033 / 211734
+  recvSnapshotFresh: 6 笔 / 127895 / 157409
+  recvDenserThanDonor: 0 笔 / 0 / 0
+  recvDens>=60: 0 笔 / 0 / 0
+  recvStale(>90拍无快照=停摆): 3 笔 / 44138 / 54325
+  recvZeroCmdsNext90: 3 笔 / 80698 / 99321
+  recvNonSquadOrUnknown: 0 笔 / 0 / 0

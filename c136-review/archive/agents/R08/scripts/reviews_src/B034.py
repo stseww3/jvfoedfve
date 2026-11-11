@@ -1,0 +1,385 @@
+# B034 人工分析部分。数字出处：
+#   真值 = scripts/resim_r08.mjs 用本局自带录像（到 t=9660）逐拍重演全场，375/375 条 traj 快照地、兵都一致；
+#   out/B034/truth.txt [TA]~[TM]、shadowcmp.txt [SA]~[SI]、shadowcmp_peer.txt、lagstats.txt、donrej.txt、spawncheck.txt、harvest.txt、top.txt、
+#   boattrack_Kilwa.txt、shadow_tr1.json / shadow_tr2.json（逐拍追踪，用 scripts/trshow.py 看）、digest.txt；
+#   L 号 = bundles/B034/in_game.log 每行开头的原始行号。同房 squad10 的对局包 A052 在验证集里，没有读。
+from patterns_catalog import pick
+
+C110 = "src/strategy/v27-team-c110.js"
+SIM = "src/sim/sim"
+
+R = dict(
+    contextExtra=dict(
+        replay="自带录像完整（到 t=9660）。对局卡 endTick=9114 是全队最后一个号 Kilwa 的阵亡拍。真引擎重演后 375 条 traj 快照（地、兵）全部逐兵一致。"
+               "录像结束时还没分出胜负（t=9360 T1 29.5% / T2 30.2% / T3 30.0% / T4 8.9%），对局卡记 winnerTeam=2。",
+        truthTeamSplit="日志里有 18 个 [HL-GAME-INIT]：18 个号进场，对局卡只数到 9 个（teamSplitCounts 1/2/4/2）。真值分队 T1×5（Levi Bulgar Ireland Cyrus Chagatai）/ "
+                       "T2×5（Fischer Jokic British Empire Tal LightYagami）/ T3×4（Pagan Broly East India Co Zhuge Liang）/ T4×4（Sanada Kilwa Praetorian Shimazu）。"
+                       "Praetorian、Shimazu、Chagatai t=168 同一拍离开，没有任何 HL-TICK；实际打过的是 15 个号（T1×4 / T2×5 / T3×4 / T4×2）。",
+        peerInRoom="同房另一支受控编队 squad10（[APEX] 标签）10 个号全在 T5——T5 整队都是受控号。它的对局包 A052 在验证集里，没有读；"
+                   "本文里 squad10 的数据全部来自本局自带录像（pipeline.sh B034 - tag:APEX，按战队标签认号）。",
+        fairSharePerCapita="50 个真人、5 队各 10 人。进场的 18 个号占人头 36%，实际打过的 15 个占 30%；主队 T3 的 10 个人里 4 个是编队号。",
+        notes="日志标签中途换名：同一个 me 先后用几个名字（Cyrus→Inosuke→Pineapple = 45 号；LightYagami→Kaiser = 48；East India Co→FreeMason→Vatican City = 31；"
+              "Kilwa→Ganondorf→Nelson = 41）。本文一律用第一个名字、按 me 认号。HL-TICK 的 t 是各号本地拍；『执行拍』是录像里的服务器拍，『决策拍』是本地拍，时延 = 执行拍 − 配上的影子决策拍。"
+              "一拍冲出多条指令时写的合计兵数含手续费；单条指令写的是实发兵（不含手续费）。『兵/格』一律是真值交战账里的耗兵 ÷ 拿到的格数（truth [TE]，整局合计），不是派出的兵数。",
+    ),
+    phases=dict(
+        spawn=dict(
+            window="t=0~90",
+            facts=[
+                "日志 [HL-SPAWN] 44 行，人均 2.5 条指派。打过的 15 个号里 9 个的引擎落点是自己最后一条指派（spawncheck [PA][PC]）；没有相距 <40 像素的号对，最近编队友距离中位 176 像素、最小 64（Tal T2 与 Zhuge Liang T3）。",
+                "没执行最后一条的 6 个：British Empire 落在 (18,194)（最后一条 (450,674) 与 Broly 的点相同）、East India Co (930,18)（最后一条 (18,402)）、Tal (18,434)（5 条里的第 4 条）、Ireland (398,46)、Kilwa (130,50)（最后一条 (930,18)）、Cyrus (818,226)。",
+                "East India Co 的落点 (930,18) 离同房 squad10 的 zexos1 (920,18) 只有 10 像素。",
+                "出生名次 rankIdx 用了 0~18、缺 3：按名字池数人头时把从没出生的 Panzergrenadier（25 号，t=0 离开，没有日志）和 T1 的野人 Prussia（49 号）都算成了编队号，名次表是 20 个位置。",
+                "Praetorian、Shimazu、Chagatai 三个号都有出生指派，t=168 同一拍离开；空壳长到 55 / 125 / 231 格，t=1064 / 1095 / 1747 被吃掉。",
+            ],
+            problems=[
+                "18 个号进场，3 个开局就掉线：T4 分支从 4 个号变成 2 个，T1 从 5 个变成 4 个。",
+                "East India Co 与 squad10 的 zexos1 贴脸出生：t=630 两个号 2790 / 2781 格；t=2340~2430 zexos1 用 281040 兵吃掉 East India Co 3430 格。",
+            ],
+        ),
+        opening=dict(
+            window="t=90~630",
+            facts=[
+                "t=180~539 已执行指令的时延中位 11~12 拍，陆攻落地无效 0 条；t<180 的 24 条比影子晚 70 拍（squad10 12 拍）。影子的 HL-OPENING 行与真机逐字相同（Fischer 8/9，其余 14 个号全同，shadowcmp [SA]）。",
+                "人均比（我方在线号人均领土 ÷ 全房在线真人人均）：t=270 1.19、t=450 1.10、t=630 1.04。t=630 我方 15 个号占全图 9.07%，squad10 10 个号占 6.38%。",
+                "(270,630] 人均吃空地 我方 2370 格 / squad10 2469 / 其它真人 2143；人均吃人机 193 / 314 / 68 格（harvest）。t=630 内置 AI 占 44.3%、空地 29.4%。",
+                "t=540~719 时延中位已经到 30 拍（P90 58）。",
+            ],
+            problems=[
+                "Broly t=630 2834 格，接壤最长的真人邻居是 T1 的野人 Prussia（41 格边界，1507 格 / 1333 兵）：这个名字在名字池里，Broly 的可打名单里没有它。",
+            ],
+        ),
+        midgame=dict(
+            window="t=630~3500",
+            facts=[
+                "卡顿波 t=540~2340：每 180 拍窗口的时延中位 30→95→174→296→365→382→309→304→340→164 拍，P90 最高 732、最大 832；陆攻落地无效的比例 0%→13%→35%→58%→59%→42%→89%→55%→43%→44%。t=2880 之后是 9~16 拍（shadowcmp [SF]）。",
+                "同房 squad10 同一波：时延中位 27→92→188→265→348→480→504→767→300→162，t=2340 起回到 11 拍；陆攻无效最高 79%（shadowcmp_peer [SF]）。",
+                "该发的没发出去（lagstats [LA]）：影子决策拍 540~1260 的 529 条指令在录像里配上 315 条（60%），其中 116 条落地时已无效；1260~1800 的 371 条配上 106 条（29%）；1800~2520 的 106 条配上 46 条。",
+                "人机收割（harvest，人均格数 我方 / squad10 / 其它真人）：(630,900] 921 / 647 / 1095；(900,1260] 1483 / 707 / 4377；(1260,1800] 480 / 606 / 4661。t=630~1800 内置 AI 共丢 265544 格，我方吃到 43257 格（16.3%，人头占 33%），squad10 7.4%（人头 22%），其它 20 个真人 76.3%。",
+                "人均比：t=630 1.04 → 900 0.96 → 1260 0.82 → 1530 0.67 → 1800 0.65 → 2520 0.57 → 3600 0.46。",
+                "防人机留底 sb（shadowcmp [SH]）：t=900~1260 接壤人机的 369 个号·点里 173 个全被挡，其中 137 个挡在 sb 上；sb 由敌队真人的余额定出 99 个、squad10 的号 18 个、异队编队友 13 个、同队真人 7 个。逐号：Jokic 56 个点（t=810~1490）、Zhuge Liang 53、Cyrus 46、Ireland 24。",
+                "1500 拍后的口粮门槛（shadowcmp [SJ]，影子口径 = 不卡的客户端）：t=1500~1800 接壤内置 AI 的 137 个号·点里只有 24 个有 AI 过门槛（都在 t=1650 之前），113 个全被挡，其中 94 个挡在最小指令门槛上："
+                "吃光那个 AI 所需的兵（中位 2705）小于 minCmd（余额的 4.7%，中位 10960），买地循环直接跳过。到 t=2400 共 122 个号·点，108 个被挡的 AI 是 0 兵。影子打内置 AI 的陆攻 t<1500 有 641 条，t=1500~1800 只有 11 条，之后 0 条。",
+                "六个号中途离开（truth [TI]）：Tal、Ireland、Bulgar t=1603 同一拍；Fischer 1778、British Empire 1785、Levi 1869。离开时合计 39625 格（全图 8.0%）、1822516 兵。这六个号最后一条 HL-TICK 的本地拍是 990 / 1170：离开时本地比服务器晚 520~700 拍。",
+                "补拍成批落地（[SB2]、lagstats [LC]）：同一个号同一个服务器拍落地 9 条 19 次、8 条 15 次（squad10 9 条 36 次；其它真人最多 2 条）。",
+                "t=1834~2156 五个号的旧单一起冲出去：Zhuge Liang t=1834 一拍 9 条 123193 兵（余额的 99%）、Pagan t=2072 一拍 9 条 437036（97%）、Jokic t=2044 一拍 9 条 297573（93%）、Sanada t=1995 + 2051 九条生效 385810（两拍分别是当时余额的 58% / 82%）、LightYagami t=2093 四条生效 288394（73%）。",
+                "阵亡：Zhuge Liang t=2020、Pagan 2288、Jokic 2438、Sanada 2487、Broly 2558——538 拍里死了 5 个。",
+                "空壳赠兵（truth [TM]）：British Empire 的空壳 t=2146 把全部余额交给同队的 LightYagami（到账 295649，117935→413584）；Tal 的空壳 t=2083 给了 T2 的野人 [OG]cyankwastaken 250072。全场 19 次：给编队外真人 11 次 382311、给在线编队号 5 次 341514（全是 LightYagami）。",
+                "t=2520 起只剩 4~5 个号。从 t=2520 到终局 7140 拍，影子一共只要发 40 条指令，40 条全部落地（lagstats [LA]）：Kilwa 12435 格不动 t=1710~4140（余额 t=1710 243718 → t=4000 1849336）；Cyrus 6481 格不动 t=2520~3690（294637→912023）；East India Co 4121 格不动 t=2520~3870。",
+                "LightYagami t=2390~2700 18134 格（全队峰值）；t=2760 / 3330 被 T4 的 Player 920 两波打掉 9320 格（对方付 1106995 兵，118.8 兵/格），t=3690~3780 squad10 的 zero_7 再拿 5101 格；t=3780 只剩 4654 格。",
+            ],
+            problems=[
+                "人机最肥的 900 拍（t=900~1800，AI 占地 56.3%→1.9%）正好是卡顿最重的 900 拍：我方人均吃到的人机地是其它真人的 22%（1963 / 9038 格）。",
+                "同一个决定在卡顿里每 15~20 拍重下一次，补拍时一拍冲出最多 9 条，各自按落地时的余额抽兵：本意 30%~40% 余额的一次买地变成 93%~99%。",
+                "本土被抽空后被第三方按 5~20 兵/格吃掉：Zhuge Liang（空壳 Tal 8.6、cyankwastaken 5.1、空壳 British Empire 4.7 兵/格）、Pagan（Bashkort 5.5）、Jokic（kaito9 10.2）、Sanada（Salchichador 20.2、Device 15.8）。",
+                "异队编队号离开后变成引擎托管的空壳，照样进攻；在线的编队号仍按名字把它当兄弟，不在可打名单里：Zhuge Liang 被空壳 Tal、British Empire 吃掉 7353 格，对它们一条指令都没有。",
+                "过了 1500 拍，剩下的人机（t=1530 还占全图 10.3%）按代码也吃不动：Cyrus 旁边的 AI394（2341 格 / 0 兵，吃光只要 4753 兵）36 个点没动，后来被 zero_7 用 4536 兵吃走 2268 格；"
+                "East India Co 旁边的 AI204（911 格 / 0 兵）36 个点没动，反被它啃走 1112 格，后来 zexos1 用 3000 兵吃走 1500 格。",
+                "幸存的号被 dpKeep 冻住：买地留底按最强真人邻居的全部余额算（Cyrus 旁边的 KING 94 万→370 万），自己 6481 格怎么囤也够不着。",
+            ],
+        ),
+        endgame=dict(
+            window="t>3500",
+            facts=[
+                "各队占地（T1 / T2 / T3 / T4 / T5）：t=3600 12.1 / 24.6 / 8.7 / 31.7 / 22.8；t=5400 10.6 / 22.1 / 11.1 / 38.2 / 17.5；t=7380 12.5 / 31.8 / 13.7 / 42.0 / 0；t=8460 19.2 / 30.2 / 24.0 / 26.3；t=9360 29.5 / 30.2 / 30.0 / 8.9。T5（squad10 整队）t=3960 到峰值 25.9%，t=6823 全灭。",
+                "头部都是编队外的真人：KING（T2）t=1800 10620 格 / 43.7 万兵 → t=3600 36366 / 372 万 → t=6300 87692 → t=9000 148889 / 2214 万；Device（T3）t=3600 33701 格 → t=9000 138356 → t=9600 159407。",
+                "LightYagami t=3780~4680 4654 格被 zero_7 围住，余额 181393→556074（密度 119.5）；t=4767 / 4781 两条陆攻 280558 兵打 zero_7（连同 t=2310 的一条，全程耗兵 330532 拿 2055 格，160.8 兵/格）；Player 778、Device 高价买走剩下的地（221.2 / 194.3 兵/格），t=5159 阵亡。",
+                "Cyrus t=3654 / 3738 为异队的 LightYagami 向 zero_7 各戳 10% 余额（92685 + 76766 兵），自己从 6481 格长到 7983 格；全程从 zero_7 身上拿 9580 格（112.3 兵/格）。同队真人 Mr Bass t=4956~5362 捐给它 3 笔共 974289 兵。squad10 的 alex_k 拿走它 11178 格（1649016 兵，147.5 兵/格），t=5666 阵亡。",
+                "East India Co t=4410~5760 4715 格，唯一的邻居是 KING；余额 t=5220~5760 顶在硬上限 707250（150 兵/格）540 拍。t=5760~5850 一条陆攻 283176 兵打 KING，耗兵 274726 拿 1145 格（239.9 兵/格）；KING 用 1346602 兵买走 4452 格（302.5 兵/格），t=6292 阵亡。",
+                "Kilwa t=4046 一条船 305639 兵在 cyankwastaken 岸上登陆 237810，t=4270 陆攻 520262 兵，正赶上对方把余额打空（t=4260 2332334 → t=4320 14141），拿 6369 格（80.3 兵/格）；t=4500 18775 格。",
+                "Kilwa t=4774~5313 三条陆攻共派出 1833875 兵打 Player 776（t=5215 离开），耗兵 1663218 拿 4296 格（387.2 兵/格），t=5700 24478 格。t=6300~7110 余额顶在硬上限 3681900（150 兵/格）810 拍。",
+                "Kilwa 终局（t=7161~9111）：三条陆攻共派出 2846246 兵打 YK，耗兵 1751079 拿 3659 格（478.6 兵/格），YK 阵亡时还有 749245 兵压在它身上；YK t=7890 被五家围死后 Kilwa 四周只剩队友，t=7994 / 8211 两条船 999474 兵全部在海上被 Banananeninineninine 的船打掉；t=8512 陆攻 1250134 兵打 Device 拿 3349 格（373.2 兵/格）；Device 用 5868098 兵买走 20223 格（290.2 兵/格），t=9111 阵亡——全队最后一个号。",
+                "船账（truth [TL]）：全队 14 条船，船上兵 1607679，手续费 554906；Kilwa 8 条 1516765 兵 / 手续费 537638，其中两条小船（3000 / 3635 兵）手续费 96011 / 116328。",
+            ],
+            problems=[
+                "幸存的 4 个号分在 4 个队里，各自被大号围着：密度 119~150 兵/格，出手就是 160~480 兵/格的价钱，不出手就顶着上限（利息降到 0）等对方来买。",
+                "T4 在 t=1800~2160 和 t=3060~8280 是第一大队（最高 42.0%；t=2340~2880 T2 略高），t=2520 起队里只有 Kilwa 一个编队号：368 万兵在硬上限上停了 810 拍；余粮捐款只给编队友和 Boss（tryDonateToTeammate L4462-4498），没有流向 T4 在前线的真人。",
+            ],
+        ),
+    ),
+    turningPoints=[
+        dict(
+            t0=630, t1=1530, shareBefore=1.04, shareAfter=0.67, shareUnit="我方在线号人均领土 ÷ 全房在线真人人均领土",
+            what="两支受控编队同时卡顿，加上防人机留底被敌队真人的余额顶住：人机地被别的真人吃走。",
+            evidence=[
+                "shadowcmp [SF]：执行拍 720~899 时延中位 95 / P90 145（陆攻无效 13%）；900~1079 174 / 270（35%）；1080~1259 296 / 377（58%）；1260~1439 365 / 484（59%）；1440~1619 382 / 547（42%）。180~539 中位 11~12、无效 0。",
+                "shadowcmp_peer [SF]：squad10 同窗中位 92 / 188 / 265 / 348 / 480。",
+                "harvest：(900,1260] 人均吃人机 我方 1483 / squad10 707 / 其它真人 4377 格；(1260,1800] 480 / 606 / 4661 格。",
+                "truth [TC]：内置 AI 占地 56.3%（t=900）→ 29.0%（1260）→ 10.3%（1530）→ 1.9%（1800）；同期 T2 10.0%→16.1%→21.4%，T4 8.5%→16.8%→23.1%，T3 8.5%→15.6%→19.7%，T1 6.9%→11.3%→13.5%，T5 8.9%→10.6%→11.6%。",
+                "lagstats [LA]：决策拍 540~1260 的 529 条配上 315 条（116 条落地无效）；1260~1800 的 371 条配上 106 条。",
+                "shadowcmp [SH]：t=900~1260 全被挡的 173 个号·点里 137 个挡在 sb 上，99 个的 sb 是敌队真人的余额。Jokic t=1300：8221 格 / 113484 兵，sb=112655（Salchichador 的余额），七个人机邻居（合计 7841 格，最便宜的 978 格 / 0 兵，吃光只要 1468 兵）可用余额都只有 829。",
+                "Broly t=900~1440 停在 3168 格，余额 26196→98713：邻居只有野人 Prussia（151 格边界，t=900 2788 格 / 5288 兵）和 Banananeninineninine；影子逐拍追踪里可打名单只有后者。",
+                "HL-TICK 性能字段 avgMs ≤1 ms；全场只有 2 条 HL-SLOW-TICK（Kilwa 33.7 / 35.3 ms）——策略计算本身没有拖慢。",
+            ],
+            priorDecisions=[
+                dict(t="540~2340", bot="全队", decision="指令迟迟不落地时照常在本地局面上决策、发令；自己发出的指令在本地看不到效果，同目标冷却 15 拍一到就原样再下一条。",
+                     codePath=f"{C110}: 文件头 L19-31（驱动层：发令后 450ms 且 8 拍内不调用策略，此外没有时延检测）；Strategy.send L526-540；{SIM}/game.js L1263-1285（执行时才按当时余额×(pct+1)/1024 抽兵）",
+                     why="Pagan 决策拍 1500~1620 每 15 拍对 Mr Bass 下一条 30% 余额的陆攻，9 条在 t=2072 同一拍落地。"),
+                dict(t="810~1490", bot="Jokic", decision="t<1500 打内置 AI 之前先扣防人机留底 sb：sb 取『人机邻居的另一个最弱邻居』的余额。那个邻居是敌队真人 Salchichador / Ill full send，余额和 Jokic 差不多，可用余额一直接近 0。",
+                     codePath=f"{C110}: floorFor0 L2270-2276；winFloor L4542-4550；safeFinite L2532-2541；threatOf L464-490",
+                     why="56 个点全被 sb 挡住：余额中位 66513，sb 中位 67898，被挡的人机中位 879 格 / 0 兵。t=1555（过了 coreFrom=1500）留底降到 25947 才买得动。"),
+                dict(t="900~1440", bot="Broly", decision="可打名单按名字池排除『编队友』：野人 Prussia 撞名，被排除在外。",
+                     codePath=f"{C110}: analyze L440（!isProtectedSquadMate 才进 nb）；isProtectedSquadMate L3993-3996；isOurSquadBot L3973-3976（只看名字是否在 SQUAD_POOL_SET）",
+                     why="shadow.mjs --trace Broly:1000,1200,1400 的 nb 只有 Banananeninineninine（留底 108768~158400 高于余额）。"),
+            ],
+            statementType="observed",
+            counterfactual="如果指令像 t=180~539 那样 12 拍内落地：影子在 900~1260 的 369 个接壤人机的号·点里有 196 个至少一个人机过得了门槛。能多吃多少没有重演（猜测）。",
+        ),
+        dict(
+            t0=1603, t1=2520, shareBefore=20.13, shareAfter=8.73, shareUnit="我方在线号领土占全图 %（t=1530 15 个号 → t=2520 5 个号）",
+            what="六个号掉线成空壳（带走全图 8.0% 的地和 182 万兵）；五个号的旧单在补拍时一拍冲出、把余额打空，538 拍里死了 5 个。",
+            evidence=[
+                "truth [TI]：Tal 4926 格 / 312076 兵、Ireland 6837 / 183318、Bulgar 5115 / 316191（三个 t=1603 同一拍）；Fischer 10603 / 388255（1778）、British Empire 5242 / 305595（1785）、Levi 6902 / 317081（1869）。这些地后来被 T4 拿走 32233 格、T2 6688 格。",
+                "Zhuge Liang t=1834 一拍 9 条 pct=396~416 打 cyankwastaken：实发 123193，是执行前余额 124296 的 99%（决策拍 1530~1650，每条本意 39%~41%）；t=1860 11335 格 / 1040 兵。空壳 Tal、空壳 British Empire 和 cyankwastaken 用 75444 兵吃掉它 10932 格，t=2020 阵亡。",
+                "Pagan t=2072 一拍 9 条 pct=309~317 打 Mr Bass：实发 437036（余额 451147 的 97%；决策拍 1500~1620）；t=2160 余额 613。Bashkort 用 34656 兵吃掉 6308 格（5.5 兵/格），t=2288 阵亡。",
+                "Jokic t=1981 / 2044 两拍各 9 条（决策拍 1555~1960）：t=2044 一拍实发 297573（余额 318975 的 93%）打 Ill full send；t=2070 12495 格 / 21811 兵。squad10 的 kaito9 用 179492 兵吃掉 17675 格（10.2 兵/格），t=2438 阵亡。",
+                "Sanada t=1995 / 2051 两拍 9 条生效的陆攻 385810 兵打 Salchichador（75.5 兵/格拿 4635 格），t=2070 余额 35057；Salchichador 20.2 兵/格吃回 5505 格，Device 15.8 兵/格拿 3613 格，t=2487 阵亡。",
+                "truth [TK]：余额单窗（90 拍）跌 ≥30% 的 41 段里陆攻 17 段、挨打 22 段、发船 2 段。",
+                "主队 T3 分支：t=1800 5.33%（4 个号）→ 2160 2.83%（3）→ 2520 1.21%（2）→ 2700 0.84%（1）。T3 全队 22.3% → 15.8% → 10.9%。",
+                "同期 squad10（T5）：12.24%（t=1800）→ 18.96%（2160）→ 23.79%（2520）。",
+            ],
+            priorDecisions=[
+                dict(t="1500~1960", bot="Zhuge Liang / Pagan / Jokic / Sanada / LightYagami", decision="买地大单发出后看不到落地，15 拍冷却一到就对同一目标原样再下；每条的 pct 都按『这一条是唯一一条』算。",
+                     codePath=f"{C110}: Policy.buyLand L5250-5534；Strategy.send L526-540（同目标 15 拍冷却，不记在途）；{SIM}/game.js L1263-1285",
+                     why="9 条 pct≈30% 连着执行，合计抽走 1−0.7^9 = 96% 的余额。"),
+                dict(t="1603~2020", bot="Zhuge Liang", decision="空壳 Tal、British Empire（T2，已离开）来打时不还手：它们的名字在名字池里，不进可打名单，也不计入留底。",
+                     codePath=f"{C110}: analyze L440；isProtectedSquadMate L3993-3996（hasWildOutsidersAlive 为真时名字池里的号都受保护，不看是否已离开）；counterAttack L871-886（只遍历 nb）；{SIM}/bots.js（离开的号按内置 AI 行动）",
+                     why="shadow.mjs --trace Zhuge Liang:1500,1600,1680 的 nb 只有 cyankwastaken；Tal 与它接壤 109~131 格。"),
+                dict(t="1885~2010", bot="Pagan", decision="给 Zhuge Liang / Broly 的救援捐款按 pct=155 发，不看受捐额度；6 笔按决策时的局面都超额度。",
+                     codePath=f"{C110}: tryDonateToTeammate L4422-4447（L4437 pct = min(maxSafePct, 155)）；{SIM}/game.js L336-418（donationCost / bookDonation：超了整单拒）",
+                     why="digest [G]：额度栏 0+114/103 … 0+134/115。3 笔在 t=2156 落地时 Pagan 余额只剩 11517，到账 1754 + 803 + 381。"),
+            ],
+            statementType="observed",
+            counterfactual="如果每个决定只落地第一条：Zhuge Liang t=1834 实发约 5 万（余额还剩 7.5 万），Pagan t=2072 实发约 14 万（还剩 31 万）。这几个号能多活多久没有重演（猜测）；六个掉线号的 182 万兵则与策略代码无关。",
+        ),
+        dict(
+            t0=7110, t1=9111, shareBefore=4.98, shareAfter=0.0, shareUnit="Kilwa 一个号的领土占全图 %（全队最后一个号）",
+            what="最后一个号 Kilwa 带着 368 万兵（硬上限）出手：打 YK 478.6 兵/格，两条大船没有靠岸（海战打掉 837696 兵），再打 Device 373.2 兵/格；Device 回头把它买光。",
+            evidence=[
+                "t=6300~7110 Kilwa 24546 格 / 3681900 兵（150 兵/格，硬上限）810 拍不动；敌邻只有 YK（T2，t=6500 57924 格 / 8688600 兵，同样 150 兵/格），影子算出的报价 775 兵/格。",
+                "t=7161 / 7427 / 7714 三条陆攻 1431050 + 661803 + 753393 兵打 YK：耗兵 1751079 拿 3659 格（478.6 兵/格），YK 用 1108528 兵拿回 2245 格。YK t=7890 阵亡时身上有五家的兵（Banananeninineninine 1706001、Player 778 952718、Барбос 762060、Kilwa 749245、Mr Bass 718007）。",
+                "t=7920~8370 Kilwa 四周只有队友 Барбос（597 格边界）。t=7931 一条船 3635 兵、手续费 116328；t=7994 / 8211 两条船 526490 / 472984 兵（手续费 114610 / 111290）驶向 Banananeninineninine：海战里被打掉 438218 / 399478 兵，其余衰减，没有靠岸（boattrack_Kilwa.txt）。",
+                "t=8370 Device（T3）贴上来（t=8500 123948 格 / 13805521 兵）。t=8512 Kilwa 陆攻 1250134 兵打 Device，拿 3349 格（373.2 兵/格），t=8550 29437 格（峰值）/ 2486318 兵。",
+                "t=8640 Device 压上 1513684 兵；Device 全程用 5868098 兵买走 20223 格（290.2 兵/格），Mr Bass 1273200 兵买走 5808 格。t=9000 15199 格，t=9111 阵亡。",
+                "T4 占地：42.0%（t=7380）→ 31.4%（8100）→ 26.3%（8460）→ 13.3%（8820）→ 8.9%（9360）。Tukcherofav t=7867、Барбос t=8789 阵亡。",
+            ],
+            priorDecisions=[
+                dict(t="6300~7110", bot="Kilwa", decision="余额到硬上限后仍不出手：买地留底取 dpKeep（按 YK 的全部余额算，4261587~4860551），高于自己的 3681900。",
+                     codePath=f"{C110}: Policy.buyLand L5250-5534；Policy.safeAt L4524-4541；V13.safeAt L2744-2754；dpKeep L2491-2496；{SIM}/game.js L739-762（余额超过 100×领土后利率线性降到 0，150×领土封顶）",
+                     why="shadow.mjs --trace Kilwa:6500,7000：safe 4860551 / 4261587，报价 775 / 727 兵/格。"),
+                dict(t="7985~8200", bot="Kilwa", decision="没有敌邻且闲置时发船：对隔海的真人目标派 (余额−留底) 的一半，不看对方在海上有没有船。",
+                     codePath=f"{C110}: Policy.act L4923 → idleBoats L4979-5006；General.boatOut L1035-1052（L1045 真人目标 amount = max）；searchWater L1056-1113；{SIM}/boats.js fightBoats（敌船相遇每 2 拍互相伤害）",
+                     why="影子 t=7985 / 8200 各发一条 pct=146 / 135 的船，目标 Banananeninineninine；对方 t=8106 / 8302 发出 758993 / 529122 兵的船。"),
+                dict(t="5610 / 7925", bot="Kilwa", decision="对一小块空地发船只带 3×格数+300 兵，手续费照收余额的 32/1024。",
+                     codePath=f"{C110}: General.boatOut L1043-1045；searchWater L1097-1102（空地的性价比 = 2×衰减 + 手续费/格数）；{SIM}/boats.js（每条船收余额的 32/1024）",
+                     why="t=5621 船上 3000 兵、手续费 96011；t=7931 船上 3635 兵、手续费 116328。"),
+            ],
+            statementType="observed",
+            counterfactual="Kilwa t=7110 之后共送出 5099489 兵（四条打真人的陆攻 4096380 + 三条船 1003109）和 499502 手续费，领土净增 4891 格（24546→29437）。如果这些兵留在家里，Device（1380 万兵、12.4 万格）要按 290 兵/格以上的价钱买 2.6 万格；T4 当时正在被 Device 和 KING 拆掉，Kilwa 守得住多久没有重演（猜测）。",
+        ),
+    ],
+    deathNotes={
+        "Zhuge Liang": dict(cause="t<1500 被 sb 挡住 53 个点（sb 来自 cyankwastaken 的余额），t=1440 5829 格 / 154652 兵。t=1680~1687 两条陆攻 166699 兵打 cyankwastaken，领土到 10459 格；t=1834 一拍 9 条旧单再打出 123193 兵（余额的 99%），本土只剩 1040 兵。"
+                                  "空壳 Tal（8.6 兵/格拿 5850 格）、cyankwastaken（5.1 兵/格拿回 3579 格）、空壳 British Empire（4.7 兵/格拿 1503 格）把它吃光；对两个空壳它一条指令都没有。",
+                            chain=["t=1440 5829 格 / 154652 兵", "t=1680 / 1687 实发 108660 + 58039", "t=1770 10459 格 / 108331 兵", "t=1834 一拍 9 条 123193 兵", "t=1860 11335 格 / 1040 兵", "t=1920 7312 格", "t=2020 阵亡"], statementType="observed"),
+        "Pagan": dict(cause="t=1080~2070 停在 3912~3932 格，余额 27584→451147（密度 114.7）：t=1500 起对 Mr Bass 每 15 拍下一条 30% 余额的陆攻，卡顿里一条都没落地。t=2072 九条一拍落地，437036 兵（97%）全压在 Mr Bass 身上，拿 3976 格（106.0 兵/格）；"
+                            "本土余额 t=2160 只剩 613。Bashkort 用 34656 兵吃掉 6308 格（5.5 兵/格）。",
+                      chain=["t=1080 3912 格 / 27584 兵", "t=1500~1620 九条陆攻单（没落地）", "t=2070 3932 格 / 451147 兵", "t=2072 一拍 9 条 437036 兵", "t=2160 4393 格 / 613 兵", "t=2220 1992 格", "t=2288 阵亡"], statementType="observed"),
+        "Jokic": dict(cause="t=810~1490 被 sb 挡住 56 个点，t=1170~1980 停在 7644~8221 格，余额囤到 423277。t=1981 / 2044 两拍各 9 条旧单：10 条生效，433153 兵打 Ill full send（拿 12678 格，30.1 兵/格；Ill full send t=2177 阵亡），"
+                            "本土 t=2070 只剩 21811 兵（12495 格）。squad10 的 kaito9 用 179492 兵吃掉 17675 格（10.2 兵/格）。",
+                      chain=["t=1300 8221 格 / 113484 兵（sb=112655）", "t=1980 423277 兵", "t=2044 一拍 9 条 297573 兵（93%）", "t=2070 12495 格 / 21811 兵", "t=2190 13985 格", "t=2340 7120 格", "t=2438 阵亡"], statementType="observed"),
+        "Sanada": dict(cause="t=1080~1980 停在 6894~6921 格，余额 40780→395651。t=1995 / 2051 两拍 15 条旧单里 9 条生效，385810 兵打 Salchichador，拿 4635 格（75.5 兵/格），t=2070 余额 35057。"
+                             "Salchichador 用 110975 兵吃回 5505 格（20.2 兵/格），Device 57091 兵拿 3613 格（15.8 兵/格）。",
+                       chain=["t=1980 6894 格 / 395651 兵", "t=1995 一拍 9 条（3 条生效，231955 兵）", "t=2051 一拍 6 条 153855 兵", "t=2100 11377 格 / 47584 兵", "t=2280 4722 格", "t=2487 阵亡"], statementType="observed"),
+        "Broly": dict(cause="t=900~1440 被两个 T1 的真人围住，停在 3168 格：野人 Prussia（151 格边界，t=900 只有 2788 格 / 5288 兵）名字在名字池里，不在可打名单；另一个邻居 Banananeninineninine 的留底高于余额。"
+                            "发了 6 条船（90914 兵，手续费 17268），4 条在 Player 778 岸上登陆，t=1800 到 5195 格。t=1800~2000 Prussia 反过来用 39506 兵拿走它 822 格；t=1900 起 Banananeninineninine 用 270862 兵买走 2995 格（90.4 兵/格）。"
+                            "被打时留底（dpKeep 230837~262646）高于余额（126852~155723），没有还手。",
+                      chain=["t=900 3168 格 / 26196 兵", "t=1440 3168 格 / 98713 兵", "t=1800 5195 格 / 146786 兵", "t=1920 4848 格，身上 117535", "t=2190 2016 格 / 41335 兵", "t=2558 阵亡"], statementType="observed"),
+        "LightYagami": dict(cause="t=2093 / 2156 两拍旧单，加上空壳 British Empire 赠的 295649 兵：从 Salchichador 身上拿 12419 格（43.2 兵/格），t=2390 到 18134 格（全队峰值）。t=2760 / 3330 被 T4 的 Player 920 两波各 44~66 万兵打掉 9320 格（对方 118.8 兵/格），"
+                                  "t=3690~3780 squad10 的 zero_7 拿走 5101 格；买地留底 dpKeep 高于余额（t=3330 1142114 对 667890），t=2311~4766 只落地 4 条指令。t=3780~4680 4654 格被围，密度 119.5；t=4767 / 4781 打 zero_7 280558 兵（全程从它身上拿 2055 格，160.8 兵/格）；Player 778、Device 买走余下的地。",
+                            chain=["t=2070 6627 格 / 383939 兵", "t=2146 空壳赠兵到账 295649", "t=2390 18134 格", "t=2940 13334 格", "t=3420 10708 格", "t=3780 4654 格 / 181393 兵", "t=4680 4654 格 / 556074 兵", "t=5159 阵亡"], statementType="observed"),
+        "Cyrus": dict(cause="t=710~1490 被 sb 挡住 46 个点（sb 来自 squad10 的 zero_7 / noah88 / riku_x）。t=2219~2289 八条陆攻 393021 兵打 leo_tx、zero_7，squad10 的 alex_k 回手，9516→6481 格。t=2520~3690 6481 格不动，余额 294637→912023（密度 141）："
+                            "买地留底 dpKeep 按 KING 的余额算（521097→2086809），一直高于自己的余额。t=3654 起为 LightYagami 戳 zero_7，之后陆续从 zero_7 身上拿 9580 格（112.3 兵/格）；Mr Bass 捐给它 974289 兵。"
+                            "alex_k 用 1649016 兵拿走 11178 格，kaito9 3228 格，noah88 2137 格，Tukcherofav 1821 格。",
+                      chain=["t=2160 7561 格 / 471053 兵", "t=2340 9516 格 / 95519 兵", "t=2520 6481 格 / 294637 兵", "t=3600 6481 格 / 912023 兵", "t=4320 7983 格 / 835320 兵", "t=5400 5306 格 / 408166 兵", "t=5580 2244 格", "t=5666 阵亡"], statementType="observed"),
+        "East India Co": dict(cause="出生点离 squad10 的 zexos1 10 像素。t=2250~2340 吃 riku_x 2394 格（28.7 兵/格）到 8417 格；t=2340~2430 zexos1 用 281040 兵拿走 3430 格。t=2520~3870 4121 格，t=4410~5760 4715 格，唯一的邻居是 KING（470 万~690 万兵）；"
+                                    "余额 t=5220~5760 顶在硬上限 707250。t=5760~5850 一条陆攻 283176 兵打 KING 拿 1145 格（239.9 兵/格）；KING 用 1346602 兵买走 4452 格（302.5 兵/格）。",
+                              chain=["t=2340 8417 格 / 250509 兵", "t=2430 5245 格 / 117764 兵", "t=2520 4121 格", "t=5220 4715 格 / 707250 兵（硬上限）", "t=6000 5860 格 / 567210 兵", "t=6200 5860 格 / 702269 兵", "t=6292 阵亡"], statementType="observed"),
+        "Kilwa": dict(cause="全队活得最久的号。t=1710~4140 12435 格不动（唯一的敌邻是 Player 776，29 格边界），余额 243718→1849336。t=4046 发船 + t=4270 陆攻吃下 cyankwastaken 6369 格（80.3 兵/格），再花 1663218 兵从 Player 776 身上买 4296 格（387.2 兵/格），到 24546 格。"
+                            "t=6300~7110 顶在硬上限 3681900。t=7161 起打 YK（478.6 兵/格）、两条大船被 Banananeninineninine 打沉、打 Device（373.2 兵/格），共送出 510 万兵；Device 用 5868098 兵买走 20223 格（290.2 兵/格），Mr Bass 1273200 兵买走 5808 格。",
+                      chain=["t=1710 12435 格 / 243718 兵", "t=4140 12435 格 / 1601070 兵", "t=4500 18775 格", "t=6300 24546 格 / 3681900 兵", "t=8550 29437 格 / 2486318 兵", "t=8730 24488 格", "t=9000 15199 格 / 1295063 兵", "t=9111 阵亡"], statementType="observed"),
+        "Tal": dict(cause="掉线：t=1603 与 Ireland、Bulgar 同一拍离开。最后一条 HL-TICK 是本地拍 990；最后一条落地的指令在 t=1162（那一拍 9 条，1 条生效）。离开时 4926 格 / 312076 兵。空壳之后吃了异队编队友 Zhuge Liang 5850 格，"
+                          "t=2083 把 250072 兵交给 T2 的 cyankwastaken，此后每隔 80~180 拍把新进账的约 1.2 万兵再交给一个 T2 队友；t=3933 被 Барбос 吃掉。",
+                    chain=["本地拍 990 最后一条 HL-TICK", "t=1162 最后一批指令落地", "t=1603 离开（4926 格 / 312076 兵）", "t=2083 空壳赠出 250072", "t=3250 空壳峰值 12285 格", "t=3933 空壳阵亡"], statementType="observed"),
+        "Ireland": dict(cause="掉线：t=1603 离开，6837 格 / 183318 兵；最后一批指令 t=1253 落地。t=770~1410 有 24 个点被 sb 挡住（sb 来自 Device 的余额）。空壳 t=2149 被 Барбос、Device 吃掉。",
+                        chain=["本地拍 990 最后一条 HL-TICK", "t=1253 最后一批指令落地", "t=1603 离开（6837 格 / 183318 兵）", "t=2149 空壳阵亡"], statementType="observed"),
+        "Bulgar": dict(cause="掉线：t=1603 离开，5115 格 / 316191 兵；最后一批指令 t=1190 落地（一拍 9 条全部无效，决策拍 760~1185）。空壳 t=2444 被 T4 的三个真人吃掉。",
+                       chain=["本地拍 990 最后一条 HL-TICK", "t=1190 一拍 9 条全部无效", "t=1603 离开（5115 格 / 316191 兵）", "t=2444 空壳阵亡"], statementType="observed"),
+        "Fischer": dict(cause="掉线：t=900 是全房最大的真人（7262 格），t=1170 10837 格。t=1778 离开，10603 格 / 388255 兵；最后一批指令 t=1386 落地（一拍 8 条全部无效，决策拍 945~1355）。空壳 t=2909 被 pat、Player 883 吃掉。",
+                        chain=["t=900 7262 格", "t=1170 10837 格 / 64059 兵", "t=1386 一拍 8 条全部无效", "t=1778 离开（10603 格 / 388255 兵）", "t=2909 空壳阵亡"], statementType="observed"),
+        "British Empire": dict(cause="掉线：出生在 (18,194)，没执行最后一条指派。t=1785 离开，5242 格 / 305595 兵；最后一批指令 t=1414。空壳吃了异队编队友 Zhuge Liang 1503 格，t=2146 把 315358 兵（到账 295649）交给同队的 LightYagami；"
+                                     "t=3177 被 Барбос 吃掉，Kilwa 的一条船也在它身上登陆拿了 400 格。",
+                               chain=["本地拍 1170 最后一条 HL-TICK", "t=1414 最后一批指令落地", "t=1785 离开（5242 格 / 305595 兵）", "t=2146 空壳赠出 315358", "t=3177 空壳阵亡"], statementType="observed"),
+        "Levi": dict(cause="掉线：t=1869 离开，6902 格 / 317081 兵；最后一批指令 t=1589（9 条，决策拍 900~1050，晚 539~689 拍）。空壳 t=2833 被 YK 吃掉（6284 格）。",
+                     chain=["本地拍 1170 最后一条 HL-TICK", "t=1589 最后一批指令落地", "t=1869 离开（6902 格 / 317081 兵）", "t=2833 空壳阵亡"], statementType="observed"),
+        "Praetorian": dict(cause="开局掉线：有出生指派，没有任何 HL-TICK；t=168 与 Shimazu、Chagatai 同一拍离开。空壳长到 55 格，t=1064 被吃掉。",
+                           chain=["t=168 离开", "t=1064 空壳阵亡"], statementType="observed"),
+        "Shimazu": dict(cause="开局掉线：有出生指派，没有任何 HL-TICK；t=168 与 Praetorian、Chagatai 同一拍离开。空壳长到 125 格，t=1095 被吃掉。",
+                        chain=["t=168 离开", "t=1095 空壳阵亡"], statementType="observed"),
+        "Chagatai": dict(cause="开局掉线：有出生指派，没有任何 HL-TICK；t=168 与 Praetorian、Shimazu 同一拍离开。空壳长到 231 格，t=1747 被吃掉。",
+                         chain=["t=168 离开", "t=1747 空壳阵亡"], statementType="observed"),
+    },
+    decisions=[
+        dict(id="D01", t="0~90", bot="全队", decision="出生指派 44 条，6/15 个号没执行最后一条；East India Co 落在离 squad10 的 zexos1 10 像素的地方；名次表给没出生的 Panzergrenadier 和野人 Prussia 留了位置。",
+             codePath=f"{C110}: Policy.chooseSpawn L4007-4153（L4011-4018 按 isOurSquadBot 数人头定 rankIdx；L4059 记 HL-SPAWN-BACKEND）；src/strategy/spawn-coordinator-c110.mjs",
+             verdict="error", patternId="NEW-SP-05", evidence=["spawncheck [PA][PC]", "日志 [HL-SPAWN] 的 rankIdx：0~18 缺 3", "truth [TB] 出生点"], statementType="observed"),
+        dict(id="D02", t="55~630", bot="全队", decision="开局扩张按期完成：t=630 人均比 1.04，(270,630] 人均吃空地 2370 格（其它真人 2143）、人机 193 格（其它真人 68）。",
+             codePath=f"{C110}: dpNeutral L2418-2490；expandNeutral L2408-2417；botOk L2499-2505",
+             verdict="good", patternId="NEW-OP-G1", evidence=["shadowcmp [SA]：HL-OPENING 逐字相同（Fischer 8/9，其余全同）", "harvest (0,270] / (270,630]", "truth [TC] t=630"], statementType="observed"),
+        dict(id="D03", t="540~2340", bot="全队", decision="指令晚几百拍落地时照常发令：决策拍 540~1260 的 529 条落地 315 条（116 条无效），1260~1800 的 371 条落地 106 条；执行拍 1260~1800 的 131 条里 73 条无效。",
+             codePath=f"{C110}: 文件头 L19-31；Strategy.send L526-540；{SIM}/game.js L1263-1285",
+             verdict="error", patternId="NEW-IO-01", evidence=["lagstats [LA][LB]", "shadowcmp [SF]", "shadowcmp_peer [SF]"], statementType="observed"),
+        dict(id="D04", t="630~1800", bot="全队", decision="人机收割只拿到 16.3%（人头 33%）：(630,1260] 人均 2404 格，其它真人 5472 格；(1260,1800] 480 格对 4661 格。",
+             codePath=f"{C110}: Style.pickTarget L1180-1213；botOk L2499-2505；winFloor L4542-4550",
+             verdict="error", patternId="NEW-EC-06", evidence=["harvest.txt", "truth [TC] 内置 AI%"], statementType="observed"),
+        dict(id="D05", t="810~1490", bot="Jokic", decision="七个人机邻居（7841 格，最弱的 0 兵）围着不吃：防人机留底取了敌队真人 Salchichador 的余额（112655），Jokic 自己 113484，可用 829。56 个点全被挡，领土停在 7644~8221 格。",
+             codePath=f"{C110}: threatOf L464-490（取人机除我之外最弱邻居的余额，不分敌友）；safeFinite L2532-2541；winFloor L4542-4550；floorFor0 L2270-2276",
+             verdict="error", patternId="NEW-EC-05", evidence=["shadowcmp [SH]：900~1260 挡在 sb 上 137 个号·点，敌队真人定出 99 个", "逐号：Jokic 56 点（Salchichador×35、Ill full send×21）", "shadow.mjs --trace Jokic:1300,1555"], statementType="observed"),
+        dict(id="D06", t="900~1440", bot="Broly", decision="野人 Prussia（T1）撞了名字池：Broly 贴着它 151 格边界不打（对方 2788 格 / 5288~46958 兵），停在 3168 格 540 拍；之后 Prussia 反过来拿走 Broly 822 格。",
+             codePath=f"{C110}: analyze L440；isProtectedSquadMate L3993-3996；isOurSquadBot L3973-3976；SQUAD_POOL_SET L1",
+             verdict="error", patternId="NEW-MT-04", evidence=["shadow.mjs --trace Broly:1000,1200,1400,1900：nb 里没有 Prussia", "truth --bot Broly --t0 630 --t1 1900", "Prussia 的 23 条指令全是 pct=522（真人滑条），不在 HL-GAME-INIT 的 me 里"], statementType="observed"),
+        dict(id="D07", t="1785~2045", bot="Pagan", decision="三次为『编队友』Prussia 向 Bashkort 下协防戳刺单（本地拍 1785 / 1820 / 2045，各 10% 余额）；录像里没有这三条。",
+             codePath=f"{C110}: tryDonateToTeammate L4449-4460（g.attack(102, mainAttacker, me)）；isProtectedSquadMate L3993-3996",
+             verdict="error", patternId="NEW-DN-05", evidence=["digest [H] L8613536 / L8613538 / L8613555", "truth --cmds Pagan：没有 pct=102 的陆攻"], statementType="observed"),
+        dict(id="D08", t="168~1869", bot="9 个号", decision="九个号掉线：三个 t=168（没打过），三个 t=1603 同一拍，另三个 t=1778 / 1785 / 1869。后六个离开时合计 39625 格、1822516 兵；它们离开前最后落地的指令都晚了 380~690 拍。",
+             codePath=f"{C110}: 文件头 L19-31（驱动层说明；驱动层源码不在数据包里）；{SIM}/bots.js L180-206（离开后的号按内置 AI 行动，把余额交给队友）",
+             verdict="error", patternId="NEW-IO-04", evidence=["truth [TB][TI]", "shadowcmp [SB]：Tal 382@1162、Ireland 383@1253、Bulgar 430@1190、Fischer 441@1386、British Empire 534@1414、Levi 689@1589", "日志：六个号最后一条 HL-TICK 的本地拍 990 / 1170"], statementType="observed"),
+        dict(id="D09", t="1530~1834", bot="Zhuge Liang", decision="同一个目标每 15 拍重下一条，9 条在 t=1834 同一拍落地：每条本意 39%~41% 余额，合计实发 123193（余额 124296 的 99%），本土剩 1040 兵守 11335 格。",
+             codePath=f"{C110}: Strategy.send L526-540（同目标 15 拍冷却）；Policy.buyLand L5250-5534",
+             verdict="error", patternId="NEW-EX-01", evidence=["shadowcmp [SB2]：执行拍 1834 的 9 条对应决策拍 1530~1650", "truth --cmds Zhuge Liang --t0 1500 --t1 2100", "truth --death Zhuge Liang"], statementType="observed"),
+        dict(id="D10", t="1770~2020", bot="Zhuge Liang", decision="空壳 Tal（8.6 兵/格拿 5850 格）、空壳 British Empire（4.7 兵/格拿 1503 格）来打时没有还手：两个空壳不在可打名单里。",
+             codePath=f"{C110}: analyze L440；isProtectedSquadMate L3993-3996；hasWildOutsidersAlive L3978-3989；counterAttack L871-886",
+             verdict="error", patternId="NEW-MT-03", evidence=["truth [TF]『编队内』三行", "shadow.mjs --trace Zhuge Liang:1500,1600,1680：nb 只有 cyankwastaken", "truth --cmds Zhuge Liang：t=1603 之后的陆攻全部打 cyankwastaken 或空地"], statementType="observed"),
+        dict(id="D11", t="1500~2072", bot="Pagan", decision="对 Mr Bass 连下 9 条 30% 余额的陆攻，t=2072 一拍落地 437036 兵（97%），按 106.0 兵/格拿 3976 格；本土剩 613 兵，被 Bashkort 以 5.5 兵/格吃掉 6308 格。",
+             codePath=f"{C110}: Policy.buyLand L5250-5534；Policy.offers L5008-5248；Strategy.send L526-540；V13.act L1853（holdOn=0，被打时不撤回在外的兵）",
+             verdict="error", patternId="NEW-AT-05", evidence=["shadowcmp [SB2]：Pagan 执行拍 2072 一次 9 条，影子决策拍 1500~1620", "shadowcmp [SG]：攻309 决策 1605 本意 69884，执行 2072 实发 136577", "truth --death Pagan"], statementType="observed"),
+        dict(id="D12", t="1555~2044", bot="Jokic", decision="决策拍 1555~1960 的旧单在 t=1981 / 2044 两拍落地，433153 兵打 Ill full send（30.1 兵/格拿 12678 格）；本土剩 21811 兵守 12495 格，被 squad10 的 kaito9 以 10.2 兵/格吃掉 17675 格。",
+             codePath=f"{C110}: Policy.buyLand L5250-5534；Strategy.send L526-540",
+             verdict="error", patternId="NEW-AT-02", evidence=["shadowcmp [SB2]：Jokic 执行拍 1981 / 2044 各 9 条", "truth [TK] 1980-2070 Jokic", "truth --death Jokic"], statementType="observed"),
+        dict(id="D13", t="1550~2051", bot="Sanada", decision="决策拍 1550~1985 的旧单在 t=1995 / 2051 两拍落地，385810 兵打 Salchichador（75.5 兵/格拿 4635 格）；本土剩 35057 兵，Salchichador 以 20.2 兵/格吃回 5505 格、Device 以 15.8 兵/格拿 3613 格。",
+             codePath=f"{C110}: Policy.buyLand L5250-5534；Strategy.send L526-540",
+             verdict="error", patternId="NEW-AT-02", evidence=["shadowcmp [SB2]：Sanada 执行拍 1995 一次 9 条、2051 一次 6 条", "truth --death Sanada"], statementType="observed"),
+        dict(id="D14", t="1885~2156", bot="Pagan", decision="给 Zhuge Liang / Broly 的救援捐款 pct=155 共 6 笔，按决策时的局面每笔 55455~65190 兵、额度成本 114~134，高于上限 103~115。3 笔 t=2156 落地时 Pagan 已被抽空，到账 1754 + 803 + 381；另 3 笔没进录像（2 笔的受捐方已死）。",
+             codePath=f"{C110}: tryDonateToTeammate L4422-4447（L4437 pct = min(maxSafePct, 155)，不看受捐方额度）；{SIM}/game.js L336-418",
+             verdict="error", patternId="NEW-DN-08", evidence=["digest [G] L8613543~L8613553", "donrej.txt [DR]", "truth [TH]"], statementType="observed"),
+        dict(id="D15", t="2093~2390", bot="LightYagami", decision="t=2093 一拍旧单把余额从 392975 打到 104581；t=2146 空壳 British Empire 的 295649 兵到账（117935→413584）；t=2156 又一拍 5 条打出 212224 兵。它没有像另外四个号那样被吃掉，从 Salchichador 身上拿 12419 格（43.2 兵/格），到全队峰值 18134 格。",
+             codePath=f"{SIM}/bots.js L180-206（botDonate / botGive：空壳没有目标可打时把全部余额交给刚打过仗的队友）；{C110}: Policy.buyLand L5250-5534",
+             verdict="unclear", patternId="NEW-DN-09", evidence=["truth [TM] t=2146", "shadowcmp [SB2]：LightYagami 执行拍 2093 一次 8 条、2156 一次 5 条", "truth [TE] LightYagami"], statementType="observed"),
+        dict(id="D16", t="2520~3690", bot="Cyrus", decision="6481 格不动 1170 拍，余额 294637→912023（密度 141，利率只剩正常的 18%）：买地留底 dpKeep 按 KING 的余额算，521097→2086809，一直高于自己的余额。",
+             codePath=f"{C110}: Policy.safeAt L4524-4541；V13.safeAt L2744-2754；dpKeep L2491-2496；{SIM}/game.js L739-762",
+             verdict="error", patternId="NEW-EC-03", evidence=["shadow.mjs --trace Cyrus:2700,3000,3300,3600", "truth --bot Cyrus --t0 2160 --t1 5700", "lagstats [LA]：2520~3500 全队只要发 5 条指令"], statementType="observed"),
+        dict(id="D17", t="5220~5850", bot="East India Co", decision="4715 格、唯一的邻居是 KING（470 万~690 万兵）：余额顶在硬上限 707250 共 540 拍，然后一条陆攻 283176 兵按 239.9 兵/格买 1145 格；KING 以 302.5 兵/格把它买光。",
+             codePath=f"{C110}: Policy.buyLand L5250-5534；Policy.safeAt L4524-4541；dpKeep L2491-2496",
+             verdict="error", patternId="NEW-EG-01", evidence=["shadow.mjs --trace East India Co:4500,5300,5700,6000,6200：safe 266 万~445 万，报价 313~399 兵/格", "truth [TE] East India Co"], statementType="observed"),
+        dict(id="D18", t="4040~4500", bot="Kilwa", decision="闲置时对隔海的 cyankwastaken 发一条 305639 兵的船（t=4046），登陆 237810；t=4270 陆攻 520262 兵，正赶上对方把余额打空：拿 6369 格（80.3 兵/格），结束了 2430 拍的停滞，12435→18775 格。",
+             codePath=f"{C110}: idleBoats L4979-5006；General.boatOut L1035-1052；searchWater L1056-1113；Policy.buyLand L5250-5534",
+             verdict="good", patternId="NEW-EG-G1", evidence=["truth --cmds Kilwa --t0 4000 --t1 9120", "boattrack_Kilwa.txt 第 4 条船", "cyankwastaken 余额 t=4260 2332334 → t=4320 14141，t=4455 阵亡"], statementType="observed"),
+        dict(id="D19", t="1710~2400", bot="Kilwa", decision="只有一个敌邻 Player 776（密度更高：t=2500 55.6 对 39.9，报价 180 兵/格以上）时没有出手；同一时段把余额打空的四个号（Zhuge Liang、Pagan、Jokic、Sanada）都在 470 拍内阵亡，Kilwa 活到 t=9111。",
+             codePath=f"{C110}: Policy.buyLand L5279-5282（isCrowdedHard 的目标在余额低于上限倍数时跳过）；Policy.offers L5008-5248；Policy.safeAt L4524-4541",
+             verdict="good", patternId="NEW-EC-G1", evidence=["shadow.mjs --trace Kilwa:2500,3000", "truth [TD] Kilwa", "shadowcmp [SB]：Kilwa 1800~3500 时延中位 13 拍"], statementType="observed"),
+        dict(id="D20", t="6300~7110", bot="Kilwa", decision="余额顶在硬上限 3681900 共 810 拍（利息为 0）；敌邻只有 YK，买地留底（dpKeep 426 万~486 万）高于余额。同队的 Барбос 就在旁边打仗，余粮捐款不给编队外的队友。",
+             codePath=f"{C110}: Policy.safeAt L4524-4541；dpKeep L2491-2496；tryDonateToTeammate L4462-4498；{SIM}/game.js L739-762",
+             verdict="error", patternId="NEW-EC-03", evidence=["shadow.mjs --trace Kilwa:6500,7000", "truth --bot Kilwa --t0 7020 --t1 9120"], statementType="observed"),
+        dict(id="D21", t="5621 / 7931", bot="Kilwa", decision="两条小船：3000 兵 / 3635 兵，手续费 96011 / 116328。",
+             codePath=f"{C110}: General.boatOut L1043-1045；searchWater L1097-1102；{SIM}/boats.js",
+             verdict="error", patternId="NEW-SE-03", evidence=["truth [TL]：2 条手续费大于船上兵，共付 212339", "truth --cmds Kilwa"], statementType="observed"),
+        dict(id="D22", t="7994~8378", bot="Kilwa", decision="四周只剩队友后向隔海的 Banananeninineninine 连发两条大船（526490 / 472984 兵，手续费 225900）：对方的船迎上来，海战打掉 837696 兵，其余衰减，一个兵都没靠岸。",
+             codePath=f"{C110}: idleBoats L4979-5006；General.boatOut L1035-1052；searchWater L1056-1113；{SIM}/boats.js fightBoats",
+             verdict="error", patternId="NEW-SE-01", evidence=["boattrack_Kilwa.txt 第 7、8 条船", "录像：Banananeninineninine t=8106 / 8302 发船 758993 / 529122 兵"], statementType="observed"),
+        dict(id="D23", t="4774~8512", bot="Kilwa", decision="余额过软上限后高价买地：Player 776 387.2 兵/格（4296 格）、YK 478.6 兵/格（3659 格）、Device 373.2 兵/格（3349 格），合计 4664289 兵买 11304 格。",
+             codePath=f"{C110}: Policy.buyLand L5261 / L5267（over = 余额 > 100×领土 时不再按性价比截断）；Policy.offers L5008-5248",
+             verdict="error", patternId="NEW-AT-01", evidence=["truth [TE] Kilwa", "shadow.mjs --trace Kilwa:8500：Device 报价 217.7 兵/格，over=True"], statementType="observed"),
+        dict(id="D24", t="3645~3780", bot="Cyrus", decision="为异队（T2）的 LightYagami 向 zero_7 戳两次，各 10% 余额（92685 + 76766 兵）。LightYagami 照样从 15643 格掉到 4654 格；Cyrus 自己借此从 6481 格长到 7338 格，结束了 1170 拍的停滞。",
+             codePath=f"{C110}: tryDonateToTeammate L4449-4460；isProtectedSquadMate L3993-3996",
+             verdict="unclear", patternId="NEW-MT-02", evidence=["digest [H] L8613645 / L8613650", "truth --cmds Cyrus：t=3654 / 3738 两条 pct=102"], statementType="observed"),
+        dict(id="D25", t="全程", bot="全队", decision="isNoFullSend：按驱动层 8 拍静默窗重演 0/15 置位；去掉静默窗 14/15 会被误锁（最早 t=533，只有 Broly 不会）。",
+             codePath=f"{C110}: Policy.updateShadowQuota L3810-3846；Policy.send L3848-3885；文件头 L19-31",
+             verdict="unclear", patternId="NEW-EX-04", evidence=["shadow.mjs --guard 0 --tag g0：14/15", "shadowcmp [SD]：guard=8 从未置位"], statementType="inferred"),
+        dict(id="D26", t="1500~2060", bot="Jokic / Sanada / LightYagami / Levi", decision="同一次决策里先发一条 4.7% 余额的空地单、再发买地大单：35 次里第一条落地 21 次，第二条及以后只落地 3 次。被丢的有 Jokic 打 Salchichador 的 89690 / 86118 兵两单。",
+             codePath=f"{C110}: Policy.act L4901-4902（expandNeutral 之后紧接 buyLand）；General.act L828-833",
+             verdict="unclear", patternId="NEW-EX-05", evidence=["shadowcmp [SI]"], statementType="observed"),
+        dict(id="D27", t="1500~1930", bot="Cyrus / East India Co / Jokic / LightYagami", decision="1500 拍后旁边 0 兵的内置 AI 不吃：吃光它所需的兵（1321~5675）小于最小指令 minCmd（余额的 4.7%，6064~11008），买地循环直接跳过。"
+             "影子口径 122 个号·点（East India Co 37、Cyrus 36、Jokic 20、LightYagami 11）；这些 AI 后来被 zero_7、zexos1、Ill full send、Salchichador 按 2.0~2.7 兵/格吃走。实战里这一段本编队还卡着 300 拍以上，这条是「不卡也吃不到」。",
+             codePath=f"{C110}: Policy.buyLand L5363-5369（L5367 x < minCmd → continue）；minCmd L521-523（feeK×⌊12×余额/1024⌋，feeK=4）；对照 t<1500 的 amount0 L2367-2393（L2371 把单子抬到 minCmd）",
+             verdict="error", patternId="NEW-EC-07", evidence=["shadowcmp [SJ]", "shadow.json：影子打内置 AI 的陆攻 t<1500 641 条 / 1500~1800 11 条 / 之后 0 条", "truth [TE]：AI394 被 zero_7 吃 2268 格（4536 兵）；AI204 被 zexos1 吃 1500 格（3000 兵）；AI357 被 Ill full send 吃 2436 格（6618 兵）"], statementType="inferred"),
+    ],
+    newPatterns=pick("NEW-SP-05", "NEW-OP-G1", "NEW-IO-01", "NEW-IO-02", "NEW-IO-03", "NEW-IO-04", "NEW-IO-05", "NEW-IO-06", "NEW-EC-03", "NEW-EC-05", "NEW-EC-06", "NEW-EC-07", "NEW-EC-G1",
+                     "NEW-EX-01", "NEW-EX-04", "NEW-EX-05", "NEW-AT-01", "NEW-AT-02", "NEW-AT-05", "NEW-SE-01", "NEW-SE-03", "NEW-DN-05", "NEW-DN-08", "NEW-DN-09",
+                     "NEW-EG-01", "NEW-EG-G1", "NEW-MT-01", "NEW-MT-02", "NEW-MT-03", "NEW-MT-04"),
+    lossArchetype="mid-collapse",
+    archetypeNote="t=1530 15 个号合占 20.13%（对局卡的峰值 15.51% 只数了 9 个号）。t=1603~2558 掉线 6 个、阵亡 5 个，t=2700 只剩 4 个号 8.35%。之后 4 个号分在 4 个队里各自被围，t=5159~9111 逐个被买走。"
+                  "主队 T3 的 4 个号 t=2700 只剩 East India Co 一个（0.84%）。",
+    winnerNotes="对局卡记 T2 获胜；录像到 t=9600 还是四家并立（T3 的 Device 159407 格、T2 的 KING 148889 格、T1 的 Mr Bass + Banananeninineninine 138750 格、T4 的 Player 778 44004 格）。T2 后期只剩 KING 一个人："
+                "t=630 只有 1950 格，t=1260~1800 领土 7332→10620 格而余额 12.8 万→43.7 万（密度 41），t=2160~2700 从 11506 格吃到 30410 格（riku_x 的 14909 格只花 446870 兵），"
+                "之后把 squad10 的号一个个买走（riku_x、zexos1、noah88、alex_k、sora_w、talon5、ryan_m 阵亡时身上最大的一股兵都是 KING 的）。"
+                "T4 在 t=1800~2160 和 t=3060~8280 是第一大队（最高 42.0%；t=2340~2880 T2 略高），t=7867 Tukcherofav、t=8789 Барбос 被 Device 和 KING 打死后崩掉。T2 还白拿了我方空壳的兵：Tal、British Empire 的空壳给 T2 的野人 11 次共 382311 兵。",
+    peerComparison="同房 squad10（[APEX]，10 个号全在 T5；对局包 A052 在验证集里没有读，以下全部来自本局录像）。① 同一波卡顿：时延中位最高 767 拍（t=1800~1979），t=2340 起回到 11 拍；我方 t=2160~2339 中位还有 164 拍。"
+                   "② 没有一个号掉线（我方 18 个掉 9 个）。③ 人机收割比我方还差：t=630~1800 占 7.4%（人头 22%），人均比 1.10（t=630）→ 0.58（1530）→ 0.53（1800）。"
+                   "④ 卡顿一结束就吃被抽空的邻居：T5 12.24%（t=1800）→ 23.79%（2520），(1800,2700] 人均吃真人 7793 格（我方 5643，其它真人 3121），其中 kaito9 吃 Jokic 17675 格只花 10.2 兵/格。"
+                   "⑤ 10 个号挨在一起、同一个队，彼此不用设防；我方 15 个号分在 4 个队，最近编队友距离中位 176 像素。"
+                   "⑥ 两支编队互打：squad10 从我方拿走 48734 格（花 4742193 兵），我方从 squad10 拿走 17488 格（花 2145712 兵）。"
+                   "⑦ 结局：T5 t=3960 到峰值 25.9%，没有编队外的队友，之后被 KING 逐个买走，t=6823 全灭。",
+    teamSplitNotes="18 个号被分成 5 / 5 / 4 / 4（实际打过的 15 个是 4 / 5 / 4 / 2）。主队 T3 的 4 个号彼此不挨着（Pagan–Broly 224 像素）。异队编队号挨着的有三处：Tal（T2）–Zhuge Liang（T3）64 像素、British Empire（T2）–Zhuge Liang 176 像素、"
+                   "Kilwa（T4）–British Empire 182 像素。在线时互相不打（British Empire t=1110~1230 有 8 个点的 sb 取的是 Zhuge Liang 的余额）；Tal、British Empire 掉线后空壳吃掉 Zhuge Liang 7353 格。"
+                   "跨队协防：Cyrus（T1）为 LightYagami（T2）戳 zero_7 两次；Pagan（T3）为撞名的野人 Prussia（T1）下了三次戳刺单。t=2700 之后 4 个幸存号各在一个队，互相够不着。",
+    ledgerExtra=dict(
+        truthDonationsExecuted=3, truthDonationsArrived=2938, truthDonationsTax=1204,
+        loggedDonations=dict(count=6, executed=3, notInReplay=3, notInReplayReasons="受捐方已死 2，没发到引擎或执行拍估错 1", overQuotaAtDecision=6, src="scripts/donrej.py + digest [G]"),
+        humanTeammateDonations=dict(donor="[CORGI] Mr Bass", recv="Cyrus", count=3, arrived=974289, tax=445389, src="truth.txt [TH]"),
+        huskGifts=dict(count=19, toOnlineSquadBots=dict(count=5, arrived=341514), toOtherHumans=dict(count=11, arrived=382311), toHusks=dict(count=3, arrived=34200),
+                       biggest="British Empire 空壳→LightYagami 295649（t=2146）；Tal 空壳→[OG]cyankwastaken 250072（t=2083）", src="truth.txt [TM]"),
+        drop30Truth=dict(windows=41, byCause={"挨打": 22, "陆攻": 17, "发船": 2}, src="truth.txt [TK]（90 拍窗，真值余额）"),
+        boats=dict(count=14, troops=1607679, fees=554906, feeOverTroops=dict(count=2, fees=212339), landedOnNeutral=13115, landedOnEnemy=387607, landedOnOwn=6842,
+                   teammateCredited=42794, teammateEvaporated=0, notLanded=1157321, sunkInSeaBattle=837696, src="truth.txt [TL] + boattrack_Kilwa.txt"),
+        crossSquad=dict(oursFromPeer=dict(cells=17488, troopsSpent=2145712), peerFromOurs=dict(cells=48734, troopsSpent=4742193),
+                        husksFromOnlineSquadBots=dict(cells=7353, troopsSpent=57234), src="truth.txt [TF]"),
+        leaves=dict(count=9, atT168=3, midgame=6, cellsAtLeave=39625, troopsAtLeave=1822516, src="truth.txt [TB][TI]"),
+        truthNote="digest [F] 的 DROP30（33 条）与 [G] 的『模型拒 / 观测拒』是按日志本地拍推的；本局指令比决策晚几百拍落地，以这里的真值口径为准。"
+                  "对局卡 squadBots=9、peakSquadLandShare=0.1551 只数了有结果行的号；真值是 18 个号进场、t=1530 峰值 20.13%。",
+    ),
+    wentWell=[
+        "开局到 t=630 人均比 1.04~1.19，高于全房真人平均；HL-OPENING 行与影子逐字相同。",
+        "Kilwa 活到 t=9111（结果表第 6 名）：t=1710~2400 没有去打密度更高的单邻；t=4046~4270 船加陆攻吃下 cyankwastaken 6369 格（80.3 兵/格）。",
+        "被打时兵留在家里，对方付了高价：Player 920 打 LightYagami 118.8 兵/格，Banananeninineninine 打 Broly 90.4 兵/格，Device 打 Kilwa 290.2 兵/格。",
+        "真引擎重演 375/375 条快照逐兵一致，录像完整到 t=9660。",
+    ],
+    unknowns=[
+        "卡顿的根因：只能排除策略自身耗时（avgMs ≤1 ms）。两支受控编队同时卡，同房其它真人不卡（每个服务器拍最多落地 2 条）。",
+        "掉线的原因：三个号 t=168 同一拍、三个号 t=1603 同一拍离开，像是同一台机器或同一个进程上的几个客户端一起断开（猜测）。六个中途掉线的号离开时本地都比服务器晚 520~700 拍，但同样晚的号（LightYagami 最大 832 拍）没有掉。",
+        "Panzergrenadier（25 号，名字在名字池里）t=0 离开、没出生、没有日志：是不是第 19 个客户端没起来，数据里看不出。",
+        "日志标签为什么中途换名（4 个活得久的号都换过）。",
+        "驱动层源码不在数据包里：『一拍最多 9 条』『一次决策只受理第一条』『发令后 8 拍静默』都是从录像和日志反推的。",
+        "时延超过 600 拍的配对（Levi 689、East India Co 672、LightYagami 832）可能有配错。",
+        "Pagan 的三条协防戳刺、三笔救援捐款为什么没进录像：只知道 t=2072 / 2156 这两拍 Pagan 各有 9 / 8 条指令落地。",
+        "对局卡 winnerTeam=2，录像到 t=9660 还没结束。",
+    ],
+    mechanicsQuestions=[
+        "离开的真人利率为 0（game.js L739-741），只剩每 10 拍 +1 和每 100 拍 +领土格数；没有目标可打时把全部余额交给一个刚打过仗（或有船在外）的队友（bots.js L180-206，手续费 64/1024，不占受捐额度）。本局 19 次共 758025 兵。",
+        "余额超过 100×领土后利率按超出比例的 2 倍线性下降，150×领土处为 0，余额也在 150×领土处封顶（game.js L739-762）：密度 141 时利率只剩正常的 18%，密度 150 时没有利息。",
+        "海战：敌对的船相遇后每 2 拍互相伤害（boats.js fightBoats），同队的船不打。Kilwa 的 52.6 万、47.3 万两条船遇上 Banananeninineninine 75.9 万、52.9 万兵的船，全部打光。",
+        "受捐额度（t<4284）：1071≤t<2142 时一笔的额度成本 = 2 + 100×兵 ÷ (30×(1+陆地/300))，本图分母是 49290；pct=155 的救援单在余额 36 万时成本 114，超过当时的上限 103，整单拒。",
+        "每条船的手续费是余额的 32/1024，与船上兵无关：余额 372 万时一条 3635 兵的船付 116328。",
+        "号阵亡后剩下的地变成空地，还压在它身上的进攻兵转去打这块空地（game.js L1336-1349 eliminate → redirectAttackToNeutral / clearTerritory）。",
+    ],
+    scripts=[
+        "c136-review/agents/R08/scripts/pipeline.sh B034 - tag:APEX（一局全套：facts → resim → truth → shadow → shadowcmp → harvest / top / spawncheck / donrej；同房另一支编队按战队标签认号）",
+        "c136-review/agents/R08/scripts/truth.py B034（[TA]~[TM]；--death / --bot / --cmds 看单号）",
+        "c136-review/agents/R08/scripts/shadow.mjs B034 --peer-tag APEX [--trace 号:拍 --tag tr1] [--guard 0 --tag g0] [--side peer]；trshow.py out/B034/shadow_tr1.json 号名",
+        "c136-review/agents/R08/scripts/shadowcmp.py B034 [--side peer]（[SA]~[SI]）；lagstats.py B034（[LA]~[LC]）",
+        "c136-review/agents/R08/scripts/boattrack.mjs B034 --bot Kilwa --peer-tag APEX（逐条船：海战损失 / 衰减 / 靠岸）",
+        "c136-review/agents/R08/scripts/donrej.py B034；spawncheck.py B034；harvest.py B034；top.py B034",
+        "c136-review/agents/R08/scripts/facts.py B034 → out/B034/digest.txt；build_review.py B034",
+    ],
+    confidenceOverall="high",
+    confidenceNote="领土、余额、指令、战损、捐款、船、空壳赠兵都来自逐兵对上的真引擎重演（到 t=9660）。时延依赖影子决策与录像的配对，数量级可靠、单条可能配错。掉线与卡顿的原因不在数据里。",
+)

@@ -1,0 +1,177 @@
+# A039 zexos1 影子决策明细 t=1500~1700（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标无可用兵（avail<=0）: 2 拍（t=1500~1505）；可用兵 -12797~-12689，一条指令下限(20%余额) 30028~30028，比值 -43%~-42%
+#   只打无主地: 1 拍（t=1510~1510）；可用兵 26810~26810，一条指令下限(20%余额) 30713~30713，比值 87%~87%
+#   出手打人/bot: 6 拍（t=1515~1650）；可用兵 36707~44899，一条指令下限(20%余额) 30713~43763，比值 100%~132%
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 23 拍（t=1530~1665）；可用兵 3778~41380，一条指令下限(20%余额) 25766~42183，比值 14%~98%
+#   有可用兵但没发（脉冲下限/冷却/其他）: 9 拍（t=1655~1700）；可用兵 29791~55500，一条指令下限(20%余额) 21977~34489，比值 108%~228%
+#   └ 「出手打人/bot」里：6 条对人/bot 的出兵共约 247396 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1500 zexos1 B=150141 L=9606 d=15.6 nb=4 neut=0 cmds=37 noFull=1 shQ=35207 | m=1.500 worth=23.4 cheap=4.3 over=0 dMedOther=3.5 safe(-1)=161179
+    → [OG] Simmy#15[T1] terr=18685 bal=54581 dq=2.9 cnt=6 | c=16.3 rankC=16.3 need=125312 tD=0.83 人 | safe=161179 keep=161179 avail=-12797 chunkB=30028 pulseB=18017 无可用(avail<=0)
+    → Total Foid Annihilat#18[T1] terr=11928 bal=75564 dq=6.3 cnt=126 | c=17.1 rankC=17.1 need=152553 tD=1.79 人 | safe=161179 keep=161179 avail=-12797 chunkB=30028 pulseB=18017 无可用(avail<=0)
+    → AI#343 terr=350 bal=0 dq=0.0 cnt=48 | c=23.5 rankC=23.5 need=120 tD=0.00 机 | safe=161179 keep=Inf avail=-Inf chunkB=30028 pulseB=18017 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1505 zexos1 B=150141 L=9606 d=15.6 nb=4 neut=0 cmds=37 noFull=1 shQ=37535 | m=1.499 worth=23.4 cheap=4.4 over=0 dMedOther=3.5 safe(-1)=161071
+    → [OG] Simmy#15[T1] terr=18800 bal=54581 dq=2.9 cnt=6 | c=16.2 rankC=16.2 need=125483 tD=0.83 人 | safe=161071 keep=161071 avail=-12689 chunkB=30028 pulseB=18017 无可用(avail<=0)
+    → Total Foid Annihilat#18[T1] terr=11891 bal=74706 dq=6.3 cnt=126 | c=17.0 rankC=17.0 need=150879 tD=1.80 人 | safe=161071 keep=161071 avail=-12689 chunkB=30028 pulseB=18017 无可用(avail<=0)
+    → AI#343 terr=296 bal=0 dq=0.0 cnt=46 | c=64.8 rankC=64.8 need=16 tD=0.00 机 | safe=161071 keep=Inf avail=-Inf chunkB=30028 pulseB=18017 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1510 zexos1 B=153564 L=9763 d=15.7 nb=3 neut=43 cmds=38 noFull=1 shQ=38391 | m=1.498 worth=23.6 cheap=4.4 over=0 dMedOther=3.6 safe(-1)=42035
+    → [OG] Simmy#15[T1] terr=18935 bal=55825 dq=2.9 cnt=6 | c=16.4 rankC=16.4 need=127907 tD=0.83 人 | safe=42035 keep=124955 avail=26810 chunkB=30713 pulseB=18428 不够一条
+    → Total Foid Annihilat#18[T1] terr=11902 bal=75985 dq=6.4 cnt=126 | c=17.2 rankC=17.2 need=153215 tD=1.80 人 | safe=42035 keep=127968 avail=23797 chunkB=30713 pulseB=18428 不够一条
+    ⇒ 影子指令 attack pct=47 → 无主地（约 7198 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=1515 zexos1 B=153564 L=9916 d=15.5 nb=3 neut=38 cmds=40 noFull=1 shQ=38391 | m=1.498 worth=23.2 cheap=4.4 over=0 dMedOther=3.5 safe(-1)=34701
+    → [OG] Simmy#15[T1] terr=19011 bal=43832 dq=2.3 cnt=14 | c=13.7 rankC=13.7 need=106645 tD=0.65 人 | safe=34701 keep=115058 avail=36707 chunkB=30713 pulseB=18428 
+    → Total Foid Annihilat#18[T1] terr=11904 bal=76642 dq=6.4 cnt=134 | c=17.3 rankC=17.3 need=154416 tD=1.83 人 | safe=34701 keep=129518 avail=22247 chunkB=30713 pulseB=18428 不够一条
+    ⇒ 影子指令 attack pct=47 → 无主地（约 7198 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=244 → [OG] Simmy#15[T1]（约 36741 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1520 zexos1 B=157019 L=9976 d=15.7 nb=3 neut=33 cmds=42 noFull=1 shQ=39254 | m=1.497 worth=23.6 cheap=4.4 over=0 dMedOther=3.6 safe(-1)=35619
+    → [OG] Simmy#15[T1] terr=19096 bal=44818 dq=2.3 cnt=18 | c=13.9 rankC=13.9 need=108526 tD=0.66 人 | safe=35619 keep=117496 avail=37683 chunkB=31404 pulseB=18842 
+    → Total Foid Annihilat#18[T1] terr=11904 bal=78366 dq=6.6 cnt=136 | c=17.7 rankC=17.7 need=157499 tD=1.84 人 | safe=35619 keep=132705 avail=22474 chunkB=31404 pulseB=18842 不够一条
+    ⇒ 影子指令 attack pct=47 → 无主地（约 7360 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=245 → [OG] Simmy#15[T1]（约 37721 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1525 zexos1 B=157019 L=10073 d=15.6 nb=3 neut=24 cmds=44 noFull=1 shQ=39254 | m=1.496 worth=23.3 cheap=4.5 over=0 dMedOther=3.5 safe(-1)=35537
+    → [OG] Simmy#15[T1] terr=19129 bal=44818 dq=2.3 cnt=21 | c=12.8 rankC=12.8 need=108577 tD=0.66 人 | safe=35537 keep=113841 avail=41338 chunkB=31404 pulseB=18842 
+    → Total Foid Annihilat#18[T1] terr=11904 bal=78366 dq=6.6 cnt=139 | c=17.7 rankC=17.7 need=157510 tD=1.86 人 | safe=35537 keep=133411 avail=21768 chunkB=31404 pulseB=18842 不够一条
+    ⇒ 影子指令 attack pct=47 → 无主地（约 7360 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=269 → [OG] Simmy#15[T1]（约 41401 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1530 zexos1 B=160504 L=10132 d=15.8 nb=2 neut=23 cmds=44 noFull=1 shQ=40126 | m=1.496 worth=23.7 cheap=4.5 over=0 dMedOther=3.5 safe(-1)=36465
+    → [OG] Simmy#15[T1] terr=19157 bal=67094 dq=3.5 cnt=23 | c=16.2 rankC=16.2 need=148323 tD=1.00 人 | safe=36465 keep=129224 avail=29400 chunkB=32101 pulseB=19260 不够一条
+    → Total Foid Annihilat#18[T1] terr=11904 bal=80105 dq=6.7 cnt=145 | c=18.0 rankC=18.0 need=160621 tD=1.92 人 | safe=36465 keep=136624 avail=22000 chunkB=32101 pulseB=19260 不够一条
+    ⇒ 本拍没有指令
+t=1535 zexos1 B=142249 L=10163 d=14.0 nb=2 neut=11 cmds=44 noFull=1 shQ=35562 | m=1.495 worth=20.9 cheap=4.5 over=0 dMedOther=3.5 safe(-1)=36438
+    → [OG] Simmy#15[T1] terr=19175 bal=67094 dq=3.5 cnt=24 | c=15.6 rankC=15.6 need=148353 tD=1.01 人 | safe=36438 keep=119924 avail=20659 chunkB=28450 pulseB=17070 不够一条
+    → Total Foid Annihilat#18[T1] terr=11904 bal=80105 dq=6.7 cnt=152 | c=18.0 rankC=18.0 need=160632 tD=1.94 人 | safe=36438 keep=129518 avail=11065 chunkB=28450 pulseB=17070 不够一条
+    ⇒ 本拍没有指令
+t=1540 zexos1 B=145364 L=10184 d=14.3 nb=2 neut=4 cmds=44 noFull=1 shQ=36341 | m=1.494 worth=21.3 cheap=4.6 over=0 dMedOther=3.5 safe(-1)=37406
+    → [OG] Simmy#15[T1] terr=19202 bal=68563 dq=3.6 cnt=24 | c=15.9 rankC=15.9 need=151011 tD=1.02 人 | safe=37406 keep=122454 avail=21207 chunkB=29073 pulseB=17444 不够一条
+    → Total Foid Annihilat#18[T1] terr=11904 bal=81859 dq=6.9 cnt=158 | c=18.3 rankC=18.3 need=163758 tD=1.96 人 | safe=37406 keep=132336 avail=11325 chunkB=29073 pulseB=17444 不够一条
+    ⇒ 本拍没有指令
+t=1545 zexos1 B=128831 L=10193 d=12.6 nb=2 neut=5 cmds=44 noFull=1 shQ=32207 | m=1.493 worth=18.9 cheap=4.6 over=0 dMedOther=3.5 safe(-1)=37399
+    → [OG] Simmy#15[T1] terr=19219 bal=68563 dq=3.6 cnt=24 | c=15.9 rankC=15.9 need=151038 tD=1.02 人 | safe=37399 keep=115912 avail=11410 chunkB=25766 pulseB=15460 不够一条
+    → Total Foid Annihilat#18[T1] terr=11904 bal=81859 dq=6.9 cnt=159 | c=18.3 rankC=18.3 need=163758 tD=1.98 人 | safe=37399 keep=125795 avail=1527 chunkB=25766 pulseB=15460 不够一条
+    ⇒ 本拍没有指令
+t=1550 zexos1 B=131600 L=10212 d=12.9 nb=2 neut=9 cmds=44 noFull=1 shQ=32900 | m=1.492 worth=19.2 cheap=4.6 over=0 dMedOther=3.3 safe(-1)=38371
+    → [OG] Simmy#15[T1] terr=19240 bal=70037 dq=3.6 cnt=24 | c=16.1 rankC=16.1 need=153691 tD=1.11 人 | safe=38371 keep=118300 avail=11758 chunkB=26320 pulseB=15792 不够一条
+    → Total Foid Annihilat#18[T1] terr=11904 bal=83618 dq=7.0 cnt=161 | c=18.6 rankC=18.6 need=166894 tD=2.15 人 | safe=38371 keep=128493 avail=1565 chunkB=26320 pulseB=15792 不够一条
+    ⇒ 本拍没有指令
+t=1555 zexos1 B=131600 L=10227 d=12.9 nb=2 neut=7 cmds=44 noFull=1 shQ=32900 | m=1.492 worth=19.2 cheap=4.7 over=0 dMedOther=3.3 safe(-1)=38358
+    → [OG] Simmy#15[T1] terr=19249 bal=70037 dq=3.6 cnt=24 | c=16.1 rankC=16.1 need=153707 tD=1.11 人 | safe=38358 keep=118432 avail=11626 chunkB=26320 pulseB=15792 不够一条
+    → Total Foid Annihilat#18[T1] terr=11904 bal=83618 dq=7.0 cnt=166 | c=18.6 rankC=18.6 need=166894 tD=2.15 人 | safe=38358 keep=128614 avail=1444 chunkB=26320 pulseB=15792 不够一条
+    ⇒ 本拍没有指令
+t=1560 zexos1 B=134389 L=10246 d=13.1 nb=2 neut=5 cmds=44 noFull=1 shQ=33597 | m=1.491 worth=19.6 cheap=4.7 over=0 dMedOther=3.3 safe(-1)=39338
+    → [OG] Simmy#15[T1] terr=19255 bal=71521 dq=3.7 cnt=24 | c=16.4 rankC=16.4 need=156364 tD=1.12 人 | safe=39338 keep=120841 avail=11974 chunkB=26878 pulseB=16127 不够一条
+    → Total Foid Annihilat#18[T1] terr=11904 bal=85390 dq=7.2 cnt=171 | c=19.0 rankC=19.0 need=170052 tD=2.16 人 | safe=39338 keep=131321 avail=1494 chunkB=26878 pulseB=16127 不够一条
+    ⇒ 本拍没有指令
+t=1565 zexos1 B=134389 L=10256 d=13.1 nb=2 neut=4 cmds=44 noFull=1 shQ=33597 | m=1.490 worth=19.5 cheap=4.7 over=0 dMedOther=3.0 safe(-1)=39329
+    → [OG] Simmy#15[T1] terr=19255 bal=82128 dq=4.3 cnt=24 | c=18.4 rankC=18.4 need=175270 tD=1.41 人 | safe=39329 keep=129037 avail=3778 chunkB=26878 pulseB=16127 不够一条
+    → Total Foid Annihilat#18[T1] terr=11904 bal=85390 dq=7.2 cnt=174 | c=19.0 rankC=19.0 need=170052 tD=2.36 人 | safe=39329 keep=131419 avail=1396 chunkB=26878 pulseB=16127 不够一条
+    ⇒ 本拍没有指令
+t=1570 zexos1 B=137197 L=10267 d=13.4 nb=2 neut=3 cmds=44 noFull=1 shQ=34299 | m=1.490 worth=19.9 cheap=4.8 over=0 dMedOther=3.1 safe(-1)=40322
+    → [OG] Simmy#15[T1] terr=19255 bal=83844 dq=4.4 cnt=24 | c=18.7 rankC=18.7 need=178329 tD=1.42 人 | safe=40322 keep=131597 avail=3993 chunkB=27439 pulseB=16464 不够一条
+    → Total Foid Annihilat#18[T1] terr=11904 bal=87174 dq=7.3 cnt=178 | c=19.3 rankC=19.3 need=173232 tD=2.39 人 | safe=40322 keep=134095 avail=1495 chunkB=27439 pulseB=16464 不够一条
+    ⇒ 本拍没有指令
+t=1575 zexos1 B=177805 L=10270 d=17.3 nb=2 neut=0 cmds=44 noFull=1 shQ=36147 | m=1.489 worth=25.8 cheap=4.8 over=0 dMedOther=3.0 safe(-1)=40320
+    → [OG] Simmy#15[T1] terr=19255 bal=83844 dq=4.4 cnt=24 | c=18.8 rankC=18.8 need=178329 tD=1.44 人 | safe=40320 keep=147989 avail=27733 chunkB=35561 pulseB=21337 不够一条
+    → Total Foid Annihilat#18[T1] terr=11904 bal=87174 dq=7.3 cnt=182 | c=19.4 rankC=19.4 need=173232 tD=2.42 人 | safe=40320 keep=150476 avail=25246 chunkB=35561 pulseB=21337 不够一条
+    ⇒ 本拍没有指令
+t=1580 zexos1 B=181467 L=10270 d=17.7 nb=2 neut=0 cmds=44 noFull=1 shQ=40765 | m=1.488 worth=26.3 cheap=4.8 over=0 dMedOther=3.1 safe(-1)=41328
+    → [OG] Simmy#15[T1] terr=19255 bal=85571 dq=4.4 cnt=24 | c=19.1 rankC=19.1 need=181407 tD=1.46 人 | safe=41328 keep=150827 avail=28514 chunkB=36293 pulseB=21776 不够一条
+    → Total Foid Annihilat#18[T1] terr=11904 bal=88969 dq=7.5 cnt=182 | c=19.7 rankC=19.7 need=176431 tD=2.45 人 | safe=41328 keep=153454 avail=25887 chunkB=36293 pulseB=21776 不够一条
+    ⇒ 本拍没有指令
+t=1585 zexos1 B=181467 L=10270 d=17.7 nb=2 neut=0 cmds=44 noFull=1 shQ=45366 | m=1.487 worth=26.3 cheap=4.9 over=0 dMedOther=2.8 safe(-1)=41328
+    → [OG] Simmy#15[T1] terr=19255 bal=85571 dq=4.4 cnt=24 | c=19.1 rankC=19.1 need=181407 tD=1.60 人 | safe=41328 keep=150873 avail=28468 chunkB=36293 pulseB=21776 不够一条
+    → Total Foid Annihilat#18[T1] terr=11904 bal=88969 dq=7.5 cnt=182 | c=19.7 rankC=19.7 need=176431 tD=2.69 人 | safe=41328 keep=153500 avail=25841 chunkB=36293 pulseB=21776 不够一条
+    ⇒ 本拍没有指令
+t=1590 zexos1 B=185150 L=10270 d=18.0 nb=2 neut=0 cmds=44 noFull=1 shQ=46287 | m=1.486 worth=26.8 cheap=4.9 over=0 dMedOther=2.8 safe(-1)=42343
+    → [OG] Simmy#15[T1] terr=19255 bal=87308 dq=4.5 cnt=24 | c=19.4 rankC=19.4 need=184503 tD=1.61 人 | safe=42343 keep=153730 avail=29251 chunkB=37030 pulseB=22218 不够一条
+    → Total Foid Annihilat#18[T1] terr=11904 bal=90775 dq=7.6 cnt=182 | c=20.1 rankC=20.1 need=179650 tD=2.71 人 | safe=42343 keep=156498 avail=26483 chunkB=37030 pulseB=22218 不够一条
+    ⇒ 本拍没有指令
+t=1595 zexos1 B=185150 L=10270 d=18.0 nb=2 neut=0 cmds=44 noFull=1 shQ=46287 | m=1.486 worth=26.8 cheap=5.0 over=0 dMedOther=3.8 safe(-1)=42343
+    → [OG] Simmy#15[T1] terr=19255 bal=87308 dq=4.5 cnt=24 | c=19.4 rankC=19.4 need=184503 tD=1.20 人 | safe=42343 keep=153776 avail=29205 chunkB=37030 pulseB=22218 不够一条
+    → Total Foid Annihilat#18[T1] terr=11904 bal=90775 dq=7.6 cnt=182 | c=20.1 rankC=20.1 need=179650 tD=2.02 人 | safe=42343 keep=156545 avail=26436 chunkB=37030 pulseB=22218 不够一条
+    ⇒ 本拍没有指令
+t=1600 zexos1 B=199123 L=10270 d=19.4 nb=2 neut=0 cmds=44 noFull=1 shQ=47282 | m=1.485 worth=28.8 cheap=5.0 over=0 dMedOther=4.9 safe(-1)=52193
+    → Total Foid Annihilat#18[T1] terr=11904 bal=104494 dq=8.8 cnt=182 | c=22.8 rankC=22.8 need=204102 tD=1.81 人 | safe=52193 keep=173380 avail=23410 chunkB=39825 pulseB=23895 不够一条
+    → [OG] Simmy#15[T1] terr=19255 bal=108309 dq=5.6 cnt=24 | c=23.3 rankC=23.3 need=221936 tD=1.16 人 | safe=52193 keep=175530 avail=21260 chunkB=39825 pulseB=23895 不够一条
+    ⇒ 本拍没有指令
+t=1605 zexos1 B=199123 L=10270 d=19.4 nb=2 neut=0 cmds=44 noFull=1 shQ=49780 | m=1.484 worth=28.8 cheap=5.0 over=0 dMedOther=4.9 safe(-1)=52193
+    → Total Foid Annihilat#18[T1] terr=11904 bal=104494 dq=8.8 cnt=182 | c=22.8 rankC=22.8 need=204102 tD=1.81 人 | safe=52193 keep=173433 avail=23357 chunkB=39825 pulseB=23895 不够一条
+    → [OG] Simmy#15[T1] terr=19255 bal=108309 dq=5.6 cnt=24 | c=23.3 rankC=23.3 need=221936 tD=1.16 人 | safe=52193 keep=175583 avail=21207 chunkB=39825 pulseB=23895 不够一条
+    ⇒ 本拍没有指令
+t=1610 zexos1 B=203045 L=10270 d=19.8 nb=2 neut=0 cmds=44 noFull=1 shQ=50761 | m=1.484 worth=29.3 cheap=5.1 over=0 dMedOther=4.9 safe(-1)=53392
+    → Total Foid Annihilat#18[T1] terr=11904 bal=106552 dq=9.0 cnt=182 | c=23.2 rankC=23.2 need=207770 tD=1.81 人 | safe=53392 keep=176742 avail=23924 chunkB=40609 pulseB=24365 不够一条
+    → [OG] Simmy#15[T1] terr=19255 bal=110442 dq=5.7 cnt=24 | c=23.7 rankC=23.7 need=225738 tD=1.16 人 | safe=53392 keep=178850 avail=21816 chunkB=40609 pulseB=24365 不够一条
+    ⇒ 本拍没有指令
+t=1615 zexos1 B=203045 L=10270 d=19.8 nb=2 neut=0 cmds=44 noFull=1 shQ=50761 | m=1.483 worth=29.3 cheap=5.1 over=0 dMedOther=4.9 safe(-1)=53392
+    → Total Foid Annihilat#18[T1] terr=11904 bal=106552 dq=9.0 cnt=182 | c=23.2 rankC=23.2 need=207770 tD=1.81 人 | safe=53392 keep=176795 avail=23871 chunkB=40609 pulseB=24365 不够一条
+    → [OG] Simmy#15[T1] terr=19255 bal=110442 dq=5.7 cnt=24 | c=23.7 rankC=23.7 need=225738 tD=1.16 人 | safe=53392 keep=178904 avail=21762 chunkB=40609 pulseB=24365 不够一条
+    ⇒ 本拍没有指令
+t=1620 zexos1 B=206984 L=10270 d=20.2 nb=2 neut=0 cmds=44 noFull=1 shQ=51746 | m=1.482 worth=29.9 cheap=5.2 over=0 dMedOther=4.1 safe(-1)=54595
+    → Total Foid Annihilat#18[T1] terr=11904 bal=108619 dq=9.1 cnt=182 | c=23.6 rankC=23.6 need=211454 tD=2.23 人 | safe=54595 keep=180121 avail=24438 chunkB=41397 pulseB=24838 不够一条
+    → [OG] Simmy#15[T1] terr=19255 bal=112584 dq=5.8 cnt=24 | c=24.1 rankC=24.1 need=229556 tD=1.43 人 | safe=54595 keep=182189 avail=22370 chunkB=41397 pulseB=24838 不够一条
+    ⇒ 本拍没有指令
+t=1625 zexos1 B=206984 L=10270 d=20.2 nb=2 neut=0 cmds=44 noFull=1 shQ=51746 | m=1.481 worth=29.9 cheap=5.2 over=0 dMedOther=4.0 safe(-1)=54595
+    → Total Foid Annihilat#18[T1] terr=11904 bal=89421 dq=7.5 cnt=182 | c=19.8 rankC=19.8 need=177237 tD=1.90 人 | safe=54595 keep=164539 avail=40020 chunkB=41397 pulseB=24838 不够一条
+    → [OG] Simmy#15[T1] terr=19255 bal=112584 dq=5.8 cnt=24 | c=24.1 rankC=24.1 need=229556 tD=1.48 人 | safe=54595 keep=182244 avail=22315 chunkB=41397 pulseB=24838 不够一条
+    ⇒ 本拍没有指令
+t=1630 zexos1 B=210916 L=10270 d=20.5 nb=2 neut=0 cmds=44 noFull=1 shQ=52729 | m=1.480 worth=30.4 cheap=5.2 over=0 dMedOther=4.0 safe(-1)=55797
+    → Total Foid Annihilat#18[T1] terr=11904 bal=91119 dq=7.7 cnt=182 | c=20.2 rankC=20.2 need=180263 tD=1.92 人 | safe=55797 keep=167560 avail=40885 chunkB=42183 pulseB=25310 不够一条
+    → [OG] Simmy#15[T1] terr=19255 bal=114723 dq=6.0 cnt=24 | c=24.5 rankC=24.5 need=233368 tD=1.49 人 | safe=55797 keep=185526 avail=22919 chunkB=42183 pulseB=25310 不够一条
+    ⇒ 本拍没有指令
+t=1635 zexos1 B=210916 L=10270 d=20.5 nb=2 neut=0 cmds=44 noFull=1 shQ=52729 | m=1.480 worth=30.4 cheap=5.3 over=0 dMedOther=3.9 safe(-1)=55797
+    → Total Foid Annihilat#18[T1] terr=11989 bal=91119 dq=7.6 cnt=182 | c=20.0 rankC=20.0 need=180394 tD=1.97 人 | safe=55797 keep=167065 avail=41380 chunkB=42183 pulseB=25310 不够一条
+    → [OG] Simmy#15[T1] terr=19255 bal=114723 dq=6.0 cnt=24 | c=24.5 rankC=24.5 need=233368 tD=1.54 人 | safe=55797 keep=185582 avail=22863 chunkB=42183 pulseB=25310 不够一条
+    ⇒ 本拍没有指令
+t=1640 zexos1 B=214860 L=10270 d=20.9 nb=2 neut=0 cmds=45 noFull=1 shQ=53715 | m=1.479 worth=30.9 cheap=5.3 over=0 dMedOther=3.9 safe(-1)=57002
+    → Total Foid Annihilat#18[T1] terr=12104 bal=92822 dq=7.7 cnt=182 | c=20.2 rankC=20.2 need=183598 tD=1.98 人 | safe=57002 keep=169346 avail=42997 chunkB=42972 pulseB=25783 
+    → [OG] Simmy#15[T1] terr=19255 bal=116868 dq=6.1 cnt=24 | c=24.9 rankC=24.9 need=237191 tD=1.56 人 | safe=57002 keep=188877 avail=23466 chunkB=42972 pulseB=25783 不够一条
+    ⇒ 影子指令 attack pct=204 → Total Foid Annihilat#18[T1]（约 43013 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1645 zexos1 B=214860 L=10270 d=20.9 nb=2 neut=0 cmds=46 noFull=1 shQ=53715 | m=1.478 worth=30.9 cheap=5.4 over=0 dMedOther=4.1 safe(-1)=57002
+    → Total Foid Annihilat#18[T1] terr=12174 bal=92822 dq=7.6 cnt=182 | c=20.1 rankC=20.1 need=183710 tD=1.86 人 | safe=57002 keep=168958 avail=43385 chunkB=42972 pulseB=25783 
+    → [OG] Simmy#15[T1] terr=19255 bal=116868 dq=6.1 cnt=24 | c=24.9 rankC=24.9 need=237191 tD=1.48 人 | safe=57002 keep=188934 avail=23409 chunkB=42972 pulseB=25783 不够一条
+    ⇒ 影子指令 attack pct=206 → Total Foid Annihilat#18[T1]（约 43433 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1650 zexos1 B=218813 L=10270 d=21.3 nb=2 neut=0 cmds=47 noFull=1 shQ=54703 | m=1.478 worth=31.5 cheap=5.4 over=0 dMedOther=3.9 safe(-1)=58210
+    → Total Foid Annihilat#18[T1] terr=12272 bal=94529 dq=7.7 cnt=182 | c=20.3 rankC=20.3 need=186893 tD=1.99 人 | safe=58210 keep=171350 avail=44899 chunkB=43763 pulseB=26258 
+    → [OG] Simmy#15[T1] terr=19255 bal=119018 dq=6.2 cnt=24 | c=25.3 rankC=25.3 need=241024 tD=1.60 人 | safe=58210 keep=192239 avail=24010 chunkB=43763 pulseB=26258 不够一条
+    ⇒ 影子指令 attack pct=210 → Total Foid Annihilat#18[T1]（约 45087 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1655 zexos1 B=172444 L=10270 d=16.8 nb=2 neut=0 cmds=47 noFull=1 shQ=1576 | m=1.477 worth=24.8 cheap=5.5 over=0 dMedOther=3.8 safe(-1)=58210
+    → Total Foid Annihilat#18[T1] terr=12334 bal=94529 dq=7.7 cnt=182 | c=15.5 rankC=15.5 need=143187 tD=2.00 人 | safe=58210 keep=132926 avail=37498 chunkB=34489 pulseB=20693 
+    → [OG] Simmy#15[T1] terr=19255 bal=119018 dq=6.2 cnt=24 | c=25.3 rankC=25.3 need=241024 tD=1.61 人 | safe=58210 keep=Inf avail=-Inf chunkB=34489 pulseB=20693 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1660 zexos1 B=138018 L=10452 d=13.2 nb=2 neut=0 cmds=47 noFull=1 shQ=5340 | m=1.476 worth=19.5 cheap=5.5 over=0 dMedOther=4.0 safe(-1)=59266
+    → Total Foid Annihilat#18[T1] terr=12227 bal=93977 dq=7.7 cnt=181 | c=12.2 rankC=12.2 need=111565 tD=1.92 人 | safe=59266 keep=106610 avail=29791 chunkB=27604 pulseB=16562 
+    → [OG] Simmy#15[T1] terr=19255 bal=121172 dq=6.3 cnt=25 | c=17.0 rankC=17.0 need=244863 tD=1.57 人 | safe=59266 keep=127018 avail=9383 chunkB=27604 pulseB=16562 不够一条
+    ⇒ 本拍没有指令
+t=1665 zexos1 B=138018 L=10810 d=12.8 nb=2 neut=0 cmds=47 noFull=1 shQ=8451 | m=1.475 worth=18.8 cheap=5.6 over=0 dMedOther=4.0 safe(-1)=58965
+    → Total Foid Annihilat#18[T1] terr=11915 bal=89600 dq=7.5 cnt=173 | c=12.7 rankC=12.7 need=111802 tD=1.88 人 | safe=58965 keep=110391 avail=26010 chunkB=27604 pulseB=16562 不够一条
+    → [OG] Simmy#15[T1] terr=19255 bal=121172 dq=6.3 cnt=26 | c=17.0 rankC=17.0 need=244863 tD=1.57 人 | safe=58965 keep=129516 avail=6885 chunkB=27604 pulseB=16562 不够一条
+    ⇒ 本拍没有指令
+t=1670 zexos1 B=109883 L=11321 d=9.7 nb=2 neut=0 cmds=47 noFull=1 shQ=11002 | m=1.474 worth=14.3 cheap=5.6 over=0 dMedOther=3.6 safe(-1)=59745
+    → Total Foid Annihilat#18[T1] terr=11473 bal=85004 dq=7.4 cnt=165 | c=4.3 rankC=2.2 need=86406 tD=2.07 人 pulse bleeding | safe=59745 keep=59745 avail=48851 chunkB=21977 pulseB=13186 
+    → [OG] Simmy#15[T1] terr=19255 bal=123328 dq=6.4 cnt=29 | c=17.3 rankC=17.3 need=248706 tD=1.79 人 | safe=59745 keep=Inf avail=-Inf chunkB=21977 pulseB=13186 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1675 zexos1 B=109883 L=11652 d=9.4 nb=2 neut=0 cmds=47 noFull=1 shQ=13434 | m=1.474 worth=13.9 cheap=5.7 over=0 dMedOther=3.6 safe(-1)=59466
+    → Total Foid Annihilat#18[T1] terr=11173 bal=80941 dq=7.2 cnt=166 | c=1.6 rankC=0.8 need=86289 tD=2.02 人 pulse nearCollapse bleeding | safe=59466 keep=59466 avail=49130 chunkB=21977 pulseB=13186 
+    → [OG] Simmy#15[T1] terr=19255 bal=123328 dq=6.4 cnt=30 | c=17.3 rankC=17.3 need=248706 tD=1.79 人 | safe=59466 keep=Inf avail=-Inf chunkB=21977 pulseB=13186 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1680 zexos1 B=111805 L=12133 d=9.2 nb=2 neut=0 cmds=47 noFull=1 shQ=15852 | m=1.473 worth=13.6 cheap=5.7 over=0 dMedOther=3.6 safe(-1)=60273
+    → Total Foid Annihilat#18[T1] terr=10721 bal=76335 dq=7.1 cnt=160 | c=1.9 rankC=0.9 need=88068 tD=1.96 人 pulse nearCollapse bleeding | safe=60273 keep=60273 avail=50222 chunkB=22361 pulseB=13417 
+    → [OG] Simmy#15[T1] terr=19255 bal=125486 dq=6.5 cnt=34 | c=17.5 rankC=17.5 need=252552 tD=1.79 人 | safe=60273 keep=Inf avail=-Inf chunkB=22361 pulseB=13417 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1685 zexos1 B=111805 L=12446 d=9.0 nb=2 neut=0 cmds=47 noFull=1 shQ=18282 | m=1.472 worth=13.2 cheap=5.8 over=0 dMedOther=3.6 safe(-1)=60010
+    → Total Foid Annihilat#18[T1] terr=10430 bal=72589 dq=7.0 cnt=158 | c=2.0 rankC=1.0 need=87850 tD=1.92 人 pulse nearCollapse bleeding | safe=60010 keep=60010 avail=50485 chunkB=22361 pulseB=13417 
+    → [OG] Simmy#15[T1] terr=19255 bal=125486 dq=6.5 cnt=35 | c=17.5 rankC=17.5 need=252552 tD=1.80 人 | safe=60010 keep=Inf avail=-Inf chunkB=22361 pulseB=13417 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1690 zexos1 B=113728 L=12920 d=8.8 nb=2 neut=0 cmds=47 noFull=1 shQ=20700 | m=1.472 worth=13.0 cheap=5.8 over=0 dMedOther=4.5 safe(-1)=60822
+    → Total Foid Annihilat#18[T1] terr=9995 bal=68279 dq=6.8 cnt=158 | c=2.3 rankC=1.1 need=89686 tD=1.53 人 pulse nearCollapse bleeding | safe=60822 keep=60822 avail=51574 chunkB=22746 pulseB=13647 
+    → [OG] Simmy#15[T1] terr=19255 bal=127644 dq=6.6 cnt=37 | c=17.8 rankC=17.8 need=256399 tD=1.48 人 | safe=60822 keep=Inf avail=-Inf chunkB=22746 pulseB=13647 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1695 zexos1 B=113728 L=13234 d=8.6 nb=2 neut=0 cmds=47 noFull=1 shQ=23130 | m=1.471 worth=12.6 cheap=5.9 over=0 dMedOther=4.5 safe(-1)=60558
+    → Total Foid Annihilat#18[T1] terr=9683 bal=64676 dq=6.7 cnt=157 | c=2.4 rankC=1.2 need=89398 tD=1.49 人 pulse nearCollapse bleeding | safe=60558 keep=60558 avail=51838 chunkB=22746 pulseB=13647 
+    → [OG] Simmy#15[T1] terr=19255 bal=127644 dq=6.6 cnt=38 | c=17.8 rankC=17.8 need=256399 tD=1.48 人 | safe=60558 keep=Inf avail=-Inf chunkB=22746 pulseB=13647 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1700 zexos1 B=129200 L=13710 d=9.4 nb=2 neut=0 cmds=47 noFull=1 shQ=25601 | m=1.470 worth=13.9 cheap=5.9 over=0 dMedOther=5.5 safe(-1)=72186
+    → Total Foid Annihilat#18[T1] terr=9221 bal=69499 dq=7.5 cnt=162 | c=4.2 rankC=2.1 need=106356 tD=1.36 人 pulse nearCollapse bleeding | safe=72186 keep=72186 avail=55500 chunkB=25840 pulseB=15504 
+    → [OG] Simmy#15[T1] terr=19255 bal=149056 dq=7.7 cnt=39 | c=20.4 rankC=20.4 need=294564 tD=1.39 人 | safe=72186 keep=Inf avail=-Inf chunkB=25840 pulseB=15504 价高(c>=worth)→break
+    ⇒ 本拍没有指令

@@ -1,0 +1,29 @@
+[QA] B035 出生点离地图边的距离（地图 1050×1392，短边的 12% = 126 像素）
+  编队 10 个号：中位 328、下四分位 194、上四分位 434；离边 ≤126 的 1 个（10%）
+  其他真人 10 个：中位 266、下四分位 216、上四分位 311；离边 ≤126 的 1 个（10%）
+  逐号（离边从近到远）：Sicilian(T2) 94（下）；San Marino(T5) 130（上）；Lucario(T6) 194（左）；Wales(T4) 286（下）；Turenne(T3) 290（上）；Impostor(T4) 366（下）；Afsharid(T4) 399（右）；Panzergrenadier(T6) 434（上）；Maurya(T2) 462（下）；Alaska(T6) 498（左）
+
+[QB] 最近的真人（像素）
+  编队：最近的任意真人 中位 134｜最近的编队友 中位 175｜最近的非编队真人 中位 148｜最近的真人就是编队友的 5/10 个
+  其他真人：最近的任意真人 中位 120
+
+[QC] 编队号的团（相距 ≤260 像素连成一团）：3 团；≥3 个号的团 1 个，装了 8 个号
+  8 个号（中心 508,797）：Turenne(T3) Sicilian(T2) Alaska(T6) Panzergrenadier(T6) Wales(T4) Impostor(T4) Maurya(T2) Afsharid(T4)｜队的构成 T2×2 T3×1 T4×3 T6×2｜≤260 像素的号对：异队 6、同队 2
+  1 个号（中心 610,130）：San Marino(T5)｜队的构成 T5×1｜≤260 像素的号对：异队 0、同队 0
+  1 个号（中心 194,914）：Lucario(T6)｜队的构成 T6×1｜≤260 像素的号对：异队 0、同队 0
+
+[QD] 贴同一条边排成一排（离这条边 ≤126 像素；沿边相邻间距 ≤520）
+  无
+
+[QE] 每个编队号最近的 3 个真人：号 | 最近 3 个（距离；* = 编队友；= 同队 / ≠ 异队）
+    Afsharid         | [Omen] Hell kiT1 169≠；Alaska*T6 200≠；Maurya*T2 236≠
+    San Marino       | United States T4 189≠；GoyimHaveNoSouT5 203=；Turenne*T3 316≠
+    Panzergrenadier  | GoyimHaveNoSouT5 114≠；Alaska*T6 150=；Turenne*T3 234≠
+    Lucario          | IachaybT1 117≠；Player 283T5 128≠；Maurya*T2 368≠
+    Wales            | Impostor*T4 82=；The ReachT3 122≠；Maurya*T2 179≠
+    Sicilian         | Wales*T4 222≠；The ReachT3 245≠；Impostor*T4 301≠
+    Maurya           | Impostor*T4 97≠；[VN]HD.MAX🇻🇳T1 101≠；Wales*T4 179≠
+    Alaska           | Panzergrenadie*T6 150=；Afsharid*T4 200≠；GoyimHaveNoSouT5 263≠
+    Turenne          | GoyimHaveNoSouT5 226≠；Panzergrenadie*T6 234≠；San Marino*T5 316≠
+    Impostor         | Wales*T4 82=；Maurya*T2 97≠；[VN]HD.MAX🇻🇳T1 127≠
+  最近 3 个真人里是异队编队友的：14 / 30

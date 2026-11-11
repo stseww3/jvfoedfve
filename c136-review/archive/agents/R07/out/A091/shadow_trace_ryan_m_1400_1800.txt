@@ -1,0 +1,278 @@
+# A091 ryan_m 影子决策明细 t=1400~1800（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没走到 buyLand: 20 拍（t=1400~1495）
+#   首选目标价高（c>=worth）: 10 拍（t=1500~1545）
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 3 拍（t=1550~1560）；可用兵 35338~36964，一条指令下限(20%余额) 36800~37484，比值 95%~99%
+#   出手打人/bot: 8 拍（t=1565~1630）；可用兵 38101~107357，一条指令下限(20%余额) 21188~38053，比值 102%~469%
+#   首选目标已有在途进攻（curAtk 过门槛）: 6 拍（t=1580~1605）；可用兵 62707~85944，一条指令下限(20%余额) 22664~30098，比值 230%~355%
+#   有可用兵但没发（其他）: 1 拍（t=1635~1635）；可用兵 98045~98045，一条指令下限(20%余额) 20530~20530，比值 478%~478%
+#   没有可打的邻居: 33 拍（t=1640~1800）
+#   └ 「出手打人/bot」里：8 条对人/bot 的出兵共约 129167 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1400 ryan_m B=125179 L=5898 d=21.2 nb=1 neut=14 cmds=27 noFull=1 shQ=29882 | m=1.400 worth=29.7 cheap=3.8 over=0 dMedOther=5.2 safe(-1)=51202
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1405 ryan_m B=125179 L=5925 d=21.1 nb=1 neut=14 cmds=27 noFull=1 shQ=31294 | m=1.405 worth=29.7 cheap=3.8 over=0 dMedOther=5.2 safe(-1)=51179
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1410 ryan_m B=128421 L=5939 d=21.6 nb=1 neut=14 cmds=27 noFull=1 shQ=32105 | m=1.410 worth=30.5 cheap=3.9 over=0 dMedOther=5.3 safe(-1)=52622
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1415 ryan_m B=128421 L=5966 d=21.5 nb=1 neut=13 cmds=27 noFull=1 shQ=32105 | m=1.415 worth=30.5 cheap=3.9 over=0 dMedOther=5.2 safe(-1)=52599
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1420 ryan_m B=131708 L=5991 d=22.0 nb=1 neut=13 cmds=27 noFull=1 shQ=32927 | m=1.420 worth=31.2 cheap=3.9 over=0 dMedOther=5.4 safe(-1)=54053
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1425 ryan_m B=131708 L=6004 d=21.9 nb=1 neut=13 cmds=27 noFull=1 shQ=32927 | m=1.425 worth=31.3 cheap=3.9 over=0 dMedOther=5.3 safe(-1)=54042
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1430 ryan_m B=135040 L=6029 d=22.4 nb=1 neut=13 cmds=27 noFull=1 shQ=33760 | m=1.430 worth=32.0 cheap=4.0 over=0 dMedOther=5.2 safe(-1)=55516
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1435 ryan_m B=135040 L=6056 d=22.3 nb=1 neut=15 cmds=27 noFull=1 shQ=33760 | m=1.435 worth=32.0 cheap=4.0 over=0 dMedOther=5.1 safe(-1)=55493
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1440 ryan_m B=138416 L=6071 d=22.8 nb=1 neut=17 cmds=27 noFull=1 shQ=34604 | m=1.440 worth=32.8 cheap=4.0 over=0 dMedOther=5.1 safe(-1)=56995
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1445 ryan_m B=138416 L=6106 d=22.7 nb=1 neut=16 cmds=27 noFull=1 shQ=34604 | m=1.445 worth=32.8 cheap=4.0 over=0 dMedOther=4.9 safe(-1)=56966
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1450 ryan_m B=141834 L=6136 d=23.1 nb=1 neut=13 cmds=27 noFull=1 shQ=35458 | m=1.450 worth=33.5 cheap=4.1 over=0 dMedOther=4.8 safe(-1)=58474
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1455 ryan_m B=141834 L=6149 d=23.1 nb=1 neut=12 cmds=27 noFull=1 shQ=35458 | m=1.455 worth=33.6 cheap=4.1 over=0 dMedOther=5.6 safe(-1)=58463
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1460 ryan_m B=145294 L=6173 d=23.5 nb=1 neut=12 cmds=27 noFull=1 shQ=36323 | m=1.460 worth=34.4 cheap=4.1 over=0 dMedOther=5.1 safe(-1)=59996
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1465 ryan_m B=145294 L=6197 d=23.4 nb=1 neut=10 cmds=27 noFull=1 shQ=36323 | m=1.465 worth=34.3 cheap=4.1 over=0 dMedOther=5.1 safe(-1)=59976
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1470 ryan_m B=148781 L=6207 d=24.0 nb=1 neut=9 cmds=27 noFull=1 shQ=37195 | m=1.470 worth=35.2 cheap=4.2 over=0 dMedOther=5.1 safe(-1)=61532
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1475 ryan_m B=148781 L=6226 d=23.9 nb=1 neut=10 cmds=27 noFull=1 shQ=37195 | m=1.475 worth=35.2 cheap=4.2 over=0 dMedOther=5.1 safe(-1)=61516
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1480 ryan_m B=152307 L=6247 d=24.4 nb=1 neut=11 cmds=27 noFull=1 shQ=38076 | m=1.480 worth=36.1 cheap=4.2 over=0 dMedOther=5.2 safe(-1)=63080
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1485 ryan_m B=152307 L=6258 d=24.3 nb=1 neut=12 cmds=27 noFull=1 shQ=38076 | m=1.485 worth=36.1 cheap=4.2 over=0 dMedOther=4.9 safe(-1)=63071
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1490 ryan_m B=155870 L=6281 d=24.8 nb=1 neut=13 cmds=27 noFull=1 shQ=38967 | m=1.490 worth=37.0 cheap=4.3 over=0 dMedOther=4.9 safe(-1)=64650
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1495 ryan_m B=155752 L=6305 d=24.7 nb=2 neut=13 cmds=27 noFull=1 shQ=38938 | m=1.495 worth=36.9 cheap=4.3 over=0 dMedOther=4.9 safe(-1)=64630
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1500 ryan_m B=165503 L=6314 d=26.2 nb=2 neut=13 cmds=27 noFull=1 shQ=39853 | m=1.500 worth=39.3 cheap=4.3 over=0 dMedOther=6.0 safe(-1)=70475
+    → LostDog#21[T3] terr=7542 bal=134916 dq=17.9 cnt=106 | c=44.5 rankC=44.5 need=251796 tD=2.98 人 | safe=70475 keep=Inf avail=-Inf chunkB=33101 pulseB=19860 价高(c>=worth)→break hNb=1
+    → AI#44 terr=292 bal=25458 dq=87.2 cnt=4 | c=213.4 rankC=213.4 need=46428 tD=14.50 机 | safe=70475 keep=Inf avail=-Inf chunkB=33101 pulseB=19860 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1505 ryan_m B=165252 L=6329 d=26.1 nb=2 neut=5 cmds=27 noFull=1 shQ=41313 | m=1.499 worth=39.1 cheap=4.4 over=0 dMedOther=6.3 safe(-1)=70462
+    → LostDog#21[T3] terr=7542 bal=134916 dq=17.9 cnt=106 | c=44.5 rankC=44.5 need=251796 tD=2.84 人 | safe=70462 keep=Inf avail=-Inf chunkB=33050 pulseB=19830 价高(c>=worth)→break hNb=1
+    → AI#44 terr=298 bal=25458 dq=85.4 cnt=6 | c=206.7 rankC=206.7 need=45984 tD=13.58 机 | safe=70462 keep=Inf avail=-Inf chunkB=33050 pulseB=19830 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1510 ryan_m B=168976 L=6339 d=26.7 nb=2 neut=4 cmds=27 noFull=1 shQ=42244 | m=1.498 worth=39.9 cheap=4.4 over=0 dMedOther=6.4 safe(-1)=72182
+    → LostDog#21[T3] terr=7542 bal=137992 dq=18.3 cnt=106 | c=45.4 rankC=45.4 need=257278 tD=2.84 人 | safe=72182 keep=Inf avail=-Inf chunkB=33795 pulseB=20277 价高(c>=worth)→break hNb=1
+    → AI#44 terr=298 bal=26041 dq=87.4 cnt=6 | c=211.0 rankC=211.0 need=46923 tD=13.59 机 | safe=72182 keep=Inf avail=-Inf chunkB=33795 pulseB=20277 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1515 ryan_m B=168976 L=6343 d=26.6 nb=2 neut=3 cmds=27 noFull=1 shQ=42244 | m=1.498 worth=39.9 cheap=4.4 over=0 dMedOther=6.4 safe(-1)=72178
+    → LostDog#21[T3] terr=7542 bal=137992 dq=18.3 cnt=106 | c=45.4 rankC=45.4 need=257278 tD=2.84 人 | safe=72178 keep=Inf avail=-Inf chunkB=33795 pulseB=20277 价高(c>=worth)→break hNb=1
+    → AI#44 terr=298 bal=26041 dq=87.4 cnt=6 | c=211.0 rankC=211.0 need=46923 tD=13.59 机 | safe=72178 keep=Inf avail=-Inf chunkB=33795 pulseB=20277 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1520 ryan_m B=172777 L=6348 d=27.2 nb=2 neut=0 cmds=27 noFull=1 shQ=43194 | m=1.497 worth=40.7 cheap=4.4 over=0 dMedOther=6.6 safe(-1)=73918
+    → LostDog#21[T3] terr=7542 bal=141096 dq=18.7 cnt=106 | c=46.4 rankC=46.4 need=262811 tD=2.84 人 | safe=73918 keep=Inf avail=-Inf chunkB=34555 pulseB=20733 价高(c>=worth)→break hNb=1
+    → AI#44 terr=298 bal=26626 dq=89.3 cnt=6 | c=215.7 rankC=215.7 need=47967 tD=13.59 机 | safe=73918 keep=Inf avail=-Inf chunkB=34555 pulseB=20733 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1525 ryan_m B=175032 L=6348 d=27.6 nb=2 neut=0 cmds=27 noFull=1 shQ=43758 | m=1.496 worth=41.3 cheap=4.5 over=0 dMedOther=6.6 safe(-1)=73918
+    → LostDog#21[T3] terr=7542 bal=141096 dq=18.7 cnt=106 | c=46.4 rankC=46.4 need=262811 tD=2.84 人 | safe=73918 keep=Inf avail=-Inf chunkB=35006 pulseB=21004 价高(c>=worth)→break hNb=1
+    → AI#44 terr=298 bal=533 dq=1.8 cnt=6 | c=126.1 rankC=126.1 need=27180 tD=0.27 机 | safe=73918 keep=Inf avail=-Inf chunkB=35006 pulseB=21004 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1530 ryan_m B=178917 L=6348 d=28.2 nb=2 neut=0 cmds=27 noFull=1 shQ=44729 | m=1.496 worth=42.2 cheap=4.5 over=0 dMedOther=6.7 safe(-1)=75678
+    → LostDog#21[T3] terr=7542 bal=144228 dq=19.1 cnt=106 | c=47.4 rankC=47.4 need=268394 tD=2.84 人 | safe=75678 keep=Inf avail=-Inf chunkB=35783 pulseB=21470 价高(c>=worth)→break hNb=1
+    → AI#44 terr=298 bal=544 dq=1.8 cnt=6 | c=126.4 rankC=126.4 need=27200 tD=0.27 机 | safe=75678 keep=Inf avail=-Inf chunkB=35783 pulseB=21470 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1535 ryan_m B=178242 L=6333 d=28.1 nb=2 neut=0 cmds=27 noFull=1 shQ=44560 | m=1.495 worth=42.1 cheap=4.5 over=0 dMedOther=6.7 safe(-1)=75690
+    → LostDog#21[T3] terr=7542 bal=144228 dq=19.1 cnt=106 | c=47.4 rankC=47.4 need=268394 tD=2.84 人 | safe=75690 keep=Inf avail=-Inf chunkB=35648 pulseB=21389 价高(c>=worth)→break hNb=1
+    → AI#44 terr=313 bal=544 dq=1.7 cnt=8 | c=114.8 rankC=114.8 need=25841 tD=0.26 机 | safe=75690 keep=Inf avail=-Inf chunkB=35648 pulseB=21389 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1540 ryan_m B=181823 L=6326 d=28.7 nb=2 neut=0 cmds=27 noFull=1 shQ=45455 | m=1.494 worth=42.9 cheap=4.6 over=0 dMedOther=6.9 safe(-1)=77470
+    → LostDog#21[T3] terr=7542 bal=147386 dq=19.5 cnt=106 | c=48.4 rankC=48.4 need=274023 tD=2.84 人 | safe=77470 keep=Inf avail=-Inf chunkB=36365 pulseB=21819 价高(c>=worth)→break hNb=1
+    → AI#44 terr=320 bal=555 dq=1.7 cnt=6 | c=110.1 rankC=110.1 need=25226 tD=0.25 机 | safe=77470 keep=Inf avail=-Inf chunkB=36365 pulseB=21819 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1545 ryan_m B=181502 L=6319 d=28.7 nb=2 neut=0 cmds=27 noFull=1 shQ=45375 | m=1.493 worth=42.9 cheap=4.6 over=0 dMedOther=6.1 safe(-1)=77476
+    → LostDog#21[T3] terr=7542 bal=147386 dq=19.5 cnt=106 | c=48.4 rankC=48.4 need=274023 tD=3.21 人 | safe=77476 keep=Inf avail=-Inf chunkB=36300 pulseB=21780 价高(c>=worth)→break hNb=1
+    → AI#44 terr=327 bal=555 dq=1.7 cnt=7 | c=104.9 rankC=104.9 need=24584 tD=0.28 机 | safe=77476 keep=Inf avail=-Inf chunkB=36300 pulseB=21780 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1550 ryan_m B=185029 L=6311 d=29.3 nb=2 neut=0 cmds=27 noFull=1 shQ=46257 | m=1.492 worth=43.8 cheap=4.6 over=0 dMedOther=6.2 safe(-1)=60678
+    → LostDog#21[T3] terr=7542 bal=117474 dq=15.6 cnt=106 | c=29.3 rankC=20.5 need=220706 tD=2.51 人 | safe=60678 keep=147523 avail=35338 chunkB=37006 pulseB=22203 不够一条(x=35338)→continue hNb=1
+    → AI#44 terr=335 bal=566 dq=1.7 cnt=8 | c=99.8 rankC=99.8 need=23866 tD=0.27 机 | safe=60678 keep=Inf avail=-Inf chunkB=37006 pulseB=22203 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1555 ryan_m B=183998 L=6289 d=29.3 nb=2 neut=0 cmds=27 noFull=1 shQ=45999 | m=1.492 worth=43.6 cheap=4.7 over=0 dMedOther=6.2 safe(-1)=60697
+    → LostDog#21[T3] terr=7617 bal=117474 dq=15.4 cnt=106 | c=29.0 rankC=20.3 need=220813 tD=2.49 人 | safe=60697 keep=146209 avail=35633 chunkB=36800 pulseB=22080 不够一条(x=35633)→continue hNb=1
+    → AI#44 terr=357 bal=566 dq=1.6 cnt=9 | c=86.3 rankC=86.3 need=21790 tD=0.26 机 | safe=60697 keep=Inf avail=-Inf chunkB=36800 pulseB=22080 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1560 ryan_m B=187420 L=6279 d=29.8 nb=2 neut=0 cmds=27 noFull=1 shQ=46855 | m=1.491 worth=44.5 cheap=4.7 over=0 dMedOther=7.0 safe(-1)=62104
+    → LostDog#21[T3] terr=7693 bal=119964 dq=15.6 cnt=107 | c=29.3 rankC=20.5 need=225365 tD=2.23 人 | safe=62104 keep=148260 avail=36964 chunkB=37484 pulseB=22490 不够一条(x=36964)→continue hNb=1
+    → AI#44 terr=367 bal=577 dq=1.6 cnt=10 | c=80.8 rankC=80.8 need=20871 tD=0.22 机 | safe=62104 keep=Inf avail=-Inf chunkB=37484 pulseB=22490 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1565 ryan_m B=186895 L=6268 d=29.8 nb=2 neut=0 cmds=28 noFull=1 shQ=46723 | m=1.490 worth=44.4 cheap=4.7 over=0 dMedOther=7.0 safe(-1)=62113
+    → LostDog#21[T3] terr=7845 bal=119964 dq=15.3 cnt=108 | c=28.8 rankC=20.1 need=225593 tD=2.19 人 | safe=62113 keep=146604 avail=38101 chunkB=37379 pulseB=22427  x=38101 hNb=1
+    → AI#44 terr=378 bal=577 dq=1.5 cnt=10 | c=74.9 rankC=74.9 need=19814 tD=0.22 机 | safe=62113 keep=Inf avail=-Inf chunkB=37379 pulseB=22427 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=208 → LostDog#21[T3]（约 38145 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1570 ryan_m B=190266 L=6257 d=30.4 nb=2 neut=0 cmds=29 noFull=1 shQ=47566 | m=1.490 worth=45.3 cheap=4.8 over=0 dMedOther=7.1 safe(-1)=63531
+    → LostDog#21[T3] terr=7992 bal=122471 dq=15.3 cnt=108 | c=13.5 rankC=6.7 need=230276 tD=2.15 人 pulse bleeding | safe=63531 keep=109383 avail=78654 chunkB=38053 pulseB=22832  x=22831 hNb=1
+    → AI#44 terr=389 bal=589 dq=1.5 cnt=11 | c=69.5 rankC=69.5 need=18781 tD=0.21 机 | safe=63531 keep=Inf avail=-Inf chunkB=38053 pulseB=22832 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=122 → LostDog#21[T3]（约 22854 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1575 ryan_m B=188906 L=6229 d=30.3 nb=2 neut=0 cmds=30 noFull=1 shQ=47226 | m=1.489 worth=45.1 cheap=4.8 over=0 dMedOther=7.1 safe(-1)=63555
+    → LostDog#21[T3] terr=8065 bal=122471 dq=15.2 cnt=108 | c=13.4 rankC=6.7 need=230391 tD=2.13 人 pulse bleeding | safe=63555 keep=108442 avail=78251 chunkB=37781 pulseB=22669  x=22668 hNb=1
+    → AI#44 terr=417 bal=589 dq=1.4 cnt=15 | c=56.4 rankC=56.4 need=16047 tD=0.20 机 | safe=63555 keep=Inf avail=-Inf chunkB=37781 pulseB=22669 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=122 → LostDog#21[T3]（约 22690 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1580 ryan_m B=150490 L=6211 d=24.2 nb=2 neut=0 cmds=30 noFull=1 shQ=3070 | m=1.488 worth=36.1 cheap=4.8 over=0 dMedOther=7.3 safe(-1)=60358
+    → LostDog#21[T3] terr=7801 bal=116753 dq=15.0 cnt=108 | c=7.9 rankC=4.0 need=179749 tD=2.05 人 pulse nearCollapse bleeding | safe=60358 keep=79577 avail=69150 chunkB=30098 pulseB=18059 在途(curAtk=38556)→continue hNb=1
+    → AI#44 terr=435 bal=601 dq=1.4 cnt=18 | c=48.6 rankC=48.6 need=14694 tD=0.19 机 | safe=60358 keep=Inf avail=-Inf chunkB=30098 pulseB=18059 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1585 ryan_m B=129990 L=6299 d=20.6 nb=2 neut=0 cmds=30 noFull=1 shQ=6618 | m=1.487 worth=30.7 cheap=4.9 over=0 dMedOther=6.5 safe(-1)=54669
+    → LostDog#21[T3] terr=7379 bal=106760 dq=14.5 cnt=105 | c=2.2 rankC=1.1 need=146225 tD=2.24 人 pulse nearCollapse bleeding | safe=54669 keep=54669 avail=73798 chunkB=25998 pulseB=15599 在途(curAtk=51310)→continue hNb=1
+    → AI#44 terr=455 bal=601 dq=1.3 cnt=18 | c=42.1 rankC=42.1 need=13362 tD=0.20 机 | safe=54669 keep=Inf avail=-Inf chunkB=25998 pulseB=15599 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1590 ryan_m B=114569 L=6490 d=17.7 nb=2 neut=0 cmds=30 noFull=1 shQ=9835 | m=1.486 worth=26.2 cheap=4.9 over=0 dMedOther=6.6 safe(-1)=50520
+    → LostDog#21[T3] terr=6982 bal=99661 dq=14.3 cnt=107 | c=0.2 rankC=0.1 need=125273 tD=2.17 人 pulse nearCollapse bleeding | safe=50520 keep=50520 avail=62707 chunkB=22914 pulseB=13748 在途(curAtk=56762)→continue hNb=1
+    → AI#44 terr=475 bal=613 dq=1.3 cnt=20 | c=36.3 rankC=36.3 need=12075 tD=0.20 机 | safe=50520 keep=Inf avail=-Inf chunkB=22914 pulseB=13748 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1595 ryan_m B=113321 L=6660 d=17.0 nb=2 neut=0 cmds=30 noFull=1 shQ=12713 | m=1.486 worth=25.3 cheap=5.0 over=0 dMedOther=6.6 safe(-1)=43075
+    → LostDog#21[T3] terr=6401 bal=86664 dq=13.5 cnt=108 | c=0.2 rankC=0.1 need=108123 tD=2.06 人 pulse nearCollapse bleeding | safe=43075 keep=43075 avail=68919 chunkB=22664 pulseB=13599 在途(curAtk=46800)→continue hNb=1
+    → AI#44 terr=520 bal=613 dq=1.2 cnt=21 | c=27.0 rankC=27.0 need=9554 tD=0.18 机 | safe=43075 keep=Inf avail=-Inf chunkB=22664 pulseB=13599 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1600 ryan_m B=121760 L=6746 d=18.0 nb=2 neut=0 cmds=30 noFull=1 shQ=15591 | m=1.485 worth=26.8 cheap=5.0 over=0 dMedOther=7.7 safe(-1)=40328
+    → LostDog#21[T3] terr=5836 bal=81902 dq=14.0 cnt=107 | c=0.2 rankC=0.1 need=99658 tD=1.83 人 pulse nearCollapse bleeding | safe=40328 keep=40328 avail=80006 chunkB=24352 pulseB=14611 在途(curAtk=42062)→continue hNb=1
+    → AI#44 terr=541 bal=1166 dq=2.2 cnt=20 | c=25.8 rankC=25.8 need=9406 tD=0.28 机 | safe=40328 keep=118397 avail=1937 chunkB=24352 pulseB=14611 不够一条(x=1937)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1605 ryan_m B=121164 L=6940 d=17.5 nb=2 neut=0 cmds=30 noFull=1 shQ=18607 | m=1.484 worth=25.9 cheap=5.0 over=0 dMedOther=7.6 safe(-1)=33801
+    → LostDog#21[T3] terr=5320 bal=70575 dq=13.3 cnt=109 | c=0.2 rankC=0.1 need=85919 tD=1.74 人 pulse nearCollapse bleeding | safe=33801 keep=33801 avail=85944 chunkB=24233 pulseB=14540 在途(curAtk=32188)→continue hNb=1
+    → AI#44 terr=562 bal=1166 dq=2.1 cnt=21 | c=22.0 rankC=22.0 need=8205 tD=0.27 机 | safe=33801 keep=109755 avail=9990 chunkB=24233 pulseB=14540 不够一条(x=9990)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1610 ryan_m B=122962 L=7138 d=17.2 nb=2 neut=0 cmds=31 noFull=1 shQ=21596 | m=1.484 worth=25.6 cheap=5.1 over=0 dMedOther=7.7 safe(-1)=25637
+    → LostDog#21[T3] terr=4569 bal=56340 dq=12.3 cnt=110 | c=0.3 rankC=0.2 need=64832 tD=1.60 人 pulse nearCollapse bleeding | safe=25637 keep=25637 avail=95885 chunkB=24592 pulseB=14755 在途(curAtk=22862)→continue hNb=1
+    → AI#44 terr=583 bal=1188 dq=2.0 cnt=21 | c=18.8 rankC=18.8 need=7081 tD=0.26 机 | safe=25637 keep=102957 avail=18565 chunkB=24592 pulseB=14755  x=8914 hNb=1
+    ⇒ 影子指令 attack pct=74 → AI#44（约 9006 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1615 ryan_m B=121788 L=7205 d=16.9 nb=2 neut=0 cmds=32 noFull=1 shQ=24588 | m=1.483 worth=25.1 cheap=5.1 over=0 dMedOther=7.7 safe(-1)=20037
+    → LostDog#21[T3] terr=4054 bal=46473 dq=11.5 cnt=111 | c=0.4 rankC=0.2 need=48602 tD=1.49 人 pulse nearCollapse bleeding | safe=20037 keep=20037 avail=100324 chunkB=24358 pulseB=14615 在途(curAtk=18442)→continue hNb=1
+    → AI#44 terr=626 bal=1188 dq=1.9 cnt=21 | c=12.6 rankC=12.6 need=4710 tD=0.25 机 | safe=20037 keep=85089 avail=35272 chunkB=24358 pulseB=14615  x=5950 hNb=1
+    ⇒ 影子指令 attack pct=50 → AI#44（约 6065 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1620 ryan_m B=123590 L=7406 d=16.7 nb=2 neut=0 cmds=33 noFull=1 shQ=27550 | m=1.482 worth=24.7 cheap=5.2 over=0 dMedOther=7.8 safe(-1)=14785
+    → LostDog#21[T3] terr=3502 bal=37427 dq=10.7 cnt=110 | c=0.5 rankC=0.3 need=37270 tD=1.37 人 pulse nearCollapse bleeding | safe=14785 keep=14785 avail=107357 chunkB=24718 pulseB=14831 在途(curAtk=10174)→continue hNb=1
+    → AI#44 terr=647 bal=1211 dq=1.9 cnt=20 | c=10.1 rankC=10.1 need=3641 tD=0.24 机 | safe=14785 keep=79403 avail=42739 chunkB=24718 pulseB=14831  x=4612 hNb=1
+    ⇒ 影子指令 attack pct=38 → AI#44（约 4707 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1625 ryan_m B=105938 L=7646 d=13.9 nb=2 neut=0 cmds=34 noFull=1 shQ=10280 | m=1.481 worth=20.5 cheap=5.2 over=0 dMedOther=7.8 safe(-1)=8724
+    → LostDog#21[T3] terr=2860 bal=26997 dq=9.4 cnt=110 | c=0.8 rankC=0.4 need=22820 tD=1.22 人 pulse nearCollapse bleeding | safe=8724 keep=8724 avail=95973 chunkB=21188 pulseB=12713  x=12712 hNb=1
+    ⇒ 影子指令 attack pct=122 → LostDog#21[T3]（约 12724 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1630 ryan_m B=108030 L=7667 d=14.1 nb=2 neut=0 cmds=35 noFull=1 shQ=12823 | m=1.480 worth=20.9 cheap=5.2 over=0 dMedOther=7.8 safe(-1)=5331
+    → LostDog#21[T3] terr=2498 bal=20989 dq=8.4 cnt=109 | c=1.2 rankC=0.6 need=13995 tD=1.07 人 pulse nearCollapse bleeding | safe=5331 keep=5331 avail=101434 chunkB=21606 pulseB=12964  x=12963 hNb=1
+    ⇒ 影子指令 attack pct=122 → LostDog#21[T3]（约 12976 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1635 ryan_m B=102651 L=7707 d=13.3 nb=2 neut=0 cmds=35 noFull=1 shQ=1457 | m=1.480 worth=19.7 cheap=5.3 over=0 dMedOther=6.9 safe(-1)=3404
+    → LostDog#21[T3] terr=2241 bal=17619 dq=7.9 cnt=108 | c=2.0 rankC=1.0 need=6931 tD=1.14 人 pulse nearCollapse bleeding | safe=3404 keep=3404 avail=98045 chunkB=20530 pulseB=12318  x=12318 hNb=1
+    ⇒ 本拍没有指令
+t=1640 ryan_m B=90785 L=7852 d=11.6 nb=1 neut=100 cmds=35 noFull=1 shQ=3750 | m=1.479 worth=17.1 cheap=5.3 over=0 dMedOther=6.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1645 ryan_m B=90785 L=7970 d=11.4 nb=1 neut=98 cmds=35 noFull=1 shQ=5866 | m=1.478 worth=16.8 cheap=5.4 over=0 dMedOther=6.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1650 ryan_m B=80268 L=8205 d=9.8 nb=1 neut=90 cmds=35 noFull=1 shQ=7693 | m=1.478 worth=14.5 cheap=5.4 over=0 dMedOther=6.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1655 ryan_m B=80268 L=8406 d=9.5 nb=1 neut=74 cmds=35 noFull=1 shQ=9532 | m=1.477 worth=14.1 cheap=5.5 over=0 dMedOther=6.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1660 ryan_m B=81720 L=8484 d=9.6 nb=1 neut=48 cmds=35 noFull=1 shQ=11363 | m=1.476 worth=14.2 cheap=5.5 over=0 dMedOther=6.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1665 ryan_m B=81720 L=8597 d=9.5 nb=1 neut=35 cmds=35 noFull=1 shQ=13202 | m=1.475 worth=14.0 cheap=5.6 over=0 dMedOther=6.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1670 ryan_m B=83174 L=8680 d=9.6 nb=1 neut=24 cmds=35 noFull=1 shQ=15030 | m=1.474 worth=14.1 cheap=5.6 over=0 dMedOther=6.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1675 ryan_m B=83174 L=8707 d=9.6 nb=1 neut=16 cmds=35 noFull=1 shQ=16872 | m=1.474 worth=14.1 cheap=5.7 over=0 dMedOther=6.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1680 ryan_m B=84629 L=8740 d=9.7 nb=1 neut=0 cmds=35 noFull=1 shQ=18700 | m=1.473 worth=14.3 cheap=5.7 over=0 dMedOther=6.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1685 ryan_m B=106265 L=8755 d=12.1 nb=1 neut=0 cmds=35 noFull=1 shQ=20915 | m=1.472 worth=17.9 cheap=5.8 over=0 dMedOther=6.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1690 ryan_m B=108092 L=8763 d=12.3 nb=1 neut=0 cmds=35 noFull=1 shQ=23212 | m=1.472 worth=18.2 cheap=5.8 over=0 dMedOther=6.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1695 ryan_m B=108092 L=8776 d=12.3 nb=1 neut=0 cmds=35 noFull=1 shQ=25521 | m=1.471 worth=18.1 cheap=5.9 over=0 dMedOther=6.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1700 ryan_m B=118700 L=8786 d=13.5 nb=1 neut=0 cmds=35 noFull=1 shQ=27524 | m=1.470 worth=19.9 cheap=5.9 over=0 dMedOther=7.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1705 ryan_m B=118700 L=8787 d=13.5 nb=0 neut=0 cmds=35 noFull=1 shQ=29675 | m=1.469 worth=19.8 cheap=6.0 over=0 dMedOther=7.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1710 ryan_m B=137660 L=8787 d=15.7 nb=0 neut=0 cmds=35 noFull=1 shQ=32500 | m=1.468 worth=23.0 cheap=6.0 over=0 dMedOther=7.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1715 ryan_m B=137660 L=8787 d=15.7 nb=0 neut=0 cmds=35 noFull=1 shQ=34415 | m=1.468 worth=23.0 cheap=6.1 over=0 dMedOther=7.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1720 ryan_m B=139890 L=8787 d=15.9 nb=0 neut=0 cmds=35 noFull=1 shQ=34972 | m=1.467 worth=23.4 cheap=6.2 over=0 dMedOther=7.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1725 ryan_m B=139890 L=8787 d=15.9 nb=0 neut=0 cmds=35 noFull=1 shQ=34972 | m=1.466 worth=23.3 cheap=6.2 over=0 dMedOther=7.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1730 ryan_m B=142114 L=8787 d=16.2 nb=0 neut=0 cmds=35 noFull=1 shQ=35528 | m=1.466 worth=23.7 cheap=6.3 over=0 dMedOther=8.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1735 ryan_m B=142114 L=8787 d=16.2 nb=0 neut=0 cmds=35 noFull=1 shQ=35528 | m=1.465 worth=23.7 cheap=6.3 over=0 dMedOther=8.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1740 ryan_m B=144330 L=8787 d=16.4 nb=0 neut=0 cmds=35 noFull=1 shQ=36082 | m=1.464 worth=24.0 cheap=6.4 over=0 dMedOther=7.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1745 ryan_m B=144330 L=8787 d=16.4 nb=0 neut=0 cmds=35 noFull=1 shQ=36082 | m=1.463 worth=24.0 cheap=6.5 over=0 dMedOther=7.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1750 ryan_m B=146538 L=8787 d=16.7 nb=0 neut=0 cmds=35 noFull=1 shQ=36634 | m=1.462 worth=24.4 cheap=6.5 over=0 dMedOther=7.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1755 ryan_m B=146538 L=8787 d=16.7 nb=0 neut=0 cmds=35 noFull=1 shQ=36634 | m=1.462 worth=24.4 cheap=6.6 over=0 dMedOther=7.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1760 ryan_m B=148736 L=8787 d=16.9 nb=0 neut=0 cmds=35 noFull=1 shQ=37184 | m=1.461 worth=24.7 cheap=6.7 over=0 dMedOther=6.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1765 ryan_m B=148736 L=8787 d=16.9 nb=0 neut=0 cmds=35 noFull=1 shQ=37184 | m=1.460 worth=24.7 cheap=6.7 over=0 dMedOther=6.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1770 ryan_m B=150922 L=8787 d=17.2 nb=0 neut=0 cmds=35 noFull=1 shQ=37730 | m=1.460 worth=25.1 cheap=6.8 over=0 dMedOther=6.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1775 ryan_m B=150922 L=8787 d=17.2 nb=0 neut=0 cmds=35 noFull=1 shQ=37730 | m=1.459 worth=25.1 cheap=6.9 over=0 dMedOther=6.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1780 ryan_m B=153095 L=8787 d=17.4 nb=0 neut=0 cmds=35 noFull=1 shQ=38273 | m=1.458 worth=25.4 cheap=7.0 over=0 dMedOther=6.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1785 ryan_m B=153095 L=8787 d=17.4 nb=0 neut=0 cmds=35 noFull=1 shQ=38273 | m=1.457 worth=25.4 cheap=7.0 over=0 dMedOther=6.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1790 ryan_m B=155238 L=8787 d=17.7 nb=0 neut=0 cmds=35 noFull=1 shQ=38809 | m=1.457 worth=25.7 cheap=7.1 over=0 dMedOther=6.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1795 ryan_m B=155238 L=8787 d=17.7 nb=0 neut=0 cmds=35 noFull=1 shQ=38809 | m=1.456 worth=25.7 cheap=7.2 over=0 dMedOther=6.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1800 ryan_m B=166151 L=8787 d=18.9 nb=0 neut=0 cmds=35 noFull=1 shQ=39382 | m=1.455 worth=27.5 cheap=7.3 over=0 dMedOther=7.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令

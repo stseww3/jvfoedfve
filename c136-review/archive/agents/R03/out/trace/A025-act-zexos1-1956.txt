@@ -1,0 +1,116 @@
+t=1960 B=108k L=62599 密=1.7 在途中立=1.7k 槽=1 nfs=1 sq=7.5k | 决策后 nb=5 neut=66
+    tryEmergencyBossRescue→false
+    safeFinite→53k
+    dpKeep→49k
+    expandNeutral(spend=54k)
+    buyLand→true
+    offers→5
+        报价 AI354：c=2.76 need=4.8k inAtk=0 tD=0.04 
+        报价 Player 691#5：c=9.42 need=409k inAtk=0 tD=1.1 person
+        报价 Russia#8：c=11.96 need=136k inAtk=0 tD=0.68 person
+        报价 AI292：c=19.89 need=2.3k inAtk=0 tD=1.53 
+        报价 Player 804#11：c=109.35 need=210k inAtk=0 tD=11.75 person/isCrowdedHard
+    safeFinite→53k
+    dpKeep→49k
+      send(AI354, 6.3k)→true
+    safeFinite→53k
+    dpKeep→49k
+      · （不针对目标）：safeAt=53k×2
+      · Player 691#5 地 57860 兵 181k 我压它 0 它压我 0 接壤 97：elimCost=409k
+      · AI292 地 994 兵 4.3k 我压它 0 它压我 0 接壤 63：elimCost=2.3k
+      · AI354 地 3613 兵 403 我压它 0 它压我 0 接壤 111：elimCost=4.8k safeAt=53k
+      · Russia#8 地 27559 兵 53k 我压它 0 它压我 0 接壤 14：elimCost=136k
+      · Player 804#11 地 3443 兵 115k 我压它 0 它压我 0 接壤 15：elimCost=210k
+t=1965 B=104k L=62853 密=1.7 在途中立=3.5k 槽=1 nfs=1 sq=1.3k | 决策后 nb=5 neut=34
+    tryEmergencyBossRescue→false
+    safeFinite→42k
+    dpKeep→37k
+    expandNeutral(spend=62k)
+    buyLand→false
+    offers→5
+        报价 Russia#8：c=5.6 need=117k inAtk=0 tD=0.54 person
+        报价 Player 691#5：c=8.55 need=372k inAtk=0 tD=1 person
+        报价 AI354：c=16.59 need=32k inAtk=0 tD=2.06 
+        报价 AI292：c=19.58 need=2.4k inAtk=0 tD=1.58 
+        报价 Player 804#11：c=109.03 need=210k inAtk=0 tD=12.06 person/isCrowdedHard
+    safeFinite→42k
+    dpKeep→37k
+      send(Russia#8, 61k)→false
+    tryDonateToTeammate→false
+    safeFinite→42k
+    dpKeep→37k
+    safeFinite→42k
+    dpKeep→37k
+    idleBoats→undef
+    boatFood→false
+    safeFinite→42k
+    dpKeep→37k
+      · （不针对目标）：safeAt=42k×4
+      · AI292 地 994 兵 4.3k 我压它 0 它压我 0 接壤 63：elimCost=2.4k
+      · Player 691#5 地 57992 兵 160k 我压它 0 它压我 0 接壤 97：elimCost=372k
+      · AI354 地 3454 兵 20k 我压它 0 它压我 0 接壤 107：elimCost=32k
+      · Russia#8 地 28153 兵 42k 我压它 0 它压我 0 接壤 43：elimCost=117k safeAt=42k
+      · Player 804#11 地 3452 兵 115k 我压它 0 它压我 0 接壤 15：elimCost=210k
+t=1970 B=95k L=63240 密=1.5 在途中立=3.4k 槽=2 nfs=1 sq=3.3k | 决策后 nb=5 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→false
+    offers→5
+        报价 Russia#8：c=5.59 need=119k inAtk=0 tD=0.54 person
+        报价 Player 691#5：c=8.63 need=377k inAtk=0 tD=1 person
+        报价 AI354：c=13.94 need=22k inAtk=0 tD=1.9 
+        报价 AI292：c=19.08 need=2.4k inAtk=0 tD=1.57 
+        报价 Player 804#11：c=110.03 need=212k inAtk=0 tD=12.02 person/isCrowdedHard
+    safeFinite→43k
+    dpKeep→38k
+      send(Russia#8, 51k)→false
+    tryDonateToTeammate→false
+    idleBoats→undef
+    boatFood→false
+    safeFinite→43k
+    dpKeep→38k
+      · AI292 地 994 兵 4.4k 我压它 0 它压我 0 接壤 63：elimCost=2.4k price=16.06
+      · Player 691#5 地 58196 兵 163k 我压它 0 它压我 0 接壤 97：elimCost=377k
+      · Russia#8 地 28493 兵 43k 我压它 0 它压我 0 接壤 66：elimCost=119k safeAt=43k
+      · AI354 地 3051 兵 16k 我压它 3.2k 它压我 0 接壤 99：elimCost=25k
+      · Player 804#11 地 3456 兵 116k 我压它 0 它压我 0 接壤 15：elimCost=212k
+      · （不针对目标）：safeAt=43k
+t=1975 B=91k L=63333 密=1.4 在途中立=0 槽=1 nfs=1 sq=5.4k | 决策后 nb=5 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→false
+    offers→5
+        报价 Player 691#5：c=8.62 need=377k inAtk=0 tD=1 person
+        报价 Russia#8：c=9.97 need=160k inAtk=0 tD=0.81 person/isCrowdedHard
+        报价 AI354：c=10.7 need=14k inAtk=0 tD=1.74 
+        报价 AI292：c=18.8 need=2.5k inAtk=0 tD=1.58 
+        报价 Player 804#11：c=109.61 need=212k inAtk=0 tD=12.01 person/isCrowdedHard
+    tryDonateToTeammate→false
+    idleBoats→undef
+    boatFood→false
+    safeFinite→66k
+    dpKeep→38k
+      · Russia#8 地 28950 兵 66k 我压它 0 它压我 0 接壤 73：elimCost=160k
+      · AI292 地 994 兵 4.4k 我压它 0 它压我 0 接壤 63：elimCost=2.5k price=16.06
+      · Player 691#5 地 58339 兵 163k 我压它 0 它压我 0 接壤 97：elimCost=377k
+      · AI354 地 2809 兵 14k 我压它 5.9k 它压我 0 接壤 89：elimCost=20k
+      · Player 804#11 地 3466 兵 116k 我压它 0 它压我 0 接壤 15：elimCost=212k
+      · （不针对目标）：safeAt=66k
+t=1980 B=93k L=63333 密=1.5 在途中立=0 槽=1 nfs=1 sq=7.3k | 决策后 nb=5 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→false
+    offers→5
+        报价 Player 691#5：c=8.7 need=383k inAtk=0 tD=1 person
+        报价 Russia#8：c=10.01 need=162k inAtk=0 tD=0.81 person/isCrowdedHard
+        报价 AI354：c=10.24 need=12k inAtk=0 tD=1.69 
+        报价 AI292：c=18.98 need=2.5k inAtk=0 tD=1.57 
+        报价 Player 804#11：c=110.5 need=214k inAtk=0 tD=11.96 person/isCrowdedHard
+    tryDonateToTeammate→false
+    idleBoats→undef
+    boatFood→false
+    safeFinite→66k
+    dpKeep→40k
+      · Russia#8 地 29236 兵 66k 我压它 0 它压我 0 接壤 74：elimCost=162k
+      · AI292 地 994 兵 4.4k 我压它 0 它压我 0 接壤 63：elimCost=2.5k price=16.21
+      · Player 691#5 地 58565 兵 165k 我压它 0 它压我 0 接壤 97：elimCost=383k
+      · AI354 地 2687 兵 13k 我压它 5.9k 它压我 0 接壤 88：elimCost=18k
+      · Player 804#11 地 3477 兵 117k 我压它 0 它压我 0 接壤 15：elimCost=214k
+      · （不针对目标）：safeAt=66k

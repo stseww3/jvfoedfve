@@ -1,0 +1,430 @@
+# A089 影子逐拍明细按时间段合计（92_trace_span.py；全部是影子值）
+# 列：决策拍 | 有真人候选 | 零指令·价高 | 零指令·唯一真人邻居闸 | 零指令·crowdedHard 闸 | 零指令·可用兵≤0 | 零指令·没有候选 | 零指令·在途 | 零指令·低于最小指令 | 零指令·不够一条 | 零指令·其他 | 捐兵拍 | 出手拍（约兵）| 其中 over=1（约兵）| 其中 c≥worth（约兵）| 出手但跳过了更便宜的（约兵）| 出手但跳过了不够一条的（约兵） | 最便宜真人候选的 c÷worth 中位数（最小~最大）| need÷B 中位数 | 自己密度中位数 | 该候选密度中位数 | 候选行带 crowdedHard / sole / onMe 的拍数
+
+## t=1500~1705
+  alex_k: 42 | 42 | 0 | 0 | 0 | 2 | 0 | 0 | 0 | 26 | 0 | 0 | 14（918,663）| 0（0）| 0（0）| 0（0）| 0（0）| 0.89（0.51~0.99） | 1.00 | 37 | 13 | 0 / 0 / 0
+  kaito9: 42 | 42 | 35 | 0 | 0 | 0 | 0 | 0 | 0 | 4 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 1.23（0.91~2.59） | 2.80 | 17 | 12 | 9 / 42 / 0
+  noah88: 42 | 42 | 9 | 0 | 0 | 4 | 0 | 0 | 0 | 28 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 0.91（0.67~1.40） | 2.22 | 23 | 12 | 0 / 0 / 0
+  riku_x: 42 | 42 | 0 | 0 | 0 | 4 | 0 | 0 | 0 | 36 | 0 | 0 | 2（44,332）| 0（0）| 0（0）| 0（0）| 0（0）| 0.62（0.55~0.71） | 0.75 | 39 | 16 | 0 / 0 / 0
+  ryan_m: 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 18 | 0 | 0 | 24（1,491,773）| 0（0）| 0（0）| 0（0）| 0（0）| 0.51（0.27~0.76） | 0.49 | 34 | 13 | 0 / 0 / 0
+  sora_w: 42 | 42 | 17 | 0 | 0 | 0 | 0 | 0 | 0 | 17 | 0 | 0 | 7（225,525）| 0（0）| 0（0）| 0（0）| 0（0）| 0.81（0.43~1.22） | 0.57 | 22 | 13 | 0 / 0 / 0
+  talon5: 42 | 42 | 27 | 0 | 0 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 11（742,474）| 0（0）| 0（0）| 0（0）| 0（0）| 1.06（0.44~1.25） | 4.10 | 19 | 12 | 0 / 42 / 0
+  zero_7: 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 41（254,236）| 0（0）| 0（0）| 0（0）| 0（0）| - | - | - | - | 0 / 0 / 0
+  zexos1: 42 | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 2.83（2.55~4.10） | 3.84 | 15 | 19 | 42 / 0 / 0
+  合计: 378 | 336 | 130 | 0 | 0 | 13 | 0 | 0 | 0 | 129 | 1 | 0 | 99（3,677,003）| 0（0）| 0（0）| 0（0）| 0（0）| 0.89（0.27~4.10） | 1.60 | - | - | 51 / 84 / 0
+
+## t=1710~1975
+  alex_k: 54 | 54 | 43 | 0 | 0 | 0 | 0 | 9 | 0 | 1 | 0 | 0 | 1（74,582）| 0（0）| 0（0）| 0（0）| 0（0）| 11.60（0.01~132.33） | 16.37 | 2 | 9 | 17 / 0 / 26
+  kaito9: 54 | 54 | 16 | 0 | 0 | 17 | 0 | 0 | 0 | 6 | 6 | 0 | 8（160,250）| 0（0）| 0（0）| 0（0）| 0（0）| 0.84（0.37~3.67） | 3.86 | 14 | 9 | 2 / 21 / 0
+  noah88: 54 | 54 | 11 | 0 | 0 | 16 | 0 | 0 | 0 | 9 | 0 | 0 | 18（524,210）| 0（0）| 0（0）| 0（0）| 0（0）| 0.54（0.28~3.07） | 2.30 | 25 | 9 | 5 / 0 / 2
+  riku_x: 54 | 54 | 3 | 0 | 0 | 51 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 0.43（0.04~2.47） | 1.45 | 28 | 9 | 11 / 7 / 7
+  ryan_m: 54 | 54 | 13 | 0 | 0 | 16 | 0 | 5 | 3 | 0 | 8 | 0 | 9（246,047）| 0（0）| 0（0）| 0（0）| 0（0）| 9.42（0.00~71.00） | 17.88 | 1 | 6 | 0 / 0 / 27
+  sora_w: 54 | 54 | 20 | 0 | 0 | 24 | 0 | 0 | 3 | 0 | 0 | 0 | 7（231,139）| 0（0）| 0（0）| 0（0）| 0（0）| 0.14（0.00~36.52） | 0.93 | 11 | 6 | 20 / 0 / 0
+  talon5: 54 | 54 | 52 | 0 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 2.46（1.10~17.13） | 10.51 | 4 | 9 | 31 / 31 / 0
+  zero_7: 54 | 24 | 0 | 0 | 0 | 0 | 23 | 0 | 0 | 0 | 4 | 0 | 27（1,090,197）| 0（0）| 0（0）| 0（0）| 0（0）| 0.00（0.00~0.09） | 0.80 | 30 | 5 | 0 / 0 / 0
+  zexos1: 54 | 54 | 28 | 0 | 0 | 25 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 2.15（0.25~2.81） | 1.51 | 25 | 24 | 28 / 0 / 0
+  合计: 486 | 456 | 186 | 0 | 0 | 150 | 23 | 14 | 6 | 16 | 18 | 0 | 70（2,326,425）| 0（0）| 0（0）| 0（0）| 0（0）| 0.83（0.00~132.33） | 2.77 | - | - | 114 / 59 / 62
+
+## t=1980~2155
+  alex_k: 8 | 8 | 6 | 0 | 0 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 10.09（3.56~11.56） | 67.48 | 1 | 5 | 0 / 0 / 8
+  kaito9: 36 | 36 | 36 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 2.94（1.39~4.68） | 4.40 | 7 | 11 | 29 / 23 / 0
+  noah88: 36 | 36 | 36 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 3.25（2.92~5.24） | 12.28 | 4 | 9 | 0 / 0 / 36
+  riku_x: 36 | 36 | 0 | 0 | 0 | 36 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 0.18（0.11~0.30） | 1.37 | 38 | 3 | 0 / 0 / 0
+  ryan_m: 12 | 12 | 6 | 0 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 6.71（3.94~34.00） | 65.96 | 1 | 4 | 0 / 0 / 12
+  sora_w: 36 | 36 | 7 | 0 | 0 | 17 | 0 | 0 | 0 | 12 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 0.95（0.48~3.58） | 1.42 | 11 | 3 | 6 / 0 / 0
+  talon5: 36 | 36 | 33 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 2.88（1.27~4.87） | 5.13 | 8 | 11 | 29 / 29 / 0
+  zero_7: 36 | 0 | 0 | 0 | 0 | 0 | 36 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| - | - | - | - | 0 / 0 / 0
+  zexos1: 36 | 36 | 0 | 0 | 0 | 35 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 0.23（0.14~0.40） | 0.89 | 29 | 3 | 0 / 0 / 0
+  合计: 272 | 236 | 124 | 0 | 0 | 96 | 36 | 0 | 0 | 12 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 1.98（0.11~34.00） | 4.14 | - | - | 64 / 52 / 56
+
+## t=2160~2785
+  kaito9: 126 | 126 | 126 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 2.60（2.03~3.73） | 5.24 | 16 | 17 | 36 / 0 / 0
+  riku_x: 126 | 126 | 0 | 0 | 0 | 116 | 0 | 0 | 8 | 0 | 0 | 0 | 2（33,650）| 0（0）| 0（0）| 0（0）| 0（0）| 0.59（0.30~0.90） | 2.91 | 64 | 13 | 0 / 0 / 0
+  sora_w: 126 | 126 | 102 | 0 | 0 | 1 | 0 | 0 | 0 | 20 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 1.14（0.94~1.81） | 1.23 | 30 | 13 | 0 / 0 / 0
+  talon5: 126 | 126 | 126 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 6.70（6.17~10.04） | 7.03 | 11 | 20 | 126 / 126 / 0
+  zero_7: 126 | 0 | 0 | 0 | 0 | 0 | 124 | 0 | 0 | 0 | 0 | 2 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| - | - | - | - | 0 / 0 / 0
+  zexos1: 126 | 126 | 5 | 0 | 0 | 121 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 0.74（0.40~1.13） | 1.79 | 50 | 13 | 0 / 0 / 0
+  合计: 756 | 630 | 359 | 0 | 0 | 238 | 124 | 0 | 8 | 20 | 0 | 2 | 2（33,650）| 0（0）| 0（0）| 0（0）| 0（0）| 1.14（0.30~10.04） | 2.91 | - | - | 162 / 126 / 0
+
+## t=2790~3685
+  kaito9: 180 | 180 | 138 | 0 | 0 | 28 | 0 | 0 | 10 | 0 | 0 | 0 | 3（209,634）| 0（0）| 0（0）| 0（0）| 0（0）| 1.26（0.03~2.61） | 2.57 | 68 | 28 | 0 / 0 / 0
+  riku_x: 180 | 180 | 63 | 27 | 0 | 86 | 0 | 0 | 0 | 0 | 0 | 1 | 3（68,623）| 0（0）| 0（0）| 0（0）| 0（0）| 4.34（0.00~11.28） | 6.32 | 73 | 85 | 34 / 91 / 3
+  sora_w: 180 | 180 | 90 | 8 | 0 | 0 | 0 | 10 | 62 | 0 | 2 | 0 | 8（615,530）| 0（0）| 0（0）| 0（0）| 0（0）| 7.20（0.01~12.52） | 1.72 | 44 | 86 | 93 / 91 / 3
+  talon5: 180 | 180 | 180 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 11.06（6.17~13.08） | 6.05 | 40 | 64 | 174 / 180 / 0
+  zero_7: 180 | 0 | 0 | 0 | 0 | 0 | 177 | 0 | 0 | 0 | 0 | 3 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| - | - | - | - | 0 / 0 / 0
+  zexos1: 180 | 180 | 53 | 25 | 0 | 86 | 0 | 0 | 9 | 0 | 0 | 1 | 3（114,955）| 0（0）| 0（0）| 0（0）| 0（0）| 0.82（0.00~10.27） | 0.89 | 82 | 21 | 24 / 74 / 5
+  合计: 1080 | 900 | 524 | 60 | 0 | 200 | 177 | 10 | 81 | 0 | 2 | 5 | 17（1,008,742）| 0（0）| 0（0）| 0（0）| 0（0）| 2.58（0.00~13.08） | 2.63 | - | - | 325 / 436 / 11
+
+## t=3690~4495
+  kaito9: 162 | 162 | 67 | 0 | 0 | 65 | 0 | 4 | 10 | 0 | 0 | 0 | 16（2,328,752）| 11（1,880,857）| 5（814,063）| 0（0）| 0（0）| 0.98（0.03~2.32） | 1.41 | 85 | 39 | 1 / 0 / 0
+  riku_x: 162 | 162 | 68 | 27 | 0 | 35 | 0 | 16 | 8 | 0 | 0 | 1 | 7（398,162）| 2（108,298）| 0（0）| 0（0）| 0（0）| 1.38（0.22~3.15） | 4.81 | 86 | 42 | 0 / 77 / 0
+  sora_w: 162 | 162 | 66 | 34 | 0 | 36 | 0 | 6 | 7 | 0 | 0 | 1 | 12（2,027,043）| 2（607,478）| 1（278,128）| 0（0）| 0（0）| 1.41（0.23~3.06） | 0.93 | 66 | 42 | 0 / 83 / 0
+  talon5: 162 | 162 | 139 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 6.45（2.14~12.10） | 7.44 | 90 | 105 | 62 / 135 / 27
+  zero_7: 162 | 0 | 0 | 0 | 0 | 0 | 159 | 0 | 0 | 0 | 0 | 3 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| - | - | - | - | 0 / 0 / 0
+  zexos1: 162 | 162 | 59 | 0 | 0 | 76 | 0 | 4 | 10 | 0 | 0 | 0 | 13（1,122,308）| 6（495,528）| 3（352,593）| 2（235,844）| 0（0）| 0.91（0.21~2.04） | 0.91 | 78 | 20 | 0 / 0 / 6
+  合计: 972 | 810 | 399 | 83 | 0 | 212 | 159 | 30 | 35 | 0 | 0 | 6 | 48（5,876,265）| 21（3,092,161）| 9（1,444,784）| 2（235,844）| 0（0）| 1.27（0.03~12.10） | 1.91 | - | - | 63 / 295 / 33
+
+## t=4500~4855
+  kaito9: 72 | 72 | 7 | 0 | 0 | 62 | 0 | 0 | 0 | 0 | 0 | 0 | 3（392,089）| 0（0）| 0（0）| 0（0）| 0（0）| 0.38（0.20~4.22） | 0.34 | 66 | 13 | 7 / 0 / 0
+  riku_x: 39 | 39 | 33 | 0 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 1.10（0.82~2.05） | 19.05 | 46 | 38 | 0 / 0 / 17
+  sora_w: 72 | 72 | 28 | 0 | 0 | 24 | 0 | 0 | 14 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 0.90（0.65~1.92） | 0.00 | 77 | 0 | 0 / 0 / 6
+  talon5: 72 | 72 | 65 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 6（313,414）| 6（313,414）| 6（313,414）| 0（0）| 0（0）| 1.55（1.10~6.48） | 5.38 | 92 | 36 | 3 / 4 / 6
+  zero_7: 61 | 56 | 56 | 0 | 0 | 0 | 5 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 2.63（2.44~13.59） | 24.54 | 40 | 100 | 4 / 4 / 52
+  zexos1: 56 | 56 | 41 | 0 | 0 | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 1.22（0.82~1.83） | 20.72 | 36 | 37 | 0 / 0 / 11
+  合计: 372 | 367 | 230 | 0 | 0 | 106 | 5 | 0 | 14 | 0 | 0 | 0 | 9（705,503）| 6（313,414）| 6（313,414）| 0（0）| 0（0）| 1.15（0.20~13.59） | 4.74 | - | - | 14 / 8 / 92
+
+## t=4860~5125
+  kaito9: 54 | 54 | 54 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 4.58（2.25~5.38） | 3.06 | 64 | 100 | 46 / 0 / 0
+  sora_w: 54 | 54 | 15 | 0 | 0 | 3 | 0 | 0 | 27 | 0 | 0 | 0 | 9（2,538,505）| 4（1,336,088）| 1（372,735）| 1（273,229）| 0（0）| 0.67（0.45~1.79） | 0.00 | 92 | 0 | 0 / 0 / 5
+  talon5: 37 | 37 | 34 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 3（204,586）| 3（204,586）| 3（204,586）| 0（0）| 0（0）| 1.60（1.12~2.36） | 7.05 | 64 | 47 | 0 / 0 / 6
+  合计: 145 | 145 | 103 | 0 | 0 | 3 | 0 | 0 | 27 | 0 | 0 | 0 | 12（2,743,091）| 7（1,540,674）| 4（577,321）| 1（273,229）| 0（0）| 1.65（0.45~5.38） | 2.59 | - | - | 46 / 0 / 11
+
+## t=5130~5845
+  kaito9: 144 | 144 | 138 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 6（2,563,722）| 6（2,563,722）| 6（2,563,722）| 0（0）| 0（0）| 4.22（1.93~6.10） | 2.42 | 84 | 93 | 80 / 0 / 0
+  sora_w: 144 | 144 | 83 | 0 | 0 | 50 | 0 | 0 | 6 | 0 | 0 | 0 | 5（1,409,641）| 3（1,039,265）| 3（1,039,265）| 0（0）| 0（0）| 1.76（0.01~2.26） | 3.75 | 77 | 63 | 0 / 0 / 26
+  合计: 288 | 288 | 221 | 0 | 0 | 50 | 0 | 0 | 6 | 0 | 0 | 0 | 11（3,973,363）| 9（3,602,987）| 9（3,602,987）| 0（0）| 0（0）| 2.12（0.01~6.10） | 2.42 | - | - | 80 / 0 / 26
+
+## t=5850~6390
+  kaito9: 109 | 109 | 100 | 0 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 6（3,157,883）| 6（3,157,883）| 6（3,157,883）| 0（0）| 0（0）| 2.69（1.77~5.94） | 4.13 | 84 | 100 | 50 / 0 / 53
+  sora_w: 109 | 109 | 107 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2（448,490）| 2（448,490）| 2（448,490）| 0（0）| 0（0）| 2.27（1.62~3.67） | 7.41 | 82 | 86 | 0 / 0 / 39
+  合计: 218 | 218 | 207 | 0 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 8（3,606,373）| 8（3,606,373）| 8（3,606,373）| 0（0）| 0（0）| 2.45（1.62~5.94） | 5.64 | - | - | 50 / 0 / 92
+
+## t=6395~6696
+  kaito9: 60 | 60 | 60 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 1.88（1.59~2.39） | 6.35 | 90 | 90 | 0 / 0 / 39
+  合计: 60 | 60 | 60 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 1.88（1.59~2.39） | 6.35 | - | - | 0 / 0 / 39
+
+## t=2160~6696
+  kaito9: 907 | 907 | 690 | 0 | 3 | 155 | 0 | 4 | 20 | 0 | 0 | 0 | 34（8,652,080）| 23（7,602,462）| 17（6,535,668）| 0（0）| 0（0）| 2.07（0.03~6.10） | 2.63 | 74 | 40 | 220 / 0 / 92
+  riku_x: 507 | 507 | 164 | 54 | 0 | 243 | 0 | 16 | 16 | 0 | 0 | 2 | 12（500,435）| 2（108,298）| 0（0）| 0（0）| 0（0）| 0.76（0.00~11.28） | 3.46 | 72 | 31 | 34 / 168 / 20
+  sora_w: 847 | 847 | 491 | 42 | 0 | 114 | 0 | 16 | 116 | 20 | 2 | 1 | 36（7,039,209）| 11（3,431,321）| 7（2,138,618）| 1（273,229）| 0（0）| 1.29（0.01~12.52） | 1.18 | 72 | 40 | 93 / 174 / 79
+  talon5: 577 | 577 | 544 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 9（518,000）| 9（518,000）| 9（518,000）| 0（0）| 0（0）| 6.68（1.10~13.08） | 6.30 | 59 | 54 | 365 / 445 / 39
+  zero_7: 529 | 56 | 56 | 0 | 0 | 0 | 465 | 0 | 0 | 0 | 0 | 8 | 0（0）| 0（0）| 0（0）| 0（0）| 0（0）| 2.63（2.44~13.59） | 24.54 | 40 | 100 | 4 / 4 / 52
+  zexos1: 524 | 524 | 158 | 25 | 0 | 297 | 0 | 4 | 19 | 0 | 0 | 1 | 16（1,237,263）| 6（495,528）| 3（352,593）| 2（235,844）| 0（0）| 0.82（0.00~10.27） | 1.78 | 70 | 19 | 24 / 74 / 22
+  合计: 3891 | 3418 | 2103 | 143 | 3 | 809 | 465 | 40 | 171 | 20 | 2 | 13 | 107（17,946,987）| 51（12,155,609）| 36（9,544,879）| 3（509,073）| 0（0）| 1.77（0.00~13.59） | 3.06 | - | - | 740 / 865 / 304
+
+## 目标含「Gahhhaha」的报价（每个决策拍：号 B / L / 密度 / worth → c / need；目标当拍 领土 / 余额）
+  t=1500: Gahhhaha#5[T2] 8,329 格 / 117,770 兵（密度 14.1）
+    alex_k: B=183,764 L=6,330 d=29.0 worth=43.5 → c=38.8（c÷worth 0.89）need=222,408（need÷B 1.21）〔人｜safe=80967 keep=170904 avail=10707 chunkB=36753 pulseB=22052 不够一条(x=10707)→continue hNb=2〕
+    ryan_m: B=157,355 L=5,886 d=26.7 worth=40.1 → c=35.5（c÷worth 0.89）need=222,408（need÷B 1.41）〔人｜safe=81341 keep=145871 avail=9640 chunkB=31471 pulseB=18883 不够一条(x=9640)→continue hNb=3〕
+    sora_w: B=134,583 L=8,055 d=16.7 worth=25.1 → c=35.8（c÷worth 1.43）need=222,408（need÷B 1.65）〔人｜safe=77904 keep=Inf avail=-Inf chunkB=26917 pulseB=16150 价高(c>=worth)→break hNb=3〕
+    这 3 个号余额合计 475,702；need 最大 222,408；合计 ÷ need = 2.14
+  t=1550: Gahhhaha#5[T2] 8,329 格 / 131,422 兵（密度 15.8）
+    alex_k: B=205,065 L=6,330 d=32.4 worth=48.4 → c=43.1（c÷worth 0.89）need=246,741（need÷B 1.20）〔人｜safe=90971 keep=190653 avail=12009 chunkB=41013 pulseB=24608 不够一条(x=12009)→continue hNb=2〕
+    ryan_m: B=175,594 L=5,886 d=29.8 worth=44.5 → c=39.4（c÷worth 0.89）need=246,741（need÷B 1.41）〔人｜safe=91345 keep=162728 avail=10809 chunkB=35119 pulseB=21071 不够一条(x=10809)→continue hNb=3〕
+    sora_w: B=150,182 L=8,055 d=18.6 worth=27.8 → c=39.7（c÷worth 1.43）need=246,741（need÷B 1.64）〔人｜safe=96101 keep=Inf avail=-Inf chunkB=30036 pulseB=18022 价高(c>=worth)→break hNb=3〕
+    这 3 个号余额合计 530,841；need 最大 246,741；合计 ÷ need = 2.15
+  t=1600: Gahhhaha#5[T2] 8,727 格 / 119,377 兵（密度 13.7）
+    alex_k: B=233,403 L=6,330 d=36.9 worth=54.8 → c=29.3（c÷worth 0.53）need=225,879（need÷B 0.97）〔人｜safe=102994 keep=167341 avail=63327 chunkB=46681 pulseB=28008  x=63327 hNb=2〕
+    ryan_m: B=200,324 L=5,886 d=34.0 worth=50.5 → c=25.9（c÷worth 0.51）need=225,879（need÷B 1.13）〔人｜safe=103369 keep=140982 avail=56995 chunkB=40065 pulseB=24039  x=56995 hNb=3〕
+    sora_w: B=174,353 L=8,055 d=21.6 worth=32.1 → c=26.1（c÷worth 0.81）need=225,879（need÷B 1.30）〔人｜safe=113406 keep=153862 avail=18448 chunkB=34871 pulseB=20922 不够一条(x=18448)→continue hNb=3〕
+    这 3 个号余额合计 608,080；need 最大 225,879；合计 ÷ need = 2.69
+  t=1650: Gahhhaha#5[T2] 12,571 格 / 131,180 兵（密度 10.4）
+    alex_k: B=256,484 L=6,330 d=40.5 worth=59.9 → c=40.0（c÷worth 0.67）need=252,679（need÷B 0.99）〔人｜safe=113706 keep=204625 avail=48854 chunkB=51297 pulseB=30778 不够一条(x=48854)→continue hNb=2〕
+    ryan_m: B=220,132 L=5,886 d=37.4 worth=55.3 → c=26.8（c÷worth 0.48）need=252,679（need÷B 1.15）〔人｜safe=114080 keep=151463 avail=66090 chunkB=44026 pulseB=26416  x=66090 hNb=3〕
+    sora_w: B=191,593 L=8,055 d=23.8 worth=35.1 → c=27.0（c÷worth 0.77）need=252,679（need÷B 1.32）〔人｜safe=125291 keep=164128 avail=25220 chunkB=38319 pulseB=22991 不够一条(x=25220)→continue hNb=3〕
+    这 3 个号余额合计 668,209；need 最大 252,679；合计 ÷ need = 2.64
+  t=1700: Gahhhaha#5[T2] 14,388 格 / 152,497 兵（密度 10.6）
+    alex_k: B=286,054 L=6,330 d=45.2 worth=66.4 → c=65.9（c÷worth 0.99）need=292,038（need÷B 1.02）〔人｜safe=126180 keep=283573 avail=-871 chunkB=57211 pulseB=34326 无可用(avail<=0) hNb=2〕
+    ryan_m: B=245,963 L=5,886 d=41.8 worth=61.4 → c=39.5（c÷worth 0.64）need=292,038（need÷B 1.19）〔人｜safe=126554 keep=192545 avail=50536 chunkB=49193 pulseB=29516  x=50536 hNb=3〕
+    sora_w: B=217,007 L=8,055 d=26.9 worth=39.6 → c=39.8（c÷worth 1.01）need=292,038（need÷B 1.35）〔人｜safe=143523 keep=Inf avail=-Inf chunkB=43401 pulseB=26041 价高(c>=worth)→break hNb=3〕
+    这 3 个号余额合计 749,024；need 最大 292,038；合计 ÷ need = 2.56
+  t=1750: Gahhhaha#5[T2] 15,067 格 / 103,339 兵（密度 6.9）
+    alex_k: B=218,543 L=6,611 d=33.1 worth=48.3 → c=3.3（c÷worth 0.07）need=132,971（need÷B 0.61）〔人 pulse bleeding｜safe=136735 keep=136735 avail=79247 chunkB=43709 pulseB=26225 在途(curAtk=73432)→continue hNb=2〕
+    ryan_m: B=187,395 L=7,216 d=26.0 worth=38.0 → c=3.5（c÷worth 0.09）need=170,051（need÷B 0.91）〔人 pulse nearCollapse bleeding｜safe=136225 keep=136225 avail=48974 chunkB=37479 pulseB=22487 在途(curAtk=36352)→continue hNb=3〕
+    sora_w: B=183,449 L=8,055 d=22.8 worth=33.3 → c=3.5（c÷worth 0.11）need=158,522（need÷B 0.86）〔人 pulse nearCollapse bleeding｜safe=155856 keep=155856 avail=25444 chunkB=36690 pulseB=22014 在途(curAtk=47881)→continue hNb=3〕
+    zero_7: B=233,824 L=8,102 d=28.9 worth=42.2 → c=3.9（c÷worth 0.09）need=206,403（need÷B 0.88）〔人 pulse nearCollapse bleeding｜safe=51228 keep=51228 avail=179856 chunkB=46765 pulseB=28059  x=61920 hNb=1〕
+    这 4 个号余额合计 823,211；need 最大 206,403；合计 ÷ need = 3.99
+  t=1800: Gahhhaha#5[T2] 16,929 格 / 95,159 兵（密度 5.6）
+    ryan_m: B=198,164 L=8,583 d=23.1 worth=33.6 → c=0.1（c÷worth 0.00）need=194,856（need÷B 0.98）〔人 pulse nearCollapse bleeding｜safe=129144 keep=129144 avail=66698 chunkB=39633 pulseB=23780  x=58456 hNb=2〕
+    sora_w: B=107,689 L=8,838 d=12.2 worth=17.7 → c=0.0（c÷worth 0.00）need=88,951（need÷B 0.83）〔人 pulse nearCollapse bleeding｜safe=173477 keep=173477 avail=-67049 chunkB=21538 pulseB=12923 无可用(avail<=0) hNb=2〕
+    zero_7: B=259,201 L=8,102 d=32.0 worth=46.5 → c=0.1（c÷worth 0.00）need=194,856（need÷B 0.75）〔人 pulse nearCollapse bleeding｜safe=46633 keep=46633 avail=209531 chunkB=51840 pulseB=31104  x=58456 hNb=1〕
+    这 3 个号余额合计 565,054；need 最大 194,856；合计 ÷ need = 2.90
+
+## 目标含「Chernobyl」的报价（每个决策拍：号 B / L / 密度 / worth → c / need；目标当拍 领土 / 余额）
+  t=1600: Chernobyl#32[T2] 3,006 格 / 192,825 兵（密度 64.1）
+    alex_k: B=233,403 L=6,330 d=36.9 worth=54.8 → c=208.1（c÷worth 3.80）need=348,239（need÷B 1.49）〔人 crowdedHard｜safe=102994 keep=Inf avail=-Inf chunkB=46681 pulseB=28008 价高(c>=worth)→break hNb=2〕
+    ryan_m: B=200,324 L=5,886 d=34.0 worth=50.5 → c=208.8（c÷worth 4.13）need=348,239（need÷B 1.74）〔人 crowdedHard｜safe=103369 keep=Inf avail=-Inf chunkB=40065 pulseB=24039 价高(c>=worth)→break hNb=3〕
+    zexos1: B=103,521 L=6,741 d=15.4 worth=22.8 → c=207.7（c÷worth 9.11）need=348,239（need÷B 3.36）〔人 crowdedHard｜safe=114514 keep=Inf avail=-Inf chunkB=20704 pulseB=12423 价高(c>=worth)→break hNb=2〕
+    这 3 个号余额合计 537,248；need 最大 348,239；合计 ÷ need = 1.54
+  t=1700: Chernobyl#32[T2] 3,006 格 / 234,096 兵（密度 77.9）
+    alex_k: B=286,054 L=6,330 d=45.2 worth=66.4 → c=365.5（c÷worth 5.50）need=421,808（need÷B 1.47）〔人 crowdedHard｜safe=126180 keep=Inf avail=-Inf chunkB=57211 pulseB=34326 价高(c>=worth)→break hNb=2〕
+    ryan_m: B=245,963 L=5,886 d=41.8 worth=61.4 → c=366.8（c÷worth 5.97）need=421,808（need÷B 1.71）〔人 crowdedHard｜safe=126554 keep=Inf avail=-Inf chunkB=49193 pulseB=29516 价高(c>=worth)→break hNb=3〕
+    zexos1: B=130,801 L=6,741 d=19.4 worth=28.5 → c=364.8（c÷worth 12.80）need=421,808（need÷B 3.22）〔人 crowdedHard｜safe=144630 keep=Inf avail=-Inf chunkB=26160 pulseB=15696 价高(c>=worth)→break hNb=2〕
+    这 3 个号余额合计 662,818；need 最大 421,808；合计 ÷ need = 1.57
+  t=1800: Chernobyl#32[T2] 3,329 格 / 131,901 兵（密度 39.6）
+    alex_k: B=15,835 L=7,508 d=2.1 worth=3.1 → c=96.3（c÷worth 31.06）need=240,103（need÷B 15.16）〔人 crowdedHard｜safe=67775 keep=Inf avail=-Inf chunkB=3167 pulseB=1900 价高(c>=worth)→break hNb=2〕
+    ryan_m: B=198,164 L=8,583 d=23.1 worth=33.6 → c=105.3（c÷worth 3.13）need=350,952（need÷B 1.77）〔人 pulse onMe｜safe=129144 keep=Inf avail=-Inf chunkB=39633 pulseB=23780 价高(c>=worth)→break hNb=2〕
+    zexos1: B=158,730 L=6,741 d=23.5 worth=34.3 → c=97.4（c÷worth 2.84）need=240,103（need÷B 1.51）〔人 crowdedHard｜safe=175244 keep=Inf avail=-Inf chunkB=31746 pulseB=19048 价高(c>=worth)→break hNb=2〕
+    这 3 个号余额合计 372,729；need 最大 350,952；合计 ÷ need = 1.06
+  t=1900: Chernobyl#32[T2] 8,933 格 / 79,064 兵（密度 8.9）
+    alex_k: B=12,859 L=7,538 d=1.7 worth=2.5 → c=23.3（c÷worth 9.32）need=210,468（need÷B 16.37）〔人 pulse onMe｜safe=69607 keep=Inf avail=-Inf chunkB=2572 pulseB=1543 价高(c>=worth)→break hNb=2〕
+    riku_x: B=106,703 L=3,461 d=30.8 worth=44.4 → c=17.4（c÷worth 0.39）need=154,324（need÷B 1.45）〔人｜safe=207998 keep=207998 avail=-102545 chunkB=21341 pulseB=12804 无可用(avail<=0) hNb=2〕
+    ryan_m: B=10,327 L=7,070 d=1.5 worth=2.1 → c=20.5（c÷worth 9.76）need=184,623（need÷B 17.88）〔人 pulse onMe｜safe=60488 keep=Inf avail=-Inf chunkB=2065 pulseB=1239 价高(c>=worth)→break hNb=2〕
+    sora_w: B=40,108 L=13,297 d=3.0 worth=4.3 → c=42.1（c÷worth 9.79）need=154,324（need÷B 3.85）〔人 crowdedHard｜safe=199709 keep=Inf avail=-Inf chunkB=8022 pulseB=4813 价高(c>=worth)→break hNb=3〕
+    zexos1: B=185,910 L=6,741 d=27.6 worth=39.7 → c=17.4（c÷worth 0.44）need=154,324（need÷B 0.83）〔人｜safe=205234 keep=205234 avail=-21502 chunkB=37182 pulseB=22309 无可用(avail<=0) hNb=2〕
+    这 5 个号余额合计 355,907；need 最大 210,468；合计 ÷ need = 1.69
+  t=1950: Chernobyl#32[T2] 14,246 格 / 83,928 兵（密度 5.9）
+    alex_k: B=6,508 L=5,584 d=1.2 worth=1.7 → c=14.4（c÷worth 8.47）need=207,288（need÷B 31.85）〔人 pulse onMe｜safe=62852 keep=Inf avail=-Inf chunkB=1302 pulseB=781 价高(c>=worth)→break hNb=2〕
+    riku_x: B=112,699 L=3,461 d=32.6 worth=46.6 → c=12.1（c÷worth 0.26）need=170,964（need÷B 1.52）〔人｜safe=220959 keep=220959 avail=-109580 chunkB=22540 pulseB=13524 无可用(avail<=0) hNb=2〕
+    ryan_m: B=1,820 L=5,729 d=0.3 worth=0.5 → c=13.4（c÷worth 26.80）need=191,893（need÷B 105.44）〔人 pulse onMe｜safe=54081 keep=Inf avail=-Inf chunkB=364 pulseB=218 价高(c>=worth)→break hNb=2〕
+    sora_w: B=42,625 L=15,556 d=2.7 worth=3.9 → c=16.2（c÷worth 4.15）need=170,964（need÷B 4.01）〔人 crowdedHard｜safe=210767 keep=Inf avail=-Inf chunkB=8525 pulseB=5115 价高(c>=worth)→break hNb=3〕
+    zexos1: B=196,845 L=6,741 d=29.2 worth=41.8 → c=12.1（c÷worth 0.29）need=170,964（need÷B 0.87）〔人｜safe=218195 keep=218195 avail=-23656 chunkB=39369 pulseB=23621 无可用(avail<=0) hNb=2〕
+    这 5 个号余额合计 360,497；need 最大 207,288；合计 ÷ need = 1.74
+  t=2000: Chernobyl#32[T2] 20,354 格 / 109,430 兵（密度 5.4）
+    alex_k: B=4,209 L=2,734 d=1.5 worth=2.2 → c=11.9（c÷worth 5.41）need=243,864（need÷B 57.94）〔人 pulse onMe｜safe=69446 keep=Inf avail=-Inf chunkB=842 pulseB=505 价高(c>=worth)→break hNb=1〕
+    riku_x: B=122,495 L=3,461 d=35.4 worth=50.4 → c=11.1（c÷worth 0.22）need=225,580（need÷B 1.84）〔人｜safe=240981 keep=240981 avail=-119921 chunkB=24499 pulseB=14699 无可用(avail<=0) hNb=2〕
+    ryan_m: B=4,445 L=3,668 d=1.2 worth=1.7 → c=11.7（c÷worth 6.88）need=239,221（need÷B 53.82）〔人 pulse onMe｜safe=66050 keep=Inf avail=-Inf chunkB=889 pulseB=533 价高(c>=worth)→break hNb=1〕
+    sora_w: B=62,222 L=16,890 d=3.7 worth=5.2 → c=14.9（c÷worth 2.87）need=225,580（need÷B 3.63）〔人 crowdedHard｜safe=229664 keep=Inf avail=-Inf chunkB=12444 pulseB=7467 价高(c>=worth)→break hNb=2〕
+    zexos1: B=182,599 L=6,741 d=27.1 worth=38.6 → c=11.1（c÷worth 0.29）need=225,580（need÷B 1.24）〔人｜safe=238217 keep=238217 avail=-57757 chunkB=36520 pulseB=21912 无可用(avail<=0) hNb=2〕
+    这 5 个号余额合计 375,970；need 最大 243,864；合计 ÷ need = 1.54
+  t=2050: Chernobyl#32[T2] 25,135 格 / 55,155 兵（密度 2.2）
+    riku_x: B=129,380 L=3,461 d=37.4 worth=51.3 → c=7.3（c÷worth 0.14）need=136,012（need÷B 1.05）〔人｜safe=196557 keep=196557 avail=-68693 chunkB=25876 pulseB=15526 无可用(avail<=0) hNb=2〕
+    sora_w: B=66,207 L=17,307 d=3.8 worth=5.3 → c=7.2（c÷worth 1.36）need=136,012（need÷B 2.05）〔人｜safe=184889 keep=184889 avail=-119457 chunkB=13241 pulseB=7945 无可用(avail<=0) hNb=2〕
+    zexos1: B=193,341 L=6,741 d=28.7 worth=39.4 → c=7.3（c÷worth 0.19）need=136,012（need÷B 0.70）〔人｜safe=193793 keep=193793 avail=-2717 chunkB=38668 pulseB=23201 无可用(avail<=0) hNb=2〕
+    这 3 个号余额合计 388,928；need 最大 136,012；合计 ÷ need = 2.86
+  t=2100: Chernobyl#32[T2] 26,651 格 / 85,465 兵（密度 3.2）
+    riku_x: B=140,112 L=3,461 d=40.5 worth=53.4 → c=9.7（c÷worth 0.18）need=192,311（need÷B 1.37）〔人｜safe=216351 keep=216351 avail=-77880 chunkB=28022 pulseB=16813 无可用(avail<=0) hNb=2〕
+    sora_w: B=213,987 L=17,310 d=12.4 worth=16.3 → c=9.6（c÷worth 0.59）need=192,311（need÷B 0.90）〔人｜safe=204680 keep=204680 avail=6800 chunkB=42797 pulseB=25678 不够一条(x=6800)→continue hNb=2〕
+    zexos1: B=211,459 L=6,746 d=31.3 worth=41.4 → c=9.6（c÷worth 0.23）need=192,311（need÷B 0.91）〔人｜safe=213583 keep=213583 avail=-4602 chunkB=42292 pulseB=25375 无可用(avail<=0) hNb=2〕
+    这 3 个号余额合计 565,558；need 最大 192,311；合计 ÷ need = 2.94
+  t=2150: Chernobyl#32[T2] 26,926 格 / 158,101 兵（密度 5.9）
+    riku_x: B=147,988 L=3,461 d=42.8 worth=54.2 → c=16.0（c÷worth 0.30）need=322,187（need÷B 2.18）〔人｜safe=230124 keep=230124 avail=-83870 chunkB=29598 pulseB=17759 无可用(avail<=0) hNb=2〕
+    sora_w: B=227,698 L=17,310 d=13.2 worth=16.7 → c=15.8（c÷worth 0.95）need=322,187（need÷B 1.41）〔人｜safe=218453 keep=219720 avail=5310 chunkB=45540 pulseB=27324 不够一条(x=5310)→continue hNb=2〕
+    zexos1: B=216,901 L=6,861 d=31.6 worth=40.1 → c=15.9（c÷worth 0.40）need=322,187（need÷B 1.49）〔人｜safe=227259 keep=227259 avail=-12899 chunkB=43380 pulseB=26028 无可用(avail<=0) hNb=2〕
+    这 3 个号余额合计 592,587；need 最大 322,187；合计 ÷ need = 1.84
+  t=2200: Chernobyl#32[T2] 26,926 格 / 195,655 兵（密度 7.3）
+    riku_x: B=159,766 L=3,461 d=46.2 worth=56.1 → c=19.3（c÷worth 0.34）need=389,123（need÷B 2.44）〔人｜safe=254588 keep=254588 avail=-96694 chunkB=31953 pulseB=19172 无可用(avail<=0) hNb=2〕
+    sora_w: B=259,597 L=17,310 d=15.0 worth=18.2 → c=19.1（c÷worth 1.05）need=389,123（need÷B 1.50）〔人｜safe=242917 keep=Inf avail=-Inf chunkB=51919 pulseB=31152 价高(c>=worth)→break hNb=2〕
+    zexos1: B=236,615 L=6,953 d=34.0 worth=41.3 → c=19.2（c÷worth 0.46）need=389,123（need÷B 1.64）〔人｜safe=251645 keep=251645 avail=-17802 chunkB=47323 pulseB=28394 无可用(avail<=0) hNb=2〕
+    这 3 个号余额合计 655,978；need 最大 389,123；合计 ÷ need = 1.69
+  t=2300: Chernobyl#32[T2] 26,926 格 / 249,773 兵（密度 9.3）
+    riku_x: B=181,694 L=3,461 d=52.5 worth=58.3 → c=24.1（c÷worth 0.41）need=485,582（need÷B 2.67）〔人｜safe=304568 keep=304568 avail=-125003 chunkB=36339 pulseB=21803 无可用(avail<=0) hNb=2〕
+    sora_w: B=299,427 L=17,474 d=17.1 worth=19.0 → c=23.8（c÷worth 1.25）need=485,582（need÷B 1.62）〔人｜safe=303310 keep=Inf avail=-Inf chunkB=59885 pulseB=35931 价高(c>=worth)→break hNb=2〕
+    zexos1: B=272,399 L=7,133 d=38.2 worth=42.4 → c=23.9（c÷worth 0.56）need=485,582（need÷B 1.78）〔人｜safe=312024 keep=312024 avail=-42817 chunkB=54480 pulseB=32688 无可用(avail<=0) hNb=2〕
+    这 3 个号余额合计 753,520；need 最大 485,582；合计 ÷ need = 1.55
+  t=2400: Chernobyl#32[T2] 26,926 格 / 311,413 兵（密度 11.6）
+    riku_x: B=206,155 L=3,461 d=59.6 worth=59.9 → c=29.5（c÷worth 0.49）need=595,449（need÷B 2.89）〔人 pulse｜safe=304568 keep=304568 avail=-100828 chunkB=41231 pulseB=24739 无可用(avail<=0) hNb=2〕
+    sora_w: B=486,014 L=17,474 d=27.8 worth=28.0 → c=29.2（c÷worth 1.04）need=595,449（need÷B 1.23）〔人 pulse｜safe=355471 keep=Inf avail=-Inf chunkB=97203 pulseB=58322 价高(c>=worth)→break hNb=2〕
+    zexos1: B=334,842 L=7,185 d=46.6 worth=46.8 → c=29.4（c÷worth 0.63）need=595,449（need÷B 1.78）〔人 pulse｜safe=364142 keep=364142 avail=-33223 chunkB=66968 pulseB=40181 无可用(avail<=0) hNb=2〕
+    这 3 个号余额合计 1,027,011；need 最大 595,449；合计 ÷ need = 1.72
+  t=2700: Chernobyl#32[T2] 26,926 格 / 552,666 兵（密度 20.5）
+    riku_x: B=297,851 L=3,461 d=86.1 worth=77.5 → c=50.8（c÷worth 0.66）need=1,025,455（need÷B 3.44）〔人 pulse｜safe=304568 keep=304568 avail=-10207 chunkB=59570 pulseB=35742 无可用(avail<=0) hNb=2〕
+    sora_w: B=919,094 L=17,474 d=52.6 worth=47.3 → c=50.3（c÷worth 1.06）need=1,025,455（need÷B 1.12）〔人 pulse｜safe=557124 keep=Inf avail=-Inf chunkB=183819 pulseB=110291 价高(c>=worth)→break hNb=2〕
+    zexos1: B=496,119 L=7,185 d=69.0 worth=62.1 → c=50.5（c÷worth 0.81）need=1,025,455（need÷B 2.07）〔人 pulse｜safe=565795 keep=565795 avail=-75489 chunkB=99224 pulseB=59534 无可用(avail<=0) hNb=2〕
+    这 3 个号余额合计 1,713,064；need 最大 1,025,455；合计 ÷ need = 1.67
+  t=2800: Chernobyl#32[T2] 26,926 格 / 656,405 兵（密度 24.4）
+    riku_x: B=335,740 L=3,461 d=97.0 worth=87.3 → c=59.9（c÷worth 0.69）need=1,210,359（need÷B 3.61）〔人 pulse｜safe=304568 keep=304568 avail=27238 chunkB=67148 pulseB=40289  x=27238 hNb=2〕
+    sora_w: B=1,058,131 L=17,474 d=60.6 worth=54.5 → c=59.4（c÷worth 1.09）need=1,210,359（need÷B 1.14）〔人 pulse｜safe=642857 keep=Inf avail=-Inf chunkB=211626 pulseB=126976 价高(c>=worth)→break hNb=2〕
+    zexos1: B=563,397 L=7,185 d=78.4 worth=70.6 → c=59.6（c÷worth 0.84）need=1,210,359（need÷B 2.15）〔人 pulse｜safe=632280 keep=632280 avail=-75485 chunkB=112679 pulseB=67608 无可用(avail<=0) hNb=2〕
+    这 3 个号余额合计 1,957,268；need 最大 1,210,359；合计 ÷ need = 1.62
+  t=2850: Chernobyl#32[T2] 22,419 格 / 246,422 兵（密度 11.0）
+    riku_x: B=241,676 L=4,028 d=60.0 worth=54.0 → c=11.7（c÷worth 0.22）need=406,855（need÷B 1.68）〔人 pulse bleeding｜safe=354464 keep=354464 avail=-115620 chunkB=48335 pulseB=29001 无可用(avail<=0) hNb=2〕
+    sora_w: B=767,115 L=20,499 d=37.4 worth=33.7 → c=21.1（c÷worth 0.63）need=647,265（need÷B 0.84）〔人 pulse bleeding onMe｜safe=541109 keep=626793 avail=131333 chunkB=153423 pulseB=92054 在途(curAtk=71245)→continue hNb=2〕
+    zexos1: B=466,967 L=8,100 d=57.7 worth=51.9 → c=11.7（c÷worth 0.23）need=416,012（need÷B 0.89）〔人 pulse bleeding｜safe=551558 keep=551558 avail=-90063 chunkB=93393 pulseB=56036 无可用(avail<=0) hNb=2〕
+    这 3 个号余额合计 1,475,758；need 最大 647,265；合计 ÷ need = 2.28
+
+## 目标含「Lugunica」的报价（每个决策拍：号 B / L / 密度 / worth → c / need；目标当拍 领土 / 余额）
+  t=1700: Lugunica Kingdom#25[T4] 19,052 格 / 218,404 兵（密度 11.5）
+    kaito9: B=175,356 L=8,159 d=21.5 worth=31.6 → c=29.3（c÷worth 0.93）need=417,853（need÷B 2.38）〔人｜safe=115823 keep=166802 avail=6500 chunkB=35071 pulseB=21043 不够一条(x=6500)→continue sole hNb=1〕
+    noah88: B=217,983 L=7,587 d=28.7 worth=42.2 → c=29.3（c÷worth 0.69）need=417,853（need÷B 1.92）〔人｜safe=143917 keep=177257 avail=38172 chunkB=43597 pulseB=26158 不够一条(x=38172)→continue hNb=2〕
+    talon5: B=106,785 L=4,993 d=21.4 worth=31.4 → c=29.2（c÷worth 0.93）need=417,853（need÷B 3.91）〔人｜safe=118491 keep=118491 avail=-12957 chunkB=21357 pulseB=12814 无可用(avail<=0) sole hNb=1〕
+    这 3 个号余额合计 500,124；need 最大 417,853；合计 ÷ need = 1.20
+  t=1800: Lugunica Kingdom#25[T4] 24,268 格 / 221,639 兵（密度 9.1）
+    kaito9: B=130,556 L=8,159 d=16.0 worth=23.3 → c=34.3（c÷worth 1.47）need=431,443（need÷B 3.30）〔人｜safe=117641 keep=Inf avail=-Inf chunkB=26111 pulseB=15667 价高(c>=worth)→break sole hNb=1〕
+    noah88: B=221,451 L=7,751 d=28.6 worth=41.6 → c=34.4（c÷worth 0.83）need=431,443（need÷B 1.95）〔人｜safe=174393 keep=197821 avail=21035 chunkB=44290 pulseB=26574 不够一条(x=21035)→continue hNb=3〕
+    talon5: B=41,060 L=8,503 d=4.8 worth=7.0 → c=46.2（c÷worth 6.60）need=431,443（need÷B 10.51）〔人 crowdedHard｜safe=117351 keep=Inf avail=-Inf chunkB=8212 pulseB=4927 价高(c>=worth)→break sole hNb=1〕
+    这 3 个号余额合计 393,067；need 最大 431,443；合计 ÷ need = 0.91
+  t=1900: Lugunica Kingdom#25[T4] 23,486 格 / 208,430 兵（密度 8.9）
+    kaito9: B=93,584 L=9,883 d=9.5 worth=13.6 → c=12.0（c÷worth 0.88）need=383,618（need÷B 4.10）〔人 pulse bleeding｜safe=108767 keep=108767 avail=-16279 chunkB=18717 pulseB=11230 无可用(avail<=0) hNb=1〕
+    noah88: B=152,677 L=10,491 d=14.6 worth=21.0 → c=12.0（c÷worth 0.57）need=368,860（need÷B 2.42）〔人｜safe=202074 keep=202074 avail=-51186 chunkB=30535 pulseB=18321 无可用(avail<=0) hNb=3〕
+    talon5: B=48,422 L=9,276 d=5.2 worth=7.5 → c=12.1（c÷worth 1.61）need=400,592（need÷B 8.27）〔人 pulse bleeding｜safe=109279 keep=Inf avail=-Inf chunkB=9684 pulseB=5811 价高(c>=worth)→break hNb=1〕
+    这 3 个号余额合计 294,683；need 最大 400,592；合计 ÷ need = 0.74
+  t=2400: Lugunica Kingdom#25[T4] 19,327 格 / 361,296 兵（密度 18.7）
+    kaito9: B=183,776 L=12,469 d=14.7 worth=14.8 → c=63.8（c÷worth 4.31）need=645,750（need÷B 3.51）〔人 pulse crowdedHard｜safe=359689 keep=Inf avail=-Inf chunkB=36755 pulseB=22053 价高(c>=worth)→break hNb=3〕
+    talon5: B=92,044 L=9,337 d=9.9 worth=9.9 → c=63.7（c÷worth 6.43）need=645,750（need÷B 7.02）〔人 pulse crowdedHard｜safe=195107 keep=Inf avail=-Inf chunkB=18409 pulseB=11045 价高(c>=worth)→break sole hNb=1〕
+    这 2 个号余额合计 275,820；need 最大 645,750；合计 ÷ need = 0.43
+  t=3000: Lugunica Kingdom#25[T4] 19,327 格 / 928,034 兵（密度 48.0）
+    kaito9: B=547,300 L=10,794 d=50.7 worth=45.6 → c=170.1（c÷worth 3.73）need=1,642,914（need÷B 3.00）〔人 pulse｜safe=689111 keep=Inf avail=-Inf chunkB=109460 pulseB=65676 价高(c>=worth)→break hNb=3〕
+    talon5: B=263,119 L=9,337 d=28.2 worth=31.8 → c=366.8（c÷worth 11.53）need=1,642,914（need÷B 6.24）〔人 pulse crowdedHard｜safe=513499 keep=Inf avail=-Inf chunkB=52624 pulseB=31574 价高(c>=worth)→break sole hNb=1〕
+    这 2 个号余额合计 810,419；need 最大 1,642,914；合计 ÷ need = 0.49
+  t=3600: Lugunica Kingdom#25[T4] 19,556 格 / 1,982,908 兵（密度 101.4）
+    kaito9: B=949,705 L=12,813 d=74.1 worth=66.7 → c=476.9（c÷worth 7.15）need=3,514,052（need÷B 3.70）〔人 pulse crowdedHard｜safe=1127544 keep=Inf avail=-Inf chunkB=189941 pulseB=113965 价高(c>=worth)→break hNb=3〕
+    talon5: B=608,487 L=9,337 d=65.2 worth=58.7 → c=763.4（c÷worth 13.01）need=3,514,052（need÷B 5.78）〔人 pulse crowdedHard｜safe=821656 keep=Inf avail=-Inf chunkB=121697 pulseB=73018 价高(c>=worth)→break sole hNb=1〕
+    这 2 个号余额合计 1,558,192；need 最大 3,514,052；合计 ÷ need = 0.44
+  t=4400: Lugunica Kingdom#25[T4] 31,180 格 / 3,186,928 兵（密度 102.2）
+    kaito9: B=1,608,224 L=18,693 d=86.0 worth=77.4 → c=326.7（c÷worth 4.22）need=5,727,031（need÷B 3.56）〔人 pulse crowdedHard｜safe=1644984 keep=Inf avail=-Inf chunkB=321645 pulseB=192987 价高(c>=worth)→break hNb=2〕
+    talon5: B=467,587 L=5,327 d=87.8 worth=79.0 → c=526.2（c÷worth 6.66）need=5,727,031（need÷B 12.25）〔人 pulse crowdedHard｜safe=468776 keep=Inf avail=-Inf chunkB=93517 pulseB=56110 价高(c>=worth)→break sole hNb=1〕
+    这 2 个号余额合计 2,075,811；need 最大 5,727,031；合计 ÷ need = 0.36
+  t=4600: Lugunica Kingdom#25[T4] 32,137 格 / 3,357,299 兵（密度 104.5）
+    kaito9: B=1,772,068 L=26,813 d=66.1 worth=75.7 → c=250.5（c÷worth 3.31）need=6,032,166（need÷B 3.40）〔人 pulse crowdedHard｜safe=1863528 keep=Inf avail=-Inf chunkB=354414 pulseB=212648 价高(c>=worth)→break hNb=2〕
+    talon5: B=400,960 L=5,055 d=79.3 worth=75.7 → c=251.9（c÷worth 3.33）need=6,032,166（need÷B 15.04）〔人 pulse crowdedHard｜safe=444840 keep=Inf avail=-Inf chunkB=80192 pulseB=48115 价高(c>=worth)→break hNb=2〕
+    zero_7: B=335,701 L=7,899 d=42.5 worth=75.7 → c=198.0（c÷worth 2.62）need=6,369,865（need÷B 18.97）〔人 pulse onMe｜safe=695112 keep=Inf avail=-Inf chunkB=67140 pulseB=40284 价高(c>=worth)→break hNb=1〕
+    这 3 个号余额合计 2,508,729；need 最大 6,369,865；合计 ÷ need = 0.39
+  t=4800: Lugunica Kingdom#25[T4] 37,952 格 / 3,892,343 兵（密度 102.6）
+    kaito9: B=1,862,363 L=30,728 d=60.6 worth=75.8 → c=328.2（c÷worth 4.33）need=6,994,494（need÷B 3.76）〔人 pulse crowdedHard｜safe=2160815 keep=Inf avail=-Inf chunkB=372473 pulseB=223484 价高(c>=worth)→break hNb=2〕
+    sora_w: B=3,360,625 L=36,430 d=92.2 worth=83.0 → c=332.6（c÷worth 4.01）need=6,994,494（need÷B 2.08）〔人 pulse crowdedHard｜safe=3205840 keep=Inf avail=-Inf chunkB=672125 pulseB=403275 价高(c>=worth)→break hNb=5〕
+    talon5: B=607,265 L=6,132 d=99.0 worth=89.1 → c=244.0（c÷worth 2.74）need=6,994,494（need÷B 11.52）〔人 pulse｜safe=539616 keep=Inf avail=-Inf chunkB=121453 pulseB=72872 价高(c>=worth)→break hNb=2〕
+    zero_7: B=52,637 L=2,084 d=25.3 worth=75.8 → c=247.3（c÷worth 3.26）need=7,059,411（need÷B 134.11）〔人 pulse onMe｜safe=183392 keep=Inf avail=-Inf chunkB=10527 pulseB=6316 价高(c>=worth)→break hNb=1〕
+    这 4 个号余额合计 5,882,890；need 最大 7,059,411；合计 ÷ need = 0.83
+  t=5000: Lugunica Kingdom#25[T4] 42,096 格 / 4,256,068 兵（密度 101.1）
+    kaito9: B=2,514,171 L=39,337 d=63.9 worth=77.0 → c=323.3（c÷worth 4.20）need=7,648,999（need÷B 3.04）〔人 pulse crowdedHard｜safe=3461656 keep=Inf avail=-Inf chunkB=502834 pulseB=301701 价高(c>=worth)→break hNb=4〕
+    sora_w: B=3,687,773 L=36,786 d=100.2 worth=90.2 → c=242.4（c÷worth 2.69）need=7,648,999（need÷B 2.07）〔人 pulse｜safe=3237168 keep=3310740 avail=333817 chunkB=737555 pulseB=442533  x=333817 hNb=5〕
+    talon5: B=263,752 L=5,010 d=52.6 worth=77.0 → c=245.8（c÷worth 3.19）need=7,802,952（need÷B 29.58）〔人 pulse onMe｜safe=440880 keep=Inf avail=-Inf chunkB=52750 pulseB=31650 价高(c>=worth)→break hNb=2〕
+    这 3 个号余额合计 6,465,696；need 最大 7,802,952；合计 ÷ need = 0.83
+  t=5300: Lugunica Kingdom#25[T4] 52,867 格 / 3,730,497 兵（密度 70.6）
+    kaito9: B=4,125,262 L=41,537 d=99.3 worth=89.4 → c=244.9（c÷worth 2.74）need=6,728,473（need÷B 1.63）〔人 pulse｜safe=3655256 keep=Inf avail=-Inf chunkB=825052 pulseB=495031 价高(c>=worth)→break hNb=3〕
+    sora_w: B=2,693,924 L=34,591 d=77.9 worth=75.6 → c=245.3（c÷worth 3.24）need=6,728,473（need÷B 2.50）〔人 pulse｜safe=2701355 keep=Inf avail=-Inf chunkB=538785 pulseB=323271 价高(c>=worth)→break hNb=4〕
+    这 2 个号余额合计 6,819,186；need 最大 6,728,473；合计 ÷ need = 1.01
+  t=5600: Lugunica Kingdom#25[T4] 58,373 格 / 6,158,765 兵（密度 105.5）
+    kaito9: B=4,574,007 L=46,320 d=98.7 worth=88.9 → c=364.6（c÷worth 4.10）need=11,064,748（need÷B 2.42）〔人 pulse｜safe=4076160 keep=Inf avail=-Inf chunkB=914801 pulseB=548881 价高(c>=worth)→break hNb=3〕
+    sora_w: B=3,233,224 L=38,990 d=82.9 worth=79.2 → c=491.7（c÷worth 6.21）need=11,064,748（need÷B 3.42）〔人 pulse crowdedHard｜safe=3431120 keep=Inf avail=-Inf chunkB=646645 pulseB=387987 价高(c>=worth)→break hNb=4〕
+    这 2 个号余额合计 7,807,231；need 最大 11,064,748；合计 ÷ need = 0.71
+
+## 目标含「OnlyDamage」的报价（每个决策拍：号 B / L / 密度 / worth → c / need；目标当拍 领土 / 余额）
+  t=2400: OnlyDamage#0[T2] 17,974 格 / 658,950 兵（密度 36.7）
+    kaito9: B=183,776 L=12,469 d=14.7 worth=14.8 → c=120.1（c÷worth 8.11）need=1,201,475（need÷B 6.54）〔人 pulse crowdedHard｜safe=359689 keep=Inf avail=-Inf chunkB=36755 pulseB=22053 价高(c>=worth)→break hNb=3〕
+    riku_x: B=206,155 L=3,461 d=59.6 worth=59.9 → c=89.0（c÷worth 1.49）need=1,201,475（need÷B 5.83）〔人 pulse｜safe=304568 keep=Inf avail=-Inf chunkB=41231 pulseB=24739 价高(c>=worth)→break hNb=2〕
+    sora_w: B=486,014 L=17,474 d=27.8 worth=28.0 → c=119.7（c÷worth 4.28）need=1,201,475（need÷B 2.47）〔人 pulse crowdedHard｜safe=355471 keep=Inf avail=-Inf chunkB=97203 pulseB=58322 价高(c>=worth)→break hNb=2〕
+    zexos1: B=334,842 L=7,185 d=46.6 worth=46.8 → c=89.2（c÷worth 1.91）need=1,201,475（need÷B 3.59）〔人 pulse｜safe=364142 keep=Inf avail=-Inf chunkB=66968 pulseB=40181 价高(c>=worth)→break hNb=2〕
+    这 4 个号余额合计 1,210,787；need 最大 1,201,475；合计 ÷ need = 1.01
+  t=3000: OnlyDamage#0[T2] 19,649 格 / 1,242,808 兵（密度 63.3）
+    kaito9: B=547,300 L=10,794 d=50.7 worth=45.6 → c=205.3（c÷worth 4.50）need=2,244,630（need÷B 4.10）〔人 pulse crowdedHard｜safe=689111 keep=Inf avail=-Inf chunkB=109460 pulseB=65676 价高(c>=worth)→break hNb=3〕
+    riku_x: B=277,820 L=5,256 d=52.9 worth=47.6 → c=205.2（c÷worth 4.31）need=2,244,630（need÷B 8.08）〔人 pulse crowdedHard｜safe=462528 keep=Inf avail=-Inf chunkB=55564 pulseB=33338 价高(c>=worth)→break hNb=2〕
+    sora_w: B=710,202 L=21,460 d=33.1 worth=31.8 → c=204.4（c÷worth 6.43）need=2,244,630（need÷B 3.16）〔人 pulse crowdedHard｜safe=680122 keep=Inf avail=-Inf chunkB=142040 pulseB=85224 价高(c>=worth)→break hNb=2〕
+    zexos1: B=576,323 L=9,109 d=63.3 worth=56.9 → c=152.4（c÷worth 2.68）need=2,244,630（need÷B 3.89）〔人 pulse｜safe=690531 keep=Inf avail=-Inf chunkB=115265 pulseB=69159 价高(c>=worth)→break hNb=2〕
+    这 4 个号余额合计 2,111,645；need 最大 2,244,630；合计 ÷ need = 0.94
+  t=3600: OnlyDamage#0[T2] 19,787 格 / 2,271,087 兵（密度 114.8）
+    kaito9: B=949,705 L=12,813 d=74.1 worth=66.7 → c=536.0（c÷worth 8.04）need=4,077,702（need÷B 4.29）〔人 pulse crowdedHard｜safe=1127544 keep=Inf avail=-Inf chunkB=189941 pulseB=113965 价高(c>=worth)→break hNb=3〕
+    riku_x: B=585,302 L=5,256 d=111.4 worth=100.2 → c=636.4（c÷worth 6.35）need=4,077,702（need÷B 6.97）〔人 pulse｜safe=462528 keep=588672 avail=-10229 chunkB=117060 pulseB=70236 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1〕
+    sora_w: B=2,043,409 L=23,067 d=88.6 worth=79.7 → c=857.3（c÷worth 10.76）need=4,077,702（need÷B 2.00）〔人 pulse crowdedHard｜safe=1256453 keep=Inf avail=-Inf chunkB=408682 pulseB=245209 价高(c>=worth)→break sole hNb=1〕
+    zexos1: B=879,961 L=9,254 d=95.1 worth=85.6 → c=860.9（c÷worth 10.06）need=4,077,702（need÷B 4.63）〔人 pulse crowdedHard｜safe=814352 keep=Inf avail=-Inf chunkB=175992 pulseB=105595 价高(c>=worth)→break sole hNb=1〕
+    这 4 个号余额合计 4,458,377；need 最大 4,077,702；合计 ÷ need = 1.09
+  t=3700: OnlyDamage#0[T2] 20,737 格 / 1,734,816 兵（密度 83.7）
+    kaito9: B=916,631 L=12,908 d=71.0 worth=63.9 → c=202.8（c÷worth 3.17）need=3,123,206（need÷B 3.41）〔人 pulse crowdedHard｜safe=1052438 keep=Inf avail=-Inf chunkB=183326 pulseB=109996 价高(c>=worth)→break hNb=3〕
+    riku_x: B=486,288 L=5,256 d=92.5 worth=83.3 → c=240.7（c÷worth 2.89）need=3,123,206（need÷B 6.42）〔人 pulse｜safe=462528 keep=Inf avail=-Inf chunkB=97258 pulseB=58355 价高(c>=worth)→break sole hNb=1〕
+    sora_w: B=2,597,179 L=23,067 d=112.6 worth=101.3 → c=241.1（c÷worth 2.38）need=3,123,206（need÷B 1.20）〔人 pulse｜safe=955177 keep=2583504 avail=-16760 chunkB=519436 pulseB=311661 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1〕
+    zexos1: B=991,498 L=9,233 d=107.4 worth=96.6 → c=150.9（c÷worth 1.56）need=3,123,206（need÷B 3.15）〔人 pulse｜safe=812504 keep=830970 avail=148909 chunkB=198300 pulseB=118980  x=118979 hNb=2〕
+    这 4 个号余额合计 4,991,596；need 最大 3,123,206；合计 ÷ need = 1.60
+  t=3900: OnlyDamage#0[T2] 24,604 格 / 1,643,840 兵（密度 66.8）
+    kaito9: B=1,498,317 L=15,156 d=98.9 worth=89.0 → c=120.6（c÷worth 1.36）need=2,966,825（need÷B 1.98）〔人 pulse｜safe=1333728 keep=Inf avail=-Inf chunkB=299663 pulseB=179798 价高(c>=worth)→break hNb=3〕
+    riku_x: B=460,670 L=5,256 d=87.6 worth=78.9 → c=192.9（c÷worth 2.44）need=2,966,825（need÷B 6.44）〔人 pulse｜safe=462528 keep=Inf avail=-Inf chunkB=92134 pulseB=55280 价高(c>=worth)→break sole hNb=1〕
+    sora_w: B=2,529,176 L=23,067 d=109.6 worth=98.7 → c=193.4（c÷worth 1.96）need=2,966,825（need÷B 1.17）〔人 pulse｜safe=904067 keep=2583504 avail=-83966 chunkB=505835 pulseB=303501 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1〕
+    zexos1: B=844,919 L=10,456 d=80.8 worth=72.7 → c=120.0（c÷worth 1.65）need=2,966,825（need÷B 3.51）〔人 pulse｜safe=914694 keep=Inf avail=-Inf chunkB=168984 pulseB=101390 价高(c>=worth)→break hNb=2〕
+    这 4 个号余额合计 5,333,082；need 最大 2,966,825；合计 ÷ need = 1.80
+  t=4000: OnlyDamage#0[T2] 25,112 格 / 1,480,870 兵（密度 59.0）
+    kaito9: B=1,231,687 L=16,925 d=72.8 worth=65.5 → c=77.1（c÷worth 1.18）need=2,666,962（need÷B 2.17）〔人 pulse｜safe=1489400 keep=Inf avail=-Inf chunkB=246337 pulseB=147802 价高(c>=worth)→break hNb=3〕
+    riku_x: B=521,216 L=5,256 d=99.2 worth=89.2 → c=123.1（c÷worth 1.38）need=2,666,962（need÷B 5.12）〔人 pulse｜safe=462528 keep=Inf avail=-Inf chunkB=104243 pulseB=62546 价高(c>=worth)→break sole hNb=1〕
+    sora_w: B=2,294,057 L=24,955 d=91.9 worth=82.7 → c=157.9（c÷worth 1.91）need=2,453,419（need÷B 1.07）〔人 pulse｜safe=810920 keep=Inf avail=-Inf chunkB=458811 pulseB=275287 价高(c>=worth)→break sole hNb=1〕
+    zexos1: B=962,415 L=10,456 d=92.0 worth=82.8 → c=76.7（c÷worth 0.93）need=2,666,962（need÷B 2.77）〔人 pulse｜safe=823138 keep=922856 avail=28281 chunkB=192483 pulseB=115490 低于最小指令(x=28281<45112)→continue hNb=2〕
+    这 4 个号余额合计 5,009,375；need 最大 2,666,962；合计 ÷ need = 1.88
+  t=4200: OnlyDamage#0[T2] 24,593 格 / 885,522 兵（密度 36.0）
+    kaito9: B=1,615,145 L=16,925 d=95.4 worth=85.9 → c=88.8（c÷worth 1.03）need=1,602,940（need÷B 0.99）〔人 pulse｜safe=1489400 keep=Inf avail=-Inf chunkB=323029 pulseB=193817 价高(c>=worth)→break hNb=3〕
+    riku_x: B=486,590 L=5,944 d=81.9 worth=73.7 → c=141.0（c÷worth 1.91）need=1,602,940（need÷B 3.29）〔人 pulse｜safe=492475 keep=Inf avail=-Inf chunkB=97318 pulseB=58391 价高(c>=worth)→break sole hNb=1〕
+    sora_w: B=1,886,103 L=31,384 d=60.1 worth=64.5 → c=140.7（c÷worth 2.18）need=1,602,940（need÷B 0.85）〔人 pulse｜safe=471037 keep=Inf avail=-Inf chunkB=377221 pulseB=226332 价高(c>=worth)→break sole hNb=1〕
+    zexos1: B=904,151 L=12,088 d=74.8 worth=67.3 → c=88.0（c÷worth 1.31）need=1,602,940（need÷B 1.77）〔人 pulse｜safe=1063744 keep=Inf avail=-Inf chunkB=180830 pulseB=108498 价高(c>=worth)→break hNb=3〕
+    这 4 个号余额合计 4,891,989；need 最大 1,602,940；合计 ÷ need = 3.05
+  t=4400: OnlyDamage#0[T2] 20,756 格 / 426,105 兵（密度 20.5）
+    riku_x: B=360,503 L=7,633 d=47.2 worth=75.8 → c=57.2（c÷worth 0.75）need=680,125（need÷B 1.89）〔人 pulse｜safe=232953 keep=485404 avail=-129125 chunkB=72101 pulseB=43260 无可用(avail<=0) sole hNb=1〕
+    sora_w: B=1,850,034 L=36,489 d=50.7 worth=75.8 → c=28.3（c÷worth 0.37）need=749,996（need÷B 0.41）〔人 pulse bleeding｜safe=2678350 keep=2678350 avail=-849996 chunkB=370007 pulseB=222004 无可用(avail<=0) hNb=2〕
+    zexos1: B=824,500 L=14,284 d=57.7 worth=75.8 → c=28.1（c÷worth 0.37）need=749,996（need÷B 0.91）〔人 pulse bleeding｜safe=1256992 keep=1256992 avail=-442154 chunkB=164900 pulseB=98940 无可用(avail<=0) hNb=2〕
+    这 3 个号余额合计 3,035,037；need 最大 749,996；合计 ÷ need = 4.05
+
+## 目标含「DONATE」的报价（每个决策拍：号 B / L / 密度 / worth → c / need；目标当拍 领土 / 余额）
+  t=4400: [EU] DONATE#40[T2] 64,853 格 / 5,040,074 兵（密度 77.7）
+    zexos1: B=824,500 L=14,284 d=57.7 worth=75.8 → c=144.8（c÷worth 1.91）need=9,419,431（need÷B 11.42）〔人 pulse onMe｜safe=1256992 keep=Inf avail=-Inf chunkB=164900 pulseB=98940 价高(c>=worth)→break hNb=2〕
+    这 1 个号余额合计 824,500；need 最大 9,419,431；合计 ÷ need = 0.09
+  t=4500: [EU] DONATE#40[T2] 66,686 格 / 4,330,911 兵（密度 64.9）
+    riku_x: B=413,549 L=8,654 d=47.8 worth=72.8 → c=211.1（c÷worth 2.90）need=7,819,328（need÷B 18.91）〔人 pulse｜safe=761552 keep=Inf avail=-Inf chunkB=82710 pulseB=49626 价高(c>=worth)→break hNb=2〕
+    zexos1: B=754,594 L=12,423 d=60.7 worth=72.8 → c=124.4（c÷worth 1.71）need=8,336,901（need÷B 11.05）〔人 pulse onMe｜safe=1093224 keep=Inf avail=-Inf chunkB=150919 pulseB=90551 价高(c>=worth)→break hNb=2〕
+    这 2 个号余额合计 1,168,143；need 最大 8,336,901；合计 ÷ need = 0.14
+  t=4600: [EU] DONATE#40[T2] 76,299 格 / 3,092,494 兵（密度 40.5）
+    riku_x: B=289,519 L=6,358 d=45.5 worth=75.7 → c=79.6（c÷worth 1.05）need=6,081,625（need÷B 21.01）〔人 pulse onMe｜safe=559504 keep=Inf avail=-Inf chunkB=57904 pulseB=34742 价高(c>=worth)→break hNb=2〕
+    zexos1: B=198,917 L=5,077 d=39.2 worth=75.7 → c=75.9（c÷worth 1.00）need=5,815,197（need÷B 29.23）〔人 pulse onMe｜safe=446776 keep=Inf avail=-Inf chunkB=39783 pulseB=23870 价高(c>=worth)→break hNb=2〕
+    这 2 个号余额合计 488,436；need 最大 6,081,625；合计 ÷ need = 0.08
+  t=4700: [EU] DONATE#40[T2] 82,394 格 / 3,253,343 兵（密度 39.5）
+    sora_w: B=2,908,565 L=36,487 d=79.7 worth=76.4 → c=139.3（c÷worth 1.82）need=5,922,256（need÷B 2.04）〔人 pulse｜safe=3210856 keep=Inf avail=-Inf chunkB=581713 pulseB=349028 价高(c>=worth)→break hNb=5〕
+    zexos1: B=122,477 L=3,526 d=34.7 worth=76.4 → c=138.1（c÷worth 1.81）need=5,922,256（need÷B 48.35）〔人 pulse｜safe=310288 keep=Inf avail=-Inf chunkB=24495 pulseB=14697 价高(c>=worth)→break hNb=2〕
+    这 2 个号余额合计 3,031,042；need 最大 5,922,256；合计 ÷ need = 0.51
+  t=4900: [EU] DONATE#40[T2] 88,596 格 / 4,336,816 兵（密度 49.0）
+    sora_w: B=3,498,481 L=35,128 d=99.6 worth=89.6 → c=145.9（c÷worth 1.63）need=7,862,672（need÷B 2.25）〔人 pulse agg｜safe=3091264 keep=Inf avail=-Inf chunkB=699696 pulseB=419818 价高(c>=worth)→break hNb=5〕
+    这 1 个号余额合计 3,498,481；need 最大 7,862,672；合计 ÷ need = 0.44
+  t=5200: [EU] DONATE#40[T2] 91,090 格 / 5,165,945 兵（密度 56.7）
+    sora_w: B=2,801,933 L=38,769 d=72.3 worth=69.9 → c=136.4（c÷worth 1.95）need=9,343,775（need÷B 3.33）〔人 pulse｜safe=2869546 keep=Inf avail=-Inf chunkB=560387 pulseB=336232 价高(c>=worth)→break hNb=4〕
+    这 1 个号余额合计 2,801,933；need 最大 9,343,775；合计 ÷ need = 0.30
+  t=5600: [EU] DONATE#40[T2] 98,896 格 / 6,543,062 兵（密度 66.2）
+    sora_w: B=3,233,224 L=38,990 d=82.9 worth=79.2 → c=125.8（c÷worth 1.59）need=12,529,077（need÷B 3.88）〔人 pulse onMe｜safe=3431120 keep=Inf avail=-Inf chunkB=646645 pulseB=387987 价高(c>=worth)→break hNb=4〕
+    这 1 个号余额合计 3,233,224；need 最大 12,529,077；合计 ÷ need = 0.26
+  t=6000: [EU] DONATE#40[T2] 105,509 格 / 8,299,617 兵（密度 78.7）
+    sora_w: B=2,451,817 L=29,575 d=82.9 worth=91.1 → c=148.2（c÷worth 1.63）need=15,772,807（need÷B 6.43）〔人 pulse onMe｜safe=2602600 keep=Inf avail=-Inf chunkB=490363 pulseB=294218 价高(c>=worth)→break hNb=3〕
+    这 1 个号余额合计 2,451,817；need 最大 15,772,807；合计 ÷ need = 0.16
+  t=6200: [EU] DONATE#40[T2] 111,557 格 / 9,887,108 兵（密度 88.6）
+    sora_w: B=2,219,248 L=23,527 d=94.3 worth=91.7 → c=305.6（c÷worth 3.33）need=17,789,776（need÷B 8.02）〔人 pulse｜safe=2070376 keep=Inf avail=-Inf chunkB=443850 pulseB=266310 价高(c>=worth)→break hNb=3〕
+    这 1 个号余额合计 2,219,248；need 最大 17,789,776；合计 ÷ need = 0.12
+
+## 目标含「hackingnoises」的报价（每个决策拍：号 B / L / 密度 / worth → c / need；目标当拍 领土 / 余额）
+  t=5200: hackingnoises#33[T2] 77,524 格 / 7,704,775 兵（密度 99.4）
+    kaito9: B=3,557,453 L=41,539 d=85.6 worth=77.1 → c=580.1（c÷worth 7.52）need=13,848,987（need÷B 3.89）〔人 pulse crowdedHard｜safe=3655432 keep=Inf avail=-Inf chunkB=711491 pulseB=426894 价高(c>=worth)→break hNb=3〕
+    这 1 个号余额合计 3,557,453；need 最大 13,848,987；合计 ÷ need = 0.26
+  t=5600: hackingnoises#33[T2] 91,556 格 / 8,449,491 兵（密度 92.3）
+    kaito9: B=4,574,007 L=46,320 d=98.7 worth=88.9 → c=399.5（c÷worth 4.49）need=15,197,389（need÷B 3.32）〔人 pulse｜safe=4076160 keep=Inf avail=-Inf chunkB=914801 pulseB=548881 价高(c>=worth)→break hNb=3〕
+    这 1 个号余额合计 4,574,007；need 最大 15,197,389；合计 ÷ need = 0.30
+  t=5900: hackingnoises#33[T2] 93,699 格 / 9,846,224 兵（密度 105.1）
+    kaito9: B=5,173,186 L=49,637 d=104.2 worth=93.8 → c=252.3（c÷worth 2.69）need=17,690,199（need÷B 3.42）〔人 pulse｜safe=4368056 keep=4467330 avail=645233 chunkB=1034637 pulseB=620782  x=620782 hNb=3〕
+    这 1 个号余额合计 5,173,186；need 最大 17,690,199；合计 ÷ need = 0.29
+  t=6100: hackingnoises#33[T2] 101,383 格 / 8,836,936 兵（密度 87.2）
+    kaito9: B=4,575,728 L=49,836 d=91.8 worth=90.1 → c=167.1（c÷worth 1.85）need=16,908,806（need÷B 3.70）〔人 pulse onMe｜safe=4385568 keep=Inf avail=-Inf chunkB=915146 pulseB=549087 价高(c>=worth)→break hNb=4〕
+    这 1 个号余额合计 4,575,728；need 最大 16,908,806；合计 ÷ need = 0.27
+  t=6200: hackingnoises#33[T2] 108,304 格 / 11,621,678 兵（密度 107.3）
+    kaito9: B=4,778,451 L=46,609 d=102.5 worth=92.3 → c=373.0（c÷worth 4.04）need=20,876,497（need÷B 4.37）〔人 pulse｜safe=4101592 keep=4194810 avail=527644 chunkB=955690 pulseB=573414  x=527644 hNb=4〕
+    这 1 个号余额合计 4,778,451；need 最大 20,876,497；合计 ÷ need = 0.23
+
+## 目标含「Player 726」的报价（每个决策拍：号 B / L / 密度 / worth → c / need；目标当拍 领土 / 余额）
+  t=1500: Player 726#18[T4] 3,384 格 / 39,993 兵（密度 11.8）
+    riku_x: B=101,422 L=3,094 d=32.8 worth=49.2 → c=30.3（c÷worth 0.62）need=76,358（need÷B 0.75）〔人｜safe=82085 keep=82085 avail=18149 chunkB=20284 pulseB=12171 不够一条(x=18149)→continue hNb=2〕
+    ryan_m: B=157,355 L=5,886 d=26.7 worth=40.1 → c=30.3（c÷worth 0.76）need=76,358（need÷B 0.49）〔人｜safe=81341 keep=133450 avail=22061 chunkB=31471 pulseB=18883 不够一条(x=22061)→continue hNb=3〕
+    sora_w: B=134,583 L=8,055 d=16.7 worth=25.1 → c=30.5（c÷worth 1.22）need=76,358（need÷B 0.57）〔人｜safe=77904 keep=Inf avail=-Inf chunkB=26917 pulseB=16150 价高(c>=worth)→break hNb=3〕
+    这 3 个号余额合计 393,360；need 最大 76,358；合计 ÷ need = 5.15
+  t=1600: Player 726#18[T4] 3,384 格 / 52,798 兵（密度 15.6）
+    riku_x: B=128,417 L=3,094 d=41.5 worth=61.6 → c=39.3（c÷worth 0.64）need=99,181（need÷B 0.77）〔人｜safe=117587 keep=117587 avail=9326 chunkB=25683 pulseB=15410 不够一条(x=9326)→continue hNb=2〕
+    ryan_m: B=200,324 L=5,886 d=34.0 worth=50.5 → c=39.3（c÷worth 0.78）need=99,181（need÷B 0.50）〔人｜safe=103369 keep=172724 avail=25253 chunkB=40065 pulseB=24039 不够一条(x=25253)→continue hNb=3〕
+    sora_w: B=174,353 L=8,055 d=21.6 worth=32.1 → c=39.6（c÷worth 1.23）need=99,181（need÷B 0.57）〔人｜safe=113406 keep=Inf avail=-Inf chunkB=34871 pulseB=20922 价高(c>=worth)→break hNb=3〕
+    这 3 个号余额合计 503,094；need 最大 99,181；合计 ÷ need = 5.07
+  t=1700: Player 726#18[T4] 3,257 格 / 62,755 兵（密度 19.3）
+    riku_x: B=96,686 L=3,221 d=30.0 worth=44.1 → c=28.5（c÷worth 0.65）need=68,225（need÷B 0.71）〔人｜safe=147596 keep=147596 avail=-52043 chunkB=19337 pulseB=11602 无可用(avail<=0) hNb=2〕
+    ryan_m: B=245,963 L=5,886 d=41.8 worth=61.4 → c=18.5（c÷worth 0.30）need=115,871（need÷B 0.47）〔人 pulse bleeding｜safe=126554 keep=142398 avail=100683 chunkB=49193 pulseB=29516  x=29515 hNb=3〕
+    sora_w: B=217,007 L=8,055 d=26.9 worth=39.6 → c=18.6（c÷worth 0.47）need=115,871（need÷B 0.53）〔人 pulse bleeding｜safe=143523 keep=147395 avail=67069 chunkB=43401 pulseB=26041  x=26040 hNb=3〕
+    这 3 个号余额合计 559,656；need 最大 115,871；合计 ÷ need = 4.83
+  t=1750: Player 726#18[T4] 2,483 格 / 1 兵（密度 0.0）
+    riku_x: B=104,636 L=3,995 d=26.2 worth=38.3 → c=21.1（c÷worth 0.55）need=45,782（need÷B 0.44）〔人 pulse onMe｜safe=159278 keep=159278 avail=-55868 chunkB=20927 pulseB=12556 无可用(avail<=0) hNb=2〕
+    ryan_m: B=187,395 L=7,216 d=26.0 worth=38.0 → c=2.4（c÷worth 0.06）need=3,304（need÷B 0.02）〔人 pulse｜safe=136225 keep=136225 avail=48974 chunkB=37479 pulseB=22487 低于最小指令(x=4300<8784)→continue hNb=3〕
+    sora_w: B=183,449 L=8,055 d=22.8 worth=33.3 → c=2.4（c÷worth 0.07）need=3,304（need÷B 0.02）〔人 pulse｜safe=155856 keep=155856 avail=25444 chunkB=36690 pulseB=22014 低于最小指令(x=4126<8596)→continue hNb=3〕
+    这 3 个号余额合计 475,480；need 最大 45,782；合计 ÷ need = 10.39
+
+## 「低于最小指令」的报价：过了比价和留底，要发的兵 x 却小于最小指令 max(minCmd, pulseMinShare×B)，这一行被跳过（全部明细拍）
+# 列：号 → 目标 | 决策拍数（其中零指令 / 其中改打了排在后面的目标：打了谁、约兵）| 拍号范围 | 目标领土 | 目标余额 | need | 要发的兵 x | 最小指令 | c | worth | 分两种：可用兵够最小指令、但吃光它用不了这么多（拍数，首末拍）/ 可用兵本身不到最小指令（拍数）
+  sora_w → Chernobyl#32[T2] | 109（零指令 102 / 改打别人 7：无主地 6 拍；[EU] DONATE#40[T2] 1 拍，约 1,187,107 兵）| t=2890~4990 | 404~20,390 格 | 0~218,995 兵 | need 606~389,338 | x 751~77,519 | 最小 27,072~168,824 | c 0.3~69.0 | worth 27.3~89.6 | 所需太少 27 拍（t=4750~4990） / 可用兵太少 82 拍
+  sora_w → OnlyDamage#0[T2] | 21（零指令 21 / 改打别人 0）| t=4020~5405 | 22,800~41,192 格 | 0~1,910,095 兵 | need 26,644~3,466,269 | x 25,949~141,363 | 最小 91,800~173,032 | c 1.0~84.5 | worth 60.5~89.9 | 所需太少 0 拍 / 可用兵太少 21 拍
+  zexos1 → Chernobyl#32[T2] | 14（零指令 12 / 改打别人 2：OnlyDamage#0[T2] 2 拍，约 235,844 兵）| t=3610~4350 | 245~290 格 | 227~5,144 兵 | need 785~9,947 | x 972~11,957 | 最小 40,348~50,972 | c 53.0~155.7 | worth 81.1~96.6 | 所需太少 11 拍（t=3650~3710） / 可用兵太少 3 拍
+  kaito9 → ✝️#2[T3] | 10（零指令 10 / 改打别人 0）| t=3430~3475 | 31,570~32,345 格 | 1,011,422~1,054,285 兵 | need 1,814,337~1,899,900 | x 2,419~24,535 | 最小 45,376~47,592 | c 79.0~80.5 | worth 80.7~84.7 | 所需太少 0 拍 / 可用兵太少 10 拍
+  kaito9 → OnlyDamage#0[T2] | 9（零指令 9 / 改打别人 0）| t=4160~4235 | 23,518~25,726 格 | 828,280~920,507 兵 | need 1,485,024~1,679,292 | x 2,728~70,592 | 最小 71,284~78,584 | c 47.9~87.8 | worth 80.9~89.1 | 所需太少 0 拍 / 可用兵太少 9 拍
+  ryan_m → Player 726#18[T4] | 9（零指令 9 / 改打别人 0）| t=1745~1790 | 2,483~2,961 格 | 0~31 兵 | need 3,300~4,332 | x 4,296~5,558 | 最小 8,648~9,176 | c 1.9~3.0 | worth 32.6~38.9 | 所需太少 9 拍（t=1745~1790） / 可用兵太少 0 拍
+  riku_x → Chernobyl#32[T2] | 8（零指令 8 / 改打别人 0）| t=2740~2775 | 26,926 格 | 582,197~605,376 兵 | need 1,078,091~1,119,405 | x 2,958~13,216 | 最小 14,584~15,072 | c 53.4~55.4 | worth 80.9~83.6 | 所需太少 0 拍 / 可用兵太少 8 拍
+  riku_x → OnlyDamage#0[T2] | 8（零指令 8 / 改打别人 0）| t=3950~4270 | 24,448~25,973 格 | 934,170~1,593,286 兵 | need 1,700,344~2,867,613 | x 791~20,986 | 最小 22,852~24,692 | c 36.9~83.9 | worth 79.8~89.2 | 所需太少 0 拍 / 可用兵太少 8 拍
+  zexos1 → OnlyDamage#0[T2] | 8（零指令 8 / 改打别人 0）| t=3995~4120 | 22,731~25,225 格 | 939,722~1,480,870 兵 | need 1,664,108~2,666,962 | x 12,938~36,016 | 最小 44,092~46,428 | c 58.7~79.3 | worth 81.0~83.8 | 所需太少 0 拍 / 可用兵太少 8 拍
+  sora_w → Player 726#18[T4] | 3（零指令 3 / 改打别人 0）| t=1745~1755 | 2,483~2,584 格 | 0~1 兵 | need 3,300~3,510 | x 4,122~4,374 | 最小 8,468~8,596 | c 1.9~2.4 | worth 32.8~33.3 | 所需太少 3 拍（t=1745~1755） / 可用兵太少 0 拍
+  sora_w → [EU] DONATE#40[T2] | 2（零指令 2 / 改打别人 0）| t=4770~4775 | 84,178~84,373 格 | 3,503,446~3,505,444 兵 | need 6,370,985~6,374,268 | x 41,664~45,769 | 最小 149,784 | c 75.6~75.8 | worth 78.9~78.9 | 所需太少 0 拍 / 可用兵太少 2 拍
+  kaito9 → Raskol3103#37[T4] | 1（零指令 1 / 改打别人 0）| t=4385~4385 | 49,140 格 | 1,501,184 兵 | need 2,650,183 | x 8,917 | 最小 77,836 | c 72.5~72.5 | worth 80.6~80.6 | 所需太少 0 拍 / 可用兵太少 1 拍
+
+## 「不够一条」的真人报价：过了比价和留底，但不在脉冲分支里（need ≤ 0.30×B、对方不薄也不濒死），可用兵 x < 1.25×need 且 x < chunk×B，这一行被跳过（全部明细拍）
+# 列：号 → 目标 | 决策拍数（其中零指令 / 其中改打了排在后面的目标：打了谁、约兵、那个目标的 need）| 其中自己过软上限的拍数 | 拍号范围 | 目标领土 | 目标余额 | need | need÷B | 可用兵 x | chunk×B | c | worth | 可用兵 ≥ 0.8×need 的拍数
+  noah88 → Lugunica Kingdom#25[T4] | 37（零指令 37 / 改打别人 0）| 过软上限 0 拍 | t=1560~1840 | 16,640~25,230 格 | 188,108~230,685 兵 | need 360,429~448,545 | need÷B 1.82~2.44 | x 9~39,161 | chunk×B 30,982~46,053 | c 22.3~34.6 | worth 30.4~42.2 | 0 拍
+  riku_x → Player 726#18[T4] | 36（零指令 36 / 改打别人 0）| 过软上限 0 拍 | t=1500~1685 | 3,384 格 | 39,993~61,170 兵 | need 76,358~114,103 | need÷B 0.74~0.77 | x 9,326~18,149 | chunk×B 20,284~29,757 | c 30.3~45.2 | worth 49.1~70.8 | 0 拍
+  riku_x → OnlyDamage#0[T2] | 36（零指令 36 / 改打别人 0）| 过软上限 0 拍 | t=1500~1685 | 11,133~11,150 格 | 150,752~247,879 兵 | need 285,399~458,552 | need÷B 2.81~3.10 | x 9,326~17,914 | chunk×B 20,284~29,757 | c 34.1~54.8 | worth 49.1~70.8 | 0 拍
+  sora_w → Chernobyl#32[T2] | 32（零指令 32 / 改打别人 0）| 过软上限 0 拍 | t=2100~2390 | 26,651~26,926 格 | 85,465~280,809 兵 | need 192,311~540,901 | need÷B 0.89~1.42 | x 319~11,598 | chunk×B 42,797~92,551 | c 9.6~26.5 | worth 16.3~26.9 | 0 拍
+  alex_k → Gahhhaha#5[T2] | 27（零指令 27 / 改打别人 0）| 过软上限 0 拍 | t=1500~1715 | 8,329~14,731 格 | 117,770~152,066 兵 | need 209,589~269,257 | need÷B 0.97~1.21 | x 7,941~53,223 | chunk×B 36,753~55,015 | c 32.8~60.1 | worth 43.5~63.9 | 0 拍
+  ryan_m → Player 726#18[T4] | 18（零指令 18 / 改打别人 0）| 过软上限 0 拍 | t=1500~1585 | 3,384 格 | 39,993~47,483 兵 | need 76,358~89,708 | need÷B 0.48~0.49 | x 22,021~26,305 | chunk×B 31,471~37,367 | c 30.3~35.6 | worth 40.1~47.2 | 0 拍
+  ryan_m → Gahhhaha#5[T2] | 18（零指令 18 / 改打别人 0）| 过软上限 0 拍 | t=1500~1585 | 8,329 格 | 117,770~139,834 兵 | need 222,408~261,735 | need÷B 1.40~1.41 | x 9,596~11,488 | chunk×B 31,471~37,367 | c 35.5~41.8 | worth 40.1~47.2 | 0 拍
+  sora_w → Gahhhaha#5[T2] | 17（零指令 17 / 改打别人 0）| 过软上限 0 拍 | t=1590~1685 | 8,329~14,731 格 | 108,677~138,664 兵 | need 206,200~269,257 | need÷B 1.26~1.33 | x 15,451~39,394 | chunk×B 32,608~40,401 | c 22.4~27.0 | worth 30.1~36.9 | 0 拍
+  kaito9 → Lugunica Kingdom#25[T4] | 10（零指令 10 / 改打别人 0）| 过软上限 0 拍 | t=1690~1840 | 18,615~25,230 格 | 180,518~230,685 兵 | need 357,857~448,746 | need÷B 2.30~3.31 | x 6,500~23,142 | chunk×B 23,477~35,071 | c 11.1~29.3 | worth 21.0~31.6 | 0 拍
+  noah88 → ✝️#2[T3] | 7（零指令 7 / 改打别人 0）| 过软上限 0 拍 | t=1800~1830 | 25,008~25,490 格 | 205,708~211,723 兵 | need 382,697~398,897 | need÷B 1.73~1.73 | x 12,465~13,275 | chunk×B 44,290~46,053 | c 36.8~37.7 | worth 41.4~42.1 | 0 拍
+

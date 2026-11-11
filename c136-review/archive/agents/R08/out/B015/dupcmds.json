@@ -1,0 +1,1612 @@
+{
+ "squad20": {
+  "gap": {
+   "gap": 14,
+   "byKind": {
+    "attack": {
+     "cmds": 393,
+     "clusters": 307,
+     "dupClusters": 47,
+     "dupCmds": 133,
+     "extraCmds": 86,
+     "sizes": {
+      "1": 260,
+      "2": 29,
+      "3": 8,
+      "5": 4,
+      "4": 3,
+      "6": 2,
+      "7": 1
+     }
+    },
+    "boat": {
+     "cmds": 159,
+     "clusters": 145,
+     "dupClusters": 11,
+     "dupCmds": 25,
+     "extraCmds": 14,
+     "sizes": {
+      "1": 134,
+      "3": 3,
+      "2": 8
+     }
+    },
+    "donate": {
+     "cmds": 42,
+     "clusters": 41,
+     "dupClusters": 1,
+     "dupCmds": 2,
+     "extraCmds": 1,
+     "sizes": {
+      "1": 40,
+      "2": 1
+     }
+    }
+   },
+   "dups": [
+    {
+     "me": 33,
+     "name": "Guts",
+     "kind": "attack",
+     "target": "23",
+     "targetName": "365",
+     "t0": 1799,
+     "t1": 1813,
+     "n": 5,
+     "pcts": [
+      122,
+      244,
+      253,
+      567,
+      211
+     ],
+     "first": 0.1201,
+     "comb": 0.8223
+    },
+    {
+     "me": 31,
+     "name": "Kaiser",
+     "kind": "attack",
+     "target": "1",
+     "targetName": "Harris [MEME]",
+     "t0": 1778,
+     "t1": 1778,
+     "n": 6,
+     "pcts": [
+      269,
+      267,
+      266,
+      122,
+      122,
+      122
+     ],
+     "first": 0.2637,
+     "comb": 0.7262
+    },
+    {
+     "me": 41,
+     "name": "Darius",
+     "kind": "attack",
+     "target": "1",
+     "targetName": "Harris [MEME]",
+     "t0": 1708,
+     "t1": 1708,
+     "n": 7,
+     "pcts": [
+      122,
+      122,
+      240,
+      122,
+      122,
+      208,
+      122
+     ],
+     "first": 0.1201,
+     "comb": 0.679
+    },
+    {
+     "me": 33,
+     "name": "Guts",
+     "kind": "attack",
+     "target": "23",
+     "targetName": "365",
+     "t0": 1778,
+     "t1": 1778,
+     "n": 5,
+     "pcts": [
+      255,
+      207,
+      238,
+      122,
+      122
+     ],
+     "first": 0.25,
+     "comb": 0.6453
+    },
+    {
+     "me": 34,
+     "name": "Cataphract",
+     "kind": "boat",
+     "target": "1394303:0",
+     "targetName": "",
+     "t0": 1575,
+     "t1": 1575,
+     "n": 3,
+     "pcts": [
+      246,
+      412,
+      198
+     ],
+     "first": 0.2412,
+     "comb": 0.6352
+    },
+    {
+     "me": 37,
+     "name": "Luigi",
+     "kind": "attack",
+     "target": "342",
+     "targetName": "bot#342",
+     "t0": 1232,
+     "t1": 1239,
+     "n": 4,
+     "pcts": [
+      203,
+      208,
+      205,
+      277
+     ],
+     "first": 0.1992,
+     "comb": 0.6291
+    },
+    {
+     "me": 31,
+     "name": "Kaiser",
+     "kind": "attack",
+     "target": "1",
+     "targetName": "Harris [MEME]",
+     "t0": 1701,
+     "t1": 1708,
+     "n": 6,
+     "pcts": [
+      122,
+      122,
+      122,
+      122,
+      122,
+      265
+     ],
+     "first": 0.1201,
+     "comb": 0.6096
+    },
+    {
+     "me": 34,
+     "name": "Cataphract",
+     "kind": "boat",
+     "target": "1560932:0",
+     "targetName": "",
+     "t0": 3059,
+     "t1": 3066,
+     "n": 2,
+     "pcts": [
+      127,
+      487
+     ],
+     "first": 0.125,
+     "comb": 0.542
+    },
+    {
+     "me": 34,
+     "name": "Cataphract",
+     "kind": "boat",
+     "target": "1517859:0",
+     "targetName": "",
+     "t0": 4466,
+     "t1": 4480,
+     "n": 2,
+     "pcts": [
+      127,
+      459
+     ],
+     "first": 0.125,
+     "comb": 0.5181
+    },
+    {
+     "me": 38,
+     "name": "Yi Sun-sin",
+     "kind": "attack",
+     "target": "2",
+     "targetName": "✨",
+     "t0": 9961,
+     "t1": 9975,
+     "n": 2,
+     "pcts": [
+      299,
+      306
+     ],
+     "first": 0.293,
+     "comb": 0.5049
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1722,
+     "t1": 1722,
+     "n": 5,
+     "pcts": [
+      139,
+      47,
+      142,
+      143,
+      151
+     ],
+     "first": 0.1367,
+     "comb": 0.4819
+    },
+    {
+     "me": 36,
+     "name": "ProGamer99",
+     "kind": "attack",
+     "target": "230",
+     "targetName": "bot#230",
+     "t0": 840,
+     "t1": 854,
+     "n": 2,
+     "pcts": [
+      268,
+      283
+     ],
+     "first": 0.2627,
+     "comb": 0.4672
+    },
+    {
+     "me": 38,
+     "name": "Yi Sun-sin",
+     "kind": "attack",
+     "target": "457",
+     "targetName": "bot#457",
+     "t0": 1820,
+     "t1": 1827,
+     "n": 4,
+     "pcts": [
+      89,
+      143,
+      143,
+      89
+     ],
+     "first": 0.0879,
+     "comb": 0.3856
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "46",
+     "targetName": "KOKUTEK",
+     "t0": 4522,
+     "t1": 4536,
+     "n": 2,
+     "pcts": [
+      208,
+      212
+     ],
+     "first": 0.2041,
+     "comb": 0.3697
+    },
+    {
+     "me": 36,
+     "name": "ProGamer99",
+     "kind": "attack",
+     "target": "304",
+     "targetName": "bot#304",
+     "t0": 588,
+     "t1": 602,
+     "n": 2,
+     "pcts": [
+      179,
+      198
+     ],
+     "first": 0.1758,
+     "comb": 0.336
+    },
+    {
+     "me": 38,
+     "name": "Yi Sun-sin",
+     "kind": "donate",
+     "target": "31",
+     "targetName": "Kaiser",
+     "t0": 6342,
+     "t1": 6356,
+     "n": 2,
+     "pcts": [
+      185,
+      185
+     ],
+     "first": 0.1816,
+     "comb": 0.3303
+    },
+    {
+     "me": 41,
+     "name": "Darius",
+     "kind": "attack",
+     "target": "1",
+     "targetName": "Harris [MEME]",
+     "t0": 1757,
+     "t1": 1757,
+     "n": 3,
+     "pcts": [
+      122,
+      122,
+      122
+     ],
+     "first": 0.1201,
+     "comb": 0.3188
+    },
+    {
+     "me": 34,
+     "name": "Cataphract",
+     "kind": "boat",
+     "target": "1550180:1",
+     "targetName": "",
+     "t0": 4123,
+     "t1": 4130,
+     "n": 2,
+     "pcts": [
+      127,
+      148
+     ],
+     "first": 0.125,
+     "comb": 0.2523
+    },
+    {
+     "me": 32,
+     "name": "Panzergrenadier",
+     "kind": "boat",
+     "target": "1598378:0",
+     "targetName": "",
+     "t0": 1771,
+     "t1": 1771,
+     "n": 3,
+     "pcts": [
+      127,
+      17,
+      127
+     ],
+     "first": 0.125,
+     "comb": 0.2478
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1582,
+     "t1": 1582,
+     "n": 4,
+     "pcts": [
+      49,
+      47,
+      47,
+      125
+     ],
+     "first": 0.0488,
+     "comb": 0.2422
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "387",
+     "targetName": "bot#387",
+     "t0": 455,
+     "t1": 469,
+     "n": 2,
+     "pcts": [
+      133,
+      126
+     ],
+     "first": 0.1309,
+     "comb": 0.2387
+    },
+    {
+     "me": 33,
+     "name": "Guts",
+     "kind": "boat",
+     "target": "1161834:0",
+     "targetName": "",
+     "t0": 1715,
+     "t1": 1715,
+     "n": 2,
+     "pcts": [
+      127,
+      127
+     ],
+     "first": 0.125,
+     "comb": 0.2344
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "96",
+     "targetName": "bot#96",
+     "t0": 903,
+     "t1": 917,
+     "n": 2,
+     "pcts": [
+      122,
+      126
+     ],
+     "first": 0.1201,
+     "comb": 0.2292
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "6",
+     "targetName": "[FR] France Libre",
+     "t0": 2156,
+     "t1": 2170,
+     "n": 2,
+     "pcts": [
+      122,
+      122
+     ],
+     "first": 0.1201,
+     "comb": 0.2258
+    },
+    {
+     "me": 32,
+     "name": "Panzergrenadier",
+     "kind": "attack",
+     "target": "288",
+     "targetName": "bot#288",
+     "t0": 945,
+     "t1": 952,
+     "n": 2,
+     "pcts": [
+      137,
+      105
+     ],
+     "first": 0.1348,
+     "comb": 0.2243
+    },
+    {
+     "me": 36,
+     "name": "ProGamer99",
+     "kind": "attack",
+     "target": "454",
+     "targetName": "bot#454",
+     "t0": 742,
+     "t1": 756,
+     "n": 2,
+     "pcts": [
+      117,
+      118
+     ],
+     "first": 0.1152,
+     "comb": 0.2181
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1407,
+     "t1": 1407,
+     "n": 5,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.2134
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "1",
+     "targetName": "Harris [MEME]",
+     "t0": 1785,
+     "t1": 1785,
+     "n": 2,
+     "pcts": [
+      116,
+      96
+     ],
+     "first": 0.1143,
+     "comb": 0.1982
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "480",
+     "targetName": "bot#480",
+     "t0": 1582,
+     "t1": 1582,
+     "n": 2,
+     "pcts": [
+      79,
+      128
+     ],
+     "first": 0.0781,
+     "comb": 0.1943
+    },
+    {
+     "me": 37,
+     "name": "Luigi",
+     "kind": "attack",
+     "target": "259",
+     "targetName": "bot#259",
+     "t0": 791,
+     "t1": 805,
+     "n": 2,
+     "pcts": [
+      97,
+      106
+     ],
+     "first": 0.0957,
+     "comb": 0.1902
+    },
+    {
+     "me": 39,
+     "name": "Don",
+     "kind": "attack",
+     "target": "181",
+     "targetName": "bot#181",
+     "t0": 1141,
+     "t1": 1141,
+     "n": 2,
+     "pcts": [
+      100,
+      100
+     ],
+     "first": 0.0986,
+     "comb": 0.1875
+    },
+    {
+     "me": 32,
+     "name": "Panzergrenadier",
+     "kind": "attack",
+     "target": "288",
+     "targetName": "bot#288",
+     "t0": 994,
+     "t1": 994,
+     "n": 2,
+     "pcts": [
+      109,
+      76
+     ],
+     "first": 0.1074,
+     "comb": 0.1745
+    },
+    {
+     "me": 33,
+     "name": "Guts",
+     "kind": "attack",
+     "target": "281",
+     "targetName": "bot#281",
+     "t0": 1309,
+     "t1": 1323,
+     "n": 2,
+     "pcts": [
+      95,
+      86
+     ],
+     "first": 0.0938,
+     "comb": 0.1707
+    },
+    {
+     "me": 33,
+     "name": "Guts",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1407,
+     "t1": 1407,
+     "n": 3,
+     "pcts": [
+      65,
+      65,
+      47
+     ],
+     "first": 0.0645,
+     "comb": 0.1658
+    },
+    {
+     "me": 33,
+     "name": "Guts",
+     "kind": "attack",
+     "target": "160",
+     "targetName": "bot#160",
+     "t0": 1134,
+     "t1": 1134,
+     "n": 3,
+     "pcts": [
+      57,
+      57,
+      58
+     ],
+     "first": 0.0566,
+     "comb": 0.1613
+    },
+    {
+     "me": 33,
+     "name": "Guts",
+     "kind": "attack",
+     "target": "442",
+     "targetName": "bot#442",
+     "t0": 910,
+     "t1": 924,
+     "n": 2,
+     "pcts": [
+      89,
+      72
+     ],
+     "first": 0.0879,
+     "comb": 0.1529
+    },
+    {
+     "me": 38,
+     "name": "Yi Sun-sin",
+     "kind": "attack",
+     "target": "317",
+     "targetName": "bot#317",
+     "t0": 1673,
+     "t1": 1673,
+     "n": 3,
+     "pcts": [
+      47,
+      57,
+      58
+     ],
+     "first": 0.0469,
+     "comb": 0.1527
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "1",
+     "targetName": "Harris [MEME]",
+     "t0": 1722,
+     "t1": 1722,
+     "n": 3,
+     "pcts": [
+      55,
+      50,
+      50
+     ],
+     "first": 0.0547,
+     "comb": 0.1465
+    },
+    {
+     "me": 33,
+     "name": "Guts",
+     "kind": "boat",
+     "target": "1061639:2",
+     "targetName": "",
+     "t0": 2429,
+     "t1": 2443,
+     "n": 2,
+     "pcts": [
+      127,
+      22
+     ],
+     "first": 0.125,
+     "comb": 0.1447
+    },
+    {
+     "me": 32,
+     "name": "Panzergrenadier",
+     "kind": "boat",
+     "target": "1587602:2",
+     "targetName": "",
+     "t0": 1708,
+     "t1": 1708,
+     "n": 2,
+     "pcts": [
+      127,
+      12
+     ],
+     "first": 0.125,
+     "comb": 0.1361
+    },
+    {
+     "me": 38,
+     "name": "Yi Sun-sin",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 3563,
+     "t1": 3570,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1309,
+     "t1": 1309,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "96",
+     "targetName": "bot#96",
+     "t0": 1309,
+     "t1": 1309,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 33,
+     "name": "Guts",
+     "kind": "boat",
+     "target": "1075448:2",
+     "targetName": "",
+     "t0": 11417,
+     "t1": 11424,
+     "n": 2,
+     "pcts": [
+      127,
+      3
+     ],
+     "first": 0.125,
+     "comb": 0.1284
+    },
+    {
+     "me": 33,
+     "name": "Guts",
+     "kind": "boat",
+     "target": "835142:2",
+     "targetName": "",
+     "t0": 12138,
+     "t1": 12145,
+     "n": 3,
+     "pcts": [
+      127,
+      1,
+      1
+     ],
+     "first": 0.125,
+     "comb": 0.1284
+    },
+    {
+     "me": 38,
+     "name": "Yi Sun-sin",
+     "kind": "boat",
+     "target": "1047649:0",
+     "targetName": "",
+     "t0": 10500,
+     "t1": 10514,
+     "n": 2,
+     "pcts": [
+      127,
+      1
+     ],
+     "first": 0.125,
+     "comb": 0.1267
+    },
+    {
+     "me": 34,
+     "name": "Cataphract",
+     "kind": "attack",
+     "target": "320",
+     "targetName": "bot#320",
+     "t0": 896,
+     "t1": 910,
+     "n": 2,
+     "pcts": [
+      77,
+      47
+     ],
+     "first": 0.0762,
+     "comb": 0.1195
+    },
+    {
+     "me": 31,
+     "name": "Kaiser",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1778,
+     "t1": 1778,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 31,
+     "name": "Kaiser",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 3703,
+     "t1": 3710,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 33,
+     "name": "Guts",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1974,
+     "t1": 1988,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 33,
+     "name": "Guts",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 2170,
+     "t1": 2177,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 41,
+     "name": "Darius",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 2107,
+     "t1": 2121,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 34,
+     "name": "Cataphract",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 11284,
+     "t1": 11291,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 38,
+     "name": "Yi Sun-sin",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 5376,
+     "t1": 5383,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1771,
+     "t1": 1785,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 39,
+     "name": "Don",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1001,
+     "t1": 1001,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 39,
+     "name": "Don",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1141,
+     "t1": 1141,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 39,
+     "name": "Don",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1722,
+     "t1": 1722,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 39,
+     "name": "Don",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1820,
+     "t1": 1834,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    }
+   ]
+  },
+  "sameTick": {
+   "gap": 0,
+   "byKind": {
+    "attack": {
+     "cmds": 393,
+     "clusters": 334,
+     "dupClusters": 26,
+     "dupCmds": 85,
+     "extraCmds": 59,
+     "sizes": {
+      "1": 308,
+      "2": 9,
+      "3": 10,
+      "5": 4,
+      "4": 1,
+      "6": 1,
+      "7": 1
+     }
+    },
+    "boat": {
+     "cmds": 159,
+     "clusters": 152,
+     "dupClusters": 5,
+     "dupCmds": 12,
+     "extraCmds": 7,
+     "sizes": {
+      "1": 147,
+      "3": 2,
+      "2": 3
+     }
+    },
+    "donate": {
+     "cmds": 42,
+     "clusters": 42,
+     "dupClusters": 0,
+     "dupCmds": 0,
+     "extraCmds": 0,
+     "sizes": {
+      "1": 42
+     }
+    }
+   },
+   "dups": [
+    {
+     "me": 31,
+     "name": "Kaiser",
+     "kind": "attack",
+     "target": "1",
+     "targetName": "Harris [MEME]",
+     "t0": 1778,
+     "t1": 1778,
+     "n": 6,
+     "pcts": [
+      269,
+      267,
+      266,
+      122,
+      122,
+      122
+     ],
+     "first": 0.2637,
+     "comb": 0.7262
+    },
+    {
+     "me": 41,
+     "name": "Darius",
+     "kind": "attack",
+     "target": "1",
+     "targetName": "Harris [MEME]",
+     "t0": 1708,
+     "t1": 1708,
+     "n": 7,
+     "pcts": [
+      122,
+      122,
+      240,
+      122,
+      122,
+      208,
+      122
+     ],
+     "first": 0.1201,
+     "comb": 0.679
+    },
+    {
+     "me": 33,
+     "name": "Guts",
+     "kind": "attack",
+     "target": "23",
+     "targetName": "365",
+     "t0": 1778,
+     "t1": 1778,
+     "n": 5,
+     "pcts": [
+      255,
+      207,
+      238,
+      122,
+      122
+     ],
+     "first": 0.25,
+     "comb": 0.6453
+    },
+    {
+     "me": 34,
+     "name": "Cataphract",
+     "kind": "boat",
+     "target": "1394303:0",
+     "targetName": "",
+     "t0": 1575,
+     "t1": 1575,
+     "n": 3,
+     "pcts": [
+      246,
+      412,
+      198
+     ],
+     "first": 0.2412,
+     "comb": 0.6352
+    },
+    {
+     "me": 33,
+     "name": "Guts",
+     "kind": "attack",
+     "target": "23",
+     "targetName": "365",
+     "t0": 1799,
+     "t1": 1799,
+     "n": 3,
+     "pcts": [
+      122,
+      244,
+      253
+     ],
+     "first": 0.1201,
+     "comb": 0.4967
+    },
+    {
+     "me": 37,
+     "name": "Luigi",
+     "kind": "attack",
+     "target": "342",
+     "targetName": "bot#342",
+     "t0": 1232,
+     "t1": 1232,
+     "n": 3,
+     "pcts": [
+      203,
+      208,
+      205
+     ],
+     "first": 0.1992,
+     "comb": 0.4909
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1722,
+     "t1": 1722,
+     "n": 5,
+     "pcts": [
+      139,
+      47,
+      142,
+      143,
+      151
+     ],
+     "first": 0.1367,
+     "comb": 0.4819
+    },
+    {
+     "me": 31,
+     "name": "Kaiser",
+     "kind": "attack",
+     "target": "1",
+     "targetName": "Harris [MEME]",
+     "t0": 1701,
+     "t1": 1701,
+     "n": 5,
+     "pcts": [
+      122,
+      122,
+      122,
+      122,
+      122
+     ],
+     "first": 0.1201,
+     "comb": 0.4726
+    },
+    {
+     "me": 38,
+     "name": "Yi Sun-sin",
+     "kind": "attack",
+     "target": "457",
+     "targetName": "bot#457",
+     "t0": 1820,
+     "t1": 1820,
+     "n": 3,
+     "pcts": [
+      89,
+      143,
+      143
+     ],
+     "first": 0.0879,
+     "comb": 0.3264
+    },
+    {
+     "me": 41,
+     "name": "Darius",
+     "kind": "attack",
+     "target": "1",
+     "targetName": "Harris [MEME]",
+     "t0": 1757,
+     "t1": 1757,
+     "n": 3,
+     "pcts": [
+      122,
+      122,
+      122
+     ],
+     "first": 0.1201,
+     "comb": 0.3188
+    },
+    {
+     "me": 32,
+     "name": "Panzergrenadier",
+     "kind": "boat",
+     "target": "1598378:0",
+     "targetName": "",
+     "t0": 1771,
+     "t1": 1771,
+     "n": 3,
+     "pcts": [
+      127,
+      17,
+      127
+     ],
+     "first": 0.125,
+     "comb": 0.2478
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1582,
+     "t1": 1582,
+     "n": 4,
+     "pcts": [
+      49,
+      47,
+      47,
+      125
+     ],
+     "first": 0.0488,
+     "comb": 0.2422
+    },
+    {
+     "me": 33,
+     "name": "Guts",
+     "kind": "boat",
+     "target": "1161834:0",
+     "targetName": "",
+     "t0": 1715,
+     "t1": 1715,
+     "n": 2,
+     "pcts": [
+      127,
+      127
+     ],
+     "first": 0.125,
+     "comb": 0.2344
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1407,
+     "t1": 1407,
+     "n": 5,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.2134
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "1",
+     "targetName": "Harris [MEME]",
+     "t0": 1785,
+     "t1": 1785,
+     "n": 2,
+     "pcts": [
+      116,
+      96
+     ],
+     "first": 0.1143,
+     "comb": 0.1982
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "480",
+     "targetName": "bot#480",
+     "t0": 1582,
+     "t1": 1582,
+     "n": 2,
+     "pcts": [
+      79,
+      128
+     ],
+     "first": 0.0781,
+     "comb": 0.1943
+    },
+    {
+     "me": 39,
+     "name": "Don",
+     "kind": "attack",
+     "target": "181",
+     "targetName": "bot#181",
+     "t0": 1141,
+     "t1": 1141,
+     "n": 2,
+     "pcts": [
+      100,
+      100
+     ],
+     "first": 0.0986,
+     "comb": 0.1875
+    },
+    {
+     "me": 32,
+     "name": "Panzergrenadier",
+     "kind": "attack",
+     "target": "288",
+     "targetName": "bot#288",
+     "t0": 994,
+     "t1": 994,
+     "n": 2,
+     "pcts": [
+      109,
+      76
+     ],
+     "first": 0.1074,
+     "comb": 0.1745
+    },
+    {
+     "me": 33,
+     "name": "Guts",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1407,
+     "t1": 1407,
+     "n": 3,
+     "pcts": [
+      65,
+      65,
+      47
+     ],
+     "first": 0.0645,
+     "comb": 0.1658
+    },
+    {
+     "me": 33,
+     "name": "Guts",
+     "kind": "attack",
+     "target": "160",
+     "targetName": "bot#160",
+     "t0": 1134,
+     "t1": 1134,
+     "n": 3,
+     "pcts": [
+      57,
+      57,
+      58
+     ],
+     "first": 0.0566,
+     "comb": 0.1613
+    },
+    {
+     "me": 38,
+     "name": "Yi Sun-sin",
+     "kind": "attack",
+     "target": "317",
+     "targetName": "bot#317",
+     "t0": 1673,
+     "t1": 1673,
+     "n": 3,
+     "pcts": [
+      47,
+      57,
+      58
+     ],
+     "first": 0.0469,
+     "comb": 0.1527
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "1",
+     "targetName": "Harris [MEME]",
+     "t0": 1722,
+     "t1": 1722,
+     "n": 3,
+     "pcts": [
+      55,
+      50,
+      50
+     ],
+     "first": 0.0547,
+     "comb": 0.1465
+    },
+    {
+     "me": 32,
+     "name": "Panzergrenadier",
+     "kind": "boat",
+     "target": "1587602:2",
+     "targetName": "",
+     "t0": 1708,
+     "t1": 1708,
+     "n": 2,
+     "pcts": [
+      127,
+      12
+     ],
+     "first": 0.125,
+     "comb": 0.1361
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1309,
+     "t1": 1309,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 35,
+     "name": "System32",
+     "kind": "attack",
+     "target": "96",
+     "targetName": "bot#96",
+     "t0": 1309,
+     "t1": 1309,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 33,
+     "name": "Guts",
+     "kind": "boat",
+     "target": "835142:2",
+     "targetName": "",
+     "t0": 12138,
+     "t1": 12138,
+     "n": 2,
+     "pcts": [
+      127,
+      1
+     ],
+     "first": 0.125,
+     "comb": 0.1267
+    },
+    {
+     "me": 31,
+     "name": "Kaiser",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1778,
+     "t1": 1778,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 38,
+     "name": "Yi Sun-sin",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 3563,
+     "t1": 3563,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 39,
+     "name": "Don",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1001,
+     "t1": 1001,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 39,
+     "name": "Don",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1141,
+     "t1": 1141,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 39,
+     "name": "Don",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1722,
+     "t1": 1722,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    }
+   ]
+  }
+ }
+}

@@ -1,0 +1,23 @@
+# A089 捐款去向：t 捐方(dMe,myBal) → 收方(快照拍/过期拍数, terr, bal, dens, nb) 之后90拍 dCmds/dTerr | 到账/费
+2320 zero_7(d58,484557) offense_dispatch pct=247 → sora_w(snap2250/age70, terr17474, bal230467, d13.2, nb2) 之后: dCmds=0 dTerr=+0 | 117353/30284
+2620 zero_7(d61,506532) offense_dispatch pct=281 → sora_w(snap2610/age10, terr17474, bal668590, d38.3, nb2) 之后: dCmds=0 dTerr=+0 | 139494/31658
+2820 zero_7(d53,441363) defense_dispatch pct=380 → kaito9(snap2790/age30, terr12469, bal340978, d27.3, nb3) 之后: dCmds=0 dTerr=-1675 | 164218/27585
+3320 zero_7(d60,501066) yield_opt_dispatch pct=273 → sora_w(snap3240/age80, terr22285, bal839112, d37.7, nb1) 之后: dCmds=0 dTerr=+782 | 134074/31316
+3515 zexos1(d113,1047832) yield_opt_dispatch pct=191 → sora_w(snap3510/age5, terr23067, bal1604573, d69.6, nb1) 之后: dCmds=0 dTerr=+0 | 196468/65489
+3620 zero_7(d60,504768) yield_opt_dispatch pct=278 → sora_w(snap3600/age20, terr23067, bal2043409, d88.6, nb1) 之后: dCmds=0 dTerr=+0 | 137529/31548
+3630 riku_x(d114,600591) yield_opt_dispatch pct=199 → sora_w(snap3600/age30, terr23067, bal2043409, d88.6, nb1) 之后: dCmds=0 dTerr=+0 | 117302/37536
+3710 sora_w(d114,2622371) offense_dispatch pct=195 → kaito9(snap3690/age20, terr12864, bal892919, d69.4, nb3) 之后: dCmds=4 dTerr=+669 | 501938/163898
+3880 riku_x(d113,592997) offense_dispatch pct=188 → kaito9(snap3870/age10, terr15156, bal1322039, d87.2, nb3) 之后: dCmds=3 dTerr=+1769 | 109449/37062
+3920 zero_7(d60,504794) yield_opt_dispatch pct=278 → sora_w(snap3870/age50, terr23067, bal2422799, d105.0, nb1) 之后: dCmds=1 dTerr=+500 | 137536/31549
+4045 zero_7(d47,394739) defense_dispatch pct=330 → zexos1(snap3960/age85, terr10456, bal907605, d86.8, nb2) 之后: dCmds=1 dTerr=+215 | 127596/24671
+4045 talon5(d113,1051782) defense_dispatch pct=224 → zexos1(snap3960/age85, terr10456, bal907605, d86.8, nb2) 之后: dCmds=1 dTerr=+215 | 231104/65736
+4320 zero_7(d44,364745) defense_dispatch pct=273 → zexos1(snap4320/age0, terr12075, bal1055099, d87.4, nb3) 之后: dCmds=3 dTerr=+1102 | 97597/22796
+
+## 汇总（笔数 / 名义到账 / 手续费）
+  all: 13 笔 / 2211658 / 601128
+  recvSnapshotFresh: 13 笔 / 2211658 / 601128
+  recvDenserThanDonor: 4 笔 / 500258 / 110564
+  recvDens>=60: 9 笔 / 1656519 / 480285
+  recvStale(>90拍无快照=停摆): 0 笔 / 0 / 0
+  recvZeroCmdsNext90: 7 笔 / 1006438 / 255416
+  recvNonSquadOrUnknown: 0 笔 / 0 / 0

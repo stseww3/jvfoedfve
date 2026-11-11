@@ -1,0 +1,215 @@
+# A079 ryan_m 影子决策明细 t=2600~4600（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   捐兵: 21 拍（t=2600~4575）；可用兵 129019~221324，一条指令下限(20%余额) 138317~174271，比值 82%~149%
+#   有可用兵但没发（脉冲下限/冷却/其他）: 172 拍（t=2605~4490）；可用兵 24187~445136，一条指令下限(20%余额) 108779~174271，比值 18%~375%
+#   出手打人/bot: 18 拍（t=2660~4505）；可用兵 35906~298645，一条指令下限(20%余额) 110062~175439，比值 27%~271%
+#   首选目标价高（c>=worth）: 172 拍（t=2675~4455）
+#   没有可打的邻居: 18 拍（t=4510~4600）
+#   └ 「出手打人/bot」里：18 条对人/bot 的出兵共约 1470630 兵；其中超过软上限（over=1）时发的 13 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 13 条约 1219778 兵，c/worth = 1.25~6.52
+t=2600 ryan_m B=691584 L=5584 d=123.9 nb=1 neut=0 cmds=46 noFull=1 shQ=172120 | m=0.900 worth=111.5 cheap=8.6 over=1 dMedOther=67.5 safe(-1)=491392
+    → Yellow Beast 2137#46[T3] terr=11773 bal=1259300 dq=107.0 cnt=57 | c=409.8 rankC=409.8 need=2262226 tD=1.58 人 pulse | safe=491392 keep=491392 avail=192088 chunkB=138317 pulseB=82990 
+    ⇒ 影子指令 donate pct=220 → [APEX] zero_7#69[T2]（约 149257 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=2625 ryan_m B=699907 L=5584 d=125.3 nb=1 neut=0 cmds=47 noFull=1 shQ=174976 | m=0.900 worth=112.8 cheap=8.6 over=1 dMedOther=69.3 safe(-1)=491392
+    → Yellow Beast 2137#46[T3] terr=11773 bal=1285883 dq=109.2 cnt=57 | c=418.4 rankC=418.4 need=2309607 tD=1.58 人 pulse | safe=491392 keep=491392 avail=200313 chunkB=139981 pulseB=83989 
+    ⇒ 影子指令 donate pct=220 → [APEX] zero_7#69[T2]（约 151054 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=2650 ryan_m B=711659 L=5584 d=127.4 nb=1 neut=0 cmds=48 noFull=1 shQ=177914 | m=0.900 worth=114.7 cheap=8.6 over=1 dMedOther=72.0 safe(-1)=491392
+    → Yellow Beast 2137#46[T3] terr=11773 bal=1324058 dq=112.5 cnt=57 | c=624.5 rankC=905.5 need=2377650 tD=1.56 人 pulse | safe=491392 keep=491392 avail=211928 chunkB=142332 pulseB=85399 
+    ⇒ 影子指令 donate pct=220 → [APEX] zero_7#69[T2]（约 153590 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=2660 ryan_m B=715359 L=5584 d=128.1 nb=1 neut=0 cmds=49 noFull=1 shQ=178839 | m=0.900 worth=115.3 cheap=8.6 over=1 dMedOther=72.9 safe(-1)=491392
+    → Yellow Beast 2137#46[T3] terr=11773 bal=1336371 dq=113.5 cnt=57 | c=630.2 rankC=913.9 need=2399597 tD=1.56 人 pulse | safe=491392 keep=491392 avail=215584 chunkB=143072 pulseB=85843 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 85926 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2665 ryan_m B=715359 L=5584 d=128.1 nb=1 neut=0 cmds=50 noFull=1 shQ=178839 | m=0.900 worth=115.3 cheap=8.6 over=1 dMedOther=72.9 safe(-1)=491392
+    → Yellow Beast 2137#46[T3] terr=11773 bal=1336371 dq=113.5 cnt=57 | c=630.2 rankC=913.9 need=2399597 tD=1.56 人 pulse | safe=491392 keep=491392 avail=215584 chunkB=143072 pulseB=85843 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 85926 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2670 ryan_m B=719007 L=5584 d=128.8 nb=1 neut=0 cmds=51 noFull=1 shQ=179751 | m=0.900 worth=115.9 cheap=8.6 over=1 dMedOther=73.8 safe(-1)=491392
+    → Yellow Beast 2137#46[T3] terr=11773 bal=1348398 dq=114.5 cnt=57 | c=635.9 rankC=922.0 need=2421034 tD=1.55 人 pulse | safe=491392 keep=491392 avail=219190 chunkB=143801 pulseB=86281 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 86365 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2700 ryan_m B=492844 L=6013 d=82.0 nb=1 neut=0 cmds=51 noFull=1 shQ=35881 | m=0.900 worth=73.8 cheap=8.6 over=0 dMedOther=73.0 safe(-1)=529144
+    → Yellow Beast 2137#46[T3] terr=11344 bal=1315416 dq=116.0 cnt=67 | c=583.8 rankC=583.8 need=2276705 tD=1.59 人 pulse crowdedHard | safe=529144 keep=Inf avail=-Inf chunkB=98569 pulseB=59141 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2750 ryan_m B=521847 L=6149 d=84.9 nb=1 neut=0 cmds=51 noFull=1 shQ=109075 | m=0.900 worth=76.4 cheap=8.6 over=0 dMedOther=77.3 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=11208 bal=1335434 dq=119.2 cnt=70 | c=618.2 rankC=618.2 need=2375940 tD=1.54 人 pulse crowdedHard | safe=541112 keep=Inf avail=-Inf chunkB=104369 pulseB=62622 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2800 ryan_m B=558699 L=6149 d=90.9 nb=1 neut=0 cmds=51 noFull=1 shQ=138187 | m=0.900 worth=81.8 cheap=8.6 over=0 dMedOther=81.7 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=11208 bal=1395000 dq=124.5 cnt=70 | c=935.6 rankC=1356.6 need=2483515 tD=1.52 人 pulse crowdedHard | safe=541112 keep=Inf avail=-Inf chunkB=111740 pulseB=67044 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2850 ryan_m B=591569 L=6149 d=96.2 nb=1 neut=0 cmds=51 noFull=1 shQ=147892 | m=0.900 worth=86.6 cheap=8.6 over=0 dMedOther=84.2 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=11208 bal=1436638 dq=128.2 cnt=70 | c=664.0 rankC=664.0 need=2559362 tD=1.52 人 pulse crowdedHard | safe=541112 keep=Inf avail=-Inf chunkB=118314 pulseB=70988 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2900 ryan_m B=632461 L=6149 d=102.9 nb=1 neut=0 cmds=51 noFull=1 shQ=156536 | m=0.900 worth=92.6 cheap=8.6 over=1 dMedOther=84.0 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=11208 bal=1484412 dq=132.4 cnt=70 | c=685.6 rankC=685.6 need=2646390 tD=1.58 人 pulse crowdedHard | safe=541112 keep=553410 avail=71640 chunkB=126492 pulseB=75895 
+    ⇒ 本拍没有指令
+t=2950 ryan_m B=665971 L=6149 d=108.3 nb=1 neut=0 cmds=51 noFull=1 shQ=166492 | m=0.900 worth=97.5 cheap=8.6 over=1 dMedOther=88.9 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=11208 bal=1514788 dq=135.2 cnt=70 | c=1013.9 rankC=1470.2 need=2702525 tD=1.52 人 pulse crowdedHard | safe=541112 keep=553410 avail=104757 chunkB=133194 pulseB=79917 
+    ⇒ 本拍没有指令
+t=3000 ryan_m B=703182 L=6149 d=114.4 nb=1 neut=0 cmds=52 noFull=1 shQ=174512 | m=0.900 worth=102.9 cheap=8.6 over=1 dMedOther=93.6 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=11208 bal=1552227 dq=138.5 cnt=70 | c=716.1 rankC=716.1 need=2771477 tD=1.48 人 pulse crowdedHard | safe=541112 keep=553410 avail=141532 chunkB=140636 pulseB=84382 
+    ⇒ 影子指令 donate pct=200 → [APEX] zero_7#69[T2]（约 138026 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3025 ryan_m B=714619 L=6149 d=116.2 nb=1 neut=0 cmds=53 noFull=1 shQ=178654 | m=0.900 worth=104.6 cheap=8.6 over=1 dMedOther=93.2 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=11208 bal=1561086 dq=139.3 cnt=70 | c=719.9 rankC=719.9 need=2788390 tD=1.49 人 pulse crowdedHard | safe=541112 keep=553410 avail=152835 chunkB=142924 pulseB=85754 
+    ⇒ 影子指令 donate pct=213 → [APEX] zero_7#69[T2]（约 149344 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3050 ryan_m B=731035 L=6149 d=118.9 nb=1 neut=0 cmds=54 noFull=1 shQ=182758 | m=0.900 worth=107.0 cheap=8.6 over=1 dMedOther=96.5 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=11208 bal=1573292 dq=140.4 cnt=70 | c=725.4 rankC=725.4 need=2811260 tD=1.45 人 pulse crowdedHard | safe=541112 keep=553410 avail=169059 chunkB=146207 pulseB=87724 
+    ⇒ 影子指令 donate pct=220 → [APEX] zero_7#69[T2]（约 157772 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3075 ryan_m B=741452 L=6149 d=120.6 nb=1 neut=0 cmds=55 noFull=1 shQ=185363 | m=0.900 worth=108.5 cheap=8.6 over=1 dMedOther=96.7 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1508097 dq=138.6 cnt=66 | c=413.5 rankC=206.8 need=2679943 tD=1.43 人 pulse crowdedHard | safe=541112 keep=553410 avail=179354 chunkB=148290 pulseB=88974 
+    ⇒ 影子指令 donate pct=220 → [APEX] zero_7#69[T2]（约 160020 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3100 ryan_m B=762377 L=6149 d=124.0 nb=1 neut=0 cmds=56 noFull=1 shQ=189759 | m=0.900 worth=111.6 cheap=8.6 over=1 dMedOther=97.9 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1519624 dq=139.6 cnt=66 | c=724.2 rankC=724.2 need=2701513 tD=1.43 人 pulse crowdedHard | safe=541112 keep=541112 avail=212331 chunkB=152475 pulseB=91485 
+    ⇒ 影子指令 donate pct=220 → [APEX] zero_7#69[T2]（约 164536 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3125 ryan_m B=771476 L=6149 d=125.5 nb=1 neut=0 cmds=57 noFull=1 shQ=192869 | m=0.900 worth=112.9 cheap=8.6 over=1 dMedOther=100.3 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1527383 dq=140.3 cnt=66 | c=727.7 rankC=727.7 need=2716439 tD=1.40 人 pulse crowdedHard | safe=541112 keep=541112 avail=221324 chunkB=154295 pulseB=92577 
+    ⇒ 影子指令 donate pct=220 → [APEX] leo_tx#65[T2]（约 166500 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3150 ryan_m B=572884 L=6149 d=93.2 nb=1 neut=0 cmds=57 noFull=1 shQ=143221 | m=0.900 worth=83.9 cheap=8.6 over=0 dMedOther=95.0 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1537945 dq=141.3 cnt=66 | c=731.8 rankC=731.8 need=2736333 tD=1.49 人 pulse crowdedHard | safe=541112 keep=Inf avail=-Inf chunkB=114577 pulseB=68746 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3200 ryan_m B=612738 L=6149 d=99.6 nb=1 neut=0 cmds=57 noFull=1 shQ=151699 | m=0.900 worth=89.7 cheap=8.6 over=0 dMedOther=97.5 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1564577 dq=143.8 cnt=66 | c=744.1 rankC=744.1 need=2786123 tD=1.47 人 pulse crowdedHard | safe=541112 keep=Inf avail=-Inf chunkB=122548 pulseB=73529 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3250 ryan_m B=647442 L=6149 d=105.3 nb=1 neut=0 cmds=57 noFull=1 shQ=161846 | m=0.900 worth=94.8 cheap=8.6 over=1 dMedOther=100.5 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1576187 dq=144.8 cnt=66 | c=749.2 rankC=749.2 need=2809169 tD=1.44 人 pulse crowdedHard | safe=541112 keep=553410 avail=86445 chunkB=129488 pulseB=77693 
+    ⇒ 本拍没有指令
+t=3300 ryan_m B=686076 L=6149 d=111.6 nb=1 neut=0 cmds=57 noFull=1 shQ=170114 | m=0.900 worth=100.4 cheap=8.6 over=1 dMedOther=96.6 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1596706 dq=146.7 cnt=66 | c=1099.9 rankC=1594.8 need=2848254 tD=1.52 人 pulse crowdedHard | safe=541112 keep=553410 avail=124627 chunkB=137215 pulseB=82329 
+    ⇒ 本拍没有指令
+t=3325 ryan_m B=698203 L=6149 d=113.5 nb=1 neut=0 cmds=58 noFull=1 shQ=174550 | m=0.900 worth=102.2 cheap=8.6 over=1 dMedOther=96.7 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1599421 dq=147.0 cnt=66 | c=759.6 rankC=759.6 need=2854327 tD=1.52 人 pulse crowdedHard | safe=541112 keep=553410 avail=136611 chunkB=139641 pulseB=83784 
+    ⇒ 影子指令 donate pct=194 → [APEX] zero_7#69[T2]（约 132958 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3350 ryan_m B=715518 L=6149 d=116.4 nb=1 neut=0 cmds=59 noFull=1 shQ=178879 | m=0.900 worth=104.7 cheap=8.6 over=1 dMedOther=97.7 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1603101 dq=147.3 cnt=66 | c=1103.7 rankC=1600.4 need=2862116 tD=1.51 人 pulse crowdedHard | safe=541112 keep=553410 avail=153724 chunkB=143104 pulseB=85862 
+    ⇒ 影子指令 donate pct=214 → [APEX] zero_7#69[T2]（约 150230 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3375 ryan_m B=726579 L=6149 d=118.2 nb=1 neut=0 cmds=60 noFull=1 shQ=181644 | m=0.900 worth=106.3 cheap=8.6 over=1 dMedOther=100.1 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1605345 dq=147.5 cnt=66 | c=1104.9 rankC=1602.2 need=2867568 tD=1.47 人 pulse crowdedHard | safe=541112 keep=553410 avail=164655 chunkB=145316 pulseB=87189 
+    ⇒ 影子指令 donate pct=220 → [APEX] zero_7#69[T2]（约 156810 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3400 ryan_m B=748534 L=6149 d=121.7 nb=1 neut=0 cmds=61 noFull=1 shQ=186177 | m=0.900 worth=109.6 cheap=8.6 over=1 dMedOther=97.6 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1619278 dq=148.8 cnt=66 | c=1114.2 rankC=1615.6 need=2893583 tD=1.53 人 pulse crowdedHard | safe=541112 keep=553410 avail=186353 chunkB=149707 pulseB=89824 
+    ⇒ 影子指令 donate pct=220 → [APEX] leo_tx#65[T2]（约 161548 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3450 ryan_m B=571986 L=6149 d=93.0 nb=1 neut=0 cmds=61 noFull=1 shQ=142996 | m=0.900 worth=83.7 cheap=8.6 over=0 dMedOther=96.7 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1621706 dq=149.0 cnt=66 | c=1114.4 rankC=1615.9 need=2900432 tD=1.54 人 pulse crowdedHard | safe=541112 keep=Inf avail=-Inf chunkB=114397 pulseB=68638 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3500 ryan_m B=611786 L=6149 d=99.5 nb=1 neut=0 cmds=61 noFull=1 shQ=151462 | m=0.900 worth=89.5 cheap=8.6 over=0 dMedOther=91.7 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1632450 dq=150.0 cnt=66 | c=773.3 rankC=773.3 need=2922297 tD=1.64 人 pulse crowdedHard | safe=541112 keep=Inf avail=-Inf chunkB=122357 pulseB=73414 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3550 ryan_m B=646500 L=6149 d=105.1 nb=1 neut=0 cmds=61 noFull=1 shQ=161609 | m=0.900 worth=94.6 cheap=8.6 over=1 dMedOther=96.4 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1632450 dq=150.0 cnt=66 | c=772.9 rankC=772.9 need=2924834 tD=1.56 人 pulse crowdedHard | safe=541112 keep=553410 avail=85514 chunkB=129300 pulseB=77580 
+    ⇒ 本拍没有指令
+t=3585 ryan_m B=666352 L=6149 d=108.4 nb=1 neut=0 cmds=62 noFull=1 shQ=166588 | m=0.900 worth=97.5 cheap=8.6 over=1 dMedOther=93.0 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=10487 bal=1539044 dq=146.8 cnt=66 | c=179.4 rankC=89.7 need=2738992 tD=1.58 人 pulse bleeding | safe=541112 keep=553410 avail=105134 chunkB=133270 pulseB=79962 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 80040 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3590 ryan_m B=672748 L=6149 d=109.4 nb=1 neut=0 cmds=63 noFull=1 shQ=168187 | m=0.900 worth=98.5 cheap=8.6 over=1 dMedOther=94.1 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=10395 bal=1516175 dq=145.9 cnt=66 | c=181.3 rankC=90.6 need=2693590 tD=1.55 人 pulse bleeding | safe=541112 keep=553410 avail=111455 chunkB=134550 pulseB=80730 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 80808 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3595 ryan_m B=672748 L=6149 d=109.4 nb=1 neut=0 cmds=64 noFull=1 shQ=168187 | m=0.900 worth=98.5 cheap=8.6 over=1 dMedOther=94.1 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=10356 bal=1507081 dq=145.5 cnt=66 | c=182.0 rankC=91.0 need=2675746 tD=1.55 人 pulse bleeding | safe=541112 keep=553410 avail=111455 chunkB=134550 pulseB=80730 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 80808 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3600 ryan_m B=596922 L=6149 d=97.1 nb=1 neut=0 cmds=64 noFull=1 shQ=66937 | m=0.900 worth=87.4 cheap=8.6 over=0 dMedOther=96.3 safe(-1)=541112
+    → Yellow Beast 2137#46[T3] terr=10316 bal=1509876 dq=146.4 cnt=66 | c=168.2 rankC=84.1 need=2597803 tD=1.52 人 pulse bleeding | safe=541112 keep=Inf avail=-Inf chunkB=119384 pulseB=71631 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3650 ryan_m B=476803 L=6617 d=72.1 nb=1 neut=0 cmds=64 noFull=1 shQ=119200 | m=0.900 worth=67.0 cheap=8.5 over=0 dMedOther=87.6 safe(-1)=582296
+    → Yellow Beast 2137#46[T3] terr=9101 bal=1249234 dq=137.3 cnt=68 | c=390.6 rankC=195.3 need=2153525 tD=1.57 人 pulse crowdedHard | safe=582296 keep=Inf avail=-Inf chunkB=95361 pulseB=57216 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3700 ryan_m B=674407 L=6617 d=101.9 nb=1 neut=0 cmds=64 noFull=1 shQ=166922 | m=0.900 worth=91.7 cheap=8.5 over=1 dMedOther=90.6 safe(-1)=582296
+    → Yellow Beast 2137#46[T3] terr=8702 bal=1191198 dq=136.9 cnt=68 | c=421.2 rankC=210.6 need=2031189 tD=1.51 人 pulse crowdedHard | safe=582296 keep=595530 avail=70974 chunkB=134881 pulseB=80929 
+    ⇒ 本拍没有指令
+t=3750 ryan_m B=711476 L=6617 d=107.5 nb=1 neut=0 cmds=64 noFull=1 shQ=177851 | m=0.900 worth=96.8 cheap=8.5 over=1 dMedOther=93.9 safe(-1)=582296
+    → Yellow Beast 2137#46[T3] terr=8702 bal=1208858 dq=138.9 cnt=68 | c=736.5 rankC=736.5 need=2065104 tD=1.48 人 pulse crowdedHard | safe=582296 keep=595530 avail=107609 chunkB=142295 pulseB=85377 
+    ⇒ 本拍没有指令
+t=3800 ryan_m B=752459 L=6617 d=113.7 nb=1 neut=0 cmds=64 noFull=1 shQ=186678 | m=0.900 worth=102.3 cheap=8.5 over=1 dMedOther=99.2 safe(-1)=582296
+    → Yellow Beast 2137#46[T3] terr=8702 bal=1232865 dq=141.7 cnt=68 | c=750.6 rankC=750.6 need=2108797 tD=1.43 人 pulse crowdedHard | safe=582296 keep=595530 avail=148112 chunkB=150492 pulseB=90295 
+    ⇒ 本拍没有指令
+t=3825 ryan_m B=765152 L=6617 d=115.6 nb=1 neut=0 cmds=65 noFull=1 shQ=191288 | m=0.900 worth=104.1 cheap=8.5 over=1 dMedOther=87.5 safe(-1)=582296
+    → Yellow Beast 2137#46[T3] terr=8702 bal=1237800 dq=142.2 cnt=68 | c=753.4 rankC=753.4 need=2118541 tD=1.63 人 pulse crowdedHard | safe=582296 keep=595530 avail=160656 chunkB=153030 pulseB=91818 
+    ⇒ 影子指令 donate pct=209 → [APEX] alex_k#67[T2]（约 156915 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3850 ryan_m B=578250 L=6617 d=87.4 nb=1 neut=0 cmds=65 noFull=1 shQ=144562 | m=0.900 worth=78.6 cheap=8.5 over=0 dMedOther=89.4 safe(-1)=582296
+    → Yellow Beast 2137#46[T3] terr=8702 bal=1244619 dq=143.0 cnt=68 | c=756.5 rankC=756.5 need=2131501 tD=1.60 人 pulse crowdedHard | safe=582296 keep=Inf avail=-Inf chunkB=115650 pulseB=69390 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3880 ryan_m B=858728 L=6617 d=129.8 nb=1 neut=0 cmds=66 noFull=1 shQ=164706 | m=0.900 worth=116.8 cheap=8.5 over=1 dMedOther=91.2 safe(-1)=582296
+    → Yellow Beast 2137#46[T3] terr=8702 bal=1250851 dq=143.7 cnt=68 | c=761.1 rankC=761.1 need=2143928 tD=1.58 人 pulse crowdedHard | safe=582296 keep=582296 avail=266369 chunkB=171746 pulseB=103047 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 103147 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3885 ryan_m B=858728 L=6617 d=129.8 nb=1 neut=0 cmds=67 noFull=1 shQ=175436 | m=0.900 worth=116.8 cheap=8.5 over=1 dMedOther=90.8 safe(-1)=582296
+    → Yellow Beast 2137#46[T3] terr=8702 bal=1250851 dq=143.7 cnt=68 | c=761.0 rankC=761.0 need=2144154 tD=1.58 人 pulse crowdedHard | safe=582296 keep=582296 avail=266369 chunkB=171746 pulseB=103047 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 103147 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3890 ryan_m B=862849 L=6617 d=130.4 nb=1 neut=0 cmds=68 noFull=1 shQ=186177 | m=0.900 worth=117.4 cheap=8.5 over=1 dMedOther=91.7 safe(-1)=582296
+    → Yellow Beast 2137#46[T3] terr=8702 bal=1252852 dq=144.0 cnt=68 | c=762.2 rankC=762.2 need=2147792 tD=1.57 人 pulse crowdedHard | safe=582296 keep=582296 avail=270442 chunkB=172570 pulseB=103542 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 103642 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3900 ryan_m B=577824 L=6685 d=86.4 nb=1 neut=0 cmds=68 noFull=1 shQ=96554 | m=0.900 worth=77.8 cheap=8.5 over=0 dMedOther=91.3 safe(-1)=588280
+    → Yellow Beast 2137#46[T3] terr=8634 bal=1247638 dq=144.5 cnt=68 | c=678.9 rankC=678.9 need=1894788 tD=1.58 人 pulse crowdedHard | safe=588280 keep=Inf avail=-Inf chunkB=115565 pulseB=69339 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3950 ryan_m B=612461 L=7169 d=85.4 nb=1 neut=0 cmds=68 noFull=1 shQ=153115 | m=0.900 worth=76.9 cheap=8.5 over=0 dMedOther=94.1 safe(-1)=630872
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1141765 dq=140.1 cnt=70 | c=746.9 rankC=746.9 need=1925995 tD=1.49 人 pulse crowdedHard | safe=630872 keep=Inf avail=-Inf chunkB=122492 pulseB=73495 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4000 ryan_m B=656305 L=7169 d=91.5 nb=1 neut=0 cmds=68 noFull=1 shQ=162326 | m=0.900 worth=82.4 cheap=8.5 over=0 dMedOther=100.7 safe(-1)=630872
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1162758 dq=142.7 cnt=70 | c=1101.4 rankC=1597.0 need=1966997 tD=1.42 人 pulse crowdedHard | safe=630872 keep=Inf avail=-Inf chunkB=131261 pulseB=78757 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4050 ryan_m B=695605 L=7169 d=97.0 nb=1 neut=0 cmds=68 noFull=1 shQ=173901 | m=0.900 worth=87.3 cheap=8.5 over=0 dMedOther=95.9 safe(-1)=630872
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1172556 dq=143.9 cnt=70 | c=765.0 rankC=765.0 need=1989286 tD=1.50 人 pulse crowdedHard | safe=630872 keep=Inf avail=-Inf chunkB=139121 pulseB=83473 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4100 ryan_m B=744136 L=7169 d=103.8 nb=1 neut=0 cmds=68 noFull=1 shQ=184174 | m=0.900 worth=93.4 cheap=8.5 over=1 dMedOther=98.8 safe(-1)=630872
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1188935 dq=145.9 cnt=70 | c=1123.4 rankC=1628.9 need=2022304 tD=1.48 人 pulse crowdedHard | safe=630872 keep=645210 avail=90206 chunkB=148827 pulseB=89296 
+    ⇒ 本拍没有指令
+t=4150 ryan_m B=783409 L=7169 d=109.3 nb=1 neut=0 cmds=69 noFull=1 shQ=195852 | m=0.900 worth=98.3 cheap=8.5 over=1 dMedOther=100.1 safe(-1)=630872
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1194651 dq=146.6 cnt=70 | c=778.1 rankC=778.1 need=2034786 tD=1.46 人 pulse crowdedHard | safe=630872 keep=645210 avail=129019 chunkB=156682 pulseB=94009 
+    ⇒ 影子指令 donate pct=199 → [APEX] zexos1#64[T2]（约 153009 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4175 ryan_m B=798284 L=7169 d=111.4 nb=1 neut=0 cmds=70 noFull=1 shQ=199571 | m=0.900 worth=100.2 cheap=8.5 over=1 dMedOther=98.5 safe(-1)=630872
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1196682 dq=146.8 cnt=70 | c=1129.7 rankC=1638.1 need=2039865 tD=1.49 人 pulse crowdedHard | safe=630872 keep=645210 avail=143720 chunkB=159657 pulseB=95794 
+    ⇒ 影子指令 donate pct=214 → [APEX] zexos1#64[T2]（约 167608 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4200 ryan_m B=826875 L=7169 d=115.3 nb=1 neut=0 cmds=71 noFull=1 shQ=205246 | m=0.900 worth=103.8 cheap=8.5 over=1 dMedOther=100.6 safe(-1)=630872
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1207586 dq=148.2 cnt=70 | c=786.0 rankC=786.0 need=2059766 tD=1.47 人 pulse crowdedHard | safe=630872 keep=645210 avail=171976 chunkB=165375 pulseB=99225 
+    ⇒ 影子指令 donate pct=207 → [APEX] zexos1#64[T2]（约 167958 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4225 ryan_m B=840240 L=7169 d=117.2 nb=1 neut=0 cmds=72 noFull=1 shQ=210060 | m=0.900 worth=105.5 cheap=8.5 over=1 dMedOther=95.8 safe(-1)=630872
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1208793 dq=148.3 cnt=70 | c=1140.5 rankC=1653.7 need=2063229 tD=1.55 人 pulse crowdedHard | safe=630872 keep=645210 avail=185184 chunkB=168048 pulseB=100829 
+    ⇒ 影子指令 donate pct=220 → [APEX] zexos1#64[T2]（约 181340 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4250 ryan_m B=859286 L=7169 d=119.9 nb=1 neut=0 cmds=73 noFull=1 shQ=214821 | m=0.900 worth=107.9 cheap=8.5 over=1 dMedOther=99.5 safe(-1)=630872
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1210242 dq=148.5 cnt=70 | c=1141.6 rankC=1655.3 need=2067103 tD=1.49 人 pulse crowdedHard | safe=630872 keep=645210 avail=204007 chunkB=171857 pulseB=103114 
+    ⇒ 影子指令 donate pct=220 → [APEX] zexos1#64[T2]（约 185451 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4275 ryan_m B=871357 L=7169 d=121.5 nb=1 neut=0 cmds=74 noFull=1 shQ=217839 | m=0.900 worth=109.4 cheap=8.5 over=1 dMedOther=105.6 safe(-1)=630872
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1211210 dq=148.6 cnt=70 | c=787.6 rankC=787.6 need=2070397 tD=1.41 人 pulse crowdedHard | safe=630872 keep=645210 avail=215936 chunkB=174271 pulseB=104563 
+    ⇒ 影子指令 donate pct=220 → [APEX] zexos1#64[T2]（约 188056 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4280 ryan_m B=877195 L=7169 d=122.4 nb=1 neut=0 cmds=75 noFull=1 shQ=219298 | m=0.900 worth=110.1 cheap=8.5 over=1 dMedOther=106.8 safe(-1)=630872
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1211694 dq=148.7 cnt=70 | c=194.8 rankC=97.4 need=2071456 tD=1.39 人 pulse bleeding | safe=630872 keep=630872 avail=236044 chunkB=175439 pulseB=105263 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 105366 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4300 ryan_m B=569767 L=7236 d=78.7 nb=1 neut=0 cmds=75 noFull=1 shQ=25824 | m=0.900 worth=78.8 cheap=8.5 over=0 dMedOther=103.0 safe(-1)=596664
+    → Yellow Beast 2137#46[T3] terr=7509 bal=1072916 dq=142.9 cnt=64 | c=175.4 rankC=87.7 need=1744792 tD=1.39 人 pulse bleeding | safe=596664 keep=Inf avail=-Inf chunkB=113953 pulseB=68372 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4320 ryan_m B=843023 L=7300 d=115.5 nb=1 neut=0 cmds=76 noFull=1 shQ=59785 | m=0.900 worth=103.9 cheap=8.5 over=1 dMedOther=103.2 safe(-1)=542067
+    → Yellow Beast 2137#46[T3] terr=7163 bal=975830 dq=136.2 cnt=62 | c=130.2 rankC=65.1 need=1605304 tD=1.32 人 pulse bleeding | safe=542067 keep=657000 avail=176144 chunkB=168605 pulseB=101163 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 101261 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4325 ryan_m B=843023 L=7300 d=115.5 nb=1 neut=0 cmds=77 noFull=1 shQ=70320 | m=0.900 worth=103.9 cheap=8.5 over=1 dMedOther=102.6 safe(-1)=528880
+    → Yellow Beast 2137#46[T3] terr=7055 bal=952357 dq=135.0 cnt=62 | c=132.4 rankC=66.2 need=1558853 tD=1.32 人 pulse bleeding | safe=528880 keep=657000 avail=176144 chunkB=168605 pulseB=101163 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 101261 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4330 ryan_m B=849851 L=7300 d=116.4 nb=1 neut=0 cmds=78 noFull=1 shQ=80872 | m=0.900 worth=104.8 cheap=8.5 over=1 dMedOther=103.8 safe(-1)=509337
+    → Yellow Beast 2137#46[T3] terr=6876 bal=917569 dq=133.4 cnt=61 | c=137.0 rankC=68.5 need=1487995 tD=1.29 人 pulse bleeding | safe=509337 keep=657000 avail=182892 chunkB=169970 pulseB=101982 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 102081 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4350 ryan_m B=569184 L=7524 d=75.6 nb=1 neut=0 cmds=78 noFull=1 shQ=27758 | m=0.900 worth=80.0 cheap=8.4 over=0 dMedOther=104.6 safe(-1)=411050
+    → Yellow Beast 2137#46[T3] terr=6042 bal=742955 dq=123.0 cnt=55 | c=121.6 rankC=60.8 need=965637 tD=1.18 人 pulse bleeding | safe=411050 keep=Inf avail=-Inf chunkB=113837 pulseB=68302 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4400 ryan_m B=611581 L=7964 d=76.8 nb=1 neut=0 cmds=78 noFull=1 shQ=114554 | m=0.900 worth=78.2 cheap=8.4 over=0 dMedOther=102.2 safe(-1)=274999
+    → Yellow Beast 2137#46[T3] terr=4635 bal=501444 dq=108.2 cnt=58 | c=116.4 rankC=58.2 need=656543 tD=1.06 人 pulse bleeding | safe=274999 keep=Inf avail=-Inf chunkB=122316 pulseB=73390 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4450 ryan_m B=648523 L=7964 d=81.4 nb=1 neut=0 cmds=78 noFull=1 shQ=162130 | m=0.900 worth=79.2 cheap=8.4 over=0 dMedOther=103.5 safe(-1)=219852
+    → Yellow Beast 2137#46[T3] terr=3959 bal=403282 dq=101.9 cnt=58 | c=450.5 rankC=450.5 need=461588 tD=0.98 人 pulse | safe=219852 keep=Inf avail=-Inf chunkB=129705 pulseB=77823 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4460 ryan_m B=656175 L=7964 d=82.4 nb=1 neut=0 cmds=79 noFull=1 shQ=164043 | m=0.900 worth=80.1 cheap=8.4 over=0 dMedOther=104.7 safe(-1)=217950
+    → Yellow Beast 2137#46[T3] terr=3912 bal=399897 dq=102.2 cnt=58 | c=70.7 rankC=35.3 need=454132 tD=0.98 人 pulse nearCollapse bleeding | safe=217950 keep=612580 avail=35906 chunkB=131235 pulseB=78741 
+    ⇒ 影子指令 attack pct=56 → Yellow Beast 2137#46[T3]（约 36525 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4470 ryan_m B=663917 L=7964 d=83.4 nb=1 neut=0 cmds=80 noFull=1 shQ=165979 | m=0.900 worth=79.3 cheap=8.4 over=0 dMedOther=103.6 safe(-1)=199137
+    → Yellow Beast 2137#46[T3] terr=3679 bal=366410 dq=99.6 cnt=58 | c=49.9 rankC=24.9 need=385831 tD=0.96 人 pulse nearCollapse bleeding | safe=199137 keep=536539 avail=119598 chunkB=132783 pulseB=79670 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 79747 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4495 ryan_m B=550312 L=8239 d=66.8 nb=1 neut=0 cmds=81 noFull=1 shQ=35457 | m=0.900 worth=78.5 cheap=8.4 over=0 dMedOther=102.7 safe(-1)=117346
+    → Yellow Beast 2137#46[T3] terr=2651 bal=221234 dq=83.5 cnt=51 | c=9.0 rankC=4.5 need=63299 tD=0.81 人 pulse nearCollapse bleeding | safe=117346 keep=245219 avail=298645 chunkB=110062 pulseB=66037 
+    ⇒ 影子指令 attack pct=81 → Yellow Beast 2137#46[T3]（约 44067 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4500 ryan_m B=565145 L=8340 d=67.8 nb=1 neut=0 cmds=82 noFull=1 shQ=43686 | m=0.900 worth=80.2 cheap=8.4 over=0 dMedOther=104.8 safe(-1)=100296
+    → Yellow Beast 2137#46[T3] terr=2385 bal=191036 dq=80.1 cnt=50 | c=24.2 rankC=12.1 need=22895 tD=0.76 人 pulse nearCollapse bleeding | safe=100296 keep=315761 avail=242762 chunkB=113029 pulseB=67817 
+    ⇒ 影子指令 attack pct=81 → Yellow Beast 2137#46[T3]（约 45255 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4505 ryan_m B=565176 L=8340 d=67.8 nb=1 neut=0 cmds=83 noFull=1 shQ=52091 | m=0.900 worth=74.6 cheap=8.4 over=0 dMedOther=97.5 safe(-1)=94652
+    → Yellow Beast 2137#46[T3] terr=2360 bal=180990 dq=76.7 cnt=49 | c=27.3 rankC=13.6 need=22738 tD=0.79 人 pulse nearCollapse bleeding | safe=94652 keep=354006 avail=204547 chunkB=113035 pulseB=67821 
+    ⇒ 影子指令 attack pct=81 → Yellow Beast 2137#46[T3]（约 45258 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4550 ryan_m B=449134 L=8689 d=51.7 nb=0 neut=12 cmds=83 noFull=1 shQ=54200 | m=0.900 worth=78.4 cheap=8.3 over=0 dMedOther=102.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4575 ryan_m B=571821 L=8722 d=65.6 nb=0 neut=0 cmds=84 noFull=1 shQ=90243 | m=0.900 worth=80.2 cheap=8.3 over=0 dMedOther=104.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zexos1#64[T2]（约 179252 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4600 ryan_m B=378552 L=8722 d=43.4 nb=0 neut=0 cmds=84 noFull=1 shQ=92496 | m=0.900 worth=76.6 cheap=8.3 over=0 dMedOther=100.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令

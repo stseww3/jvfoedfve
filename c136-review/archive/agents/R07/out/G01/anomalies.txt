@@ -1,0 +1,37 @@
+ERROR lines: 276
+  ethan21: n=48 firstLine=1241 lastLine=1589
+  kevin_k: n=48 firstLine=1242 lastLine=1590
+  leo_tx: n=38 firstLine=1306 lastLine=1587
+  lucas94: n=39 firstLine=1198 lastLine=1588
+  mark07: n=57 firstLine=1195 lastLine=1591
+  ryan_m: n=46 firstLine=1255 lastLine=1592
+HOT-IMPORT lines: 8 (lines 1595..1602, size=249271)
+unparsed in-scope lines: 0
+HL-TICK gaps (consecutive snapshots of one bot not 90 ticks apart):
+  lucas94: 1710 -> 2070 (gap 360) at line 1233
+  lucas94: 2070 -> 2880 (gap 810) at line 1359
+  ryan_m: 2160 -> 4320 (gap 2160) at line 1618
+  leo_tx: 2520 -> 4320 (gap 1800) at line 1619
+  lucas94: 3510 -> 4320 (gap 810) at line 1620
+  ethan21: 2070 -> 4320 (gap 2250) at line 1621
+  kevin_k: 2070 -> 4320 (gap 2250) at line 1622
+  mark07: 1710 -> 4320 (gap 2610) at line 1626
+  total gaps: 8
+first/last HL-TICK per bot:
+  mark07: first=630 last=5130
+  kevin_k: first=630 last=5580
+  ethan21: first=630 last=5580
+  lucas94: first=630 last=5490
+  dave_w: first=630 last=5490
+  ryan_m: first=630 last=5580
+  noah88: first=630 last=5220
+  leo_tx: first=630 last=5850
+HL-SLOW-TICK per bot (count, max ms, first t, last t):
+  mark07: n=2 maxMs=109.5 firstT=1212 lastT=4248
+  kevin_k: n=2 maxMs=74.3 firstT=1510 lastT=4250
+  ethan21: n=1 maxMs=97.7 firstT=4250 lastT=4250
+  lucas94: n=1 maxMs=132.6 firstT=4252 lastT=4252
+  dave_w: n=0
+  ryan_m: n=3 maxMs=91.3 firstT=862 lastT=4256
+  noah88: n=0
+  leo_tx: n=1 maxMs=115.1 firstT=4252 lastT=4252

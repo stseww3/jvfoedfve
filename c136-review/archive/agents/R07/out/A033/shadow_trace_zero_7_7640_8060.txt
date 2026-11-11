@@ -1,0 +1,50 @@
+# A033 zero_7 影子决策明细 t=7640~8060（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 82 拍（t=7640~8050）
+#   出手打人/bot: 1 拍（t=7955~7955）；可用兵 99857~99857，一条指令下限(20%余额) 170178~170178，比值 59%~59%
+#   └ 「出手打人/bot」里：1 条对人/bot 的出兵共约 100544 兵；其中超过软上限（over=1）时发的 1 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 1 条约 100544 兵，c/worth = 2.46~2.46
+t=7650 zero_7 B=1381468 L=27817 d=49.7 nb=1 neut=0 cmds=102 noFull=1 shQ=345367 | m=0.900 worth=79.6 cheap=7.3 over=0 dMedOther=104.1 safe(-1)=2447896
+    → [UA]i🍇TV#44[T1] terr=88527 bal=8757623 dq=98.9 cnt=270 | c=189.0 rankC=132.3 need=16804127 tD=0.95 人 pulse onMe | safe=2447896 keep=Inf avail=-Inf chunkB=276294 pulseB=165776 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7680 zero_7 B=923819 L=21122 d=43.7 nb=1 neut=0 cmds=102 noFull=1 shQ=230954 | m=0.900 worth=78.3 cheap=7.6 over=0 dMedOther=102.4 safe(-1)=1858736
+    → [UA]i🍇TV#44[T1] terr=95636 bal=9200185 dq=96.2 cnt=193 | c=230.6 rankC=230.6 need=16590385 tD=0.94 人 pulse onMe | safe=1858736 keep=Inf avail=-Inf chunkB=184764 pulseB=110858 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7710 zero_7 B=956575 L=20929 d=45.7 nb=1 neut=0 cmds=102 noFull=1 shQ=239143 | m=0.900 worth=70.6 cheap=7.6 over=0 dMedOther=92.3 safe(-1)=1841752
+    → [UA]i🍇TV#44[T1] terr=95829 bal=10959389 dq=114.4 cnt=188 | c=436.7 rankC=436.7 need=19677386 tD=1.24 人 pulse | safe=1841752 keep=Inf avail=-Inf chunkB=191315 pulseB=114789 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7740 zero_7 B=994367 L=20929 d=47.5 nb=1 neut=0 cmds=102 noFull=1 shQ=248591 | m=0.900 worth=71.1 cheap=7.6 over=0 dMedOther=93.0 safe(-1)=1841752
+    → [UA]i🍇TV#44[T1] terr=95829 bal=11339606 dq=118.3 cnt=188 | c=451.7 rankC=451.7 need=20355072 tD=1.27 人 pulse | safe=1841752 keep=Inf avail=-Inf chunkB=198873 pulseB=119324 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7770 zero_7 B=1033652 L=20929 d=49.4 nb=1 neut=0 cmds=102 noFull=1 shQ=258413 | m=0.900 worth=74.2 cheap=7.6 over=0 dMedOther=97.0 safe(-1)=1841752
+    → [UA]i🍇TV#44[T1] terr=96707 bal=10168792 dq=105.2 cnt=198 | c=301.3 rankC=210.9 need=18269644 tD=1.08 人 pulse | safe=1841752 keep=Inf avail=-Inf chunkB=206730 pulseB=124038 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7800 zero_7 B=1095419 L=20929 d=52.3 nb=1 neut=159 cmds=102 noFull=1 shQ=268762 | m=0.900 worth=78.1 cheap=7.6 over=0 dMedOther=102.1 safe(-1)=1841752
+    → [UA]i🍇TV#44[T1] terr=98551 bal=10729668 dq=108.9 cnt=222 | c=415.7 rankC=415.7 need=19272098 tD=1.07 人 pulse | safe=1841752 keep=Inf avail=-Inf chunkB=219084 pulseB=131450 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7830 zero_7 B=1138697 L=20929 d=54.4 nb=1 neut=85 cmds=102 noFull=1 shQ=284674 | m=0.900 worth=79.8 cheap=7.6 over=0 dMedOther=104.4 safe(-1)=1841752
+    → [UA]i🍇TV#44[T1] terr=100527 bal=11182238 dq=111.2 cnt=296 | c=424.1 rankC=424.1 need=20081708 tD=1.07 人 pulse | safe=1841752 keep=Inf avail=-Inf chunkB=227739 pulseB=136644 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7860 zero_7 B=834194 L=14477 d=57.6 nb=1 neut=0 cmds=102 noFull=1 shQ=208548 | m=0.900 worth=75.3 cheap=8.0 over=0 dMedOther=98.5 safe(-1)=1273976
+    → [UA]i🍇TV#44[T1] terr=107673 bal=10603676 dq=98.5 cnt=337 | c=238.0 rankC=238.0 need=19332335 tD=1.00 人 pulse onMe | safe=1273976 keep=Inf avail=-Inf chunkB=166839 pulseB=100103 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7890 zero_7 B=782989 L=13135 d=59.6 nb=1 neut=0 cmds=102 noFull=1 shQ=195747 | m=0.900 worth=72.7 cheap=8.0 over=0 dMedOther=95.0 safe(-1)=1155880
+    → [UA]i🍇TV#44[T1] terr=109015 bal=11155000 dq=102.3 cnt=334 | c=390.0 rankC=390.0 need=20045883 tD=1.08 人 pulse | safe=1155880 keep=Inf avail=-Inf chunkB=156598 pulseB=93959 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7920 zero_7 B=825941 L=13135 d=62.9 nb=1 neut=0 cmds=102 noFull=1 shQ=206485 | m=0.900 worth=76.0 cheap=8.0 over=0 dMedOther=99.4 safe(-1)=1155880
+    → [UA]i🍇TV#44[T1] terr=109015 bal=11796426 dq=108.2 cnt=334 | c=412.3 rankC=412.3 need=21189143 tD=1.09 人 pulse | safe=1155880 keep=Inf avail=-Inf chunkB=165188 pulseB=99113 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7950 zero_7 B=743423 L=9573 d=77.7 nb=1 neut=0 cmds=102 noFull=1 shQ=169634 | m=0.900 worth=74.4 cheap=8.3 over=0 dMedOther=97.3 safe(-1)=842424
+    → [UA]i🍇TV#44[T1] terr=112577 bal=10691337 dq=95.0 cnt=268 | c=177.1 rankC=123.9 need=20021864 tD=0.98 人 pulse onMe | safe=842424 keep=Inf avail=-Inf chunkB=148685 pulseB=89211 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7955 zero_7 B=850888 L=8234 d=103.3 nb=1 neut=0 cmds=103 noFull=1 shQ=176426 | m=0.900 worth=93.0 cheap=8.4 over=1 dMedOther=95.1 safe(-1)=724592
+    → [UA]i🍇TV#44[T1] terr=113916 bal=10691337 dq=93.9 cnt=265 | c=228.6 rankC=228.6 need=19613367 tD=0.99 人 pulse onMe | safe=724592 keep=741060 avail=99857 chunkB=170178 pulseB=102107 
+    ⇒ 影子指令 attack pct=120 → [UA]i🍇TV#44[T1]（约 100544 兵）
+t=7980 zero_7 B=591799 L=7432 d=79.6 nb=1 neut=0 cmds=103 noFull=1 shQ=43972 | m=0.900 worth=74.7 cheap=8.5 over=0 dMedOther=97.7 safe(-1)=654016
+    → [UA]i🍇TV#44[T1] terr=114718 bal=11215046 dq=97.8 cnt=262 | c=373.4 rankC=373.4 need=20152573 tD=1.00 人 pulse | safe=654016 keep=Inf avail=-Inf chunkB=118360 pulseB=71016 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=8010 zero_7 B=620333 L=7432 d=83.5 nb=1 neut=0 cmds=103 noFull=1 shQ=96805 | m=0.900 worth=78.5 cheap=8.5 over=0 dMedOther=102.7 safe(-1)=654016
+    → [UA]i🍇TV#44[T1] terr=114718 bal=11915731 dq=103.9 cnt=262 | c=396.5 rankC=396.5 need=21402082 tD=1.01 人 pulse | safe=654016 keep=Inf avail=-Inf chunkB=124067 pulseB=74440 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=8040 zero_7 B=642360 L=7432 d=86.4 nb=1 neut=0 cmds=103 noFull=1 shQ=151929 | m=0.900 worth=77.8 cheap=8.5 over=0 dMedOther=98.3 safe(-1)=654016
+    → [UA]i🍇TV#44[T1] terr=114718 bal=13743285 dq=119.8 cnt=262 | c=456.8 rankC=456.8 need=24659397 tD=1.22 人 pulse | safe=654016 keep=Inf avail=-Inf chunkB=128472 pulseB=77083 价高(c>=worth)→break
+    ⇒ 本拍没有指令

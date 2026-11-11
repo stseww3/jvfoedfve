@@ -1,0 +1,1136 @@
+# A053 kaito9 影子决策明细 t=2800~4410（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标已有在途进攻（curAtk 过门槛）: 17 拍（t=2800~4205）；可用兵 121084~315981，一条指令下限(20%余额) 72797~175714，比值 72%~419%
+#   出手打人/bot: 27 拍（t=2835~4220）；可用兵 67928~346093，一条指令下限(20%余额) 75337~179051，比值 56%~454%
+#   没有可打的邻居: 21 拍（t=2850~2960）
+#   捐兵: 7 拍（t=2925~3875）；可用兵 38047~245463，一条指令下限(20%余额) 162506~171326，比值 23%~143%
+#   首选目标价高（c>=worth）: 142 拍（t=2965~4410）
+#   过了软上限，但首选目标是唯一的真人邻居（isSoleHealthyBuffer：余额 < overHumanCap×100×领土 不打）: 28 拍（t=3180~3895）；可用兵 -77740~255140，一条指令下限(20%余额) 126880~173284，比值 -61%~147%
+#   首选目标要发的兵低于最小指令（x < max(minCmd, pulseMinShare×B)）: 26 拍（t=3285~3680）；可用兵 475~61138，一条指令下限(20%余额) 108124~119510，比值 0%~51%
+#   首选目标无可用兵（avail<=0）: 51 拍（t=3300~3670）；可用兵 -123894~-3566，一条指令下限(20%余额) 87746~115017，比值 -138%~-3%
+#   有可用兵但没发（其他）: 2 拍（t=3705~3710）；可用兵 82920~87162，一条指令下限(20%余额) 135587~137065，比值 61%~64%
+#   其他指令: 2 拍（t=3820~3880）；可用兵 246886~250373，一条指令下限(20%余额) 171596~172319，比值 144%~145%
+#   └ 「出手打人/bot」里：27 条对人/bot 的出兵共约 2313614 兵；其中超过软上限（over=1）时发的 24 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 18 条约 1632199 兵，c/worth = 1.44~4.27
+t=2800 kaito9 B=363986 L=5055 d=72.0 nb=1 neut=0 cmds=44 noFull=1 shQ=89758 | m=0.900 worth=64.8 cheap=8.8 over=0 dMedOther=67.6 safe(-1)=104303
+    → [TR] Oylesine#53[T5] terr=3780 bal=193241 dq=51.1 cnt=37 | c=1.0 rankC=0.5 need=230160 tD=0.76 人 pulse nearCollapse bleeding | safe=104303 keep=104303 avail=255418 chunkB=72797 pulseB=43678 在途(curAtk=81282)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2805 kaito9 B=363986 L=5129 d=71.0 nb=1 neut=0 cmds=44 noFull=1 shQ=90996 | m=0.900 worth=63.9 cheap=8.6 over=0 dMedOther=67.6 safe(-1)=94074
+    → [TR] Oylesine#53[T5] terr=3635 bal=175145 dq=48.2 cnt=39 | c=1.1 rankC=0.5 need=208319 tD=0.71 人 pulse nearCollapse bleeding | safe=94074 keep=94074 avail=265647 chunkB=72797 pulseB=43678 在途(curAtk=69532)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2810 kaito9 B=368171 L=5207 d=70.7 nb=1 neut=0 cmds=44 noFull=1 shQ=92042 | m=0.900 worth=63.6 cheap=8.6 over=0 dMedOther=68.4 safe(-1)=89991
+    → [TR] Oylesine#53[T5] terr=3527 bal=167994 dq=47.6 cnt=41 | c=1.2 rankC=0.6 need=205601 tD=0.70 人 pulse nearCollapse bleeding | safe=89991 keep=89991 avail=273866 chunkB=73634 pulseB=44181 在途(curAtk=57404)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2815 kaito9 B=368171 L=5248 d=70.2 nb=1 neut=0 cmds=44 noFull=1 shQ=92042 | m=0.900 worth=63.1 cheap=8.6 over=0 dMedOther=68.4 safe(-1)=82849
+    → [TR] Oylesine#53[T5] terr=3369 bal=155343 dq=46.1 cnt=41 | c=1.3 rankC=0.6 need=186921 tD=0.67 人 pulse nearCollapse bleeding | safe=82849 keep=82849 avail=281008 chunkB=73634 pulseB=44181 在途(curAtk=51116)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2820 kaito9 B=372404 L=5331 d=69.9 nb=1 neut=0 cmds=44 noFull=1 shQ=93101 | m=0.900 worth=62.9 cheap=8.6 over=0 dMedOther=69.2 safe(-1)=75540
+    → [TR] Oylesine#53[T5] terr=3175 bal=142458 dq=44.9 cnt=42 | c=1.4 rankC=0.7 need=172555 tD=0.65 人 pulse nearCollapse bleeding | safe=75540 keep=75540 avail=292500 chunkB=74481 pulseB=44688 在途(curAtk=38866)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2825 kaito9 B=372404 L=5415 d=68.8 nb=1 neut=0 cmds=44 noFull=1 shQ=93101 | m=0.900 worth=61.9 cheap=8.6 over=0 dMedOther=69.2 safe(-1)=63532
+    → [TR] Oylesine#53[T5] terr=2881 bal=121210 dq=42.1 cnt=43 | c=1.7 rankC=0.8 need=142013 tD=0.61 人 pulse nearCollapse bleeding | safe=63532 keep=63532 avail=304508 chunkB=74481 pulseB=44688 在途(curAtk=27056)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2830 kaito9 B=376686 L=5457 d=69.0 nb=1 neut=0 cmds=44 noFull=1 shQ=94171 | m=0.900 worth=62.1 cheap=8.6 over=0 dMedOther=70.0 safe(-1)=56291
+    → [TR] Oylesine#53[T5] terr=2676 bal=108383 dq=40.5 cnt=43 | c=1.9 rankC=1.0 need=121275 tD=0.58 人 pulse nearCollapse bleeding | safe=56291 keep=56291 avail=315981 chunkB=75337 pulseB=45202 在途(curAtk=21432)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2835 kaito9 B=376686 L=5543 d=68.0 nb=1 neut=0 cmds=45 noFull=1 shQ=94171 | m=0.900 worth=61.2 cheap=8.6 over=0 dMedOther=70.0 safe(-1)=45005
+    → [TR] Oylesine#53[T5] terr=2361 bal=88423 dq=37.5 cnt=43 | c=2.5 rankC=1.3 need=92300 tD=0.53 人 pulse nearCollapse bleeding | safe=45005 keep=45005 avail=327267 chunkB=75337 pulseB=45202  x=45202 hNb=1
+    ⇒ 影子指令 attack pct=122 → [TR] Oylesine#53[T5]（约 45246 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2840 kaito9 B=381017 L=5627 d=67.7 nb=1 neut=0 cmds=46 noFull=1 shQ=95254 | m=0.900 worth=60.9 cheap=8.6 over=0 dMedOther=70.9 safe(-1)=37753
+    → [TR] Oylesine#53[T5] terr=2134 bal=75640 dq=35.4 cnt=44 | c=3.3 rankC=1.6 need=76136 tD=0.50 人 pulse nearCollapse bleeding | safe=37753 keep=37753 avail=338799 chunkB=76203 pulseB=45722  x=45722 hNb=1
+    ⇒ 影子指令 attack pct=122 → [TR] Oylesine#53[T5]（约 45766 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2845 kaito9 B=381033 L=5627 d=67.7 nb=1 neut=0 cmds=47 noFull=1 shQ=95258 | m=0.900 worth=60.9 cheap=8.6 over=0 dMedOther=70.9 safe(-1)=30475
+    → [TR] Oylesine#53[T5] terr=1909 bal=62686 dq=32.8 cnt=42 | c=4.6 rankC=2.3 need=51391 tD=0.46 人 pulse nearCollapse bleeding | safe=30475 keep=30475 avail=346093 chunkB=76207 pulseB=45724  x=45723 hNb=1
+    ⇒ 影子指令 attack pct=122 → [TR] Oylesine#53[T5]（约 45768 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2850 kaito9 B=290492 L=5627 d=51.6 nb=1 neut=0 cmds=47 noFull=1 shQ=0 | m=0.900 worth=54.4 cheap=8.6 over=0 dMedOther=71.2 safe(-1)=25995
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2855 kaito9 B=290492 L=5627 d=51.6 nb=1 neut=0 cmds=47 noFull=1 shQ=4210 | m=0.900 worth=53.6 cheap=8.6 over=0 dMedOther=70.1 safe(-1)=20547
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2860 kaito9 B=255095 L=5707 d=44.7 nb=1 neut=0 cmds=47 noFull=1 shQ=7984 | m=0.900 worth=53.1 cheap=8.6 over=0 dMedOther=69.4 safe(-1)=17862
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2865 kaito9 B=255095 L=5748 d=44.4 nb=1 neut=0 cmds=47 noFull=1 shQ=11679 | m=0.900 worth=52.3 cheap=8.6 over=0 dMedOther=68.4 safe(-1)=16144
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2870 kaito9 B=258028 L=5832 d=44.2 nb=0 neut=43 cmds=47 noFull=1 shQ=15383 | m=0.900 worth=58.5 cheap=8.6 over=0 dMedOther=76.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2875 kaito9 B=258028 L=5917 d=43.6 nb=0 neut=44 cmds=47 noFull=1 shQ=19123 | m=0.900 worth=58.5 cheap=8.6 over=0 dMedOther=76.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2880 kaito9 B=335102 L=5960 d=56.2 nb=0 neut=41 cmds=47 noFull=1 shQ=23510 | m=0.900 worth=59.2 cheap=8.6 over=0 dMedOther=77.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2885 kaito9 B=335102 L=6032 d=55.6 nb=0 neut=26 cmds=47 noFull=1 shQ=28365 | m=0.900 worth=59.2 cheap=8.6 over=0 dMedOther=77.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2890 kaito9 B=338955 L=6082 d=55.7 nb=0 neut=23 cmds=47 noFull=1 shQ=33240 | m=0.900 worth=60.0 cheap=8.5 over=0 dMedOther=78.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2895 kaito9 B=338955 L=6105 d=55.5 nb=0 neut=22 cmds=47 noFull=1 shQ=38195 | m=0.900 worth=60.0 cheap=8.5 over=0 dMedOther=78.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2900 kaito9 B=349071 L=6151 d=56.8 nb=0 neut=24 cmds=47 noFull=1 shQ=43180 | m=0.900 worth=54.3 cheap=8.5 over=0 dMedOther=70.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2905 kaito9 B=349071 L=6198 d=56.3 nb=0 neut=22 cmds=47 noFull=1 shQ=48285 | m=0.900 worth=54.3 cheap=8.5 over=0 dMedOther=70.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2910 kaito9 B=353155 L=6220 d=56.8 nb=0 neut=21 cmds=47 noFull=1 shQ=53401 | m=0.900 worth=53.9 cheap=8.5 over=0 dMedOther=70.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2915 kaito9 B=353155 L=6261 d=56.4 nb=0 neut=17 cmds=47 noFull=1 shQ=58561 | m=0.900 worth=50.8 cheap=8.5 over=0 dMedOther=60.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2920 kaito9 B=357286 L=6288 d=56.8 nb=0 neut=4 cmds=47 noFull=1 shQ=63734 | m=0.900 worth=51.1 cheap=8.5 over=0 dMedOther=60.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2925 kaito9 B=357286 L=6292 d=56.8 nb=0 neut=0 cmds=48 noFull=1 shQ=68959 | m=0.900 worth=51.1 cheap=8.5 over=0 dMedOther=60.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] zero_7#49[T3]（约 132935 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=2930 kaito9 B=463366 L=6292 d=73.6 nb=0 neut=0 cmds=48 noFull=1 shQ=75670 | m=0.900 worth=66.3 cheap=8.5 over=0 dMedOther=60.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2935 kaito9 B=463366 L=6292 d=73.6 nb=0 neut=0 cmds=48 noFull=1 shQ=82445 | m=0.900 worth=66.3 cheap=8.5 over=0 dMedOther=60.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2940 kaito9 B=468787 L=6292 d=74.5 nb=0 neut=0 cmds=48 noFull=1 shQ=89236 | m=0.900 worth=67.1 cheap=8.5 over=0 dMedOther=60.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2945 kaito9 B=468787 L=6292 d=74.5 nb=0 neut=0 cmds=48 noFull=1 shQ=96091 | m=0.900 worth=67.1 cheap=8.5 over=0 dMedOther=60.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2950 kaito9 B=474271 L=6292 d=75.4 nb=0 neut=0 cmds=49 noFull=1 shQ=102962 | m=0.900 worth=67.8 cheap=8.5 over=0 dMedOther=61.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] zero_7#49[T3]（约 176462 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=2955 kaito9 B=474271 L=6292 d=75.4 nb=0 neut=0 cmds=49 noFull=1 shQ=109897 | m=0.900 worth=67.8 cheap=8.5 over=0 dMedOther=61.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2960 kaito9 B=479819 L=6292 d=76.3 nb=0 neut=0 cmds=49 noFull=1 shQ=116848 | m=0.900 worth=68.6 cheap=8.5 over=0 dMedOther=62.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2965 kaito9 B=479819 L=6292 d=76.3 nb=1 neut=0 cmds=49 noFull=1 shQ=119954 | m=0.900 worth=68.6 cheap=8.5 over=0 dMedOther=62.3 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=11363 bal=1195586 dq=105.2 cnt=1 | c=982.4 rankC=982.4 need=2148123 tD=1.69 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=95964 pulseB=57578 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2970 kaito9 B=485432 L=6292 d=77.2 nb=1 neut=0 cmds=49 noFull=1 shQ=121358 | m=0.900 worth=69.4 cheap=8.5 over=0 dMedOther=63.1 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=11363 bal=1061374 dq=93.4 cnt=1 | c=655.0 rankC=458.5 need=1908897 tD=1.48 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=97086 pulseB=58252 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2975 kaito9 B=485432 L=6292 d=77.2 nb=1 neut=0 cmds=49 noFull=1 shQ=121358 | m=0.900 worth=69.4 cheap=8.5 over=0 dMedOther=63.1 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=11363 bal=1061374 dq=93.4 cnt=1 | c=655.0 rankC=458.5 need=1908897 tD=1.48 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=97086 pulseB=58252 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2980 kaito9 B=491111 L=6292 d=78.1 nb=1 neut=0 cmds=49 noFull=1 shQ=122777 | m=0.900 worth=70.2 cheap=8.5 over=0 dMedOther=63.9 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=11555 bal=1074428 dq=93.0 cnt=10 | c=651.4 rankC=456.0 need=1932451 tD=1.46 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=98222 pulseB=58933 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2985 kaito9 B=491111 L=6292 d=78.1 nb=1 neut=0 cmds=49 noFull=1 shQ=122777 | m=0.900 worth=70.2 cheap=8.5 over=0 dMedOther=62.1 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=11676 bal=1074428 dq=92.0 cnt=14 | c=555.4 rankC=388.8 need=1932534 tD=1.48 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=98222 pulseB=58933 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2990 kaito9 B=496856 L=6292 d=79.0 nb=1 neut=0 cmds=49 noFull=1 shQ=124214 | m=0.900 worth=71.1 cheap=8.5 over=0 dMedOther=62.8 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=11863 bal=1087643 dq=91.7 cnt=21 | c=409.1 rankC=286.3 need=1956466 tD=1.46 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=99371 pulseB=59623 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2995 kaito9 B=496856 L=6292 d=79.0 nb=1 neut=0 cmds=49 noFull=1 shQ=124214 | m=0.900 worth=71.1 cheap=8.5 over=0 dMedOther=62.8 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=11986 bal=1087643 dq=90.7 cnt=27 | c=470.3 rankC=470.3 need=1956617 tD=1.44 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=99371 pulseB=59623 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3000 kaito9 B=508961 L=6292 d=80.9 nb=1 neut=0 cmds=49 noFull=1 shQ=125702 | m=0.900 worth=72.8 cheap=8.5 over=0 dMedOther=64.6 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12170 bal=1113129 dq=91.5 cnt=30 | c=473.9 rankC=473.9 need=2002319 tD=1.42 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=101792 pulseB=61075 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3005 kaito9 B=508961 L=6292 d=80.9 nb=1 neut=0 cmds=49 noFull=1 shQ=127240 | m=0.900 worth=72.8 cheap=8.5 over=0 dMedOther=64.6 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12299 bal=1113129 dq=90.5 cnt=33 | c=468.8 rankC=468.8 need=2002544 tD=1.40 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=101792 pulseB=61075 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3010 kaito9 B=514915 L=6292 d=81.8 nb=1 neut=0 cmds=49 noFull=1 shQ=128728 | m=0.900 worth=73.7 cheap=8.5 over=0 dMedOther=65.3 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1126969 dq=91.1 cnt=35 | c=472.0 rankC=472.0 need=2027247 tD=1.39 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=102983 pulseB=61790 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3015 kaito9 B=514915 L=6292 d=81.8 nb=1 neut=0 cmds=49 noFull=1 shQ=128728 | m=0.900 worth=73.7 cheap=8.5 over=0 dMedOther=64.8 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1126969 dq=91.1 cnt=35 | c=472.0 rankC=472.0 need=2027247 tD=1.41 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=102983 pulseB=61790 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3020 kaito9 B=520939 L=6292 d=82.8 nb=1 neut=0 cmds=49 noFull=1 shQ=130234 | m=0.900 worth=74.5 cheap=8.5 over=0 dMedOther=65.6 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1140943 dq=92.3 cnt=35 | c=477.8 rankC=477.8 need=2052154 tD=1.41 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=104188 pulseB=62513 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3025 kaito9 B=520939 L=6292 d=82.8 nb=1 neut=0 cmds=49 noFull=1 shQ=130234 | m=0.900 worth=74.5 cheap=8.5 over=0 dMedOther=65.6 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1140943 dq=92.3 cnt=35 | c=477.8 rankC=477.8 need=2052154 tD=1.41 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=104188 pulseB=62513 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3030 kaito9 B=527033 L=6292 d=83.8 nb=1 neut=0 cmds=49 noFull=1 shQ=131758 | m=0.900 worth=75.4 cheap=8.5 over=0 dMedOther=66.5 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1155090 dq=93.4 cnt=35 | c=483.7 rankC=483.7 need=2077369 tD=1.41 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=105407 pulseB=63244 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3035 kaito9 B=527033 L=6292 d=83.8 nb=1 neut=0 cmds=49 noFull=1 shQ=131758 | m=0.900 worth=75.4 cheap=8.5 over=0 dMedOther=62.3 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1155090 dq=93.4 cnt=35 | c=483.7 rankC=483.7 need=2077369 tD=1.50 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=105407 pulseB=63244 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3040 kaito9 B=533199 L=6292 d=84.7 nb=1 neut=0 cmds=49 noFull=1 shQ=133299 | m=0.900 worth=76.3 cheap=8.5 over=0 dMedOther=62.8 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1169413 dq=94.6 cnt=35 | c=489.6 rankC=489.6 need=2102899 tD=1.51 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=106640 pulseB=63984 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3045 kaito9 B=533199 L=6292 d=84.7 nb=1 neut=0 cmds=49 noFull=1 shQ=133299 | m=0.900 worth=76.3 cheap=8.5 over=0 dMedOther=62.8 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1169413 dq=94.6 cnt=35 | c=489.6 rankC=489.6 need=2102899 tD=1.51 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=106640 pulseB=63984 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3050 kaito9 B=539437 L=6292 d=85.7 nb=1 neut=0 cmds=49 noFull=1 shQ=134859 | m=0.900 worth=77.2 cheap=8.5 over=0 dMedOther=63.6 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1183913 dq=95.7 cnt=35 | c=495.7 rankC=495.7 need=2128743 tD=1.50 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=107887 pulseB=64732 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3055 kaito9 B=539437 L=6292 d=85.7 nb=1 neut=0 cmds=49 noFull=1 shQ=134859 | m=0.900 worth=77.2 cheap=8.5 over=0 dMedOther=63.6 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1183913 dq=95.7 cnt=35 | c=495.7 rankC=495.7 need=2128743 tD=1.50 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=107887 pulseB=64732 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3060 kaito9 B=545748 L=6292 d=86.7 nb=1 neut=0 cmds=49 noFull=1 shQ=136437 | m=0.900 worth=78.1 cheap=8.5 over=0 dMedOther=68.8 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1198593 dq=96.9 cnt=35 | c=501.7 rankC=501.7 need=2154909 tD=1.41 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=109150 pulseB=65490 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3065 kaito9 B=545748 L=6292 d=86.7 nb=1 neut=0 cmds=49 noFull=1 shQ=136437 | m=0.900 worth=78.1 cheap=8.5 over=0 dMedOther=68.7 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1198593 dq=96.9 cnt=35 | c=501.7 rankC=501.7 need=2154909 tD=1.41 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=109150 pulseB=65490 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3070 kaito9 B=552133 L=6292 d=87.8 nb=1 neut=0 cmds=49 noFull=1 shQ=138033 | m=0.900 worth=79.0 cheap=8.5 over=0 dMedOther=69.4 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1213455 dq=98.1 cnt=35 | c=507.9 rankC=507.9 need=2181399 tD=1.41 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=110427 pulseB=66256 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3075 kaito9 B=552133 L=6292 d=87.8 nb=1 neut=0 cmds=49 noFull=1 shQ=138033 | m=0.900 worth=79.0 cheap=8.5 over=0 dMedOther=70.2 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1213455 dq=98.1 cnt=35 | c=507.9 rankC=507.9 need=2181399 tD=1.40 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=110427 pulseB=66256 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3080 kaito9 B=558592 L=6292 d=88.8 nb=1 neut=0 cmds=49 noFull=1 shQ=139648 | m=0.900 worth=79.9 cheap=8.5 over=0 dMedOther=71.0 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1228501 dq=99.4 cnt=35 | c=514.2 rankC=514.2 need=2208217 tD=1.40 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=111718 pulseB=67031 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3085 kaito9 B=558592 L=6292 d=88.8 nb=1 neut=0 cmds=49 noFull=1 shQ=139648 | m=0.900 worth=79.9 cheap=8.5 over=0 dMedOther=71.0 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1228501 dq=99.4 cnt=35 | c=745.5 rankC=1081.0 need=2208217 tD=1.40 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=111718 pulseB=67031 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3090 kaito9 B=565127 L=6292 d=89.8 nb=1 neut=0 cmds=49 noFull=1 shQ=141281 | m=0.900 worth=80.8 cheap=8.5 over=0 dMedOther=70.4 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1243734 dq=100.6 cnt=35 | c=754.7 rankC=1094.3 need=2235368 tD=1.43 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=113025 pulseB=67815 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3095 kaito9 B=565127 L=6292 d=89.8 nb=1 neut=0 cmds=49 noFull=1 shQ=141281 | m=0.900 worth=80.8 cheap=8.5 over=0 dMedOther=70.3 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1243734 dq=100.6 cnt=35 | c=754.7 rankC=1094.3 need=2235368 tD=1.43 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=113025 pulseB=67815 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3100 kaito9 B=578030 L=6292 d=91.9 nb=1 neut=0 cmds=49 noFull=1 shQ=142971 | m=0.900 worth=82.7 cheap=8.5 over=0 dMedOther=72.1 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1271396 dq=102.8 cnt=35 | c=771.3 rankC=1118.5 need=2284672 tD=1.43 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=115606 pulseB=69364 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3105 kaito9 B=578030 L=6292 d=91.9 nb=1 neut=0 cmds=49 noFull=1 shQ=144507 | m=0.900 worth=82.7 cheap=8.5 over=0 dMedOther=72.0 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1271396 dq=102.8 cnt=35 | c=771.3 rankC=1118.5 need=2284672 tD=1.43 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=115606 pulseB=69364 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3110 kaito9 B=584792 L=6292 d=92.9 nb=1 neut=0 cmds=49 noFull=1 shQ=146198 | m=0.900 worth=83.6 cheap=8.5 over=0 dMedOther=72.7 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1286398 dq=104.0 cnt=35 | c=538.2 rankC=538.2 need=2311412 tD=1.43 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=116958 pulseB=70175 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3115 kaito9 B=584792 L=6292 d=92.9 nb=1 neut=0 cmds=49 noFull=1 shQ=146198 | m=0.900 worth=83.6 cheap=8.5 over=0 dMedOther=72.6 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1286398 dq=104.0 cnt=35 | c=538.2 rankC=538.2 need=2311412 tD=1.43 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=116958 pulseB=70175 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3120 kaito9 B=591634 L=6292 d=94.0 nb=1 neut=0 cmds=49 noFull=1 shQ=147908 | m=0.900 worth=84.6 cheap=8.5 over=0 dMedOther=73.4 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1301062 dq=105.2 cnt=35 | c=789.2 rankC=1144.3 need=2337549 tD=1.43 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=118327 pulseB=70996 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3125 kaito9 B=591634 L=6292 d=94.0 nb=1 neut=0 cmds=49 noFull=1 shQ=147908 | m=0.900 worth=84.6 cheap=8.5 over=0 dMedOther=73.3 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1301062 dq=105.2 cnt=35 | c=789.2 rankC=1144.3 need=2337549 tD=1.44 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=118327 pulseB=70996 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3130 kaito9 B=598556 L=6292 d=95.1 nb=1 neut=0 cmds=49 noFull=1 shQ=149639 | m=0.900 worth=85.6 cheap=8.5 over=0 dMedOther=74.1 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1315633 dq=106.4 cnt=35 | c=798.0 rankC=1157.1 need=2363520 tD=1.44 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=119711 pulseB=71827 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3135 kaito9 B=598556 L=6292 d=95.1 nb=1 neut=0 cmds=49 noFull=1 shQ=149639 | m=0.900 worth=85.6 cheap=8.5 over=0 dMedOther=74.0 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1315633 dq=106.4 cnt=35 | c=798.0 rankC=1157.1 need=2363520 tD=1.44 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=119711 pulseB=71827 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3140 kaito9 B=605559 L=6292 d=96.2 nb=1 neut=0 cmds=49 noFull=1 shQ=151389 | m=0.900 worth=86.6 cheap=8.5 over=0 dMedOther=76.2 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1329973 dq=107.6 cnt=35 | c=806.6 rankC=1169.6 need=2389079 tD=1.41 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=121112 pulseB=72667 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3145 kaito9 B=605559 L=6292 d=96.2 nb=1 neut=0 cmds=49 noFull=1 shQ=151389 | m=0.900 worth=86.6 cheap=8.5 over=0 dMedOther=75.1 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1329973 dq=107.6 cnt=35 | c=806.6 rankC=1169.6 need=2389079 tD=1.43 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=121112 pulseB=72667 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3150 kaito9 B=612644 L=6292 d=97.4 nb=1 neut=0 cmds=49 noFull=1 shQ=153161 | m=0.900 worth=87.6 cheap=8.5 over=0 dMedOther=74.9 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1344070 dq=108.7 cnt=35 | c=815.1 rankC=1181.9 need=2414206 tD=1.45 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=122529 pulseB=73517 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3155 kaito9 B=612644 L=6292 d=97.4 nb=1 neut=0 cmds=49 noFull=1 shQ=153161 | m=0.900 worth=87.6 cheap=8.5 over=0 dMedOther=74.8 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1344070 dq=108.7 cnt=35 | c=815.1 rankC=1181.9 need=2414206 tD=1.45 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=122529 pulseB=73517 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3160 kaito9 B=619811 L=6292 d=98.5 nb=1 neut=0 cmds=49 noFull=1 shQ=154952 | m=0.900 worth=88.7 cheap=8.5 over=0 dMedOther=75.6 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1357913 dq=109.8 cnt=35 | c=823.4 rankC=1194.0 need=2438879 tD=1.45 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=123962 pulseB=74377 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3165 kaito9 B=619811 L=6292 d=98.5 nb=1 neut=0 cmds=49 noFull=1 shQ=154952 | m=0.900 worth=88.7 cheap=8.5 over=0 dMedOther=75.4 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1357913 dq=109.8 cnt=35 | c=823.4 rankC=1194.0 need=2438879 tD=1.46 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=123962 pulseB=74377 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3170 kaito9 B=627062 L=6292 d=99.7 nb=1 neut=0 cmds=49 noFull=1 shQ=156765 | m=0.900 worth=89.7 cheap=8.5 over=0 dMedOther=76.3 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1371492 dq=110.9 cnt=35 | c=831.6 rankC=1205.8 need=2463082 tD=1.45 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=125412 pulseB=75247 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3175 kaito9 B=627062 L=6292 d=99.7 nb=1 neut=0 cmds=49 noFull=1 shQ=156765 | m=0.900 worth=89.7 cheap=8.5 over=0 dMedOther=73.5 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1371492 dq=110.9 cnt=35 | c=831.6 rankC=1205.8 need=2463082 tD=1.51 人 pulse crowdedHard | safe=553696 keep=Inf avail=-Inf chunkB=125412 pulseB=75247 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3180 kaito9 B=634398 L=6292 d=100.8 nb=1 neut=0 cmds=49 noFull=1 shQ=158588 | m=0.900 worth=90.7 cheap=8.5 over=1 dMedOther=68.6 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=12365 bal=1384795 dq=112.0 cnt=35 | c=839.6 rankC=1217.4 need=2486793 tD=1.63 人 pulse crowdedHard | safe=553696 keep=704704 avail=-77740 chunkB=126880 pulseB=76128 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3185 kaito9 B=634076 L=6290 d=100.8 nb=2 neut=0 cmds=50 noFull=1 shQ=158519 | m=0.900 worth=90.7 cheap=8.5 over=1 dMedOther=68.6 safe(-1)=553520
+    → The great Malay empa#66[T1] terr=4998 bal=20172 dq=4.0 cnt=2 | c=8.7 rankC=6.1 need=68435 tD=0.06 人 pulse onMe agg | safe=553520 keep=553520 avail=73126 chunkB=126815 pulseB=76089  x=73126 hNb=2
+    → [OG] Gallo#55[T4] terr=12365 bal=1384795 dq=112.0 cnt=35 | c=524.8 rankC=760.9 need=2486793 tD=1.63 人 pulse crowdedHard | safe=553520 keep=566100 avail=60546 chunkB=126815 pulseB=76089 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 影子指令 attack pct=118 → The great Malay empa#66[T1]（约 73686 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3190 kaito9 B=639800 L=6280 d=101.9 nb=2 neut=0 cmds=51 noFull=1 shQ=159950 | m=0.900 worth=91.7 cheap=8.5 over=1 dMedOther=69.4 safe(-1)=552640
+    → The great Malay empa#66[T1] terr=5018 bal=20401 dq=4.1 cnt=6 | c=8.7 rankC=6.1 need=65651 tD=0.06 人 pulse onMe agg | safe=552640 keep=552640 avail=79663 chunkB=127960 pulseB=76776  x=76776 hNb=2
+    → [OG] Gallo#55[T4] terr=12365 bal=1229459 dq=99.4 cnt=35 | c=178.7 rankC=125.1 need=2209924 tD=1.43 人 pulse | safe=552640 keep=565200 avail=67103 chunkB=127960 pulseB=76776  x=67103 hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 76850 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3195 kaito9 B=638334 L=6271 d=101.8 nb=2 neut=0 cmds=52 noFull=1 shQ=159583 | m=0.900 worth=91.6 cheap=8.5 over=1 dMedOther=68.4 safe(-1)=551848
+    → The great Malay empa#66[T1] terr=5032 bal=20401 dq=4.1 cnt=9 | c=8.6 rankC=6.0 need=62758 tD=0.06 人 pulse onMe agg | safe=551848 keep=551848 avail=79006 chunkB=127667 pulseB=76600  x=75337 hNb=2
+    → [OG] Gallo#55[T4] terr=12500 bal=1229459 dq=98.4 cnt=37 | c=176.8 rankC=123.8 need=2210091 tD=1.44 人 pulse | safe=551848 keep=564390 avail=66464 chunkB=127667 pulseB=76600  x=66464 hNb=2
+    ⇒ 影子指令 attack pct=120 → The great Malay empa#66[T1]（约 75428 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3200 kaito9 B=492320 L=6248 d=78.8 nb=2 neut=0 cmds=52 noFull=1 shQ=0 | m=0.900 worth=70.9 cheap=8.5 over=0 dMedOther=70.1 safe(-1)=549824
+    → [OG] Gallo#55[T4] terr=12636 bal=1257340 dq=99.5 cnt=39 | c=241.2 rankC=168.8 need=2259989 tD=1.42 人 pulse crowdedHard | safe=549824 keep=Inf avail=-Inf chunkB=98464 pulseB=59078 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3205 kaito9 B=492320 L=6248 d=78.8 nb=2 neut=0 cmds=52 noFull=1 shQ=7200 | m=0.900 worth=70.9 cheap=8.5 over=0 dMedOther=69.7 safe(-1)=549824
+    → [OG] Gallo#55[T4] terr=12844 bal=1257340 dq=97.9 cnt=44 | c=458.7 rankC=665.1 need=2260301 tD=1.40 人 pulse crowdedHard | safe=549824 keep=Inf avail=-Inf chunkB=98464 pulseB=59078 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3210 kaito9 B=433389 L=6271 d=69.1 nb=2 neut=0 cmds=52 noFull=1 shQ=13663 | m=0.900 worth=62.2 cheap=8.5 over=0 dMedOther=68.8 safe(-1)=551848
+    → [OG] Gallo#55[T4] terr=12978 bal=1272931 dq=98.1 cnt=46 | c=459.3 rankC=666.0 need=2288361 tD=1.43 人 pulse crowdedHard | safe=551848 keep=Inf avail=-Inf chunkB=86678 pulseB=52007 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3215 kaito9 B=433389 L=6280 d=69.0 nb=2 neut=0 cmds=52 noFull=1 shQ=19998 | m=0.900 worth=62.1 cheap=8.5 over=0 dMedOther=68.1 safe(-1)=552640
+    → [OG] Gallo#55[T4] terr=13107 bal=1272972 dq=97.1 cnt=49 | c=454.8 rankC=659.4 need=2288661 tD=1.43 人 pulse crowdedHard | safe=552640 keep=Inf avail=-Inf chunkB=86678 pulseB=52007 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3220 kaito9 B=438459 L=6290 d=69.7 nb=2 neut=0 cmds=52 noFull=1 shQ=26348 | m=0.900 worth=62.7 cheap=8.5 over=0 dMedOther=69.0 safe(-1)=553520
+    → [OG] Gallo#55[T4] terr=13107 bal=1288756 dq=98.3 cnt=49 | c=460.3 rankC=667.5 need=2316795 tD=1.42 人 pulse crowdedHard | safe=553520 keep=Inf avail=-Inf chunkB=87692 pulseB=52615 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3225 kaito9 B=598881 L=6292 d=95.2 nb=1 neut=0 cmds=52 noFull=1 shQ=33227 | m=0.900 worth=85.7 cheap=8.5 over=0 dMedOther=62.2 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=13107 bal=1288756 dq=98.3 cnt=49 | c=376.6 rankC=376.6 need=2316795 tD=1.58 人 pulse | safe=553696 keep=Inf avail=-Inf chunkB=119776 pulseB=71866 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3230 kaito9 B=605887 L=6292 d=96.3 nb=1 neut=0 cmds=52 noFull=1 shQ=42003 | m=0.900 worth=86.7 cheap=8.5 over=0 dMedOther=63.0 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=13107 bal=1304736 dq=99.5 cnt=49 | c=552.8 rankC=801.5 need=2345278 tD=1.58 人 pulse | safe=553696 keep=Inf avail=-Inf chunkB=121177 pulseB=72706 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3235 kaito9 B=605887 L=6292 d=96.3 nb=1 neut=0 cmds=52 noFull=1 shQ=50863 | m=0.900 worth=86.7 cheap=8.5 over=0 dMedOther=62.9 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=13107 bal=1304736 dq=99.5 cnt=49 | c=552.8 rankC=801.5 need=2345278 tD=1.58 人 pulse | safe=553696 keep=Inf avail=-Inf chunkB=121177 pulseB=72706 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3240 kaito9 B=612975 L=6292 d=97.4 nb=1 neut=0 cmds=52 noFull=1 shQ=59743 | m=0.900 worth=87.7 cheap=8.5 over=0 dMedOther=63.6 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=13107 bal=1320914 dq=100.8 cnt=49 | c=559.5 rankC=811.3 need=2374115 tD=1.58 人 pulse | safe=553696 keep=Inf avail=-Inf chunkB=122595 pulseB=73557 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3245 kaito9 B=612975 L=6292 d=97.4 nb=1 neut=0 cmds=52 noFull=1 shQ=68703 | m=0.900 worth=87.7 cheap=8.5 over=0 dMedOther=63.4 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=13107 bal=1320914 dq=100.8 cnt=49 | c=559.5 rankC=811.3 need=2374115 tD=1.59 人 pulse | safe=553696 keep=Inf avail=-Inf chunkB=122595 pulseB=73557 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3250 kaito9 B=620146 L=6292 d=98.6 nb=1 neut=0 cmds=52 noFull=1 shQ=77684 | m=0.900 worth=88.7 cheap=8.5 over=0 dMedOther=64.0 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=13107 bal=1337161 dq=102.0 cnt=49 | c=566.4 rankC=821.2 need=2403074 tD=1.59 人 pulse | safe=553696 keep=Inf avail=-Inf chunkB=124029 pulseB=74418 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3255 kaito9 B=620146 L=6292 d=98.6 nb=1 neut=0 cmds=52 noFull=1 shQ=86749 | m=0.900 worth=88.7 cheap=8.5 over=0 dMedOther=63.9 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=13107 bal=1337161 dq=102.0 cnt=49 | c=566.4 rankC=821.2 need=2403074 tD=1.60 人 pulse | safe=553696 keep=Inf avail=-Inf chunkB=124029 pulseB=74418 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3260 kaito9 B=627401 L=6292 d=99.7 nb=1 neut=0 cmds=52 noFull=1 shQ=95836 | m=0.900 worth=89.7 cheap=8.5 over=0 dMedOther=64.3 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=13107 bal=1353073 dq=103.2 cnt=49 | c=573.1 rankC=830.9 need=2431436 tD=1.61 人 pulse | safe=553696 keep=Inf avail=-Inf chunkB=125480 pulseB=75288 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3265 kaito9 B=627401 L=6292 d=99.7 nb=1 neut=0 cmds=52 noFull=1 shQ=105011 | m=0.900 worth=89.7 cheap=8.5 over=0 dMedOther=64.3 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=13107 bal=1353073 dq=103.2 cnt=49 | c=573.1 rankC=830.9 need=2431436 tD=1.61 人 pulse | safe=553696 keep=Inf avail=-Inf chunkB=125480 pulseB=75288 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3270 kaito9 B=634741 L=6292 d=100.9 nb=1 neut=0 cmds=52 noFull=1 shQ=114175 | m=0.900 worth=90.8 cheap=8.5 over=1 dMedOther=67.6 safe(-1)=553696
+    → [OG] Gallo#55[T4] terr=13107 bal=1368768 dq=104.4 cnt=49 | c=579.7 rankC=840.5 need=2459412 tD=1.54 人 pulse | safe=553696 keep=704704 avail=-77401 chunkB=126948 pulseB=76169 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3275 kaito9 B=633451 L=6284 d=100.8 nb=2 neut=0 cmds=53 noFull=1 shQ=123316 | m=0.900 worth=90.7 cheap=8.5 over=1 dMedOther=67.3 safe(-1)=552992
+    → The great Malay empa#66[T1] terr=5037 bal=4900 dq=1.0 cnt=6 | c=6.2 rankC=4.3 need=23858 tD=0.01 人 pulse onMe | safe=552992 keep=552992 avail=73036 chunkB=126690 pulseB=76014 低于最小指令(x=28648<29692)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13107 bal=1368768 dq=104.4 cnt=49 | c=362.3 rankC=525.3 need=2459412 tD=1.55 人 pulse | safe=552992 keep=565560 avail=60468 chunkB=126690 pulseB=76014  x=60468 hNb=2
+    ⇒ 影子指令 attack pct=97 → [OG] Gallo#55[T4]（约 60623 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3280 kaito9 B=637701 L=6265 d=101.8 nb=2 neut=0 cmds=54 noFull=1 shQ=132449 | m=0.900 worth=91.6 cheap=8.5 over=1 dMedOther=67.6 safe(-1)=551320
+    → The great Malay empa#66[T1] terr=5056 bal=4955 dq=1.0 cnt=9 | c=5.0 rankC=3.5 need=17808 tD=0.01 人 pulse onMe | safe=551320 keep=551320 avail=78908 chunkB=127540 pulseB=76524 低于最小指令(x=21396<29892)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13107 bal=1384371 dq=105.6 cnt=49 | c=366.4 rankC=531.2 need=2487223 tD=1.56 人 pulse | safe=551320 keep=563850 avail=66378 chunkB=127540 pulseB=76524  x=66378 hNb=2
+    ⇒ 影子指令 attack pct=106 → [OG] Gallo#55[T4]（约 66634 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3285 kaito9 B=568551 L=6265 d=90.8 nb=2 neut=0 cmds=54 noFull=1 shQ=79499 | m=0.900 worth=81.7 cheap=8.5 over=0 dMedOther=67.2 safe(-1)=551320
+    → The great Malay empa#66[T1] terr=5056 bal=4793 dq=0.9 cnt=9 | c=9.9 rankC=14.3 need=16040 tD=0.01 人 pulse bleeding | safe=551320 keep=551320 avail=10569 chunkB=113710 pulseB=68226 低于最小指令(x=10569<26648)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13107 bal=1384371 dq=105.6 cnt=49 | c=332.7 rankC=332.7 need=2426263 tD=1.57 人 pulse crowdedHard | safe=551320 keep=Inf avail=-Inf chunkB=113710 pulseB=68226 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3290 kaito9 B=575203 L=6265 d=91.8 nb=2 neut=0 cmds=54 noFull=1 shQ=87833 | m=0.900 worth=82.6 cheap=8.5 over=0 dMedOther=67.4 safe(-1)=551320
+    → The great Malay empa#66[T1] terr=5051 bal=4840 dq=1.0 cnt=9 | c=10.0 rankC=14.4 need=16115 tD=0.01 人 pulse bleeding | safe=551320 keep=551320 avail=17143 chunkB=115041 pulseB=69024 低于最小指令(x=17143<26960)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13107 bal=1399737 dq=106.8 cnt=49 | c=336.4 rankC=336.4 need=2453652 tD=1.58 人 pulse crowdedHard | safe=551320 keep=Inf avail=-Inf chunkB=115041 pulseB=69024 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3295 kaito9 B=575203 L=6363 d=90.4 nb=2 neut=0 cmds=54 noFull=1 shQ=96243 | m=0.900 worth=81.4 cheap=8.5 over=0 dMedOther=66.9 safe(-1)=559944
+    → The great Malay empa#66[T1] terr=5031 bal=4811 dq=1.0 cnt=9 | c=9.9 rankC=14.4 need=16020 tD=0.01 人 pulse bleeding | safe=559944 keep=559944 avail=8519 chunkB=115041 pulseB=69024 低于最小指令(x=8519<26960)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13009 bal=1383013 dq=106.3 cnt=49 | c=339.8 rankC=339.8 need=2453806 tD=1.59 人 pulse crowdedHard | safe=559944 keep=Inf avail=-Inf chunkB=115041 pulseB=69024 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3300 kaito9 B=520718 L=6461 d=80.6 nb=2 neut=0 cmds=54 noFull=1 shQ=104102 | m=0.900 worth=72.5 cheap=8.5 over=0 dMedOther=68.1 safe(-1)=568568
+    → The great Malay empa#66[T1] terr=5016 bal=7675 dq=1.5 cnt=9 | c=11.9 rankC=17.2 need=21071 tD=0.02 人 pulse bleeding | safe=568568 keep=568568 avail=-53952 chunkB=104144 pulseB=62486 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12911 bal=1394140 dq=108.0 cnt=48 | c=341.7 rankC=341.7 need=2443561 tD=1.59 人 pulse crowdedHard | safe=568568 keep=Inf avail=-Inf chunkB=104144 pulseB=62486 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3305 kaito9 B=520718 L=6509 d=80.0 nb=2 neut=0 cmds=54 noFull=1 shQ=111717 | m=0.900 worth=72.0 cheap=8.5 over=0 dMedOther=77.8 safe(-1)=572792
+    → The great Malay empa#66[T1] terr=5005 bal=7650 dq=1.5 cnt=9 | c=11.9 rankC=17.2 need=21003 tD=0.02 人 pulse bleeding | safe=572792 keep=572792 avail=-58176 chunkB=104144 pulseB=62486 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12863 bal=1215325 dq=94.5 cnt=48 | c=179.2 rankC=125.4 need=2295128 tD=1.21 人 pulse onMe | safe=572792 keep=Inf avail=-Inf chunkB=104144 pulseB=62486 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3310 kaito9 B=526856 L=6509 d=80.9 nb=2 neut=0 cmds=54 noFull=1 shQ=119350 | m=0.900 worth=72.8 cheap=8.5 over=0 dMedOther=78.8 safe(-1)=572792
+    → The great Malay empa#66[T1] terr=4998 bal=7721 dq=1.5 cnt=9 | c=11.9 rankC=17.3 need=21115 tD=0.02 人 pulse bleeding | safe=572792 keep=572792 avail=-52110 chunkB=105371 pulseB=63223 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12863 bal=1230395 dq=95.7 cnt=48 | c=181.3 rankC=126.9 need=2322310 tD=1.21 人 pulse onMe | safe=572792 keep=Inf avail=-Inf chunkB=105371 pulseB=63223 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3315 kaito9 B=514454 L=6413 d=80.2 nb=2 neut=0 cmds=54 noFull=1 shQ=126943 | m=0.900 worth=72.2 cheap=8.5 over=0 dMedOther=77.3 safe(-1)=564344
+    → The great Malay empa#66[T1] terr=4990 bal=4228 dq=0.8 cnt=9 | c=9.2 rankC=13.3 need=14908 tD=0.01 人 pulse bleeding | safe=564344 keep=564344 avail=-55918 chunkB=102891 pulseB=61734 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12959 bal=1230395 dq=94.9 cnt=48 | c=177.8 rankC=124.5 need=2300895 tD=1.23 人 pulse onMe | safe=564344 keep=Inf avail=-Inf chunkB=102891 pulseB=61734 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3320 kaito9 B=501993 L=6270 d=80.1 nb=2 neut=0 cmds=54 noFull=1 shQ=125498 | m=0.900 worth=72.1 cheap=8.5 over=0 dMedOther=78.0 safe(-1)=551760
+    → The great Malay empa#66[T1] terr=4986 bal=4272 dq=0.9 cnt=9 | c=4.6 rankC=3.2 need=16923 tD=0.01 人 pulse bleeding onMe | safe=551760 keep=551760 avail=-55649 chunkB=100399 pulseB=60239 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=13102 bal=1245651 dq=95.1 cnt=47 | c=233.2 rankC=233.2 need=2295483 tD=1.22 人 pulse onMe | safe=551760 keep=Inf avail=-Inf chunkB=100399 pulseB=60239 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3325 kaito9 B=489601 L=6173 d=79.3 nb=2 neut=0 cmds=54 noFull=1 shQ=122400 | m=0.900 worth=71.4 cheap=8.5 over=0 dMedOther=77.1 safe(-1)=543224
+    → The great Malay empa#66[T1] terr=4983 bal=4267 dq=0.9 cnt=11 | c=4.4 rankC=3.1 need=16398 tD=0.01 人 pulse bleeding onMe | safe=543224 keep=543224 avail=-59360 chunkB=97920 pulseB=58752 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=13197 bal=1245651 dq=94.4 cnt=48 | c=229.1 rankC=229.1 need=2271125 tD=1.22 人 pulse onMe | safe=543224 keep=Inf avail=-Inf chunkB=97920 pulseB=58752 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3330 kaito9 B=536021 L=6072 d=88.3 nb=2 neut=0 cmds=54 noFull=1 shQ=130182 | m=0.900 worth=79.4 cheap=8.6 over=0 dMedOther=78.0 safe(-1)=534336
+    → The great Malay empa#66[T1] terr=4980 bal=2455 dq=0.5 cnt=11 | c=7.0 rankC=10.1 need=11754 tD=0.01 人 pulse bleeding | safe=534336 keep=534336 avail=-4596 chunkB=107204 pulseB=64323 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1261248 dq=94.8 cnt=51 | c=329.2 rankC=477.3 need=2268015 tD=1.22 人 pulse | safe=534336 keep=Inf avail=-Inf chunkB=107204 pulseB=64323 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3335 kaito9 B=535739 L=6070 d=88.3 nb=2 neut=0 cmds=54 noFull=1 shQ=133934 | m=0.900 worth=79.4 cheap=8.6 over=0 dMedOther=80.9 safe(-1)=534160
+    → The great Malay empa#66[T1] terr=4981 bal=2455 dq=0.5 cnt=13 | c=4.1 rankC=2.9 need=14332 tD=0.01 人 pulse onMe | safe=534160 keep=534160 avail=-4699 chunkB=107148 pulseB=64289 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1261248 dq=94.8 cnt=51 | c=227.0 rankC=227.0 need=2268015 tD=1.17 人 pulse | safe=534160 keep=Inf avail=-Inf chunkB=107148 pulseB=64289 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3340 kaito9 B=541329 L=6066 d=89.2 nb=2 neut=0 cmds=54 noFull=1 shQ=135332 | m=0.900 worth=80.3 cheap=8.6 over=0 dMedOther=78.5 safe(-1)=533808
+    → The great Malay empa#66[T1] terr=4985 bal=2482 dq=0.5 cnt=15 | c=3.9 rankC=2.7 need=13258 tD=0.01 人 pulse onMe | safe=533808 keep=533808 avail=1178 chunkB=108266 pulseB=64959 低于最小指令(x=1178<25372)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1277013 dq=96.0 cnt=51 | c=229.8 rankC=229.8 need=2296115 tD=1.22 人 pulse | safe=533808 keep=Inf avail=-Inf chunkB=108266 pulseB=64959 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3345 kaito9 B=540618 L=6066 d=89.1 nb=2 neut=0 cmds=54 noFull=1 shQ=135154 | m=0.900 worth=80.2 cheap=8.6 over=0 dMedOther=78.2 safe(-1)=533808
+    → The great Malay empa#66[T1] terr=4985 bal=2485 dq=0.5 cnt=15 | c=4.8 rankC=4.8 need=11829 tD=0.01 人 pulse | safe=533808 keep=533808 avail=475 chunkB=108124 pulseB=64874 低于最小指令(x=475<25340)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1277013 dq=96.0 cnt=51 | c=229.8 rankC=229.8 need=2296115 tD=1.23 人 pulse | safe=533808 keep=Inf avail=-Inf chunkB=108124 pulseB=64874 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3350 kaito9 B=546835 L=6066 d=90.1 nb=2 neut=0 cmds=54 noFull=1 shQ=136708 | m=0.900 worth=81.1 cheap=8.6 over=0 dMedOther=79.0 safe(-1)=533808
+    → The great Malay empa#66[T1] terr=4985 bal=2513 dq=0.5 cnt=15 | c=4.9 rankC=4.9 need=11881 tD=0.01 人 pulse | safe=533808 keep=533808 avail=6619 chunkB=109367 pulseB=65620 低于最小指令(x=6619<25632)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1292975 dq=97.2 cnt=51 | c=232.7 rankC=232.7 need=2324566 tD=1.23 人 pulse | safe=533808 keep=Inf avail=-Inf chunkB=109367 pulseB=65620 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3355 kaito9 B=546835 L=6066 d=90.1 nb=2 neut=0 cmds=54 noFull=1 shQ=136708 | m=0.900 worth=81.1 cheap=8.6 over=0 dMedOther=73.2 safe(-1)=533808
+    → The great Malay empa#66[T1] terr=4985 bal=1429 dq=0.3 cnt=15 | c=3.5 rankC=2.4 need=11015 tD=0.00 人 pulse onMe | safe=533808 keep=533808 avail=6619 chunkB=109367 pulseB=65620 低于最小指令(x=6619<25632)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1292975 dq=97.2 cnt=51 | c=337.4 rankC=489.2 need=2324566 tD=1.33 人 pulse | safe=533808 keep=Inf avail=-Inf chunkB=109367 pulseB=65620 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3360 kaito9 B=553123 L=6066 d=91.2 nb=2 neut=0 cmds=54 noFull=1 shQ=138280 | m=0.900 worth=82.1 cheap=8.6 over=0 dMedOther=73.7 safe(-1)=533808
+    → The great Malay empa#66[T1] terr=4985 bal=1445 dq=0.3 cnt=15 | c=3.5 rankC=2.4 need=11048 tD=0.00 人 pulse onMe | safe=533808 keep=533808 avail=12834 chunkB=110625 pulseB=66375 低于最小指令(x=12834<25924)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1309137 dq=98.4 cnt=51 | c=341.6 rankC=495.3 need=2353373 tD=1.34 人 pulse | safe=533808 keep=Inf avail=-Inf chunkB=110625 pulseB=66375 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3365 kaito9 B=549914 L=6044 d=91.0 nb=2 neut=0 cmds=54 noFull=1 shQ=137478 | m=0.900 worth=81.9 cheap=8.6 over=0 dMedOther=72.5 safe(-1)=531872
+    → The great Malay empa#66[T1] terr=5007 bal=0 dq=0.0 cnt=22 | c=2.1 rankC=1.1 need=7474 tD=0.00 人 pulse | safe=531872 keep=531872 avail=11598 chunkB=109983 pulseB=65990 低于最小指令(x=9035<25776)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1309137 dq=98.4 cnt=51 | c=461.1 rankC=668.6 need=2353373 tD=1.36 人 pulse crowdedHard | safe=531872 keep=Inf avail=-Inf chunkB=109983 pulseB=65990 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3370 kaito9 B=556238 L=6044 d=92.0 nb=2 neut=0 cmds=54 noFull=1 shQ=139059 | m=0.900 worth=82.8 cheap=8.6 over=0 dMedOther=68.2 safe(-1)=531872
+    → The great Malay empa#66[T1] terr=5007 bal=0 dq=0.0 cnt=22 | c=2.1 rankC=1.1 need=7476 tD=0.00 人 pulse | safe=531872 keep=531872 avail=17848 chunkB=111248 pulseB=66749 低于最小指令(x=9037<26072)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1325501 dq=99.7 cnt=51 | c=466.8 rankC=676.9 need=2382541 tD=1.46 人 pulse crowdedHard | safe=531872 keep=Inf avail=-Inf chunkB=111248 pulseB=66749 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3375 kaito9 B=556238 L=6044 d=92.0 nb=2 neut=0 cmds=54 noFull=1 shQ=139059 | m=0.900 worth=82.8 cheap=8.6 over=0 dMedOther=67.2 safe(-1)=531872
+    → The great Malay empa#66[T1] terr=5007 bal=0 dq=0.0 cnt=22 | c=2.1 rankC=1.1 need=7478 tD=0.00 人 pulse | safe=531872 keep=531872 avail=17848 chunkB=111248 pulseB=66749 低于最小指令(x=9040<26072)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1325501 dq=99.7 cnt=51 | c=466.8 rankC=676.9 need=2382541 tD=1.48 人 pulse crowdedHard | safe=531872 keep=Inf avail=-Inf chunkB=111248 pulseB=66749 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3380 kaito9 B=562634 L=6044 d=93.1 nb=2 neut=0 cmds=54 noFull=1 shQ=140658 | m=0.900 worth=83.8 cheap=8.6 over=0 dMedOther=67.9 safe(-1)=531872
+    → The great Malay empa#66[T1] terr=5007 bal=0 dq=0.0 cnt=22 | c=2.1 rankC=1.1 need=7482 tD=0.00 人 pulse | safe=531872 keep=531872 avail=24169 chunkB=112527 pulseB=67516 低于最小指令(x=9044<26372)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1342069 dq=100.9 cnt=51 | c=472.6 rankC=685.3 need=2412072 tD=1.49 人 pulse crowdedHard | safe=531872 keep=Inf avail=-Inf chunkB=112527 pulseB=67516 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3385 kaito9 B=562634 L=6044 d=93.1 nb=2 neut=0 cmds=54 noFull=1 shQ=140658 | m=0.900 worth=83.8 cheap=8.6 over=0 dMedOther=67.7 safe(-1)=531872
+    → The great Malay empa#66[T1] terr=5007 bal=0 dq=0.0 cnt=22 | c=2.1 rankC=1.1 need=7484 tD=0.00 人 pulse | safe=531872 keep=531872 avail=24169 chunkB=112527 pulseB=67516 低于最小指令(x=9047<26372)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1342069 dq=100.9 cnt=51 | c=472.6 rankC=685.3 need=2412072 tD=1.49 人 pulse crowdedHard | safe=531872 keep=Inf avail=-Inf chunkB=112527 pulseB=67516 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3390 kaito9 B=569104 L=6044 d=94.2 nb=2 neut=0 cmds=54 noFull=1 shQ=142276 | m=0.900 worth=84.7 cheap=8.6 over=0 dMedOther=68.4 safe(-1)=531872
+    → The great Malay empa#66[T1] terr=5007 bal=0 dq=0.0 cnt=22 | c=2.2 rankC=1.1 need=7486 tD=0.00 人 pulse | safe=531872 keep=531872 avail=30563 chunkB=113821 pulseB=68292 低于最小指令(x=9049<26676)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1358576 dq=102.2 cnt=51 | c=478.4 rankC=693.6 need=2441494 tD=1.49 人 pulse crowdedHard | safe=531872 keep=Inf avail=-Inf chunkB=113821 pulseB=68292 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3395 kaito9 B=569104 L=6044 d=94.2 nb=2 neut=0 cmds=54 noFull=1 shQ=142276 | m=0.900 worth=84.7 cheap=8.6 over=0 dMedOther=68.2 safe(-1)=531872
+    → The great Malay empa#66[T1] terr=5007 bal=0 dq=0.0 cnt=22 | c=2.2 rankC=1.1 need=7488 tD=0.00 人 pulse | safe=531872 keep=531872 avail=30563 chunkB=113821 pulseB=68292 低于最小指令(x=9052<26676)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1358576 dq=102.2 cnt=51 | c=478.4 rankC=693.6 need=2441494 tD=1.50 人 pulse crowdedHard | safe=531872 keep=Inf avail=-Inf chunkB=113821 pulseB=68292 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3400 kaito9 B=577399 L=6016 d=96.0 nb=2 neut=0 cmds=54 noFull=1 shQ=142895 | m=0.900 worth=86.4 cheap=8.6 over=0 dMedOther=69.8 safe(-1)=529408
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=2.2 rankC=1.1 need=7548 tD=0.00 人 pulse | safe=529408 keep=529408 avail=41225 chunkB=115480 pulseB=69288 低于最小指令(x=9130<27064)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1388176 dq=104.4 cnt=51 | c=488.7 rankC=708.6 need=2494253 tD=1.49 人 pulse crowdedHard | safe=529408 keep=Inf avail=-Inf chunkB=115480 pulseB=69288 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3405 kaito9 B=577399 L=6016 d=96.0 nb=2 neut=0 cmds=54 noFull=1 shQ=144349 | m=0.900 worth=86.4 cheap=8.6 over=0 dMedOther=69.6 safe(-1)=529408
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=2.2 rankC=1.1 need=7550 tD=0.00 人 pulse | safe=529408 keep=529408 avail=41225 chunkB=115480 pulseB=69288 低于最小指令(x=9132<27064)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1388176 dq=104.4 cnt=51 | c=488.7 rankC=708.6 need=2494253 tD=1.50 人 pulse crowdedHard | safe=529408 keep=Inf avail=-Inf chunkB=115480 pulseB=69288 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3410 kaito9 B=584039 L=6016 d=97.1 nb=2 neut=0 cmds=54 noFull=1 shQ=146009 | m=0.900 worth=87.4 cheap=8.6 over=0 dMedOther=70.3 safe(-1)=529408
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=2.2 rankC=1.1 need=7552 tD=0.00 人 pulse | safe=529408 keep=529408 avail=47787 chunkB=116808 pulseB=70085 低于最小指令(x=9134<27376)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1404140 dq=105.6 cnt=51 | c=494.3 rankC=716.7 need=2522708 tD=1.50 人 pulse crowdedHard | safe=529408 keep=Inf avail=-Inf chunkB=116808 pulseB=70085 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3415 kaito9 B=584039 L=6016 d=97.1 nb=2 neut=0 cmds=54 noFull=1 shQ=146009 | m=0.900 worth=87.4 cheap=8.6 over=0 dMedOther=69.9 safe(-1)=529408
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=2.2 rankC=1.1 need=7554 tD=0.00 人 pulse | safe=529408 keep=529408 avail=47787 chunkB=116808 pulseB=70085 低于最小指令(x=9137<27376)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1404140 dq=105.6 cnt=51 | c=494.3 rankC=716.7 need=2522708 tD=1.51 人 pulse crowdedHard | safe=529408 keep=Inf avail=-Inf chunkB=116808 pulseB=70085 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3420 kaito9 B=590755 L=6016 d=98.2 nb=2 neut=0 cmds=54 noFull=1 shQ=147688 | m=0.900 worth=88.4 cheap=8.6 over=0 dMedOther=70.5 safe(-1)=529408
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=2.2 rankC=1.1 need=7554 tD=0.00 人 pulse | safe=529408 keep=529408 avail=54425 chunkB=118151 pulseB=70891 低于最小指令(x=9137<27688)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1419866 dq=106.8 cnt=51 | c=499.8 rankC=724.7 need=2550738 tD=1.51 人 pulse crowdedHard | safe=529408 keep=Inf avail=-Inf chunkB=118151 pulseB=70891 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3425 kaito9 B=590755 L=6016 d=98.2 nb=2 neut=0 cmds=54 noFull=1 shQ=147688 | m=0.900 worth=88.4 cheap=8.6 over=0 dMedOther=70.3 safe(-1)=529408
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=2.2 rankC=1.1 need=7554 tD=0.00 人 pulse | safe=529408 keep=529408 avail=54425 chunkB=118151 pulseB=70891 低于最小指令(x=9137<27688)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1419866 dq=106.8 cnt=51 | c=499.8 rankC=724.7 need=2550738 tD=1.52 人 pulse crowdedHard | safe=529408 keep=Inf avail=-Inf chunkB=118151 pulseB=70891 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3430 kaito9 B=597548 L=6016 d=99.3 nb=2 neut=0 cmds=54 noFull=1 shQ=149387 | m=0.900 worth=89.4 cheap=8.6 over=0 dMedOther=70.9 safe(-1)=529408
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=2.2 rankC=1.1 need=7554 tD=0.00 人 pulse | safe=529408 keep=529408 avail=61138 chunkB=119510 pulseB=71706 低于最小指令(x=9137<28008)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1435342 dq=107.9 cnt=51 | c=505.2 rankC=732.5 need=2578323 tD=1.52 人 pulse crowdedHard | safe=529408 keep=Inf avail=-Inf chunkB=119510 pulseB=71706 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3435 kaito9 B=597548 L=6016 d=99.3 nb=2 neut=0 cmds=54 noFull=1 shQ=149387 | m=0.900 worth=89.4 cheap=8.6 over=0 dMedOther=70.7 safe(-1)=529408
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=2.2 rankC=1.1 need=7554 tD=0.00 人 pulse | safe=529408 keep=529408 avail=61138 chunkB=119510 pulseB=71706 低于最小指令(x=9137<28008)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1230695 dq=92.5 cnt=51 | c=321.4 rankC=466.0 need=2213557 tD=1.31 人 pulse | safe=529408 keep=Inf avail=-Inf chunkB=119510 pulseB=71706 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3440 kaito9 B=604419 L=6016 d=100.5 nb=2 neut=0 cmds=55 noFull=1 shQ=151104 | m=0.900 worth=90.4 cheap=8.6 over=1 dMedOther=71.3 safe(-1)=529408
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=2.2 rankC=1.1 need=7554 tD=0.00 人 pulse | safe=529408 keep=529408 avail=67928 chunkB=120884 pulseB=72530 低于最小指令(x=9137<28332)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1246078 dq=93.7 cnt=51 | c=325.4 rankC=471.8 need=2240976 tD=1.31 人 pulse | safe=529408 keep=541440 avail=55896 chunkB=120884 pulseB=72530  x=55896 hNb=2
+    ⇒ 影子指令 attack pct=94 → [OG] Gallo#55[T4]（约 56074 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3445 kaito9 B=604419 L=6016 d=100.5 nb=2 neut=0 cmds=56 noFull=1 shQ=151104 | m=0.900 worth=90.4 cheap=8.6 over=1 dMedOther=71.1 safe(-1)=529408
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=2.2 rankC=1.1 need=7554 tD=0.00 人 pulse | safe=529408 keep=529408 avail=67928 chunkB=120884 pulseB=72530 低于最小指令(x=9137<28332)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1246078 dq=93.7 cnt=51 | c=325.4 rankC=471.8 need=2240976 tD=1.32 人 pulse | safe=529408 keep=541440 avail=55896 chunkB=120884 pulseB=72530  x=55896 hNb=2
+    ⇒ 影子指令 attack pct=94 → [OG] Gallo#55[T4]（约 56074 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3450 kaito9 B=611309 L=6016 d=101.6 nb=2 neut=0 cmds=57 noFull=1 shQ=152815 | m=0.900 worth=91.5 cheap=8.6 over=1 dMedOther=71.9 safe(-1)=529408
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=2.2 rankC=1.1 need=7554 tD=0.00 人 pulse | safe=529408 keep=529408 avail=74738 chunkB=122262 pulseB=73357 低于最小指令(x=9137<28652)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1261653 dq=94.9 cnt=51 | c=329.4 rankC=477.7 need=2268737 tD=1.32 人 pulse | safe=529408 keep=541440 avail=62706 chunkB=122262 pulseB=73357  x=62706 hNb=2
+    ⇒ 影子指令 attack pct=105 → [OG] Gallo#55[T4]（约 63280 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3455 kaito9 B=547433 L=6016 d=91.0 nb=2 neut=0 cmds=57 noFull=1 shQ=84906 | m=0.900 worth=81.9 cheap=8.6 over=0 dMedOther=71.9 safe(-1)=529408
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=2.1 rankC=1.1 need=7554 tD=0.00 人 pulse | safe=529408 keep=529408 avail=11610 chunkB=109487 pulseB=65692 低于最小指令(x=9137<25660)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=13298 bal=1261653 dq=94.9 cnt=51 | c=221.4 rankC=221.4 need=2212024 tD=1.32 人 pulse | safe=529408 keep=Inf avail=-Inf chunkB=109487 pulseB=65692 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3460 kaito9 B=438730 L=6067 d=72.3 nb=2 neut=0 cmds=57 noFull=1 shQ=92196 | m=0.900 worth=65.1 cheap=8.6 over=0 dMedOther=72.8 safe(-1)=533896
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=1.9 rankC=1.0 need=7554 tD=0.00 人 pulse | safe=533896 keep=533896 avail=-100307 chunkB=87746 pulseB=52648 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=13247 bal=1269585 dq=95.8 cnt=50 | c=290.3 rankC=290.3 need=2138339 tD=1.32 人 pulse crowdedHard | safe=533896 keep=Inf avail=-Inf chunkB=87746 pulseB=52648 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3465 kaito9 B=438730 L=6165 d=71.2 nb=2 neut=0 cmds=57 noFull=1 shQ=98600 | m=0.900 worth=64.0 cheap=8.5 over=0 dMedOther=72.8 safe(-1)=542520
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=1.9 rankC=1.0 need=7554 tD=0.00 人 pulse | safe=542520 keep=542520 avail=-108931 chunkB=87746 pulseB=52648 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=13149 bal=1254577 dq=95.4 cnt=47 | c=293.3 rankC=293.3 need=2138614 tD=1.31 人 pulse crowdedHard | safe=542520 keep=Inf avail=-Inf chunkB=87746 pulseB=52648 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3470 kaito9 B=443863 L=6212 d=71.5 nb=2 neut=0 cmds=57 noFull=1 shQ=105030 | m=0.900 worth=64.3 cheap=8.5 over=0 dMedOther=76.0 safe(-1)=546656
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=1.9 rankC=1.0 need=7554 tD=0.00 人 pulse | safe=546656 keep=546656 avail=-107994 chunkB=88773 pulseB=53264 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=13102 bal=1262870 dq=96.4 cnt=47 | c=298.4 rankC=298.4 need=2166244 tD=1.27 人 pulse crowdedHard | safe=546656 keep=Inf avail=-Inf chunkB=88773 pulseB=53264 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3475 kaito9 B=443863 L=6307 d=70.4 nb=2 neut=0 cmds=57 noFull=1 shQ=110965 | m=0.900 worth=63.3 cheap=8.5 over=0 dMedOther=73.7 safe(-1)=555016
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=1.9 rankC=1.0 need=7554 tD=0.00 人 pulse | safe=555016 keep=555016 avail=-116354 chunkB=88773 pulseB=53264 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=13007 bal=1248236 dq=96.0 cnt=48 | c=301.3 rankC=301.3 need=2166385 tD=1.30 人 pulse crowdedHard | safe=555016 keep=Inf avail=-Inf chunkB=88773 pulseB=53264 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3480 kaito9 B=449056 L=6403 d=70.1 nb=2 neut=0 cmds=57 noFull=1 shQ=112264 | m=0.900 worth=63.1 cheap=8.5 over=0 dMedOther=74.6 safe(-1)=563464
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=1.9 rankC=1.0 need=7554 tD=0.00 人 pulse | safe=563464 keep=563464 avail=-119670 chunkB=89811 pulseB=53887 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12911 bal=1248809 dq=96.7 cnt=48 | c=308.1 rankC=308.1 need=2193817 tD=1.30 人 pulse crowdedHard | safe=563464 keep=Inf avail=-Inf chunkB=89811 pulseB=53887 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3485 kaito9 B=449056 L=6451 d=69.6 nb=2 neut=0 cmds=57 noFull=1 shQ=112264 | m=0.900 worth=62.6 cheap=8.5 over=0 dMedOther=74.6 safe(-1)=567688
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=1.9 rankC=1.0 need=7554 tD=0.00 人 pulse | safe=567688 keep=567688 avail=-123894 chunkB=89811 pulseB=53887 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12863 bal=1241382 dq=96.5 cnt=48 | c=309.7 rankC=309.7 need=2194096 tD=1.29 人 pulse crowdedHard | safe=567688 keep=Inf avail=-Inf chunkB=89811 pulseB=53887 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3490 kaito9 B=454311 L=6499 d=69.9 nb=2 neut=0 cmds=57 noFull=1 shQ=113577 | m=0.900 worth=62.9 cheap=8.5 over=0 dMedOther=75.6 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=5035 bal=0 dq=0.0 cnt=24 | c=1.9 rankC=1.0 need=7554 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-103427 chunkB=90862 pulseB=54517 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12815 bal=1244799 dq=97.1 cnt=47 | c=315.2 rankC=315.2 need=2222335 tD=1.29 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=90862 pulseB=54517 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3495 kaito9 B=454311 L=6499 d=69.9 nb=2 neut=0 cmds=57 noFull=1 shQ=113577 | m=0.900 worth=62.9 cheap=8.5 over=0 dMedOther=75.6 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=5029 bal=0 dq=0.0 cnt=24 | c=1.9 rankC=1.0 need=7544 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-103427 chunkB=90862 pulseB=54517 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12815 bal=1244799 dq=97.1 cnt=47 | c=315.2 rankC=315.2 need=2222475 tD=1.29 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=90862 pulseB=54517 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3500 kaito9 B=466125 L=6499 d=71.7 nb=2 neut=0 cmds=57 noFull=1 shQ=114940 | m=0.900 worth=64.6 cheap=8.5 over=0 dMedOther=77.5 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=5003 bal=0 dq=0.0 cnt=24 | c=2.0 rankC=1.0 need=7494 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-91752 chunkB=93225 pulseB=55935 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12815 bal=1273049 dq=99.3 cnt=47 | c=467.3 rankC=677.6 need=2272625 tD=1.28 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=93225 pulseB=55935 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3505 kaito9 B=466125 L=6499 d=71.7 nb=2 neut=0 cmds=57 noFull=1 shQ=116531 | m=0.900 worth=64.6 cheap=8.5 over=0 dMedOther=82.3 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=4974 bal=0 dq=0.0 cnt=24 | c=2.0 rankC=1.0 need=7438 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-91752 chunkB=93225 pulseB=55935 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12815 bal=1273049 dq=99.3 cnt=47 | c=467.3 rankC=677.5 need=2272911 tD=1.21 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=93225 pulseB=55935 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3510 kaito9 B=471578 L=6499 d=72.6 nb=2 neut=0 cmds=57 noFull=1 shQ=117894 | m=0.900 worth=65.3 cheap=8.5 over=0 dMedOther=83.3 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=4916 bal=0 dq=0.0 cnt=24 | c=2.0 rankC=1.0 need=7324 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-86363 chunkB=94316 pulseB=56589 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12815 bal=1288834 dq=100.6 cnt=47 | c=473.0 rankC=685.8 need=2301003 tD=1.21 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=94316 pulseB=56589 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3515 kaito9 B=471578 L=6499 d=72.6 nb=2 neut=0 cmds=57 noFull=1 shQ=117894 | m=0.900 worth=65.3 cheap=8.5 over=0 dMedOther=78.5 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=4869 bal=0 dq=0.0 cnt=24 | c=2.0 rankC=1.0 need=7234 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-86363 chunkB=94316 pulseB=56589 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12815 bal=1288834 dq=100.6 cnt=47 | c=473.0 rankC=685.8 need=2301148 tD=1.28 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=94316 pulseB=56589 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3520 kaito9 B=477095 L=6499 d=73.4 nb=2 neut=0 cmds=57 noFull=1 shQ=119273 | m=0.900 worth=66.1 cheap=8.5 over=0 dMedOther=79.5 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=4783 bal=0 dq=0.0 cnt=24 | c=2.1 rankC=1.0 need=7064 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-80910 chunkB=95419 pulseB=57251 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12815 bal=1304686 dq=101.8 cnt=47 | c=478.7 rankC=694.1 need=2329363 tD=1.28 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=95419 pulseB=57251 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3525 kaito9 B=477095 L=6499 d=73.4 nb=2 neut=0 cmds=57 noFull=1 shQ=119273 | m=0.900 worth=66.1 cheap=8.5 over=0 dMedOther=79.5 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=4718 bal=0 dq=0.0 cnt=24 | c=2.1 rankC=1.0 need=6936 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-80910 chunkB=95419 pulseB=57251 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12815 bal=1304686 dq=101.8 cnt=47 | c=478.7 rankC=694.1 need=2329657 tD=1.28 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=95419 pulseB=57251 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3530 kaito9 B=482677 L=6499 d=74.3 nb=2 neut=0 cmds=57 noFull=1 shQ=120669 | m=0.900 worth=66.8 cheap=8.5 over=0 dMedOther=80.5 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=4605 bal=0 dq=0.0 cnt=24 | c=2.1 rankC=1.1 need=6712 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-75394 chunkB=96535 pulseB=57921 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12815 bal=1320342 dq=103.0 cnt=47 | c=484.4 rankC=702.3 need=2357532 tD=1.28 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=96535 pulseB=57921 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3535 kaito9 B=482677 L=6499 d=74.3 nb=2 neut=0 cmds=57 noFull=1 shQ=120669 | m=0.900 worth=66.8 cheap=8.5 over=0 dMedOther=80.5 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=4516 bal=0 dq=0.0 cnt=24 | c=2.1 rankC=1.1 need=6538 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-75394 chunkB=96535 pulseB=57921 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12815 bal=1320342 dq=103.0 cnt=47 | c=484.3 rankC=702.3 need=2357680 tD=1.28 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=96535 pulseB=57921 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3540 kaito9 B=488324 L=6499 d=75.1 nb=2 neut=0 cmds=57 noFull=1 shQ=122081 | m=0.900 worth=67.6 cheap=8.5 over=0 dMedOther=81.5 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=4362 bal=0 dq=0.0 cnt=24 | c=2.2 rankC=1.1 need=6232 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-69813 chunkB=97665 pulseB=58599 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12815 bal=1335790 dq=104.2 cnt=47 | c=489.9 rankC=710.4 need=2385193 tD=1.28 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=97665 pulseB=58599 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3545 kaito9 B=488324 L=6499 d=75.1 nb=2 neut=0 cmds=57 noFull=1 shQ=122081 | m=0.900 worth=67.6 cheap=8.5 over=0 dMedOther=81.5 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=4249 bal=0 dq=0.0 cnt=24 | c=2.2 rankC=1.1 need=6008 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-69813 chunkB=97665 pulseB=58599 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12815 bal=1335790 dq=104.2 cnt=47 | c=489.9 rankC=710.4 need=2385492 tD=1.28 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=97665 pulseB=58599 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3550 kaito9 B=494037 L=6499 d=76.0 nb=2 neut=0 cmds=57 noFull=1 shQ=123509 | m=0.900 worth=68.4 cheap=8.5 over=0 dMedOther=82.5 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=4067 bal=0 dq=0.0 cnt=24 | c=2.3 rankC=1.2 need=5646 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-64167 chunkB=98807 pulseB=59284 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12815 bal=1351018 dq=105.4 cnt=47 | c=495.4 rankC=718.4 need=2412622 tD=1.28 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=98807 pulseB=59284 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3555 kaito9 B=494037 L=6499 d=76.0 nb=2 neut=0 cmds=57 noFull=1 shQ=123509 | m=0.900 worth=68.4 cheap=8.5 over=0 dMedOther=82.5 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=3942 bal=0 dq=0.0 cnt=24 | c=2.4 rankC=1.2 need=5400 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-64167 chunkB=98807 pulseB=59284 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12815 bal=1351018 dq=105.4 cnt=47 | c=495.4 rankC=718.3 need=2412773 tD=1.28 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=98807 pulseB=59284 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3560 kaito9 B=499817 L=6499 d=76.9 nb=2 neut=0 cmds=57 noFull=1 shQ=124954 | m=0.900 worth=69.2 cheap=8.5 over=0 dMedOther=83.6 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=3754 bal=0 dq=0.0 cnt=24 | c=2.5 rankC=1.2 need=5026 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-58455 chunkB=99963 pulseB=59978 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12815 bal=1366014 dq=106.6 cnt=47 | c=500.8 rankC=726.2 need=2439496 tD=1.28 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=99963 pulseB=59978 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3565 kaito9 B=499817 L=6499 d=76.9 nb=2 neut=0 cmds=57 noFull=1 shQ=124954 | m=0.900 worth=69.2 cheap=8.5 over=0 dMedOther=83.6 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=3633 bal=0 dq=0.0 cnt=24 | c=2.5 rankC=1.3 need=4786 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-58455 chunkB=99963 pulseB=59978 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12828 bal=1366014 dq=106.5 cnt=47 | c=500.3 rankC=725.4 need=2440333 tD=1.27 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=99963 pulseB=59978 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3570 kaito9 B=505664 L=6499 d=77.8 nb=2 neut=0 cmds=57 noFull=1 shQ=126416 | m=0.900 worth=70.0 cheap=8.5 over=0 dMedOther=84.6 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=3451 bal=0 dq=0.0 cnt=24 | c=2.7 rankC=1.3 need=4424 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-52676 chunkB=101133 pulseB=60680 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12849 bal=1380903 dq=107.5 cnt=47 | c=504.7 rankC=731.9 need=2467741 tD=1.27 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=101133 pulseB=60680 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3575 kaito9 B=505664 L=6499 d=77.8 nb=2 neut=0 cmds=57 noFull=1 shQ=126416 | m=0.900 worth=70.0 cheap=8.5 over=0 dMedOther=84.6 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=3338 bal=0 dq=0.0 cnt=24 | c=2.8 rankC=1.4 need=4202 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-52676 chunkB=101133 pulseB=60680 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12892 bal=1380903 dq=107.1 cnt=47 | c=502.8 rankC=729.1 need=2469650 tD=1.27 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=101133 pulseB=60680 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3580 kaito9 B=511580 L=6499 d=78.7 nb=2 neut=0 cmds=57 noFull=1 shQ=127895 | m=0.900 worth=70.8 cheap=8.5 over=0 dMedOther=85.7 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=3194 bal=0 dq=0.0 cnt=24 | c=2.9 rankC=1.4 need=3916 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-46830 chunkB=102316 pulseB=61390 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12928 bal=1395816 dq=108.0 cnt=47 | c=506.6 rankC=734.6 need=2497740 tD=1.26 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=102316 pulseB=61390 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3585 kaito9 B=511580 L=6499 d=78.7 nb=2 neut=0 cmds=57 noFull=1 shQ=127895 | m=0.900 worth=70.8 cheap=8.5 over=0 dMedOther=85.7 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=3113 bal=0 dq=0.0 cnt=24 | c=2.9 rankC=1.5 need=3756 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-46830 chunkB=102316 pulseB=61390 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=12998 bal=1395816 dq=107.4 cnt=47 | c=503.6 rankC=730.2 need=2500880 tD=1.25 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=102316 pulseB=61390 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3590 kaito9 B=517565 L=6499 d=79.6 nb=2 neut=0 cmds=57 noFull=1 shQ=129391 | m=0.900 worth=71.7 cheap=8.5 over=0 dMedOther=86.8 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=3021 bal=0 dq=0.0 cnt=24 | c=3.0 rankC=1.5 need=3574 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-40915 chunkB=103513 pulseB=62108 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=13058 bal=1410751 dq=108.0 cnt=47 | c=506.3 rankC=734.1 need=2530006 tD=1.24 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=103513 pulseB=62108 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3595 kaito9 B=517565 L=6499 d=79.6 nb=2 neut=0 cmds=57 noFull=1 shQ=129391 | m=0.900 worth=71.7 cheap=8.5 over=0 dMedOther=86.8 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2991 bal=0 dq=0.0 cnt=24 | c=3.1 rankC=1.5 need=3518 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-40915 chunkB=103513 pulseB=62108 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=13167 bal=1410751 dq=107.1 cnt=47 | c=501.6 rankC=727.3 need=2534333 tD=1.23 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=103513 pulseB=62108 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3600 kaito9 B=530119 L=6499 d=81.6 nb=2 neut=0 cmds=57 noFull=1 shQ=130941 | m=0.900 worth=73.4 cheap=8.5 over=0 dMedOther=88.9 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2961 bal=0 dq=0.0 cnt=24 | c=3.1 rankC=1.6 need=3460 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-28508 chunkB=106024 pulseB=63614 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=13253 bal=1439381 dq=108.6 cnt=47 | c=508.5 rankC=737.3 need=2585416 tD=1.22 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=106024 pulseB=63614 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3605 kaito9 B=530119 L=6499 d=81.6 nb=2 neut=0 cmds=57 noFull=1 shQ=132529 | m=0.900 worth=73.4 cheap=8.5 over=0 dMedOther=88.9 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2939 bal=0 dq=0.0 cnt=24 | c=3.2 rankC=1.6 need=3418 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-28508 chunkB=106024 pulseB=63614 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=13401 bal=1439381 dq=107.4 cnt=47 | c=502.9 rankC=729.2 need=2585638 tD=1.21 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=106024 pulseB=63614 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3610 kaito9 B=536321 L=6499 d=82.5 nb=2 neut=0 cmds=57 noFull=1 shQ=134080 | m=0.900 worth=74.3 cheap=8.5 over=0 dMedOther=90.0 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2922 bal=0 dq=0.0 cnt=24 | c=3.2 rankC=1.6 need=3386 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-22379 chunkB=107264 pulseB=64359 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=13498 bal=1455070 dq=107.8 cnt=47 | c=504.7 rankC=731.9 need=2613785 tD=1.20 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=107264 pulseB=64359 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3615 kaito9 B=536321 L=6499 d=82.5 nb=2 neut=0 cmds=57 noFull=1 shQ=134080 | m=0.900 worth=74.3 cheap=8.5 over=0 dMedOther=90.0 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2919 bal=0 dq=0.0 cnt=24 | c=3.2 rankC=1.6 need=3384 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=-22379 chunkB=107264 pulseB=64359 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=13648 bal=1455070 dq=106.6 cnt=47 | c=499.3 rankC=724.0 need=2613934 tD=1.18 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=107264 pulseB=64359 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3620 kaito9 B=542595 L=6499 d=83.5 nb=2 neut=0 cmds=57 noFull=1 shQ=135648 | m=0.900 worth=75.1 cheap=8.5 over=0 dMedOther=91.1 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2915 bal=0 dq=0.0 cnt=24 | c=3.2 rankC=1.6 need=3378 tD=0.00 人 pulse | safe=571912 keep=571912 avail=-35675 chunkB=108519 pulseB=65111 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=13753 bal=1471221 dq=107.0 cnt=47 | c=501.0 rankC=726.4 need=2642916 tD=1.17 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=108519 pulseB=65111 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3625 kaito9 B=542595 L=6499 d=83.5 nb=2 neut=0 cmds=57 noFull=1 shQ=135648 | m=0.900 worth=75.1 cheap=8.5 over=0 dMedOther=91.0 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2915 bal=0 dq=0.0 cnt=24 | c=3.2 rankC=1.6 need=3380 tD=0.00 人 pulse | safe=571912 keep=571912 avail=-35675 chunkB=108519 pulseB=65111 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=13913 bal=1471221 dq=105.7 cnt=47 | c=495.3 rankC=718.2 need=2643156 tD=1.16 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=108519 pulseB=65111 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3630 kaito9 B=548943 L=6499 d=84.5 nb=2 neut=0 cmds=57 noFull=1 shQ=137235 | m=0.900 worth=76.0 cheap=8.5 over=0 dMedOther=92.0 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2915 bal=0 dq=0.0 cnt=24 | c=3.2 rankC=1.6 need=3382 tD=0.00 人 pulse | safe=571912 keep=571912 avail=-29401 chunkB=109789 pulseB=65873 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=14018 bal=1487845 dq=106.1 cnt=47 | c=497.1 rankC=720.8 need=2672981 tD=1.15 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=109789 pulseB=65873 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3635 kaito9 B=548943 L=6499 d=84.5 nb=2 neut=0 cmds=57 noFull=1 shQ=137235 | m=0.900 worth=76.0 cheap=8.5 over=0 dMedOther=91.8 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2915 bal=0 dq=0.0 cnt=24 | c=3.2 rankC=1.6 need=3386 tD=0.00 人 pulse | safe=571912 keep=571912 avail=-29401 chunkB=109789 pulseB=65873 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=14183 bal=1487845 dq=104.9 cnt=47 | c=491.4 rankC=712.5 need=2673265 tD=1.14 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=109789 pulseB=65873 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3640 kaito9 B=555365 L=6499 d=85.5 nb=2 neut=0 cmds=57 noFull=1 shQ=138841 | m=0.900 worth=76.9 cheap=8.5 over=0 dMedOther=92.7 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2915 bal=0 dq=0.0 cnt=24 | c=3.3 rankC=1.6 need=3388 tD=0.00 人 pulse | safe=571912 keep=571912 avail=-23055 chunkB=111073 pulseB=66644 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=14298 bal=1505104 dq=105.3 cnt=47 | c=493.1 rankC=715.0 need=2704162 tD=1.14 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=111073 pulseB=66644 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3645 kaito9 B=555365 L=6499 d=85.5 nb=2 neut=0 cmds=57 noFull=1 shQ=138841 | m=0.900 worth=76.9 cheap=8.5 over=0 dMedOther=92.2 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2915 bal=0 dq=0.0 cnt=24 | c=3.2 rankC=1.6 need=3390 tD=0.00 人 pulse | safe=571912 keep=571912 avail=-23055 chunkB=111073 pulseB=66644 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=14480 bal=1505104 dq=103.9 cnt=47 | c=487.0 rankC=706.1 need=2704361 tD=1.13 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=111073 pulseB=66644 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3650 kaito9 B=561862 L=6499 d=86.5 nb=2 neut=0 cmds=57 noFull=1 shQ=140465 | m=0.900 worth=77.8 cheap=8.5 over=0 dMedOther=92.9 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2915 bal=0 dq=0.0 cnt=24 | c=3.3 rankC=1.6 need=3392 tD=0.00 人 pulse | safe=571912 keep=571912 avail=-16634 chunkB=112372 pulseB=67423 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=14606 bal=1523014 dq=104.3 cnt=47 | c=488.5 rankC=708.3 need=2736545 tD=1.12 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=112372 pulseB=67423 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3655 kaito9 B=561862 L=6499 d=86.5 nb=2 neut=0 cmds=57 noFull=1 shQ=140465 | m=0.900 worth=77.8 cheap=8.5 over=0 dMedOther=89.3 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2915 bal=0 dq=0.0 cnt=24 | c=3.3 rankC=1.6 need=3396 tD=0.00 人 pulse | safe=571912 keep=571912 avail=-16634 chunkB=112372 pulseB=67423 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=14779 bal=1523014 dq=103.1 cnt=47 | c=482.8 rankC=700.1 need=2736840 tD=1.15 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=112372 pulseB=67423 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3660 kaito9 B=568435 L=6499 d=87.5 nb=2 neut=0 cmds=57 noFull=1 shQ=142108 | m=0.900 worth=78.7 cheap=8.5 over=0 dMedOther=90.4 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2915 bal=0 dq=0.0 cnt=24 | c=3.3 rankC=1.6 need=3398 tD=0.00 人 pulse | safe=571912 keep=571912 avail=-10138 chunkB=113687 pulseB=68212 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=14884 bal=1541442 dq=103.6 cnt=47 | c=334.6 rankC=334.6 need=2769734 tD=1.15 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=113687 pulseB=68212 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3665 kaito9 B=568435 L=6499 d=87.5 nb=2 neut=0 cmds=57 noFull=1 shQ=142108 | m=0.900 worth=78.7 cheap=8.5 over=0 dMedOther=90.4 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2915 bal=0 dq=0.0 cnt=24 | c=3.3 rankC=1.6 need=3400 tD=0.00 人 pulse | safe=571912 keep=571912 avail=-10138 chunkB=113687 pulseB=68212 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=15027 bal=1541442 dq=102.6 cnt=47 | c=331.4 rankC=331.4 need=2770057 tD=1.13 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=113687 pulseB=68212 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3670 kaito9 B=575085 L=6499 d=88.5 nb=2 neut=0 cmds=57 noFull=1 shQ=143771 | m=0.900 worth=79.6 cheap=8.5 over=0 dMedOther=91.5 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2915 bal=0 dq=0.0 cnt=24 | c=3.3 rankC=1.7 need=3402 tD=0.00 人 pulse | safe=571912 keep=571912 avail=-3566 chunkB=115017 pulseB=69010 无可用(avail<=0) hNb=2
+    → [OG] Gallo#55[T4] terr=15115 bal=1560247 dq=103.2 cnt=47 | c=333.5 rankC=333.5 need=2803707 tD=1.13 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=115017 pulseB=69010 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3675 kaito9 B=575085 L=6499 d=88.5 nb=2 neut=0 cmds=57 noFull=1 shQ=143771 | m=0.900 worth=79.6 cheap=8.5 over=0 dMedOther=91.5 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2915 bal=0 dq=0.0 cnt=24 | c=3.3 rankC=1.7 need=3406 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=15931 chunkB=115017 pulseB=69010 低于最小指令(x=15931<26956)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=15235 bal=1560247 dq=102.4 cnt=47 | c=330.9 rankC=330.9 need=2803887 tD=1.12 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=115017 pulseB=69010 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3680 kaito9 B=581813 L=6499 d=89.5 nb=2 neut=0 cmds=57 noFull=1 shQ=145453 | m=0.900 worth=80.6 cheap=8.5 over=0 dMedOther=92.4 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2907 bal=0 dq=0.0 cnt=24 | c=3.4 rankC=1.7 need=3392 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=22580 chunkB=116363 pulseB=69818 低于最小指令(x=22580<27272)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=15302 bal=1579438 dq=103.2 cnt=47 | c=333.5 rankC=333.5 need=2838157 tD=1.12 人 pulse crowdedHard | safe=571912 keep=Inf avail=-Inf chunkB=116363 pulseB=69818 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3685 kaito9 B=882338 L=6499 d=135.8 nb=2 neut=0 cmds=58 noFull=1 shQ=152068 | m=0.900 worth=122.2 cheap=8.5 over=1 dMedOther=91.2 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2888 bal=0 dq=0.0 cnt=24 | c=4.6 rankC=2.3 need=3356 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=319584 chunkB=176468 pulseB=105881  x=105880 hNb=2
+    → [OG] Gallo#55[T4] terr=15386 bal=1579438 dq=102.7 cnt=47 | c=356.7 rankC=517.2 need=2838282 tD=1.13 人 pulse | safe=571912 keep=571912 avail=300087 chunkB=176468 pulseB=105881  x=105880 hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 105983 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=3690 kaito9 B=885337 L=6499 d=136.2 nb=2 neut=0 cmds=59 noFull=1 shQ=163101 | m=0.900 worth=122.6 cheap=8.5 over=1 dMedOther=92.2 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2837 bal=0 dq=0.0 cnt=24 | c=4.7 rankC=2.4 need=3258 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=322547 chunkB=177067 pulseB=106240  x=106240 hNb=2
+    → [OG] Gallo#55[T4] terr=15423 bal=1598549 dq=103.6 cnt=47 | c=360.1 rankC=522.1 need=2872438 tD=1.12 人 pulse | safe=571912 keep=571912 avail=303050 chunkB=177067 pulseB=106240  x=106240 hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 106344 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=3695 kaito9 B=885337 L=6499 d=136.2 nb=2 neut=0 cmds=60 noFull=1 shQ=174166 | m=0.900 worth=122.6 cheap=8.5 over=1 dMedOther=91.9 safe(-1)=571912
+    → The great Malay empa#66[T1] terr=2796 bal=0 dq=0.0 cnt=24 | c=4.8 rankC=2.4 need=3180 tD=0.00 人 pulse nearCollapse bleeding | safe=552415 keep=552415 avail=322547 chunkB=177067 pulseB=106240  x=106240 hNb=2
+    → [OG] Gallo#55[T4] terr=15457 bal=1598549 dq=103.4 cnt=47 | c=359.3 rankC=521.0 need=2872416 tD=1.12 人 pulse | safe=571912 keep=571912 avail=303050 chunkB=177067 pulseB=106240  x=106240 hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 106344 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=3700 kaito9 B=780881 L=6499 d=120.2 nb=2 neut=0 cmds=61 noFull=1 shQ=77750 | m=0.900 worth=108.1 cheap=8.5 over=1 dMedOther=93.9 safe(-1)=571912
+    → [OG] Gallo#55[T4] terr=15474 bal=1633045 dq=105.5 cnt=47 | c=366.4 rankC=531.3 need=2933963 tD=1.12 人 pulse | safe=571912 keep=584910 avail=186821 chunkB=156176 pulseB=93706  x=93705 hNb=2
+    ⇒ 影子指令 attack pct=122 → [OG] Gallo#55[T4]（约 93797 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3705 kaito9 B=677934 L=6523 d=103.9 nb=2 neut=0 cmds=61 noFull=1 shQ=1830 | m=0.900 worth=93.5 cheap=8.5 over=1 dMedOther=93.9 safe(-1)=574024
+    → [OG] Gallo#55[T4] terr=15479 bal=1507866 dq=97.4 cnt=47 | c=338.4 rankC=490.6 need=2710885 tD=1.04 人 pulse | safe=574024 keep=587070 avail=82920 chunkB=135587 pulseB=81352  x=81352 hNb=2
+    ⇒ 本拍没有指令
+t=3710 kaito9 B=685323 L=6557 d=104.5 nb=2 neut=0 cmds=61 noFull=1 shQ=11034 | m=0.900 worth=94.1 cheap=8.5 over=1 dMedOther=95.0 safe(-1)=577016
+    → [OG] Gallo#55[T4] terr=15479 bal=1527015 dq=98.7 cnt=47 | c=342.6 rankC=496.8 need=2745017 tD=1.04 人 pulse | safe=577016 keep=590130 avail=87162 chunkB=137065 pulseB=82239  x=82238 hNb=2
+    ⇒ 本拍没有指令
+t=3715 kaito9 B=516535 L=6615 d=78.1 nb=2 neut=0 cmds=61 noFull=1 shQ=18584 | m=0.900 worth=70.3 cheap=8.5 over=0 dMedOther=85.5 safe(-1)=582120
+    → [OG] Gallo#55[T4] terr=15432 bal=1519597 dq=98.5 cnt=49 | c=310.4 rankC=310.4 need=2662699 tD=1.15 人 pulse crowdedHard | safe=582120 keep=Inf avail=-Inf chunkB=103307 pulseB=61984 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3720 kaito9 B=522578 L=6727 d=77.7 nb=2 neut=0 cmds=61 noFull=1 shQ=26152 | m=0.900 worth=69.9 cheap=8.5 over=0 dMedOther=84.3 safe(-1)=591976
+    → [OG] Gallo#55[T4] terr=15334 bal=1523277 dq=99.3 cnt=50 | c=317.0 rankC=317.0 need=2696971 tD=1.18 人 pulse crowdedHard | safe=591976 keep=Inf avail=-Inf chunkB=104516 pulseB=62709 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3725 kaito9 B=522578 L=6830 d=76.5 nb=1 neut=0 cmds=61 noFull=1 shQ=33792 | m=0.900 worth=68.9 cheap=8.5 over=0 dMedOther=83.3 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15233 bal=1507242 dq=98.9 cnt=53 | c=511.6 rankC=511.6 need=2697115 tD=1.19 人 pulse crowdedHard | safe=601040 keep=Inf avail=-Inf chunkB=104516 pulseB=62709 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3730 kaito9 B=800318 L=6830 d=117.2 nb=1 neut=0 cmds=61 noFull=1 shQ=42818 | m=0.900 worth=105.5 cheap=8.5 over=1 dMedOther=84.3 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15233 bal=1524398 dq=100.1 cnt=53 | c=384.2 rankC=384.2 need=2731820 tD=1.19 人 pulse | safe=601040 keep=764960 avail=25980 chunkB=160064 pulseB=96038 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3735 kaito9 B=800318 L=6830 d=117.2 nb=1 neut=0 cmds=61 noFull=1 shQ=52818 | m=0.900 worth=105.5 cheap=8.5 over=1 dMedOther=84.3 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15233 bal=1524398 dq=100.1 cnt=53 | c=384.2 rankC=384.2 need=2731963 tD=1.19 人 pulse | safe=601040 keep=764960 avail=25980 chunkB=160064 pulseB=96038 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3740 kaito9 B=806480 L=6830 d=118.1 nb=1 neut=0 cmds=61 noFull=1 shQ=62834 | m=0.900 worth=106.3 cheap=8.5 over=1 dMedOther=85.4 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15233 bal=1543757 dq=101.3 cnt=53 | c=389.0 rankC=389.0 need=2766657 tD=1.19 人 pulse | safe=601040 keep=764960 avail=32070 chunkB=161296 pulseB=96778 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3745 kaito9 B=806480 L=6830 d=118.1 nb=1 neut=0 cmds=61 noFull=1 shQ=72914 | m=0.900 worth=106.3 cheap=8.5 over=1 dMedOther=85.4 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15235 bal=1543757 dq=101.3 cnt=53 | c=389.0 rankC=389.0 need=2766878 tD=1.19 人 pulse | safe=601040 keep=764960 avail=32070 chunkB=161296 pulseB=96778 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3750 kaito9 B=812528 L=6830 d=119.0 nb=1 neut=0 cmds=62 noFull=1 shQ=83009 | m=0.900 worth=107.1 cheap=8.5 over=1 dMedOther=86.5 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15244 bal=1562899 dq=102.5 cnt=53 | c=393.5 rankC=393.5 need=2801396 tD=1.19 人 pulse | safe=601040 keep=764960 avail=38047 chunkB=162506 pulseB=97503 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=220 → [APEX] noah88#44[T3]（约 175360 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3755 kaito9 B=812528 L=6830 d=119.0 nb=1 neut=0 cmds=62 noFull=1 shQ=93164 | m=0.900 worth=107.1 cheap=8.5 over=1 dMedOther=86.5 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15273 bal=1562899 dq=102.3 cnt=53 | c=392.7 rankC=392.7 need=2802653 tD=1.18 人 pulse | safe=601040 keep=764960 avail=38047 chunkB=162506 pulseB=97503 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3760 kaito9 B=818459 L=6830 d=119.8 nb=1 neut=0 cmds=62 noFull=1 shQ=103334 | m=0.900 worth=107.8 cheap=8.5 over=1 dMedOther=87.6 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15301 bal=1581966 dq=103.4 cnt=53 | c=396.6 rankC=396.6 need=2837941 tD=1.18 人 pulse | safe=601040 keep=764960 avail=43908 chunkB=163692 pulseB=98215 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3765 kaito9 B=818459 L=6830 d=119.8 nb=1 neut=0 cmds=62 noFull=1 shQ=113564 | m=0.900 worth=107.8 cheap=8.5 over=1 dMedOther=87.6 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15349 bal=1581966 dq=103.1 cnt=53 | c=395.2 rankC=395.2 need=2839927 tD=1.18 人 pulse | safe=601040 keep=764960 avail=43908 chunkB=163692 pulseB=98215 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3770 kaito9 B=824270 L=6830 d=120.7 nb=1 neut=0 cmds=62 noFull=1 shQ=123808 | m=0.900 worth=108.6 cheap=8.5 over=1 dMedOther=88.8 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15378 bal=1600949 dq=104.1 cnt=53 | c=399.0 rankC=399.0 need=2874993 tD=1.17 人 pulse | safe=601040 keep=764960 avail=49651 chunkB=164854 pulseB=98912 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3775 kaito9 B=824270 L=6830 d=120.7 nb=1 neut=0 cmds=63 noFull=1 shQ=134108 | m=0.900 worth=108.6 cheap=8.5 over=1 dMedOther=88.8 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15414 bal=1600949 dq=103.9 cnt=53 | c=577.0 rankC=836.6 need=2876519 tD=1.17 人 pulse | safe=601040 keep=764960 avail=49651 chunkB=164854 pulseB=98912 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=240 → [APEX] noah88#44[T3]（约 193993 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3780 kaito9 B=829957 L=6830 d=121.5 nb=1 neut=0 cmds=63 noFull=1 shQ=144422 | m=0.900 worth=109.4 cheap=8.5 over=1 dMedOther=89.9 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15429 bal=1619840 dq=105.0 cnt=53 | c=583.1 rankC=845.5 need=2910322 tD=1.17 人 pulse | safe=601040 keep=764960 avail=55271 chunkB=165991 pulseB=99595 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3785 kaito9 B=829957 L=6830 d=121.5 nb=1 neut=0 cmds=63 noFull=1 shQ=154792 | m=0.900 worth=109.4 cheap=8.5 over=1 dMedOther=89.9 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15433 bal=1803319 dq=116.8 cnt=53 | c=648.2 rankC=939.9 need=3237359 tD=1.30 人 pulse | safe=601040 keep=764960 avail=55271 chunkB=165991 pulseB=99595 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3790 kaito9 B=835517 L=6830 d=122.3 nb=1 neut=0 cmds=63 noFull=1 shQ=165176 | m=0.900 worth=110.1 cheap=8.5 over=1 dMedOther=91.1 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15433 bal=1818647 dq=117.8 cnt=53 | c=653.7 rankC=947.9 need=3264679 tD=1.29 人 pulse | safe=601040 keep=601040 avail=224686 chunkB=167103 pulseB=100262 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3795 kaito9 B=835517 L=6830 d=122.3 nb=1 neut=0 cmds=63 noFull=1 shQ=175616 | m=0.900 worth=110.1 cheap=8.5 over=1 dMedOther=99.6 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15433 bal=1818647 dq=117.8 cnt=53 | c=653.7 rankC=947.9 need=3264679 tD=1.18 人 pulse | safe=601040 keep=601040 avail=224686 chunkB=167103 pulseB=100262 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3800 kaito9 B=847777 L=6830 d=124.1 nb=1 neut=0 cmds=64 noFull=1 shQ=186087 | m=0.900 worth=111.7 cheap=8.5 over=1 dMedOther=100.7 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15433 bal=1848992 dq=119.8 cnt=53 | c=458.3 rankC=458.3 need=3318765 tD=1.19 人 pulse | safe=601040 keep=601040 avail=236803 chunkB=169555 pulseB=101733 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=220 → [APEX] noah88#44[T3]（约 182967 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3805 kaito9 B=847777 L=6830 d=124.1 nb=1 neut=0 cmds=64 noFull=1 shQ=196682 | m=0.900 worth=111.7 cheap=8.5 over=1 dMedOther=99.9 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15433 bal=1848992 dq=119.8 cnt=53 | c=458.3 rankC=458.3 need=3318765 tD=1.20 人 pulse | safe=601040 keep=601040 avail=236803 chunkB=169555 pulseB=101733 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3810 kaito9 B=852948 L=6830 d=124.9 nb=1 neut=0 cmds=64 noFull=1 shQ=207290 | m=0.900 worth=112.4 cheap=8.5 over=1 dMedOther=100.7 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15433 bal=1863229 dq=120.7 cnt=53 | c=461.8 rankC=461.8 need=3344141 tD=1.20 人 pulse | safe=601040 keep=601040 avail=241913 chunkB=170590 pulseB=102354 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3815 kaito9 B=852948 L=6830 d=124.9 nb=1 neut=0 cmds=64 noFull=1 shQ=213237 | m=0.900 worth=112.4 cheap=8.5 over=1 dMedOther=100.3 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15433 bal=1863229 dq=120.7 cnt=53 | c=461.8 rankC=461.8 need=3344141 tD=1.20 人 pulse | safe=601040 keep=601040 avail=241913 chunkB=170590 pulseB=102354 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3820 kaito9 B=857980 L=6830 d=125.6 nb=1 neut=0 cmds=65 noFull=1 shQ=214495 | m=0.900 worth=113.1 cheap=8.5 over=1 dMedOther=95.7 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15433 bal=1877203 dq=121.6 cnt=53 | c=465.2 rankC=465.2 need=3369048 tD=1.27 人 pulse | safe=601040 keep=601040 avail=246886 chunkB=171596 pulseB=102958 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 boatTo pct=485 → 水/岸#789832（约 407205 兵） 〔boatOut:1011<boatOut:2327<idleBoats:5068<act:4963〕
+t=3825 kaito9 B=857980 L=6830 d=125.6 nb=1 neut=0 cmds=65 noFull=1 shQ=214495 | m=0.900 worth=113.1 cheap=8.5 over=1 dMedOther=95.7 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15433 bal=1877203 dq=121.6 cnt=53 | c=465.2 rankC=465.2 need=3369048 tD=1.27 人 pulse | safe=601040 keep=601040 avail=246886 chunkB=171596 pulseB=102958 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3830 kaito9 B=862956 L=6830 d=126.3 nb=1 neut=0 cmds=65 noFull=1 shQ=215739 | m=0.900 worth=113.7 cheap=8.5 over=1 dMedOther=96.9 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15433 bal=1890906 dq=122.5 cnt=53 | c=679.5 rankC=985.2 need=3393472 tD=1.26 人 pulse | safe=601040 keep=601040 avail=251804 chunkB=172591 pulseB=103555 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3835 kaito9 B=862956 L=6830 d=126.3 nb=1 neut=0 cmds=65 noFull=1 shQ=215739 | m=0.900 worth=113.7 cheap=8.5 over=1 dMedOther=96.9 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15433 bal=1890906 dq=122.5 cnt=53 | c=679.5 rankC=985.2 need=3393472 tD=1.26 人 pulse | safe=601040 keep=601040 avail=251804 chunkB=172591 pulseB=103555 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3840 kaito9 B=431411 L=6830 d=63.2 nb=1 neut=0 cmds=65 noFull=1 shQ=107852 | m=0.900 worth=72.1 cheap=8.5 over=0 dMedOther=94.3 safe(-1)=601040
+    → [OG] Gallo#55[T4] terr=15433 bal=1904142 dq=123.4 cnt=53 | c=922.3 rankC=1337.3 need=3417064 tD=1.31 人 pulse crowdedHard | safe=601040 keep=Inf avail=-Inf chunkB=86282 pulseB=51769 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3845 kaito9 B=840976 L=6831 d=123.1 nb=1 neut=0 cmds=65 noFull=1 shQ=112056 | m=0.900 worth=110.8 cheap=8.5 over=1 dMedOther=92.0 safe(-1)=601128
+    → [OG] Gallo#55[T4] terr=15433 bal=1904142 dq=123.4 cnt=53 | c=684.1 rankC=992.0 need=3417064 tD=1.34 人 pulse | safe=601128 keep=601128 avail=229993 chunkB=168195 pulseB=100917 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3850 kaito9 B=846274 L=6831 d=123.9 nb=1 neut=0 cmds=66 noFull=1 shQ=122579 | m=0.900 worth=111.5 cheap=8.5 over=1 dMedOther=93.0 safe(-1)=601128
+    → [OG] Gallo#55[T4] terr=15433 bal=1917090 dq=124.2 cnt=53 | c=688.8 rankC=998.7 need=3440142 tD=1.34 人 pulse | safe=601128 keep=601128 avail=235229 chunkB=169255 pulseB=101553 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=220 → [APEX] noah88#44[T3]（约 182643 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3855 kaito9 B=846274 L=6831 d=123.9 nb=1 neut=0 cmds=66 noFull=1 shQ=133154 | m=0.900 worth=111.5 cheap=8.5 over=1 dMedOther=92.9 safe(-1)=601128
+    → [OG] Gallo#55[T4] terr=15433 bal=1917090 dq=124.2 cnt=53 | c=688.8 rankC=998.7 need=3440142 tD=1.34 人 pulse | safe=601128 keep=601128 avail=235229 chunkB=169255 pulseB=101553 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3860 kaito9 B=851520 L=6831 d=124.7 nb=1 neut=0 cmds=66 noFull=1 shQ=143742 | m=0.900 worth=112.2 cheap=8.5 over=1 dMedOther=93.9 safe(-1)=601128
+    → [OG] Gallo#55[T4] terr=15433 bal=1929742 dq=125.0 cnt=53 | c=693.3 rankC=1005.2 need=3462693 tD=1.33 人 pulse | safe=601128 keep=601128 avail=240414 chunkB=170304 pulseB=102182 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3865 kaito9 B=851520 L=6831 d=124.7 nb=1 neut=0 cmds=66 noFull=1 shQ=154382 | m=0.900 worth=112.2 cheap=8.5 over=1 dMedOther=93.8 safe(-1)=601128
+    → [OG] Gallo#55[T4] terr=15433 bal=1929742 dq=125.0 cnt=53 | c=693.3 rankC=1005.2 need=3462693 tD=1.33 人 pulse | safe=601128 keep=601128 avail=240414 chunkB=170304 pulseB=102182 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3870 kaito9 B=856629 L=6831 d=125.4 nb=1 neut=0 cmds=66 noFull=1 shQ=165035 | m=0.900 worth=112.9 cheap=8.5 over=1 dMedOther=94.8 safe(-1)=601128
+    → [OG] Gallo#55[T4] terr=15433 bal=1942092 dq=125.8 cnt=53 | c=697.7 rankC=1011.6 need=3484705 tD=1.33 人 pulse | safe=601128 keep=601128 avail=245463 chunkB=171326 pulseB=102795 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3875 kaito9 B=856629 L=6831 d=125.4 nb=1 neut=0 cmds=67 noFull=1 shQ=175740 | m=0.900 worth=112.9 cheap=8.5 over=1 dMedOther=94.8 safe(-1)=601128
+    → [OG] Gallo#55[T4] terr=15433 bal=1942092 dq=125.8 cnt=53 | c=697.7 rankC=1011.6 need=3484705 tD=1.33 人 pulse | safe=601128 keep=601128 avail=245463 chunkB=171326 pulseB=102795 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=220 → [APEX] noah88#44[T3]（约 184877 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3880 kaito9 B=861597 L=6831 d=126.1 nb=1 neut=0 cmds=68 noFull=1 shQ=186457 | m=0.900 worth=113.5 cheap=8.5 over=1 dMedOther=96.0 safe(-1)=601128
+    → [OG] Gallo#55[T4] terr=15433 bal=1954132 dq=126.6 cnt=53 | c=484.1 rankC=484.1 need=3506165 tD=1.32 人 pulse | safe=601128 keep=601128 avail=250373 chunkB=172319 pulseB=103392 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 boatTo pct=487 → 水/岸#775887（约 410604 兵） 〔boatOut:1011<boatOut:2327<idleBoats:5068<act:4963〕
+t=3885 kaito9 B=861597 L=6831 d=126.1 nb=1 neut=0 cmds=68 noFull=1 shQ=197222 | m=0.900 worth=113.5 cheap=8.5 over=1 dMedOther=96.0 safe(-1)=601128
+    → [OG] Gallo#55[T4] terr=15433 bal=1954132 dq=126.6 cnt=53 | c=484.1 rankC=484.1 need=3506165 tD=1.32 人 pulse | safe=601128 keep=601128 avail=250373 chunkB=172319 pulseB=103392 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3890 kaito9 B=866421 L=6831 d=126.8 nb=1 neut=0 cmds=68 noFull=1 shQ=208000 | m=0.900 worth=114.2 cheap=8.5 over=1 dMedOther=92.1 safe(-1)=601128
+    → [OG] Gallo#55[T4] terr=15433 bal=1965856 dq=127.4 cnt=53 | c=487.0 rankC=487.0 need=3527062 tD=1.38 人 pulse | safe=601128 keep=601128 avail=255140 chunkB=173284 pulseB=103971 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3895 kaito9 B=866421 L=6831 d=126.8 nb=1 neut=0 cmds=68 noFull=1 shQ=216605 | m=0.900 worth=114.2 cheap=8.5 over=1 dMedOther=89.9 safe(-1)=601128
+    → [OG] Gallo#55[T4] terr=15433 bal=1965856 dq=127.4 cnt=53 | c=487.0 rankC=487.0 need=3527062 tD=1.42 人 pulse | safe=601128 keep=601128 avail=255140 chunkB=173284 pulseB=103971 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3900 kaito9 B=878017 L=6831 d=128.5 nb=1 neut=0 cmds=69 noFull=1 shQ=218800 | m=0.900 worth=115.7 cheap=8.5 over=1 dMedOther=92.1 safe(-1)=601128
+    → [OG] Gallo#55[T4] terr=15433 bal=1992690 dq=129.1 cnt=53 | c=493.6 rankC=493.6 need=3574891 tD=1.40 人 pulse | safe=601128 keep=601128 avail=266600 chunkB=175603 pulseB=105362  x=105362 sole hNb=1
+    ⇒ 影子指令 attack pct=122 → [OG] Gallo#55[T4]（约 105464 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3905 kaito9 B=878017 L=6831 d=128.5 nb=1 neut=0 cmds=70 noFull=1 shQ=219504 | m=0.900 worth=115.7 cheap=8.5 over=1 dMedOther=92.1 safe(-1)=601128
+    → [OG] Gallo#55[T4] terr=15433 bal=1992690 dq=129.1 cnt=53 | c=493.6 rankC=493.6 need=3574891 tD=1.40 人 pulse | safe=601128 keep=601128 avail=266600 chunkB=175603 pulseB=105362  x=105362 sole hNb=1
+    ⇒ 影子指令 attack pct=122 → [OG] Gallo#55[T4]（约 105464 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3910 kaito9 B=882494 L=6831 d=129.2 nb=1 neut=0 cmds=71 noFull=1 shQ=220623 | m=0.900 worth=116.3 cheap=8.5 over=1 dMedOther=93.3 safe(-1)=601128
+    → [OG] Gallo#55[T4] terr=15433 bal=2003450 dq=129.8 cnt=53 | c=496.3 rankC=496.3 need=3594069 tD=1.39 人 pulse | safe=601128 keep=601128 avail=271025 chunkB=176499 pulseB=105899  x=105899 sole hNb=1
+    ⇒ 影子指令 attack pct=122 → [OG] Gallo#55[T4]（约 106002 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3915 kaito9 B=882494 L=6831 d=129.2 nb=1 neut=0 cmds=72 noFull=1 shQ=220623 | m=0.900 worth=116.3 cheap=8.5 over=1 dMedOther=93.3 safe(-1)=601128
+    → [OG] Gallo#55[T4] terr=15433 bal=2003450 dq=129.8 cnt=53 | c=496.3 rankC=496.3 need=3594069 tD=1.39 人 pulse | safe=601128 keep=601128 avail=271025 chunkB=176499 pulseB=105899  x=105899 sole hNb=1
+    ⇒ 影子指令 attack pct=122 → [OG] Gallo#55[T4]（约 106002 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3920 kaito9 B=886818 L=6831 d=129.8 nb=1 neut=0 cmds=73 noFull=1 shQ=221704 | m=0.900 worth=116.8 cheap=8.5 over=1 dMedOther=94.5 safe(-1)=601128
+    → [OG] Gallo#55[T4] terr=15433 bal=2013867 dq=130.5 cnt=53 | c=498.8 rankC=498.8 need=3612636 tD=1.38 人 pulse | safe=601128 keep=601128 avail=275298 chunkB=177364 pulseB=106418  x=106418 sole hNb=1
+    ⇒ 影子指令 attack pct=122 → [OG] Gallo#55[T4]（约 106522 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3925 kaito9 B=886818 L=6831 d=129.8 nb=1 neut=0 cmds=74 noFull=1 shQ=221704 | m=0.900 worth=116.8 cheap=8.5 over=1 dMedOther=94.5 safe(-1)=601128
+    → [OG] Gallo#55[T4] terr=15433 bal=2013867 dq=130.5 cnt=53 | c=498.8 rankC=498.8 need=3612636 tD=1.38 人 pulse | safe=601128 keep=601128 avail=275298 chunkB=177364 pulseB=106418  x=106418 sole hNb=1
+    ⇒ 影子指令 attack pct=122 → [OG] Gallo#55[T4]（约 106522 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3930 kaito9 B=383371 L=6831 d=56.1 nb=1 neut=0 cmds=74 noFull=1 shQ=2229 | m=0.900 worth=73.2 cheap=8.5 over=0 dMedOther=95.7 safe(-1)=601128
+    → [OG] Gallo#55[T4] terr=15433 bal=2023936 dq=131.1 cnt=53 | c=655.8 rankC=655.8 need=3524061 tD=1.37 人 pulse crowdedHard | safe=601128 keep=Inf avail=-Inf chunkB=76674 pulseB=46005 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3935 kaito9 B=250858 L=6884 d=36.4 nb=1 neut=0 cmds=74 noFull=1 shQ=7446 | m=0.900 worth=73.2 cheap=8.5 over=0 dMedOther=95.7 safe(-1)=605792
+    → [OG] Gallo#55[T4] terr=15380 bal=2012816 dq=130.9 cnt=54 | c=636.0 rankC=636.0 need=3403328 tD=1.37 人 pulse crowdedHard | safe=605792 keep=Inf avail=-Inf chunkB=50172 pulseB=30103 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3940 kaito9 B=253793 L=6938 d=36.6 nb=1 neut=0 cmds=74 noFull=1 shQ=11120 | m=0.900 worth=74.2 cheap=8.5 over=0 dMedOther=97.0 safe(-1)=610544
+    → [OG] Gallo#55[T4] terr=15326 bal=2011517 dq=131.2 cnt=57 | c=642.1 rankC=642.1 need=3421514 tD=1.35 人 pulse crowdedHard | safe=610544 keep=Inf avail=-Inf chunkB=50759 pulseB=30455 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3945 kaito9 B=191287 L=7052 d=27.1 nb=1 neut=0 cmds=74 noFull=1 shQ=14098 | m=0.900 worth=74.2 cheap=8.5 over=0 dMedOther=97.0 safe(-1)=620576
+    → [OG] Gallo#55[T4] terr=15212 bal=1987607 dq=130.7 cnt=59 | c=637.5 rankC=637.5 need=3364754 tD=1.35 人 pulse crowdedHard | safe=620576 keep=Inf avail=-Inf chunkB=38257 pulseB=22954 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3950 kaito9 B=403597 L=7176 d=56.2 nb=1 neut=3 cmds=74 noFull=1 shQ=18181 | m=0.900 worth=75.1 cheap=8.4 over=0 dMedOther=98.2 safe(-1)=631488
+    → [OG] Gallo#55[T4] terr=15093 bal=1972574 dq=130.7 cnt=62 | c=647.9 rankC=647.9 need=3382489 tD=1.33 人 pulse crowdedHard | safe=631488 keep=Inf avail=-Inf chunkB=80719 pulseB=48432 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3955 kaito9 B=403597 L=7241 d=55.7 nb=1 neut=4 cmds=74 noFull=1 shQ=24181 | m=0.900 worth=75.1 cheap=8.4 over=0 dMedOther=98.2 safe(-1)=637208
+    → [OG] Gallo#55[T4] terr=15031 bal=1959611 dq=130.4 cnt=61 | c=651.5 rankC=651.5 need=3382678 tD=1.33 人 pulse crowdedHard | safe=637208 keep=Inf avail=-Inf chunkB=80719 pulseB=48432 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3960 kaito9 B=408359 L=7367 d=55.4 nb=2 neut=6 cmds=74 noFull=1 shQ=30195 | m=0.900 worth=69.7 cheap=8.4 over=0 dMedOther=91.1 safe(-1)=648296
+    → Player 174#1[T2] terr=17139 bal=505594 dq=29.5 cnt=1 | c=189.1 rankC=274.2 need=926893 tD=0.32 人 pulse | safe=648296 keep=Inf avail=-Inf chunkB=81672 pulseB=49003 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=14914 bal=1945300 dq=130.4 cnt=44 | c=414.1 rankC=414.1 need=3400876 tD=1.43 人 pulse crowdedHard | safe=648296 keep=Inf avail=-Inf chunkB=81672 pulseB=49003 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3965 kaito9 B=408359 L=7464 d=54.7 nb=2 neut=4 cmds=74 noFull=1 shQ=36265 | m=0.900 worth=69.7 cheap=8.4 over=0 dMedOther=91.1 safe(-1)=656832
+    → Player 174#1[T2] terr=17153 bal=505594 dq=29.5 cnt=3 | c=188.9 rankC=274.0 need=926892 tD=0.32 人 pulse | safe=656832 keep=Inf avail=-Inf chunkB=81672 pulseB=49003 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=14829 bal=1652749 dq=111.5 cnt=40 | c=357.5 rankC=357.5 need=2912513 tD=1.22 人 pulse crowdedHard | safe=656832 keep=Inf avail=-Inf chunkB=81672 pulseB=49003 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3970 kaito9 B=413177 L=7508 d=55.0 nb=2 neut=2 cmds=74 noFull=1 shQ=42350 | m=0.900 worth=70.6 cheap=8.4 over=0 dMedOther=92.3 safe(-1)=660704
+    → Player 174#1[T2] terr=17160 bal=512065 dq=29.8 cnt=4 | c=191.2 rankC=277.2 need=938425 tD=0.32 人 pulse | safe=660704 keep=Inf avail=-Inf chunkB=82635 pulseB=49581 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=14789 bal=1661744 dq=112.4 cnt=40 | c=362.3 rankC=362.3 need=2941186 tD=1.22 人 pulse crowdedHard | safe=660704 keep=Inf avail=-Inf chunkB=82635 pulseB=49581 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3975 kaito9 B=413183 L=7551 d=54.7 nb=2 neut=0 cmds=74 noFull=1 shQ=48495 | m=0.900 worth=70.6 cheap=8.4 over=0 dMedOther=92.3 safe(-1)=664488
+    → Player 174#1[T2] terr=17168 bal=512065 dq=29.8 cnt=4 | c=131.8 rankC=131.8 need=938437 tD=0.32 人 pulse | safe=664488 keep=Inf avail=-Inf chunkB=82637 pulseB=49582 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=14749 bal=1652585 dq=112.0 cnt=39 | c=363.7 rankC=363.7 need=2941893 tD=1.21 人 pulse crowdedHard | safe=664488 keep=Inf avail=-Inf chunkB=82637 pulseB=49582 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3980 kaito9 B=780204 L=7551 d=103.3 nb=2 neut=0 cmds=75 noFull=1 shQ=58483 | m=0.900 worth=93.0 cheap=8.4 over=1 dMedOther=93.3 safe(-1)=664488
+    → Player 174#1[T2] terr=17175 bal=518619 dq=30.2 cnt=4 | c=134.0 rankC=134.0 need=950163 tD=0.32 人 pulse | safe=664488 keep=679590 avail=91471 chunkB=156041 pulseB=93624  x=91471 hNb=2
+    → [OG] Gallo#55[T4] terr=14749 bal=1668449 dq=113.1 cnt=39 | c=367.7 rankC=367.7 need=2970252 tD=1.21 人 pulse crowdedHard | safe=664488 keep=679590 avail=91471 chunkB=156041 pulseB=93624 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 影子指令 attack pct=120 → Player 174#1[T2]（约 92192 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3985 kaito9 B=780204 L=7551 d=103.3 nb=2 neut=0 cmds=76 noFull=1 shQ=69308 | m=0.900 worth=93.0 cheap=8.4 over=1 dMedOther=93.2 safe(-1)=664488
+    → Player 174#1[T2] terr=17195 bal=518619 dq=30.2 cnt=4 | c=133.8 rankC=133.8 need=950192 tD=0.32 人 pulse | safe=664488 keep=679590 avail=91471 chunkB=156041 pulseB=93624  x=91471 hNb=2
+    → [OG] Gallo#55[T4] terr=14749 bal=1668449 dq=113.1 cnt=39 | c=533.1 rankC=773.1 need=2970415 tD=1.21 人 pulse crowdedHard | safe=664488 keep=679590 avail=91471 chunkB=156041 pulseB=93624 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 影子指令 attack pct=120 → Player 174#1[T2]（约 92192 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3990 kaito9 B=788864 L=7551 d=104.5 nb=2 neut=0 cmds=77 noFull=1 shQ=80097 | m=0.900 worth=94.0 cheap=8.4 over=1 dMedOther=94.0 safe(-1)=664488
+    → Player 174#1[T2] terr=17215 bal=525309 dq=30.5 cnt=4 | c=135.3 rankC=135.3 need=962147 tD=0.32 人 pulse | safe=664488 keep=679590 avail=100030 chunkB=157773 pulseB=94664  x=94663 hNb=2
+    → [OG] Gallo#55[T4] terr=14749 bal=1683965 dq=114.2 cnt=39 | c=538.0 rankC=780.2 need=2998001 tD=1.21 人 pulse crowdedHard | safe=664488 keep=679590 avail=100030 chunkB=157773 pulseB=94664 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 174#1[T2]（约 94756 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3995 kaito9 B=686405 L=7551 d=90.9 nb=2 neut=0 cmds=77 noFull=1 shQ=8168 | m=0.900 worth=81.8 cheap=8.4 over=0 dMedOther=93.9 safe(-1)=664488
+    → Player 174#1[T2] terr=17255 bal=525309 dq=30.4 cnt=4 | c=121.9 rankC=121.9 need=868992 tD=0.32 人 pulse | safe=664488 keep=Inf avail=-Inf chunkB=137281 pulseB=82369 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=14749 bal=1683965 dq=114.2 cnt=39 | c=537.8 rankC=779.8 need=2998166 tD=1.22 人 pulse crowdedHard | safe=664488 keep=Inf avail=-Inf chunkB=137281 pulseB=82369 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4000 kaito9 B=611856 L=7555 d=81.0 nb=2 neut=0 cmds=77 noFull=1 shQ=17624 | m=0.900 worth=73.4 cheap=8.4 over=0 dMedOther=96.0 safe(-1)=664840
+    → Player 174#1[T2] terr=17286 bal=549174 dq=31.8 cnt=3 | c=116.3 rankC=116.3 need=830852 tD=0.33 人 pulse | safe=664840 keep=Inf avail=-Inf chunkB=122371 pulseB=73423 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=14749 bal=1714038 dq=116.2 cnt=39 | c=547.1 rankC=793.3 need=3051655 tD=1.21 人 pulse crowdedHard | safe=664840 keep=Inf avail=-Inf chunkB=122371 pulseB=73423 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4005 kaito9 B=531192 L=7562 d=70.2 nb=2 neut=0 cmds=77 noFull=1 shQ=26484 | m=0.900 worth=73.4 cheap=8.4 over=0 dMedOther=95.9 safe(-1)=665456
+    → Player 174#1[T2] terr=17333 bal=548820 dq=31.7 cnt=4 | c=105.7 rankC=105.7 need=757508 tD=0.33 人 pulse | safe=665456 keep=Inf avail=-Inf chunkB=106238 pulseB=63743 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=14749 bal=1714038 dq=116.2 cnt=40 | c=546.9 rankC=793.0 need=3051823 tD=1.21 人 pulse crowdedHard | safe=665456 keep=Inf avail=-Inf chunkB=106238 pulseB=63743 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4010 kaito9 B=537460 L=7570 d=71.0 nb=2 neut=0 cmds=77 noFull=1 shQ=34402 | m=0.900 worth=74.2 cheap=8.4 over=0 dMedOther=97.1 safe(-1)=666160
+    → Player 174#1[T2] terr=17358 bal=555491 dq=32.0 cnt=4 | c=107.3 rankC=107.3 need=770229 tD=0.33 人 pulse | safe=666160 keep=Inf avail=-Inf chunkB=107492 pulseB=64495 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=14749 bal=1728778 dq=117.2 cnt=40 | c=551.5 rankC=799.7 need=3078049 tD=1.21 人 pulse crowdedHard | safe=666160 keep=Inf avail=-Inf chunkB=107492 pulseB=64495 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4015 kaito9 B=537460 L=7574 d=71.0 nb=2 neut=0 cmds=77 noFull=1 shQ=42392 | m=0.900 worth=73.9 cheap=8.4 over=0 dMedOther=96.7 safe(-1)=666512
+    → Player 174#1[T2] terr=17400 bal=555287 dq=31.9 cnt=4 | c=107.1 rankC=107.1 need=770368 tD=0.33 人 pulse | safe=666512 keep=Inf avail=-Inf chunkB=107492 pulseB=64495 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=14749 bal=1728778 dq=117.2 cnt=40 | c=551.5 rankC=799.7 need=3078219 tD=1.21 人 pulse crowdedHard | safe=666512 keep=Inf avail=-Inf chunkB=107492 pulseB=64495 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4020 kaito9 B=543802 L=7582 d=71.7 nb=2 neut=0 cmds=77 noFull=1 shQ=50401 | m=0.900 worth=74.8 cheap=8.4 over=0 dMedOther=97.8 safe(-1)=667216
+    → Player 174#1[T2] terr=17422 bal=562036 dq=32.3 cnt=3 | c=108.7 rankC=108.7 need=783285 tD=0.33 人 pulse | safe=667216 keep=Inf avail=-Inf chunkB=108760 pulseB=65256 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=14749 bal=1743126 dq=118.2 cnt=40 | c=556.0 rankC=806.3 need=3103926 tD=1.21 人 pulse crowdedHard | safe=667216 keep=Inf avail=-Inf chunkB=108760 pulseB=65256 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4025 kaito9 B=543802 L=7589 d=71.7 nb=2 neut=0 cmds=77 noFull=1 shQ=58486 | m=0.900 worth=74.8 cheap=8.4 over=0 dMedOther=97.8 safe(-1)=667832
+    → Player 174#1[T2] terr=17455 bal=561676 dq=32.2 cnt=4 | c=108.5 rankC=108.5 need=783439 tD=0.33 人 pulse | safe=667832 keep=Inf avail=-Inf chunkB=108760 pulseB=65256 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=14749 bal=1743126 dq=118.2 cnt=40 | c=556.0 rankC=806.2 need=3104097 tD=1.21 人 pulse crowdedHard | safe=667832 keep=Inf avail=-Inf chunkB=108760 pulseB=65256 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4030 kaito9 B=550218 L=7593 d=72.5 nb=2 neut=0 cmds=77 noFull=1 shQ=66590 | m=0.900 worth=75.8 cheap=8.4 over=0 dMedOther=99.0 safe(-1)=668184
+    → Player 174#1[T2] terr=17478 bal=568713 dq=32.5 cnt=4 | c=110.2 rankC=110.2 need=796422 tD=0.33 人 pulse | safe=668184 keep=Inf avail=-Inf chunkB=110044 pulseB=66026 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=14751 bal=1757245 dq=119.1 cnt=40 | c=289.9 rankC=202.9 need=3129327 tD=1.20 人 pulse crowdedHard | safe=668184 keep=Inf avail=-Inf chunkB=110044 pulseB=66026 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4035 kaito9 B=550218 L=7601 d=72.4 nb=2 neut=0 cmds=77 noFull=1 shQ=74770 | m=0.900 worth=75.8 cheap=8.4 over=0 dMedOther=99.0 safe(-1)=668888
+    → Player 174#1[T2] terr=17507 bal=568298 dq=32.5 cnt=4 | c=110.0 rankC=110.0 need=796584 tD=0.33 人 pulse | safe=668888 keep=Inf avail=-Inf chunkB=110044 pulseB=66026 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=14770 bal=1757245 dq=119.0 cnt=40 | c=289.4 rankC=202.6 need=3130374 tD=1.20 人 pulse crowdedHard | safe=668888 keep=Inf avail=-Inf chunkB=110044 pulseB=66026 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4040 kaito9 B=556710 L=7608 d=73.2 nb=2 neut=0 cmds=77 noFull=1 shQ=82970 | m=0.900 worth=76.6 cheap=8.4 over=0 dMedOther=100.2 safe(-1)=669504
+    → Player 174#1[T2] terr=17520 bal=575262 dq=32.8 cnt=4 | c=111.8 rankC=111.8 need=809722 tD=0.33 人 pulse | safe=669504 keep=Inf avail=-Inf chunkB=111342 pulseB=66805 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=14794 bal=1771127 dq=119.7 cnt=40 | c=291.2 rankC=203.8 need=3156385 tD=1.20 人 pulse crowdedHard | safe=669504 keep=Inf avail=-Inf chunkB=111342 pulseB=66805 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4045 kaito9 B=556710 L=7612 d=73.1 nb=2 neut=0 cmds=77 noFull=1 shQ=91250 | m=0.900 worth=76.6 cheap=8.4 over=0 dMedOther=100.2 safe(-1)=669856
+    → Player 174#1[T2] terr=17538 bal=575052 dq=32.8 cnt=4 | c=111.6 rankC=111.6 need=809827 tD=0.33 人 pulse | safe=669856 keep=Inf avail=-Inf chunkB=111342 pulseB=66805 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=14846 bal=1771127 dq=119.3 cnt=40 | c=290.0 rankC=203.0 need=3158943 tD=1.19 人 pulse crowdedHard | safe=669856 keep=Inf avail=-Inf chunkB=111342 pulseB=66805 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4050 kaito9 B=563279 L=7621 d=73.9 nb=2 neut=0 cmds=77 noFull=1 shQ=99549 | m=0.900 worth=77.0 cheap=8.4 over=0 dMedOther=100.6 safe(-1)=670648
+    → Player 174#1[T2] terr=17542 bal=581993 dq=33.2 cnt=5 | c=113.4 rankC=113.4 need=823165 tD=0.33 人 pulse | safe=670648 keep=Inf avail=-Inf chunkB=112656 pulseB=67593 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=14892 bal=1785118 dq=119.9 cnt=40 | c=291.3 rankC=203.9 need=3186004 tD=1.19 人 pulse crowdedHard | safe=670648 keep=Inf avail=-Inf chunkB=112656 pulseB=67593 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4055 kaito9 B=563279 L=7632 d=73.8 nb=2 neut=0 cmds=77 noFull=1 shQ=107924 | m=0.900 worth=76.0 cheap=8.4 over=0 dMedOther=99.3 safe(-1)=671616
+    → Player 174#1[T2] terr=17541 bal=581410 dq=33.1 cnt=7 | c=113.4 rankC=113.4 need=823252 tD=0.33 人 pulse | safe=671616 keep=Inf avail=-Inf chunkB=112656 pulseB=67593 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=14974 bal=1785118 dq=119.2 cnt=40 | c=289.5 rankC=202.6 need=3189893 tD=1.20 人 pulse crowdedHard | safe=671616 keep=Inf avail=-Inf chunkB=112656 pulseB=67593 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4060 kaito9 B=569925 L=7639 d=74.6 nb=2 neut=0 cmds=77 noFull=1 shQ=116319 | m=0.900 worth=76.8 cheap=8.4 over=0 dMedOther=100.4 safe(-1)=672232
+    → Player 174#1[T2] terr=17534 bal=738838 dq=42.1 cnt=8 | c=152.0 rankC=152.0 need=1104787 tD=0.42 人 pulse | safe=672232 keep=Inf avail=-Inf chunkB=113985 pulseB=68391 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=15038 bal=1799220 dq=119.6 cnt=40 | c=561.3 rankC=813.9 need=3218145 tD=1.19 人 pulse crowdedHard | safe=672232 keep=Inf avail=-Inf chunkB=113985 pulseB=68391 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4065 kaito9 B=569925 L=7657 d=74.4 nb=2 neut=0 cmds=77 noFull=1 shQ=124794 | m=0.900 worth=76.8 cheap=8.4 over=0 dMedOther=100.4 safe(-1)=673816
+    → Player 174#1[T2] terr=17516 bal=737626 dq=42.1 cnt=10 | c=152.1 rankC=152.1 need=1104847 tD=0.42 人 pulse | safe=673816 keep=Inf avail=-Inf chunkB=113985 pulseB=68391 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=15149 bal=1799220 dq=118.8 cnt=40 | c=556.7 rankC=807.2 need=3223246 tD=1.18 人 pulse crowdedHard | safe=673816 keep=Inf avail=-Inf chunkB=113985 pulseB=68391 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4070 kaito9 B=576650 L=7674 d=75.1 nb=2 neut=0 cmds=77 noFull=1 shQ=133289 | m=0.900 worth=77.8 cheap=8.4 over=0 dMedOther=101.7 safe(-1)=675312
+    → Player 174#1[T2] terr=17499 bal=745982 dq=42.6 cnt=7 | c=154.7 rankC=154.7 need=1121847 tD=0.42 人 pulse | safe=675312 keep=Inf avail=-Inf chunkB=115330 pulseB=69198 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=15234 bal=1813973 dq=119.1 cnt=40 | c=557.7 rankC=808.6 need=3253403 tD=1.17 人 pulse crowdedHard | safe=675312 keep=Inf avail=-Inf chunkB=115330 pulseB=69198 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4075 kaito9 B=576650 L=7681 d=75.1 nb=2 neut=0 cmds=77 noFull=1 shQ=141864 | m=0.900 worth=75.9 cheap=8.4 over=0 dMedOther=99.2 safe(-1)=675928
+    → Player 174#1[T2] terr=17492 bal=745505 dq=42.6 cnt=5 | c=154.8 rankC=154.8 need=1121908 tD=0.43 人 pulse | safe=675928 keep=Inf avail=-Inf chunkB=115330 pulseB=69198 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=15370 bal=1813973 dq=118.0 cnt=40 | c=552.5 rankC=801.1 need=3256295 tD=1.19 人 pulse crowdedHard | safe=675928 keep=Inf avail=-Inf chunkB=115330 pulseB=69198 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4080 kaito9 B=583454 L=7691 d=75.9 nb=2 neut=0 cmds=77 noFull=1 shQ=145863 | m=0.900 worth=76.8 cheap=8.4 over=0 dMedOther=100.4 safe(-1)=676808
+    → Player 174#1[T2] terr=17482 bal=754433 dq=43.2 cnt=5 | c=157.3 rankC=157.3 need=1139149 tD=0.43 人 pulse | safe=676808 keep=Inf avail=-Inf chunkB=116691 pulseB=70014 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=15418 bal=1829065 dq=118.6 cnt=40 | c=555.3 rankC=805.2 need=3283267 tD=1.18 人 pulse crowdedHard | safe=676808 keep=Inf avail=-Inf chunkB=116691 pulseB=70014 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4085 kaito9 B=583454 L=7701 d=75.8 nb=2 neut=0 cmds=77 noFull=1 shQ=145863 | m=0.900 worth=76.8 cheap=8.4 over=0 dMedOther=100.4 safe(-1)=677688
+    → Player 174#1[T2] terr=17472 bal=753743 dq=43.1 cnt=5 | c=157.4 rankC=157.4 need=1139211 tD=0.43 人 pulse | safe=677688 keep=Inf avail=-Inf chunkB=116691 pulseB=70014 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=15418 bal=1829065 dq=118.6 cnt=40 | c=555.3 rankC=805.2 need=3283267 tD=1.18 人 pulse crowdedHard | safe=677688 keep=Inf avail=-Inf chunkB=116691 pulseB=70014 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4090 kaito9 B=590338 L=7706 d=76.6 nb=2 neut=0 cmds=77 noFull=1 shQ=147584 | m=0.900 worth=77.7 cheap=8.4 over=0 dMedOther=101.5 safe(-1)=678128
+    → Player 174#1[T2] terr=17467 bal=763116 dq=43.7 cnt=5 | c=159.9 rankC=159.9 need=1156586 tD=0.43 人 pulse | safe=678128 keep=Inf avail=-Inf chunkB=118068 pulseB=70841 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=15418 bal=1843697 dq=119.6 cnt=40 | c=559.8 rankC=811.6 need=3309347 tD=1.18 人 pulse crowdedHard | safe=678128 keep=Inf avail=-Inf chunkB=118068 pulseB=70841 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4095 kaito9 B=590338 L=7715 d=76.5 nb=2 neut=0 cmds=77 noFull=1 shQ=147584 | m=0.900 worth=77.6 cheap=8.4 over=0 dMedOther=101.4 safe(-1)=678920
+    → Player 174#1[T2] terr=17458 bal=762488 dq=43.7 cnt=3 | c=160.0 rankC=160.0 need=1156649 tD=0.43 人 pulse | safe=678920 keep=Inf avail=-Inf chunkB=118068 pulseB=70841 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=15418 bal=1843697 dq=119.6 cnt=40 | c=559.8 rankC=811.6 need=3309347 tD=1.18 人 pulse crowdedHard | safe=678920 keep=Inf avail=-Inf chunkB=118068 pulseB=70841 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4100 kaito9 B=605021 L=7721 d=78.4 nb=2 neut=0 cmds=77 noFull=1 shQ=149383 | m=0.900 worth=79.1 cheap=8.4 over=0 dMedOther=103.5 safe(-1)=679448
+    → Player 174#1[T2] terr=17452 bal=789350 dq=45.2 cnt=3 | c=166.8 rankC=166.8 need=1205389 tD=0.44 人 pulse | safe=679448 keep=Inf avail=-Inf chunkB=121004 pulseB=72603 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=15418 bal=1873495 dq=121.5 cnt=40 | c=568.7 rankC=824.7 need=3362460 tD=1.17 人 pulse crowdedHard | safe=679448 keep=Inf avail=-Inf chunkB=121004 pulseB=72603 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4105 kaito9 B=605021 L=7724 d=78.3 nb=2 neut=0 cmds=77 noFull=1 shQ=151255 | m=0.900 worth=79.0 cheap=8.4 over=0 dMedOther=103.3 safe(-1)=679712
+    → Player 174#1[T2] terr=17449 bal=789133 dq=45.2 cnt=3 | c=166.8 rankC=166.8 need=1205454 tD=0.44 人 pulse | safe=679712 keep=Inf avail=-Inf chunkB=121004 pulseB=72603 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=15418 bal=1873495 dq=121.5 cnt=40 | c=568.7 rankC=824.7 need=3362460 tD=1.18 人 pulse crowdedHard | safe=679712 keep=Inf avail=-Inf chunkB=121004 pulseB=72603 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4110 kaito9 B=612160 L=7730 d=79.2 nb=2 neut=0 cmds=77 noFull=1 shQ=153040 | m=0.900 worth=79.8 cheap=8.4 over=0 dMedOther=104.3 safe(-1)=680240
+    → Player 174#1[T2] terr=17443 bal=798873 dq=45.8 cnt=3 | c=169.4 rankC=169.4 need=1223644 tD=0.44 人 pulse | safe=680240 keep=Inf avail=-Inf chunkB=122432 pulseB=73459 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=15418 bal=1887171 dq=122.4 cnt=40 | c=572.9 rankC=830.7 need=3386836 tD=1.17 人 pulse crowdedHard | safe=680240 keep=Inf avail=-Inf chunkB=122432 pulseB=73459 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4115 kaito9 B=612160 L=7736 d=79.1 nb=2 neut=0 cmds=77 noFull=1 shQ=153040 | m=0.900 worth=79.7 cheap=8.4 over=0 dMedOther=104.1 safe(-1)=680768
+    → Player 174#1[T2] terr=17437 bal=798435 dq=45.8 cnt=4 | c=169.5 rankC=169.5 need=1223709 tD=0.44 人 pulse | safe=680768 keep=Inf avail=-Inf chunkB=122432 pulseB=73459 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=15418 bal=1887171 dq=122.4 cnt=40 | c=572.9 rankC=830.7 need=3386836 tD=1.18 人 pulse crowdedHard | safe=680768 keep=Inf avail=-Inf chunkB=122432 pulseB=73459 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4120 kaito9 B=619383 L=7740 d=80.0 nb=2 neut=0 cmds=77 noFull=1 shQ=154845 | m=0.900 worth=73.1 cheap=8.4 over=0 dMedOther=95.5 safe(-1)=681120
+    → Player 174#1[T2] terr=17433 bal=808438 dq=46.4 cnt=3 | c=172.1 rankC=172.1 need=1242184 tD=0.49 人 pulse | safe=681120 keep=Inf avail=-Inf chunkB=123877 pulseB=74326 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=15418 bal=1900569 dq=123.3 cnt=40 | c=576.9 rankC=836.5 need=3410716 tD=1.29 人 pulse crowdedHard | safe=681120 keep=Inf avail=-Inf chunkB=123877 pulseB=74326 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4125 kaito9 B=619383 L=7747 d=80.0 nb=2 neut=0 cmds=77 noFull=1 shQ=154845 | m=0.900 worth=72.9 cheap=8.4 over=0 dMedOther=95.3 safe(-1)=681736
+    → [OG] Gallo#55[T4] terr=15418 bal=1900569 dq=123.3 cnt=40 | c=224.5 rankC=112.3 need=3410716 tD=1.29 人 pulse crowdedHard | safe=681736 keep=Inf avail=-Inf chunkB=123877 pulseB=74326 价高(c>=worth)→break hNb=2
+    → Player 174#1[T2] terr=17426 bal=807920 dq=46.4 cnt=5 | c=172.1 rankC=172.1 need=1242250 tD=0.49 人 pulse | safe=681736 keep=Inf avail=-Inf chunkB=123877 pulseB=74326 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4130 kaito9 B=626691 L=7756 d=80.8 nb=2 neut=0 cmds=77 noFull=1 shQ=156672 | m=0.900 worth=73.4 cheap=8.4 over=0 dMedOther=95.9 safe(-1)=682528
+    → [OG] Gallo#55[T4] terr=15324 bal=1895222 dq=123.7 cnt=39 | c=227.6 rankC=113.8 need=3397118 tD=1.29 人 pulse crowdedHard | safe=682528 keep=Inf avail=-Inf chunkB=125338 pulseB=75203 价高(c>=worth)→break hNb=2
+    → Player 174#1[T2] terr=17417 bal=817667 dq=46.9 cnt=5 | c=174.8 rankC=174.8 need=1260873 tD=0.49 人 pulse | safe=682528 keep=Inf avail=-Inf chunkB=125338 pulseB=75203 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4135 kaito9 B=626691 L=7761 d=80.7 nb=2 neut=0 cmds=77 noFull=1 shQ=156672 | m=0.900 worth=72.7 cheap=8.4 over=0 dMedOther=94.1 safe(-1)=682968
+    → [OG] Gallo#55[T4] terr=15230 bal=1876640 dq=123.2 cnt=38 | c=229.1 rankC=114.5 need=3359944 tD=1.31 人 pulse crowdedHard | safe=682968 keep=Inf avail=-Inf chunkB=125338 pulseB=75203 价高(c>=worth)→break hNb=2
+    → Player 174#1[T2] terr=17412 bal=817292 dq=46.9 cnt=6 | c=174.8 rankC=174.8 need=1260941 tD=0.50 人 pulse | safe=682968 keep=Inf avail=-Inf chunkB=125338 pulseB=75203 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4140 kaito9 B=634085 L=7774 d=81.6 nb=2 neut=0 cmds=77 noFull=1 shQ=158521 | m=0.900 worth=73.4 cheap=8.4 over=0 dMedOther=95.2 safe(-1)=684112
+    → [OG] Gallo#55[T4] terr=15184 bal=1880458 dq=123.8 cnt=38 | c=231.4 rankC=115.7 need=3364971 tD=1.30 人 pulse crowdedHard | safe=684112 keep=Inf avail=-Inf chunkB=126817 pulseB=76090 价高(c>=worth)→break hNb=2
+    → Player 174#1[T2] terr=17399 bal=826847 dq=47.5 cnt=7 | c=177.6 rankC=177.6 need=1279832 tD=0.50 人 pulse | safe=684112 keep=Inf avail=-Inf chunkB=126817 pulseB=76090 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4145 kaito9 B=634085 L=7789 d=81.4 nb=2 neut=0 cmds=77 noFull=1 shQ=158521 | m=0.900 worth=73.3 cheap=8.4 over=0 dMedOther=95.2 safe(-1)=685432
+    → Player 174#1[T2] terr=17384 bal=825707 dq=47.5 cnt=8 | c=177.8 rankC=177.8 need=1279900 tD=0.50 人 pulse | safe=685432 keep=Inf avail=-Inf chunkB=126817 pulseB=76090 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=15184 bal=1872468 dq=123.3 cnt=38 | c=578.3 rankC=838.6 need=3350945 tD=1.29 人 pulse crowdedHard | safe=685432 keep=Inf avail=-Inf chunkB=126817 pulseB=76090 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4150 kaito9 B=641567 L=7797 d=82.3 nb=2 neut=0 cmds=77 noFull=1 shQ=160391 | m=0.900 worth=74.1 cheap=8.4 over=0 dMedOther=96.4 safe(-1)=686136
+    → Player 174#1[T2] terr=17376 bal=835743 dq=48.1 cnt=7 | c=180.5 rankC=180.5 need=1298922 tD=0.50 人 pulse | safe=686136 keep=Inf avail=-Inf chunkB=128313 pulseB=76988 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=15184 bal=1885200 dq=124.2 cnt=38 | c=582.2 rankC=844.2 need=3373752 tD=1.29 人 pulse crowdedHard | safe=686136 keep=Inf avail=-Inf chunkB=128313 pulseB=76988 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4155 kaito9 B=641567 L=7812 d=82.1 nb=2 neut=0 cmds=77 noFull=1 shQ=160391 | m=0.900 worth=73.9 cheap=8.4 over=0 dMedOther=96.4 safe(-1)=687456
+    → Player 174#1[T2] terr=17361 bal=834590 dq=48.1 cnt=8 | c=180.7 rankC=180.7 need=1298991 tD=0.50 人 pulse | safe=687456 keep=Inf avail=-Inf chunkB=128313 pulseB=76988 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=15184 bal=1885200 dq=124.2 cnt=38 | c=582.2 rankC=844.2 need=3373928 tD=1.29 人 pulse crowdedHard | safe=687456 keep=Inf avail=-Inf chunkB=128313 pulseB=76988 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4160 kaito9 B=836304 L=7829 d=106.8 nb=2 neut=0 cmds=77 noFull=1 shQ=164716 | m=0.900 worth=96.1 cheap=8.4 over=1 dMedOther=95.6 safe(-1)=688952
+    → Player 174#1[T2] terr=17344 bal=844033 dq=48.7 cnt=9 | c=183.9 rankC=183.9 need=1318286 tD=0.51 人 pulse | safe=688952 keep=704610 avail=121894 chunkB=167261 pulseB=100356 在途(curAtk=210495)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=15184 bal=1897642 dq=125.0 cnt=38 | c=586.4 rankC=850.3 need=3396401 tD=1.31 人 pulse crowdedHard | safe=688952 keep=704610 avail=121894 chunkB=167261 pulseB=100356 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 本拍没有指令
+t=4165 kaito9 B=836304 L=7838 d=106.7 nb=2 neut=0 cmds=77 noFull=1 shQ=175481 | m=0.900 worth=96.0 cheap=8.4 over=1 dMedOther=95.4 safe(-1)=689744
+    → Player 174#1[T2] terr=17335 bal=843333 dq=48.6 cnt=9 | c=184.0 rankC=184.0 need=1318356 tD=0.51 人 pulse | safe=689744 keep=705420 avail=121084 chunkB=167261 pulseB=100356 在途(curAtk=209077)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=15184 bal=1897642 dq=125.0 cnt=38 | c=586.4 rankC=850.2 need=3396578 tD=1.31 人 pulse crowdedHard | safe=689744 keep=705420 avail=121084 chunkB=167261 pulseB=100356 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 本拍没有指令
+t=4170 kaito9 B=844917 L=7857 d=107.5 nb=2 neut=0 cmds=77 noFull=1 shQ=186226 | m=0.900 worth=96.8 cheap=8.4 over=1 dMedOther=96.2 safe(-1)=691416
+    → Player 174#1[T2] terr=17316 bal=852714 dq=49.2 cnt=10 | c=186.9 rankC=186.9 need=1337756 tD=0.51 人 pulse | safe=691416 keep=707130 avail=127886 chunkB=168983 pulseB=101390 在途(curAtk=206083)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=15184 bal=1909786 dq=125.8 cnt=38 | c=590.1 rankC=855.6 need=3418348 tD=1.31 人 pulse crowdedHard | safe=691416 keep=707130 avail=127886 chunkB=168983 pulseB=101390 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 本拍没有指令
+t=4175 kaito9 B=844917 L=7878 d=107.3 nb=2 neut=0 cmds=77 noFull=1 shQ=196912 | m=0.900 worth=96.5 cheap=8.4 over=1 dMedOther=96.0 safe(-1)=693264
+    → Player 174#1[T2] terr=17295 bal=851061 dq=49.2 cnt=10 | c=187.2 rankC=187.2 need=1337827 tD=0.51 人 pulse | safe=693264 keep=709020 avail=125996 chunkB=168983 pulseB=101390 在途(curAtk=202735)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=15184 bal=1909786 dq=125.8 cnt=38 | c=590.1 rankC=855.6 need=3418527 tD=1.31 人 pulse crowdedHard | safe=693264 keep=709020 avail=125996 chunkB=168983 pulseB=101390 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 本拍没有指令
+t=4180 kaito9 B=853535 L=7888 d=108.2 nb=2 neut=0 cmds=77 noFull=1 shQ=207661 | m=0.900 worth=97.4 cheap=8.4 over=1 dMedOther=90.4 safe(-1)=694144
+    → Player 174#1[T2] terr=17285 bal=861242 dq=49.8 cnt=11 | c=190.1 rankC=190.1 need=1357488 tD=0.55 人 pulse | safe=694144 keep=709920 avail=133613 chunkB=170707 pulseB=102424 在途(curAtk=201141)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=15184 bal=1921626 dq=126.6 cnt=38 | c=593.7 rankC=860.8 need=3439939 tD=1.40 人 pulse crowdedHard | safe=694144 keep=709920 avail=133613 chunkB=170707 pulseB=102424 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 本拍没有指令
+t=4185 kaito9 B=853535 L=7910 d=107.9 nb=2 neut=0 cmds=77 noFull=1 shQ=213383 | m=0.900 worth=97.1 cheap=8.4 over=1 dMedOther=89.2 safe(-1)=696080
+    → Player 174#1[T2] terr=17263 bal=859490 dq=49.8 cnt=11 | c=190.4 rankC=190.4 need=1357560 tD=0.56 人 pulse | safe=696080 keep=711900 avail=131633 chunkB=170707 pulseB=102424 在途(curAtk=197593)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=15184 bal=1921626 dq=126.6 cnt=38 | c=593.6 rankC=860.8 need=3440118 tD=1.42 人 pulse crowdedHard | safe=696080 keep=711900 avail=131633 chunkB=170707 pulseB=102424 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 本拍没有指令
+t=4190 kaito9 B=862070 L=7932 d=108.7 nb=2 neut=0 cmds=77 noFull=1 shQ=215517 | m=0.900 worth=97.8 cheap=8.4 over=1 dMedOther=90.4 safe(-1)=698016
+    → Player 174#1[T2] terr=17241 bal=868803 dq=50.4 cnt=12 | c=193.4 rankC=193.4 need=1377338 tD=0.56 人 pulse | safe=698016 keep=713880 avail=138088 chunkB=172414 pulseB=103448 在途(curAtk=194023)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=15184 bal=1933155 dq=127.3 cnt=38 | c=597.2 rankC=865.9 need=3460802 tD=1.41 人 pulse crowdedHard | safe=698016 keep=713880 avail=138088 chunkB=172414 pulseB=103448 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 本拍没有指令
+t=4195 kaito9 B=862070 L=7944 d=108.5 nb=2 neut=0 cmds=77 noFull=1 shQ=215517 | m=0.900 worth=97.7 cheap=8.4 over=1 dMedOther=90.4 safe(-1)=699072
+    → Player 174#1[T2] terr=17229 bal=867836 dq=50.4 cnt=11 | c=193.6 rankC=193.6 need=1377410 tD=0.56 人 pulse | safe=699072 keep=714960 avail=137008 chunkB=172414 pulseB=103448 在途(curAtk=192065)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=15184 bal=1933155 dq=127.3 cnt=38 | c=597.1 rankC=865.8 need=3460982 tD=1.41 人 pulse crowdedHard | safe=699072 keep=714960 avail=137008 chunkB=172414 pulseB=103448 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 本拍没有指令
+t=4200 kaito9 B=878570 L=7966 d=110.3 nb=2 neut=0 cmds=77 noFull=1 shQ=217713 | m=0.900 worth=99.3 cheap=8.4 over=1 dMedOther=92.5 safe(-1)=701008
+    → Player 174#1[T2] terr=17207 bal=894356 dq=52.0 cnt=11 | c=201.0 rankC=201.0 need=1427873 tD=0.56 人 pulse | safe=701008 keep=716940 avail=151335 chunkB=175714 pulseB=105428 在途(curAtk=188477)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=15184 bal=1959551 dq=129.1 cnt=38 | c=605.2 rankC=877.5 need=3508296 tD=1.39 人 pulse crowdedHard | safe=701008 keep=716940 avail=151335 chunkB=175714 pulseB=105428 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 本拍没有指令
+t=4205 kaito9 B=878570 L=7988 d=110.0 nb=2 neut=0 cmds=77 noFull=1 shQ=219642 | m=0.900 worth=99.0 cheap=8.4 over=1 dMedOther=92.3 safe(-1)=702944
+    → Player 174#1[T2] terr=17185 bal=892528 dq=51.9 cnt=11 | c=201.4 rankC=201.4 need=1427948 tD=0.56 人 pulse | safe=702944 keep=718920 avail=149355 chunkB=175714 pulseB=105428 在途(curAtk=184777)→continue hNb=2
+    → [OG] Gallo#55[T4] terr=15184 bal=1959551 dq=129.1 cnt=38 | c=605.2 rankC=877.5 need=3508479 tD=1.40 人 pulse crowdedHard | safe=702944 keep=718920 avail=149355 chunkB=175714 pulseB=105428 crowdedHard(B<1.26×100×L)→continue hNb=2
+    ⇒ 本拍没有指令
+t=4210 kaito9 B=886916 L=7999 d=110.9 nb=2 neut=0 cmds=78 noFull=1 shQ=221729 | m=0.900 worth=99.8 cheap=8.4 over=1 dMedOther=93.0 safe(-1)=703912
+    → [OG] Gallo#55[T4] terr=15184 bal=1734416 dq=114.2 cnt=38 | c=205.5 rankC=143.8 need=3108156 tD=1.23 人 pulse | safe=703912 keep=719910 avail=156613 chunkB=177383 pulseB=106430  x=106429 hNb=2
+    → Player 174#1[T2] terr=17174 bal=903026 dq=52.6 cnt=12 | c=204.4 rankC=204.4 need=1448314 tD=0.57 人 pulse | safe=703912 keep=719910 avail=156613 chunkB=177383 pulseB=106430 在途(curAtk=182927)→continue hNb=2
+    ⇒ 影子指令 attack pct=122 → [OG] Gallo#55[T4]（约 106533 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4215 kaito9 B=886916 L=8022 d=110.6 nb=2 neut=0 cmds=79 noFull=1 shQ=221729 | m=0.900 worth=99.5 cheap=8.4 over=1 dMedOther=93.0 safe(-1)=705936
+    → [OG] Gallo#55[T4] terr=15267 bal=1734416 dq=113.6 cnt=38 | c=204.2 rankC=143.0 need=3111812 tD=1.22 人 pulse | safe=705936 keep=721980 avail=154543 chunkB=177383 pulseB=106430  x=106429 hNb=2
+    → Player 174#1[T2] terr=17151 bal=901093 dq=52.5 cnt=11 | c=204.7 rankC=204.7 need=1448389 tD=0.56 人 pulse | safe=705936 keep=721980 avail=154543 chunkB=177383 pulseB=106430 在途(curAtk=179015)→continue hNb=2
+    ⇒ 影子指令 attack pct=122 → [OG] Gallo#55[T4]（约 106533 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4220 kaito9 B=895253 L=8043 d=111.3 nb=2 neut=0 cmds=80 noFull=1 shQ=223813 | m=0.900 worth=100.2 cheap=8.4 over=1 dMedOther=94.2 safe(-1)=707784
+    → [OG] Gallo#55[T4] terr=15434 bal=1751066 dq=113.5 cnt=38 | c=203.8 rankC=142.7 need=3144265 tD=1.20 人 pulse | safe=707784 keep=723870 avail=160892 chunkB=179051 pulseB=107430  x=107430 hNb=2
+    → Player 174#1[T2] terr=17130 bal=910840 dq=53.2 cnt=10 | c=208.0 rankC=208.0 need=1469021 tD=0.56 人 pulse | safe=707784 keep=723870 avail=160892 chunkB=179051 pulseB=107430 在途(curAtk=175423)→continue hNb=2
+    ⇒ 影子指令 attack pct=122 → [OG] Gallo#55[T4]（约 107535 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4225 kaito9 B=777227 L=8091 d=96.1 nb=2 neut=0 cmds=80 noFull=1 shQ=93707 | m=0.900 worth=86.5 cheap=8.4 over=0 dMedOther=94.2 safe(-1)=712008
+    → [OG] Gallo#55[T4] terr=15653 bal=1744245 dq=111.4 cnt=34 | c=262.2 rankC=183.5 need=3038578 tD=1.18 人 pulse crowdedHard | safe=712008 keep=Inf avail=-Inf chunkB=155445 pulseB=93267 价高(c>=worth)→break hNb=2
+    → Player 174#1[T2] terr=17120 bal=909990 dq=53.2 cnt=9 | c=208.0 rankC=208.0 need=1469098 tD=0.56 人 pulse | safe=712008 keep=Inf avail=-Inf chunkB=155445 pulseB=93267 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4230 kaito9 B=592833 L=8175 d=72.5 nb=2 neut=0 cmds=80 noFull=1 shQ=104235 | m=0.900 worth=72.9 cheap=8.3 over=0 dMedOther=95.3 safe(-1)=719400
+    → [OG] Gallo#55[T4] terr=15760 bal=1750222 dq=111.1 cnt=31 | c=248.3 rankC=173.8 need=2898467 tD=1.16 人 pulse crowdedHard | safe=719400 keep=Inf avail=-Inf chunkB=118567 pulseB=71140 价高(c>=worth)→break hNb=2
+    → Player 174#1[T2] terr=17102 bal=920088 dq=53.8 cnt=8 | c=210.9 rankC=210.9 need=1489837 tD=0.56 人 pulse | safe=719400 keep=Inf avail=-Inf chunkB=118567 pulseB=71140 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4235 kaito9 B=592833 L=8254 d=71.8 nb=2 neut=0 cmds=80 noFull=1 shQ=113125 | m=0.900 worth=72.9 cheap=8.3 over=0 dMedOther=95.3 safe(-1)=726352
+    → [OG] Gallo#55[T4] terr=15956 bal=1739158 dq=109.0 cnt=33 | c=245.5 rankC=171.8 need=2901295 tD=1.14 人 pulse crowdedHard | safe=726352 keep=Inf avail=-Inf chunkB=118567 pulseB=71140 价高(c>=worth)→break hNb=2
+    → Player 174#1[T2] terr=17086 bal=918712 dq=53.8 cnt=7 | c=211.2 rankC=211.2 need=1489914 tD=0.56 人 pulse | safe=726352 keep=Inf avail=-Inf chunkB=118567 pulseB=71140 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4240 kaito9 B=599946 L=8294 d=72.3 nb=2 neut=0 cmds=80 noFull=1 shQ=122036 | m=0.900 worth=73.9 cheap=8.3 over=0 dMedOther=96.5 safe(-1)=729872
+    → [OG] Gallo#55[T4] terr=16100 bal=1752156 dq=108.8 cnt=35 | c=246.2 rankC=172.3 need=2936190 tD=1.13 人 pulse crowdedHard | safe=729872 keep=Inf avail=-Inf chunkB=119989 pulseB=71994 价高(c>=worth)→break hNb=2
+    → Player 174#1[T2] terr=17079 bal=929861 dq=54.4 cnt=6 | c=214.3 rankC=214.3 need=1510947 tD=0.56 人 pulse | safe=729872 keep=Inf avail=-Inf chunkB=119989 pulseB=71994 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4245 kaito9 B=599946 L=8377 d=71.6 nb=2 neut=0 cmds=80 noFull=1 shQ=131031 | m=0.900 worth=74.5 cheap=8.3 over=0 dMedOther=97.4 safe(-1)=737176
+    → [OG] Gallo#55[T4] terr=16290 bal=1739902 dq=106.8 cnt=38 | c=243.5 rankC=170.5 need=2939359 tD=1.10 人 pulse crowdedHard | safe=737176 keep=Inf avail=-Inf chunkB=119989 pulseB=71994 价高(c>=worth)→break hNb=2
+    → Player 174#1[T2] terr=17067 bal=819066 dq=48.0 cnt=5 | c=200.9 rankC=200.9 need=1414850 tD=0.49 人 pulse | safe=737176 keep=Inf avail=-Inf chunkB=119989 pulseB=71994 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4250 kaito9 B=607145 L=8464 d=71.7 nb=2 neut=0 cmds=80 noFull=1 shQ=140048 | m=0.900 worth=75.5 cheap=8.3 over=0 dMedOther=98.7 safe(-1)=744832
+    → [OG] Gallo#55[T4] terr=16385 bal=1746714 dq=106.6 cnt=40 | c=245.3 rankC=171.7 need=2976300 tD=1.08 人 pulse crowdedHard | safe=744832 keep=Inf avail=-Inf chunkB=121429 pulseB=72857 价高(c>=worth)→break hNb=2
+    → Player 174#1[T2] terr=17056 bal=828696 dq=48.6 cnt=5 | c=203.7 rankC=203.7 need=1433535 tD=0.49 人 pulse | safe=744832 keep=Inf avail=-Inf chunkB=121429 pulseB=72857 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4255 kaito9 B=607145 L=8509 d=71.4 nb=2 neut=0 cmds=80 noFull=1 shQ=149153 | m=0.900 worth=74.8 cheap=8.3 over=0 dMedOther=97.7 safe(-1)=748792
+    → [OG] Gallo#55[T4] terr=16594 bal=1739961 dq=104.9 cnt=40 | c=242.3 rankC=169.6 need=2979555 tD=1.07 人 pulse crowdedHard | safe=748792 keep=Inf avail=-Inf chunkB=121429 pulseB=72857 价高(c>=worth)→break hNb=2
+    → Player 174#1[T2] terr=17051 bal=828308 dq=48.6 cnt=5 | c=203.8 rankC=203.8 need=1433605 tD=0.50 人 pulse | safe=748792 keep=Inf avail=-Inf chunkB=121429 pulseB=72857 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4260 kaito9 B=614430 L=8600 d=71.4 nb=2 neut=0 cmds=80 noFull=1 shQ=153607 | m=0.900 worth=74.7 cheap=8.3 over=0 dMedOther=97.7 safe(-1)=756800
+    → [OG] Gallo#55[T4] terr=16672 bal=1746993 dq=104.8 cnt=42 | c=244.3 rankC=171.0 need=3019318 tD=1.07 人 pulse crowdedHard | safe=756800 keep=Inf avail=-Inf chunkB=122886 pulseB=73732 价高(c>=worth)→break hNb=2
+    → Player 174#1[T2] terr=17041 bal=838124 dq=49.2 cnt=4 | c=206.7 rankC=206.7 need=1452560 tD=0.50 人 pulse | safe=756800 keep=Inf avail=-Inf chunkB=122886 pulseB=73732 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4265 kaito9 B=614430 L=8694 d=70.7 nb=2 neut=0 cmds=80 noFull=1 shQ=153607 | m=0.900 worth=73.4 cheap=8.3 over=0 dMedOther=96.0 safe(-1)=765072
+    → [OG] Gallo#55[T4] terr=16822 bal=1732888 dq=103.0 cnt=44 | c=242.4 rankC=169.7 need=3022855 tD=1.07 人 pulse crowdedHard | safe=765072 keep=Inf avail=-Inf chunkB=122886 pulseB=73732 价高(c>=worth)→break hNb=2
+    → Player 174#1[T2] terr=17032 bal=837417 dq=49.2 cnt=4 | c=206.8 rankC=206.8 need=1452631 tD=0.51 人 pulse | safe=765072 keep=Inf avail=-Inf chunkB=122886 pulseB=73732 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4270 kaito9 B=621803 L=8742 d=71.1 nb=2 neut=0 cmds=80 noFull=1 shQ=155450 | m=0.900 worth=73.5 cheap=8.3 over=0 dMedOther=96.1 safe(-1)=769296
+    → [OG] Gallo#55[T4] terr=16935 bal=1747068 dq=103.2 cnt=45 | c=243.9 rankC=170.8 need=3062859 tD=1.07 人 pulse crowdedHard | safe=769296 keep=Inf avail=-Inf chunkB=124361 pulseB=74616 价高(c>=worth)→break hNb=2
+    → Player 174#1[T2] terr=17028 bal=847817 dq=49.8 cnt=4 | c=209.6 rankC=209.6 need=1471732 tD=0.52 人 pulse | safe=769296 keep=Inf avail=-Inf chunkB=124361 pulseB=74616 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4275 kaito9 B=621803 L=8837 d=70.4 nb=2 neut=0 cmds=80 noFull=1 shQ=155450 | m=0.900 worth=73.1 cheap=8.3 over=0 dMedOther=95.6 safe(-1)=777656
+    → [OG] Gallo#55[T4] terr=17090 bal=1732820 dq=101.4 cnt=38 | c=242.1 rankC=169.5 need=3066329 tD=1.06 人 pulse crowdedHard | safe=777656 keep=Inf avail=-Inf chunkB=124361 pulseB=74616 价高(c>=worth)→break hNb=2
+    → Player 174#1[T2] terr=17020 bal=847181 dq=49.8 cnt=4 | c=209.7 rankC=209.7 need=1471804 tD=0.52 人 pulse | safe=777656 keep=Inf avail=-Inf chunkB=124361 pulseB=74616 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4280 kaito9 B=629264 L=8915 d=70.6 nb=2 neut=0 cmds=80 noFull=1 shQ=157316 | m=0.900 worth=72.5 cheap=8.3 over=0 dMedOther=94.7 safe(-1)=784520
+    → [OG] Gallo#55[T4] terr=17183 bal=1784351 dq=103.8 cnt=34 | c=250.0 rankC=175.0 need=3180755 tD=1.10 人 pulse crowdedHard | safe=784520 keep=Inf avail=-Inf chunkB=125853 pulseB=75512 价高(c>=worth)→break hNb=2
+    → Player 174#1[T2] terr=17014 bal=857541 dq=50.4 cnt=3 | c=212.6 rankC=212.6 need=1491200 tD=0.53 人 pulse | safe=784520 keep=Inf avail=-Inf chunkB=125853 pulseB=75512 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4285 kaito9 B=629264 L=8952 d=70.3 nb=2 neut=0 cmds=80 noFull=1 shQ=157316 | m=0.900 worth=71.6 cheap=8.3 over=0 dMedOther=93.6 safe(-1)=787776
+    → [OG] Gallo#55[T4] terr=17359 bal=1778751 dq=102.5 cnt=32 | c=247.6 rankC=173.3 need=3183625 tD=1.09 人 pulse crowdedHard | safe=787776 keep=Inf avail=-Inf chunkB=125853 pulseB=75512 价高(c>=worth)→break hNb=2
+    → Player 174#1[T2] terr=17011 bal=857300 dq=50.4 cnt=1 | c=212.7 rankC=212.7 need=1491273 tD=0.54 人 pulse | safe=787776 keep=Inf avail=-Inf chunkB=125853 pulseB=75512 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4290 kaito9 B=694139 L=8985 d=77.3 nb=1 neut=0 cmds=80 noFull=1 shQ=161455 | m=0.900 worth=72.3 cheap=8.3 over=0 dMedOther=94.5 safe(-1)=790680
+    → [OG] Gallo#55[T4] terr=17446 bal=1794519 dq=102.9 cnt=30 | c=532.5 rankC=532.5 need=3224725 tD=1.09 人 pulse crowdedHard | safe=790680 keep=Inf avail=-Inf chunkB=138828 pulseB=83297 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4295 kaito9 B=694139 L=8985 d=77.3 nb=1 neut=0 cmds=80 noFull=1 shQ=171865 | m=0.900 worth=71.5 cheap=8.3 over=0 dMedOther=93.4 safe(-1)=790680
+    → [OG] Gallo#55[T4] terr=17612 bal=1794519 dq=101.9 cnt=30 | c=527.5 rankC=527.5 need=3224901 tD=1.09 人 pulse crowdedHard | safe=790680 keep=Inf avail=-Inf chunkB=138828 pulseB=83297 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4300 kaito9 B=711453 L=8985 d=79.2 nb=1 neut=0 cmds=80 noFull=1 shQ=175668 | m=0.900 worth=72.8 cheap=8.3 over=0 dMedOther=95.2 safe(-1)=790680
+    → [OG] Gallo#55[T4] terr=17718 bal=1834847 dq=103.6 cnt=30 | c=777.3 rankC=1127.1 need=3297012 tD=1.09 人 pulse crowdedHard | safe=790680 keep=Inf avail=-Inf chunkB=142291 pulseB=85374 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4305 kaito9 B=711453 L=8985 d=79.2 nb=1 neut=0 cmds=80 noFull=1 shQ=177863 | m=0.900 worth=72.8 cheap=8.3 over=0 dMedOther=95.2 safe(-1)=790680
+    → [OG] Gallo#55[T4] terr=17871 bal=1834847 dq=102.7 cnt=30 | c=770.7 rankC=1117.5 need=3297277 tD=1.08 人 pulse crowdedHard | safe=790680 keep=Inf avail=-Inf chunkB=142291 pulseB=85374 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4310 kaito9 B=719990 L=8985 d=80.1 nb=1 neut=0 cmds=80 noFull=1 shQ=179997 | m=0.900 worth=73.6 cheap=8.3 over=0 dMedOther=96.2 safe(-1)=790680
+    → [OG] Gallo#55[T4] terr=17969 bal=1896714 dq=105.6 cnt=30 | c=792.1 rankC=1148.6 need=3407622 tD=1.10 人 pulse crowdedHard | safe=790680 keep=Inf avail=-Inf chunkB=143998 pulseB=86399 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4315 kaito9 B=719990 L=8985 d=80.1 nb=1 neut=0 cmds=80 noFull=1 shQ=179997 | m=0.900 worth=75.2 cheap=8.3 over=0 dMedOther=98.3 safe(-1)=790680
+    → [OG] Gallo#55[T4] terr=18102 bal=1896714 dq=104.8 cnt=30 | c=786.3 rankC=1140.2 need=3407859 tD=1.07 人 pulse crowdedHard | safe=790680 keep=Inf avail=-Inf chunkB=143998 pulseB=86399 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4320 kaito9 B=728629 L=8985 d=81.1 nb=1 neut=0 cmds=80 noFull=1 shQ=182157 | m=0.900 worth=76.3 cheap=8.3 over=0 dMedOther=99.7 safe(-1)=790680
+    → [OG] Gallo#55[T4] terr=18180 bal=1919095 dq=105.6 cnt=30 | c=792.2 rankC=1148.6 need=3447793 tD=1.06 人 pulse crowdedHard | safe=790680 keep=Inf avail=-Inf chunkB=145726 pulseB=87435 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4325 kaito9 B=728629 L=8985 d=81.1 nb=1 neut=0 cmds=80 noFull=1 shQ=182157 | m=0.900 worth=76.3 cheap=8.3 over=0 dMedOther=99.7 safe(-1)=790680
+    → [OG] Gallo#55[T4] terr=18283 bal=1919095 dq=105.0 cnt=30 | c=787.7 rankC=1142.2 need=3448058 tD=1.05 人 pulse crowdedHard | safe=790680 keep=Inf avail=-Inf chunkB=145726 pulseB=87435 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4330 kaito9 B=737372 L=8985 d=82.1 nb=1 neut=0 cmds=80 noFull=1 shQ=184343 | m=0.900 worth=77.4 cheap=8.3 over=0 dMedOther=101.2 safe(-1)=790680
+    → [OG] Gallo#55[T4] terr=18267 bal=1929892 dq=105.6 cnt=29 | c=310.1 rankC=155.0 need=3465936 tD=1.04 人 pulse crowdedHard | safe=790680 keep=Inf avail=-Inf chunkB=147474 pulseB=88485 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4335 kaito9 B=737372 L=8985 d=82.1 nb=1 neut=0 cmds=80 noFull=1 shQ=184343 | m=0.900 worth=77.4 cheap=8.3 over=0 dMedOther=101.2 safe(-1)=790680
+    → [OG] Gallo#55[T4] terr=18311 bal=1923985 dq=105.1 cnt=28 | c=294.5 rankC=147.2 need=3456816 tD=1.04 人 pulse crowdedHard | safe=790680 keep=Inf avail=-Inf chunkB=147474 pulseB=88485 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4340 kaito9 B=746220 L=8985 d=83.1 nb=1 neut=0 cmds=80 noFull=1 shQ=186555 | m=0.900 worth=78.0 cheap=8.3 over=0 dMedOther=102.0 safe(-1)=790680
+    → [OG] Gallo#55[T4] terr=18291 bal=1935328 dq=105.8 cnt=27 | c=298.5 rankC=149.2 need=3476407 tD=1.04 人 pulse crowdedHard | safe=790680 keep=Inf avail=-Inf chunkB=149244 pulseB=89546 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4345 kaito9 B=746220 L=8985 d=83.1 nb=1 neut=0 cmds=80 noFull=1 shQ=186555 | m=0.900 worth=77.7 cheap=8.3 over=0 dMedOther=101.5 safe(-1)=790680
+    → [OG] Gallo#55[T4] terr=18303 bal=1925196 dq=105.2 cnt=26 | c=132.0 rankC=66.0 need=3458666 tD=1.04 人 pulse bleeding | safe=790680 keep=Inf avail=-Inf chunkB=149244 pulseB=89546 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4350 kaito9 B=751679 L=8959 d=83.9 nb=1 neut=0 cmds=80 noFull=1 shQ=187919 | m=0.900 worth=77.3 cheap=8.3 over=0 dMedOther=101.0 safe(-1)=788392
+    → [OG] Gallo#55[T4] terr=18216 bal=1686287 dq=92.6 cnt=26 | c=121.2 rankC=60.6 need=3236725 tD=0.92 人 pulse bleeding onMe | safe=788392 keep=Inf avail=-Inf chunkB=150336 pulseB=90201 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4355 kaito9 B=740026 L=8872 d=83.4 nb=1 neut=0 cmds=80 noFull=1 shQ=185006 | m=0.900 worth=76.9 cheap=8.3 over=0 dMedOther=100.5 safe(-1)=780736
+    → [OG] Gallo#55[T4] terr=18190 bal=1659052 dq=91.2 cnt=32 | c=117.0 rankC=58.5 need=3164132 tD=0.91 人 pulse bleeding onMe | safe=780736 keep=Inf avail=-Inf chunkB=148005 pulseB=88803 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4360 kaito9 B=739061 L=8799 d=84.0 nb=1 neut=0 cmds=80 noFull=1 shQ=184765 | m=0.900 worth=77.4 cheap=8.3 over=0 dMedOther=101.1 safe(-1)=774312
+    → [OG] Gallo#55[T4] terr=18053 bal=1643737 dq=91.1 cnt=37 | c=118.6 rankC=59.3 need=3112724 tD=0.90 人 pulse bleeding onMe | safe=774312 keep=Inf avail=-Inf chunkB=147812 pulseB=88687 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4365 kaito9 B=722446 L=8675 d=83.3 nb=1 neut=0 cmds=80 noFull=1 shQ=180611 | m=0.900 worth=77.0 cheap=8.3 over=0 dMedOther=100.7 safe(-1)=763400
+    → [OG] Gallo#55[T4] terr=18067 bal=1655328 dq=91.6 cnt=40 | c=119.6 rankC=59.8 need=3100463 tD=0.91 人 pulse bleeding onMe | safe=763400 keep=Inf avail=-Inf chunkB=144489 pulseB=86694 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4370 kaito9 B=719134 L=8586 d=83.8 nb=1 neut=0 cmds=80 noFull=1 shQ=179783 | m=0.900 worth=77.3 cheap=8.3 over=0 dMedOther=101.0 safe(-1)=755568
+    → [OG] Gallo#55[T4] terr=17930 bal=1641541 dq=91.6 cnt=43 | c=121.0 rankC=60.5 need=3047483 tD=0.91 人 pulse bleeding onMe | safe=755568 keep=Inf avail=-Inf chunkB=143827 pulseB=86296 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4375 kaito9 B=703234 L=8467 d=83.1 nb=1 neut=0 cmds=80 noFull=1 shQ=175808 | m=0.900 worth=77.8 cheap=8.3 over=0 dMedOther=101.7 safe(-1)=745096
+    → [OG] Gallo#55[T4] terr=17874 bal=1817158 dq=101.7 cnt=38 | c=135.5 rankC=67.8 need=3325303 tD=1.00 人 pulse onMe | safe=745096 keep=Inf avail=-Inf chunkB=140647 pulseB=84388 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4380 kaito9 B=702138 L=8396 d=83.6 nb=1 neut=0 cmds=80 noFull=1 shQ=175534 | m=0.900 worth=78.2 cheap=8.3 over=0 dMedOther=102.3 safe(-1)=738848
+    → [OG] Gallo#55[T4] terr=17754 bal=1808913 dq=101.9 cnt=35 | c=137.4 rankC=68.7 need=3287170 tD=1.00 人 pulse onMe | safe=738848 keep=Inf avail=-Inf chunkB=140428 pulseB=84257 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4385 kaito9 B=689324 L=8300 d=83.1 nb=1 neut=0 cmds=80 noFull=1 shQ=172331 | m=0.900 worth=78.2 cheap=8.3 over=0 dMedOther=102.3 safe(-1)=730400
+    → [OG] Gallo#55[T4] terr=17681 bal=1781489 dq=100.8 cnt=31 | c=136.9 rankC=68.4 need=3210072 tD=0.99 人 pulse onMe | safe=730400 keep=Inf avail=-Inf chunkB=137865 pulseB=82719 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4390 kaito9 B=689270 L=8238 d=83.7 nb=1 neut=0 cmds=80 noFull=1 shQ=172317 | m=0.900 worth=79.2 cheap=8.3 over=0 dMedOther=103.5 safe(-1)=724944
+    → [OG] Gallo#55[T4] terr=17661 bal=1564841 dq=88.6 cnt=31 | c=161.0 rankC=112.7 need=2809401 tD=0.86 人 pulse onMe | safe=724944 keep=Inf avail=-Inf chunkB=137854 pulseB=82712 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4395 kaito9 B=682577 L=8207 d=83.2 nb=1 neut=0 cmds=80 noFull=1 shQ=170644 | m=0.900 worth=79.2 cheap=8.3 over=0 dMedOther=103.5 safe(-1)=722216
+    → [OG] Gallo#55[T4] terr=17805 bal=1564861 dq=87.9 cnt=32 | c=338.7 rankC=338.7 need=2801093 tD=0.85 人 pulse | safe=722216 keep=Inf avail=-Inf chunkB=136515 pulseB=81909 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4400 kaito9 B=698974 L=8207 d=85.2 nb=1 neut=0 cmds=80 noFull=1 shQ=172740 | m=0.900 worth=80.9 cheap=8.3 over=0 dMedOther=105.7 safe(-1)=722216
+    → [OG] Gallo#55[T4] terr=17886 bal=1635629 dq=91.4 cnt=33 | c=510.4 rankC=740.0 need=2929548 tD=0.87 人 pulse | safe=722216 keep=Inf avail=-Inf chunkB=139795 pulseB=83877 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4405 kaito9 B=698974 L=8207 d=85.2 nb=1 neut=0 cmds=80 noFull=1 shQ=174743 | m=0.900 worth=80.7 cheap=8.3 over=0 dMedOther=105.5 safe(-1)=722216
+    → [OG] Gallo#55[T4] terr=18021 bal=1635629 dq=90.8 cnt=35 | c=506.0 rankC=733.7 need=2934353 tD=0.86 人 pulse | safe=722216 keep=Inf avail=-Inf chunkB=139795 pulseB=83877 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4410 kaito9 B=707361 L=8207 d=86.2 nb=1 neut=0 cmds=80 noFull=1 shQ=176840 | m=0.900 worth=81.6 cheap=8.3 over=0 dMedOther=106.7 safe(-1)=722216
+    → [OG] Gallo#55[T4] terr=18117 bal=1656728 dq=91.4 cnt=36 | c=509.4 rankC=738.6 need=2975299 tD=0.86 人 pulse | safe=722216 keep=Inf avail=-Inf chunkB=141472 pulseB=84883 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
