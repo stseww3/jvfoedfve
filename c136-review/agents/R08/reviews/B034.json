@@ -1,0 +1,5186 @@
+{
+ "matchId": "B034",
+ "reviewer": "R08",
+ "protocol": "v2.0",
+ "context": {
+  "cohort": "squad20",
+  "strategyFile": "v27-team-c110.js",
+  "mapId": 14,
+  "mapSeed": 15385,
+  "mapLand": 492822,
+  "mode": 6,
+  "seededPlayers": 50,
+  "nominalTeams": 8,
+  "actualTeams": 5,
+  "baseWinExpectation": 0.2,
+  "squadBots": 9,
+  "ourPrimaryTeam": 3,
+  "teamSplitCounts": {
+   "1": 1,
+   "2": 2,
+   "3": 4,
+   "4": 2
+  },
+  "teamSplit": true,
+  "sameMatchPeer": {
+   "peerMatchId": "A052",
+   "peerCohort": "squad10",
+   "peerPrimaryTeam": 5,
+   "samePrimaryTeam": false
+  },
+  "dataCompleteness": {
+   "results": true,
+   "inGameLog": true,
+   "replay": true,
+   "tickSnapshots": 101
+  },
+  "anomaliesSummary": {
+   "drop30Count": 33,
+   "totalTransfers": 6,
+   "likelyRejectedTransfers": 5,
+   "boxedHighDensSnapshots": 4,
+   "strategyErrors": 0,
+   "teamSplit": true
+  },
+  "squad": [
+   {
+    "me": 22,
+    "name": "Sanada",
+    "labels": [
+     "Sanada"
+    ],
+    "team": 4,
+    "teamInferred": false,
+    "spawn": [
+     412,
+     224
+    ],
+    "spawnResolves": 2,
+    "spawnInfo": null
+   },
+   {
+    "me": 23,
+    "name": "Fischer",
+    "labels": [
+     "Fischer"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     262,
+     314
+    ],
+    "spawnResolves": 2,
+    "spawnInfo": null
+   },
+   {
+    "me": 24,
+    "name": "Levi",
+    "labels": [
+     "Levi"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     18,
+     674
+    ],
+    "spawnResolves": 2,
+    "spawnInfo": null
+   },
+   {
+    "me": 26,
+    "name": "Jokic",
+    "labels": [
+     "Jokic"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     594,
+     146
+    ],
+    "spawnResolves": 2,
+    "spawnInfo": null
+   },
+   {
+    "me": 27,
+    "name": "Pagan",
+    "labels": [
+     "Pagan"
+    ],
+    "team": 3,
+    "teamInferred": false,
+    "spawn": [
+     226,
+     674
+    ],
+    "spawnResolves": 2,
+    "spawnInfo": null
+   },
+   {
+    "me": 28,
+    "name": "Bulgar",
+    "labels": [
+     "Bulgar"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     278,
+     466
+    ],
+    "spawnResolves": 2,
+    "spawnInfo": null
+   },
+   {
+    "me": 29,
+    "name": "British Empire",
+    "labels": [
+     "British Empire"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     450,
+     674
+    ],
+    "spawnResolves": 3,
+    "spawnInfo": null
+   },
+   {
+    "me": 30,
+    "name": "Broly",
+    "labels": [
+     "Broly"
+    ],
+    "team": 3,
+    "teamInferred": false,
+    "spawn": [
+     450,
+     674
+    ],
+    "spawnResolves": 2,
+    "spawnInfo": null
+   },
+   {
+    "me": 31,
+    "name": "East India Co",
+    "labels": [
+     "East India Co",
+     "FreeMason",
+     "Vatican City"
+    ],
+    "team": 3,
+    "teamInferred": false,
+    "spawn": [
+     18,
+     402
+    ],
+    "spawnResolves": 3,
+    "spawnInfo": null
+   },
+   {
+    "me": 34,
+    "name": "Praetorian",
+    "labels": [
+     "Praetorian"
+    ],
+    "team": 4,
+    "teamInferred": false,
+    "spawn": [
+     418,
+     370
+    ],
+    "spawnResolves": 2,
+    "spawnInfo": null
+   },
+   {
+    "me": 35,
+    "name": "Tal",
+    "labels": [
+     "Tal"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     146,
+     386
+    ],
+    "spawnResolves": 5,
+    "spawnInfo": null
+   },
+   {
+    "me": 37,
+    "name": "Shimazu",
+    "labels": [
+     "Shimazu"
+    ],
+    "team": 4,
+    "teamInferred": false,
+    "spawn": [
+     930,
+     594
+    ],
+    "spawnResolves": 2,
+    "spawnInfo": null
+   },
+   {
+    "me": 38,
+    "name": "Zhuge Liang",
+    "labels": [
+     "Zhuge Liang"
+    ],
+    "team": 3,
+    "teamInferred": false,
+    "spawn": [
+     18,
+     370
+    ],
+    "spawnResolves": 2,
+    "spawnInfo": null
+   },
+   {
+    "me": 40,
+    "name": "Ireland",
+    "labels": [
+     "Ireland"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     610,
+     262
+    ],
+    "spawnResolves": 3,
+    "spawnInfo": null
+   },
+   {
+    "me": 41,
+    "name": "Kilwa",
+    "labels": [
+     "Kilwa",
+     "Ganondorf",
+     "Nelson"
+    ],
+    "team": 4,
+    "teamInferred": false,
+    "spawn": [
+     930,
+     18
+    ],
+    "spawnResolves": 3,
+    "spawnInfo": null
+   },
+   {
+    "me": 43,
+    "name": "Chagatai",
+    "labels": [
+     "Chagatai"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     978,
+     178
+    ],
+    "spawnResolves": 2,
+    "spawnInfo": null
+   },
+   {
+    "me": 45,
+    "name": "Cyrus",
+    "labels": [
+     "Cyrus",
+     "Inosuke",
+     "Pineapple"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     466,
+     514
+    ],
+    "spawnResolves": 3,
+    "spawnInfo": null
+   },
+   {
+    "me": 48,
+    "name": "LightYagami",
+    "labels": [
+     "LightYagami",
+     "Kaiser"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     546,
+     290
+    ],
+    "spawnResolves": 2,
+    "spawnInfo": null
+   }
+  ],
+  "replay": "自带录像完整（到 t=9660）。对局卡 endTick=9114 是全队最后一个号 Kilwa 的阵亡拍。真引擎重演后 375 条 traj 快照（地、兵）全部逐兵一致。录像结束时还没分出胜负（t=9360 T1 29.5% / T2 30.2% / T3 30.0% / T4 8.9%），对局卡记 winnerTeam=2。",
+  "truthTeamSplit": "日志里有 18 个 [HL-GAME-INIT]：18 个号进场，对局卡只数到 9 个（teamSplitCounts 1/2/4/2）。真值分队 T1×5（Levi Bulgar Ireland Cyrus Chagatai）/ T2×5（Fischer Jokic British Empire Tal LightYagami）/ T3×4（Pagan Broly East India Co Zhuge Liang）/ T4×4（Sanada Kilwa Praetorian Shimazu）。Praetorian、Shimazu、Chagatai t=168 同一拍离开，没有任何 HL-TICK；实际打过的是 15 个号（T1×4 / T2×5 / T3×4 / T4×2）。",
+  "peerInRoom": "同房另一支受控编队 squad10（[APEX] 标签）10 个号全在 T5——T5 整队都是受控号。它的对局包 A052 在验证集里，没有读；本文里 squad10 的数据全部来自本局自带录像（pipeline.sh B034 - tag:APEX，按战队标签认号）。",
+  "fairSharePerCapita": "50 个真人、5 队各 10 人。进场的 18 个号占人头 36%，实际打过的 15 个占 30%；主队 T3 的 10 个人里 4 个是编队号。",
+  "notes": "日志标签中途换名：同一个 me 先后用几个名字（Cyrus→Inosuke→Pineapple = 45 号；LightYagami→Kaiser = 48；East India Co→FreeMason→Vatican City = 31；Kilwa→Ganondorf→Nelson = 41）。本文一律用第一个名字、按 me 认号。HL-TICK 的 t 是各号本地拍；『执行拍』是录像里的服务器拍，『决策拍』是本地拍，时延 = 执行拍 − 配上的影子决策拍。一拍冲出多条指令时写的合计兵数含手续费；单条指令写的是实发兵（不含手续费）。『兵/格』一律是真值交战账里的耗兵 ÷ 拿到的格数（truth [TE]，整局合计），不是派出的兵数。",
+  "truthSource": {
+   "replayFrom": "B034",
+   "peer": "APEX",
+   "engineEndTick": 9660,
+   "trajRowsExact": "375/375"
+  }
+ },
+ "outcome": {
+  "result": "lost",
+  "resultLabel": "lost",
+  "primaryTeamWon": false,
+  "anyBotWon": false,
+  "winnerTeam": 2,
+  "endTick": 9114,
+  "peakSquadLandShare": 0.1551,
+  "peakPrimaryTeamShareSeen": 0.2871,
+  "ourFinalTeamShare": 0.2871,
+  "placements": [
+   {
+    "bot": "Sanada",
+    "me": 22,
+    "team": 4,
+    "event": "died",
+    "result": "lost",
+    "tick": 2488,
+    "place": 36
+   },
+   {
+    "bot": "Fischer",
+    "me": 23,
+    "team": 2,
+    "event": "left",
+    "result": "left",
+    "tick": 1778,
+    "place": null
+   },
+   {
+    "bot": "Levi",
+    "me": 24,
+    "team": 1,
+    "event": "left",
+    "result": "left",
+    "tick": 1869,
+    "place": null
+   },
+   {
+    "bot": "Jokic",
+    "me": 26,
+    "team": 2,
+    "event": "died",
+    "result": "lost",
+    "tick": 2447,
+    "place": 37
+   },
+   {
+    "bot": "Pagan",
+    "me": 27,
+    "team": 3,
+    "event": "died",
+    "result": "lost",
+    "tick": 2289,
+    "place": 40
+   },
+   {
+    "bot": "Bulgar",
+    "me": 28,
+    "team": 1,
+    "event": "left",
+    "result": "left",
+    "tick": 1603,
+    "place": null
+   },
+   {
+    "bot": "British Empire",
+    "me": 29,
+    "team": 2,
+    "event": "left",
+    "result": "left",
+    "tick": 1785,
+    "place": null
+   },
+   {
+    "bot": "Broly",
+    "me": 30,
+    "team": 3,
+    "event": "died",
+    "result": "lost",
+    "tick": 2563,
+    "place": 34
+   },
+   {
+    "bot": "East India Co",
+    "me": 31,
+    "team": 3,
+    "event": "died",
+    "result": "lost",
+    "tick": 6298,
+    "place": 12
+   },
+   {
+    "bot": "Praetorian",
+    "me": 34,
+    "team": 4,
+    "event": "left",
+    "result": "left",
+    "tick": 168,
+    "place": null
+   },
+   {
+    "bot": "Tal",
+    "me": 35,
+    "team": 2,
+    "event": "left",
+    "result": "left",
+    "tick": 1603,
+    "place": null
+   },
+   {
+    "bot": "Shimazu",
+    "me": 37,
+    "team": 4,
+    "event": "left",
+    "result": "left",
+    "tick": 168,
+    "place": null
+   },
+   {
+    "bot": "Zhuge Liang",
+    "me": 38,
+    "team": 3,
+    "event": "died",
+    "result": "lost",
+    "tick": 2028,
+    "place": 46
+   },
+   {
+    "bot": "Ireland",
+    "me": 40,
+    "team": 1,
+    "event": "left",
+    "result": "left",
+    "tick": 1603,
+    "place": null
+   },
+   {
+    "bot": "Kilwa",
+    "me": 41,
+    "team": 4,
+    "event": "died",
+    "result": "lost",
+    "tick": 9114,
+    "place": 6
+   },
+   {
+    "bot": "Chagatai",
+    "me": 43,
+    "team": 1,
+    "event": "left",
+    "result": "left",
+    "tick": 168,
+    "place": null
+   },
+   {
+    "bot": "Cyrus",
+    "me": 45,
+    "team": 1,
+    "event": "died",
+    "result": "lost",
+    "tick": 5670,
+    "place": 18
+   },
+   {
+    "bot": "LightYagami",
+    "me": 48,
+    "team": 2,
+    "event": "died",
+    "result": "lost",
+    "tick": 5167,
+    "place": 21
+   }
+  ]
+ },
+ "timeline": [
+  {
+   "t": 90,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 15,
+   "sqTerr": 324,
+   "sqSharePct": 0.07,
+   "sqBal": 12584,
+   "sqDens": 38.8,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 48,
+   "primaryTeamBotsSharePct": 0.01,
+   "truth": {
+    "snapT": 90,
+    "teamSharePct": {
+     "T1": 0.1,
+     "T2": 0.1,
+     "T3": 0.1,
+     "T4": 0.1,
+     "T5": 0.1
+    },
+    "builtInAiSharePct": 2.6,
+    "activeHumansByTeam": {
+     "T1": 10,
+     "T2": 10,
+     "T3": 9,
+     "T4": 10,
+     "T5": 10
+    },
+    "squadActive": 15,
+    "squadActiveSharePct": 0.07,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.48,
+    "squadByTeam": {
+     "T1": {
+      "bots": 4,
+      "sharePct": 0.03
+     },
+     "T2": {
+      "bots": 5,
+      "sharePct": 0.02
+     },
+     "T3": {
+      "bots": 4,
+      "sharePct": 0.01
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 0.0
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 0.06
+   }
+  },
+  {
+   "t": 168,
+   "src": "RESULT LNone + 最近快照 t=90",
+   "botsWithSnapshot": 15,
+   "sqTerr": 324,
+   "sqSharePct": 0.07,
+   "sqBal": 12584,
+   "sqDens": 38.8,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 48,
+   "primaryTeamBotsSharePct": 0.01,
+   "event": "Praetorian left",
+   "events": [
+    "Shimazu left",
+    "Chagatai left"
+   ],
+   "truth": {
+    "snapT": 160,
+    "teamSharePct": {
+     "T1": 0.3,
+     "T2": 0.3,
+     "T3": 0.1,
+     "T4": 0.2,
+     "T5": 0.3
+    },
+    "builtInAiSharePct": 4.5,
+    "activeHumansByTeam": {
+     "T1": 10,
+     "T2": 10,
+     "T3": 9,
+     "T4": 10,
+     "T5": 10
+    },
+    "squadActive": 15,
+    "squadActiveSharePct": 0.19,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.53,
+    "squadByTeam": {
+     "T1": {
+      "bots": 4,
+      "sharePct": 0.1
+     },
+     "T2": {
+      "bots": 5,
+      "sharePct": 0.07
+     },
+     "T3": {
+      "bots": 4,
+      "sharePct": 0.01
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 0.0
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 0.31
+   },
+   "note": "结果表里的拍是掉线号冻结的本地拍；录像里真正的离开拍见 deaths[].truth.engineLeftTick"
+  },
+  {
+   "t": 180,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 9,
+   "sqTerr": 862,
+   "sqSharePct": 0.17,
+   "sqBal": 6338,
+   "sqDens": 7.4,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 289,
+   "primaryTeamBotsSharePct": 0.06,
+   "truth": {
+    "snapT": 180,
+    "teamSharePct": {
+     "T1": 0.4,
+     "T2": 0.4,
+     "T3": 0.2,
+     "T4": 0.2,
+     "T5": 0.3
+    },
+    "builtInAiSharePct": 4.8,
+    "activeHumansByTeam": {
+     "T1": 9,
+     "T2": 10,
+     "T3": 9,
+     "T4": 8,
+     "T5": 10
+    },
+    "squadActive": 15,
+    "squadActiveSharePct": 0.41,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.82,
+    "squadByTeam": {
+     "T1": {
+      "bots": 4,
+      "sharePct": 0.16
+     },
+     "T2": {
+      "bots": 5,
+      "sharePct": 0.18
+     },
+     "T3": {
+      "bots": 4,
+      "sharePct": 0.06
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 0.02
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 0.31
+   }
+  },
+  {
+   "t": 182,
+   "src": "OPENING-CHECK L8613214",
+   "botsWithSnapshot": 3,
+   "sqTerr": 476,
+   "sqSharePct": 0.097,
+   "allOk": true,
+   "truth": {
+    "snapT": 180,
+    "teamSharePct": {
+     "T1": 0.4,
+     "T2": 0.4,
+     "T3": 0.2,
+     "T4": 0.2,
+     "T5": 0.3
+    },
+    "builtInAiSharePct": 4.8,
+    "activeHumansByTeam": {
+     "T1": 9,
+     "T2": 10,
+     "T3": 9,
+     "T4": 8,
+     "T5": 10
+    },
+    "squadActive": 15,
+    "squadActiveSharePct": 0.41,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.82,
+    "squadByTeam": {
+     "T1": {
+      "bots": 4,
+      "sharePct": 0.16
+     },
+     "T2": {
+      "bots": 5,
+      "sharePct": 0.18
+     },
+     "T3": {
+      "bots": 4,
+      "sharePct": 0.06
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 0.02
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 0.31
+   }
+  },
+  {
+   "t": 270,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 14,
+   "sqTerr": 6305,
+   "sqSharePct": 1.28,
+   "sqBal": 18740,
+   "sqDens": 3.0,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 1899,
+   "primaryTeamBotsSharePct": 0.39,
+   "truth": {
+    "snapT": 270,
+    "teamSharePct": {
+     "T1": 0.6,
+     "T2": 0.8,
+     "T3": 0.7,
+     "T4": 0.6,
+     "T5": 0.7
+    },
+    "builtInAiSharePct": 7.9,
+    "activeHumansByTeam": {
+     "T1": 9,
+     "T2": 10,
+     "T3": 9,
+     "T4": 8,
+     "T5": 10
+    },
+    "squadActive": 15,
+    "squadActiveSharePct": 1.35,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 1.19,
+    "squadByTeam": {
+     "T1": {
+      "bots": 4,
+      "sharePct": 0.31
+     },
+     "T2": {
+      "bots": 5,
+      "sharePct": 0.46
+     },
+     "T3": {
+      "bots": 4,
+      "sharePct": 0.39
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 0.19
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 0.74
+   }
+  },
+  {
+   "t": 450,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 14,
+   "sqTerr": 16384,
+   "sqSharePct": 3.32,
+   "sqBal": 45111,
+   "sqDens": 2.8,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 4515,
+   "primaryTeamBotsSharePct": 0.92,
+   "truth": {
+    "snapT": 450,
+    "teamSharePct": {
+     "T1": 1.8,
+     "T2": 2.2,
+     "T3": 1.9,
+     "T4": 1.6,
+     "T5": 2.4
+    },
+    "builtInAiSharePct": 20.2,
+    "activeHumansByTeam": {
+     "T1": 8,
+     "T2": 10,
+     "T3": 9,
+     "T4": 8,
+     "T5": 10
+    },
+    "squadActive": 15,
+    "squadActiveSharePct": 3.55,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 1.1,
+    "squadByTeam": {
+     "T1": {
+      "bots": 4,
+      "sharePct": 1.0
+     },
+     "T2": {
+      "bots": 5,
+      "sharePct": 1.19
+     },
+     "T3": {
+      "bots": 4,
+      "sharePct": 0.92
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 0.45
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 2.35
+   }
+  },
+  {
+   "t": 630,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 10,
+   "sqTerr": 30426,
+   "sqSharePct": 6.17,
+   "sqBal": 62208,
+   "sqDens": 2.0,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 8078,
+   "primaryTeamBotsSharePct": 1.64,
+   "truth": {
+    "snapT": 630,
+    "teamSharePct": {
+     "T1": 4.3,
+     "T2": 5.8,
+     "T3": 5.3,
+     "T4": 4.5,
+     "T5": 6.4
+    },
+    "builtInAiSharePct": 44.3,
+    "activeHumansByTeam": {
+     "T1": 8,
+     "T2": 10,
+     "T3": 9,
+     "T4": 8,
+     "T5": 10
+    },
+    "squadActive": 15,
+    "squadActiveSharePct": 9.07,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 1.04,
+    "squadByTeam": {
+     "T1": {
+      "bots": 4,
+      "sharePct": 2.56
+     },
+     "T2": {
+      "bots": 5,
+      "sharePct": 3.17
+     },
+     "T3": {
+      "bots": 4,
+      "sharePct": 2.15
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 1.2
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 6.38
+   }
+  },
+  {
+   "t": 900,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 15,
+   "sqTerr": 67370,
+   "sqSharePct": 13.67,
+   "sqBal": 367486,
+   "sqDens": 5.5,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 14138,
+   "primaryTeamBotsSharePct": 2.87,
+   "truth": {
+    "snapT": 900,
+    "teamSharePct": {
+     "T1": 6.9,
+     "T2": 10.0,
+     "T3": 8.5,
+     "T4": 8.5,
+     "T5": 8.9
+    },
+    "builtInAiSharePct": 56.3,
+    "activeHumansByTeam": {
+     "T1": 8,
+     "T2": 10,
+     "T3": 9,
+     "T4": 8,
+     "T5": 10
+    },
+    "squadActive": 15,
+    "squadActiveSharePct": 13.67,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.96,
+    "squadByTeam": {
+     "T1": {
+      "bots": 4,
+      "sharePct": 3.7
+     },
+     "T2": {
+      "bots": 5,
+      "sharePct": 4.94
+     },
+     "T3": {
+      "bots": 4,
+      "sharePct": 2.87
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 2.16
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 8.9
+   }
+  },
+  {
+   "t": 990,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 15,
+   "sqTerr": 76439,
+   "sqSharePct": 15.51,
+   "sqBal": 482664,
+   "sqDens": 6.3,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 15423,
+   "primaryTeamBotsSharePct": 3.13,
+   "note": "编队领土份额峰值",
+   "truth": {
+    "snapT": 990,
+    "teamSharePct": {
+     "T1": 7.8,
+     "T2": 11.5,
+     "T3": 10.1,
+     "T4": 11.0,
+     "T5": 9.4
+    },
+    "builtInAiSharePct": 49.5,
+    "activeHumansByTeam": {
+     "T1": 8,
+     "T2": 10,
+     "T3": 9,
+     "T4": 8,
+     "T5": 10
+    },
+    "squadActive": 15,
+    "squadActiveSharePct": 15.51,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.94,
+    "squadByTeam": {
+     "T1": {
+      "bots": 4,
+      "sharePct": 4.06
+     },
+     "T2": {
+      "bots": 5,
+      "sharePct": 5.65
+     },
+     "T3": {
+      "bots": 4,
+      "sharePct": 3.13
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 2.68
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 9.4
+   }
+  },
+  {
+   "t": 1260,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 7,
+   "sqTerr": 45919,
+   "sqSharePct": 9.32,
+   "sqBal": 548442,
+   "sqDens": 11.9,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 13275,
+   "primaryTeamBotsSharePct": 2.69,
+   "truth": {
+    "snapT": 1260,
+    "teamSharePct": {
+     "T1": 11.3,
+     "T2": 16.1,
+     "T3": 15.6,
+     "T4": 16.8,
+     "T5": 10.6
+    },
+    "builtInAiSharePct": 29.0,
+    "activeHumansByTeam": {
+     "T1": 8,
+     "T2": 10,
+     "T3": 9,
+     "T4": 8,
+     "T5": 10
+    },
+    "squadActive": 15,
+    "squadActiveSharePct": 19.11,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.82,
+    "squadByTeam": {
+     "T1": {
+      "bots": 4,
+      "sharePct": 4.78
+     },
+     "T2": {
+      "bots": 5,
+      "sharePct": 7.11
+     },
+     "T3": {
+      "bots": 4,
+      "sharePct": 3.8
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 3.42
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 10.57
+   }
+  },
+  {
+   "t": 1530,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 6,
+   "sqTerr": 35108,
+   "sqSharePct": 7.12,
+   "sqBal": 886226,
+   "sqDens": 25.2,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 20263,
+   "primaryTeamBotsSharePct": 4.11,
+   "truth": {
+    "snapT": 1530,
+    "teamSharePct": {
+     "T1": 13.5,
+     "T2": 21.4,
+     "T3": 19.7,
+     "T4": 23.1,
+     "T5": 11.6
+    },
+    "builtInAiSharePct": 10.3,
+    "activeHumansByTeam": {
+     "T1": 8,
+     "T2": 10,
+     "T3": 8,
+     "T4": 8,
+     "T5": 10
+    },
+    "squadActive": 15,
+    "squadActiveSharePct": 20.13,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.67,
+    "squadByTeam": {
+     "T1": {
+      "bots": 4,
+      "sharePct": 5.27
+     },
+     "T2": {
+      "bots": 5,
+      "sharePct": 6.93
+     },
+     "T3": {
+      "bots": 4,
+      "sharePct": 4.11
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 3.81
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 11.64
+   }
+  },
+  {
+   "t": 1603,
+   "src": "RESULT LNone + 最近快照 t=1530",
+   "botsWithSnapshot": 6,
+   "sqTerr": 35108,
+   "sqSharePct": 7.12,
+   "sqBal": 886226,
+   "sqDens": 25.2,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 20263,
+   "primaryTeamBotsSharePct": 4.11,
+   "event": "Bulgar left",
+   "events": [
+    "Tal left",
+    "Ireland left"
+   ],
+   "truth": {
+    "snapT": 1600,
+    "teamSharePct": {
+     "T1": 14.2,
+     "T2": 22.4,
+     "T3": 20.7,
+     "T4": 24.7,
+     "T5": 12.1
+    },
+    "builtInAiSharePct": 5.2,
+    "activeHumansByTeam": {
+     "T1": 8,
+     "T2": 10,
+     "T3": 8,
+     "T4": 8,
+     "T5": 10
+    },
+    "squadActive": 15,
+    "squadActiveSharePct": 20.31,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.64,
+    "squadByTeam": {
+     "T1": {
+      "bots": 4,
+      "sharePct": 5.27
+     },
+     "T2": {
+      "bots": 5,
+      "sharePct": 6.9
+     },
+     "T3": {
+      "bots": 4,
+      "sharePct": 4.28
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 3.86
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 12.08
+   },
+   "note": "结果表里的拍是掉线号冻结的本地拍；录像里真正的离开拍见 deaths[].truth.engineLeftTick"
+  },
+  {
+   "t": 1778,
+   "src": "RESULT LNone + 最近快照 t=1710",
+   "botsWithSnapshot": 9,
+   "sqTerr": 62673,
+   "sqSharePct": 12.72,
+   "sqBal": 1987178,
+   "sqDens": 31.7,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 22575,
+   "primaryTeamBotsSharePct": 4.58,
+   "event": "Fischer left",
+   "truth": {
+    "snapT": 1770,
+    "teamSharePct": {
+     "T1": 14.8,
+     "T2": 22.2,
+     "T3": 22.3,
+     "T4": 25.9,
+     "T5": 12.2
+    },
+    "builtInAiSharePct": 2.1,
+    "activeHumansByTeam": {
+     "T1": 6,
+     "T2": 9,
+     "T3": 8,
+     "T4": 8,
+     "T5": 10
+    },
+    "squadActive": 12,
+    "squadActiveSharePct": 18.28,
+    "squadHuskSharePct": 3.76,
+    "squadPerCapitaVsRoomActive": 0.67,
+    "squadByTeam": {
+     "T1": {
+      "bots": 2,
+      "sharePct": 2.96
+     },
+     "T2": {
+      "bots": 4,
+      "sharePct": 6.1
+     },
+     "T3": {
+      "bots": 4,
+      "sharePct": 5.3
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 3.92
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 12.24
+   },
+   "note": "结果表里的拍是掉线号冻结的本地拍；录像里真正的离开拍见 deaths[].truth.engineLeftTick"
+  },
+  {
+   "t": 1785,
+   "src": "RESULT LNone + 最近快照 t=1710",
+   "botsWithSnapshot": 9,
+   "sqTerr": 62673,
+   "sqSharePct": 12.72,
+   "sqBal": 1987178,
+   "sqDens": 31.7,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 22575,
+   "primaryTeamBotsSharePct": 4.58,
+   "event": "British Empire left",
+   "truth": {
+    "snapT": 1780,
+    "teamSharePct": {
+     "T1": 14.8,
+     "T2": 22.2,
+     "T3": 22.3,
+     "T4": 26.0,
+     "T5": 12.2
+    },
+    "builtInAiSharePct": 2.1,
+    "activeHumansByTeam": {
+     "T1": 6,
+     "T2": 8,
+     "T3": 8,
+     "T4": 8,
+     "T5": 10
+    },
+    "squadActive": 11,
+    "squadActiveSharePct": 16.14,
+    "squadHuskSharePct": 5.94,
+    "squadPerCapitaVsRoomActive": 0.64,
+    "squadByTeam": {
+     "T1": {
+      "bots": 2,
+      "sharePct": 2.96
+     },
+     "T2": {
+      "bots": 3,
+      "sharePct": 3.96
+     },
+     "T3": {
+      "bots": 4,
+      "sharePct": 5.3
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 3.92
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 12.24
+   },
+   "note": "结果表里的拍是掉线号冻结的本地拍；录像里真正的离开拍见 deaths[].truth.engineLeftTick"
+  },
+  {
+   "t": 1800,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 7,
+   "sqTerr": 55960,
+   "sqSharePct": 11.36,
+   "sqBal": 1539892,
+   "sqDens": 27.5,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 22319,
+   "primaryTeamBotsSharePct": 4.53,
+   "truth": {
+    "snapT": 1800,
+    "teamSharePct": {
+     "T1": 14.9,
+     "T2": 22.3,
+     "T3": 22.3,
+     "T4": 26.0,
+     "T5": 12.2
+    },
+    "builtInAiSharePct": 1.9,
+    "activeHumansByTeam": {
+     "T1": 6,
+     "T2": 7,
+     "T3": 8,
+     "T4": 8,
+     "T5": 10
+    },
+    "squadActive": 10,
+    "squadActiveSharePct": 15.1,
+    "squadHuskSharePct": 7.06,
+    "squadPerCapitaVsRoomActive": 0.65,
+    "squadByTeam": {
+     "T1": {
+      "bots": 2,
+      "sharePct": 2.96
+     },
+     "T2": {
+      "bots": 2,
+      "sharePct": 2.9
+     },
+     "T3": {
+      "bots": 4,
+      "sharePct": 5.33
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 3.92
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 12.24
+   }
+  },
+  {
+   "t": 1869,
+   "src": "RESULT LNone + 最近快照 t=1800",
+   "botsWithSnapshot": 7,
+   "sqTerr": 55960,
+   "sqSharePct": 11.36,
+   "sqBal": 1539892,
+   "sqDens": 27.5,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 22319,
+   "primaryTeamBotsSharePct": 4.53,
+   "event": "Levi left",
+   "truth": {
+    "snapT": 1860,
+    "teamSharePct": {
+     "T1": 14.9,
+     "T2": 22.2,
+     "T3": 22.5,
+     "T4": 26.4,
+     "T5": 12.5
+    },
+    "builtInAiSharePct": 1.4,
+    "activeHumansByTeam": {
+     "T1": 6,
+     "T2": 7,
+     "T3": 8,
+     "T4": 8,
+     "T5": 10
+    },
+    "squadActive": 10,
+    "squadActiveSharePct": 15.26,
+    "squadHuskSharePct": 7.26,
+    "squadPerCapitaVsRoomActive": 0.65,
+    "squadByTeam": {
+     "T1": {
+      "bots": 2,
+      "sharePct": 2.94
+     },
+     "T2": {
+      "bots": 2,
+      "sharePct": 2.9
+     },
+     "T3": {
+      "bots": 4,
+      "sharePct": 5.51
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 3.92
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 12.49
+   },
+   "note": "结果表里的拍是掉线号冻结的本地拍；录像里真正的离开拍见 deaths[].truth.engineLeftTick"
+  },
+  {
+   "t": 2028,
+   "src": "RESULT L8613533 + 最近快照 t=1980",
+   "botsWithSnapshot": 7,
+   "sqTerr": 50134,
+   "sqSharePct": 10.17,
+   "sqBal": 1671595,
+   "sqDens": 33.3,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 16035,
+   "primaryTeamBotsSharePct": 3.25,
+   "event": "Zhuge Liang died",
+   "teamTotals": {
+    "mineTeam": 3,
+    "mineSharePct": 18.84,
+    "topEnemyTeam": 4,
+    "topEnemySharePct": 27.05,
+    "allPct": {
+     "T0": 0.4,
+     "T1": 15.2,
+     "T2": 23.5,
+     "T3": 18.8,
+     "T4": 27.1,
+     "T5": 14.5
+    }
+   },
+   "truth": {
+    "snapT": 2020,
+    "teamSharePct": {
+     "T1": 15.2,
+     "T2": 23.3,
+     "T3": 19.6,
+     "T4": 27.0,
+     "T5": 14.3
+    },
+    "builtInAiSharePct": 0.4,
+    "activeHumansByTeam": {
+     "T1": 5,
+     "T2": 7,
+     "T3": 7,
+     "T4": 8,
+     "T5": 10
+    },
+    "squadActive": 8,
+    "squadActiveSharePct": 12.01,
+    "squadHuskSharePct": 9.83,
+    "squadPerCapitaVsRoomActive": 0.62,
+    "squadByTeam": {
+     "T1": {
+      "bots": 1,
+      "sharePct": 1.52
+     },
+     "T2": {
+      "bots": 2,
+      "sharePct": 3.38
+     },
+     "T3": {
+      "bots": 3,
+      "sharePct": 2.93
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 4.18
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 14.34
+   }
+  },
+  {
+   "t": 2070,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 8,
+   "sqTerr": 63710,
+   "sqSharePct": 12.93,
+   "sqBal": 1937646,
+   "sqDens": 30.4,
+   "boxedIn": 0,
+   "overSoftCap": 1,
+   "primaryTeamBotsTerr": 14450,
+   "primaryTeamBotsSharePct": 2.93,
+   "truth": {
+    "snapT": 2070,
+    "teamSharePct": {
+     "T1": 14.9,
+     "T2": 23.9,
+     "T3": 17.8,
+     "T4": 27.0,
+     "T5": 15.9
+    },
+    "builtInAiSharePct": 0.3,
+    "activeHumansByTeam": {
+     "T1": 5,
+     "T2": 7,
+     "T3": 7,
+     "T4": 8,
+     "T5": 10
+    },
+    "squadActive": 8,
+    "squadActiveSharePct": 12.93,
+    "squadHuskSharePct": 9.94,
+    "squadPerCapitaVsRoomActive": 0.67,
+    "squadByTeam": {
+     "T1": {
+      "bots": 1,
+      "sharePct": 1.52
+     },
+     "T2": {
+      "bots": 2,
+      "sharePct": 3.88
+     },
+     "T3": {
+      "bots": 3,
+      "sharePct": 2.93
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 4.59
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 15.89
+   }
+  },
+  {
+   "t": 2289,
+   "src": "RESULT L8613574 + 最近快照 t=2250",
+   "botsWithSnapshot": 8,
+   "sqTerr": 67936,
+   "sqSharePct": 13.79,
+   "sqBal": 1456550,
+   "sqDens": 21.4,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 10928,
+   "primaryTeamBotsSharePct": 2.22,
+   "event": "Pagan died",
+   "teamTotals": {
+    "mineTeam": 3,
+    "mineSharePct": 12.19,
+    "topEnemyTeam": 2,
+    "topEnemySharePct": 27.59,
+    "allPct": {
+     "T0": 0.4,
+     "T1": 12.5,
+     "T2": 27.6,
+     "T3": 12.2,
+     "T4": 27.0,
+     "T5": 20.1
+    }
+   },
+   "truth": {
+    "snapT": 2280,
+    "teamSharePct": {
+     "T1": 12.4,
+     "T2": 27.5,
+     "T3": 12.8,
+     "T4": 27.0,
+     "T5": 19.8
+    },
+    "builtInAiSharePct": 0.3,
+    "activeHumansByTeam": {
+     "T1": 4,
+     "T2": 6,
+     "T3": 6,
+     "T4": 8,
+     "T5": 10
+    },
+    "squadActive": 8,
+    "squadActiveSharePct": 12.97,
+    "squadHuskSharePct": 8.56,
+    "squadPerCapitaVsRoomActive": 0.61,
+    "squadByTeam": {
+     "T1": {
+      "bots": 1,
+      "sharePct": 1.67
+     },
+     "T2": {
+      "bots": 2,
+      "sharePct": 5.65
+     },
+     "T3": {
+      "bots": 3,
+      "sharePct": 2.16
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 3.49
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 19.82
+   }
+  },
+  {
+   "t": 2447,
+   "src": "RESULT L8613589 + 最近快照 t=2430",
+   "botsWithSnapshot": 7,
+   "sqTerr": 52590,
+   "sqSharePct": 10.67,
+   "sqBal": 1032908,
+   "sqDens": 19.6,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 7111,
+   "primaryTeamBotsSharePct": 1.44,
+   "event": "Jokic died",
+   "teamTotals": {
+    "mineTeam": 2,
+    "mineSharePct": 26.8,
+    "topEnemyTeam": 4,
+    "topEnemySharePct": 26.46,
+    "allPct": {
+     "T0": 0.3,
+     "T1": 11.4,
+     "T2": 26.8,
+     "T3": 10.7,
+     "T4": 26.5,
+     "T5": 23.4
+    }
+   },
+   "truth": {
+    "snapT": 2440,
+    "teamSharePct": {
+     "T1": 11.8,
+     "T2": 26.7,
+     "T3": 10.7,
+     "T4": 26.4,
+     "T5": 23.2
+    },
+    "builtInAiSharePct": 0.3,
+    "activeHumansByTeam": {
+     "T1": 4,
+     "T2": 5,
+     "T3": 5,
+     "T4": 8,
+     "T5": 9
+    },
+    "squadActive": 6,
+    "squadActiveSharePct": 9.79,
+    "squadHuskSharePct": 7.99,
+    "squadPerCapitaVsRoomActive": 0.56,
+    "squadByTeam": {
+     "T1": {
+      "bots": 1,
+      "sharePct": 1.62
+     },
+     "T2": {
+      "bots": 1,
+      "sharePct": 3.68
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 1.39
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 3.1
+     }
+    },
+    "peerActive": 9,
+    "peerActiveSharePct": 23.18
+   }
+  },
+  {
+   "t": 2488,
+   "src": "RESULT L8613590 + 最近快照 t=2430",
+   "botsWithSnapshot": 7,
+   "sqTerr": 52590,
+   "sqSharePct": 10.67,
+   "sqBal": 1032908,
+   "sqDens": 19.6,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 7111,
+   "primaryTeamBotsSharePct": 1.44,
+   "event": "Sanada died",
+   "teamTotals": {
+    "mineTeam": 4,
+    "mineSharePct": 25.87,
+    "topEnemyTeam": 2,
+    "topEnemySharePct": 27.37,
+    "allPct": {
+     "T0": 0.2,
+     "T1": 11.1,
+     "T2": 27.4,
+     "T3": 10.7,
+     "T4": 25.9,
+     "T5": 23.8
+    }
+   },
+   "truth": {
+    "snapT": 2480,
+    "teamSharePct": {
+     "T1": 11.2,
+     "T2": 27.2,
+     "T3": 10.7,
+     "T4": 26.4,
+     "T5": 23.8
+    },
+    "builtInAiSharePct": 0.2,
+    "activeHumansByTeam": {
+     "T1": 4,
+     "T2": 5,
+     "T3": 5,
+     "T4": 8,
+     "T5": 9
+    },
+    "squadActive": 6,
+    "squadActiveSharePct": 9.27,
+    "squadHuskSharePct": 7.7,
+    "squadPerCapitaVsRoomActive": 0.52,
+    "squadByTeam": {
+     "T1": {
+      "bots": 1,
+      "sharePct": 1.32
+     },
+     "T2": {
+      "bots": 1,
+      "sharePct": 3.68
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 1.24
+     },
+     "T4": {
+      "bots": 2,
+      "sharePct": 3.04
+     }
+    },
+    "peerActive": 9,
+    "peerActiveSharePct": 23.76
+   }
+  },
+  {
+   "t": 2520,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 5,
+   "sqTerr": 43001,
+   "sqSharePct": 8.73,
+   "sqBal": 1330716,
+   "sqDens": 30.9,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 5951,
+   "primaryTeamBotsSharePct": 1.21,
+   "truth": {
+    "snapT": 2520,
+    "teamSharePct": {
+     "T1": 11.1,
+     "T2": 27.6,
+     "T3": 10.9,
+     "T4": 25.8,
+     "T5": 23.8
+    },
+    "builtInAiSharePct": 0.2,
+    "activeHumansByTeam": {
+     "T1": 4,
+     "T2": 5,
+     "T3": 5,
+     "T4": 7,
+     "T5": 9
+    },
+    "squadActive": 5,
+    "squadActiveSharePct": 8.73,
+    "squadHuskSharePct": 7.64,
+    "squadPerCapitaVsRoomActive": 0.57,
+    "squadByTeam": {
+     "T1": {
+      "bots": 1,
+      "sharePct": 1.32
+     },
+     "T2": {
+      "bots": 1,
+      "sharePct": 3.68
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 1.21
+     },
+     "T4": {
+      "bots": 1,
+      "sharePct": 2.52
+     }
+    },
+    "peerActive": 9,
+    "peerActiveSharePct": 23.79
+   }
+  },
+  {
+   "t": 2563,
+   "src": "RESULT L8613596 + 最近快照 t=2520",
+   "botsWithSnapshot": 5,
+   "sqTerr": 43001,
+   "sqSharePct": 8.73,
+   "sqBal": 1330716,
+   "sqDens": 30.9,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 5951,
+   "primaryTeamBotsSharePct": 1.21,
+   "event": "Broly died",
+   "teamTotals": {
+    "mineTeam": 3,
+    "mineSharePct": 10.65,
+    "topEnemyTeam": 2,
+    "topEnemySharePct": 28.21,
+    "allPct": {
+     "T1": 11.2,
+     "T2": 28.2,
+     "T3": 10.6,
+     "T4": 26.0,
+     "T5": 23.4
+    }
+   },
+   "truth": {
+    "snapT": 2560,
+    "teamSharePct": {
+     "T1": 11.2,
+     "T2": 28.2,
+     "T3": 10.6,
+     "T4": 26.0,
+     "T5": 23.4
+    },
+    "builtInAiSharePct": 0.0,
+    "activeHumansByTeam": {
+     "T1": 4,
+     "T2": 5,
+     "T3": 4,
+     "T4": 7,
+     "T5": 9
+    },
+    "squadActive": 4,
+    "squadActiveSharePct": 8.35,
+    "squadHuskSharePct": 7.69,
+    "squadPerCapitaVsRoomActive": 0.66,
+    "squadByTeam": {
+     "T1": {
+      "bots": 1,
+      "sharePct": 1.32
+     },
+     "T2": {
+      "bots": 1,
+      "sharePct": 3.68
+     },
+     "T3": {
+      "bots": 1,
+      "sharePct": 0.84
+     },
+     "T4": {
+      "bots": 1,
+      "sharePct": 2.52
+     }
+    },
+    "peerActive": 9,
+    "peerActiveSharePct": 23.39
+   }
+  },
+  {
+   "t": 3060,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 4,
+   "sqTerr": 36371,
+   "sqSharePct": 7.38,
+   "sqBal": 2235447,
+   "sqDens": 61.5,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 4121,
+   "primaryTeamBotsSharePct": 0.84,
+   "truth": {
+    "snapT": 3060,
+    "teamSharePct": {
+     "T1": 11.3,
+     "T2": 27.3,
+     "T3": 10.9,
+     "T4": 29.0,
+     "T5": 21.4
+    },
+    "builtInAiSharePct": 0.0,
+    "activeHumansByTeam": {
+     "T1": 4,
+     "T2": 5,
+     "T3": 4,
+     "T4": 7,
+     "T5": 8
+    },
+    "squadActive": 4,
+    "squadActiveSharePct": 7.38,
+    "squadHuskSharePct": 3.6,
+    "squadPerCapitaVsRoomActive": 0.54,
+    "squadByTeam": {
+     "T1": {
+      "bots": 1,
+      "sharePct": 1.32
+     },
+     "T2": {
+      "bots": 1,
+      "sharePct": 2.71
+     },
+     "T3": {
+      "bots": 1,
+      "sharePct": 0.84
+     },
+     "T4": {
+      "bots": 1,
+      "sharePct": 2.52
+     }
+    },
+    "peerActive": 8,
+    "peerActiveSharePct": 21.43
+   }
+  },
+  {
+   "t": 3510,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 4,
+   "sqTerr": 33408,
+   "sqSharePct": 6.78,
+   "sqBal": 3268183,
+   "sqDens": 97.8,
+   "boxedIn": 0,
+   "overSoftCap": 2,
+   "primaryTeamBotsTerr": 4121,
+   "primaryTeamBotsSharePct": 0.84,
+   "truth": {
+    "snapT": 3510,
+    "teamSharePct": {
+     "T1": 11.7,
+     "T2": 25.1,
+     "T3": 8.7,
+     "T4": 31.5,
+     "T5": 22.8
+    },
+    "builtInAiSharePct": 0.0,
+    "activeHumansByTeam": {
+     "T1": 4,
+     "T2": 5,
+     "T3": 2,
+     "T4": 7,
+     "T5": 8
+    },
+    "squadActive": 4,
+    "squadActiveSharePct": 6.78,
+    "squadHuskSharePct": 2.49,
+    "squadPerCapitaVsRoomActive": 0.46,
+    "squadByTeam": {
+     "T1": {
+      "bots": 1,
+      "sharePct": 1.32
+     },
+     "T2": {
+      "bots": 1,
+      "sharePct": 2.1
+     },
+     "T3": {
+      "bots": 1,
+      "sharePct": 0.84
+     },
+     "T4": {
+      "bots": 1,
+      "sharePct": 2.52
+     }
+    },
+    "peerActive": 8,
+    "peerActiveSharePct": 22.81
+   }
+  },
+  {
+   "t": 4050,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 4,
+   "sqTerr": 30543,
+   "sqSharePct": 6.2,
+   "sqBal": 2902884,
+   "sqDens": 95.0,
+   "boxedIn": 0,
+   "overSoftCap": 1,
+   "primaryTeamBotsTerr": 4647,
+   "primaryTeamBotsSharePct": 0.94,
+   "truth": {
+    "snapT": 4050,
+    "teamSharePct": {
+     "T1": 14.1,
+     "T2": 20.5,
+     "T3": 8.4,
+     "T4": 31.5,
+     "T5": 25.4
+    },
+    "builtInAiSharePct": 0.0,
+    "activeHumansByTeam": {
+     "T1": 4,
+     "T2": 4,
+     "T3": 2,
+     "T4": 7,
+     "T5": 8
+    },
+    "squadActive": 4,
+    "squadActiveSharePct": 6.2,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.39,
+    "squadByTeam": {
+     "T1": {
+      "bots": 1,
+      "sharePct": 1.79
+     },
+     "T2": {
+      "bots": 1,
+      "sharePct": 0.94
+     },
+     "T3": {
+      "bots": 1,
+      "sharePct": 0.94
+     },
+     "T4": {
+      "bots": 1,
+      "sharePct": 2.52
+     }
+    },
+    "peerActive": 8,
+    "peerActiveSharePct": 25.36
+   }
+  },
+  {
+   "t": 4500,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 4,
+   "sqTerr": 35569,
+   "sqSharePct": 7.22,
+   "sqBal": 3280452,
+   "sqDens": 92.2,
+   "boxedIn": 0,
+   "overSoftCap": 2,
+   "primaryTeamBotsTerr": 4715,
+   "primaryTeamBotsSharePct": 0.96,
+   "truth": {
+    "snapT": 4500,
+    "teamSharePct": {
+     "T1": 14.3,
+     "T2": 18.2,
+     "T3": 9.5,
+     "T4": 33.5,
+     "T5": 24.2
+    },
+    "builtInAiSharePct": 0.0,
+    "activeHumansByTeam": {
+     "T1": 4,
+     "T2": 3,
+     "T3": 2,
+     "T4": 7,
+     "T5": 7
+    },
+    "squadActive": 4,
+    "squadActiveSharePct": 7.22,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.42,
+    "squadByTeam": {
+     "T1": {
+      "bots": 1,
+      "sharePct": 1.51
+     },
+     "T2": {
+      "bots": 1,
+      "sharePct": 0.94
+     },
+     "T3": {
+      "bots": 1,
+      "sharePct": 0.96
+     },
+     "T4": {
+      "bots": 1,
+      "sharePct": 3.81
+     }
+    },
+    "peerActive": 7,
+    "peerActiveSharePct": 24.19
+   }
+  },
+  {
+   "t": 5040,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 4,
+   "sqTerr": 37684,
+   "sqSharePct": 7.65,
+   "sqBal": 4412520,
+   "sqDens": 117.1,
+   "boxedIn": 0,
+   "overSoftCap": 3,
+   "primaryTeamBotsTerr": 4715,
+   "primaryTeamBotsSharePct": 0.96,
+   "truth": {
+    "snapT": 5040,
+    "teamSharePct": {
+     "T1": 13.6,
+     "T2": 20.4,
+     "T3": 9.8,
+     "T4": 36.6,
+     "T5": 19.6
+    },
+    "builtInAiSharePct": 0.0,
+    "activeHumansByTeam": {
+     "T1": 4,
+     "T2": 3,
+     "T3": 2,
+     "T4": 7,
+     "T5": 6
+    },
+    "squadActive": 4,
+    "squadActiveSharePct": 7.65,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.42,
+    "squadByTeam": {
+     "T1": {
+      "bots": 1,
+      "sharePct": 1.42
+     },
+     "T2": {
+      "bots": 1,
+      "sharePct": 1.11
+     },
+     "T3": {
+      "bots": 1,
+      "sharePct": 0.96
+     },
+     "T4": {
+      "bots": 1,
+      "sharePct": 4.16
+     }
+    },
+    "peerActive": 6,
+    "peerActiveSharePct": 19.6
+   }
+  },
+  {
+   "t": 5167,
+   "src": "RESULT L8613718 + 最近快照 t=5130",
+   "botsWithSnapshot": 4,
+   "sqTerr": 36681,
+   "sqSharePct": 7.44,
+   "sqBal": 3925101,
+   "sqDens": 107.0,
+   "boxedIn": 0,
+   "overSoftCap": 2,
+   "primaryTeamBotsTerr": 4715,
+   "primaryTeamBotsSharePct": 0.96,
+   "event": "LightYagami died",
+   "teamTotals": {
+    "mineTeam": 2,
+    "mineSharePct": 19.91,
+    "topEnemyTeam": 4,
+    "topEnemySharePct": 36.28,
+    "allPct": {
+     "T1": 13.1,
+     "T2": 19.9,
+     "T3": 10.2,
+     "T4": 36.3,
+     "T5": 19.7
+    }
+   },
+   "truth": {
+    "snapT": 5160,
+    "teamSharePct": {
+     "T1": 13.1,
+     "T2": 19.8,
+     "T3": 10.1,
+     "T4": 36.3,
+     "T5": 19.7
+    },
+    "builtInAiSharePct": 0.0,
+    "activeHumansByTeam": {
+     "T1": 4,
+     "T2": 2,
+     "T3": 2,
+     "T4": 6,
+     "T5": 6
+    },
+    "squadActive": 3,
+    "squadActiveSharePct": 6.98,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.47,
+    "squadByTeam": {
+     "T1": {
+      "bots": 1,
+      "sharePct": 1.58
+     },
+     "T3": {
+      "bots": 1,
+      "sharePct": 0.96
+     },
+     "T4": {
+      "bots": 1,
+      "sharePct": 4.45
+     }
+    },
+    "peerActive": 6,
+    "peerActiveSharePct": 19.66
+   }
+  },
+  {
+   "t": 5670,
+   "src": "RESULT L8613737 + 最近快照 t=5670",
+   "botsWithSnapshot": 2,
+   "sqTerr": 29000,
+   "sqSharePct": 5.88,
+   "sqBal": 3786149,
+   "sqDens": 130.6,
+   "boxedIn": 0,
+   "overSoftCap": 2,
+   "primaryTeamBotsTerr": 4715,
+   "primaryTeamBotsSharePct": 0.96,
+   "event": "Cyrus died",
+   "teamTotals": {
+    "mineTeam": 1,
+    "mineSharePct": 10.49,
+    "topEnemyTeam": 4,
+    "topEnemySharePct": 36.97,
+    "allPct": {
+     "T1": 10.5,
+     "T2": 25.6,
+     "T3": 11.1,
+     "T4": 37.0,
+     "T5": 15.4
+    }
+   },
+   "truth": {
+    "snapT": 5670,
+    "teamSharePct": {
+     "T1": 10.5,
+     "T2": 25.6,
+     "T3": 11.1,
+     "T4": 37.0,
+     "T5": 15.4
+    },
+    "builtInAiSharePct": 0.0,
+    "activeHumansByTeam": {
+     "T1": 2,
+     "T2": 2,
+     "T3": 2,
+     "T4": 6,
+     "T5": 5
+    },
+    "squadActive": 2,
+    "squadActiveSharePct": 5.88,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.5,
+    "squadByTeam": {
+     "T3": {
+      "bots": 1,
+      "sharePct": 0.96
+     },
+     "T4": {
+      "bots": 1,
+      "sharePct": 4.93
+     }
+    },
+    "peerActive": 5,
+    "peerActiveSharePct": 15.36
+   }
+  },
+  {
+   "t": 6030,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 2,
+   "sqTerr": 30406,
+   "sqSharePct": 6.17,
+   "sqBal": 4171894,
+   "sqDens": 137.2,
+   "boxedIn": 0,
+   "overSoftCap": 2,
+   "primaryTeamBotsTerr": 5860,
+   "primaryTeamBotsSharePct": 1.19,
+   "truth": {
+    "snapT": 6030,
+    "teamSharePct": {
+     "T1": 10.8,
+     "T2": 28.3,
+     "T3": 12.5,
+     "T4": 37.1,
+     "T5": 10.4
+    },
+    "builtInAiSharePct": 0.0,
+    "activeHumansByTeam": {
+     "T1": 2,
+     "T2": 2,
+     "T3": 2,
+     "T4": 5,
+     "T5": 2
+    },
+    "squadActive": 2,
+    "squadActiveSharePct": 6.17,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.4,
+    "squadByTeam": {
+     "T3": {
+      "bots": 1,
+      "sharePct": 1.19
+     },
+     "T4": {
+      "bots": 1,
+      "sharePct": 4.98
+     }
+    },
+    "peerActive": 2,
+    "peerActiveSharePct": 10.39
+   }
+  },
+  {
+   "t": 6298,
+   "src": "RESULT L8613751 + 最近快照 t=6210",
+   "botsWithSnapshot": 2,
+   "sqTerr": 30406,
+   "sqSharePct": 6.17,
+   "sqBal": 4383898,
+   "sqDens": 144.2,
+   "boxedIn": 0,
+   "overSoftCap": 2,
+   "primaryTeamBotsTerr": 5860,
+   "primaryTeamBotsSharePct": 1.19,
+   "event": "East India Co died",
+   "teamTotals": {
+    "mineTeam": 3,
+    "mineSharePct": 11.28,
+    "topEnemyTeam": 4,
+    "topEnemySharePct": 38.18,
+    "allPct": {
+     "T1": 10.8,
+     "T2": 29.5,
+     "T3": 11.3,
+     "T4": 38.2,
+     "T5": 9.8
+    }
+   },
+   "truth": {
+    "snapT": 6290,
+    "teamSharePct": {
+     "T1": 10.8,
+     "T2": 29.3,
+     "T3": 11.7,
+     "T4": 38.2,
+     "T5": 9.8
+    },
+    "builtInAiSharePct": 0.0,
+    "activeHumansByTeam": {
+     "T1": 2,
+     "T2": 2,
+     "T3": 2,
+     "T4": 5,
+     "T5": 1
+    },
+    "squadActive": 2,
+    "squadActiveSharePct": 5.36,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.32,
+    "squadByTeam": {
+     "T3": {
+      "bots": 1,
+      "sharePct": 0.38
+     },
+     "T4": {
+      "bots": 1,
+      "sharePct": 4.98
+     }
+    },
+    "peerActive": 1,
+    "peerActiveSharePct": 9.84
+   }
+  },
+  {
+   "t": 7020,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 1,
+   "sqTerr": 24546,
+   "sqSharePct": 4.98,
+   "sqBal": 3681900,
+   "sqDens": 150.0,
+   "boxedIn": 0,
+   "overSoftCap": 1,
+   "primaryTeamBotsTerr": 0,
+   "primaryTeamBotsSharePct": 0.0,
+   "truth": {
+    "snapT": 7020,
+    "teamSharePct": {
+     "T1": 12.5,
+     "T2": 33.7,
+     "T3": 13.6,
+     "T4": 40.0,
+     "T5": 0.0
+    },
+    "builtInAiSharePct": 0.0,
+    "activeHumansByTeam": {
+     "T1": 2,
+     "T2": 2,
+     "T3": 1,
+     "T4": 4,
+     "T5": 0
+    },
+    "squadActive": 1,
+    "squadActiveSharePct": 4.98,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.45,
+    "squadByTeam": {
+     "T4": {
+      "bots": 1,
+      "sharePct": 4.98
+     }
+    },
+    "peerActive": 0,
+    "peerActiveSharePct": 0.0
+   }
+  },
+  {
+   "t": 8010,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 1,
+   "sqTerr": 26088,
+   "sqSharePct": 5.29,
+   "sqBal": 3107463,
+   "sqDens": 119.1,
+   "boxedIn": 1,
+   "overSoftCap": 1,
+   "primaryTeamBotsTerr": 0,
+   "primaryTeamBotsSharePct": 0.0,
+   "truth": {
+    "snapT": 8010,
+    "teamSharePct": {
+     "T1": 18.4,
+     "T2": 29.2,
+     "T3": 19.2,
+     "T4": 32.9,
+     "T5": 0.0
+    },
+    "builtInAiSharePct": 0.0,
+    "activeHumansByTeam": {
+     "T1": 2,
+     "T2": 1,
+     "T3": 1,
+     "T4": 3,
+     "T5": 0
+    },
+    "squadActive": 1,
+    "squadActiveSharePct": 5.29,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.37,
+    "squadByTeam": {
+     "T4": {
+      "bots": 1,
+      "sharePct": 5.29
+     }
+    },
+    "peerActive": 0,
+    "peerActiveSharePct": 0.0
+   }
+  },
+  {
+   "t": 9000,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 1,
+   "sqTerr": 15199,
+   "sqSharePct": 3.08,
+   "sqBal": 1295063,
+   "sqDens": 85.2,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 0,
+   "primaryTeamBotsSharePct": 0.0,
+   "truth": {
+    "snapT": 9000,
+    "teamSharePct": {
+     "T1": 28.2,
+     "T2": 30.2,
+     "T3": 28.1,
+     "T4": 12.0,
+     "T5": 0.0
+    },
+    "builtInAiSharePct": 0.0,
+    "activeHumansByTeam": {
+     "T1": 2,
+     "T2": 1,
+     "T3": 1,
+     "T4": 2,
+     "T5": 0
+    },
+    "squadActive": 1,
+    "squadActiveSharePct": 3.08,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.19,
+    "squadByTeam": {
+     "T4": {
+      "bots": 1,
+      "sharePct": 3.08
+     }
+    },
+    "peerActive": 0,
+    "peerActiveSharePct": 0.0
+   }
+  },
+  {
+   "t": 9090,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 1,
+   "sqTerr": 8641,
+   "sqSharePct": 1.75,
+   "sqBal": 571758,
+   "sqDens": 66.2,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 0,
+   "primaryTeamBotsSharePct": 0.0,
+   "truth": {
+    "snapT": 9090,
+    "teamSharePct": {
+     "T1": 28.9,
+     "T2": 30.2,
+     "T3": 28.7,
+     "T4": 10.7,
+     "T5": 0.0
+    },
+    "builtInAiSharePct": 0.0,
+    "activeHumansByTeam": {
+     "T1": 2,
+     "T2": 1,
+     "T3": 1,
+     "T4": 2,
+     "T5": 0
+    },
+    "squadActive": 1,
+    "squadActiveSharePct": 1.75,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.11,
+    "squadByTeam": {
+     "T4": {
+      "bots": 1,
+      "sharePct": 1.75
+     }
+    },
+    "peerActive": 0,
+    "peerActiveSharePct": 0.0
+   }
+  },
+  {
+   "t": 9114,
+   "src": "RESULT L8613786 + 最近快照 t=9090",
+   "botsWithSnapshot": 1,
+   "sqTerr": 8641,
+   "sqSharePct": 1.75,
+   "sqBal": 571758,
+   "sqDens": 66.2,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 0,
+   "primaryTeamBotsSharePct": 0.0,
+   "event": "Kilwa died",
+   "teamTotals": {
+    "mineTeam": 4,
+    "mineSharePct": 8.93,
+    "topEnemyTeam": 2,
+    "topEnemySharePct": 30.21,
+    "allPct": {
+     "T1": 29.4,
+     "T2": 30.2,
+     "T3": 28.7,
+     "T4": 8.9
+    }
+   },
+   "truth": {
+    "snapT": 9110,
+    "teamSharePct": {
+     "T1": 29.3,
+     "T2": 30.2,
+     "T3": 28.7,
+     "T4": 10.2,
+     "T5": 0.0
+    },
+    "builtInAiSharePct": 0.0,
+    "activeHumansByTeam": {
+     "T1": 2,
+     "T2": 1,
+     "T3": 1,
+     "T4": 2,
+     "T5": 0
+    },
+    "squadActive": 1,
+    "squadActiveSharePct": 1.31,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.08,
+    "squadByTeam": {
+     "T4": {
+      "bots": 1,
+      "sharePct": 1.31
+     }
+    },
+    "peerActive": 0,
+    "peerActiveSharePct": 0.0
+   }
+  },
+  {
+   "t": 9660,
+   "src": "真引擎重演的最后一拍",
+   "truth": {
+    "snapT": 9660,
+    "teamSharePct": {
+     "T1": 28.5,
+     "T2": 30.2,
+     "T3": 32.0,
+     "T4": 8.9,
+     "T5": 0.0
+    },
+    "builtInAiSharePct": 0.0,
+    "activeHumansByTeam": {
+     "T1": 2,
+     "T2": 1,
+     "T3": 1,
+     "T4": 1,
+     "T5": 0
+    },
+    "squadActive": 0,
+    "squadActiveSharePct": 0.0,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": null,
+    "squadByTeam": {},
+    "peerActive": 0,
+    "peerActiveSharePct": 0.0
+   }
+  }
+ ],
+ "phases": {
+  "spawn": {
+   "window": "t=0~90",
+   "facts": [
+    "日志 [HL-SPAWN] 44 行，人均 2.5 条指派。打过的 15 个号里 9 个的引擎落点是自己最后一条指派（spawncheck [PA][PC]）；没有相距 <40 像素的号对，最近编队友距离中位 176 像素、最小 64（Tal T2 与 Zhuge Liang T3）。",
+    "没执行最后一条的 6 个：British Empire 落在 (18,194)（最后一条 (450,674) 与 Broly 的点相同）、East India Co (930,18)（最后一条 (18,402)）、Tal (18,434)（5 条里的第 4 条）、Ireland (398,46)、Kilwa (130,50)（最后一条 (930,18)）、Cyrus (818,226)。",
+    "East India Co 的落点 (930,18) 离同房 squad10 的 zexos1 (920,18) 只有 10 像素。",
+    "出生名次 rankIdx 用了 0~18、缺 3：按名字池数人头时把从没出生的 Panzergrenadier（25 号，t=0 离开，没有日志）和 T1 的野人 Prussia（49 号）都算成了编队号，名次表是 20 个位置。",
+    "Praetorian、Shimazu、Chagatai 三个号都有出生指派，t=168 同一拍离开；空壳长到 55 / 125 / 231 格，t=1064 / 1095 / 1747 被吃掉。"
+   ],
+   "problems": [
+    "18 个号进场，3 个开局就掉线：T4 分支从 4 个号变成 2 个，T1 从 5 个变成 4 个。",
+    "East India Co 与 squad10 的 zexos1 贴脸出生：t=630 两个号 2790 / 2781 格；t=2340~2430 zexos1 用 281040 兵吃掉 East India Co 3430 格。"
+   ]
+  },
+  "opening": {
+   "window": "t=90~630",
+   "facts": [
+    "t=180~539 已执行指令的时延中位 11~12 拍，陆攻落地无效 0 条；t<180 的 24 条比影子晚 70 拍（squad10 12 拍）。影子的 HL-OPENING 行与真机逐字相同（Fischer 8/9，其余 14 个号全同，shadowcmp [SA]）。",
+    "人均比（我方在线号人均领土 ÷ 全房在线真人人均）：t=270 1.19、t=450 1.10、t=630 1.04。t=630 我方 15 个号占全图 9.07%，squad10 10 个号占 6.38%。",
+    "(270,630] 人均吃空地 我方 2370 格 / squad10 2469 / 其它真人 2143；人均吃人机 193 / 314 / 68 格（harvest）。t=630 内置 AI 占 44.3%、空地 29.4%。",
+    "t=540~719 时延中位已经到 30 拍（P90 58）。"
+   ],
+   "problems": [
+    "Broly t=630 2834 格，接壤最长的真人邻居是 T1 的野人 Prussia（41 格边界，1507 格 / 1333 兵）：这个名字在名字池里，Broly 的可打名单里没有它。"
+   ]
+  },
+  "midgame": {
+   "window": "t=630~3500",
+   "facts": [
+    "卡顿波 t=540~2340：每 180 拍窗口的时延中位 30→95→174→296→365→382→309→304→340→164 拍，P90 最高 732、最大 832；陆攻落地无效的比例 0%→13%→35%→58%→59%→42%→89%→55%→43%→44%。t=2880 之后是 9~16 拍（shadowcmp [SF]）。",
+    "同房 squad10 同一波：时延中位 27→92→188→265→348→480→504→767→300→162，t=2340 起回到 11 拍；陆攻无效最高 79%（shadowcmp_peer [SF]）。",
+    "该发的没发出去（lagstats [LA]）：影子决策拍 540~1260 的 529 条指令在录像里配上 315 条（60%），其中 116 条落地时已无效；1260~1800 的 371 条配上 106 条（29%）；1800~2520 的 106 条配上 46 条。",
+    "人机收割（harvest，人均格数 我方 / squad10 / 其它真人）：(630,900] 921 / 647 / 1095；(900,1260] 1483 / 707 / 4377；(1260,1800] 480 / 606 / 4661。t=630~1800 内置 AI 共丢 265544 格，我方吃到 43257 格（16.3%，人头占 33%），squad10 7.4%（人头 22%），其它 20 个真人 76.3%。",
+    "人均比：t=630 1.04 → 900 0.96 → 1260 0.82 → 1530 0.67 → 1800 0.65 → 2520 0.57 → 3600 0.46。",
+    "防人机留底 sb（shadowcmp [SH]）：t=900~1260 接壤人机的 369 个号·点里 173 个全被挡，其中 137 个挡在 sb 上；sb 由敌队真人的余额定出 99 个、squad10 的号 18 个、异队编队友 13 个、同队真人 7 个。逐号：Jokic 56 个点（t=810~1490）、Zhuge Liang 53、Cyrus 46、Ireland 24。",
+    "六个号中途离开（truth [TI]）：Tal、Ireland、Bulgar t=1603 同一拍；Fischer 1778、British Empire 1785、Levi 1869。离开时合计 39625 格（全图 8.0%）、1822516 兵。这六个号最后一条 HL-TICK 的本地拍是 990 / 1170：离开时本地比服务器晚 520~700 拍。",
+    "补拍成批落地（[SB2]、lagstats [LC]）：同一个号同一个服务器拍落地 9 条 19 次、8 条 15 次（squad10 9 条 36 次；其它真人最多 2 条）。",
+    "t=1834~2156 五个号的旧单一起冲出去：Zhuge Liang t=1834 一拍 9 条 123193 兵（余额的 99%）、Pagan t=2072 一拍 9 条 437036（97%）、Jokic t=2044 一拍 9 条 297573（93%）、Sanada t=1995 + 2051 九条生效 385810（两拍分别是当时余额的 58% / 82%）、LightYagami t=2093 四条生效 288394（73%）。",
+    "阵亡：Zhuge Liang t=2020、Pagan 2288、Jokic 2438、Sanada 2487、Broly 2558——538 拍里死了 5 个。",
+    "空壳赠兵（truth [TM]）：British Empire 的空壳 t=2146 把全部余额交给同队的 LightYagami（到账 295649，117935→413584）；Tal 的空壳 t=2083 给了 T2 的野人 [OG]cyankwastaken 250072。全场 19 次：给编队外真人 11 次 382311、给在线编队号 5 次 341514（全是 LightYagami）。",
+    "t=2520 起只剩 4~5 个号。从 t=2520 到终局 7140 拍，影子一共只要发 40 条指令，40 条全部落地（lagstats [LA]）：Kilwa 12435 格不动 t=1710~4140（余额 t=1710 243718 → t=4000 1849336）；Cyrus 6481 格不动 t=2520~3690（294637→912023）；East India Co 4121 格不动 t=2520~3870。",
+    "LightYagami t=2390~2700 18134 格（全队峰值）；t=2760 / 3330 被 T4 的 Player 920 两波打掉 9320 格（对方付 1106995 兵，118.8 兵/格），t=3690~3780 squad10 的 zero_7 再拿 5101 格；t=3780 只剩 4654 格。"
+   ],
+   "problems": [
+    "人机最肥的 900 拍（t=900~1800，AI 占地 56.3%→1.9%）正好是卡顿最重的 900 拍：我方人均吃到的人机地是其它真人的 22%（1963 / 9038 格）。",
+    "同一个决定在卡顿里每 15~20 拍重下一次，补拍时一拍冲出最多 9 条，各自按落地时的余额抽兵：本意 30%~40% 余额的一次买地变成 93%~99%。",
+    "本土被抽空后被第三方按 5~20 兵/格吃掉：Zhuge Liang（空壳 Tal 8.6、cyankwastaken 5.1、空壳 British Empire 4.7 兵/格）、Pagan（Bashkort 5.5）、Jokic（kaito9 10.2）、Sanada（Salchichador 20.2、Device 15.8）。",
+    "异队编队号离开后变成引擎托管的空壳，照样进攻；在线的编队号仍按名字把它当兄弟，不在可打名单里：Zhuge Liang 被空壳 Tal、British Empire 吃掉 7353 格，对它们一条指令都没有。",
+    "幸存的号被 dpKeep 冻住：买地留底按最强真人邻居的全部余额算（Cyrus 旁边的 KING 94 万→370 万），自己 6481 格怎么囤也够不着。"
+   ]
+  },
+  "endgame": {
+   "window": "t>3500",
+   "facts": [
+    "各队占地（T1 / T2 / T3 / T4 / T5）：t=3600 12.1 / 24.6 / 8.7 / 31.7 / 22.8；t=5400 10.6 / 22.1 / 11.1 / 38.2 / 17.5；t=7380 12.5 / 31.8 / 13.7 / 42.0 / 0；t=8460 19.2 / 30.2 / 24.0 / 26.3；t=9360 29.5 / 30.2 / 30.0 / 8.9。T5（squad10 整队）t=3960 到峰值 25.9%，t=6823 全灭。",
+    "头部都是编队外的真人：KING（T2）t=1800 10620 格 / 43.7 万兵 → t=3600 36366 / 372 万 → t=6300 87692 → t=9000 148889 / 2214 万；Device（T3）t=3600 33701 格 → t=9000 138356 → t=9600 159407。",
+    "LightYagami t=3780~4680 4654 格被 zero_7 围住，余额 181393→556074（密度 119.5）；t=4767 / 4781 两条陆攻 280558 兵打 zero_7（连同 t=2310 的一条，全程耗兵 330532 拿 2055 格，160.8 兵/格）；Player 778、Device 高价买走剩下的地（221.2 / 194.3 兵/格），t=5159 阵亡。",
+    "Cyrus t=3654 / 3738 为异队的 LightYagami 向 zero_7 各戳 10% 余额（92685 + 76766 兵），自己从 6481 格长到 7983 格；全程从 zero_7 身上拿 9580 格（112.3 兵/格）。同队真人 Mr Bass t=4956~5362 捐给它 3 笔共 974289 兵。squad10 的 alex_k 拿走它 11178 格（1649016 兵，147.5 兵/格），t=5666 阵亡。",
+    "East India Co t=4410~5760 4715 格，唯一的邻居是 KING；余额 t=5220~5760 顶在硬上限 707250（150 兵/格）540 拍。t=5760~5850 一条陆攻 283176 兵打 KING，耗兵 274726 拿 1145 格（239.9 兵/格）；KING 用 1346602 兵买走 4452 格（302.5 兵/格），t=6292 阵亡。",
+    "Kilwa t=4046 一条船 305639 兵在 cyankwastaken 岸上登陆 237810，t=4270 陆攻 520262 兵，正赶上对方把余额打空（t=4260 2332334 → t=4320 14141），拿 6369 格（80.3 兵/格）；t=4500 18775 格。",
+    "Kilwa t=4774~5313 三条陆攻共派出 1833875 兵打 Player 776（t=5215 离开），耗兵 1663218 拿 4296 格（387.2 兵/格），t=5700 24478 格。t=6300~7110 余额顶在硬上限 3681900（150 兵/格）810 拍。",
+    "Kilwa 终局（t=7161~9111）：三条陆攻共派出 2846246 兵打 YK，耗兵 1751079 拿 3659 格（478.6 兵/格），YK 阵亡时还有 749245 兵压在它身上；YK t=7890 被五家围死后 Kilwa 四周只剩队友，t=7994 / 8211 两条船 999474 兵全部在海上被 Banananeninineninine 的船打掉；t=8512 陆攻 1250134 兵打 Device 拿 3349 格（373.2 兵/格）；Device 用 5868098 兵买走 20223 格（290.2 兵/格），t=9111 阵亡——全队最后一个号。",
+    "船账（truth [TL]）：全队 14 条船，船上兵 1607679，手续费 554906；Kilwa 8 条 1516765 兵 / 手续费 537638，其中两条小船（3000 / 3635 兵）手续费 96011 / 116328。"
+   ],
+   "problems": [
+    "幸存的 4 个号分在 4 个队里，各自被大号围着：密度 119~150 兵/格，出手就是 160~480 兵/格的价钱，不出手就顶着上限（利息降到 0）等对方来买。",
+    "T4 在 t=1800~2160 和 t=3060~8280 是第一大队（最高 42.0%；t=2340~2880 T2 略高），t=2520 起队里只有 Kilwa 一个编队号：368 万兵在硬上限上停了 810 拍；余粮捐款只给编队友和 Boss（tryDonateToTeammate L4462-4498），没有流向 T4 在前线的真人。"
+   ]
+  }
+ },
+ "turningPoints": [
+  {
+   "t0": 630,
+   "t1": 1530,
+   "shareBefore": 1.04,
+   "shareAfter": 0.67,
+   "shareUnit": "我方在线号人均领土 ÷ 全房在线真人人均领土",
+   "what": "两支受控编队同时卡顿，加上防人机留底被敌队真人的余额顶住：人机地被别的真人吃走。",
+   "evidence": [
+    "shadowcmp [SF]：执行拍 720~899 时延中位 95 / P90 145（陆攻无效 13%）；900~1079 174 / 270（35%）；1080~1259 296 / 377（58%）；1260~1439 365 / 484（59%）；1440~1619 382 / 547（42%）。180~539 中位 11~12、无效 0。",
+    "shadowcmp_peer [SF]：squad10 同窗中位 92 / 188 / 265 / 348 / 480。",
+    "harvest：(900,1260] 人均吃人机 我方 1483 / squad10 707 / 其它真人 4377 格；(1260,1800] 480 / 606 / 4661 格。",
+    "truth [TC]：内置 AI 占地 56.3%（t=900）→ 29.0%（1260）→ 10.3%（1530）→ 1.9%（1800）；同期 T2 10.0%→16.1%→21.4%，T4 8.5%→16.8%→23.1%，T3 8.5%→15.6%→19.7%，T1 6.9%→11.3%→13.5%，T5 8.9%→10.6%→11.6%。",
+    "lagstats [LA]：决策拍 540~1260 的 529 条配上 315 条（116 条落地无效）；1260~1800 的 371 条配上 106 条。",
+    "shadowcmp [SH]：t=900~1260 全被挡的 173 个号·点里 137 个挡在 sb 上，99 个的 sb 是敌队真人的余额。Jokic t=1300：8221 格 / 113484 兵，sb=112655（Salchichador 的余额），七个人机邻居（合计 7841 格，最便宜的 978 格 / 0 兵，吃光只要 1468 兵）可用余额都只有 829。",
+    "Broly t=900~1440 停在 3168 格，余额 26196→98713：邻居只有野人 Prussia（151 格边界，t=900 2788 格 / 5288 兵）和 Banananeninineninine；影子逐拍追踪里可打名单只有后者。",
+    "HL-TICK 性能字段 avgMs ≤1 ms；全场只有 2 条 HL-SLOW-TICK（Kilwa 33.7 / 35.3 ms）——策略计算本身没有拖慢。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "540~2340",
+     "bot": "全队",
+     "decision": "指令迟迟不落地时照常在本地局面上决策、发令；自己发出的指令在本地看不到效果，同目标冷却 15 拍一到就原样再下一条。",
+     "codePath": "src/strategy/v27-team-c110.js: 文件头 L19-31（驱动层：发令后 450ms 且 8 拍内不调用策略，此外没有时延检测）；Strategy.send L526-540；src/sim/sim/game.js L1263-1285（执行时才按当时余额×(pct+1)/1024 抽兵）",
+     "why": "Pagan 决策拍 1500~1620 每 15 拍对 Mr Bass 下一条 30% 余额的陆攻，9 条在 t=2072 同一拍落地。"
+    },
+    {
+     "t": "810~1490",
+     "bot": "Jokic",
+     "decision": "t<1500 打内置 AI 之前先扣防人机留底 sb：sb 取『人机邻居的另一个最弱邻居』的余额。那个邻居是敌队真人 Salchichador / Ill full send，余额和 Jokic 差不多，可用余额一直接近 0。",
+     "codePath": "src/strategy/v27-team-c110.js: floorFor0 L2270-2276；winFloor L4542-4550；safeFinite L2532-2541；threatOf L464-490",
+     "why": "56 个点全被 sb 挡住：余额中位 66513，sb 中位 67898，被挡的人机中位 879 格 / 0 兵。t=1555（过了 coreFrom=1500）留底降到 25947 才买得动。"
+    },
+    {
+     "t": "900~1440",
+     "bot": "Broly",
+     "decision": "可打名单按名字池排除『编队友』：野人 Prussia 撞名，被排除在外。",
+     "codePath": "src/strategy/v27-team-c110.js: analyze L440（!isProtectedSquadMate 才进 nb）；isProtectedSquadMate L3993-3996；isOurSquadBot L3973-3976（只看名字是否在 SQUAD_POOL_SET）",
+     "why": "shadow.mjs --trace Broly:1000,1200,1400 的 nb 只有 Banananeninineninine（留底 108768~158400 高于余额）。"
+    }
+   ],
+   "statementType": "observed",
+   "counterfactual": "如果指令像 t=180~539 那样 12 拍内落地：影子在 900~1260 的 369 个接壤人机的号·点里有 196 个至少一个人机过得了门槛。能多吃多少没有重演（猜测）。"
+  },
+  {
+   "t0": 1603,
+   "t1": 2520,
+   "shareBefore": 20.13,
+   "shareAfter": 8.73,
+   "shareUnit": "我方在线号领土占全图 %（t=1530 15 个号 → t=2520 5 个号）",
+   "what": "六个号掉线成空壳（带走全图 8.0% 的地和 182 万兵）；五个号的旧单在补拍时一拍冲出、把余额打空，538 拍里死了 5 个。",
+   "evidence": [
+    "truth [TI]：Tal 4926 格 / 312076 兵、Ireland 6837 / 183318、Bulgar 5115 / 316191（三个 t=1603 同一拍）；Fischer 10603 / 388255（1778）、British Empire 5242 / 305595（1785）、Levi 6902 / 317081（1869）。这些地后来被 T4 拿走 32233 格、T2 6688 格。",
+    "Zhuge Liang t=1834 一拍 9 条 pct=396~416 打 cyankwastaken：实发 123193，是执行前余额 124296 的 99%（决策拍 1530~1650，每条本意 39%~41%）；t=1860 11335 格 / 1040 兵。空壳 Tal、空壳 British Empire 和 cyankwastaken 用 75444 兵吃掉它 10932 格，t=2020 阵亡。",
+    "Pagan t=2072 一拍 9 条 pct=309~317 打 Mr Bass：实发 437036（余额 451147 的 97%；决策拍 1500~1620）；t=2160 余额 613。Bashkort 用 34656 兵吃掉 6308 格（5.5 兵/格），t=2288 阵亡。",
+    "Jokic t=1981 / 2044 两拍各 9 条（决策拍 1555~1960）：t=2044 一拍实发 297573（余额 318975 的 93%）打 Ill full send；t=2070 12495 格 / 21811 兵。squad10 的 kaito9 用 179492 兵吃掉 17675 格（10.2 兵/格），t=2438 阵亡。",
+    "Sanada t=1995 / 2051 两拍 9 条生效的陆攻 385810 兵打 Salchichador（75.5 兵/格拿 4635 格），t=2070 余额 35057；Salchichador 20.2 兵/格吃回 5505 格，Device 15.8 兵/格拿 3613 格，t=2487 阵亡。",
+    "truth [TK]：余额单窗（90 拍）跌 ≥30% 的 41 段里陆攻 17 段、挨打 22 段、发船 2 段。",
+    "主队 T3 分支：t=1800 5.33%（4 个号）→ 2160 2.83%（3）→ 2520 1.21%（2）→ 2700 0.84%（1）。T3 全队 22.3% → 15.8% → 10.9%。",
+    "同期 squad10（T5）：12.24%（t=1800）→ 18.96%（2160）→ 23.79%（2520）。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "1500~1960",
+     "bot": "Zhuge Liang / Pagan / Jokic / Sanada / LightYagami",
+     "decision": "买地大单发出后看不到落地，15 拍冷却一到就对同一目标原样再下；每条的 pct 都按『这一条是唯一一条』算。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330；Strategy.send L526-540（同目标 15 拍冷却，不记在途）；src/sim/sim/game.js L1263-1285",
+     "why": "9 条 pct≈30% 连着执行，合计抽走 1−0.7^9 = 96% 的余额。"
+    },
+    {
+     "t": "1603~2020",
+     "bot": "Zhuge Liang",
+     "decision": "空壳 Tal、British Empire（T2，已离开）来打时不还手：它们的名字在名字池里，不进可打名单，也不计入留底。",
+     "codePath": "src/strategy/v27-team-c110.js: analyze L440；isProtectedSquadMate L3993-3996（hasWildOutsidersAlive 为真时名字池里的号都受保护，不看是否已离开）；counterAttack L871-886（只遍历 nb）；src/sim/sim/bots.js（离开的号按内置 AI 行动）",
+     "why": "shadow.mjs --trace Zhuge Liang:1500,1600,1680 的 nb 只有 cyankwastaken；Tal 与它接壤 109~131 格。"
+    },
+    {
+     "t": "1885~2010",
+     "bot": "Pagan",
+     "decision": "给 Zhuge Liang / Broly 的救援捐款按 pct=155 发，不看受捐额度；6 笔按决策时的局面都超额度。",
+     "codePath": "src/strategy/v27-team-c110.js: tryDonateToTeammate L4422-4447（L4437 pct = min(maxSafePct, 155)）；src/sim/sim/game.js L336-418（donationCost / bookDonation：超了整单拒）",
+     "why": "digest [G]：额度栏 0+114/103 … 0+134/115。3 笔在 t=2156 落地时 Pagan 余额只剩 11517，到账 1754 + 803 + 381。"
+    }
+   ],
+   "statementType": "observed",
+   "counterfactual": "如果每个决定只落地第一条：Zhuge Liang t=1834 实发约 5 万（余额还剩 7.5 万），Pagan t=2072 实发约 14 万（还剩 31 万）。这几个号能多活多久没有重演（猜测）；六个掉线号的 182 万兵则与策略代码无关。"
+  },
+  {
+   "t0": 7110,
+   "t1": 9111,
+   "shareBefore": 4.98,
+   "shareAfter": 0.0,
+   "shareUnit": "Kilwa 一个号的领土占全图 %（全队最后一个号）",
+   "what": "最后一个号 Kilwa 带着 368 万兵（硬上限）出手：打 YK 478.6 兵/格，两条大船没有靠岸（海战打掉 837696 兵），再打 Device 373.2 兵/格；Device 回头把它买光。",
+   "evidence": [
+    "t=6300~7110 Kilwa 24546 格 / 3681900 兵（150 兵/格，硬上限）810 拍不动；敌邻只有 YK（T2，t=6500 57924 格 / 8688600 兵，同样 150 兵/格），影子算出的报价 775 兵/格。",
+    "t=7161 / 7427 / 7714 三条陆攻 1431050 + 661803 + 753393 兵打 YK：耗兵 1751079 拿 3659 格（478.6 兵/格），YK 用 1108528 兵拿回 2245 格。YK t=7890 阵亡时身上有五家的兵（Banananeninineninine 1706001、Player 778 952718、Барбос 762060、Kilwa 749245、Mr Bass 718007）。",
+    "t=7920~8370 Kilwa 四周只有队友 Барбос（597 格边界）。t=7931 一条船 3635 兵、手续费 116328；t=7994 / 8211 两条船 526490 / 472984 兵（手续费 114610 / 111290）驶向 Banananeninineninine：海战里被打掉 438218 / 399478 兵，其余衰减，没有靠岸（boattrack_Kilwa.txt）。",
+    "t=8370 Device（T3）贴上来（t=8500 123948 格 / 13805521 兵）。t=8512 Kilwa 陆攻 1250134 兵打 Device，拿 3349 格（373.2 兵/格），t=8550 29437 格（峰值）/ 2486318 兵。",
+    "t=8640 Device 压上 1513684 兵；Device 全程用 5868098 兵买走 20223 格（290.2 兵/格），Mr Bass 1273200 兵买走 5808 格。t=9000 15199 格，t=9111 阵亡。",
+    "T4 占地：42.0%（t=7380）→ 31.4%（8100）→ 26.3%（8460）→ 13.3%（8820）→ 8.9%（9360）。Tukcherofav t=7867、Барбос t=8789 阵亡。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "6300~7110",
+     "bot": "Kilwa",
+     "decision": "余额到硬上限后仍不出手：买地留底取 dpKeep（按 YK 的全部余额算，4261587~4860551），高于自己的 3681900。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330；Policy.safeAt L4524-4541；V13.safeAt L2744-2754；dpKeep L2491-2496；src/sim/sim/game.js L739-762（余额超过 100×领土后利率线性降到 0，150×领土封顶）",
+     "why": "shadow.mjs --trace Kilwa:6500,7000：safe 4860551 / 4261587，报价 775 / 727 兵/格。"
+    },
+    {
+     "t": "7985~8200",
+     "bot": "Kilwa",
+     "decision": "没有敌邻且闲置时发船：对隔海的真人目标派 (余额−留底) 的一半，不看对方在海上有没有船。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.act L4923 → idleBoats L4979-5006；General.boatOut L1035-1052（L1045 真人目标 amount = max）；searchWater L1056-1113；src/sim/sim/boats.js fightBoats（敌船相遇每 2 拍互相伤害）",
+     "why": "影子 t=7985 / 8200 各发一条 pct=146 / 135 的船，目标 Banananeninineninine；对方 t=8106 / 8302 发出 758993 / 529122 兵的船。"
+    },
+    {
+     "t": "5610 / 7925",
+     "bot": "Kilwa",
+     "decision": "对一小块空地发船只带 3×格数+300 兵，手续费照收余额的 32/1024。",
+     "codePath": "src/strategy/v27-team-c110.js: General.boatOut L1043-1045；searchWater L1097-1102（空地的性价比 = 2×衰减 + 手续费/格数）；src/sim/sim/boats.js（每条船收余额的 32/1024）",
+     "why": "t=5621 船上 3000 兵、手续费 96011；t=7931 船上 3635 兵、手续费 116328。"
+    }
+   ],
+   "statementType": "observed",
+   "counterfactual": "Kilwa t=7110 之后共送出 5099489 兵（四条打真人的陆攻 4096380 + 三条船 1003109）和 499502 手续费，领土净增 4891 格（24546→29437）。如果这些兵留在家里，Device（1380 万兵、12.4 万格）要按 290 兵/格以上的价钱买 2.6 万格；T4 当时正在被 Device 和 KING 拆掉，Kilwa 守得住多久没有重演（猜测）。"
+  }
+ ],
+ "deaths": [
+  {
+   "bot": "Praetorian",
+   "me": 34,
+   "labels": [
+    "Praetorian"
+   ],
+   "team": 4,
+   "event": "left",
+   "tick": 168,
+   "place": null,
+   "resultPeak": null,
+   "logPeakTerr": null,
+   "logPeakTick": null,
+   "lastSnapshots": [],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": null,
+   "cause": "开局掉线：有出生指派，没有任何 HL-TICK；t=168 与 Shimazu、Chagatai 同一拍离开。空壳长到 55 格，t=1064 被吃掉。",
+   "chain": [
+    "t=168 离开",
+    "t=1064 空壳阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": 168,
+    "engineDeathTick": 1064,
+    "leftWith": {
+     "terr": 12,
+     "bal": 1420
+    },
+    "takersLast420": [
+     {
+      "by": "AI295#",
+      "tiles": 130,
+      "troopsSpent": 2468,
+      "perTile": 19.0
+     },
+     {
+      "by": "AI337#",
+      "tiles": 39,
+      "troopsSpent": 1059,
+      "perTile": 27.2
+     }
+    ],
+    "ownAttacksLast420": [
+     {
+      "on": "AI337#",
+      "tiles": 57,
+      "troopsSpent": 128,
+      "perTile": 2.2
+     },
+     {
+      "on": "AI295#",
+      "tiles": 0,
+      "troopsSpent": 60,
+      "perTile": 60.0
+     }
+    ]
+   }
+  },
+  {
+   "bot": "Shimazu",
+   "me": 37,
+   "labels": [
+    "Shimazu"
+   ],
+   "team": 4,
+   "event": "left",
+   "tick": 168,
+   "place": null,
+   "resultPeak": null,
+   "logPeakTerr": null,
+   "logPeakTick": null,
+   "lastSnapshots": [],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": null,
+   "cause": "开局掉线：有出生指派，没有任何 HL-TICK；t=168 与 Praetorian、Chagatai 同一拍离开。空壳长到 125 格，t=1095 被吃掉。",
+   "chain": [
+    "t=168 离开",
+    "t=1095 空壳阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": 168,
+    "engineDeathTick": 1095,
+    "leftWith": {
+     "terr": 12,
+     "bal": 1420
+    },
+    "takersLast420": [
+     {
+      "by": "AI184#",
+      "tiles": 195,
+      "troopsSpent": 3638,
+      "perTile": 18.7
+     }
+    ],
+    "ownAttacksLast420": [
+     {
+      "on": "AI184#",
+      "tiles": 51,
+      "troopsSpent": 286,
+      "perTile": 5.6
+     },
+     {
+      "on": "空地",
+      "tiles": 25,
+      "troopsSpent": 50,
+      "perTile": 2.0
+     }
+    ]
+   }
+  },
+  {
+   "bot": "Chagatai",
+   "me": 43,
+   "labels": [
+    "Chagatai"
+   ],
+   "team": 1,
+   "event": "left",
+   "tick": 168,
+   "place": null,
+   "resultPeak": null,
+   "logPeakTerr": null,
+   "logPeakTick": null,
+   "lastSnapshots": [],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": null,
+   "cause": "开局掉线：有出生指派，没有任何 HL-TICK；t=168 与 Praetorian、Shimazu 同一拍离开。空壳长到 231 格，t=1747 被吃掉。",
+   "chain": [
+    "t=168 离开",
+    "t=1747 空壳阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": 168,
+    "engineDeathTick": 1747,
+    "leftWith": {
+     "terr": 12,
+     "bal": 1420
+    },
+    "takersLast420": [
+     {
+      "by": "AI123#",
+      "tiles": 247,
+      "troopsSpent": 494,
+      "perTile": 2.0
+     },
+     {
+      "by": "ZxZxZT2",
+      "tiles": 198,
+      "troopsSpent": 396,
+      "perTile": 2.0
+     }
+    ],
+    "ownAttacksLast420": []
+   }
+  },
+  {
+   "bot": "Bulgar",
+   "me": 28,
+   "labels": [
+    "Bulgar"
+   ],
+   "team": 1,
+   "event": "left",
+   "tick": 1603,
+   "place": null,
+   "resultPeak": null,
+   "logPeakTerr": 5378,
+   "logPeakTick": 990,
+   "lastSnapshots": [
+    {
+     "t": 720,
+     "terr": 3846,
+     "bal": 11330,
+     "dens": 2.9,
+     "nb": 8,
+     "neut": 6,
+     "cmds": 11
+    },
+    {
+     "t": 810,
+     "terr": 4629,
+     "bal": 19688,
+     "dens": 4.3,
+     "nb": 9,
+     "neut": 0,
+     "cmds": 16
+    },
+    {
+     "t": 900,
+     "terr": 5019,
+     "bal": 29954,
+     "dens": 6.0,
+     "nb": 9,
+     "neut": 7,
+     "cmds": 23
+    },
+    {
+     "t": 990,
+     "terr": 5378,
+     "bal": 41855,
+     "dens": 7.8,
+     "nb": 7,
+     "neut": 0,
+     "cmds": 30
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": null,
+   "cause": "掉线：t=1603 离开，5115 格 / 316191 兵；最后一批指令 t=1190 落地（一拍 9 条全部无效，决策拍 760~1185）。空壳 t=2444 被 T4 的三个真人吃掉。",
+   "chain": [
+    "本地拍 990 最后一条 HL-TICK",
+    "t=1190 一拍 9 条全部无效",
+    "t=1603 离开（5115 格 / 316191 兵）",
+    "t=2444 空壳阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": 1603,
+    "engineDeathTick": 2444,
+    "leftWith": {
+     "terr": 5115,
+     "bal": 316191
+    },
+    "takersLast420": [
+     {
+      "by": "Player 883T4",
+      "tiles": 2356,
+      "troopsSpent": 241717,
+      "perTile": 102.6
+     },
+     {
+      "by": "patT4",
+      "tiles": 2028,
+      "troopsSpent": 159740,
+      "perTile": 78.8
+     },
+     {
+      "by": "Player 778T4",
+      "tiles": 493,
+      "troopsSpent": 20436,
+      "perTile": 41.5
+     }
+    ],
+    "ownAttacksLast420": [
+     {
+      "on": "Player 883T4",
+      "tiles": 297,
+      "troopsSpent": 27314,
+      "perTile": 92.0
+     },
+     {
+      "on": "[RU]: BashkortT2",
+      "tiles": 271,
+      "troopsSpent": 12828,
+      "perTile": 47.3
+     }
+    ]
+   }
+  },
+  {
+   "bot": "Tal",
+   "me": 35,
+   "labels": [
+    "Tal"
+   ],
+   "team": 2,
+   "event": "left",
+   "tick": 1603,
+   "place": null,
+   "resultPeak": null,
+   "logPeakTerr": 4508,
+   "logPeakTick": 990,
+   "lastSnapshots": [
+    {
+     "t": 720,
+     "terr": 4122,
+     "bal": 10025,
+     "dens": 2.4,
+     "nb": 10,
+     "neut": 13,
+     "cmds": 12
+    },
+    {
+     "t": 810,
+     "terr": 4213,
+     "bal": 22149,
+     "dens": 5.3,
+     "nb": 11,
+     "neut": 0,
+     "cmds": 19
+    },
+    {
+     "t": 900,
+     "terr": 4306,
+     "bal": 27504,
+     "dens": 6.4,
+     "nb": 9,
+     "neut": 2,
+     "cmds": 26
+    },
+    {
+     "t": 990,
+     "terr": 4508,
+     "bal": 47301,
+     "dens": 10.5,
+     "nb": 8,
+     "neut": 0,
+     "cmds": 32
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": null,
+   "cause": "掉线：t=1603 与 Ireland、Bulgar 同一拍离开。最后一条 HL-TICK 是本地拍 990；最后一条落地的指令在 t=1162（那一拍 9 条，1 条生效）。离开时 4926 格 / 312076 兵。空壳之后吃了异队编队友 Zhuge Liang 5850 格，t=2083 把 250072 兵交给 T2 的 cyankwastaken，此后每隔 80~180 拍把新进账的约 1.2 万兵再交给一个 T2 队友；t=3933 被 Барбос 吃掉。",
+   "chain": [
+    "本地拍 990 最后一条 HL-TICK",
+    "t=1162 最后一批指令落地",
+    "t=1603 离开（4926 格 / 312076 兵）",
+    "t=2083 空壳赠出 250072",
+    "t=3250 空壳峰值 12285 格",
+    "t=3933 空壳阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": 1603,
+    "engineDeathTick": 3933,
+    "leftWith": {
+     "terr": 4926,
+     "bal": 312076
+    },
+    "takersLast420": [
+     {
+      "by": "БарбосT4",
+      "tiles": 9459,
+      "troopsSpent": 72874,
+      "perTile": 7.7
+     }
+    ],
+    "ownAttacksLast420": [
+     {
+      "on": "БарбосT4",
+      "tiles": 0,
+      "troopsSpent": 1781,
+      "perTile": 1781.0
+     }
+    ]
+   }
+  },
+  {
+   "bot": "Ireland",
+   "me": 40,
+   "labels": [
+    "Ireland"
+   ],
+   "team": 1,
+   "event": "left",
+   "tick": 1603,
+   "place": null,
+   "resultPeak": null,
+   "logPeakTerr": 4456,
+   "logPeakTick": 990,
+   "lastSnapshots": [
+    {
+     "t": 720,
+     "terr": 3763,
+     "bal": 8940,
+     "dens": 2.4,
+     "nb": 13,
+     "neut": 3,
+     "cmds": 13
+    },
+    {
+     "t": 810,
+     "terr": 3733,
+     "bal": 17255,
+     "dens": 4.6,
+     "nb": 13,
+     "neut": 0,
+     "cmds": 16
+    },
+    {
+     "t": 900,
+     "terr": 3880,
+     "bal": 30554,
+     "dens": 7.9,
+     "nb": 12,
+     "neut": 0,
+     "cmds": 21
+    },
+    {
+     "t": 990,
+     "terr": 4456,
+     "bal": 37298,
+     "dens": 8.4,
+     "nb": 9,
+     "neut": 0,
+     "cmds": 28
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": null,
+   "cause": "掉线：t=1603 离开，6837 格 / 183318 兵；最后一批指令 t=1253 落地。t=770~1410 有 24 个点被 sb 挡住（sb 来自 Device 的余额）。空壳 t=2149 被 Барбос、Device 吃掉。",
+   "chain": [
+    "本地拍 990 最后一条 HL-TICK",
+    "t=1253 最后一批指令落地",
+    "t=1603 离开（6837 格 / 183318 兵）",
+    "t=2149 空壳阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": 1603,
+    "engineDeathTick": 2149,
+    "leftWith": {
+     "terr": 6837,
+     "bal": 183318
+    },
+    "takersLast420": [
+     {
+      "by": "БарбосT4",
+      "tiles": 3727,
+      "troopsSpent": 163470,
+      "perTile": 43.9
+     },
+     {
+      "by": "DeviceT3",
+      "tiles": 2946,
+      "troopsSpent": 110568,
+      "perTile": 37.5
+     },
+     {
+      "by": "Ill full sendT3",
+      "tiles": 663,
+      "troopsSpent": 35256,
+      "perTile": 53.2
+     }
+    ],
+    "ownAttacksLast420": [
+     {
+      "on": "БарбосT4",
+      "tiles": 377,
+      "troopsSpent": 26808,
+      "perTile": 71.1
+     },
+     {
+      "on": "AI322#",
+      "tiles": 1610,
+      "troopsSpent": 3220,
+      "perTile": 2.0
+     }
+    ]
+   }
+  },
+  {
+   "bot": "Fischer",
+   "me": 23,
+   "labels": [
+    "Fischer"
+   ],
+   "team": 2,
+   "event": "left",
+   "tick": 1778,
+   "place": null,
+   "resultPeak": null,
+   "logPeakTerr": 10837,
+   "logPeakTick": 1170,
+   "lastSnapshots": [
+    {
+     "t": 900,
+     "terr": 7262,
+     "bal": 15764,
+     "dens": 2.2,
+     "nb": 10,
+     "neut": 27,
+     "cmds": 24
+    },
+    {
+     "t": 990,
+     "terr": 7379,
+     "bal": 34806,
+     "dens": 4.7,
+     "nb": 9,
+     "neut": 0,
+     "cmds": 31
+    },
+    {
+     "t": 1080,
+     "terr": 8834,
+     "bal": 33494,
+     "dens": 3.8,
+     "nb": 9,
+     "neut": 39,
+     "cmds": 39
+    },
+    {
+     "t": 1170,
+     "terr": 10837,
+     "bal": 64059,
+     "dens": 5.9,
+     "nb": 8,
+     "neut": 0,
+     "cmds": 46
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": null,
+   "cause": "掉线：t=900 是全房最大的真人（7262 格），t=1170 10837 格。t=1778 离开，10603 格 / 388255 兵；最后一批指令 t=1386 落地（一拍 8 条全部无效，决策拍 945~1355）。空壳 t=2909 被 pat、Player 883 吃掉。",
+   "chain": [
+    "t=900 7262 格",
+    "t=1170 10837 格 / 64059 兵",
+    "t=1386 一拍 8 条全部无效",
+    "t=1778 离开（10603 格 / 388255 兵）",
+    "t=2909 空壳阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": 1778,
+    "engineDeathTick": 2909,
+    "leftWith": {
+     "terr": 10603,
+     "bal": 388255
+    },
+    "takersLast420": [
+     {
+      "by": "patT4",
+      "tiles": 4344,
+      "troopsSpent": 169926,
+      "perTile": 39.1
+     },
+     {
+      "by": "Player 883T4",
+      "tiles": 4296,
+      "troopsSpent": 209931,
+      "perTile": 48.9
+     },
+     {
+      "by": "Player 776T1",
+      "tiles": 1224,
+      "troopsSpent": 30978,
+      "perTile": 25.3
+     }
+    ],
+    "ownAttacksLast420": [
+     {
+      "on": "Player 776T1",
+      "tiles": 495,
+      "troopsSpent": 117013,
+      "perTile": 236.4
+     },
+     {
+      "on": "patT4",
+      "tiles": 426,
+      "troopsSpent": 35426,
+      "perTile": 83.2
+     }
+    ]
+   }
+  },
+  {
+   "bot": "British Empire",
+   "me": 29,
+   "labels": [
+    "British Empire"
+   ],
+   "team": 2,
+   "event": "left",
+   "tick": 1785,
+   "place": null,
+   "resultPeak": null,
+   "logPeakTerr": 5262,
+   "logPeakTick": 1170,
+   "lastSnapshots": [
+    {
+     "t": 900,
+     "terr": 3969,
+     "bal": 19117,
+     "dens": 4.8,
+     "nb": 4,
+     "neut": 20,
+     "cmds": 28
+    },
+    {
+     "t": 990,
+     "terr": 3964,
+     "bal": 33842,
+     "dens": 8.5,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 35
+    },
+    {
+     "t": 1080,
+     "terr": 4679,
+     "bal": 28185,
+     "dens": 6.0,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 42
+    },
+    {
+     "t": 1170,
+     "terr": 5262,
+     "bal": 65664,
+     "dens": 12.5,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 48
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": null,
+   "cause": "掉线：出生在 (18,194)，没执行最后一条指派。t=1785 离开，5242 格 / 305595 兵；最后一批指令 t=1414。空壳吃了异队编队友 Zhuge Liang 1503 格，t=2146 把 315358 兵（到账 295649）交给同队的 LightYagami；t=3177 被 Барбос 吃掉，Kilwa 的一条船也在它身上登陆拿了 400 格。",
+   "chain": [
+    "本地拍 1170 最后一条 HL-TICK",
+    "t=1414 最后一批指令落地",
+    "t=1785 离开（5242 格 / 305595 兵）",
+    "t=2146 空壳赠出 315358",
+    "t=3177 空壳阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": 1785,
+    "engineDeathTick": 3177,
+    "leftWith": {
+     "terr": 5242,
+     "bal": 305595
+    },
+    "takersLast420": [
+     {
+      "by": "БарбосT4",
+      "tiles": 5130,
+      "troopsSpent": 44371,
+      "perTile": 8.6
+     },
+     {
+      "by": "Kilwa*T4",
+      "tiles": 400,
+      "troopsSpent": 5002,
+      "perTile": 12.5
+     }
+    ],
+    "ownAttacksLast420": [
+     {
+      "on": "БарбосT4",
+      "tiles": 0,
+      "troopsSpent": 1368,
+      "perTile": 1368.0
+     }
+    ]
+   }
+  },
+  {
+   "bot": "Levi",
+   "me": 24,
+   "labels": [
+    "Levi"
+   ],
+   "team": 1,
+   "event": "left",
+   "tick": 1869,
+   "place": null,
+   "resultPeak": null,
+   "logPeakTerr": 6267,
+   "logPeakTick": 1170,
+   "lastSnapshots": [
+    {
+     "t": 900,
+     "terr": 5111,
+     "bal": 15608,
+     "dens": 3.1,
+     "nb": 9,
+     "neut": 5,
+     "cmds": 33
+    },
+    {
+     "t": 990,
+     "terr": 6029,
+     "bal": 25418,
+     "dens": 4.2,
+     "nb": 7,
+     "neut": 0,
+     "cmds": 41
+    },
+    {
+     "t": 1080,
+     "terr": 5983,
+     "bal": 42944,
+     "dens": 7.2,
+     "nb": 6,
+     "neut": 16,
+     "cmds": 48
+    },
+    {
+     "t": 1170,
+     "terr": 6267,
+     "bal": 53914,
+     "dens": 8.6,
+     "nb": 6,
+     "neut": 13,
+     "cmds": 56
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": null,
+   "cause": "掉线：t=1869 离开，6902 格 / 317081 兵；最后一批指令 t=1589（9 条，决策拍 900~1050，晚 539~689 拍）。空壳 t=2833 被 YK 吃掉（6284 格）。",
+   "chain": [
+    "本地拍 1170 最后一条 HL-TICK",
+    "t=1589 最后一批指令落地",
+    "t=1869 离开（6902 格 / 317081 兵）",
+    "t=2833 空壳阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": 1869,
+    "engineDeathTick": 2833,
+    "leftWith": {
+     "terr": 6902,
+     "bal": 317081
+    },
+    "takersLast420": [
+     {
+      "by": "YKT2",
+      "tiles": 5318,
+      "troopsSpent": 354255,
+      "perTile": 66.6
+     }
+    ],
+    "ownAttacksLast420": [
+     {
+      "on": "YKT2",
+      "tiles": 264,
+      "troopsSpent": 30965,
+      "perTile": 117.3
+     }
+    ]
+   }
+  },
+  {
+   "bot": "Zhuge Liang",
+   "me": 38,
+   "labels": [
+    "Zhuge Liang"
+   ],
+   "team": 3,
+   "event": "died",
+   "tick": 2028,
+   "place": 46,
+   "resultPeak": 11745,
+   "logPeakTerr": 11017,
+   "logPeakTick": 1890,
+   "lastSnapshots": [
+    {
+     "t": 1710,
+     "terr": 7310,
+     "bal": 98788,
+     "dens": 13.5,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 44
+    },
+    {
+     "t": 1800,
+     "terr": 10332,
+     "bal": 119835,
+     "dens": 11.6,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 44
+    },
+    {
+     "t": 1890,
+     "terr": 11017,
+     "bal": 895,
+     "dens": 0.1,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 44
+    },
+    {
+     "t": 1980,
+     "terr": 5016,
+     "bal": 3954,
+     "dens": 0.8,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 44
+    }
+   ],
+   "donationsReceivedLogged": 2,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8613533,
+   "cause": "t<1500 被 sb 挡住 53 个点（sb 来自 cyankwastaken 的余额），t=1440 5829 格 / 154652 兵。t=1680~1687 两条陆攻 166699 兵打 cyankwastaken，领土到 10459 格；t=1834 一拍 9 条旧单再打出 123193 兵（余额的 99%），本土只剩 1040 兵。空壳 Tal（8.6 兵/格拿 5850 格）、cyankwastaken（5.1 兵/格拿回 3579 格）、空壳 British Empire（4.7 兵/格拿 1503 格）把它吃光；对两个空壳它一条指令都没有。",
+   "chain": [
+    "t=1440 5829 格 / 154652 兵",
+    "t=1680 / 1687 实发 108660 + 58039",
+    "t=1770 10459 格 / 108331 兵",
+    "t=1834 一拍 9 条 123193 兵",
+    "t=1860 11335 格 / 1040 兵",
+    "t=1920 7312 格",
+    "t=2020 阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": 2020,
+    "takersLast420": [
+     {
+      "by": "Tal*~T2",
+      "tiles": 5850,
+      "troopsSpent": 50196,
+      "perTile": 8.6
+     },
+     {
+      "by": "[OG]cyankwastaT2",
+      "tiles": 3579,
+      "troopsSpent": 18210,
+      "perTile": 5.1
+     },
+     {
+      "by": "British Empire*~T2",
+      "tiles": 1503,
+      "troopsSpent": 7038,
+      "perTile": 4.7
+     }
+    ],
+    "ownAttacksLast420": [
+     {
+      "on": "[OG]cyankwastaT2",
+      "tiles": 7836,
+      "troopsSpent": 286246,
+      "perTile": 36.5
+     }
+    ]
+   }
+  },
+  {
+   "bot": "Pagan",
+   "me": 27,
+   "labels": [
+    "Pagan"
+   ],
+   "team": 3,
+   "event": "died",
+   "tick": 2289,
+   "place": 40,
+   "resultPeak": 4597,
+   "logPeakTerr": 4393,
+   "logPeakTick": 2160,
+   "lastSnapshots": [
+    {
+     "t": 1710,
+     "terr": 3932,
+     "bal": 285217,
+     "dens": 72.5,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 58
+    },
+    {
+     "t": 2070,
+     "terr": 3932,
+     "bal": 451147,
+     "dens": 114.7,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 89
+    },
+    {
+     "t": 2160,
+     "terr": 4393,
+     "bal": 613,
+     "dens": 0.1,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 90
+    },
+    {
+     "t": 2250,
+     "terr": 2091,
+     "bal": 1188,
+     "dens": 0.6,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 90
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 6,
+   "resultLine": 8613574,
+   "cause": "t=1080~2070 停在 3912~3932 格，余额 27584→451147（密度 114.7）：t=1500 起对 Mr Bass 每 15 拍下一条 30% 余额的陆攻，卡顿里一条都没落地。t=2072 九条一拍落地，437036 兵（97%）全压在 Mr Bass 身上，拿 3976 格（106.0 兵/格）；本土余额 t=2160 只剩 613。Bashkort 用 34656 兵吃掉 6308 格（5.5 兵/格）。",
+   "chain": [
+    "t=1080 3912 格 / 27584 兵",
+    "t=1500~1620 九条陆攻单（没落地）",
+    "t=2070 3932 格 / 451147 兵",
+    "t=2072 一拍 9 条 437036 兵",
+    "t=2160 4393 格 / 613 兵",
+    "t=2220 1992 格",
+    "t=2288 阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": 2288,
+    "takersLast420": [
+     {
+      "by": "[RU]: BashkortT2",
+      "tiles": 6308,
+      "troopsSpent": 34656,
+      "perTile": 5.5
+     },
+     {
+      "by": "[CORGI] Mr BasT1",
+      "tiles": 576,
+      "troopsSpent": 2112,
+      "perTile": 3.7
+     }
+    ],
+    "ownAttacksLast420": [
+     {
+      "on": "[CORGI] Mr BasT1",
+      "tiles": 3976,
+      "troopsSpent": 421530,
+      "perTile": 106.0
+     },
+     {
+      "on": "[RU]: BashkortT2",
+      "tiles": 0,
+      "troopsSpent": 5822,
+      "perTile": 5822.0
+     }
+    ]
+   }
+  },
+  {
+   "bot": "Jokic",
+   "me": 26,
+   "labels": [
+    "Jokic"
+   ],
+   "team": 2,
+   "event": "died",
+   "tick": 2447,
+   "place": 37,
+   "resultPeak": 13998,
+   "logPeakTerr": 13553,
+   "logPeakTick": 2160,
+   "lastSnapshots": [
+    {
+     "t": 2160,
+     "terr": 13553,
+     "bal": 21781,
+     "dens": 1.6,
+     "nb": 6,
+     "neut": 0,
+     "cmds": 62
+    },
+    {
+     "t": 2250,
+     "terr": 12598,
+     "bal": 21044,
+     "dens": 1.7,
+     "nb": 5,
+     "neut": 43,
+     "cmds": 62
+    },
+    {
+     "t": 2340,
+     "terr": 7120,
+     "bal": 30713,
+     "dens": 4.3,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 62
+    },
+    {
+     "t": 2430,
+     "terr": 3533,
+     "bal": 14155,
+     "dens": 4.0,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 62
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8613589,
+   "cause": "t=810~1490 被 sb 挡住 56 个点，t=1170~1980 停在 7644~8221 格，余额囤到 423277。t=1981 / 2044 两拍各 9 条旧单：10 条生效，433153 兵打 Ill full send（拿 12678 格，30.1 兵/格；Ill full send t=2177 阵亡），本土 t=2070 只剩 21811 兵（12495 格）。squad10 的 kaito9 用 179492 兵吃掉 17675 格（10.2 兵/格）。",
+   "chain": [
+    "t=1300 8221 格 / 113484 兵（sb=112655）",
+    "t=1980 423277 兵",
+    "t=2044 一拍 9 条 297573 兵（93%）",
+    "t=2070 12495 格 / 21811 兵",
+    "t=2190 13985 格",
+    "t=2340 7120 格",
+    "t=2438 阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": 2438,
+    "takersLast420": [
+     {
+      "by": "[APEX] kaito9+T5",
+      "tiles": 17675,
+      "troopsSpent": 179492,
+      "perTile": 10.2
+     },
+     {
+      "by": "[APEX] zero_7+T5",
+      "tiles": 2508,
+      "troopsSpent": 19272,
+      "perTile": 7.7
+     },
+     {
+      "by": "[Bloods] 🩸 🩸 [T3",
+      "tiles": 1429,
+      "troopsSpent": 10834,
+      "perTile": 7.6
+     }
+    ],
+    "ownAttacksLast420": [
+     {
+      "on": "Ill full sendT3",
+      "tiles": 10316,
+      "troopsSpent": 251491,
+      "perTile": 24.4
+     },
+     {
+      "on": "空地",
+      "tiles": 4477,
+      "troopsSpent": 8954,
+      "perTile": 2.0
+     }
+    ]
+   }
+  },
+  {
+   "bot": "Sanada",
+   "me": 22,
+   "labels": [
+    "Sanada"
+   ],
+   "team": 4,
+   "event": "died",
+   "tick": 2488,
+   "place": 36,
+   "resultPeak": 11529,
+   "logPeakTerr": 9560,
+   "logPeakTick": 2070,
+   "lastSnapshots": [
+    {
+     "t": 2160,
+     "terr": 9056,
+     "bal": 34212,
+     "dens": 3.8,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 92
+    },
+    {
+     "t": 2250,
+     "terr": 6930,
+     "bal": 30495,
+     "dens": 4.4,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 92
+    },
+    {
+     "t": 2340,
+     "terr": 4134,
+     "bal": 18467,
+     "dens": 4.5,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 92
+    },
+    {
+     "t": 2430,
+     "terr": 3005,
+     "bal": 14104,
+     "dens": 4.7,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 92
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8613590,
+   "cause": "t=1080~1980 停在 6894~6921 格，余额 40780→395651。t=1995 / 2051 两拍 15 条旧单里 9 条生效，385810 兵打 Salchichador，拿 4635 格（75.5 兵/格），t=2070 余额 35057。Salchichador 用 110975 兵吃回 5505 格（20.2 兵/格），Device 57091 兵拿 3613 格（15.8 兵/格）。",
+   "chain": [
+    "t=1980 6894 格 / 395651 兵",
+    "t=1995 一拍 9 条（3 条生效，231955 兵）",
+    "t=2051 一拍 6 条 153855 兵",
+    "t=2100 11377 格 / 47584 兵",
+    "t=2280 4722 格",
+    "t=2487 阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": 2487,
+    "takersLast420": [
+     {
+      "by": "SalchichadorT3",
+      "tiles": 5505,
+      "troopsSpent": 110975,
+      "perTile": 20.2
+     },
+     {
+      "by": "DeviceT3",
+      "tiles": 3613,
+      "troopsSpent": 57091,
+      "perTile": 15.8
+     }
+    ],
+    "ownAttacksLast420": [
+     {
+      "on": "SalchichadorT3",
+      "tiles": 3197,
+      "troopsSpent": 249497,
+      "perTile": 78.0
+     }
+    ]
+   }
+  },
+  {
+   "bot": "Broly",
+   "me": 30,
+   "labels": [
+    "Broly"
+   ],
+   "team": 3,
+   "event": "died",
+   "tick": 2563,
+   "place": 34,
+   "resultPeak": 4913,
+   "logPeakTerr": 5195,
+   "logPeakTick": 1800,
+   "lastSnapshots": [
+    {
+     "t": 2250,
+     "terr": 1837,
+     "bal": 38336,
+     "dens": 20.9,
+     "nb": 3,
+     "neut": 5,
+     "cmds": 25
+    },
+    {
+     "t": 2340,
+     "terr": 1866,
+     "bal": 61808,
+     "dens": 33.1,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 25
+    },
+    {
+     "t": 2430,
+     "terr": 1866,
+     "bal": 69943,
+     "dens": 37.5,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 25
+    },
+    {
+     "t": 2520,
+     "terr": 1830,
+     "bal": 76456,
+     "dens": 41.8,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 25
+    }
+   ],
+   "donationsReceivedLogged": 4,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8613596,
+   "cause": "t=900~1440 被两个 T1 的真人围住，停在 3168 格：野人 Prussia（151 格边界，t=900 只有 2788 格 / 5288 兵）名字在名字池里，不在可打名单；另一个邻居 Banananeninineninine 的留底高于余额。发了 6 条船（90914 兵，手续费 17268），4 条在 Player 778 岸上登陆，t=1800 到 5195 格。t=1800~2000 Prussia 反过来用 39506 兵拿走它 822 格；t=1900 起 Banananeninineninine 用 270862 兵买走 2995 格（90.4 兵/格）。被打时留底（dpKeep 230837~262646）高于余额（126852~155723），没有还手。",
+   "chain": [
+    "t=900 3168 格 / 26196 兵",
+    "t=1440 3168 格 / 98713 兵",
+    "t=1800 5195 格 / 146786 兵",
+    "t=1920 4848 格，身上 117535",
+    "t=2190 2016 格 / 41335 兵",
+    "t=2558 阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": 2558,
+    "takersLast420": [
+     {
+      "by": "BanananeninineT1",
+      "tiles": 1471,
+      "troopsSpent": 120334,
+      "perTile": 81.8
+     },
+     {
+      "by": "Player 778T4",
+      "tiles": 487,
+      "troopsSpent": 70840,
+      "perTile": 145.5
+     }
+    ],
+    "ownAttacksLast420": [
+     {
+      "on": "空地",
+      "tiles": 84,
+      "troopsSpent": 168,
+      "perTile": 2.0
+     }
+    ]
+   }
+  },
+  {
+   "bot": "LightYagami",
+   "me": 48,
+   "labels": [
+    "LightYagami",
+    "Kaiser"
+   ],
+   "team": 2,
+   "event": "died",
+   "tick": 5167,
+   "place": 21,
+   "resultPeak": 18134,
+   "logPeakTerr": 18134,
+   "logPeakTick": 2430,
+   "lastSnapshots": [
+    {
+     "t": 4860,
+     "terr": 5482,
+     "bal": 341625,
+     "dens": 62.3,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 106
+    },
+    {
+     "t": 4950,
+     "terr": 5482,
+     "bal": 384453,
+     "dens": 70.1,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 106
+    },
+    {
+     "t": 5040,
+     "terr": 5482,
+     "bal": 431859,
+     "dens": 78.8,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 106
+    },
+    {
+     "t": 5130,
+     "terr": 2832,
+     "bal": 165397,
+     "dens": 58.4,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 106
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8613718,
+   "cause": "t=2093 / 2156 两拍旧单，加上空壳 British Empire 赠的 295649 兵：从 Salchichador 身上拿 12419 格（43.2 兵/格），t=2390 到 18134 格（全队峰值）。t=2760 / 3330 被 T4 的 Player 920 两波各 44~66 万兵打掉 9320 格（对方 118.8 兵/格），t=3690~3780 squad10 的 zero_7 拿走 5101 格；买地留底 dpKeep 高于余额（t=3330 1142114 对 667890），t=2311~4766 只落地 4 条指令。t=3780~4680 4654 格被围，密度 119.5；t=4767 / 4781 打 zero_7 280558 兵（全程从它身上拿 2055 格，160.8 兵/格）；Player 778、Device 买走余下的地。",
+   "chain": [
+    "t=2070 6627 格 / 383939 兵",
+    "t=2146 空壳赠兵到账 295649",
+    "t=2390 18134 格",
+    "t=2940 13334 格",
+    "t=3420 10708 格",
+    "t=3780 4654 格 / 181393 兵",
+    "t=4680 4654 格 / 556074 兵",
+    "t=5159 阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": 5159,
+    "takersLast420": [
+     {
+      "by": "Player 778T4",
+      "tiles": 2092,
+      "troopsSpent": 462808,
+      "perTile": 221.2
+     },
+     {
+      "by": "DeviceT3",
+      "tiles": 1552,
+      "troopsSpent": 301612,
+      "perTile": 194.3
+     }
+    ],
+    "ownAttacksLast420": [
+     {
+      "on": "[APEX] zero_7+T5",
+      "tiles": 828,
+      "troopsSpent": 280418,
+      "perTile": 338.7
+     }
+    ]
+   }
+  },
+  {
+   "bot": "Cyrus",
+   "me": 45,
+   "labels": [
+    "Cyrus",
+    "Inosuke",
+    "Pineapple"
+   ],
+   "team": 1,
+   "event": "died",
+   "tick": 5670,
+   "place": 18,
+   "resultPeak": 9811,
+   "logPeakTerr": 9516,
+   "logPeakTick": 2340,
+   "lastSnapshots": [
+    {
+     "t": 5310,
+     "terr": 7387,
+     "bal": 554512,
+     "dens": 75.1,
+     "nb": 5,
+     "neut": 0,
+     "cmds": 79
+    },
+    {
+     "t": 5400,
+     "terr": 5306,
+     "bal": 408166,
+     "dens": 76.9,
+     "nb": 5,
+     "neut": 0,
+     "cmds": 80
+    },
+    {
+     "t": 5490,
+     "terr": 4073,
+     "bal": 269220,
+     "dens": 66.1,
+     "nb": 5,
+     "neut": 0,
+     "cmds": 80
+    },
+    {
+     "t": 5580,
+     "terr": 2244,
+     "bal": 112449,
+     "dens": 50.1,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 80
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8613737,
+   "cause": "t=710~1490 被 sb 挡住 46 个点（sb 来自 squad10 的 zero_7 / noah88 / riku_x）。t=2219~2289 八条陆攻 393021 兵打 leo_tx、zero_7，squad10 的 alex_k 回手，9516→6481 格。t=2520~3690 6481 格不动，余额 294637→912023（密度 141）：买地留底 dpKeep 按 KING 的余额算（521097→2086809），一直高于自己的余额。t=3654 起为 LightYagami 戳 zero_7，之后陆续从 zero_7 身上拿 9580 格（112.3 兵/格）；Mr Bass 捐给它 974289 兵。alex_k 用 1649016 兵拿走 11178 格，kaito9 3228 格，noah88 2137 格，Tukcherofav 1821 格。",
+   "chain": [
+    "t=2160 7561 格 / 471053 兵",
+    "t=2340 9516 格 / 95519 兵",
+    "t=2520 6481 格 / 294637 兵",
+    "t=3600 6481 格 / 912023 兵",
+    "t=4320 7983 格 / 835320 兵",
+    "t=5400 5306 格 / 408166 兵",
+    "t=5580 2244 格",
+    "t=5666 阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": 5666,
+    "takersLast420": [
+     {
+      "by": "[APEX] kaito9+T5",
+      "tiles": 3228,
+      "troopsSpent": 673298,
+      "perTile": 208.6
+     },
+     {
+      "by": "Tukcherofav👻T4",
+      "tiles": 1821,
+      "troopsSpent": 495346,
+      "perTile": 272.0
+     },
+     {
+      "by": "[APEX] alex_k+T5",
+      "tiles": 1714,
+      "troopsSpent": 476110,
+      "perTile": 277.8
+     }
+    ],
+    "ownAttacksLast420": [
+     {
+      "on": "[APEX] kaito9+T5",
+      "tiles": 1233,
+      "troopsSpent": 315918,
+      "perTile": 256.2
+     },
+     {
+      "on": "[APEX] alex_k+T5",
+      "tiles": 796,
+      "troopsSpent": 180476,
+      "perTile": 226.7
+     }
+    ]
+   }
+  },
+  {
+   "bot": "East India Co",
+   "me": 31,
+   "labels": [
+    "East India Co",
+    "FreeMason",
+    "Vatican City"
+   ],
+   "team": 3,
+   "event": "died",
+   "tick": 6298,
+   "place": 12,
+   "resultPeak": 8438,
+   "logPeakTerr": 8417,
+   "logPeakTick": 2340,
+   "lastSnapshots": [
+    {
+     "t": 5940,
+     "terr": 5860,
+     "bal": 523511,
+     "dens": 89.3,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 60
+    },
+    {
+     "t": 6030,
+     "terr": 5860,
+     "bal": 587351,
+     "dens": 100.2,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 60
+    },
+    {
+     "t": 6120,
+     "terr": 5860,
+     "bal": 651723,
+     "dens": 111.2,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 60
+    },
+    {
+     "t": 6210,
+     "terr": 5860,
+     "bal": 707255,
+     "dens": 120.7,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 60
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8613751,
+   "cause": "出生点离 squad10 的 zexos1 10 像素。t=2250~2340 吃 riku_x 2394 格（28.7 兵/格）到 8417 格；t=2340~2430 zexos1 用 281040 兵拿走 3430 格。t=2520~3870 4121 格，t=4410~5760 4715 格，唯一的邻居是 KING（470 万~690 万兵）；余额 t=5220~5760 顶在硬上限 707250。t=5760~5850 一条陆攻 283176 兵打 KING 拿 1145 格（239.9 兵/格）；KING 用 1346602 兵买走 4452 格（302.5 兵/格）。",
+   "chain": [
+    "t=2340 8417 格 / 250509 兵",
+    "t=2430 5245 格 / 117764 兵",
+    "t=2520 4121 格",
+    "t=5220 4715 格 / 707250 兵（硬上限）",
+    "t=6000 5860 格 / 567210 兵",
+    "t=6200 5860 格 / 702269 兵",
+    "t=6292 阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": 6292,
+    "takersLast420": [
+     {
+      "by": "KING✨️T2",
+      "tiles": 4452,
+      "troopsSpent": 1346602,
+      "perTile": 302.5
+     }
+    ],
+    "ownAttacksLast420": []
+   }
+  },
+  {
+   "bot": "Kilwa",
+   "me": 41,
+   "labels": [
+    "Kilwa",
+    "Ganondorf",
+    "Nelson"
+   ],
+   "team": 4,
+   "event": "died",
+   "tick": 9114,
+   "place": 6,
+   "resultPeak": 29437,
+   "logPeakTerr": 29437,
+   "logPeakTick": 8550,
+   "lastSnapshots": [
+    {
+     "t": 8820,
+     "terr": 21468,
+     "bal": 1905415,
+     "dens": 88.8,
+     "nb": 2,
+     "neut": 134,
+     "cmds": 85
+    },
+    {
+     "t": 8910,
+     "terr": 18225,
+     "bal": 1441486,
+     "dens": 79.1,
+     "nb": 2,
+     "neut": 2,
+     "cmds": 85
+    },
+    {
+     "t": 9000,
+     "terr": 15199,
+     "bal": 1295063,
+     "dens": 85.2,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 85
+    },
+    {
+     "t": 9090,
+     "terr": 8641,
+     "bal": 571758,
+     "dens": 66.2,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 85
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8613786,
+   "cause": "全队活得最久的号。t=1710~4140 12435 格不动（唯一的敌邻是 Player 776，29 格边界），余额 243718→1849336。t=4046 发船 + t=4270 陆攻吃下 cyankwastaken 6369 格（80.3 兵/格），再花 1663218 兵从 Player 776 身上买 4296 格（387.2 兵/格），到 24546 格。t=6300~7110 顶在硬上限 3681900。t=7161 起打 YK（478.6 兵/格）、两条大船被 Banananeninineninine 打沉、打 Device（373.2 兵/格），共送出 510 万兵；Device 用 5868098 兵买走 20223 格（290.2 兵/格），Mr Bass 1273200 兵买走 5808 格。",
+   "chain": [
+    "t=1710 12435 格 / 243718 兵",
+    "t=4140 12435 格 / 1601070 兵",
+    "t=4500 18775 格",
+    "t=6300 24546 格 / 3681900 兵",
+    "t=8550 29437 格 / 2486318 兵",
+    "t=8730 24488 格",
+    "t=9000 15199 格 / 1295063 兵",
+    "t=9111 阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": 9111,
+    "takersLast420": [
+     {
+      "by": "DeviceT3",
+      "tiles": 15274,
+      "troopsSpent": 4354420,
+      "perTile": 285.1
+     },
+     {
+      "by": "[CORGI] Mr BasT1",
+      "tiles": 5808,
+      "troopsSpent": 1273200,
+      "perTile": 219.2
+     }
+    ],
+    "ownAttacksLast420": [
+     {
+      "on": "空地",
+      "tiles": 2838,
+      "troopsSpent": 5676,
+      "perTile": 2.0
+     }
+    ]
+   }
+  }
+ ],
+ "ledger": {
+  "drop30Count": 33,
+  "drop30ByClass": {
+   "ATTACK-GAIN": 16,
+   "LOST-LAND": 13,
+   "PASSIVE-LOSS": 2,
+   "SPEND-NO-LAND": 2
+  },
+  "donationsLogged": 6,
+  "donationsObservedAccepted": 0,
+  "donationsObservedRejected": 6,
+  "donationsUndetermined": 0,
+  "donationsModelRejected": 6,
+  "note": "观测判定=拿捐出方下一次已知余额和「被拒/成交」两个预期比；Undetermined=判不了。下面两项按「未判拒即成交」计，是上限。",
+  "donatedArrivedUpperBound": 0,
+  "donationTaxUpperBound": 0,
+  "cardLikelyRejected": 5,
+  "truthDonationsExecuted": 3,
+  "truthDonationsArrived": 2938,
+  "truthDonationsTax": 1204,
+  "loggedDonations": {
+   "count": 6,
+   "executed": 3,
+   "notInReplay": 3,
+   "notInReplayReasons": "受捐方已死 2，没发到引擎或执行拍估错 1",
+   "overQuotaAtDecision": 6,
+   "src": "scripts/donrej.py + digest [G]"
+  },
+  "humanTeammateDonations": {
+   "donor": "[CORGI] Mr Bass",
+   "recv": "Cyrus",
+   "count": 3,
+   "arrived": 974289,
+   "tax": 445389,
+   "src": "truth.txt [TH]"
+  },
+  "huskGifts": {
+   "count": 19,
+   "toOnlineSquadBots": {
+    "count": 5,
+    "arrived": 341514
+   },
+   "toOtherHumans": {
+    "count": 11,
+    "arrived": 382311
+   },
+   "toHusks": {
+    "count": 3,
+    "arrived": 34200
+   },
+   "biggest": "British Empire 空壳→LightYagami 295649（t=2146）；Tal 空壳→[OG]cyankwastaken 250072（t=2083）",
+   "src": "truth.txt [TM]"
+  },
+  "drop30Truth": {
+   "windows": 41,
+   "byCause": {
+    "挨打": 22,
+    "陆攻": 17,
+    "发船": 2
+   },
+   "src": "truth.txt [TK]（90 拍窗，真值余额）"
+  },
+  "boats": {
+   "count": 14,
+   "troops": 1607679,
+   "fees": 554906,
+   "feeOverTroops": {
+    "count": 2,
+    "fees": 212339
+   },
+   "landedOnNeutral": 13115,
+   "landedOnEnemy": 387607,
+   "landedOnOwn": 6842,
+   "teammateCredited": 42794,
+   "teammateEvaporated": 0,
+   "notLanded": 1157321,
+   "sunkInSeaBattle": 837696,
+   "src": "truth.txt [TL] + boattrack_Kilwa.txt"
+  },
+  "crossSquad": {
+   "oursFromPeer": {
+    "cells": 17488,
+    "troopsSpent": 2145712
+   },
+   "peerFromOurs": {
+    "cells": 48734,
+    "troopsSpent": 4742193
+   },
+   "husksFromOnlineSquadBots": {
+    "cells": 7353,
+    "troopsSpent": 57234
+   },
+   "src": "truth.txt [TF]"
+  },
+  "leaves": {
+   "count": 9,
+   "atT168": 3,
+   "midgame": 6,
+   "cellsAtLeave": 39625,
+   "troopsAtLeave": 1822516,
+   "src": "truth.txt [TB][TI]"
+  },
+  "truthNote": "digest [F] 的 DROP30（33 条）与 [G] 的『模型拒 / 观测拒』是按日志本地拍推的；本局指令比决策晚几百拍落地，以这里的真值口径为准。对局卡 squadBots=9、peakSquadLandShare=0.1551 只数了有结果行的号；真值是 18 个号进场、t=1530 峰值 20.13%。"
+ },
+ "decisions": [
+  {
+   "id": "D01",
+   "t": "0~90",
+   "bot": "全队",
+   "decision": "出生指派 44 条，6/15 个号没执行最后一条；East India Co 落在离 squad10 的 zexos1 10 像素的地方；名次表给没出生的 Panzergrenadier 和野人 Prussia 留了位置。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.chooseSpawn L4007-4153（L4011-4018 按 isOurSquadBot 数人头定 rankIdx；L4059 记 HL-SPAWN-BACKEND）；src/strategy/spawn-coordinator-c110.mjs",
+   "verdict": "error",
+   "patternId": "NEW-SP-05",
+   "evidence": [
+    "spawncheck [PA][PC]",
+    "日志 [HL-SPAWN] 的 rankIdx：0~18 缺 3",
+    "truth [TB] 出生点"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D02",
+   "t": "55~630",
+   "bot": "全队",
+   "decision": "开局扩张按期完成：t=630 人均比 1.04，(270,630] 人均吃空地 2370 格（其它真人 2143）、人机 193 格（其它真人 68）。",
+   "codePath": "src/strategy/v27-team-c110.js: dpNeutral L2418-2490；expandNeutral L2408-2417；botOk L2499-2505",
+   "verdict": "good",
+   "patternId": "NEW-OP-G1",
+   "evidence": [
+    "shadowcmp [SA]：HL-OPENING 逐字相同（Fischer 8/9，其余全同）",
+    "harvest (0,270] / (270,630]",
+    "truth [TC] t=630"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D03",
+   "t": "540~2340",
+   "bot": "全队",
+   "decision": "指令晚几百拍落地时照常发令：决策拍 540~1260 的 529 条落地 315 条（116 条无效），1260~1800 的 371 条落地 106 条；执行拍 1260~1800 的 131 条里 73 条无效。",
+   "codePath": "src/strategy/v27-team-c110.js: 文件头 L19-31；Strategy.send L526-540；src/sim/sim/game.js L1263-1285",
+   "verdict": "error",
+   "patternId": "NEW-IO-01",
+   "evidence": [
+    "lagstats [LA][LB]",
+    "shadowcmp [SF]",
+    "shadowcmp_peer [SF]"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D04",
+   "t": "630~1800",
+   "bot": "全队",
+   "decision": "人机收割只拿到 16.3%（人头 33%）：(630,1260] 人均 2404 格，其它真人 5472 格；(1260,1800] 480 格对 4661 格。",
+   "codePath": "src/strategy/v27-team-c110.js: Style.pickTarget L1180-1213；botOk L2499-2505；winFloor L4542-4550",
+   "verdict": "error",
+   "patternId": "NEW-EC-06",
+   "evidence": [
+    "harvest.txt",
+    "truth [TC] 内置 AI%"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D05",
+   "t": "810~1490",
+   "bot": "Jokic",
+   "decision": "七个人机邻居（7841 格，最弱的 0 兵）围着不吃：防人机留底取了敌队真人 Salchichador 的余额（112655），Jokic 自己 113484，可用 829。56 个点全被挡，领土停在 7644~8221 格。",
+   "codePath": "src/strategy/v27-team-c110.js: threatOf L464-490（取人机除我之外最弱邻居的余额，不分敌友）；safeFinite L2532-2541；winFloor L4542-4550；floorFor0 L2270-2276",
+   "verdict": "error",
+   "patternId": "NEW-EC-05",
+   "evidence": [
+    "shadowcmp [SH]：900~1260 挡在 sb 上 137 个号·点，敌队真人定出 99 个",
+    "逐号：Jokic 56 点（Salchichador×35、Ill full send×21）",
+    "shadow.mjs --trace Jokic:1300,1555"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D06",
+   "t": "900~1440",
+   "bot": "Broly",
+   "decision": "野人 Prussia（T1）撞了名字池：Broly 贴着它 151 格边界不打（对方 2788 格 / 5288~46958 兵），停在 3168 格 540 拍；之后 Prussia 反过来拿走 Broly 822 格。",
+   "codePath": "src/strategy/v27-team-c110.js: analyze L440；isProtectedSquadMate L3993-3996；isOurSquadBot L3973-3976；SQUAD_POOL_SET L1",
+   "verdict": "error",
+   "patternId": "NEW-MT-04",
+   "evidence": [
+    "shadow.mjs --trace Broly:1000,1200,1400,1900：nb 里没有 Prussia",
+    "truth --bot Broly --t0 630 --t1 1900",
+    "Prussia 的 23 条指令全是 pct=522（真人滑条），不在 HL-GAME-INIT 的 me 里"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D07",
+   "t": "1785~2045",
+   "bot": "Pagan",
+   "decision": "三次为『编队友』Prussia 向 Bashkort 下协防戳刺单（本地拍 1785 / 1820 / 2045，各 10% 余额）；录像里没有这三条。",
+   "codePath": "src/strategy/v27-team-c110.js: tryDonateToTeammate L4449-4460（g.attack(102, mainAttacker, me)）；isProtectedSquadMate L3993-3996",
+   "verdict": "error",
+   "patternId": "NEW-DN-05",
+   "evidence": [
+    "digest [H] L8613536 / L8613538 / L8613555",
+    "truth --cmds Pagan：没有 pct=102 的陆攻"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D08",
+   "t": "168~1869",
+   "bot": "9 个号",
+   "decision": "九个号掉线：三个 t=168（没打过），三个 t=1603 同一拍，另三个 t=1778 / 1785 / 1869。后六个离开时合计 39625 格、1822516 兵；它们离开前最后落地的指令都晚了 380~690 拍。",
+   "codePath": "src/strategy/v27-team-c110.js: 文件头 L19-31（驱动层说明；驱动层源码不在数据包里）；src/sim/sim/bots.js L180-206（离开后的号按内置 AI 行动，把余额交给队友）",
+   "verdict": "error",
+   "patternId": "NEW-IO-04",
+   "evidence": [
+    "truth [TB][TI]",
+    "shadowcmp [SB]：Tal 382@1162、Ireland 383@1253、Bulgar 430@1190、Fischer 441@1386、British Empire 534@1414、Levi 689@1589",
+    "日志：六个号最后一条 HL-TICK 的本地拍 990 / 1170"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D09",
+   "t": "1530~1834",
+   "bot": "Zhuge Liang",
+   "decision": "同一个目标每 15 拍重下一条，9 条在 t=1834 同一拍落地：每条本意 39%~41% 余额，合计实发 123193（余额 124296 的 99%），本土剩 1040 兵守 11335 格。",
+   "codePath": "src/strategy/v27-team-c110.js: Strategy.send L526-540（同目标 15 拍冷却）；Policy.buyLand L5250-5330",
+   "verdict": "error",
+   "patternId": "NEW-EX-01",
+   "evidence": [
+    "shadowcmp [SB2]：执行拍 1834 的 9 条对应决策拍 1530~1650",
+    "truth --cmds Zhuge Liang --t0 1500 --t1 2100",
+    "truth --death Zhuge Liang"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D10",
+   "t": "1770~2020",
+   "bot": "Zhuge Liang",
+   "decision": "空壳 Tal（8.6 兵/格拿 5850 格）、空壳 British Empire（4.7 兵/格拿 1503 格）来打时没有还手：两个空壳不在可打名单里。",
+   "codePath": "src/strategy/v27-team-c110.js: analyze L440；isProtectedSquadMate L3993-3996；hasWildOutsidersAlive L3978-3989；counterAttack L871-886",
+   "verdict": "error",
+   "patternId": "NEW-MT-03",
+   "evidence": [
+    "truth [TF]『编队内』三行",
+    "shadow.mjs --trace Zhuge Liang:1500,1600,1680：nb 只有 cyankwastaken",
+    "truth --cmds Zhuge Liang：t=1603 之后的陆攻全部打 cyankwastaken 或空地"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D11",
+   "t": "1500~2072",
+   "bot": "Pagan",
+   "decision": "对 Mr Bass 连下 9 条 30% 余额的陆攻，t=2072 一拍落地 437036 兵（97%），按 106.0 兵/格拿 3976 格；本土剩 613 兵，被 Bashkort 以 5.5 兵/格吃掉 6308 格。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330；Policy.offers L5008-5248；Strategy.send L526-540；V13.act L1853（holdOn=0，被打时不撤回在外的兵）",
+   "verdict": "error",
+   "patternId": "NEW-AT-05",
+   "evidence": [
+    "shadowcmp [SB2]：Pagan 执行拍 2072 一次 9 条，影子决策拍 1500~1620",
+    "shadowcmp [SG]：攻309 决策 1605 本意 69884，执行 2072 实发 136577",
+    "truth --death Pagan"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D12",
+   "t": "1555~2044",
+   "bot": "Jokic",
+   "decision": "决策拍 1555~1960 的旧单在 t=1981 / 2044 两拍落地，433153 兵打 Ill full send（30.1 兵/格拿 12678 格）；本土剩 21811 兵守 12495 格，被 squad10 的 kaito9 以 10.2 兵/格吃掉 17675 格。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330；Strategy.send L526-540",
+   "verdict": "error",
+   "patternId": "NEW-AT-02",
+   "evidence": [
+    "shadowcmp [SB2]：Jokic 执行拍 1981 / 2044 各 9 条",
+    "truth [TK] 1980-2070 Jokic",
+    "truth --death Jokic"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D13",
+   "t": "1550~2051",
+   "bot": "Sanada",
+   "decision": "决策拍 1550~1985 的旧单在 t=1995 / 2051 两拍落地，385810 兵打 Salchichador（75.5 兵/格拿 4635 格）；本土剩 35057 兵，Salchichador 以 20.2 兵/格吃回 5505 格、Device 以 15.8 兵/格拿 3613 格。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330；Strategy.send L526-540",
+   "verdict": "error",
+   "patternId": "NEW-AT-02",
+   "evidence": [
+    "shadowcmp [SB2]：Sanada 执行拍 1995 一次 9 条、2051 一次 6 条",
+    "truth --death Sanada"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D14",
+   "t": "1885~2156",
+   "bot": "Pagan",
+   "decision": "给 Zhuge Liang / Broly 的救援捐款 pct=155 共 6 笔，按决策时的局面每笔 55455~65190 兵、额度成本 114~134，高于上限 103~115。3 笔 t=2156 落地时 Pagan 已被抽空，到账 1754 + 803 + 381；另 3 笔没进录像（2 笔的受捐方已死）。",
+   "codePath": "src/strategy/v27-team-c110.js: tryDonateToTeammate L4422-4447（L4437 pct = min(maxSafePct, 155)，不看受捐方额度）；src/sim/sim/game.js L336-418",
+   "verdict": "error",
+   "patternId": "NEW-DN-08",
+   "evidence": [
+    "digest [G] L8613543~L8613553",
+    "donrej.txt [DR]",
+    "truth [TH]"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D15",
+   "t": "2093~2390",
+   "bot": "LightYagami",
+   "decision": "t=2093 一拍旧单把余额从 392975 打到 104581；t=2146 空壳 British Empire 的 295649 兵到账（117935→413584）；t=2156 又一拍 5 条打出 212224 兵。它没有像另外四个号那样被吃掉，从 Salchichador 身上拿 12419 格（43.2 兵/格），到全队峰值 18134 格。",
+   "codePath": "src/sim/sim/bots.js L180-206（botDonate / botGive：空壳没有目标可打时把全部余额交给刚打过仗的队友）；src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330",
+   "verdict": "unclear",
+   "patternId": "NEW-DN-09",
+   "evidence": [
+    "truth [TM] t=2146",
+    "shadowcmp [SB2]：LightYagami 执行拍 2093 一次 8 条、2156 一次 5 条",
+    "truth [TE] LightYagami"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D16",
+   "t": "2520~3690",
+   "bot": "Cyrus",
+   "decision": "6481 格不动 1170 拍，余额 294637→912023（密度 141，利率只剩正常的 18%）：买地留底 dpKeep 按 KING 的余额算，521097→2086809，一直高于自己的余额。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.safeAt L4524-4541；V13.safeAt L2744-2754；dpKeep L2491-2496；src/sim/sim/game.js L739-762",
+   "verdict": "error",
+   "patternId": "NEW-EC-03",
+   "evidence": [
+    "shadow.mjs --trace Cyrus:2700,3000,3300,3600",
+    "truth --bot Cyrus --t0 2160 --t1 5700",
+    "lagstats [LA]：2520~3500 全队只要发 5 条指令"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D17",
+   "t": "5220~5850",
+   "bot": "East India Co",
+   "decision": "4715 格、唯一的邻居是 KING（470 万~690 万兵）：余额顶在硬上限 707250 共 540 拍，然后一条陆攻 283176 兵按 239.9 兵/格买 1145 格；KING 以 302.5 兵/格把它买光。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5330；Policy.safeAt L4524-4541；dpKeep L2491-2496",
+   "verdict": "error",
+   "patternId": "NEW-EG-01",
+   "evidence": [
+    "shadow.mjs --trace East India Co:4500,5300,5700,6000,6200：safe 266 万~445 万，报价 313~399 兵/格",
+    "truth [TE] East India Co"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D18",
+   "t": "4040~4500",
+   "bot": "Kilwa",
+   "decision": "闲置时对隔海的 cyankwastaken 发一条 305639 兵的船（t=4046），登陆 237810；t=4270 陆攻 520262 兵，正赶上对方把余额打空：拿 6369 格（80.3 兵/格），结束了 2430 拍的停滞，12435→18775 格。",
+   "codePath": "src/strategy/v27-team-c110.js: idleBoats L4979-5006；General.boatOut L1035-1052；searchWater L1056-1113；Policy.buyLand L5250-5330",
+   "verdict": "good",
+   "patternId": "NEW-EG-G1",
+   "evidence": [
+    "truth --cmds Kilwa --t0 4000 --t1 9120",
+    "boattrack_Kilwa.txt 第 4 条船",
+    "cyankwastaken 余额 t=4260 2332334 → t=4320 14141，t=4455 阵亡"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D19",
+   "t": "1710~2400",
+   "bot": "Kilwa",
+   "decision": "只有一个敌邻 Player 776（密度更高：t=2500 55.6 对 39.9，报价 180 兵/格以上）时没有出手；同一时段把余额打空的四个号（Zhuge Liang、Pagan、Jokic、Sanada）都在 470 拍内阵亡，Kilwa 活到 t=9111。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5279-5282（isCrowdedHard 的目标在余额低于上限倍数时跳过）；Policy.offers L5008-5248；Policy.safeAt L4524-4541",
+   "verdict": "good",
+   "patternId": "NEW-EC-G1",
+   "evidence": [
+    "shadow.mjs --trace Kilwa:2500,3000",
+    "truth [TD] Kilwa",
+    "shadowcmp [SB]：Kilwa 1800~3500 时延中位 13 拍"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D20",
+   "t": "6300~7110",
+   "bot": "Kilwa",
+   "decision": "余额顶在硬上限 3681900 共 810 拍（利息为 0）；敌邻只有 YK，买地留底（dpKeep 426 万~486 万）高于余额。同队的 Барбос 就在旁边打仗，余粮捐款不给编队外的队友。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.safeAt L4524-4541；dpKeep L2491-2496；tryDonateToTeammate L4462-4498；src/sim/sim/game.js L739-762",
+   "verdict": "error",
+   "patternId": "NEW-EC-03",
+   "evidence": [
+    "shadow.mjs --trace Kilwa:6500,7000",
+    "truth --bot Kilwa --t0 7020 --t1 9120"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D21",
+   "t": "5621 / 7931",
+   "bot": "Kilwa",
+   "decision": "两条小船：3000 兵 / 3635 兵，手续费 96011 / 116328。",
+   "codePath": "src/strategy/v27-team-c110.js: General.boatOut L1043-1045；searchWater L1097-1102；src/sim/sim/boats.js",
+   "verdict": "error",
+   "patternId": "NEW-SE-03",
+   "evidence": [
+    "truth [TL]：2 条手续费大于船上兵，共付 212339",
+    "truth --cmds Kilwa"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D22",
+   "t": "7994~8378",
+   "bot": "Kilwa",
+   "decision": "四周只剩队友后向隔海的 Banananeninineninine 连发两条大船（526490 / 472984 兵，手续费 225900）：对方的船迎上来，海战打掉 837696 兵，其余衰减，一个兵都没靠岸。",
+   "codePath": "src/strategy/v27-team-c110.js: idleBoats L4979-5006；General.boatOut L1035-1052；searchWater L1056-1113；src/sim/sim/boats.js fightBoats",
+   "verdict": "error",
+   "patternId": "NEW-SE-01",
+   "evidence": [
+    "boattrack_Kilwa.txt 第 7、8 条船",
+    "录像：Banananeninineninine t=8106 / 8302 发船 758993 / 529122 兵"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D23",
+   "t": "4774~8512",
+   "bot": "Kilwa",
+   "decision": "余额过软上限后高价买地：Player 776 387.2 兵/格（4296 格）、YK 478.6 兵/格（3659 格）、Device 373.2 兵/格（3349 格），合计 4664289 兵买 11304 格。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5261 / L5267（over = 余额 > 100×领土 时不再按性价比截断）；Policy.offers L5008-5248",
+   "verdict": "error",
+   "patternId": "NEW-AT-01",
+   "evidence": [
+    "truth [TE] Kilwa",
+    "shadow.mjs --trace Kilwa:8500：Device 报价 217.7 兵/格，over=True"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D24",
+   "t": "3645~3780",
+   "bot": "Cyrus",
+   "decision": "为异队（T2）的 LightYagami 向 zero_7 戳两次，各 10% 余额（92685 + 76766 兵）。LightYagami 照样从 15643 格掉到 4654 格；Cyrus 自己借此从 6481 格长到 7338 格，结束了 1170 拍的停滞。",
+   "codePath": "src/strategy/v27-team-c110.js: tryDonateToTeammate L4449-4460；isProtectedSquadMate L3993-3996",
+   "verdict": "unclear",
+   "patternId": "NEW-MT-02",
+   "evidence": [
+    "digest [H] L8613645 / L8613650",
+    "truth --cmds Cyrus：t=3654 / 3738 两条 pct=102"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D25",
+   "t": "全程",
+   "bot": "全队",
+   "decision": "isNoFullSend：按驱动层 8 拍静默窗重演 0/15 置位；去掉静默窗 14/15 会被误锁（最早 t=533，只有 Broly 不会）。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.updateShadowQuota L3810-3846；Policy.send L3848-3885；文件头 L19-31",
+   "verdict": "unclear",
+   "patternId": "NEW-EX-04",
+   "evidence": [
+    "shadow.mjs --guard 0 --tag g0：14/15",
+    "shadowcmp [SD]：guard=8 从未置位"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D26",
+   "t": "1500~2060",
+   "bot": "Jokic / Sanada / LightYagami / Levi",
+   "decision": "同一次决策里先发一条 4.7% 余额的空地单、再发买地大单：35 次里第一条落地 21 次，第二条及以后只落地 3 次。被丢的有 Jokic 打 Salchichador 的 89690 / 86118 兵两单。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.act L4901-4902（expandNeutral 之后紧接 buyLand）；General.act L828-833",
+   "verdict": "unclear",
+   "patternId": "NEW-EX-05",
+   "evidence": [
+    "shadowcmp [SI]"
+   ],
+   "statementType": "observed"
+  }
+ ],
+ "newPatterns": [
+  {
+   "id": "NEW-SP-05",
+   "prefix": "SP",
+   "name": "最后一条出生指派没执行",
+   "definition": "引擎落点 ≠ 日志里该号最后一条 [HL-SPAWN] 的点；记号数 / 总号数、人均指派条数、『最后一条指派相同』的号对数",
+   "detect": "scripts/spawncheck.py [PC]"
+  },
+  {
+   "id": "NEW-OP-G1",
+   "prefix": "OP",
+   "name": "（正面）开局 DP 扩张按期完成",
+   "definition": "第一条 HL-TICK（t≤630）人均领土 ≥2500；日志里有 OPENING-CHECK 行的局还要求全部 OK（G08 这类没有该行的局只看前一条）",
+   "detect": "scripts/patterns.py: op_on_schedule"
+  },
+  {
+   "id": "NEW-IO-01",
+   "prefix": "IO",
+   "name": "客户端卡顿波：指令比决策晚几十到几百拍才落地",
+   "definition": "按执行拍每 180 拍一窗，本编队配上影子的已执行指令时延中位 ≥35 拍（5 个服务器回合）的窗口连续 ≥2 个记为一波；记起止拍、峰值窗口的中位 / P90、受影响号数（该波内自身中位 ≥35 的号）、波内陆攻落地时已无效的比例",
+   "detect": "scripts/shadowcmp.py [SF][SB]（需要录像）"
+  },
+  {
+   "id": "NEW-IO-02",
+   "prefix": "IO",
+   "name": "补拍成批落地：一个服务器拍里冲出 ≥3 条指令，原本分散在 ≥30 拍里",
+   "definition": "同一个号同一个执行拍 ≥3 条指令，且配上的影子决策拍跨度 ≥30 拍；记批数、每批条数（实测上限 9 条）、该批合计派出占执行前余额的比例；≥50% 记为『清仓批』。只有录像没有影子时退回『同一执行拍 ≥3 条』",
+   "detect": "scripts/shadowcmp.py [SB2]；scripts/truth.py [TG]"
+  },
+  {
+   "id": "NEW-IO-03",
+   "prefix": "IO",
+   "name": "旧比例放大：单子按余额比例下，落地时余额已是下单时的 ≥2 倍",
+   "definition": "时延 ≥35 拍、落地生效的陆攻或发船，实发兵力（执行时余额×(pct+1)/1024）≥ 2×本意兵力（决策时余额×(pct+1)/1024）且实发 ≥5000；记条数、最大倍数、多发出去的兵",
+   "detect": "scripts/shadowcmp.py [SG]"
+  },
+  {
+   "id": "NEW-IO-04",
+   "prefix": "IO",
+   "name": "掉线成空壳：号在录像里执行『离开』，领土和兵留给引擎托管",
+   "definition": "真值 leftT ≥ 0 且离开时领土 >0；记号数、离开拍、离开时领土 / 余额合计，以及这些地最后被哪一队拿走（按队合计）",
+   "detect": "scripts/truth.py [TI]"
+  },
+  {
+   "id": "NEW-IO-05",
+   "prefix": "IO",
+   "name": "决策了没落地：影子在卡顿窗里要发的指令，录像里找不到",
+   "definition": "影子决策拍落在卡顿波内的指令里，后来在录像中配不上的比例 ≥40%；另记 HL-DONATE 有日志、录像没有的笔数及拒因（scripts/donrej.py：受捐方已死 / 超额度 / 到硬上限 / 没发到引擎）",
+   "detect": "scripts/shadowcmp.py [SC]；scripts/donrej.py"
+  },
+  {
+   "id": "NEW-IO-06",
+   "prefix": "IO",
+   "name": "日志标签中途换名 / 对局卡少数号：同一个 me 先后用几个名字，掉线号没有结果行",
+   "definition": "traj.csv 的标签数 > HL-GAME-INIT 的 me 个数，或 card.squadBots < HL-GAME-INIT 的 me 个数；记同一个 me 的标签链和没有结果行的 me",
+   "detect": "scripts/facts.py digest [A][B]"
+  },
+  {
+   "id": "NEW-EC-03",
+   "prefix": "EC",
+   "name": "超软上限滞留：余额 > 100×领土",
+   "definition": "连续 ≥2 条快照 bal>100×terr（超出部分利息按 [E6] 扣减）；记命中号数与累计快照数",
+   "detect": "scripts/patterns.py: ec_over_softcap"
+  },
+  {
+   "id": "NEW-EC-05",
+   "prefix": "EC",
+   "name": "贴着白给的人机不出手：防人机留底 sb 取了邻居（常是编队友）的余额，互锁",
+   "definition": "t<1500 的影子普查（按真值每 10 拍）里，该号接壤的内置 AI 没有一个过得了门槛，且最便宜那个的原因是 floor:sb 或 minShare(floor:sb)（可用兵 = 余额 − safeFinite ≤ 最小出手比例×余额）；按 sb 的来源分账（本编队同队 / 异队、另一支受控编队、同队真人、敌队真人），并数互锁（对方同一点也被我定的 sb 挡住）与「吃光该人机所需 ≤10% 余额」的点数。每局记号·点数（×10 拍）",
+   "detect": "scripts/shadow.mjs census（sbSource）+ shadowcmp.py [SH]"
+  },
+  {
+   "id": "NEW-EC-06",
+   "prefix": "EC",
+   "name": "人机收割落后：t=630~1260 人均吃到的人机地不到其它真人的一半",
+   "definition": "真值逐对战损账里，(630,1260] 本编队在线号人均从内置 AI 手里拿到的格数 < 0.5×其它真人人均",
+   "detect": "scripts/harvest.py"
+  },
+  {
+   "id": "NEW-EC-G1",
+   "prefix": "EC",
+   "name": "（正面）t<2400 不打密度更高的单邻，存活更久",
+   "definition": "t∈[1500,2400] 连续 ≥5 条快照 nb=1、Δcmds≤2，且该号存活到 t≥3500",
+   "detect": "scripts/patterns.py: ec_hold_survive"
+  },
+  {
+   "id": "NEW-EX-01",
+   "prefix": "EX",
+   "name": "在途重复下单：前一条指令还没生效，又对同一目标发同类指令",
+   "definition": "录像命令流里，同一个号、同类指令（进攻/发船）、同一目标，相邻两条的执行拍相差 ≤14 拍（两个 7 拍回合）记为一串；串长 ≥2 命中。同时记串内合计抽兵比例 1-∏(1-(pct+1)/1024) 与第一条的比例；合计 ≥50% 余额的记为『清仓串』。严格口径另数『同一执行拍』的串",
+   "detect": "scripts/dupcmds.py（需要 replay.txt；G 组没有录像，用 NEW-EX-02 代替）"
+  },
+  {
+   "id": "NEW-EX-04",
+   "prefix": "EX",
+   "name": "发令后 7 拍额度自检：在线时被 8 拍静默窗整个跳过；去掉静默窗则大面积误锁",
+   "definition": "影子按『发令后 8 拍不调用策略』模拟时，updateShadowQuota 的 7 拍检查窗一次都没执行、isNoFullSend 置位号数 = 0；同一局把静默窗设为 0 再跑，置位号数 ≥1。记两种设定下的置位号数",
+   "detect": "scripts/shadow.mjs --guard 0 --tag g0 对比 --tag g8"
+  },
+  {
+   "id": "NEW-EX-05",
+   "prefix": "EX",
+   "name": "同一次决策发两条指令，只有第一条落地：零星空地单占掉名额",
+   "definition": "影子同一次 act 发出 ≥2 条指令时，第 1 条在录像里配得上、第 2 条及以后配不上；记被丢掉的第 2 条的本意兵力合计",
+   "detect": "scripts/shadowcmp.py [SI]"
+  },
+  {
+   "id": "NEW-AT-01",
+   "prefix": "AT",
+   "name": "超软上限后高价倾泻",
+   "definition": "某快照 bal>100×terr，其后 180 拍内出现 DROP30 且领土增加、两段口径 ≥150 兵/格",
+   "detect": "scripts/patterns.py: at_overcap_dump"
+  },
+  {
+   "id": "NEW-AT-02",
+   "prefix": "AT",
+   "name": "出手后变薄，随后被吃",
+   "definition": "一段进攻性掉款（相邻快照 bal 跌 ≥30% 且领土增加）结束时 dens ≤ 起点的一半，且下一段没有回流把 dens 拉回一半以上；兑现：其后 450 拍内领土较出手后跌 ≥30% 或阵亡",
+   "detect": "scripts/patterns.py: at_drained"
+  },
+  {
+   "id": "NEW-AT-05",
+   "prefix": "AT",
+   "name": "清仓打一个真人，兵压在进攻槽里，本土被别人吃掉",
+   "definition": "180 拍内对同一个真人目标的陆攻 / 发船合计派出 ≥70% 余额，打完本土密度 <10；兑现：420 拍内阵亡，且拿走最多地的不是该目标",
+   "detect": "scripts/truth.py [TK] + --death"
+  },
+  {
+   "id": "NEW-SE-01",
+   "prefix": "SE",
+   "name": "大额或连续海上拦截",
+   "definition": "HL-INTERCEPT 的 pct≥200（≥19.6% 余额），或同一个号 900 拍内 ≥5 次拦截；同时记这些段的净花费（公式余额 - 实际余额）",
+   "detect": "scripts/patterns.py: se_big_intercept"
+  },
+  {
+   "id": "NEW-SE-03",
+   "prefix": "SE",
+   "name": "小船高费：船上只有几百兵，手续费却是余额的 32/1024",
+   "definition": "已执行的发船指令里手续费 > 船上兵的那些：记条数、手续费合计、同期领土净增；每局手续费合计 ≥ 该号发船时余额中位数的 20% 算命中",
+   "detect": "scripts/truth.py [TL]"
+  },
+  {
+   "id": "NEW-DN-05",
+   "prefix": "DN",
+   "name": "名字池误认：给名字撞上编队名字池的陌生真人捐款 / 协防",
+   "definition": "HL-DONATE / HL-ASSIST 的受益人不是本编队的号（按引擎号核对），却通过了 isOurSquadBot（名字池）；记笔数、到账、税",
+   "detect": "scripts/truth.py [TH] + 身份表"
+  },
+  {
+   "id": "NEW-DN-08",
+   "prefix": "DN",
+   "name": "救援捐款单笔超过受捐额度：整单被拒，冷却后原样重发",
+   "definition": "日志里同一对（捐出→受捐）连续 ≥3 笔相同 pct 的捐款都没进录像，且按引擎口径（game.js donationCost / donCap）那一笔的额度成本 > 当时额度上限 − 已用；记笔数与受捐方结局",
+   "detect": "scripts/donrej.py + digest [G] 的额度栏"
+  },
+  {
+   "id": "NEW-DN-09",
+   "prefix": "DN",
+   "name": "空壳赠兵（引擎规则）：离开的号没有可打的目标时把全部余额交给一个队友",
+   "definition": "真值重演里 bots.js botGive 的每一次成交：记空壳、收款方（在线编队号 / 其它真人 / 另一个空壳）、到账；单笔 ≥ 收款方当时余额的 50% 算命中",
+   "detect": "scripts/truth.py [TM]（resim_r08.mjs 的 huskGifts）"
+  },
+  {
+   "id": "NEW-EG-01",
+   "prefix": "EG",
+   "name": "小号顶着软上限等死：领土 <6000、密度 ≥85，被大号高价买走",
+   "definition": "t≥2000 连续 ≥10 条真值快照（每 270 拍）领土 <6000、密度 ≥85、领土变化 <5%；兑现：阵亡，且主攻手领土 ≥3×该号、买价 ≥200 兵/格",
+   "detect": "scripts/truth.py [TD][TE]"
+  },
+  {
+   "id": "NEW-EG-G1",
+   "prefix": "EG",
+   "name": "（正面）终局吃空壳和残血邻居持续长大",
+   "definition": "t≥3500 起 1800 拍内领土 +≥60%，新增领土里 ≥50% 来自空壳或已被第三方打掉一半以上领土的邻居，且该号存活到终局",
+   "detect": "scripts/truth.py [TE]"
+  },
+  {
+   "id": "NEW-MT-01",
+   "prefix": "MT",
+   "name": "编队被分到多个队",
+   "definition": "真值里本编队的号分属 ≥2 个队；记各队号数、各分支峰值份额、哪个分支所在队获胜",
+   "detect": "scripts/truth.py [TA]"
+  },
+  {
+   "id": "NEW-MT-02",
+   "prefix": "MT",
+   "name": "跨队协防戳刺：为别的队里的编队号出兵",
+   "definition": "HL-ASSIST 的受益人与出手号不同队；记条数、派出兵、受益人是空壳或编队外真人的条数",
+   "detect": "scripts/truth.py + in_game.log HL-ASSIST"
+  },
+  {
+   "id": "NEW-MT-03",
+   "prefix": "MT",
+   "name": "空壳兄弟仍受保护：异队编队号离开后被引擎托管，照样来打；编队号按名字把它排除在可打名单外",
+   "definition": "真值交战账里攻方是已离开的编队号（空壳）、守方是在线的异队编队号、被拿走 ≥300 格；同期守方对该空壳的陆攻指令数为 0（影子逐拍追踪里该空壳不在 nb 里）",
+   "detect": "scripts/truth.py [TF]『编队内』行 + --cmds；scripts/shadow.mjs --trace（nb 列表）"
+  },
+  {
+   "id": "NEW-MT-04",
+   "prefix": "MT",
+   "name": "撞名野人算进编队：名字在名字池里的陌生真人占出生名次、受保护、被协防",
+   "definition": "房间里名字在 SQUAD_POOL_SET、但不在本编队日志身份表（HL-GAME-INIT 的 me）里的真人；命中任一：[HL-SPAWN] 的 rankIdx 序列为它留了空位；与某个编队号接壤 ≥30 格持续 ≥180 拍而该号对它 0 条陆攻；[HL-ASSIST]/[HL-DONATE] 的 ally 是它",
+   "detect": "scripts/facts.py digest [B][H] + resim.json names；scripts/shadow.mjs --trace（nb 列表里没有它）"
+  }
+ ],
+ "lossArchetype": "mid-collapse",
+ "archetypeNote": "t=1530 15 个号合占 20.13%（对局卡的峰值 15.51% 只数了 9 个号）。t=1603~2558 掉线 6 个、阵亡 5 个，t=2700 只剩 4 个号 8.35%。之后 4 个号分在 4 个队里各自被围，t=5159~9111 逐个被买走。主队 T3 的 4 个号 t=2700 只剩 East India Co 一个（0.84%）。",
+ "winnerNotes": "对局卡记 T2 获胜；录像到 t=9600 还是四家并立（T3 的 Device 159407 格、T2 的 KING 148889 格、T1 的 Mr Bass + Banananeninineninine 138750 格、T4 的 Player 778 44004 格）。T2 后期只剩 KING 一个人：t=630 只有 1950 格，t=1260~1800 领土 7332→10620 格而余额 12.8 万→43.7 万（密度 41），t=2160~2700 从 11506 格吃到 30410 格（riku_x 的 14909 格只花 446870 兵），之后把 squad10 的号一个个买走（riku_x、zexos1、noah88、alex_k、sora_w、talon5、ryan_m 阵亡时身上最大的一股兵都是 KING 的）。T4 在 t=1800~2160 和 t=3060~8280 是第一大队（最高 42.0%；t=2340~2880 T2 略高），t=7867 Tukcherofav、t=8789 Барбос 被 Device 和 KING 打死后崩掉。T2 还白拿了我方空壳的兵：Tal、British Empire 的空壳给 T2 的野人 11 次共 382311 兵。",
+ "wentWell": [
+  "开局到 t=630 人均比 1.04~1.19，高于全房真人平均；HL-OPENING 行与影子逐字相同。",
+  "Kilwa 活到 t=9111（结果表第 6 名）：t=1710~2400 没有去打密度更高的单邻；t=4046~4270 船加陆攻吃下 cyankwastaken 6369 格（80.3 兵/格）。",
+  "被打时兵留在家里，对方付了高价：Player 920 打 LightYagami 118.8 兵/格，Banananeninineninine 打 Broly 90.4 兵/格，Device 打 Kilwa 290.2 兵/格。",
+  "真引擎重演 375/375 条快照逐兵一致，录像完整到 t=9660。"
+ ],
+ "unknowns": [
+  "卡顿的根因：只能排除策略自身耗时（avgMs ≤1 ms）。两支受控编队同时卡，同房其它真人不卡（每个服务器拍最多落地 2 条）。",
+  "掉线的原因：三个号 t=168 同一拍、三个号 t=1603 同一拍离开，像是同一台机器或同一个进程上的几个客户端一起断开（猜测）。六个中途掉线的号离开时本地都比服务器晚 520~700 拍，但同样晚的号（LightYagami 最大 832 拍）没有掉。",
+  "Panzergrenadier（25 号，名字在名字池里）t=0 离开、没出生、没有日志：是不是第 19 个客户端没起来，数据里看不出。",
+  "日志标签为什么中途换名（4 个活得久的号都换过）。",
+  "驱动层源码不在数据包里：『一拍最多 9 条』『一次决策只受理第一条』『发令后 8 拍静默』都是从录像和日志反推的。",
+  "时延超过 600 拍的配对（Levi 689、East India Co 672、LightYagami 832）可能有配错。",
+  "Pagan 的三条协防戳刺、三笔救援捐款为什么没进录像：只知道 t=2072 / 2156 这两拍 Pagan 各有 9 / 8 条指令落地。",
+  "对局卡 winnerTeam=2，录像到 t=9660 还没结束。"
+ ],
+ "mechanicsQuestions": [
+  "离开的真人利率为 0（game.js L739-741），只剩每 10 拍 +1 和每 100 拍 +领土格数；没有目标可打时把全部余额交给一个刚打过仗（或有船在外）的队友（bots.js L180-206，手续费 64/1024，不占受捐额度）。本局 19 次共 758025 兵。",
+  "余额超过 100×领土后利率按超出比例的 2 倍线性下降，150×领土处为 0，余额也在 150×领土处封顶（game.js L739-762）：密度 141 时利率只剩正常的 18%，密度 150 时没有利息。",
+  "海战：敌对的船相遇后每 2 拍互相伤害（boats.js fightBoats），同队的船不打。Kilwa 的 52.6 万、47.3 万两条船遇上 Banananeninineninine 75.9 万、52.9 万兵的船，全部打光。",
+  "受捐额度（t<4284）：1071≤t<2142 时一笔的额度成本 = 2 + 100×兵 ÷ (30×(1+陆地/300))，本图分母是 49290；pct=155 的救援单在余额 36 万时成本 114，超过当时的上限 103，整单拒。",
+  "每条船的手续费是余额的 32/1024，与船上兵无关：余额 372 万时一条 3635 兵的船付 116328。",
+  "号阵亡后剩下的地变成空地，还压在它身上的进攻兵转去打这块空地（game.js L1336-1349 eliminate → redirectAttackToNeutral / clearTerritory）。"
+ ],
+ "scripts": [
+  "c136-review/agents/R08/scripts/pipeline.sh B034 - tag:APEX（一局全套：facts → resim → truth → shadow → shadowcmp → harvest / top / spawncheck / donrej；同房另一支编队按战队标签认号）",
+  "c136-review/agents/R08/scripts/truth.py B034（[TA]~[TM]；--death / --bot / --cmds 看单号）",
+  "c136-review/agents/R08/scripts/shadow.mjs B034 --peer-tag APEX [--trace 号:拍 --tag tr1] [--guard 0 --tag g0] [--side peer]；trshow.py out/B034/shadow_tr1.json 号名",
+  "c136-review/agents/R08/scripts/shadowcmp.py B034 [--side peer]（[SA]~[SI]）；lagstats.py B034（[LA]~[LC]）",
+  "c136-review/agents/R08/scripts/boattrack.mjs B034 --bot Kilwa --peer-tag APEX（逐条船：海战损失 / 衰减 / 靠岸）",
+  "c136-review/agents/R08/scripts/donrej.py B034；spawncheck.py B034；harvest.py B034；top.py B034",
+  "c136-review/agents/R08/scripts/facts.py B034 → out/B034/digest.txt；build_review.py B034"
+ ],
+ "confidenceOverall": "high",
+ "peerComparison": "同房 squad10（[APEX]，10 个号全在 T5；对局包 A052 在验证集里没有读，以下全部来自本局录像）。① 同一波卡顿：时延中位最高 767 拍（t=1800~1979），t=2340 起回到 11 拍；我方 t=2160~2339 中位还有 164 拍。② 没有一个号掉线（我方 18 个掉 9 个）。③ 人机收割比我方还差：t=630~1800 占 7.4%（人头 22%），人均比 1.10（t=630）→ 0.58（1530）→ 0.53（1800）。④ 卡顿一结束就吃被抽空的邻居：T5 12.24%（t=1800）→ 23.79%（2520），(1800,2700] 人均吃真人 7793 格（我方 5643，其它真人 3121），其中 kaito9 吃 Jokic 17675 格只花 10.2 兵/格。⑤ 10 个号挨在一起、同一个队，彼此不用设防；我方 15 个号分在 4 个队，最近编队友距离中位 176 像素。⑥ 两支编队互打：squad10 从我方拿走 48734 格（花 4742193 兵），我方从 squad10 拿走 17488 格（花 2145712 兵）。⑦ 结局：T5 t=3960 到峰值 25.9%，没有编队外的队友，之后被 KING 逐个买走，t=6823 全灭。",
+ "teamSplitNotes": "18 个号被分成 5 / 5 / 4 / 4（实际打过的 15 个是 4 / 5 / 4 / 2）。主队 T3 的 4 个号彼此不挨着（Pagan–Broly 224 像素）。异队编队号挨着的有三处：Tal（T2）–Zhuge Liang（T3）64 像素、British Empire（T2）–Zhuge Liang 176 像素、Kilwa（T4）–British Empire 182 像素。在线时互相不打（British Empire t=1110~1230 有 8 个点的 sb 取的是 Zhuge Liang 的余额）；Tal、British Empire 掉线后空壳吃掉 Zhuge Liang 7353 格。跨队协防：Cyrus（T1）为 LightYagami（T2）戳 zero_7 两次；Pagan（T3）为撞名的野人 Prussia（T1）下了三次戳刺单。t=2700 之后 4 个幸存号各在一个队，互相够不着。"
+}

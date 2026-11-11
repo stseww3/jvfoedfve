@@ -194,6 +194,19 @@ CATALOG = [
     dict(id="NEW-EX-05", prefix="EX", name="同一次决策发两条指令，只有第一条落地：零星空地单占掉名额",
          definition="影子同一次 act 发出 ≥2 条指令时，第 1 条在录像里配得上、第 2 条及以后配不上；记被丢掉的第 2 条的本意兵力合计",
          detect="scripts/shadowcmp.py [SI]"),
+    # ---- B034 起新增 ----
+    dict(id="NEW-MT-03", prefix="MT", name="空壳兄弟仍受保护：异队编队号离开后被引擎托管，照样来打；编队号按名字把它排除在可打名单外",
+         definition="真值交战账里攻方是已离开的编队号（空壳）、守方是在线的异队编队号、被拿走 ≥300 格；同期守方对该空壳的陆攻指令数为 0（影子逐拍追踪里该空壳不在 nb 里）",
+         detect="scripts/truth.py [TF]『编队内』行 + --cmds；scripts/shadow.mjs --trace（nb 列表）"),
+    dict(id="NEW-MT-04", prefix="MT", name="撞名野人算进编队：名字在名字池里的陌生真人占出生名次、受保护、被协防",
+         definition="房间里名字在 SQUAD_POOL_SET、但不在本编队日志身份表（HL-GAME-INIT 的 me）里的真人；命中任一：[HL-SPAWN] 的 rankIdx 序列为它留了空位；与某个编队号接壤 ≥30 格持续 ≥180 拍而该号对它 0 条陆攻；[HL-ASSIST]/[HL-DONATE] 的 ally 是它",
+         detect="scripts/facts.py digest [B][H] + resim.json names；scripts/shadow.mjs --trace（nb 列表里没有它）"),
+    dict(id="NEW-IO-06", prefix="IO", name="日志标签中途换名 / 对局卡少数号：同一个 me 先后用几个名字，掉线号没有结果行",
+         definition="traj.csv 的标签数 > HL-GAME-INIT 的 me 个数，或 card.squadBots < HL-GAME-INIT 的 me 个数；记同一个 me 的标签链和没有结果行的 me",
+         detect="scripts/facts.py digest [A][B]"),
+    dict(id="NEW-DN-09", prefix="DN", name="空壳赠兵（引擎规则）：离开的号没有可打的目标时把全部余额交给一个队友",
+         definition="真值重演里 bots.js botGive 的每一次成交：记空壳、收款方（在线编队号 / 其它真人 / 另一个空壳）、到账；单笔 ≥ 收款方当时余额的 50% 算命中",
+         detect="scripts/truth.py [TM]（resim_r08.mjs 的 huskGifts）"),
 ]
 
 BY_ID = {p["id"]: p for p in CATALOG}
