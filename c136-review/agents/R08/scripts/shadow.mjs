@@ -140,6 +140,7 @@ function census(g, b) {
     const fl = pol.floors(g);
     const bal = g.bal[me], min = pol.minCmd(g);
     let best = null, anyOk = 0, nAi = 0;
+    const per = [];   // 逐个接壤的内置 AI：[号, 被哪一关挡住]（landcap.py 的逐格归因用）
     for (const q of pol.nb) {
       if (g.alive[q] === 0 || g.terr[q] === 0 || pol.person(g, q)) continue;
       const price = pol.price(g, q);
@@ -161,12 +162,13 @@ function census(g, b) {
       } else if (need <= 0) why = 'need<=0';
       else if (!g.hasAttack(me, q) && !g.hasFreeSlot(me)) why = 'slots';
       if (why === 'ok') anyOk++;
+      per.push([q, why]);
       if (best && price >= best.price) continue;
       best = { q, price: +price.toFixed(1), terr: g.terr[q], aiBal: g.bal[q], need: Math.round(need), floor: Math.round(floor), avail: Math.round(avail), why };
     }
     let src = null;
-    if (best && /floor:sb/.test(best.why)) { const sbs = sbSource(g, pol); if (sbs) src = [sbs.ai, sbs.who, whoCat(g, me, sbs.who), sbs.whoBal, sbs.whoTerr, sbs.v]; }
-    b.census.push([g.t, bal, g.terr[me], pol.neutral, best ? best.q : -1, best ? best.price : 0, best ? best.terr : 0, best ? best.aiBal : 0, best ? best.need : 0, best ? best.floor : 0, best ? best.why : 'noAI', src, nAi, anyOk]);
+    if ((best && /floor:sb/.test(best.why)) || per.some((x) => /floor:sb/.test(x[1]))) { const sbs = sbSource(g, pol); if (sbs) src = [sbs.ai, sbs.who, whoCat(g, me, sbs.who), sbs.whoBal, sbs.whoTerr, sbs.v]; }
+    b.census.push([g.t, bal, g.terr[me], pol.neutral, best ? best.q : -1, best ? best.price : 0, best ? best.terr : 0, best ? best.aiBal : 0, best ? best.need : 0, best ? best.floor : 0, best ? best.why : 'noAI', src, nAi, anyOk, per]);
   } catch (e) { if (b.errors.length < 20) b.errors.push([g.t, 'census ' + String(e).slice(0, 200)]); }
 }
 
