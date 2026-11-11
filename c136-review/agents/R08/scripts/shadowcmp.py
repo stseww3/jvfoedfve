@@ -21,7 +21,7 @@ sys.path.insert(0, HERE)
 from truth import Truth, NEUTRAL  # noqa: E402
 import r08lib as L  # noqa: E402
 
-MAXLAG = 600
+MAXLAG = 1500   # 600 会在卡顿尾段饱和（真时延到 700~1300 拍）；近窗（≤40 拍）优先的规则不变
 
 
 def median(v):
@@ -170,9 +170,12 @@ def sec_SI(S, T, w, allpairs):
 
 
 def main():
+    global MAXLAG
     args = sys.argv[1:]
     mid = args[0]
     quiet = "--quiet" in args
+    if "--maxlag" in args:
+        MAXLAG = int(args[args.index("--maxlag") + 1])
     only = args[args.index("--bot") + 1] if "--bot" in args else None
     T = Truth(mid)
     peer = "--side" in args and args[args.index("--side") + 1] == "peer"
