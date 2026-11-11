@@ -220,6 +220,30 @@ def main():
     k18 = [r for r in all_w if r[4] >= 17 and r[6] == 0]
     P(f"  一窗发出 ≥17 条（差不多每个决策拍一条）且没有捐款的窗口：{len(k18):,} 个，发出 {sum(r[4] for r in k18):,}、落地 {sum(r[5] for r in k18):,}；分布在 {len({r[0] for r in k18})} 局、{len({(r[0], r[1]) for r in k18})} 个号次")
 
+    P("")
+    P("## J. 逐局的「连发窗口」（单个号一窗发出 ≥10 条、窗口里没有捐款）：局 | 这样的窗口数（其中 ≥17 条的）| 窗口里发出 / 落地 | 按窗口起点分 0~600 / 600~1500 / 1500~3000 / 3000+ 的窗口数 | 涉及的号数")
+    fl = defaultdict(list)
+    for r in all_w:
+        if r[4] >= 10 and r[6] == 0:
+            fl[r[0]].append(r)
+    with open(os.path.join(CROSS, "throughput_flood.tsv"), "w", encoding="utf-8") as f:
+        f.write("matchId\tresult\tfloodWindows\tfloodWindowsGe17\tissuedInFlood\tlandedInFlood\tw0_600\tw600_1500\tw1500_3000\tw3000\tbots\n")
+        for g in games:
+            ws = fl.get(g["matchId"], [])
+            per = [sum(1 for r in ws if p[0] <= r[2] < p[1]) for p in PERIODS]
+            f.write(f"{g['matchId']}\t{g['result']}\t{len(ws)}\t{sum(1 for r in ws if r[4] >= 17)}\t{sum(r[4] for r in ws)}\t{sum(r[5] for r in ws)}\t" + "\t".join(str(x) for x in per) + f"\t{len({r[1] for r in ws})}\n")
+    mine = ["A062", "A033", "A039", "A079", "A061", "A053", "A091", "A089", "A082", "A007", "A070"]
+    for mid in mine:
+        ws = fl.get(mid, [])
+        per = [sum(1 for r in ws if p[0] <= r[2] < p[1]) for p in PERIODS]
+        P(f"  {mid}\t{len(ws)}（{sum(1 for r in ws if r[4] >= 17)}）\t{sum(r[4] for r in ws):,} / {sum(r[5] for r in ws):,}\t" + " / ".join(str(x) for x in per) + f"\t{len({r[1] for r in ws})}")
+    allfl = [r for ws in fl.values() for r in ws]
+    P(f"  全部 {len(games)} 局\t{len(allfl):,}（{sum(1 for r in allfl if r[4] >= 17):,}）\t{sum(r[4] for r in allfl):,} / {sum(r[5] for r in allfl):,}\t"
+      + " / ".join(str(sum(1 for r in allfl if p[0] <= r[2] < p[1])) for p in PERIODS) + f"\t有这种窗口的局 {len(fl)} 局")
+    nz = sorted(((len(ws), m) for m, ws in fl.items()), reverse=True)
+    P("  这种窗口最多的 15 局：" + "、".join(f"{m}（{n}）" for n, m in nz[:15]))
+    P("  （只列我逐局复盘过的 11 局带录像的局；全部局在 throughput_flood.tsv）")
+
     os.makedirs(CROSS, exist_ok=True)
     open(os.path.join(CROSS, "throughput.txt"), "w", encoding="utf-8").write("\n".join(L) + "\n")
     print("\n".join(L))

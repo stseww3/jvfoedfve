@@ -86,6 +86,20 @@ def main():
         ver, log_last, resets = log_facts(mid, allow)
         r = {"matchId": mid, "cohort": c.get("cohort", ""), "result": c.get("_result", ""), "ver": ver, "humans": int(b["humans"]), "logBots": int(b["logBots"]),
              "bots": int(b["squadBots"]), "lastTick": int(b["lastTick"]), "logLastTick": log_last, "cmdsResets": resets}
+        # 结算表里 event=left 的号（被判离开；席位交给内置 AI）。只是下限：有的号被判离开时结算表没有记（A062 六个里只记了一个）
+        left = []
+        rp = os.path.join(DATA, "bundles", mid, "results.csv")
+        if os.path.exists(rp):
+            with open(rp, newline="", encoding="utf-8") as f:
+                for row in csv.DictReader(f):
+                    if row.get("event") == "left" and row.get("bot") in allow:
+                        try:
+                            left.append(int(row["tick"]))
+                        except (ValueError, KeyError):
+                            pass
+        r["leftAll"] = len(left)
+        r["leftBefore3000"] = sum(1 for t in left if 0 < t < 3000)
+        r["leftTicks"] = ",".join(str(t) for t in sorted(left))
         # 录像只到一半（最后一拍比在场的号最后一条 HL-TICK 早 180 拍以上）的局，发出 vs 落地不能对账
         r["replayShort"] = 1 if r["lastTick"] + 180 < log_last else 0
         r["partial"] = 1 if r["bots"] < r["logBots"] else 0
@@ -108,7 +122,7 @@ def main():
                   "spawnAfterPhase": int(b["spawnCmdsAfterPhase"])})
         rows.append(r)
 
-    cols = ["matchId", "cohort", "ver", "result", "humans", "logBots", "bots", "partial", "lastTick", "logLastTick", "replayShort", "cmdsResets", "solves", "changes", "asg", "hostSpawn", "spawnLanded", "firstMiss", "firstBots", "endLast",
+    cols = ["matchId", "cohort", "ver", "result", "humans", "logBots", "bots", "partial", "lastTick", "logLastTick", "replayShort", "cmdsResets", "leftAll", "leftBefore3000", "leftTicks", "solves", "changes", "asg", "hostSpawn", "spawnLanded", "firstMiss", "firstBots", "endLast",
             "endOver", "endStale", "endNone", "grpRev", "grpFwd", "grpBoth", "myFirstStep", "othFirstStep", "issued", "landed", "dispatch", "donLanded", "atkIssued",
             "atkLanded", "atkMiss", "late90", "late90_600_1500", "late90_1500_3000", "late90_3000", "late180", "squadCmds", "sqBatches", "sqBatchCmds", "sqBatch9", "sqBatchGt9",
             "sqBatchMax", "sqBatchesByPeriod", "otherCmds", "otBatches", "otBatchCmds", "otBatchMax", "notMod7", "spawnAfterPhase"]
@@ -200,6 +214,21 @@ def main():
     top = sorted(fv, key=lambda r: -r["atkMiss"] / r["atkIssued"])[:12]
     P("没落地比例最高的 12 局：" + "、".join(f"{r['matchId']}（{r['atkMiss']}/{r['atkIssued']} = {r['atkMiss'] / r['atkIssued']:.0%}，批 {r['sqBatches']}，{r['result']}）" for r in top))
     P(f"捐款：日志 [HL-DISPATCH] 合计 {sum(r['dispatch'] for r in fv):,} 条、录像里我方捐款指令 {sum(r['donLanded'] for r in fv):,} 条。")
+
+    P("")
+    P("## C2. 被判离开的席位（results.csv 里 event=left；只是下限）")
+    lf = [r for r in rows if r["leftBefore3000"]]
+    P(f"t<3000 就有号被判离开的局：{len(lf)} 局、{sum(r['leftBefore3000'] for r in lf)} 个号（全部 {n} 局里在场的号合计 {sum(r['bots'] for r in rows)} 个）；"
+      f"其中 ≥5 个号的：" + "、".join(f"{r['matchId']}（{r['leftBefore3000']}/{r['bots']}，拍 {r['leftTicks']}，{r['result']}）" for r in lf if r["leftBefore3000"] >= 5))
+    P("其余：" + "、".join(f"{r['matchId']}（{r['leftBefore3000']}）" for r in lf if r["leftBefore3000"] < 5))
+    lf_ids = {r["matchId"] for r in lf}
+    a = [r for r in fv if r["matchId"] in lf_ids]
+    b = [r for r in fv if r["matchId"] not in lf_ids]
+    for lab, rs in (("有号在 t<3000 被判离开的局", a), ("没有的局", b)):
+        if rs:
+            miss = [r["atkMiss"] / r["atkIssued"] for r in rs]
+            P(f"{lab}（能对账的 {len(rs)} 局）：没落地比例中位 {statistics.median(miss):.1%}、≥25% 的 {sum(1 for x in miss if x >= 0.25)} 局；批数中位 {statistics.median([r['sqBatches'] for r in rs]):.0f}；"
+              + "、".join(f"{k or '?'} {v}" for k, v in Counter(r["result"] for r in rs).most_common()))
 
     P("")
     P("## D. 和结果的对照（只是并排放，不是因果）")
