@@ -363,3 +363,62 @@ for p in P:
     if P[p]['team'] != OUR and alive_at(p, 6000) and not (0 <= P[p]['leftT'] <= 6000):
         tm[P[p]['team']] += 1
 print(f"  t=6000 在场敌方真人：" + ' '.join(f'T{t_} {n_} 人' for t_, n_ in sorted(tm.items())))
+
+print('== §16 队伍之间易手的地（pairAll，600 拍窗口；SQ = 编队，T3r = 本队路人）与交换比 ==')
+team = {p: P[p]['team'] for p in P}
+cls = lambda p: 'SQ' if p in sq else ('T3r' if team[p] == OUR else f'T{team[p]}')
+tab = defaultdict(lambda: defaultdict(int))
+for w, x, b, n_ in J['pairAll']:
+    if b in team and x in team:
+        tab[(w, cls(b))][cls(x)] += n_
+print('  窗口｜从编队手里：T1 / T2｜从 T3 路人手里：T1 / T2｜编队从 T1 / T2 手里｜T1 从 T2 手里 / T2 从 T1 手里')
+for w in range(2, 15):
+    c, d_, a, b = tab[(w, 'SQ')], tab[(w, 'T3r')], tab[(w, 'T1')], tab[(w, 'T2')]
+    print(f"  {w*600}–{w*600+599}｜{c['T1']} / {c['T2']}｜{d_['T1']} / {d_['T2']}｜{a['SQ']} / {b['SQ']}｜{b['T1']} / {a['T2']}")
+for vt in ('SQ', 'T3r', 'T1', 'T2'):
+    print(f'  全程 从 {vt} 手里：' + ' '.join(f"{kk}:{sum(tab[(w, vt)][kk] for w in range(0, 16))}" for kk in ('T1', 'T2', 'SQ', 'T3r')))
+for lo, hi in ((1500, 3000), (3000, 4200), (4200, 5400), (5400, 6000), (6000, 7800), (7800, 9000), (1500, 9000)):
+    o = [0, 0, 0]; i_ = [0, 0, 0]
+    for r in J['pairsW']:
+        t = r['w'] * 100
+        if not (lo <= t < hi):
+            continue
+        a, b = r['a'], r['b']
+        if a in sq and b in team and team[b] != OUR:
+            o[0] += r['sent']; o[1] += r['tiles']; o[2] += r['balDmg']
+        if b in sq and a in team and team[a] != OUR:
+            i_[0] += r['sent']; i_[1] += r['tiles']; i_[2] += r['balDmg']
+    print(f"  {lo}–{hi}: 编队打敌方真人 投 {k(o[0])} 拿地 {o[1]} 打掉兵 {k(o[2])}（每格 {o[0]/max(1,o[1]):.0f} 兵）｜敌方真人打编队 投 {k(i_[0])} 拿地 {i_[1]} 打掉兵 {k(i_[2])}（每格 {i_[0]/max(1,i_[1]):.0f} 兵）")
+
+print('== §17 赢家一侧：Player 395(#35,T2)、Player 755(#38,T1)、各队在场人数；真人之间的捐兵 ==')
+for big in (35, 38, 27):
+    tk = defaultdict(int)
+    for w, x, b, n_ in J['pairAll']:
+        if x == big:
+            tk['中立' if b == 512 else '机器人' if b == 600 else cls(b)] += n_
+    fromsq = defaultdict(int)
+    for r in J['pairs']:
+        if r['a'] == big and r['b'] in sq:
+            fromsq[sq[r['b']]] += r['tiles']
+    hs_ = ' '.join(f"{t}:{hsrow(t)[0][big]}/{k(hsrow(t)[1][big])}" for t in HS['t'] if t in (1500, 3000, 4200, 5400, 6000, 7200, 7800, 8400))
+    atk = [e for e in ev if e['type'] == 'attack' and e['p'] == big and e.get('q') in sq and e['ok']]
+    print(f"  {nm(big)} 峰值 {P[big]['peakTerr']}@{P[big]['peakT']}｜地/兵 {hs_}")
+    print(f"     拿地来源：" + ' '.join(f'{a}:{b}' for a, b in sorted(tk.items(), key=lambda z: -z[1])) + f"｜从我方号：{sum(fromsq.values())}（" + ' '.join(f'{a}:{b}' for a, b in sorted(fromsq.items(), key=lambda z: -z[1])) + '）')
+    print(f"     对我方号的陆攻 {len(atk)} 条 {k(sum(e['troops'] for e in atk))}；pct 中位 {statistics.median([e['pct'] for e in atk]) if atk else 0:.0f}；按号：" + ' '.join(f"{b}:{k(v)}" for b, v in sorted(((sq[q], sum(e['troops'] for e in atk if e['q'] == q)) for q in {e['q'] for e in atk}), key=lambda z: -z[1])))
+dn = defaultdict(lambda: [0, 0, 0])
+for d in ad:
+    t, a, b, v, fee = d[:5]
+    key = 'SQ→SQ' if (a in sq and b in sq) else ('路人→SQ' if b in sq else f'T{team[a]} 真人之间')
+    dn[key][0] += 1; dn[key][1] += v; dn[key][2] += fee
+print('  全场捐兵（笔数/到账/税）：' + '；'.join(f'{kk} {v[0]} 笔 {k(v[1])}/{k(v[2])}' for kk, v in sorted(dn.items())))
+big_d = sorted((d for d in ad if d[1] not in sq), key=lambda d: -d[3])[:5]
+print('  真人最大的 5 笔：' + '；'.join(f"{d[0]} {nm(d[1])}→{nm(d[2])} {k(d[3])}（税 {k(d[4])}）" for d in big_d))
+
+print('== §18 终局：最后两个号的离场（Policy.act L4912-4926）==')
+for e in ev:
+    if e['type'] in ('died', 'leave') and e['p'] in sq and e['t'] > 8500:
+        print(f"  {sq[e['p']]} {e['type']} t={e['t']}" + (f" 当时 {e.get('L0')} 格/{k(e.get('B0', 0))}" if e['type'] == 'leave' else ''))
+j = len(T['t']) - 1
+print(f"  T30 最后一采 t={T['t'][j]}：各队地 {T['land'][j]}（[无队, T1, T2, T3]），编队 {T['squadLand'][j]}；全图 {LAND}，4% = {0.04*LAND:.0f}，5% = {0.05*LAND:.0f}")
+alive_m = [nm(p) + f" {at(p, 8930)[0] if str(p) in J['S10'] else hsrow(8700)[0][p]}格" for p in P if team[p] == OUR and p not in sq and alive_at(p, 8930) and not (0 <= P[p]['leftT'] <= 8930)]
+print('  t=8930 仍在场的路人队友：' + ('；'.join(alive_m) or '无'))
