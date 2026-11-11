@@ -20,6 +20,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from r06lib import load_match, pname, pteam, donation_truth  # noqa: E402
 import digest as D  # noqa: E402
+import simdigest as SD  # noqa: E402
 
 ROOT = os.path.dirname(HERE)
 PROTO_TICKS = [90, 180, 270, 630, 1170, 1530, 2070, 3060, 4050, 4500, 5040, 6030, 7020, 8010, 9000, 9990, 10980, 11970, 12960, 13950]
@@ -34,7 +35,75 @@ def team_rank(tot, team):
     return None
 
 
-def facts(M):
+def truth_timeline_row(X, t, primary):
+    """真引擎重放在 t 拍的编队与各队真值。"""
+    S = X.S
+    i = X.ix(t)
+    tt = S['ticks'][i]
+    tl, tb, th, tk = S['teamLand'][i], S['teamBal'][i], S['teamHumans'][i], S['teamHusk'][i]
+    act = [p for p in X.squad if X.alive_active(p, tt)]
+    husk = [p for p in X.squad if not X.alive_active(p, tt) and not (X.deathT[p] >= 0 and tt >= X.deathT[p])]
+    land = sum(S['hum'][p]['terr'][i] for p in act)
+    troops = sum(S['hum'][p]['bal'][i] for p in act)
+    per = defaultdict(lambda: [0, 0, 0])
+    for p in act:
+        per[X.team[p]][0] += 1
+        per[X.team[p]][1] += S['hum'][p]['terr'][i]
+        per[X.team[p]][2] += S['hum'][p]['bal'][i]
+    boxed = 0
+    for p in act:
+        ns = [n for n in X.neigh[p] if n['t'] <= tt]
+        if ns and tt - ns[-1]['t'] <= 90:
+            ec = SD.enemy_contact(X, ns[-1])
+            if ec['enemy'] == 0 and ns[-1]['neut'] == 0:
+                boxed += 1
+    nT = S['nTeams']
+    order = sorted(range(1, nT + 1), key=lambda k: -tl[k])
+    row = dict(t=tt, alive=len(act), seen=len(act), husks=len(husk), squadLand=land, squadLandShare=round(land / X.land, 4), teamTroops=troops,
+               squadDens=round(troops / land, 1) if land else 0, boxed=boxed, squadHuskLand=sum(S['hum'][p]['terr'][i] for p in husk),
+               perTeam={str(k): dict(bots=v[0], land=v[1], troops=v[2]) for k, v in sorted(per.items())},
+               allTeams={str(k): dict(landShare=round(tl[k] / X.land, 4), troops=tb[k], activeHumans=th[k], huskLandShare=round(tk[k] / X.land, 4)) for k in range(1, nT + 1)},
+               aiLandShare=round(tl[0] / X.land, 4), src='engine-replay')
+    if primary is not None and 1 <= int(primary) <= nT:
+        pr = int(primary)
+        row['teamLandShare'] = round(tl[pr] / X.land, 4)
+        row['teamRank'] = order.index(pr) + 1
+        en = [k for k in order if k != pr]
+        row['topEnemyTeam'] = en[0] if en else None
+        row['topEnemyShare'] = round(tl[en[0]] / X.land, 4) if en else None
+    return row
+
+
+def truth_death(X, me, T):
+    """阵亡号的真值死因链材料。"""
+    S = X.S
+    tot, tk = SD.takers(X, me, T - 900, T + 1)
+    dtot, dk = SD.takers(X, me, T - 900, T + 1, kind='dmg')
+    led = SD.ledger_totals(X, me, T - 900, T + 1)
+    cm = [c for c in S['squadCmds'] if c['p'] == me and T - 600 <= c['t'] <= T]
+    on = defaultdict(lambda: [0, 0, 10 ** 9, 0])
+    for c in S['squadCmds']:
+        if c['k'] == 'atk' and c.get('to') == me and T - 600 <= c['t'] <= T and c['ok']:
+            a = on[c['p']]
+            a[0] += 1
+            a[1] += c['sent']
+            a[2] = min(a[2], c['t'])
+            a[3] = max(a[3], c['t'])
+    ns = [n for n in X.neigh[me] if T - 400 <= n['t'] < T]
+    return dict(
+        landTakenLast900=[dict(by=X.name(o), cls=X.cls(me, o, T), cells=v) for o, v in tk],
+        troopsKilledLast900=[dict(by=X.name(o), troops=v) for o, v in dk],
+        ledgerLast900={SD.KIND_CN[k]: v for k, v in led.items() if v},
+        ownCmdsLast600=[f"t{c['t']}:{c['k']}{'→' + X.name(c['to']) if c.get('to') is not None and c['k'] == 'atk' else ''} {c.get('pct', '')}‰ 出{c['sent']}{'' if c['ok'] else '(空)'}" for c in cm[-12:]],
+        ownCmdCountLast600=len(cm),
+        attackCmdsOnMeLast600=[f"{X.name(a)}[{X.cls(me, a, T)}]×{v[0]} 共{v[1]}兵 t{v[2]}~{v[3]}" for a, v in sorted(on.items(), key=lambda kv: -kv[1][1])],
+        donationsInLast900=[f"{X.name(x['from'])}@{x['t']} +{x['delivered']}(费{x['fee']})" for x in S['donations'] if x['to'] == me and x['ok'] and T - 900 <= x['t'] <= T],
+        donationsOutLast900=[f"→{X.name(x['to'])}@{x['t']} {x['delivered']}(费{x['fee']})" for x in S['donations'] if x['from'] == me and x['ok'] and T - 900 <= x['t'] <= T],
+        neighborsBeforeDeath=[SD.neigh_line(X, n) for n in ns[-2:]],
+    )
+
+
+def facts(M, X=None):
     card = M.card
     pres = D.presence(M)
     primary = card.get('ourPrimaryTeam')
@@ -66,6 +135,29 @@ def facts(M):
     deaths_t = sorted({p['outT'] for p in pres.values() if p['how'] == 'died' and p['outT']})
     ticks = sorted(set([t for t in PROTO_TICKS if t <= M.endTick + 60]) | set(deaths_t) | {M.endTick})
     tl = []
+    if X:
+        # 真值：分队、离开拍
+        split_true = Counter(X.team[p] for p in X.squad)
+        ctx['teamSplitTrue'] = {str(k): v for k, v in sorted(split_true.items())}
+        ctx['teamSplitSource'] = 'engine-replay(bj.fX)'
+        ctx['leftTicks'] = {M.bots[p].name: X.leave[p]['t'] for p in sorted(X.leave, key=lambda q: X.leave[q]['t']) if p in X.squad and p in M.bots}
+        ctx['huskDeaths'] = [dict(bot=M.bots[p].name, me=p, team=X.team[p], leftT=X.leave[p]['t'], diedT=X.deathT[p],
+                                  landTakenLast900=[dict(by=X.name(o), cls=X.cls(p, o, X.deathT[p]), cells=v) for o, v in SD.takers(X, p, X.deathT[p] - 900, X.deathT[p] + 1)[1][:3]])
+                             for p in X.squad if p in X.leave and X.deathT[p] >= 0 and p in M.bots]
+        c = X.S['check']
+        ctx['dataCompleteness']['truth'] = f"真引擎重放（录像 {M.replaySrc}）到 t={X.endT}；日志快照指纹 {c['exact']}/{c['points']} 逐兵一致"
+        ctx['truthEnd'] = X.endT
+        # 真值时间线：协议拍 + 在场号的真实阵亡拍 + 重放末拍；同一个采样拍只留一行
+        d_truth = sorted({X.deathT[p] for p in X.squad if X.deathT[p] >= 0 and not (p in X.leave and X.leave[p]['t'] <= X.deathT[p])})
+        t_truth = sorted(set(t for t in PROTO_TICKS if t <= X.endT) | set(d_truth) | {X.endT})
+        seen_t = set()
+        for t in t_truth:
+            row = truth_timeline_row(X, t, primary)
+            if row['t'] in seen_t:
+                continue
+            seen_t.add(row['t'])
+            tl.append(row)
+        ticks = [t for t in ticks if t > X.endT + 30]
     for r in D.timeline_rows(M, ticks):
         row = dict(t=r['t'], alive=r['active'], seen=r['seen'], squadLand=r['terr'], squadLandShare=round(r['share'], 4), teamTroops=r['bal'],
                    squadDens=round(r['dens'], 1), boxed=r['boxed'],
@@ -121,7 +213,30 @@ def facts(M):
             stillDonating=[f"{e['kind'][0]}{e['pct']}→{pname(M, e['to'])}@{e['t']}" for e in dons],
             balanceAtDeath=(b.result or {}).get('balance'),
             cause='', patternIds=[]))
-    return dict(context=ctx, outcome=outcome, timeline=tl, deaths=deaths)
+        if X and X.deathT[me] >= 0:
+            d = deaths[-1]
+            d['tLog'] = d['t']
+            d['t'] = X.deathT[me]
+            d['truth'] = truth_death(X, me, X.deathT[me])
+            d['killers'] = [f"{k['by']}[{k['cls']}] 拿走 {k['cells']} 格" for k in d['truth']['landTakenLast900']]
+    out = dict(context=ctx, outcome=outcome, timeline=tl, deaths=deaths)
+    if X:
+        S = X.S
+        ok = [x for x in S['donations'] if x['ok'] and x['from'] in X.squad]
+        small = [x for x in ok if x['pct'] < 150]
+        husk = [x for x in ok if x['toLeft']]
+        G = [g for g in (S.get('boatGifts') or []) if g['from'] in X.squad]
+        pr = SD.probe_rows(X)
+        out['truthSummary'] = dict(
+            source=ctx['dataCompleteness']['truth'],
+            donationsExecuted=dict(n=len(ok), delivered=sum(x['delivered'] for x in ok), fee=sum(x['fee'] for x in ok),
+                                   smallPctN=len(small), smallPctDelivered=sum(x['delivered'] for x in small), smallPctFee=sum(x['fee'] for x in small),
+                                   toHuskN=len(husk), toHuskDelivered=sum(x['delivered'] for x in husk), toHuskFee=sum(x['fee'] for x in husk)),
+            donationLogVerdicts=dict(Counter(r['verdict'] for r in pr)),
+            boatGiftsOut=dict(n=len(G), troops=sum(g['troops'] for g in G), delivered=sum(g['delivered'] for g in G)),
+            ledgerTotals={M.bots[p].name if p in M.bots else str(p): {SD.KIND_CN[k]: v for k, v in SD.ledger_totals(X, p).items() if v} for p in X.squad},
+        )
+    return out
 
 
 def load_collector():
@@ -138,7 +253,8 @@ def main():
         return 2
     mid = sys.argv[1]
     M = load_match(mid)
-    F = facts(M)
+    X = SD.Sim(mid, M) if M.sim else None
+    F = facts(M, X)
     if '--facts' in sys.argv:
         print(json.dumps(F, ensure_ascii=False, indent=1, default=str))
         return 0
@@ -166,6 +282,8 @@ def main():
         if a.get('statementType'):
             d['statementType'] = a['statementType']
     doc['deaths'] = F['deaths']
+    if 'truthSummary' in F:
+        doc['truthSummary'] = F['truthSummary']
     doc['decisions'] = A['decisions']
     doc['newPatterns'] = A['newPatterns']
     doc['lossArchetype'] = A['lossArchetype']
@@ -176,12 +294,17 @@ def main():
     doc['wentWell'] = A['wentWell']
     doc['unknowns'] = A['unknowns']
     doc['mechanicsQuestions'] = A['mechanicsQuestions']
-    doc['scripts'] = A.get('scripts') or [
+    doc['scripts'] = A.get('scripts') or ([
         f"node c136-review/agents/R06/scripts/replay_decode.mjs {mid}（套 run-heavy.sh）",
         f"python3 c136-review/agents/R06/scripts/team_assign.py {mid}",
+    ] + ([
+        f"bash c136-review/agents/R06/scripts/run_truth.sh {mid}（sim_prep.py + eng_replay.cjs：真引擎重放，写 out/{mid}/sim_state.json）",
+        f"python3 c136-review/agents/R06/scripts/simdigest.py {mid} check|teams|roster|ledger [me]|deaths [me]|don|probe|gifts|boats [me]|landings|fees|nfs|cmds|cmdlist <me> [t0 t1]|pair <me> [t0 t1]|neigh <me>|front|boxed|gaps|husks|poolai|protbox|medians [前缀]|shadow|gates|dups|crowd",
+        f"node c136-review/agents/R06/scripts/strat_probe.mjs {mid} --me squad --json --tally [--dump 玩家:起拍:止拍:步长,...]（套 run-heavy.sh；影子策略：同一份策略源码逐拍跑在重放局面上，打印 buyLand 逐报价的 c/worth/safe/keep/avail 和出口行号）",
+    ] if X else []) + [
         f"python3 c136-review/agents/R06/scripts/digest.py {mid} roster|teams|timeline|deaths|donations -v|drops|spawn|boxed|attacks|lag|teamwar|bot <me>|json",
         f"python3 c136-review/agents/R06/scripts/make_review.py {mid}",
-    ]
+    ])
     doc['confidenceOverall'] = A['confidenceOverall']
     os.makedirs(os.path.join(ROOT, 'reviews'), exist_ok=True)
     out = os.path.join(ROOT, 'reviews', f'{mid}.json')

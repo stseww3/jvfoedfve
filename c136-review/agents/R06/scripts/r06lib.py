@@ -164,7 +164,7 @@ def _num(x, d=None):
             return d
 
 
-def load_match(mid, with_replay=True):
+def load_match(mid, with_replay=True, use_sim=True):
     M = Match()
     M.id = mid
     base = os.path.join(DATA, mid)
@@ -235,6 +235,7 @@ def load_match(mid, with_replay=True):
                     b.names.append(r['bot'])
                 name2me.setdefault(r['bot'], r['meId'])
     M.name2me = name2me
+    M.squadIds = sorted(set(name2me.values()))   # 只来自 HL-GAME-INIT / HL-SPAWN / results.csv 的 me（可靠）
     M.unresolved = defaultdict(list)
     # 原始快照行（不依赖名字归并；sim_prep.py 拿它去和重演逐行对指纹）
     M.tickRows = []
@@ -249,13 +250,19 @@ def load_match(mid, with_replay=True):
     M.lineP = {}
     anchors = defaultdict(list)
     sp = os.path.join(OUT, mid, 'sim_state.json')
-    if with_replay and os.path.exists(sp):
+    if with_replay and use_sim and os.path.exists(sp):
         try:
             M.sim = json.load(open(sp))
         except Exception:
             M.sim = None
-        if M.sim and M.sim.get('lineId'):
+        if M.sim and M.sim.get('lineId') is not None:
             M.lineP = {int(k): v for k, v in M.sim['lineId'].items()}
+            # 歧义行（同拍多个我方号状态完全相同）：名字对应的号在候选里就用它，否则不当锚点
+            amb = {int(k): v for k, v in (M.sim.get('lineAmb') or {}).items()}
+            for r in M.tickRows:
+                c = amb.get(r['line'])
+                if c and name2me.get(r['name']) in c:
+                    M.lineP[r['line']] = name2me[r['name']]
             for r in M.tickRows:
                 q = M.lineP.get(r['line'])
                 if q is not None:
@@ -380,7 +387,7 @@ def load_match(mid, with_replay=True):
         b.donations.sort(key=lambda e: (e['t'], e['line']))
         b.assists.sort(key=lambda e: (e['t'], e['line']))
         b.opening.sort(key=lambda e: (e['t'], e['line']))
-    M.squad = sorted(me for me, b in M.bots.items() if b.init is not None or b.traj)
+    M.squad = sorted(me for me, b in M.bots.items() if b.init is not None or b.traj or me in M.squadIds)
     # 队伍领土表（来自各号结算时刻）
     M.teamSnaps = []
     for r in M.results:
