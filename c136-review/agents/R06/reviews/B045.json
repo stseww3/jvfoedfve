@@ -2311,6 +2311,33 @@
    ]
   },
   {
+   "name": "NEW:IO-disconnect-husk",
+   "definition": "我方号在存活状态下被登记离开（录像指令 9 或结算 left），领土和兵留在场上由内置 AI 托管、利息为 0，仍算原队成员",
+   "detectionSketch": "digest roster 的去向 = left；logdigest wall（结算行落盘的墙上时刻 → 服务器拍）",
+   "instances": [
+    {
+     "t": 0,
+     "bot": "Roman Empire"
+    },
+    {
+     "t": 0,
+     "bot": "Malacca"
+    },
+    {
+     "t": 0,
+     "bot": "Three Kingdoms"
+    },
+    {
+     "t": 0,
+     "bot": "Maratha"
+    },
+    {
+     "t": 1530,
+     "bot": "Moravia"
+    }
+   ]
+  },
+  {
    "name": "NEW:IO-silent-drop",
    "definition": "日志在终局前 >=300 拍停住，且没有结算行",
    "detectionSketch": "logdigest wall 的「日志停掉、也没有结算行的号」",
@@ -2491,7 +2518,7 @@
   {
    "name": "NEW:DN-husk-donate",
    "definition": "捐款时收款人的页面已经停住或离开（最后一条快照在捐款之前 >=180 拍，没有结算行或 event=left）",
-   "detectionSketch": "logdigest donlog 的逐条 × logdigest wall 的失联表",
+   "detectionSketch": "logdigest donlog 的「给页面已停住/离开的席位」一行：本局日志 4 条、执行 4 条、手续费 7.9 万",
    "instances": [
     {
      "t": 1615,
