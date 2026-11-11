@@ -71,6 +71,8 @@ class Truth:
 
     def is_husk(self, p, t=None):
         """离开后还没被吃完的空壳。t=None：整局里当过空壳。"""
+        if p >= self.H:
+            return False
         lt, dt = self.leftT[p], self.deathT[p]
         if lt < 0 or (0 <= dt <= lt):
             return False

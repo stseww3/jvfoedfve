@@ -361,7 +361,7 @@
   "name": "同一支编队被分进两局同图、几乎同时开的对局：每局只有一部分号，协调器却按全体同场求解",
   "definition": "对局包 results.csv 里各号的开局时刻（结果行的 at − seconds）分成 ≥2 组、组间相差 ≥5 秒；录像里只有其中一组的号，另一组的 meId 在录像里是别的真人（编号相撞）；[HL-SPAWN] 的本地 squad=N 小于编队人数。计数 = 每组的号数、组间相差的秒数、不在录像里的号数。这种局的对局卡把两局的数加在一起（drop30Count、totalTransfers、peakSquadLandShare）或取自另一局（peakPrimaryTeamShareSeen），不能当成录像这一局的数。不在录像里的号只有日志（traj.csv、events.csv、结果行），关于它们的结论一律标 inferred。",
   "detector": "scripts/logonly_bots.py <局号>（按开局时刻分组、meId、本地 squad=N、是否在录像里；不在录像里的号的快照、平台段、余额骤降、结果行里的队伍领土合计）；tmp/truth/<局号>/meta.json 的 ours（录像里的我方号）；对局包 in_game.log 的 [BACKEND-SPAWN-COORD] Solved N bots",
-  "codePath": "分房发生在策略代码之外（上线适配层 / 匹配，不在对局包里）。策略侧与此有关的三处：后端协调器一次给全体号解一个扇形阵（[BACKEND-SPAWN-COORD] Solved 10 bots；spawn-coordinator-c116-va.mjs TeamSpawnCoordinator.solve L790，L797~800 把全体号的 meId 都记成编队号，L818~820 遇到这些编号的真人直接跳过）；Policy.chooseSpawn L3983（L3987~3992 的 squadIds 只数本局里名字对得上的号，L3994 squadCount = max(10, …)）；Policy.tryDonateToTeammate L4411~4412（候选只有本局里的编队号）。Vb / Vc 的行号在 L4298 以后各加 1。"
+  "codePath": "分房发生在策略代码之外（上线适配层 / 匹配，不在对局包里）。策略侧与此有关的三处：后端协调器一次给全体号解一个扇形阵（[BACKEND-SPAWN-COORD] Solved 10 bots；spawn-coordinator-c116-va.mjs TeamSpawnCoordinator.solve L790，L797~800 把全体号的 meId 都记成编队号，L818~820 遇到这些编号的真人直接跳过）；Policy.chooseSpawn L3983（L3987~3992 的 squadIds 只数本局里名字对得上的号，L3994 squadCount = max(10, …)）；Policy.tryDonateToTeammate L4412~4413（候选只有本局里的编队号）。Vb / Vc 的行号在 L4298 以后各加 1。"
  },
  "NEW-SP-ALLYBLIND": {
   "prefix": "SP",
@@ -375,6 +375,6 @@
   "name": "核心期买内置 AI 的地，留兵底线仍取「这个 AI 的其他邻居里余额最小者」，队友也算：两个相邻的我方号互相把对方的余额当底线，夹在中间的 AI 谁也不吃",
   "definition": "核心期（t ≥ coreFrom=1500）某号贴着内置 AI、这一拍没有出手，core_gate_tally.py --ai 把第一条 AI 报价的去向归在 floor，且顶住的是 safeFinite（rows.tsv 的 gate 列 floor/sf/* 与 floor/cap+sf/*：后者是被 oppFloorCap×领土 截住以后仍高于「余额 − 手续费」）。按参照对象分 编队号 / 同队真人 / 敌方真人 计数。后果另记：同一段里内置 AI 从我方号身上拿走的地（ai_nibble.py）。与 NEW-OP-ALLYLOCK 的区别：那一条是核心期前 winFloor 的第 3 项，这一条是核心期 buyLand 的 safeAt。",
   "detector": "scripts/core_gate_tally.py <局号> t0 t1 --ai [--by-target]；scripts/shadow.mjs <局号> --bots <号> --at <拍>（[buyLand] 一段每条报价的 safeAt 与「余额−费−底线」）；scripts/ai_nibble.py <局号> t0 t1 [--ai 编号 --bot 号]",
-  "codePath": "Policy.buyLand L5413（let safe = this.safeAt(g, q)）、L5443~5446（keep = max(keep, safe)；avail = B − fee − keep；≤0 就跳过）← Policy.safeAt L4542~4559（L4545 用 oppFloorCap×领土 封顶）← V17.safeAt L2728~2738（L2731：botSkip=0 时不排除当前目标，取 safeFinite）← V13.safeFinite L2500~2510（对每个没在打我的内置 AI 邻居取 threatOf(q).minOther，全体取最大）← Strategy.threatOf L417~444（minOther 不排除队友）。Va 的行号；Vb / Vc 在 L4298 以后各加 1。"
+  "codePath": "Policy.buyLand L5413（let safe = this.safeAt(g, q)）、L5443~5446（keep = max(keep, safe)；avail = B − fee − keep；≤0 就跳过）← Policy.safeAt L4542~4559（L4545 用 oppFloorCap×领土 封顶）← V17.safeAt L2728~2738（L2731：botSkip=0 时不排除当前目标，取 safeFinite）← V17.safeFinite L2757~2758（skip<0 时回到 V13 的版本；botSkip=0 时 skip 恒为 −1，L2753~2756 的注释写的就是这把锁）← V13.safeFinite L2500~2510（对每个没在打我的内置 AI 邻居取 threatOf(q).minOther，全体取最大）← Strategy.threatOf L417~444（minOther 不排除队友）。Va 的行号；Vb / Vc 在 L4298 以后各加 1。"
  }
 }

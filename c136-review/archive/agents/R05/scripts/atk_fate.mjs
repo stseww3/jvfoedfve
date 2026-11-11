@@ -8,6 +8,7 @@
 //   槽里的兵不算存兵：不吃利息，也不算进被打时的密度（def 用的是 存兵/地）。
 // 用法：node atk_fate.mjs <matchId> [--bots a,b] [--min 200000] [--humans-only] [--t0 0 --t1 99999]
 //   --min：只列打出 ≥ 这个数的场次（汇总仍按全部场次）。
+//   --json FILE：把每一场（含每次追加的 [拍, 兵数]）写成 JSON（delay_account.py 用它把「一条指令」对到「它所在的那一场」）；带 --json 时不打印逐号文本。
 import { simulate, Game, NEUTRAL } from './sim_replay.mjs';
 import { squadIds } from './match_truth.mjs';
 
@@ -17,6 +18,7 @@ const val = (k, d) => (a.includes(k) ? a[a.indexOf(k) + 1] : d);
 const MIN = +val('--min', 200000), T0 = +val('--t0', 0), T1 = +val('--t1', 99999);
 const onlyBots = val('--bots', '');
 const humansOnly = a.includes('--humans-only');
+const jsonOut = val('--json', '');
 let sq = new Map(); // p -> 号名（onStart 里按录像名单填）
 const isSq = new Uint8Array(1024);
 const P = Game.prototype;
@@ -32,7 +34,7 @@ const get = (g, p, target, create) => {
   return e;
 };
 wrap('addAttack', (o) => function (p, troops, target) {
-  if (isSq[p] && !redirect) { const e = get(this, p, target, true); e.sent += troops; e.cmds++; }
+  if (isSq[p] && !redirect) { const e = get(this, p, target, true); e.sent += troops; e.cmds++; (e.adds || (e.adds = [])).push([this.t, troops]); }
   return o.call(this, p, troops, target);
 });
 wrap('redirectAttackToNeutral', (o) => function (p, target) {
@@ -88,6 +90,12 @@ if (P.cancelAttack) wrap('cancelAttack', (o) => function (p, target) {
 const R = simulate(mid, { onStart: (g, ctx) => { sq = squadIds(mid, ctx.names, ctx.H).squad; for (const p of sq.keys()) isSq[p] = 1; } });
 for (const e of open.values()) { e.t1 = R.endTick; e.open = true; done.push(e); }
 const H = R.H, names = R.names;
+if (jsonOut) {
+  const fs = await import('node:fs');
+  fs.writeFileSync(jsonOut, JSON.stringify({ mid, H, endTick: R.endTick, squad: [...sq].map(([p, bot]) => ({ p, bot })), episodes: done.map((e) => ({ ...e, adds: e.adds || [] })) }));
+  console.log(`[进攻下场] ${mid}：${done.length} 场 → ${jsonOut}`);
+  process.exit(0);
+}
 const nm = (t) => (t >= 512 ? '中立' : t < H ? `${names[t]}#${t}` : `机器人#${t}`);
 const k = (v) => (Math.abs(v) >= 1e6 ? (v / 1e6).toFixed(2) + 'M' : Math.abs(v) >= 1e4 ? Math.round(v / 1e3) + 'k' : String(Math.round(v)));
 for (const [p, bot] of sq) {

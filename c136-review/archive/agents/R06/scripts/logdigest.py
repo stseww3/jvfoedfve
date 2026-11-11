@@ -654,7 +654,7 @@ def sec_donlog(M, detail=None):
     print(f"   第二种估法（引擎规则：到账 = min(想给, 对方离硬上限的空间)）：执行的 {len(ex)} 条到账 {fmt(sum(r['byRule'] for r in ex))}（干净的 {len(clean)} 条 {fmt(sum(r['byRule'] for r in clean))}）；"
           f"到账 < 手续费的 {len(w2)} 条：手续费 {fmt(sum(r['fee'] for r in w2))}、到账 {fmt(sum(r['byRule'] for r in w2))}（其中 pct<64 的 {len(low)} 条本来就是手续费比到账多；其余 {len(w2) - len(low)} 条是被对方的空间截掉的）")
     for r in sorted(w2, key=lambda r: -r['fee']):
-        print(f"      {r['name']} t={r['t']} {r['kind']} pct={r['pct']} →{r['toName'][:12]}：余额 {r['bal']}、手续费 {r['fee']}、想给 {r['vmax']}、对方 {r['recvTerr']} 格 密度 {r['recvDens']:.0f}、空间 {r['recvRoom']}{'（混）' if r['mixed'] else ''}")
+        print(f"      {r['name']} t={r['t']} {r['kind']} pct={r['pct']} →{r['toName'][:12]}：余额 {r['bal']}、手续费 {r['fee']}、想给 {r['vmax']}、对方 {r['recvTerr']} 格 密度 {('%.0f' % r['recvDens']) if r['recvDens'] is not None else '?'}、空间 {r['recvRoom']}{'（混）' if r['mixed'] else ''}")
     pp = pingpong_pairs(rows)
     inv = {id(x): x for a, b_ in pp for x in (a, b_)}
     print(f"   反向配对（A→B 执行后 {PINGPONG_WIN} 拍内 B→A 也执行）：{len(pp)} 对，涉及 {len(inv)} 笔捐款，这些捐款的手续费合计 {fmt(sum(x['fee'] for x in inv.values()))}")

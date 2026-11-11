@@ -346,6 +346,19 @@ CATALOG = [
     dict(id="NEW-AT-G3", prefix="AT", name="（正面）密度还低时趁邻居便宜连续出手：不等囤过软上限",
          definition="只看日志：一个号在密度 <50 时起手，≤630 拍内陆攻 ≥8 条，领土 ≥2 倍，净花费 ÷ 净增领土 ≤50 兵/格，期末密度不低于期初",
          detect="scripts/facts.py [E]（分段的 Δcmds / 领土 / 密度）；scripts/flow.py [VB]（逐窗净流出）"),
+    # ---- B015（8 队局，11 个号分在 5 个队；延迟硬账 / 好地硬账）新增 ----
+    dict(id="NEW-EC-10", prefix="EC", name="收割中途掉队：头一段（630~900）人均吃到的人机地不比别人少，后一段（900~1260）掉到别人的一半以下",
+         definition="真值逐对战损账里，(630,900] 本编队在线号人均从内置 AI 手里拿到的格数 ≥ 其他真人人均，而 (900,1260] < 0.5×其他真人人均。"
+                    "和 NEW-EC-06（整段 630~1260 落后）分开数：这一条说明站位够得着、起步不慢，掉队发生在 900 拍之后",
+         detect="scripts/harvest.py <局> 的两个窗；按格追踪的对照：scripts/landcap.py [KD] 的 150 拍窗占比"),
+    dict(id="NEW-MT-08", prefix="MT", name="（引擎规则）内置 AI 也分队：贴着的人机是自己队的，不能打，只能看着别的队吃",
+         definition="8 队局里内置 AI p 属于 1+(p%8) 队（按这个设定重演才逐兵对得上）。(600,1500] 别人吃掉的、被吃之前有编队号贴着的 AI 格里，"
+                    "那个 AI 和贴着它的编队号同队的格数占 ≥20% 算命中；记格数、占接壤口径的比例、占按人头差额的比例",
+         detect="scripts/landcap.py [KF] 的『同队的内置 AI（不能打）』一行；resim_r08.mjs 的 botsTeamed（nTeams ≥ 8）"),
+    dict(id="NEW-IO-14", prefix="IO", name="迟到落空：指令落地时目标人机已经出局，被引擎改成打无主地或作废",
+         definition="影子瞄的是内置 AI 或真人、录像里这一条的目标记成 512（无主地）的陆攻：600~1500 这样的条数 ≥ 该段落地陆攻的 10% 算命中；"
+                    "记改打无主地的条数 / 兵、作废的条数 / 本意的兵，以及『按时到』和『晚 ≥35 拍』两组的落空率",
+         detect="scripts/atkfate.mjs + scripts/lagledger.py [GE]"),
 ]
 
 BY_ID = {p["id"]: p for p in CATALOG}

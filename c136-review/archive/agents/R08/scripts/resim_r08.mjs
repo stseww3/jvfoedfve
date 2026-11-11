@@ -502,11 +502,12 @@ export function resim(mid, opts = {}) {
   const cmdLog = [];
   const leftT = new Int32Array(H).fill(-1);
   const spawnXY = new Array(H).fill(null);
+  const spawnSeq = Array.from({ length: H }, () => []);   // 出生阶段每个真人落地的选点指令（按执行顺序）
   const execCmd = (c) => {
     const { id, player, dX, dZ } = c;
     if (id === 0) {
       g.chooseSpawn(dX % g.W, Math.floor(dX / g.W), player, false);
-      if (player < H) spawnXY[player] = [dX % g.W, Math.floor(dX / g.W)];
+      if (player < H) { spawnXY[player] = [dX % g.W, Math.floor(dX / g.W)]; spawnSeq[player].push([iy, dX % g.W, Math.floor(dX / g.W)]); }
     } else if (id === 1) {
       const B0 = g.bal[player], L0 = g.terr[player];
       const target = Math.min(dZ, NEUTRAL);
@@ -769,7 +770,7 @@ export function resim(mid, opts = {}) {
     gameMode: vu.gameMode, nTeamsHeader: vu.numberTeams, nTeams: ta.nTeams, teamColor: ta.lH, botsTeamed: ta.botsTeamed,
     clans: ta.clans, teamSizes: ta.sizes, teams: ta.fX, names, colors, squad, selectedPlayer: vu.selectedPlayer,
     endTick: g.t, over: g.over, winner: g.winner, winnerTeam: g.winnerTeam,
-    spawnXY, startBox, leftT: Array.from(leftT), deathT: Array.from(deathT.subarray(0, H)),
+    spawnXY, spawnSeq, spawnTurns: vu.selectableSpawn ? (H <= 2 ? 30 : H <= 50 ? 40 : 50) : 0, startBox, leftT: Array.from(leftT), deathT: Array.from(deathT.subarray(0, H)),
     validate: val,
     snapT, snapTerr, snapBal, snapInc, snapRet, snapOut, snapAi, teamLand, botLand, aliveH,
     sq, pairLog, cmdLog, deaths, landings, maps, engineEvents, huskGifts,

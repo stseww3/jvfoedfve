@@ -294,6 +294,14 @@ def main():
     doc['deaths'] = F['deaths']
     if 'truthSummary' in F:
         doc['truthSummary'] = F['truthSummary']
+    # 延迟账 / 好地账：latency.py <id> json、landcap.py <id> json 的原样输出（有才带）
+    for key, fn in (('latencyLedger', 'latency.json'), ('landLedger', 'landcap.json')):
+        p = os.path.join(ROOT, 'out', mid, fn)
+        if os.path.exists(p):
+            doc[key] = json.load(open(p))
+    for k in ('latencyNotes', 'landNotes'):
+        if k in A:
+            doc[k] = A[k]
     doc['decisions'] = A['decisions']
     doc['newPatterns'] = A['newPatterns']
     doc['lossArchetype'] = A['lossArchetype']
