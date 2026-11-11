@@ -26,8 +26,9 @@ a = sys.argv[1:]
 jo = a[a.index('--json') + 1] if '--json' in a else None
 per_match = '--per-match' in a
 ids = [x for i, x in enumerate(a) if not x.startswith('--') and (i == 0 or a[i - 1] != '--json')]
-CM = '/tmp/c136-r05/cmds'
+CM = os.environ.get('C136_CMDS', '/tmp/c136-r05/cmds')
 DATA = os.environ.get('C136_DATA', '/agent/repos/c136-data')
+BUN = os.environ.get('C136_BUNDLES', 'bundles')   # 验证集：C136_BUNDLES=validation_bundles
 H = json.load(open(f'{CM}/headers.json'))
 if not ids:
     ids = sorted(m for m in H if 'error' not in H[m] and os.path.exists(f'{CM}/{m}.tsv'))
@@ -40,7 +41,7 @@ bare = lambda n: re.sub(r'\[[^\]]*\]', '', n or '').strip().lower()
 
 
 def squad_seats(mid, names, humans):
-    B = f'{DATA}/bundles/{mid}'
+    B = f'{DATA}/{BUN}/{mid}'
     if not mid or not os.path.exists(f'{B}/in_game.log'):
         return set()
     alias = {}
@@ -63,7 +64,7 @@ def squad_seats(mid, names, humans):
 
 
 def peer_of(mid):
-    p = f'{DATA}/bundles/{mid}/card.json'
+    p = f'{DATA}/{BUN}/{mid}/card.json'
     if not os.path.exists(p):
         return None
     return (json.load(open(p)).get('sameMatchPeer') or {}).get('peerMatchId')

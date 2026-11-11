@@ -50,15 +50,17 @@ a = sys.argv[1:]
 opt = lambda k: a[a.index(k) + 1] if k in a else None
 ids = [x for i, x in enumerate(a) if not x.startswith('--') and (i == 0 or a[i - 1] not in ('--tsv', '--json', '--only'))]
 SRC = os.environ.get('C136_DATA', '/agent/repos/c136-data')
-CMDS = '/tmp/c136-r05/cmds'
+BUN = os.environ.get('C136_BUNDLES', 'bundles')   # 验证集：C136_BUNDLES=validation_bundles
+CMDS = os.environ.get('C136_CMDS', '/tmp/c136-r05/cmds')
 HEAD = json.load(open(f'{CMDS}/headers.json'))
 if not ids:
-    ids = sorted(d for d in os.listdir(f'{SRC}/bundles') if os.path.exists(f'{SRC}/bundles/{d}/replay.txt'))
+    ids = sorted(d for d in os.listdir(f'{SRC}/{BUN}') if os.path.exists(f'{SRC}/{BUN}/{d}/replay.txt'))
 if opt('--only'):
     ids = [x for x in ids if x[0] in opt('--only')]
 bare = lambda n: re.sub(r'\[[^\]]*\]', '', n or '').strip().lower()
 IDMAP = collections.defaultdict(list)
-for r in csv.DictReader(open(f'{SRC}/src/tools/identity-map-discovery.csv', encoding='utf-8')):
+_idmap = os.environ.get('C136_IDMAP', f'{SRC}/src/tools/identity-map-discovery.csv')   # 验证集没有这份表时：C136_IDMAP=''（B 组轮换名就不换回）
+for r in (csv.DictReader(open(_idmap, encoding='utf-8')) if _idmap and os.path.exists(_idmap) else []):
     IDMAP[r['matchId']].append(r)
 MAPW = {}            # mapId → 宽（从有 `(map=宽x高` 的局学来）
 
@@ -114,7 +116,7 @@ def inside(h, p):
 
 
 def scan(mid):
-    B = f'{SRC}/bundles/{mid}'
+    B = f'{SRC}/{BUN}/{mid}'
     card = json.load(open(f'{B}/card.json'))
     hd = HEAD.get(mid) or {}
     if 'error' in hd or not os.path.exists(f'{CMDS}/{mid}.tsv'):

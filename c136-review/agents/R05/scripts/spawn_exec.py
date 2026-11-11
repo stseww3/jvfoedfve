@@ -40,8 +40,8 @@ COLS = ['matchId', 'logBots', 'inReplay', 'solveRounds', 'distinctSolutions', 'f
 if tsv:
     print('\t'.join(COLS))
 for mid in ids:
-    B = os.environ.get('C136_DATA', '/agent/repos/c136-data') + f'/bundles/{mid}'
-    cp = f'/tmp/c136-r05/cmds/{mid}.tsv'
+    B = os.environ.get('C136_DATA', '/agent/repos/c136-data') + f"/{os.environ.get('C136_BUNDLES', 'bundles')}/{mid}"
+    cp = os.environ.get('C136_CMDS', '/tmp/c136-r05/cmds') + f'/{mid}.tsv'
     if not os.path.exists(cp):
         alt = f'/tmp/c136-r05/work/{mid}-cmds.tsv'
         cp = alt if os.path.exists(alt) else cp
