@@ -11671,64 +11671,79 @@
    {
     "cohort": "squad10",
     "phase": "中后期（t0≥1500）",
-    "n": 1685,
-    "ownDonation": 716,
-    "ownSingle": 292,
-    "ownStack": 241,
-    "mixed": 62,
-    "defence": 374,
-    "ownShare": 0.741246290801187,
-    "stackShare": 0.143026706231454,
-    "defenceShare": 0.22195845697329378
+    "n": 2605,
+    "ownDonation": 1193,
+    "ownSingle": 435,
+    "ownStack": 333,
+    "mixed": 91,
+    "defence": 553,
+    "ownShare": 0.7527831094049904,
+    "stackShare": 0.12783109404990403,
+    "defenceShare": 0.2122840690978887
    },
    {
     "cohort": "squad10",
     "phase": "开局（t0<1500）",
-    "n": 291,
+    "n": 380,
     "ownDonation": 0,
-    "ownSingle": 147,
-    "ownStack": 141,
+    "ownSingle": 196,
+    "ownStack": 180,
     "mixed": 1,
-    "defence": 2,
-    "ownShare": 0.9896907216494846,
-    "stackShare": 0.4845360824742268,
-    "defenceShare": 0.006872852233676976
+    "defence": 3,
+    "ownShare": 0.9894736842105263,
+    "stackShare": 0.47368421052631576,
+    "defenceShare": 0.007894736842105263
    },
    {
     "cohort": "squad20",
     "phase": "中后期（t0≥1500）",
-    "n": 232,
-    "ownDonation": 24,
-    "ownSingle": 62,
-    "ownStack": 57,
-    "mixed": 11,
-    "defence": 78,
-    "ownShare": 0.6163793103448276,
-    "stackShare": 0.24568965517241378,
-    "defenceShare": 0.33620689655172414
+    "n": 391,
+    "ownDonation": 66,
+    "ownSingle": 108,
+    "ownStack": 87,
+    "mixed": 19,
+    "defence": 111,
+    "ownShare": 0.6675191815856778,
+    "stackShare": 0.22250639386189258,
+    "defenceShare": 0.28388746803069054
    },
    {
     "cohort": "squad20",
     "phase": "开局（t0<1500）",
-    "n": 63,
+    "n": 92,
     "ownDonation": 0,
-    "ownSingle": 29,
-    "ownStack": 31,
+    "ownSingle": 42,
+    "ownStack": 47,
     "mixed": 0,
     "defence": 3,
-    "ownShare": 0.9523809523809523,
-    "stackShare": 0.49206349206349204,
-    "defenceShare": 0.047619047619047616
+    "ownShare": 0.967391304347826,
+    "stackShare": 0.5108695652173914,
+    "defenceShare": 0.03260869565217391
    }
   ],
   "drop30Total": {
+   "squad10": 3194,
+   "squad20": 1668,
+   "squad8": 410
+  },
+  "drop30Listed": {
    "squad10": 2062,
    "squad20": 1003,
    "squad8": 291
   },
+  "drop30All": {
+   "full": 5272,
+   "listed": 3356,
+   "bundles": 123,
+   "countMatches": 123,
+   "firstThirtySorted": 123,
+   "truncated": 92,
+   "botsWithDrop": 1097,
+   "botsHidden": 390
+  },
   "drop30Covered": {
-   "squad10": 1976,
-   "squad20": 295
+   "squad10": 2985,
+   "squad20": 483
   },
   "afterDump": {
    "squad10": {

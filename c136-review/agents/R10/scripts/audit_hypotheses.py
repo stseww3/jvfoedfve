@@ -1522,12 +1522,23 @@ def hx(games, rows) -> dict:
     dump_frac = defaultdict(list)
     drop = defaultdict(Counter)
     drop_total = Counter()
+    drop_listed = Counter()
+    tool = Counter()
     drop_cov = Counter()
     for g in games:
         coh = g["cohort"]
         an = L.load_json(g["card"], "anomalies.json")
-        evs = an.get("drop30Events", [])
+        evs = D.drop30_full(g["card"])          # 全量；anomalies.json 的 drop30Events 只列前 30 条
         drop_total[coh] += len(evs)
+        listed_ = [(e["bot"], e["t0"]) for e in an.get("drop30Events", [])]
+        drop_listed[coh] += len(listed_)
+        tool["bundles"] += 1
+        tool["countMatches"] += 1 if len(evs) == an.get("drop30Count") else 0
+        tool["firstThirtySorted"] += 1 if listed_ == sorted((e["bot"], e["t0"]) for e in evs)[:30] else 0
+        if len(evs) > len(listed_):
+            tool["truncated"] += 1
+            tool["botsWithDrop"] += len({e["bot"] for e in evs})
+            tool["botsHidden"] += len({e["bot"] for e in evs} - {b_ for b_, _ in listed_})
         r = g["replay"]
         E = g["E"]
         if not r or not E or coh not in ("squad10", "squad20"):
@@ -1634,6 +1645,9 @@ def hx(games, rows) -> dict:
                             "ownShare": (c["ownDonation"] + c["ownSingle"] + c["ownStack"]) / n if n else None,
                             "stackShare": c["ownStack"] / n if n else None, "defenceShare": c["defence"] / n if n else None})
     J["drop30Total"] = dict(drop_total)
+    J["drop30Listed"] = dict(drop_listed)
+    J["drop30All"] = {"full": sum(drop_total.values()), "listed": sum(drop_listed.values()),
+                      **{k: tool[k] for k in ("bundles", "countMatches", "firstThirtySorted", "truncated", "botsWithDrop", "botsHidden")}}
     J["drop30Covered"] = dict(drop_cov)
     # 清仓批之后的结局：同为“有敌邻/在交战”的窗口比较（粗对照）
     J["afterDump"] = {}

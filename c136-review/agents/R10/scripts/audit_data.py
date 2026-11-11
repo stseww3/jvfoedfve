@@ -20,6 +20,7 @@ Game（dict）：
 """
 from __future__ import annotations
 
+import csv
 import json
 import os
 import re
@@ -329,6 +330,25 @@ def build_ledger(g: dict) -> dict | None:
 # ----------------------------------------------------------------------------
 # 真引擎探针（engine_probe.cjs）的作业单与结果
 # ----------------------------------------------------------------------------
+
+def drop30_full(card_or_mid) -> list[dict]:
+    """
+    全量 DROP30 事件：traj.csv 里同一个号相邻两行快照之间余额下跌 ≥30%。
+    口径和 anomalies.json 的 drop30Count 一致（相邻两行不要求正好隔 90 拍；缺快照时间隔会是 180 拍以上，
+    字段 gap 记录间隔）。anomalies.json 的 drop30Events 只列前 30 条（按号名字母序截断），这里给全量。
+    """
+    rows: dict[str, list[tuple[int, int, int]]] = {}
+    with open(os.path.join(L.bundle_dir(card_or_mid), "traj.csv"), encoding="utf-8") as f:
+        for r in csv.DictReader(f):
+            rows.setdefault(r["bot"], []).append((int(r["t"]), int(float(r["bal"])), int(float(r["terr"]))))
+    out = []
+    for bot, sn in rows.items():
+        for a, b in zip(sn, sn[1:]):
+            if a[1] > 0 and (a[1] - b[1]) / a[1] >= 0.30:
+                out.append({"bot": bot, "t0": a[0], "t1": b[0], "bal0": a[1], "bal1": b[1],
+                            "dropPct": round(100.0 * (a[1] - b[1]) / a[1], 1), "terr0": a[2], "terr1": b[2], "gap": b[0] - a[0]})
+    return out
+
 
 def engine_dir(which: str = "discovery") -> str:
     return os.path.join(OUT, "engine", which)

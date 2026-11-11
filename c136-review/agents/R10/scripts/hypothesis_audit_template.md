@@ -413,7 +413,7 @@ squad10 的阵亡里，{{h5.squad10.path.neverAbove|wp}} 的号从 t=630 起就�
 
 squad10 里叠单占比在输的房间明显更高。这有可能是因果，也有可能只是“局势差的局里客户端更卡 / 活得短的局开局段占比更大”，本审计不下判断。
 
-`anomalies.json` 里的 `DROP30`（90 拍内余额跌 30% 以上）事件，按引擎真值归因：
+`DROP30`（相邻两张快照之间余额跌 30% 以上）事件，按引擎真值归因。注意 `anomalies.json` 的 `drop30Events` 每个包最多只列 30 条：{{hx.drop30All.bundles}} 个包里 {{hx.drop30All.firstThirtySorted}} 个的列表正好是“按号名、再按拍号排序后的前 30 条”，{{hx.drop30All.truncated}} 个包被截断，这些包里有 `DROP30` 的 {{hx.drop30All.botsWithDrop|n}} 个号中 {{hx.drop30All.botsHidden}} 个一条都没列出来（名字靠后的号）。发现集全量是 {{hx.drop30All.full|n}} 条，列出来的只有 {{hx.drop30All.listed|n}} 条。这里用的是从 `traj.csv` 重算的全量（{{hx.drop30All.countMatches}} 个包的条数和 `drop30Count` 一致）：
 
 {{TABLE:x_drop30}}
 
