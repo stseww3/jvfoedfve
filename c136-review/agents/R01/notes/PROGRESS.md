@@ -1,40 +1,52 @@
 # R01 进度与工作笔记（给自己接续用）
 
 ## 状态
-- A057：复盘完成并通过本地机械检查（`python3 scripts/check_my_review.py A057`）。
-- 其余 14 局：见下方「逐局进度」。
+- M1 完成：A057、A059、A094 三份复盘都通过本地机械检查（`python3 scripts/check_my_review.py`）。
+- 下一步 M2：A055、A075、A054。其余见下方「逐局进度」。
 
-## 工具链（都在 scripts/）
-- `resim_lib.mjs` + `resim.mjs <mid> [--replay 同局A包] [--log 包1,包2]`：整局逐拍重演（512 席位），与日志 [HL-TICK] 逐号核对。
-  - 关键修正：团队局颜色初始化取 512 个随机数（否则 AI 出生点全错位）；队伍分配按引擎 `bj.ee()` 移植。
-  - 核对结果（ok/bad，首个偏差拍）：A059 290/0；A055 539/0；A075 286/2(6480)；A054 652/0；A031 464/0；A019 505/0；
-    A009 406/0；A023 515/1(5670)；A050 499/0；A003 339/0；B039(--replay A058 --log B039,A058) 743/0；
-    B043(--replay A062 --log B043,A062) 860/2(6300)；A057(--log A057,B038) 963/361，t<=4130 全对。
-  - A094：日志与录像不是同一盘（从 t=90 起全错）；A005：缺地图 `5_9294.bin.gz`，不能重演。
-- `resim_report.py <mid> --section meta,timeline,bots,pairs,transfers,events,top,front`：把重演表整理成数字。
-- 旧工具：`match_facts.py`、`lag_probe.py`、`cmd_audit.py`、`donation_ledger.py`、`econ_check.py`、`boat_landings.py`、
-  `team_infer.py`、`dispatch_survey.py`、`replay_cmds.mjs`、`check_my_review.py`。
+## 每局流水线
+1. `bash c136-review/tools/run-heavy.sh node scripts/resim.mjs <mid> [--replay 同局A包] [--log 包1,包2] [--bots a,b]`：整局重演，和日志 [HL-TICK] 逐号核对。
+2. `run-heavy.sh node scripts/shadow.mjs <mid> [--bots ..] [--pin-no-full --tag nf0] [--probe bot:t0:t1 --tag x]`：把重演的每拍状态喂给部署的策略原文。
+   默认 isNoFullSend 检查窗口 = 发令拍 +2..+7（`--pc-shift 1 --pc-end keep`），三局全对。
+3. `resim_report.py --section meta,timeline,percap,bots,events,pairs,transfers,front,spawn,drops`；
+   `shadow_report.py --section check,lagcurve,chunks,bursts,paths,repeat,donate,idle`（idle 里有价格线细分）；`shadow_diff.py <mid> nf0`。
+4. `burst_audit.mjs`、`dispatch_audit.mjs`、`tick_cost.py`、`q.py <mid> <表> --where .. --show ..`。
+5. 手写 `analysis/<mid>.json` → `build_review.py <mid>` → `check_my_review.py <mid>`（md ≤150 行）。
+- 没有录像的实例（A094 的 X、A005）：`log_only.py`（spawn/squad/idle/dispatch/results/drops/share/late/chain）、`log_sync.py`；
+  build_review 的 `timelineLog` 从日志填时间线，`timelineSpecB` 给第二个实例另填一张表。
+- 总部共享工具：`/agent/repos/c136-data/src/tools/engine_replay.cjs`（真引擎）、`engine_vs_resim.py` 对比。
+- `match_facts.py` 的按席位对账在混了两个实例的包上不能用（A094）。
+
+## 重演核对（ok/bad）
+A057 1324/0（含 B038）；A059 290/0；A094-Y 86/0（--bots ryan_m,zexos1,noah88）。
+旧结果（船落点修正前，开工时重跑）：A055 539/0；A075 286/2；A054 652/0；A031 464/0；A019 505/0；A009 406/0；A023 515/1；A050 499/0；
+A003 339/0；B039(--replay A058 --log B039,A058) 743/0；B043(--replay A062 --log B043,A062) 860/2。A005 缺地图，只能 engine_replay 或 log_only。
 
 ## 版本对应（总部 0002）
 - Va（A003/A005/A009）：`v27-team-c116-va.js` + `spawn-coordinator-c116-va.mjs`
 - Vb（其余 A 局）：`v27-team-c116-vb.js` + `spawn-coordinator-c116-vb.mjs`
 - B039/B043：`v27-team-c110.js` + `spawn-coordinator-c110.mjs`
 
-## 模式编号（提议，跨局复用）
-SP01 密集阵压低人均中立地 | OP01 DP 开局一租期一令(对) | OP02 中立吃完后有邻居却零指令 | IO01 指令晚到/被丢 |
-EX01 客户端落后后成批离场 | AT02 对零星中立像素重复下最小指令 | EC01 内陆封死满仓 | DN01 后排输血给唯一前线(对) |
-DN02 受赠者快满仓时截断/作废 | DN04 给必死队友协防捐款 | DN06 低密度号给高密度号输血 | AT01 12% 脉冲持续推进(对) |
-DF01 被余额高一个量级的对手陆攻 | EG01 本队领先时自退。
-预留：DN03 上限作废、DN05 配额拒绝(t<4284)、EG02 标签与队伍结果不符、EX02 离场壳自动捐款、SE01 满仓不出海。
+## Vb 代码地图（行号）
+General.act L752–810（L796 打 AI）；Style.pickTarget L1144–1177；V13.dpNeutral L2383/L2406；V13.floorFor0 L2233；V13.safeFinite L2500–2510；
+Policy.updateShadowQuota L3800–3835；Policy.send L3838–3925（L3844 闸门）；tryDonateToTeammate L4325–4517（L4331 每 25 拍、L4343 被打不捐、
+L4355 boxedIn、L4382–4388 两条底线、L4418 受赠者密度上限 142/115、L4455 doomed、L4463–4473 协防、L4479–4481 收益调度、L4500–4506 pct）；
+Policy.winFloor L4562；Policy.act L4801…（L4941 expandNeutral、L4942 buyLand、L4962 捐款只在本拍没发令时）；Policy.offers L5072–5340；
+Policy.buyLand L5342–5619（L5358 价格线、L5361–5365 唯一健康缓冲、L5440–5443 over 留兵、L5449–5453 打 AI、L5611–5616 满预算）。
+参数：maxW 0.5，winT→2500 拍后 1.8（m=0.9），hold 0.9，marketFloor 0.85，overHumanCap 1.28，pulseFrac 0.12，quotaGuardMode 1。
 
-## 给总部的汇报要点（M1 报告里带上）
-1. 重演工具与核对结果；A057 4140 起偏差原因未查到；A094 混盘；A005 缺地图。
-2. 离场人类号自动捐款（kq）、船靠队友岸免税捐款、队数<8 时 AI 不入队、无边界进攻令入录像但不扣兵。
-3. `likelyRejected` 不可靠，录像指令流才是真值。
-4. 协议 `team-split` 与检查器 `external` 不一致；md 行数上限 160。
-5. 捐款候选只认编队号/boss：被本队活人围死的后排无处输血（A057）。
+## 模式编号（提议，跨局复用）
+SP01 密集阵/被队友围住 | SP02 出生名单跨实例 | OP01 DP 开局(对) | OP02 保底线死锁 | IO01 掉队期间照常下令 | IO02 过期指令成批落地 |
+IO03 isNoFullSend 误置真 | AT01 12% 脉冲(对) | AT02 零星中立令占名额 | AT04 开战首击 | AT05 价格线空等 | AT06 中期吃 AI 地(对) |
+EC01 内陆围死满仓 | EC02 小邻居卡住后排大号 | DN01 后排输血(对) | DN02 截断捐款 | DN04 给必死队友捐 | DN05 配额拒单 | DN06 低密度给高密度 |
+DN07 互捐 | DF01 被大号陆攻 | DF02 挨打不出手 | EG01 领先时自退。
 
 ## 逐局进度
-- [x] A057
-- [ ] A059
-- [ ] A094
+- [x] A057（never-grew）
+- [x] A059
+- [x] A094（lead-thrown；两个实例）
+- [ ] A055  - [ ] A075  - [ ] A054   （M2）
+- [ ] A031  - [ ] A019  - [ ] A009   （M3）
+- [ ] A023  - [ ] A050  - [ ] A003   （M4）
+- [ ] A005  - [ ] B039  - [ ] B043   （M5）
+- [ ] M6：reports/CROSS-MATCH-SUMMARY.md、全量模式计数脚本、cards/

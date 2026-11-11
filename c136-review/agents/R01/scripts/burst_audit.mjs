@@ -1,5 +1,5 @@
 // burst_audit.mjs — 同一个服务器拍里同一个号落地多条指令（“叠单”）的审计，数字全部来自整局重演。
-//   node burst_audit.mjs <matchId> [--replay other] [--log id1,id2] [--min 3]
+//   node burst_audit.mjs <matchId> [--replay other] [--log id1,id2] [--bots a,b] [--min 3]
 // 每个叠单事件：拍、号、指令类型、条数、目标、各条 pct、执行前后余额、花掉的比例、当时自己的领土/密度、目标的领土/兵力/密度、
 //   同一拍之后 300 拍内这个号的领土变化与是否阵亡。
 // 输出 out/<matchId>/bursts.csv，并在标准输出给出按号汇总。
@@ -11,6 +11,7 @@ import { openMatch, readLogSnaps, NEUTRAL } from './resim_lib.mjs';
 const args = process.argv.slice(2);
 const mid = args[0];
 const opt = (k, d) => (args.includes(`--${k}`) ? args[args.indexOf(`--${k}`) + 1] : d);
+const onlyBots = opt('bots', '') ? new Set(opt('bots', '').split(',')) : null; // --bots a,b：只认这些号（日志里的号分在两个实例时用）
 const minN = +opt('min', 3);
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.resolve(HERE, '..', 'out', mid);
@@ -20,7 +21,7 @@ const m = openMatch(mid, { replay: opt('replay', mid) });
 const { g, H } = m;
 const squad = {};
 for (const lb of opt('log', mid).split(',')) {
-  const { me } = readLogSnaps(lb);
+  const { me } = readLogSnaps(lb, '', onlyBots);
   for (const [b, p] of Object.entries(me)) squad[p] = (lb === mid ? '' : lb + ':') + b;
 }
 const cur = new Map(); // p|kind|target -> event (current tick)

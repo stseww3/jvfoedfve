@@ -7,7 +7,9 @@ analysis 文件就是复盘 JSON 本体（字段同 reviews/*.json），另外�
   summary: [..]               md 第 0 节的结论句
   reconcile: [..]             md 第 5 节的兵力对账句
   repro: [..]                 md 第 10 节的复现命令
-这样时间线上的数字不经手抄。没有重演的局（A094、A005）直接在 analysis 里写 timeline。
+  timelineSpecB: [{t, note}] + timelineBTitle   包里还有第二个实例且它有录像时：按 timelineSpec 的办法另填一张表（存为 timelineB）
+  timelineLog: {bots, points:[{t, note, teamSharePct?}]}  这批号所在实例没有录像时用：数字取自日志 [HL-TICK]（log_only.py 写的 log_ticks.csv）
+这样时间线上的数字不经手抄。
 """
 import csv, json, os, sys
 from collections import defaultdict
@@ -51,6 +53,27 @@ def fill_timeline(mid, spec):
     return out
 
 
+def fill_timeline_log(mid, spec):
+    """没有录像的实例：时间线数字取自日志的 [HL-TICK] 行（先跑 log_only.py 写出 out/<id>/log_ticks.csv）。
+    spec = {bots: [...], points: [{t, note, teamSharePct?}]}。alive = 该拍有快照的号数；dead 列 = 名单里日志已经停了的号数（离场和阵亡分不开，见备注）。"""
+    bots = set(spec['bots'])
+    land = json.load(open(f'/agent/repos/c136-data/bundles/{mid}/card.json'))['mapLand']
+    by = defaultdict(list); last = {}
+    for r in load_csv(mid, 'log_ticks.csv'):
+        if r['bot'] in bots:
+            by[int(r['t'])].append(r); last[r['bot']] = max(last.get(r['bot'], 0), int(r['t']))
+    ticks = sorted(by)
+    out = []
+    for s in spec['points']:
+        t = min(ticks, key=lambda x: abs(x - s['t']))
+        rows = by[t]
+        terr = sum(int(r['terr']) for r in rows); bal = sum(int(r['bal']) for r in rows)
+        out.append({'t': t, 'alive': len(rows), 'husk': 0, 'dead': sum(1 for b in bots if last.get(b, 0) < t), 'sqTerr': terr,
+                    'sqSharePct': round(100 * terr / land, 2), 'sqBal': bal, 'sqDens': round(bal / terr, 1) if terr else 0,
+                    'teamSharePct': s.get('teamSharePct', ''), 'note': s.get('note', '')})
+    return out
+
+
 def md_escape(s):
     return str(s).replace('|', '\\|').replace('\n', ' ')
 
@@ -74,6 +97,16 @@ def render_md(r):
         tss = ' '.join(f"{k}:{v}" for k, v in ts.items()) if isinstance(ts, dict) else (str(ts) if ts is not None else '')
         ahd = f"{p.get('alive','')}/{p.get('husk','-')}/{p.get('dead','-')}"
         L.append(f"| {p['t']} | {ahd} | {p.get('sqTerr','')} | {p.get('sqSharePct','')} | {p.get('sqBal','')} | {p.get('sqDens','')} | {tss} | {md_escape(p.get('note',''))} |")
+    if r.get('timelineB'):
+        L.append('')
+        L.append(r.get('timelineBTitle', '另一实例') + '：')
+        L.append('')
+        L.append('| t | 存活/壳/死 | 领土 | 占比% | 兵力 | 密度 | 各队占比% | 备注 |')
+        L.append('| --: | :-- | --: | --: | --: | --: | :-- | :-- |')
+        for p in r['timelineB']:
+            ts = p.get('teamSharePct')
+            tss = ' '.join(f"{k}:{v}" for k, v in ts.items()) if isinstance(ts, dict) else str(ts or '')
+            L.append(f"| {p['t']} | {p.get('alive','')}/{p.get('husk','-')}/{p.get('dead','-')} | {p.get('sqTerr','')} | {p.get('sqSharePct','')} | {p.get('sqBal','')} | {p.get('sqDens','')} | {tss} | {md_escape(p.get('note',''))} |")
     L.append('')
     L.append('## 2. 四阶段'); L.append('')
     for ph in r['phases']:
@@ -134,6 +167,10 @@ def main():
         r = json.load(open(src))
         if 'timelineSpec' in r:
             r['timeline'] = fill_timeline(mid, r.pop('timelineSpec'))
+        if 'timelineLog' in r:
+            r['timeline'] = fill_timeline_log(mid, r.pop('timelineLog'))
+        if 'timelineSpecB' in r:
+            r['timelineB'] = fill_timeline(mid, r.pop('timelineSpecB'))
         json.dump(r, open(os.path.join(ROOT, 'reviews', mid + '.json'), 'w'), ensure_ascii=False, indent=1)
         md = render_md(r)
         open(os.path.join(ROOT, 'reviews', mid + '.md'), 'w').write(md)

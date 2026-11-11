@@ -3,6 +3,7 @@
 用法: python3 check_my_review.py [matchId ...]   （不给参数 = reviews/ 下全部）
 """
 import importlib.util, json, os, sys, glob
+sys.dont_write_bytecode = True  # 不往 c136-review/tools/__pycache__ 里写东西（那不是我的目录）
 HERE = os.path.dirname(os.path.abspath(__file__))
 TOOL = os.path.abspath(os.path.join(HERE, '..', '..', '..', 'tools', 'collect-reviews.py'))
 spec = importlib.util.spec_from_file_location('collect_reviews', TOOL)

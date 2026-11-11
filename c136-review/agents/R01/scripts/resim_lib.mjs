@@ -115,13 +115,16 @@ Game.prototype.setupColors = function () {
 };
 
 // 读某个包的局内日志：号名 -> 席位号（[HL-GAME-INIT] me=），以及每条 [HL-TICK] 的 terr/bal。
-export function readLogSnaps(bundleId, label = '') {
+// only：只取这些号（A094 这类“日志里的号分在两个实例、录像只有其中一个实例”的包用）。
+// 没有 [HL-GAME-INIT] 的号退而用 [HL-SPAWN-BACKEND] / [HL-SPAWN] 行里的 me=（A094 的 ryan_m/zexos1/noah88）。
+export function readLogSnaps(bundleId, label = '', only = null) {
   const logp = `${BUNDLES}/${bundleId}/in_game.log`;
   const me = {}, rows = [];
   if (!fs.existsSync(logp)) return { me, rows };
   for (const line of fs.readFileSync(logp, 'utf8').split('\n')) {
     let m = line.match(/\[([^\]]+)\] \[HL-GAME-INIT\].*me=(\d+)/);
-    if (m) { me[m[1]] = +m[2]; continue; }
+    if (!m) { m = line.match(/\[([^\]]+)\] \[HL-SPAWN(?:-BACKEND)?\] me=(\d+)/); if (m && me[m[1]] !== undefined) continue; }
+    if (m) { if (!only || only.has(m[1])) me[m[1]] = +m[2]; continue; }
     m = line.match(/\[([^\]]+)\] \[HL-TICK\] t=(\d+) terr=(\d+)\([^)]*\) bal=(\d+)/);
     if (m && me[m[1]] !== undefined) rows.push({ t: +m[2], bot: label + m[1], p: me[m[1]], terr: +m[3], bal: +m[4] });
   }

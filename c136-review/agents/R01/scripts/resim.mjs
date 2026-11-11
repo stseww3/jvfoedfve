@@ -1,5 +1,5 @@
 // resim.mjs — 逐拍重演整局（512 席位）并与局内日志逐快照核对，同时导出全局事实表。公共部分在 resim_lib.mjs。
-//   node resim.mjs <matchId> [--replay <otherMatchId>] [--log id1,id2] [--ticks N] [--no-dump] [--every 90] [--sq-every 30]
+//   node resim.mjs <matchId> [--replay <otherMatchId>] [--log id1,id2] [--bots a,b] [--ticks N] [--no-dump] [--every 90] [--sq-every 30]
 //                  [--trace t0,t1,p1,p2,...]
 // --replay：B 系列包的 replay.txt 是截断的，用同局 A 包的录像。--log：拿哪些包的日志当观测点（默认本包；可加同局对面那支队）。
 // 输出 out/<matchId>/：
@@ -32,10 +32,11 @@ const m = openMatch(mid, { replay: rmid, rngFix: !args.includes('--no-rngfix') }
 const { g, H, tm, names } = m;
 
 // 观测点
+const onlyBots = opt('bots', '') ? new Set(opt('bots', '').split(',')) : null; // --bots a,b：只认这些号（见 readLogSnaps）
 const squad = {}; // label -> p
 const snaps = new Map();
 for (const lb of opt('log', mid).split(',')) {
-  const { me, rows } = readLogSnaps(lb, lb === mid ? '' : lb + ':');
+  const { me, rows } = readLogSnaps(lb, lb === mid ? '' : lb + ':', onlyBots);
   for (const [b, p] of Object.entries(me)) squad[(lb === mid ? '' : lb + ':') + b] = p;
   for (const r of rows) { if (!snaps.has(r.t)) snaps.set(r.t, []); snaps.get(r.t).push(r); }
 }

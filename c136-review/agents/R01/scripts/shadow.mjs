@@ -16,6 +16,11 @@
 //       依据：A057 riku_x 11905 拍发令后正被 [ua] 打、余额逐拍下降；按原样（--pc-shift 0）影子在 11906 拍把 isNoFullSend 置真，
 //       随后 4 条指令变成 pct=0，而录像里这 4 条是 pct=122；挪 1 拍后影子与录像一致（唯一配上 41→53 条），
 //       其余所有号、所有 HL-TICK 点、A059 全部结果都不变。真实客户端为什么晚一拍，镜像里没有外壳源码，查不到。
+//   --pc-end keep（默认）：核对窗口的终点不跟着后移，仍是“发令拍 + 7”，即窗口 = [发令拍+2, 发令拍+7]；--pc-end shift 则是 [发令拍+2, 发令拍+8]。
+//       依据：A094 noah88 560 拍发令（余额 5494），余额到 568 拍才掉到 5168。窗口若延到 568 拍，影子把这次判成“被限额”、额度清零，
+//       570 拍的下一条被拦，cmds 从 630 拍起比日志少 1（12 个 HL-TICK 点只对上 6 个）；终点留在 567 拍则 12/12。
+//       三种口径对三局日志的结果：原样 [t+1,t+7]：A057 riku_x 末段 4 条 pct 对不上；[t+2,t+8]：A094 noah88 对不上；[t+2,t+7]：A057 586/586、A059 290/290、A094 86/86 全对。
+//   --pc-trace：把每条待检记录的去向（pcEval 被核对 / pcDrop 超时作废 / pcOver 被下一条覆盖）记进 shadow_flags.csv
 //   --act-every N：对照用，假设外壳每 N 拍才调一次 act（N=5 时 A057 有 4 个号的 cmds 对不上日志，已排除）
 //   --per-tick N：每拍最多受理几条指令（默认 1；N=5 时 A057 有 4 个号的 cmds 对不上日志，已排除）
 //   --quit 1（默认）：录像里出现离场指令的人类席位进 window.__quitPlayers（线上外壳也维护这张表；A057 关掉它就在 4005 拍起对不上日志）
@@ -31,7 +36,8 @@
 //                     tDecide,lag,balDecide,troopsDecide(决策时想出的兵),balExec(执行前余额),applied,spent(实际扣掉的兵+手续费),shTarget,path
 //   shadow_chunks.csv 成块补帧：每个（号, 落地拍）一行：n 条、决策拍区间 t0–t1、延迟区间、是否是连续的决策
 //   shadow_probe.txt  --probe 指定区间内 offers / safeAt / pickTarget 等中间量
-//   shadow_idle.csv   闲置审计：每个号每 100 拍里各类决策拍的个数（cmd / boxed / dp / floor / floorN / other）、顶在 150 倍上限的拍数、身边机器人地的面积与密度
+//   shadow_idle.csv   闲置审计：每个号每 100 拍里各类决策拍的个数（cmd / boxed / dp / floor / floorN / other；other 再分 oPrice/oGate/oEmpty/oNoCall，
+//                     priceC/priceWorth/priceDq = 卡在价格线的那些拍里 最便宜目标的单价 / 愿付价 / 该目标密度 的均值，priceOnMe = 其中正被人打的拍数）、顶在 150 倍上限的拍数、身边机器人地的面积与密度
 //   shadow_flags.csv  策略内部闸门：isNoFullSend 何时被置真（连同当时那条待检记录）、Policy.send 没走到 g.attack 就返回 false 的每一次
 import fs from 'node:fs';
 import path from 'node:path';
@@ -121,6 +127,9 @@ export async function runShadow(mid, o = {}) {
     for (const line of fs.readFileSync(lp, 'utf8').split('\n')) {
       let x = line.match(/\[([^\]]+)\] \[HL-GAME-INIT\].*me=(\d+)/);
       if (x) { bots.set(pre + x[1], { p: +x[2], name: x[1], slot: null, ticks: new Map(), logLines: [] }); continue; }
+      // 没有 [HL-GAME-INIT] 行的号（A094 的 ryan_m/zexos1/noah88）：席位号取自 [HL-SPAWN-BACKEND] me=
+      x = line.match(/\[([^\]]+)\] \[HL-SPAWN-BACKEND\] me=(\d+)/);
+      if (x && !bots.has(pre + x[1])) bots.set(pre + x[1], { p: +x[2], name: x[1], slot: null, ticks: new Map(), logLines: [] });
       x = line.match(/\[([^\]]+)\] \[(HL-[A-Z-]+)\] (.*)$/);
       if (!x) continue;
       const b = bots.get(pre + x[1]);
@@ -158,6 +167,11 @@ export async function runShadow(mid, o = {}) {
         if (!r && st.nCalls === n0) st.flags.push({ t: g.t, bot: label, ev: 'sendHeld', target, troops: Math.round(troops), bal: g.bal[p], noFull: pol.isNoFullSend ? 1 : 0, shadowQuota: Math.round(pol.shadowQuota ?? -1), note: '' });
         return r;
       };
+    }
+    // 记下本拍 offers() 的结果，供闲置审计判断 buyLand 停在哪一道闸门。
+    if (typeof pol.offers === 'function') {
+      const origOffers = pol.offers.bind(pol);
+      pol.offers = (gg) => { const r = origOffers(gg); st.lastOffers = { t: g.t, list: r }; return r; };
     }
     const perTick = o.perTick ?? 1;
     const rec = (kind, pct, target, ok, extra = {}) => {
@@ -263,7 +277,12 @@ export async function runShadow(mid, o = {}) {
   //   dp    1500 拍前身边还有中立地、这一拍没发令，且不属于 floor/floorN（开局按租期出手，间隔是设计内的）
   //   floorN 同 floor，但身边还剩中立地（开局期的 floorN 多半是 dpKeep 在按计划留兵；中立吃完之后剩 1–4 格的 floorN 与 floor 是一回事）
   //   floor 1500 拍前、中立地已经没有：身边有机器人/离场壳的地，但 pickTarget 的保底线 winFloor（L4562，取 safeFinite=邻居机器人的其他邻居里最小的余额）不低于自己的余额
-  //   other 其余（有人类邻居但没出手等）
+  //   other 其余（有人类邻居但没出手等）。other 再按 buyLand 的走向细分（只对有 offers() 的版本）：
+  //     oPrice  offers() 排第一的目标单价 c >= 愿付价 worth 且 c >= cheap 且余额没过 100 倍领土 → buyLand L5358 的 break（一个都不买）
+  //             worth = maxW * winRatio(t) * max(自己密度, marketFloor * 其他人类密度中位数)；c = (打死对方要的兵 + 手续费) / 能拿到的地
+  //     oGate   排第一的目标过了价格线，但被后面的闸门拦下（sole buffer / crowded hard / 保底 keep 等）
+  //     oEmpty  offers() 是空的（没有可打的邻居或没有空攻击槽）
+  //     oNoCall 这一拍没走到 offers()
   //   cap   余额顶在 150 倍领土（利息为 0）
   const idleAgg = new Map();
   const idleAudit = (s, nCmd) => {
@@ -292,8 +311,28 @@ export async function runShadow(mid, o = {}) {
     else cls = 'other';
     const k = `${s.label}|${Math.floor(g.t / 100) * 100}`;
     let a = idleAgg.get(k);
-    if (!a) idleAgg.set(k, (a = { bot: s.label, t0: Math.floor(g.t / 100) * 100, acts: 0, cmd: 0, boxed: 0, dp: 0, floor: 0, floorN: 0, other: 0, cap: 0, bal: 0, terr: 0, wf: 0, nwf: 0, ai: 0, aiLand: 0, aiBal: 0, foe: 0, by_safe: 0, by_keep: 0, by_px: 0 }));
+    if (!a) idleAgg.set(k, (a = { bot: s.label, t0: Math.floor(g.t / 100) * 100, acts: 0, cmd: 0, boxed: 0, dp: 0, floor: 0, floorN: 0, other: 0, cap: 0, bal: 0, terr: 0, wf: 0, nwf: 0, ai: 0, aiLand: 0, aiBal: 0, foe: 0, by_safe: 0, by_keep: 0, by_px: 0,
+      oPrice: 0, oGate: 0, oEmpty: 0, oNoCall: 0, pC: 0, pWorth: 0, pOnMe: 0, pInAtk: 0, pDq: 0 }));
     a.acts++; a[cls]++; a.bal += B; a.terr += L; a.ai += ai; a.aiLand += aiLand; a.aiBal += aiBal; a.foe += foe;
+    if (cls === 'other') {
+      const lo = s.lastOffers && s.lastOffers.t === g.t ? s.lastOffers.list : null;
+      const P = pol.p || {};
+      if (!lo) a.oNoCall++;
+      else if (!lo.length) a.oEmpty++;
+      else if (typeof pol.winRatio === 'function' && P.maxW !== undefined) {
+        const dMe = B / Math.max(1, L);
+        const dMed = typeof pol.otherHumanMedDens === 'function' ? pol.otherHumanMedDens(s.gv) : null;
+        const refDens = dMed !== null && g.t >= P.marketFrom ? Math.max(dMe, P.marketFloor * dMed) : dMe;
+        const worth = P.maxW * pol.winRatio(g.t) * refDens, over = P.surplus > 0 && B > 100 * L, cheap = P.growth > 0 ? 0.1 / pol.baseRate(s.gv) : 0;
+        const o0 = lo[0];
+        if (o0.c >= worth && o0.c >= cheap && !over) {
+          a.oPrice++; a.pC += o0.c; a.pWorth += worth;
+          const inAtk = lo.reduce((x, y) => x + (y.inAtk || 0), 0);
+          if (inAtk > 0) { a.pOnMe++; a.pInAtk += inAtk; }
+          a.pDq += g.bal[o0.q] / Math.max(1, g.terr[o0.q]);
+        } else a.oGate++;
+      } else a.oGate++;
+    }
     if (B >= 150 * L - 150) a.cap++;
     if (wf !== Infinity) { a.wf += wf; a.nwf++; }
     if (by) a['by_' + by]++;
@@ -307,13 +346,24 @@ export async function runShadow(mid, o = {}) {
       if (o.actEvery > 1 && g.t % o.actEvery !== 0) continue; // 对照用：假设外壳不是每拍都调 act
       globalThis.window = s.win;
       if (o.pinNoFull) { s.pol.isNoFullSend = false; s.pol.pendingQuotaCheck = null; }
+      // --pc-end keep：核对窗口的起点按 --pc-shift 后移，终点仍是“发令拍 + 7”（原代码的终点），即窗口 = [发令拍+1+shift, 发令拍+7]。
+      if (o.pcEnd === 'keep' && s.pol.pendingQuotaCheck?._sh && g.t > s.pol.pendingQuotaCheck.t + 6 - o.pcShift) s.pol.pendingQuotaCheck = null;
       const nf0 = !!s.pol.isNoFullSend, pc0 = s.pol.pendingQuotaCheck ? { ...s.pol.pendingQuotaCheck } : null, bal0 = g.bal[p];
       const nCmd0 = cmds.length;
       try { s.pol.act(s.gv); if (o.pcShift && s.pol.pendingQuotaCheck && s.pol.pendingQuotaCheck.t === g.t + 1 && !s.pol.pendingQuotaCheck._sh) { s.pol.pendingQuotaCheck.t += o.pcShift; s.pol.pendingQuotaCheck._sh = 1; }
         if (s.probeState) s.probeState(); idleAudit(s, cmds.length - nCmd0); } catch (e) { if (errN++ < 5) console.error(`影子出错 t=${g.t} ${s.label}: ${e.stack.split('\n').slice(0, 3).join(' | ')}`); }
+      // 待检记录的去向（--pc-trace 才记，量大）：pcEval = 本拍被核对（置真或扣额度）；pcDrop = 超过 6 拍作废；pcOver = 没等到核对就被下一条指令的记录覆盖。
+      if (o.pcTrace && pc0) {
+        const pc1 = s.pol.pendingQuotaCheck;
+        const due = g.t >= pc0.t, late = g.t > pc0.t + 6, low = bal0 < pc0.bal0 - pc0.fee;
+        const sent = Math.max(0, pc0.bal0 - bal0 - pc0.fee);
+        const ev = due && late ? 'pcDrop' : due && low ? 'pcEval' : (pc1 && pc1 !== pc0 && (pc1.bal0 !== pc0.bal0 || pc1.want !== pc0.want || pc1.t !== pc0.t)) ? 'pcOver' : null;
+        if (ev) s.flags.push({ t: g.t, bot: s.label, ev, target: -1, troops: Math.round(pc0.want), bal: bal0, noFull: s.pol.isNoFullSend ? 1 : 0, shadowQuota: Math.round(s.pol.shadowQuota ?? -1),
+          note: `发令拍=${pc0.t - 1 - (pc0._sh ? o.pcShift : 0)} 发令时余额=${pc0.bal0} 手续费=${pc0.fee} 想发=${Math.round(pc0.want)} 本拍余额=${bal0}` + (ev === 'pcEval' ? ` 算出实发=${sent} ${pc0.want >= 1.12 * sent && sent < pc0.bal0 - pc0.fee - 50 ? '判为被限额' : '判为正常'}` : '') });
+      }
       if (!nf0 && s.pol.isNoFullSend) {
         s.flags.push({ t: g.t, bot: s.label, ev: 'isNoFullSend', target: -1, troops: pc0 ? Math.round(pc0.want) : 0, bal: bal0, noFull: 1, shadowQuota: Math.round(s.pol.shadowQuota ?? -1),
-          note: pc0 ? `发令拍=${pc0.t - 1} 发令时余额=${pc0.bal0} 手续费=${pc0.fee} 想发=${Math.round(pc0.want)} 检查时余额=${bal0} 算出实发=${Math.max(0, pc0.bal0 - bal0 - pc0.fee)}` : '无待检记录' });
+          note: pc0 ? `发令拍=${pc0.t - 1 - (pc0._sh ? o.pcShift : 0)} 发令时余额=${pc0.bal0} 手续费=${pc0.fee} 想发=${Math.round(pc0.want)} 检查时余额=${bal0} 算出实发=${Math.max(0, pc0.bal0 - bal0 - pc0.fee)}` : '无待检记录' });
       }
     }
   }
@@ -443,7 +493,7 @@ if (IS_MAIN) {
   const t0 = Date.now();
   const r = await runShadow(mid, {
     replay: opt('replay', mid), log: opt('log', mid).split(','), bots: opt('bots', 'all'), strategy: opt('strategy', null),
-    nocut: argv.includes('--nocut'), pinNoFull: argv.includes('--pin-no-full'), to: opt('to', null) ? +opt('to') : undefined, accept: opt('accept', 'always'), perTick: +opt('per-tick', 1), actEvery: +opt('act-every', 1), pcShift: +opt('pc-shift', 1), quit: +opt('quit', 1), probe: opt('probe', null),
+    nocut: argv.includes('--nocut'), pinNoFull: argv.includes('--pin-no-full'), to: opt('to', null) ? +opt('to') : undefined, accept: opt('accept', 'always'), perTick: +opt('per-tick', 1), actEvery: +opt('act-every', 1), pcShift: +opt('pc-shift', 1), pcTrace: argv.includes('--pc-trace'), pcEnd: opt('pc-end', 'keep'), quit: +opt('quit', 1), probe: opt('probe', null),
   });
   const { m, sh, cmds, slog, check, probeOut, idleAgg } = r;
   const dir = path.join(OUT_ROOT, mid);
@@ -464,10 +514,11 @@ if (IS_MAIN) {
   fs.writeFileSync(path.join(dir, `shadow_chunks${suffix}.csv`), 'bot,tick,n,t0,t1,lagMin,lagMax,consec,seq0,seq1\n' + ch.map((c) => [c.bot, c.tick, c.n, c.t0, c.t1, c.lag0, c.lag1, c.consec, c.seq0, c.seq1].join(',')).join('\n') + '\n');
   if (probeOut.length) fs.writeFileSync(path.join(dir, `shadow_probe${suffix}.txt`), probeOut.join('\n') + '\n');
   {
-    const rows = ['bot,t0,acts,cmd,boxed,dp,floor,floorN,other,cap,bal,terr,dens,floorAvg,aiNb,aiLand,aiDens,foeNb,bySafe,byKeep,byPx'];
+    const rows = ['bot,t0,acts,cmd,boxed,dp,floor,floorN,other,cap,bal,terr,dens,floorAvg,aiNb,aiLand,aiDens,foeNb,bySafe,byKeep,byPx,oPrice,oGate,oEmpty,oNoCall,priceC,priceWorth,priceDq,priceOnMe,priceInAtk'];
     for (const a of [...idleAgg.values()].sort((x, y) => (x.bot < y.bot ? -1 : x.bot > y.bot ? 1 : x.t0 - y.t0))) {
       const n = a.acts;
-      rows.push([a.bot, a.t0, n, a.cmd, a.boxed, a.dp, a.floor, a.floorN, a.other, a.cap, Math.round(a.bal / n), Math.round(a.terr / n), (a.bal / Math.max(1, a.terr)).toFixed(1), a.nwf ? Math.round(a.wf / a.nwf) : '', (a.ai / n).toFixed(1), Math.round(a.aiLand / n), a.aiLand ? (a.aiBal / a.aiLand).toFixed(1) : '', (a.foe / n).toFixed(1), a.by_safe, a.by_keep, a.by_px].join(','));
+      rows.push([a.bot, a.t0, n, a.cmd, a.boxed, a.dp, a.floor, a.floorN, a.other, a.cap, Math.round(a.bal / n), Math.round(a.terr / n), (a.bal / Math.max(1, a.terr)).toFixed(1), a.nwf ? Math.round(a.wf / a.nwf) : '', (a.ai / n).toFixed(1), Math.round(a.aiLand / n), a.aiLand ? (a.aiBal / a.aiLand).toFixed(1) : '', (a.foe / n).toFixed(1), a.by_safe, a.by_keep, a.by_px,
+        a.oPrice, a.oGate, a.oEmpty, a.oNoCall, a.oPrice ? (a.pC / a.oPrice).toFixed(1) : '', a.oPrice ? (a.pWorth / a.oPrice).toFixed(1) : '', a.oPrice ? (a.pDq / a.oPrice).toFixed(1) : '', a.pOnMe, a.pOnMe ? Math.round(a.pInAtk / a.pOnMe) : ''].join(','));
     }
     fs.writeFileSync(path.join(dir, `shadow_idle${suffix}.csv`), rows.join('\n') + '\n');
   }

@@ -12,6 +12,9 @@
   top       指定拍领土前 10 的人类号
   percap    指定拍的人均领土：本队 / 同队其他人类号 / 其他各队人类号（--ticks 180,630,...）
   front     --bot 某号每 30 拍的进攻/被攻/邻居明细 ([t0,t1])
+  spawn     本队各号的出生点（录像里最后一条出生指令）、离最近队友的距离、--radius（默认 250）像素内的其他人类号（队伍、距离）
+  drops     本队各号相邻两个 90 拍快照之间余额下降 >=30% 的点（数字来自整局重演，不依赖日志）：
+            区间内落地的本号指令（进攻/船/捐款条数与 pct 合计）、同拍落地 >=3 条的批次、被谁拿走多少格，并归类
 """
 import csv, json, os, sys
 from collections import defaultdict
@@ -49,6 +52,36 @@ def main():
     for p in sq_ids:
         my_team = teams.get(str(p)); break
 
+    if 'drops' in sections:
+        drops_section(mid, meta, squad)
+    if 'spawn' in sections:
+        sp = {int(k): v for k, v in meta['spawn'].items()}
+        R = float(opt('radius', 250))
+        dist = lambda a, b: ((a[0] - b[0]) ** 2 + (a[1] - b[1]) ** 2) ** 0.5
+        print(f'== spawn（号 席位 出生点 | 最近队友 | {R:.0f} 像素内的其他人类号：名字/队/距离）')
+        for b, p in sorted(squad.items(), key=lambda kv: kv[1]):
+            if p not in sp:
+                print(f'  {b:<8} #{p} 没有出生指令'); continue
+            ally = sorted((dist(sp[p], sp[q]), lab[q]) for q in sq_ids if q != p and q in sp)
+            oth = sorted((dist(sp[p], sp[q]), q) for q in sp if q not in sq_ids and q < H)
+            near = ' '.join(f"{names[q] if isinstance(names, list) else names.get(str(q))}/T{teams.get(str(q), '?')}/{d:.0f}" for d, q in oth if d <= R)
+            print(f"  {b:<8} #{p} ({sp[p][0]},{sp[p][1]}) | 最近队友 {ally[0][1] + ' ' + format(ally[0][0], '.0f') if ally else '-'} | {near or '无'}")
+        # 协调器给“不在这个实例里”的号排的位置（日志最后一条 [HL-SPAWN-BACKEND]）附近，这个实例里实际站着谁
+        import re
+        plan = {}
+        lp = f'/agent/repos/c136-data/bundles/{mid}/in_game.log'
+        if os.path.exists(lp):
+            for line in open(lp, encoding='utf8'):
+                m = re.search(r'\[([a-z0-9_]+)\] \[HL-SPAWN-BACKEND\] me=\d+ slot=(\d+) role=(\w+) -> \((\d+),(\d+)\)', line)
+                if m:
+                    plan[m.group(1)] = (int(m.group(4)), int(m.group(5)), m.group(3))
+        absent = {b: v for b, v in plan.items() if b not in squad}
+        if absent:
+            print('   协调器排了位、但不在这个实例里的号（计划位 | 这个实例里 100 像素内的人类号）：')
+            for b, (x, y, role) in sorted(absent.items()):
+                oth = sorted((dist((x, y), sp[q]), q) for q in sp if q < H)
+                near = ' '.join(f"{lab.get(q) or (names[q] if isinstance(names, list) else names.get(str(q)))}/T{teams.get(str(q), '?')}/{d:.0f}" for d, q in oth if d <= 100)
+                print(f"   {b:<8} {role:<18} ({x},{y}) | {near or '无'}")
     if 'meta' in sections:
         print(f"== {mid} 重演核对: ok={meta['checkOk']} bad={meta['checkBad']} firstBadTick={meta['firstBadTick']} firstBad={meta['firstBad']}")
         print(f"   map={meta['map']} {meta['W']}x{meta['Hh']} land={land} humans={H} nTeams={meta['nTeams']} teamCounts={meta['teamCounts']} lastTick={meta['lastTick']} myTeam=T{my_team}")
@@ -210,6 +243,42 @@ def main():
             t = int(r['t'])
             if t < t0 or t > t1 or t % step: continue
             print(f"  t={t} terr={r['terr']} bal={r['bal']} dens={r['dens']} room={r['room150']} | out[{exp(r['atkOut'])}] | in[{exp(r['atkIn'])}] | en[{exp(r['enemyNb'])}] | al={len(r['allyNb'].split('|')) if r['allyNb'] else 0} hu={len(r['huskNb'].split('|')) if r['huskNb'] else 0} ai={r['aiNb']} | n={r['neutralC']} w={r['waterC']} b={r['boats']}")
+
+
+def drops_section(mid, meta, squad):
+    lab = {p: b for b, p in squad.items()}
+    players = load(mid, 'resim_players.csv'); cmds = load(mid, 'replay_cmds.csv'); pairs = load(mid, 'resim_pairs.csv')
+    names = meta['names']
+    nm = lambda p: lab.get(p) or (names[p] if isinstance(names, list) else names.get(str(p), str(p))) if p < meta['humans'] else f'AI#{p}'
+    by = defaultdict(list)
+    for r in players:
+        if int(r['p']) in lab:
+            by[int(r['p'])].append(r)
+    print('== drops（号 t0→t1 余额 领土 | 区间内落地的本号指令：进攻条数/Σ(pct+1)/1024、船、捐款 | 同拍 >=3 条的批次 | 被拿走的地 | 归类）')
+    cnt = defaultdict(int)
+    for p, rs in by.items():
+        for x, y in zip(rs, rs[1:]):
+            b0, b1 = int(x['bal']), int(y['bal'])
+            if x['alive'] != '1' or x['state'] == '2' or b0 <= 0 or b1 > 0.7 * b0:
+                continue
+            t0, t1 = int(x['t']), int(y['t'])
+            mine = [c for c in cmds if int(c['player']) == p and t0 < int(c['tick']) <= t1]
+            at = [c for c in mine if c['kind'] == 'attack']; bo = [c for c in mine if c['kind'] == 'boat']; dn = [c for c in mine if c['kind'] == 'donate']
+            frac = sum((int(c['dX']) + 1) / 1024 for c in at + bo)
+            ticks = defaultdict(int)
+            for c in at:
+                ticks[int(c['tick'])] += 1
+            batch = {t: n for t, n in ticks.items() if n >= 3}
+            lost = defaultdict(int)
+            for r in pairs:
+                if int(r['victim']) == p and int(r['t0']) >= t0 and int(r['t1']) <= t1:
+                    lost[int(r['attacker'])] += int(r['px'])
+            lostPx = sum(lost.values())
+            kind = '捐款' if dn else '过期指令成批落地' if batch and frac >= 0.3 else '自己出兵' if frac >= 0.3 else '挨打' if lostPx >= 0.03 * int(x['terr']) else '自己出兵（小额多次）' if at else '不明'
+            cnt[kind] += 1
+            print(f"  {lab[p]:<8} {t0:>5}→{t1:<5} {b0:>8}→{b1:<8} ({100 * (b1 - b0) / b0:.0f}%) 领土 {x['terr']}→{y['terr']} | 进攻 {len(at)} 条/{frac:.2f} 船 {len(bo)} 捐 {len(dn)} | "
+                  f"批次 {' '.join(f'{t}×{n}' for t, n in sorted(batch.items())) or '-'} | 丢地 {' '.join(f'{nm(a)}:{v}' for a, v in sorted(lost.items(), key=lambda kv: -kv[1])[:3]) or '-'} | {kind}")
+    print('  归类合计：' + '；'.join(f'{k} {v}' for k, v in sorted(cnt.items(), key=lambda kv: -kv[1])))
 
 
 if __name__ == '__main__':

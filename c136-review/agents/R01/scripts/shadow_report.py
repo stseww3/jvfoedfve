@@ -178,6 +178,21 @@ def main():
                 else:
                     f0, f1 = fr[0], fr[-1]
                     print(f"         首窗 t0={f0['t0']} 余额 {f0['bal']} 保底线 {f0['floorAvg']} 机器人地 {f0['aiLand']} 格(密度 {f0['aiDens']})；末窗 t0={f1['t0']} 余额 {f1['bal']} 保底线 {f1['floorAvg']} 机器人地 {f1['aiLand']} 格(密度 {f1['aiDens']})；领土 {f0['terr']}→{f1['terr']}")
+            # other 的去向（见 shadow.mjs 的说明）：oPrice = buyLand 在价格线上 break（L5358）
+            if rows and 'oPrice' in rows[0]:
+                oc = {k: sum(int(r[k] or 0) for r in rows) for k in ('oPrice', 'oGate', 'oEmpty', 'oNoCall', 'priceOnMe')}
+                for k, v in oc.items():
+                    tot[k] += v
+                if c['other']:
+                    print(f"       other 细分：价格线 {oc['oPrice']} / 其他闸门 {oc['oGate']} / 没有可打目标或没空槽 {oc['oEmpty']} / 没走到 offers {oc['oNoCall']}；价格线里正被人打的 {oc['priceOnMe']} 个决策拍")
+                pr = [r for r in rows if int(r['oPrice'] or 0) >= 0.5 * int(r['acts'])]
+                if pr:
+                    print(f"       价格线>=50% 的窗口：{runs(rows, lambda r: int(r['oPrice'] or 0) >= 0.5 * int(r['acts']))}；这些窗口共 {sum(int(r['oPrice']) for r in pr)} 个价格线决策拍、cmd {sum(int(r['cmd']) for r in pr)} 个")
+                    show = pr if a.verbose else [pr[0], pr[len(pr) // 2], pr[-1]] if len(pr) >= 3 else pr
+                    for r in show:
+                        print(f"         t0={r['t0']:>5s} 余额均值 {r['bal']:>8s} 领土 {r['terr']:>6s} 密度 {r['dens']:>5s} | 最便宜目标 单价 c={r['priceC']} 愿付价 worth={r['priceWorth']} 对方密度 {r['priceDq']} | 人类邻居 {r['foeNb']} 个 | 正被打 {r['priceOnMe']} 拍" + (f"（来袭兵力均值 {r['priceInAtk']}）" if r['priceInAtk'] else ''))
+        if tot['acts'] and tot.get('oPrice') is not None and tot['other']:
+            print(f"  合计 other {tot['other']} = 价格线 {tot['oPrice']} + 其他闸门 {tot['oGate']} + 无目标 {tot['oEmpty']} + 没走到 {tot['oNoCall']}；价格线占全部决策拍 {100*tot['oPrice']/tot['acts']:.1f}%")
         if tot['acts']:
             print(f"  合计 决策拍 {tot['acts']} | cmd {tot['cmd']} ({100*tot['cmd']/tot['acts']:.1f}%) boxed {tot['boxed']} ({100*tot['boxed']/tot['acts']:.1f}%) dp {tot['dp']} ({100*tot['dp']/tot['acts']:.1f}%) floor {tot['floor']} ({100*tot['floor']/tot['acts']:.1f}%) floorN {tot['floorN']} ({100*tot['floorN']/tot['acts']:.1f}%) other {tot['other']} ({100*tot['other']/tot['acts']:.1f}%) | cap {tot['cap']} ({100*tot['cap']/tot['acts']:.1f}%)")
 
