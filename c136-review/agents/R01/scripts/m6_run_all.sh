@@ -14,6 +14,7 @@ mkdir -p "$D"
 run() { local out=$1; shift; timeout 110 "$@" > "$D/$out" 2>&1 || echo "FAILED: $*" >&2; }
 
 # —— 全量（123 个对局包）——
+run match_split.txt   python3 scripts/m6_match_split.py --csv      # 哪些包不是同一场对局；后面的脚本都读它
 run all_pages.txt     python3 scripts/m6_all_pages.py --csv
 run all_replay.txt    python3 scripts/m6_all_replay.py --csv
 run all_traj.txt      python3 scripts/m6_all_traj.py --csv
@@ -23,7 +24,7 @@ run all_outcomes.txt  python3 scripts/m6_all_outcomes.py --csv     # land.csv �
 run land_groups.md    python3 scripts/m6_all_land.py --md
 run all_coload.txt    python3 scripts/m6_all_coload.py --list
 run leave_grid.txt    python3 scripts/leave_grid.py
-cp out/_all/pages.csv out/_all/replay_facts.csv out/_all/traj.csv out/_all/joined.csv out/_all/land.csv "$D/"
+cp out/_all/pages.csv out/_all/replay_facts.csv out/_all/traj.csv out/_all/joined.csv out/_all/land.csv out/_all/match_split.csv "$D/"
 
 # —— 我复盘的 15 局 ——
 for m in A075 A057 A059 A055 A054 A031 A019 A009 A023 A050 A003 A005; do

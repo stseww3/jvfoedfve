@@ -9,7 +9,8 @@
   {{lines:<文件名>:<正则>}}  reports/m6-data/<文件名> 里匹配正则的行，原样放进代码块；正则后面加 @@N 只取前 N 行
 这样表里的数字只有一个出处（scripts/m6_run_all.sh 生成的文件），正文手写的数字用 --check 核对：
   --check   把正文里出现的、带千分位或不带的 ≥4 位整数逐个在 reports/m6-data/ 的全部文件和 reviews/*.md 里找一遍，列出找不到的（人工看是不是笔误）。
-用法：python3 scripts/m6_build_report.py [--check]
+  --check-file <文件>...   不生成报告，只对给出的文件（cards/*.md、reports/COUNCIL-PROPOSAL.md）做同样的核对（代码块、反引号里的内容、代码行号 Lnnn 不查）。
+用法：python3 scripts/m6_build_report.py [--check] | --check-file cards/*.md
 """
 import glob, os, re, sys
 
@@ -84,17 +85,34 @@ def main():
     print(f'已写 {os.path.relpath(dst, R)}：{len(out.splitlines())} 行，{len(out)} 字符')
 
     if '--check' in sys.argv:
-        hay = ''
-        for f in glob.glob(os.path.join(D, '*')) + glob.glob(os.path.join(R, 'reviews', '*.md')) + glob.glob(os.path.join(R, 'notes', '*.md')):
-            if f.endswith('SUMMARY.tmpl.md'):
-                continue
-            hay += open(f, encoding='utf8', errors='replace').read()
-        hay_digits = set(re.findall(r'\d+', hay.replace(',', '')))
-        prose = re.sub(r'^\{\{.*$', '', tmpl, flags=re.M)
-        prose = re.sub(r'`[^`]*`', '', prose)          # 路径、命令里的数字不查
-        miss = sorted({x for x in re.findall(r'(?<![\d.])\d{4,}(?![\d.])', prose.replace(',', '')) if x not in hay_digits}, key=int)
-        print(f'正文里 ≥4 位的整数 {len(set(re.findall(r"(?<![0-9.])[0-9]{4,}(?![0-9.])", prose.replace(",", ""))))} 个，在数据文件和逐局报告里找不到的 {len(miss)} 个：{" ".join(miss)}')
+        check_text('正文', re.sub(r'^\{\{.*$', '', tmpl, flags=re.M))
+
+
+def haystack():
+    hay = ''
+    for f in (glob.glob(os.path.join(D, '*')) + glob.glob(os.path.join(R, 'reviews', '*.md')) + glob.glob(os.path.join(R, 'notes', '*.md'))
+              + glob.glob(os.path.join(R, 'analysis', '*.json'))):
+        if f.endswith('SUMMARY.tmpl.md'):
+            continue
+        hay += open(f, encoding='utf8', errors='replace').read()
+    return set(re.findall(r'\d+', hay.replace(',', '')))
+
+
+def check_text(label, prose, hay_digits=None):
+    hay_digits = hay_digits or haystack()
+    prose = re.sub(r'```.*?```', '', prose, flags=re.S)   # 代码块（命令）不查
+    prose = re.sub(r'`[^`]*`', '', prose)                 # 路径、命令、标识符里的数字不查
+    prose = re.sub(r'L\d+(?:[–-]\d+)?', '', prose)        # 代码行号不查
+    nums = set(re.findall(r'(?<![\d.])\d{4,}(?![\d.])', prose.replace(',', '')))
+    miss = sorted({x for x in nums if x not in hay_digits}, key=int)
+    print(f'{label}：≥4 位的整数 {len(nums)} 个，在数据文件、逐局报告、analysis 里找不到的 {len(miss)} 个：{" ".join(miss)}')
+    return miss
 
 
 if __name__ == '__main__':
-    main()
+    if '--check-file' in sys.argv:
+        H = haystack()
+        for f in sys.argv[sys.argv.index('--check-file') + 1:]:
+            check_text(os.path.relpath(f, R), open(f, encoding='utf8').read(), H)
+    else:
+        main()
