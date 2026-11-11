@@ -1,0 +1,2943 @@
+{
+ "matchId": "B031",
+ "reviewer": "R08",
+ "protocol": "v2.0",
+ "context": {
+  "cohort": "squad20",
+  "strategyFile": "v27-team-c110.js",
+  "mapId": 23,
+  "mapSeed": 8158,
+  "mapLand": 483274,
+  "mode": 4,
+  "seededPlayers": 50,
+  "nominalTeams": 6,
+  "actualTeams": 2,
+  "baseWinExpectation": 0.5,
+  "squadBots": 11,
+  "ourPrimaryTeam": null,
+  "teamSplitCounts": {},
+  "teamSplit": false,
+  "sameMatchPeer": {
+   "peerMatchId": "A048",
+   "peerCohort": "squad10",
+   "peerPrimaryTeam": null,
+   "samePrimaryTeam": true
+  },
+  "dataCompleteness": {
+   "results": true,
+   "inGameLog": true,
+   "replay": true,
+   "tickSnapshots": 21
+  },
+  "anomaliesSummary": {
+   "drop30Count": 4,
+   "totalTransfers": 6,
+   "likelyRejectedTransfers": 5,
+   "boxedHighDensSnapshots": 0,
+   "strategyErrors": 0,
+   "teamSplit": false
+  },
+  "squad": [
+   {
+    "me": 23,
+    "name": "Tifa",
+    "labels": [
+     "Tifa",
+     "Magikarp"
+    ],
+    "team": 4,
+    "teamInferred": false,
+    "spawn": [
+     162,
+     1106
+    ],
+    "spawnResolves": 15,
+    "spawnInfo": null
+   },
+   {
+    "me": 24,
+    "name": "Zizka",
+    "labels": [
+     "Zizka"
+    ],
+    "team": 3,
+    "teamInferred": false,
+    "spawn": [
+     974,
+     1134
+    ],
+    "spawnResolves": 5,
+    "spawnInfo": null
+   },
+   {
+    "me": 25,
+    "name": "Redcoat",
+    "labels": [
+     "Redcoat"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     466,
+     1058
+    ],
+    "spawnResolves": 9,
+    "spawnInfo": null
+   },
+   {
+    "me": 26,
+    "name": "JohnMarston",
+    "labels": [
+     "JohnMarston",
+     "Potato"
+    ],
+    "team": 4,
+    "teamInferred": false,
+    "spawn": [
+     594,
+     754
+    ],
+    "spawnResolves": 10,
+    "spawnInfo": null
+   },
+   {
+    "me": 27,
+    "name": "Manchu",
+    "labels": [
+     "Manchu",
+     "Reconquista"
+    ],
+    "team": 3,
+    "teamInferred": false,
+    "spawn": [
+     166,
+     930
+    ],
+    "spawnResolves": 6,
+    "spawnInfo": null
+   },
+   {
+    "me": 28,
+    "name": "Cataphract",
+    "labels": [
+     "Cataphract",
+     "Subway"
+    ],
+    "team": 4,
+    "teamInferred": false,
+    "spawn": [
+     522,
+     618
+    ],
+    "spawnResolves": 7,
+    "spawnInfo": null
+   },
+   {
+    "me": 29,
+    "name": "Benin",
+    "labels": [
+     "Benin",
+     "Champa"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     558,
+     502
+    ],
+    "spawnResolves": 7,
+    "spawnInfo": null
+   },
+   {
+    "me": 30,
+    "name": "Transylvania",
+    "labels": [
+     "Transylvania",
+     "Centurion"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     514,
+     882
+    ],
+    "spawnResolves": 13,
+    "spawnInfo": null
+   },
+   {
+    "me": 31,
+    "name": "Aurelian",
+    "labels": [
+     "Aurelian",
+     "Uesugi"
+    ],
+    "team": 4,
+    "teamInferred": false,
+    "spawn": [
+     1026,
+     1362
+    ],
+    "spawnResolves": 8,
+    "spawnInfo": null
+   },
+   {
+    "me": 33,
+    "name": "TaxCollector",
+    "labels": [
+     "TaxCollector",
+     "Three Kingdoms"
+    ],
+    "team": 5,
+    "teamInferred": false,
+    "spawn": [
+     194,
+     1090
+    ],
+    "spawnResolves": 14,
+    "spawnInfo": null
+   },
+   {
+    "me": 35,
+    "name": "Croatia",
+    "labels": [
+     "Croatia",
+     "Justinian"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     434,
+     338
+    ],
+    "spawnResolves": 8,
+    "spawnInfo": null
+   },
+   {
+    "me": 40,
+    "name": "BigSmoke",
+    "labels": [
+     "BigSmoke",
+     "Pepe"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     50,
+     1074
+    ],
+    "spawnResolves": 13,
+    "spawnInfo": null
+   },
+   {
+    "me": 47,
+    "name": "Togo",
+    "labels": [
+     "Togo",
+     "Ragnar"
+    ],
+    "team": 5,
+    "teamInferred": false,
+    "spawn": [
+     822,
+     1160
+    ],
+    "spawnResolves": 6,
+    "spawnInfo": null
+   }
+  ],
+  "replay": "B031 自带 replay.txt 录到服务器拍 1864（over=0，对局没有结束）；结果表最大本地拍 2121。同房 A048 只在验证集里，没有读。176 条 traj 快照（地、兵）全部逐兵一致。",
+  "truthTeamSplit": "真值 5 队、每队 10 个真人（录像头写 6 队）。本编队 13 个号：T1×5（Benin BigSmoke Croatia Redcoat Transylvania）/ T3×2（Manchu Zizka）/ T4×4（Aurelian Cataphract JohnMarston Tifa）/ T5×2（TaxCollector Togo）。card.json 写的是 squadBots=11、actualTeams=2、teamSplitCounts={}：结果行全是 left、team=null，Zizka 和 Redcoat 没有结果行。",
+  "peerInRoom": "同房另一支受控编队：squad10（[APEX] 标签，按 c116-vb 重演）10 个号全在 T2——T2 整队都是受控号。",
+  "fairSharePerCapita": "50 个真人里 3 个 t=0 就离开，47 个开局在线（T1 10 / T2 10 / T3 9 / T4 10 / T5 8）。13 个号占人头 27.7%。",
+  "notes": "日志标签中途换名：Tifa>Magikarp、JohnMarston>Potato、Manchu>Reconquista、Cataphract>Subway、Benin>Champa、Transylvania>Centurion、Aurelian>Uesugi、TaxCollector>Three Kingdoms、Croatia>Justinian、BigSmoke>Pepe、Togo>Ragnar；本文一律用前一个名字。HL-TICK 的 t 是各号本地拍；本局 t=720 起本地拍落后服务器 75~750 拍。写『执行拍』的是服务器拍（录像），写『决策拍』『本地拍』的是客户端自己的拍。",
+  "truthSource": {
+   "replayFrom": "B031",
+   "peer": "APEX",
+   "engineEndTick": 1864,
+   "trajRowsExact": "176/176"
+  }
+ },
+ "outcome": {
+  "result": "lost",
+  "resultLabel": "lost",
+  "primaryTeamWon": false,
+  "anyBotWon": false,
+  "winnerTeam": null,
+  "endTick": 2121,
+  "peakSquadLandShare": 0.1195,
+  "peakPrimaryTeamShareSeen": 0.0,
+  "ourFinalTeamShare": 0.0,
+  "placements": [
+   {
+    "bot": "Tifa",
+    "me": 23,
+    "team": 4,
+    "event": "left",
+    "result": "left",
+    "tick": 1652,
+    "place": 23
+   },
+   {
+    "bot": "Zizka",
+    "me": 24,
+    "team": 3,
+    "event": null,
+    "result": null,
+    "tick": null,
+    "place": null
+   },
+   {
+    "bot": "Redcoat",
+    "me": 25,
+    "team": 1,
+    "event": "left",
+    "result": "left",
+    "tick": 1540,
+    "place": null
+   },
+   {
+    "bot": "JohnMarston",
+    "me": 26,
+    "team": 4,
+    "event": "left",
+    "result": "left",
+    "tick": 1645,
+    "place": 43
+   },
+   {
+    "bot": "Manchu",
+    "me": 27,
+    "team": 3,
+    "event": "left",
+    "result": "left",
+    "tick": 1645,
+    "place": 24
+   },
+   {
+    "bot": "Cataphract",
+    "me": 28,
+    "team": 4,
+    "event": "left",
+    "result": "left",
+    "tick": 518,
+    "place": 13
+   },
+   {
+    "bot": "Benin",
+    "me": 29,
+    "team": 1,
+    "event": "left",
+    "result": "left",
+    "tick": 1652,
+    "place": 55
+   },
+   {
+    "bot": "Transylvania",
+    "me": 30,
+    "team": 1,
+    "event": "left",
+    "result": "left",
+    "tick": 1652,
+    "place": 30
+   },
+   {
+    "bot": "Aurelian",
+    "me": 31,
+    "team": 4,
+    "event": "left",
+    "result": "left",
+    "tick": 1652,
+    "place": 32
+   },
+   {
+    "bot": "TaxCollector",
+    "me": 33,
+    "team": 5,
+    "event": "left",
+    "result": "left",
+    "tick": 1918,
+    "place": 39
+   },
+   {
+    "bot": "Croatia",
+    "me": 35,
+    "team": 1,
+    "event": "left",
+    "result": "left",
+    "tick": 1652,
+    "place": 17
+   },
+   {
+    "bot": "BigSmoke",
+    "me": 40,
+    "team": 1,
+    "event": "left",
+    "result": "left",
+    "tick": 1652,
+    "place": 34
+   },
+   {
+    "bot": "Togo",
+    "me": 47,
+    "team": 5,
+    "event": "left",
+    "result": "left",
+    "tick": 2121,
+    "place": 26
+   }
+  ]
+ },
+ "timeline": [
+  {
+   "t": 90,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 13,
+   "sqTerr": 517,
+   "sqSharePct": 0.11,
+   "sqBal": 7570,
+   "sqDens": 14.6,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "truth": {
+    "snapT": 90,
+    "teamSharePct": {
+     "T1": 0.1,
+     "T2": 0.1,
+     "T3": 0.1,
+     "T4": 0.1,
+     "T5": 0.1
+    },
+    "builtInAiSharePct": 2.7,
+    "activeHumansByTeam": {
+     "T1": 10,
+     "T2": 10,
+     "T3": 9,
+     "T4": 10,
+     "T5": 8
+    },
+    "squadActive": 13,
+    "squadActiveSharePct": 0.11,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.79,
+    "squadByTeam": {
+     "T1": {
+      "bots": 5,
+      "sharePct": 0.05
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 0.01
+     },
+     "T4": {
+      "bots": 4,
+      "sharePct": 0.04
+     },
+     "T5": {
+      "bots": 2,
+      "sharePct": 0.0
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 0.05
+   }
+  },
+  {
+   "t": 180,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 5,
+   "sqTerr": 857,
+   "sqSharePct": 0.18,
+   "sqBal": 4490,
+   "sqDens": 5.2,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "truth": {
+    "snapT": 180,
+    "teamSharePct": {
+     "T1": 0.3,
+     "T2": 0.4,
+     "T3": 0.3,
+     "T4": 0.4,
+     "T5": 0.4
+    },
+    "builtInAiSharePct": 4.9,
+    "activeHumansByTeam": {
+     "T1": 10,
+     "T2": 10,
+     "T3": 9,
+     "T4": 10,
+     "T5": 8
+    },
+    "squadActive": 13,
+    "squadActiveSharePct": 0.45,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 0.97,
+    "squadByTeam": {
+     "T1": {
+      "bots": 5,
+      "sharePct": 0.18
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 0.06
+     },
+     "T4": {
+      "bots": 4,
+      "sharePct": 0.13
+     },
+     "T5": {
+      "bots": 2,
+      "sharePct": 0.07
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 0.35
+   }
+  },
+  {
+   "t": 196,
+   "src": "OPENING-CHECK L8609922",
+   "botsWithSnapshot": 13,
+   "sqTerr": 2522,
+   "sqSharePct": 0.522,
+   "allOk": true,
+   "truth": {
+    "snapT": 190,
+    "teamSharePct": {
+     "T1": 0.4,
+     "T2": 0.4,
+     "T3": 0.3,
+     "T4": 0.4,
+     "T5": 0.4
+    },
+    "builtInAiSharePct": 5.2,
+    "activeHumansByTeam": {
+     "T1": 10,
+     "T2": 10,
+     "T3": 9,
+     "T4": 10,
+     "T5": 8
+    },
+    "squadActive": 13,
+    "squadActiveSharePct": 0.51,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 1.02,
+    "squadByTeam": {
+     "T1": {
+      "bots": 5,
+      "sharePct": 0.21
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 0.07
+     },
+     "T4": {
+      "bots": 4,
+      "sharePct": 0.16
+     },
+     "T5": {
+      "bots": 2,
+      "sharePct": 0.07
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 0.39
+   }
+  },
+  {
+   "t": 270,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 10,
+   "sqTerr": 3657,
+   "sqSharePct": 0.76,
+   "sqBal": 14033,
+   "sqDens": 3.8,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "truth": {
+    "snapT": 270,
+    "teamSharePct": {
+     "T1": 0.7,
+     "T2": 0.8,
+     "T3": 0.5,
+     "T4": 0.6,
+     "T5": 0.5
+    },
+    "builtInAiSharePct": 8.1,
+    "activeHumansByTeam": {
+     "T1": 10,
+     "T2": 10,
+     "T3": 9,
+     "T4": 10,
+     "T5": 8
+    },
+    "squadActive": 13,
+    "squadActiveSharePct": 1.0,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 1.16,
+    "squadByTeam": {
+     "T1": {
+      "bots": 5,
+      "sharePct": 0.37
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 0.17
+     },
+     "T4": {
+      "bots": 4,
+      "sharePct": 0.29
+     },
+     "T5": {
+      "bots": 2,
+      "sharePct": 0.16
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 0.75
+   }
+  },
+  {
+   "t": 450,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 12,
+   "sqTerr": 13466,
+   "sqSharePct": 2.79,
+   "sqBal": 36548,
+   "sqDens": 2.7,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "truth": {
+    "snapT": 450,
+    "teamSharePct": {
+     "T1": 2.2,
+     "T2": 2.4,
+     "T3": 1.7,
+     "T4": 2.0,
+     "T5": 1.6
+    },
+    "builtInAiSharePct": 20.7,
+    "activeHumansByTeam": {
+     "T1": 10,
+     "T2": 10,
+     "T3": 9,
+     "T4": 10,
+     "T5": 8
+    },
+    "squadActive": 13,
+    "squadActiveSharePct": 3.0,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 1.09,
+    "squadByTeam": {
+     "T1": {
+      "bots": 5,
+      "sharePct": 1.06
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 0.53
+     },
+     "T4": {
+      "bots": 4,
+      "sharePct": 0.95
+     },
+     "T5": {
+      "bots": 2,
+      "sharePct": 0.46
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 2.39
+   }
+  },
+  {
+   "t": 518,
+   "src": "RESULT L8610207 + 最近快照 t=450",
+   "botsWithSnapshot": 12,
+   "sqTerr": 13466,
+   "sqSharePct": 2.79,
+   "sqBal": 36548,
+   "sqDens": 2.7,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "event": "Cataphract left",
+   "truth": {
+    "snapT": 510,
+    "teamSharePct": {
+     "T1": 3.3,
+     "T2": 3.9,
+     "T3": 2.5,
+     "T4": 3.0,
+     "T5": 2.6
+    },
+    "builtInAiSharePct": 28.2,
+    "activeHumansByTeam": {
+     "T1": 10,
+     "T2": 10,
+     "T3": 9,
+     "T4": 10,
+     "T5": 8
+    },
+    "squadActive": 13,
+    "squadActiveSharePct": 4.52,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 1.06,
+    "squadByTeam": {
+     "T1": {
+      "bots": 5,
+      "sharePct": 1.64
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 0.68
+     },
+     "T4": {
+      "bots": 4,
+      "sharePct": 1.53
+     },
+     "T5": {
+      "bots": 2,
+      "sharePct": 0.66
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 3.86
+   },
+   "note": "结果表里的拍是掉线号冻结的本地拍；录像里真正的离开拍见 deaths[].truth.engineLeftTick"
+  },
+  {
+   "t": 630,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 11,
+   "sqTerr": 29266,
+   "sqSharePct": 6.06,
+   "sqBal": 56480,
+   "sqDens": 1.9,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "truth": {
+    "snapT": 630,
+    "teamSharePct": {
+     "T1": 6.1,
+     "T2": 4.9,
+     "T3": 4.4,
+     "T4": 4.7,
+     "T5": 4.3
+    },
+    "builtInAiSharePct": 46.1,
+    "activeHumansByTeam": {
+     "T1": 10,
+     "T2": 10,
+     "T3": 9,
+     "T4": 10,
+     "T5": 8
+    },
+    "squadActive": 13,
+    "squadActiveSharePct": 7.1,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 1.05,
+    "squadByTeam": {
+     "T1": {
+      "bots": 5,
+      "sharePct": 2.69
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 1.25
+     },
+     "T4": {
+      "bots": 4,
+      "sharePct": 1.99
+     },
+     "T5": {
+      "bots": 2,
+      "sharePct": 1.18
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 4.87
+   }
+  },
+  {
+   "t": 900,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 12,
+   "sqTerr": 51281,
+   "sqSharePct": 10.61,
+   "sqBal": 263139,
+   "sqDens": 5.1,
+   "boxedIn": 1,
+   "overSoftCap": 0,
+   "truth": {
+    "snapT": 900,
+    "teamSharePct": {
+     "T1": 9.6,
+     "T2": 6.0,
+     "T3": 8.0,
+     "T4": 7.8,
+     "T5": 7.6
+    },
+    "builtInAiSharePct": 58.6,
+    "activeHumansByTeam": {
+     "T1": 10,
+     "T2": 10,
+     "T3": 8,
+     "T4": 10,
+     "T5": 8
+    },
+    "squadActive": 13,
+    "squadActiveSharePct": 11.03,
+    "squadHuskSharePct": 0.0,
+    "squadPerCapitaVsRoomActive": 1.0,
+    "squadByTeam": {
+     "T1": {
+      "bots": 5,
+      "sharePct": 4.43
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 1.92
+     },
+     "T4": {
+      "bots": 4,
+      "sharePct": 2.87
+     },
+     "T5": {
+      "bots": 2,
+      "sharePct": 1.82
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 6.0
+   }
+  },
+  {
+   "t": 990,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 12,
+   "sqTerr": 57733,
+   "sqSharePct": 11.95,
+   "sqBal": 291209,
+   "sqDens": 5.0,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "note": "编队领土份额峰值",
+   "truth": {
+    "snapT": 990,
+    "teamSharePct": {
+     "T1": 11.0,
+     "T2": 6.7,
+     "T3": 9.9,
+     "T4": 9.6,
+     "T5": 8.9
+    },
+    "builtInAiSharePct": 51.8,
+    "activeHumansByTeam": {
+     "T1": 10,
+     "T2": 10,
+     "T3": 8,
+     "T4": 9,
+     "T5": 8
+    },
+    "squadActive": 12,
+    "squadActiveSharePct": 11.95,
+    "squadHuskSharePct": 0.4,
+    "squadPerCapitaVsRoomActive": 0.98,
+    "squadByTeam": {
+     "T1": {
+      "bots": 5,
+      "sharePct": 5.07
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 2.21
+     },
+     "T4": {
+      "bots": 3,
+      "sharePct": 2.7
+     },
+     "T5": {
+      "bots": 2,
+      "sharePct": 1.97
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 6.69
+   }
+  },
+  {
+   "t": 1260,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 8,
+   "sqTerr": 44073,
+   "sqSharePct": 9.12,
+   "sqBal": 529962,
+   "sqDens": 12.0,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "truth": {
+    "snapT": 1260,
+    "teamSharePct": {
+     "T1": 15.5,
+     "T2": 7.3,
+     "T3": 16.4,
+     "T4": 15.6,
+     "T5": 13.3
+    },
+    "builtInAiSharePct": 30.3,
+    "activeHumansByTeam": {
+     "T1": 10,
+     "T2": 10,
+     "T3": 8,
+     "T4": 9,
+     "T5": 8
+    },
+    "squadActive": 12,
+    "squadActiveSharePct": 14.19,
+    "squadHuskSharePct": 0.5,
+    "squadPerCapitaVsRoomActive": 0.79,
+    "squadByTeam": {
+     "T1": {
+      "bots": 5,
+      "sharePct": 5.78
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 2.61
+     },
+     "T4": {
+      "bots": 3,
+      "sharePct": 3.56
+     },
+     "T5": {
+      "bots": 2,
+      "sharePct": 2.24
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 7.32
+   }
+  },
+  {
+   "t": 1530,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 9,
+   "sqTerr": 51594,
+   "sqSharePct": 10.68,
+   "sqBal": 1380916,
+   "sqDens": 26.8,
+   "boxedIn": 2,
+   "overSoftCap": 0,
+   "truth": {
+    "snapT": 1530,
+    "teamSharePct": {
+     "T1": 18.3,
+     "T2": 7.6,
+     "T3": 21.6,
+     "T4": 19.1,
+     "T5": 17.7
+    },
+    "builtInAiSharePct": 14.6,
+    "activeHumansByTeam": {
+     "T1": 10,
+     "T2": 10,
+     "T3": 8,
+     "T4": 9,
+     "T5": 8
+    },
+    "squadActive": 12,
+    "squadActiveSharePct": 14.42,
+    "squadHuskSharePct": 0.54,
+    "squadPerCapitaVsRoomActive": 0.65,
+    "squadByTeam": {
+     "T1": {
+      "bots": 5,
+      "sharePct": 5.99
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 2.69
+     },
+     "T4": {
+      "bots": 3,
+      "sharePct": 3.59
+     },
+     "T5": {
+      "bots": 2,
+      "sharePct": 2.16
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 7.58
+   }
+  },
+  {
+   "t": 1540,
+   "src": "RESULT LNone + 最近快照 t=1530",
+   "botsWithSnapshot": 9,
+   "sqTerr": 51594,
+   "sqSharePct": 10.68,
+   "sqBal": 1380916,
+   "sqDens": 26.8,
+   "boxedIn": 2,
+   "overSoftCap": 0,
+   "event": "Redcoat left",
+   "truth": {
+    "snapT": 1540,
+    "teamSharePct": {
+     "T1": 18.3,
+     "T2": 7.6,
+     "T3": 21.7,
+     "T4": 19.2,
+     "T5": 17.8
+    },
+    "builtInAiSharePct": 14.3,
+    "activeHumansByTeam": {
+     "T1": 9,
+     "T2": 10,
+     "T3": 8,
+     "T4": 9,
+     "T5": 8
+    },
+    "squadActive": 11,
+    "squadActiveSharePct": 13.18,
+    "squadHuskSharePct": 1.8,
+    "squadPerCapitaVsRoomActive": 0.64,
+    "squadByTeam": {
+     "T1": {
+      "bots": 4,
+      "sharePct": 4.75
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 2.69
+     },
+     "T4": {
+      "bots": 3,
+      "sharePct": 3.59
+     },
+     "T5": {
+      "bots": 2,
+      "sharePct": 2.16
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 7.59
+   },
+   "note": "结果表里的拍是掉线号冻结的本地拍；录像里真正的离开拍见 deaths[].truth.engineLeftTick"
+  },
+  {
+   "t": 1645,
+   "src": "RESULT L8610200 + 最近快照 t=1620",
+   "botsWithSnapshot": 9,
+   "sqTerr": 51344,
+   "sqSharePct": 10.62,
+   "sqBal": 1525856,
+   "sqDens": 29.7,
+   "boxedIn": 2,
+   "overSoftCap": 0,
+   "event": "JohnMarston left",
+   "events": [
+    "Manchu left"
+   ],
+   "truth": {
+    "snapT": 1640,
+    "teamSharePct": {
+     "T1": 18.3,
+     "T2": 7.5,
+     "T3": 22.5,
+     "T4": 19.7,
+     "T5": 18.3
+    },
+    "builtInAiSharePct": 12.7,
+    "activeHumansByTeam": {
+     "T1": 9,
+     "T2": 10,
+     "T3": 8,
+     "T4": 9,
+     "T5": 8
+    },
+    "squadActive": 11,
+    "squadActiveSharePct": 13.3,
+    "squadHuskSharePct": 1.98,
+    "squadPerCapitaVsRoomActive": 0.63,
+    "squadByTeam": {
+     "T1": {
+      "bots": 4,
+      "sharePct": 4.72
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 2.87
+     },
+     "T4": {
+      "bots": 3,
+      "sharePct": 3.49
+     },
+     "T5": {
+      "bots": 2,
+      "sharePct": 2.23
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 7.51
+   },
+   "note": "结果表里的拍是掉线号冻结的本地拍；录像里真正的离开拍见 deaths[].truth.engineLeftTick"
+  },
+  {
+   "t": 1652,
+   "src": "RESULT L8610217 + 最近快照 t=1620",
+   "botsWithSnapshot": 9,
+   "sqTerr": 51344,
+   "sqSharePct": 10.62,
+   "sqBal": 1525856,
+   "sqDens": 29.7,
+   "boxedIn": 2,
+   "overSoftCap": 0,
+   "event": "Tifa left",
+   "events": [
+    "Benin left",
+    "Transylvania left",
+    "Aurelian left",
+    "Croatia left",
+    "BigSmoke left"
+   ],
+   "truth": {
+    "snapT": 1650,
+    "teamSharePct": {
+     "T1": 18.3,
+     "T2": 7.5,
+     "T3": 22.6,
+     "T4": 19.8,
+     "T5": 18.3
+    },
+    "builtInAiSharePct": 12.4,
+    "activeHumansByTeam": {
+     "T1": 9,
+     "T2": 10,
+     "T3": 8,
+     "T4": 9,
+     "T5": 8
+    },
+    "squadActive": 11,
+    "squadActiveSharePct": 13.3,
+    "squadHuskSharePct": 1.98,
+    "squadPerCapitaVsRoomActive": 0.63,
+    "squadByTeam": {
+     "T1": {
+      "bots": 4,
+      "sharePct": 4.71
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 2.87
+     },
+     "T4": {
+      "bots": 3,
+      "sharePct": 3.49
+     },
+     "T5": {
+      "bots": 2,
+      "sharePct": 2.23
+     }
+    },
+    "peerActive": 10,
+    "peerActiveSharePct": 7.51
+   },
+   "note": "结果表里的拍是掉线号冻结的本地拍；录像里真正的离开拍见 deaths[].truth.engineLeftTick"
+  },
+  {
+   "t": 1800,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 1,
+   "sqTerr": 3957,
+   "sqSharePct": 0.82,
+   "sqBal": 312824,
+   "sqDens": 79.1,
+   "boxedIn": 1,
+   "overSoftCap": 0,
+   "truth": {
+    "snapT": 1800,
+    "teamSharePct": {
+     "T1": 18.5,
+     "T2": 7.1,
+     "T3": 24.6,
+     "T4": 20.2,
+     "T5": 18.9
+    },
+    "builtInAiSharePct": 10.0,
+    "activeHumansByTeam": {
+     "T1": 8,
+     "T2": 9,
+     "T3": 8,
+     "T4": 9,
+     "T5": 8
+    },
+    "squadActive": 11,
+    "squadActiveSharePct": 13.24,
+    "squadHuskSharePct": 1.98,
+    "squadPerCapitaVsRoomActive": 0.59,
+    "squadByTeam": {
+     "T1": {
+      "bots": 4,
+      "sharePct": 4.57
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 2.87
+     },
+     "T4": {
+      "bots": 3,
+      "sharePct": 3.57
+     },
+     "T5": {
+      "bots": 2,
+      "sharePct": 2.23
+     }
+    },
+    "peerActive": 9,
+    "peerActiveSharePct": 6.77
+   }
+  },
+  {
+   "t": 1890,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 1,
+   "sqTerr": 3957,
+   "sqSharePct": 0.82,
+   "sqBal": 349027,
+   "sqDens": 88.2,
+   "boxedIn": 1,
+   "overSoftCap": 0,
+   "truth": {
+    "snapT": 1864,
+    "teamSharePct": {
+     "T1": 19.1,
+     "T2": 7.2,
+     "T3": 26.0,
+     "T4": 19.1,
+     "T5": 19.1
+    },
+    "builtInAiSharePct": 8.3,
+    "activeHumansByTeam": {
+     "T1": 8,
+     "T2": 9,
+     "T3": 8,
+     "T4": 9,
+     "T5": 8
+    },
+    "squadActive": 11,
+    "squadActiveSharePct": 13.19,
+    "squadHuskSharePct": 1.48,
+    "squadPerCapitaVsRoomActive": 0.57,
+    "squadByTeam": {
+     "T1": {
+      "bots": 4,
+      "sharePct": 4.54
+     },
+     "T3": {
+      "bots": 2,
+      "sharePct": 2.87
+     },
+     "T4": {
+      "bots": 3,
+      "sharePct": 3.55
+     },
+     "T5": {
+      "bots": 2,
+      "sharePct": 2.23
+     }
+    },
+    "peerActive": 9,
+    "peerActiveSharePct": 6.79
+   }
+  },
+  {
+   "t": 1918,
+   "src": "RESULT L8610248 + 最近快照 t=1890",
+   "botsWithSnapshot": 1,
+   "sqTerr": 3957,
+   "sqSharePct": 0.82,
+   "sqBal": 349027,
+   "sqDens": 88.2,
+   "boxedIn": 1,
+   "overSoftCap": 0,
+   "event": "TaxCollector left",
+   "note": "结果表里的拍是掉线号冻结的本地拍；录像里真正的离开拍见 deaths[].truth.engineLeftTick"
+  },
+  {
+   "t": 2121,
+   "src": "RESULT L8610243 + 最近快照 t=1890",
+   "botsWithSnapshot": 1,
+   "sqTerr": 3957,
+   "sqSharePct": 0.82,
+   "sqBal": 349027,
+   "sqDens": 88.2,
+   "boxedIn": 1,
+   "overSoftCap": 0,
+   "event": "Togo left",
+   "note": "结果表里的拍是掉线号冻结的本地拍；录像里真正的离开拍见 deaths[].truth.engineLeftTick"
+  }
+ ],
+ "phases": {
+  "spawn": {
+   "window": "t=0~90",
+   "facts": [
+    "日志 [HL-SPAWN] 121 行，人均 9.3 条指派（Zizka 5 条，Tifa 15 条）。13 个号里只有 Manchu、Cataphract、Croatia 3 个的引擎落点是自己最后一条指派（spawncheck [PA][PC]）。没有同像素或 <40 像素的号对。",
+    "最近编队友距离中位 151 像素、最小 91。最近的三对都是异队：Zizka(T3)–Benin(T1) 91、Redcoat(T1)–Cataphract(T4) 95、JohnMarston(T4)–Croatia(T1) 107。",
+    "同房 squad10 的 10 个号全落在 (670~888, 933~1110) 一块里，leo_tx 与 ryan_m 同像素 (786,946)（truth [TB]）。",
+    "t=90 我方人均 39 格、其它真人 66 格；t=180 165 对 174，追平。"
+   ],
+   "problems": [
+    "协调器每次重解都换点，13 个号里 10 个停在更早的某一解上。",
+    "最近的三对异队编队友后来正好是三处内耗：Benin 与 Zizka 的留底互锁、Redcoat 被停住的 Cataphract 的余额锁住、JohnMarston 的船靠岸在 Croatia 身上。"
+   ]
+  },
+  "opening": {
+   "window": "t=90~630",
+   "facts": [
+    "(270,630] 人均吃空地：我方 2095 格、squad10 1847 格、其它真人 2159 格；人均吃人机 224 / 232 / 41 格（harvest）。人均比（我方在线号人均 ÷ 全房在线真人人均）t=450 1.09、t=630 1.05、t=720 1.07。",
+    "t=0~539 已执行指令的时延中位 11~12 拍、P90 28~29，陆攻落地无效 0 条（shadowcmp [SF]）；影子决策拍 <540 的 85 条指令录像里配上 82 条（lagstats [LA]）。",
+    "Cataphract 的最后一条指令在服务器拍 469（日志最后一行 L8609987 是 HL-OPENING t=460，结果表本地拍 518）：t=540 起 2021 格不动，余额 5237→57115，t=973 被服务器宣布离开。",
+    "BigSmoke 在 t=630 之前被 [CN]you can yo（T3）吃掉 548 格（对方耗兵 3699），t=630 只有 1157 格，全队最小。",
+    "t=540~719 时延中位 19 / P90 36 拍，卡顿刚开始。"
+   ],
+   "problems": [
+    "Cataphract 的客户端在本地拍 460~518 之间停住，之后 500 拍没有任何指令，带着 2021 格、5.7 万兵变成空壳。"
+   ]
+  },
+  "midgame": {
+   "window": "t=630~3500（录像到 t=1864）",
+   "facts": [
+    "卡顿一路加重、没有恢复：每 180 拍窗口的时延中位 75→144→239→310→317 拍（执行拍 720~1619），P90 最高 515、单条最大 751；陆攻落地无效 23%→15%→41%→58%→78%。执行拍 1620 之后全队只落地 10 条指令，时延 545~670 拍，全部无效（[SF]）。",
+    "按决策拍看：影子在 540~1260 要发的 391 条，录像里配上 273 条（70%），其中 95 条落地时已无效；1260~1800 的 245 条只配上 30 条（12%），22 条无效；1800 之后的 34 条一条也没有（lagstats [LA]）。",
+    "补拍成批落地：同一个号在同一个服务器拍落地 8 条的 11 次、9 条的 5 次；同房 squad10 8 条 6 次、9 条 16 次；其它真人最多 2 条（[LC]）。Tifa t=1540 8 条、Manchu t=1617 9 条、TaxCollector t=1519 和 t=1820 各 8 条，全部无效。",
+    "策略自身不慢：177 条 HL-TICK 的 avgMs ≤1.26、maxMs ≤60.8、skip=0。同房 squad10（另一套策略）同窗时延中位 72→54→196→270→398→557 拍。",
+    "内置 AI 占地 56.5%（t=720）→30.3%（1260）→10.0%（1800）。人均从人机手里拿到的地：(630,900] 我方 873 / squad10 316 / 其它真人 1135 格；(900,1260] 1278 / 608 / 4174；(1260,1800] 315 / 179 / 3271。t=630~1800 人机共丢 241264 格，我方拿到 31753 格（13.2%，人头占 27.7%）。",
+    "人均比 1.07（t=720）→1.00（900）→0.79（1260）→0.65（1530）→0.57（1864）。t=1260→1864 我方在线号人均 5715→5795 格，其它真人 9699→14871 格；人均余额 76433→277503（其它真人 68593→275765）。t=1864 我方密度 47.9，其它真人 18.5。",
+    "影子普查（按真值每 10 拍把各号接壤的人机过一遍门槛，[SH]）：t=630~1500 接壤人机的 761 个号·点里 417 个全被挡，其中 264 个是被防人机留底 sb 挡的；定出 sb 的是异队编队友 178 个、同队真人 59 个、敌队真人 27 个。",
+    "Benin：t=660~1490 的 77 个普查点全被 Zizka 的余额锁住（中位：自己 51184、sb 64096，旁边的人机 1295 格、0 兵、吃光只要 1944 兵）；t≥1500 又被 min(sb, 88×领土) 挡 28 个点、被最小指令门槛挡 9 个点。真机 Benin 本地拍 720~1620 只发了 4 条指令（HL-TICK cmds 12→16）。",
+    "没兵的人机反过来啃：AI373（余额一直是 0）t=900 起对 Benin 新开 9 次进攻，9 圈全赢，实际耗兵 912，赊账 163401（欠账 t=1350 起顶在 5 万上限）；整局 Benin 被它拿走 1293 格、余额被打掉 81718，从没有一个兵压在它身上（aiprobe）。Benin 3238 格（t=740）→1709 格（1864），余额却涨到 158746（密度 92.9）。AI92 同样啃 Tifa 4 圈 711 格（Tifa 损失 22424）。",
+    "全房对比（truth [TN]）：被内置 AI 打掉的余额 ÷ AI 实际耗兵——我方 13 个号 191781 ÷ 79127 = 2.42（丢 5454 格），squad10 10 个号 132191 ÷ 33730 = 3.92，其它 24 个真人 26526 ÷ 65050 = 0.41。",
+    "t≥1500 的买地口径（[SJ]）：接壤人机的 109 个号·点里 83 个全被挡——最小指令门槛 44 个（中位：余额 251322、minCmd 11780，被挡人机 2016 格、0 兵、吃光要 4077 兵），min(sb, 88×领土) 28 个（全是 Benin），报价 7 个。AI373 到 t=1860 还有 2113 格、0 兵，夹在 Benin（15.9 万兵）和 Zizka（39.8 万兵）中间没人吃。",
+    "没有人机邻居的号（t=1710）：TaxCollector 3957 格（t=1230 起不变，邻居只有同队的 Napaleon Bonap、black magic）、Transylvania 6500 格（t=1120 起，唯一邻居是敌队的 Progress City）、Aurelian 5833、BigSmoke 4888、Manchu 7351。t=1864 余额：Transylvania 410796、Zizka 398009、Aurelian 348528、TaxCollector 337325（密度 85.2）。",
+    "JohnMarston 7 条船 71645 兵：3 条靠岸在异队编队友 Croatia 的地上（t=846 3072 兵、t=958 3131 兵、t=1627 49864 兵），合计吃 Croatia 1176 格、耗兵 56031、Croatia 余额被打掉 26782；另 3 条靠岸时落点已是自己的地（truth [TO][TL]、boattrack）。",
+    "Redcoat 最后一批指令在服务器拍 987，t=1540 被宣布离开（5971 格 / 262530 兵）。两个空壳之后互打：空壳 Redcoat 吃空壳 Cataphract 1197 格，空壳 Cataphract 用 28221 兵吃 Redcoat 261 格；Cataphract 另被 [НЯШ]Weirdo（T3）吃 2031 格，t=1843 阵亡。",
+    "断流：各号最后一条已执行指令的服务器拍——Transylvania 1365、Zizka 1540、Tifa 1561、Aurelian 1568、Croatia / BigSmoke 1575、Togo / JohnMarston / Manchu 1617、Benin 1645、TaxCollector 1820（那 8 条是决策拍 1230~1365 的旧单）。同期其它真人每 90 拍仍执行 11~13 条指令，最后一条到 t=1862。",
+    "结果表 11 行全是 left，写入时间 04:13:38.7~04:13:57.1（开局后 127~145 秒，18 秒内写完）；本地拍 Cataphract 518、JohnMarston / Manchu 1645、另 6 个号 1652、TaxCollector 1918、Togo 2121。"
+   ],
+   "problems": [
+    "人机最肥的 900 拍（t=900~1800，人机 58.6%→10.0%）里，其它真人人均拿 7445 格，我方 1593 格：指令晚几百拍是一半原因，另一半是准时的代码自己也不出手（sb 互锁、t≥1500 的最小指令门槛）。",
+    "囤兵没有换来安全：余额越高，被没兵的人机赊账啃一格掉的兵越多（Benin 每格 1.9 兵→105 兵→148 兵）。",
+    "被围的号唯一的出口是船和盈余捐；船单在队列里没发出去，盈余捐按固定比例下，超过受捐额度。",
+    "t=1650 前后全队客户端停止和服务器交换，对局没有打完。"
+   ]
+  },
+  "endgame": {
+   "window": "t>3500",
+   "facts": [
+    "没有打到。录像停在服务器拍 1864（over=0）；结果表里最晚的本地拍是 Togo 的 2121。t=1864 各队占地 T3 26.0%、T1 19.1%、T4 19.1%、T5 19.1%、T2 7.2%，内置 AI 8.3%；我方 11 个在线号合计 13.19%。"
+   ],
+   "problems": []
+  }
+ },
+ "turningPoints": [
+  {
+   "t0": 720,
+   "t1": 1260,
+   "shareBefore": 1.07,
+   "shareAfter": 0.79,
+   "shareUnit": "我方在线号人均领土 ÷ 全房在线真人人均领土",
+   "what": "人机收割期：指令越来越晚（时延中位 75→239 拍），准时的那部分又被防人机留底挡住一半；其它真人人均从人机手里拿 5309 格，我方 2151 格。",
+   "evidence": [
+    "shadowcmp [SF]：执行拍 720~899 时延中位 75 / P90 114（陆攻无效 23%）；900~1079 144 / 203（15%）；1080~1259 239 / 315（41%）。0~539 中位 11~12、无效 0。",
+    "lagstats [LA]：影子决策拍 540~1260 要发 391 条，录像里配上 273 条（70%），其中 95 条落地时已无效。",
+    "harvest：(630,900] 人均吃人机 我方 873 / squad10 316 / 其它真人 1135 格；(900,1260] 1278 / 608 / 4174 格。truth [TC]：内置 AI 56.5%（t=720）→30.3%（1260）。",
+    "shadowcmp [SH]：630~900 接壤人机的 266 个号·点里 161 个全被挡（sb 61、价位门槛 91）；900~1260 的 320 个里 176 个全被挡（sb 146）。sb 挡住的 207 个点里，定出 sb 的是异队编队友 136、同队真人 53、敌队真人 18；互锁 54 个；被挡人机 0 兵的 105 个，吃光它只需 ≤10% 余额的 162 个。",
+    "逐号：Benin 77 个点（660~1490，sb 全是 Zizka 的余额）；JohnMarston 45（650~1440，Croatia）；BigSmoke 30（660~1440，同队真人 Doncamerino 29）；Zizka 30（720~1200，Benin）；Redcoat 24（850~1080，停住的 Cataphract）；TaxCollector 23（750~1210，同队真人 black magic）。",
+    "shadow.mjs --trace Benin:900,1200：t=900 余额 23307、sb 30962（= Zizka 的余额），可用 −7655，6 个人机邻居吃光各要 620~2998 兵；t=1200 余额 69308、sb 81157，AI373 1295 格 / 0 兵 / 吃光 1944 兵。Zizka t=1200 余额 81157、sb 69308（= Benin 的余额），可用 11849 < 门槛 17376。",
+    "人均比：1.07（t=720）→1.00（900）→0.94（1080）→0.79（1260）。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "720~1260",
+     "bot": "全队",
+     "decision": "客户端落后服务器 75~530 拍，策略照常在本地旧局面上决策、发令；没落地的指令本地看不到，冷却一过原样再发。",
+     "codePath": "src/strategy/v27-team-c110.js: 文件头 L19-31（驱动层 afterTick 包装，没有时延检测）；Strategy.send L526-540（pct 按决策时余额折算，同目标 15 拍冷却后可重发）；src/sim/sim/game.js L1263-1285（执行时才按当时余额×(pct+1)/1024 抽兵，目标没了就无效）",
+     "why": "7 条以上的批次落地时，后几条的目标多半已经被前几条或别人吃掉；陆攻无效率从 0 升到 41%。"
+    },
+    {
+     "t": "660~1490",
+     "bot": "Benin / Zizka / JohnMarston / Redcoat",
+     "decision": "防人机留底 sb 取『旁边那个人机除我之外最弱的邻居』的余额；这个邻居是异队编队友时，两个号里弱的那个永远出不了手。",
+     "codePath": "src/strategy/v27-team-c110.js: Style.pickTarget L1180-1213（L1197：可用 ≤ minShare×余额 就跳过）；floorFor0 L2270-2276 → winFloor L4542-4550（取 dpKeep、价位底、sb 的最大值）；safeFinite L2532-2541 → threatOf L464-490（minOther 不排除编队友，也不看人机自己有没有兵）",
+     "why": "引擎的内置 AI 以 weakestPct 的概率打余额最低的邻居（bots.js weakestTarget L301-313），sb 就是照这条规则『别当最弱』。Benin 的地只有 Zizka 的一半，利息追不上，留底永远高于余额；它不出手，领土越来越小，更追不上。"
+    },
+    {
+     "t": "0~90",
+     "bot": "全队",
+     "decision": "出生点重解 121 次，10/13 个号没执行到最后一解；最近的三对编队友都是异队。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.chooseSpawn L4007-4153（各号各自上报、各自读回指派并改点）；src/strategy/spawn-coordinator-c110.mjs（每次请求给全队重解）",
+     "why": "相距 91~107 像素的异队编队友围着同一批人机：谁也不能打对方，又互相把对方的余额当底线。"
+    }
+   ],
+   "statementType": "observed"
+  },
+  {
+   "t0": 1260,
+   "t1": 1864,
+   "shareBefore": 0.79,
+   "shareAfter": 0.57,
+   "shareUnit": "我方在线号人均领土 ÷ 全房在线真人人均领土",
+   "what": "全队停在原地囤兵：600 拍里人均领土 5715→5795 格（其它真人 9699→14871），人均余额翻了 3.6 倍；影子要发的 279 条指令只落地 30 条；没兵的人机反过来啃我们的号。",
+   "evidence": [
+    "lagstats [LA][LB]：决策拍 1260~1800 的 245 条配上 30 条（12%）、≥1800 的 34 条配上 0 条；执行拍 1260~1800 落地的 109 条里 77 条无效（71%），时延中位 317 / P90 514 / 最大 751。",
+    "shadowcmp [SJ]（t≥1500 的买地口径）：接壤人机的 109 个号·点里 83 个全被挡；minCmd(want) 44 个（34 个人机 0 兵，最大 4577 格），safe:sb(cap) 28 个（全是 Benin，sb 来自 Zizka），price 7 个。逐号：Benin 37 个点、Zizka 22、Togo 11、Tifa 9。",
+    "truth [TN]：我方被内置 AI 拿走 5454 格，AI 实际耗兵 79127，我方余额被打掉 191781（2.42 倍）；其它 24 个真人 3965 格 / 65050 / 26526（0.41 倍）。逐对：Benin←AI373 1293 格 / 2732 / 81718；Tifa←AI92 711 / 4562 / 22424；Benin←AI248 125 / 3661 / 16192；Cataphract←AI189 261 / 785 / 10122；Zizka←AI226 289 / 3001 / 9438。",
+    "aiprobe AI373→Benin：t=900 起 9 次新开进攻、9 圈全靠赊账赢，赊 163401 兵，欠账 49992~49998（上限 5 万）；Benin 每个窗口压在 AI373 身上的反击兵最大值都是 0。t≥1500 的三个窗口 Benin 丢 434 格、余额被打掉 52717。",
+    "truth [TO]：JohnMarston 的船 3 次靠岸在 Croatia（T1，在线）的地上，船上兵合计 56067。t=1617 那条：决策拍 1470 余额 81686、本意 34939 兵、落点当时是空地；晚 147 拍执行，余额 118418、实发 50651 兵 + 手续费 3700；t=1627 靠岸吃 Croatia 585 格（85.2 兵/格）。",
+    "真值余额（t=1864）：Transylvania 410796 / 6500 格、Zizka 398009 / 6516、Aurelian 348528 / 5833、TaxCollector 337325 / 3957、Croatia 299770 / 8833、Manchu 294870 / 7351、Togo 287568 / 6830、Tifa 264985 / 7196、Benin 158746 / 1709、BigSmoke 148002 / 4888、JohnMarston 103937 / 4140。",
+    "L8610169：TaxCollector 本地拍 1800 的 HL-TICK 写着 boats=4、nb=0、dens=79.1；录像里它一条船也没有，t=1519、1820 落地的两批各 8 条全是打已经不存在的 AI442 / AI132 的旧单。AI132（1568 格）在 t=1320~1410 被同队真人 Napaleon Bonap 用 7746 兵吃掉 1954 格。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "1500~1864",
+     "bot": "Zizka / Tifa / Benin",
+     "decision": "t≥1500 打人机走买地口径：吃光所需的兵 want 小于最小指令门槛（余额的 4.7%）就跳过。余额越多门槛越高，0 兵的人机反而吃不动。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534（L5363-5369：want = 1.25×need + 3×边界；x = min(avail, want)；x < minCmd 就 continue）；minCmd L521-523（feeK=4 × ⌊12×余额/1024⌋）；对照 t<1500 的 amount0 L2371（口粮单不足 minCmd 时抬到 minCmd 再发）",
+     "why": "Zizka 余额 20.6 万~39.8 万，minCmd 9672~18656；AI373 1679~2113 格、0 兵，want 3171~4038。整局唯一一次 t≥1500 吃人机（Zizka t=1540 吃 AI226 696 格，耗兵 1392）是决策拍 1165 的旧单晚 375 拍落地。"
+    },
+    {
+     "t": "1500~1770",
+     "bot": "Benin",
+     "decision": "t≥1500 打人机前的留底 = min(防人机留底 sb, 88×领土)：sb 仍是 Zizka 的余额，封顶后 17.6 万~20.0 万，高于 Benin 自己的余额 13.0 万~15.2 万。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5322（safe = safeAt(g, q)）、L5358（keep = max(keep, safe)）、L5360（avail = B − fee − keep）；Policy.safeAt L4524-4541（非真人：min(s, oppFloorCap×领土)，oppFloorCap=88）；safeAt L2744-2754（botSkip=0，不跳过任何人机）→ safeFinite L2532-2541",
+     "why": "要等密度超过 88 才解锁；Benin 到 t=1830 才过线，随即撞上最小指令门槛。"
+    },
+    {
+     "t": "900~1864",
+     "bot": "Benin / Tifa",
+     "decision": "被内置 AI 啃的时候没有任何还手的路径：反击只对真人，打人机只走口粮 / 买地两条路，两条都被上面的门槛挡着。",
+     "codePath": "src/strategy/v27-team-c110.js: counterAttack L871-886（L875：g.isBot(o) 直接 continue）；src/sim/sim/game.js expandAttack L958-1060（L1016-1020：fresh && counter === 0 时不够的兵由 takeBalance 补，这一圈必赢）；takeBalance L766-776（余额不够记 debt，上限 5 万）；damage L1062-1074（守方掉 def = 圈格数×余额/(1+0.625×领土)）",
+     "why": "守方只要有兵压在这个 AI 身上（counter>0），这条『首圈必赢』的分支就不走。Benin 整局没有一个兵压在 AI373 身上；吃光它（0 兵，2 兵/格）只要 2600~4200 兵。"
+    },
+    {
+     "t": "745~1617",
+     "bot": "JohnMarston",
+     "decision": "被围的号往空地发船；船到的时候落点已经是异队编队友的地，引擎按进攻结算。",
+     "codePath": "src/strategy/v27-team-c110.js: General.act L840-844（没有敌邻或 idle 时每 boatEvery=60 拍走 boatOut）；boatOut L1035-1052；searchWater L1056-1113（L1104 只在决策那一拍排除受保护的编队友）；src/sim/sim/boats.js arrive L230（靠岸在别人的地上 = 对地主发起进攻）",
+     "why": "t=1470 的船单在队列里等了 147 拍，航行 10 拍；这段时间 Croatia 把那块空地吃了。Croatia 不能还手（analyze L440 把编队友排除在目标外），白丢 1176 格、26782 兵。"
+    }
+   ],
+   "statementType": "observed"
+  },
+  {
+   "t0": 1365,
+   "t1": 2121,
+   "shareBefore": 13.19,
+   "shareAfter": 0.0,
+   "shareUnit": "我方在线号领土占全图 %（t=1864 真值 → 结果表：11 行全是 left，对局没打完）",
+   "what": "全队断流：各号先后停止向服务器发指令（t=1365~1645），开局后 127~145 秒 11 个号在 18 秒内全部以 left 结算；录像停在 t=1864，当时 11 个号还在线、占 13.19%。",
+   "evidence": [
+    "results.csv：11 行 event=left，at 04:13:38.701~04:13:57.100（card.timeUtc 04:11:31 之后 127~145 秒）；本地拍 518（Cataphract）、1645×2、1652×6、1918（TaxCollector）、2121（Togo）。Zizka、Redcoat 没有结果行（日志最后一条 HL-TICK 是本地拍 1170 / 1080）。",
+    "真值指令账：各号最后一条已执行指令 Transylvania 1365、Zizka 1540、Tifa 1561、Aurelian 1568、Croatia / BigSmoke 1575、Togo / JohnMarston / Manchu 1617、Benin 1645、TaxCollector 1820。执行拍 1620~1710 我方 2 条、1710~1800 0 条、1800~1864 8 条（全部无效）；同窗其它真人 12 / 12 / 13 条。",
+    "同房 squad10 同样：10 个号最后一条指令在 t=1267~1757，riku_x t=1757 被宣布离开。",
+    "服务器宣布离开比最后一条指令晚 476~553 拍：Cataphract 469→973、Redcoat 987→1540、riku_x 1281→1757。",
+    "按 56 毫秒一拍折算，开局后 127 秒服务器约在 2270 拍，而结果表写的本地拍是 1645 / 1652——落后约 620 拍，与录像量到的时延 545~670 拍一致（推断）。",
+    "HL-TICK 177 条：avgMs ≤1.26、maxMs ≤60.8、skip=0，策略计算本身没有变慢。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "720~1864",
+     "bot": "全队",
+     "decision": "策略层没有『我落后了』『我的指令没被确认』的概念：时延从 75 拍涨到 670 拍的 900 拍里，决策节奏、下单比例、重发冷却都没有变化。",
+     "codePath": "src/strategy/v27-team-c110.js: 文件头 L19-31；Strategy.send L526-540；General.act L804-846（每 period=5 拍决策一次）",
+     "why": "断流本身在策略之外；策略能看到的信号（已下的单迟迟不出现在局面里）没有被用上。"
+    },
+    {
+     "t": "1800~1900",
+     "bot": "TaxCollector",
+     "decision": "被围、密度过 75 之后每 20 拍发一笔 pct=185 的盈余捐给 Togo，6 笔都没进录像；按真值问价，这一笔占额度 119~128，受捐额度上限只有 103，到了也会被整单拒绝。",
+     "codePath": "src/strategy/v27-team-c110.js: tryDonateToTeammate L4369-4499（L4382-4385：有海岸的号 t≥1100 要留 68×领土，余额 >1.10 倍才捐；L4489：被围时 pct 固定 185，密度 >110 时 280）；src/sim/sim/game.js donationCost L348-358、bookDonation L370-376",
+     "why": "pct 固定、余额越涨这一笔越大：t=1800 是 56821 兵（额度成本 119），额度上限 103 只放得下约 4.9 万。"
+    }
+   ],
+   "statementType": "inferred"
+  }
+ ],
+ "deaths": [
+  {
+   "bot": "Cataphract",
+   "me": 28,
+   "labels": [
+    "Cataphract",
+    "Subway"
+   ],
+   "team": 4,
+   "event": "left",
+   "tick": 518,
+   "place": 13,
+   "resultPeak": 2021,
+   "logPeakTerr": 1282,
+   "logPeakTick": 450,
+   "lastSnapshots": [
+    {
+     "t": 90,
+     "terr": 40,
+     "bal": 575,
+     "dens": 14.4,
+     "nb": 0,
+     "neut": 20,
+     "cmds": 1
+    },
+    {
+     "t": 270,
+     "terr": 362,
+     "bal": 1679,
+     "dens": 4.6,
+     "nb": 1,
+     "neut": 52,
+     "cmds": 2
+    },
+    {
+     "t": 360,
+     "terr": 697,
+     "bal": 2439,
+     "dens": 3.5,
+     "nb": 3,
+     "neut": 54,
+     "cmds": 3
+    },
+    {
+     "t": 450,
+     "terr": 1282,
+     "bal": 3430,
+     "dens": 2.7,
+     "nb": 5,
+     "neut": 60,
+     "cmds": 5
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8610207,
+   "cause": "客户端在本地拍 460~518 之间停住：日志最后一行是 L8609987（HL-OPENING t=460），服务器拍 469 之后没有指令，t=973 被宣布离开（1959 格 / 57115 兵）。空壳由引擎托管，先长到 3491 格（t=1650），再被 [НЯШ]Weirdo（T3）吃 2031 格（耗兵 28135）、被空壳 Redcoat 吃 1197 格；自己用 28221 兵换了 Redcoat 261 格，余额打空。",
+   "chain": [
+    "t=469 最后一条指令",
+    "t=540 2021 格 / 5237 兵",
+    "t=973 离开（1959 格 / 57115 兵）",
+    "t=1650 3491 格",
+    "t=1800 3221 格 / 0 兵",
+    "t=1843 空壳阵亡"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": 973,
+    "engineDeathTick": 1843,
+    "leftWith": {
+     "terr": 1959,
+     "bal": 57115
+    },
+    "takersLast420": [
+     {
+      "by": "[НЯШ]WeirdoT3",
+      "tiles": 1851,
+      "troopsSpent": 13524,
+      "perTile": 7.3
+     },
+     {
+      "by": "Redcoat*~T1",
+      "tiles": 1197,
+      "troopsSpent": 12773,
+      "perTile": 10.7
+     },
+     {
+      "by": "AI80#",
+      "tiles": 22,
+      "troopsSpent": 0,
+      "perTile": 0.0
+     }
+    ],
+    "ownAttacksLast420": [
+     {
+      "on": "Redcoat*~T1",
+      "tiles": 261,
+      "troopsSpent": 28221,
+      "perTile": 108.1
+     },
+     {
+      "on": "AI423#",
+      "tiles": 232,
+      "troopsSpent": 1318,
+      "perTile": 5.7
+     }
+    ]
+   }
+  },
+  {
+   "bot": "Redcoat",
+   "me": 25,
+   "labels": [
+    "Redcoat"
+   ],
+   "team": 1,
+   "event": "left",
+   "tick": 1540,
+   "place": null,
+   "resultPeak": null,
+   "logPeakTerr": 6001,
+   "logPeakTick": 1080,
+   "lastSnapshots": [
+    {
+     "t": 810,
+     "terr": 4271,
+     "bal": 20264,
+     "dens": 4.7,
+     "nb": 13,
+     "neut": 0,
+     "cmds": 17
+    },
+    {
+     "t": 900,
+     "terr": 5187,
+     "bal": 22169,
+     "dens": 4.3,
+     "nb": 16,
+     "neut": 0,
+     "cmds": 20
+    },
+    {
+     "t": 990,
+     "terr": 5912,
+     "bal": 31320,
+     "dens": 5.3,
+     "nb": 11,
+     "neut": 28,
+     "cmds": 20
+    },
+    {
+     "t": 1080,
+     "terr": 6001,
+     "bal": 54842,
+     "dens": 9.1,
+     "nb": 11,
+     "neut": 0,
+     "cmds": 20
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": null,
+   "cause": "最后一批指令在服务器拍 987（4 条，3 条无效），日志最后一条 HL-TICK 是本地拍 1080，没有结果行；t=1540 被宣布离开（5971 格 / 262530 兵）。离开前 t=850~1080 的 24 个普查点被停住的 Cataphract 的余额锁住（sb 54935，自己 31320，旁边人机 933 格 / 0 兵）。空壳之后吃掉空壳 Cataphract 1197 格，t=1864 还有 7154 格 / 233507 兵，没有阵亡。",
+   "chain": [
+    "t=987 最后一批指令",
+    "t=1080 6001 格 / 54842",
+    "t=1540 离开（5971 格 / 262530）",
+    "t=1864 空壳 7154 格 / 233507"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": 1540,
+    "engineDeathTick": null,
+    "leftWith": {
+     "terr": 5971,
+     "bal": 262530
+    }
+   }
+  },
+  {
+   "bot": "JohnMarston",
+   "me": 26,
+   "labels": [
+    "JohnMarston",
+    "Potato"
+   ],
+   "team": 4,
+   "event": "left",
+   "tick": 1645,
+   "place": 43,
+   "resultPeak": 3576,
+   "logPeakTerr": 3555,
+   "logPeakTick": 1530,
+   "lastSnapshots": [
+    {
+     "t": 1350,
+     "terr": 3200,
+     "bal": 63860,
+     "dens": 20.0,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 21
+    },
+    {
+     "t": 1440,
+     "terr": 3484,
+     "bal": 69676,
+     "dens": 20.0,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 21
+    },
+    {
+     "t": 1530,
+     "terr": 3555,
+     "bal": 97396,
+     "dens": 27.4,
+     "nb": 0,
+     "neut": 0,
+     "cmds": 23
+    },
+    {
+     "t": 1620,
+     "terr": 3555,
+     "bal": 65309,
+     "dens": 18.4,
+     "nb": 0,
+     "neut": 0,
+     "cmds": 27
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8610200,
+   "cause": "没有阵亡；结果行 left（本地拍 1645）。t=630 起只有一个人机邻居，7 条船里 3 条靠岸在编队友 Croatia 身上；最后一条指令是 t=1617 那条 50651 兵的船。",
+   "chain": [
+    "t=805~973 6 条小船",
+    "t=1617 一条船 50651 兵",
+    "t=1864 4140 格 / 103937"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Manchu",
+   "me": 27,
+   "labels": [
+    "Manchu",
+    "Reconquista"
+   ],
+   "team": 3,
+   "event": "left",
+   "tick": 1645,
+   "place": 24,
+   "resultPeak": 7351,
+   "logPeakTerr": 7351,
+   "logPeakTick": 1530,
+   "lastSnapshots": [
+    {
+     "t": 990,
+     "terr": 5113,
+     "bal": 18623,
+     "dens": 3.6,
+     "nb": 6,
+     "neut": 0,
+     "cmds": 22
+    },
+    {
+     "t": 1170,
+     "terr": 6596,
+     "bal": 46807,
+     "dens": 7.1,
+     "nb": 5,
+     "neut": 0,
+     "cmds": 36
+    },
+    {
+     "t": 1530,
+     "terr": 7351,
+     "bal": 153645,
+     "dens": 20.9,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 57
+    },
+    {
+     "t": 1620,
+     "terr": 7351,
+     "bal": 192249,
+     "dens": 26.2,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 62
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8610196,
+   "cause": "没有阵亡；结果行 left（本地拍 1645）。最后一批指令在服务器拍 1617（9 条全部无效）；t=1864 7351 格 / 294870 兵。",
+   "chain": [
+    "t=1617 9 条无效",
+    "t=1864 7351 格 / 294870"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Tifa",
+   "me": 23,
+   "labels": [
+    "Tifa",
+    "Magikarp"
+   ],
+   "team": 4,
+   "event": "left",
+   "tick": 1652,
+   "place": 23,
+   "resultPeak": 7932,
+   "logPeakTerr": 8312,
+   "logPeakTick": 1350,
+   "lastSnapshots": [
+    {
+     "t": 1260,
+     "terr": 8108,
+     "bal": 54926,
+     "dens": 6.8,
+     "nb": 4,
+     "neut": 13,
+     "cmds": 57
+    },
+    {
+     "t": 1350,
+     "terr": 8312,
+     "bal": 98098,
+     "dens": 11.8,
+     "nb": 4,
+     "neut": 15,
+     "cmds": 64
+    },
+    {
+     "t": 1530,
+     "terr": 7940,
+     "bal": 160667,
+     "dens": 20.2,
+     "nb": 5,
+     "neut": 0,
+     "cmds": 78
+    },
+    {
+     "t": 1620,
+     "terr": 7446,
+     "bal": 181602,
+     "dens": 24.4,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 84
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8610217,
+   "cause": "没有阵亡；结果行 left（本地拍 1652）。峰值 8312 格（t=1340），被 AI92 / AI106 / AI255 拿走 1116 格；最后一条已执行指令在服务器拍 1561。",
+   "chain": [
+    "t=1340 峰值 8312 格",
+    "t=1540 8 条无效",
+    "t=1864 7196 格 / 264985"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Benin",
+   "me": 29,
+   "labels": [
+    "Benin",
+    "Champa"
+   ],
+   "team": 1,
+   "event": "left",
+   "tick": 1652,
+   "place": 55,
+   "resultPeak": 3178,
+   "logPeakTerr": 3131,
+   "logPeakTick": 720,
+   "lastSnapshots": [
+    {
+     "t": 1350,
+     "terr": 2387,
+     "bal": 93617,
+     "dens": 39.2,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 16
+    },
+    {
+     "t": 1440,
+     "terr": 2268,
+     "bal": 111184,
+     "dens": 49.0,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 16
+    },
+    {
+     "t": 1530,
+     "terr": 2152,
+     "bal": 127962,
+     "dens": 59.5,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 16
+    },
+    {
+     "t": 1620,
+     "terr": 2112,
+     "bal": 151350,
+     "dens": 71.7,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 16
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8610204,
+   "cause": "没有阵亡；结果行 left（本地拍 1652）。领土 3238（t=740）→1709（t=1864）：被 0 兵的 AI373 赊账啃掉 1293 格、AI248 等再啃 487 格，余额被打掉 100949；自己被 Zizka 的余额锁住，t=720 之后本地只发了 4 条指令。",
+   "chain": [
+    "t=740 峰值 3238 格",
+    "t=900 起 AI373 每 100~150 拍啃一圈",
+    "t=1500 2268 格 / 130364",
+    "t=1645 最后一条指令（无效）",
+    "t=1864 1709 格 / 158746（密度 92.9）"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Transylvania",
+   "me": 30,
+   "labels": [
+    "Transylvania",
+    "Centurion"
+   ],
+   "team": 1,
+   "event": "left",
+   "tick": 1652,
+   "place": 30,
+   "resultPeak": 6500,
+   "logPeakTerr": 6500,
+   "logPeakTick": 1170,
+   "lastSnapshots": [
+    {
+     "t": 1260,
+     "terr": 6500,
+     "bal": 96871,
+     "dens": 14.9,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 41
+    },
+    {
+     "t": 1350,
+     "terr": 6500,
+     "bal": 132816,
+     "dens": 20.4,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 42
+    },
+    {
+     "t": 1440,
+     "terr": 6500,
+     "bal": 174855,
+     "dens": 26.9,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 43
+    },
+    {
+     "t": 1530,
+     "terr": 6500,
+     "bal": 222307,
+     "dens": 34.2,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 47
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8610179,
+   "cause": "没有阵亡；结果行 left（本地拍 1652）。t=1120 起 6500 格不动，唯一邻居是敌队的 Progress City；最后一条已执行指令在服务器拍 1365，之后影子要发的 10 条船、23 条打 Progress City 的陆攻一条也没落地。",
+   "chain": [
+    "t=1022 一拍 7 条吃 AI296 / AI427",
+    "t=1120 6500 格",
+    "t=1365 最后一条指令（无效）",
+    "t=1864 6500 格 / 410796"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Aurelian",
+   "me": 31,
+   "labels": [
+    "Aurelian",
+    "Uesugi"
+   ],
+   "team": 4,
+   "event": "left",
+   "tick": 1652,
+   "place": 32,
+   "resultPeak": 5833,
+   "logPeakTerr": 5833,
+   "logPeakTick": 1440,
+   "lastSnapshots": [
+    {
+     "t": 990,
+     "terr": 4223,
+     "bal": 38594,
+     "dens": 9.1,
+     "nb": 7,
+     "neut": 0,
+     "cmds": 28
+    },
+    {
+     "t": 1440,
+     "terr": 5833,
+     "bal": 147505,
+     "dens": 25.3,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 55
+    },
+    {
+     "t": 1530,
+     "terr": 5833,
+     "bal": 187910,
+     "dens": 32.2,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 57
+    },
+    {
+     "t": 1620,
+     "terr": 5833,
+     "bal": 231841,
+     "dens": 39.7,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 63
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8610191,
+   "cause": "没有阵亡；结果行 left（本地拍 1652）。t=1440 起 5833 格不动；最后一批指令在服务器拍 1568（8 条全部无效）。",
+   "chain": [
+    "t=1372 9 条打空地",
+    "t=1568 8 条无效",
+    "t=1864 5833 格 / 348528"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Croatia",
+   "me": 35,
+   "labels": [
+    "Croatia",
+    "Justinian"
+   ],
+   "team": 1,
+   "event": "left",
+   "tick": 1652,
+   "place": 17,
+   "resultPeak": 9374,
+   "logPeakTerr": 9418,
+   "logPeakTick": 1530,
+   "lastSnapshots": [
+    {
+     "t": 1260,
+     "terr": 8036,
+     "bal": 66000,
+     "dens": 8.2,
+     "nb": 4,
+     "neut": 12,
+     "cmds": 47
+    },
+    {
+     "t": 1440,
+     "terr": 8856,
+     "bal": 106896,
+     "dens": 12.1,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 57
+    },
+    {
+     "t": 1530,
+     "terr": 9418,
+     "bal": 170951,
+     "dens": 18.2,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 58
+    },
+    {
+     "t": 1620,
+     "terr": 9418,
+     "bal": 215191,
+     "dens": 22.8,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 58
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8610186,
+   "cause": "没有阵亡；结果行 left（本地拍 1652）。全队最大的号（t=1510 9418 格）；t=1627 被编队友 JohnMarston 的船吃掉 585 格。最后一批指令在服务器拍 1575（8 条全部无效）。",
+   "chain": [
+    "t=1510 峰值 9418 格",
+    "t=1627 丢 585 格",
+    "t=1864 8833 格 / 299770"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "BigSmoke",
+   "me": 40,
+   "labels": [
+    "BigSmoke",
+    "Pepe"
+   ],
+   "team": 1,
+   "event": "left",
+   "tick": 1652,
+   "place": 34,
+   "resultPeak": 4888,
+   "logPeakTerr": 4888,
+   "logPeakTick": 1260,
+   "lastSnapshots": [
+    {
+     "t": 1350,
+     "terr": 4888,
+     "bal": 40265,
+     "dens": 8.2,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 28
+    },
+    {
+     "t": 1440,
+     "terr": 4888,
+     "bal": 56233,
+     "dens": 11.5,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 28
+    },
+    {
+     "t": 1530,
+     "terr": 4888,
+     "bal": 74479,
+     "dens": 15.2,
+     "nb": 1,
+     "neut": 22,
+     "cmds": 28
+    },
+    {
+     "t": 1620,
+     "terr": 4888,
+     "bal": 94568,
+     "dens": 19.3,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 28
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8610224,
+   "cause": "没有阵亡；结果行 left（本地拍 1652）。开局被 [CN]you can yo 吃掉 548 格；t=1210 起 4888 格不动，t=660~1440 的 30 个普查点被同队真人 Doncamerino 的余额锁住。",
+   "chain": [
+    "t=630 1157 格",
+    "t=1210 4888 格",
+    "t=1575 最后一条指令",
+    "t=1864 4888 格 / 148002"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "TaxCollector",
+   "me": 33,
+   "labels": [
+    "TaxCollector",
+    "Three Kingdoms"
+   ],
+   "team": 5,
+   "event": "left",
+   "tick": 1918,
+   "place": 39,
+   "resultPeak": 3957,
+   "logPeakTerr": 3957,
+   "logPeakTick": 1260,
+   "lastSnapshots": [
+    {
+     "t": 1620,
+     "terr": 3957,
+     "bal": 227115,
+     "dens": 57.4,
+     "nb": 0,
+     "neut": 0,
+     "cmds": 51
+    },
+    {
+     "t": 1710,
+     "terr": 3957,
+     "bal": 270190,
+     "dens": 68.3,
+     "nb": 0,
+     "neut": 0,
+     "cmds": 51
+    },
+    {
+     "t": 1800,
+     "terr": 3957,
+     "bal": 312824,
+     "dens": 79.1,
+     "nb": 0,
+     "neut": 0,
+     "cmds": 51
+    },
+    {
+     "t": 1890,
+     "terr": 3957,
+     "bal": 349027,
+     "dens": 88.2,
+     "nb": 0,
+     "neut": 0,
+     "cmds": 56
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 6,
+   "resultLine": 8610248,
+   "cause": "没有阵亡；结果行 left（本地拍 1918）。t=1230 起 3957 格被同队真人围死；本地决定的 4 条船、6 笔盈余捐都没进录像，最后落地的是 t=1820 的 8 条旧单（全部无效）。",
+   "chain": [
+    "t=1230 3957 格（被围）",
+    "t=1519 8 条无效",
+    "t=1820 8 条无效",
+    "t=1864 3957 格 / 337325（密度 85.2）"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Togo",
+   "me": 47,
+   "labels": [
+    "Togo",
+    "Ragnar"
+   ],
+   "team": 5,
+   "event": "left",
+   "tick": 2121,
+   "place": 26,
+   "resultPeak": 6830,
+   "logPeakTerr": 6852,
+   "logPeakTick": 1260,
+   "lastSnapshots": [
+    {
+     "t": 1260,
+     "terr": 6852,
+     "bal": 77504,
+     "dens": 11.3,
+     "nb": 9,
+     "neut": 26,
+     "cmds": 40
+    },
+    {
+     "t": 1350,
+     "terr": 6529,
+     "bal": 100407,
+     "dens": 15.4,
+     "nb": 9,
+     "neut": 0,
+     "cmds": 46
+    },
+    {
+     "t": 1440,
+     "terr": 6504,
+     "bal": 133171,
+     "dens": 20.5,
+     "nb": 6,
+     "neut": 10,
+     "cmds": 51
+    },
+    {
+     "t": 1620,
+     "terr": 6784,
+     "bal": 166631,
+     "dens": 24.6,
+     "nb": 3,
+     "neut": 8,
+     "cmds": 63
+    }
+   ],
+   "donationsReceivedLogged": 6,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 8610243,
+   "cause": "没有阵亡；结果行 left（本地拍 2121，全队最晚）。t=900~1500 被 Player 432（T1）吃掉 924 格（对方 35.1 兵/格）；最后一批指令在服务器拍 1568~1617。",
+   "chain": [
+    "t=1240 峰值 6900 格",
+    "t=1568 9 条打空地",
+    "t=1864 6830 格 / 287568"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  },
+  {
+   "bot": "Zizka",
+   "me": 24,
+   "labels": [
+    "Zizka"
+   ],
+   "team": 3,
+   "event": null,
+   "tick": null,
+   "place": null,
+   "resultPeak": null,
+   "logPeakTerr": 5638,
+   "logPeakTick": 1170,
+   "lastSnapshots": [
+    {
+     "t": 900,
+     "terr": 4260,
+     "bal": 30962,
+     "dens": 7.3,
+     "nb": 7,
+     "neut": 0,
+     "cmds": 20
+    },
+    {
+     "t": 990,
+     "terr": 5546,
+     "bal": 24506,
+     "dens": 4.4,
+     "nb": 4,
+     "neut": 8,
+     "cmds": 23
+    },
+    {
+     "t": 1080,
+     "terr": 5505,
+     "bal": 52580,
+     "dens": 9.6,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 23
+    },
+    {
+     "t": 1170,
+     "terr": 5638,
+     "bal": 68409,
+     "dens": 12.1,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 27
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": null,
+   "cause": "没有阵亡，也没有结果行（日志最后一条 HL-TICK 是本地拍 1170）。最后一条已执行指令在服务器拍 1540；t=1864 6516 格 / 398009 兵。",
+   "chain": [
+    "t=1540 最后一条指令",
+    "t=1864 6516 格 / 398009"
+   ],
+   "statementType": "observed",
+   "truth": {
+    "engineLeftTick": null,
+    "engineDeathTick": null
+   }
+  }
+ ],
+ "ledger": {
+  "drop30Count": 4,
+  "drop30ByClass": {
+   "ATTACK-GAIN": 3,
+   "BOAT": 1
+  },
+  "donationsLogged": 6,
+  "donationsObservedAccepted": 0,
+  "donationsObservedRejected": 5,
+  "donationsUndetermined": 1,
+  "donationsModelRejected": 6,
+  "note": "观测判定=拿捐出方下一次已知余额和「被拒/成交」两个预期比；Undetermined=判不了。下面两项按「未判拒即成交」计，是上限。",
+  "donatedArrivedUpperBound": 0,
+  "donationTaxUpperBound": 0,
+  "cardLikelyRejected": 5,
+  "truthDonationsExecuted": 0,
+  "loggedNotExecuted": {
+   "count": 6,
+   "overQuota": 4,
+   "afterReplayEnd": 2,
+   "src": "scripts/donrej.py"
+  },
+  "drop30Truth": {
+   "windows": 4,
+   "byCause": {
+    "发船": 2,
+    "陆攻": 2
+   },
+   "src": "truth.txt [TK]（90 拍窗，真值余额）"
+  },
+  "aiCreditNibbling": {
+   "ours": {
+    "heads": 13,
+    "cells": 5454,
+    "aiBurnt": 79127,
+    "balLoss": 191781
+   },
+   "peerSquad": {
+    "heads": 10,
+    "cells": 3478,
+    "aiBurnt": 33730,
+    "balLoss": 132191
+   },
+   "otherHumans": {
+    "heads": 24,
+    "cells": 3965,
+    "aiBurnt": 65050,
+    "balLoss": 26526
+   },
+   "src": "truth.txt [TN]"
+  },
+  "boatLandingsOnCrossTeamSquadMates": {
+   "count": 3,
+   "troops": 56067,
+   "cellsTaken": 1176,
+   "attackerBurnt": 56031,
+   "defenderBalLoss": 26782,
+   "src": "truth.txt [TO][TF]"
+  },
+  "staleAmplification": {
+   "commands": 137,
+   "intended": 309498,
+   "sent": 542939,
+   "src": "shadowcmp.txt [SG]"
+  },
+  "truthNote": "digest [F] 的 DROP30 与 [G] 的捐款判定是按日志本地拍推的；本局本地拍与服务器拍差几百拍，以这里的真值口径为准。兵/格 = 真值交战账里的耗兵 ÷ 拿到的格数。"
+ },
+ "decisions": [
+  {
+   "id": "D01",
+   "t": "0~90",
+   "bot": "全队",
+   "decision": "出生点指派人均改了 9.3 次，13 个号里 10 个最后落在更早的某一条上；最近的三对编队友（91 / 95 / 107 像素）都是异队。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.chooseSpawn L4007-4153；src/strategy/spawn-coordinator-c110.mjs",
+   "verdict": "error",
+   "patternId": "NEW-SP-05",
+   "evidence": [
+    "spawncheck [PA][PC]",
+    "L8609740~L8609862：Cataphract 7 条指派，从 (210,642) 一路改到 (522,618)",
+    "Tifa 15 条指派，引擎落点 (882,1202) 是第 13 条，最后一条是 (162,1106)"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D02",
+   "t": "90~720",
+   "bot": "全队",
+   "decision": "开局扩张按期完成：(270,630] 人均吃空地 2095 格（其它真人 2159），t=630 人均比 1.05，t=720 1.07；13 个号都在长。",
+   "codePath": "src/strategy/v27-team-c110.js: expandNeutral L2408-2417 → dpNeutral L2418-2490（每个周期一条中立地指令）",
+   "verdict": "good",
+   "patternId": "NEW-OP-G1",
+   "evidence": [
+    "harvest (270,630]",
+    "shadowcmp [SF]：0~539 时延中位 11~12 拍，无效 0",
+    "lagstats [LA]：决策拍 <540 的 85 条配上 82 条"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D03",
+   "t": "720~1864",
+   "bot": "全队",
+   "decision": "落后服务器 75~750 拍时照常决策发令：执行拍 540~1260 落地的 226 条里 45 条无效，1260~1800 的 109 条里 77 条无效，1800 之后 8 条全部无效。",
+   "codePath": "src/strategy/v27-team-c110.js: 文件头 L19-31；Strategy.send L526-540；src/sim/sim/game.js L1263-1285",
+   "verdict": "error",
+   "patternId": "NEW-IO-01",
+   "evidence": [
+    "shadowcmp [SF][SB]：各号 1260~1800 时延中位 Benin 670、Zizka 606、BigSmoke 505、Tifa 500、TaxCollector 474",
+    "shadowcmp_peer [SF]（squad10 同步卡顿，中位 72→557）",
+    "HL-TICK avgMs ≤1.26 / skip=0"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D04",
+   "t": "854~1820",
+   "bot": "Aurelian / TaxCollector / Tifa / Manchu",
+   "decision": "补拍成批落地：一个服务器拍冲出 8~9 条。Aurelian t=1372 9 条 pct=47 打空地，实发兵加手续费 54489（余额的 42%），领土只从 5824 涨到 5833；兵在进攻结束时退回，10895 手续费白付。",
+   "codePath": "src/strategy/v27-team-c110.js: Strategy.send L526-540（同目标 15 拍冷却后原样重发）；expandNeutral L2408-2417；src/sim/sim/game.js L1263-1285",
+   "verdict": "error",
+   "patternId": "NEW-IO-02",
+   "evidence": [
+    "lagstats [LC]：本编队 8 条 11 次、9 条 5 次；其它真人最多 2 条",
+    "shadowcmp [SB2]：Aurelian 1372（决策拍 935~1345）、Tifa 1540、Manchu 1617、TaxCollector 1519 / 1820",
+    "truth [TG]：陆攻 + 发船 422 条，163 条（39%）是重发串里多发的"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D05",
+   "t": "675~1617",
+   "bot": "Togo / Croatia / Zizka / Tifa",
+   "decision": "旧单按比例下、落地时余额已涨了几倍：137 条过期且生效的指令本意 309498 兵，实发 542939 兵（1.75 倍）。Togo 决策拍 1075 本意 6591，晚 493 拍实发 21523；Tifa 决策拍 675 本意 1121，晚 529 拍实发 7732（6.9 倍）。",
+   "codePath": "src/strategy/v27-team-c110.js: Strategy.send L526-540（pct = ceil(兵×1024/余额)−1）；src/sim/sim/game.js L1263-1285",
+   "verdict": "error",
+   "patternId": "NEW-IO-03",
+   "evidence": [
+    "shadowcmp [SG]",
+    "truth [TK]：990-1080 Transylvania −70%（8 条 43252 兵打 AI296）"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D06",
+   "t": "1260~1864",
+   "bot": "全队",
+   "decision": "决策了没落地：影子决策拍 1260~1800 的 245 条只配上 30 条，≥1800 的 34 条配上 0 条。TaxCollector 真机日志写着已发 4 条船，录像里一条没有。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.act L4781（t≥1500：L4901-4902 expandNeutral → buyLand，L4923 idleBoats）；idleBoats L4979-5006；boatOut L1035-1052",
+   "verdict": "unclear",
+   "patternId": "NEW-IO-05",
+   "evidence": [
+    "lagstats [LA]",
+    "L8610169：TaxCollector HL-TICK t=1800 boats=4",
+    "shadowcmp [SC]：影子多出 Tifa 70、Togo 52、Zizka 47、Redcoat 37、Transylvania 32 陆攻 + 10 船"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D07",
+   "t": "630~1800",
+   "bot": "全队",
+   "decision": "人机地只拿到 13.2%（人头占 27.7%）：(900,1260] 人均 1278 格，其它真人 4174 格；(1260,1800] 315 格对 3271 格。",
+   "codePath": "src/strategy/v27-team-c110.js: General.act L804-846 → Style.pickTarget L1180-1213（t<1500）；Policy.buyLand L5250-5534（t≥1500）",
+   "verdict": "error",
+   "patternId": "NEW-EC-06",
+   "evidence": [
+    "harvest 三个窗口",
+    "truth [TC]：内置 AI 56.5%→30.3%→10.0%",
+    "shadowcmp [SH][SJ]：t=630~1500 接壤人机的号·点 417/761 全被挡，t≥1500 83/109 全被挡"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D08",
+   "t": "660~1490",
+   "bot": "Benin / Zizka",
+   "decision": "相距 91 像素的异队编队友围着同一批人机互锁：Benin 77 个普查点全被 Zizka 的余额锁住，Zizka 30 个点被 Benin 的余额锁住；中间的 AI373（1295 格、0 兵）谁也没吃。",
+   "codePath": "src/strategy/v27-team-c110.js: Style.pickTarget L1197；floorFor0 L2270-2276；winFloor L4542-4550；safeFinite L2532-2541；threatOf L464-490",
+   "verdict": "error",
+   "patternId": "NEW-EC-05",
+   "evidence": [
+    "shadowcmp [SH] 逐号：Benin 51184 / 64096 / 1295·0·1944；Zizka 41525 / 36098 / 345·0·518",
+    "shadow.mjs --trace Benin:900,1200,1450；Zizka:1200",
+    "真机 Benin HL-TICK：cmds=12（t=720）→16（t=1620）"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D09",
+   "t": "650~1440",
+   "bot": "JohnMarston / Redcoat / BigSmoke / TaxCollector",
+   "decision": "同一把锁的另外四种来源：JohnMarston 被异队编队友 Croatia 的余额锁 45 个点；Redcoat 被已经停住的 Cataphract 的余额锁 24 个点；BigSmoke、TaxCollector 被同队真人 Doncamerino、black magic 的余额锁 30 / 23 个点。",
+   "codePath": "src/strategy/v27-team-c110.js: safeFinite L2532-2541；threatOf L464-490（最弱邻居不分敌我、不管在不在线）",
+   "verdict": "error",
+   "patternId": "NEW-EC-05",
+   "evidence": [
+    "shadowcmp [SH] 逐号：JohnMarston 40687 / 58404 / 1680·1854·5459；Redcoat 31320 / 54935 / 933·0·1400；BigSmoke 9921 / 53854 / 737·23·902；TaxCollector 46633 / 58818 / 147·0·186",
+    "shadow.mjs --trace Redcoat:900：sb 45461 = Cataphract 当时的余额"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D10",
+   "t": "1500~1770",
+   "bot": "Benin",
+   "decision": "t≥1500 这把锁还在：打人机前的留底 = min(sb, 88×领土) = 17.6 万~20.0 万，高于自己的余额 13.0 万~15.2 万，28 个普查点对三个人机邻居都出不了手。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5322、L5358-5360；Policy.safeAt L4524-4541（oppFloorCap=88）；safeAt L2744-2754（botSkip=0）",
+   "verdict": "error",
+   "patternId": "NEW-EC-08",
+   "evidence": [
+    "shadowcmp [SJ]：Benin safe:sb(cap)×28，sb 来源全是异队编队友",
+    "shadow.mjs --trace Benin:1550,1700：safe 189376 / 175912，余额 133575 / 161568"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D11",
+   "t": "1500~1864",
+   "bot": "Zizka / Tifa / Benin",
+   "decision": "t≥1500 最小指令门槛挡住 0 兵的人机：44 个号·点，中位余额 251322、minCmd 11780，被挡人机 2016 格、0 兵、吃光要 4077 兵。AI373、AI92 到录像结束都没被吃。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5363-5369；minCmd L521-523；对照 amount0 L2371",
+   "verdict": "error",
+   "patternId": "NEW-EC-07",
+   "evidence": [
+    "shadowcmp [SJ]：Zizka 22 个点（317179 / 14864 / 2016·0·3828）、Tifa 9（253544 / 11884 / 2616·0·5412）、Benin 9",
+    "harvest：(1800,1864] 我方吃人机 0 格",
+    "shadowcmp [SG]：Zizka t=1540 吃 AI226 的那条是决策拍 1165 的旧单"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D12",
+   "t": "900~1864",
+   "bot": "Benin / Tifa / Zizka",
+   "decision": "被没兵的内置 AI 赊账啃地，全程不还手：我方 13 个号丢 5454 格、余额被打掉 191781，AI 实际只花 79127 兵。",
+   "codePath": "src/strategy/v27-team-c110.js: counterAttack L871-886（L875 跳过非真人）；src/sim/sim/game.js expandAttack L1016-1020、takeBalance L766-776、damage L1062-1074；src/sim/sim/bots.js botDecide L101-109、weakestTarget L301-313",
+   "verdict": "error",
+   "patternId": "NEW-DF-03",
+   "evidence": [
+    "truth [TN]：余额损失 ÷ AI 耗兵 我方 2.42、squad10 3.92、其它真人 0.41",
+    "aiprobe.mjs B031 --ai 373 --bot Benin：9 圈全靠赊账，赊 163401，Benin 反击兵 0",
+    "aiprobe.mjs B031 --ai 92 --bot Tifa：4 圈 711 格，赊 41883，Tifa 损失 22424"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D13",
+   "t": "745~1627",
+   "bot": "JohnMarston",
+   "decision": "3 条船靠岸在异队编队友 Croatia 的地上：下单时落点都是空地，到的时候已被 Croatia 占了。合计 56067 兵吃 Croatia 1176 格，Croatia 余额被打掉 26782。",
+   "codePath": "src/strategy/v27-team-c110.js: General.act L840-844；boatOut L1035-1052；searchWater L1056-1113（L1104）；src/sim/sim/boats.js arrive L230",
+   "verdict": "error",
+   "patternId": "NEW-SE-04",
+   "evidence": [
+    "truth [TO]：846 / 958 / 1627 三次",
+    "shadow.json：决策拍 745、755、1470 的船指令 targetOwner=512（空地）",
+    "truth [TF]：JohnMarston → Croatia 1176 格，耗兵 56031"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D14",
+   "t": "1800~1900",
+   "bot": "TaxCollector",
+   "decision": "被围的号给 Togo 连发 6 笔 pct=185 的盈余捐，都没进录像；按真值问价，单笔额度成本 119~128，受捐额度上限 103，到了也是整单被拒。",
+   "codePath": "src/strategy/v27-team-c110.js: tryDonateToTeammate L4369-4499（L4489）；src/sim/sim/game.js donationCost L348-358、bookDonation L370-376",
+   "verdict": "error",
+   "patternId": "NEW-DN-08",
+   "evidence": [
+    "L8610170~L8610176：6 条 HL-DONATE",
+    "donrej.txt：1800~1860 四笔『超受捐额度』（0+119>103 … 0+128>103），1880 / 1900 两笔在录像结束之后",
+    "truth [TH]：本编队成交 0 笔"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D15",
+   "t": "1120~1864",
+   "bot": "Transylvania / TaxCollector / Aurelian / BigSmoke",
+   "decision": "人机邻居吃完后停手囤兵：4 个号 400~740 拍领土一格没变，余额涨到 14.8 万~41.1 万；全队 t=1260→1864 人均领土 +1.4%，人均余额 3.6 倍。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534（对真人：报价 c ≥ worth 就 break）；Policy.safeAt L4524-4541；idleBoats L4979-5006",
+   "verdict": "error",
+   "patternId": "NEW-EC-04",
+   "evidence": [
+    "truth [TD]：Transylvania 6500 格（t=1120 起）、TaxCollector 3957（t=1230 起）、BigSmoke 4888（t=1210 起）、Aurelian 5833（t=1440 起）",
+    "shadow.mjs --trace Transylvania:1500：唯一邻居 Progress City 报价 23.4、worth 48，影子想打，录像里没有",
+    "影子在 1500~1864 要对真人发 96 条陆攻；录像里我方整局没有一条打真人的陆攻"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D16",
+   "t": "469~1540",
+   "bot": "Cataphract / Redcoat",
+   "decision": "两个号停止发令后带着 7930 格、31.9 万兵变成空壳；空壳之间互打 1458 格，Cataphract 的地最后被 T3 的真人吃掉 2031 格。",
+   "codePath": "src/sim/sim/bots.js botAttackTeam L142-171（离开的真人由内置 AI 接管）；src/strategy/v27-team-c110.js: isProtectedSquadMate L3993-3996（在线的编队号不能打它）",
+   "verdict": "unclear",
+   "patternId": "NEW-IO-04",
+   "evidence": [
+    "truth [TI]：Cataphract 973 离开（1959 / 57115），Redcoat 1540 离开（5971 / 262530）",
+    "truth [TF]：空壳 Redcoat → 空壳 Cataphract 1197 格；反向 261 格 / 28221 兵"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D17",
+   "t": "1365~2121",
+   "bot": "全队",
+   "decision": "全队断流：t=1365~1645 各号先后停止向服务器发指令，11 行结果全是 left，18 秒内写完；Zizka、Redcoat 没有结果行，对局卡只数到 11 个号。",
+   "codePath": "src/strategy/v27-team-c110.js: 文件头 L19-31（驱动层）；Strategy.send L526-540",
+   "verdict": "unclear",
+   "patternId": "NEW-IO-07",
+   "evidence": [
+    "results.csv 的 tick / at 两列",
+    "真值指令账：执行拍 1620 之后我方只有 Benin 2 条、TaxCollector 8 条，全部无效",
+    "card.json：squadBots=11、endTick=2121；录像 engineEndTick=1864"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D18",
+   "t": "630~1510",
+   "bot": "Croatia",
+   "decision": "卡顿里长得最好的号：吃空地 5542 格（2.0 兵/格）、8 个人机 4759 格（2.5 兵/格），t=1510 9418 格，是全队唯一超过 9000 格的号。",
+   "codePath": "src/strategy/v27-team-c110.js: expandNeutral L2408-2417；Style.pickTarget L1180-1213；amount0 L2367-2393",
+   "verdict": "good",
+   "patternId": "NEW-AT-G1",
+   "evidence": [
+    "truth [TE] Croatia",
+    "truth [TD] Croatia：t=900 5576、t=1170 7237、t=1440 8856",
+    "全队吃人机 34661 格，各窗 2.7~4.1 兵/格"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D19",
+   "t": "全程",
+   "bot": "全队",
+   "decision": "跨队编队友之间 0 条陆攻：Benin–Zizka 接壤 69~86 格、JohnMarston–Croatia 21~67 格，1100 拍的卡顿里保护名单没有失手；在线号之间的损耗只有那 3 条船。",
+   "codePath": "src/strategy/v27-team-c110.js: analyze L420-448（L440 !isProtectedSquadMate）；isProtectedSquadMate L3993-3996；isOurSquadBot L3973-3976",
+   "verdict": "good",
+   "patternId": "NEW-MT-01",
+   "evidence": [
+    "truth [TF]：编队内互打三行，两行是空壳之间，一行是船",
+    "truth [TD]：Zizka 的邻居 Benin 69 / 86 / 82 格；JohnMarston 的邻居 Croatia 21 / 25 / 29 / 67 格"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D20",
+   "t": "全程",
+   "bot": "全队",
+   "decision": "统筹点名的 isNoFullSend：按驱动层『发令后 8 拍不调策略』重演，13 个号全程没有置位。",
+   "codePath": "src/strategy/v27-team-c110.js: updateShadowQuota L3810-3846；Policy.send L3848-3885",
+   "verdict": "unclear",
+   "patternId": "NEW-EX-04",
+   "evidence": [
+    "shadowcmp [SD]：13 个号『从未置位』",
+    "shadowcmp [SA]：JohnMarston 的 cmds 计数 15/16 条 HL-TICK 一致"
+   ],
+   "statementType": "inferred"
+  }
+ ],
+ "newPatterns": [
+  {
+   "id": "NEW-SP-05",
+   "prefix": "SP",
+   "name": "最后一条出生指派没执行",
+   "definition": "引擎落点 ≠ 日志里该号最后一条 [HL-SPAWN] 的点；记号数 / 总号数、人均指派条数、『最后一条指派相同』的号对数",
+   "detect": "scripts/spawncheck.py [PC]"
+  },
+  {
+   "id": "NEW-OP-G1",
+   "prefix": "OP",
+   "name": "（正面）开局 DP 扩张按期完成",
+   "definition": "第一条 HL-TICK（t≤630）人均领土 ≥2500；日志里有 OPENING-CHECK 行的局还要求全部 OK（G08 这类没有该行的局只看前一条）",
+   "detect": "scripts/patterns.py: op_on_schedule"
+  },
+  {
+   "id": "NEW-IO-01",
+   "prefix": "IO",
+   "name": "客户端卡顿波：指令比决策晚几十到几百拍才落地",
+   "definition": "按执行拍每 180 拍一窗，本编队配上影子的已执行指令时延中位 ≥35 拍（5 个服务器回合）的窗口连续 ≥2 个记为一波；记起止拍、峰值窗口的中位 / P90、受影响号数（该波内自身中位 ≥35 的号）、波内陆攻落地时已无效的比例",
+   "detect": "scripts/shadowcmp.py [SF][SB]（需要录像）"
+  },
+  {
+   "id": "NEW-IO-02",
+   "prefix": "IO",
+   "name": "补拍成批落地：一个服务器拍里冲出 ≥3 条指令，原本分散在 ≥30 拍里",
+   "definition": "同一个号同一个执行拍 ≥3 条指令，且配上的影子决策拍跨度 ≥30 拍；记批数、每批条数（实测上限 9 条）、该批合计派出占执行前余额的比例；≥50% 记为『清仓批』。只有录像没有影子时退回『同一执行拍 ≥3 条』",
+   "detect": "scripts/shadowcmp.py [SB2]；scripts/truth.py [TG]"
+  },
+  {
+   "id": "NEW-IO-03",
+   "prefix": "IO",
+   "name": "旧比例放大：单子按余额比例下，落地时余额已是下单时的 ≥2 倍",
+   "definition": "时延 ≥35 拍、落地生效的陆攻或发船，实发兵力（执行时余额×(pct+1)/1024）≥ 2×本意兵力（决策时余额×(pct+1)/1024）且实发 ≥5000；记条数、最大倍数、多发出去的兵",
+   "detect": "scripts/shadowcmp.py [SG]"
+  },
+  {
+   "id": "NEW-IO-04",
+   "prefix": "IO",
+   "name": "掉线成空壳：号在录像里执行『离开』，领土和兵留给引擎托管",
+   "definition": "真值 leftT ≥ 0 且离开时领土 >0；记号数、离开拍、离开时领土 / 余额合计，以及这些地最后被哪一队拿走（按队合计）",
+   "detect": "scripts/truth.py [TI]"
+  },
+  {
+   "id": "NEW-IO-05",
+   "prefix": "IO",
+   "name": "决策了没落地：影子在卡顿窗里要发的指令，录像里找不到",
+   "definition": "影子决策拍落在卡顿波内的指令里，后来在录像中配不上的比例 ≥40%；另记 HL-DONATE 有日志、录像没有的笔数及拒因（scripts/donrej.py：受捐方已死 / 超额度 / 到硬上限 / 没发到引擎）",
+   "detect": "scripts/shadowcmp.py [SC]；scripts/donrej.py"
+  },
+  {
+   "id": "NEW-IO-06",
+   "prefix": "IO",
+   "name": "日志标签中途换名 / 对局卡少数号：同一个 me 先后用几个名字，掉线号没有结果行",
+   "definition": "traj.csv 的标签数 > HL-GAME-INIT 的 me 个数，或 card.squadBots < HL-GAME-INIT 的 me 个数；记同一个 me 的标签链和没有结果行的 me",
+   "detect": "scripts/facts.py digest [A][B]"
+  },
+  {
+   "id": "NEW-IO-07",
+   "prefix": "IO",
+   "name": "全队断流：编队所有在线号先后停止向服务器发指令，结果表全是 left，对局没有打完",
+   "definition": "结果表所有行 event=left 且写入时间相差 ≤60 秒；录像最后 ≥150 拍里本编队执行的指令 ≤1 个号，而同期其它真人每 90 拍仍有 ≥10 条指令",
+   "detect": "results.csv 的 at / tick；scripts/lagstats.py [LA][LB]；scripts/truth.py --cmds"
+  },
+  {
+   "id": "NEW-EX-04",
+   "prefix": "EX",
+   "name": "发令后 7 拍额度自检：在线时被 8 拍静默窗整个跳过；去掉静默窗则大面积误锁",
+   "definition": "影子按『发令后 8 拍不调用策略』模拟时，updateShadowQuota 的 7 拍检查窗一次都没执行、isNoFullSend 置位号数 = 0；同一局把静默窗设为 0 再跑，置位号数 ≥1。记两种设定下的置位号数",
+   "detect": "scripts/shadow.mjs --guard 0 --tag g0 对比 --tag g8"
+  },
+  {
+   "id": "NEW-EC-04",
+   "prefix": "EC",
+   "name": "全队停手囤兵：中立地吃完后领土不涨、余额成倍涨",
+   "definition": "连续 ≥10 条快照（≥900 拍）里，窗口首尾都存活的编队号合计领土增幅 ≤5%，合计本土余额 ≥3 倍，合计指令数 ≤ 号数×10；记窗口长度、余额倍数，以及窗口内阵亡或领土腰斩的编队号数",
+   "detect": "scripts/patterns.py: ec_team_standoff"
+  },
+  {
+   "id": "NEW-EC-05",
+   "prefix": "EC",
+   "name": "贴着白给的人机不出手：防人机留底 sb 取了邻居（常是编队友）的余额，互锁",
+   "definition": "t<1500 的影子普查（按真值每 10 拍）里，该号接壤的内置 AI 没有一个过得了门槛，且最便宜那个的原因是 floor:sb 或 minShare(floor:sb)（可用兵 = 余额 − safeFinite ≤ 最小出手比例×余额）；按 sb 的来源分账（本编队同队 / 异队、另一支受控编队、同队真人、敌队真人），并数互锁（对方同一点也被我定的 sb 挡住）与「吃光该人机所需 ≤10% 余额」的点数。每局记号·点数（×10 拍）",
+   "detect": "scripts/shadow.mjs census（sbSource）+ shadowcmp.py [SH]"
+  },
+  {
+   "id": "NEW-EC-06",
+   "prefix": "EC",
+   "name": "人机收割落后：t=630~1260 人均吃到的人机地不到其它真人的一半",
+   "definition": "真值逐对战损账里，(630,1260] 本编队在线号人均从内置 AI 手里拿到的格数 < 0.5×其它真人人均",
+   "detect": "scripts/harvest.py"
+  },
+  {
+   "id": "NEW-EC-07",
+   "prefix": "EC",
+   "name": "1500 拍后最小指令门槛反过来挡住小人机：吃光它所需的兵小于 minCmd（余额的 4.7%）就跳过，余额越多越吃不动",
+   "definition": "影子在真值上每 10 拍按 Policy.buyLand 对非真人邻居的那条路重算（c110 L5363-5369）：t≥1500、接壤至少一个内置 AI、没有一个过门槛，且最便宜那个的 want = 1.25×need + 3×边界 < minCmd = feeK×⌊12×余额/1024⌋；一个号累计 ≥5 个点算命中。记被挡 AI 的格数、兵、want、当时余额，以及这块地后来被谁吃走",
+   "detect": "scripts/shadow.mjs（census2）+ scripts/shadowcmp.py [SJ]"
+  },
+  {
+   "id": "NEW-EC-08",
+   "prefix": "EC",
+   "name": "1500 拍后防人机留底的锁还在：打人机前的留底 = min(sb, 88×领土)，sb 由更富的邻居（常是编队友）定出，密度不到 88 的号对任何人机都出不了手",
+   "definition": "影子在真值上每 10 拍按 Policy.buyLand 对非真人邻居的那条路重算：t≥1500、接壤至少一个内置 AI、全部被挡，且最便宜那个的原因是 safe:sb 或 safe:sb(cap)（buyLand L5322 → Policy.safeAt L4524-4541 → safeAt L2744-2754，botSkip=0 时不跳过任何人机 → safeFinite L2532-2541）；一个号累计 ≥5 个点算命中。记 sb 是谁的余额定的",
+   "detect": "scripts/shadow.mjs（census2）+ scripts/shadowcmp.py [SJ]"
+  },
+  {
+   "id": "NEW-DF-03",
+   "prefix": "DF",
+   "name": "没兵的人机赊账啃地（引擎规则）：内置 AI 新开进攻的第一圈必赢，被啃的号每格掉 1.6 倍自身密度的兵；号既不压兵在它身上、也不吃它",
+   "definition": "真值交战账里攻方是内置 AI、守方是本编队的号：整局丢 ≥100 格且守方余额损失 > 攻方实际耗兵（正常交换守方损失 ≤ 攻方耗兵的一半）。机制：game.js expandAttack L1016-1020 的 fresh && counter === 0 分支，不够的兵由 takeBalance L766-776 记欠账（上限 5 万）；记每一对的格数、AI 实际耗兵、号的余额损失，以及全房三组人（本编队 / 同房另一支 / 其它真人）的『余额损失 ÷ AI 耗兵』",
+   "detect": "scripts/truth.py [TN]；scripts/aiprobe.mjs <局> --ai <号> --bot <名字>（逐窗：新开进攻次数、靠赊账赢的圈数、赊的兵、号压在 AI 身上的反击兵）"
+  },
+  {
+   "id": "NEW-SE-04",
+   "prefix": "SE",
+   "name": "船靠岸在异队编队友的地上：下单时落点是空地或人机，航行和时延期间被编队友占了，引擎按进攻结算",
+   "definition": "真值船靠岸记录里船主和地主都是本编队的号、不同队、地主在线；记船上兵、吃掉的格数、双方损失，以及影子决策拍那个落点当时的地主",
+   "detect": "scripts/truth.py [TO][TF]；scripts/boattrack.mjs；shadow.json 里该船指令的 targetOwner"
+  },
+  {
+   "id": "NEW-DN-08",
+   "prefix": "DN",
+   "name": "救援捐款单笔超过受捐额度：整单被拒，冷却后原样重发",
+   "definition": "日志里同一对（捐出→受捐）连续 ≥3 笔相同 pct 的捐款都没进录像，且按引擎口径（game.js donationCost / donCap）那一笔的额度成本 > 当时额度上限 − 已用；记笔数与受捐方结局",
+   "detect": "scripts/donrej.py + digest [G] 的额度栏"
+  },
+  {
+   "id": "NEW-MT-01",
+   "prefix": "MT",
+   "name": "编队被分到多个队",
+   "definition": "真值里本编队的号分属 ≥2 个队；记各队号数、各分支峰值份额、哪个分支所在队获胜",
+   "detect": "scripts/truth.py [TA]"
+  },
+  {
+   "id": "NEW-AT-G1",
+   "prefix": "AT",
+   "name": "（正面）低价买地：两段口径 ≤12 兵/格",
+   "definition": "DROP30 且两段净增领土 ≥500，两段口径的每格花费 ≤12",
+   "detect": "scripts/patterns.py: at_cheap_buy"
+  }
+ ],
+ "lossArchetype": "external",
+ "archetypeNote": "对局没有打完：t=1365~1645 全队客户端先后断流，11 行结果全是 left；录像停在 t=1864 时 11 个号还在线、占 13.19%，没有一个在线的号被打死。局内的次要归类是 never-grew：t=1260 之后人均领土不再增长（人均比 0.79→0.57），一半是卡顿，一半是 sb 互锁和 t≥1500 的最小指令门槛。",
+ "winnerNotes": "结果未知：录像停在 t=1864（over=0），结果表 winnerTeam=null。t=1864 各队占地 T3 26.0%、T1 19.1%、T4 19.1%、T5 19.1%、T2 7.2%（T2 的 10 个真人全是 squad10），内置 AI 8.3%。头部全是编队外真人（t=1800）：[OG] ICARUS（T3）23442 格 / 25.3 万兵、[CN]市区（T3）21724、black magic（T5）20416 / 42.7 万、Napaleon Bonap（T5）20276、Player 996（T1）20195 / 39.5 万、Progress City（T5）19978、LA MANCHA（T3）19929。他们在 t=900~1800 人均从人机手里拿 7445 格，是我方（1593 格）的 4.7 倍，每格花的兵差不多（4.1 对我方 3.6~4.1）；t=1864 人均余额与我方相同（27.6 万对 27.8 万），领土是我方的 2.6 倍。被内置 AI 打时他们 1 个 AI 兵只换走 0.41 个兵，我方是 2.42 个。",
+ "wentWell": [
+  "t=720 之前开局扩张与全房真人持平（人均比 1.05~1.07），13 个号都在长。",
+  "录像范围内没有一个在线的号被打死；t=1864 11 个号在线、合计 13.19%，人均余额 27.8 万。",
+  "吃人机的价格不贵：全队 34661 格，各窗 2.7~4.1 兵/格；Croatia 长到 9418 格。",
+  "跨队编队友之间 0 条陆攻，保护名单在卡顿里没有失手。",
+  "真引擎重演 176/176 条快照逐兵一致。"
+ ],
+ "unknowns": [
+  "卡顿和断流的根因：只能排除策略自身耗时（avgMs ≤1.26）。两支编队 23 个客户端同时变慢、其它真人不受影响，像是宿主机或网络出口的问题，没有主机侧数据（猜测）。",
+  "结果表的 left 是服务器踢的还是驱动层自己退的，看不出来；只知道 11 行在 18 秒内写完，服务器宣布离开比最后一条指令晚 476~553 拍。",
+  "对局的真实结局：录像停在 t=1864，A048 在验证集里没有读。",
+  "Zizka、Redcoat 为什么没有结果行；Togo 的 HL-TICK 到本地拍 1620 为止，结果行却写着 2121。",
+  "TaxCollector 的 4 条船和 6 笔盈余捐在 t=1864 之后有没有到服务器，录像里看不到。",
+  "Cataphract 的客户端为什么在本地拍 460~518 之间停住（比全队卡顿早 200 拍）。",
+  "驱动层源码不在数据包里：『一拍最多 9 条』『发令后 8 拍静默』都是从录像和日志反推的。"
+ ],
+ "mechanicsQuestions": [
+  "新开进攻的第一圈在守方没有反击兵时必赢，不够的兵记欠账、上限 5 万（game.js L1016-1020 + L766-776）：模拟器按这条规则重演 176/176 条快照逐兵一致，所以真服务器在这一局里也是这么算的。欠账顶到上限之后，再赊的兵等于白送。",
+  "内置 AI 选目标时以 weakestPct 的概率挑『余额 + 压在自己身上的兵』最低的邻居（bots.js L301-313）：两个真人围着一个 AI，弱的那个会被一直选中；c110 的 sb 是照着这条规则写的，但它只管留兵，不管出手。",
+  "船靠岸不看下单时的目标：落点现在是谁的地，就按对谁的进攻结算（boats.js arrive L230）；引擎没有『落点换了主人就返航』的规则。",
+  "受捐额度成本在 t=1071~2142 是 2 + 100×兵 ÷ (30×(1+陆地/300))（game.js L348-358）：本图一笔最多约 4.9 万兵（t=1800，额度上限 103）；超了整单拒绝，没有部分成交。"
+ ],
+ "scripts": [
+  "c136-review/agents/R08/scripts/pipeline.sh B031 - tag:APEX（facts → resim → truth → shadow → shadowcmp → harvest → top → spawncheck → donrej，一条命令）",
+  "c136-review/agents/R08/scripts/truth.py B031（[TA]~[TO]；本局新加 [TN] 内置 AI 打真人的交换比、[TO] 船靠岸在异队编队友的地上）",
+  "c136-review/agents/R08/scripts/aiprobe.mjs B031 --ai 373 --bot Benin --peer-tag APEX（本局新写：逐窗看一个 AI 对一个号的每一圈是不是靠赊账赢的）",
+  "c136-review/agents/R08/scripts/shadow.mjs B031 --peer-tag APEX [--trace 号:拍]；shadowcmp.py B031（[SH] t<1500 门槛普查、[SJ] t≥1500 门槛普查、[SF] 时延曲线）",
+  "c136-review/agents/R08/scripts/lagstats.py B031（[LA] 按决策拍的落地率、[LB] 按执行拍的无效率、[LC] 每拍条数分布）",
+  "c136-review/agents/R08/scripts/boattrack.mjs B031 --bot JohnMarston --peer-tag APEX（逐条船：出发、衰减、靠岸在谁的地上）",
+  "c136-review/agents/R08/scripts/donrej.py B031 --peer-tag APEX；harvest.py / top.py / spawncheck.py B031；build_review.py B031"
+ ],
+ "confidenceOverall": "medium",
+ "peerComparison": "同房 squad10（A048 在验证集，没有读；按 [APEX] 标签从本包录像里识别，按 c116-vb 重演影子）：10 个号全在 T2，出生点挤在一块（leo_tx 与 ryan_m 同像素），4 个号峰值不到 2400 格。同一波卡顿（时延中位 72→196→398→557 拍，陆攻无效最高 79%），最后一条指令在 t=1267~1757。人均比 0.94（t=630）→0.49（1260）→0.36（1864），比我方（1.05→0.79→0.57）更低；(630,1260] 人均吃人机 924 格，我方 2151 格。t<1500 被 sb 挡住的 339 个号·点里 203 个的 sb 是同队编队友的余额（我方 264 个里 178 个是异队编队友）；t≥1500 最小指令门槛挡 70 个号·点。被内置 AI 赊账啃得更重（余额损失 ÷ AI 耗兵 3.92）。两套策略、两种分队方式（10 个号同队扎堆 vs 13 个号散在 4 个队）在同一局里同样停住、同样断流：扎堆的一方锁得更死、长得更小，分散的一方多了跨队内耗（船靠岸、互锁）。",
+ "teamSplitNotes": "13 个号没有战队标签，被分到 4 个队（T1×5、T3×2、T4×4、T5×2）；T2 整队是 squad10。跨队编队友互不陆攻（analyze L440、searchWater L1104 的 isProtectedSquadMate）。代价有两处：防人机留底把异队编队友的余额当底线（178 个号·点），以及船靠岸时落点换了主人（JohnMarston→Croatia 3 次，56067 兵）。对局没打完，看不到哪个分支所在的队获胜；t=1864 T3（Manchu、Zizka 所在）领先。"
+}

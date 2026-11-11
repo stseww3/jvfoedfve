@@ -102,7 +102,10 @@ def main():
         else:
             lag, src = (lags[len(lags) // 2] if lags else 12), "全局中位"
         te = r["t"] + lag
-        if e:
+        if e and not e.get("seq"):
+            out.append(f"     {r['t']} {T.nm(r['donor'], r['t'])}→{T.nm(r['to'], r['t'])} pct={r['pct']} {r['kind']} | {te} | （决策拍在录像结束之后，问不了价）")
+            cnt["录像结束之后"] = cnt.get("录像结束之后", 0) + 1
+        elif e:
             seq = e["seq"]  # [[t0, code], ...] 游程
             def code_at(t):
                 c = None
@@ -118,7 +121,7 @@ def main():
             c = next((k for k in (1, 3, 4, 6, 5) if k in cs), 0)
             first_ok = next((t0 for t0, cc in seq if cc == 0 and t0 >= r["t"]), None)
             span = {}
-            for (t0, cc), nxt in zip(seq, seq[1:] + [[e["tEnd"], None]]):
+            for (t0, cc), nxt in zip(seq, seq[1:] + [[e.get("tEnd", (seq[-1][0] + 1) if seq else r["t"]), None]]):
                 span[cc] = span.get(cc, 0) + (nxt[0] - t0)
             why = WHY.get(c, "?")
             if c == 0:

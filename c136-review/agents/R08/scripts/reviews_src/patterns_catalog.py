@@ -211,6 +211,21 @@ CATALOG = [
          definition="影子在真值上每 10 拍按 Policy.buyLand 对非真人邻居的那条路重算（c110 L5363-5369）：t≥1500、接壤至少一个内置 AI、没有一个过门槛，"
                     "且最便宜那个的 want = 1.25×need + 3×边界 < minCmd = feeK×⌊12×余额/1024⌋；一个号累计 ≥5 个点算命中。记被挡 AI 的格数、兵、want、当时余额，以及这块地后来被谁吃走",
          detect="scripts/shadow.mjs（census2）+ scripts/shadowcmp.py [SJ]"),
+    dict(id="NEW-DF-03", prefix="DF", name="没兵的人机赊账啃地（引擎规则）：内置 AI 新开进攻的第一圈必赢，被啃的号每格掉 1.6 倍自身密度的兵；号既不压兵在它身上、也不吃它",
+         definition="真值交战账里攻方是内置 AI、守方是本编队的号：整局丢 ≥100 格且守方余额损失 > 攻方实际耗兵（正常交换守方损失 ≤ 攻方耗兵的一半）。"
+                    "机制：game.js expandAttack L1016-1020 的 fresh && counter === 0 分支，不够的兵由 takeBalance L766-776 记欠账（上限 5 万）；"
+                    "记每一对的格数、AI 实际耗兵、号的余额损失，以及全房三组人（本编队 / 同房另一支 / 其它真人）的『余额损失 ÷ AI 耗兵』",
+         detect="scripts/truth.py [TN]；scripts/aiprobe.mjs <局> --ai <号> --bot <名字>（逐窗：新开进攻次数、靠赊账赢的圈数、赊的兵、号压在 AI 身上的反击兵）"),
+    dict(id="NEW-EC-08", prefix="EC", name="1500 拍后防人机留底的锁还在：打人机前的留底 = min(sb, 88×领土)，sb 由更富的邻居（常是编队友）定出，密度不到 88 的号对任何人机都出不了手",
+         definition="影子在真值上每 10 拍按 Policy.buyLand 对非真人邻居的那条路重算：t≥1500、接壤至少一个内置 AI、全部被挡，且最便宜那个的原因是 safe:sb 或 safe:sb(cap)"
+                    "（buyLand L5322 → Policy.safeAt L4524-4541 → safeAt L2744-2754，botSkip=0 时不跳过任何人机 → safeFinite L2532-2541）；一个号累计 ≥5 个点算命中。记 sb 是谁的余额定的",
+         detect="scripts/shadow.mjs（census2）+ scripts/shadowcmp.py [SJ]"),
+    dict(id="NEW-SE-04", prefix="SE", name="船靠岸在异队编队友的地上：下单时落点是空地或人机，航行和时延期间被编队友占了，引擎按进攻结算",
+         definition="真值船靠岸记录里船主和地主都是本编队的号、不同队、地主在线；记船上兵、吃掉的格数、双方损失，以及影子决策拍那个落点当时的地主",
+         detect="scripts/truth.py [TO][TF]；scripts/boattrack.mjs；shadow.json 里该船指令的 targetOwner"),
+    dict(id="NEW-IO-07", prefix="IO", name="全队断流：编队所有在线号先后停止向服务器发指令，结果表全是 left，对局没有打完",
+         definition="结果表所有行 event=left 且写入时间相差 ≤60 秒；录像最后 ≥150 拍里本编队执行的指令 ≤1 个号，而同期其它真人每 90 拍仍有 ≥10 条指令",
+         detect="results.csv 的 at / tick；scripts/lagstats.py [LA][LB]；scripts/truth.py --cmds"),
 ]
 
 BY_ID = {p["id"]: p for p in CATALOG}

@@ -13,6 +13,7 @@
   [TG] 指令账：每个号各类指令条数、没生效的条数、叠加到已有进攻上的条数、重发串
   [TH] 捐款账（真值：是否成交、到账、扣税、收款人额度）   [TI] 离开的号：离开时的地/兵，之后被谁吃掉
   [TJ] 船靠岸到队友身上（兵是否蒸发）   [TK] 余额单窗跌 ≥30% 的真值对账
+  [TL] 船账   [TM] 空壳赠兵   [TN] 内置 AI 打真人的交换比（赊账啃地）   [TO] 船靠岸在异队编队友的地上
 名字后缀：*=本编队  +=同房另一支编队  ~=已离开的空壳  #=内置 AI  T<n>=队号
 """
 import json
@@ -431,6 +432,41 @@ def sec_TM(T, out):
     out.append("     合计（谁的空壳 → 给了谁：次数 / 到账）：" + "；".join(f"{a}→{b} {v[0]} 次 / {v[1]}" for (a, b), v in sorted(tot.items(), key=lambda kv: -kv[1][1])))
 
 
+def sec_TN(T, out, min_cells=100):
+    """内置 AI 打真人的交换比。引擎 game.js expandAttack：新开的进攻（fresh）在守方没有反击兵压着攻方时第一圈必赢，
+    不够的兵由 takeBalance 记成欠账（debt，上限 5 万），守方照样按 def = 圈格数×余额/(1+0.625×领土) 掉余额。
+    正常交换里守方余额损失 ≤ 攻方耗兵的一半；守方损失 > 攻方耗兵就是被赊账啃的。"""
+    tot = pair_totals(T)
+    peer = set(getattr(T, "peerIds", ()))
+    grp = {"本编队": [0, 0, 0, 0], "同房另一支": [0, 0, 0, 0], "其它真人": [0, 0, 0, 0]}
+    heads = {"本编队": len(T.sqIds), "同房另一支": len(peer), "其它真人": sum(1 for p in range(T.H) if p not in T.sqIds and p not in peer and T.leftT[p] != 0)}
+    rows = []
+    for (a, d), v in tot.items():
+        if a < T.H or a >= 512 or d >= T.H or v[0] <= 0:
+            continue
+        k = "本编队" if d in T.sqIds else ("同房另一支" if d in peer else "其它真人")
+        g = grp[k]
+        g[0] += v[0]; g[1] += v[1]; g[2] += v[2]
+        if v[2] > v[1]:
+            g[3] += v[0]
+            if d in T.sqIds and v[0] >= min_cells:
+                rows.append((v[2], d, a, v))
+    out.append("[TN] 内置 AI 打真人的交换比（整局真值）：谁挨打 | 人数 | 丢的格数 | AI 实际耗兵 | 自己余额被打掉 | 余额损失÷AI 耗兵 | 其中『余额损失 > AI 耗兵』的对子丢的格数")
+    for k, g in grp.items():
+        out.append(f"     {k} | {heads[k]} | {g[0]} | {g[1]} | {g[2]} | {g[2] / max(g[1], 1):.2f} | {g[3]}")
+    out.append(f"     本编队被赊账啃的对子（丢 ≥{min_cells} 格且余额损失 > AI 耗兵）{len(rows)} 对：号 ← AI | 丢的格数 | AI 实际耗兵 | 自己余额被打掉（每格）")
+    for dB, d, a, v in sorted(rows, reverse=True)[:25]:
+        out.append(f"     {T.nm(d, T.end)} ← AI{a} | {v[0]} | {v[1]} | {v[2]}（{v[2] / v[0]:.1f}/格）")
+
+
+def sec_TO(T, out):
+    """本编队的船靠岸在异队编队友的地上：引擎按对地主的进攻结算（boats.js 靠岸 → attack）。"""
+    rows = [l for l in T.R.get("landings", []) if l[1] in T.sqIds and l[2] in T.sqIds and l[2] != l[1] and T.team(l[1]) != T.team(l[2])]
+    out.append(f"[TO] 本编队的船靠岸在异队编队友的地上：{len(rows)} 次，船上兵合计 {sum(l[3] for l in rows)}：拍 船主→地主 船上兵 | 地主当时是不是空壳")
+    for l in rows[:20]:
+        out.append(f"     {l[0]} {T.nm(l[1], l[0])}→{T.nm(l[2], l[0])} {l[3]} | {'空壳' if T.is_husk(l[2], l[0]) else '在线'}")
+
+
 def boat_ledger(T, ids=None):
     """每个号的船账：发船（条数、船上兵、手续费）；靠岸分类（空地 / 敌方 / 自己的地 / 同队：到账与蒸发）；没靠岸的差额（海上衰减每 5 拍 1/128、海战、终局仍在海上）。"""
     R = T.R
@@ -682,7 +718,7 @@ def main():
         cmds_detail(T, opt("--cmds"), t0, t1)
         return 0
     out = []
-    for sec in (sec_TA, sec_TB, sec_TC, sec_TD, sec_TE, sec_TF, sec_TG, sec_TH, sec_TI, sec_TJ, sec_TK, sec_TL, sec_TM):
+    for sec in (sec_TA, sec_TB, sec_TC, sec_TD, sec_TE, sec_TF, sec_TG, sec_TH, sec_TI, sec_TJ, sec_TK, sec_TL, sec_TM, sec_TN, sec_TO):
         sec(T, out)
     txt = "\n".join(out)
     with open(os.path.join(OUT, mid, "truth.txt"), "w", encoding="utf-8") as f:
