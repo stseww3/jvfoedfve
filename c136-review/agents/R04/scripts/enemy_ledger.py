@@ -2,7 +2,7 @@
 # 敌方头号的账本：它的地是从谁手里拿的、它对我方各号出了多少兵、我方对它出了多少兵。
 # 用法：python3 scripts/enemy_ledger.py <局号> [--p 引擎编号] [--win t0,t1,t2,…] [--strikes t0 t1] [--ours id,id,…]
 #   不给 --p 时取「终局领土最大的非我方队真人」；--win 给出窗口边界（默认每 600 拍一段）。
-# 「兵」= 实际出征的兵，不含每条指令另扣的手续费（余额的 12/1024）。
+# 「兵」= 实际出征的兵，不含每条指令另扣的手续费（余额的 12/1024）；船登陆后的进攻（ev.tsv 的 land 事件）也算一发。
 # 数据：tmp/truth/<局号>/（engine_truth.cjs 的真引擎重放）。flow.tsv 只记与我方队有关的地块流动，
 #       所以「来自我方队」是精确的，它从别的队拿的地只能用「领土变化 − 我方队净流入」反推。
 import sys, collections
@@ -65,6 +65,27 @@ def main():
             other[i][0] += 1; other[i][1] += s
         elif c['p'] in M.ours and c['b'] == E:
             recv[i][0] += 1; recv[i][1] += s
+    # 船登陆后的进攻（ev.tsv 的 land 事件，细节形如 位置|atk:目标:兵）也算一发
+    landings = []   # (t, 出兵方, 目标, 兵)
+    for (t, kind, p, x, y, det) in M.ev:
+        if kind != 'land' or '|' not in det:
+            continue
+        for part in det.split('|', 1)[1].split(';'):
+            f = part.split(':')
+            if f[0] == 'atk' and len(f) >= 3 and int(f[2]) > 0:
+                landings.append((t, p, int(f[1]), int(f[2])))
+    boat_sent = collections.defaultdict(lambda: [0, 0])
+    for (t, p, q, s) in landings:
+        i = widx(t)
+        if i is None:
+            continue
+        if p == E and q in M.ours:
+            sent[i][0] += 1; sent[i][1] += s
+            boat_sent[i][0] += 1; boat_sent[i][1] += s
+        elif p == E:
+            other[i][0] += 1; other[i][1] += s
+        elif p in M.ours and q == E:
+            recv[i][0] += 1; recv[i][1] += s
     tot_in = 0
     for i in range(len(edges) - 1):
         t0, t1 = edges[i], edges[i + 1]
@@ -79,24 +100,31 @@ def main():
                 if frm == E:
                     g[nm(to)] -= n
         net = sum(g.values()); tot_in += net
-        print('(%d,%d] 领土 %d→%d（%+d），余额 %s→%s；与我方队的地块净流入 %+d %s；它打我方号 %d 条 %s 兵，打别人 %d 条 %s 兵；我方号打它 %d 条 %s 兵' % (
+        print('(%d,%d] 领土 %d→%d（%+d），余额 %s→%s；与我方队的地块净流入 %+d %s；它打我方号 %d 发 %s 兵%s，打别人 %d 发 %s 兵；我方号打它 %d 发 %s 兵' % (
             t0, t1, s0[0], s1[0], s1[0] - s0[0], fmt(s0[1]), fmt(s1[1]), net,
             {k: v for k, v in g.most_common() if abs(v) >= 300},
-            sent[i][0], fmt(sent[i][1]), other[i][0], fmt(other[i][1]), recv[i][0], fmt(recv[i][1])))
-    print('合计：从我方队净拿 %d 格；对我方号出兵 %s（%d 条），我方号对它出兵 %s（%d 条）' % (
+            sent[i][0], fmt(sent[i][1]), ('（其中船登陆 %d 发 %s 兵）' % (boat_sent[i][0], fmt(boat_sent[i][1]))) if boat_sent[i][0] else '',
+            other[i][0], fmt(other[i][1]), recv[i][0], fmt(recv[i][1])))
+    print('合计（陆攻指令 + 船登陆）：从我方队净拿 %d 格；对我方号出兵 %s（%d 发，其中船登陆 %d 发 %s 兵），我方号对它出兵 %s（%d 发）' % (
         tot_in, fmt(sum(v[1] for v in sent.values())), sum(v[0] for v in sent.values()),
+        sum(v[0] for v in boat_sent.values()), fmt(sum(v[1] for v in boat_sent.values())),
         fmt(sum(v[1] for v in recv.values())), sum(v[0] for v in recv.values())))
     if '--strikes' in a:
         i = a.index('--strikes'); t0, t1 = int(a[i + 1]), int(a[i + 2])
-        print('它在 [%d,%d] 的每一发陆攻（拍 / 目标 / 兵 / 它当时 地·兵 / 目标当时 地·兵·密度）：' % (t0, t1))
+        print('它在 [%d,%d] 的每一发进攻（拍 / 目标 / 兵 / 它当时 地·兵 / 目标当时 地·兵·密度；标「船」的是船登陆后的进攻）：' % (t0, t1))
+        rows = []
         for c in M.cmd:
             if c['id'] == 1 and c['p'] == E and t0 <= c['t'] <= t1:
                 s = troops(c)
-                if s <= 0:
-                    continue
-                S = M.state[M.at(c['t'])]
-                me = S.get(E, (0, 0)); q = S.get(c['b'], (0, 0))
-                print('  %d → %s %s 兵 | 它 %d·%s | 目标 %d·%s·%.0f' % (c['t'], nm(c['b']), fmt(s), me[0], fmt(me[1]), q[0], fmt(q[1]), q[1] / max(1, q[0])))
+                if s > 0:
+                    rows.append((c['t'], c['b'], s, ''))
+        for (t, p, q, s) in landings:
+            if p == E and t0 <= t <= t1:
+                rows.append((t, q, s, '船 '))
+        for (t, b, s, tag) in sorted(rows):
+            S = M.state[M.at(t)]
+            me = S.get(E, (0, 0)); q = S.get(b, (0, 0))
+            print('  %d → %s%s %s 兵 | 它 %d·%s | 目标 %d·%s·%.0f' % (t, tag, nm(b), fmt(s), me[0], fmt(me[1]), q[0], fmt(q[1]), q[1] / max(1, q[0])))
 
 
 if __name__ == '__main__':

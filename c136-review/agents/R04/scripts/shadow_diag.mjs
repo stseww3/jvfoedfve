@@ -239,7 +239,33 @@ export function diagBoats(pol, g, nm) {
     if (!g.boatsAllowed(me)) why.push(`boatsAllowed=false（海岸像素 ${g.coast[me].length}，在航 ${g.boatCount[me]} 条）`);
     if (g.boatCount[me] >= 6) why.push('在航船已 6 条');
     if (g.t - (pol.lastBoat ?? -999) < Math.min(P.boatEvery, 18)) why.push('发船冷却中');
-    out.push(`    [idleBoats L5022~5043 封死分支] 接敌兄弟 ${act} 个，密度 ${dMe.toFixed(0)}，海岸像素 ${g.coast[me].length}，保底 ${act >= 1 ? 92 : 68}×地=${f((act >= 1 ? 92 : 68) * L)} → ${why.length ? '不发船：' + why.join('；') : '会调用 boatOut（范围 2500，至多用 余额−保底 的 24%）'}`);
+    out.push(`    [idleBoats L5022~5043 封死分支] 接敌兄弟 ${act} 个，密度 ${dMe.toFixed(0)}，海岸像素 ${g.coast[me].length}，保底 ${act >= 1 ? 92 : 68}×地=${f((act >= 1 ? 92 : 68) * L)} → ${why.length ? '不发船：' + why.join('；') : '会调用 boatOut（范围 2500）'}`);
+    if (!why.length) {
+      // 复刻 boatOut（基类 L999~1015 + V13 包装 L2325~2330）：找得到落点吗？够不够最小船量？
+      const oldRange = P.boatRange, oldFrac = P.boatFrac;
+      let hit = null, err = '';
+      try {
+        P.boatRange = 2500; P.boatFrac = Math.max(oldFrac, 0.24);
+        hit = pol.searchWater(g);
+      } catch (e) { err = String(e && e.message || e); }
+      const frac = Math.max(oldFrac, 0.24);
+      P.boatRange = oldRange; P.boatFrac = oldFrac;
+      if (err) out.push(`      searchWater 出错：${err}`);
+      else if (!hit) out.push(`      searchWater 在 2500 像素水程内找不到任何可登陆的非队友陆地（水面只通到自己/队友的岸，或根本不通外海）→ boatOut 返回 false，不发船`);
+      else {
+        let fl = 0;
+        try { const { floorAt } = pol.floors(g); fl = Math.max(Math.min(floorAt(hit.price), 85 * L), (act >= 1 ? 92 : 68) * L); } catch (e) { fl = (act >= 1 ? 92 : 68) * L; }
+        let idleNow = false;
+        try { idleNow = pol.idle(g); } catch (e) { /* ignore */ }
+        if (P.idleSafe > 0 && idleNow) fl = Math.max(fl, P.idleSafe * 100 * L + Math.floor((32 * B) / 1024));
+        const max = frac * (B - fl);
+        const min = P.boatFee > 0 && hit.neutral ? 60 : Math.max(60, P.feeK * Math.floor((32 * B) / 1024));
+        const o = hit.neutral ? -1 : g.own[hit.land];
+        const tgt = hit.neutral ? `无主地（连片 ${hit.size} 格）` : `${nm(o)} 地 ${g.terr[o]} 兵 ${f(g.bal[o])}`;
+        const cnt = g.boatCount[me] >= P.maxBoats ? `；但在航船 ${g.boatCount[me]} 条 ≥ maxBoats ${P.maxBoats}` : '';
+        out.push(`      searchWater 落点：${tgt}，单价 ${hit.price.toFixed(1)}，折算 ${hit.eff.toFixed(1)}；可装 ${frac}×(余额−保底 ${f(fl)}) = ${f(max)}，最小船量 ${f(min)}（feeK ${P.feeK}×船手续费）→ ${max < min ? '不够最小船量，不发船（L1008）' : '够，发船'}${cnt}`);
+      }
+    }
   } else {
     out.push(`    [idleBoats] 非封死分支（nb=${pol.nb.length} neut=${pol.neutral} mopUp=${mop}）；闲置线 idleCap×100×地=${f(P.idleCap * 100 * L)}，余额 ${f(B)}`);
   }

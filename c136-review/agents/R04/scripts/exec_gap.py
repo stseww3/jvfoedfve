@@ -2,7 +2,7 @@
 # exec_gap.py — 「想发的」对「落地的」：影子策略逐拍给出的发令意图（tmp/shadow/<局号>/intents.tsv，
 # 已与真实日志的调度逐条相同、发令数增量逐段相同）对照录像里真正被执行的指令（tmp/truth/<局号>/cmd.tsv）。
 #
-# 用法：python3 scripts/exec_gap.py <局号> [--bot 名字] [--list t0 t1]
+# 用法：python3 scripts/exec_gap.py <局号> [--bot 名字] [--list t0 t1] [--profile 每段拍数]
 #   先要有：bash scripts/engine_truth_all.sh <局号>；node scripts/shadow.mjs <局号> --bots <全部我方号> --quiet --out tmp/shadow/<局号>
 # 输出：
 #   1) 每个号：发出/落地 的条数（陆攻、捐款、发船），落地率；落地指令的延迟（拍）中位/九成位/最大
@@ -147,6 +147,25 @@ def main():
             if t0 <= x['t'] <= t1 and (not only or x['bot'] == only):
                 c = pm.get(id(x))
                 print(f'  拍 {x["t"]} {x["bot"]} {NAME.get(x["kind"], x["kind"])} 目标 {x["target"]} {x["pct"]}/1024 想出 {x["troops"]} → ' + (f'落地于 {c["t"]}（晚 {c["t"]-x["t"]} 拍），余额 {c["bal0"]}→{c["bal1"]}' if c else '没落地'))
+    if '--profile' in a:
+        # 按发令拍分桶：这一段想发几条陆攻、落地几条、落地的那些晚了多少拍
+        n = int(a[a.index('--profile') + 1])
+        pm = {id(x): c for (x, c) in pairs}
+        last = max(x['t'] for x in intents)
+        print(f'按每 {n} 拍一段（按发令拍）：陆攻 想发/落地（落地率），落地延迟 中位/最大，想出的兵合计 → 落地时实际出的兵合计')
+        for lo in range(0, last + 1, n):
+            xs = [x for x in intents if x['kind'] == 'attack' and lo <= x['t'] < lo + n and (not only or x['bot'] == only)]
+            if not xs:
+                continue
+            ls = [(x, pm[id(x)]) for x in xs if id(x) in pm]
+            lags = [c['t'] - x['t'] for (x, c) in ls]
+            got = 0
+            for (x, c) in ls:
+                for s2 in (c['sub'] or '').split(','):
+                    f = s2.split(':')
+                    if f[0] == 'atk' and len(f) >= 3:
+                        got += int(f[2])
+            print(f'  {lo:5d}~{lo+n-1:5d}  {len(xs):4d}/{len(ls):4d}（{100*len(ls)/len(xs):3.0f}%）  延迟 {q(lags, .5)}/{max(lags) if lags else None}  想出 {sum(x["troops"] for x in xs)} → 实出 {got}')
 
 
 if __name__ == '__main__':

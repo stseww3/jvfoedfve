@@ -26,6 +26,13 @@ def main():
             if m:
                 kinds.setdefault(int(m.group(4)), []).append((int(m.group(1)), int(m.group(7)), m.group(2), m.group(6)))
     n = 0; thin = 0; cred_tot = 0; tax_tot = 0
+    under_n = 0; under_tax = 0; under_cred = 0      # 到账 < 税 的捐款
+    pair = collections.defaultdict(lambda: [0, 0, 0])  # (捐款人, 收款人) -> [笔数, 到账, 税]
+    seq = []                                        # (拍, 捐款人, 收款人, 到账)，用来数来回倒
+    want_tot = 0; cut_n = 0; cut_want = 0; cut_cred = 0   # 想送 = 比例×捐款人余额；被收款方上限截掉的
+    relay_in = collections.Counter()                # 每个号收到的
+    relay_out = collections.Counter()               # 每个号又捐出去的（到账）
+    relay_tax = collections.Counter()
     by_rcpt = collections.Counter(); by_kind = collections.Counter(); boxed_n = 0
     for c in M.cmd:
         if c['id'] != 2 or c['p'] not in M.ours or not (t0 <= c['t'] <= t1) or 'q' not in c:
@@ -43,6 +50,16 @@ def main():
         if d1 <= 32:
             thin += 1
         by_rcpt[M.nm(c['q'])] += cred
+        if cred < tax:
+            under_n += 1; under_tax += tax; under_cred += cred
+        pr = pair[(M.nm(c['p']), M.nm(c['q']))]
+        pr[0] += 1; pr[1] += cred; pr[2] += tax
+        seq.append((c['t'], c['p'], c['q'], cred))
+        want = (c['a'] + 1) * c['bal0'] // 1024
+        want_tot += want
+        if cred < 0.98 * want:
+            cut_n += 1; cut_want += want; cut_cred += cred
+        relay_in[M.nm(c['q'])] += cred; relay_out[M.nm(c['p'])] += cred; relay_tax[M.nm(c['p'])] += tax
         if k:
             by_kind[k[0]] += 1
             if k[1] == 'true':
@@ -54,6 +71,30 @@ def main():
     print('[%d,%d] 落地 %d 笔，到账 %s，税 %s；捐后密度 ≤32 的 %d 笔；封死号发出的 %d 笔；按种类 %s' % (
         t0, min(t1, M.last), n, fmt(cred_tot), fmt(tax_tot), thin, boxed_n, dict(by_kind)))
     print('收款人到账：', {k: fmt(v) for k, v in by_rcpt.most_common()})
+    print('到账 < 税 的捐款：%d 笔，到账合计 %s，税合计 %s' % (under_n, fmt(under_cred), fmt(under_tax)))
+    # 来回倒：A→B 之后 100 拍内出现 B→A
+    pp = 0; pp_pairs = collections.Counter()
+    for i, (t, p, q, _c) in enumerate(seq):
+        for (t2, p2, q2, _c2) in seq[i + 1:]:
+            if t2 - t > 100:
+                break
+            if p2 == q and q2 == p:
+                pp += 1; pp_pairs[tuple(sorted((M.nm(p), M.nm(q))))] += 1
+                break
+    print('100 拍内来回倒（A→B 后 B→A）：%d 次 %s' % (pp, dict(pp_pairs)))
+    # 300 拍内来回倒手：A→B 这一笔的前后 300 拍内有过 B→A
+    back = 0
+    for (t, p, q, cr) in seq:
+        if any(abs(t2 - t) <= 300 and p2 == q and q2 == p for (t2, p2, q2, _x) in seq):
+            back += cr
+    print('300 拍内来回倒手的到账：%s，占到账合计的 %.0f%%' % (fmt(back), 100.0 * back / max(1, cred_tot)))
+    print('想送（比例×捐款人余额）合计 %s，实际到账 %s；被收款方 150×领土 上限截短的 %d 笔：想送 %s 只到账 %s（截掉 %.0f%%），税照 6.25%%×余额 全交' % (
+        fmt(want_tot), fmt(cred_tot), cut_n, fmt(cut_want), fmt(cut_cred), 100.0 * (cut_want - cut_cred) / max(1, cut_want)))
+    relay = [(k, relay_in[k], relay_out[k], relay_tax[k]) for k in relay_in if relay_out[k] >= 0.3 * relay_in[k] and relay_in[k] >= 500000]
+    for (k, i_, o_, tx) in sorted(relay, key=lambda r: -r[1]):
+        print('二传手 %s：收到 %s，又捐出去 %s（到账），为此再交税 %s' % (k, fmt(i_), fmt(o_), fmt(tx)))
+    top = sorted(pair.items(), key=lambda kv: -kv[1][1])[:6]
+    print('到账最多的几条线：' + '；'.join('%s→%s %d 笔 %s（税 %s）' % (k[0], k[1], v[0], fmt(v[1]), fmt(v[2])) for k, v in top))
 
 
 if __name__ == '__main__':
