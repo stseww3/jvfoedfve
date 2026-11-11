@@ -5,7 +5,7 @@
      以及保底线取自 safeFinite / dpKeep / 回本线 各多少拍；这些拍里身边的机器人地格数（窗口均值）。
   ③ 动了但迟到：600–1500 里落地的陆攻令中，落地时目标已不在（引擎改打无主地）/ 一兵未扣 的条数，占落地条数几成；
      这些令在决策时想出的兵合计，占同期全部落地令想出的兵的几成（shadow_match.csv）。
-用法：python3 scripts/attrib3.py <局号> [--t0 600 --t1 1500] [--json]
+用法：python3 scripts/attrib3.py <局号> [--t0 600 --t1 1500] [--tag land] [--json]
 说明：决策拍数来自影子策略（每 5 拍一个决策拍）；离场/阵亡之后的号不再有决策拍。c110 的影子是近似（页面外壳会跳拍）。
      三项不是互斥的分摊，只是三张并排的账：每项各自的分母都写在行里。
 """
@@ -19,7 +19,9 @@ opt = lambda k, d=None: a[a.index('--' + k) + 1] if '--' + k in a else d
 T0, T1 = int(opt('t0', 600)), int(opt('t1', 1500))
 D = os.path.join(HERE, '..', 'out', mid)
 rd = lambda f: list(csv.DictReader(open(os.path.join(D, f), encoding='utf8'))) if os.path.exists(os.path.join(D, f)) else []
-idle, match, seats = rd('shadow_idle.csv'), rd('shadow_match.csv'), rd('voronoi_seats.csv')
+tag = opt('tag', '')  # --tag land：读 shadow_*_land.csv（A031）
+sfx = '_' + tag if tag else ''
+idle, match, seats = rd(f'shadow_idle{sfx}.csv'), rd(f'shadow_match{sfx}.csv'), rd('voronoi_seats.csv')
 num = lambda x: float(x) if x not in ('', None) else 0.0
 out = {'mid': mid, 't0': T0, 't1': T1}
 

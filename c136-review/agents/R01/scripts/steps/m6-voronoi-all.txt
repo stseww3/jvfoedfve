@@ -1,0 +1,84 @@
+# M6 第四批：其余有录像的对局包的好地账（voronoi_share）。每行：输出文件 命令。录像不到 1800 拍的把 AI 地去向的终点提前；不到 700 拍、混了两场的不跑。
+out/A001/batch/voronoi.txt node scripts/voronoi_share.mjs A001
+out/A002/batch/voronoi.txt node scripts/voronoi_share.mjs A002
+out/A006/batch/voronoi.txt node scripts/voronoi_share.mjs A006 --ai-to 1350 --ticks 630
+out/A007/batch/voronoi.txt node scripts/voronoi_share.mjs A007
+out/A010/batch/voronoi.txt node scripts/voronoi_share.mjs A010 --replay B009 --log A010
+out/A011/batch/voronoi.txt node scripts/voronoi_share.mjs A011 --ai-to 990 --ticks 630
+out/A013/batch/voronoi.txt node scripts/voronoi_share.mjs A013
+out/A014/batch/voronoi.txt node scripts/voronoi_share.mjs A014
+out/A015/batch/voronoi.txt node scripts/voronoi_share.mjs A015
+out/A017/batch/voronoi.txt node scripts/voronoi_share.mjs A017
+out/A018/batch/voronoi.txt node scripts/voronoi_share.mjs A018
+out/A021/batch/voronoi.txt node scripts/voronoi_share.mjs A021
+out/A022/batch/voronoi.txt node scripts/voronoi_share.mjs A022
+out/A025/batch/voronoi.txt node scripts/voronoi_share.mjs A025
+out/A026/batch/voronoi.txt node scripts/voronoi_share.mjs A026
+out/A027/batch/voronoi.txt node scripts/voronoi_share.mjs A027
+out/A029/batch/voronoi.txt node scripts/voronoi_share.mjs A029
+out/A030/batch/voronoi.txt node scripts/voronoi_share.mjs A030
+out/A033/batch/voronoi.txt node scripts/voronoi_share.mjs A033
+out/A034/batch/voronoi.txt node scripts/voronoi_share.mjs A034
+out/A035/batch/voronoi.txt node scripts/voronoi_share.mjs A035
+out/A037/batch/voronoi.txt node scripts/voronoi_share.mjs A037
+out/A038/batch/voronoi.txt node scripts/voronoi_share.mjs A038
+out/A039/batch/voronoi.txt node scripts/voronoi_share.mjs A039
+out/A041/batch/voronoi.txt node scripts/voronoi_share.mjs A041
+out/A042/batch/voronoi.txt node scripts/voronoi_share.mjs A042
+out/A043/batch/voronoi.txt node scripts/voronoi_share.mjs A043
+out/A045/batch/voronoi.txt node scripts/voronoi_share.mjs A045
+out/A046/batch/voronoi.txt node scripts/voronoi_share.mjs A046
+out/A047/batch/voronoi.txt node scripts/voronoi_share.mjs A047
+out/A049/batch/voronoi.txt node scripts/voronoi_share.mjs A049
+out/A051/batch/voronoi.txt node scripts/voronoi_share.mjs A051
+out/A053/batch/voronoi.txt node scripts/voronoi_share.mjs A053
+out/A058/batch/voronoi.txt node scripts/voronoi_share.mjs A058
+out/A061/batch/voronoi.txt node scripts/voronoi_share.mjs A061
+out/A062/batch/voronoi.txt node scripts/voronoi_share.mjs A062
+out/A063/batch/voronoi.txt node scripts/voronoi_share.mjs A063
+out/A065/batch/voronoi.txt node scripts/voronoi_share.mjs A065
+out/A066/batch/voronoi.txt node scripts/voronoi_share.mjs A066
+out/A067/batch/voronoi.txt node scripts/voronoi_share.mjs A067
+out/A069/batch/voronoi.txt node scripts/voronoi_share.mjs A069
+out/A070/batch/voronoi.txt node scripts/voronoi_share.mjs A070
+out/A074/batch/voronoi.txt node scripts/voronoi_share.mjs A074
+out/A077/batch/voronoi.txt node scripts/voronoi_share.mjs A077
+out/A078/batch/voronoi.txt node scripts/voronoi_share.mjs A078
+out/A079/batch/voronoi.txt node scripts/voronoi_share.mjs A079
+out/A081/batch/voronoi.txt node scripts/voronoi_share.mjs A081
+out/A082/batch/voronoi.txt node scripts/voronoi_share.mjs A082
+out/A083/batch/voronoi.txt node scripts/voronoi_share.mjs A083
+out/A085/batch/voronoi.txt node scripts/voronoi_share.mjs A085
+out/A086/batch/voronoi.txt node scripts/voronoi_share.mjs A086
+out/A087/batch/voronoi.txt node scripts/voronoi_share.mjs A087
+out/A089/batch/voronoi.txt node scripts/voronoi_share.mjs A089
+out/A090/batch/voronoi.txt node scripts/voronoi_share.mjs A090
+out/A091/batch/voronoi.txt node scripts/voronoi_share.mjs A091
+out/A093/batch/voronoi.txt node scripts/voronoi_share.mjs A093
+out/A095/batch/voronoi.txt node scripts/voronoi_share.mjs A095
+out/A097/batch/voronoi.txt node scripts/voronoi_share.mjs A097
+out/A098/batch/voronoi.txt node scripts/voronoi_share.mjs A098
+out/A099/batch/voronoi.txt node scripts/voronoi_share.mjs A099
+out/B009/batch/voronoi.txt node scripts/voronoi_share.mjs B009
+out/B010/batch/voronoi.txt node scripts/voronoi_share.mjs B010
+out/B011/batch/voronoi.txt node scripts/voronoi_share.mjs B011
+out/B015/batch/voronoi.txt node scripts/voronoi_share.mjs B015
+out/B017/batch/voronoi.txt node scripts/voronoi_share.mjs B017
+out/B019/batch/voronoi.txt node scripts/voronoi_share.mjs B019 --ai-to 1170 --ticks 630
+out/B021/batch/voronoi.txt node scripts/voronoi_share.mjs B021
+out/B022/batch/voronoi.txt node scripts/voronoi_share.mjs B022
+out/B023/batch/voronoi.txt node scripts/voronoi_share.mjs B023
+out/B025/batch/voronoi.txt node scripts/voronoi_share.mjs B025 --ai-to 1350 --ticks 630
+out/B027/batch/voronoi.txt node scripts/voronoi_share.mjs B027 --ai-to 1350 --ticks 630
+out/B029/batch/voronoi.txt node scripts/voronoi_share.mjs B029
+out/B030/batch/voronoi.txt node scripts/voronoi_share.mjs B030
+out/B031/batch/voronoi.txt node scripts/voronoi_share.mjs B031
+out/B033/batch/voronoi.txt node scripts/voronoi_share.mjs B033 --replay A051 --log B033
+out/B034/batch/voronoi.txt node scripts/voronoi_share.mjs B034
+out/B035/batch/voronoi.txt node scripts/voronoi_share.mjs B035
+out/B037/batch/voronoi.txt node scripts/voronoi_share.mjs B037
+out/B038/batch/voronoi.txt node scripts/voronoi_share.mjs B038 --replay A057 --log B038
+out/B041/batch/voronoi.txt node scripts/voronoi_share.mjs B041 --ai-to 1080 --ticks 630
+out/B042/batch/voronoi.txt node scripts/voronoi_share.mjs B042
+out/B047/batch/voronoi.txt node scripts/voronoi_share.mjs B047 --ai-to 990 --ticks 630
+out/B050/batch/voronoi.txt node scripts/voronoi_share.mjs B050 --ai-to 990 --ticks 630
