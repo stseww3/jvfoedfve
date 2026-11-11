@@ -164,13 +164,9 @@ def pct(a, b):
     return "—" if not b else f"{100 * a / b:.0f}%"
 
 
-def scan(mid, row, pool):
-    p = os.path.join(RUN, f"{mid}.json")
-    if not os.path.exists(p):
-        return None
-    X = json.load(open(p, encoding="utf-8"))
-    if "error" in X:
-        return dict(matchId=mid, error=X["error"])
+def seat_groups(X, mid, pool):
+    """席位分组（own / apex / pool / wild）和这一局「对不对得上」的判定。xpost.py 也用这一份。
+    own = 日志里的本编队号（按 me 席位 + 名字后缀对上的）；对不上的局（核对行 <10，或对上的不到九成）own 记空，全部席位按名字归到另外三组。"""
     H = X["H"]
     names = [str(x).strip() for x in X["names"]] + [""] * H
     low = [x.lower() for x in names]
@@ -195,6 +191,19 @@ def scan(mid, row, pool):
             grp[q] = "pool"
         else:
             grp[q] = "wild"
+    return names, low, F, own, valid, spawn_only, grp
+
+
+def scan(mid, row, pool):
+    p = os.path.join(RUN, f"{mid}.json")
+    if not os.path.exists(p):
+        return None
+    X = json.load(open(p, encoding="utf-8"))
+    if "error" in X:
+        return dict(matchId=mid, error=X["error"])
+    H = X["H"]
+    names, low, F, own, valid, spawn_only, grp = seat_groups(X, mid, pool)
+    v = X["validate"]
     # 出生点：最后一条落地的选点；一条选点都没落地的号用开局那一拍它那块地外接框的中心（引擎替它定的位置）
     sb = X.get("startBox") or [None] * H
     xy = [X["spawnXY"][q] or ([(sb[q][0] + sb[q][2]) // 2, (sb[q][1] + sb[q][3]) // 2] if sb[q] else None) for q in range(H)]
@@ -295,6 +304,15 @@ def scan(mid, row, pool):
     rec["human600_1500"] = harvest([1, 2, 3], 4) if X["endTick"] >= 1500 else None
     rec["lostToHuman600_1500"] = harvest([1, 2, 3], 6) if X["endTick"] >= 1500 else None
     rec["ai1500_1800"] = harvest([4], 0) if X["endTick"] >= 1800 else None
+    # (1500,1800] 的收支：1500 拍还有地、到 1800 拍没离开的席位。[人头, AI 格, AI 烧的兵, 无主地格, 烧的兵, 真人格, 烧的兵, 被真人拿走的格, 1500 拍的地, 1500 拍的兵]
+    w18 = None
+    c15_, c18_ = X["cp"].get("1500"), X["cp"].get("1800")
+    if X["endTick"] >= 1800 and c15_ and c18_:
+        w18 = {}
+        for g in GROUPS:
+            sel = [q for q in spawned if grp[q] == g and not (0 <= left_t[q] <= 1800) and c15_["terr"][q] > 0]
+            w18[g] = [len(sel)] + [sum(gain[4][q][c] for q in sel) for c in range(7)] + [sum(c15_["terr"][q] for q in sel), sum(c15_["bal"][q] for q in sel)]
+    rec["win1500_1800"] = w18
     # 地的收支（600 → 1500，同一批席位：600 拍还有地、到 1500 拍没离开；中途出局的号按 0 格算）
     bd = None
     c6, c15 = X["cp"].get("600"), X["cp"].get("1500")
@@ -963,6 +981,44 @@ def main():
     P(f"    逐局（own 和野人各 ≥10 对的 {len(pmp)} 局），own ÷ 野人：人均对数 中位 {med([x[1] for x in pmp]):.2f}（<1 的 {sum(1 for x in pmp if x[1] < 1)} 局）；每对吃到的格 中位 {med([x[2] for x in pmp]):.2f}"
       f"（<1 的 {sum(1 for x in pmp if x[2] < 1)} 局）；下手时 AI 的地 中位 {med([x[3] for x in pmp]):.2f}（<1 的 {sum(1 for x in pmp if x[3] < 1)} 局）；每对条数 own 中位 {med([x[4] for x in pmp]):.2f}、野人 中位 {med([x[5] for x in pmp]):.2f}")
 
+    # (1500,1800] 的收支
+    w18 = [r for r in full if r.get("win1500_1800") and r["win1500_1800"]["own"][0] >= 3 and r["win1500_1800"]["wild"][0] >= 5]
+    agg_w18 = None
+    if w18:
+        P("")
+        P(f"  (1500,1800] 的收支（真值；{len(w18)} 局；1500 拍还有地、到 1800 拍没离开的席位）：组 | 人头 | 1500 拍人均地 / 兵密度 | 从内置 AI：人均格 / 每格烧的兵 | 从无主地：人均格 / 每格烧的兵 | "
+          "从真人：人均格 / 每格烧的兵 | 被真人拿走：人均格 | 人均净增")
+        agg18 = {}
+        for g in GROUPS:
+            v = [sum(r["win1500_1800"][g][i] for r in w18) for i in range(10)]
+            if not v[0]:
+                continue
+            agg18[g] = v
+            P(f"    {GROUP_CN[g]} | {v[0]} | {v[8] / v[0]:.0f} / {v[9] / max(1, v[8]):.1f} | {v[1] / v[0]:.0f} / {v[2] / max(1, v[1]):.1f} | {v[3] / v[0]:.0f} / {v[4] / max(1, v[3]):.1f} | "
+              f"{v[5] / v[0]:.0f} / {v[6] / max(1, v[5]):.1f} | {v[7] / v[0]:.0f} | {(v[1] + v[3] + v[5] - v[7]) / v[0]:+.0f}")
+        pm18 = []
+        for r in w18:
+            o, w = r["win1500_1800"]["own"], r["win1500_1800"]["wild"]
+            pm18.append(((o[1] / o[0]) / max(1e-9, w[1] / w[0]) if w[1] else None, (o[5] / o[0]) / max(1e-9, w[5] / w[0]) if w[5] else None,
+                         (o[7] / o[0]) / max(1e-9, w[7] / w[0]) if w[7] else None,
+                         (o[6] / max(1, o[5])) / max(1e-9, w[6] / max(1, w[5])) if (o[5] >= 200 and w[5] >= 200) else None))
+        def col(i):
+            xs = [x[i] for x in pm18 if x[i] is not None]
+            return f"{fmt(med(xs))}（{len(xs)} 局，<1 的 {sum(1 for x in xs if x < 1)}）" if xs else "—"
+        P(f"    逐局 own ÷ 野人：人均从内置 AI 吃到的 {col(0)}；人均从真人吃到的 {col(1)}；人均被真人拿走的 {col(2)}；从真人手里每格烧的兵 {col(3)}")
+        def sub18(sel):
+            xs = [x[0] for r, x in zip(w18, pm18) if sel(r) and x[0] is not None]
+            oo = [sum(r["win1500_1800"]["own"][i] for r in w18 if sel(r)) for i in (0, 1)]
+            ww = [sum(r["win1500_1800"]["wild"][i] for r in w18 if sel(r)) for i in (0, 1)]
+            return (f"逐局中位 {fmt(med(xs))}（{len(xs)} 局，<1 的 {sum(1 for x in xs if x < 1)}）、合计 own 人均 {oo[1] / max(1, oo[0]):.0f} 格 / 野人 {ww[1] / max(1, ww[0]):.0f} 格"
+                    if xs else "—")
+        P("    人均从内置 AI 吃到的 own ÷ 野人，分开看：" + "；".join(f"{nm} {sub18(fn)}" for nm, fn in (
+            ("squad10", lambda r: r["cohort"] == "squad10"), ("squad20", lambda r: r["cohort"] == "squad20"),
+            ("主队赢的局", lambda r: r["won"]), ("没赢的局", lambda r: not r["won"]))))
+        zero18 = sum(1 for r in w18 if r["win1500_1800"]["own"][1] == 0)
+        P(f"    own 在这 300 拍里一格内置 AI 的地都没吃到的局：{zero18}/{len(w18)}；野人一格都没吃到的局：{sum(1 for r in w18 if r['win1500_1800']['wild'][1] == 0)}/{len(w18)}")
+        agg_w18 = dict(matches=len(w18), groups=agg18, ownZeroMatches=zero18)
+
     # ---- [XT-D] ----
     P("")
     P("[XT-D] 陆攻落地后有没有生效（真值；录像里落地的陆攻指令）：时段 | 组 | 局数 | 落地 | 生效 | 没生效占比 | 目标 512 占比 | 每席位落地条数")
@@ -1326,7 +1382,7 @@ def main():
     with open(os.path.join(OUT, "_cross", "xtruth.txt"), "w", encoding="utf-8") as f:
         f.write("\n".join(out) + "\n")
     with open(os.path.join(OUT, "_cross", "xtruth.json"), "w", encoding="utf-8") as f:
-        json.dump(dict(replays=len(recs), valid=len(val), full=len(full), failed=failed, perHead=agg_b, dist=agg_dist, drop=dict(both=len(both), hit=[r["matchId"] for r in drop]),
+        json.dump(dict(replays=len(recs), valid=len(val), full=len(full), failed=failed, win1500_1800=agg_w18, perHead=agg_b, dist=agg_dist, drop=dict(both=len(both), hit=[r["matchId"] for r in drop]),
                        aiHarvest=dict(matches=len(hv), cells=tot, heads=heads, burnt=burn), cmdEffect=agg_d, attackSize=agg_sz, spawn=agg_e, spawnAssign=agg_sa, flow=agg_f, reach=agg_i, rule=agg_j, aiYield=agg_y, aiPairs=agg_p, budget=agg_bd, neutralFrom=agg_nf,
                        matches=[{k: v for k, v in r.items()} for r in recs]), f, ensure_ascii=False, separators=(",", ":"))
     if not quiet:
