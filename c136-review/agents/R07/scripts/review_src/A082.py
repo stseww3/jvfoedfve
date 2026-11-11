@@ -118,6 +118,8 @@ SRC = {
         "python3 97_bot_flow.py A082 --tag tp --span 1530:2070 --span 1620:2700 --span 2070:3960 --span 3960:4590 --span 4590:5800",
         "python3 98_neutral_cmds.py A082",
         "python3 99_quota_checks.py A082",
+        "bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/46_voronoi.mjs A082",
+        "python3 47_delay_periods.py A082",
         "python3 45_logref.py A082 ALL 1700 4500 HL-DISPATCH",
     ],
     "timelineTs": [180, 540, 990, 1530, 1620, 1890, 2070, 2700, 3060, 3510, 3960, 4320, 4590, 4950, 5220, 5490, 5760],
@@ -823,18 +825,33 @@ SRC = {
                            "同期卡在别处的更多（捐方自己在挨打 65 / 120、没有合格收方 49 / 120）。反过来的一例：zero_7 从没被判成弃子，最后两笔 519,142 捐给了 22~155 拍后就被清场的号。",
         "19_boatVoyage": "否（我方的船没有问题）。我方 2 条船带兵 35,957、船费 8,988：zero_7 1890 的 18,883 兵去无主地岸（1917 靠岸）、riku_x 5194 的 17,074 兵去 AI#276（5239 靠岸）；没有靠到队友岸上、没有落在非陆地像素上。"
                          "对面的船是另一回事：配到我方号身上的敌方船 11 条 3,524,539 兵（ryan_m 6 条 2,034,955、zero_7 3 条 826,430、riku_x 1 条 634,978）。",
+        "20_execLatency": "（delay_periods.txt、spawn_truth.txt）①出生：协调器求解 48 次，我方出生指令 316 条（每号 24~37 条），其中 48 条的落点当时被引擎挪开 6 像素以上；出生阶段结束时 10 个号都落在最后一次指派的坐标上（偏差 0.5~2.1 像素），没有重叠、没有没落地的号。"
+                          "②意图 → 落地（影子发令拍 → 录像落地拍，pct 和目标逐条相同才算，下限）：0~600 配上 89 条，P50 12 / P90 17 / 最大 22 拍；600~1500 配上 96 条，24 / 67 / 167；1500~3000 配上 132 条，27 / 73 / 103；3000 以后 106 条，11 / 20 / 32。"
+                          "600~1500 另有 106 条落地时原目标已经没了、录像里记成打无主地（按同 pct 配，P50 79 / P90 182 / 最大 316 拍）。各号 600~1500 的 P50：riku_x 60、zero_7 48、kaito9 39、zexos1 35、sora_w 24、leo_tx 18、noah88 16、alex_k 14、ryan_m 13、talon5 11；"
+                          "1500~3000：talon5 66、zero_7 56、sora_w 53、ryan_m 47、noah88 23、zexos1 22。③漏斗（影子受理 / 真号日志 cmds / 录像落地，按 90 拍快照切）：0~630 是 105 / 99 / 99；630~1530 是 268 / 267 / 192；1530~3060 是 126 / 125 / 135；3060 以后 109 / 108 / 107。"
+                          "630~1530 真号自己数了 267 条、录像里只落地 192 条（alex_k 50 → 26、talon5 55 → 35、ryan_m 50 → 37），下一段多落地 10 条，全程净少 66 条（599 → 533）。"
+                          "④迟到落空（600~1500）：落地的 202 条进攻里 81 条落地时余额没动（40%）；影子想打内置 AI 192 条约 386,963 兵，落在 AI 身上 75 条 132,246 兵；发兵 263,890、同段退回 203,018（77%）；按 540~1530 切，我方退回 70%，其他各组 34%~49%。"
+                          "⑤重复下单与同拍批：同一拍 ≥3 条的批 600~1500 是 21 个 113 条 113,447 兵，1500~3000 是 8 个 69 条 1,233,401 兵，其中 7 个把余额打掉一半以上（批前合计 1,278,290 → 批后 27,589）；"
+                          "同一目标连发的组 600~1500 是 24 组 79 条（第 2 条起 97,845 兵、手续费 16,024，超出吃光所需 73,803），1500~3000 是 29 组 127 条（第 2 条起 1,641,259 兵、手续费 148,905，超出 148,617）。",
+        "21_landCapture": "（voronoi.txt、delay_periods.txt G）①天然地盘（出生阶段结束时把每格陆地分给最近的真人落点）：我方 10 个号占真人位 14.7%（10 / 68），天然地盘 45,769 格 = 全图陆地的 6.9%，人均是全场人均的 0.47 倍；"
+                          "各号 1,908~7,957 格（中位 4,099，其他真人的中位 9,307），ryan_m 1,908 格排 65 / 68；其他各队人均 0.87~1.47 倍（T1 1.47）。②实际领土 ÷ 天然地盘：630 拍我方 29,948 格 = 65.4%（其他各组 17.3%~33.4%）；"
+                          "1500 拍 47,500 格 = 103.8%（T2 96.3%、T1 91.8%、T5 89.5%、T7 87.0%、T4 77.8%、T6 68.2%）。1500 拍我方天然地盘里 75.5% 是自己的、20.2% 在其他真人手里（T7 5,068 格、T5 4,143 格），自己另有 12,934 格在天然地盘之外。"
+                          "③邻近内置 AI 的地：630 拍和我方接壤的 AI 30 个共 11,810 格 → 1500 拍我方拿到 5,233 格（44.3%）、敌方真人 6,200 格（52.5%：T7 3,364、T5 2,235、T6 410）、还是 AI 的 377 格；1800 拍我方 62.9%、敌方真人 37.1%。"
+                          "其他各组对自己接壤的 AI 到 1500 拍拿到 66.0%~94.9%（T1 是 26,387 格的 80.9%）。脚印过半在我方天然地盘里的 AI 26 个 11,296 格：1500 拍我方 42.3%、敌方真人 47.3%。630 拍落在各组天然地盘里的 AI 地：我方人均 1,194 格，其他各组人均 2,479~4,745 格。"
+                          "④600~1500 的三层（影子决策拍）：站位——见①③。留底——身边有内置 AI 的 1,075 个决策拍出手 224 个，卡在留底 609 个（57%：参照队友余额的 safeFinite 397、dpKeep 139、参照敌方真人的 safeFinite 55、价格项 18），单价高于出价 201 个；"
+                          "身边只剩敌方真人的 648 个决策拍出手 2 个，卡在留底 449 个（69%）、猎杀规则一次吃不光 192 个。发了但晚到——见上一条④：落地 202 条里 81 条落空，发兵的 77% 退回。",
     },
     "extraScripts": ["60_truth.cjs", "61_truth_view.py", "62_rank.py", "63_replay_ledger.py", "64_cmd_loss.py", "65_shadow.mjs（本局加了 shadow_quota_checks.tsv）", "66_spawn_truth.mjs", "67_troop_flow.mjs",
                      "69_quota_truth.mjs", "70_team_density.py", "71_death_chain.py", "72_repeat_sends.py", "73_front_width.py", "74_side_flow.mjs", "75_interest.py", "76_boat_targets.mjs",
                      "77_drop30_classify.py", "79_help_table.py", "80_donation_yield.py", "81_same_tick_batches.py（本局加了 B2）", "82_outlet_gap.py", "84_pair_cmds.py", "85_trace_blocked.py（本局加了 --any）",
                      "86_enemy_neighbors.py", "87_trace_classify.py", "88_sim_divergence.mjs", "89_squad_perimeter.py", "90_spend_ratio.py", "91_noop_cmds.py", "92_trace_span.py",
-                     "93_frontier.mjs", "94_conquest.mjs", "95_group_sends.py", "96_enemy_boats.py（本局新增）", "97_bot_flow.py（本局新增）", "98_neutral_cmds.py（本局新增）", "99_quota_checks.py（本局新增）", "r07simfix.mjs", "review_src/A082.py", "review_src/common.py"],
+                     "93_frontier.mjs", "94_conquest.mjs", "95_group_sends.py", "96_enemy_boats.py（本局新增）", "97_bot_flow.py（本局新增）", "98_neutral_cmds.py（本局新增）", "99_quota_checks.py（本局新增）", "46_voronoi.mjs（本局新增，广播 0007-③）", "47_delay_periods.py（本局新增，广播 0007-②）", "49_audit_numbers.py（本局新增）", "r07simfix.mjs", "review_src/A082.py", "review_src/common.py"],
     "extraOutputs": [f"c136-review/agents/R07/out/A082/{f}" for f in
                      ("truth_view.txt", "truth_check.txt", "truth_all.tsv", "truth_bots.tsv", "truth_border.tsv", "truth_atk.tsv", "rank.txt", "team_density.txt", "side_flow.txt", "side_flow_tp.txt", "spend_ratio_tp.txt",
                       "conquest.txt", "group_sends.txt", "frontier.txt", "humans_cmd.tsv", "troop_flow.txt", "troop_flow_tp.txt", "cmd_effect.tsv", "drop30_recon.txt", "drop30_class.txt", "interest.txt",
                       "squad_perimeter.txt", "outlet_gap.txt", "enemy_neighbors.txt", "enemy_boats.txt", "boat_targets.txt", "replay_ledger.txt", "quota_truth.txt", "quota_logs.tsv", "repeat_sends.txt", "same_tick_batches.txt",
                       "noop_cmds.txt", "cmd_loss.txt", "front_width.txt", "death_chain.txt", "spawn_truth.txt", "patterns.json", "help_table.txt", "donation_yield.txt", "sim_divergence.txt",
-                      "shadow_check.txt", "shadow_early.txt", "shadow_early_humans.txt", "shadow_late_ai.txt", "shadow_boat_gate.txt", "shadow_donor_gate.tsv", "shadow_cmds.tsv", "shadow_nofull.tsv", "shadow_quota_checks.tsv", "shadow_quota_checks.txt",
+                      "shadow_check.txt", "shadow_early.txt", "shadow_early_humans.txt", "shadow_late_ai.txt", "shadow_boat_gate.txt", "shadow_donor_gate.tsv", "shadow_cmds.tsv", "shadow_nofull.tsv", "shadow_quota_checks.tsv", "shadow_quota_checks.txt", "shadow_early.tsv", "voronoi.txt", "voronoi.json", "delay_periods.txt", "delay_periods.json",
                       "trace_classify.txt", "trace_span.txt",
                       "trace_blocked_noah88_1400_2070.txt", "trace_blocked_riku_x_1400_2070.txt", "trace_blocked_zero_7_1400_2070.txt", "trace_blocked_zexos1_1400_2070.txt", "trace_blocked_kaito9_1400_2070.txt",
                       "trace_blocked_alex_k_1400_2070.txt", "trace_blocked_leo_tx_1400_2070.txt", "trace_blocked_ryan_m_1400_2070.txt", "trace_blocked_sora_w_1400_1994.txt", "trace_blocked_talon5_1400_1828.txt",
