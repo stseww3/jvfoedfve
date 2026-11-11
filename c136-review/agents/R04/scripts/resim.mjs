@@ -60,7 +60,7 @@ for (let p = 0; p < H; p++) {
   const m = nm.match(/\[APEX\]\s*([a-z0-9_]+)/i);
   if (m) idOf.set(m[1], p);
 }
-for (const r of results) if (!idOf.has(r[0])) idOf.set(r[0], +r[1]);
+// 只比名字能在录像里对上的号（结算表里的号位可能来自另一场对局）
 const trajLines = fs.readFileSync(path.join(dir, 'traj.csv'), 'utf8').trim().split('\n');
 const th = trajLines[0].split(',');
 const ci = (n) => th.indexOf(n);
