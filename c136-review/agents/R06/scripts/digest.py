@@ -6,6 +6,7 @@
     python3 digest.py <matchId> teams       # 全员分队（引擎算法重算）、各队里我方号与战队、结算时刻的各队领土
     python3 digest.py <matchId> timeline [t ...]   # 里程碑拍（或指定拍）的编队合计 + 分队小计
     python3 digest.py <matchId> outsiders   # 结算行的各队份额拆成「我方在场号」+「其余」
+    python3 digest.py <matchId> snap [t ...]       # 指定拍的横截面：每个在场号的地/兵/密度/nb/neut，加中位、最小、最大
     python3 digest.py <matchId> bot <me> [t0 t1]   # 单号逐快照故事 + 录像指令（出兵/被打/捐款收发/船）
     python3 digest.py <matchId> deaths      # 每个阵亡号死前 600 拍
     python3 digest.py <matchId> donations   # 捐款台账：录像真值（接受/被拒）、手续费、到账、额度点
@@ -158,12 +159,18 @@ def sec_teams(M):
     else:
         obs = Counter(b.teamObserved for b in M.bots.values() if b.teamObserved)
         print(f"== {M.id} teams：没有录像头，只有结算里的队号：{dict(obs)}")
+        for me, x in sorted(getattr(M, 'teamInferred', {}).items()):
+            print(f"  结算行没带队号、按捐款日志补的：{M.bots[me].name}({me}) → 队{x['team']}（{x['n']} 条捐款日志的另一头都是队{x['team']}：{'、'.join(x['evidence'])}）")
+        full = Counter(b.team for b in M.bots.values())
+        print(f"  补完后：{dict(sorted(full.items(), key=lambda kv: str(kv[0])))}")
     print("  结算时刻各队领土（份额%）：")
     for s in M.teamSnaps:
         tot = s['totals']
         sm = sum(tot.values())
         desc = ' '.join(f"T{k}={100 * v / M.land:.1f}" for k, v in sorted(tot.items()))
-        print(f"   t={s['t']:<6} {desc}  (合计 {100 * sm / M.land:.1f}%)  ← {s['by']} 队{s['mine']} {s['event']}")
+        rr = next((r for r in M.results if r.get('bot') == s['by'] and r.get('tick') == s['t']), None)
+        extra = f" 存活玩家 {rr['alivePlayers']} 名次 {rr['place']}" if rr and rr.get('alivePlayers') is not None else ''
+        print(f"   t={s['t']:<6} {desc}  (合计 {100 * sm / M.land:.1f}%)  ← {s['by']} 队{s['mine']} {s['event']}{extra}")
 
 
 def outsider_rows(M):
@@ -894,6 +901,40 @@ def sec_teamwar(M, win=900):
         f"T{k}: {len(v)} 人（我方 {sum(1 for _, p, _ in v if p in M.bots)}，断线 {sum(1 for _, _, c in v if c == 9)}）" for k, v in sorted(by_team.items())))
 
 
+def snap_rows(M, t):
+    """t 拍的横截面：每个在场号 t 及之前最近的一条快照（200 拍内）。"""
+    pres = presence(M)
+    rows = []
+    for me in M.squad:
+        b = M.bots[me]
+        if not active_at(M, pres, me, t):
+            continue
+        s = b.at(t, 200)
+        if s:
+            rows.append(dict(me=me, name=b.name, team=b.team, t=s['t'], terr=s['terr'], bal=s['bal'], dens=s['dens'], nb=s['nb'], neut=s['neut'], cmds=s['cmds'], boats=s['boats']))
+    return rows
+
+
+def sec_snap(M, ticks):
+    for t in ticks:
+        rows = snap_rows(M, t)
+        if not rows:
+            print(f"== {M.id} snap t={t}：没有在场号的快照")
+            continue
+        terr = sorted(r['terr'] for r in rows)
+        dens = sorted(r['dens'] for r in rows)
+        med = lambda v: v[len(v) // 2] if len(v) % 2 else (v[len(v) // 2 - 1] + v[len(v) // 2]) / 2
+        print(f"== {M.id} snap t={t}：在场 {len(rows)} 个号；领土 合计 {sum(terr)}、中位 {med(terr):.0f}、最小 {terr[0]}、最大 {terr[-1]}；密度 中位 {med(dens):.1f}、最小 {dens[0]:.1f}、最大 {dens[-1]:.1f}；"
+              f"nb=0 的 {sum(1 for r in rows if r['nb'] == 0)} 个（其中 neut=0 的 {sum(1 for r in rows if r['nb'] == 0 and r['neut'] == 0)} 个）；密度>=100 的 {sum(1 for r in rows if r['dens'] >= 100)} 个")
+        for r in sorted(rows, key=lambda r: (str(r['team']), -r['terr'])):
+            print(f"   {r['name']:14s} 队{r['team']} 地 {r['terr']:>6} 兵 {r['bal']:>8} 密度 {r['dens']:>6.1f} nb={r['nb']:<2} neut={r['neut']:<3} cmds={r['cmds']:<4} boats={r['boats']}")
+        # 分队小计；「吃光要花」= 把每个号打到清地的兵（c110 L2756-2757 的口径：1.78×兵 + 1.5×地，不计期间利息和对方的在途兵）
+        for tm in sorted({str(r['team']) for r in rows}):
+            rs = [r for r in rows if str(r['team']) == tm]
+            L, B = sum(r['terr'] for r in rs), sum(r['bal'] for r in rs)
+            print(f"   队{tm} 小计：{len(rs)} 个号 地 {L}（{100 * L / M.land:.2f}%） 兵 {B} 密度 {B / max(1, L):.1f}；有邻居（nb>=1）的 {sum(1 for r in rs if r['nb'] >= 1)} 个；吃光要花 ≈ {int(1.78 * B + 1.5 * L)}")
+
+
 def main():
     if len(sys.argv) < 3:
         print(__doc__)
@@ -903,6 +944,8 @@ def main():
     a = sys.argv[3:]
     if sec == 'roster':
         sec_roster(M)
+    elif sec == 'snap':
+        sec_snap(M, [int(x) for x in a] or [630])
     elif sec == 'teams':
         sec_teams(M)
     elif sec == 'timeline':

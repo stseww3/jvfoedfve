@@ -18,8 +18,10 @@
   cmdmix    指令构成：按时段把每个号 cmds 计数的增量拆成 捐款日志 / 协防戳日志 / 其余（出兵、发船等）
   idleloss  丢地间隔账：相邻快照在丢地的间隔里，有多少是「一条出兵/发船指令都没发」、其中多少起点密度已过 100；连续段列表
   spend [t0 t1]  兵去哪了：相邻快照间的净支出按「这段里发了什么指令」分账（无指令 / 只捐款 / 只协防戳 / 只出兵或发船 / 混合）
-  fireband [t0 [t1]] [名字...]  有真人邻居时按密度档数「这 90 拍里发没发出兵/发船指令」「是不是在丢地」
+  fireband [t0 [t1]] [名字...]  有可打的邻居时（日志 nb>=1：非同队、非编队的邻居，真人还是内置 AI 日志分不清）按密度档数「这 90 拍里发没发出兵/发船指令」「是不是在丢地」
   capidle   满仓不动 → 被吃：连续 >=600 拍零指令且密度到过 >=140，段内或之后 600 拍领土跌掉 25% 以上或阵亡
+  freezebound [t0]  满仓（密度>100）、有可打的邻居（nb>=1）、这 90 拍没有出兵/发船：按 c110 buyLand 超软上限分支反推「邻居是真人时，最强敌邻至少多少兵」（代码反推，不是实测）
+  quotacap [收款人领土]  引擎受捐额度公式在本图上的封顶：各拍的上限点数、单笔最多到账、每 100 拍新增额度够收多少
   foes      协防戳日志里点名的外人：被它打的号、戳它的号 → 它不可能在哪些队
   assists [t0 t1]  协防戳日志按「谁替谁戳谁」计数（可限定拍范围），并列出同一范围内每个号的 cmds 增量
   opening   HL-OPENING 行：每个号的条数、拍范围、相邻两条的间隔（中位 / p10 / p90）
@@ -914,7 +916,7 @@ def sec_spend(M, t_from=0, t_to=10 ** 9):
     print('   合计：' + '；'.join(f"{lab[k]} {x['n']} 段 / {fmt(x['spend'])} / {x['dterr']:+d}（+{x['gain']} / −{x['lose']}）" for k, x in ((k, tot[k]) for k in ('none', 'don', 'poke', 'atk', 'mixed')) if x['n']))
 
 
-# ------------------------------------------------------------------ fireband（有真人邻居时，按密度档看「这 90 拍里发没发出兵/发船指令」）
+# ------------------------------------------------------------------ fireband（有可打的邻居时，按密度档看「这 90 拍里发没发出兵/发船指令」）
 FIRE_BANDS = [(0, 50), (50, 90), (90, 100), (100, 114), (114, 126), (126, 137), (137, 142), (142, 150.1)]
 
 
@@ -987,6 +989,100 @@ def sec_capidle(M):
     for r in rows:
         tail = f"，{r['deathT'] - r['t1']} 拍后阵亡" if r['died'] else f"，之后 600 拍最低 {r['lowAfter']}"
         print(f"   {r['name']:14s} t={r['t0']}~{r['t1']}（{r['len']} 拍）nb {r['nbMin']}~{r['nbMax']}；密度 {r['dens0']:.0f}→{r['dens1']:.0f}（最高 {r['densMax']:.0f}）；领土 {r['terr0']}→{r['terr1']}；兵 {fmt(r['bal0'])}→{fmt(r['bal1'])}{tail}")
+
+
+# ------------------------------------------------------------------ quotacap（按引擎受捐额度公式：一个收款人最多能收多少）
+QC_TICKS = [1100, 1500, 1800, 2141, 2142, 2500, 3000, 3212, 3213, 3600, 4000, 4283]
+
+
+def quotacap_rows(M, recv_terr=5000):
+    """引擎受捐额度（r06lib.quota_limit / quota_points，逐项对过 live-donation-check.txt）：上限全场共用、只随拍号涨；用量按收款人累计、整局不清零。
+    每个拍号给：上限点数；「额度一点没用过」时这一拍单笔最多能到账多少（二分 quota_points<=上限）；
+    以及从这一拍起每 100 拍新涨的额度够收多少（=稳态流量，已扣掉每笔固定的 2 或 4 点，按每 100 拍只收一笔算）。"""
+    out = []
+    for t in QC_TICKS:
+        lim = quota_limit(t)
+        lo, hi = 0, 10 ** 9
+        while lo < hi:
+            mid = (lo + hi + 1) // 2
+            if quota_points(t, mid, M.land, recv_terr) <= lim:
+                lo = mid
+            else:
+                hi = mid - 1
+        step = 4 if t < 1071 else 6 if t < 2142 else 8 if t < 3213 else 10
+        lo2, hi2 = 0, 10 ** 9
+        while lo2 < hi2:
+            mid = (lo2 + hi2 + 1) // 2
+            if quota_points(t, mid, M.land, recv_terr) <= step:
+                lo2 = mid
+            else:
+                hi2 = mid - 1
+        out.append(dict(t=t, limit=lim, maxOnce=lo, per100=lo2, step=step))
+    return out
+
+
+def sec_quotacap(M, recv_terr=5000):
+    uv = 1 + M.land // 300
+    print(f"受捐额度封顶（引擎公式；本图陆地 {M.land} → uv={uv}；t>=3213 的一档按收款人 {recv_terr} 格算；t>=4284 不再检查）")
+    print("   拍｜上限点数｜额度没用过时单笔最多到账｜此后每 100 拍新增额度（+点数）够收")
+    for r in quotacap_rows(M, recv_terr):
+        print(f"   t={r['t']:>4}｜{r['limit']:>4}｜{fmt(r['maxOnce']):>8}｜+{r['step']} 点 → {fmt(r['per100'])}")
+    print("   用量按收款人累计、整局不清零：上一档里收过的点数照样占着后面的上限。")
+
+
+# ------------------------------------------------------------------ freezebound（满仓不出手 ⇒ 按代码反推「最强敌邻至少多少兵」）
+FB_CHUNK = 0.2          # P17.chunk：没到 want 时至少要出余额的 20%（c110 L5528）
+FB_FEE = 12 / 1024      # 陆攻手续费
+FB_KEEPS = ((0.9, 'hold'), (1.12, 'overHumanKeep'))   # 超软上限后 keep = min(keep, 倍数×100×领土)（c110 L5348-5357）
+
+
+def freezebound_rows(M, t_from=1500):
+    """相邻快照间隔（起点 nb>=1、领土>=200、密度>100、t>=t_from）且这段里没有出兵/发船指令。
+    c110 超软上限后的出兵条件（没有录像时只能按代码反推，不是实测）：
+      keep = max(倍数×100×L, safe)，avail = B − fee − keep，要出手需 avail >= chunk×B（或够一口吃光，这里不算）；
+      safe = max(safeFinite, dpKeep)，dpKeep = (最强敌方真人邻居的兵 + 它打我的在途兵 − 1.5×L)/1.78（L2491-2496、L2744-2754）。
+    所以「倍数×100×L 这一项不拦」（密度够高）而仍然不出手 ⇒ safe > (1−fee−chunk)×B ⇒ 若 safe 取自 dpKeep，最强敌邻的兵 > 1.78×(1−fee−chunk)×B + 1.5×L。
+    每个号给：这样的间隔数，以及其中余额最高那个快照的反推下界（两档 keep 各算一次：密度 >=114.2 用 0.9，>=142.1 用 1.12）。"""
+    out = []
+    for me, b in sorted(M.bots.items()):
+        rows = []
+        for a, c in zip(b.traj, b.traj[1:]):
+            if a['t'] < t_from or a['nb'] < 1 or a['terr'] < 200 or a['dens'] <= 100:
+                continue
+            dn = sum(1 for e in b.donations if a['t'] <= e['t'] < c['t'])
+            ps = sum(1 for e in b.assists if a['t'] <= e['t'] < c['t'])
+            if (c['cmds'] - a['cmds']) - dn - ps > 0:
+                continue
+            B, L = a['bal'], a['terr']
+            free = (1 - FB_FEE - FB_CHUNK) * B
+            ok = [(k, lab) for k, lab in FB_KEEPS if k * 100 * L <= free]
+            rows.append(dict(t=a['t'], bal=B, terr=L, dens=a['dens'], nb=a['nb'], keeps=[lab for _, lab in ok],
+                             bound=int(1.78 * free + 1.5 * L) if ok else None, lost=a['terr'] - c['terr']))
+        if not rows:
+            continue
+        hit = [r for r in rows if r['bound'] is not None]
+        top = max(hit, key=lambda r: r['bal']) if hit else None
+        out.append(dict(me=me, name=name_of(b), team=b.team, n=len(rows), nHit=len(hit), nHit112=sum(1 for r in hit if 'overHumanKeep' in r['keeps']),
+                        top=top, t0=rows[0]['t'], t1=rows[-1]['t'], lostIdle=sum(max(0, r['lost']) for r in rows)))
+    return out
+
+
+def sec_freezebound(M, t_from=1500):
+    rows = freezebound_rows(M, t_from)
+    print(f"满仓不出手的反推下界（t>={t_from}；起点 nb>=1、密度>100 且这 90 拍里没有出兵/发船指令的快照间隔）。按 c110 buyLand 超软上限分支反推，不是实测：")
+    print("   keep=max(倍数×100×地, safe)；要出手需 兵−手续费−keep >= 20%×兵。倍数 0.9 时密度 >=114.2 这一项就不拦、1.12（唯一真人邻居）时 >=142.1；")
+    print("   这一项不拦而仍不出手 ⇒ safe > 78.8%×兵；safe 取自 dpKeep 时 ⇒ 最强敌方真人邻居的兵（加它打我的在途兵）> 1.403×兵 + 1.5×地")
+    print("   注意：日志的 nb>=1 只说明有非同队、非编队的邻居，是真人还是内置 AI 分不清；邻居只有内置 AI 时走的是另一条分支（L5363-5369），下界不适用")
+    print("   号(队)｜这样的间隔数 拍范围｜其中密度>=114.2 的 / >=142.1 的｜余额最高那个快照：拍 兵 地 密度 nb → 敌邻下界（是我的几倍）｜这些间隔里丢的地")
+    for r in rows:
+        tp = r['top']
+        if tp:
+            s = f"t={tp['t']} 兵 {fmt(tp['bal'])} 地 {tp['terr']} 密度 {tp['dens']:.0f} nb={tp['nb']} → >{fmt(tp['bound'])}（{tp['bound'] / tp['bal']:.2f} 倍）"
+        else:
+            s = '（密度都不到 114.2：倍数这一项本身就拦住）'
+        print(f"   {r['name']:13s}(队{r['team']})｜{r['n']:3d} t={r['t0']}~{r['t1']}｜{r['nHit']:3d} / {r['nHit112']:3d}｜{s}｜{r['lostIdle']}")
+    n = sum(r['n'] for r in rows)
+    print(f"   合计 {len(rows)} 个号、{n} 个间隔；其中密度 >=114.2 的 {sum(r['nHit'] for r in rows)} 个、>=142.1 的 {sum(r['nHit112'] for r in rows)} 个；这些间隔里共丢 {sum(r['lostIdle'] for r in rows)} 格")
 
 
 # ------------------------------------------------------------------ foes（协防戳日志里点名的外人：在哪些队不可能）
@@ -1288,6 +1384,10 @@ def main():
         sec_spend(M, *(a if len(a) == 2 else ()))
     elif sec == 'issued':
         sec_issued(M)
+    elif sec == 'freezebound':
+        sec_freezebound(M, *( [int(sys.argv[3])] if len(sys.argv) > 3 else [] ))
+    elif sec == 'quotacap':
+        sec_quotacap(M, *( [int(sys.argv[3])] if len(sys.argv) > 3 else [] ))
     elif sec == 'json':
         doc = build_json(M)
         doc['matchId'] = mid

@@ -116,7 +116,7 @@ def facts(M, X=None):
         map=card.get('mapId'), mapSeed=card.get('mapSeed'), mapLand=M.land, teams=card.get('actualTeams'), humans=M.humans or card.get('seededPlayers'),
         ourTeam=primary,
         teamSplitTrue={str(k): v for k, v in sorted(split_true.items(), key=lambda kv: str(kv[0]))},
-        teamSplitSource='replay-header-recompute' if M.teamInfo else 'results-only',
+        teamSplitSource='replay-header-recompute' if M.teamInfo else ('results+donation-log' if getattr(M, 'teamInferred', None) else 'results-only'),
         teamSplitCard=card.get('teamSplitCounts'),
         presence=dict(how),
         leftTicks={M.bots[me].name: t for me, t in sorted(lv.items(), key=lambda kv: kv[1] or 0)},

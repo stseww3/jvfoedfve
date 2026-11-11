@@ -458,6 +458,26 @@ def load_match(mid, with_replay=True, use_sim=True):
             M.lastPick = last_pick
     for me, b in M.bots.items():
         b.team = M.team.get(me) or b.teamObserved
+    # 结算行没带队号的号（left 行的 teamMine 为空）且没有录像：用捐款日志补。
+    # c110 只对同队的号打 HL-DONATE（救援 L4424-4436 要求同队，surplus L4466 要求 isTeammate），所以「谁给它捐过 / 它给谁捐过」的队号就是它的队号；
+    # 两头的队号不一致时不补。
+    M.teamInferred = {}
+    for me, b in M.bots.items():
+        if b.team is not None:
+            continue
+        ev = []
+        for o, ob in M.bots.items():
+            for e in ob.donations:
+                if e['to'] == me and ob.team is not None and o != me:
+                    ev.append((ob.team, f"{ob.name}→{b.name}@{e['t']}"))
+        for e in b.donations:
+            rb = M.bots.get(e['to'])
+            if rb is not None and rb.team is not None:
+                ev.append((rb.team, f"{b.name}→{rb.name}@{e['t']}"))
+        teams = sorted({t for t, _ in ev})
+        if len(teams) == 1:
+            b.team = teams[0]
+            M.teamInferred[me] = dict(team=teams[0], n=len(ev), evidence=[x for _, x in ev][:6])
     return M
 
 
