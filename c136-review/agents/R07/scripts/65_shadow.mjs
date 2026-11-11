@@ -57,6 +57,7 @@ globalThis.window = {
   __tsbSquadSlot: 0,
 };
 
+Error.stackTraceLimit = 40;
 const SIM = await import(path.join(DATA, 'src/sim/sim/index.js'));
 const { resim } = await import(path.join(DATA, 'src/tools/resim.mjs'));
 const LIB = await import(path.join(DATA, 'src/sim/tools/c102-replay-lib.mjs'));
@@ -164,7 +165,7 @@ function traceLine(g, b, p, tr, cmdsNow, ev) {
     out.push(`    → ${pname(g, q)} terr=${g.terr[q]} bal=${g.bal[q]} dq=${(g.bal[q] / Math.max(1, g.terr[q])).toFixed(1)} cnt=${p.cnt[q]} | c=${o.c.toFixed(1)} rankC=${(o.rankC ?? o.c).toFixed(1)} need=${Math.round(o.need)} tD=${(o.tD ?? 0).toFixed(2)} ${o.person ? '人' : '机'}${o.pulseMode ? ' pulse' : ''}${o.nearCollapse ? ' nearCollapse' : ''}${o.bleeding ? ' bleeding' : ''}${o.onMe ? ' onMe' : ''}${o.isCrowdedHard ? ' crowdedHard' : ''}${o.isAgg ? ' agg' : ''} | safe=${Math.round(r.safe)} keep=${Number.isFinite(r.keep) ? Math.round(r.keep) : 'Inf'} avail=${Number.isFinite(r.avail) ? Math.round(r.avail) : '-Inf'} chunkB=${Math.round(P.chunk * B)} pulseB=${Math.round(P.pulseFrac * B)} ${r.verdict === '价高' ? '价高(c>=worth)→break' : r.verdict === '无可用' ? '无可用(avail<=0)' : r.verdict}`);
   }
   if (!ev.rows.length) out.push('    （offers 为空：没有可打的邻居）');
-  for (const c of cmdsNow) out.push(`    ⇒ 影子指令 ${c.kind} pct=${c.pct} → ${c.targetName}（约 ${c.troops} 兵）`);
+  for (const c of cmdsNow) out.push(`    ⇒ 影子指令 ${c.kind} pct=${c.pct} → ${c.targetName}（约 ${c.troops} 兵）${c.site ? ` 〔${c.site}〕` : ''}`);
   if (!cmdsNow.length) out.push('    ⇒ 本拍没有指令');
   tr.lines.push(...out);
 }
@@ -278,6 +279,13 @@ proto.tick = function () {
     const rec = (kind, pct, target, extra) => {
       const B = g.bal[me];
       const c = { t: g.t, bot: b, kind, pct, target, targetName: kind === 'boat' || kind === 'boatTo' ? `水/岸#${target}` : pname(g, Math.min(target, NEUTRAL)), bal: B, terr: g.terr[me], troops: iV(B * (Math.min(1023, Math.max(0, pct | 0)) + 1), 1024), extra };
+      const fr = [];
+      for (const ln of (new Error().stack || '').split('\n').slice(2)) {
+        const m = /at (?:async )?(?:new )?(\S+)? ?\(?[^()]*strategy-[a-z0-9]+\.mjs:(\d+):\d+\)?/.exec(ln);
+        if (m) fr.push(`${(m[1] || '?').replace(/^.*\./, '')}:${+m[2] - 1}`);
+        if (fr.length >= 4) break;
+      }
+      c.site = fr.join('<');
       cmdsNow.push(c); shadowCmds.push(c);
     };
     g.attack = (pct, target, pl = me) => {
@@ -427,9 +435,22 @@ chk.push(`# 影子策略报错 ${errs.length} 条${errs.length ? '：' + errs.sl
 const kinds = {};
 for (const c of shadowCmds) { const k = `${c.bot}:${c.kind}`; kinds[k] = (kinds[k] || 0) + 1; }
 chk.push('# 影子指令计数：' + Object.entries(kinds).sort().map(([k, n]) => `${k}×${n}`).join(' '));
+{
+  // 每条影子指令是从策略源码的哪一行发出来的（调用栈里属于策略文件的最里 4 层，行号已换回原文件行号）
+  const bySite = new Map();
+  for (const c of shadowCmds) {
+    const tgt = c.kind !== 'attack' ? '' : c.target >= NEUTRAL ? '→无主地' : c.target >= H ? '→内置AI' : '→真人';
+    const k = `${c.kind}${tgt} 〔${c.site || '?'}〕`;
+    const e = bySite.get(k) || { n: 0, troops: 0, t0: c.t, t1: c.t };
+    e.n++; e.troops += c.troops; e.t0 = Math.min(e.t0, c.t); e.t1 = Math.max(e.t1, c.t);
+    bySite.set(k, e);
+  }
+  chk.push('# 影子指令的发令位置（策略源码行号）：');
+  for (const [k, e] of [...bySite].sort((a, b) => b[1].n - a[1].n)) chk.push(`#   ${k}：${e.n} 条，约 ${e.troops.toLocaleString('en-US')} 兵，t=${e.t0}~${e.t1}`);
+}
 fs.writeFileSync(path.join(OUT, 'shadow_check.txt'), chk.join('\n') + '\n');
 fs.writeFileSync(path.join(OUT, 'shadow_log.txt'), shadowLog.map((l) => `${l.t}\t[${l.bot}] ${l.text}`).join('\n') + '\n');
-fs.writeFileSync(path.join(OUT, 'shadow_cmds.tsv'), 't\tbot\tkind\tpct\ttarget\ttargetName\tbal\tterr\ttroops\n' + shadowCmds.map((c) => [c.t, c.bot, c.kind, c.pct, c.target, c.targetName, c.bal, c.terr, c.troops].join('\t')).join('\n') + '\n');
+fs.writeFileSync(path.join(OUT, 'shadow_cmds.tsv'), 't\tbot\tkind\tpct\ttarget\ttargetName\tbal\tterr\ttroops\tsite\n' + shadowCmds.map((c) => [c.t, c.bot, c.kind, c.pct, c.target, c.targetName, c.bal, c.terr, c.troops, c.site || ''].join('\t')).join('\n') + '\n');
 fs.writeFileSync(path.join(OUT, 'shadow_nofull.tsv'), 't\tbot\tevent\tdetail_or_target\twantTroops\tshadowQuota\tbal\n' + nfEvents.join('\n') + '\n');
 {
   const per = new Map();

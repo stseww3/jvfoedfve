@@ -86,7 +86,12 @@ proto.tick = function () {
   origTick.call(this);
   const g = this;
   if (g.spawnPhase) return;
-  if (g.t % 100 === 0) capSeries.push([g.t, g.donCap]);
+  if (g.t % 100 === 0) {
+    // 一个额度全空的受捐方单笔最多能收多少兵：用引擎自己的 donationCost 二分反解（t<3213 与受捐方无关；之后看受捐方的 100×领土）
+    const maxV = (q) => { let lo = 0, hi = 2e9; while (lo < hi) { const mid2 = Math.floor((lo + hi + 1) / 2); if (g.donationCost(q, mid2) <= g.donCap) lo = mid2; else hi = mid2 - 1; } return lo; };
+    const live = [...botOf.keys()].filter((q) => g.alive[q] && g.terr[q] > 0).sort((a, b) => g.terr[b] - g.terr[a]);
+    capSeries.push([g.t, g.donCap, live.length ? maxV(live[0]) : 0, live.length ? maxV(live[live.length - 1]) : 0, live.length ? g.terr[live[0]] : 0, live.length ? g.terr[live[live.length - 1]] : 0]);
+  }
   const ls = byTick.get(g.t);
   if (!ls) return;
   for (const L of ls) {
@@ -132,6 +137,8 @@ const fmt = (n) => Math.round(n).toLocaleString('en-US');
 const P = [];
 P.push(`# ${mid} 防喂兵配额真账（干净模拟器重演，核对 ${v.bothExact}/${v.rows}；落地窗口取发令拍 +${LAG0}~+${LAG1}）`);
 P.push(`A. 全场上限 donCap：${capSeries.filter((x, i) => i % 5 === 0 || i === capSeries.length - 1).map(([t, c]) => `${t}:${c}`).join(' ')}`);
+P.push('A2. 一个额度全空的受捐方单笔最多能收多少兵（引擎 donationCost 反解；t<3213 与受捐方无关，之后按「我方领土最大的号 / 最小的号」各给一个）：');
+P.push('    ' + capSeries.filter(([t]) => t < 4284 && (t % 300 === 0 || t === 1000 || t === 1100 || t === 2100 || t === 2200 || t === 3200 || t === 3300)).map(([t, c, a, b, ta, tb]) => t < 3213 ? `${t}: 上限 ${c} 点 → ${a.toLocaleString('en-US')} 兵` : `${t}: 上限 ${c} 点 → ${a.toLocaleString('en-US')}（${ta.toLocaleString('en-US')} 格的号）/ ${b.toLocaleString('en-US')}（${tb.toLocaleString('en-US')} 格的号）`).join('；'));
 P.push('');
 P.push(`B. 记账流水（受捐方或捐方是我方号）：${book.length} 次，其中成功 ${book.filter((b) => b.ok).length}、被拒 ${book.filter((b) => !b.ok).length}`);
 {
