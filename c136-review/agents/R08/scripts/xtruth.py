@@ -16,8 +16,9 @@ out/_run/ 不入库，随时可以按上面两步重建。
 （至少 10 行）——对不上说明包里的录像是别的房间的，这局不进 own 的统计。
 
 口径：
-  · 人均对照 = 这一拍还有地的 own 号的人均地 ÷ 还有地的野人的人均地（两边各至少 3 / 5 个号才算）。另给「按出生人数」口径
-    （死掉的号按 0 算进分母），防「野人里死掉的不算」把对照抬高。
+  · 人均对照 = 这一拍在线的 own 号的人均地 ÷ 在线的野人的人均地（两边各至少 3 / 5 个号才算）。在线 = 还有地、且还没离开；
+    离开后的空壳由引擎的 AI 接管，不算任何一组的人头（两组一视同仁）。另给「按出生人数」口径
+    （死掉的、离开的号按 0 算进分母），防「野人里死掉的不算」把对照抬高。
   · 掉队 = t=630 时人均对照 ≥0.90，且 t=1500 时 ≤ t=630 的 0.75 倍。
   · AI 的地 = (600,1500] 里真人从内置 AI 手里吃下的格（AI 之间互吃、AI 被淘汰后变无主地再被吃的不算）；
     份额对照 = own 吃到的份额 ÷ own 在 t=600 还有地的真人里的人头份额。
@@ -31,7 +32,7 @@ out/_run/ 不入库，随时可以按上面两步重建。
     分段只看量级；600~3000 合起来的一行消掉了这种串段。
 节：
   [XT-A] 覆盖与核对  [XT-B] 人均对照走势  [XT-C] AI 的地 / 无主地  [XT-D] 陆攻生效率  [XT-E] 出生点  [XT-F] 发出 vs 落地
-  [XT-G] 1800 拍前出局 / 离开  [XT-H] 逐局
+  [XT-G] 1800 拍前出局 / 离开  [XT-H] 逐局  [XT-I] 接壤普查（挨着白给的内置 AI 出不出手；不跑策略）
 """
 import json
 import math
@@ -110,6 +111,12 @@ def scan(mid, row, pool):
                size={g: sum(1 for q in spawned if grp[q] == g) for g in GROUPS}, nTeams=X["nTeams"])
 
     # ---- 人均对照 ----
+    # 在线 = 这一拍还有地、且还没离开（离开后的空壳由引擎的 AI 接管，不算任何一组的人头）
+    left_t = X["leftT"]
+
+    def online(q, t, c):
+        return c["terr"][q] > 0 and not (0 <= left_t[q] <= t)
+
     ph = {}
     for t in CP:
         c = X["cp"].get(str(t))
@@ -118,11 +125,38 @@ def scan(mid, row, pool):
         cell = {}
         for g in GROUPS + ("bot",):
             sel = [q for q in spawned if (grp[q] == g if g != "bot" else grp[q] != "wild")]
-            alive = [q for q in sel if c["terr"][q] > 0]
+            alive = [q for q in sel if online(q, t, c)]
             cell[g] = dict(n=len(alive), spawned=len(sel), land=sum(c["terr"][q] for q in alive), bal=sum(c["bal"][q] for q in alive))
         ai = X["aiAt"].get(str(t))
         cell["aiLand"] = sum(a[1] for a in ai) if ai is not None else None
         cell["aiN"] = len(ai) if ai is not None else None
+        # 分布口径：把每个还有地的真人的地除以「全体还有地的真人的人均地」，再看 own / 野人各自的分位
+        allv = [c["terr"][q] for q in spawned if online(q, t, c)]
+        if allv:
+            mean_all = sum(allv) / len(allv)
+            dist = {}
+            for g in ("own", "wild"):
+                v = sorted(c["terr"][q] / mean_all for q in spawned if grp[q] == g and online(q, t, c))
+                if v:
+                    dist[g] = dict(n=len(v), q25=v[len(v) // 4], q50=statistics.median(v), q75=v[(3 * len(v)) // 4], q90=v[min(len(v) - 1, (9 * len(v)) // 10)], max=v[-1],
+                                   ge2=sum(1 for x in v if x >= 2), lt05=sum(1 for x in v if x < 0.5))
+            wv = sorted((c["terr"][q] for q in spawned if grp[q] == "wild" and online(q, t, c)), reverse=True)
+            if wv:
+                k = max(1, len(wv) // 10)
+                dist["wildTop10Share"] = sum(wv[:k]) / sum(wv)
+                wmed = statistics.median(wv)
+                ov = [c["terr"][q] for q in spawned if grp[q] == "own" and online(q, t, c)]
+                dist["ownAboveWildMedian"] = sum(1 for x in ov if x > wmed)
+                dist["ownN"] = len(ov)
+                # own 的号在全体真人里的名次：前 10% / 前 25% 里有几个
+                ranked = sorted(((c["terr"][q], grp[q]) for q in spawned if online(q, t, c)), reverse=True)
+                top10, top25 = ranked[:max(1, len(ranked) // 10)], ranked[:max(1, len(ranked) // 4)]
+                dist["ownInTop10"] = sum(1 for _, g2 in top10 if g2 == "own")
+                dist["top10N"] = len(top10)
+                dist["ownInTop25"] = sum(1 for _, g2 in top25 if g2 == "own")
+                dist["top25N"] = len(top25)
+                dist["aliveN"] = len(ranked)
+            cell["dist"] = dist
         ph[t] = cell
     rec["ph"] = ph
 
@@ -150,7 +184,16 @@ def scan(mid, row, pool):
     gain = X["gain"]
 
     def harvest(k_list, col):
-        return {g: sum(gain[k][q][col] for k in k_list for q in spawned if (grp[q] == g)) for g in GROUPS}
+        # 只算到窗末还没离开的席位（离开后空壳吃的地不算这个组的）
+        end = win[max(k_list) + 1]
+        return {g: sum(gain[k][q][col] for k in k_list for q in spawned if grp[q] == g and not (0 <= left_t[q] <= end)) for g in GROUPS}
+
+    def heads_at(t0, end):
+        c0 = X["cp"].get(str(t0))
+        return {g: sum(1 for q in spawned if grp[q] == g and not (0 <= left_t[q] <= end) and (c0["terr"][q] > 0 if c0 else True)) for g in GROUPS}
+
+    rec["heads600_1500"] = heads_at(600, 1500) if X["endTick"] >= 1500 else None
+    rec["heads0_600"] = {g: sum(1 for q in spawned if grp[q] == g and not (0 <= left_t[q] <= 600)) for g in GROUPS} if X["endTick"] >= 600 else None
 
     rec["neutral0_600"] = harvest([0], 2) if X["endTick"] >= 600 else None
     rec["ai600_1500"] = harvest([1, 2, 3], 0) if X["endTick"] >= 1500 else None
@@ -174,6 +217,22 @@ def scan(mid, row, pool):
                            don=sum(X["cmds"][k][q][4] for q in sel), donOk=sum(X["cmds"][k][q][5] for q in sel))
         cm.append(cell)
     rec["cmds"] = cm
+    # 生效陆攻的出手量，按目标分三类：每类 [条数, 派出的兵, Σ 派出 ÷ 发令前余额]
+    szs = []
+    for k in range(len(per) - 1):
+        if X["endTick"] < per[k + 1] or not X.get("size"):
+            szs.append(None)
+            continue
+        cell = {}
+        for g in GROUPS:
+            acc = [0.0] * 9
+            for q in spawned:
+                if grp[q] == g:
+                    for i in range(9):
+                        acc[i] += X["size"][k][q][i]
+            cell[g] = acc
+        szs.append(cell)
+    rec["atkSize"] = szs
 
     # ---- 出生点 ----
     W, Hh = X["W"], X["Hh"]
@@ -205,6 +264,70 @@ def scan(mid, row, pool):
                 s["nnOwn"] += 1
     rec["spawn"] = {g: dict(n=s["n"], nearEdge=s["nearEdge"], edgeMed=med(s["edge"]), nnBot=s["nnBot"], nnOwn=s["nnOwn"], nnMed=med(s["nn"]), picksMed=med(s["picks"]), noPick=s["noPick"]) for g, s in sp.items()}
     rec["edgeLimit"] = lim
+
+    # ---- 出生指派（日志）vs 引擎落点 ----
+    # spawn.csv = 日志里 [HL-SPAWN]（本地兜底选点，role 以 RANK_ 开头）和 [HL-SPAWN-BACKEND]（后端协调器）的全部指派行，按日志行号排
+    sa = None
+    sp_csv = os.path.join(L.DATA, "bundles", mid, "spawn.csv")
+    if own and os.path.exists(sp_csv):
+        import csv
+        seqs = defaultdict(list)
+        with open(sp_csv, encoding="utf-8", errors="replace") as f:
+            for rw in csv.DictReader(f):
+                try:
+                    me_i, x_i, y_i, ln = int(rw["me"]), int(rw["x"]), int(rw["y"]), int(rw["line"])
+                except (TypeError, ValueError):
+                    continue
+                b = own.get(me_i)
+                if b is None or rw["bot"] not in b["labels"]:
+                    continue
+                seqs[me_i].append((ln, x_i, y_i, not str(rw.get("role", "")).startswith("RANK_")))
+        sa = dict(seats=0, withAssign=0, assigns=0, backend=0, lastExec=0, stale=0, notInLog=0, noPick=0, sameLast=0, lastBackend=0, lastBackendExec=0)
+        lasts = []
+        for q in own:
+            if not xy[q]:
+                continue
+            sa["seats"] += 1
+            seq = sorted(seqs.get(q, []))
+            if not seq:
+                continue
+            sa["withAssign"] += 1
+            sa["assigns"] += len(seq)
+            sa["backend"] += sum(1 for z in seq if z[3])
+            eng = tuple(X["spawnXY"][q]) if X["spawnXY"][q] else None
+            last = (seq[-1][1], seq[-1][2])
+            lasts.append(last)
+            if seq[-1][3]:
+                sa["lastBackend"] += 1
+            if eng is None:
+                sa["noPick"] += 1
+            elif eng == last:
+                sa["lastExec"] += 1
+                if seq[-1][3]:
+                    sa["lastBackendExec"] += 1
+            elif any((z[1], z[2]) == eng for z in seq):
+                sa["stale"] += 1
+            else:
+                sa["notInLog"] += 1
+        cnt = Counter(lasts)
+        sa["sameLast"] = sum(v for v in cnt.values() if v >= 2)
+    rec["spawnAssign"] = sa
+
+    # ---- 接壤普查 ----
+    rc = None
+    if X.get("reach"):
+        rc = []
+        for k in range(len(X["reach"])):
+            cell = {}
+            for g in GROUPS:
+                acc = [0] * 11
+                for q in spawned:
+                    if grp[q] == g:
+                        for i in range(11):
+                            acc[i] += X["reach"][k][q][i]
+                cell[g] = acc
+            rc.append(cell)
+    rec["reach"] = rc
 
     # ---- 1800 拍前出局 / 离开 ----
     ex = {}
@@ -315,6 +438,34 @@ def main():
         f"t={t} 中位 {fmt(med([r['ratio']['pool'][t] for r in recs if r['ratio']['pool'].get(t) is not None]))}（{sum(1 for r in recs if r['ratio']['pool'].get(t) is not None)} 局）" for t in CP))
     P("  兵密度对照（own 的兵 ÷ 地，再 ÷ 野人的同口径）：" + "；".join(
         f"t={t} 中位 {fmt(med([r['densRatio'][t] for r in full if t in r['densRatio']]))}" for t in CP))
+    # 分布口径
+    P("  分布口径（每个号的地 ÷ 全体还有地的真人的人均地；逐局取分位，再取各局的中位）：拍 | 局数 | own 下四分位 / 中位 / 上四分位 / 九成位 / 最大 | 野人 同口径 | 野人里最大的一成号占野人地的比例 | own 的号高过野人中位的比例 | 前 10% 名次里 own 的占比（own 的人头占比） | 前 25% 里 own 的占比")
+    agg_dist = {}
+    for t in CP:
+        sel = [r for r in full if r["ph"].get(t) and "own" in (r["ph"][t].get("dist") or {}) and "wild" in r["ph"][t]["dist"] and r["ph"][t]["own"]["n"] >= 3 and r["ph"][t]["wild"]["n"] >= 5]
+        if not sel:
+            continue
+        mo = lambda g, k: med([r["ph"][t]["dist"][g][k] for r in sel])  # noqa: E731
+        above = sum(r["ph"][t]["dist"]["ownAboveWildMedian"] for r in sel)
+        own_n = sum(r["ph"][t]["dist"]["ownN"] for r in sel)
+        t10 = sum(r["ph"][t]["dist"]["ownInTop10"] for r in sel)
+        t10n = sum(r["ph"][t]["dist"]["top10N"] for r in sel)
+        t25 = sum(r["ph"][t]["dist"]["ownInTop25"] for r in sel)
+        t25n = sum(r["ph"][t]["dist"]["top25N"] for r in sel)
+        alive = sum(r["ph"][t]["dist"]["aliveN"] for r in sel)
+        P(f"  {t:>5} | {len(sel)} | {mo('own', 'q25'):.2f} / {mo('own', 'q50'):.2f} / {mo('own', 'q75'):.2f} / {mo('own', 'q90'):.2f} / {mo('own', 'max'):.2f} | "
+          f"{mo('wild', 'q25'):.2f} / {mo('wild', 'q50'):.2f} / {mo('wild', 'q75'):.2f} / {mo('wild', 'q90'):.2f} / {mo('wild', 'max'):.2f} | "
+          f"{100 * med([r['ph'][t]['dist']['wildTop10Share'] for r in sel]):.0f}% | {pct(above, own_n)} | {pct(t10, t10n)}（{pct(own_n, alive)}） | {pct(t25, t25n)}")
+        agg_dist[t] = dict(n=len(sel), ownQ50=mo("own", "q50"), wildQ50=mo("wild", "q50"), ownQ90=mo("own", "q90"), wildQ90=mo("wild", "q90"), ownMax=mo("own", "max"), wildMax=mo("wild", "max"),
+                           wildTop10Share=med([r["ph"][t]["dist"]["wildTop10Share"] for r in sel]), ownAboveWildMedian=above, ownN=own_n,
+                           ownInTop10=t10, top10N=t10n, ownInTop25=t25, top25N=t25n, aliveN=alive)
+    big = sum(r["ph"][1500]["dist"]["own"]["ge2"] for r in full if r["ph"].get(1500) and "own" in (r["ph"][1500].get("dist") or {}))
+    bign = sum(r["ph"][1500]["dist"]["own"]["n"] for r in full if r["ph"].get(1500) and "own" in (r["ph"][1500].get("dist") or {}))
+    wbig = sum(r["ph"][1500]["dist"]["wild"]["ge2"] for r in full if r["ph"].get(1500) and "wild" in (r["ph"][1500].get("dist") or {}))
+    wbign = sum(r["ph"][1500]["dist"]["wild"]["n"] for r in full if r["ph"].get(1500) and "wild" in (r["ph"][1500].get("dist") or {}))
+    sm = sum(r["ph"][1500]["dist"]["own"]["lt05"] for r in full if r["ph"].get(1500) and "own" in (r["ph"][1500].get("dist") or {}))
+    wsm = sum(r["ph"][1500]["dist"]["wild"]["lt05"] for r in full if r["ph"].get(1500) and "wild" in (r["ph"][1500].get("dist") or {}))
+    P(f"  t=1500：地 ≥ 全体人均 2 倍的号——own {big}/{bign}（{pct(big, bign)}），野人 {wbig}/{wbign}（{pct(wbig, wbign)}）；地 < 全体人均一半的号——own {sm}/{bign}（{pct(sm, bign)}），野人 {wsm}/{wbign}（{pct(wsm, wbign)}）")
     # 掉队
     both = [r for r in full if r["ratio"]["own"].get(630) is not None and r["ratio"]["own"].get(1500) is not None]
     drop = [r for r in both if r["ratio"]["own"][630] >= 0.9 and r["ratio"]["own"][1500] <= 0.75 * r["ratio"]["own"][630]]
@@ -336,20 +487,20 @@ def main():
     # ---- [XT-C] ----
     P("")
     P("[XT-C] 地是谁吃的（真值）")
-    hv = [r for r in full if r["ai600_1500"] is not None and r["ph"].get(600) and r["ph"][600]["own"]["n"] >= 3 and r["ph"][600]["wild"]["n"] >= 5]
+    hv = [r for r in full if r["ai600_1500"] is not None and r["heads600_1500"]["own"] >= 3 and r["heads600_1500"]["wild"] >= 5]
     tot = {g: sum(r["ai600_1500"][g] for r in hv) for g in GROUPS}
-    heads = {g: sum(r["ph"][600][g]["n"] for r in hv) for g in GROUPS}
+    heads = {g: sum(r["heads600_1500"][g] for r in hv) for g in GROUPS}
     burn = {g: sum(r["aiBurn600_1500"][g] for r in hv) for g in GROUPS}
     allc, allh = sum(tot.values()), sum(heads.values())
-    P(f"  (600,1500] 真人从内置 AI 手里吃下的格（{len(hv)} 局合计 {allc} 格；人头 = t=600 还有地的真人 {allh} 个）：")
+    P(f"  (600,1500] 真人从内置 AI 手里吃下的格（{len(hv)} 局合计 {allc} 格；人头 = t=600 还有地、到 1500 拍没离开的真人 {allh} 个；中途离开的席位连人带地都不算）：")
     for g in GROUPS:
         P(f"    {GROUP_CN[g]}：{tot[g]} 格（{pct(tot[g], allc)}）｜人头 {heads[g]}（{pct(heads[g], allh)}）｜人均 {tot[g] / max(1, heads[g]):.0f} 格｜每格烧 {burn[g] / max(1, tot[g]):.1f} 兵")
     sr = []
     for r in hv:
         a = sum(r["ai600_1500"].values())
-        h = sum(r["ph"][600][g]["n"] for g in GROUPS)
+        h = sum(r["heads600_1500"][g] for g in GROUPS)
         if a > 0:
-            sr.append((r, (r["ai600_1500"]["own"] / a) / (r["ph"][600]["own"]["n"] / h)))
+            sr.append((r, (r["ai600_1500"]["own"] / a) / (r["heads600_1500"]["own"] / h)))
     xs = sorted(v for _, v in sr)
     P(f"  逐局的份额对照（own 的份额 ÷ own 的人头份额）：{len(xs)} 局，中位 {fmt(med(xs))}，下四分位 {fmt(xs[len(xs) // 4]) if xs else '—'}，上四分位 {fmt(xs[(3 * len(xs)) // 4]) if xs else '—'}；"
       f"<0.70 的 {sum(1 for v in xs if v < 0.7)} 局，<1.00 的 {sum(1 for v in xs if v < 1.0)} 局")
@@ -358,10 +509,10 @@ def main():
     hu = {g: sum(r["human600_1500"][g] for r in hv) for g in GROUPS}
     lo = {g: sum(r["lostToHuman600_1500"][g] for r in hv) for g in GROUPS}
     P("  同窗真人之间：" + "；".join(f"{GROUP_CN[g]} 从真人手里吃 {hu[g]} 格、被真人吃走 {lo[g]} 格（人均净 {(hu[g] - lo[g]) / max(1, heads[g]):+.0f}）" for g in GROUPS))
-    nv = [r for r in full if r["neutral0_600"] is not None and r["size"]["own"] >= 3 and r["size"]["wild"] >= 5]
+    nv = [r for r in full if r["neutral0_600"] is not None and r["heads0_600"]["own"] >= 3 and r["heads0_600"]["wild"] >= 5]
     ntot = {g: sum(r["neutral0_600"][g] for r in nv) for g in GROUPS}
-    nheads = {g: sum(r["size"][g] for r in nv) for g in GROUPS}
-    P(f"  (0,600] 真人吃下的无主地（{len(nv)} 局；人头 = 出过生的真人）：" + "；".join(
+    nheads = {g: sum(r["heads0_600"][g] for r in nv) for g in GROUPS}
+    P(f"  (0,600] 真人吃下的无主地（{len(nv)} 局；人头 = 出过生、到 600 拍没离开的真人）：" + "；".join(
         f"{GROUP_CN[g]} {ntot[g]} 格（{pct(ntot[g], sum(ntot.values()))}）/ 人头 {nheads[g]}（{pct(nheads[g], sum(nheads.values()))}）/ 人均 {ntot[g] / max(1, nheads[g]):.0f}" for g in GROUPS))
     ai_left = [(r["ph"][t]["aiLand"] / r["land"]) for r in full for t in (600,) if r["ph"].get(t) and r["ph"][t]["aiLand"] is not None]
     ai_left15 = [(r["ph"][1500]["aiLand"] / r["land"]) for r in full if r["ph"].get(1500) and r["ph"][1500]["aiLand"] is not None]
@@ -388,6 +539,27 @@ def main():
     P(f"  逐局（600~1500，own 和野人各 ≥20 条陆攻的 {len(pm)} 局）：own 没生效占比 中位 {100 * med([a for _, a, _ in pm]):.0f}%，野人 中位 {100 * med([b for _, _, b in pm]):.0f}%；"
       f"own 比野人高的 {sum(1 for _, a, b in pm if a > b)} 局；own ≥20% 的 {sum(1 for _, a, _ in pm if a >= 0.2)} 局，野人 ≥20% 的 {sum(1 for _, _, b in pm if b >= 0.2)} 局")
     P("    按编队档（own 没生效占比的中位）：" + "；".join(f"{c} {fmt(100 * med([a for r, a, _ in pm if r['cohort'] == c]) if [a for r, a, _ in pm if r['cohort'] == c] else None, 0)}%（{sum(1 for r, _, _ in pm if r['cohort'] == c)} 局）" for c in COHORTS))
+
+    P("  生效的陆攻每条派多少（真值）：时段 | 组 | 打内置 AI：条数 / 每条派出占余额的平均 / 每条平均兵 | 打无主地：同口径 | 打真人：同口径 | 三类条数之比")
+    agg_sz = {}
+    for k, nm in enumerate(("0~600", "600~1500", "1500~1800")):
+        for g in GROUPS:
+            sel = [r for r in (full if g == "own" else recs) if r["atkSize"][k] is not None]
+            acc = [sum(r["atkSize"][k][g][i] for r in sel) for i in range(9)]
+            if not (acc[0] + acc[3] + acc[6]):
+                continue
+            cells = []
+            for o in (0, 3, 6):
+                cells.append(f"{acc[o]:.0f} / {100 * acc[o + 2] / max(1, acc[o]):.1f}% / {acc[o + 1] / max(1, acc[o]):.0f}")
+            tot_n = acc[0] + acc[3] + acc[6]
+            P(f"  {nm} | {GROUP_CN[g]} | " + " | ".join(cells) + f" | {100 * acc[0] / tot_n:.0f} : {100 * acc[3] / tot_n:.0f} : {100 * acc[6] / tot_n:.0f}")
+            agg_sz[f"{nm}|{g}"] = dict(ai=acc[0:3], neutral=acc[3:6], human=acc[6:9])
+    szm = []
+    for r in full:
+        c = r["atkSize"][1] if len(r["atkSize"]) > 1 else None
+        if c and c["own"][0] >= 20 and c["wild"][0] >= 20:
+            szm.append((r, c["own"][2] / c["own"][0], c["wild"][2] / c["wild"][0]))
+    P(f"  逐局（600~1500，own 和野人各 ≥20 条打 AI 的生效陆攻，{len(szm)} 局）：每条派出占余额——own 中位 {100 * med([a for _, a, _ in szm]):.1f}%，野人 中位 {100 * med([b for _, _, b in szm]):.1f}%；own 比野人小的 {sum(1 for _, a, b in szm if a < b)} 局")
 
     # ---- [XT-E] ----
     P("")
@@ -418,6 +590,27 @@ def main():
     e_hi = [r["ratio"]["own"][1500] for r in both if r["spawn"]["own"]["n"] and r["spawn"]["own"]["nearEdge"] / r["spawn"]["own"]["n"] >= 0.5]
     e_lo = [r["ratio"]["own"][1500] for r in both if r["spawn"]["own"]["n"] and r["spawn"]["own"]["nearEdge"] / r["spawn"]["own"]["n"] < 0.5]
     P(f"  own 贴边 ≥50% 的局：t=1500 人均对照中位 {fmt(med(e_hi))}（{len(e_hi)} 局）；<50% 的局：{fmt(med(e_lo))}（{len(e_lo)} 局）")
+
+    P("  出生指派（日志 spawn.csv）vs 引擎落点（own 席位）：档 | 局 | 有指派的席位 | 人均指派条数（其中后端协调器的占比） | 最后一条指派被执行 | 落点是更早的某条指派 | 落点不在指派里 | 一条选点都没落地 | 最后一条指派和别的编队号撞同一个点的席位")
+    agg_sa = {}
+    for nm, sel in (("全部", val), ("squad10", [r for r in val if r["cohort"] == "squad10"]), ("squad20", [r for r in val if r["cohort"] == "squad20"]),
+                    ("主队赢的局", [r for r in val if r["won"]]), ("没赢的局", [r for r in val if not r["won"]])):
+        sel = [r for r in sel if r.get("spawnAssign") and r["spawnAssign"]["withAssign"]]
+        if not sel:
+            continue
+        a = {k: sum(r["spawnAssign"][k] for r in sel) for k in sel[0]["spawnAssign"]}
+        w = a["withAssign"]
+        P(f"  {nm} | {len(sel)} | {w} | {a['assigns'] / max(1, w):.1f}（{pct(a['backend'], a['assigns'])}） | {a['lastExec']}（{pct(a['lastExec'], w)}） | {a['stale']}（{pct(a['stale'], w)}） | "
+          f"{a['notInLog']}（{pct(a['notInLog'], w)}） | {a['noPick']}（{pct(a['noPick'], w)}） | {a['sameLast']}（{pct(a['sameLast'], w)}）")
+        agg_sa[nm] = a
+    pme = [(r, r["spawnAssign"]["lastExec"] / r["spawnAssign"]["withAssign"]) for r in val if r.get("spawnAssign") and r["spawnAssign"]["withAssign"] >= 3]
+    P(f"  逐局（有指派的 own 席位 ≥3 的 {len(pme)} 局）：最后一条指派被执行的比例 中位 {100 * med([v for _, v in pme]):.0f}%；全部执行的 {sum(1 for _, v in pme if v >= 0.999)} 局；不到一半的 {sum(1 for _, v in pme if v < 0.5)} 局")
+    hi = [r["ratio"]["own"].get(1500) for r, v in pme if v >= 0.5 and r["ratio"]["own"].get(1500) is not None]
+    lo2 = [r["ratio"]["own"].get(1500) for r, v in pme if v < 0.5 and r["ratio"]["own"].get(1500) is not None]
+    P(f"  最后一条指派执行 ≥50% 的局：t=1500 人均对照中位 {fmt(med(hi))}（{len(hi)} 局）；<50% 的局：{fmt(med(lo2))}（{len(lo2)} 局）")
+    hi = [r["ratio"]["own"].get(630) for r, v in pme if v >= 0.5 and r["ratio"]["own"].get(630) is not None]
+    lo2 = [r["ratio"]["own"].get(630) for r, v in pme if v < 0.5 and r["ratio"]["own"].get(630) is not None]
+    P(f"  同上，t=630 人均对照中位：执行 ≥50% 的局 {fmt(med(hi))}（{len(hi)} 局）；<50% 的局 {fmt(med(lo2))}（{len(lo2)} 局）")
 
     # ---- [XT-F] ----
     P("")
@@ -459,6 +652,62 @@ def main():
         P(f"  {nm} | {bl} | {bn} | {pct(bn, bl)}")
         agg_f[nm].update(boatsLog=bl, boatsLanded=bn)
 
+    # ---- [XT-I] ----
+    P("")
+    P("[XT-I] 接壤普查（真值；600~1500 每 30 拍一个样本，全部在线真人；不跑策略，只看引擎状态）")
+    P("  「白给」= 挨着的内置 AI 里最便宜的那个，推到出局线要的兵（策略自己的 elimCost 公式）≤ 这个号余额的 10%；「买得起」= ≤25%；")
+    P("  「出手」= 之后 90 拍里这个号有一条生效的陆攻落在内置 AI 身上。")
+    P("  窗 | 组 | 局数 | 样本 | 挨着 AI | 挨着无主地 | 只剩真人 || 白给的样本 | 其中 90 拍内出手 | 买得起的样本 | 其中出手 | 挨着 AI 的样本里出手")
+    RWN = ("600~900", "900~1260", "1260~1500", "600~1500")
+    agg_i = {}
+
+    def reach_sum(sel, k, g):
+        acc = [0] * 11
+        for r in sel:
+            ks = range(3) if k == 3 else [k]
+            for kk in ks:
+                for i in range(11):
+                    acc[i] += r["reach"][kk][g][i]
+        return acc
+
+    def calm_of(r):
+        c = r["cmds"][1] if len(r["cmds"]) > 1 else None
+        return bool(c and c["own"]["land"] >= 20 and 1 - c["own"]["ok"] / c["own"]["land"] <= 0.05)
+
+    for k, nm in enumerate(RWN):
+        for g in GROUPS:
+            sel = [r for r in (full if g == "own" else recs) if r.get("reach")]
+            a = reach_sum(sel, k, g)
+            sel_n = sum(1 for r in sel if reach_sum([r], k, g)[0] > 0)
+            if not a[0]:
+                continue
+            P(f"  {nm} | {GROUP_CN[g]} | {sel_n} | {a[0]} | {pct(a[1], a[0])} | {pct(a[2], a[0])} | {pct(a[3], a[0])} || {a[4]} | {pct(a[5], a[4])} | {a[6]} | {pct(a[7], a[6])} | {pct(a[8], a[1])}")
+            agg_i[f"{nm}|{g}"] = dict(matches=sel_n, samples=a[0], hasAi=a[1], hasNeutral=a[2], locked=a[3], free=a[4], freeHit=a[5], cheap=a[6], cheapHit=a[7], aiHit=a[8], aiLandAdj=a[9], aiLandCheap=a[10])
+    P("  分开看（600~1500 合计）：组 | 局 | 白给的样本 | 其中 90 拍内出手 | 买得起的样本 | 其中出手 | 只剩真人的样本占比")
+    splits = [("squad10 的局", [r for r in full if r["cohort"] == "squad10"]), ("squad20 的局", [r for r in full if r["cohort"] == "squad20"]),
+              ("几乎不卡的局（own 600~1500 陆攻没生效 ≤5%）", [r for r in full if calm_of(r)]), ("其余的局", [r for r in full if not calm_of(r)]),
+              ("主队赢的局", [r for r in full if r["won"]]), ("没赢的局", [r for r in full if not r["won"]])]
+    for nm, sel in splits:
+        sel = [r for r in sel if r.get("reach")]
+        for g in ("own", "wild"):
+            a = reach_sum(sel, 3, g)
+            if not a[0]:
+                continue
+            P(f"  {nm} | {GROUP_CN[g]} | {sum(1 for r in sel if reach_sum([r], 3, g)[0] > 0)} | {a[4]} | {pct(a[5], a[4])} | {a[6]} | {pct(a[7], a[6])} | {pct(a[3], a[0])}")
+            agg_i[f"split|{nm}|{g}"] = dict(samples=a[0], free=a[4], freeHit=a[5], cheap=a[6], cheapHit=a[7], locked=a[3])
+    pmr = []
+    for r in full:
+        if not r.get("reach"):
+            continue
+        a, w = reach_sum([r], 3, "own"), reach_sum([r], 3, "wild")
+        if a[4] >= 20 and w[4] >= 20:
+            pmr.append((r, a[5] / a[4], w[5] / w[4], a[3] / a[0], w[3] / w[0]))
+    P(f"  逐局（own 和野人各 ≥20 个白给样本的 {len(pmr)} 局）：白给样本里 90 拍内出手的比例——own 中位 {100 * med([x[1] for x in pmr]):.0f}%，野人 中位 {100 * med([x[2] for x in pmr]):.0f}%；"
+      f"own 比野人低的 {sum(1 for x in pmr if x[1] < x[2])} 局；只剩真人的样本占比——own 中位 {100 * med([x[3] for x in pmr]):.0f}%，野人 中位 {100 * med([x[4] for x in pmr]):.0f}%")
+    calm_pm = [x for x in pmr if calm_of(x[0])]
+    P(f"    其中几乎不卡的 {len(calm_pm)} 局：own 中位 {fmt(100 * med([x[1] for x in calm_pm]) if calm_pm else None, 0)}%，野人 中位 {fmt(100 * med([x[2] for x in calm_pm]) if calm_pm else None, 0)}%；"
+      f"own 比野人低的 {sum(1 for x in calm_pm if x[1] < x[2])} 局")
+
     # ---- [XT-G] ----
     P("")
     P("[XT-G] 录像前 1800 拍里出局 / 离开（真值；录像不到 1800 拍的算到录像末）：组 | 席位 | 出局 | 其中 900 拍前 | 离开")
@@ -489,8 +738,8 @@ def main():
     with open(os.path.join(OUT, "_cross", "xtruth.txt"), "w", encoding="utf-8") as f:
         f.write("\n".join(out) + "\n")
     with open(os.path.join(OUT, "_cross", "xtruth.json"), "w", encoding="utf-8") as f:
-        json.dump(dict(replays=len(recs), valid=len(val), full=len(full), failed=failed, perHead=agg_b, drop=dict(both=len(both), hit=[r["matchId"] for r in drop]),
-                       aiHarvest=dict(matches=len(hv), cells=tot, heads=heads, burnt=burn), cmdEffect=agg_d, spawn=agg_e, flow=agg_f,
+        json.dump(dict(replays=len(recs), valid=len(val), full=len(full), failed=failed, perHead=agg_b, dist=agg_dist, drop=dict(both=len(both), hit=[r["matchId"] for r in drop]),
+                       aiHarvest=dict(matches=len(hv), cells=tot, heads=heads, burnt=burn), cmdEffect=agg_d, attackSize=agg_sz, spawn=agg_e, spawnAssign=agg_sa, flow=agg_f, reach=agg_i,
                        matches=[{k: v for k, v in r.items()} for r in recs]), f, ensure_ascii=False, separators=(",", ":"))
     if not quiet:
         print("\n".join(out))
