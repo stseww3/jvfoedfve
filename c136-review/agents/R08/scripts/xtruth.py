@@ -494,12 +494,24 @@ def scan(mid, row, pool):
 
         rule = {g: dict(cls={c: [0] * 6 for c in RULE_CLASSES}, sbSrc={k: 0 for k in SRC_GROUPS}, dpSrc={k: 0 for k in SRC_GROUPS},
                         over=dict(px=0, dp=0, sb=0), sole=dict(px=0, dp=0, sb=0), sbShare=[], eng={c: 0 for c in RULE_CLASSES},
-                        win=[{c: [0, 0] for c in RULE_CLASSES} for _ in range(3)]) for g in GROUPS}
+                        win=[{c: [0, 0] for c in RULE_CLASSES} for _ in range(3)],
+                        # 挨着的内置 AI 有多大（每窗）：[样本, 平均地之和, 最大的那个的地之和, 打垮最便宜的那个的地之和, 挨着的 AI 个数之和（最多记 6 个）, 本号的地之和, 本号的兵之和]
+                        adj=[[0] * 7 for _ in range(3)]) for g in GROUPS}
         for rw in X["locks"]:
             t, q = rw[0], rw[1]
             if not xy[q]:
                 continue
             g = grp[q]
+            if rw[12]:
+                av = rule[g]["adj"][0 if t < 900 else 1 if t < 1260 else 2]
+                lands = [a[7] for a in rw[12]]
+                av[0] += 1
+                av[1] += sum(lands) / len(lands)
+                av[2] += max(lands)
+                av[3] += rw[12][0][7]
+                av[4] += len(lands)
+                av[5] += rw[6]
+                av[6] += rw[5]
             # c110（squad20）的邻居表不含「受保护的队友」（analyze L440 / isProtectedSquadMate L3993-3996）；c116 系只排除同队（引擎那一侧已排除）
             protected = {o for o, _ in rw[11] if is_prot[o]} if (g == "own" and c110) else ()
             # 同一局里各组用同一把尺子（这一局主编队那一档的规则）
@@ -748,6 +760,27 @@ def main():
                 dv = (w[k] / w["heads"] - o[k] / o["heads"]) * (-1 if k == "lost" else 1)
                 parts.append(f"{kn} {dv:+.0f}（{100 * dv / (gw - go):.0f}%）" if gw != go else f"{kn} {dv:+.0f}")
             P(f"      {nm}：野人人均净增比 own 多 {gw - go:.0f} 格，拆开：" + "；".join(parts))
+        # 逐局口径（上面是各局人头相加；大地图小房间的局人均地大，会把合计往上带）
+        pmb = []
+        for r in sel:
+            o, w = r["budget600_1500"]["own"], r["budget600_1500"]["wild"]
+            if o["heads"] < 3 or w["heads"] < 5:
+                continue
+            go = (o["t1500"] - o["t600"]) / o["heads"]
+            gw = (w["t1500"] - w["t600"]) / w["heads"]
+            if gw <= 0:
+                continue
+            dai = w["ai"] / w["heads"] - o["ai"] / o["heads"]
+            dn = w["neutral"] / w["heads"] - o["neutral"] / o["heads"]
+            dh = (w["human"] - w["lost"]) / w["heads"] - (o["human"] - o["lost"]) / o["heads"]
+            pmb.append((go / gw, (gw - go) / gw, dai / gw, dn / gw, dh / gw, (o["ai"] / o["heads"]) / max(1e-9, w["ai"] / w["heads"]),
+                        (o["neutral"] / o["heads"]) / max(1e-9, w["neutral"] / w["heads"])))
+        if pmb:
+            P(f"      {nm}·逐局（own ≥3 人头、野人 ≥5 人头的 {len(pmb)} 局；每局先各自算人均，再取各局的中位）：own 人均净增 ÷ 野人人均净增 中位 {med([x[0] for x in pmb]):.2f}；"
+              f"差额占野人净增 中位 {100 * med([x[1] for x in pmb]):.0f}%，其中 内置 AI {100 * med([x[2] for x in pmb]):.0f}%、无主地 {100 * med([x[3] for x in pmb]):.0f}%、真人之间的净额 {100 * med([x[4] for x in pmb]):.0f}%；"
+              f"own 人均从内置 AI 吃到的 ÷ 野人的 中位 {med([x[5] for x in pmb]):.2f}（<1 的 {sum(1 for x in pmb if x[5] < 1)} 局）；从无主地吃到的 ÷ 野人的 中位 {med([x[6] for x in pmb]):.2f}（<1 的 {sum(1 for x in pmb if x[6] < 1)} 局）")
+            agg_bd[f"{nm}|perMatch"] = dict(n=len(pmb), gainRatio=med([x[0] for x in pmb]), gapShare=med([x[1] for x in pmb]), ai=med([x[2] for x in pmb]),
+                                           neutral=med([x[3] for x in pmb]), human=med([x[4] for x in pmb]), aiRatio=med([x[5] for x in pmb]), neutralRatio=med([x[6] for x in pmb]))
 
     # 一条陆攻换回多少地
     ysel = [r for r in full if r.get("yield600_1500")]
@@ -1113,6 +1146,23 @@ def main():
             P(f"    {nm} | {GROUP_CN[g]} | {tot} | {pct(w['allowed'][0], tot)}（{pct(w['allowed'][1], w['allowed'][0])}） | {pct(w['again'][0], tot)}（{pct(w['again'][1], w['again'][0])}） | {pct(w['engaged'][0], tot)}（{pct(w['engaged'][1], w['engaged'][0])}） | "
               f"{pct(w['worth'][0], tot)} | {pct(w['px'][0], tot)} | {pct(w['dp'][0], tot)} | {pct(w['sb'][0], tot)}（{pct(w['sb'][1], w['sb'][0])}）")
             agg_j[f"win|{nm}|{g}"] = dict(total=tot, cls={c: dict(n=w[c][0], hit=w[c][1]) for c in RULE_CLASSES})
+    P("  挨着的内置 AI 有多大（挨着内置 AI 的全部样本；每个样本最多记 6 个、按打垮价从小到大）：窗 | 组 | 样本 | 挨着的 AI 平均地 | 其中最大的那个 | 打垮最便宜的那个 | 记到的 AI 个数 | 这个号自己的地 | 自己的兵")
+    for k, nm in enumerate(("600~900", "900~1260", "1260~1500")):
+        for g, sel in (("own", with_rule), ("wild", with_rule_all)):
+            a = [sum(r["rule"][g]["adj"][k][i] for r in sel) for i in range(7)]
+            if a[0]:
+                P(f"    {nm} | {GROUP_CN[g]} | {a[0]} | {a[1] / a[0]:.0f} | {a[2] / a[0]:.0f} | {a[3] / a[0]:.0f} | {a[4] / a[0]:.1f} | {a[5] / a[0]:.0f} | {a[6] / a[0]:.0f}")
+                agg_j[f"adj|{nm}|{g}"] = dict(n=a[0], mean=a[1] / a[0], largest=a[2] / a[0], cheapest=a[3] / a[0], count=a[4] / a[0], terr=a[5] / a[0], bal=a[6] / a[0])
+    pma = []
+    for r in with_rule:
+        o = [sum(r["rule"]["own"]["adj"][k][i] for k in range(3)) for i in range(7)]
+        w = [sum(r["rule"]["wild"]["adj"][k][i] for k in range(3)) for i in range(7)]
+        if o[0] >= 20 and w[0] >= 20:
+            pma.append(((o[1] / o[0]) / (w[1] / w[0]), (o[2] / o[0]) / (w[2] / w[0]), (o[3] / o[0]) / (w[3] / w[0])))
+    if pma:
+        P(f"    逐局（own 和野人各 ≥20 个样本的 {len(pma)} 局），own ÷ 野人：挨着的 AI 平均地 中位 {med([x[0] for x in pma]):.2f}（<1 的 {sum(1 for x in pma if x[0] < 1)} 局）；"
+          f"最大的那个 中位 {med([x[1] for x in pma]):.2f}（<1 的 {sum(1 for x in pma if x[1] < 1)} 局）；打垮最便宜的那个 中位 {med([x[2] for x in pma]):.2f}（<1 的 {sum(1 for x in pma if x[2] < 1)} 局）")
+        agg_j["adj|perMatch"] = dict(n=len(pma), mean=med([x[0] for x in pma]), largest=med([x[1] for x in pma]), cheapest=med([x[2] for x in pma]))
     pmj = []
     for r in with_rule:
         acc, _ = rule_sum([r], "own")

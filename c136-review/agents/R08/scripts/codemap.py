@@ -24,8 +24,9 @@ FUNCS = ["chooseSpawn", "analyze", "threatOf", "safeBalance", "elimCost", "minCm
          "amount", "amount0", "expandNeutral", "food", "peopleFloor", "floorFor", "floorFor0", "dpKeep", "botOk", "botPx", "winWorth", "winFloor", "safeFinite",
          "waitDump", "reserve", "contested", "safeAt", "buyLand", "idleBoats", "idle", "isOurSquadBot", "hasWildOutsidersAlive", "isProtectedSquadMate",
          "tryEmergencyBossRescue", "tryDonateToTeammate", "updateShadowQuota", "hasBorderFood"]
-GAME_FUNCS = ["isBot", "isEnemy", "isEnemyOf", "isTeammate", "leave", "runAsBot", "hasAttack", "hasFreeSlot", "attackTroopsOn", "aliveTick", "collapse",
-              "victoryTick", "donate", "expandAttack"]
+GAME_FUNCS = ["slotBase", "isBot", "isAlive", "isEnemy", "isEnemyOf", "isTeammate", "leave", "runAsBot", "receiverRoom", "donationCost", "donate", "tick",
+              "interestRate", "softCap", "addBalance", "takeBalance", "economyTick", "hasAttack", "hasFreeSlot", "attackTroopsOn", "redirectAttackToNeutral",
+              "attackersOf", "commitAttack", "quote", "payQuote", "canAct", "attack", "retreat", "aliveTick", "collapse", "eliminate", "victoryTick"]
 
 
 def scan(path):

@@ -41,20 +41,38 @@
   hasBorderFood | Policy.hasBorderFood L4552-4558 | Policy.hasBorderFood L4572-4578 | Policy.hasBorderFood L4572-4578 | Policy.hasBorderFood L4571-4577 | Policy.hasBorderFood L4967-4973
 
 [CM-B] 引擎 src/sim/sim/game.js：方法 | 起~止
+  slotBase | L157-159
   isBot | L215-217
+  isAlive | L219-221
   isEnemy | L266-268
   isEnemyOf | L271-273
   isTeammate | L275-277
   leave | L229-233
   runAsBot | L235-239
+  receiverRoom | L340-345
+  donationCost | L348-357
+  donate | L404-416
+  tick | L708-723
+  interestRate | L739-746
+  softCap | L748-750
+  addBalance | L752-764
+  takeBalance | L766-776
+  economyTick | L778-791
   hasAttack | L795-799
   hasFreeSlot | L801-803
   attackTroopsOn | L805-809
+  redirectAttackToNeutral | L858-872
+  attackersOf | L874-887
+  commitAttack | L1229-1236
+  quote | L1239-1248
+  payQuote | L1250-1254
+  canAct | L1258-1260
+  attack | L1263-1285
+  retreat | L1288-1294
   aliveTick | L1298-1312
   collapse | L1314-1334
+  eliminate | L1336-1350
   victoryTick | L1398-1412
-  donate | L404-416
-  expandAttack | L958-1060
 
 [CM-C] 正文逐字比对（去掉每行首尾空白；同名方法按出现顺序一一对；「同」= 和 c110 的正文完全一样）：函数 | c116-vb | c116 | c116-va | g09
   chooseSpawn | 不同：Policy | 不同：Policy | 不同：Policy | 不同：Policy

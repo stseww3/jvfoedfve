@@ -69,6 +69,29 @@ def spearman_perm(x, y, rng):
     return rho, (hit + 1) / (NPERM + 1)
 
 
+def partial_perm(x, y, z, rng):
+    """秩口径的偏相关（x、y 各自对 z 的秩回归取残差）+ 置换检验（打乱 x 的残差；Freedman–Lane 的简化版）。"""
+    rx, ry, rz = rank(x), rank(y), rank(z)
+    n = len(rz)
+    mz = sum(rz) / n
+    szz = sum((c - mz) ** 2 for c in rz)
+
+    def resid(r):
+        m = sum(r) / n
+        b = sum((c - mz) * (a - m) for a, c in zip(r, rz)) / szz
+        return [(a - m) - b * (c - mz) for a, c in zip(r, rz)]
+
+    ex, ey = resid(rx), resid(ry)
+    rho = pearson(ex, ey)
+    hit = 0
+    sh = ex[:]
+    for _ in range(NPERM):
+        rng.shuffle(sh)
+        if abs(pearson(sh, ey)) >= abs(rho) - 1e-12:
+            hit += 1
+    return rho, (hit + 1) / (NPERM + 1)
+
+
 def sign_p(k, n):
     """双侧二项：n 局里有 k 局朝一个方向（平局先剔掉），p = min(1, 2·P(X ≥ max(k, n−k)))"""
     if n == 0:
@@ -170,6 +193,25 @@ def main():
     sign_row("每对（号 → AI）吃到的格：own 低于 野人", cpp)
     sign_row("下手时那个 AI 的地：own 低于 野人", t0r)
     sign_row("白给样本里被留底规则挡住的占比（同一把尺子）：野人 低于 own", gate)
+    rf, st, adj = [], [], []
+    for r in full:
+        if r.get("pairs") and r.get("yield600_1500"):
+            o = [sum(r["pairs"]["own"][c][i] for c in ("alone", "mate", "wild")) for i in range(14)]
+            w = [sum(r["pairs"]["wild"][c][i] for c in ("alone", "mate", "wild")) for i in range(14)]
+            if o[1] >= 20 and w[1] >= 20:
+                rf.append((w[11] / w[1], o[11] / o[1]))
+                st.append((w[12] / w[1], o[12] / o[1]))
+        ru = r.get("rule")
+        if ru:
+            ao = [sum(ru["own"]["adj"][k][i] for k in range(3)) for i in range(7)]
+            aw = [sum(ru["wild"]["adj"][k][i] for k in range(3)) for i in range(7)]
+            if ao[0] >= 20 and aw[0] >= 20:
+                adj.append((ao[1] / ao[0], aw[1] / aw[0]))
+    sign_row("打 AI 的生效陆攻里续兵的占比：野人 低于 own", rf)
+    sign_row("打 AI 的生效陆攻里和上一条同拍落地的占比：野人 低于 own", st)
+    sign_row("挨着的内置 AI 的平均地：own 低于 野人", adj)
+    sign_row("600~1500 人均从内置 AI 吃到的格：own 低于 野人（AIRATIO < 1）", [(d.get("AIRATIO"), 1.0) for d in rows])
+    sign_row("600~1500 人均从无主地吃到的格：own 低于 野人（NEUTRATIO < 1）", [(d.get("NEUTRATIO"), 1.0) for d in rows])
 
     # ---- [XG-B] ----
     P("")
@@ -205,6 +247,28 @@ def main():
     for nm, sel in (("squad10", sq10), ("squad20", sq20)):
         corr_row(f"{nm}：卡顿剂量 B × R1500", sel, "B", "R1500")
         corr_row(f"{nm}：GATE × AISHARE", sel, "GATE", "AISHARE")
+    for b in ("R1500", "AISHARE"):
+        corr_row(f"PAIRS（人均对几个 AI 下过手 ÷ 野人的）× {b}", rows, "PAIRS", b)
+        corr_row(f"AISIZE（下手时 AI 的地 ÷ 野人下手时的）× {b}", rows, "AISIZE", b)
+        corr_row(f"REINF（续兵占比）× {b}", rows, "REINF", b)
+        corr_row(f"NNDIST（own 最近真人距离 ÷ 野人的）× {b}", rows, "NNDIST", b)
+        corr_row(f"CLUSTER（最近的真人是机器号的比例）× {b}", rows, "CLUSTER", b)
+    corr_row("PAIRS × 卡顿剂量 B", rows, "PAIRS", "B")
+    corr_row("几乎不卡的局里 R630 × R1500", calm, "R630", "R1500")
+    corr_row("几乎不卡的局里 PAIRS × AISHARE", calm, "PAIRS", "AISHARE")
+
+    P("  偏相关（扣掉卡顿剂量 B；秩口径，置换检验）：两个量 | 局数 | 偏 rho | p")
+
+    def pcorr_row(name, sel, a, b, z="B"):
+        tr = [(d[a], d[b], d[z]) for d in sel if d.get(a) is not None and d.get(b) is not None and d.get(z) is not None]
+        rho, p = partial_perm([x for x, _, _ in tr], [y for _, y, _ in tr], [c for _, _, c in tr], rng) if len(tr) >= 10 else (None, None)
+        P(f"  {name} | {len(tr)} | {'—' if rho is None else f'{rho:.2f}'} | {fp(p)}")
+        tests.append((f"B|偏相关 {name}", p))
+
+    for a, an in (("GATE", "GATE（被留底挡住的占比）"), ("SB", "SB（被 AI 仇恨项挡住的占比）"), ("ACT", "ACT（出手率）"), ("PAIRS", "PAIRS"), ("AISIZE", "AISIZE"), ("NNDIST", "NNDIST"),
+                  ("EDGE", "EDGE（贴边比例）"), ("R630", "R630")):
+        for b in ("R1500", "AISHARE"):
+            pcorr_row(f"{an} × {b} ｜B", rows, a, b)
 
     # ---- [XG-C] ----
     P("")
