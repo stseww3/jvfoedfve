@@ -18,7 +18,8 @@ SRC = {
                "10 万格、每条指令都把余额压光的 Player 724 贴着我方三个号，全场只被我方吃走 13,179 格。",
     "narrative": [
         "**出生到 990（t<990）**：协调器求解 13 次，结果都一样——10 个点排在 x 796~973、y 463~728 的扇面里（间距 70 像素），每个号各有一条 [HL-SPAWN-BACKEND] 指派日志（L5~L27）。"
-        "录像的出生阶段只有 15 条选点指令（第 −41~−12 拍），全部是 T1 真人的，我方 0 条（R07 复盘过的其余 10 局录像里我方有 46~316 条）。出生阶段结束时引擎给没有地的席位各发一个默认格点："
+        "录像的出生阶段只有 15 条选点指令（第 −41~−12 拍），全部是 T1 真人的，我方 0 条（R07 复盘过的其余 10 局录像里我方有 46~316 条）。把这 11 局日志里的指派逐条对上录像（54_spawn_seq.py）："
+        "每个号第一次拿到的点——自己先挑的和协调器第一次给的——没有一次进录像（105 个号次全部如此），进录像的都是后来改过的指派；别的局协调器的结果变过 7~45 次，本局 13 次求解一次没变，所以一条都没有。发是发了：OPENING-CHECK@219 各号的 sent 是 3 或 4，减去两条开局指令正好是各号的指派次数（合计 16 条），录像里一条没有。出生阶段结束时引擎给没有地的席位各发一个默认格点："
         "10 个号离自己的指派点 144~1,092 像素，散在 1,260×690 像素的范围里，最近队友 67~678 像素（中位 134；T1 9 个人最近同队的中位 216）。离敌人反而近：noah88 离 *Cr-nA* 38 像素、riku_x 离 Player 191 47 像素、"
         "sora_w 离 🌞 81 像素、alex_k 离 IDF 91 像素。按真实落点分的天然地盘，我方 10 个号占全图陆地 39.6%（人均是全场平均的 0.75 倍），T1 9 个人 60.4%（1.28 倍）。"
         "开局本身没吃亏：OPENING-CHECK@219 10/10 OK，85 条 [HL-OPENING] 影子逐条同拍同数；0~990 我方 263 条进攻吃到 74,499 格（10.7%），T1 165 条 66,746 格（9.6%），990 拍名次中位数 10/19。",
@@ -63,6 +64,8 @@ SRC = {
         "bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/60_truth.cjs A070",
         "bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/88_sim_divergence.mjs A070",
         "bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/66_spawn_truth.mjs A070",
+        "bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/55_spawn_cmds.mjs A062 A033 A039 A079 A061 A053 A091 A089 A082 A007 A070",
+        "python3 54_spawn_seq.py A062 A033 A039 A079 A061 A053 A091 A089 A082 A007 A070",
         "bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/69_quota_truth.mjs A070",
         "bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/46_voronoi.mjs A070",
         "bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/67_troop_flow.mjs A070 --cuts 0,990,2142,3213,4160",
@@ -122,7 +125,7 @@ SRC = {
         "gameVersion": "引擎 2.17.x。真引擎重放（60_truth.cjs）与 traj.csv 的 374 个快照（领土、余额）逐条一致；干净模拟器（带 r07simfix.mjs）重演同样 374/374，本局没有落在非陆地像素上的船（88_sim_divergence.mjs）。"
                        "录像到 4349 拍；我方最后一个号 zexos1 4155 出局",
         "contamination": [
-            "IO①（出生）：录像的出生阶段我方 0 条选点指令（T1 真人 15 条）；10 个号全部落在引擎的默认格点上，离日志里的指派点 144~1,092 像素。协调器只求解了 13 次（其余四局 Vb 是 16~48 次）。"
+            "IO①（出生）：录像的出生阶段我方 0 条选点指令（T1 真人 15 条）；10 个号全部落在引擎的默认格点上，离日志里的指派点 144~1,092 像素。协调器只求解了 13 次（其余四局 Vb 是 16~48 次），结果一次没变；11 局录像里每个号第一次拿到的点都没有进录像（spawn_seq.txt），别的局靠后来改过的指派落地。"
             "协调器排的阵形、角色标签在这一局都没有生效；对局包 spawn.csv 记的是指派，不是落点。原因不在本包里",
             "IO②（本局最重的一项，也是 R07 复盘过的 11 局录像里最重的）：t≈850~2650 我方指令成批晚到——「同一号同一拍 ≥3 条」的批 104 个共 791 条（最大 9 条，正好 9 条的 46 批）；"
             "影子发令拍 → 录像落地拍的延迟中位数 600~1500 是 74 拍、1500~3000 是 248 拍，≥90 拍的 343 条；真号自己数的 2,137 条指令里录像落地 1,024 条。同窗全场其他真人 0 个批。"
@@ -322,10 +325,10 @@ SRC = {
         {"t": -1, "bot": "全队", "kind": "spawn", "verdict": "unclear",
          "state": "20 个真人位、全图陆地 695,915 格；协调器 13 次求解结果相同（间距 70 像素），10 个点在 x 796~973、y 463~728；每号一条指派日志。录像出生阶段 15 条选点指令全是 T1 的",
          "codePath": f"{SPVB}:L1344-1368（指派）→ {VB}:Policy.chooseSpawn:L3983-4040（L4029-4039 返回指派坐标）；发选点指令的是客户端。引擎 game.js endSpawnPhase:L657-667",
-         "why": "策略算出了点位，指令没有进录像：10 个号落在引擎的默认格点上，离指派点 144~1,092 像素。阵形没有执行，所以评不了它本身；结果是一次自然实验——散开落点（最近队友中位 134 像素）下，"
+         "why": "策略算出了点位，指令没有进录像：10 个号落在引擎的默认格点上，离指派点 144~1,092 像素。11 局录像里每个号第一次拿到的点都没有进录像，进录像的全是改过的指派；本局协调器的结果一次没变。宿主的 sent 计数显示本局 16 条选点指令都发了。阵形没有执行，所以评不了它本身；结果是一次自然实验——散开落点（最近队友中位 134 像素）下，"
                 "开局不差（990 拍 10 个号 74,499 格，T1 9 个人 66,746 格），但四个号离敌方真人 38~91 像素、人均天然地盘只有全场平均的 0.75 倍",
          "estCost": "分不出来：ryan_m 落在左上角（最近队友 678 像素）、riku_x 的天然地盘 7,170 格；另一面 kaito9 / leo_tx 的天然地盘 5.3~5.5 万格",
-         "patternId": "NEW:R07-IO-SPAWN-LOST", "evidenceRef": "out/A070/spawn_truth.txt；voronoi.txt；in_game.log L2、L5~L27"},
+         "patternId": "NEW:R07-IO-SPAWN-LOST", "evidenceRef": "out/A070/spawn_truth.txt；spawn_seq.txt；spawn_cmds.tsv；voronoi.txt；in_game.log L2、L5~L27"},
         {"t": 60, "bot": "全队", "kind": "expand", "verdict": "good",
          "state": "OPENING-CHECK@219 10/10 OK（领土合计 3,421）；540 拍单号中位数 1,963 格（全体真人 1,999）；990 拍 74,499 格对 T1 66,746 格",
          "codePath": f"{VB}:V13.expandNeutral:L2373 `g.t < this.p.dpEnd → dpNeutral`（L2383，发令 L2406，日志 L2409）",
@@ -439,7 +442,8 @@ SRC = {
         "策略本身没有报错、没有慢拍堆积；影子与日志 374 个快照的领土 / 余额 / 邻居数全部一致",
     ],
     "unknowns": [
-        "出生阶段我方的选点指令为什么一条都没进录像：是客户端没发、发晚了（协调器只求解 13 次，别的局 16~48 次），还是服务器没收——包里看不到",
+        "每个号第一次拿到的出生点为什么不进录像（11 局 105 个号次都这样）：宿主的 sent 计数里有这些指令（spawn_seq.txt D 节，本局 16 条），录像里没有；是发得太早服务器还不收，还是别的原因——发选点指令的代码不在包里",
+        "本局协调器 13 次求解为什么结果一次没变（别的局变 7~45 次）：T1 真人的 15 条选点里有落在我方扇面里的（x=827、y=683 和 x=921、y=489），协调器没有跟着动；是各号上报的局面没有更新，还是别的原因，包里看不到",
         "指令晚在哪一段：是 10 个客户端的本地进度一起落后（成批补算、一拍送出一串），还是指令在上行通道里排队。两种都对得上「一批最多 9 条、各号轮流、间隔越拉越长」；出局上报的时刻（晚 0~1.5 秒）说明至少在 2674 拍以后本地进度是跟得上的",
         "没落地的 1,113 条去了哪里：被服务器丢了，还是客户端自己没送出去；每批正好 9 条的上限是谁设的",
         "指令按拍落地时内置 AI 那一轮能拿到多少：影子的意图不能相加，没有对照",
@@ -486,7 +490,7 @@ SRC = {
         "8_noFullSendLock": "证实（影子）。十个号 470~896 拍全部锁上 isNoFullSend（kaito9 470、noah88 540、zero_7 568、riku_x 750、alex_k 771、ryan_m 831、sora_w 834、zexos1 862、leo_tx 890、talon5 896）。出兵后的核对 275 次：过期 116、扣减 101、归零 58（对内置 AI 的 49 次），"
                             "作废额度 1,290,216；t≥1500 归零 21 次（19 次发生在真指令落地之前）、作废 866,479，挡下 65 条，其中 42 条（想发 576,382 兵）在一次归零之后 60 拍内。真号内存里的值看不到。",
         "9_invertedFeeding": "不适用（0 笔捐款）。",
-        "10_spawnRecompute": "否，形态相反。协调器 13 次求解结果完全相同，每号只有一条指派日志（位置没变过就不再打印）；没有轮换。问题不在重算，在指令没有进录像：我方 0 条选点指令，落点离指派 144~1,092 像素。",
+        "10_spawnRecompute": "否，形态相反。协调器 13 次求解结果完全相同，每号只有一条指派日志（位置没变过就不再打印）；没有轮换。问题不在重算，在指令没有进录像：我方 0 条选点指令，落点离指派 144~1,092 像素。反过来看，别的 10 局正是靠重算才有落点：每个号第一次拿到的点都没进录像（spawn_seq.txt），进录像的全是改过的指派。",
         "11_winFloorMateLock": "部分证实，量小。t<1500 有内置 AI 邻居的 2,079 个决策拍里零指令 1,171 个，卡在 safeFinite 的 200 个：参照队友余额的只有 43 个（kaito9 33），参照敌方真人的 157 个（zexos1 58、ryan_m 40、noah88 39）——落点散开之后共同邻居多半是敌人，同一条留底换了参照对象。"
                                "t≥1500 身边有 AI 的 1,136 个决策拍里参照队友的 69 个、参照敌方真人的 168 个。",
         "12_oneCmdPerTick": "证实。影子 cmds 计数与日志在 374 个快照里 95 个相同；各号终值影子比真号多 120 条（talon5 31、noah88 30、kaito9 18、zexos1 18、leo_tx 9、ryan_m 6、riku_x 4、sora_w 2、alex_k 1、zero_7 1），"
@@ -503,7 +507,7 @@ SRC = {
                            "同期没有一个捐方够密度门槛（102 / 108，全队最高 76），去掉弃子判定也捐不出去。",
         "19_boatVoyage": "部分证实，量小。我方 13 条船带兵 334,430、船费 78,919（23.6%）：登上敌方 / AI / 无主地 8 条 240,563 兵（zexos1 三条各 6.2~6.8 万兵登上 *Cr-nA*、kaito9 63,119 登上 Player 724），靠到队友岸上 3 条（到账 27,126），靠回自己的地 1 条 6,329，没靠岸 1 条。"
                          "zero_7 2520 的一条船在大陆上的地被吃光之后落了脚（2653），席位活到 3418。敌方 34 条船带兵 4,465,137，落在我方身上 8 条 3,219,446（Player 724 711,936 → kaito9、*Cr-nA* 2,058,056 → zexos1）。",
-        "20_execLatency": "（delay_periods.txt、issue_vs_land.txt、retarget_check.txt、result_clock.txt、spawn_truth.txt）①出生：协调器求解 13 次，每号一条指派；录像出生阶段我方 0 条选点指令，10 个号落在引擎默认格点上，离指派 144~1,092 像素（其余 10 局我方有 46~316 条选点指令）。"
+        "20_execLatency": "（delay_periods.txt、issue_vs_land.txt、retarget_check.txt、result_clock.txt、spawn_truth.txt）①出生：协调器求解 13 次，每号一条指派；录像出生阶段我方 0 条选点指令，10 个号落在引擎默认格点上，离指派 144~1,092 像素（其余 10 局我方有 46~316 条选点指令；11 局里每个号第一次拿到的点都没进录像，本局协调器的结果一次没变，所以没有第二条）。"
                           "②意图 → 落地（影子发令拍 → 录像落地拍，pct 和目标逐条相同才算，下限）：0~600 配上 84 条，P50 11 / P90 14 / 最大 18 拍；600~1500 配上 301 条，74 / 292 / 410（≥35 拍 233 条、≥90 拍 128 条），另 252 条落地时目标没了、记成打无主地（120 / 297 / 459）；"
                           "1500~3000 配上 242 条，248 / 379 / 893（≥90 拍 215 条）；3000 以后 17 条，13 / 17 / 26。各号 1500~3000 的 P50：zero_7 402、leo_tx 337、alex_k 315、zexos1 295、riku_x 250、talon5 243、ryan_m 240、sora_w 199、kaito9 176、noah88 127。"
                           "③漏斗（影子受理 / 真号日志 cmds / 录像落地）：0~630 是 94 / 89 / 88；630~1530 是 990 / 977 / 483；1530~3060 是 1,140 / 1,038 / 436；3060 以后 17 / 17 / 17。不靠影子：真号发出 2,137 条、落地 1,024 条；"
@@ -524,13 +528,13 @@ SRC = {
                      "79_help_table.py", "80_donation_yield.py", "81_same_tick_batches.py", "82_outlet_gap.py", "84_pair_cmds.py", "86_enemy_neighbors.py", "87_trace_classify.py", "88_sim_divergence.mjs",
                      "89_squad_perimeter.py", "90_spend_ratio.py", "91_noop_cmds.py", "92_trace_span.py", "93_frontier.mjs", "94_conquest.mjs", "95_group_sends.py", "96_enemy_boats.py", "97_bot_flow.py",
                      "98_neutral_cmds.py", "99_quota_checks.py", "41_conquest_squad.py（本局修了一处把敌方真人 *Cr-nA* 认成我方号的匹配，加了 --merge）", "46_voronoi.mjs", "47_delay_periods.py", "48_neutral_floor.py",
-                     "51_retarget_check.py（本局新增）", "52_result_clock.py（本局新增）", "53_issue_vs_land.py（本局新增）", "45_logref.py", "r07simfix.mjs", "review_src/A070.py", "review_src/common.py"],
+                     "51_retarget_check.py（本局新增）", "52_result_clock.py（本局新增）", "53_issue_vs_land.py（本局新增）", "54_spawn_seq.py（本局新增）", "55_spawn_cmds.mjs（本局新增）", "45_logref.py", "r07simfix.mjs", "review_src/A070.py", "review_src/common.py"],
     "extraOutputs": [f"c136-review/agents/R07/out/A070/{f}" for f in
                      ("truth_view.txt", "truth_check.txt", "truth_all.tsv", "truth_bots.tsv", "truth_border.tsv", "truth_atk.tsv", "rank.txt", "team_density.txt", "side_flow.txt", "side_flow_tp.txt", "side_flow_p4.txt",
                       "spend_ratio_tp.txt", "conquest.txt", "conquest_squad.txt", "group_sends.txt", "group_sends_late.txt", "frontier.txt", "voronoi.txt", "humans_cmd.tsv", "troop_flow.txt", "troop_flow_tp.txt", "bot_flow_tp.txt", "cmd_effect.tsv",
                       "drop30_recon.txt", "drop30_class.txt", "interest.txt", "squad_perimeter.txt", "outlet_gap.txt", "enemy_neighbors.txt", "enemy_boats.txt", "boat_targets.txt", "replay_ledger.txt", "quota_truth.txt",
                       "repeat_sends.txt", "same_tick_batches.txt", "noop_cmds.txt", "cmd_loss.txt", "delay_periods.txt", "retarget_check.txt", "issue_vs_land.txt", "result_clock.txt", "front_width.txt", "death_chain.txt",
-                      "spawn_truth.txt", "patterns.json", "help_table.txt", "neutral_cmds.txt", "neutral_floor.txt", "sim_divergence.txt",
+                      "spawn_truth.txt", "spawn_seq.txt", "spawn_cmds.tsv", "patterns.json", "help_table.txt", "neutral_cmds.txt", "neutral_floor.txt", "sim_divergence.txt",
                       "shadow_check.txt", "shadow_early.txt", "shadow_early_humans.txt", "shadow_late_ai.txt", "shadow_cmds.tsv", "shadow_nofull.tsv", "shadow_quota_checks.txt", "trace_classify.txt", "trace_span.txt",
                       "shadow_trace_ryan_m_1400_2070.txt", "shadow_trace_ryan_m_2070_2430.txt", "shadow_trace_ryan_m_2430_2674.txt",
                       "shadow_trace_noah88_1400_2070.txt", "shadow_trace_noah88_2070_2430.txt", "shadow_trace_noah88_2430_2883.txt",
