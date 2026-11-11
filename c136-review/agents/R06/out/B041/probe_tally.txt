@@ -1,0 +1,5 @@
+B041: 干净模拟器 vs 真引擎重放：全体真人在采样拍一致到 t=1155，没有不同
+        我方号分叉后的最大偏差（兵力相对值@拍，领土格数@拍）：没有
+        我方号逐拍第一处不同：没有
+B041: 影子重演到 t=1155，耗时 4.3s；日志快照核对 202/202；策略 c110，g.online=true
+影子的 isNoFullSend 置真拍（按代码 L3831-3843 的条件在真实余额轨迹上演化；影子的指令不执行，余额下跌只来自录像里真实执行的指令和挨打）：Kamakura@567，Sweaty@637，Eisenhower@706，MaxVerstappen@706，Morphy@824，Kobe@1071，bruh@462，root@623，Carthage@462，Zidane@705，First Bulgarian@56，Jotaro@602，Mewtwo@735，Peru@567，Cringe@896，Songhai@701，Kazakh@539｜始终为假：Seljuk，SonHeungMin，SegFault
