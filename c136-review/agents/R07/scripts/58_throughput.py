@@ -25,6 +25,7 @@ CROSS = os.path.join(HERE, "..", "out", "_cross")
 TICK_RE = re.compile(r"^\d+\t\[([^\]\[]+)\] \[HL-TICK\] t=(\d+) .*?cmds=(\d+)")
 DISP_RE = re.compile(r"^\d+\t\[([^\]\[]+)\] \[HL-DISPATCH\] t=(\d+) ")
 PERIODS = [(0, 600), (600, 1500), (1500, 3000), (3000, 10 ** 9)]
+BATCH_GAPS = {}
 
 
 def plabel(p):
@@ -69,6 +70,20 @@ def load_game(mid):
             lt = land.get(b, [])
             dp = disp.get(b, [])
             wins.append((b, a, z, sn[z] - sn[a], bisect.bisect_right(lt, z) - bisect.bisect_right(lt, a), bisect.bisect_right(dp, z) - bisect.bisect_right(dp, a)))
+    # 同一个号相邻两个 ≥8 条的批（中间零星落地 ≤2 条）：(后一个批的落地拍, 间隔的回合数)
+    BATCH_GAPS[mid] = []
+    for b, lt in land.items():
+        cnt = defaultdict(int)
+        for t in lt:
+            cnt[t] += 1
+        last, between = None, 0
+        for t in sorted(cnt):
+            if cnt[t] >= 8:
+                if last is not None and between <= 2:
+                    BATCH_GAPS[mid].append((t, (t - last) // 7))
+                last, between = t, 0
+            else:
+                between += cnt[t]
     return wins
 
 
@@ -292,6 +307,27 @@ def main():
             if r and r[0] >= 20:
                 P(f"  {tag}\t{plabel(p)}\t{r[0]:,}\t{r[1]:,} / {r[2]:,}（{r[2] / r[1]:.2f}）\t{r[3] / r[0]:.0%}")
     P("  （不足 20 个窗口的格子不列）")
+
+    P("")
+    P("## M. 同一个号相邻两个 ≥8 条的批隔几个回合，和全队当时发得多少的关系（后一个批落在 600~3000 拍；全队发出 = 后一个批所在的 90 拍窗口里全队 cmds 的增量）")
+    P("   全队这一窗发出 | 对数 | 间隔（回合）中位 / P90 | 涉及的局数")
+    mg = []
+    for g, w, team in per_game:
+        mid = g["matchId"]
+        for t, gap in BATCH_GAPS.get(mid, []):
+            if not (600 <= t < 3000):
+                continue
+            a = (t - 1) // 90 * 90
+            v = team.get((a, a + 90))
+            if v:
+                mg.append((v[0], gap, mid))
+    for lo, hi in ((0, 19), (20, 39), (40, 79), (80, 129), (130, 10 ** 6)):
+        sel = sorted(x[1] for x in mg if lo <= x[0] <= hi)
+        if not sel:
+            continue
+        lab = f"{lo}~{hi}" if hi < 10 ** 6 else f"≥{lo}"
+        P(f"  {lab}\t{len(sel)}\t{statistics.median(sel):.0f} / {sel[int(0.9 * (len(sel) - 1))]}\t{len({x[2] for x in mg if lo <= x[0] <= hi})}")
+    P(f"  （合计 {len(mg)} 对；只算能对账的局）")
 
     os.makedirs(CROSS, exist_ok=True)
     open(os.path.join(CROSS, "throughput.txt"), "w", encoding="utf-8").write("\n".join(L) + "\n")
