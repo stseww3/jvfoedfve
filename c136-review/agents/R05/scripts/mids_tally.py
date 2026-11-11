@@ -21,6 +21,13 @@ fn = val('--fn', 'buyLand')
 t0, t1 = int(val('--t0', 0)), int(val('--t1', 10 ** 9))
 want = [int(x) for x in val('--lines', '').split(',') if x]
 per_window = '--per-window' in args
+
+
+def num(x):
+    # 出口标签除了行号还有 'end'（函数走到末尾没有显式 return）
+    return int(x) if x.isdigit() else x
+
+
 rx = re.compile(r'^\[分支命中 (\S+)\] (\S+) t=(\d+)[–-](\d+) 调用 (\d+) 次｜出口行 ([^｜]*)(?:｜途中 continue 行（按拍去重）(.*))?$')
 calls = Counter()
 exits = defaultdict(Counter)
@@ -34,8 +41,8 @@ for f in files:
         bot, a, b, n = m.group(2), int(m.group(3)), int(m.group(4)), int(m.group(5))
         if a < t0 or a >= t1:
             continue
-        ex = Counter({int(x.split('×')[0]): int(x.split('×')[1]) for x in m.group(6).split() if '×' in x})
-        md = Counter({int(x.split('×')[0]): int(x.split('×')[1]) for x in (m.group(7) or '').split() if '×' in x})
+        ex = Counter({num(x.split('×')[0]): int(x.split('×')[1]) for x in m.group(6).split() if '×' in x})
+        md = Counter({num(x.split('×')[0]): int(x.split('×')[1]) for x in (m.group(7) or '').split() if '×' in x})
         calls[bot] += n
         exits[bot].update(ex)
         mids[bot].update(md)
