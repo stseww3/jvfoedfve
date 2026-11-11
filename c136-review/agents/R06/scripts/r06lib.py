@@ -340,6 +340,8 @@ def load_match(mid, with_replay=True, use_sim=True):
             mm = RE_SLOW.search(rest)
             if mm and me is not None:
                 M.bots[me].slow.append((int(mm.group(1)), float(mm.group(2))))
+            elif mm:
+                M.unresolved[name].append(('SLOW', (int(mm.group(1)), float(mm.group(2)))))
         elif tag == 'HL-PEACE':
             M.peace.append((line, name, rest))
     # 解析不出 me 的名字：按「前一个号的快照到此为止、领土接得上」推断改名
@@ -389,6 +391,8 @@ def load_match(mid, with_replay=True, use_sim=True):
                 elif kind == 'ASSIST':
                     e['me'] = best
                     M.bots[best].assists.append(e)
+                elif kind == 'SLOW':
+                    M.bots[best].slow.append(e)
             del M.unresolved[name]
     for b in M.bots.values():
         seen = {}

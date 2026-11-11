@@ -14,6 +14,7 @@
     python3 digest.py <matchId> spawn       # 出生几何
     python3 digest.py <matchId> picks       # 选点指令（录像真值）：每号改点次数、最后两步的改点、撞点
     python3 digest.py <matchId> spawnlog    # 有录像的局：日志最后一条 HL-SPAWN 是不是真正的出生点（给没有录像的局校准）
+    python3 digest.py <matchId> slots       # 日志 HL-SPAWN 的槽位与候选数：槽位是否互不相同、每次重算的候选点个数、走到兜底取点的行数
     python3 digest.py <matchId> boxed       # 被围（nb=0,neut=0）高密度滞留
     python3 digest.py <matchId> attacks [t0 t1]    # 我方各号被谁打 / 打了谁（录像）
     python3 digest.py <matchId> json        # 写 out/<matchId>/digest.json（复盘 JSON 的数字来源）
@@ -596,6 +597,25 @@ def sec_spawn(M):
               ' '.join(f"{pname(M, p)}/T{pteam(M, p)}:{d:.0f}" for d, p in near) +
               f" | 最近我方号 {mate[0]:.0f} 最近敌队真人 {enemy[0]:.0f} 最近同队真人 {tm[0]:.0f}" +
               f" | 地@270={s270['terr'] if s270 else '-'} @630={s630['terr'] if s630 else '-'}")
+    # 汇总：出生点 80 格内有没有另一个我方号 × t≈630 的领土（取 t<=630 最近一条快照，最多往前 100 拍；没有快照的号不计）
+    rows = []
+    for me in M.squad:
+        if me not in pts:
+            continue
+        x, y = pts[me]
+        dm = min((math.hypot(x - pts[p][0], y - pts[p][1]) for p in M.squad if p != me and p in pts), default=9e9)
+        s = M.bots[me].at(630, 100)
+        if s:
+            rows.append((s['terr'], M.bots[me].name, dm < 80, s['t']))
+    if rows:
+        rows.sort()
+        v = [r[0] for r in rows]
+        med = v[len(v) // 2] if len(v) % 2 else (v[len(v) // 2 - 1] + v[len(v) // 2]) / 2
+        near = [r for r in rows if r[2]]
+        far = [r for r in rows if not r[2]]
+        print(f"  t≈630 有快照的 {len(rows)} 个号领土从小到大：" + ' '.join(f"{n}{'*' if f else ''}:{t}" for t, n, f, _ in rows) + f"（* = 出生点 80 格内有另一个我方号）；中位 {med:g}")
+        print(f"  其中 80 格内有我方号的 {len(near)} 个：中位 {sorted(r[0] for r in near)[len(near) // 2] if near else '-'}，排在最小的 {len(near)} 名里的 {sum(1 for r in rows[:len(near)] if r[2])} 个；"
+              f"其余 {len(far)} 个：中位 {sorted(r[0] for r in far)[len(far) // 2] if far else '-'}")
 
 
 def picks_rows(M):
@@ -675,6 +695,63 @@ def spawnlog_rows(M):
         out.append(dict(me=me, name=M.bots[me].name, logPicks=len(lg), effective=len(v), lastLog=list(lg[-1]), true=list(true),
                         lastIsTrue=(lg[-1] == true), trueBack=back, dist=round(math.hypot(lg[-1][0] - true[0], lg[-1][1] - true[1]), 1)))
     return out
+
+
+def slots_rows(M):
+    """日志 HL-SPAWN：slot（工位号 %20）、rankIdx、每行的 chosenSlots/候选数。只用日志，不需要录像。
+    c110 chooseSpawn：候选表每 2.2 秒在本机重算（L4074-4085）；按 minSep 贪心取到第 slot 个（L4090-4103），
+    不够就把间距放宽到 0.62 倍（L4105-4116），再不够走最远点采样兜底（L4118-4145）。"""
+    rows = []
+    for me in sorted(M.squad):
+        b = M.bots[me]
+        sp = b.spawns
+        if not sp:
+            continue
+        cand = Counter(int(e['cand']) for e in sp if e['cand'] is not None)
+        rows.append(dict(me=me, name=b.name, team=b.team, slot=sp[0]['slot'], rankIdx=sp[0]['rankIdx'], squad=sp[0]['squad'], n=len(sp),
+                         cand=dict(sorted(cand.items())), distinctXY=len({(e['x'], e['y']) for e in sp}),
+                         shortOfSlot=sum(1 for e in sp if e['chosen'] is not None and e['chosen'] <= e['slot']),
+                         minSep=sorted({int(e['minSep']) for e in sp if e['minSep'] is not None})))
+    return rows
+
+
+def sec_slots(M):
+    rows = slots_rows(M)
+    slots = [r['slot'] for r in rows]
+    dup = sorted(k for k, v in Counter(slots).items() if v > 1)
+    print(f"== {M.id} slots：日志 HL-SPAWN {sum(r['n'] for r in rows)} 行、{len(rows)} 个号；槽位 {sorted(slots)}；重复的槽位 {dup or '无'}；"
+          f"0~19 里没人用的槽位 {sorted(set(range(20)) - set(slots))}")
+    for r in rows:
+        print(f"   {r['name']:14s} 队{r['team']} slot={r['slot']:2d} rankIdx={r['rankIdx']:2d} squad={r['squad']} 日志 {r['n']:2d} 行、不同坐标 {r['distinctXY']:2d} 个；"
+              f"候选数分布 {r['cand']}；按间距取不满 slot+1 个的行 {r['shortOfSlot']}；minSep {r['minSep']}")
+    tot = Counter()
+    for r in rows:
+        tot.update(r['cand'])
+    print(f"   全部行的候选数分布：{dict(sorted(tot.items()))}")
+    R = picks_rows(M)
+    if not R:
+        print('   （没有录像：每个槽位生效了几条选点看不到）')
+        return
+    # 槽位 × 录像里生效的选点条数：高槽位是不是只生效了一条
+    print(f"   按槽位看「录像里生效的选点条数 / 日志 HL-SPAWN 行数」（选点阶段 {R['steps']} 步）；去向 = 结算行 event（没有结算行 = silent）：")
+    line = []
+    one = []
+    for r in sorted(rows, key=lambda r: r['slot']):
+        v = R['per'].get(r['me'], [])
+        b = M.bots[r['me']]
+        ev = b.result.get('event') if b.result else 'silent'
+        last = b.traj[-1]['t'] if b.traj else None
+        line.append(f"s{r['slot']}:{len(v)}/{r['n']}" + (f"(步{v[0][0]}" + (f"~{v[-1][0]}" if len(v) > 1 else '') + ')' if v else '') + f"[{ev}{'' if ev in ('died', 'end') else '@' + str(last)}]")
+        if len(v) <= 1:
+            one.append(r['slot'])
+    for i in range(0, len(line), 5):
+        print('     ' + '  '.join(line[i:i + 5]))
+    hi = [r for r in rows if r['slot'] >= 14]
+    lo = [r for r in rows if r['slot'] < 14]
+    def med(rs):
+        v = sorted(len(R['per'].get(r['me'], [])) for r in rs)
+        return v[len(v) // 2] if v else '-'
+    print(f"   只生效 <=1 条的槽位：{one or '无'}；槽位 >=14 的 {len(hi)} 个号生效条数中位 {med(hi)}，槽位 <14 的 {len(lo)} 个号中位 {med(lo)}")
 
 
 def sec_spawnlog(M):
@@ -964,6 +1041,8 @@ def main():
         sec_spawn(M)
     elif sec == 'picks':
         sec_picks(M)
+    elif sec == 'slots':
+        sec_slots(M)
     elif sec == 'spawnlog':
         sec_spawnlog(M)
     elif sec == 'boxed':

@@ -28,6 +28,11 @@
   peace     HL-PEACE 行：谁在哪一拍发起 / 投票、当时日志里的 teamLand，以及同一拍别的队里还在场的我方号
   oplag     开局指令「下令拍 → 进录像的执行拍」的延迟（HL-OPENING 的 t 与录像里同一条无主地指令的拍；需要录像）
   issued    日志 cmds 计数（策略自己数的已发指令）与录像里该号的指令条数（需要录像）
+  bursts [t0]  便宜的集中出手（NEW:AT-cheap-burst）的机械判定：一个间隔内 >=3 条出兵/发船、两个间隔领土 +25%、每格 <80 兵、600 拍后仍 >=1.2 倍；起点 t>=t0（默认 630；模式实例取 1440）
+  boxboats  被围发船：nb=0 且 neut=0 时发的船，500 拍内领土涨没涨（>=1.5 倍 = NEW:BT-boxed-breakout；<1.05 倍 = 没换到地）
+  harvest [t0]  邻居崩盘后收地（NEW:AT-collapse-harvest）：t>=t0（默认 630）相邻快照 neut 从 0 变成 >=8，270 拍内领土 >=1.2 倍
+  crumb     开局期被零星无主地卡住（NEW:OP-neutral-crumb-lock）：t<1500 连续 >=270 拍 neut>0、零指令、领土不变
+  thinbig   又大又薄（NEW:EC-thin-big-target）的机械判定：密度 <12 连续 >=450 拍、领土到过在场我方号中位 2 倍且 nb>=1、到顶后 300 拍内跌 >=40%
   json      以上汇总写 out/<id>/logdigest.json
 所有阈值都写在函数开头的常量里。
 """
@@ -916,6 +921,277 @@ def sec_spend(M, t_from=0, t_to=10 ** 9):
     print('   合计：' + '；'.join(f"{lab[k]} {x['n']} 段 / {fmt(x['spend'])} / {x['dterr']:+d}（+{x['gain']} / −{x['lose']}）" for k, x in ((k, tot[k]) for k in ('none', 'don', 'poke', 'atk', 'mixed')) if x['n']))
 
 
+# ------------------------------------------------------------------ bursts / thinbig（两个只靠日志的机械判定）
+BURST_MIN_CMDS = 3        # 一个快照间隔内的出兵/发船指令条数下限
+BURST_GROW = 1.25         # 这个间隔加下一个间隔，领土至少涨到几倍
+BURST_MAX_COST = 80       # 净支出 / 净得格 的上限（兵）
+BURST_HOLD_T = 600        # 之后多少拍再看一次
+BURST_HOLD = 1.2          # 那时领土至少还是扩张前的几倍
+BURST_MIN_TERR = 300      # 起点领土下限（排除开局头几圈）
+
+
+def _other_cmds(b, a, c):
+    dn = sum(1 for e in b.donations if a['t'] <= e['t'] < c['t'])
+    ps = sum(1 for e in b.assists if a['t'] <= e['t'] < c['t'])
+    return (c['cmds'] - a['cmds']) - dn - ps
+
+
+def burst_rows(M, t_from=630):
+    """NEW:AT-cheap-burst：一个快照间隔内 >=3 条出兵/发船指令，这个间隔加下一个间隔领土 +25% 以上，
+    净支出/净得格 <80 兵（净支出 = 两个间隔里「按引擎利息推的余额 − 实际余额」之和，带符号），
+    且 600 拍后（之后第一条 t>=起点+600 的快照；终局前不足 600 拍就用最后一条）领土仍 >= 扩张前的 1.2 倍。
+    返回 (命中的, 只差最后一条「600 拍后还在」的)。相邻命中的间隔只记第一条。"""
+    hits, faded = [], []
+    for me, b in sorted(M.bots.items()):
+        tr = b.traj
+        last_hit = -10 ** 9
+        for i in range(len(tr) - 2):
+            a, c, e = tr[i], tr[i + 1], tr[i + 2]
+            if a['t'] < t_from or a['terr'] < BURST_MIN_TERR or a['bal'] <= 0 or c['t'] - a['t'] > 270 or e['t'] - c['t'] > 270:
+                continue
+            ot = _other_cmds(b, a, c)
+            if ot < BURST_MIN_CMDS or e['terr'] < BURST_GROW * a['terr']:
+                continue
+            spend = (grow(a['bal'], a['t'], c['t'], b, M.land) - c['bal']) + (grow(c['bal'], c['t'], e['t'], b, M.land) - e['bal'])
+            cells = e['terr'] - a['terr']
+            cost = spend / max(1, cells)
+            if cost >= BURST_MAX_COST:
+                continue
+            later = [x for x in tr if x['t'] >= a['t'] + BURST_HOLD_T]
+            dt = death_tick(b)
+            if later:
+                hold = later[0]
+            elif dt is None and b.result and b.result.get('event') == 'end':
+                hold = tr[-1]
+            else:
+                hold = None
+            row = dict(me=me, name=name_of(b), team=b.team, t=a['t'], t1=e['t'], terr0=a['terr'], terr1=e['terr'], cmds=ot, bal0=a['bal'], balMin=min(c['bal'], e['bal']),
+                       bal1=e['bal'], spend=int(spend), cost=round(cost, 1), dens0=round(a['dens'], 1), nb=a['nb'],
+                       holdT=hold['t'] if hold else None, holdTerr=hold['terr'] if hold else None, died=dt)
+            if a['t'] - last_hit <= 180:
+                continue
+            last_hit = a['t']
+            (hits if hold and hold['terr'] >= BURST_HOLD * a['terr'] else faded).append(row)
+    return hits, faded
+
+
+def sec_bursts(M, t_from=630):
+    hits, faded = burst_rows(M, t_from)
+    print(f"便宜的集中出手（NEW:AT-cheap-burst；只用日志）：一个快照间隔内 >={BURST_MIN_CMDS} 条出兵/发船指令，这个间隔加下一个间隔领土 >= {BURST_GROW} 倍，"
+          f"净支出/净得格 < {BURST_MAX_COST} 兵，{BURST_HOLD_T} 拍后领土仍 >= 扩张前的 {BURST_HOLD} 倍；起点 t>={t_from}（不带参数 = 630，含开局扩张；NEW:AT-cheap-burst 的实例取 bursts 1440）")
+    def line(r):
+        return (f"   {r['name']:13s}(队{r['team']}) t={r['t']}~{r['t1']} 指令 {r['cmds']} 条；领土 {r['terr0']}→{r['terr1']}（+{r['terr1'] - r['terr0']}）；余额 {fmt(r['bal0'])}→最低 {fmt(r['balMin'])}→{fmt(r['bal1'])}；"
+                f"净支出 {fmt(r['spend'])}，每格 {r['cost']} 兵；起点密度 {r['dens0']} nb={r['nb']}；"
+                + (f"t={r['holdT']} 领土 {r['holdTerr']}（{r['holdTerr'] / max(1, r['terr0']):.2f} 倍）" if r['holdT'] is not None else '之后没有快照')
+                + (f"；阵亡 t={r['died']}" if r['died'] else ''))
+    print(f"  命中 {len(hits)} 次：")
+    for r in hits:
+        print(line(r))
+    print(f"  前三条都满足、但 {BURST_HOLD_T} 拍后没守住（或没活到）的 {len(faded)} 次：")
+    for r in faded:
+        print(line(r))
+
+
+BOXB_WIN = 500            # 发船后多少拍内看领土
+BOXB_GROW = 1.5           # 涨到几倍算「靠船突围」
+BOXB_FLAT = 1.05          # 不到几倍算「没换到地」
+
+
+def boxboat_rows(M):
+    """被围发船：起点快照 nb=0 且 neut=0、这个间隔里 boats 计数涨了。相邻（<=270 拍）的这种间隔并成一段。
+    每段：发船条数、这些间隔的净支出（按引擎利息推的余额 − 实际余额，带符号求和；同一间隔里有捐款日志的不计，另列条数）、起点领土、段首起 500 拍内（到段尾 +500）最高领土。
+    NEW:BT-boxed-breakout = 最高领土 >= 1.5×起点；「没换到地」= 最高领土 < 1.05×起点。"""
+    out = []
+    for me, b in sorted(M.bots.items()):
+        tr = b.traj
+        segs = []
+        for a, c in zip(tr, tr[1:]):
+            if a['nb'] == 0 and a['neut'] == 0 and c['boats'] > a['boats'] and c['t'] - a['t'] <= 270:
+                spend = grow(a['bal'], a['t'], c['t'], b, M.land) - c['bal']
+                dn = sum(1 for e in b.donations if a['t'] <= e['t'] < c['t'])
+                if segs and a['t'] - segs[-1]['t1'] <= 270:
+                    g = segs[-1]
+                    g['t1'] = c['t']
+                    g['boats'] += c['boats'] - a['boats']
+                    g['n'] += 1
+                else:
+                    g = dict(me=me, name=name_of(b), team=b.team, t0=a['t'], t1=c['t'], boats=c['boats'] - a['boats'], spend=0, n=1, mixed=0, boatsMixed=0,
+                             terr0=a['terr'], bal0=a['bal'], dens0=round(a['dens'], 1))
+                    segs.append(g)
+                if dn:
+                    g['mixed'] += 1          # 这个间隔里还有捐款日志：支出分不开，不计入净支出
+                    g['boatsMixed'] += c['boats'] - a['boats']
+                else:
+                    g['spend'] += spend
+        for g in segs:
+            win = [x for x in tr if g['t0'] < x['t'] <= g['t1'] + BOXB_WIN]
+            g['maxTerr'] = max((x['terr'] for x in win), default=g['terr0'])
+            g['maxT'] = next((x['t'] for x in win if x['terr'] == g['maxTerr']), None)
+            g['endTerr'] = win[-1]['terr'] if win else g['terr0']
+            g['endT'] = win[-1]['t'] if win else None
+            g['died'] = death_tick(b)
+            e1 = next((x for x in tr if x['t'] == g['t1']), None)
+            nx = next((x for x in tr if x['t'] > g['t1']), None)
+            g['bal1'] = e1['bal'] if e1 else None
+            g['balNext'] = nx['bal'] if nx else None
+            g['ratio'] = g['maxTerr'] / max(1, g['terr0'])
+            g['kind'] = 'breakout' if g['ratio'] >= BOXB_GROW else ('flat' if g['ratio'] < BOXB_FLAT else 'some')
+            out.append(g)
+    return out
+
+
+def sec_boxboats(M):
+    rows = boxboat_rows(M)
+    lab = dict(breakout='突围（NEW:BT-boxed-breakout）', some='涨了一点', flat='没换到地')
+    print(f"被围发船（只用日志）：起点 nb=0 且 neut=0 的快照间隔里 boats 计数上涨，相邻间隔并成一段；看段首到段尾 +{BOXB_WIN} 拍内的最高领土；净支出只算没有捐款日志的间隔。"
+          f"共 {len(rows)} 段、{sum(r['boats'] for r in rows)} 条船：" + '，'.join(f"{lab[k]} {sum(1 for r in rows if r['kind'] == k)} 段 / {sum(r['boats'] for r in rows if r['kind'] == k)} 条船 / 净支出 {fmt(sum(r['spend'] for r in rows if r['kind'] == k))}" for k in ('breakout', 'some', 'flat')))
+    for r in rows:
+        print(f"   {r['name']:13s}(队{r['team']}) t={r['t0']}~{r['t1']} 船 {r['boats']} 条（{r['n']} 个间隔）；起点 {r['terr0']} 格、{fmt(r['bal0'])} 兵、密度 {r['dens0']}；"
+              f"净支出 {fmt(r['spend'])}（{r['boats'] - r['boatsMixed']} 条船；另 {r['boatsMixed']} 条所在间隔有捐款，不计）；段尾余额 {fmt(r['bal1']) if r['bal1'] is not None else '-'}、下一个快照 {fmt(r['balNext']) if r['balNext'] is not None else '-'}；"
+              f"最高领土 {r['maxTerr']}（t={r['maxT']}，{r['ratio']:.2f} 倍）；t={r['endT']} 时 {r['endTerr']} 格 → {lab[r['kind']]}" + (f"；阵亡 t={r['died']}" if r['died'] else ''))
+
+
+HARV_T_FROM = 630         # 开局期到处是无主地，不算
+HARV_NEUT = 8             # 无主邻格从 0 跳到至少这么多
+HARV_WIN = 270            # 从跳变前一个快照起多少拍内看领土
+HARV_GROW = 1.2
+
+
+def harvest_rows(M, t_from=None):
+    """NEW:AT-collapse-harvest：t>=630，相邻快照（<=270 拍）neut 从 0 变成 >=8（引擎里一个玩家领土 <= 峰值/4 就崩盘，剩下的地变成无主地，
+    正在打它的兵改打无主地），从跳变前一个快照起 270 拍内领土到过 >= 1.2 倍。
+    同一个号相邻命中（起点相隔 <=270 拍）只记第一条。列出：这段里的指令数/发船数、余额（起点→最低→终点）、nb 的变化、600 拍后的领土。"""
+    out = []
+    for me, b in sorted(M.bots.items()):
+        tr = b.traj
+        last = -10 ** 9
+        for i in range(len(tr) - 1):
+            a, c = tr[i], tr[i + 1]
+            if a['t'] < (HARV_T_FROM if t_from is None else t_from) or c['t'] - a['t'] > 270 or a['neut'] != 0 or c['neut'] < HARV_NEUT or a['terr'] < 300:
+                continue
+            win = [x for x in tr if a['t'] < x['t'] <= a['t'] + HARV_WIN]
+            top = max(win, key=lambda x: x['terr'])
+            if top['terr'] < HARV_GROW * a['terr'] or a['t'] - last <= 270:
+                continue
+            last = a['t']
+            pre = tr[i - 1] if i > 0 and a['t'] - tr[i - 1]['t'] <= 270 else a
+            seg = [x for x in tr if pre['t'] <= x['t'] <= top['t']]
+            later = [x for x in tr if x['t'] >= a['t'] + 600]
+            spend = sum(grow(x['bal'], x['t'], y['t'], b, M.land) - y['bal'] for x, y in zip(seg, seg[1:]))
+            dons = sum(1 for e in b.donations if pre['t'] <= e['t'] < top['t'])
+            out.append(dict(me=me, name=name_of(b), team=b.team, t=a['t'], tNeut=c['t'], neut=c['neut'], terr0=a['terr'], terrTop=top['terr'], tTop=top['t'],
+                            preT=pre['t'], cmds=top['cmds'] - pre['cmds'], boats=top['boats'] - pre['boats'], dons=dons, bal0=pre['bal'], balMin=min(x['bal'] for x in seg), bal1=top['bal'],
+                            spend=int(spend), nb0=a['nb'], nb1=top['nb'], dens0=round(a['dens'], 1),
+                            holdT=later[0]['t'] if later else None, holdTerr=later[0]['terr'] if later else None, died=death_tick(b)))
+    return out
+
+
+def sec_harvest(M, t_from=None):
+    rows = harvest_rows(M, t_from)
+    late = [r for r in rows if r['t'] >= 1440]
+    print(f"邻居崩盘后收地（NEW:AT-collapse-harvest；只用日志）：t>={HARV_T_FROM if t_from is None else t_from}，相邻快照 neut 从 0 变成 >={HARV_NEUT}，从跳变前一个快照起 {HARV_WIN} 拍内领土 >= {HARV_GROW} 倍：{len(rows)} 次，"
+          f"合计 +{sum(r['terrTop'] - r['terr0'] for r in rows)} 格；其中起点 t>=1440 的 {len(late)} 次、+{sum(r['terrTop'] - r['terr0'] for r in late)} 格、净支出合计 {fmt(sum(r['spend'] for r in late))}")
+    for r in rows:
+        print(f"   {r['name']:13s}(队{r['team']}) t={r['t']}→{r['tTop']} 领土 {r['terr0']}→{r['terrTop']}（+{r['terrTop'] - r['terr0']}，{r['terrTop'] / r['terr0']:.2f} 倍）；t={r['tNeut']} neut={r['neut']}；nb {r['nb0']}→{r['nb1']}；"
+              f"t={r['preT']}~{r['tTop']} 指令 {r['cmds']} 条（发船 {r['boats']}、捐款日志 {r['dons']}）；余额 {fmt(r['bal0'])}→最低 {fmt(r['balMin'])}→{fmt(r['bal1'])}，净支出 {fmt(r['spend'])}"
+              f"（每格 {r['spend'] / max(1, r['terrTop'] - r['terr0']):.0f} 兵）；起点密度 {r['dens0']}；"
+              + (f"t={r['holdT']} 领土 {r['holdTerr']}" if r['holdT'] is not None else '之后没有快照') + (f"；阵亡 t={r['died']}" if r['died'] else ''))
+
+
+CRUMB_MIN_LEN = 270       # 连续多少拍
+CRUMB_T_MAX = 1500        # 只看开局期（t < coreFrom / dpEnd）
+
+
+def crumb_rows(M):
+    """NEW:OP-neutral-crumb-lock：t<1500，连续 >=270 拍 neut>0、cmds 与 boats 计数不变、领土不变（日志快照）。
+    代码：t<dpEnd(1500) 无主地只走 dpNeutral（L2418-2444），要买的那几圈不到 minCmd（4×手续费 = 余额的 4.7%）就不发（L2440）；
+    General.act L835 在 neutral>0 时直接返回，后面的发船（L840-844）和闲兵出手（L845）都走不到。"""
+    out = []
+    for me, b in sorted(M.bots.items()):
+        tr = [x for x in b.traj if x['t'] <= CRUMB_T_MAX + 30]
+        i = 0
+        while i < len(tr):
+            if tr[i]['neut'] <= 0:
+                i += 1
+                continue
+            j = i
+            while (j + 1 < len(tr) and tr[j + 1]['neut'] > 0 and tr[j + 1]['cmds'] == tr[i]['cmds'] and tr[j + 1]['boats'] == tr[i]['boats']
+                   and tr[j + 1]['terr'] == tr[i]['terr'] and tr[j + 1]['t'] - tr[j]['t'] <= 270):
+                j += 1
+            a, c = tr[i], tr[j]
+            if c['t'] - a['t'] >= CRUMB_MIN_LEN:
+                nxt = next((x for x in b.traj if x['t'] > c['t']), None)
+                out.append(dict(me=me, name=name_of(b), team=b.team, t0=a['t'], t1=c['t'], terr=a['terr'], bal0=a['bal'], bal1=c['bal'], dens0=round(a['dens'], 1), dens1=round(c['dens'], 1),
+                                nb=sorted({x['nb'] for x in tr[i:j + 1]}), neut=sorted({x['neut'] for x in tr[i:j + 1]}), minCmd0=4 * (12 * a['bal'] // 1024), minCmd1=4 * (12 * c['bal'] // 1024),
+                                nextT=nxt['t'] if nxt else None, nextCmds=(nxt['cmds'] - c['cmds']) if nxt else None, nextBoats=(nxt['boats'] - c['boats']) if nxt else None))
+            i = j + 1
+    return out
+
+
+def sec_crumb(M):
+    rows = crumb_rows(M)
+    print(f"开局期被零星无主地卡住（NEW:OP-neutral-crumb-lock；只用日志）：t<{CRUMB_T_MAX}，连续 >={CRUMB_MIN_LEN} 拍 neut>0、cmds/boats 计数不变、领土不变：{len(rows)} 段，合计 {sum(r['t1'] - r['t0'] for r in rows)} 拍")
+    for r in rows:
+        print(f"   {r['name']:13s}(队{r['team']}) t={r['t0']}~{r['t1']}（{r['t1'] - r['t0']} 拍）领土 {r['terr']}；nb {r['nb']} neut {r['neut']}；余额 {fmt(r['bal0'])}→{fmt(r['bal1'])}，密度 {r['dens0']}→{r['dens1']}；"
+              f"最小指令量（4×手续费）{fmt(r['minCmd0'])}→{fmt(r['minCmd1'])}"
+              + (f"；下一个快照 t={r['nextT']} 指令 +{r['nextCmds']}（其中发船 +{r['nextBoats']}）" if r['nextT'] is not None else '；之后没有快照'))
+
+
+THIN_DENS = 12            # 「薄」的密度上限
+THIN_MIN_LEN = 450        # 连续多少拍
+THIN_BIG = 2.0            # 领土 >= 在场我方号中位的几倍
+THIN_FALL_T = 300         # 到顶之后多少拍内
+THIN_FALL = 0.6           # 领土跌到峰值的几成以下（即跌 >=40%）
+
+
+def _median(v):
+    v = sorted(v)
+    n = len(v)
+    return 0 if not n else (v[n // 2] if n % 2 else (v[n // 2 - 1] + v[n // 2]) / 2)
+
+
+def thinbig_rows(M):
+    """NEW:EC-thin-big-target：密度 <12 连续 >=450 拍，其间领土到过在场我方号中位的 2 倍以上且 nb>=1；到顶之后 300 拍内领土跌 >=40%（或阵亡）。"""
+    med = {}
+    def med_at(t):
+        if t not in med:
+            med[t] = _median([x['terr'] for bb in M.bots.values() for x in bb.traj if x['t'] == t])
+        return med[t]
+    out = []
+    for me, b in sorted(M.bots.items()):
+        tr = b.traj
+        i = 0
+        while i < len(tr):
+            if tr[i]['dens'] >= THIN_DENS:
+                i += 1
+                continue
+            j = i
+            while j + 1 < len(tr) and tr[j + 1]['dens'] < THIN_DENS and tr[j + 1]['t'] - tr[j]['t'] <= 270:
+                j += 1
+            run = tr[i:j + 1]
+            if run[-1]['t'] - run[0]['t'] >= THIN_MIN_LEN:
+                big = [x for x in run if x['nb'] >= 1 and x['terr'] >= THIN_BIG * med_at(x['t'])]
+                if big:
+                    pk = max(big, key=lambda x: x['terr'])
+                    after = [x for x in tr if pk['t'] < x['t'] <= pk['t'] + THIN_FALL_T]
+                    dt = death_tick(b)
+                    low = min((x['terr'] for x in after), default=pk['terr'])
+                    dead = dt is not None and dt <= pk['t'] + THIN_FALL_T
+                    if dead or low <= THIN_FALL * pk['terr']:
+                        out.append(dict(me=me, name=name_of(b), team=b.team, t0=run[0]['t'], t1=run[-1]['t'], peakT=pk['t'], peak=pk['terr'], median=med_at(pk['t']),
+                                        dens=round(pk['dens'], 1), nb=pk['nb'], low=0 if dead else low, died=dt))
+            i = j + 1
+    return out
+
+
+def sec_thinbig(M):
+    rows = thinbig_rows(M)
+    print(f"又大又薄（NEW:EC-thin-big-target；只用日志）：密度 <{THIN_DENS} 连续 >={THIN_MIN_LEN} 拍，其间领土到过在场我方号中位的 {THIN_BIG:g} 倍以上且 nb>=1；到顶之后 {THIN_FALL_T} 拍内领土跌 >=40% 或阵亡：{len(rows)} 次")
+    for r in rows:
+        print(f"   {r['name']:13s}(队{r['team']}) 薄的时段 t={r['t0']}~{r['t1']}；领土峰值 t={r['peakT']} {r['peak']} 格（当时在场我方号中位 {r['median']:.0f}，密度 {r['dens']}，nb={r['nb']}）"
+              f" → {THIN_FALL_T} 拍内最低 {r['low']} 格" + (f"；阵亡 t={r['died']}" if r['died'] else ''))
+
+
 # ------------------------------------------------------------------ fireband（有可打的邻居时，按密度档看「这 90 拍里发没发出兵/发船指令」）
 FIRE_BANDS = [(0, 50), (50, 90), (90, 100), (100, 114), (114, 126), (126, 137), (137, 142), (142, 150.1)]
 
@@ -1332,6 +1608,13 @@ def build_json(M):
     if o is not None:
         doc['oplag'] = {str(me): rows for me, rows in o.items()}
         doc['issued'] = [{k: v for k, v in r.items() if k != 'series'} for r in issued_rows(M)]
+    hits, faded = burst_rows(M, 1440)
+    doc['bursts1440'] = dict(hits=hits, faded=faded)
+    doc['thinbig'] = thinbig_rows(M)
+    doc['crumb'] = crumb_rows(M)
+    doc['boxboats'] = boxboat_rows(M)
+    doc['harvest'] = harvest_rows(M)
+    doc['freezebound'] = [{k: v for k, v in r.items() if k != 'rows'} for r in freezebound_rows(M)]
     return doc
 
 
@@ -1384,6 +1667,16 @@ def main():
         sec_spend(M, *(a if len(a) == 2 else ()))
     elif sec == 'issued':
         sec_issued(M)
+    elif sec == 'bursts':
+        sec_bursts(M, *([int(sys.argv[3])] if len(sys.argv) > 3 else []))
+    elif sec == 'thinbig':
+        sec_thinbig(M)
+    elif sec == 'crumb':
+        sec_crumb(M)
+    elif sec == 'harvest':
+        sec_harvest(M, *([int(sys.argv[3])] if len(sys.argv) > 3 else []))
+    elif sec == 'boxboats':
+        sec_boxboats(M)
     elif sec == 'freezebound':
         sec_freezebound(M, *( [int(sys.argv[3])] if len(sys.argv) > 3 else [] ))
     elif sec == 'quotacap':
