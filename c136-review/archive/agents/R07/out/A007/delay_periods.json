@@ -77,25 +77,33 @@
    "shadow": 95,
    "real": 88,
    "landed": 84,
-   "bots": 10
+   "bots": 10,
+   "donWant": 0,
+   "donLanded": 0
   },
   "630~1530": {
    "shadow": 155,
    "real": 155,
    "landed": 149,
-   "bots": 9
+   "bots": 9,
+   "donWant": 0,
+   "donLanded": 0
   },
   "1530~3060": {
    "shadow": 107,
    "real": 107,
    "landed": 62,
-   "bots": 9
+   "bots": 9,
+   "donWant": 60,
+   "donLanded": 11
   },
   "3060~末": {
    "shadow": 200,
    "real": 189,
    "landed": 141,
-   "bots": 9
+   "bots": 9,
+   "donWant": 50,
+   "donLanded": 20
   }
  },
  "whiff": {
@@ -687,5 +695,117 @@
     "留底：keepCap×100×领土 封顶": 148
    }
   }
- }
+ },
+ "late": [
+  {
+   "T": 714,
+   "bot": "sora_w",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 635,
+   "intentMax": 635,
+   "b0": 7701,
+   "b1": 6807
+  },
+  {
+   "T": 980,
+   "bot": "noah88",
+   "n": 1,
+   "sameTick": 6,
+   "intentMin": 920,
+   "intentMax": 920,
+   "b0": 30082,
+   "b1": 13957
+  },
+  {
+   "T": 4102,
+   "bot": "noah88",
+   "n": 1,
+   "sameTick": 4,
+   "intentMin": 4040,
+   "intentMax": 4040,
+   "b0": 981555,
+   "b1": 495123
+  },
+  {
+   "T": 4137,
+   "bot": "talon5",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 4070,
+   "intentMax": 4070,
+   "b0": 525278,
+   "b1": 458080
+  },
+  {
+   "T": 4144,
+   "bot": "talon5",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 4080,
+   "intentMax": 4080,
+   "b0": 463302,
+   "b1": 376886
+  },
+  {
+   "T": 4179,
+   "bot": "ryan_m",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 4110,
+   "intentMax": 4110,
+   "b0": 457830,
+   "b1": 462408
+  },
+  {
+   "T": 4200,
+   "bot": "kaito9",
+   "n": 3,
+   "sameTick": 3,
+   "intentMin": 4080,
+   "intentMax": 4090,
+   "b0": 306165,
+   "b1": 319037
+  },
+  {
+   "T": 4242,
+   "bot": "zero_7",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 4155,
+   "intentMax": 4155,
+   "b0": 364250,
+   "b1": 316230
+  },
+  {
+   "T": 4305,
+   "bot": "talon5",
+   "n": 4,
+   "sameTick": 4,
+   "intentMin": 4075,
+   "intentMax": 4135,
+   "b0": 271957,
+   "b1": 109025
+  },
+  {
+   "T": 4347,
+   "bot": "ryan_m",
+   "n": 8,
+   "sameTick": 8,
+   "intentMin": 4080,
+   "intentMax": 4165,
+   "b0": 533710,
+   "b1": 390585
+  },
+  {
+   "T": 4445,
+   "bot": "ryan_m",
+   "n": 8,
+   "sameTick": 8,
+   "intentMin": 4220,
+   "intentMax": 4255,
+   "b0": 442399,
+   "b1": 80432
+  }
+ ]
 }

@@ -1,0 +1,20 @@
+# A086 核心期行动拍的去向 [1500,3500)：共 3600 个号·行动拍
+合计：nooffer 2649（74%），floor 289（8%），出手 185（5%），inflight 163（5%），donate 146（4%），price 120（3%），chunk 19（1%），send 17（0%），boat 6（0%），small 4（0%），sole 2（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：dp 107，sf/squad 94，sf/enemy 61，empty 18，sf/ally 8，keep 1
+  ryan_m    400 拍：nooffer 287（72%），floor 20（5%），出手 22（6%），inflight 17（4%），donate 1（0%），price 33（8%），chunk 16（4%），send 3（1%），small 1（0%）
+          按目标：price→15 32，chunk→15 15，inflight→15 15，floor→9 13，floor→15 7，send→9 2，inflight→9 2，chunk→9 1
+  noah88    400 拍：nooffer 354（88%），floor 24（6%），出手 9（2%），donate 11（3%），boat 2（0%）
+          按目标：floor→385 21，floor→53 2，floor→361 1
+  zexos1    400 拍：nooffer 324（81%），floor 4（1%），出手 9（2%），donate 63（16%）
+          按目标：floor→53 4
+  leo_tx    400 拍：nooffer 255（64%），floor 80（20%），出手 32（8%），inflight 4（1%），donate 1（0%），price 21（5%），chunk 3（1%），send 4（1%）
+          按目标：floor→15 57，price→86 11，floor→385 10，price→264 8，floor→406 6，floor→214 5，inflight→15 4，send→15 3
+  talon5    400 拍：nooffer 268（67%），floor 26（6%），出手 37（9%），inflight 44（11%），donate 2（0%），price 22（6%），send 1（0%）
+          按目标：inflight→8 32，floor→9 26，price→9 18，inflight→9 12，price→183 4，send→9 1
+  alex_k    400 拍：nooffer 284（71%），floor 65（16%），出手 11（3%），inflight 15（4%），price 25（6%）
+          按目标：floor→9 32，floor→15 18，price→15 17，floor→183 15，inflight→15 15，price→183 4，price→147 4
+  zero_7    400 拍：nooffer 326（82%），出手 6（2%），donate 68（17%）
+  kaito9    400 拍：nooffer 284（71%），floor 3（1%），出手 22（6%），inflight 76（19%），price 9（2%），boat 4（1%），sole 2（0%）
+          按目标：inflight→8 55，inflight→9 20，price→13 6，price→8 3，floor→9 2，sole→13 2，floor→8 1，inflight→13 1
+  riku_x    400 拍：nooffer 267（67%），floor 67（17%），出手 37（9%），inflight 7（2%），price 10（2%），send 9（2%），small 3（1%）
+          按目标：floor→8 38，floor→9 29，send→8 8，price→9 6，inflight→9 5，price→8 4，inflight→8 2，small→8 2

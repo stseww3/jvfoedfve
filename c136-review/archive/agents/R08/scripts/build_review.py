@@ -254,7 +254,8 @@ def hard_ledgers(mid):
                          ("donationPairs", "donpairs_sum.json", "scripts/donpairs.py [YA]~[YF]（out/<局>/donpairs.txt）：捐款对子、净转移与来回倒手"),
                          ("deathDossier", "dossier_sum.json", "scripts/dossier.py（out/<局>/dossier.txt）：每个阵亡号最后一轮下坡里的指令和被打掉的余额"),
                          ("spawnGeometry", "spawngeo_sum.json", "scripts/spawngeo.py [QA]~[QE]（out/<局>/spawngeo.txt）：出生点贴边、扎堆、异队编队友挨着"),
-                         ("lagLoad", "lagload_sum.json", "scripts/lagload.py [LL-A]~[LL-D]（out/<局>/lagload.txt）：指令时延对全房换手格数，每 180 拍一窗")):
+                         ("lagLoad", "lagload_sum.json", "scripts/lagload.py [LL-A]~[LL-D]（out/<局>/lagload.txt）：指令时延对全房换手格数，每 180 拍一窗"),
+                         ("gateCensus", "gatecensus_sum.json", "scripts/shadow.mjs --walk-every 30 --tag walk + scripts/gatecensus.py [WA]~[WI]（out/<局>/gatecensus.txt）：1500 拍后对真人邻居 / 进攻者的买地门槛结论普查")):
         p = os.path.join(ROOT, "out", mid, fn)
         if os.path.exists(p):
             d = json.load(open(p, encoding="utf-8"))

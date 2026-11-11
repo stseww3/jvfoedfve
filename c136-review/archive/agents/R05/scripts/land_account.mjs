@@ -13,6 +13,8 @@
 //   我方号分在多个队里的局（B 系）：「路人队友 / 敌方真人」按参照的那个号自己的队算——名下的地、阵内机器人地按格子所属的号；
 //       贴身 / 全图机器人地没有唯一的参照号，「路人队友」= 与任一我方号同队的其他真人；分组改成「T<队>真人」。
 //       另出逐号表：t=--bot0 贴着这个号的机器人的全部格子，之后归 自己 / 同队真人（含同队我方号）/ 异队我方号 / 其他队真人 / 仍是机器人 / 中立。
+//   AI 机器人也分了队的局（8 队局：每队 52 个左右）：与参照号同队的机器人打不了，单列为「同队机器人」；
+//       「贴身」与逐号表只算能打的（异队）机器人；「阵内」同时给出其中同队机器人的格数。
 // 先跑：node scripts/match_truth.mjs <id>
 // 用法：node scripts/land_account.mjs <matchId> [--at 630,1500] [--bot0 600] [--fate 900,1200,1500,1800] [--json FILE]
 import fs from 'node:fs';
@@ -48,7 +50,10 @@ const fateRows = { A: [], B: [], C: [] };
 const ownerOf = (g, c) => (g.px[c] >= P_INNER ? g.own[c] : NEUTRAL);
 // ref = 参照的我方号（没有就按全队口径）
 const isMate = (o, ref) => (ref != null && ref >= 0 && teamOf.has(ref) ? teamOf.get(o) === teamOf.get(ref) : MULTI ? sqTeams.has(teamOf.get(o)) : teamOf.get(o) === ourTeam && ourTeam > 0);
-const catOf = (o, ref) => (o >= NEUTRAL ? '中立' : o >= H ? '机器人' : sq.has(o) ? '我方号' : isMate(o, ref) ? '路人队友' : '敌方真人');
+let TEAMS = null; // 引擎的队表（含 AI 机器人）
+const botMate = (o, ref) => !!(TEAMS && o >= H && o < NEUTRAL && ref != null && ref >= 0 && TEAMS[o] > 0 && TEAMS[o] === TEAMS[ref]);
+const catOf = (o, ref) => (o >= NEUTRAL ? '中立' : o >= H ? (botMate(o, ref) ? '同队机器人' : '机器人') : sq.has(o) ? '我方号' : isMate(o, ref) ? '路人队友' : '敌方真人');
+let BOTTEAM = false, mateA = 0;
 const perBotAdj = new Map(); // 我方号 -> { bots:Set, cells:Int32Array, rows:[] }
 const wantT = new Set([...AT, BOT0, ...FATE]);
 const maxT = Math.max(...wantT) + 1;
@@ -58,6 +63,8 @@ const R = await simulate(mid, {
   maxTick: maxT,
   onStart(g) {
     W = g.W; Hh = g.H; N = g.N;
+    TEAMS = g.teams || null;
+    if (TEAMS) for (let p = H; p < g.players; p++) if (TEAMS[p] > 0) { BOTTEAM = true; break; }
     cell = new Int16Array(N).fill(-1);
     const li = [];
     for (let y = 0; y < Hh; y++) {
@@ -78,6 +85,7 @@ const R = await simulate(mid, {
       terrAt.set(t, Int32Array.from({ length: H }, (_, p) => (g.alive[p] ? g.terr[p] : 0)));
       const comp = { 自己: 0, 我方别的号: 0, 路人队友: 0, 敌方真人: 0, 机器人: 0, 中立: 0 };
       if (MULTI) comp['异队我方号'] = 0;
+      if (BOTTEAM) comp['同队机器人'] = 0;
       for (let i = 0; i < landIdx.length; i++) {
         const c = landIdx[i], co = cell[c];
         if (!sq.has(co)) continue;
@@ -95,7 +103,7 @@ const R = await simulate(mid, {
         if (!(o < H && sq.has(o))) continue;
         for (const d of d4) {
           const c2 = c + d; if (c2 < 0 || c2 >= N || cell[c2] < 0) continue; const o2 = ownerOf(g, c2);
-          if (o2 >= H && o2 < NEUTRAL) { adjBots.add(o2); let e = perBotAdj.get(o); if (!e) { e = { bots: new Set(), cells: null, rows: [] }; perBotAdj.set(o, e); } e.bots.add(o2); }
+          if (o2 >= H && o2 < NEUTRAL && !botMate(o2, o)) { adjBots.add(o2); let e = perBotAdj.get(o); if (!e) { e = { bots: new Set(), cells: null, rows: [] }; perBotAdj.set(o, e); } e.bots.add(o2); }
         }
       }
       for (const [, e] of perBotAdj) { const li2 = []; for (let i = 0; i < landIdx.length; i++) { const o = ownerOf(g, landIdx[i]); if (e.bots.has(o)) li2.push(landIdx[i]); } e.cells = Int32Array.from(li2); }
@@ -105,14 +113,14 @@ const R = await simulate(mid, {
         if (o >= NEUTRAL) { if (sq.has(cell[c])) neutA++; continue; }
         if (o < H) continue;
         C.push(c);
-        if (sq.has(cell[c])) A.push(c);
+        if (sq.has(cell[c])) { A.push(c); if (botMate(o, cell[c])) mateA++; }
         if (adjBots.has(o)) B.push(c);
       }
       setA = Int32Array.from(A); setB = Int32Array.from(B); setC = Int32Array.from(C);
     }
     if (FATE.includes(t) && setA) {
       for (const [key, S] of [['A', setA], ['B', setB], ['C', setC]]) {
-        const r = { t, 我方号: 0, 路人队友: 0, 敌方真人: 0, 机器人: 0, 中立: 0, byHuman: {} };
+        const r = { t, 我方号: 0, 路人队友: 0, 敌方真人: 0, 机器人: 0, 同队机器人: 0, 中立: 0, byHuman: {} };
         for (let i = 0; i < S.length; i++) {
           const o = ownerOf(g, S[i]); const k = catOf(o, key === 'A' ? cell[S[i]] : null); r[k]++;
           if (o < H) r.byHuman[o] = (r.byHuman[o] || 0) + 1;
@@ -184,14 +192,15 @@ console.log(`\n== ③ 机器人地的去向（t=${BOT0} 时属于 AI 机器人�
 if (!setA) console.log(`   对局在 t=${BOT0} 之前已结束`);
 else {
   const nameOf = (id) => (sq.has(+id) ? `我方 ${sq.get(+id)}` : `${(J.players.find((p) => p.id === +id) || {}).name}#${id}`);
-  const lab = { A: `阵内（落在我方号名下格子里的机器人地）${setA.length} 格 = 我方名下的 ${pct(setA.length, sumO)}（另有中立 ${neutA} 格 = ${pct(neutA, sumO)}）`, B: `贴身（t=${BOT0} 与我方号接壤的 ${adjBots.size} 个机器人的全部地）${setB.length} 格`, C: `全图机器人地 ${setC.length} 格 = 全图陆地的 ${pct(setC.length, total)}` };
-  OUT.botLand = { A: { tiles: setA.length, neutralInCells: neutA }, B: { tiles: setB.length, bots: adjBots.size }, C: { tiles: setC.length }, fate: fateRows };
+  const lab = { A: `阵内（落在我方号名下格子里的机器人地）${setA.length} 格 = 我方名下的 ${pct(setA.length, sumO)}${BOTTEAM ? `，其中与该号同队、打不了的 ${mateA} 格（${pct(mateA, setA.length)}）` : ''}（另有中立 ${neutA} 格 = ${pct(neutA, sumO)}）`, B: `贴身（t=${BOT0} 与我方号接壤${BOTTEAM ? '、且不与该号同队' : ''}的 ${adjBots.size} 个机器人的全部地）${setB.length} 格`, C: `全图机器人地 ${setC.length} 格 = 全图陆地的 ${pct(setC.length, total)}` };
+  OUT.botTeams = BOTTEAM;
+  OUT.botLand = { A: { tiles: setA.length, neutralInCells: neutA, sameTeamBotTiles: mateA }, B: { tiles: setB.length, bots: adjBots.size }, C: { tiles: setC.length }, fate: fateRows };
   for (const key of ['A', 'B', 'C']) {
     const S = key === 'A' ? setA : key === 'B' ? setB : setC;
     console.log(`   ${lab[key]}`);
     for (const r of fateRows[key]) {
       const top = Object.entries(r.byHuman).sort((x, y) => y[1] - x[1]).slice(0, 4).map(([id, v]) => `${nameOf(id)} ${v}`).join('、');
-      console.log(`      t=${r.t}: 我方号 ${pct(r['我方号'], S.length)}、路人队友 ${pct(r['路人队友'], S.length)}、敌方真人 ${pct(r['敌方真人'], S.length)}、仍是机器人 ${pct(r['机器人'], S.length)}、中立 ${pct(r['中立'], S.length)}${top ? `｜拿得最多：${top}` : ''}`);
+      console.log(`      t=${r.t}: 我方号 ${pct(r['我方号'], S.length)}、路人队友 ${pct(r['路人队友'], S.length)}、敌方真人 ${pct(r['敌方真人'], S.length)}、仍是机器人 ${pct(r['机器人'] + r['同队机器人'], S.length)}${BOTTEAM && key === 'A' ? `（其中同队机器人 ${pct(r['同队机器人'], S.length)}）` : ''}、中立 ${pct(r['中立'], S.length)}${top ? `｜拿得最多：${top}` : ''}`);
     }
   }
   console.log(`   -- 逐号：t=${BOT0} 贴着这个号的机器人的全部格子，到 t=${FATE[FATE.length - 1]} 归谁`);

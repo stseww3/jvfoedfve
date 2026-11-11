@@ -1,8 +1,8 @@
-# 逐局复盘汇总（机械检查，2026-11-11 16:20 UTC）
+# 逐局复盘汇总（机械检查，2026-11-11 17:09 UTC）
 
 只查字段、数量和取值；内容对不对由 R10 抽查和 c136 复核。
 
-共 75 份复盘，来自 7 名复盘员。
+共 78 份复盘，来自 7 名复盘员。
 
 | 对局 | 复盘员 | 结果 | 分型 | 时间线 | 转折点 | 阵亡 | 决策（错/对/不清） | 新模式 | 未解 | 清单未过 |
 | :-- | :-: | :-: | :-- | --: | --: | --: | :-- | --: | --: | :-- |
@@ -19,6 +19,7 @@
 | A059 | R01 | lost | never-grew | 18 | 3 | 9 | 13（8/4/1） | 5 | 4 | 全过 |
 | A075 | R01 | won | win | 17 | 2 | 0 | 20（10/5/5） | 8 | 4 | 全过 |
 | A094 | R01 | lost | lead-thrown | 14 | 4 | 9 | 15（8/3/4） | 5 | 3 | 全过 |
+| B039 | R01 | lost | external | 13 | 4 | 15 | 18（12/4/2） | 4 | 3 | 全过 |
 | A025 | R03 | won | win | 19 | 4 | 6 | 20（10/4/6） | 10 | 9 | 全过 |
 | A045 | R03 | lost | lead-thrown | 24 | 7 | 8 | 24（12/3/9） | 9 | 8 | 全过 |
 | A051 | R03 | lost | never-grew | 12 | 3 | 10 | 23（15/3/5） | 6 | 7 | 全过 |
@@ -31,6 +32,7 @@
 | A047 | R04 | lost | mid-collapse | 26 | 3 | 8 | 27（16/4/7） | 26 | 5 | 全过 |
 | A073 | R04 | won | win | 21 | 3 | 3 | 20（11/6/3） | 16 | 6 | 全过 |
 | A078 | R04 | lost | outscaled | 25 | 3 | 10 | 21（15/3/3） | 19 | 5 | 全过 |
+| A081 | R04 | lost | outscaled | 23 | 5 | 10 | 26（20/3/3） | 26 | 6 | 全过 |
 | A083 | R04 | lost | never-grew | 27 | 3 | 10 | 23（14/3/6） | 23 | 5 | 全过 |
 | A099 | R04 | lost | outscaled | 26 | 4 | 10 | 26（17/4/5） | 26 | 7 | 全过 |
 | A014 | R05 | lost | lead-thrown | 25 | 3 | 10 | 18（11/4/3） | 18 | 5 | 全过 |
@@ -72,6 +74,7 @@
 | B009 | R08 | open | external | 23 | 3 | 1 | 24（8/4/12） | 20 | 7 | 全过 |
 | B015 | R08 | lost | never-grew | 38 | 3 | 9 | 25（19/3/3） | 31 | 6 | 全过 |
 | B019 | R08 | won | win | 36 | 6 | 18 | 29（18/4/7） | 35 | 11 | 全过 |
+| B029 | R08 | lost | never-grew | 41 | 4 | 14 | 20（16/3/1） | 6 | 5 | 全过 |
 | B030 | R08 | won | win | 131 | 4 | 4 | 18（10/4/4） | 19 | 6 | 全过 |
 | B031 | R08 | lost | external | 18 | 3 | 13 | 20（13/3/4） | 20 | 7 | 全过 |
 | B033 | R08 | won | win | 25 | 3 | 6 | 21（16/3/2） | 25 | 6 | 全过 |
@@ -82,41 +85,52 @@
 | G05 | R08 | lost | never-grew | 23 | 3 | 8 | 20（15/2/3） | 18 | 6 | 全过 |
 | G08 | R08 | lost | outscaled | 23 | 3 | 6 | 16（13/2/1） | 14 | 6 | 全过 |
 
+## 双审对局
+
+| 对局 | 复盘员 | 分型 | 最大转折点窗口 |
+| :-- | :-- | :-- | :-- |
+| B039 | R01 | external | 2016~3400 |
+| B039 | R06 | external | 847~2016 |
+
 ## 模式编号出现次数（复盘员手工标注，不是全量计数）
 
 | 模式 | 错 | 对 | 不清 |
 | :-- | --: | --: | --: |
 | NEW | 117 | 48 | 85 |
-| NEW-AT-01 | 2 | 0 | 2 |
+| NEW-AT-01 | 3 | 0 | 2 |
 | NEW-AT-02 | 12 | 0 | 2 |
 | NEW-AT-03 | 5 | 0 | 0 |
-| NEW-AT-04 | 3 | 0 | 1 |
+| NEW-AT-04 | 4 | 0 | 1 |
 | NEW-AT-05 | 3 | 0 | 0 |
 | NEW-AT-ALLYFLOOR | 1 | 0 | 0 |
-| NEW-AT-BEACHDUMP | 1 | 0 | 0 |
+| NEW-AT-BEACHDUMP | 2 | 0 | 0 |
 | NEW-AT-CAPDUMP | 3 | 0 | 6 |
-| NEW-AT-CHEAPKILL | 0 | 8 | 0 |
-| NEW-AT-DENSEDGE | 0 | 5 | 0 |
-| NEW-AT-ENCLAVE | 2 | 0 | 0 |
+| NEW-AT-CHEAPKILL | 0 | 9 | 0 |
+| NEW-AT-DENSEDGE | 0 | 6 | 0 |
+| NEW-AT-ENCLAVE | 3 | 0 | 0 |
+| NEW-AT-ENEMYFLOOR | 1 | 0 | 0 |
 | NEW-AT-FEELOCK | 1 | 0 | 0 |
 | NEW-AT-G1 | 0 | 11 | 0 |
-| NEW-AT-G2 | 0 | 1 | 0 |
+| NEW-AT-G2 | 0 | 2 | 0 |
 | NEW-AT-G3 | 0 | 2 | 0 |
-| NEW-AT-NFSLOCK | 5 | 0 | 2 |
-| NEW-AT-OVERSTRIKE | 3 | 1 | 2 |
+| NEW-AT-NEUTFEE | 1 | 0 | 0 |
+| NEW-AT-NFSLOCK | 6 | 0 | 2 |
+| NEW-AT-OVERSTRIKE | 4 | 1 | 2 |
+| NEW-AT-PARTALLIN | 1 | 0 | 0 |
 | NEW-AT-PRICEGATE | 4 | 0 | 0 |
 | NEW-AT-SOLEHOLD | 0 | 0 | 2 |
-| NEW-AT-STANDOFF | 2 | 0 | 1 |
+| NEW-AT-STANDOFF | 3 | 0 | 1 |
 | NEW-AT-TINYFEE | 6 | 0 | 0 |
 | NEW-DF-01 | 14 | 0 | 0 |
 | NEW-DF-02 | 1 | 0 | 0 |
 | NEW-DF-03 | 2 | 0 | 0 |
 | NEW-DF-04 | 4 | 0 | 0 |
 | NEW-DF-05 | 2 | 0 | 0 |
+| NEW-DF-06 | 2 | 0 | 0 |
 | NEW-DF-G1 | 0 | 0 | 1 |
 | NEW-DF-HOLDFED | 0 | 2 | 0 |
 | NEW-DF-NEXTNB | 1 | 0 | 0 |
-| NEW-DF-NORESCUE | 5 | 0 | 2 |
+| NEW-DF-NORESCUE | 6 | 0 | 2 |
 | NEW-DF-NORESCUE / R08:挨打的小号被判弃子 | 0 | 0 | 1 |
 | NEW-DF-SEAFLANK | 2 | 0 | 0 |
 | NEW-DF-THIN | 1 | 0 | 0 |
@@ -131,24 +145,25 @@
 | NEW-DN-09 | 0 | 0 | 1 |
 | NEW-DN-10 | 2 | 0 | 0 |
 | NEW-DN-11 | 2 | 0 | 0 |
-| NEW-DN-12 | 5 | 0 | 0 |
+| NEW-DN-12 | 6 | 0 | 0 |
 | NEW-DN-13 | 1 | 0 | 0 |
 | NEW-DN-14 | 3 | 0 | 0 |
 | NEW-DN-15 | 1 | 0 | 0 |
-| NEW-DN-BIGFIRST | 2 | 0 | 0 |
+| NEW-DN-16 | 1 | 0 | 0 |
+| NEW-DN-BIGFIRST | 2 | 0 | 1 |
 | NEW-DN-CAPLOOP | 6 | 0 | 0 |
-| NEW-DN-CARRIER | 0 | 3 | 2 |
+| NEW-DN-CARRIER | 0 | 3 | 3 |
 | NEW-DN-G1 | 0 | 2 | 0 |
 | NEW-DN-G2 | 0 | 2 | 0 |
 | NEW-DN-G3 | 0 | 1 | 0 |
-| NEW-DN-HOLLOWREAR | 5 | 0 | 0 |
-| NEW-DN-QUOTABLIND | 7 | 0 | 1 |
+| NEW-DN-HOLLOWREAR | 6 | 0 | 0 |
+| NEW-DN-QUOTABLIND | 8 | 0 | 1 |
 | NEW-DN-SQUADONLY | 0 | 0 | 2 |
 | NEW-EC-01 | 2 | 0 | 0 |
 | NEW-EC-02 | 3 | 0 | 2 |
 | NEW-EC-03 | 3 | 0 | 1 |
 | NEW-EC-04 | 2 | 0 | 3 |
-| NEW-EC-05 | 8 | 0 | 0 |
+| NEW-EC-05 | 9 | 0 | 0 |
 | NEW-EC-06 | 5 | 0 | 0 |
 | NEW-EC-07 | 5 | 0 | 2 |
 | NEW-EC-08 | 4 | 0 | 0 |
@@ -156,7 +171,7 @@
 | NEW-EC-10 | 1 | 0 | 0 |
 | NEW-EC-G1 | 0 | 2 | 0 |
 | NEW-EC-HOARD | 1 | 0 | 0 |
-| NEW-EC-LANDLOCK | 5 | 0 | 0 |
+| NEW-EC-LANDLOCK | 6 | 0 | 0 |
 | NEW-EG-01 | 2 | 0 | 0 |
 | NEW-EG-03 | 1 | 0 | 0 |
 | NEW-EG-G1 | 0 | 6 | 0 |
@@ -173,7 +188,7 @@
 | NEW-EX-MODE1V1 | 1 | 0 | 0 |
 | NEW-EX-SPLITGAME | 1 | 0 | 0 |
 | NEW-IO-01 | 6 | 0 | 1 |
-| NEW-IO-02 | 3 | 0 | 0 |
+| NEW-IO-02 | 4 | 0 | 0 |
 | NEW-IO-03 | 2 | 0 | 1 |
 | NEW-IO-04 | 1 | 0 | 1 |
 | NEW-IO-05 | 0 | 0 | 3 |
@@ -182,12 +197,14 @@
 | NEW-IO-11 | 0 | 0 | 1 |
 | NEW-IO-12 | 1 | 0 | 1 |
 | NEW-IO-13 | 0 | 0 | 1 |
-| NEW-IO-ACKREPEAT | 6 | 0 | 1 |
-| NEW-IO-DEADTARGET | 4 | 0 | 0 |
+| NEW-IO-14 | 1 | 0 | 0 |
+| NEW-IO-15 | 1 | 0 | 0 |
+| NEW-IO-ACKREPEAT | 7 | 0 | 1 |
+| NEW-IO-DEADTARGET | 5 | 0 | 0 |
 | NEW-IO-DRAINBATCH | 5 | 0 | 2 |
 | NEW-IO-LAGLOSS | 4 | 0 | 1 |
-| NEW-IO-ONECMD | 8 | 0 | 0 |
-| NEW-IO-STACK9 | 2 | 0 | 3 |
+| NEW-IO-ONECMD | 9 | 0 | 0 |
+| NEW-IO-STACK9 | 3 | 0 | 3 |
 | NEW-MT-01 | 0 | 1 | 2 |
 | NEW-MT-02 | 0 | 0 | 6 |
 | NEW-MT-03 | 1 | 0 | 0 |
@@ -195,24 +212,26 @@
 | NEW-MT-05 | 1 | 0 | 0 |
 | NEW-MT-06 | 2 | 0 | 0 |
 | NEW-MT-07 | 0 | 0 | 1 |
+| NEW-MT-09 | 1 | 0 | 0 |
+| NEW-MT-10 | 0 | 0 | 1 |
 | NEW-MT-OUTNUMBERED | 0 | 0 | 4 |
 | NEW-MT-WRONGFRONT | 0 | 0 | 1 |
 | NEW-OP-01 | 1 | 0 | 0 |
 | NEW-OP-02 | 1 | 0 | 0 |
-| NEW-OP-ALLYLOCK | 9 | 0 | 0 |
-| NEW-OP-DPGOOD | 0 | 9 | 0 |
-| NEW-OP-G1 | 0 | 12 | 0 |
+| NEW-OP-ALLYLOCK | 10 | 0 | 0 |
+| NEW-OP-DPGOOD | 0 | 10 | 0 |
+| NEW-OP-G1 | 0 | 13 | 0 |
 | NEW-OP-G2 | 0 | 1 | 0 |
-| NEW-OP-REFCHASE | 3 | 0 | 0 |
+| NEW-OP-REFCHASE | 4 | 0 | 0 |
 | NEW-R01-AT01 | 0 | 9 | 0 |
 | NEW-R01-AT02 | 6 | 0 | 0 |
 | NEW-R01-AT04 | 0 | 9 | 0 |
 | NEW-R01-AT05 | 3 | 0 | 10 |
 | NEW-R01-AT06 | 0 | 1 | 0 |
-| NEW-R01-AT07 | 2 | 0 | 0 |
-| NEW-R01-AT08 | 1 | 3 | 6 |
+| NEW-R01-AT07 | 3 | 0 | 0 |
+| NEW-R01-AT08 | 1 | 4 | 7 |
 | NEW-R01-AT09 | 1 | 0 | 0 |
-| NEW-R01-AT10 | 0 | 2 | 0 |
+| NEW-R01-AT10 | 0 | 3 | 0 |
 | NEW-R01-AT11 | 0 | 0 | 3 |
 | NEW-R01-AT12 | 2 | 0 | 0 |
 | NEW-R01-AT13 | 0 | 0 | 2 |
@@ -220,42 +239,46 @@
 | NEW-R01-DF02 | 0 | 0 | 7 |
 | NEW-R01-DF03 | 1 | 0 | 5 |
 | NEW-R01-DF04 | 0 | 0 | 3 |
+| NEW-R01-DF05 | 1 | 0 | 0 |
 | NEW-R01-DN01 | 0 | 8 | 0 |
 | NEW-R01-DN02 | 5 | 0 | 0 |
 | NEW-R01-DN04 | 5 | 0 | 0 |
 | NEW-R01-DN05 | 11 | 0 | 0 |
 | NEW-R01-DN06 | 3 | 0 | 1 |
-| NEW-R01-DN07 | 4 | 0 | 0 |
+| NEW-R01-DN07 | 5 | 0 | 0 |
 | NEW-R01-DN08 | 4 | 0 | 2 |
 | NEW-R01-DN09 | 1 | 0 | 1 |
 | NEW-R01-DN10 | 4 | 0 | 0 |
 | NEW-R01-DN11 | 1 | 0 | 0 |
 | NEW-R01-DN12 | 1 | 0 | 0 |
 | NEW-R01-DN13 | 0 | 0 | 1 |
+| NEW-R01-DN14 | 1 | 0 | 0 |
 | NEW-R01-EC01 | 5 | 0 | 3 |
 | NEW-R01-EC02 | 1 | 0 | 2 |
+| NEW-R01-EC03 | 2 | 0 | 0 |
 | NEW-R01-EG01 | 1 | 0 | 0 |
-| NEW-R01-EG02 | 0 | 0 | 3 |
+| NEW-R01-EG02 | 0 | 0 | 4 |
 | NEW-R01-EG03 | 0 | 0 | 2 |
-| NEW-R01-IO01 | 7 | 0 | 2 |
-| NEW-R01-IO02 | 15 | 0 | 2 |
+| NEW-R01-IO01 | 8 | 0 | 2 |
+| NEW-R01-IO02 | 16 | 0 | 2 |
 | NEW-R01-IO03 | 11 | 0 | 1 |
 | NEW-R01-IO04 | 7 | 0 | 3 |
-| NEW-R01-IO05 | 1 | 0 | 1 |
-| NEW-R01-OP01 | 0 | 12 | 0 |
-| NEW-R01-OP02 | 10 | 0 | 1 |
+| NEW-R01-IO05 | 2 | 0 | 1 |
+| NEW-R01-OP01 | 0 | 13 | 0 |
+| NEW-R01-OP02 | 11 | 0 | 1 |
 | NEW-R01-OP03 | 0 | 0 | 6 |
 | NEW-R01-OP04 | 0 | 1 | 0 |
 | NEW-R01-SE01 | 1 | 0 | 0 |
-| NEW-R01-SE02 | 0 | 3 | 0 |
+| NEW-R01-SE02 | 0 | 4 | 0 |
 | NEW-R01-SE03 | 3 | 0 | 0 |
 | NEW-R01-SE04 | 2 | 0 | 0 |
-| NEW-R01-SE05 | 1 | 0 | 0 |
+| NEW-R01-SE05 | 2 | 0 | 0 |
 | NEW-R01-SP01 | 3 | 0 | 6 |
 | NEW-R01-SP02 | 3 | 0 | 2 |
 | NEW-R01-SP03 | 8 | 0 | 0 |
 | NEW-R01-SP04 | 0 | 0 | 2 |
 | NEW-R01-SP05 | 0 | 0 | 1 |
+| NEW-R01-SP06 | 1 | 0 | 0 |
 | NEW-R03-AT01 | 0 | 7 | 0 |
 | NEW-R03-AT02 | 2 | 0 | 0 |
 | NEW-R03-AT03 | 1 | 0 | 0 |
@@ -275,14 +298,14 @@
 | NEW-R03-SE03 | 1 | 0 | 0 |
 | NEW-SE-01 | 2 | 0 | 2 |
 | NEW-SE-02 | 2 | 0 | 0 |
-| NEW-SE-03 | 4 | 0 | 0 |
-| NEW-SE-04 | 2 | 0 | 0 |
+| NEW-SE-03 | 5 | 0 | 0 |
+| NEW-SE-04 | 4 | 0 | 0 |
 | NEW-SE-05 | 3 | 0 | 2 |
 | NEW-SE-06 | 2 | 0 | 0 |
 | NEW-SE-BOATOK | 0 | 5 | 0 |
 | NEW-SE-BOATWASTE | 7 | 0 | 0 |
 | NEW-SE-FOODBOAT | 0 | 1 | 0 |
-| NEW-SE-G1 | 0 | 2 | 0 |
+| NEW-SE-G1 | 0 | 3 | 0 |
 | NEW-SE-G2 | 0 | 1 | 0 |
 | NEW-SE-WRONGISLAND | 2 | 0 | 0 |
 | NEW-SP-01 | 2 | 0 | 0 |
@@ -290,12 +313,14 @@
 | NEW-SP-03 | 1 | 0 | 0 |
 | NEW-SP-04 | 1 | 0 | 0 |
 | NEW-SP-04 / NEW-SP-05 | 1 | 0 | 0 |
-| NEW-SP-05 | 5 | 0 | 1 |
+| NEW-SP-05 | 6 | 0 | 1 |
 | NEW-SP-06 | 1 | 0 | 0 |
 | NEW-SP-07 | 3 | 0 | 1 |
+| NEW-SP-08 | 1 | 0 | 0 |
 | NEW-SP-ALLYBLIND | 0 | 0 | 1 |
-| NEW-SP-DISC | 5 | 0 | 1 |
-| NEW-SP-NOEXEC | 0 | 0 | 1 |
+| NEW-SP-DISC | 6 | 0 | 1 |
+| NEW-SP-FIRSTLOST | 0 | 0 | 1 |
+| NEW-SP-NOEXEC | 1 | 0 | 1 |
 | NEW-SP-RESOLVE | 3 | 0 | 4 |
 | NEW-SP-SPREAD | 0 | 1 | 0 |
 | NEW:AS-cross-team-poke | 0 | 0 | 4 |
