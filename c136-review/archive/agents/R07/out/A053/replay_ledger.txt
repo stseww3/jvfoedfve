@@ -1,0 +1,160 @@
+=== A053 执行层账本（录像命令流 + 真引擎余额）===
+A. 引擎接受的指令（每号）：种类×条数 | 首拍~末拍 | 离开拍 | 最后一条 HL-TICK 日志拍
+  alex_k#50: attack×91 donate×4 spawn×34 | 局内 95 条 77~6580 | 离开 - | 末条日志 6840
+  kaito9#51: attack×75 boat×5 donate×3 spawn×34 | 局内 83 条 63~6825 | 离开 - | 末条日志 7110
+  leo_tx#47: attack×26 donate×13 spawn×28 | 局内 39 条 84~6125 | 离开 - | 末条日志 6390
+  noah88#44: attack×94 spawn×20 | 局内 94 条 77~6447 | 离开 - | 末条日志 6390
+  ryan_m#41: attack×67 donate×12 spawn×32 | 局内 79 条 84~7518 | 离开 - | 末条日志 7740
+  sora_w#43: attack×41 boat×10 donate×16 spawn×35 | 局内 67 条 63~6545 | 离开 - | 末条日志 7200
+  talon5#48: attack×22 donate×15 spawn×21 | 局内 37 条 77~6279 | 离开 - | 末条日志 6480
+  zero_7#49: attack×105 boat×5 donate×4 spawn×18 | 局内 114 条 77~5985 | 离开 - | 末条日志 6210
+  zexos1#46: attack×51 boat×2 donate×15 spawn×35 | 局内 68 条 84~6300 | 离开 - | 末条日志 6750
+
+B. 捐款/调度：日志 165 条，引擎执行 82 条（49.7%）；另有非我方号捐给我方号 4 条
+   我方执行合计：到账 8154976，手续费 1940595（费/到账 = 0.238）
+     受捐方顶到硬上限、到账被截断的 2 笔：名义 627432，实际到账 585919，手续费 119687（费/到账 = 0.204）
+     其中有配额期（t<4284）：34 笔，pct 184~380，到账 3316422，手续费 718079（费/到账 = 0.217）；单笔到账 11160~429061，单笔费 2524~76123
+     其中免检期（t>=4284）：48 笔，pct 180~380，到账 4838554，手续费 1222516（费/到账 = 0.253）；单笔到账 8146~252871，单笔费 1743~63301
+   逐笔：执行拍 捐出方→受捐方 pct | 执行前余额→后 | 到账 费 | 受捐方领土 余额前→后 | 配额 需点/累计前/上限 | 对应日志 t(延迟) L行 种类
+   1582 talon5→noah88 pct=380 | 61422→34731 | 22853 3838 | 3989 47438→70291 | 46/0/85 | t=1570(+12) L549 defense_dispatch
+   1785 talon5→alex_k pct=380 | 52263→29552 | 19445 3266 | 5678 79103→98548 | 39/0/97 | t=1720(+65) L572 defense_dispatch
+   2142 sora_w→zero_7 pct=320 | 297353→185556 | 93213 18584 | 6538 143410→236623 | 56/0/121 | t=2135(+7) L625 offense_dispatch
+   2177 sora_w→kaito9 pct=244 | 191973→134044 | 45931 11998 | 4266 65808→111027 | 28/0/121 | t=2160(+17) L629 defense_dispatch
+   2184 zexos1→kaito9 pct=380 | 414863→234577 | 154358 25928 | 4249 112272→266630 | 91/28/121 | t=2165(+19) L637 defense_dispatch
+   2429 zexos1→zero_7 pct=263 | 327537→222623 | 84443 20471 | 8290 375395→465356 | 50/56/145 | t=2415(+14) L660 yield_opt_dispatch
+   2506 talon5→zero_7 pct=320 | 80707→50364 | 25299 5044 | 8631 514497→539796 | 16/106/153 | t=2495(+11) L670 yield_opt_dispatch
+   2548 Doctor Doom→ryan_m pct=510 | 59835→26237 | 29859 3739 | 7967 633504→663363 | 19/0/153 | (无日志)
+   2576 Doctor Doom→alex_k pct=975 | 27151→0 | 25455 1696 | 5678 321996→347451 | 16/39/153 | (无日志)
+   2632 Doctor Doom→alex_k pct=1023 | 2737→0 | 2566 171 | 5678 377998→380564 | 3/55/161 | (无日志)
+   2702 sora_w→zero_7 pct=271 | 281026→188815 | 74647 17564 | 8790 705390→780037 | 45/122/169 | t=2685(+17) L690 yield_opt_dispatch
+   2800 zexos1→leo_tx pct=320 | 369929→230845 | 115964 23120 | 4203 86190→207339 | 69/0/177 | t=2790(+10) L709 offense_dispatch
+   2877 talon5→noah88 pct=320 | 79447→49578 | 24904 4965 | 6710 451923→476827 | 16/46/177 | t=2870(+7) L717 yield_opt_dispatch
+   2877 zexos1→kaito9 pct=299 | 250078→161184 | 73265 15629 | 5917 258028→331293 | 44/119/177 | t=2865(+12) L716 defense_dispatch
+   2898 leo_tx→noah88 pct=320 | 437790→273193 | 137236 27361 | 6765 488049→625285 | 81/62/177 | t=2885(+13) L726 yield_opt_dispatch
+   2933 talon5→zero_7 pct=380 | 54215→30656 | 20171 3388 | 11497 407170→425358 | 13/167/185 | t=2920(+13) L730 defense_dispatch
+   3129 talon5→zero_7 pct=282 | 40384→26700 | 11160 2524 | 9725 541241→558626 | 8/180/201 | t=3120(+9) L770 defense_dispatch
+   3227 leo_tx→zero_7 pct=380 | 417853→236268 | 155470 26115 | 8858 541486→696956 | 21/188/209 | t=3210(+17) L790 defense_dispatch
+   3248 sora_w→ryan_m pct=320 | 378201→236007 | 118557 23637 | 9359 781320→899877 | 16/19/209 | t=3235(+13) L792 yield_opt_dispatch
+   3269 sora_w→noah88 pct=380 | 241418→136506 | 89824 15088 | 5722 474455→558559 | 19/143/209 | t=3260(+9) L802 defense_dispatch
+   3276 leo_tx→noah88 pct=380 | 250044→141384 | 93033 15627 | 5541 537798→736123 | 20/162/209 | t=3260(+16) L803 defense_dispatch
+   3276 zexos1→noah88 pct=380 | 282992→160013 | 105292 17687 | 5541 537798→736123 | 23/182/209 | t=3265(+11) L804 defense_dispatch
+   3325 leo_tx→kaito9 pct=380 | 153967→87059 | 57286 9622 | 6173 489601→538230 | 13/163/219 | t=3310(+15) L805 defense_dispatch
+   3528 zero_7→noah88 pct=198 | 1010384→750882 | 196353 63149 | 7380 550171→746524 | 30/205/239 | t=3520(+8) L834 offense_dispatch
+   3682 ryan_m→kaito9 pct=301 | 1019000→654788 | 300525 63687 | 6499 581813→882338 | 50/176/249 | t=3675(+7) L850 offense_dispatch
+   3752 sora_w→noah88 pct=248 | 268200→186222 | 65216 16762 | 11071 862214→927430 | 9/235/259 | t=3735(+17) L860 yield_opt_dispatch
+   3773 zexos1→zero_7 pct=380 | 321121→181572 | 119479 20070 | 8834 925764→907444 | 17/209/259 | t=3765(+8) L862 defense_dispatch
+   3780 talon5→zero_7 pct=380 | 65366→36961 | 24320 4085 | 8834 907444→821111 | 6/226/259 | t=3770(+10) L863 defense_dispatch
+   3801 leo_tx→noah88 pct=380 | 176941→100049 | 65834 11058 | 10599 929040→1045468 | 10/244/269 | t=3785(+16) L876 defense_dispatch
+   3801 sora_w→noah88 pct=256 | 201592→138399 | 50594 12599 | 10599 929040→1045468 | 8/254/269 | t=3785(+16) L875 defense_dispatch
+   3857 talon5→zero_7 pct=289 | 41218→26969 | 11673 2576 | 8812 749581→761254 | 5/232/269 | t=3845(+12) L878 defense_dispatch
+   3948 alex_k→kaito9 pct=220 | 961931→694207 | 207604 60120 | 7113 191287→398891 | 33/226/279 | t=3940(+8) L893 offense_dispatch
+   4004 leo_tx→zero_7 pct=273 | 134494→90102 | 35987 8405 | 8843 721568→757555 | 8/237/289 | t=3985(+19) L905 defense_dispatch
+   4046 Player 19→noah88 pct=279 | 716301→472789 | 195863 44768 | 11188 784418→980281 | 21/262/289 | (无日志)
+   4109 ryan_m→zero_7 pct=380 | 1217978→712794 | 429061 76123 〔顶格截断：名义 453173，受捐方硬上限 1325550〕 | 8837 896612→1177693 | 52/245/299 | t=4100(+9) L919 defense_dispatch
+   4158 zero_7→kaito9 pct=184 | 1029802→779392 | 186048 64362 | 7820 641567→827615 | 27/259/299 | t=4145(+13) L930 offense_dispatch
+   4200 zexos1→noah88 pct=259 | 331676→226733 | 84214 20729 | 11762 963256→951840 | 11/283/309 | t=4190(+10) L933 yield_opt_dispatch
+   4228 talon5→zero_7 pct=378 | 46374→26313 | 17163 2898 | 8937 833326→847506 | 5/297/309 | t=4220(+8) L937 defense_dispatch
+   4298 alex_k→noah88 pct=240 | 1012819→711150 | 238368 63301 | 12003 997657→1322140 | 免检 | t=4290(+8) L954 defense_dispatch
+   4298 sora_w→noah88 pct=380 | 265044→149864 | 98615 16565 | 12003 997657→1322140 | 免检 | t=4285(+13) L952 defense_dispatch
+   4305 leo_tx→noah88 pct=308 | 140899→89576 | 42517 8806 | 11909 1331765→1375112 | 免检 | t=4285(+20) L953 defense_dispatch
+   4305 zexos1→noah88 pct=310 | 259662→164572 | 78862 16228 | 11909 1331765→1375112 | 免检 | t=4290(+15) L955 defense_dispatch
+   4312 ryan_m→zero_7 pct=260 | 963970→658023 | 245699 60248 | 8632 712566→958265 | 免检 | t=4300(+12) L956 offense_dispatch
+   4361 ryan_m→noah88 pct=259 | 700880→479118 | 177957 43805 | 11976 639838→817795 | 免检 | t=4350(+11) L966 defense_dispatch
+   4473 sora_w→noah88 pct=253 | 194135→133848 | 48154 12133 | 11364 779219→821979 | 免检 | t=4460(+13) L976 defense_dispatch
+   4529 talon5→zero_7 pct=289 | 40739→26656 | 11537 2546 | 8291 645610→661124 | 免检 | t=4520(+9) L986 defense_dispatch
+   4627 leo_tx→noah88 pct=349 | 143376→85410 | 49005 8961 | 10301 866342→986306 | 免检 | t=4610(+17) L996 defense_dispatch
+   4627 zexos1→noah88 pct=316 | 256163→160853 | 79300 16010 | 10301 866342→986306 | 免检 | t=4615(+12) L997 defense_dispatch
+   4634 ryan_m→noah88 pct=291 | 730966→476842 | 208439 45685 | 10136 981067→1180835 | 免检 | t=4625(+9) L998 defense_dispatch
+   4767 kaito9→noah88 pct=210 | 917385→671018 | 189031 57336 | 10106 706089→895120 | 免检 | t=4750(+17) L1009 defense_dispatch
+   4774 sora_w→noah88 pct=292 | 204533→133227 | 58523 12783 | 10106 905950→964473 | 免检 | t=4760(+14) L1010 defense_dispatch
+   4830 talon5→noah88 pct=297 | 41653→26929 | 12121 2603 | 9826 782567→692153 | 免检 | t=4820(+10) L1020 defense_dispatch
+   4872 alex_k→noah88 pct=230 | 1011713→720253 | 228228 63232 | 9920 689022→910298 | 免检 | t=4865(+7) L1029 defense_dispatch
+   4879 zero_7→noah88 pct=204 | 772426→569514 | 154636 48276 | 9777 896159→1054463 | 免检 | t=4870(+9) L1031 defense_dispatch
+   4886 ryan_m→noah88 pct=249 | 691816→479678 | 168900 43238 | 9575 1028015→1186516 | 免检 | t=4875(+11) L1032 defense_dispatch
+   4900 zexos1→noah88 pct=251 | 240008→165944 | 59064 15000 | 9188 1127391→1033842 | 免检 | t=4890(+10) L1033 defense_dispatch
+   4928 leo_tx→noah88 pct=305 | 134637→85990 | 40233 8414 | 9105 857910→898143 | 免检 | t=4910(+18) L1034 defense_dispatch
+   5096 sora_w→noah88 pct=306 | 208324→132848 | 62456 13020 | 10104 631131→692388 | 免检 | t=5085(+11) L1053 defense_dispatch
+   5110 ryan_m→noah88 pct=255 | 697126→479275 | 174281 43570 | 10003 700857→875191 | 免检 | t=5100(+10) L1054 defense_dispatch
+   5131 talon5→noah88 pct=297 | 41638→26919 | 12117 2602 | 9587 844054→851100 | 免检 | t=5120(+11) L1055 defense_dispatch
+   5152 zexos1→noah88 pct=246 | 233125→162323 | 56232 14570 | 8614 738811→951673 | 免检 | t=5140(+12) L1066 defense_dispatch
+   5152 alex_k→noah88 pct=187 | 969997→731288 | 178085 60624 | 8614 738811→951673 | 免检 | t=5140(+12) L1065 defense_dispatch
+   5159 kaito9→noah88 pct=204 | 828300→610711 | 165821 51768 | 8255 908949→1059655 | 免检 | t=5150(+9) L1067 defense_dispatch
+   5229 leo_tx→zero_7 pct=310 | 135453→85850 | 41138 8465 | 6737 578496→626883 | 免检 | t=5210(+19) L1068 defense_dispatch
+   5348 sora_w→noah88 pct=246 | 192291→133891 | 46382 12018 | 4042 280231→326613 | 免检 | t=5335(+13) L1087 defense_dispatch
+   5383 ryan_m→zero_7 pct=271 | 711945→478339 | 189110 44496 | 6696 482918→815745 | 免检 | t=5375(+8) L1089 defense_dispatch
+   5383 kaito9→zero_7 pct=180 | 813078→618544 | 143717 50817 | 6696 482918→815745 | 免检 | t=5375(+8) L1088 defense_dispatch
+   5404 zero_7→noah88 pct=220 | 833351→601413 | 179854 52084 | 4042 353225→533079 | 免检 | t=5395(+9) L1091 offense_dispatch
+   5481 talon5→zero_7 pct=334 | 43899→26795 | 14361 2743 | 6904 588519→679148 | 免检 | t=5470(+11) L1102 defense_dispatch
+   5481 zexos1→zero_7 pct=310 | 256956→162857 | 78040 16059 | 6904 588519→679148 | 免检 | t=5465(+16) L1101 defense_dispatch
+   5530 leo_tx→zero_7 pct=309 | 136796→86835 | 41412 8549 | 6136 535541→576681 | 免检 | t=5510(+20) L1112 defense_dispatch
+   5614 ryan_m→noah88 pct=253 | 695339→479405 | 172476 43458 | 6130 338692→509666 | 免检 | t=5600(+14) L1122 defense_dispatch
+   5621 sora_w→noah88 pct=274 | 199467→133434 | 53567 12466 | 6056 507020→556739 | 免检 | t=5610(+11) L1123 defense_dispatch
+   5726 zexos1→alex_k pct=246 | 233169→162354 | 56242 14573 | 11666 750539→803591 | 免检 | t=5715(+11) L1133 defense_dispatch
+   5775 talon5→alex_k pct=274 | 41264→27604 | 11081 2579 | 10870 761075→772156 | 免检 | t=5745(+30) L1134 defense_dispatch
+   5782 talon5→noah88 pct=298 | 27899→18010 | 8146 1743 | 5417 351946→350521 | 免检 | t=5770(+12) L1143 defense_dispatch
+   5824 leo_tx→alex_k pct=309 | 135263→85862 | 40948 8453 | 9893 715024→746315 | 免检 | t=5810(+14) L1146 defense_dispatch
+   5922 sora_w→zero_7 pct=287 | 203039→133246 | 57104 12689 | 4550 363970→415699 | 免检 | t=5910(+12) L1156 defense_dispatch
+   5936 ryan_m→zero_7 pct=333 | 775270→473945 | 252871 48454 | 4253 382940→629619 | 免检 | t=5925(+11) L1157 defense_dispatch
+   6006 zexos1→noah88 pct=257 | 242078→165957 | 60992 15129 | 3454 228115→282979 | 免检 | t=5990(+16) L1167 defense_dispatch
+   6125 leo_tx→zero_7 pct=309 | 135268→85864 | 40950 8454 | 3259 215342→248995 | 免检 | t=6110(+15) L1177 defense_dispatch
+   6188 ryan_m→alex_k pct=245 | 687846→479612 | 165244 42990 | 8369 528157→693401 | 免检 | t=6175(+13) L1187 defense_dispatch
+   6223 sora_w→zero_7 pct=286 | 202775→133270 | 56832 12673 | 2006 133166→188938 | 免检 | t=6210(+13) L1192 defense_dispatch
+   6300 zexos1→kaito9 pct=289 | 252326→165097 | 71459 15770 | 8519 670040→755480 | 免检 | t=6290(+10) L1199 defense_dispatch
+   6412 ryan_m→noah88 pct=255 | 697039→496617 | 156858 43564 〔顶格截断：名义 174259，受捐方硬上限 279450〕 | 1863 122592→279450 | 免检 | t=6400(+12) L1216 defense_dispatch
+   6545 sora_w→alex_k pct=303 | 207460→132905 | 61589 12966 | 8399 807429→854783 | 免检 | t=6535(+10) L1225 defense_dispatch
+   每号：alex_k 日志 11 执行 4 到账 852285 费 247277；kaito9 日志 10 执行 3 到账 498569 费 159921；leo_tx 日志 27 执行 13 到账 841049 费 158290；ryan_m 日志 24 执行 12 到账 2641421 费 599318；sora_w 日志 37 执行 16 到账 1081204 费 233545；talon5 日志 17 执行 15 到账 246351 费 47400；zero_7 日志 4 执行 4 到账 716891 费 227871；zexos1 日志 35 执行 15 到账 1277206 费 266973
+
+C. 没被执行的日志捐款（落地拍未知：对「发令拍 + 7~65 拍」里的每一拍都算一遍需点 / 上限 / 累计——这个范围取自本局已执行捐款的实测延迟；表里的需点、上限取 +12 拍那一档）
+   需点 > 剩余额度（累计已用）: 55 条，t=2140~4240，名义到账合计 8600706；需点 11~104，上限 121~309
+   按下限账算得过却没执行（延迟/余额变化/友军登陆占额/其他）: 19 条，t=2085~4265，名义到账合计 2311299；需点 11~173，上限 115~309
+   单笔需点 > 全场上限（受捐方即使从没收过也过不了）: 7 条，t=1815~2065，名义到账合计 642717；需点 135~217，上限 103~115
+   需点 > 剩余额度（要么撞上换档前的贵价，要么额度被同拍先到的另一笔用掉）: 2 条，t=2090~2115，名义到账合计 235685；需点 225~233，上限 121~121
+
+D. 顶格时长（10 拍采样；在场且没离开的拍）：硬上限 = 余额 >= 150×领土-1；软上限以上 = 余额 >= 100×领土
+  alex_k: 硬上限 0 拍；软上限以上 690 拍（2950~6570）
+  kaito9: 硬上限 70 拍（0~60）；软上限以上 900 拍（0~6810）
+  leo_tx: 硬上限 0 拍；软上限以上 30 拍（2870~2890）
+  noah88: 硬上限 10 拍（6420~6420）；软上限以上 410 拍（2720~6430）
+  ryan_m: 硬上限 0 拍；软上限以上 100 拍（2690~7510）
+  sora_w: 硬上限 0 拍；软上限以上 70 拍（0~60）
+  zero_7: 硬上限 0 拍；软上限以上 650 拍（3410~5970）
+
+E. 同一号同一拍被接受 >=3 条指令（清仓批）：拍 号 条数 | 指令(种类 pct→目标) | 批前余额 → 批后余额
+  658 talon5 ×5 | attack 181→bot#358 attack 265→bot#159 attack 279→bot#159 attack 283→bot#159 attack 371→bot#159 | 1630 → 308 | 整数对账：5 条扣了款（反序），手续费合计 48，发出的兵合计 1274
+  693 leo_tx ×6 | attack 382→Player 399 attack 401→Player 399 attack 355→Player 399 attack 419→Player 399 attack 401→Player 399 attack 352→Player 399 | 6461 → 329 | 整数对账：无精确解（批内另有利息/挨打）
+  714 noah88 ×5 | attack 104→bot#106 attack 103→bot#106 attack 107→bot#106 attack 102→bot#106 attack 104→bot#106 | 13653 → 7448 | 整数对账：5 条扣了款（反序），手续费合计 634，发出的兵合计 5571
+  763 zero_7 ×4 | attack 142→bot#333 attack 107→bot#333 attack 111→bot#333 attack 240→bot#374 | 12528 → 6214 | 整数对账：4 条扣了款（正序），手续费合计 476，发出的兵合计 5838
+  791 kaito9 ×4 | attack 176→bot#353 attack 178→bot#353 attack 174→bot#353 attack 178→bot#353 | 8775 → 3873 | 整数对账：4 条扣了款（正序），手续费合计 308，发出的兵合计 4594
+  812 alex_k ×6 | attack 119→bot#339 attack 97→bot#339 attack 91→bot#339 attack 89→bot#339 attack 83→bot#339 attack 76→bot#339 | 16795 → 8745 | 整数对账：6 条扣了款（正序），手续费合计 892，发出的兵合计 7158
+  826 noah88 ×4 | attack 142→bot#257 attack 54→NEUTRAL attack 49→NEUTRAL attack 48→NEUTRAL | 16087 → 11276 | 整数对账：4 条扣了款（反序），手续费合计 686，发出的兵合计 4125
+  826 zero_7 ×4 | attack 65→bot#287 attack 71→bot#287 attack 71→bot#287 attack 75→bot#287 | 10818 → 7701 | 整数对账：4 条扣了款（正序），手续费合计 448，发出的兵合计 2669
+  854 ryan_m ×8 | attack 160→bot#161 attack 99→bot#139 attack 104→bot#139 attack 47→bot#407 attack 47→bot#407 attack 47→bot#407 attack 103→NEUTRAL attack 103→NEUTRAL | 19559 → 8417 | 整数对账：8 条扣了款（正序），手续费合计 1248，发出的兵合计 9894
+  882 sora_w ×6 | attack 73→bot#506 attack 76→bot#506 attack 76→bot#506 attack 79→bot#506 attack 146→bot#506 attack 146→bot#506 | 22599 → 11213 | 整数对账：6 条扣了款（反序），手续费合计 1148，发出的兵合计 10238
+  910 noah88 ×3 | attack 48→NEUTRAL attack 49→NEUTRAL attack 47→NEUTRAL | 25947 → 25947 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  917 zero_7 ×3 | attack 169→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 24050 → 24050 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  945 ryan_m ×7 | attack 47→NEUTRAL attack 47→NEUTRAL attack 184→bot#318 attack 179→bot#318 attack 181→bot#318 attack 176→bot#318 attack 175→bot#318 | 27717 → 9818 | 整数对账：5 条扣了款（反序），手续费合计 1122，发出的兵合计 16777
+  994 sora_w ×9 | attack 103→NEUTRAL attack 105→NEUTRAL attack 105→NEUTRAL attack 107→NEUTRAL attack 107→NEUTRAL attack 110→NEUTRAL attack 110→NEUTRAL attack 112→NEUTRAL attack 112→NEUTRAL | 33284 → 33284 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1008 zero_7 ×9 | attack 103→NEUTRAL attack 105→NEUTRAL attack 105→NEUTRAL attack 62→NEUTRAL attack 62→NEUTRAL attack 64→NEUTRAL attack 64→NEUTRAL attack 161→NEUTRAL attack 185→NEUTRAL | 37798 → 37798 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1022 alex_k ×9 | attack 60→bot#466 attack 57→bot#466 attack 49→NEUTRAL attack 51→NEUTRAL attack 55→NEUTRAL attack 214→NEUTRAL attack 222→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 45926 → 39739 | 整数对账：2 条扣了款（正序），手续费合计 1037，发出的兵合计 5150
+  1043 ryan_m ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 48→NEUTRAL attack 62→NEUTRAL attack 72→NEUTRAL attack 49→bot#161 attack 47→bot#161 attack 121→NEUTRAL | 34274 → 30314 | 整数对账：2 条扣了款（反序），手续费合计 779，发出的兵合计 3181
+  1057 kaito9 ×9 | attack 128→NEUTRAL attack 128→NEUTRAL attack 130→NEUTRAL attack 130→NEUTRAL attack 133→NEUTRAL attack 133→NEUTRAL attack 80→NEUTRAL attack 80→NEUTRAL attack 84→NEUTRAL | 36195 → 36195 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1085 zero_7 ×8 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 98→NEUTRAL attack 98→NEUTRAL attack 100→NEUTRAL attack 100→NEUTRAL | 50669 → 50669 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1092 sora_w ×3 | boat 127→NaN boat 93→NaN boat 151→NaN | 45057 → 27351 | 整数对账：无精确解（批内另有利息/挨打）
+  1106 zexos1 ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 89→NEUTRAL attack 123→NEUTRAL attack 134→NEUTRAL attack 153→NEUTRAL | 60236 → 60236 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1106 alex_k ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 53→NEUTRAL attack 62→NEUTRAL attack 67→NEUTRAL attack 85→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 59734 → 59734 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1113 ryan_m ×5 | attack 47→bot#161 attack 136→bot#161 attack 138→bot#161 attack 163→bot#161 attack 172→bot#161 | 45907 → 21366 | 整数对账：5 条扣了款（反序），手续费合计 1918，发出的兵合计 22623
+  1169 ryan_m ×3 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 47376 → 48958 | 整数对账：无精确解（批内另有利息/挨打）
+  1169 zexos1 ×9 | attack 47→NEUTRAL attack 56→NEUTRAL attack 67→NEUTRAL attack 76→NEUTRAL attack 91→NEUTRAL attack 103→NEUTRAL attack 105→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 73835 → 76301 | 整数对账：无精确解（批内另有利息/挨打）
+  1169 alex_k ×9 | attack 47→bot#286 attack 47→bot#286 attack 47→bot#286 attack 47→bot#286 attack 47→bot#286 attack 47→bot#286 attack 47→bot#286 attack 47→bot#286 attack 47→bot#286 | 71208 → 42744 | 整数对账：无精确解（批内另有利息/挨打）
+  1218 alex_k ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 76680 → 76680 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1225 zexos1 ×9 | attack 62→bot#200 attack 63→bot#200 attack 63→bot#200 attack 64→bot#200 attack 63→bot#200 attack 63→bot#200 attack 63→bot#200 attack 47→NEUTRAL attack 47→NEUTRAL | 89672 → 52273 | 整数对账：7 条扣了款（反序），手续费合计 5899，发出的兵合计 31500
+  1246 zexos1 ×8 | attack 47→bot#200 attack 47→bot#200 attack 47→bot#200 attack 47→bot#200 attack 47→bot#200 attack 47→bot#200 attack 47→bot#200 attack 47→bot#200 | 55601 → 34307 | 整数对账：8 条扣了款（反序），手续费合计 4256，发出的兵合计 17038
+  1589 alex_k ×3 | attack 219→[VOID] Soviet onion attack 312→[VOID] Soviet onion attack 305→[VOID] Soviet onion | 150927 → 56056 | 整数对账：无精确解（批内另有利息/挨打）
+  1596 zero_7 ×3 | attack 122→[TR] Oylesine attack 122→[TR] Oylesine attack 122→[TR] Oylesine | 147223 → 96337 | 整数对账：3 条扣了款（反序），手续费合计 4522，发出的兵合计 46364
+  1855 zero_7 ×4 | attack 257→The great Malay empa attack 122→The great Malay empa attack 122→The great Malay empa attack 122→The great Malay empa | 143398 → 69093 | 整数对账：4 条扣了款（正序），手续费合计 4923，发出的兵合计 69382
+  1904 zero_7 ×9 | attack 122→The great Malay empa attack 122→The great Malay empa attack 122→The great Malay empa attack 122→The great Malay empa attack 122→The great Malay empa attack 122→The great Malay empa attack 1 | 79715 → 20001 | 整数对账：9 条扣了款（正序），手续费合计 5098，发出的兵合计 54616
+  1932 sora_w ×9 | attack 122→The great Malay empa attack 122→The great Malay empa attack 122→The great Malay empa attack 122→The great Malay empa attack 122→The great Malay empa attack 122→The great Malay empa attack 1 | 226484 → 226484 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  2737 noah88 ×3 | attack 105→[TR] Oylesine attack 95→[TR] Oylesine attack 95→[TR] Oylesine | 604308 → 427840 | 整数对账：3 条扣了款（反序），手续费合计 19081，发出的兵合计 157387
+  3934 kaito9 ×3 | attack 122→[OG] Gallo attack 122→[OG] Gallo attack 122→[OG] Gallo | 383371 → 250858 | 整数对账：3 条扣了款（反序），手续费合计 11778，发出的兵合计 120735
+  4340 noah88 ×3 | attack 122→[OG] Gallo attack 122→[TR]İsmail Enver Paş attack 122→[TR]İsmail Enver Paş | 1405335 → 919574 | 整数对账：3 条扣了款（反序），手续费合计 43177，发出的兵合计 442584
+  6447 noah88 ×3 | attack 47→NEUTRAL attack 47→NEUTRAL attack 0→[OG] Gallo | 185611 → 141200 | 整数对账：无精确解（批内另有利息/挨打）

@@ -1,0 +1,711 @@
+# A089 zexos1 影子决策明细 t=3700~4500（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   出手打人/bot: 11 拍（t=3700~4345）；可用兵 63913~213527，一条指令下限(20%余额) 192483~236106，比值 31%~91%
+#   首选目标要发的兵低于最小指令（x < max(minCmd, pulseMinShare×B)）: 10 拍（t=3705~4120）；可用兵 12938~48231，一条指令下限(20%余额) 172157~198109，比值 7%~28%
+#   首选目标无可用兵（avail<=0）: 76 拍（t=3715~4465）；可用兵 -465403~-3132，一条指令下限(20%余额) 132837~213536，比值 -320%~-2%
+#   首选目标价高（c>=worth）: 60 拍（t=3765~4500）
+#   首选目标已有在途进攻（curAtk 过门槛）: 4 拍（t=4070~4350）；可用兵 12127~60662，一条指令下限(20%余额) 184571~217494，比值 6%~32%
+#   └ 「出手打人/bot」里：11 条对人/bot 的出兵共约 888810 兵；其中超过软上限（over=1）时发的 4 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 1 条约 119095 兵，c/worth = 1.56~1.56
+t=3700 zexos1 B=991498 L=9233 d=107.4 nb=2 neut=0 cmds=67 noFull=1 shQ=245493 | m=0.900 worth=96.6 cheap=8.4 over=1 dMedOther=59.8 safe(-1)=812504
+    → Chernobyl#32[T2] terr=253 bal=482 dq=1.9 cnt=10 | c=65.4 rankC=65.4 need=1240 tD=0.03 人 pulse | safe=812504 keep=830970 avail=148909 chunkB=198300 pulseB=118980 低于最小指令(x=1518<46476)→continue hNb=2
+    → OnlyDamage#0[T2] terr=20737 bal=1734816 dq=83.7 cnt=40 | c=150.9 rankC=105.6 need=3123206 tD=1.40 人 pulse | safe=812504 keep=830970 avail=148909 chunkB=198300 pulseB=118980  x=118979 hNb=2
+    ⇒ 影子指令 attack pct=122 → OnlyDamage#0[T2]（约 119095 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3705 zexos1 B=860784 L=9233 d=93.2 nb=2 neut=0 cmds=67 noFull=1 shQ=98661 | m=0.900 worth=83.9 cheap=8.4 over=0 dMedOther=58.7 safe(-1)=812504
+    → Chernobyl#32[T2] terr=253 bal=482 dq=1.9 cnt=10 | c=57.6 rankC=57.6 need=1240 tD=0.03 人 pulse | safe=812504 keep=812504 avail=38193 chunkB=172157 pulseB=103294 低于最小指令(x=1518<40348)→continue hNb=2
+    → OnlyDamage#0[T2] terr=20854 bal=1734816 dq=83.2 cnt=40 | c=144.3 rankC=101.0 need=3004316 tD=1.42 人 pulse | safe=812504 keep=Inf avail=-Inf chunkB=172157 pulseB=103294 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3710 zexos1 B=870941 L=9233 d=94.3 nb=2 neut=0 cmds=67 noFull=1 shQ=111492 | m=0.900 worth=84.9 cheap=8.4 over=0 dMedOther=58.0 safe(-1)=812504
+    → Chernobyl#32[T2] terr=253 bal=486 dq=1.9 cnt=10 | c=58.2 rankC=58.2 need=1247 tD=0.03 人 pulse | safe=812504 keep=812504 avail=48231 chunkB=174188 pulseB=104513 低于最小指令(x=1526<40824)→continue hNb=2
+    → OnlyDamage#0[T2] terr=21042 bal=1757021 dq=83.5 cnt=42 | c=144.8 rankC=101.4 need=3044175 tD=1.44 人 pulse | safe=812504 keep=Inf avail=-Inf chunkB=174188 pulseB=104513 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3715 zexos1 B=756121 L=9319 d=81.1 nb=2 neut=0 cmds=67 noFull=1 shQ=122737 | m=0.900 worth=73.0 cheap=8.4 over=0 dMedOther=56.9 safe(-1)=820072
+    → Chernobyl#32[T2] terr=254 bal=486 dq=1.9 cnt=10 | c=51.3 rankC=51.3 need=1250 tD=0.03 人 pulse | safe=820072 keep=820072 avail=-72811 chunkB=151224 pulseB=90735 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=21079 bal=1745558 dq=82.8 cnt=45 | c=139.7 rankC=97.8 need=2942312 tD=1.45 人 pulse | safe=820072 keep=Inf avail=-Inf chunkB=151224 pulseB=90735 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3720 zexos1 B=664183 L=9411 d=70.6 nb=2 neut=0 cmds=67 noFull=1 shQ=133114 | m=0.900 worth=63.5 cheap=8.4 over=0 dMedOther=57.7 safe(-1)=828168
+    → Chernobyl#32[T2] terr=255 bal=490 dq=1.9 cnt=10 | c=45.5 rankC=45.5 need=1259 tD=0.03 人 pulse | safe=828168 keep=828168 avail=-171768 chunkB=132837 pulseB=79702 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=21169 bal=1755618 dq=82.9 cnt=51 | c=184.6 rankC=129.2 need=2894094 tD=1.44 人 pulse crowdedHard | safe=828168 keep=Inf avail=-Inf chunkB=132837 pulseB=79702 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3725 zexos1 B=664183 L=9461 d=70.2 nb=2 neut=0 cmds=67 noFull=1 shQ=142989 | m=0.900 worth=63.2 cheap=8.4 over=0 dMedOther=57.7 safe(-1)=832568
+    → Chernobyl#32[T2] terr=255 bal=1621 dq=6.4 cnt=10 | c=55.7 rankC=55.7 need=3280 tD=0.11 人 pulse | safe=832568 keep=832568 avail=-176168 chunkB=132837 pulseB=79702 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=21248 bal=1749004 dq=82.3 cnt=53 | c=184.0 rankC=128.8 need=2895723 tD=1.43 人 pulse crowdedHard | safe=832568 keep=Inf avail=-Inf chunkB=132837 pulseB=79702 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3730 zexos1 B=672020 L=9564 d=70.3 nb=2 neut=0 cmds=67 noFull=1 shQ=152888 | m=0.900 worth=63.2 cheap=8.4 over=0 dMedOther=58.5 safe(-1)=841632
+    → Chernobyl#32[T2] terr=255 bal=1637 dq=6.4 cnt=10 | c=56.3 rankC=56.3 need=3308 tD=0.11 人 pulse | safe=841632 keep=841632 avail=-177487 chunkB=134404 pulseB=80642 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=21348 bal=1757708 dq=82.3 cnt=59 | c=185.8 rankC=130.1 need=2938613 tD=1.41 人 pulse crowdedHard | safe=841632 keep=Inf avail=-Inf chunkB=134404 pulseB=80642 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3735 zexos1 B=672020 L=9679 d=69.4 nb=2 neut=0 cmds=67 noFull=1 shQ=162883 | m=0.900 worth=62.5 cheap=8.4 over=0 dMedOther=58.5 safe(-1)=851752
+    → Chernobyl#32[T2] terr=255 bal=742 dq=2.9 cnt=10 | c=48.2 rankC=48.2 need=1710 tD=0.05 人 pulse | safe=851752 keep=851752 avail=-187607 chunkB=134404 pulseB=80642 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=21374 bal=1742624 dq=81.5 cnt=64 | c=185.8 rankC=130.1 need=2940487 tD=1.39 人 pulse crowdedHard | safe=851752 keep=Inf avail=-Inf chunkB=134404 pulseB=80642 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3740 zexos1 B=679949 L=9740 d=69.8 nb=2 neut=0 cmds=67 noFull=1 shQ=169987 | m=0.900 worth=62.8 cheap=8.4 over=0 dMedOther=59.3 safe(-1)=857120
+    → Chernobyl#32[T2] terr=256 bal=749 dq=2.9 cnt=10 | c=48.9 rankC=48.9 need=1719 tD=0.05 人 pulse | safe=857120 keep=857120 avail=-185139 chunkB=135990 pulseB=81594 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=21537 bal=1756899 dq=81.6 cnt=71 | c=186.9 rankC=130.8 need=2983861 tD=1.38 人 pulse crowdedHard | safe=857120 keep=Inf avail=-Inf chunkB=135990 pulseB=81594 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3745 zexos1 B=679949 L=9874 d=68.9 nb=2 neut=0 cmds=67 noFull=1 shQ=169987 | m=0.900 worth=62.0 cheap=8.4 over=0 dMedOther=59.3 safe(-1)=868912
+    → Chernobyl#32[T2] terr=257 bal=749 dq=2.9 cnt=10 | c=48.7 rankC=48.7 need=1722 tD=0.05 人 pulse | safe=868912 keep=868912 avail=-196931 chunkB=135990 pulseB=81594 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=21560 bal=1739459 dq=80.7 cnt=77 | c=186.9 rankC=130.8 need=2987930 tD=1.36 人 pulse crowdedHard | safe=868912 keep=Inf avail=-Inf chunkB=135990 pulseB=81594 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3750 zexos1 B=687972 L=10018 d=68.7 nb=2 neut=0 cmds=67 noFull=1 shQ=171993 | m=0.900 worth=61.8 cheap=8.4 over=0 dMedOther=60.1 safe(-1)=881584
+    → Chernobyl#32[T2] terr=258 bal=756 dq=2.9 cnt=10 | c=48.8 rankC=48.8 need=1738 tD=0.05 人 pulse | safe=881584 keep=881584 avail=-201674 chunkB=137594 pulseB=82557 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=21660 bal=1743023 dq=80.5 cnt=79 | c=188.8 rankC=132.1 need=3031885 tD=1.34 人 pulse crowdedHard | safe=881584 keep=Inf avail=-Inf chunkB=137594 pulseB=82557 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3755 zexos1 B=687972 L=10164 d=67.7 nb=2 neut=0 cmds=67 noFull=1 shQ=171993 | m=0.900 worth=60.9 cheap=8.4 over=0 dMedOther=69.9 safe(-1)=845716
+    → Chernobyl#32[T2] terr=258 bal=1258 dq=4.9 cnt=10 | c=53.3 rankC=53.3 need=2634 tD=0.07 人 pulse | safe=845716 keep=845716 avail=-165806 chunkB=137594 pulseB=82557 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=21744 bal=1520620 dq=69.9 cnt=76 | c=122.7 rankC=85.9 need=2666991 tD=1.00 人 pulse | safe=845716 keep=Inf avail=-Inf chunkB=137594 pulseB=82557 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3760 zexos1 B=696090 L=10306 d=67.5 nb=2 neut=0 cmds=67 noFull=1 shQ=174022 | m=0.900 worth=60.8 cheap=8.4 over=0 dMedOther=69.2 safe(-1)=847589
+    → Chernobyl#32[T2] terr=258 bal=1270 dq=4.9 cnt=10 | c=53.9 rankC=53.9 need=2655 tD=0.07 人 pulse | safe=847589 keep=847589 avail=-159656 chunkB=139218 pulseB=83531 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=22025 bal=1524167 dq=69.2 cnt=81 | c=122.8 rankC=86.0 need=2707264 tD=1.00 人 pulse | safe=847589 keep=Inf avail=-Inf chunkB=139218 pulseB=83531 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3765 zexos1 B=696160 L=10456 d=66.6 nb=2 neut=0 cmds=67 noFull=1 shQ=174040 | m=0.900 worth=59.9 cheap=8.3 over=0 dMedOther=67.9 safe(-1)=835696
+    → OnlyDamage#0[T2] terr=22139 bal=1503222 dq=67.9 cnt=84 | c=122.4 rankC=85.7 need=2712567 tD=1.00 人 pulse | safe=835696 keep=Inf avail=-Inf chunkB=139232 pulseB=83539 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=258 bal=1270 dq=4.9 cnt=10 | c=78.1 rankC=113.2 need=2655 tD=0.07 人 pulse | safe=835696 keep=Inf avail=-Inf chunkB=139232 pulseB=83539 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3770 zexos1 B=704513 L=10456 d=67.4 nb=2 neut=0 cmds=67 noFull=1 shQ=176128 | m=0.900 worth=60.6 cheap=8.3 over=0 dMedOther=67.7 safe(-1)=846589
+    → OnlyDamage#0[T2] terr=22480 bal=1522613 dq=67.7 cnt=86 | c=122.1 rankC=85.5 need=2747568 tD=1.00 人 pulse | safe=846589 keep=Inf avail=-Inf chunkB=140903 pulseB=84542 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=258 bal=1282 dq=5.0 cnt=10 | c=79.0 rankC=114.5 need=2676 tD=0.07 人 pulse | safe=846589 keep=Inf avail=-Inf chunkB=140903 pulseB=84542 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3775 zexos1 B=704513 L=10456 d=67.4 nb=2 neut=0 cmds=67 noFull=1 shQ=176128 | m=0.900 worth=60.6 cheap=8.3 over=0 dMedOther=67.2 safe(-1)=846589
+    → OnlyDamage#0[T2] terr=22673 bal=1522613 dq=67.2 cnt=88 | c=121.1 rankC=84.7 need=2747881 tD=1.00 人 pulse | safe=846589 keep=Inf avail=-Inf chunkB=140903 pulseB=84542 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=258 bal=1282 dq=5.0 cnt=10 | c=79.0 rankC=114.5 need=2676 tD=0.07 人 pulse | safe=846589 keep=Inf avail=-Inf chunkB=140903 pulseB=84542 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3780 zexos1 B=712967 L=10456 d=68.2 nb=2 neut=0 cmds=67 noFull=1 shQ=178241 | m=0.900 worth=61.4 cheap=8.3 over=0 dMedOther=67.3 safe(-1)=857624
+    → OnlyDamage#0[T2] terr=22907 bal=1542254 dq=67.3 cnt=104 | c=121.3 rankC=84.9 need=2783288 tD=1.00 人 pulse | safe=857624 keep=Inf avail=-Inf chunkB=142593 pulseB=85556 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=259 bal=1294 dq=5.0 cnt=10 | c=79.7 rankC=115.6 need=2702 tD=0.07 人 pulse | safe=857624 keep=Inf avail=-Inf chunkB=142593 pulseB=85556 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3785 zexos1 B=712967 L=10456 d=68.2 nb=2 neut=0 cmds=67 noFull=1 shQ=178241 | m=0.900 worth=61.4 cheap=8.3 over=0 dMedOther=67.0 safe(-1)=857624
+    → OnlyDamage#0[T2] terr=23034 bal=1542254 dq=67.0 cnt=119 | c=120.5 rankC=84.4 need=2783454 tD=1.00 人 pulse | safe=857624 keep=Inf avail=-Inf chunkB=142593 pulseB=85556 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=261 bal=1294 dq=5.0 cnt=10 | c=79.5 rankC=115.2 need=2700 tD=0.07 人 pulse | safe=857624 keep=Inf avail=-Inf chunkB=142593 pulseB=85556 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3790 zexos1 B=721522 L=10456 d=69.0 nb=2 neut=0 cmds=67 noFull=1 shQ=180380 | m=0.900 worth=62.1 cheap=8.3 over=0 dMedOther=67.3 safe(-1)=868801
+    → OnlyDamage#0[T2] terr=23200 bal=1562149 dq=67.3 cnt=126 | c=121.2 rankC=84.8 need=2819116 tD=1.00 人 pulse | safe=868801 keep=Inf avail=-Inf chunkB=144304 pulseB=86583 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=262 bal=1306 dq=5.0 cnt=10 | c=79.5 rankC=115.3 need=2725 tD=0.07 人 pulse | safe=868801 keep=Inf avail=-Inf chunkB=144304 pulseB=86583 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3795 zexos1 B=721522 L=10456 d=69.0 nb=2 neut=0 cmds=67 noFull=1 shQ=180380 | m=0.900 worth=62.1 cheap=8.3 over=0 dMedOther=67.0 safe(-1)=868801
+    → OnlyDamage#0[T2] terr=23304 bal=1562149 dq=67.0 cnt=130 | c=72.9 rankC=27.1 need=2819272 tD=1.00 人 pulse | safe=868801 keep=Inf avail=-Inf chunkB=144304 pulseB=86583 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=262 bal=1536 dq=5.9 cnt=10 | c=56.9 rankC=56.9 need=3136 tD=0.09 人 pulse | safe=868801 keep=868801 avail=-155734 chunkB=144304 pulseB=86583 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=3800 zexos1 B=740636 L=10456 d=70.8 nb=2 neut=0 cmds=67 noFull=1 shQ=182601 | m=0.900 worth=63.8 cheap=8.3 over=0 dMedOther=68.5 safe(-1)=893271
+    → Chernobyl#32[T2] terr=262 bal=1813 dq=6.9 cnt=10 | c=60.4 rankC=60.4 need=3630 tD=0.10 人 pulse | safe=893271 keep=893271 avail=-161314 chunkB=148127 pulseB=88876 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=23456 bal=1605706 dq=68.5 cnt=134 | c=123.1 rankC=86.2 need=2897134 tD=1.00 人 pulse | safe=893271 keep=Inf avail=-Inf chunkB=148127 pulseB=88876 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3805 zexos1 B=740636 L=10456 d=70.8 nb=2 neut=0 cmds=67 noFull=1 shQ=185159 | m=0.900 worth=63.8 cheap=8.3 over=0 dMedOther=68.2 safe(-1)=893271
+    → OnlyDamage#0[T2] terr=23555 bal=1605706 dq=68.2 cnt=137 | c=122.6 rankC=85.8 need=2897355 tD=1.00 人 pulse | safe=893271 keep=Inf avail=-Inf chunkB=148127 pulseB=88876 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=263 bal=1813 dq=6.9 cnt=10 | c=87.4 rankC=126.8 need=3635 tD=0.10 人 pulse | safe=893271 keep=Inf avail=-Inf chunkB=148127 pulseB=88876 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3810 zexos1 B=749523 L=10456 d=71.7 nb=2 neut=0 cmds=67 noFull=1 shQ=187380 | m=0.900 worth=64.5 cheap=8.3 over=0 dMedOther=76.5 safe(-1)=920128
+    → OnlyDamage#0[T2] terr=23695 bal=1813087 dq=76.5 cnt=146 | c=100.9 rankC=50.4 need=3267202 tD=1.00 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=149905 pulseB=89943 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=266 bal=1831 dq=6.9 cnt=10 | c=60.6 rankC=60.6 need=3668 tD=0.09 人 pulse | safe=920128 keep=920128 avail=-179388 chunkB=149905 pulseB=89943 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=3815 zexos1 B=749523 L=10456 d=71.7 nb=2 neut=0 cmds=67 noFull=1 shQ=187380 | m=0.900 worth=64.5 cheap=8.3 over=0 dMedOther=76.2 safe(-1)=920128
+    → OnlyDamage#0[T2] terr=23790 bal=1813087 dq=76.2 cnt=152 | c=100.5 rankC=50.2 need=3267317 tD=1.00 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=149905 pulseB=89943 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=270 bal=1831 dq=6.8 cnt=10 | c=59.9 rankC=59.9 need=3674 tD=0.09 人 pulse | safe=920128 keep=920128 avail=-179388 chunkB=149905 pulseB=89943 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=3820 zexos1 B=758517 L=10456 d=72.5 nb=2 neut=0 cmds=67 noFull=1 shQ=189629 | m=0.900 worth=65.3 cheap=8.3 over=0 dMedOther=75.8 safe(-1)=920128
+    → OnlyDamage#0[T2] terr=23477 bal=1780541 dq=75.8 cnt=158 | c=98.4 rankC=49.2 need=3200492 tD=1.00 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=151703 pulseB=91022 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=275 bal=1849 dq=6.7 cnt=10 | c=59.0 rankC=59.0 need=3717 tD=0.09 人 pulse | safe=920128 keep=920128 avail=-170499 chunkB=151703 pulseB=91022 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=3825 zexos1 B=758517 L=10456 d=72.5 nb=2 neut=0 cmds=67 noFull=1 shQ=189629 | m=0.900 worth=65.3 cheap=8.3 over=0 dMedOther=74.9 safe(-1)=920128
+    → OnlyDamage#0[T2] terr=23276 bal=1744249 dq=74.9 cnt=163 | c=99.3 rankC=49.6 need=3130309 tD=1.00 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=151703 pulseB=91022 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=1849 dq=6.7 cnt=10 | c=58.8 rankC=58.8 need=3710 tD=0.09 人 pulse | safe=920128 keep=920128 avail=-170499 chunkB=151703 pulseB=91022 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=3830 zexos1 B=767619 L=10456 d=73.4 nb=2 neut=0 cmds=67 noFull=1 shQ=191904 | m=0.900 worth=66.1 cheap=8.3 over=0 dMedOther=74.6 safe(-1)=920128
+    → OnlyDamage#0[T2] terr=22976 bal=1715060 dq=74.6 cnt=170 | c=101.9 rankC=50.9 need=3070020 tD=1.00 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=153524 pulseB=92114 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=2607 dq=9.4 cnt=10 | c=65.6 rankC=65.6 need=5061 tD=0.13 人 pulse | safe=920128 keep=920128 avail=-161504 chunkB=153524 pulseB=92114 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=3835 zexos1 B=767619 L=10456 d=73.4 nb=2 neut=0 cmds=67 noFull=1 shQ=191904 | m=0.900 worth=66.1 cheap=8.3 over=0 dMedOther=73.8 safe(-1)=920128
+    → OnlyDamage#0[T2] terr=22798 bal=1683615 dq=73.8 cnt=173 | c=102.7 rankC=51.3 need=3009263 tD=1.00 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=153524 pulseB=92114 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=2607 dq=9.4 cnt=10 | c=65.6 rankC=65.6 need=5061 tD=0.13 人 pulse | safe=920128 keep=920128 avail=-161504 chunkB=153524 pulseB=92114 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=3840 zexos1 B=776830 L=10456 d=74.3 nb=2 neut=0 cmds=67 noFull=1 shQ=194207 | m=0.900 worth=66.9 cheap=8.3 over=0 dMedOther=74.1 safe(-1)=920128
+    → Chernobyl#32[T2] terr=276 bal=2633 dq=9.5 cnt=10 | c=66.3 rankC=66.3 need=5107 tD=0.13 人 pulse | safe=920128 keep=920128 avail=-152401 chunkB=155366 pulseB=93220 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=22928 bal=1699694 dq=74.1 cnt=178 | c=133.6 rankC=93.5 need=3041629 tD=1.00 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=155366 pulseB=93220 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3845 zexos1 B=776830 L=10456 d=74.3 nb=2 neut=0 cmds=67 noFull=1 shQ=194207 | m=0.900 worth=66.9 cheap=8.3 over=0 dMedOther=73.9 safe(-1)=920128
+    → Chernobyl#32[T2] terr=276 bal=2633 dq=9.5 cnt=10 | c=66.3 rankC=66.3 need=5107 tD=0.13 人 pulse | safe=920128 keep=920128 avail=-152401 chunkB=155366 pulseB=93220 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=23014 bal=1699694 dq=73.9 cnt=179 | c=133.0 rankC=93.1 need=3044247 tD=1.00 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=155366 pulseB=93220 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3850 zexos1 B=786151 L=10456 d=75.2 nb=2 neut=0 cmds=67 noFull=1 shQ=196537 | m=0.900 worth=67.7 cheap=8.3 over=0 dMedOther=74.4 safe(-1)=920128
+    → Chernobyl#32[T2] terr=276 bal=2659 dq=9.6 cnt=10 | c=67.0 rankC=67.0 need=5153 tD=0.13 人 pulse | safe=920128 keep=920128 avail=-143189 chunkB=157230 pulseB=94338 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=23150 bal=1721620 dq=74.4 cnt=181 | c=133.8 rankC=93.7 need=3087264 tD=1.00 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=157230 pulseB=94338 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3855 zexos1 B=786151 L=10456 d=75.2 nb=2 neut=0 cmds=67 noFull=1 shQ=196537 | m=0.900 worth=67.7 cheap=8.3 over=0 dMedOther=74.1 safe(-1)=920128
+    → Chernobyl#32[T2] terr=276 bal=2659 dq=9.6 cnt=10 | c=67.0 rankC=67.0 need=5153 tD=0.13 人 pulse | safe=920128 keep=920128 avail=-143189 chunkB=157230 pulseB=94338 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=23247 bal=1721620 dq=74.1 cnt=183 | c=133.2 rankC=93.2 need=3090167 tD=1.00 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=157230 pulseB=94338 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3860 zexos1 B=795584 L=10456 d=76.1 nb=2 neut=0 cmds=67 noFull=1 shQ=198896 | m=0.900 worth=68.5 cheap=8.3 over=0 dMedOther=74.5 safe(-1)=920128
+    → Chernobyl#32[T2] terr=276 bal=2685 dq=9.7 cnt=10 | c=67.8 rankC=67.8 need=5200 tD=0.13 人 pulse | safe=920128 keep=920128 avail=-133867 chunkB=159117 pulseB=95470 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=23398 bal=1743828 dq=74.5 cnt=185 | c=133.9 rankC=93.7 need=3134038 tD=1.00 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=159117 pulseB=95470 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3865 zexos1 B=795584 L=10456 d=76.1 nb=2 neut=0 cmds=67 noFull=1 shQ=198896 | m=0.900 worth=68.5 cheap=8.3 over=0 dMedOther=74.2 safe(-1)=920128
+    → OnlyDamage#0[T2] terr=23505 bal=1743828 dq=74.2 cnt=187 | c=89.9 rankC=37.7 need=3137184 tD=1.00 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=159117 pulseB=95470 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=2685 dq=9.7 cnt=10 | c=67.8 rankC=67.8 need=5200 tD=0.13 人 pulse | safe=920128 keep=920128 avail=-133867 chunkB=159117 pulseB=95470 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=3870 zexos1 B=805131 L=10456 d=77.0 nb=2 neut=0 cmds=67 noFull=1 shQ=201282 | m=0.900 worth=69.3 cheap=8.3 over=0 dMedOther=74.6 safe(-1)=920128
+    → Chernobyl#32[T2] terr=276 bal=2711 dq=9.8 cnt=10 | c=68.5 rankC=68.5 need=5246 tD=0.13 人 pulse | safe=920128 keep=920128 avail=-124432 chunkB=161026 pulseB=96616 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=23670 bal=1766497 dq=74.6 cnt=190 | c=133.9 rankC=93.7 need=3182399 tD=1.00 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=161026 pulseB=96616 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3875 zexos1 B=805131 L=10456 d=77.0 nb=2 neut=0 cmds=67 noFull=1 shQ=201282 | m=0.900 worth=69.3 cheap=8.3 over=0 dMedOther=74.3 safe(-1)=920128
+    → Chernobyl#32[T2] terr=276 bal=2711 dq=9.8 cnt=10 | c=68.5 rankC=68.5 need=5246 tD=0.13 人 pulse | safe=920128 keep=920128 avail=-124432 chunkB=161026 pulseB=96616 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=23785 bal=1766497 dq=74.3 cnt=192 | c=133.2 rankC=93.2 need=3184242 tD=1.00 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=161026 pulseB=96616 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3880 zexos1 B=814792 L=10456 d=77.9 nb=2 neut=0 cmds=67 noFull=1 shQ=203698 | m=0.900 worth=70.1 cheap=8.3 over=0 dMedOther=74.7 safe(-1)=920128
+    → Chernobyl#32[T2] terr=276 bal=2738 dq=9.9 cnt=10 | c=69.3 rankC=69.3 need=5294 tD=0.13 人 pulse | safe=920128 keep=920128 avail=-114884 chunkB=162958 pulseB=97775 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=23961 bal=1789461 dq=74.7 cnt=195 | c=133.9 rankC=93.7 need=3225436 tD=1.00 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=162958 pulseB=97775 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3885 zexos1 B=814792 L=10456 d=77.9 nb=2 neut=0 cmds=67 noFull=1 shQ=203698 | m=0.900 worth=70.1 cheap=8.3 over=0 dMedOther=74.3 safe(-1)=920128
+    → Chernobyl#32[T2] terr=276 bal=2738 dq=9.9 cnt=10 | c=69.3 rankC=69.3 need=5294 tD=0.13 人 pulse | safe=920128 keep=920128 avail=-114884 chunkB=162958 pulseB=97775 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=24081 bal=1789461 dq=74.3 cnt=196 | c=133.2 rankC=93.3 need=3225616 tD=1.00 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=162958 pulseB=97775 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3890 zexos1 B=824569 L=10456 d=78.9 nb=2 neut=0 cmds=67 noFull=1 shQ=206142 | m=0.900 worth=71.0 cheap=8.3 over=0 dMedOther=74.7 safe(-1)=920128
+    → Chernobyl#32[T2] terr=276 bal=2765 dq=10.0 cnt=10 | c=70.0 rankC=70.0 need=5342 tD=0.13 人 pulse | safe=920128 keep=920128 avail=-105221 chunkB=164914 pulseB=98948 无可用(avail<=0) hNb=2
+    → OnlyDamage#0[T2] terr=24268 bal=1812723 dq=74.7 cnt=198 | c=133.9 rankC=93.7 need=3267331 tD=1.00 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=164914 pulseB=98948 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3895 zexos1 B=824569 L=10456 d=78.9 nb=2 neut=0 cmds=67 noFull=1 shQ=206142 | m=0.900 worth=71.0 cheap=8.3 over=0 dMedOther=74.0 safe(-1)=889237
+    → OnlyDamage#0[T2] terr=24398 bal=1598526 dq=65.5 cnt=199 | c=117.7 rankC=82.4 need=2885796 tD=0.89 人 pulse | safe=889237 keep=Inf avail=-Inf chunkB=164914 pulseB=98948 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=2765 dq=10.0 cnt=10 | c=101.5 rankC=147.2 need=5342 tD=0.14 人 pulse | safe=889237 keep=Inf avail=-Inf chunkB=164914 pulseB=98948 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3900 zexos1 B=844919 L=10456 d=80.8 nb=2 neut=0 cmds=67 noFull=1 shQ=208676 | m=0.900 worth=72.7 cheap=8.3 over=0 dMedOther=76.0 safe(-1)=914694
+    → Chernobyl#32[T2] terr=276 bal=3068 dq=11.1 cnt=10 | c=73.7 rankC=73.7 need=5882 tD=0.15 人 pulse | safe=914694 keep=Inf avail=-Inf chunkB=168984 pulseB=101390 价高(c>=worth)→break hNb=2
+    → OnlyDamage#0[T2] terr=24604 bal=1643840 dq=66.8 cnt=200 | c=120.0 rankC=84.0 need=2966825 tD=0.88 人 pulse | safe=914694 keep=Inf avail=-Inf chunkB=168984 pulseB=101390 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3905 zexos1 B=844919 L=10456 d=80.8 nb=2 neut=0 cmds=67 noFull=1 shQ=211229 | m=0.900 worth=72.7 cheap=8.3 over=0 dMedOther=76.0 safe(-1)=914694
+    → Chernobyl#32[T2] terr=276 bal=3068 dq=11.1 cnt=10 | c=73.7 rankC=73.7 need=5882 tD=0.15 人 pulse | safe=914694 keep=Inf avail=-Inf chunkB=168984 pulseB=101390 价高(c>=worth)→break hNb=2
+    → OnlyDamage#0[T2] terr=24750 bal=1643840 dq=66.4 cnt=201 | c=119.3 rankC=83.5 need=2967091 tD=0.87 人 pulse | safe=914694 keep=Inf avail=-Inf chunkB=168984 pulseB=101390 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3910 zexos1 B=855058 L=10456 d=81.8 nb=2 neut=0 cmds=67 noFull=1 shQ=213764 | m=0.900 worth=73.6 cheap=8.3 over=0 dMedOther=77.0 safe(-1)=920128
+    → Chernobyl#32[T2] terr=276 bal=3098 dq=11.2 cnt=10 | c=74.5 rankC=74.5 need=5936 tD=0.15 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=171012 pulseB=102607 价高(c>=worth)→break hNb=2
+    → OnlyDamage#0[T2] terr=24982 bal=1665209 dq=66.7 cnt=203 | c=119.7 rankC=83.8 need=3005526 tD=0.87 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=171012 pulseB=102607 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3915 zexos1 B=855058 L=10456 d=81.8 nb=2 neut=0 cmds=67 noFull=1 shQ=213764 | m=0.900 worth=73.6 cheap=8.3 over=0 dMedOther=77.0 safe(-1)=920128
+    → Chernobyl#32[T2] terr=276 bal=3098 dq=11.2 cnt=10 | c=74.5 rankC=74.5 need=5936 tD=0.15 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=171012 pulseB=102607 价高(c>=worth)→break hNb=2
+    → OnlyDamage#0[T2] terr=25145 bal=1665209 dq=66.2 cnt=204 | c=118.9 rankC=83.3 need=3005747 tD=0.86 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=171012 pulseB=102607 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3920 zexos1 B=865318 L=10456 d=82.8 nb=2 neut=0 cmds=67 noFull=1 shQ=216329 | m=0.900 worth=74.5 cheap=8.3 over=0 dMedOther=78.1 safe(-1)=920128
+    → Chernobyl#32[T2] terr=276 bal=3128 dq=11.3 cnt=10 | c=75.3 rankC=75.3 need=5989 tD=0.15 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=173064 pulseB=103838 价高(c>=worth)→break hNb=2
+    → OnlyDamage#0[T2] terr=25409 bal=1686856 dq=66.4 cnt=205 | c=119.2 rankC=83.5 need=3044726 tD=0.85 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=173064 pulseB=103838 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3925 zexos1 B=865318 L=10456 d=82.8 nb=2 neut=0 cmds=67 noFull=1 shQ=216329 | m=0.900 worth=74.5 cheap=8.3 over=0 dMedOther=78.1 safe(-1)=920128
+    → OnlyDamage#0[T2] terr=25579 bal=1686856 dq=65.9 cnt=205 | c=88.1 rankC=44.0 need=3045028 tD=0.84 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=173064 pulseB=103838 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3128 dq=11.3 cnt=10 | c=75.3 rankC=75.3 need=5989 tD=0.15 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=173064 pulseB=103838 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3930 zexos1 B=875701 L=10456 d=83.8 nb=2 neut=0 cmds=67 noFull=1 shQ=218925 | m=0.900 worth=75.4 cheap=8.3 over=0 dMedOther=79.2 safe(-1)=920128
+    → OnlyDamage#0[T2] terr=25580 bal=1681076 dq=65.7 cnt=205 | c=86.1 rankC=43.0 need=3032690 tD=0.83 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=175140 pulseB=105084 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3159 dq=11.4 cnt=10 | c=76.1 rankC=76.1 need=6044 tD=0.14 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=175140 pulseB=105084 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3935 zexos1 B=875701 L=10456 d=83.8 nb=2 neut=0 cmds=67 noFull=1 shQ=218925 | m=0.900 worth=75.4 cheap=8.3 over=0 dMedOther=79.2 safe(-1)=920128
+    → OnlyDamage#0[T2] terr=25498 bal=1654246 dq=64.9 cnt=205 | c=83.1 rankC=41.5 need=2983058 tD=0.82 人 pulse bleeding | safe=920128 keep=Inf avail=-Inf chunkB=175140 pulseB=105084 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3159 dq=11.4 cnt=10 | c=76.1 rankC=76.1 need=6044 tD=0.14 人 pulse | safe=920128 keep=Inf avail=-Inf chunkB=175140 pulseB=105084 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3940 zexos1 B=886209 L=10456 d=84.8 nb=2 neut=0 cmds=67 noFull=1 shQ=221552 | m=0.900 worth=76.3 cheap=8.3 over=0 dMedOther=80.3 safe(-1)=910671
+    → OnlyDamage#0[T2] terr=25389 bal=1636678 dq=64.5 cnt=205 | c=84.5 rankC=42.3 need=2949183 tD=0.80 人 pulse | safe=910671 keep=Inf avail=-Inf chunkB=177242 pulseB=106345 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3190 dq=11.6 cnt=10 | c=76.9 rankC=76.9 need=6100 tD=0.14 人 pulse | safe=910671 keep=Inf avail=-Inf chunkB=177242 pulseB=106345 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3945 zexos1 B=886209 L=10456 d=84.8 nb=2 neut=0 cmds=67 noFull=1 shQ=221552 | m=0.900 worth=76.3 cheap=8.3 over=0 dMedOther=80.3 safe(-1)=896232
+    → OnlyDamage#0[T2] terr=25314 bal=1610977 dq=63.6 cnt=205 | c=84.8 rankC=42.4 need=2901718 tD=0.79 人 pulse | safe=896232 keep=Inf avail=-Inf chunkB=177242 pulseB=106345 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3190 dq=11.6 cnt=10 | c=76.9 rankC=76.9 need=6100 tD=0.14 人 pulse | safe=896232 keep=Inf avail=-Inf chunkB=177242 pulseB=106345 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3950 zexos1 B=896843 L=10456 d=85.8 nb=2 neut=0 cmds=67 noFull=1 shQ=224210 | m=0.900 worth=77.2 cheap=8.3 over=0 dMedOther=81.4 safe(-1)=886293
+    → OnlyDamage#0[T2] terr=25202 bal=1593286 dq=63.2 cnt=205 | c=77.6 rankC=38.8 need=2867613 tD=0.78 人 pulse bleeding | safe=886293 keep=Inf avail=-Inf chunkB=179369 pulseB=107621 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3221 dq=11.7 cnt=10 | c=77.8 rankC=77.8 need=6155 tD=0.14 人 pulse | safe=886293 keep=Inf avail=-Inf chunkB=179369 pulseB=107621 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3955 zexos1 B=896843 L=10456 d=85.8 nb=2 neut=0 cmds=67 noFull=1 shQ=224210 | m=0.900 worth=77.2 cheap=8.3 over=0 dMedOther=81.4 safe(-1)=872078
+    → OnlyDamage#0[T2] terr=25130 bal=1567982 dq=62.4 cnt=205 | c=77.8 rankC=38.9 need=2821094 tD=0.77 人 pulse bleeding | safe=872078 keep=Inf avail=-Inf chunkB=179369 pulseB=107621 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3221 dq=11.7 cnt=10 | c=77.8 rankC=77.8 need=6155 tD=0.14 人 pulse | safe=872078 keep=Inf avail=-Inf chunkB=179369 pulseB=107621 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3960 zexos1 B=907605 L=10456 d=86.8 nb=2 neut=0 cmds=67 noFull=1 shQ=226901 | m=0.900 worth=78.1 cheap=8.3 over=0 dMedOther=82.5 safe(-1)=849942
+    → OnlyDamage#0[T2] terr=24896 bal=1528580 dq=61.4 cnt=205 | c=79.6 rankC=39.8 need=2745585 tD=0.74 人 pulse bleeding | safe=849942 keep=Inf avail=-Inf chunkB=181521 pulseB=108913 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3253 dq=11.8 cnt=10 | c=78.6 rankC=78.6 need=6212 tD=0.14 人 pulse | safe=849942 keep=Inf avail=-Inf chunkB=181521 pulseB=108913 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3965 zexos1 B=907605 L=10456 d=86.8 nb=2 neut=0 cmds=67 noFull=1 shQ=226901 | m=0.900 worth=78.1 cheap=8.3 over=0 dMedOther=82.5 safe(-1)=831524
+    → OnlyDamage#0[T2] terr=24729 bal=1495797 dq=60.5 cnt=205 | c=80.1 rankC=40.1 need=2683555 tD=0.73 人 pulse bleeding | safe=831524 keep=Inf avail=-Inf chunkB=181521 pulseB=108913 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3253 dq=11.8 cnt=10 | c=78.6 rankC=78.6 need=6212 tD=0.14 人 pulse | safe=831524 keep=Inf avail=-Inf chunkB=181521 pulseB=108913 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3970 zexos1 B=918496 L=10456 d=87.8 nb=2 neut=0 cmds=67 noFull=1 shQ=229624 | m=0.900 worth=79.1 cheap=8.3 over=0 dMedOther=83.6 safe(-1)=814079
+    → OnlyDamage#0[T2] terr=24448 bal=1464744 dq=59.9 cnt=205 | c=82.1 rankC=41.1 need=2621902 tD=0.72 人 pulse bleeding | safe=814079 keep=Inf avail=-Inf chunkB=183699 pulseB=110220 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3285 dq=11.9 cnt=10 | c=79.5 rankC=79.5 need=6269 tD=0.14 人 pulse | safe=814079 keep=Inf avail=-Inf chunkB=183699 pulseB=110220 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3975 zexos1 B=918496 L=10456 d=87.8 nb=2 neut=0 cmds=67 noFull=1 shQ=229624 | m=0.900 worth=79.1 cheap=8.3 over=0 dMedOther=83.6 safe(-1)=796201
+    → OnlyDamage#0[T2] terr=24429 bal=1432922 dq=58.7 cnt=205 | c=106.2 rankC=74.4 need=2565440 tD=0.70 人 pulse | safe=796201 keep=Inf avail=-Inf chunkB=183699 pulseB=110220 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3285 dq=11.9 cnt=10 | c=79.5 rankC=79.5 need=6269 tD=0.14 人 pulse | safe=796201 keep=Inf avail=-Inf chunkB=183699 pulseB=110220 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3980 zexos1 B=929517 L=10456 d=88.9 nb=2 neut=0 cmds=67 noFull=1 shQ=232379 | m=0.900 worth=80.0 cheap=8.3 over=0 dMedOther=83.9 safe(-1)=806666
+    → OnlyDamage#0[T2] terr=24665 bal=1451549 dq=58.9 cnt=205 | c=106.5 rankC=74.5 need=2604081 tD=0.70 人 pulse bleeding | safe=806666 keep=Inf avail=-Inf chunkB=185903 pulseB=111542 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3317 dq=12.0 cnt=10 | c=80.4 rankC=80.4 need=6326 tD=0.14 人 pulse | safe=806666 keep=Inf avail=-Inf chunkB=185903 pulseB=111542 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3985 zexos1 B=929517 L=10456 d=88.9 nb=2 neut=0 cmds=67 noFull=1 shQ=232379 | m=0.900 worth=80.0 cheap=8.3 over=0 dMedOther=82.0 safe(-1)=806666
+    → OnlyDamage#0[T2] terr=24824 bal=1451549 dq=58.5 cnt=205 | c=105.7 rankC=74.0 need=2607916 tD=0.71 人 pulse | safe=806666 keep=Inf avail=-Inf chunkB=185903 pulseB=111542 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3317 dq=12.0 cnt=10 | c=80.4 rankC=80.4 need=6326 tD=0.15 人 pulse | safe=806666 keep=Inf avail=-Inf chunkB=185903 pulseB=111542 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3990 zexos1 B=940671 L=10456 d=90.0 nb=2 neut=0 cmds=67 noFull=1 shQ=235167 | m=0.900 worth=81.0 cheap=8.3 over=0 dMedOther=80.3 safe(-1)=817267
+    → OnlyDamage#0[T2] terr=25064 bal=1470419 dq=58.7 cnt=205 | c=105.9 rankC=74.1 need=2647043 tD=0.73 人 pulse | safe=817267 keep=Inf avail=-Inf chunkB=188134 pulseB=112881 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3350 dq=12.1 cnt=10 | c=81.2 rankC=81.2 need=6385 tD=0.15 人 pulse | safe=817267 keep=Inf avail=-Inf chunkB=188134 pulseB=112881 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3995 zexos1 B=940671 L=10456 d=90.0 nb=2 neut=0 cmds=67 noFull=1 shQ=235167 | m=0.900 worth=81.0 cheap=8.3 over=0 dMedOther=78.6 safe(-1)=817267
+    → OnlyDamage#0[T2] terr=25225 bal=1470419 dq=58.3 cnt=205 | c=74.0 rankC=37.0 need=2650908 tD=0.74 人 pulse bleeding | safe=817267 keep=896570 avail=33078 chunkB=188134 pulseB=112881 低于最小指令(x=33078<44092)→continue hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3350 dq=12.1 cnt=10 | c=81.2 rankC=81.2 need=6385 tD=0.15 人 pulse | safe=817267 keep=Inf avail=-Inf chunkB=188134 pulseB=112881 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4000 zexos1 B=962415 L=10456 d=92.0 nb=2 neut=0 cmds=67 noFull=1 shQ=238054 | m=0.900 worth=82.8 cheap=8.3 over=0 dMedOther=77.9 safe(-1)=823138
+    → OnlyDamage#0[T2] terr=25112 bal=1480870 dq=59.0 cnt=205 | c=76.7 rankC=38.4 need=2666962 tD=0.76 人 pulse | safe=823138 keep=922856 avail=28281 chunkB=192483 pulseB=115490 低于最小指令(x=28281<45112)→continue hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3659 dq=13.3 cnt=10 | c=85.0 rankC=85.0 need=6936 tD=0.17 人 pulse | safe=823138 keep=Inf avail=-Inf chunkB=192483 pulseB=115490 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4005 zexos1 B=962415 L=10456 d=92.0 nb=2 neut=0 cmds=68 noFull=1 shQ=240603 | m=0.900 worth=82.8 cheap=8.3 over=0 dMedOther=76.2 safe(-1)=803972
+    → OnlyDamage#0[T2] terr=24915 bal=1446754 dq=58.1 cnt=205 | c=52.2 rankC=15.7 need=2601958 tD=0.76 人 pulse | safe=803972 keep=803972 avail=147165 chunkB=192483 pulseB=115490  x=115489 hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3659 dq=13.3 cnt=10 | c=85.0 rankC=85.0 need=6936 tD=0.17 人 pulse | safe=803972 keep=Inf avail=-Inf chunkB=192483 pulseB=115490 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → OnlyDamage#0[T2]（约 115602 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4010 zexos1 B=973963 L=10456 d=93.1 nb=2 neut=0 cmds=68 noFull=1 shQ=243490 | m=0.900 worth=83.8 cheap=8.3 over=0 dMedOther=76.3 safe(-1)=785323
+    → OnlyDamage#0[T2] terr=24617 bal=1413559 dq=57.4 cnt=205 | c=79.3 rankC=39.7 need=2536354 tD=0.75 人 pulse | safe=785323 keep=943127 avail=19423 chunkB=194793 pulseB=116876 低于最小指令(x=19423<45652)→continue hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3695 dq=13.4 cnt=10 | c=85.9 rankC=85.9 need=7000 tD=0.18 人 pulse | safe=785323 keep=Inf avail=-Inf chunkB=194793 pulseB=116876 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4015 zexos1 B=973963 L=10456 d=93.1 nb=2 neut=0 cmds=68 noFull=1 shQ=243490 | m=0.900 worth=83.8 cheap=8.3 over=0 dMedOther=76.3 safe(-1)=774211
+    → OnlyDamage#0[T2] terr=24619 bal=1393779 dq=56.6 cnt=205 | c=102.5 rankC=71.8 need=2501584 tD=0.74 人 pulse | safe=774211 keep=Inf avail=-Inf chunkB=194793 pulseB=116876 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3695 dq=13.4 cnt=10 | c=85.9 rankC=85.9 need=7000 tD=0.18 人 pulse | safe=774211 keep=Inf avail=-Inf chunkB=194793 pulseB=116876 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4020 zexos1 B=855707 L=10456 d=81.8 nb=2 neut=0 cmds=68 noFull=1 shQ=213926 | m=0.900 worth=73.7 cheap=8.3 over=0 dMedOther=77.3 safe(-1)=784390
+    → OnlyDamage#0[T2] terr=24912 bal=1411898 dq=56.7 cnt=205 | c=97.7 rankC=68.4 need=2423434 tD=0.73 人 pulse bleeding | safe=784390 keep=Inf avail=-Inf chunkB=171141 pulseB=102685 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3731 dq=13.5 cnt=10 | c=79.8 rankC=79.8 need=7064 tD=0.17 人 pulse | safe=784390 keep=Inf avail=-Inf chunkB=171141 pulseB=102685 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4025 zexos1 B=855707 L=10456 d=81.8 nb=2 neut=0 cmds=68 noFull=1 shQ=213926 | m=0.900 worth=73.7 cheap=8.3 over=0 dMedOther=77.3 safe(-1)=784390
+    → OnlyDamage#0[T2] terr=25114 bal=1411898 dq=56.2 cnt=205 | c=96.9 rankC=67.8 need=2428033 tD=0.73 人 pulse bleeding | safe=784390 keep=Inf avail=-Inf chunkB=171141 pulseB=102685 价高(c>=worth)→break hNb=2
+    → Chernobyl#32[T2] terr=276 bal=3731 dq=13.5 cnt=10 | c=79.8 rankC=79.8 need=7064 tD=0.17 人 pulse | safe=784390 keep=Inf avail=-Inf chunkB=171141 pulseB=102685 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4030 zexos1 B=864827 L=11066 d=78.2 nb=3 neut=0 cmds=68 noFull=1 shQ=216206 | m=0.900 worth=70.3 cheap=8.3 over=0 dMedOther=78.3 safe(-1)=973808
+    → OnlyDamage#0[T2] terr=24800 bal=1374358 dq=55.4 cnt=203 | c=76.4 rankC=38.2 need=2466616 tD=0.71 人 pulse bleeding | safe=973808 keep=Inf avail=-Inf chunkB=172965 pulseB=103779 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=62529 bal=3512042 dq=56.2 cnt=5 | c=107.5 rankC=75.3 need=6716319 tD=0.72 人 pulse onMe | safe=973808 keep=Inf avail=-Inf chunkB=172965 pulseB=103779 价高(c>=worth)→break hNb=3
+    → Chernobyl#32[T2] terr=276 bal=3768 dq=13.7 cnt=10 | c=80.6 rankC=80.6 need=7130 tD=0.17 人 pulse | safe=973808 keep=Inf avail=-Inf chunkB=172965 pulseB=103779 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4035 zexos1 B=858140 L=11012 d=77.9 nb=3 neut=0 cmds=68 noFull=1 shQ=214535 | m=0.900 worth=70.1 cheap=8.3 over=0 dMedOther=78.3 safe(-1)=969056
+    → OnlyDamage#0[T2] terr=24923 bal=1364632 dq=54.8 cnt=201 | c=76.0 rankC=38.0 need=2457176 tD=0.70 人 pulse bleeding | safe=969056 keep=Inf avail=-Inf chunkB=171628 pulseB=102977 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=62583 bal=3512042 dq=56.1 cnt=13 | c=107.2 rankC=75.0 need=6702848 tD=0.72 人 pulse onMe | safe=969056 keep=Inf avail=-Inf chunkB=171628 pulseB=102977 价高(c>=worth)→break hNb=3
+    → Chernobyl#32[T2] terr=276 bal=3768 dq=13.7 cnt=10 | c=80.2 rankC=80.2 need=7130 tD=0.17 人 pulse | safe=969056 keep=Inf avail=-Inf chunkB=171628 pulseB=102977 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4040 zexos1 B=858489 L=10933 d=78.5 nb=3 neut=0 cmds=68 noFull=1 shQ=214622 | m=0.900 worth=70.7 cheap=8.3 over=0 dMedOther=79.4 safe(-1)=962104
+    → OnlyDamage#0[T2] terr=25145 bal=1372292 dq=54.6 cnt=201 | c=73.8 rankC=36.9 need=2475663 tD=0.69 人 pulse bleeding | safe=962104 keep=Inf avail=-Inf chunkB=171698 pulseB=103019 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=62662 bal=3564371 dq=56.9 cnt=18 | c=108.2 rankC=75.7 need=6776344 tD=0.72 人 pulse onMe | safe=962104 keep=Inf avail=-Inf chunkB=171698 pulseB=103019 价高(c>=worth)→break hNb=3
+    → Chernobyl#32[T2] terr=276 bal=3805 dq=13.8 cnt=10 | c=80.5 rankC=80.5 need=7196 tD=0.17 人 pulse | safe=962104 keep=Inf avail=-Inf chunkB=171698 pulseB=103019 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4045 zexos1 B=843330 L=10812 d=78.0 nb=3 neut=0 cmds=68 noFull=1 shQ=210832 | m=0.900 worth=70.2 cheap=8.3 over=0 dMedOther=79.4 safe(-1)=951456
+    → OnlyDamage#0[T2] terr=25351 bal=1372292 dq=54.1 cnt=201 | c=73.1 rankC=36.5 need=2480128 tD=0.68 人 pulse bleeding | safe=951456 keep=Inf avail=-Inf chunkB=168666 pulseB=101200 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=62783 bal=3564371 dq=56.8 cnt=26 | c=107.5 rankC=75.2 need=6745986 tD=0.72 人 pulse onMe | safe=951456 keep=Inf avail=-Inf chunkB=168666 pulseB=101200 价高(c>=worth)→break hNb=3
+    → Chernobyl#32[T2] terr=276 bal=3805 dq=13.8 cnt=10 | c=79.7 rankC=79.7 need=7196 tD=0.17 人 pulse | safe=951456 keep=Inf avail=-Inf chunkB=168666 pulseB=101200 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4050 zexos1 B=835702 L=10671 d=78.3 nb=3 neut=0 cmds=68 noFull=1 shQ=208925 | m=0.900 worth=70.5 cheap=8.3 over=0 dMedOther=72.2 safe(-1)=939048
+    → OnlyDamage#0[T2] terr=25497 bal=1375324 dq=53.9 cnt=199 | c=73.6 rankC=36.8 need=2488664 tD=0.75 人 pulse bleeding | safe=939048 keep=Inf avail=-Inf chunkB=167140 pulseB=100284 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=62902 bal=3615452 dq=57.5 cnt=27 | c=108.1 rankC=75.7 need=6801754 tD=0.80 人 pulse onMe | safe=939048 keep=Inf avail=-Inf chunkB=167140 pulseB=100284 价高(c>=worth)→break hNb=3
+    → Chernobyl#32[T2] terr=276 bal=3843 dq=13.9 cnt=10 | c=79.6 rankC=79.6 need=7264 tD=0.19 人 pulse | safe=939048 keep=Inf avail=-Inf chunkB=167140 pulseB=100284 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4055 zexos1 B=1171900 L=10496 d=111.7 nb=3 neut=0 cmds=69 noFull=1 shQ=211738 | m=0.900 worth=100.5 cheap=8.3 over=1 dMedOther=71.5 safe(-1)=923648
+    → OnlyDamage#0[T2] terr=25622 bal=1367847 dq=53.4 cnt=197 | c=70.1 rankC=35.1 need=2476470 tD=0.75 人 pulse bleeding | safe=923648 keep=944640 avail=213527 chunkB=234380 pulseB=140628  x=140628 hNb=3
+    → Chernobyl#32[T2] terr=276 bal=3843 dq=13.9 cnt=9 | c=98.3 rankC=98.3 need=7264 tD=0.19 人 pulse | safe=923648 keep=944640 avail=213527 chunkB=234380 pulseB=140628 低于最小指令(x=8743<54932)→continue hNb=3
+    → [EU] DONATE#40[T2] terr=63077 bal=3615452 dq=57.3 cnt=39 | c=142.7 rankC=142.7 need=6749542 tD=0.80 人 pulse onMe | safe=923648 keep=944640 avail=213527 chunkB=234380 pulseB=140628  x=140628 hNb=3
+    ⇒ 影子指令 attack pct=122 → OnlyDamage#0[T2]（约 140765 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4060 zexos1 B=1137743 L=10244 d=111.1 nb=3 neut=0 cmds=70 noFull=1 shQ=8554 | m=0.900 worth=100.0 cheap=8.4 over=1 dMedOther=71.3 safe(-1)=901472
+    → OnlyDamage#0[T2] terr=25701 bal=1370557 dq=53.3 cnt=195 | c=70.8 rankC=35.4 need=2481171 tD=0.75 人 pulse bleeding | safe=901472 keep=921960 avail=202451 chunkB=227549 pulseB=136529  x=136529 hNb=3
+    → Chernobyl#32[T2] terr=276 bal=3881 dq=14.1 cnt=6 | c=97.8 rankC=97.8 need=7331 tD=0.20 人 pulse | safe=901472 keep=921960 avail=202451 chunkB=227549 pulseB=136529 低于最小指令(x=8816<53328)→continue hNb=3
+    → [EU] DONATE#40[T2] terr=63329 bal=3669322 dq=57.9 cnt=58 | c=142.1 rankC=142.1 need=6755736 tD=0.81 人 pulse onMe | safe=901472 keep=921960 avail=202451 chunkB=227549 pulseB=136529  x=136529 hNb=3
+    ⇒ 影子指令 attack pct=0 → OnlyDamage#0[T2]（约 1111 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4065 zexos1 B=1084640 L=9943 d=109.1 nb=3 neut=0 cmds=71 noFull=1 shQ=14244 | m=0.900 worth=98.2 cheap=8.4 over=1 dMedOther=71.3 safe(-1)=874984
+    → OnlyDamage#0[T2] terr=25066 bal=1302317 dq=52.0 cnt=195 | c=69.5 rankC=34.7 need=2346775 tD=0.73 人 pulse bleeding | safe=874984 keep=894870 avail=177060 chunkB=216928 pulseB=130157  x=130156 hNb=3
+    → Chernobyl#32[T2] terr=276 bal=3881 dq=14.1 cnt=3 | c=95.8 rankC=95.8 need=7331 tD=0.20 人 pulse | safe=874984 keep=894870 avail=177060 chunkB=216928 pulseB=130157 低于最小指令(x=8807<50840)→continue hNb=3
+    → [EU] DONATE#40[T2] terr=63630 bal=3669322 dq=57.7 cnt=60 | c=139.2 rankC=139.2 need=6649400 tD=0.81 人 pulse onMe | safe=874984 keep=894870 avail=177060 chunkB=216928 pulseB=130157  x=130156 hNb=3
+    ⇒ 影子指令 attack pct=0 → OnlyDamage#0[T2]（约 1059 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4070 zexos1 B=946740 L=9943 d=95.2 nb=3 neut=0 cmds=71 noFull=1 shQ=5599 | m=0.900 worth=85.7 cheap=8.4 over=0 dMedOther=72.2 safe(-1)=874984
+    → OnlyDamage#0[T2] terr=24795 bal=1279278 dq=51.6 cnt=195 | c=61.3 rankC=30.6 need=2170905 tD=0.71 人 pulse bleeding | safe=874984 keep=874984 avail=60662 chunkB=189348 pulseB=113609 在途(curAtk=129460)→continue hNb=3
+    → Chernobyl#32[T2] terr=276 bal=3919 dq=14.2 cnt=3 | c=88.4 rankC=88.4 need=7399 tD=0.20 人 pulse | safe=874984 keep=Inf avail=-Inf chunkB=189348 pulseB=113609 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63630 bal=3724021 dq=58.5 cnt=60 | c=140.9 rankC=140.9 need=6733042 tD=0.81 人 pulse | safe=874984 keep=Inf avail=-Inf chunkB=189348 pulseB=113609 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4075 zexos1 B=922857 L=10138 d=91.0 nb=3 neut=0 cmds=71 noFull=1 shQ=19608 | m=0.900 worth=81.9 cheap=8.4 over=0 dMedOther=72.2 safe(-1)=892144
+    → OnlyDamage#0[T2] terr=23994 bal=1202614 dq=50.1 cnt=191 | c=43.1 rankC=12.9 need=2048945 tD=0.69 人 pulse bleeding | safe=892144 keep=892144 avail=19899 chunkB=184571 pulseB=110743 在途(curAtk=99282)→continue hNb=3
+    → Chernobyl#32[T2] terr=276 bal=3919 dq=14.2 cnt=3 | c=87.1 rankC=87.1 need=7399 tD=0.20 人 pulse | safe=892144 keep=Inf avail=-Inf chunkB=184571 pulseB=110743 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63630 bal=3724021 dq=58.5 cnt=60 | c=140.9 rankC=140.9 need=6733042 tD=0.81 人 pulse | safe=892144 keep=Inf avail=-Inf chunkB=184571 pulseB=110743 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4080 zexos1 B=933746 L=10522 d=88.7 nb=3 neut=0 cmds=71 noFull=1 shQ=33389 | m=0.900 worth=79.9 cheap=8.3 over=0 dMedOther=73.2 safe(-1)=925936
+    → OnlyDamage#0[T2] terr=23305 bal=1146079 dq=49.2 cnt=193 | c=66.7 rankC=33.3 need=1996820 tD=0.67 人 pulse bleeding | safe=925936 keep=925936 avail=-3132 chunkB=186749 pulseB=112050 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=276 bal=3958 dq=14.3 cnt=3 | c=88.0 rankC=88.0 need=7469 tD=0.20 人 pulse | safe=925936 keep=Inf avail=-Inf chunkB=186749 pulseB=112050 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63630 bal=3779508 dq=59.4 cnt=60 | c=143.0 rankC=143.0 need=6831940 tD=0.81 人 pulse | safe=925936 keep=Inf avail=-Inf chunkB=186749 pulseB=112050 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4085 zexos1 B=933929 L=10715 d=87.2 nb=3 neut=0 cmds=71 noFull=1 shQ=47394 | m=0.900 worth=78.4 cheap=8.3 over=0 dMedOther=73.2 safe(-1)=942920
+    → Chernobyl#32[T2] terr=276 bal=3958 dq=14.3 cnt=3 | c=88.0 rankC=88.0 need=7469 tD=0.20 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=186786 pulseB=112071 价高(c>=worth)→break hNb=3
+    → OnlyDamage#0[T2] terr=22985 bal=1098842 dq=47.8 cnt=195 | c=117.1 rankC=117.1 need=1945246 tD=0.65 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=186786 pulseB=112071 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63630 bal=3779508 dq=59.4 cnt=60 | c=143.0 rankC=143.0 need=6831940 tD=0.81 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=186786 pulseB=112071 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4090 zexos1 B=945136 L=10715 d=88.2 nb=3 neut=0 cmds=71 noFull=1 shQ=61433 | m=0.900 worth=79.4 cheap=8.3 over=0 dMedOther=74.1 safe(-1)=942920
+    → OnlyDamage#0[T2] terr=23215 bal=981499 dq=42.3 cnt=195 | c=55.6 rankC=27.8 need=1745675 tD=0.57 人 pulse bleeding | safe=942920 keep=942920 avail=-8859 chunkB=189027 pulseB=113416 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=276 bal=3997 dq=14.5 cnt=3 | c=89.0 rankC=89.0 need=7538 tD=0.20 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=189027 pulseB=113416 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63630 bal=3835822 dq=60.3 cnt=60 | c=145.1 rankC=145.1 need=6932313 tD=0.81 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=189027 pulseB=113416 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4095 zexos1 B=945136 L=10715 d=88.2 nb=3 neut=0 cmds=71 noFull=1 shQ=75608 | m=0.900 worth=79.4 cheap=8.3 over=0 dMedOther=74.1 safe(-1)=942920
+    → OnlyDamage#0[T2] terr=23392 bal=981499 dq=42.0 cnt=195 | c=55.1 rankC=27.6 need=1749252 tD=0.57 人 pulse bleeding | safe=942920 keep=942920 avail=-8859 chunkB=189027 pulseB=113416 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=276 bal=3997 dq=14.5 cnt=3 | c=89.0 rankC=89.0 need=7538 tD=0.20 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=189027 pulseB=113416 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63630 bal=3835822 dq=60.3 cnt=60 | c=145.1 rankC=145.1 need=6932313 tD=0.81 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=189027 pulseB=113416 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4100 zexos1 B=967192 L=10715 d=90.3 nb=3 neut=0 cmds=71 noFull=1 shQ=89849 | m=0.900 worth=81.2 cheap=8.3 over=0 dMedOther=76.0 safe(-1)=942920
+    → OnlyDamage#0[T2] terr=22837 bal=960331 dq=42.1 cnt=195 | c=58.7 rankC=29.4 need=1701785 tD=0.55 人 pulse bleeding | safe=942920 keep=942920 avail=12938 chunkB=193438 pulseB=116063 低于最小指令(x=12938<45336)→continue hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4312 dq=15.6 cnt=3 | c=92.9 rankC=92.9 need=8100 tD=0.21 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=193438 pulseB=116063 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63630 bal=3956605 dq=62.2 cnt=60 | c=149.6 rankC=149.6 need=7147593 tD=0.82 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=193438 pulseB=116063 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4105 zexos1 B=967192 L=10715 d=90.3 nb=3 neut=0 cmds=71 noFull=1 shQ=104354 | m=0.900 worth=81.2 cheap=8.3 over=0 dMedOther=75.9 safe(-1)=942920
+    → OnlyDamage#0[T2] terr=22731 bal=939722 dq=41.3 cnt=195 | c=76.4 rankC=53.5 need=1664108 tD=0.54 人 pulse | safe=942920 keep=942920 avail=12938 chunkB=193438 pulseB=116063 低于最小指令(x=12938<45336)→continue hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4312 dq=15.6 cnt=3 | c=92.9 rankC=92.9 need=8100 tD=0.21 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=193438 pulseB=116063 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63630 bal=3956605 dq=62.2 cnt=60 | c=149.6 rankC=149.6 need=7147593 tD=0.82 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=193438 pulseB=116063 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4110 zexos1 B=978798 L=10715 d=91.3 nb=3 neut=0 cmds=71 noFull=1 shQ=118894 | m=0.900 worth=82.2 cheap=8.3 over=0 dMedOther=76.9 safe(-1)=942920
+    → OnlyDamage#0[T2] terr=23021 bal=951844 dq=41.3 cnt=195 | c=76.3 rankC=53.4 need=1690967 tD=0.54 人 pulse bleeding | safe=942920 keep=942920 avail=24408 chunkB=195760 pulseB=117456 低于最小指令(x=24408<45880)→continue hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4355 dq=15.8 cnt=3 | c=93.9 rankC=93.9 need=8176 tD=0.21 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=195760 pulseB=117456 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63630 bal=4015558 dq=63.1 cnt=60 | c=151.8 rankC=151.8 need=7252669 tD=0.82 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=195760 pulseB=117456 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4115 zexos1 B=978798 L=10715 d=91.3 nb=3 neut=0 cmds=71 noFull=1 shQ=133574 | m=0.900 worth=82.2 cheap=8.3 over=0 dMedOther=76.7 safe(-1)=942920
+    → OnlyDamage#0[T2] terr=23217 bal=951844 dq=41.0 cnt=195 | c=75.5 rankC=52.9 need=1694798 tD=0.53 人 pulse bleeding | safe=942920 keep=942920 avail=24408 chunkB=195760 pulseB=117456 低于最小指令(x=24408<45880)→continue hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4355 dq=15.8 cnt=3 | c=93.9 rankC=93.9 need=8176 tD=0.21 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=195760 pulseB=117456 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63630 bal=4015558 dq=63.1 cnt=60 | c=151.8 rankC=151.8 need=7252669 tD=0.82 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=195760 pulseB=117456 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4120 zexos1 B=990543 L=10715 d=92.4 nb=3 neut=0 cmds=71 noFull=1 shQ=148289 | m=0.900 worth=83.2 cheap=8.3 over=0 dMedOther=77.7 safe(-1)=942920
+    → OnlyDamage#0[T2] terr=23518 bal=964217 dq=41.0 cnt=195 | c=75.4 rankC=52.8 need=1722191 tD=0.53 人 pulse | safe=942920 keep=942920 avail=36016 chunkB=198109 pulseB=118865 低于最小指令(x=36016<46428)→continue hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4398 dq=15.9 cnt=3 | c=94.9 rankC=94.9 need=8253 tD=0.21 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=198109 pulseB=118865 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63630 bal=4075389 dq=64.0 cnt=60 | c=154.0 rankC=154.0 need=7359311 tD=0.82 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=198109 pulseB=118865 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4125 zexos1 B=1036471 L=10715 d=96.7 nb=3 neut=0 cmds=72 noFull=1 shQ=163282 | m=0.900 worth=87.1 cheap=8.3 over=0 dMedOther=77.5 safe(-1)=942920
+    → OnlyDamage#0[T2] terr=23722 bal=964217 dq=40.6 cnt=195 | c=74.7 rankC=52.3 need=1725961 tD=0.52 人 pulse | safe=942920 keep=960412 avail=63913 chunkB=207294 pulseB=124377  x=63913 hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4398 dq=15.9 cnt=3 | c=97.5 rankC=97.5 need=8253 tD=0.21 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=207294 pulseB=124377 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63630 bal=4075389 dq=64.0 cnt=60 | c=154.0 rankC=154.0 need=7359311 tD=0.83 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=207294 pulseB=124377 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=63 → OnlyDamage#0[T2]（约 64779 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4130 zexos1 B=1048908 L=10715 d=97.9 nb=3 neut=0 cmds=73 noFull=1 shQ=178864 | m=0.900 worth=88.1 cheap=8.3 over=0 dMedOther=78.4 safe(-1)=942920
+    → OnlyDamage#0[T2] terr=24028 bal=976751 dq=40.7 cnt=195 | c=74.6 rankC=52.2 need=1753556 tD=0.52 人 pulse | safe=942920 keep=966200 avail=70417 chunkB=209782 pulseB=125869  x=70417 hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4441 dq=16.1 cnt=3 | c=98.6 rankC=98.6 need=8329 tD=0.21 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=209782 pulseB=125869 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63630 bal=4136112 dq=65.0 cnt=60 | c=156.3 rankC=156.3 need=7467542 tD=0.83 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=209782 pulseB=125869 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=68 → OnlyDamage#0[T2]（约 70678 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4135 zexos1 B=1048908 L=10715 d=97.9 nb=3 neut=0 cmds=74 noFull=1 shQ=194594 | m=0.900 worth=88.1 cheap=8.3 over=0 dMedOther=78.2 safe(-1)=942920
+    → OnlyDamage#0[T2] terr=24232 bal=976751 dq=40.3 cnt=195 | c=73.9 rankC=51.7 need=1757184 tD=0.52 人 pulse bleeding | safe=942920 keep=962269 avail=74348 chunkB=209782 pulseB=125869  x=74348 hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4441 dq=16.1 cnt=3 | c=98.6 rankC=98.6 need=8329 tD=0.21 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=209782 pulseB=125869 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63630 bal=4136112 dq=65.0 cnt=60 | c=156.3 rankC=156.3 need=7467542 tD=0.83 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=209782 pulseB=125869 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=72 → OnlyDamage#0[T2]（约 74775 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4140 zexos1 B=982713 L=10715 d=91.7 nb=3 neut=0 cmds=74 noFull=1 shQ=5861 | m=0.900 worth=82.5 cheap=8.3 over=0 dMedOther=79.0 safe(-1)=942920
+    → OnlyDamage#0[T2] terr=24544 bal=989448 dq=40.3 cnt=195 | c=71.0 rankC=49.7 need=1719451 tD=0.51 人 pulse | safe=942920 keep=942920 avail=28277 chunkB=196543 pulseB=117926 在途(curAtk=65556)→continue hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4485 dq=16.3 cnt=3 | c=95.2 rankC=95.2 need=8408 tD=0.21 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=196543 pulseB=117926 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63630 bal=4197740 dq=66.0 cnt=60 | c=158.5 rankC=158.5 need=7577386 tD=0.83 人 pulse | safe=942920 keep=Inf avail=-Inf chunkB=196543 pulseB=117926 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4145 zexos1 B=829860 L=10910 d=76.1 nb=3 neut=0 cmds=74 noFull=1 shQ=20142 | m=0.900 worth=68.5 cheap=8.3 over=0 dMedOther=78.7 safe(-1)=960080
+    → OnlyDamage#0[T2] terr=24562 bal=976980 dq=39.8 cnt=193 | c=65.7 rankC=46.0 need=1592326 tD=0.51 人 pulse | safe=960080 keep=960080 avail=-139944 chunkB=165972 pulseB=99583 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4485 dq=16.3 cnt=3 | c=86.7 rankC=86.7 need=8408 tD=0.21 人 pulse | safe=960080 keep=Inf avail=-Inf chunkB=165972 pulseB=99583 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63630 bal=4197740 dq=66.0 cnt=60 | c=158.5 rankC=158.5 need=7577386 tD=0.84 人 pulse | safe=960080 keep=Inf avail=-Inf chunkB=165972 pulseB=99583 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4150 zexos1 B=839818 L=11298 d=74.3 nb=3 neut=0 cmds=74 noFull=1 shQ=32617 | m=0.900 worth=66.9 cheap=8.3 over=0 dMedOther=79.6 safe(-1)=994224
+    → OnlyDamage#0[T2] terr=24502 bal=964892 dq=39.4 cnt=196 | c=67.0 rankC=46.9 need=1619792 tD=0.49 人 pulse | safe=994224 keep=Inf avail=-Inf chunkB=167964 pulseB=100778 价高(c>=worth)→break hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4529 dq=16.4 cnt=3 | c=87.6 rankC=87.6 need=8486 tD=0.21 人 pulse | safe=994224 keep=Inf avail=-Inf chunkB=167964 pulseB=100778 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4257823 dq=66.9 cnt=60 | c=160.8 rankC=160.8 need=7683894 tD=0.84 人 pulse | safe=994224 keep=Inf avail=-Inf chunkB=167964 pulseB=100778 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4155 zexos1 B=839818 L=11890 d=70.6 nb=3 neut=0 cmds=74 noFull=1 shQ=45233 | m=0.900 worth=63.6 cheap=8.2 over=0 dMedOther=79.6 safe(-1)=1046320
+    → OnlyDamage#0[T2] terr=24132 bal=927944 dq=38.5 cnt=198 | c=68.6 rankC=48.0 need=1623575 tD=0.48 人 pulse bleeding | safe=1046320 keep=Inf avail=-Inf chunkB=167964 pulseB=100778 价高(c>=worth)→break hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4529 dq=16.4 cnt=3 | c=87.6 rankC=87.6 need=8486 tD=0.21 人 pulse | safe=1046320 keep=Inf avail=-Inf chunkB=167964 pulseB=100778 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4257823 dq=66.9 cnt=60 | c=160.8 rankC=160.8 need=7683989 tD=0.84 人 pulse | safe=1046320 keep=Inf avail=-Inf chunkB=167964 pulseB=100778 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4160 zexos1 B=850165 L=12088 d=70.3 nb=3 neut=0 cmds=74 noFull=1 shQ=57965 | m=0.900 worth=63.3 cheap=8.2 over=0 dMedOther=80.6 safe(-1)=1063744
+    → OnlyDamage#0[T2] terr=24275 bal=917095 dq=37.8 cnt=198 | c=48.0 rankC=24.0 need=1653082 tD=0.47 人 pulse bleeding | safe=1063744 keep=1063744 avail=-223541 chunkB=170033 pulseB=102020 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4574 dq=16.6 cnt=3 | c=88.6 rankC=88.6 need=8567 tD=0.21 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=170033 pulseB=102020 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4321264 dq=67.9 cnt=60 | c=163.2 rankC=163.2 need=7797251 tD=0.84 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=170033 pulseB=102020 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4165 zexos1 B=850165 L=12088 d=70.3 nb=3 neut=0 cmds=74 noFull=1 shQ=70820 | m=0.900 worth=63.3 cheap=8.2 over=0 dMedOther=80.6 safe(-1)=1063744
+    → OnlyDamage#0[T2] terr=24498 bal=917095 dq=37.4 cnt=198 | c=47.5 rankC=23.7 need=1656733 tD=0.46 人 pulse bleeding | safe=1063744 keep=1063744 avail=-223541 chunkB=170033 pulseB=102020 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4574 dq=16.6 cnt=3 | c=88.6 rankC=88.6 need=8567 tD=0.21 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=170033 pulseB=102020 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4321264 dq=67.9 cnt=60 | c=163.2 rankC=163.2 need=7797348 tD=0.84 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=170033 pulseB=102020 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4170 zexos1 B=860451 L=12088 d=71.2 nb=3 neut=0 cmds=74 noFull=1 shQ=83706 | m=0.900 worth=64.1 cheap=8.2 over=0 dMedOther=81.7 safe(-1)=1063744
+    → OnlyDamage#0[T2] terr=23684 bal=861042 dq=36.4 cnt=198 | c=49.9 rankC=24.9 need=1545024 tD=0.44 人 pulse bleeding | safe=1063744 keep=1063744 avail=-213376 chunkB=172090 pulseB=103254 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4619 dq=16.7 cnt=3 | c=89.5 rankC=89.5 need=8647 tD=0.20 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=172090 pulseB=103254 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4385650 dq=68.9 cnt=60 | c=165.6 rankC=165.6 need=7912203 tD=0.84 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=172090 pulseB=103254 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4175 zexos1 B=860451 L=12088 d=71.2 nb=3 neut=0 cmds=74 noFull=1 shQ=96716 | m=0.900 worth=64.1 cheap=8.2 over=0 dMedOther=81.3 safe(-1)=1063744
+    → OnlyDamage#0[T2] terr=23518 bal=828280 dq=35.2 cnt=198 | c=65.0 rankC=45.5 need=1485024 tD=0.43 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=172090 pulseB=103254 价高(c>=worth)→break hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4619 dq=16.7 cnt=3 | c=129.8 rankC=188.3 need=8647 tD=0.21 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=172090 pulseB=103254 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4385650 dq=68.9 cnt=60 | c=240.1 rankC=348.1 need=7912302 tD=0.85 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=172090 pulseB=103254 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4180 zexos1 B=870862 L=12088 d=72.0 nb=3 neut=0 cmds=74 noFull=1 shQ=109758 | m=0.900 worth=64.8 cheap=8.2 over=0 dMedOther=81.8 safe(-1)=1063744
+    → OnlyDamage#0[T2] terr=23796 bal=839047 dq=35.3 cnt=198 | c=64.9 rankC=45.5 need=1508375 tD=0.43 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=174172 pulseB=104503 价高(c>=worth)→break hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4665 dq=16.9 cnt=3 | c=131.2 rankC=190.3 need=8729 tD=0.21 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=174172 pulseB=104503 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4450996 dq=70.0 cnt=60 | c=243.6 rankC=353.2 need=8028773 tD=0.85 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=174172 pulseB=104503 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4185 zexos1 B=870862 L=12088 d=72.0 nb=3 neut=0 cmds=74 noFull=1 shQ=122928 | m=0.900 worth=64.8 cheap=8.2 over=0 dMedOther=81.2 safe(-1)=1063744
+    → OnlyDamage#0[T2] terr=23976 bal=839047 dq=35.0 cnt=198 | c=64.4 rankC=45.1 need=1511239 tD=0.43 人 pulse | safe=1063744 keep=1063744 avail=-203087 chunkB=174172 pulseB=104503 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4665 dq=16.9 cnt=3 | c=131.2 rankC=190.3 need=8729 tD=0.21 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=174172 pulseB=104503 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4450996 dq=70.0 cnt=60 | c=243.6 rankC=353.2 need=8028773 tD=0.86 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=174172 pulseB=104503 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4190 zexos1 B=881399 L=12088 d=72.9 nb=3 neut=0 cmds=74 noFull=1 shQ=136130 | m=0.900 worth=65.6 cheap=8.2 over=0 dMedOther=82.3 safe(-1)=1063744
+    → OnlyDamage#0[T2] terr=24211 bal=849954 dq=35.1 cnt=198 | c=64.5 rankC=45.2 need=1534171 tD=0.43 人 pulse bleeding | safe=1063744 keep=1063744 avail=-192673 chunkB=176280 pulseB=105768 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4711 dq=17.1 cnt=3 | c=91.5 rankC=91.5 need=8811 tD=0.21 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=176280 pulseB=105768 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4517315 dq=71.0 cnt=60 | c=170.5 rankC=170.5 need=8146978 tD=0.86 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=176280 pulseB=105768 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4195 zexos1 B=881399 L=12088 d=72.9 nb=3 neut=0 cmds=74 noFull=1 shQ=149460 | m=0.900 worth=65.6 cheap=8.2 over=0 dMedOther=82.3 safe(-1)=1063744
+    → OnlyDamage#0[T2] terr=24367 bal=849954 dq=34.9 cnt=198 | c=64.1 rankC=44.8 need=1536594 tD=0.42 人 pulse | safe=1063744 keep=1063744 avail=-192673 chunkB=176280 pulseB=105768 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=276 bal=4711 dq=17.1 cnt=3 | c=132.7 rankC=192.4 need=8811 tD=0.21 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=176280 pulseB=105768 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4270275 dq=67.1 cnt=60 | c=233.9 rankC=339.1 need=7706660 tD=0.82 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=176280 pulseB=105768 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4200 zexos1 B=904151 L=12088 d=74.8 nb=3 neut=0 cmds=74 noFull=1 shQ=162859 | m=0.900 worth=67.3 cheap=8.2 over=0 dMedOther=84.3 safe(-1)=1063744
+    → OnlyDamage#0[T2] terr=24593 bal=885522 dq=36.0 cnt=198 | c=88.0 rankC=88.0 need=1602940 tD=0.43 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=180830 pulseB=108498 价高(c>=worth)→break hNb=3
+    → Chernobyl#32[T2] terr=276 bal=5034 dq=18.2 cnt=3 | c=95.5 rankC=95.5 need=9386 tD=0.22 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=180830 pulseB=108498 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4397509 dq=69.1 cnt=60 | c=166.0 rankC=166.0 need=7933439 tD=0.82 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=180830 pulseB=108498 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4205 zexos1 B=904151 L=12088 d=74.8 nb=3 neut=0 cmds=74 noFull=1 shQ=176534 | m=0.900 worth=67.3 cheap=8.2 over=0 dMedOther=84.3 safe(-1)=1063744
+    → OnlyDamage#0[T2] terr=24737 bal=885522 dq=35.8 cnt=198 | c=87.4 rankC=87.4 need=1605182 tD=0.42 人 pulse bleeding | safe=1063744 keep=Inf avail=-Inf chunkB=180830 pulseB=108498 价高(c>=worth)→break hNb=3
+    → Chernobyl#32[T2] terr=276 bal=5034 dq=18.2 cnt=3 | c=95.5 rankC=95.5 need=9386 tD=0.22 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=180830 pulseB=108498 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4397509 dq=69.1 cnt=60 | c=166.0 rankC=166.0 need=7933439 tD=0.82 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=180830 pulseB=108498 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4210 zexos1 B=915091 L=12088 d=75.7 nb=3 neut=0 cmds=74 noFull=1 shQ=190242 | m=0.900 worth=68.1 cheap=8.2 over=0 dMedOther=85.5 safe(-1)=1063744
+    → OnlyDamage#0[T2] terr=24947 bal=897033 dq=36.0 cnt=198 | c=87.7 rankC=87.7 need=1628853 tD=0.42 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=183018 pulseB=109811 价高(c>=worth)→break hNb=3
+    → Chernobyl#32[T2] terr=276 bal=5084 dq=18.4 cnt=3 | c=96.6 rankC=96.6 need=9476 tD=0.22 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=183018 pulseB=109811 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4463031 dq=70.2 cnt=60 | c=168.5 rankC=168.5 need=8050224 tD=0.82 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=183018 pulseB=109811 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4215 zexos1 B=915091 L=12088 d=75.7 nb=3 neut=0 cmds=74 noFull=1 shQ=204082 | m=0.900 worth=68.1 cheap=8.2 over=0 dMedOther=85.5 safe(-1)=1063744
+    → OnlyDamage#0[T2] terr=25085 bal=897033 dq=35.8 cnt=198 | c=87.2 rankC=87.2 need=1630960 tD=0.42 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=183018 pulseB=109811 价高(c>=worth)→break hNb=3
+    → Chernobyl#32[T2] terr=276 bal=5084 dq=18.4 cnt=3 | c=96.6 rankC=96.6 need=9476 tD=0.22 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=183018 pulseB=109811 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4463031 dq=70.2 cnt=60 | c=168.5 rankC=168.5 need=8050224 tD=0.82 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=183018 pulseB=109811 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4220 zexos1 B=926163 L=12088 d=76.6 nb=3 neut=0 cmds=74 noFull=1 shQ=217955 | m=0.900 worth=69.0 cheap=8.2 over=0 dMedOther=86.6 safe(-1)=1063744
+    → OnlyDamage#0[T2] terr=25290 bal=908694 dq=35.9 cnt=198 | c=87.5 rankC=87.5 need=1654766 tD=0.41 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=185233 pulseB=111140 价高(c>=worth)→break hNb=3
+    → Chernobyl#32[T2] terr=276 bal=5134 dq=18.6 cnt=3 | c=97.6 rankC=97.6 need=9565 tD=0.21 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=185233 pulseB=111140 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4529530 dq=71.2 cnt=60 | c=170.9 rankC=170.9 need=8168750 tD=0.82 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=185233 pulseB=111140 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4225 zexos1 B=926163 L=12088 d=76.6 nb=3 neut=0 cmds=74 noFull=1 shQ=231540 | m=0.900 worth=69.0 cheap=8.2 over=0 dMedOther=86.6 safe(-1)=1063744
+    → Chernobyl#32[T2] terr=276 bal=2427 dq=8.8 cnt=3 | c=65.4 rankC=45.8 need=7387 tD=0.10 人 pulse onMe | safe=1063744 keep=1063744 avail=-148434 chunkB=185233 pulseB=111140 无可用(avail<=0) hNb=3
+    → OnlyDamage#0[T2] terr=25423 bal=908694 dq=35.7 cnt=198 | c=87.0 rankC=87.0 need=1656759 tD=0.41 人 pulse bleeding | safe=1063744 keep=Inf avail=-Inf chunkB=185233 pulseB=111140 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4281823 dq=67.3 cnt=60 | c=161.7 rankC=161.7 need=7727242 tD=0.78 人 pulse | safe=1063744 keep=Inf avail=-Inf chunkB=185233 pulseB=111140 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4230 zexos1 B=937121 L=12086 d=77.5 nb=3 neut=0 cmds=74 noFull=1 shQ=234280 | m=0.900 worth=69.8 cheap=8.2 over=0 dMedOther=87.8 safe(-1)=1063568
+    → Chernobyl#32[T2] terr=278 bal=2451 dq=8.8 cnt=2 | c=63.8 rankC=44.7 need=6946 tD=0.10 人 pulse onMe | safe=1063568 keep=1063568 avail=-137428 chunkB=187424 pulseB=112455 无可用(avail<=0) hNb=3
+    → OnlyDamage#0[T2] terr=25621 bal=920507 dq=35.9 cnt=198 | c=87.4 rankC=87.4 need=1679122 tD=0.41 人 pulse | safe=1063568 keep=Inf avail=-Inf chunkB=187424 pulseB=112455 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4345622 dq=68.3 cnt=60 | c=164.1 rankC=164.1 need=7840956 tD=0.78 人 pulse | safe=1063568 keep=Inf avail=-Inf chunkB=187424 pulseB=112455 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4235 zexos1 B=936873 L=12084 d=77.5 nb=3 neut=0 cmds=74 noFull=1 shQ=234218 | m=0.900 worth=69.8 cheap=8.2 over=0 dMedOther=87.8 safe(-1)=1063392
+    → Chernobyl#32[T2] terr=280 bal=2451 dq=8.8 cnt=2 | c=61.7 rankC=43.2 need=6442 tD=0.10 人 pulse onMe | safe=1063392 keep=1063392 avail=-137497 chunkB=187375 pulseB=112425 无可用(avail<=0) hNb=3
+    → OnlyDamage#0[T2] terr=25726 bal=920507 dq=35.8 cnt=198 | c=87.0 rankC=87.0 need=1679292 tD=0.41 人 pulse | safe=1063392 keep=Inf avail=-Inf chunkB=187375 pulseB=112425 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4345622 dq=68.3 cnt=60 | c=164.1 rankC=164.1 need=7840956 tD=0.78 人 pulse | safe=1063392 keep=Inf avail=-Inf chunkB=187375 pulseB=112425 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4240 zexos1 B=947958 L=12082 d=78.5 nb=3 neut=0 cmds=74 noFull=1 shQ=236989 | m=0.900 worth=70.6 cheap=8.2 over=0 dMedOther=88.9 safe(-1)=1063216
+    → Chernobyl#32[T2] terr=282 bal=2475 dq=8.8 cnt=2 | c=60.0 rankC=42.0 need=5994 tD=0.10 人 pulse onMe | safe=1063216 keep=1063216 avail=-126366 chunkB=189592 pulseB=113755 无可用(avail<=0) hNb=3
+    → OnlyDamage#0[T2] terr=25879 bal=932473 dq=36.0 cnt=198 | c=87.6 rankC=87.6 need=1700862 tD=0.41 人 pulse bleeding | safe=1063216 keep=Inf avail=-Inf chunkB=189592 pulseB=113755 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4410371 dq=69.3 cnt=60 | c=166.5 rankC=166.5 need=7956364 tD=0.78 人 pulse | safe=1063216 keep=Inf avail=-Inf chunkB=189592 pulseB=113755 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4245 zexos1 B=947708 L=12080 d=78.5 nb=3 neut=0 cmds=74 noFull=1 shQ=236927 | m=0.900 worth=70.6 cheap=8.2 over=0 dMedOther=88.9 safe(-1)=1063040
+    → Chernobyl#32[T2] terr=284 bal=2475 dq=8.7 cnt=1 | c=58.2 rankC=40.7 need=5486 tD=0.10 人 pulse onMe | safe=1063040 keep=1063040 avail=-126437 chunkB=189542 pulseB=113725 无可用(avail<=0) hNb=3
+    → OnlyDamage#0[T2] terr=25978 bal=932473 dq=35.9 cnt=198 | c=87.3 rankC=87.3 need=1700998 tD=0.40 人 pulse | safe=1063040 keep=Inf avail=-Inf chunkB=189542 pulseB=113725 价高(c>=worth)→break hNb=3
+    → [EU] DONATE#40[T2] terr=63607 bal=4410371 dq=69.3 cnt=60 | c=166.5 rankC=166.5 need=7956364 tD=0.78 人 pulse | safe=1063040 keep=Inf avail=-Inf chunkB=189542 pulseB=113725 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4250 zexos1 B=959048 L=12079 d=79.4 nb=2 neut=0 cmds=74 noFull=1 shQ=239762 | m=0.900 worth=71.5 cheap=8.2 over=0 dMedOther=90.1 safe(-1)=1062952
+    → OnlyDamage#0[T2] terr=26124 bal=944688 dq=36.2 cnt=198 | c=47.1 rankC=23.6 need=1722962 tD=0.40 人 pulse bleeding | safe=1062952 keep=1062952 avail=-115142 chunkB=191810 pulseB=115086 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=63607 bal=4476085 dq=70.4 cnt=60 | c=169.0 rankC=169.0 need=8073491 tD=0.78 人 pulse | safe=1062952 keep=Inf avail=-Inf chunkB=191810 pulseB=115086 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4255 zexos1 B=959048 L=12079 d=79.4 nb=2 neut=0 cmds=74 noFull=1 shQ=239762 | m=0.900 worth=71.5 cheap=8.2 over=0 dMedOther=90.1 safe(-1)=1062952
+    → OnlyDamage#0[T2] terr=26220 bal=944688 dq=36.0 cnt=198 | c=46.9 rankC=23.5 need=1723106 tD=0.40 人 pulse bleeding | safe=1062952 keep=1062952 avail=-115142 chunkB=191810 pulseB=115086 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=63583 bal=4473383 dq=70.4 cnt=60 | c=168.9 rankC=168.9 need=8068039 tD=0.78 人 pulse | safe=1062952 keep=Inf avail=-Inf chunkB=191810 pulseB=115086 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4260 zexos1 B=970652 L=12079 d=80.4 nb=2 neut=0 cmds=74 noFull=1 shQ=242663 | m=0.900 worth=72.3 cheap=8.2 over=0 dMedOther=91.3 safe(-1)=1062952
+    → OnlyDamage#0[T2] terr=26180 bal=946822 dq=36.2 cnt=198 | c=44.1 rankC=22.1 need=1725801 tD=0.40 人 pulse bleeding | safe=1062952 keep=1062952 avail=-103674 chunkB=194130 pulseB=116478 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=63583 bal=4540036 dq=71.4 cnt=60 | c=171.4 rankC=171.4 need=8186933 tD=0.78 人 pulse | safe=1062952 keep=Inf avail=-Inf chunkB=194130 pulseB=116478 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4265 zexos1 B=970652 L=12079 d=80.4 nb=2 neut=0 cmds=74 noFull=1 shQ=242663 | m=0.900 worth=72.3 cheap=8.2 over=0 dMedOther=85.8 safe(-1)=1062952
+    → OnlyDamage#0[T2] terr=26009 bal=931835 dq=35.8 cnt=198 | c=36.2 rankC=18.1 need=1696667 tD=0.42 人 pulse bleeding | safe=1062952 keep=1062952 avail=-103674 chunkB=194130 pulseB=116478 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=63583 bal=4540036 dq=71.4 cnt=60 | c=171.4 rankC=171.4 need=8187135 tD=0.83 人 pulse | safe=1062952 keep=Inf avail=-Inf chunkB=194130 pulseB=116478 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4270 zexos1 B=982396 L=12079 d=81.3 nb=2 neut=0 cmds=74 noFull=1 shQ=245599 | m=0.900 worth=73.2 cheap=8.2 over=0 dMedOther=86.9 safe(-1)=1062952
+    → OnlyDamage#0[T2] terr=25973 bal=934170 dq=36.0 cnt=198 | c=36.9 rankC=18.5 need=1700344 tD=0.41 人 pulse bleeding | safe=1062952 keep=1062952 avail=-92068 chunkB=196479 pulseB=117888 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=63583 bal=4607682 dq=72.5 cnt=60 | c=173.9 rankC=173.9 need=8307805 tD=0.83 人 pulse | safe=1062952 keep=Inf avail=-Inf chunkB=196479 pulseB=117888 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4275 zexos1 B=982396 L=12079 d=81.3 nb=2 neut=0 cmds=74 noFull=1 shQ=245599 | m=0.900 worth=73.2 cheap=8.2 over=0 dMedOther=86.9 safe(-1)=1062952
+    → OnlyDamage#0[T2] terr=24426 bal=752980 dq=30.8 cnt=198 | c=28.4 rankC=14.2 need=1357866 tD=0.35 人 pulse bleeding | safe=1062952 keep=1062952 avail=-92068 chunkB=196479 pulseB=117888 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=63583 bal=4607682 dq=72.5 cnt=60 | c=173.9 rankC=173.9 need=8307908 tD=0.83 人 pulse | safe=1062952 keep=Inf avail=-Inf chunkB=196479 pulseB=117888 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4280 zexos1 B=994282 L=12079 d=82.3 nb=2 neut=0 cmds=74 noFull=1 shQ=248570 | m=0.900 worth=74.1 cheap=8.2 over=0 dMedOther=88.0 safe(-1)=1062952
+    → OnlyDamage#0[T2] terr=23563 bal=713845 dq=30.3 cnt=198 | c=30.0 rankC=15.0 need=1277194 tD=0.34 人 pulse bleeding | safe=1062952 keep=1062952 avail=-80321 chunkB=198856 pulseB=119314 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=63583 bal=4676336 dq=73.5 cnt=60 | c=176.5 rankC=176.5 need=8430378 tD=0.84 人 pulse | safe=1062952 keep=Inf avail=-Inf chunkB=198856 pulseB=119314 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4285 zexos1 B=994282 L=12079 d=82.3 nb=2 neut=0 cmds=74 noFull=1 shQ=248570 | m=0.900 worth=74.1 cheap=8.2 over=0 dMedOther=88.0 safe(-1)=1062952
+    → OnlyDamage#0[T2] terr=22259 bal=647199 dq=29.1 cnt=198 | c=21.5 rankC=6.5 need=1142754 tD=0.33 人 pulse bleeding | safe=1062952 keep=1062952 avail=-80321 chunkB=198856 pulseB=119314 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=63583 bal=4676336 dq=73.5 cnt=60 | c=176.5 rankC=176.5 need=8430378 tD=0.84 人 pulse | safe=1062952 keep=Inf avail=-Inf chunkB=198856 pulseB=119314 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4290 zexos1 B=1006312 L=12079 d=83.3 nb=2 neut=0 cmds=74 noFull=1 shQ=251578 | m=0.900 worth=75.0 cheap=8.2 over=0 dMedOther=89.2 safe(-1)=1062952
+    → OnlyDamage#0[T2] terr=21532 bal=614761 dq=28.6 cnt=198 | c=33.3 rankC=16.7 need=1076297 tD=0.32 人 pulse bleeding | safe=1062952 keep=1062952 avail=-68432 chunkB=201262 pulseB=120757 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=63583 bal=4746013 dq=74.6 cnt=60 | c=179.1 rankC=179.1 need=8554569 tD=0.84 人 pulse | safe=1062952 keep=Inf avail=-Inf chunkB=201262 pulseB=120757 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4295 zexos1 B=1006312 L=12079 d=83.3 nb=2 neut=0 cmds=74 noFull=1 shQ=251578 | m=0.900 worth=75.0 cheap=8.2 over=0 dMedOther=89.2 safe(-1)=1062952
+    → OnlyDamage#0[T2] terr=20863 bal=573540 dq=27.5 cnt=198 | c=32.4 rankC=16.2 need=996223 tD=0.31 人 pulse bleeding | safe=1062952 keep=1062952 avail=-68432 chunkB=201262 pulseB=120757 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=63583 bal=4746013 dq=74.6 cnt=60 | c=179.1 rankC=179.1 need=8554569 tD=0.84 人 pulse | safe=1062952 keep=Inf avail=-Inf chunkB=201262 pulseB=120757 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4300 zexos1 B=1030567 L=12079 d=85.3 nb=2 neut=0 cmds=74 noFull=1 shQ=254695 | m=0.900 worth=76.8 cheap=8.2 over=0 dMedOther=91.1 safe(-1)=1062952
+    → OnlyDamage#0[T2] terr=20957 bal=598147 dq=28.5 cnt=198 | c=30.6 rankC=15.3 need=1039598 tD=0.31 人 pulse bleeding | safe=1062952 keep=1062952 avail=-44461 chunkB=206113 pulseB=123668 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=63583 bal=4880311 dq=76.8 cnt=60 | c=184.1 rankC=184.1 need=8793939 tD=0.84 人 pulse | safe=1062952 keep=Inf avail=-Inf chunkB=206113 pulseB=123668 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4305 zexos1 B=1030567 L=12079 d=85.3 nb=2 neut=0 cmds=74 noFull=1 shQ=257641 | m=0.900 worth=76.8 cheap=8.2 over=0 dMedOther=90.3 safe(-1)=1062952
+    → OnlyDamage#0[T2] terr=20933 bal=591060 dq=28.2 cnt=195 | c=30.6 rankC=15.3 need=1027520 tD=0.31 人 pulse bleeding | safe=1062952 keep=1062952 avail=-44461 chunkB=206113 pulseB=123668 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=63583 bal=4880311 dq=76.8 cnt=60 | c=184.1 rankC=184.1 need=8793939 tD=0.85 人 pulse | safe=1062952 keep=Inf avail=-Inf chunkB=206113 pulseB=123668 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4310 zexos1 B=1042761 L=12077 d=86.3 nb=3 neut=0 cmds=74 noFull=1 shQ=260690 | m=0.900 worth=77.7 cheap=8.2 over=0 dMedOther=91.1 safe(-1)=1062776
+    → OnlyDamage#0[T2] terr=21064 bal=594710 dq=28.2 cnt=193 | c=29.5 rankC=14.7 need=1036062 tD=0.31 人 pulse bleeding | safe=1062776 keep=1062776 avail=-32234 chunkB=208552 pulseB=125131 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=288 bal=1625 dq=5.6 cnt=1 | c=57.0 rankC=39.9 need=4254 tD=0.06 人 pulse onMe | safe=1062776 keep=1062776 avail=-32234 chunkB=208552 pulseB=125131 无可用(avail<=0) hNb=3
+    → [EU] DONATE#40[T2] terr=63583 bal=4953027 dq=77.9 cnt=59 | c=186.8 rankC=186.8 need=8923546 tD=0.86 人 pulse | safe=1062776 keep=Inf avail=-Inf chunkB=208552 pulseB=125131 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4315 zexos1 B=1042623 L=12076 d=86.3 nb=3 neut=0 cmds=74 noFull=1 shQ=260655 | m=0.900 worth=77.7 cheap=8.2 over=0 dMedOther=90.9 safe(-1)=1062688
+    → OnlyDamage#0[T2] terr=21069 bal=587694 dq=27.9 cnt=191 | c=29.5 rankC=14.7 need=1024538 tD=0.31 人 pulse bleeding | safe=1062688 keep=1062688 avail=-32283 chunkB=208525 pulseB=125115 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=289 bal=1625 dq=5.6 cnt=1 | c=55.8 rankC=39.0 need=3980 tD=0.06 人 pulse onMe | safe=1062688 keep=1062688 avail=-32283 chunkB=208525 pulseB=125115 无可用(avail<=0) hNb=3
+    → [EU] DONATE#40[T2] terr=63583 bal=4953027 dq=77.9 cnt=58 | c=186.8 rankC=186.8 need=8923546 tD=0.86 人 pulse | safe=1062688 keep=Inf avail=-Inf chunkB=208525 pulseB=125115 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4320 zexos1 B=1055099 L=12075 d=87.4 nb=3 neut=0 cmds=74 noFull=1 shQ=263774 | m=0.900 worth=78.6 cheap=8.2 over=0 dMedOther=92.1 safe(-1)=1062600
+    → OnlyDamage#0[T2] terr=21203 bal=589027 dq=27.8 cnt=189 | c=29.8 rankC=14.9 need=1029113 tD=0.30 人 pulse bleeding | safe=1062600 keep=1062600 avail=-19865 chunkB=211020 pulseB=126612 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=290 bal=1641 dq=5.7 cnt=1 | c=55.2 rankC=38.6 need=3735 tD=0.06 人 pulse onMe | safe=1062600 keep=1062600 avail=-19865 chunkB=211020 pulseB=126612 无可用(avail<=0) hNb=3
+    → [EU] DONATE#40[T2] terr=63583 bal=5026827 dq=79.1 cnt=58 | c=189.6 rankC=189.6 need=9055086 tD=0.86 人 pulse | safe=1062600 keep=Inf avail=-Inf chunkB=211020 pulseB=126612 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4325 zexos1 B=1054916 L=12075 d=87.4 nb=3 neut=0 cmds=74 noFull=1 shQ=263729 | m=0.900 worth=78.6 cheap=8.2 over=0 dMedOther=91.9 safe(-1)=1062600
+    → OnlyDamage#0[T2] terr=21288 bal=584784 dq=27.5 cnt=188 | c=29.7 rankC=14.9 need=1023437 tD=0.30 人 pulse bleeding | safe=1062600 keep=1062600 avail=-20046 chunkB=210983 pulseB=126590 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=290 bal=1641 dq=5.7 cnt=1 | c=71.9 rankC=71.9 need=3365 tD=0.06 人 pulse | safe=1062600 keep=1062600 avail=-20046 chunkB=210983 pulseB=126590 无可用(avail<=0) hNb=3
+    → [EU] DONATE#40[T2] terr=63583 bal=5026827 dq=79.1 cnt=58 | c=189.6 rankC=189.6 need=9055086 tD=0.86 人 pulse | safe=1062600 keep=Inf avail=-Inf chunkB=210983 pulseB=126590 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4330 zexos1 B=1067680 L=12075 d=88.4 nb=3 neut=0 cmds=74 noFull=1 shQ=266920 | m=0.900 worth=79.6 cheap=8.2 over=0 dMedOther=93.1 safe(-1)=1062600
+    → OnlyDamage#0[T2] terr=21440 bal=586298 dq=27.3 cnt=186 | c=30.0 rankC=15.0 need=1028532 tD=0.29 人 pulse bleeding | safe=1062600 keep=1062600 avail=-7431 chunkB=213536 pulseB=128122 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=290 bal=1657 dq=5.7 cnt=1 | c=72.7 rankC=72.7 need=3393 tD=0.06 人 pulse | safe=1062600 keep=1062600 avail=-7431 chunkB=213536 pulseB=128122 无可用(avail<=0) hNb=3
+    → [EU] DONATE#40[T2] terr=63583 bal=5101726 dq=80.2 cnt=58 | c=192.4 rankC=192.4 need=9188584 tD=0.86 人 pulse | safe=1062600 keep=Inf avail=-Inf chunkB=213536 pulseB=128122 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4335 zexos1 B=1166419 L=12075 d=96.6 nb=3 neut=0 cmds=75 noFull=1 shQ=273976 | m=0.900 worth=86.9 cheap=8.2 over=0 dMedOther=93.1 safe(-1)=1062600
+    → OnlyDamage#0[T2] terr=21501 bal=579823 dq=27.0 cnt=184 | c=30.0 rankC=15.0 need=1018626 tD=0.29 人 pulse bleeding | safe=1062600 keep=1062600 avail=90151 chunkB=233284 pulseB=139970  x=90151 hNb=3
+    → Chernobyl#32[T2] terr=290 bal=1657 dq=5.7 cnt=1 | c=78.0 rankC=78.0 need=3393 tD=0.06 人 pulse | safe=1062600 keep=1102366 avail=50385 chunkB=233284 pulseB=139970 低于最小指令(x=4075<54672)→continue hNb=3
+    → [EU] DONATE#40[T2] terr=63583 bal=5101726 dq=80.2 cnt=58 | c=192.4 rankC=192.4 need=9188584 tD=0.86 人 pulse | safe=1062600 keep=Inf avail=-Inf chunkB=233284 pulseB=139970 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=79 → OnlyDamage#0[T2]（约 91126 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4340 zexos1 B=1180532 L=12075 d=97.8 nb=3 neut=0 cmds=76 noFull=1 shQ=291659 | m=0.900 worth=88.0 cheap=8.2 over=0 dMedOther=94.5 safe(-1)=1062600
+    → OnlyDamage#0[T2] terr=21758 bal=583644 dq=26.8 cnt=182 | c=30.1 rankC=15.1 need=1029114 tD=0.28 人 pulse bleeding | safe=1062600 keep=1062600 avail=104098 chunkB=236106 pulseB=141664  x=104098 hNb=3
+    → Chernobyl#32[T2] terr=290 bal=1673 dq=5.8 cnt=1 | c=78.9 rankC=78.9 need=3422 tD=0.06 人 pulse | safe=1062600 keep=1115359 avail=51339 chunkB=236106 pulseB=141664 低于最小指令(x=4109<55336)→continue hNb=3
+    → [EU] DONATE#40[T2] terr=63583 bal=5177741 dq=81.4 cnt=58 | c=195.3 rankC=195.3 need=9324072 tD=0.86 人 pulse | safe=1062600 keep=Inf avail=-Inf chunkB=236106 pulseB=141664 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=90 → OnlyDamage#0[T2]（约 104910 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4345 zexos1 B=1180532 L=12075 d=97.8 nb=3 neut=0 cmds=77 noFull=1 shQ=295133 | m=0.900 worth=88.0 cheap=8.2 over=0 dMedOther=94.5 safe(-1)=1062600
+    → OnlyDamage#0[T2] terr=21849 bal=577114 dq=26.4 cnt=180 | c=30.0 rankC=15.0 need=1019448 tD=0.28 人 pulse bleeding | safe=1062600 keep=1062600 avail=104098 chunkB=236106 pulseB=141664  x=104098 hNb=3
+    → Chernobyl#32[T2] terr=290 bal=1673 dq=5.8 cnt=1 | c=78.9 rankC=78.9 need=3422 tD=0.06 人 pulse | safe=1062600 keep=1115359 avail=51339 chunkB=236106 pulseB=141664 低于最小指令(x=4109<55336)→continue hNb=3
+    → [EU] DONATE#40[T2] terr=63583 bal=5177741 dq=81.4 cnt=58 | c=195.3 rankC=195.3 need=9324072 tD=0.86 人 pulse | safe=1062600 keep=Inf avail=-Inf chunkB=236106 pulseB=141664 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=90 → OnlyDamage#0[T2]（约 104910 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4350 zexos1 B=1087470 L=12075 d=90.1 nb=3 neut=0 cmds=77 noFull=1 shQ=6539 | m=0.900 worth=81.1 cheap=8.2 over=0 dMedOther=95.9 safe(-1)=1062600
+    → OnlyDamage#0[T2] terr=22079 bal=578484 dq=26.2 cnt=178 | c=26.7 rankC=13.3 need=932951 tD=0.27 人 pulse bleeding | safe=1062600 keep=1062600 avail=12127 chunkB=217494 pulseB=130496 在途(curAtk=92229)→continue hNb=3
+    → Chernobyl#32[T2] terr=290 bal=799 dq=2.8 cnt=1 | c=53.0 rankC=37.1 need=2724 tD=0.03 人 pulse onMe | safe=1062600 keep=1062600 avail=12127 chunkB=217494 pulseB=130496 低于最小指令(x=3272<50972)→continue hNb=3
+    → [EU] DONATE#40[T2] terr=63583 bal=5254889 dq=82.6 cnt=58 | c=198.1 rankC=198.1 need=9461579 tD=0.86 人 pulse | safe=1062600 keep=Inf avail=-Inf chunkB=217494 pulseB=130496 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4355 zexos1 B=977828 L=12251 d=79.8 nb=3 neut=0 cmds=77 noFull=1 shQ=22652 | m=0.900 worth=73.3 cheap=8.2 over=0 dMedOther=95.9 safe(-1)=1078088
+    → OnlyDamage#0[T2] terr=22052 bal=567210 dq=25.7 cnt=170 | c=15.7 rankC=4.7 need=831820 tD=0.27 人 pulse bleeding | safe=1078088 keep=1078088 avail=-111718 chunkB=195566 pulseB=117339 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=292 bal=799 dq=2.7 cnt=2 | c=46.5 rankC=32.5 need=2202 tD=0.03 人 pulse onMe | safe=1078088 keep=1078088 avail=-111718 chunkB=195566 pulseB=117339 无可用(avail<=0) hNb=3
+    → [EU] DONATE#40[T2] terr=63583 bal=5254889 dq=82.6 cnt=57 | c=198.1 rankC=198.1 need=9461579 tD=0.86 人 pulse | safe=1078088 keep=Inf avail=-Inf chunkB=195566 pulseB=117339 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4360 zexos1 B=989533 L=12588 d=78.6 nb=3 neut=0 cmds=77 noFull=1 shQ=37473 | m=0.900 worth=74.4 cheap=8.2 over=0 dMedOther=97.3 safe(-1)=1107744
+    → OnlyDamage#0[T2] terr=21951 bal=555001 dq=25.3 cnt=166 | c=23.9 rankC=12.0 need=837803 tD=0.26 人 pulse bleeding | safe=1107744 keep=1107744 avail=-129807 chunkB=197907 pulseB=118744 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=293 bal=806 dq=2.8 cnt=1 | c=46.1 rankC=32.3 need=1966 tD=0.03 人 pulse onMe | safe=1107744 keep=1107744 avail=-129807 chunkB=197907 pulseB=118744 无可用(avail<=0) hNb=3
+    → [EU] DONATE#40[T2] terr=63557 bal=5329697 dq=83.9 cnt=57 | c=201.0 rankC=201.0 need=9594104 tD=0.86 人 pulse | safe=1107744 keep=Inf avail=-Inf chunkB=197907 pulseB=118744 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4365 zexos1 B=889958 L=13088 d=68.0 nb=3 neut=0 cmds=77 noFull=1 shQ=51256 | m=0.900 worth=74.4 cheap=8.2 over=0 dMedOther=97.3 safe(-1)=1151744
+    → OnlyDamage#0[T2] terr=21570 bal=530109 dq=24.6 cnt=168 | c=21.2 rankC=10.6 need=743305 tD=0.25 人 pulse bleeding | safe=1151744 keep=1151744 avail=-272215 chunkB=177992 pulseB=106795 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=293 bal=806 dq=2.8 cnt=1 | c=55.8 rankC=55.8 need=1878 tD=0.03 人 pulse | safe=1151744 keep=1151744 avail=-272215 chunkB=177992 pulseB=106795 无可用(avail<=0) hNb=3
+    → [EU] DONATE#40[T2] terr=63557 bal=5329697 dq=83.9 cnt=57 | c=200.9 rankC=200.9 need=9594341 tD=0.86 人 pulse | safe=1151744 keep=Inf avail=-Inf chunkB=177992 pulseB=106795 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4370 zexos1 B=900815 L=13425 d=67.1 nb=3 neut=0 cmds=77 noFull=1 shQ=64859 | m=0.900 worth=75.5 cheap=8.2 over=0 dMedOther=98.7 safe(-1)=1181400
+    → OnlyDamage#0[T2] terr=21537 bal=521383 dq=24.2 cnt=170 | c=21.8 rankC=10.9 need=755030 tD=0.25 人 pulse bleeding | safe=1181400 keep=1181400 avail=-291141 chunkB=180163 pulseB=108098 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=293 bal=814 dq=2.8 cnt=1 | c=56.4 rankC=56.4 need=1892 tD=0.03 人 pulse | safe=1181400 keep=1181400 avail=-291141 chunkB=180163 pulseB=108098 无可用(avail<=0) hNb=3
+    → [EU] DONATE#40[T2] terr=63557 bal=5409109 dq=85.1 cnt=57 | c=203.9 rankC=203.9 need=9735996 tD=0.86 人 pulse | safe=1181400 keep=Inf avail=-Inf chunkB=180163 pulseB=108098 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4375 zexos1 B=900815 L=13936 d=64.6 nb=3 neut=0 cmds=77 noFull=1 shQ=78594 | m=0.900 worth=75.5 cheap=8.2 over=0 dMedOther=98.7 safe(-1)=1226368
+    → OnlyDamage#0[T2] terr=21175 bal=498335 dq=23.5 cnt=174 | c=26.8 rankC=13.4 need=751275 tD=0.24 人 pulse bleeding | safe=1226368 keep=1226368 avail=-336109 chunkB=180163 pulseB=108098 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=293 bal=814 dq=2.8 cnt=1 | c=56.4 rankC=56.4 need=1892 tD=0.03 人 pulse | safe=1226368 keep=1226368 avail=-336109 chunkB=180163 pulseB=108098 无可用(avail<=0) hNb=3
+    → [EU] DONATE#40[T2] terr=63557 bal=5409109 dq=85.1 cnt=57 | c=203.9 rankC=203.9 need=9736117 tD=0.86 人 pulse | safe=1226368 keep=Inf avail=-Inf chunkB=180163 pulseB=108098 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4380 zexos1 B=911804 L=14284 d=63.8 nb=3 neut=0 cmds=77 noFull=1 shQ=92363 | m=0.900 worth=76.3 cheap=8.2 over=0 dMedOther=99.7 safe(-1)=1256992
+    → OnlyDamage#0[T2] terr=21100 bal=488703 dq=23.2 cnt=173 | c=27.5 rankC=13.7 need=760711 tD=0.23 人 pulse bleeding | safe=1256992 keep=1256992 avail=-355873 chunkB=182361 pulseB=109416 无可用(avail<=0) hNb=3
+    → Chernobyl#32[T2] terr=293 bal=822 dq=2.8 cnt=1 | c=57.1 rankC=57.1 need=1906 tD=0.03 人 pulse | safe=1256992 keep=1256992 avail=-355873 chunkB=182361 pulseB=109416 无可用(avail<=0) hNb=3
+    → [EU] DONATE#40[T2] terr=63557 bal=4830298 dq=76.0 cnt=57 | c=145.9 rankC=102.2 need=9290934 tD=0.76 人 pulse onMe | safe=1256992 keep=Inf avail=-Inf chunkB=182361 pulseB=109416 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4385 zexos1 B=893532 L=14613 d=61.1 nb=2 neut=0 cmds=77 noFull=1 shQ=106381 | m=0.900 worth=75.8 cheap=8.1 over=0 dMedOther=99.1 safe(-1)=1285944
+    → OnlyDamage#0[T2] terr=20788 bal=468729 dq=22.5 cnt=170 | c=28.2 rankC=14.1 need=761499 tD=0.23 人 pulse bleeding | safe=1285944 keep=1285944 avail=-402883 chunkB=178706 pulseB=107224 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=63740 bal=4830298 dq=75.8 cnt=62 | c=144.9 rankC=101.4 need=9254379 tD=0.76 人 pulse onMe | safe=1285944 keep=Inf avail=-Inf chunkB=178706 pulseB=107224 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4390 zexos1 B=873101 L=14628 d=59.7 nb=2 neut=0 cmds=77 noFull=1 shQ=119973 | m=0.900 worth=76.4 cheap=8.1 over=0 dMedOther=99.9 safe(-1)=1287264
+    → OnlyDamage#0[T2] terr=20736 bal=420623 dq=20.3 cnt=158 | c=26.2 rankC=13.1 need=704372 tD=0.20 人 pulse bleeding | safe=1287264 keep=1287264 avail=-424394 chunkB=174620 pulseB=104772 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=64062 bal=4902269 dq=76.5 cnt=67 | c=145.2 rankC=101.6 need=9320317 tD=0.77 人 pulse onMe | safe=1287264 keep=Inf avail=-Inf chunkB=174620 pulseB=104772 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4395 zexos1 B=839086 L=14712 d=57.0 nb=2 neut=0 cmds=77 noFull=1 shQ=133192 | m=0.900 worth=76.4 cheap=8.1 over=0 dMedOther=99.9 safe(-1)=1294656
+    → OnlyDamage#0[T2] terr=20448 bal=404219 dq=19.8 cnt=142 | c=26.8 rankC=13.4 need=703038 tD=0.20 人 pulse bleeding | safe=1294656 keep=1294656 avail=-465403 chunkB=167817 pulseB=100690 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=64425 bal=4902269 dq=76.1 cnt=77 | c=143.2 rankC=100.3 need=9252078 tD=0.76 人 pulse onMe | safe=1294656 keep=Inf avail=-Inf chunkB=167817 pulseB=100690 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4400 zexos1 B=824500 L=14284 d=57.7 nb=2 neut=0 cmds=77 noFull=1 shQ=145876 | m=0.900 worth=75.8 cheap=8.2 over=0 dMedOther=99.1 safe(-1)=1256992
+    → OnlyDamage#0[T2] terr=20756 bal=426105 dq=20.5 cnt=142 | c=28.1 rankC=14.1 need=749996 tD=0.21 人 pulse bleeding | safe=1256992 keep=1256992 avail=-442154 chunkB=164900 pulseB=98940 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=64853 bal=5040074 dq=77.7 cnt=91 | c=144.8 rankC=101.3 need=9419431 tD=0.78 人 pulse onMe | safe=1256992 keep=Inf avail=-Inf chunkB=164900 pulseB=98940 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4405 zexos1 B=778175 L=13778 d=56.5 nb=2 neut=0 cmds=77 noFull=1 shQ=158033 | m=0.900 worth=68.8 cheap=8.2 over=0 dMedOther=89.9 safe(-1)=1212464
+    → OnlyDamage#0[T2] terr=20925 bal=423847 dq=20.3 cnt=140 | c=27.9 rankC=13.9 need=748393 tD=0.23 人 pulse bleeding | safe=1212464 keep=1212464 avail=-443408 chunkB=155635 pulseB=93381 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=65359 bal=5040074 dq=77.1 cnt=109 | c=189.5 rankC=189.5 need=9326583 tD=0.86 人 pulse onMe | safe=1212464 keep=Inf avail=-Inf chunkB=155635 pulseB=93381 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4410 zexos1 B=733282 L=13177 d=55.6 nb=2 neut=0 cmds=77 noFull=1 shQ=169441 | m=0.900 worth=69.8 cheap=8.2 over=0 dMedOther=91.2 safe(-1)=1159576
+    → OnlyDamage#0[T2] terr=21219 bal=426898 dq=20.1 cnt=138 | c=27.8 rankC=13.9 need=757179 tD=0.22 人 pulse bleeding | safe=1159576 keep=1159576 avail=-434887 chunkB=146656 pulseB=87994 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=65960 bal=5115675 dq=77.6 cnt=124 | c=188.2 rankC=188.2 need=9353215 tD=0.85 人 pulse onMe | safe=1159576 keep=Inf avail=-Inf chunkB=146656 pulseB=87994 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4415 zexos1 B=678194 L=12551 d=54.0 nb=2 neut=0 cmds=77 noFull=1 shQ=169548 | m=0.900 worth=69.3 cheap=8.2 over=0 dMedOther=90.6 safe(-1)=1104488
+    → OnlyDamage#0[T2] terr=21439 bal=425683 dq=19.9 cnt=136 | c=27.5 rankC=13.7 need=757772 tD=0.22 人 pulse bleeding | safe=1104488 keep=1104488 avail=-434241 chunkB=135639 pulseB=81383 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=66586 bal=5115675 dq=76.8 cnt=127 | c=184.2 rankC=184.2 need=9242780 tD=0.85 人 pulse onMe | safe=1104488 keep=Inf avail=-Inf chunkB=135639 pulseB=81383 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4420 zexos1 B=674091 L=12423 d=54.3 nb=2 neut=0 cmds=77 noFull=1 shQ=168522 | m=0.900 worth=70.0 cheap=8.2 over=0 dMedOther=91.5 safe(-1)=1093224
+    → OnlyDamage#0[T2] terr=21773 bal=428608 dq=19.7 cnt=134 | c=27.4 rankC=13.7 need=766611 tD=0.22 人 pulse bleeding | safe=1093224 keep=1093224 avail=-427032 chunkB=134818 pulseB=80891 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=66714 bal=5192433 dq=77.8 cnt=128 | c=186.1 rankC=186.1 need=9354923 tD=0.85 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=134818 pulseB=80891 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4425 zexos1 B=674091 L=12423 d=54.3 nb=2 neut=0 cmds=77 noFull=1 shQ=168522 | m=0.900 worth=69.6 cheap=8.2 over=0 dMedOther=90.9 safe(-1)=1093224
+    → OnlyDamage#0[T2] terr=21977 bal=426014 dq=19.4 cnt=132 | c=18.4 rankC=5.5 need=764478 tD=0.21 人 pulse bleeding | safe=1093224 keep=1093224 avail=-427032 chunkB=134818 pulseB=80891 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=66714 bal=5192433 dq=77.8 cnt=128 | c=186.1 rankC=186.1 need=9354923 tD=0.86 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=134818 pulseB=80891 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4430 zexos1 B=682247 L=12423 d=54.9 nb=2 neut=0 cmds=77 noFull=1 shQ=170561 | m=0.900 worth=70.2 cheap=8.2 over=0 dMedOther=91.8 safe(-1)=1093224
+    → OnlyDamage#0[T2] terr=22378 bal=430168 dq=19.2 cnt=132 | c=26.9 rankC=13.5 need=775972 tD=0.21 人 pulse bleeding | safe=1093224 keep=1093224 avail=-418972 chunkB=136449 pulseB=81870 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=66714 bal=5270319 dq=79.0 cnt=128 | c=188.8 rankC=188.8 need=9493745 tD=0.86 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=136449 pulseB=81870 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4435 zexos1 B=682247 L=12423 d=54.9 nb=2 neut=0 cmds=77 noFull=1 shQ=170561 | m=0.900 worth=69.8 cheap=8.2 over=0 dMedOther=91.2 safe(-1)=1093224
+    → OnlyDamage#0[T2] terr=22588 bal=427381 dq=18.9 cnt=130 | c=26.7 rankC=13.3 need=773377 tD=0.21 人 pulse bleeding | safe=1093224 keep=1093224 avail=-418972 chunkB=136449 pulseB=81870 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=66714 bal=5270319 dq=79.0 cnt=128 | c=188.8 rankC=188.8 need=9493745 tD=0.87 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=136449 pulseB=81870 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4440 zexos1 B=690502 L=12423 d=55.6 nb=2 neut=0 cmds=77 noFull=1 shQ=172625 | m=0.900 worth=70.5 cheap=8.2 over=0 dMedOther=92.1 safe(-1)=1093224
+    → OnlyDamage#0[T2] terr=22957 bal=429982 dq=18.7 cnt=127 | c=26.5 rankC=13.3 need=781643 tD=0.20 人 pulse bleeding | safe=1093224 keep=1093224 avail=-410813 chunkB=138100 pulseB=82860 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=66714 bal=5349373 dq=80.2 cnt=128 | c=191.6 rankC=191.6 need=9634649 tD=0.87 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=138100 pulseB=82860 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4445 zexos1 B=690502 L=12423 d=55.6 nb=2 neut=0 cmds=77 noFull=1 shQ=172625 | m=0.900 worth=70.0 cheap=8.2 over=0 dMedOther=91.5 safe(-1)=1093224
+    → OnlyDamage#0[T2] terr=23225 bal=428465 dq=18.4 cnt=125 | c=26.2 rankC=13.1 need=781640 tD=0.20 人 pulse bleeding | safe=1093224 keep=1093224 avail=-410813 chunkB=138100 pulseB=82860 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=66714 bal=5349373 dq=80.2 cnt=128 | c=191.6 rankC=191.6 need=9634649 tD=0.88 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=138100 pulseB=82860 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4450 zexos1 B=698857 L=12423 d=56.3 nb=2 neut=0 cmds=77 noFull=1 shQ=174714 | m=0.900 worth=70.7 cheap=8.2 over=0 dMedOther=92.5 safe(-1)=1093224
+    → OnlyDamage#0[T2] terr=23611 bal=430921 dq=18.3 cnt=122 | c=26.1 rankC=13.0 need=789637 tD=0.20 人 pulse bleeding | safe=1093224 keep=1093224 avail=-402556 chunkB=139771 pulseB=83863 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=66714 bal=5429613 dq=81.4 cnt=128 | c=194.5 rankC=194.5 need=9777667 tD=0.88 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=139771 pulseB=83863 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4455 zexos1 B=698857 L=12423 d=56.3 nb=2 neut=0 cmds=77 noFull=1 shQ=174714 | m=0.900 worth=70.3 cheap=8.2 over=0 dMedOther=92.0 safe(-1)=1093224
+    → OnlyDamage#0[T2] terr=23836 bal=427677 dq=17.9 cnt=119 | c=25.8 rankC=12.9 need=786024 tD=0.20 人 pulse bleeding | safe=1093224 keep=1093224 avail=-402556 chunkB=139771 pulseB=83863 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=66714 bal=5429613 dq=81.4 cnt=128 | c=194.5 rankC=194.5 need=9777667 tD=0.89 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=139771 pulseB=83863 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4460 zexos1 B=707313 L=12423 d=56.9 nb=2 neut=0 cmds=77 noFull=1 shQ=176828 | m=0.900 worth=71.1 cheap=8.2 over=0 dMedOther=93.0 safe(-1)=1093224
+    → OnlyDamage#0[T2] terr=24293 bal=431562 dq=17.8 cnt=118 | c=25.6 rankC=12.8 need=796936 tD=0.19 人 pulse bleeding | safe=1093224 keep=1093224 avail=-394199 chunkB=141463 pulseB=84878 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=66714 bal=5511057 dq=82.6 cnt=128 | c=197.4 rankC=197.4 need=9922830 tD=0.89 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=141463 pulseB=84878 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4465 zexos1 B=707313 L=12423 d=56.9 nb=2 neut=0 cmds=77 noFull=1 shQ=176828 | m=0.900 worth=70.8 cheap=8.2 over=0 dMedOther=92.6 safe(-1)=1093224
+    → OnlyDamage#0[T2] terr=24511 bal=428082 dq=17.5 cnt=115 | c=25.4 rankC=12.7 need=792697 tD=0.19 人 pulse bleeding | safe=1093224 keep=1093224 avail=-394199 chunkB=141463 pulseB=84878 无可用(avail<=0) hNb=2
+    → [EU] DONATE#40[T2] terr=66686 bal=5507357 dq=82.6 cnt=128 | c=197.3 rankC=197.3 need=9915491 tD=0.89 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=141463 pulseB=84878 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4470 zexos1 B=715871 L=12423 d=57.6 nb=2 neut=0 cmds=77 noFull=1 shQ=178967 | m=0.900 worth=71.6 cheap=8.2 over=0 dMedOther=93.7 safe(-1)=1093224
+    → OnlyDamage#0[T2] terr=25031 bal=1035400 dq=41.4 cnt=115 | c=145.9 rankC=211.5 need=1875012 tD=0.44 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=143174 pulseB=85905 价高(c>=worth)→break hNb=2
+    → [EU] DONATE#40[T2] terr=66686 bal=4634652 dq=69.5 cnt=128 | c=241.3 rankC=349.9 need=8360214 tD=0.74 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=143174 pulseB=85905 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4475 zexos1 B=715871 L=12423 d=57.6 nb=2 neut=0 cmds=77 noFull=1 shQ=178967 | m=0.900 worth=71.3 cheap=8.2 over=0 dMedOther=93.3 safe(-1)=1093224
+    → OnlyDamage#0[T2] terr=25386 bal=1035400 dq=40.8 cnt=115 | c=143.6 rankC=208.2 need=1880974 tD=0.44 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=143174 pulseB=85905 价高(c>=worth)→break hNb=2
+    → [EU] DONATE#40[T2] terr=66686 bal=4634652 dq=69.5 cnt=128 | c=241.3 rankC=349.9 need=8360312 tD=0.75 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=143174 pulseB=85905 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4480 zexos1 B=724533 L=12423 d=58.3 nb=2 neut=0 cmds=77 noFull=1 shQ=181133 | m=0.900 worth=72.2 cheap=8.2 over=0 dMedOther=94.4 safe(-1)=1093224
+    → OnlyDamage#0[T2] terr=25933 bal=1048860 dq=40.4 cnt=115 | c=142.3 rankC=206.3 need=1908363 tD=0.43 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=144907 pulseB=86944 价高(c>=worth)→break hNb=2
+    → [EU] DONATE#40[T2] terr=66686 bal=4704171 dq=70.5 cnt=128 | c=244.8 rankC=355.0 need=8484416 tD=0.75 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=144907 pulseB=86944 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4485 zexos1 B=724533 L=12423 d=58.3 nb=2 neut=0 cmds=77 noFull=1 shQ=181133 | m=0.900 worth=70.0 cheap=8.2 over=0 dMedOther=91.5 safe(-1)=1093224
+    → OnlyDamage#0[T2] terr=26308 bal=1048860 dq=39.9 cnt=115 | c=96.8 rankC=96.8 need=1908911 tD=0.44 人 pulse bleeding | safe=1093224 keep=Inf avail=-Inf chunkB=144907 pulseB=86944 价高(c>=worth)→break hNb=2
+    → [EU] DONATE#40[T2] terr=66686 bal=4704171 dq=70.5 cnt=128 | c=168.9 rankC=168.9 need=8484516 tD=0.77 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=144907 pulseB=86944 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4490 zexos1 B=733299 L=12423 d=59.0 nb=2 neut=0 cmds=77 noFull=1 shQ=183324 | m=0.900 worth=71.0 cheap=8.2 over=0 dMedOther=92.8 safe(-1)=1093224
+    → OnlyDamage#0[T2] terr=26870 bal=1062600 dq=39.5 cnt=115 | c=139.2 rankC=201.8 need=1934272 tD=0.43 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=146660 pulseB=87996 价高(c>=worth)→break hNb=2
+    → [EU] DONATE#40[T2] terr=66686 bal=4774733 dq=71.6 cnt=128 | c=248.5 rankC=360.3 need=8610384 tD=0.77 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=146660 pulseB=87996 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4495 zexos1 B=733299 L=12423 d=59.0 nb=2 neut=0 cmds=77 noFull=1 shQ=183324 | m=0.900 worth=71.0 cheap=8.2 over=0 dMedOther=92.8 safe(-1)=1093224
+    → [EU] DONATE#40[T2] terr=66686 bal=4201207 dq=63.0 cnt=128 | c=121.0 rankC=84.7 need=8105720 tD=0.68 人 pulse onMe | safe=1093224 keep=Inf avail=-Inf chunkB=146660 pulseB=87996 价高(c>=worth)→break hNb=2
+    → OnlyDamage#0[T2] terr=27233 bal=1062600 dq=39.0 cnt=115 | c=137.4 rankC=199.2 need=1934802 tD=0.42 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=146660 pulseB=87996 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4500 zexos1 B=754594 L=12423 d=60.7 nb=2 neut=0 cmds=77 noFull=1 shQ=185606 | m=0.900 worth=72.8 cheap=8.2 over=0 dMedOther=95.2 safe(-1)=1093224
+    → [EU] DONATE#40[T2] terr=66686 bal=4330911 dq=64.9 cnt=128 | c=124.4 rankC=87.1 need=8336901 tD=0.68 人 pulse onMe | safe=1093224 keep=Inf avail=-Inf chunkB=150919 pulseB=90551 价高(c>=worth)→break hNb=2
+    → OnlyDamage#0[T2] terr=27773 bal=1104218 dq=39.8 cnt=115 | c=139.9 rankC=202.9 need=2009790 tD=0.42 人 pulse | safe=1093224 keep=Inf avail=-Inf chunkB=150919 pulseB=90551 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令

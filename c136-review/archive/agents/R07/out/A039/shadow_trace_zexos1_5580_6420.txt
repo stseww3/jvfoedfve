@@ -1,0 +1,187 @@
+# A039 zexos1 影子决策明细 t=5580~6420（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 137 拍（t=5580~6405）
+#   出手打人/bot: 7 拍（t=5710~6270）；可用兵 235705~365318，一条指令下限(20%余额) 723020~769638，比值 31%~51%
+#   只打无主地: 2 拍（t=6260~6265）
+#   有可用兵但没发（脉冲下限/冷却/其他）: 4 拍（t=6275~6290）；可用兵 14701~157610，一条指令下限(20%余额) 701752~747502，比值 2%~21%
+#   首选目标无可用兵（avail<=0）: 17 拍（t=6295~6410）；可用兵 -441119~-20350，一条指令下限(20%余额) 120677~638633，比值 -366%~-3%
+#   └ 「出手打人/bot」里：7 条对人/bot 的出兵共约 2334131 兵；其中超过软上限（over=1）时发的 6 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 6 条约 2095598 兵，c/worth = 1.97~2.19
+t=5580 zexos1 B=2929683 L=35638 d=82.2 nb=2 neut=0 cmds=77 noFull=1 shQ=732420 | m=0.900 worth=74.0 cheap=6.8 over=0 dMedOther=85.5 safe(-1)=1008789
+    → [OG] Simmy#15[T1] terr=21618 bal=1849102 dq=85.5 cnt=352 | c=215.9 rankC=215.9 need=2989480 tD=1.00 人 pulse | safe=1008789 keep=Inf avail=-Inf chunkB=585937 pulseB=351562 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1258163 dq=116.7 cnt=84 | c=289.9 rankC=289.9 need=2110401 tD=1.36 人 pulse | safe=1008789 keep=Inf avail=-Inf chunkB=585937 pulseB=351562 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5610 zexos1 B=3096042 L=35638 d=86.9 nb=2 neut=0 cmds=77 noFull=1 shQ=774010 | m=0.900 worth=78.2 cheap=6.8 over=0 dMedOther=72.8 safe(-1)=853578
+    → [OG] Simmy#15[T1] terr=21618 bal=1572825 dq=72.8 cnt=352 | c=138.2 rankC=96.7 need=2555678 tD=1.00 人 pulse | safe=853578 keep=Inf avail=-Inf chunkB=619208 pulseB=371525 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1299466 dq=120.5 cnt=84 | c=299.2 rankC=299.2 need=2183775 tD=1.66 人 pulse | safe=853578 keep=Inf avail=-Inf chunkB=619208 pulseB=371525 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5640 zexos1 B=3233637 L=35638 d=90.7 nb=2 neut=0 cmds=77 noFull=1 shQ=808409 | m=0.900 worth=81.7 cheap=6.8 over=0 dMedOther=71.9 safe(-1)=890174
+    → [OG] Simmy#15[T1] terr=22773 bal=1637967 dq=71.9 cnt=357 | c=180.6 rankC=180.6 need=2721825 tD=1.00 人 pulse | safe=890174 keep=Inf avail=-Inf chunkB=646727 pulseB=388036 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1327472 dq=123.1 cnt=84 | c=305.5 rankC=305.5 need=2234974 tD=1.71 人 pulse | safe=890174 keep=Inf avail=-Inf chunkB=646727 pulseB=388036 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5670 zexos1 B=3377347 L=35638 d=94.8 nb=2 neut=0 cmds=77 noFull=1 shQ=844336 | m=0.900 worth=85.3 cheap=6.8 over=0 dMedOther=74.9 safe(-1)=928231
+    → [OG] Simmy#15[T1] terr=22773 bal=1705708 dq=74.9 cnt=357 | c=187.8 rankC=187.8 need=2840785 tD=1.00 人 pulse | safe=928231 keep=Inf avail=-Inf chunkB=675469 pulseB=405282 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1353525 dq=125.5 cnt=84 | c=311.3 rankC=311.3 need=2283273 tD=1.68 人 pulse | safe=928231 keep=Inf avail=-Inf chunkB=675469 pulseB=405282 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5700 zexos1 B=3563082 L=35638 d=100.0 nb=2 neut=0 cmds=77 noFull=1 shQ=882176 | m=0.900 worth=90.0 cheap=6.8 over=0 dMedOther=79.0 safe(-1)=980655
+    → [OG] Simmy#15[T1] terr=22773 bal=1799023 dq=79.0 cnt=357 | c=197.7 rankC=197.7 need=3001624 tD=1.00 人 pulse | safe=980655 keep=Inf avail=-Inf chunkB=712616 pulseB=427570 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1388544 dq=128.7 cnt=84 | c=319.2 rankC=319.2 need=2345955 tD=1.63 人 pulse | safe=980655 keep=Inf avail=-Inf chunkB=712616 pulseB=427570 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5710 zexos1 B=3615102 L=35638 d=101.4 nb=2 neut=0 cmds=78 noFull=1 shQ=903603 | m=0.900 worth=91.3 cheap=6.8 over=1 dMedOther=80.1 safe(-1)=994400
+    → [OG] Simmy#15[T1] terr=22773 bal=1823489 dq=80.1 cnt=357 | c=200.3 rankC=200.3 need=3044328 tD=1.00 人 pulse | safe=994400 keep=3207420 avail=365318 chunkB=723020 pulseB=433812 
+    → Player 528#2[T1] terr=10785 bal=1395903 dq=129.4 cnt=84 | c=320.9 rankC=320.9 need=2359362 tD=1.62 人 pulse | safe=994400 keep=3207420 avail=365318 chunkB=723020 pulseB=433812 
+    ⇒ 影子指令 attack pct=103 → [OG] Simmy#15[T1]（约 367158 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=5715 zexos1 B=3615102 L=35638 d=101.4 nb=2 neut=0 cmds=79 noFull=1 shQ=903775 | m=0.900 worth=91.3 cheap=6.8 over=1 dMedOther=80.1 safe(-1)=994400
+    → [OG] Simmy#15[T1] terr=22773 bal=1823489 dq=80.1 cnt=357 | c=200.3 rankC=200.3 need=3045541 tD=1.00 人 pulse | safe=994400 keep=3207420 avail=365318 chunkB=723020 pulseB=433812 
+    → Player 528#2[T1] terr=10785 bal=1395903 dq=129.4 cnt=84 | c=320.8 rankC=320.8 need=2359783 tD=1.62 人 pulse | safe=994400 keep=3207420 avail=365318 chunkB=723020 pulseB=433812 
+    ⇒ 影子指令 attack pct=103 → [OG] Simmy#15[T1]（约 367158 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=5730 zexos1 B=2926054 L=36346 d=80.5 nb=2 neut=0 cmds=79 noFull=1 shQ=113773 | m=0.900 worth=72.5 cheap=6.8 over=0 dMedOther=80.7 safe(-1)=969755
+    → [OG] Simmy#15[T1] terr=22065 bal=1780683 dq=80.7 cnt=350 | c=167.4 rankC=167.4 need=2432032 tD=1.00 人 pulse | safe=969755 keep=Inf avail=-Inf chunkB=585211 pulseB=351126 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1410176 dq=130.8 cnt=84 | c=322.8 rankC=322.8 need=2385460 tD=1.62 人 pulse | safe=969755 keep=Inf avail=-Inf chunkB=585211 pulseB=351126 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5760 zexos1 B=3057650 L=38328 d=79.8 nb=2 neut=0 cmds=79 noFull=1 shQ=443558 | m=0.900 worth=71.8 cheap=6.8 over=0 dMedOther=78.4 safe(-1)=837928
+    → [OG] Simmy#15[T1] terr=19764 bal=1549003 dq=78.4 cnt=317 | c=103.9 rankC=52.0 need=2463074 tD=1.00 人 pulse bleeding | safe=837928 keep=Inf avail=-Inf chunkB=611530 pulseB=366918 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1430009 dq=132.6 cnt=84 | c=327.3 rankC=327.3 need=2422025 tD=1.69 人 pulse | safe=837928 keep=Inf avail=-Inf chunkB=611530 pulseB=366918 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5790 zexos1 B=3195427 L=38328 d=83.4 nb=2 neut=0 cmds=79 noFull=1 shQ=788498 | m=0.900 worth=75.0 cheap=6.8 over=0 dMedOther=78.2 safe(-1)=785429
+    → [OG] Simmy#15[T1] terr=18614 bal=1455555 dq=78.2 cnt=309 | c=201.4 rankC=201.4 need=2262728 tD=1.00 人 pulse | safe=785429 keep=Inf avail=-Inf chunkB=639085 pulseB=383451 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1448246 dq=134.3 cnt=84 | c=331.4 rankC=331.4 need=2455980 tD=1.72 人 pulse | safe=785429 keep=Inf avail=-Inf chunkB=639085 pulseB=383451 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5820 zexos1 B=3378603 L=38326 d=88.2 nb=3 neut=0 cmds=79 noFull=1 shQ=844650 | m=0.900 worth=79.3 cheap=6.8 over=0 dMedOther=82.4 safe(-1)=1054034
+    → Player 493#3[T1] terr=12258 bal=1737262 dq=141.7 cnt=2 | c=218.7 rankC=125.5 need=3311325 tD=1.72 人 pulse onMe agg | safe=1054034 keep=Inf avail=-Inf chunkB=675721 pulseB=405432 价高(c>=worth)→break
+    → [OG] Simmy#15[T1] terr=18614 bal=1533518 dq=82.4 cnt=309 | c=211.8 rankC=211.8 need=2394858 tD=1.00 人 pulse | safe=1054034 keep=Inf avail=-Inf chunkB=675721 pulseB=405432 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1474948 dq=136.8 cnt=84 | c=337.5 rankC=337.5 need=2504295 tD=1.66 人 pulse | safe=1054034 keep=Inf avail=-Inf chunkB=675721 pulseB=405432 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5850 zexos1 B=3484917 L=38016 d=91.7 nb=3 neut=0 cmds=79 noFull=1 shQ=871229 | m=0.900 worth=82.5 cheap=6.8 over=0 dMedOther=67.3 safe(-1)=1008988
+    → [OG] Simmy#15[T1] terr=19153 bal=1288699 dq=67.3 cnt=309 | c=129.7 rankC=90.8 need=2052361 tD=1.00 人 pulse | safe=1008988 keep=Inf avail=-Inf chunkB=696983 pulseB=418190 价高(c>=worth)→break
+    → Player 493#3[T1] terr=12568 bal=1460548 dq=116.2 cnt=36 | c=179.6 rankC=103.1 need=3014552 tD=1.73 人 pulse onMe agg | safe=1008988 keep=Inf avail=-Inf chunkB=696983 pulseB=418190 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1489152 dq=138.1 cnt=84 | c=340.6 rankC=340.6 need=2531597 tD=2.05 人 pulse | safe=1008988 keep=Inf avail=-Inf chunkB=696983 pulseB=418190 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5880 zexos1 B=3513871 L=37182 d=94.5 nb=3 neut=0 cmds=79 noFull=1 shQ=878467 | m=0.900 worth=85.1 cheap=6.8 over=0 dMedOther=67.9 safe(-1)=893554
+    → Player 493#3[T1] terr=13402 bal=1502717 dq=112.1 cnt=71 | c=172.9 rankC=99.2 need=2842150 tD=1.65 人 pulse onMe agg | safe=893554 keep=Inf avail=-Inf chunkB=702774 pulseB=421665 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1063344 dq=98.6 cnt=84 | c=183.9 rankC=128.7 need=1814336 tD=1.45 人 pulse | safe=893554 keep=Inf avail=-Inf chunkB=702774 pulseB=421665 价高(c>=worth)→break
+    → [OG] Simmy#15[T1] terr=19762 bal=1341200 dq=67.9 cnt=309 | c=173.2 rankC=173.2 need=2172351 tD=1.00 人 pulse | safe=893554 keep=Inf avail=-Inf chunkB=702774 pulseB=421665 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5910 zexos1 B=3634137 L=36792 d=98.8 nb=3 neut=0 cmds=79 noFull=1 shQ=908534 | m=0.900 worth=88.9 cheap=6.8 over=0 dMedOther=70.5 safe(-1)=847141
+    → [OG] Simmy#15[T1] terr=20097 bal=1416083 dq=70.5 cnt=309 | c=179.1 rankC=179.1 need=2315445 tD=1.00 人 pulse | safe=847141 keep=Inf avail=-Inf chunkB=726827 pulseB=436096 价高(c>=worth)→break
+    → Player 493#3[T1] terr=13792 bal=1563099 dq=113.3 cnt=83 | c=232.8 rankC=190.9 need=2806697 tD=1.61 人 pulse agg | safe=847141 keep=Inf avail=-Inf chunkB=726827 pulseB=436096 价高(c>=worth)→break
+    → Player 528#2[T1] terr=12137 bal=1116290 dq=92.0 cnt=94 | c=225.1 rankC=225.1 need=1967027 tD=1.31 人 pulse | safe=847141 keep=Inf avail=-Inf chunkB=726827 pulseB=436096 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5920 zexos1 B=3687558 L=36792 d=100.2 nb=3 neut=0 cmds=80 noFull=1 shQ=921889 | m=0.900 worth=90.2 cheap=6.8 over=1 dMedOther=70.9 safe(-1)=855396
+    → [OG] Simmy#15[T1] terr=20240 bal=1435058 dq=70.9 cnt=309 | c=180.0 rankC=180.0 need=2355082 tD=1.00 人 pulse | safe=855396 keep=3311280 avail=333065 chunkB=737512 pulseB=442507 
+    → Player 493#3[T1] terr=13792 bal=1577792 dq=114.4 cnt=83 | c=235.0 rankC=192.7 need=2832885 tD=1.61 人 pulse agg | safe=855396 keep=3311280 avail=333065 chunkB=737512 pulseB=442507 
+    → Player 528#2[T1] terr=12137 bal=1130355 dq=93.1 cnt=94 | c=227.8 rankC=227.8 need=1992007 tD=1.31 人 pulse | safe=855396 keep=3311280 avail=333065 chunkB=737512 pulseB=442507 
+    ⇒ 影子指令 attack pct=92 → [OG] Simmy#15[T1]（约 334905 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=5925 zexos1 B=3687558 L=36792 d=100.2 nb=3 neut=0 cmds=81 noFull=1 shQ=921889 | m=0.900 worth=90.2 cheap=6.8 over=1 dMedOther=70.7 safe(-1)=855396
+    → [OG] Simmy#15[T1] terr=20296 bal=1435058 dq=70.7 cnt=309 | c=179.4 rankC=179.4 need=2358809 tD=1.00 人 pulse | safe=855396 keep=3311280 avail=333065 chunkB=737512 pulseB=442507 
+    → Player 493#3[T1] terr=13792 bal=1577792 dq=114.4 cnt=83 | c=235.0 rankC=192.7 need=2832885 tD=1.62 人 pulse agg | safe=855396 keep=3311280 avail=333065 chunkB=737512 pulseB=442507 
+    → Player 528#2[T1] terr=12137 bal=1130355 dq=93.1 cnt=94 | c=227.8 rankC=227.8 need=1992147 tD=1.32 人 pulse | safe=855396 keep=3311280 avail=333065 chunkB=737512 pulseB=442507 
+    ⇒ 影子指令 attack pct=92 → [OG] Simmy#15[T1]（约 334905 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=5940 zexos1 B=3058056 L=37412 d=81.7 nb=3 neut=0 cmds=81 noFull=1 shQ=118654 | m=0.900 worth=73.6 cheap=6.8 over=0 dMedOther=70.9 safe(-1)=870989
+    → [OG] Simmy#15[T1] terr=19777 bal=1402394 dq=70.9 cnt=310 | c=141.5 rankC=141.5 need=1788417 tD=1.00 人 pulse | safe=870989 keep=Inf avail=-Inf chunkB=611611 pulseB=366967 价高(c>=worth)→break
+    → Player 493#3[T1] terr=13792 bal=1606478 dq=116.5 cnt=83 | c=238.5 rankC=195.6 need=2884014 tD=1.64 人 pulse agg | safe=870989 keep=Inf avail=-Inf chunkB=611611 pulseB=366967 价高(c>=worth)→break
+    → Player 528#2[T1] terr=12137 bal=1159018 dq=95.5 cnt=94 | c=232.6 rankC=232.6 need=2042787 tD=1.35 人 pulse | safe=870989 keep=Inf avail=-Inf chunkB=611611 pulseB=366967 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5970 zexos1 B=3161828 L=39136 d=80.8 nb=3 neut=0 cmds=81 noFull=1 shQ=464716 | m=0.900 worth=72.7 cheap=6.7 over=0 dMedOther=68.8 safe(-1)=847779
+    → Player 493#3[T1] terr=14056 bal=1369883 dq=97.5 cnt=91 | c=150.2 rankC=86.2 need=2660579 tD=1.42 人 pulse onMe agg | safe=847779 keep=Inf avail=-Inf chunkB=632366 pulseB=379419 价高(c>=worth)→break
+    → [OG] Simmy#15[T1] terr=17857 bal=1229034 dq=68.8 cnt=265 | c=178.0 rankC=178.0 need=1927485 tD=1.00 人 pulse | safe=847779 keep=Inf avail=-Inf chunkB=632366 pulseB=379419 价高(c>=worth)→break
+    → Player 528#2[T1] terr=12137 bal=1203381 dq=99.1 cnt=94 | c=241.3 rankC=241.3 need=2121339 tD=1.44 人 pulse | safe=847779 keep=Inf avail=-Inf chunkB=632366 pulseB=379419 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6000 zexos1 B=3240769 L=38434 d=84.3 nb=3 neut=0 cmds=81 noFull=1 shQ=800898 | m=0.900 worth=75.9 cheap=6.8 over=0 dMedOther=72.6 safe(-1)=775719
+    → Player 528#2[T1] terr=12137 bal=1260963 dq=103.9 cnt=94 | c=135.5 rankC=67.7 need=2223240 tD=1.43 人 pulse bleeding | safe=775719 keep=Inf avail=-Inf chunkB=648154 pulseB=388892 价高(c>=worth)→break
+    → Player 493#3[T1] terr=14758 bal=1438431 dq=97.5 cnt=107 | c=200.1 rankC=164.1 need=2586011 tD=1.34 人 pulse agg | safe=775719 keep=Inf avail=-Inf chunkB=648154 pulseB=388892 价高(c>=worth)→break
+    → [OG] Simmy#15[T1] terr=17857 bal=1296205 dq=72.6 cnt=265 | c=187.2 rankC=187.2 need=2041447 tD=1.00 人 pulse | safe=775719 keep=Inf avail=-Inf chunkB=648154 pulseB=388892 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6030 zexos1 B=3386798 L=38434 d=88.1 nb=3 neut=0 cmds=81 noFull=1 shQ=846699 | m=0.900 worth=79.3 cheap=6.8 over=0 dMedOther=58.7 safe(-1)=807397
+    → [OG] Simmy#15[T1] terr=18365 bal=879455 dq=47.9 cnt=265 | c=93.4 rankC=65.4 need=1416111 tD=0.82 人 pulse | safe=807397 keep=Inf avail=-Inf chunkB=677360 pulseB=406416 价高(c>=worth)→break
+    → Player 493#3[T1] terr=14758 bal=1494818 dq=101.3 cnt=107 | c=207.9 rankC=170.4 need=2686516 tD=1.73 人 pulse agg | safe=807397 keep=Inf avail=-Inf chunkB=677360 pulseB=406416 价高(c>=worth)→break
+    → Player 528#2[T1] terr=11076 bal=1113135 dq=100.5 cnt=86 | c=248.1 rankC=248.1 need=1920269 tD=1.71 人 pulse | safe=807397 keep=Inf avail=-Inf chunkB=677360 pulseB=406416 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6060 zexos1 B=3539407 L=38434 d=92.1 nb=3 neut=0 cmds=81 noFull=1 shQ=884851 | m=0.900 worth=82.9 cheap=6.8 over=0 dMedOther=66.9 safe(-1)=838767
+    → [OG] Simmy#15[T1] terr=18785 bal=1205281 dq=64.2 cnt=265 | c=164.3 rankC=164.3 need=1957751 tD=0.96 人 pulse | safe=838767 keep=Inf avail=-Inf chunkB=707881 pulseB=424729 价高(c>=worth)→break
+    → Player 493#3[T1] terr=14758 bal=1550656 dq=105.1 cnt=107 | c=215.6 rankC=176.8 need=2786042 tD=1.57 人 pulse agg | safe=838767 keep=Inf avail=-Inf chunkB=707881 pulseB=424729 价高(c>=worth)→break
+    → Player 528#2[T1] terr=11076 bal=1154030 dq=104.2 cnt=86 | c=257.0 rankC=257.0 need=1992693 tD=1.56 人 pulse | safe=838767 keep=Inf avail=-Inf chunkB=707881 pulseB=424729 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6090 zexos1 B=3698893 L=38434 d=96.2 nb=3 neut=0 cmds=81 noFull=1 shQ=924723 | m=0.900 worth=86.6 cheap=6.8 over=0 dMedOther=71.3 safe(-1)=868633
+    → [OG] Simmy#15[T1] terr=18785 bal=1254013 dq=66.8 cnt=265 | c=170.6 rankC=170.6 need=2043021 tD=0.94 人 pulse | safe=868633 keep=Inf avail=-Inf chunkB=739779 pulseB=443867 价高(c>=worth)→break
+    → Player 493#3[T1] terr=14758 bal=1603818 dq=108.7 cnt=107 | c=223.0 rankC=182.8 need=2880799 tD=1.53 人 pulse agg | safe=868633 keep=Inf avail=-Inf chunkB=739779 pulseB=443867 价高(c>=worth)→break
+    → Player 528#2[T1] terr=11076 bal=1193240 dq=107.7 cnt=86 | c=265.5 rankC=265.5 need=2062392 tD=1.51 人 pulse | safe=868633 keep=Inf avail=-Inf chunkB=739779 pulseB=443867 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6110 zexos1 B=3848192 L=38434 d=100.1 nb=3 neut=0 cmds=82 noFull=1 shQ=962048 | m=0.900 worth=90.1 cheap=6.8 over=1 dMedOther=75.3 safe(-1)=895938
+    → [OG] Simmy#15[T1] terr=18785 bal=1306626 dq=69.6 cnt=265 | c=177.5 rankC=177.5 need=2132623 tD=0.92 人 pulse | safe=895938 keep=3459060 avail=344036 chunkB=769638 pulseB=461783 
+    → Player 493#3[T1] terr=14758 bal=1652420 dq=112.0 cnt=107 | c=229.7 rankC=188.3 need=2967427 tD=1.49 人 pulse agg | safe=895938 keep=3459060 avail=344036 chunkB=769638 pulseB=461783 
+    → Player 528#2[T1] terr=11076 bal=1229255 dq=111.0 cnt=86 | c=273.5 rankC=273.5 need=2125552 tD=1.47 人 pulse | safe=895938 keep=3459060 avail=344036 chunkB=769638 pulseB=461783 
+    ⇒ 影子指令 attack pct=91 → [OG] Simmy#15[T1]（约 345736 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=6115 zexos1 B=3848192 L=38434 d=100.1 nb=3 neut=0 cmds=83 noFull=1 shQ=962048 | m=0.900 worth=90.1 cheap=6.8 over=1 dMedOther=75.3 safe(-1)=895938
+    → [OG] Simmy#15[T1] terr=18785 bal=1306626 dq=69.6 cnt=265 | c=177.5 rankC=177.5 need=2133843 tD=0.92 人 pulse | safe=895938 keep=3459060 avail=344036 chunkB=769638 pulseB=461783 
+    → Player 493#3[T1] terr=14758 bal=1652420 dq=112.0 cnt=107 | c=229.7 rankC=188.3 need=2967427 tD=1.49 人 pulse agg | safe=895938 keep=3459060 avail=344036 chunkB=769638 pulseB=461783 
+    → Player 528#2[T1] terr=11076 bal=1229255 dq=111.0 cnt=86 | c=273.4 rankC=273.4 need=2125897 tD=1.47 人 pulse | safe=895938 keep=3459060 avail=344036 chunkB=769638 pulseB=461783 
+    ⇒ 影子指令 attack pct=91 → [OG] Simmy#15[T1]（约 345736 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=6120 zexos1 B=3508528 L=38434 d=91.3 nb=3 neut=0 cmds=83 noFull=1 shQ=531585 | m=0.900 worth=82.2 cheap=6.8 over=0 dMedOther=76.9 safe(-1)=905128
+    → [OG] Simmy#15[T1] terr=18785 bal=1324004 dq=70.5 cnt=265 | c=151.3 rankC=151.3 need=1817402 tD=0.92 人 pulse | safe=905128 keep=Inf avail=-Inf chunkB=701706 pulseB=421023 价高(c>=worth)→break
+    → Player 493#3[T1] terr=14758 bal=1668778 dq=113.1 cnt=107 | c=231.6 rankC=189.9 need=2996584 tD=1.47 人 pulse agg | safe=905128 keep=Inf avail=-Inf chunkB=701706 pulseB=421023 价高(c>=worth)→break
+    → Player 528#2[T1] terr=11076 bal=1241301 dq=112.1 cnt=86 | c=275.5 rankC=275.5 need=2146751 tD=1.46 人 pulse | safe=905128 keep=Inf avail=-Inf chunkB=701706 pulseB=421023 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6150 zexos1 B=3295057 L=41250 d=79.9 nb=3 neut=0 cmds=83 noFull=1 shQ=823764 | m=0.900 worth=71.9 cheap=6.7 over=0 dMedOther=65.3 safe(-1)=929154
+    → [OG] Simmy#15[T1] terr=15969 bal=1042143 dq=65.3 cnt=194 | c=171.5 rankC=171.5 need=1591549 tD=1.00 人 pulse | safe=929154 keep=Inf avail=-Inf chunkB=659011 pulseB=395407 价高(c>=worth)→break
+    → Player 493#3[T1] terr=14758 bal=1715770 dq=116.3 cnt=107 | c=279.8 rankC=279.8 need=3080343 tD=1.78 人 pulse | safe=929154 keep=Inf avail=-Inf chunkB=659011 pulseB=395407 价高(c>=worth)→break
+    → Player 528#2[T1] terr=11076 bal=1276128 dq=115.2 cnt=86 | c=282.7 rankC=282.7 need=2207797 tD=1.77 人 pulse | safe=929154 keep=Inf avail=-Inf chunkB=659011 pulseB=395407 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6180 zexos1 B=3301866 L=40183 d=82.2 nb=3 neut=0 cmds=83 noFull=1 shQ=825466 | m=0.900 worth=74.0 cheap=6.7 over=0 dMedOther=67.8 safe(-1)=791990
+    → Player 493#3[T1] terr=15825 bal=1470017 dq=92.9 cnt=128 | c=190.5 rankC=156.2 need=2643873 tD=1.37 人 pulse agg | safe=791990 keep=Inf avail=-Inf chunkB=660373 pulseB=396224 价高(c>=worth)→break
+    → [OG] Simmy#15[T1] terr=15969 bal=1083315 dq=67.8 cnt=194 | c=177.7 rankC=177.7 need=1663420 tD=1.00 人 pulse | safe=791990 keep=Inf avail=-Inf chunkB=660373 pulseB=396224 价高(c>=worth)→break
+    → Player 528#2[T1] terr=11076 bal=1308816 dq=118.2 cnt=86 | c=289.6 rankC=289.6 need=2265415 tD=1.74 人 pulse | safe=791990 keep=Inf avail=-Inf chunkB=660373 pulseB=396224 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6210 zexos1 B=3492449 L=40183 d=86.9 nb=3 neut=0 cmds=83 noFull=1 shQ=873112 | m=0.900 worth=78.2 cheap=6.7 over=0 dMedOther=69.5 safe(-1)=833624
+    → [OG] Simmy#15[T1] terr=15228 bal=1058644 dq=69.5 cnt=194 | c=95.3 rankC=47.6 need=1594373 tD=1.00 人 pulse bleeding | safe=833624 keep=Inf avail=-Inf chunkB=698490 pulseB=419094 价高(c>=worth)→break
+    → Player 493#3[T1] terr=15825 bal=1544126 dq=97.6 cnt=128 | c=200.1 rankC=164.1 need=2775964 tD=1.40 人 pulse agg | safe=833624 keep=Inf avail=-Inf chunkB=698490 pulseB=419094 价高(c>=worth)→break
+    → Player 528#2[T1] terr=11076 bal=1350438 dq=121.9 cnt=86 | c=298.8 rankC=298.8 need=2338282 tD=1.75 人 pulse | safe=833624 keep=Inf avail=-Inf chunkB=698490 pulseB=419094 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6240 zexos1 B=3650897 L=40183 d=90.9 nb=4 neut=164 cmds=83 noFull=1 shQ=912724 | m=0.900 worth=81.8 cheap=6.7 over=0 dMedOther=54.5 safe(-1)=3536104
+    → Player 49#17[T1] terr=254351 bal=11048081 dq=43.4 cnt=47 | c=105.3 rankC=105.3 need=20073257 tD=0.80 人 pulse | safe=3536104 keep=Inf avail=-Inf chunkB=730179 pulseB=438108 价高(c>=worth)→break
+    → [OG] Simmy#15[T1] terr=14264 bal=777342 dq=54.5 cnt=194 | c=147.1 rankC=147.1 need=1138598 tD=1.00 人 pulse | safe=3536104 keep=Inf avail=-Inf chunkB=730179 pulseB=438108 价高(c>=worth)→break
+    → Player 493#3[T1] terr=15825 bal=1605131 dq=101.4 cnt=128 | c=207.9 rankC=170.5 need=2884698 tD=1.86 人 pulse agg | safe=3536104 keep=Inf avail=-Inf chunkB=730179 pulseB=438108 价高(c>=worth)→break
+    → Player 528#2[T1] terr=12463 bal=982940 dq=78.9 cnt=97 | c=192.4 rankC=192.4 need=1757276 tD=1.45 人 pulse | safe=3536104 keep=Inf avail=-Inf chunkB=730179 pulseB=438108 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6260 zexos1 B=3760503 L=40183 d=93.6 nb=4 neut=57 cmds=84 noFull=1 shQ=940125 | m=0.900 worth=84.2 cheap=6.7 over=0 dMedOther=55.9 safe(-1)=3536104
+    → [OG] Simmy#15[T1] terr=14266 bal=797526 dq=55.9 cnt=194 | c=112.9 rankC=79.1 need=1174037 tD=1.00 人 pulse | safe=3536104 keep=Inf avail=-Inf chunkB=752101 pulseB=451260 价高(c>=worth)→break
+    → Player 49#17[T1] terr=259755 bal=11550836 dq=44.5 cnt=154 | c=107.5 rankC=107.5 need=20977456 tD=0.80 人 pulse | safe=3536104 keep=Inf avail=-Inf chunkB=752101 pulseB=451260 价高(c>=worth)→break
+    → Player 493#3[T1] terr=15825 bal=1357198 dq=85.8 cnt=128 | c=176.6 rankC=144.8 need=2442786 tD=1.53 人 pulse agg | safe=3536104 keep=Inf avail=-Inf chunkB=752101 pulseB=451260 价高(c>=worth)→break
+    → Player 528#2[T1] terr=12463 bal=1008149 dq=80.9 cnt=97 | c=197.3 rankC=197.3 need=1802456 tD=1.45 人 pulse | safe=3536104 keep=Inf avail=-Inf chunkB=752101 pulseB=451260 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=47 → 无主地（约 176273 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=6265 zexos1 B=3760503 L=40183 d=93.6 nb=4 neut=48 cmds=85 noFull=1 shQ=940125 | m=0.900 worth=84.2 cheap=6.7 over=0 dMedOther=55.9 safe(-1)=3536104
+    → [OG] Simmy#15[T1] terr=14277 bal=797526 dq=55.9 cnt=194 | c=112.8 rankC=79.0 need=1176052 tD=1.00 人 pulse | safe=3536104 keep=Inf avail=-Inf chunkB=752101 pulseB=451260 价高(c>=worth)→break
+    → Player 49#17[T1] terr=260046 bal=11550836 dq=44.4 cnt=163 | c=107.4 rankC=107.4 need=20977876 tD=0.80 人 pulse | safe=3536104 keep=Inf avail=-Inf chunkB=752101 pulseB=451260 价高(c>=worth)→break
+    → Player 493#3[T1] terr=15825 bal=1357198 dq=85.8 cnt=128 | c=176.6 rankC=144.8 need=2442786 tD=1.54 人 pulse agg | safe=3536104 keep=Inf avail=-Inf chunkB=752101 pulseB=451260 价高(c>=worth)→break
+    → Player 528#2[T1] terr=12463 bal=1008149 dq=80.9 cnt=97 | c=197.2 rankC=197.2 need=1802573 tD=1.45 人 pulse | safe=3536104 keep=Inf avail=-Inf chunkB=752101 pulseB=451260 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=47 → 无主地（约 176273 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=6270 zexos1 B=3816534 L=40183 d=95.0 nb=4 neut=32 cmds=87 noFull=1 shQ=954133 | m=0.900 worth=85.5 cheap=6.7 over=0 dMedOther=56.4 safe(-1)=3536104
+    → Player 49#17[T1] terr=260849 bal=9999905 dq=38.3 cnt=184 | c=69.7 rankC=48.8 need=18214742 tD=0.68 人 pulse | safe=3536104 keep=3536104 avail=235705 chunkB=763307 pulseB=457984 
+    → [OG] Simmy#15[T1] terr=14313 bal=807814 dq=56.4 cnt=194 | c=113.9 rankC=79.7 need=1194439 tD=1.00 人 pulse | safe=3536104 keep=Inf avail=-Inf chunkB=763307 pulseB=457984 价高(c>=worth)→break
+    → Player 493#3[T1] terr=15825 bal=1644020 dq=103.9 cnt=128 | c=213.0 rankC=174.7 need=2954014 tD=1.84 人 pulse agg | safe=3536104 keep=Inf avail=-Inf chunkB=763307 pulseB=457984 价高(c>=worth)→break
+    → Player 528#2[T1] terr=12463 bal=1020952 dq=81.9 cnt=97 | c=199.7 rankC=199.7 need=1825349 tD=1.45 人 pulse | safe=3536104 keep=Inf avail=-Inf chunkB=763307 pulseB=457984 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=47 → 无主地（约 178900 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=63 → Player 49#17[T1]（约 238533 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=6300 zexos1 B=3123995 L=35209 d=88.7 nb=4 neut=0 cmds=87 noFull=1 shQ=348219 | m=0.900 worth=79.9 cheap=6.8 over=0 dMedOther=57.8 safe(-1)=3098392
+    → Player 528#2[T1] terr=12463 bal=755947 dq=60.7 cnt=97 | c=111.5 rankC=78.1 need=1357050 tD=1.05 人 pulse | safe=3098392 keep=Inf avail=-Inf chunkB=624799 pulseB=374879 价高(c>=worth)→break
+    → Player 49#17[T1] terr=271422 bal=9658454 dq=35.6 cnt=223 | c=86.3 rankC=86.3 need=17622024 tD=0.62 人 pulse | safe=3098392 keep=Inf avail=-Inf chunkB=624799 pulseB=374879 价高(c>=worth)→break
+    → [OG] Simmy#15[T1] terr=14776 bal=854208 dq=57.8 cnt=157 | c=153.7 rankC=153.7 need=1294461 tD=1.00 人 pulse | safe=3098392 keep=Inf avail=-Inf chunkB=624799 pulseB=374879 价高(c>=worth)→break
+    → Player 493#3[T1] terr=15825 bal=1718226 dq=108.6 cnt=128 | c=221.8 rankC=181.9 need=3086277 tD=1.88 人 pulse agg | safe=3098392 keep=Inf avail=-Inf chunkB=624799 pulseB=374879 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6330 zexos1 B=2410705 L=29456 d=81.8 nb=4 neut=0 cmds=87 noFull=1 shQ=602676 | m=0.900 worth=73.7 cheap=7.0 over=0 dMedOther=42.9 safe(-1)=2592128
+    → Player 49#17[T1] terr=276974 bal=7515243 dq=27.1 cnt=193 | c=54.2 rankC=37.9 need=15039103 tD=0.63 人 pulse onMe | safe=2592128 keep=2592128 avail=-209673 chunkB=482141 pulseB=289285 无可用(avail<=0)
+    → [OG] Simmy#15[T1] terr=14995 bal=643382 dq=42.9 cnt=125 | c=73.0 rankC=41.9 need=1224009 tD=1.00 人 pulse onMe agg | safe=2592128 keep=2592128 avail=-209673 chunkB=482141 pulseB=289285 无可用(avail<=0)
+    → Player 528#2[T1] terr=13881 bal=785377 dq=56.6 cnt=105 | c=137.4 rankC=137.4 need=1420668 tD=1.32 人 pulse | safe=2592128 keep=Inf avail=-Inf chunkB=482141 pulseB=289285 价高(c>=worth)→break
+    → Player 493#3[T1] terr=16779 bal=1472409 dq=87.8 cnt=140 | c=210.9 rankC=210.9 need=2649628 tD=2.05 人 pulse | safe=2592128 keep=Inf avail=-Inf chunkB=482141 pulseB=289285 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6360 zexos1 B=1764855 L=23769 d=74.3 nb=4 neut=0 cmds=87 noFull=1 shQ=441213 | m=0.900 worth=66.8 cheap=7.3 over=0 dMedOther=29.1 safe(-1)=2091672
+    → Player 528#2[T1] terr=14962 bal=435892 dq=29.1 cnt=113 | c=54.0 rankC=37.8 need=799382 tD=1.00 人 pulse | safe=2091672 keep=2091672 avail=-347498 chunkB=352971 pulseB=211783 无可用(avail<=0)
+    → Player 49#17[T1] terr=285922 bal=6813733 dq=23.8 cnt=196 | c=58.5 rankC=58.5 need=12573442 tD=0.82 人 pulse | safe=2091672 keep=2091672 avail=-347498 chunkB=352971 pulseB=211783 无可用(avail<=0)
+    → [OG] Simmy#15[T1] terr=15921 bal=668834 dq=42.0 cnt=72 | c=93.8 rankC=76.9 need=1067926 tD=1.44 人 pulse agg | safe=2091672 keep=Inf avail=-Inf chunkB=352971 pulseB=211783 价高(c>=worth)→break
+    → Player 493#3[T1] terr=16779 bal=891111 dq=53.1 cnt=97 | c=133.2 rankC=93.2 need=2227448 tD=1.82 人 pulse onMe | safe=2091672 keep=Inf avail=-Inf chunkB=352971 pulseB=211783 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6390 zexos1 B=1174800 L=18143 d=64.8 nb=4 neut=230 cmds=87 noFull=1 shQ=293700 | m=0.900 worth=58.3 cheap=7.5 over=0 dMedOther=27.8 safe(-1)=1596584
+    → Player 49#17[T1] terr=293188 bal=6180596 dq=21.1 cnt=195 | c=52.0 rankC=52.0 need=11455844 tD=0.76 人 pulse | safe=1596584 keep=1596584 avail=-435551 chunkB=234960 pulseB=140976 无可用(avail<=0)
+    → Player 528#2[T1] terr=16273 bal=453112 dq=27.8 cnt=173 | c=67.9 rankC=67.9 need=832029 tD=1.00 人 pulse | safe=1596584 keep=Inf avail=-Inf chunkB=234960 pulseB=140976 价高(c>=worth)→break
+    → Player 493#3[T1] terr=18187 bal=926774 dq=51.0 cnt=102 | c=108.2 rankC=75.8 need=1967066 tD=1.83 人 pulse onMe | safe=1596584 keep=Inf avail=-Inf chunkB=234960 pulseB=140976 价高(c>=worth)→break
+    → [OG] Simmy#15[T1] terr=15921 bal=695257 dq=43.7 cnt=53 | c=96.8 rankC=79.4 need=1114168 tD=1.57 人 pulse agg | safe=1596584 keep=Inf avail=-Inf chunkB=234960 pulseB=140976 价高(c>=worth)→break
+    ⇒ 本拍没有指令

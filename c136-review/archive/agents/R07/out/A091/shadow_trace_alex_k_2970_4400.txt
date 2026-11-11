@@ -1,0 +1,871 @@
+# A091 alex_k 影子决策明细 t=2970~4400（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没有可打的邻居: 227 拍（t=2970~4400）
+#   捐兵: 18 拍（t=3140~4215）
+#   首选目标价高（c>=worth）: 26 拍（t=3720~3925）
+#   出手打人/bot: 7 拍（t=3750~3905）；可用兵 118525~168659，一条指令下限(20%余额) 161461~170915，比值 73%~99%
+#   过了软上限，但首选目标是唯一的真人邻居（isSoleHealthyBuffer：余额 < overHumanCap×100×领土 不打）: 9 拍（t=3775~3815）；可用兵 -31483~-2251，一条指令下限(20%余额) 161717~169423，比值 -19%~-1%
+#   └ 「出手打人/bot」里：7 条对人/bot 的出兵共约 700369 兵；其中超过软上限（over=1）时发的 7 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 7 条约 700369 兵，c/worth = 2.26~3.36
+t=2970 alex_k B=560258 L=7572 d=74.0 nb=0 neut=0 cmds=38 noFull=0 shQ=118165 | m=0.900 worth=66.6 cheap=8.4 over=0 dMedOther=41.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2975 alex_k B=560258 L=7572 d=74.0 nb=0 neut=0 cmds=38 noFull=0 shQ=126495 | m=0.900 worth=66.6 cheap=8.4 over=0 dMedOther=41.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2980 alex_k B=353740 L=7572 d=46.7 nb=0 neut=0 cmds=38 noFull=0 shQ=88435 | m=0.900 worth=42.0 cheap=8.4 over=0 dMedOther=42.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2985 alex_k B=353740 L=7572 d=46.7 nb=0 neut=0 cmds=38 noFull=0 shQ=88435 | m=0.900 worth=42.0 cheap=8.4 over=0 dMedOther=42.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2990 alex_k B=357914 L=7572 d=47.3 nb=0 neut=0 cmds=38 noFull=0 shQ=89478 | m=0.900 worth=42.5 cheap=8.4 over=0 dMedOther=42.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2995 alex_k B=357914 L=7572 d=47.3 nb=0 neut=0 cmds=38 noFull=0 shQ=89478 | m=0.900 worth=42.5 cheap=8.4 over=0 dMedOther=42.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3000 alex_k B=369709 L=7572 d=48.8 nb=0 neut=0 cmds=38 noFull=0 shQ=90577 | m=0.900 worth=43.9 cheap=8.4 over=0 dMedOther=44.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3005 alex_k B=369709 L=7572 d=48.8 nb=0 neut=0 cmds=38 noFull=0 shQ=92427 | m=0.900 worth=43.9 cheap=8.4 over=0 dMedOther=44.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3010 alex_k B=374071 L=7572 d=49.4 nb=0 neut=0 cmds=38 noFull=0 shQ=93517 | m=0.900 worth=44.5 cheap=8.4 over=0 dMedOther=44.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3015 alex_k B=374071 L=7572 d=49.4 nb=0 neut=0 cmds=38 noFull=0 shQ=93517 | m=0.900 worth=44.5 cheap=8.4 over=0 dMedOther=44.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3020 alex_k B=378485 L=7572 d=50.0 nb=0 neut=0 cmds=38 noFull=0 shQ=94621 | m=0.900 worth=45.0 cheap=8.4 over=0 dMedOther=45.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3025 alex_k B=378485 L=7572 d=50.0 nb=0 neut=0 cmds=38 noFull=0 shQ=94621 | m=0.900 worth=45.0 cheap=8.4 over=0 dMedOther=38.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3030 alex_k B=382951 L=7572 d=50.6 nb=0 neut=0 cmds=38 noFull=0 shQ=95737 | m=0.900 worth=45.5 cheap=8.4 over=0 dMedOther=38.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3035 alex_k B=382951 L=7572 d=50.6 nb=0 neut=0 cmds=38 noFull=0 shQ=95737 | m=0.900 worth=45.5 cheap=8.4 over=0 dMedOther=38.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3040 alex_k B=387469 L=7572 d=51.2 nb=0 neut=0 cmds=38 noFull=0 shQ=96867 | m=0.900 worth=46.1 cheap=8.4 over=0 dMedOther=38.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3045 alex_k B=387469 L=7572 d=51.2 nb=0 neut=0 cmds=38 noFull=0 shQ=96867 | m=0.900 worth=46.1 cheap=8.4 over=0 dMedOther=38.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3050 alex_k B=392041 L=7572 d=51.8 nb=0 neut=0 cmds=38 noFull=0 shQ=98010 | m=0.900 worth=46.6 cheap=8.4 over=0 dMedOther=39.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3055 alex_k B=392041 L=7572 d=51.8 nb=0 neut=0 cmds=38 noFull=0 shQ=98010 | m=0.900 worth=46.6 cheap=8.4 over=0 dMedOther=39.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3060 alex_k B=396667 L=7572 d=52.4 nb=0 neut=0 cmds=38 noFull=0 shQ=99166 | m=0.900 worth=47.1 cheap=8.4 over=0 dMedOther=39.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3065 alex_k B=396667 L=7572 d=52.4 nb=0 neut=0 cmds=38 noFull=0 shQ=99166 | m=0.900 worth=47.1 cheap=8.4 over=0 dMedOther=39.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3070 alex_k B=401347 L=7572 d=53.0 nb=0 neut=0 cmds=38 noFull=0 shQ=100336 | m=0.900 worth=47.7 cheap=8.4 over=0 dMedOther=40.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3075 alex_k B=401347 L=7572 d=53.0 nb=0 neut=0 cmds=38 noFull=0 shQ=100336 | m=0.900 worth=47.7 cheap=8.4 over=0 dMedOther=40.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3080 alex_k B=406082 L=7572 d=53.6 nb=0 neut=0 cmds=38 noFull=0 shQ=101520 | m=0.900 worth=48.3 cheap=8.4 over=0 dMedOther=40.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3085 alex_k B=406082 L=7572 d=53.6 nb=0 neut=0 cmds=38 noFull=0 shQ=101520 | m=0.900 worth=48.3 cheap=8.4 over=0 dMedOther=40.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3090 alex_k B=410873 L=7572 d=54.3 nb=0 neut=0 cmds=38 noFull=0 shQ=102718 | m=0.900 worth=48.8 cheap=8.4 over=0 dMedOther=40.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3095 alex_k B=410873 L=7572 d=54.3 nb=0 neut=0 cmds=38 noFull=0 shQ=102718 | m=0.900 worth=48.8 cheap=8.4 over=0 dMedOther=40.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3100 alex_k B=423293 L=7572 d=55.9 nb=0 neut=0 cmds=38 noFull=0 shQ=103977 | m=0.900 worth=50.3 cheap=8.4 over=0 dMedOther=42.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3105 alex_k B=423293 L=7572 d=55.9 nb=0 neut=0 cmds=38 noFull=0 shQ=105823 | m=0.900 worth=50.3 cheap=8.4 over=0 dMedOther=42.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3110 alex_k B=428287 L=7572 d=56.6 nb=0 neut=0 cmds=38 noFull=0 shQ=107071 | m=0.900 worth=50.9 cheap=8.4 over=0 dMedOther=43.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3115 alex_k B=428287 L=7572 d=56.6 nb=0 neut=0 cmds=38 noFull=0 shQ=107071 | m=0.900 worth=50.9 cheap=8.4 over=0 dMedOther=43.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3120 alex_k B=433340 L=7572 d=57.2 nb=0 neut=0 cmds=38 noFull=0 shQ=108335 | m=0.900 worth=51.5 cheap=8.4 over=0 dMedOther=43.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3125 alex_k B=433340 L=7572 d=57.2 nb=0 neut=0 cmds=38 noFull=0 shQ=108335 | m=0.900 worth=51.5 cheap=8.4 over=0 dMedOther=43.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3130 alex_k B=438453 L=7572 d=57.9 nb=0 neut=0 cmds=38 noFull=0 shQ=109613 | m=0.900 worth=52.1 cheap=8.4 over=0 dMedOther=44.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3135 alex_k B=438453 L=7572 d=57.9 nb=0 neut=0 cmds=38 noFull=0 shQ=109613 | m=0.900 worth=52.1 cheap=8.4 over=0 dMedOther=44.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3140 alex_k B=443626 L=7572 d=58.6 nb=0 neut=0 cmds=39 noFull=0 shQ=110906 | m=0.900 worth=52.7 cheap=8.4 over=0 dMedOther=44.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=254 → [APEX] talon5#14[T2]（约 110473 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3145 alex_k B=443626 L=7572 d=58.6 nb=0 neut=0 cmds=39 noFull=0 shQ=110906 | m=0.900 worth=52.7 cheap=8.4 over=0 dMedOther=44.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3150 alex_k B=448860 L=7572 d=59.3 nb=0 neut=0 cmds=39 noFull=0 shQ=112215 | m=0.900 worth=53.4 cheap=8.4 over=0 dMedOther=45.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3155 alex_k B=448860 L=7572 d=59.3 nb=0 neut=0 cmds=39 noFull=0 shQ=112215 | m=0.900 worth=53.4 cheap=8.4 over=0 dMedOther=45.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3160 alex_k B=454156 L=7572 d=60.0 nb=0 neut=0 cmds=39 noFull=0 shQ=113539 | m=0.900 worth=54.0 cheap=8.4 over=0 dMedOther=45.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3165 alex_k B=454156 L=7572 d=60.0 nb=0 neut=0 cmds=40 noFull=0 shQ=113539 | m=0.900 worth=54.0 cheap=8.4 over=0 dMedOther=45.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=272 → [APEX] talon5#14[T2]（约 121078 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3170 alex_k B=459515 L=7572 d=60.7 nb=0 neut=0 cmds=40 noFull=0 shQ=114878 | m=0.900 worth=54.6 cheap=8.4 over=0 dMedOther=46.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3175 alex_k B=459515 L=7572 d=60.7 nb=0 neut=0 cmds=40 noFull=0 shQ=114878 | m=0.900 worth=54.6 cheap=8.4 over=0 dMedOther=46.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3180 alex_k B=464937 L=7572 d=61.4 nb=0 neut=0 cmds=40 noFull=0 shQ=116234 | m=0.900 worth=55.3 cheap=8.4 over=0 dMedOther=47.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3185 alex_k B=464937 L=7572 d=61.4 nb=0 neut=0 cmds=40 noFull=0 shQ=116234 | m=0.900 worth=55.3 cheap=8.4 over=0 dMedOther=47.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3190 alex_k B=470423 L=7572 d=62.1 nb=0 neut=0 cmds=41 noFull=0 shQ=117605 | m=0.900 worth=55.9 cheap=8.4 over=0 dMedOther=47.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=298 → [APEX] talon5#14[T2]（约 137359 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3195 alex_k B=470423 L=7572 d=62.1 nb=0 neut=0 cmds=41 noFull=0 shQ=117605 | m=0.900 worth=55.9 cheap=8.4 over=0 dMedOther=47.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3200 alex_k B=483545 L=7572 d=63.9 nb=0 neut=0 cmds=41 noFull=0 shQ=119043 | m=0.900 worth=57.5 cheap=8.4 over=0 dMedOther=49.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3205 alex_k B=483545 L=7572 d=63.9 nb=0 neut=0 cmds=41 noFull=0 shQ=120886 | m=0.900 worth=57.5 cheap=8.4 over=0 dMedOther=49.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3210 alex_k B=489250 L=7572 d=64.6 nb=0 neut=0 cmds=41 noFull=0 shQ=122312 | m=0.900 worth=58.2 cheap=8.4 over=0 dMedOther=50.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3215 alex_k B=489250 L=7572 d=64.6 nb=0 neut=0 cmds=42 noFull=0 shQ=122312 | m=0.900 worth=58.2 cheap=8.4 over=0 dMedOther=50.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] talon5#14[T2]（约 153368 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3220 alex_k B=495023 L=7572 d=65.4 nb=0 neut=0 cmds=42 noFull=0 shQ=123755 | m=0.900 worth=58.8 cheap=8.4 over=0 dMedOther=50.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3225 alex_k B=495023 L=7572 d=65.4 nb=0 neut=0 cmds=42 noFull=0 shQ=123755 | m=0.900 worth=58.8 cheap=8.4 over=0 dMedOther=50.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3230 alex_k B=500864 L=7572 d=66.1 nb=0 neut=0 cmds=42 noFull=0 shQ=125216 | m=0.900 worth=59.5 cheap=8.4 over=0 dMedOther=51.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3235 alex_k B=500864 L=7572 d=66.1 nb=0 neut=0 cmds=42 noFull=0 shQ=125216 | m=0.900 worth=59.5 cheap=8.4 over=0 dMedOther=51.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3240 alex_k B=506774 L=7572 d=66.9 nb=0 neut=0 cmds=43 noFull=0 shQ=126693 | m=0.900 worth=60.2 cheap=8.4 over=0 dMedOther=52.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] talon5#14[T2]（约 158861 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3245 alex_k B=506774 L=7572 d=66.9 nb=0 neut=0 cmds=43 noFull=0 shQ=126693 | m=0.900 worth=60.2 cheap=8.4 over=0 dMedOther=52.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3250 alex_k B=512753 L=7572 d=67.7 nb=0 neut=0 cmds=43 noFull=0 shQ=128188 | m=0.900 worth=60.9 cheap=8.4 over=0 dMedOther=52.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3255 alex_k B=512753 L=7572 d=67.7 nb=0 neut=0 cmds=43 noFull=0 shQ=128188 | m=0.900 worth=60.9 cheap=8.4 over=0 dMedOther=52.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3260 alex_k B=518803 L=7572 d=68.5 nb=0 neut=0 cmds=43 noFull=0 shQ=129700 | m=0.900 worth=61.7 cheap=8.4 over=0 dMedOther=53.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3265 alex_k B=518803 L=7572 d=68.5 nb=0 neut=0 cmds=44 noFull=0 shQ=129700 | m=0.900 worth=61.7 cheap=8.4 over=0 dMedOther=53.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] talon5#14[T2]（约 162632 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3270 alex_k B=524924 L=7572 d=69.3 nb=0 neut=0 cmds=44 noFull=0 shQ=131231 | m=0.900 worth=62.4 cheap=8.4 over=0 dMedOther=54.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3275 alex_k B=524924 L=7572 d=69.3 nb=0 neut=0 cmds=44 noFull=0 shQ=131231 | m=0.900 worth=62.4 cheap=8.4 over=0 dMedOther=54.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3280 alex_k B=531118 L=7572 d=70.1 nb=0 neut=0 cmds=44 noFull=0 shQ=132779 | m=0.900 worth=63.1 cheap=8.4 over=0 dMedOther=54.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3285 alex_k B=531118 L=7572 d=70.1 nb=0 neut=0 cmds=44 noFull=0 shQ=132779 | m=0.900 worth=63.1 cheap=8.4 over=0 dMedOther=54.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3290 alex_k B=537385 L=7572 d=71.0 nb=0 neut=0 cmds=45 noFull=0 shQ=134346 | m=0.900 worth=63.9 cheap=8.4 over=0 dMedOther=55.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] talon5#14[T2]（约 168457 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3295 alex_k B=537385 L=7572 d=71.0 nb=0 neut=0 cmds=45 noFull=0 shQ=134346 | m=0.900 worth=63.9 cheap=8.4 over=0 dMedOther=55.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3300 alex_k B=551298 L=7572 d=72.8 nb=0 neut=0 cmds=45 noFull=0 shQ=135986 | m=0.900 worth=65.5 cheap=8.4 over=0 dMedOther=57.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3305 alex_k B=551298 L=7572 d=72.8 nb=0 neut=0 cmds=45 noFull=0 shQ=137824 | m=0.900 worth=65.5 cheap=8.4 over=0 dMedOther=57.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3310 alex_k B=557803 L=7572 d=73.7 nb=0 neut=0 cmds=45 noFull=0 shQ=139450 | m=0.900 worth=66.3 cheap=8.4 over=0 dMedOther=58.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3315 alex_k B=557803 L=7572 d=73.7 nb=0 neut=0 cmds=46 noFull=0 shQ=139450 | m=0.900 worth=66.3 cheap=8.4 over=0 dMedOther=58.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] talon5#14[T2]（约 174858 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3320 alex_k B=564385 L=7572 d=74.5 nb=0 neut=0 cmds=46 noFull=0 shQ=141096 | m=0.900 worth=67.1 cheap=8.4 over=0 dMedOther=53.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3325 alex_k B=564385 L=7572 d=74.5 nb=0 neut=0 cmds=46 noFull=0 shQ=141096 | m=0.900 worth=67.1 cheap=8.4 over=0 dMedOther=53.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3330 alex_k B=571044 L=7572 d=75.4 nb=0 neut=0 cmds=46 noFull=0 shQ=142761 | m=0.900 worth=67.9 cheap=8.4 over=0 dMedOther=59.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3335 alex_k B=571044 L=7572 d=75.4 nb=0 neut=0 cmds=46 noFull=0 shQ=142761 | m=0.900 worth=67.9 cheap=8.4 over=0 dMedOther=59.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3340 alex_k B=577782 L=7572 d=76.3 nb=0 neut=0 cmds=47 noFull=0 shQ=144445 | m=0.900 worth=68.7 cheap=8.4 over=0 dMedOther=60.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] talon5#14[T2]（约 181121 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3345 alex_k B=577782 L=7572 d=76.3 nb=0 neut=0 cmds=47 noFull=0 shQ=144445 | m=0.900 worth=68.7 cheap=8.4 over=0 dMedOther=60.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3350 alex_k B=584599 L=7572 d=77.2 nb=0 neut=0 cmds=47 noFull=0 shQ=146149 | m=0.900 worth=69.5 cheap=8.4 over=0 dMedOther=61.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3355 alex_k B=584599 L=7572 d=77.2 nb=0 neut=0 cmds=47 noFull=0 shQ=146149 | m=0.900 worth=69.5 cheap=8.4 over=0 dMedOther=61.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3360 alex_k B=591497 L=7572 d=78.1 nb=0 neut=0 cmds=47 noFull=0 shQ=147874 | m=0.900 worth=70.3 cheap=8.4 over=0 dMedOther=61.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3365 alex_k B=591497 L=7572 d=78.1 nb=0 neut=0 cmds=48 noFull=0 shQ=147874 | m=0.900 worth=70.3 cheap=8.4 over=0 dMedOther=61.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] talon5#14[T2]（约 185420 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3370 alex_k B=598476 L=7572 d=79.0 nb=0 neut=0 cmds=48 noFull=0 shQ=149619 | m=0.900 worth=71.1 cheap=8.4 over=0 dMedOther=62.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3375 alex_k B=598476 L=7572 d=79.0 nb=0 neut=0 cmds=48 noFull=0 shQ=149619 | m=0.900 worth=71.1 cheap=8.4 over=0 dMedOther=62.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3380 alex_k B=605538 L=7572 d=80.0 nb=0 neut=0 cmds=48 noFull=0 shQ=151384 | m=0.900 worth=72.0 cheap=8.4 over=0 dMedOther=63.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3385 alex_k B=605538 L=7572 d=80.0 nb=0 neut=0 cmds=48 noFull=0 shQ=151384 | m=0.900 worth=72.0 cheap=8.4 over=0 dMedOther=63.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3390 alex_k B=612683 L=7572 d=80.9 nb=0 neut=0 cmds=49 noFull=0 shQ=153170 | m=0.900 worth=72.8 cheap=8.4 over=0 dMedOther=64.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] talon5#14[T2]（约 192061 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3395 alex_k B=612683 L=7572 d=80.9 nb=0 neut=0 cmds=49 noFull=0 shQ=153170 | m=0.900 worth=72.8 cheap=8.4 over=0 dMedOther=64.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3400 alex_k B=627484 L=7572 d=82.9 nb=0 neut=0 cmds=49 noFull=0 shQ=155036 | m=0.900 worth=74.6 cheap=8.4 over=0 dMedOther=66.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3405 alex_k B=627484 L=7572 d=82.9 nb=0 neut=0 cmds=49 noFull=0 shQ=156871 | m=0.900 worth=74.6 cheap=8.4 over=0 dMedOther=62.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3410 alex_k B=634888 L=7572 d=83.8 nb=0 neut=0 cmds=49 noFull=0 shQ=158722 | m=0.900 worth=75.5 cheap=8.4 over=0 dMedOther=63.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3415 alex_k B=634888 L=7572 d=83.8 nb=0 neut=0 cmds=50 noFull=0 shQ=158722 | m=0.900 worth=75.5 cheap=8.4 over=0 dMedOther=63.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] noah88#12[T2]（约 199022 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3420 alex_k B=642379 L=7572 d=84.8 nb=0 neut=0 cmds=50 noFull=0 shQ=160594 | m=0.900 worth=76.4 cheap=8.4 over=0 dMedOther=64.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3425 alex_k B=400861 L=7572 d=52.9 nb=0 neut=0 cmds=50 noFull=0 shQ=100215 | m=0.900 worth=49.1 cheap=8.4 over=0 dMedOther=64.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3430 alex_k B=405591 L=7572 d=53.6 nb=0 neut=0 cmds=50 noFull=0 shQ=101397 | m=0.900 worth=49.7 cheap=8.4 over=0 dMedOther=65.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3435 alex_k B=405591 L=7572 d=53.6 nb=0 neut=0 cmds=50 noFull=0 shQ=101397 | m=0.900 worth=49.7 cheap=8.4 over=0 dMedOther=65.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3440 alex_k B=410376 L=7572 d=54.2 nb=0 neut=0 cmds=50 noFull=0 shQ=102594 | m=0.900 worth=50.4 cheap=8.4 over=0 dMedOther=65.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3445 alex_k B=410376 L=7572 d=54.2 nb=0 neut=0 cmds=50 noFull=0 shQ=102594 | m=0.900 worth=50.4 cheap=8.4 over=0 dMedOther=65.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3450 alex_k B=415218 L=7572 d=54.8 nb=0 neut=0 cmds=50 noFull=0 shQ=103804 | m=0.900 worth=51.2 cheap=8.4 over=0 dMedOther=66.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3455 alex_k B=415218 L=7572 d=54.8 nb=0 neut=0 cmds=50 noFull=0 shQ=103804 | m=0.900 worth=51.2 cheap=8.4 over=0 dMedOther=66.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3460 alex_k B=420117 L=7572 d=55.5 nb=0 neut=0 cmds=50 noFull=0 shQ=105029 | m=0.900 worth=51.9 cheap=8.4 over=0 dMedOther=67.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3465 alex_k B=420117 L=7572 d=55.5 nb=0 neut=0 cmds=50 noFull=0 shQ=105029 | m=0.900 worth=51.9 cheap=8.4 over=0 dMedOther=67.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3470 alex_k B=425074 L=7572 d=56.1 nb=0 neut=0 cmds=50 noFull=0 shQ=106268 | m=0.900 worth=52.6 cheap=8.4 over=0 dMedOther=68.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3475 alex_k B=425074 L=7572 d=56.1 nb=0 neut=0 cmds=50 noFull=0 shQ=106268 | m=0.900 worth=52.5 cheap=8.4 over=0 dMedOther=68.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3480 alex_k B=430089 L=7572 d=56.8 nb=0 neut=0 cmds=50 noFull=0 shQ=107522 | m=0.900 worth=51.1 cheap=8.4 over=0 dMedOther=66.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3485 alex_k B=430089 L=7572 d=56.8 nb=0 neut=0 cmds=50 noFull=0 shQ=107522 | m=0.900 worth=51.1 cheap=8.4 over=0 dMedOther=66.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3490 alex_k B=435164 L=7572 d=57.5 nb=0 neut=0 cmds=50 noFull=0 shQ=108791 | m=0.900 worth=51.7 cheap=8.4 over=0 dMedOther=66.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3495 alex_k B=435164 L=7572 d=57.5 nb=0 neut=0 cmds=50 noFull=0 shQ=108791 | m=0.900 worth=51.7 cheap=8.4 over=0 dMedOther=66.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3500 alex_k B=447870 L=7572 d=59.1 nb=0 neut=0 cmds=50 noFull=0 shQ=110123 | m=0.900 worth=53.2 cheap=8.4 over=0 dMedOther=67.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3505 alex_k B=447870 L=7572 d=59.1 nb=0 neut=0 cmds=50 noFull=0 shQ=111967 | m=0.900 worth=53.2 cheap=8.4 over=0 dMedOther=67.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3510 alex_k B=453154 L=7572 d=59.8 nb=0 neut=0 cmds=50 noFull=0 shQ=113288 | m=0.900 worth=53.9 cheap=8.4 over=0 dMedOther=68.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3515 alex_k B=453154 L=7572 d=59.8 nb=0 neut=0 cmds=51 noFull=0 shQ=113288 | m=0.900 worth=53.9 cheap=8.4 over=0 dMedOther=68.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=271 → [APEX] talon5#14[T2]（约 120369 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3520 alex_k B=458501 L=7572 d=60.6 nb=0 neut=0 cmds=51 noFull=0 shQ=114625 | m=0.900 worth=54.5 cheap=8.4 over=0 dMedOther=69.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3525 alex_k B=458501 L=7572 d=60.6 nb=0 neut=0 cmds=51 noFull=0 shQ=114625 | m=0.900 worth=54.5 cheap=8.4 over=0 dMedOther=64.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3530 alex_k B=463911 L=7572 d=61.3 nb=0 neut=0 cmds=51 noFull=0 shQ=115977 | m=0.900 worth=55.1 cheap=8.4 over=0 dMedOther=65.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3535 alex_k B=463911 L=7572 d=61.3 nb=0 neut=0 cmds=51 noFull=0 shQ=115977 | m=0.900 worth=55.1 cheap=8.4 over=0 dMedOther=65.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3540 alex_k B=469385 L=7572 d=62.0 nb=0 neut=0 cmds=52 noFull=0 shQ=117346 | m=0.900 worth=57.3 cheap=8.4 over=0 dMedOther=74.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=297 → [APEX] talon5#14[T2]（约 136598 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3545 alex_k B=469385 L=7572 d=62.0 nb=0 neut=0 cmds=52 noFull=0 shQ=117346 | m=0.900 worth=57.2 cheap=8.4 over=0 dMedOther=74.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3550 alex_k B=474923 L=7572 d=62.7 nb=0 neut=0 cmds=52 noFull=0 shQ=118730 | m=0.900 worth=57.9 cheap=8.4 over=0 dMedOther=75.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3555 alex_k B=474923 L=7572 d=62.7 nb=0 neut=0 cmds=52 noFull=0 shQ=118730 | m=0.900 worth=57.8 cheap=8.4 over=0 dMedOther=75.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3560 alex_k B=480527 L=7572 d=63.5 nb=0 neut=0 cmds=52 noFull=0 shQ=120131 | m=0.900 worth=58.5 cheap=8.4 over=0 dMedOther=76.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3565 alex_k B=480527 L=7572 d=63.5 nb=0 neut=0 cmds=53 noFull=0 shQ=120131 | m=0.900 worth=58.5 cheap=8.4 over=0 dMedOther=76.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=314 → [APEX] noah88#12[T2]（约 147818 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3570 alex_k B=486197 L=7572 d=64.2 nb=0 neut=0 cmds=53 noFull=0 shQ=121549 | m=0.900 worth=59.2 cheap=8.4 over=0 dMedOther=77.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3575 alex_k B=486197 L=7572 d=64.2 nb=0 neut=0 cmds=53 noFull=0 shQ=121549 | m=0.900 worth=59.1 cheap=8.4 over=0 dMedOther=77.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3580 alex_k B=309861 L=7572 d=40.9 nb=0 neut=0 cmds=53 noFull=0 shQ=77465 | m=0.900 worth=59.8 cheap=8.4 over=0 dMedOther=78.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3585 alex_k B=309861 L=7572 d=40.9 nb=0 neut=0 cmds=53 noFull=0 shQ=77465 | m=0.900 worth=59.8 cheap=8.4 over=0 dMedOther=78.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3590 alex_k B=313517 L=7572 d=41.4 nb=0 neut=0 cmds=53 noFull=0 shQ=78379 | m=0.900 worth=60.5 cheap=8.4 over=0 dMedOther=79.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3595 alex_k B=313517 L=7572 d=41.4 nb=0 neut=0 cmds=53 noFull=0 shQ=78379 | m=0.900 worth=60.4 cheap=8.4 over=0 dMedOther=79.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3600 alex_k B=324788 L=7572 d=42.9 nb=0 neut=0 cmds=53 noFull=0 shQ=79345 | m=0.900 worth=61.9 cheap=8.4 over=0 dMedOther=80.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3605 alex_k B=324788 L=7572 d=42.9 nb=0 neut=0 cmds=53 noFull=0 shQ=81197 | m=0.900 worth=61.8 cheap=8.4 over=0 dMedOther=80.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3610 alex_k B=328620 L=7572 d=43.4 nb=0 neut=0 cmds=53 noFull=0 shQ=82155 | m=0.900 worth=62.6 cheap=8.4 over=0 dMedOther=81.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3615 alex_k B=328620 L=7572 d=43.4 nb=0 neut=0 cmds=53 noFull=0 shQ=82155 | m=0.900 worth=62.6 cheap=8.4 over=0 dMedOther=81.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3620 alex_k B=332497 L=7572 d=43.9 nb=0 neut=0 cmds=53 noFull=0 shQ=83124 | m=0.900 worth=63.4 cheap=8.4 over=0 dMedOther=82.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3625 alex_k B=332497 L=7572 d=43.9 nb=0 neut=0 cmds=53 noFull=0 shQ=83124 | m=0.900 worth=68.8 cheap=8.4 over=0 dMedOther=90.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3630 alex_k B=336420 L=7572 d=44.4 nb=0 neut=0 cmds=53 noFull=0 shQ=84105 | m=0.900 worth=69.8 cheap=8.4 over=0 dMedOther=91.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3635 alex_k B=336420 L=7572 d=44.4 nb=0 neut=0 cmds=53 noFull=0 shQ=84105 | m=0.900 worth=67.2 cheap=8.4 over=0 dMedOther=87.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3640 alex_k B=340389 L=7572 d=45.0 nb=0 neut=0 cmds=53 noFull=0 shQ=85097 | m=0.900 worth=68.2 cheap=8.4 over=0 dMedOther=89.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3645 alex_k B=340389 L=7572 d=45.0 nb=0 neut=0 cmds=53 noFull=0 shQ=85097 | m=0.900 worth=68.2 cheap=8.4 over=0 dMedOther=89.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3650 alex_k B=344405 L=7572 d=45.5 nb=0 neut=0 cmds=53 noFull=0 shQ=86101 | m=0.900 worth=69.1 cheap=8.4 over=0 dMedOther=90.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3655 alex_k B=344405 L=7572 d=45.5 nb=0 neut=0 cmds=53 noFull=0 shQ=86101 | m=0.900 worth=69.1 cheap=8.4 over=0 dMedOther=90.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3660 alex_k B=348468 L=7572 d=46.0 nb=0 neut=0 cmds=53 noFull=0 shQ=87117 | m=0.900 worth=67.3 cheap=8.4 over=0 dMedOther=88.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3665 alex_k B=348468 L=7572 d=46.0 nb=0 neut=0 cmds=53 noFull=0 shQ=87117 | m=0.900 worth=66.8 cheap=8.4 over=0 dMedOther=87.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3670 alex_k B=352579 L=7572 d=46.6 nb=0 neut=0 cmds=53 noFull=0 shQ=88144 | m=0.900 worth=67.2 cheap=8.4 over=0 dMedOther=87.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3675 alex_k B=352579 L=7572 d=46.6 nb=0 neut=0 cmds=53 noFull=0 shQ=88144 | m=0.900 worth=66.7 cheap=8.4 over=0 dMedOther=87.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3680 alex_k B=356739 L=7572 d=47.1 nb=0 neut=0 cmds=53 noFull=0 shQ=89184 | m=0.900 worth=67.0 cheap=8.4 over=0 dMedOther=87.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3685 alex_k B=356739 L=7572 d=47.1 nb=0 neut=0 cmds=53 noFull=0 shQ=89184 | m=0.900 worth=65.4 cheap=8.4 over=0 dMedOther=85.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3690 alex_k B=360948 L=7572 d=47.7 nb=0 neut=0 cmds=53 noFull=0 shQ=90237 | m=0.900 worth=66.2 cheap=8.4 over=0 dMedOther=86.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3695 alex_k B=360948 L=7572 d=47.7 nb=0 neut=0 cmds=53 noFull=0 shQ=90237 | m=0.900 worth=65.9 cheap=8.4 over=0 dMedOther=86.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3700 alex_k B=372779 L=7572 d=49.2 nb=0 neut=0 cmds=53 noFull=0 shQ=91346 | m=0.900 worth=66.9 cheap=8.4 over=0 dMedOther=87.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3705 alex_k B=372779 L=7572 d=49.2 nb=0 neut=0 cmds=53 noFull=0 shQ=93194 | m=0.900 worth=66.3 cheap=8.4 over=0 dMedOther=86.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3710 alex_k B=377177 L=7572 d=49.8 nb=0 neut=0 cmds=53 noFull=0 shQ=94294 | m=0.900 worth=67.0 cheap=8.4 over=0 dMedOther=87.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3715 alex_k B=377177 L=7572 d=49.8 nb=0 neut=0 cmds=53 noFull=0 shQ=94294 | m=0.900 worth=67.0 cheap=8.4 over=0 dMedOther=87.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3720 alex_k B=381305 L=7568 d=50.4 nb=1 neut=0 cmds=53 noFull=0 shQ=95326 | m=0.900 worth=66.7 cheap=8.4 over=0 dMedOther=87.2 safe(-1)=665984
+    → Etherin_09#10[T3] terr=10289 bal=1237784 dq=120.3 cnt=3 | c=226.9 rankC=158.8 need=2330611 tD=1.38 人 pulse onMe | safe=665984 keep=Inf avail=-Inf chunkB=76261 pulseB=45757 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3725 alex_k B=498134 L=7547 d=66.0 nb=1 neut=0 cmds=53 noFull=0 shQ=96565 | m=0.900 worth=63.9 cheap=8.4 over=0 dMedOther=83.5 safe(-1)=664136
+    → Etherin_09#10[T3] terr=10310 bal=1237784 dq=120.1 cnt=9 | c=226.1 rankC=158.3 need=2326808 tD=1.44 人 pulse onMe | safe=664136 keep=Inf avail=-Inf chunkB=99627 pulseB=59776 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3730 alex_k B=501342 L=7522 d=66.7 nb=1 neut=0 cmds=53 noFull=0 shQ=103967 | m=0.900 worth=61.0 cheap=8.4 over=0 dMedOther=79.8 safe(-1)=661936
+    → Etherin_09#10[T3] terr=10335 bal=1246943 dq=120.7 cnt=13 | c=226.5 rankC=158.6 need=2337887 tD=1.51 人 pulse onMe | safe=661936 keep=Inf avail=-Inf chunkB=100268 pulseB=60161 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3735 alex_k B=496232 L=7474 d=66.4 nb=1 neut=0 cmds=53 noFull=0 shQ=111377 | m=0.900 worth=59.8 cheap=8.4 over=0 dMedOther=73.4 safe(-1)=657712
+    → Etherin_09#10[T3] terr=10383 bal=1246943 dq=120.1 cnt=9 | c=224.6 rankC=157.2 need=2327643 tD=1.64 人 pulse onMe | safe=657712 keep=Inf avail=-Inf chunkB=99246 pulseB=59548 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3740 alex_k B=672642 L=7460 d=90.2 nb=1 neut=0 cmds=53 noFull=0 shQ=119777 | m=0.900 worth=81.1 cheap=8.4 over=0 dMedOther=74.2 safe(-1)=656480
+    → Etherin_09#10[T3] terr=10397 bal=1256170 dq=120.8 cnt=6 | c=225.8 rankC=158.0 need=2340589 tD=1.63 人 pulse onMe | safe=656480 keep=Inf avail=-Inf chunkB=134528 pulseB=80717 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3745 alex_k B=669761 L=7440 d=90.0 nb=1 neut=0 cmds=53 noFull=0 shQ=129755 | m=0.900 worth=81.0 cheap=8.4 over=0 dMedOther=74.2 safe(-1)=654720
+    → Etherin_09#10[T3] terr=10417 bal=1256170 dq=120.6 cnt=7 | c=224.8 rankC=157.3 need=2334817 tD=1.63 人 pulse onMe | safe=654720 keep=Inf avail=-Inf chunkB=133952 pulseB=80371 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3750 alex_k B=837138 L=7428 d=112.7 nb=1 neut=0 cmds=54 noFull=0 shQ=140151 | m=0.900 worth=101.4 cheap=8.4 over=1 dMedOther=75.1 safe(-1)=653664
+    → Etherin_09#10[T3] terr=10429 bal=1265340 dq=121.3 cnt=6 | c=301.1 rankC=301.1 need=2346868 tD=1.62 人 pulse onMe | safe=653664 keep=668520 avail=158808 chunkB=167428 pulseB=100457  x=100456 hNb=1
+    ⇒ 影子指令 attack pct=122 → Etherin_09#10[T3]（约 100554 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3755 alex_k B=833716 L=7409 d=112.5 nb=1 neut=0 cmds=55 noFull=0 shQ=150589 | m=0.900 worth=101.3 cheap=8.4 over=1 dMedOther=74.4 safe(-1)=651992
+    → Etherin_09#10[T3] terr=10448 bal=1265340 dq=121.1 cnt=7 | c=299.7 rankC=299.7 need=2339971 tD=1.63 人 pulse onMe | safe=651992 keep=666810 avail=157136 chunkB=166743 pulseB=100046  x=100045 hNb=1
+    ⇒ 影子指令 attack pct=122 → Etherin_09#10[T3]（约 100143 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3760 alex_k B=730289 L=7396 d=98.7 nb=1 neut=0 cmds=55 noFull=0 shQ=67428 | m=0.900 worth=88.9 cheap=8.4 over=0 dMedOther=74.7 safe(-1)=650848
+    → Etherin_09#10[T3] terr=10461 bal=1274323 dq=121.8 cnt=7 | c=287.9 rankC=287.9 need=2251479 tD=1.63 人 pulse onMe | safe=650848 keep=Inf avail=-Inf chunkB=146058 pulseB=87635 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3765 alex_k B=730289 L=7396 d=98.7 nb=1 neut=0 cmds=55 noFull=0 shQ=78288 | m=0.900 worth=88.9 cheap=8.4 over=0 dMedOther=73.9 safe(-1)=650848
+    → Etherin_09#10[T3] terr=10461 bal=1274329 dq=121.8 cnt=7 | c=1119.3 rankC=1119.3 need=2251469 tD=1.65 人 pulse crowdedHard | safe=650848 keep=Inf avail=-Inf chunkB=146058 pulseB=87635 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3770 alex_k B=641492 L=7409 d=86.6 nb=1 neut=0 cmds=55 noFull=0 shQ=88026 | m=0.900 worth=77.9 cheap=8.4 over=0 dMedOther=79.1 safe(-1)=651992
+    → Etherin_09#10[T3] terr=10448 bal=1280572 dq=122.6 cnt=7 | c=1084.8 rankC=1084.8 need=2179575 tD=1.55 人 pulse crowdedHard | safe=651992 keep=Inf avail=-Inf chunkB=128298 pulseB=76979 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3775 alex_k B=808584 L=7416 d=109.0 nb=1 neut=0 cmds=55 noFull=0 shQ=97792 | m=0.900 worth=98.1 cheap=8.4 over=1 dMedOther=79.1 safe(-1)=652608
+    → Etherin_09#10[T3] terr=10441 bal=1279200 dq=122.5 cnt=6 | c=1086.8 rankC=1086.8 need=2179747 tD=1.55 人 pulse crowdedHard | safe=652608 keep=830592 avail=-31483 chunkB=161717 pulseB=97030 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3780 alex_k B=816508 L=7428 d=109.9 nb=1 neut=0 cmds=55 noFull=0 shQ=107917 | m=0.900 worth=98.9 cheap=8.4 over=1 dMedOther=80.2 safe(-1)=653664
+    → Etherin_09#10[T3] terr=10429 bal=1285531 dq=123.3 cnt=6 | c=1096.1 rankC=1096.1 need=2195563 tD=1.54 人 pulse crowdedHard | safe=653664 keep=831936 avail=-24996 chunkB=163302 pulseB=97981 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3785 alex_k B=816508 L=7440 d=109.7 nb=1 neut=0 cmds=55 noFull=0 shQ=118122 | m=0.900 worth=98.8 cheap=8.4 over=1 dMedOther=80.2 safe(-1)=654720
+    → Etherin_09#10[T3] terr=10417 bal=1283166 dq=123.2 cnt=7 | c=1097.7 rankC=1097.7 need=2195737 tD=1.54 人 pulse crowdedHard | safe=654720 keep=833280 avail=-26340 chunkB=163302 pulseB=97981 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3790 alex_k B=824346 L=7447 d=110.7 nb=1 neut=0 cmds=55 noFull=0 shQ=128346 | m=0.900 worth=99.6 cheap=8.4 over=1 dMedOther=81.3 safe(-1)=655336
+    → Etherin_09#10[T3] terr=10410 bal=1290246 dq=123.9 cnt=6 | c=1106.2 rankC=1106.2 need=2210980 tD=1.52 人 pulse crowdedHard | safe=655336 keep=834064 avail=-19378 chunkB=164869 pulseB=98922 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3795 alex_k B=824346 L=7460 d=110.5 nb=1 neut=0 cmds=55 noFull=0 shQ=138646 | m=0.900 worth=99.5 cheap=8.4 over=1 dMedOther=81.3 safe(-1)=656480
+    → Etherin_09#10[T3] terr=10397 bal=1287670 dq=123.9 cnt=6 | c=1108.0 rankC=1108.0 need=2211155 tD=1.52 人 pulse crowdedHard | safe=656480 keep=835520 avail=-20834 chunkB=164869 pulseB=98922 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3800 alex_k B=839560 L=7473 d=112.3 nb=1 neut=0 cmds=55 noFull=0 shQ=148984 | m=0.900 worth=101.1 cheap=8.4 over=1 dMedOther=83.4 safe(-1)=657624
+    → Etherin_09#10[T3] terr=10381 bal=1303099 dq=125.5 cnt=7 | c=1126.2 rankC=1126.2 need=2243470 tD=1.50 人 pulse crowdedHard | safe=657624 keep=836976 avail=-7254 chunkB=167912 pulseB=100747 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3805 alex_k B=839560 L=7480 d=112.2 nb=1 neut=0 cmds=55 noFull=0 shQ=159474 | m=0.900 worth=101.0 cheap=8.4 over=1 dMedOther=83.4 safe(-1)=658240
+    → Etherin_09#10[T3] terr=10372 bal=1301293 dq=125.5 cnt=7 | c=1127.0 rankC=1127.0 need=2242841 tD=1.50 人 pulse crowdedHard | safe=658240 keep=837760 avail=-8038 chunkB=167912 pulseB=100747 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3810 alex_k B=847116 L=7495 d=113.0 nb=1 neut=0 cmds=55 noFull=0 shQ=169983 | m=0.900 worth=101.7 cheap=8.4 over=1 dMedOther=84.6 safe(-1)=659560
+    → Etherin_09#10[T3] terr=10354 bal=1305599 dq=126.1 cnt=7 | c=1136.1 rankC=1136.1 need=2255900 tD=1.49 人 pulse crowdedHard | safe=659560 keep=839440 avail=-2251 chunkB=169423 pulseB=101654 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3815 alex_k B=847116 L=7510 d=112.8 nb=1 neut=0 cmds=55 noFull=0 shQ=180568 | m=0.900 worth=101.5 cheap=8.4 over=1 dMedOther=88.1 safe(-1)=660880
+    → Etherin_09#10[T3] terr=10339 bal=1302574 dq=126.0 cnt=7 | c=1138.2 rankC=1138.2 need=2256079 tD=1.43 人 pulse crowdedHard | safe=660880 keep=841120 avail=-3931 chunkB=169423 pulseB=101654 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3820 alex_k B=854573 L=7510 d=113.8 nb=1 neut=0 cmds=56 noFull=0 shQ=191172 | m=0.900 worth=102.4 cheap=8.4 over=1 dMedOther=89.1 safe(-1)=660880
+    → Etherin_09#10[T3] terr=10339 bal=1169611 dq=113.1 cnt=7 | c=231.4 rankC=231.4 need=2148231 tD=1.27 人 pulse onMe agg | safe=660880 keep=675900 avail=168659 chunkB=170915 pulseB=102549  x=102548 hNb=1
+    ⇒ 影子指令 attack pct=122 → Etherin_09#10[T3]（约 102648 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3825 alex_k B=851844 L=7495 d=113.7 nb=1 neut=0 cmds=57 noFull=0 shQ=201837 | m=0.900 worth=102.3 cheap=8.4 over=1 dMedOther=89.0 safe(-1)=659560
+    → Etherin_09#10[T3] terr=10354 bal=1169611 dq=113.0 cnt=7 | c=231.0 rankC=231.0 need=2143529 tD=1.27 人 pulse onMe agg | safe=659560 keep=674550 avail=167312 chunkB=170369 pulseB=102221  x=102221 hNb=1
+    ⇒ 影子指令 attack pct=122 → Etherin_09#10[T3]（约 102321 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3830 alex_k B=745874 L=7480 d=99.7 nb=1 neut=0 cmds=57 noFull=0 shQ=90480 | m=0.900 worth=89.7 cheap=8.4 over=0 dMedOther=90.1 safe(-1)=658240
+    → Etherin_09#10[T3] terr=10369 bal=1180254 dq=113.8 cnt=7 | c=265.6 rankC=265.6 need=2055798 tD=1.26 人 pulse onMe | safe=658240 keep=Inf avail=-Inf chunkB=149175 pulseB=89505 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3835 alex_k B=745874 L=7480 d=99.7 nb=1 neut=0 cmds=57 noFull=0 shQ=101570 | m=0.900 worth=89.7 cheap=8.4 over=0 dMedOther=89.9 safe(-1)=656764
+    → Etherin_09#10[T3] terr=10369 bal=1180260 dq=113.8 cnt=7 | c=1032.4 rankC=1032.4 need=2055950 tD=1.27 人 pulse crowdedHard | safe=656764 keep=Inf avail=-Inf chunkB=149175 pulseB=89505 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3840 alex_k B=655182 L=7495 d=87.4 nb=1 neut=0 cmds=57 noFull=0 shQ=111515 | m=0.900 worth=78.7 cheap=8.4 over=0 dMedOther=90.9 safe(-1)=659560
+    → Etherin_09#10[T3] terr=10354 bal=1188009 dq=114.7 cnt=7 | c=998.3 rankC=998.3 need=1985372 tD=1.26 人 pulse crowdedHard | safe=659560 keep=Inf avail=-Inf chunkB=131036 pulseB=78622 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3845 alex_k B=655182 L=7502 d=87.3 nb=1 neut=0 cmds=57 noFull=0 shQ=121260 | m=0.900 worth=78.6 cheap=8.4 over=0 dMedOther=90.4 safe(-1)=660176
+    → Etherin_09#10[T3] terr=10347 bal=1186725 dq=114.7 cnt=8 | c=999.1 rankC=999.1 need=1985534 tD=1.27 人 pulse crowdedHard | safe=660176 keep=Inf avail=-Inf chunkB=131036 pulseB=78622 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3850 alex_k B=662913 L=7517 d=88.2 nb=1 neut=0 cmds=57 noFull=0 shQ=131028 | m=0.900 worth=79.4 cheap=8.4 over=0 dMedOther=91.1 safe(-1)=661496
+    → Etherin_09#10[T3] terr=10332 bal=1194274 dq=115.6 cnt=7 | c=1010.3 rankC=1010.3 need=2004039 tD=1.27 人 pulse crowdedHard | safe=661496 keep=Inf avail=-Inf chunkB=132583 pulseB=79550 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3855 alex_k B=662913 L=7530 d=88.0 nb=1 neut=0 cmds=57 noFull=0 shQ=140888 | m=0.900 worth=79.2 cheap=8.4 over=0 dMedOther=86.0 safe(-1)=662640
+    → Etherin_09#10[T3] terr=10319 bal=1191871 dq=115.5 cnt=6 | c=1012.0 rankC=1012.0 need=2004202 tD=1.34 人 pulse crowdedHard | safe=662640 keep=Inf avail=-Inf chunkB=132583 pulseB=79550 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3860 alex_k B=670735 L=7536 d=89.0 nb=1 neut=0 cmds=57 noFull=0 shQ=150771 | m=0.900 worth=80.1 cheap=8.4 over=0 dMedOther=87.2 safe(-1)=663168
+    → Etherin_09#10[T3] terr=10313 bal=1200884 dq=116.4 cnt=5 | c=1021.9 rankC=1021.9 need=2022550 tD=1.34 人 pulse crowdedHard | safe=663168 keep=Inf avail=-Inf chunkB=134147 pulseB=80488 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3865 alex_k B=670735 L=7546 d=88.9 nb=1 neut=0 cmds=57 noFull=0 shQ=160746 | m=0.900 worth=80.0 cheap=8.4 over=0 dMedOther=84.3 safe(-1)=664048
+    → Etherin_09#10[T3] terr=10303 bal=1199022 dq=116.4 cnt=4 | c=1023.2 rankC=1023.2 need=2022715 tD=1.38 人 pulse crowdedHard | safe=664048 keep=Inf avail=-Inf chunkB=134147 pulseB=80488 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3870 alex_k B=678649 L=7554 d=89.8 nb=1 neut=0 cmds=57 noFull=0 shQ=169662 | m=0.900 worth=80.9 cheap=8.4 over=0 dMedOther=84.8 safe(-1)=664752
+    → Etherin_09#10[T3] terr=10295 bal=1207473 dq=117.3 cnt=3 | c=1033.3 rankC=1033.3 need=2040586 tD=1.38 人 pulse crowdedHard | safe=664752 keep=Inf avail=-Inf chunkB=135730 pulseB=81438 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3875 alex_k B=678649 L=7557 d=89.8 nb=1 neut=0 cmds=57 noFull=0 shQ=169662 | m=0.900 worth=80.8 cheap=8.4 over=0 dMedOther=84.5 safe(-1)=665016
+    → Etherin_09#10[T3] terr=10292 bal=1206911 dq=117.3 cnt=3 | c=1033.7 rankC=1033.7 need=2040751 tD=1.39 人 pulse crowdedHard | safe=665016 keep=Inf avail=-Inf chunkB=135730 pulseB=81438 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3880 alex_k B=686657 L=7563 d=90.8 nb=1 neut=0 cmds=57 noFull=0 shQ=171664 | m=0.900 worth=81.7 cheap=8.4 over=0 dMedOther=85.3 safe(-1)=665544
+    → Etherin_09#10[T3] terr=10286 bal=1215433 dq=118.2 cnt=3 | c=1043.1 rankC=1043.1 need=2058256 tD=1.39 人 pulse crowdedHard | safe=665544 keep=Inf avail=-Inf chunkB=137331 pulseB=82399 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3885 alex_k B=686222 L=7566 d=90.7 nb=2 neut=0 cmds=57 noFull=0 shQ=171555 | m=0.900 worth=81.6 cheap=8.4 over=0 dMedOther=85.1 safe(-1)=665808
+    → [IND]Magadha Empire#6[T1] terr=2259 bal=307284 dq=136.0 cnt=3 | c=330.6 rankC=330.6 need=535615 tD=1.60 人 pulse onMe | safe=665808 keep=Inf avail=-Inf chunkB=137244 pulseB=82347 价高(c>=worth)→break hNb=2
+    → Etherin_09#10[T3] terr=10280 bal=1214299 dq=118.1 cnt=2 | c=652.5 rankC=652.5 need=2058424 tD=1.39 人 pulse crowdedHard | safe=665808 keep=Inf avail=-Inf chunkB=137244 pulseB=82347 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3890 alex_k B=692413 L=7555 d=91.6 nb=2 neut=0 cmds=57 noFull=0 shQ=173103 | m=0.900 worth=82.5 cheap=8.4 over=0 dMedOther=85.9 safe(-1)=664840
+    → [IND]Magadha Empire#6[T1] terr=2272 bal=308298 dq=135.7 cnt=6 | c=327.2 rankC=327.2 need=534840 tD=1.58 人 pulse onMe | safe=664840 keep=Inf avail=-Inf chunkB=138483 pulseB=83090 价高(c>=worth)→break hNb=2
+    → Etherin_09#10[T3] terr=10278 bal=1223390 dq=119.0 cnt=1 | c=658.0 rankC=658.0 need=2075447 tD=1.39 人 pulse crowdedHard | safe=664840 keep=Inf avail=-Inf chunkB=138483 pulseB=83090 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3895 alex_k B=807305 L=7548 d=107.0 nb=1 neut=0 cmds=58 noFull=0 shQ=176930 | m=0.900 worth=96.3 cheap=8.4 over=1 dMedOther=85.7 safe(-1)=166844
+    → [IND]Magadha Empire#6[T1] terr=2280 bal=308305 dq=135.2 cnt=8 | c=323.4 rankC=323.4 need=529975 tD=1.58 人 pulse | safe=166844 keep=679320 avail=118525 chunkB=161461 pulseB=96877  x=96876 hNb=1
+    ⇒ 影子指令 attack pct=122 → [IND]Magadha Empire#6[T1]（约 96971 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3900 alex_k B=823087 L=7548 d=109.0 nb=1 neut=0 cmds=59 noFull=0 shQ=187219 | m=0.900 worth=98.1 cheap=8.4 over=1 dMedOther=87.8 safe(-1)=168697
+    → [IND]Magadha Empire#6[T1] terr=2280 bal=311602 dq=136.7 cnt=8 | c=326.8 rankC=326.8 need=535823 tD=1.56 人 pulse | safe=168697 keep=679320 avail=134122 chunkB=164617 pulseB=98770  x=98770 hNb=1
+    ⇒ 影子指令 attack pct=122 → [IND]Magadha Empire#6[T1]（约 98866 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3905 alex_k B=823087 L=7548 d=109.0 nb=1 neut=0 cmds=60 noFull=0 shQ=197504 | m=0.900 worth=98.1 cheap=8.4 over=1 dMedOther=87.8 safe(-1)=168697
+    → [IND]Magadha Empire#6[T1] terr=2280 bal=311602 dq=136.7 cnt=8 | c=326.8 rankC=326.8 need=536037 tD=1.56 人 pulse | safe=168697 keep=679320 avail=134122 chunkB=164617 pulseB=98770  x=98770 hNb=1
+    ⇒ 影子指令 attack pct=122 → [IND]Magadha Empire#6[T1]（约 98866 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3910 alex_k B=723007 L=7548 d=95.8 nb=1 neut=0 cmds=60 noFull=0 shQ=86178 | m=0.900 worth=86.2 cheap=8.4 over=0 dMedOther=81.3 safe(-1)=169221
+    → [IND]Magadha Empire#6[T1] terr=2280 bal=312536 dq=137.1 cnt=8 | c=267.8 rankC=267.8 need=439197 tD=1.69 人 pulse | safe=169221 keep=Inf avail=-Inf chunkB=144601 pulseB=86761 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3915 alex_k B=544939 L=7556 d=72.1 nb=1 neut=0 cmds=60 noFull=0 shQ=95870 | m=0.900 worth=64.9 cheap=8.4 over=0 dMedOther=81.3 safe(-1)=168230
+    → [IND]Magadha Empire#6[T1] terr=2272 bal=310783 dq=136.8 cnt=6 | c=170.3 rankC=170.3 need=277171 tD=1.68 人 pulse | safe=168230 keep=Inf avail=-Inf chunkB=108988 pulseB=65393 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3920 alex_k B=551369 L=7567 d=72.9 nb=1 neut=0 cmds=60 noFull=0 shQ=103994 | m=0.900 worth=73.1 cheap=8.4 over=0 dMedOther=95.6 safe(-1)=167390
+    → [IND]Magadha Empire#6[T1] terr=2261 bal=309304 dq=136.8 cnt=4 | c=198.0 rankC=198.0 need=278971 tD=1.43 人 pulse | safe=167390 keep=Inf avail=-Inf chunkB=110274 pulseB=66164 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3925 alex_k B=551369 L=7571 d=72.8 nb=1 neut=0 cmds=60 noFull=0 shQ=112194 | m=0.900 worth=73.1 cheap=8.4 over=0 dMedOther=95.6 safe(-1)=166895
+    → [IND]Magadha Empire#6[T1] terr=2257 bal=308430 dq=136.7 cnt=1 | c=311.3 rankC=311.3 need=279185 tD=1.43 人 pulse | safe=166895 keep=Inf avail=-Inf chunkB=110274 pulseB=66164 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3930 alex_k B=810344 L=7572 d=107.0 nb=0 neut=0 cmds=60 noFull=0 shQ=121285 | m=0.900 worth=96.3 cheap=8.4 over=1 dMedOther=96.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3935 alex_k B=810344 L=7572 d=107.0 nb=0 neut=0 cmds=60 noFull=0 shQ=131615 | m=0.900 worth=96.3 cheap=8.4 over=1 dMedOther=96.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3940 alex_k B=818609 L=7572 d=108.1 nb=0 neut=0 cmds=61 noFull=0 shQ=141925 | m=0.900 worth=97.3 cheap=8.4 over=1 dMedOther=98.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] noah88#12[T2]（约 256614 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3945 alex_k B=818609 L=7572 d=108.1 nb=0 neut=0 cmds=61 noFull=0 shQ=152155 | m=0.900 worth=97.3 cheap=8.4 over=1 dMedOther=98.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3950 alex_k B=516859 L=7572 d=68.3 nb=0 neut=0 cmds=61 noFull=0 shQ=129214 | m=0.900 worth=76.2 cheap=8.4 over=0 dMedOther=99.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3955 alex_k B=516859 L=7572 d=68.3 nb=0 neut=0 cmds=61 noFull=0 shQ=129214 | m=0.900 worth=76.2 cheap=8.4 over=0 dMedOther=99.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3960 alex_k B=522957 L=7572 d=69.1 nb=0 neut=0 cmds=61 noFull=0 shQ=130739 | m=0.900 worth=77.2 cheap=8.4 over=0 dMedOther=100.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3965 alex_k B=522957 L=7572 d=69.1 nb=0 neut=0 cmds=62 noFull=0 shQ=130739 | m=0.900 worth=77.2 cheap=8.4 over=0 dMedOther=100.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] zexos1#13[T2]（约 194576 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3970 alex_k B=529127 L=7572 d=69.9 nb=0 neut=0 cmds=62 noFull=0 shQ=132281 | m=0.900 worth=69.6 cheap=8.4 over=0 dMedOther=90.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3975 alex_k B=529127 L=7572 d=69.9 nb=0 neut=0 cmds=62 noFull=0 shQ=132281 | m=0.900 worth=69.6 cheap=8.4 over=0 dMedOther=90.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3980 alex_k B=302715 L=7572 d=40.0 nb=0 neut=0 cmds=62 noFull=0 shQ=75678 | m=0.900 worth=70.4 cheap=8.4 over=0 dMedOther=92.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3985 alex_k B=302715 L=7572 d=40.0 nb=0 neut=0 cmds=62 noFull=0 shQ=75678 | m=0.900 worth=70.2 cheap=8.4 over=0 dMedOther=91.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3990 alex_k B=306287 L=7572 d=40.4 nb=0 neut=0 cmds=62 noFull=0 shQ=76571 | m=0.900 worth=71.1 cheap=8.4 over=0 dMedOther=92.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3995 alex_k B=306287 L=7572 d=40.4 nb=0 neut=0 cmds=62 noFull=0 shQ=76571 | m=0.900 worth=70.9 cheap=8.4 over=0 dMedOther=92.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4000 alex_k B=317473 L=7572 d=41.9 nb=0 neut=0 cmds=62 noFull=0 shQ=77515 | m=0.900 worth=72.5 cheap=8.4 over=0 dMedOther=94.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4005 alex_k B=317473 L=7572 d=41.9 nb=0 neut=0 cmds=62 noFull=0 shQ=79368 | m=0.900 worth=72.3 cheap=8.4 over=0 dMedOther=94.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4010 alex_k B=321219 L=7572 d=42.4 nb=0 neut=0 cmds=62 noFull=0 shQ=80304 | m=0.900 worth=73.2 cheap=8.4 over=0 dMedOther=95.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4015 alex_k B=321219 L=7572 d=42.4 nb=0 neut=0 cmds=62 noFull=0 shQ=80304 | m=0.900 worth=72.9 cheap=8.4 over=0 dMedOther=95.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4020 alex_k B=325009 L=7572 d=42.9 nb=0 neut=0 cmds=62 noFull=0 shQ=81252 | m=0.900 worth=73.8 cheap=8.4 over=0 dMedOther=96.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4025 alex_k B=325009 L=7572 d=42.9 nb=0 neut=0 cmds=62 noFull=0 shQ=81252 | m=0.900 worth=73.4 cheap=8.4 over=0 dMedOther=96.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4030 alex_k B=328844 L=7572 d=43.4 nb=0 neut=0 cmds=62 noFull=0 shQ=82211 | m=0.900 worth=74.3 cheap=8.4 over=0 dMedOther=97.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4035 alex_k B=328844 L=7572 d=43.4 nb=0 neut=0 cmds=62 noFull=0 shQ=82211 | m=0.900 worth=73.9 cheap=8.4 over=0 dMedOther=96.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4040 alex_k B=332724 L=7572 d=43.9 nb=0 neut=0 cmds=62 noFull=0 shQ=83181 | m=0.900 worth=74.7 cheap=8.4 over=0 dMedOther=97.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4045 alex_k B=332724 L=7572 d=43.9 nb=0 neut=0 cmds=62 noFull=0 shQ=83181 | m=0.900 worth=74.2 cheap=8.4 over=0 dMedOther=97.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4050 alex_k B=336650 L=7572 d=44.5 nb=0 neut=0 cmds=62 noFull=0 shQ=84162 | m=0.900 worth=75.0 cheap=8.4 over=0 dMedOther=98.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4055 alex_k B=336650 L=7572 d=44.5 nb=0 neut=0 cmds=62 noFull=0 shQ=84162 | m=0.900 worth=74.5 cheap=8.4 over=0 dMedOther=97.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4060 alex_k B=340622 L=7572 d=45.0 nb=0 neut=0 cmds=62 noFull=0 shQ=85155 | m=0.900 worth=75.2 cheap=8.4 over=0 dMedOther=98.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4065 alex_k B=340622 L=7572 d=45.0 nb=0 neut=0 cmds=62 noFull=0 shQ=85155 | m=0.900 worth=75.0 cheap=8.4 over=0 dMedOther=98.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4070 alex_k B=344641 L=7572 d=45.5 nb=0 neut=0 cmds=62 noFull=0 shQ=86160 | m=0.900 worth=76.1 cheap=8.4 over=0 dMedOther=99.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4075 alex_k B=344641 L=7572 d=45.5 nb=0 neut=0 cmds=62 noFull=0 shQ=86160 | m=0.900 worth=76.1 cheap=8.4 over=0 dMedOther=99.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4080 alex_k B=348707 L=7572 d=46.1 nb=0 neut=0 cmds=62 noFull=0 shQ=87176 | m=0.900 worth=77.2 cheap=8.4 over=0 dMedOther=100.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4085 alex_k B=348707 L=7572 d=46.1 nb=0 neut=0 cmds=62 noFull=0 shQ=87176 | m=0.900 worth=77.2 cheap=8.4 over=0 dMedOther=100.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4090 alex_k B=352821 L=7572 d=46.6 nb=0 neut=0 cmds=62 noFull=0 shQ=88205 | m=0.900 worth=78.3 cheap=8.4 over=0 dMedOther=102.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4095 alex_k B=352821 L=7572 d=46.6 nb=0 neut=0 cmds=62 noFull=0 shQ=88205 | m=0.900 worth=78.3 cheap=8.4 over=0 dMedOther=102.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4100 alex_k B=364556 L=7572 d=48.1 nb=0 neut=0 cmds=62 noFull=0 shQ=89289 | m=0.900 worth=80.1 cheap=8.4 over=0 dMedOther=104.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4105 alex_k B=364556 L=7572 d=48.1 nb=0 neut=0 cmds=62 noFull=0 shQ=91139 | m=0.900 worth=70.1 cheap=8.4 over=0 dMedOther=91.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4110 alex_k B=368857 L=7572 d=48.7 nb=0 neut=0 cmds=62 noFull=0 shQ=92214 | m=0.900 worth=70.9 cheap=8.4 over=0 dMedOther=92.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4115 alex_k B=368857 L=7572 d=48.7 nb=0 neut=0 cmds=62 noFull=0 shQ=92214 | m=0.900 worth=70.6 cheap=8.4 over=0 dMedOther=92.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4120 alex_k B=373209 L=7572 d=49.3 nb=0 neut=0 cmds=62 noFull=0 shQ=93302 | m=0.900 worth=71.1 cheap=8.4 over=0 dMedOther=92.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4125 alex_k B=373209 L=7572 d=49.3 nb=0 neut=0 cmds=62 noFull=0 shQ=93302 | m=0.900 worth=70.7 cheap=8.4 over=0 dMedOther=92.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4130 alex_k B=377612 L=7572 d=49.9 nb=0 neut=0 cmds=62 noFull=0 shQ=94403 | m=0.900 worth=71.2 cheap=8.4 over=0 dMedOther=93.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4135 alex_k B=377612 L=7572 d=49.9 nb=0 neut=0 cmds=62 noFull=0 shQ=94403 | m=0.900 worth=70.8 cheap=8.4 over=0 dMedOther=92.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4140 alex_k B=382067 L=7572 d=50.5 nb=0 neut=0 cmds=62 noFull=0 shQ=95516 | m=0.900 worth=71.2 cheap=8.4 over=0 dMedOther=93.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4145 alex_k B=382067 L=7572 d=50.5 nb=0 neut=0 cmds=62 noFull=0 shQ=95516 | m=0.900 worth=71.0 cheap=8.4 over=0 dMedOther=92.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4150 alex_k B=386575 L=7572 d=51.1 nb=0 neut=0 cmds=62 noFull=0 shQ=96643 | m=0.900 worth=72.0 cheap=8.4 over=0 dMedOther=94.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4155 alex_k B=386575 L=7572 d=51.1 nb=0 neut=0 cmds=62 noFull=0 shQ=96643 | m=0.900 worth=65.1 cheap=8.4 over=0 dMedOther=85.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4160 alex_k B=391136 L=7572 d=51.7 nb=0 neut=0 cmds=62 noFull=0 shQ=97784 | m=0.900 worth=65.8 cheap=8.4 over=0 dMedOther=86.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4165 alex_k B=391136 L=7572 d=51.7 nb=0 neut=0 cmds=62 noFull=0 shQ=97784 | m=0.900 worth=65.2 cheap=8.4 over=0 dMedOther=85.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4170 alex_k B=395751 L=7572 d=52.3 nb=0 neut=0 cmds=62 noFull=0 shQ=98937 | m=0.900 worth=65.7 cheap=8.4 over=0 dMedOther=85.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4175 alex_k B=395751 L=7572 d=52.3 nb=0 neut=0 cmds=62 noFull=0 shQ=98937 | m=0.900 worth=62.0 cheap=8.4 over=0 dMedOther=81.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4180 alex_k B=400420 L=7572 d=52.9 nb=0 neut=0 cmds=62 noFull=0 shQ=100105 | m=0.900 worth=62.9 cheap=8.4 over=0 dMedOther=82.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4185 alex_k B=400420 L=7572 d=52.9 nb=0 neut=0 cmds=62 noFull=0 shQ=100105 | m=0.900 worth=62.9 cheap=8.4 over=0 dMedOther=82.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4190 alex_k B=405144 L=7572 d=53.5 nb=0 neut=0 cmds=62 noFull=0 shQ=101286 | m=0.900 worth=63.8 cheap=8.4 over=0 dMedOther=83.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4195 alex_k B=405144 L=7572 d=53.5 nb=0 neut=0 cmds=62 noFull=0 shQ=101286 | m=0.900 worth=63.3 cheap=8.4 over=0 dMedOther=82.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4200 alex_k B=417496 L=7572 d=55.1 nb=0 neut=0 cmds=62 noFull=0 shQ=102528 | m=0.900 worth=65.0 cheap=8.4 over=0 dMedOther=84.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4205 alex_k B=417496 L=7572 d=55.1 nb=0 neut=0 cmds=62 noFull=0 shQ=104374 | m=0.900 worth=65.0 cheap=8.4 over=0 dMedOther=84.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4210 alex_k B=422422 L=7572 d=55.8 nb=0 neut=0 cmds=62 noFull=0 shQ=105605 | m=0.900 worth=65.1 cheap=8.4 over=0 dMedOther=85.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4215 alex_k B=422422 L=7572 d=55.8 nb=0 neut=0 cmds=63 noFull=0 shQ=105605 | m=0.900 worth=64.1 cheap=8.4 over=0 dMedOther=83.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] sora_w#9[T2]（约 157170 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4220 alex_k B=427406 L=7572 d=56.4 nb=0 neut=0 cmds=63 noFull=0 shQ=106851 | m=0.900 worth=64.7 cheap=8.4 over=0 dMedOther=84.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4225 alex_k B=427406 L=7572 d=56.4 nb=0 neut=0 cmds=63 noFull=0 shQ=106851 | m=0.900 worth=64.1 cheap=8.4 over=0 dMedOther=83.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4230 alex_k B=244520 L=7572 d=32.3 nb=0 neut=0 cmds=63 noFull=0 shQ=61130 | m=0.900 worth=64.8 cheap=8.4 over=0 dMedOther=84.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4235 alex_k B=244520 L=7572 d=32.3 nb=0 neut=0 cmds=63 noFull=0 shQ=61130 | m=0.900 worth=64.3 cheap=8.4 over=0 dMedOther=84.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4240 alex_k B=247405 L=7572 d=32.7 nb=0 neut=0 cmds=63 noFull=0 shQ=61851 | m=0.900 worth=64.9 cheap=8.4 over=0 dMedOther=84.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4245 alex_k B=247405 L=7572 d=32.7 nb=0 neut=0 cmds=63 noFull=0 shQ=61851 | m=0.900 worth=64.5 cheap=8.4 over=0 dMedOther=84.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4250 alex_k B=250324 L=7572 d=33.1 nb=0 neut=0 cmds=63 noFull=0 shQ=62581 | m=0.900 worth=65.1 cheap=8.4 over=0 dMedOther=85.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4255 alex_k B=250324 L=7572 d=33.1 nb=0 neut=0 cmds=63 noFull=0 shQ=62581 | m=0.900 worth=64.7 cheap=8.4 over=0 dMedOther=84.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4260 alex_k B=253277 L=7572 d=33.4 nb=0 neut=0 cmds=63 noFull=0 shQ=63319 | m=0.900 worth=65.4 cheap=8.4 over=0 dMedOther=85.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4265 alex_k B=253277 L=7572 d=33.4 nb=0 neut=0 cmds=63 noFull=0 shQ=63319 | m=0.900 worth=65.0 cheap=8.4 over=0 dMedOther=85.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4270 alex_k B=256265 L=7572 d=33.8 nb=0 neut=0 cmds=63 noFull=0 shQ=64066 | m=0.900 worth=65.7 cheap=8.4 over=0 dMedOther=85.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4275 alex_k B=256265 L=7572 d=33.8 nb=0 neut=0 cmds=63 noFull=0 shQ=64066 | m=0.900 worth=65.4 cheap=8.4 over=0 dMedOther=85.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4280 alex_k B=259288 L=7572 d=34.2 nb=0 neut=0 cmds=63 noFull=0 shQ=64822 | m=0.900 worth=66.1 cheap=8.4 over=0 dMedOther=86.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4285 alex_k B=259288 L=7572 d=34.2 nb=0 neut=0 cmds=63 noFull=0 shQ=64822 | m=0.900 worth=58.3 cheap=8.4 over=0 dMedOther=76.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4290 alex_k B=262347 L=7572 d=34.6 nb=0 neut=0 cmds=63 noFull=0 shQ=65586 | m=0.900 worth=58.8 cheap=8.4 over=0 dMedOther=76.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4295 alex_k B=262347 L=7572 d=34.6 nb=0 neut=0 cmds=63 noFull=0 shQ=65586 | m=0.900 worth=58.2 cheap=8.4 over=0 dMedOther=76.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4300 alex_k B=273014 L=7572 d=36.1 nb=0 neut=0 cmds=63 noFull=0 shQ=66398 | m=0.900 worth=59.4 cheap=8.4 over=0 dMedOther=77.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4305 alex_k B=273014 L=7572 d=36.1 nb=0 neut=0 cmds=63 noFull=0 shQ=68253 | m=0.900 worth=58.8 cheap=8.4 over=0 dMedOther=76.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4310 alex_k B=276235 L=7572 d=36.5 nb=0 neut=0 cmds=63 noFull=0 shQ=69058 | m=0.900 worth=59.2 cheap=8.4 over=0 dMedOther=77.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4315 alex_k B=276235 L=7572 d=36.5 nb=0 neut=0 cmds=63 noFull=0 shQ=69058 | m=0.900 worth=61.0 cheap=8.4 over=0 dMedOther=79.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4320 alex_k B=279494 L=7572 d=36.9 nb=0 neut=0 cmds=63 noFull=0 shQ=69873 | m=0.900 worth=59.1 cheap=8.4 over=0 dMedOther=77.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4325 alex_k B=279494 L=7572 d=36.9 nb=0 neut=0 cmds=63 noFull=0 shQ=69873 | m=0.900 worth=58.6 cheap=8.4 over=0 dMedOther=76.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4330 alex_k B=282792 L=7572 d=37.3 nb=0 neut=0 cmds=63 noFull=0 shQ=70698 | m=0.900 worth=59.1 cheap=8.4 over=0 dMedOther=77.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4335 alex_k B=282792 L=7572 d=37.3 nb=0 neut=0 cmds=63 noFull=0 shQ=70698 | m=0.900 worth=58.5 cheap=8.4 over=0 dMedOther=76.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4340 alex_k B=286128 L=7572 d=37.8 nb=0 neut=0 cmds=63 noFull=0 shQ=71532 | m=0.900 worth=59.0 cheap=8.4 over=0 dMedOther=77.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4345 alex_k B=286128 L=7572 d=37.8 nb=0 neut=0 cmds=63 noFull=0 shQ=71532 | m=0.900 worth=58.5 cheap=8.4 over=0 dMedOther=76.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4350 alex_k B=289504 L=7572 d=38.2 nb=0 neut=0 cmds=63 noFull=0 shQ=72376 | m=0.900 worth=59.0 cheap=8.4 over=0 dMedOther=77.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4355 alex_k B=289504 L=7572 d=38.2 nb=0 neut=0 cmds=63 noFull=0 shQ=72376 | m=0.900 worth=58.5 cheap=8.4 over=0 dMedOther=76.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4360 alex_k B=292920 L=7572 d=38.7 nb=0 neut=0 cmds=63 noFull=0 shQ=73230 | m=0.900 worth=59.0 cheap=8.4 over=0 dMedOther=77.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4365 alex_k B=292920 L=7572 d=38.7 nb=0 neut=0 cmds=63 noFull=0 shQ=73230 | m=0.900 worth=60.9 cheap=8.4 over=0 dMedOther=79.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4370 alex_k B=296376 L=7572 d=39.1 nb=0 neut=0 cmds=63 noFull=0 shQ=74094 | m=0.900 worth=61.7 cheap=8.4 over=0 dMedOther=80.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4375 alex_k B=296376 L=7572 d=39.1 nb=0 neut=0 cmds=63 noFull=0 shQ=74094 | m=0.900 worth=61.7 cheap=8.4 over=0 dMedOther=80.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4380 alex_k B=299873 L=7572 d=39.6 nb=0 neut=0 cmds=63 noFull=0 shQ=74968 | m=0.900 worth=62.6 cheap=8.4 over=0 dMedOther=81.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4385 alex_k B=299873 L=7572 d=39.6 nb=0 neut=0 cmds=63 noFull=0 shQ=74968 | m=0.900 worth=57.4 cheap=8.4 over=0 dMedOther=75.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4390 alex_k B=303411 L=7572 d=40.1 nb=0 neut=0 cmds=63 noFull=0 shQ=75852 | m=0.900 worth=58.1 cheap=8.4 over=0 dMedOther=75.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4395 alex_k B=303411 L=7572 d=40.1 nb=0 neut=0 cmds=63 noFull=0 shQ=75852 | m=0.900 worth=59.4 cheap=8.4 over=0 dMedOther=77.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4400 alex_k B=314563 L=7572 d=41.5 nb=0 neut=0 cmds=63 noFull=0 shQ=76787 | m=0.900 worth=60.7 cheap=8.4 over=0 dMedOther=79.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令

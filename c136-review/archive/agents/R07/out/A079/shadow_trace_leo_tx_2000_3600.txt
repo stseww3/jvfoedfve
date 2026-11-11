@@ -1,0 +1,171 @@
+# A079 leo_tx 影子决策明细 t=2000~3600（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 235 拍（t=2000~3415）
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 6 拍（t=2090~2125）；可用兵 7527~65676，一条指令下限(20%余额) 77495~89263，比值 10%~74%
+#   出手打人/bot: 23 拍（t=2105~3440）；可用兵 23929~197355，一条指令下限(20%余额) 87400~151450，比值 26%~140%
+#   有可用兵但没发（脉冲下限/冷却/其他）: 27 拍（t=2335~3480）；可用兵 4271~118673，一条指令下限(20%余额) 46103~149980，比值 5%~121%
+#   首选目标无可用兵（avail<=0）: 6 拍（t=2375~3470）；可用兵 -59735~-543，一条指令下限(20%余额) 45565~138170，比值 -131%~-1%
+#   没有可打的邻居: 24 拍（t=3485~3600）
+#   └ 「出手打人/bot」里：23 条对人/bot 的出兵共约 1819670 兵；其中超过软上限（over=1）时发的 16 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 14 条约 969036 兵，c/worth = 1.09~4.14
+t=2000 leo_tx B=387131 L=4266 d=90.7 nb=1 neut=0 cmds=36 noFull=1 shQ=95739 | m=1.425 worth=129.3 cheap=8.9 over=0 dMedOther=35.1 safe(-1)=375408
+    → [💲] 32.99 🇹🇷#28[T1] terr=17034 bal=778872 dq=45.7 cnt=16 | c=199.5 rankC=199.5 need=1413816 tD=1.30 人 | safe=375408 keep=Inf avail=-Inf chunkB=77426 pulseB=46456 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2050 leo_tx B=409299 L=4266 d=95.9 nb=1 neut=0 cmds=36 noFull=1 shQ=102324 | m=1.373 worth=131.7 cheap=8.9 over=0 dMedOther=35.2 safe(-1)=375408
+    → [💲] 32.99 🇹🇷#28[T1] terr=17034 bal=829600 dq=48.7 cnt=16 | c=307.8 rankC=446.3 need=1504234 tD=1.38 人 | safe=375408 keep=Inf avail=-Inf chunkB=81860 pulseB=49116 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2100 leo_tx B=437002 L=4266 d=102.4 nb=1 neut=0 cmds=36 noFull=1 shQ=108154 | m=1.320 worth=135.2 cheap=8.9 over=1 dMedOther=41.7 safe(-1)=375408
+    → [💲] 32.99 🇹🇷#28[T1] terr=17034 bal=900666 dq=52.9 cnt=16 | c=70.1 rankC=35.0 need=1630902 tD=1.27 人 | safe=375408 keep=375408 avail=56473 chunkB=87400 pulseB=52440 不够一条
+    ⇒ 本拍没有指令
+t=2105 leo_tx B=437002 L=4266 d=102.4 nb=1 neut=0 cmds=37 noFull=1 shQ=109250 | m=1.315 worth=134.7 cheap=8.9 over=1 dMedOther=40.0 safe(-1)=375408
+    → [💲] 32.99 🇹🇷#28[T1] terr=16689 bal=871572 dq=52.2 cnt=15 | c=65.5 rankC=32.7 need=1572119 tD=1.31 人 pulse bleeding | safe=375408 keep=375408 avail=56473 chunkB=87400 pulseB=52440 
+    ⇒ 影子指令 attack pct=122 → [💲] 32.99 🇹🇷#28[T1]（约 52491 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2110 leo_tx B=441677 L=4266 d=103.5 nb=1 neut=0 cmds=38 noFull=1 shQ=110398 | m=1.310 worth=135.6 cheap=8.9 over=1 dMedOther=40.2 safe(-1)=375408
+    → [💲] 32.99 🇹🇷#28[T1] terr=16348 bal=853877 dq=52.2 cnt=14 | c=67.8 rankC=33.9 need=1533655 tD=1.30 人 pulse bleeding | safe=375408 keep=375408 avail=61094 chunkB=88335 pulseB=53001 
+    ⇒ 影子指令 attack pct=122 → [💲] 32.99 🇹🇷#28[T1]（约 53052 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2150 leo_tx B=347959 L=4337 d=80.2 nb=1 neut=0 cmds=38 noFull=1 shQ=86989 | m=1.268 worth=101.7 cheap=8.8 over=0 dMedOther=40.9 safe(-1)=381656
+    → [💲] 32.99 🇹🇷#28[T1] terr=15463 bal=817522 dq=52.9 cnt=8 | c=219.1 rankC=219.1 need=1362524 tD=1.29 人 | safe=381656 keep=Inf avail=-Inf chunkB=69592 pulseB=41755 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2200 leo_tx B=372787 L=4541 d=82.1 nb=1 neut=0 cmds=38 noFull=1 shQ=92086 | m=1.215 worth=99.7 cheap=8.8 over=0 dMedOther=43.2 safe(-1)=399608
+    → [💲] 32.99 🇹🇷#28[T1] terr=15259 bal=867300 dq=56.8 cnt=20 | c=194.1 rankC=194.1 need=1481349 tD=1.31 人 | safe=399608 keep=Inf avail=-Inf chunkB=74557 pulseB=44734 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2250 leo_tx B=394535 L=4805 d=82.1 nb=1 neut=0 cmds=38 noFull=1 shQ=98633 | m=1.163 worth=95.5 cheap=8.8 over=0 dMedOther=43.0 safe(-1)=422840
+    → [💲] 32.99 🇹🇷#28[T1] terr=14995 bal=896255 dq=59.8 cnt=30 | c=146.3 rankC=146.3 need=1578221 tD=1.39 人 | safe=422840 keep=Inf avail=-Inf chunkB=78907 pulseB=47344 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2300 leo_tx B=422344 L=4805 d=87.9 nb=1 neut=0 cmds=38 noFull=1 shQ=104411 | m=1.110 worth=97.6 cheap=8.8 over=0 dMedOther=46.5 safe(-1)=422840
+    → [💲] 32.99 🇹🇷#28[T1] terr=14995 bal=969153 dq=64.6 cnt=30 | c=158.0 rankC=158.0 need=1706116 tD=1.39 人 | safe=422840 keep=Inf avail=-Inf chunkB=84469 pulseB=50681 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2350 leo_tx B=446971 L=4805 d=93.0 nb=1 neut=0 cmds=38 noFull=1 shQ=111742 | m=1.058 worth=98.4 cheap=8.8 over=0 dMedOther=49.4 safe(-1)=422840
+    → [💲] 32.99 🇹🇷#28[T1] terr=14609 bal=989326 dq=67.7 cnt=30 | c=72.3 rankC=36.2 need=1730835 tD=1.37 人 pulse bleeding | safe=422840 keep=422840 avail=18894 chunkB=89394 pulseB=53637 
+    ⇒ 本拍没有指令
+t=2360 leo_tx B=452066 L=4805 d=94.1 nb=1 neut=0 cmds=39 noFull=1 shQ=113016 | m=1.047 worth=98.5 cheap=8.8 over=0 dMedOther=50.0 safe(-1)=422840
+    → [💲] 32.99 🇹🇷#28[T1] terr=14206 bal=957762 dq=67.4 cnt=30 | c=75.7 rankC=37.8 need=1664096 tD=1.35 人 pulse bleeding | safe=422840 keep=422840 avail=23929 chunkB=90413 pulseB=54248 
+    ⇒ 影子指令 attack pct=54 → [💲] 32.99 🇹🇷#28[T1]（约 24280 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2365 leo_tx B=452066 L=4805 d=94.1 nb=1 neut=0 cmds=40 noFull=1 shQ=113016 | m=1.042 worth=98.0 cheap=8.8 over=0 dMedOther=50.0 safe(-1)=422840
+    → [💲] 32.99 🇹🇷#28[T1] terr=14103 bal=946652 dq=67.1 cnt=30 | c=76.2 rankC=38.1 need=1641888 tD=1.34 人 pulse bleeding | safe=422840 keep=422840 avail=23929 chunkB=90413 pulseB=54248 
+    ⇒ 影子指令 attack pct=54 → [💲] 32.99 🇹🇷#28[T1]（约 24280 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2370 leo_tx B=457219 L=4805 d=95.2 nb=1 neut=0 cmds=41 noFull=1 shQ=114304 | m=1.036 worth=98.6 cheap=8.8 over=0 dMedOther=50.6 safe(-1)=422840
+    → [💲] 32.99 🇹🇷#28[T1] terr=13893 bal=935611 dq=67.3 cnt=30 | c=78.6 rankC=39.3 need=1616357 tD=1.33 人 pulse bleeding | safe=422840 keep=422840 avail=29021 chunkB=91444 pulseB=54866 
+    ⇒ 影子指令 attack pct=64 → [💲] 32.99 🇹🇷#28[T1]（约 29022 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2400 leo_tx B=387131 L=5039 d=76.8 nb=1 neut=0 cmds=41 noFull=1 shQ=29364 | m=1.005 worth=77.2 cheap=8.8 over=0 dMedOther=53.5 safe(-1)=443432
+    → [💲] 32.99 🇹🇷#28[T1] terr=12771 bal=860972 dq=67.4 cnt=38 | c=86.8 rankC=43.4 need=1429617 tD=1.26 人 pulse bleeding | safe=443432 keep=Inf avail=-Inf chunkB=77426 pulseB=46456 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2450 leo_tx B=409726 L=5116 d=80.1 nb=1 neut=0 cmds=41 noFull=1 shQ=85838 | m=0.953 worth=76.3 cheap=8.8 over=0 dMedOther=56.8 safe(-1)=450208
+    → [💲] 32.99 🇹🇷#28[T1] terr=11984 bal=819594 dq=68.4 cnt=41 | c=171.8 rankC=171.8 need=1358657 tD=1.20 人 pulse | safe=450208 keep=Inf avail=-Inf chunkB=81945 pulseB=49167 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2500 leo_tx B=438732 L=5116 d=85.8 nb=1 neut=0 cmds=41 noFull=1 shQ=108432 | m=0.900 worth=77.2 cheap=8.8 over=0 dMedOther=64.2 safe(-1)=450208
+    → [💲] 32.99 🇹🇷#28[T1] terr=11984 bal=883237 dq=73.7 cnt=41 | c=184.6 rankC=184.6 need=1469223 tD=1.15 人 pulse | safe=450208 keep=Inf avail=-Inf chunkB=87746 pulseB=52648 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2550 leo_tx B=464314 L=5116 d=90.8 nb=1 neut=0 cmds=41 noFull=1 shQ=116078 | m=0.900 worth=81.7 cheap=8.8 over=0 dMedOther=62.4 safe(-1)=450208
+    → [💲] 32.99 🇹🇷#28[T1] terr=11984 bal=938906 dq=78.3 cnt=41 | c=109.9 rankC=55.0 need=1567455 tD=1.26 人 pulse | safe=450208 keep=Inf avail=-Inf chunkB=92863 pulseB=55718 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2600 leo_tx B=496504 L=5116 d=97.0 nb=1 neut=0 cmds=41 noFull=1 shQ=122877 | m=0.900 worth=87.3 cheap=8.8 over=0 dMedOther=67.5 safe(-1)=450208
+    → [💲] 32.99 🇹🇷#28[T1] terr=11556 bal=951264 dq=82.3 cnt=39 | c=206.3 rankC=206.3 need=1574270 tD=1.22 人 pulse | safe=450208 keep=Inf avail=-Inf chunkB=99301 pulseB=59580 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2630 leo_tx B=513677 L=5116 d=100.4 nb=1 neut=0 cmds=42 noFull=1 shQ=128419 | m=0.900 worth=90.4 cheap=8.8 over=1 dMedOther=70.1 safe(-1)=450208
+    → [💲] 32.99 🇹🇷#28[T1] terr=11556 bal=986506 dq=85.4 cnt=39 | c=213.6 rankC=213.6 need=1636394 tD=1.22 人 pulse | safe=450208 keep=460440 avail=47218 chunkB=102735 pulseB=61641 
+    ⇒ 影子指令 attack pct=94 → [💲] 32.99 🇹🇷#28[T1]（约 47655 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2635 leo_tx B=513677 L=5116 d=100.4 nb=1 neut=0 cmds=43 noFull=1 shQ=128419 | m=0.900 worth=90.4 cheap=8.8 over=1 dMedOther=69.0 safe(-1)=450208
+    → [💲] 32.99 🇹🇷#28[T1] terr=11556 bal=986506 dq=85.4 cnt=39 | c=213.6 rankC=213.6 need=1637119 tD=1.24 人 pulse | safe=450208 keep=460440 avail=47218 chunkB=102735 pulseB=61641 
+    ⇒ 影子指令 attack pct=94 → [💲] 32.99 🇹🇷#28[T1]（约 47655 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2640 leo_tx B=519532 L=5116 d=101.6 nb=1 neut=0 cmds=44 noFull=1 shQ=129860 | m=0.900 worth=91.4 cheap=8.8 over=1 dMedOther=68.7 safe(-1)=450208
+    → [💲] 32.99 🇹🇷#28[T1] terr=11556 bal=998541 dq=86.4 cnt=39 | c=216.1 rankC=216.1 need=1657639 tD=1.26 人 pulse | safe=450208 keep=460440 avail=53004 chunkB=103906 pulseB=62344 
+    ⇒ 影子指令 attack pct=104 → [💲] 32.99 🇹🇷#28[T1]（约 53272 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2645 leo_tx B=519532 L=5116 d=101.6 nb=1 neut=0 cmds=45 noFull=1 shQ=129883 | m=0.900 worth=91.4 cheap=8.8 over=1 dMedOther=71.0 safe(-1)=450208
+    → [💲] 32.99 🇹🇷#28[T1] terr=11556 bal=998541 dq=86.4 cnt=39 | c=216.1 rankC=216.1 need=1658371 tD=1.22 人 pulse | safe=450208 keep=460440 avail=53004 chunkB=103906 pulseB=62344 
+    ⇒ 影子指令 attack pct=104 → [💲] 32.99 🇹🇷#28[T1]（约 53272 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2650 leo_tx B=470549 L=5116 d=92.0 nb=1 neut=0 cmds=45 noFull=1 shQ=72104 | m=0.900 worth=82.8 cheap=8.8 over=0 dMedOther=72.0 safe(-1)=450208
+    → [💲] 32.99 🇹🇷#28[T1] terr=11556 bal=1010723 dq=87.5 cnt=39 | c=212.3 rankC=212.3 need=1630960 tD=1.22 人 pulse | safe=450208 keep=Inf avail=-Inf chunkB=94110 pulseB=56466 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2700 leo_tx B=355778 L=5716 d=62.2 nb=1 neut=0 cmds=45 noFull=1 shQ=87551 | m=0.900 worth=56.0 cheap=8.6 over=0 dMedOther=73.0 safe(-1)=503008
+    → [💲] 32.99 🇹🇷#28[T1] terr=10956 bal=995183 dq=90.8 cnt=63 | c=306.5 rankC=306.5 need=1628930 tD=1.24 人 pulse crowdedHard | safe=503008 keep=Inf avail=-Inf chunkB=71156 pulseB=42693 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2750 leo_tx B=376709 L=5716 d=65.9 nb=1 neut=0 cmds=45 noFull=1 shQ=94177 | m=0.900 worth=59.3 cheap=8.6 over=0 dMedOther=77.3 safe(-1)=503008
+    → [💲] 32.99 🇹🇷#28[T1] terr=10956 bal=1057387 dq=96.5 cnt=63 | c=324.9 rankC=324.9 need=1738190 tD=1.25 人 pulse crowdedHard | safe=503008 keep=Inf avail=-Inf chunkB=75342 pulseB=45205 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2800 leo_tx B=404587 L=5716 d=70.8 nb=1 neut=0 cmds=45 noFull=1 shQ=99757 | m=0.900 worth=63.7 cheap=8.6 over=0 dMedOther=81.7 safe(-1)=503008
+    → [💲] 32.99 🇹🇷#28[T1] terr=10956 bal=1134102 dq=103.5 cnt=63 | c=190.8 rankC=95.4 need=1872121 tD=1.27 人 pulse crowdedHard | safe=503008 keep=Inf avail=-Inf chunkB=80917 pulseB=48550 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2850 leo_tx B=428390 L=5716 d=74.9 nb=1 neut=0 cmds=45 noFull=1 shQ=107097 | m=0.900 worth=67.5 cheap=8.6 over=0 dMedOther=84.2 safe(-1)=501442
+    → [💲] 32.99 🇹🇷#28[T1] terr=10698 bal=901141 dq=84.2 cnt=60 | c=212.7 rankC=148.9 need=1484596 tD=1.00 人 pulse crowdedHard | safe=501442 keep=Inf avail=-Inf chunkB=85678 pulseB=51407 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2900 leo_tx B=459310 L=5716 d=80.4 nb=1 neut=0 cmds=45 noFull=1 shQ=113440 | m=0.900 worth=72.3 cheap=8.6 over=0 dMedOther=84.0 safe(-1)=503008
+    → [💲] 32.99 🇹🇷#28[T1] terr=11540 bal=969012 dq=84.0 cnt=60 | c=207.1 rankC=207.1 need=1643125 tD=1.00 人 pulse | safe=503008 keep=Inf avail=-Inf chunkB=91862 pulseB=55117 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2950 leo_tx B=486333 L=5716 d=85.1 nb=1 neut=0 cmds=45 noFull=1 shQ=121583 | m=0.900 worth=76.6 cheap=8.6 over=0 dMedOther=88.9 safe(-1)=503008
+    → [💲] 32.99 🇹🇷#28[T1] terr=11462 bal=1018467 dq=88.9 cnt=60 | c=147.7 rankC=88.6 need=1727838 tD=1.00 人 pulse | safe=503008 keep=Inf avail=-Inf chunkB=97267 pulseB=58360 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3000 leo_tx B=520661 L=5716 d=91.1 nb=1 neut=0 cmds=45 noFull=1 shQ=128781 | m=0.900 worth=82.0 cheap=8.6 over=0 dMedOther=93.6 safe(-1)=503008
+    → [💲] 32.99 🇹🇷#28[T1] terr=11402 bal=1084044 dq=95.1 cnt=60 | c=339.5 rankC=492.3 need=1840931 tD=1.02 人 pulse | safe=503008 keep=Inf avail=-Inf chunkB=104132 pulseB=62479 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3050 leo_tx B=551293 L=5716 d=96.4 nb=1 neut=0 cmds=45 noFull=1 shQ=137823 | m=0.900 worth=86.8 cheap=8.6 over=0 dMedOther=96.5 safe(-1)=503008
+    → [💲] 32.99 🇹🇷#28[T1] terr=11402 bal=1151801 dq=101.0 cnt=60 | c=248.4 rankC=248.4 need=1959109 tD=1.05 人 pulse | safe=503008 keep=Inf avail=-Inf chunkB=110259 pulseB=66155 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3090 leo_tx B=577091 L=5716 d=101.0 nb=1 neut=0 cmds=46 noFull=1 shQ=144272 | m=0.900 worth=90.9 cheap=8.6 over=1 dMedOther=99.1 safe(-1)=503008
+    → [💲] 32.99 🇹🇷#28[T1] terr=11402 bal=1205940 dq=105.8 cnt=60 | c=259.8 rankC=259.8 need=2053869 tD=1.07 人 pulse | safe=503008 keep=514440 avail=55889 chunkB=115418 pulseB=69251 
+    ⇒ 影子指令 attack pct=99 → [💲] 32.99 🇹🇷#28[T1]（约 56356 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3095 leo_tx B=577091 L=5716 d=101.0 nb=1 neut=0 cmds=47 noFull=1 shQ=144272 | m=0.900 worth=90.9 cheap=8.6 over=1 dMedOther=95.8 safe(-1)=503008
+    → [💲] 32.99 🇹🇷#28[T1] terr=11402 bal=1205940 dq=105.8 cnt=60 | c=259.8 rankC=259.8 need=2054379 tD=1.10 人 pulse | safe=503008 keep=514440 avail=55889 chunkB=115418 pulseB=69251 
+    ⇒ 影子指令 attack pct=99 → [💲] 32.99 🇹🇷#28[T1]（约 56356 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3100 leo_tx B=589328 L=5716 d=103.1 nb=1 neut=0 cmds=48 noFull=1 shQ=145877 | m=0.900 worth=92.8 cheap=8.6 over=1 dMedOther=97.9 safe(-1)=503008
+    → [💲] 32.99 🇹🇷#28[T1] terr=11402 bal=1230366 dq=107.9 cnt=60 | c=265.0 rankC=265.0 need=2096019 tD=1.10 人 pulse | safe=503008 keep=514440 avail=67982 chunkB=117866 pulseB=70719 
+    ⇒ 影子指令 attack pct=118 → [💲] 32.99 🇹🇷#28[T1]（约 68486 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3105 leo_tx B=589328 L=5716 d=103.1 nb=1 neut=0 cmds=49 noFull=1 shQ=147332 | m=0.900 worth=92.8 cheap=8.6 over=1 dMedOther=97.9 safe(-1)=503008
+    → [💲] 32.99 🇹🇷#28[T1] terr=11402 bal=1230366 dq=107.9 cnt=60 | c=384.2 rankC=557.0 need=2096539 tD=1.10 人 pulse | safe=503008 keep=514440 avail=67982 chunkB=117866 pulseB=70719 
+    ⇒ 影子指令 attack pct=118 → [💲] 32.99 🇹🇷#28[T1]（约 68486 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3145 leo_tx B=676838 L=6304 d=107.4 nb=1 neut=0 cmds=50 noFull=1 shQ=48559 | m=0.900 worth=96.6 cheap=8.6 over=1 dMedOther=93.9 safe(-1)=554752
+    → [💲] 32.99 🇹🇷#28[T1] terr=10249 bal=1077315 dq=105.1 cnt=70 | c=149.2 rankC=74.6 need=1778012 tD=1.12 人 pulse | safe=554752 keep=567360 avail=101547 chunkB=135368 pulseB=81221 
+    ⇒ 影子指令 attack pct=122 → [💲] 32.99 🇹🇷#28[T1]（约 81299 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3150 leo_tx B=683538 L=6304 d=108.4 nb=1 neut=0 cmds=51 noFull=1 shQ=57035 | m=0.900 worth=97.6 cheap=8.6 over=1 dMedOther=95.0 safe(-1)=554752
+    → [💲] 32.99 🇹🇷#28[T1] terr=10180 bal=1072009 dq=105.3 cnt=70 | c=380.3 rankC=551.5 need=1765686 tD=1.11 人 pulse | safe=554752 keep=567360 avail=108168 chunkB=136708 pulseB=82025 
+    ⇒ 影子指令 attack pct=122 → [💲] 32.99 🇹🇷#28[T1]（约 82104 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3155 leo_tx B=683538 L=6304 d=108.4 nb=1 neut=0 cmds=52 noFull=1 shQ=65575 | m=0.900 worth=97.6 cheap=8.6 over=1 dMedOther=95.0 safe(-1)=554752
+    → [💲] 32.99 🇹🇷#28[T1] terr=10180 bal=1072009 dq=105.3 cnt=70 | c=380.3 rankC=551.4 need=1766406 tD=1.11 人 pulse | safe=554752 keep=567360 avail=108168 chunkB=136708 pulseB=82025 
+    ⇒ 影子指令 attack pct=122 → [💲] 32.99 🇹🇷#28[T1]（约 82104 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3200 leo_tx B=480948 L=6916 d=69.5 nb=1 neut=0 cmds=52 noFull=1 shQ=60435 | m=0.900 worth=74.6 cheap=8.5 over=0 dMedOther=97.5 safe(-1)=572663
+    → [💲] 32.99 🇹🇷#28[T1] terr=9568 bal=1029715 dq=107.6 cnt=86 | c=526.2 rankC=763.0 need=1664651 tD=1.10 人 pulse crowdedHard | safe=572663 keep=Inf avail=-Inf chunkB=96190 pulseB=57714 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3250 leo_tx B=649758 L=6916 d=93.9 nb=1 neut=0 cmds=52 noFull=1 shQ=129741 | m=0.900 worth=84.6 cheap=8.5 over=0 dMedOther=100.5 safe(-1)=601269
+    → [💲] 32.99 🇹🇷#28[T1] terr=9568 bal=1080633 dq=112.9 cnt=86 | c=146.8 rankC=73.4 need=1756259 tD=1.12 人 pulse bleeding | safe=601269 keep=Inf avail=-Inf chunkB=129952 pulseB=77971 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3300 leo_tx B=695584 L=6916 d=100.6 nb=1 neut=0 cmds=52 noFull=1 shQ=172193 | m=0.900 worth=90.5 cheap=8.5 over=1 dMedOther=96.6 safe(-1)=550052
+    → [💲] 32.99 🇹🇷#28[T1] terr=8793 bal=989467 dq=112.5 cnt=86 | c=382.2 rankC=382.2 need=1562567 tD=1.16 人 pulse crowdedHard | safe=550052 keep=622440 avail=64993 chunkB=139117 pulseB=83470 
+    ⇒ 本拍没有指令
+t=3350 leo_tx B=734907 L=6916 d=106.3 nb=1 neut=0 cmds=52 noFull=1 shQ=183709 | m=0.900 worth=95.6 cheap=8.5 over=1 dMedOther=97.7 safe(-1)=572145
+    → [💲] 32.99 🇹🇷#28[T1] terr=8773 bal=1028792 dq=117.3 cnt=86 | c=172.9 rankC=64.3 need=1633204 tD=1.20 人 pulse crowdedHard | safe=572145 keep=622440 avail=103855 chunkB=146981 pulseB=88189 
+    ⇒ 本拍没有指令
+t=3375 leo_tx B=749900 L=6916 d=108.4 nb=1 neut=0 cmds=53 noFull=1 shQ=187475 | m=0.900 worth=97.6 cheap=8.5 over=1 dMedOther=100.1 safe(-1)=561035
+    → [💲] 32.99 🇹🇷#28[T1] terr=8582 bal=1009017 dq=117.6 cnt=86 | c=106.5 rankC=32.0 need=1591696 tD=1.17 人 pulse bleeding | safe=561035 keep=622440 avail=118673 chunkB=149980 pulseB=89988 
+    ⇒ 影子指令 attack pct=122 → [💲] 32.99 🇹🇷#28[T1]（约 90075 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3380 leo_tx B=757249 L=6916 d=109.5 nb=1 neut=0 cmds=54 noFull=1 shQ=189312 | m=0.900 worth=98.5 cheap=8.5 over=1 dMedOther=101.1 safe(-1)=559812
+    → [💲] 32.99 🇹🇷#28[T1] terr=8529 bal=1006840 dq=118.0 cnt=85 | c=126.9 rankC=47.2 need=1584914 tD=1.17 人 pulse | safe=559812 keep=622440 avail=125935 chunkB=151450 pulseB=90870 
+    ⇒ 影子指令 attack pct=122 → [💲] 32.99 🇹🇷#28[T1]（约 90958 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3385 leo_tx B=757249 L=6916 d=109.5 nb=1 neut=0 cmds=55 noFull=1 shQ=189312 | m=0.900 worth=98.5 cheap=8.5 over=1 dMedOther=100.9 safe(-1)=548799
+    → [💲] 32.99 🇹🇷#28[T1] terr=8425 bal=987237 dq=117.2 cnt=84 | c=128.9 rankC=48.0 need=1546590 tD=1.16 人 pulse | safe=548799 keep=622440 avail=125935 chunkB=151450 pulseB=90870 
+    ⇒ 影子指令 attack pct=122 → [💲] 32.99 🇹🇷#28[T1]（约 90958 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3400 leo_tx B=591260 L=7081 d=83.5 nb=1 neut=0 cmds=55 noFull=1 shQ=93547 | m=0.900 worth=75.1 cheap=8.5 over=0 dMedOther=97.6 safe(-1)=505099
+    → [💲] 32.99 🇹🇷#28[T1] terr=7881 bal=909697 dq=115.4 cnt=85 | c=88.7 rankC=26.6 need=1273301 tD=1.18 人 pulse bleeding | safe=505099 keep=Inf avail=-Inf chunkB=118252 pulseB=70951 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3425 leo_tx B=690851 L=7559 d=91.4 nb=1 neut=0 cmds=56 noFull=1 shQ=139914 | m=0.900 worth=82.3 cheap=8.4 over=0 dMedOther=99.0 safe(-1)=398856
+    → [💲] 32.99 🇹🇷#28[T1] terr=6775 bal=721302 dq=106.5 cnt=77 | c=45.0 rankC=13.5 need=1006952 tD=1.08 人 pulse nearCollapse bleeding | safe=398856 keep=538257 avail=144499 chunkB=138170 pulseB=82902 
+    ⇒ 影子指令 attack pct=214 → [💲] 32.99 🇹🇷#28[T1]（约 145051 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=3430 leo_tx B=699003 L=7559 d=92.5 nb=1 neut=0 cmds=57 noFull=1 shQ=150213 | m=0.900 worth=83.2 cheap=8.4 over=0 dMedOther=101.2 safe(-1)=387149
+    → [💲] 32.99 🇹🇷#28[T1] terr=6609 bal=700464 dq=106.0 cnt=75 | c=47.4 rankC=14.2 need=961886 tD=1.05 人 pulse nearCollapse bleeding | safe=387149 keep=552000 avail=138812 chunkB=139801 pulseB=83880 
+    ⇒ 影子指令 attack pct=203 → [💲] 32.99 🇹🇷#28[T1]（约 139254 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=3435 leo_tx B=699003 L=7559 d=92.5 nb=1 neut=0 cmds=58 noFull=1 shQ=160608 | m=0.900 worth=83.2 cheap=8.4 over=0 dMedOther=101.2 safe(-1)=368614
+    → [💲] 32.99 🇹🇷#28[T1] terr=6413 bal=667472 dq=104.1 cnt=73 | c=35.7 rankC=10.7 need=897325 tD=1.03 人 pulse nearCollapse bleeding | safe=368614 keep=505774 avail=185038 chunkB=139801 pulseB=83880 
+    ⇒ 影子指令 attack pct=271 → [💲] 32.99 🇹🇷#28[T1]（约 185672 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=3440 leo_tx B=707251 L=7559 d=93.6 nb=1 neut=0 cmds=59 noFull=1 shQ=171028 | m=0.900 worth=84.2 cheap=8.4 over=0 dMedOther=102.1 safe(-1)=354900
+    → [💲] 32.99 🇹🇷#28[T1] terr=6223 bal=643060 dq=103.3 cnt=71 | c=33.6 rankC=10.1 need=844846 tD=1.01 人 pulse nearCollapse bleeding | safe=354900 keep=501608 avail=197355 chunkB=141450 pulseB=84870 
+    ⇒ 影子指令 attack pct=285 → [💲] 32.99 🇹🇷#28[T1]（约 197532 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=3450 leo_tx B=439480 L=7559 d=58.1 nb=1 neut=0 cmds=59 noFull=1 shQ=6475 | m=0.900 worth=74.0 cheap=8.4 over=0 dMedOther=96.7 safe(-1)=328047
+    → [💲] 32.99 🇹🇷#28[T1] terr=5888 bal=595263 dq=101.1 cnt=58 | c=0.7 rankC=0.2 need=488830 tD=1.05 人 pulse nearCollapse bleeding | safe=328047 keep=328047 avail=106283 chunkB=87896 pulseB=52738 
+    ⇒ 本拍没有指令
+t=3500 leo_tx B=247242 L=8528 d=29.0 nb=1 neut=0 cmds=59 noFull=1 shQ=43364 | m=0.900 worth=70.2 cheap=8.4 over=0 dMedOther=91.7 safe(-1)=150366
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3550 leo_tx B=407248 L=9426 d=43.2 nb=0 neut=47 cmds=59 noFull=1 shQ=101812 | m=0.900 worth=73.8 cheap=8.3 over=0 dMedOther=96.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3600 leo_tx B=442475 L=10030 d=44.1 nb=0 neut=25 cmds=59 noFull=1 shQ=108156 | m=0.900 worth=73.6 cheap=8.2 over=0 dMedOther=96.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令

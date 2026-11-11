@@ -1,0 +1,129 @@
+{
+ "matchId": "B029",
+ "W": 1756,
+ "H": 1000,
+ "edgeLimit": 120,
+ "squad": {
+  "n": 18,
+  "edgeMedian": 106.0,
+  "nearEdge": 12,
+  "nnAny": 84.07199439977882,
+  "nnMate": 98.40036184591395,
+  "nnWild": 140.37658798848773,
+  "nearestIsMate": 15
+ },
+ "others": {
+  "n": 43,
+  "edgeMedian": 277,
+  "nearEdge": 4,
+  "nnAny": 68.41052550594829
+ },
+ "groups": [
+  {
+   "n": 9,
+   "bots": [
+    "Angkor",
+    "Senna",
+    "Two Sicilies",
+    "Moldavia",
+    "Khazar",
+    "Cumania",
+    "DioBrando",
+    "Scorpion",
+    "Erwin"
+   ],
+   "teams": {
+    "5": 2,
+    "4": 2,
+    "2": 2,
+    "3": 3
+   },
+   "crossPairs": 12,
+   "samePairs": 4
+  },
+  {
+   "n": 7,
+   "bots": [
+    "Marlborough",
+    "Interpol",
+    "Lelouch",
+    "Goku",
+    "SyntaxError",
+    "Iceland",
+    "Conde"
+   ],
+   "teams": {
+    "3": 3,
+    "5": 1,
+    "4": 1,
+    "2": 2
+   },
+   "crossPairs": 6,
+   "samePairs": 1
+  },
+  {
+   "n": 2,
+   "bots": [
+    "Tomato",
+    "Anya"
+   ],
+   "teams": {
+    "3": 1,
+    "4": 1
+   },
+   "crossPairs": 1,
+   "samePairs": 0
+  }
+ ],
+ "edgeRows": [
+  {
+   "side": "上",
+   "bots": [
+    "Angkor",
+    "Two Sicilies",
+    "Senna",
+    "Erwin",
+    "Scorpion",
+    "Tomato",
+    "Anya"
+   ],
+   "gaps": [
+    0,
+    100,
+    116,
+    60,
+    504,
+    0
+   ],
+   "teams": [
+    2,
+    3,
+    4,
+    5
+   ]
+  },
+  {
+   "side": "下",
+   "bots": [
+    "Lelouch",
+    "SyntaxError",
+    "Marlborough",
+    "Goku",
+    "Interpol"
+   ],
+   "gaps": [
+    240,
+    133,
+    171,
+    176
+   ],
+   "teams": [
+    2,
+    3,
+    4,
+    5
+   ]
+  }
+ ],
+ "nn3CrossTeamMates": 26
+}

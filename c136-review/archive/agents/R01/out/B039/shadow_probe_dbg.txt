@@ -1,0 +1,63 @@
+t=355 baseRate() -> 0.06
+t=355 dpNeutral() -> undefined
+t=355 expandNeutral(2162.1194) -> undefined
+t=355 winRatio() -> 0.71
+t=355 price(483) -> 2.14
+t=355 allow(483) -> true
+t=355 price(483) -> 2.14
+t=355 dpKeep() -> 0
+t=355 winFloor(483) -> 1986.69
+t=355 peopleFloor() -> 0
+t=355 floorFor(483,2134.6146534653467) -> 1986.69
+t=355 price(483) -> 2.14
+t=355 food(483) -> true
+t=355 minShare(483) -> 0.21
+t=355 winRatio() -> 0.71
+t=355 price(379) -> 2.11
+t=355 allow(379) -> true
+t=355 price(379) -> 2.11
+t=355 dpKeep() -> 0
+t=355 winFloor(379) -> 1969.74
+t=355 peopleFloor() -> 0
+t=355 floorFor(379,2103.2025000000003) -> 1969.74
+t=355 price(379) -> 2.11
+t=355 food(379) -> true
+t=355 minShare(379) -> 0.21
+t=355 pickTarget(fn,338.1478) -> null
+t=355 boatFood() -> false
+t=355   机器人邻居 AI#483（地161 兵7 空槽1 正打我0）的其他邻居按余额从小到大：（无）
+t=355   机器人邻居 AI#379（地179 兵6 空槽1 正打我0）的其他邻居按余额从小到大：（无）
+t=355 状态 bal=2170 terr=679 dens=3.2 neutral=41 coast=13 noFull=0 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: AI#483[T0 地161 密0.0 机] AI#379[T0 地179 密0.0 机]
+t=355 dpKeep() -> 0
+t=355 winFloor(483) -> 1986.69
+t=355 dpKeep() -> 0
+t=355 winFloor(379) -> 1969.74
+t=356 baseRate() -> 0.06
+t=356 状态 bal=2170 terr=679 dens=3.2 neutral=41 coast=13 noFull=0 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: AI#483[T0 地161 密0.0 机] AI#379[T0 地179 密0.0 机]
+t=357 baseRate() -> 0.06
+t=357 状态 bal=2170 terr=679 dens=3.2 neutral=41 coast=13 noFull=0 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: AI#483[T0 地161 密0.4 机] AI#379[T0 地179 密0.0 机]
+t=358 baseRate() -> 0.06
+t=358 状态 bal=1150 terr=679 dens=1.7 neutral=41 coast=13 noFull=0 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: AI#483[T0 地161 密0.4 机] AI#379[T0 地179 密0.2 机]
+t=359 baseRate() -> 0.06
+t=359 状态 bal=1150 terr=679 dens=1.7 neutral=41 coast=13 noFull=0 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: AI#483[T0 地161 密0.4 机] AI#379[T0 地179 密0.2 机]
+t=360 baseRate() -> 0.06
+t=360 dpNeutral() -> undefined
+t=360 expandNeutral(1157.5924) -> undefined
+t=360 winRatio() -> 0.72
+t=360 allow(483) -> false
+t=360 winRatio() -> 0.72
+t=360 allow(379) -> false
+t=360 pickTarget(fn,338.1478) -> null
+t=360 boatFood() -> false
+t=360   机器人邻居 AI#483（地161 兵64 空槽1 正打我0）的其他邻居按余额从小到大：（无）
+t=360   机器人邻居 AI#379（地179 兵34 空槽1 正打我0）的其他邻居按余额从小到大：（无）
+t=360 状态 bal=1217 terr=679 dens=1.8 neutral=41 coast=13 noFull=0 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: AI#483[T0 地161 密0.4 机] AI#379[T0 地179 密0.2 机]
+t=360 dpKeep() -> 0
+t=360 winFloor(483) -> 2553.4
+t=360 dpKeep() -> 0
+t=360 winFloor(379) -> 2204.96
+t=360 dpKeep() -> 0
+t=361 baseRate() -> 0.06
+t=361 状态 bal=1217 terr=679 dens=1.8 neutral=41 coast=13 noFull=0 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: AI#483[T0 地161 密0.4 机] AI#379[T0 地179 密0.2 机]
+t=362 baseRate() -> 0.06
+t=362 状态 bal=1217 terr=679 dens=1.8 neutral=41 coast=13 noFull=0 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: AI#483[T0 地161 密0.4 机] AI#379[T0 地179 密0.2 机]

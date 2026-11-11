@@ -1,0 +1,6770 @@
+{
+ "checks": [
+  {
+   "name": "结算记录数 = 119",
+   "ok": true,
+   "value": 119
+  },
+  {
+   "name": "日志对局数 = 10",
+   "ok": true,
+   "value": 10
+  },
+  {
+   "name": "日志 7992 行之后没有对局内容",
+   "ok": true,
+   "value": null
+  },
+  {
+   "name": "日志里的 [RESULT] 行数 = 有日志房间的结算记录数",
+   "ok": true,
+   "value": 77
+  },
+  {
+   "name": "G00 日志 [RESULT] 行与结算记录逐条一致",
+   "ok": true,
+   "value": 8
+  },
+  {
+   "name": "G01 日志 [RESULT] 行与结算记录逐条一致",
+   "ok": true,
+   "value": 8
+  },
+  {
+   "name": "G02 日志 [RESULT] 行与结算记录逐条一致",
+   "ok": true,
+   "value": 8
+  },
+  {
+   "name": "G03 日志 [RESULT] 行与结算记录逐条一致",
+   "ok": true,
+   "value": 8
+  },
+  {
+   "name": "G04 日志 [RESULT] 行与结算记录逐条一致",
+   "ok": true,
+   "value": 8
+  },
+  {
+   "name": "G05 日志 [RESULT] 行与结算记录逐条一致",
+   "ok": true,
+   "value": 8
+  },
+  {
+   "name": "G06 日志 [RESULT] 行与结算记录逐条一致",
+   "ok": true,
+   "value": 8
+  },
+  {
+   "name": "G07 日志 [RESULT] 行与结算记录逐条一致",
+   "ok": true,
+   "value": 8
+  },
+  {
+   "name": "G08 日志 [RESULT] 行与结算记录逐条一致",
+   "ok": true,
+   "value": 7
+  },
+  {
+   "name": "G09 日志 [RESULT] 行与结算记录逐条一致",
+   "ok": true,
+   "value": 6
+  },
+  {
+   "name": "房间内开局时刻最大差 <= 5000 ms",
+   "ok": true,
+   "value": 2051
+  },
+  {
+   "name": "相邻房间开局时刻最小间隔 > 4 倍容差",
+   "ok": true,
+   "value": 29916
+  }
+ ],
+ "params": {
+  "MAX_LOG_LINE": 7992,
+  "ROOM_TOL_MS": 5000,
+  "SNAP_TICKS": [
+   630,
+   1530,
+   3060,
+   4500
+  ],
+  "SNAP_TOL": 90
+ },
+ "rooms": [
+  {
+   "H": 50,
+   "T": 0,
+   "T_nominal": null,
+   "T_obs": 0,
+   "T_rule": null,
+   "T_rule_if_all_bots_tagged": null,
+   "T_source": "obs(lower bound)",
+   "clan_for_rule": null,
+   "events": {
+    "left": 3
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "P1",
+   "kind": "played",
+   "land": 762763,
+   "last_view": null,
+   "log": null,
+   "max_tick": 1638,
+   "mine_values": [],
+   "n_bots_results": 3,
+   "n_played_records": 3,
+   "n_records": 3,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 18,
+     "alivePlayers": 506,
+     "at": "2026-11-07T14:43:49.191Z",
+     "balance": 2229,
+     "best": null,
+     "bot": "[Nope] ryan_m",
+     "event": "left",
+     "me": 24,
+     "mine": null,
+     "peak": 724,
+     "place": 8,
+     "result": "left",
+     "row": 4,
+     "seconds": 101,
+     "sent": 18,
+     "territory": 724,
+     "tick": 357,
+     "totals": null,
+     "why": "reload"
+    },
+    {
+     "accepted": 12,
+     "alivePlayers": 506,
+     "at": "2026-11-07T14:43:50.511Z",
+     "balance": 2193,
+     "best": null,
+     "bot": "[Nope] dave_w",
+     "event": "left",
+     "me": 22,
+     "mine": null,
+     "peak": 684,
+     "place": 14,
+     "result": "left",
+     "row": 5,
+     "seconds": 102,
+     "sent": 12,
+     "territory": 684,
+     "tick": 371,
+     "totals": null,
+     "why": "reload"
+    },
+    {
+     "accepted": 74,
+     "alivePlayers": 76,
+     "at": "2026-11-07T14:45:01.098Z",
+     "balance": 128270,
+     "best": null,
+     "bot": "[Nope] leo_tx",
+     "event": "left",
+     "me": 21,
+     "mine": null,
+     "peak": 32225,
+     "place": 3,
+     "result": "left",
+     "row": 6,
+     "seconds": 172,
+     "sent": 78,
+     "territory": 32225,
+     "tick": 1638,
+     "totals": null,
+     "why": "reload"
+    }
+   ],
+   "results": {
+    "left": 3
+   },
+   "saw_end": false,
+   "snapshots": null,
+   "split": false,
+   "squad_outcome": "lost_inferred",
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794062528397,
+   "t0_spread_ms": 210,
+   "t0_utc": "2026-11-07T14:42:08.397Z",
+   "why": {
+    "reload": 3
+   }
+  },
+  {
+   "H": 38,
+   "T": null,
+   "T_nominal": null,
+   "T_obs": 0,
+   "T_rule": null,
+   "T_rule_if_all_bots_tagged": null,
+   "T_source": null,
+   "clan_for_rule": null,
+   "events": {
+    "left": 2
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "A01",
+   "kind": "aborted",
+   "land": 547479,
+   "last_view": null,
+   "log": null,
+   "max_tick": 0,
+   "mine_values": [],
+   "n_bots_results": 2,
+   "n_played_records": 0,
+   "n_records": 2,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 2,
+     "alivePlayers": 512,
+     "at": "2026-11-07T14:42:40.341Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] lucas94",
+     "event": "left",
+     "me": 5,
+     "mine": null,
+     "peak": 0,
+     "place": 6,
+     "result": "left",
+     "row": 0,
+     "seconds": 2,
+     "sent": 2,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    },
+    {
+     "accepted": 2,
+     "alivePlayers": 512,
+     "at": "2026-11-07T14:42:40.517Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] ethan21",
+     "event": "left",
+     "me": 14,
+     "mine": null,
+     "peak": 0,
+     "place": 15,
+     "result": "left",
+     "row": 1,
+     "seconds": 2,
+     "sent": 2,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 2
+   },
+   "saw_end": false,
+   "snapshots": null,
+   "split": false,
+   "squad_outcome": null,
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794062558495,
+   "t0_spread_ms": 329,
+   "t0_utc": "2026-11-07T14:42:38.495Z",
+   "why": {}
+  },
+  {
+   "H": 65,
+   "T": null,
+   "T_nominal": null,
+   "T_obs": 0,
+   "T_rule": null,
+   "T_rule_if_all_bots_tagged": null,
+   "T_source": null,
+   "clan_for_rule": null,
+   "events": {
+    "left": 1
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "A02",
+   "kind": "aborted",
+   "land": 664497,
+   "last_view": null,
+   "log": null,
+   "max_tick": 0,
+   "mine_values": [],
+   "n_bots_results": 1,
+   "n_played_records": 0,
+   "n_records": 1,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 2,
+     "alivePlayers": 512,
+     "at": "2026-11-07T14:43:10.739Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] lucas94",
+     "event": "left",
+     "me": 22,
+     "mine": null,
+     "peak": 0,
+     "place": 23,
+     "result": "left",
+     "row": 2,
+     "seconds": 2,
+     "sent": 2,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 1
+   },
+   "saw_end": false,
+   "snapshots": null,
+   "split": false,
+   "squad_outcome": null,
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794062588708,
+   "t0_spread_ms": 0,
+   "t0_utc": "2026-11-07T14:43:08.708Z",
+   "why": {}
+  },
+  {
+   "H": 37,
+   "T": null,
+   "T_nominal": null,
+   "T_obs": 0,
+   "T_rule": null,
+   "T_rule_if_all_bots_tagged": null,
+   "T_source": null,
+   "clan_for_rule": null,
+   "events": {
+    "left": 1
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "A03",
+   "kind": "aborted",
+   "land": 430654,
+   "last_view": null,
+   "log": null,
+   "max_tick": 0,
+   "mine_values": [],
+   "n_bots_results": 1,
+   "n_played_records": 0,
+   "n_records": 1,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 2,
+     "alivePlayers": 512,
+     "at": "2026-11-07T14:43:42.173Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] lucas94",
+     "event": "left",
+     "me": 6,
+     "mine": null,
+     "peak": 0,
+     "place": 7,
+     "result": "left",
+     "row": 3,
+     "seconds": 4,
+     "sent": 2,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 1
+   },
+   "saw_end": false,
+   "snapshots": null,
+   "split": false,
+   "squad_outcome": null,
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794062618624,
+   "t0_spread_ms": 0,
+   "t0_utc": "2026-11-07T14:43:38.624Z",
+   "why": {}
+  },
+  {
+   "H": 38,
+   "T": 4,
+   "T_nominal": null,
+   "T_obs": 4,
+   "T_rule": null,
+   "T_rule_if_all_bots_tagged": null,
+   "T_source": "obs(lower bound)",
+   "clan_for_rule": null,
+   "events": {
+    "died": 3,
+    "left": 5
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "P2",
+   "kind": "played",
+   "land": 374820,
+   "last_view": {
+    "best": 1,
+    "best_share_of_land": 0.4853422976361987,
+    "bot": "[Nope] ethan21",
+    "mine": 3,
+    "mine_share_of_land": 0.08241822741582626,
+    "teams_alive": 4,
+    "tick": 5633
+   },
+   "log": null,
+   "max_tick": 6013,
+   "mine_values": [
+    3
+   ],
+   "n_bots_results": 8,
+   "n_played_records": 8,
+   "n_records": 8,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 68,
+     "alivePlayers": 37,
+     "at": "2026-11-07T14:54:08.003Z",
+     "balance": 267300,
+     "best": null,
+     "bot": "[Nope] kevin_k",
+     "event": "left",
+     "me": 23,
+     "mine": null,
+     "peak": 16315,
+     "place": 4,
+     "result": "left",
+     "row": 7,
+     "seconds": 180,
+     "sent": 69,
+     "territory": 16315,
+     "tick": 1890,
+     "totals": null,
+     "why": "reload"
+    },
+    {
+     "accepted": 95,
+     "alivePlayers": 21,
+     "at": "2026-11-07T14:55:46.666Z",
+     "balance": 260677,
+     "best": 1,
+     "bot": "[Nope] lucas94",
+     "event": "died",
+     "me": 25,
+     "mine": 3,
+     "peak": 11090,
+     "place": 22,
+     "result": "lost",
+     "row": 8,
+     "seconds": 279,
+     "sent": 96,
+     "territory": 0,
+     "tick": 4615,
+     "totals": {
+      "0": 502,
+      "1": 159189,
+      "2": 114189,
+      "3": 77926,
+      "4": 18597
+     },
+     "why": null
+    },
+    {
+     "accepted": 69,
+     "alivePlayers": 24,
+     "at": "2026-11-07T14:55:58.443Z",
+     "balance": 189204,
+     "best": null,
+     "bot": "[Nope] noah88",
+     "event": "left",
+     "me": 26,
+     "mine": null,
+     "peak": 4980,
+     "place": 22,
+     "result": "left",
+     "row": 9,
+     "seconds": 290,
+     "sent": 69,
+     "territory": 1412,
+     "tick": 3738,
+     "totals": null,
+     "why": "reload"
+    },
+    {
+     "accepted": 70,
+     "alivePlayers": 24,
+     "at": "2026-11-07T14:55:58.611Z",
+     "balance": 1489313,
+     "best": null,
+     "bot": "[Nope] ryan_m",
+     "event": "left",
+     "me": 24,
+     "mine": null,
+     "peak": 15578,
+     "place": 13,
+     "result": "left",
+     "row": 10,
+     "seconds": 291,
+     "sent": 73,
+     "territory": 13048,
+     "tick": 3745,
+     "totals": null,
+     "why": "reload"
+    },
+    {
+     "accepted": 97,
+     "alivePlayers": 17,
+     "at": "2026-11-07T14:56:35.779Z",
+     "balance": 517975,
+     "best": 1,
+     "bot": "[Nope] leo_tx",
+     "event": "died",
+     "me": 27,
+     "mine": 3,
+     "peak": 30295,
+     "place": 18,
+     "result": "lost",
+     "row": 11,
+     "seconds": 328,
+     "sent": 101,
+     "territory": 0,
+     "tick": 5492,
+     "totals": {
+      "1": 173560,
+      "2": 138650,
+      "3": 37165,
+      "4": 19185
+     },
+     "why": null
+    },
+    {
+     "accepted": 93,
+     "alivePlayers": 16,
+     "at": "2026-11-07T14:56:43.746Z",
+     "balance": 145621,
+     "best": 1,
+     "bot": "[Nope] ethan21",
+     "event": "died",
+     "me": 22,
+     "mine": 3,
+     "peak": 11356,
+     "place": 17,
+     "result": "lost",
+     "row": 12,
+     "seconds": 336,
+     "sent": 96,
+     "territory": 0,
+     "tick": 5633,
+     "totals": {
+      "1": 181916,
+      "2": 139632,
+      "3": 30892,
+      "4": 19254
+     },
+     "why": null
+    },
+    {
+     "accepted": 132,
+     "alivePlayers": 15,
+     "at": "2026-11-07T14:57:05.461Z",
+     "balance": 1843424,
+     "best": null,
+     "bot": "[Nope] mark07",
+     "event": "left",
+     "me": 29,
+     "mine": null,
+     "peak": 20667,
+     "place": 10,
+     "result": "left",
+     "row": 13,
+     "seconds": 357,
+     "sent": 136,
+     "territory": 15911,
+     "tick": 6010,
+     "totals": null,
+     "why": null
+    },
+    {
+     "accepted": 100,
+     "alivePlayers": 15,
+     "at": "2026-11-07T14:57:05.673Z",
+     "balance": 897637,
+     "best": null,
+     "bot": "[Nope] dave_w",
+     "event": "left",
+     "me": 28,
+     "mine": null,
+     "peak": 11753,
+     "place": 11,
+     "result": "left",
+     "row": 14,
+     "seconds": 357,
+     "sent": 100,
+     "territory": 10321,
+     "tick": 6013,
+     "totals": null,
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 5,
+    "lost": 3
+   },
+   "saw_end": false,
+   "snapshots": null,
+   "split": false,
+   "squad_outcome": "lost_inferred",
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794063068000,
+   "t0_spread_ms": 228,
+   "t0_utc": "2026-11-07T14:51:08.000Z",
+   "why": {
+    "reload": 3
+   }
+  },
+  {
+   "H": 50,
+   "T": null,
+   "T_nominal": null,
+   "T_obs": 0,
+   "T_rule": null,
+   "T_rule_if_all_bots_tagged": null,
+   "T_source": null,
+   "clan_for_rule": null,
+   "events": {
+    "left": 3
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "A04",
+   "kind": "aborted",
+   "land": 430654,
+   "last_view": null,
+   "log": null,
+   "max_tick": 0,
+   "mine_values": [],
+   "n_bots_results": 3,
+   "n_played_records": 0,
+   "n_records": 3,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 2,
+     "alivePlayers": 512,
+     "at": "2026-11-07T14:57:40.599Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] dave_w",
+     "event": "left",
+     "me": 6,
+     "mine": null,
+     "peak": 0,
+     "place": 7,
+     "result": "left",
+     "row": 15,
+     "seconds": 2,
+     "sent": 2,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    },
+    {
+     "accepted": 2,
+     "alivePlayers": 512,
+     "at": "2026-11-07T14:57:40.746Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] lucas94",
+     "event": "left",
+     "me": 3,
+     "mine": null,
+     "peak": 0,
+     "place": 4,
+     "result": "left",
+     "row": 16,
+     "seconds": 3,
+     "sent": 2,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    },
+    {
+     "accepted": 2,
+     "alivePlayers": 512,
+     "at": "2026-11-07T14:57:40.928Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] leo_tx",
+     "event": "left",
+     "me": 18,
+     "mine": null,
+     "peak": 0,
+     "place": 19,
+     "result": "left",
+     "row": 17,
+     "seconds": 3,
+     "sent": 2,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 3
+   },
+   "saw_end": false,
+   "snapshots": null,
+   "split": false,
+   "squad_outcome": null,
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794063458225,
+   "t0_spread_ms": 347,
+   "t0_utc": "2026-11-07T14:57:38.225Z",
+   "why": {}
+  },
+  {
+   "H": 43,
+   "T": null,
+   "T_nominal": null,
+   "T_obs": 0,
+   "T_rule": null,
+   "T_rule_if_all_bots_tagged": null,
+   "T_source": null,
+   "clan_for_rule": null,
+   "events": {
+    "left": 3
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "A05",
+   "kind": "aborted",
+   "land": 374820,
+   "last_view": null,
+   "log": null,
+   "max_tick": 0,
+   "mine_values": [],
+   "n_bots_results": 3,
+   "n_played_records": 0,
+   "n_records": 3,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 2,
+     "alivePlayers": 512,
+     "at": "2026-11-07T14:58:10.681Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] lucas94",
+     "event": "left",
+     "me": 1,
+     "mine": null,
+     "peak": 0,
+     "place": 2,
+     "result": "left",
+     "row": 18,
+     "seconds": 3,
+     "sent": 2,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    },
+    {
+     "accepted": 2,
+     "alivePlayers": 512,
+     "at": "2026-11-07T14:58:10.797Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] dave_w",
+     "event": "left",
+     "me": 13,
+     "mine": null,
+     "peak": 0,
+     "place": 14,
+     "result": "left",
+     "row": 19,
+     "seconds": 3,
+     "sent": 2,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    },
+    {
+     "accepted": 2,
+     "alivePlayers": 512,
+     "at": "2026-11-07T14:58:10.859Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] leo_tx",
+     "event": "left",
+     "me": 11,
+     "mine": null,
+     "peak": 0,
+     "place": 12,
+     "result": "left",
+     "row": 20,
+     "seconds": 3,
+     "sent": 2,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 3
+   },
+   "saw_end": false,
+   "snapshots": null,
+   "split": false,
+   "squad_outcome": null,
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794063488141,
+   "t0_spread_ms": 175,
+   "t0_utc": "2026-11-07T14:58:08.141Z",
+   "why": {}
+  },
+  {
+   "H": 38,
+   "T": null,
+   "T_nominal": null,
+   "T_obs": 0,
+   "T_rule": null,
+   "T_rule_if_all_bots_tagged": null,
+   "T_source": null,
+   "clan_for_rule": null,
+   "events": {
+    "left": 2
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "A06",
+   "kind": "aborted",
+   "land": 480957,
+   "last_view": null,
+   "log": null,
+   "max_tick": 0,
+   "mine_values": [],
+   "n_bots_results": 2,
+   "n_played_records": 0,
+   "n_records": 2,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 1,
+     "alivePlayers": 512,
+     "at": "2026-11-07T14:58:38.628Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] lucas94",
+     "event": "left",
+     "me": 7,
+     "mine": null,
+     "peak": 0,
+     "place": 8,
+     "result": "left",
+     "row": 21,
+     "seconds": 1,
+     "sent": 1,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    },
+    {
+     "accepted": 2,
+     "alivePlayers": 512,
+     "at": "2026-11-07T14:58:40.911Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] dave_w",
+     "event": "left",
+     "me": 11,
+     "mine": null,
+     "peak": 0,
+     "place": 12,
+     "result": "left",
+     "row": 22,
+     "seconds": 3,
+     "sent": 2,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 2
+   },
+   "saw_end": false,
+   "snapshots": null,
+   "split": false,
+   "squad_outcome": null,
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794063518119,
+   "t0_spread_ms": 246,
+   "t0_utc": "2026-11-07T14:58:38.119Z",
+   "why": {}
+  },
+  {
+   "H": 40,
+   "T": null,
+   "T_nominal": null,
+   "T_obs": 0,
+   "T_rule": null,
+   "T_rule_if_all_bots_tagged": null,
+   "T_source": null,
+   "clan_for_rule": null,
+   "events": {
+    "left": 1
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "A07",
+   "kind": "aborted",
+   "land": 492822,
+   "last_view": null,
+   "log": null,
+   "max_tick": 0,
+   "mine_values": [],
+   "n_bots_results": 1,
+   "n_played_records": 0,
+   "n_records": 1,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 1,
+     "alivePlayers": 512,
+     "at": "2026-11-07T14:59:08.707Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] leo_tx",
+     "event": "left",
+     "me": 8,
+     "mine": null,
+     "peak": 0,
+     "place": 9,
+     "result": "left",
+     "row": 23,
+     "seconds": 1,
+     "sent": 1,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 1
+   },
+   "saw_end": false,
+   "snapshots": null,
+   "split": false,
+   "squad_outcome": null,
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794063548197,
+   "t0_spread_ms": 0,
+   "t0_utc": "2026-11-07T14:59:08.197Z",
+   "why": {}
+  },
+  {
+   "H": 50,
+   "T": null,
+   "T_nominal": null,
+   "T_obs": 0,
+   "T_rule": null,
+   "T_rule_if_all_bots_tagged": null,
+   "T_source": null,
+   "clan_for_rule": null,
+   "events": {
+    "left": 1
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "A08",
+   "kind": "aborted",
+   "land": 517334,
+   "last_view": null,
+   "log": null,
+   "max_tick": 0,
+   "mine_values": [],
+   "n_bots_results": 1,
+   "n_played_records": 0,
+   "n_records": 1,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 1,
+     "alivePlayers": 512,
+     "at": "2026-11-07T15:00:08.731Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] leo_tx",
+     "event": "left",
+     "me": 10,
+     "mine": null,
+     "peak": 0,
+     "place": 11,
+     "result": "left",
+     "row": 24,
+     "seconds": 1,
+     "sent": 1,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 1
+   },
+   "saw_end": false,
+   "snapshots": null,
+   "split": false,
+   "squad_outcome": null,
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794063608220,
+   "t0_spread_ms": 0,
+   "t0_utc": "2026-11-07T15:00:08.220Z",
+   "why": {}
+  },
+  {
+   "H": 46,
+   "T": 5,
+   "T_nominal": null,
+   "T_obs": 5,
+   "T_rule": null,
+   "T_rule_if_all_bots_tagged": null,
+   "T_source": "obs(lower bound)",
+   "clan_for_rule": null,
+   "events": {
+    "died": 5,
+    "left": 2
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "P3",
+   "kind": "played",
+   "land": 667024,
+   "last_view": {
+    "best": 4,
+    "best_share_of_land": 0.6673058240782941,
+    "bot": "[Nope] dave_w",
+    "mine": 1,
+    "mine_share_of_land": 0.22530973398258533,
+    "teams_alive": 5,
+    "tick": 6791
+   },
+   "log": null,
+   "max_tick": 6791,
+   "mine_values": [
+    1
+   ],
+   "n_bots_results": 7,
+   "n_played_records": 7,
+   "n_records": 7,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 28,
+     "alivePlayers": 512,
+     "at": "2026-11-07T15:18:05.748Z",
+     "balance": 777,
+     "best": null,
+     "bot": "[Nope] noah88",
+     "event": "left",
+     "me": 10,
+     "mine": null,
+     "peak": 144,
+     "place": 31,
+     "result": "left",
+     "row": 25,
+     "seconds": 88,
+     "sent": 28,
+     "territory": 144,
+     "tick": 112,
+     "totals": null,
+     "why": "reload"
+    },
+    {
+     "accepted": 49,
+     "alivePlayers": 40,
+     "at": "2026-11-07T15:20:05.733Z",
+     "balance": 705962,
+     "best": null,
+     "bot": "[Nope] leo_tx",
+     "event": "left",
+     "me": 11,
+     "mine": null,
+     "peak": 13204,
+     "place": 22,
+     "result": "left",
+     "row": 26,
+     "seconds": 208,
+     "sent": 51,
+     "territory": 13204,
+     "tick": 2254,
+     "totals": null,
+     "why": "reload"
+    },
+    {
+     "accepted": 77,
+     "alivePlayers": 17,
+     "at": "2026-11-07T15:22:56.945Z",
+     "balance": 130610,
+     "best": 4,
+     "bot": "[Nope] mark07",
+     "event": "died",
+     "me": 14,
+     "mine": 1,
+     "peak": 17514,
+     "place": 18,
+     "result": "lost",
+     "row": 27,
+     "seconds": 379,
+     "sent": 78,
+     "territory": 0,
+     "tick": 6402,
+     "totals": {
+      "1": 219991,
+      "2": 14037,
+      "3": 21244,
+      "4": 375282,
+      "5": 27105
+     },
+     "why": null
+    },
+    {
+     "accepted": 123,
+     "alivePlayers": 15,
+     "at": "2026-11-07T15:23:12.079Z",
+     "balance": 242501,
+     "best": 4,
+     "bot": "[Nope] ethan21",
+     "event": "died",
+     "me": 13,
+     "mine": 1,
+     "peak": 38871,
+     "place": 16,
+     "result": "lost",
+     "row": 28,
+     "seconds": 394,
+     "sent": 126,
+     "territory": 0,
+     "tick": 6674,
+     "totals": {
+      "1": 170557,
+      "2": 14037,
+      "3": 21755,
+      "4": 424786,
+      "5": 27105
+     },
+     "why": null
+    },
+    {
+     "accepted": 90,
+     "alivePlayers": 14,
+     "at": "2026-11-07T15:23:16.348Z",
+     "balance": 100710,
+     "best": 4,
+     "bot": "[Nope] lucas94",
+     "event": "died",
+     "me": 12,
+     "mine": 1,
+     "peak": 12002,
+     "place": 15,
+     "result": "lost",
+     "row": 29,
+     "seconds": 398,
+     "sent": 90,
+     "territory": 0,
+     "tick": 6752,
+     "totals": {
+      "1": 162749,
+      "2": 14037,
+      "3": 21755,
+      "4": 439644,
+      "5": 27105
+     },
+     "why": null
+    },
+    {
+     "accepted": 172,
+     "alivePlayers": 11,
+     "at": "2026-11-07T15:23:18.409Z",
+     "balance": 199799,
+     "best": 4,
+     "bot": "[Nope] kevin_k",
+     "event": "died",
+     "me": 9,
+     "mine": 1,
+     "peak": 17386,
+     "place": 12,
+     "result": "lost",
+     "row": 30,
+     "seconds": 400,
+     "sent": 174,
+     "territory": 0,
+     "tick": 6789,
+     "totals": {
+      "1": 150080,
+      "2": 14037,
+      "3": 21755,
+      "4": 444399,
+      "5": 27105
+     },
+     "why": null
+    },
+    {
+     "accepted": 137,
+     "alivePlayers": 11,
+     "at": "2026-11-07T15:23:18.753Z",
+     "balance": 94580,
+     "best": 4,
+     "bot": "[Nope] dave_w",
+     "event": "died",
+     "me": 8,
+     "mine": 1,
+     "peak": 11827,
+     "place": 12,
+     "result": "lost",
+     "row": 31,
+     "seconds": 401,
+     "sent": 138,
+     "territory": 0,
+     "tick": 6791,
+     "totals": {
+      "1": 150287,
+      "2": 14037,
+      "3": 21755,
+      "4": 445109,
+      "5": 27105
+     },
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 2,
+    "lost": 5
+   },
+   "saw_end": false,
+   "snapshots": null,
+   "split": false,
+   "squad_outcome": "lost_inferred",
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794064597889,
+   "t0_spread_ms": 329,
+   "t0_utc": "2026-11-07T15:16:37.889Z",
+   "why": {
+    "reload": 2
+   }
+  },
+  {
+   "H": 39,
+   "T": null,
+   "T_nominal": null,
+   "T_obs": 0,
+   "T_rule": null,
+   "T_rule_if_all_bots_tagged": null,
+   "T_source": null,
+   "clan_for_rule": null,
+   "events": {
+    "left": 5
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "A09",
+   "kind": "aborted",
+   "land": 492822,
+   "last_view": null,
+   "log": null,
+   "max_tick": 0,
+   "mine_values": [],
+   "n_bots_results": 5,
+   "n_played_records": 0,
+   "n_records": 5,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 1,
+     "alivePlayers": 512,
+     "at": "2026-11-07T15:23:38.760Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] kevin_k",
+     "event": "left",
+     "me": 32,
+     "mine": null,
+     "peak": 0,
+     "place": 33,
+     "result": "left",
+     "row": 32,
+     "seconds": 1,
+     "sent": 1,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    },
+    {
+     "accepted": 1,
+     "alivePlayers": 512,
+     "at": "2026-11-07T15:23:38.791Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] lucas94",
+     "event": "left",
+     "me": 36,
+     "mine": null,
+     "peak": 0,
+     "place": 37,
+     "result": "left",
+     "row": 33,
+     "seconds": 1,
+     "sent": 1,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    },
+    {
+     "accepted": 1,
+     "alivePlayers": 512,
+     "at": "2026-11-07T15:23:38.971Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] ethan21",
+     "event": "left",
+     "me": 33,
+     "mine": null,
+     "peak": 0,
+     "place": 34,
+     "result": "left",
+     "row": 34,
+     "seconds": 1,
+     "sent": 1,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    },
+    {
+     "accepted": 1,
+     "alivePlayers": 512,
+     "at": "2026-11-07T15:23:39.033Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] mark07",
+     "event": "left",
+     "me": 35,
+     "mine": null,
+     "peak": 0,
+     "place": 36,
+     "result": "left",
+     "row": 35,
+     "seconds": 1,
+     "sent": 1,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    },
+    {
+     "accepted": 2,
+     "alivePlayers": 512,
+     "at": "2026-11-07T15:23:39.204Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] dave_w",
+     "event": "left",
+     "me": 37,
+     "mine": null,
+     "peak": 0,
+     "place": 38,
+     "result": "left",
+     "row": 36,
+     "seconds": 1,
+     "sent": 2,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 5
+   },
+   "saw_end": false,
+   "snapshots": null,
+   "split": false,
+   "squad_outcome": null,
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794065018252,
+   "t0_spread_ms": 447,
+   "t0_utc": "2026-11-07T15:23:38.252Z",
+   "why": {}
+  },
+  {
+   "H": 39,
+   "T": null,
+   "T_nominal": null,
+   "T_obs": 0,
+   "T_rule": null,
+   "T_rule_if_all_bots_tagged": null,
+   "T_source": null,
+   "clan_for_rule": null,
+   "events": {
+    "left": 5
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "A10",
+   "kind": "aborted",
+   "land": 374820,
+   "last_view": null,
+   "log": null,
+   "max_tick": 0,
+   "mine_values": [],
+   "n_bots_results": 5,
+   "n_played_records": 0,
+   "n_records": 5,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 1,
+     "alivePlayers": 512,
+     "at": "2026-11-07T15:24:08.883Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] ethan21",
+     "event": "left",
+     "me": 2,
+     "mine": null,
+     "peak": 0,
+     "place": 3,
+     "result": "left",
+     "row": 37,
+     "seconds": 1,
+     "sent": 1,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    },
+    {
+     "accepted": 1,
+     "alivePlayers": 512,
+     "at": "2026-11-07T15:24:08.946Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] lucas94",
+     "event": "left",
+     "me": 11,
+     "mine": null,
+     "peak": 0,
+     "place": 12,
+     "result": "left",
+     "row": 38,
+     "seconds": 1,
+     "sent": 1,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    },
+    {
+     "accepted": 2,
+     "alivePlayers": 512,
+     "at": "2026-11-07T15:24:09.118Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] dave_w",
+     "event": "left",
+     "me": 4,
+     "mine": null,
+     "peak": 0,
+     "place": 5,
+     "result": "left",
+     "row": 39,
+     "seconds": 0,
+     "sent": 2,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    },
+    {
+     "accepted": 2,
+     "alivePlayers": 512,
+     "at": "2026-11-07T15:24:09.380Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] mark07",
+     "event": "left",
+     "me": 17,
+     "mine": null,
+     "peak": 0,
+     "place": 18,
+     "result": "left",
+     "row": 40,
+     "seconds": 1,
+     "sent": 2,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    },
+    {
+     "accepted": 2,
+     "alivePlayers": 512,
+     "at": "2026-11-07T15:24:11.424Z",
+     "balance": 512,
+     "best": null,
+     "bot": "[Nope] kevin_k",
+     "event": "left",
+     "me": 26,
+     "mine": null,
+     "peak": 0,
+     "place": 27,
+     "result": "left",
+     "row": 41,
+     "seconds": 1,
+     "sent": 2,
+     "territory": 0,
+     "tick": 0,
+     "totals": null,
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 5
+   },
+   "saw_end": false,
+   "snapshots": null,
+   "split": false,
+   "squad_outcome": null,
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794065048369,
+   "t0_spread_ms": 2051,
+   "t0_utc": "2026-11-07T15:24:08.369Z",
+   "why": {}
+  },
+  {
+   "H": 62,
+   "T": 3,
+   "T_nominal": 3,
+   "T_obs": 3,
+   "T_rule": 3,
+   "T_rule_if_all_bots_tagged": 3,
+   "T_source": "rule(mode,H,clan)=obs",
+   "clan_for_rule": 8,
+   "events": {
+    "died": 7,
+    "left": 1
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "G00",
+   "kind": "played",
+   "land": 546152,
+   "last_view": {
+    "best": 1,
+    "best_share_of_land": 0.5885046653678829,
+    "bot": "[Nope] mark07",
+    "mine": 3,
+    "mine_share_of_land": 0.051549751717470595,
+    "teams_alive": 3,
+    "tick": 5502
+   },
+   "log": {
+    "H": 62,
+    "bots_in_game": [
+     "[Nope] dave_w",
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] noah88",
+     "[Nope] ryan_m"
+    ],
+    "bots_in_game_not_selfchecked": [],
+    "counts": {
+     "ERROR": 223,
+     "HL-DONATE": 9,
+     "HL-INTERCEPT": 12,
+     "HL-OPENING": 65,
+     "HL-SLOW-TICK": 11,
+     "HL-SPAWN-BACKEND": 122,
+     "HL-TICK": 155
+    },
+    "errors": {
+     "[Nope] dave_w": {
+      "first_line": 537,
+      "last_line": 697,
+      "last_tick_seen_at_first_error": 2610,
+      "last_tick_seen_at_last_error": 2610,
+      "min_tick_seen": 2610,
+      "msgs": {
+       "TypeError: rnd is not a function": 43
+      },
+      "n": 43
+     },
+     "[Nope] kevin_k": {
+      "first_line": 399,
+      "last_line": 637,
+      "last_tick_seen_at_first_error": 1350,
+      "last_tick_seen_at_last_error": 3498,
+      "min_tick_seen": 1350,
+      "msgs": {
+       "TypeError: rnd is not a function": 40
+      },
+      "n": 40
+     },
+     "[Nope] leo_tx": {
+      "first_line": 410,
+      "last_line": 677,
+      "last_tick_seen_at_first_error": 1440,
+      "last_tick_seen_at_last_error": 3600,
+      "min_tick_seen": 1440,
+      "msgs": {
+       "TypeError: rnd is not a function": 56
+      },
+      "n": 56
+     },
+     "[Nope] mark07": {
+      "first_line": 444,
+      "last_line": 733,
+      "last_tick_seen_at_first_error": 1710,
+      "last_tick_seen_at_last_error": 5195,
+      "min_tick_seen": 1710,
+      "msgs": {
+       "TypeError: rnd is not a function": 84
+      },
+      "n": 84
+     }
+    },
+    "first_line": 85,
+    "hot_imports": [],
+    "init_lines": 8,
+    "last_line": 736,
+    "log_index": 0,
+    "map": 10,
+    "mapSeed": 7652,
+    "max_tick_in_snapshots": 5490,
+    "me": {
+     "[Nope] dave_w": 28,
+     "[Nope] ethan21": 25,
+     "[Nope] kevin_k": 23,
+     "[Nope] leo_tx": 34,
+     "[Nope] lucas94": 22,
+     "[Nope] mark07": 26,
+     "[Nope] noah88": 27,
+     "[Nope] ryan_m": 21
+    },
+    "mode": 1,
+    "n_bots_in_game": 8,
+    "n_error_lines": 223,
+    "n_spawn_solved": 30,
+    "result_lines": [
+     {
+      "bot": "[Nope] noah88",
+      "event": "died",
+      "line": 464,
+      "place": 52,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] lucas94",
+      "event": "died",
+      "line": 468,
+      "place": 51,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] ethan21",
+      "event": "died",
+      "line": 491,
+      "place": 50,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] ryan_m",
+      "event": "died",
+      "line": 535,
+      "place": 44,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] kevin_k",
+      "event": "died",
+      "line": 676,
+      "place": 32,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] dave_w",
+      "event": "died",
+      "line": 700,
+      "place": 28,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] mark07",
+      "event": "died",
+      "line": 735,
+      "place": 24,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] leo_tx",
+      "event": "left",
+      "line": 736,
+      "place": 23,
+      "result": "left"
+     }
+    ],
+    "selfcheck_bots": [
+     "[Nope] dave_w",
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] noah88",
+     "[Nope] ryan_m"
+    ],
+    "selfcheck_lines": 8,
+    "selfcheck_max_nope": 8,
+    "selfcheck_name_mismatch": 0,
+    "tick_summary": {
+     "[Nope] dave_w": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 2610,
+      "n": 23,
+      "peak_terr_in_snapshots": 9832
+     },
+     "[Nope] ethan21": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 2070,
+      "n": 17,
+      "peak_terr_in_snapshots": 11110
+     },
+     "[Nope] kevin_k": {
+      "first_t": 630,
+      "gaps": [
+       [
+        1350,
+        1530
+       ],
+       [
+        1530,
+        2790
+       ],
+       [
+        3330,
+        3690
+       ]
+      ],
+      "last_t": 4050,
+      "n": 22,
+      "peak_terr_in_snapshots": 6492
+     },
+     "[Nope] leo_tx": {
+      "first_t": 630,
+      "gaps": [
+       [
+        1530,
+        3420
+       ],
+       [
+        3420,
+        3600
+       ],
+       [
+        3600,
+        4230
+       ]
+      ],
+      "last_t": 5490,
+      "n": 28,
+      "peak_terr_in_snapshots": 3511
+     },
+     "[Nope] lucas94": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 1890,
+      "n": 15,
+      "peak_terr_in_snapshots": 5666
+     },
+     "[Nope] mark07": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 1710,
+      "n": 13,
+      "peak_terr_in_snapshots": 9027
+     },
+     "[Nope] noah88": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 1890,
+      "n": 15,
+      "peak_terr_in_snapshots": 8576
+     },
+     "[Nope] ryan_m": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 2520,
+      "n": 22,
+      "peak_terr_in_snapshots": 4958
+     }
+    }
+   },
+   "max_tick": 5506,
+   "mine_values": [
+    3
+   ],
+   "n_bots_results": 8,
+   "n_played_records": 8,
+   "n_records": 8,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 76,
+     "alivePlayers": 51,
+     "at": "2026-11-07T16:20:42.132Z",
+     "balance": 0,
+     "best": 2,
+     "bot": "[Nope] noah88",
+     "event": "died",
+     "me": 27,
+     "mine": 3,
+     "peak": 9116,
+     "place": 52,
+     "result": "lost",
+     "row": 42,
+     "seconds": 130,
+     "sent": 77,
+     "territory": 0,
+     "tick": 1905,
+     "totals": {
+      "0": 3717,
+      "1": 183610,
+      "2": 197936,
+      "3": 156687
+     },
+     "why": null
+    },
+    {
+     "accepted": 48,
+     "alivePlayers": 50,
+     "at": "2026-11-07T16:20:43.659Z",
+     "balance": 12173,
+     "best": 2,
+     "bot": "[Nope] lucas94",
+     "event": "died",
+     "me": 22,
+     "mine": 3,
+     "peak": 5821,
+     "place": 51,
+     "result": "lost",
+     "row": 43,
+     "seconds": 132,
+     "sent": 48,
+     "territory": 0,
+     "tick": 1933,
+     "totals": {
+      "0": 3717,
+      "1": 184341,
+      "2": 199714,
+      "3": 154781
+     },
+     "why": null
+    },
+    {
+     "accepted": 104,
+     "alivePlayers": 49,
+     "at": "2026-11-07T16:20:56.392Z",
+     "balance": 25739,
+     "best": 2,
+     "bot": "[Nope] ethan21",
+     "event": "died",
+     "me": 25,
+     "mine": 3,
+     "peak": 11917,
+     "place": 50,
+     "result": "lost",
+     "row": 44,
+     "seconds": 145,
+     "sent": 104,
+     "territory": 0,
+     "tick": 2160,
+     "totals": {
+      "0": 3717,
+      "1": 184363,
+      "2": 211831,
+      "3": 142879
+     },
+     "why": null
+    },
+    {
+     "accepted": 49,
+     "alivePlayers": 43,
+     "at": "2026-11-07T16:21:21.578Z",
+     "balance": 16,
+     "best": 2,
+     "bot": "[Nope] ryan_m",
+     "event": "died",
+     "me": 21,
+     "mine": 3,
+     "peak": 4958,
+     "place": 44,
+     "result": "lost",
+     "row": 45,
+     "seconds": 171,
+     "sent": 49,
+     "territory": 0,
+     "tick": 2610,
+     "totals": {
+      "1": 186876,
+      "2": 217646,
+      "3": 138090
+     },
+     "why": null
+    },
+    {
+     "accepted": 68,
+     "alivePlayers": 31,
+     "at": "2026-11-07T16:22:46.333Z",
+     "balance": 10,
+     "best": 1,
+     "bot": "[Nope] kevin_k",
+     "event": "died",
+     "me": 23,
+     "mine": 3,
+     "peak": 6757,
+     "place": 32,
+     "result": "lost",
+     "row": 46,
+     "seconds": 255,
+     "sent": 70,
+     "territory": 0,
+     "tick": 4123,
+     "totals": {
+      "1": 285725,
+      "2": 195551,
+      "3": 64604
+     },
+     "why": null
+    },
+    {
+     "accepted": 109,
+     "alivePlayers": 27,
+     "at": "2026-11-07T16:23:08.418Z",
+     "balance": 115506,
+     "best": 1,
+     "bot": "[Nope] dave_w",
+     "event": "died",
+     "me": 28,
+     "mine": 3,
+     "peak": 9832,
+     "place": 28,
+     "result": "lost",
+     "row": 47,
+     "seconds": 277,
+     "sent": 109,
+     "territory": 0,
+     "tick": 4514,
+     "totals": {
+      "1": 288301,
+      "2": 198525,
+      "3": 55966
+     },
+     "why": null
+    },
+    {
+     "accepted": 113,
+     "alivePlayers": 23,
+     "at": "2026-11-07T16:24:03.698Z",
+     "balance": 190398,
+     "best": 1,
+     "bot": "[Nope] mark07",
+     "event": "died",
+     "me": 26,
+     "mine": 3,
+     "peak": 15980,
+     "place": 24,
+     "result": "lost",
+     "row": 48,
+     "seconds": 332,
+     "sent": 113,
+     "territory": 0,
+     "tick": 5502,
+     "totals": {
+      "1": 321413,
+      "2": 192798,
+      "3": 28154
+     },
+     "why": null
+    },
+    {
+     "accepted": 44,
+     "alivePlayers": 23,
+     "at": "2026-11-07T16:24:04.268Z",
+     "balance": 0,
+     "best": null,
+     "bot": "[Nope] leo_tx",
+     "event": "left",
+     "me": 34,
+     "mine": null,
+     "peak": 3511,
+     "place": 23,
+     "result": "left",
+     "row": 49,
+     "seconds": 333,
+     "sent": 44,
+     "territory": 1,
+     "tick": 5506,
+     "totals": null,
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 1,
+    "lost": 7
+   },
+   "saw_end": false,
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 6597,
+      "[Nope] ethan21": 9560,
+      "[Nope] kevin_k": 5760,
+      "[Nope] leo_tx": 3511,
+      "[Nope] lucas94": 5666,
+      "[Nope] mark07": 9027,
+      "[Nope] noah88": 6654,
+      "[Nope] ryan_m": 4958
+     },
+     "squad_share": 0.09472271455565484,
+     "squad_terr": 51733
+    },
+    "3060": {
+     "n_missing": 3,
+     "n_with_snapshot": 1,
+     "per_bot": {
+      "[Nope] dave_w": null,
+      "[Nope] ethan21": 0,
+      "[Nope] kevin_k": 5517,
+      "[Nope] leo_tx": null,
+      "[Nope] lucas94": 0,
+      "[Nope] mark07": null,
+      "[Nope] noah88": 0,
+      "[Nope] ryan_m": 0
+     },
+     "squad_share": 0.010101583441972197,
+     "squad_terr": 5517
+    },
+    "4500": {
+     "n_missing": 2,
+     "n_with_snapshot": 1,
+     "per_bot": {
+      "[Nope] dave_w": null,
+      "[Nope] ethan21": 0,
+      "[Nope] kevin_k": 0,
+      "[Nope] leo_tx": 1,
+      "[Nope] lucas94": 0,
+      "[Nope] mark07": null,
+      "[Nope] noah88": 0,
+      "[Nope] ryan_m": 0
+     },
+     "squad_share": 1.8309921047620443e-06,
+     "squad_terr": 1
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 3065,
+      "[Nope] ethan21": 3191,
+      "[Nope] kevin_k": 2970,
+      "[Nope] leo_tx": 2623,
+      "[Nope] lucas94": 2195,
+      "[Nope] mark07": 2653,
+      "[Nope] noah88": 3238,
+      "[Nope] ryan_m": 2959
+     },
+     "squad_share": 0.04191873324642224,
+     "squad_terr": 22894
+    }
+   },
+   "split": false,
+   "squad_outcome": "lost_inferred",
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794068311053,
+   "t0_spread_ms": 1276,
+   "t0_utc": "2026-11-07T16:18:31.053Z",
+   "why": {}
+  },
+  {
+   "H": 50,
+   "T": 6,
+   "T_nominal": 7,
+   "T_obs": 6,
+   "T_rule": 6,
+   "T_rule_if_all_bots_tagged": 6,
+   "T_source": "rule(mode,H,clan)=obs",
+   "clan_for_rule": 8,
+   "events": {
+    "died": 8
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "G01",
+   "kind": "played",
+   "land": 546152,
+   "last_view": {
+    "best": 6,
+    "best_share_of_land": 0.3777098683150478,
+    "bot": "[Nope] leo_tx",
+    "mine": 4,
+    "mine_share_of_land": 0.05381102696685172,
+    "teams_alive": 5,
+    "tick": 5858
+   },
+   "log": {
+    "H": 50,
+    "bots_in_game": [
+     "[Nope] dave_w",
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] noah88",
+     "[Nope] ryan_m"
+    ],
+    "bots_in_game_not_selfchecked": [],
+    "counts": {
+     "ERROR": 276,
+     "HL-ASSIST": 13,
+     "HL-DONATE": 67,
+     "HL-INTERCEPT": 26,
+     "HL-OPENING": 76,
+     "HL-SLOW-TICK": 10,
+     "HL-SPAWN-BACKEND": 207,
+     "HL-TICK": 303
+    },
+    "errors": {
+     "[Nope] ethan21": {
+      "first_line": 1241,
+      "last_line": 1589,
+      "last_tick_seen_at_first_error": 2070,
+      "last_tick_seen_at_last_error": 2070,
+      "min_tick_seen": 2070,
+      "msgs": {
+       "TypeError: rnd is not a function": 48
+      },
+      "n": 48
+     },
+     "[Nope] kevin_k": {
+      "first_line": 1242,
+      "last_line": 1590,
+      "last_tick_seen_at_first_error": 2070,
+      "last_tick_seen_at_last_error": 2070,
+      "min_tick_seen": 2070,
+      "msgs": {
+       "TypeError: rnd is not a function": 48
+      },
+      "n": 48
+     },
+     "[Nope] leo_tx": {
+      "first_line": 1306,
+      "last_line": 1587,
+      "last_tick_seen_at_first_error": 2520,
+      "last_tick_seen_at_last_error": 4116,
+      "min_tick_seen": 2520,
+      "msgs": {
+       "TypeError: rnd is not a function": 38
+      },
+      "n": 38
+     },
+     "[Nope] lucas94": {
+      "first_line": 1198,
+      "last_line": 1588,
+      "last_tick_seen_at_first_error": 1750,
+      "last_tick_seen_at_last_error": 3557,
+      "min_tick_seen": 1750,
+      "msgs": {
+       "TypeError: rnd is not a function": 39
+      },
+      "n": 39
+     },
+     "[Nope] mark07": {
+      "first_line": 1195,
+      "last_line": 1591,
+      "last_tick_seen_at_first_error": 1710,
+      "last_tick_seen_at_last_error": 1710,
+      "min_tick_seen": 1710,
+      "msgs": {
+       "TypeError: rnd is not a function": 57
+      },
+      "n": 57
+     },
+     "[Nope] ryan_m": {
+      "first_line": 1255,
+      "last_line": 1592,
+      "last_tick_seen_at_first_error": 2160,
+      "last_tick_seen_at_last_error": 3847,
+      "min_tick_seen": 2160,
+      "msgs": {
+       "TypeError: rnd is not a function": 46
+      },
+      "n": 46
+     }
+    },
+    "first_line": 755,
+    "hot_imports": [
+     {
+      "bot": "[Nope] mark07",
+      "bytes": 249271,
+      "file": "v27team.js",
+      "line": 1595,
+      "max_tick_so_far": 4230
+     },
+     {
+      "bot": "[Nope] kevin_k",
+      "bytes": 249271,
+      "file": "v27team.js",
+      "line": 1596,
+      "max_tick_so_far": 4230
+     },
+     {
+      "bot": "[Nope] ethan21",
+      "bytes": 249271,
+      "file": "v27team.js",
+      "line": 1597,
+      "max_tick_so_far": 4230
+     },
+     {
+      "bot": "[Nope] lucas94",
+      "bytes": 249271,
+      "file": "v27team.js",
+      "line": 1598,
+      "max_tick_so_far": 4230
+     },
+     {
+      "bot": "[Nope] dave_w",
+      "bytes": 249271,
+      "file": "v27team.js",
+      "line": 1599,
+      "max_tick_so_far": 4230
+     },
+     {
+      "bot": "[Nope] ryan_m",
+      "bytes": 249271,
+      "file": "v27team.js",
+      "line": 1600,
+      "max_tick_so_far": 4230
+     },
+     {
+      "bot": "[Nope] noah88",
+      "bytes": 249271,
+      "file": "v27team.js",
+      "line": 1601,
+      "max_tick_so_far": 4230
+     },
+     {
+      "bot": "[Nope] leo_tx",
+      "bytes": 249271,
+      "file": "v27team.js",
+      "line": 1602,
+      "max_tick_so_far": 4230
+     }
+    ],
+    "init_lines": 8,
+    "last_line": 1798,
+    "log_index": 1,
+    "map": 10,
+    "mapSeed": 9645,
+    "max_tick_in_snapshots": 5850,
+    "me": {
+     "[Nope] dave_w": 16,
+     "[Nope] ethan21": 15,
+     "[Nope] kevin_k": 18,
+     "[Nope] leo_tx": 17,
+     "[Nope] lucas94": 21,
+     "[Nope] mark07": 9,
+     "[Nope] noah88": 20,
+     "[Nope] ryan_m": 19
+    },
+    "mode": 5,
+    "n_bots_in_game": 8,
+    "n_error_lines": 276,
+    "n_spawn_solved": 33,
+    "result_lines": [
+     {
+      "bot": "[Nope] mark07",
+      "event": "died",
+      "line": 1742,
+      "place": 28,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] noah88",
+      "event": "died",
+      "line": 1759,
+      "place": 26,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] dave_w",
+      "event": "died",
+      "line": 1786,
+      "place": 24,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] lucas94",
+      "event": "died",
+      "line": 1787,
+      "place": 22,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] ethan21",
+      "event": "died",
+      "line": 1792,
+      "place": 21,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] ryan_m",
+      "event": "died",
+      "line": 1793,
+      "place": 20,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] kevin_k",
+      "event": "died",
+      "line": 1794,
+      "place": 19,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] leo_tx",
+      "event": "died",
+      "line": 1798,
+      "place": 17,
+      "result": "lost"
+     }
+    ],
+    "selfcheck_bots": [
+     "[Nope] dave_w",
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] noah88",
+     "[Nope] ryan_m"
+    ],
+    "selfcheck_lines": 8,
+    "selfcheck_max_nope": 8,
+    "selfcheck_name_mismatch": 0,
+    "tick_summary": {
+     "[Nope] dave_w": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 5490,
+      "n": 55,
+      "peak_terr_in_snapshots": 12513
+     },
+     "[Nope] ethan21": {
+      "first_t": 630,
+      "gaps": [
+       [
+        2070,
+        4320
+       ]
+      ],
+      "last_t": 5580,
+      "n": 32,
+      "peak_terr_in_snapshots": 6714
+     },
+     "[Nope] kevin_k": {
+      "first_t": 630,
+      "gaps": [
+       [
+        2070,
+        4320
+       ]
+      ],
+      "last_t": 5580,
+      "n": 32,
+      "peak_terr_in_snapshots": 17038
+     },
+     "[Nope] leo_tx": {
+      "first_t": 630,
+      "gaps": [
+       [
+        2520,
+        4320
+       ]
+      ],
+      "last_t": 5850,
+      "n": 40,
+      "peak_terr_in_snapshots": 18876
+     },
+     "[Nope] lucas94": {
+      "first_t": 630,
+      "gaps": [
+       [
+        1710,
+        2070
+       ],
+       [
+        2070,
+        2880
+       ],
+       [
+        3510,
+        4320
+       ]
+      ],
+      "last_t": 5490,
+      "n": 36,
+      "peak_terr_in_snapshots": 13554
+     },
+     "[Nope] mark07": {
+      "first_t": 630,
+      "gaps": [
+       [
+        1710,
+        4320
+       ]
+      ],
+      "last_t": 5130,
+      "n": 23,
+      "peak_terr_in_snapshots": 10638
+     },
+     "[Nope] noah88": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 5220,
+      "n": 52,
+      "peak_terr_in_snapshots": 28284
+     },
+     "[Nope] ryan_m": {
+      "first_t": 630,
+      "gaps": [
+       [
+        2160,
+        4320
+       ]
+      ],
+      "last_t": 5580,
+      "n": 33,
+      "peak_terr_in_snapshots": 51089
+     }
+    }
+   },
+   "max_tick": 5858,
+   "mine_values": [
+    4
+   ],
+   "n_bots_results": 8,
+   "n_played_records": 8,
+   "n_records": 8,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 124,
+     "alivePlayers": 27,
+     "at": "2026-11-07T16:29:39.719Z",
+     "balance": 66057,
+     "best": 4,
+     "bot": "[Nope] mark07",
+     "event": "died",
+     "me": 9,
+     "mine": 4,
+     "peak": 12039,
+     "place": 28,
+     "result": "lost",
+     "row": 50,
+     "seconds": 308,
+     "sent": 124,
+     "territory": 0,
+     "tick": 5139,
+     "totals": {
+      "1": 132955,
+      "2": 70478,
+      "3": 25392,
+      "4": 151096,
+      "5": 50376,
+      "6": 113174
+     },
+     "why": null
+    },
+    {
+     "accepted": 146,
+     "alivePlayers": 25,
+     "at": "2026-11-07T16:29:48.066Z",
+     "balance": 359220,
+     "best": 1,
+     "bot": "[Nope] noah88",
+     "event": "died",
+     "me": 20,
+     "mine": 4,
+     "peak": 28284,
+     "place": 26,
+     "result": "lost",
+     "row": 51,
+     "seconds": 317,
+     "sent": 146,
+     "territory": 0,
+     "tick": 5291,
+     "totals": {
+      "1": 139322,
+      "2": 65712,
+      "3": 27348,
+      "4": 128849,
+      "5": 50696,
+      "6": 127798
+     },
+     "why": null
+    },
+    {
+     "accepted": 166,
+     "alivePlayers": 23,
+     "at": "2026-11-07T16:30:02.452Z",
+     "balance": 66028,
+     "best": 1,
+     "bot": "[Nope] dave_w",
+     "event": "died",
+     "me": 16,
+     "mine": 4,
+     "peak": 13216,
+     "place": 24,
+     "result": "lost",
+     "row": 52,
+     "seconds": 331,
+     "sent": 167,
+     "territory": 0,
+     "tick": 5545,
+     "totals": {
+      "1": 159214,
+      "2": 47032,
+      "3": 26290,
+      "4": 92853,
+      "5": 64933,
+      "6": 152808
+     },
+     "why": null
+    },
+    {
+     "accepted": 110,
+     "alivePlayers": 21,
+     "at": "2026-11-07T16:30:03.716Z",
+     "balance": 21395,
+     "best": 1,
+     "bot": "[Nope] lucas94",
+     "event": "died",
+     "me": 21,
+     "mine": 4,
+     "peak": 13554,
+     "place": 22,
+     "result": "lost",
+     "row": 53,
+     "seconds": 332,
+     "sent": 110,
+     "territory": 0,
+     "tick": 5570,
+     "totals": {
+      "1": 161017,
+      "2": 41599,
+      "3": 25844,
+      "4": 87010,
+      "5": 67940,
+      "6": 154547
+     },
+     "why": null
+    },
+    {
+     "accepted": 141,
+     "alivePlayers": 20,
+     "at": "2026-11-07T16:30:06.456Z",
+     "balance": 64973,
+     "best": 1,
+     "bot": "[Nope] ethan21",
+     "event": "died",
+     "me": 15,
+     "mine": 4,
+     "peak": 7237,
+     "place": 21,
+     "result": "lost",
+     "row": 54,
+     "seconds": 335,
+     "sent": 143,
+     "territory": 0,
+     "tick": 5618,
+     "totals": {
+      "1": 163379,
+      "2": 41095,
+      "3": 25734,
+      "4": 71753,
+      "5": 78019,
+      "6": 161274
+     },
+     "why": null
+    },
+    {
+     "accepted": 197,
+     "alivePlayers": 19,
+     "at": "2026-11-07T16:30:07.887Z",
+     "balance": 114936,
+     "best": 6,
+     "bot": "[Nope] ryan_m",
+     "event": "died",
+     "me": 19,
+     "mine": 4,
+     "peak": 51217,
+     "place": 20,
+     "result": "lost",
+     "row": 55,
+     "seconds": 336,
+     "sent": 198,
+     "territory": 0,
+     "tick": 5645,
+     "totals": {
+      "1": 165021,
+      "2": 40108,
+      "3": 22549,
+      "4": 55168,
+      "5": 82135,
+      "6": 168660
+     },
+     "why": null
+    },
+    {
+     "accepted": 168,
+     "alivePlayers": 18,
+     "at": "2026-11-07T16:30:08.269Z",
+     "balance": 60317,
+     "best": 6,
+     "bot": "[Nope] kevin_k",
+     "event": "died",
+     "me": 18,
+     "mine": 4,
+     "peak": 17038,
+     "place": 19,
+     "result": "lost",
+     "row": 56,
+     "seconds": 337,
+     "sent": 169,
+     "territory": 0,
+     "tick": 5651,
+     "totals": {
+      "1": 165487,
+      "2": 39775,
+      "3": 21807,
+      "4": 50240,
+      "5": 82974,
+      "6": 170375
+     },
+     "why": null
+    },
+    {
+     "accepted": 175,
+     "alivePlayers": 16,
+     "at": "2026-11-07T16:30:19.820Z",
+     "balance": 27687,
+     "best": 6,
+     "bot": "[Nope] leo_tx",
+     "event": "died",
+     "me": 17,
+     "mine": 4,
+     "peak": 19686,
+     "place": 17,
+     "result": "lost",
+     "row": 57,
+     "seconds": 348,
+     "sent": 176,
+     "territory": 0,
+     "tick": 5858,
+     "totals": {
+      "1": 183873,
+      "2": 30595,
+      "4": 29389,
+      "5": 91205,
+      "6": 206287
+     },
+     "why": null
+    }
+   ],
+   "results": {
+    "lost": 8
+   },
+   "saw_end": false,
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 12386,
+      "[Nope] ethan21": 6347,
+      "[Nope] kevin_k": 16550,
+      "[Nope] leo_tx": 9415,
+      "[Nope] lucas94": 11565,
+      "[Nope] mark07": 7976,
+      "[Nope] noah88": 17574,
+      "[Nope] ryan_m": 23117
+     },
+     "squad_share": 0.1921260015526813,
+     "squad_terr": 104930
+    },
+    "3060": {
+     "n_missing": 5,
+     "n_with_snapshot": 3,
+     "per_bot": {
+      "[Nope] dave_w": 12386,
+      "[Nope] ethan21": null,
+      "[Nope] kevin_k": null,
+      "[Nope] leo_tx": null,
+      "[Nope] lucas94": 12954,
+      "[Nope] mark07": null,
+      "[Nope] noah88": 23970,
+      "[Nope] ryan_m": null
+     },
+     "squad_share": 0.0902862206858164,
+     "squad_terr": 49310
+    },
+    "4500": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 12386,
+      "[Nope] ethan21": 6403,
+      "[Nope] kevin_k": 14712,
+      "[Nope] leo_tx": 18225,
+      "[Nope] lucas94": 13554,
+      "[Nope] mark07": 10632,
+      "[Nope] noah88": 15830,
+      "[Nope] ryan_m": 45048
+     },
+     "squad_share": 0.2504614100104,
+     "squad_terr": 136790
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 2650,
+      "[Nope] ethan21": 1828,
+      "[Nope] kevin_k": 3119,
+      "[Nope] leo_tx": 2936,
+      "[Nope] lucas94": 2836,
+      "[Nope] mark07": 3071,
+      "[Nope] noah88": 3354,
+      "[Nope] ryan_m": 3440
+     },
+     "squad_share": 0.042541270562041336,
+     "squad_terr": 23234
+    }
+   },
+   "split": false,
+   "squad_outcome": "lost_inferred",
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794068671404,
+   "t0_spread_ms": 412,
+   "t0_utc": "2026-11-07T16:24:31.404Z",
+   "why": {}
+  },
+  {
+   "H": 61,
+   "T": 5,
+   "T_nominal": 5,
+   "T_obs": 5,
+   "T_rule": 5,
+   "T_rule_if_all_bots_tagged": 5,
+   "T_source": "rule(mode,H,clan)=obs",
+   "clan_for_rule": 8,
+   "events": {
+    "died": 7,
+    "left": 1
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "G02",
+   "kind": "played",
+   "land": 664497,
+   "last_view": {
+    "best": 1,
+    "best_share_of_land": 0.5363395169579396,
+    "bot": "[Nope] kevin_k",
+    "mine": 2,
+    "mine_share_of_land": 0.03233573665494351,
+    "teams_alive": 5,
+    "tick": 4467
+   },
+   "log": {
+    "H": 61,
+    "bots_in_game": [
+     "[Nope] dave_w",
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] noah88",
+     "[Nope] ryan_m"
+    ],
+    "bots_in_game_not_selfchecked": [],
+    "counts": {
+     "HL-DONATE": 7,
+     "HL-INTERCEPT": 23,
+     "HL-OPENING": 76,
+     "HL-SLOW-TICK": 51,
+     "HL-SPAWN-BACKEND": 69,
+     "HL-TICK": 280
+    },
+    "errors": {},
+    "first_line": 1817,
+    "hot_imports": [],
+    "init_lines": 8,
+    "last_line": 2373,
+    "log_index": 2,
+    "map": 22,
+    "mapSeed": 1985,
+    "max_tick_in_snapshots": 4410,
+    "me": {
+     "[Nope] dave_w": 51,
+     "[Nope] ethan21": 45,
+     "[Nope] kevin_k": 48,
+     "[Nope] leo_tx": 53,
+     "[Nope] lucas94": 46,
+     "[Nope] mark07": 56,
+     "[Nope] noah88": 47,
+     "[Nope] ryan_m": 49
+    },
+    "mode": 3,
+    "n_bots_in_game": 8,
+    "n_error_lines": 0,
+    "n_spawn_solved": 26,
+    "result_lines": [
+     {
+      "bot": "[Nope] ryan_m",
+      "event": "died",
+      "line": 2211,
+      "place": 52,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] noah88",
+      "event": "died",
+      "line": 2237,
+      "place": 48,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] leo_tx",
+      "event": "died",
+      "line": 2312,
+      "place": 39,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] lucas94",
+      "event": "died",
+      "line": 2336,
+      "place": 36,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] ethan21",
+      "event": "died",
+      "line": 2368,
+      "place": 31,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] mark07",
+      "event": "died",
+      "line": 2371,
+      "place": 29,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] kevin_k",
+      "event": "died",
+      "line": 2372,
+      "place": 28,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] dave_w",
+      "event": "left",
+      "line": 2373,
+      "place": 25,
+      "result": "left"
+     }
+    ],
+    "selfcheck_bots": [
+     "[Nope] dave_w",
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] noah88",
+     "[Nope] ryan_m"
+    ],
+    "selfcheck_lines": 8,
+    "selfcheck_max_nope": 8,
+    "selfcheck_name_mismatch": 0,
+    "tick_summary": {
+     "[Nope] dave_w": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 4410,
+      "n": 43,
+      "peak_terr_in_snapshots": 7131
+     },
+     "[Nope] ethan21": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 4320,
+      "n": 42,
+      "peak_terr_in_snapshots": 7421
+     },
+     "[Nope] kevin_k": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 4410,
+      "n": 43,
+      "peak_terr_in_snapshots": 15911
+     },
+     "[Nope] leo_tx": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 3420,
+      "n": 32,
+      "peak_terr_in_snapshots": 13239
+     },
+     "[Nope] lucas94": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 3690,
+      "n": 35,
+      "peak_terr_in_snapshots": 24166
+     },
+     "[Nope] mark07": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 4320,
+      "n": 42,
+      "peak_terr_in_snapshots": 11651
+     },
+     "[Nope] noah88": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 2610,
+      "n": 23,
+      "peak_terr_in_snapshots": 10890
+     },
+     "[Nope] ryan_m": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 2340,
+      "n": 20,
+      "peak_terr_in_snapshots": 19123
+     }
+    }
+   },
+   "max_tick": 4470,
+   "mine_values": [
+    2
+   ],
+   "n_bots_results": 8,
+   "n_played_records": 8,
+   "n_records": 8,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 198,
+     "alivePlayers": 51,
+     "at": "2026-11-07T16:33:07.085Z",
+     "balance": 42492,
+     "best": 1,
+     "bot": "[Nope] ryan_m",
+     "event": "died",
+     "me": 49,
+     "mine": 2,
+     "peak": 19135,
+     "place": 52,
+     "result": "lost",
+     "row": 58,
+     "seconds": 156,
+     "sent": 199,
+     "territory": 0,
+     "tick": 2356,
+     "totals": {
+      "0": 7409,
+      "1": 204109,
+      "2": 84451,
+      "3": 46331,
+      "4": 156750,
+      "5": 152624
+     },
+     "why": null
+    },
+    {
+     "accepted": 124,
+     "alivePlayers": 47,
+     "at": "2026-11-07T16:33:25.935Z",
+     "balance": 9961,
+     "best": 1,
+     "bot": "[Nope] noah88",
+     "event": "died",
+     "me": 47,
+     "mine": 2,
+     "peak": 11324,
+     "place": 48,
+     "result": "lost",
+     "row": 59,
+     "seconds": 175,
+     "sent": 124,
+     "territory": 0,
+     "tick": 2690,
+     "totals": {
+      "0": 7337,
+      "1": 201272,
+      "2": 74825,
+      "3": 39345,
+      "4": 162113,
+      "5": 170358
+     },
+     "why": null
+    },
+    {
+     "accepted": 100,
+     "alivePlayers": 38,
+     "at": "2026-11-07T16:34:10.436Z",
+     "balance": 32337,
+     "best": 1,
+     "bot": "[Nope] leo_tx",
+     "event": "died",
+     "me": 53,
+     "mine": 2,
+     "peak": 13773,
+     "place": 39,
+     "result": "lost",
+     "row": 60,
+     "seconds": 219,
+     "sent": 100,
+     "territory": 0,
+     "tick": 3486,
+     "totals": {
+      "0": 7998,
+      "1": 245776,
+      "2": 65399,
+      "3": 34425,
+      "4": 139388,
+      "5": 164978
+     },
+     "why": null
+    },
+    {
+     "accepted": 139,
+     "alivePlayers": 35,
+     "at": "2026-11-07T16:34:26.884Z",
+     "balance": 47814,
+     "best": 1,
+     "bot": "[Nope] lucas94",
+     "event": "died",
+     "me": 46,
+     "mine": 2,
+     "peak": 24267,
+     "place": 36,
+     "result": "lost",
+     "row": 61,
+     "seconds": 236,
+     "sent": 139,
+     "territory": 0,
+     "tick": 3781,
+     "totals": {
+      "0": 4040,
+      "1": 262108,
+      "2": 52719,
+      "3": 43735,
+      "4": 125701,
+      "5": 165481
+     },
+     "why": null
+    },
+    {
+     "accepted": 128,
+     "alivePlayers": 30,
+     "at": "2026-11-07T16:34:58.087Z",
+     "balance": 17154,
+     "best": 1,
+     "bot": "[Nope] ethan21",
+     "event": "died",
+     "me": 45,
+     "mine": 2,
+     "peak": 7599,
+     "place": 31,
+     "result": "lost",
+     "row": 62,
+     "seconds": 267,
+     "sent": 132,
+     "territory": 0,
+     "tick": 4338,
+     "totals": {
+      "0": 2248,
+      "1": 342383,
+      "2": 32394,
+      "3": 25056,
+      "4": 118844,
+      "5": 132349
+     },
+     "why": null
+    },
+    {
+     "accepted": 112,
+     "alivePlayers": 28,
+     "at": "2026-11-07T16:35:02.339Z",
+     "balance": 44199,
+     "best": 1,
+     "bot": "[Nope] mark07",
+     "event": "died",
+     "me": 56,
+     "mine": 2,
+     "peak": 11651,
+     "place": 29,
+     "result": "lost",
+     "row": 63,
+     "seconds": 271,
+     "sent": 112,
+     "territory": 0,
+     "tick": 4411,
+     "totals": {
+      "0": 1791,
+      "1": 350300,
+      "2": 25890,
+      "3": 25056,
+      "4": 117274,
+      "5": 131637
+     },
+     "why": null
+    },
+    {
+     "accepted": 152,
+     "alivePlayers": 27,
+     "at": "2026-11-07T16:35:05.370Z",
+     "balance": 39926,
+     "best": 1,
+     "bot": "[Nope] kevin_k",
+     "event": "died",
+     "me": 48,
+     "mine": 2,
+     "peak": 15911,
+     "place": 28,
+     "result": "lost",
+     "row": 64,
+     "seconds": 275,
+     "sent": 152,
+     "territory": 0,
+     "tick": 4467,
+     "totals": {
+      "0": 1829,
+      "1": 356396,
+      "2": 21487,
+      "3": 25056,
+      "4": 116201,
+      "5": 129983
+     },
+     "why": null
+    },
+    {
+     "accepted": 108,
+     "alivePlayers": 27,
+     "at": "2026-11-07T16:35:06.150Z",
+     "balance": 559,
+     "best": null,
+     "bot": "[Nope] dave_w",
+     "event": "left",
+     "me": 51,
+     "mine": null,
+     "peak": 7131,
+     "place": 25,
+     "result": "left",
+     "row": 65,
+     "seconds": 275,
+     "sent": 110,
+     "territory": 65,
+     "tick": 4470,
+     "totals": null,
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 1,
+    "lost": 7
+   },
+   "saw_end": false,
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 6203,
+      "[Nope] ethan21": 2978,
+      "[Nope] kevin_k": 10659,
+      "[Nope] leo_tx": 9448,
+      "[Nope] lucas94": 20170,
+      "[Nope] mark07": 4668,
+      "[Nope] noah88": 9927,
+      "[Nope] ryan_m": 16079
+     },
+     "squad_share": 0.12059046165746422,
+     "squad_terr": 80132
+    },
+    "3060": {
+     "n_missing": 0,
+     "n_with_snapshot": 6,
+     "per_bot": {
+      "[Nope] dave_w": 68,
+      "[Nope] ethan21": 6191,
+      "[Nope] kevin_k": 12397,
+      "[Nope] leo_tx": 13239,
+      "[Nope] lucas94": 18608,
+      "[Nope] mark07": 9278,
+      "[Nope] noah88": 0,
+      "[Nope] ryan_m": 0
+     },
+     "squad_share": 0.08996428877782744,
+     "squad_terr": 59781
+    },
+    "4500": {
+     "n_missing": 1,
+     "n_with_snapshot": 2,
+     "per_bot": {
+      "[Nope] dave_w": 65,
+      "[Nope] ethan21": 0,
+      "[Nope] kevin_k": 4260,
+      "[Nope] leo_tx": 0,
+      "[Nope] lucas94": 0,
+      "[Nope] mark07": null,
+      "[Nope] noah88": 0,
+      "[Nope] ryan_m": 0
+     },
+     "squad_share": 0.006508682507219746,
+     "squad_terr": 4325
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 3517,
+      "[Nope] ethan21": 1984,
+      "[Nope] kevin_k": 2751,
+      "[Nope] leo_tx": 3046,
+      "[Nope] lucas94": 3316,
+      "[Nope] mark07": 2243,
+      "[Nope] noah88": 2673,
+      "[Nope] ryan_m": 3106
+     },
+     "squad_share": 0.03406486410021415,
+     "squad_terr": 22636
+    }
+   },
+   "split": false,
+   "squad_outcome": "lost_inferred",
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794069030709,
+   "t0_spread_ms": 474,
+   "t0_utc": "2026-11-07T16:30:30.709Z",
+   "why": {}
+  },
+  {
+   "H": 58,
+   "T": 4,
+   "T_nominal": 4,
+   "T_obs": 4,
+   "T_rule": 4,
+   "T_rule_if_all_bots_tagged": 4,
+   "T_source": "rule(mode,H,clan)=obs",
+   "clan_for_rule": 8,
+   "events": {
+    "died": 7,
+    "left": 1
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "G03",
+   "kind": "played",
+   "land": 292727,
+   "last_view": {
+    "best": 1,
+    "best_share_of_land": 0.6905000222049896,
+    "bot": "[Nope] kevin_k",
+    "mine": 3,
+    "mine_share_of_land": 0.07742367461833038,
+    "teams_alive": 4,
+    "tick": 5237
+   },
+   "log": {
+    "H": 58,
+    "bots_in_game": [
+     "[Nope] dave_w",
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] noah88",
+     "[Nope] ryan_m"
+    ],
+    "bots_in_game_not_selfchecked": [],
+    "counts": {
+     "HL-ASSIST": 32,
+     "HL-DONATE": 75,
+     "HL-INTERCEPT": 44,
+     "HL-OPENING": 63,
+     "HL-SLOW-TICK": 7,
+     "HL-SPAWN-BACKEND": 186,
+     "HL-TICK": 326
+    },
+    "errors": {},
+    "first_line": 2393,
+    "hot_imports": [],
+    "init_lines": 8,
+    "last_line": 3188,
+    "log_index": 3,
+    "map": 17,
+    "mapSeed": 5336,
+    "max_tick_in_snapshots": 5400,
+    "me": {
+     "[Nope] dave_w": 27,
+     "[Nope] ethan21": 25,
+     "[Nope] kevin_k": 22,
+     "[Nope] leo_tx": 23,
+     "[Nope] lucas94": 26,
+     "[Nope] mark07": 21,
+     "[Nope] noah88": 34,
+     "[Nope] ryan_m": 24
+    },
+    "mode": 2,
+    "n_bots_in_game": 8,
+    "n_error_lines": 0,
+    "n_spawn_solved": 38,
+    "result_lines": [
+     {
+      "bot": "[Nope] mark07",
+      "event": "died",
+      "line": 2834,
+      "place": 44,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] lucas94",
+      "event": "died",
+      "line": 2958,
+      "place": 35,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] leo_tx",
+      "event": "died",
+      "line": 3022,
+      "place": 31,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] ryan_m",
+      "event": "died",
+      "line": 3166,
+      "place": 26,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] ethan21",
+      "event": "died",
+      "line": 3171,
+      "place": 24,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] noah88",
+      "event": "died",
+      "line": 3176,
+      "place": 23,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] kevin_k",
+      "event": "died",
+      "line": 3185,
+      "place": 21,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] dave_w",
+      "event": "left",
+      "line": 3188,
+      "place": 18,
+      "result": "left"
+     }
+    ],
+    "selfcheck_bots": [
+     "[Nope] dave_w",
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] noah88",
+     "[Nope] ryan_m"
+    ],
+    "selfcheck_lines": 8,
+    "selfcheck_max_nope": 8,
+    "selfcheck_name_mismatch": 0,
+    "tick_summary": {
+     "[Nope] dave_w": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 5400,
+      "n": 54,
+      "peak_terr_in_snapshots": 6400
+     },
+     "[Nope] ethan21": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 4860,
+      "n": 48,
+      "peak_terr_in_snapshots": 9732
+     },
+     "[Nope] kevin_k": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 5220,
+      "n": 52,
+      "peak_terr_in_snapshots": 8541
+     },
+     "[Nope] leo_tx": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 3420,
+      "n": 32,
+      "peak_terr_in_snapshots": 15773
+     },
+     "[Nope] lucas94": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 3060,
+      "n": 28,
+      "peak_terr_in_snapshots": 6647
+     },
+     "[Nope] mark07": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 1980,
+      "n": 16,
+      "peak_terr_in_snapshots": 10573
+     },
+     "[Nope] noah88": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 4950,
+      "n": 49,
+      "peak_terr_in_snapshots": 8018
+     },
+     "[Nope] ryan_m": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 4770,
+      "n": 47,
+      "peak_terr_in_snapshots": 11797
+     }
+    }
+   },
+   "max_tick": 5472,
+   "mine_values": [
+    3
+   ],
+   "n_bots_results": 8,
+   "n_played_records": 8,
+   "n_records": 8,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 117,
+     "alivePlayers": 43,
+     "at": "2026-11-07T16:37:48.512Z",
+     "balance": 12904,
+     "best": 1,
+     "bot": "[Nope] mark07",
+     "event": "died",
+     "me": 21,
+     "mine": 3,
+     "peak": 10573,
+     "place": 44,
+     "result": "lost",
+     "row": 66,
+     "seconds": 137,
+     "sent": 117,
+     "territory": 0,
+     "tick": 2024,
+     "totals": {
+      "1": 124568,
+      "2": 44618,
+      "3": 73102,
+      "4": 48144
+     },
+     "why": null
+    },
+    {
+     "accepted": 101,
+     "alivePlayers": 34,
+     "at": "2026-11-07T16:38:51.198Z",
+     "balance": 17512,
+     "best": 1,
+     "bot": "[Nope] lucas94",
+     "event": "died",
+     "me": 26,
+     "mine": 3,
+     "peak": 6993,
+     "place": 35,
+     "result": "lost",
+     "row": 67,
+     "seconds": 200,
+     "sent": 103,
+     "territory": 0,
+     "tick": 3146,
+     "totals": {
+      "1": 142341,
+      "2": 11040,
+      "3": 62301,
+      "4": 75472
+     },
+     "why": null
+    },
+    {
+     "accepted": 141,
+     "alivePlayers": 30,
+     "at": "2026-11-07T16:39:09.632Z",
+     "balance": 90681,
+     "best": 1,
+     "bot": "[Nope] leo_tx",
+     "event": "died",
+     "me": 23,
+     "mine": 3,
+     "peak": 15999,
+     "place": 31,
+     "result": "lost",
+     "row": 68,
+     "seconds": 219,
+     "sent": 141,
+     "territory": 0,
+     "tick": 3475,
+     "totals": {
+      "1": 142331,
+      "2": 18629,
+      "3": 58154,
+      "4": 71315
+     },
+     "why": null
+    },
+    {
+     "accepted": 145,
+     "alivePlayers": 25,
+     "at": "2026-11-07T16:40:25.788Z",
+     "balance": 140704,
+     "best": 1,
+     "bot": "[Nope] ryan_m",
+     "event": "died",
+     "me": 24,
+     "mine": 3,
+     "peak": 12034,
+     "place": 26,
+     "result": "lost",
+     "row": 69,
+     "seconds": 295,
+     "sent": 145,
+     "territory": 0,
+     "tick": 4835,
+     "totals": {
+      "1": 179458,
+      "2": 21256,
+      "3": 43042,
+      "4": 46208
+     },
+     "why": null
+    },
+    {
+     "accepted": 132,
+     "alivePlayers": 23,
+     "at": "2026-11-07T16:40:29.554Z",
+     "balance": 90055,
+     "best": 1,
+     "bot": "[Nope] ethan21",
+     "event": "died",
+     "me": 25,
+     "mine": 3,
+     "peak": 10472,
+     "place": 24,
+     "result": "lost",
+     "row": 70,
+     "seconds": 299,
+     "sent": 132,
+     "territory": 0,
+     "tick": 4902,
+     "totals": {
+      "1": 187221,
+      "2": 21256,
+      "3": 37266,
+      "4": 43902
+     },
+     "why": null
+    },
+    {
+     "accepted": 99,
+     "alivePlayers": 22,
+     "at": "2026-11-07T16:40:36.365Z",
+     "balance": 50821,
+     "best": 1,
+     "bot": "[Nope] noah88",
+     "event": "died",
+     "me": 34,
+     "mine": 3,
+     "peak": 8770,
+     "place": 23,
+     "result": "lost",
+     "row": 71,
+     "seconds": 305,
+     "sent": 99,
+     "territory": 0,
+     "tick": 5026,
+     "totals": {
+      "1": 193281,
+      "2": 21256,
+      "3": 31122,
+      "4": 44357
+     },
+     "why": null
+    },
+    {
+     "accepted": 141,
+     "alivePlayers": 20,
+     "at": "2026-11-07T16:40:48.295Z",
+     "balance": 130897,
+     "best": 1,
+     "bot": "[Nope] kevin_k",
+     "event": "died",
+     "me": 22,
+     "mine": 3,
+     "peak": 9129,
+     "place": 21,
+     "result": "lost",
+     "row": 72,
+     "seconds": 317,
+     "sent": 141,
+     "territory": 0,
+     "tick": 5237,
+     "totals": {
+      "1": 202128,
+      "2": 21256,
+      "3": 22664,
+      "4": 43718
+     },
+     "why": null
+    },
+    {
+     "accepted": 134,
+     "alivePlayers": 18,
+     "at": "2026-11-07T16:41:02.156Z",
+     "balance": 0,
+     "best": null,
+     "bot": "[Nope] dave_w",
+     "event": "left",
+     "me": 27,
+     "mine": null,
+     "peak": 6400,
+     "place": 18,
+     "result": "left",
+     "row": 73,
+     "seconds": 331,
+     "sent": 134,
+     "territory": 0,
+     "tick": 5472,
+     "totals": null,
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 1,
+    "lost": 7
+   },
+   "saw_end": false,
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 6282,
+      "[Nope] ethan21": 7301,
+      "[Nope] kevin_k": 8080,
+      "[Nope] leo_tx": 11808,
+      "[Nope] lucas94": 4440,
+      "[Nope] mark07": 8200,
+      "[Nope] noah88": 7826,
+      "[Nope] ryan_m": 6381
+     },
+     "squad_share": 0.20605547148025294,
+     "squad_terr": 60318
+    },
+    "3060": {
+     "n_missing": 0,
+     "n_with_snapshot": 7,
+     "per_bot": {
+      "[Nope] dave_w": 6282,
+      "[Nope] ethan21": 9732,
+      "[Nope] kevin_k": 8080,
+      "[Nope] leo_tx": 6772,
+      "[Nope] lucas94": 5592,
+      "[Nope] mark07": 0,
+      "[Nope] noah88": 7826,
+      "[Nope] ryan_m": 10827
+     },
+     "squad_share": 0.1882675667089131,
+     "squad_terr": 55111
+    },
+    "4500": {
+     "n_missing": 0,
+     "n_with_snapshot": 5,
+     "per_bot": {
+      "[Nope] dave_w": 6282,
+      "[Nope] ethan21": 8383,
+      "[Nope] kevin_k": 8080,
+      "[Nope] leo_tx": 0,
+      "[Nope] lucas94": 0,
+      "[Nope] mark07": 0,
+      "[Nope] noah88": 7826,
+      "[Nope] ryan_m": 5240
+     },
+     "squad_share": 0.12233582826319403,
+     "squad_terr": 35811
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 2732,
+      "[Nope] ethan21": 3035,
+      "[Nope] kevin_k": 2278,
+      "[Nope] leo_tx": 3033,
+      "[Nope] lucas94": 1951,
+      "[Nope] mark07": 2661,
+      "[Nope] noah88": 2410,
+      "[Nope] ryan_m": 2693
+     },
+     "squad_share": 0.07103205375657182,
+     "squad_terr": 20793
+    }
+   },
+   "split": false,
+   "squad_outcome": "lost_inferred",
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794069330796,
+   "t0_spread_ms": 441,
+   "t0_utc": "2026-11-07T16:35:30.796Z",
+   "why": {}
+  },
+  {
+   "H": 48,
+   "T": 3,
+   "T_nominal": 3,
+   "T_obs": 3,
+   "T_rule": 3,
+   "T_rule_if_all_bots_tagged": 3,
+   "T_source": "rule(mode,H,clan)=obs",
+   "clan_for_rule": 8,
+   "events": {
+    "died": 7,
+    "left": 1
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "G04",
+   "kind": "played",
+   "land": 546152,
+   "last_view": {
+    "best": 2,
+    "best_share_of_land": 0.9949775886566378,
+    "bot": "[Nope] mark07",
+    "mine": 1,
+    "mine_share_of_land": 2.197190525714453e-05,
+    "teams_alive": 2,
+    "tick": 8720
+   },
+   "log": {
+    "H": 48,
+    "bots_in_game": [
+     "[Nope] dave_w",
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] noah88",
+     "[Nope] ryan_m"
+    ],
+    "bots_in_game_not_selfchecked": [],
+    "counts": {
+     "HL-ASSIST": 29,
+     "HL-DONATE": 79,
+     "HL-INTERCEPT": 61,
+     "HL-OPENING": 66,
+     "HL-SLOW-TICK": 54,
+     "HL-SPAWN-BACKEND": 112,
+     "HL-TICK": 483
+    },
+    "errors": {},
+    "first_line": 3207,
+    "hot_imports": [],
+    "init_lines": 8,
+    "last_line": 4140,
+    "log_index": 4,
+    "map": 10,
+    "mapSeed": 3070,
+    "max_tick_in_snapshots": 8730,
+    "me": {
+     "[Nope] dave_w": 14,
+     "[Nope] ethan21": 7,
+     "[Nope] kevin_k": 8,
+     "[Nope] leo_tx": 12,
+     "[Nope] lucas94": 10,
+     "[Nope] mark07": 17,
+     "[Nope] noah88": 11,
+     "[Nope] ryan_m": 13
+    },
+    "mode": 1,
+    "n_bots_in_game": 8,
+    "n_error_lines": 0,
+    "n_spawn_solved": 25,
+    "result_lines": [
+     {
+      "bot": "[Nope] dave_w",
+      "event": "died",
+      "line": 3547,
+      "place": 42,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] ethan21",
+      "event": "died",
+      "line": 3548,
+      "place": 41,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] kevin_k",
+      "event": "died",
+      "line": 3935,
+      "place": 19,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] lucas94",
+      "event": "died",
+      "line": 4078,
+      "place": 16,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] leo_tx",
+      "event": "died",
+      "line": 4092,
+      "place": 14,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] noah88",
+      "event": "died",
+      "line": 4101,
+      "place": 13,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] mark07",
+      "event": "died",
+      "line": 4138,
+      "place": 10,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] ryan_m",
+      "event": "left",
+      "line": 4140,
+      "place": 9,
+      "result": "left"
+     }
+    ],
+    "selfcheck_bots": [
+     "[Nope] dave_w",
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] noah88",
+     "[Nope] ryan_m"
+    ],
+    "selfcheck_lines": 8,
+    "selfcheck_max_nope": 8,
+    "selfcheck_name_mismatch": 0,
+    "tick_summary": {
+     "[Nope] dave_w": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 1800,
+      "n": 14,
+      "peak_terr_in_snapshots": 7519
+     },
+     "[Nope] ethan21": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 1800,
+      "n": 14,
+      "peak_terr_in_snapshots": 6740
+     },
+     "[Nope] kevin_k": {
+      "first_t": 630,
+      "gaps": [
+       [
+        2610,
+        2790
+       ]
+      ],
+      "last_t": 5400,
+      "n": 53,
+      "peak_terr_in_snapshots": 8122
+     },
+     "[Nope] leo_tx": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 7200,
+      "n": 74,
+      "peak_terr_in_snapshots": 28816
+     },
+     "[Nope] lucas94": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 6930,
+      "n": 71,
+      "peak_terr_in_snapshots": 18092
+     },
+     "[Nope] mark07": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 8640,
+      "n": 90,
+      "peak_terr_in_snapshots": 9579
+     },
+     "[Nope] noah88": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 7380,
+      "n": 76,
+      "peak_terr_in_snapshots": 20018
+     },
+     "[Nope] ryan_m": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 8730,
+      "n": 91,
+      "peak_terr_in_snapshots": 2973
+     }
+    }
+   },
+   "max_tick": 8736,
+   "mine_values": [
+    1
+   ],
+   "n_bots_results": 8,
+   "n_played_records": 8,
+   "n_records": 8,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 75,
+     "alivePlayers": 41,
+     "at": "2026-11-07T16:43:32.839Z",
+     "balance": 6413,
+     "best": 1,
+     "bot": "[Nope] dave_w",
+     "event": "died",
+     "me": 14,
+     "mine": 1,
+     "peak": 7697,
+     "place": 42,
+     "result": "lost",
+     "row": 74,
+     "seconds": 121,
+     "sent": 75,
+     "territory": 0,
+     "tick": 1809,
+     "totals": {
+      "0": 8162,
+      "1": 203114,
+      "2": 173358,
+      "3": 158083
+     },
+     "why": null
+    },
+    {
+     "accepted": 66,
+     "alivePlayers": 40,
+     "at": "2026-11-07T16:43:34.308Z",
+     "balance": 10328,
+     "best": 1,
+     "bot": "[Nope] ethan21",
+     "event": "died",
+     "me": 7,
+     "mine": 1,
+     "peak": 6813,
+     "place": 41,
+     "result": "lost",
+     "row": 75,
+     "seconds": 123,
+     "sent": 66,
+     "territory": 0,
+     "tick": 1836,
+     "totals": {
+      "0": 7159,
+      "1": 202401,
+      "2": 173797,
+      "3": 159267
+     },
+     "why": null
+    },
+    {
+     "accepted": 99,
+     "alivePlayers": 18,
+     "at": "2026-11-07T16:46:54.988Z",
+     "balance": 180134,
+     "best": 1,
+     "bot": "[Nope] kevin_k",
+     "event": "died",
+     "me": 8,
+     "mine": 1,
+     "peak": 8122,
+     "place": 19,
+     "result": "lost",
+     "row": 76,
+     "seconds": 324,
+     "sent": 104,
+     "territory": 0,
+     "tick": 5422,
+     "totals": {
+      "0": 4,
+      "1": 248433,
+      "2": 226797,
+      "3": 66931
+     },
+     "why": null
+    },
+    {
+     "accepted": 146,
+     "alivePlayers": 15,
+     "at": "2026-11-07T16:48:22.673Z",
+     "balance": 84504,
+     "best": 2,
+     "bot": "[Nope] lucas94",
+     "event": "died",
+     "me": 10,
+     "mine": 1,
+     "peak": 18243,
+     "place": 16,
+     "result": "lost",
+     "row": 77,
+     "seconds": 411,
+     "sent": 178,
+     "territory": 0,
+     "tick": 6988,
+     "totals": {
+      "0": 18,
+      "1": 227372,
+      "2": 310205
+     },
+     "why": null
+    },
+    {
+     "accepted": 229,
+     "alivePlayers": 13,
+     "at": "2026-11-07T16:48:36.823Z",
+     "balance": 182057,
+     "best": 2,
+     "bot": "[Nope] leo_tx",
+     "event": "died",
+     "me": 12,
+     "mine": 1,
+     "peak": 28816,
+     "place": 14,
+     "result": "lost",
+     "row": 78,
+     "seconds": 425,
+     "sent": 231,
+     "territory": 0,
+     "tick": 7237,
+     "totals": {
+      "0": 18,
+      "1": 192702,
+      "2": 343841
+     },
+     "why": null
+    },
+    {
+     "accepted": 339,
+     "alivePlayers": 12,
+     "at": "2026-11-07T16:48:46.269Z",
+     "balance": 9,
+     "best": 2,
+     "bot": "[Nope] noah88",
+     "event": "died",
+     "me": 11,
+     "mine": 1,
+     "peak": 20018,
+     "place": 13,
+     "result": "lost",
+     "row": 79,
+     "seconds": 435,
+     "sent": 342,
+     "territory": 0,
+     "tick": 7404,
+     "totals": {
+      "0": 18,
+      "1": 182137,
+      "2": 360770
+     },
+     "why": null
+    },
+    {
+     "accepted": 264,
+     "alivePlayers": 9,
+     "at": "2026-11-07T16:49:59.804Z",
+     "balance": 4872,
+     "best": 2,
+     "bot": "[Nope] mark07",
+     "event": "died",
+     "me": 17,
+     "mine": 1,
+     "peak": 9637,
+     "place": 10,
+     "result": "lost",
+     "row": 80,
+     "seconds": 508,
+     "sent": 279,
+     "territory": 0,
+     "tick": 8720,
+     "totals": {
+      "0": 25,
+      "1": 12,
+      "2": 543409
+     },
+     "why": null
+    },
+    {
+     "accepted": 155,
+     "alivePlayers": 9,
+     "at": "2026-11-07T16:50:01.070Z",
+     "balance": 0,
+     "best": null,
+     "bot": "[Nope] ryan_m",
+     "event": "left",
+     "me": 13,
+     "mine": null,
+     "peak": 4116,
+     "place": 9,
+     "result": "left",
+     "row": 81,
+     "seconds": 510,
+     "sent": 159,
+     "territory": 0,
+     "tick": 8736,
+     "totals": null,
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 1,
+    "lost": 7
+   },
+   "saw_end": false,
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 4682,
+      "[Nope] ethan21": 6740,
+      "[Nope] kevin_k": 6385,
+      "[Nope] leo_tx": 16241,
+      "[Nope] lucas94": 13136,
+      "[Nope] mark07": 7835,
+      "[Nope] noah88": 5846,
+      "[Nope] ryan_m": 3
+     },
+     "squad_share": 0.1114488274326561,
+     "squad_terr": 60868
+    },
+    "3060": {
+     "n_missing": 0,
+     "n_with_snapshot": 6,
+     "per_bot": {
+      "[Nope] dave_w": 0,
+      "[Nope] ethan21": 0,
+      "[Nope] kevin_k": 6401,
+      "[Nope] leo_tx": 27199,
+      "[Nope] lucas94": 8,
+      "[Nope] mark07": 0,
+      "[Nope] noah88": 6085,
+      "[Nope] ryan_m": 12
+     },
+     "squad_share": 0.07269954151957697,
+     "squad_terr": 39705
+    },
+    "4500": {
+     "n_missing": 0,
+     "n_with_snapshot": 6,
+     "per_bot": {
+      "[Nope] dave_w": 0,
+      "[Nope] ethan21": 0,
+      "[Nope] kevin_k": 8122,
+      "[Nope] leo_tx": 27199,
+      "[Nope] lucas94": 382,
+      "[Nope] mark07": 27,
+      "[Nope] noah88": 5143,
+      "[Nope] ryan_m": 112
+     },
+     "squad_share": 0.07504321141367239,
+     "squad_terr": 40985
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 2892,
+      "[Nope] ethan21": 2638,
+      "[Nope] kevin_k": 1398,
+      "[Nope] leo_tx": 3396,
+      "[Nope] lucas94": 2880,
+      "[Nope] mark07": 2540,
+      "[Nope] noah88": 1851,
+      "[Nope] ryan_m": 1307
+     },
+     "squad_share": 0.03460941276421216,
+     "squad_terr": 18902
+    }
+   },
+   "split": false,
+   "squad_outcome": "lost_inferred",
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794069691032,
+   "t0_spread_ms": 472,
+   "t0_utc": "2026-11-07T16:41:31.032Z",
+   "why": {}
+  },
+  {
+   "H": 55,
+   "T": 6,
+   "T_nominal": 7,
+   "T_obs": 6,
+   "T_rule": 6,
+   "T_rule_if_all_bots_tagged": 6,
+   "T_source": "rule(mode,H,clan)=obs",
+   "clan_for_rule": 8,
+   "events": {
+    "died": 6,
+    "left": 2
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "G05",
+   "kind": "played",
+   "land": 664497,
+   "last_view": {
+    "best": 5,
+    "best_share_of_land": 0.2486015738220037,
+    "bot": "[Nope] leo_tx",
+    "mine": 2,
+    "mine_share_of_land": 0.0006155031550180061,
+    "teams_alive": 6,
+    "tick": 3882
+   },
+   "log": {
+    "H": 55,
+    "bots_in_game": [
+     "[Nope] dave_w",
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] noah88",
+     "[Nope] ryan_m"
+    ],
+    "bots_in_game_not_selfchecked": [],
+    "counts": {
+     "HL-DONATE": 2,
+     "HL-INTERCEPT": 20,
+     "HL-OPENING": 60,
+     "HL-SLOW-TICK": 33,
+     "HL-SPAWN-BACKEND": 60,
+     "HL-TICK": 250
+    },
+    "errors": {},
+    "first_line": 4160,
+    "hot_imports": [],
+    "init_lines": 8,
+    "last_line": 4631,
+    "log_index": 5,
+    "map": 22,
+    "mapSeed": 1511,
+    "max_tick_in_snapshots": 3870,
+    "me": {
+     "[Nope] dave_w": 23,
+     "[Nope] ethan21": 21,
+     "[Nope] kevin_k": 22,
+     "[Nope] leo_tx": 25,
+     "[Nope] lucas94": 20,
+     "[Nope] mark07": 24,
+     "[Nope] noah88": 28,
+     "[Nope] ryan_m": 18
+    },
+    "mode": 5,
+    "n_bots_in_game": 8,
+    "n_error_lines": 0,
+    "n_spawn_solved": 22,
+    "result_lines": [
+     {
+      "bot": "[Nope] lucas94",
+      "event": "died",
+      "line": 4524,
+      "place": 50,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] ryan_m",
+      "event": "died",
+      "line": 4573,
+      "place": 43,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] noah88",
+      "event": "died",
+      "line": 4593,
+      "place": 40,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] ethan21",
+      "event": "died",
+      "line": 4604,
+      "place": 39,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] dave_w",
+      "event": "died",
+      "line": 4614,
+      "place": 38,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] leo_tx",
+      "event": "died",
+      "line": 4629,
+      "place": 34,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] kevin_k",
+      "event": "left",
+      "line": 4630,
+      "place": 32,
+      "result": "left"
+     },
+     {
+      "bot": "[Nope] mark07",
+      "event": "left",
+      "line": 4631,
+      "place": 31,
+      "result": "left"
+     }
+    ],
+    "selfcheck_bots": [
+     "[Nope] dave_w",
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] noah88",
+     "[Nope] ryan_m"
+    ],
+    "selfcheck_lines": 8,
+    "selfcheck_max_nope": 8,
+    "selfcheck_name_mismatch": 0,
+    "tick_summary": {
+     "[Nope] dave_w": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 3510,
+      "n": 33,
+      "peak_terr_in_snapshots": 16065
+     },
+     "[Nope] ethan21": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 3330,
+      "n": 31,
+      "peak_terr_in_snapshots": 964
+     },
+     "[Nope] kevin_k": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 3870,
+      "n": 37,
+      "peak_terr_in_snapshots": 8500
+     },
+     "[Nope] leo_tx": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 3870,
+      "n": 37,
+      "peak_terr_in_snapshots": 7799
+     },
+     "[Nope] lucas94": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 2340,
+      "n": 20,
+      "peak_terr_in_snapshots": 11059
+     },
+     "[Nope] mark07": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 3870,
+      "n": 37,
+      "peak_terr_in_snapshots": 8515
+     },
+     "[Nope] noah88": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 3150,
+      "n": 29,
+      "peak_terr_in_snapshots": 8873
+     },
+     "[Nope] ryan_m": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 2880,
+      "n": 26,
+      "peak_terr_in_snapshots": 7238
+     }
+    }
+   },
+   "max_tick": 3890,
+   "mine_values": [
+    2
+   ],
+   "n_bots_results": 8,
+   "n_played_records": 8,
+   "n_records": 8,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 109,
+     "alivePlayers": 49,
+     "at": "2026-11-07T16:53:11.183Z",
+     "balance": 13257,
+     "best": 5,
+     "bot": "[Nope] lucas94",
+     "event": "died",
+     "me": 20,
+     "mine": 2,
+     "peak": 11301,
+     "place": 50,
+     "result": "lost",
+     "row": 82,
+     "seconds": 160,
+     "sent": 109,
+     "territory": 0,
+     "tick": 2417,
+     "totals": {
+      "0": 6190,
+      "1": 146490,
+      "2": 35169,
+      "3": 93641,
+      "4": 119484,
+      "5": 152143,
+      "6": 100255
+     },
+     "why": null
+    },
+    {
+     "accepted": 87,
+     "alivePlayers": 42,
+     "at": "2026-11-07T16:53:41.991Z",
+     "balance": 16882,
+     "best": 5,
+     "bot": "[Nope] ryan_m",
+     "event": "died",
+     "me": 18,
+     "mine": 2,
+     "peak": 7227,
+     "place": 43,
+     "result": "lost",
+     "row": 83,
+     "seconds": 191,
+     "sent": 88,
+     "territory": 0,
+     "tick": 2967,
+     "totals": {
+      "0": 1912,
+      "1": 138693,
+      "2": 17970,
+      "3": 104395,
+      "4": 122999,
+      "5": 171403,
+      "6": 102451
+     },
+     "why": null
+    },
+    {
+     "accepted": 212,
+     "alivePlayers": 39,
+     "at": "2026-11-07T16:53:56.589Z",
+     "balance": 13819,
+     "best": 5,
+     "bot": "[Nope] noah88",
+     "event": "died",
+     "me": 28,
+     "mine": 2,
+     "peak": 8924,
+     "place": 40,
+     "result": "lost",
+     "row": 84,
+     "seconds": 205,
+     "sent": 212,
+     "territory": 0,
+     "tick": 3220,
+     "totals": {
+      "0": 2119,
+      "1": 148356,
+      "2": 10400,
+      "3": 110349,
+      "4": 118680,
+      "5": 170861,
+      "6": 98195
+     },
+     "why": null
+    },
+    {
+     "accepted": 82,
+     "alivePlayers": 38,
+     "at": "2026-11-07T16:54:06.919Z",
+     "balance": 17,
+     "best": 5,
+     "bot": "[Nope] ethan21",
+     "event": "died",
+     "me": 21,
+     "mine": 2,
+     "peak": 1254,
+     "place": 39,
+     "result": "lost",
+     "row": 85,
+     "seconds": 215,
+     "sent": 87,
+     "territory": 0,
+     "tick": 3411,
+     "totals": {
+      "0": 2119,
+      "1": 148650,
+      "2": 8804,
+      "3": 111756,
+      "4": 122476,
+      "5": 168266,
+      "6": 99788
+     },
+     "why": null
+    },
+    {
+     "accepted": 236,
+     "alivePlayers": 37,
+     "at": "2026-11-07T16:54:17.389Z",
+     "balance": 29072,
+     "best": 5,
+     "bot": "[Nope] dave_w",
+     "event": "died",
+     "me": 23,
+     "mine": 2,
+     "peak": 16638,
+     "place": 38,
+     "result": "lost",
+     "row": 86,
+     "seconds": 226,
+     "sent": 238,
+     "territory": 0,
+     "tick": 3595,
+     "totals": {
+      "0": 2116,
+      "1": 139127,
+      "2": 2994,
+      "3": 114985,
+      "4": 131843,
+      "5": 166585,
+      "6": 102556
+     },
+     "why": null
+    },
+    {
+     "accepted": 68,
+     "alivePlayers": 33,
+     "at": "2026-11-07T16:54:33.274Z",
+     "balance": 0,
+     "best": 5,
+     "bot": "[Nope] leo_tx",
+     "event": "died",
+     "me": 25,
+     "mine": 2,
+     "peak": 7837,
+     "place": 34,
+     "result": "lost",
+     "row": 87,
+     "seconds": 241,
+     "sent": 71,
+     "territory": 0,
+     "tick": 3882,
+     "totals": {
+      "0": 2119,
+      "1": 122550,
+      "2": 409,
+      "3": 117728,
+      "4": 144670,
+      "5": 165195,
+      "6": 109001
+     },
+     "why": null
+    },
+    {
+     "accepted": 112,
+     "alivePlayers": 33,
+     "at": "2026-11-07T16:54:34.239Z",
+     "balance": 112,
+     "best": null,
+     "bot": "[Nope] kevin_k",
+     "event": "left",
+     "me": 22,
+     "mine": null,
+     "peak": 9603,
+     "place": 32,
+     "result": "left",
+     "row": 88,
+     "seconds": 243,
+     "sent": 112,
+     "territory": 2,
+     "tick": 3890,
+     "totals": null,
+     "why": null
+    },
+    {
+     "accepted": 161,
+     "alivePlayers": 33,
+     "at": "2026-11-07T16:54:34.288Z",
+     "balance": 158,
+     "best": null,
+     "bot": "[Nope] mark07",
+     "event": "left",
+     "me": 24,
+     "mine": null,
+     "peak": 8598,
+     "place": 31,
+     "result": "left",
+     "row": 89,
+     "seconds": 243,
+     "sent": 164,
+     "territory": 11,
+     "tick": 3889,
+     "totals": null,
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 2,
+    "lost": 6
+   },
+   "saw_end": false,
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 13212,
+      "[Nope] ethan21": 485,
+      "[Nope] kevin_k": 7142,
+      "[Nope] leo_tx": 5226,
+      "[Nope] lucas94": 5762,
+      "[Nope] mark07": 7949,
+      "[Nope] noah88": 6641,
+      "[Nope] ryan_m": 5008
+     },
+     "squad_share": 0.07738936368410994,
+     "squad_terr": 51425
+    },
+    "3060": {
+     "n_missing": 0,
+     "n_with_snapshot": 6,
+     "per_bot": {
+      "[Nope] dave_w": 5276,
+      "[Nope] ethan21": 9,
+      "[Nope] kevin_k": 2,
+      "[Nope] leo_tx": 4287,
+      "[Nope] lucas94": 0,
+      "[Nope] mark07": 401,
+      "[Nope] noah88": 5601,
+      "[Nope] ryan_m": 0
+     },
+     "squad_share": 0.02344028641212827,
+     "squad_terr": 15576
+    },
+    "4500": {
+     "n_missing": 0,
+     "n_with_snapshot": 0,
+     "per_bot": {
+      "[Nope] dave_w": 0,
+      "[Nope] ethan21": 0,
+      "[Nope] kevin_k": 0,
+      "[Nope] leo_tx": 0,
+      "[Nope] lucas94": 0,
+      "[Nope] mark07": 0,
+      "[Nope] noah88": 0,
+      "[Nope] ryan_m": 0
+     },
+     "squad_share": 0.0,
+     "squad_terr": 0
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 2909,
+      "[Nope] ethan21": 479,
+      "[Nope] kevin_k": 3019,
+      "[Nope] leo_tx": 2223,
+      "[Nope] lucas94": 2287,
+      "[Nope] mark07": 2331,
+      "[Nope] noah88": 1925,
+      "[Nope] ryan_m": 3396
+     },
+     "squad_share": 0.027944445196893288,
+     "squad_terr": 18569
+    }
+   },
+   "split": false,
+   "squad_outcome": "lost_inferred",
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794070231398,
+   "t0_spread_ms": 391,
+   "t0_utc": "2026-11-07T16:50:31.398Z",
+   "why": {}
+  },
+  {
+   "H": 44,
+   "T": 5,
+   "T_nominal": 6,
+   "T_obs": 5,
+   "T_rule": 5,
+   "T_rule_if_all_bots_tagged": 5,
+   "T_source": "rule(mode,H,clan)=obs",
+   "clan_for_rule": 8,
+   "events": {
+    "died": 5,
+    "end": 3
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "G06",
+   "kind": "played",
+   "land": 762763,
+   "last_view": {
+    "best": 4,
+    "best_share_of_land": 0.9938080373589175,
+    "bot": "[Nope] kevin_k",
+    "mine": 1,
+    "mine_share_of_land": 0.0024306370392900545,
+    "teams_alive": 4,
+    "tick": 6539
+   },
+   "log": {
+    "H": 44,
+    "bots_in_game": [
+     "[Nope] dave_w",
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] noah88",
+     "[Nope] ryan_m"
+    ],
+    "bots_in_game_not_selfchecked": [],
+    "counts": {
+     "HL-ASSIST": 10,
+     "HL-DONATE": 108,
+     "HL-INTERCEPT": 63,
+     "HL-OPENING": 82,
+     "HL-SLOW-TICK": 180,
+     "HL-SPAWN-BACKEND": 163,
+     "HL-TICK": 447
+    },
+    "errors": {},
+    "first_line": 4650,
+    "hot_imports": [],
+    "init_lines": 8,
+    "last_line": 5761,
+    "log_index": 6,
+    "map": 24,
+    "mapSeed": 10375,
+    "max_tick_in_snapshots": 6480,
+    "me": {
+     "[Nope] dave_w": 13,
+     "[Nope] ethan21": 15,
+     "[Nope] kevin_k": 9,
+     "[Nope] leo_tx": 17,
+     "[Nope] lucas94": 16,
+     "[Nope] mark07": 18,
+     "[Nope] noah88": 26,
+     "[Nope] ryan_m": 14
+    },
+    "mode": 4,
+    "n_bots_in_game": 8,
+    "n_error_lines": 0,
+    "n_spawn_solved": 34,
+    "result_lines": [
+     {
+      "bot": "[Nope] ryan_m",
+      "event": "died",
+      "line": 5593,
+      "place": 26,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] lucas94",
+      "event": "died",
+      "line": 5644,
+      "place": 24,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] dave_w",
+      "event": "died",
+      "line": 5671,
+      "place": 23,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] mark07",
+      "event": "died",
+      "line": 5683,
+      "place": 21,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] leo_tx",
+      "event": "died",
+      "line": 5689,
+      "place": 20,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] kevin_k",
+      "event": "end",
+      "line": 5759,
+      "place": 9,
+      "result": "over"
+     },
+     {
+      "bot": "[Nope] ethan21",
+      "event": "end",
+      "line": 5760,
+      "place": 14,
+      "result": "over"
+     },
+     {
+      "bot": "[Nope] noah88",
+      "event": "end",
+      "line": 5761,
+      "place": 10,
+      "result": "over"
+     }
+    ],
+    "selfcheck_bots": [
+     "[Nope] dave_w",
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] noah88",
+     "[Nope] ryan_m"
+    ],
+    "selfcheck_lines": 8,
+    "selfcheck_max_nope": 8,
+    "selfcheck_name_mismatch": 0,
+    "tick_summary": {
+     "[Nope] dave_w": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 5130,
+      "n": 51,
+      "peak_terr_in_snapshots": 13344
+     },
+     "[Nope] ethan21": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 6480,
+      "n": 66,
+      "peak_terr_in_snapshots": 58437
+     },
+     "[Nope] kevin_k": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 6480,
+      "n": 66,
+      "peak_terr_in_snapshots": 30042
+     },
+     "[Nope] leo_tx": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 5400,
+      "n": 54,
+      "peak_terr_in_snapshots": 23247
+     },
+     "[Nope] lucas94": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 4860,
+      "n": 48,
+      "peak_terr_in_snapshots": 19325
+     },
+     "[Nope] mark07": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 5310,
+      "n": 53,
+      "peak_terr_in_snapshots": 22215
+     },
+     "[Nope] noah88": {
+      "first_t": 630,
+      "gaps": [
+       [
+        2880,
+        3060
+       ],
+       [
+        6030,
+        6210
+       ]
+      ],
+      "last_t": 6480,
+      "n": 64,
+      "peak_terr_in_snapshots": 20286
+     },
+     "[Nope] ryan_m": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 4590,
+      "n": 45,
+      "peak_terr_in_snapshots": 16798
+     }
+    }
+   },
+   "max_tick": 6539,
+   "mine_values": [
+    1
+   ],
+   "n_bots_results": 8,
+   "n_played_records": 8,
+   "n_records": 8,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 325,
+     "alivePlayers": 25,
+     "at": "2026-11-07T16:59:39.489Z",
+     "balance": 172747,
+     "best": 4,
+     "bot": "[Nope] ryan_m",
+     "event": "died",
+     "me": 14,
+     "mine": 1,
+     "peak": 21211,
+     "place": 26,
+     "result": "lost",
+     "row": 90,
+     "seconds": 279,
+     "sent": 327,
+     "territory": 0,
+     "tick": 4611,
+     "totals": {
+      "1": 138757,
+      "2": 71873,
+      "3": 57826,
+      "4": 377496,
+      "5": 110604
+     },
+     "why": null
+    },
+    {
+     "accepted": 335,
+     "alivePlayers": 23,
+     "at": "2026-11-07T16:59:57.468Z",
+     "balance": 114757,
+     "best": 4,
+     "bot": "[Nope] lucas94",
+     "event": "died",
+     "me": 16,
+     "mine": 1,
+     "peak": 19932,
+     "place": 24,
+     "result": "lost",
+     "row": 91,
+     "seconds": 296,
+     "sent": 335,
+     "territory": 0,
+     "tick": 4935,
+     "totals": {
+      "1": 112165,
+      "2": 44588,
+      "3": 68354,
+      "4": 423367,
+      "5": 109378
+     },
+     "why": null
+    },
+    {
+     "accepted": 382,
+     "alivePlayers": 22,
+     "at": "2026-11-07T17:00:13.676Z",
+     "balance": 49269,
+     "best": 4,
+     "bot": "[Nope] dave_w",
+     "event": "died",
+     "me": 13,
+     "mine": 1,
+     "peak": 13344,
+     "place": 23,
+     "result": "lost",
+     "row": 92,
+     "seconds": 313,
+     "sent": 383,
+     "territory": 0,
+     "tick": 5219,
+     "totals": {
+      "1": 85052,
+      "2": 46607,
+      "3": 59019,
+      "4": 473551,
+      "5": 90833
+     },
+     "why": null
+    },
+    {
+     "accepted": 320,
+     "alivePlayers": 20,
+     "at": "2026-11-07T17:00:23.007Z",
+     "balance": 154010,
+     "best": 4,
+     "bot": "[Nope] mark07",
+     "event": "died",
+     "me": 18,
+     "mine": 1,
+     "peak": 22466,
+     "place": 21,
+     "result": "lost",
+     "row": 93,
+     "seconds": 322,
+     "sent": 321,
+     "territory": 0,
+     "tick": 5383,
+     "totals": {
+      "1": 68156,
+      "2": 41771,
+      "3": 51843,
+      "4": 499843,
+      "5": 90857
+     },
+     "why": null
+    },
+    {
+     "accepted": 259,
+     "alivePlayers": 19,
+     "at": "2026-11-07T17:00:27.855Z",
+     "balance": 112238,
+     "best": 4,
+     "bot": "[Nope] leo_tx",
+     "event": "died",
+     "me": 17,
+     "mine": 1,
+     "peak": 23867,
+     "place": 20,
+     "result": "lost",
+     "row": 94,
+     "seconds": 327,
+     "sent": 260,
+     "territory": 0,
+     "tick": 5464,
+     "totals": {
+      "1": 48355,
+      "2": 34244,
+      "3": 52617,
+      "4": 526076,
+      "5": 90866
+     },
+     "why": null
+    },
+    {
+     "accepted": 446,
+     "alivePlayers": 15,
+     "at": "2026-11-07T17:01:27.606Z",
+     "balance": 3124,
+     "best": 4,
+     "bot": "[Nope] kevin_k",
+     "event": "end",
+     "me": 9,
+     "mine": 1,
+     "peak": 31058,
+     "place": 9,
+     "result": "over",
+     "row": 95,
+     "seconds": 387,
+     "sent": 449,
+     "territory": 989,
+     "tick": 6539,
+     "totals": {
+      "1": 1854,
+      "2": 331,
+      "3": 19,
+      "4": 758040
+     },
+     "why": null
+    },
+    {
+     "accepted": 381,
+     "alivePlayers": 15,
+     "at": "2026-11-07T17:01:27.857Z",
+     "balance": 132,
+     "best": 4,
+     "bot": "[Nope] ethan21",
+     "event": "end",
+     "me": 15,
+     "mine": 1,
+     "peak": 59347,
+     "place": 14,
+     "result": "over",
+     "row": 96,
+     "seconds": 387,
+     "sent": 381,
+     "territory": 16,
+     "tick": 6539,
+     "totals": {
+      "1": 1854,
+      "2": 331,
+      "3": 19,
+      "4": 758040
+     },
+     "why": null
+    },
+    {
+     "accepted": 375,
+     "alivePlayers": 15,
+     "at": "2026-11-07T17:01:28.041Z",
+     "balance": 24585,
+     "best": 4,
+     "bot": "[Nope] noah88",
+     "event": "end",
+     "me": 26,
+     "mine": 1,
+     "peak": 20286,
+     "place": 10,
+     "result": "over",
+     "row": 97,
+     "seconds": 387,
+     "sent": 380,
+     "territory": 849,
+     "tick": 6539,
+     "totals": {
+      "1": 1854,
+      "2": 331,
+      "3": 19,
+      "4": 758040
+     },
+     "why": null
+    }
+   ],
+   "results": {
+    "lost": 5,
+    "over": 3
+   },
+   "saw_end": true,
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 7966,
+      "[Nope] ethan21": 14401,
+      "[Nope] kevin_k": 15082,
+      "[Nope] leo_tx": 13374,
+      "[Nope] lucas94": 14170,
+      "[Nope] mark07": 12136,
+      "[Nope] noah88": 13650,
+      "[Nope] ryan_m": 10494
+     },
+     "squad_share": 0.13277125398059422,
+     "squad_terr": 101273
+    },
+    "3060": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 12019,
+      "[Nope] ethan21": 22546,
+      "[Nope] kevin_k": 29564,
+      "[Nope] leo_tx": 16301,
+      "[Nope] lucas94": 15032,
+      "[Nope] mark07": 14383,
+      "[Nope] noah88": 16064,
+      "[Nope] ryan_m": 16505
+     },
+     "squad_share": 0.18670806003961912,
+     "squad_terr": 142414
+    },
+    "4500": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 12019,
+      "[Nope] ethan21": 49449,
+      "[Nope] kevin_k": 29779,
+      "[Nope] leo_tx": 16301,
+      "[Nope] lucas94": 15032,
+      "[Nope] mark07": 14383,
+      "[Nope] noah88": 63,
+      "[Nope] ryan_m": 15770
+     },
+     "squad_share": 0.20031910305035772,
+     "squad_terr": 152796
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 2538,
+      "[Nope] ethan21": 3506,
+      "[Nope] kevin_k": 3059,
+      "[Nope] leo_tx": 3205,
+      "[Nope] lucas94": 3734,
+      "[Nope] mark07": 2983,
+      "[Nope] noah88": 2170,
+      "[Nope] ryan_m": 3000
+     },
+     "squad_share": 0.0317202066696995,
+     "squad_terr": 24195
+    }
+   },
+   "split": false,
+   "squad_outcome": "lost_observed",
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794070500519,
+   "t0_spread_ms": 865,
+   "t0_utc": "2026-11-07T16:55:00.519Z",
+   "why": {}
+  },
+  {
+   "H": 59,
+   "T": 2,
+   "T_nominal": 2,
+   "T_obs": 2,
+   "T_rule": 2,
+   "T_rule_if_all_bots_tagged": 2,
+   "T_source": "rule(mode,H,clan)=obs",
+   "clan_for_rule": 8,
+   "events": {
+    "died": 4,
+    "end": 3,
+    "left": 1
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "G07",
+   "kind": "played",
+   "land": 546152,
+   "last_view": {
+    "best": 2,
+    "best_share_of_land": 0.9991723915686476,
+    "bot": "[Nope] kevin_k",
+    "mine": 2,
+    "mine_share_of_land": 0.9991723915686476,
+    "teams_alive": 2,
+    "tick": 5405
+   },
+   "log": {
+    "H": 59,
+    "bots_in_game": [
+     "[Nope] dave_w",
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] noah88",
+     "[Nope] ryan_m"
+    ],
+    "bots_in_game_not_selfchecked": [],
+    "counts": {
+     "HL-DONATE": 24,
+     "HL-INTERCEPT": 19,
+     "HL-OPENING": 57,
+     "HL-SLOW-TICK": 65,
+     "HL-SPAWN-BACKEND": 186,
+     "HL-TICK": 301
+    },
+    "errors": {},
+    "first_line": 5782,
+    "hot_imports": [],
+    "init_lines": 8,
+    "last_line": 6493,
+    "log_index": 7,
+    "map": 10,
+    "mapSeed": 3327,
+    "max_tick_in_snapshots": 5400,
+    "me": {
+     "[Nope] dave_w": 20,
+     "[Nope] ethan21": 23,
+     "[Nope] kevin_k": 21,
+     "[Nope] leo_tx": 22,
+     "[Nope] lucas94": 24,
+     "[Nope] mark07": 19,
+     "[Nope] noah88": 29,
+     "[Nope] ryan_m": 18
+    },
+    "mode": 0,
+    "n_bots_in_game": 8,
+    "n_error_lines": 0,
+    "n_spawn_solved": 35,
+    "result_lines": [
+     {
+      "bot": "[Nope] leo_tx",
+      "event": "died",
+      "line": 6188,
+      "place": 50,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] ryan_m",
+      "event": "died",
+      "line": 6353,
+      "place": 39,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] dave_w",
+      "event": "died",
+      "line": 6364,
+      "place": 37,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] ethan21",
+      "event": "died",
+      "line": 6412,
+      "place": 33,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] noah88",
+      "event": "left",
+      "line": 6448,
+      "place": 27,
+      "result": "left"
+     },
+     {
+      "bot": "[Nope] kevin_k",
+      "event": "end",
+      "line": 6491,
+      "place": 16,
+      "result": "won"
+     },
+     {
+      "bot": "[Nope] lucas94",
+      "event": "end",
+      "line": 6492,
+      "place": 12,
+      "result": "won"
+     },
+     {
+      "bot": "[Nope] mark07",
+      "event": "end",
+      "line": 6493,
+      "place": 15,
+      "result": "won"
+     }
+    ],
+    "selfcheck_bots": [
+     "[Nope] dave_w",
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] noah88",
+     "[Nope] ryan_m"
+    ],
+    "selfcheck_lines": 8,
+    "selfcheck_max_nope": 8,
+    "selfcheck_name_mismatch": 0,
+    "tick_summary": {
+     "[Nope] dave_w": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 3240,
+      "n": 30,
+      "peak_terr_in_snapshots": 6539
+     },
+     "[Nope] ethan21": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 3870,
+      "n": 37,
+      "peak_terr_in_snapshots": 10169
+     },
+     "[Nope] kevin_k": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 5400,
+      "n": 54,
+      "peak_terr_in_snapshots": 1575
+     },
+     "[Nope] leo_tx": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 1710,
+      "n": 13,
+      "peak_terr_in_snapshots": 1312
+     },
+     "[Nope] lucas94": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 5400,
+      "n": 54,
+      "peak_terr_in_snapshots": 19103
+     },
+     "[Nope] mark07": {
+      "first_t": 630,
+      "gaps": [
+       [
+        3960,
+        4140
+       ]
+      ],
+      "last_t": 5400,
+      "n": 53,
+      "peak_terr_in_snapshots": 6977
+     },
+     "[Nope] noah88": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 3420,
+      "n": 32,
+      "peak_terr_in_snapshots": 8842
+     },
+     "[Nope] ryan_m": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 3060,
+      "n": 28,
+      "peak_terr_in_snapshots": 21370
+     }
+    }
+   },
+   "max_tick": 5405,
+   "mine_values": [
+    2
+   ],
+   "n_bots_results": 8,
+   "n_played_records": 8,
+   "n_records": 8,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 59,
+     "alivePlayers": 49,
+     "at": "2026-11-07T17:04:04.993Z",
+     "balance": 620,
+     "best": 2,
+     "bot": "[Nope] leo_tx",
+     "event": "died",
+     "me": 22,
+     "mine": 2,
+     "peak": 1623,
+     "place": 50,
+     "result": "lost",
+     "row": 98,
+     "seconds": 124,
+     "sent": 59,
+     "territory": 0,
+     "tick": 1776,
+     "totals": {
+      "0": 4577,
+      "1": 249729,
+      "2": 290666
+     },
+     "why": null
+    },
+    {
+     "accepted": 162,
+     "alivePlayers": 38,
+     "at": "2026-11-07T17:05:21.939Z",
+     "balance": 24086,
+     "best": 2,
+     "bot": "[Nope] ryan_m",
+     "event": "died",
+     "me": 18,
+     "mine": 2,
+     "peak": 21912,
+     "place": 39,
+     "result": "lost",
+     "row": 99,
+     "seconds": 201,
+     "sent": 163,
+     "territory": 0,
+     "tick": 3157,
+     "totals": {
+      "1": 237551,
+      "2": 304624
+     },
+     "why": null
+    },
+    {
+     "accepted": 92,
+     "alivePlayers": 36,
+     "at": "2026-11-07T17:05:30.092Z",
+     "balance": 21,
+     "best": 2,
+     "bot": "[Nope] dave_w",
+     "event": "died",
+     "me": 20,
+     "mine": 2,
+     "peak": 6731,
+     "place": 37,
+     "result": "lost",
+     "row": 100,
+     "seconds": 209,
+     "sent": 93,
+     "territory": 0,
+     "tick": 3295,
+     "totals": {
+      "1": 238408,
+      "2": 306022
+     },
+     "why": null
+    },
+    {
+     "accepted": 80,
+     "alivePlayers": 32,
+     "at": "2026-11-07T17:06:04.328Z",
+     "balance": 113079,
+     "best": 2,
+     "bot": "[Nope] ethan21",
+     "event": "died",
+     "me": 23,
+     "mine": 2,
+     "peak": 10714,
+     "place": 33,
+     "result": "lost",
+     "row": 101,
+     "seconds": 243,
+     "sent": 80,
+     "territory": 0,
+     "tick": 3909,
+     "totals": {
+      "1": 196353,
+      "2": 348224
+     },
+     "why": null
+    },
+    {
+     "accepted": 202,
+     "alivePlayers": 35,
+     "at": "2026-11-07T17:06:38.254Z",
+     "balance": 74009,
+     "best": null,
+     "bot": "[Nope] noah88",
+     "event": "left",
+     "me": 29,
+     "mine": null,
+     "peak": 8862,
+     "place": 27,
+     "result": "left",
+     "row": 102,
+     "seconds": 276,
+     "sent": 224,
+     "territory": 7869,
+     "tick": 3437,
+     "totals": null,
+     "why": "reload"
+    },
+    {
+     "accepted": 79,
+     "alivePlayers": 18,
+     "at": "2026-11-07T17:07:28.179Z",
+     "balance": 169219,
+     "best": 2,
+     "bot": "[Nope] kevin_k",
+     "event": "end",
+     "me": 21,
+     "mine": 2,
+     "peak": 1710,
+     "place": 16,
+     "result": "won",
+     "row": 103,
+     "seconds": 327,
+     "sent": 79,
+     "territory": 1412,
+     "tick": 5405,
+     "totals": {
+      "1": 7,
+      "2": 545700
+     },
+     "why": null
+    },
+    {
+     "accepted": 146,
+     "alivePlayers": 18,
+     "at": "2026-11-07T17:07:28.179Z",
+     "balance": 2070393,
+     "best": 2,
+     "bot": "[Nope] lucas94",
+     "event": "end",
+     "me": 24,
+     "mine": 2,
+     "peak": 19659,
+     "place": 12,
+     "result": "won",
+     "row": 104,
+     "seconds": 327,
+     "sent": 146,
+     "territory": 17077,
+     "tick": 5405,
+     "totals": {
+      "1": 7,
+      "2": 545700
+     },
+     "why": null
+    },
+    {
+     "accepted": 218,
+     "alivePlayers": 18,
+     "at": "2026-11-07T17:07:28.359Z",
+     "balance": 300132,
+     "best": 2,
+     "bot": "[Nope] mark07",
+     "event": "end",
+     "me": 19,
+     "mine": 2,
+     "peak": 6977,
+     "place": 15,
+     "result": "won",
+     "row": 105,
+     "seconds": 327,
+     "sent": 218,
+     "territory": 6977,
+     "tick": 5405,
+     "totals": {
+      "1": 7,
+      "2": 545700
+     },
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 1,
+    "lost": 4,
+    "won": 3
+   },
+   "saw_end": true,
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 5722,
+      "[Nope] ethan21": 9833,
+      "[Nope] kevin_k": 1575,
+      "[Nope] leo_tx": 247,
+      "[Nope] lucas94": 10178,
+      "[Nope] mark07": 2035,
+      "[Nope] noah88": 5635,
+      "[Nope] ryan_m": 18652
+     },
+     "squad_share": 0.09864836162826465,
+     "squad_terr": 53877
+    },
+    "3060": {
+     "n_missing": 0,
+     "n_with_snapshot": 7,
+     "per_bot": {
+      "[Nope] dave_w": 5353,
+      "[Nope] ethan21": 7029,
+      "[Nope] kevin_k": 1411,
+      "[Nope] leo_tx": 0,
+      "[Nope] lucas94": 16555,
+      "[Nope] mark07": 5401,
+      "[Nope] noah88": 8329,
+      "[Nope] ryan_m": 7901
+     },
+     "squad_share": 0.0951731386134263,
+     "squad_terr": 51979
+    },
+    "4500": {
+     "n_missing": 0,
+     "n_with_snapshot": 3,
+     "per_bot": {
+      "[Nope] dave_w": 0,
+      "[Nope] ethan21": 0,
+      "[Nope] kevin_k": 1411,
+      "[Nope] leo_tx": 0,
+      "[Nope] lucas94": 17077,
+      "[Nope] mark07": 6405,
+      "[Nope] noah88": 0,
+      "[Nope] ryan_m": 0
+     },
+     "squad_share": 0.04557888646384157,
+     "squad_terr": 24893
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "per_bot": {
+      "[Nope] dave_w": 2862,
+      "[Nope] ethan21": 2879,
+      "[Nope] kevin_k": 1320,
+      "[Nope] leo_tx": 1312,
+      "[Nope] lucas94": 3365,
+      "[Nope] mark07": 1486,
+      "[Nope] noah88": 2800,
+      "[Nope] ryan_m": 3444
+     },
+     "squad_share": 0.035645754295507474,
+     "squad_terr": 19468
+    }
+   },
+   "split": false,
+   "squad_outcome": "won",
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794070920858,
+   "t0_spread_ms": 980,
+   "t0_utc": "2026-11-07T17:02:00.858Z",
+   "why": {
+    "reload": 1
+   }
+  },
+  {
+   "H": 49,
+   "T": 6,
+   "T_nominal": 6,
+   "T_obs": 6,
+   "T_rule": 6,
+   "T_rule_if_all_bots_tagged": 6,
+   "T_source": "rule(mode,H,clan)=obs",
+   "clan_for_rule": 7,
+   "events": {
+    "died": 6,
+    "end": 1
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "G08",
+   "kind": "played",
+   "land": 430654,
+   "last_view": {
+    "best": 5,
+    "best_share_of_land": 0.7298202269106986,
+    "bot": "[Nope] lucas94",
+    "mine": 1,
+    "mine_share_of_land": 0.028071259061799032,
+    "teams_alive": 4,
+    "tick": 5895
+   },
+   "log": {
+    "H": 49,
+    "bots_in_game": [
+     "[Nope] dave_w",
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] ryan_m"
+    ],
+    "bots_in_game_not_selfchecked": [],
+    "counts": {
+     "HL-ASSIST": 41,
+     "HL-DONATE": 9,
+     "HL-OPENING": 61,
+     "HL-SPAWN-BACKEND": 160,
+     "HL-TICK": 315
+    },
+    "errors": {},
+    "first_line": 6508,
+    "hot_imports": [],
+    "init_lines": 7,
+    "last_line": 7145,
+    "log_index": 8,
+    "map": 13,
+    "mapSeed": 15650,
+    "max_tick_in_snapshots": 5850,
+    "me": {
+     "[Nope] dave_w": 12,
+     "[Nope] ethan21": 13,
+     "[Nope] kevin_k": 8,
+     "[Nope] leo_tx": 10,
+     "[Nope] lucas94": 1,
+     "[Nope] mark07": 15,
+     "[Nope] ryan_m": 7
+    },
+    "mode": 4,
+    "n_bots_in_game": 7,
+    "n_error_lines": 0,
+    "n_spawn_solved": 30,
+    "result_lines": [
+     {
+      "bot": "[Nope] leo_tx",
+      "event": "died",
+      "line": 6928,
+      "place": 36,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] kevin_k",
+      "event": "died",
+      "line": 7089,
+      "place": 24,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] mark07",
+      "event": "died",
+      "line": 7105,
+      "place": 21,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] dave_w",
+      "event": "died",
+      "line": 7106,
+      "place": 20,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] ethan21",
+      "event": "died",
+      "line": 7119,
+      "place": 18,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] ryan_m",
+      "event": "died",
+      "line": 7139,
+      "place": 14,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] lucas94",
+      "event": "end",
+      "line": 7145,
+      "place": 4,
+      "result": "over"
+     }
+    ],
+    "selfcheck_bots": [
+     "[Nope] dave_w",
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] ryan_m"
+    ],
+    "selfcheck_lines": 7,
+    "selfcheck_max_nope": 7,
+    "selfcheck_name_mismatch": 0,
+    "tick_summary": {
+     "[Nope] dave_w": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 4590,
+      "n": 45,
+      "peak_terr_in_snapshots": 11765
+     },
+     "[Nope] ethan21": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 4860,
+      "n": 48,
+      "peak_terr_in_snapshots": 24448
+     },
+     "[Nope] kevin_k": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 4320,
+      "n": 42,
+      "peak_terr_in_snapshots": 10513
+     },
+     "[Nope] leo_tx": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 2520,
+      "n": 22,
+      "peak_terr_in_snapshots": 13391
+     },
+     "[Nope] lucas94": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 5850,
+      "n": 59,
+      "peak_terr_in_snapshots": 19437
+     },
+     "[Nope] mark07": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 4590,
+      "n": 45,
+      "peak_terr_in_snapshots": 19753
+     },
+     "[Nope] ryan_m": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 5400,
+      "n": 54,
+      "peak_terr_in_snapshots": 21022
+     }
+    }
+   },
+   "max_tick": 5895,
+   "mine_values": [
+    1
+   ],
+   "n_bots_results": 7,
+   "n_played_records": 7,
+   "n_records": 7,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 110,
+     "alivePlayers": 35,
+     "at": "2026-11-07T17:10:46.523Z",
+     "balance": 26194,
+     "best": 2,
+     "bot": "[Nope] leo_tx",
+     "event": "died",
+     "me": 10,
+     "mine": 1,
+     "peak": 13539,
+     "place": 36,
+     "result": "lost",
+     "row": 106,
+     "seconds": 165,
+     "sent": 110,
+     "territory": 0,
+     "tick": 2585,
+     "totals": {
+      "1": 78026,
+      "2": 88365,
+      "3": 82987,
+      "4": 36372,
+      "5": 56206,
+      "6": 85376
+     },
+     "why": null
+    },
+    {
+     "accepted": 107,
+     "alivePlayers": 23,
+     "at": "2026-11-07T17:12:27.676Z",
+     "balance": 66380,
+     "best": 2,
+     "bot": "[Nope] kevin_k",
+     "event": "died",
+     "me": 8,
+     "mine": 1,
+     "peak": 10835,
+     "place": 24,
+     "result": "lost",
+     "row": 107,
+     "seconds": 267,
+     "sent": 107,
+     "territory": 0,
+     "tick": 4392,
+     "totals": {
+      "1": 78080,
+      "2": 119930,
+      "3": 56144,
+      "4": 27908,
+      "5": 85882,
+      "6": 56504
+     },
+     "why": null
+    },
+    {
+     "accepted": 146,
+     "alivePlayers": 20,
+     "at": "2026-11-07T17:12:41.177Z",
+     "balance": 20431,
+     "best": 2,
+     "bot": "[Nope] mark07",
+     "event": "died",
+     "me": 15,
+     "mine": 1,
+     "peak": 21323,
+     "place": 21,
+     "result": "lost",
+     "row": 108,
+     "seconds": 280,
+     "sent": 147,
+     "territory": 0,
+     "tick": 4630,
+     "totals": {
+      "1": 57614,
+      "2": 123346,
+      "3": 62292,
+      "4": 29933,
+      "5": 102652,
+      "6": 47274
+     },
+     "why": null
+    },
+    {
+     "accepted": 149,
+     "alivePlayers": 19,
+     "at": "2026-11-07T17:12:41.632Z",
+     "balance": 10976,
+     "best": 2,
+     "bot": "[Nope] dave_w",
+     "event": "died",
+     "me": 12,
+     "mine": 1,
+     "peak": 11765,
+     "place": 20,
+     "result": "lost",
+     "row": 109,
+     "seconds": 280,
+     "sent": 149,
+     "territory": 0,
+     "tick": 4638,
+     "totals": {
+      "1": 56500,
+      "2": 123299,
+      "3": 62292,
+      "4": 29825,
+      "5": 102811,
+      "6": 47499
+     },
+     "why": null
+    },
+    {
+     "accepted": 146,
+     "alivePlayers": 17,
+     "at": "2026-11-07T17:12:58.529Z",
+     "balance": 122230,
+     "best": 5,
+     "bot": "[Nope] ethan21",
+     "event": "died",
+     "me": 13,
+     "mine": 1,
+     "peak": 26023,
+     "place": 18,
+     "result": "lost",
+     "row": 110,
+     "seconds": 297,
+     "sent": 147,
+     "territory": 0,
+     "tick": 4942,
+     "totals": {
+      "1": 35446,
+      "2": 103805,
+      "3": 62357,
+      "4": 29327,
+      "5": 149942,
+      "6": 42477
+     },
+     "why": null
+    },
+    {
+     "accepted": 134,
+     "alivePlayers": 13,
+     "at": "2026-11-07T17:13:25.840Z",
+     "balance": 518899,
+     "best": 5,
+     "bot": "[Nope] ryan_m",
+     "event": "died",
+     "me": 7,
+     "mine": 1,
+     "peak": 22211,
+     "place": 14,
+     "result": "lost",
+     "row": 111,
+     "seconds": 325,
+     "sent": 134,
+     "territory": 0,
+     "tick": 5425,
+     "totals": {
+      "1": 12303,
+      "2": 75154,
+      "3": 66004,
+      "4": 29825,
+      "5": 205799,
+      "6": 35815
+     },
+     "why": null
+    },
+    {
+     "accepted": 150,
+     "alivePlayers": 9,
+     "at": "2026-11-07T17:13:52.096Z",
+     "balance": 148041,
+     "best": 5,
+     "bot": "[Nope] lucas94",
+     "event": "end",
+     "me": 1,
+     "mine": 1,
+     "peak": 22014,
+     "place": 4,
+     "result": "over",
+     "row": 112,
+     "seconds": 351,
+     "sent": 151,
+     "territory": 12089,
+     "tick": 5895,
+     "totals": {
+      "1": 12089,
+      "3": 66087,
+      "5": 314300,
+      "6": 36637
+     },
+     "why": null
+    }
+   ],
+   "results": {
+    "lost": 6,
+    "over": 1
+   },
+   "saw_end": true,
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 7,
+     "per_bot": {
+      "[Nope] dave_w": 11119,
+      "[Nope] ethan21": 11255,
+      "[Nope] kevin_k": 9608,
+      "[Nope] leo_tx": 10545,
+      "[Nope] lucas94": 8189,
+      "[Nope] mark07": 11583,
+      "[Nope] ryan_m": 9769
+     },
+     "squad_share": 0.16734547920140067,
+     "squad_terr": 72068
+    },
+    "3060": {
+     "n_missing": 0,
+     "n_with_snapshot": 6,
+     "per_bot": {
+      "[Nope] dave_w": 9889,
+      "[Nope] ethan21": 11255,
+      "[Nope] kevin_k": 8938,
+      "[Nope] leo_tx": 0,
+      "[Nope] lucas94": 13608,
+      "[Nope] mark07": 12702,
+      "[Nope] ryan_m": 14707
+     },
+     "squad_share": 0.16509541302298364,
+     "squad_terr": 71099
+    },
+    "4500": {
+     "n_missing": 0,
+     "n_with_snapshot": 5,
+     "per_bot": {
+      "[Nope] dave_w": 4082,
+      "[Nope] ethan21": 16614,
+      "[Nope] kevin_k": 0,
+      "[Nope] leo_tx": 0,
+      "[Nope] lucas94": 19085,
+      "[Nope] mark07": 15979,
+      "[Nope] ryan_m": 15863
+     },
+     "squad_share": 0.16631216707612143,
+     "squad_terr": 71623
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 7,
+     "per_bot": {
+      "[Nope] dave_w": 2697,
+      "[Nope] ethan21": 3455,
+      "[Nope] kevin_k": 3317,
+      "[Nope] leo_tx": 3025,
+      "[Nope] lucas94": 3217,
+      "[Nope] mark07": 2608,
+      "[Nope] ryan_m": 3082
+     },
+     "squad_share": 0.04969418605191174,
+     "squad_terr": 21401
+    }
+   },
+   "split": false,
+   "squad_outcome": "lost_observed",
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794071281022,
+   "t0_spread_ms": 336,
+   "t0_utc": "2026-11-07T17:08:01.022Z",
+   "why": {}
+  },
+  {
+   "H": 41,
+   "T": 5,
+   "T_nominal": 5,
+   "T_obs": 5,
+   "T_rule": 5,
+   "T_rule_if_all_bots_tagged": 5,
+   "T_source": "rule(mode,H,clan)=obs",
+   "clan_for_rule": 4,
+   "events": {
+    "died": 4,
+    "end": 1,
+    "left": 1
+   },
+   "ext": [
+    "0.7.0"
+   ],
+   "id": "G09",
+   "kind": "played",
+   "land": 423950,
+   "last_view": {
+    "best": 1,
+    "best_share_of_land": 0.975183394268192,
+    "bot": "[Nope] lucas94",
+    "mine": 2,
+    "mine_share_of_land": 0.014296497228446751,
+    "teams_alive": 3,
+    "tick": 14666
+   },
+   "log": {
+    "H": 41,
+    "bots_in_game": [
+     "[Nope] ethan21",
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07",
+     "[Nope] ryan_m"
+    ],
+    "bots_in_game_not_selfchecked": [
+     "[Nope] ethan21",
+     "[Nope] ryan_m"
+    ],
+    "counts": {
+     "HL-DONATE": 2,
+     "HL-INTERCEPT": 9,
+     "HL-OPENING": 50,
+     "HL-SLOW-TICK": 36,
+     "HL-SPAWN-BACKEND": 129,
+     "HL-TICK": 326
+    },
+    "errors": {},
+    "first_line": 7160,
+    "hot_imports": [],
+    "init_lines": 6,
+    "last_line": 7992,
+    "log_index": 9,
+    "map": 16,
+    "mapSeed": 8468,
+    "max_tick_in_snapshots": 14580,
+    "me": {
+     "[Nope] ethan21": 37,
+     "[Nope] kevin_k": 32,
+     "[Nope] leo_tx": 35,
+     "[Nope] lucas94": 34,
+     "[Nope] mark07": 38,
+     "[Nope] ryan_m": 33
+    },
+    "mode": 3,
+    "n_bots_in_game": 6,
+    "n_error_lines": 0,
+    "n_spawn_solved": 30,
+    "result_lines": [
+     {
+      "bot": "[Nope] kevin_k",
+      "event": "died",
+      "line": 7515,
+      "place": 37,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] mark07",
+      "event": "died",
+      "line": 7522,
+      "place": 35,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] ethan21",
+      "event": "died",
+      "line": 7647,
+      "place": 22,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] ryan_m",
+      "event": "died",
+      "line": 7657,
+      "place": 21,
+      "result": "lost"
+     },
+     {
+      "bot": "[Nope] leo_tx",
+      "event": "left",
+      "line": 7805,
+      "place": 11,
+      "result": "left"
+     },
+     {
+      "bot": "[Nope] lucas94",
+      "event": "end",
+      "line": 7992,
+      "place": 3,
+      "result": "over"
+     }
+    ],
+    "selfcheck_bots": [
+     "[Nope] kevin_k",
+     "[Nope] leo_tx",
+     "[Nope] lucas94",
+     "[Nope] mark07"
+    ],
+    "selfcheck_lines": 4,
+    "selfcheck_max_nope": 4,
+    "selfcheck_name_mismatch": 0,
+    "tick_summary": {
+     "[Nope] ethan21": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 3510,
+      "n": 33,
+      "peak_terr_in_snapshots": 15055
+     },
+     "[Nope] kevin_k": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 1980,
+      "n": 16,
+      "peak_terr_in_snapshots": 8815
+     },
+     "[Nope] leo_tx": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 6660,
+      "n": 68,
+      "peak_terr_in_snapshots": 3692
+     },
+     "[Nope] lucas94": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 14580,
+      "n": 156,
+      "peak_terr_in_snapshots": 19660
+     },
+     "[Nope] mark07": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 2070,
+      "n": 17,
+      "peak_terr_in_snapshots": 7723
+     },
+     "[Nope] ryan_m": {
+      "first_t": 630,
+      "gaps": [],
+      "last_t": 3780,
+      "n": 36,
+      "peak_terr_in_snapshots": 12299
+     }
+    }
+   },
+   "max_tick": 14666,
+   "mine_values": [
+    2,
+    3
+   ],
+   "n_bots_results": 6,
+   "n_played_records": 6,
+   "n_records": 6,
+   "players": 512,
+   "records": [
+    {
+     "accepted": 107,
+     "alivePlayers": 36,
+     "at": "2026-11-07T17:16:14.680Z",
+     "balance": 7440,
+     "best": 1,
+     "bot": "[Nope] kevin_k",
+     "event": "died",
+     "me": 32,
+     "mine": 2,
+     "peak": 9575,
+     "place": 37,
+     "result": "lost",
+     "row": 113,
+     "seconds": 133,
+     "sent": 108,
+     "territory": 0,
+     "tick": 2012,
+     "totals": {
+      "0": 3346,
+      "1": 134541,
+      "2": 59361,
+      "3": 78383,
+      "4": 51419,
+      "5": 91415
+     },
+     "why": null
+    },
+    {
+     "accepted": 106,
+     "alivePlayers": 34,
+     "at": "2026-11-07T17:16:18.897Z",
+     "balance": 13186,
+     "best": 1,
+     "bot": "[Nope] mark07",
+     "event": "died",
+     "me": 38,
+     "mine": 2,
+     "peak": 7742,
+     "place": 35,
+     "result": "lost",
+     "row": 114,
+     "seconds": 137,
+     "sent": 107,
+     "territory": 0,
+     "tick": 2085,
+     "totals": {
+      "0": 1530,
+      "1": 137440,
+      "2": 55962,
+      "3": 79747,
+      "4": 53035,
+      "5": 90505
+     },
+     "why": null
+    },
+    {
+     "accepted": 142,
+     "alivePlayers": 21,
+     "at": "2026-11-07T17:17:44.147Z",
+     "balance": 24557,
+     "best": 1,
+     "bot": "[Nope] ethan21",
+     "event": "died",
+     "me": 37,
+     "mine": 3,
+     "peak": 15328,
+     "place": 22,
+     "result": "lost",
+     "row": 115,
+     "seconds": 223,
+     "sent": 164,
+     "territory": 0,
+     "tick": 3609,
+     "totals": {
+      "1": 150535,
+      "2": 63978,
+      "3": 47600,
+      "4": 47647,
+      "5": 108841
+     },
+     "why": null
+    },
+    {
+     "accepted": 193,
+     "alivePlayers": 20,
+     "at": "2026-11-07T17:17:56.427Z",
+     "balance": 24618,
+     "best": 1,
+     "bot": "[Nope] ryan_m",
+     "event": "died",
+     "me": 33,
+     "mine": 3,
+     "peak": 12303,
+     "place": 21,
+     "result": "lost",
+     "row": 116,
+     "seconds": 235,
+     "sent": 206,
+     "territory": 0,
+     "tick": 3827,
+     "totals": {
+      "1": 155179,
+      "2": 70276,
+      "3": 37092,
+      "4": 47482,
+      "5": 109972
+     },
+     "why": null
+    },
+    {
+     "accepted": 160,
+     "alivePlayers": 11,
+     "at": "2026-11-07T17:21:38.079Z",
+     "balance": 474093,
+     "best": null,
+     "bot": "[Nope] leo_tx",
+     "event": "left",
+     "me": 35,
+     "mine": null,
+     "peak": 3692,
+     "place": 11,
+     "result": "left",
+     "row": 117,
+     "seconds": 456,
+     "sent": 178,
+     "territory": 3247,
+     "tick": 6685,
+     "totals": null,
+     "why": "reload"
+    },
+    {
+     "accepted": 261,
+     "alivePlayers": 5,
+     "at": "2026-11-07T17:28:03.465Z",
+     "balance": 84987,
+     "best": 1,
+     "bot": "[Nope] lucas94",
+     "event": "end",
+     "me": 34,
+     "mine": 2,
+     "peak": 19832,
+     "place": 3,
+     "result": "over",
+     "row": 118,
+     "seconds": 842,
+     "sent": 274,
+     "territory": 4874,
+     "tick": 14666,
+     "totals": {
+      "1": 413429,
+      "2": 6061,
+      "5": 332
+     },
+     "why": null
+    }
+   ],
+   "results": {
+    "left": 1,
+    "lost": 4,
+    "over": 1
+   },
+   "saw_end": true,
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 6,
+     "per_bot": {
+      "[Nope] ethan21": 7140,
+      "[Nope] kevin_k": 8815,
+      "[Nope] leo_tx": 2863,
+      "[Nope] lucas94": 13498,
+      "[Nope] mark07": 7723,
+      "[Nope] ryan_m": 9597
+     },
+     "squad_share": 0.1170798443212643,
+     "squad_terr": 49636
+    },
+    "3060": {
+     "n_missing": 0,
+     "n_with_snapshot": 4,
+     "per_bot": {
+      "[Nope] ethan21": 13465,
+      "[Nope] kevin_k": 0,
+      "[Nope] leo_tx": 2774,
+      "[Nope] lucas94": 19660,
+      "[Nope] mark07": 0,
+      "[Nope] ryan_m": 9610
+     },
+     "squad_share": 0.10734520580257106,
+     "squad_terr": 45509
+    },
+    "4500": {
+     "n_missing": 0,
+     "n_with_snapshot": 2,
+     "per_bot": {
+      "[Nope] ethan21": 0,
+      "[Nope] kevin_k": 0,
+      "[Nope] leo_tx": 3243,
+      "[Nope] lucas94": 4231,
+      "[Nope] mark07": 0,
+      "[Nope] ryan_m": 0
+     },
+     "squad_share": 0.01762943743365963,
+     "squad_terr": 7474
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 6,
+     "per_bot": {
+      "[Nope] ethan21": 2159,
+      "[Nope] kevin_k": 2382,
+      "[Nope] leo_tx": 1141,
+      "[Nope] lucas94": 3293,
+      "[Nope] mark07": 580,
+      "[Nope] ryan_m": 2988
+     },
+     "squad_share": 0.02958603608916146,
+     "squad_terr": 12543
+    }
+   },
+   "split": true,
+   "squad_outcome": "lost_observed",
+   "strategy": [
+    "file:v27team"
+   ],
+   "t0_ms": 1794071641274,
+   "t0_spread_ms": 488,
+   "t0_utc": "2026-11-07T17:14:01.274Z",
+   "why": {
+    "reload": 1
+   }
+  }
+ ],
+ "source": {
+  "branch": "cursor/c116-winrate-liaison-b3bc",
+  "log": {
+   "lines": 46752,
+   "lines_used": 7992,
+   "path": "c116-winrate/data/G01-G09-squad.log",
+   "sha256": "b77c00d118baeeba0f386ed1740e7918c9ab8ed14c45b13bb777b1862b6ec50e"
+  },
+  "results": {
+   "path": "c116-winrate/data/tsb-team-results.jsonl",
+   "rows": 119,
+   "sha256": "c3dcc776d3d45b0fd6e34f4eb6ab90f5059f6119054a9c70b2fa9d6ad1dbbf33"
+  }
+ }
+}

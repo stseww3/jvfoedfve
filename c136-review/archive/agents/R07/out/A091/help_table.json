@@ -1,0 +1,437 @@
+{
+ "check": "复刻校验：1788 行一致 / 0 行不一致",
+ "A": {
+  "total": {
+   "no-cand": 1323,
+   "D:nocall-atkH": 40,
+   "D:meAttacking": 100,
+   "SENT:defense_dispatch": 62,
+   "SENT:offense_dispatch": 41,
+   "SENT:yield_opt_dispatch": 63,
+   "D:meUnderFire": 94,
+   "PCT<min": 14,
+   "D:nocall-neutral": 2,
+   "D:bal<min": 21,
+   "D:nocall-atkAI": 1,
+   "D:terr<1200": 27
+  },
+  "byDonor": {
+   "ryan_m": {
+    "no-cand": 179,
+    "D:nocall-atkH": 2,
+    "D:meAttacking": 2,
+    "SENT:defense_dispatch": 11,
+    "SENT:offense_dispatch": 12,
+    "SENT:yield_opt_dispatch": 5,
+    "D:meUnderFire": 4
+   },
+   "kaito9": {
+    "no-cand": 32,
+    "D:meUnderFire": 11
+   },
+   "riku_x": {
+    "no-cand": 186,
+    "D:nocall-atkH": 1,
+    "D:meAttacking": 3,
+    "SENT:defense_dispatch": 11,
+    "SENT:yield_opt_dispatch": 5,
+    "SENT:offense_dispatch": 2,
+    "D:meUnderFire": 3
+   },
+   "noah88": {
+    "no-cand": 128,
+    "D:nocall-atkH": 8,
+    "D:meAttacking": 38,
+    "PCT<min": 2,
+    "SENT:offense_dispatch": 6,
+    "SENT:yield_opt_dispatch": 3,
+    "D:meUnderFire": 30,
+    "D:nocall-neutral": 1
+   },
+   "sora_w": {
+    "no-cand": 120,
+    "PCT<min": 1,
+    "SENT:defense_dispatch": 1,
+    "SENT:offense_dispatch": 1,
+    "D:nocall-atkH": 15,
+    "D:meAttacking": 33,
+    "D:meUnderFire": 18,
+    "SENT:yield_opt_dispatch": 1
+   },
+   "leo_tx": {
+    "no-cand": 174,
+    "D:nocall-atkH": 1,
+    "D:meAttacking": 2,
+    "SENT:defense_dispatch": 16,
+    "SENT:offense_dispatch": 5,
+    "SENT:yield_opt_dispatch": 17,
+    "D:nocall-neutral": 1,
+    "D:meUnderFire": 2
+   },
+   "zexos1": {
+    "no-cand": 169,
+    "D:meUnderFire": 11,
+    "D:nocall-atkH": 4,
+    "D:bal<min": 3,
+    "D:nocall-atkAI": 1,
+    "SENT:offense_dispatch": 1,
+    "SENT:yield_opt_dispatch": 13,
+    "SENT:defense_dispatch": 9,
+    "D:meAttacking": 2,
+    "D:terr<1200": 27
+   },
+   "alex_k": {
+    "no-cand": 168,
+    "D:nocall-atkH": 4,
+    "D:meAttacking": 14,
+    "SENT:yield_opt_dispatch": 15,
+    "SENT:offense_dispatch": 3,
+    "D:meUnderFire": 11,
+    "SENT:defense_dispatch": 7,
+    "D:bal<min": 18
+   },
+   "talon5": {
+    "no-cand": 167,
+    "D:nocall-atkH": 5,
+    "D:meAttacking": 6,
+    "PCT<min": 11,
+    "SENT:offense_dispatch": 11,
+    "SENT:yield_opt_dispatch": 4,
+    "SENT:defense_dispatch": 7,
+    "D:meUnderFire": 4
+   }
+  }
+ },
+ "B": {
+  "noah88": {
+   "ticks": 154,
+   "underFire": 134,
+   "doomedA": 0,
+   "doomedB": 0,
+   "maxRatio": 0.766,
+   "maxRatioT": 6890
+  },
+  "alex_k": {
+   "ticks": 96,
+   "underFire": 90,
+   "doomedA": 34,
+   "doomedB": 0,
+   "maxRatio": 39.016,
+   "maxRatioT": 7410
+  },
+  "sora_w": {
+   "ticks": 85,
+   "underFire": 78,
+   "doomedA": 9,
+   "doomedB": 0,
+   "maxRatio": 7.153,
+   "maxRatioT": 6240
+  },
+  "kaito9": {
+   "ticks": 69,
+   "underFire": 69,
+   "doomedA": 0,
+   "doomedB": 0,
+   "maxRatio": 1.083,
+   "maxRatioT": 2545
+  },
+  "zexos1": {
+   "ticks": 50,
+   "underFire": 44,
+   "doomedA": 25,
+   "doomedB": 0,
+   "maxRatio": 33.299,
+   "maxRatioT": 6835
+  },
+  "talon5": {
+   "ticks": 17,
+   "underFire": 17,
+   "doomedA": 12,
+   "doomedB": 0,
+   "maxRatio": 7.601,
+   "maxRatioT": 6875
+  },
+  "ryan_m": {
+   "ticks": 16,
+   "underFire": 16,
+   "doomedA": 10,
+   "doomedB": 0,
+   "maxRatio": 6.316,
+   "maxRatioT": 6850
+  },
+  "riku_x": {
+   "ticks": 13,
+   "underFire": 13,
+   "doomedA": 13,
+   "doomedB": 0,
+   "maxRatio": 23.473,
+   "maxRatioT": 6755
+  },
+  "leo_tx": {
+   "ticks": 9,
+   "underFire": 9,
+   "doomedA": 9,
+   "doomedB": 0,
+   "maxRatio": 6.893,
+   "maxRatioT": 6950
+  }
+ },
+ "C": {
+  "kaito9:1650:2562": {
+   "total": {
+    "B:dMe": 162,
+    "D:bal<min": 1,
+    "A:dMe": 97,
+    "PCT<min": 1,
+    "SENT": 10,
+    "D:nocall-atkAI": 1,
+    "OTHER→talon5": 1,
+    "D:nocall-atkH": 4,
+    "D:meAttacking": 16
+   },
+   "byDonor": {
+    "ryan_m": {
+     "B:dMe": 26,
+     "A:dMe": 8,
+     "SENT": 3
+    },
+    "riku_x": {
+     "B:dMe": 23,
+     "A:dMe": 13,
+     "SENT": 1
+    },
+    "noah88": {
+     "B:dMe": 17,
+     "A:dMe": 14,
+     "D:nocall-atkH": 1,
+     "D:meAttacking": 5
+    },
+    "sora_w": {
+     "B:dMe": 13,
+     "A:dMe": 11,
+     "PCT<min": 1,
+     "SENT": 1,
+     "OTHER→talon5": 1,
+     "D:nocall-atkH": 1,
+     "D:meAttacking": 9
+    },
+    "leo_tx": {
+     "B:dMe": 21,
+     "A:dMe": 11,
+     "SENT": 5
+    },
+    "zexos1": {
+     "D:bal<min": 1,
+     "B:dMe": 20,
+     "A:dMe": 14,
+     "D:nocall-atkAI": 1
+    },
+    "alex_k": {
+     "B:dMe": 19,
+     "A:dMe": 13,
+     "D:nocall-atkH": 2,
+     "D:meAttacking": 2
+    },
+    "talon5": {
+     "A:dMe": 13,
+     "B:dMe": 23
+    }
+   }
+  },
+  "sora_w:5470:6251": {
+   "total": {
+    "B:dMe": 134,
+    "A:dMe": 45,
+    "SENT": 9,
+    "D:meAttacking": 6,
+    "OTHER→noah88": 10,
+    "D:nocall-atkH": 1,
+    "D:meUnderFire": 11,
+    "D:nocall-neutral": 1,
+    "ABSENT": 2
+   },
+   "byDonor": {
+    "talon5": {
+     "B:dMe": 22,
+     "A:dMe": 7,
+     "OTHER→noah88": 2,
+     "ABSENT": 1
+    },
+    "ryan_m": {
+     "A:dMe": 6,
+     "B:dMe": 22,
+     "SENT": 1,
+     "OTHER→noah88": 2,
+     "ABSENT": 1
+    },
+    "riku_x": {
+     "SENT": 2,
+     "B:dMe": 23,
+     "A:dMe": 5,
+     "OTHER→noah88": 1
+    },
+    "noah88": {
+     "A:dMe": 2,
+     "B:dMe": 11,
+     "D:nocall-atkH": 1,
+     "D:meAttacking": 5,
+     "D:meUnderFire": 11,
+     "D:nocall-neutral": 1
+    },
+    "leo_tx": {
+     "A:dMe": 8,
+     "B:dMe": 20,
+     "SENT": 2,
+     "OTHER→noah88": 1
+    },
+    "zexos1": {
+     "D:meAttacking": 1,
+     "OTHER→noah88": 3,
+     "SENT": 2,
+     "A:dMe": 8,
+     "B:dMe": 17
+    },
+    "alex_k": {
+     "SENT": 2,
+     "B:dMe": 19,
+     "A:dMe": 9,
+     "OTHER→noah88": 1
+    }
+   }
+  },
+  "noah88:6100:6898": {
+   "total": {
+    "B:dMe": 66,
+    "A:dMe": 83,
+    "SENT": 11,
+    "D:meUnderFire": 20,
+    "D:nocall-atkH": 1,
+    "D:nocall-neutral": 1,
+    "D:bal<min": 6,
+    "D:terr<1200": 3
+   },
+   "byDonor": {
+    "ryan_m": {
+     "B:dMe": 12,
+     "SENT": 3,
+     "A:dMe": 14,
+     "D:meUnderFire": 2
+    },
+    "riku_x": {
+     "A:dMe": 15,
+     "B:dMe": 8,
+     "SENT": 1,
+     "D:meUnderFire": 3
+    },
+    "sora_w": {
+     "A:dMe": 2,
+     "B:dMe": 1,
+     "D:meUnderFire": 3
+    },
+    "leo_tx": {
+     "SENT": 3,
+     "A:dMe": 14,
+     "B:dMe": 14,
+     "D:nocall-neutral": 1
+    },
+    "zexos1": {
+     "SENT": 2,
+     "A:dMe": 13,
+     "B:dMe": 9,
+     "D:meUnderFire": 5,
+     "D:terr<1200": 3
+    },
+    "alex_k": {
+     "A:dMe": 13,
+     "B:dMe": 9,
+     "D:meUnderFire": 3,
+     "D:nocall-atkH": 1,
+     "D:bal<min": 6
+    },
+    "talon5": {
+     "A:dMe": 12,
+     "B:dMe": 13,
+     "SENT": 2,
+     "D:meUnderFire": 4
+    }
+   }
+  }
+ },
+ "D": {
+  "1650:2562": {
+   "n": 330,
+   "reasons": {
+    "no-cand": 285,
+    "D:bal<min": 1,
+    "D:meUnderFire": 11,
+    "PCT<min": 1,
+    "SENT:defense_dispatch": 10,
+    "D:nocall-atkAI": 1,
+    "SENT:offense_dispatch": 1,
+    "D:nocall-atkH": 4,
+    "D:meAttacking": 16
+   },
+   "noCandPairs": {
+    "B:dMe": 1179,
+    "C:rear": 1004,
+    "A:dMe": 97
+   }
+  },
+  "5470:6251": {
+   "n": 250,
+   "reasons": {
+    "no-cand": 198,
+    "SENT:defense_dispatch": 17,
+    "D:meUnderFire": 21,
+    "D:meAttacking": 8,
+    "D:nocall-atkH": 3,
+    "SENT:yield_opt_dispatch": 2,
+    "D:nocall-neutral": 1
+   },
+   "noCandPairs": {
+    "B:dMe": 267,
+    "C:rear": 1016,
+    "A:dMe": 101
+   }
+  },
+  "6100:6898": {
+   "n": 223,
+   "reasons": {
+    "no-cand": 158,
+    "D:meUnderFire": 40,
+    "SENT:defense_dispatch": 11,
+    "D:nocall-atkH": 2,
+    "D:meAttacking": 2,
+    "D:nocall-neutral": 1,
+    "D:bal<min": 6,
+    "D:terr<1200": 3
+   },
+   "noCandPairs": {
+    "B:dMe": 171,
+    "C:rear": 638,
+    "A:dMe": 107,
+    "C:doomedA": 45,
+    "C:small": 4
+   }
+  },
+  "6600:6960": {
+   "n": 83,
+   "reasons": {
+    "no-cand": 41,
+    "D:meUnderFire": 25,
+    "SENT:defense_dispatch": 2,
+    "D:nocall-atkH": 1,
+    "D:nocall-neutral": 1,
+    "D:bal<min": 8,
+    "D:terr<1200": 5
+   },
+   "noCandPairs": {
+    "A:dMe": 26,
+    "C:rear": 105,
+    "B:dMe": 48,
+    "C:doomedA": 45,
+    "C:small": 4
+   }
+  }
+ }
+}

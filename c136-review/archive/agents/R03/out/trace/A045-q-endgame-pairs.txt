@@ -1,0 +1,63 @@
+# A045 收官四家之间的逐对战损（pairLog 每 30 拍一行：t, 攻, 守, 格, 攻方烧兵, 守方掉兵）；窗口内合计
+8100~9000:
+    [APEX] noah88#35 T2 → U.N. Peace Cor#15 T5：3533 格，攻方烧 1.20M，守方掉 0.60M（340 兵/格）
+    U.N. Peace Cor#15 T5 → [JP] Phantigma#45 T1：2848 格，攻方烧 1.14M，守方掉 0.57M（399 兵/格）
+    [JP] Phantigma#45 T1 → [APEX] noah88#35 T2：3592 格，攻方烧 1.03M，守方掉 0.51M（287 兵/格）
+9000~9600:
+    Player 58#10 T3 → [APEX] noah88#35 T2：14825 格，攻方烧 3.95M，守方掉 1.89M（266 兵/格）
+    [APEX] noah88#35 T2 → [JP] Phantigma#45 T1：7763 格，攻方烧 3.75M，守方掉 1.64M（483 兵/格）
+    [APEX] noah88#35 T2 → Player 58#10 T3：6983 格，攻方烧 1.70M，守方掉 0.84M（243 兵/格）
+    [JP] Phantigma#45 T1 → [APEX] noah88#35 T2：1891 格，攻方烧 0.55M，守方掉 0.28M（293 兵/格）
+9600~10200:
+    [APEX] noah88#35 T2 → Player 58#10 T3：12302 格，攻方烧 7.52M，守方掉 2.28M（611 兵/格）
+    U.N. Peace Cor#15 T5 → [APEX] noah88#35 T2：16815 格，攻方烧 4.79M，守方掉 2.38M（285 兵/格）
+    Player 58#10 T3 → [APEX] noah88#35 T2：14253 格，攻方烧 4.62M，守方掉 2.05M（324 兵/格）
+    U.N. Peace Cor#15 T5 → [JP] Phantigma#45 T1：4322 格，攻方烧 1.60M，守方掉 0.80M（370 兵/格）
+    [JP] Phantigma#45 T1 → [APEX] noah88#35 T2：3795 格，攻方烧 1.01M，守方掉 0.50M（266 兵/格）
+10200~10800:
+    Player 58#10 T3 → [APEX] noah88#35 T2：49130 格，攻方烧 12.39M，守方掉 6.15M（252 兵/格）
+    [APEX] noah88#35 T2 → Player 58#10 T3：17146 格，攻方烧 6.07M，守方掉 3.02M（354 兵/格）
+    U.N. Peace Cor#15 T5 → [JP] Phantigma#45 T1：12474 格，攻方烧 4.81M，守方掉 2.39M（386 兵/格）
+    [APEX] noah88#35 T2 → U.N. Peace Cor#15 T5：6288 格，攻方烧 2.42M，守方掉 1.20M（384 兵/格）
+10800~11400:
+    Player 58#10 T3 → [APEX] noah88#35 T2：31061 格，攻方烧 8.42M，守方掉 4.18M（271 兵/格）
+    [JP] Phantigma#45 T1 → Player 58#10 T3：12604 格，攻方烧 3.37M，守方掉 1.67M（268 兵/格）
+    [APEX] noah88#35 T2 → Player 58#10 T3：10690 格，攻方烧 3.36M，守方掉 1.67M（315 兵/格）
+    U.N. Peace Cor#15 T5 → [APEX] noah88#35 T2：2282 格，攻方烧 0.61M，守方掉 0.30M（267 兵/格）
+11400~11790:
+    U.N. Peace Cor#15 T5 → [APEX] noah88#35 T2：34190 格，攻方烧 9.59M，守方掉 4.76M（281 兵/格）
+    Player 58#10 T3 → [JP] Phantigma#45 T1：15238 格，攻方烧 6.27M，守方掉 3.12M（412 兵/格）
+    Player 58#10 T3 → [APEX] noah88#35 T2：20212 格，攻方烧 5.20M，守方掉 2.58M（257 兵/格）
+    [JP] Phantigma#45 T1 → Player 58#10 T3：3641 格，攻方烧 1.31M，守方掉 0.65M（361 兵/格）
+    [JP] Phantigma#45 T1 → [APEX] noah88#35 T2：323 格，攻方烧 0.08M，守方掉 0.04M（233 兵/格）
+# 9000 拍起 P58/UN/JP 三家互相之间的进攻指令（不含打 noah88 的）
+    9681 U.N. Peace Cor#15 T5 → [JP] Phantigma#45 T1 pct 124 兵 1.60M 余额 13.11M
+    10318 U.N. Peace Cor#15 T5 → [JP] Phantigma#45 T1 pct 124 兵 1.63M 余额 13.32M
+    10409 U.N. Peace Cor#15 T5 → [JP] Phantigma#45 T1 pct 124 兵 1.60M 余额 13.08M
+    10829 [JP] Phantigma#45 T1 → Player 58#10 T3 pct 112 兵 1.10M 余额 9.92M
+    10962 [JP] Phantigma#45 T1 → Player 58#10 T3 pct 112 兵 1.09M 余额 9.88M
+    11172 [JP] Phantigma#45 T1 → Player 58#10 T3 pct 112 兵 1.19M 余额 10.77M
+    11466 [JP] Phantigma#45 T1 → Player 58#10 T3 pct 112 兵 1.31M 余额 11.90M
+    11543 Player 58#10 T3 → [JP] Phantigma#45 T1 pct 142 兵 2.98M 余额 21.34M
+    11599 Player 58#10 T3 → [JP] Phantigma#45 T1 pct 168 兵 3.29M 余额 19.95M
+# 9000 拍起三家的船（落点归属）
+    9177 Player 58#10 T3 船 pct 139 兵 1.82M 落点属 [APEX] noah88#35 T2
+    10171 Player 58#10 T3 船 pct 16 兵 0.24M 落点属 neutral
+    10507 U.N. Peace Cor#15 T5 船 pct 124 兵 1.61M 落点属 [JP] Phantigma#45 T1
+    10577 U.N. Peace Cor#15 T5 船 pct 124 兵 1.53M 落点属 U.N. Peace Cor#15 T5
+    10640 U.N. Peace Cor#15 T5 船 pct 124 兵 1.66M 落点属 endte 🐐D?[TITA#6 T3
+    11249 U.N. Peace Cor#15 T5 船 pct 14 兵 0.28M 落点属 neutral
+    11648 U.N. Peace Cor#15 T5 船 pct 139 兵 2.46M 落点属 [APEX] noah88#35 T2
+# 四家的地/兵/密度
+   t=9000 Player 58 92115/10.86M(118)  U.N. Peace 75727/9.55M(126)  [JP] Phant 66011/8.75M(133)  [APEX] noa 119473/12.73M(107)
+   t=9300 Player 58 99713/11.27M(113)  U.N. Peace 80089/10.35M(129)  [JP] Phant 68795/8.82M(128)  [APEX] noa 127530/9.42M(74)
+   t=9600 Player 58 131426/12.02M(91)  U.N. Peace 90057/12.91M(143)  [JP] Phant 70063/7.32M(104)  [APEX] noa 146458/11.98M(82)
+   t=9820 Player 58 124584/15.47M(124)  U.N. Peace 94744/11.21M(118)  [JP] Phant 66476/8.41M(126)  [APEX] noa 152860/12.62M(83)
+   t=10000 Player 58 127151/14.49M(114)  U.N. Peace 100000/11.72M(117)  [JP] Phant 70271/8.46M(120)  [APEX] noa 141168/11.04M(78)
+   t=10200 Player 58 133377/14.34M(108)  U.N. Peace 110981/12.95M(117)  [JP] Phant 72641/7.99M(110)  [APEX] noa 123897/11.48M(93)
+   t=10500 Player 58 148341/13.18M(89)  U.N. Peace 112847/13.23M(117)  [JP] Phant 75742/8.47M(112)  [APEX] noa 117617/8.70M(74)
+   t=10800 Player 58 165957/14.86M(90)  U.N. Peace 122557/12.98M(106)  [JP] Phant 70798/9.86M(139)  [APEX] noa 100001/7.43M(74)
+   t=11100 Player 58 175139/15.65M(89)  U.N. Peace 138101/17.58M(127)  [JP] Phant 81153/10.27M(127)  [APEX] noa 81536/6.02M(74)
+   t=11400 Player 58 173724/20.62M(119)  U.N. Peace 140313/17.40M(124)  [JP] Phant 84474/11.64M(138)  [APEX] noa 77348/6.54M(85)
+   t=11600 Player 58 188372/16.94M(90)  U.N. Peace 156199/16.89M(108)  [JP] Phant 80955/10.41M(129)  [APEX] noa 50931/4.67M(92)
+   t=11760 Player 58 204231/19.98M(98)  U.N. Peace 175086/18.94M(108)  [JP] Phant 72877/9.90M(136)  [APEX] noa 24248/1.80M(74)

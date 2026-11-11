@@ -1,0 +1,106 @@
+# A007 t=300~1499 有内置 AI 邻居的决策拍：影子有没有出手，没出手时卡在哪条底线（策略 v27-team-c116-va.js；Style.pickTarget → floorFor → floorFor0 → winFloor = max(价格项, dpKeep, safeFinite)）
+zexos1: 有 AI 邻居的决策拍 128（t=300~935）；出手打 AI/人 26；只打无主地/其他指令 3；零指令 99（零指令时平均余额 5905）
+    邻居 AI 都不让打（allow / botOk 没过：价格高于当拍地价或 winWorth）: 55 拍
+    safeFinite 底线卡住（参照的最弱邻居是我方队友）: 16 拍
+    safeFinite 底线卡住（参照的最弱邻居是敌方真人）: 12 拍
+    价格项 底线卡住: 10 拍
+    dpKeep 底线卡住: 6 拍
+alex_k: 有 AI 邻居的决策拍 128（t=300~935）；出手打 AI/人 22；只打无主地/其他指令 4；零指令 102（零指令时平均余额 7019）
+    邻居 AI 都不让打（allow / botOk 没过：价格高于当拍地价或 winWorth）: 60 拍
+    safeFinite 底线卡住（参照的最弱邻居是敌方真人）: 26 拍
+    safeFinite 底线卡住（参照的最弱邻居是我方队友）: 8 拍
+    过了底线但没发（need<=0 / 数额不到一条指令 / 没有空槽）: 6 拍
+    价格项 底线卡住: 2 拍
+riku_x: 有 AI 邻居的决策拍 174（t=300~1190）；出手打 AI/人 11；只打无主地/其他指令 5；零指令 158（零指令时平均余额 17030）
+    safeFinite 底线卡住（参照的最弱邻居是我方队友）: 79 拍
+    邻居 AI 都不让打（allow / botOk 没过：价格高于当拍地价或 winWorth）: 58 拍
+    safeFinite 底线卡住（参照的最弱邻居是敌方真人）: 12 拍
+    价格项 底线卡住: 9 拍
+sora_w: 有 AI 邻居的决策拍 207（t=300~1330）；出手打 AI/人 15；只打无主地/其他指令 3；零指令 189（零指令时平均余额 28256）
+    邻居 AI 都不让打（allow / botOk 没过：价格高于当拍地价或 winWorth）: 70 拍
+    safeFinite 底线卡住（参照的最弱邻居是我方队友）: 63 拍
+    safeFinite 底线卡住（参照的最弱邻居是敌方真人）: 49 拍
+    价格项 底线卡住: 5 拍
+    过了底线但没发（need<=0 / 数额不到一条指令 / 没有空槽）: 2 拍
+kaito9: 有 AI 邻居的决策拍 190（t=300~1495）；出手打 AI/人 15；只打无主地/其他指令 5；零指令 170（零指令时平均余额 21206）
+    邻居 AI 都不让打（allow / botOk 没过：价格高于当拍地价或 winWorth）: 75 拍
+    过了底线但没发（need<=0 / 数额不到一条指令 / 没有空槽）: 43 拍
+    safeFinite 底线卡住（参照的最弱邻居是我方队友）: 32 拍
+    价格项 底线卡住: 20 拍
+zero_7: 有 AI 邻居的决策拍 165（t=300~1120）；出手打 AI/人 25；只打无主地/其他指令 4；零指令 136（零指令时平均余额 11322）
+    邻居 AI 都不让打（allow / botOk 没过：价格高于当拍地价或 winWorth）: 57 拍
+    safeFinite 底线卡住（参照的最弱邻居是我方队友）: 45 拍
+    价格项 底线卡住: 22 拍
+    过了底线但没发（need<=0 / 数额不到一条指令 / 没有空槽）: 12 拍
+noah88: 有 AI 邻居的决策拍 139（t=350~1040）；出手打 AI/人 15；只打无主地/其他指令 3；零指令 121（零指令时平均余额 9901）
+    邻居 AI 都不让打（allow / botOk 没过：价格高于当拍地价或 winWorth）: 53 拍
+    safeFinite 底线卡住（参照的最弱邻居是我方队友）: 44 拍
+    过了底线但没发（need<=0 / 数额不到一条指令 / 没有空槽）: 17 拍
+    价格项 底线卡住: 7 拍
+leo_tx: 有 AI 邻居的决策拍 67（t=355~685）；出手打 AI/人 63；只打无主地/其他指令 0；零指令 4（零指令时平均余额 5591）
+    过了底线但没发（need<=0 / 数额不到一条指令 / 没有空槽）: 4 拍
+ryan_m: 有 AI 邻居的决策拍 107（t=405~935）；出手打 AI/人 18；只打无主地/其他指令 1；零指令 88（零指令时平均余额 8671）
+    safeFinite 底线卡住（参照的最弱邻居是我方队友）: 36 拍
+    邻居 AI 都不让打（allow / botOk 没过：价格高于当拍地价或 winWorth）: 26 拍
+    价格项 底线卡住: 17 拍
+    过了底线但没发（need<=0 / 数额不到一条指令 / 没有空槽）: 9 拍
+talon5: 有 AI 邻居的决策拍 84（t=555~970）；出手打 AI/人 10；只打无主地/其他指令 1；零指令 73（零指令时平均余额 11632）
+    safeFinite 底线卡住（参照的最弱邻居是我方队友）: 39 拍
+    邻居 AI 都不让打（allow / botOk 没过：价格高于当拍地价或 winWorth）: 27 拍
+    价格项 底线卡住: 4 拍
+    过了底线但没发（need<=0 / 数额不到一条指令 / 没有空槽）: 3 拍
+# 合计：决策拍 1389，出手 220，只打无主地/其他 29，零指令 1140；其中 safeFinite 底线卡住且参照的是我方队友 362 拍（占零指令 31.8%）
+#       零指令拍按原因：safeFinite（任何参照）461，邻居 AI 不让打（价格高于 winWorth / 当拍地价）481，价格项或 dpKeep 等其他底线 102，过了底线没发 96
+#       「参照我方队友」的 362 拍里，最好的目标每格成本 ≤3 兵（几乎是空地）的 194 拍，这些目标当时平均 481 格
+# 例子（每 50 拍取一条）
+  t=550 zexos1 B=4431 L=1976 | 最好的目标 AI#486（137 格 / 5 兵）每格 2.1 | 底线 5116 = max(价格项 3709, dpKeep 0, safeFinite 5116, peopleFloor 0) → 可用 -685 | safeFinite 参照 [APEX] sora_w#80[T1]（5116 兵）
+  t=550 ryan_m B=5254 L=1958 | 最好的目标 AI#147（329 格 / 11 兵）每格 2.1 | 底线 4410 = max(价格项 3666, dpKeep 0, safeFinite 4410, peopleFloor 0) → 可用 844 | safeFinite 参照 [APEX] noah88#76[T1]（4410 兵）
+  t=550 noah88 B=4410 L=1715 | 最好的目标 AI#506（322 格 / 11 兵）每格 2.1 | 底线 5254 = max(价格项 3213, dpKeep 0, safeFinite 5254, peopleFloor 0) → 可用 -844 | safeFinite 参照 [APEX] ryan_m#75[T1]（5254 兵）
+  t=550 sora_w B=5116 L=1873 | 最好的目标 AI#486（137 格 / 5 兵）每格 2.1 | 底线 4431 = max(价格项 3516, dpKeep 0, safeFinite 4431, peopleFloor 0) → 可用 685 | safeFinite 参照 [APEX] zexos1#79[T1]（4431 兵）
+  t=700 ryan_m B=9548 L=3411 | 最好的目标 AI#109（333 格 / 339 兵）每格 5.2 | 底线 9541 = max(价格项 9288, dpKeep 0, safeFinite 9541, peopleFloor 0) → 可用 7 | safeFinite 参照 [APEX] noah88#76[T1]（9541 兵）
+  t=700 noah88 B=9541 L=2633 | 最好的目标 AI#253（714 格 / 742 兵）每格 5.3 | 底线 9763 = max(价格项 7240, dpKeep 0, safeFinite 9763, peopleFloor 0) → 可用 -222 | safeFinite 参照 [APEX] talon5#86[T1]（9763 兵）
+  t=700 alex_k B=10436 L=2904 | 最好的目标 AI#485（354 格 / 374 兵）每格 5.4 | 底线 11374 = max(价格项 8049, dpKeep 3680, safeFinite 11374, peopleFloor 0) → 可用 -938 | safeFinite 参照 [CN]GCAntiaktis#16[T5]（10907 兵）
+  t=700 talon5 B=9763 L=3428 | 最好的目标 AI#253（714 格 / 742 兵）每格 5.3 | 底线 9541 = max(价格项 9427, dpKeep 0, safeFinite 9541, peopleFloor 0) → 可用 222 | safeFinite 参照 [APEX] noah88#76[T1]（9541 兵）
+  t=750 zexos1 B=9469 L=3667 | 最好的目标 AI#383（540 格 / 35 兵）每格 2.2 | 底线 17820 = max(价格项 5171, dpKeep 6921, safeFinite 17820, peopleFloor 0) → 可用 -8351 | safeFinite 参照 Player 811#53[T3]（17820 兵）
+  t=750 noah88 B=10856 L=2856 | 最好的目标 AI#253（300 格 / 206 兵）每格 4.2 | 底线 12291 = max(价格项 6135, dpKeep 0, safeFinite 12291, peopleFloor 0) → 可用 -1435 | safeFinite 参照 [APEX] talon5#86[T1]（12291 兵）
+  t=750 alex_k B=14362 L=3031 | 最好的目标 AI#485（230 格 / 163 兵）每格 4.3 | 底线 11493 = max(价格项 6590, dpKeep 2891, safeFinite 11493, peopleFloor 0) → 可用 2869 | safeFinite 参照 [CN]GCAntiaktis#16[T5]（9692 兵）
+  t=750 riku_x B=7198 L=3489 | 最好的目标 AI#273（689 格 / 19 兵）每格 2.1 | 底线 8913 = max(价格项 4766, dpKeep 4253, safeFinite 8913, peopleFloor 0) → 可用 -1715 | safeFinite 参照 [APEX] kaito9#85[T1]（8913 兵）
+  t=750 sora_w B=7349 L=4002 | 最好的目标 AI#421（597 格 / 20 兵）每格 2.1 | 底线 7198 = max(价格项 5495, dpKeep 6639, safeFinite 7198, peopleFloor 0) → 可用 151 | safeFinite 参照 [APEX] riku_x#78[T1]（7198 兵）
+  t=750 kaito9 B=8913 L=3950 | 最好的目标 AI#198（393 格 / 11 兵）每格 2.1 | 底线 7198 = max(价格项 5398, dpKeep 0, safeFinite 7198, peopleFloor 0) → 可用 1715 | safeFinite 参照 [APEX] riku_x#78[T1]（7198 兵）
+  t=750 talon5 B=12291 L=3428 | 最好的目标 AI#434（633 格 / 18 兵）每格 2.1 | 底线 10856 = max(价格项 4686, dpKeep 0, safeFinite 10856, peopleFloor 0) → 可用 1435 | safeFinite 参照 [APEX] noah88#76[T1]（10856 兵）
+  t=800 zexos1 B=15727 L=3882 | 最好的目标 AI#139（358 格 / 378 兵）每格 5.4 | 底线 16349 = max(价格项 9412, dpKeep 6477, safeFinite 16349, peopleFloor 0) → 可用 -622 | safeFinite 参照 [APEX] ryan_m#75[T1]（16349 兵）
+  t=800 ryan_m B=16349 L=3764 | 最好的目标 AI#415（326 格 / 341 兵）每格 5.3 | 底线 16077 = max(价格项 9085, dpKeep 0, safeFinite 16077, peopleFloor 0) → 可用 272 | safeFinite 参照 [APEX] noah88#76[T1]（16077 兵）
+  t=800 noah88 B=16077 L=2816 | 最好的目标 AI#329（227 格 / 0 兵）每格 2.0 | 底线 16349 = max(价格项 3520, dpKeep 0, safeFinite 16349, peopleFloor 0) → 可用 -272 | safeFinite 参照 [APEX] ryan_m#75[T1]（16349 兵）
+  t=800 alex_k B=16732 L=3253 | 最好的目标 AI#383（140 格 / 152 兵）每格 5.5 | 底线 16077 = max(价格项 7995, dpKeep 3993, safeFinite 16077, peopleFloor 0) → 可用 655 | safeFinite 参照 [APEX] noah88#76[T1]（16077 兵）
+  t=800 riku_x B=12587 L=3593 | 最好的目标 AI#339（992 格 / 1021 兵）每格 5.3 | 底线 15138 = max(价格项 8605, dpKeep 6675, safeFinite 15138, peopleFloor 0) → 可用 -2551 | safeFinite 参照 [APEX] kaito9#85[T1]（13575 兵）
+  t=800 sora_w B=11398 L=4170 | 最好的目标 AI#481（981 格 / 1007 兵）每格 5.3 | 底线 12587 = max(价格项 9975, dpKeep 6234, safeFinite 12587, peopleFloor 0) → 可用 -1189 | safeFinite 参照 [APEX] riku_x#78[T1]（12587 兵）
+  t=800 kaito9 B=13575 L=4010 | 最好的目标 AI#198（301 格 / 322 兵）每格 5.4 | 底线 11024 = max(价格项 9785, dpKeep 0, safeFinite 11024, peopleFloor 0) → 可用 2551 | safeFinite 参照 [APEX] riku_x#78[T1]（12587 兵）
+  t=800 talon5 B=15517 L=3705 | 最好的目标 AI#434（556 格 / 571 兵）每格 5.3 | 底线 16077 = max(价格项 8864, dpKeep 7255, safeFinite 16077, peopleFloor 0) → 可用 -560 | safeFinite 参照 [APEX] noah88#76[T1]（16077 兵）
+  t=850 noah88 B=19940 L=2816 | 最好的目标 AI#329（227 格 / 0 兵）每格 2.0 | 底线 19245 = max(价格项 3313, dpKeep 1918, safeFinite 19245, peopleFloor 0) → 可用 695 | safeFinite 参照 [APEX] talon5#86[T1]（19245 兵）
+  t=850 riku_x B=17839 L=3594 | 最好的目标 AI#339（1016 格 / 2135 兵）每格 8.7 | 底线 14156 = max(价格项 12136, dpKeep 2885, safeFinite 14156, peopleFloor 0) → 可用 3683 | safeFinite 参照 [APEX] sora_w#80[T1]（14156 兵）
+  t=850 sora_w B=14156 L=4832 | 最好的目标 AI#481（439 格 / 323 兵）每格 4.3 | 底线 17839 = max(价格项 9407, dpKeep 8784, safeFinite 17839, peopleFloor 0) → 可用 -3683 | safeFinite 参照 [APEX] riku_x#78[T1]（17839 兵）
+  t=850 zero_7 B=9060 L=4928 | 最好的目标 AI#487（279 格 / 0 兵）每格 2.0 | 底线 17545 = max(价格项 5798, dpKeep 0, safeFinite 17545, peopleFloor 0) → 可用 -8485 | safeFinite 参照 [APEX] ryan_m#75[T1]（17545 兵）
+  t=850 talon5 B=19245 L=4199 | 最好的目标 AI#137（632 格 / 1162 兵）每格 7.9 | 底线 19940 = max(价格项 13024, dpKeep 7976, safeFinite 19940, peopleFloor 0) → 可用 -695 | safeFinite 参照 [APEX] noah88#76[T1]（19940 兵）
+  t=900 ryan_m B=16479 L=4804 | 最好的目标 AI#257（326 格 / 750 兵）每格 9.4 | 底线 25382 = max(价格项 16267, dpKeep 0, safeFinite 25382, peopleFloor 0) → 可用 -8903 | safeFinite 参照 [APEX] zexos1#79[T1]（16013 兵）
+  t=900 noah88 B=26725 L=2773 | 最好的目标 AI#329（162 格 / 0 兵）每格 2.0 | 底线 27664 = max(价格项 3081, dpKeep 3622, safeFinite 27664, peopleFloor 0) → 可用 -939 | safeFinite 参照 [APEX] talon5#86[T1]（25875 兵）
+  t=900 riku_x B=25185 L=3559 | 最好的目标 AI#470（784 格 / 819 兵）每格 5.3 | 底线 21884 = max(价格项 7631, dpKeep 7876, safeFinite 21884, peopleFloor 0) → 可用 3301 | safeFinite 参照 [APEX] sora_w#80[T1]（21884 兵）
+  t=900 sora_w B=21884 L=4765 | 最好的目标 AI#471（647 格 / 727 兵）每格 5.6 | 底线 25185 = max(价格项 10589, dpKeep 14774, safeFinite 25185, peopleFloor 0) → 可用 -3301 | safeFinite 参照 [APEX] riku_x#78[T1]（25185 兵）
+  t=900 zero_7 B=15395 L=5801 | 最好的目标 AI#409（963 格 / 1099 兵）每格 5.7 | 底线 20093 = max(价格项 12992, dpKeep 0, safeFinite 20093, peopleFloor 0) → 可用 -4698 | safeFinite 参照 [APEX] kaito9#85[T1]（10250 兵）
+  t=900 talon5 B=25875 L=4424 | 最好的目标 AI#329（162 格 / 0 兵）每格 2.0 | 底线 24936 = max(价格项 4916, dpKeep 10515, safeFinite 24936, peopleFloor 0) → 可用 939 | safeFinite 参照 [APEX] noah88#76[T1]（26725 兵）
+  t=950 riku_x B=26611 L=3696 | 最好的目标 AI#471（647 格 / 887 兵）每格 6.4 | 底线 25173 = max(价格项 8638, dpKeep 8271, safeFinite 25173, peopleFloor 0) → 可用 1438 | safeFinite 参照 [APEX] sora_w#80[T1]（25173 兵）
+  t=950 sora_w B=25173 L=4869 | 最好的目标 AI#471（647 格 / 887 兵）每格 6.4 | 底线 26611 = max(价格项 11379, dpKeep 13890, safeFinite 26611, peopleFloor 0) → 可用 -1438 | safeFinite 参照 [APEX] riku_x#78[T1]（26611 兵）
+  t=950 zero_7 B=19215 L=6011 | 最好的目标 AI#487（179 格 / 0 兵）每格 2.0 | 底线 22383 = max(价格项 6327, dpKeep 0, safeFinite 22383, peopleFloor 0) → 可用 -3168 | safeFinite 参照 [APEX] kaito9#85[T1]（14246 兵）
+  t=1000 riku_x B=36098 L=3826 | 最好的目标 AI#470（968 格 / 1662 兵）每格 7.5 | 底线 30775 = max(价格项 9672, dpKeep 12218, safeFinite 30775, peopleFloor 0) → 可用 5323 | safeFinite 参照 гейство#21[T7]（30775 兵）
+  t=1000 sora_w B=35708 L=4801 | 最好的目标 AI#471（716 格 / 52 兵）每格 2.2 | 底线 30775 = max(价格项 5111, dpKeep 17116, safeFinite 30775, peopleFloor 0) → 可用 4933 | safeFinite 参照 гейство#21[T7]（30775 兵）
+  t=1000 kaito9 B=23270 L=5994 | 最好的目标 AI#350（907 格 / 1533 兵）每格 7.4 | 底线 26645 = max(价格项 15011, dpKeep 0, safeFinite 26645, peopleFloor 0) → 可用 -3375 | safeFinite 参照 [APEX] zero_7#83[T1]（33326 兵）
+  t=1000 zero_7 B=33326 L=5937 | 最好的目标 AI#409（1044 格 / 1263 兵）每格 5.9 | 底线 29951 = max(价格项 12329, dpKeep 0, safeFinite 29951, peopleFloor 0) → 可用 3375 | safeFinite 参照 [APEX] kaito9#85[T1]（23270 兵）
+  t=1050 riku_x B=39281 L=4101 | 最好的目标 AI#470（1205 格 / 1412 兵）每格 5.7 | 底线 42983 = max(价格项 7979, dpKeep 13277, safeFinite 42983, peopleFloor 0) → 可用 -3702 | safeFinite 参照 [APEX] sora_w#80[T1]（42983 兵）
+  t=1050 sora_w B=42983 L=4801 | 最好的目标 AI#471（716 格 / 101 兵）每格 2.5 | 底线 39281 = max(价格项 5146, dpKeep 20475, safeFinite 39281, peopleFloor 0) → 可用 3702 | safeFinite 参照 [APEX] riku_x#78[T1]（39281 兵）
+  t=1050 kaito9 B=28011 L=6591 | 最好的目标 AI#350（382 格 / 12 兵）每格 2.1 | 底线 36162 = max(价格项 6453, dpKeep 0, safeFinite 36162, peopleFloor 0) → 可用 -8151 | safeFinite 参照 [APEX] zero_7#83[T1]（40116 兵）
+  t=1050 zero_7 B=40116 L=5937 | 最好的目标 AI#409（1044 格 / 1517 兵）每格 6.6 | 底线 31965 = max(价格项 12967, dpKeep 0, safeFinite 31965, peopleFloor 0) → 可用 8151 | safeFinite 参照 [APEX] kaito9#85[T1]（28011 兵）
+  t=1100 sora_w B=56151 L=4801 | 最好的目标 AI#471（716 格 / 720 兵）每格 5.2 | 底线 50268 = max(价格项 8271, dpKeep 24877, safeFinite 50268, peopleFloor 0) → 可用 5883 | safeFinite 参照 гейство#21[T7]（50268 兵）
+  t=1150 riku_x B=46598 L=4850 | 最好的目标 AI#471（563 格 / 0 兵）每格 2.0 | 底线 63382 = max(价格项 4217, dpKeep 29401, safeFinite 63382, peopleFloor 0) → 可用 -16784 | safeFinite 参照 [APEX] sora_w#80[T1]（65032 兵）
+  t=1150 sora_w B=65032 L=4731 | 最好的目标 AI#471（563 格 / 0 兵）每格 2.0 | 底线 59609 = max(价格项 4114, dpKeep 31618, safeFinite 59609, peopleFloor 0) → 可用 5423 | safeFinite 参照 гейство#21[T7]（59609 兵）
+  t=1200 sora_w B=70817 L=4688 | 最好的目标 AI#422（789 格 / 23 兵）每格 2.1 | 底线 71562 = max(价格项 4008, dpKeep 36616, safeFinite 71562, peopleFloor 0) → 可用 -745 | safeFinite 参照 гейство#21[T7]（71562 兵）
+  t=1250 sora_w B=89923 L=4758 | 最好的目标 AI#422（789 格 / 28 兵）每格 2.1 | 底线 85824 = max(价格项 3927, dpKeep 45113, safeFinite 85824, peopleFloor 0) → 可用 4099 | safeFinite 参照 [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4]（85824 兵）
+  t=1300 sora_w B=100413 L=4685 | 最好的目标 AI#422（862 格 / 0 兵）每格 2.0 | 底线 101437 = max(价格项 3604, dpKeep 56414, safeFinite 101437, peopleFloor 0) → 可用 -1024 | safeFinite 参照 [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4]（106067 兵）

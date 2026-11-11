@@ -1,0 +1,107 @@
+[FA] B009 捐款定案（余额序列拟合）：日志 65 笔；成交 43，没成交 1，定不了 21
+     成交的到账合计 17542841，税合计 7445383（税占捐出方付出的 29.8%）
+     其中到账被收款方 150 倍上限夹小的 4 笔：到账 764514，税 514186（税占 40%）
+     与 facts.py [G]「只看发令 20 拍后那条余额」的判定对照（旧判定→新定案：笔数）：ACC→EXEC:37；?→AMB:10；ACC→AMB:6；REJ→AMB:5；?→EXEC:5；REJ→EXEC:1；REJ→NOEXEC:1
+     成交的 43 笔里，发令 20 拍后的观测仍未扣款（时延 ≥20 拍）的 1 笔（2%）；时延上界 中位 50 拍
+     连发（同号 ≤25 拍内第二笔，发令时前一笔还没落地，两笔都成交）：1 笔，多付出 到账 829367 + 税 344672
+     没成交的 1 笔里，收款方在这笔捐款落地前已经出局的 1 笔：t=5265 Reconquista→Dream
+[FB] 按捐出方：号 | 日志笔数 | 成交 / 没成交 / 定不了 | 到账合计 | 税合计 | 连发笔数 | 时延≥20 的成交笔数
+     DeepBlue       |  13 | 11 / 0 / 2 |   3797829 |  1710339 | 0 | 0
+     Borsch         |  12 | 9 / 0 / 3 |   2184505 |   635013 | 0 | 0
+     Sun Quan       |  11 | 4 / 0 / 7 |   3485282 |  1448428 | 0 | 0
+     Courland       |   9 | 7 / 0 / 2 |   2292814 |  1051322 | 0 | 0
+     Reconquista    |   8 | 6 / 1 / 1 |   1562883 |   849561 | 0 | 0
+     California     |   5 | 4 / 0 / 1 |   3507817 |  1457807 | 1 | 1
+     Safavid        |   4 | 1 / 0 / 3 |    537313 |   220436 | 0 | 0
+     Dream          |   3 | 1 / 0 / 2 |    174398 |    72477 | 0 | 0
+[FC] 按收款方：号 | 成交笔数 | 到账合计 | 捐出方付的税 | 首末拍
+     IceKing(17)        |  20 |   8716403 |  3914340 | 3330~6440
+     Courland(16)       |   5 |   3313652 |  1315660 | 4480~4775
+     Safavid(10)        |   9 |   2184505 |   635013 | 3470~6560
+     Dream(14)          |   6 |   1562883 |   849561 | 4330~5200
+     Hamilton(18)       |   1 |   1053687 |   437896 | 4510~4510
+     OldGuard(11)       |   1 |    537313 |   220436 | 3755~3755
+     BigSmoke(15)       |   1 |    174398 |    72477 | 3870~3870
+[FQ] 引擎受捐额度对账（归属口径：先取过得了额度的，再取发令最晚的；--fifo 可换回旧的队首口径）：成交的 43 笔里记账后超出额度的 0 笔（编队外队友的捐款看不到，已用点数是下限；超出 = 余额拟合和额度模型对不上，这几笔的到账额或归属存疑）
+     受捐方 | t<2142 成交 笔数 / 到账 / 点数 | 2142~3212 | 3213~4283 | t≥4284 笔数 / 到账（不查额度）| t=4283 累计点数（额度 309）
+     IceKing        | 0 / 0 / 0 | 0 / 0 / 0 | 10 / 2321293 / 88 | 10 / 6395110 | 88
+     Courland       | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 5 / 3313652 | 0
+     Safavid        | 0 / 0 / 0 | 0 / 0 / 0 | 2 / 269798 / 14 | 7 / 1914707 | 14
+     Dream          | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 6 / 1562883 | 0
+     Hamilton       | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 1 / 1053687 | 0
+     OldGuard       | 0 / 0 / 0 | 0 / 0 / 0 | 1 / 537313 / 82 | 0 / 0 | 82
+     BigSmoke       | 0 / 0 / 0 | 0 / 0 / 0 | 1 / 174398 / 14 | 0 / 0 | 14
+[FE] 盈余捐款成交后的密度（捐后余额 = 发令时余额 − 到账 − 税；连发的第二笔再减去第一笔）：号 | 成交笔数 | 发令时密度 中位 | 捐后密度 中位 / 最低 | 捐后 <68 的笔数 | 捐后 <55 的笔数
+     Borsch         |   9 | 120.8 | 85.9 / 58.9 | 2 | 0
+     DeepBlue       |   6 | 78.4 | 59.2 / 58.8 | 5 | 0
+     Reconquista    |   5 | 119.3 | 97.8 / 89.0 | 0 | 0
+     Sun Quan       |   4 | 120.9 | 95.0 / 89.0 | 0 | 0
+     Courland       |   3 | 78.3 | 59.2 / 57.8 | 2 | 0
+     California     |   2 | 118.4 | 90.7 / 73.3 | 0 | 0
+     Dream          |   1 | 112.8 | 88.8 / 88.8 | 0 | 0
+[FD] 逐笔：拍 捐出→收款 类型 pct | 发令时余额 | 定案 | 时延区间(拍) | 到账 / 税 | 旧判定 | 连发
+      3330 DeepBlue→IceKing(17) squad rescue 155 | 2592823 | EXEC | (0,80] | 395000 / 162051 | ACC |  L8407443
+      3410 DeepBlue→IceKing(17) squad rescue 75 | 2306557 | EXEC | (10,95] | 173603 / 146192 | ACC |  L8407448
+      3470 Borsch→Safavid(10) surplus 153 | 824686 | EXEC | (0,40] | 124025 / 51542 | ACC |  L8407459
+      3505 DeepBlue→IceKing(17) squad rescue 67 | 2287705 | EXEC | (0,95] | 154059 / 144997 | ACC |  L8407460
+      3715 Borsch→Safavid(10) surplus 153 | 840851 | AMB | (>65) | None / None | REJ |  L8407491
+      3755 Safavid→OldGuard(11) squad rescue 155 | 3475542 | EXEC | (0,25] | 537313 / 220436 | ? |  L8407492
+      3780 Borsch→Safavid(10) surplus 153 | 920603 | AMB | (>0) | None / None | ? |  L8407497
+      3820 DeepBlue→IceKing(17) surplus 185 | 3021063 | EXEC | (0,20] | 548747 / 188816 | ACC |  L8407506
+      3825 Courland→IceKing(17) squad rescue 84 | 1655977 | EXEC | (0,45] | 139300 / 104885 | ACC |  L8407507
+      3840 DeepBlue→IceKing(17) squad rescue 55 | 2348811 | AMB | (>190) | None / None | ACC |  L8407510
+      3870 Dream→BigSmoke(15) surplus 153 | 1159634 | EXEC | (0,90] | 174398 / 72477 | ACC |  L8407514
+      3910 Courland→IceKing(17) squad rescue 61 | 1616068 | EXEC | (0,50] | 97847 / 101004 | ACC |  L8407522
+      3950 DeepBlue→IceKing(17) squad rescue 65 | 2373512 | EXEC | (10,80] | 155152 / 150450 | ACC |  L8407523
+      4000 Courland→IceKing(17) squad rescue 62 | 1618268 | EXEC | (0,50] | 99561 / 101141 | ACC |  L8407538
+      4030 DeepBlue→IceKing(17) squad rescue 56 | 2351182 | EXEC | (0,20] | 130876 / 146948 | ACC |  L8407540
+      4110 DeepBlue→IceKing(17) surplus 185 | 2351613 | EXEC | (0,30] | 427148 / 146975 | ACC |  L8407551
+      4130 Borsch→Safavid(10) surplus 185 | 802537 | EXEC | (0,10] | 145773 / 50158 | ACC |  L8407552
+      4300 DeepBlue→IceKing(17) surplus 185 | 2388654 | EXEC | (0,20] | 433876 / 149290 | ACC |  L8407575
+      4330 Reconquista→Dream(14) squad rescue 155 | 2536350 | EXEC | (0,80] | 389340 / 159729 | ? |  L8407586
+      4410 Reconquista→Dream(14) surplus 153 | 2134472 | EXEC | (0,90] | 321004 / 133404 | ACC |  L8407596
+      4480 DeepBlue→Courland(16) surplus 185 | 2360987 | EXEC | (0,20] | 428851 / 147561 | ACC |  L8407599
+      4510 California→Hamilton(18) surplus 153 | 6858776 | EXEC | (20,80] | 1053687 / 437896 | REJ |  L8407609
+      4530 Reconquista→Dream(14) surplus 153 | 2021685 | EXEC | (0,60] | 304042 / 126355 | ? |  L8407611
+      4530 California→Courland(16) surplus 153 | 7006338 | EXEC | (0,60] | 829367 / 344672 | ? | 连发@4510 L8407612
+      4550 Sun Quan→Courland(16) surplus 153 | 3957879 | AMB | (>0) | None / None | ? |  L8407613
+      4570 Courland→Hamilton(18) surplus 153 | 3536004 | AMB | (>0) | None / None | ? |  L8407614
+      4580 Dream→BigSmoke(15) surplus 153 | 1240938 | AMB | (>110) | None / None | REJ |  L8407615
+      4610 Reconquista→Dream(14) surplus 153 | 2006695 | AMB | (>0) | None / None | ACC |  L8407627
+      4635 California→Courland(16) squad rescue 155 | 5144473 | EXEC | (0,45] | 821709 / 337111 | ACC |  L8407629
+      4660 DeepBlue→Courland(16) surplus 185 | 2371011 | EXEC | (0,20] | 430671 / 148188 | ACC |  L8407630
+      4690 Dream→BigSmoke(15) surplus 153 | 1288673 | AMB | (>0) | None / None | ? |  L8407641
+      4775 California→Courland(16) squad rescue 151 | 5103536 | EXEC | (0,85] | 803054 / 338128 | ACC |  L8407653
+      4965 Safavid→OldGuard(11) surplus 153 | 6157151 | AMB | (>0) | None / None | ? |  L8407674
+      4980 Sun Quan→IceKing(17) surplus 185 | 4459357 | AMB | (>150) | None / None | ACC |  L8407676
+      4990 Reconquista→Dream(14) surplus 153 | 2386191 | EXEC(夹小) | (0,50] | 184384 / 149136 | ACC |  L8407678
+      5050 Courland→IceKing(17) surplus 153 | 3546176 | EXEC | (0,80] | 533311 / 221636 | ACC |  L8407688
+      5125 Reconquista→Dream(14) surplus 153 | 2333079 | EXEC(夹小) | (0,75] | 206896 / 146867 | ? |  L8407691
+      5160 Courland→IceKing(17) squad rescue 155 | 3282818 | EXEC | (0,25] | 500116 / 205176 | ACC |  L8407700
+      5170 Sun Quan→IceKing(17) surplus 185 | 3772970 | AMB | (>0) | None / None | ACC |  L8407702
+      5175 DeepBlue→IceKing(17) surplus 185 | 2960336 | AMB | (>225) | None / None | ACC |  L8407703
+      5185 Courland→IceKing(17) surplus 185 | 2649155 | AMB | (>0) | None / None | ? |  L8407704
+      5200 Reconquista→Dream(14) surplus 153 | 2145131 | EXEC(夹小) | (0,20] | 157217 / 134070 | ACC |  L8407706
+      5215 California→DeepBlue(13) surplus 153 | 7425138 | AMB | (>0) | None / None | ? |  L8407713
+      5265 Reconquista→Dream(14) squad rescue 101 | 1999363 | NOEXEC(收款方已出局) | (>45) | None / None | REJ |  L8407719
+      5345 Borsch→Safavid(10) surplus 280 | 1401208 | EXEC | (0,55] | 389026 / 88604 | ACC |  L8407732
+      5355 Sun Quan→IceKing(17) surplus 185 | 3787283 | AMB | (>195) | None / None | REJ |  L8407733
+      5395 Sun Quan→IceKing(17) surplus 185 | 3710229 | AMB | (>155) | None / None | REJ |  L8407734
+      5465 Sun Quan→IceKing(17) surplus 185 | 4438900 | AMB | (>85) | None / None | ACC |  L8407741
+      5550 Sun Quan→IceKing(17) surplus 185 | 3774085 | AMB | (>210) | None / None | ? |  L8407752
+      5930 Sun Quan→IceKing(17) surplus 153 | 5833724 | EXEC | (10,100] | 885233 / 367889 | ACC |  L8407792
+      6130 Sun Quan→IceKing(17) surplus 153 | 5949710 | EXEC | (0,80] | 894780 / 371856 | ACC |  L8407820
+      6150 Borsch→Safavid(10) surplus 280 | 1345814 | EXEC(夹小) | (0,45] | 216017 / 84113 | ACC |  L8407822
+      6160 Courland→IceKing(17) surplus 185 | 2497390 | EXEC | (0,50] | 453627 / 156086 | ACC |  L8407824
+      6195 Borsch→Safavid(10) surplus 185 | 1083058 | EXEC | (0,15] | 200989 / 69157 | ACC |  L8407826
+      6215 Borsch→Safavid(10) surplus 185 | 846749 | EXEC | (0,85] | 155711 / 53578 | ACC |  L8407836
+      6290 Sun Quan→IceKing(17) surplus 153 | 5785699 | EXEC | (10,100] | 885457 / 367982 | ACC |  L8407840
+      6295 Safavid→OldGuard(11) squad rescue 155 | 4588759 | AMB | (>110) | None / None | REJ |  L8407841
+      6310 Borsch→Safavid(10) surplus 280 | 1444795 | EXEC | (0,25] | 396472 / 90299 | ACC |  L8407850
+      6330 Courland→IceKing(17) surplus 185 | 2474625 | EXEC | (0,60] | 469052 / 161394 | ACC |  L8407851
+      6335 Borsch→Safavid(10) surplus 185 | 973103 | EXEC | (0,55] | 178946 / 61573 | ACC |  L8407852
+      6405 Safavid→OldGuard(11) squad rescue 155 | 5927081 | AMB | (>0) | None / None | ? |  L8407864
+      6410 Sun Quan→IceKing(17) surplus 153 | 5451224 | EXEC | (0,70] | 819812 / 340701 | ACC |  L8407865
+      6440 DeepBlue→IceKing(17) surplus 185 | 2861951 | EXEC | (0,40] | 519846 / 178871 | ACC |  L8407867
+      6560 Borsch→Safavid(10) surplus 280 | 1368985 | EXEC | (10,20] | 377546 / 85989 | ACC |  L8407876
+      6580 Borsch→Safavid(10) surplus 185 | 923606 | AMB | (>0) | None / None | ? |  L8407884

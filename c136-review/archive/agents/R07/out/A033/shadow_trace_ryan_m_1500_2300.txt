@@ -1,0 +1,130 @@
+# A033 ryan_m 影子决策明细 t=1500~2300（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   出手打人/bot: 13 拍（t=1500~2260）；可用兵 11642~69075，一条指令下限(20%余额) 4998~49407，比值 24%~369%
+#   有可用兵但没发（脉冲下限/冷却/其他）: 45 拍（t=1515~2295）；可用兵 1284~62560，一条指令下限(20%余额) 4841~48831，比值 3%~410%
+#   首选目标价高（c>=worth）: 89 拍（t=1745~2285）
+#   首选目标无可用兵（avail<=0）: 14 拍（t=2185~2300）；可用兵 -19733~-44，一条指令下限(20%余额) 43248~48261，比值 -43%~-0%
+#   └ 「出手打人/bot」里：13 条对人/bot 的出兵共约 360689 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1500 ryan_m B=220358 L=6509 d=33.9 nb=1 neut=0 cmds=24 noFull=1 shQ=53527 | m=1.500 worth=50.8 cheap=4.3 over=0 dMedOther=13.2 safe(-1)=60618
+    → [INDIA] Susland#26[T1] terr=12491 bal=117663 dq=9.4 cnt=195 | c=24.3 rankC=24.3 need=228466 tD=0.71 人 | safe=60618 keep=150373 avail=67403 chunkB=44072 pulseB=26443 
+    ⇒ 影子指令 attack pct=313 → [INDIA] Susland#26[T1]（约 67570 兵）
+t=1505 ryan_m B=220358 L=6509 d=33.9 nb=1 neut=0 cmds=25 noFull=1 shQ=55089 | m=1.499 worth=50.8 cheap=4.4 over=0 dMedOther=13.2 safe(-1)=60618
+    → [INDIA] Susland#26[T1] terr=12497 bal=117663 dq=9.4 cnt=195 | c=24.3 rankC=24.3 need=228467 tD=0.71 人 | safe=60618 keep=150397 avail=67379 chunkB=44072 pulseB=26443 
+    ⇒ 影子指令 attack pct=313 → [INDIA] Susland#26[T1]（约 67570 兵）
+t=1510 ryan_m B=225382 L=6509 d=34.6 nb=1 neut=0 cmds=26 noFull=1 shQ=56345 | m=1.498 worth=51.9 cheap=4.4 over=0 dMedOther=13.5 safe(-1)=62124
+    → [INDIA] Susland#26[T1] terr=12517 bal=120345 dq=9.6 cnt=195 | c=24.8 rankC=24.8 need=233278 tD=0.71 人 | safe=62124 keep=153666 avail=69075 chunkB=45076 pulseB=27046 
+    ⇒ 影子指令 attack pct=313 → [INDIA] Susland#26[T1]（约 69111 兵）
+t=1530 ryan_m B=74609 L=7282 d=10.2 nb=1 neut=0 cmds=26 noFull=1 shQ=8037 | m=1.496 worth=15.3 cheap=4.5 over=0 dMedOther=13.6 safe(-1)=55806
+    → [INDIA] Susland#26[T1] terr=11629 bal=110258 dq=9.5 cnt=191 | c=0.1 rankC=0.0 need=87307 tD=0.70 人 pulse nearCollapse bleeding | safe=55806 keep=55806 avail=17929 chunkB=14922 pulseB=8953 
+    ⇒ 本拍没有指令
+t=1560 ryan_m B=79532 L=8921 d=8.9 nb=1 neut=0 cmds=26 noFull=1 shQ=19883 | m=1.491 worth=13.3 cheap=4.7 over=0 dMedOther=14.5 safe(-1)=51079
+    → [INDIA] Susland#26[T1] terr=9653 bal=104302 dq=10.8 cnt=103 | c=0.1 rankC=0.0 need=120793 tD=0.75 人 pulse nearCollapse bleeding | safe=51079 keep=51079 avail=27521 chunkB=15906 pulseB=9544 
+    ⇒ 本拍没有指令
+t=1590 ryan_m B=84548 L=9917 d=8.5 nb=1 neut=0 cmds=26 noFull=1 shQ=21137 | m=1.486 worth=12.7 cheap=4.9 over=0 dMedOther=15.4 safe(-1)=31178
+    → [INDIA] Susland#26[T1] terr=8434 bal=70373 dq=8.3 cnt=98 | c=0.1 rankC=0.1 need=107936 tD=0.54 人 pulse nearCollapse bleeding | safe=31178 keep=31178 avail=52380 chunkB=16910 pulseB=10146 
+    ⇒ 本拍没有指令
+t=1605 ryan_m B=96558 L=10402 d=9.3 nb=1 neut=0 cmds=27 noFull=1 shQ=24018 | m=1.484 worth=13.8 cheap=5.0 over=0 dMedOther=16.4 safe(-1)=31515
+    → [INDIA] Susland#26[T1] terr=7874 bal=71699 dq=9.1 cnt=97 | c=0.1 rankC=0.1 need=120899 tD=0.55 人 pulse nearCollapse bleeding | safe=31515 keep=31515 avail=63912 chunkB=19312 pulseB=11587 
+    ⇒ 影子指令 attack pct=384 → [INDIA] Susland#26[T1]（约 36303 兵）
+t=1610 ryan_m B=98460 L=10402 d=9.5 nb=1 neut=0 cmds=28 noFull=1 shQ=24615 | m=1.484 worth=14.0 cheap=5.1 over=0 dMedOther=16.7 safe(-1)=32067
+    → [INDIA] Susland#26[T1] terr=7845 bal=72682 dq=9.3 cnt=96 | c=0.1 rankC=0.1 need=122269 tD=0.56 人 pulse nearCollapse bleeding | safe=32067 keep=32067 avail=65240 chunkB=19692 pulseB=11815 
+    ⇒ 影子指令 attack pct=381 → [INDIA] Susland#26[T1]（约 36730 兵）
+t=1615 ryan_m B=98460 L=10402 d=9.5 nb=1 neut=0 cmds=29 noFull=1 shQ=24615 | m=1.483 worth=14.0 cheap=5.1 over=0 dMedOther=16.5 safe(-1)=31490
+    → [INDIA] Susland#26[T1] terr=7830 bal=57106 dq=7.3 cnt=96 | c=0.1 rankC=0.1 need=112626 tD=0.44 人 pulse nearCollapse bleeding onMe | safe=31490 keep=31490 avail=65817 chunkB=19692 pulseB=11815 
+    ⇒ 影子指令 attack pct=351 → [INDIA] Susland#26[T1]（约 33845 兵）
+t=1620 ryan_m B=37812 L=10402 d=3.6 nb=1 neut=0 cmds=29 noFull=1 shQ=362 | m=1.482 worth=5.4 cheap=5.2 over=0 dMedOther=16.8 safe(-1)=23734
+    → [INDIA] Susland#26[T1] terr=7798 bal=57849 dq=7.4 cnt=95 | c=0.1 rankC=0.0 need=53911 tD=0.44 人 pulse nearCollapse bleeding | safe=23734 keep=23734 avail=13635 chunkB=7562 pulseB=4537 
+    ⇒ 本拍没有指令
+t=1650 ryan_m B=25764 L=11638 d=2.2 nb=1 neut=0 cmds=29 noFull=1 shQ=4127 | m=1.478 worth=3.3 cheap=5.4 over=0 dMedOther=18.1 safe(-1)=9973
+    → [INDIA] Susland#26[T1] terr=6412 bal=35209 dq=5.5 cnt=96 | c=0.1 rankC=0.0 need=24415 tD=0.30 人 pulse nearCollapse bleeding agg | safe=9973 keep=9973 avail=15490 chunkB=5153 pulseB=3092 
+    ⇒ 本拍没有指令
+t=1680 ryan_m B=27163 L=13003 d=2.1 nb=2 neut=0 cmds=29 noFull=1 shQ=6790 | m=1.473 worth=3.1 cheap=5.7 over=0 dMedOther=19.1 safe(-1)=14790
+    → [INDIA] Susland#26[T1] terr=4862 bal=14790 dq=3.0 cnt=82 | c=0.1 rankC=0.0 need=15417 tD=0.16 人 pulse nearCollapse bleeding agg | safe=14790 keep=14790 avail=12055 chunkB=5433 pulseB=3260 
+    → [DRAGON]#37[T1离] terr=1226 bal=6627 dq=5.4 cnt=20 | c=16.4 rankC=16.4 need=11256 tD=0.28 机 | safe=14790 keep=Inf avail=-Inf chunkB=5433 pulseB=3260 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1690 ryan_m B=27654 L=13329 d=2.1 nb=2 neut=0 cmds=30 noFull=1 shQ=6913 | m=1.472 worth=3.1 cheap=5.8 over=0 dMedOther=19.5 safe(-1)=13001
+    → [INDIA] Susland#26[T1] terr=4475 bal=13001 dq=2.9 cnt=82 | c=0.1 rankC=0.1 need=15462 tD=0.15 人 pulse nearCollapse bleeding agg | safe=13001 keep=13001 avail=14329 chunkB=5531 pulseB=3318 
+    → [DRAGON]#37[T1离] terr=1226 bal=6628 dq=5.4 cnt=23 | c=16.3 rankC=16.3 need=11295 tD=0.28 机 | safe=13001 keep=Inf avail=-Inf chunkB=5531 pulseB=3318 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=171 → [INDIA] Susland#26[T1]（约 4645 兵）
+t=1695 ryan_m B=27654 L=13329 d=2.1 nb=2 neut=0 cmds=31 noFull=1 shQ=6913 | m=1.471 worth=3.1 cheap=5.9 over=0 dMedOther=19.4 safe(-1)=10101
+    → [INDIA] Susland#26[T1] terr=4435 bal=10101 dq=2.3 cnt=81 | c=0.1 rankC=0.1 need=15077 tD=0.12 人 pulse nearCollapse bleeding onMe agg | safe=10101 keep=10101 avail=17229 chunkB=5531 pulseB=3318 
+    → [DRAGON]#37[T1离] terr=1226 bal=6628 dq=5.4 cnt=23 | c=16.3 rankC=16.3 need=11307 tD=0.28 机 | safe=10101 keep=Inf avail=-Inf chunkB=5531 pulseB=3318 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=167 → [INDIA] Susland#26[T1]（约 4536 兵）
+t=1700 ryan_m B=41450 L=13329 d=3.1 nb=2 neut=0 cmds=32 noFull=1 shQ=7088 | m=1.470 worth=4.6 cheap=5.9 over=0 dMedOther=20.1 safe(-1)=14502
+    → [INDIA] Susland#26[T1] terr=4394 bal=14502 dq=3.3 cnt=80 | c=0.2 rankC=0.1 need=19032 tD=0.16 人 pulse nearCollapse bleeding onMe agg | safe=14502 keep=14502 avail=26463 chunkB=8290 pulseB=4974 
+    → [DRAGON]#37[T1离] terr=1226 bal=7855 dq=6.4 cnt=23 | c=19.1 rankC=19.1 need=13153 tD=0.32 机 | safe=14502 keep=Inf avail=-Inf chunkB=8290 pulseB=4974 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=141 → [INDIA] Susland#26[T1]（约 5747 兵）
+t=1710 ryan_m B=24205 L=13408 d=1.8 nb=2 neut=0 cmds=32 noFull=1 shQ=899 | m=1.468 worth=2.7 cheap=6.0 over=0 dMedOther=20.2 safe(-1)=11043
+    → [INDIA] Susland#26[T1] terr=4253 bal=11043 dq=2.6 cnt=78 | c=0.1 rankC=0.1 need=2151 tD=0.13 人 pulse nearCollapse bleeding agg | safe=11043 keep=11043 avail=12879 chunkB=4841 pulseB=2905 
+    → [DRAGON]#37[T1离] terr=1226 bal=7856 dq=6.4 cnt=25 | c=18.8 rankC=18.8 need=13198 tD=0.32 机 | safe=11043 keep=Inf avail=-Inf chunkB=4841 pulseB=2905 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1735 ryan_m B=24988 L=14464 d=1.7 nb=2 neut=0 cmds=33 noFull=1 shQ=3363 | m=1.465 worth=2.5 cheap=6.3 over=0 dMedOther=20.2 safe(-1)=6500
+    → [INDIA] Susland#26[T1] terr=2998 bal=6500 dq=2.2 cnt=85 | c=0.8 rankC=0.4 need=817 tD=0.11 人 pulse nearCollapse bleeding agg | safe=6500 keep=6500 avail=18196 chunkB=4998 pulseB=2999 
+    → [DRAGON]#37[T1离] terr=1235 bal=6979 dq=5.7 cnt=31 | c=16.8 rankC=16.8 need=12017 tD=0.28 机 | safe=6500 keep=Inf avail=-Inf chunkB=4998 pulseB=2999 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=122 → [INDIA] Susland#26[T1]（约 3001 兵）
+t=1740 ryan_m B=25484 L=14464 d=1.8 nb=2 neut=0 cmds=34 noFull=1 shQ=3854 | m=1.464 worth=2.6 cheap=6.4 over=0 dMedOther=20.4 safe(-1)=6402
+    → [INDIA] Susland#26[T1] terr=2941 bal=6402 dq=2.2 cnt=85 | c=1.0 rankC=0.5 need=509 tD=0.11 人 pulse nearCollapse bleeding agg | safe=6402 keep=6402 avail=18784 chunkB=5097 pulseB=3058 
+    → [DRAGON]#37[T1离] terr=1235 bal=6980 dq=5.7 cnt=31 | c=16.8 rankC=16.8 need=12032 tD=0.28 机 | safe=6402 keep=Inf avail=-Inf chunkB=5097 pulseB=3058 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=122 → [INDIA] Susland#26[T1]（约 3061 兵）
+t=1770 ryan_m B=20084 L=15234 d=1.3 nb=1 neut=62 cmds=34 noFull=1 shQ=3149 | m=1.460 worth=1.9 cheap=6.8 over=0 dMedOther=23.2 safe(-1)=0
+    → [DRAGON]#37[T1离] terr=1235 bal=6983 dq=5.7 cnt=51 | c=16.6 rankC=16.6 need=12137 tD=0.24 机 | safe=0 keep=Inf avail=-Inf chunkB=4017 pulseB=2410 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1800 ryan_m B=36939 L=15998 d=2.3 nb=2 neut=50 cmds=34 noFull=1 shQ=5291 | m=1.455 worth=3.4 cheap=7.3 over=0 dMedOther=22.0 safe(-1)=183798
+    → [DRAGON]#37[T1离] terr=1235 bal=7617 dq=6.2 cnt=70 | c=18.0 rankC=18.0 need=13200 tD=0.28 机 | safe=183798 keep=Inf avail=-Inf chunkB=7388 pulseB=4433 价高(c>=worth)→break
+    → [UNION]Emo Femboy 3#46[T1] terr=15997 bal=351158 dq=22.0 cnt=3 | c=131.7 rankC=131.7 need=649894 tD=1.00 人 crowdedHard | safe=183798 keep=Inf avail=-Inf chunkB=7388 pulseB=4433 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1830 ryan_m B=37913 L=16380 d=2.3 nb=2 neut=11 cmds=34 noFull=1 shQ=8994 | m=1.451 worth=3.4 cheap=7.8 over=0 dMedOther=22.4 safe(-1)=187446
+    → [DRAGON]#37[T1离] terr=861 bal=4269 dq=5.0 cnt=53 | c=16.2 rankC=16.2 need=5868 tD=0.22 机 | safe=187446 keep=Inf avail=-Inf chunkB=7583 pulseB=4550 价高(c>=worth)→break
+    → [UNION]Emo Femboy 3#46[T1] terr=16340 bal=305947 dq=18.7 cnt=26 | c=38.0 rankC=26.6 need=622094 tD=0.83 人 pulse onMe | safe=187446 keep=Inf avail=-Inf chunkB=7583 pulseB=4550 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1860 ryan_m B=38678 L=15816 d=2.4 nb=1 neut=12 cmds=34 noFull=1 shQ=9669 | m=1.446 worth=3.5 cheap=7.9 over=0 dMedOther=23.3 safe(-1)=224112
+    → [UNION]Emo Femboy 3#46[T1] terr=16951 bal=376107 dq=22.2 cnt=52 | c=43.7 rankC=30.6 need=742346 tD=0.95 人 pulse onMe | safe=224112 keep=Inf avail=-Inf chunkB=7736 pulseB=4641 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1890 ryan_m B=36539 L=14910 d=2.5 nb=1 neut=0 cmds=34 noFull=1 shQ=9134 | m=1.442 worth=3.5 cheap=8.0 over=0 dMedOther=22.9 safe(-1)=228112
+    → [UNION]Emo Femboy 3#46[T1] terr=17857 bal=390734 dq=21.9 cnt=67 | c=42.5 rankC=29.7 need=760893 tD=0.96 人 pulse onMe | safe=228112 keep=Inf avail=-Inf chunkB=7308 pulseB=4385 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1920 ryan_m B=47174 L=13796 d=3.4 nb=1 neut=0 cmds=34 noFull=1 shQ=11793 | m=1.437 worth=4.9 cheap=8.0 over=0 dMedOther=25.6 safe(-1)=240647
+    → [UNION]Emo Femboy 3#46[T1] terr=18971 bal=424717 dq=22.4 cnt=82 | c=56.7 rankC=56.7 need=809809 tD=0.87 人 pulse onMe | safe=240647 keep=Inf avail=-Inf chunkB=9435 pulseB=5661 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1950 ryan_m B=42691 L=12667 d=3.4 nb=1 neut=0 cmds=34 noFull=1 shQ=10672 | m=1.433 worth=4.8 cheap=8.1 over=0 dMedOther=26.5 safe(-1)=239644
+    → [UNION]Emo Femboy 3#46[T1] terr=20217 bal=435695 dq=21.6 cnt=79 | c=53.7 rankC=53.7 need=816772 tD=0.81 人 pulse onMe | safe=239644 keep=Inf avail=-Inf chunkB=8538 pulseB=5123 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1980 ryan_m B=40077 L=11918 d=3.4 nb=1 neut=0 cmds=34 noFull=1 shQ=10019 | m=1.428 worth=4.8 cheap=8.1 over=0 dMedOther=27.4 safe(-1)=243961
+    → [UNION]Emo Femboy 3#46[T1] terr=20942 bal=452128 dq=21.6 cnt=85 | c=18.2 rankC=5.4 need=837189 tD=0.79 人 pulse bleeding | safe=243961 keep=Inf avail=-Inf chunkB=8015 pulseB=4809 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2010 ryan_m B=53636 L=11918 d=4.5 nb=1 neut=0 cmds=34 noFull=1 shQ=11948 | m=1.415 worth=6.4 cheap=8.1 over=0 dMedOther=26.1 safe(-1)=255075
+    → [UNION]Emo Femboy 3#46[T1] terr=20436 bal=471911 dq=23.1 cnt=84 | c=20.1 rankC=6.0 need=867609 tD=0.88 人 pulse bleeding | safe=255075 keep=Inf avail=-Inf chunkB=10727 pulseB=6436 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2040 ryan_m B=54364 L=11747 d=4.6 nb=1 neut=0 cmds=34 noFull=1 shQ=13591 | m=1.383 worth=6.4 cheap=8.2 over=0 dMedOther=27.1 safe(-1)=247380
+    → [UNION]Emo Femboy 3#46[T1] terr=19954 bal=402048 dq=20.1 cnt=86 | c=23.3 rankC=8.7 need=795293 tD=0.74 人 pulse bleeding onMe | safe=247380 keep=Inf avail=-Inf chunkB=10873 pulseB=6524 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2070 ryan_m B=46016 L=10350 d=4.4 nb=1 neut=0 cmds=34 noFull=1 shQ=11504 | m=1.352 worth=6.0 cheap=8.2 over=0 dMedOther=28.1 safe(-1)=210144
+    → [UNION]Emo Femboy 3#46[T1] terr=19424 bal=356739 dq=18.4 cnt=103 | c=27.2 rankC=13.6 need=687714 tD=0.65 人 pulse bleeding onMe | safe=210144 keep=Inf avail=-Inf chunkB=9203 pulseB=5522 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2100 ryan_m B=46039 L=8868 d=5.2 nb=1 neut=0 cmds=34 noFull=1 shQ=9493 | m=1.320 worth=6.9 cheap=8.3 over=0 dMedOther=30.0 safe(-1)=215147
+    → [UNION]Emo Femboy 3#46[T1] terr=20808 bal=387168 dq=18.6 cnt=95 | c=26.7 rankC=13.3 need=730213 tD=0.62 人 pulse bleeding onMe | safe=215147 keep=Inf avail=-Inf chunkB=9208 pulseB=5525 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2130 ryan_m B=43584 L=8396 d=5.2 nb=1 neut=0 cmds=34 noFull=1 shQ=10896 | m=1.288 worth=6.7 cheap=8.4 over=0 dMedOther=30.3 safe(-1)=216812
+    → [UNION]Emo Femboy 3#46[T1] terr=21149 bal=398520 dq=18.8 cnt=95 | c=26.9 rankC=13.5 need=741444 tD=0.62 人 pulse bleeding | safe=216812 keep=Inf avail=-Inf chunkB=8717 pulseB=5230 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2160 ryan_m B=45144 L=8396 d=5.4 nb=1 neut=0 cmds=34 noFull=1 shQ=11286 | m=1.257 worth=6.8 cheap=8.4 over=0 dMedOther=31.5 safe(-1)=224754
+    → [UNION]Emo Femboy 3#46[T1] terr=21102 bal=412656 dq=19.6 cnt=95 | c=65.2 rankC=65.2 need=766409 tD=0.62 人 crowdedHard | safe=224754 keep=Inf avail=-Inf chunkB=9029 pulseB=5417 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2190 ryan_m B=219265 L=8396 d=26.1 nb=1 neut=0 cmds=34 noFull=1 shQ=19785 | m=1.226 worth=32.0 cheap=8.4 over=0 dMedOther=32.7 safe(-1)=233840
+    → [UNION]Emo Femboy 3#46[T1] terr=21098 bal=428829 dq=20.3 cnt=95 | c=17.4 rankC=5.2 need=795414 tD=0.62 人 pulse bleeding | safe=233840 keep=233840 avail=-17144 chunkB=43853 pulseB=26312 无可用(avail<=0)
+    ⇒ 本拍没有指令
+t=2220 ryan_m B=235712 L=8396 d=28.1 nb=1 neut=0 cmds=34 noFull=1 shQ=40124 | m=1.194 worth=33.5 cheap=8.4 over=0 dMedOther=34.9 safe(-1)=242743
+    → [UNION]Emo Femboy 3#46[T1] terr=20449 bal=444677 dq=21.7 cnt=95 | c=19.2 rankC=5.7 need=817585 tD=0.62 人 pulse bleeding | safe=242743 keep=242743 avail=-9793 chunkB=47142 pulseB=28285 无可用(avail<=0)
+    ⇒ 本拍没有指令
+t=2250 ryan_m B=244154 L=8396 d=29.1 nb=1 neut=0 cmds=34 noFull=1 shQ=61038 | m=1.163 worth=33.8 cheap=8.4 over=0 dMedOther=36.3 safe(-1)=236484
+    → [UNION]Emo Femboy 3#46[T1] terr=19649 bal=433536 dq=22.1 cnt=94 | c=19.7 rankC=5.9 need=789971 tD=0.61 人 pulse bleeding | safe=236484 keep=236484 avail=4809 chunkB=48831 pulseB=29298 
+    ⇒ 本拍没有指令
+t=2255 ryan_m B=244154 L=8396 d=29.1 nb=1 neut=0 cmds=35 noFull=1 shQ=61038 | m=1.157 worth=33.7 cheap=8.4 over=0 dMedOther=36.3 safe(-1)=229651
+    → [UNION]Emo Femboy 3#46[T1] terr=19303 bal=421372 dq=21.8 cnt=93 | c=19.7 rankC=5.9 need=764989 tD=0.60 人 pulse bleeding | safe=229651 keep=229651 avail=11642 chunkB=48831 pulseB=29298 
+    ⇒ 影子指令 attack pct=48 → [UNION]Emo Femboy 3#46[T1]（约 11683 兵）
+t=2260 ryan_m B=247035 L=8396 d=29.4 nb=1 neut=0 cmds=36 noFull=1 shQ=61758 | m=1.152 worth=33.9 cheap=8.4 over=0 dMedOther=36.7 safe(-1)=227275
+    → [UNION]Emo Femboy 3#46[T1] terr=19029 bal=417144 dq=21.9 cnt=92 | c=20.2 rankC=6.1 need=754692 tD=0.60 人 pulse bleeding | safe=227275 keep=227275 avail=16866 chunkB=49407 pulseB=29644 
+    ⇒ 影子指令 attack pct=69 → [UNION]Emo Femboy 3#46[T1]（约 16887 兵）
+t=2280 ryan_m B=218832 L=8756 d=25.0 nb=1 neut=0 cmds=36 noFull=1 shQ=11907 | m=1.131 worth=28.3 cheap=8.3 over=0 dMedOther=37.7 safe(-1)=209092
+    → [UNION]Emo Femboy 3#46[T1] terr=17899 bal=385318 dq=21.5 cnt=89 | c=20.6 rankC=6.2 need=685015 tD=0.57 人 pulse bleeding | safe=209092 keep=209092 avail=7176 chunkB=43766 pulseB=26260 
+    ⇒ 本拍没有指令

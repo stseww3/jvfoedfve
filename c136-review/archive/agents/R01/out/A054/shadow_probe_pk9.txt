@@ -1,0 +1,849 @@
+t=1300 baseRate() -> 0.03
+t=1300 winRatio() -> 2.6
+t=1300 price(490) -> 2
+t=1300 allow(490) -> true
+t=1300 price(490) -> 2
+t=1300 dpKeep() -> 10869.94
+t=1300 winFloor(490) -> 110142
+t=1300 peopleFloor() -> 0
+t=1300 floorFor(490,318124) -> 110142
+t=1300 price(490) -> 2
+t=1300 food(490) -> true
+t=1300 minShare(490) -> 0.21
+t=1300 food(44) -> false
+t=1300 allow(44) -> true
+t=1300 price(44) -> 22.07
+t=1300 food(44) -> false
+t=1300 motive(44) -> "grudge"
+t=1300 floorFor(44,318124) -> 318124
+t=1300 food(44) -> false
+t=1300 minShare(44) -> 0.21
+t=1300 pickTarget(fn,338.1478) -> null
+t=1300 price(490) -> 2
+t=1300 boatFood() -> false
+t=1300   机器人邻居 AI#490（地208 兵0 空槽1 正打我0）的其他邻居按余额从小到大：British empire#45[T2]=116269
+t=1300 状态 bal=56701 terr=3975 dens=14.3 neutral=0 coast=93 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: AI#490[T0 地208 密0.0 机] [cn]中国人不骗中国人#44[T1 地4034 密6.3 人]
+t=1300 dpKeep() -> 10869.94
+t=1300 winFloor(490) -> 110142
+t=1300 dpKeep() -> 10869.94
+t=1301 baseRate() -> 0.03
+t=1301 状态 bal=56701 terr=4017 dens=14.1 neutral=0 coast=94 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: AI#490[T0 地166 密0.0 机] [cn]中国人不骗中国人#44[T1 地4034 密6.3 人]
+t=1302 baseRate() -> 0.03
+t=1302 状态 bal=56701 terr=4017 dens=14.1 neutral=0 coast=94 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: AI#490[T0 地153 密0.0 机] [cn]中国人不骗中国人#44[T1 地4034 密6.3 人]
+t=1303 baseRate() -> 0.03
+t=1303 状态 bal=56701 terr=4017 dens=14.1 neutral=0 coast=94 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: AI#490[T0 地153 密0.0 机] [cn]中国人不骗中国人#44[T1 地4034 密6.3 人]
+t=1304 baseRate() -> 0.03
+t=1304 状态 bal=56701 terr=4055 dens=14.0 neutral=0 coast=95 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: AI#490[T0 地0 密0 机] [cn]中国人不骗中国人#44[T1 地4034 密6.3 人]
+t=1305 baseRate() -> 0.03
+t=1305 dpKeep() -> 10802.53
+t=1305 dpNeutral() -> undefined
+t=1305 expandNeutral(26013.943600000002) -> undefined
+t=1305 food(44) -> false
+t=1305 allow(44) -> true
+t=1305 price(44) -> 22.07
+t=1305 food(44) -> false
+t=1305 motive(44) -> "grudge"
+t=1305 floorFor(44,318124) -> 318124
+t=1305 food(44) -> false
+t=1305 minShare(44) -> 0.21
+t=1305 pickTarget(fn,338.1478) -> null
+t=1305 boatFood() -> false
+t=1305 状态 bal=56701 terr=4055 dens=14.0 neutral=33 coast=95 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.3 人]
+t=1306 baseRate() -> 0.03
+t=1306 状态 bal=56701 terr=4055 dens=14.0 neutral=33 coast=95 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.3 人]
+t=1307 baseRate() -> 0.03
+t=1307 状态 bal=56701 terr=4088 dens=13.9 neutral=33 coast=96 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.3 人]
+t=1308 baseRate() -> 0.03
+t=1308 状态 bal=56701 terr=4088 dens=13.9 neutral=33 coast=96 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.3 人]
+t=1309 baseRate() -> 0.03
+t=1309 状态 bal=56701 terr=4088 dens=13.9 neutral=33 coast=96 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.3 人]
+t=1310 baseRate() -> 0.03
+t=1310 dpKeep() -> 11164.33
+t=1310 dpNeutral() -> undefined
+t=1310 expandNeutral(26768.042) -> undefined
+t=1310 food(44) -> false
+t=1310 allow(44) -> true
+t=1310 price(44) -> 22.65
+t=1310 food(44) -> false
+t=1310 motive(44) -> "grudge"
+t=1310 floorFor(44,327348) -> 327348
+t=1310 food(44) -> false
+t=1310 minShare(44) -> 0.21
+t=1310 pickTarget(fn,338.1478) -> null
+t=1310 boatFood() -> false
+t=1310 状态 bal=58345 terr=4115 dens=14.2 neutral=19 coast=96 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.5 人]
+t=1311 baseRate() -> 0.03
+t=1311 状态 bal=58345 terr=4115 dens=14.2 neutral=19 coast=96 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.5 人]
+t=1312 baseRate() -> 0.03
+t=1312 状态 bal=58345 terr=4115 dens=14.2 neutral=19 coast=96 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.5 人]
+t=1313 baseRate() -> 0.03
+t=1313 状态 bal=58345 terr=4131 dens=14.1 neutral=19 coast=96 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.5 人]
+t=1314 baseRate() -> 0.03
+t=1314 状态 bal=58345 terr=4131 dens=14.1 neutral=19 coast=96 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.5 人]
+t=1315 baseRate() -> 0.03
+t=1315 dpKeep() -> 11150.84
+t=1315 dpNeutral() -> undefined
+t=1315 expandNeutral(26768.042) -> undefined
+t=1315 food(44) -> false
+t=1315 allow(44) -> true
+t=1315 price(44) -> 22.65
+t=1315 food(44) -> false
+t=1315 motive(44) -> "grudge"
+t=1315 floorFor(44,327348) -> 327348
+t=1315 food(44) -> false
+t=1315 minShare(44) -> 0.21
+t=1315 pickTarget(fn,338.1478) -> null
+t=1315 boatFood() -> false
+t=1315 状态 bal=58345 terr=4131 dens=14.1 neutral=1 coast=96 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.5 人]
+t=1316 baseRate() -> 0.03
+t=1316 状态 bal=58345 terr=4132 dens=14.1 neutral=1 coast=96 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.5 人]
+t=1317 baseRate() -> 0.03
+t=1317 状态 bal=58345 terr=4132 dens=14.1 neutral=1 coast=96 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.5 人]
+t=1318 baseRate() -> 0.03
+t=1318 状态 bal=58345 terr=4132 dens=14.1 neutral=1 coast=96 noFull=1 atkOut=1 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.5 人]
+t=1319 baseRate() -> 0.03
+t=1319 状态 bal=64158 terr=4132 dens=15.5 neutral=1 coast=96 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.5 人]
+t=1320 baseRate() -> 0.03
+t=1320 food(44) -> false
+t=1320 allow(44) -> true
+t=1320 price(44) -> 23.25
+t=1320 food(44) -> false
+t=1320 motive(44) -> "grudge"
+t=1320 floorFor(44,336740) -> 336740
+t=1320 food(44) -> false
+t=1320 minShare(44) -> 0.21
+t=1320 pickTarget(fn,338.1478) -> null
+t=1320 isMopUp() -> false
+t=1320 searchFood() -> {"land":828540,"price":2,"cost":14645.300288150827,"eff":5.37062958395373}
+t=1320 baseRate() -> 0.03
+t=1320 reserve(2) -> 0
+t=1320 boatFood() -> false
+t=1320 状态 bal=65999 terr=4132 dens=16.0 neutral=0 coast=96 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.6 人]
+t=1321 baseRate() -> 0.03
+t=1321 状态 bal=65999 terr=4132 dens=16.0 neutral=0 coast=96 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.6 人]
+t=1322 baseRate() -> 0.03
+t=1322 状态 bal=65999 terr=4132 dens=16.0 neutral=0 coast=96 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.6 人]
+t=1323 baseRate() -> 0.03
+t=1323 状态 bal=65999 terr=4132 dens=16.0 neutral=0 coast=96 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密6.6 人]
+t=1324 baseRate() -> 0.03
+t=1324 状态 bal=65999 terr=4132 dens=16.0 neutral=0 coast=96 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密3.2 人]
+t=1325 baseRate() -> 0.03
+t=1325 food(44) -> false
+t=1325 allow(44) -> true
+t=1325 price(44) -> 12.4
+t=1325 food(44) -> false
+t=1325 motive(44) -> "grudge"
+t=1325 floorFor(44,336740) -> 336740
+t=1325 food(44) -> false
+t=1325 minShare(44) -> 0.21
+t=1325 pickTarget(fn,338.1478) -> null
+t=1325 boatFood() -> false
+t=1325 状态 bal=65999 terr=4132 dens=16.0 neutral=0 coast=96 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密3.2 人]
+t=1326 baseRate() -> 0.03
+t=1326 状态 bal=65999 terr=4132 dens=16.0 neutral=0 coast=96 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密3.2 人]
+t=1327 baseRate() -> 0.03
+t=1327 状态 bal=65999 terr=4132 dens=16.0 neutral=0 coast=96 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密3.2 人]
+t=1328 baseRate() -> 0.03
+t=1328 状态 bal=65999 terr=4132 dens=16.0 neutral=0 coast=96 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密3.2 人]
+t=1329 baseRate() -> 0.03
+t=1329 状态 bal=65999 terr=4132 dens=16.0 neutral=0 coast=96 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密3.2 人]
+t=1330 baseRate() -> 0.03
+t=1330 food(44) -> false
+t=1330 allow(44) -> true
+t=1330 price(44) -> 12.69
+t=1330 food(44) -> false
+t=1330 motive(44) -> "grudge"
+t=1330 floorFor(44,346300) -> 346300
+t=1330 food(44) -> false
+t=1330 minShare(44) -> 0.21
+t=1330 pickTarget(fn,338.1478) -> null
+t=1330 boatFood() -> false
+t=1330 状态 bal=67873 terr=4132 dens=16.4 neutral=0 coast=96 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4034 密3.3 人]
+t=1331 baseRate() -> 0.03
+t=1331 状态 bal=65955 terr=4059 dens=16.2 neutral=0 coast=95 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4107 密3.3 人]
+t=1332 baseRate() -> 0.03
+t=1332 状态 bal=65955 terr=4059 dens=16.2 neutral=0 coast=95 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4107 密3.3 人]
+t=1333 baseRate() -> 0.03
+t=1333 状态 bal=65955 terr=4059 dens=16.2 neutral=0 coast=95 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4107 密3.3 人]
+t=1334 baseRate() -> 0.03
+t=1334 状态 bal=64058 terr=3986 dens=16.1 neutral=0 coast=95 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4180 密3.2 人]
+t=1335 baseRate() -> 0.03
+t=1335 food(44) -> false
+t=1335 allow(44) -> true
+t=1335 price(44) -> 12.32
+t=1335 food(44) -> false
+t=1335 motive(44) -> "grudge"
+t=1335 floorFor(44,346300) -> 346300
+t=1335 food(44) -> false
+t=1335 minShare(44) -> 0.21
+t=1335 pickTarget(fn,338.1478) -> null
+t=1335 boatFood() -> false
+t=1335 状态 bal=64058 terr=3986 dens=16.1 neutral=0 coast=95 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4180 密3.2 人]
+t=1336 baseRate() -> 0.03
+t=1336 状态 bal=64058 terr=3986 dens=16.1 neutral=0 coast=95 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4180 密3.2 人]
+t=1337 baseRate() -> 0.03
+t=1337 状态 bal=62182 terr=3913 dens=15.9 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.2 人]
+t=1338 baseRate() -> 0.03
+t=1338 状态 bal=62182 terr=3913 dens=15.9 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.2 人]
+t=1339 baseRate() -> 0.03
+t=1339 状态 bal=62182 terr=3913 dens=15.9 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.2 人]
+t=1340 baseRate() -> 0.03
+t=1340 food(44) -> false
+t=1340 allow(44) -> true
+t=1340 price(44) -> 12.45
+t=1340 food(44) -> false
+t=1340 motive(44) -> "grudge"
+t=1340 floorFor(44,311880) -> 311880
+t=1340 food(44) -> false
+t=1340 minShare(44) -> 0.21
+t=1340 pickTarget(fn,338.1478) -> null
+t=1340 boatFood() -> false
+t=1340 状态 bal=63245 terr=3913 dens=16.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.3 人]
+t=1341 baseRate() -> 0.03
+t=1341 状态 bal=63245 terr=3913 dens=16.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.3 人]
+t=1342 baseRate() -> 0.03
+t=1342 状态 bal=63245 terr=3913 dens=16.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.3 人]
+t=1343 baseRate() -> 0.03
+t=1343 状态 bal=63245 terr=3913 dens=16.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.3 人]
+t=1344 baseRate() -> 0.03
+t=1344 状态 bal=63245 terr=3913 dens=16.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.3 人]
+t=1345 baseRate() -> 0.03
+t=1345 food(44) -> false
+t=1345 allow(44) -> true
+t=1345 price(44) -> 12.45
+t=1345 food(44) -> false
+t=1345 motive(44) -> "grudge"
+t=1345 floorFor(44,311880) -> 311880
+t=1345 food(44) -> false
+t=1345 minShare(44) -> 0.21
+t=1345 pickTarget(fn,338.1478) -> null
+t=1345 boatFood() -> false
+t=1345 状态 bal=63245 terr=3913 dens=16.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.3 人]
+t=1346 baseRate() -> 0.03
+t=1346 状态 bal=63245 terr=3913 dens=16.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.3 人]
+t=1347 baseRate() -> 0.03
+t=1347 状态 bal=63245 terr=3913 dens=16.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.3 人]
+t=1348 baseRate() -> 0.03
+t=1348 状态 bal=63245 terr=3913 dens=16.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.3 人]
+t=1349 baseRate() -> 0.03
+t=1349 状态 bal=63245 terr=3913 dens=16.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.3 人]
+t=1350 baseRate() -> 0.03
+t=1350 food(44) -> false
+t=1350 allow(44) -> true
+t=1350 price(44) -> 12.74
+t=1350 food(44) -> false
+t=1350 motive(44) -> "grudge"
+t=1350 floorFor(44,320548) -> 320548
+t=1350 food(44) -> false
+t=1350 minShare(44) -> 0.21
+t=1350 pickTarget(fn,338.1478) -> null
+t=1350 boatFood() -> false
+t=1350 状态 bal=65003 terr=3913 dens=16.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.4 人]
+t=1351 baseRate() -> 0.03
+t=1351 状态 bal=65003 terr=3913 dens=16.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.4 人]
+t=1352 baseRate() -> 0.03
+t=1352 状态 bal=65003 terr=3913 dens=16.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.4 人]
+t=1353 baseRate() -> 0.03
+t=1353 状态 bal=65003 terr=3913 dens=16.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.4 人]
+t=1354 baseRate() -> 0.03
+t=1354 状态 bal=65003 terr=3913 dens=16.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.4 人]
+t=1355 baseRate() -> 0.03
+t=1355 food(44) -> false
+t=1355 allow(44) -> true
+t=1355 price(44) -> 12.74
+t=1355 food(44) -> false
+t=1355 motive(44) -> "grudge"
+t=1355 floorFor(44,320548) -> 320548
+t=1355 food(44) -> false
+t=1355 minShare(44) -> 0.21
+t=1355 pickTarget(fn,338.1478) -> null
+t=1355 boatFood() -> false
+t=1355 状态 bal=65003 terr=3913 dens=16.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.4 人]
+t=1356 baseRate() -> 0.03
+t=1356 状态 bal=65003 terr=3913 dens=16.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.4 人]
+t=1357 baseRate() -> 0.03
+t=1357 状态 bal=65003 terr=3913 dens=16.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.4 人]
+t=1358 baseRate() -> 0.03
+t=1358 状态 bal=65003 terr=3913 dens=16.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.4 人]
+t=1359 baseRate() -> 0.03
+t=1359 状态 bal=65003 terr=3913 dens=16.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.4 人]
+t=1360 baseRate() -> 0.03
+t=1360 food(44) -> false
+t=1360 allow(44) -> true
+t=1360 price(44) -> 13.04
+t=1360 food(44) -> false
+t=1360 motive(44) -> "grudge"
+t=1360 floorFor(44,329360) -> 329360
+t=1360 food(44) -> false
+t=1360 minShare(44) -> 0.21
+t=1360 pickTarget(fn,338.1478) -> null
+t=1360 boatFood() -> false
+t=1360 状态 bal=66790 terr=3913 dens=17.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1361 baseRate() -> 0.03
+t=1361 状态 bal=66790 terr=3913 dens=17.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1362 baseRate() -> 0.03
+t=1362 状态 bal=66790 terr=3913 dens=17.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1363 baseRate() -> 0.03
+t=1363 状态 bal=66790 terr=3913 dens=17.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1364 baseRate() -> 0.03
+t=1364 状态 bal=66790 terr=3913 dens=17.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1365 baseRate() -> 0.03
+t=1365 food(44) -> false
+t=1365 allow(44) -> true
+t=1365 price(44) -> 13.04
+t=1365 food(44) -> false
+t=1365 motive(44) -> "grudge"
+t=1365 floorFor(44,329360) -> 329360
+t=1365 food(44) -> false
+t=1365 minShare(44) -> 0.21
+t=1365 pickTarget(fn,338.1478) -> null
+t=1365 boatFood() -> false
+t=1365 状态 bal=66790 terr=3913 dens=17.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1366 baseRate() -> 0.03
+t=1366 状态 bal=66790 terr=3913 dens=17.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1367 baseRate() -> 0.03
+t=1367 状态 bal=66790 terr=3913 dens=17.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1368 baseRate() -> 0.03
+t=1368 状态 bal=66790 terr=3913 dens=17.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1369 baseRate() -> 0.03
+t=1369 状态 bal=66790 terr=3913 dens=17.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1370 baseRate() -> 0.03
+t=1370 food(44) -> false
+t=1370 allow(44) -> true
+t=1370 price(44) -> 13.34
+t=1370 food(44) -> false
+t=1370 motive(44) -> "grudge"
+t=1370 floorFor(44,338316) -> 338316
+t=1370 food(44) -> false
+t=1370 minShare(44) -> 0.21
+t=1370 pickTarget(fn,338.1478) -> null
+t=1370 boatFood() -> false
+t=1370 状态 bal=68606 terr=3913 dens=17.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1371 baseRate() -> 0.03
+t=1371 状态 bal=68606 terr=3913 dens=17.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1372 baseRate() -> 0.03
+t=1372 状态 bal=68606 terr=3913 dens=17.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1373 baseRate() -> 0.03
+t=1373 状态 bal=68606 terr=3913 dens=17.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1374 baseRate() -> 0.03
+t=1374 状态 bal=68606 terr=3913 dens=17.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1375 baseRate() -> 0.03
+t=1375 food(44) -> false
+t=1375 allow(44) -> true
+t=1375 price(44) -> 13.34
+t=1375 food(44) -> false
+t=1375 motive(44) -> "grudge"
+t=1375 floorFor(44,375036) -> 375036
+t=1375 food(44) -> false
+t=1375 minShare(44) -> 0.21
+t=1375 pickTarget(fn,338.1478) -> null
+t=1375 boatFood() -> false
+t=1375 状态 bal=68606 terr=3913 dens=17.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1376 baseRate() -> 0.03
+t=1376 状态 bal=68606 terr=3913 dens=17.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1377 baseRate() -> 0.03
+t=1377 状态 bal=68606 terr=3913 dens=17.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1378 baseRate() -> 0.03
+t=1378 状态 bal=68606 terr=3913 dens=17.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1379 baseRate() -> 0.03
+t=1379 状态 bal=68606 terr=3913 dens=17.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.5 人]
+t=1380 baseRate() -> 0.03
+t=1380 food(44) -> false
+t=1380 allow(44) -> true
+t=1380 price(44) -> 13.64
+t=1380 food(44) -> false
+t=1380 motive(44) -> "grudge"
+t=1380 floorFor(44,385124) -> 385124
+t=1380 food(44) -> false
+t=1380 minShare(44) -> 0.21
+t=1380 pickTarget(fn,338.1478) -> null
+t=1380 isMopUp() -> false
+t=1380 searchFood() -> {"land":698608,"price":2,"cost":2089.088673735316,"eff":10.223614402214388}
+t=1380 baseRate() -> 0.03
+t=1380 reserve(2) -> 0
+t=1380 boatFood() -> false
+t=1380 状态 bal=70451 terr=3913 dens=18.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.6 人]
+t=1381 baseRate() -> 0.03
+t=1381 状态 bal=70451 terr=3913 dens=18.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.6 人]
+t=1382 baseRate() -> 0.03
+t=1382 状态 bal=70451 terr=3913 dens=18.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.6 人]
+t=1383 baseRate() -> 0.03
+t=1383 状态 bal=70451 terr=3913 dens=18.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.6 人]
+t=1384 baseRate() -> 0.03
+t=1384 状态 bal=70451 terr=3913 dens=18.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.6 人]
+t=1385 baseRate() -> 0.03
+t=1385 food(44) -> false
+t=1385 allow(44) -> true
+t=1385 price(44) -> 13.64
+t=1385 food(44) -> false
+t=1385 motive(44) -> "grudge"
+t=1385 floorFor(44,385124) -> 385124
+t=1385 food(44) -> false
+t=1385 minShare(44) -> 0.21
+t=1385 pickTarget(fn,338.1478) -> null
+t=1385 boatFood() -> false
+t=1385 状态 bal=70451 terr=3913 dens=18.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.6 人]
+t=1386 baseRate() -> 0.03
+t=1386 状态 bal=70451 terr=3913 dens=18.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.6 人]
+t=1387 baseRate() -> 0.03
+t=1387 状态 bal=70451 terr=3913 dens=18.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.6 人]
+t=1388 baseRate() -> 0.03
+t=1388 状态 bal=70451 terr=3913 dens=18.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.6 人]
+t=1389 baseRate() -> 0.03
+t=1389 状态 bal=70451 terr=3913 dens=18.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.6 人]
+t=1390 baseRate() -> 0.03
+t=1390 food(44) -> false
+t=1390 allow(44) -> true
+t=1390 price(44) -> 13.95
+t=1390 food(44) -> false
+t=1390 motive(44) -> "grudge"
+t=1390 floorFor(44,391300) -> 391300
+t=1390 food(44) -> false
+t=1390 minShare(44) -> 0.21
+t=1390 pickTarget(fn,338.1478) -> null
+t=1390 boatFood() -> false
+t=1390 状态 bal=72317 terr=3913 dens=18.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.7 人]
+t=1391 baseRate() -> 0.03
+t=1391 状态 bal=72317 terr=3913 dens=18.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.7 人]
+t=1392 baseRate() -> 0.03
+t=1392 状态 bal=72317 terr=3913 dens=18.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.7 人]
+t=1393 baseRate() -> 0.03
+t=1393 状态 bal=72317 terr=3913 dens=18.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.7 人]
+t=1394 baseRate() -> 0.03
+t=1394 状态 bal=72317 terr=3913 dens=18.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.7 人]
+t=1395 baseRate() -> 0.03
+t=1395 food(44) -> false
+t=1395 allow(44) -> true
+t=1395 price(44) -> 13.95
+t=1395 food(44) -> false
+t=1395 motive(44) -> "grudge"
+t=1395 floorFor(44,391300) -> 391300
+t=1395 food(44) -> false
+t=1395 minShare(44) -> 0.21
+t=1395 pickTarget(fn,338.1478) -> null
+t=1395 boatFood() -> false
+t=1395 状态 bal=72317 terr=3913 dens=18.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.7 人]
+t=1396 baseRate() -> 0.03
+t=1396 状态 bal=72317 terr=3913 dens=18.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.7 人]
+t=1397 baseRate() -> 0.03
+t=1397 状态 bal=72317 terr=3913 dens=18.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.7 人]
+t=1398 baseRate() -> 0.03
+t=1398 状态 bal=72317 terr=3913 dens=18.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.7 人]
+t=1399 baseRate() -> 0.03
+t=1399 状态 bal=72317 terr=3913 dens=18.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密3.7 人]
+t=1400 baseRate() -> 0.03
+t=1400 food(44) -> false
+t=1400 allow(44) -> true
+t=1400 price(44) -> 17.46
+t=1400 food(44) -> false
+t=1400 motive(44) -> "grudge"
+t=1400 floorFor(44,391300) -> 391300
+t=1400 food(44) -> false
+t=1400 minShare(44) -> 0.21
+t=1400 pickTarget(fn,338.1478) -> null
+t=1400 boatFood() -> false
+t=1400 状态 bal=78124 terr=3913 dens=20.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密4.8 人]
+t=1401 baseRate() -> 0.03
+t=1401 状态 bal=78124 terr=3913 dens=20.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密4.8 人]
+t=1402 baseRate() -> 0.03
+t=1402 状态 bal=78124 terr=3913 dens=20.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密4.8 人]
+t=1403 baseRate() -> 0.03
+t=1403 状态 bal=78124 terr=3913 dens=20.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密4.8 人]
+t=1404 baseRate() -> 0.03
+t=1404 状态 bal=78124 terr=3913 dens=20.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密4.8 人]
+t=1405 baseRate() -> 0.03
+t=1405 food(44) -> false
+t=1405 allow(44) -> true
+t=1405 price(44) -> 17.46
+t=1405 food(44) -> false
+t=1405 motive(44) -> "grudge"
+t=1405 floorFor(44,391300) -> 391300
+t=1405 food(44) -> false
+t=1405 minShare(44) -> 0.21
+t=1405 pickTarget(fn,338.1478) -> null
+t=1405 boatFood() -> false
+t=1405 状态 bal=78124 terr=3913 dens=20.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密4.8 人]
+t=1406 baseRate() -> 0.03
+t=1406 状态 bal=78124 terr=3913 dens=20.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密4.8 人]
+t=1407 baseRate() -> 0.03
+t=1407 状态 bal=78124 terr=3913 dens=20.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密4.8 人]
+t=1408 baseRate() -> 0.03
+t=1408 状态 bal=78124 terr=3913 dens=20.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密4.8 人]
+t=1409 baseRate() -> 0.03
+t=1409 状态 bal=78124 terr=3913 dens=20.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密4.8 人]
+t=1410 baseRate() -> 0.03
+t=1410 food(44) -> false
+t=1410 allow(44) -> true
+t=1410 price(44) -> 17.86
+t=1410 food(44) -> false
+t=1410 motive(44) -> "grudge"
+t=1410 floorFor(44,391300) -> 391300
+t=1410 food(44) -> false
+t=1410 minShare(44) -> 0.21
+t=1410 pickTarget(fn,338.1478) -> null
+t=1410 boatFood() -> false
+t=1410 状态 bal=80147 terr=3913 dens=20.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.0 人]
+t=1411 baseRate() -> 0.03
+t=1411 状态 bal=80147 terr=3913 dens=20.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.0 人]
+t=1412 baseRate() -> 0.03
+t=1412 状态 bal=80147 terr=3913 dens=20.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.0 人]
+t=1413 baseRate() -> 0.03
+t=1413 状态 bal=80147 terr=3913 dens=20.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.0 人]
+t=1414 baseRate() -> 0.03
+t=1414 状态 bal=80147 terr=3913 dens=20.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.0 人]
+t=1415 baseRate() -> 0.03
+t=1415 food(44) -> false
+t=1415 allow(44) -> true
+t=1415 price(44) -> 17.86
+t=1415 food(44) -> false
+t=1415 motive(44) -> "grudge"
+t=1415 floorFor(44,391300) -> 391300
+t=1415 food(44) -> false
+t=1415 minShare(44) -> 0.21
+t=1415 pickTarget(fn,338.1478) -> null
+t=1415 boatFood() -> false
+t=1415 状态 bal=80147 terr=3913 dens=20.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.0 人]
+t=1416 baseRate() -> 0.03
+t=1416 状态 bal=80147 terr=3913 dens=20.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.0 人]
+t=1417 baseRate() -> 0.03
+t=1417 状态 bal=80147 terr=3913 dens=20.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.0 人]
+t=1418 baseRate() -> 0.03
+t=1418 状态 bal=80147 terr=3913 dens=20.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.0 人]
+t=1419 baseRate() -> 0.03
+t=1419 状态 bal=80147 terr=3913 dens=20.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.0 人]
+t=1420 baseRate() -> 0.03
+t=1420 food(44) -> false
+t=1420 allow(44) -> true
+t=1420 price(44) -> 18.27
+t=1420 food(44) -> false
+t=1420 motive(44) -> "grudge"
+t=1420 floorFor(44,391300) -> 391300
+t=1420 food(44) -> false
+t=1420 minShare(44) -> 0.21
+t=1420 pickTarget(fn,338.1478) -> null
+t=1420 boatFood() -> false
+t=1420 状态 bal=82198 terr=3913 dens=21.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.1 人]
+t=1421 baseRate() -> 0.03
+t=1421 状态 bal=82198 terr=3913 dens=21.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.1 人]
+t=1422 baseRate() -> 0.03
+t=1422 状态 bal=82198 terr=3913 dens=21.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.1 人]
+t=1423 baseRate() -> 0.03
+t=1423 状态 bal=82198 terr=3913 dens=21.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.1 人]
+t=1424 baseRate() -> 0.03
+t=1424 状态 bal=82198 terr=3913 dens=21.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.1 人]
+t=1425 baseRate() -> 0.03
+t=1425 food(44) -> false
+t=1425 allow(44) -> true
+t=1425 price(44) -> 18.27
+t=1425 food(44) -> false
+t=1425 motive(44) -> "grudge"
+t=1425 floorFor(44,391300) -> 391300
+t=1425 food(44) -> false
+t=1425 minShare(44) -> 0.21
+t=1425 pickTarget(fn,338.1478) -> null
+t=1425 boatFood() -> false
+t=1425 状态 bal=82198 terr=3913 dens=21.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.1 人]
+t=1426 baseRate() -> 0.03
+t=1426 状态 bal=82198 terr=3913 dens=21.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.1 人]
+t=1427 baseRate() -> 0.03
+t=1427 状态 bal=82198 terr=3913 dens=21.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.1 人]
+t=1428 baseRate() -> 0.03
+t=1428 状态 bal=82198 terr=3913 dens=21.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.1 人]
+t=1429 baseRate() -> 0.03
+t=1429 状态 bal=82198 terr=3913 dens=21.0 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.1 人]
+t=1430 baseRate() -> 0.03
+t=1430 food(44) -> false
+t=1430 allow(44) -> true
+t=1430 price(44) -> 18.68
+t=1430 food(44) -> false
+t=1430 motive(44) -> "grudge"
+t=1430 floorFor(44,391300) -> 391300
+t=1430 food(44) -> false
+t=1430 minShare(44) -> 0.21
+t=1430 pickTarget(fn,338.1478) -> null
+t=1430 boatFood() -> false
+t=1430 状态 bal=84277 terr=3913 dens=21.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.2 人]
+t=1431 baseRate() -> 0.03
+t=1431 状态 bal=84277 terr=3913 dens=21.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.2 人]
+t=1432 baseRate() -> 0.03
+t=1432 状态 bal=84277 terr=3913 dens=21.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.2 人]
+t=1433 baseRate() -> 0.03
+t=1433 状态 bal=84277 terr=3913 dens=21.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.2 人]
+t=1434 baseRate() -> 0.03
+t=1434 状态 bal=84277 terr=3913 dens=21.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.2 人]
+t=1435 baseRate() -> 0.03
+t=1435 food(44) -> false
+t=1435 allow(44) -> true
+t=1435 price(44) -> 18.68
+t=1435 food(44) -> false
+t=1435 motive(44) -> "grudge"
+t=1435 floorFor(44,391300) -> 391300
+t=1435 food(44) -> false
+t=1435 minShare(44) -> 0.21
+t=1435 pickTarget(fn,338.1478) -> null
+t=1435 boatFood() -> false
+t=1435 状态 bal=84277 terr=3913 dens=21.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.2 人]
+t=1436 baseRate() -> 0.03
+t=1436 状态 bal=84277 terr=3913 dens=21.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.2 人]
+t=1437 baseRate() -> 0.03
+t=1437 状态 bal=84277 terr=3913 dens=21.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.2 人]
+t=1438 baseRate() -> 0.03
+t=1438 状态 bal=84277 terr=3913 dens=21.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.2 人]
+t=1439 baseRate() -> 0.03
+t=1439 状态 bal=84277 terr=3913 dens=21.5 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.2 人]
+t=1440 baseRate() -> 0.03
+t=1440 food(44) -> false
+t=1440 allow(44) -> true
+t=1440 price(44) -> 19.1
+t=1440 food(44) -> false
+t=1440 motive(44) -> "grudge"
+t=1440 floorFor(44,391300) -> 391300
+t=1440 food(44) -> false
+t=1440 minShare(44) -> 0.21
+t=1440 pickTarget(fn,338.1478) -> null
+t=1440 isMopUp() -> false
+t=1440 searchFood() -> {"land":698608,"price":2,"cost":2089.088673735316,"eff":11.784742928860155}
+t=1440 baseRate() -> 0.03
+t=1440 reserve(2) -> 0
+t=1440 boatFood() -> false
+t=1440 状态 bal=86383 terr=3913 dens=22.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.3 人]
+t=1441 baseRate() -> 0.02
+t=1441 状态 bal=86383 terr=3913 dens=22.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.3 人]
+t=1442 baseRate() -> 0.02
+t=1442 状态 bal=86383 terr=3913 dens=22.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.3 人]
+t=1443 baseRate() -> 0.02
+t=1443 状态 bal=86383 terr=3913 dens=22.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.3 人]
+t=1444 baseRate() -> 0.02
+t=1444 状态 bal=86383 terr=3913 dens=22.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.3 人]
+t=1445 baseRate() -> 0.02
+t=1445 food(44) -> false
+t=1445 allow(44) -> true
+t=1445 price(44) -> 19.1
+t=1445 food(44) -> false
+t=1445 motive(44) -> "grudge"
+t=1445 floorFor(44,391300) -> 391300
+t=1445 food(44) -> false
+t=1445 minShare(44) -> 0.21
+t=1445 pickTarget(fn,338.1478) -> null
+t=1445 boatFood() -> false
+t=1445 状态 bal=86383 terr=3913 dens=22.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.3 人]
+t=1446 baseRate() -> 0.02
+t=1446 状态 bal=86383 terr=3913 dens=22.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.3 人]
+t=1447 baseRate() -> 0.02
+t=1447 状态 bal=86383 terr=3913 dens=22.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.3 人]
+t=1448 baseRate() -> 0.02
+t=1448 状态 bal=86383 terr=3913 dens=22.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.3 人]
+t=1449 baseRate() -> 0.02
+t=1449 状态 bal=86383 terr=3913 dens=22.1 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.3 人]
+t=1450 baseRate() -> 0.02
+t=1450 food(44) -> false
+t=1450 allow(44) -> true
+t=1450 price(44) -> 19.52
+t=1450 food(44) -> false
+t=1450 motive(44) -> "grudge"
+t=1450 floorFor(44,391300) -> 391300
+t=1450 food(44) -> false
+t=1450 minShare(44) -> 0.21
+t=1450 pickTarget(fn,338.1478) -> null
+t=1450 boatFood() -> false
+t=1450 状态 bal=88516 terr=3913 dens=22.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.5 人]
+t=1451 baseRate() -> 0.02
+t=1451 状态 bal=88516 terr=3913 dens=22.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.5 人]
+t=1452 baseRate() -> 0.02
+t=1452 状态 bal=88516 terr=3913 dens=22.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.5 人]
+t=1453 baseRate() -> 0.02
+t=1453 状态 bal=88516 terr=3913 dens=22.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.5 人]
+t=1454 baseRate() -> 0.02
+t=1454 状态 bal=88516 terr=3913 dens=22.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.5 人]
+t=1455 baseRate() -> 0.02
+t=1455 food(44) -> false
+t=1455 allow(44) -> true
+t=1455 price(44) -> 19.52
+t=1455 food(44) -> false
+t=1455 motive(44) -> "grudge"
+t=1455 floorFor(44,391300) -> 391300
+t=1455 food(44) -> false
+t=1455 minShare(44) -> 0.21
+t=1455 pickTarget(fn,338.1478) -> null
+t=1455 boatFood() -> false
+t=1455 状态 bal=88516 terr=3913 dens=22.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.5 人]
+t=1456 baseRate() -> 0.02
+t=1456 状态 bal=88516 terr=3913 dens=22.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.5 人]
+t=1457 baseRate() -> 0.02
+t=1457 状态 bal=88516 terr=3913 dens=22.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.5 人]
+t=1458 baseRate() -> 0.02
+t=1458 状态 bal=88516 terr=3913 dens=22.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.5 人]
+t=1459 baseRate() -> 0.02
+t=1459 状态 bal=88516 terr=3913 dens=22.6 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.5 人]
+t=1460 baseRate() -> 0.02
+t=1460 food(44) -> false
+t=1460 allow(44) -> true
+t=1460 price(44) -> 19.95
+t=1460 food(44) -> false
+t=1460 motive(44) -> "grudge"
+t=1460 floorFor(44,391300) -> 391300
+t=1460 food(44) -> false
+t=1460 minShare(44) -> 0.21
+t=1460 pickTarget(fn,338.1478) -> null
+t=1460 boatFood() -> false
+t=1460 状态 bal=90675 terr=3913 dens=23.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.6 人]
+t=1461 baseRate() -> 0.02
+t=1461 状态 bal=90675 terr=3913 dens=23.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.6 人]
+t=1462 baseRate() -> 0.02
+t=1462 状态 bal=90675 terr=3913 dens=23.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.6 人]
+t=1463 baseRate() -> 0.02
+t=1463 状态 bal=90675 terr=3913 dens=23.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.6 人]
+t=1464 baseRate() -> 0.02
+t=1464 状态 bal=90675 terr=3913 dens=23.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.6 人]
+t=1465 baseRate() -> 0.02
+t=1465 food(44) -> false
+t=1465 allow(44) -> true
+t=1465 price(44) -> 19.95
+t=1465 food(44) -> false
+t=1465 motive(44) -> "grudge"
+t=1465 floorFor(44,130080.1479252852) -> 130080.15
+t=1465 food(44) -> false
+t=1465 minShare(44) -> 0.21
+t=1465 pickTarget(fn,338.1478) -> null
+t=1465 boatFood() -> false
+t=1465 状态 bal=90675 terr=3913 dens=23.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.6 人]
+t=1466 baseRate() -> 0.02
+t=1466 状态 bal=90675 terr=3913 dens=23.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.6 人]
+t=1467 baseRate() -> 0.02
+t=1467 状态 bal=90675 terr=3913 dens=23.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.6 人]
+t=1468 baseRate() -> 0.02
+t=1468 状态 bal=90675 terr=3913 dens=23.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.6 人]
+t=1469 baseRate() -> 0.02
+t=1469 状态 bal=90675 terr=3913 dens=23.2 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4253 密5.6 人]
+t=1470 baseRate() -> 0.02
+t=1470 food(44) -> false
+t=1470 allow(44) -> true
+t=1470 price(44) -> 20.38
+t=1470 food(44) -> false
+t=1470 motive(44) -> "grudge"
+t=1470 floorFor(44,132886.93253072485) -> 132886.93
+t=1470 food(44) -> false
+t=1470 minShare(44) -> 0.21
+t=1470 pickTarget(fn,338.1478) -> null
+t=1470 boatFood() -> false
+t=1470 状态 bal=92851 terr=3913 dens=23.7 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4252 密5.7 人]
+t=1471 baseRate() -> 0.02
+t=1471 状态 bal=92851 terr=3913 dens=23.7 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4252 密5.7 人]
+t=1472 baseRate() -> 0.02
+t=1472 状态 bal=92851 terr=3913 dens=23.7 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4252 密5.7 人]
+t=1473 baseRate() -> 0.02
+t=1473 状态 bal=92851 terr=3913 dens=23.7 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4249 密5.7 人]
+t=1474 baseRate() -> 0.02
+t=1474 状态 bal=92851 terr=3913 dens=23.7 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4249 密5.7 人]
+t=1475 baseRate() -> 0.02
+t=1475 food(44) -> false
+t=1475 allow(44) -> true
+t=1475 price(44) -> 20.37
+t=1475 food(44) -> false
+t=1475 motive(44) -> "grudge"
+t=1475 floorFor(44,132844.58207831325) -> 132844.58
+t=1475 food(44) -> false
+t=1475 minShare(44) -> 0.21
+t=1475 pickTarget(fn,338.1478) -> null
+t=1475 boatFood() -> false
+t=1475 状态 bal=92851 terr=3913 dens=23.7 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4249 密5.7 人]
+t=1476 baseRate() -> 0.02
+t=1476 状态 bal=92851 terr=3913 dens=23.7 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4244 密5.7 人]
+t=1477 baseRate() -> 0.02
+t=1477 状态 bal=92851 terr=3913 dens=23.7 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4244 密5.7 人]
+t=1478 baseRate() -> 0.02
+t=1478 状态 bal=92851 terr=3913 dens=23.7 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4244 密5.7 人]
+t=1479 baseRate() -> 0.02
+t=1479 状态 bal=92851 terr=3913 dens=23.7 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4237 密5.7 人]
+t=1480 baseRate() -> 0.02
+t=1480 food(44) -> false
+t=1480 allow(44) -> true
+t=1480 price(44) -> 20.77
+t=1480 food(44) -> false
+t=1480 motive(44) -> "grudge"
+t=1480 floorFor(44,135455.68138920347) -> 135455.68
+t=1480 food(44) -> false
+t=1480 minShare(44) -> 0.21
+t=1480 pickTarget(fn,338.1478) -> null
+t=1480 boatFood() -> false
+t=1480 状态 bal=95051 terr=3913 dens=24.3 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4237 密5.9 人]
+t=1481 baseRate() -> 0.02
+t=1481 状态 bal=95051 terr=3913 dens=24.3 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4237 密5.9 人]
+t=1482 baseRate() -> 0.02
+t=1482 状态 bal=95051 terr=3913 dens=24.3 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4229 密5.9 人]
+t=1483 baseRate() -> 0.02
+t=1483 状态 bal=95051 terr=3913 dens=24.3 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4229 密5.9 人]
+t=1484 baseRate() -> 0.02
+t=1484 状态 bal=95051 terr=3913 dens=24.3 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4229 密5.9 人]
+t=1485 baseRate() -> 0.02
+t=1485 food(44) -> false
+t=1485 allow(44) -> true
+t=1485 price(44) -> 20.73
+t=1485 food(44) -> false
+t=1485 motive(44) -> "grudge"
+t=1485 floorFor(44,135181.75957527495) -> 135181.76
+t=1485 food(44) -> false
+t=1485 minShare(44) -> 0.21
+t=1485 pickTarget(fn,338.1478) -> null
+t=1485 boatFood() -> false
+t=1485 状态 bal=95051 terr=3913 dens=24.3 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4219 密5.9 人]
+t=1486 baseRate() -> 0.02
+t=1486 状态 bal=95051 terr=3913 dens=24.3 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4219 密5.9 人]
+t=1487 baseRate() -> 0.02
+t=1487 状态 bal=95051 terr=3913 dens=24.3 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4219 密5.9 人]
+t=1488 baseRate() -> 0.02
+t=1488 状态 bal=95051 terr=3913 dens=24.3 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4210 密5.8 人]
+t=1489 baseRate() -> 0.02
+t=1489 状态 bal=95051 terr=3913 dens=24.3 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4210 密5.8 人]
+t=1490 baseRate() -> 0.02
+t=1490 food(44) -> false
+t=1490 allow(44) -> true
+t=1490 price(44) -> 21.14
+t=1490 food(44) -> false
+t=1490 motive(44) -> "grudge"
+t=1490 floorFor(44,137847.02127659577) -> 137847.02
+t=1490 food(44) -> false
+t=1490 minShare(44) -> 0.21
+t=1490 pickTarget(fn,338.1478) -> null
+t=1490 boatFood() -> false
+t=1490 状态 bal=97275 terr=3913 dens=24.9 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4210 密6.0 人]
+t=1491 baseRate() -> 0.02
+t=1491 状态 bal=97275 terr=3913 dens=24.9 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4204 密6.0 人]
+t=1492 baseRate() -> 0.02
+t=1492 状态 bal=97275 terr=3913 dens=24.9 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4204 密6.0 人]
+t=1493 baseRate() -> 0.02
+t=1493 状态 bal=97275 terr=3913 dens=24.9 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4204 密6.0 人]
+t=1494 baseRate() -> 0.02
+t=1494 状态 bal=97275 terr=3913 dens=24.9 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4197 密6.0 人]
+t=1495 baseRate() -> 0.02
+t=1495 food(44) -> false
+t=1495 allow(44) -> true
+t=1495 price(44) -> 21.1
+t=1495 food(44) -> false
+t=1495 motive(44) -> "grudge"
+t=1495 floorFor(44,137616.11407520325) -> 137616.11
+t=1495 food(44) -> false
+t=1495 minShare(44) -> 0.21
+t=1495 pickTarget(fn,338.1478) -> null
+t=1495 boatFood() -> false
+t=1495 状态 bal=97275 terr=3913 dens=24.9 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4197 密6.0 人]
+t=1496 baseRate() -> 0.02
+t=1496 状态 bal=97275 terr=3913 dens=24.9 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4197 密6.0 人]
+t=1497 baseRate() -> 0.02
+t=1497 状态 bal=97275 terr=3913 dens=24.9 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4190 密6.0 人]
+t=1498 baseRate() -> 0.02
+t=1498 状态 bal=97275 terr=3913 dens=24.9 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4190 密6.0 人]
+t=1499 baseRate() -> 0.02
+t=1499 状态 bal=97275 terr=3913 dens=24.9 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4190 密6.0 人]
+t=1500 baseRate() -> 0.02
+t=1500 otherHumanMedDens() -> 13.02
+t=1500 winRatio() -> 3
+t=1500 baseRate() -> 0.02
+t=1500 otherHumanMedDens() -> 13.02
+t=1500 offers() -> [{"q":44,"person":true,"tD":0.55,"need":59058.25,"c":5.15,"rankC":1.54,"pulseMode":true,"nearCollapse":false,"bleeding":true,"onMe":false,"inAtk":0,"newNbs":0,"isCrowdedHard":false,"isAgg":false}]
+t=1500 dpKeep() -> 13378.37
+t=1500 safeAt(44) -> 13378.37
+t=1500 otherHumanMedDens() -> 13.02
+t=1500 winRatio() -> 3
+t=1500 buyLand() -> true
+t=1500 状态 bal=103435 terr=3913 dens=26.4 neutral=0 coast=94 noFull=1 atkOut=0 船=0/2（可出海 1，上次出海 -1000000000） 邻居: [cn]中国人不骗中国人#44[T1 地4183 密7.1 人]
