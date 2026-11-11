@@ -2,7 +2,8 @@
 
 ## 状态
 - M1 完成：A057、A059、A094；M2 完成：A055、A075、A054。全部通过本地机械检查（`python3 scripts/check_my_review.py`）。
-- 下一步 M3：A031、A019、A009（A009 是 Va）。其余见下方「逐局进度」。
+- M3 进行中：A031 完成（never-grew）；下一步 A019、A009（A009 是 Va）。其余见下方「逐局进度」。
+- M2 报告 `outbox/0006-m2-reviews.md` 里 A075 的判定数写错了（写成 11/4/5），实际是 错 10 / 不清 5 / 对 5，M3 报告里要更正。
 - 总部 0006：所有 node 重演/影子命令必须 `bash ../../tools/run-heavy.sh node scripts/...`（在 agents/R01 下），串行、一次一局，结果缓存在 out/。
 
 ## 每局流水线
@@ -20,6 +21,11 @@
 - M2 新增（都读 out/<mid>/）：`recon_facts.py --section dispatch,husk,slot,safe,ainb,doomed,peak [--siege bot:t0:t1]`（对账一节的汇总数）、
   `probe_view.py`（探针按决策拍一行）、`death_ledger.py`（阵亡号的最后一围）、`exchange_price.py`/`target_price.py`（换地与公式价）、
   `boat_fight.mjs`（海战）、`sea_landings.mjs` + `landing_math.py`（敌方登陆）、`map_ascii.mjs`（字符地图）。
+- M3 新增/改动：`probe_view.py <mid> --tag x --gate <席位>`（把 buyLand 的闸门链整条复算：预算、价格 keep、safeAt 封顶、avail、20% 线、最小出兵量；
+  nearCollapse 的 85 倍封顶和 isSoleHealthyBuffer 没算）、`recon_facts.py --section drops,leave`（results.csv 的离场拍 vs 录像 leave 拍）、
+  `resim_report.py --section percap`（带密度）、`afk_gap.py`（leave 前的静默拍数；没有 leave 的席位的最大指令间隔）。
+- 批次落地的兵不都是净损失：打无主地（目标已死改打无主地、pct=47 中立令成批）的兵在进攻结束后流回余额；写“实扣”时要分开打真人和打无主地
+  （`q.py <mid> shadow_match --where "... n>=3" --agg sum:spent --by targetName`）。
 - 引擎规则备忘：阵亡 = 领土 ≤ 峰值/4（game.js aliveTick L1298–1312，峰值每拍回落 max(1, 差/1000)），剩下的地和兵清零；
   进攻每格 2 + 2×def，def ≈ 1.6×守方密度；海战 boats.js fightBoats L328–357；登陆 landAt L262–287 不需要陆地接壤。
 - Vb buyLand 非真人目标：safe = min(safeAt, 88×L)（L5414–5418）→ keep = max(keep, safe)（L5444）→ avail ≤ 0 continue（L5446–5447）→ x < want 且 x < chunk(0.2)×B 不发（L5449–5453）。
@@ -51,13 +57,14 @@ M2 新增：SP03 出生方案反复改写/同像素 | OP03 1500 拍前对真人�
 AT07 最小出兵量闸门 | AT08 过 100 倍后不看价格 | AT09 离场壳的 88 倍保底线 | DF03 safeAt 高于余额 | DF04 不接壤对手海上登陆 |
 DN08 后排捐空后被打 | DN09 幽灵前线 | DN10 为利息而捐净负 | SE01 远程船耗光占船位 | SE02 短程船重开前线(对) | SE03 船落在队友岸上 |
 SE04 装兵比手续费少的小船 | SE05 远程船被拦截船打沉。
+M3 新增：AT10 身边的离场壳按预算吃掉(对) | DN11 两波进攻之间把兵捐走 | EG02 8500 拍前被 leave 指令移出对局（不出自策略）；IO01 在 A031 补了定义。
 
 ## 逐局进度
 - [x] A057（never-grew）
 - [x] A059
 - [x] A094（lead-thrown；两个实例）
 - [x] A055（outscaled）  - [x] A075（win）  - [x] A054（mid-collapse）   （M2）
-- [ ] A031  - [ ] A019  - [ ] A009   （M3）
+- [x] A031（never-grew）  - [ ] A019  - [ ] A009   （M3）
 - [ ] A023  - [ ] A050  - [ ] A003   （M4）
 - [ ] A005  - [ ] B039  - [ ] B043   （M5）
 - [ ] M6：reports/CROSS-MATCH-SUMMARY.md、全量模式计数脚本、cards/

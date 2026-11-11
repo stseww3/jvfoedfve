@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """recon_facts.py — 把复盘“兵力对账”一节反复要用的几组汇总数一次算出来（都只读 out/<mid>/ 下已有的表）。
-用法: python3 recon_facts.py <matchId> [--section dispatch,siege,husk,slot,safe,ainb,doomed] [--siege bot:t0:t1[,bot:t0:t1..]]
+用法: python3 recon_facts.py <matchId> [--section dispatch,siege,husk,slot,safe,ainb,doomed,peak,drops,leave] [--siege bot:t0:t1[,bot:t0:t1..]]
   dispatch  日志调度 vs 录像：总数、落地、按配额时代、按捐出方、pct 分布、被拒单的 名义额/配额余量
   siege     某号在 [t0,t1] 里收到的调度：按捐出方的条数、落地、名义额、到账；配额台阶
   husk      离场壳：每个离场的人类席位离场时的领土/兵力，之后本队各号从它身上拿了多少格、花了多少兵，以及它的地最后归谁
@@ -206,6 +206,137 @@ def sec_peak(mid, meta):
     print(f"   合计：阵亡时还剩 {tot_t} 格、{tot_b} 兵")
 
 
+def sec_drops(mid, meta):
+    """卡片 anomalies.json 的 drop30Events（按日志 HL-TICK 相邻两点）对 整局重演的同一条规则（resim_players.csv 相邻两个快照余额掉 ≥30%）。"""
+    ap = f'/agent/repos/c136-data/bundles/{mid}/anomalies.json'
+    card = json.load(open(ap)).get('drop30Events', []) if os.path.exists(ap) else []
+    ck = {(e['bot'], I(e['t0']), I(e['t1'])) for e in card}
+    seat = {v: k for k, v in meta['squad'].items()}
+    by = defaultdict(list)
+    for r in load(mid, 'resim_players.csv'):
+        if I(r['p']) in seat:
+            by[seat[I(r['p'])]].append(r)
+    rk = {}
+    for b, rs in by.items():
+        for x, y in zip(rs, rs[1:]):
+            b0, b1 = I(x['bal']), I(y['bal'])
+            if x['alive'] != '1' or x['state'] == '2' or b0 <= 0 or b1 > 0.7 * b0:
+                continue
+            rk[(b, I(x['t']), I(y['t']))] = (b0, b1, y['alive'], y['state'])
+    both = ck & set(rk); oc = ck - set(rk); orr = set(rk) - ck
+    import re
+    logt = defaultdict(set)
+    lp = f'/agent/repos/c136-data/bundles/{mid}/in_game.log'
+    if os.path.exists(lp):
+        for line in open(lp, encoding='utf8'):
+            m = re.search(r'\[([a-z0-9_]+)\] \[HL-TICK\] t=(\d+)', line)
+            if m:
+                logt[m.group(1)].add(I(m.group(2)))
+    cnt_card = json.load(open(ap)).get('drop30Count') if os.path.exists(ap) else None
+    print(f"== DROP30 对账：卡片 drop30Count={cnt_card}，列表里 {len(ck)} 条；重演 {len(rk)} 条；两边都有 {len(both)}，只在卡片列表 {len(oc)}，只在重演 {len(orr)}")
+    for k in sorted(oc):
+        print(f"   只在卡片 {k[0]:8s} {k[1]}→{k[2]}")
+    tally = defaultdict(int)
+    for k in sorted(orr):
+        b0, b1, al, st = rk[k]
+        if k[1] in logt[k[0]] and k[2] in logt[k[0]]:
+            why = '日志里有这两行（卡片列表只列了前 %d 条）' % len(ck)
+        elif al != '1':
+            why = '后一个快照已阵亡，日志没有后一行'
+        elif st == '2':
+            why = '后一个快照已是离场壳，日志没有后一行'
+        else:
+            why = '日志在此之前已经停了'
+        tally[why] += 1
+        print(f"   只在重演 {k[0]:8s} {k[1]}→{k[2]} 余额 {b0}→{b1}：{why}")
+    for w, n in tally.items():
+        print(f"   小计 {n} 条：{w}")
+
+
+def sec_leave(mid, meta):
+    """本队号的离场：录像里的 leave 指令拍、它最后一条落地指令的拍、日志里最后一行 HL-TICK / HL-DISPATCH 的本地拍、离场时的领土和兵。
+    策略文件里的自退（sbLeave）要求 t>8500，早于 8500 的离场不出自策略。"""
+    import re
+    seat = {v: k for k, v in meta['squad'].items()}
+    cmds = load(mid, 'replay_cmds.csv')
+    last_tick, last_disp, result = {}, {}, {}
+    lp = f'/agent/repos/c136-data/bundles/{mid}/in_game.log'
+    if os.path.exists(lp):
+        for line in open(lp, encoding='utf8'):
+            m = re.search(r'\[([a-z0-9_]+)\] \[HL-(TICK|DISPATCH)\] t=(\d+)', line)
+            if m:
+                (last_tick if m.group(2) == 'TICK' else last_disp)[m.group(1)] = I(m.group(3))
+            m = re.search(r'\[RESULT \[APEX\] ([a-z0-9_]+)\] result=(\w+) event=(\w+)', line)
+            if m:
+                result[m.group(1)] = (m.group(2), m.group(3), 'team=null' in line)
+    sq = {(r['bot'], I(r['t'])): r for r in load(mid, 'resim_squad.csv')}
+    print('== 本队号的离场（录像 leave 指令）')
+    n = 0
+    for c in cmds:
+        p = I(c['player'])
+        if c['kind'] != 'leave' or p not in seat:
+            continue
+        n += 1
+        b = seat[p]; tl = I(c['tick'])
+        mine = [I(x['tick']) for x in cmds if I(x['player']) == p and x['kind'] in ('attack', 'donate', 'boat') and I(x['tick']) <= tl]
+        snap = max((t for (bb, t) in sq if bb == b and t <= tl), default=None)
+        r = sq.get((b, snap)) if snap is not None else None
+        res = result.get(b)
+        print(f"   {b:8s} leave t={tl}；最后一条落地指令 t={max(mine) if mine else '-'}（相隔 {tl - max(mine) if mine else '-'} 拍）；日志最后一行 HL-TICK 本地 t={last_tick.get(b, '-')}"
+              f"{'，HL-DISPATCH t=' + str(last_disp[b]) if b in last_disp else ''}；离场前快照 t={snap}：领土 {r['terr'] if r else '-'} 余额 {r['bal'] if r else '-'} 密度 {r['dens'] if r else '-'}"
+              f"；RESULT {res[0] + '/' + res[1] + ('/team=null' if res[2] else '') if res else '-'}")
+    # results.csv 里离场行的 tick：对照录像的 leave 落地拍、重演在该拍前后的状态、日志里它之后还打出的 HL-TICK 行
+    import csv
+    from datetime import datetime
+    rp = f'/agent/repos/c136-data/bundles/{mid}/results.csv'
+    if os.path.exists(rp) and n:
+        rows = list(csv.DictReader(open(rp, newline='')))
+        leave_at = {seat[I(c['player'])]: I(c['tick']) for c in cmds if c['kind'] == 'leave' and I(c['player']) in seat}
+        ticks_logged = {}
+        for line in open(lp, encoding='utf8'):
+            m = re.search(r'\[([a-z0-9_]+)\] \[HL-TICK\] t=(\d+)', line)
+            if m:
+                ticks_logged.setdefault(m.group(1), []).append(I(m.group(2)))
+        print('   results.csv 的离场行（tick = 结果行记下的局内拍）：')
+        for r in rows:
+            b = r['bot']
+            if r['event'] != 'left' or b not in leave_at:
+                continue
+            rt = I(r['tick']); tl = leave_at[b]
+            lo = max((t for (bb, t) in sq if bb == b and t <= rt), default=None)
+            hi = min((t for (bb, t) in sq if bb == b and t > rt), default=None)
+            st = lambda t: f"t={t} 领土 {sq[(b, t)]['terr']} 余额 {sq[(b, t)]['bal']}" if t is not None else '-'
+            later = [t for t in ticks_logged.get(b, []) if t > rt]
+            print(f"     {b:8s} tick={rt} 领土 {r['territory']} 余额 {r['balance']} 在场玩家 {r['alivePlayers']}；比 leave 落地拍 {tl} 早 {tl - rt} 拍；"
+                  f"重演相邻快照：{st(lo)} / {st(hi)}；日志里本地拍大于 {rt} 的 HL-TICK 行 {len(later)} 行{('（' + ','.join(map(str, later)) + '）') if later else ''}")
+        # 墙上时间：相邻两条 RESULT 之间每拍多少毫秒（离场行用 leave 落地拍 / 用 results 的 tick 各算一遍）
+        ev = []
+        for r in rows:
+            try:
+                at = datetime.fromisoformat(r['at'].replace('Z', '+00:00'))
+            except Exception:
+                continue
+            ev.append((at, r['bot'], I(r['tick']), leave_at.get(r['bot']) if r['event'] == 'left' else None))
+        ev.sort()
+        print('   相邻两条 RESULT 的墙上时间差 / 拍数差（毫秒每拍）：离场行按 leave 落地拍算 | 按 results 的 tick 算')
+        for (a0, b0, t0, l0), (a1, b1, t1, l1) in zip(ev, ev[1:]):
+            dt = (a1 - a0).total_seconds() * 1000
+            d_leave = (l1 if l1 is not None else t1) - (l0 if l0 is not None else t0)
+            d_res = t1 - t0
+            f = lambda d: f"{dt / d:6.1f}" if d > 0 else '     -'
+            print(f"     {b0:8s}→{b1:8s} {dt / 1000:7.1f} 秒：{f(d_leave)} | {f(d_res)}")
+    early = [(I(c['tick']), names_of(meta, I(c['player']))) for c in cmds if c['kind'] == 'leave' and I(c['tick']) < 0 and 'APEX' in c.get('pname', '')]
+    for t, nm in early:
+        print(f"   {nm} 在出生阶段（t={t}）就发了 leave，没有出生指令，没进图")
+    if not n and not early:
+        print('   无')
+
+
+def names_of(meta, p):
+    names = meta['names']
+    return names[p] if isinstance(names, list) else names.get(str(p), str(p))
+
+
 def main():
     a = sys.argv[1:]
     mid = a[0]
@@ -223,6 +354,8 @@ def main():
         elif s == 'ainb': sec_ainb(mid, meta)
         elif s == 'doomed': sec_doomed(mid, meta)
         elif s == 'peak': sec_peak(mid, meta)
+        elif s == 'drops': sec_drops(mid, meta)
+        elif s == 'leave': sec_leave(mid, meta)
         print()
 
 

@@ -134,19 +134,19 @@ def main():
         want = [int(x) for x in (opt('ticks') or '180,630,900,1530,2250,3060').split(',')]
         ticks_avail = sorted({int(r['t']) for r in pl})
         my_team = None
-        print("== percap (t | 本队 n 人均 | 同队其他人 n 人均 | 其他各队 n 人均)")
+        print("== percap (t | 本队 n 人均领土 密度(兵/格) | 同队其他人 | 其他各队；只算仍存活的人类席位，本队含离场壳)")
         for w in want:
             t = min(ticks_avail, key=lambda x: abs(x - w))
             rows = [r for r in pl if int(r['t']) == t and r['alive'] == '1' and int(r['team']) > 0 and (not H or int(r['p']) < H)]
             if my_team is None:
                 my_team = next((int(r['team']) for r in rows if int(r['p']) in sq_ids), None)
-            grp = defaultdict(list)
+            grp = defaultdict(list); gbal = defaultdict(int)
             for r in rows:
                 k = 'squad' if int(r['p']) in sq_ids else ('mates' if int(r['team']) == my_team else f"T{r['team']}")
-                grp[k].append(int(r['terr']))
+                grp[k].append(int(r['terr'])); gbal[k] += int(r['bal'])
             def f(k):
                 v = grp.get(k, [])
-                return f"{k} n={len(v)} 人均={sum(v) / len(v):.0f}" if v else f"{k} n=0"
+                return f"{k} n={len(v)} 人均={sum(v) / len(v):.0f} 密度={gbal[k] / max(1, sum(v)):.1f}" if v else f"{k} n=0"
             others = ' | '.join(f(k) for k in sorted(grp) if k.startswith('T'))
             print(f"  t={t:5d} | {f('squad')} | {f('mates')} | {others}")
 
