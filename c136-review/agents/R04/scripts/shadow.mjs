@@ -359,8 +359,12 @@ async function main() {
             } catch (e) { gateAI = 'err2'; }
           }
         }
+        // 核心期前、非队友邻居里有真人、这一拍没出手：对底线最低的那个真人，底线被哪一项顶住（shadow_diag.preHumanBind）
+        let hb = null;
+        if (t < coreFrom && nHum > 0 && ints2 === 0) { try { hb = DIAG.preHumanBind(pol, g, ourSet); } catch (e) { hb = null; } }
         rowsOut.push([t, b, g.terr[p], g.bal[p], pol.nb.length, nAI, nAIweak, weakLand, nHum, pol.neutral, g.coast[p].length, ints2, Math.round(minFloor), pol.isNoFullSend ? 1 : 0, g.totalAttackTroops(p),
-          fb ? fb.bind : '', fb ? fb.ref : '', fb ? Math.round(fb.avail) : '', fb ? Math.round(fb.need) : '', gate, gateAI].join('\t'));
+          fb ? fb.bind : '', fb ? fb.ref : '', fb ? Math.round(fb.avail) : '', fb ? Math.round(fb.need) : '', gate, gateAI,
+          hb ? hb.bind : '', hb ? hb.ref : '', hb ? Math.round(hb.avail) : '', hb ? Math.round(hb.need) : '', hb ? hb.tgt : '', hb && Number.isFinite(hb.kneed) ? Math.round(hb.kneed) : '', hb ? hb.mot : ''].join('\t'));
       }
       const ints = M.intents.slice(i0);
       const newLogs = logs.slice(l0);
@@ -430,7 +434,7 @@ async function main() {
     const nameOf = new Map(pols.map((S) => [S.p, S.b]));
     fs.writeFileSync(path.join(outDir, 'intents.tsv'), 't\tp\tbot\tkind\tpct\ttarget\ttroops\n' + M.intents.map((x) => [x.t, x.p, nameOf.get(x.p), x.kind, x.pct, x.target, x.troops].join('\t')).join('\n') + '\n');
     fs.writeFileSync(path.join(outDir, 'logs.txt'), logs.join('\n') + '\n');
-    if (rowsOn) fs.writeFileSync(path.join(outDir, 'rows.tsv'), 't\tbot\tterr\tbal\tnb\tnAI\tnAIweak\tweakLand\tnHum\tneut\tcoast\tintents\tfloorAI\tnfs\tatkOut\tbind\tsbRef\tavail\tneed\tgate\tgateAI\n' + rowsOut.join('\n') + '\n');
+    if (rowsOn) fs.writeFileSync(path.join(outDir, 'rows.tsv'), 't\tbot\tterr\tbal\tnb\tnAI\tnAIweak\tweakLand\tnHum\tneut\tcoast\tintents\tfloorAI\tnfs\tatkOut\tbind\tsbRef\tavail\tneed\tgate\tgateAI\thbind\thref\thavail\thneed\thtgt\thkneed\thmot\n' + rowsOut.join('\n') + '\n');
     fs.writeFileSync(path.join(outDir, 'check.json'), JSON.stringify({ match: mid, ver: VERS[ver], from, to: st[0], ku: info.ku, bots: pols.map((S) => ({ bot: S.b, p: S.p, slot: S.slot, cmds: S.pol.cmds, boats: S.pol.boats, errs: S.errs, lockAt: S.lockAt, blocked: S.blocked, probes: S.probes })), cmp }, null, 1) + '\n');
   }
   for (const l of outLines) console.log(l);

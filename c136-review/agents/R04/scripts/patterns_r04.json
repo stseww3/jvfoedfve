@@ -108,7 +108,7 @@
   "prefix": "DF",
   "name": "出兵后留守太薄，被邻居反手打穿",
   "definition": "某号余额在 90 拍内因自己的陆攻/捐款跌到 20×领土 以下，随后 300 拍内被敌方真人净拿走 ≥ 25% 领土或出局。",
-  "detector": "scripts/match_digest.py 第 5 节（出局链）与第 6 节（DROP30 对账）",
+  "detector": "scripts/thin_after_spend.py <局号> [--all]（每个变薄点：前 90 拍自己花掉的兵、变薄后的密度、随后 300 拍出局 / 被敌方真人净拿走的地）；scripts/match_digest.py 第 5 节（出局链）与第 6 节（DROP30 对账）",
   "codePath": "Policy.safeAt L4543~4560、Policy.buyLand L5414~5418（底线封顶 oppFloorCap×地）"
  },
  "NEW-DF-NORESCUE": {
@@ -205,9 +205,9 @@
  "NEW-DN-HOLLOWREAR": {
   "prefix": "DN",
   "name": "封死的后排号按 32~44×领土 留底把兵调走，长期只剩三成密度，敌人一贴上来就被逐个打穿",
-  "definition": "某号在 boxedIn 状态下捐款后密度 ≤ 32，并在首次被敌方真人进攻前 600 拍内密度中位 ≤ 45；随后在首次被打后的 400 拍内出局。计数 = 这样出局的号数。",
-  "detector": "scripts/truth_query.py <局号> cmds <号> t0 t1 --id 2（捐后密度）；scripts/match_digest.py 第 5 节（出局链）；scripts/shadow.mjs --at（调度诊断里的两条底线）",
-  "codePath": "Policy.tryDonateToTeammate L4355（boxedIn 判定）、L4382（prodOptFloor = 44/34×地，emergDefFloor = 32/22×地）、L4502~4506（封死号比例 320/380）"
+  "definition": "某号最后一轮挨打的第一发之前 600 拍内有过捐款、最后一笔捐后密度 ≤ 32，挨第一发时密度 ≤ 45，随后 400 拍内出局（没地）。计数 = 这样出局的号数（hollow_rear.py 末尾的口径行；另给 700 拍内的放宽口径）。成因分两种，复盘里要写清是哪一种：封死的号按规则把兵调到三成密度（Vb：留底 32~44×领土）；或者调度指令迟到、几笔叠在一起落地把余额抽空（A099 的 leo_tx：留底 70×领土只在下单那一拍核对）。",
+  "detector": "scripts/hollow_rear.py <局号>（末尾「按 NEW-DN-HOLLOWREAR 的口径」一行）；scripts/truth_query.py <局号> cmds <号> t0 t1 --id 2（捐后密度）；scripts/match_digest.py 第 5 节（出局链）；scripts/shadow.mjs --at（调度诊断里的两条底线）",
+  "codePath": "Policy.tryDonateToTeammate L4355（boxedIn 判定）、L4381~4387（两条留底线：Vb prodOptFloor 44/34×地、emergDefFloor 32/22×地；Vc 76/70×地、58/48×地）、L4500~4509（定比例后直接 donate；Vb 封死号比例 320/380，Vc 220/260）；L4329、L4331（24 拍冷却 + 槽位相位：前一笔没落地时每 25 拍再下一笔）"
  },
  "NEW-DN-BIGFIRST": {
   "prefix": "DN",
@@ -330,10 +330,10 @@
  },
  "NEW-OP-REFCHASE": {
   "prefix": "OP",
-  "name": "核心期前打真人的底线跟着邻居的兵一起涨：几个号围着一个密度更低的真人，各算各的都够不着",
-  "definition": "核心期之前（t < coreFrom=1500）某号的非队友陆上邻居只剩真人（没有内置 AI、没有无主地），这一拍没有出手，影子诊断里对这个真人的底线（约 1.5×邻居均兵，封顶 50×自己的领土）高于「余额 −（最小出兵比例×余额）」；同一拍贴着同一个真人的我方号合计余额 ≥ 这个真人余额的 2 倍。计数 = 号·拍数（window_tally.py 的「只贴真人」类 ×5）、段首段末我方合计余额与对方余额之比、对方在这段时间的领土变化、核心期接手后的第一次出手拍。",
-  "detector": "scripts/window_tally.py <局号> <t0> <t1>（「只贴真人」列）；scripts/shadow.mjs <局号> --bots <号> --at <拍>（[核心期前] 一段逐个邻居给出 需 / 底线 / 可用兵）；scripts/truth_query.py <局号> bal <号> t0 t1",
-  "codePath": "Policy.act L4850（coreFrom 之前走 super.act）→ Style.pickTarget L1144~1161（avail = 余额 − floorFor(…, floorAt(单价))，要 > minShare×余额 = 21.4%×余额）← V13.floorFor L2228~2231 / floorFor0 L2233~2240（真人目标直接用 floorAt）← General.floors L819~830（refFloor = ref×邻居均兵；floorAt = floorK×min(keepCap×100×领土, max(reserve…, refFloor))）；每个号只看自己的余额，没有「几个号合起来够」的判断"
+  "name": "核心期前对真人只有「一次吃到出局」一种打法，留兵底线又跟着对方别的邻居（含队友）的余额涨：几个号围着一个密度更低的真人，各算各的都够不着",
+  "definition": "核心期之前（t < coreFrom=1500）某号的非队友陆上邻居只剩真人（没有内置 AI、没有无主地），这一拍没有出手。两道门：① 留兵底线 = preyFloor(0.5)×min(100×领土, max(100×领土×min(1, 单价/60), defenseNeed))，defenseNeed = kDef(4)×「这个真人别的邻居里余额最小者」（队友也算），要 余额 − 底线 > 21.4%×余额；② 对没打过自己的真人（motive 为 null）要 sendFrac(0.746)×(余额 − 底线) ≥ 出局价（elimCost ≈ 1.8×对方余额 + 1.5×对方领土），否则这一拍出兵量为 0。计数 = 「只贴真人」没出手的号·决策拍数；其中两道门都过不了 / 只差底线 / 底线过了但一次吃不到出局 的拍数；底线被 defenseNeed 顶住且参照对象是我方编队号的拍数；按「同一拍、同一个目标」归组后，≥2 个我方号贴着同一个真人、合计余额的 74.6% ≥ 出局价的组数占比（合起来够、各算各的不够）。另列段首段末我方合计余额与对方余额之比、对方在这段时间的领土变化、核心期接手后的第一次出手拍。（2.0 版之前这条的说明写成「底线约 1.5×邻居均兵」，是按现象估的；四个版本 ref 在 513 拍以后都是 0，实际是上面两道门。）",
+  "detector": "scripts/window_tally.py <局号> <t0> <t1>（「只贴真人」列）；scripts/pre_human_floor_tally.py <局号> [t0 t1] [--only-human]（rows.tsv 的 hbind / href / hkneed 列：底线被哪一项顶住、参照对象、出局价、归组后合起来够不够）；scripts/shadow.mjs <局号> --bots <号> --at <拍>（[核心期前] 一段逐个邻居给出 需 / 底线 / 可用兵，[底线拆解] 一行给出各项和参照对象）；scripts/truth_query.py <局号> bal <号> t0 t1",
+  "codePath": "Policy.act L4850（coreFrom 之前走 super.act）→ Style.pickTarget L1144~1165（L1160~1161：avail = 余额 − floorFor(…, floorAt(单价))，要 > minShare×余额 = 21.4%×余额；L1162 出局价 need）→ V13.amount0 L2347~2349（motive 为 null：sendFrac×avail ≥ preyKill×need 才出手）；V13.floorFor0 L2233~2240（真人、motive 为 null：preyFloor×floorAt）← General.floors L819~830 ← General.defenseNeed L899~913 ← General.altOf L918~940（不排除队友）；Strategy.elimCost L464~469。每个号只看自己的余额，没有「几个号合起来够」的判断"
  },
  "NEW-IO-DEADTARGET": {
   "prefix": "IO",
@@ -348,5 +348,12 @@
   "definition": "核心期某号的非队友陆上邻居只有一个真人（或报价单上的真人都被标成「拥挤硬目标」），连续 ≥ 900 拍没有一条陆攻落地；这些决策拍在 core_gate_tally.py 里分在 price（余额 ≤ 100×领土，单价 ≥ worth，L5359 break）和 sole / crowded（余额 > 100×领土，但 < overHumanCap=1.28 / crowdedHardCap=1.26 × 100×领土，L5361~5374 continue）两类；同期该号的调度（密度 ≥ 108 触发、一次捐掉约两成）落地 ≥ 3 笔。计数 = 号·拍数、两类决策拍数、同期捐出的到账与税、对方同期从我方编队净拿的地。",
   "detector": "scripts/core_gate_tally.py <局号> t0 t1 --by-target（rows.tsv 的 gate 列，判定照抄在 shadow_diag.coreGate）；scripts/truth_query.py <局号> cmds <号> t0 t1；scripts/shadow.mjs <局号> --bots <号> --at <拍>；scripts/enemy_ledger.py <局号> --p <对方>",
   "codePath": "Policy.buyLand L5353（over）、L5359（price break）、L5361~5365（isSoleHealthyBuffer：唯一真人邻居、对方不濒崩不流血没在打我、打穿会露出新真人 → 余额 < 1.28×100×领土 就 continue）、L5371~5374（拥挤硬目标 1.26×）；Policy.offers L5248~5250（同一条件下报价再乘 soleBufferPenalty=1.6）；Policy.tryDonateToTeammate L4479~4508（一般调度：捐款人密度 ≥ 108）"
+ },
+ "NEW-DF-NEXTNB": {
+  "prefix": "DF",
+  "name": "留兵的底线只看眼下贴着的真人：把快垮的邻居吃到出局的那一段，底线跟着它的余额降到接近 0，它身后的大号一贴上来就没有兵守",
+  "definition": "我方某号在敌方真人 X 出局前 300 拍内对 X 的陆攻出兵 ≥ 自己当时余额的 10%（postkill_exposure.py 的一对）；X 出局那一拍该号密度 ≤ 45 且 ≤ 300 拍前的 60%；(X 出局前 150 拍, 出局后 400 拍] 内有此前 900 拍没打过它的敌方真人（新来者）对它出兵，新来者出兵合计 ≥ 该号在 X 出局那一拍的余额；该号在这 400 拍内出局或被新来者拿走 ≥ 25% 的地。计数 = 这样的（号, X）对数、X 出局前 300 拍对 X 的出兵、新来者的出兵与拿走的地。出兵那几拍的底线用影子诊断核对：底线来自 killW×dpKeep（只取当前陆上邻居里余额最大的真人）的才归这一条；余额是被成摞落地的指令抽空的（NEW-IO-DRAINBATCH）另注。",
+  "detector": "scripts/postkill_exposure.py <局号> [--pre 300] [--post 400]；scripts/shadow.mjs <局号> --bots <号> --at <拍>（[buyLand] 一段每条报价的 safeAt）；scripts/enemy_ledger.py <局号> --p <新来者> --strikes t0 t1；scripts/truth_query.py <局号> cmds <号> t0 t1",
+  "codePath": "V13.dpKeep L2459~2464（只遍历 this.nb 里在场的真人，取「余额 + 正在打它的兵」最大者：(m − 1.5×领土)/1.78）；V13.safeAt L2728~2738（P.postKill=0 时 around=null，底线 = killW×dpKeep；L2740~2744 的注释：postKill>0 才把「买下这块地后会贴上的人」算进去）；Policy.safeAt L4543~4560（再用 oppFloorCap×领土 封顶）；Policy.buyLand L5414~5418（濒崩 / 流血的目标再封一次顶）、L5420~5427（濒崩目标要留的兵按 0.70×c×领土/m 算）、L5444~5447（keep = max(keep, safe)）"
  }
 }

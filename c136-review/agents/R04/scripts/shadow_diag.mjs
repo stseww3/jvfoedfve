@@ -2,6 +2,7 @@
 // 每个函数注明它照抄的源码位置（行号以 v27-team-c116-vb.js 为准；va/vc/c110 同名函数结构相同、行号略有偏移）。
 // 只读：不发指令、不改策略对象的记忆（除 floors() 自带的 avgNb 缓存）。
 const NEUTRAL = 512;
+const P_INNER = 16; // sim/sim/game.js L11
 const iV = (a, b) => Math.floor((a + 0.5) / b);
 const f = (n) => { if (!Number.isFinite(n)) return String(n); n = Math.round(n); const a = Math.abs(n); return a >= 1e7 ? (n / 1e6).toFixed(1) + 'M' : a >= 1e6 ? (n / 1e6).toFixed(2) + 'M' : a >= 1e4 ? (n / 1e3).toFixed(1) + 'k' : String(n); };
 
@@ -43,9 +44,127 @@ export function diagPre(pol, g, nm) {
       if (!(send >= min)) why.push(`amount=${f(send)} < 最小指令`);
     } catch (e) { why.push('诊断出错 ' + String(e).slice(0, 60)); }
     out.push(`      ${nm(q)} 地 ${g.terr[q]} 兵 ${f(g.bal[q])} 接触 ${pol.cnt[q]} 单价 ${perPx.toFixed(1)} 需 ${f(need)} 底线 ${f(floor)}${Number.isFinite(wf) ? `（winFloor ${f(wf)}，peopleFloor ${f(pf)}）` : ''} → ${why.length ? '不打：' + why.join('；') : '可打，拟出 ' + f(send)}`);
+    if (person) for (const l of diagPreHumanFloor(pol, g, nm, q, perPx, fl)) out.push(l);
   }
   if (!pol.nb.length) out.push('      没有任何非队友邻居（nb=0）');
   for (const l of diagWinFloor(pol, g, nm)) out.push(l);
+  return out;
+}
+
+// 核心期前打真人的底线拆解。照抄：
+//   General.floors L819~830：floorAt(price) = floorK×min(keepCap×100×地, max(reserve×100×地×min(1, price/cRef), max(ref×邻居均兵, defenseNeed)))
+//   General.defenseNeed L899~913：对每个邻居 q（余额 ≥ capMin×我的余额）取 kDef×max(altOf(q).minBal − 我打它的兵, denW×(altOf(q).minPrice−2)×k/2)，k = 1+iV(10×我的地,16)；
+//     q 没有别的邻居时取 aloneK×q 的余额 − 我打它的兵；最后封顶 defCap×100×地
+//   General.altOf L918~940：q 的边界上除了 q 和我以外的每个邻居 o，v = o 的余额 + o 正在打 q 的兵，取最小的（队友、内置 AI 都算）
+//   V13.floorFor0 L2233~2240：真人目标且不是 food 时，motive 为 null 取 preyFloor×floorAt，否则取 floorAt
+// 不调用 pol.altOf（它会动策略对象的去重计数器），自己照抄循环并记下「最弱的别的邻居」是谁。
+function altWho(pol, g, q) {
+  const B = g.border[q], px = g.px, own = g.own, d = g.dir4, me = pol.me;
+  const seen = new Set();
+  let minBal = Infinity, minPrice = Infinity, who = -1, whoPrice = -1;
+  const n = B.length, step = n > 1024 ? Math.ceil(n / 1024) : 1;
+  for (let i = n - 1; i >= 0; i -= step) {
+    const b = B[i];
+    for (let k = 0; k < 4; k++) {
+      const c = b + d[k];
+      if (px[c] < P_INNER) continue;
+      const o = own[c];
+      if (o === q || o === me || seen.has(o)) continue;
+      seen.add(o);
+      const v = g.bal[o] + g.attackTroopsOn(o, q);
+      if (v < minBal) { minBal = v; who = o; }
+      const price = 2 + (2 * g.bal[o]) / (1 + iV(10 * g.terr[o], 16));
+      if (price < minPrice) { minPrice = price; whoPrice = o; }
+    }
+  }
+  return { minBal, minPrice, who, whoPrice };
+}
+
+// 核心期之前，非队友邻居里有真人、这一拍没出手：对「底线最低的那个真人邻居」，底线是被哪一项顶住的。
+// 返回 { bind, ref, floor, avail, need, tgt, kneed, mot }：
+//   bind = 'ok'（底线没卡住，是别的原因）| 'def'（floorAt 被 defenseNeed 顶住）| 'res'（被 reserve 项顶住）| 'ref'（被 ref×邻居均兵 顶住）
+//          | 'cap'（顶到 keepCap×100×地 的封顶）
+//   ref  = bind 为 def / cap 时，defenseNeed 取到最大值的那个邻居 q0 的参照对象：
+//          'squad:号'（我方编队的号）| 'ally:号'（同队其他真人或同队内置 AI）| 'enemy:号'（外队真人）| 'ai:号'（外队内置 AI）
+//          | 'price:号'（取的是 denW×(minPrice−2)×k/2 那一项，即 q0 别的邻居里密度最低者的密度 × 我的地）| 'alone:q0'（q0 没有别的邻居）
+//   tgt  = 底线最低的那个真人邻居；floor / avail / need = 对它的底线、余额 − 底线、出手至少要有的可用兵（max(minShare×余额, 最小指令)）。
+export function preHumanBind(pol, g, ourSet) {
+  const P = pol.p, me = pol.me, T = Math.max(1, g.terr[me]), bal = g.bal[me];
+  let fl;
+  try { fl = pol.floors(g); } catch (e) { return null; }
+  const min = pol.minCmd(g);
+  let bestQ = -1, bestF = Infinity, bestPx = NaN;
+  for (const q of pol.nb) {
+    if (!g.alive[q] || !g.terr[q] || !pol.person(g, q)) continue;
+    let f0 = NaN, px0 = NaN;
+    try { px0 = pol.price(g, q); f0 = pol.floorFor(g, q, fl.floorAt(px0)); } catch (e) { f0 = NaN; }
+    if (Number.isFinite(f0) && f0 < bestF) { bestF = f0; bestQ = q; bestPx = px0; }
+  }
+  if (bestQ < 0) return null;
+  let ms = 0;
+  try { ms = pol.minShare(g, bestQ); } catch (e) { ms = 0; }
+  const need = Math.max(ms * bal, min), avail = bal - bestF;
+  // 「一次吃到出局」的要求（V13.amount0 L2347~2349）：真人目标、motive 为 null 时，sendFrac×可用兵 ≥ preyKill×出局价 才出手，否则 amount = 0。
+  //   kneed = 出局价 = elimCost(q) + 它正在打我的兵 − 我正在打它的兵（Style.pickTarget L1162）；mot = motive（null 记成 'prey'）
+  let kneed = NaN, mot = '?';
+  try { kneed = pol.elimCost(g, bestQ) + g.attackTroopsOn(bestQ, me) - g.attackTroopsOn(me, bestQ); } catch (e) { kneed = NaN; }
+  try { const m0 = pol.motive ? pol.motive(g, bestQ) : '?'; mot = m0 === null ? 'prey' : String(m0); } catch (e) { mot = '?'; }
+  if (avail > ms * bal && avail >= min) return { bind: 'ok', ref: '', floor: bestF, avail, need, tgt: bestQ, kneed, mot };
+  const early = g.t < P.earlyEnd, cap = 100 * T;
+  const reserveTerm = (early ? P.reserveEarly : P.reserve) * cap * Math.min(1, bestPx / P.cRef);
+  const refTerm = (early ? P.refEarly : P.ref) * (fl.avgNb || 0);
+  let dn = 0;
+  try { dn = pol.defenseNeed(g); } catch (e) { dn = 0; }
+  const inner = Math.max(reserveTerm, refTerm, dn);
+  let bind;
+  if (inner >= P.keepCap * cap) bind = 'cap';
+  else if (dn >= reserveTerm && dn >= refTerm) bind = 'def';
+  else if (reserveTerm >= refTerm) bind = 'res';
+  else bind = 'ref';
+  let ref = '';
+  if (bind === 'def' || (bind === 'cap' && dn >= P.keepCap * cap)) {
+    const k = 1 + iV(10 * g.terr[me], 16);
+    let top = 0, q0 = -1, alt = null, viaPrice = false;
+    for (const o of pol.nb) {
+      if (g.alive[o] === 0 || g.bal[o] < P.capMin * bal) continue;
+      const a = altWho(pol, g, o);
+      const sent = g.attackTroopsOn(me, o);
+      const byBal = a.minBal - sent, byPrice = (P.denW * (a.minPrice - 2) * k) / 2;
+      const nd = a.minBal === Infinity ? (g.bal[o] > 0 ? P.aloneK * g.bal[o] - sent : 0) : P.kDef * Math.max(byBal, byPrice);
+      if (nd > top) { top = nd; q0 = o; alt = a; viaPrice = a.minBal !== Infinity && byPrice > byBal; }
+    }
+    if (q0 >= 0) {
+      if (alt.minBal === Infinity) ref = 'alone:' + q0;
+      else if (viaPrice) ref = 'price:' + alt.whoPrice;
+      else ref = (ourSet && ourSet.has(alt.who) ? 'squad:' : g.isTeammate(me, alt.who) ? 'ally:' : g.isBot(alt.who) ? 'ai:' : 'enemy:') + alt.who;
+    }
+  }
+  return { bind, ref, floor: bestF, avail, need, tgt: bestQ, kneed, mot };
+}
+export function diagPreHumanFloor(pol, g, nm, q, perPx, fl) {
+  const P = pol.p, me = pol.me, bal = g.bal[me], T = Math.max(1, g.terr[me]);
+  const out = [];
+  try {
+    const early = g.t < P.earlyEnd, cap = 100 * T;
+    const reserveTerm = (early ? P.reserveEarly : P.reserve) * cap * Math.min(1, perPx / P.cRef);
+    const refTerm = (early ? P.refEarly : P.ref) * fl.avgNb;
+    const k = 1 + iV(10 * g.terr[me], 16);
+    let dn = 0, dnWho = -1, dnAlt = null;
+    for (const o of pol.nb) {
+      if (g.alive[o] === 0 || g.bal[o] < P.capMin * bal) continue;
+      const a = altWho(pol, g, o);
+      const sent = g.attackTroopsOn(me, o);
+      const need = a.minBal === Infinity ? (g.bal[o] > 0 ? P.aloneK * g.bal[o] - sent : 0) : P.kDef * Math.max(a.minBal - sent, (P.denW * (a.minPrice - 2) * k) / 2);
+      if (need > dn) { dn = need; dnWho = o; dnAlt = a; }
+    }
+    const dnCapped = Math.min(dn, P.defCap * 100 * T);
+    const dnReal = pol.defenseNeed(g);
+    const fa = fl.floorAt(perPx);
+    let fd = '?', mot = '?';
+    try { fd = pol.food ? pol.food(g, q) : '?'; mot = pol.motive ? pol.motive(g, q) : '?'; } catch (e) { /* ignore */ }
+    const src = dnWho < 0 ? '无' : `${nm(dnWho)} 的别的邻居里最弱的是 ${dnAlt.who >= 0 ? nm(dnAlt.who) : '（没有）'}（余额+正在打它的兵 ${f(dnAlt.minBal)}）→ kDef ${P.kDef}×它`;
+    out.push(`        [底线拆解 L819~830 / L899~913 / L2233~2240] floorAt=${f(fa)} = floorK ${pol.floorK}×min(${f(P.keepCap * cap)}, max(reserve 项 ${f(reserveTerm)}, ref ${early ? P.refEarly : P.ref}×邻居均兵 ${f(refTerm)}, defenseNeed ${f(dnReal)}${Math.abs(dnReal - dnCapped) > 1 ? `（照抄值 ${f(dnCapped)}，对不上）` : ''}))；defenseNeed 来自：${src}；food=${fd} motive=${mot}（null 时再乘 preyFloor ${P.preyFloor}）`);
+  } catch (e) { out.push('        底线拆解出错 ' + String(e).slice(0, 80)); }
   return out;
 }
 
