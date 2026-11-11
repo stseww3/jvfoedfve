@@ -1,0 +1,184 @@
+{
+ "NEW-SP-DISC": {
+  "prefix": "SP",
+  "name": "出生点挤成一个紧凑圆盘，内圈的号开局就没地可占",
+  "definition": "我方号出生点到最近队友的距离中位 ≤ 1.25×rCell（rCell = sqrt(陆地像素 /(π×真人数))，即人均地盘半径），且至少 7 成的号在 60 像素内有 ≥2 个队友。后果指标：t=1530 时我方号领土中位 < 其他真人领土中位的 60%，或 t≤2100 时半数以上的号 nb=0 且 neut=0。",
+  "detector": "scripts/match_digest.py 第 1 节（出生点距离）与第 3b 节（开局名次、封死快照）",
+  "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L845~852（allyMinSep 等尺度）、pickNextTarget L938~991（relaxFactors 逐级放宽 + 紧凑圆盘约束）"
+ },
+ "NEW-SP-RESOLVE": {
+  "prefix": "SP",
+  "name": "选点阶段反复改点，最后一刻才落定",
+  "definition": "选点阶段同一个号被执行的出生指令 ≥ 10 条，或最后一条出生指令落在选点阶段最后 10% 的步数里。",
+  "detector": "scripts/match_digest.py 第 3b 节（出生指令条数 / 最后一条所在步）",
+  "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve（每次大厅状态变化都整体重算）、matchBotsToTargets L1431"
+ },
+ "NEW-SP-SPREAD": {
+  "prefix": "SP",
+  "name": "出生点散开、各自有地可占（对照组）",
+  "definition": "我方号出生点到最近队友的距离中位 > 1.25×rCell，且 t=630 时我方号领土中位 ≥ 其他真人领土中位的 80%。",
+  "detector": "scripts/match_digest.py 第 1 节与第 3b 节",
+  "codePath": "spawn-coordinator-*.mjs TeamSpawnCoordinator.solve"
+ },
+ "NEW-OP-DPGOOD": {
+  "prefix": "OP",
+  "name": "开局占无主地的节奏不落后",
+  "definition": "t=270 时我方号领土中位 ≥ 其他真人领土中位。",
+  "detector": "scripts/match_digest.py 第 3b 节（拍 270 的中位与名次）",
+  "codePath": "V13.expandNeutral L2373 / dpNeutral L2383（开局按圈数买无主地）"
+ },
+ "NEW-OP-ALLYLOCK": {
+  "prefix": "OP",
+  "name": "打内置 AI 的底线被队友的余额顶住（队友互锁）",
+  "definition": "核心期之前（t < coreFrom=1500）某号贴着「兵比地少」的内置 AI、这一拍没有出手，且对该 AI 的出兵底线高于自己的余额；底线来自 winFloor 的第 3 项 safeFinite = 这个 AI 的其他邻居里「余额 + 正在打它的兵」最小者，不排除队友、也不看这个 AI 自己有没有兵。",
+  "detector": "scripts/idle_scan.py（「贴弱AI不出手」列）；scripts/shadow.mjs --at <拍>（winFloor 拆解会标出最弱邻居是不是队友）",
+  "codePath": "Style.pickTarget L1160~1161 ← V13.floorFor0 L2233~2236 ← Policy.winFloor L4562~4570 ← V13.safeFinite L2500~2510 ← Strategy.threatOf L417~444"
+ },
+ "NEW-EC-HOARD": {
+  "prefix": "EC",
+  "name": "兵比别人密、地比别人少",
+  "definition": "t=1530 时我方号密度（余额/领土）中位 ≥ 其他真人密度中位的 2 倍，且领土中位 ≤ 其他真人领土中位的 60%。",
+  "detector": "scripts/match_digest.py 第 3b 节（拍 1530 的领土/余额中位）",
+  "codePath": "V13.floorFor0 L2233~2241（核心期前的底线）+ Policy.safeAt L4543~4548（核心期底线封顶 oppFloorCap×地）"
+ },
+ "NEW-EC-LANDLOCK": {
+  "prefix": "EC",
+  "name": "内陆封死憋兵（没有敌邻、没有无主地、没有海岸）",
+  "definition": "某号 nb=0 且 neut=0 且海岸像素=0（船也发不了）连续 ≥ 900 拍；或余额顶到 150×领土（硬上限，利息归零）≥ 90 拍。",
+  "detector": "scripts/idle_scan.py（「封死」「封死且无海岸」「顶到硬上限」三列）",
+  "codePath": "Policy.offers L5072（只遍历 this.nb，报价单为空）、Policy.idleBoats L5019~5070（L5032 boatsAllowed 要求有海岸）"
+ },
+ "NEW-DN-QUOTABLIND": {
+  "prefix": "DN",
+  "name": "调度不看收款人的反喂养配额",
+  "definition": "t<4284 时 tryDonateToTeammate 一般分支按固定比例（220/240/320/380）定额，不比较收款人剩余配额点数；某号 t<4284 的调度落地率 < 30%。",
+  "detector": "scripts/match_digest.py 第 7 节（按时段 发出/落地/到账）；scripts/exec_gap.py（捐款落地率）",
+  "codePath": "Policy.tryDonateToTeammate L4499~4508（选定收款人后按 idealPct 定额直接 g.donate，没有用 g.donQuota / g.donCap）"
+ },
+ "NEW-DN-SQUADONLY": {
+  "prefix": "DN",
+  "name": "只给本编队的号捐，战线上的非编队队友不在候选里",
+  "definition": "调度候选限定 isOurSquadBot 或 boss；同期本队领土最大的非编队队友领土 ≥ 我方收款号的 2 倍而从未被选为收款人。",
+  "detector": "scripts/match_digest.py 第 7 节（收款方名单）+ 第 9 节（本队领土排名）",
+  "codePath": "Policy.tryDonateToTeammate L4414（候选循环里 !isOurSquadBot && !isBossNpl 就跳过）"
+ },
+ "NEW-DN-CAPLOOP": {
+  "prefix": "DN",
+  "name": "给快顶格的队友倒灌 / 两个封死号互相捐",
+  "definition": "一笔捐款的到账额 < 捐款人为它交的税（6.25%×捐款人余额）；或 A→B 与 B→A 的捐款在 100 拍内交替出现。",
+  "detector": "scripts/truth_query.py <局号> cmds <号> <t0> <t1> --id 2（到账、税、对方上限）",
+  "codePath": "Policy.tryDonateToTeammate L4453（封死且对方有海岸就放行）、L4479~4481（封死时 reqD=58、maxAllyD=128/140，「我要比对方密 16」只对非封死号生效）、L4499~4508（不看对方 150×领土 的剩余空间）"
+ },
+ "NEW-DN-CARRIER": {
+  "prefix": "DN",
+  "name": "配额解除后把后排的兵集中给有战线的号（有效）",
+  "definition": "t≥4284 后封死号的调度落地率 ≥ 90%，且收款号在随后 600 拍净得地 > 0。",
+  "detector": "scripts/match_digest.py 第 7 节；scripts/truth_query.py <局号> gain <t0> <t1>",
+  "codePath": "Policy.tryDonateToTeammate L4414~4508（offense / yield / defense 三种调度）"
+ },
+ "NEW-AT-NFSLOCK": {
+  "prefix": "AT",
+  "name": "isNoFullSend 误锁，出兵被自己的守卫拦掉",
+  "definition": "影子策略里 isNoFullSend 变成 true（引擎的 25% 限额只在 aE.lC==10 的模式存在，团队局没有），此后 Policy.send 的守卫拦掉对非无主目标的出兵（返回 false）。计数 = 被拦次数与想出的兵。",
+  "detector": "scripts/shadow.mjs <局号> --out（check.json 里每个号的 lockAt / blocked）",
+  "codePath": "Policy.updateShadowQuota L3821~3834（发令后 6 拍内看到余额少掉的量比想发的小就上锁，永不解锁）、Policy.send L3844~3862（守卫）"
+ },
+ "NEW-AT-CHEAPKILL": {
+  "prefix": "AT",
+  "name": "挑密度远低于自己的邻居一口气打到出局线（有效）",
+  "definition": "对某真人目标的出兵发生时，对方密度 ≤ 我方密度的 45%，且对方在随后 300 拍内出局或领土跌掉 ≥ 40%，我方该号同期净得地 > 0。",
+  "detector": "scripts/shadow.mjs --at <拍>（报价 c 与 worth）；scripts/truth_query.py <局号> bal <对方号>",
+  "codePath": "Policy.buyLand L5350~5359（c < worth 才买）、L5456~5609（对真人的出兵量）"
+ },
+ "NEW-AT-PULSE": {
+  "prefix": "AT",
+  "name": "按 12% 一发的脉冲持续压一个真人目标并净得地（有效）",
+  "definition": "同一号对同一真人目标在 60 拍内落地 ≥ 3 条 pct≈122/1024 的陆攻，且该号在这 300 拍窗口净得地 > 0。",
+  "detector": "scripts/truth_query.py <局号> cmds <号> <t0> <t1> --id 1；gain <t0> <t1>",
+  "codePath": "Policy.buyLand L5456~5609（pulseMode / pulseFrac）"
+ },
+ "NEW-AT-OVEREXT": {
+  "prefix": "AT",
+  "name": "对密度不低于自己的真人硬打，兵换不回地",
+  "definition": "对某真人目标 300 拍内落地的陆攻兵 ≥ 自己余额峰值的 60%，同期从该目标净得地 < 出兵量 / 200，且出兵后自己密度 < 对方密度。",
+  "detector": "scripts/match_digest.py 第 8 节（出兵去向与净得地）；scripts/truth_query.py flow",
+  "codePath": "Policy.buyLand L5456~5609"
+ },
+ "NEW-DF-THIN": {
+  "prefix": "DF",
+  "name": "出兵后留守太薄，被邻居反手打穿",
+  "definition": "某号余额在 90 拍内因自己的陆攻/捐款跌到 20×领土 以下，随后 300 拍内被敌方真人净拿走 ≥ 25% 领土或出局。",
+  "detector": "scripts/match_digest.py 第 5 节（出局链）与第 6 节（DROP30 对账）",
+  "codePath": "Policy.safeAt L4543~4560、Policy.buyLand L5414~5418（底线封顶 oppFloorCap×地）"
+ },
+ "NEW-DF-NORESCUE": {
+  "prefix": "DF",
+  "name": "队友被围时救援到不了（配额/不相邻/没兵）",
+  "definition": "某号出局前 500 拍内被攻兵 ≥ 自己余额，期间收到的队友捐款到账 < 被攻兵的 10%。",
+  "detector": "scripts/match_digest.py 第 5 节（出局前收到的捐款）",
+  "codePath": "Policy.tryEmergencyBossRescue L4215、Policy.tryDonateToTeammate L4463~4473（defense_dispatch 分支）"
+ },
+ "NEW-IO-LAGLOSS": {
+  "prefix": "IO",
+  "name": "客户端落后，指令晚到或丢失",
+  "definition": "某时段我方陆攻指令落地率 < 60%，或落地延迟中位 ≥ 90 拍；并且日志行序显示该号比最快的队友落后 ≥ 180 拍。",
+  "detector": "scripts/exec_gap.py（想发 vs 落地）+ scripts/client_lag.py（日志行序）",
+  "codePath": "Strategy.send L479~487（发出即计数，不跟踪是否落地）+ Policy.act L4838（每 5 拍重新决策，同一指令反复重发）"
+ },
+ "NEW-IO-DRAINBATCH": {
+  "prefix": "IO",
+  "name": "追帧后同一拍连发，把余额抽干",
+  "definition": "同一拍落地 ≥ 5 条同目标陆攻，批后余额 < 批前的 40%（每条都按当时余额重新计价）。",
+  "detector": "scripts/match_digest.py 第 6 节（同拍批次）",
+  "codePath": "Strategy.send L479~487（比例按决策拍的余额换算）+ Policy.act L4838（每 5 拍重发）；策略里没有「已发未落地」的账"
+ },
+ "NEW-EX-LEAVER": {
+  "prefix": "EX",
+  "name": "我方号中途离场，变成不生息的内置 AI",
+  "definition": "引擎里该号状态变成 2（离开）；记录离场拍、当时领土与余额、离场前客户端落后量。",
+  "detector": "scripts/match_digest.py 第 5、10 节（ev.tsv 的 state 事件）；scripts/client_lag.py",
+  "codePath": "不在策略代码里：引擎 dF.aeY 把离场号标成已离开并交给内置 AI（规格书 B 第 9.4 节）"
+ },
+ "NEW-MT-WRONGFRONT": {
+  "prefix": "MT",
+  "name": "多队局里把兵花在弱队身上，领先队没人管",
+  "definition": "窗口内我方号对敌方真人的出兵里，打向「当时领土第一的敌队」的比例 < 30%，而该敌队在窗口内占比上升。",
+  "detector": "scripts/match_digest.py 第 8、9 节；scripts/truth_query.py gain",
+  "codePath": "Policy.offers L5072~5340（报价只看单价与邻接，不看对方所在队的排名，leaderHardFrom 之后才加权）"
+ },
+ "NEW-MT-OUTNUMBERED": {
+  "prefix": "MT",
+  "name": "队友先垮，我方号被多家围攻",
+  "definition": "某号出局前 300 拍内有 ≥ 3 个不同的敌方真人在打它，或本队在场真人数 ≤ 头号敌队的一半。",
+  "detector": "scripts/match_digest.py 第 2、5 节",
+  "codePath": "不是单一分支：Policy.safeAt L4543~4560 按单个邻居估威胁"
+ },
+ "NEW-SE-BOATOK": {
+  "prefix": "SE",
+  "name": "封死后发船开第二战场并站住（有效）",
+  "definition": "某号在 nb=0 且 neut=0 时发船，登陆后 300 拍内在新地块净得地 ≥ 500 像素。",
+  "detector": "scripts/match_digest.py 第 8 节（船结果）；ev.tsv 的 land 事件",
+  "codePath": "Policy.idleBoats L5019~5070"
+ },
+ "NEW-SE-BOATWASTE": {
+  "prefix": "SE",
+  "name": "发船白送：登陆即被吃或回到自己地上作废",
+  "definition": "一条船的兵 ≥ 发船时余额的 20%，登陆后 300 拍内该登陆点净得地 ≤ 0，或船回到自己/队友地上作废。",
+  "detector": "scripts/match_digest.py 第 8 节（船结果）",
+  "codePath": "Policy.idleBoats L5019~5070、General.boatOut L999~1015"
+ },
+ "NEW-EG-TAXBURN": {
+  "prefix": "EG",
+  "name": "胜负已分后还在烧捐款税",
+  "definition": "本队占比 ≥ 80% 之后，我方号捐款所交的税合计 ≥ 100 万兵。",
+  "detector": "scripts/truth_query.py <局号> cmds <号> <t0> <t1> --id 2",
+  "codePath": "Policy.tryDonateToTeammate L4355（没有敌邻、没有无主地时 boxedIn 恒真）→ L4453、L4479~4481"
+ },
+ "NEW-EG-NOCLOSE": {
+  "prefix": "EG",
+  "name": "残局只剩我方号时不会收口（不投票 / 不转守 / 不集中）",
+  "definition": "本队只剩我方号在场且占比 < 头号敌队的一半之后，仍持续 ≥ 600 拍没有任何落地的陆攻或船。",
+  "detector": "scripts/match_digest.py 第 2、10 节",
+  "codePath": "Policy.tryPeaceVote L4166、Policy.act L4801~4984"
+ }
+}
