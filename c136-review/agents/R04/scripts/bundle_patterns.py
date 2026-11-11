@@ -39,6 +39,7 @@
 #   REJ      （NEW-DN-QUOTABLIND / NEW-DN-CAPLOOP）events.csv 里 DISPATCH / DONATE 行数，和其中 likelyRejected=True 的行数
 #            （对局包自带的推断：35 拍内再次发起且余额没降；统筹的 HYPOTHESIS-AUDIT §2.4 拿录像对过，10 号编队可用、c110 不准）；
 #            「顶着上限还在送」= 其中 dMe ≥100（送出方密度已过软上限）的被拒行数。
+#   BASE     对局卡的 primaryTeamWon 对 baseWinExpectation（按实际队数的均分基准），只作背景。
 #   COLLAPSE （mid-collapse）任意 600 拍窗口里出局的号数的最大值；「崩盘」= 这个最大值 ≥ 有快照的号数的一半（且 ≥3）。
 #
 # 版本：A001~A017 Va，A018~A095 Vb，A097~A099 Vc，B 组 c110，G 组 g09（src/strategy/VERSION-TIMELINE.md）。
@@ -104,7 +105,8 @@ def scan(mid, idmap, listing=None):
         tr[k].sort()
     death = {k: recs[k]['tick'] for k in tr if recs[k]['event'] == 'died' and recs[k]['tick'] is not None}
     R = collections.OrderedDict(mid=mid, cohort=card['cohort'], ver=version(mid), mode=card.get('mode'), res=res, endTick=end, rooms=len(rooms),
-                                bots=len(tr), seeded=card.get('seededPlayers'), unkRows=unk)
+                                bots=len(tr), seeded=card.get('seededPlayers'), unkRows=unk, baseWin=card.get('baseWinExpectation'),
+                                nominalTeams=card.get('nominalTeams'), actualTeams=card.get('actualTeams'))
 
     def nm(k):
         return '→'.join(recs[k]['names'])
@@ -307,7 +309,8 @@ def scan(mid, idmap, listing=None):
             rc = math.sqrt(card['mapLand'] / (math.pi * card['seededPlayers']))
             ds = [min(math.hypot(p[0] - q[0], p[1] - q[1]) for j, q in enumerate(pts) if j != i) for i, p in enumerate(pts)]
             gap = round(statistics.median(ds) / rc, 3)
-    R.update(spawnGap=gap, headShare=round(R['n1530'] / card['seededPlayers'], 3) if R.get('n1530') else None)
+    R.update(spawnGap=gap, headShare=round(R['n1530'] / card['seededPlayers'], 3) if R.get('n1530') else None,
+             crowd=round(1e6 * card['seededPlayers'] / card['mapLand'], 2) if card.get('mapLand') and card.get('seededPlayers') else None)
 
     # ---- COLLAPSE ----
     ds = sorted(death.values())
@@ -386,6 +389,13 @@ def main():
             pct(sum(1 for r in rs if (r['squadTeams'] or 0) >= 2), n), S('transfers'), S('rejected'), pct(S('rejected'), S('transfers')), S('rejectedAtCap'),
             has('collapse'), pct(has('collapse'), n), S('died')))
 
+    print('## 0 结果对基准（对局卡：primaryTeamWon 对 baseWinExpectation = 1 ÷ 实际队数；1v1 和没有基准的局不算）')
+    for (coh, ver), rs in groups.items():
+        ok = [r for r in rs if r['baseWin'] and r['mode'] != 8]
+        if ok:
+            print('  %s %s：%d 局，主队赢 %d 局（%s）；按基准应赢 %.1f 局（%s）；拆队后别的队里有号赢 %d 局' % (
+                coh, ver, len(ok), sum(1 for r in ok if r['res'] == 'W'), pct(sum(1 for r in ok if r['res'] == 'W'), len(ok)),
+                sum(r['baseWin'] for r in ok), pct(sum(r['baseWin'] for r in ok), len(ok)), sum(1 for r in ok if r['res'] == 'S')))
     print('## 1 按编队 × 版本')
     for (coh, ver), rs in groups.items():
         line('%s %s' % (coh, ver), rs)
@@ -444,13 +454,15 @@ def main():
             pr = [(r[xk], r[yk]) for r in rs if r[xk] is not None and r[yk] is not None]
             if len(pr) >= 8 and len({p[0] for p in pr}) > 1:
                 print('  %s %s：%d 局，ρ = %+.2f' % (coh, label, len(pr), spearman([p[0] for p in pr], [p[1] for p in pr])))
-        tri = [(r['spawnGap'], r['ratio1530'], r['headShare']) for r in rs if None not in (r['spawnGap'], r['ratio1530'], r['headShare'])]
-        if len(tri) >= 8:
-            x, y, z = ([t[i] for t in tri] for i in range(3))
-            rxy, rxz, ryz = spearman(x, y), spearman(x, z), spearman(y, z)
-            den = math.sqrt((1 - rxz ** 2) * (1 - ryz ** 2))
-            print('  %s 出生间距 ÷ rCell 对 1530 拍占地 ÷ 人头，扣掉「我方号数 ÷ 真人位」之后的偏相关：%d 局，ρ = %+.2f（间距与人头占比本身的 ρ = %+.2f）' % (
-                coh, len(tri), (rxy - rxz * ryz) / den if den else float('nan'), rxz))
+        # 「间距 ÷ rCell」和「占地 ÷ 人头」的分母里都有 真人位 ÷ 地图陆地（房间越挤，两个比值都越大），所以要把它扣掉再看
+        for zk, zlabel in (('headShare', '我方号数 ÷ 真人位'), ('crowd', '房间拥挤度（真人位 ÷ 地图陆地）')):
+            tri = [(r['spawnGap'], r['ratio1530'], r[zk]) for r in rs if None not in (r['spawnGap'], r['ratio1530'], r[zk])]
+            if len(tri) >= 8:
+                x, y, z = ([t[i] for t in tri] for i in range(3))
+                rxy, rxz, ryz = spearman(x, y), spearman(x, z), spearman(y, z)
+                den = math.sqrt((1 - rxz ** 2) * (1 - ryz ** 2))
+                print('  %s 出生间距 ÷ rCell 对 1530 拍占地 ÷ 人头，扣掉「%s」之后的偏相关：%d 局，ρ = %+.2f（间距与它的 ρ = %+.2f，占地 ÷ 人头与它的 ρ = %+.2f）' % (
+                    coh, zlabel, len(tri), (rxy - rxz * ryz) / den if den else float('nan'), rxz, ryz))
     if any(r['unkRows'] for r in rows):
         print('号名对照表里找不到的快照行：' + '、'.join('%s %d 行' % (r['mid'], r['unkRows']) for r in rows if r['unkRows']))
 
