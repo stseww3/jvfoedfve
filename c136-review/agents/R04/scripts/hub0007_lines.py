@@ -31,7 +31,10 @@ def lines(mid):
     for k in ('停在旧坐标', '一条出生指令都没落地', '哪一轮的点都不是', '协调器日志里没有它的点'):
         if c.get(k):
             s1 += '、%s %d 个' % (k, c[k])
-    s1 += '、两号同点 %d 对，最后一条出生指令落地在第 %s~%s 步（共 %s 步）' % (sp['samePoint'], sp['lastStepMin'], sp['lastStepMax'], sp['steps'])
+    if sp['lastStepMin'] is None:
+        s1 += '、两号同点 %d 对，选点阶段（共 %s 步）没有一条出生指令落地' % (sp['samePoint'], sp['steps'])
+    else:
+        s1 += '、两号同点 %d 对，最后一条出生指令落地在第 %s~%s 步（共 %s 步）' % (sp['samePoint'], sp['lastStepMin'], sp['lastStepMax'], sp['steps'])
     d = lat['delay']
     s2 = '执行拍 − 决策拍 P50/P90/Max（宽配对；括号里是严配对）：' + '，'.join(
         '%s 拍 %s/%s/%s（%s/%s/%s）' % (k, v['p50'], v['p90'], v['max'], v['strictP50'], v['strictP90'], v['strictMax']) for k, v in d.items() if v['landed'])
@@ -113,8 +116,16 @@ def lines(mid):
         if int(t) not in (630, 1500, 1800, 3000):
             continue
         g = land['capture'][t]['groups']
-        caps.append('%s 拍 %.2f 对 %.2f' % (t, g['我方']['ratioE'], g['全部其他真人']['ratioE']))
-    g2 = '实际领土 ÷ 天然地盘（我方 对 其他真人）：' + '，'.join(caps)
+        if '全部其他真人' in g:
+            caps.append('%s 拍 %.2f 对 %.2f' % (t, g['我方']['ratioE'], g['全部其他真人']['ratioE']))
+        else:
+            caps.append('%s 拍 %.2f' % (t, g['我方']['ratioE']))
+    solo = not any('全部其他真人' in land['capture'][t]['groups'] for t in land['capture'])
+    if solo:
+        # 到场的真人全是我方（A073）：没有「其他真人」这一栏
+        g1 = '到场的真人全是我方（%d 个），天然地盘（按出生点把陆地分给最近的真人）就是全图陆地 %s 格；只走陆路能到的 %s 格 = 全图的 %.1f%%' % (
+            land['ours'], format(int(ve['ourPx']), ','), format(int(vl['ourPx']), ','), vl['ourSharePct'])
+    g2 = ('实际领土 ÷ 天然地盘（我方；没有其他真人可比）：' if solo else '实际领土 ÷ 天然地盘（我方 对 其他真人）：') + '，'.join(caps)
     a0 = land['aiFate'].get('t0', {})
     g3 = ''
     if a0.get('px'):
