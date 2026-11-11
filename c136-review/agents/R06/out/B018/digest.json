@@ -169,13 +169,13 @@
    "outT": 1749
   },
   "41": {
-   "lastSnap": 10530,
-   "leaveT": 11158,
+   "lastSnap": 11340,
+   "leaveT": 11340,
    "deathT": null,
    "endT": null,
    "how": "left",
    "leaveSrc": "result(本机拍,偏早)",
-   "outT": 11158
+   "outT": 11340
   },
   "43": {
    "lastSnap": 0,
@@ -393,14 +393,15 @@
   "41": {
    "names": [
     "Uzbek",
-    "Hojo"
+    "Hojo",
+    "Bohemia"
    ],
    "team": 3,
    "spawn": [
     824,
     736
    ],
-   "snaps": 112
+   "snaps": 120
   },
   "43": {
    "names": [
@@ -1548,37 +1549,55 @@
   {
    "t": 10752,
    "active": 1,
-   "seen": 0,
-   "terr": 0,
-   "share": 0.0,
-   "bal": 0,
-   "dens": 0,
+   "seen": 1,
+   "terr": 504,
+   "share": 0.0009228200208000703,
+   "bal": 20764,
+   "dens": 41.198412698412696,
    "boxed": 0,
-   "perTeam": {},
+   "perTeam": {
+    "3": [
+     1,
+     504,
+     20764
+    ]
+   },
    "teamSnapT": 10752
   },
   {
    "t": 10980,
    "active": 1,
-   "seen": 0,
-   "terr": 0,
-   "share": 0.0,
-   "bal": 0,
-   "dens": 0,
+   "seen": 1,
+   "terr": 517,
+   "share": 0.0009466229181619768,
+   "bal": 34880,
+   "dens": 67.4661508704062,
    "boxed": 0,
-   "perTeam": {},
+   "perTeam": {
+    "3": [
+     1,
+     517,
+     34880
+    ]
+   },
    "teamSnapT": null
   },
   {
    "t": 11158,
-   "active": 0,
-   "seen": 0,
-   "terr": 0,
-   "share": 0.0,
-   "bal": 0,
-   "dens": 0,
-   "boxed": 0,
-   "perTeam": {},
+   "active": 1,
+   "seen": 1,
+   "terr": 517,
+   "share": 0.0009466229181619768,
+   "bal": 38697,
+   "dens": 74.84912959381045,
+   "boxed": 1,
+   "perTeam": {
+    "3": [
+     1,
+     517,
+     38697
+    ]
+   },
    "teamSnapT": null
   }
  ],
@@ -5325,14 +5344,14 @@
   {
    "me": 41,
    "name": "Uzbek",
-   "boxedSnaps": 64,
+   "boxedSnaps": 67,
    "hiDensSnaps": 0,
    "first": null,
    "last": null,
    "maxDens": 0,
    "maxBal": 0,
    "earlyNoNeutral": [],
-   "total": 112
+   "total": 120
   }
  ]
 }
