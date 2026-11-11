@@ -10,7 +10,7 @@
 输出：out/<matchId>/trace_classify.txt
     每个明细一段：
       · 零指令的决策拍按第一个候选目标的状态归类：价高（c >= worth → break）、可用兵 <= 0、唯一真人邻居闸、crowdedHard 闸、
-        没有可打的邻居（没有候选行）、其他（有可用兵但没发：不够一条 / 脉冲条件不满足等）；每类给拍数和首末拍
+        没有可打的邻居（没有候选行）、已有在途进攻、要发的兵低于最小指令、可用兵不够一条（后三类来自 65_shadow.mjs 的 sizeOf()）、其他；每类给拍数和首末拍
       · 出手的决策拍：打真人 / 内置 AI 的、只打无主地的、捐兵的；打真人里 over=1（过软上限）的拍数、
         这些拍的 c/worth 范围和「约 N 兵」合计；c >= worth 的拍数和兵
       · 发令的源码行（影子指令末尾的调用栈最后一段）计数
@@ -99,6 +99,12 @@ def classify(path):
                     k = "零指令：唯一真人邻居闸"
                 elif "crowdedHard" in o and "continue" in o:
                     k = "零指令：crowdedHard 闸"
+                elif "在途(" in o:
+                    k = "零指令：对首选目标已有在途进攻（curAtk 过门槛）"
+                elif "低于最小指令(" in o:
+                    k = "零指令：要发的兵低于最小指令（x < max(minCmd, pulseMinShare×B)）"
+                elif "不够一条(" in o:
+                    k = "零指令：可用兵不够一条（x < chunk×B）"
                 else:
                     k = "零指令：其他（有可用兵但没发）"
         cnt[k] += 1

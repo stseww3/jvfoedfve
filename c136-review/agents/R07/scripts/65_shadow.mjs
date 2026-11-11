@@ -172,7 +172,12 @@ function evalOffers(g, p, lim = 6) {
     else if (P.absorbMode >= 1 && o.person && !o.isDoorSea && !o.nearCollapse && (o.inAtk ?? 0) >= P.absorbWaveMin * B) gate = '吸收';
     else if (siegeShrink && pricey && B < P.crowdedHardCap * 100 * L) gate = '缩圈';
     let safe = p.safeAt(g, q);
-    if (!o.person || o.nearCollapse || (P.bleedSafeCap > 0 && (o.bleeding || o.tD < 0.45))) safe = Math.min(safe, P.oppFloorCap * L);
+    if (!o.person || o.nearCollapse || (P.bleedSafeCap > 0 && (o.bleeding || o.tD < 0.45))) {
+      // Vb L5415-5417：目标濒死且几乎没兵时，安全底的上限从 oppFloorCap 换成 collapseFloorCap
+      const capPerPx = o.person && o.nearCollapse && (o.inAtk ?? 0) < 0.02 * B && ((o.c < 0.25 * worth && o.need <= 0.10 * B) || (g.bal[q] <= 0.05 * B && o.c < 25))
+        ? Math.min(P.oppFloorCap, P.collapseFloorCap ?? 85) : P.oppFloorCap;
+      safe = Math.min(safe, capPerPx * L);
+    }
     let keep = Infinity;
     if (o.c < cheap) keep = 0;
     if (o.c < worth) {
@@ -184,10 +189,58 @@ function evalOffers(g, p, lim = 6) {
     if (over) keep = Math.min(keep, (dMe >= 122 ? 0.82 : soleBuffer ? P.overHumanKeep : P.hold) * 100 * L);
     keep = Math.max(keep, safe);
     const avail = B - fee - keep;
-    const verdict = o.c >= worth && o.c >= cheap && !over ? '价高' : gate ? gate : avail <= 0 ? '无可用' : (!o.pulseMode && avail < P.chunk * B && avail < 1.25 * o.need) ? '不够一条' : '';
-    rows.push({ o, q, safe, keep, avail, verdict, soleBuffer, humanNbCount });
+    let verdict = o.c >= worth && o.c >= cheap && !over ? '价高' : gate ? gate : avail <= 0 ? '无可用' : '';
+    let sz = null;
+    if (!verdict) {
+      sz = sizeOf(g, p, o, B, avail, over);
+      verdict = sz.kind;
+    }
+    rows.push({ o, q, safe, keep, avail, verdict, soleBuffer, humanNbCount, sz });
   }
   return { B, L, fee, dMe, dMedOther, m, worth, over, cheap, rows };
+}
+
+// 过了比价和留底之后「发多少」的那一段（Vb：buyLand L5449-5617，c110 / c116 / Va / g09 同一段代码）：
+//   在途：对这个目标已经压着的兵（curAtk）过了门槛就不再加（L5575 / L5589 / L5596）；
+//   低于最小指令：算出来要发的兵 x < max(minCmd, pulseMinShare×B)，minCmd = feeK × 手续费（L474-476）——跳过这个报价（L5583 / L5591 / L5605）；
+//   不够一条：非脉冲分支 x < want 且 x < chunk×B（L5612）。
+// counterClearMode / exactRingMode / zeroPulseMode / narrowBoatFirstMode 在这几个版本的参数下都不改变发不发（6 / 0 / 0 / 0），这里不复刻。
+function sizeOf(g, p, o, B, avail, over) {
+  const P = p.p, me = p.me, q = o.q, need = o.need, cnt = p.cnt[q] ?? 0;
+  const minSend = Math.max(typeof p.minCmd === 'function' ? p.minCmd(g) : 0, (P.pulseMinShare ?? 0) * B);
+  const curAtk = typeof g.attackTroopsOn === 'function' ? g.attackTroopsOn(me, q) : 0;
+  const inAtk = o.inAtk ?? 0;
+  const r = (kind, x) => ({ kind, x: Math.round(x ?? 0), minSend: Math.round(minSend), curAtk: Math.round(curAtk) });
+  if (!o.person) {
+    const want = 1.25 * need + 3 * cnt, x = Math.min(avail, want);
+    return r(x <= 0 || (x < want && x < P.chunk * B) ? '不够一条' : '', x);
+  }
+  const usePulseBlock = P.pulseFrac > 0 && (!over || o.nearCollapse || o.bleeding || need > 0.30 * B || avail < P.chunk * B);
+  if (usePulseBlock) {
+    if (g.t >= 3800 && (o.nearCollapse || o.bleeding || (P.aggMemMode === 2 && o.isAgg))) {
+      if (curAtk >= 0.08 * B || curAtk >= 0.65 * need) return r('在途', 0);
+      const targetSlot = Math.min(0.85 * need + 3 * cnt, Math.floor(P.pulseFrac * B));
+      let pulse = Math.min(avail, Math.max(targetSlot - curAtk, Math.floor(0.08 * B)));
+      if (P.counterClearMode === 2 && !o.nearCollapse && inAtk > 0 && curAtk + pulse <= 1.05 * inAtk) {
+        pulse = Math.min(avail, Math.min(Math.floor(0.28 * B), Math.ceil(1.05 * inAtk - curAtk + 0.05 * B)));
+      }
+      return r(pulse < minSend ? '低于最小指令' : '', pulse);
+    }
+    if (o.nearCollapse) {
+      if (curAtk >= 0.04 * B || curAtk >= 0.30 * need) return r('在途', 0);
+      const pulse = Math.min(avail, Math.max(Math.floor(P.pulseFrac * B), Math.min(avail, Math.floor(0.30 * need))));
+      return r(pulse < minSend ? '低于最小指令' : '', pulse);
+    }
+    if (o.pulseMode) {
+      if (curAtk >= 0.04 * B) return r('在途', 0);
+      let capFrac = Math.floor(P.pulseFrac * B);
+      if (P.counterClearMode === 2 && inAtk > 0) capFrac = Math.max(capFrac, Math.min(Math.floor(0.28 * B), Math.ceil(1.05 * inAtk - curAtk + 0.05 * B)));
+      const x = Math.min(avail, Math.min(1.20 * need + 3 * cnt, capFrac));
+      return r(x < minSend ? '低于最小指令' : '', x);
+    }
+  }
+  const want = 1.25 * need + 3 * cnt, x = Math.min(avail, want);
+  return r(x <= 0 || (x < want && (x < P.chunk * B || (P.pplKill > 0 && o.person))) ? '不够一条' : '', x);
 }
 
 function classify(ev, cmdsNow, hadOffers) {
@@ -202,7 +255,7 @@ function classify(ev, cmdsNow, hadOffers) {
   if (v === '拥挤') return '过了软上限，但首选目标判为 crowdedHard（余额 < crowdedHardCap×100×领土 不打）';
   if (v === '缩圈') return '过了软上限，但自己领土低于峰值的 siegeShrinkRatio（余额 < crowdedHardCap×100×领土 不打）';
   if (v === '残块' || v === '吸收') return '首选目标被前置闸跳过（残块 / 吸收波）';
-  return v === '价高' ? '首选目标价高（c>=worth）' : v === '无可用' ? '首选目标无可用兵（avail<=0）' : v === '不够一条' ? '首选目标可用兵不够一条指令（avail<chunk*B）' : '有可用兵但没发（脉冲下限/冷却/其他）';
+  return v === '价高' ? '首选目标价高（c>=worth）' : v === '无可用' ? '首选目标无可用兵（avail<=0）' : v === '不够一条' ? '首选目标可用兵不够一条指令（avail<chunk*B）' : v === '在途' ? '首选目标已有在途进攻（curAtk 过门槛）' : v === '低于最小指令' ? '首选目标要发的兵低于最小指令（x < max(minCmd, pulseMinShare×B)）' : '有可用兵但没发（其他）';
 }
 
 function traceLine(g, b, p, tr, cmdsNow, ev) {
@@ -212,7 +265,7 @@ function traceLine(g, b, p, tr, cmdsNow, ev) {
   out.push(`t=${g.t} ${b} B=${B} L=${L} d=${dMe.toFixed(1)} nb=${p.nb.length} neut=${p.neutral} cmds=${p.cmds} noFull=${p.isNoFullSend ? 1 : 0} shQ=${Math.round(p.shadowQuota ?? 0)} | m=${m.toFixed(3)} worth=${worth.toFixed(1)} cheap=${cheap.toFixed(1)} over=${over ? 1 : 0} dMedOther=${dMedOther === null ? '-' : dMedOther.toFixed(1)} safe(-1)=${Math.round(p.safeAt(g, -1))}`);
   for (const r of ev.rows) {
     const o = r.o, q = r.q;
-    out.push(`    → ${pname(g, q)} terr=${g.terr[q]} bal=${g.bal[q]} dq=${(g.bal[q] / Math.max(1, g.terr[q])).toFixed(1)} cnt=${p.cnt[q]} | c=${o.c.toFixed(1)} rankC=${(o.rankC ?? o.c).toFixed(1)} need=${Math.round(o.need)} tD=${(o.tD ?? 0).toFixed(2)} ${o.person ? '人' : '机'}${o.pulseMode ? ' pulse' : ''}${o.nearCollapse ? ' nearCollapse' : ''}${o.bleeding ? ' bleeding' : ''}${o.onMe ? ' onMe' : ''}${o.isCrowdedHard ? ' crowdedHard' : ''}${o.isAgg ? ' agg' : ''} | safe=${Math.round(r.safe)} keep=${Number.isFinite(r.keep) ? Math.round(r.keep) : 'Inf'} avail=${Number.isFinite(r.avail) ? Math.round(r.avail) : '-Inf'} chunkB=${Math.round(P.chunk * B)} pulseB=${Math.round(P.pulseFrac * B)} ${r.verdict === '价高' ? '价高(c>=worth)→break' : r.verdict === '无可用' ? '无可用(avail<=0)' : r.verdict === '唯一缓冲' ? `唯一真人邻居(B<${P.overHumanCap}×100×L)→continue` : r.verdict === '拥挤' ? `crowdedHard(B<${P.crowdedHardCap}×100×L)→continue` : r.verdict === '缩圈' ? `siegeShrink(B<${P.crowdedHardCap}×100×L)→continue` : r.verdict}${r.soleBuffer ? ' sole' : ''} hNb=${r.humanNbCount}`);
+    out.push(`    → ${pname(g, q)} terr=${g.terr[q]} bal=${g.bal[q]} dq=${(g.bal[q] / Math.max(1, g.terr[q])).toFixed(1)} cnt=${p.cnt[q]} | c=${o.c.toFixed(1)} rankC=${(o.rankC ?? o.c).toFixed(1)} need=${Math.round(o.need)} tD=${(o.tD ?? 0).toFixed(2)} ${o.person ? '人' : '机'}${o.pulseMode ? ' pulse' : ''}${o.nearCollapse ? ' nearCollapse' : ''}${o.bleeding ? ' bleeding' : ''}${o.onMe ? ' onMe' : ''}${o.isCrowdedHard ? ' crowdedHard' : ''}${o.isAgg ? ' agg' : ''} | safe=${Math.round(r.safe)} keep=${Number.isFinite(r.keep) ? Math.round(r.keep) : 'Inf'} avail=${Number.isFinite(r.avail) ? Math.round(r.avail) : '-Inf'} chunkB=${Math.round(P.chunk * B)} pulseB=${Math.round(P.pulseFrac * B)} ${r.verdict === '价高' ? '价高(c>=worth)→break' : r.verdict === '无可用' ? '无可用(avail<=0)' : r.verdict === '唯一缓冲' ? `唯一真人邻居(B<${P.overHumanCap}×100×L)→continue` : r.verdict === '拥挤' ? `crowdedHard(B<${P.crowdedHardCap}×100×L)→continue` : r.verdict === '缩圈' ? `siegeShrink(B<${P.crowdedHardCap}×100×L)→continue` : r.verdict === '在途' ? `在途(curAtk=${r.sz.curAtk})→continue` : r.verdict === '低于最小指令' ? `低于最小指令(x=${r.sz.x}<${r.sz.minSend})→continue` : r.verdict === '不够一条' ? `不够一条(x=${r.sz ? r.sz.x : 0})→continue` : r.verdict}${r.sz && !r.verdict ? ` x=${r.sz.x}` : ''}${r.soleBuffer ? ' sole' : ''} hNb=${r.humanNbCount}`);
   }
   if (!ev.rows.length) out.push('    （offers 为空：没有可打的邻居）');
   for (const c of cmdsNow) out.push(`    ⇒ 影子指令 ${c.kind} pct=${c.pct} → ${c.targetName}（约 ${c.troops} 兵）${c.site ? ` 〔${c.site}〕` : ''}`);

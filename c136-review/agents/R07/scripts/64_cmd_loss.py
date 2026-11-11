@@ -11,7 +11,7 @@
       录像里记成打无主地（A062 kaito9 t=945 的 9 条就是这样），这类记作「改投无主地」。
       配不上的影子指令 = 没被服务器收下（丢失，或者那一拍客户端已经不在了）。
       配不上的录像指令 = 影子没发过（真号和影子在那一拍决策不同）。
-输出：stdout + out/<matchId>/cmd_loss.txt
+输出：stdout + out/<matchId>/cmd_loss.txt（带 --detail bot 时写 out/<matchId>/cmd_loss_detail_<bot>.txt，不覆盖前者）
   A. 每个号：想发 N、收下 M、配上 K、延迟（T−t）中位/90 分位/最大、延迟 ≥35 拍的条数、同一拍落地 ≥3 条的批数
   B. 每 win 拍一档：想发/收下/配上/中位延迟（看卡顿从哪一拍开始）
   C. --detail bot：该号逐条配对明细
@@ -168,9 +168,9 @@ def main():
             if g["hit"] is None:
                 P(f"收下但影子没发 T={g['T']} {g['kind']} pct={g['pct']} → {g['target']}")
     txt = "\n".join(lines) + "\n"
-    if not detail:
-        with open(os.path.join(out, "cmd_loss.txt"), "w") as f:
-            f.write(txt)
+    name = f"cmd_loss_detail_{detail}.txt" if detail else "cmd_loss.txt"
+    with open(os.path.join(out, name), "w") as f:
+        f.write(txt)
     sys.stdout.write(txt)
 
 

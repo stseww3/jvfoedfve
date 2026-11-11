@@ -13,6 +13,7 @@
   手续费 = 陆攻费 + 发船费 + 捐款费
   挨打掉 = 每拍结算的余额差里扣掉利息地租、退兵、收到的兵之后的缺口
   各项 ÷ 收入 给出占比；余额、领土取 span 两端。
+  每人 = 除以 span 第一个阶段期初的在场人数（n0）；退回 = 进攻结束（目标被吃光 / 边界断开）退回余额的兵。
 输出：out/<matchId>/spend_ratio[_<tag>].txt
 """
 import json
@@ -72,9 +73,13 @@ def main():
             terr0, terr1 = rows[0]["terr0"], rows[-1]["terr1"]
             bal0, bal1 = rows[0]["bal0"], rows[-1]["bal1"]
             pc = (lambda x: f"{100 * x / eco:.0f}%") if eco > 0 else (lambda x: "-")
+            n0 = max(1, rows[0].get("n0") or 1)
+            t_ai = sum(r["tA"] for r in rows)
+            refund = sum(r["refund"] for r in rows)
             L.append(f"  {g}：收入 {fmt(eco)} | 进攻净消耗 {fmt(burn)}（{pc(burn)}）| 手续费 {fmt(af)} / {fmt(bf)} / {fmt(df)}（{pc(af + bf + df)}）| 挨打掉 {fmt(hit)}（{pc(hit)}）| "
                      f"捐款 {don_n} 笔 / {fmt(don_amt)} | 进攻 {atk_n} 条 / {fmt(sent)} | 领土 {fmt(terr0)}→{fmt(terr1)} | 余额 {fmt(bal0)}→{fmt(bal1)} | "
-                     f"密度 {bal0 / max(1, terr0):.0f}→{bal1 / max(1, terr1):.0f}")
+                     f"密度 {bal0 / max(1, terr0):.0f}→{bal1 / max(1, terr1):.0f} | "
+                     f"期初 {n0} 人：每人净消耗 {fmt(burn / n0)}、每人打 AI {fmt(t_ai / n0)}、每人领土 {terr1 / n0 - terr0 / n0:+,.0f}；退回 {fmt(refund)}（占发兵 {100 * refund / max(1, sent):.0f}%）")
     txt = "\n".join(L) + "\n"
     dst = os.path.join(out, f"spend_ratio_{tag}.txt" if tag else "spend_ratio.txt")
     open(dst, "w", encoding="utf-8").write(txt)
