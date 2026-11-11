@@ -1,5 +1,89 @@
 [
  {
+  "matchId": "A054",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-SE05",
+  "prefix": "SE",
+  "name": "远程船被对手的拦截船打沉",
+  "definition": "本队出海的船在靠岸前被海战扣到 0 兵，且出海时装的兵不少于当拍余额的 5%。",
+  "detect": "boat_fight.mjs：每条船的被击次数、损失、结局（destroyed）和动手的玩家；录像里对方的 chase 指令。",
+  "instances": [
+   {
+    "matchId": "A054",
+    "t": 3325,
+    "note": "sora_w 两条、kaito9 一条，共 445909 兵 + 手续费 106828，全部被 Crictus 的拦截船打沉"
+   }
+  ]
+ },
+ {
+  "matchId": "A054",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-DF04",
+  "prefix": "DF",
+  "name": "不接壤的对手从海上登陆，打在沿海号上",
+  "definition": "此前和该号没有陆地接壤的敌方玩家用船登陆，船上的兵不少于该号当拍余额的 30%，该号 700 拍内阵亡。",
+  "detect": "sea_landings.mjs（hadLandBorder=0）+ landing_math.py + resim_events.csv。",
+  "instances": [
+   {
+    "matchId": "A054",
+    "t": 3579,
+    "note": "Player 414→talon5 303854（余额的 40%），433 拍后阵亡"
+   },
+   {
+    "matchId": "A054",
+    "t": 4338,
+    "note": "Crictus→kaito9 583031（253%），291 拍后阵亡"
+   },
+   {
+    "matchId": "A054",
+    "t": 4745,
+    "note": "justakitten→zero_7 279659（60%），303 拍后阵亡"
+   },
+   {
+    "matchId": "A054",
+    "t": 8161,
+    "note": "Federation→sora_w 534276（36%），486 拍后阵亡"
+   }
+  ]
+ },
+ {
+  "matchId": "A054",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-AT09",
+  "prefix": "AT",
+  "name": "离场壳的保底线是 88 倍领土：密度不到 88 的号不吃身边的壳",
+  "definition": "1500 拍后身边有 ≥2000 格的非真人邻居（离场壳或 AI），它的报价 c < worth，buyLand 因 avail = 余额 − 手续费 − max(keep, min(safeAt, 88×领土)) ≤ 0（或 x < want 且 x < 20% 余额）连续 ≥20 个决策拍不发令。",
+  "detect": "shadow_idle.csv（t0≥1500、aiNb>0、oGate）+ shadow.mjs --probe 的 safeAt(q)；recon_facts.py --section husk,ainb。",
+  "instances": [
+   {
+    "matchId": "A054",
+    "t": 2700,
+    "note": "riku_x 贴着 Pakistan 的壳（4100–5427 格），2700–2890 拍 safeAt=88×领土 高于余额；壳被 T3 吃走 4470 格"
+   },
+   {
+    "matchId": "A054",
+    "t": 7532,
+    "note": "alex_k 贴着 justakitten 的壳（31068 格、密度 1.0），7500–8299 拍 160 个决策拍里 155 个被这道闸门拦下，发 1 条拿到 10681 格"
+   }
+  ]
+ },
+ {
+  "matchId": "A054",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-DN06",
+  "prefix": "DN",
+  "name": "低密度的号给高密度的号送协防",
+  "definition": "（M1 起使用，这里补定义）defense_dispatch 落地当拍，捐出方密度低于受赠方密度。",
+  "detect": "resim_report.py --section donflow --list（落地拍双方密度）；dispatch_audit.csv 的 dMe、dAlly（决策拍）。",
+  "instances": [
+   {
+    "matchId": "A054",
+    "t": 3230,
+    "note": "20 笔协防里 16 笔；捐出方 ryan_m、noah88、leo_tx 密度 30–39，受赠方 61–97"
+   }
+  ]
+ },
+ {
   "matchId": "A055",
   "reviewer": "R01",
   "proposedId": "NEW-R01-SP03",
@@ -2324,6 +2408,948 @@
   "name": "空心领先：图涨、兵占比跌",
   "definition": "我方队伍占图上升 ≥3 个点的 600 拍窗口里，队伍总兵占各队总兵之和的比例下降 ≥8 个点。",
   "detector": "scripts/match_truth.mjs（T30）"
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:BT-food-is-teammate",
+  "definition": "发船时按引擎靠岸规则会登上的地属于同队的内置 AI 或同队的空壳（策略的 searchFood 把它当成「隔海的内置 AI」）：靠岸 = 把船上的兵交给它",
+  "detectionSketch": "重放：发船指令的瞄准对象是同队 AI / 同队空壳（simdigest boats 的「瞄准」列）；靠岸时 bB.kw.rE 被调用（simdigest gifts）",
+  "instances": [
+   {
+    "t": 1708,
+    "bot": "Enderman"
+   },
+   {
+    "t": 1813,
+    "bot": "Enderman"
+   },
+   {
+    "t": 1869,
+    "bot": "Enderman"
+   },
+   {
+    "t": 1925,
+    "bot": "Enderman"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:BT-squad-boats-fight",
+  "definition": "两个异队我方号的船在 7.5 格内互相开火（引擎：不同队的船每 2 拍互打，按较小一方兵力的 10% 上下结算）",
+  "detectionSketch": "重放：eng_replay.cjs 在船打船函数里的只读口子按（开火船主, 挨打船主）累计（simdigest boatwar 里两头都是我方号的组）",
+  "instances": [
+   {
+    "t": 2017,
+    "bot": "Enderman"
+   },
+   {
+    "t": 2017,
+    "bot": "Mansa Musa"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:BT-min-boat-overkill",
+  "definition": "boatFood 的最小船 = 余额的 12.5%（4×发船手续费）：目标是几乎没兵的内置 AI，船上的兵 >= 吃光它所需的 10 倍",
+  "detectionSketch": "重放：发船瞄准内置 AI 且 船上兵 >= 10×(2×对方领土 + 1.78×对方兵)（simdigest boats 逐条）；影子探针的「船→AI」行",
+  "instances": [
+   {
+    "t": 5215,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 5425,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 5607,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 5663,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 5733,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 5831,
+    "bot": "BlackRock"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:AT-counter-into-allin",
+  "definition": "对手的余额几乎为 0（不到它压在我身上的兵的 1%），而它对我的攻击线上的兵 >= 我这一条的出兵：这批兵被引擎 1:1 抵在它的攻击线上，拿不到地",
+  "detectionSketch": "重放：我对 q 的陆攻生效那一拍 q 的余额 < 1%×(q→我 的攻击线兵) 且线上兵 >= 出兵；eng_replay --trace 的 RING 行里「反击兵 X→0」",
+  "instances": [
+   {
+    "t": 2079,
+    "bot": "Cleopatra"
+   },
+   {
+    "t": 2086,
+    "bot": "Cleopatra"
+   },
+   {
+    "t": 2100,
+    "bot": "Cleopatra"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:DP-empty-neighbor-missed",
+  "definition": "有一个真人邻居几乎没兵（tD<0.1，吃光它的 need 不到我余额的一半），而 buyLand 对它的报价停在 L5361：保底线（dpKeep，取自另一个强邻居）>= 我的余额",
+  "detectionSketch": "影子探针：真人报价 tD<0.1 且 need<=0.5×余额 且出口 L5361（safe 来自 dpKeep）",
+  "instances": [
+   {
+    "t": 2130,
+    "bot": "Cleopatra"
+   },
+   {
+    "t": 2220,
+    "bot": "Cleopatra"
+   },
+   {
+    "t": 2310,
+    "bot": "Cleopatra"
+   },
+   {
+    "t": 2400,
+    "bot": "Cleopatra"
+   },
+   {
+    "t": 2140,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 2185,
+    "bot": "BlackRock"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:OP-safefinite-human-lock",
+  "definition": "t<1500 打内置 AI 的底线取到 safeFinite，而它的值是「某个内置 AI 邻居的另一个邻居」——一个敌方真人或外人队友——的兵；去掉这一项当拍就能出兵（winFloor 里的 safeFinite 不带 skip，正要买的那个内置 AI 自己也在设这条线）",
+  "detectionSketch": "影子探针 tally：t<1500 gate=floor:sb 且 sbKind 为敌方真人/外人队友 且 passNoSb=1",
+  "instances": [
+   {
+    "t": 900,
+    "bot": "Chosokabe"
+   },
+   {
+    "t": 900,
+    "bot": "Chicago"
+   },
+   {
+    "t": 920,
+    "bot": "Afsharid"
+   },
+   {
+    "t": 1080,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 1380,
+    "bot": "AltF4"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:AS-poke-for-husk",
+  "definition": "HL-ASSIST 的被救对象当时已经离开对局（空壳）",
+  "detectionSketch": "HL-ASSIST 行的 ally 的离开拍 <= 日志拍（simdigest pokes 的「空壳」标记）",
+  "instances": [
+   {
+    "t": 3374,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 3402,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 3521,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 3640,
+    "bot": "BlackRock"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:AS-poke-then-hit",
+  "definition": "被戳的真人此前 900 拍没有对出手的号下过陆攻，戳之后 600 拍内对它出兵（只记先后，不记因果）",
+  "detectionSketch": "simdigest pokes：戳前 900 拍对方→出手号的陆攻 0 条、戳后 600 拍 >0 条",
+  "instances": [
+   {
+    "t": 3374,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 4823,
+    "bot": "Mansa Musa"
+   },
+   {
+    "t": 5348,
+    "bot": "Enderman"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:AT-thin-human-pulse",
+  "definition": "对密度 <15 的真人邻居按 pulse（每条 <=12% 余额）出兵，每格花费 < worth 的一半且 600 拍内领土 +30% 以上",
+  "detectionSketch": "重放 pair：对敌方真人 耗兵/得地 < 0.5×worth 且领土 600 拍 +30%；影子出口 L5522",
+  "instances": [
+   {
+    "t": 3339,
+    "bot": "Mansa Musa"
+   },
+   {
+    "t": 3395,
+    "bot": "Mansa Musa"
+   },
+   {
+    "t": 3409,
+    "bot": "Mansa Musa"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:AI-buffer-eaten",
+  "definition": "隔在我方号与一个大号真人之间的内置 AI（我方号因保护名单或 minCmd 一直没买）被那个真人吃掉，对方由此与我方号接壤，随后 600 拍内对我方号出兵",
+  "detectionSketch": "重放邻居采样（每 90 拍）：某内置 AI 邻居消失的同时出现一个此前不接壤的真人邻居（simdigest neigh），再查 cmdlist 里它 600 拍内对我方号的陆攻；谁吃的用 eng_replay --trace <AI号>",
+  "instances": [
+   {
+    "t": 4770,
+    "bot": "Enderman"
+   },
+   {
+    "t": 4770,
+    "bot": "Mansa Musa"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:IO-disconnect-husk",
+  "definition": "我方号在存活状态下被登记离开（录像指令 9 或结算 left），领土和兵留在场上由内置 AI 托管、利息为 0，仍算原队成员",
+  "detectionSketch": "重放：号从在场变成离开状态且仍存活（simdigest gaps / roster）；无录像：日志在终局前 300 拍以上中断且没有 died 结算",
+  "instances": [
+   {
+    "t": 1330,
+    "bot": "Frieren"
+   },
+   {
+    "t": 1330,
+    "bot": "Afsharid"
+   },
+   {
+    "t": 1603,
+    "bot": "TaxCollector"
+   },
+   {
+    "t": 1603,
+    "bot": "Khiva"
+   },
+   {
+    "t": 1624,
+    "bot": "Angkor"
+   },
+   {
+    "t": 1694,
+    "bot": "Chicago"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:IO-silent-drop",
+  "definition": "某个号的日志在终局前 300 拍以上中断，之后既没有快照也没有结算行",
+  "detectionSketch": "对局包：results.csv 里没有这个号的行，且 in_game.log 最后一条快照拍 < endTick−300（simdigest gaps / logdigest wall）",
+  "instances": [
+   {
+    "t": 810,
+    "bot": "Frieren"
+   },
+   {
+    "t": 810,
+    "bot": "Afsharid"
+   },
+   {
+    "t": 900,
+    "bot": "Khiva"
+   },
+   {
+    "t": 990,
+    "bot": "Chicago"
+   },
+   {
+    "t": 1080,
+    "bot": "TaxCollector"
+   },
+   {
+    "t": 1080,
+    "bot": "Angkor"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:IO-client-behind",
+  "definition": "本机拍落后服务器拍 >=90 拍",
+  "detectionSketch": "digest lag；logdigest wall / oplag（开局周期指令的下令拍→执行拍延迟）",
+  "instances": [
+   {
+    "t": 60,
+    "bot": "AltF4"
+   },
+   {
+    "t": 50,
+    "bot": "Chosokabe"
+   },
+   {
+    "t": 700,
+    "bot": "Khiva"
+   },
+   {
+    "t": 700,
+    "bot": "Afsharid"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:IO-lag-burst",
+  "definition": "同号同拍 >=3 条生效指令且一拍内出兵+手续费 >= 拍前余额的 50%（攒下的指令成批执行，每条按执行时余额的百分比连乘）",
+  "detectionSketch": "重放 squadCmds 按 (号, 拍) 聚合（simdigest bursts 3 0.5）",
+  "instances": [
+   {
+    "t": 994,
+    "bot": "Bowser"
+   },
+   {
+    "t": 1057,
+    "bot": "Angkor"
+   },
+   {
+    "t": 1092,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 1267,
+    "bot": "Chosokabe"
+   },
+   {
+    "t": 1407,
+    "bot": "Chicago"
+   },
+   {
+    "t": 1575,
+    "bot": "Bowser"
+   },
+   {
+    "t": 1813,
+    "bot": "Enderman"
+   },
+   {
+    "t": 1827,
+    "bot": "Bowser"
+   },
+   {
+    "t": 2100,
+    "bot": "BlackRock"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:IO-cmd-blackout",
+  "definition": "指令断档：某个号相邻两次有指令进录像的拍相隔 >=300，而这段时间它的日志 cmds 计数涨了 >=5（策略在发令、引擎没收到）",
+  "detectionSketch": "simdigest gaps",
+  "instances": [
+   {
+    "t": 1295,
+    "bot": "Enderman"
+   },
+   {
+    "t": 840,
+    "bot": "Khiva"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:CMD-repeat-before-effect",
+  "definition": "同一个号对同一玩家目标的两条生效陆攻相隔 <=21 拍（3 个服务器回合）：第二条是在第一条落地前后下的，各自按当拍余额的百分比出兵",
+  "detectionSketch": "重放 squadCmds：同 p 同 raw 目标、ok=1、间隔 1~21 拍（simdigest dups）",
+  "instances": [
+   {
+    "t": 3395,
+    "bot": "Mansa Musa"
+   },
+   {
+    "t": 2079,
+    "bot": "Cleopatra"
+   },
+   {
+    "t": 2086,
+    "bot": "Cleopatra"
+   },
+   {
+    "t": 1274,
+    "bot": "Enderman"
+   },
+   {
+    "t": 1407,
+    "bot": "Chicago"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:SP-squad-stack",
+  "definition": "两个我方号最终出生点相距 <80 格（同队或异队）",
+  "detectionSketch": "录像选点指令取每号最后一条生效的落点，两两算距离（digest picks）",
+  "instances": [
+   {
+    "t": 50,
+    "bot": "Frieren"
+   },
+   {
+    "t": 50,
+    "bot": "Enderman"
+   },
+   {
+    "t": 50,
+    "bot": "Khiva"
+   },
+   {
+    "t": 50,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 50,
+    "bot": "Angkor"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:SP-repick-churn",
+  "definition": "选点阶段单号生效的选点指令 >=8 条，或最后两步还在改点",
+  "detectionSketch": "录像 id=0 指令按号计数、按步号取最后两步（digest picks）",
+  "instances": [
+   {
+    "t": 49,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 50,
+    "bot": "Enderman"
+   },
+   {
+    "t": 50,
+    "bot": "TaxCollector"
+   },
+   {
+    "t": 33,
+    "bot": "Chosokabe"
+   },
+   {
+    "t": 48,
+    "bot": "Mansa Musa"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:OP-cycle-open",
+  "definition": "开局周期出兵按时执行（指令延迟 <50 拍）且 t=630 单号领土不低于同局其余真人中位",
+  "detectionSketch": "HL-OPENING 配录像无主地指令的延迟（logdigest oplag）；重放 t=630 各真人领土（simdigest top 630 / medians）",
+  "instances": [
+   {
+    "t": 630,
+    "bot": "Cleopatra"
+   },
+   {
+    "t": 630,
+    "bot": "Chicago"
+   },
+   {
+    "t": 630,
+    "bot": "Enderman"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:OP-dpkeep-freeze-ai",
+  "definition": "t<1500 打内置 AI 的底线取到 dpKeep（最强真人邻居的兵折算），高于自己的可用兵 → 对 0 兵的内置 AI 也不出手，而那个真人当时并没有打我",
+  "detectionSketch": "影子探针 tally：t<1500 gate=floor:dpKeep（simdigest gates 第一段）",
+  "instances": [
+   {
+    "t": 1020,
+    "bot": "Chosokabe"
+   },
+   {
+    "t": 1140,
+    "bot": "Chosokabe"
+   },
+   {
+    "t": 1250,
+    "bot": "AltF4"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:OP-safefinite-squad-lock",
+  "definition": "打内置 AI 的底线取到 safeFinite，而它的值是「某个内置 AI 邻居的另一个邻居」的兵，那个邻居是我方在场号（同队或异队）；去掉这一项当拍就能出兵。t>=1500 经 safeAt 卡的是所有报价",
+  "detectionSketch": "影子探针 tally：t<1500 gate=floor:sb 且 sbKind 以「我方号」开头且 passNoSb=1；t>=1500 报价出口 L5361 且 safe 来自 safeFinite〔我方号〕（simdigest gates）",
+  "instances": [
+   {
+    "t": 3395,
+    "bot": "Mansa Musa"
+   },
+   {
+    "t": 3590,
+    "bot": "Mansa Musa"
+   },
+   {
+    "t": 1000,
+    "bot": "Mansa Musa"
+   },
+   {
+    "t": 800,
+    "bot": "Enderman"
+   },
+   {
+    "t": 800,
+    "bot": "Khiva"
+   },
+   {
+    "t": 640,
+    "bot": "Frieren"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:PL-protect-box",
+  "definition": "被保护名单围住：我方在场号连续 >=180 拍没有可打的邻居、也没有无主邻格（策略 nb=0 且 neut=0），而它实际挨着名字在池里的异队号/空壳或撞名内置 AI",
+  "detectionSketch": "重放邻居采样（每 90 拍）按策略的 isProtectedSquadMate 规则分类（simdigest protbox）",
+  "instances": [
+   {
+    "t": 1440,
+    "bot": "Enderman"
+   },
+   {
+    "t": 810,
+    "bot": "Frieren"
+   },
+   {
+    "t": 1170,
+    "bot": "TaxCollector"
+   },
+   {
+    "t": 720,
+    "bot": "Angkor"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:PL-pool-ai",
+  "definition": "内置 AI 的名字在编队名字池里（isOurSquadBot 只比名字）：我方号与它接壤却整局不打它",
+  "detectionSketch": "重放：引擎名字表里编号 >= 真人数且名字小写在 SQUAD_POOL_SET 里的号；与我方在场号的接壤采样（simdigest poolai）",
+  "instances": [
+   {
+    "t": 810,
+    "bot": "Afsharid"
+   },
+   {
+    "t": 810,
+    "bot": "Bowser"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:HK-husk-eats-us",
+  "definition": "我方空壳（内置 AI 托管）对我方在场号出兵并拿走领土，而在场号因保护名单不能陆攻它",
+  "detectionSketch": "重放 ledger：空壳离开后对我方在场号的 耗兵/得地（simdigest husks）",
+  "instances": [
+   {
+    "t": 2100,
+    "bot": "Mansa Musa"
+   },
+   {
+    "t": 2100,
+    "bot": "BlackRock"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:BT-gift",
+  "definition": "船靠上同队玩家的岸：船上的兵直接归了对方（引擎当作一次不收手续费的移交）",
+  "detectionSketch": "重放：bB.kw.rE 被调用（simdigest gifts）",
+  "instances": [
+   {
+    "t": 1933,
+    "bot": "Enderman"
+   },
+   {
+    "t": 2239,
+    "bot": "Enderman"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:BT-hit-squadmate",
+  "definition": "我方在场号的船靠上「异队的我方在场号」的岸：保护名单只管陆攻和选目标，引擎照样按进攻结算",
+  "detectionSketch": "重放：登陆事件里发船人和登陆格主人都是在场的我方号且不同队（simdigest landings）",
+  "instances": [
+   {
+    "t": 2070,
+    "bot": "Enderman"
+   },
+   {
+    "t": 1076,
+    "bot": "Angkor"
+   },
+   {
+    "t": 1175,
+    "bot": "Angkor"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:BT-own-shore",
+  "definition": "船靠回自己的岸：兵回到余额，白付一次 32/1024 的手续费",
+  "detectionSketch": "重放：靠岸时登陆格的主人是发船人自己（simdigest boats）",
+  "instances": [
+   {
+    "t": 5621,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 5726,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 5733,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 1813,
+    "bot": "Enderman"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:BT-sunk",
+  "definition": "船没靠岸就在海上被敌船打光（消失时船上 0 兵）",
+  "detectionSketch": "重放：按引擎船编号跟踪，船被移除时没有靠岸记录且兵力为 0（simdigest boats）",
+  "instances": [
+   {
+    "t": 2016,
+    "bot": "Mansa Musa"
+   },
+   {
+    "t": 1813,
+    "bot": "Enderman"
+   },
+   {
+    "t": 3955,
+    "bot": "Enderman"
+   },
+   {
+    "t": 1869,
+    "bot": "Bowser"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:AT-ai-order-too-small",
+  "definition": "t>=1500 对非真人邻居（内置 AI / 空壳）的报价在 buyLand L5367 因 x=min(avail, 1.25×need+3×接壤) < minCmd（4×手续费=余额的 4.7%）被跳过",
+  "detectionSketch": "影子探针 tally：t>=1500、ai>0、排第一的非真人报价出口 = L5367a（simdigest gates 第三段）",
+  "instances": [
+   {
+    "t": 1730,
+    "bot": "Mansa Musa"
+   },
+   {
+    "t": 2545,
+    "bot": "Mansa Musa"
+   },
+   {
+    "t": 3920,
+    "bot": "Mansa Musa"
+   },
+   {
+    "t": 4750,
+    "bot": "Mansa Musa"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:AT-over-cap-dump",
+  "definition": "兵超过 100×领土后对真人邻居一次打出 >=20% 余额的陆攻并拿到地",
+  "detectionSketch": "重放：对敌方真人的陆攻 sent>=0.2×B0 且 B0>100×myTerr，之后 300 拍 ledger 对该目标得地 >0",
+  "instances": [
+   {
+    "t": 3997,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 4452,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 5824,
+    "bot": "BlackRock"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:AT-overcap-price-skip",
+  "definition": "超软上限（兵 > 100×领土）时 buyLand 不比价：对报价 c >= worth 的真人出兵",
+  "detectionSketch": "影子探针 tally：t>=1500、出口含出兵、hc>=worth 且 over=1（simdigest gates 第二段末行）",
+  "instances": [
+   {
+    "t": 4440,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 5810,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 5815,
+    "bot": "BlackRock"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:AT-worth-gate",
+  "definition": "有真人在打我，而 buyLand 对每个真人邻居的报价都停在 L5267（c >= worth 且没超软上限）→ 整段挨打期间 0 条还击",
+  "detectionSketch": "strat_probe 的逐报价出口（simdigest gates 第二段：正被真人打的决策拍里没有对真人出兵的占比）",
+  "instances": [
+   {
+    "t": 1650,
+    "bot": "Bowser"
+   },
+   {
+    "t": 1800,
+    "bot": "Bowser"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:AS-cross-team-poke",
+  "definition": "HL-ASSIST 的「10% squad-rescue poke」是替异队的编队号打的（被救的号与出手的号不同队）",
+  "detectionSketch": "HL-ASSIST 行的 ally 与出手号按真实分队比较；再看被戳的 enemy 属于哪一队（simdigest pokes）",
+  "instances": [
+   {
+    "t": 3374,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 4823,
+    "bot": "Mansa Musa"
+   },
+   {
+    "t": 5327,
+    "bot": "Enderman"
+   },
+   {
+    "t": 5348,
+    "bot": "Enderman"
+   },
+   {
+    "t": 5376,
+    "bot": "Enderman"
+   },
+   {
+    "t": 5404,
+    "bot": "Enderman"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:EG-giant-neighbor-freeze",
+  "definition": "自己超软上限（兵>100×地），邻居表里最强真人的兵让 dpKeep=(对方兵−1.5×我的地)/1.78 >= 自己的全部兵 → 对所有不在 bleeding/将崩状态的目标 avail<=0（L5361）",
+  "detectionSketch": "strat_probe 直接读 safe/avail（simdigest gates 第二段的 L5361·dpKeep）；重放每 90 拍采样：我密度>=100 且 max(真人邻居兵)−1.5×我的地 >= 1.78×我的兵",
+  "instances": [
+   {
+    "t": 3700,
+    "bot": "Enderman"
+   },
+   {
+    "t": 4800,
+    "bot": "Mansa Musa"
+   },
+   {
+    "t": 5600,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 2850,
+    "bot": "Cleopatra"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:FE-tiny-cmd-fee",
+  "definition": "出兵不到余额 5% 的指令（陆攻手续费固定为余额的 1.17%、发船 3.125%）；余额 >=100 万时单条手续费上万",
+  "detectionSketch": "重放：squadCmds 里 sent < 0.05×B0（simdigest fees；47‰ 无主地小单见 simdigest cmds 合计行）",
+  "instances": [
+   {
+    "t": 4774,
+    "bot": "Mansa Musa"
+   },
+   {
+    "t": 4781,
+    "bot": "Mansa Musa"
+   },
+   {
+    "t": 4767,
+    "bot": "Enderman"
+   },
+   {
+    "t": 3955,
+    "bot": "Enderman"
+   },
+   {
+    "t": 3171,
+    "bot": "Cleopatra"
+   },
+   {
+    "t": 5544,
+    "bot": "Mansa Musa"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:DF-passive-death",
+  "definition": "阵亡/清地前 900 拍被真人拿走 >=1,000 格，而自己此前 600 拍对真人 0 条陆攻",
+  "detectionSketch": "重放：ledger 里死前 900 拍按对手类别的失地 + 死前 600 拍 squadCmds 里对真人的陆攻条数（simdigest deaths、cmdlist）",
+  "instances": [
+   {
+    "t": 6061,
+    "bot": "Mansa Musa"
+   },
+   {
+    "t": 3657,
+    "bot": "Cleopatra"
+   },
+   {
+    "t": 1558,
+    "bot": "Chosokabe"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:DF-sea-landing",
+  "definition": "外人的船在我方在场号的岸上登陆，船上兵 >= 我方号当时兵力的 50%（且 >=2 万）：对面从海上开一条新战线",
+  "detectionSketch": "重放：引擎靠岸钩子记录的登陆事件（simdigest landings）",
+  "instances": [
+   {
+    "t": 1754,
+    "bot": "Bowser"
+   },
+   {
+    "t": 2119,
+    "bot": "Cleopatra"
+   },
+   {
+    "t": 6031,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 6060,
+    "bot": "BlackRock"
+   }
+  ]
+ },
+ {
+  "matchId": "B010",
+  "reviewer": "R06",
+  "name": "NEW:NF-lock",
+  "definition": "isNoFullSend 被置真的条件成立：陆攻发令后 1~7 拍内余额跌幅（来自上一条指令落地或挨打）被当成本条指令的实际出兵，且想发的兵 >= 1.12×跌幅",
+  "detectionSketch": "重放逐拍余额 + 影子的发令拍（simdigest nfs / shadow）",
+  "instances": [
+   {
+    "t": 4452,
+    "bot": "BlackRock"
+   },
+   {
+    "t": 2100,
+    "bot": "Cleopatra"
+   }
+  ]
  },
  {
   "matchId": "B038",
