@@ -24,7 +24,24 @@ def check(mid):
     print('统计:', json.dumps(stats, ensure_ascii=False))
     if md is not None:
         print('md 行数:', md.count('\n'))
+def _flat(x):
+    if isinstance(x, (list, tuple)):
+        return [z for y in x for z in _flat(y)]
+    return [str(x)]
+
+
+def normalize(doc):
+    """各局 decisions[] 的字段类型统一：bots 一律是字符串（多个号用顿号隔开），evidence 一律是字符串列表。"""
+    for d in doc.get('decisions') or []:
+        if isinstance(d.get('bots'), (list, tuple)):
+            d['bots'] = '、'.join(_flat(d['bots']))
+        if isinstance(d.get('evidence'), str):
+            d['evidence'] = [d['evidence']]
+    return doc
+
+
 def dump(mid, doc):
+    normalize(doc)
     json.dump(doc, open(f'{ROOT}/agents/R05/reviews/{mid}.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     print('写入', f'{ROOT}/agents/R05/reviews/{mid}.json', len(json.dumps(doc, ensure_ascii=False)), '字符')
 
@@ -60,7 +77,8 @@ def accounts(mid, work='/tmp/c136-r05/work'):
             'delayBy300': D.get('delayBy300'),
             'lagByBotP50': {b: [x.get('p50') if x else None for x in v] for b, v in (D.get('lagByBot') or {}).items()},
             'funnel': D.get('funnel'),
-            'selfReport': {k: (D.get('selfReport') or {}).get(k) for k in ('shadow', 'cmds', 'landed')},
+            'funnelTotals': D.get('funnelTotals'),
+            'selfReport': {k: (D.get('selfReport') or {}).get(k) for k in ('shadow', 'cmds', 'landed', 'executedAll')},
             'phantomDecisions': D.get('phantom'),
             'lateVoid': D.get('lateVoid'),
             'batches': D.get('batches'),

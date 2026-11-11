@@ -35,7 +35,7 @@ for (let y = 0; y < Hh; y++) {
     cnt.set(best, cnt.get(best) + 1);
   }
 }
-const med = (v) => { const s = [...v].sort((x, y) => x - y); return s.length ? s[Math.floor(s.length / 2)] : 0; };
+const med = (v) => { const s = [...v].sort((x, y) => x - y); return s.length ? (s.length % 2 ? s[(s.length - 1) / 2] : (s[s.length / 2 - 1] + s[s.length / 2]) / 2) : 0; }; // 偶数个取中间两个的平均（早先版本取的是靠上的那个）
 const ours = pts.filter((p) => sq.has(p.id)), others = pts.filter((p) => !sq.has(p.id));
 const sumO = ours.reduce((s, p) => s + cnt.get(p.id), 0);
 const nn = (p, set) => Math.round(Math.min(...set.filter((o) => o.id !== p.id).map((o) => Math.hypot(o.x - p.x, o.y - p.y))));
@@ -64,7 +64,7 @@ if (a.includes('--vs')) {
     const terr = (p) => HS.terr[i][p.id];
     const live = (set) => set.filter((p) => terr(p) > 0);
     const ratio = (set) => live(set).map((p) => terr(p) / Math.max(1, cnt.get(p.id)));
-    const q = (v, f) => { const s = [...v].sort((x, y) => x - y); return s.length ? s[Math.min(s.length - 1, Math.floor(s.length * f))] : 0; };
+    const q = (v, f) => { if (f === 0.5) return med(v); const s = [...v].sort((x, y) => x - y); return s.length ? s[Math.min(s.length - 1, Math.floor(s.length * f))] : 0; };
     const ro = ratio(others), rs = ratio(ours);
     const sumT = (set) => live(set).reduce((s, p) => s + terr(p), 0), sumC = (set) => live(set).reduce((s, p) => s + cnt.get(p.id), 0);
     // 秩相关（Spearman）：出生份额的名次 对 该拍实际地的名次，在场真人全体

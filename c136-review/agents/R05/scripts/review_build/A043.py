@@ -563,6 +563,7 @@ doc = {
     'shadow': {'summary': {'shadowIssued': 188, 'selfReported': 188, 'executed': 188, 'matched': 184, 'staleMedian': 9, 'staleMax': 24, 'staleGE90': 0,
                            'noFullSendFirstTrue': 'ryan_m t=771（拒 11 次整额）、sora_w t=1002（1 次）', 'oneCmdPerTickSqueezed': '2 条（ryan_m，打机器人，想出 19k）'}},
     **ACC,
+    'accountsNote': '这三本账只覆盖 X 盘（有录像的那一盘）的 ryan_m、sora_w 两个号；Y 盘的 8 个号没有录像，做不了延迟配对、好地账和决策拍归因（它们的被围、配额拒单见第 6 节）。',
     'squadVsRealHumans': S['cmp'],
     'teamTroops': {
         'note': 'match_extra.py --sec team（X 盘，HS 每 300 拍）：各队 占图/总兵；编队兵 ÷ 最大敌队兵',

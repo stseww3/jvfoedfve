@@ -136,7 +136,7 @@ turning = [
              'codePath': f'{SRC}: Strategy.send L479-487；Policy.act L4836-4963（L4941-4942）；{ADAPT}: afterTick 在途门与 patchLoop（L10-106）'},
         ],
         'statementType': 'inferred',
-        'note': '地、兵、锁死样本、pct、过闸与落地条数都是量出来的。三层原因各占多少没有拆：没有做「准时下发」或「不锁」的重放。指令为什么迟到、为什么一半没有出现在录像里，原因在策略代码之外（见 unknowns）。',
+        'note': '地、兵、锁死样本、pct、过闸与落地条数都是量出来的。三层原因按决策拍的占比见 tickAttribution（留底 53.3%、发了没用 31.7%、结构 4.6%、有效 8.1%），各自少拿多少地没有拆：没有做「准时下发」或「不锁」的重放。指令为什么迟到、为什么一半没有出现在录像里，原因在策略代码之外（见 unknowns）。',
     },
     {
         'id': 'TP3', 't0': 1800, 't1': 2400, 'shareBefore': 11.4, 'shareAfter': 15.1, 'shareOf': 'T3（我方队伍）', 'rankBefore': 3, 'rankAfter': 3,

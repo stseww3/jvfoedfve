@@ -132,7 +132,7 @@ turning = [
              'codePath': f'{SRC}: Strategy.send L479-487；{LIVE}: sbSendAttack（qs，直接写 websocket）；{SIM}: attack L1263-1285'},
         ],
         'statementType': 'inferred',
-        'note': '三件事各自是量出来的；各占多少分不开。留底锁在 500–750 拍（指令还准时）是唯一的约束；750 拍以后锁和迟到同时存在。',
+        'note': '三件事各自是量出来的；各自少拿多少地分不开（X 盘 ryan_m 按决策拍的占比见 tickAttribution）。留底锁在 500–750 拍（指令还准时）是唯一的约束；750 拍以后锁和迟到同时存在。',
     },
     {
         'id': 'TP3', 't0': 1500, 't1': 2751, 'shareBefore': 1.1, 'shareAfter': 0.0, 'shareOf': 'X 盘 ryan_m',
@@ -472,6 +472,7 @@ doc = {
         'aiBotsLingered': 'Y 盘机器人 3185 拍还有 13.4%、3696 拍 8.3%；X 盘 2700 拍已是 2.7%',
     },
     **ACC,
+    'accountsNote': '这三本账只覆盖 X 盘（有录像的那一盘）的 ryan_m 一个号；Y 盘的九个号没有录像，做不了延迟配对、好地账和决策拍归因（它们的发令窗、清仓窗见第 6 节）。',
     'squadVsRealHumans': S['cmp'],
     'bursts': S['bursts'],
     'delivery': S['delivery'],
