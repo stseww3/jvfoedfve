@@ -1,0 +1,21 @@
+# B034 日志号名 → 引擎编号（traj.csv 的行按「同拍、领土和余额都相同」去 state.tsv 里认）
+  #22（录像里的名字 Sanada）：Sanada（25 行，认出 24 行，GAME-INIT me=22）
+  #23（录像里的名字 Fischer）：Fischer（12 行，认出 11 行，GAME-INIT me=23）
+  #24（录像里的名字 Levi）：Levi（11 行，认出 10 行，GAME-INIT me=24）
+  #26（录像里的名字 Jokic）：Jokic（22 行，认出 21 行，GAME-INIT me=26）
+  #27（录像里的名字 Pagan）：Pagan（21 行，认出 20 行，GAME-INIT me=27）
+  #28（录像里的名字 Bulgar）：Bulgar（10 行，认出 10 行，GAME-INIT me=28）
+  #29（录像里的名字 British Empire）：British Empire（13 行，认出 12 行，GAME-INIT me=29）
+  #30（录像里的名字 Broly）：Broly（27 行，认出 26 行，GAME-INIT me=30）
+  #31（录像里的名字 East India Co）：East India Co（41 行，认出 40 行，GAME-INIT me=31） → FreeMason（15 行，认出 15 行） → Vatican City（10 行，认出 10 行）
+  #34（录像里的名字 Praetorian）：Praetorian（0 行，认出 0 行，GAME-INIT me=34）
+  #35（录像里的名字 Tal）：Tal（9 行，认出 6 行，GAME-INIT me=35）
+  #37（录像里的名字 Shimazu）：Shimazu（0 行，认出 0 行，GAME-INIT me=37）
+  #38（录像里的名字 Zhuge Liang）：Zhuge Liang（20 行，认出 19 行，GAME-INIT me=38）
+  #40（录像里的名字 Ireland）：Ireland（9 行，认出 9 行，GAME-INIT me=40）
+  #41（录像里的名字 Kilwa）：Kilwa（71 行，认出 70 行，GAME-INIT me=41） → Ganondorf（15 行，认出 15 行） → Nelson（12 行，认出 12 行）
+  #43（录像里的名字 Chagatai）：Chagatai（0 行，认出 0 行，GAME-INIT me=43）
+  #45（录像里的名字 Cyrus）：Cyrus（43 行，认出 42 行，GAME-INIT me=45） → Inosuke（15 行，认出 15 行） → Pineapple（3 行，认出 3 行）
+  #48（录像里的名字 LightYagami）：LightYagami（41 行，认出 40 行，GAME-INIT me=48） → Kaiser（13 行，认出 13 行）
+  和 GAME-INIT 对不上的号名：无
+  影子核对（tmp/shadow/B034.all/rows.tsv）：日志快照 458 行里，影子同拍有记录的 458 行：领土 / 余额 / 邻居数 / 无主地边数 全相同 458 行，不同 0 行；影子没有这一拍记录的 0 行（出局那一拍之后或非行动拍）
