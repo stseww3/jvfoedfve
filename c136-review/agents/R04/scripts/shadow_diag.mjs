@@ -145,6 +145,75 @@ export function diagDonate(pol, g, nm) {
     rows.push(`${nm(p)} 地${g.terr[p]} 密度${dA.toFixed(0)} 敌邻${enemyNbs} 被攻${f(inAtk)} 配额${g.donQuota[p]}/${g.donCap}`);
   }
   out.push('      我方队友：' + rows.join('；'));
+  // 逐个候选照抄 L4414~4496 的分类与打分（Vb 行号；只读）
+  try {
+    const hasExposedCoast = (g.coast?.[me]?.length ?? 0) > 0;
+    const prodOptFloor = boxedIn ? (hasExposedCoast ? 44 * L : 34 * L) : Math.max(92 * L, pol.safeAt(g, -1));
+    const emergDefFloor = boxedIn ? (hasExposedCoast ? 32 * L : 22 * L) : Math.max(88 * L, pol.safeAt(g, -1));
+    let maxSquadTerr = 0, topSquadId = -1, maxRandomTeamTerr = 0, fronts = 0;
+    for (let p = 0; p < g.humans; p++) {
+      if (!g.alive[p] || !pol.isTeammate(g, p)) continue;
+      if (pol.isOurSquadBot(g, p) || pol.isBossNpl(g, p)) { if (g.terr[p] > maxSquadTerr) { maxSquadTerr = g.terr[p]; topSquadId = p; } }
+      else if (!g.isBot(p) && g.terr[p] > maxRandomTeamTerr) maxRandomTeamTerr = g.terr[p];
+    }
+    for (let p = 0; p < g.humans; p++) {
+      if (g.alive[p] && pol.isTeammate(g, p) && (pol.isOurSquadBot(g, p) || pol.isBossNpl(g, p)) && g.terr[p] >= 150) {
+        if (pol.peopleOf(g, p).some((o) => g.alive[o] && !pol.isTeammate(g, o) && g.terr[o] > 0)) fronts++;
+      }
+    }
+    out.push(`      底线：一般调度留 ${f(prodOptFloor)}（${(prodOptFloor / L).toFixed(0)}×地），救急调度留 ${f(emergDefFloor)}（${(emergDefFloor / L).toFixed(0)}×地）；编队最大领土 ${maxSquadTerr}（「弃子线」= 0.22×它 = ${Math.round(0.22 * maxSquadTerr)}）；有陆上战线的我方号 ${fronts} 个`);
+    const cls = [];
+    let best = null;
+    for (let p = 0; p < g.humans; p++) {
+      if (p === me || !g.alive[p] || !pol.isTeammate(g, p) || (!pol.isOurSquadBot(g, p) && !pol.isBossNpl(g, p))) continue;
+      if (g.terr[p] < (fronts <= 2 ? 150 : 1200)) { cls.push(`${nm(p)}：地太小，跳过`); continue; }
+      const Lp = Math.max(1, g.terr[p]), Bp = g.bal[p], dAlly = Bp / Lp;
+      if (dAlly >= (boxedIn ? 142 : 115)) { cls.push(`${nm(p)}：密度 ${dAlly.toFixed(0)} 已够高，跳过`); continue; }
+      let inH = 0, outH = 0;
+      for (const a of g.attackersOf(p)) if (!g.isBot(a) && !pol.isTeammate(g, a)) inH += g.attackTroopsOn(a, p);
+      const sbP = g.slotBase(p);
+      for (let i = 0; i < g.atkCount[p]; i++) { const tgt = g.atkTarget[sbP + i]; if (tgt >= 0 && tgt < g.humans && !g.isBot(tgt) && !pol.isTeammate(g, tgt)) outH += g.atkTroops[sbP + i]; }
+      let enemyNbs = 0, botNbs = 0, minEnemyDens = Infinity, prey = false;
+      for (const o of pol.peopleOf(g, p)) {
+        if (o !== me && g.alive[o] && !pol.isTeammate(g, o) && g.terr[o] > 0) {
+          const dd = g.bal[o] / Math.max(1, g.terr[o]);
+          if (!g.isBot(o)) { enemyNbs++; if (dd < minEnemyDens) minEnemyDens = dd; if (dd < 45 || g.terr[o] <= 0.35 * (g.peak?.[o] ?? g.terr[o])) prey = true; }
+          else { botNbs++; if (dd < minEnemyDens) minEnemyDens = dd; if (dd < 35) prey = true; }
+        }
+      }
+      if (enemyNbs === 0 && botNbs > 0) enemyNbs = botNbs;
+      const allyHasCoast = (g.coast?.[p]?.length ?? 0) > 0;
+      const isBeachhead = enemyNbs > 0 && fronts <= 2 && boxedIn;
+      const crown = (p === topSquadId && enemyNbs > 0 && maxRandomTeamTerr >= 0.70 * maxSquadTerr) || isBeachhead;
+      if (enemyNbs === 0 && inH === 0 && outH === 0 && (!boxedIn || !allyHasCoast || dMe < 105 || dAlly > 112)) { cls.push(`${nm(p)}：没有敌邻也没在打/挨打，跳过（L4453）`); continue; }
+      const doomed = !isBeachhead && (inH > 1.65 * Bp || (g.t >= 4500 && Lp < 0.22 * maxSquadTerr && inH > 0.45 * Bp));
+      if (doomed) { cls.push(`${nm(p)}：**判为弃子，跳过**（L4455：被攻 ${f(inH)} ${inH > 1.65 * Bp ? '> 1.65×余额' : '> 0.45×余额'} ${f(Bp)}，地 ${Lp} ${Lp < 0.22 * maxSquadTerr ? '< 弃子线' : ''}）`); continue; }
+      const underFire = inH > 0 && (inH >= 0.06 * Bp || dAlly < 88);
+      const push = outH >= 0.06 * Bp && dAlly < 96;
+      const opening = enemyNbs > 0 && (prey || minEnemyDens < 0.70 * dAlly) && dAlly < 96;
+      if (underFire) {
+        const reqD = boxedIn ? (hasExposedCoast ? 42 : 30) : 102;
+        if (dMe < reqD || B <= 1.12 * emergDefFloor || (!boxedIn && dMe < dAlly + 16)) { cls.push(`${nm(p)}：在挨打（${f(inH)}），但我不够格（我密度 ${dMe.toFixed(0)}，要求 ≥${reqD}${!boxedIn ? '且比对方高 16' : ''}，余额要 > ${f(1.12 * emergDefFloor)}）`); continue; }
+        const score = 5000 + (inH / Math.max(1, Bp)) * 1200 + (105 - dAlly) * 20 + Math.min(2200, Lp / 18);
+        cls.push(`${nm(p)}：救急候选，得分 ${score.toFixed(0)} = 5000 + 被攻比 ${((inH / Math.max(1, Bp)) * 1200).toFixed(0)} + 密度差 ${((105 - dAlly) * 20).toFixed(0)} + 领土项 ${Math.min(2200, Lp / 18).toFixed(0)}`);
+        if (!best || score > best.score) best = { p, score, kind: 'defense_dispatch', floor: emergDefFloor };
+      } else {
+        const reqD = boxedIn ? 58 : 108;
+        const maxAllyD = boxedIn ? (push || opening || enemyNbs > 0 ? 140 : 128) : 96;
+        if (dMe < reqD || dAlly > maxAllyD || B <= 1.14 * prodOptFloor || (!boxedIn && dMe < dAlly + 16)) { cls.push(`${nm(p)}：一般候选，但不够格（我密度 ${dMe.toFixed(0)} 要求 ≥${reqD}；对方密度 ${dAlly.toFixed(0)} 要求 ≤${maxAllyD}；余额要 > ${f(1.14 * prodOptFloor)}）`); continue; }
+        const score = (push || opening ? 2500 : 1000) + (crown ? 1800 : 0) + (outH / Math.max(1, Bp)) * 1200 + (prey ? 500 : 0) + (100 - dAlly) * 18 + enemyNbs * 80 + Math.min(3500, Lp / 14);
+        cls.push(`${nm(p)}：${push || opening ? '进攻' : '增产'}候选，得分 ${score.toFixed(0)}（领土项 ${Math.min(3500, Lp / 14).toFixed(0)}）`);
+        if (!best || score > best.score) best = { p, score, kind: push || opening ? 'offense_dispatch' : 'yield_opt_dispatch', floor: prodOptFloor };
+      }
+    }
+    for (const c of cls) out.push('        ' + c);
+    if (best) {
+      const maxSafePct = Math.floor((Math.max(0, B - best.floor) * 1024) / Math.max(1, B));
+      const ideal = best.kind === 'defense_dispatch' ? (boxedIn ? 380 : 240) : (boxedIn ? 320 : 220);
+      const pct = Math.min(maxSafePct, ideal);
+      out.push(`      ⇒ 选中 ${nm(best.p)}（${best.kind}），比例 min(${maxSafePct}, ${ideal}) = ${pct}/1024${pct < 180 ? '，低于 180 不发（L4506）' : `，捐后我方密度约 ${((B * (1 - pct / 1024) - B * 0.0625) / L).toFixed(0)}`}`);
+    } else out.push('      ⇒ 没有合格的收款人');
+  } catch (e) { out.push('      调度候选诊断出错 ' + String(e).slice(0, 100)); }
   return out;
 }
 

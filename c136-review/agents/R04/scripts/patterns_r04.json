@@ -116,7 +116,7 @@
   "name": "队友被围时救援到不了（配额/不相邻/没兵）",
   "definition": "某号出局前 500 拍内被攻兵 ≥ 自己余额，期间收到的队友捐款到账 < 被攻兵的 10%。",
   "detector": "scripts/match_digest.py 第 5 节（出局前收到的捐款）",
-  "codePath": "Policy.tryEmergencyBossRescue L4215、Policy.tryDonateToTeammate L4463~4473（defense_dispatch 分支）"
+  "codePath": "Policy.tryDonateToTeammate L4455~4456（弃子规则：被攻兵 > 1.65×余额，或 t≥4500 且领土 < 0.22×编队最大领土且被攻兵 > 0.45×余额 → 不再给它捐）、L4463~4473（defense_dispatch 要求捐款人密度 ≥102 且比对方高 16）；Policy.tryEmergencyBossRescue L4215"
  },
  "NEW-IO-LAGLOSS": {
   "prefix": "IO",
@@ -180,5 +180,40 @@
   "definition": "本队只剩我方号在场且占比 < 头号敌队的一半之后，仍持续 ≥ 600 拍没有任何落地的陆攻或船。",
   "detector": "scripts/match_digest.py 第 2、10 节",
   "codePath": "Policy.tryPeaceVote L4166、Policy.act L4801~4984"
+ },
+ "NEW-AT-PRICEGATE": {
+  "prefix": "AT",
+  "name": "贴着决定胜负的敌方大号，报价高于 worth 就一直不出手",
+  "definition": "某号与某敌方真人相邻 ≥ 300 拍，buyLand 对它的报价 c ≥ worth（worth = 0.9×winRatio×其他真人密度中位）、自己余额 ≤ 100×领土，这段时间对任何真人都没有出兵；同期该敌方真人从我方编队净拿走 ≥ 5000 格。",
+  "detector": "scripts/shadow.mjs <局号> --at <拍>（buyLand 报价行末尾「c≥worth 且不便宜且未超上限：到此为止（L5359 break）」）；scripts/truth_query.py <局号> cmds <号> t0 t1 --id 1；scripts/enemy_ledger.py（敌方头号的地块来源与双方出兵）",
+  "codePath": "Policy.buyLand L5350~5359（worth、over、L5359 break）；Policy.peerAggressor L4606~4655（对方余额+在途 > 1.6×我的余额就不算「打我的人」，没有折扣）"
+ },
+ "NEW-AT-CAPDUMP": {
+  "prefix": "AT",
+  "name": "余额一过软上限就把兵倒给最便宜的邻居，不看单价也不看谁在打我们",
+  "definition": "出兵那一拍余额 > 100×领土（buyLand 的 over=true），目标的报价 c ≥ worth，且目标不是此前 600 拍从我方编队拿地最多的敌方真人。计数 = 这类出兵的次数与兵数。",
+  "detector": "scripts/shadow.mjs <局号> --at <拍>（over=true 时的报价单与实际目标）；scripts/truth_query.py <局号> cmds <号> t0 t1 --id 1",
+  "codePath": "Policy.buyLand L5352（over = surplus>0 && B > 100×L）、L5359（over 时不 break，按单价从低到高买）"
+ },
+ "NEW-DF-HOLDFED": {
+  "prefix": "DF",
+  "name": "前线号留足 88×领土 + 队友救急调度，顶住大两三倍的真人连续进攻（有效）",
+  "definition": "某号在 ≥ 900 拍里被同一个余额 ≥ 自己 2 倍的敌方真人打 ≥ 4 次，期间领土净跌 ≤ 15%，并收到 ≥ 3 笔队友捐款。",
+  "detector": "scripts/truth_query.py <局号> cmds <号> t0 t1；bal <号> t0 t1；scripts/match_digest.py 第 7 节",
+  "codePath": "Policy.safeAt L4543~4560（底线封顶 oppFloorCap=88×地）；Policy.tryDonateToTeammate L4463~4473（defense_dispatch）；Policy.buyLand L5456~5609（挨打后对来犯者的 12% 脉冲）"
+ },
+ "NEW-DN-HOLLOWREAR": {
+  "prefix": "DN",
+  "name": "封死的后排号按 32~44×领土 留底把兵调走，长期只剩三成密度，敌人一贴上来就被逐个打穿",
+  "definition": "某号在 boxedIn 状态下捐款后密度 ≤ 32，并在首次被敌方真人进攻前 600 拍内密度中位 ≤ 45；随后在首次被打后的 400 拍内出局。计数 = 这样出局的号数。",
+  "detector": "scripts/truth_query.py <局号> cmds <号> t0 t1 --id 2（捐后密度）；scripts/match_digest.py 第 5 节（出局链）；scripts/shadow.mjs --at（调度诊断里的两条底线）",
+  "codePath": "Policy.tryDonateToTeammate L4355（boxedIn 判定）、L4382（prodOptFloor = 44/34×地，emergDefFloor = 32/22×地）、L4502~4506（封死号比例 320/380）"
+ },
+ "NEW-DN-BIGFIRST": {
+  "prefix": "DN",
+  "name": "调度打分里领土项最大，兵总是流向地最大的号",
+  "definition": "某 600 拍窗口内到账捐款的 ≥ 50% 给了编队里领土最大的号，而同窗口另一个我方号正被敌方真人净拿走 ≥ 20% 领土且收到的捐款 < 窗口总到账的 10%。",
+  "detector": "scripts/match_digest.py 第 7 节（收款方）；scripts/shadow.mjs --at（调度诊断逐个候选的得分拆解）",
+  "codePath": "Policy.tryDonateToTeammate L4467（救急得分 = 5000 + 被攻比×1200 + 密度差×20 + min(2200, 领土/18)）、L4482~4488（一般得分含 min(3500, 领土/14) 与 crown 1800）、L4455（弃子规则先把小号排除）"
  }
 }
