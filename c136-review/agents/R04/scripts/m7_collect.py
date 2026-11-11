@@ -10,7 +10,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 MIDS = ['A013', 'A015', 'A022', 'A029', 'A038', 'A047', 'A073', 'A078', 'A081', 'A083', 'A086', 'A099', 'B034']
 OURS = {'B034': '22,26,27,30,31,38,41,45,48'}
-SKIP = {('quota_truth', 'A073'): '1v1，没有队友，没有捐款账', ('hollow_rear', 'A073'): '1v1，没有队友'}
+SKIP = {('quota_truth', 'A073'): '1v1，没有队友，没有捐款账', ('hollow_rear', 'A073'): '1v1，没有队友',
+        ('pre_human_floor', 'A078'): 'A078 的影子表是早先的版本，没有 hbind 列；重跑影子两次都超过 110 秒被杀，这一格空着'}
 # 名字: (脚本, 局号后面的参数, 认不认 --ours, 留哪些行)
 JOBS = {
     'same_tick': ('same_tick.py', [], False, r'影子策略的意图|组内第 2 条'),
