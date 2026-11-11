@@ -306,6 +306,7 @@ function threatOwner(g, q, me) {
 }
 const early = new Map(); // bot -> 统计
 const earlyEx = [];
+const earlyRows = []; // 逐决策拍的归类（shadow_early.tsv；47_delay_periods.py 按任意时段重新合计）
 function earlyDiag(g, b, p, cmdsNow) {
   const P = p.p, me = p.me;
   if (!(g.t < (P.dpEnd ?? 1500)) || g.t < 300 || g.t % P.period !== 0) return;
@@ -315,8 +316,8 @@ function earlyDiag(g, b, p, cmdsNow) {
   if (!early.has(b)) early.set(b, { dec: 0, fired: 0, neutralOnly: 0, idle: 0, cls: new Map(), idleBal: 0, sbMate: 0, sbMateBal: 0, t0: g.t, t1: g.t });
   const st = early.get(b);
   st.dec++; st.t1 = g.t;
-  if (cmdsNow.some((c) => c.kind === 'attack' && c.target !== NEUTRAL)) { st.fired++; return; }
-  if (cmdsNow.length) { st.neutralOnly++; return; }
+  if (cmdsNow.some((c) => c.kind === 'attack' && c.target !== NEUTRAL)) { st.fired++; earlyRows.push([g.t, b, 'AI邻居', '出手（打 AI / 真人）', g.bal[me], g.terr[me]]); return; }
+  if (cmdsNow.length) { st.neutralOnly++; earlyRows.push([g.t, b, 'AI邻居', '只打无主地 / 其他指令', g.bal[me], g.terr[me]]); return; }
   st.idle++;
   const B = g.bal[me], L = Math.max(1, g.terr[me]);
   st.idleBal += B;
@@ -359,6 +360,7 @@ function earlyDiag(g, b, p, cmdsNow) {
     } else cls = `${top} 底线卡住`;
   }
   st.cls.set(cls, (st.cls.get(cls) || 0) + 1);
+  earlyRows.push([g.t, b, 'AI邻居', cls, B, g.terr[me]]);
 }
 // ---- t<coreFrom（1500）、身边既没有内置 AI 也没有无主地的决策拍：开局逻辑（V13 Style.act → pickTarget → allow）为什么不打贴着的敌方真人
 // 复刻 Style.floors（L819-831）与 defenseNeed / altOf（L899-941），多返回「defenseNeed 参照的是谁」
@@ -427,7 +429,7 @@ function earlyHumanDiag(g, b, p, cmdsNow) {
   if (!earlyH.has(b)) earlyH.set(b, { dec: 0, cmd: 0, cls: new Map(), t0: g.t, t1: g.t, bal0: g.bal[me], bal1: g.bal[me], terr0: g.terr[me], terr1: g.terr[me], cheapest: new Map() });
   const st = earlyH.get(b);
   st.dec++; st.t1 = g.t; st.bal1 = g.bal[me]; st.terr1 = g.terr[me];
-  if (cmdsNow.length) { st.cmd++; return; }
+  if (cmdsNow.length) { st.cmd++; earlyRows.push([g.t, b, '只剩真人', '有指令', g.bal[me], g.terr[me]]); return; }
   const B = g.bal[me], L = Math.max(1, g.terr[me]);
   const hum = p.nb.filter((q) => g.alive[q] && !g.isBot(q) && g.terr[q] > 0 && !g.isTeammate(me, q));
   let cls;
@@ -531,6 +533,7 @@ function earlyHumanDiag(g, b, p, cmdsNow) {
     if (earlyHEx.length < 400 && g.t % 100 === 0) earlyHEx.push(`  t=${g.t} ${b} B=${B} L=${L}（密度 ${(B / L).toFixed(1)}）| 最便宜的敌方真人 ${pname(g, cheapQ)}（${g.terr[cheapQ]} 格 / ${g.bal[cheapQ]} 兵）每格 ${cheapPx.toFixed(1)} | ${cls}${best ? `；底线 ${Math.round(best.fl)}（floorFor0 ${Math.round(best.f0)}、safeP×peopleSafe ${Math.round(best.ps)}${best.fp ? `、dpKeep ${Math.round(best.dp)}、peopleFloor ${Math.round(best.pf)}、floorAt ${Math.round(best.fAt)}〔价格留底 ${Math.round(best.fp.reserveTerm)}、ref×邻居均值 ${Math.round(best.fp.refTerm)}、defenseNeed ${Math.round(best.fp.defNeed)}、keepCap 封顶 ${Math.round(best.fp.keepCap * best.fp.cap)}〕` : ''}${best.refWho >= 0 && best.refWho !== undefined ? `，参照 ${pname(g, best.refWho)} 的 ${g.bal[best.refWho]} 兵（经由 ${pname(g, best.refVia)}）` : ''}）、可用 ${Math.round(best.avail)}、吃光要 ${Math.round(best.need)}${best.send !== undefined ? `、amount=${Number.isFinite(best.send) ? Math.round(best.send) : best.send}、minCmd=${Math.round(min)}` : ''}` : ''}`);
   }
   st.cls.set(cls, (st.cls.get(cls) || 0) + 1);
+  earlyRows.push([g.t, b, '只剩真人', cls, B, g.terr[me]]);
 }
 // ---- t>=dpEnd（1500）吃内置 AI 的诊断（统筹广播 0005-①②）：身边有内置 AI 的决策拍里，为什么没对它出手
 // 按 buyLand 的循环顺序走到第一个非真人报价，用 evalOffers 重算的 worth / safe / keep / avail 归类；
@@ -1051,6 +1054,7 @@ fs.writeFileSync(path.join(OUT, 'shadow_nofull.tsv'), 't\tbot\tevent\tdetail_or_
   E.push(`#       「参照我方队友」的 ${T.sbMate} 拍里，最好的目标每格成本 ≤3 兵（几乎是空地）的 ${T.cheap || 0} 拍，这些目标当时平均 ${T.cheap ? Math.round(T.cheapTerr / T.cheap) : 0} 格`);
   if (earlyEx.length) { E.push('# 例子（每 50 拍取一条）'); E.push(...earlyEx.slice(0, 60)); }
   fs.writeFileSync(path.join(OUT, 'shadow_early.txt'), E.join('\n') + '\n');
+  fs.writeFileSync(path.join(OUT, 'shadow_early.tsv'), ['t\tbot\tscene\tcls\tbal\tterr', ...earlyRows.map((r) => r.join('\t'))].join('\n') + '\n');
   {
     const EH = [`# ${mid} t=300~1499 身边既没有内置 AI、也没有无主地的决策拍：开局逻辑为什么不打贴着的敌方真人（策略 ${SRC}；Policy.act → super.act（V13 Style.act）→ pickTarget → allow / floorFor）`];
     if (earlyHumanDiag.err) EH.push(`# 诊断出错：${earlyHumanDiag.err}`);
