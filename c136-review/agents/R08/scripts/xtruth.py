@@ -976,6 +976,14 @@ def main():
             seats = sum(r["cmds"][k][g]["seats"] for r in sel)
             P(f"  {nm} | {GROUP_CN[g]} | {len(sel)} | {land} | {ok} | {pct(land - ok, land)} | {pct(t512, land)} | {land / max(1, seats):.1f}")
             agg_d[f"{nm}|{g}"] = dict(matches=len(sel), landed=land, effective=ok, t512=t512, seats=seats)
+    P("  船（录像里落地的船令）：时段 | 组 | 局数 | 席位 | 条数 | 每席位")
+    for k, nm in enumerate(("0~600", "600~1500", "1500~1800")):
+        for g in ("own", "wild"):
+            sel = [r for r in (full if g == "own" else recs) if r["cmds"][k] is not None and r["cmds"][k][g]["seats"] > 0]
+            b_ = sum(r["cmds"][k][g]["boats"] for r in sel)
+            st_ = sum(r["cmds"][k][g]["seats"] for r in sel)
+            P(f"  {nm} | {GROUP_CN[g]} | {len(sel)} | {st_} | {b_} | {b_ / max(1, st_):.2f}")
+            agg_d[f"boats|{nm}|{g}"] = dict(matches=len(sel), seats=st_, boats=b_)
     pm = []
     for r in full:
         c = r["cmds"][1]
