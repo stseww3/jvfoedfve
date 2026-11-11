@@ -300,7 +300,7 @@ def load_match(mid, with_replay=True, use_sim=True):
                 continue
             s = dict(t=int(mm.group(1)), terr=int(mm.group(2)), pct=float(mm.group(3)), bal=int(mm.group(4)), dens=float(mm.group(5)),
                      nb=int(mm.group(6)), neut=int(mm.group(7)), cmds=int(mm.group(8)), boats=int(mm.group(9)),
-                     maxMs=_num(mm.group(11), 0), skip=_num(mm.group(12), 0), line=line, name=name)
+                     avgMs=_num(mm.group(10), 0), maxMs=_num(mm.group(11), 0), skip=_num(mm.group(12), 0), line=line, name=name)
             if me is None:
                 M.unresolved[name].append(('TICK', s))
             else:

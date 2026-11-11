@@ -21,6 +21,9 @@
   fireband [t0 [t1]] [名字...]  有真人邻居时按密度档数「这 90 拍里发没发出兵/发船指令」「是不是在丢地」
   capidle   满仓不动 → 被吃：连续 >=600 拍零指令且密度到过 >=140，段内或之后 600 拍领土跌掉 25% 以上或阵亡
   foes      协防戳日志里点名的外人：被它打的号、戳它的号 → 它不可能在哪些队
+  assists [t0 t1]  协防戳日志按「谁替谁戳谁」计数（可限定拍范围），并列出同一范围内每个号的 cmds 增量
+  opening   HL-OPENING 行：每个号的条数、拍范围、相邻两条的间隔（中位 / p10 / p90）
+  peace     HL-PEACE 行：谁在哪一拍发起 / 投票、当时日志里的 teamLand，以及同一拍别的队里还在场的我方号
   oplag     开局指令「下令拍 → 进录像的执行拍」的延迟（HL-OPENING 的 t 与录像里同一条无主地指令的拍；需要录像）
   issued    日志 cmds 计数（策略自己数的已发指令）与录像里该号的指令条数（需要录像）
   json      以上汇总写 out/<id>/logdigest.json
@@ -249,6 +252,12 @@ def sec_seqlag(M):
     w = lag_window(M)
     if w:
         print(f"   落后的快照都在本机拍 t={w[0]}~{w[1]}")
+    slow = [(t, ms) for b in M.bots.values() for t, ms in b.slow]
+    snaps = [x for b in M.bots.values() for x in b.traj]
+    if snaps:
+        in_w = sum(1 for t, _ in slow if w and w[0] <= t <= w[1])
+        print(f"   策略自己的耗时：HL-SLOW-TICK {len(slow)} 行" + (f"（{min(ms for _, ms in slow):.1f}~{max(ms for _, ms in slow):.1f} 毫秒，t={min(t for t, _ in slow)}~{max(t for t, _ in slow)}，其中落后窗口内 {in_w} 行）" if slow else '')
+              + f"；HL-TICK 快照里 avgMs 最大 {max((x.get('avgMs') or 0) for x in snaps):.1f}、maxMs 最大 {max((x.get('maxMs') or 0) for x in snaps):.1f}、skip 最大 {max((x.get('skip') or 0) for x in snaps):.0f}")
 
 
 # ------------------------------------------------------------------ overcap
@@ -1015,6 +1024,113 @@ def sec_foes(M):
         print(f"   #{f['id']} {f['name']}｜{f['n']} 条 t={f['t0']}~{f['t1']}｜{vi}｜{pk}｜非 {f['excluded']} → 可能 {f['possible']}")
 
 
+# ------------------------------------------------------------------ assists / opening / peace（纯日志计数）
+def alive_at(b, t):
+    r = b.result
+    if r and r.get('event') in ('died', 'left') and r['tick'] <= t:
+        return False
+    return bool(b.traj) and b.traj[0]['t'] <= t
+
+
+def cmds_delta(b, t0, t1):
+    """[t0, t1] 内 cmds 计数的增量：取 <=t0 的最后一条快照与 <=t1 的最后一条快照之差。"""
+    a = c = None
+    for x in b.traj:
+        if x['t'] <= t0:
+            a = x
+        if x['t'] <= t1:
+            c = x
+    if c is None:
+        return None
+    return c['cmds'] - (a['cmds'] if a else 0)
+
+
+def assists_rows(M, t_from=0, t_to=10 ** 9):
+    cnt = defaultdict(int)
+    for me, b in M.bots.items():
+        for e in b.assists:
+            if t_from <= e['t'] <= t_to:
+                cnt[(me, e['ally'], e['enemy'], e['enemyName'])] += 1
+    return [dict(poker=k[0], ally=k[1], enemy=k[2], enemyName=k[3], n=n) for k, n in sorted(cnt.items(), key=lambda kv: (-kv[1], kv[0][:3]))]
+
+
+def sec_assists(M, t_from=0, t_to=10 ** 9):
+    rows = assists_rows(M, t_from, t_to)
+    rng = '全局' if t_to >= 10 ** 9 and t_from == 0 else f"t={t_from}~{t_to}"
+    print(f"协防戳日志（{rng}）：{sum(r['n'] for r in rows)} 条。戳的人(队) → 替谁(队) 戳 外人｜条数")
+    for r in rows:
+        pb, ab = M.bots[r['poker']], M.bots.get(r['ally'])
+        print(f"   {name_of(pb)}(队{pb.team}) → 替 {name_of(ab) if ab else r['ally']}(队{ab.team if ab else '?'}) 戳 #{r['enemy']} {r['enemyName']}｜{r['n']}")
+    if rows:
+        who = sorted({r['poker'] for r in rows} | {r['ally'] for r in rows if r['ally'] in M.bots})
+        hi = t_to if t_to < 10 ** 9 else max(b.traj[-1]['t'] for b in M.bots.values() if b.traj)
+        print('   同一范围内各号 cmds 增量 / 其中协防戳日志 / 捐款日志：' + '；'.join(
+            f"{name_of(M.bots[p])} {cmds_delta(M.bots[p], t_from, hi)} / {sum(1 for e in M.bots[p].assists if t_from <= e['t'] <= t_to)} / {sum(1 for e in M.bots[p].donations if t_from <= e['t'] <= t_to)}" for p in who))
+
+
+def _pctl(v, q):
+    v = sorted(v)
+    return v[min(len(v) - 1, int(q * len(v)))] if v else None
+
+
+def opening_rows(M):
+    out = []
+    for me, b in sorted(M.bots.items()):
+        ts = [o['t'] for o in b.opening]
+        gaps = [y - x for x, y in zip(ts, ts[1:])]
+        out.append(dict(me=me, name=name_of(b), n=len(ts), t0=(ts[0] if ts else None), t1=(ts[-1] if ts else None), gaps=gaps))
+    return out
+
+
+def sec_opening(M):
+    rows = opening_rows(M)
+    allg = [g for r in rows for g in r['gaps']]
+    ts = [t for r in rows for t in (r['t0'], r['t1']) if t is not None]
+    print(f"HL-OPENING：{sum(r['n'] for r in rows)} 行，{sum(1 for r in rows if r['n'])} 个号，t={min(ts) if ts else '-'}~{max(ts) if ts else '-'}；"
+          f"同一个号相邻两条的间隔 {len(allg)} 个：中位 {_pctl(allg, 0.5)}、p10 {_pctl(allg, 0.1)}、p90 {_pctl(allg, 0.9)}")
+    for r in rows:
+        print(f"   {r['name']:14s} {r['n']:3d} 条 t={r['t0']}~{r['t1']} 间隔 {' '.join(str(g) for g in r['gaps'])}")
+
+
+def peace_rows(M):
+    import re
+    out = []
+    for line, name, rest in M.peace:
+        m = re.search(r't=(\d+) (initiated peace vote|voted YES[^(]*)(?:.*?teamLand=([\d.]+)%)?', rest)
+        if not m:
+            out.append(dict(line=line, name=name, raw=rest))
+            continue
+        t = int(m.group(1))
+        me = next((k for k, b in M.bots.items() if name in b.names), None)
+        my_team = M.bots[me].team if me is not None else None
+        others = defaultdict(list)
+        for k, b in sorted(M.bots.items()):
+            if k != me and b.team and b.team != my_team and alive_at(b, t):
+                others[b.team].append(name_of(b))
+        same = [name_of(b) for k, b in sorted(M.bots.items()) if k != me and b.team == my_team and alive_at(b, t)]
+        out.append(dict(line=line, t=t, name=name, me=me, team=my_team, kind=('initiated' if m.group(2).startswith('initiated') else 'votedYes'),
+                        teamLand=(float(m.group(3)) if m.group(3) else None), sameTeam=same, otherTeams={str(k): v for k, v in others.items()}))
+    return out
+
+
+def sec_peace(M):
+    rows = peace_rows(M)
+    ini = [r for r in rows if r.get('kind') == 'initiated']
+    yes = [r for r in rows if r.get('kind') == 'votedYes']
+    print(f"HL-PEACE：{len(rows)} 行（发起 {len(ini)}、投赞成 {len(yes)}）。拍｜谁(队)｜日志里的 teamLand｜同队在场的我方号｜别的队里在场的我方号")
+    prev = None
+    for r in rows:
+        if 't' not in r:
+            print('   解析不了：', r['raw'][:120])
+            continue
+        o = ' '.join(f"队{k}:{'、'.join(v)}" for k, v in sorted(r['otherTeams'].items())) or '无'
+        gap = '' if prev is None else f"（距上一条 {r['t'] - prev} 拍）"
+        prev = r['t']
+        print(f"   t={r['t']}{gap}｜{r['name']}(队{r['team']}) {r['kind']}｜{r['teamLand']}%｜{'、'.join(r['sameTeam']) or '无'}｜{o}")
+    n_other = sum(1 for r in ini if r['otherTeams'])
+    print(f"   发起时别的队里还有我方号在场的：{n_other} / {len(ini)} 次")
+
+
 # ------------------------------------------------------------------ oplag / issued（需要录像真值）
 def oplag_rows(M):
     S = M.sim
@@ -1111,6 +1227,9 @@ def build_json(M):
     doc['spend'] = spend_rows(M)
     doc['fireband'] = fireband_rows(M)
     doc['foes'] = foes_rows(M)
+    doc['assists'] = assists_rows(M)
+    doc['opening'] = opening_rows(M)
+    doc['peace'] = peace_rows(M)
     L = seqlag_rows(M)
     doc['seqlag'] = {str(me): dict(maxLag=max((d for _, d in v), default=0), lagSnaps=sum(1 for _, d in v if d >= 90), snaps=len(v)) for me, v in L.items()}
     o = oplag_rows(M)
@@ -1148,6 +1267,13 @@ def main():
         sec_cmdmix(M)
     elif sec == 'foes':
         sec_foes(M)
+    elif sec == 'assists':
+        a = [int(x) for x in sys.argv[3:5]]
+        sec_assists(M, *(a if len(a) == 2 else ()))
+    elif sec == 'opening':
+        sec_opening(M)
+    elif sec == 'peace':
+        sec_peace(M)
     elif sec == 'idleloss':
         sec_idleloss(M)
     elif sec == 'capidle':

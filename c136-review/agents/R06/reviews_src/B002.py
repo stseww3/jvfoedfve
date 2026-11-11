@@ -16,7 +16,7 @@ A = dict(
     ],
     contamination=[
         "没有录像：攻击者是谁、每条指令是否生效、策略停在哪个分支都看不到。执行与否是用捐款人自己的余额读数推的（logdigest donlog）；这套推法在有录像的 B023/B039/B038 上对过表：执行与否的一致率 87.4% / 85.4% / 81.2%，金额干净的到账估算是真值的 0.983 / 0.949 / 0.955 倍",
-        "源码版本：对局包里的 c110 是这批对局的最终版。本局（11-08 08:25Z）日志里有 9 行 HL-PEACE「initiated peace vote」，而最终版 tryPeaceVote L4227 在没有 Boss 的局里直接返回——当时跑的是更早的一版。文中 buyLand / tryDonateToTeammate 的行号都按最终版引用，属于推断（已向统筹提问 0006）",
+        "源码版本（统筹 2026-11-11T08:28Z 对问题 0006 的答复）：本局（11-08 08:25Z）跑的 = 对局包里的 v27-team-c110.js 去掉 L4227 的无 Boss 守卫（该守卫 11-08T15:28:46Z 才加，所以本局有 9 行 HL-PEACE），选点没有后端协调器（11-10T14:08:38Z 才对无 Boss 局启用）；buyLand 与捐款的调用顺序、参数与最终版一致。文中 buyLand / tryDonateToTeammate 的行号可直接对应当时的代码；但走的是哪个分支仍然只能推断（没有录像，影子探针跑不了）",
         "外人的队号只有排除法：HL-ASSIST 只在「对方是真人、非队友、非名字池」时打印，所以被戳的外人不在出手号和被救号的队里。☢️SigmaX、ALL*H İS G*Y 在 t>=11621 只可能是队1（那时队3 0.1%、队4 0、队2 只剩我方号）",
         "卡片的 likelyRejected=53 是「20 拍后余额没掉」的启发式；本复盘的余额链判 48 条没执行，两者交叉：都判没执行 46、卡片判拒而余额链判执行 7、卡片判过而余额链判没执行 2",
         "t=9540 的「编队峰值 53.19%」是五支队里我方号的合计，不是任何一支队的份额：当时队5 的我方号 39.8%、队2 的我方号 9.1%、队1 的 Liu Bei 4.3%",
@@ -36,7 +36,7 @@ A = dict(
         ),
         expansion=dict(
             facts=[
-                "开局周期出兵：19 个号在 t=60~975 各发 5~10 条周期指令（HL-OPENING 146 行，间隔中位 95 拍）。t=630 编队 54,296 格（11.02%），单号领土中位 2,777；最低的七个里六个在 <145 格的成对里：DragonSlayer 36、Chagatai 1,878（t=540 起 neut=0）、Dahomey 2,282、Spiderman 2,487、Wallenstein 2,523、DeepBlue 2,528（另一个是 Maurya 2,198）。",
+                "开局周期出兵：19 个号在 t=60~975 各发 5~10 条周期指令（logdigest opening：HL-OPENING 146 行，同号相邻两条间隔中位 95 拍、p10 70、p90 105）。t=630 编队 54,296 格（11.02%），单号领土中位 2,777；最低的七个里六个在 <145 格的成对里：DragonSlayer 36、Chagatai 1,878（t=540 起 neut=0）、Dahomey 2,282、Spiderman 2,487、Wallenstein 2,523、DeepBlue 2,528（另一个是 Maurya 2,198）。",
                 "t=630→900→1530：编队领土 54,296→88,080→111,193（11.02%→17.87%→22.56%），兵 11.7 万→38.4 万→290.9 万，密度 2.2→4.4→26.2。t=630~1530 全队出兵/发船指令 1,389 条（每千号·拍 77.2 条）。",
                 "没有录像，无法与其余 45 个真人的同拍领土比较。能比的最早一拍是 t=2056 的结算行：存活 53 人，其中我方 19 个号 149,999 格（30.4%），单号平均 7,895；队1 的外人和内置 AI 合计 20.9%。",
             ],
@@ -46,7 +46,7 @@ A = dict(
         ),
         midgame=dict(
             facts=[
-                "客户端落后：按日志落盘顺序对拍，本机拍 990~1620 有 16 个号落后最快的号 90~270 拍（Anya、OldGuard、Shimazu、Ragnar、Subway、Maurya、Dahomey 最多 270 拍）。策略每拍耗时很小（各号 avgMs <=3.7；HL-SLOW-TICK 124 行、43~89 毫秒）。t>=2056 的结算行与墙上时钟拟合线的残差 0~1.9 秒：到那时已追平。",
+                "客户端落后：按日志落盘顺序对拍，本机拍 990~1620 有 16 个号落后最快的号 90~270 拍（Anya、OldGuard、Shimazu、Ragnar、Subway、Maurya、Dahomey 最多 270 拍）。策略每拍耗时很小（logdigest seqlag：各号快照里 avgMs <=3.7；HL-SLOW-TICK 全局 124 行、25~89 毫秒，其中落后窗口内 27 行）。t>=2056 的结算行与墙上时钟拟合线的残差 0~1.9 秒：到那时已追平。",
                 "落后期间策略照常发令，本机局面里看不到生效：Anya t=1080~1710 发了 110 条而余额贴着纯利息预测、领土不动；Shimazu t=1260~1800 104 条；Subway t=1440~1710 38 条。",
                 "一个快照间隔内清仓（logdigest stale：落后窗口后 360 拍内、没有回弹的 8 段）。其中 6 个号清仓前有一段发令不见效：Shimazu t=1800~1890 32.3 万→3,032 兵，领土 7,768→10,620→12,449；Anya 31.2 万→2.7 万，4,510→4,930→6,189；Subway 30.5 万→1.2 万；Maurya 24.2 万→2.4 万；Aurelian 26.5 万→6.0 万（4,906→6,148→8,939）；FreeMason 16.5 万→2.7 万（7,563→8,042→12,252）；这 6 个号合计 146 万兵。支出折合成 12% pulse 的条数 k：FreeMason 14.1、Aurelian 11.6，正好是清仓间隔里发的 14、11 条；Anya 18.3、Maurya 17.3、Subway 23.6、Shimazu 33.8，比间隔里发的 10~13 条多 4~24 条。另 2 个号没有不见效的前段：OldGuard 一个间隔 6 条指令 24.8 万→9.0 万（16,970→25,483→30,328），Sus 7 条 26.9 万→5.4 万（3,443→4,400）。8 段合计 183 万兵，清仓后密度 0.3~12.2；两个快照后这 8 个号的领土合计 +25,719 格。",
                 "清仓后密度 0~12 的三个号 172~292 拍内阵亡：Maurya（队1，t=1800 5,783 格、密度 4）t=2056；Sus（队3，t=1890 4,400 格、密度 12）t=2062；Subway（队5，t=1890 只剩 73 兵）t=2092。编队领土 22.56%（t=1530）→30.44%（t=2056，19 个号）→29.83%（t=2092，17 个号）。",
@@ -89,7 +89,7 @@ A = dict(
                 "logdigest stale：落后窗口（t=990~1620）结束后 360 拍内、没有回弹的清仓 8 段、8 个号，清掉 183 万兵，再下一个快照时领土合计 +25,719 格；清仓后密度 <=12 的 7 个，300 拍内阵亡 3 个。清仓前有「发令不见效」前段的 6 段（Anya 110 条、Shimazu 104、Subway 38、Aurelian 24、Maurya 8、FreeMason 6）清掉 146 万；没有前段的 2 段（OldGuard 间隔内 6 条、k=8.0；Sus 7 条、k=12.2）清掉 37.4 万",
                 "logdigest stale 的 k（支出折合 12% pulse 的条数）对清仓间隔内发的条数：FreeMason 14.1 对 14、Aurelian 11.6 对 11（吻合，不需要积压）；Anya 18.3 对 13、Maurya 17.3 对 13、Subway 23.6 对 13、Shimazu 33.8 对 10（多出 4~24 条）",
                 "digest bot：Maurya t=1710 24.2 万兵（密度 51）→t=1800 2.4 万（密度 4），领土 4,724→5,783→2,999→1,877，t=2056 阵亡；Subway t=1890 只剩 73 兵，4,717→3,955→2,065→1,393，t=2092 阵亡；Sus t=1800 26.9 万→t=1890 5.4 万，3,443→4,400→3,236，t=2062 阵亡",
-                "logdigest wall：t>=2056 的 20 条结算行与 秒=23.6+0.056×拍 的残差 0.0~1.9 秒；in_game.log：HL-SLOW-TICK 124 行（43~89 毫秒），各号 avgMs <=3.7",
+                "logdigest wall：t>=2056 的 20 条结算行与 秒=23.6+0.056×拍 的残差 0.0~1.9 秒；logdigest seqlag：HL-SLOW-TICK 124 行（25~89 毫秒，落后窗口内 27 行），各号快照里 avgMs <=3.7",
                 "digest timeline：编队领土 111,193（22.56%，t=1530）→149,999（30.44%，t=2056，19 个号）→147,010（29.83%，t=2092，17 个号）",
             ],
             priorDecisions=[
@@ -217,7 +217,7 @@ A = dict(
              state="t=60~975 各发 5~10 条开局周期指令（间隔中位 95 拍）；t=630 编队 54,296 格（11.02%），单号中位 2,777",
              codePath=f"{C110} Policy.act L4820-4859（t<coreFrom=1500 走 super.act）→ dpNeutral L2418-2444（日志 HL-OPENING「DP expand rings=8」）",
              why="节奏与设计一致；没有录像，无法与其余 45 个真人同拍比较，也量不到指令延迟",
-             estCost="量不出", patternId="NEW:OP-cycle-open", evidenceRef="digest.py B002 timeline；in_game.log HL-OPENING 146 行"),
+             estCost="量不出", patternId="NEW:OP-cycle-open", evidenceRef="digest.py B002 timeline；logdigest.py B002 opening"),
         dict(t=1710, bot="Subway、Maurya、Sus", kind="attack", verdict="error",
              state="一个快照间隔内清仓：Subway 30.5 万→1.2 万→73 兵（此前 38 条不见效），Maurya 24.2 万→2.4 万（此前 8 条不见效），Sus 26.9 万→5.4 万（没有不见效的前段，间隔内 7 条指令）；清仓后密度 0~12、nb=2~3",
              codePath=f"{C110} buyLand L5510-5523（pulse，每条 <=12% 余额）；Strategy.send L526-539（15 个本机拍节流，不记「已发未生效」）",
@@ -342,6 +342,12 @@ A = dict(
              why="按它的规则没有一条路通；估算少拿利息 3,213 万（实得 996 万），是全队最多的",
              estCost="3,213 万利息",
              patternId="NEW:EG-boxed-hardcap", evidenceRef="logdigest.py B002 silent；logdigest.py B002 overcap；digest.py B002 boxed"),
+        dict(t=10815, bot="Liu Bei", kind="peace", verdict="unclear",
+             state="队1 份额 58.1% 时发起和平投票，共 9 次（t=10815~14190，前 7 次间隔 470~475 拍）；前 8 次发起时队5、队2 还有 5→1 个我方号在场（t=10815：Spiderman、DeepBlue、OldGuard、Shimazu、Umbreon）",
+             codePath=f"{C110} Policy.act L4887 → tryPeaceVote L4226-4269（本局当时没有 L4227 的无 Boss 守卫）：L4232-4241 ourTeamLand 只按游戏里的队号加总；L4245 weLead = 有外人活着且 ourTeamLand >= 0.58×陆地；L4260-4266 发起（105 拍冷却）",
+             why="「我方领先」只按自己在游戏里的队号加总，别的队里还有编队号不在条件里。0 行 voted YES：L4247-4252 的 callerIsOurs 读 window.__lastPeaceCaller，全文只有 L4263 发起者自己赋值（各号是否共用一个 window 没有核对——推断）。投票没有通过，看不出实际影响",
+             estCost="量不出（投票没通过）",
+             patternId="NEW:PV-cross-team-peace-call", evidenceRef="logdigest.py B002 peace"),
     ],
     newPatterns=[
         dict(name="NEW:DN-fee-exceeds-delivery", definition="已执行的捐款到账 < 手续费：手续费按捐款人余额的 6.25% 收，到账被收款人离硬上限的空间（150×领土−余额）截断；或 pct<64 本来就到账不及手续费",
@@ -357,6 +363,9 @@ A = dict(
         dict(name="NEW:EG-boxed-hardcap", definition="被队友/受保护的号围住（nb=0、neut=0）且密度 >=149 连续 >=900 拍，零指令：没有邻居可打、没有合格的收款人、船也不发",
              detectionSketch="快照 nb==0 && neut==0 && dens>=149 且 cmds/boats 不变的连续段 >=900 拍",
              instances=[dict(t=8370, bot="Liu Bei"), dict(t=630, bot="DragonSlayer")]),
+        dict(name="NEW:PV-cross-team-peace-call", definition="编队号在自己所在的队领先（>=58% 陆地）时发起和平投票，而此时别的队里还有我方号在场",
+             detectionSketch="logdigest peace：HL-PEACE「initiated peace vote」行 × 同拍别队在场的我方号数 >=1",
+             instances=[dict(t=10815, bot="Liu Bei"), dict(t=11290, bot="Liu Bei"), dict(t=11760, bot="Liu Bei"), dict(t=12235, bot="Liu Bei"), dict(t=12710, bot="Liu Bei"), dict(t=13180, bot="Liu Bei"), dict(t=13655, bot="Liu Bei"), dict(t=13875, bot="Liu Bei")]),
         dict(name="NEW:EG-cap-idle-death", definition="连续 >=600 拍没有任何指令、期间密度升到 >=140，段内或之后 600 拍领土跌掉 >=25% 或阵亡",
              detectionSketch="logdigest capidle",
              instances=[dict(t=3330, bot="Anya"), dict(t=12420, bot="OldGuard"), dict(t=11070, bot="Spiderman"), dict(t=3960, bot="Chagatai"), dict(t=9810, bot="Shimazu"), dict(t=3510, bot="Ragnar"), dict(t=6030, bot="Macedon"), dict(t=1980, bot="Wallenstein")]),
@@ -416,7 +425,7 @@ A = dict(
     unknowns=[
         "没有录像：每个阵亡号是被谁打死的只有 HL-ASSIST 里点到的名字；外人的队号只有排除法；队1 有多少兵、怎么出手完全看不到。",
         "满仓不出手到底停在 buyLand 的哪一行（L5361 的保底线、L5345 的 siegeShrink、L5528 的 chunk）无法区分；isNoFullSend 的真实状态日志不打印。",
-        "本局跑的是不是对局包里的最终版 c110：HL-PEACE 的 9 行说明不是；buyLand、捐款顺序与最终版差在哪里要等统筹答复。",
+        "和平投票：Liu Bei 的 9 次发起有没有外人投票、离通过差多少，日志看不到（0 行 voted YES）。",
         "客户端在本机拍 990~1620 为什么落后；「不见效的指令随后一起生效」是推断，没有逐条核对（落后是相对最快的号量的，分辨率 90 拍；t=1620~2056 全体是否落后于服务器量不到）。",
         "Liu Bei t≈7830 之后为什么不再发船（boats 停在 13）；它的 9 次和平投票有没有人响应。",
         "Scotland t=3600~3867 被谁打死：同一时段 Umbreon 长了 10,720 格，两者有没有关系看不到。",
@@ -428,12 +437,12 @@ A = dict(
         dict(q="内陆被围高密度", a="nb=0 且 neut=0 的号 8 个。密度 >=95 的被围快照：Liu Bei 91 个（t=4590~14220，最高 150）、DragonSlayer 17 个、DeepBlue 14 个、Caesar 12 个（t=2790~4230）。Caesar 的出口（捐给 Anya）被配额挡了 560 拍；Liu Bei 没有同队的编队号可捐，6,480 拍零指令，估算少拿利息 3,213 万。但全局少拿的 9,629 万利息里，有邻居却不出手的号更多：OldGuard 2,018 万、Spiderman 1,398 万、Shimazu 627 万、FreeMason 549 万。"),
         dict(q="出生与开局被围", a="20 个号各算各的候选表：<80 格的 6 对，其中 4 对异队。t<630 就被封死的只有 DragonSlayer（t=180 起 neut=0、nb=0，36 格）和 Chagatai（t=540 起 neut=0，1,878 格）——两者相距 5.7 格。Spiderman/DeepBlue 同队 16.0 格：DeepBlue t=4050 起被围在 Spiderman 里面。"),
         dict(q="前线消耗与底线", a="主队峰值 37.5%（t=9126）。崩盘窗口 t=9540~13867：不是出兵过度被偷袭——t=9990 五个号有 2,590 万兵、密度 110~137。是对方逐个集火、被打的号满仓不还手：Shimazu、Spiderman、OldGuard 三个号 t>=9000 密度 >=114 的 92 个间隔里只有 7 个有出兵指令；丢地的 26 个间隔里 24 个零出兵。全局丢掉的 386,719 格里 345,471 格（89%）丢在零出兵的间隔，166,155 格（43%）丢在密度 >=100 且零出兵的间隔。"),
-        dict(q="squad20 拆队", a="5 队局，6/4/4/3/3。没有同室操戈的直接证据（没有录像），HL-PEACE 只有 Liu Bei 在队1 领先后单方面发起的 9 次。拆队的代价在三处：（1）捐款只能同队：202 条日志全部同队，Liu Bei 在队1 的三个编队队友 t=5203 前全部阵亡后，316.9 万兵顶着硬上限 5,850 拍无处可去；（2）协防戳 72 条有 50 条跨队，OldGuard 替队1 的 Liu Bei 戳了 6 次，而队1 是最后打死它的队；（3）各队的外人打我方别队的号：BY（队5）打队2 的 Dahomey、队4 的 Chagatai。主队队5 的输法：t=9126 时队5+队2 的我方号与队1 的外人一样大，随后被逐个吃掉。"),
+        dict(q="squad20 拆队", a="5 队局，6/4/4/3/3。没有同室操戈的直接证据（没有录像）。HL-PEACE（logdigest peace）：Liu Bei（队1）在队1 份额过 58% 后发起和平投票 9 次（t=10815~14190，前 7 次间隔 470~475 拍，teamLand 58.1%→99.9%），其中 8 次发起时别的队里还有我方号在场（t=10815 有 5 个：Spiderman、DeepBlue、OldGuard、Shimazu、Umbreon）；0 行 voted YES，投票没有通过（对局打到 14253）。拆队的代价在三处：（1）捐款只能同队：202 条日志全部同队，Liu Bei 在队1 的三个编队队友 t=5203 前全部阵亡后，316.9 万兵顶着硬上限 5,850 拍无处可去；（2）协防戳 72 条有 50 条跨队，OldGuard 替队1 的 Liu Bei 戳了 6 次，而队1 是最后打死它的队；（3）各队的外人打我方别队的号：BY（队5）打队2 的 Dahomey、队4 的 Chagatai。主队队5 的输法：t=9126 时队5+队2 的我方号与队1 的外人一样大，随后被逐个吃掉。"),
         dict(q="HUB 0003~0005 的几项", a="没有录像，影子探针跑不了：safeFinite 互锁、expandNeutral 挤单、minCmd 门槛、21 拍内重复下单、isNoFullSend 都无法计数。能从日志核对的：（1）落后窗口之后一个间隔内的清仓成立（8 段、183 万兵，其中 6 段此前有一段发令不见效）；（2）超软上限不比价的出手成立（Umbreon t=8910 每格约 652 兵）；（3）超软上限后仍不出手的远多于出手的：t>=2070、nb>=1、密度 >=100 的 508 个间隔里只有 86 个（16.9%）有出兵指令。代码事实（最终版）：超软上限后 keep 取 0.9/1.08/1.12/1.24×100×领土时，可用兵要到余额的 20% 分别需要密度 114.2/137.0/142.1/157.3，最后一档高于硬上限 150。"),
     ],
     scripts=[
         "python3 c136-review/agents/R06/scripts/digest.py B002 roster|teams|timeline [t ...]|outsiders|bot <me> [t0 t1]|deaths|boxed|spawn|drops|json（日志快照 + 结算行；outsiders = 结算行各队份额拆成我方号 + 其余）",
-        "python3 c136-review/agents/R06/scripts/logdigest.py B002 seqlag|stale|wall|silent|cmdmix|fireband [t0 [t1]] [名字 ...]|idleloss|capidle|overcap|drop30|spend [t0 t1]|donlog [me|-1]|foes|json（只用日志：本机拍落后、发令不见效→集中清仓、零指令时段、指令构成、按密度档的出手率、丢地账、满仓不动、超软上限少拿的利息、兵的去向分账、捐款执行账、协防戳点名的外人）",
+        "python3 c136-review/agents/R06/scripts/logdigest.py B002 seqlag|stale|wall|silent|cmdmix|fireband [t0 [t1]] [名字 ...]|idleloss|capidle|overcap|drop30|spend [t0 t1]|donlog [me|-1]|foes|assists [t0 t1]|opening|peace|json（只用日志：本机拍落后、发令不见效→集中清仓、零指令时段、指令构成、按密度档的出手率、丢地账、满仓不动、超软上限少拿的利息、兵的去向分账、捐款执行账、协防戳点名的外人）",
         "python3 c136-review/agents/R06/scripts/logdigest.py B023 donval（B039、B038 同：捐款余额链推法与录像真值对表）",
         "python3 c136-review/agents/R06/scripts/spawn_geo.py B002 [json]（固定地图 14 的地形 + HL-SPAWN 最终选点）",
         "python3 c136-review/agents/R06/scripts/make_review.py B002（合并 reviews_src/B002.py，自检）",
