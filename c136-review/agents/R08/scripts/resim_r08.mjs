@@ -2,7 +2,8 @@
 // resim_r08.mjs — R08 的副本：原件是统筹分发的 /agent/repos/c136-data/src/tools/resim.mjs（逻辑未改）。
 // 只改了三处：(1) 输出写到 agents/R08/out/<局>/resim.json；(2) --replay-from <局2>：录像取自同一房间的另一个对局包
 // （例如 B043 自己的录像只到 t=819，同房的 A062 录到 t=6568）；(3) --peer <局2>：把同房另一支编队的号也按名字认出来，
-// 写进 squad（键名前加「局2:」），这样两边的号都有在途兵、邻居、额度的逐拍明细。
+// 写进 squad（键名前加「局2:」），这样两边的号都有在途兵、邻居、额度的逐拍明细；--peer-tag <标签>：不读对方的对局包，
+// 只按本局录像里名字带的战队标签（如 APEX）认出同房另一支编队（对方的包在验证集里时用）。
 // resim.mjs — 全量重放一局：用 c136-data/src/sim 的纯 JS 引擎（512 个玩家）把 replay.txt 从头跑一遍，
 // 输出全场账本到 out/cache/<mid>-resim.json，并把本队每个号的地/兵与 traj.csv 逐快照核对。
 //
@@ -361,6 +362,17 @@ export function resim(mid, opts = {}) {
       squad[`${opts.peer}:${b}`] = { id, meId: id, peer: true };
     }
   }
+  // --peer-tag <标签>：同房另一支编队的对局包不能读（验证集）时，按录像里名字带的战队标签认号
+  if (opts.peerTag) {
+    const tag = `[${String(opts.peerTag).toLowerCase()}]`;
+    const mine = new Set(Object.values(squad).map((x) => x.id));
+    for (let p = 0; p < H; p++) {
+      const nm = names[p].trim();
+      if (!nm.toLowerCase().includes(tag) || mine.has(p)) continue;
+      const b = nm.replace(/\[[^\]]*\]\s*/g, '').trim() || `p${p}`;
+      squad[`${opts.peerTag}:${b}`] = { id: p, meId: p, peer: true };
+    }
+  }
   const squadIds = Object.values(squad).map((s) => s.id).filter((x) => x >= 0);
   const isSquad = new Uint8Array(512);
   for (const p of squadIds) isSquad[p] = 1;
@@ -415,6 +427,15 @@ export function resim(mid, opts = {}) {
   const engineEvents = [];
   g.onHunt = (lead, n) => engineEvents.push([g.t, 'hunt', lead, n]);
   g.onFast = (lead) => engineEvents.push([g.t, 'fast', lead, 0]);
+
+  // ---- 钩子：空壳（离开的真人，按内置 AI 跑）把余额交给队友（bots.js botDonate → botGive）----
+  const huskGifts = [];
+  g.botGive = function (p, q, dn) {
+    const bp = this.bal[p], bq = this.bal[q];
+    const r = proto.botGive.call(this, p, q, dn);
+    if (this.bal[q] !== bq || this.bal[p] !== bp) huskGifts.push([this.t, p, q, dn, bp, bq, this.bal[q], this.bal[p], this.terr[p], this.terr[q]]);
+    return r;
+  };
 
   // ---- 钩子：死亡 ----
   const deaths = [];
@@ -724,7 +745,7 @@ export function resim(mid, opts = {}) {
     spawnXY, startBox, leftT: Array.from(leftT), deathT: Array.from(deathT.subarray(0, H)),
     validate: val,
     snapT, snapTerr, snapBal, snapInc, snapRet, snapOut, snapAi, teamLand, botLand, aliveH,
-    sq, pairLog, cmdLog, deaths, landings, maps, engineEvents,
+    sq, pairLog, cmdLog, deaths, landings, maps, engineEvents, huskGifts,
   };
   return out;
 }
@@ -738,9 +759,9 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const mapsArg = opt('maps', '');
   const t0 = Date.now();
   const out = resim(mid, { until: until ? +until : undefined, maps: mapsArg ? mapsArg.split(',').map(Number) : [], offsetScan: args.includes('--offset-scan'),
-    replayFrom: opt('replay-from', null), peer: opt('peer', null) });
+    replayFrom: opt('replay-from', null), peer: opt('peer', null), peerTag: opt('peer-tag', null) });
   out.replayFrom = opt('replay-from', null) || mid;
-  out.peer = opt('peer', null);
+  out.peer = opt('peer', null) || opt('peer-tag', null);
   if (out.offsetScan) console.log('  offset scan [k, rows, terr一致, bal一致]: ' + out.offsetScan.map((r) => r.join('/')).join(' '));
   fs.mkdirSync(path.join(OUT, mid), { recursive: true });
   fs.writeFileSync(path.join(OUT, mid, 'resim.json'), JSON.stringify(out));

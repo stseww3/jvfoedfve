@@ -4,7 +4,7 @@
 #   bash c136-review/agents/R08/scripts/pipeline.sh <matchId> [录像来源局] [同房另一支编队的局]
 #
 # 例：pipeline.sh B043 A062 A062   （B043 自带录像不全，用同房 A062 的录像重演，并把 A062 的号当作同房另一支编队）
-#     pipeline.sh B034              （用自带录像；没有可用的同房局）
+#     pipeline.sh B034 - tag:APEX   （用自带录像；同房另一支编队的包在验证集里不能读，只按录像里的战队标签 [APEX] 认号）
 # 步骤：facts（日志事实）→ resim（真引擎全场真值）→ truth → 影子（本编队 / 同房另一支）→ shadowcmp → harvest / top / spawncheck / donrej。
 # 每一步单独限时；某一步失败不影响后面的步骤（会打印 FAIL）。
 set -u
@@ -15,7 +15,8 @@ O="$ROOT/c136-review/agents/R08/out/$MID"
 H="bash $ROOT/c136-review/tools/run-heavy.sh"
 export PYTHONDONTWRITEBYTECODE=1
 mkdir -p "$O"
-RA=(); [ -n "$RF" ] && RA+=(--replay-from "$RF"); [ -n "$PEER" ] && RA+=(--peer "$PEER")
+RA=(); [ -n "$RF" ] && [ "$RF" != "-" ] && RA+=(--replay-from "$RF")
+if [ -n "$PEER" ]; then case "$PEER" in tag:*) RA+=(--peer-tag "${PEER#tag:}");; *) RA+=(--peer "$PEER");; esac; fi
 step() { local name="$1"; shift; if "$@" > "$O/.step.log" 2>&1; then echo "OK   $name: $(tail -1 "$O/.step.log" | cut -c1-200)"; else echo "FAIL $name: $(tail -2 "$O/.step.log" | tr '\n' ' ' | cut -c1-300)"; fi; }
 cd "$ROOT"
 step facts timeout 110 python3 "$S/facts.py" "$MID" --quiet

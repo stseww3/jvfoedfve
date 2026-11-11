@@ -411,6 +411,26 @@ def sec_TJ(T, out):
         out.append(f"     {l[0]} {T.nm(l[1], l[0])}→{T.nm(l[2], l[0])} {l[3]} | {l[4]} | {l[5]}/{l[6]}")
 
 
+def sec_TM(T, out):
+    """空壳赠兵（bots.js botDonate→botGive）：离开的真人按内置 AI 跑，没有目标可打时把全部余额交给一个刚打过仗或有船在外的队友（手续费 64/1024，不占额度）。"""
+    gifts = T.R.get("huskGifts")
+    if gifts is None:
+        out.append("[TM] 空壳赠兵：resim.json 没有 huskGifts（重跑 resim_r08.mjs）")
+        return
+    big = [x for x in gifts if x[6] - x[5] >= 2000]
+    out.append(f"[TM] 空壳赠兵（引擎 botDonate，真值）：共 {len(gifts)} 次，其中到账 ≥2000 的 {len(big)} 次：拍 空壳→收款 | 空壳余额 前→后 / 领土 | 收款方到账 | 收款方余额 前→后 / 领土")
+    for x in sorted(big, key=lambda r: -(r[6] - r[5]))[:25]:
+        t, p, q = x[0], x[1], x[2]
+        tag = lambda i: ("*" if i in T.sqIds else "") + ("+" if i in getattr(T, "peerIds", ()) else "")  # noqa: E731
+        out.append(f"     {t:>5} {T.nm(p, t)}→{T.nm(q, t)} | {x[4]}→{x[7]} / {x[8]} | {x[6] - x[5]} | {x[5]}→{x[6]} / {x[9]}")
+    tot = defaultdict(lambda: [0, 0])
+    for x in gifts:
+        k = ("本编队空壳" if x[1] in T.sqIds else "其它空壳", "空壳" if T.is_husk(x[2], x[0]) else ("本编队在线的号" if x[2] in T.sqIds else "其它真人"))
+        tot[k][0] += 1
+        tot[k][1] += x[6] - x[5]
+    out.append("     合计（谁的空壳 → 给了谁：次数 / 到账）：" + "；".join(f"{a}→{b} {v[0]} 次 / {v[1]}" for (a, b), v in sorted(tot.items(), key=lambda kv: -kv[1][1])))
+
+
 def boat_ledger(T, ids=None):
     """每个号的船账：发船（条数、船上兵、手续费）；靠岸分类（空地 / 敌方 / 自己的地 / 同队：到账与蒸发）；没靠岸的差额（海上衰减每 5 拍 1/128、海战、终局仍在海上）。"""
     R = T.R
@@ -662,7 +682,7 @@ def main():
         cmds_detail(T, opt("--cmds"), t0, t1)
         return 0
     out = []
-    for sec in (sec_TA, sec_TB, sec_TC, sec_TD, sec_TE, sec_TF, sec_TG, sec_TH, sec_TI, sec_TJ, sec_TK, sec_TL):
+    for sec in (sec_TA, sec_TB, sec_TC, sec_TD, sec_TE, sec_TF, sec_TG, sec_TH, sec_TI, sec_TJ, sec_TK, sec_TL, sec_TM):
         sec(T, out)
     txt = "\n".join(out)
     with open(os.path.join(OUT, mid, "truth.txt"), "w", encoding="utf-8") as f:

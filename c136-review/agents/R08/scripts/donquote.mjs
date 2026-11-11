@@ -34,7 +34,7 @@ function code(g, d) {
 }
 
 resim(mid, {
-  quiet: true, noWrite: true, until: tMax + 1, replayFrom: opt('--replay-from'), peer: opt('--peer'),
+  quiet: true, noWrite: true, until: tMax + 1, replayFrom: opt('--replay-from'), peer: opt('--peer'), peerTag: opt('--peer-tag'),
   onTick(g) {
     for (const d of list) {
       if (g.t < d.t || g.t > d.t + SPAN) continue;

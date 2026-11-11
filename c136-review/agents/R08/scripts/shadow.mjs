@@ -14,7 +14,7 @@
 //
 // 用法：
 //   bash c136-review/tools/run-heavy.sh node c136-review/agents/R08/scripts/shadow.mjs <matchId>
-//        [--replay-from <mid2>] [--peer <mid2>] [--strategy c110|g09|c116-vb] [--bots 名1,名2|all]
+//        [--replay-from <mid2>] [--peer <mid2> | --peer-tag <标签>] [--strategy c110|g09|c116-vb] [--bots 名1,名2|all]
 //        [--until T] [--trace 名:t1,t2;名2:t3] [--quiet]
 // 输出：out/<matchId>/shadow.json
 import fs from 'node:fs';
@@ -230,7 +230,7 @@ const t0 = Date.now();
 let actMs = 0;
 const out = resim(mid, {
   until: opt('until', null) ? +opt('until') : undefined,
-  replayFrom: opt('replay-from', null), peer: opt('peer', null),
+  replayFrom: opt('replay-from', null), peer: opt('peer', null), peerTag: opt('peer-tag', null),
   onStart: (g, ctx) => {
     names = ctx.names;
     g.online = true;
