@@ -4,7 +4,7 @@
 - M1 完成：A057、A059、A094；M2 完成：A055、A075、A054。全部通过本地机械检查（`python3 scripts/check_my_review.py`）。
 - M3 完成：A031（never-grew）、A019（mid-collapse）、A009（never-grew，Va）；m3-reviews 报告已发（里面更正了 A075 的判定数：错 10 / 不清 5 / 对 5）。
 - M4 完成：A023（never-grew；错 9 / 不清 8 / 对 3；新模式 AT12、AT13）；A050（external；错 9 / 不清 5 / 对 6；新模式 EG03）；A003（never-grew，Va；错 7 / 不清 9 / 对 3；新模式 SP04、DN13）。
-- M5 进行中：A005 完成（external，Va；错 4 / 不清 6 / 对 2；新模式 SP05、OP04）；B039 完成（external，c110；错 12 / 不清 2 / 对 4；新模式 SP06、EC03、DF05、DN14）→ B043；然后 M6，再写 COUNCIL-PROPOSAL（总部 0008）。
+- M5 完成：A005（external，Va；错 4 / 不清 6 / 对 2；新模式 SP05、OP04）；B039（external，c110；错 12 / 不清 2 / 对 4；新模式 SP06、EC03、DF05、DN14）；B043（external，c110；错 10 / 不清 4 / 对 5；新模式 OP05、AT14）。15/15 局都过了机械检查。接着 M6（CROSS-MATCH-SUMMARY + 全量计数脚本 + cards/），再写 COUNCIL-PROPOSAL（总部 0008）。
   A005 的图镜像里没有（5_9294）：`run-heavy.sh node scripts/map_from_engine.cjs A005` 从真引擎的状态数组 aFA 取出写 out/A005/map_5_9294.bin，
   `resim_lib.mjs` 的 loadMapOrLocal 在镜像缺图时读它（A003 --verify 12_0 逐像素全同）。之后流水线照常：重演 125/125、影子 125/125。**以后缺图的局都这么办。**
 - 总部 0006：所有 node 重演/影子命令必须 `bash ../../tools/run-heavy.sh node scripts/...`（在 agents/R01 下），串行、一次一局，结果缓存在 out/。
@@ -133,7 +133,7 @@ A003 的主线：7 个号随机出生散在全图（开局人均反而全场最�
 - [x] A055（outscaled）  - [x] A075（win）  - [x] A054（mid-collapse）   （M2）
 - [x] A031（never-grew）  - [x] A019（mid-collapse）  - [x] A009（never-grew）   （M3）
 - [x] A023（never-grew）  - [x] A050（external）  - [x] A003（never-grew）   （M4）
-- [x] A005（external）  - [x] B039（external）  - [ ] B043   （M5）
+- [x] A005（external）  - [x] B039（external）  - [x] B043（external）   （M5）
 - [ ] M6：reports/CROSS-MATCH-SUMMARY.md、全量模式计数脚本、cards/
 A005 新增脚本：`map_from_engine.cjs <mid> [--verify 图_种子]`（见上）；`page_speed.py <mid> [--ref 600]`（只读日志：按行序 + RESULT 的 at + 名义的钟，
   给每个页面在各 RESULT 时刻的本地拍区间、落后拍/秒、平均速度占正常速度的比例；HL-SLOW-TICK 行；avgMs/maxMs 前后）；
@@ -176,3 +176,15 @@ M6 要全量做的（A005 带出来的）：
   长地全靠船吃离场壳 → 3897–4960 拍被周围 2–4 万格的真人逐个吃掉；Pomerania 在赢的 T2 里活到收场。
 - M6 要全量做的（B039 带出来的）：6. 每局 `lag_periods.py --json`、`attrib3.py --json`、`voronoi_share.mjs`（串行）；7. 机器人席位 vs 其他真人的离场率（B039：30 个少 20 个 vs 44 个少 6 个）；
   8. 船的手续费/装兵比、被打沉的船（boat_trace 的 hitLoss）；9. 捐兵手续费占比（donate_recon 只对 c110；c116 用 dispatch_audit）。
+- B043 做完后的笔记（c110，--replay A062 --log B043；重演 600/604，另 4 个快照是 6241 拍后壳自动捐兵的收款人，`engine_bal.cjs --check` 用真引擎核对过）：
+  新脚本 `pairs_view.py <mid> victim|attacker <席位…>`（resim_pairs 按对手汇总格数、起止拍；resim_pairs 只有和本队席位有关的行）；`scripts/steps/b043-{a,b,c,d}.txt` 是成批步骤文件
+  （`run_batch.sh` 的输入）。run-heavy 排队太深时内联命令 118 秒内拿不到槽：改在 tmux 里 `HEAVY_QUEUE=3000 bash ../../tools/run-heavy.sh bash scripts/run_batch.sh <步骤文件> > 日志 2>&1`，回头读日志。
+  新模式：OP05 1500 拍前 dpKeep 按最强真人邻居的全部余额留兵（Jordan 1285–1495 拍；dpKeep L2491–2496）| AT14 进攻线上的兵不撤回（Srivijaya 1800–2040 拍 30 万兵压在进攻线上，家里 0.4–2.4 万；
+  hold() L2120–2130 因 holdOn=0 不执行，本队全场 0 条 retreat）。复用：AT13 在 c110 里的行号是 buyLand L5269–5273（isSoleHealthyBuffer）/ L5279–5282（isCrowdedHard）/ L5267（价格线）；
+  DN14 的机理读清了：rescue 分支 L4424 不查 isBot，L4434 的条件（被真人打且密度 < 75）对壳永远成立，L4436 dMe ≥ max(55, dAlly+15) 就捐 pct 155——Yoshi 的壳一家收了 18 笔 1170526。
+  船落在同队岸上 = 捐款且“一笔收不下整船作废”（boats.js landAt L273–279 + game.js bookDonation L370–376）；过期船令按执行时余额装兵，额度一超就整船没了（Itachi 1596 拍 97653 兵）。
+- B043 的主线：20 个席位拆三队（T3 8 / T1 7 / T2 5）→ 630 拍和路人并排（吃到天然地盘 0.41 对 0.44）→ 页面本地 600 拍起只有正常速度的 4–89%，600–1500 拍的令 44.2% 落地、延迟中位 224 →
+  最慢的 7 个页面 1043–1526 拍被 leave → 1560–1800 拍过期令、过期船成批落地，1755–2503 拍死 6 个 → 中期 Janissary、Barbary、KGB、Hussite 两三千拍没打过真人（价格线 + 唯一健康邻居等 128 倍 + safeAt），
+  46 笔捐兵 350 万里 23 笔 152 万进了壳 → 3591–5892 拍被 Art raffiné、Mongol Empire 等逐个吃掉 → T1 99.87% 收场，Trajan（第 7）、Zenobia（第 10）在赢的队里活到最后。
+- M6 要全量做的（B043 带出来的）：10. 船落在同队岸上的条数、到岸、到账（boat_trace 的 landedOn=mate / mateGot）和出海当拍落点已是同队岸的条数（aimAtLaunch）；
+  11. 进攻线上的兵对家里余额的比（resim_squad 的 atkOut 对 bal）≥5 倍且持续 ≥90 拍的号数（AT14）；12. 给离场壳的捐兵（c110 用 donate_recon；c116 用 dispatch_audit 的 to 席位 state=2）。
