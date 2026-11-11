@@ -716,5 +716,9 @@
   "scripts/thin_after_spend.py A099 --all（本局新增：自己花兵后变薄的时刻与随后 300 拍的后果）",
   "scripts/truth_query.py A099 cmds | bal | gain …；scripts/policy_params.mjs vc …；scripts/engine_settings.cjs A099",
   "scripts/review_base.py / review_write.py / check_reviews.py"
- ]
+ ],
+ "hub0007Notes": {
+  "latency": "解读：>3060 拍影子想发的 305 条里有 97 条是 4150 拍以后的发船意图，真实客户端没有发（见 §9），所以这一段「受理 ÷ 想发」只有 68% 不是桥拒收。",
+  "land": "解读：同队的内置 AI 打不了，已从「身边的内置 AI」里剔掉。1500 拍我方实际 ÷ 天然（0.82）略低于其他真人（0.89），身边 AI 的地有 28% 被敌方真人拿走；到站时目标已出局的指令占落地的「瞄 AI/真人」单的 60%，是 M4 三局里最高的。1500 拍以后贴着内置 AI 的决策拍 81% 停在单价闸上（sora_w 贴着 AI#261 的残地占了其中一大块，见 D25）。"
+ }
 }

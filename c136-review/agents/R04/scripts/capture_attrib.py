@@ -30,7 +30,7 @@ def main():
     ve, vl = land['voronoi']['euclid'], land['voronoi']['landpath']
     f1 = min(1.0, ve['ourSharePct'] / ve['headSharePct'])
     f1l = min(1.0, vl['ourSharePct'] / vl['headSharePct'])
-    out = dict(match=mid, f1=round(f1, 3), f1Landpath=round(f1l, 3), windows={})
+    out = dict(match=mid, f1=round(f1, 6), f1Landpath=round(f1l, 6), windows={})
     print('# %s 好地为什么没拿到：三层归因（机会折扣，不是反事实）' % mid)
     print('① 出生：我方天然地盘（欧氏）占全图陆地 %.1f%%、人头占到场真人 %.1f%% → 人均天然地盘是全场人均的 %.2f 倍（陆路口径 %.2f 倍）；单号中位 %s 格，其他真人中位 %s 格（%.2f 倍）' % (
         ve['ourSharePct'], ve['headSharePct'], ve['ourSharePct'] / ve['headSharePct'], vl['ourSharePct'] / vl['headSharePct'],
@@ -120,9 +120,10 @@ def main():
                 res = dict(tick=te, ourRatio=me['ratioE'], otherRatio=ot['ratioE'], aiOurPct=round(100.0 * o.get('我方', 0) / max(1, px), 1),
                            aiAllyPct=round(100.0 * o.get('同队其他真人', 0) / max(1, px), 1), aiEnemyPct=round(100.0 * o.get('敌方真人', 0) / max(1, px), 1))
             print(line)
-        out['windows'][lab] = dict(adjTicks=n, acted=act, locked=lock, free=free, lockDetail=dict(det), f2=round(f2, 3), f3a=round(f3a, 3), f3b=round(f3b, 3),
-                                   product=round(f1 * f2 * f3a * f3b, 4), shareSpawn=round(100 * logs[0] / s, 1), shareLock=round(100 * logs[1] / s, 1),
-                                   shareLate=round(100 * logs[2] / s, 1), result=res)
+        out['windows'][lab] = dict(adjTicks=n, acted=act, locked=lock, free=free, lockDetail=dict(det), f2=round(f2, 6), f3a=round(f3a, 6), f3b=round(f3b, 6),
+                                   product=round(f1 * f2 * f3a * f3b, 6), shareSpawn=round(100 * logs[0] / s, 4), shareLock=round(100 * logs[1] / s, 4),
+                                   shareLate=round(100 * logs[2] / s, 4), shareNotLanded=round(100 * math.log(1 / max(1e-9, f3a)) / s, 4),
+                                   shareDeadTarget=round(100 * math.log(1 / max(1e-9, f3b)) / s, 4), result=res)
     d = os.path.join(ROOT, 'tmp', 'attrib')
     os.makedirs(d, exist_ok=True)
     json.dump(out, open(os.path.join(d, mid + '.json'), 'w', encoding='utf8'), ensure_ascii=False)

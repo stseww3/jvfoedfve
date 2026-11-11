@@ -1451,5 +1451,1230 @@
   "0005-(4) 为利息而捐：对得上影子日志的 4 笔增产调度到账 322.5 万、税 91.3 万，落地当拍「捐款人 + 收款人」合计利息每 10 拍 +12.5 万，73 拍回本；全部 44 笔合计每 10 拍 −8.06 万（35 笔变少），300 拍内倒回去的占 78%（yield_check.py、donation_list.py；D17）。",
   "0005-(5) 弃子判定：5090 拍 ryan_m 被判成弃子（第一分支：被攻兵 78.1 万 > 1.65×余额 13.3 万），判定时它确实在被 Arasmus 打穿，没有误判；第二分支（地 < 0.22×最大号）没有触发（ryan_m 11,634 格是 sora_w 的 0.31）。判定之前 leo_tx 下的 25.0 万调度晚 274 拍落在了出局前 15 拍的 ryan_m 身上。",
   "0005-(6) 船：69 条船载兵 1,310 万、手续费 341.5 万，海上损耗 117.9 万（9%；航行拍数中位 64、最长 1,363）。回到自己地上作废 35 条（兵退回，手续费 165.9 万不退；27 条是下一拍就回来，终点此前都已经有我方的船登陆过）；手续费比载兵多的 16 条（载兵 7.5 万、手续费 107.8 万；无主地落点固定载 3×格数 + 300）；ryan_m 的 8 条长途船 87.7 万→到岸 30.4 万（走了 636~730 拍）；登在内置 AI 岛上的 10 条净得地 6,029 格（D15、D16）。对照：队 1 全队 92 条船 2,200 万兵。"
- ]
+ ],
+ "hub0007Notes": {
+  "latency": "解读：本局录像里只有 4 个号，另一局的 6 个号和它们共用同一条发令通道，所以这里数到的「编队密度」偏低、同一档的延迟偏高（其他局 ≤12 条时 P50 是 10~15 拍）。慢拍和四个号被围住之后的找船位搜索对得上（noah88 2160 拍起、另外三个号 3280 拍起）：影子策略同拍段每次决策的耗时是开局的 13~24 倍，93~98% 花在 idleBoats → boatOut → searchWater（围住分支把 boatRange 设成 2500，Policy.idleBoats L5037；`act_cost.mjs`）。",
+  "land": "解读：到 1500 拍我方的实际 ÷ 天然还高于其他真人，被反超是 1500~2250 拍的事（2250 拍 0.53 对 0.89）：这一段贴着内置 AI 的 910 个号·决策拍里 282 个被 safeAt → safeFinite（参照编队号）卡住，桥受理的 528 条指令只落地 162 条；630 拍身边内置 AI 的 39,239 格到 2250 拍有 13,288 格（34%）是同队的 Targaryen 吃掉的。"
+ },
+ "latencyLedger": {
+  "match": "A015",
+  "spawn": {
+   "steps": 281,
+   "solves": 22,
+   "lastChange": 11,
+   "classes": {
+    "落在最后一轮的点上": 4
+   },
+   "samePoint": 0,
+   "lastStepMin": 232,
+   "lastStepMax": 232
+  },
+  "delay": {
+   "0~599": {
+    "intents": 36,
+    "landed": 34,
+    "attackIntents": 36,
+    "attackLanded": 34,
+    "p50": 12,
+    "p90": 14,
+    "max": 15,
+    "strictN": 31,
+    "strictP50": 11,
+    "strictP90": 14,
+    "strictMax": 15
+   },
+   "600~1499": {
+    "intents": 265,
+    "landed": 153,
+    "attackIntents": 265,
+    "attackLanded": 153,
+    "p50": 48,
+    "p90": 359,
+    "max": 556,
+    "strictN": 102,
+    "strictP50": 50,
+    "strictP90": 369,
+    "strictMax": 556
+   },
+   "1500~2999": {
+    "intents": 600,
+    "landed": 135,
+    "attackIntents": 591,
+    "attackLanded": 133,
+    "p50": 414,
+    "p90": 703,
+    "max": 743,
+    "strictN": 39,
+    "strictP50": 489,
+    "strictP90": 706,
+    "strictMax": 720
+   },
+   "3000+": {
+    "intents": 388,
+    "landed": 161,
+    "attackIntents": 215,
+    "attackLanded": 50,
+    "p50": 156,
+    "p90": 320,
+    "max": 501,
+    "strictN": 21,
+    "strictP50": 89,
+    "strictP90": 191,
+    "strictMax": 501
+   }
+  },
+  "batchLag": {
+   "600~1499": {
+    "batches": 8,
+    "matched": 8,
+    "newestP50": 151,
+    "oldestP50": 196,
+    "oldestMax": 280
+   },
+   "1500~2999": {
+    "batches": 16,
+    "matched": 6,
+    "newestP50": 209,
+    "oldestP50": 350,
+    "oldestMax": 514
+   },
+   "3000+": {
+    "batches": 5,
+    "matched": 5,
+    "newestP50": 134,
+    "oldestP50": 189,
+    "oldestMax": 206
+   }
+  },
+  "funnel": {
+   "≤630": {
+    "want": 41,
+    "accepted": 37,
+    "landed": 35
+   },
+   "630~1530": {
+    "want": 270,
+    "accepted": 268,
+    "landed": 128
+   },
+   "1530~3060": {
+    "want": 597,
+    "accepted": 528,
+    "landed": 162
+   },
+   ">3060": {
+    "want": 292,
+    "accepted": 284,
+    "landed": 158
+   },
+   "total": {
+    "want": 1200,
+    "accepted": 1117,
+    "landed": 483,
+    "resSent": 1143,
+    "resAccepted": 1071
+   },
+   "perBot": {
+    "ryan_m": {
+     "want": 164,
+     "accepted": 148,
+     "landed": 95
+    },
+    "sora_w": {
+     "want": 315,
+     "accepted": 304,
+     "landed": 146
+    },
+    "noah88": {
+     "want": 311,
+     "accepted": 282,
+     "landed": 135
+    },
+    "leo_tx": {
+     "want": 410,
+     "accepted": 383,
+     "landed": 107
+    }
+   }
+  },
+  "clientLag": {
+   "ryan_m": {
+    "max": 0,
+    "n180": 0
+   },
+   "sora_w": {
+    "max": 90,
+    "n180": 0
+   },
+   "noah88": {
+    "max": 0,
+    "n180": 0
+   },
+   "leo_tx": {
+    "max": 630,
+    "n180": 12
+   }
+  },
+  "lateWrong": {
+   "0~599": {
+    "landed": 34,
+    "aimed": 10,
+    "aimedTroops": 5068,
+    "retargeted": 0,
+    "wantTroops": 0,
+    "toNeutralN": 0,
+    "toNeutralTroops": 0,
+    "toNeutralFee": 0,
+    "noAttackN": 0,
+    "noAttackTroops": 0,
+    "aimedIntents": 12,
+    "onTarget": 10,
+    "onTargetTroops": 3592
+   },
+   "600~1499": {
+    "landed": 129,
+    "aimed": 118,
+    "aimedTroops": 301068,
+    "retargeted": 35,
+    "wantTroops": 98145,
+    "toNeutralN": 17,
+    "toNeutralTroops": 45577,
+    "toNeutralFee": 6435,
+    "noAttackN": 18,
+    "noAttackTroops": 51203,
+    "aimedIntents": 254,
+    "onTarget": 82,
+    "onTargetTroops": 293335
+   },
+   "1500~2999": {
+    "landed": 156,
+    "aimed": 65,
+    "aimedTroops": 1470228,
+    "retargeted": 34,
+    "wantTroops": 271540,
+    "toNeutralN": 20,
+    "toNeutralTroops": 165577,
+    "toNeutralFee": 71548,
+    "noAttackN": 14,
+    "noAttackTroops": 77778,
+    "aimedIntents": 521,
+    "onTarget": 30,
+    "onTargetTroops": 1067484
+   },
+   "3000+": {
+    "landed": 51,
+    "aimed": 32,
+    "aimedTroops": 10733154,
+    "retargeted": 0,
+    "wantTroops": 0,
+    "toNeutralN": 0,
+    "toNeutralTroops": 0,
+    "toNeutralFee": 0,
+    "noAttackN": 0,
+    "noAttackTroops": 0,
+    "aimedIntents": 177,
+    "onTarget": 32,
+    "onTargetTroops": 4347669
+   }
+  },
+  "repeat": {
+   "0~599": {
+    "n": 2,
+    "troops": 743,
+    "sharePct": 20.7
+   },
+   "600~1499": {
+    "n": 39,
+    "troops": 130050,
+    "sharePct": 44.1
+   },
+   "1500~2999": {
+    "n": 49,
+    "troops": 1035754,
+    "sharePct": 54.9
+   },
+   "3000+": {
+    "n": 23,
+    "troops": 2553434,
+    "sharePct": 58.0
+   },
+   "total": {
+    "n": 113,
+    "troops": 3719981,
+    "sharePct": 56.5
+   }
+  },
+  "drain": {
+   "600~1499": {
+    "批": 8,
+    "条": 58,
+    "兵": 240563,
+    "第2条起的兵": 154850,
+    "手续费": 19755,
+    "抽到四成以下": 4
+   },
+   "1500~2999": {
+    "批": 16,
+    "条": 136,
+    "兵": 1146869,
+    "第2条起的兵": 883793,
+    "手续费": 251114,
+    "抽到四成以下": 3,
+    "一兵没出": 5
+   },
+   "3000+": {
+    "批": 5,
+    "条": 35,
+    "兵": 3529322,
+    "第2条起的兵": 2707750,
+    "手续费": 297231,
+    "一兵没出": 2,
+    "抽到四成以下": 2
+   },
+   "sizes": {
+    "3": 2,
+    "4": 1,
+    "8": 11,
+    "9": 13,
+    "7": 2
+   }
+  }
+ },
+ "goodLand": {
+  "match": "A015",
+  "land": 664497,
+  "humansPresent": 18,
+  "ours": 4,
+  "t0": 630,
+  "at": [
+   630,
+   1080,
+   1500,
+   1800,
+   2250,
+   3000
+  ],
+  "voronoi": {
+   "euclid": {
+    "ourPx": 99942,
+    "ourSharePct": 15.04,
+    "headSharePct": 22.22,
+    "ourMedian": 29960,
+    "otherMedian": 38495,
+    "perBot": {
+     "16": 9672,
+     "17": 29960,
+     "18": 46843,
+     "19": 13467
+    }
+   },
+   "landpath": {
+    "ourPx": 101027,
+    "ourSharePct": 15.2,
+    "headSharePct": 22.22,
+    "ourMedian": 26169,
+    "otherMedian": 33635,
+    "perBot": {
+     "16": 15764,
+     "17": 26169,
+     "18": 43290,
+     "19": 15804
+    }
+   },
+   "unreachable": 47721
+  },
+  "capture": {
+   "630": {
+    "groups": {
+     "我方": {
+      "n": 4,
+      "alive": 4,
+      "actual": 13334,
+      "euclid": 99942,
+      "landpath": 101027,
+      "ratioE": 0.133,
+      "ratioL": 0.132,
+      "medE": 0.227,
+      "medL": 0.193
+     },
+     "全部其他真人": {
+      "n": 14,
+      "alive": 14,
+      "actual": 33297,
+      "euclid": 564555,
+      "landpath": 515749,
+      "ratioE": 0.059,
+      "ratioL": 0.065,
+      "medE": 0.072,
+      "medL": 0.067
+     },
+     "同队其他真人": {
+      "n": 6,
+      "alive": 6,
+      "actual": 14396,
+      "euclid": 238088,
+      "landpath": 243667,
+      "ratioE": 0.06,
+      "ratioL": 0.059,
+      "medE": 0.076,
+      "medL": 0.067
+     },
+     "敌队1": {
+      "n": 8,
+      "alive": 8,
+      "actual": 18901,
+      "euclid": 326467,
+      "landpath": 272082,
+      "ratioE": 0.058,
+      "ratioL": 0.069,
+      "medE": 0.06,
+      "medL": 0.076
+     }
+    },
+    "ourCell": {
+     "px": 99942,
+     "owners": {
+      "无主": 48388,
+      "内置AI": 38231,
+      "我方": 13323
+     }
+    },
+    "ourOutside": 11,
+    "ourAll": 13334
+   },
+   "1080": {
+    "groups": {
+     "我方": {
+      "n": 4,
+      "alive": 4,
+      "actual": 32725,
+      "euclid": 99942,
+      "landpath": 101027,
+      "ratioE": 0.327,
+      "ratioL": 0.324,
+      "medE": 0.515,
+      "medL": 0.397
+     },
+     "全部其他真人": {
+      "n": 14,
+      "alive": 14,
+      "actual": 90568,
+      "euclid": 564555,
+      "landpath": 515749,
+      "ratioE": 0.16,
+      "ratioL": 0.176,
+      "medE": 0.182,
+      "medL": 0.209
+     },
+     "同队其他真人": {
+      "n": 6,
+      "alive": 6,
+      "actual": 42309,
+      "euclid": 238088,
+      "landpath": 243667,
+      "ratioE": 0.178,
+      "ratioL": 0.174,
+      "medE": 0.223,
+      "medL": 0.213
+     },
+     "敌队1": {
+      "n": 8,
+      "alive": 8,
+      "actual": 48259,
+      "euclid": 326467,
+      "landpath": 272082,
+      "ratioE": 0.148,
+      "ratioL": 0.177,
+      "medE": 0.169,
+      "medL": 0.209
+     }
+    },
+    "ourCell": {
+     "px": 99942,
+     "owners": {
+      "无主": 5025,
+      "内置AI": 63393,
+      "我方": 31524
+     }
+    },
+    "ourOutside": 1201,
+    "ourAll": 32725
+   },
+   "1500": {
+    "groups": {
+     "我方": {
+      "n": 4,
+      "alive": 4,
+      "actual": 42956,
+      "euclid": 99942,
+      "landpath": 101027,
+      "ratioE": 0.43,
+      "ratioL": 0.425,
+      "medE": 0.503,
+      "medL": 0.428
+     },
+     "全部其他真人": {
+      "n": 14,
+      "alive": 14,
+      "actual": 211800,
+      "euclid": 564555,
+      "landpath": 515749,
+      "ratioE": 0.375,
+      "ratioL": 0.411,
+      "medE": 0.507,
+      "medL": 0.484
+     },
+     "同队其他真人": {
+      "n": 6,
+      "alive": 6,
+      "actual": 87467,
+      "euclid": 238088,
+      "landpath": 243667,
+      "ratioE": 0.367,
+      "ratioL": 0.359,
+      "medE": 0.507,
+      "medL": 0.367
+     },
+     "敌队1": {
+      "n": 8,
+      "alive": 8,
+      "actual": 124333,
+      "euclid": 326467,
+      "landpath": 272082,
+      "ratioE": 0.381,
+      "ratioL": 0.457,
+      "medE": 0.517,
+      "medL": 0.564
+     }
+    },
+    "ourCell": {
+     "px": 99942,
+     "owners": {
+      "无主": 4605,
+      "内置AI": 51946,
+      "同队其他真人": 1854,
+      "我方": 41537
+     }
+    },
+    "ourOutside": 1419,
+    "ourAll": 42956
+   },
+   "1800": {
+    "groups": {
+     "我方": {
+      "n": 4,
+      "alive": 4,
+      "actual": 46370,
+      "euclid": 99942,
+      "landpath": 101027,
+      "ratioE": 0.464,
+      "ratioL": 0.459,
+      "medE": 0.532,
+      "medL": 0.45
+     },
+     "全部其他真人": {
+      "n": 14,
+      "alive": 14,
+      "actual": 325537,
+      "euclid": 564555,
+      "landpath": 515749,
+      "ratioE": 0.577,
+      "ratioL": 0.631,
+      "medE": 0.743,
+      "medL": 0.567
+     },
+     "同队其他真人": {
+      "n": 6,
+      "alive": 6,
+      "actual": 148664,
+      "euclid": 238088,
+      "landpath": 243667,
+      "ratioE": 0.624,
+      "ratioL": 0.61,
+      "medE": 0.887,
+      "medL": 0.556
+     },
+     "敌队1": {
+      "n": 8,
+      "alive": 8,
+      "actual": 176873,
+      "euclid": 326467,
+      "landpath": 272082,
+      "ratioE": 0.542,
+      "ratioL": 0.65,
+      "medE": 0.743,
+      "medL": 0.863
+     }
+    },
+    "ourCell": {
+     "px": 99942,
+     "owners": {
+      "无主": 5020,
+      "内置AI": 42232,
+      "同队其他真人": 8881,
+      "我方": 43809
+     }
+    },
+    "ourOutside": 2561,
+    "ourAll": 46370
+   },
+   "2250": {
+    "groups": {
+     "我方": {
+      "n": 4,
+      "alive": 4,
+      "actual": 52878,
+      "euclid": 99942,
+      "landpath": 101027,
+      "ratioE": 0.529,
+      "ratioL": 0.523,
+      "medE": 0.662,
+      "medL": 0.582
+     },
+     "全部其他真人": {
+      "n": 14,
+      "alive": 14,
+      "actual": 502971,
+      "euclid": 564555,
+      "landpath": 515749,
+      "ratioE": 0.891,
+      "ratioL": 0.975,
+      "medE": 0.867,
+      "medL": 0.889
+     },
+     "同队其他真人": {
+      "n": 6,
+      "alive": 6,
+      "actual": 235446,
+      "euclid": 238088,
+      "landpath": 243667,
+      "ratioE": 0.989,
+      "ratioL": 0.966,
+      "medE": 1.03,
+      "medL": 0.799
+     },
+     "敌队1": {
+      "n": 8,
+      "alive": 8,
+      "actual": 267525,
+      "euclid": 326467,
+      "landpath": 272082,
+      "ratioE": 0.819,
+      "ratioL": 0.983,
+      "medE": 0.867,
+      "medL": 0.946
+     }
+    },
+    "ourCell": {
+     "px": 99942,
+     "owners": {
+      "无主": 4549,
+      "同队其他真人": 27350,
+      "我方": 50278,
+      "内置AI": 17765
+     }
+    },
+    "ourOutside": 2600,
+    "ourAll": 52878
+   },
+   "3000": {
+    "groups": {
+     "我方": {
+      "n": 4,
+      "alive": 4,
+      "actual": 71153,
+      "euclid": 99942,
+      "landpath": 101027,
+      "ratioE": 0.712,
+      "ratioL": 0.704,
+      "medE": 0.94,
+      "medL": 0.619
+     },
+     "全部其他真人": {
+      "n": 14,
+      "alive": 12,
+      "actual": 567751,
+      "euclid": 564555,
+      "landpath": 515749,
+      "ratioE": 1.006,
+      "ratioL": 1.101,
+      "medE": 0.964,
+      "medL": 1.093
+     },
+     "同队其他真人": {
+      "n": 6,
+      "alive": 5,
+      "actual": 271844,
+      "euclid": 238088,
+      "landpath": 243667,
+      "ratioE": 1.142,
+      "ratioL": 1.116,
+      "medE": 0.964,
+      "medL": 1.093
+     },
+     "敌队1": {
+      "n": 8,
+      "alive": 7,
+      "actual": 295907,
+      "euclid": 326467,
+      "landpath": 272082,
+      "ratioE": 0.906,
+      "ratioL": 1.088,
+      "medE": 1.044,
+      "medL": 1.138
+     }
+    },
+    "ourCell": {
+     "px": 99942,
+     "owners": {
+      "无主": 3768,
+      "同队其他真人": 28002,
+      "我方": 62785,
+      "内置AI": 5387
+     }
+    },
+    "ourOutside": 8368,
+    "ourAll": 71153
+   }
+  },
+  "aiFate": {
+   "1080": {
+    "owners": {
+     "原来那个AI": 21798,
+     "别的AI": 9724,
+     "我方": 7650,
+     "无主": 67
+    },
+    "perBot": {
+     "16": 1411,
+     "17": 1971,
+     "18": 1963,
+     "19": 2305
+    },
+    "topOthers": []
+   },
+   "1500": {
+    "owners": {
+     "别的AI": 13090,
+     "原来那个AI": 11060,
+     "同队其他真人": 1363,
+     "我方": 13726
+    },
+    "perBot": {
+     "16": 1453,
+     "17": 4712,
+     "18": 5205,
+     "19": 2356
+    },
+    "topOthers": [
+     {
+      "p": 0,
+      "name": "Targaryen Dynasty",
+      "cls": "同队其他真人",
+      "px": 1363
+     }
+    ]
+   },
+   "1800": {
+    "owners": {
+     "别的AI": 12148,
+     "原来那个AI": 7293,
+     "同队其他真人": 4863,
+     "无主": 8,
+     "我方": 14927
+    },
+    "perBot": {
+     "16": 1441,
+     "17": 5885,
+     "18": 5278,
+     "19": 2323
+    },
+    "topOthers": [
+     {
+      "p": 0,
+      "name": "Targaryen Dynasty",
+      "cls": "同队其他真人",
+      "px": 4863
+     }
+    ]
+   },
+   "2250": {
+    "owners": {
+     "同队其他真人": 13288,
+     "我方": 18735,
+     "原来那个AI": 3094,
+     "别的AI": 4122
+    },
+    "perBot": {
+     "16": 1441,
+     "17": 6496,
+     "18": 6820,
+     "19": 3978
+    },
+    "topOthers": [
+     {
+      "p": 0,
+      "name": "Targaryen Dynasty",
+      "cls": "同队其他真人",
+      "px": 13288
+     }
+    ]
+   },
+   "3000": {
+    "owners": {
+     "同队其他真人": 13288,
+     "我方": 24059,
+     "别的AI": 1341,
+     "原来那个AI": 551
+    },
+    "perBot": {
+     "16": 1829,
+     "17": 11242,
+     "18": 6820,
+     "19": 4168
+    },
+    "topOthers": [
+     {
+      "p": 0,
+      "name": "Targaryen Dynasty",
+      "cls": "同队其他真人",
+      "px": 13288
+     }
+    ]
+   },
+   "t0": {
+    "n": 78,
+    "px": 39239,
+    "adjacentN": 23,
+    "adjacentPx": 11216,
+    "allAiPx": 250031
+   }
+  }
+ },
+ "captureAttrib": {
+  "match": "A015",
+  "f1": 0.676868,
+  "f1Landpath": 0.684068,
+  "windows": {
+   "600~1499": {
+    "adjTicks": 720,
+    "acted": 263,
+    "locked": 428,
+    "free": 29,
+    "lockDetail": {
+     "项1 价格项": 183,
+     "项3 safeFinite/编队号": 198,
+     "项3 safeFinite/同队真人": 47
+    },
+    "f2": 0.405556,
+    "f3a": 0.477612,
+    "f3b": 0.674011,
+    "product": 0.088368,
+    "shareSpawn": 16.0858,
+    "shareLock": 37.1973,
+    "shareLate": 46.7169,
+    "shareNotLanded": 30.4568,
+    "shareDeadTarget": 16.2601,
+    "result": {
+     "tick": 1500,
+     "ourRatio": 0.43,
+     "otherRatio": 0.375,
+     "aiOurPct": 35.0,
+     "aiAllyPct": 3.5,
+     "aiEnemyPct": 0.0
+    }
+   },
+   "1500~2999": {
+    "adjTicks": 910,
+    "acted": 510,
+    "locked": 282,
+    "free": 118,
+    "lockDetail": {
+     "safeAt→safeFinite/编队号": 249,
+     "safeAt→safeFinite/同队真人": 5,
+     "截到 oppFloorCap 后仍不够/编队号": 28
+    },
+    "f2": 0.69011,
+    "f3a": 0.306818,
+    "f3b": 0.815308,
+    "product": 0.116849,
+    "shareSpawn": 18.179,
+    "shareLock": 17.2765,
+    "shareLate": 64.5445,
+    "shareNotLanded": 55.0335,
+    "shareDeadTarget": 9.511,
+    "result": {
+     "tick": 3000,
+     "ourRatio": 0.712,
+     "otherRatio": 1.006,
+     "aiOurPct": 61.3,
+     "aiAllyPct": 33.9,
+     "aiEnemyPct": 0.0
+    }
+   }
+  }
+ },
+ "delayVsRate": {
+  "match": "A015",
+  "win": 50,
+  "own": {
+   "1 条": {
+    "n": 100,
+    "landed": 77,
+    "p50": 22,
+    "p90": 414
+   },
+   "2~3 条": {
+    "n": 195,
+    "landed": 138,
+    "p50": 107,
+    "p90": 409
+   },
+   "4~6 条": {
+    "n": 160,
+    "landed": 100,
+    "p50": 97,
+    "p90": 384
+   },
+   "≥7 条": {
+    "n": 834,
+    "landed": 168,
+    "p50": 226,
+    "p90": 641
+   }
+  },
+  "squad": {
+   "1~5 条": {
+    "n": 131,
+    "landed": 106,
+    "p50": 22,
+    "p90": 263
+   },
+   "6~15 条": {
+    "n": 470,
+    "landed": 183,
+    "p50": 85,
+    "p90": 451
+   },
+   "16~30 条": {
+    "n": 449,
+    "landed": 143,
+    "p50": 165,
+    "p90": 626
+   },
+   "≥31 条": {
+    "n": 239,
+    "landed": 51,
+    "p50": 598,
+    "p90": 703
+   }
+  },
+  "squadFine": {
+   "1~3": {
+    "n": 60,
+    "landed": 49,
+    "p50": 14,
+    "p90": 206
+   },
+   "4~6": {
+    "n": 136,
+    "landed": 88,
+    "p50": 114,
+    "p90": 320
+   },
+   "7~9": {
+    "n": 127,
+    "landed": 63,
+    "p50": 72,
+    "p90": 227
+   },
+   "10~12": {
+    "n": 174,
+    "landed": 39,
+    "p50": 67,
+    "p90": 484
+   },
+   "13~15": {
+    "n": 104,
+    "landed": 50,
+    "p50": 115,
+    "p90": 502
+   },
+   "16~20": {
+    "n": 202,
+    "landed": 84,
+    "p50": 171,
+    "p90": 414
+   },
+   "21~30": {
+    "n": 247,
+    "landed": 59,
+    "p50": 139,
+    "p90": 646
+   },
+   "≥31": {
+    "n": 239,
+    "landed": 51,
+    "p50": 598,
+    "p90": 703
+   }
+  },
+  "cross": {
+   "自己 1 条、编队 ≥16 条": {
+    "n": 14,
+    "landed": 10,
+    "p50": 178,
+    "p90": 556
+   },
+   "自己 1 条、编队 ≤5 条": {
+    "n": 50,
+    "landed": 40,
+    "p50": 12,
+    "p90": 189
+   },
+   "自己 ≥4 条、编队 ≤15 条": {
+    "n": 342,
+    "landed": 102,
+    "p50": 122,
+    "p90": 469
+   },
+   "自己 ≥4 条、编队 ≥16 条": {
+    "n": 652,
+    "landed": 166,
+    "p50": 207,
+    "p90": 649
+   }
+  },
+  "throughput": {
+   "想发 <15 条": {
+    "windows": 26,
+    "landedP50": 5,
+    "landedMax": 20
+   },
+   "15~39 条": {
+    "windows": 21,
+    "landedP50": 6,
+    "landedMax": 43
+   },
+   "40~79 条": {
+    "windows": 11,
+    "landedP50": 11,
+    "landedMax": 19
+   }
+  },
+  "throughputMax": 43,
+  "batchGap": {
+   "1500~2999": {
+    "n": 14,
+    "p50": 294,
+    "min": 21,
+    "max": 434
+   },
+   "<1500": {
+    "n": 4,
+    "p50": 161,
+    "min": 126,
+    "max": 168
+   },
+   "3000+": {
+    "n": 2,
+    "p50": 168,
+    "min": 133,
+    "max": 168
+   }
+  }
+ },
+ "slowTicks": {
+  "match": "A015",
+  "lines": 231,
+  "bots": {
+   "noah88": {
+    "n": 66,
+    "first": 2160,
+    "med": 55.150000000000006,
+    "max": 124.6,
+    "segments": [
+     [
+      2160,
+      2380,
+      12
+     ],
+     [
+      3450,
+      3630,
+      10
+     ],
+     [
+      3700,
+      4060,
+      18
+     ],
+     [
+      4345,
+      4730,
+      17
+     ],
+     [
+      5285,
+      5465,
+      4
+     ],
+     [
+      6005,
+      6045,
+      3
+     ]
+    ]
+   },
+   "sora_w": {
+    "n": 54,
+    "first": 3280,
+    "med": 69.30000000000001,
+    "max": 140.5,
+    "segments": [
+     [
+      3280,
+      3920,
+      31
+     ],
+     [
+      4175,
+      4405,
+      11
+     ],
+     [
+      4650,
+      4765,
+      6
+     ],
+     [
+      5130,
+      5250,
+      3
+     ],
+     [
+      5455,
+      5575,
+      3
+     ]
+    ]
+   },
+   "ryan_m": {
+    "n": 41,
+    "first": 3280,
+    "med": 46.1,
+    "max": 97.5,
+    "segments": [
+     [
+      3400,
+      4160,
+      38
+     ]
+    ]
+   },
+   "leo_tx": {
+    "n": 29,
+    "first": 3280,
+    "med": 51.6,
+    "max": 107.6,
+    "segments": [
+     [
+      3400,
+      3920,
+      27
+     ]
+    ]
+   },
+   "talon5": {
+    "n": 20,
+    "first": 2340,
+    "med": 29.65,
+    "max": 49.7,
+    "segments": [
+     [
+      3000,
+      3540,
+      10
+     ]
+    ]
+   },
+   "riku_x": {
+    "n": 7,
+    "first": 2690,
+    "med": 27.5,
+    "max": 31.6,
+    "segments": []
+   },
+   "zexos1": {
+    "n": 5,
+    "first": 3495,
+    "med": 51.5,
+    "max": 64.3,
+    "segments": [
+     [
+      4220,
+      4300,
+      3
+     ]
+    ]
+   },
+   "kaito9": {
+    "n": 4,
+    "first": 2910,
+    "med": 27.15,
+    "max": 46.3,
+    "segments": []
+   },
+   "zero_7": {
+    "n": 3,
+    "first": 2355,
+    "med": 27.5,
+    "max": 41.1,
+    "segments": []
+   },
+   "alex_k": {
+    "n": 2,
+    "first": 2880,
+    "med": 27.4,
+    "max": 28.9,
+    "segments": []
+   }
+  },
+  "lagIn": {
+   "n": 86,
+   "p50": 178,
+   "p90": 322
+  },
+  "lagOut": {
+   "n": 397,
+   "p50": 85,
+   "p90": 609
+  },
+  "byBand": {
+   "0~599": {
+    "inN": 0,
+    "inP50": null,
+    "outN": 34,
+    "outP50": 12
+   },
+   "600~1499": {
+    "inN": 0,
+    "inP50": null,
+    "outN": 153,
+    "outP50": 48
+   },
+   "1500~2999": {
+    "inN": 0,
+    "inP50": null,
+    "outN": 135,
+    "outP50": 414
+   },
+   "3000+": {
+    "inN": 86,
+    "inP50": 178,
+    "outN": 75,
+    "outP50": 121
+   }
+  }
+ }
 }

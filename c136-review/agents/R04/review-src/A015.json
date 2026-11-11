@@ -709,5 +709,9 @@
   "scripts/boat_list.py A015 --all；scripts/boat_gap.py A015",
   "scripts/truth_query.py A015 cmds | bal | flow …；scripts/policy_params.mjs va …",
   "scripts/review_base.py / review_write.py / check_reviews.py"
- ]
+ ],
+ "hub0007Notes": {
+  "latency": "解读：本局录像里只有 4 个号，另一局的 6 个号和它们共用同一条发令通道，所以这里数到的「编队密度」偏低、同一档的延迟偏高（其他局 ≤12 条时 P50 是 10~15 拍）。慢拍和四个号被围住之后的找船位搜索对得上（noah88 2160 拍起、另外三个号 3280 拍起）：影子策略同拍段每次决策的耗时是开局的 13~24 倍，93~98% 花在 idleBoats → boatOut → searchWater（围住分支把 boatRange 设成 2500，Policy.idleBoats L5037；`act_cost.mjs`）。",
+  "land": "解读：到 1500 拍我方的实际 ÷ 天然还高于其他真人，被反超是 1500~2250 拍的事（2250 拍 0.53 对 0.89）：这一段贴着内置 AI 的 910 个号·决策拍里 282 个被 safeAt → safeFinite（参照编队号）卡住，桥受理的 528 条指令只落地 162 条；630 拍身边内置 AI 的 39,239 格到 2250 拍有 13,288 格（34%）是同队的 Targaryen 吃掉的。"
+ }
 }
