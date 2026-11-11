@@ -22,8 +22,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 DATA = "/agent/repos/c136-data"
 ROOT = os.path.join(HERE, "..", "out", "_cache", "census")
 CROSS = os.path.join(HERE, "..", "out", "_cross")
-TICK_RE = re.compile(r"^\d+\t\[(\w+)\] \[HL-TICK\] t=(\d+) .*?cmds=(\d+)")
-DISP_RE = re.compile(r"^\d+\t\[(\w+)\] \[HL-DISPATCH\] t=(\d+) ")
+TICK_RE = re.compile(r"^\d+\t\[([^\]\[]+)\] \[HL-TICK\] t=(\d+) .*?cmds=(\d+)")
+DISP_RE = re.compile(r"^\d+\t\[([^\]\[]+)\] \[HL-DISPATCH\] t=(\d+) ")
 PERIODS = [(0, 600), (600, 1500), (1500, 3000), (3000, 10 ** 9)]
 
 
@@ -33,10 +33,12 @@ def plabel(p):
 
 def load_game(mid):
     allow = set()
+    pmap = {}
     for ln in open(os.path.join(ROOT, mid, "squad_players.tsv"), encoding="utf-8"):
         c = ln.rstrip("\n").split("\t")
         if len(c) == 2 and c[0].isdigit():
             allow.add(c[1])
+            pmap[c[0]] = c[1]
     snaps = defaultdict(dict)
     disp = defaultdict(list)
     with open(os.path.join(DATA, "bundles", mid, "in_game.log"), encoding="utf-8", errors="replace") as f:
@@ -52,8 +54,8 @@ def load_game(mid):
     land = defaultdict(list)
     with open(os.path.join(ROOT, mid, "humans_cmd.tsv"), newline="", encoding="utf-8") as f:
         for r in csv.DictReader(f, delimiter="\t"):
-            if r["squad"] == "1":
-                land[r["name"].split("] ")[-1].strip()].append(int(r["t"]))
+            if r["squad"] == "1" and r["p"] in pmap:
+                land[pmap[r["p"]]].append(int(r["t"]))
     for b in land:
         land[b].sort()
     for b in disp:
@@ -219,6 +221,25 @@ def main():
     P("  （只算有相邻 HL-TICK、且窗口里没有捐款的窗口；这样的窗口里发出不足 20 条的号次不列）")
     k18 = [r for r in all_w if r[4] >= 17 and r[6] == 0]
     P(f"  一窗发出 ≥17 条（差不多每个决策拍一条）且没有捐款的窗口：{len(k18):,} 个，发出 {sum(r[4] for r in k18):,}、落地 {sum(r[5] for r in k18):,}；分布在 {len({r[0] for r in k18})} 局、{len({(r[0], r[1]) for r in k18})} 个号次")
+
+    P("")
+    P("## I2. 逐个号（一局一个号算一个）在 600~3000 拍里：这个号发出合计分档（只算起点在 600~3000、没有捐款的窗口；这样的窗口不足 10 个的号次不列）")
+    P("   发出合计 | 号次 | 发出合计 | 落地合计 | 落地 ÷ 发出 | 每个号落地条数的中位 / P90 / 最大")
+    bl = []
+    for (m, b), ws0 in seq.items():
+        ws = [w for w in ws0 if w[4] == 0 and 600 <= w[0] < 3000]
+        if len(ws) >= 10:
+            bl.append((sum(w[2] for w in ws), sum(w[3] for w in ws), m, b))
+    for lo, hi in ((0, 19), (20, 39), (40, 79), (80, 149), (150, 249), (250, 10 ** 6)):
+        sel = [x for x in bl if lo <= x[0] <= hi]
+        if not sel:
+            continue
+        si, sl = sum(x[0] for x in sel), sum(x[1] for x in sel)
+        ls = sorted(x[1] for x in sel)
+        lab = f"{lo}~{hi}" if hi < 10 ** 6 else f"≥{lo}"
+        P(f"  {lab}\t{len(sel)}\t{si:,}\t{sl:,}\t{(sl / si if si else 0):.2f}\t{statistics.median(ls):.0f} / {ls[int(0.9 * (len(ls) - 1))]} / {ls[-1]}")
+    topl = sorted(bl, key=lambda x: -x[1])[:5]
+    P("  落地最多的 5 个号次：" + "、".join(f"{m} {b}（发出 {i}、落地 {l}）" for i, l, m, b in topl))
 
     P("")
     P("## J. 逐局的「连发窗口」（单个号一窗发出 ≥10 条、窗口里没有捐款）：局 | 这样的窗口数（其中 ≥17 条的）| 窗口里发出 / 落地 | 按窗口起点分 0~600 / 600~1500 / 1500~3000 / 3000+ 的窗口数 | 涉及的号数")
