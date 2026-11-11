@@ -5,6 +5,9 @@
   pattern_scan.py --tsv out/pattern-scan.tsv --json /tmp/c136-r05/work/pattern-scan.json --agg --sum --classes
   spawn_exec_sum.py --list                       （读 out/spawn-exec-all.tsv）
   perf_vs_lag.py
+  pattern_scan2.py --tsv out/pattern-scan2.tsv --agg --check     （第二批：捐兵去向 / 放行口 / 船 / 出生几何 / 每拍一条）
+  round_limit.py --json out/round-limit.json                     （回合 = 7 拍、每玩家 3 回合 ≤ 9 条）
+  burst_model.py --json out/burst-model.json                     （没落地的指令丢在哪；只有 13 局）
 另做一张对照表：pattern_scan 的 L/N/B（只读对局包）对 已复盘各局 reviews/<局>.json 里的决策级延迟账（delay_account.py，要跑影子策略），
 用来说明「不跑影子也能数」的口径和「跑了影子」的口径差多少。
 
@@ -49,7 +52,7 @@ P = []
 P.append('# 全量机械检测：高频失分模式在全部对局包里出现多少次')
 P.append('')
 P.append('> 本文件由 `python3 scripts/scan_report.py` 生成，不手改。所有数字来自下面三个脚本对全部有录像的对局包的输出；逐局明细在 `out/pattern-scan.tsv`、`out/spawn-exec-all.tsv`。')
-P.append('> 这些检测只读对局包文件和录像命令流（`replay_dump_all.mjs` 解码），不跑引擎、不跑影子策略，全量跑一遍约 2 秒。')
+P.append('> 第 1–8 节的检测只读对局包文件和录像命令流（`replay_dump_all.mjs` 解码），不跑引擎、不跑影子策略，全量跑一遍十几秒；第 9 节要决策级延迟账（影子策略），只有已复盘的 13 局。')
 P.append('')
 P.append('## 0. 口径（pattern_scan.py 头注原文）')
 P.append('')
@@ -143,6 +146,69 @@ P += tsv_to_md(['\t'.join(r) for r in rows])
 P.append('')
 P.append(f'「延迟波局」的判定两种口径一致的局：{agree}/{len(rows) - 1}。')
 P.append('')
+
+# ---- 第二批：落地的指令去了哪 ----
+scan2 = run(['python3', 'scripts/pattern_scan2.py', '--tsv', 'out/pattern-scan2.tsv', '--json', '/tmp/c136-r05/work/pattern-scan2.json', '--agg', '--check'])
+doc2 = open(os.path.join(HERE, 'pattern_scan2.py'), encoding='utf-8').read().split('"""')[1]
+secs2 = {}
+cur = None
+for ln in scan2.split('\n'):
+    if ln.startswith('====='):
+        cur = ln.strip('= ').strip()
+        secs2[cur] = []
+    elif cur is not None:
+        secs2[cur].append(ln)
+P.append('## 7. 第二批检测：落地的指令去了哪（pattern_scan2.py；逐局明细 `out/pattern-scan2.tsv`）')
+P.append('')
+P.append('```text')
+P.append(doc2.strip())
+P.append('```')
+P.append('')
+for name, body in secs2.items():
+    if '全量合计' in name:
+        P.append(f'### {name}')
+        P.append('')
+        P += [f'- {ln}' for ln in body if ln.strip()]
+        P.append('')
+for name, body in secs2.items():
+    if name.startswith('各检测项把对局'):
+        P.append('### 每个检测项把对局分成「有 / 没有」两类：赢的局数对期望赢局数')
+        P.append('')
+        P.append(body[0])
+        P.append('')
+        P += tsv_to_md(body[1:])
+        P.append('')
+        P.append('读法同第 3 节。K 的「来回」「≥4284 捐兵多」和 T 的「探路船多」在赢的局里更多：这些是活到后期、存兵很大的局才有的现象，不能读成「来回捐让人赢」。')
+        P.append('')
+    if name.startswith('近似口径对真值'):
+        P.append('### 近似口径对真值（13 局）')
+        P.append('')
+        tl = [ln for ln in body if '\t' in ln]
+        P += tsv_to_md(tl)
+        P.append('')
+        P += [f'- {ln}' for ln in body if ln.strip() and '\t' not in ln]
+        P.append('')
+
+# ---- 回合容量 ----
+rl = run(['python3', 'scripts/round_limit.py', '--json', 'out/round-limit.json'])
+P.append('## 8. 回合与每玩家执行条数上限（round_limit.py，全部录像、全部真人）')
+P.append('')
+P.append('```text')
+P.append(rl.strip())
+P.append('```')
+P.append('')
+P.append('读法：这是录像里量出来的规则，0 个反例；实现在服务器还是客户端的发送模块，压缩过的引擎源码里没有找到，层次未知。')
+P.append('')
+
+# ---- 没落地的指令丢在哪 ----
+if os.path.exists('/tmp/c136-r05/work/A014-delay.json'):
+    bm = run(['python3', 'scripts/burst_model.py', '--json', 'out/burst-model.json'])
+    P.append('## 9. 没落地的指令丢在哪（burst_model.py；要决策级延迟账，只有已复盘的 13 局）')
+    P.append('')
+    P.append('```text')
+    P.append(bm.strip())
+    P.append('```')
+    P.append('')
 txt = '\n'.join(P) + '\n'
 open(os.path.join(ROOT, outp), 'w', encoding='utf-8').write(txt)
 print('→', outp, txt.count('\n'), '行')
