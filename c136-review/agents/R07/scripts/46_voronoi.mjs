@@ -51,6 +51,7 @@ let spawnEndT = -1, landCount = 0, engineLand = 0;
 let squadTeams = null;
 let groupName = null;    // p → 组名
 const snaps = new Map(); // t → {terr, own: Int16Array(陆地格的主人；-1 无主地), left:Set, bal}
+let geom = null;         // 阵型朝向：质心、8 个扇区的陆地 / 水
 let foot = null;         // {cellAI: Int16Array, ai: Map(id → {cells, bal, adj:Set(组名), adjBots:Set, inOurVor})}
 const wantT = new Set([...atList, aiFrom, ...aiTo]);
 const maxT = Math.max(...wantT);
@@ -86,6 +87,30 @@ proto.tick = function () {
       return squadTeams.has(t) ? `T${t} 其他真人` : `T${t} 真人`;
     };
     for (const s of sites) s.group = groupName(s.p);
+    // 阵型朝向：以我方落点质心为圆心，8 个方位扇区（每 45°）× 两个环（60~160、160~260 像素）里的陆地 / 水格数
+    {
+      const sq = sites.filter((s) => s.squad);
+      if (sq.length) {
+        const cx = sq.reduce((a, s) => a + s.x, 0) / sq.length, cy = sq.reduce((a, s) => a + s.y, 0) / sq.length;
+        const Hh = (px.length / W) | 0;
+        const sec = Array.from({ length: 8 }, () => ({ land: [0, 0], water: [0, 0], off: [0, 0] }));
+        const R = 260;
+        for (let dy = -R; dy <= R; dy++) {
+          for (let dx = -R; dx <= R; dx++) {
+            const dd = Math.hypot(dx, dy);
+            if (dd < 60 || dd > R) continue;
+            const ring = dd <= 160 ? 0 : 1;
+            // 方位：0 = 北（y 减小），顺时针
+            const k = ((Math.round((Math.atan2(dx, -dy) * 180 / Math.PI) / 45) % 8) + 8) % 8;
+            const x = Math.round(cx + dx), y = Math.round(cy + dy);
+            if (x < 0 || y < 0 || x >= W || y >= Hh) { sec[k].off[ring]++; continue; }
+            const v = px[y * W + x];
+            if (v === T_LAND || v >= P_INNER) sec[k].land[ring]++; else sec[k].water[ring]++;
+          }
+        }
+        geom = { cx, cy, sec, W, Hh };
+      }
+    }
     const cells = [];
     for (let c = 0; c < px.length; c++) if (px[c] === T_LAND || px[c] >= P_INNER) cells.push(c);
     landCells = Int32Array.from(cells); landCount = cells.length;
@@ -116,7 +141,9 @@ proto.tick = function () {
           const o = own[c];
           if (o === p || !g.isBot(o)) continue;
           let e = ai.get(o);
-          if (!e) { e = { cells: 0, bal: g.bal[o], adj: new Set(), adjBots: new Set(), inOurVor: 0 }; ai.set(o, e); }
+          if (!e) { e = { cells: 0, bal: g.bal[o], team: g.teams[o], adj: new Set(), adjBots: new Set(), mateAdj: new Set(), mateAdjBots: new Set(), inOurVor: 0 }; ai.set(o, e); }
+          // 8 队局里内置 AI 也分队：和 p 同队的 AI（以及同队已离开的席位）p 打不了，单独记
+          if (g.teams[p] !== 0 && g.teams[o] === g.teams[p]) { e.mateAdj.add(s.group); if (s.squad) e.mateAdjBots.add(s.squad); continue; }
           e.adj.add(s.group);
           if (s.squad) e.adjBots.add(s.squad);
         }
@@ -131,13 +158,16 @@ proto.tick = function () {
       const o = own[c];
       if (!g.isBot(o)) continue;
       let e = ai.get(o);
-      if (!e) { e = { cells: 0, bal: g.bal[o], adj: new Set(), adjBots: new Set(), inOurVor: 0 }; ai.set(o, e); }
+      if (!e) { e = { cells: 0, bal: g.bal[o], team: g.teams[o], adj: new Set(), adjBots: new Set(), mateAdj: new Set(), mateAdjBots: new Set(), inOurVor: 0 }; ai.set(o, e); }
       e.cells++; cellAI[i] = o;
       if (sq[vor[i]]) e.inOurVor++;
     }
+    botTeamed = false;
+    for (const e of ai.values()) if (e.team !== 0) botTeamed = true;
     foot = { cellAI, ai };
   }
 };
+let botTeamed = false;
 const res = await resim(mid, { until: maxT + 5 });
 const v = res.validate || {};
 if (sites === null) { console.error('重演没有走出出生阶段'); process.exit(1); }
@@ -228,6 +258,7 @@ for (const st of sites.filter((x) => x.squad).sort((a, b) => b.vor - a.vor)) {
 L.push('');
 L.push(`D. 身边内置 AI 的地去了哪：t=${aiFrom} 和本组接壤的内置 AI 当拍的领土（脚印）→ 之后各拍这些格子在谁手里`);
 L.push('   组 | 接壤的 AI 个数 / 脚印格数 / 当拍余额 | 到 t：本组 / 别的真人 / 还是内置 AI / 无主地（同一个 AI 可以同时和几个组接壤，各组各算一遍）');
+if (botTeamed) L.push('   本局内置 AI 也分了队（实际队数 ≥8 时引擎把 AI 按席位号轮流分进各队）：和某一组同队的 AI 该组打不了。下面「接壤的 AI」只算该组打得了的；同队 AI 另列在每行末尾。');
 if (foot) {
   const sFrom = snaps.get(aiFrom);
   for (const gname of groups) {
@@ -256,7 +287,10 @@ if (foot) {
       parts.push(`t=${t} ${fmt(own)}（${pc(own, cells)}）/ ${fmt(hum)}（${pc(hum, cells)}${byTxt ? '：' + byTxt : ''}）/ ${fmt(ai)}（${pc(ai, cells)}）/ ${fmt(neu)}（${pc(neu, cells)}）`);
       J.ai[gname].to[t] = { own, human: hum, ai, neutral: neu };
     }
-    L.push(`  ${gname}\t${ids.length} / ${fmt(cells)} / ${fmt(bal)}\t${parts.join(' ｜ ')}`);
+    const mateIds = [...foot.ai].filter(([, e]) => e.mateAdj.has(gname)).map(([id]) => id);
+    const mateCells = mateIds.reduce((a, id) => a + foot.ai.get(id).cells, 0);
+    J.ai[gname].mateAi = { n: mateIds.length, cells: mateCells };
+    L.push(`  ${gname}\t${ids.length} / ${fmt(cells)} / ${fmt(bal)}\t${parts.join(' ｜ ')}${botTeamed ? `\t同队 AI（打不了）${mateIds.length} 个 / ${fmt(mateCells)} 格` : ''}`);
   }
   // 我方逐个 AI
   const lastT = [...aiTo].reverse().find((t) => snaps.has(t));
@@ -278,8 +312,14 @@ if (foot) {
     }
     L.push(`  AI#${id}\t${fmt(e.cells)} / ${fmt(e.bal)}\t${[...e.adjBots].join('、')}\t${pc(e.inOurVor, e.cells)}\t${txt}`);
   }
+  if (botTeamed) {
+    const mate = [...foot.ai].filter(([, e]) => e.mateAdj.has('我方号')).sort((a, b) => b[1].cells - a[1].cells);
+    L.push(`  和我方接壤的同队 AI（打不了）${mate.length} 个 / ${fmt(mate.reduce((a, [, e]) => a + e.cells, 0))} 格：` + mate.map(([id, e]) => `AI#${id} ${fmt(e.cells)} 格 / ${fmt(e.bal)} 兵（贴 ${[...e.mateAdjBots].join('、')}；${pc(e.inOurVor, e.cells)} 在我方天然地盘里）`).join('；'));
+  }
   // 阵型圈内的 AI：脚印过半在我方天然地盘里
-  const inIds = [...foot.ai].filter(([, e]) => e.cells > 0 && e.inOurVor * 2 > e.cells).map(([id]) => id);
+  const isMateAi = (e) => e.team !== 0 && squadTeams.has(e.team);
+  const inIds = [...foot.ai].filter(([, e]) => e.cells > 0 && e.inOurVor * 2 > e.cells && !isMateAi(e)).map(([id]) => id);
+  const inMate = [...foot.ai].filter(([, e]) => e.cells > 0 && e.inOurVor * 2 > e.cells && isMateAi(e));
   const inSet = new Set(inIds);
   const inCells = inIds.reduce((a, id) => a + foot.ai.get(id).cells, 0);
   const inAdj = inIds.filter((id) => foot.ai.get(id).adj.has('我方号')).length;
@@ -303,13 +343,23 @@ if (foot) {
     J.aiInOurVor.to[t] = { own, mate, human: hum, ai, neutral: neu };
   }
   L.push('');
-  L.push(`D3. 阵型圈内的内置 AI（t=${aiFrom} 脚印过半落在我方天然地盘里）：${inIds.length} 个 / ${fmt(inCells)} 格（其中当拍和我方接壤的 ${inAdj} 个）→ ${parts.join(' ｜ ') || '录像没到'}`);
+  L.push(`D3. 阵型圈内${botTeamed ? '打得了的' : '的'}内置 AI（t=${aiFrom} 脚印过半落在我方天然地盘里）：${inIds.length} 个 / ${fmt(inCells)} 格（其中当拍和我方接壤的 ${inAdj} 个）→ ${parts.join(' ｜ ') || '录像没到'}`);
+  if (botTeamed) {
+    const mc = inMate.reduce((a, [, e]) => a + e.cells, 0);
+    const lastS = snaps.get([...aiTo].reverse().find((t) => snaps.has(t)));
+    let still = 0;
+    if (lastS) { const ms = new Set(inMate.map(([id]) => id)); for (let i = 0; i < landCells.length; i++) { const a = foot.cellAI[i]; if (a >= 0 && ms.has(a) && lastS.own[i] === a) still++; } }
+    L.push(`    阵型圈内和我方同队的 AI（打不了）：${inMate.length} 个 / ${fmt(mc)} 格；到最后一个对照拍还在它自己手里的 ${fmt(still)} 格`);
+    J.aiInOurVor.mate = { n: inMate.length, cells: mc, still };
+  }
   // 全图：当拍内置 AI 的地合计，落在各组天然地盘里的格数
   const perG = new Map(groups.map((gname) => [gname, 0]));
   let aiAll = 0;
-  for (let i = 0; i < landCells.length; i++) if (foot.cellAI[i] >= 0) { aiAll++; const gs = sites[vor[i]].group; perG.set(gs, perG.get(gs) + 1); }
+  const perGMate = new Map(groups.map((gname) => [gname, 0]));
+  for (let i = 0; i < landCells.length; i++) if (foot.cellAI[i] >= 0) { aiAll++; const st = sites[vor[i]]; const gs = st.group; const e = foot.ai.get(foot.cellAI[i]); if (st.team !== 0 && e && e.team === st.team) perGMate.set(gs, perGMate.get(gs) + 1); else perG.set(gs, perG.get(gs) + 1); }
   L.push('');
-  L.push(`D4. t=${aiFrom} 全图内置 AI 的地 ${fmt(aiAll)} 格，落在各组天然地盘里的：` + groups.map((gname) => `${gname} ${fmt(perG.get(gname))}（每人 ${fmt(perG.get(gname) / sites.filter((s) => s.group === gname).length)}）`).join('、'));
+  L.push(`D4. t=${aiFrom} 全图内置 AI 的地 ${fmt(aiAll)} 格，落在各组天然地盘里${botTeamed ? '、该组打得了的' : '的'}：` + groups.map((gname) => `${gname} ${fmt(perG.get(gname))}（每人 ${fmt(perG.get(gname) / sites.filter((s) => s.group === gname).length)}）`).join('、'));
+  if (botTeamed) L.push('    其中和该落点同队、打不了的 AI 地：' + groups.map((gname) => `${gname} ${fmt(perGMate.get(gname))}`).join('、'));
   J.aiLandInVor = Object.fromEntries(groups.map((gname) => [gname, perG.get(gname)]));
   J.aiLandAll = aiAll;
   if (sFrom) {
@@ -320,6 +370,38 @@ if (foot) {
   }
 } else {
   L.push(`  录像没有到 t=${aiFrom}`);
+}
+if (geom) {
+  const DIR = ['北', '东北', '东', '东南', '南', '西南', '西', '西北'];
+  const dirOf = (dx, dy) => ((Math.round((Math.atan2(dx, -dy) * 180 / Math.PI) / 45) % 8) + 8) % 8;
+  const sq = sites.filter((s) => s.squad);
+  const others = sites.filter((s) => !s.squad);
+  L.push('');
+  L.push(`E. 阵型朝向（出生阶段结束时）：我方落点质心 (${geom.cx.toFixed(0)},${geom.cy.toFixed(0)})；地图 ${geom.W}×${geom.Hh}；方位以质心为圆心，北 = y 减小`);
+  L.push('   方位 | 60~160 像素环：陆地格 / 水格（陆地占比）| 160~260 像素环：陆地 / 水（陆地占比）| 260 像素内的敌方真人落点（个数，最近的距离）| 同队其他真人落点 | 站在这个方位的我方号（离质心）');
+  J.geom = { cx: geom.cx, cy: geom.cy, sectors: [] };
+  for (let k = 0; k < 8; k++) {
+    const e = geom.sec[k];
+    const en = [], mates = [], mine = [];
+    for (const o of others) {
+      const dx = o.x - geom.cx, dy = o.y - geom.cy, dd = Math.hypot(dx, dy);
+      if (dd > 260 || dirOf(dx, dy) !== k) continue;
+      if (o.team !== 0 && squadTeams.has(o.team)) mates.push(dd); else en.push(dd);
+    }
+    for (const o of sq) { const dx = o.x - geom.cx, dy = o.y - geom.cy; if (Math.hypot(dx, dy) >= 20 && dirOf(dx, dy) === k) mine.push(`${o.squad} ${Math.hypot(dx, dy).toFixed(0)}`); }
+    const f = (r) => `${fmt(e.land[r])} / ${fmt(e.water[r])}（${pc(e.land[r], e.land[r] + e.water[r] + e.off[r])}${e.off[r] ? `，图外 ${fmt(e.off[r])}` : ''}）`;
+    L.push(`  ${DIR[k]}\t${f(0)}\t${f(1)}\t${en.length}${en.length ? `（最近 ${Math.min(...en).toFixed(0)}）` : ''}\t${mates.length}\t${mine.join('、') || '-'}`);
+    J.geom.sectors.push({ dir: DIR[k], land0: e.land[0], water0: e.water[0], land1: e.land[1], water1: e.water[1], off0: e.off[0], off1: e.off[1], enemies: en.length, enemyNearest: en.length ? Math.min(...en) : null, mates: mates.length });
+  }
+  const inner = sq.filter((o) => Math.hypot(o.x - geom.cx, o.y - geom.cy) < 20).map((o) => o.squad);
+  if (inner.length) L.push(`  离质心不到 20 像素的我方号：${inner.join('、')}`);
+  const near = others.filter((o) => !(o.team !== 0 && squadTeams.has(o.team))).map((o) => {
+    let best = null, bd = Infinity;
+    for (const m of sq) { const dd = Math.hypot(o.x - m.x, o.y - m.y); if (dd < bd) { bd = dd; best = m.squad; } }
+    return { o, dc: Math.hypot(o.x - geom.cx, o.y - geom.cy), k: dirOf(o.x - geom.cx, o.y - geom.cy), best, bd };
+  }).sort((a, b) => a.bd - b.bd).slice(0, 12);
+  L.push('  离我方最近的 12 个敌方真人落点：' + near.map((n) => `${names[n.o.p].slice(0, 14)}#${n.o.p}[T${n.o.team}] ${DIR[n.k]}，离 ${n.best} ${n.bd.toFixed(0)} 像素`).join('；'));
+  J.geom.nearestEnemies = near.map((n) => ({ p: n.o.p, team: n.o.team, dir: DIR[n.k], bot: n.best, dist: n.bd }));
 }
 fs.writeFileSync(path.join(OUT, 'voronoi.txt'), L.join('\n') + '\n');
 fs.writeFileSync(path.join(OUT, 'voronoi.json'), JSON.stringify(J, null, 1) + '\n');

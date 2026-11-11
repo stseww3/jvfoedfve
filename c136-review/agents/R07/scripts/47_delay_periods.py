@@ -35,6 +35,9 @@ PNAME = ['0~600', '600~1500', '1500~3000', '3000+']
 FUNNEL_CUTS = [0, 630, 1530, 3060, 10 ** 9]
 
 
+LATE_MIN = 60
+
+
 def load(path):
     if not os.path.exists(path):
         return []
@@ -88,7 +91,8 @@ def main():
         kind = {'attack': 'attack', 'donate': 'donate', 'don': 'donate', 'atk': 'attack'}.get(r['kind'])
         if kind is None:
             continue
-        got[r['bot']].append({'T': int(r['tick']), 'kind': kind, 'pct': int(r['a']), 'target': int(r['b']), 'hit': None, 're': False})
+        got[r['bot']].append({'T': int(r['tick']), 'kind': kind, 'pct': int(r['a']), 'target': int(r['b']), 'hit': None, 're': False,
+                              'tname': r.get('target', ''), 'b0': int(float(r.get('bal_m1') or 0)), 'b1': int(float(r.get('bal_p1') or 0))})
     lags = defaultdict(lambda: [[] for _ in PERIODS])       # bot -> period -> [lag]（精确配上）
     lags_re = [[] for _ in PERIODS]                         # 改投无主地（启发式配对）的延迟
     lags_fifo = [[] for _ in PERIODS]
@@ -178,15 +182,23 @@ def main():
         ks = [k for k in series if k <= t]
         return series[max(ks)] if ks else 0
     P('')
-    P('C. 漏斗（全部种类的指令；按 90 拍快照切，所以分界是 630 / 1530 / 3060）：影子受理的 cmds | 真号日志的 cmds | 录像落地 | 真号 ÷ 影子 | 落地 ÷ 真号')
+    P('C. 漏斗（全部种类的指令；按 90 拍快照切，所以分界是 630 / 1530 / 3060）：影子受理的 cmds | 真号日志的 cmds | 录像落地 | 真号 ÷ 影子 | 落地 ÷ 真号 | 其中捐兵：影子想发 / 录像落地（服务器按配额拒收的捐兵不进录像）| 去掉捐兵后：真号 / 落地')
     P('   影子 cmds = 没有延迟时策略会发出并被引擎接受的条数；真号 cmds = 策略自己数的被受理条数（[HL-TICK] cmds=）；只有两边都有快照的号才计入')
     all_landed = defaultdict(list)
+    don_want = defaultdict(list)
+    don_got = defaultdict(list)
+    for r in sh:
+        if r['kind'] == 'donate':
+            don_want[r['bot']].append(int(r['t']))
+    for r in tr:
+        if r['bot'] and r['kind'] in ('donate', 'don'):
+            don_got[r['bot']].append(int(r['tick']))
     for r in tr:
         if r['bot'] and r['kind'] in ('attack', 'atk', 'donate', 'don', 'boat', 'boatTo', 'chase', 'recall', 'retreat'):
             all_landed[r['bot']].append(int(r['tick']))
     for i in range(len(FUNNEL_CUTS) - 1):
         a, b_ = FUNNEL_CUTS[i], FUNNEL_CUTS[i + 1]
-        s_n = r_n = l_n = 0
+        s_n = r_n = l_n = dw = dg = 0
         nb = 0
         for b in bots:
             if b not in real or b not in shad:
@@ -199,9 +211,11 @@ def main():
             s_n += at_or_before(shad[b], hi) - at_or_before(shad[b], a)
             r_n += at_or_before(real[b], hi) - at_or_before(real[b], a)
             l_n += sum(1 for t in all_landed[b] if a < t <= hi)
+            dw += sum(1 for t in don_want[b] if a < t <= hi)
+            dg += sum(1 for t in don_got[b] if a < t <= hi)
         nm = f"{a}~{b_ if b_ < 10 ** 9 else '末'}"
-        P(f"  {nm}\t{s_n}\t{r_n}\t{l_n}\t{(r_n / s_n if s_n else 0):.2f}\t{(l_n / r_n if r_n else 0):.2f}\t（{nb} 个号）")
-        J['funnel'][nm] = {'shadow': s_n, 'real': r_n, 'landed': l_n, 'bots': nb}
+        P(f"  {nm}\t{s_n}\t{r_n}\t{l_n}\t{(r_n / s_n if s_n else 0):.2f}\t{(l_n / r_n if r_n else 0):.2f}\t{dw} / {dg}\t{r_n - dw} / {l_n - dg}\t（{nb} 个号）")
+        J['funnel'][nm] = {'shadow': s_n, 'real': r_n, 'landed': l_n, 'bots': nb, 'donWant': dw, 'donLanded': dg}
 
     P('   各号（影子 / 真号 / 落地）：')
     for b in bots:
@@ -370,6 +384,33 @@ def main():
                     tops = '、'.join(f"{b} {n}" for b, n in sorted(who[k].items(), key=lambda kv: -kv[1])[:5])
                     P(f"      {k}：{v}（{tops}）")
                 J['early'][f"{a}~{b_} {scene}"] = {'dec': len(rows), 'fired': cnt.get('出手', 0), 'floor': floor_n, 'cls': dict(cnt)}
+    # ---- 迟到 ≥60 拍的落地指令：按（号，落地拍）并成一批
+    late = defaultdict(list)
+    for b in bots:
+        for g in got[b]:
+            if g['hit'] is not None and not g['re'] and g['T'] - g['hit'] >= LATE_MIN:
+                late[(g['T'], b)].append(g)
+    P('')
+    P(f'H. 迟到 ≥{LATE_MIN} 拍才落地的指令（精确配上的；延迟按下限）：按（落地拍，号）并批 | 条数 | 影子发令拍（最早~最晚）| 延迟（最小~最大）| 指令 | 落地前一拍余额 → 落地后一拍余额')
+    J['late'] = []
+    if not late:
+        P('  没有')
+    tot_n = 0
+    for (T, b), gs in sorted(late.items()):
+        it = [g['hit'] for g in gs]
+        kinds = defaultdict(int)
+        for g in gs:
+            kinds[f"{'捐兵' if g['kind'] == 'donate' else '进攻'} {g['pct']}→{'无主地' if g['target'] == 512 else g['tname']}"] += 1
+        ks = '、'.join(f"{k}{' ×' + str(n) if n > 1 else ''}" for k, n in kinds.items())
+        same_tick = sum(1 for g in got[b] if g['T'] == T)
+        P(f"  t={T} {b}\t{len(gs)} 条（同拍一共落地 {same_tick} 条）\t{min(it)}~{max(it)}\t{T - max(it)}~{T - min(it)}\t{ks}\t{gs[0]['b0']:,} → {gs[0]['b1']:,}")
+        J['late'].append({'T': T, 'bot': b, 'n': len(gs), 'sameTick': same_tick, 'intentMin': min(it), 'intentMax': max(it), 'b0': gs[0]['b0'], 'b1': gs[0]['b1']})
+        tot_n += len(gs)
+    if late:
+        byb = defaultdict(int)
+        for (T, b), gs in late.items():
+            byb[b] += len(gs)
+        P(f"  合计 {tot_n} 条 / {len(late)} 批；各号：" + '、'.join(f"{b} {n}" for b, n in sorted(byb.items(), key=lambda kv: -kv[1])))
     with open(os.path.join(out, 'delay_periods.txt'), 'w', encoding='utf-8') as f:
         f.write('\n'.join(L) + '\n')
     with open(os.path.join(out, 'delay_periods.json'), 'w', encoding='utf-8') as f:

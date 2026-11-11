@@ -53,11 +53,11 @@ proto.tick = function () {
   for (let p = 0; p < H; p++) {
     if (!g.alive[p] || g.state[p] === 2 || g.terr[p] <= 0) continue;
     const B = g.border[p] || [];
-    let nNeut = 0, nAI = 0, nEnemy = 0, nMate = 0, nWater = 0;
-    const ai = new Map(), enemies = new Map();
+    let nNeut = 0, nAI = 0, nEnemy = 0, nMate = 0, nWater = 0, nMateAI = 0;
+    const ai = new Map(), enemies = new Map(), mateAi = new Map();
     for (let i = 0; i < B.length; i++) {
       const b = B[i];
-      let fN = 0, fA = 0, fE = 0, fM = 0, fW = 0;
+      let fN = 0, fA = 0, fE = 0, fM = 0, fW = 0, fMA = 0;
       for (let k = 0; k < 4; k++) {
         const c = b + d4[k];
         const v = px[c];
@@ -65,14 +65,15 @@ proto.tick = function () {
         if (v < P_INNER) { if (v === T_WATER) fW = 1; continue; }
         const o = own[c];
         if (o === p) continue;
-        if (g.isBot(o)) { fA = 1; ai.set(o, (ai.get(o) || 0) + 1); }
-        else if (g.teams[p] !== 0 && g.teams[o] === g.teams[p]) fM = 1;
+        if (g.teams[p] !== 0 && g.teams[o] === g.teams[p]) { fM = 1; if (g.isBot(o)) { fMA = 1; mateAi.set(o, (mateAi.get(o) || 0) + 1); } }
+        else if (g.isBot(o)) { fA = 1; ai.set(o, (ai.get(o) || 0) + 1); }
         else { fE = 1; enemies.set(o, (enemies.get(o) || 0) + 1); }
       }
-      nNeut += fN; nAI += fA; nEnemy += fE; nMate += fM; nWater += fW;
+      nNeut += fN; nAI += fA; nEnemy += fE; nMate += fM; nWater += fW; nMateAI += fMA;
     }
     for (const o of ai.keys()) aiTouchedByHuman.add(o);
-    per.push({ p, team: g.teams[p], squad: squadOf(p), terr: g.terr[p], bal: g.bal[p], border: B.length, nNeut, nAI, nEnemy, nMate, ai, enemies });
+    for (const o of mateAi.keys()) aiTouchedByHuman.add(o);
+    per.push({ p, team: g.teams[p], squad: squadOf(p), terr: g.terr[p], bal: g.bal[p], border: B.length, nNeut, nAI, nEnemy, nMate, nMateAI, ai, enemies, mateAi });
   }
   let neutralLand = 0;
   for (let c = 0; c < px.length; c++) if (px[c] === T_LAND) neutralLand++;
@@ -93,10 +94,11 @@ const ourTeam = (() => { for (let p = 0; p < H; p++) if (squadOf(p)) return snap
 const groupOf = (r) => r.squad ? '我方号' : r.team === ourTeam ? `T${r.team} 其他真人` : `T${r.team} 真人`;
 const L = [];
 L.push(`# ${mid} 全场真人的边界构成与够得着的内置 AI 地（干净模拟器重演，核对 ${v.bothExact}/${v.rows}；采样拍 ${[...at].sort((a, b) => a - b).join(',')}）`);
-L.push('# 一格边界可以同时算进几类；「够得着的 AI」= 和它接壤的内置 AI（含离开后被接管的席位），每个 AI 在一个人 / 一个组里只算一次');
+L.push('# 一格边界可以同时算进几类；「够得着的 AI」= 和它接壤、它打得了的内置 AI（含离开后被接管的敌方席位），每个 AI 在一个人 / 一个组里只算一次');
+L.push('# 实际队数 ≥8 的局内置 AI 也分队：同队的 AI（和同队已离开的席位）打不了，算在「贴同队」里，另列「其中贴同队 AI」和同队 AI 的个数 / 领土');
 L.push('');
 L.push('A. 分组 × 时刻');
-L.push('t\t组\t人数\t领土\t余额\t边界格\t贴无主地\t贴AI\t贴敌方真人\t贴同队\t够得着的AI 个数/领土/余额\t每人中位：贴AI格 / 够得着的AI地\t没有AI边界的人数');
+L.push('t\t组\t人数\t领土\t余额\t边界格\t贴无主地\t贴AI\t贴敌方真人\t贴同队\t够得着的AI 个数/领土/余额\t每人中位：贴AI格 / 够得着的AI地\t没有AI边界的人数\t其中贴同队AI格 / 同队AI 个数 / 领土');
 for (const s of snaps) {
   const groups = new Map();
   for (const r of s.per) { const k = groupOf(r); if (!groups.has(k)) groups.set(k, []); groups.get(k).push(r); }
@@ -108,17 +110,19 @@ for (const s of snaps) {
     let aiT = 0, aiB = 0; for (const o of ai) { const x = s.aiInfo.get(o); if (x) { aiT += x.terr; aiB += x.bal; } }
     const perAiT = rs.map((r) => { let x = 0; for (const o of r.ai.keys()) x += s.aiInfo.get(o)?.terr ?? 0; return x; });
     L.push([s.t, k, rs.length, fmt(sum((r) => r.terr)), fmt(sum((r) => r.bal)), fmt(sum((r) => r.border)), fmt(sum((r) => r.nNeut)), fmt(sum((r) => r.nAI)), fmt(sum((r) => r.nEnemy)), fmt(sum((r) => r.nMate)),
-      `${ai.size} / ${fmt(aiT)} / ${fmt(aiB)}`, `${fmt(med(rs.map((r) => r.nAI)))} / ${fmt(med(perAiT))}`, rs.filter((r) => r.nAI === 0).length].join('\t'));
+      `${ai.size} / ${fmt(aiT)} / ${fmt(aiB)}`, `${fmt(med(rs.map((r) => r.nAI)))} / ${fmt(med(perAiT))}`, rs.filter((r) => r.nAI === 0).length,
+      (() => { const m = new Set(); for (const r of rs) for (const o of r.mateAi.keys()) m.add(o); let mt = 0; for (const o of m) mt += s.aiInfo.get(o)?.terr ?? 0; return `${fmt(sum((r) => r.nMateAI))} / ${m.size} / ${fmt(mt)}`; })()].join('\t'));
   }
 }
 L.push('');
 L.push('B. 我方每个号 × 时刻');
-L.push('t\t号\t领土 / 余额\t边界格\t贴无主地\t贴AI\t贴敌方真人\t贴同队\t够得着的AI 个数/领土\t贴着的敌方真人（接壤格数）');
+L.push('t\t号\t领土 / 余额\t边界格\t贴无主地\t贴AI\t贴敌方真人\t贴同队\t够得着的AI 个数/领土\t贴着的敌方真人（接壤格数）\t其中贴同队AI格 / 同队AI 个数 / 领土');
 for (const s of snaps) {
   for (const r of s.per.filter((x) => x.squad).sort((a, b) => a.squad.localeCompare(b.squad))) {
     let aiT = 0; for (const o of r.ai.keys()) aiT += s.aiInfo.get(o)?.terr ?? 0;
     const en = [...r.enemies].sort((a, b) => b[1] - a[1]).map(([o, c]) => `${names[o].slice(0, 16)}#${o}[T${s.teams[o]}]:${c}`).join('、') || '-';
-    L.push([s.t, r.squad, `${fmt(r.terr)} / ${fmt(r.bal)}`, r.border, r.nNeut, r.nAI, r.nEnemy, r.nMate, `${r.ai.size} / ${fmt(aiT)}`, en].join('\t'));
+    let mT = 0; for (const o of r.mateAi.keys()) mT += s.aiInfo.get(o)?.terr ?? 0;
+    L.push([s.t, r.squad, `${fmt(r.terr)} / ${fmt(r.bal)}`, r.border, r.nNeut, r.nAI, r.nEnemy, r.nMate, `${r.ai.size} / ${fmt(aiT)}`, en, `${r.nMateAI} / ${r.mateAi.size} / ${fmt(mT)}`].join('\t'));
   }
 }
 L.push('');

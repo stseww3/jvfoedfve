@@ -57,7 +57,11 @@ def main():
                 q, n = int(q), int(n)
                 pl = players.get(q)
                 if pl is None or pl.get("human") != "1":
-                    ai += n
+                    # 实际队数 ≥8 的局内置 AI 也分队：和自己同队的 AI 打不了，算进「同队」
+                    if pl is not None and pl["team"] not in ("", "0") and pl["team"] == my_team:
+                        mate += n
+                    else:
+                        ai += n
                 elif pl["team"] != my_team:
                     e += n
                     enemy_seen[q].append((int(r["t"]), n))

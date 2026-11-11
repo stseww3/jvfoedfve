@@ -77,25 +77,33 @@
    "shadow": 105,
    "real": 99,
    "landed": 99,
-   "bots": 10
+   "bots": 10,
+   "donWant": 0,
+   "donLanded": 0
   },
   "630~1530": {
    "shadow": 268,
    "real": 267,
    "landed": 192,
-   "bots": 10
+   "bots": 10,
+   "donWant": 0,
+   "donLanded": 0
   },
   "1530~3060": {
    "shadow": 126,
    "real": 125,
    "landed": 135,
-   "bots": 10
+   "bots": 10,
+   "donWant": 3,
+   "donLanded": 2
   },
   "3060~末": {
    "shadow": 109,
    "real": 108,
    "landed": 107,
-   "bots": 8
+   "bots": 8,
+   "donWant": 17,
+   "donLanded": 16
   }
  },
  "whiff": {
@@ -648,5 +656,187 @@
     "留底：keepCap×100×领土 封顶": 134
    }
   }
- }
+ },
+ "late": [
+  {
+   "T": 826,
+   "bot": "riku_x",
+   "n": 2,
+   "sameTick": 3,
+   "intentMin": 760,
+   "intentMax": 765,
+   "b0": 13998,
+   "b1": 10265
+  },
+  {
+   "T": 840,
+   "bot": "riku_x",
+   "n": 1,
+   "sameTick": 3,
+   "intentMin": 780,
+   "intentMax": 780,
+   "b0": 9733,
+   "b1": 7719
+  },
+  {
+   "T": 882,
+   "bot": "riku_x",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 815,
+   "intentMax": 815,
+   "b0": 9132,
+   "b1": 11110
+  },
+  {
+   "T": 931,
+   "bot": "kaito9",
+   "n": 2,
+   "sameTick": 2,
+   "intentMin": 855,
+   "intentMax": 860,
+   "b0": 14465,
+   "b1": 8753
+  },
+  {
+   "T": 952,
+   "bot": "riku_x",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 885,
+   "intentMax": 885,
+   "b0": 13358,
+   "b1": 15526
+  },
+  {
+   "T": 973,
+   "bot": "riku_x",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 890,
+   "intentMax": 890,
+   "b0": 16788,
+   "b1": 11281
+  },
+  {
+   "T": 1022,
+   "bot": "alex_k",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 950,
+   "intentMax": 950,
+   "b0": 42542,
+   "b1": 34068
+  },
+  {
+   "T": 1022,
+   "bot": "sora_w",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 955,
+   "intentMax": 955,
+   "b0": 46014,
+   "b1": 43319
+  },
+  {
+   "T": 1036,
+   "bot": "sora_w",
+   "n": 1,
+   "sameTick": 1,
+   "intentMin": 950,
+   "intentMax": 950,
+   "b0": 44956,
+   "b1": 42323
+  },
+  {
+   "T": 1043,
+   "bot": "zero_7",
+   "n": 1,
+   "sameTick": 4,
+   "intentMin": 920,
+   "intentMax": 920,
+   "b0": 37812,
+   "b1": 21943
+  },
+  {
+   "T": 1267,
+   "bot": "alex_k",
+   "n": 1,
+   "sameTick": 9,
+   "intentMin": 1100,
+   "intentMax": 1100,
+   "b0": 98166,
+   "b1": 63265
+  },
+  {
+   "T": 1561,
+   "bot": "zexos1",
+   "n": 1,
+   "sameTick": 8,
+   "intentMin": 1500,
+   "intentMax": 1500,
+   "b0": 232527,
+   "b1": 928
+  },
+  {
+   "T": 1568,
+   "bot": "sora_w",
+   "n": 2,
+   "sameTick": 8,
+   "intentMin": 1500,
+   "intentMax": 1505,
+   "b0": 267214,
+   "b1": 16042
+  },
+  {
+   "T": 1582,
+   "bot": "ryan_m",
+   "n": 5,
+   "sameTick": 9,
+   "intentMin": 1500,
+   "intentMax": 1520,
+   "b0": 297345,
+   "b1": 363
+  },
+  {
+   "T": 1596,
+   "bot": "zero_7",
+   "n": 8,
+   "sameTick": 9,
+   "intentMin": 1500,
+   "intentMax": 1535,
+   "b0": 214850,
+   "b1": 1246
+  },
+  {
+   "T": 1603,
+   "bot": "talon5",
+   "n": 9,
+   "sameTick": 9,
+   "intentMin": 1500,
+   "intentMax": 1540,
+   "b0": 250507,
+   "b1": 8430
+  },
+  {
+   "T": 1631,
+   "bot": "talon5",
+   "n": 3,
+   "sameTick": 9,
+   "intentMin": 1560,
+   "intentMax": 1570,
+   "b0": 8928,
+   "b1": 355
+  },
+  {
+   "T": 1631,
+   "bot": "zero_7",
+   "n": 3,
+   "sameTick": 8,
+   "intentMin": 1560,
+   "intentMax": 1570,
+   "b0": 6919,
+   "b1": 225
+  }
+ ]
 }
