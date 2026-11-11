@@ -5,7 +5,7 @@
 来源：
   bundles/<id>/in_game.log 的 [HL-TICK] 行：每个号每 90 拍一条，cmds= 是策略自己数的「本地引擎接受了的指令」累计条数
       （Strategy.send 里 `if (ok) this.cmds++`，船、捐兵同样计数；选点不计）。
-  bundles/<id>/results.csv 的 accepted：出局 / 终局时的同一个计数。
+  bundles/<id>/results.csv 的 accepted：出局 / 终局时宿主数的条数（含出生阶段的选点指令，这里减掉）。
   out/<id>/humans_cmd.tsv：真引擎重放录像得到的逐条指令（落地拍；squad==1 是我方号）。
 算三件事：
   A. 每个快照拍：全队累计「发出」/「落地」/ 差（= 发了还没落地，或再也没落地）。
@@ -30,11 +30,37 @@ TICK_RE = re.compile(r"\[(\w+)\] \[HL-TICK\] t=(\d+) .*?cmds=(\d+)")
 
 def load(mid):
     issued = defaultdict(dict)
+    # results.csv 的 accepted 是宿主数的，含出生阶段的选点指令；[HL-TICK] 的 cmds 是策略自己数的，不含。
+    # 选点指令条数 = [OPENING-CHECK] 的 sent − 到那一拍为止的开局指令（[HL-OPENING]）；没有核对行的号用日志里的指派次数。
+    check, opening, asg = {}, defaultdict(list), defaultdict(int)
+    n_dispatch = 0
     with open(os.path.join(DATA, "bundles", mid, "in_game.log"), encoding="utf-8", errors="replace") as f:
         for line in f:
             m = TICK_RE.search(line)
             if m:
                 issued[m.group(1)][int(m.group(2))] = int(m.group(3))
+                continue
+            if "[HL-DISPATCH]" in line:
+                n_dispatch += 1
+                continue
+            if "[OPENING-CHECK" in line and not check:
+                for mm in re.finditer(r"\] (\w+):tick=(\d+),terr=\d+,sent=(\d+)", line):
+                    check[mm.group(1)] = (int(mm.group(2)), int(mm.group(3)))
+                continue
+            mo = re.search(r"\[(\w+)\] \[HL-OPENING\] t=(\d+) ", line)
+            if mo:
+                opening[mo.group(1)].append(int(mo.group(2)))
+                continue
+            ms = re.search(r"\[(\w+)\] \[HL-SPAWN(?:-BACKEND)?\] me=", line)
+            if ms:
+                asg[ms.group(1)] += 1
+    spawn_sent = {}
+    for b in set(list(asg) + list(check)):
+        if b in check:
+            tk, sent = check[b]
+            spawn_sent[b] = sent - sum(1 for t in opening.get(b, []) if t <= tk)
+        else:
+            spawn_sent[b] = asg[b]
     final = {}
     rp = os.path.join(DATA, "bundles", mid, "results.csv")
     if os.path.exists(rp):
@@ -45,6 +71,7 @@ def load(mid):
                 except (ValueError, KeyError):
                     pass
     land = defaultdict(list)
+    n_don_land = 0
     hp = os.path.join(HERE, "..", "out", mid, "humans_cmd.tsv")
     if not os.path.exists(hp):
         return None
@@ -54,9 +81,11 @@ def load(mid):
                 continue
             name = r["name"].split("] ")[-1].strip()
             land[name].append(int(r["t"]))
+            if r.get("kind") == "donate":
+                n_don_land += 1
     for b in land:
         land[b].sort()
-    return issued, final, land
+    return issued, final, land, spawn_sent, n_dispatch, n_don_land
 
 
 def landed_upto(ts, t):
@@ -67,7 +96,7 @@ def one(mid):
     got = load(mid)
     if got is None:
         return None
-    issued, final, land = got
+    issued, final, land, spawn_sent, n_dispatch, n_don_land = got
     bots = sorted(issued)
     snaps = sorted({t for b in bots for t in issued[b]})
     lines = [f"# {mid} 真号自己数的指令 vs 录像落地（53_issue_vs_land.py；发出 = [HL-TICK] cmds=，落地 = humans_cmd.tsv 里我方号的全部指令）",
@@ -95,7 +124,9 @@ def one(mid):
         ts = sorted(issued[b])
         if b in final:
             ft, fi, ev = final[b]
-            src = f"results.csv {ev}"
+            sp = spawn_sent.get(b, 0)
+            fi -= sp
+            src = f"results.csv {ev}，已减去 {sp} 条选点指令"
         else:
             ft, fi, src = ts[-1], issued[b][ts[-1]], "最后一条 HL-TICK"
         fl = len(land.get(b, []))
@@ -105,6 +136,10 @@ def one(mid):
         tot_l += fl
         lines.append(f"  {b}\t{ft}（{src}）\t{fi}\t{fl}\t{fi - fl}（{100 * (fi - fl) / max(1, fi):.0f}%）\t{pkv}（{pk}）")
     lines.append(f"  合计\t\t{tot_i}\t{tot_l}\t{tot_i - tot_l}（{100 * (tot_i - tot_l) / max(1, tot_i):.0f}%）")
+    don_miss = n_dispatch - n_don_land
+    lines.append(f"  其中捐款：日志里 [HL-DISPATCH] {n_dispatch} 条、录像里我方捐款指令 {n_don_land} 条，没进录像 {don_miss} 条（服务器按配额拒收的捐款不进录像）；"
+                 f"其余（进攻 / 船）发出 {tot_i - n_dispatch}、落地 {tot_l - n_don_land}、没落地 {tot_i - tot_l - don_miss}"
+                 f"（{100 * (tot_i - tot_l - don_miss) / max(1, tot_i - n_dispatch):.0f}%）")
     lines.append("")
     lines.append("C. 不靠影子的迟到下限（各号相加）：时段（按落地拍）| 落地条数 | 其中一定晚 >90 拍的 | 一定晚 >180 拍的")
     per = [(0, 600), (600, 1500), (1500, 3000), (3000, 10 ** 9)]
@@ -140,7 +175,7 @@ def one(mid):
     out_dir = os.path.join(HERE, "..", "out", mid)
     os.makedirs(out_dir, exist_ok=True)
     open(os.path.join(out_dir, "issue_vs_land.txt"), "w", encoding="utf-8").write("\n".join(lines) + "\n")
-    return {"mid": mid, "issued": tot_i, "landed": tot_l, "peak": peak, "agg": agg, "lines": lines}
+    return {"mid": mid, "issued": tot_i, "landed": tot_l, "peak": peak, "agg": agg, "lines": lines, "dispatch": n_dispatch, "donLand": n_don_land}
 
 
 def main():
@@ -149,7 +184,7 @@ def main():
         r = one(mids[0])
         print("\n".join(r["lines"]) if r else f"{mids[0]}: 没有 humans_cmd.tsv")
         return
-    print("局\t发出\t落地\t没落地（占发出）\t差的峰值（拍）\t一定晚 >90 拍：0~600 / 600~1500 / 1500~3000 / 3000+")
+    print("局\t发出\t落地\t没落地（占发出）\t捐款：日志 / 录像 / 没进录像\t进攻和船：发出 / 落地 / 没落地（占发出）\t差的峰值（拍）\t一定晚 >90 拍：0~600 / 600~1500 / 1500~3000 / 3000+")
     for mid in mids:
         r = one(mid)
         if not r:
@@ -157,7 +192,10 @@ def main():
             continue
         pk = r["peak"]
         a = r["agg"]
+        dm = r["dispatch"] - r["donLand"]
+        oi, ol = r["issued"] - r["dispatch"], r["landed"] - r["donLand"]
         print(f"{mid}\t{r['issued']}\t{r['landed']}\t{r['issued'] - r['landed']}（{100 * (r['issued'] - r['landed']) / max(1, r['issued']):.0f}%）\t"
+              f"{r['dispatch']} / {r['donLand']} / {dm}\t{oi} / {ol} / {oi - ol}（{100 * (oi - ol) / max(1, oi):.0f}%）\t"
               f"{pk[2] - pk[3]}（{pk[0]}）\t" + " / ".join(str(a[p][1]) for p in a))
 
 
