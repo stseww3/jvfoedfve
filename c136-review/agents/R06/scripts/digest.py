@@ -4,7 +4,8 @@
 用法：
     python3 digest.py <matchId> roster      # 20 个号的身份、队号、出生点、在场区间（离开/阵亡/终局）、指令数
     python3 digest.py <matchId> teams       # 全员分队（引擎算法重算）、各队里我方号与战队、结算时刻的各队领土
-    python3 digest.py <matchId> timeline    # 里程碑拍的编队合计 + 分队小计
+    python3 digest.py <matchId> timeline [t ...]   # 里程碑拍（或指定拍）的编队合计 + 分队小计
+    python3 digest.py <matchId> outsiders   # 结算行的各队份额拆成「我方在场号」+「其余」
     python3 digest.py <matchId> bot <me> [t0 t1]   # 单号逐快照故事 + 录像指令（出兵/被打/捐款收发/船）
     python3 digest.py <matchId> deaths      # 每个阵亡号死前 600 拍
     python3 digest.py <matchId> donations   # 捐款台账：录像真值（接受/被拒）、手续费、到账、额度点
@@ -164,6 +165,44 @@ def sec_teams(M):
         print(f"   t={s['t']:<6} {desc}  (合计 {100 * sm / M.land:.1f}%)  ← {s['by']} 队{s['mine']} {s['event']}")
 
 
+def outsider_rows(M):
+    """每条结算行（带全场各队领土）：各队份额拆成「我方在场号」与「其余（外人 + 该队内置 AI）」。
+    我方部分取各号在结算拍前 200 拍内最近的一条快照（阵亡的那个号按 0 算）。"""
+    pres = presence(M)
+    rows = []
+    for s in M.teamSnaps:
+        t = s['t']
+        ours = defaultdict(int)
+        n = defaultdict(int)
+        for me in M.squad:
+            if not active_at(M, pres, me, t):
+                continue
+            x = M.bots[me].at(t, max_age=200)
+            r = M.bots[me].result
+            if pres[me]['how'] == 'end' and t >= pres[me]['outT'] and r and r.get('territory') is not None:
+                x = dict(terr=int(r['territory']))
+            if not x:
+                continue
+            ours[str(M.bots[me].team)] += x['terr']
+            n[str(M.bots[me].team)] += 1
+        per = {}
+        for k, v in s['totals'].items():
+            per[str(k)] = dict(total=v, ours=ours.get(str(k), 0), bots=n.get(str(k), 0), others=v - ours.get(str(k), 0))
+        rows.append(dict(t=t, by=s['by'], per=per))
+    return rows
+
+
+def sec_outsiders(M):
+    print(f"== {M.id} outsiders：结算行的各队领土 = 我方在场号 + 其余（外人和该队内置 AI）。每格：队份额% = 我方%（号数）+ 其余%")
+    for r in outsider_rows(M):
+        parts = []
+        for k, v in sorted(r['per'].items()):
+            if k == '0' or v['total'] <= 0:
+                continue
+            parts.append(f"T{k} {100 * v['total'] / M.land:.1f}={100 * v['ours'] / M.land:.1f}({v['bots']})+{100 * v['others'] / M.land:.1f}")
+        print(f"   t={r['t']:<6} " + '  '.join(parts) + f"   ← {r['by']}")
+
+
 def timeline_rows(M, ticks=None):
     pres = presence(M)
     if ticks is None:
@@ -203,8 +242,8 @@ def timeline_rows(M, ticks=None):
     return rows
 
 
-def sec_timeline(M):
-    rows = timeline_rows(M)
+def sec_timeline(M, ticks=None):
+    rows = timeline_rows(M, ticks)
     print(f"== {M.id} timeline（在场=没离开没阵亡；有读数=200 拍内有快照；合计只算有读数的号）")
     print("t      在场 有读数  编队地   份额%   编队兵      密度  被围  分队小计(队:号数/地/兵)                      结算快照各队份额%")
     for r in rows:
@@ -832,7 +871,9 @@ def main():
     elif sec == 'teams':
         sec_teams(M)
     elif sec == 'timeline':
-        sec_timeline(M)
+        sec_timeline(M, [int(x) for x in a] or None)
+    elif sec == 'outsiders':
+        sec_outsiders(M)
     elif sec == 'bot':
         sec_bot(M, int(a[0]), int(a[1]) if len(a) > 1 else 0, int(a[2]) if len(a) > 2 else 10 ** 9)
     elif sec == 'deaths':
