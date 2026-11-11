@@ -12,3 +12,9 @@ out/*/sec/*
 out/*/sim_state.partial.json
 out/*/grids.bin.gz
 out/*/probe.part*.json
+!out/*/sec/land_natwho_*.txt
+!out/*/sec/sim_cmdlist_*.txt
+!out/*/sec/sim_foedon.txt
+!out/*/sec/sim_foepct.txt
+!out/*/sec/sim_boats_*.txt
+!out/*/sec/sim_ledger_*.txt

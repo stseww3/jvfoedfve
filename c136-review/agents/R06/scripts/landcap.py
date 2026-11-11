@@ -527,6 +527,23 @@ def sec_layers(X):
     return out
 
 
+def sec_natwho(X, me, ticks):
+    """某个号的天然份额（陆路版）在各拍分别在谁手里（按名字列前 6 名）。用法：landcap.py <id> natwho <me> [t ...]"""
+    lab, _ = bfs_voronoi(X)
+    m = lab == me
+    n = int(m.sum())
+    print(f"{name(X, me)} 队{X.team[me]} 的天然份额 {n} 格在各拍的归属（格；内置 AI 合并成一项）")
+    for want in ticks:
+        t = tick_for(X, want)
+        o = X.grid[t][m].astype(np.int64)
+        cnt = np.bincount(o, minlength=NEUTRAL + 1)[:NEUTRAL + 1]
+        ai = int(cnt[X.H:NEUTRAL].sum())
+        rows = sorted(((int(cnt[p]), p) for p in range(X.H) if cnt[p] > 0), reverse=True)
+        parts = [f"{'*' if p in X.squad else ''}{name(X, p).lstrip('*')}(队{X.team[p]}) {c}" for c, p in rows[:6]]
+        print(f"   t={t}：内置 AI {ai}、无主地 {int(cnt[NEUTRAL])}；真人：" + '、'.join(parts))
+    return 0
+
+
 def main():
     if len(sys.argv) < 2:
         print(__doc__)
@@ -537,6 +554,8 @@ def main():
     if X is None:
         print(f"（{mid}：没有归属网格 —— 需要先用 eng_replay.cjs 重放；没有录像的局这本账做不了）")
         return 0
+    if sec == 'natwho':
+        return sec_natwho(X, int(sys.argv[3]), [int(a) for a in sys.argv[4:]] or [630, 1500])
     doc = dict(matchId=mid, gridTicks=X.gt, replayLast=X.last)
     if sec in ('voronoi', 'all', 'json'):
         doc['voronoi'] = sec_voronoi(X)

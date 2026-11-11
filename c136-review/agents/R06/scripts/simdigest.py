@@ -2462,6 +2462,88 @@ def sec_crowd(X):
 
 
 
+def foedon_rows(X):
+    """外人之间的捐款（捐款人、收款人都不是我方号；只算录像里执行了的）。按队汇总，并给出每队收得最多的那个人。"""
+    S = X.S
+    rows = [x for x in S['donations'] if x.get('ok') and x['from'] not in X.squad and x['to'] not in X.squad and x['from'] < X.H and x['to'] < X.H]
+    by_team = defaultdict(lambda: dict(n=0, delivered=0, fee=0, recv=defaultdict(int), give=defaultdict(int), ts=[]))
+    for x in rows:
+        d = by_team[X.team[x['from']]]
+        d['n'] += 1
+        d['delivered'] += x['delivered']
+        d['fee'] += x['fee']
+        d['recv'][x['to']] += x['delivered']
+        d['give'][x['from']] += x['delivered']
+        d['ts'].append(x['t'])
+    return rows, by_team
+
+
+def sec_foedon(X):
+    rows, by_team = foedon_rows(X)
+    tot = sum(x['delivered'] for x in rows)
+    fee = sum(x['fee'] for x in rows)
+    print(f"外人之间执行了的捐款 {len(rows)} 笔：到账 {fmt(tot)}，手续费 {fmt(fee)}（损耗率 {pc(fee, tot + fee)}）")
+    sq = [x for x in X.S['donations'] if x.get('ok') and x['from'] in X.squad]
+    print(f"   对照：我方号捐出 {len(sq)} 笔，到账 {fmt(sum(x['delivered'] for x in sq))}，手续费 {fmt(sum(x['fee'] for x in sq))}")
+    for tm in sorted(by_team):
+        d = by_team[tm]
+        recv = sorted(d['recv'].items(), key=lambda kv: -kv[1])
+        give = sorted(d['give'].items(), key=lambda kv: -kv[1])
+        ts = sorted(d['ts'])
+        print(f"   队{tm}：{d['n']} 笔，到账 {fmt(d['delivered'])}，手续费 {fmt(d['fee'])}；t={ts[0]}~{ts[-1]}（中位 {ts[len(ts) // 2]}）")
+        print('      收：' + '；'.join(f"{X.name(p)} {fmt(v)}（{pc(v, d['delivered'])}）" for p, v in recv[:5]))
+        print('      捐：' + '；'.join(f"{X.name(p)} {fmt(v)}" for p, v in give[:5]))
+    pairs = defaultdict(lambda: [0, 0, 0])
+    back = 0
+    for x in rows:
+        k = (x['from'], x['to'])
+        pairs[k][0] += 1
+        pairs[k][1] += x['delivered']
+        pairs[k][2] += x['fee']
+    for x in rows:
+        if any(y['from'] == x['to'] and y['to'] == x['from'] and 0 < y['t'] - x['t'] <= 150 for y in rows):
+            back += 1
+    print(f"   来回对捐（A→B 之后 150 拍内 B→A）的外人捐款 {back} 笔；我方同口径见 don 节")
+    for (a, b), (n, v, f) in sorted(pairs.items(), key=lambda kv: -kv[1][1])[:8]:
+        print(f"      {X.name(a)}（队{X.team[a]}）→ {X.name(b)}：{n} 笔 到账 {fmt(v)} 费 {fmt(f)}")
+    big = sorted(rows, key=lambda x: -x['delivered'])[:6]
+    print('   最大的几笔：' + '；'.join(f"t={x['t']} {X.name(x['from'])}→{X.name(x['to'])} {x['pct']}‰ 到账 {fmt(x['delivered'])}（捐前 {fmt(x['B0'])}，收款人当时 地 {x['toTerr']} 兵 {fmt(x['toBal'])}）" for x in big))
+
+
+def sec_foepct(X, top=8):
+    """外人的出手习惯：录像里每个外人的陆攻 / 捐款 / 发船指令条数和千分比分布（录像指令 id 1 / 2 / 3；dX = 千分比），离开拍（id 9）。
+    列出对我方出兵最多的 top 个外人，加上捐款条数 >= 5 的外人。"""
+    S = X.S
+    tot = defaultdict(int)
+    for c in S['squadCmds']:
+        if c['k'] == 'atk' and c.get('ok') and c['p'] not in X.squad and c['p'] < X.H and c.get('to') in X.squad:
+            tot[c['p']] += c['sent']
+    who = [p for p, _ in sorted(tot.items(), key=lambda kv: -kv[1])[:top]]
+    by = defaultdict(list)
+    for c in X.M.cmds:
+        if c.get('phase') == 'game' and c['player'] < X.H and c['player'] not in X.squad:
+            by[c['player']].append(c)
+    for p, cs in by.items():
+        if sum(1 for c in cs if c['id'] == 2) >= 5 and p not in who:
+            who.append(p)
+    print('外人的出手习惯（录像指令；千分比:条数，按条数排前 6）')
+    for p in who:
+        cs = by.get(p, [])
+        def dist(i):
+            cnt = defaultdict(int)
+            for c in cs:
+                if c['id'] == i:
+                    cnt[c['dX']] += 1
+            n = sum(cnt.values())
+            return n, ' '.join(f"{k}:{v}" for k, v in sorted(cnt.items(), key=lambda kv: -kv[1])[:6])
+        na, da = dist(1)
+        nd, dd = dist(2)
+        nb, db = dist(3)
+        leave = [c['t'] for c in cs if c['id'] == 9]
+        print(f"   {X.name(p)}（队{X.team[p]}）对我方出兵 {fmt(tot.get(p, 0))}｜陆攻 {na} 条 [{da}]｜捐款 {nd} 条 [{dd}]｜发船 {nb} 条 [{db}]｜"
+              + (f"离开 t={leave[0]}" if leave else ('阵亡 t=%d' % X.deathT[p] if X.deathT[p] >= 0 else '活到终局')))
+
+
 def build_json(X):
     S = X.S
     doc = dict(matchId=S['matchId'], replaySource=S['replayPath'].split('/')[-2], replayEnd=X.endT,
@@ -2583,6 +2665,10 @@ def main():
         sec_halves(X, [int(v) for v in a] if a else None)
     elif sec == 'boatwar':
         sec_boatwar(X)
+    elif sec == 'foedon':
+        sec_foedon(X)
+    elif sec == 'foepct':
+        sec_foepct(X, int(a[0]) if a else 8)
     elif sec == 'json':
         doc = build_json(X)
         p = os.path.join(OUT, mid, 'simdigest.json')
