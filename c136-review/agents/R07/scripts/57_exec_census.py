@@ -216,6 +216,8 @@ def main():
     stalls = []                               # (局, 号, 落地拍, 静默回合数, 这段里队友落地条数, 队友按平时该落的条数, 其他真人落地条数, 其他真人按平时该落的条数, 这段里有没有队友的大批)
     bgaps = defaultdict(list)                 # 时段 -> [同一个号相邻两个 ≥8 条的批隔几个回合]
     TB = ((600, 900), (900, 1200), (1200, 1500), (1500, 1800), (1800, 2100), (2100, 2400), (2400, 3000), (3000, 10 ** 9))
+    rr_cycles, rr_shift, rr_pairs, rr_games, rr_text = [], [], [0, 0], set(), []
+    RR_EXAMPLES = {"A070": (1050, 2100), "A026": (1300, 2300), "A089": (900, 1600)}
 
     def win_max(cnt, w):
         rs = sorted(cnt)
@@ -336,6 +338,50 @@ def main():
                     span = range(ts[i - 1] + 1, t)
                     stalls.append((mid, nm[pl].strip(), t * 7, sil, sum(tm_round.get(x, 0) for x in span), (tm_all - own) / n_r * sil,
                                    sum(ot_round.get(x, 0) for x in span), ot_all / n_r * sil, 1 if any(tm_big.get(x) for x in span) else 0))
+        # 各号的大批是不是按固定的先后顺序轮流落地：取这一局 600~3000 拍里 ≥8 条的批最多的号当参照，
+        # 它相邻两批之间算一轮（≤120 个回合的才算）；别的号在这一轮里正好落一批的，记它在这一轮里的位置（0~1）。
+        seqs = {}
+        for pl in mine:
+            v = sorted(t for t, k in per[pl].items() if k >= 8 and 600 // 7 <= t < 3000 // 7)
+            if len(v) >= 4:
+                seqs[pl] = v
+        if len(seqs) >= 3:
+            ref = max(seqs, key=lambda q: (len(seqs[q]), q))
+            cyc = []
+            for a0, a1 in zip(seqs[ref], seqs[ref][1:]):
+                g = a1 - a0
+                if g > 120:
+                    cyc.append(None)
+                    continue
+                ph = {}
+                for pl, v in seqs.items():
+                    if pl == ref:
+                        continue
+                    inside = [t for t in v if a0 <= t < a1]
+                    if len(inside) == 1:
+                        ph[pl] = (inside[0] - a0) / g
+                cyc.append(ph)
+                rr_cycles.append((mid, g, len(ph), len(seqs) - 1))
+            for c0, c1 in zip(cyc, cyc[1:]):
+                if not c0 or not c1:
+                    continue
+                both = sorted(set(c0) & set(c1))
+                for pl in both:
+                    d = abs(c1[pl] - c0[pl])
+                    rr_shift.append(min(d, 1 - d))
+                for i in range(len(both)):
+                    for j in range(i + 1, len(both)):
+                        d0, d1 = c0[both[i]] - c0[both[j]], c1[both[i]] - c1[both[j]]
+                        if d0 == 0 or d1 == 0:
+                            continue
+                        rr_pairs[0] += 1
+                        rr_pairs[1] += 1 if (d0 > 0) == (d1 > 0) else 0
+                        rr_games.add(mid)
+        if mid in RR_EXAMPLES:
+            lo, hi = RR_EXAMPLES[mid]
+            ev = sorted((t, nm[pl].strip().split("] ")[-1], per[pl][t]) for pl in mine for t in per[pl] if per[pl][t] >= 6 and lo // 7 <= t < hi // 7)
+            rr_text.append(f"  {mid}（落地拍 {lo}~{hi}；回合号:号名 条数）：" + " ".join(f"{t}:{b}×{k}" for t, b, k in ev))
+
         # 同一个号相邻两个 ≥8 条的批隔几个回合（中间零星落地 ≤2 条的才算）
         for pl, cnt in per.items():
             if sq[pl] != "1":
@@ -426,6 +472,21 @@ def main():
     allg = sorted(x for v in bgaps.values() for x in v)
     if allg:
         P(f"  合计\t{len(allg):,}\t{statistics.median(allg):.1f} / {allg[int(0.9 * (len(allg) - 1))]} / {allg[-1]}；间隔正好 3 个回合的 {sum(1 for x in allg if x == 3)} 对、不到 3 个回合的 {sum(1 for x in allg if x < 3)} 对")
+
+    P("")
+    P("## B9. 同一局里各号的大批是不是按固定的先后顺序轮流落地（600~3000 拍；≥8 条的批；一局里至少 3 个号各有 ≥4 个这样的批）")
+    if rr_cycles:
+        gs = sorted(c[1] for c in rr_cycles)
+        P(f"  参照号（这一局里批最多的号）相邻两批之间算一轮：{len(rr_cycles):,} 轮，分布在 {len({c[0] for c in rr_cycles})} 局；一轮的长度（回合）中位 {statistics.median(gs):.0f}、P90 {gs[int(0.9 * (len(gs) - 1))]}")
+        P(f"  一轮里别的号正好落一批的：{sum(c[2] for c in rr_cycles):,} 个号次（这些轮里别的有批的号合计 {sum(c[3] for c in rr_cycles):,} 个号次）")
+        if rr_pairs[0]:
+            P(f"  相邻两轮里都正好落一批的两个号，谁先谁后保持不变的：{rr_pairs[1]:,} / {rr_pairs[0]:,} 对（{rr_pairs[1] / rr_pairs[0]:.0%}；各号互不相干时是 50%）；涉及 {len(rr_games)} 局")
+        if rr_shift:
+            sh = sorted(rr_shift)
+            P(f"  同一个号在相邻两轮里的位置（0~1）差多少：中位 {statistics.median(sh):.2f}、P90 {sh[int(0.9 * (len(sh) - 1))]:.2f}（{len(sh):,} 个号次；互不相干时中位 0.25）")
+    P("  例子（一个号一帧 ≥6 条的批，按落地的回合排）：")
+    for t in rr_text:
+        P(t)
 
     P("")
     P("## B8. 策略自己的耗时（[HL-TICK] 行尾的 avgMs / maxMs / skip；在场的号）")
