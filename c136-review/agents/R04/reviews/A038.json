@@ -1282,9 +1282,9 @@
    "t": "选点阶段",
    "bot": "全部",
    "what": "9 个出生点彼此 62~72 像素（rCell=60.4），60 像素内都没有队友。",
-   "why": "42 个真人的图上间距下限算出来是 62~70 像素，点位摆得开。",
-   "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L845~852；pickNextTarget L938",
-   "evidence": "match_digest.py 第 1 节；630 拍我方领土中位 3048 对其他真人 2573，9 个号里 6 个排进前 15。",
+   "why": "走的也是角落扇形阵（最后一轮点位里顶点和三个内弧点与标称几何对上，偏差 0~1 像素）：当时 36 个已选点真人，点间距下限 62 像素、三圈半径 31 / 93 / 155 像素，扇形面积约 2.06 个人均地盘（A022 是 2.86 个，A029 是 1.65 个）。",
+   "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L1065~1077（角落扇形阵与 r0/r1/r2、minReqSep）、L1135~1170",
+   "evidence": "spawn_churn.py A038 --fan；match_digest.py 第 1 节、spawn_geometry.py；630 拍我方领土中位 3048 对其他真人 2573（1.18 倍），1530 拍 10,366 对 11,992（0.86 倍），9 个号里 6 个在 630 拍排进前 15。间距中位是 rCell 的 1.10 倍，和 A022 的 1.11 倍几乎一样，但本局 42 个真人、外圈有地可占，2100 拍只有 1 个号封死（A022 是 6 个）。",
    "verdict": "good",
    "patternId": "NEW-SP-SPREAD",
    "statementType": "observed"
@@ -1294,9 +1294,9 @@
    "t": "第 204~281 步",
    "bot": "sora_w、talon5、zexos1、kaito9、alex_k",
    "what": "选点最后一步四个号还在互换点位；alex_k 的最后一条指令把它放到离计划点位约 100 像素、离敌方真人 26 像素的地方。",
-   "why": "每次大厅状态变化都整体重算并重新配对；alex_k 和 noah88 在第 204 步之后没有新的出生指令落地。",
-   "codePath": "spawn-coordinator-c116-vb.mjs solve L790；matchBotsToTargets L1431",
-   "evidence": "match_digest.py 第 3b 节（出生指令 20~33 条、最后一条所在步）；本局没有看到由此造成的损失。",
+   "why": "每次大厅状态变化都整体重算并重新配对：rCell 按「当时已选点的真人数」算，半径和锚点跟着变；锁的只是角落名；配对按各号当前位置重新求最小总距离。alex_k 和 noah88 在第 204 步之后没有新的出生指令落地。",
+   "codePath": "spawn-coordinator-c116-vb.mjs solve L837~838（rCell 用已选点真人数）、L1103（采样半径 = r2）、L1276（只锁角落名）、L1346 → matchBotsToTargets L1431~1446",
+   "evidence": "spawn_churn.py A038：协调器日志 41 轮整体求解，阵型中心搬了 15 次（第 29 轮起才稳定）；相邻两轮之间互换点位 9 次；9 个号里 5 个最后没落在最后一轮给自己的点上（偏 73~169 像素：sora_w、talon5、kaito9 站在上一轮的点位上，zexos1、alex_k 停在第 23、28 轮的旧点位上）。match_digest.py 第 3b 节（出生指令 20~33 条、最后一条所在步）；本局没有看到由此造成的损失。",
    "verdict": "unclear",
    "patternId": "NEW-SP-RESOLVE",
    "statementType": "observed"
@@ -1461,9 +1461,9 @@
  "newPatterns": [
   {
    "prefix": "SP",
-   "name": "出生点散开、各自有地可占（对照组）",
-   "definition": "我方号出生点到最近队友的距离中位 > 1.25×rCell，且 t=630 时我方号领土中位 ≥ 其他真人领土中位的 80%。",
-   "detector": "scripts/match_digest.py 第 1 节与第 3b 节",
+   "name": "出生阵型没有让号吃亏（对照组）",
+   "definition": "t=630 与 t=1530 时我方号领土中位都 ≥ 其他真人领土中位的 80%（不论最近队友距离是多少；间距与 rCell 的比例照列）。",
+   "detector": "scripts/spawn_geometry.py；scripts/match_digest.py 第 1 节与第 3b 节",
    "codePath": "spawn-coordinator-*.mjs TeamSpawnCoordinator.solve",
    "id": "NEW-SP-SPREAD"
   },
@@ -1471,15 +1471,15 @@
    "prefix": "SP",
    "name": "选点阶段反复改点，最后一刻才落定",
    "definition": "选点阶段同一个号被执行的出生指令 ≥ 10 条，或最后一条出生指令落在选点阶段最后 10% 的步数里。",
-   "detector": "scripts/match_digest.py 第 3b 节（出生指令条数 / 最后一条所在步）",
-   "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve（每次大厅状态变化都整体重算）、matchBotsToTargets L1431",
+   "detector": "scripts/spawn_churn.py <局号> [--fan]（求解轮数、阵型中心的移动、点位互换次数、各号最后落点离最后一轮点位的距离）；scripts/match_digest.py 第 3b 节（出生指令条数 / 最后一条所在步）",
+   "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L837~838（rCell 按「当时已选点的真人数」算，每轮都变）、L1103（锚点打分的采样半径 = r2）、L1276（只锁角落名，不锁锚点）、L1346 → matchBotsToTargets L1431~1446（按各号当前位置重新配对）",
    "id": "NEW-SP-RESOLVE"
   },
   {
    "prefix": "OP",
    "name": "开局占无主地的节奏不落后",
-   "definition": "t=270 时我方号领土中位 ≥ 其他真人领土中位。",
-   "detector": "scripts/match_digest.py 第 3b 节（拍 270 的中位与名次）",
+   "definition": "t=270 或 t=630 时我方号领土中位 ≥ 其他真人领土中位（两个时刻的数都列出）。",
+   "detector": "scripts/match_digest.py 第 3b 节（拍 270、630 的中位与名次）",
    "codePath": "V13.expandNeutral L2373 / dpNeutral L2383（开局按圈数买无主地）",
    "id": "NEW-OP-DPGOOD"
   },
@@ -1559,7 +1559,7 @@
    "prefix": "DN",
    "name": "调度不看收款人的反喂养配额",
    "definition": "t<4284 时 tryDonateToTeammate 一般分支按固定比例（220/240/320/380）定额，不比较收款人剩余配额点数；某号 t<4284 的调度落地率 < 30%。",
-   "detector": "scripts/match_digest.py 第 7 节（按时段 发出/落地/到账）；scripts/exec_gap.py（捐款落地率）",
+   "detector": "scripts/quota_truth.py <局号>（没落地的调度用真引擎记的收款人配额重判原因）；scripts/match_digest.py 第 7 节",
    "codePath": "Policy.tryDonateToTeammate L4499~4508（选定收款人后按 idealPct 定额直接 g.donate，没有用 g.donQuota / g.donCap）",
    "id": "NEW-DN-QUOTABLIND"
   }
@@ -1585,6 +1585,8 @@
  "scripts": [
   "scripts/engine_truth.cjs + scripts/engine_truth_all.sh A038（真引擎重放 → tmp/truth/A038/）",
   "scripts/match_digest.py A038 > out/digest/A038.txt（结构、时间线、出生、大跌窗口、出局链、对账、捐款真账、出兵去向、赢家）",
+  "scripts/spawn_churn.py A038 --fan（协调器求解轮数、阵型搬家与点位互换、与角落扇形阵标称几何的拟合、扇形面积）",
+  "scripts/spawn_geometry.py（13 局的出生间距、rCell、630/1530 拍领土中位比）",
   "scripts/review_base.py A038（本文件的 context / outcome / timeline / deaths 数字）",
   "scripts/shadow_all.sh A038（全队影子策略 → tmp/shadow/A038/）；scripts/shadow.mjs A038 --bots <号> --at <拍,…>（buyLand 报价单、winFloor 拆解、调度候选逐个判定）",
   "scripts/shadow_diag.mjs（上面各项诊断的实现，调度候选部分照抄 L4414~4506）",

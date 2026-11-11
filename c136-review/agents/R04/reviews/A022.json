@@ -70,8 +70,8 @@
     "选点阶段 351 步里，我方每个号被执行了 11~32 条出生指令，leo_tx 的最后一条落在第 351 步（最后一步），zexos1 在第 344 步。协调器日志里间距目标从 69 一路缩到 42 像素。"
    ],
    "problems": [
-    "协调器的间距下限按 allyMinSep = clamp(round(1.48×rCell), 72, 118) = 72 像素起算，放不下就按 0.80/0.62/0.42 逐级放宽，同时要求每个新点离已选点群不超过 allyMinSep×(2.1−0.5×relax)。107 人的图上这两条合起来就是一个紧凑圆盘：实际间距 ≈ 72×0.62 = 45 像素。",
-    "圆盘贴着地图右上角，外圈只有朝西、朝南两个方向有出路。"
+    "协调器走的是「角落扇形阵」（没有 boss 且 ≥6 个号时的分支）：最后一轮点位里顶点、两个内弧点、三个外弧点与代码的标称几何对上（偏差 0~8 像素），其余 4 个是回退点位。点间距下限 = clamp(round(0.95×rCell), 42, 68)，107 人的图上取到下限 42 像素；三圈半径 28 / 75 / 122 像素（外圈半径的下限就是 122）。10 个号排进半径约 122 像素、张角 112° 的扇形，面积约 1.46 万格，相当于 2.9 个人均地盘。",
+    "这一团点位贴着地图右上角，外圈只有朝西、朝南两个方向有出路。"
    ]
   },
   "opening_90_630": {
@@ -81,7 +81,7 @@
     "t=630 编队合计 22,002 格（全图 4.03%，占本队 24.8%），余额 64.5k。"
    ],
    "problems": [
-    "开局买无主地的节奏本身没问题（270 拍还领先），问题是地在 540 拍前后就被圆盘里的队友互相占完了。"
+    "开局买无主地的节奏本身没问题（270 拍还领先），问题是地在 540 拍前后就被挤在一起的队友互相占完了。"
    ]
   },
   "midgame_630_3500": {
@@ -94,7 +94,7 @@
     "到 2100 拍 6 个号封死（nb=0、neut=0），其中 5 个连海岸都没有。2142 拍之前的 73 次调度全部没有落地，2142~3212 落地 9/162。"
    ],
    "problems": [
-    "三重叠加：圆盘出生把地占完 → 该吃 AI 的 900 拍里被队友互锁的底线和客户端落后同时卡住 → AI 被别人吃完后内圈的号彻底没有邻居。",
+    "三重叠加：密排出生把地占完 → 该吃 AI 的 900 拍里被队友互锁的底线和客户端落后同时卡住 → AI 被别人吃完后内圈的号彻底没有邻居。",
     "所有 10 个号的 isNoFullSend 都被误锁（372~1225 拍之间），之后共有 32 次出兵被自己的守卫拦掉。"
    ]
   },
@@ -649,9 +649,9 @@
     {
      "t": "选点阶段（第 113~351 步）",
      "bots": "全部 10 个号",
-     "decision": "把 10 个出生点排成间距 42~48 像素的紧凑圆盘，放在地图右上角。",
-     "why": "间距下限 72 像素放不下就乘 0.62 放宽；同时强制新点贴着已选点群（紧凑圆盘约束）。",
-     "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L845~852；pickNextTarget L938~991"
+     "decision": "把 10 个出生点排成间距 42~48 像素的一团（角落扇形阵加 4 个回退点位），放在地图右上角。",
+     "why": "没有 boss 且 ≥6 个号时走角落扇形阵：点间距下限取到 42 像素，三圈半径 28 / 75 / 122 像素，上限 46 / 108 / 182，和人均地盘无关。",
+     "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L1065~1077（角落扇形阵与 r0/r1/r2）、L1135~1170（1 顶点 + 3 内弧 + 外弧）、L1187（只查队友间距）"
     },
     {
      "t": "330~630",
@@ -733,10 +733,10 @@
    "id": "D01",
    "t": "选点阶段",
    "bot": "全部",
-   "what": "10 个出生点排成间距 42~48 像素的圆盘（rCell=40.3，人均应有 5104 格，内圈实际可占约 1750 格）。",
-   "why": "allyMinSep 起算 72 像素放不下，relaxFactors 放宽到 0.62；紧凑圆盘约束禁止新点远离点群。",
-   "codePath": "spawn-coordinator-c116-vb.mjs solve L845~852；pickNextTarget L938~991",
-   "evidence": "match_digest.py 第 1 节出生距离；630~1530 拍 8 个号领土停在 2009~3407 格；到 2100 拍 6 个号 nb=0。",
+   "what": "10 个出生点排成间距 42~48 像素的一团（角落扇形阵加 4 个回退点位；rCell=40.3，人均应有 5104 格，内圈实际可占约 1750 格）。",
+   "why": "没有 boss 且 ≥6 个号时走角落扇形阵：点间距下限 clamp(round(0.95×rCell), 42, 68) 取到 42 像素，三圈半径 28 / 75 / 122 像素（上限 46 / 108 / 182），和地图大小、人均地盘无关；注释写明内圈 4 个号是「保证 nb=0 的蓄水池」。",
+   "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L1065~1077（角落扇形阵的注释与 r0/r1/r2、minReqSep）、L1135~1170（1 顶点 + 3 内弧 + 外弧）、L1187（只查队友间距）",
+   "evidence": "spawn_churn.py A022 --fan（最后一轮点位 10 个里 6 个与标称扇形对上：顶点、两个内弧点、三个外弧点，偏差 0~8 像素；日志里点位最小间距 42 像素的求解 23 轮）；match_digest.py 第 1 节出生距离；630~1530 拍 8 个号领土停在 2009~3407 格；到 2100 拍 6 个号 nb=0。",
    "verdict": "error",
    "patternId": "NEW-SP-DISC",
    "statementType": "observed"
@@ -746,9 +746,9 @@
    "t": "第 113~351 步",
    "bot": "全部",
    "what": "选点阶段每个号被执行 11~32 条出生指令，leo_tx、zexos1 的落点在最后 8 步里才定。",
-   "why": "协调器每次大厅状态变化都整体重算，分配结果随之跳动（ryan_m 的目标点换了约 30 次）。",
-   "codePath": "spawn-coordinator-c116-vb.mjs solve L790（整体重算）；matchBotsToTargets L1431",
-   "evidence": "match_digest.py 第 3b 节。没有证据表明最终落点因此更差，只是每次重算都回到同一种圆盘。",
+   "why": "协调器每次大厅状态变化都整体重算。rCell 按「当时已选点的真人数」算，别人一选点，三圈半径和锚点打分的采样半径就跟着变；锁的只是角落名，不是锚点；点位和号的配对按各号当前位置重新求最小总距离，所以点位在号之间来回换。",
+   "codePath": "spawn-coordinator-c116-vb.mjs solve L837~838（rCell 用已选点真人数）、L1103（采样半径 = r2）、L1276（只锁角落名）、L1346 → matchBotsToTargets L1431~1446（按当前位置重新配对）",
+   "evidence": "spawn_churn.py A022：协调器日志 47 轮整体求解，阵型中心搬了 6 次（第 13 轮起才稳定在 (850,208)）；相邻两轮之间互换点位 13 次（leo_tx↔zexos1 6 次、leo_tx↔ryan_m 3 次）；最后 zexos1、leo_tx 离最后一轮给的点都是 45 像素。match_digest.py 第 3b 节。没有证据表明最终落点因此更差，每次重算都回到同一种密排。",
    "verdict": "unclear",
    "patternId": "NEW-SP-RESOLVE",
    "statementType": "observed"
@@ -757,7 +757,7 @@
    "id": "D03",
    "t": "90~450",
    "bot": "全部",
-   "what": "按圈数买无主地：t=270 我方领土中位 364，高于其他真人的 312；名次 25~68/103。",
+   "what": "按圈数买无主地：t=270 我方领土中位 364，高于其他真人的 312；名次 25~68/103。到 t=630 已经落后（2138 对 2622），原因是密排的阵型把外圈占完了（见 D01），不是这个分支慢。",
    "why": "开局无主地扩张分支每个周期把可用余额换成外圈。",
    "codePath": "V13.expandNeutral L2373；V13.dpNeutral L2383",
    "evidence": "match_digest.py 第 3b 节；opening.csv。",
@@ -865,7 +865,7 @@
    "id": "D12",
    "t": "2100~2660",
    "bot": "ryan_m（另 noah88 3100~4290、kaito9 3670~4290）",
-   "what": "ryan_m 2419 格、余额 362,850 = 150×领土，顶在硬上限 565 拍，利息为零；它没有敌邻、没有无主地、没有一格海岸，报价单是空的，船也不允许发。全局五个内陆号这样封死且无海岸共 33,115 号·拍。",
+   "what": "ryan_m 2419 格、余额 362,850 = 150×领土，顶在硬上限 565 拍，利息为零；它没有敌邻、没有无主地、没有一格海岸，报价单是空的，船也不允许发。ryan_m、noah88、alex_k、kaito9、riku_x 五个内陆号这样封死且无海岸共 33,115 号·拍，leo_tx 从 3250 拍起另有 5,110 号·拍。",
    "why": "买地只遍历 this.nb；闲置发船要求有海岸；调度被配额挡住。三条出路都不通。",
    "codePath": "Policy.offers L5072（只看 nb）；Policy.idleBoats L5031~5032；Policy.tryDonateToTeammate",
    "evidence": "idle_scan.py A022；shadow.mjs A022 --at 2400（coast=0，boatsAllowed=false）。 interest_rate.py A022（利息公式已用真引擎余额逐 10 拍核对）：1500~4284 拍编队实拿利息 617 万，因余额超过 100×领土 被折扣少拿 329 万（ryan_m、noah88、kaito9、sora_w 最多）。",
@@ -913,25 +913,25 @@
  "newPatterns": [
   {
    "prefix": "SP",
-   "name": "出生点挤成一个紧凑圆盘，内圈的号开局就没地可占",
-   "definition": "我方号出生点到最近队友的距离中位 ≤ 1.25×rCell（rCell = sqrt(陆地像素 /(π×真人数))，即人均地盘半径），且至少 7 成的号在 60 像素内有 ≥2 个队友。后果指标：t=1530 时我方号领土中位 < 其他真人领土中位的 60%，或 t≤2100 时半数以上的号 nb=0 且 neut=0。",
-   "detector": "scripts/match_digest.py 第 1 节（出生点距离）与第 3b 节（开局名次、封死快照）",
-   "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L845~852（allyMinSep 等尺度）、pickNextTarget L938~991（relaxFactors 逐级放宽 + 紧凑圆盘约束）",
+   "name": "出生点挤成一个紧凑的扇形/圆盘，内圈的号开局就没地可占",
+   "definition": "我方号出生点到最近队友的距离中位 ≤ 1.25×rCell（rCell = sqrt(陆地像素 /(π×真人数))，即人均地盘半径），且至少 7 成的号在 1.5×rCell 内有 ≥2 个队友（紧凑阵型）。后果指标：t=1530 时我方号领土中位 < 其他真人领土中位的 60%，或 t≤2100 时半数以上的号 nb=0 且 neut=0。几何条件和后果指标都满足才算。",
+   "detector": "scripts/spawn_geometry.py（13 局的间距、rCell、630/1530 拍领土中位比、2100 拍封死号数，结果在 out/spawn_geometry.txt）；scripts/spawn_churn.py <局号> --fan（点位与角落扇形阵标称几何的拟合）；scripts/match_digest.py 第 1 节与第 3b 节",
+   "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L1065~1077（没有 boss 且 ≥6 个号时的角落扇形阵：点间距下限 clamp(0.95×rCell, 42, 68)，三圈半径上限 46 / 108 / 182 像素；注释写明内圈 4 个号是「保证 nb=0 的蓄水池」）、L1093~1133（锚点 = 陆地采样数×18 − 到角落距离×2.2 最大的格点）、L1135~1170（1 顶点 + 3 内弧 + 外弧）、L1187（每个点只查队友间距）、L1262~1268（敌人只进方案打分）；扇形排不满时才走 pickNextTarget L938~991",
    "id": "NEW-SP-DISC"
   },
   {
    "prefix": "SP",
    "name": "选点阶段反复改点，最后一刻才落定",
    "definition": "选点阶段同一个号被执行的出生指令 ≥ 10 条，或最后一条出生指令落在选点阶段最后 10% 的步数里。",
-   "detector": "scripts/match_digest.py 第 3b 节（出生指令条数 / 最后一条所在步）",
-   "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve（每次大厅状态变化都整体重算）、matchBotsToTargets L1431",
+   "detector": "scripts/spawn_churn.py <局号> [--fan]（求解轮数、阵型中心的移动、点位互换次数、各号最后落点离最后一轮点位的距离）；scripts/match_digest.py 第 3b 节（出生指令条数 / 最后一条所在步）",
+   "codePath": "spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve L837~838（rCell 按「当时已选点的真人数」算，每轮都变）、L1103（锚点打分的采样半径 = r2）、L1276（只锁角落名，不锁锚点）、L1346 → matchBotsToTargets L1431~1446（按各号当前位置重新配对）",
    "id": "NEW-SP-RESOLVE"
   },
   {
    "prefix": "OP",
    "name": "开局占无主地的节奏不落后",
-   "definition": "t=270 时我方号领土中位 ≥ 其他真人领土中位。",
-   "detector": "scripts/match_digest.py 第 3b 节（拍 270 的中位与名次）",
+   "definition": "t=270 或 t=630 时我方号领土中位 ≥ 其他真人领土中位（两个时刻的数都列出）。",
+   "detector": "scripts/match_digest.py 第 3b 节（拍 270、630 的中位与名次）",
    "codePath": "V13.expandNeutral L2373 / dpNeutral L2383（开局按圈数买无主地）",
    "id": "NEW-OP-DPGOOD"
   },
@@ -946,8 +946,8 @@
   {
    "prefix": "IO",
    "name": "客户端落后，指令晚到或丢失",
-   "definition": "某时段我方陆攻指令落地率 < 60%，或落地延迟中位 ≥ 90 拍；并且日志行序显示该号比最快的队友落后 ≥ 180 拍。",
-   "detector": "scripts/exec_gap.py（想发 vs 落地）+ scripts/client_lag.py（日志行序）",
+   "definition": "某 250 拍时段我方陆攻指令落地率 < 60%，或落地延迟（落地拍 − 影子策略的决策拍）中位 ≥ 90 拍。全队一起落后时号与号之间的相对落后量看不出差别，另列。",
+   "detector": "scripts/exec_gap.py <局号> --profile 250；scripts/client_lag.py <局号>",
    "codePath": "Strategy.send L479~487（发出即计数，不跟踪是否落地）+ Policy.act L4838（每 5 拍重新决策，同一指令反复重发）",
    "id": "NEW-IO-LAGLOSS"
   },
@@ -979,7 +979,7 @@
    "prefix": "DN",
    "name": "调度不看收款人的反喂养配额",
    "definition": "t<4284 时 tryDonateToTeammate 一般分支按固定比例（220/240/320/380）定额，不比较收款人剩余配额点数；某号 t<4284 的调度落地率 < 30%。",
-   "detector": "scripts/match_digest.py 第 7 节（按时段 发出/落地/到账）；scripts/exec_gap.py（捐款落地率）",
+   "detector": "scripts/quota_truth.py <局号>（没落地的调度用真引擎记的收款人配额重判原因）；scripts/match_digest.py 第 7 节",
    "codePath": "Policy.tryDonateToTeammate L4499~4508（选定收款人后按 idealPct 定额直接 g.donate，没有用 g.donQuota / g.donCap）",
    "id": "NEW-DN-QUOTABLIND"
   },
@@ -987,7 +987,7 @@
    "prefix": "EC",
    "name": "内陆封死憋兵（没有敌邻、没有无主地、没有海岸）",
    "definition": "某号 nb=0 且 neut=0 且海岸像素=0（船也发不了）连续 ≥ 900 拍；或余额顶到 150×领土（硬上限，利息归零）≥ 90 拍。",
-   "detector": "scripts/idle_scan.py（「封死」「封死且无海岸」「顶到硬上限」三列）",
+   "detector": "scripts/idle_scan.py（「封死」「封死且无海岸」「顶到硬上限」三列）；scripts/cap_time.py；scripts/interest_rate.py --win（软上限折扣少拿的利息）；scripts/shadow.mjs --at（发船诊断：searchWater 有没有可登陆的岸）",
    "codePath": "Policy.offers L5072（只遍历 this.nb，报价单为空）、Policy.idleBoats L5019~5070（L5032 boatsAllowed 要求有海岸）",
    "id": "NEW-EC-LANDLOCK"
   },
@@ -1027,7 +1027,7 @@
   "指令为什么会丢。影子策略想发的 942 条陆攻只有 465 条进了录像；每次追帧最多落地 9 条，其余消失。客户端 send 是即发的、不带拍号，丢在浏览器、网络还是服务器的每拍上限，录像里看不出来。",
   "8 个客户端为什么在 630~1700 拍落后（同一时间 sora_w、riku_x 不落后；A038 全队都不落后）。是 10 个号同机抢 CPU，还是 107 人大图本身慢，没有机器侧的数据。",
   "talon5、zexos1 离场的直接原因（掉线、被服务器踢、还是页面崩溃）。只知道它们是落后最多的两个。",
-  "如果没有队友互锁和落后，630~1500 拍我方能多吃多少 AI 地。圆盘出生下内圈的号贴到的 AI 本来就少（每号 2~6 个、可吃的弱 AI 地 239~1449 格），上限可能也不高。"
+  "如果没有队友互锁和落后，630~1500 拍我方能多吃多少 AI 地。密排出生下内圈的号贴到的 AI 本来就少（每号 2~6 个、可吃的弱 AI 地 239~1449 格），上限可能也不高。"
  ],
  "mechanicsQuestions": [
   "服务器对同一玩家一拍内最多转发几条指令？观察到的批次上限是 9 条，且顺序与发出顺序相反。",
@@ -1037,6 +1037,8 @@
  "scripts": [
   "scripts/engine_truth.cjs + scripts/engine_truth_all.sh A022（真引擎重放 → tmp/truth/A022/）",
   "scripts/match_digest.py A022 > out/digest/A022.txt（结构、时间线、出生、对账、捐款真账、出兵去向、赢家）",
+  "scripts/spawn_churn.py A022 --fan（协调器求解轮数、阵型搬家与点位互换、与角落扇形阵标称几何的拟合、扇形面积）",
+  "scripts/spawn_geometry.py（13 局的出生间距、rCell、630/1530 拍领土中位比）",
   "scripts/review_base.py A022（本文件的 context / outcome / timeline 数字）",
   "scripts/shadow.mjs A022 --bots <全部> --quiet --rows --out tmp/shadow/A022（影子策略；--at <拍> 打印分支诊断）",
   "scripts/shadow_diag.mjs（winFloor 拆解、buyLand 报价、调度与发船诊断）",
