@@ -243,6 +243,20 @@ def donfit_summary(mid, room):
                 old20TickRuleRejectedButExecuted=sum(1 for r in ex if r.get("oldVerdict") == "REJ"))
 
 
+def hard_ledgers(mid):
+    """统筹广播 0007 的两本硬账：lagledger.py（延迟 / 执行延迟）和 landcap.py（好地实际抢到多少）的汇总 JSON，原样并进 ledger。"""
+    out = {}
+    for key, fn, src in (("latencyLedger", "lagledger_sum.json", "scripts/lagledger.py [GA]~[GG]（out/<局>/lagledger.txt）"),
+                         ("latencyLedgerPeer", "lagledger_sum_peer.json", "scripts/lagledger.py --side peer"),
+                         ("landCapture", "landcap_sum.json", "scripts/landcap.mjs + landcap.py [KA]~[KF]（out/<局>/landcap.txt）")):
+        p = os.path.join(ROOT, "out", mid, fn)
+        if os.path.exists(p):
+            d = json.load(open(p, encoding="utf-8"))
+            d["src"] = src
+            out[key] = d
+    return out
+
+
 def build(mid):
     F = facts.build(mid)
     F["dons"] = facts.donation_ledger(F)
@@ -292,6 +306,7 @@ def build(mid):
                     donatedArrivedUpperBound=sum(d["amountEff"] for d in acc), donationTaxUpperBound=sum(d["fee"] for d in acc),
                     cardLikelyRejected=(card.get("anomaliesSummary") or {}).get("likelyRejectedTransfers"),
                     **({"donfit": donfit_summary(mid, None)} if donfit_summary(mid, None) else {}),
+                    **hard_ledgers(mid),
                     **R.get("ledgerExtra", {})),
         decisions=R["decisions"],
         newPatterns=R.get("newPatterns", []),

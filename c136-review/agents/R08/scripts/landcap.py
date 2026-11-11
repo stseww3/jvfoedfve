@@ -18,6 +18,7 @@
        应得（按人头）− 实得 = ① 名下先天就少 + 名下的被别人吃掉 − 到别人名下吃的；
        「名下的被别人吃掉」逐格归到：同队 AI 不能打 / 号不在了 / 够不着 / ② 门槛挡住（哪一关、sb 由谁定）/ ③ 迟到落空 / 出手了被分走 / 过了门槛没发。
 口径：
+  [KF] 接壤口径的归因：不看名下，别人吃掉的每一格只问「被吃掉之前有没有编队号贴着那个 AI」；贴着的再分 同队 AI / ② / ③ / 出手了被分走。
   · 「名下」= 直线最近（vorE）。归因时先看名下那个号；它不接壤这个 AI 时，改看接壤这个 AI 的其他编队号（同队优先）。
   · 门槛 = 影子在真值上每 10 拍把接壤的内置 AI 逐个过一遍 pickTarget 的门槛（shadow.mjs census 的逐 AI 结论）。
     need<=0（压上去的兵已经够吃光它）算过闸。
@@ -409,6 +410,9 @@ def main():
                 actor = cands[0]
         if actor is None:
             return ("够不着（没有编队号接壤这个 AI）", "")
+        return judge(actor, q, be)
+
+    def judge(actor, q, be):
         if actor in last_tick and last_tick[actor] < be - 150:
             return ("客户端停了（日志已断）", "")
         eff = [c for c in real_atk[actor] if c[4] == q and c[5] == 1 and t0 - 60 <= c[0] <= be]
@@ -472,6 +476,53 @@ def main():
     w(f"  三层合计：① 站位（名下先天少 {par - Us:+.0f} 格 + 名下够不着 {g1} 格）｜② 门槛挡住 {g2} 格（{pct(g2, lost)}）｜③ 迟到 {g3} 格（{pct(g3, lost)}）"
       f"｜其余 {lost - g1 - g2 - g3} 格（同队 AI、号不在了、出手了被分走、过闸没发等）")
     SUM["attr"].update({"cats": dict(cats), "gate": g2, "late": g3, "noContact": g1, "byTaker": dict(by_taker), "hasShadow": has_census})
+    # ---------- [KF] 接壤口径：不看名下，只看「被别人吃掉之前有没有编队号贴着这个 AI」
+    w("")
+    notsq = [r for r in U if r[2] not in sqid]
+    n_not = sum(r[4] for r in notsq)
+    cats2 = defaultdict(int)
+    subs2 = defaultdict(lambda: defaultdict(int))
+    per_bot = defaultdict(lambda: defaultdict(int))
+    for reg, q, tk, be, n in notsq:
+        cands = [p for p in sqid if not gone(p, be - 30) and any(t0 <= t < be for t in contact.get((p, q), []))]
+        if not cands:
+            cats2["不接壤（被吃掉之前没有编队号贴着它）"] += n
+            continue
+        ok_c = [p for p in cands if not (LC["botsTeamed"] and same(p, q))]
+        if not ok_c:
+            cats2["同队的内置 AI（不能打）"] += n
+            continue
+        ok_c.sort(key=lambda p: -sum(1 for t in contact.get((p, q), []) if t0 <= t < be))
+        cat, sub = judge(ok_c[0], q, be)
+        cats2[cat] += n
+        per_bot[ok_c[0]][cat[:1] if cat[:1] in "②③" else "其它"] += n
+        if sub:
+            subs2[cat][sub] += n
+    reach = n_not - cats2["不接壤（被吃掉之前没有编队号贴着它）"]
+    w(f"[KF] 接壤口径的归因：({t0},1500] 别人吃掉的 {n_not} 格『属于过内置 AI 的格』里，被吃掉之前有编队号贴着那个 AI 的 {reach} 格（{pct(reach, n_not)}）；编队自己吃到 {A} 格")
+    w("  逐格归因（格数 | 占贴着的）：")
+    for cat, n in sorted(cats2.items(), key=lambda kv: -kv[1]):
+        if cat.startswith("不接壤"):
+            continue
+        extra = ""
+        if subs2[cat]:
+            extra = "｜sb 由谁的余额定：" + "、".join(f"{SRC.get(k, k)} {v}" for k, v in sorted(subs2[cat].items(), key=lambda kv: -kv[1]))
+        w(f"    {cat}：{n}（{pct(n, reach)}）{extra}")
+    h2 = sum(v for k, v in cats2.items() if k.startswith("②"))
+    h3 = sum(v for k, v in cats2.items() if k.startswith("③"))
+    w(f"  合计：② 门槛挡住 {h2} 格（{pct(h2, reach)}）｜③ 迟到 {h3} 格（{pct(h3, reach)}）｜贴着但没吃到的一共 {reach} 格 = 编队实得 {A} 格的 {reach / max(1, A):.2f} 倍")
+    short = par - A
+    team_ai = cats2.get("同队的内置 AI（不能打）", 0)
+    rest = reach - team_ai - h2 - h3
+    pos = short - reach
+    w(f"  把按人头的差额（应得 {par:.0f} − 实得 {A} = {short:+.0f} 格）摊开：贴着没吃到 {reach} 格 = 同队 AI {team_ai}（{pct(team_ai, short)}）+ ② 门槛 {h2}（{pct(h2, short)}）+ ③ 迟到 {h3}（{pct(h3, short)}）+ 出手了被分走 / 过闸没发等 {rest}（{pct(rest, short)}）；"
+      f"剩下 {pos:+.0f} 格（{pct(pos, short) if short > 0 else '–'}）是 ① 贴不着：就算贴着的全吃到也到不了人头份额"
+      + ("（负数 = 贴着的全吃到就超过人头份额）" if pos < 0 else ""))
+    SUM["attrContact"] = {"short": round(short), "position": round(pos), "teamAi": team_ai, "rest": rest}
+    w("  逐号（贴着、被别人吃掉的格里归到这个号头上的）：" + "；".join(
+        f"{name(p)} ②{d.get('②', 0)} ③{d.get('③', 0)} 其它{d.get('其它', 0)}" for p, d in sorted(per_bot.items(), key=lambda kv: -sum(kv[1].values()))))
+    SUM["attrContact"].update({"othersAte": n_not, "inReach": reach, "cats": dict(cats2), "gate": h2, "late": h3,
+                               "perBot": {name(p): dict(d) for p, d in per_bot.items()}})
     # 门槛普查的决策拍数（接壤至少一个可打的 AI 的号·点里，全被挡的）
     if has_census:
         n_pts = n_blk = 0
