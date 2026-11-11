@@ -1,0 +1,223 @@
+{
+ "matchId": "A059",
+ "reviewer": "R01",
+ "protocol": "v2.0",
+ "context": {
+  "cohort": "squad10（本局 9 个号进图）",
+  "map": "10_0（931x959，陆地 546152）",
+  "teams": 3,
+  "seededHumans": 70,
+  "aiBots": 442,
+  "ourTeam": "T1（22 人，其中本队 9 个）",
+  "teamSplit": false,
+  "peer": "B040（数据镜像里没有这个包，同局对抗无法核对）",
+  "squadBots": {"ryan_m": 18, "sora_w": 19, "noah88": 20, "zexos1": 21, "alex_k": 22, "leo_tx": 23, "talon5": 24, "kaito9": 25, "riku_x": 32},
+  "versionNote": "策略 Vb（`v27-team-c116-vb.js`）。整局重演与日志 290 个快照的 terr、bal 全部相等；把部署的策略源码原样跑在重演局面上（影子策略），290/290 个快照的 nb/neut/cmds/boats 全同，169/169 条 OPENING/DISPATCH 日志行逐字相同，所以每条决策的内容、代码行和它在录像里的落地拍都是确定的。",
+  "dataCaveats": [
+   "录像只记执行时生效的指令和目标已死改记成中立的进攻；到了引擎但被配额拒掉的捐款不在录像里。",
+   "results.csv 的 tick 是外层快照拍，比真实事件晚；阵亡与离场拍以录像和重演为准。"
+  ]
+ },
+ "outcome": {"result": "lost", "endTick": 5328, "label": "lost", "winnerTeam": "T3", "note": "T3 在 t=5760 占 99.75%。本队最后一个号 leo_tx 死于 5321。"},
+ "summary": [
+  "**开局是全场最好的，之后 9 个客户端一起掉队。** 540 拍本队人均 2014 格，高于同队其他人（1722）、T2（1974）、T3（1804）。从本地 500 拍起，指令从决策到落地的延迟由 7–14 拍涨到 44（500–599 拍的决策）、150（600–699）、339（800–899）、648（900–999）、824（1100–1199）。700–1499 拍全队发出 468 条指令，录像里只有 103 条。AI 地被分完的 900→1530 拍，本队人均 3520→4216，同队其他人到 7030，T2 8753，T3 10959。",
+  "**掉队不是策略算得慢。** 日志里每次决策耗时最大均值 1.17 毫秒；9 个号的本地拍按日志写入顺序齐步推进（极差不超过 180 拍）。指令成批落地：每批是一段连续决策的头 7–9 条，后面的没进录像。4 个客户端在 1421–1806 拍离场。",
+  "**追上进度时，过期的整批指令被当场执行成清仓。** zexos1 从本地 1500 拍起每 5 拍对 TURAN 下一条“预算内一次打出”的指令（单条占余额 29–39%），没有一条按时到。2107 拍落地的是它 1680–1720 拍的 9 条，在 614617 的余额上逐条执行，花掉 98.6%；2156 拍落地的是 2020–2060 拍打 VOID 的 9 条，把刚收到的 111735 捐款也花掉 97.7%。leo_tx（1918、2023 拍）和 alex_k（2086、2149 拍）同样。本队兵力 2070→2160 拍从 1691152 掉到 794271，zexos1 2507 拍阵亡。",
+  "**后排的兵送不进前线。** 100 条调度落地 24 条。正常延迟下到了引擎的 58 条里有 56 条超出受赠者的反喂养配额：2142 拍前一笔 6–17 万的成本是 116–305，上限只有 85–121；2185–2500 拍给被围的 zexos1 发了 32 条，撞在已用 113 的配额上，全部被拒。",
+  "**2600 拍之后执行恢复正常（延迟 7–18 拍），输在体量。** 3510 拍本队 4 个号占 6.38%，四周是余额 170–410 万的对手；sora_w 4320–4454 拍被四家同时吃掉，ryan_m 4719、alex_k 5222、leo_tx 5321 相继阵亡。"
+ ],
+ "timelineSpec": [
+  {"t": 180, "note": "DP 开局，每个租期一条指令，延迟 7–35 拍"},
+  {"t": 540, "note": "本队人均 2014 格，全场各组最高；这一轮开局指令延迟已到 20–53 拍"},
+  {"t": 630, "note": "人均 2676，T2 2926、T3 2840；延迟 37–99 拍"},
+  {"t": 900, "note": "人均 3520，同队其他人 4340；900–999 拍的决策延迟 272–766 拍"},
+  {"t": 1530, "note": "noah88、riku_x 已离场（1421、1435）；AI 只剩 4.75%"},
+  {"t": 1890, "note": "talon5、kaito9 离场（1694、1806）；5 个活号密度 79"},
+  {"t": 2070, "note": "zexos1 余额 59 万，对 TURAN 下的指令一条没到"},
+  {"t": 2160, "note": "三个号六批过期指令落地，本队兵力比 2070 拍少 896881"},
+  {"t": 2250, "note": "zexos1 打下 TURAN 的地到 14104 格，密度 6.4"},
+  {"t": 2520, "note": "zexos1 死于 2507；riku_x 壳死于 2473"},
+  {"t": 3060, "note": "talon5 壳 3100 死，noah88 壳 3268 死"},
+  {"t": 3510, "note": "本队占比峰值；sora_w 19292 格"},
+  {"t": 3960, "note": "T3 过半"},
+  {"t": 4410, "note": "sora_w 被四家围攻，剩 7856 格"},
+  {"t": 4500, "note": "sora_w 死于 4454"},
+  {"t": 4860, "note": "ryan_m 死于 4719"},
+  {"t": 5220, "note": "alex_k 死于 5222"},
+  {"t": 5310, "note": "leo_tx 死于 5321"}
+ ],
+ "phases": [
+  {
+   "name": "出生与开局", "t0": 0, "t1": 630,
+   "facts": [
+    "9 个号在东北角排成扇形（1 个 CORNER_APEX_BANK、3 个 INNER_ARC_BANK、5 个 OUTER_SHIELD_WALL），重解 254 次，相邻间距 49–59 像素。",
+    "DP 开局 69 条指令全部落地，前 5 个租期的 45 条延迟 7–35 拍；540 拍 18130 格，人均 2014，全场各组最高。",
+    "7 个号的 isNoFullSend 在 43–1519 拍被置真（noah88 43、talon5 456、leo_tx 463、zexos1 554、alex_k 568、ryan_m 758、sora_w 1519），置真时待检的那条指令都还没落地。"
+   ],
+   "problems": ["内圈号的中立地在 630 拍前后吃完：ryan_m 1050 拍起四周全是队友，noah88 1620、sora_w 1980、alex_k 2220。"]
+  },
+  {
+   "name": "掉队", "t0": 630, "t1": 1900,
+   "facts": [
+    "中立地吃完后各号每 5 拍对相邻 AI 下令。700–1499 拍发出 468 条，落地 103 条（22.0%）；1000–1499 拍发出 225 条，落地 10 条。",
+    "落地成批：zexos1 1141 拍落地的是本地 720–810 拍的 8 条（延迟 331–421），1666 拍是 875–915 拍的 9 条（751–791），2002 拍是 1155–1195 拍的 9 条（807–847）；后两批的目标 AI 已死，没有扣兵。sora_w、leo_tx 1596 拍各落地一批，延迟 611–676。",
+    "按批推算，游戏拍 720–875 这 155 拍客户端用了 280 拍的时间，875–1155 这 280 拍用了 525 拍：只有实时的 0.53–0.55 倍速。",
+    "4 个客户端离场：noah88@1421、riku_x@1435、talon5@1694、kaito9@1806，日志分别停在本地 900、900、1080、1170 拍。离场时合计 13209 格、1020714 兵。"
+   ],
+   "problems": [
+    "900→1530 拍本队活号领土 31684→31419（另有离场壳 6529）；T1 占比 +4.98 个点，T2 +15.81，T3 +19.61。",
+    "ryan_m 从本地 1525 拍起每 25 拍向 zexos1 发 pct=320 的调度，单笔成本 116–305，上限 85–121。"
+   ]
+  },
+  {
+   "name": "过期指令清仓", "t0": 1900, "t1": 2520,
+   "facts": [
+    "leo_tx 1918 拍落地 1500–1525 拍的 6 条（延迟 393–418），420065→31229；2023 拍 9 条 pct=212，42238→4532。",
+    "alex_k 2086 拍落地 1715–1750 拍的 8 条（延迟 336–371），253900→29432；2149 拍 7 条，34396→1048。",
+    "zexos1 2107 拍落地 1680–1720 拍的 9 条：决策时每条想出 124210–132825 兵（当时余额 333837–366613），执行时在 614617 上依次扣掉 229880、143900、89372、56206、35349、22992、14168、8730、5380。2142 拍收到 sora_w 的 111735，2156 拍落地 2020–2060 拍打 VOID 的 9 条，122192→2827。",
+    "zexos1 从 TURAN 手里拿下 9379 格，2280 拍 14104 格、密度 6.4；VOID（405781 兵）和 Nani（553685 兵）2220 拍起进攻，2507 拍阵亡。"
+   ],
+   "problems": [
+    "三个号在 240 拍内密度都被打到 0.3–0.6，对面目标的密度是 19–23。",
+    "2185–2500 拍 sora_w、ryan_m、alex_k 给 zexos1 发了 32 条调度（名义 63628–188731），zexos1 的配额已被 2142、2184 两笔用掉 113，上限 121–153，全部被拒。"
+   ]
+  },
+  {
+   "name": "残局", "t0": 2520, "t1": 5328,
+   "facts": [
+    "延迟回到 7–18 拍。sora_w 2590 拍起用 12% 脉冲打 VOID（34 条全部落地），拿下 12111 格，3480 拍到 19292 格；ryan_m、alex_k 被围在内陆，给 sora_w 送了 16 笔，到账 1121048。",
+    "3990 拍 sora_w（15651 格、1512915 兵）四周：Nani 4079890、Soft power 3259831、boi 2320982、VOID 1692172。4320–4454 拍被四家吃掉 18134 格。",
+    "leo_tx 4277 拍给 sora_w 212711（税 68755），177 拍后 sora_w 死；5124 拍 leo_tx 给 alex_k 290964（税 96988），5152 拍 alex_k 回给 leo_tx 97674（税 28675），alex_k 5222 死。"
+   ],
+   "problems": ["T1 3960 拍只剩 9 人 10.53%，T3 14 人 54.57%。"]
+  }
+ ],
+ "turningPoints": [
+  {
+   "t0": 630, "t1": 1530, "shareBefore": 4.41, "shareAfter": 5.75,
+   "what": "AI 地被分完的 900 拍里，本队的指令晚到 150–850 拍或根本没进录像，人均领土从全场最高掉到不足对手的一半；T1 从三队接近（10.2/12.3/10.4）变成明显最小（21.1/35.3/38.1）。",
+   "evidence": [
+    "resim_report percap：540 拍本队人均 2014（同队其他人 1722、T2 1974、T3 1804）；900 拍 3520 对 4340/4619/5056；1530 拍 4216 对 7030/8753/10959",
+    "shadow_report lagcurve（按决策拍，延迟中位）：0–499 拍 7–14；500–599 拍 44；600–699 拍 150；700–799 拍 253；800–899 拍 339；900–999 拍 648；1100–1199 拍 824",
+    "同表：700–1499 拍发出 468 条、落地 103 条；1000–1499 拍发出 225 条、落地 10 条",
+    "shadow_report chunks：zexos1 1141←720–810、1666←875–915、2002←1155–1195；sora_w 1162←780–830、1596←920–985；leo_tx 1169←815–865、1596←930–970",
+    "tick_cost：策略每次决策耗时均值最大 1.17 毫秒、单次最大 13.1 毫秒；各号本地拍极差最大 180 拍",
+    "录像 leave 指令：noah88 1421、riku_x 1435、talon5 1694、kaito9 1806；日志最后一行本地拍 900/900/1080/1170"
+   ],
+   "priorDecisions": [
+    {"t": 0, "bot": "全体", "what": "角落扇形阵，间距 49–59；内圈号的中立地 630 拍前后吃完，之后只能靠打 AI 扩张", "codePath": "spawn-coordinator-c116-vb.mjs solve() L1074–1201"},
+    {"t": 700, "bot": "全体", "what": "每 5 拍对相邻 AI 下一条指令；指令不带拍号，也不核对上一条有没有生效", "codePath": "v27-team-c116-vb.js General.act L792–796 → Strategy.send L479–487"}
+   ],
+   "statementType": "observed"
+  },
+  {
+   "t0": 1918, "t1": 2507, "shareBefore": 5.05, "shareAfter": 3.56,
+   "what": "三个前线号各有两批过期指令在同一个服务器拍落地，每批把当时余额花掉 88–99%；zexos1（当时本队最大的号）400 拍后阵亡。",
+   "evidence": [
+    "shadow_report bursts：zexos1 2107 拍 9 条←决策 1680–1720，想出的兵合计 1145125，执行前余额 614617，实扣 605977（98.6%）；2156 拍 9 条←2020–2060，122192 实扣 119365（97.7%）",
+    "同表：leo_tx 1918 拍 6 条←1500–1525，420065 实扣 388836（92.6%）；2023 拍 9 条 42238 实扣 37706；alex_k 2086 拍 8 条←1715–1750，253900 实扣 224468（88.4%）；2149 拍 7 条 34396 实扣 30765",
+    "shadow --probe zexos1:1500:1500：offers 第一名 TURAN c=30.39、need=213681、pulseMode=false；winRatio=3，对手密度中位 13.62，safeAt=89302；当拍下令 pct=298（66748 兵，余额 228598）",
+    "resim_report timeline：本队兵力 2070 拍 1691152，2160 拍 794271",
+    "resim_report front zexos1：2280 拍 14104 格、90667 兵，邻居 VOID 405781、Nani 553685；pairs：被 VOID 拿走 8168 格、Nani 4265 格"
+   ],
+   "priorDecisions": [
+    {"t": 1500, "bot": "zexos1 leo_tx alex_k", "what": "对还没交战的人类邻居不走 12% 脉冲，把整笔预算一条打出（单条 21–39% 余额）", "codePath": "v27-team-c116-vb.js Policy.offers L5291–5294（pulseMode=false）→ Policy.buyLand L5611–5616"},
+    {"t": 1505, "bot": "zexos1 leo_tx alex_k", "what": "上一条没有生效，下一个周期按没扣兵的余额再下同一条；zexos1 1500–2105 拍对 TURAN 下了 68 条、对 VOID 54 条", "codePath": "v27-team-c116-vb.js Strategy.send L479–487（没有在途记录）；Policy.send L3876 的 pendingQuotaCheck 6 拍后作废（L3823）"},
+    {"t": 2020, "bot": "zexos1", "what": "本地余额还是 558371 时把目标换成 VOID（c=47.94，TURAN 60.39）；这批 2156 拍落地时余额只有 122192", "codePath": "v27-team-c116-vb.js Policy.buyLand L5356–5359、L5616"}
+   ],
+   "statementType": "observed"
+  },
+  {
+   "t0": 4320, "t1": 4454, "shareBefore": 6.03, "shareAfter": 3.25,
+   "what": "sora_w 被 Nani、boi、VOID、Soft power 同时进攻，134 拍内 13402→0。",
+   "evidence": [
+    "resim_report front sora_w：3990 拍 boi 422984 兵压上；4200 拍邻居 Nani 3896684、boi 2320982、VOID 1957557，自己 1055984",
+    "pairs：sora_w 被 Nani 拿 6408、boi 6220、VOID 3648、Soft power 1858",
+    "events：sora_w 4454 死，死时余额 159301；当拍在攻的有 VOID 265026、Soft power 249375、Nani 139106、boi 92632",
+    "timeline：T1 3960 拍 9 人 10.53%，4500 拍 4 人 4.71%"
+   ],
+   "priorDecisions": [
+    {"t": 2590, "bot": "sora_w", "what": "向 VOID 推进到 19292 格，接触线从 139 增到 387", "codePath": "v27-team-c116-vb.js Policy.buyLand L5607（12% 脉冲）"},
+    {"t": 4260, "bot": "leo_tx", "what": "给被围的 sora_w 送 212711", "codePath": "v27-team-c116-vb.js Policy.tryDonateToTeammate L4508"}
+   ],
+   "statementType": "observed"
+  }
+ ],
+ "deaths": [
+  {"bot": "noah88", "event": "left→壳被吃", "t": 1421, "cause": "日志停在本地 900 拍，录像 1421 拍记离场（3127 格、124229 兵）；最后落地的一批是 1043 拍，内容是本地 715–760 拍的决策。壳 1631 拍把 124158 自动捐给 ChainsawMan，3268 拍被 VOID 吃掉 3420 格。", "killer": "Пустота [VOID]（T2）", "statementType": "observed"},
+  {"bot": "riku_x", "event": "left→壳被吃", "t": 1435, "cause": "日志停在本地 900 拍，1435 拍离场（2637 格、170466 兵）；本地 900 拍之后发出的 18 条指令没有一条落地。壳 2473 拍死，Soft power 拿 2705 格、VOID 398 格。", "killer": "Soft power（T3）", "statementType": "observed"},
+  {"bot": "talon5", "event": "left→壳被吃", "t": 1694, "cause": "日志停在本地 1080 拍，1694 拍离场（3414 格、356885 兵）；1120 拍落地的 9 条是 665–705 拍的决策，目标已死，没有扣兵。壳 3100 拍死，Soft power 3999 格、VOID 1086 格。", "killer": "Soft power（T3）", "statementType": "observed"},
+  {"bot": "kaito9", "event": "left→壳被吃", "t": 1806, "cause": "日志停在本地 1170 拍，1806 拍离场（4031 格、369134 兵）；最后一条落地在 1218 拍，延迟 418。壳 2619 拍死，VOID 4643 格。", "killer": "Пустота [VOID]（T2）", "statementType": "observed"},
+  {"bot": "zexos1", "event": "died", "t": 2507, "cause": "2107、2156 拍两批过期指令把余额打到 2827；2220 拍起 VOID（405781）和 Nani（553685）进攻，丢 8168+4265 格。期间队友发来的 32 条调度全部超配额。", "killer": "Пустота [VOID]、[OG] Nani（T2）", "statementType": "observed"},
+  {"bot": "sora_w", "event": "died", "t": 4454, "cause": "四家同时进攻（Nani 6408 格、boi 6220、VOID 3648、Soft power 1858），对手余额是自己的 1.3–3.7 倍。", "killer": "[OG] Nani、[og] boi（T2）", "statementType": "observed"},
+  {"bot": "ryan_m", "event": "died", "t": 4719, "cause": "1050 拍起被队友围在内陆当捐款号；sora_w 死后暴露，boi 用 90776 兵拿走 3151 格。", "killer": "[og] boi（T2）", "statementType": "observed"},
+  {"bot": "alex_k", "event": "died", "t": 5222, "cause": "2086、2149 拍两批过期指令打空后 2220 拍起被围；5124 拍收 leo_tx 290964、5152 拍又送回 97674；Soft power 用 107477 兵拿走 2948 格。", "killer": "Soft power（T3）", "statementType": "observed"},
+  {"bot": "leo_tx", "event": "died", "t": 5321, "cause": "T1 最后一个号；Soft power 452363 兵压上，丢 14308 格。", "killer": "Soft power（T3）", "statementType": "observed"}
+ ],
+ "reconcile": [
+  "28 次 DROP30 全部对上。攻击型：leo_tx 1890–1980（405916→33819）是 1918 拍落地的 6 条过期指令，1980–2070（→4776）是 2023 拍的 9 条；alex_k 2070–2160（251138→1070）是 2086 拍 8 条加 2149 拍 7 条；zexos1 2070–2160（590462→2860）是 2107、2156 拍各 9 条。",
+  "捐款型：ryan_m 2160–2250（450927→194588）= 2184 拍两笔到账 142275+88783 加税 28366+17701；其余 ryan_m、alex_k 的 12 次都是 1–2 笔到账调度。",
+  "挨打型：sora_w 4320–4410（893422→451351）、ryan_m 4590–4680、alex_k 5130–5220、leo_tx 5220–5310 都有对手进攻在场。",
+  "调度 100 条：落地 24 条，到账 2111200，税 493352（到账额的 23.4%）。没落地的 76 条：18 条是积压期间发出的，是被通道丢掉还是到了引擎被拒分不出来（按决策拍的状态全部超配额）；58 条在正常延迟下到了引擎，其中 56 条超配额，2 条按决策拍状态可以通过但录像里没有。",
+  "配额算例：t=1525 ryan_m→zexos1 名义 62292，成本 2+floor(100*62292/(30*1821))=116，上限 85。t=2215 alex_k→zexos1 名义 68659，成本 39，已用 113，上限 129。ryan_m 对 sora_w 的同一条调度 3050–3200 拍连拒 7 次（成本 36–43，已用 191，上限 193–209），3213 拍换公式那一拍执行成功。",
+  "离场壳自动捐款（不进录像）：13 笔 493071，其中 7 笔 464693 给了 T1 的非本队成员，6 笔 28378 给本队。队里 Nodik 等人给本队 9 笔 pct=60–62 的捐款，到账 571626，对方付税 594346。"
+ ],
+ "decisions": [
+  {"id": "D1", "t": 0, "bot": "全体", "what": "东北角扇形阵，相邻 49–59 像素", "codePath": "spawn-coordinator-c116-vb.mjs solve() L1074–1201", "branch": "无真 boss 且 K>=6 的角落扇形分支", "verdict": "unclear", "patternId": "NEW-R01-SP01", "evidence": "match_facts spawn：间距 min/med/max=49/51/59，重解 254 次。540 拍人均 2014 是全场最高，说明密集阵没有拖慢吃中立；但 ryan_m 1050 拍起四周全是队友，此后本队的扩张全靠外圈号打 AI，而这一段正好掉队。", "statementType": "observed"},
+  {"id": "D2", "t": 65, "bot": "全体", "what": "DP 开局，每个租期一条指令，69 条全部落地（前 5 个租期延迟 7–35 拍）", "codePath": "v27-team-c116-vb.js V13.expandNeutral L2373–2378 → dpNeutral L2383–2406", "branch": "t<dpEnd(1500) 的 DP 中立扩张", "verdict": "good", "patternId": "NEW-R01-OP01", "evidence": "shadow_report paths：dpNeutral L2406 发出 69、落地 69；percap：540 拍人均 2014，同队其他人 1722、T2 1974、T3 1804。", "statementType": "observed"},
+  {"id": "D3", "t": 554, "bot": "zexos1 等 7 个号", "what": "isNoFullSend 被置真后不再复位", "codePath": "v27-team-c116-vb.js Policy.updateShadowQuota L3821–3834；Policy.send L3844–3862", "branch": "发令后 1–6 拍内余额下降就拿来算“实发”；实际扣的是更早一条指令的兵", "verdict": "error", "patternId": "NEW-R01-IO03", "evidence": "shadow_flags：zexos1 本地 550 拍发令想发 1037，554 拍检查时看到的是 525 拍那条在 553 拍落地扣掉的 781，于是置真；550 拍那条自己 581 拍才落地。7 个号在 43–1519 拍中招：5 个是更早一条指令恰好在窗口里落地，ryan_m、sora_w 是余额因别的原因少了 197、2155；7 次里待检的那条都还没落地（发令后 9–44 拍才到，或没到）。本局后果小：Policy.send 被自己的闸门拦下 18 次（alex_k 14 次，其中 1895–2000 拍打 Achaemenid 的 10 条）。把标志钉成假重跑影子：决策 1036 条变 1052 条，多出的就是这 18 条进攻（另少 2 条捐款）。", "statementType": "observed", "mdNote": true},
+  {"id": "D4", "t": 700, "bot": "全体", "what": "掉队期间照常每 5 拍下令：700–1499 拍 468 条，落地 103 条，落地的晚 91–847 拍", "codePath": "v27-team-c116-vb.js General.act L792–796 → Strategy.send L479–487", "branch": "g.attack 本地返回 ok 就 cmds++；指令不带拍号，按到达服务器的回合执行", "verdict": "error", "patternId": "NEW-R01-IO01", "evidence": "shadow_report lagcurve、chunks。落地的批次里，目标 AI 已死的有 talon5 1120 拍 9 条、leo_tx 1169 和 1596 拍各 9 条、zexos1 1666 和 2002 拍各 9 条、alex_k 1946 拍 9 条、sora_w 2114 拍 8 条，都没有扣兵也没有拿地。", "statementType": "observed", "mdNote": true},
+  {"id": "D5", "t": 1500, "bot": "zexos1", "what": "选 TURAN（13642 格、108402 兵，密度 7.9，自己 40.4）开战，第一条 66748 兵（余额的 29%）", "codePath": "v27-team-c116-vb.js Policy.buyLand L5356–5359、L5422–5427、L5611–5616", "branch": "c=30.39 < worth=1.5*40.4；budget=(worth*L-fee*m-c*L)/(1+m)；pulseMode=false 所以整笔预算一条打出", "verdict": "good", "patternId": "NEW-R01-AT04", "evidence": "shadow --probe zexos1:1500:1500。目标和量都合理；问题在它没有按时执行（见 D6）。2107 拍落地后确实从 TURAN 手里拿下 9379 格。", "statementType": "observed"},
+  {"id": "D6", "t": 1505, "bot": "zexos1 leo_tx alex_k", "what": "上一条没生效，就每 5 拍按原余额再下同一条；过期的整批落地时逐条按当时余额重新计价", "codePath": "v27-team-c116-vb.js Strategy.send L479–487；Policy.send L3876、L3823", "branch": "pct=ceil(troops*1024/bal)-1，发出去的是百分比；没有在途指令记账", "verdict": "error", "patternId": "NEW-R01-IO02", "evidence": "shadow_report bursts：六批的执行前余额→实扣：420065→388836、42238→37706、253900→224468、34396→30765、614617→605977、122192→119365。zexos1 2107 拍那批，决策时单条想出 124210–132825 兵，实际第一条就扣了 229880。正常延迟下同样会重复：shadow_report repeat 里 9 组连发 2–4 条的，实际花掉的比例是意图的 2.93 倍（中位）。", "statementType": "observed", "mdNote": true},
+  {"id": "D7", "t": 2020, "bot": "zexos1", "what": "本地余额 558371 时把目标换成 VOID；这 9 条 2156 拍落地，当时余额 122192，VOID 21831 格、411961 兵", "codePath": "v27-team-c116-vb.js Policy.buyLand L5356–5359、L5616", "branch": "offers 排序 VOID c=47.94 在 TURAN 60.39 之前", "verdict": "error", "patternId": "NEW-R01-IO02", "evidence": "shadow_report bursts：2156 拍 9 条←决策 2020–2060，延迟 96–136，实扣 119365（97.7%），其中 111735 是 14 拍前 sora_w 刚捐来的。VOID 2220 拍起反攻。", "statementType": "observed"},
+  {"id": "D8", "t": 1525, "bot": "ryan_m", "what": "被围的后排每 25 拍向 zexos1 发 pct=320 的调度，名义 62292–139324", "codePath": "v27-team-c116-vb.js Policy.tryDonateToTeammate L4325–4331（闸门）、L4475–4508", "branch": "boxedIn 的 offense_dispatch，idealPct=320；不看受赠者的配额", "verdict": "error", "patternId": "NEW-R01-DN05", "evidence": "q.py dispatch_audit：2142 拍前 30 条，名义 62292–165722，成本 116–305，上限 85–121，一笔最多放得进 45889–65555；shadow_report donate：其中 18 条发在积压期间，去向分不出来。ryan_m 这段时间余额 198714→452415，密度 60→136。", "statementType": "observed", "mdNote": true},
+  {"id": "D9", "t": 2185, "bot": "sora_w ryan_m alex_k", "what": "zexos1 被两家进攻的 315 拍里连发 32 条调度（名义 63628–188731），全部超配额", "codePath": "v27-team-c116-vb.js Policy.tryDonateToTeammate L4463–4508", "branch": "defense_dispatch idealPct=380 / offense_dispatch 320；pct<180 才放弃", "verdict": "error", "patternId": "NEW-R01-DN05", "evidence": "shadow_report donate --verbose：2185–2500 拍给 zexos1 的 32 条（sora_w 10、ryan_m 12、alex_k 10），成本 36–105，已用 113，上限 121–153；配额余量只放得进 12746–71018。zexos1 2507 拍死。", "statementType": "observed"},
+  {"id": "D10", "t": 2590, "bot": "ryan_m alex_k", "what": "被围的两个后排给唯一能推进的 sora_w 送 16 笔", "codePath": "v27-team-c116-vb.js Policy.tryDonateToTeammate L4475–4508", "branch": "boxedIn 的 offense/defense_dispatch", "verdict": "good", "patternId": "NEW-R01-DN01", "evidence": "resim_report transfers --list：2604–4361 拍 ryan_m、alex_k→sora_w 16 笔，到账 1121048。", "statementType": "observed"},
+  {"id": "D11", "t": 2590, "bot": "sora_w", "what": "用后排送来的兵以 12% 脉冲打 VOID，拿下 12111 格", "codePath": "v27-team-c116-vb.js Policy.buyLand L5607", "branch": "o.pulseMode 为真的脉冲块", "verdict": "good", "patternId": "NEW-R01-AT01", "evidence": "shadow_report paths：L5607 发出 34、落地 34；front sora_w：2520 拍 7860 格，3480 拍 19292 格；本队占比 3.56%→6.38%。", "statementType": "observed"},
+  {"id": "D12", "t": 4260, "bot": "leo_tx", "what": "sora_w 被四家围攻时送 212711（税 68755）", "codePath": "v27-team-c116-vb.js Policy.tryDonateToTeammate L4508", "branch": "defense_dispatch；isDoomedPocket 要求 inHumanAtk>1.65*Bp，没触发", "verdict": "error", "patternId": "NEW-R01-DN04", "evidence": "sora_w 当时邻居 Nani 3896684、boi 2320982、VOID 1957557；177 拍后阵亡，死时余额 159301。", "statementType": "observed"},
+  {"id": "D13", "t": 5110, "bot": "leo_tx alex_k", "what": "28 拍内互相捐款：leo_tx→alex_k 290964，alex_k→leo_tx 97674", "codePath": "v27-team-c116-vb.js Policy.tryDonateToTeammate L4508", "branch": "t>=4284 的 defense_dispatch 与 yield_opt_dispatch", "verdict": "error", "patternId": "NEW-R01-DN07", "evidence": "shadow_match：5124 拍扣 387952（税 96988），5152 拍扣 126349（税 28675）；alex_k 5222 死，leo_tx 5321 死。", "statementType": "observed"}
+ ],
+ "newPatterns": [
+  {"proposedId": "NEW-R01-IO02", "prefix": "IO", "name": "过期指令成批执行成清仓", "definition": "同一个号在同一个服务器拍落地 >=3 条陆攻令，这些指令的决策拍比落地拍早 60 拍以上，合计花掉执行前余额的 60% 以上。", "detect": "shadow.mjs + shadow_report.py --section bursts（要决策拍）；只有录像时用 burst_audit.mjs（n>=3 且花掉 >=60%）。", "instances": [{"matchId": "A059", "t": 2107, "note": "zexos1 x9，614617 花掉 98.6%，决策拍 1680–1720"}, {"matchId": "A059", "t": 1918, "note": "leo_tx x6，420065 花掉 92.6%"}, {"matchId": "A059", "t": 2086, "note": "alex_k x8，253900 花掉 88.4%"}]},
+  {"proposedId": "NEW-R01-IO03", "prefix": "IO", "name": "isNoFullSend 被别的指令落地误置真", "definition": "置真那一拍，待检指令还没落地，余额下降来自更早的一条指令。", "detect": "shadow.mjs 输出的 shadow_flags.csv（ev=isNoFullSend）；后果用 shadow.mjs --pin-no-full 加 shadow_diff.py 数差异。", "instances": [{"matchId": "A059", "t": 554, "note": "7 个号中招；拦下 18 次 send"}]},
+  {"proposedId": "NEW-R01-DN05", "prefix": "DN", "name": "调度额超过受赠者的反喂养配额", "definition": "日志有调度行、录像无对应捐款，且重演到那一拍 used+cost>cap。", "detect": "dispatch_audit.mjs 的 would=quota 且 executed=0；shadow_report.py --section donate 区分是否到了引擎。", "instances": [{"matchId": "A059", "t": 2185, "note": "给 zexos1 的 32 条全拒"}, {"matchId": "A059", "t": 1525, "note": "2142 前单笔成本 116–257 对上限 85–121"}]},
+  {"proposedId": "NEW-R01-AT04", "prefix": "AT", "name": "开战首击按预算一次打出", "definition": "2400 拍前对还没交战的人类邻居，不走 12% 脉冲，单条 pct>=200。", "detect": "shadow_cmds.csv 里代码位置为 buyLand L5616 的陆攻。", "instances": [{"matchId": "A059", "t": 1500, "note": "zexos1→TURAN pct 298–396"}]},
+  {"proposedId": "NEW-R01-DN07", "prefix": "DN", "name": "两个号短时间内互相捐款", "definition": "甲给乙捐款后 100 拍内乙又给甲捐款。", "detect": "resim_transfers.csv 里 kind=cmd 的往返配对。", "instances": [{"matchId": "A059", "t": 5124, "note": "leo_tx↔alex_k，税 125663"}]}
+ ],
+ "lossArchetype": "never-grew",
+ "winnerNotes": "T3 赢。它在 900→1530 拍吃到的 AI 地最多（+19.6 个点），人均 10959 格是本队的 2.6 倍；4050 拍 bruh [off] 69987 格、4336401 兵，Player 89、Player 418、Soft power 各有 230–360 万兵。杀本队的主力是 T2 的 VOID（拿走本队 21363 格）和 T3 的 Soft power（25857 格）：Soft power 先后吃掉 riku_x、talon5 两个离场壳，最后收掉 alex_k 和 leo_tx。两队都是等本队的号余额见底或离场后才进攻：VOID 2220 拍打 zexos1 时自己 405781 对 90667。本队没有打错目标的问题，zexos1、leo_tx、alex_k 选的都是密度比自己低得多的邻居；问题是打出去的时间和量都不是决策时的样子。",
+ "wentWell": [
+  "DP 开局：540 拍人均领土全场最高",
+  "zexos1 本地 1500 拍的目标和首击量（密度 40 对 7.9，29% 余额）",
+  "2590 拍之后 ryan_m、alex_k 把兵送给唯一能推进的 sora_w，本队占比从 3.56% 回到 6.38%"
+ ],
+ "unknowns": [
+  "9 个客户端为什么在游戏拍 720–1155 只能以实时的 0.53–0.55 倍速推进：策略自身耗时已排除，是主机 CPU、引擎每拍耗时还是适配层，镜像里看不到。",
+  "4 个客户端为什么离场：日志停在本地 900–1170 拍，录像 1421–1806 拍记离场，没有对应的日志行。",
+  "积压期间发出的 18 条调度是被通道丢掉还是到了引擎被配额拒绝。",
+  "B040 的包不在镜像里，不知道同局的 squad20 在哪一队、是否与本队交手。"
+ ],
+ "mechanicsQuestions": [
+  "每个号在同一个服务器拍最多落地 9 条，而且每批正好是一段连续决策的头 7–9 条，后面的全丢。服务器是不是每回合每个玩家只收前 9 条？被拒的指令是否也占名额：sora_w 2114 拍那批录像里 8 条，按决策顺序第 9 条正是一条超配额的捐款。",
+  "每批第一条的决策拍等于上上次落地拍加 14–18（zexos1：875=861+14，1155=1141+14，1680=1666+14，2020=2002+18）。推断：积压时客户端每次只处理“上一批开始时已经收到的回合”，这一批的指令要等处理完才一起发出。",
+  "配额公式在 3213 拍切换的那一拍立刻放行：同一条 pct=320 的调度 3050–3200 拍连拒 7 次，3213 拍成功。",
+  "离场壳的自动捐款对象不限本队：本局 464693 给了 T1 的非本队成员。"
+ ],
+ "scripts": [
+  "scripts/resim_lib.mjs", "scripts/resim.mjs", "scripts/resim_report.py", "scripts/shadow.mjs", "scripts/shadow_report.py", "scripts/shadow_diff.py",
+  "scripts/tick_cost.py", "scripts/burst_audit.mjs", "scripts/dispatch_audit.mjs", "scripts/match_facts.py", "scripts/build_review.py"
+ ],
+ "repro": [
+  "node scripts/resim.mjs A059                      # 整局重演，290/290 快照一致",
+  "node scripts/shadow.mjs A059                     # 影子策略：290/290、169/169；写 out/A059/shadow_*.csv",
+  "python3 scripts/shadow_report.py A059 --section check,lagcurve,chunks,bursts,paths,repeat --win 100",
+  "python3 scripts/shadow_report.py A059 --section donate --verbose   # 先跑 dispatch_audit.mjs",
+  "node scripts/shadow.mjs A059 --bots zexos1 --probe zexos1:1500:1500 --to 1502 --tag pz",
+  "node scripts/shadow.mjs A059 --pin-no-full --tag nf0; python3 scripts/shadow_diff.py A059 nf0",
+  "python3 scripts/resim_report.py A059 --section meta,timeline,percap,bots,events,pairs,transfers --ticks 540,630,900,1530",
+  "python3 scripts/resim_report.py A059 --section front --bot zexos1 --t0 1500 --t1 2520",
+  "node scripts/burst_audit.mjs A059; node scripts/dispatch_audit.mjs A059; python3 scripts/tick_cost.py A059",
+  "python3 scripts/match_facts.py A059 --section card,results,spawn,drops,dispatch"
+ ],
+ "confidenceOverall": "high"
+}

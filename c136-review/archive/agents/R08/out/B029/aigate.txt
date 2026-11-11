@@ -1,0 +1,116 @@
+[GA] B029 1500 拍后打内置 AI 的门槛普查（影子按真值每 10 拍一次，到 t=3000；c110 Policy.buyLand L5363-5368（门槛在 L5367）：want = 1.25×吃光所需 + 3×接壤格数，x = min(可用兵, want)，x < minCmd 就跳过；minCmd = feeK×floor(12×余额/1024)，feeK=4，L521-523）
+     窗 | 号·点 | 接壤 AI 的 | 至少一个 AI 过门槛或已在打 | 全被挡 | 最便宜那个被挡的原因 | 中位：自己余额 / minCmd / AI 邻居合计 格·兵 / 吃光它们所需合计 / 单个最大 want | 最大 want < minCmd 的点 | 吃光所需合计 < minCmd 的点
+     1500~2400 | 1513 | 486 | 43 | 443 | safe:people:161 noOffer:103 minCmd(want):70 price:64 safe:sb:41 safe:sb(cap):4 | 98086 / 4596 / 686·0 / 1030 / 1344 | 333 | 387
+     2400~3300 | 994 | 160 | 0 | 160 | price:75 minCmd(want):41 safe:sb(cap):19 safe:sb:12 safe:people:7 minCmd(avail):6 | 195836 / 9178 / 1388·0 / 1712 / 2248 | 85 | 85
+[GB] 逐号（t≥1500 到普查结束）：号 | 号·点 | 接壤 AI 的 | 全被挡 | 原因 | 其中余额 > 100×领土（超软上限）的点：接壤 AI 的 / 全被挡
+     Erwin | 47 | 0 | 0 |  | 0 / 0
+     Anya | 151 | 134 | 134 | safe:people:65 price:29 safe:sb(cap):12 noOffer:11 minCmd(want):6 minCmd(avail):6 safe:sb:5 | 0 / 0
+     Interpol | 143 | 63 | 59 | minCmd(want):44 noOffer:12 safe:sb:3 | 3 / 3
+     Angkor | 149 | 0 | 0 |  | 0 / 0
+     Moldavia | 149 | 0 | 0 |  | 0 / 0
+     Scorpion | 148 | 33 | 23 | noOffer:19 minCmd(want):2 safe:sb:1 safe:people:1 | 0 / 0
+     Cumania | 145 | 13 | 13 | noOffer:13 | 0 / 0
+     Tomato | 151 | 111 | 110 | safe:people:71 price:26 safe:sb:12 safe:sb(cap):1 | 0 / 0
+     Conde | 143 | 11 | 11 | noOffer:8 safe:sb:3 | 0 / 0
+     Marlborough | 137 | 34 | 25 | safe:sb:10 noOffer:9 minCmd(want):6 | 0 / 0
+     Goku | 139 | 35 | 17 | noOffer:7 minCmd(want):6 safe:sb:4 | 0 / 0
+     Lelouch | 151 | 9 | 9 | noOffer:9 | 0 / 0
+     DioBrando | 150 | 128 | 128 | price:83 minCmd(want):43 noOffer:2 | 41 / 41
+     Senna | 149 | 0 | 0 |  | 0 / 0
+     SyntaxError | 146 | 5 | 4 | minCmd(want):4 | 0 / 0
+     Two Sicilies | 146 | 0 | 0 |  | 0 / 0
+     Khazar | 141 | 0 | 0 |  | 0 / 0
+     Iceland | 122 | 70 | 70 | safe:people:31 safe:sb:15 noOffer:13 safe:sb(cap):10 price:1 | 0 / 0
+[GC] t≥2250 落地的打 AI 的陆攻（真值）：拍 | 号 | 目标 | 实发兵 + 手续费 | 发令前余额 / 领土（密度）| 当时的 minCmd | 目标当时 地 / 兵 | 300 拍后目标 地 | 300 拍后自己 地
+     共 0 条
+[GD] 顶在上限上的拍数（真值每 10 拍一个点，t≥1500 到阵亡 / 录像结束）：号 | 点数×10 | 密度 ≥100 / ≥140 / ≥149 的拍数 | 密度 ≥100 的时候：被内置 AI 拿走的格数 / AI 实际耗兵 / 自己余额被打掉 | 同期自己从 AI 手里拿的格数 / 耗兵
+     Erwin | 570 | 100 / 0 / 0 | 0 / 0 / 0 | 0 / 0
+     Anya | 9740 | 2220 / 130 / 100 | 0 / 0 / 0 | 0 / 0
+     Interpol | 9660 | 160 / 0 / 0 | 0 / 0 / 0 | 0 / 0
+     Angkor | 9480 | 2960 / 0 / 0 | 0 / 0 / 0 | 0 / 0
+     Moldavia | 7570 | 2810 / 0 / 0 | 0 / 0 / 0 | 0 / 0
+     Scorpion | 8710 | 3720 / 1260 / 500 | 0 / 0 / 0 | 0 / 0
+     Cumania | 4520 | 520 / 0 / 0 | 0 / 0 / 0 | 0 / 0
+     Tomato | 4320 | 1190 / 100 / 10 | 0 / 0 / 0 | 0 / 0
+     Conde | 3790 | 580 / 10 / 10 | 0 / 0 / 0 | 0 / 0
+     Marlborough | 8350 | 2150 / 110 / 110 | 0 / 0 / 0 | 0 / 0
+     Goku | 10400 | 3300 / 630 / 100 | 0 / 0 / 0 | 0 / 0
+     Lelouch | 8320 | 1040 / 680 / 430 | 0 / 0 / 0 | 0 / 0
+     DioBrando | 1950 | 470 / 20 / 0 | 60 / 0 / 11494 | 0 / 0
+     Senna | 8650 | 3560 / 300 / 90 | 0 / 0 / 0 | 0 / 0
+     SyntaxError | 10400 | 4610 / 430 / 370 | 0 / 0 / 0 | 0 / 0
+     Two Sicilies | 10400 | 4220 / 1740 / 960 | 0 / 0 / 0 | 0 / 0
+     Khazar | 9150 | 1640 / 0 / 0 | 0 / 0 / 0 | 0 / 0
+     Iceland | 1240 | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0
+[GE] t≥2250 打空地的指令（真值）：号 | 条数（没生效的）| 实发兵合计 | 手续费合计 | 发令后 60 拍内从空地拿到的格数合计 | 每格连手续费 | 其中发令时密度 ≥100 的：条数 / 实发兵 / 手续费 / 拿到的格数
+     Erwin | 0
+     Anya | 2（0）| 25508 | 6377 | 297 | 23.5 | 0 / 0 / 0 / 0
+     Interpol | 3（0）| 16352 | 4087 | 9 | 456.1 | 0 / 0 / 0 / 0
+     Angkor | 9（5）| 217587 | 54396 | 1717 | 33.7 | 1 / 60839 / 15209 / 541
+     Moldavia | 7（0）| 349135 | 87281 | 959 | 93.0 | 3 / 147600 / 36899 / 247
+     Scorpion | 6（0）| 97954 | 22714 | 470 | 50.3 | 1 / 19344 / 4298 / 54
+     Cumania | 0
+     Tomato | 0
+     Conde | 1（0）| 12694 | 3173 | 635 | 7.0 | 0 / 0 / 0 / 0
+     Marlborough | 1（0）| 41602 | 6088 | 1413 | 6.3 | 0 / 0 / 0 / 0
+     Goku | 19（16）| 177692 | 44422 | 142 | 314.8 | 2 / 146758 / 36689 / 140
+     Lelouch | 0
+     DioBrando | 0
+     Senna | 2（0）| 116406 | 20786 | 487 | 44.7 | 1 / 76404 / 10786 / 487
+     SyntaxError | 18（10）| 685806 | 160242 | 2121 | 77.6 | 12 / 194690 / 48671 / 762
+     Two Sicilies | 16（8）| 1326088 | 65997 | 862 | 78.6 | 12 / 893329 / 52951 / 862
+     Khazar | 5（2）| 17635 | 4405 | 381 | 13.6 | 0 / 0 / 0 / 0
+     Iceland | 0
+     注：打空地每格耗 2 兵，多发的兵打完退回；手续费（余额的 12/1024）不退。「每格连手续费」=（2×格数 + 手续费）÷ 格数。
+[GF] 录像结束（t=11888）以后只有日志的尾段：号 | 快照数 | 密度 ≥149 的快照数 | 指令数 / 船数（尾段内新增）| 领土最低@拍 | 单窗（90 拍）领土涨 ≥10% 的时刻
+[GG] 编队号互打的陆攻（真值）：拍 | 攻→守 | 实发兵 + 手续费 | 攻方 余额 / 领土（密度）| 守方 地 / 兵（密度）| 同一拍攻方的 AI 邻居：个数 / 合计格数 / 吃光所需合计（取影子普查里最近的一个点）
+     合计 Lelouch→SyntaxError：684 格，攻方耗兵 131322（192.0/格），守方余额被打掉 64913
+     合计 Interpol→Goku：696 格，攻方耗兵 78670（113.0/格），守方余额被打掉 38581
+     合计 Goku→Interpol：1262 格，攻方耗兵 78596（62.3/格），守方余额被打掉 37926
+     合计 Anya→Tomato：608 格，攻方耗兵 50107（82.4/格），守方余额被打掉 24416
+     合计 Goku→Marlborough：148 格，攻方耗兵 44896（303.4/格），守方余额被打掉 22274
+     合计 Tomato→Anya：128 格，攻方耗兵 42017（328.3/格），守方余额被打掉 20864
+     合计 SyntaxError→Marlborough：469 格，攻方耗兵 25238（53.8/格），守方余额被打掉 12102
+     合计 Two Sicilies→Khazar：1145 格，攻方耗兵 23336（20.4/格），守方余额被打掉 10523
+     合计 Two Sicilies→Senna：54 格，攻方耗兵 22733（421.0/格），守方余额被打掉 11303
+     合计 Interpol→Marlborough：30 格，攻方耗兵 9435（314.5/格），守方余额被打掉 4675
+     合计 Interpol→SyntaxError：14 格，攻方耗兵 7976（569.7/格），守方余额被打掉 3964
+     合计 Angkor→Scorpion：43 格，攻方耗兵 3222（74.9/格），守方余额被打掉 1554
+     合计 Two Sicilies→Scorpion：5 格，攻方耗兵 1564（312.8/格），守方余额被打掉 774
+     合计 Angkor→Erwin：134 格，攻方耗兵 916（6.8/格），守方余额被打掉 324
+     合计 Marlborough→Goku：2 格，攻方耗兵 595（297.5/格），守方余额被打掉 292
+     合计 Khazar→Scorpion：1 格，攻方耗兵 475（475.0/格），守方余额被打掉 236
+     合计 Senna→Scorpion：1 格，攻方耗兵 460（460.0/格），守方余额被打掉 227
+     合计 Scorpion→Khazar：9 格，攻方耗兵 253（28.1/格），守方余额被打掉 115
+     合计 Marlborough→SyntaxError：1 格，攻方耗兵 159（159.0/格），守方余额被打掉 78
+     互打合计：5434 格，攻方耗兵 521970，守方余额被打掉 255141
+[GI] 和内置 AI 的来回账，按时段（真值逐对战损账）：时段 | 编队被 AI 拿走的格数 / AI 实际耗兵 / 编队余额被打掉（每格）| 编队从 AI 手里拿的格数 / 耗兵（每格）| 编队从空地拿的格数 | 编队互打的格数 / 攻方耗兵 | 时段末：编队领土 / AI 领土 / AI 总兵 / 活着的 AI 数
+     1500~2790 | 1078 / 15549 / 60794（56.4）| 15557 / 65611（4.2）| 8425 | 2789 / 202069 | 107265 / 94 / 0 / 1
+     2790~4010 | 87 / 0 / 14338（164.8）| 0 / 0（0.0）| 4226 | 126 / 41939 | 108128 / 0 / 0 / 0
+     4010~5670 | 0 / 0 / 0（0.0）| 0 / 0（0.0）| 250 | 1 / 460 | 98748 / 0 / 0 / 0
+     5670~9700 | 0 / 0 / 0（0.0）| 0 / 0（0.0）| 10282 | 931 / 210678 | 71013 / 0 / 0 / 0
+     9700~9840 | 0 / 0 / 0（0.0）| 0 / 0（0.0）| 18 | 0 / 0 | 59001 / 0 / 0 / 0
+     9840~11888 | 0 / 0 / 0（0.0）| 0 / 0（0.0）| 5078 | 1166 / 32884 | 42436 / 0 / 0 / 0
+[GJ] 扫尾段（只看日志）：连续的 HL-TICK 快照 nb=0 且领土 ≥80% 陆地算一段。HL-SLOW-TICK 是驱动层记的『这一拍策略耗时超标』，在这些段里每一条都对得上一次找船的水路搜索（base boatOut L1037 的在途条数检查通过之后才搜），所以『没有慢拍的空档』= 那段时间一次水路搜索都没做
+[GK] 时间线（真值）：拍 | 各编队号 格（密度）| 编队合计 格 / 占陆地% / 兵 | 内置 AI：活着的个数 / 合计格（占陆地%）/ 合计兵 / 其中 0 兵的个数 / 吃光所需合计（1.78×兵 + 1.5×格）
+     630 | Marlborough 3104（2.5） Tomato 1898（3.3） Angkor 2260（1.8） Senna 2820（2.2） Two Sicilies 1816（3.0） Interpol 2533（2.6） Moldavia 2410（2.4） Lelouch 2818（1.3） Goku 3496（2.2） Khazar 2904（1.8） Cumania 2936（2.2） DioBrando 3069（1.3） SyntaxError 3112（2.1） Scorpion 2500（3.0） Iceland 1966（3.4） Anya 2539（2.2） Erwin 2944（2.3） Conde 2211（2.8） | 47336 / 9.15% / 108778 | 434 / 212006（41.0%）/ 201722 / 0 / 677074（AI 快照 t=630）
+     900 | Marlborough 5328（3.0） Tomato 2493（6.0） Angkor 2394（10.2） Senna 2840（9.9） Two Sicilies 2084（14.8） Interpol 3206（8.6） Moldavia 4344（4.0） Lelouch 4738（5.2） Goku 5248（5.8） Khazar 4234（5.8） Cumania 4550（5.5） DioBrando 4808（4.7） SyntaxError 4912（3.8） Scorpion 3908（4.4） Iceland 2045（14.7） Anya 2524（9.8） Erwin 3370（9.1） Conde 2886（10.4） | 65912 / 12.74% / 438100 | 305 / 225672（43.6%）/ 286812 / 7 / 849033（AI 快照 t=900）
+     1440 | Marlborough 6012（29.1） Tomato 2853（26.2） Angkor 3128（50.6） Senna 3324（47.8） Two Sicilies 2346（6.6） Interpol 3069（50.7） Moldavia 5726（21.3） Lelouch 6113（24.8） Goku 5986（34.9） Khazar 4672（36.9） Cumania 5903（26.7） DioBrando 7115（20.5） SyntaxError 7037（23.0） Scorpion 4805（26.9） Iceland 2483（1.7） Anya 3323（26.8） Erwin 3205（61.6） Conde 4915（30.0） | 82015 / 15.85% / 2426564 | 31 / 39605（7.7%）/ 84593 / 7 / 209983（AI 快照 t=1440）
+     1980 | Marlborough 8977（13.8） Tomato 3240（9.7） Angkor 3128（39.9） Senna 4581（17.5） Two Sicilies 2019（11.1） Interpol 2701（15.2） Moldavia 7962（28.0） Lelouch 8224（41.0） Goku 10084（24.7） Khazar 8262（1.8） Cumania 8332（11.9） DioBrando 7107（56.5） SyntaxError 10272（7.1） Scorpion 6534（15.2） Iceland 4425（13.9） Anya 3350（6.9） Erwin 4805（0.9） Conde 7259（18.3） | 111262 / 21.51% / 2142253 | 6 / 8613（1.7%）/ 1314 / 3 / 15258（AI 快照 t=1980）
+     2520 | Marlborough 8678（69.0） Tomato 3215（25.5） Angkor 6124（33.5） Senna 4695（37.2） Two Sicilies 1478（81.0） Interpol 3234（26.6） Moldavia 8716（49.5） Lelouch 8224（65.6） Goku 10737（50.3） Khazar 6374（23.0） Cumania 10981（24.1） DioBrando 7063（93.4） SyntaxError 10603（43.3） Scorpion 5613（27.5） Iceland 3175（23.6） Anya 2539（60.6） Erwin 0（0.0） Conde 7259（42.9） | 108708 / 21.01% / 5002564 | 2 / 1148（0.2%）/ 0 / 2 / 1722（AI 快照 t=2520）
+     2730 | Marlborough 8694（72.3） Tomato 3046（33.2） Angkor 6124（44.9） Senna 4695（49.4） Two Sicilies 1478（103.4） Interpol 3243（32.3） Moldavia 8716（65.9） Lelouch 8224（49.9） Goku 10743（62.9） Khazar 6374（66.7） Cumania 11557（19.3） DioBrando 7036（117.7） SyntaxError 10604（54.5） Scorpion 5613（37.1） Iceland 1146（38.0） Anya 2493（76.1） Erwin 0（0.0） Conde 7848（40.4） | 107634 / 20.81% / 5966501 | 1 / 79（0.0%）/ 0 / 1 / 118（AI 快照 t=2730）
+     2790 | Marlborough 8697（75.2） Tomato 3046（35.5） Angkor 6124（48.2） Senna 4695（52.8） Two Sicilies 1478（109.5） Interpol 3244（33.3） Moldavia 8716（70.7） Lelouch 8224（53.6） Goku 10742（65.5） Khazar 6374（71.5） Cumania 11749（20.4） DioBrando 7021（122.6） SyntaxError 10604（58.6） Scorpion 5613（39.7） Iceland 0（0.0） Anya 2445（77.7） Erwin 0（0.0） Conde 8493（27.7） | 107265 / 20.73% / 6161491 | 1 / 94（0.0%）/ 0 / 1 / 141（AI 快照 t=2790）
+     3300 | Marlborough 8697（75.3） Tomato 2721（91.6） Angkor 6124（80.7） Senna 4695（91.3） Two Sicilies 2382（50.1） Interpol 3244（65.0） Moldavia 9219（81.8） Lelouch 8224（61.8） Goku 10745（86.8） Khazar 6374（114.4） Cumania 12893（71.4） DioBrando 5859（76.7） SyntaxError 10604（102.8） Scorpion 5613（79.3） Iceland 0（0.0） Anya 2245（117.8） Erwin 0（0.0） Conde 9081（72.6） | 108720 / 21.02% / 8911435 | 0 / 0（0.0%）/ 0 / 0 / 0（AI 快照 t=3300）
+     3600 | Marlborough 8697（64.4） Tomato 2440（100.9） Angkor 6438（112.9） Senna 4695（127.5） Two Sicilies 2435（54.6） Interpol 3244（71.6） Moldavia 9433（115.7） Lelouch 8224（69.9） Goku 10745（122.3） Khazar 6374（119.6） Cumania 13138（88.6） DioBrando 0（0.0） SyntaxError 10604（116.5） Scorpion 6079（100.4） Iceland 0（0.0） Anya 2974（86.0） Erwin 0（0.0） Conde 9081（93.2） | 104601 / 20.22% / 10351368 | 0 / 0（0.0%）/ 0 / 0 / 0（AI 快照 t=3600）
+     3990 | Marlborough 8697（61.2） Tomato 2516（112.9） Angkor 7169（98.0） Senna 5124（127.2） Two Sicilies 2651（76.3） Interpol 3244（66.0） Moldavia 10871（99.1） Lelouch 8224（84.3） Goku 10745（120.5） Khazar 6807（101.0） Cumania 13609（66.2） DioBrando 0（0.0） SyntaxError 10619（124.5） Scorpion 4387（118.9） Iceland 0（0.0） Anya 3307（84.9） Erwin 0（0.0） Conde 10157（108.4） | 108127 / 20.90% / 10464749 | 0 / 0（0.0%）/ 0 / 0 / 0（AI 快照 t=3990）
+     4010 | Marlborough 8697（63.6） Tomato 2516（115.7） Angkor 7169（101.3） Senna 5125（129.7） Two Sicilies 2651（79.0） Interpol 3244（68.5） Moldavia 10871（102.5） Lelouch 8224（87.4） Goku 10745（123.2） Khazar 6807（104.3） Cumania 13609（68.9） DioBrando 0（0.0） SyntaxError 10619（127.0） Scorpion 4387（121.6） Iceland 0（0.0） Anya 3307（87.8） Erwin 0（0.0） Conde 10157（111.5） | 108128 / 20.90% / 10775922 | 0 / 0（0.0%）/ 0 / 0 / 0（AI 快照 t=3990）
+     4500 | Marlborough 8697（61.6） Tomato 2262（105.7） Angkor 8017（100.0） Senna 5761（121.2） Two Sicilies 2722（101.9） Interpol 3244（72.5） Moldavia 8539（98.6） Lelouch 8224（72.5） Goku 10745（135.6） Khazar 8079（114.1） Cumania 13287（91.2） DioBrando 0（0.0） SyntaxError 10833（150.0） Scorpion 4284（135.9） Iceland 0（0.0） Anya 4015（84.7） Erwin 0（0.0） Conde 12673（109.8） | 111382 / 21.53% / 11754548 | 0 / 0（0.0%）/ 0 / 0 / 0（AI 快照 t=4500）
+     4920 | Marlborough 8697（61.3） Tomato 2554（94.8） Angkor 9228（101.1） Senna 7338（118.2） Two Sicilies 2737（117.9） Interpol 3234（70.0） Moldavia 9341（103.1） Lelouch 8224（72.7） Goku 10745（97.7） Khazar 8953（93.2） Cumania 12007（104.0） DioBrando 0（0.0） SyntaxError 10802（117.1） Scorpion 2868（94.9） Iceland 0（0.0） Anya 4015（99.1） Erwin 0（0.0） Conde 11895（75.0） | 112638 / 21.77% / 10645443 | 0 / 0（0.0%）/ 0 / 0 / 0（AI 快照 t=4920）
+     5310 | Marlborough 8697（78.1） Tomato 2555（95.7） Angkor 9355（105.5） Senna 8348（90.9） Two Sicilies 2747（78.8） Interpol 3234（65.3） Moldavia 10158（109.4） Lelouch 6623（67.6） Goku 10745（71.5） Khazar 9024（117.7） Cumania 4711（95.1） DioBrando 0（0.0） SyntaxError 12437（124.5） Scorpion 2736（92.0） Iceland 0（0.0） Anya 4345（111.2） Erwin 0（0.0） Conde 0（0.0） | 95715 / 18.50% / 9217568 | 0 / 0（0.0%）/ 0 / 0 / 0（AI 快照 t=5310）
+     5670 | Marlborough 7357（92.3） Tomato 1996（101.7） Angkor 9902（102.5） Senna 8755（107.5） Two Sicilies 2752（57.9） Interpol 3234（77.1） Moldavia 12247（103.7） Lelouch 6623（61.2） Goku 11312（92.8） Khazar 10311（110.9） Cumania 4965（105.9） DioBrando 0（0.0） SyntaxError 12689（108.7） Scorpion 2959（104.3） Iceland 0（0.0） Anya 3646（111.3） Erwin 0（0.0） Conde 0（0.0） | 98748 / 19.09% / 9734081 | 0 / 0（0.0%）/ 0 / 0 / 0（AI 快照 t=5670）
+     6300 | Marlborough 6502（117.9） Tomato 0（0.0） Angkor 12538（87.9） Senna 9431（103.2） Two Sicilies 2754（48.7） Interpol 2652（93.9） Moldavia 14251（80.8） Lelouch 6623（81.2） Goku 10948（113.7） Khazar 2776（110.3） Cumania 0（0.0） DioBrando 0（0.0） SyntaxError 13769（112.0） Scorpion 3514（118.1） Iceland 0（0.0） Anya 4124（150.0） Erwin 0（0.0） Conde 0（0.0） | 89882 / 17.37% / 9041314 | 0 / 0（0.0%）/ 0 / 0 / 0（AI 快照 t=6300）
+     9000 | Marlborough 9940（92.2） Tomato 0（0.0） Angkor 3870（104.9） Senna 8054（92.9） Two Sicilies 5218（134.7） Interpol 2682（61.3） Moldavia 3763（84.7） Lelouch 7358（111.0） Goku 12150（82.3） Khazar 175（9.4） Cumania 0（0.0） DioBrando 0（0.0） SyntaxError 19071（63.1） Scorpion 775（149.6） Iceland 0（0.0） Anya 0（0.0） Erwin 0（0.0） Conde 0（0.0） | 73056 / 14.12% / 6394717 | 0 / 0（0.0%）/ 0 / 0 / 0（AI 快照 t=9000）
+     9700 | Marlborough 9940（89.5） Tomato 0（0.0） Angkor 3442（127.4） Senna 8054（96.2） Two Sicilies 5440（141.1） Interpol 2682（82.7） Moldavia 0（0.0） Lelouch 7970（143.0） Goku 12150（66.3） Khazar 204（14.6） Cumania 0（0.0） DioBrando 0（0.0） SyntaxError 19237（68.3） Scorpion 1886（143.8） Iceland 0（0.0） Anya 8（20.1） Erwin 0（0.0） Conde 0（0.0） | 71013 / 13.73% / 6625417 | 0 / 0（0.0%）/ 0 / 0 / 0（AI 快照 t=9690）
+     9840 | Marlborough 4883（69.4） Tomato 0（0.0） Angkor 3530（100.0） Senna 8054（112.8） Two Sicilies 6352（140.0） Interpol 2682（97.4） Moldavia 0（0.0） Lelouch 0（0.0） Goku 12150（35.1） Khazar 205（18.9） Cumania 0（0.0） DioBrando 0（0.0） SyntaxError 19250（83.0） Scorpion 1886（147.0） Iceland 0（0.0） Anya 9（11.6） Erwin 0（0.0） Conde 0（0.0） | 59001 / 11.40% / 5056139 | 0 / 0（0.0%）/ 0 / 0 / 0（AI 快照 t=9840）
+     10050 | Marlborough 0（0.0） Tomato 0（0.0） Angkor 4079（124.2） Senna 8054（35.6） Two Sicilies 6701（150.0） Interpol 2682（31.7） Moldavia 0（0.0） Lelouch 0（0.0） Goku 12150（47.7） Khazar 207（20.8） Cumania 0（0.0） DioBrando 0（0.0） SyntaxError 19250（96.5） Scorpion 1886（150.0） Iceland 0（0.0） Anya 15（0.0） Erwin 0（0.0） Conde 0（0.0） | 55024 / 10.64% / 4608429 | 0 / 0（0.0%）/ 0 / 0 / 0（AI 快照 t=10050）
+     11880 | Marlborough 0（0.0） Tomato 0（0.0） Angkor 0（0.0） Senna 0（0.0） Two Sicilies 10006（139.3） Interpol 0（0.0） Moldavia 0（0.0） Lelouch 0（0.0） Goku 12303（145.2） Khazar 0（0.0） Cumania 0（0.0） DioBrando 0（0.0） SyntaxError 20107（132.0） Scorpion 0（0.0） Iceland 0（0.0） Anya 20（0.0） Erwin 0（0.0） Conde 0（0.0） | 42436 / 8.20% / 5833510 | 0 / 0（0.0%）/ 0 / 0 / 0（AI 快照 t=11880）

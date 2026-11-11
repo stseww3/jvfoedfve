@@ -1,0 +1,541 @@
+[FA] B029 捐款定案（余额序列拟合）：日志 463 笔；成交 241，没成交 80，定不了 142
+     成交的到账合计 24382387，税合计 10902639（税占捐出方付出的 30.9%）
+     其中到账被收款方 150 倍上限夹小的 40 笔：到账 2118921，税 2464825（税占 54%）
+     与 facts.py [G]「只看发令 20 拍后那条余额」的判定对照（旧判定→新定案：笔数）：ACC→EXEC:194；REJ→NOEXEC:73；REJ→AMB:65；?→AMB:42；ACC→AMB:35；?→EXEC:27；REJ→EXEC:20；ACC→NOEXEC:5；?→NOEXEC:2
+     成交的 241 笔里，发令 20 拍后的观测仍未扣款（时延 ≥20 拍）的 17 笔（7%）；时延上界 中位 50 拍
+     连发（同号 ≤25 拍内第二笔，发令时前一笔还没落地，两笔都成交）：12 笔，多付出 到账 684672 + 税 319011
+     没成交的 80 笔里，收款方在这笔捐款落地前已经出局的 14 笔：t=2675 Marlborough→Iceland；t=3380 Goku→DioBrando；t=3380 SyntaxError→DioBrando；t=3400 Goku→DioBrando；t=3400 SyntaxError→DioBrando；t=3420 Goku→DioBrando；t=3420 SyntaxError→DioBrando；t=3440 Goku→DioBrando
+[FB] 按捐出方：号 | 日志笔数 | 成交 / 没成交 / 定不了 | 到账合计 | 税合计 | 连发笔数 | 时延≥20 的成交笔数
+     Goku           |  62 | 36 / 22 / 4 |   6486098 |  2637649 | 1 | 1
+     Lelouch        |  52 | 28 / 19 / 5 |   3183432 |  1084787 | 2 | 2
+     Marlborough    |  49 | 40 / 9 / 0 |   2780398 |  2155264 | 1 | 2
+     Interpol       |  45 | 25 / 7 / 13 |   1048582 |   360796 | 3 | 3
+     SyntaxError    |  45 | 4 / 14 / 27 |   1039047 |   355409 | 0 | 0
+     Senna          |  33 | 13 / 5 / 15 |   1562526 |   645106 | 1 | 1
+     Scorpion       |  28 | 18 / 3 / 7 |   1150209 |   488881 | 0 | 2
+     Anya           |  25 | 16 / 0 / 9 |   1136965 |   475175 | 1 | 1
+     Two Sicilies   |  24 | 9 / 0 / 15 |    497157 |   186571 | 3 | 3
+     Khazar         |  21 | 8 / 0 / 13 |    650400 |   350789 | 0 | 0
+     Angkor         |  20 | 6 / 0 / 14 |    699139 |   331944 | 0 | 0
+     Tomato         |  15 | 11 / 0 / 4 |    352079 |   190046 | 0 | 0
+     Conde          |  13 | 8 / 0 / 5 |   1119152 |   513311 | 0 | 1
+     Cumania        |  13 | 9 / 0 / 4 |   1610001 |   604854 | 0 | 0
+     Moldavia       |  10 | 7 / 0 / 3 |    824015 |   388722 | 0 | 1
+     Erwin          |   4 | 0 / 0 / 4 |         0 |        0 | 0 | 0
+     DioBrando      |   4 | 3 / 1 / 0 |    243187 |   133335 | 0 | 0
+[FC] 按收款方：号 | 成交笔数 | 到账合计 | 捐出方付的税 | 首末拍
+     SyntaxError(41)    |  25 |   4281161 |  1709825 | 3680~8015
+     Two Sicilies(33)   |  18 |   2683430 |  1178511 | 2280~10735
+     Scorpion(42)       |  36 |   2575194 |  2050149 | 3690~9630
+     Senna(32)          |  24 |   2192580 |   878408 | 3070~8290
+     Khazar(38)         |  20 |   1857429 |   790927 | 2650~6260
+     Cumania(39)        |  16 |   1554590 |   657448 | 2910~5910
+     Conde(49)          |  15 |   1508441 |   608790 | 2810~5250
+     Moldavia(35)       |  21 |   1306608 |   540962 | 3450~9040
+     Anya(45)           |  12 |   1293126 |   438767 | 2440~6920
+     Lelouch(36)        |   9 |   1190188 |   447755 | 3780~9525
+     Angkor(31)         |  16 |   1137212 |   459444 | 3735~9845
+     Tomato(30)         |  11 |   1069707 |   493941 | 3260~5715
+     Goku(37)           |   7 |    990934 |   317974 | 5460~10770
+     DioBrando(40)      |   2 |    309964 |   106654 | 2810~3010
+     Marlborough(29)    |   8 |    303907 |   142028 | 5520~7980
+     Interpol(34)       |   1 |    127916 |    81056 | 6165~6165
+[FQ] 引擎受捐额度对账（归属口径：先取过得了额度的，再取发令最晚的；--fifo 可换回旧的队首口径）：成交的 241 笔里记账后超出额度的 0 笔（编队外队友的捐款看不到，已用点数是下限；超出 = 余额拟合和额度模型对不上，这几笔的到账额或归属存疑）
+     受捐方 | t<2142 成交 笔数 / 到账 / 点数 | 2142~3212 | 3213~4283 | t≥4284 笔数 / 到账（不查额度）| t=4283 累计点数（额度 309）
+     SyntaxError    | 0 / 0 / 0 | 0 / 0 / 0 | 4 / 476730 / 59 | 21 / 3804431 | 59
+     Two Sicilies   | 0 / 0 / 0 | 3 / 275271 / 164 | 1 / 24572 / 16 | 14 / 2383587 | 180
+     Scorpion       | 0 / 0 / 0 | 0 / 0 / 0 | 4 / 626019 / 128 | 32 / 1949175 | 128
+     Senna          | 0 / 0 / 0 | 1 / 117250 / 69 | 5 / 495007 / 123 | 18 / 1580323 | 192
+     Khazar         | 0 / 0 / 0 | 2 / 208675 / 124 | 5 / 559879 / 103 | 13 / 1088875 | 227
+     Cumania        | 0 / 0 / 0 | 1 / 123590 / 73 | 6 / 626260 / 68 | 9 / 804740 | 141
+     Conde          | 0 / 0 / 0 | 2 / 163187 / 98 | 5 / 554775 / 73 | 8 / 790479 | 171
+     Moldavia       | 0 / 0 / 0 | 0 / 0 / 0 | 4 / 272686 / 42 | 17 / 1033922 | 42
+     Anya           | 0 / 0 / 0 | 1 / 116036 / 69 | 2 / 207226 / 90 | 9 / 969864 | 159
+     Lelouch        | 0 / 0 / 0 | 0 / 0 / 0 | 2 / 202435 / 31 | 7 / 987753 | 31
+     Angkor         | 0 / 0 / 0 | 0 / 0 / 0 | 2 / 220274 / 40 | 14 / 916938 | 40
+     Tomato         | 0 / 0 / 0 | 0 / 0 / 0 | 6 / 586507 / 239 | 5 / 483200 | 239
+     Goku           | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 7 / 990934 | 0
+     DioBrando      | 0 / 0 / 0 | 2 / 309964 / 182 | 0 / 0 / 0 | 0 / 0 | 182
+     Marlborough    | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 8 / 303907 | 0
+     Interpol       | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 1 / 127916 | 0
+[FE] 盈余捐款成交后的密度（捐后余额 = 发令时余额 − 到账 − 税；连发的第二笔再减去第一笔）：号 | 成交笔数 | 发令时密度 中位 | 捐后密度 中位 / 最低 | 捐后 <68 的笔数 | 捐后 <55 的笔数
+     Marlborough    |  35 | 95.6 | 83.9 / 58.3 | 12 | 0
+     Goku           |  33 | 88.9 | 67.4 / 47.7 | 17 | 1
+     Lelouch        |  27 | 78.0 | 58.9 / 44.4 | 23 | 2
+     Interpol       |  25 | 78.3 | 59.2 / 48.4 | 22 | 2
+     Anya           |  13 | 120.0 | 93.6 / 80.8 | 0 | 0
+     Senna          |  10 | 125.1 | 94.6 / 55.0 | 1 | 0
+     Scorpion       |  10 | 124.6 | 97.6 / 66.3 | 1 | 0
+     Two Sicilies   |   8 | 81.1 | 59.1 / 45.6 | 7 | 3
+     Khazar         |   7 | 113.3 | 89.3 / 80.0 | 0 | 0
+     Cumania        |   6 | 97.1 | 73.1 / 59.0 | 3 | 0
+     Angkor         |   5 | 112.1 | 88.1 / 58.5 | 1 | 0
+     SyntaxError    |   4 | 115.6 | 76.3 / 65.9 | 1 | 0
+     Moldavia       |   4 | 118.1 | 93.0 / 87.5 | 0 | 0
+     DioBrando      |   2 | 133.6 | 104.9 / 104.5 | 0 | 0
+     Conde          |   2 | 113.2 | 92.5 / 88.5 | 0 | 0
+     Tomato         |   1 | 121.5 | 95.0 / 95.0 | 0 | 0
+[FD] 逐笔：拍 捐出→收款 类型 pct | 发令时余额 | 定案 | 时延区间(拍) | 到账 / 税 | 旧判定 | 连发
+      1615 Erwin→Tomato(30) squad rescue 155 | 293769 | AMB | (>135) | None / None | REJ |  L8603271
+      1635 Erwin→Tomato(30) squad rescue 155 | 305157 | AMB | (>115) | None / None | REJ |  L8603278
+      1640 Interpol→Moldavia(35) surplus 185 | 229698 | NOEXEC | (>160) | None / None | REJ |  L8603297
+      1660 Angkor→Moldavia(35) surplus 185 | 244895 | AMB | (>230) | None / None | REJ |  L8603289
+      1660 Interpol→Moldavia(35) surplus 185 | 238158 | NOEXEC | (>160) | None / None | REJ |  L8603309
+      1680 Angkor→Moldavia(35) surplus 185 | 253615 | AMB | (>210) | None / None | REJ |  L8603299
+      1680 Interpol→Moldavia(35) surplus 185 | 237504 | AMB | (>140) | None / None | REJ |  L8603320
+      1700 Angkor→Moldavia(35) surplus 185 | 265464 | AMB | (>190) | None / None | REJ |  L8603304
+      1700 Interpol→Moldavia(35) surplus 185 | 248539 | AMB | (>120) | None / None | REJ |  L8603329
+      1720 Angkor→Moldavia(35) surplus 185 | 274215 | AMB | (>170) | None / None | REJ |  L8603327
+      1720 Interpol→Moldavia(35) surplus 185 | 256731 | AMB | (>100) | None / None | REJ |  L8603343
+      1730 Erwin→Cumania(39) surplus 153 | 360866 | AMB | (>20) | None / None | REJ |  L8603323
+      1740 Angkor→Moldavia(35) surplus 185 | 282920 | AMB | (>150) | None / None | ? |  L8603332
+      1740 Interpol→Moldavia(35) surplus 185 | 264881 | AMB | (>80) | None / None | REJ |  L8603350
+      1750 Erwin→Cumania(39) surplus 153 | 369140 | AMB | (>0) | None / None | ? |  L8603331
+      1760 Interpol→Angkor(31) surplus 185 | 272966 | AMB | (>60) | None / None | REJ |  L8603363
+      1780 Interpol→Angkor(31) surplus 185 | 269997 | AMB | (>40) | None / None | REJ |  L8603367
+      1800 Interpol→Angkor(31) surplus 185 | 280324 | AMB | (>20) | None / None | REJ |  L8603371
+      1820 Interpol→Angkor(31) surplus 185 | 287687 | AMB | (>0) | None / None | ? |  L8603381
+      2280 DioBrando→Two Sicilies(33) squad rescue 126 | 593904 | EXEC | (0,60] | 77161 / 38884 | ACC |  L8603493
+      2440 Lelouch→Anya(45) surplus 185 | 638822 | EXEC | (0,80] | 116036 / 39926 | ACC |  L8603543
+      2650 Lelouch→Khazar(38) surplus 185 | 638866 | EXEC | (20,50] | 118845 / 40893 | REJ |  L8603617
+      2670 Lelouch→Khazar(38) surplus 185 | 654290 | EXEC | (0,30] | 89830 / 30909 | ? | 连发@2650 L8603619
+      2675 Marlborough→Iceland(43) squad rescue 62 | 679881 | NOEXEC(收款方已出局) | (>115) | None / None | ACC |  L8603620
+      2790 DioBrando→Goku(37) surplus 153 | 861025 | NOEXEC | (>180) | None / None | REJ |  L8603671
+      2810 Goku→DioBrando(40) surplus 185 | 841089 | EXEC | (0,70] | 158435 / 54515 | ACC |  L8603677
+      2810 Marlborough→Conde(49) squad rescue 59 | 678223 | EXEC | (0,70] | 39739 / 42388 | ACC |  L8603678
+      2910 Marlborough→Cumania(39) surplus 185 | 680411 | EXEC | (0,60] | 123590 / 42525 | ACC |  L8603703
+      2985 DioBrando→Two Sicilies(33) surplus 153 | 933579 | EXEC | (0,55] | 141454 / 58786 | ? |  L8603732
+      3000 SyntaxError→Two Sicilies(33) surplus 185 | 838293 | EXEC(夹小) | (0,60] | 56656 / 52393 | ACC |  L8603734
+      3010 Goku→DioBrando(40) surplus 185 | 834228 | EXEC | (0,50] | 151529 / 52139 | ACC |  L8603736
+      3040 DioBrando→Two Sicilies(33) surplus 153 | 790415 | EXEC(夹小) | (0,200] | 24572 / 35665 | ? |  L8603742
+      3040 Two Sicilies→DioBrando(40) surplus 153 | 211370 | AMB | (>200) | None / None | ? |  L8603744
+      3060 Two Sicilies→DioBrando(40) surplus 153 | 262350 | AMB | (>180) | None / None | REJ |  L8603766
+      3070 Lelouch→Senna(32) surplus 185 | 645509 | EXEC | (0,80] | 117250 / 40344 | ACC |  L8603763
+      3080 Two Sicilies→DioBrando(40) surplus 153 | 262350 | AMB | (>160) | None / None | ? |  L8603767
+      3100 SyntaxError→DioBrando(40) surplus 185 | 838353 | NOEXEC | (>160) | None / None | REJ |  L8603771
+      3120 Marlborough→Conde(49) surplus 185 | 679628 | EXEC | (0,30] | 123448 / 42476 | ACC |  L8603775
+      3120 SyntaxError→Two Sicilies(33) surplus 185 | 858932 | NOEXEC | (>160) | None / None | REJ |  L8603776
+      3140 SyntaxError→Two Sicilies(33) surplus 185 | 880016 | NOEXEC | (>160) | None / None | REJ |  L8603779
+      3160 SyntaxError→Two Sicilies(33) surplus 185 | 901929 | NOEXEC | (>160) | None / None | REJ |  L8603800
+      3165 Khazar→Senna(32) surplus 153 | 721900 | EXEC(夹小) | (0,75] | 13702 / 45506 | REJ |  L8603802
+      3180 SyntaxError→Two Sicilies(33) surplus 185 | 924069 | NOEXEC | (>150) | None / None | REJ |  L8603804
+      3190 Senna→Khazar(38) surplus 153 | 635951 | AMB | (>220) | None / None | ACC |  L8603809
+      3200 SyntaxError→DioBrando(40) surplus 185 | 957365 | NOEXEC | (>160) | None / None | REJ |  L8603810
+      3220 Goku→DioBrando(40) surplus 185 | 836852 | NOEXEC | (>160) | None / None | REJ |  L8603817
+      3220 SyntaxError→DioBrando(40) surplus 185 | 980866 | NOEXEC | (>160) | None / None | REJ |  L8603818
+      3240 Goku→DioBrando(40) surplus 185 | 857395 | NOEXEC | (>160) | None / None | REJ |  L8603826
+      3240 SyntaxError→DioBrando(40) surplus 185 | 1003736 | NOEXEC | (>160) | None / None | REJ |  L8603836
+      3250 Khazar→Anya(45) surplus 153 | 727031 | AMB | (>170) | None / None | REJ |  L8603843
+      3260 Goku→DioBrando(40) surplus 185 | 878442 | NOEXEC | (>160) | None / None | REJ |  L8603845
+      3260 Conde→Tomato(30) squad rescue 104 | 742720 | EXEC | (0,70] | 76157 / 46420 | ACC |  L8603846
+      3260 SyntaxError→DioBrando(40) surplus 185 | 1028375 | NOEXEC | (>160) | None / None | REJ |  L8603847
+      3270 Lelouch→Khazar(38) surplus 185 | 638376 | EXEC | (0,60] | 115955 / 39898 | ACC |  L8603848
+      3280 Anya→Khazar(38) surplus 153 | 297900 | AMB | (>0) | None / None | ? |  L8603854
+      3280 Goku→DioBrando(40) surplus 185 | 900005 | NOEXEC | (>160) | None / None | REJ |  L8603855
+      3280 SyntaxError→DioBrando(40) squad rescue 155 | 1053620 | NOEXEC | (>160) | None / None | REJ |  L8603856
+      3285 Senna→Anya(45) surplus 153 | 527855 | AMB | (>205) | None / None | ACC |  L8603858
+      3290 Khazar→Anya(45) surplus 153 | 716496 | EXEC | (0,40] | 107754 / 44781 | ACC |  L8603861
+      3300 Goku→DioBrando(40) surplus 185 | 932844 | NOEXEC | (>210) | None / None | REJ |  L8603863
+      3300 SyntaxError→DioBrando(40) squad rescue 155 | 1089982 | AMB | (>140) | None / None | REJ |  L8603864
+      3305 Anya→Senna(32) surplus 153 | 345450 | AMB | (>0) | None / None | ? |  L8603865
+      3320 Goku→DioBrando(40) surplus 185 | 955743 | NOEXEC | (>190) | None / None | REJ |  L8603870
+      3320 SyntaxError→DioBrando(40) squad rescue 155 | 1115084 | AMB | (>120) | None / None | REJ |  L8603871
+      3330 Marlborough→Tomato(30) surplus 185 | 679098 | EXEC | (0,90] | 123351 / 42443 | ACC |  L8603886
+      3340 Goku→DioBrando(40) squad rescue 155 | 979205 | NOEXEC | (>170) | None / None | REJ |  L8603894
+      3340 SyntaxError→DioBrando(40) squad rescue 155 | 1139411 | AMB | (>100) | None / None | REJ |  L8603897
+      3360 Goku→DioBrando(40) squad rescue 155 | 1003243 | NOEXEC | (>150) | None / None | REJ |  L8603903
+      3360 Tomato→Cumania(39) surplus 153 | 341247 | AMB | (>0) | None / None | ? |  L8603904
+      3360 SyntaxError→DioBrando(40) squad rescue 155 | 1163002 | AMB | (>80) | None / None | REJ |  L8603905
+      3380 Goku→DioBrando(40) squad rescue 155 | 1027870 | NOEXEC(收款方已出局) | (>130) | None / None | REJ |  L8603909
+      3380 SyntaxError→DioBrando(40) squad rescue 155 | 1185790 | NOEXEC(收款方已出局) | (>60) | None / None | REJ |  L8603910
+      3400 Goku→DioBrando(40) squad rescue 155 | 1063848 | NOEXEC(收款方已出局) | (>110) | None / None | REJ |  L8603916
+      3400 SyntaxError→DioBrando(40) squad rescue 155 | 1218432 | NOEXEC(收款方已出局) | (>40) | None / None | REJ |  L8603918
+      3410 Senna→Anya(45) surplus 153 | 538677 | NOEXEC | (>160) | None / None | REJ |  L8603921
+      3420 Goku→DioBrando(40) squad rescue 155 | 1089963 | NOEXEC(收款方已出局) | (>90) | None / None | REJ |  L8603932
+      3420 SyntaxError→DioBrando(40) squad rescue 155 | 1239232 | NOEXEC(收款方已出局) | (>20) | None / None | REJ |  L8603937
+      3440 Conde→Tomato(30) squad rescue 155 | 788918 | EXEC(夹小) | (0,70] | 61126 / 49307 | ACC |  L8603941
+      3440 Goku→DioBrando(40) squad rescue 155 | 1115727 | NOEXEC(收款方已出局) | (>70) | None / None | REJ |  L8603942
+      3440 Cumania→Tomato(30) squad rescue 155 | 1144146 | EXEC(夹小) | (0,70] | 140793 / 71509 | ACC |  L8603943
+      3440 SyntaxError→DioBrando(40) squad rescue 155 | 1259138 | NOEXEC(收款方已出局) | (>0) | None / None | ACC |  L8603944
+      3450 Interpol→Moldavia(35) surplus 185 | 252437 | EXEC | (0,60] | 45852 / 15777 | ACC |  L8603945
+      3465 Tomato→Cumania(39) surplus 153 | 381719 | AMB | (>0) | None / None | ? |  L8603953
+      3480 Lelouch→Khazar(38) surplus 185 | 639114 | EXEC | (0,30] | 116089 / 39944 | ACC |  L8603958
+      3490 Khazar→Anya(45) surplus 153 | 739809 | AMB | (>120) | None / None | ? |  L8603960
+      3490 Senna→Anya(45) surplus 153 | 571401 | NOEXEC | (>200) | None / None | REJ |  L8603961
+      3510 Khazar→Anya(45) surplus 153 | 869696 | AMB | (>100) | None / None | REJ |  L8603977
+      3510 Senna→Anya(45) surplus 153 | 583346 | NOEXEC | (>180) | None / None | REJ |  L8603979
+      3530 Khazar→Anya(45) surplus 153 | 846198 | AMB | (>80) | None / None | ACC |  L8603984
+      3530 Senna→Anya(45) surplus 153 | 590190 | NOEXEC | (>160) | None / None | REJ |  L8603985
+      3540 Marlborough→Cumania(39) surplus 185 | 678816 | EXEC | (0,60] | 123300 / 42426 | ACC |  L8603987
+      3550 Senna→Anya(45) surplus 153 | 596699 | AMB | (>140) | None / None | REJ |  L8603990
+      3550 Khazar→Anya(45) surplus 153 | 726601 | AMB | (>60) | None / None | REJ |  L8603992
+      3570 Senna→Anya(45) surplus 153 | 584004 | AMB | (>120) | None / None | REJ |  L8603994
+      3570 Khazar→Anya(45) surplus 153 | 738785 | AMB | (>40) | None / None | REJ |  L8603995
+      3590 Senna→Anya(45) surplus 153 | 590797 | AMB | (>100) | None / None | REJ |  L8604000
+      3590 Khazar→Anya(45) surplus 153 | 750503 | AMB | (>20) | None / None | REJ |  L8604004
+      3610 Senna→Anya(45) surplus 153 | 601913 | AMB | (>80) | None / None | REJ |  L8604017
+      3610 Khazar→Anya(45) surplus 153 | 768070 | AMB | (>170) | None / None | REJ |  L8604021
+      3630 Senna→Khazar(38) surplus 153 | 588815 | EXEC | (0,60] | 88552 / 36800 | ACC |  L8604024
+      3680 Interpol→Moldavia(35) surplus 185 | 254016 | EXEC | (0,10] | 46139 / 15876 | ACC |  L8604032
+      3680 Goku→SyntaxError(41) surplus 280 | 1379575 | EXEC(夹小) | (0,10] | 143996 / 86223 | REJ |  L8604033
+      3680 Scorpion→Tomato(30) squad rescue 152 | 688299 | EXEC | (0,10] | 102841 / 43018 | REJ |  L8604034
+      3685 Conde→Tomato(30) squad rescue 155 | 930858 | AMB | (>185) | None / None | ? |  L8604035
+      3685 Anya→Senna(32) surplus 280 | 401747 | EXEC | (0,20] | 110829 / 25242 | ACC |  L8604037
+      3690 Cumania→Scorpion(42) surplus 185 | 1365232 | EXEC | (0,20] | 256361 / 88210 | ACC |  L8604040
+      3690 Lelouch→Senna(32) surplus 185 | 640059 | EXEC(夹小) | (0,90] | 103192 / 40003 | ACC |  L8604045
+      3695 Tomato→Scorpion(42) surplus 153 | 310450 | EXEC | (0,80] | 47922 / 19915 | ACC |  L8604053
+      3705 Anya→Khazar(38) surplus 185 | 273862 | AMB | (>0) | None / None | ? |  L8604060
+      3710 Cumania→Conde(49) surplus 185 | 1067746 | AMB | (>160) | None / None | ? |  L8604061
+      3730 Conde→Scorpion(42) surplus 153 | 1177376 | AMB | (>175) | None / None | ACC |  L8604068
+      3735 Moldavia→Angkor(31) surplus 153 | 1093181 | EXEC | (135,225] | 174055 / 72334 | REJ |  L8604070
+      3740 Senna→Khazar(38) surplus 153 | 627724 | AMB | (>130) | None / None | ? |  L8604071
+      3745 Scorpion→Conde(49) surplus 153 | 767525 | EXEC | (0,30] | 117460 / 48814 | ACC |  L8604072
+      3745 Khazar→Senna(32) surplus 153 | 724763 | EXEC | (0,35] | 110054 / 45737 | ACC |  L8604076
+      3750 Marlborough→Conde(49) surplus 185 | 678769 | EXEC | (0,30] | 123292 / 42423 | ACC |  L8604077
+      3750 Angkor→Moldavia(35) surplus 153 | 892050 | EXEC | (0,30] | 134155 / 55753 | ACC |  L8604078
+      3760 Senna→Anya(45) surplus 153 | 740923 | AMB | (>110) | None / None | REJ |  L8604082
+      3775 Scorpion→Conde(49) squad rescue 155 | 615116 | EXEC | (0,95] | 94505 / 38771 | ACC |  L8604085
+      3775 Tomato→Conde(49) squad rescue 101 | 265438 | EXEC | (0,95] | 26699 / 16752 | ACC |  L8604086
+      3780 Senna→Lelouch(36) squad rescue 155 | 741071 | EXEC | (0,30] | 112897 / 46316 | ACC |  L8604099
+      3810 Senna→Lelouch(36) surplus 153 | 595371 | EXEC | (0,60] | 89538 / 37210 | ACC |  L8604104
+      3820 Lelouch→Khazar(38) surplus 185 | 654112 | AMB | (>160) | None / None | REJ |  L8604108
+      3840 Lelouch→Anya(45) surplus 185 | 762227 | NOEXEC | (>160) | None / None | REJ |  L8604111
+      3855 Goku→SyntaxError(41) surplus 280 | 1343095 | EXEC(夹小) | (15,40] | 1402 / 84970 | REJ |  L8604112
+      3860 Lelouch→Anya(45) surplus 185 | 780629 | NOEXEC | (>160) | None / None | REJ |  L8604113
+      3880 Lelouch→Anya(45) surplus 185 | 799475 | NOEXEC | (>160) | None / None | REJ |  L8604131
+      3895 Goku→SyntaxError(41) surplus 280 | 1292604 | EXEC(夹小) | (0,65] | 26937 / 82049 | ACC |  L8604135
+      3900 Interpol→Moldavia(35) surplus 185 | 256222 | EXEC | (0,60] | 46540 / 16013 | ACC |  L8604137
+      3900 Lelouch→Anya(45) surplus 185 | 827000 | NOEXEC | (>150) | None / None | REJ |  L8604138
+      3905 Conde→Cumania(39) surplus 153 | 1145144 | EXEC | (0,55] | 173785 / 72222 | ACC |  L8604139
+      3915 Cumania→Scorpion(42) surplus 185 | 1078841 | EXEC | (0,45] | 198410 / 68270 | ACC |  L8604144
+      3920 Lelouch→Anya(45) surplus 185 | 846548 | NOEXEC | (>160) | None / None | REJ |  L8604146
+      3940 Lelouch→Senna(32) surplus 185 | 865615 | EXEC | (0,20] | 157230 / 54100 | ACC |  L8604151
+      3960 Marlborough→Scorpion(42) surplus 185 | 678959 | EXEC | (0,90] | 123326 / 42434 | ACC |  L8604167
+      3960 Lelouch→Anya(45) surplus 185 | 669286 | NOEXEC | (>180) | None / None | REJ |  L8604169
+      3960 Senna→Anya(45) surplus 153 | 650745 | AMB | (>90) | None / None | REJ |  L8604173
+      3970 Scorpion→Conde(49) surplus 153 | 607176 | AMB | (>110) | None / None | ACC |  L8604176
+      3980 Lelouch→Anya(45) surplus 185 | 685444 | NOEXEC | (>160) | None / None | REJ |  L8604177
+      3980 Senna→Anya(45) surplus 153 | 657389 | AMB | (>160) | None / None | REJ |  L8604178
+      4000 Lelouch→Anya(45) surplus 185 | 710217 | NOEXEC | (>160) | None / None | REJ |  L8604181
+      4000 Senna→Anya(45) surplus 153 | 661430 | EXEC | (0,50] | 99472 / 41339 | ACC |  L8604182
+      4020 Lelouch→Senna(32) surplus 185 | 727363 | NOEXEC | (>160) | None / None | REJ |  L8604185
+      4040 Scorpion→Tomato(30) surplus 153 | 543576 | EXEC | (10,40] | 82239 / 34177 | ACC |  L8604187
+      4040 Lelouch→Senna(32) surplus 185 | 744924 | NOEXEC | (>160) | None / None | REJ |  L8604188
+      4050 Conde→Tomato(30) surplus 153 | 1174359 | AMB | (>180) | None / None | ACC |  L8604196
+      4060 Lelouch→Anya(45) surplus 185 | 762909 | NOEXEC | (>160) | None / None | REJ |  L8604211
+      4080 Scorpion→Tomato(30) squad rescue 72 | 448549 | AMB | (>150) | None / None | ? |  L8604214
+      4080 Lelouch→Khazar(38) surplus 185 | 781327 | EXEC | (0,60] | 141920 / 48832 | ACC |  L8604215
+      4090 Khazar→Senna(32) surplus 153 | 825680 | AMB | (>50) | None / None | REJ |  L8604216
+      4100 Cumania→Conde(49) surplus 185 | 1061545 | EXEC | (0,40] | 192819 / 66346 | ACC |  L8604217
+      4110 Goku→SyntaxError(41) surplus 280 | 1412153 | EXEC(夹小) | (0,30] | 304395 / 88259 | ACC |  L8604219
+      4110 Senna→Khazar(38) surplus 153 | 647404 | EXEC | (0,30] | 97363 / 40462 | ACC |  L8604220
+      4115 Two Sicilies→SyntaxError(41) surplus 185 | 228765 | AMB | (>40) | None / None | REJ |  L8604222
+      4120 Interpol→Angkor(31) surplus 185 | 254453 | EXEC | (0,20] | 46219 / 15903 | ACC |  L8604221
+      4130 Khazar→Anya(45) surplus 153 | 780767 | AMB | (>10) | None / None | ACC |  L8604227
+      4140 Goku→SyntaxError(41) surplus 185 | 1045079 | NOEXEC | (>180) | None / None | REJ |  L8604231
+      4140 Lelouch→Anya(45) surplus 185 | 643014 | NOEXEC | (>180) | None / None | REJ |  L8604237
+      4155 Conde→Cumania(39) squad rescue 155 | 1099320 | EXEC | (0,20] | 169383 / 69490 | ACC |  L8604246
+      4155 Two Sicilies→SyntaxError(41) surplus 185 | 211913 | AMB | (>0) | None / None | ? |  L8604247
+      4160 Lelouch→Anya(45) surplus 185 | 658538 | NOEXEC | (>160) | None / None | REJ |  L8604248
+      4170 Marlborough→Cumania(39) squad rescue 61 | 679385 | EXEC | (0,60] | 41134 / 42461 | ACC |  L8604251
+      4170 Tomato→Cumania(39) squad rescue 61 | 228675 | EXEC | (0,60] | 13845 / 14292 | ACC |  L8604252
+      4175 Conde→Cumania(39) squad rescue 119 | 883629 | EXEC | (0,55] | 104813 / 55900 | ACC |  L8604253
+      4180 Lelouch→Anya(45) surplus 185 | 674437 | NOEXEC | (>170) | None / None | REJ |  L8604254
+      4200 Lelouch→Anya(45) surplus 185 | 698944 | NOEXEC | (>150) | None / None | REJ |  L8604258
+      4220 Lelouch→Anya(45) surplus 185 | 715818 | NOEXEC | (>190) | None / None | REJ |  L8604262
+      4240 Lelouch→Khazar(38) surplus 185 | 733099 | NOEXEC | (>170) | None / None | REJ |  L8604278
+      4260 Lelouch→Khazar(38) surplus 185 | 750798 | NOEXEC | (>150) | None / None | REJ |  L8604283
+      4270 Marlborough→Cumania(39) surplus 185 | 680722 | EXEC | (0,50] | 123646 / 42545 | ACC |  L8604284
+      4280 Lelouch→Khazar(38) surplus 185 | 768924 | EXEC | (0,40] | 139667 / 48057 | ACC |  L8604285
+      4280 Cumania→Scorpion(42) surplus 185 | 1428477 | EXEC | (0,20] | 259469 / 89279 | ACC |  L8604286
+      4300 Cumania→Conde(49) surplus 185 | 1150390 | EXEC | (0,20] | 214213 / 73708 | ACC |  L8604287
+      4325 Conde→Scorpion(42) surplus 153 | 1594650 | AMB | (>175) | None / None | ? |  L8604305
+      4330 Scorpion→Conde(49) surplus 153 | 543259 | AMB | (>80) | None / None | REJ |  L8604306
+      4340 Interpol→Moldavia(35) surplus 185 | 252906 | EXEC | (0,70] | 45938 / 15806 | ACC |  L8604307
+      4350 Scorpion→Cumania(39) squad rescue 155 | 529112 | EXEC | (0,60] | 80606 / 33069 | ACC |  L8604308
+      4350 Tomato→Cumania(39) squad rescue 134 | 247608 | EXEC | (0,60] | 32643 / 15475 | ACC |  L8604309
+      4350 Lelouch→Anya(45) surplus 185 | 640541 | EXEC | (0,60] | 116348 / 40033 | ACC |  L8604310
+      4380 Angkor→Moldavia(35) squad rescue 155 | 911426 | AMB | (>0) | None / None | REJ |  L8604316
+      4385 Anya→Senna(32) surplus 153 | 476774 | EXEC | (20,115] | 73789 / 30665 | REJ |  L8604319
+      4405 Anya→Khazar(38) surplus 153 | 487487 | EXEC | (0,95] | 59389 / 24681 | ? | 连发@4385 L8604327
+      4470 Moldavia→Angkor(31) surplus 153 | 1026726 | EXEC | (0,30] | 154409 / 64170 | ACC |  L8604339
+      4480 Marlborough→Scorpion(42) surplus 185 | 681338 | EXEC | (0,20] | 123758 / 42583 | ACC |  L8604340
+      4505 Senna→Anya(45) surplus 153 | 698004 | AMB | (>0) | None / None | ACC |  L8604364
+      4510 Cumania→Scorpion(42) squad rescue 155 | 1224203 | AMB | (>0) | None / None | ACC |  L8604365
+      4510 Conde→Scorpion(42) squad rescue 155 | 1405055 | EXEC | (0,80] | 214051 / 87815 | ? |  L8604366
+      4510 Tomato→Scorpion(42) squad rescue 111 | 241370 | EXEC | (0,80] | 26399 / 15085 | ACC |  L8604367
+      4510 Khazar→Senna(32) surplus 153 | 929522 | EXEC | (0,80] | 139791 / 58095 | ACC |  L8604368
+      4525 Scorpion→Cumania(39) surplus 153 | 650550 | EXEC | (65,155] | 102359 / 42538 | REJ |  L8604370
+      4545 Goku→SyntaxError(41) surplus 280 | 1476451 | EXEC(夹小) | (0,45] | 32043 / 92564 | ACC |  L8604371
+      4550 Cumania→Scorpion(42) surplus 185 | 1201435 | AMB | (>0) | None / None | ? |  L8604372
+      4560 Scorpion→Conde(49) squad rescue 155 | 621039 | EXEC | (0,30] | 94611 / 38814 | ACC |  L8604377
+      4560 Lelouch→Senna(32) surplus 185 | 640756 | EXEC | (0,30] | 120627 / 41506 | ACC |  L8604379
+      4570 Interpol→Angkor(31) surplus 185 | 254390 | EXEC | (0,20] | 46207 / 15899 | ACC |  L8604380
+      4595 Scorpion→Tomato(30) surplus 153 | 680623 | EXEC | (0,85] | 81524 / 33880 | ? |  L8604388
+      4610 Tomato→Scorpion(42) squad rescue 155 | 326213 | EXEC | (0,20] | 49696 / 20388 | ACC |  L8604400
+      4630 Anya→Khazar(38) surplus 153 | 460497 | EXEC | (0,50] | 69254 / 28781 | ACC |  L8604406
+      4630 Tomato→Scorpion(42) surplus 153 | 258539 | AMB | (>230) | None / None | ? |  L8604407
+      4685 Goku→SyntaxError(41) surplus 280 | 1450718 | NOEXEC | (>175) | None / None | REJ |  L8604432
+      4685 Two Sicilies→SyntaxError(41) surplus 185 | 295338 | AMB | (>85) | None / None | REJ |  L8604434
+      4690 Marlborough→Tomato(30) surplus 185 | 682178 | EXEC | (0,80] | 130043 / 44746 | ACC |  L8604433
+      4695 Conde→Cumania(39) surplus 153 | 1361213 | AMB | (>40) | None / None | REJ |  L8604435
+      4695 Scorpion→Cumania(39) surplus 153 | 446076 | AMB | (>165) | None / None | ACC |  L8604436
+      4725 Cumania→Conde(49) surplus 185 | 1290393 | EXEC | (0,45] | 237317 / 81657 | ACC |  L8604438
+      4735 Conde→Tomato(30) surplus 153 | 1368974 | EXEC | (130,215] | 176993 / 73555 | ACC |  L8604442
+      4760 Tomato→Scorpion(42) squad rescue 155 | 341270 | EXEC | (10,100] | 50364 / 20662 | ACC |  L8604447
+      4770 Lelouch→Khazar(38) surplus 185 | 641196 | EXEC | (0,90] | 116467 / 40074 | ACC |  L8604458
+      4770 Cumania→Scorpion(42) surplus 185 | 1037857 | AMB | (>180) | None / None | ACC |  L8604462
+      4785 Khazar→Senna(32) surplus 153 | 998870 | AMB | (>165) | None / None | ACC |  L8604470
+      4790 Interpol→Angkor(31) surplus 185 | 253255 | EXEC | (0,70] | 48166 / 16573 | ACC |  L8604469
+      4830 Scorpion→Conde(49) surplus 153 | 394486 | EXEC | (0,30] | 59326 / 24655 | ACC |  L8604477
+      4835 Anya→Senna(32) surplus 153 | 453675 | EXEC | (0,25] | 68794 / 28590 | ACC |  L8604478
+      4865 Conde→Cumania(39) squad rescue 155 | 1176894 | EXEC | (0,85] | 142844 / 58602 | ? |  L8604496
+      4865 Scorpion→Cumania(39) squad rescue 148 | 318963 | EXEC | (0,85] | 46810 / 20106 | ACC |  L8604497
+      4865 Tomato→Cumania(39) squad rescue 152 | 285257 | EXEC | (0,85] | 42983 / 17980 | ACC |  L8604498
+      4900 Marlborough→Cumania(39) surplus 185 | 689245 | EXEC | (0,50] | 125194 / 43077 | ACC |  L8604501
+      4905 Goku→SyntaxError(41) surplus 280 | 1561722 | EXEC | (0,20] | 429072 / 97724 | ? |  L8604502
+      4905 Two Sicilies→SyntaxError(41) surplus 280 | 328676 | AMB | (>135) | None / None | ACC |  L8604505
+      4925 Goku→SyntaxError(41) surplus 185 | 1049448 | NOEXEC | (>150) | None / None | REJ |  L8604509
+      4925 Two Sicilies→SyntaxError(41) surplus 185 | 214051 | AMB | (>115) | None / None | REJ |  L8604511
+      4940 Anya→Lelouch(36) squad rescue 63 | 406670 | EXEC | (0,10] | 25416 / 25416 | ACC |  L8604512
+      4980 Goku→SyntaxError(41) surplus 185 | 1126752 | EXEC | (0,60] | 204663 / 70422 | ? |  L8604533
+      4985 Two Sicilies→SyntaxError(41) surplus 185 | 221737 | AMB | (>55) | None / None | REJ |  L8604542
+      4990 Scorpion→Conde(49) squad rescue 73 | 293633 | AMB | (>230) | None / None | ? |  L8604537
+      4990 Tomato→Conde(49) squad rescue 72 | 261284 | EXEC | (0,50] | 18626 / 16330 | ACC |  L8604538
+      5010 Interpol→Angkor(31) surplus 185 | 253374 | EXEC | (0,30] | 46023 / 15835 | ACC |  L8604540
+      5010 Khazar→Lelouch(36) squad rescue 94 | 937484 | EXEC | (0,30] | 86973 / 58592 | ACC |  L8604541
+      5075 Goku→SyntaxError(41) surplus 185 | 960535 | EXEC | (0,55] | 176600 / 60765 | ACC |  L8604563
+      5100 Marlborough→Conde(49) surplus 185 | 679827 | EXEC | (0,30] | 123484 / 42489 | ACC |  L8604566
+      5145 Tomato→Conde(49) squad rescue 106 | 271045 | EXEC | (0,75] | 28596 / 17104 | ACC |  L8604588
+      5180 Goku→SyntaxError(41) surplus 185 | 841464 | EXEC | (0,40] | 152844 / 52591 | ? |  L8604595
+      5210 Khazar→Lelouch(36) surplus 153 | 1009776 | AMB | (>100) | None / None | REJ |  L8604601
+      5230 Interpol→Moldavia(35) surplus 185 | 251761 | EXEC | (0,80] | 45730 / 15735 | ACC |  L8604618
+      5250 Tomato→Conde(49) squad rescue 56 | 257023 | EXEC | (0,60] | 14306 / 16063 | ACC |  L8604620
+      5255 Lelouch→Khazar(38) surplus 185 | 547568 | NOEXEC | (>165) | None / None | REJ |  L8604622
+      5275 Lelouch→Anya(45) surplus 185 | 556821 | EXEC | (0,35] | 102324 / 35208 | ACC |  L8604625
+      5295 Senna→Khazar(38) surplus 153 | 935366 | EXEC | (0,15] | 143219 / 59519 | ACC |  L8604634
+      5300 Anya→Khazar(38) surplus 153 | 478612 | AMB | (>100) | None / None | REJ |  L8604635
+      5310 Marlborough→Scorpion(42) surplus 185 | 678838 | EXEC | (0,90] | 123304 / 42427 | ACC |  L8604645
+      5320 Khazar→Anya(45) surplus 153 | 1141971 | AMB | (>0) | None / None | ? |  L8604653
+      5325 Scorpion→Cumania(39) surplus 153 | 379392 | AMB | (>165) | None / None | ? |  L8604654
+      5335 Anya→Khazar(38) surplus 153 | 521610 | EXEC | (0,65] | 79936 / 33220 | ACC |  L8604656
+      5370 Angkor→Moldavia(35) surplus 153 | 1048287 | EXEC | (0,30] | 157652 / 65517 | ACC |  L8604664
+      5420 Tomato→Scorpion(42) squad rescue 126 | 277046 | AMB | (>160) | None / None | ? |  L8604684
+      5420 Lelouch→Anya(45) surplus 185 | 515496 | EXEC | (0,70] | 96959 / 33362 | ACC |  L8604686
+      5435 Goku→SyntaxError(41) surplus 185 | 899169 | NOEXEC | (>195) | None / None | ? |  L8604691
+      5440 Two Sicilies→SyntaxError(41) surplus 185 | 236895 | EXEC | (20,50] | 42989 / 14791 | REJ |  L8604696
+      5460 Interpol→Angkor(31) surplus 185 | 253169 | EXEC | (0,30] | 45985 / 15823 | ACC |  L8604698
+      5460 SyntaxError→Goku(37) surplus 280 | 1745284 | AMB | (>0) | None / None | ACC |  L8604702
+      5460 Two Sicilies→Goku(37) surplus 185 | 234096 | EXEC | (0,30] | 33212 / 11427 | ? | 连发@5440 L8604704
+      5470 Anya→Khazar(38) squad rescue 155 | 415030 | EXEC | (0,20] | 63227 / 25939 | ACC |  L8604705
+      5520 Cumania→Marlborough(29) squad rescue 62 | 502561 | EXEC | (0,60] | 30919 / 31410 | ACC |  L8604723
+      5530 Scorpion→Marlborough(29) squad rescue 61 | 299342 | EXEC | (0,50] | 18124 / 18708 | ACC |  L8604724
+      5630 Goku→SyntaxError(41) squad rescue 97 | 1188807 | EXEC | (0,40] | 113772 / 74300 | ACC |  L8604750
+      5640 Lelouch→Anya(45) surplus 185 | 517997 | EXEC | (0,30] | 94089 / 32374 | ACC |  L8604751
+      5680 Interpol→Moldavia(35) surplus 185 | 251971 | EXEC | (0,80] | 45768 / 15748 | ACC |  L8604768
+      5710 Cumania→Tomato(30) squad rescue 147 | 551442 | EXEC | (0,50] | 79700 / 34465 | ACC |  L8604769
+      5715 Scorpion→Tomato(30) squad rescue 134 | 323823 | EXEC(夹小) | (0,45] | 14940 / 20421 | ACC |  L8604772
+      5750 Anya→Senna(32) surplus 153 | 435836 | EXEC | (10,60] | 65997 / 27427 | ACC |  L8604774
+      5760 Khazar→Senna(32) surplus 153 | 1243922 | EXEC(夹小) | (0,180] | 87844 / 54740 | ? |  L8604787
+      5765 Angkor→Moldavia(35) surplus 153 | 1123550 | AMB | (>0) | None / None | ? |  L8604788
+      5780 SyntaxError→Goku(37) surplus 153 | 1532216 | AMB | (>160) | None / None | ACC |  L8604795
+      5805 Scorpion→Tomato(30) squad rescue 121 | 319164 | NOEXEC(收款方已出局) | (>0) | None / None | ACC |  L8604798
+      5805 Senna→Khazar(38) squad rescue 155 | 874007 | EXEC(夹小) | (0,135] | 1555 / 41972 | ACC |  L8604799
+      5810 Anya→Khazar(38) squad rescue 62 | 368885 | EXEC | (0,40] | 22695 / 23055 | ACC |  L8604800
+      5810 Marlborough→Tomato(30) squad rescue 60 | 640290 | NOEXEC(收款方已出局) | (>40) | None / None | REJ |  L8604801
+      5810 Goku→SyntaxError(41) squad rescue 155 | 1329900 | AMB | (>130) | None / None | ACC |  L8604802
+      5850 Lelouch→Khazar(38) surplus 185 | 514763 | EXEC | (0,90] | 93501 / 32172 | ACC |  L8604813
+      5900 Interpol→Moldavia(35) surplus 185 | 254216 | EXEC | (0,40] | 46175 / 15888 | ACC |  L8604825
+      5910 Marlborough→Cumania(39) surplus 153 | 715841 | EXEC | (0,30] | 107655 / 44740 | ACC |  L8604826
+      5980 SyntaxError→Goku(37) surplus 153 | 1955700 | AMB | (>320) | None / None | ? |  L8604848
+      6010 Two Sicilies→Goku(37) surplus 185 | 215190 | EXEC | (0,20] | 39087 / 13449 | ACC |  L8604855
+      6050 Goku→SyntaxError(41) surplus 153 | 1653320 | EXEC | (0,70] | 248643 / 103332 | ACC |  L8604871
+      6070 Lelouch→Khazar(38) surplus 185 | 517803 | EXEC | (0,50] | 94054 / 32362 | ACC |  L8604873
+      6120 Interpol→Moldavia(35) surplus 185 | 252497 | AMB | (>0) | None / None | ? |  L8604878
+      6125 SyntaxError→Goku(37) surplus 153 | 1547795 | EXEC | (0,175] | 234961 / 97646 | ? |  L8604890
+      6165 Angkor→Interpol(34) squad rescue 72 | 993505 | AMB | (>225) | None / None | ACC |  L8604896
+      6165 Moldavia→Interpol(34) squad rescue 100 | 1280633 | EXEC | (0,45] | 127916 / 81056 | ACC |  L8604897
+      6190 Goku→SyntaxError(41) squad rescue 155 | 1301817 | EXEC | (0,20] | 202949 / 83261 | ACC |  L8604900
+      6190 Senna→Khazar(38) squad rescue 56 | 948327 | EXEC | (0,20] | 54566 / 61267 | ACC |  L8604901
+      6220 Anya→Khazar(38) squad rescue 68 | 411022 | AMB | (>170) | None / None | ? |  L8604916
+      6240 Two Sicilies→Goku(37) surplus 185 | 215263 | EXEC | (20,60] | 39965 / 13751 | REJ |  L8604917
+      6260 Lelouch→Khazar(38) squad rescue 155 | 993450 | EXEC | (0,20] | 151345 / 62090 | ACC |  L8604921
+      6260 Two Sicilies→Goku(37) surplus 185 | 220023 | EXEC | (0,40] | 30208 / 10394 | ? | 连发@6240 L8604922
+      6275 Khazar→Anya(45) surplus 153 | 379827 | EXEC | (0,25] | 57288 / 23808 | ACC |  L8604923
+      6280 Lelouch→Anya(45) surplus 280 | 785943 | EXEC | (0,20] | 215673 / 49121 | ACC |  L8604924
+      6300 Lelouch→Senna(32) surplus 185 | 537770 | EXEC | (0,90] | 97680 / 33610 | ACC |  L8604929
+      6345 Anya→Senna(32) surplus 153 | 618600 | EXEC | (0,20] | 93031 / 38662 | ACC |  L8604941
+      6360 Khazar→Senna(32) surplus 153 | 312485 | EXEC | (0,30] | 46994 / 19530 | ACC |  L8604942
+      6365 Anya→Senna(32) surplus 153 | 490461 | EXEC | (0,25] | 74284 / 30871 | ACC |  L8604943
+      6405 SyntaxError→Goku(37) surplus 280 | 1609015 | EXEC | (0,75] | 445377 / 101438 | ACC |  L8604959
+      6425 Interpol→Moldavia(35) surplus 185 | 285399 | EXEC | (0,20] | 52327 / 18005 | ACC |  L8604961
+      6445 Interpol→Moldavia(35) surplus 185 | 220144 | EXEC | (0,35] | 40426 / 13910 | ACC |  L8604962
+      6450 Anya→Khazar(38) squad rescue 89 | 429586 | AMB | (>175) | None / None | REJ |  L8604964
+      6450 Senna→Khazar(38) squad rescue 155 | 1197102 | AMB | (>120) | None / None | REJ |  L8604965
+      6490 Lelouch→Anya(45) surplus 185 | 514360 | EXEC | (0,80] | 97977 / 33712 | ACC |  L8604979
+      6525 Goku→SyntaxError(41) squad rescue 155 | 1578209 | EXEC | (0,20] | 241536 / 99091 | ACC |  L8604983
+      6545 Goku→SyntaxError(41) surplus 185 | 1259032 | EXEC | (0,20] | 231229 / 79562 | ACC |  L8604984
+      6565 Goku→SyntaxError(41) surplus 185 | 974051 | EXEC | (0,95] | 179103 / 61626 | ACC |  L8604986
+      6610 Interpol→Moldavia(35) surplus 185 | 206074 | AMB | (>230) | None / None | ACC |  L8605001
+      6615 Scorpion→Marlborough(29) squad rescue 155 | 482402 | EXEC | (0,45] | 73667 / 30222 | ACC |  L8605003
+      6625 Anya→Senna(32) surplus 153 | 576619 | EXEC | (0,35] | 86926 / 36125 | ACC |  L8605006
+      6665 Anya→Senna(32) surplus 153 | 467159 | AMB | (>105) | None / None | REJ |  L8605024
+      6685 Scorpion→Marlborough(29) surplus 153 | 397081 | EXEC | (0,65] | 61597 / 25599 | ? |  L8605028
+      6700 Lelouch→Anya(45) surplus 185 | 516728 | EXEC | (0,50] | 93858 / 32295 | ACC |  L8605030
+      6750 Anya→Senna(32) surplus 153 | 500900 | AMB | (>180) | None / None | REJ |  L8605040
+      6770 Anya→Senna(32) surplus 153 | 490461 | AMB | (>160) | None / None | ACC |  L8605052
+      6785 Marlborough→Scorpion(42) squad rescue 155 | 976800 | EXEC | (0,50] | 148809 / 61050 | ACC |  L8605053
+      6835 Goku→Two Sicilies(33) surplus 185 | 1066575 | EXEC | (0,95] | 196116 / 67480 | ACC |  L8605059
+      6835 Marlborough→Scorpion(42) surplus 280 | 795601 | EXEC(夹小) | (0,50] | 59304 / 50053 | REJ |  L8605060
+      6835 SyntaxError→Two Sicilies(33) surplus 280 | 1831017 | AMB | (>0) | None / None | ? |  L8605061
+      6840 Moldavia→Angkor(31) surplus 153 | 1172994 | AMB | (>180) | None / None | ACC |  L8605066
+      6855 Two Sicilies→SyntaxError(41) surplus 280 | 474900 | AMB | (>70) | None / None | ACC |  L8605073
+      6870 Interpol→Angkor(31) surplus 185 | 206180 | EXEC | (0,60] | 37450 / 12886 | ACC |  L8605074
+      6885 Marlborough→Scorpion(42) surplus 185 | 715269 | EXEC(夹小) | (0,25] | 64510 / 45124 | ACC |  L8605077
+      6885 Two Sicilies→SyntaxError(41) squad rescue 155 | 377444 | AMB | (>40) | None / None | ACC |  L8605078
+      6905 Two Sicilies→SyntaxError(41) squad rescue 155 | 339303 | EXEC | (0,20] | 52745 / 21639 | ACC |  L8605081
+      6910 Marlborough→Scorpion(42) surplus 185 | 633294 | EXEC(夹小) | (0,20] | 48603 / 39580 | ACC |  L8605082
+      6920 Lelouch→Anya(45) surplus 185 | 518860 | EXEC | (10,100] | 95348 / 32808 | ACC |  L8605083
+      6925 Two Sicilies→SyntaxError(41) surplus 185 | 271681 | AMB | (>0) | None / None | ? |  L8605087
+      6940 Goku→SyntaxError(41) surplus 185 | 934817 | EXEC | (0,80] | 169800 / 58426 | ACC |  L8605099
+      6940 Marlborough→Scorpion(42) surplus 185 | 565625 | EXEC(夹小) | (0,80] | 8893 / 36606 | ACC |  L8605100
+      6985 Scorpion→Marlborough(29) surplus 153 | 336952 | EXEC | (125,215] | 40907 / 17000 | ACC |  L8605107
+      6990 Senna→Anya(45) surplus 153 | 1697721 | AMB | (>120) | None / None | ACC |  L8605109
+      7010 Anya→Senna(32) surplus 153 | 661500 | EXEC | (10,20] | 99483 / 41343 | ACC |  L8605111
+      7020 Angkor→Moldavia(35) surplus 153 | 1364655 | EXEC | (0,90] | 211554 / 87918 | ACC |  L8605118
+      7030 Anya→Senna(32) surplus 153 | 524474 | EXEC | (0,80] | 78875 / 32779 | ACC |  L8605127
+      7040 Moldavia→Angkor(31) surplus 153 | 1111866 | AMB | (>0) | None / None | ? |  L8605128
+      7100 Interpol→Moldavia(35) surplus 185 | 209249 | EXEC | (10,100] | 38426 / 13221 | ACC |  L8605133
+      7130 Lelouch→Senna(32) surplus 185 | 515253 | EXEC | (0,70] | 93590 / 32203 | ACC |  L8605149
+      7150 Angkor→Moldavia(35) squad rescue 55 | 1268069 | EXEC | (0,50] | 69347 / 79254 | ACC |  L8605151
+      7150 Goku→SyntaxError(41) surplus 185 | 940566 | EXEC | (0,50] | 170844 / 58785 | ACC |  L8605152
+      7275 Marlborough→Scorpion(42) squad rescue 84 | 693217 | EXEC | (0,15] | 58169 / 43798 | ACC |  L8605177
+      7320 Scorpion→Marlborough(29) surplus 280 | 167964 | EXEC | (0,65] | 46091 / 10497 | ACC |  L8605194
+      7320 Interpol→Moldavia(35) surplus 185 | 206924 | EXEC | (0,60] | 37585 / 12932 | ACC |  L8605195
+      7350 Lelouch→Senna(32) surplus 185 | 517929 | EXEC | (0,30] | 94076 / 32370 | ACC |  L8605197
+      7350 Goku→SyntaxError(41) surplus 185 | 935016 | EXEC | (0,30] | 169836 / 58438 | ACC |  L8605198
+      7385 Scorpion→Marlborough(29) surplus 185 | 118881 | AMB | (>175) | None / None | ACC |  L8605213
+      7410 Two Sicilies→SyntaxError(41) surplus 185 | 273713 | AMB | (>150) | None / None | ACC |  L8605218
+      7515 Moldavia→Angkor(31) squad rescue 144 | 647875 | EXEC | (0,45] | 92574 / 40860 | ACC |  L8605237
+      7550 Interpol→Angkor(31) surplus 185 | 207073 | AMB | (>10) | None / None | ? |  L8605241
+      7560 Goku→SyntaxError(41) surplus 185 | 941094 | AMB | (>180) | None / None | ACC |  L8605244
+      7560 Anya→Senna(32) surplus 185 | 358073 | EXEC | (0,90] | 65040 / 22379 | ACC |  L8605249
+      7560 Lelouch→Senna(32) surplus 185 | 514872 | AMB | (>180) | None / None | ? |  L8605253
+      7590 Senna→Anya(45) squad rescue 117 | 1735428 | AMB | (>0) | None / None | ? |  L8605258
+      7655 Moldavia→Angkor(31) squad rescue 89 | 609253 | EXEC | (0,85] | 54115 / 38481 | ACC |  L8605271
+      7700 Two Sicilies→SyntaxError(41) surplus 185 | 278510 | EXEC | (20,40] | 51728 / 17798 | REJ |  L8605276
+      7720 Two Sicilies→SyntaxError(41) surplus 185 | 284783 | EXEC | (0,20] | 39099 / 13453 | ? | 连发@7700 L8605277
+      7860 Marlborough→Scorpion(42) squad rescue 56 | 786318 | EXEC | (0,60] | 43769 / 49144 | ACC |  L8605312
+      7900 Goku→SyntaxError(41) surplus 185 | 935112 | EXEC | (0,20] | 169854 / 58444 | ACC |  L8605314
+      7960 Scorpion→Marlborough(29) surplus 280 | 82220 | EXEC | (0,20] | 22562 / 5138 | ACC |  L8605330
+      7980 Scorpion→Marlborough(29) surplus 185 | 55279 | EXEC | (0,30] | 10040 / 3454 | ACC |  L8605333
+      7995 Goku→SyntaxError(41) surplus 280 | 1822500 | EXEC | (0,15] | 500119 / 113906 | ACC |  L8605335
+      8010 Senna→Lelouch(36) surplus 153 | 1289178 | EXEC | (0,90] | 183965 / 76453 | ACC |  L8605346
+      8015 Goku→SyntaxError(41) surplus 185 | 1223460 | EXEC | (0,20] | 224963 / 77406 | ACC |  L8605351
+      8035 Goku→Two Sicilies(33) surplus 185 | 947747 | EXEC | (0,65] | 174283 / 59968 | ACC |  L8605355
+      8035 SyntaxError→Two Sicilies(33) surplus 280 | 2076939 | AMB | (>95) | None / None | ACC |  L8605356
+      8040 Moldavia→Angkor(31) surplus 153 | 726858 | EXEC | (0,60] | 109312 / 45428 | ACC |  L8605357
+      8070 Two Sicilies→SyntaxError(41) surplus 153 | 400455 | AMB | (>0) | None / None | ? |  L8605363
+      8085 SyntaxError→Two Sicilies(33) surplus 185 | 1877263 | AMB | (>45) | None / None | ACC |  L8605364
+      8110 Interpol→Angkor(31) surplus 185 | 210004 | EXEC | (0,80] | 39417 / 13563 | ACC |  L8605380
+      8130 SyntaxError→Two Sicilies(33) surplus 185 | 1657033 | AMB | (>0) | None / None | ? |  L8605383
+      8250 Moldavia→Angkor(31) surplus 153 | 720610 | EXEC | (0,30] | 111634 / 46393 | ACC |  L8605412
+      8250 Goku→Two Sicilies(33) surplus 185 | 966992 | EXEC(夹小) | (30,120] | 7230 / 51056 | REJ |  L8605413
+      8255 Two Sicilies→SyntaxError(41) surplus 153 | 531588 | AMB | (>205) | None / None | ? |  L8605417
+      8270 Goku→Two Sicilies(33) surplus 185 | 991121 | EXEC(夹小) | (0,10] | 123789 / 61945 | ACC | 连发@8250 L8605418
+      8270 Lelouch→Senna(32) surplus 185 | 572711 | EXEC | (20,100] | 109089 / 37536 | REJ |  L8605420
+      8290 Lelouch→Senna(32) surplus 185 | 586305 | EXEC | (0,80] | 84413 / 29045 | ? | 连发@8270 L8605438
+      8310 SyntaxError→Two Sicilies(33) surplus 185 | 1611954 | AMB | (>40) | None / None | REJ |  L8605444
+      8330 SyntaxError→Two Sicilies(33) surplus 185 | 1654136 | AMB | (>20) | None / None | REJ |  L8605446
+      8335 Senna→Lelouch(36) surplus 185 | 833066 | AMB | (>0) | None / None | ? |  L8605447
+      8340 Interpol→Moldavia(35) surplus 185 | 210066 | EXEC | (120,210] | 25154 / 8655 | REJ |  L8605450
+      8350 SyntaxError→Two Sicilies(33) surplus 185 | 1697422 | AMB | (>0) | None / None | ? |  L8605454
+      8360 Interpol→Moldavia(35) surplus 185 | 214712 | EXEC | (100,190] | 19013 / 6542 | REJ | 连发@8340 L8605462
+      8380 Interpol→Moldavia(35) surplus 185 | 219460 | EXEC | (20,80] | 41231 / 14187 | REJ | 连发@8360 L8605470
+      8400 Interpol→Moldavia(35) surplus 185 | 226996 | EXEC | (0,60] | 31165 / 10723 | ? | 连发@8380 L8605475
+      8425 Lelouch→Senna(32) surplus 185 | 613260 | AMB | (>215) | None / None | REJ |  L8605483
+      8445 Lelouch→Senna(32) surplus 185 | 627817 | AMB | (>195) | None / None | REJ |  L8605493
+      8465 Lelouch→Senna(32) surplus 185 | 642720 | AMB | (>175) | None / None | ? |  L8605500
+      8510 Marlborough→Scorpion(42) surplus 280 | 1359339 | EXEC(夹小) | (0,40] | 39326 / 84958 | ACC |  L8605513
+      8595 Marlborough→Scorpion(42) surplus 280 | 1288452 | EXEC(夹小) | (0,45] | 18324 / 81552 | ACC |  L8605538
+      8635 Goku→Two Sicilies(33) surplus 185 | 1230148 | EXEC(夹小) | (0,30] | 108061 / 77814 | ? |  L8605546
+      8635 SyntaxError→Two Sicilies(33) surplus 185 | 1641578 | EXEC | (5,95] | 302053 / 103932 | ? |  L8605549
+      8640 Marlborough→Scorpion(42) surplus 280 | 1236075 | EXEC(夹小) | (0,30] | 44998 / 77254 | ACC |  L8605552
+      8665 Goku→Two Sicilies(33) surplus 185 | 1088282 | EXEC | (0,65] | 200127 / 68861 | ? |  L8605566
+      8670 Marlborough→Scorpion(42) surplus 280 | 1141503 | EXEC(夹小) | (0,45] | 49561 / 71343 | ACC |  L8605568
+      8715 Marlborough→Scorpion(42) surplus 185 | 1073420 | EXEC(夹小) | (105,195] | 6393 / 58100 | REJ |  L8605575
+      8735 Marlborough→Scorpion(42) surplus 280 | 1095103 | EXEC(夹小) | (0,45] | 26959 / 69107 | ACC | 连发@8715 L8605599
+      8750 SyntaxError→Two Sicilies(33) surplus 185 | 1468829 | AMB | (>160) | None / None | REJ |  L8605594
+      8760 Goku→Two Sicilies(33) surplus 185 | 943551 | NOEXEC | (>150) | None / None | REJ |  L8605597
+      8770 SyntaxError→Two Sicilies(33) surplus 185 | 1507265 | AMB | (>185) | None / None | ACC |  L8605601
+      8780 Goku→Two Sicilies(33) surplus 185 | 967096 | EXEC | (0,40] | 175663 / 60443 | ACC |  L8605602
+      8780 Marlborough→Scorpion(42) surplus 185 | 1054741 | EXEC(夹小) | (0,20] | 19793 / 65921 | ACC |  L8605608
+      8800 Marlborough→Scorpion(42) surplus 185 | 1002940 | EXEC(夹小) | (0,20] | 33533 / 62683 | ACC |  L8605616
+      8925 Marlborough→Scorpion(42) surplus 185 | 986606 | EXEC(夹小) | (0,45] | 29294 / 62408 | ACC |  L8605659
+      8940 Senna→Lelouch(36) surplus 280 | 1055244 | EXEC | (0,60] | 293412 / 66827 | ACC |  L8605665
+      8945 Moldavia→Angkor(31) surplus 153 | 421994 | AMB | (>0) | None / None | ACC |  L8605664
+      8955 SyntaxError→Two Sicilies(33) surplus 185 | 1495604 | AMB | (>225) | None / None | ACC |  L8605671
+      8970 Marlborough→Scorpion(42) surplus 185 | 952978 | EXEC(夹小) | (0,30] | 19749 / 59561 | ACC |  L8605673
+      8970 Goku→Two Sicilies(33) surplus 185 | 952069 | NOEXEC | (>185) | None / None | REJ |  L8605674
+      9010 Senna→Lelouch(36) surplus 185 | 756752 | EXEC | (20,80] | 140719 / 48419 | REJ |  L8605697
+      9015 Goku→Two Sicilies(33) surplus 185 | 1012476 | EXEC(夹小) | (0,75] | 105451 / 65662 | ACC |  L8605701
+      9015 Marlborough→Scorpion(42) surplus 185 | 927520 | NOEXEC | (>160) | None / None | REJ |  L8605703
+      9020 Angkor→Moldavia(35) surplus 185 | 387917 | EXEC | (0,20] | 72027 / 24783 | ACC |  L8605706
+      9030 Senna→Lelouch(36) surplus 185 | 774716 | EXEC | (0,60] | 106364 / 36598 | ? | 连发@9010 L8605707
+      9035 Marlborough→Scorpion(42) surplus 185 | 950100 | EXEC(夹小) | (0,40] | 16354 / 60099 | ACC |  L8605713
+      9040 Angkor→Moldavia(35) surplus 185 | 299518 | EXEC | (0,50] | 54404 / 18719 | ACC |  L8605715
+      9075 Marlborough→Scorpion(42) surplus 185 | 918264 | NOEXEC | (>195) | None / None | REJ |  L8605724
+      9095 Marlborough→Scorpion(42) surplus 185 | 940619 | EXEC(夹小) | (0,20] | 15323 / 60848 | ACC |  L8605736
+      9115 Marlborough→Scorpion(42) surplus 185 | 897408 | EXEC(夹小) | (0,60] | 16622 / 58148 | ACC |  L8605745
+      9155 Goku→Two Sicilies(33) surplus 185 | 1027311 | NOEXEC | (>205) | None / None | REJ |  L8605757
+      9175 Marlborough→Scorpion(42) surplus 185 | 887652 | NOEXEC | (>185) | None / None | REJ |  L8605763
+      9175 Goku→Two Sicilies(33) surplus 185 | 1052945 | EXEC | (0,95] | 193629 / 66625 | ACC |  L8605767
+      9195 Marlborough→Scorpion(42) surplus 185 | 909262 | EXEC(夹小) | (0,20] | 16867 / 58137 | ACC |  L8605775
+      9215 Marlborough→Scorpion(42) surplus 185 | 865752 | EXEC(夹小) | (0,55] | 18409 / 56097 | ACC |  L8605780
+      9270 SyntaxError→Two Sicilies(33) surplus 185 | 1544274 | AMB | (>170) | None / None | ACC |  L8605801
+      9330 Interpol→Angkor(31) surplus 185 | 245206 | EXEC | (0,30] | 44539 / 15325 | ACC |  L8605815
+      9395 Marlborough→Scorpion(42) surplus 185 | 997626 | EXEC(夹小) | (0,55] | 32842 / 63727 | ACC |  L8605842
+      9430 Interpol→Angkor(31) surplus 185 | 209535 | EXEC | (0,20] | 38060 / 13095 | ACC |  L8605853
+      9440 Goku→Two Sicilies(33) surplus 185 | 1153515 | EXEC(夹小) | (10,100] | 111284 / 72988 | ? |  L8605856
+      9440 SyntaxError→Two Sicilies(33) surplus 185 | 1588167 | AMB | (>150) | None / None | ? |  L8605857
+      9525 Senna→Lelouch(36) surplus 185 | 811922 | EXEC | (15,105] | 150904 / 51924 | ? |  L8605886
+      9530 Marlborough→Scorpion(42) surplus 185 | 1084844 | EXEC(夹小) | (10,40] | 64296 / 68473 | ? |  L8605887
+      9550 Goku→Two Sicilies(33) surplus 185 | 1138550 | NOEXEC | (>170) | None / None | REJ |  L8605902
+      9550 SyntaxError→Two Sicilies(33) surplus 185 | 1625828 | AMB | (>110) | None / None | REJ |  L8605903
+      9570 Goku→Two Sicilies(33) surplus 185 | 1166961 | NOEXEC | (>150) | None / None | REJ |  L8605908
+      9570 SyntaxError→Two Sicilies(33) surplus 185 | 1668373 | AMB | (>90) | None / None | REJ |  L8605910
+      9570 Marlborough→Scorpion(42) surplus 185 | 997291 | NOEXEC | (>150) | None / None | REJ |  L8605912
+      9590 Goku→Two Sicilies(33) surplus 185 | 1196080 | EXEC | (0,30] | 217256 / 74755 | ? |  L8605915
+      9590 SyntaxError→Two Sicilies(33) surplus 185 | 1712031 | AMB | (>220) | None / None | ? |  L8605916
+      9590 Marlborough→Scorpion(42) surplus 185 | 1021268 | NOEXEC | (>220) | None / None | REJ |  L8605918
+      9610 Marlborough→Scorpion(42) surplus 185 | 1054424 | NOEXEC | (>200) | None / None | REJ |  L8605926
+      9620 Goku→Two Sicilies(33) surplus 185 | 950571 | AMB | (>100) | None / None | REJ |  L8605927
+      9630 Marlborough→Scorpion(42) surplus 185 | 1076789 | EXEC | (20,90] | 201434 / 69310 | REJ |  L8605940
+      9640 SyntaxError→Two Sicilies(33) surplus 185 | 1495092 | AMB | (>170) | None / None | REJ |  L8605934
+      9640 Goku→Two Sicilies(33) surplus 185 | 974291 | EXEC | (0,80] | 176970 / 60893 | ACC |  L8605935
+      9650 Marlborough→Scorpion(42) surplus 280 | 1098431 | NOEXEC | (>160) | None / None | ACC |  L8605950
+      9660 SyntaxError→Two Sicilies(33) surplus 185 | 1534216 | AMB | (>150) | None / None | ACC |  L8605949
+      9660 Interpol→Angkor(31) surplus 185 | 209741 | NOEXEC | (>150) | None / None | REJ |  L8605952
+      9680 Interpol→Angkor(31) surplus 185 | 214380 | NOEXEC | (>165) | None / None | REJ |  L8605957
+      9700 Interpol→Angkor(31) surplus 185 | 221804 | NOEXEC | (>200) | None / None | REJ |  L8605961
+      9720 Interpol→Angkor(31) surplus 185 | 226709 | NOEXEC | (>180) | None / None | REJ |  L8605976
+      9740 Interpol→Angkor(31) surplus 185 | 231723 | NOEXEC | (>160) | None / None | REJ |  L8605982
+      9760 Interpol→Angkor(31) surplus 185 | 236847 | AMB | (>140) | None / None | REJ |  L8605989
+      9800 Senna→Lelouch(36) surplus 185 | 874975 | NOEXEC(收款方已出局) | (>0) | None / None | ? |  L8605977
+      9815 Scorpion→Marlborough(29) squad rescue 155 | 276592 | NOEXEC(收款方已出局) | (>85) | None / None | REJ |  L8605999
+      9825 Interpol→Angkor(31) surplus 185 | 255653 | AMB | (>75) | None / None | REJ |  L8606017
+      9835 Scorpion→Marlborough(29) squad rescue 155 | 277006 | NOEXEC(收款方已出局) | (>65) | None / None | REJ |  L8606007
+      9845 Interpol→Angkor(31) surplus 185 | 261308 | EXEC | (0,55] | 49047 / 16876 | ACC |  L8606032
+     10000 Angkor→Interpol(34) surplus 153 | 490795 | AMB | (>110) | None / None | REJ |  L8606063
+     10020 Angkor→Interpol(34) surplus 153 | 497393 | AMB | (>90) | None / None | REJ |  L8606067
+     10050 Angkor→Interpol(34) surplus 153 | 506801 | AMB | (>60) | None / None | REJ |  L8606075
+     10070 Angkor→Interpol(34) surplus 153 | 512747 | AMB | (>40) | None / None | REJ |  L8606079
+     10090 Angkor→Interpol(34) surplus 153 | 518402 | AMB | (>20) | None / None | REJ |  L8606081
+     10110 Angkor→Interpol(34) surplus 153 | 527801 | AMB | (>0) | None / None | ? |  L8606084
+     10435 Goku→SyntaxError(41) surplus 185 | 974821 | AMB | (>95) | None / None | REJ |  L8606115
+     10735 Goku→Two Sicilies(33) surplus 185 | 972068 | EXEC | (0,155] | 291675 / 100361 | ? |  L8606158
+     10735 SyntaxError→Two Sicilies(33) surplus 153 | 2527378 | AMB | (>0) | None / None | ACC |  L8606159
+     10770 SyntaxError→Goku(37) surplus 280 | 2334162 | AMB | (>0) | None / None | ACC |  L8606160
+     10770 Two Sicilies→Goku(37) surplus 153 | 1106652 | EXEC | (0,30] | 168124 / 69869 | ACC |  L8606161
+     10795 Goku→Two Sicilies(33) surplus 280 | 1605781 | NOEXEC | (>185) | None / None | ACC |  L8606163
+     10800 SyntaxError→Two Sicilies(33) surplus 185 | 1570633 | AMB | (>0) | None / None | REJ |  L8606168

@@ -1,0 +1,3863 @@
+{
+ "matchId": "B039",
+ "reviewer": "R06",
+ "protocol": "v2.0",
+ "context": {
+  "time": "2026-11-10T05:27:31Z",
+  "squad": "squad20",
+  "bots": 20,
+  "strategyVersion": "v27-team-c110",
+  "gameVersion": "2.17.1",
+  "map": 24,
+  "mapSeed": 7721,
+  "mapLand": 762763,
+  "teams": 3,
+  "humans": 74,
+  "ourTeam": 3,
+  "teamSplitTrue": {
+   "1": 2,
+   "2": 7,
+   "3": 11
+  },
+  "teamSplitSource": "engine-replay(bj.fX)",
+  "teamSplitCard": {
+   "2": 3,
+   "3": 4
+  },
+  "presence": {
+   "died": 6,
+   "left": 13,
+   "end": 1
+  },
+  "leftTicks": {
+   "Andalusia": 112,
+   "Chile": 112,
+   "Bellingham": 224,
+   "Ryu": 224,
+   "VoidWalker": 224,
+   "Ashanti": 1099,
+   "Manstein": 1183,
+   "Kazuya": 1295,
+   "Maple Leaf": 1456,
+   "HighPing": 1456,
+   "BlackRock": 1456,
+   "Belgium": 1813,
+   "DoomSlayer": 2016
+  },
+  "neverPlayed": [
+   "Bellingham",
+   "Andalusia",
+   "Ryu",
+   "Chile",
+   "VoidWalker"
+  ],
+  "sameMatchPeer": "A058",
+  "dataCompleteness": {
+   "results": true,
+   "squadLog": true,
+   "truth": "真引擎重放（录像 A058）到 t=8275；日志快照指纹 475/475 逐兵一致"
+  },
+  "contamination": [
+   "对局包按名字分号：Bohemia(45) 在 t=7650 后日志名变成 ErenYeager；4 条 left 结算行用的是换过的新名字（Tuscany/Sengoku/Parthia/Conquistador = 61/68/60/54）。本复盘按「日志快照的 (领土, 兵力) 与重放同拍完全相同」认号（475/475 条）",
+   "card.teamSplitCounts={2:3,3:4} 只数了有队号的结算行；真实分队取自真引擎重放里的队伍表",
+   "录像取自同局对手包 A058（与本局是同一场）；录像只含引擎接受的指令，内置 AI 与空壳的动作由重放算出",
+   "内置 AI 里有一个也叫 Pomerania（bot362，t=1620 前被吃掉），与我方 48 号同名；本文的 Pomerania 都指 48 号"
+  ],
+  "huskDeaths": [
+   {
+    "bot": "Bellingham",
+    "me": 46,
+    "team": 3,
+    "leftT": 224,
+    "diedT": 1209,
+    "landTakenLast900": [
+     {
+      "by": "bot292",
+      "cls": "内置AI",
+      "cells": 134
+     },
+     {
+      "by": "bot507",
+      "cls": "内置AI",
+      "cells": 116
+     }
+    ]
+   },
+   {
+    "bot": "Andalusia",
+    "me": 50,
+    "team": 3,
+    "leftT": 112,
+    "diedT": 1023,
+    "landTakenLast900": [
+     {
+      "by": "bot421",
+      "cls": "内置AI",
+      "cells": 160
+     }
+    ]
+   },
+   {
+    "bot": "Belgium",
+    "me": 51,
+    "team": 3,
+    "leftT": 1813,
+    "diedT": 3222,
+    "landTakenLast900": [
+     {
+      "by": "Furry🦊 [Corgi]",
+      "cls": "敌方真人",
+      "cells": 2920
+     },
+     {
+      "by": "Ice Barrier Clan",
+      "cls": "敌方真人",
+      "cells": 129
+     }
+    ]
+   },
+   {
+    "bot": "Ryu",
+    "me": 52,
+    "team": 3,
+    "leftT": 224,
+    "diedT": 1676,
+    "landTakenLast900": [
+     {
+      "by": "Player 362",
+      "cls": "敌方真人",
+      "cells": 180
+     },
+     {
+      "by": "bot426",
+      "cls": "内置AI",
+      "cells": 46
+     },
+     {
+      "by": "bot315",
+      "cls": "内置AI",
+      "cells": 41
+     }
+    ]
+   },
+   {
+    "bot": "Maple Leaf",
+    "me": 53,
+    "team": 2,
+    "leftT": 1456,
+    "diedT": 2501,
+    "landTakenLast900": [
+     {
+      "by": "[APEX] talon5",
+      "cls": "敌方真人",
+      "cells": 9896
+     }
+    ]
+   },
+   {
+    "bot": "DoomSlayer",
+    "me": 54,
+    "team": 1,
+    "leftT": 2016,
+    "diedT": 2914,
+    "landTakenLast900": [
+     {
+      "by": "Player 626",
+      "cls": "敌方真人",
+      "cells": 5113
+     },
+     {
+      "by": "*Bohemia",
+      "cls": "我方号·异队",
+      "cells": 291
+     }
+    ]
+   },
+   {
+    "bot": "Manstein",
+    "me": 56,
+    "team": 3,
+    "leftT": 1183,
+    "diedT": 2051,
+    "landTakenLast900": [
+     {
+      "by": "[GD]SYFER",
+      "cls": "敌方真人",
+      "cells": 4052
+     },
+     {
+      "by": "Рязань",
+      "cls": "敌方真人",
+      "cells": 3941
+     },
+     {
+      "by": "bot397",
+      "cls": "内置AI",
+      "cells": 242
+     }
+    ]
+   },
+   {
+    "bot": "Kazuya",
+    "me": 57,
+    "team": 1,
+    "leftT": 1295,
+    "diedT": 5863,
+    "landTakenLast900": [
+     {
+      "by": "Furry🦊 [Corgi]",
+      "cls": "敌方真人",
+      "cells": 6791
+     }
+    ]
+   },
+   {
+    "bot": "Chile",
+    "me": 58,
+    "team": 2,
+    "leftT": 112,
+    "diedT": 2100,
+    "landTakenLast900": [
+     {
+      "by": "*DoomSlayer",
+      "cls": "我方号·异队(空壳)",
+      "cells": 288
+     }
+    ]
+   },
+   {
+    "bot": "HighPing",
+    "me": 60,
+    "team": 3,
+    "leftT": 1456,
+    "diedT": 3064,
+    "landTakenLast900": [
+     {
+      "by": "Ice Barrier Clan",
+      "cls": "敌方真人",
+      "cells": 2726
+     },
+     {
+      "by": "Furry🦊 [Corgi]",
+      "cls": "敌方真人",
+      "cells": 458
+     }
+    ]
+   },
+   {
+    "bot": "VoidWalker",
+    "me": 61,
+    "team": 2,
+    "leftT": 224,
+    "diedT": 985,
+    "landTakenLast900": [
+     {
+      "by": "bot309",
+      "cls": "内置AI",
+      "cells": 122
+     },
+     {
+      "by": "bot90",
+      "cls": "内置AI",
+      "cells": 60
+     }
+    ]
+   },
+   {
+    "bot": "Ashanti",
+    "me": 65,
+    "team": 3,
+    "leftT": 1099,
+    "diedT": 3342,
+    "landTakenLast900": [
+     {
+      "by": "*Pomerania",
+      "cls": "我方号·异队",
+      "cells": 13329
+     },
+     {
+      "by": "Furry🦊 [Corgi]",
+      "cls": "敌方真人",
+      "cells": 2793
+     }
+    ]
+   },
+   {
+    "bot": "BlackRock",
+    "me": 68,
+    "team": 2,
+    "leftT": 1456,
+    "diedT": 3430,
+    "landTakenLast900": [
+     {
+      "by": "*Thanos",
+      "cls": "我方号·异队",
+      "cells": 4496
+     }
+    ]
+   }
+  ],
+  "truthEnd": 8275
+ },
+ "outcome": {
+  "result": "lost",
+  "resultLabel": "split_straggler_won",
+  "anyBotWon": true,
+  "ourTeamRank": 2,
+  "winnerTeam": 2,
+  "endTick": 8275,
+  "ourFinalShare": 0.013,
+  "peakSquadLandShare": 0.0921,
+  "peakPrimaryTeamShareSeen": 0.3987,
+  "note": "主队按卡片记为队3（输）；唯一活到终局的 Pomerania 在队2（赢）。按真实人数主队也是队3（11 个号）。阵亡拍以重放为准（比结算行早 5~11 拍）。peakSquadLandShare 是卡片按日志算的；重放里在场号合计领土的峰值是 t=1080 的 78,368 格（10.27%）。"
+ },
+ "timeline": [
+  {
+   "t": 90,
+   "alive": 20,
+   "seen": 20,
+   "husks": 0,
+   "squadLand": 249,
+   "squadLandShare": 0.0003,
+   "teamTroops": 16471,
+   "squadDens": 66.1,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 24,
+     "troops": 1496
+    },
+    "2": {
+     "bots": 7,
+     "land": 80,
+     "troops": 5701
+    },
+    "3": {
+     "bots": 11,
+     "land": 145,
+     "troops": 9274
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0013,
+     "troops": 14988,
+     "activeHumans": 24,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.0022,
+     "troops": 16496,
+     "activeHumans": 25,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0024,
+     "troops": 17170,
+     "activeHumans": 25,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0163,
+   "src": "engine-replay",
+   "teamLandShare": 0.0024,
+   "teamRank": 1,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.0022
+  },
+  {
+   "t": 180,
+   "alive": 18,
+   "seen": 18,
+   "husks": 2,
+   "squadLand": 2775,
+   "squadLandShare": 0.0036,
+   "teamTroops": 18754,
+   "squadDens": 6.8,
+   "boxed": 0,
+   "squadHuskLand": 34,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 324,
+     "troops": 2185
+    },
+    "2": {
+     "bots": 6,
+     "land": 1001,
+     "troops": 6120
+    },
+    "3": {
+     "bots": 10,
+     "land": 1450,
+     "troops": 10449
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0054,
+     "troops": 24087,
+     "activeHumans": 24,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.0064,
+     "troops": 21323,
+     "activeHumans": 24,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0062,
+     "troops": 21888,
+     "activeHumans": 24,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0293,
+   "src": "engine-replay",
+   "teamLandShare": 0.0062,
+   "teamRank": 2,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.0064
+  },
+  {
+   "t": 270,
+   "alive": 15,
+   "seen": 15,
+   "husks": 5,
+   "squadLand": 5357,
+   "squadLandShare": 0.007,
+   "teamTroops": 20326,
+   "squadDens": 3.8,
+   "boxed": 0,
+   "squadHuskLand": 113,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 768,
+     "troops": 3301
+    },
+    "2": {
+     "bots": 5,
+     "land": 1906,
+     "troops": 6322
+    },
+    "3": {
+     "bots": 8,
+     "land": 2683,
+     "troops": 10703
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0117,
+     "troops": 33376,
+     "activeHumans": 24,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.0119,
+     "troops": 34509,
+     "activeHumans": 23,
+     "huskLandShare": 0.0001
+    },
+    "3": {
+     "landShare": 0.0109,
+     "troops": 32814,
+     "activeHumans": 22,
+     "huskLandShare": 0.0001
+    }
+   },
+   "aiLandShare": 0.0479,
+   "src": "engine-replay",
+   "teamLandShare": 0.0109,
+   "teamRank": 3,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.0119
+  },
+  {
+   "t": 630,
+   "alive": 15,
+   "seen": 15,
+   "husks": 5,
+   "squadLand": 42511,
+   "squadLandShare": 0.0557,
+   "teamTroops": 85262,
+   "squadDens": 2.0,
+   "boxed": 0,
+   "squadHuskLand": 512,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 6852,
+     "troops": 14862
+    },
+    "2": {
+     "bots": 5,
+     "land": 14526,
+     "troops": 27131
+    },
+    "3": {
+     "bots": 8,
+     "land": 21133,
+     "troops": 43269
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0835,
+     "troops": 166297,
+     "activeHumans": 24,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.0899,
+     "troops": 141953,
+     "activeHumans": 22,
+     "huskLandShare": 0.0004
+    },
+    "3": {
+     "landShare": 0.0784,
+     "troops": 137052,
+     "activeHumans": 22,
+     "huskLandShare": 0.0004
+    }
+   },
+   "aiLandShare": 0.2873,
+   "src": "engine-replay",
+   "teamLandShare": 0.0784,
+   "teamRank": 3,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.0899
+  },
+  {
+   "t": 1170,
+   "alive": 14,
+   "seen": 14,
+   "husks": 4,
+   "squadLand": 74743,
+   "squadLandShare": 0.098,
+   "teamTroops": 891997,
+   "squadDens": 11.9,
+   "boxed": 5,
+   "squadHuskLand": 6491,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 14268,
+     "troops": 140936
+    },
+    "2": {
+     "bots": 5,
+     "land": 28798,
+     "troops": 291821
+    },
+    "3": {
+     "bots": 7,
+     "land": 31677,
+     "troops": 459240
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.2103,
+     "troops": 1354193,
+     "activeHumans": 21,
+     "huskLandShare": 0.0099
+    },
+    "2": {
+     "landShare": 0.2576,
+     "troops": 1106856,
+     "activeHumans": 21,
+     "huskLandShare": 0.0008
+    },
+    "3": {
+     "landShare": 0.2189,
+     "troops": 914808,
+     "activeHumans": 20,
+     "huskLandShare": 0.014
+    }
+   },
+   "aiLandShare": 0.2965,
+   "src": "engine-replay",
+   "teamLandShare": 0.2189,
+   "teamRank": 2,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.2576
+  },
+  {
+   "t": 1530,
+   "alive": 9,
+   "seen": 9,
+   "husks": 8,
+   "squadLand": 43802,
+   "squadLandShare": 0.0574,
+   "teamTroops": 1576555,
+   "squadDens": 36.0,
+   "boxed": 0,
+   "squadHuskLand": 44170,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 5493,
+     "troops": 208588
+    },
+    "2": {
+     "bots": 3,
+     "land": 17612,
+     "troops": 537887
+    },
+    "3": {
+     "bots": 5,
+     "land": 20697,
+     "troops": 830080
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.2576,
+     "troops": 3497431,
+     "activeHumans": 18,
+     "huskLandShare": 0.0243
+    },
+    "2": {
+     "landShare": 0.3521,
+     "troops": 3380448,
+     "activeHumans": 19,
+     "huskLandShare": 0.0216
+    },
+    "3": {
+     "landShare": 0.2928,
+     "troops": 2788078,
+     "activeHumans": 18,
+     "huskLandShare": 0.0323
+    }
+   },
+   "aiLandShare": 0.0851,
+   "src": "engine-replay",
+   "teamLandShare": 0.2928,
+   "teamRank": 2,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.3521
+  },
+  {
+   "t": 2070,
+   "alive": 7,
+   "seen": 7,
+   "husks": 8,
+   "squadLand": 41487,
+   "squadLandShare": 0.0544,
+   "teamTroops": 2081191,
+   "squadDens": 50.2,
+   "boxed": 0,
+   "squadHuskLand": 54941,
+   "perTeam": {
+    "2": {
+     "bots": 3,
+     "land": 22696,
+     "troops": 1034318
+    },
+    "3": {
+     "bots": 4,
+     "land": 18791,
+     "troops": 1046873
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.2863,
+     "troops": 7029781,
+     "activeHumans": 13,
+     "huskLandShare": 0.0812
+    },
+    "2": {
+     "landShare": 0.3453,
+     "troops": 6939413,
+     "activeHumans": 18,
+     "huskLandShare": 0.024
+    },
+    "3": {
+     "landShare": 0.3479,
+     "troops": 5703849,
+     "activeHumans": 17,
+     "huskLandShare": 0.0394
+    }
+   },
+   "aiLandShare": 0.014,
+   "src": "engine-replay",
+   "teamLandShare": 0.3479,
+   "teamRank": 1,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.3453
+  },
+  {
+   "t": 3060,
+   "alive": 7,
+   "seen": 7,
+   "husks": 5,
+   "squadLand": 62993,
+   "squadLandShare": 0.0826,
+   "teamTroops": 2571958,
+   "squadDens": 40.8,
+   "boxed": 0,
+   "squadHuskLand": 23625,
+   "perTeam": {
+    "2": {
+     "bots": 3,
+     "land": 40431,
+     "troops": 1469468
+    },
+    "3": {
+     "bots": 4,
+     "land": 22562,
+     "troops": 1102490
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.3395,
+     "troops": 12164089,
+     "activeHumans": 9,
+     "huskLandShare": 0.1108
+    },
+    "2": {
+     "landShare": 0.289,
+     "troops": 13538918,
+     "activeHumans": 14,
+     "huskLandShare": 0.0073
+    },
+    "3": {
+     "landShare": 0.3659,
+     "troops": 12999466,
+     "activeHumans": 17,
+     "huskLandShare": 0.012
+    }
+   },
+   "aiLandShare": 0.0025,
+   "src": "engine-replay",
+   "teamLandShare": 0.3659,
+   "teamRank": 1,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.3395
+  },
+  {
+   "t": 3870,
+   "alive": 7,
+   "seen": 7,
+   "husks": 1,
+   "squadLand": 62972,
+   "squadLandShare": 0.0826,
+   "teamTroops": 4593602,
+   "squadDens": 72.9,
+   "boxed": 0,
+   "squadHuskLand": 8912,
+   "perTeam": {
+    "2": {
+     "bots": 3,
+     "land": 37559,
+     "troops": 3050620
+    },
+    "3": {
+     "bots": 4,
+     "land": 25413,
+     "troops": 1542982
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.3106,
+     "troops": 17681263,
+     "activeHumans": 9,
+     "huskLandShare": 0.0377
+    },
+    "2": {
+     "landShare": 0.2894,
+     "troops": 18768433,
+     "activeHumans": 11,
+     "huskLandShare": 0.0115
+    },
+    "3": {
+     "landShare": 0.3952,
+     "troops": 17501867,
+     "activeHumans": 16,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0024,
+   "src": "engine-replay",
+   "teamLandShare": 0.3952,
+   "teamRank": 1,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.3106
+  },
+  {
+   "t": 3930,
+   "alive": 6,
+   "seen": 6,
+   "husks": 1,
+   "squadLand": 58923,
+   "squadLandShare": 0.0772,
+   "teamTroops": 4243393,
+   "squadDens": 72.0,
+   "boxed": 0,
+   "squadHuskLand": 8912,
+   "perTeam": {
+    "2": {
+     "bots": 2,
+     "land": 34831,
+     "troops": 2628125
+    },
+    "3": {
+     "bots": 4,
+     "land": 24092,
+     "troops": 1615268
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.3178,
+     "troops": 17690294,
+     "activeHumans": 9,
+     "huskLandShare": 0.0316
+    },
+    "2": {
+     "landShare": 0.276,
+     "troops": 19364324,
+     "activeHumans": 10,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.3956,
+     "troops": 17593502,
+     "activeHumans": 16,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0024,
+   "src": "engine-replay",
+   "teamLandShare": 0.3956,
+   "teamRank": 1,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.3178
+  },
+  {
+   "t": 3990,
+   "alive": 5,
+   "seen": 5,
+   "husks": 1,
+   "squadLand": 56410,
+   "squadLandShare": 0.074,
+   "teamTroops": 4182204,
+   "squadDens": 74.1,
+   "boxed": 0,
+   "squadHuskLand": 8912,
+   "perTeam": {
+    "2": {
+     "bots": 2,
+     "land": 35281,
+     "troops": 2595127
+    },
+    "3": {
+     "bots": 3,
+     "land": 21129,
+     "troops": 1587077
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.3156,
+     "troops": 17368880,
+     "activeHumans": 9,
+     "huskLandShare": 0.0224
+    },
+    "2": {
+     "landShare": 0.2783,
+     "troops": 19650573,
+     "activeHumans": 10,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.3995,
+     "troops": 17533050,
+     "activeHumans": 15,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0024,
+   "src": "engine-replay",
+   "teamLandShare": 0.3995,
+   "teamRank": 1,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.3156
+  },
+  {
+   "t": 4050,
+   "alive": 4,
+   "seen": 4,
+   "husks": 1,
+   "squadLand": 53625,
+   "squadLandShare": 0.0703,
+   "teamTroops": 4296577,
+   "squadDens": 80.1,
+   "boxed": 0,
+   "squadHuskLand": 8912,
+   "perTeam": {
+    "2": {
+     "bots": 2,
+     "land": 34242,
+     "troops": 2654640
+    },
+    "3": {
+     "bots": 2,
+     "land": 19383,
+     "troops": 1641937
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.3183,
+     "troops": 18313785,
+     "activeHumans": 9,
+     "huskLandShare": 0.0148
+    },
+    "2": {
+     "landShare": 0.2805,
+     "troops": 21116803,
+     "activeHumans": 10,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.3922,
+     "troops": 19128434,
+     "activeHumans": 14,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0025,
+   "src": "engine-replay",
+   "teamLandShare": 0.3922,
+   "teamRank": 1,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.3183
+  },
+  {
+   "t": 4500,
+   "alive": 4,
+   "seen": 4,
+   "husks": 1,
+   "squadLand": 54197,
+   "squadLandShare": 0.0711,
+   "teamTroops": 4795226,
+   "squadDens": 88.5,
+   "boxed": 0,
+   "squadHuskLand": 8912,
+   "perTeam": {
+    "2": {
+     "bots": 2,
+     "land": 35275,
+     "troops": 2711530
+    },
+    "3": {
+     "bots": 2,
+     "land": 18922,
+     "troops": 2083696
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.3042,
+     "troops": 22600551,
+     "activeHumans": 8,
+     "huskLandShare": 0.0262
+    },
+    "2": {
+     "landShare": 0.3307,
+     "troops": 22479529,
+     "activeHumans": 10,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.3607,
+     "troops": 22302519,
+     "activeHumans": 13,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0025,
+   "src": "engine-replay",
+   "teamLandShare": 0.3607,
+   "teamRank": 1,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.3307
+  },
+  {
+   "t": 4950,
+   "alive": 4,
+   "seen": 4,
+   "husks": 1,
+   "squadLand": 40062,
+   "squadLandShare": 0.0525,
+   "teamTroops": 3756814,
+   "squadDens": 93.8,
+   "boxed": 0,
+   "squadHuskLand": 8912,
+   "perTeam": {
+    "2": {
+     "bots": 2,
+     "land": 24071,
+     "troops": 2466782
+    },
+    "3": {
+     "bots": 2,
+     "land": 15991,
+     "troops": 1290032
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.3343,
+     "troops": 18464217,
+     "activeHumans": 8,
+     "huskLandShare": 0.0148
+    },
+    "2": {
+     "landShare": 0.2901,
+     "troops": 20455933,
+     "activeHumans": 9,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.3705,
+     "troops": 20313094,
+     "activeHumans": 11,
+     "huskLandShare": 0.0383
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.3705,
+   "teamRank": 1,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.3343
+  },
+  {
+   "t": 5040,
+   "alive": 2,
+   "seen": 2,
+   "husks": 1,
+   "squadLand": 37078,
+   "squadLandShare": 0.0486,
+   "teamTroops": 3857554,
+   "squadDens": 104.0,
+   "boxed": 0,
+   "squadHuskLand": 8912,
+   "perTeam": {
+    "2": {
+     "bots": 1,
+     "land": 22104,
+     "troops": 2482692
+    },
+    "3": {
+     "bots": 1,
+     "land": 14974,
+     "troops": 1374862
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.3167,
+     "troops": 20304772,
+     "activeHumans": 7,
+     "huskLandShare": 0.0148
+    },
+    "2": {
+     "landShare": 0.2981,
+     "troops": 22438301,
+     "activeHumans": 8,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.3826,
+     "troops": 22337148,
+     "activeHumans": 10,
+     "huskLandShare": 0.0383
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.3826,
+   "teamRank": 1,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.3167
+  },
+  {
+   "t": 6030,
+   "alive": 2,
+   "seen": 2,
+   "husks": 0,
+   "squadLand": 41472,
+   "squadLandShare": 0.0544,
+   "teamTroops": 5493113,
+   "squadDens": 132.5,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "2": {
+     "bots": 1,
+     "land": 22104,
+     "troops": 3315600
+    },
+    "3": {
+     "bots": 1,
+     "land": 19368,
+     "troops": 2177513
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.2805,
+     "troops": 20907437,
+     "activeHumans": 6,
+     "huskLandShare": 0.0031
+    },
+    "2": {
+     "landShare": 0.3299,
+     "troops": 26536677,
+     "activeHumans": 8,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.3874,
+     "troops": 29183935,
+     "activeHumans": 10,
+     "huskLandShare": 0.0356
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.3874,
+   "teamRank": 1,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.3299
+  },
+  {
+   "t": 7020,
+   "alive": 2,
+   "seen": 2,
+   "husks": 0,
+   "squadLand": 44765,
+   "squadLandShare": 0.0587,
+   "teamTroops": 5466354,
+   "squadDens": 122.1,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "2": {
+     "bots": 1,
+     "land": 31432,
+     "troops": 4161107
+    },
+    "3": {
+     "bots": 1,
+     "land": 13333,
+     "troops": 1305247
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.3396,
+     "troops": 15756077,
+     "activeHumans": 4,
+     "huskLandShare": 0.0031
+    },
+    "2": {
+     "landShare": 0.4754,
+     "troops": 36074918,
+     "activeHumans": 7,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.1835,
+     "troops": 9713581,
+     "activeHumans": 5,
+     "huskLandShare": 0.0191
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.1835,
+   "teamRank": 3,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.4754
+  },
+  {
+   "t": 8010,
+   "alive": 2,
+   "seen": 2,
+   "husks": 0,
+   "squadLand": 44794,
+   "squadLandShare": 0.0587,
+   "teamTroops": 6546013,
+   "squadDens": 146.1,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "2": {
+     "bots": 1,
+     "land": 31461,
+     "troops": 4546063
+    },
+    "3": {
+     "bots": 1,
+     "land": 13333,
+     "troops": 1999950
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0945,
+     "troops": 4337712,
+     "activeHumans": 1,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.748,
+     "troops": 40531665,
+     "activeHumans": 7,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.1374,
+     "troops": 8636134,
+     "activeHumans": 2,
+     "huskLandShare": 0.0902
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.1374,
+   "teamRank": 2,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.748
+  },
+  {
+   "t": 8040,
+   "alive": 2,
+   "seen": 2,
+   "husks": 0,
+   "squadLand": 37138,
+   "squadLandShare": 0.0487,
+   "teamTroops": 5074236,
+   "squadDens": 136.6,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "2": {
+     "bots": 1,
+     "land": 31476,
+     "troops": 4565638
+    },
+    "3": {
+     "bots": 1,
+     "land": 5662,
+     "troops": 508598
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0945,
+     "troops": 4534509,
+     "activeHumans": 1,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.7751,
+     "troops": 35221522,
+     "activeHumans": 7,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.1273,
+     "troops": 7203197,
+     "activeHumans": 2,
+     "huskLandShare": 0.0902
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.1273,
+   "teamRank": 2,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.7751
+  },
+  {
+   "t": 8275,
+   "alive": 1,
+   "seen": 1,
+   "husks": 0,
+   "squadLand": 31485,
+   "squadLandShare": 0.0413,
+   "teamTroops": 4459525,
+   "squadDens": 141.6,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "2": {
+     "bots": 1,
+     "land": 31485,
+     "troops": 4459525
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0,
+     "troops": 0,
+     "activeHumans": 0,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.9857,
+     "troops": 26975720,
+     "activeHumans": 7,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.013,
+     "troops": 777686,
+     "activeHumans": 1,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.013,
+   "teamRank": 2,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.9857
+  }
+ ],
+ "phases": {
+  "opening": {
+   "facts": [
+    "t=0~90：20 个号各自在本机算选点（没有 HL-SPAWN-BACKEND），多数号反复改点（ArthurMorgan 12 次、Thanos 9 次；后来最早离开的 5 个号 7~29 次）。最终落点：ArthurMorgan(队2) (1266,466) 与 Thanos(队3) (1266,482) 相距 16 格；Bohemia(队3)/DoomSlayer(队1)/Chile(队2) 三个号挤在 30~46 格内。",
+    "t=112：Andalusia、Chile 离开；t=224：Bellingham、Ryu、VoidWalker 离开。这 5 个号整局 0 条日志快照、0 条出兵指令，空壳在 t=985~2100 被内置 AI 或邻居吃掉。t=270 在场 15/20。",
+    "真实分队：队1=DoomSlayer、Kazuya；队2=ArthurMorgan、Pomerania、Algiers、Maple Leaf、Chile、VoidWalker、BlackRock；队3=其余 11 个。全场真人 74：队1 24、队2 25、队3 25。",
+    "名字池撞名：外人 Kievan Rus（22 号，队2）和 15 个内置 AI（German Empire、Assyria、Goryeo、Abyssinia…）的名字都在 740 人名字池里，策略把它们当成编队号。这 15 个 AI t=630 占 8,153 格、t=1170 占 13,834 格（当时全部内置 AI 占地的 6.1%）。"
+   ],
+   "issues": [
+    "敌对队的编队号贴身出生：Thanos t=630 领土 364（同期其余在场号 2,221~4,052）。t=203~609 发了 7 条船，5 条（1,681 兵）靠上 ArthurMorgan 的地。",
+    "开局就少 5 个号。"
+   ]
+  },
+  "expansion": {
+   "facts": [
+    "t=90~630：15 个在场号按周期出兵，t=155~560 的周期指令「日志拍→执行拍」延迟 6~45 拍（多数 7~27）。t=630 在场号领土 42,511（5.57%），单号中位 2,950；同局 [APEX] 十人队中位 2,679，其余 43 个真人中位 2,790。全场 t=630：队1 8.4%、队2 9.0%、队3 7.8%、内置 AI 28.7%。",
+    "t=600 起延迟拉长：Pomerania 本地 700/800 的指令晚 105/194 拍；ArthurMorgan 本地 800/900 晚 369/269 拍；Algiers 本地 800/900 晚 222/619 拍。",
+    "t≈850 起指令断档（simdigest gaps）：Bohemia t=980→1547（567 拍，期间策略发令 23 条，t=1547 一拍执行 9 条）；Pomerania t=994→1890（896 拍，发令 51 条，执行 8 条）；ArthurMorgan 847→1169、1204→1666；404 Not Found 798→1169→1666；DoomSlayer 1050→1512；Sus 1085→1498；Thanos 1225→1575；Kazuya 987→离开。",
+    "这段正是全场瓜分内置 AI 的时候：内置 AI 占地 48.8%（t=900）→29.7%（t=1170）→8.5%（t=1530）。我方在场号单号领土中位 2,950（t=630）→5,381（t=1170）→4,771（t=1530）；其余真人中位 2,790→9,460→12,565。",
+    "影子策略对照（strat_probe：同一份 c110 源码逐拍跑在重放的真实局面上，指令只记不发）：断档的 10 段里，影子在 6 段的 20~30 个「15 拍格」里都想对身边的内置 AI 出兵（Bohemia 想打 Zand Dynasty 20 次、Pomerania 想打 Majapahit Empire 18 次、DoomSlayer 想打 Bremen 17 次…），录像里这些时段执行 0 条。断档之外影子与录像按「300 拍窗口 × 指令类别」对照一致 89/119，断档窗口里 7/29。",
+    "在场号合计领土峰值在 t=1080：15 个号 78,368 格（10.27%）；t=1170 14 个号 74,743 格（9.80%），三队 21.0%/25.8%/21.9%。"
+   ],
+   "issues": [
+    "断档后成批执行的指令是按几百拍前的局面算的：ArthurMorgan t=1169 一拍 9 条陆攻（拍前 5.0 万兵，一拍花掉 93.9%）；Bohemia t=1547 的 9 条里 3 条打无主地的没生效、6 条全落在 bot100 上；t=1834 的 8 条打无主地的全部没生效。",
+    "开局连发陆攻触发 isNoFullSend 置真的条件：按日志原文的发令拍重演，Bohemia t=560、BlackRock t=555、Pomerania t=700、Ashanti t=710；影子策略里 15 个在场号有 12 个被置真（11 个在 t=182~812，Sus 在 t=2181）。"
+   ]
+  },
+  "midgame": {
+   "facts": [
+    "t=1099~2016 又有 8 个号被登记离开（Ashanti 1099、Manstein 1183、Kazuya 1295、Maple Leaf/HighPing/BlackRock 1456、Belgium 1813、DoomSlayer 2016）；它们的日志在这之前 215~733 拍就停了。在场号 15→7；在场号领土 10.27%（t=1080）→5.74%（t=1530）→5.44%（t=2070）；t=2070 我方空壳占着 54,941 格。",
+    "空壳由内置 AI 托管后有的还在长（Ashanti 6,086→18,547 格、Maple Leaf 9,937→12,866 格），最后全被吃掉：Maple Leaf 的 9,896 格归了 [APEX] talon5（t=2501）、Manstein 归了 [GD]SYFER/Рязань（t=2051）、DoomSlayer 的 5,113 格归了 Player 626（t=2914）、Belgium/HighPing/Kazuya 归了队2 的 Furry🦊[Corgi] 与 Ice Barrier Clan；Ashanti(队3) 的 13,329 格被我方 Pomerania(队2) 吃掉，BlackRock(队2) 的 4,496 格被我方 Thanos(队3) 吃掉。13 个号离开后少拿的利息合计 119 万。",
+    "空壳会打我方在场号，在场号却不能陆攻它（名字在池里 → 不进邻居表）：DoomSlayer 空壳（队1）对 Bohemia（队3）耗 33.7 万兵、拿走 1,264 格、打掉 16.7 万兵。Bohemia t=2107~2814 的 707 拍 0 条陆攻，领土 7,203→6,072、密度 61→108。影子探针：这段它最宽的三条边（DoomSlayer 155~200 格、404 Not Found 99 格、Algiers 43 格）都在保护名单里；唯一进了邻居表的 HRE（1.8 万格、密度 10~19）只接壤 12~15 格，窄接触加价 ×1.8 后 t=1700~2000 的报价 c=45~80、worth=53~81，可用兵只有 0.1 万~2.6 万，不到余额的 20%（L5528 跳过）；t=2050 c=84 超过 worth=82（L5267 break）；t=2200 HRE 密度涨到 34，c=151。全部空壳合计：对在场号耗兵 45.7 万、拿走 2,473 格、打掉 23.7 万兵；录像里我方号对我方号（含空壳）的陆攻指令 0 条。",
+    "被「保护名单」围住（simdigest protbox）：策略眼里没有可打邻居、也没有无主邻格的时段共 10 段 9,090 拍，其中 8 段 7,470 拍实际挨着被名单挡住的地——Thanos t=1260~2160 只挨着 ArthurMorgan（188 格）；ArthurMorgan t=1350~2430 挨着 Thanos 246 格；Sus t=1260~1890、2970~4500 挨着 Pomerania 128~168 格和撞名 AI Goryeo；404 Not Found t=2970~3600 挨着 Algiers 257 格；Pomerania t=2520~3330、3510~4410 挨着 Ashanti 空壳 331 格、Sus 171 格、Goryeo 161 格。",
+    "撞名 AI Goryeo（bot452）：t=360~4680 一直贴着 Pomerania（6~161 格）和 Sus（1~27 格），自己 144~1,935 格、密度 0~1.8，t=3060 后是全图最后一个内置 AI；两个号整局对它耗兵 0。它反过来在 t=1800~2500 从 Pomerania 手里拿走 311 格、打掉 4.0 万兵，Sus 死前 900 拍被它拿走 75 格。",
+    "断档后成批执行的发船：Sus t=1722 一拍 7 条船，拍前 19.2 万兵花掉 95.6%；ArthurMorgan t=2023 一拍 7 条船花掉 79.9%（26.3 万）；Thanos t=2100 一拍 7 条船花掉 92.0%，t=2268 一拍 8 条船全部 1 拍后靠回自己的岸。一拍花掉 ≥50% 余额的共 11 组，全在 t=903~2268。",
+    "48 条捐款日志：29 条执行，19 条没进录像（Pomerania 13 条、404 Not Found 6 条，全在本地拍 1640~2040，即断档期）。用引擎自己的校验函数在日志拍后 7/14/21/28 拍各判一次：收款人存活、同队、有余量、配额够（要 32~97 点，上限 91~115，收款人已用 0）——这 19 条到了引擎都能过，是指令没到引擎。",
+    "已执行 29 笔（全部在 t>=2177）：到账 336 万、手续费 150 万（损耗 30.9%）。pct<150 的 8 笔到账 58.6 万、手续费 38.4 万（39.6%）；给空壳 5 笔到账 23.6 万、手续费 10.6 万；收款人 300 拍内阵亡的 7 笔到账 53.7 万、手续费 40.6 万。",
+    "吃空壳和弱邻居是这段唯一的增长来源：Pomerania 3 条船（14.5 万/10.4 万/11.9 万兵）靠上 Ashanti 空壳，共耗 25.3 万兵拿下 13,329 格（每格 19 兵），领土 13,301（t=2430）→25,954（t=3402）；Thanos 6 条船靠上 BlackRock 空壳，耗 4.1 万兵拿下 4,496 格（每格 9.1 兵）；Bohemia 靠一条船登上 Göktürk（敌队真人的空壳）后耗 5.1 万兵拿下 6,931 格（每格 7.3 兵），又从密度 0~1 的 Player 626 手里拿下 3,128 格（每格 3.1 兵）。",
+    "t=3060：队3 36.6%、队1 33.9%、队2 28.9%；我方在场 7 个号共 62,993 格（8.26%）：队2 的 3 个号 5.3%，队3 的 4 个号 3.0%。单号领土中位 6,294，其余 31 个真人中位 17,622。"
+   ],
+   "issues": [
+    "船到岸时登陆格的主人决定这船兵的去向：ArthurMorgan t=2023 那 7 条船（发船时 5 条瞄的是无主地）118~221 拍后全部靠上队友的岸，16.7 万兵归了 Ice Barrier Clan/Furry/虎；Thanos 39 条船里 21 条靠回自己的岸（白付 3.125% 手续费）。",
+    "空壳按内置 AI 对待（person()=!isBot）：同队空壳密度最低、在 surplus 打分里排第一（5 笔捐款给了空壳）；异队空壳只能靠 boatFood 的船去吃（searchFood 不查保护名单）。"
+   ]
+  },
+  "endgame": {
+   "facts": [
+    "t=3898~4011 连死 3 个：ArthurMorgan（队2）死前 900 拍被 Name/队1 拿走 4,963 格（6 条 12% 的陆攻共 144 万兵）；Thanos（队3）被 Furry🦊[Corgi]/队2 拿走 5,386 格、Name 1,044 格；404 Not Found（队3）被 LMAOOOO/队1 拿走 4,898 格（t=3651 一条船带 23.2 万兵登陆——404 当时只有 15.2 万兵——再加 t=3843 一条 14.5 万兵的陆攻）。",
+    "影子探针给出的不还击原因（buyLand 逐报价）：对面真人的报价 c（每格≈2+2.4×对方密度，再乘窄接触/拥挤加价）是 148~620，自己的 worth（0.9×max(自己密度, 0.85×其余真人密度中位)）只有 28~120 → 每个决策拍都在 L5267 break；自己超软上限时不 break，但保底线 dpKeep=（最强真人邻居的兵−1.5×我的地）/1.78 是 94 万~232 万，高于自己的全部兵（30 万~92 万）→ L5361 avail<=0。五个阵亡号无一例外。",
+    "对面真人开战多从海上来（simdigest landings）：外人的船在我方在场号岸上登陆 20 次、船上共 484 万兵。t=3502 LMAOOOO→Bohemia 29.7 万、t=3651 LMAOOOO→404 23.2 万（404 兵力的 153%）、t=3719/4021 HRE→Bohemia 19.8 万/19.0 万、t=4353 My Staffer→Algiers 38.4 万、t=4469 TITAN→Pomerania 35.1 万、t=4571 Big Boss→Sus 33.1 万（Sus 兵力的 134%）、t=6709 Furry→Bohemia 235 万。我方在场号整局发了 104 条船，船上兵 >=10 万的 11 条：Pomerania 7 条（3 条打 Ashanti 空壳、3 条 1 拍后靠回自己的岸、1 条 46 万兵登上无主地）、Algiers 2 条、Bohemia 2 条（都在海上被打光）；没有一条登上正在打自己的真人的岸。",
+    "t=4954、4961 再死 2 个：Algiers（队2）被 [UN] My Staffer/队3 拿走 12,382 格（5 条陆攻共 234 万兵，Algiers 被打掉 207 万兵）；Sus（队3）被 [UNSC] Big Boss/队2 拿走 3,089 格（3 条陆攻共 108 万兵）。",
+    "Bohemia（队3）t=4459~5390 花掉约 287 万兵只换回 2,501 格：t=4459 发 26 万兵的船（瞄准 [GD]SYFER）、t=4816 发 90.3 万兵的船（当时余额的 47.7%，瞄准 HRE），两条都在海上被敌船打光；t=4585、4732 两笔捐给 Sus（到账 29.4 万+6.8 万，手续费 12.1 万+11.2 万），Sus 229 拍后阵亡；t=5383/5390 对 LMAOOOO 两条 29% 的陆攻共 94.4 万兵得 2,501 格（每格 378 兵）。",
+    "队3 的崩盘（t=5936~7141）：队3 最大的 [IND] TITAN（t=5940 有 5.2 万格、557 万兵）被队2 三个人同时打——Yolo 12 条、我方 Pomerania 4 条（t=6069 20.5%、t=6195 21.5%，共 130 万兵）、Furry 3 条；TITAN t=6454 把全部兵压向 Yolo，t=6480 兵力为 3，t=6605 阵亡。之后 [UZB] t=6623 阵亡、[OG]🤫 t=6902 离开、[UN] My Staffer t=7049 离开、[UZB] Full send t=7141 阵亡。队3 份额 38.7%（t=6030）→18.3%（t=7020），在场真人 10→5；队2 33.0%→47.5%。",
+    "这段时间 Bohemia（队3）：t=5845~6783 的 938 拍 0 条指令，领土 19,368 不动，兵 196 万→287 万（密度 101→148，t=6000~6999 少拿利息 180 万）。影子探针：全场第一的 Furry（11 万~18 万格、1,040 万~1,510 万兵）进了邻居表后，dpKeep 是 580 万~850 万，高于自己的全部兵 → 对 Furry、对较弱的 HRE（3.1 万格、密度 92~137）都是 L5361 avail<=0；影子在 t=5836~6769 同样 0 条指令（录像里是 t=5846~6782）。",
+    "t=6685 Furry 发一条 14.4% 的船，t=6709 带着 235 万兵在 Bohemia 的岸上登陆（Bohemia 当时 289 万兵）：t=6500~7000 被 Furry 拿走 5,289 格、打掉 117 万兵，被 HRE 拿走 2,314 格；自己 t=6783 趁 HRE 被别人打（保底线改按 88×地 封顶）出了 48.2 万兵得 1,453 格。t=6993 之后 1,036 拍又是 0 条指令，兵涨到 150×领土硬上限；t=8029 Furry（42 万格）一条 27% 的陆攻（665 万兵），16 拍后阵亡。",
+    "Pomerania（队2）：t=3510~4410 没有可打的邻居，密度在 65~78 之间来回——每到 77.6 就捐 18%（pct=185）给 Algiers。t=4400~5100 被 [IND] TITAN 拿走 5,424 格、打掉 80.3 万兵；t=6069~6510 兵到 150×领土硬上限后从 TITAN 手里拿下 8,298 格（每格 158 兵）。t=6930 起没有敌邻，密度 129→150；t=6657~8190 发了 12 条 0~1‰ 的小船，船上合计 5.3 万兵、手续费合计 160 万。终局 31,485 格、446 万兵。",
+    "各队份额：t=4500 队3 36.1 / 队2 33.1 / 队1 30.4；t=6030 队3 38.7 / 队2 33.0 / 队1 28.1；t=7020 队2 47.5 / 队1 34.0 / 队3 18.3；t=8010 队2 74.8；t=8275 队2 98.6。"
+   ],
+   "issues": [
+    "来回对捐 4 组：回流 53.8 万，两头手续费 64.3 万。收款人已超软上限（密度>=100）还收到捐款的 4 笔：到账 51.6 万、手续费 28.4 万；其中 3 笔撞了收款人的 150×领土硬上限，到账被截（t=4459 33.4 万、t=4732 6.8 万、t=4851 22.6 万）。",
+    "Bohemia 7 条船共 153 万兵，靠岸的只有 19.6 万；4 条被敌船打光（船上 130 万）。"
+   ]
+  }
+ },
+ "turningPoints": [
+  {
+   "t0": 847,
+   "t1": 2016,
+   "what": "指令断档 + 客户端停摆：在场号的指令 300~900 拍才成批进一次录像，8 个号的日志先后停住并被登记离开。全场瓜分内置 AI 的 700 拍里我方几乎没动",
+   "shareBefore": 0.1027,
+   "shareAfter": 0.0544,
+   "ourBots": [
+    "Bohemia",
+    "Pomerania",
+    "ArthurMorgan",
+    "404 Not Found",
+    "Sus",
+    "Thanos",
+    "Algiers",
+    "Ashanti",
+    "Manstein",
+    "Kazuya",
+    "Maple Leaf",
+    "HighPing",
+    "BlackRock",
+    "Belgium",
+    "DoomSlayer"
+   ],
+   "enemies": [],
+   "evidence": [
+    "simdigest gaps：10 段断档涉及 8 个号，最长 896 拍（Pomerania t=994→1890）；断档期间策略发令 209 条。断档结束那一拍执行 5~9 条，全场单拍最多 9 条（6 个号各出现过）",
+    "simdigest gaps（离开的号）：日志末拍 → 登记离开：Ashanti 720→1099、Manstein 810→1183、Kazuya 1080→1295、Maple Leaf 990→1456、HighPing 900→1456、BlackRock 900→1456、Belgium 1080→1813、DoomSlayer 1440→2016；离开时共 51,327 格、169 万兵",
+    "digest lag：本地拍 1350~1799 的快照 70% 落后 >=180 拍（中位 360、最大 540）；t>=2250 后为 0%。traj.csv：策略每拍耗时 avgMs 中位 1.0、单拍最大 51ms、skip=0——不是策略算得慢",
+    "simdigest medians：内置 AI 占地 48.8%（t=900）→8.5%（t=1530）。我方在场号单号领土中位 2,950（t=630）→4,771（t=1530），其余真人 2,790→12,565；在场号合计 78,368 格（t=1080，15 个号）→41,487 格（t=2070，7 个号）",
+    "Bohemia（编队里最快的号）：本地拍 990~1440 日志 cmds 计数 20→43，录像里 t=980 之后下一批是 t=1547 的 9 条；这段余额 2.5 万→21.1 万、领土 4,659→5,342",
+    "results.csv 只有 4 条 left 行，其中 3 条（VoidWalker、BlackRock、HighPing 三个页面）写入时刻在同一秒内（05:29:18.5~19.2Z）；这三个号被服务器登记离开的拍分别是 224、1456、1456"
+   ],
+   "priorDecisions": [
+    {
+     "t": "600~900",
+     "bot": "Algiers/Pomerania/ArthurMorgan",
+     "what": "开局周期出兵照常发出，但执行拍比日志拍晚 105~619 拍",
+     "codePath": "src/strategy/v27-team-c110.js dpNeutral L2418-2444（经 Policy.act L4820-4859 的 t<coreFrom 分支 super.act 调用）；策略里没有「上一条指令还没生效」的判断",
+     "why": "指令按做决定时的本地局面计算，晚到后按执行那一拍的余额百分比执行"
+    },
+    {
+     "t": "990~1890",
+     "bot": "全体在场号",
+     "what": "断档期间策略每 5 拍照常决策发令（Pomerania 51 条、Bohemia 23 条…），不知道指令没到",
+     "codePath": "src/strategy/v27-team-c110.js Policy.act L4861-4923（g.t % period===0 即决策）；base send L526-539 只有「同一目标 15 拍内不重发」的节流；src/engine/live_game_js.js 客户端每条指令各发一个网络包（b1.qo.qw → b1.z.send），没有排队和回执",
+     "why": "策略没有读「上一条指令是否进了本地重放」的回执；日志 cmds 计数在涨而余额/领土不动"
+    }
+   ],
+   "alternatives": [
+    "这一步不是策略决策；局内数据看不出停摆是运行环境关页、页面卡死还是连接超时。同机的 [APEX] 十人队同期也从 10 个掉到 3 个（simdigest medians [APEX]）"
+   ],
+   "statementType": "observed",
+   "confidence": "high"
+  },
+  {
+   "t0": 3416,
+   "t1": 5061,
+   "what": "前线 5 个号在 1,063 拍内全部阵亡（ArthurMorgan 3898、Thanos 3956、404 Not Found 4011、Algiers 4954、Sus 4961）；在场号领土 9.39%→4.86%",
+   "shareBefore": 0.0939,
+   "shareAfter": 0.0486,
+   "ourBots": [
+    "ArthurMorgan",
+    "Thanos",
+    "404 Not Found",
+    "Algiers",
+    "Sus",
+    "Pomerania",
+    "Bohemia"
+   ],
+   "enemies": [
+    "Name/T1",
+    "Furry🦊 [Corgi]/T2",
+    "LMAOOOO/T1",
+    "[UN] My Staffer/T3",
+    "[UNSC] Big Boss/T2"
+   ],
+   "evidence": [
+    "ArthurMorgan：死前 900 拍失地 4,990 格，其中 Name/队1 4,963 格；Name 6 条 12% 的陆攻共 144 万兵（t=3416~3885），Name 当时 2.5 万~2.9 万格、密度 64~72。ArthurMorgan t=2492 之后 1,406 拍 0 条指令；兵 8.1 万（t=2520）→34.3 万（t=3448，密度 54），被打掉 61.0 万",
+    "strat_probe（影子策略逐报价）：ArthurMorgan t=2520~3870 每 90 拍一查，Name 的报价 c=148~377、worth=28~90 → 16 次里 15 次 L5267 break，1 次（t=3690，超软上限）dpKeep=115 万 > 兵 36 万 → L5361。Sus t=4580~4940：Big Boss c=178~462、worth=69~119，超软上限时 dpKeep=94 万~107 万 > 兵 30 万~44 万。Algiers t=4420~4900：My Staffer c=204~343、worth=77~107，dpKeep=215 万~232 万 > 兵 71 万~92 万。Thanos：Furry c=175~224、worth=57~66。404：LMAOOOO c=157~619、worth=61~73",
+    "Thanos：死前 900 拍失地 6,766 格（Furry🦊[Corgi]/队2 5,386、Name/队1 1,044、Ice Barrier Clan/队2 336）；Furry 4 条陆攻共 44.4 万兵，当时 48,761 格、密度 88。Thanos 密度 17~40（影子探针：Furry 的报价 c=175~224、worth=57~66）",
+    "404 Not Found：死前 900 拍失地 4,898 格全部给了 LMAOOOO/队1（18,525 格、密度 77）：LMAOOOO 一条 19.5% 的船 t=3651 在它 291 格的海岸上登陆（船上 23.2 万兵，404 当时 15.2 万兵），t=3843 再下一条 14.5 万兵的陆攻；404 自己密度 13~25。t=2177 一拍执行 3 条陆攻 + 4 笔捐款，余额 52.1 万→8.7 万；6 条船里 2 条被敌船打光（11.5 万兵）、2 条（4.1 万兵）靠上 Bohemia 的岸",
+    "Algiers：死前 900 拍收到 Pomerania 的捐款 135 万，被 [UN] My Staffer（41,765 格、密度 98，5 条陆攻共 234 万兵）打掉 207 万兵、拿走 12,382 格。自己对 My Staffer 0 条陆攻；3 次回捐给 Pomerania（到账 32.5 万、费 13.4 万）",
+    "Sus：死前 600 拍 0 条陆攻/发船（密度 105~127）；[UNSC] Big Boss（1.7 万格、密度 85~97）3 条陆攻共 108 万兵，Sus 被打掉 56.8 万兵。t=4585 刚收到 Bohemia 的 29.4 万，t=4837 又回捐 4.5 万",
+    "救援捐款都到了但挡不住：Algiers→ArthurMorgan pct=89/143（到账 7.5 万/12.8 万，费 5.3 万/5.7 万）；Sus→Thanos pct=74/185/55（2.4 万/5.8 万/1.7 万，费各 2.0 万）；Sus→404 pct=62（2.0 万，费 2.0 万）。同队邻居 Bohemia（16,262 格、密度 62）没有给 404 捐",
+    "simdigest don：对倒 4 组，回流 53.8 万，两头手续费 64.3 万。Bohemia t=4816 的船（eng_replay --trace 45:4810:5065）：t=4818 船上 902,752 兵，t=4938 自然损耗剩 747,868；t=4938~4994 的 56 拍里被敌船打到 133,613；t=5061 归零"
+   ],
+   "priorDecisions": [
+    {
+     "t": "1260~3600",
+     "bot": "Thanos/ArthurMorgan/Sus/404 Not Found",
+     "what": "这几个号长时间只挨着异队编队号（和撞名 AI），策略眼里 nb=0 → 只发船、只捐款，领土停在 2,600~6,300",
+     "codePath": "src/strategy/v27-team-c110.js analyze L425-447：L440 把 isProtectedSquadMate 的邻居排除在 nb 之外；isProtectedSquadMate L3993-3996 = 同队 || Boss || (场上还有外人 && 名字在池里)；isOurSquadBot L3973-3976 只比名字",
+     "why": "三支队里都有编队号：互保名单把跨队接壤的边变成不能打的边（protbox：8 段 7,470 拍）"
+    },
+    {
+     "t": "1722~2268",
+     "bot": "Sus/ArthurMorgan/Thanos",
+     "what": "断档后的发船指令同拍成批执行，一拍花掉 80%~96% 的余额；船到岸时登陆格已经换了主人（队友或自己）",
+     "codePath": "src/strategy/v27-team-c110.js Policy.act L4923 → idleBoats L4979-5005 → V13.boatFood L2038-2058（min=feeK×手续费=余额的 12.5% → pct=127）/ General.boatOut L1035-1051；src/engine/live_game_js.js bB.qi.iB（按执行拍余额算百分比，手续费 32/1024）、acN（登陆格主人决定打谁/交给谁）",
+     "why": "boatEvery=60 的间隔和 maxBoats=2 的上限都按本地局面判断；指令挤在同一拍时逐条按剩余余额连乘"
+    },
+    {
+     "t": "3416~3885",
+     "bot": "ArthurMorgan",
+     "what": "被 Name 连打 6 波，自己有 16.5 万~36.0 万兵（密度 54~100），0 条还击",
+     "codePath": "src/strategy/v27-team-c110.js offers L5008-5248（c=(elimCost+手续费)/可得地；elimCost L511-516 在对方满地时≈1.78×对方兵+1.5×对方地）→ buyLand L5258-5260 worth=maxW×winRatio×max(自己密度, marketFloor×其余真人密度中位)=0.9×max(dMe, 0.85×中位) → L5267：c >= worth 且未超软上限 → break；超软上限时 L5322/L5358 keep=max(keep, safeAt)，safeAt（V17 L2744-2754 / Policy L4524-4540）→ dpKeep L2491-2496 =（最强真人邻居的兵 + 它压在我身上的兵 − 1.5×我的地）/1.78 → L5360-5361 avail<=0 → continue",
+     "why": "strat_probe 实测：t=2520~3870 的 16 个采样里 Name 的报价 c=148~377、worth=28~90 → 15 次 L5267 break；t=3690 自己密度 100.3 超软上限，dpKeep=115 万 > 全部兵 36 万 → L5361。留在家里的兵按引擎规则自动守地（Name 每拿 1 格花 290 兵，ArthurMorgan 每丢 1 格掉 123 兵）"
+    },
+    {
+     "t": "4459~4879",
+     "bot": "Pomerania/Algiers/Bohemia/Sus",
+     "what": "后排号 surplus 捐给前线号，前线号又按 squad rescue 捐回来",
+     "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4462-4497 surplus 分支（boxedIn 且 dMe>=55 → pct=185，候选只要求同队+池内名字+地>=600+密度<132）；L4423-4445 squad rescue 分支（inHumanAtk>0 && (>=0.08×bal[p] || dAlly<75)，且 dMe >= max(55, dAlly+15)）",
+     "why": "捐出方捐完后密度掉到 63~74 且有真人在打它 → 被判成要救；收款方被捐到高密度 → 被判成有富余。条件里没有「对方刚捐给我」的排除，也不看收款人是否已超软上限"
+    },
+    {
+     "t": "4459~4816",
+     "bot": "Bohemia",
+     "what": "兵超过 125×领土、又没有买得起的邻居时，把「余额−底线」的一半装一条船，开向 200 格内的真人海岸",
+     "codePath": "src/strategy/v27-team-c110.js idleBoats L4995-5004（L4996：有邻居时要 bal >= idleCap×100×地 才发）→ General.boatOut L1035-1051（非无主地目标 amount=boatFrac×(bal−floorAt)）→ searchWater L1055-1114（eff 只按 exp(boatDecay×距离) 估海上损耗）；src/engine/live_game_js.js 船队结算：每 2 拍、7.5 格内每条敌船打掉我船「敌船兵力的 10%」，挨打后 3 拍只有 0.04 格/拍；每 5 拍掉 1/128",
+     "why": "搜索只算了自然损耗，没有算被拦截；t=4816 这条船在对方近海被钉住 120 拍"
+    }
+   ],
+   "alternatives": [
+    "五个阵亡号面对的都是 1.7 万~4.9 万格、密度 64~98 的真人；被打时自己密度 17~54 的三个号（404、Thanos、ArthurMorgan）对方一条 12% 的陆攻就能推进上千格（引擎里攻方每格花费≈2+2×守方每格兵力）；按 buyLand 的口径，对面真人的报价 c 是自己 worth 的 1.9~9.5 倍，五个号在被打的全程都没有一次「买得起」",
+    "同一时段后排有兵：Pomerania 213 万~252 万、Bohemia 176 万~201 万。Bohemia t=4459~4816 的两条船（116 万兵）和两笔捐款手续费（23.3 万）没有换回任何地"
+   ],
+   "statementType": "inferred",
+   "confidence": "medium"
+  },
+  {
+   "t0": 5936,
+   "t1": 7141,
+   "what": "主队队3 从第一（38.7%）崩到第三（18.3%）：最大的 TITAN 被队2 三人围打致死（其中一个是我方 Pomerania），主力相继离开；同队的 Bohemia 这段时间顶着硬上限 0 条指令",
+   "shareBefore": 0.0544,
+   "shareAfter": 0.0587,
+   "ourBots": [
+    "Bohemia",
+    "Pomerania"
+   ],
+   "enemies": [
+    "Furry🦊 [Corgi]/T2",
+    "Yolo/T2",
+    "HRE/T1"
+   ],
+   "evidence": [
+    "simdigest teams：队3 38.7%（t=6030）→18.3%（t=7020）→13.7%（t=8010），在场真人 10→5→2；队2 33.0%→47.5%→74.8%",
+    "录像：t=5936~6587 打 [IND] TITAN 的陆攻指令——Yolo/队2 12 条（每条 8.6%）、Pomerania/队2 4 条（20.5%、21.5%、2.0%、1.6%）、Furry/队2 3 条（每条 10.8%）。TITAN 重放兵力 557 万（t=5940）→222 万（t=6420）→3（t=6480，t=6454 一条 100% 的陆攻压向 Yolo）→t=6605 阵亡",
+    "simdigest pair 48 6000 6600：Pomerania 从 TITAN 手里拿下 8,190 格、耗兵 131 万（每格 160 兵），领土 22,104→28,117",
+    "simdigest cmdlist 45 5300 8045：Bohemia t=5845 之后到 t=6783 没有任何指令（938 拍）；neigh：领土 19,368、兵 196 万（t=5940）→287 万（t=6660，密度 148）；邻居 Furry（10.7 万→17.6 万格、密度 79~110）、HRE（3.1 万格、密度 92~137）、队友 [UN] My Staffer",
+    "simdigest ledger 45：t=6000~6499 实得利息 69.5 万、因超软上限少拿 96.6 万；t=6500~6999 少拿 83.1 万、失地 7,603 格、被打掉 151 万兵",
+    "Furry🦊[Corgi] 领土 112,873（t=6030）→175,731（t=6660）→212,422（t=7020）→420,095（t=8010）"
+   ],
+   "priorDecisions": [
+    {
+     "t": "5845~6783",
+     "bot": "Bohemia",
+     "what": "兵 196 万→287 万、密度 101→148，没有陆攻、没有捐款、没有发船",
+     "codePath": "src/strategy/v27-team-c110.js buyLand L5322：safe=safeAt(g,q) → dpKeep L2491-2496 取「所有真人邻居」里最大的（兵+压在我身上的兵−1.5×我的地）/1.78，不分正在报价的是谁；L5323-5326 只有目标 nearCollapse / bleeding / tD<0.45 时才把 safe 封顶到 oppFloorCap×地=88×地；L5358 keep=max(keep, safe)；L5360-5361 avail=兵−费−keep<=0 → continue。tryDonateToTeammate L4465-4467：候选必须是 Boss 或名字在池里的同队号 → TITAN、My Staffer 都不是候选",
+     "why": "strat_probe 实测：t=5940~6660 每 90 拍一查，Furry（1,040 万~1,510 万兵）进了邻居表 → safe=580 万~850 万，自己只有 196 万~287 万 → 对 Furry、对 HRE 的 avail 都是 −320 万~−565 万（L5361）；HRE 在 t=5940、6030 还被判 crowdedHard（L5280）。影子在 t=5836~6769 没有发出任何陆攻、捐款或船"
+    },
+    {
+     "t": "6069~6195",
+     "bot": "Pomerania",
+     "what": "兵到 150×领土硬上限后对 TITAN 两条 21% 的陆攻",
+     "codePath": "src/strategy/v27-team-c110.js buyLand L5348-5357：over（兵>100×地）→ keep=min(keep, hold×100×地)=90×地；L5322/L5358 keep=max(keep, dpKeep)，dpKeep=（TITAN 的兵−1.5×我的地）/1.78；L5360 avail=兵−费−keep；L5526-5531 x=min(avail, 1.25×need+3×cnt)，x>=chunk×兵（20%）才发",
+     "why": "strat_probe 实测：t=6050 TITAN 511 万兵 → dpKeep=285 万，avail=42 万 < 20%×332 万 → L5528 跳过；TITAN 被 Yolo 打、自己又对 Big Boss 出兵，兵掉到 459 万（t=6055）、390 万（t=6185）时 dpKeep 降到 256 万、217 万 → avail=71.6 万、61.5 万（过了 20% 兵的门槛）→ L5531 出兵。影子 t=6055 发 221‰（71.9 万）、t=6185 发 219‰（61.7 万）；录像 t=6069 209‰、t=6195 219‰"
+    }
+   ],
+   "alternatives": [
+    "TITAN t=6454 倾巢出动前有 222 万兵；同队的 Bohemia 当时（t=6480）278 万兵、密度 144，贴着硬上限。两者之间没有任何转移：策略只给 Boss 和名字在池里的同队号捐款",
+    "Pomerania 在队2：它打 TITAN 对自己的队是赚的（每格 160 兵），对卡片记的主队（队3）是亏的"
+   ],
+   "statementType": "inferred",
+   "confidence": "medium"
+  }
+ ],
+ "deaths": [
+  {
+   "bot": "Bohemia",
+   "me": 45,
+   "team": 3,
+   "t": 8045,
+   "peakLand": 19368,
+   "killers": [
+    "Furry🦊 [Corgi][敌方真人] 拿走 9515 格",
+    "Ice Barrier Clan[敌方真人] 拿走 217 格"
+   ],
+   "densityLast500": [
+    [
+     7470,
+     13333,
+     1845291,
+     138
+    ],
+    [
+     7560,
+     13333,
+     1897904,
+     142
+    ],
+    [
+     7650,
+     13333,
+     1937672,
+     145
+    ],
+    [
+     7740,
+     13333,
+     1967181,
+     148
+    ],
+    [
+     7830,
+     13333,
+     1989195,
+     149
+    ],
+    [
+     7920,
+     13333,
+     1999950,
+     150
+    ],
+    [
+     8010,
+     13333,
+     1999950,
+     150
+    ]
+   ],
+   "lastDecisions": [
+    "t8043 攻Furry🦊 [Corgi]/T2 36%"
+   ],
+   "donationsReceivedReplay": [],
+   "rescueLogsForMe": [],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 326600,
+   "cause": "队3 最后一个编队号。t=4459、4816 两条大船（26 万、90.3 万）在海上被敌船打光。t=5845~6783 挨着全场第一 Furry🦊[Corgi]，938 拍 0 条指令，兵涨到密度 148（影子探针：保底线 dpKeep 按 Furry 的兵算是 580 万~850 万，高于自己的全部兵，对谁都 avail<=0）；这期间队3 的 TITAN 被打死、主力相继离开（在场真人 10→5）。t=6709 Furry 的一条船带 235 万兵在它岸上登陆，t=6500~7000 被 Furry 拿走 5,289 格、打掉 117 万兵。t=6993 之后 1,036 拍又是 0 条指令，领土 13,333 不动，兵顶在 150×领土硬上限（1,999,950，死前 900 拍少拿利息 162 万）。t=8029 Furry（42 万格）一条 27% 的陆攻（665 万兵），16 拍后阵亡。",
+   "patternIds": [
+    "NEW:BT-sunk",
+    "NEW:EG-cap-idle-death",
+    "NEW:EG-giant-neighbor-freeze"
+   ],
+   "tLog": 8056,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "Furry🦊 [Corgi]",
+      "cls": "敌方真人",
+      "cells": 9515
+     },
+     {
+      "by": "Ice Barrier Clan",
+      "cls": "敌方真人",
+      "cells": 217
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "Furry🦊 [Corgi]",
+      "troops": 1809609
+     },
+     {
+      "by": "Ice Barrier Clan",
+      "troops": 39180
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 563780,
+     "顶格少拿": 1616000,
+     "陆攻出兵": 117052,
+     "出兵手续费": 3827,
+     "失地": 9732,
+     "被打掉兵": 1848789
+    },
+    "ownCmdsLast600": [
+     "t8043:atk→Furry🦊 [Corgi] 366‰ 出117052"
+    ],
+    "ownCmdCountLast600": 1,
+    "attackCmdsOnMeLast600": [
+     "Furry🦊 [Corgi][敌方真人]×1 共6646997兵 t8029~8029",
+     "Ice Barrier Clan[敌方真人]×1 共136486兵 t8043~8043"
+    ],
+    "donationsInLast900": [],
+    "donationsOutLast900": [],
+    "neighborsBeforeDeath": [
+     "t= 7920 地 13333 兵 2.00M 密150.0 边424 岸175 无主邻格0 船0 | 邻居2: Furry🦊 [Corgi][敌方真人] 接637 地380881 密86；[UN] My Staffer[队友(空壳)] 接135 地67289 密62",
+     "t= 8010 地 13333 兵 2.00M 密150.0 边424 岸175 无主邻格0 船0 | 邻居2: Furry🦊 [Corgi][敌方真人] 接637 地420095 密59；[UN] My Staffer[队友(空壳)] 接135 地68774 密56"
+    ]
+   },
+   "statementType": "observed"
+  },
+  {
+   "bot": "ArthurMorgan",
+   "me": 47,
+   "team": 2,
+   "t": 3898,
+   "peakLand": 6323,
+   "killers": [
+    "Name[敌方真人] 拿走 4963 格",
+    "*Thanos[我方号·异队] 拿走 27 格"
+   ],
+   "densityLast500": [
+    [
+     3330,
+     6294,
+     303820,
+     48
+    ],
+    [
+     3420,
+     6294,
+     342886,
+     54
+    ],
+    [
+     3510,
+     5188,
+     353774,
+     68
+    ],
+    [
+     3600,
+     4006,
+     260795,
+     65
+    ],
+    [
+     3690,
+     3592,
+     360204,
+     100
+    ],
+    [
+     3780,
+     2388,
+     197375,
+     83
+    ],
+    [
+     3870,
+     2001,
+     165291,
+     83
+    ]
+   ],
+   "lastDecisions": [],
+   "donationsReceivedReplay": [
+    "*Algiers@3479p89",
+    "*Algiers@3682p143"
+   ],
+   "rescueLogsForMe": [
+    "Algiers@3470r89",
+    "Algiers@3670r143"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 92934,
+   "cause": "队2 的内陆号，最长的边（246~251 格）贴着异队的我方号 Thanos，双方互不进攻；t=1350~2430 策略眼里没有可打的邻居，只发船：t=2023 一批 7 条（断档后同拍执行，花掉 79.9% 的余额）118~221 拍后全部靠上队友的岸，16.7 万兵归了非编队队友。t=2520 起唯一能打的邻居是 Name/队1（2.0 万~2.9 万格），t=2492 之后 1,406 拍 0 条指令（影子探针：Name 的报价 c=148~377，自己的 worth=28~90，16 个采样 15 次 L5267 break、1 次 L5361）。t=3416 起 Name 连下 6 条 12% 的陆攻共 144 万兵，拿走 4,963 格、打掉 61 万兵。Algiers 两笔救援（pct=89、143）到账 20.3 万，没挡住。",
+   "patternIds": [
+    "NEW:PL-protect-box",
+    "NEW:IO-lag-burst",
+    "NEW:BT-gift",
+    "NEW:DN-small-pct",
+    "NEW:DF-passive-death",
+    "NEW:AT-worth-gate"
+   ],
+   "tLog": 3903,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "Name",
+      "cls": "敌方真人",
+      "cells": 4963
+     },
+     {
+      "by": "*Thanos",
+      "cls": "我方号·异队",
+      "cells": 27
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "Name",
+      "troops": 608679
+     },
+     {
+      "by": "*Thanos",
+      "troops": 1245
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 325247,
+     "收到捐款": 203387,
+     "失地": 4990,
+     "被打掉兵": 609924
+    },
+    "ownCmdsLast600": [],
+    "ownCmdCountLast600": 0,
+    "attackCmdsOnMeLast600": [
+     "Name[敌方真人]×6 共1439073兵 t3416~3885"
+    ],
+    "donationsInLast900": [
+     "*Algiers@3479 +74949(费53297)",
+     "*Algiers@3682 +128438(费57083)"
+    ],
+    "donationsOutLast900": [],
+    "neighborsBeforeDeath": [
+     "t= 3780 地  2388 兵  197k 密 82.7 边207 岸206 无主邻格0 船0 | 邻居2: *Thanos[我方号·异队] 接241 地3371 密32；Name[敌方真人] 接105 地28550 密66",
+     "t= 3870 地  2001 兵  165k 密 82.6 边188 岸164 无主邻格0 船0 | 邻居3: *Thanos[我方号·异队] 接186 地2585 密37；Name[敌方真人] 接93 地28937 密64；Ice Barrier Clan[队友] 接40 地14982 密120 | 被攻: Name:145k"
+    ]
+   },
+   "statementType": "observed"
+  },
+  {
+   "bot": "Algiers",
+   "me": 49,
+   "team": 2,
+   "t": 4954,
+   "peakLand": 8889,
+   "killers": [
+    "[UN] My Staffer[敌方真人] 拿走 12382 格"
+   ],
+   "densityLast500": [
+    [
+     4410,
+     8773,
+     923784,
+     105
+    ],
+    [
+     4500,
+     8086,
+     775672,
+     96
+    ],
+    [
+     4590,
+     6985,
+     690841,
+     99
+    ],
+    [
+     4680,
+     5583,
+     532557,
+     95
+    ],
+    [
+     4770,
+     4114,
+     348987,
+     85
+    ],
+    [
+     4950,
+     2019,
+     185590,
+     92
+    ]
+   ],
+   "lastDecisions": [
+    "t4473 船 17%",
+    "t4480 捐→*Pomerania pct=155",
+    "t4543 捐→*Pomerania pct=155",
+    "t4865 船 15%",
+    "t4879 捐→*Pomerania pct=153"
+   ],
+   "donationsReceivedReplay": [
+    "*Pomerania@4459p185",
+    "*Pomerania@4851p114"
+   ],
+   "rescueLogsForMe": [
+    "Pomerania@4450s185",
+    "Pomerania@4840r114"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [
+    "r155→*Pomerania@4470",
+    "r155→*Pomerania@4530",
+    "s153→*Pomerania@4865"
+   ],
+   "balanceAtDeath": 198153,
+   "cause": "队2 的前线号，对面是 [UN] My Staffer/队3（4.2 万格、密度 98）。t=4353 My Staffer 一条船带 38.4 万兵在它岸上登陆。死前 900 拍收到 Pomerania 的捐款 135 万，被 My Staffer 的 5 条陆攻（共 234 万兵）打掉 207 万兵、拿走 12,382 格。Algiers 自己没有对 My Staffer 出过兵（影子探针：My Staffer 的报价 c=204~343、worth=77~107；超软上限时 dpKeep=215 万~232 万 > 兵 71 万~92 万）；3 次回捐给 Pomerania（到账 32.5 万，费 13.4 万）；t=4473 的 20.8 万兵的船靠上 Name 的岸只得 43 格。",
+   "patternIds": [
+    "NEW:DN-pingpong",
+    "NEW:DN-dying-donor",
+    "NEW:DF-passive-death",
+    "NEW:AT-worth-gate"
+   ],
+   "tLog": 4958,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "[UN] My Staffer",
+      "cls": "敌方真人",
+      "cells": 12382
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "[UN] My Staffer",
+      "troops": 2070613
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 624226,
+     "顶格少拿": 132116,
+     "发船出兵": 263791,
+     "出兵手续费": 50370,
+     "捐出到账": 325243,
+     "捐款手续费": 133675,
+     "收到捐款": 1348381,
+     "战斗耗兵": 67123,
+     "得地": 6414,
+     "失地": 12382,
+     "被打掉兵": 2070613,
+     "收到船兵": 30130
+    },
+    "ownCmdsLast600": [
+     "t4473:boat 170‰ 出207866",
+     "t4865:boat 155‰ 出55925"
+    ],
+    "ownCmdCountLast600": 2,
+    "attackCmdsOnMeLast600": [
+     "[UN] My Staffer[敌方真人]×5 共2338543兵 t4487~4928"
+    ],
+    "donationsInLast900": [
+     "*Pomerania@4088 +395140(费135962)",
+     "*Pomerania@4270 +393374(费135354)",
+     "*Pomerania@4459 +334190(费132987)",
+     "*Pomerania@4851 +225677(费157765)"
+    ],
+    "donationsOutLast900": [
+     "→*Pomerania@4480 153103(费62811)",
+     "→*Pomerania@4543 126657(费51962)",
+     "→*Pomerania@4879 45483(费18902)"
+    ],
+    "neighborsBeforeDeath": [
+     "t= 4860 地  2783 兵  375k 密134.6 边167 岸296 无主邻格0 船0 | 邻居4: [UN] My Staffer[敌方真人] 接199 地43096 密95；*Bohemia[我方号·异队] 接53 地14974 密72；LMAOOOO[敌方真人] 接45 地25305 密95；Furry🦊 [Corgi][队友] 接20 地75276 密117 | 被攻: [UN] My Staffer:15k",
+     "t= 4950 地  2019 兵  186k 密 91.9 边159 岸275 无主邻格0 船0 | 邻居4: [UN] My Staffer[敌方真人] 接193 地43876 密94；*Bohemia[我方号·异队] 接53 地14974 密81；LMAOOOO[敌方真人] 接37 地26859 密101；Furry🦊 [Corgi][队友] 接20 地76362 密66 | 被攻: [UN] My Staffer:234k"
+    ]
+   },
+   "statementType": "observed"
+  },
+  {
+   "bot": "404 Not Found",
+   "me": 55,
+   "team": 3,
+   "t": 4011,
+   "peakLand": 6205,
+   "killers": [
+    "LMAOOOO[敌方真人] 拿走 4898 格"
+   ],
+   "densityLast500": [
+    [
+     3420,
+     6205,
+     114700,
+     18
+    ],
+    [
+     3600,
+     6205,
+     143613,
+     23
+    ],
+    [
+     3690,
+     5851,
+     144730,
+     25
+    ],
+    [
+     3780,
+     3583,
+     75728,
+     21
+    ],
+    [
+     3870,
+     2919,
+     61785,
+     21
+    ],
+    [
+     3960,
+     1659,
+     28908,
+     17
+    ]
+   ],
+   "lastDecisions": [
+    "t3514 船 0%",
+    "t3577 船 0%"
+   ],
+   "donationsReceivedReplay": [
+    "*Sus@3969p62"
+   ],
+   "rescueLogsForMe": [
+    "Sus@3950r62"
+   ],
+   "assistsForMe": [
+    "Algiers@3800→LMAOOOO",
+    "Algiers@3945→LMAOOOO",
+    "Algiers@3970→LMAOOOO"
+   ],
+   "stillDonating": [],
+   "balanceAtDeath": 40607,
+   "cause": "t=2177 一拍执行 3 条陆攻+4 笔捐款（其中 1 笔给已离开的 HighPing），余额 52.1 万→8.7 万；t=2970~3600 只挨着异队的 Algiers（257 格）和队友，6 条船里 2 条在海上被敌船打光（11.5 万兵）、2 条靠上 Bohemia 的岸（4.1 万兵归了 Bohemia），密度停在 13~25。LMAOOOO/队1（1.6 万~2.0 万格、密度 75~81）从海上来：t=3651 一条船带 23.2 万兵在它 291 格的海岸上登陆（404 当时 15.2 万兵），t=3843 再下一条 14.5 万兵的陆攻，共拿走 4,898 格（死前 900 拍被打掉 17.5 万兵）；404 这段对 LMAOOOO 的报价 c=157~619、worth=61~73，0 条还击。Algiers（异队）为它发过 3 次协防戳，Sus 捐了 2.0 万（手续费也是 2.0 万）；同队邻居 Bohemia 没有捐。",
+   "patternIds": [
+    "NEW:IO-lag-burst",
+    "NEW:DN-husk-donate",
+    "NEW:PL-protect-box",
+    "NEW:BT-sunk",
+    "NEW:DF-passive-death",
+    "NEW:AT-worth-gate"
+   ],
+   "tLog": 4013,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "LMAOOOO",
+      "cls": "敌方真人",
+      "cells": 4898
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "LMAOOOO",
+      "troops": 175408
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 147773,
+     "发船出兵": 63144,
+     "出兵手续费": 16666,
+     "收到捐款": 19504,
+     "战斗耗兵": 74,
+     "得地": 37,
+     "失地": 4898,
+     "被打掉兵": 175408,
+     "船兵交友军": 40514
+    },
+    "ownCmdsLast600": [
+     "t3514:boat 3‰ 出520",
+     "t3577:boat 3‰ 出537"
+    ],
+    "ownCmdCountLast600": 2,
+    "attackCmdsOnMeLast600": [
+     "LMAOOOO[敌方真人]×1 共145230兵 t3843~3843"
+    ],
+    "donationsInLast900": [
+     "*Sus@3969 +19504(费19813)"
+    ],
+    "donationsOutLast900": [],
+    "neighborsBeforeDeath": [
+     "t= 3870 地  2919 兵   62k 密 21.2 边147 岸212 无主邻格0 船0 | 邻居2: *Algiers[我方号·异队] 接183 地8191 密92；LMAOOOO[敌方真人] 接71 地18946 密74 | 被攻: LMAOOOO:124k",
+     "t= 3960 地  1659 兵   29k 密 17.4 边39 岸180 无主邻格0 船0 | 邻居2: *Algiers[我方号·异队] 接46 地7655 密100；LMAOOOO[敌方真人] 接26 地19933 密78 | 被攻: LMAOOOO:44k"
+    ]
+   },
+   "statementType": "observed"
+  },
+  {
+   "bot": "Sus",
+   "me": 66,
+   "team": 3,
+   "t": 4961,
+   "peakLand": 4889,
+   "killers": [
+    "[UNSC] Big Boss[敌方真人] 拿走 3089 格",
+    "bot452[内置AI] 拿走 75 格"
+   ],
+   "densityLast500": [
+    [
+     4410,
+     3961,
+     273425,
+     69
+    ],
+    [
+     4500,
+     3948,
+     304075,
+     77
+    ],
+    [
+     4590,
+     3858,
+     533483,
+     138
+    ],
+    [
+     4680,
+     3166,
+     401163,
+     127
+    ],
+    [
+     4770,
+     2285,
+     290761,
+     127
+    ],
+    [
+     4860,
+     2223,
+     233424,
+     105
+    ],
+    [
+     4950,
+     1017,
+     71409,
+     70
+    ]
+   ],
+   "lastDecisions": [
+    "t4529 捐→*Bohemia pct=185",
+    "t4837 捐→*Bohemia pct=153"
+   ],
+   "donationsReceivedReplay": [
+    "*Bohemia@4585p155",
+    "*Bohemia@4732p153"
+   ],
+   "rescueLogsForMe": [
+    "Bohemia@4575r155",
+    "Bohemia@4720s153"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [
+    "s185→*Bohemia@4510",
+    "s153→*Bohemia@4820"
+   ],
+   "balanceAtDeath": 71409,
+   "cause": "队3 的内陆号。t=1260 起长期只挨着异队的 Pomerania、队友 TITAN 和撞名 AI Goryeo（策略眼里没有邻居）。t=1722 断档后一拍 7 条船花掉 95.6% 的兵，之后密度 60~80，t=2947~4837 捐了 11 笔（到账 47.2 万、手续费 21.8 万）：3 笔给空壳、3 笔给 Thanos、1 笔给 404、4 笔给密度 66~121 的 Bohemia。t=4571 Big Boss/队2 一条船带 33.1 万兵在它岸上登陆（Sus 当时 24.7 万兵）；t=4585 收到 Bohemia 的 29.4 万后密度 138；t=4718 起 Big Boss（1.7 万~1.8 万格、密度 70~97）再下 3 条陆攻（共 108 万兵）拿走 3,089 格、打掉 56.8 万兵，撞名 AI Goryeo 也拿走 75 格；这 600 拍 0 条陆攻/发船（影子探针：Big Boss 的报价 c=178~462、worth=69~119；超软上限时 dpKeep=94 万~107 万 > 兵 30 万~44 万），t=4837 还回捐给 Bohemia 4.5 万。",
+   "patternIds": [
+    "NEW:PL-protect-box",
+    "NEW:PL-pool-ai",
+    "NEW:DF-passive-death",
+    "NEW:AT-worth-gate",
+    "NEW:DN-pingpong",
+    "NEW:DN-dying-donor",
+    "NEW:IO-lag-burst"
+   ],
+   "tLog": 4967,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "[UNSC] Big Boss",
+      "cls": "敌方真人",
+      "cells": 3089
+     },
+     {
+      "by": "bot452",
+      "cls": "内置AI",
+      "cells": 75
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "[UNSC] Big Boss",
+      "troops": 559872
+     },
+     {
+      "by": "bot452",
+      "troops": 8083
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 260134,
+     "顶格少拿": 66986,
+     "捐出到账": 216854,
+     "捐款手续费": 77853,
+     "收到捐款": 361723,
+     "失地": 3164,
+     "被打掉兵": 567955
+    },
+    "ownCmdsLast600": [],
+    "ownCmdCountLast600": 0,
+    "attackCmdsOnMeLast600": [
+     "[UNSC] Big Boss[敌方真人]×3 共1082656兵 t4718~4949"
+    ],
+    "donationsInLast900": [
+     "*Bohemia@4585 +293902(费120575)",
+     "*Bohemia@4732 +67821(费111576)"
+    ],
+    "donationsOutLast900": [
+     "→*Bohemia@4074 57425(费19759)",
+     "→*Bohemia@4305 57707(费19856)",
+     "→*Bohemia@4529 56453(费19425)",
+     "→*Bohemia@4837 45269(费18813)"
+    ],
+    "neighborsBeforeDeath": [
+     "t= 4860 地  2223 兵  233k 密105.0 边197 岸23 无主邻格0 船0 | 邻居3: [IND] TITAN[队友] 接204 地34376 密136；[UNSC] Big Boss[敌方真人] 接125 地16810 密85；*Pomerania[我方号·异队] 接41 地23345 密93 | 被攻: [UNSC] Big Boss:345k",
+     "t= 4950 地  1017 兵   71k 密 70.2 边159 岸23 无主邻格0 船0 | 邻居3: [IND] TITAN[队友] 接155 地39441 密103；[UNSC] Big Boss[敌方真人] 接116 地18016 密70；*Pomerania[我方号·异队] 接32 地22052 密103 | 被攻: [UNSC] Big Boss:325k"
+    ]
+   },
+   "statementType": "observed"
+  },
+  {
+   "bot": "Thanos",
+   "me": 71,
+   "team": 3,
+   "t": 3956,
+   "peakLand": 7036,
+   "killers": [
+    "Furry🦊 [Corgi][敌方真人] 拿走 5386 格",
+    "Name[敌方真人] 拿走 1044 格",
+    "Ice Barrier Clan[敌方真人] 拿走 336 格"
+   ],
+   "densityLast500": [
+    [
+     3420,
+     6750,
+     124420,
+     18
+    ],
+    [
+     3510,
+     7036,
+     117833,
+     17
+    ],
+    [
+     3600,
+     4527,
+     81692,
+     18
+    ],
+    [
+     3690,
+     4632,
+     138829,
+     30
+    ],
+    [
+     3780,
+     3371,
+     106322,
+     32
+    ],
+    [
+     3870,
+     2585,
+     96631,
+     37
+    ]
+   ],
+   "lastDecisions": [
+    "t3395 船 12%",
+    "t3556 船 12%",
+    "t3619 船 12%"
+   ],
+   "donationsReceivedReplay": [
+    "*Sus@3514p74",
+    "*Sus@3626p185",
+    "*Sus@3857p55"
+   ],
+   "rescueLogsForMe": [
+    "Sus@3500r74",
+    "Sus@3610s185",
+    "Sus@3840r55"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 61667,
+   "cause": "出生时与敌对队的 ArthurMorgan 只隔 16 格，t=630 领土 364；t=1260~2160 只挨着 ArthurMorgan 一家（188 格），无地可打。整局 39 条船，21 条靠回自己的岸。t=2471~3276 用 6 条船吃下 BlackRock 空壳，领土到 7,741（t=3480），但密度只有 17~40。t=3479 起被队2 的 Furry🦊[Corgi]（4 条陆攻共 44.4 万兵，对方 4.9 万格、密度 88）拿走 5,386 格，再被 Name/队1（21.5 万兵）和 Ice Barrier Clan 收尾。Sus 三笔捐款（pct=74/185/55）到账 9.9 万。",
+   "patternIds": [
+    "NEW:SP-squad-stack",
+    "NEW:PL-protect-box",
+    "NEW:BT-own-shore",
+    "NEW:DN-small-pct",
+    "NEW:DF-passive-death",
+    "NEW:AT-worth-gate"
+   ],
+   "tLog": 3959,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "Furry🦊 [Corgi]",
+      "cls": "敌方真人",
+      "cells": 5386
+     },
+     {
+      "by": "Name",
+      "cls": "敌方真人",
+      "cells": 1044
+     },
+     {
+      "by": "Ice Barrier Clan",
+      "cls": "敌方真人",
+      "cells": 336
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "Furry🦊 [Corgi]",
+      "troops": 200194
+     },
+     {
+      "by": "Name",
+      "troops": 60767
+     },
+     {
+      "by": "Ice Barrier Clan",
+      "troops": 16403
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 157077,
+     "发船出兵": 185249,
+     "出兵手续费": 32996,
+     "收到捐款": 98982,
+     "战斗耗兵": 35768,
+     "得地": 5591,
+     "失地": 6766,
+     "被打掉兵": 277364
+    },
+    "ownCmdsLast600": [
+     "t3395:boat 127‰ 出14710",
+     "t3556:boat 127‰ 出14169",
+     "t3619:boat 127‰ 出10325"
+    ],
+    "ownCmdCountLast600": 3,
+    "attackCmdsOnMeLast600": [
+     "Furry🦊 [Corgi][敌方真人]×4 共443694兵 t3479~3717",
+     "Name[敌方真人]×1 共215349兵 t3934~3934",
+     "Ice Barrier Clan[敌方真人]×1 共91022兵 t3815~3815"
+    ],
+    "donationsInLast900": [
+     "*Sus@3514 +23769(费20283)",
+     "*Sus@3626 +57940(费19936)",
+     "*Sus@3857 +17273(费19741)"
+    ],
+    "donationsOutLast900": [],
+    "neighborsBeforeDeath": [
+     "t= 3780 地  3371 兵  106k 密 31.5 边249 岸463 无主邻格0 船0 | 邻居4: *ArthurMorgan[我方号·异队] 接241 地2388 密83；Ice Barrier Clan[敌方真人] 接123 地14646 密116；Furry🦊 [Corgi][敌方真人] 接43 地53370 密81；Name[敌方真人] 接10 地28550 密66 | 被攻: Furry🦊 [Corgi]:78k",
+     "t= 3870 地  2585 兵   97k 密 37.4 边137 岸343 无主邻格0 船0 | 邻居2: *ArthurMorgan[我方号·异队] 接186 地2001 密83；Name[敌方真人] 接25 地28937 密64"
+    ]
+   },
+   "statementType": "observed"
+  }
+ ],
+ "truthSummary": {
+  "source": "真引擎重放（录像 A058）到 t=8275；日志快照指纹 475/475 逐兵一致",
+  "donationsExecuted": {
+   "n": 29,
+   "delivered": 3355981,
+   "fee": 1499896,
+   "smallPctN": 8,
+   "smallPctDelivered": 586164,
+   "smallPctFee": 384191,
+   "toHuskN": 5,
+   "toHuskDelivered": 236415,
+   "toHuskFee": 105792
+  },
+  "donationLogVerdicts": {
+   "已执行": 29,
+   "校验能过却没执行": 19
+  },
+  "boatGiftsOut": {
+   "n": 13,
+   "troops": 394040,
+   "delivered": 394040
+  },
+  "ledgerTotals": {
+   "Bohemia": {
+    "利息+地租": 7580436,
+    "顶格少拿": 4105759,
+    "陆攻出兵": 2091537,
+    "发船出兵": 1532338,
+    "出兵手续费": 382744,
+    "捐出到账": 439317,
+    "捐款手续费": 268136,
+    "收到捐款": 216854,
+    "战斗耗兵": 1522659,
+    "得地": 26203,
+    "失地": 22614,
+    "被打掉兵": 3926113,
+    "收到船兵": 40514
+   },
+   "Bellingham": {
+    "利息+地租": 2102,
+    "顶格少拿": 379,
+    "空壳少拿": 6586,
+    "战斗耗兵": 876,
+    "得地": 249,
+    "失地": 250,
+    "被打掉兵": 1538,
+    "回兵溢出": 12
+   },
+   "ArthurMorgan": {
+    "利息+地租": 811521,
+    "陆攻出兵": 60866,
+    "发船出兵": 263772,
+    "出兵手续费": 70183,
+    "收到捐款": 203387,
+    "战斗耗兵": 24095,
+    "得地": 6988,
+    "失地": 5669,
+    "被打掉兵": 614767,
+    "船兵交友军": 166945
+   },
+   "Pomerania": {
+    "利息+地租": 11496679,
+    "顶格少拿": 11174601,
+    "陆攻出兵": 2436940,
+    "发船出兵": 1392336,
+    "出兵手续费": 2291435,
+    "捐出到账": 1735072,
+    "捐款手续费": 695123,
+    "收到捐款": 325243,
+    "战斗耗兵": 1615598,
+    "得地": 39161,
+    "失地": 7686,
+    "被打掉兵": 943217,
+    "回兵溢出": 1136,
+    "船兵交友军": 120635
+   },
+   "Algiers": {
+    "利息+地租": 2573718,
+    "顶格少拿": 180103,
+    "陆攻出兵": 919003,
+    "发船出兵": 543311,
+    "出兵手续费": 227420,
+    "捐出到账": 528630,
+    "捐款手续费": 244055,
+    "收到捐款": 1735072,
+    "战斗耗兵": 557344,
+    "得地": 17294,
+    "失地": 15480,
+    "被打掉兵": 2584628,
+    "收到船兵": 30130
+   },
+   "Andalusia": {
+    "利息+地租": 1342,
+    "顶格少拿": 52,
+    "空壳少拿": 4653,
+    "战斗耗兵": 451,
+    "得地": 181,
+    "失地": 160,
+    "被打掉兵": 1224
+   },
+   "Belgium": {
+    "利息+地租": 462141,
+    "顶格少拿": 782,
+    "空壳少拿": 63961,
+    "陆攻出兵": 28225,
+    "出兵手续费": 1419,
+    "收到捐款": 96554,
+    "战斗耗兵": 29105,
+    "得地": 4211,
+    "失地": 3374,
+    "被打掉兵": 26198
+   },
+   "Ryu": {
+    "利息+地租": 2011,
+    "顶格少拿": 379,
+    "空壳少拿": 6663,
+    "战斗耗兵": 849,
+    "得地": 300,
+    "失地": 267,
+    "被打掉兵": 1509,
+    "回兵溢出": 666
+   },
+   "Maple Leaf": {
+    "利息+地租": 311249,
+    "空壳少拿": 197610,
+    "陆攻出兵": 59597,
+    "出兵手续费": 4655,
+    "战斗耗兵": 202085,
+    "得地": 13054,
+    "失地": 10096,
+    "被打掉兵": 75913
+   },
+   "DoomSlayer": {
+    "利息+地租": 537843,
+    "空壳少拿": 293104,
+    "陆攻出兵": 47990,
+    "出兵手续费": 2851,
+    "战斗耗兵": 350932,
+    "得地": 7306,
+    "失地": 5744,
+    "被打掉兵": 143082
+   },
+   "404 Not Found": {
+    "利息+地租": 916963,
+    "顶格少拿": 16253,
+    "陆攻出兵": 306165,
+    "发船出兵": 178196,
+    "出兵手续费": 56909,
+    "捐出到账": 180868,
+    "捐款手续费": 74202,
+    "收到捐款": 19504,
+    "战斗耗兵": 209143,
+    "得地": 6508,
+    "失地": 5170,
+    "被打掉兵": 207184,
+    "船兵交友军": 40514
+   },
+   "Manstein": {
+    "利息+地租": 184572,
+    "顶格少拿": 1,
+    "空壳少拿": 149161,
+    "陆攻出兵": 36521,
+    "出兵手续费": 1253,
+    "战斗耗兵": 44066,
+    "得地": 10219,
+    "失地": 8330,
+    "被打掉兵": 125515
+   },
+   "Kazuya": {
+    "利息+地租": 558063,
+    "顶格少拿": 1,
+    "空壳少拿": 66311,
+    "陆攻出兵": 46273,
+    "出兵手续费": 2439,
+    "战斗耗兵": 44435,
+    "得地": 8943,
+    "失地": 6791,
+    "被打掉兵": 22154
+   },
+   "Chile": {
+    "利息+地租": 1501,
+    "空壳少拿": 7611,
+    "战斗耗兵": 1606,
+    "得地": 354,
+    "失地": 300,
+    "被打掉兵": 252,
+    "回兵溢出": 5574
+   },
+   "HighPing": {
+    "利息+地租": 282627,
+    "空壳少拿": 79934,
+    "陆攻出兵": 12016,
+    "出兵手续费": 583,
+    "收到捐款": 22067,
+    "战斗耗兵": 19545,
+    "得地": 4980,
+    "失地": 3997,
+    "被打掉兵": 32137
+   },
+   "VoidWalker": {
+    "利息+地租": 1897,
+    "顶格少拿": 379,
+    "空壳少拿": 5770,
+    "战斗耗兵": 504,
+    "得地": 179,
+    "失地": 182,
+    "被打掉兵": 1729
+   },
+   "Ashanti": {
+    "利息+地租": 312013,
+    "空壳少拿": 232091,
+    "陆攻出兵": 22143,
+    "出兵手续费": 883,
+    "收到捐款": 117794,
+    "战斗耗兵": 165633,
+    "得地": 21558,
+    "失地": 18339,
+    "被打掉兵": 213826
+   },
+   "Sus": {
+    "利息+地租": 1148520,
+    "顶格少拿": 66986,
+    "陆攻出兵": 68708,
+    "发船出兵": 243688,
+    "出兵手续费": 29081,
+    "捐出到账": 472094,
+    "捐款手续费": 218380,
+    "收到捐款": 520524,
+    "战斗耗兵": 108740,
+    "得地": 6155,
+    "失地": 5322,
+    "被打掉兵": 643455,
+    "船兵交友军": 65946
+   },
+   "BlackRock": {
+    "利息+地租": 318351,
+    "空壳少拿": 78778,
+    "陆攻出兵": 31001,
+    "出兵手续费": 1999,
+    "战斗耗兵": 15776,
+    "得地": 5790,
+    "失地": 4540,
+    "被打掉兵": 21272,
+    "收到船兵": 20850,
+    "其它白损": 13
+   },
+   "Thanos": {
+    "利息+地租": 358335,
+    "顶格少拿": 113,
+    "陆攻出兵": 16699,
+    "发船出兵": 484791,
+    "出兵手续费": 70534,
+    "收到捐款": 98982,
+    "战斗耗兵": 103374,
+    "得地": 8588,
+    "失地": 7054,
+    "被打掉兵": 290772
+   }
+  }
+ },
+ "decisions": [
+  {
+   "t": 40,
+   "bot": "ArthurMorgan/Thanos",
+   "kind": "spawn",
+   "verdict": "error",
+   "state": "选点阶段：ArthurMorgan(队2) 最终 (1266,466)，Thanos(队3) 最终 (1266,482)，相距 16 格；日志写 minSep=145",
+   "codePath": "src/strategy/v27-team-c110.js chooseSpawn L4007-4154：L4067-4072 把名字池里的号从局面里抹掉再算候选；L4090-4117 每个客户端各自按 minSep 贪心取 chosenSlots[slot]",
+   "why": "候选表在各号本机各算一份、时刻不同，两个槽位在两份表里落到同一点；名单内的号互不排斥，而这两个号分属敌对的队2 和队3",
+   "estCost": "Thanos t=630 领土 364（其余在场号 2,221~4,052）；两号此后共用 188~251 格互不进攻的边界",
+   "patternId": "NEW:SP-squad-stack",
+   "evidenceRef": "digest.py B039 spawn；simdigest.py B039 roster；protbox"
+  },
+  {
+   "t": 630,
+   "bot": "全体在场 15 个号",
+   "kind": "expand",
+   "verdict": "good",
+   "state": "t=40~560 各号 6 个开局周期按时出兵，t=155~560 的周期指令延迟 6~45 拍",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4820-4859（t<coreFrom 走 super.act）→ dpNeutral L2418-2444",
+   "why": "t=630 单号领土中位 2,950；同局 [APEX] 十人队（c116）2,679，其余 43 个真人 2,790",
+   "estCost": "无",
+   "patternId": "NEW:OP-cycle-open",
+   "evidenceRef": "digest.py B039 lag；simdigest.py B039 medians [APEX]"
+  },
+  {
+   "t": 1547,
+   "bot": "Bohemia",
+   "kind": "expand",
+   "verdict": "unclear",
+   "state": "本地拍 990~1440 策略发了 23 条指令（日志 cmds 20→43），录像里 t=980 之后 567 拍没有它的指令；t=1547 一拍执行 9 条（6 条打 bot100 共 7.2 万兵、3 条打无主地没生效），t=1834 一拍 8 条打无主地全部没生效",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4861-4923 → expandNeutral / buyLand L5363-5368（非真人目标 want=1.25×need+3×cnt）；src/engine/live_game_js.js bB.qi.i6：n2(player,pct,12,0) 按执行那一拍的余额算百分比",
+   "why": "指令是按 100~550 拍前的局面算的：当时余额 2.5 万~17 万，执行时 21.5 万；6 条都落在同一个 bot100 上，瞄无主地的 11 条到执行时已经没有无主邻格",
+   "estCost": "断档 567 拍里余额 2.5 万→21.1 万、领土 4,659→5,342；同期其余真人领土中位 2,790→12,565",
+   "patternId": "NEW:IO-cmd-blackout",
+   "evidenceRef": "simdigest.py B039 gaps；cmdlist 45 900 1900；digest.py B039 bot 45 880 1650"
+  },
+  {
+   "t": 1722,
+   "bot": "Sus",
+   "kind": "boat",
+   "verdict": "error",
+   "state": "策略眼里没有可打的邻居（日志 nb=0、neut=0；实际挨着异队的 Pomerania 126 格、队友 TITAN 113 格、撞名 AI Goryeo），拍前 19.2 万兵（密度 40）；日志里 boats 计数从 10 涨到 19，录像里 t=1722 同一拍执行 7 条发船，一拍内出兵+手续费 18.3 万（95.6%）",
+   "codePath": "src/strategy/v27-team-c110.js idleBoats L4995-5004（nb 为空 → 不看 idleCap、maxEff=Infinity）→ V13.boatFood L2038-2058 / General.boatOut L1035-1051（非无主地目标 amount=boatFrac×(bal−floorAt)）；src/engine/live_game_js.js bB.qi.iB：n2(player,pct,32,0) 按执行那一拍的余额算百分比",
+   "why": "boatEvery=60 的间隔和 maxBoats 上限都按本地局面判断；断档后 7 条挤在同一拍，逐条按剩余余额连乘。10 条船最终：2 条（6.6 万）靠上队友 TITAN 的岸，2 条（5.0 万）靠上 Big Boss，3 条靠上 Pomerania",
+   "estCost": "18.3 万兵一次装船；t=1800~2160 密度 2~6，t=2002 起被 [UNSC] Big Boss 推掉 1,624 格（t=1700~2500）",
+   "patternId": "NEW:IO-lag-burst",
+   "evidenceRef": "simdigest.py B039 cmds；boats 66；pair 66 1700 2500；digest.py B039 bot 66 1400 2400"
+  },
+  {
+   "t": 2023,
+   "bot": "ArthurMorgan",
+   "kind": "boat",
+   "verdict": "error",
+   "state": "t=1350~2430 只挨着异队的 Thanos（246 格）和队友（78 格），策略眼里 nb=0；拍前 32.9 万兵，t=2023 一拍 7 条船花掉 26.3 万（79.9%），t=2170 一拍 6 条再花 47.3%",
+   "codePath": "src/strategy/v27-team-c110.js analyze L440（Thanos 名字在池里 → 不进 nb）→ idleBoats L4979-5005 → boatFood L2038-2058 / boatOut L1035-1051；src/engine/live_game_js.js acN → bB.kw.rE（船靠同队玩家的岸 = 把兵交给对方，不收手续费，占对方受捐配额）",
+   "why": "发船时 5 条瞄的是无主地；船漂了 118~221 拍，到岸时那些地已是队友的：t=2141~2145 五条共 10.0 万兵归了 Ice Barrier Clan，t=2206 2.5 万归 Furry，t=2244 4.2 万归 虎。t=2170 那 6 条全部靠回自己的岸",
+   "estCost": "16.7 万兵送给了非编队队友、4.9 万手续费；本号此后兵力 8 万~36 万，t=3898 阵亡",
+   "patternId": "NEW:BT-gift",
+   "evidenceRef": "simdigest.py B039 gifts；boats 47；cmdlist 47 2000 3898；protbox"
+  },
+  {
+   "t": 1640,
+   "bot": "Pomerania",
+   "kind": "donate",
+   "verdict": "unclear",
+   "state": "本地拍 1640~1890 每 20 拍一条捐款日志共 13 条（surplus pct=153 / rescue pct=155；→Kievan Rus 6 条、→BlackRock 7 条），录像里 0 条；本号密度 128→142",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4498（g.donate 返回真就记日志并计入冷却）；收款人资格 isOurSquadBot L3973-3976 只比名字：Kievan Rus 是名字撞池的外人，BlackRock 已在 t=1456 离开；src/engine/live_game_js.js bB.qi.qv（校验全过才写录像）",
+   "why": "引擎校验重演：收款人存活、同队、余量够、配额够（要 81~91 点，上限 91~103，已用 0）→ 这 13 条到了引擎都会执行。它们落在 Pomerania t=994→1890 的断档里：这段策略发令 51 条，t=1890 只执行了 8 条陆攻",
+   "estCost": "未执行不扣手续费；密度 128~142 的兵滞留 250 拍",
+   "patternId": "NEW:DN-not-executed",
+   "evidenceRef": "simdigest.py B039 probe；gaps"
+  },
+  {
+   "t": 2107,
+   "bot": "Bohemia",
+   "kind": "idle",
+   "verdict": "error",
+   "state": "t=2107~2814：领土 7,203→6,072，兵 44.2 万（t=2070）→65.4 万（t=2790），密度 61→108；最宽的边都在保护名单里——DoomSlayer 空壳（队1，接壤 155~214 格，内置 AI 托管、正在打它）、404 Not Found（99 格）、Algiers（43 格）；策略眼里只有 HRE/队1（1.8 万格，密度 10→19→81）一个邻居，接壤 12~15 格。707 拍里只有 1 条打无主地、1 笔捐给 Belgium 空壳",
+   "codePath": "src/strategy/v27-team-c110.js analyze L440 + isProtectedSquadMate L3993-3996：DoomSlayer 名字在池里且场上还有外人 → 不进 nb（不查是否已离开）；offers L5109-5112 窄接触加价：cnt<25 且 0.75×对方地/cnt > contactStepsMax(350) → c×(1+0.002×min(400, 步数−350))，最多 ×1.8；buyLand L5526-5531：买不起整笔时 avail 要 >= chunk(0.2)×兵 才发；L5267 c>=worth → break",
+   "why": "strat_probe 实测（t=1700~2200 每 50 拍）：HRE 密度只有 10~19，但只接壤 15 格 → 报价被乘 1.8，c=44.6~79.6 对 worth=53.4~80.9；保底线之上的可用兵只有 0.1 万~2.6 万，不到余额的 20%（5.2 万~8.2 万）→ L5528 跳过 7 次；t=2050 c=84.4>=worth=82.4 → break；t=2200 HRE 密度 34 时 c=151（此后 HRE 密度一路涨到 81）。同时空壳的 AI 把 Bohemia 当普通邻居打（整局对 Bohemia 耗 33.7 万兵、拿走 1,264 格、打掉 16.7 万兵）。直到 t=2856 一条 boatFood 的船（7.2 万兵）靠上 DoomSlayer 的岸，才拿回 291 格",
+   "estCost": "707 拍失地 1,131 格；密度从 61 闲置到 108（t=2500~2999 已开始因超软上限少拿利息）；HRE 在这段从密度 10 长到 81",
+   "patternId": "NEW:HK-husk-eats-us",
+   "evidenceRef": "strat_probe.mjs B039 --me 45 --dump 45:1700:2200:50；simdigest.py B039 husks；pair 45 2000 2950；cmdlist 45 2000 3100；neigh 45 1700 2800"
+  },
+  {
+   "t": 2177,
+   "bot": "404 Not Found",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "t=2177 同拍执行：3 条对 Çeçenistan Cumhuriye/队2 的陆攻（11.7 万+4.6 万+2.7 万）+ 3 笔→Sus pct=155 + 1 笔→HighPing pct=155（HighPing 已于 t=1456 离开）；余额 52.1 万→8.7 万，7 拍后第 5 笔捐款后剩 6.9 万",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4423-4445 squad rescue 循环：只查 g.alive[p]、isOurSquadBot(名字)、terr>=300；src/engine/live_game_js.js ca.aOb：收款人已离开时不查配额",
+   "why": "攒下的指令同拍执行，4 笔捐款各扣一次 6.25%；给空壳的那笔到账 2.2 万（空壳没有利息，t=3064 被 Ice Barrier Clan 吃掉）",
+   "estCost": "4 笔捐款手续费 6.9 万 + 3 条陆攻 19.0 万；本号密度 116→16，此后 1,800 拍没恢复",
+   "patternId": "NEW:IO-lag-burst",
+   "evidenceRef": "simdigest.py B039 don；cmdlist 55 2000 2300"
+  },
+  {
+   "t": 2457,
+   "bot": "Pomerania",
+   "kind": "boat",
+   "verdict": "good",
+   "state": "策略眼里没有可打的邻居（实际挨着 Ashanti 空壳 331 格、Sus 171 格、Goryeo 145 格）；领土 13,301、兵 62 万~69 万；t=2457、2758、3276 三条船（14.5 万/10.4 万/11.9 万兵）靠上 Ashanti 空壳（队3，1.9 万格降到 0.6 万格）",
+   "codePath": "src/strategy/v27-team-c110.js V13.boatFood L2038-2058 → searchFood L2065-2117（L2108 只排除 person() 和已是 nb 的邻居；离开的真人 isBot=true、又因名字在池里不在 nb 里 → 被当成隔海的内置 AI 买）",
+   "why": "空壳没有利息、密度 2~6：三条船加后续推进共耗 25.3 万兵拿下 13,329 格（每格 19 兵），领土 13,301→25,954",
+   "estCost": "无（同期另有 3 条船到岸时目标格已是自己的地，白付手续费 6.3 万；2 条去 Belgium 空壳的船漂了 211~272 拍后靠上队友 Furry 的岸，12.1 万兵归了 Furry）",
+   "patternId": "NEW:AT-bot-farm",
+   "evidenceRef": "simdigest.py B039 boats 48；husks；cmdlist 48 900 3500"
+  },
+  {
+   "t": 2814,
+   "bot": "Bohemia",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "Player 626/队2（7,500 格、密度 0~1）打穿 DoomSlayer 空壳后成了 Bohemia 的邻居；t=2810 日志：为 DoomSlayer 对 Player 626 发协防戳；t=2814、2821 两条陆攻（2.8 万+6.5 万兵）",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4423-4459：p=DoomSlayer（名字在池里、存活、场上有外人 → 跨队也算），mainAttacker=Player 626 与我接壤、dMe>=65 → g.attack(102, mainAttacker)；buyLand 同拍对同一目标另出一条",
+   "why": "被救的是异队空壳，但被戳的 Player 626 几乎没兵：t=2800~4200 共耗 9,626 兵拿下 3,128 格（每格 3.1 兵），领土 6,072→9,526",
+   "estCost": "无",
+   "patternId": "NEW:AT-bot-farm",
+   "evidenceRef": "simdigest.py B039 pair 45 2800 4200；cmdlist 45 2000 3100；deaths 54"
+  },
+  {
+   "t": 2947,
+   "bot": "Sus",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "策略眼里没有可打的邻居、密度 78、兵≈32 万：t=2947、3283 surplus pct=185 →Ashanti（t=1099 已离开）；t=3178 rescue pct=59 →Belgium（t=1813 已离开）",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4465-4486 surplus 候选：只要求同队 + 名字在池里 + 地>=600 + 密度<132；L4481 打分含 (135−dAlly)×3，空壳密度 2~3 → 排第一。L4424 rescue 循环同样只看名字和存活",
+   "why": "收款人是内置 AI 托管、利息为 0 的空壳；Belgium 44 拍后、Ashanti 59 拍后阵亡。pct=59 那笔到账 1.9 万、手续费 2.0 万",
+   "estCost": "三笔到账 13.7 万、手续费 6.0 万；另有 Bohemia→Belgium t=2387 pct=137（到账 7.8 万、费 3.6 万）、404→HighPing t=2177（到账 2.2 万）",
+   "patternId": "NEW:DN-husk-donate",
+   "evidenceRef": "simdigest.py B039 don"
+  },
+  {
+   "t": 3857,
+   "bot": "Sus",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "rescue 捐款 pct=74（→Thanos t=3514）、55（→Thanos t=3857）、62（→404 t=3969）；兵 31.6 万~32.5 万、密度 78~79",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4382-4389 + L4436-4438：safeFloor=68×地（有海岸且 t>=1100），maxSafePct=(兵−1.08×safeFloor)/兵，pct=min(maxSafePct,155)，pct>=55 即执行；src/engine/live_game_js.js bB.qi.qv → rD：手续费 floor(64×余额/1024)，与 pct 无关",
+   "why": "手续费恒为余额的 6.25%；pct=55 时到账 5.5%",
+   "estCost": "三笔到账 6.1 万、手续费 6.0 万；Thanos、404 分别在 99 拍、42 拍后阵亡",
+   "patternId": "NEW:DN-small-pct",
+   "evidenceRef": "simdigest.py B039 don"
+  },
+  {
+   "t": 3416,
+   "bot": "ArthurMorgan",
+   "kind": "defend",
+   "verdict": "error",
+   "state": "t=3416~3885 被 Name（2.5 万~2.9 万格、密度 64~72）6 条 12% 的陆攻连打；自己 6,294→2,001 格、兵 16.5 万~36.0 万；t=2492 之后 0 条指令。策略眼里 nb 只有 Name 一家，最长的边（Thanos 246~251 格）在保护名单里",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5258-5260 worth=0.9×max(自己密度, 0.85×其余真人密度中位)；L5267 c>=worth 且未超软上限 → break；超软上限时 L5322/L5358 keep=max(keep, dpKeep L2491-2496) → L5361 avail<=0。buyLand 没出指令后轮到 tryDonateToTeammate L4369-4498（正被真人打 myHumanInAtk>0 或兵 <= 1.10×safeFloor 时直接返回）和 idleBoats L4995-4996（有邻居时要兵 >= 125×地）",
+   "why": "strat_probe 实测 16 个采样：Name 的报价 c=148~377，worth=28~90 → 15 次 break；t=3690 自己密度 100.3（超软上限）时 dpKeep=115 万 > 兵 36 万。挨打时没有任何一条分支会出兵：领土从 6,294 掉到 2,001 的过程中兵一直留在家里，密度从 54 涨到 100 以上。引擎里守方占便宜（Name 花 144 万兵，ArthurMorgan 只掉 61 万兵），但 4,963 格地丢了，攒下的兵也全部耗在了守地上",
+   "estCost": "4,963 格地 + 阵亡时剩下的兵；这条战线上 Name 的 144 万兵对 ArthurMorgan 自己的 34 万+两笔捐款 20.3 万",
+   "patternId": "NEW:AT-worth-gate",
+   "evidenceRef": "strat_probe.mjs B039 --me 47 --dump 47:2520:3890:90；simdigest.py B039 deaths 47；cmdlist 47 2000 3898；neigh 47 2400 3500"
+  },
+  {
+   "t": 3878,
+   "bot": "Pomerania",
+   "kind": "donate",
+   "verdict": "good",
+   "state": "策略眼里没有可打的邻居、兵≈213 万、密度 78；t=3878、4088、4270 surplus pct=185 →Algiers（有敌邻、[UN] My Staffer 有 29 万兵压在它身上，密度 76~92）",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4462-4497 surplus 分支：boxedIn && dMe>=55，收款人 isOurSquadBot && terr>=600 && dAlly<132；L4382-4389 的保底线 68×地 使它只在密度过 77.6 时才捐",
+   "why": "后排闲兵→挨打的前线，方向对；三笔各占 51/64/55 点配额（上限 269/289/309），全部到账。守方每损失 1 兵攻方要花 2 兵",
+   "estCost": "三笔到账 117.5 万、手续费 40.4 万（效率 74%）；每笔只捐 18%，手续费却按全部余额收",
+   "patternId": "NEW:DN-rear-to-front",
+   "evidenceRef": "simdigest.py B039 don；deaths 49"
+  },
+  {
+   "t": 4305,
+   "bot": "Sus",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "Sus（3,974 格、兵 31.8 万、密度 78~80，策略眼里没有邻居）t=4074、4305、4529 surplus pct=185 →Bohemia（1.5 万格，收款时密度 87、120、121）",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4462-4486：boxedIn 时候选只要求同队 + 池内名字 + 地>=600 + 密度<132，L4482 的 boxedIn 条件让任何候选都过；Thanos、404 死后 Bohemia 是队3 唯一候选",
+   "why": "小号把兵捐给密度更高的大号：后两笔到账时 Bohemia 已超软上限（利率已被降档）。Bohemia 当时没有在打人（下一条陆攻在 t=5383）",
+   "estCost": "三笔到账 17.1 万、手续费 5.9 万；Sus 自己 t=4718 起被 Big Boss 打死",
+   "patternId": "NEW:DN-to-overcap",
+   "evidenceRef": "simdigest.py B039 don；cmdlist 45 3100 6000"
+  },
+  {
+   "t": 4480,
+   "bot": "Algiers",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "t=4459 收到 33.4 万（撞硬上限被截）后密度 150；t=4480、4543 squad rescue pct=155 回捐给 Pomerania（15.3 万、12.7 万）；t=4879 濒死（领土 2,783）时又 surplus pct=153 回捐 4.5 万",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4423-4445 squad rescue 分支与 L4462-4497 surplus 分支（非 boxedIn 时 dMe>=112）",
+   "why": "Pomerania 捐出后密度 63~74 且 [IND] TITAN 有 15 万~35 万兵压在它身上 → 被判成要救；Algiers 被捐到高密度 → 被判成有富余",
+   "estCost": "三笔回捐到账 32.5 万、手续费 13.4 万；同期 Algiers 领土 8,773（t=4414）→2,019（t=4953）",
+   "patternId": "NEW:DN-pingpong",
+   "evidenceRef": "simdigest.py B039 don（对倒 4 组）"
+  },
+  {
+   "t": 4816,
+   "bot": "Bohemia",
+   "kind": "boat",
+   "verdict": "error",
+   "state": "领土 14,974、兵 193 万（密度 129）、没有买得起的邻居（影子探针 t=4440~4830：LMAOOOO c=203~415、HRE c=321~478 对 worth=92~120；保底线 dpKeep=163 万~192 万，可用兵不足 20% 或为负）；t=4816 一条 477‰ 的船（90.3 万兵，手续费 6.0 万）。影子在 t=4805 发出同一条 477‰ 的船，目标格当时属于 [GD]SYFER；录像执行拍按引擎靠岸规则会登上 HRE/队1（2.4 万格、281 万兵）的岸",
+   "codePath": "src/strategy/v27-team-c110.js idleBoats L4995-5004 → General.boatOut L1035-1051：非无主地目标 amount = boatFrac(0.5)×(bal−floorAt(price))；searchWater L1055-1114 的 eff 只含 exp(boatDecay×距离)；src/engine/live_game_js.js 船速 0.24~0.57 格/拍，每 5 拍掉 1/128，敌船 7.5 格内每 2 拍打掉「敌船兵力×10%」并把我船减速到 0.04 格/拍",
+   "why": "船漂了 245 拍：自然损耗 28.8 万，被敌船打掉 61.5 万，t=5061 归零。t=4459 那条 26 万兵的船同样在 204 拍后被打光",
+   "estCost": "两条船连手续费 128.6 万兵，换回 0 格；Bohemia 整局 7 条船 153 万兵只有 19.6 万靠岸",
+   "patternId": "NEW:BT-sunk",
+   "evidenceRef": "simdigest.py B039 boats 45；eng_replay.cjs B039 --trace 45:4810:5065；strat_probe.mjs B039 --me 45 --dump 45:4440:4830:30"
+  },
+  {
+   "t": 6069,
+   "bot": "Pomerania",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "领土 22,104、兵 332 万（150×领土硬上限）；邻居 [IND] TITAN/队3（5.4 万格、466 万兵）正被队2 的 Yolo 连续攻击；t=6069、6195 两条 21% 的陆攻（68.0 万、62.3 万）",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5348-5357：over（兵>100×地）→ keep=min(keep, hold×100×地)=90×地；L5322/L5358 keep=max(keep, dpKeep)；L5360 avail=兵−费−keep；L5526-5531 x=min(avail, 1.25×need+3×cnt)，x>=chunk×兵 才发",
+   "why": "strat_probe 实测：t=6050 TITAN 511 万兵 → dpKeep=285 万、avail=42 万 < 20% 兵 → 跳过；t=6055 TITAN 的兵掉到 459 万 → dpKeep=256 万、avail=71.6 万 → L5531 出兵（影子 221‰，录像 t=6069 209‰）；t=6185 同理（影子 219‰ 61.7 万，录像 t=6195 219‰）。即：顶着硬上限等到最强邻居的兵降到「我的兵−20%」以下才出手。t=6000~6600 共耗 131 万兵从 TITAN 手里拿下 8,190 格（每格 160 兵），领土 22,104→28,117；TITAN t=6605 阵亡",
+   "estCost": "对本队（队2）无；出兵前在硬上限上停了很久（整局少拿利息 1,117 万）。被打的 TITAN 是卡片主队队3 的最大号",
+   "patternId": "NEW:AT-over-cap-dump",
+   "evidenceRef": "strat_probe.mjs B039 --me 48 --dump 48:6050:6210:5；simdigest.py B039 cmdlist 48 5900 6640；pair 48 6000 6600"
+  },
+  {
+   "t": 6030,
+   "bot": "Bohemia",
+   "kind": "idle",
+   "verdict": "error",
+   "state": "t=5845~6783：领土 19,368、兵 196 万→287 万（密度 101→148）；邻居 Furry🦊[Corgi]/队2（11 万~18 万格、1,040 万~1,510 万兵）、HRE/队1（3.1 万格、密度 92~137）、队友 My Staffer；938 拍 0 条指令。同队 TITAN 这段被打死。之后 t=6993~8028 又 1,036 拍 0 条指令直到被 Furry 推平",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5322 safe=safeAt(g,q) → dpKeep L2491-2496：对所有真人邻居取最大的（兵+压在我身上的兵−1.5×我的地）/1.78，与正在报价的目标无关；L5323-5326 只有目标 nearCollapse/bleeding/tD<0.45 才封顶 88×地；L5358 keep=max(keep, safe)；L5360-5361 avail<=0 → continue。tryDonateToTeammate L4465-4467：surplus 候选只收 Boss 或名字在池里的同队号，队3 已无在场编队号 → 不捐。idleBoats L4995-5004 → searchWater：这段影子也没有发船",
+   "why": "strat_probe 实测（t=5940~6660 每 90 拍）：Furry 进邻居表后 safe=580 万~850 万，自己全部兵只有 196 万~287 万 → 对 Furry、对 HRE 的 avail 都是 −320 万~−565 万；影子在 t=5836~6769 发出 0 条指令，与录像一致。t=6783 HRE 被别人打（bleeding → safe 封顶 88×地=124 万）时才出了一条 27.7%（48.2 万兵得 1,453 格）；t=6993 之后 Furry 成了唯一进邻居表的邻居：t=7020 c=387 对 worth=88 → L5267；t=7140、7260 → L5271（唯一的真人缓冲邻居）；t=7500 起超软上限，dpKeep=1,430 万~1,700 万 → L5361",
+   "estCost": "t=6000~6999 少拿利息 180 万；t=6500~7000 失地 7,603 格、被打掉 151 万兵；死时 200 万兵在硬上限上",
+   "patternId": "NEW:EG-giant-neighbor-freeze",
+   "evidenceRef": "strat_probe.mjs B039 --me 45 --dump 45:5850:6780:90,45:7020:8040:120；simdigest.py B039 neigh 45 5300 8045；ledger 45；cmdlist 45 6000 8045；deaths 45"
+  },
+  {
+   "t": 6657,
+   "bot": "Pomerania",
+   "kind": "boat",
+   "verdict": "unclear",
+   "state": "t=6657~8190：没有邻居、没有无主邻格，兵 315 万~472 万（密度 129→150）；12 条 0~1‰ 的船，每条船上 3,419~6,153 兵、手续费 9.8 万~14.7 万",
+   "codePath": "src/strategy/v27-team-c110.js idleBoats L4995-5004：nb 为空时不看 idleCap、maxEff=Infinity → General.boatOut L1043-1045：无主地目标 min=60、amount=3×size+300 → pct=0~1；searchWater L1097 的 eff=2×grow+fee/comp 只用来排序；src/engine/live_game_js.js n2(player,pct,32,0)：手续费 floor(32×余额/1024)，出兵 floor(余额×(pct+1)/1024)",
+   "why": "每条船的手续费是船上兵力的 20~40 倍。这个号已顶在硬上限附近（这段少拿的利息 691 万），烧掉的手续费大半会被恢复的利息补回",
+   "estCost": "12 条船手续费合计 160 万，船上合计 5.3 万兵，领土 +62 格；整局该号出兵 <5% 余额的指令 30 条，出兵 111 万、手续费 191 万",
+   "patternId": "NEW:FE-tiny-cmd-fee",
+   "evidenceRef": "simdigest.py B039 boats 48；fees；protbox"
+  },
+  {
+   "t": 1890,
+   "bot": "Pomerania",
+   "kind": "expand",
+   "verdict": "good",
+   "state": "断档结束后 t=1890 一拍 8 条（7 条无主地没生效+1 条 bot505），t=2142 一拍 9 条（7 条 bot505+2 条无主地）；领土 3,127→12,409（t=2340）",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4901-4902 → expandNeutral（neutral>0）→ buyLand L5363-5368 非真人目标分支（want=1.25×need+3×cnt）",
+   "why": "吃内置 AI：bot505 等共 9,169 格只花 2.9 万兵（每格 3.2 兵）",
+   "estCost": "无（这批指令晚了 900 拍：t=994~1890 余额从 3.5 万攒到 44 万、领土停在 3,127~3,698）",
+   "patternId": "NEW:AT-bot-farm",
+   "evidenceRef": "simdigest.py B039 cmdlist 48 900 3500；ledger；digest.py B039 bot 48 1500 2400"
+  },
+  {
+   "t": 1260,
+   "bot": "Pomerania/Sus",
+   "kind": "expand",
+   "verdict": "error",
+   "state": "内置 AI Goryeo（bot452）t=360~4680 贴着 Pomerania（6~161 格）和 Sus（1~27 格），自己 144~1,935 格、密度 0~1.8；t=3060 后它是全图最后一个内置 AI。Sus 当时只有 3,444~4,889 格",
+   "codePath": "src/strategy/v27-team-c110.js isOurSquadBot L3973-3976：SQUAD_POOL_SET.has(名字小写)，不看是不是真人；isProtectedSquadMate L3993-3996 → analyze L440 不进 nb。池里有 goryeo；本局 15 个内置 AI 撞名",
+   "why": "策略把这个 AI 当成编队号：不进邻居表、不报价。两个号整局对它耗兵 0 得 0 格",
+   "estCost": "约 1,900 格每格 2 兵左右的地没人拿（对 Sus 是自己领土的 40%~50%）；15 个撞名 AI 在 t=1170 共占 13,834 格",
+   "patternId": "NEW:PL-pool-ai",
+   "evidenceRef": "simdigest.py B039 poolai；protbox"
+  },
+  {
+   "t": 1200,
+   "bot": "Algiers",
+   "kind": "idle",
+   "verdict": "error",
+   "state": "t=1100~1750 Algiers 7,935~8,201 格，兵 2.5 万→32.0 万（密度 3→41）；身边 2~4 个内置 AI（Zand Dynasty 1,495~1,887 格 0~3,816 兵、Balhae 1,528~1,663 格 0~3,581 兵、Württemberg、Wattasids，每格报价 2~9）；夹在同一批 AI 另一侧的是异队我方号 404 Not Found（兵 7.2 万→32.1 万）和 Bohemia。Algiers 自己的日志 cmds 计数 t=1080→1890 只从 24 涨到 28（810 拍 4 条指令），不是断档",
+   "codePath": "src/strategy/v27-team-c110.js t<1500：General.act L830 → Style.pickTarget L1196-1197 avail = bal − floorFor → V13.floorFor0 L2270-2276 → Policy.winFloor L4542-4550 max(winR 项, dpKeep, this.sb) → V13.safeFinite L2532-2542 → Strategy.threatOf L464-492（minOther 取该 AI 其余邻居里兵最少的，不排除队友/编队号）；t>=1500：buyLand L5322 safeAt → V17.safeAt L2747（botSkip=0，不跳过）→ 同一个 safeFinite → L5361 avail<=0",
+   "why": "策略给自己定的底线是「别成为内置 AI 邻居眼里最弱的那个」，取的是那个 AI 的另一个邻居的兵——这里取到的是 404 或 Bohemia 的兵（2.6 万~34.0 万），多数时候不低于 Algiers 自己的兵；两边按同样的利率涨兵，谁也超不过对方 21.4%（minSend）。t=600~1499 的 180 个决策拍里 106 个卡在这一项",
+   "estCost": "领土 t=1200~2289 停在 7,879~8,255 格共 1,090 拍，兵从 7.4 万攒到 50.0 万；旁边两个 AI 合计 3,100~3,500 格、每格 2~9 兵的地没买。全队 t=600~1499 有 AI 邻居的 2,230 个决策拍里 610 个（27.4%）卡在这一项且去掉就能出兵",
+   "patternId": "NEW:OP-safefinite-squad-lock",
+   "evidenceRef": "strat_probe.mjs B039 --me 49 --dump 49:700:1900:50；simdigest.py B039 gates；cmdlist 49 600 2300"
+  },
+  {
+   "t": 1800,
+   "bot": "Algiers",
+   "kind": "idle",
+   "verdict": "error",
+   "state": "t=1800~1900 safeFinite 降到 25.0 万~28.3 万，可用兵 9.7 万~11.6 万；Balhae 1,609→707 格、0 兵，每格报价 5.3~15.9；Algiers 兵 35.1 万~40.4 万",
+   "codePath": "src/strategy/v27-team-c110.js Policy.buyLand L5365-5367：want = 1.25×need + 3×接壤 = 3,074→885；x = min(avail, want)；x < minCmd（L521-523 = feeK×手续费 = 4×12/1024×余额 = 1.6 万~1.9 万）→ continue。开局段同类目标走 V13.amount0 L2371 的 Math.max(…, min)，会把单抬到 minCmd；核心段是跳过",
+   "why": "目标太空：吃光它只要 900~3,100 兵，小于最小指令（余额的 4.7%）。兵越多这道闸越宽——35 万兵时，0 兵的 AI 少于约 8,800 格就不买",
+   "estCost": "Balhae 的 1,609 格在 t=1800~1900 被别人拿走 900 格。全队 t>=1500 有非真人报价的 359 个决策拍里 264 个（73.5%）出口在这一行（404 88、Pomerania 67、Belgium 46、Algiers 37、DoomSlayer 19、Bohemia 7）",
+   "patternId": "NEW:AT-ai-order-too-small",
+   "evidenceRef": "strat_probe.mjs B039 --me 49 --dump 49:1500:1900:50；simdigest.py B039 gates（第三段）"
+  }
+ ],
+ "newPatterns": [
+  {
+   "name": "NEW:IO-disconnect-husk",
+   "definition": "我方号在存活状态下被登记离开（录像指令 9 或结算 left），领土和兵留在场上由内置 AI 托管、利息为 0，仍算原队成员",
+   "detectionSketch": "重放：号从在场变成离开状态且仍存活；无录像：results.csv event=left 且 lastTerritory>0，或日志在终局前 300 拍以上中断且没有 died 结算",
+   "instances": [
+    {
+     "t": 112,
+     "bot": "Andalusia"
+    },
+    {
+     "t": 112,
+     "bot": "Chile"
+    },
+    {
+     "t": 224,
+     "bot": "Bellingham"
+    },
+    {
+     "t": 224,
+     "bot": "Ryu"
+    },
+    {
+     "t": 224,
+     "bot": "VoidWalker"
+    },
+    {
+     "t": 1099,
+     "bot": "Ashanti"
+    },
+    {
+     "t": 1183,
+     "bot": "Manstein"
+    },
+    {
+     "t": 1295,
+     "bot": "Kazuya"
+    },
+    {
+     "t": 1456,
+     "bot": "Maple Leaf"
+    },
+    {
+     "t": 1456,
+     "bot": "HighPing"
+    },
+    {
+     "t": 1456,
+     "bot": "BlackRock"
+    },
+    {
+     "t": 1813,
+     "bot": "Belgium"
+    },
+    {
+     "t": 2016,
+     "bot": "DoomSlayer"
+    }
+   ]
+  },
+  {
+   "name": "NEW:IO-cmd-blackout",
+   "definition": "指令断档：某个号相邻两次有指令进录像的拍相隔 >=300，而这段时间它的日志 cmds 计数涨了 >=5（策略在发令、引擎没收到）",
+   "detectionSketch": "simdigest gaps：录像里该号指令的执行拍序列 + 日志快照的 cmds 字段；无录像时用「cmds 在涨而领土/余额走势与发令无关」近似",
+   "instances": [
+    {
+     "t": 980,
+     "bot": "Bohemia"
+    },
+    {
+     "t": 847,
+     "bot": "ArthurMorgan"
+    },
+    {
+     "t": 1204,
+     "bot": "ArthurMorgan"
+    },
+    {
+     "t": 994,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 1050,
+     "bot": "DoomSlayer"
+    },
+    {
+     "t": 798,
+     "bot": "404 Not Found"
+    },
+    {
+     "t": 1169,
+     "bot": "404 Not Found"
+    },
+    {
+     "t": 987,
+     "bot": "Kazuya"
+    },
+    {
+     "t": 1085,
+     "bot": "Sus"
+    },
+    {
+     "t": 1225,
+     "bot": "Thanos"
+    }
+   ]
+  },
+  {
+   "name": "NEW:IO-lag-burst",
+   "definition": "同号同拍 >=3 条生效指令且一拍内出兵+手续费 >= 拍前余额的 50%（攒下的指令成批执行，每条按执行时余额的百分比连乘）",
+   "detectionSketch": "重放：同号同拍生效指令 >=3 且合计花费 >= 50% 余额（simdigest cmds）；日志侧：相邻快照余额跌 >=30% 且 boats/cmds 计数在此前多个快照里已经涨过",
+   "instances": [
+    {
+     "t": 903,
+     "bot": "Belgium"
+    },
+    {
+     "t": 931,
+     "bot": "Kazuya"
+    },
+    {
+     "t": 1008,
+     "bot": "Thanos"
+    },
+    {
+     "t": 1022,
+     "bot": "Algiers"
+    },
+    {
+     "t": 1022,
+     "bot": "DoomSlayer"
+    },
+    {
+     "t": 1169,
+     "bot": "ArthurMorgan"
+    },
+    {
+     "t": 1176,
+     "bot": "Maple Leaf"
+    },
+    {
+     "t": 1722,
+     "bot": "Sus"
+    },
+    {
+     "t": 2023,
+     "bot": "ArthurMorgan"
+    },
+    {
+     "t": 2100,
+     "bot": "Thanos"
+    },
+    {
+     "t": 2268,
+     "bot": "Thanos"
+    }
+   ]
+  },
+  {
+   "name": "NEW:SP-squad-stack",
+   "definition": "两个我方号最终出生点相距 <80 格（同队或异队）",
+   "detectionSketch": "录像选点指令取每号最后一条生效的落点，两两算距离（digest picks）；无录像用 HL-SPAWN 最后一行近似（不可靠：最后几条日志里的改点可能没生效）",
+   "instances": [
+    {
+     "t": 40,
+     "bot": "ArthurMorgan"
+    },
+    {
+     "t": 40,
+     "bot": "Thanos"
+    },
+    {
+     "t": 40,
+     "bot": "Bohemia"
+    },
+    {
+     "t": 40,
+     "bot": "DoomSlayer"
+    },
+    {
+     "t": 40,
+     "bot": "Chile"
+    }
+   ]
+  },
+  {
+   "name": "NEW:PL-protect-box",
+   "definition": "被保护名单围住：我方在场号连续 >=180 拍没有可打的邻居、也没有无主邻格（策略 nb=0 且 neut=0），而它实际挨着名字在池里的异队号/空壳或撞名内置 AI",
+   "detectionSketch": "重放邻居采样（每 90 拍）按策略的 isProtectedSquadMate 规则分类（simdigest protbox）；无录像：日志 nb=0 && neut=0 且同局有异队编队号",
+   "instances": [
+    {
+     "t": 1260,
+     "bot": "Thanos"
+    },
+    {
+     "t": 1350,
+     "bot": "ArthurMorgan"
+    },
+    {
+     "t": 1260,
+     "bot": "Sus"
+    },
+    {
+     "t": 2970,
+     "bot": "Sus"
+    },
+    {
+     "t": 2970,
+     "bot": "404 Not Found"
+    },
+    {
+     "t": 2520,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 3510,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 1710,
+     "bot": "DoomSlayer"
+    }
+   ]
+  },
+  {
+   "name": "NEW:PL-pool-ai",
+   "definition": "内置 AI 的名字在编队名字池里（isOurSquadBot 只比名字）：我方号与它接壤却整局不打它",
+   "detectionSketch": "重放：引擎名字表里编号 >= 真人数且名字小写在 SQUAD_POOL_SET 里的号；与我方在场号的接壤采样（simdigest poolai）",
+   "instances": [
+    {
+     "t": 360,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 1080,
+     "bot": "Sus"
+    },
+    {
+     "t": 720,
+     "bot": "Manstein"
+    },
+    {
+     "t": 990,
+     "bot": "Kazuya"
+    },
+    {
+     "t": 270,
+     "bot": "HighPing"
+    }
+   ]
+  },
+  {
+   "name": "NEW:HK-husk-eats-us",
+   "definition": "我方空壳（内置 AI 托管）对我方在场号出兵并拿走领土，而在场号因保护名单不能陆攻它",
+   "detectionSketch": "重放 ledger：空壳离开后对我方在场号的 耗兵/得地（simdigest husks）",
+   "instances": [
+    {
+     "t": 2107,
+     "bot": "Bohemia"
+    },
+    {
+     "t": 2520,
+     "bot": "Pomerania"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-husk-donate",
+   "definition": "捐款的收款人当时已经离开对局（内置 AI 托管的空壳）",
+   "detectionSketch": "捐款执行拍 >= 收款人的离开拍",
+   "instances": [
+    {
+     "t": 2177,
+     "bot": "404 Not Found"
+    },
+    {
+     "t": 2387,
+     "bot": "Bohemia"
+    },
+    {
+     "t": 2947,
+     "bot": "Sus"
+    },
+    {
+     "t": 3178,
+     "bot": "Sus"
+    },
+    {
+     "t": 3283,
+     "bot": "Sus"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-small-pct",
+   "definition": "已执行的捐款 pct<150（到账/(到账+手续费) < 70%）；pct<64 时到账小于手续费",
+   "detectionSketch": "HL-DONATE 的 pct 字段 <150 且录像里有对应指令",
+   "instances": [
+    {
+     "t": 3178,
+     "bot": "Sus"
+    },
+    {
+     "t": 3479,
+     "bot": "Algiers"
+    },
+    {
+     "t": 3514,
+     "bot": "Sus"
+    },
+    {
+     "t": 3682,
+     "bot": "Algiers"
+    },
+    {
+     "t": 3857,
+     "bot": "Sus"
+    },
+    {
+     "t": 3969,
+     "bot": "Sus"
+    },
+    {
+     "t": 2387,
+     "bot": "Bohemia"
+    },
+    {
+     "t": 4851,
+     "bot": "Pomerania"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-pingpong",
+   "definition": "A 捐给 B 之后 150 拍内 B 又捐回 A（两笔都执行）",
+   "detectionSketch": "按 (捐款人, 收款人) 配对相反方向的两条已执行捐款，间隔 <=150 拍",
+   "instances": [
+    {
+     "t": 4480,
+     "bot": "Algiers"
+    },
+    {
+     "t": 4585,
+     "bot": "Bohemia"
+    },
+    {
+     "t": 4837,
+     "bot": "Sus"
+    },
+    {
+     "t": 4879,
+     "bot": "Algiers"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-to-overcap",
+   "definition": "收款人收款时密度已 >=100（超软上限，利率已降档）；撞 150×领土硬上限时到账被截而手续费照收",
+   "detectionSketch": "捐款执行拍收款人 兵/地 >= 100；到账 < floor(余额×(pct+1)/1024) 即被截",
+   "instances": [
+    {
+     "t": 4305,
+     "bot": "Sus"
+    },
+    {
+     "t": 4459,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 4529,
+     "bot": "Sus"
+    },
+    {
+     "t": 4732,
+     "bot": "Bohemia"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-not-executed",
+   "definition": "日志里有 HL-DONATE，录像里没有这条捐款，且引擎校验重演表明它到了引擎会被执行（指令没送达）",
+   "detectionSketch": "重放 probes：日志拍后 7/14/21/28 拍用引擎校验函数判；无录像时用 40 拍内余额读数 >=0.97×原余额近似「没执行」",
+   "instances": [
+    {
+     "t": 1640,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 1780,
+     "bot": "404 Not Found"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-dying-donor",
+   "definition": "捐款人自己的领土在 300 拍内已跌 >=25%，仍然往外捐",
+   "detectionSketch": "捐款执行拍回看 300 拍的领土跌幅",
+   "instances": [
+    {
+     "t": 4879,
+     "bot": "Algiers"
+    },
+    {
+     "t": 4837,
+     "bot": "Sus"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-rear-to-front",
+   "definition": "没有可打邻居的后排号把兵以 pct>=185 捐给有敌邻且正在挨打、密度低于 100 的同队编队号，且捐款被执行",
+   "detectionSketch": "HL-DONATE surplus 且 boxedIn=true、pct>=185、录像里有对应指令、收款人密度 <100",
+   "instances": [
+    {
+     "t": 3878,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 4088,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 4270,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 3626,
+     "bot": "Sus"
+    }
+   ]
+  },
+  {
+   "name": "NEW:BT-sunk",
+   "definition": "船没靠岸就在海上被敌船打光（消失时船上 0 兵）",
+   "detectionSketch": "重放：按引擎船编号跟踪，船被移除时没有靠岸记录且兵力为 0（simdigest boats）",
+   "instances": [
+    {
+     "t": 2919,
+     "bot": "Bohemia"
+    },
+    {
+     "t": 3017,
+     "bot": "Bohemia"
+    },
+    {
+     "t": 4459,
+     "bot": "Bohemia"
+    },
+    {
+     "t": 4816,
+     "bot": "Bohemia"
+    },
+    {
+     "t": 2919,
+     "bot": "404 Not Found"
+    },
+    {
+     "t": 2933,
+     "bot": "404 Not Found"
+    }
+   ]
+  },
+  {
+   "name": "NEW:BT-gift",
+   "definition": "船靠上同队玩家的岸：船上的兵直接归了对方（引擎当作一次不收手续费的移交，占对方受捐配额）",
+   "detectionSketch": "重放：bB.kw.rE 被调用（simdigest gifts）",
+   "instances": [
+    {
+     "t": 1525,
+     "bot": "Sus"
+    },
+    {
+     "t": 2141,
+     "bot": "ArthurMorgan"
+    },
+    {
+     "t": 3144,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 3500,
+     "bot": "404 Not Found"
+    }
+   ]
+  },
+  {
+   "name": "NEW:BT-own-shore",
+   "definition": "船靠回自己的岸：兵回到余额，白付一次 32/1024 的手续费",
+   "detectionSketch": "重放：靠岸时登陆格的主人是发船人自己",
+   "instances": [
+    {
+     "t": 2268,
+     "bot": "Thanos"
+    },
+    {
+     "t": 2576,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 2170,
+     "bot": "ArthurMorgan"
+    }
+   ]
+  },
+  {
+   "name": "NEW:FE-tiny-cmd-fee",
+   "definition": "出兵不到余额 5% 的指令（陆攻手续费固定为余额的 1.17%、发船 3.125%）；余额 >=100 万时单条手续费上万",
+   "detectionSketch": "重放：squadCmds 里 sent < 0.05×B0（simdigest fees）；无录像无法精确统计",
+   "instances": [
+    {
+     "t": 6657,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 6860,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 7630,
+     "bot": "Pomerania"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DF-passive-death",
+   "definition": "阵亡号死前 900 拍被真人拿走 >=1,000 格，而自己死前 600 拍对真人 0 条陆攻",
+   "detectionSketch": "重放：ledger 里死前 900 拍按对手类别的失地 + 死前 600 拍 squadCmds 里对真人的陆攻条数（simdigest deaths、cmdlist）；无录像：死前快照 nb>=1、cmds 计数不变而领土连续下跌",
+   "instances": [
+    {
+     "t": 3898,
+     "bot": "ArthurMorgan"
+    },
+    {
+     "t": 3956,
+     "bot": "Thanos"
+    },
+    {
+     "t": 4011,
+     "bot": "404 Not Found"
+    },
+    {
+     "t": 4954,
+     "bot": "Algiers"
+    },
+    {
+     "t": 4961,
+     "bot": "Sus"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AT-worth-gate",
+   "definition": "有真人在打我，而 buyLand 对每个真人邻居的报价都停在 L5267（c >= worth=0.9×max(自己密度, 0.85×其余真人密度中位) 且没超软上限）→ 整段挨打期间 0 条还击",
+   "detectionSketch": "有录像：strat_probe 的逐报价出口（真人报价 L5267/L5361/L5280/L5528 各占多少、有没有 L5531/L5500 出兵）；无录像：日志 nb>=1 且 cmds 计数 >=300 拍不变而 terr 下跌 >=20%",
+   "instances": [
+    {
+     "t": 3416,
+     "bot": "ArthurMorgan"
+    },
+    {
+     "t": 3479,
+     "bot": "Thanos"
+    },
+    {
+     "t": 3651,
+     "bot": "404 Not Found"
+    },
+    {
+     "t": 4487,
+     "bot": "Algiers"
+    },
+    {
+     "t": 4571,
+     "bot": "Sus"
+    }
+   ]
+  },
+  {
+   "name": "NEW:EG-giant-neighbor-freeze",
+   "definition": "自己超软上限（兵>100×地），邻居表里最强真人的兵让 dpKeep=(对方兵−1.5×我的地)/1.78 >= 自己的全部兵 → 对所有不在 bleeding/将崩状态的目标 avail<=0（L5361），包括比自己弱的那个邻居",
+   "detectionSketch": "重放每 90 拍采样：我密度>=100 且 max(真人邻居兵)−1.5×我的地 >= 1.78×我的兵；strat_probe 可直接读 safe/avail；无录像：dens>=100、nb>=1 且 cmds 计数 >=300 拍不变",
+   "instances": [
+    {
+     "t": 3690,
+     "bot": "ArthurMorgan"
+    },
+    {
+     "t": 4420,
+     "bot": "Algiers"
+    },
+    {
+     "t": 4640,
+     "bot": "Sus"
+    },
+    {
+     "t": 5940,
+     "bot": "Bohemia"
+    },
+    {
+     "t": 7500,
+     "bot": "Bohemia"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AT-narrow-contact-skip",
+   "definition": "邻居表里唯一的真人密度不到自己的 1/3，但接壤 <25 格 → 报价被窄接触加价（最多 ×1.8）抬到贴近 worth，保底线之上的可用兵不足余额的 20% → L5528 跳过",
+   "detectionSketch": "strat_probe：真人报价 c<worth、出口 L5528 且该邻居 cnt<25；无录像无法判定（日志不打印 offers）",
+   "instances": [
+    {
+     "t": 1700,
+     "bot": "Bohemia"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DF-sea-landing",
+   "definition": "外人的船在我方在场号的岸上登陆，船上兵 >= 我方号当时兵力的 50%（且 >=2 万）：对面从海上开一条新战线",
+   "detectionSketch": "重放：引擎靠岸钩子记录的登陆事件（simdigest landings）；无录像：日志 nb 从 0 变 >=1 的同时领土开始下跌（近似）",
+   "instances": [
+    {
+     "t": 1953,
+     "bot": "Sus"
+    },
+    {
+     "t": 2105,
+     "bot": "Sus"
+    },
+    {
+     "t": 3651,
+     "bot": "404 Not Found"
+    },
+    {
+     "t": 4571,
+     "bot": "Sus"
+    },
+    {
+     "t": 6709,
+     "bot": "Bohemia"
+    }
+   ]
+  },
+  {
+   "name": "NEW:BT-hit-squadmate",
+   "definition": "我方在场号的船靠上「异队的我方在场号」的岸：保护名单只管陆攻和选目标，引擎照样按进攻结算",
+   "detectionSketch": "重放：登陆事件里发船人和登陆格主人都是在场的我方号且不同队（simdigest landings）",
+   "instances": [
+    {
+     "t": 210,
+     "bot": "Thanos"
+    },
+    {
+     "t": 2017,
+     "bot": "Sus"
+    },
+    {
+     "t": 2321,
+     "bot": "ArthurMorgan"
+    },
+    {
+     "t": 2620,
+     "bot": "Algiers"
+    }
+   ]
+  },
+  {
+   "name": "NEW:EG-cap-idle-death",
+   "definition": "连续 >=600 拍没有任何指令、期间密度升到 >=140（硬上限 150，利息趋零），随后 600 拍内被打掉 >=25% 领土或被打死",
+   "detectionSketch": "快照 cmds/boats 计数 >=600 拍不变且期间 dens>=140，之后 600 拍内领土跌 >=25% 或阵亡",
+   "instances": [
+    {
+     "t": 5845,
+     "bot": "Bohemia"
+    },
+    {
+     "t": 6993,
+     "bot": "Bohemia"
+    }
+   ]
+  },
+  {
+   "name": "NEW:EC-boxed-cap",
+   "definition": "没有敌方真人邻居、没有无主邻格且密度 >=95 的时段（内陆闲兵）；按该时段因超软上限少拿的利息计量",
+   "detectionSketch": "重放邻居采样（每 90 拍）：敌方真人接触 0 且 neut==0 且 dens>=95；日志：nb==0 && neut==0 && dens>=95",
+   "instances": [
+    {
+     "t": 6930,
+     "bot": "Pomerania"
+    }
+   ]
+  },
+  {
+   "name": "NEW:OP-cycle-open",
+   "definition": "开局周期出兵按时执行（指令延迟 <50 拍）且 t=630 单号领土中位不低于同局其余真人中位",
+   "detectionSketch": "HL-OPENING 配录像无主地指令的延迟；重放 t=630 各真人领土（simdigest medians）",
+   "instances": [
+    {
+     "t": 630,
+     "bot": "全体在场号"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AT-bot-farm",
+   "definition": "对内置 AI / 无主地 / 空壳 / 密度 <5 的真人出兵，每格花费 <25 兵且 500 拍内领土 +30% 以上",
+   "detectionSketch": "重放 ledger：按对手类别的 耗兵/得地（simdigest ledger、pair）",
+   "instances": [
+    {
+     "t": 1890,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 2457,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 2471,
+     "bot": "Thanos"
+    },
+    {
+     "t": 2814,
+     "bot": "Bohemia"
+    },
+    {
+     "t": 3115,
+     "bot": "Bohemia"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AT-over-cap-dump",
+   "definition": "兵超过 100×领土后对真人邻居一次打出 >=20% 余额的陆攻并拿到地",
+   "detectionSketch": "重放：对敌方真人的陆攻 sent>=0.2×B0 且 B0>100×myTerr，之后 300 拍 ledger 对该目标得地 >0",
+   "instances": [
+    {
+     "t": 6069,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 6195,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 5383,
+     "bot": "Bohemia"
+    },
+    {
+     "t": 6783,
+     "bot": "Bohemia"
+    }
+   ]
+  },
+  {
+   "name": "NEW:NF-lock",
+   "definition": "isNoFullSend 被置真的条件成立：陆攻发令后 1~7 拍内余额跌幅（来自上一条指令落地或挨打）被当成本条指令的实际出兵，且想发的兵 >= 1.12×跌幅",
+   "detectionSketch": "重放逐拍余额 + HL-OPENING 的发令拍与 spend（simdigest nfs）",
+   "instances": [
+    {
+     "t": 555,
+     "bot": "BlackRock"
+    },
+    {
+     "t": 560,
+     "bot": "Bohemia"
+    },
+    {
+     "t": 700,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 710,
+     "bot": "Ashanti"
+    }
+   ]
+  },
+  {
+   "name": "NEW:OP-safefinite-squad-lock",
+   "definition": "打内置 AI 的底线取到 safeFinite，而它的值是「某个内置 AI 邻居的另一个邻居」的兵，那个邻居是我方在场号（同队或异队）；去掉这一项当拍就能出兵",
+   "detectionSketch": "影子探针逐决策拍（strat_probe.mjs --tally → simdigest gates）：t<1500 gate=floor:sb 且 sbKind 以「我方号」开头且 passNoSb=1；t>=1500 非真人报价出口 L5361 且 safeBy=sb。无录像的局只能用日志近似：nb>=1、neut=0、cmds 不涨、密度在涨",
+   "instances": [
+    {
+     "t": 900,
+     "bot": "Algiers"
+    },
+    {
+     "t": 1100,
+     "bot": "Algiers"
+    },
+    {
+     "t": 1200,
+     "bot": "Algiers"
+    },
+    {
+     "t": 1500,
+     "bot": "Algiers"
+    },
+    {
+     "t": 1000,
+     "bot": "Bohemia"
+    },
+    {
+     "t": 1100,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 1000,
+     "bot": "Belgium"
+    },
+    {
+     "t": 1000,
+     "bot": "Sus"
+    },
+    {
+     "t": 1000,
+     "bot": "Ashanti"
+    },
+    {
+     "t": 1000,
+     "bot": "404 Not Found"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AT-ai-order-too-small",
+   "definition": "t>=1500 对非真人邻居（内置 AI / 空壳）的报价在 buyLand L5367 因 x=min(avail, 1.25×need+3×接壤) < minCmd（4×手续费=余额的 4.7%）被跳过",
+   "detectionSketch": "影子探针 tally：t>=1500、ai>0、排第一的非真人报价出口 = L5367a（simdigest gates 第三段）",
+   "instances": [
+    {
+     "t": 1800,
+     "bot": "Algiers"
+    },
+    {
+     "t": 1850,
+     "bot": "Algiers"
+    },
+    {
+     "t": 1900,
+     "bot": "Algiers"
+    }
+   ]
+  },
+  {
+   "name": "NEW:CMD-repeat-before-effect",
+   "definition": "同一个号对同一玩家目标的两条生效陆攻相隔 <=21 拍（3 个服务器回合）：第二条是在第一条落地前后下的，各自按当拍余额的百分比出兵",
+   "detectionSketch": "重放 squadCmds：同 p 同 raw 目标、ok=1、间隔 1~21 拍（simdigest dups）",
+   "instances": [
+    {
+     "t": 5383,
+     "bot": "Bohemia"
+    },
+    {
+     "t": 2814,
+     "bot": "Bohemia"
+    },
+    {
+     "t": 2226,
+     "bot": "Algiers"
+    },
+    {
+     "t": 2233,
+     "bot": "Algiers"
+    },
+    {
+     "t": 2240,
+     "bot": "Algiers"
+    },
+    {
+     "t": 2443,
+     "bot": "Algiers"
+    },
+    {
+     "t": 2247,
+     "bot": "Pomerania"
+    },
+    {
+     "t": 2247,
+     "bot": "Sus"
+    }
+   ]
+  }
+ ],
+ "lossArchetype": "external",
+ "secondaryArchetype": "team-split",
+ "teamSplit": true,
+ "externalFactors": [
+  "指令断档：t≈850~2200 在场号的指令只在零星几拍成批进录像（每拍最多 9 条），相邻两批相隔 308~896 拍；断档期间策略照常发令共 209 条（simdigest gaps）",
+  "20 个号里 13 个被服务器登记为离开（录像指令 9）：5 个在 t=112/224 离开、整局没有一条日志快照和出兵指令；另 8 个的日志先停在本地拍 720~1440，215~733 拍后（t=1099~2016）被登记离开，留下 51,327 格地（全图 6.7%）和 169 万兵，由内置 AI 托管、利息为 0",
+  "本地拍 1350~1799 的日志快照里 70% 落后编队最快的号 180 拍以上（中位 360，最大 540）；最快的号自己的指令也断了 567 拍",
+  "20 个号被引擎按颜色分到三支队：队1=2、队2=7、队3=11（卡片只数到 3+4）"
+ ],
+ "winnerNotes": "赢家是队2（t=8275 占 98.6%）。队3 在 t=2070~6030 一直第一（34.8%~39.9%），队2 在 t=3060 垫底（28.9%）。转折在 t=5936~7141：队3 最大的 [IND] TITAN（5.2 万格、557 万兵）被队2 的 Yolo（12 条 8.6% 的陆攻）、我方 Pomerania（两条 21%，共 130 万兵）和 Furry（3 条 10.8%）同时打，t=6454 把全部兵压向 Yolo 后兵力归零，t=6605 阵亡；随后队3 的 [UZB] 阵亡（t=6623），[OG]🤫（t=6902）、[UN] My Staffer（t=7049）离开，在场真人 10→5，份额 38.7%→18.3%；队2 同期 33.0%→47.5%。队2 的主力 Furry🦊[Corgi] 领土 11.3 万（t=6030）→21.2 万（t=7020）→42.0 万（t=8010），终局前一条 27% 的陆攻就是 665 万兵。录像里的队间出兵（digest teamwar）：t=5400~7199 队1 与队3 互相下了 107 条陆攻，同期队2 对两边只有 43 条——队2 是在另外两队互耗时坐大的。我方在队2 的 7 个号里 3 个开局就离开、2 个中途离开、2 个阵亡，只有 Pomerania 活到终局（31,485 格、446 万兵）。它对队2 的贡献：t=3878~4851 捐给 Algiers 173 万兵（My Staffer 为推平 Algiers 花了 234 万兵）、t=6069~6510 从队3 的 TITAN 手里打下 8,298 格。我方在队3 的 11 个号在 t=3060 合计只占全图 3.0%（队3 的 8%）；队3 崩盘时唯一还在的 Bohemia 有 196 万~287 万兵，938 拍没有任何指令。全场真人中途离开 56 个（队1 21、队2 16、队3 19），我方 13 个。",
+ "wentWell": [
+  "开局节奏：t=630 单号领土中位 2,950，高于同局 [APEX] 十人队（2,679）和其余真人（2,790）。",
+  "t>=2177 的 29 条捐款全部被引擎执行；整局没有一笔因配额被拒（船靠友军岸的 13 次移交 39.4 万兵也全部到账）。",
+  "吃内置 AI、空壳和没兵的真人很便宜：Pomerania 领土 3,127（t=1890）→25,954（t=3402），每格 3~19 兵；Bohemia 从 Göktürk 空壳和 Player 626 手里拿下 10,059 格，每格 3~7 兵。",
+  "Pomerania 兵到硬上限后两条 21% 的陆攻从 TITAN 手里拿下 8,298 格（每格 158 兵）。",
+  "Pomerania 的后排→前线捐款（t=3878~4270 三笔 pct=185）全部到账，效率 74%。"
+ ],
+ "unknowns": [
+  "断档期间没进录像的指令丢在哪一层（客户端卡住没发、发了被服务器按每回合条数丢弃）：引擎端只看得到「没收到」。单拍最多 9 条这个数在 6 个号上各出现过。",
+  "13 个号停摆/离开的原因（运行环境关页 / 页面卡死 / 连接超时）局内数据看不出；t=112、224、1456、2016 都是 112 拍（16 个服务器回合）的整数倍；3 条 left 结算行写在同一秒。",
+  "isNoFullSend 的置真是按代码条件重演出来的（开局 4 个号有日志原文的发令拍，可信；其余按执行拍反推），日志没有直接打印这个开关；t>=4800 的对人出兵是否因此少了 shadowedByTop/isLeaderFortress 这两道闸，无法从日志确认。",
+  "影子探针的边界：它把 c110 源码跑在重放出来的无延迟真实局面上，指令只记不发；真实客户端当时看到的局面晚 7~20 拍（断档期晚几百拍），内部记忆（上次发船拍、isNoFullSend、仇恨表）各自演化。断档之外两者按「300 拍窗口×指令类别」一致 89/119，所以文中引用的分支只用在断档之后（t>=2250）且影子与录像同向的时段。",
+  "船的「瞄准」是按引擎靠岸规则在发船拍反推的登陆格主人；策略侧当时选的是哪一格（searchWater/searchFood 的 hit.land）日志没有。断档期的船是按更早的局面选的目标。",
+  "Bohemia t=5845~6783 密度超过 125 却没有再发船：影子在这段同样没有发船（idleBoats → searchWater 没有给出目标），具体卡在 searchWater 的哪个条件没有逐行查。"
+ ],
+ "mechanicsQuestions": [
+  {
+   "q": "额度拒单",
+   "a": "整局 0 笔因配额被拒。48 条捐款日志里 19 条没进录像（全部在本地拍 1640~2040 的断档期），引擎校验重演：收款人存活、同队、余量够、配额够（要 32~97 点，上限 91~115，已用 0）——是指令没送达，不是被拒。13 次船靠友军岸的移交（39.4 万兵）也全部到账。Pomerania→Algiers 前三笔各占 51/64/55 点（上限 269/289/309），t>=4284 后免配额。"
+  },
+  {
+   "q": "小额捐款的 6.25% 全额税",
+   "a": "已执行 29 笔：到账 336 万、手续费 150 万（30.9%）。pct<150 的 8 笔：到账 58.6 万、手续费 38.4 万（39.6%）；pct=55/59/62 三笔到账小于或等于手续费。后排号的 surplus 捐款固定 pct=185：每次只捐 18.1%，手续费 6.25%，效率 74%。同样的结构也出现在出兵上：Pomerania 30 条 <5% 余额的指令，出兵 111 万、手续费 191 万。"
+  },
+  {
+   "q": "内陆被围高密度",
+   "a": "策略眼里没有可打邻居的时段 10 段 9,090 拍，8 段是被保护名单围住的（异队编队号、空壳、撞名 AI），这些时段密度只有 2~80——兵都发了船或捐了款。真正的高密度闲置：Pomerania t=6930~8190 没有敌邻，密度 129→150，实得利息 160 万、因超软上限少拿 691 万（整局少拿 1,117 万，实得 1,150 万）；Bohemia 整局少拿 411 万。"
+  },
+  {
+   "q": "出生与开局被围",
+   "a": "ArthurMorgan/Thanos 跨队贴身出生（16 格），Thanos t=630 领土 364，t=1260~2160 只挨着 ArthurMorgan 一家；Bohemia/DoomSlayer/Chile 30~46 格。日志 minSep=145 是各号本机候选表内的间距，不是号与号之间的间距。"
+  },
+  {
+   "q": "前线消耗与底线",
+   "a": "5 个前线阵亡号面对的都是 1.6 万~4.9 万格、密度 64~98 的真人；对方单次出手 11 万~47 万兵（LMAOOOO 登陆 23.2 万+陆攻 14.5 万，Name 每条约 22 万~26 万，Furry 每条约 11 万，Big Boss 登陆 33.1 万+每条约 36 万，My Staffer 登陆 38.4 万+每条约 47 万）。我方号死前 600 拍对真人 0 条陆攻。影子探针给出的原因是两道闸：（1）L5267：报价 c（148~620）>= worth（28~120）就不买——worth=0.9×max(自己密度, 0.85×其余真人密度中位)，而 c≈2+2.4×对方密度（对方满地时）再乘加价，所以只有密度不到这个基准四成的真人才「买得起」；（2）超软上限后 L5361：保底线 dpKeep 按最强真人邻居的兵算（94 万~1,700 万），高于自己的全部兵。能出手的只有两种情形：目标正被别人打/将崩（保底线封顶 88×地：Bohemia t=5383、5825、6783），或最强邻居的兵掉到让 dpKeep 低于「我的兵−20%」（Pomerania t=6069、6195）。主队队3 的领先（38.7%）是在 t=6030 之后丢的，当时我方在队3 只剩 Bohemia 一个号，它 938 拍没有指令。"
+  },
+  {
+   "q": "squad20 拆队",
+   "a": "真实分队 队1=2、队2=7、队3=11。跨队影响：（1）互保名单把跨队接壤变成不能打的边：protbox 8 段 7,470 拍（Thanos↔ArthurMorgan、Sus↔Pomerania、404↔Algiers、Bohemia↔DoomSlayer）；（2）空壳的 AI 反过来打在场号（DoomSlayer 空壳从 Bohemia 手里拿走 1,264 格）；（3）捐款只能在同队内进行，队3 后期只剩 Bohemia 一个编队号、没有捐款对象；（4）Pomerania(队2) 参与打死了队3 的 TITAN；（5）Algiers(队2) 为 404(队3)、Bohemia(队3) 为 DoomSlayer 空壳(队1) 发过协防戳；（6）船不受保护名单约束：我方在场号的船 12 次靠上异队我方在场号的岸（3.9 万兵，按进攻结算；Thanos→ArthurMorgan 7 条、Sus→Pomerania 3 条）。"
+  },
+  {
+   "q": "isNoFullSend 误锁（HUB 第 4 点）",
+   "a": "重演：开局连发陆攻时，上一条指令落地造成的余额下跌被当成本条指令的实际出兵 → Bohemia t=560、BlackRock t=555、Pomerania t=700、Ashanti t=710 满足置真条件（发令拍与 spend 取自 HL-OPENING 原文）。影子策略里 15 个在场过的号有 12 个被置真（11 个在 t=182~812，Sus 在 t=2181）；t>=4800 还在场的 Pomerania、Bohemia 都在锁定状态。锁本身的局内后果有限：Policy.send L3848-3923 的拦截只在 shadowQuota 不足时生效（配额每拍回 1%，最多停火 24 拍）；它同时关掉了 t>=4800 的几道保守闸（shadowedByTop、isLeaderFortress、coalition keep）。本局后期不出兵的原因不在这把锁，而在 worth 和 dpKeep 两道闸。"
+  },
+  {
+   "q": "反序清仓批（HUB 第 3 点）",
+   "a": "同号同拍 >=4 条指令 28 组；>=3 条生效且一拍花掉 >=50% 余额的 11 组（ArthurMorgan t=1169 93.9%、t=2023 79.9%，Sus t=1722 95.6%，Thanos t=2100 92.0%…），全在 t=903~2268，即指令断档期。它们是断档的另一面：几百拍前算好的指令在同一拍按当前余额逐条执行；boatFood 每条船最少占余额的 12.5%+3.125%，7 条连乘就是 70% 以上。"
+  },
+  {
+   "q": "名字池撞名（新）",
+   "a": "isOurSquadBot 只比名字。本局 15 个内置 AI（占全部 438 个的 3.4%）和 1 个外人（Kievan Rus）名字在池里：AI 不进邻居表、不会被打（Goryeo 在 Pomerania 和 Sus 旁边活到 t=4680）；Kievan Rus 被当成捐款对象（Pomerania 6 条捐款日志，断档中未执行）。"
+  },
+  {
+   "q": "HUB 广播 0004 的三处病灶对账",
+   "a": "（1）打内置 AI 的 safeFinite 底线取到队友/编队号的兵：成立。t=600~1499 有 AI 邻居的 2,230 个决策拍里，可出兵 1,168（52.4%），底线取到我方在场号的兵且去掉就能出兵 610（27.4%：异队 430、同队 180），取到我方空壳 10，取到别人 98；最重的是 Algiers 58.9%、Ashanti 58.0%、Sus 56.5%、Belgium 53.3%、Pomerania 44.4%。同一个 safeFinite 在 t>=1500 经 V17.safeAt L2747 继续生效（botSkip=0）：Algiers t=1500~1750 因 404 的兵卡在 L5361。新增一道闸：t>=1500 非真人报价 359 个决策拍里 264 个（73.5%）因单太小（want < minCmd=余额的 4.7%）在 L5367 被跳过。（2）expandNeutral 小单挤掉 buyLand 主单：本局不成立——影子一拍发两条的只有 12 拍（963 个有指令的决策拍里），11 拍在 t<1500。（3）落地前重复下单：我方对玩家的 128 条陆攻里 11 组相隔 <=21 拍（8.6%），第二条共出兵 71.8 万、手续费 5.0 万；最大一组 Bohemia t=5383/5390（54.5 万+40.0 万换 2,501 格）。策略侧同一目标 15 拍内只发一条（Strategy.send L529-533），两条相隔 7 拍进录像说明第二条下单时第一条还没在本机局面里出现；Algiers t=2226~2268 的 7 条（30.7 万兵）是断档后成批执行。"
+  }
+ ],
+ "scripts": [
+  "node c136-review/agents/R06/scripts/replay_decode.mjs B039（套 run-heavy.sh）",
+  "python3 c136-review/agents/R06/scripts/team_assign.py B039",
+  "bash c136-review/agents/R06/scripts/run_truth.sh B039（sim_prep.py + eng_replay.cjs：真引擎重放，写 out/B039/sim_state.json）",
+  "python3 c136-review/agents/R06/scripts/simdigest.py B039 check|teams|roster|ledger [me]|deaths [me]|don|probe|gifts|boats [me]|landings|fees|nfs|cmds|cmdlist <me> [t0 t1]|pair <me> [t0 t1]|neigh <me>|front|boxed|gaps|husks|poolai|protbox|medians [前缀]|dens [t]|shadow|gates|dups|crowd",
+  "node c136-review/agents/R06/scripts/strat_probe.mjs B039 --me squad --json --tally [--dump 玩家:起拍:止拍:步长,...]（套 run-heavy.sh；影子策略：同一份策略源码逐拍跑在重放局面上，打印 buyLand 逐报价的 c/worth/safe/keep/avail 和出口行号）",
+  "python3 c136-review/agents/R06/scripts/digest.py B039 roster|teams|timeline|deaths|donations -v|drops|spawn|boxed|attacks|lag|teamwar|bot <me>|json",
+  "python3 c136-review/agents/R06/scripts/digest.py B039 picks（选点指令真值：改点次数、最后两步的改点、撞点）",
+  "python3 c136-review/agents/R06/scripts/logdigest.py B039 stale|silent|seqlag|wall|overcap|drop30|oplag|issued|json（只用日志快照的事实：发令不见效→集中清仓、零指令时段、本地拍落后、墙上时钟对拍、超软上限、全量 DROP30）",
+  "python3 c136-review/agents/R06/scripts/make_review.py B039"
+ ],
+ "confidenceOverall": "high：全场状态来自真引擎重放（日志快照 475/475 条逐兵一致），出兵/捐款/船/离开/阵亡都是重放真值；策略侧走了哪个分支：断档之后的时段由影子探针给出（同一份 c110 源码跑在重放局面上，与录像同向的时段才引用）；isNoFullSend 的真实状态、停摆与离开的原因属于推断或未知。"
+}

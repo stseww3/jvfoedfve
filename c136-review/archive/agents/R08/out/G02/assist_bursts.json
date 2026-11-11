@@ -1,0 +1,31 @@
+{
+ "match": "G02",
+ "gap": 4,
+ "bursts": [],
+ "releases": [
+  {
+   "bot": "leo_tx",
+   "t0": 2880,
+   "t1": 2970,
+   "dens0": 114.2,
+   "bal0": 1079225,
+   "bal1": 290566,
+   "terr0": 9448,
+   "terr1": 11392,
+   "attackCmds": 6,
+   "boats": 0,
+   "fireTickEst": 2880,
+   "firstOrder": 216258,
+   "firstOrderFrac": 0.2004,
+   "predByN": {
+    "4": 467077,
+    "5": 370184,
+    "6": 293841
+   },
+   "bestN": 6,
+   "bestErr": 0.0113,
+   "idleBal": 1163881,
+   "excessOverSingle": 657057
+  }
+ ]
+}

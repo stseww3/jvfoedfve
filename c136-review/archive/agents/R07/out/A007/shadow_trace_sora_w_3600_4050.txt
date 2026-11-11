@@ -1,0 +1,454 @@
+# A007 sora_w 影子决策明细 t=3600~4050（策略 v27-team-c116-va.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 56 拍（t=3600~4050）
+#   首选目标无可用兵（avail<=0）: 25 拍（t=3740~3945）；可用兵 -144210~0，一条指令下限(20%余额) 92695~166672，比值 -151%~0%
+#   首选目标要发的兵低于最小指令（x < max(minCmd, pulseMinShare×B)）: 5 拍（t=3750~3790）；可用兵 2190~17902，一条指令下限(20%余额) 154217~161047，比值 1%~11%
+#   出手打人/bot: 2 拍（t=3825~3830）；可用兵 164083~168221，一条指令下限(20%余额) 168342~168672，比值 97%~100%
+#   有可用兵但没发（其他）: 1 拍（t=3835~3835）；可用兵 162575~162575，一条指令下限(20%余额) 166063~166063，比值 98%~98%
+#   只打无主地: 2 拍（t=3960~3965）
+#   └ 「出手打人/bot」里：2 条对人/bot 的出兵共约 333224 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=3600 sora_w B=727466 L=9323 d=78.0 nb=3 neut=0 cmds=39 noFull=1 shQ=179589 | m=0.900 worth=86.9 cheap=8.2 over=0 dMedOther=113.6 safe(-1)=727194
+    → [Off] Skull#2[T5] terr=19362 bal=1776761 dq=91.8 cnt=96 | c=135.7 rankC=67.8 need=3150762 tD=0.81 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=145493 pulseB=145493 价高(c>=worth)→break hNb=3
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8338 bal=824439 dq=98.9 cnt=88 | c=270.5 rankC=392.2 need=1459171 tD=0.87 人 pulse | safe=727194 keep=Inf avail=-Inf chunkB=145493 pulseB=145493 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1350369 dq=127.1 cnt=150 | c=471.7 rankC=683.9 need=2422823 tD=1.12 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=145493 pulseB=145493 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3605 sora_w B=727466 L=9323 d=78.0 nb=3 neut=0 cmds=39 noFull=1 shQ=181866 | m=0.900 worth=86.9 cheap=8.2 over=0 dMedOther=113.6 safe(-1)=727194
+    → [Off] Skull#2[T5] terr=19310 bal=1769130 dq=91.6 cnt=96 | c=136.1 rankC=68.0 need=3135531 tD=0.81 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=145493 pulseB=145493 价高(c>=worth)→break hNb=3
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8338 bal=824439 dq=98.9 cnt=88 | c=270.5 rankC=392.2 need=1459317 tD=0.87 人 pulse | safe=727194 keep=Inf avail=-Inf chunkB=145493 pulseB=145493 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1350369 dq=127.1 cnt=150 | c=471.7 rankC=683.9 need=2422823 tD=1.12 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=145493 pulseB=145493 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3610 sora_w B=736480 L=9323 d=79.0 nb=3 neut=0 cmds=39 noFull=1 shQ=184120 | m=0.900 worth=87.7 cheap=8.2 over=0 dMedOther=114.6 safe(-1)=727194
+    → [Off] Skull#2[T5] terr=19229 bal=1780112 dq=92.6 cnt=96 | c=138.5 rankC=69.2 need=3151868 tD=0.81 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=147296 pulseB=147296 价高(c>=worth)→break hNb=3
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8338 bal=834332 dq=100.1 cnt=88 | c=273.7 rankC=396.8 need=1476829 tD=0.87 人 pulse | safe=727194 keep=Inf avail=-Inf chunkB=147296 pulseB=147296 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1357931 dq=127.9 cnt=150 | c=474.3 rankC=687.7 need=2436302 tD=1.12 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=147296 pulseB=147296 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3615 sora_w B=736480 L=9323 d=79.0 nb=3 neut=0 cmds=39 noFull=1 shQ=184120 | m=0.900 worth=87.7 cheap=8.2 over=0 dMedOther=114.6 safe(-1)=727194
+    → [Off] Skull#2[T5] terr=19171 bal=1771526 dq=92.4 cnt=96 | c=138.9 rankC=69.5 need=3134718 tD=0.81 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=147296 pulseB=147296 价高(c>=worth)→break hNb=3
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8338 bal=834332 dq=100.1 cnt=88 | c=273.7 rankC=396.8 need=1476977 tD=0.87 人 pulse | safe=727194 keep=Inf avail=-Inf chunkB=147296 pulseB=147296 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1357931 dq=127.9 cnt=150 | c=474.3 rankC=687.7 need=2436302 tD=1.12 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=147296 pulseB=147296 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3620 sora_w B=745391 L=9323 d=80.0 nb=3 neut=0 cmds=39 noFull=1 shQ=186347 | m=0.900 worth=87.4 cheap=8.2 over=0 dMedOther=114.3 safe(-1)=727194
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8338 bal=844343 dq=101.3 cnt=88 | c=190.9 rankC=190.9 need=1494851 tD=0.89 人 pulse | safe=727194 keep=Inf avail=-Inf chunkB=149078 pulseB=149078 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=19105 bal=1780996 dq=93.2 cnt=96 | c=243.5 rankC=243.5 need=3149043 tD=0.82 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=149078 pulseB=149078 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1365399 dq=128.6 cnt=150 | c=328.9 rankC=328.9 need=2449613 tD=1.12 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=149078 pulseB=149078 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3625 sora_w B=745391 L=9323 d=80.0 nb=3 neut=0 cmds=39 noFull=1 shQ=186347 | m=0.900 worth=87.4 cheap=8.2 over=0 dMedOther=114.3 safe(-1)=727194
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8338 bal=844343 dq=101.3 cnt=88 | c=190.9 rankC=190.9 need=1495000 tD=0.89 人 pulse | safe=727194 keep=Inf avail=-Inf chunkB=149078 pulseB=149078 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=19105 bal=1780996 dq=93.2 cnt=96 | c=243.5 rankC=243.5 need=3149181 tD=0.82 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=149078 pulseB=149078 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1365399 dq=128.6 cnt=150 | c=328.9 rankC=328.9 need=2449613 tD=1.12 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=149078 pulseB=149078 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3630 sora_w B=754410 L=9323 d=80.9 nb=3 neut=0 cmds=39 noFull=1 shQ=188602 | m=0.900 worth=88.2 cheap=8.2 over=0 dMedOther=115.3 safe(-1)=727194
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8338 bal=854221 dq=102.4 cnt=88 | c=193.1 rankC=193.1 need=1512499 tD=0.89 人 pulse | safe=727194 keep=Inf avail=-Inf chunkB=150882 pulseB=150882 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=19105 bal=1804148 dq=94.4 cnt=96 | c=246.6 rankC=246.6 need=3189897 tD=0.82 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=150882 pulseB=150882 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1372635 dq=129.2 cnt=150 | c=330.6 rankC=330.6 need=2462510 tD=1.12 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=150882 pulseB=150882 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3635 sora_w B=754410 L=9323 d=80.9 nb=3 neut=0 cmds=39 noFull=1 shQ=188602 | m=0.900 worth=88.2 cheap=8.2 over=0 dMedOther=115.3 safe(-1)=727194
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8338 bal=854221 dq=102.4 cnt=88 | c=193.1 rankC=193.1 need=1512649 tD=0.89 人 pulse | safe=727194 keep=Inf avail=-Inf chunkB=150882 pulseB=150882 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=19105 bal=1804148 dq=94.4 cnt=96 | c=246.6 rankC=246.6 need=3190037 tD=0.82 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=150882 pulseB=150882 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1372635 dq=129.2 cnt=150 | c=330.6 rankC=330.6 need=2462510 tD=1.12 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=150882 pulseB=150882 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3640 sora_w B=763538 L=9323 d=81.9 nb=3 neut=0 cmds=39 noFull=1 shQ=190884 | m=0.900 worth=88.9 cheap=8.2 over=0 dMedOther=116.2 safe(-1)=727194
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8338 bal=864044 dq=103.6 cnt=88 | c=195.3 rankC=195.3 need=1530209 tD=0.89 人 pulse | safe=727194 keep=Inf avail=-Inf chunkB=152708 pulseB=152708 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=19105 bal=1827601 dq=95.7 cnt=96 | c=249.8 rankC=249.8 need=3231427 tD=0.82 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=152708 pulseB=152708 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1379635 dq=129.9 cnt=150 | c=332.3 rankC=332.3 need=2474987 tD=1.12 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=152708 pulseB=152708 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3645 sora_w B=763538 L=9323 d=81.9 nb=3 neut=0 cmds=39 noFull=1 shQ=190884 | m=0.900 worth=88.9 cheap=8.2 over=0 dMedOther=116.2 safe(-1)=727194
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8338 bal=763634 dq=91.6 cnt=88 | c=114.1 rankC=79.9 need=1444223 tD=0.79 人 pulse onMe agg | safe=727194 keep=Inf avail=-Inf chunkB=152708 pulseB=152708 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=19105 bal=1827601 dq=95.7 cnt=96 | c=249.8 rankC=249.8 need=3231569 tD=0.82 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=152708 pulseB=152708 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1379635 dq=129.9 cnt=150 | c=332.3 rankC=332.3 need=2474987 tD=1.12 人 pulse crowdedHard | safe=727194 keep=Inf avail=-Inf chunkB=152708 pulseB=152708 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3650 sora_w B=761372 L=9237 d=82.4 nb=3 neut=0 cmds=39 noFull=1 shQ=190343 | m=0.900 worth=88.5 cheap=8.2 over=0 dMedOther=115.7 safe(-1)=720486
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8424 bal=772797 dq=91.7 cnt=86 | c=114.2 rankC=79.9 need=1440978 tD=0.79 人 pulse onMe agg | safe=720486 keep=Inf avail=-Inf chunkB=152274 pulseB=152274 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=19105 bal=1851359 dq=96.9 cnt=96 | c=366.8 rankC=531.8 need=3273359 tD=0.84 人 pulse crowdedHard | safe=720486 keep=Inf avail=-Inf chunkB=152274 pulseB=152274 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1386533 dq=130.5 cnt=150 | c=484.3 rankC=702.2 need=2487282 tD=1.13 人 pulse crowdedHard | safe=720486 keep=Inf avail=-Inf chunkB=152274 pulseB=152274 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3655 sora_w B=739018 L=9067 d=81.5 nb=3 neut=0 cmds=39 noFull=1 shQ=184754 | m=0.900 worth=87.9 cheap=8.3 over=0 dMedOther=114.9 safe(-1)=707226
+    → [Off] Skull#2[T5] terr=19105 bal=1589205 dq=83.2 cnt=95 | c=151.1 rankC=105.7 need=2813919 tD=0.72 人 pulse | safe=707226 keep=Inf avail=-Inf chunkB=147804 pulseB=147804 价高(c>=worth)→break hNb=3
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8594 bal=772797 dq=89.9 cnt=84 | c=148.8 rankC=148.8 need=1402208 tD=0.78 人 pulse onMe agg | safe=707226 keep=Inf avail=-Inf chunkB=147804 pulseB=147804 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1386533 dq=130.5 cnt=149 | c=484.2 rankC=702.2 need=2487282 tD=1.14 人 pulse crowdedHard | safe=707226 keep=Inf avail=-Inf chunkB=147804 pulseB=147804 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3660 sora_w B=736676 L=8983 d=82.0 nb=3 neut=0 cmds=39 noFull=1 shQ=184169 | m=0.900 worth=88.6 cheap=8.3 over=0 dMedOther=115.8 safe(-1)=700674
+    → [Off] Skull#2[T5] terr=19105 bal=1609864 dq=84.3 cnt=94 | c=153.0 rankC=107.1 need=2850386 tD=0.73 人 pulse | safe=700674 keep=Inf avail=-Inf chunkB=147335 pulseB=147335 价高(c>=worth)→break hNb=3
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8678 bal=782108 dq=90.1 cnt=84 | c=215.9 rankC=313.1 need=1399367 tD=0.78 人 pulse agg | safe=700674 keep=Inf avail=-Inf chunkB=147335 pulseB=147335 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1393188 dq=131.2 cnt=148 | c=486.6 rankC=705.5 need=2499144 tD=1.13 人 pulse crowdedHard | safe=700674 keep=Inf avail=-Inf chunkB=147335 pulseB=147335 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3665 sora_w B=736676 L=8983 d=82.0 nb=3 neut=0 cmds=39 noFull=1 shQ=184169 | m=0.900 worth=88.1 cheap=8.3 over=0 dMedOther=115.2 safe(-1)=700674
+    → [Off] Skull#2[T5] terr=19380 bal=1609864 dq=83.1 cnt=95 | c=150.5 rankC=105.4 need=2860038 tD=0.72 人 pulse | safe=700674 keep=Inf avail=-Inf chunkB=147335 pulseB=147335 价高(c>=worth)→break hNb=3
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8678 bal=782108 dq=90.1 cnt=84 | c=215.9 rankC=313.1 need=1399497 tD=0.78 人 pulse agg | safe=700674 keep=Inf avail=-Inf chunkB=147335 pulseB=147335 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1393188 dq=131.2 cnt=148 | c=486.6 rankC=705.5 need=2499144 tD=1.14 人 pulse crowdedHard | safe=700674 keep=Inf avail=-Inf chunkB=147335 pulseB=147335 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3670 sora_w B=745516 L=8983 d=83.0 nb=3 neut=0 cmds=39 noFull=1 shQ=186379 | m=0.900 worth=88.8 cheap=8.3 over=0 dMedOther=116.1 safe(-1)=700674
+    → [Off] Skull#2[T5] terr=19759 bal=1630792 dq=82.5 cnt=97 | c=149.1 rankC=104.4 need=2909723 tD=0.71 人 pulse | safe=700674 keep=Inf avail=-Inf chunkB=149103 pulseB=149103 价高(c>=worth)→break hNb=3
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8678 bal=791493 dq=91.2 cnt=84 | c=218.5 rankC=316.8 need=1416267 tD=0.79 人 pulse agg | safe=700674 keep=Inf avail=-Inf chunkB=149103 pulseB=149103 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1399596 dq=131.8 cnt=148 | c=488.8 rankC=708.8 need=2510565 tD=1.13 人 pulse crowdedHard | safe=700674 keep=Inf avail=-Inf chunkB=149103 pulseB=149103 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3675 sora_w B=745516 L=8983 d=83.0 nb=3 neut=0 cmds=39 noFull=1 shQ=186379 | m=0.900 worth=88.8 cheap=8.3 over=0 dMedOther=116.1 safe(-1)=700674
+    → [Off] Skull#2[T5] terr=19978 bal=1630792 dq=81.6 cnt=98 | c=147.3 rankC=103.1 need=2916941 tD=0.70 人 pulse | safe=700674 keep=Inf avail=-Inf chunkB=149103 pulseB=149103 价高(c>=worth)→break hNb=3
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8678 bal=791493 dq=91.2 cnt=84 | c=218.5 rankC=316.8 need=1416398 tD=0.79 人 pulse agg | safe=700674 keep=Inf avail=-Inf chunkB=149103 pulseB=149103 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1399596 dq=131.8 cnt=148 | c=488.8 rankC=708.8 need=2510565 tD=1.13 人 pulse crowdedHard | safe=700674 keep=Inf avail=-Inf chunkB=149103 pulseB=149103 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3680 sora_w B=754462 L=8983 d=84.0 nb=3 neut=0 cmds=39 noFull=1 shQ=188615 | m=0.900 worth=87.7 cheap=8.3 over=0 dMedOther=114.7 safe(-1)=700674
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8678 bal=800990 dq=92.3 cnt=84 | c=221.0 rankC=320.5 need=1433503 tD=0.80 人 pulse agg | safe=700674 keep=Inf avail=-Inf chunkB=150892 pulseB=150892 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20264 bal=1649492 dq=81.4 cnt=99 | c=283.4 rankC=410.9 need=2959367 tD=0.71 人 pulse | safe=700674 keep=Inf avail=-Inf chunkB=150892 pulseB=150892 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1405894 dq=132.4 cnt=148 | c=491.0 rankC=712.0 need=2521791 tD=1.15 人 pulse crowdedHard | safe=700674 keep=Inf avail=-Inf chunkB=150892 pulseB=150892 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3685 sora_w B=754462 L=8983 d=84.0 nb=3 neut=0 cmds=39 noFull=1 shQ=188615 | m=0.900 worth=86.3 cheap=8.3 over=0 dMedOther=112.7 safe(-1)=700674
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8678 bal=800990 dq=92.3 cnt=84 | c=221.0 rankC=320.5 need=1433636 tD=0.82 人 pulse agg | safe=700674 keep=Inf avail=-Inf chunkB=150892 pulseB=150892 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20442 bal=1649492 dq=80.7 cnt=100 | c=280.6 rankC=406.9 need=2964977 tD=0.72 人 pulse | safe=700674 keep=Inf avail=-Inf chunkB=150892 pulseB=150892 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1405894 dq=132.4 cnt=148 | c=491.0 rankC=712.0 need=2521791 tD=1.17 人 pulse crowdedHard | safe=700674 keep=Inf avail=-Inf chunkB=150892 pulseB=150892 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3690 sora_w B=763515 L=8983 d=85.0 nb=3 neut=0 cmds=39 noFull=1 shQ=190878 | m=0.900 worth=87.0 cheap=8.3 over=0 dMedOther=113.7 safe(-1)=700674
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8501 bal=784149 dq=92.2 cnt=84 | c=181.2 rankC=262.8 need=1397596 tD=0.81 人 pulse bleeding agg | safe=700674 keep=Inf avail=-Inf chunkB=152703 pulseB=152703 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1671100 dq=80.8 cnt=102 | c=280.6 rankC=406.8 need=3009586 tD=0.71 人 pulse | safe=700674 keep=Inf avail=-Inf chunkB=152703 pulseB=152703 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1412079 dq=133.0 cnt=148 | c=493.2 rankC=715.1 need=2532815 tD=1.17 人 pulse crowdedHard | safe=700674 keep=Inf avail=-Inf chunkB=152703 pulseB=152703 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3695 sora_w B=763515 L=8983 d=85.0 nb=3 neut=0 cmds=39 noFull=1 shQ=190878 | m=0.900 worth=87.0 cheap=8.3 over=0 dMedOther=113.7 safe(-1)=700674
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8325 bal=758178 dq=91.1 cnt=84 | c=219.4 rankC=318.1 need=1345474 tD=0.80 人 pulse agg | safe=700674 keep=Inf avail=-Inf chunkB=152703 pulseB=152703 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1671127 dq=80.8 cnt=102 | c=280.6 rankC=406.8 need=3009634 tD=0.71 人 pulse | safe=700674 keep=Inf avail=-Inf chunkB=152703 pulseB=152703 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1412079 dq=133.0 cnt=148 | c=493.2 rankC=715.1 need=2532815 tD=1.17 人 pulse crowdedHard | safe=700674 keep=Inf avail=-Inf chunkB=152703 pulseB=152703 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3700 sora_w B=781660 L=8983 d=87.0 nb=3 neut=0 cmds=39 noFull=1 shQ=193222 | m=0.900 worth=88.5 cheap=8.3 over=0 dMedOther=115.7 safe(-1)=700674
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=7977 bal=724131 dq=90.8 cnt=84 | c=220.0 rankC=319.0 need=1272815 tD=0.78 人 pulse agg | safe=700674 keep=Inf avail=-Inf chunkB=156332 pulseB=156332 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1713700 dq=82.9 cnt=102 | c=287.6 rankC=417.1 need=3085516 tD=0.72 人 pulse | safe=700674 keep=Inf avail=-Inf chunkB=156332 pulseB=156332 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1428630 dq=134.5 cnt=148 | c=498.9 rankC=723.5 need=2562315 tD=1.16 人 pulse crowdedHard | safe=700674 keep=Inf avail=-Inf chunkB=156332 pulseB=156332 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3705 sora_w B=781660 L=8983 d=87.0 nb=3 neut=0 cmds=39 noFull=1 shQ=195415 | m=0.900 worth=88.5 cheap=8.3 over=0 dMedOther=115.7 safe(-1)=700674
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=7977 bal=624294 dq=78.3 cnt=84 | c=155.6 rankC=225.6 need=1099036 tD=0.68 人 pulse bleeding agg | safe=700674 keep=Inf avail=-Inf chunkB=156332 pulseB=156332 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1713700 dq=82.9 cnt=102 | c=287.6 rankC=417.1 need=3085516 tD=0.72 人 pulse | safe=700674 keep=Inf avail=-Inf chunkB=156332 pulseB=156332 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1428630 dq=134.5 cnt=148 | c=498.9 rankC=723.5 need=2562315 tD=1.16 人 pulse crowdedHard | safe=700674 keep=Inf avail=-Inf chunkB=156332 pulseB=156332 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3710 sora_w B=791039 L=8983 d=88.1 nb=3 neut=0 cmds=39 noFull=1 shQ=197759 | m=0.900 worth=89.3 cheap=8.3 over=0 dMedOther=116.7 safe(-1)=700674
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=7978 bal=631660 dq=79.2 cnt=84 | c=157.4 rankC=228.2 need=1112022 tD=0.68 人 pulse bleeding agg | safe=700674 keep=Inf avail=-Inf chunkB=158208 pulseB=158208 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1736149 dq=83.9 cnt=102 | c=291.4 rankC=422.5 need=3125529 tD=0.72 人 pulse | safe=700674 keep=Inf avail=-Inf chunkB=158208 pulseB=158208 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1434058 dq=135.0 cnt=148 | c=500.8 rankC=726.2 need=2571990 tD=1.16 人 pulse crowdedHard | safe=700674 keep=Inf avail=-Inf chunkB=158208 pulseB=158208 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3715 sora_w B=791039 L=8983 d=88.1 nb=3 neut=0 cmds=39 noFull=1 shQ=197759 | m=0.900 worth=89.0 cheap=8.3 over=0 dMedOther=116.4 safe(-1)=700674
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=7920 bal=623694 dq=78.7 cnt=84 | c=156.7 rankC=227.2 need=1096259 tD=0.68 人 pulse bleeding agg | safe=700674 keep=Inf avail=-Inf chunkB=158208 pulseB=158208 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1736149 dq=83.9 cnt=102 | c=291.4 rankC=422.5 need=3125529 tD=0.72 人 pulse | safe=700674 keep=Inf avail=-Inf chunkB=158208 pulseB=158208 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1434058 dq=135.0 cnt=148 | c=500.8 rankC=726.2 need=2571990 tD=1.16 人 pulse crowdedHard | safe=700674 keep=Inf avail=-Inf chunkB=158208 pulseB=158208 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3720 sora_w B=800531 L=8983 d=89.1 nb=3 neut=0 cmds=39 noFull=1 shQ=200132 | m=0.900 worth=88.3 cheap=8.3 over=0 dMedOther=115.5 safe(-1)=700674
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=7872 bal=623551 dq=79.2 cnt=84 | c=157.7 rankC=228.7 need=1094567 tD=0.69 人 pulse bleeding agg | safe=700674 keep=Inf avail=-Inf chunkB=160106 pulseB=160106 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1758892 dq=85.0 cnt=102 | c=295.1 rankC=428.0 need=3166066 tD=0.74 人 pulse | safe=700674 keep=Inf avail=-Inf chunkB=160106 pulseB=160106 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1439364 dq=135.5 cnt=148 | c=502.7 rankC=728.9 need=2581447 tD=1.17 人 pulse crowdedHard | safe=700674 keep=Inf avail=-Inf chunkB=160106 pulseB=160106 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3725 sora_w B=800531 L=8983 d=89.1 nb=3 neut=0 cmds=39 noFull=1 shQ=200132 | m=0.900 worth=88.3 cheap=8.3 over=0 dMedOther=115.5 safe(-1)=700674
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=7853 bal=620134 dq=79.0 cnt=84 | c=157.3 rankC=228.0 need=1088081 tD=0.68 人 pulse bleeding agg | safe=700674 keep=Inf avail=-Inf chunkB=160106 pulseB=160106 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1758892 dq=85.0 cnt=102 | c=295.1 rankC=428.0 need=3166066 tD=0.74 人 pulse | safe=700674 keep=Inf avail=-Inf chunkB=160106 pulseB=160106 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1439364 dq=135.5 cnt=148 | c=502.7 rankC=728.9 need=2581447 tD=1.17 人 pulse crowdedHard | safe=700674 keep=Inf avail=-Inf chunkB=160106 pulseB=160106 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3730 sora_w B=810137 L=8983 d=90.2 nb=3 neut=0 cmds=39 noFull=1 shQ=202534 | m=0.900 worth=89.1 cheap=8.3 over=0 dMedOther=116.5 safe(-1)=700674
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=7875 bal=626990 dq=79.6 cnt=84 | c=193.7 rankC=280.9 need=1100889 tD=0.68 人 pulse agg | safe=700674 keep=Inf avail=-Inf chunkB=162027 pulseB=162027 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1781933 dq=86.2 cnt=102 | c=299.0 rankC=433.5 need=3207134 tD=0.74 人 pulse | safe=700674 keep=Inf avail=-Inf chunkB=162027 pulseB=162027 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1444545 dq=136.0 cnt=148 | c=504.5 rankC=731.5 need=2590682 tD=1.17 人 pulse crowdedHard | safe=700674 keep=Inf avail=-Inf chunkB=162027 pulseB=162027 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3735 sora_w B=810137 L=8983 d=90.2 nb=3 neut=0 cmds=39 noFull=1 shQ=202534 | m=0.900 worth=89.1 cheap=8.3 over=0 dMedOther=116.5 safe(-1)=700674
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=7905 bal=626990 dq=79.3 cnt=84 | c=192.9 rankC=279.7 need=1102067 tD=0.68 人 pulse agg | safe=700674 keep=Inf avail=-Inf chunkB=162027 pulseB=162027 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1781933 dq=86.2 cnt=102 | c=299.0 rankC=433.5 need=3207134 tD=0.74 人 pulse | safe=700674 keep=Inf avail=-Inf chunkB=162027 pulseB=162027 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1444545 dq=136.0 cnt=148 | c=504.5 rankC=731.5 need=2590682 tD=1.17 人 pulse crowdedHard | safe=700674 keep=Inf avail=-Inf chunkB=162027 pulseB=162027 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3740 sora_w B=819858 L=8983 d=91.3 nb=3 neut=0 cmds=39 noFull=1 shQ=204964 | m=0.900 worth=89.9 cheap=8.3 over=0 dMedOther=117.5 safe(-1)=700674
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=7923 bal=560666 dq=70.8 cnt=84 | c=89.2 rankC=62.4 need=1052989 tD=0.60 人 pulse onMe agg | safe=700674 keep=890157 avail=-79906 chunkB=163972 pulseB=163972 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1805276 dq=87.3 cnt=102 | c=302.9 rankC=439.1 need=3248741 tD=0.74 人 pulse | safe=700674 keep=Inf avail=-Inf chunkB=163972 pulseB=163972 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1449600 dq=136.5 cnt=148 | c=506.3 rankC=734.1 need=2599692 tD=1.16 人 pulse crowdedHard | safe=700674 keep=Inf avail=-Inf chunkB=163972 pulseB=163972 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3745 sora_w B=795688 L=8817 d=90.2 nb=3 neut=0 cmds=39 noFull=1 shQ=198922 | m=0.900 worth=89.8 cheap=8.3 over=0 dMedOther=117.4 safe(-1)=687726
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8131 bal=560666 dq=69.0 cnt=80 | c=115.5 rankC=115.5 need=1010737 tD=0.59 人 pulse onMe agg | safe=687726 keep=Inf avail=-Inf chunkB=159138 pulseB=159138 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1805276 dq=87.3 cnt=101 | c=302.8 rankC=439.1 need=3248741 tD=0.74 人 pulse | safe=687726 keep=Inf avail=-Inf chunkB=159138 pulseB=159138 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1449600 dq=136.5 cnt=148 | c=506.2 rankC=734.0 need=2599692 tD=1.16 人 pulse crowdedHard | safe=687726 keep=Inf avail=-Inf chunkB=159138 pulseB=159138 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3750 sora_w B=782359 L=8660 d=90.3 nb=3 neut=0 cmds=39 noFull=1 shQ=195589 | m=0.900 worth=90.2 cheap=8.3 over=0 dMedOther=118.0 safe(-1)=675480
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8312 bal=501459 dq=60.3 cnt=78 | c=85.4 rankC=85.4 need=924585 tD=0.51 人 pulse bleeding onMe agg | safe=675480 keep=755289 avail=17902 chunkB=156472 pulseB=156472 低于最小指令(x=17902<36672)→continue hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1828925 dq=88.4 cnt=99 | c=306.8 rankC=444.8 need=3290893 tD=0.75 人 pulse | safe=675480 keep=Inf avail=-Inf chunkB=156472 pulseB=156472 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1454383 dq=136.9 cnt=147 | c=507.9 rankC=736.4 need=2608217 tD=1.16 人 pulse crowdedHard | safe=675480 keep=Inf avail=-Inf chunkB=156472 pulseB=156472 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3755 sora_w B=771086 L=8582 d=89.8 nb=3 neut=0 cmds=39 noFull=1 shQ=192771 | m=0.900 worth=86.2 cheap=8.3 over=0 dMedOther=112.6 safe(-1)=669396
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8366 bal=499143 dq=59.7 cnt=76 | c=82.3 rankC=82.3 need=899235 tD=0.53 人 pulse bleeding onMe agg | safe=669396 keep=748976 avail=13074 chunkB=154217 pulseB=154217 低于最小指令(x=13074<36144)→continue hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1828925 dq=88.4 cnt=98 | c=211.6 rankC=211.6 need=3290893 tD=0.79 人 pulse | safe=669396 keep=Inf avail=-Inf chunkB=154217 pulseB=154217 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1454383 dq=136.9 cnt=142 | c=350.4 rankC=350.4 need=2608217 tD=1.22 人 pulse crowdedHard | safe=669396 keep=Inf avail=-Inf chunkB=154217 pulseB=154217 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3760 sora_w B=776931 L=8582 d=90.5 nb=3 neut=0 cmds=39 noFull=1 shQ=194232 | m=0.900 worth=85.7 cheap=8.3 over=0 dMedOther=112.1 safe(-1)=669396
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8317 bal=500455 dq=60.2 cnt=76 | c=82.4 rankC=82.4 need=893576 tD=0.54 人 pulse bleeding agg | safe=669396 keep=757259 avail=10568 chunkB=155386 pulseB=155386 低于最小指令(x=10568<36416)→continue hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1852883 dq=89.6 cnt=98 | c=214.3 rankC=214.3 need=3333595 tD=0.80 人 pulse | safe=669396 keep=Inf avail=-Inf chunkB=155386 pulseB=155386 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1459037 dq=137.4 cnt=142 | c=351.5 rankC=351.5 need=2616512 tD=1.23 人 pulse crowdedHard | safe=669396 keep=Inf avail=-Inf chunkB=155386 pulseB=155386 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3765 sora_w B=776931 L=8582 d=90.5 nb=3 neut=0 cmds=39 noFull=1 shQ=194232 | m=0.900 worth=85.7 cheap=8.3 over=0 dMedOther=112.1 safe(-1)=669396
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8268 bal=495743 dq=60.0 cnt=76 | c=82.2 rankC=82.2 need=884143 tD=0.54 人 pulse bleeding agg | safe=669396 keep=756248 avail=11579 chunkB=155386 pulseB=155386 低于最小指令(x=11579<36416)→continue hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1852883 dq=89.6 cnt=98 | c=214.3 rankC=214.3 need=3333595 tD=0.80 人 pulse | safe=669396 keep=Inf avail=-Inf chunkB=155386 pulseB=155386 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1459037 dq=137.4 cnt=142 | c=351.5 rankC=351.5 need=2616512 tD=1.23 人 pulse crowdedHard | safe=669396 keep=Inf avail=-Inf chunkB=155386 pulseB=155386 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3770 sora_w B=786254 L=8582 d=91.6 nb=3 neut=0 cmds=39 noFull=1 shQ=196563 | m=0.900 worth=84.5 cheap=8.3 over=0 dMedOther=110.5 safe(-1)=669396
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8244 bal=499362 dq=60.6 cnt=76 | c=120.4 rankC=174.6 need=889990 tD=0.55 人 pulse bleeding agg | safe=669396 keep=Inf avail=-Inf chunkB=157251 pulseB=157251 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1877155 dq=90.8 cnt=98 | c=314.8 rankC=456.4 need=3376858 tD=0.82 人 pulse | safe=669396 keep=Inf avail=-Inf chunkB=157251 pulseB=157251 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1463560 dq=137.8 cnt=142 | c=511.3 rankC=741.4 need=2624574 tD=1.25 人 pulse crowdedHard | safe=669396 keep=Inf avail=-Inf chunkB=157251 pulseB=157251 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3775 sora_w B=786254 L=8582 d=91.6 nb=3 neut=0 cmds=39 noFull=1 shQ=196563 | m=0.900 worth=82.5 cheap=8.3 over=0 dMedOther=106.7 safe(-1)=669396
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8221 bal=495064 dq=60.2 cnt=76 | c=146.4 rankC=212.3 need=881940 tD=0.56 人 pulse agg | safe=669396 keep=Inf avail=-Inf chunkB=157251 pulseB=157251 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1877155 dq=90.8 cnt=98 | c=314.8 rankC=456.4 need=3376858 tD=0.85 人 pulse | safe=669396 keep=Inf avail=-Inf chunkB=157251 pulseB=157251 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1463560 dq=137.8 cnt=142 | c=511.3 rankC=741.4 need=2624574 tD=1.29 人 pulse crowdedHard | safe=669396 keep=Inf avail=-Inf chunkB=157251 pulseB=157251 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3780 sora_w B=795689 L=8582 d=92.7 nb=3 neut=0 cmds=39 noFull=1 shQ=198922 | m=0.900 worth=83.4 cheap=8.3 over=0 dMedOther=107.5 safe(-1)=669396
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8221 bal=501004 dq=60.9 cnt=76 | c=102.2 rankC=102.2 need=892559 tD=0.57 人 pulse agg | safe=669396 keep=Inf avail=-Inf chunkB=159138 pulseB=159138 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20682 bal=1901745 dq=92.0 cnt=98 | c=219.9 rankC=219.9 need=3420687 tD=0.86 人 pulse | safe=669396 keep=Inf avail=-Inf chunkB=159138 pulseB=159138 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1467950 dq=138.2 cnt=142 | c=353.7 rankC=353.7 need=2632399 tD=1.29 人 pulse crowdedHard | safe=669396 keep=Inf avail=-Inf chunkB=159138 pulseB=159138 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3785 sora_w B=795689 L=8582 d=92.7 nb=3 neut=0 cmds=39 noFull=1 shQ=198922 | m=0.900 worth=83.4 cheap=8.3 over=0 dMedOther=106.9 safe(-1)=669396
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8221 bal=501004 dq=60.9 cnt=76 | c=102.2 rankC=102.2 need=892649 tD=0.57 人 pulse agg | safe=669396 keep=Inf avail=-Inf chunkB=159138 pulseB=159138 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20663 bal=1898950 dq=91.9 cnt=98 | c=219.8 rankC=219.8 need=3415189 tD=0.86 人 pulse | safe=669396 keep=Inf avail=-Inf chunkB=159138 pulseB=159138 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1467950 dq=138.2 cnt=142 | c=353.7 rankC=353.7 need=2632399 tD=1.29 人 pulse crowdedHard | safe=669396 keep=Inf avail=-Inf chunkB=159138 pulseB=159138 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3790 sora_w B=805237 L=8582 d=93.8 nb=3 neut=0 cmds=39 noFull=1 shQ=201309 | m=0.900 worth=86.0 cheap=8.3 over=0 dMedOther=112.5 safe(-1)=669396
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8221 bal=507016 dq=61.7 cnt=76 | c=84.6 rankC=84.6 need=903308 tD=0.55 人 pulse bleeding agg | safe=669396 keep=793611 avail=2190 chunkB=161047 pulseB=161047 低于最小指令(x=2190<37744)→continue hNb=3
+    → [Off] Skull#2[T5] terr=20663 bal=1923826 dq=93.1 cnt=98 | c=222.7 rankC=222.7 need=3459653 tD=0.83 人 pulse | safe=669396 keep=Inf avail=-Inf chunkB=161047 pulseB=161047 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1472207 dq=138.6 cnt=142 | c=354.7 rankC=354.7 need=2639987 tD=1.23 人 pulse crowdedHard | safe=669396 keep=Inf avail=-Inf chunkB=161047 pulseB=161047 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3795 sora_w B=805237 L=8582 d=93.8 nb=3 neut=0 cmds=39 noFull=1 shQ=201309 | m=0.900 worth=84.4 cheap=8.3 over=0 dMedOther=106.9 safe(-1)=669396
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8198 bal=504747 dq=61.6 cnt=76 | c=84.5 rankC=84.5 need=898815 tD=0.58 人 pulse bleeding agg | safe=669396 keep=Inf avail=-Inf chunkB=161047 pulseB=161047 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20663 bal=1923826 dq=93.1 cnt=98 | c=222.7 rankC=222.7 need=3459917 tD=0.87 人 pulse | safe=669396 keep=Inf avail=-Inf chunkB=161047 pulseB=161047 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1472207 dq=138.6 cnt=142 | c=354.7 rankC=354.7 need=2639987 tD=1.30 人 pulse crowdedHard | safe=669396 keep=Inf avail=-Inf chunkB=161047 pulseB=161047 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3800 sora_w B=823481 L=8582 d=96.0 nb=3 neut=0 cmds=39 noFull=1 shQ=203779 | m=0.900 worth=86.4 cheap=8.3 over=0 dMedOther=109.1 safe(-1)=669396
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8176 bal=516786 dq=63.2 cnt=76 | c=86.7 rankC=86.7 need=919570 tD=0.58 人 pulse bleeding agg | safe=669396 keep=Inf avail=-Inf chunkB=164696 pulseB=164696 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20663 bal=1969691 dq=95.3 cnt=98 | c=227.9 rankC=227.9 need=3541799 tD=0.87 人 pulse | safe=669396 keep=Inf avail=-Inf chunkB=164696 pulseB=164696 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1486950 dq=140.0 cnt=142 | c=358.3 rankC=358.3 need=2666264 tD=1.28 人 pulse crowdedHard | safe=669396 keep=Inf avail=-Inf chunkB=164696 pulseB=164696 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3805 sora_w B=823481 L=8582 d=96.0 nb=3 neut=0 cmds=39 noFull=1 shQ=205870 | m=0.900 worth=86.4 cheap=8.3 over=0 dMedOther=108.4 safe(-1)=669396
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8135 bal=512644 dq=63.0 cnt=76 | c=86.5 rankC=86.5 need=911298 tD=0.58 人 pulse bleeding agg | safe=669396 keep=Inf avail=-Inf chunkB=164696 pulseB=164696 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20663 bal=1969691 dq=95.3 cnt=98 | c=227.9 rankC=227.9 need=3541799 tD=0.88 人 pulse | safe=669396 keep=Inf avail=-Inf chunkB=164696 pulseB=164696 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1486950 dq=140.0 cnt=142 | c=358.3 rankC=358.3 need=2666264 tD=1.29 人 pulse crowdedHard | safe=669396 keep=Inf avail=-Inf chunkB=164696 pulseB=164696 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3810 sora_w B=833362 L=8582 d=97.1 nb=3 neut=0 cmds=39 noFull=1 shQ=208340 | m=0.900 worth=87.4 cheap=8.3 over=0 dMedOther=105.7 safe(-1)=669396
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8099 bal=515125 dq=63.6 cnt=76 | c=87.3 rankC=87.3 need=914773 tD=0.60 人 pulse bleeding agg | safe=669396 keep=823597 avail=0 chunkB=166672 pulseB=166672 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20663 bal=1995493 dq=96.6 cnt=98 | c=230.9 rankC=230.9 need=3587788 tD=0.91 人 pulse | safe=669396 keep=Inf avail=-Inf chunkB=166672 pulseB=166672 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1490667 dq=140.4 cnt=142 | c=359.2 rankC=359.2 need=2672890 tD=1.33 人 pulse crowdedHard | safe=669396 keep=Inf avail=-Inf chunkB=166672 pulseB=166672 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3815 sora_w B=833362 L=8582 d=97.1 nb=3 neut=0 cmds=39 noFull=1 shQ=208340 | m=0.900 worth=87.4 cheap=8.3 over=0 dMedOther=105.7 safe(-1)=669396
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8083 bal=513497 dq=63.5 cnt=76 | c=87.2 rankC=87.2 need=911580 tD=0.60 人 pulse bleeding agg | safe=669396 keep=823597 avail=0 chunkB=166672 pulseB=166672 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20663 bal=1995493 dq=96.6 cnt=98 | c=230.9 rankC=230.9 need=3587788 tD=0.91 人 pulse | safe=669396 keep=Inf avail=-Inf chunkB=166672 pulseB=166672 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1490667 dq=140.4 cnt=142 | c=359.2 rankC=359.2 need=2672890 tD=1.33 人 pulse crowdedHard | safe=669396 keep=Inf avail=-Inf chunkB=166672 pulseB=166672 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3820 sora_w B=843362 L=8582 d=98.3 nb=3 neut=0 cmds=39 noFull=1 shQ=210840 | m=0.900 worth=88.4 cheap=8.3 over=0 dMedOther=104.5 safe(-1)=669396
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8053 bal=516474 dq=64.1 cnt=76 | c=127.7 rankC=185.2 need=916165 tD=0.61 人 pulse bleeding agg | safe=669396 keep=Inf avail=-Inf chunkB=168672 pulseB=168672 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=20663 bal=2021633 dq=97.8 cnt=98 | c=339.1 rankC=491.7 need=3634381 tD=0.94 人 pulse | safe=669396 keep=Inf avail=-Inf chunkB=168672 pulseB=168672 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1494244 dq=140.7 cnt=142 | c=522.0 rankC=757.0 need=2679265 tD=1.35 人 pulse crowdedHard | safe=669396 keep=Inf avail=-Inf chunkB=168672 pulseB=168672 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3825 sora_w B=843362 L=8582 d=98.3 nb=3 neut=0 cmds=40 noFull=1 shQ=210840 | m=0.900 worth=88.4 cheap=8.3 over=0 dMedOther=102.7 safe(-1)=669396
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8021 bal=0 dq=0.0 cnt=76 | c=21.0 rankC=10.5 need=520466 tD=0.00 人 pulse nearCollapse bleeding onMe | safe=669396 keep=669396 avail=164083 chunkB=168672 pulseB=168672  x=164083 hNb=3
+    → [Off] Skull#2[T5] terr=20663 bal=2021633 dq=97.8 cnt=98 | c=339.1 rankC=491.7 need=3634381 tD=0.95 人 pulse | safe=669396 keep=Inf avail=-Inf chunkB=168672 pulseB=168672 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1494244 dq=140.7 cnt=142 | c=522.0 rankC=757.0 need=2679265 tD=1.37 人 pulse crowdedHard | safe=669396 keep=Inf avail=-Inf chunkB=168672 pulseB=168672 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=199 → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4]（约 164719 兵） 〔send:484<send:1827<send:3865<buyLand:5584〕
+t=3830 sora_w B=841708 L=8508 d=98.9 nb=3 neut=0 cmds=41 noFull=1 shQ=210427 | m=0.900 worth=89.0 cheap=8.3 over=0 dMedOther=103.2 safe(-1)=663624
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8078 bal=1 dq=0.0 cnt=74 | c=27.4 rankC=19.1 need=496888 tD=0.00 人 pulse nearCollapse bleeding onMe | safe=663624 keep=663624 avail=168221 chunkB=168342 pulseB=168342  x=168221 hNb=3
+    → [Off] Skull#2[T5] terr=20663 bal=2048116 dq=99.1 cnt=97 | c=343.5 rankC=498.1 need=3681584 tD=0.96 人 pulse | safe=663624 keep=Inf avail=-Inf chunkB=168342 pulseB=168342 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1497680 dq=141.0 cnt=141 | c=523.3 rankC=758.8 need=2685390 tD=1.37 人 pulse crowdedHard | safe=663624 keep=Inf avail=-Inf chunkB=168342 pulseB=168342 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=204 → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4]（约 168505 兵） 〔send:484<send:1827<send:3865<buyLand:5584〕
+t=3835 sora_w B=830313 L=8436 d=98.4 nb=3 neut=0 cmds=41 noFull=1 shQ=4980 | m=0.900 worth=88.6 cheap=8.3 over=0 dMedOther=102.5 safe(-1)=658008
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=8115 bal=1 dq=0.0 cnt=70 | c=27.6 rankC=19.4 need=474030 tD=0.00 人 pulse nearCollapse bleeding onMe | safe=658008 keep=658008 avail=162575 chunkB=166063 pulseB=166063  x=162575 hNb=3
+    → [Off] Skull#2[T5] terr=20663 bal=2048116 dq=99.1 cnt=97 | c=343.5 rankC=498.1 need=3681584 tD=0.97 人 pulse | safe=658008 keep=Inf avail=-Inf chunkB=166063 pulseB=166063 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1497680 dq=141.0 cnt=138 | c=523.4 rankC=758.9 need=2685390 tD=1.38 人 pulse crowdedHard | safe=658008 keep=Inf avail=-Inf chunkB=166063 pulseB=166063 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3840 sora_w B=649046 L=8299 d=78.2 nb=3 neut=0 cmds=41 noFull=1 shQ=15207 | m=0.900 worth=77.4 cheap=8.3 over=0 dMedOther=101.1 safe(-1)=647322
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=7908 bal=2 dq=0.0 cnt=67 | c=22.7 rankC=15.9 need=274673 tD=0.00 人 pulse nearCollapse bleeding onMe | safe=647322 keep=647322 avail=-5882 chunkB=129809 pulseB=129809 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20663 bal=2074946 dq=100.4 cnt=95 | c=375.6 rankC=544.6 need=3729407 tD=0.99 人 pulse crowdedHard | safe=647322 keep=Inf avail=-Inf chunkB=129809 pulseB=129809 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1500974 dq=141.3 cnt=136 | c=524.2 rankC=760.1 need=2691261 tD=1.40 人 pulse crowdedHard | safe=647322 keep=Inf avail=-Inf chunkB=129809 pulseB=129809 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3845 sora_w B=498975 L=8171 d=61.1 nb=3 neut=0 cmds=41 noFull=1 shQ=24009 | m=0.900 worth=76.8 cheap=8.3 over=0 dMedOther=100.4 safe(-1)=637338
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=7870 bal=2 dq=0.0 cnt=63 | c=16.2 rankC=11.3 need=117596 tD=0.00 人 pulse nearCollapse bleeding onMe | safe=637338 keep=637338 avail=-144210 chunkB=99795 pulseB=99795 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20663 bal=2074946 dq=100.4 cnt=94 | c=375.5 rankC=544.4 need=3729407 tD=1.00 人 pulse crowdedHard | safe=637338 keep=Inf avail=-Inf chunkB=99795 pulseB=99795 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1500974 dq=141.3 cnt=136 | c=523.9 rankC=759.6 need=2691261 tD=1.41 人 pulse crowdedHard | safe=637338 keep=Inf avail=-Inf chunkB=99795 pulseB=99795 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3850 sora_w B=498833 L=8109 d=61.5 nb=3 neut=0 cmds=41 noFull=1 shQ=31453 | m=0.900 worth=77.5 cheap=8.3 over=0 dMedOther=101.3 safe(-1)=632502
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=7612 bal=3 dq=0.0 cnt=62 | c=15.2 rankC=10.6 need=104846 tD=0.00 人 pulse nearCollapse bleeding onMe agg | safe=632502 keep=632502 avail=-139514 chunkB=99767 pulseB=99767 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20663 bal=2101920 dq=101.7 cnt=93 | c=380.3 rankC=551.4 need=3777485 tD=1.00 人 pulse crowdedHard | safe=632502 keep=Inf avail=-Inf chunkB=99767 pulseB=99767 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1504276 dq=141.6 cnt=135 | c=525.1 rankC=761.3 need=2697146 tD=1.40 人 pulse crowdedHard | safe=632502 keep=Inf avail=-Inf chunkB=99767 pulseB=99767 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3855 sora_w B=486659 L=7985 d=60.9 nb=3 neut=0 cmds=41 noFull=1 shQ=38742 | m=0.900 worth=76.6 cheap=8.4 over=0 dMedOther=100.1 safe(-1)=622830
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=7430 bal=3 dq=0.0 cnt=62 | c=12.1 rankC=8.5 need=79888 tD=0.00 人 pulse nearCollapse bleeding onMe agg | safe=622830 keep=622830 avail=-141874 chunkB=97332 pulseB=97332 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20663 bal=2101920 dq=101.7 cnt=91 | c=380.3 rankC=551.5 need=3777485 tD=1.02 人 pulse crowdedHard | safe=622830 keep=Inf avail=-Inf chunkB=97332 pulseB=97332 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1333871 dq=125.6 cnt=134 | c=466.1 rankC=675.8 need=2393417 tD=1.25 人 pulse crowdedHard | safe=622830 keep=Inf avail=-Inf chunkB=97332 pulseB=97332 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3860 sora_w B=480296 L=7862 d=61.1 nb=3 neut=0 cmds=41 noFull=1 shQ=45907 | m=0.900 worth=76.0 cheap=8.4 over=0 dMedOther=99.3 safe(-1)=613236
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=7263 bal=4 dq=0.0 cnt=62 | c=8.9 rankC=6.2 need=55244 tD=0.00 人 pulse nearCollapse bleeding onMe agg | safe=613236 keep=613236 avail=-138568 chunkB=96059 pulseB=96059 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20663 bal=1827922 dq=88.5 cnt=90 | c=228.4 rankC=228.4 need=3289108 tD=0.89 人 pulse crowdedHard | safe=613236 keep=Inf avail=-Inf chunkB=96059 pulseB=96059 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1341874 dq=126.3 cnt=133 | c=323.4 rankC=323.4 need=2407682 tD=1.27 人 pulse crowdedHard | safe=613236 keep=Inf avail=-Inf chunkB=96059 pulseB=96059 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3865 sora_w B=474139 L=7799 d=60.8 nb=3 neut=0 cmds=41 noFull=1 shQ=52993 | m=0.900 worth=75.0 cheap=8.4 over=0 dMedOther=98.0 safe(-1)=608322
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=6963 bal=4 dq=0.0 cnt=63 | c=7.4 rankC=5.2 need=42206 tD=0.00 人 pulse nearCollapse bleeding onMe agg | safe=608322 keep=608322 avail=-139739 chunkB=94828 pulseB=94828 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20726 bal=1827922 dq=88.2 cnt=89 | c=125.5 rankC=62.7 need=3289171 tD=0.90 人 pulse crowdedHard | safe=608322 keep=Inf avail=-Inf chunkB=94828 pulseB=94828 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10621 bal=1189866 dq=112.0 cnt=133 | c=416.2 rankC=603.5 need=2136743 tD=1.14 人 pulse crowdedHard | safe=608322 keep=Inf avail=-Inf chunkB=94828 pulseB=94828 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3870 sora_w B=467072 L=7670 d=60.9 nb=3 neut=0 cmds=41 noFull=1 shQ=59931 | m=0.900 worth=75.9 cheap=8.4 over=0 dMedOther=99.2 safe(-1)=598260
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=6562 bal=5 dq=0.0 cnt=65 | c=3.7 rankC=2.6 need=16123 tD=0.00 人 pulse nearCollapse bleeding onMe agg | safe=598260 keep=598260 avail=-136661 chunkB=93414 pulseB=93414 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20844 bal=1851867 dq=88.8 cnt=91 | c=126.5 rankC=63.2 need=3331964 tD=0.90 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=93414 pulseB=93414 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10624 bal=1200931 dq=113.0 cnt=132 | c=420.0 rankC=609.0 need=2156430 tD=1.14 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=93414 pulseB=93414 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3875 sora_w B=463475 L=7670 d=60.4 nb=3 neut=0 cmds=41 noFull=1 shQ=66832 | m=0.900 worth=75.7 cheap=8.4 over=0 dMedOther=98.9 safe(-1)=598260
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=6179 bal=22 dq=0.0 cnt=63 | c=3.3 rankC=3.3 need=8046 tD=0.00 人 pulse nearCollapse bleeding agg | safe=598260 keep=598260 avail=-140216 chunkB=92695 pulseB=92695 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20914 bal=1841533 dq=88.1 cnt=93 | c=122.9 rankC=61.5 need=3313712 tD=0.89 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=92695 pulseB=92695 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10637 bal=1200931 dq=112.9 cnt=132 | c=419.5 rankC=608.3 need=2156490 tD=1.14 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=92695 pulseB=92695 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3880 sora_w B=468944 L=7670 d=61.1 nb=3 neut=0 cmds=41 noFull=1 shQ=73739 | m=0.900 worth=76.8 cheap=8.4 over=0 dMedOther=100.4 safe(-1)=598260
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=5749 bal=23 dq=0.0 cnt=61 | c=3.5 rankC=3.5 need=7192 tD=0.00 人 pulse nearCollapse bleeding agg | safe=598260 keep=598260 avail=-134811 chunkB=93789 pulseB=93789 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20887 bal=1849015 dq=88.5 cnt=95 | c=124.7 rankC=62.4 need=3325786 tD=0.88 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=93789 pulseB=93789 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10648 bal=1211859 dq=113.8 cnt=132 | c=422.9 rankC=613.2 need=2175944 tD=1.13 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=93789 pulseB=93789 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3885 sora_w B=468944 L=7670 d=61.1 nb=3 neut=0 cmds=41 noFull=1 shQ=80714 | m=0.900 worth=76.8 cheap=8.4 over=0 dMedOther=100.4 safe(-1)=598260
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=5409 bal=23 dq=0.0 cnt=59 | c=3.7 rankC=3.7 need=6517 tD=0.00 人 pulse nearCollapse bleeding agg | safe=598260 keep=598260 avail=-134811 chunkB=93789 pulseB=93789 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20910 bal=1834770 dq=87.7 cnt=97 | c=124.4 rankC=62.2 need=3301031 tD=0.87 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=93789 pulseB=93789 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10668 bal=1211859 dq=113.6 cnt=132 | c=422.1 rankC=612.1 need=2175974 tD=1.13 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=93789 pulseB=93789 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3890 sora_w B=474477 L=7670 d=61.9 nb=3 neut=0 cmds=41 noFull=1 shQ=87705 | m=0.900 worth=76.6 cheap=8.4 over=0 dMedOther=100.1 safe(-1)=598260
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=5033 bal=24 dq=0.0 cnt=58 | c=3.9 rankC=3.9 need=5774 tD=0.00 人 pulse nearCollapse bleeding agg | safe=598260 keep=598260 avail=-129343 chunkB=94895 pulseB=94895 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20841 bal=1838815 dq=88.2 cnt=98 | c=126.5 rankC=63.2 need=3306227 tD=0.88 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=94895 pulseB=94895 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10686 bal=1222765 dq=114.4 cnt=132 | c=425.2 rankC=616.5 need=2195520 tD=1.14 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=94895 pulseB=94895 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3895 sora_w B=474477 L=7670 d=61.9 nb=3 neut=0 cmds=41 noFull=1 shQ=94760 | m=0.900 worth=75.4 cheap=8.4 over=0 dMedOther=98.6 safe(-1)=598260
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=4761 bal=24 dq=0.0 cnt=55 | c=4.1 rankC=4.1 need=5236 tD=0.00 人 pulse nearCollapse bleeding agg | safe=598260 keep=598260 avail=-129343 chunkB=94895 pulseB=94895 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20821 bal=1824179 dq=87.6 cnt=101 | c=126.5 rankC=63.3 need=3279630 tD=0.89 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=94895 pulseB=94895 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10696 bal=1318735 dq=123.3 cnt=132 | c=457.8 rankC=663.8 need=2366508 tD=1.25 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=94895 pulseB=94895 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3900 sora_w B=487745 L=7670 d=63.6 nb=3 neut=0 cmds=41 noFull=1 shQ=101855 | m=0.900 worth=76.7 cheap=8.4 over=0 dMedOther=100.3 safe(-1)=598260
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=4454 bal=4427 dq=1.0 cnt=53 | c=7.0 rankC=7.0 need=10677 tD=0.01 人 pulse nearCollapse bleeding agg | safe=598260 keep=598260 avail=-116230 chunkB=97549 pulseB=97549 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20695 bal=1844802 dq=89.1 cnt=103 | c=130.5 rankC=65.3 need=3312283 tD=0.89 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=97549 pulseB=97549 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10701 bal=1338136 dq=125.0 cnt=132 | c=464.3 rankC=673.3 need=2401139 tD=1.25 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=97549 pulseB=97549 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3905 sora_w B=487745 L=7670 d=63.6 nb=3 neut=0 cmds=41 noFull=1 shQ=109110 | m=0.900 worth=76.6 cheap=8.4 over=0 dMedOther=100.1 safe(-1)=598260
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=4225 bal=4069 dq=1.0 cnt=52 | c=7.2 rankC=7.2 need=9523 tD=0.01 人 pulse nearCollapse bleeding agg | safe=598260 keep=598260 avail=-116230 chunkB=97549 pulseB=97549 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20633 bal=1827585 dq=88.6 cnt=104 | c=130.9 rankC=65.5 need=3279715 tD=0.89 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=97549 pulseB=97549 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10714 bal=1338136 dq=124.9 cnt=132 | c=463.8 rankC=672.6 need=2401202 tD=1.25 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=97549 pulseB=97549 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3910 sora_w B=493500 L=7670 d=64.3 nb=3 neut=0 cmds=41 noFull=1 shQ=116382 | m=0.900 worth=77.4 cheap=8.4 over=0 dMedOther=101.2 safe(-1)=598260
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=3936 bal=3674 dq=0.9 cnt=50 | c=7.6 rankC=7.6 need=8144 tD=0.01 人 pulse nearCollapse bleeding agg | safe=598260 keep=598260 avail=-110543 chunkB=98700 pulseB=98700 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20478 bal=1823896 dq=89.1 cnt=106 | c=133.6 rankC=66.8 need=3268181 tD=0.88 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=98700 pulseB=98700 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10749 bal=1346432 dq=125.3 cnt=132 | c=465.3 rankC=674.6 need=2415997 tD=1.24 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=98700 pulseB=98700 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3915 sora_w B=493500 L=7670 d=64.3 nb=3 neut=0 cmds=41 noFull=1 shQ=123375 | m=0.900 worth=77.3 cheap=8.4 over=0 dMedOther=101.0 safe(-1)=598260
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=3711 bal=3345 dq=0.9 cnt=49 | c=7.9 rankC=7.9 need=7055 tD=0.01 人 pulse nearCollapse bleeding agg | safe=598260 keep=598260 avail=-110543 chunkB=98700 pulseB=98700 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20537 bal=1823561 dq=88.8 cnt=107 | c=229.7 rankC=229.7 need=3269714 tD=0.88 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=98700 pulseB=98700 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10763 bal=1429647 dq=132.8 cnt=132 | c=340.1 rankC=340.1 need=2564434 tD=1.31 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=98700 pulseB=98700 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3920 sora_w B=499323 L=7670 d=65.1 nb=3 neut=0 cmds=41 noFull=1 shQ=124830 | m=0.900 worth=78.2 cheap=8.4 over=0 dMedOther=102.2 safe(-1)=598260
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=3423 bal=2972 dq=0.9 cnt=48 | c=8.7 rankC=8.7 need=5727 tD=0.01 人 pulse nearCollapse bleeding agg | safe=598260 keep=598260 avail=-104788 chunkB=99865 pulseB=99865 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20579 bal=1847449 dq=89.8 cnt=108 | c=232.1 rankC=232.1 need=3313706 tD=0.88 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=99865 pulseB=99865 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10763 bal=1435651 dq=133.4 cnt=132 | c=341.5 rankC=341.5 need=2575136 tD=1.31 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=99865 pulseB=99865 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3925 sora_w B=499323 L=7670 d=65.1 nb=3 neut=0 cmds=41 noFull=1 shQ=124830 | m=0.900 worth=78.1 cheap=8.4 over=0 dMedOther=102.1 safe(-1)=598260
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=3193 bal=2660 dq=0.8 cnt=46 | c=9.5 rankC=9.5 need=4667 tD=0.01 人 pulse nearCollapse bleeding agg | safe=598260 keep=598260 avail=-104788 chunkB=99865 pulseB=99865 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20646 bal=1847449 dq=89.5 cnt=110 | c=231.2 rankC=231.2 need=3316104 tD=0.88 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=99865 pulseB=99865 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10763 bal=1435651 dq=133.4 cnt=132 | c=341.5 rankC=341.5 need=2575136 tD=1.31 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=99865 pulseB=99865 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3930 sora_w B=505215 L=7670 d=65.9 nb=3 neut=0 cmds=41 noFull=1 shQ=126303 | m=0.900 worth=79.4 cheap=8.4 over=0 dMedOther=103.9 safe(-1)=598260
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=2904 bal=2311 dq=0.8 cnt=45 | c=11.3 rankC=11.3 need=3388 tD=0.01 人 pulse nearCollapse bleeding agg | safe=598260 keep=598260 avail=-98965 chunkB=101043 pulseB=101043 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20693 bal=1871650 dq=90.4 cnt=111 | c=233.6 rankC=233.6 need=3360999 tD=0.87 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=101043 pulseB=101043 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10763 bal=1441537 dq=133.9 cnt=132 | c=342.9 rankC=342.9 need=2585627 tD=1.29 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=101043 pulseB=101043 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3935 sora_w B=505215 L=7670 d=65.9 nb=3 neut=0 cmds=41 noFull=1 shQ=126303 | m=0.900 worth=77.9 cheap=8.4 over=0 dMedOther=101.8 safe(-1)=598260
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=2671 bal=2022 dq=0.8 cnt=44 | c=13.9 rankC=13.9 need=2368 tD=0.01 人 pulse nearCollapse bleeding agg | safe=598260 keep=598260 avail=-98965 chunkB=101043 pulseB=101043 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20767 bal=1871650 dq=90.1 cnt=112 | c=232.7 rankC=232.7 need=3363628 tD=0.88 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=101043 pulseB=101043 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10763 bal=1278238 dq=118.8 cnt=132 | c=304.4 rankC=304.4 need=2294553 tD=1.17 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=101043 pulseB=101043 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3940 sora_w B=511176 L=7670 d=66.6 nb=3 neut=0 cmds=41 noFull=1 shQ=127794 | m=0.900 worth=80.0 cheap=8.4 over=0 dMedOther=104.6 safe(-1)=598260
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=2384 bal=1704 dq=0.7 cnt=42 | c=22.7 rankC=22.7 need=1153 tD=0.01 人 pulse nearCollapse bleeding agg | safe=598260 keep=598260 avail=-93074 chunkB=102235 pulseB=102235 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20819 bal=1896168 dq=91.1 cnt=114 | c=235.0 rankC=235.0 need=3409178 tD=0.87 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=102235 pulseB=102235 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10763 bal=1288080 dq=119.7 cnt=132 | c=306.7 rankC=306.7 need=2312096 tD=1.14 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=102235 pulseB=102235 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3945 sora_w B=511176 L=7670 d=66.6 nb=3 neut=0 cmds=41 noFull=1 shQ=127794 | m=0.900 worth=82.5 cheap=8.4 over=0 dMedOther=107.8 safe(-1)=598260
+    → [OG] 𝕶𝕬𝕴𝕾𝕰𝕽☪️#90[T4] terr=2152 bal=0 dq=0.0 cnt=39 | c=41.7 rankC=20.8 need=1756 tD=0.00 人 pulse nearCollapse bleeding onMe agg | safe=598260 keep=598260 avail=-93074 chunkB=102235 pulseB=102235 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=20897 bal=1896168 dq=90.7 cnt=117 | c=234.1 rankC=234.1 need=3411036 tD=0.84 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=102235 pulseB=102235 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10763 bal=1288080 dq=119.7 cnt=132 | c=306.7 rankC=306.7 need=2312096 tD=1.11 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=102235 pulseB=102235 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=3950 sora_w B=517207 L=7670 d=67.4 nb=2 neut=38 cmds=41 noFull=1 shQ=129301 | m=0.900 worth=83.3 cheap=8.4 over=0 dMedOther=108.9 safe(-1)=598260
+    → [Off] Skull#2[T5] terr=20950 bal=1921007 dq=91.7 cnt=118 | c=236.5 rankC=236.5 need=3455420 tD=0.84 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=103441 pulseB=103441 价高(c>=worth)→break hNb=2
+    → гейство#21[T7] terr=10763 bal=1297611 dq=120.6 cnt=132 | c=309.0 rankC=309.0 need=2329085 tD=1.11 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=103441 pulseB=103441 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3955 sora_w B=517207 L=7670 d=67.4 nb=2 neut=27 cmds=41 noFull=1 shQ=129301 | m=0.900 worth=83.3 cheap=8.4 over=0 dMedOther=108.9 safe(-1)=598260
+    → [Off] Skull#2[T5] terr=21033 bal=1921007 dq=91.3 cnt=129 | c=235.5 rankC=235.5 need=3455512 tD=0.84 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=103441 pulseB=103441 价高(c>=worth)→break hNb=2
+    → гейство#21[T7] terr=10763 bal=1297611 dq=120.6 cnt=132 | c=309.0 rankC=309.0 need=2329085 tD=1.11 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=103441 pulseB=103441 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3960 sora_w B=645243 L=7670 d=84.1 nb=2 neut=26 cmds=42 noFull=1 shQ=138808 | m=0.900 worth=81.9 cheap=8.4 over=0 dMedOther=107.0 safe(-1)=598260
+    → [Off] Skull#2[T5] terr=21069 bal=1946172 dq=92.4 cnt=130 | c=238.2 rankC=238.2 need=3500420 tD=0.86 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=129049 pulseB=129049 价高(c>=worth)→break hNb=2
+    → гейство#21[T7] terr=10763 bal=1306953 dq=121.4 cnt=132 | c=311.4 rankC=311.4 need=2345737 tD=1.13 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=129049 pulseB=129049 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 30245 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=3965 sora_w B=645243 L=7670 d=84.1 nb=2 neut=25 cmds=43 noFull=1 shQ=148403 | m=0.900 worth=81.9 cheap=8.4 over=0 dMedOther=107.0 safe(-1)=598260
+    → [Off] Skull#2[T5] terr=21119 bal=1946172 dq=92.2 cnt=131 | c=237.6 rankC=237.6 need=3500560 tD=0.86 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=129049 pulseB=129049 价高(c>=worth)→break hNb=2
+    → гейство#21[T7] terr=10763 bal=1306953 dq=121.4 cnt=132 | c=311.4 rankC=311.4 need=2345737 tD=1.13 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=129049 pulseB=129049 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 30245 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=3970 sora_w B=614604 L=7670 d=80.1 nb=2 neut=23 cmds=43 noFull=1 shQ=0 | m=0.900 worth=82.8 cheap=8.4 over=0 dMedOther=108.2 safe(-1)=598260
+    → [Off] Skull#2[T5] terr=21150 bal=1971666 dq=93.2 cnt=133 | c=240.3 rankC=240.3 need=3546014 tD=0.86 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=122921 pulseB=122921 价高(c>=worth)→break hNb=2
+    → гейство#21[T7] terr=10763 bal=1316101 dq=122.3 cnt=132 | c=313.5 rankC=313.5 need=2362043 tD=1.13 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=122921 pulseB=122921 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3975 sora_w B=614604 L=7670 d=80.1 nb=2 neut=21 cmds=43 noFull=1 shQ=9140 | m=0.900 worth=82.8 cheap=8.4 over=0 dMedOther=108.2 safe(-1)=598260
+    → [Off] Skull#2[T5] terr=21193 bal=1971666 dq=93.0 cnt=135 | c=239.8 rankC=239.8 need=3546046 tD=0.86 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=122921 pulseB=122921 价高(c>=worth)→break hNb=2
+    → гейство#21[T7] terr=10763 bal=1316101 dq=122.3 cnt=132 | c=313.5 rankC=313.5 need=2362043 tD=1.13 人 pulse crowdedHard | safe=598260 keep=Inf avail=-Inf chunkB=122921 pulseB=122921 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3980 sora_w B=585420 L=7707 d=76.0 nb=2 neut=14 cmds=43 noFull=1 shQ=17872 | m=0.900 worth=83.7 cheap=8.4 over=0 dMedOther=109.4 safe(-1)=601146
+    → [Off] Skull#2[T5] terr=21221 bal=1997494 dq=94.1 cnt=137 | c=242.6 rankC=242.6 need=3592123 tD=0.86 人 pulse crowdedHard | safe=601146 keep=Inf avail=-Inf chunkB=117084 pulseB=117084 价高(c>=worth)→break hNb=2
+    → гейство#21[T7] terr=10763 bal=1325050 dq=123.1 cnt=133 | c=315.5 rankC=315.5 need=2377994 tD=1.13 人 pulse crowdedHard | safe=601146 keep=Inf avail=-Inf chunkB=117084 pulseB=117084 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3985 sora_w B=585420 L=7720 d=75.8 nb=2 neut=11 cmds=43 noFull=1 shQ=26577 | m=0.900 worth=82.2 cheap=8.4 over=0 dMedOther=107.4 safe(-1)=602160
+    → [Off] Skull#2[T5] terr=21257 bal=1997494 dq=94.0 cnt=139 | c=242.2 rankC=242.2 need=3592177 tD=0.88 人 pulse crowdedHard | safe=602160 keep=Inf avail=-Inf chunkB=117084 pulseB=117084 价高(c>=worth)→break hNb=2
+    → гейство#21[T7] terr=10763 bal=1325050 dq=123.1 cnt=133 | c=315.5 rankC=315.5 need=2377994 tD=1.15 人 pulse crowdedHard | safe=602160 keep=Inf avail=-Inf chunkB=117084 pulseB=117084 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3990 sora_w B=592327 L=7741 d=76.5 nb=2 neut=10 cmds=43 noFull=1 shQ=35303 | m=0.900 worth=83.1 cheap=8.4 over=0 dMedOther=108.6 safe(-1)=603798
+    → [Off] Skull#2[T5] terr=21267 bal=2022643 dq=95.1 cnt=141 | c=245.0 rankC=245.0 need=3637084 tD=0.88 人 pulse crowdedHard | safe=603798 keep=Inf avail=-Inf chunkB=118465 pulseB=118465 价高(c>=worth)→break hNb=2
+    → гейство#21[T7] terr=10763 bal=1333795 dq=123.9 cnt=134 | c=317.6 rankC=317.6 need=2393581 tD=1.14 人 pulse crowdedHard | safe=603798 keep=Inf avail=-Inf chunkB=118465 pulseB=118465 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3995 sora_w B=592327 L=7761 d=76.3 nb=2 neut=10 cmds=43 noFull=1 shQ=44113 | m=0.900 worth=83.1 cheap=8.4 over=0 dMedOther=108.6 safe(-1)=605358
+    → [Off] Skull#2[T5] terr=21280 bal=2022643 dq=95.0 cnt=143 | c=244.9 rankC=244.9 need=3637003 tD=0.88 人 pulse crowdedHard | safe=605358 keep=Inf avail=-Inf chunkB=118465 pulseB=118465 价高(c>=worth)→break hNb=2
+    → гейство#21[T7] terr=10763 bal=1442277 dq=134.0 cnt=135 | c=343.1 rankC=343.1 need=2586946 tD=1.23 人 pulse crowdedHard | safe=605358 keep=Inf avail=-Inf chunkB=118465 pulseB=118465 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4000 sora_w B=607086 L=7770 d=78.1 nb=3 neut=4 cmds=43 noFull=1 shQ=52967 | m=0.900 worth=84.7 cheap=8.4 over=0 dMedOther=110.8 safe(-1)=606060
+    → [Off] Skull#2[T5] terr=21285 bal=2070626 dq=97.3 cnt=144 | c=250.6 rankC=250.6 need=3722568 tD=0.88 人 pulse crowdedHard | safe=606060 keep=Inf avail=-Inf chunkB=121417 pulseB=121417 价高(c>=worth)→break hNb=3
+    → Nazarick#12[T5] terr=15930 bal=1098362 dq=68.9 cnt=6 | c=299.5 rankC=299.5 need=1981623 tD=0.62 人 pulse | safe=606060 keep=Inf avail=-Inf chunkB=121417 pulseB=121417 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10763 bal=1326977 dq=123.3 cnt=136 | c=315.9 rankC=315.9 need=2381429 tD=1.11 人 pulse crowdedHard | safe=606060 keep=Inf avail=-Inf chunkB=121417 pulseB=121417 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4005 sora_w B=607086 L=7776 d=78.1 nb=3 neut=1 cmds=43 noFull=1 shQ=61997 | m=0.900 worth=84.7 cheap=8.4 over=0 dMedOther=110.8 safe(-1)=606528
+    → [Off] Skull#2[T5] terr=21286 bal=2339091 dq=109.9 cnt=145 | c=282.7 rankC=282.7 need=4201114 tD=0.99 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=121417 pulseB=121417 价高(c>=worth)→break hNb=3
+    → Nazarick#12[T5] terr=15967 bal=1098362 dq=68.8 cnt=10 | c=298.7 rankC=298.7 need=1981703 tD=0.62 人 pulse | safe=606528 keep=Inf avail=-Inf chunkB=121417 pulseB=121417 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10783 bal=1326977 dq=123.1 cnt=137 | c=315.3 rankC=315.3 need=2381458 tD=1.11 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=121417 pulseB=121417 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4010 sora_w B=673785 L=7776 d=86.6 nb=3 neut=0 cmds=43 noFull=1 shQ=71750 | m=0.900 worth=85.6 cheap=8.4 over=0 dMedOther=111.9 safe(-1)=606528
+    → [Off] Skull#2[T5] terr=21286 bal=2363885 dq=111.1 cnt=145 | c=285.7 rankC=285.7 need=4245307 tD=0.99 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=134757 pulseB=134757 价高(c>=worth)→break hNb=3
+    → Nazarick#12[T5] terr=15988 bal=1112311 dq=69.6 cnt=11 | c=302.2 rankC=302.2 need=2006523 tD=0.62 人 pulse | safe=606528 keep=Inf avail=-Inf chunkB=134757 pulseB=134757 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10812 bal=1335867 dq=123.6 cnt=137 | c=316.6 rankC=316.6 need=2397217 tD=1.10 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=134757 pulseB=134757 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4015 sora_w B=673785 L=7776 d=86.6 nb=3 neut=0 cmds=43 noFull=1 shQ=81770 | m=0.900 worth=85.6 cheap=8.4 over=0 dMedOther=111.9 safe(-1)=606528
+    → [Off] Skull#2[T5] terr=21286 bal=2363885 dq=111.1 cnt=145 | c=285.7 rankC=285.7 need=4245307 tD=0.99 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=134757 pulseB=134757 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10814 bal=1454076 dq=134.5 cnt=137 | c=344.3 rankC=344.3 need=2608006 tD=1.20 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=134757 pulseB=134757 价高(c>=worth)→break hNb=3
+    → Nazarick#12[T5] terr=15988 bal=1289314 dq=80.6 cnt=11 | c=349.5 rankC=349.5 need=2322007 tD=0.72 人 pulse | safe=606528 keep=Inf avail=-Inf chunkB=134757 pulseB=134757 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4020 sora_w B=681735 L=7776 d=87.7 nb=3 neut=0 cmds=43 noFull=1 shQ=91814 | m=0.900 worth=84.9 cheap=8.4 over=0 dMedOther=110.9 safe(-1)=606528
+    → [Off] Skull#2[T5] terr=21286 bal=2388233 dq=112.2 cnt=145 | c=288.6 rankC=288.6 need=4288705 tD=1.01 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=136347 pulseB=136347 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10814 bal=1459601 dq=135.0 cnt=137 | c=345.6 rankC=345.6 need=2617854 tD=1.22 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=136347 pulseB=136347 价高(c>=worth)→break hNb=3
+    → Nazarick#12[T5] terr=15988 bal=1305688 dq=81.7 cnt=11 | c=353.9 rankC=353.9 need=2351191 tD=0.74 人 pulse | safe=606528 keep=Inf avail=-Inf chunkB=136347 pulseB=136347 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4025 sora_w B=681735 L=7776 d=87.7 nb=3 neut=0 cmds=43 noFull=1 shQ=101954 | m=0.900 worth=84.9 cheap=8.4 over=0 dMedOther=110.9 safe(-1)=606528
+    → [Off] Skull#2[T5] terr=21286 bal=2388233 dq=112.2 cnt=145 | c=288.6 rankC=288.6 need=4288705 tD=1.01 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=136347 pulseB=136347 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10814 bal=1459601 dq=135.0 cnt=137 | c=345.6 rankC=345.6 need=2617854 tD=1.22 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=136347 pulseB=136347 价高(c>=worth)→break hNb=3
+    → Nazarick#12[T5] terr=15988 bal=1305688 dq=81.7 cnt=11 | c=353.9 rankC=353.9 need=2351191 tD=0.74 人 pulse | safe=606528 keep=Inf avail=-Inf chunkB=136347 pulseB=136347 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4030 sora_w B=689779 L=7776 d=88.7 nb=3 neut=0 cmds=43 noFull=1 shQ=112118 | m=0.900 worth=86.2 cheap=8.4 over=0 dMedOther=112.7 safe(-1)=606528
+    → [Off] Skull#2[T5] terr=21286 bal=2412115 dq=113.3 cnt=145 | c=291.5 rankC=291.5 need=4331272 tD=1.01 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=137956 pulseB=137956 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10814 bal=1465001 dq=135.5 cnt=137 | c=346.9 rankC=346.9 need=2627479 tD=1.20 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=137956 pulseB=137956 价高(c>=worth)→break hNb=3
+    → Nazarick#12[T5] terr=15988 bal=1322270 dq=82.7 cnt=11 | c=358.3 rankC=358.3 need=2380746 tD=0.73 人 pulse | safe=606528 keep=Inf avail=-Inf chunkB=137956 pulseB=137956 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4035 sora_w B=689779 L=7776 d=88.7 nb=3 neut=0 cmds=43 noFull=1 shQ=122378 | m=0.900 worth=85.1 cheap=8.4 over=0 dMedOther=111.3 safe(-1)=606528
+    → [Off] Skull#2[T5] terr=21286 bal=2070557 dq=97.3 cnt=145 | c=187.9 rankC=131.6 need=3722481 tD=0.87 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=137956 pulseB=137956 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10814 bal=1465001 dq=135.5 cnt=137 | c=346.9 rankC=346.9 need=2627479 tD=1.22 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=137956 pulseB=137956 价高(c>=worth)→break hNb=3
+    → Nazarick#12[T5] terr=15988 bal=1322270 dq=82.7 cnt=11 | c=358.3 rankC=358.3 need=2380746 tD=0.74 人 pulse | safe=606528 keep=Inf avail=-Inf chunkB=137956 pulseB=137956 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4040 sora_w B=697918 L=7776 d=89.8 nb=3 neut=0 cmds=43 noFull=1 shQ=132662 | m=0.900 worth=86.0 cheap=8.4 over=0 dMedOther=112.4 safe(-1)=606528
+    → [Off] Skull#2[T5] terr=21349 bal=2097888 dq=98.3 cnt=146 | c=189.8 rankC=132.9 need=3771255 tD=0.87 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=139584 pulseB=139584 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10814 bal=1470275 dq=136.0 cnt=137 | c=348.1 rankC=348.1 need=2636880 tD=1.21 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=139584 pulseB=139584 价高(c>=worth)→break hNb=3
+    → Nazarick#12[T5] terr=15988 bal=1339062 dq=83.8 cnt=11 | c=362.8 rankC=362.8 need=2410676 tD=0.75 人 pulse | safe=606528 keep=Inf avail=-Inf chunkB=139584 pulseB=139584 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4045 sora_w B=697918 L=7776 d=89.8 nb=3 neut=0 cmds=43 noFull=1 shQ=143042 | m=0.900 worth=86.9 cheap=8.4 over=0 dMedOther=113.5 safe(-1)=606528
+    → [Off] Skull#2[T5] terr=21474 bal=2097888 dq=97.7 cnt=147 | c=188.7 rankC=132.1 need=3771477 tD=0.86 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=139584 pulseB=139584 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=10814 bal=1470275 dq=136.0 cnt=137 | c=348.1 rankC=348.1 need=2636880 tD=1.20 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=139584 pulseB=139584 价高(c>=worth)→break hNb=3
+    → Nazarick#12[T5] terr=15988 bal=1339062 dq=83.8 cnt=11 | c=362.8 rankC=362.8 need=2410676 tD=0.74 人 pulse | safe=606528 keep=Inf avail=-Inf chunkB=139584 pulseB=139584 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4050 sora_w B=706153 L=7776 d=90.8 nb=3 neut=0 cmds=43 noFull=1 shQ=153446 | m=0.900 worth=86.8 cheap=8.4 over=0 dMedOther=113.4 safe(-1)=606528
+    → гейство#21[T7] terr=10814 bal=1475420 dq=136.4 cnt=137 | c=155.0 rankC=77.5 need=2646050 tD=1.20 人 pulse bleeding | safe=606528 keep=Inf avail=-Inf chunkB=141231 pulseB=141231 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21668 bal=2125580 dq=98.1 cnt=149 | c=189.5 rankC=132.7 need=3821056 tD=0.86 人 pulse crowdedHard | safe=606528 keep=Inf avail=-Inf chunkB=141231 pulseB=141231 价高(c>=worth)→break hNb=3
+    → Nazarick#12[T5] terr=15988 bal=1356068 dq=84.8 cnt=11 | c=532.7 rankC=772.5 need=2440987 tD=0.75 人 pulse | safe=606528 keep=Inf avail=-Inf chunkB=141231 pulseB=141231 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令

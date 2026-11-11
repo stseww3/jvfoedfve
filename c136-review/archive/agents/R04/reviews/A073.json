@@ -1,0 +1,1095 @@
+{
+ "matchId": "A073",
+ "reviewer": "R04",
+ "protocol": "2.0",
+ "context": {
+  "strategyVersion": "Vb（v27-team-c116-vb.js + spawn-coordinator-c116-vb.mjs）",
+  "cohort": "squad10",
+  "map": 22,
+  "mapSize": [
+   1541,
+   1080
+  ],
+  "mapLand": 664497,
+  "humans": 2,
+  "players": 512,
+  "teams": {},
+  "actualTeams": 0,
+  "cardActualTeams": 2,
+  "ourTeam": 0,
+  "ourBots": 2,
+  "teamSplit": {
+   "0": 2
+  },
+  "baselineWinRate": null,
+  "structureNote": "这不是组队局。对局卡 mode=8，引擎里 lC=8：1v1，不分队（a0L=0），不能捐款（iT=false），每个房间 2 个真人 + 510 个内置 AI，同一张地图（22 号，1541×1080，陆地 664,497 格）同一个种子（5103）。有日志的 9 个号分在 5 个房间：alex_k#0 对 kaito9#1（只有这个房间有录像，下文叫 A 房间）；noah88#0 对 leo_tx#1；sora_w#0 对 zexos1#1；zero_7#0 对 talon5#1；ryan_m#1 对一个没有日志的 #0（协调器名单里的第 10 个号 riku_x，推断）。5 个房间里至少 4 个是编队内互打。",
+  "rooms": "按 results.csv 的 meId / tick / result 两两配对：noah88 won@4943 ↔ leo_tx lost@4942；sora_w won@5547 ↔ zexos1 lost@5547；zero_7 won@5657 ↔ talon5 lost@5657；ryan_m won@4181（日志末行 244,107 格）；alex_k left@11504 ↔ kaito9 left@11494（661 / 660 秒，两个号同时离场，没人赢）。",
+  "landmasses": "地图有 357 块陆地，最大的几块：L1 244,592 格（两个号都出生在这块上）、L2 133,512、L3 96,941、L4 76,804、L5 34,446、L6 30,481、L7 11,828。块与块之间只能坐船（ascii_map.mjs）。",
+  "tools": "A 房间的全场真值来自未改动的线上客户端重放（engine_truth.cjs）；两个号每一拍的决策由影子策略（shadow.mjs）逐拍复现，自检：nb/neut 254 点全部一致，指令计数增量 252 段里 240 段相同、5 段差 1、7 段不同。影子策略的内部状态（冷却、floorK 所在的计划模式）和真号不完全相同，下文凡是依赖它的判定都注明。其余 4 个房间只有日志（traj.csv），凡是这 4 个房间的数字都是日志口径。"
+ },
+ "outcome": {
+  "result": "won",
+  "endTick": 11509,
+  "cardOutcome": {
+   "primaryTeamWon": true,
+   "anyBotWon": true,
+   "resultLabel": "won",
+   "winnerTeam": null,
+   "endTick": 11504,
+   "peakSquadLandShare": 1.9249,
+   "peakPrimaryTeamShareSeen": 0.0,
+   "ourFinalTeamShare": 0.0
+  },
+  "ourTeamFinalSharePct": 96.89,
+  "squadPeakSharePct": 96.89,
+  "botsDead": 0,
+  "botsLeft": [
+   {
+    "bot": "kaito9",
+    "p": 1,
+    "t": 11509
+   }
+  ],
+  "note": "卡片的 won 只是 anyBotWon：3 个房间里 #0 号把同编队的 #1 号打出局，ryan_m 赢了第 5 个房间。A 房间到第 11,509 拍（660 秒，两个号同时离场）没有分出胜负：alex_k 617,634 格（全图 92.9%）、8,480 万兵；kaito9 26,191 格（3.9%）、177 万兵，仍在场。这一局不能算进组队胜率。"
+ },
+ "lossArchetype": "win",
+ "confidenceOverall": "high（A 房间的事实层：真引擎重放 + 影子策略，脚本可复算）；medium（其余 4 个房间：只有日志快照，看得到领土、余额、指令数，看不到谁打了谁）；low（指令成摞落地的成因、选点指令为什么没落地：传输层不在仓库里，只有外形）",
+ "phases": {
+  "spawn_0_90": {
+   "facts": [
+    "9 个号的日志都是 [HL-GAME-INIT] mode=8 map=22 mapSeed=5103 seeded=2；引擎设置 lC=8、ku=2、a0L=0、iT=false（engine_settings.cjs）。",
+    "协调器日志 10 次 Solved 10 bots（minSep=69px），给 alex_k 的点是 (1340,237)（角色 INNER_ARC_BANK）；kaito9 先记了一次 (1423,931)（RANK_1），后改成 (1207,68)（OUTER_SHIELD_WALL）。都是组队阵型的点位。",
+    "录像出生阶段（1v1 只有 30 步，约 11.8 秒）里两个号的选点指令 0 条（cmd.tsv 没有 spawnStep ≥ 0 的行）；实际出生点 alex_k (1205,155)、kaito9 (935,235)。",
+    "90 拍两个号各 40 格、575 兵。"
+   ],
+   "problems": [
+    "协调器不知道这是 1v1：仍按 10 个号同房排扇形阵，点位之间只隔 69 像素。这些点没有一个落地，所以没有造成后果。",
+    "选点指令为什么一条都没落地，不知道（引擎的选点处理函数不看模式）。"
+   ]
+  },
+  "opening_90_630": {
+   "facts": [
+    "两个号的开局完全同步到 270 拍（各 364 格、1,671 兵），630 拍 3,526 / 3,556 格，是内置 AI 平均领土（575 格）的 6 倍。",
+    "同种子的其余房间 630 拍：noah88 3,526、sora_w 3,526（和 alex_k 一格不差）、talon5 3,402、zexos1 3,369、leo_tx 3,007、zero_7 2,975、ryan_m 2,975。",
+    "630 拍前陆攻想发 20 条、落地 18 条，延迟中位 10 拍。"
+   ],
+   "problems": []
+  },
+  "midgame_630_3500": {
+   "facts": [
+    "959 拍起指令成摞落地：两个号共 74 批（同号同拍 ≥3 条陆攻），70 批正好是一段连续决策拍各发的一条、倒着排；最新一条到落地的平均延迟 630~1499 拍 52 拍、1500~2999 拍 79 拍、3000~4283 拍 107 拍；每批最多 9 条（burst_runs.py）。",
+    "alex_k 想发陆攻 548 条，落地 452 条（82%），其中 277 条在 40 批里；每批花掉余额的中位 45%，最多 100%（3080 拍 9.5 万→0）。kaito9 想发 405 条，对上落地的 348 条（86%）；它落地的 350 条里 230 条在 34 批里，每批花掉余额的中位 49%。",
+    "指令稀的时候不成摞：3500~4999 拍两个号 34 条陆攻全部落地，延迟中位 9~15 拍（exec_gap.py --profile 250）。",
+    "alex_k 1309~1484 拍 175 拍没有一条指令产生进攻：其间只落地过 1379 拍那一批 8 条，是 1250~1285 拍发的（晚 94~129 拍），目标 AI#268 已经出局，没产生进攻。1484 拍落地 9 条 47/1024 全打 AI#178（375 格、347 兵的那个）；1554 拍又落地 9 条 47/1024，AI#178 已出局，打进无主地。",
+    "1620~3330 拍 alex_k 18,821→137,702 格，kaito9 31,449→106,407 格；内置 AI 从 204 个、59.8 万格（1530 拍）降到 26 个、40.6 万格（3420 拍），L1 上只剩 490 格 AI。",
+    "两个号互咬，都发生在对方刚被一批指令抽空之后：2870 拍 kaito9 出 9.2 万兵（密度比 5.83），300 拍净得 3.6 万格；3192 拍 alex_k 出 41.1 万兵（密度比 7.93），3248 拍再出 17.2 万兵，3190~3550 拍从 kaito9 净得 40,398 格。",
+    "同一个决策拍出两条指令的有 34 个号·拍，分得清的第 2 条 17 条全部没落地（same_tick.py）。"
+   ],
+   "problems": [
+    "策略每个决策拍照发一条，不记「已发未落地」的账；落地时引擎按当时余额逐条重新计价：1995 拍 9 条一起落地，5.4 万→1.0 万（−81%）。",
+    "被抽空的那几十拍，对方的买地条件立刻成立：两个号各被咬走 3.6 万~4 万格。",
+    "落地时的局面和下单时不是一回事：3185 拍 kaito9 落地的 6 条是 3055~3080 拍发的（晚 105~130 拍），下单时两个号密度相当，落地时 alex_k 密度 7.0（密度比 0.29），300 拍净丢 3.8 万格。"
+   ]
+  },
+  "endgame_3500_end": {
+   "facts": [
+    "3330~4410 拍 alex_k 领土 137,702→139,048，指令 +0，发船 +0，余额 30.5 万→616 万（密度 2.2→44.3）。同一段 kaito9 106,407→210,633 格（两条船上 L2，吃了 10.6 万格 AI 的地）。",
+    "同种子的其余房间也一样（flat_windows.py，日志口径）：9 个号里 8 个在 1500 拍后有一段 ≥720 拍「领土变化 ≤4%、指令增量 ≤12 条、余额涨 2.6~20 倍」，合计 7,380 号·拍；zero_7 3240~4050 拍 155k 格不动、密度 9.6→51.8，leo_tx 3690~4680 拍 78k 格不动、密度 18→101。",
+    "4459、4592 拍 alex_k 密度是 kaito9 的 2.96 / 4.97 倍，两轮出手 318.8 万兵，从 kaito9 净得 52,387 格（领土 139,048→191,270）；4770~5310 拍又停；5313 拍余额过 100×领土，5760 拍拿下整块 L1。",
+    "kaito9 的 20 条船里 4 条决定了它没死在 L1 上：3808 拍 29.4 万兵 → AI#211（300 拍 +9,050 格）、3871 拍 23.6 万兵 → AI#82（+8,490），4410 拍它在 L2 上有 105,812 格；4942、5068 拍两条（合计 145 万兵）→ AI#224，5010~5426 拍从它净得 60,840 格，5760 拍整块 L4（76,804 格）在它手里。",
+    "alex_k 的 56 条船：载兵 7.70 亿、手续费 7,680 万。登陆 kaito9 4 条（3,770 万兵）；登陆内置 AI 33 条（4.90 亿兵）；19 条回到自己地上作废（2.43 亿兵、手续费 2,030 万）。",
+    "13 对「同一落点、前后 7 拍」的船，11 对的第二条回到自己地上：第二条合计载兵 1.73 亿、手续费 1,260 万、海上损耗 728 万。",
+    "7690~8300 拍 alex_k 领土 379,202→382,620（+3,418），新到手的全是小岛：L9 2,992 格、L35 317 格、L80 44 格、L102 22 格、L115 16 格、L147 12 格、L150 12 格、L316 3 格。AI#304 的主体 L3（96,941 格，守兵 915~16 万）一格没碰；同一段 kaito9 离 alex_k 的岸只隔 1 格水，在候选里排第 3~5。",
+    "9968~10598 拍 alex_k 9 条船（每条 3,060 万~3,870 万兵，余额的 42%~49%）全部登陆 AI#488（1.06 万~1.36 万格，分在几块小岛上）：载兵 3.20 亿、手续费 2,150 万，净得地 6,423 格。",
+    "过线之后（finish_ledger.py：9620 拍 alex_k 占 75.4%、余额是 kaito9 的 6 倍）到 10919 拍的 1,290 拍：alex_k 出兵 4.585 亿，船 3.195 亿全去内置 AI，陆攻 kaito9 的 1.376 亿全打在它坐船登到 alex_k 岸上的滩头上；从 kaito9 净得地 +233 格，kaito9 的余额 448 万→1,370 万。",
+    "alex_k 全场陆攻手续费 5,630 万（出征兵 3.14 亿的 17.9%）；其中 62 条指令出的兵比手续费少：出兵 466 万，手续费 3,090 万。",
+    "两个号密度超过 100 的时间：alex_k 2,260 拍、kaito9 1,860 拍。"
+   ],
+   "problems": [
+    "有陆上邻居时，买不买只看「单价是否低于 worth 或便宜线」。对真人，实际门槛是自己的密度要到对方的两倍半以上；对小块 AI，单价里摊进了自己整笔余额的陆攻手续费，自己兵越多它越贵。",
+    "海岛 AI 在岸上登一小块滩头（AI#283：72→512 格），就成了「陆上邻居」：买地嫌它贵不吃，发船找地因为它直接返回。alex_k 3580~4410 拍的 167 个决策拍全是这样。",
+    "没有陆上邻居时，船去哪里只看「单价 + 船费 ÷ 对方总领土」，落点是那个对象离岸最近的一格（常是碎岛）；装多少兵是「（余额 − 底线）的一半」，底线 = 100×领土×min(1, 落点单价/60)：目标越弱装得越多。对只剩碎岛的 AI 装四五成余额；对最后一个真人（单价 ≥60）底线是 100×领土，要密度到 133 才发得出去，而且只装超出部分的一半。",
+    "余额过 100×领土后不看单价：对着一块 58 格的滩头出 4,700 万兵，需要量按对方全部 10.7 万格算。",
+    "A 房间到 660 秒没打完。3330~4410、4770~5310、7560~8300 三段共 2,360 拍 alex_k 的领土基本没动（+1,346、+109、+3,870 格）；9360~10920 拍的 1,560 拍只从内置 AI 和无主地拿了 4.1 万格，kaito9 一格没少。"
+   ]
+  }
+ },
+ "timeline": [
+  {
+   "t": 90,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 80,
+   "squadSharePct": 0.01,
+   "squadBal": 1150,
+   "squadDens": 14.4,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 0.01,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "出生：录像里两个号的选点指令 0 条，出生点是引擎随机给的 alex_k (1205,155)、kaito9 (935,235)，相距 282 像素，都在 L1 上。协调器这时还在按「10 个号同房」解阵型（10 次 Solved 10 bots）。"
+  },
+  {
+   "t": 180,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 288,
+   "squadSharePct": 0.04,
+   "squadBal": 2410,
+   "squadDens": 8.4,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 0.04,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "两个号完全同步：180 拍各 144 格、1,205 兵。"
+  },
+  {
+   "t": 270,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 728,
+   "squadSharePct": 0.11,
+   "squadBal": 3342,
+   "squadDens": 4.6,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 0.11,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "270 拍各 364 格、1,671 兵。"
+  },
+  {
+   "t": 450,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 2362,
+   "squadSharePct": 0.36,
+   "squadBal": 7363,
+   "squadDens": 3.1,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 0.36,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2
+  },
+  {
+   "t": 630,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 7082,
+   "squadSharePct": 1.07,
+   "squadBal": 13720,
+   "squadDens": 1.9,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 1.07,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "alex_k 3,526 格、kaito9 3,556 格；510 个内置 AI 合计 293,368 格（平均 575 格）。L1 上：两个号 7,082 格、AI 102,850、无主 134,660。"
+  },
+  {
+   "t": 1080,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 24308,
+   "squadSharePct": 3.66,
+   "squadBal": 35261,
+   "squadDens": 1.5,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 3.66,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "指令开始成摞落地（两个号的第一批都在 959 拍）：每 5 拍发一条，落地变成每 70 拍左右一批 3~9 条。alex_k 13,122 格、kaito9 11,186 格。"
+  },
+  {
+   "t": 1530,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 47621,
+   "squadSharePct": 7.17,
+   "squadBal": 163275,
+   "squadDens": 3.4,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 7.17,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "alex_k 卡在 19,069 格（1350~1620 拍 19,512→18,821 格，余额 2.9 万→14.7 万）；kaito9 28,552 格。内置 AI 剩 204 个、597,622 格。"
+  },
+  {
+   "t": 2250,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 145252,
+   "squadSharePct": 21.86,
+   "squadBal": 145236,
+   "squadDens": 1.0,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 21.86,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "两个号都在吃 AI：alex_k 77,908 格、kaito9 67,344 格；余额被成批落地反复抽空（alex_k 1911 拍 18.1 万→5,366，2170 拍 17.3 万→2,071）。"
+  },
+  {
+   "t": 3060,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 225542,
+   "squadSharePct": 33.94,
+   "squadBal": 269317,
+   "squadDens": 1.2,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 33.94,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "L1 快分完：alex_k 91,493 格、kaito9 134,049 格。2870 拍 kaito9 趁 alex_k 密度 0.4 咬走 3.6 万格；3192 拍 alex_k 趁 kaito9 密度 0.9 咬回 4.0 万格。"
+  },
+  {
+   "t": 3780,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 243911,
+   "squadSharePct": 36.71,
+   "squadBal": 2802463,
+   "squadDens": 11.5,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 36.71,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "L1 分完（3420 拍 alex_k 139,672 / kaito9 104,430，接壤 160 像素）。alex_k 3330~4410 拍一条指令都没发；kaito9 3808、3871 拍两条船上 L2。"
+  },
+  {
+   "t": 4500,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 376672,
+   "squadSharePct": 56.69,
+   "squadBal": 10314009,
+   "squadDens": 27.4,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 56.69,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "kaito9 232,884 格（L1 + L2）、411 万兵；alex_k 143,788 格、620 万兵。alex_k 4459 拍起密度是 kaito9 的 2.96 倍以上，开始在 L1 上打它。"
+  },
+  {
+   "t": 5220,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 392138,
+   "squadSharePct": 59.01,
+   "squadBal": 24133146,
+   "squadDens": 61.5,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 59.01,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "alex_k 4770~5310 拍又停了 540 拍（191k 格，密度 35→103）；kaito9 4942、5068 拍两条船拿下 L4。"
+  },
+  {
+   "t": 6030,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 454920,
+   "squadSharePct": 68.46,
+   "squadBal": 36845934,
+   "squadDens": 81.0,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 68.46,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "5313 拍 alex_k 余额过 100×领土，连续出手，5760 拍拿下整块 L1（244,592 格）。kaito9 被赶下 L1，手里是 L2 + L4（206,614 格）。此后两个号要先坐船登陆才有陆上战线。"
+  },
+  {
+   "t": 6750,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 455981,
+   "squadSharePct": 68.62,
+   "squadBal": 38678425,
+   "squadDens": 84.8,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 68.62,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "alex_k 5968 拍一条 145 万兵的小船在 kaito9 的 L2 上登陆，随后 7 轮陆攻（5999~7441 拍）：6750 拍 304,529 格对 151,452 格。"
+  },
+  {
+   "t": 7500,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 455656,
+   "squadSharePct": 68.57,
+   "squadBal": 35281876,
+   "squadDens": 77.4,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 68.57,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "alex_k 拿下 L2：376,926 格；kaito9 只剩 L4（78,730 格）。"
+  },
+  {
+   "t": 8250,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 478022,
+   "squadSharePct": 71.94,
+   "squadBal": 43338214,
+   "squadDens": 90.7,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 71.94,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "alex_k 7560~8300 拍领土 378,750→382,620：20 条船载兵 2.107 亿，9 条回到自己地上作废，8300 拍前到岸的 9 条拿到的全是小岛。kaito9 8274 拍一条 606 万兵的船登陆 AI#304 的主体 L3。"
+  },
+  {
+   "t": 9000,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 597199,
+   "squadSharePct": 89.87,
+   "squadBal": 65904479,
+   "squadDens": 110.4,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 89.87,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "kaito9 登陆 L3 后涨到 196,252 格；8995~9163 拍两个号对打：alex_k 4,272 万兵对 kaito9 1,634 万兵。9360 拍 L3 的 96,941 格全在 alex_k 手里，kaito9 回到 107,381 格（L4 + L6）。"
+  },
+  {
+   "t": 9750,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 637289,
+   "squadSharePct": 95.91,
+   "squadBal": 44898433,
+   "squadDens": 70.5,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 95.91,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "alex_k 529,803 格（L1 + L2 + L3 等），kaito9 107,486 格。9968 拍起 alex_k 的 9 条大船全去了只剩碎岛的 AI#488。"
+  },
+  {
+   "t": 10500,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 640586,
+   "squadSharePct": 96.4,
+   "squadBal": 90233230,
+   "squadDens": 140.9,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 96.4,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "alex_k 533,202 格、7,628 万兵（密度 143）；kaito9 107,384 格、1,396 万兵。10395 拍 alex_k 4,700 万兵打在 kaito9 一块 58 格的滩头上，收回这 58 格后兵退回。"
+  },
+  {
+   "t": 11250,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 643831,
+   "squadSharePct": 96.89,
+   "squadBal": 78631817,
+   "squadDens": 122.1,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 96.89,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "10920、10976 拍 alex_k 头两条去 kaito9 本土的船（1,200 万 + 1,190 万兵）在 L4 登陆，10997 拍 3,716 万兵跟进，11160 拍 kaito9 只剩 34,035 格。"
+  },
+  {
+   "t": 11500,
+   "squadAlive": 2,
+   "squadPlaying": 2,
+   "squadTerr": 643825,
+   "squadSharePct": 96.89,
+   "squadBal": 86568015,
+   "squadDens": 134.5,
+   "teamSharePct": {},
+   "teamBal": {},
+   "teamHumansPlaying": {},
+   "ourTeamSharePct": 96.89,
+   "squadShareOfTeamPct": 100.0,
+   "squadRankMedian": 2,
+   "humansAlive": 2,
+   "note": "660 秒两个号同时离场：alex_k 617,634 格（92.9%），kaito9 26,191 格。alex_k 最后一条船 11428 拍登陆 L6，打到一半。"
+  }
+ ],
+ "turningPoints": [
+  {
+   "id": "TP1",
+   "t0": 3330,
+   "t1": 4410,
+   "title": "L1 分完之后 alex_k 一千拍没发一条指令，kaito9 坐船上了 L2",
+   "shareBasis": "alex_k 占全图陆地的百分比（另给 kaito9 的）",
+   "shareBefore": 20.7,
+   "shareAfter": 20.9,
+   "otherBefore": "kaito9 16.0%",
+   "otherAfter": "kaito9 31.7%",
+   "statementType": "observed",
+   "evidence": [
+    "真引擎（state.tsv）：alex_k 3330 拍 137,702 格、30.5 万兵 → 4410 拍 139,048 格、616.4 万兵（密度 2.2→44.3）；kaito9 106,407 格、59.7 万兵 → 210,633 格、353.0 万兵。",
+    "flat_windows.py A073：alex_k 3330~4410 拍指令 +0、发船 +0；影子 rows.tsv：这段 217 个决策拍 alex_k 想发的指令是 0 条；exec_gap.py --profile 250：3250~4249 拍两个号合计只想发 15 条陆攻。",
+    "买地这道门（out/A073/shadow_3300_4460.txt）：3500 拍 worth=7.2，kaito9 c=24.5；3800 拍 worth=10.9，kaito9 c=34.4，AI#283 c=20.0（吃掉它只需 6,688 兵，可用 97.9 万）；4100 拍 worth=21.5，kaito9 c=38.6，AI#283 c=28.7，AI#121 c=55.4。都是「c ≥ worth 且 c ≥ 便宜线 5.8 且未 over」→ L5359 break。4400 拍 worth=39.2 第一次高过 kaito9 的 c=37.3。",
+    "AI#283 是海岛 AI（out/A073/landmass_283.txt）：主体在 L11（2,060 格的小岛，离 alex_k 的岸 5 格水），3580 拍起在 L1 上有一块滩头：72 格（3600 拍）→ 327（3800）→ 512（4400）→ 725（5700）。flow.tsv：3580~4410 拍它从 alex_k 手里一点点拿地，alex_k 没有还手。",
+    "发船这两道门，3580~4410 拍的 167 个决策拍都关着（rows.tsv：每一拍陆上邻居里都有内置 AI）。以 3800 拍为例：boatFood「陆上邻居里有单价 ≤ botMax 60 的内置 AI：AI#283 单价 6.3」直接返回（L2005）；boatOut「有陆上邻居且余额 169 万 < 闲置线 1,740 万」（L5060）。同一拍 searchWater 最便宜的落点是 L2 上的 AI#82（53,453 格、5.8 万兵，水程 168，折算 12.0）。",
+    "3340~3575 拍 AI#283 的滩头还没上来（nb=1，只有 kaito9），这 48 个决策拍也没发船：影子策略（从 3330 拍起跑，out/A073/shadow_3330_3620_boatgate.txt）45 个拍卡在「可装 = boatFrac×(余额 − 底线) < 最小船量」（余额 31 万~79 万，底线 66 万~391 万，L2014），3565~3575 拍 3 个拍能过但落在 boatFood 自己的 60 拍冷却里。这一段依赖影子的内部状态（另一次从 3300 拍起跑，3500 拍判定为能发），真号卡在哪道门不确定。",
+    "kaito9 同期：3731~3738 拍打掉 AI#403 在它岸上的那块地（3 条 91 / 81 / 86 per 1024，共 37.6 万兵），3800 拍陆上邻居只剩 alex_k → boatFood 放行，影子 3800 拍发船 24.2 万兵（170/1024；L2 离它的岸只有 1~2 格水）；真引擎 3808 拍 29.4 万兵登陆 AI#211，3871 拍 23.6 万兵登陆 AI#82，之后陆攻跟进，4410 拍它在 L2 上已有 105,812 格（out/A073/landmass.txt）。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "3192~3248",
+     "bots": "alex_k",
+     "decision": "两批 14 条陆攻 58.3 万兵落在刚被抽空的 kaito9 身上，净得 4.0 万格，把 L1 的分界推到 139k 对 104k。此后到 4400 拍两个号的密度比一直不到 2.6，谁都过不了买地的门槛。",
+     "why": "真人目标的单价按对方余额算，对方越空越便宜；c < worth 或 c < 便宜线时按 12% 的脉冲出兵。",
+     "codePath": "Policy.buyLand L5350~5359（worth、cheap 与 c 的比较）、L5455~5609（脉冲）"
+    },
+    {
+     "t": "3300~3315",
+     "bots": "alex_k",
+     "decision": "对 AI#283 发了 4 条 1/1024~2/1024 的指令（566~864 兵，当时 c=4.5 低于便宜线 5.8）。4 条都落地了（3395 拍 1 条、3444 拍 3 条，晚 95~139 拍），那时两家已经不接壤，没有产生进攻。3320 拍 c 涨到 6.1，过了便宜线，此后再没对它下过单。",
+     "why": "内置 AI 目标的出兵量 want = 1.25×need + 3×接触数（need 只有 352~493）；c 里的手续费是自己整笔余额的 12/1024，余额一涨 c 就过线。",
+     "codePath": "Policy.buyLand L5449~5454 → Strategy.send L479~487；Policy.offers L5072~5100"
+    },
+    {
+     "t": "3580~4410",
+     "bots": "alex_k",
+     "decision": "每个决策拍报价单第一条就 break：不打 kaito9，不吃 AI#283 的滩头，不发船。",
+     "why": "c = (rawNeed + fee) / baseGain，fee 取整笔余额的 12/1024：余额从 169 万（3800 拍）涨到 606 万（4400 拍），AI#283 的 c 从 20.0 涨到 46.5；worth = 0.9×自己密度，跟着涨但追不上小目标的手续费摊销。boatFood 用的是不含手续费的单价（6.3 ≤ 60），认定「陆上还有便宜的 AI」。两处口径相反。",
+     "codePath": "Policy.offers L5072~5100、Policy.buyLand L5350~5359、V13.boatFood L2005、Policy.idleBoats L5058~5060"
+    }
+   ]
+  },
+  {
+   "id": "TP2",
+   "t0": 5313,
+   "t1": 7560,
+   "title": "alex_k 余额过 100×领土后连续出手：先清掉 L1，再靠一条小船在 L2 上开出陆上战线",
+   "shareBasis": "alex_k 占全图陆地的百分比（另给 kaito9 的）",
+   "shareBefore": 28.8,
+   "shareAfter": 57.0,
+   "otherBefore": "kaito9 35.1%",
+   "otherAfter": "kaito9 11.6%",
+   "statementType": "observed",
+   "evidence": [
+    "state.tsv：alex_k 5310 拍 191,379 格、1,964 万兵（密度 102.6）→ 5760 拍 244,592 格（整块 L1）→ 7560 拍 378,750 格；kaito9 233,505 → 206,614 → 76,900 格。",
+    "human_strikes.py A073 --list 45：alex_k 5313 拍 3 条 537.9 万兵（密度比 2.61）净得 4.3 万格；5628 拍 800.4 万兵；5999~7441 拍 7 轮 636 万~1,099 万兵（余额的 19%~40%），密度比 0.99~1.34，每轮 300 拍净得 0.9 万~4.3 万格（相邻几轮的窗口有重叠，不能相加）。全场 alex_k 在 over 状态下打 kaito9 16 轮 2.91 亿兵。",
+    "boat_list.py：5803 拍 alex_k 同一拍两条船：466/1024 载 1,340 万兵，5981 拍回到自己地上作废（退回 1,007 万）；127/1024 载 187.8 万兵，5968 拍登陆 kaito9（到岸 144.9 万），300 拍净得 10,056 格。",
+    "out/A073/landmass.txt：5760 拍 alex_k 在 L1 上 244,592 格、没有任何接壤；kaito9 在 L2 129,714 + L4 76,804；7560 拍 alex_k 在 L2 上 133,230 格，kaito9 只剩 L4（76,804 格，一格没少）。",
+    "kaito9 的还手（human_strikes.py）：6132~7308 拍 7 轮 120 万~521 万兵，密度比 0.98~1.43，每轮之后 300 拍它对 alex_k 的净得地都是负的（−0.8 万~−4.3 万）。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "4770~5310",
+     "bots": "alex_k",
+     "decision": "L1 上还剩 kaito9 的 4 万多格，停手 540 拍，等余额涨到 100×领土。",
+     "why": "kaito9 的密度回到 20.9~39.3，密度比只有 1.7~2.6，c ≥ worth。这 109 个决策拍陆上邻居里一直有内置 AI（AI#283 / AI#121 的滩头），船也发不出去。",
+     "codePath": "Policy.buyLand L5350~5359；V13.boatFood L2005；Policy.idleBoats L5060"
+    },
+    {
+     "t": "5313",
+     "bots": "alex_k",
+     "decision": "余额 1,964 万 > 100×191,379：不再比较单价，对 kaito9 连续出手。",
+     "why": "over = P.surplus > 0 && B > 100×L；over 为真时 L5359 的 break 不触发。",
+     "codePath": "Policy.buyLand L5353、L5359"
+    },
+    {
+     "t": "5750~5755（影子）/ 5803（落地）",
+     "bots": "alex_k",
+     "decision": "没有陆上邻居了，相邻两个决策拍各发一条船：127/1024（boatFood）和 466/1024（boatOut），去的是同一个落点。",
+     "why": "boatFood 和 boatOut 各有各的冷却（lastFood / lastBoat），后一条不知道前一条已经在路上。",
+     "codePath": "Policy.idleBoats L5058~5068、V13.boatFood L2001~2021、General.boatOut L999~1015（L1002 lastBoat）"
+    }
+   ]
+  },
+  {
+   "id": "TP3",
+   "t0": 9360,
+   "t1": 10920,
+   "title": "只剩一个对手、兵是它的 5 倍以上，1,560 拍里 9 条大船全去了只剩碎岛的内置 AI",
+   "shareBasis": "alex_k 占全图陆地的百分比（另给 kaito9 的）",
+   "shareBefore": 74.6,
+   "shareAfter": 80.7,
+   "otherBefore": "kaito9 16.2%",
+   "otherAfter": "kaito9 16.2%",
+   "statementType": "observed",
+   "evidence": [
+    "state.tsv：alex_k 9360 拍 495,589 格、2,956 万兵 → 10920 拍 536,447 格、7,791 万兵（密度 145）；kaito9 107,381 格 → 107,384 格，余额 530 万 → 1,383 万。",
+    "boat_list.py：9968、10094、10234、10290、10353、10423、10479、10542、10598 拍 alex_k 9 条船，比例 425~498/1024，每条载 3,060 万~3,870 万兵、手续费 221 万~248 万，全部登陆 AI#488，每条 300 拍净得 1,105~3,447 格；boat_pairs.py：这 9 条合计载兵 3.20 亿、手续费 2,150 万，9973~10919 拍从 AI#488 净得 6,423 格。",
+    "finish_ledger.py A073 --until 10919：过线拍 9620（alex_k 占 75.4%，2,670 万兵对 kaito9 448 万）；到 10919 拍的 1,290 拍 alex_k 出兵 4.585 亿：船 9 条 3.195 亿全部登陆内置 AI，陆攻 kaito9 8 条 1.376 亿；手续费 3,710 万；净得地 内置 AI +32,156、无主地 +6,800、kaito9 +233。",
+    "影子诊断（out/A073/shadow_9300_10990.txt）9965 拍 searchWater 候选：AI#488（13,574 格、3.1 万兵，水程 3）单价 9.4、折算 226.8；kaito9（107,208 格、871 万兵）单价 262.1、折算 290.6，排第 2。10090 拍：240.8 对 356.9。10420 拍：307.8 对 419.2。",
+    "装船量对得上底线公式（General.floors L829）：9960 拍余额 7,080 万、领土 530,024，落点单价 9.4 → 底线 100×530,024×9.4/60 = 830 万 → 装 (7,080 − 830)/2 = 3,125 万（实际 3,130 万，452/1024）；10905 拍落点 kaito9 单价 411 ≥ 60 → 底线 100×536,447 = 5,364 万 → 装 (7,750 − 5,364)/2 = 1,193 万（实际 1,200 万，157/1024）。",
+    "10395 拍：kaito9 的一条 180 万兵的船在 L1 上占了 58 格。alex_k 两条陆攻 2,850 万 + 1,850 万兵（余额的 60%）；10400 拍在途 2,673 万（抵消了对方 179 万），10410 拍在途 0、领土 532,948→533,006（收回那 58 格），余额 7,784 万 → 7,650 万。kaito9 的本土一格没丢。10822 拍同样的事又发生一次（2,917 万 + 1,809 万）。refund_strikes.py：这样的空打 2 次 9,426 万兵，手续费 300 万。",
+    "10915 拍 searchWater 第一次把 kaito9 排到第 1（折算 442.9），因为 AI#488 被吃到 7,151 格后折算涨到 462.5。10920、10976 拍两条船（1,200 万 + 1,190 万兵，157 / 156 per 1024）登陆 L4，10997 拍 3 条陆攻 3,716 万兵跟进，11160 拍 kaito9 只剩 34,035 格。",
+    "cap_time.py：alex_k 密度 >100 共 2,260 拍。",
+    "前 300 拍（boat_list.py A073 9150 9340 --bot alex_k；human_strikes.py A073 --list 45 的拍 9156 一行；out/A073/landmass.txt 9360 拍）：9156 拍 alex_k 7 条 2,564 万兵打 kaito9，300 拍净得 60,082 格；9177、9268、9331 拍三条 127/1024 的船都去 AI#154。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "9156~9331",
+     "bots": "alex_k",
+     "decision": "9156 拍 7 条 2,564 万兵（余额的 54%）打掉 kaito9 在 L3 上的地：到 9360 拍 L3 的 96,941 格全归 alex_k，kaito9 回到 L4 + L6 的 107,381 格，两个号不再有陆上接壤。之后 9177、9268、9331 拍三条 127/1024 的小船（245 万~297 万兵）去的都是内置 AI#154：9177 拍那条换来 8 格，9268 拍那条回到自己地上作废，9331 拍那条 9594 拍登陆，300 拍从 AI#154 净得 27,401 格（L5）。",
+     "why": "over 状态下对陆上邻居 kaito9 直接出手。陆上没有 kaito9 之后，boatFood 只找海对面的内置 AI 和无主地（searchFood 跳过真人）；这几拍陆上邻居只剩 kaito9 在 L3 上的残地，余额只有 37~60×领土，能去真人那里的 boatOut 过不了闲置线（有陆上邻居时要余额 ≥ 125×领土），发出去的都是 boatFood 的小船。",
+     "codePath": "Policy.buyLand L5353、L5359；V13.boatFood L2001~2021、V13.searchFood L2071；Policy.idleBoats L5058~5060"
+    },
+    {
+     "t": "9960、10085、10220 …（每 60 拍左右一条）",
+     "bots": "alex_k",
+     "decision": "nb=0，余额过闲置线：boatOut 把 boatFrac×(余额 − 底线) 装船，去 searchWater 折算最低的落点 AI#488。",
+     "why": "折算 = 单价×grow + 船费 ÷ (0.75×对方总领土)。AI#488 兵少所以单价低；kaito9 密度 81~128 所以单价 262~411。装船量不看需要多少，只看底线 floorAt = 100×领土×min(1, 落点单价/60)：对 AI#488（单价 9.4）装 452/1024，对 kaito9 只装 157/1024。nb=0 时不设折算上限（maxEff = Infinity）。",
+     "codePath": "General.searchWater L1069~1070、General.boatOut L1006~1009、General.floors L819~830（L829）、Policy.idleBoats L5059~5068"
+    },
+    {
+     "t": "10385~10395、10810~10820",
+     "bots": "alex_k",
+     "decision": "kaito9 的船一靠岸就成了陆上邻居，over 状态下对它出 374~380/1024。",
+     "why": "over 时不比单价，也不走脉冲；出兵量 = 1.25×需要量，需要量按对方全部领土和余额算（10395 拍「需 2,300 万」），不看能打到的只有滩头那几十格。",
+     "codePath": "Policy.buyLand L5353~5359、L5456~5457（over 且 need ≤ 0.30×余额时不走脉冲）、L5612~5617；Policy.offers L5096~5100"
+    },
+    {
+     "t": "10730~10780（影子）/ 10780（落地）",
+     "bots": "alex_k",
+     "decision": "对 AI#121 连续 11 个决策拍各发一条 0/1024 的陆攻；落地并产生进攻的 2 条，每条出 7.8 万兵、付约 94 万手续费。",
+     "why": "内置 AI 目标按 want 出兵，pct 向下取整到 0；手续费按整笔余额收。",
+     "codePath": "Policy.buyLand L5449~5454 → Strategy.send L479~487"
+    }
+   ]
+  }
+ ],
+ "deaths": [
+  {
+   "bot": "leo_tx",
+   "p": 1,
+   "t": 4942,
+   "detail": "只有日志（另一个 1v1 房间，对手是同编队的 noah88#0）",
+   "cause": "被同编队的 noah88 在 1v1 房间里打出局。日志：leo_tx 3690~4680 拍 78k 格不动、指令 +4，余额 144 万→797 万（密度 18→101）；noah88 4410~4680 拍 299.9k 格不动，密度 47→84。leo_tx 4680 拍先过 100×领土，4770 拍涨到 86,315 格、余额 797 万→556 万（noah88 同期 299,894→292,107 格）；noah88 4770 拍密度 100.7，随后出手，4860 拍 leo_tx 65,161 格、noah88 313,208 格，4942 拍 leo_tx 出局。"
+  },
+  {
+   "bot": "zexos1",
+   "p": 1,
+   "t": 5547,
+   "detail": "只有日志（另一个 1v1 房间，对手是同编队的 sora_w#0）",
+   "cause": "被同编队的 sora_w 在 1v1 房间里打出局。日志：zexos1 3060 拍 94,013 格，3420~5220 拍一条指令都没发（cmds 267 不变），领土 74,541→41,298（同期 sora_w 3510~4590 拍只从 157k 到 160k，这 3 万多格被谁拿走日志里看不出来），密度 2.8→86。sora_w 3690~4590 拍 157k~160k 格不动（密度 11→62），4950 拍密度 100.5，5130~5490 拍 200,565→336,384 格；zexos1 5490 拍 34,787 格，5547 拍出局。"
+  },
+  {
+   "bot": "talon5",
+   "p": 1,
+   "t": 5657,
+   "detail": "只有日志（另一个 1v1 房间，对手是同编队的 zero_7#0）",
+   "cause": "被同编队的 zero_7 在 1v1 房间里打出局。日志：talon5 3600~4410 拍 74k 格不动、指令 +0（密度 7.5→57）；zero_7 3240~4050 拍 155k 格不动（密度 9.6→51.8），4410 拍密度 95.5，之后出手：4500~4590 拍 zero_7 164,875→176,575 格，talon5 64,719→53,105 格。talon5 5040 拍密度 104 后反打到 86,067 格（5310 拍，余额 597 万→285 万），5580 拍 62,374 格，5657 拍出局。"
+  }
+ ],
+ "decisions": [
+  {
+   "id": "D01",
+   "t": "选点阶段",
+   "bot": "全部 9 个号",
+   "what": "对局是 1v1（mode=8，每房 2 个真人），协调器仍 10 次按「10 个号同一房间」求解扇形阵（minSep=69px），给每个号发 INNER_ARC_BANK / OUTER_SHIELD_WALL 这类组队点位；实际上 9 个号分在 5 个房间，其中 4 个房间的对手就是同编队的号。",
+   "why": "选点入口不看对局模式：只要协调器给了点就用。进了对局之后 g.teams[me] 是 0，队友判断、调度、封死分支都不会触发，策略把同编队的号当普通真人打。",
+   "codePath": "Policy.chooseSpawn L3983~4129（总是向协调器要点）；spawn-coordinator-c116-vb.mjs 的 TeamSpawnCoordinator（L71 起）；Policy.isTeammate L3927、Policy.idleBoats L5022（封死分支要求 g.teams[me] > 0）",
+   "evidence": "in_game.log：9 行 [HL-GAME-INIT] mode=8 … seeded=2；10 行 [BACKEND-SPAWN-COORD] Solved 10 bots；engine_settings.cjs A073（lC=8、ku=2、a0L=0、iT=false）；results.csv 两两配对（context.rooms）。",
+   "verdict": "error",
+   "patternId": "NEW-EX-MODE1V1",
+   "statementType": "observed"
+  },
+  {
+   "id": "D02",
+   "t": "选点阶段",
+   "bot": "alex_k、kaito9",
+   "what": "两个号都记了选点日志（alex_k → (1340,237)；kaito9 → (1423,931) 再改 (1207,68)），录像里一条选点指令都没有；出生点是引擎随机给的 (1205,155) 和 (935,235)，相距 282 像素，同在 L1 上。",
+   "why": "不知道。引擎的选点处理（指令 0 → i0）只查阶段、存活、格子可用，不看模式；1v1 的出生阶段只有 30 步（约 11.8 秒），多人局是 40~50 步。指令是没发出去还是到得太晚，录像里看不出来。",
+   "codePath": "Policy.chooseSpawn L3983~4129；引擎 rV 分发的 0 号指令（i0）、出生阶段步数 a7a（ku ≤ 2 时 30）",
+   "evidence": "tmp/truth/A073/cmd.tsv 没有 spawnStep ≥ 0 的行；meta.json 的 spawn 坐标；对局包 spawn.csv。",
+   "verdict": "unclear",
+   "patternId": "NEW-SP-NOEXEC",
+   "statementType": "observed"
+  },
+  {
+   "id": "D03",
+   "t": "0~630",
+   "bot": "alex_k、kaito9",
+   "what": "开局只占无主地：270 拍各 364 格，630 拍 3,526 / 3,556 格，是内置 AI 平均领土（575 格）的 6 倍；陆攻想发 20 条落地 18 条，延迟中位 10 拍。房间里没有别的真人，这里拿内置 AI 当参照。",
+   "why": "核心期前走 super.act 的开局扩张（日志 [HL-OPENING] DP expand），每轮按圈数出一条。",
+   "codePath": "Policy.act L4839~4850 → V13.expandNeutral L2373（日志在 L2409）",
+   "evidence": "state.tsv；team.tsv（630 拍 510 个 AI 合计 293,368 格）；exec_gap.py A073 --profile 250（<630 拍 20→18）。",
+   "verdict": "good",
+   "patternId": "NEW-OP-DPGOOD",
+   "statementType": "observed"
+  },
+  {
+   "id": "D04",
+   "t": "1290~1620",
+   "bot": "alex_k",
+   "what": "领土 19,512→18,821 停了 270 拍，余额 2.9 万→14.7 万。1309~1484 拍 175 拍没有一条指令产生进攻：其间只落地过 1379 拍那一批 8 条，是 1250~1285 拍发的（晚 94~129 拍），目标 AI#268 已经出局，引擎把目标改成无主地，没有可打的边。影子策略 1320~1395 拍连着 16 个决策拍都对 AI#178（375 格、347 兵，12 个 AI 邻居里单价最低 5.0，需要量 1,183）发一条最小指令 47/1024，1430~1480 拍又是 11 条。1484 拍 9 条 47/1024 一起落地：3.45 万兵打一个 375 格的 AI，领土 +295 格，兵大半退回。1554 拍又落地 9 条 47/1024，AI#178 已出局，4.20 万兵打进无主地，换来 28 格。两批手续费约 1.9 万。",
+   "why": "两层。策略每个决策拍对单价最低的目标发一条最小指令（最小指令 = feeK×手续费 = 余额的 47/1024），不管上一条到没到，目标没死就一直重发；传输层把指令攒成一摞（最多 9 条）晚几十上百拍倒序放出来，多出来的丢掉。",
+   "codePath": "General.act L752 起 → Style.pickTarget L1144 → Strategy.minCmd L474~476、Strategy.send L479~487；传输层不在仓库里",
+   "evidence": "burst_runs.py A073 --list（1232 拍 = 意图 1135~1175 倒序；1309 拍 = 1195~1240；1379 拍 = 1250~1285；1624 拍 = 1505~1550；1484、1554 两批都是 9×47/1024 打 AI#178，和 1320~1395、1430~1480 两段意图都对得上，分不清各是哪一段）；truth_query.py A073 cmds alex_k 1290 1630；truth_query.py A073 bal alex_k 1480 1630 10；tmp/shadow/A073/intents.tsv；out/A073/shadow_0_1700.txt（1400 拍 12 个 AI 邻居的报价）。",
+   "verdict": "error",
+   "patternId": "NEW-IO-STACK9",
+   "statementType": "observed"
+  },
+  {
+   "id": "D05",
+   "t": "1620~3250",
+   "bot": "alex_k、kaito9",
+   "what": "吃 AI 的整个阶段，出兵是一批一批落地的：alex_k 40 批 277 条（全部落地陆攻 452 条），每批花掉余额的中位 45%；1911 拍 9 条把 18.1 万打到 5,366（−97%），2170 拍 8 条 17.3 万→2,071（−99%），3080 拍 6 条 9.5 万→0。kaito9 34 批 230 条，1540 拍 −93%、1610 拍 −90%。被抽空后的几十拍里对方的买地条件立刻成立：2870 拍 kaito9 咬走 alex_k 3.6 万格，3192 拍 alex_k 咬走 kaito9 4.0 万格。",
+   "why": "指令带的是比例。策略按发令那一拍的余额换算比例，一摞落地时引擎逐条按当时的余额计价，每条再收一次手续费。策略没有「已发未落地」的账，摞在路上的时候它每个决策拍还在照发。",
+   "codePath": "Strategy.send L479~487；Policy.act L4838、L4941~4942；Policy.buyLand L5446（avail 不扣在路上的指令）",
+   "evidence": "burst_runs.py A073 --list；match_digest.py A073 第 6 节（同拍 ≥3 条的批次 74 个，把余额打到四成以下的 22 个）；blind_reorders.py A073 --lag（延迟中位 71 拍，>25 拍的 207/294 条）；human_strikes.py A073 --list 45。",
+   "verdict": "error",
+   "patternId": "NEW-IO-DRAINBATCH",
+   "statementType": "observed"
+  },
+  {
+   "id": "D06",
+   "t": "2870",
+   "bot": "kaito9",
+   "what": "alex_k 刚被两批指令抽空（2800 拍 59.6 万→10.7 万，2849 拍 →3.7 万；108,809 格、密度 0.4），kaito9 6 条 122/1024 的陆攻 9.2 万兵（余额的 52%）落地，密度比 5.83，300 拍净得 35,920 格。这 6 条是 2810~2835 拍发的（晚 35~60 拍），下单和落地时对方都是空的。",
+   "why": "真人目标的单价跟对方余额走；对方密度远低于自己时 c < worth，按 12% 的脉冲出兵。",
+   "codePath": "Policy.offers L5072~5100、Policy.buyLand L5350~5359、L5455~5609",
+   "evidence": "human_strikes.py A073 --list 45（拍 2870 一行）；burst_runs.py A073 --list（kaito9 拍 2870 = 意图 2810~2835；alex_k 拍 2800、2849）；truth_query.py A073 cmds kaito9 2865 2875。",
+   "verdict": "good",
+   "patternId": "NEW-AT-DENSEDGE",
+   "statementType": "observed"
+  },
+  {
+   "id": "D07",
+   "t": "3030~3065（下单）/ 3192（落地）",
+   "bot": "alex_k",
+   "what": "3030~3065 拍 alex_k 每 5 拍对 kaito9 发一条 122/1024 的脉冲，下单时每条 1.06 万~1.11 万兵（自己密度 1.0，kaito9 1.3；c=4.9 低于便宜线 6.3 所以下单）。这 8 条晚 127~162 拍在 3192 拍一起落地，那时 alex_k 的余额已经是 66.6 万：实际出兵 41.1 万（余额的 62%），正好撞上 kaito9 自己刚落地一批、密度 0.9 的空档，密度比 7.93。加上 3248 拍下一批 6 条 17.2 万兵，3190~3550 拍从 kaito9 净得 40,398 格。",
+   "why": "结果是好的，但不是下单时想要的那一手：想出的是 8 条共 8.7 万兵的小脉冲，落地的是 41 万兵的一把。同一机制 7 拍之前刚让 kaito9 吃了亏：3185 拍 kaito9 落地的 6 条（14.8 万兵，余额的 52%）是 3055~3080 拍下的单，落地时密度比 0.29；7 拍后 alex_k 的 41 万兵落地，两边对冲，300 拍 kaito9 净丢 38,179 格。",
+   "codePath": "Policy.buyLand L5350~5359（c < cheap）、L5455~5609（脉冲 pulseFrac=0.12）；Strategy.send L479~487；传输层不在仓库里",
+   "evidence": "human_strikes.py A073 --list 45（拍 3192、3248、3185）；truth_query.py A073 flow alex_k 3190 3550；burst_runs.py A073 --list（alex_k 拍 3192 = 意图 3030~3065；kaito9 拍 3185 = 意图 3055~3080）；out/A073/shadow_3000_3320.txt；tmp/shadow/A073/intents.tsv（3030~3065 拍 8 条合计 86,572 兵）。",
+   "verdict": "unclear",
+   "patternId": "NEW-IO-STACK9",
+   "statementType": "observed"
+  },
+  {
+   "id": "D08",
+   "t": "3420~4410",
+   "bot": "alex_k",
+   "what": "和 kaito9 接壤 160 像素，一千拍不打它：3500 拍 kaito9 c=24.5 对 worth=7.2；3800 拍 34.4 对 10.9；4100 拍 38.6 对 21.5。余额从 50 万涨到 616 万，领土不动。4400 拍 kaito9 把兵花在 L2 上、密度 16.7，alex_k 密度 43.6，worth=39.2 第一次高过 c=37.3；4459 拍出手（密度比 2.96）。同种子的其余 4 个房间里 6 个号各有一段 720~990 拍同样的停顿。",
+   "why": "未 over 时只有 c < worth（或 c < 便宜线 5.8）才打。worth = 0.9×max(自己的密度, 0.85×其他真人密度中位)；真人目标的 c 约是对方密度的 2.2~2.6 倍（3500 拍 24.5 / 9.5，4100 拍 38.6 / 15.6，4400 拍 37.3 / 16.7）。所以实际门槛是「我的密度 ≥ 对方的两倍半到三倍」。两个号都在攒兵时，谁也过不了这个门槛，直到有一方先过 100×领土。",
+   "codePath": "Policy.offers L5072~5100、Policy.buyLand L5350~5359（L5359 break）",
+   "evidence": "out/A073/shadow_3300_4460.txt（shadow.mjs A073 --bots alex_k,kaito9 --from 3300 --to 4460 --at 3500,3800,4100,4400 --water）；human_strikes.py A073 --list 45（拍 4459）；flat_windows.py A073。",
+   "verdict": "error",
+   "patternId": "NEW-AT-STANDOFF",
+   "statementType": "observed"
+  },
+  {
+   "id": "D09",
+   "t": "3580~4410",
+   "bot": "alex_k",
+   "what": "海岛 AI#283（主体在 L11，2,060 格）3580 拍在 alex_k 的岸上登了一块滩头，72 格→327 格→512 格一点点长。吃掉它的需要量只有 6,700~10,700 兵，alex_k 有 169 万~606 万，一直不吃：c 从 20.0（3800 拍）涨到 28.7（4100 拍）、46.5（4400 拍），始终 ≥ worth。同一时间发船的两道门都因为它关着：boatFood 看到「陆上邻居里有单价 ≤ 60 的内置 AI（6.3）」直接返回；boatOut 要余额 ≥ 1,740 万。167 个决策拍，一条指令都没有。5705~5712 拍（over 之后）才用 3 条 0/1024 的指令把滩头收回，每条出 2.5 万兵、付 30 万~33 万手续费。",
+   "why": "报价里的 fee 是自己整笔余额的 12/1024，need 按这个 AI 的全部领土算，gain 还要打折：余额越多，这块地越「贵」。worth 只按自己的密度涨。发船分支用的是另一个不含手续费的单价。两处口径相反：买地说它太贵，发船说它很便宜、不用出海。",
+   "codePath": "Policy.offers L5072~5100（fee = iV(12*B,1024)；c = (rawNeed + fee)/baseGain）、Policy.buyLand L5359、V13.boatFood L2005、Policy.idleBoats L5058~5060",
+   "evidence": "out/A073/shadow_3300_4460.txt 的 [buyLand]、[idleBoats] 两段（3800、4100、4400 拍）；out/A073/landmass_283.txt（ascii_map.mjs A073 --at 3420,3600,3800,4400,5700 --ours 0,1 --also 283,121）；tmp/shadow/A073/rows.tsv（3580~4410 拍 167 行 nAI>0、intents=0）；tmp/truth/A073/flow.tsv（0→283）。truth_query.py A073 cmds alex_k 5680 5730。对照 kaito9：3731~3738 拍打掉了岸上的 AI#403（truth_query.py A073 cmds kaito9 3700 3745），3800 拍 boatFood 就放行了。",
+   "verdict": "error",
+   "patternId": "NEW-AT-FEELOCK",
+   "statementType": "observed"
+  },
+  {
+   "id": "D10",
+   "t": "3808~3871、4942~5068",
+   "bot": "kaito9",
+   "what": "L1 上没有内置 AI 邻居了，用余额的 12.5%~17% 发船去吃海对面的 AI：3808 拍 29.4 万兵 → AI#211（300 拍净得 9,050 格），3871 拍 23.6 万兵 → AI#82（8,490 格），陆攻跟进后 4410 拍在 L2 上有 105,812 格；4942、5068 拍 71.0 万 / 73.9 万兵 → AI#224，5010~5426 拍从它净得 60,840 格，5760 拍整块 L4 在它手里。5760 拍它在 L1 上的地全丢了，靠这两块岛活到终场。",
+   "why": "boatFood：陆上没有便宜的内置 AI 邻居时找海对面单价最低的 AI / 无主地，装 max(foodK×需要量, 余额的 12.5%)。L2 上的 AI 很弱（AI#82：53,453 格、5.8 万兵），离 kaito9 的岸只有 1~2 格水。",
+   "codePath": "Policy.idleBoats L5058 → V13.boatFood L2001~2021 → V13.searchFood L2028",
+   "evidence": "boat_list.py A073（前 8 行）；boat_pairs.py A073 --list（kaito9 → AI#224 一行）；out/A073/landmass.txt（4410、5760 拍）；out/A073/shadow_3300_4460.txt（kaito9 3800 拍）。",
+   "verdict": "good",
+   "patternId": "NEW-SE-FOODBOAT",
+   "statementType": "observed"
+  },
+  {
+   "id": "D11",
+   "t": "4459、4592",
+   "bot": "alex_k",
+   "what": "密度比过线后对 kaito9 出手：4459 拍 2 条 90.4 万兵（余额的 14%，密度比 2.96）、4592 拍 3 条 228.4 万兵（31%，密度比 4.97）；4455~4895 拍从 kaito9 净得 52,387 格（其中 4592 拍之后 37,474 格），领土 139,048（4410 拍）→191,270（4770 拍）。这一段指令稀，延迟只有 11~19 拍，落地的就是下单时想要的。",
+   "why": "c < worth，按脉冲比例出兵。",
+   "codePath": "Policy.buyLand L5350~5359、L5455~5609",
+   "evidence": "human_strikes.py A073 --list 45；truth_query.py A073 flow alex_k 4455 4895；state.tsv；exec_gap.py A073 --profile 250（4250~4749 拍 18 条全部落地）。",
+   "verdict": "good",
+   "patternId": "NEW-AT-DENSEDGE",
+   "statementType": "observed"
+  },
+  {
+   "id": "D12",
+   "t": "5313~7441",
+   "bot": "alex_k",
+   "what": "余额过 100×领土后不再比较单价，对 kaito9 一轮一轮出手：5313 拍 537.9 万兵（密度比 2.61）、5628 拍 800.4 万兵、5999~7441 拍 7 轮 636 万~1,099 万兵（密度比 0.99~1.34）。9 轮里每轮 300 拍净得 0.8 万~4.3 万格（相邻几轮的窗口有重叠，不能相加；合起来是 kaito9 233,505→76,900 格），L1 和 L2 都是这样拿下的。",
+   "why": "over = 余额 > 100×领土；over 时 L5359 不 break。5999 拍起 alex_k 的地是对方的 1.2~3.3 倍，密度相当，同样的比例换出来的兵比对方多。全场 over 的出手里，出手时地不比对方少的 15 轮有 14 轮净得地为正。",
+   "codePath": "Policy.buyLand L5353、L5359",
+   "evidence": "human_strikes.py A073 --list 45（alex_k over 状态 16 轮 2.91 亿兵；「over 的出手里，出手时地不比对方少的」一行）；state.tsv。",
+   "verdict": "good",
+   "patternId": "NEW-AT-OVERSTRIKE",
+   "statementType": "observed"
+  },
+  {
+   "id": "D13",
+   "t": "6132~7308、8995、9156、10997",
+   "bot": "kaito9",
+   "what": "同一条规则在小的那个号身上：kaito9 余额一过 100×领土就对 alex_k 出手，8 轮 3,932 万兵，密度比 0.79~1.43，对方的地是自己的 1.5~5 倍。每一轮之后 300 拍它对 alex_k 的净得地都是负的（−0.8 万~−9.2 万格）。9156 拍 7 条 974 万兵（余额的 55%）之后，9360 拍领土从 167,443 掉到 107,381。",
+   "why": "over 时不看单价，也不看对方比自己大多少。其中 7308、8995、9156、10997 拍是两个号同一拍对打，小号的损失里有多少是自己这一手造成的分不开；没有反事实重放。别的局里「地比对方少时 over 出手」多数是净得地的（A022 10 轮 9 正，A038 31 轮 21 正），所以不能当成一般规律。",
+   "codePath": "Policy.buyLand L5353、L5359",
+   "evidence": "human_strikes.py A073 --list 45（kaito9 over 状态 8 轮，净得地合计 −348,793，重叠窗口有重复计；「over 的出手里，出手时地比对方少的」9 轮 8 负）；human_strikes.py A022、A038（同一行）；state.tsv。",
+   "verdict": "unclear",
+   "patternId": "NEW-AT-OVERSTRIKE",
+   "statementType": "inferred"
+  },
+  {
+   "id": "D14",
+   "t": "5803、7693~8946",
+   "bot": "alex_k",
+   "what": "没有陆上邻居时，相邻两个决策拍各发一条船去同一个落点：先 127/1024（余额的 12.5%），5 拍后再 373~498/1024（影子：5750/5755、7680/7685、7740/7745、7800/7805 … 每 60 拍一对）。13 对里 11 对的第二条到的时候那一格已经是自己的，兵退回：第二条合计载兵 1.73 亿、手续费 1,260 万、海上损耗 728 万。全场 19 条船回到自己地上作废（2.43 亿兵、手续费 2,030 万）。",
+   "why": "boatFood 用 lastFood 冷却，boatOut 用 lastBoat 冷却，互不知道；boatOut 选落点时不看已经在路上的船。",
+   "codePath": "Policy.idleBoats L5058~5068、V13.boatFood L2001~2021（L2006 lastFood）、General.boatOut L999~1015（L1002 lastBoat）",
+   "evidence": "boat_pairs.py A073 --list；boat_list.py A073；out/A073/shadow_7600_8300.txt（7680 拍 4.86M 127/1024、7685 拍 17.4M 456/1024 …）。",
+   "verdict": "error",
+   "patternId": "NEW-SE-BOATWASTE",
+   "statementType": "observed"
+  },
+  {
+   "id": "D15",
+   "t": "7560~8300",
+   "bot": "alex_k",
+   "what": "378,750 格、3,500 万~4,500 万兵，740 拍领土只到 382,620。20 条船载兵 2.107 亿、手续费 2,270 万：9 条回到自己地上（1.138 亿）；登陆 AI#304 / AI#154 的 11 条里，8300 拍前到岸的 9 条拿到的全是小岛：7709 拍 481 万兵登上的是 AI#304 一块 12 格的岛（L147），7784 拍 483 万兵登上 16 格的 L115，8074 拍 1,794 万兵登上 AI#154 一块 12 格的岛（L150），8218 拍 1,666 万兵登陆后到 8300 拍 alex_k 多出来的只有 6 格的 L230（boat_list 那一行的 +11,834 是 300 拍窗口把 8432 拍登陆的 L7 也算了进去）；最大的一块是 L9（2,992 格）。最后一对（8295 拍，2,190 万 + 277 万兵）8432 拍登上 L7（11,828 格）。AI#304 的主体 L3（96,941 格）当时只有 915~16 万兵守着，一格没碰。kaito9（L4，7.8 万~9.7 万格、600 万~1,140 万兵）离 alex_k 的岸只隔 1 格水，在候选里排第 3~5。8274 拍 kaito9 一条 606 万兵的船登上了 L3 本体，9000 拍它涨到 196,252 格。",
+   "why": "两种船用的两个搜索（127/1024 的小船走 searchFood，大船走 searchWater）是同一个做法：从自己的岸在水上做广搜，每个对象取最先碰到的那一格当落点；折算按对方的总领土摊（searchFood：(吃掉它的兵 + 船费) ÷ (总领土 − 峰值/4)；searchWater：单价 + 船费 ÷ (0.75×总领土)），AI#304 当时 11 万格，所以排第 1，不看落点所在的那块陆地有多大。离 alex_k 最近的 AI#304 的地是它的小岛（水程 9、50、91，越吃越远），L3 本体更远。无主地是按那一片的大小摊的（L1061、L2067~2068），有主的地不是。",
+   "codePath": "General.searchWater L1020~1079（L1061 对无主地用 comp[n]；L1069~1073 对有主的地用 g.terr[o]，落点 land: n = 最先碰到的一格）；V13.searchFood L2028~2080（L2067~2068 无主地用 comp[n]；L2071~2074 内置 AI 用 g.terr[o] − peak/4）；Policy.boatFood L5623（seaCore=0 → V13.boatFood L2001~2021）",
+   "evidence": "out/A073/landmass_7690_8440.txt（ascii_map.mjs A073 --at 7690,7730,7800,7840,8060,8110,8210,8300,8440 --ours 0,1 --also 304,154 --top 14：每个采样拍 alex_k 新到手的陆块）；boat_list.py A073 7560 8300 --bot alex_k；tmp/truth/A073/ev.tsv（land 事件的到岸兵）；out/A073/shadow_7600_8300.txt（7680、8015、8140、8290 拍的 [searchWater 候选]：AI#304 折算 16.5~32.1 排第 1，kaito9 水程 1、折算 227~422）。",
+   "verdict": "error",
+   "patternId": "NEW-SE-WRONGISLAND",
+   "statementType": "observed"
+  },
+  {
+   "id": "D16",
+   "t": "9968~10598",
+   "bot": "alex_k",
+   "what": "9 条船，每条 3,060 万~3,870 万兵（余额的 42%~49%），全部登陆 AI#488（1.06 万~1.36 万格，守兵 0.2 万~5.2 万，分在十几块小岛上；最大的一块 L8 只有 3,116 格，10400 拍、5 条船 1.75 亿兵之后还一格没动）：合计载兵 3.20 亿、手续费 2,150 万，净得地 6,423 格。这 650 拍里 kaito9（107,384 格）是场上唯一的对手，searchWater 把它排在第 2。",
+   "why": "折算 = 单价×grow + 船费 ÷ (0.75×对方总领土)：AI#488 226.8，kaito9 290.6（9965 拍）。装多少兵不看目标需要多少：目标不是无主地时一律装 boatFrac×(余额 − floorAt)，floorAt = 100×领土×min(1, 落点单价/60)，落点单价 9.4 时底线只有 15.7×领土，所以装了 44%。",
+   "codePath": "General.searchWater L1069~1070、General.boatOut L1006~1009、General.floors L819~830（L829；keepCap=1、reserve=1、cRef=60）、Policy.idleBoats L5059~5068",
+   "evidence": "boat_list.py A073；boat_pairs.py A073 --list（→ AI#488 一行）；out/A073/landmass_488.txt（ascii_map.mjs A073 --at 9960,10400,10900 --ours 0,1 --also 488 --top 14）；out/A073/shadow_9300_10990.txt（9965、10090、10420 拍的 [searchWater 候选]；9960 拍发船 3,130 万 452/1024）。",
+   "verdict": "error",
+   "patternId": "NEW-SE-WRONGISLAND",
+   "statementType": "observed"
+  },
+  {
+   "id": "D17",
+   "t": "10395、10822",
+   "bot": "alex_k",
+   "what": "kaito9 的船在 L1 上占了 58 格，alex_k 两条陆攻 2,850 万 + 1,850 万兵（余额的 60%）。收回那 58 格后进攻就结束了，兵退回，kaito9 的本土（在 L4、L6 上）一格没丢；两条指令的手续费 150 万。10822 拍又来一次（2,917 万 + 1,809 万，手续费 150 万）。9620~10919 拍 alex_k 对 kaito9 的 8 条陆攻 1.376 亿兵全是打滩头的，从 kaito9 净得地 +233 格。代价是手续费和那十来拍余额只剩四成；这段时间场上没有别的对手来利用。",
+   "why": "over 时不比单价、不走脉冲，出兵量 = 1.25×需要量；需要量按对方全部领土和余额算（「需 2,300 万」），不看两家只在滩头那几十格上接壤（接壤 6~7 像素）。",
+   "codePath": "Policy.buyLand L5353~5359、L5456~5457、L5612~5617；Policy.offers L5096~5100",
+   "evidence": "refund_strikes.py A073 --list（空打 2 次 9,426 万兵，手续费 300 万）；truth_query.py A073 cmds alex_k 10380 10420；truth_query.py A073 bal alex_k 10370 10430 10；truth_query.py A073 bal kaito9 10370 10430 10；out/A073/landmass.txt（10400 拍：kaito9 在 L1 上 58 格）；out/A073/shadow_9300_10990.txt（10395 拍）；finish_ledger.py A073 --until 10919。",
+   "verdict": "error",
+   "patternId": "NEW-AT-BEACHDUMP",
+   "statementType": "observed"
+  },
+  {
+   "id": "D18",
+   "t": "2639~11501（54 条在 5000 拍以后）",
+   "bot": "alex_k",
+   "what": "62 条陆攻出的兵比手续费少：合计出兵 466 万，手续费 3,090 万（AI#121 21 条、AI#488 11 条、AI#304 7 条、无主地 7 条）。例：10780 拍对 AI#121 两条 0/1024，每条出 7.8 万兵、付约 94 万手续费。AI#121 和 AI#283 一样是海岛 AI 登在岸上的滩头（4400 拍 98 格，5700 拍 4 格）。",
+   "why": "内置 AI 目标的出兵量只按需要量算，不和手续费比；手续费是整笔余额的 12/1024，余额 8,000 万时每条 94 万。",
+   "codePath": "Policy.buyLand L5449~5454 → Strategy.send L479~487",
+   "evidence": "fee_ledger.py A073；truth_query.py A073 cmds alex_k 10690 10840；out/A073/landmass_283.txt（AI#121 的滩头）。",
+   "verdict": "error",
+   "patternId": "NEW-AT-TINYFEE",
+   "statementType": "observed"
+  },
+  {
+   "id": "D19",
+   "t": "10920~11160",
+   "bot": "alex_k",
+   "what": "头两条去 kaito9 本土的船：10920、10976 拍 157 / 156 per 1024，各载 1,200 万 / 1,190 万兵，登陆 L4；10997 拍 3 条陆攻 3,716 万兵跟进（余额的 57%）；11160 拍 kaito9 只剩 34,035 格，11200 拍 L4 上已经没有它的地（30,484 格 = L6 + 3 格）。从第一条船登陆到 kaito9 被赶下 L4 用了 280 拍左右。",
+   "why": "10915 拍 AI#488 被吃到 7,151 格，折算涨到 462.5，kaito9（442.9）第一次排到第 1。登陆后 kaito9 成了陆上邻居，over 状态直接出手。",
+   "codePath": "General.searchWater L1069~1070、General.boatOut L999~1015；Policy.buyLand L5353~5359",
+   "evidence": "boat_list.py A073（10920、10976 拍）；out/A073/shadow_9300_10990.txt（10915、10920 拍）；human_strikes.py A073 --list 45（拍 10997）；truth_query.py A073 bal kaito9 11150 11260 10；out/A073/landmass.txt（11400 拍）。",
+   "verdict": "good",
+   "patternId": "NEW-SE-BOATOK",
+   "statementType": "observed"
+  },
+  {
+   "id": "D20",
+   "t": "9620~11509",
+   "bot": "alex_k",
+   "what": "9620 拍 alex_k 占全图 75.4%，2,670 万兵对 kaito9 的 448 万。之后 1,880 拍没把它打出局：出兵 5.319 亿，落在 kaito9 身上的 2.106 亿（40%，其中 1.376 亿是打滩头后退回的），手续费 5,010 万。kaito9 终场还有 26,191 格。最后一段：11230 拍起 alex_k 没有陆上邻居，kaito9 只剩 L6 的 3 万格、150 万~177 万兵，searchWater 把它排第 1，可船到 11350 拍才发出去（影子；真引擎 11368 拍，1,190 万兵，11428 拍登陆），660 秒到点。",
+   "why": "没有「只剩一个对手、集中把它打出局」的分支：不分队时清场分支要求场上只剩自己一个真人。平常的发船分支对单价 ≥ 60 的落点底线是 100×领土，最小船量是余额的 12.5%，所以密度不到 133 发不出船；每次没发成也把 60 拍冷却重置。11230、11290 拍两次评估时密度 122.2、131.4，都差一点；11350 拍密度 138.6 才发出去，装的是超出 100×领土部分的一半（142/1024）。",
+   "codePath": "Policy.isMopUp L4520~4533、Policy.idleBoats L5045~5070、General.boatOut L999~1015（L1002 先记 lastBoat；L1006~1008 max < min 返回）、General.floors L829、General.searchWater L1069~1070",
+   "evidence": "finish_ledger.py A073；out/A073/shadow_11150_11400.txt（11230、11290、11345 拍 nb=0、kaito9 折算第 1、不出手；11350 拍发船 142/1024）；boat_list.py A073（11368 拍）；state.tsv；results.csv（left@660 秒）。",
+   "verdict": "error",
+   "patternId": "NEW-EG-SLOWFINISH",
+   "statementType": "observed"
+  }
+ ],
+ "newPatterns": [
+  {
+   "prefix": "EX",
+   "name": "对局是 1v1 模式：编队的号被两两分进不同房间，对手就是自己人",
+   "definition": "对局卡 mode=8（引擎 aE.lC=8：不分队 a0L=0、不能捐款 iT=false、每个房间 2 个真人 + 510 个内置 AI）。计数 = 这类对局的局数、编队内互打的房间数。这种局的卡片 resultLabel=won 只表示「有一个号赢了」，不是队伍获胜。",
+   "detector": "scripts/engine_settings.cjs <局号>（lC、ku、a0L、iT）；对局包 results.csv 的 meId / tick / result 两两配对；in_game.log 的 [HL-GAME-INIT] mode=8 seeded=2",
+   "codePath": "Policy.isTeammate L3927、Policy.idleBoats L5019（封死分支要求 g.teams[me] > 0）、Policy.tryDonateToTeammate L4325（没有队友可捐）；spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve（仍按 10 个号同房求解）",
+   "id": "NEW-EX-MODE1V1"
+  },
+  {
+   "prefix": "SP",
+   "name": "选点指令没有落地，出生点是引擎随机给的",
+   "definition": "录像出生阶段里这个号的选点指令（id=0）条数为 0，而日志里有 [HL-SPAWN] / [HL-SPAWN-BACKEND] 选点记录。计数 = 这样的号数。",
+   "detector": "tmp/truth/<局号>/cmd.tsv 里 spawnStep ≥ 0 的行数（engine_truth.cjs）；对局包 spawn.csv",
+   "codePath": "Policy.chooseSpawn L3983~4129；引擎 qi.i0（只查阶段、存活、格子可用）；出生阶段步数 a7a（真人 ≤2 时 30 步，约 11.8 秒）",
+   "id": "NEW-SP-NOEXEC"
+  },
+  {
+   "prefix": "OP",
+   "name": "开局占无主地的节奏不落后",
+   "definition": "t=270 或 t=630 时我方号领土中位 ≥ 其他真人领土中位（两个时刻的数都列出）。",
+   "detector": "scripts/match_digest.py 第 3b 节（拍 270、630 的中位与名次）",
+   "codePath": "V13.expandNeutral L2373 / dpNeutral L2383（开局按圈数买无主地）",
+   "id": "NEW-OP-DPGOOD"
+  },
+  {
+   "prefix": "IO",
+   "name": "指令在路上被攒成一摞（最多 9 条）再倒序一起落地，晚 60~130 拍；多出来的丢失",
+   "definition": "同一个号同一拍落地 ≥3 条陆攻算一批；把批里的比例序列倒过来，等于影子策略某一段连续决策拍各发的一条（整段对上）。计数 = 批数、对上的批数、最新一条意图到落地的拍数（中位）、相邻两批的间隔（中位）、每批花掉余额的比例（中位）；另计发了没落地的意图条数。",
+   "detector": "scripts/burst_runs.py <局号> [--list]；scripts/exec_gap.py <局号> --profile 250",
+   "codePath": "Strategy.send L479~487（比例按发令拍的余额换算，落地时引擎按当时余额重新计价）；Policy.act L4838（每 5 拍一个决策拍，每拍照发）；策略里没有「已发未落地」的账。传输层（适配层 / 服务器）不在仓库里：引擎客户端 b1.qo.qs → b1.z.send 是直接写 WebSocket，没有排队",
+   "id": "NEW-IO-STACK9"
+  },
+  {
+   "prefix": "IO",
+   "name": "追帧后同一拍连发，把余额抽干",
+   "definition": "同一拍落地 ≥ 5 条同目标陆攻，批后余额 < 批前的 40%（每条都按当时余额重新计价）。",
+   "detector": "scripts/match_digest.py 第 6 节（同拍批次）",
+   "codePath": "Strategy.send L479~487（比例按决策拍的余额换算）+ Policy.act L4838（每 5 拍重发）；策略里没有「已发未落地」的账",
+   "id": "NEW-IO-DRAINBATCH"
+  },
+  {
+   "prefix": "AT",
+   "name": "自己密度是对方两倍以上时出手并净得地（有效）",
+   "definition": "对某真人目标的一轮出兵（human_strikes.py 的一轮）落地时未 over、我方密度 ≥ 对方的 2.2 倍，随后 300 拍从它净得地 > 5000 格且 ≥ 出兵量 / 100。计数 = 轮数、出兵、净得地。",
+   "detector": "scripts/human_strikes.py <局号> --list",
+   "codePath": "Policy.buyLand L5350~5359（c < worth 或 c < cheap 才买）、L5455~5609（对真人的脉冲出兵量）",
+   "id": "NEW-AT-DENSEDGE"
+  },
+  {
+   "prefix": "AT",
+   "name": "两个真人接壤对峙：没过 100×领土时要自己的密度是对方的两倍半以上才出手，双方都攒兵不动，谁先过线谁先打",
+   "definition": "某号与某真人接壤，buyLand 对它的报价 c ≥ worth、c ≥ cheap 且未 over，连续 ≥ 300 拍没有任何落地的陆攻，同期自己余额翻倍以上、领土变化 ≤ 4%。计数 = 号·拍数、段首段末双方密度、段末谁的余额先过 100×领土。只有日志的房间用 flat_windows.py 的口径（地不动、指令增量 ≤ 12、≥ 360 拍）。对方同期从我方净拿地 ≥ 5000 格的情形另记 NEW-AT-PRICEGATE。",
+   "detector": "scripts/flat_windows.py <局号>；scripts/shadow.mjs <局号> --bots <号> --at <拍>（[buyLand] 一段的 worth、c）；scripts/human_strikes.py <局号> --list（出手时的密度比）",
+   "codePath": "Policy.offers L5072~5100（真人目标的 c 约为对方密度的 2.2~2.6 倍）、Policy.buyLand L5350~5359（worth = maxW×winRatio×max(自己密度, marketFloor×其他真人密度中位)；L5353 over = 余额 > 100×领土；L5359 break）",
+   "id": "NEW-AT-STANDOFF"
+  },
+  {
+   "prefix": "AT",
+   "name": "贴着一小块内置 AI（常是海岛 AI 登在我岸上的滩头）一直不吃：报价把整笔余额的陆攻手续费摊到它头上；而它又让发船找地直接返回",
+   "definition": "核心期（t ≥ 1500）某个号的陆上邻居里有内置 AI，影子诊断里这个 AI 的 c ≥ worth、c ≥ cheap、未 over（L5359 break），吃掉它的需要量 < 可用兵的 5%；同一拍 boatFood 因「陆上邻居里有单价 ≤ botMax 的内置 AI」返回 false（V13.boatFood L2005 / Policy.boatFood L5630），boatOut 因余额 < idleCap×100×领土 不发（L5060）。计数 = 这样的号·拍数（影子 rows.tsv：nAI>0 且 intents=0 的行动拍 ×5）、期间领土变化、余额倍数；另列这个 AI 的主体在哪块陆地上（ascii_map.mjs --also）。",
+   "detector": "scripts/shadow.mjs <局号> --bots <号> --at <拍> --water（[buyLand]、[idleBoats] 两段）；tmp/shadow/<局号>/rows.tsv（shadow_all.sh）；scripts/flat_windows.py <局号>；scripts/ascii_map.mjs <局号> --at <拍> --also <AI 编号>",
+   "codePath": "Policy.offers L5072~5100（fee = iV(12*B, 1024) 取整笔余额；need 按这个 AI 的全部领土和余额算；c = (rawNeed + fee) / baseGain）、Policy.buyLand L5350~5359（worth = m×refDens；c ≥ worth && c ≥ cheap && !over → break）、V13.boatFood L2001~2021（L2005 用不含手续费的 this.price）、Policy.idleBoats L5058~5060",
+   "id": "NEW-AT-FEELOCK"
+  },
+  {
+   "prefix": "SE",
+   "name": "陆上没有内置 AI 可吃时，用一成多的余额发船吃海对面的 AI 并站住（有效）",
+   "definition": "boatFood 发的船（发船那一拍陆上邻居里没有内置 AI；比例 ≤ 205/1024），登陆后 300 拍内从登陆目标净得地 ≥ 5000 格。计数 = 条数、载兵、净得地。",
+   "detector": "scripts/boat_list.py <局号>；scripts/shadow.mjs <局号> --bots <号> --at <拍> --water（[idleBoats] 一段）",
+   "codePath": "Policy.idleBoats L5058 → V13.boatFood L2001~2021（载兵 = max(foodK×需要量, feeK×船手续费 = 余额的 12.5%)）→ V13.searchFood L2028",
+   "id": "NEW-SE-FOODBOAT"
+  },
+  {
+   "prefix": "AT",
+   "name": "余额过 100×领土后不比单价，对接壤真人一轮一轮出手：结果看谁的地多",
+   "definition": "human_strikes.py 的一轮出手，串首执行前余额 > 100×领土（buyLand 的 over=true）。计数 = 轮数、出兵、随后 300 拍从目标净得地为正 / 为负的轮数，按「出手时自己的领土不比对方少 / 比对方少」分两组。两个号同一拍对打的轮次净得地互为相反数，分不开是谁造成的，单列。",
+   "detector": "scripts/human_strikes.py <局号> --list N（「over 的出手里，出手时地不比对方少的 / 地比对方少的」两行）",
+   "codePath": "Policy.buyLand L5353（over = surplus>0 && B > 100×L）、L5359（over 时不 break）、L5456~5457 与 L5612~5617（over 且需要量 ≤ 0.30×余额时不走脉冲，一次出 1.25×需要量）",
+   "id": "NEW-AT-OVERSTRIKE"
+  },
+  {
+   "prefix": "SE",
+   "name": "发船白送：登陆即被吃或回到自己地上作废",
+   "definition": "(a) 一条船的载兵 ≥ 发船时余额的 15%，登陆后 300 拍内从登陆目标净得地 ≤ 100 像素，或船回到自己地上作废；(b) 载兵 < 发船手续费（引擎按余额的 32/1024 收，与载多少无关）。计数 = 条数、载兵、手续费。",
+   "detector": "scripts/boat_list.py（每条船的载兵、手续费、到岸兵、结果、登陆后净得地）",
+   "codePath": "Policy.idleBoats L5019~5070（封死分支把 boatRange 放到 2500）→ General.boatOut L999~1015：L1007 目标是无主地时最低载兵只有 60，不和手续费挂钩；L1009 载兵 = 3×目标块大小 + 300",
+   "id": "NEW-SE-BOATWASTE"
+  },
+  {
+   "prefix": "SE",
+   "name": "发船落点按「单价 + 船费 ÷ 对方总领土」排、登陆的却是离岸最近的那一格：富号反复把四五成余额装船去吃内置 AI 的碎岛，隔一格水的真人排在后面",
+   "definition": "没有陆上邻居（nb=0）的号 boatOut 选的落点是内置 AI，载兵 ≥ 余额的 30%，而发船范围内有敌方真人（影子诊断 [searchWater 候选] 里真人排在第 2 名以后）。计数 = 这样的船数、载兵、手续费、登陆后 300 拍从目标净得地；对照登陆敌方真人的船。另记登陆到的陆块有多大（ascii_map.mjs 前后两拍的归属差）：登陆的陆块 ≤ 500 格而目标另有 ≥ 1 万格的主体，算「登在碎岛上」。",
+   "detector": "scripts/boat_list.py <局号>；scripts/boat_pairs.py <局号> --list；scripts/shadow.mjs <局号> --bots <号> --at <拍> --water（[searchWater 候选]）；scripts/ascii_map.mjs <局号> --at <登陆前后的拍> --also <AI 编号> --top 14",
+   "codePath": "General.searchWater L1020~1079（从自己的岸在水上做广搜，每个对象取最先碰到的那一格当落点；L1061 无主地的船费按那一片的大小 comp[n] 摊，L1069~1070 有主的地按对方总领土摊：price = 2 + 2×余额/(1+地×10/16)，eff = price×grow + fee / max(1, 0.75×对方总领土)）、General.boatOut L999~1015（L1006 max = boatFrac×(余额 − floorAt(落点单价))；L1009 目标不是无主地时装 max，不看需要多少）、General.floors L819~830（L829 floorAt = 100×领土×min(1, 单价/cRef 60)：落点单价越低底线越低、装得越多；单价 ≥ 60 时底线是 100×领土，要密度 ≥ 133 才够最小船量）、V13.boatOut L2325~2330、Policy.idleBoats L5059~5068（nb=0 时 maxEff = Infinity）；V13.searchFood L2028~2080（boatFood 的小船用的搜索，同一个做法：L2067~2068 无主地按 comp[n]，L2071~2074 内置 AI 按 g.terr[o] − peak/4 摊，落点 land: n 也是最先碰到的一格；L2071 跳过真人）",
+   "id": "NEW-SE-WRONGISLAND"
+  },
+  {
+   "prefix": "AT",
+   "name": "对只隔着一小块滩头接壤的真人按「吃掉它全部领土」的量出兵：打完滩头没地可打，兵退回，白付手续费",
+   "definition": "对真人的一轮大笔出手（整串出兵 ≥ 余额的 10% 且 ≥ 1 万兵），同时满足：进攻在串尾之后 40 拍内结束；目标领土少了不到 100 格；不是对打（同期目标打过来的在途兵 < 整串出兵的 25%）；兵回到了余额（串尾 30 拍后的余额 + 其间别的指令的花费 ≥ 出手前余额 − 整串出兵的 25%）。计数 = 轮数、出兵、手续费。",
+   "detector": "scripts/refund_strikes.py <局号> --list",
+   "codePath": "Policy.offers L5072~5100（need 按对方全部领土和余额算，不看接壤多长）、Policy.buyLand L5353~5359（over 时不比单价）、L5456~5457、L5612~5617（want = 1.25×need + 3×接触数）",
+   "id": "NEW-AT-BEACHDUMP"
+  },
+  {
+   "prefix": "AT",
+   "name": "比例只有 0~4/1024 的陆攻：出的兵比这条指令的手续费还少",
+   "definition": "陆攻指令实际出兵 < 这条指令付的手续费（引擎按余额的 12/1024 收）。计数 = 条数、出兵合计、手续费合计、目标分布。",
+   "detector": "scripts/fee_ledger.py <局号>",
+   "codePath": "Policy.buyLand L5449~5454（内置 AI 目标：want = 1.25×need + 3×接触数，x = min(avail, want)，不和手续费比）→ Strategy.send L479~487（pct = ceil(x×1024/余额) − 1，可以是 0）",
+   "id": "NEW-AT-TINYFEE"
+  },
+  {
+   "prefix": "SE",
+   "name": "封死后发船开第二战场并站住（有效）",
+   "definition": "某号在 nb=0 且 neut=0 时发船，登陆后 300 拍内在新地块净得地 ≥ 500 像素。",
+   "detector": "scripts/boat_list.py",
+   "codePath": "Policy.idleBoats L5019~5070",
+   "id": "NEW-SE-BOATOK"
+  },
+  {
+   "prefix": "EG",
+   "name": "大幅领先之后收不了口：兵是最后一个对手的三倍以上，出的兵却大半不落在它身上",
+   "definition": "某号（组队局按本队）占全图陆地 ≥ 75% 且自己余额 ≥ 3×场上最大的敌方真人余额（过线拍）之后，到对局结束敌方真人仍在场。计数 = 过线到结束的拍数、其间出兵合计（陆攻 + 船）、落在敌方真人身上的比例、从敌方真人净得地。",
+   "detector": "scripts/finish_ledger.py <局号> [--share 75] [--ratio 3] [--until 拍]",
+   "codePath": "Policy.idleBoats L5019~5070（没有陆上邻居时只剩发船）；Policy.isMopUp L4520~4533（不分队时要场上只剩自己一个真人才算清场）；General.searchWater L1069~1070（落点按单价 + 船费摊销排）；General.boatOut L999~1015",
+   "id": "NEW-EG-SLOWFINISH"
+  }
+ ],
+ "winnerNotes": "A 房间没有赢家：660 秒两个号同时离场时 alex_k 617,634 格（92.9%）对 kaito9 26,191 格。alex_k 领先靠的是四步：3192~3248 拍两批指令落在刚被抽空的 kaito9 身上，咬下 4.0 万格；3330~4410 拍不出手攒出近 3 倍的密度，4459~4592 拍换成 5.2 万格；5313 拍先过 100×领土，此后不看单价连续出手，5760 拍拿下整块 L1（全图 36.8%）；海战期靠「小船登陆 + 陆攻跟进」拿下 L2（7560 拍）、从 kaito9 手里拿下 L3（9360 拍）、L4（11200 拍）。其余 4 个房间（日志口径）：noah88、sora_w、zero_7 都是 #0 号，3060 拍已有 12.3 万~15.9 万格，对面的 #1 号只有 5.4 万~9.4 万格；三个房间都是双方先各自攒到密度 100 左右再动手，大号出手到小号出局：noah88 房间约 170 拍，sora_w 房间约 600 拍，zero_7 房间约 1,200 拍。ryan_m（#1）一路把余额花光（2250、3060 拍余额 916、251），4181 拍获胜（日志末行 244,107 格），对手不明。",
+ "wentWell": [
+  "开局占无主地：630 拍 3,526 / 3,556 格，是内置 AI 平均领土的 6 倍。",
+  "kaito9 陆上没有 AI 可吃之后用 12.5%~17% 的余额发船吃海对面的 AI，4 条船加陆攻跟进换来 L2 的 10.6 万格和整块 L4。",
+  "指令稀、延迟短的时段（4459、4592 拍），alex_k 在密度比 2.96 / 4.97 时出手，两轮 318.8 万兵从 kaito9 净得 5.2 万格。",
+  "alex_k 的「小船登陆真人 + 陆攻跟进」每次都成：5968 拍（L2）、10922 拍（L4）。",
+  "策略计算没有卡顿：9 个号的 avgMs 都不超过 1.31，日志 skip 全为 0。"
+ ],
+ "unknowns": [
+  "指令成摞落地的成因。外形很清楚（最多 9 条、倒序、晚 60~130 拍、两个号各有各的节奏、都从 959 拍开始、只在连续每拍下单的时段出现），但引擎客户端发指令是直接写 WebSocket，适配层和服务器的代码不在仓库里。results.csv 里 alex_k sent=604 / accepted=599，而录像里它只有 508 条（陆攻 452 + 船 56）：有 91 条是在适配层接受之后丢的。",
+  "选点指令为什么一条都没落地。",
+  "ryan_m 的对手是谁（推断是没有日志的 riku_x）；其余 4 个房间没有录像，谁在什么时候打了谁只能从日志快照推。zexos1 3420~5220 拍丢的 3.3 万格是被谁拿走的，看不出来。",
+  "同种子的房间里 #0 号 3 胜 0 负（另一个房间 #1 的 ryan_m 胜）。A 房间 kaito9（#1）3060 拍还领先，所以不像是座位本身的差别；没有录像，无法查。",
+  "3340~3575 拍（AI#283 的滩头还没上来）alex_k 为什么没发船：影子策略两次运行的判定不同（依赖内部状态），真号卡在底线还是冷却不确定。",
+  "alex_k 如果 9620 拍就去 kaito9 本土登陆能不能在 660 秒内打完，没有做反事实重放。10920 拍那一次从登陆（10922 拍）到把 kaito9 赶下 L4（11200 拍）用了 280 拍左右。"
+ ],
+ "mechanicsQuestions": [
+  "陆攻打到没有相邻的地就结束，剩下的兵退回余额（10395 拍：出 4,700 万，10400 拍在途 2,673 万，10410 拍在途 0，余额比出手前少 134 万）。退回时如果余额已经顶在 150×领土，超出的部分是不是丢掉？本局那一刻密度 143.5，没顶到，看不出来。",
+  "每个玩家每一拍最多落地 9 条指令，是服务器的上限还是适配层的上限？13 局录像里我方号同一拍落地的指令（不含选点）从没有超过 9 条，11 局到过 9 条；其他玩家一般最多 2~6 条，只有 A022、B034 里有别的玩家也到过 9 条（max_per_tick.py）。",
+  "1v1 的出生阶段只有 30 步；选点指令要在第几步之前到才算数？",
+  "陆攻指令落地时如果和目标没有可打的边（引擎里找不到自己这边贴着目标的边界格），指令被录进录像但不扣手续费、不产生进攻。本局这样的陆攻 147 条（落地的 802 条里）。这条规则对不对，请对接人核一下。"
+ ],
+ "scripts": [
+  "scripts/engine_truth.cjs + scripts/engine_truth_all.sh A073（真引擎重放 → tmp/truth/A073/）",
+  "scripts/engine_settings.cjs A073（lC、ku、a0L、iT）",
+  "scripts/match_digest.py A073 > out/digest/A073.txt（DIGEST_ALL_DROPS=1 列出全部骤降）",
+  "bash scripts/shadow_all.sh A073（影子策略 → tmp/shadow/A073/：intents.tsv、rows.tsv、check.json）",
+  "scripts/shadow.mjs A073 --bots alex_k --from 0 --to 1700 --at 1400,1530,1600 > out/A073/shadow_0_1700.txt",
+  "scripts/shadow.mjs A073 --bots alex_k --from 3000 --to 3320 --at 3030,3125,3300,3320 > out/A073/shadow_3000_3320.txt",
+  "scripts/shadow.mjs A073 --bots alex_k,kaito9 --from 3300 --to 4460 --at 3500,3800,4100,4400 --water > out/A073/shadow_3300_4460.txt",
+  "scripts/shadow.mjs A073 --bots alex_k --from 3330 --to 3620 --trace --water | grep 决策拍和发船两道门 > out/A073/shadow_3330_3620_boatgate.txt",
+  "scripts/shadow.mjs A073 --bots alex_k --from 7600 --to 8300 --at 7680,7685,8015,8140,8145,8290 --water > out/A073/shadow_7600_8300.txt",
+  "scripts/shadow.mjs A073 --bots alex_k --from 9300 --to 10990 --at 9965,10090,10395,10420,10915,10920 --water > out/A073/shadow_9300_10990.txt",
+  "scripts/shadow.mjs A073 --bots alex_k --from 11150 --to 11400 --at 11225,11230,11235,11290,11295,11345,11350 --water > out/A073/shadow_11150_11400.txt",
+  "scripts/ascii_map.mjs A073 --at 630,1530,3420,4410,5760,7560,9360,10400,11400 --ours 0,1 --also 488,304,154 > out/A073/landmass.txt",
+  "scripts/ascii_map.mjs A073 --at 3420,3600,3800,4400,5700 --ours 0,1 --also 283,121 > out/A073/landmass_283.txt",
+  "scripts/ascii_map.mjs A073 --at 7690,7730,7800,7840,8060,8110,8210,8300,8440 --ours 0,1 --also 304,154 --top 14 > out/A073/landmass_7690_8440.txt",
+  "scripts/ascii_map.mjs A073 --at 9960,10400,10900 --ours 0,1 --also 488 --top 14 > out/A073/landmass_488.txt",
+  "scripts/burst_runs.py A073 --list > out/A073/burst_runs.txt（新）",
+  "scripts/flat_windows.py A073 > out/A073/flat_windows.txt（新）",
+  "scripts/finish_ledger.py A073 [--until 10919] [--share 55] > out/A073/finish_ledger.txt（新）",
+  "scripts/refund_strikes.py A073 --list（新）；scripts/max_per_tick.py（新，13 局）",
+  "scripts/exec_gap.py A073 --profile 250；scripts/same_tick.py A073；scripts/blind_reorders.py A073 --lag",
+  "scripts/human_strikes.py A073 --list 45",
+  "scripts/boat_list.py A073 > out/A073/boat_list.txt；scripts/boat_list.py A073 7560 8300 --bot alex_k；scripts/boat_pairs.py A073 --list > out/A073/boat_pairs.txt",
+  "scripts/fee_ledger.py A073 > out/A073/fee_ledger.txt；scripts/cap_time.py A073 > out/A073/cap_time.txt",
+  "scripts/idle_scan.py A073；scripts/truth_query.py A073 cmds|bal|flow …",
+  "scripts/traj_at.py A073 <号名,…> <拍,…>（新：没有录像的 4 个房间，从 traj.csv 取快照）",
+  "scripts/review_base.py A073；scripts/review_write.py A073；scripts/check_reviews.py A073"
+ ],
+ "leavers": [
+  "alex_k、kaito9 在 11,504 / 11,494 拍（661 / 660 秒）同时离场，results.csv 记 left；对局在那里结束，没有胜者。"
+ ],
+ "drop30": {
+  "total": 94,
+  "cardCount": 94,
+  "replayRoom": 32,
+  "byCause": {
+   "陆攻-内置AI": 14,
+   "装船": 11,
+   "陆攻-真人": 6,
+   "挨打或其他": 1
+  },
+  "notes": [
+   "对局包的 94 次是 9 个号合计（drop30Events 只列前 30 条）；有录像可以对账的 A 房间 32 次：打内置 AI 14、装船 11、打真人 6、挨打 1（kaito9 [11070,11160] 丢 L4）。自己花掉的 31 次（97%）。这些窗口里余额合计跌 2.905 亿，同期自己花出去 4.953 亿（陆攻 1.328 亿、装船 3.176 亿、手续费 4,490 万）。",
+   "1500~3250 拍的骤降几乎都是一摞指令同拍落地：alex_k [1890,1980] −96%（1911 拍 9 条）、[2790,2880] −92%（2800、2849 拍各 9 条）、[2880,2970] −86%（2912 拍 5 条）；kaito9 [1890,1980] −75%、[2160,2250] −60%。",
+   "5760 拍以后 alex_k 的骤降都是装船或 over 出手：[7740,7830] 4 条船 4,150 万兵（−54%），[8550,8640] 2 条船 2,710 万兵（−60%），[9090,9180] 打 kaito9 2,560 万（−59%），[10350,10440] −49%（打滩头 4,700 万 + 装船 7,450 万），[10530,10620] −45%（装船 7,180 万）。",
+   "其余 4 个房间的 62 次没有录像，无法对账。"
+  ]
+ },
+ "transfers": {
+  "dispatched": 0,
+  "executed": 0,
+  "note": "1v1 模式不能捐款（iT=false），日志里 0 次调度，录像里 0 条捐款指令。"
+ },
+ "hub0004": [
+  "0004-(1) / 0005-(1) 队友互锁：本局不适用（没有队友，g.teams 全 0）。idle_scan.py 的「贴弱 AI 不出手、底线高于余额」alex_k 495 拍、kaito9 1,815 拍，底线来自内置 AI 邻居和对方真人，不是队友。",
+  "0004-(2) 同一个决策拍两条指令：34 个号·拍，分得清的第 2 条 17 条全部没落地、第 1 条 6 条里落地 4 条（same_tick.py A073）。成立。",
+  "0004-(3) 回包窗口重复下单：关闸串 121 个，串里第 2 条起的重复单 324 条 1.93 亿兵，占全部打人 / AI 出征兵的 52%；第一条占余额的中位 9%，整串中位 23%、最大 92%（blind_reorders.py A073 --lag）。成立。本局的回包窗口比广播里说的 11~19 拍长得多：没有歧义的 294 条陆攻延迟中位 71 拍，>25 拍的 207 条；而且长延迟只出现在连续每拍下单的时段，指令稀的时段（3500~4999 拍）延迟中位 9~15 拍。",
+  "0005-(2) 最小指令门槛：本局看到的是它的另外两面——D09（手续费摊进单价，滩头 AI 一直不吃）和 D18（0/1024 的指令，出的兵比手续费少）。",
+  "0005-(3) over 跳过价格检查：成立。over 状态下的出手 24 轮 3.30 亿兵；出手时地不比对方少的 15 轮 14 轮净得地为正，地比对方少的 9 轮 8 轮为负；另有对着滩头出 4,700 万兵的空打 2 次（D17）。",
+  "0005-(4)(5) 为利息而捐、弃子判定：本局不适用。",
+  "0005-(6) 单点登陆与兵退回：成立。22 条船回到自己地上作废（2.45 亿兵），其中 11 条是「同一落点的第二条船」；另外登陆的船多次登在碎岛上（D15）。"
+ ]
+}

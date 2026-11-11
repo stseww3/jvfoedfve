@@ -1,0 +1,81 @@
+#### [1500 2250)
+# A099 核心期行动拍的去向 [1500,2250)：共 1386 个号·行动拍
+合计：nooffer 447（32%），price 415（30%），出手 236（17%），floor 178（13%），chunk 62（4%），donate 33（2%），small 10（1%），boat 5（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：dp 178
+  noah88    150 拍：nooffer 80（53%），price 4（3%），出手 44（29%），chunk 21（14%），boat 1（1%）
+          按目标：chunk→49 18，chunk→71 3，price→49 2，price→71 2
+  sora_w    150 拍：nooffer 40（27%），price 94（63%），出手 14（9%），boat 2（1%）
+          按目标：price→261 94
+  zexos1    150 拍：price 69（46%），floor 62（41%），chunk 7（5%），small 10（7%），boat 2（1%）
+          按目标：floor→10 33，price→69 32，price→71 23，floor→56 22，small→10 10，price→10 9，chunk→69 7，floor→69 7
+  alex_k    150 拍：nooffer 52（35%），出手 72（48%），chunk 20（13%），donate 6（4%）
+          按目标：chunk→49 20
+  zero_7    150 拍：price 97（65%），出手 18（12%），floor 32（21%），chunk 3（2%）
+          按目标：price→10 77，floor→82 32，price→4 16，price→82 4，chunk→10 3
+  leo_tx    150 拍：nooffer 117（78%），出手 6（4%），donate 27（18%）
+  riku_x    150 拍：nooffer 150（100%）
+  kaito9    144 拍：nooffer 8（6%），price 70（49%），出手 27（19%），floor 39（27%）
+          按目标：price→71 45，floor→49 39，price→49 15，price→60 10
+  talon5    101 拍：price 53（52%），出手 35（35%），floor 13（13%）
+          按目标：price→71 37，floor→49 13，price→60 11，price→69 5
+  ryan_m     91 拍：price 28（31%），出手 20（22%），floor 32（35%），chunk 11（12%）
+          按目标：floor→82 32，price→82 20，chunk→82 11，price→69 8
+#### [2250 4500)
+# A099 核心期行动拍的去向 [2250,4500)：共 2835 个号·行动拍
+合计：nooffer 880（31%），price 734（26%），floor 710（25%），出手 201（7%），inflight 112（4%），sole 107（4%），small 36（1%），donate 25（1%），boat 15（1%），chunk 12（0%），send 3（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：dp 384，keep 294，cap+dp 30，sf/squad 2
+  noah88    450 拍：price 228（51%），floor 130（29%），出手 38（8%），inflight 24（5%），sole 8（2%），boat 10（2%），chunk 12（3%）
+          按目标：price→69 174，floor→71 91，price→8 34，floor→8 23，price→60 17，chunk→71 12，inflight→71 12，inflight→8 12
+  sora_w    450 拍：nooffer 136（30%），price 78（17%），floor 175（39%），出手 14（3%），inflight 40（9%），small 2（0%），donate 2（0%），boat 3（1%）
+          按目标：floor→261 124，floor→71 51，price→261 49，inflight→71 40，price→69 29，small→71 2
+  zexos1    450 拍：price 226（50%），floor 98（22%），出手 9（2%），inflight 3（1%），sole 99（22%），small 8（2%），donate 7（2%）
+          按目标：price→69 215，sole→69 99，floor→71 80，floor→56 18，price→71 9，small→71 6，inflight→69 3，price→56 2
+  zero_7    450 拍：price 165（37%），floor 205（46%），出手 34（8%），inflight 31（7%），small 12（3%），send 3（1%）
+          按目标：price→69 75，floor→8 71，floor→71 53，price→10 46，floor→10 40，price→4 29，floor→4 23，floor→69 16
+  leo_tx    450 拍：nooffer 302（67%），floor 24（5%），出手 88（20%），inflight 14（3%），small 14（3%），donate 8（2%）
+          按目标：floor→71 24，small→71 14，inflight→71 14
+  riku_x    450 拍：nooffer 442（98%），donate 8（2%）
+  alex_k    135 拍：price 37（27%），floor 78（58%），出手 18（13%），boat 2（1%）
+          按目标：floor→71 78，price→71 37
+#### [4500 6030)
+# A099 核心期行动拍的去向 [4500,6030)：共 1713 个号·行动拍
+合计：price 744（43%），nooffer 421（25%），sole 342（20%），出手 56（3%），boat 50（3%），floor 49（3%），donate 26（2%），small 16（1%），inflight 6（0%），send 2（0%），crowded 1（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：cap+dp 42，dp 7
+  noah88    306 拍：price 122（40%），sole 152（50%），boat 24（8%），donate 8（3%）
+          按目标：sole→69 152，price→69 122
+  sora_w    306 拍：price 124（41%），sole 148（48%），出手 3（1%），boat 25（8%），donate 6（2%）
+          按目标：sole→69 148，price→69 124
+  zexos1    306 拍：price 221（72%），sole 11（4%），出手 28（9%），boat 1（0%），floor 30（10%），small 11（4%），inflight 4（1%）
+          按目标：price→86 98，price→69 72，price→2 33，floor→1 24，price→1 18，sole→69 11，small→1 11，floor→86 6
+  zero_7    306 拍：price 220（72%），sole 31（10%），出手 25（8%），floor 19（6%），donate 1（0%），small 5（2%），inflight 2（1%），send 2（1%），crowded 1（0%）
+          按目标：price→86 149，price→69 71，sole→69 31，floor→1 10，floor→86 9，small→1 5，inflight→4 2，send→1 2
+  riku_x    306 拍：nooffer 301（98%），donate 5（2%）
+  leo_tx    183 拍：price 57（31%），nooffer 120（66%），donate 6（3%）
+          按目标：price→69 57
+#### [6030 6750)
+# A099 核心期行动拍的去向 [6030,6750)：共 720 个号·行动拍
+合计：price 334（46%），nooffer 174（24%），sole 74（10%），出手 49（7%），inflight 30（4%），boat 19（3%），send 16（2%），floor 15（2%），donate 7（1%），small 2（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：cap+dp 11，dp 4
+  noah88    144 拍：price 69（48%），nooffer 14（10%），sole 23（16%），出手 12（8%），inflight 1（1%），boat 8（6%），send 13（9%），floor 1（1%），donate 1（1%），small 2（1%）
+          按目标：price→69 69，sole→69 23，send→69 13，small→69 2，floor→69 1，inflight→69 1
+  sora_w    144 拍：price 65（45%），nooffer 20（14%），sole 20（14%），出手 12（8%），inflight 17（12%），boat 10（7%）
+          按目标：price→69 57，sole→69 20，inflight→69 17，price→2 8
+  zexos1    144 拍：price 112（78%），出手 15（10%），inflight 2（1%），send 1（1%），floor 14（10%）
+          按目标：price→69 74，price→2 38，floor→69 14，inflight→69 2，send→69 1
+  zero_7    144 拍：price 88（61%），sole 31（22%），出手 10（7%），inflight 10（7%），boat 1（1%），send 2（1%），donate 2（1%）
+          按目标：price→69 60，sole→69 31，price→16 26，inflight→69 10，send→69 2，price→2 2
+  riku_x    144 拍：nooffer 140（97%），donate 4（3%）
+#### [6750 7580)
+# A099 核心期行动拍的去向 [6750,7575)：共 549 个号·行动拍
+合计：price 408（74%），nooffer 105（19%），boat 24（4%），出手 6（1%），floor 5（1%），donate 1（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：keep 3，cap+dp 2
+  riku_x    165 拍：price 98（59%），nooffer 58（35%），boat 7（4%），出手 1（1%），donate 1（1%）
+          按目标：price→2 91，price→52 7
+  noah88    150 拍：price 91（61%），nooffer 47（31%），boat 7（5%），floor 5（3%）
+          按目标：price→16 91，floor→16 5
+  sora_w    146 拍：price 136（93%），boat 5（3%），出手 5（3%）
+          按目标：price→16 82，price→2 54
+  zero_7     59 拍：price 54（92%），boat 5（8%）
+          按目标：price→16 32，price→2 22
+  zexos1     29 拍：price 29（100%）
+          按目标：price→2 29

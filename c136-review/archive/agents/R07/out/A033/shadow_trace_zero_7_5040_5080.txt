@@ -1,0 +1,33 @@
+# A033 zero_7 影子决策明细 t=5040~5080（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 3 拍（t=5040~5050）；可用兵 559065~598971，一条指令下限(20%余额) 702252~710328，比值 80%~84%
+#   出手打人/bot: 3 拍（t=5055~5065）；可用兵 1406260~1432234，一条指令下限(20%余额) 821335~826591，比值 171%~173%
+#   没有可打的邻居: 3 拍（t=5070~5080）
+#   └ 「出手打人/bot」里：3 条对人/bot 的出兵共约 2891751 兵；其中超过软上限（over=1）时发的 3 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 3 条约 2891751 兵，c/worth = 3.12~3.12
+t=5040 zero_7 B=3511262 L=32345 d=108.6 nb=1 neut=0 cmds=75 noFull=1 shQ=877672 | m=0.900 worth=97.7 cheap=7.2 over=1 dMedOther=109.8 safe(-1)=248938
+    → Thy Hoarders#15[T3] terr=3767 bal=491628 dq=130.5 cnt=21 | c=352.8 rankC=352.8 need=761732 tD=1.19 人 | safe=248938 keep=2911050 avail=559065 chunkB=702252 pulseB=421351 不够一条
+    ⇒ 本拍没有指令
+t=5045 zero_7 B=3511262 L=32345 d=108.6 nb=1 neut=0 cmds=75 noFull=1 shQ=877815 | m=0.900 worth=97.7 cheap=7.2 over=1 dMedOther=109.6 safe(-1)=248938
+    → Thy Hoarders#15[T3] terr=3767 bal=491628 dq=130.5 cnt=21 | c=352.6 rankC=352.6 need=762460 tD=1.19 人 | safe=248938 keep=2911050 avail=559065 chunkB=702252 pulseB=421351 不够一条
+    ⇒ 本拍没有指令
+t=5050 zero_7 B=3551641 L=32345 d=109.8 nb=1 neut=0 cmds=75 noFull=1 shQ=887759 | m=0.900 worth=98.8 cheap=7.2 over=1 dMedOther=110.6 safe(-1)=250154
+    → Thy Hoarders#15[T3] terr=3767 bal=493791 dq=131.1 cnt=21 | c=354.2 rankC=354.2 need=766281 tD=1.19 人 | safe=250154 keep=2911050 avail=598971 chunkB=710328 pulseB=426197 不够一条
+    ⇒ 本拍没有指令
+t=5055 zero_7 B=4106675 L=32345 d=127.0 nb=1 neut=0 cmds=76 noFull=1 shQ=898176 | m=0.900 worth=114.3 cheap=7.2 over=1 dMedOther=110.2 safe(-1)=250154
+    → Thy Hoarders#15[T3] terr=3767 bal=493791 dq=131.1 cnt=21 | c=356.9 rankC=356.9 need=767010 tD=1.19 人 | safe=250154 keep=2652290 avail=1406260 chunkB=821335 pulseB=492801 
+    ⇒ 影子指令 attack pct=239 → Thy Hoarders#15[T3]（约 962501 兵）
+t=5060 zero_7 B=4132957 L=32345 d=127.8 nb=1 neut=0 cmds=77 noFull=1 shQ=949572 | m=0.900 worth=115.0 cheap=7.2 over=1 dMedOther=119.9 safe(-1)=251346
+    → Thy Hoarders#15[T3] terr=3767 bal=495914 dq=131.6 cnt=21 | c=358.4 rankC=358.4 need=770776 tD=1.10 人 | safe=251346 keep=2652290 avail=1432234 chunkB=826591 pulseB=495955 
+    ⇒ 影子指令 attack pct=238 → Thy Hoarders#15[T3]（约 964625 兵）
+t=5065 zero_7 B=4132957 L=32345 d=127.8 nb=1 neut=0 cmds=78 noFull=1 shQ=1001232 | m=0.900 worth=115.0 cheap=7.2 over=1 dMedOther=119.8 safe(-1)=251346
+    → Thy Hoarders#15[T3] terr=3767 bal=495914 dq=131.6 cnt=21 | c=358.2 rankC=358.2 need=771507 tD=1.10 人 | safe=251346 keep=2652290 avail=1432234 chunkB=826591 pulseB=495955 
+    ⇒ 影子指令 attack pct=238 → Thy Hoarders#15[T3]（约 964625 兵）
+t=5070 zero_7 B=2384571 L=32345 d=73.7 nb=1 neut=0 cmds=78 noFull=1 shQ=8286 | m=0.900 worth=92.4 cheap=7.2 over=0 dMedOther=120.7 safe(-1)=252516
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5075 zero_7 B=2384571 L=32345 d=73.7 nb=1 neut=0 cmds=78 noFull=1 shQ=49716 | m=0.900 worth=96.6 cheap=7.2 over=0 dMedOther=126.3 safe(-1)=252516
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5080 zero_7 B=2184950 L=32407 d=67.4 nb=1 neut=0 cmds=78 noFull=1 shQ=87264 | m=0.900 worth=97.3 cheap=7.2 over=0 dMedOther=127.2 safe(-1)=246268
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令

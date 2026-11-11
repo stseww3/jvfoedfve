@@ -1,0 +1,223 @@
+# outline v27-team-g09.js  lines=6124  bytes=249440
+import [4-4] import { NEUTRAL, P_INNER, P_BORDER, MAX_PLAYERS, iV } from "../../sim/index.js";
+import [5-5] import { T_LAND, T_WATER } from "../../sim/map.js";
+const spawnByRollout  [88-88] 1L = () => null
+const chooseMode  [89-89] 1L = () => 0
+const DEFAULT_PARAMS  [95-134] 40L = { period: 3, spawnRadius: 48, spawnSlack: 1, spawnCoast: 0.0, // neutral expansion: troops held for the next …
+function withoutPlayer(g, p)  [137-158] 22L
+  fn isBot(o)  [155-155] 1L
+  fn ownedBy(o, i)  [156-156] 1L
+const scratchBufs  [161-161] 1L = new Map()
+function scratch(N)  [162-169] 8L
+function farthest(dist, W, H, px, n)  [174-207] 34L
+class Strategy  [209-557] 349L
+  constructor(params = {}, me = 0)  [210-223] 14L
+  saveMemory()  [226-228] 3L
+  loadMemory(m)  [230-233] 4L
+  updateGrudges(g)  [236-239] 4L
+  targetBias(g, q)  [242-249] 8L
+  attackedByOthers(g, q)  [253-267] 15L
+  chooseSpawn(g)  [273-276] 4L
+  spawnCandidates(g, k)  [282-287] 6L
+  spawnDist(g, dist, keep = null)  [291-313] 23L
+  scoreSpawns(g, k, extra)  [315-363] 49L
+  spawnWeight()  [365-367] 3L
+  analyze(g)  [373-401] 29L
+  avgBotBalance(g)  [403-412] 10L
+  threatOf(g, q)  [417-444] 28L
+  safeBalance(g)  [447-460] 14L
+  elimCost(g, q)  [464-469] 6L
+  minCmd(g)  [474-476] 3L
+  send(g, target, troops)  [479-487] 9L
+  act(g)  [489-556] 68L
+const BASE  [574-574] 1L = {"period":5,"spawnRadius":45,"spawnSlack":2,"spawnCoast":0,"nLow":2.0404,"nHigh":2.2523,"nGrow":1.7099,"refN"…
+const GENERAL_PARAMS  [576-658] 83L = { ...BASE, safeK: 0, snipeK: 0, // economic reserve: full reserve for land costing cRef per pixel or more, //…
+const compCache  [660-660] 1L = new WeakMap()
+class General extends Strategy  [662-1058] 397L
+  constructor(params = {}, me = 0)  [663-672] 10L
+  saveMemory()  [674-676] 3L
+  loadMemory(m)  [678-684] 7L
+  compSize(g)  [689-718] 30L
+  chooseSpawn(g, final = true)  [723-730] 8L
+  spawnWeight(g, s)  [735-750] 16L
+  act(g)  [754-788] 35L
+    fn copy(m)  [760-760] 1L
+  warAct()  [791-793] 3L
+  floors(g)  [797-809] 13L
+    fn floorAt(price)  [807-807] 1L
+  counterAttack(g, floorAt)  [813-829] 17L
+  minNbPrice(g)  [831-838] 8L
+  updateWars(g)  [841-847] 7L
+  atWar(g, q)  [849-852] 4L
+  warBias(g, q)  [857-870] 14L
+  defenseNeed(g)  [877-891] 15L
+  altOf(g, q)  [896-918] 23L
+  expandNeutral(g, spend)  [922-931] 10L
+  pickTarget(g, floorAt, maxCost)  [934-970] 37L
+  boatOut(g, floorAt, maxEff)  [977-993] 17L
+  searchWater(g)  [998-1057] 60L
+    fn seed(list)  [1007-1017] 11L
+const STYLE_PARAMS  [1070-1076] 7L = { spawnRoll: 0, planEvery: 0, grudgeT: 3000, grudgeW: 0.25, pileW: 0.5, }
+class Style extends General  [1078-1156] 79L
+  constructor(params = {}, me = 0)  [1079-1081] 3L
+  price(g, q)  [1083-1085] 3L
+  person(g, q)  [1087-1089] 3L
+  grudgeOn(g, q)  [1091-1093] 3L
+  updateGrudges(g)  [1095-1098] 4L
+  allow()  [1101-1103] 3L
+  floorFor(g, q, f)  [1106-1108] 3L
+  minShare(g, q)  [1112-1114] 3L
+  amount(g, q, avail, need, min)  [1117-1120] 4L
+  pickTarget(g, floorAt, maxCost)  [1122-1155] 34L
+const shoreCache  [1164-1164] 1L = new WeakMap()
+function shores(g)  [1167-1190] 24L
+function bodiesOf(g, p)  [1193-1205] 13L
+function seaSample(g, p, n, rnd)  [1210-1247] 38L
+const PARAMS13  [1279-1608] 330L = { // full reserve for any land costing cRef per pixel or more, defence floor // kDef x what would make us a n…
+class V13 extends Style  [1610-2637] 1028L
+  constructor(params = {}, me = 0)  [1611-1613] 3L
+  chooseSpawn(g, final = true)  [1615-1629] 15L
+    fn make(me)  [1618-1618] 1L
+  spawnVsPeople(g, k = 1)  [1640-1650] 11L
+  spawnVsPeople0(g, k)  [1652-1758] 107L
+    fn spaced(list, k, gap)  [1676-1685] 10L
+    fn score(s)  [1694-1729] 36L
+  peopleCells(g, dist)  [1762-1785] 24L
+  idle(g)  [1787-1789] 3L
+  act(g)  [1791-1801] 11L
+  send(g, target, troops)  [1803-1808] 6L
+  frontBoat(g, q, troops)  [1812-1827] 16L
+  beachhead(g, q)  [1831-1860] 30L
+    fn rnd()  [1847-1847] 1L
+  bankAct(g)  [1864-1909] 46L
+    fn rnd()  [1890-1890] 1L
+  routeLeft(g, b)  [1912-1917] 6L
+  bankLands(g, b)  [1921-1932] 12L
+  warAct(g)  [1936-1969] 34L
+  boatFood(g)  [1979-1999] 21L
+  searchFood(g)  [2006-2058] 53L
+  hold(g)  [2061-2070] 10L
+  minShare(g, q)  [2072-2075] 4L
+  lowFood(g, q)  [2078-2080] 3L
+  foodRef(g, q)  [2083-2086] 4L
+  allow(g, q)  [2088-2097] 10L
+  duelOn(g)  [2100-2107] 8L
+  duelOk(g, q)  [2110-2115] 6L
+  duelSend(g, q, need, min)  [2120-2144] 25L
+    fn gap(X)  [2130-2134] 5L
+  motive(g, q)  [2147-2152] 6L
+  food(g, q)  [2154-2159] 6L
+  hoardFood(g, q)  [2163-2168] 6L
+  floors(g)  [2170-2174] 5L
+  peopleFloor(g)  [2181-2192] 12L
+  hasNeutral(g, q)  [2195-2204] 10L
+  floorFor(g, q, f)  [2206-2209] 4L
+  floorFor0(g, q, f)  [2211-2217] 7L
+  peopleCache(g)  [2219-2225] 7L
+  peopleOf(g, q)  [2228-2250] 23L
+  peopleSafe(g, q = -1)  [2256-2275] 20L
+  seaPeople(g)  [2279-2289] 11L
+    fn rnd()  [2284-2284] 1L
+  amount(g, q, avail, need, min)  [2291-2299] 9L
+  boatOut(g, floorAt, maxEff)  [2301-2306] 6L
+  amount0(g, q, avail, need, min)  [2308-2334] 27L
+  spawnDist(g, dist)  [2336-2347] 12L
+  expandNeutral(g, spend)  [2349-2358] 10L
+  dpNeutral(g)  [2362-2388] 27L
+  dpRings(g, u)  [2393-2431] 39L
+  dpKeep(g)  [2435-2440] 6L
+  botOk(g, q)  [2443-2449] 7L
+  botPx(g, q)  [2452-2454] 3L
+  winWorth(g)  [2457-2460] 4L
+  winFloor(g, q)  [2465-2472] 8L
+  safeFinite(g)  [2476-2486] 11L
+  dpValue(t)  [2491-2503] 13L
+  analyze(g)  [2505-2508] 4L
+  watchDumps(g)  [2513-2531] 19L
+  waitDump(g, q)  [2536-2546] 11L
+  elimCost(g, q)  [2548-2552] 5L
+  attackTicks(g, q)  [2555-2559] 5L
+  reserve(g, price)  [2562-2566] 5L
+  baseRate(g)  [2570-2575] 6L
+  targetBias(g, q)  [2577-2587] 11L
+  focusOf(g)  [2592-2609] 18L
+  outOfReach(g, q)  [2615-2619] 5L
+  contested(g, q)  [2622-2636] 15L
+const P17  [2640-2659] 20L = { coreFrom: 1500, chunk: 0.2, safeW: 0, killW: 1, maxW: 0.5, pplKill: 0, surplus: 1, hold: 0.9, growth: 1, po…
+class V17 extends V13  [2661-3071] 411L
+  constructor(params = {}, me = 0)  [2662-2664] 3L
+  updatePokeState(g, checkCnt = false)  [2675-2714] 40L
+  tryDeterrentCounter(g)  [2716-2875] 160L
+  act(g)  [2877-2888] 12L
+  safeAt(g, q)  [2891-2901] 11L
+  killKeep(g, f, around = null)  [2908-2914] 7L
+  safeFinite(g, skip = -1)  [2920-2931] 12L
+  offers(g)  [2935-2952] 18L
+  buyLand(g)  [2955-2976] 22L
+  compSize(g)  [2980-3010] 31L
+  floors(g)  [3012-3017] 6L
+    fn floorAt(price)  [3016-3016] 1L
+  boatOut(g, floorAt, maxEff)  [3020-3045] 26L
+  idleBoats(g)  [3047-3054] 8L
+  winRatio(t)  [3058-3065] 8L
+  winWorth(g)  [3067-3070] 4L
+function trip(d, troops, t0)  [3074-3084] 11L
+function troopsFor(need, d, t0)  [3086-3099] 14L
+const DX  [3129-3129] 1L = [0, 1, 1, 1, 0, -1, -1, -1]
+const DY  [3130-3130] 1L = [-1, -1, 0, 1, 1, 1, 0, -1]
+const mapIsleCache  [3132-3132] 1L = new WeakMap()
+function getMapIsles(g, maxIsleSize = 30, maxHopWater = 80, doorRadius = 35)  [3135-3207] 73L
+  fn isLand(i)  [3142-3142] 1L
+  fn isWater(i)  [3143-3143] 1L
+function medianHumanDensity(g)  [3209-3220] 12L
+function frogHopStep(g, me, state, opts = {})  [3229-3410] 182L
+function findCoastalBridgeheads(g, me, state, targetQ, opts = {})  [3414-3510] 97L
+function doorHarvestCandidates(g, me, state, opts = {})  [3513-3679] 167L
+function handoffFootholds(g, me, state, safeFloorFn)  [3683-3743] 61L
+function reigniteNewBorders(g, me, state, cnt, minShare = 0.10)  [3746-3797] 52L
+function widenFrontBoats(g, me, state, cnt, opts = {})  [3801-3857] 57L
+function guardAndRecall()  [3859-3862] 4L
+function futureInterestRebate(g, me, sendTroops, ticks, baseRatePer10)  [3865-3881] 17L
+  fn stepGrow(b)  [3871-3874] 4L
+export const PARAMS  [3900-3975] 76L = { ...P17, coreFrom: 1500, contestW: 0.68, sharedBotMult: 1.0, marketFloor: 0.85, marketFrom: 2500, period: 2,…
+export class Policy extends V17  [3977-6123] 2147L
+  constructor(params = {}, me = 0)  [3978-4007] 30L
+  updateShadowQuota(g)  [4009-4045] 37L
+  send(g, target, troops, budgetHint = troops)  [4047-4134] 88L
+  isTeammate(g, p)  [4136-4138] 3L
+  myOutTroops(g)  [4140-4145] 6L
+  isBossNpl(g, p)  [4148-4167] 20L
+  findBossId(g)  [4169-4174] 6L
+  isOurSquadBot(g, p)  [4176-4187] 12L
+  chooseSpawn(g, final = true)  [4194-4317] 124L
+  otherHumanMedDens(g)  [4319-4330] 12L
+  livingHumanCount(g)  [4332-4338] 7L
+  topOtherHuman(g)  [4340-4350] 11L
+  tryPeaceVote(g)  [4354-4392] 39L
+  tryEmergencyBossRescue(g)  [4396-4486] 91L
+  tryInterceptEnemyBoats(g)  [4495-4670] 176L
+    fn minCoastDistOf(p, tx, ty)  [4513-4524] 12L
+  tryClaimNearTeamIslands(g)  [4675-4783] 109L
+  tryDonateToTeammate(g)  [4786-4914] 129L
+  isMopUp(g)  [4916-4929] 14L
+  spawnWeight(g, s)  [4931-4937] 7L
+  safeAt(g, q)  [4939-4955] 17L
+  winFloor(g, q)  [4957-4965] 9L
+  hasBorderFood(g)  [4967-4973] 7L
+  newHumansExposed(g, q)  [4975-4984] 10L
+  activeFocus(g)  [4986-4999] 14L
+  peerAggressor(g)  [5001-5048] 48L
+  stepFlashLoan(g)  [5050-5114] 65L
+  tryStartFlashLoan(g)  [5116-5194] 79L
+  tryPeaceVoteWin(g)  [5196-5234] 39L
+  act(g)  [5236-5395] 160L
+  compSize(g)  [5397-5428] 32L
+  idleBoats(g)  [5430-5457] 28L
+  offers(g)  [5459-5713] 255L
+  buyLand(g)  [5715-6034] 320L
+    fn blockUndersized(amt)  [5873-5879] 7L
+    fn tryNarrowBoatFirst(wantLandTroops)  [5883-5943] 61L
+    fn canZeroPulse(amt)  [5954-5966] 13L
+    fn alignMultiRing(amt)  [5970-5987] 18L
+  boatFood(g)  [6036-6099] 64L
+  searchFood(g)  [6101-6122] 22L

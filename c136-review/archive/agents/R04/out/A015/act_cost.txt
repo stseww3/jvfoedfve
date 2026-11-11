@@ -1,0 +1,87 @@
+# A015 影子策略（va）每次决策的计算耗时（本机毫秒；每 300 拍一段；函数耗时含子调用）
+## sora_w#17
+  拍段          领土      决策拍  平均毫秒/决策拍  最大毫秒（拍）   ≥25 毫秒的拍数   耗时最多的函数（占这一段 act 总耗时）
+      0~299        552     59       0.28（×1.0）      2.4（5）      0          expandNeutral 19%，updateShadowQuota 11%，floors 4%，boatFood 1%
+    300~599       2885     60       0.60（×2.1）     10.4（440）      0          expandNeutral 5%，updateShadowQuota 3%，floors 1%，pickTarget 1%
+    600~899       7581     60       0.51（×1.8）     16.3（675）      0          pickTarget 11%，updateShadowQuota 4%，winFloor 4%，expandNeutral 3%
+    900~1199     12315     60       0.69（×2.4）     18.7（1040）      0          floors 19%，pickTarget 12%，winFloor 7%，safeFinite 4%
+   1200~1499     13117     60       0.58（×2.0）     12.6（1400）      0          pickTarget 37%，winFloor 6%，updateShadowQuota 3%，safeFinite 3%
+   1500~1799     15927     60       1.70（×6.0）     79.1（1775）      1          safeAt 80%，safeFinite 79%，buyLand 11%，offers 8%
+   1800~2099     17621     60       0.30（×1.1）      3.5（2050）      0          buyLand 29%，safeAt 12%，offers 11%，safeFinite 10%
+   2100~2399     20260     60       0.26（×0.9）      5.2（2280）      0          buyLand 56%，offers 40%，safeAt 10%，tryDonateToTeammate 9%
+   2400~2699     27367     60       0.14（×0.5）      0.3（2440）      0          buyLand 32%，offers 11%，tryDonateToTeammate 11%，safeAt 9%
+   2700~2999     32188     60       0.15（×0.5）      1.0（2765）      0          buyLand 18%，tryDonateToTeammate 14%，offers 10%，updateShadowQuota 7%
+   3000~3299     32729     60       0.85（×3.0）     41.6（3280）      1          idleBoats 86%，boatOut 81%，searchWater 81%，buyLand 3%
+   3300~3599     32729     60       6.01（×21.2）     52.9（3580）      5          idleBoats 97%，boatOut 96%，searchWater 96%，tryDonateToTeammate 1%
+   3600~3899     32729     60       6.85（×24.1）     65.1（3790）      6          idleBoats 98%，boatOut 97%，searchWater 97%，buyLand 0%
+   3900~4199     34789     60       1.33（×4.7）     30.8（3920）      1          idleBoats 88%，boatOut 87%，searchWater 87%，tryDonateToTeammate 5%
+   4200~4499     35605     60       3.67（×12.9）     41.4（4215）      4          idleBoats 97%，boatOut 96%，searchWater 96%，buyLand 1%
+   4500~4799     37863     60       3.77（×13.3）     43.4（4740）      6          idleBoats 97%，boatOut 95%，searchWater 95%，boatFood 2%
+   4800~5099     33144     60       0.19（×0.7）      0.7（4840）      0          buyLand 45%，offers 25%，updateShadowQuota 9%，safeAt 4%
+   5100~5399     33276     60       1.33（×4.7）     30.9（5130）      1          idleBoats 83%，boatFood 83%，searchFood 72%，floors 10%
+   5400~5699      9062     47       1.22（×4.3）     25.6（5515）      1          idleBoats 87%，boatFood 87%，searchFood 86%，buyLand 6%
+## noah88#18
+  拍段          领土      决策拍  平均毫秒/决策拍  最大毫秒（拍）   ≥25 毫秒的拍数   耗时最多的函数（占这一段 act 总耗时）
+      0~299        460     59       0.20（×1.0）      3.2（200）      0          expandNeutral 27%，floors 4%，updateShadowQuota 3%，pickTarget 2%
+    300~599       3223     60       1.36（×6.7）     73.3（445）      1          pickTarget 92%，winFloor 91%，safeFinite 90%，threatOf 90%
+    600~899       8829     60       0.35（×1.7）      5.4（600）      0          pickTarget 46%，expandNeutral 30%，winFloor 5%，safeFinite 3%
+    900~1199     10746     60       0.23（×1.2）      1.4（1165）      0          pickTarget 48%，winFloor 29%，safeFinite 18%，threatOf 16%
+   1200~1499     16453     60       0.21（×1.1）      2.3（1440）      0          pickTarget 29%，winFloor 22%，safeFinite 13%，threatOf 12%
+   1500~1799     16727     60       0.17（×0.8）      1.0（1500）      0          buyLand 32%，safeAt 21%，safeFinite 18%，threatOf 17%
+   1800~2099     20131     60       0.30（×1.5）     10.7（2070）      0          buyLand 8%，safeAt 3%，tryDonateToTeammate 2%，safeFinite 2%
+   2100~2399     20050     60       4.50（×22.4）     73.6（2160）      3          idleBoats 98%，boatOut 95%，searchWater 95%，buyLand 0%
+   2400~2699     20050     60       0.48（×2.4）     10.7（2420）      0          idleBoats 82%，boatOut 72%，searchWater 72%，tryDonateToTeammate 7%
+   2700~2999     20050     60       0.17（×0.8）      3.6（2920）      0          idleBoats 54%，tryDonateToTeammate 10%，buyLand 7%，offers 4%
+   3000~3299     20050     60       1.19（×5.9）     32.3（3220）      2          idleBoats 93%，boatOut 89%，searchWater 88%，isMopUp 3%
+   3300~3599     21064     60       3.72（×18.5）     53.3（3530）      3          idleBoats 97%，boatOut 96%，searchWater 95%，updateShadowQuota 1%
+   3600~3899     21193     60       4.43（×22.0）     33.6（3840）      5          idleBoats 98%，boatOut 97%，searchWater 97%，tryDonateToTeammate 1%
+   3900~4199     21637     60       2.03（×10.1）     22.3（3900）      0          idleBoats 97%，boatOut 95%，searchWater 95%，tryDonateToTeammate 1%
+   4200~4499     22618     60       3.07（×15.3）     42.5（4485）      2          idleBoats 93%，boatOut 92%，searchWater 92%，tryDonateToTeammate 1%
+   4500~4799     22687     60       3.66（×18.2）     29.6（4585）      2          idleBoats 98%，boatOut 97%，searchWater 97%，tryDonateToTeammate 0%
+   4800~5099     22687     60       0.14（×0.7）      1.7（4870）      0          idleBoats 45%，tryDonateToTeammate 10%，buyLand 7%，offers 4%
+   5100~5399     17726     60       0.53（×2.7）     11.0（5285）      0          idleBoats 68%，boatFood 66%，searchFood 65%，tryDonateToTeammate 17%
+   5400~5699        45     60       0.43（×2.1）     11.8（5405）      0          idleBoats 88%，boatFood 85%，searchFood 84%，buyLand 4%
+   5700~5999       686     60       0.08（×0.4）      0.1（5960）      0          buyLand 21%，offers 10%，safeAt 8%，expandNeutral 6%
+   6000~6299         0     29       1.71（×8.5）     12.1（6025）      0          idleBoats 79%，boatOut 61%，searchWater 61%，buyLand 18%
+## ryan_m#16
+  拍段          领土      决策拍  平均毫秒/决策拍  最大毫秒（拍）   ≥25 毫秒的拍数   耗时最多的函数（占这一段 act 总耗时）
+      0~299        443     59       0.26（×1.0）      5.1（5）      0          expandNeutral 45%，floors 17%，pickTarget 7%，winFloor 3%
+    300~599       2515     60       0.19（×0.7）      2.0（400）      0          pickTarget 21%，expandNeutral 18%，floors 5%，winFloor 4%
+    600~899       5885     60       0.21（×0.8）      2.0（815）      0          pickTarget 34%，winFloor 26%，dpKeep 15%，updateShadowQuota 11%
+    900~1199      6251     60       0.24（×0.9）      3.5（1138）      0          pickTarget 28%，updateShadowQuota 26%，winFloor 20%，safeFinite 14%
+   1200~1499      6590     60       0.94（×3.6）     32.4（1370）      1          pickTarget 19%，winFloor 4%，safeFinite 3%，threatOf 3%
+   1500~1799      7098     60       1.89（×7.3）     55.1（1775）      2          idleBoats 44%，tryDonateToTeammate 18%，buyLand 6%，boatFood 5%
+   1800~2099      6662     60       0.26（×1.0）      8.5（1835）      0          buyLand 9%，safeAt 5%，tryDonateToTeammate 5%，safeFinite 4%
+   2100~2399      6272     60       0.34（×1.3）     13.8（2125）      0          tryDonateToTeammate 71%，safeAt 68%，safeFinite 68%，buyLand 9%
+   2400~2699      7206     60       0.20（×0.8）      4.1（2400）      0          buyLand 37%，tryDonateToTeammate 32%，offers 26%，safeAt 5%
+   2700~2999      9261     60       1.05（×4.1）     18.2（2760）      0          idleBoats 87%，boatFood 86%，searchFood 86%，buyLand 7%
+   3000~3299     11634     60       1.62（×6.3）     44.5（3280）      1          idleBoats 91%，boatOut 45%，searchWater 45%，boatFood 45%
+   3300~3599     11634     60       3.39（×13.1）     20.8（3580）      0          idleBoats 97%，boatOut 93%，searchWater 93%，tryDonateToTeammate 0%
+   3600~3899     11634     60       4.83（×18.7）     42.7（3820）      2          idleBoats 96%，boatOut 95%，searchWater 95%，tryDonateToTeammate 3%
+   3900~4199     11634     60       4.33（×16.7）     42.7（4160）      1          idleBoats 98%，boatOut 95%，searchWater 95%，isMopUp 2%
+   4200~4499     11634     60       0.17（×0.6）      1.8（4390）      0          idleBoats 55%，tryDonateToTeammate 7%，buyLand 5%，offers 3%
+   4500~4799     11634     60       0.13（×0.5）      2.1（4680）      0          idleBoats 18%，tryDonateToTeammate 9%，buyLand 6%，offers 3%
+   4800~5099      6156     60       0.54（×2.1）     18.9（4995）      0          buyLand 63%，offers 62%，idleBoats 25%，boatFood 24%
+   5100~5399      2944     15       0.44（×1.7）      4.7（5130）      0          idleBoats 71%，boatFood 71%，searchFood 70%，buyLand 18%
+## leo_tx#19
+  拍段          领土      决策拍  平均毫秒/决策拍  最大毫秒（拍）   ≥25 毫秒的拍数   耗时最多的函数（占这一段 act 总耗时）
+      0~299        420     59       0.28（×1.0）      4.7（150）      0          expandNeutral 29%，updateShadowQuota 8%，floors 2%，pickTarget 0%
+    300~599       2521     60       0.94（×3.4）     49.4（470）      1          pickTarget 91%，expandNeutral 3%，winFloor 2%，updateShadowQuota 0%
+    600~899       5549     60       0.11（×0.4）      0.3（605）      0          pickTarget 23%，expandNeutral 10%，winFloor 10%，floors 9%
+    900~1199      6799     60       0.11（×0.4）      0.8（1025）      0          pickTarget 28%，winFloor 22%，safeFinite 15%，threatOf 13%
+   1200~1499      6842     60       0.45（×1.6）     22.1（1370）      0          pickTarget 4%，winFloor 3%，safeFinite 2%，threatOf 2%
+   1500~1799      6618     60       4.21（×15.1）    247.4（1518）      1          updateShadowQuota 98%，buyLand 1%，safeAt 0%，safeFinite 0%
+   1800~2099      9195     60       0.10（×0.3）      0.5（2035）      0          buyLand 22%，safeAt 11%，tryDonateToTeammate 10%，safeFinite 9%
+   2100~2399      9195     60       0.09（×0.3）      0.8（2175）      0          buyLand 39%，safeAt 12%，offers 11%，safeFinite 10%
+   2400~2699      9597     60       0.13（×0.5）      4.0（2415）      0          buyLand 19%，offers 7%，safeAt 7%，safeFinite 5%
+   2700~2999      9785     60       0.12（×0.4）      0.7（2833）      0          idleBoats 23%，tryDonateToTeammate 19%，updateShadowQuota 12%，buyLand 10%
+   3000~3299      9785     60       1.82（×6.5）    103.4（3280）      1          idleBoats 96%，boatOut 94%，searchWater 94%，tryDonateToTeammate 1%
+   3300~3599      9785     60       4.58（×16.5）     38.4（3300）      3          idleBoats 98%，boatOut 98%，searchWater 98%，tryDonateToTeammate 0%
+   3600~3899      9785     60       5.00（×18.0）     40.0（3840）      1          idleBoats 99%，boatOut 98%，searchWater 98%，tryDonateToTeammate 0%
+   3900~4199      9785     60       0.85（×3.1）     27.9（3900）      1          idleBoats 87%，boatOut 84%，searchWater 84%，tryDonateToTeammate 3%
+   4200~4499      9785     60       0.13（×0.5）      1.9（4290）      0          tryDonateToTeammate 20%，idleBoats 18%，buyLand 5%，offers 3%
+   4500~4799     10163     60       0.15（×0.5）      3.3（4740）      0          tryDonateToTeammate 6%，expandNeutral 5%，buyLand 4%，idleBoats 4%
+   4800~5099     10336     60       0.13（×0.5）      2.2（4815）      0          expandNeutral 29%，idleBoats 11%，buyLand 10%，tryDonateToTeammate 10%
+   5100~5399     10336     60       0.10（×0.3）      0.2（5130）      0          buyLand 51%，offers 28%，updateShadowQuota 7%，safeAt 4%
+   5400~5699      9774     60       0.76（×2.7）     20.4（5450）      0          idleBoats 75%，boatFood 75%，searchFood 74%，buyLand 8%
+   5700~5999      2803     52       0.61（×2.2）     14.5（5910）      0          idleBoats 35%，boatFood 35%，searchFood 34%，buyLand 13%

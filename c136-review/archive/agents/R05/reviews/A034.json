@@ -1,0 +1,5569 @@
+{
+ "matchId": "A034",
+ "reviewer": "R05",
+ "protocol": "v2.0",
+ "context": {
+  "cohort": "squad10",
+  "strategyVersion": "Vb(v27-team-c116-vb.js)",
+  "timeUtc": "2026-11-10T02:14:00Z",
+  "map": "10(931x959)",
+  "mapLand": 546152,
+  "humans": 33,
+  "headerTeams": 3,
+  "actualTeams": 3,
+  "teamSizes": [
+   11,
+   11,
+   11
+  ],
+  "baseWinExpectation": 0.333,
+  "ourTeam": 3,
+  "ourTeamSize": 11,
+  "squadBotsInReplay": [
+   "ryan_m#21",
+   "zero_7#28",
+   "talon5#26",
+   "kaito9#29",
+   "sora_w#22",
+   "noah88#23",
+   "alex_k#27",
+   "leo_tx#25",
+   "riku_x#30"
+  ],
+  "squadBotsNotInReplay": [],
+  "teamSplit": {
+   "3": 7
+  },
+  "sameRoomPeer": null,
+  "realHumansExcludingBothSquads": 24,
+  "leftByT1000": {
+   "squad": 0,
+   "peer": 0,
+   "real": 0
+  },
+  "leftByT2000": {
+   "squad": 0,
+   "peer": 0,
+   "real": 1
+  },
+  "classSizes": {
+   "squad": 9,
+   "peer": 0,
+   "real": 24
+  },
+  "replayEndTick": 5810,
+  "simCheck": "442/442 条 [HL-TICK] 的地、兵与逐拍重放相等",
+  "teamSplitByReplay": {
+   "3": 9
+  },
+  "note": "表头 3 队、实际 3 队（11/11/11，落子 32 人：T3 的 Nutter 没有落子）。我方 9 个号全在 T3，squadBots 里的 zexos1 没有进房；T3 另有路人队友 ★（1947 拍离线，3157 拍阵亡）。同房没有第二支我方编队。"
+ },
+ "outcome": {
+  "result": "lost",
+  "endTick": 5808,
+  "replayEndTick": 5810,
+  "winnerTeam": 1,
+  "winnerTeamByReplay": 1,
+  "ourTeamPeakShare": 16.6,
+  "ourTeamPeakT": 2160,
+  "squadPeakShare": 15.1,
+  "squadPeakT": 3600,
+  "finalShares": {
+   "T1": 99.7,
+   "T2": 0.0,
+   "T3": 0.0
+  },
+  "note": "endTick 5808 是结果行拍号（leo_tx 的客户端上报离场）；T1 终局 99.7%。T3 峰值 16.6%@2160，编队峰值 15.1%@3600（人数占比 28.1%）；T3 180–600 拍排第二，900 拍起一直第三。"
+ },
+ "timeline": [
+  {
+   "t": 90,
+   "teamShare": {
+    "T1": 0.1,
+    "T2": 0.2,
+    "T3": 0.0
+   },
+   "ourTeamRank": 3,
+   "botsShare": 2.4,
+   "squadShare": 0.0,
+   "squadBal": 4783,
+   "squadDens": 21.9,
+   "squadActive": 9,
+   "squadAlive": 9,
+   "ourTeamActiveHumans": 10,
+   "note": "九个号全部落子（179 条出生指令，t=−38…−2）。东北角的扇形阵：锚点 (766,180) 16–65 格内有 SPARTUS 300、Player 607、ProfChaos 三个敌人，ALBOSS 在阵里（离 riku_x 47 格）；四个人都在我方第一条出生指令之前落子。"
+  },
+  {
+   "t": 180,
+   "teamShare": {
+    "T1": 0.2,
+    "T2": 0.4,
+    "T3": 0.3
+   },
+   "ourTeamRank": 2,
+   "botsShare": 4.4,
+   "squadShare": 0.3,
+   "squadBal": 10092,
+   "squadDens": 7.2,
+   "squadActive": 9,
+   "squadAlive": 9,
+   "ourTeamActiveHumans": 10,
+   "note": "开局中立扩张；T3 0.3%（T1 0.2%、T2 0.4%），第二。"
+  },
+  {
+   "t": 360,
+   "teamShare": {
+    "T1": 1.0,
+    "T2": 1.4,
+    "T3": 1.1
+   },
+   "ourTeamRank": 2,
+   "botsShare": 12.0,
+   "squadShare": 1.1,
+   "squadBal": 19637,
+   "squadDens": 3.3,
+   "squadActive": 9,
+   "squadAlive": 9,
+   "ourTeamActiveHumans": 10,
+   "note": "编队 1.1%；t=300 我方号地中位 459 对真人 476。"
+  },
+  {
+   "t": 600,
+   "teamShare": {
+    "T1": 3.7,
+    "T2": 4.9,
+    "T3": 4.5
+   },
+   "ourTeamRank": 2,
+   "botsShare": 37.8,
+   "squadShare": 4.3,
+   "squadBal": 47356,
+   "squadDens": 2.0,
+   "squadActive": 9,
+   "squadAlive": 9,
+   "ourTeamActiveHumans": 10,
+   "note": "编队 4.3%（23,477 格）/47k；我方号地中位 2,663 对其他真人 2,185（名次 4–20/32）。机器人 37.8%。0–599 拍 87 条指令全部落地。"
+  },
+  {
+   "t": 900,
+   "teamShare": {
+    "T1": 9.3,
+    "T2": 10.7,
+    "T3": 8.0
+   },
+   "ourTeamRank": 3,
+   "botsShare": 68.7,
+   "squadShare": 7.1,
+   "squadBal": 211358,
+   "squadDens": 5.5,
+   "squadActive": 9,
+   "squadAlive": 9,
+   "ourTeamActiveHumans": 10,
+   "note": "机器人占图到顶（68.7%）。编队 7.1%（38,546 格）/211k；T1 9.3%、T2 10.7%、T3 8.0%（第三）。600–899 拍影子过闸 133 条、录像里 59 条；910 拍出现第一个同拍批。"
+  },
+  {
+   "t": 1200,
+   "teamShare": {
+    "T1": 19.6,
+    "T2": 20.4,
+    "T3": 10.3
+   },
+   "ourTeamRank": 3,
+   "botsShare": 48.2,
+   "squadShare": 8.0,
+   "squadBal": 704290,
+   "squadDens": 16.2,
+   "squadActive": 9,
+   "squadAlive": 9,
+   "ourTeamActiveHumans": 10,
+   "note": "编队 8.0%（300 拍只多 4,920 格）；T1 19.6%、T2 20.4%（各多 10 个点）。编队存兵 704k，多于 T1 的 590k、T2 的 578k；我方号地的名次 21–32/32。"
+  },
+  {
+   "t": 1500,
+   "teamShare": {
+    "T1": 31.2,
+    "T2": 33.0,
+    "T3": 10.5
+   },
+   "ourTeamRank": 3,
+   "botsShare": 24.2,
+   "squadShare": 8.6,
+   "squadBal": 1593571,
+   "squadDens": 34.0,
+   "squadActive": 9,
+   "squadAlive": 9,
+   "ourTeamActiveHumans": 10,
+   "note": "编队 8.6%/1.59M（密度 34；T1 1.12M 密度 7、T2 1.16M 密度 6）。地中位 5,318 对其他真人 16,181；机器人还剩 24.2%。到这一拍编队累计收入 1.84M，花在机器人身上 286k。"
+  },
+  {
+   "t": 1800,
+   "teamShare": {
+    "T1": 41.9,
+    "T2": 39.8,
+    "T3": 11.4
+   },
+   "ourTeamRank": 3,
+   "botsShare": 6.1,
+   "squadShare": 9.6,
+   "squadBal": 2200855,
+   "squadDens": 42.0,
+   "squadActive": 9,
+   "squadAlive": 9,
+   "ourTeamActiveHumans": 10,
+   "note": "编队 9.6%/2.20M（密度 42）；机器人只剩 6.1%，T1 41.9%、T2 39.8%。1799 拍 riku_x 的 9 条同拍批（1500–1540 拍的决定）打出 96% 的存兵。"
+  },
+  {
+   "t": 2100,
+   "teamShare": {
+    "T1": 42.2,
+    "T2": 40.4,
+    "T3": 16.1
+   },
+   "ourTeamRank": 3,
+   "botsShare": 0.6,
+   "squadShare": 14.1,
+   "squadBal": 1401897,
+   "squadDens": 18.2,
+   "squadActive": 9,
+   "squadAlive": 9,
+   "ourTeamActiveHumans": 9,
+   "note": "编队 14.1%（76,911 格）/1.40M：ALBOSS 2082 拍阵亡，它丢的地 97% 归编队。九个打真人的同拍批把兵打空：编队兵÷T1 兵 1.09→0.43；zero_7 剩 13k。T3 峰值 16.6%@2160。"
+  },
+  {
+   "t": 2400,
+   "teamShare": {
+    "T1": 44.5,
+    "T2": 38.3,
+    "T3": 15.1
+   },
+   "ourTeamRank": 3,
+   "botsShare": 0.6,
+   "squadShare": 13.3,
+   "squadBal": 2505076,
+   "squadDens": 34.6,
+   "squadActive": 8,
+   "squadAlive": 8,
+   "ourTeamActiveHumans": 8,
+   "note": "编队 13.3%/2.51M；zero_7 2388 拍阵亡（Player 813 七条 204k 拿走 10,374 格）。有报价的 7 个号里 5 个被价格门收口，握着编队 81% 的兵。"
+  },
+  {
+   "t": 2700,
+   "teamShare": {
+    "T1": 46.4,
+    "T2": 37.4,
+    "T3": 15.2
+   },
+   "ourTeamRank": 3,
+   "botsShare": 0.7,
+   "squadShare": 13.8,
+   "squadBal": 3347025,
+   "squadDens": 44.5,
+   "squadActive": 8,
+   "squadAlive": 8,
+   "ourTeamActiveHumans": 8,
+   "note": "编队 13.8%/3.35M。ProfChaos 24,959→17,854 格、存兵 18k，地在被 SPARTUS 300 拿走；紧挨着它的 kaito9、noah88 存兵低于留底，出不了手。"
+  },
+  {
+   "t": 3000,
+   "teamShare": {
+    "T1": 48.0,
+    "T2": 35.4,
+    "T3": 15.7
+   },
+   "ourTeamRank": 3,
+   "botsShare": 0.6,
+   "squadShare": 14.2,
+   "squadBal": 4573966,
+   "squadDens": 59.2,
+   "squadActive": 8,
+   "squadAlive": 8,
+   "ourTeamActiveHumans": 8,
+   "note": "编队 14.2%（77,310 格）/4.57M（密度 59）；T1 48.0%/12.40M、T2 35.4%/7.64M；编队兵÷T1 兵 0.37。SPARTUS 300 从 7,445 格涨到 23,285 格。"
+  },
+  {
+   "t": 3300,
+   "teamShare": {
+    "T1": 49.5,
+    "T2": 34.7,
+    "T3": 14.9
+   },
+   "ourTeamRank": 3,
+   "botsShare": 0.6,
+   "squadShare": 14.9,
+   "squadBal": 6149135,
+   "squadDens": 75.6,
+   "squadActive": 8,
+   "squadAlive": 8,
+   "ourTeamActiveHumans": 8,
+   "note": "编队 14.9%/6.15M（密度 76）；路人队友 ★ 3157 拍阵亡。有报价的 7 个号里 6 个被价格门收口（握着 82% 的兵）。"
+  },
+  {
+   "t": 3600,
+   "teamShare": {
+    "T1": 51.0,
+    "T2": 33.7,
+    "T3": 15.1
+   },
+   "ourTeamRank": 3,
+   "botsShare": 0.0,
+   "squadShare": 15.1,
+   "squadBal": 7319170,
+   "squadDens": 88.6,
+   "squadActive": 8,
+   "squadAlive": 8,
+   "ourTeamActiveHumans": 8,
+   "note": "编队峰值 15.1%（82,581 格）/7.32M（密度 89）；七个敌邻合计 15.79M。3514–3619 拍四个号对四个敌人打出 1.85M。"
+  },
+  {
+   "t": 3900,
+   "teamShare": {
+    "T1": 54.6,
+    "T2": 32.3,
+    "T3": 13.0
+   },
+   "ourTeamRank": 3,
+   "botsShare": 0.0,
+   "squadShare": 13.0,
+   "squadBal": 6243897,
+   "squadDens": 88.0,
+   "squadActive": 8,
+   "squadAlive": 8,
+   "ourTeamActiveHumans": 8,
+   "note": "编队 13.0%/6.24M：jet、Player 813、Trace、Player 31、SPARTUS 300 轮流打 talon5、alex_k、ryan_m；3601–3900 拍 5 笔捐兵到账 1.00M、税 310k。"
+  },
+  {
+   "t": 4200,
+   "teamShare": {
+    "T1": 61.4,
+    "T2": 28.6,
+    "T3": 9.2
+   },
+   "ourTeamRank": 3,
+   "botsShare": 0.0,
+   "squadShare": 9.2,
+   "squadBal": 4348632,
+   "squadDens": 86.8,
+   "squadActive": 7,
+   "squadAlive": 7,
+   "ourTeamActiveHumans": 7,
+   "note": "编队 9.2%（50,074 格）/4.35M；alex_k 4063、ryan_m 4214、riku_x 4217 拍阵亡；编队兵÷T1 兵 0.16。"
+  },
+  {
+   "t": 4500,
+   "teamShare": {
+    "T1": 64.3,
+    "T2": 28.7,
+    "T3": 5.9
+   },
+   "ourTeamRank": 3,
+   "botsShare": 0.0,
+   "squadShare": 5.9,
+   "squadBal": 3011005,
+   "squadDens": 93.2,
+   "squadActive": 5,
+   "squadAlive": 5,
+   "ourTeamActiveHumans": 5,
+   "note": "编队 5.9%/3.01M。leo_tx 4445 拍出了一条 1,897 兵的船，4490 拍地和兵清零，因为海上有船没有被除名。"
+  },
+  {
+   "t": 4800,
+   "teamShare": {
+    "T1": 72.3,
+    "T2": 23.0,
+    "T3": 3.8
+   },
+   "ourTeamRank": 3,
+   "botsShare": 0.0,
+   "squadShare": 3.8,
+   "squadBal": 2061782,
+   "squadDens": 98.6,
+   "squadActive": 3,
+   "squadAlive": 3,
+   "ourTeamActiveHumans": 3,
+   "note": "编队 3.8%/2.06M（在场 kaito9、sora_w）；talon5 4595、noah88 4610 拍阵亡。"
+  },
+  {
+   "t": 5100,
+   "teamShare": {
+    "T1": 78.7,
+    "T2": 18.0,
+    "T3": 3.0
+   },
+   "ourTeamRank": 3,
+   "botsShare": 0.0,
+   "squadShare": 3.0,
+   "squadBal": 1171008,
+   "squadDens": 71.8,
+   "squadActive": 3,
+   "squadAlive": 3,
+   "ourTeamActiveHumans": 3,
+   "note": "编队 3.0%/1.17M；Player 31 三条 855k、Trace 一条 1.64M 落在 sora_w 身上。"
+  },
+  {
+   "t": 5400,
+   "teamShare": {
+    "T1": 88.7,
+    "T2": 11.0,
+    "T3": 0.0
+   },
+   "ourTeamRank": 3,
+   "botsShare": 0.0,
+   "squadShare": 0.0,
+   "squadBal": 45,
+   "squadDens": 45.0,
+   "squadActive": 1,
+   "squadAlive": 1,
+   "ourTeamActiveHumans": 1,
+   "note": "编队 0.0%：sora_w 5164、kaito9 5266 拍阵亡；T1 88.7%。"
+  },
+  {
+   "t": 5700,
+   "teamShare": {
+    "T1": 99.7,
+    "T2": 0.0,
+    "T3": 0.0
+   },
+   "ourTeamRank": 2,
+   "botsShare": 0.0,
+   "squadShare": 0.0,
+   "squadBal": 78,
+   "squadDens": 78.0,
+   "squadActive": 1,
+   "squadAlive": 1,
+   "ourTeamActiveHumans": 1,
+   "note": "T1 99.7%。leo_tx 的船 5008 拍落在 jet 的地上，剩 1 格/90 兵。"
+  },
+  {
+   "t": 5790,
+   "teamShare": {
+    "T1": 99.7,
+    "T2": 0.0,
+    "T3": 0.0
+   },
+   "ourTeamRank": 2,
+   "botsShare": 0.0,
+   "squadShare": 0.0,
+   "squadBal": 87,
+   "squadDens": 87.0,
+   "squadActive": 1,
+   "squadAlive": 1,
+   "ourTeamActiveHumans": 1,
+   "note": "终局：T1 99.7%（Trace 28.3%）。"
+  }
+ ],
+ "phases": {
+  "spawn_0_90": {
+   "facts": [
+    "后端 33 次求解全部 K=10：squadBots 里的 zexos1 没有进房，每次求解都给它留一个点（槽位 8；首次求解的点是 (755,378)）。",
+    "最终点位：ryan_m (768,216)、zero_7 (577,219)、talon5 (624,277)、kaito9 (912,263)、sora_w (856,326)、noah88 (845,247)、alex_k (691,335)、leo_tx (696,257)、riku_x (773,284)。最近队友距离最小 68、中位 75 格；离阵心最远 179 格；阵的半径内有 5 个其他真人。",
+    "首次求解（shadow_spawn.mjs --at -42 --corners --slots … --phantom 8:99）：盘面上还没有任何真人落子，协调器按陆地打分选中东北角（复算总分 16,859；西南角 15,650、东南角 14,911），解出的九个点与日志里第一批 [HL-SPAWN-BACKEND] 逐点相同（尖端 (783,228)）。角从此锁定。",
+    "一拍之后（t=−41）七个真人落子，五个在东北角锚点 227 格以内：SPARTUS 300 离锚点 20 格、Player 607 28 格、ProfChaos 77 格、ALBOSS 107 格、Player 184 122 格。对 t=−41 的盘面从零求解选的是西南角（15,650，角内 0 个敌人，最近的敌人 391 格）；东北角 13,337。t=−38（我方第一条出生指令）东北角 13,151（角内 6 人）对西南角 15,650。",
+    "t=−6 的盘面：东北角锚点 (766,180) 四周 99/107 个采样点是陆地、离地图角 210 格；SPARTUS 300 离锚点 16 格、Player 607 22 格、ProfChaos 65 格、ALBOSS 148 格。九个点里 2 个离敌人不到 enemyMinClearance（53 格）：ryan_m 的点离 SPARTUS 300 43 格，riku_x 的目标点离 ALBOSS 34 格。",
+    "出生份额（spawn_voronoi.mjs）：编队名下 81,694 格＝全图 15.0%，人数占 28.1%（9/32），份额÷人数 0.53。每号中位 8,233 格（riku_x 4,710、ryan_m 5,152、sora_w 6,184）；其他真人中位 19,589、下四分位 14,559。T1 名下 39.9%、T2 40.6%、★ 4.6%。",
+    "海岸（coast_len.mjs）：kaito9、sora_w、noah88、riku_x 在每个采样拍海岸格数都是 0，alex_k 到 3000 拍为止是 0。"
+   ],
+   "problems": [
+    "SP-CORNER-LOCK：角在空盘上选定后不再比较",
+    "SP-ENEMY-INSIDE：扇形点位排在已落子的敌人身边",
+    "SP-SHARE-SHORT / SP-INLAND-ANCHOR：九个号挤在 15.0% 的陆地里，锚点四周 93% 是陆地",
+    "SP-PHANTOM-SLOT：给没进房的号留位"
+   ]
+  },
+  "opening_90_630": {
+   "facts": [
+    "中立扩张不输真人：t=300 地中位 459 对 476；t=600 2,663 对 2,185（review_skel.py 的 cmp；A034_facts.py §8）。",
+    "T3 180–600 拍排第二（t=600：T1 3.7%、T2 4.9%、T3 4.5%）。",
+    "0–599 拍 87 条过闸指令全部出现在录像里（A034_facts.py §23）；没有同拍批。",
+    "t=600 编队的地是出生份额的 29%，其他真人 10%（spawn_voronoi.mjs --vs）。"
+   ],
+   "problems": [
+    "没有新问题"
+   ]
+  },
+  "midgame_630_3500": {
+   "facts": [
+    "机器人的地（A034_facts.py §7）：600–1199 拍真人共拿 135,134 格，编队 11,804 格（8.7%，每号中位 814 对别人 4,673）；1200–1799 拍 187,870 格里编队 6,454 格（3.4%，每号中位 591 对 7,967）。900→1500 拍机器人让出 242,942 格，编队 +8,293 格（全图的 1.5%），T1 +21.9 个点、T2 +22.3 个点。",
+    "同一时段编队的兵比两支敌队都多：1200 拍 704k 对 590k/578k，1500 拍 1.59M 对 1.12M/1.16M（密度 34 对 7、6）。到 1500 拍累计收入 1.84M，打机器人 286k、打中立 344k，剩 1.59M。",
+    "留底锁（floor_tally.py，500–1700 拍每 25 拍采样）：有相邻机器人的 407 个（号×拍）样本锁死 214 个（52%）。500–900 拍 116/144，其中 84 个 safeFinite 为 0 仍没有目标过得了留底（价格项：机器人每格价 > winR×t×自己密度）；900–1200 拍 48/105，定留底的是我方号的 30 个；1200–1500 拍 40/96，我方号 28 个。talon5 900–1500 拍 22/24 个样本被 alex_k 的存兵锁住，身边的机器人地中位 5,644→11,529 格。",
+    "没锁的时候发的是最小额：打机器人的决策 900–1199 拍 263 条里 167 条 pct ≤48（存兵的 4.7%，每条中位 2,420 兵），1200–1499 拍 248 条里 244 条（中位 5,668 兵）。",
+    "下发（A034_facts.py §23）：600–1799 拍过闸 1,074 条，录像里 350 条；全程过闸 1,441 条，录像里 725 条，716 条（50%）没有出现。落地的 706 条陆攻/出船里 392 条在 46 个同拍批里（≥5 条，全在 7 的倍数拍，34 个是 9 条）；46 批全部按决策的倒序落地，唯一匹配的 33 批陈旧度中位 236 拍。批内 152 条落空、197 条的目标类别变了（机器人已死，改写成中立）。",
+    "ryan_m 1500–1825 拍每个决策拍先发一条最小额的中立指令，同拍 buyLand 的指令被「每拍 1 条」挤掉 47 条（含 15 条打 ALBOSS 的）；它的地 1500→2400 拍从 5,318 格到 5,436 格，存兵 153k→538k。",
+    "1799–2023 拍九个打真人的同拍批：riku_x 298k 打出 287k（96%）、kaito9 399k→377k（94%）、zero_7 253k→240k（95%）、alex_k 430k→318k（74%）……ALBOSS 2082 拍阵亡，11,349 格里 10,994 格归编队；编队 9.6%→14.1%，存兵 2.20M→1.40M，同期 T1 2.02M→3.24M、T2 1.75M→2.42M。",
+    "zero_7 两个批后剩 235 兵/10,371 格（2053 拍）；Player 813 2051–2289 拍七条 204k 拿走 10,374 格，zero_7 2388 拍阵亡。捐兵探针 2150–2300 拍把它判为弃子，急援分支要求捐出方密度 ≥102（L4466 ×31），没有号够格。",
+    "2100–3300 拍价格门（offers_price.py）：有报价的号里被 L5359 收口的 2105 拍 6/8（握着 75% 的兵）、2400 拍 5/7（81%）、2700 拍 5/7（79%）、3000 拍 6/7（79%）、3300 拍 6/7（82%）；最便宜报价÷估值中位 1.50→1.60→1.87→2.68→3.02。talon5、sora_w 2100–3299 拍每 300 拍 60/60 次调用在 L5359 收口。",
+    "ProfChaos 2400–2999 拍丢的地：SPARTUS 300 17,373 格、kaito9 1,837 格、noah88 0 格。探针（2150–2850 拍每 50 拍）：noah88 15 个样本对 ProfChaos 的报价都过了价格门（0.04–0.99×估值），可用兵全为负（−240k…−66k）；kaito9 2500–2700 拍 5 个样本可用兵为负。留底取 dpKeep＝（最强真人邻居的存兵 − 1.5×自己的地）÷1.78，邻居是 SPARTUS 300（2150 拍 564k）。",
+    "ryan_m 2105–2400 拍对 Player 607（12,616 格，接触 10 格）的报价是估值的 1.14–1.60 倍，其中接触面罚价 ×1.80；去掉罚价是 0.63–0.89 倍（offers_price.py --contact）。它的存兵 369k→538k，2410 拍密度到 100 才出手。",
+    "编队兵÷T1 兵：2100 拍 0.43、2400 拍 0.49、3000 拍 0.37、3300 拍 0.37；÷T2 兵 0.58、0.70、0.60、0.60。riku_x 2100–3900 拍没有敌邻。"
+   ],
+   "problems": [
+    "AT-BOTLOCK",
+    "IO-LAG-STALE / IO-BATCH9",
+    "AT-NEUTRAL-CROWD",
+    "DN-DONOR-GATE / DF-DOOMED-POCKET",
+    "AT-PRICE-HOLD",
+    "AT-SAFEAT-HOLD",
+    "AT-CONTACT-PENALTY",
+    "SP-ENCLOSED / EC-BANK-IDLE"
+   ]
+  },
+  "endgame_3500_plus": {
+   "facts": [
+    "3600 拍：编队 7.32M（密度 89），七个敌邻 15.79M（Trace 3.97M、jet 3.27M、SPARTUS 300 2.05M、Patliputra 1.95M、Player 31 1.79M、Player 813 1.71M、Player 607 1.05M）。",
+    "打真人的出口：2100 拍以后影子里 32 段对真人的出手，23 段在密度 ≥100 时开始（A034_facts.py §19）；全程 47 轮里放行的 21 轮打出 5.26M（打真人支出的 59%，volleys.py）；跟在首条后面的指令合计 5.33M（59%）。",
+    "放行的 20 轮里 16 轮（3.84M）目标的存兵不少于自己，4 轮（755k）≥2 倍（A034_facts.py §28）。3514–3619 拍 16 条 1.85M 分给四个目标；3620–4217 拍编队打出 20 条 1.38M，挨了 52 条 11.85M。",
+    "Player 607 全程挨了三个号 25 条 1.82M（退回 369k），丢给编队 5,260 格（每格净约 276 兵），反手 17 条 1.52M 拿走 4,036 格，4789 拍才阵亡；它丢的 16,273 格里 SPARTUS 300 拿走 8,387 格。",
+    "30 对「我方号×敌方真人」里我方先动手 18 对、对方先动手 12 对（A034_facts.py §17）；talon5 3605 拍 556k 打 Player 813，其后 300 拍 Player 813 回了 1.15M，jet 两条 1.36M。",
+    "捐兵 19 笔全部落地（配额 0 拒绝）：到账 3.73M、税 1.16M（31.1%）；17 笔是 defense_dispatch。14 笔到账后 300 拍内受赠方的地少了 ≥20%（到账 2.89M、税 899k），其中 3 笔的受赠方 300 拍内清零。",
+    "捐出方 sora_w、kaito9、noah88 3600–4500 拍密度 85–113、敌邻 145–362 格，自己没有打过真人（kaito9 4501 拍、sora_w 5040 拍才第一次出手，noah88 1953 拍以后 0 条）。",
+    "阵亡前最后一个采样点九个号手里合计还有 1.11M（地÷峰值 0.17–0.28）。ryan_m 的客户端 3960 拍以后没有日志，上报离场时本地拍 4011、服务器约 4387 拍。",
+    "全程：收入 19.80M、打真人 8.95M、被打掉 9.15M；编队对真人 8.13M 拿 55,494 格（每格 146 兵），真人对编队 26.01M 拿 92,239 格（每格 282 兵）。"
+   ],
+   "problems": [
+    "AT-OVER-POKE / AT-OVER-GRIND",
+    "AT-PULSE-REPEAT",
+    "DN-SINK-FEED / DN-TAX",
+    "IO-CLIENT-EXIT",
+    "SE-SCOUT-FEE"
+   ]
+  }
+ },
+ "turningPoints": [
+  {
+   "id": "TP1",
+   "t0": 0,
+   "t1": 600,
+   "shareBefore": 0.0,
+   "shareAfter": 4.5,
+   "shareOf": "T3（我方队伍）",
+   "rankBefore": 3,
+   "rankAfter": 2,
+   "squadShareBefore": 0.0,
+   "squadShareAfter": 4.3,
+   "what": "落子：协调器在还没有人落子的盘面上选了东北角并锁定；一拍之后五个敌人落在这个角里，其中两个离锚点 20–28 格。我方第一条出生指令在锁角之后 4 拍才发出，这 4 拍里对同一盘面从零求解都会改选当时空着的西南角。最后九个号围着 SPARTUS 300、Player 607、ProfChaos、ALBOSS 四个敌人排开，名下的陆地只有全图的 15.0%（人数占 28.1%）。",
+   "evidence": [
+    "shadow_spawn.mjs A034 --at -42,-41,-38,-6 --corners --slots 21:0,23:1,25:2,27:3,28:4,29:5,30:6,22:7,26:9 --phantom 8:99：t=−42 已落点 0 人，东北角 16,859、西南角 15,650；解出的九个点与日志第一批 [HL-SPAWN-BACKEND]（ryan_m (783,228)、noah88 (858,191)、leo_tx (788,297)、alex_k (717,299)、zero_7 (912,138)、kaito9 (912,244)、riku_x (882,321)、sora_w (824,362)、talon5 (685,366)）逐点相同。",
+    "同一脚本：t=−41 已落点 7 个敌人，东北角 13,337（角内 5 人，扣 1,100 分；到敌距离项 916 对西南角的 2,880）、西南角 15,650（角内 0 人）；t=−38 东北角 13,151（角内 6 人）、西南角 15,650。不带记忆的求解在这两拍都选西南角。",
+    "A034_facts.py §24（replay_cmds.mjs 的出生指令）：SPARTUS 300 t=−41 (751,176)、Player 607 t=−41 (747,168)、ProfChaos t=−41 (819,161)→t=−29 (750,117)、ALBOSS t=−41 (766,302)→t=−39 (796,325)；我方第一条出生指令 t=−38、最后一条 t=−2。最终锚点 (766,180) 217 格内 4 个敌人，全部先于我方落子。",
+    "shadow_spawn.mjs A034 --at -6 --anchors：东北角锚点 (766,180) 采样 99/107、打分 1321、陆地偏向度 0.04；ryan_m 的点 (768,216) 离 SPARTUS 300 43 格、riku_x 的目标点 (776,352) 离 ALBOSS 34 格，enemyMinClearance 53。--drop 12,20,10,11（把四个敌人拿掉）解出的尖端点 (778,207)，离实际 13 格。",
+    "spawn_voronoi.mjs A034 --vs 600,900,1200,1500,2100,3000 --list：编队名下 81,694 格（15.0%），份额÷人数 0.53；其他真人中位 19,589 格、编队每号中位 8,233 格。1500 拍份额名次与实际地名次的秩相关 0.74。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "t=−42（首次求解）",
+     "bot": "后端",
+     "what": "角落扇形阵的方案总分 = 点数×900 + 锚点分×3.5 + Σmin(240,到敌)×1.2 + min(200,最近敌人)×2.5 − 角内敌人×220 − 到角距离×1.5；首次求解选出的角写进 lockedCornerName，之后的求解跳过其他角。",
+     "codePath": "src/strategy/spawn-coordinator-c116-vb.mjs: 锁角 L1084-1090（L1090 跳过其他角）、L1276（写入）；方案总分 L1258-1268"
+    },
+    {
+     "t": "t=−41…−2",
+     "bot": "后端",
+     "what": "角内锚点只按陆地打分（landSamples×18 − dCorner×2.2），扇形点吸附到陆地时只查同一陆块和队友间距，不查到敌人的距离；enemyMinClearance 只在通用选点路径里用。",
+     "codePath": "src/strategy/spawn-coordinator-c116-vb.mjs: 锚点打分 L1091-1132（L1122）；落点吸附 L1172-1207；enemyClearSum/minEnemyD 只进总分 L1209-1211；通用路径 reqEnemyClear L943、L961、L1042"
+    },
+    {
+     "t": "选点期",
+     "bot": "全部",
+     "what": "按 K=10 排阵（zexos1 没进房），最小间距 0.95×rCell 封顶 68 格，三圈半径 36/104/172。",
+     "codePath": "src/strategy/spawn-coordinator-c116-vb.mjs: K L836；rCell L838；minReqSep/r0/r1/r2 L1074-1077；fanHalf L1135"
+    }
+   ],
+   "statementType": "inferred",
+   "note": "逐角总分、落子先后、份额都是量出来的。「首次求解时盘面是空的」是推断：录像里 t=−41 的盘面从零求解不会选东北角，而线上选了；后端当时实际看到的真人位置不在对局包里。换一个角以后别人会怎么落子没有办法验证（t=−20 时西南角里也已经有 5 个敌人）。"
+  },
+  {
+   "id": "TP2",
+   "t0": 600,
+   "t1": 1800,
+   "shareBefore": 4.5,
+   "shareAfter": 11.4,
+   "shareOf": "T3（我方队伍）",
+   "rankBefore": 2,
+   "rankAfter": 3,
+   "squadShareBefore": 4.3,
+   "squadShareAfter": 9.6,
+   "what": "分机器人的地：机器人 900 拍占图 68.7%，1800 拍只剩 6.1%。这 900 拍里 T1 从 9.3% 到 41.9%，T2 从 10.7% 到 39.8%，编队从 7.1% 到 9.6%。编队不是没兵：1200–1500 拍存兵比两支敌队都多，密度是它们的 3–5 倍。兵没有变成地有三层原因叠在一起：留底把相邻的机器人锁住；没锁时每条指令只发存兵的 4.7%；发出去的指令三条里只有一条出现在录像里，而且是 200–400 拍以前的决定。",
+   "evidence": [
+    "A034_facts.py §7：600–1199 拍真人从机器人手里拿走 135,134 格，编队 8.7%；1200–1799 拍 187,870 格，编队 3.4%。900→1500 拍编队 +8,293 格，T1 +21.9 个点、T2 +22.3 个点。",
+    "A034_facts.py §1、§11：编队兵÷T1 兵、÷T2 兵 1200 拍 1.19/1.22，1500 拍 1.43/1.37；(0,1500] 收入 1.84M，打机器人 286k、打中立 344k，1500 拍余 1.59M。review_skel.py cmp：1500 拍密度中位 我方 31.6 对真人 5.9。",
+    "floor_tally.py（shadow.mjs --cold --floor 500…1700 每 25 拍）：有相邻机器人的 407 个样本锁死 214 个；500–900 拍 116/144（价格项 84、我方号 32），900–1200 拍 48/105（我方号 30），1200–1500 拍 40/96（我方号 28），1500–1700 拍 10/62。",
+    "A034_facts.py §18：打机器人的决策 pct ≤48 的占比 600–899 拍 32%、900–1199 拍 63%、1200–1499 拍 98%。",
+    "A034_facts.py §23：过闸/录像里 600 段 133/59、900 段 264/99、1200 段 248/93、1500 段 429/99；batch_origin.py：46 个同拍批全部倒序落地，唯一匹配的 33 批 278 条陈旧度中位 236 拍（48–441），≥90 拍的 258 条。",
+    "bot_fate.mjs / botfate_sum.py：1200–1500 拍贴着我方号的 25 个机器人（1200 拍 21,599 格）此后被拿走 36,659 格：编队 8,541（23%）、其他真人 12,521（34%，jet 7,770）、别的机器人 8,492、变回中立 7,105。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "500–1500",
+     "bot": "全部",
+     "what": "t<dpEnd（1500）时打机器人的留底取 max(价格项, dpKeep, safeFinite)：价格项＝机器人每格价×自己的地÷(winR×t)；safeFinite 取「该机器人最弱的其它邻居」的存兵，而那个邻居常常是存兵相近的我方队友。",
+     "codePath": "src/strategy/v27-team-c116-vb.js: floorFor0 L2233-2241；Policy.winFloor L4562-4570；botOk L2467-2473；botPx L2476-2478；winWorth L2481-2484；safeFinite L2500；pickTarget L1144-1161"
+    },
+    {
+     "t": "600–1500",
+     "bot": "全部",
+     "what": "过了留底以后可用兵很少，amount 落到最小额 minCmd（手续费的 4 倍 ≈ 存兵的 4.7%）。",
+     "codePath": "src/strategy/v27-team-c116-vb.js: minCmd L474-476；amount L2315-2323；amount0 L2332；General.act L792-797"
+    },
+    {
+     "t": "600–2030",
+     "bot": "全部",
+     "what": "指令只带百分比、不登记在途，每个决策拍（5 拍）重发；客户端落后时这些指令成批迟到。",
+     "codePath": "src/strategy/v27-team-c116-vb.js: Strategy.send L479-487；Policy.act L4836-4963（L4941-4942）；src/strategy/make_v27_team.py: afterTick 在途门与 patchLoop（L10-106）"
+    }
+   ],
+   "statementType": "inferred",
+   "note": "地、兵、锁死样本、pct、过闸与落地条数都是量出来的。三层原因各占多少没有拆：没有做「准时下发」或「不锁」的重放。指令为什么迟到、为什么一半没有出现在录像里，原因在策略代码之外（见 unknowns）。"
+  },
+  {
+   "id": "TP3",
+   "t0": 1800,
+   "t1": 2400,
+   "shareBefore": 11.4,
+   "shareAfter": 15.1,
+   "shareOf": "T3（我方队伍）",
+   "rankBefore": 3,
+   "rankAfter": 3,
+   "squadShareBefore": 9.6,
+   "squadShareAfter": 13.3,
+   "what": "迟到的指令一次到齐：1799–2023 拍九个打真人的同拍批（每批 8–9 条）落地，每条按落地那一拍的存兵重新计百分比，一批打出存兵的 57–99%。结果是全局最好的一仗（ALBOSS 阵亡，编队 +2.4 万格）和最贵的一仗叠在一起：编队存兵 2.20M→1.40M，同期 T1 +1.22M、T2 +0.67M；zero_7、riku_x 被打空，zero_7 365 拍后阵亡。策略从 1500 拍起就想打这些邻居，第一条落地是 1750 拍。",
+   "evidence": [
+    "A034_facts.py §5、§22：riku_x 1799 拍 9 条（82k/58k/42k/30k/21k/21k/12k/6k/4k）批前 298k 打出 287k；kaito9 1932 拍 399k→377k；zero_7 1946 拍 253k→240k、2023 拍 23k→23k；alex_k 1988 拍 430k→318k；sora_w 2002 拍 182k→134k；noah88 1918 拍 227k→188k；kaito9 1974 拍 381k→218k。",
+    "batch_origin.py：riku_x 1799 拍的批是 1500–1540 拍的 9 个决定（陈旧 259–299 拍）；zero_7 1946 拍 ← 1710–1745 拍；kaito9 1932 拍 ← 1675–1715 拍；alex_k 1988 拍 ← 1900–1940 拍。A034_facts.py §27：riku_x 1500–1795 拍对 ALBOSS 做了 60 个决定，第一个在 1500 拍。",
+    "land_takers.py：ALBOSS 的 11,349 格里 riku_x 4,537、sora_w 3,990、alex_k 1,725、noah88 607、kaito9 135（编队 97%）；A034_facts.py §15：五个号对它 58 条 1.34M（退回 449k）。",
+    "A034_facts.py §1：1800→2100 拍编队 9.6%→14.1%，存兵 2.20M→1.40M；T1 2.02M→3.24M、T2 1.75M→2.42M；编队兵÷T1 兵 1.09→0.43。",
+    "A034_facts.py §22：zero_7 2040 拍 10,006 格/233 兵；Player 813 2051–2289 拍七条 204k（pct 192）；zero_7 2130 拍 11,985 格 → 2370 拍 3,669 格，2388 拍阵亡。donprobe_tally.py：2150–2300 拍 zero_7 被判弃子（被打量÷存兵 1.99–4.05）；donprobe_why.py 2100–3100 拍 L4466 ×31。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "1500–1945",
+     "bot": "riku_x、zero_7、kaito9、alex_k、sora_w、noah88",
+     "what": "buyLand 的通用出口按「1.25×需要量」出兵（pct 122–632），波次出口每条 12%；每个决策拍在途看不到就再发一条。",
+     "codePath": "src/strategy/v27-team-c116-vb.js: Policy.buyLand 通用出口 L5611-5616、波次 L5595-5607（L5596 在途门）；Strategy.send L479-487"
+    },
+    {
+     "t": "1799–2023",
+     "bot": "同上",
+     "what": "指令里只有百分比，落地时按当拍存兵折算；同拍 9 条逐条折算，合计就是存兵的大半。",
+     "codePath": "src/strategy/v27-team-c116-vb.js: Strategy.send L479-487（pct = 兵数÷存兵）；engine-evidence.txt [A2] troops = floor(B×(pct+1)/1024)、[A11] 同目标合并"
+    },
+    {
+     "t": "2150–2300",
+     "bot": "全部捐出方",
+     "what": "zero_7 挨打时被判弃子跳过；不被围的捐出方要密度 ≥102 才给急援。",
+     "codePath": "src/strategy/v27-team-c116-vb.js: tryDonateToTeammate L4455-4456（isDoomedPocket）、L4463-4473（L4466 reqD）"
+    }
+   ],
+   "statementType": "observed",
+   "note": "批的大小、来源决策拍、ALBOSS 的地归谁、zero_7 的死因链都是录像真值与影子逐条对出来的。「如果按决策拍准时落地会怎样」没有重放。"
+  },
+  {
+   "id": "TP4",
+   "t0": 2400,
+   "t1": 3600,
+   "shareBefore": 15.1,
+   "shareAfter": 15.1,
+   "shareOf": "T3（我方队伍）",
+   "rankBefore": 3,
+   "rankAfter": 3,
+   "squadShareBefore": 13.3,
+   "squadShareAfter": 15.1,
+   "what": "攒兵比赛：1,200 拍里编队的地只多了 1 万格（72,453→82,581），存兵 2.51M→7.32M；T1 5.10M→21.22M，T2 3.56M→12.36M。地只有 14% 的一方比不过。这一段唯一一块大地易手是 ProfChaos 的 2.5 万格：它 2500 拍起密度不到 2，SPARTUS 300（T1，就在我方阵里）拿走 17,373 格，从 7,445 格长到 23,285 格；紧挨着 ProfChaos 的 noah88 一格没拿、kaito9 拿了 1,837 格——两个号的报价都过了价格门，存兵却低于按 SPARTUS 300 的存兵算出来的留底。",
+   "evidence": [
+    "A034_facts.py §20、land_takers.py：ProfChaos 2400 拍 24,959 格/279k → 2700 拍 17,854 格/18k → 3000 拍 6,507 格，3017 拍阵亡；2400–2999 拍它丢的地 SPARTUS 300 17,373、kaito9 1,837。SPARTUS 300 2400 拍 7,445 格/779k → 3000 拍 23,285 格/891k → 3600 拍 2.05M。",
+    "offers_price.py A034-offers-pc.txt（shadow.mjs --cold --offers 2150…3000 每 50 拍）：noah88 18 个样本存兵都不高于留底；2150–2850 拍对 ProfChaos 每格价 1.3–26.4（0.04–0.99×估值），可用兵 −240k…−66k，safeAt(-1) 311k–432k 由 dpKeep 定。kaito9 2500–2700 拍每格价 1.3–4.9（0.05–0.21×估值），可用兵 −128k…−14k。",
+    "mids_tally（shadow.mjs --mids buyLand）：noah88 L5447 命中 2100–2399 拍 60 个决策拍、2400–2699 拍 56 个、2700–2999 拍 33 个；kaito9 2400–2699 拍 42 个。",
+    "offers_price.py A034-offers.txt：被 L5359 收口的号握着编队兵的 75%（2105 拍）、81%、79%、79%、82%（3300 拍）；最便宜报价÷估值中位 1.50→3.02。talon5 2100 拍 177k → 3300 拍 1.20M 没有出过手；它的邻居 jet 317k → 3.27M（3600 拍）。",
+    "A034_facts.py §1、§11：编队兵÷T1 兵 2400 拍 0.49 → 3600 拍 0.34；(2100,3600] 编队收入 8.52M、打真人 2.82M。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "2150–2850",
+     "bot": "noah88、kaito9",
+     "what": "留底 safe = safeAt(q)，里面的 dpKeep 取最强真人邻居的全部存兵；只有 88×地 的封顶，对正在垮的目标也只封到 85–88×地（高于这两个号当时的存兵）。keep = max(keep, safe)，可用兵 ≤0 就跳过。",
+     "codePath": "src/strategy/v27-team-c116-vb.js: dpKeep L2459-2464；V17.safeAt L2728-2739；Policy.safeAt L4543-4560；buyLand L5414-5418、L5444、L5446-5447"
+    },
+    {
+     "t": "2100–3300",
+     "bot": "有敌邻的 7 个号",
+     "what": "价格门：最便宜报价 ≥ 估值（m×参考密度，m 2500 拍起 0.90）且存兵 ≤100×地 时整轮收口。",
+     "codePath": "src/strategy/v27-team-c116-vb.js: buyLand L5350-5359；winRatio L2875-2882；Policy.offers L5072-5191（报价 L5097-5100）"
+    },
+    {
+     "t": "2105–2400",
+     "bot": "ryan_m",
+     "what": "接触面窄（<25 格）且「0.75×对方地÷接触格」超过 350 时报价乘以 1+0.002×超出部分（封顶 400）。",
+     "codePath": "src/strategy/v27-team-c116-vb.js: Policy.offers L5177-5180"
+    }
+   ],
+   "statementType": "inferred",
+   "note": "ProfChaos 的地归谁、两个号的报价与留底是量出来的；「留底不拦的话这两个号能拿到多少」没有重放——SPARTUS 300 当时有 564k–891k，确实比它们强。"
+  },
+  {
+   "id": "TP5",
+   "t0": 3600,
+   "t1": 5400,
+   "shareBefore": 15.1,
+   "shareAfter": 0.0,
+   "shareOf": "T3（我方队伍）",
+   "rankBefore": 3,
+   "rankAfter": 3,
+   "squadShareBefore": 15.1,
+   "squadShareAfter": 0.0,
+   "what": "崩盘：3600 拍编队 7.32M 对七个敌邻 15.79M，两支敌队都贴着。编队的出手方式是每个号存兵过了 100×地 就不看价格地打出 3 条各约 12% 的指令，打谁由各号自己的报价表定——3514–3619 拍四个号 16 条 1.85M 分给四个目标。其后 600 拍编队挨了 52 条 11.85M。后排满仓的号（sora_w、kaito9、noah88）自己不打，兵以 31% 的税率捐给正在被打穿的前排：19 笔里 14 笔到账后 300 拍内受赠方的地少了两成以上。",
+   "evidence": [
+    "A034_facts.py §26：3514–3619 拍我方打真人 16 条 1.85M（talon5→Player 813 556k、talon5→Player 607 457k、leo_tx→Player 607 266k、ryan_m→Player 607 245k、alex_k→Player 31 212k、alex_k→jet 117k）；3620–4217 拍我方 20 条 1.38M，真人打我方 52 条 11.85M（Trace→alex_k 2.93M、SPARTUS 300→ryan_m 1.59M、Player 813→leo_tx 1.16M、Player 813→talon5 1.15M）。",
+    "volleys.py A034 --list：47 轮里放行的 21 轮打出 5.26M（59%）；≥3 条的 29 轮 140 条 7.23M（81%）。A034_facts.py §28：放行的 20 轮里 16 轮目标存兵 ≥ 自己；Player 607 7 轮 1.61M。A034_facts.py §19：ryan_m 6 段全部在密度 ≥100 时开始，alex_k 4/4、leo_tx 8/11。",
+    "A034_facts.py §4、§14、§28：19 笔到账 3.73M、税 1.16M（31.1%）；受赠方其后 300 拍地变多 2 笔、变少 17 笔；少 ≥20% 的 14 笔（到账 2.89M、税 899k）；sora_w→talon5 3724 拍 264k 之后 talon5 被打掉 1.19M、地 14,159→5,761。",
+    "A034_facts.py §6、§25：alex_k 最后 300 拍 Trace 四条 2.50M；ryan_m SPARTUS 300 两条 988k；talon5 jet 871k；kaito9 SPARTUS 300 1.21M；sora_w Trace 1.64M。阵亡前最后一个采样点九个号合计 1.11M。",
+    "A034_facts.py §16：sora_w 3600–4500 拍 1.08M/1.15M/954k/1.01M（密度 86–104，敌邻 247–362 格），打真人 0；捐出 342k/602k/322k/296k。mids_tally：sora_w 3600–5099 拍 L5364（唯一缓冲）108 个决策拍，其余在 L5359 收口。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "2410–4935",
+     "bot": "ryan_m、alex_k、talon5、leo_tx、kaito9",
+     "what": "over = 存兵 > 100×地 时跳过价格门；keep 取 90×地，可用兵约 10–13%；波次出口每条 min(可用, 12%×存兵)，在途 <4% 存兵就再发。",
+     "codePath": "src/strategy/v27-team-c116-vb.js: buyLand L5353、L5359、L5440-5443；波次 L5595-5607（L5596）"
+    },
+    {
+     "t": "3455–4921",
+     "bot": "sora_w、kaito9、noah88、riku_x、leo_tx",
+     "what": "队友挨打时（Case A）不被围的捐出方密度 ≥102 就捐；手续费是捐出方全部存兵的 64/1024，与捐多少无关。",
+     "codePath": "src/strategy/v27-team-c116-vb.js: tryDonateToTeammate L4325-4518（L4457 underFire、Case A L4463-4473、L4500-4508）；src/sim/sim/game.js: transfer L388-400、donationCost L348-357"
+    },
+    {
+     "t": "3600–5099",
+     "bot": "sora_w、noah88、kaito9",
+     "what": "只剩一个健康的真人邻居、报价高于估值、存兵 <128×地 时不打它。",
+     "codePath": "src/strategy/v27-team-c116-vb.js: buyLand L5361-5365；overHumanCap（params-raw-vb.json）"
+    }
+   ],
+   "statementType": "inferred",
+   "note": "出手、挨打、捐兵的数字都是录像真值。3600 拍兵力比已经是 0.34/0.59，这一段换一种打法能不能活更久没有推演；「先动手招来反击」只是时间上的先后，不是因果。"
+  }
+ ],
+ "deaths": [
+  {
+   "bot": "zero_7",
+   "pid": 28,
+   "leftT": null,
+   "diedT": 2388,
+   "lastCmdT": 2023,
+   "lastLogT": 2340,
+   "terrAtLeave": null,
+   "balAtLeave": null,
+   "peakTerr": 13334,
+   "peakT": 2107,
+   "logOrderLagMax": 0,
+   "logOrderLagMaxAtT": 0,
+   "tickLinesLagGE90": "0/26",
+   "takers": [
+    {
+     "who": "Player 813(#2,T2)",
+     "tiles": 10374,
+     "sent": 204230
+    },
+    {
+     "who": "机器人#162",
+     "tiles": 416,
+     "sent": 4690
+    },
+    {
+     "who": "机器人#75",
+     "tiles": 370,
+     "sent": 473
+    }
+   ],
+   "cause": "两个同拍批（1946 拍 8 条 253k→13k、2023 拍 9 条 23k→235）把兵打空以后，Player 813 2051–2289 拍七条 204k（每条 17k–47k）拿走 10,374 格；阵亡前 8 拍 3,285 格/7k。",
+   "chain": "外墙位 (577,219)，阵的最西端，离 Player 813 106 格 → 1500 拍起想打 Player 813（首个决定 1670 拍，pct 632），第一批 1946 拍落地（1710–1745 拍的 8 个决定）→ 从 Player 813 手里拿到 5,286 格，2107 拍 13,334 格（编队第二大）但只有 13k 兵 → 2150–2300 拍捐兵探针把它判为弃子（被打量÷存兵 1.99–4.05），不被围的捐出方要密度 ≥102，当时编队最高的是 ryan_m 72–99 → 280 拍里 13,334→3,285 格，2388 拍阵亡。",
+   "received": "0 笔",
+   "donatedOut": "0 笔",
+   "statementType": "observed"
+  },
+  {
+   "bot": "alex_k",
+   "pid": 27,
+   "leftT": null,
+   "diedT": 4063,
+   "lastCmdT": 3619,
+   "lastLogT": 4050,
+   "terrAtLeave": null,
+   "balAtLeave": null,
+   "peakTerr": 12617,
+   "peakT": 3417,
+   "logOrderLagMax": 0,
+   "logOrderLagMaxAtT": 0,
+   "tickLinesLagGE90": "0/45",
+   "takers": [
+    {
+     "who": "[GRID] Trace(#7,T1)",
+     "tiles": 7334,
+     "sent": 2930378
+    },
+    {
+     "who": "Player 31(#9,T2)",
+     "tiles": 3628,
+     "sent": 1175029
+    },
+    {
+     "who": "机器人#466",
+     "tiles": 96,
+     "sent": 897
+    }
+   ],
+   "cause": "Trace（T1）3745–4053 拍六条 3.36M（最后 300 拍四条 2.50M：420k、408k、877k、797k），Player 31（T2）3451–3899 拍三条 1.17M；丢的 10,962 格里 Trace 7,334、Player 31 3,628。阵亡前 3 拍 2,961 格/183k。",
+   "chain": "外墙位 (691,335) → 1988 拍 9 条批（430k→318k）吃 ALBOSS 1,725 格，2009 拍第一次打 Trace → 2100–2700 拍价格门收口，81k→680k → 2996、3395 拍密度过 100 两轮打 Trace（340k、394k；Trace 当时 1.84M、3.07M）→ 3451 拍 Player 31 367k 打过来，3612–3619 拍它再放行三条打 Player 31 和 jet → 3465–3920 拍收到 4 笔 574k → 3745 拍起 Trace 每 70–90 拍一条 40–88 万，12,617→2,961 格。",
+   "received": "5 笔 755k",
+   "donatedOut": "0 笔",
+   "statementType": "observed"
+  },
+  {
+   "bot": "ryan_m",
+   "pid": 21,
+   "leftT": 4544,
+   "diedT": 4214,
+   "lastCmdT": 3969,
+   "lastLogT": 3960,
+   "terrAtLeave": 2334,
+   "balAtLeave": 109533,
+   "peakTerr": 9614,
+   "peakT": 3608,
+   "logOrderLagMax": 0,
+   "logOrderLagMaxAtT": 0,
+   "tickLinesLagGE90": "0/44",
+   "takers": [
+    {
+     "who": "[SPARTUS] 300(#12,T1)",
+     "tiles": 6418,
+     "sent": 1592660
+    },
+    {
+     "who": "Player 607(#20,T2)",
+     "tiles": 2598,
+     "sent": 861270
+    },
+    {
+     "who": "机器人#145",
+     "tiles": 80,
+     "sent": 1252
+    }
+   ],
+   "cause": "SPARTUS 300（T1）3710–4172 拍四条 1.59M（229k、376k、415k、573k）拿走 6,418 格，Player 607（T2）七条 750k 拿走 2,598 格。阵亡前 4 拍 2,334 格/110k。客户端 3960 拍以后没有日志、3969 拍以后没有指令落地。",
+   "chain": "尖端银行位 (768,216)，离 SPARTUS 300 43 格、离 Player 607 52 格 → 600–1500 拍被留底锁住（38/47 个样本）→ 1500–1825 拍每拍一条中立最小额指令挤掉了 buyLand 的 47 条 → 地 5,318（1500）→5,436（2400），存兵 153k→538k → 2105–2400 拍对 Player 607 的报价被接触面罚价抬过估值 → 2410 拍起密度每到 100 打 3 条（6 段：Player 607 四段、SPARTUS 300 两段，共 1.16M 拿 5,723 格）→ 3710 拍起 SPARTUS 300 反手 → 3717–3948 拍收到 3 笔 509k → 3969 拍以后客户端不再出手（上报离场时本地拍 4011，服务器约 4387 拍），4214 拍阵亡。",
+   "received": "3 笔 509k",
+   "donatedOut": "0 笔",
+   "statementType": "observed"
+  },
+  {
+   "bot": "riku_x",
+   "pid": 30,
+   "leftT": null,
+   "diedT": 4217,
+   "lastCmdT": 3920,
+   "lastLogT": 4140,
+   "terrAtLeave": null,
+   "balAtLeave": null,
+   "peakTerr": 7816,
+   "peakT": 1951,
+   "logOrderLagMax": 0,
+   "logOrderLagMaxAtT": 0,
+   "tickLinesLagGE90": "0/46",
+   "takers": [
+    {
+     "who": "Player 31(#9,T2)",
+     "tiles": 4187,
+     "sent": 442830
+    },
+    {
+     "who": "ALBOSS(#10,T2)",
+     "tiles": 1566,
+     "sent": 34642
+    },
+    {
+     "who": "[GRID] Trace(#7,T1)",
+     "tiles": 719,
+     "sent": 657300
+    }
+   ],
+   "cause": "alex_k 4063 拍阵亡后失去屏障：Player 31 4067 拍一条 443k、Trace 4088 拍一条 657k 落在 162k/6,417 格的它身上，150 拍后阵亡（Player 31 拿走 4,187 格）。",
+   "chain": "外墙位 (773,284) 实际在阵心，出生份额 4,710 格（编队最小），离 ALBOSS 47 格 → 1500 拍起想打 ALBOSS，1799 拍 9 条批（298k→287k）、1911 拍又 9 条（23k→22k）拿到 4,537 格 → ALBOSS 死后四周全是队友：2100–3900 拍敌邻 0 格、没有海岸，14k→212k（密度 2→33）→ 3472–3920 拍捐出 3 笔 212k（税 42k）→ 4067 拍敌人到门口时 162k。",
+   "received": "0 笔",
+   "donatedOut": "3 笔 212k（税 42k）",
+   "statementType": "observed"
+  },
+  {
+   "bot": "leo_tx",
+   "pid": 25,
+   "leftT": null,
+   "diedT": null,
+   "lastCmdT": 4466,
+   "lastLogT": 5760,
+   "terrAtLeave": null,
+   "balAtLeave": null,
+   "peakTerr": 11112,
+   "peakT": 4067,
+   "logOrderLagMax": 0,
+   "logOrderLagMaxAtT": 0,
+   "tickLinesLagGE90": "0/64",
+   "takers": [
+    {
+     "who": "Player 813(#2,T2)",
+     "tiles": 3013,
+     "sent": 1159345
+    },
+    {
+     "who": "[GRID] Trace(#7,T1)",
+     "tiles": 2884,
+     "sent": 1023591
+    },
+    {
+     "who": "[SPARTUS] 300(#12,T1)",
+     "tiles": 1988,
+     "sent": 598110
+    }
+   ],
+   "cause": "没有被除名：4445 拍出了一条 1,897 兵的船（手续费 12,142），4480 拍 2,456 格/193k，4490 拍地和兵清零（引擎 collapse：海上有船的玩家不除名，地变中立、存兵归零）。此前 300 拍 Trace 两条 1.02M、Player 607 八条 603k、SPARTUS 300 两条 598k。船 5008 拍带 827 兵落在 jet 的地上，终局 1 格/90 兵。",
+   "chain": "内弧位 (696,257)，四周是队友，敌邻只有 16–79 格（Player 607）→ 2436 拍第一次打 Player 607，3000–3300 拍密度 103–107、捐出 2 笔 375k → 3515 拍起密度到 100 就打 Player 607、Player 813、Patliputra（12 段，1.48M 拿 4,885 格，每格净 259 兵）→ alex_k、ryan_m 阵亡后成为最前排：4109–4424 拍收到 5 笔 1.18M，同时被 Player 813（七条 1.16M）、Patliputra 678k、Trace 496k、SPARTUS 300 309k 打 → 11,112 格（4067）→ 2,456 格（4480）。",
+   "received": "5 笔 1.18M",
+   "donatedOut": "2 笔 375k（税 119k）",
+   "statementType": "observed"
+  },
+  {
+   "bot": "talon5",
+   "pid": 26,
+   "leftT": null,
+   "diedT": 4595,
+   "lastCmdT": 4501,
+   "lastLogT": 4590,
+   "terrAtLeave": null,
+   "balAtLeave": null,
+   "peakTerr": 15855,
+   "peakT": 3566,
+   "logOrderLagMax": 0,
+   "logOrderLagMaxAtT": 0,
+   "tickLinesLagGE90": "0/51",
+   "takers": [
+    {
+     "who": "jet(#1,T1)",
+     "tiles": 6314,
+     "sent": 2227164
+    },
+    {
+     "who": "[GRID] Trace(#7,T1)",
+     "tiles": 4016,
+     "sent": 1006930
+    },
+    {
+     "who": "Patliputra(#13,T2)",
+     "tiles": 3756,
+     "sent": 1053227
+    }
+   ],
+   "cause": "jet（T1）3605、3794、4592 拍三条 2.23M（674k、682k、871k）拿走 6,314 格，Trace 4277、4536 拍两条 1.01M 拿走 4,016 格，Patliputra 19 条 1.00M 拿走 3,756 格，Player 813 四条 1.15M 拿走 3,077 格。阵亡前 5 拍 2,736 格/152k。",
+   "chain": "外墙位 (624,277)，900–1500 拍 22/24 个样本被 alex_k 的存兵锁住，身边 5,644–11,529 格机器人的地大半被 jet 拿走 → 2051–2065 拍三条 191k 从 jet 手里拿到 5,222 格（每格 36 兵），15,552 格成为编队最大的号 → 2100–3299 拍每个决策拍在价格门收口，177k→1.20M → 3514 拍密度到 100，三条 457k 打 Player 607；3605 拍四条 556k 打 Player 813 —— 同一拍 jet 674k 打过来 → 300 拍内 Player 813 回了 1.15M、jet 再 682k，15,855→7,987 格 → 收到 3 笔 567k。",
+   "received": "3 笔 567k",
+   "donatedOut": "0 笔",
+   "statementType": "observed"
+  },
+  {
+   "bot": "noah88",
+   "pid": 23,
+   "leftT": null,
+   "diedT": 4610,
+   "lastCmdT": 4235,
+   "lastLogT": 4590,
+   "terrAtLeave": null,
+   "balAtLeave": null,
+   "peakTerr": 7792,
+   "peakT": 2218,
+   "logOrderLagMax": 0,
+   "logOrderLagMaxAtT": 0,
+   "tickLinesLagGE90": "0/51",
+   "takers": [
+    {
+     "who": "Player 31(#9,T2)",
+     "tiles": 3214,
+     "sent": 1137575
+    },
+    {
+     "who": "[SPARTUS] 300(#12,T1)",
+     "tiles": 2948,
+     "sent": 648292
+    },
+    {
+     "who": "ProfChaos(#11,T2)",
+     "tiles": 947,
+     "sent": 113099
+    }
+   ],
+   "cause": "Player 31（T2）4305、4515 拍两条 1.14M 拿走 3,214 格，SPARTUS 300（T1）4466、4578 拍两条 616k 拿走 2,948 格；阵亡前 10 拍 2,198 格/115k。最后 600 拍自己打真人 0 条。",
+   "chain": "内弧位 (845,247)，没有海岸 → 1862 拍一条 117k 打 ProfChaos（1740 拍的决定），3,132→6,816 格 → 2150–2850 拍对 ProfChaos 的报价一直过价格门，存兵 149k–341k 一直低于按 SPARTUS 300 算的留底 311k–432k，149 个决策拍在 L5447 跳过 → 2900 拍以后只剩 SPARTUS 300 一个报价（2.7–4.1×估值）→ 3300–4200 拍密度 90–113，捐出 4 笔 606k（税 190k）→ 4305 拍 Player 31 544k 打过来时 608k。",
+   "received": "0 笔",
+   "donatedOut": "4 笔 606k（税 190k）",
+   "statementType": "observed"
+  },
+  {
+   "bot": "sora_w",
+   "pid": 22,
+   "leftT": null,
+   "diedT": 5164,
+   "lastCmdT": 5054,
+   "lastLogT": 5130,
+   "terrAtLeave": null,
+   "balAtLeave": null,
+   "peakTerr": 11963,
+   "peakT": 5062,
+   "logOrderLagMax": 0,
+   "logOrderLagMaxAtT": 0,
+   "tickLinesLagGE90": "0/57",
+   "takers": [
+    {
+     "who": "[GRID] Trace(#7,T1)",
+     "tiles": 5342,
+     "sent": 1644043
+    },
+    {
+     "who": "Player 31(#9,T2)",
+     "tiles": 3759,
+     "sent": 855278
+    },
+    {
+     "who": "机器人#209",
+     "tiles": 67,
+     "sent": 1132
+    }
+   ],
+   "cause": "Player 31（T2）5068–5103 拍三条 855k，Trace（T1）5124 拍一条 1.64M 落在 493k/8,204 格的它身上；丢的 9,101 格里 Trace 5,342、Player 31 3,759。阵亡前 4 拍 3,110 格/108k。",
+   "chain": "外墙位 (856,326)，没有海岸，离 ALBOSS 60 格 → 1750 拍编队第一个打真人的号，从 ALBOSS 手里拿到 3,990 格 → 2100–4800 拍 11,102 格没有变过：2100–3599 拍每个决策拍在价格门收口（邻居 Player 31 332k→1.79M），3600 拍以后 L5364 108 个决策拍 → 48k（2100）→1.08M（3600），3710–4910 拍捐出 6 笔 1.48M（税 463k）→ 5040 拍第一次打 Player 31（三条 173k），28 拍后 Player 31 反手。",
+   "received": "0 笔",
+   "donatedOut": "6 笔 1.48M（税 463k）",
+   "statementType": "observed"
+  },
+  {
+   "bot": "kaito9",
+   "pid": 29,
+   "leftT": null,
+   "diedT": 5266,
+   "lastCmdT": 4935,
+   "lastLogT": 5220,
+   "terrAtLeave": null,
+   "balAtLeave": null,
+   "peakTerr": 13858,
+   "peakT": 4525,
+   "logOrderLagMax": 0,
+   "logOrderLagMaxAtT": 0,
+   "tickLinesLagGE90": "0/58",
+   "takers": [
+    {
+     "who": "[SPARTUS] 300(#12,T1)",
+     "tiles": 6436,
+     "sent": 2306643
+    },
+    {
+     "who": "Player 31(#9,T2)",
+     "tiles": 5778,
+     "sent": 1758421
+    },
+    {
+     "who": "机器人#202",
+     "tiles": 116,
+     "sent": 1939
+    }
+   ],
+   "cause": "Player 31 4592–4900 拍三条 1.76M 拿走 5,778 格，SPARTUS 300 4970–5243 拍四条 2.31M（最后一条 1.21M 打 487k/5,886 格）拿走 6,436 格。阵亡前 6 拍 3,515 格/215k。",
+   "chain": "外墙位 (912,263) 贴着东边图边，没有海岸 → 1932、1974 拍两个 9 条批（399k→377k 打 ALBOSS；381k→218k 打 ProfChaos）→ 从 ProfChaos 手里共拿 6,195 格，12,511 格 → 2500–2700 拍 ProfChaos 垮的时候存兵低于留底 → 3300–4500 拍密度 70–104，捐出 4 笔 1.05M（税 344k）→ 3143、4501、4858 拍放行打 SPARTUS 300（七条 629k 拿 3,106 格）→ 4592 拍起 Player 31、SPARTUS 300 轮流打，收到 3 笔 716k。",
+   "received": "3 笔 716k",
+   "donatedOut": "4 笔 1.05M（税 344k）",
+   "statementType": "observed"
+  }
+ ],
+ "drop30": {
+  "windows": [
+   {
+    "bot": "ryan_m",
+    "t0": 450,
+    "t1": 540,
+    "bal0": 3430,
+    "bal1": 2377,
+    "terr0": 1162,
+    "terr1": 2135,
+    "mainSink": "atkNeutral",
+    "flows": {
+     "eco": 2995,
+     "atkNeutral": -3653,
+     "atkBot": -519,
+     "ret": 124
+    },
+    "residual": 0
+   },
+   {
+    "bot": "ryan_m",
+    "t0": 4050,
+    "t1": 4140,
+    "bal0": 571272,
+    "bal1": 368768,
+    "terr0": 7147,
+    "terr1": 5230,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 52328,
+     "dmg": -254832
+    },
+    "residual": 0
+   },
+   {
+    "bot": "zero_7",
+    "t0": 900,
+    "t1": 990,
+    "bal0": 16346,
+    "bal1": 10100,
+    "terr0": 5546,
+    "terr1": 6587,
+    "mainSink": "atkBot",
+    "flows": {
+     "eco": 3433,
+     "atkBot": -14246,
+     "ret": 4682
+    },
+    "residual": 0
+   },
+   {
+    "bot": "zero_7",
+    "t0": 1890,
+    "t1": 1980,
+    "bal0": 231001,
+    "bal1": 13521,
+    "terr0": 8048,
+    "terr1": 8550,
+    "mainSink": "atkHuman",
+    "flows": {
+     "eco": 23004,
+     "atkHuman": -240484
+    },
+    "residual": 0
+   },
+   {
+    "bot": "zero_7",
+    "t0": 1980,
+    "t1": 2070,
+    "bal0": 13521,
+    "bal1": 239,
+    "terr0": 8550,
+    "terr1": 11224,
+    "mainSink": "atkHuman",
+    "flows": {
+     "eco": 9901,
+     "atkHuman": -23183
+    },
+    "residual": 0
+   },
+   {
+    "bot": "talon5",
+    "t0": 1980,
+    "t1": 2070,
+    "bal0": 253554,
+    "bal1": 157044,
+    "terr0": 9450,
+    "terr1": 11396,
+    "mainSink": "atkHuman",
+    "flows": {
+     "eco": 37876,
+     "atkHuman": -200465,
+     "ret": 66079
+    },
+    "residual": 0
+   },
+   {
+    "bot": "talon5",
+    "t0": 3600,
+    "t1": 3690,
+    "bal0": 1628950,
+    "bal1": 828527,
+    "terr0": 15855,
+    "terr1": 13580,
+    "mainSink": "atkHuman",
+    "flows": {
+     "eco": 98731,
+     "atkHuman": -619954,
+     "donIn": 54500,
+     "dmg": -333700
+    },
+    "residual": 0
+   },
+   {
+    "bot": "talon5",
+    "t0": 3780,
+    "t1": 3870,
+    "bal0": 1022109,
+    "bal1": 553959,
+    "terr0": 13562,
+    "terr1": 8733,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 97068,
+     "dmg": -565218
+    },
+    "residual": 0
+   },
+   {
+    "bot": "talon5",
+    "t0": 4500,
+    "t1": 4590,
+    "bal0": 418977,
+    "bal1": 151918,
+    "terr0": 4477,
+    "terr1": 2736,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 28635,
+     "atkNeutral": -24548,
+     "dmg": -271146
+    },
+    "residual": 0
+   },
+   {
+    "bot": "kaito9",
+    "t0": 1890,
+    "t1": 1980,
+    "bal0": 376058,
+    "bal1": 164911,
+    "terr0": 5604,
+    "terr1": 5739,
+    "mainSink": "atkHuman",
+    "flows": {
+     "eco": 30365,
+     "atkHuman": -595184,
+     "ret": 353672
+    },
+    "residual": 0
+   },
+   {
+    "bot": "kaito9",
+    "t0": 4950,
+    "t1": 5040,
+    "bal0": 893234,
+    "bal1": 487935,
+    "terr0": 9818,
+    "terr1": 6662,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 85852,
+     "dmg": -491151
+    },
+    "residual": 0
+   },
+   {
+    "bot": "sora_w",
+    "t0": 1260,
+    "t1": 1350,
+    "bal0": 110725,
+    "bal1": 73043,
+    "terr0": 3899,
+    "terr1": 4086,
+    "mainSink": "atkBot",
+    "flows": {
+     "eco": 33016,
+     "atkBot": -70698
+    },
+    "residual": 0
+   },
+   {
+    "bot": "sora_w",
+    "t0": 1710,
+    "t1": 1800,
+    "bal0": 250086,
+    "bal1": 112740,
+    "terr0": 5500,
+    "terr1": 7233,
+    "mainSink": "atkHuman",
+    "flows": {
+     "eco": 30469,
+     "atkBot": -30098,
+     "atkHuman": -135735
+    },
+    "residual": 0
+   },
+   {
+    "bot": "sora_w",
+    "t0": 1980,
+    "t1": 2070,
+    "bal0": 170720,
+    "bal1": 36697,
+    "terr0": 7495,
+    "terr1": 9367,
+    "mainSink": "atkHuman",
+    "flows": {
+     "eco": 14899,
+     "atkHuman": -148922
+    },
+    "residual": 0
+   },
+   {
+    "bot": "sora_w",
+    "t0": 5040,
+    "t1": 5130,
+    "bal0": 1058155,
+    "bal1": 398219,
+    "terr0": 11102,
+    "terr1": 7135,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 83705,
+     "atkHuman": -207917,
+     "dmg": -522556
+    },
+    "residual": 0
+   },
+   {
+    "bot": "noah88",
+    "t0": 1890,
+    "t1": 1980,
+    "bal0": 218976,
+    "bal1": 113397,
+    "terr0": 3251,
+    "terr1": 4203,
+    "mainSink": "atkHuman",
+    "flows": {
+     "eco": 13068,
+     "atkHuman": -198004,
+     "ret": 94968,
+     "dmg": -15611
+    },
+    "residual": 0
+   },
+   {
+    "bot": "noah88",
+    "t0": 4320,
+    "t1": 4410,
+    "bal0": 587280,
+    "bal1": 404044,
+    "terr0": 7250,
+    "terr1": 5368,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 52120,
+     "dmg": -235356
+    },
+    "residual": 0
+   },
+   {
+    "bot": "noah88",
+    "t0": 4500,
+    "t1": 4590,
+    "bal0": 291584,
+    "bal1": 168664,
+    "terr0": 4230,
+    "terr1": 2829,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 24705,
+     "dmg": -147625
+    },
+    "residual": 0
+   },
+   {
+    "bot": "alex_k",
+    "t0": 1980,
+    "t1": 2070,
+    "bal0": 430055,
+    "bal1": 69621,
+    "terr0": 5514,
+    "terr1": 7752,
+    "mainSink": "atkHuman",
+    "flows": {
+     "eco": 13623,
+     "atkHuman": -374057
+    },
+    "residual": 0
+   },
+   {
+    "bot": "alex_k",
+    "t0": 3960,
+    "t1": 4050,
+    "bal0": 617628,
+    "bal1": 180919,
+    "terr0": 6619,
+    "terr1": 2961,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 43456,
+     "dmg": -480165
+    },
+    "residual": 0
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 1170,
+    "t1": 1260,
+    "bal0": 56069,
+    "bal1": 33326,
+    "terr0": 5354,
+    "terr1": 6162,
+    "mainSink": "atkBot",
+    "flows": {
+     "eco": 18057,
+     "atkBot": -49210,
+     "ret": 11232,
+     "dmg": -2822
+    },
+    "residual": 0
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 4230,
+    "t1": 4320,
+    "bal0": 734328,
+    "bal1": 349053,
+    "terr0": 8899,
+    "terr1": 4669,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 63230,
+     "atkHuman": -62655,
+     "ret": 211095,
+     "dmg": -596945
+    },
+    "residual": 0
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 4320,
+    "t1": 4410,
+    "bal0": 349053,
+    "bal1": 237934,
+    "terr0": 4669,
+    "terr1": 3626,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 31611,
+     "atkHuman": -162948,
+     "donIn": 252660,
+     "dmg": -232450
+    },
+    "residual": 0
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 4410,
+    "t1": 4500,
+    "bal0": 237934,
+    "bal1": 0,
+    "terr0": 3626,
+    "terr1": 0,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 19261,
+     "atkHuman": -93771,
+     "boat": -14039,
+     "donIn": 245179,
+     "dmg": -210243
+    },
+    "residual": -184343
+   },
+   {
+    "bot": "riku_x",
+    "t0": 1710,
+    "t1": 1800,
+    "bal0": 264215,
+    "bal1": 14417,
+    "terr0": 3279,
+    "terr1": 3279,
+    "mainSink": "atkHuman",
+    "flows": {
+     "eco": 37169,
+     "atkHuman": -286967
+    },
+    "residual": 0
+   },
+   {
+    "bot": "riku_x",
+    "t0": 1890,
+    "t1": 1980,
+    "bal0": 16084,
+    "bal1": 734,
+    "terr0": 6354,
+    "terr1": 7404,
+    "mainSink": "atkHuman",
+    "flows": {
+     "eco": 7102,
+     "atkHuman": -22422
+    },
+    "residual": 0
+   },
+   {
+    "bot": "riku_x",
+    "t0": 3420,
+    "t1": 3510,
+    "bal0": 250493,
+    "bal1": 163756,
+    "terr0": 6417,
+    "terr1": 6417,
+    "mainSink": "donOut",
+    "flows": {
+     "eco": 28637,
+     "donOut": -115374
+    },
+    "residual": 0
+   },
+   {
+    "bot": "riku_x",
+    "t0": 4050,
+    "t1": 4140,
+    "bal0": 159994,
+    "bal1": 92180,
+    "terr0": 6417,
+    "terr1": 4163,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 19757,
+     "dmg": -87571
+    },
+    "residual": 0
+   }
+  ],
+  "mainSinkCounts": {
+   "atkNeutral": 1,
+   "dmg": 12,
+   "atkBot": 3,
+   "atkHuman": 11,
+   "donOut": 1
+  },
+  "note": "28 个 DROP30 窗口：被打 12、打真人 11、打机器人 3、打中立 1、捐出 1。27 个残差为 0；leo_tx 4410–4500 拍残差 −184,343，是引擎 collapse 把存兵清零（海上有船，不走除名）。"
+ },
+ "spawnReplay": {
+  "note": "shadow_spawn.mjs（用录像里各拍的落点调用线上同一份协调器；--corners 逐角强制求解并按 L1258-1268 复算方案总分）+ spawn_truth.mjs + spawn_voronoi.mjs + A034_facts.py §24",
+  "solves": "后端 33 次求解全部 K=10（zexos1 没进房，槽位 8）；我方出生指令 179 条，t=−38…−2",
+  "cornerScores(K=10)": {
+   "t=-42（已落点 0）": {
+    "TOP_RIGHT": 16859,
+    "BOTTOM_LEFT": 15650,
+    "BOTTOM_RIGHT": 14911,
+    "picked": "TOP_RIGHT",
+    "firstBackendPointsEqual": "9/9"
+   },
+   "t=-41（敌 7）": {
+    "TOP_RIGHT": 13337,
+    "BOTTOM_LEFT": 15650,
+    "BOTTOM_RIGHT": 12987,
+    "enemiesInTopRight": 5,
+    "freshPick": "BOTTOM_LEFT"
+   },
+   "t=-38（敌 9）": {
+    "TOP_RIGHT": 13151,
+    "BOTTOM_LEFT": 15650,
+    "BOTTOM_RIGHT": 12869,
+    "enemiesInTopRight": 6,
+    "freshPick": "BOTTOM_LEFT"
+   },
+   "t=-6（敌 20）": {
+    "TOP_RIGHT": 13567,
+    "BOTTOM_RIGHT": 12598,
+    "BOTTOM_LEFT": "放不下 10 个点（角内 5 个敌人）",
+    "enemiesInTopRight": 4,
+    "freshPick": "TOP_RIGHT"
+   }
+  },
+  "scales(t=-6)": {
+   "rCell": 76,
+   "allyMinSep": 113,
+   "enemyMinClearance": 53,
+   "minReqSep": 68,
+   "r0/r1/r2": "36/104/172"
+  },
+  "points": {
+   "ryan_m": [
+    768,
+    216
+   ],
+   "zero_7": [
+    577,
+    219
+   ],
+   "talon5": [
+    624,
+    277
+   ],
+   "kaito9": [
+    912,
+    263
+   ],
+   "sora_w": [
+    856,
+    326
+   ],
+   "noah88": [
+    845,
+    247
+   ],
+   "alex_k": [
+    691,
+    335
+   ],
+   "leo_tx": [
+    696,
+    257
+   ],
+   "riku_x": [
+    773,
+    284
+   ]
+  },
+  "roles": "CORNER_APEX_BANK ryan_m；INNER_ARC_BANK noah88、leo_tx；OUTER_SHIELD_WALL sora_w、talon5、alex_k、zero_7、kaito9、riku_x",
+  "anchor": {
+   "corner": "TOP_RIGHT",
+   "best": [
+    766,
+    180
+   ],
+   "landSamples": "99/107",
+   "distToCorner": 210,
+   "metric": 1321,
+   "axisDeg": 86,
+   "landBias": 0.04,
+   "bestWithHalfLand": {
+    "at": [
+     878,
+     100
+    ],
+    "landSamples": "52/107",
+    "distToCorner": 81,
+    "metric": 758
+   },
+   "otherCorners": "TOP_LEFT 最好 156 分；BOTTOM_RIGHT (830,810) 850 分；BOTTOM_LEFT (164,810) 1029 分"
+  },
+  "enemiesNearAnchor": {
+   "[SPARTUS] 300(T1)": "t=−41 (751,176)，离锚点 16、离 ryan_m 43",
+   "Player 607(T2)": "t=−41 (747,168)，离锚点 22、离 ryan_m 52",
+   "ProfChaos(T2)": "t=−41 (819,161) → t=−29 (750,117)，离锚点 65",
+   "ALBOSS(T2)": "t=−41 (766,302) → t=−39 (796,325)，离锚点 148、离 riku_x 47"
+  },
+  "dropFourEnemies": "--drop 12,20,10,11 --at -6：仍是东北角，尖端点 (778,207)，离实际 13 格",
+  "spacing": {
+   "nearestMate": "68/75（最小/中位）",
+   "farthestFromCentroid": 179,
+   "othersInsideRadius": 5
+  },
+  "voronoi": {
+   "squadTiles": 81694,
+   "squadShare": 0.15,
+   "headcountShare": 0.281,
+   "ratio": 0.53,
+   "perBotMedian": 8233,
+   "othersMedian": 19589,
+   "othersLowerQuartile": 14559,
+   "othersMin": 3689,
+   "perBot": {
+    "riku_x": 4710,
+    "ryan_m": 5152,
+    "sora_w": 6184,
+    "leo_tx": 7053,
+    "kaito9": 8233,
+    "noah88": 11301,
+    "talon5": 12142,
+    "zero_7": 13307,
+    "alex_k": 13612
+   },
+   "teams": {
+    "T1": 0.399,
+    "T2": 0.406,
+    "★": 0.046,
+    "编队": 0.15
+   },
+   "landOverShare": {
+    "squad": {
+     "600": 0.29,
+     "900": 0.47,
+     "1200": 0.53,
+     "1500": 0.57,
+     "2100": 0.94,
+     "3000": 1.13
+    },
+    "others": {
+     "600": 0.1,
+     "900": 0.25,
+     "1200": 0.5,
+     "1500": 0.78,
+     "2100": 1.05,
+     "3000": 1.17
+    }
+   },
+   "rankCorrelation": {
+    "1200": 0.63,
+    "1500": 0.74,
+    "2100": 0.64,
+    "3000": 0.5
+   }
+  },
+  "coast": "kaito9、sora_w、noah88、riku_x 每个采样拍海岸 0 格；alex_k 到 3000 拍为止 0 格"
+ },
+ "botLockProbe": {
+  "note": "shadow.mjs --cold --floor 500…1700 每 25 拍 → floor_tally.py --by-bot --who：有相邻机器人的（号×拍）样本 / 其中没有任何机器人目标过得了留底的",
+  "all": {
+   "withBots": 407,
+   "locked": 214,
+   "floorGEBalance": 94,
+   "decidedBy": {
+    "我方号": 96,
+    "价格项等其它门槛": 118
+   }
+  },
+  "500-900": {
+   "withBots": 144,
+   "locked": 116,
+   "floorGEBalance": 35,
+   "bySquadMate": 32,
+   "other": 84,
+   "adjBotLandMedian": 3267
+  },
+  "900-1200": {
+   "withBots": 105,
+   "locked": 48,
+   "floorGEBalance": 31,
+   "bySquadMate": 30,
+   "other": 18,
+   "adjBotLandMedian": 2597
+  },
+  "1200-1500": {
+   "withBots": 96,
+   "locked": 40,
+   "floorGEBalance": 28,
+   "bySquadMate": 28,
+   "other": 12,
+   "adjBotLandMedian": 1720
+  },
+  "1500-1700": {
+   "withBots": 62,
+   "locked": 10,
+   "bySquadMate": 6
+  },
+  "perBot": "talon5 35/48（经 alex_k 24）、ryan_m 38/47（经 leo_tx 11）、leo_tx 26/47（经 ryan_m 8、talon5 7）、noah88 23/48（经 kaito9 12）、sora_w 22/48、kaito9 21/48（经 noah88 13）、riku_x 20/25、zero_7 16/48、alex_k 13/48",
+  "minCmdShare": "打机器人的决策里 pct ≤48 的：600–899 拍 37/117、900–1199 拍 167/263、1200–1499 拍 244/248（A034_facts.py §18）",
+  "botFate": "1200–1500 拍贴着我方号的 25 个机器人此后被拿走 36,659 格：编队 8,541（23%）、其他真人 12,521（34%：jet 7,770、Trace 1,843、Player 31 1,093、SPARTUS 300 871）、别的机器人 8,492、变回中立 7,105"
+ },
+ "dispatchAudit": {
+  "logged": 19,
+  "executed": 19,
+  "notExecuted": 0,
+  "notExecutedReasons": {},
+  "perBotLoggedExecuted": {
+   "leo_tx": [
+    2,
+    2
+   ],
+   "riku_x": [
+    3,
+    3
+   ],
+   "noah88": [
+    4,
+    4
+   ],
+   "kaito9": [
+    4,
+    4
+   ],
+   "sora_w": [
+    6,
+    6
+   ]
+  },
+  "execLagMedian": 13,
+  "execLagMax": 21,
+  "execLagGE25": 0,
+  "squadDonationsExecuted": 19,
+  "arrived": 3728221,
+  "tax": 1157666,
+  "toSquadMates": 19,
+  "toOtherTeammates": 0,
+  "fromOtherTeammates": {
+   "n": 0,
+   "arrived": 0
+  },
+  "sameTickBatches": [],
+  "cardLikelyRejected": 0,
+  "cardTotalTransfers": 19,
+  "byPhase": {
+   "t<3213": {
+    "logged": 1,
+    "executed": 1,
+    "arrived": 194000.0
+   },
+   "3213-4284": {
+    "logged": 14,
+    "executed": 14,
+    "arrived": 2510000.0
+   },
+   "t>=4284": {
+    "logged": 4,
+    "executed": 4,
+    "arrived": 1020000.0
+   }
+  },
+  "note": "调度日志 19 条、落地 19 条（配额 0 拒绝）；到账 3.73M、税 1.16M（31.1%）。defense_dispatch 17 笔（到账 3.35M、税 1.04M）、offense_dispatch 2 笔（375k、税 119k）。已用配额最多 108/209 点（kaito9）。",
+  "byRecipient": {
+   "leo_tx": "5 笔 1.18M（税 374k）",
+   "alex_k": "5 笔 755k（税 222k）",
+   "kaito9": "3 笔 716k（税 216k）",
+   "talon5": "3 笔 567k（税 175k）",
+   "ryan_m": "3 笔 509k（税 169k）"
+  },
+  "byDonor": {
+   "sora_w": "6 笔 1.48M（税 463k）",
+   "kaito9": "4 笔 1.05M（税 344k）",
+   "noah88": "4 笔 606k（税 190k）",
+   "leo_tx": "2 笔 375k（税 119k）",
+   "riku_x": "3 笔 212k（税 42k）"
+  },
+  "yieldPayback": {
+   "positive": 13,
+   "positiveGainPer10": 25000.0,
+   "paybackMedianTicks": 393,
+   "negative": 6,
+   "donorDensityMedian": 110,
+   "recipientDensity": "69 → 92"
+  },
+  "aftermath": "其后 300 拍受赠方的地：变多 2 笔、变少 17 笔；少 ≥20% 的 14 笔（到账 2.89M、税 899k），其中 3 笔（4221、4340、4424 拍给 leo_tx 的 671k）受赠方清零",
+  "randoms": "编队 ↔ 路人队友 0 笔"
+ },
+ "donProbe": {
+  "note": "shadow.mjs --cold --don-probe → donprobe_tally.py / donprobe_why.py",
+  "2100-3100": {
+   "donorTicks": 174,
+   "allSkipped": 140,
+   "donorFighting": 22,
+   "underAttackCandTicks": 8,
+   "unlisted": 8,
+   "blocks": "L4466 ×31、L4456 ×17"
+  },
+  "3100-3600": {
+   "donorTicks": 88,
+   "allSkipped": 80,
+   "underAttackCandTicks": 1,
+   "unlisted": 1
+  },
+  "3600-4300": {
+   "donorTicks": 111,
+   "allSkipped": 63,
+   "donorFighting": 32,
+   "withTarget": 16,
+   "underAttackCandTicks": 27,
+   "unlisted": 12
+  },
+  "4300-5200": {
+   "donorTicks": 67,
+   "allSkipped": 33,
+   "donorFighting": 15,
+   "withTarget": 5,
+   "underAttackCandTicks": 15,
+   "unlisted": 10
+  },
+  "doomed": {
+   "firstBranchCandTicks": 11,
+   "secondBranchOnly": 0,
+   "who": "zero_7 2150–2300 拍 3 个、riku_x 4100–4200 拍 3 个、noah88 4550–4600 拍 2 个、leo_tx、ryan_m、sora_w 各 1 个"
+  }
+ },
+ "offersProbe": {
+  "note": "shadow.mjs --cold --offers → offers_price.py [--contact]：buyLand 的报价表（worth = m×参考密度；over = 存兵 > 100×地）",
+  "gateClosedShare": {
+   "2105": "6/8 个号，握着 75% 的兵，报价÷估值中位 1.50",
+   "2400": "5/7，81%，1.60",
+   "2700": "5/7，79%，1.87",
+   "3000": "6/7，79%，2.68",
+   "3300": "6/7，82%，3.02",
+   "3600": "4 个（42%），3 个号放行",
+   "4200": "5/7，64%"
+  },
+  "ryan_m→Player 607": {
+   "contact": 10,
+   "steps": 946,
+   "penalty": 1.8,
+   "2105": "1.14×估值 → 不罚 0.63×",
+   "2200": "1.27× → 0.70×",
+   "2300": "1.42× → 0.79×",
+   "2400": "1.60× → 0.89×",
+   "needOverBalance": "1.44–1.55"
+  },
+  "contactPenaltyFlips": "2150–3000 拍探针：被收口的 22 个（号×拍）里 6 个带罚价、6 个去掉后能过；2105–4200 拍探针 40 个里 5 个带、4 个能过",
+  "ProfChaos 2150-2850": {
+   "noah88": "18 个样本存兵都 ≤ 留底；报价 0.04–0.99×估值，可用兵 −240k…−66k；safeAt(-1) 311k–432k（dpKeep，邻居 SPARTUS 300）",
+   "kaito9": "2150–2400 拍可用 9k–30k；2500–2700 拍报价 0.05–0.21×估值、可用兵 −128k…−14k；2750–2850 拍可用 2k、−1k、29k"
+  },
+  "buyLandExits": "talon5、sora_w 2100–3299 拍每 300 拍 60/60 次调用在 L5359 收口；noah88 L5447 命中 60/56/33 个决策拍（2100/2400/2700 段）；L5364：sora_w 108、noah88 74、kaito9 64、leo_tx 57 个决策拍"
+ },
+ "idleBoatsProbe": {
+  "note": "shadow.mjs --quiet --win 300 --mids idleBoats → mids_tally.py --fn idleBoats（t≥1500）",
+  "lines": "L5060 = 有邻居且存兵 <125×地 → 返回；L5031 = 被围、队友有前线且自己密度 <115 → 返回；L5059 = 还有中立可扩或在冷却",
+  "calls": 4661,
+  "L5060": 3844,
+  "L5031": 468,
+  "L5059": 347,
+  "boatOut": 2,
+  "boatsInReplay": 1,
+  "perBot": "riku_x L5031 362/476；leo_tx L5031 106/831；其余七个号 81–98% 在 L5060"
+ },
+ "overRelease": {
+  "note": "volleys.py A034 --list（含手续费）；A034_facts.py §28（不含手续费）",
+  "humanAttackCommands": 166,
+  "volleys": 47,
+  "volleysGE3": {
+   "n": 29,
+   "commands": 140,
+   "sent": 7230000.0,
+   "shareOfSpend": 0.81
+  },
+  "firstCommands": 3630000.0,
+  "followUps": 5330000.0,
+  "followUpShare": 0.59,
+  "launchedOver100xLand": {
+   "volleys": 21,
+   "sent": 5260000.0,
+   "shareOfAttackHumanSpend": 0.59
+  },
+  "targetStrength": {
+   "overVolleys": 20,
+   "sent": 4640000.0,
+   "targetGEOwn": {
+    "n": 16,
+    "sent": 3840000.0
+   },
+   "targetGE2xOwn": {
+    "n": 4,
+    "sent": 755000.0
+   }
+  },
+  "byTarget": "Player 607 7 轮 1.61M（ryan_m、leo_tx、talon5）；Player 813 4 轮 974k；SPARTUS 300 4 轮 868k；Trace 2 轮 733k；Player 31 2 轮 339k；ProfChaos 1 轮 117k",
+  "segmentsFrom2100": "影子里 32 段对真人的出手，23 段开打时密度 ≥100（ryan_m 6/6、alex_k 4/4、leo_tx 8/11、kaito9 3/7、talon5 2/3、sora_w 0/1）"
+ },
+ "delivery": {
+  "ryan_m": {
+   "lastLogT": 3960,
+   "atkBoatIssued": 120,
+   "atkBoatExecuted": 74,
+   "atkBoatRate": 0.62,
+   "donIssued": 0,
+   "donExecuted": 0,
+   "deadWindows": [
+    {
+     "t0": 1440,
+     "t1": 1530,
+     "issued": 9,
+     "executed": 0
+    },
+    {
+     "t0": 1530,
+     "t1": 1620,
+     "issued": 18,
+     "executed": 0
+    },
+    {
+     "t0": 1710,
+     "t1": 1800,
+     "issued": 18,
+     "executed": 0
+    }
+   ],
+   "issuedInDeadWindows": 45
+  },
+  "zero_7": {
+   "lastLogT": 2340,
+   "atkBoatIssued": 199,
+   "atkBoatExecuted": 88,
+   "atkBoatRate": 0.44,
+   "donIssued": 0,
+   "donExecuted": 0,
+   "deadWindows": [
+    {
+     "t0": 1170,
+     "t1": 1260,
+     "issued": 17,
+     "executed": 0
+    },
+    {
+     "t0": 1350,
+     "t1": 1440,
+     "issued": 17,
+     "executed": 0
+    },
+    {
+     "t0": 1530,
+     "t1": 1620,
+     "issued": 18,
+     "executed": 0
+    },
+    {
+     "t0": 1710,
+     "t1": 1800,
+     "issued": 18,
+     "executed": 0
+    }
+   ],
+   "issuedInDeadWindows": 70
+  },
+  "sora_w": {
+   "lastLogT": 5130,
+   "atkBoatIssued": 181,
+   "atkBoatExecuted": 80,
+   "atkBoatRate": 0.44,
+   "donIssued": 6,
+   "donExecuted": 6,
+   "deadWindows": [
+    {
+     "t0": 810,
+     "t1": 900,
+     "issued": 12,
+     "executed": 1
+    },
+    {
+     "t0": 990,
+     "t1": 1080,
+     "issued": 17,
+     "executed": 0
+    },
+    {
+     "t0": 1170,
+     "t1": 1260,
+     "issued": 14,
+     "executed": 0
+    },
+    {
+     "t0": 1620,
+     "t1": 1710,
+     "issued": 18,
+     "executed": 0
+    },
+    {
+     "t0": 1800,
+     "t1": 1890,
+     "issued": 16,
+     "executed": 0
+    }
+   ],
+   "issuedInDeadWindows": 77
+  },
+  "kaito9": {
+   "lastLogT": 5220,
+   "atkBoatIssued": 194,
+   "atkBoatExecuted": 87,
+   "atkBoatRate": 0.45,
+   "donIssued": 4,
+   "donExecuted": 4,
+   "deadWindows": [
+    {
+     "t0": 900,
+     "t1": 990,
+     "issued": 11,
+     "executed": 0
+    },
+    {
+     "t0": 1080,
+     "t1": 1170,
+     "issued": 15,
+     "executed": 0
+    },
+    {
+     "t0": 1260,
+     "t1": 1350,
+     "issued": 12,
+     "executed": 1
+    },
+    {
+     "t0": 1350,
+     "t1": 1440,
+     "issued": 14,
+     "executed": 0
+    },
+    {
+     "t0": 1530,
+     "t1": 1620,
+     "issued": 18,
+     "executed": 0
+    },
+    {
+     "t0": 1710,
+     "t1": 1800,
+     "issued": 18,
+     "executed": 0
+    }
+   ],
+   "issuedInDeadWindows": 88
+  },
+  "talon5": {
+   "lastLogT": 4590,
+   "atkBoatIssued": 109,
+   "atkBoatExecuted": 73,
+   "atkBoatRate": 0.67,
+   "donIssued": 0,
+   "donExecuted": 0,
+   "deadWindows": [
+    {
+     "t0": 810,
+     "t1": 900,
+     "issued": 12,
+     "executed": 1
+    },
+    {
+     "t0": 1620,
+     "t1": 1710,
+     "issued": 10,
+     "executed": 0
+    }
+   ],
+   "issuedInDeadWindows": 22
+  },
+  "noah88": {
+   "lastLogT": 4590,
+   "atkBoatIssued": 172,
+   "atkBoatExecuted": 74,
+   "atkBoatRate": 0.43,
+   "donIssued": 4,
+   "donExecuted": 4,
+   "deadWindows": [
+    {
+     "t0": 900,
+     "t1": 990,
+     "issued": 15,
+     "executed": 0
+    },
+    {
+     "t0": 1170,
+     "t1": 1260,
+     "issued": 18,
+     "executed": 0
+    },
+    {
+     "t0": 1350,
+     "t1": 1440,
+     "issued": 10,
+     "executed": 0
+    },
+    {
+     "t0": 1530,
+     "t1": 1620,
+     "issued": 17,
+     "executed": 1
+    },
+    {
+     "t0": 1710,
+     "t1": 1800,
+     "issued": 12,
+     "executed": 0
+    }
+   ],
+   "issuedInDeadWindows": 72
+  },
+  "alex_k": {
+   "lastLogT": 4050,
+   "atkBoatIssued": 241,
+   "atkBoatExecuted": 92,
+   "atkBoatRate": 0.38,
+   "donIssued": 0,
+   "donExecuted": 0,
+   "deadWindows": [
+    {
+     "t0": 810,
+     "t1": 900,
+     "issued": 14,
+     "executed": 1
+    },
+    {
+     "t0": 1080,
+     "t1": 1170,
+     "issued": 18,
+     "executed": 0
+    },
+    {
+     "t0": 1170,
+     "t1": 1260,
+     "issued": 18,
+     "executed": 0
+    },
+    {
+     "t0": 1350,
+     "t1": 1440,
+     "issued": 18,
+     "executed": 0
+    },
+    {
+     "t0": 1440,
+     "t1": 1530,
+     "issued": 18,
+     "executed": 0
+    },
+    {
+     "t0": 1620,
+     "t1": 1710,
+     "issued": 18,
+     "executed": 0
+    }
+   ],
+   "issuedInDeadWindows": 104
+  },
+  "riku_x": {
+   "lastLogT": 4140,
+   "atkBoatIssued": 103,
+   "atkBoatExecuted": 51,
+   "atkBoatRate": 0.5,
+   "donIssued": 3,
+   "donExecuted": 3,
+   "deadWindows": [
+    {
+     "t0": 990,
+     "t1": 1080,
+     "issued": 16,
+     "executed": 1
+    },
+    {
+     "t0": 1530,
+     "t1": 1620,
+     "issued": 18,
+     "executed": 0
+    },
+    {
+     "t0": 1620,
+     "t1": 1710,
+     "issued": 18,
+     "executed": 0
+    }
+   ],
+   "issuedInDeadWindows": 52
+  },
+  "leo_tx": {
+   "lastLogT": 5760,
+   "atkBoatIssued": 102,
+   "atkBoatExecuted": 87,
+   "atkBoatRate": 0.85,
+   "donIssued": 2,
+   "donExecuted": 2,
+   "deadWindows": [
+    {
+     "t0": 900,
+     "t1": 990,
+     "issued": 18,
+     "executed": 1
+    }
+   ],
+   "issuedInDeadWindows": 18
+  },
+  "_total": {
+   "atkBoatIssued": 1421,
+   "atkBoatExecuted": 706,
+   "atkBoatRate": 0.5,
+   "donIssued": 19,
+   "donExecuted": 19,
+   "issuedInDeadWindows": 548
+  }
+ },
+ "shadow": {
+  "mid": "A034",
+  "ver": "vb",
+  "bots": [
+   {
+    "bot": "ryan_m",
+    "shadowIssued": 121,
+    "reportedCmds": 120,
+    "executed": 74,
+    "executedAll": 74,
+    "matched": 67,
+    "staleMedian": 9,
+    "staleMax": 204,
+    "staleGE90": 14,
+    "lockT": 748,
+    "guardRefusals": 4
+   },
+   {
+    "bot": "zero_7",
+    "shadowIssued": 199,
+    "reportedCmds": 199,
+    "executed": 88,
+    "executedAll": 88,
+    "matched": 59,
+    "staleMedian": 108,
+    "staleMax": 269,
+    "staleGE90": 35,
+    "lockT": 722,
+    "guardRefusals": 13
+   },
+   {
+    "bot": "talon5",
+    "shadowIssued": 109,
+    "reportedCmds": 109,
+    "executed": 73,
+    "executedAll": 73,
+    "matched": 54,
+    "staleMedian": 14,
+    "staleMax": 230,
+    "staleGE90": 18,
+    "lockT": 477,
+    "guardRefusals": 3
+   },
+   {
+    "bot": "kaito9",
+    "shadowIssued": 198,
+    "reportedCmds": 198,
+    "executed": 91,
+    "executedAll": 91,
+    "matched": 56,
+    "staleMedian": 15,
+    "staleMax": 257,
+    "staleGE90": 10,
+    "lockT": 694,
+    "guardRefusals": 10
+   },
+   {
+    "bot": "sora_w",
+    "shadowIssued": 187,
+    "reportedCmds": 187,
+    "executed": 86,
+    "executedAll": 86,
+    "matched": 52,
+    "staleMedian": 19,
+    "staleMax": 365,
+    "staleGE90": 9,
+    "lockT": 748,
+    "guardRefusals": 5
+   },
+   {
+    "bot": "noah88",
+    "shadowIssued": 176,
+    "reportedCmds": 176,
+    "executed": 78,
+    "executedAll": 78,
+    "matched": 51,
+    "staleMedian": 16,
+    "staleMax": 206,
+    "staleGE90": 15,
+    "lockT": 456,
+    "guardRefusals": 0
+   },
+   {
+    "bot": "alex_k",
+    "shadowIssued": 241,
+    "reportedCmds": 241,
+    "executed": 92,
+    "executedAll": 92,
+    "matched": 48,
+    "staleMedian": 14,
+    "staleMax": 274,
+    "staleGE90": 5,
+    "lockT": 463,
+    "guardRefusals": 10
+   },
+   {
+    "bot": "leo_tx",
+    "shadowIssued": 104,
+    "reportedCmds": 104,
+    "executed": 89,
+    "executedAll": 89,
+    "matched": 70,
+    "staleMedian": 17,
+    "staleMax": 353,
+    "staleGE90": 16,
+    "lockT": 942,
+    "guardRefusals": 10
+   },
+   {
+    "bot": "riku_x",
+    "shadowIssued": 106,
+    "reportedCmds": 106,
+    "executed": 54,
+    "executedAll": 54,
+    "matched": 42,
+    "staleMedian": 18,
+    "staleMax": 294,
+    "staleGE90": 19,
+    "lockT": 694,
+    "guardRefusals": 1
+   }
+  ],
+  "summary": {
+   "shadowIssued": 1441,
+   "selfReported": 1440,
+   "executed": 725,
+   "matched": 499,
+   "staleGE90": 141,
+   "guardRefusals": 56,
+   "oneCmdPerTickSqueezed": "83 条（ryan_m 47、alex_k 12、noah88 9、talon5 7、其余五个号 1–2 条）；results.csv 的 sent − accepted 逐号相同",
+   "notInReplay": "过闸 1,441 条里 716 条没有出现在录像里"
+  }
+ },
+ "deliveryGap": {
+  "note": "A034_facts.py §23：过闸的局内指令（影子，每拍只算被受理的那一条）/ 录像里执行拍落在该窗口的指令；replay_cmds.mjs → A034-cmds.tsv",
+  "windows": {
+   "0": "27/27",
+   "300": "60/60",
+   "600": "133/59",
+   "900": "264/99",
+   "1200": "248/93",
+   "1500": "429/99",
+   "1800": "164/168",
+   "2100": "4/6",
+   "2400": "10/12",
+   "2700": "9/7",
+   "3000": "6/8",
+   "3300": "17/15",
+   "3600": "13/15",
+   "3900": "24/20",
+   "4200": "21/22",
+   "4500": "5/8",
+   "4800": "7/7"
+  },
+  "accounting": {
+   "wanted": 1524,
+   "squeezedByOnePerTick": 83,
+   "sentMinusAccepted": 83,
+   "gatePassed": 1441,
+   "inReplay": 725,
+   "notInReplay": 716,
+   "perBotNotInReplay": "ryan_m 47/121、zero_7 111/199、talon5 36/109、kaito9 107/198、sora_w 101/187、noah88 98/176、alex_k 149/241、leo_tx 15/104、riku_x 52/106"
+  },
+  "bursts": {
+   "batches": 46,
+   "sizes": {
+    "5": 1,
+    "6": 3,
+    "7": 1,
+    "8": 7,
+    "9": 34
+   },
+   "commands": 392,
+   "ofExecutedLandBoat": 706,
+   "void": 152,
+   "targetClassRewritten": 197,
+   "firstTick": 910,
+   "lastTick": 2023,
+   "allOnTickMod7": true,
+   "order": "46/46 批按决策的倒序落地",
+   "uniqueMatches": {
+    "batches": 33,
+    "commands": 278,
+    "staleMedian": 236,
+    "staleMin": 48,
+    "staleMax": 441,
+    "staleGE90": 258
+   }
+  },
+  "perWindow(落地|在批里|落空)": {
+   "600": "59|0|0",
+   "900": "99|73|47",
+   "1200": "93|81|43",
+   "1500": "99|81|30",
+   "1800": "168|157|49"
+  },
+  "singlesStaleMedian": {
+   "600": 17,
+   "900": 78,
+   "1200": 214,
+   "1500": 206,
+   "1800": 30,
+   "2100": 12
+  },
+  "kaito9Chain": "落地拍 ← 决策拍：1253 ← 930–990；1470 ← 1100–1140；1659 ← 1430–1470；1820 ← 1485–1525；1932 ← 1675–1715；1974 ← 1875–1915",
+  "byIssuingDensity": "决定当时前 60 拍内该号的陆攻决策数 0–2 / 3–7 / 8–12：落地 96 / 128 / 186 条，陈旧度中位 96 / 178 / 222 拍（cmd_staleness.py）",
+  "strategyCost": "traj.csv：avgMs 约 0.8、maxMs ≤13.4、skip 0",
+  "clientClock": "client_clock.py：服务器每拍 56.02 ms；ryan_m 上报离场时落后 376 拍（21.1 秒），leo_tx 终局落后 12 拍"
+ },
+ "delayAccount": {
+  "source": "scripts/delay_account.py A034（口径见脚本头；延迟 = 录像里的执行拍 − 影子策略做出同一条决策的拍）",
+  "spawnExecution": {
+   "solveRounds": 33,
+   "distinctSolutions": 10,
+   "phaseStart": -41,
+   "verdicts": {
+    "最终坐标落地": 7,
+    "停在旧坐标": 2
+   },
+   "nearestAllyMedian": 74.653,
+   "othersWithSpawnCmd": 21,
+   "others": 24,
+   "stackPairs": 0,
+   "bots": [
+    {
+     "bot": "ryan_m",
+     "assignN": 20,
+     "final": [
+      768,
+      216
+     ],
+     "replaySpawnN": 18,
+     "actual": [
+      768,
+      216
+     ],
+     "verdict": "最终坐标落地",
+     "distActualToFinal": 0.0,
+     "localSendsApprox": 21
+    },
+    {
+     "bot": "sora_w",
+     "assignN": 21,
+     "final": [
+      856,
+      326
+     ],
+     "replaySpawnN": 19,
+     "actual": [
+      856,
+      326
+     ],
+     "verdict": "最终坐标落地",
+     "distActualToFinal": 0.0,
+     "localSendsApprox": 21
+    },
+    {
+     "bot": "noah88",
+     "assignN": 25,
+     "final": [
+      845,
+      247
+     ],
+     "replaySpawnN": 24,
+     "actual": [
+      845,
+      247
+     ],
+     "verdict": "最终坐标落地",
+     "distActualToFinal": 0.0,
+     "localSendsApprox": 25
+    },
+    {
+     "bot": "leo_tx",
+     "assignN": 32,
+     "final": [
+      773,
+      284
+     ],
+     "replaySpawnN": 14,
+     "actual": [
+      696,
+      257
+     ],
+     "verdict": "停在旧坐标",
+     "distActualToFinal": 81.597,
+     "localSendsApprox": 32
+    },
+    {
+     "bot": "talon5",
+     "assignN": 21,
+     "final": [
+      624,
+      277
+     ],
+     "replaySpawnN": 19,
+     "actual": [
+      624,
+      277
+     ],
+     "verdict": "最终坐标落地",
+     "distActualToFinal": 0.0,
+     "localSendsApprox": 21
+    },
+    {
+     "bot": "alex_k",
+     "assignN": 26,
+     "final": [
+      691,
+      335
+     ],
+     "replaySpawnN": 25,
+     "actual": [
+      691,
+      335
+     ],
+     "verdict": "最终坐标落地",
+     "distActualToFinal": 0.0,
+     "localSendsApprox": 26
+    },
+    {
+     "bot": "zero_7",
+     "assignN": 21,
+     "final": [
+      577,
+      219
+     ],
+     "replaySpawnN": 19,
+     "actual": [
+      577,
+      219
+     ],
+     "verdict": "最终坐标落地",
+     "distActualToFinal": 0.0,
+     "localSendsApprox": 21
+    },
+    {
+     "bot": "kaito9",
+     "assignN": 20,
+     "final": [
+      912,
+      263
+     ],
+     "replaySpawnN": 18,
+     "actual": [
+      912,
+      263
+     ],
+     "verdict": "最终坐标落地",
+     "distActualToFinal": 0.0,
+     "localSendsApprox": 20
+    },
+    {
+     "bot": "riku_x",
+     "assignN": 26,
+     "final": [
+      696,
+      257
+     ],
+     "replaySpawnN": 23,
+     "actual": [
+      773,
+      284
+     ],
+     "verdict": "停在旧坐标",
+     "distActualToFinal": 81.597,
+     "localSendsApprox": 26
+    }
+   ]
+  },
+  "baselineTicks": 13,
+  "delayByPeriod": [
+   {
+    "period": "0–600",
+    "landed": 87,
+    "matched": 87,
+    "unique": 87,
+    "p50": 13,
+    "p90": 16,
+    "max": 20,
+    "uP50": 13,
+    "uP90": 16,
+    "uMax": 20,
+    "hiP50": 13,
+    "ge35": 0,
+    "ge90": 0,
+    "ge300": 0
+   },
+   {
+    "period": "600–1500",
+    "landed": 251,
+    "matched": 250,
+    "unique": 204,
+    "p50": 127,
+    "p90": 330,
+    "max": 419,
+    "uP50": 148,
+    "uP90": 330,
+    "uMax": 418,
+    "hiP50": 168,
+    "ge35": 185,
+    "ge90": 156,
+    "ge300": 44
+   },
+   {
+    "period": "1500–3000",
+    "landed": 292,
+    "matched": 292,
+    "unique": 208,
+    "p50": 211,
+    "p90": 334,
+    "max": 441,
+    "uP50": 220,
+    "uP90": 340,
+    "uMax": 441,
+    "hiP50": 220,
+    "ge35": 241,
+    "ge90": 206,
+    "ge300": 48
+   },
+   {
+    "period": "3000+",
+    "landed": 76,
+    "matched": 76,
+    "unique": 39,
+    "p50": 13.0,
+    "p90": 20,
+    "max": 30,
+    "uP50": 13,
+    "uP90": 16,
+    "uMax": 19,
+    "hiP50": 13.5,
+    "ge35": 0,
+    "ge90": 0,
+    "ge300": 0
+   }
+  ],
+  "delayBy300": [
+   {
+    "t": 0,
+    "p50": 14,
+    "max": 17,
+    "n": 27
+   },
+   {
+    "t": 300,
+    "p50": 13.0,
+    "max": 20,
+    "n": 60
+   },
+   {
+    "t": 600,
+    "p50": 17,
+    "max": 69,
+    "n": 59
+   },
+   {
+    "t": 900,
+    "p50": 129,
+    "max": 251,
+    "n": 99
+   },
+   {
+    "t": 1200,
+    "p50": 294,
+    "max": 419,
+    "n": 92
+   },
+   {
+    "t": 1500,
+    "p50": 224,
+    "max": 441,
+    "n": 99
+   },
+   {
+    "t": 1800,
+    "p50": 216,
+    "max": 387,
+    "n": 168
+   },
+   {
+    "t": 2100,
+    "p50": 17.0,
+    "max": 24,
+    "n": 6
+   },
+   {
+    "t": 2400,
+    "p50": 11.5,
+    "max": 32,
+    "n": 12
+   },
+   {
+    "t": 2700,
+    "p50": 11,
+    "max": 16,
+    "n": 7
+   },
+   {
+    "t": 3000,
+    "p50": 12,
+    "max": 20,
+    "n": 7
+   },
+   {
+    "t": 3300,
+    "p50": 12.0,
+    "max": 24,
+    "n": 12
+   },
+   {
+    "t": 3600,
+    "p50": 11.0,
+    "max": 19,
+    "n": 10
+   },
+   {
+    "t": 3900,
+    "p50": 13,
+    "max": 30,
+    "n": 15
+   },
+   {
+    "t": 4200,
+    "p50": 14,
+    "max": 27,
+    "n": 19
+   },
+   {
+    "t": 4500,
+    "p50": 15,
+    "max": 24,
+    "n": 7
+   },
+   {
+    "t": 4800,
+    "p50": 12.0,
+    "max": 17,
+    "n": 6
+   }
+  ],
+  "lagByBotP50": {
+   "ryan_m": [
+    10.0,
+    129,
+    42,
+    9.5
+   ],
+   "sora_w": [
+    12,
+    228,
+    245,
+    10.5
+   ],
+   "noah88": [
+    13,
+    33.5,
+    168,
+    14.0
+   ],
+   "leo_tx": [
+    15,
+    129,
+    180,
+    15.5
+   ],
+   "talon5": [
+    13,
+    104,
+    217,
+    10
+   ],
+   "alex_k": [
+    12.5,
+    32,
+    77,
+    10.5
+   ],
+   "zero_7": [
+    12.0,
+    172,
+    216,
+    null
+   ],
+   "kaito9": [
+    12.5,
+    303,
+    242,
+    13
+   ],
+   "riku_x": [
+    14,
+    277,
+    236,
+    null
+   ]
+  },
+  "funnel": [
+   {
+    "period": "0–600",
+    "intended": 87,
+    "intendedTroops": 67198,
+    "landed": 87,
+    "asIntended": 87,
+    "deadToNeutral": 0,
+    "deadVoid": 0,
+    "void": 0,
+    "neverLanded": 0,
+    "neverLandedTroops": 0
+   },
+   {
+    "period": "600–1500",
+    "intended": 645,
+    "intendedTroops": 2375390,
+    "landed": 310,
+    "asIntended": 132,
+    "deadToNeutral": 72,
+    "deadVoid": 104,
+    "void": 2,
+    "neverLanded": 335,
+    "neverLandedTroops": 1464331
+   },
+   {
+    "period": "1500–3000",
+    "intended": 616,
+    "intendedTroops": 18139565,
+    "landed": 234,
+    "asIntended": 151,
+    "deadToNeutral": 18,
+    "deadVoid": 37,
+    "void": 28,
+    "neverLanded": 382,
+    "neverLandedTroops": 11064023
+   },
+   {
+    "period": "3000+",
+    "intended": 74,
+    "intendedTroops": 6163042,
+    "landed": 74,
+    "asIntended": 72,
+    "deadToNeutral": 0,
+    "deadVoid": 0,
+    "void": 2,
+    "neverLanded": 0,
+    "neverLandedTroops": 0
+   }
+  ],
+  "selfReport": {
+   "shadow": 1441,
+   "cmds": 1440,
+   "landed": 722
+  },
+  "phantomDecisions": {},
+  "lateVoid": [
+   {
+    "period": "0–600",
+    "B": {
+     "landed": 33,
+     "hit": 33,
+     "hitOut": 10869,
+     "hitRet": 542,
+     "hitTiles": 2686,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 0,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    },
+    "N": {
+     "landed": 54,
+     "hit": 54,
+     "hitOut": 53020,
+     "hitRet": 10693,
+     "hitTiles": 21163,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 0,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    }
+   },
+   {
+    "period": "600–1500",
+    "B": {
+     "landed": 233,
+     "hit": 94,
+     "hitOut": 238318,
+     "hitRet": 156170,
+     "hitTiles": 16725,
+     "rewrittenOk": 50,
+     "rewrittenOut": 212061,
+     "rewrittenFee": 46111,
+     "rewrittenRet": 210967,
+     "rewrittenTiles": 407,
+     "rewrittenVoid": 88,
+     "void": 1,
+     "intendedTroopsDead": 326022,
+     "staleRewrittenP50": 214
+    },
+    "N": {
+     "landed": 17,
+     "hit": 16,
+     "hitOut": 29966,
+     "hitRet": 18966,
+     "hitTiles": 5500,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 1,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    },
+    "unmatched": {
+     "n": 1,
+     "void": 0,
+     "toNeutral": 0,
+     "out": 5170,
+     "ret": 4600
+    }
+   },
+   {
+    "period": "1500–3000",
+    "B": {
+     "landed": 136,
+     "hit": 44,
+     "hitOut": 375179,
+     "hitRet": 362556,
+     "hitTiles": 5957,
+     "rewrittenOk": 39,
+     "rewrittenOut": 346641,
+     "rewrittenFee": 111620,
+     "rewrittenRet": 342703,
+     "rewrittenTiles": 1712,
+     "rewrittenVoid": 53,
+     "void": 0,
+     "intendedTroopsDead": 514683,
+     "staleRewrittenP50": 291
+    },
+    "H": {
+     "landed": 108,
+     "hit": 104,
+     "hitOut": 2910040,
+     "hitRet": 807198,
+     "hitTiles": 39937,
+     "rewrittenOk": 1,
+     "rewrittenOut": 2002,
+     "rewrittenFee": 153,
+     "rewrittenRet": 2002,
+     "rewrittenTiles": 0.0,
+     "rewrittenVoid": 0,
+     "void": 3,
+     "intendedTroopsDead": 1120,
+     "staleRewrittenP50": 20
+    },
+    "N": {
+     "landed": 48,
+     "hit": 23,
+     "hitOut": 254528,
+     "hitRet": 254056,
+     "hitTiles": 236,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 25,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    }
+   },
+   {
+    "period": "3000+",
+    "H": {
+     "landed": 62,
+     "hit": 62,
+     "hitOut": 5214765,
+     "hitRet": 693791,
+     "hitTiles": 17716,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 0,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    },
+    "N": {
+     "landed": 13,
+     "hit": 11,
+     "hitOut": 354586,
+     "hitRet": 312899,
+     "hitTiles": 1481,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 2,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    }
+   }
+  ],
+  "batches": [
+   {
+    "period": "0–600",
+    "batches": 0,
+    "cmds": 0,
+    "void": 0,
+    "allVoidBatches": 0,
+    "out": 0,
+    "fee": 0,
+    "ret": 0,
+    "burnt": 0,
+    "tiles": 0,
+    "drain50": 0,
+    "drain50Out": 0,
+    "drain50Bank": 0,
+    "landedAll": 87
+   },
+   {
+    "period": "600–1500",
+    "batches": 26,
+    "cmds": 177,
+    "void": 87,
+    "allVoidBatches": 10,
+    "out": 366922,
+    "fee": 65739,
+    "ret": 328833,
+    "burnt": 0.0,
+    "tiles": 6744,
+    "drain50": 4,
+    "drain50Out": 155899,
+    "drain50Bank": 253819,
+    "landedAll": 251
+   },
+   {
+    "period": "1500–3000",
+    "batches": 31,
+    "cmds": 252,
+    "void": 77,
+    "allVoidBatches": 6,
+    "out": 2670386,
+    "fee": 383919,
+    "ret": 1553402,
+    "burnt": 0.0,
+    "tiles": 29408,
+    "drain50": 10,
+    "drain50Out": 1974399,
+    "drain50Bank": 2481883,
+    "landedAll": 292
+   },
+   {
+    "period": "3000+",
+    "batches": 0,
+    "cmds": 0,
+    "void": 0,
+    "allVoidBatches": 0,
+    "out": 0,
+    "fee": 0,
+    "ret": 0,
+    "burnt": 0,
+    "tiles": 0,
+    "drain50": 0,
+    "drain50Out": 0,
+    "drain50Bank": 0,
+    "landedAll": 76
+   }
+  ],
+  "batchSizes": {
+   "3": 7,
+   "9": 34,
+   "6": 3,
+   "8": 7,
+   "7": 1,
+   "4": 4,
+   "5": 1
+  },
+  "inflightRepeats": [
+   {
+    "period": "0–600",
+    "attackDecisions": 87,
+    "repeatDecisions": 14,
+    "landedRepeats": 14,
+    "landedMatched": 87,
+    "repeatOut": 4639,
+    "repeatFee": 406,
+    "repeatRet": 111,
+    "repeatTiles": 1084,
+    "allOut": 63889
+   },
+   {
+    "period": "600–1500",
+    "attackDecisions": 645,
+    "repeatDecisions": 368,
+    "landedRepeats": 168,
+    "landedMatched": 250,
+    "repeatOut": 330837,
+    "repeatFee": 58469,
+    "repeatRet": 299503,
+    "repeatTiles": 7508,
+    "allOut": 480345
+   },
+   {
+    "period": "1500–3000",
+    "attackDecisions": 616,
+    "repeatDecisions": 496,
+    "landedRepeats": 254,
+    "landedMatched": 292,
+    "repeatOut": 3059868,
+    "repeatFee": 433875,
+    "repeatRet": 1585467,
+    "repeatTiles": 33933,
+    "allOut": 3888390
+   },
+   {
+    "period": "3000+",
+    "attackDecisions": 73,
+    "repeatDecisions": 43,
+    "landedRepeats": 45,
+    "landedMatched": 75,
+    "repeatOut": 3491895,
+    "repeatFee": 444489,
+    "repeatRet": 752560,
+    "repeatTiles": 12378,
+    "allOut": 5569351
+   }
+  ],
+  "neverLanded": [
+   {
+    "period": "0–600",
+    "N": {
+     "n": 0,
+     "troops": 0
+    },
+    "B": {
+     "n": 0,
+     "troops": 0
+    },
+    "H": {
+     "n": 0,
+     "troops": 0
+    },
+    "S": {
+     "n": 0,
+     "troops": 0
+    }
+   },
+   {
+    "period": "600–1500",
+    "N": {
+     "n": 0,
+     "troops": 0
+    },
+    "B": {
+     "n": 335,
+     "troops": 1464331
+    },
+    "H": {
+     "n": 0,
+     "troops": 0
+    },
+    "S": {
+     "n": 0,
+     "troops": 0
+    }
+   },
+   {
+    "period": "1500–3000",
+    "N": {
+     "n": 50,
+     "troops": 475745
+    },
+    "B": {
+     "n": 174,
+     "troops": 820513
+    },
+    "H": {
+     "n": 158,
+     "troops": 9767765
+    },
+    "S": {
+     "n": 0,
+     "troops": 0
+    }
+   },
+   {
+    "period": "3000+",
+    "N": {
+     "n": 0,
+     "troops": 0
+    },
+    "B": {
+     "n": 0,
+     "troops": 0
+    },
+    "H": {
+     "n": 0,
+     "troops": 0
+    },
+    "S": {
+     "n": 0,
+     "troops": 0
+    }
+   }
+  ],
+  "lastLocalTick": {
+   "ryan_m": 4011,
+   "zero_7": 2391,
+   "sora_w": 5164,
+   "noah88": 4617,
+   "talon5": 4596,
+   "kaito9": 5269,
+   "alex_k": 4066,
+   "leo_tx": 5808,
+   "riku_x": 4220
+  }
+ },
+ "landAccount": {
+  "source": "scripts/land_account.mjs A034（每格陆地归离它最近的真人出生点；出生点 = 重放第 0 拍各人领地外接框中心）",
+  "voronoi": {
+   "land": 546152,
+   "humans": 32,
+   "squad": 9,
+   "squadCells": 81694,
+   "landShare": 0.15,
+   "headShare": 0.281,
+   "ratio": 0.532,
+   "squadMedian": 8233,
+   "othersMedian": 19589,
+   "groups": {
+    "敌队T1": {
+     "n": 11,
+     "cells": 217933
+    },
+    "敌队T2": {
+     "n": 11,
+     "cells": 221491
+    },
+    "路人队友": {
+     "n": 1,
+     "cells": 25034
+    },
+    "我方号": {
+     "n": 9,
+     "cells": 81694
+    }
+   },
+   "perBot": [
+    {
+     "bot": "ryan_m",
+     "x": 768,
+     "y": 216,
+     "cells": 5152
+    },
+    {
+     "bot": "sora_w",
+     "x": 856,
+     "y": 326,
+     "cells": 6184
+    },
+    {
+     "bot": "noah88",
+     "x": 845,
+     "y": 247,
+     "cells": 11301
+    },
+    {
+     "bot": "leo_tx",
+     "x": 696,
+     "y": 257,
+     "cells": 7053
+    },
+    {
+     "bot": "talon5",
+     "x": 624,
+     "y": 277,
+     "cells": 12142
+    },
+    {
+     "bot": "alex_k",
+     "x": 691,
+     "y": 335,
+     "cells": 13612
+    },
+    {
+     "bot": "zero_7",
+     "x": 577,
+     "y": 219,
+     "cells": 13307
+    },
+    {
+     "bot": "kaito9",
+     "x": 912,
+     "y": 263,
+     "cells": 8233
+    },
+    {
+     "bot": "riku_x",
+     "x": 773,
+     "y": 284,
+     "cells": 4710
+    }
+   ]
+  },
+  "capture": [
+   {
+    "t": 630,
+    "groups": {
+     "敌队T1": {
+      "n": 11,
+      "alive": 11,
+      "land": 23823,
+      "cells": 217933,
+      "ratio": 0.109,
+      "medianRatio": 0.111,
+      "medianLand": 1984
+     },
+     "敌队T2": {
+      "n": 11,
+      "alive": 11,
+      "land": 30641,
+      "cells": 221491,
+      "ratio": 0.138,
+      "medianRatio": 0.129,
+      "medianLand": 2920
+     },
+     "路人队友": {
+      "n": 1,
+      "alive": 1,
+      "land": 1713,
+      "cells": 25034,
+      "ratio": 0.068,
+      "medianRatio": 0.068,
+      "medianLand": 1713
+     },
+     "我方号": {
+      "n": 9,
+      "alive": 9,
+      "land": 26684,
+      "cells": 81694,
+      "ratio": 0.327,
+      "medianRatio": 0.366,
+      "medianLand": 2943
+     }
+    },
+    "othersMedianRatio": 0.113,
+    "othersMedianLand": 2502,
+    "perBot": [
+     {
+      "bot": "ryan_m",
+      "land": 2579,
+      "cells": 5152,
+      "ratio": 0.501
+     },
+     {
+      "bot": "sora_w",
+      "land": 2672,
+      "cells": 6184,
+      "ratio": 0.432
+     },
+     {
+      "bot": "noah88",
+      "land": 2861,
+      "cells": 11301,
+      "ratio": 0.253
+     },
+     {
+      "bot": "leo_tx",
+      "land": 3216,
+      "cells": 7053,
+      "ratio": 0.456
+     },
+     {
+      "bot": "talon5",
+      "land": 2943,
+      "cells": 12142,
+      "ratio": 0.242
+     },
+     {
+      "bot": "alex_k",
+      "land": 3357,
+      "cells": 13612,
+      "ratio": 0.247
+     },
+     {
+      "bot": "zero_7",
+      "land": 3465,
+      "cells": 13307,
+      "ratio": 0.26
+     },
+     {
+      "bot": "kaito9",
+      "land": 3017,
+      "cells": 8233,
+      "ratio": 0.366
+     },
+     {
+      "bot": "riku_x",
+      "land": 2574,
+      "cells": 4710,
+      "ratio": 0.546
+     }
+    ]
+   },
+   {
+    "t": 1500,
+    "groups": {
+     "敌队T1": {
+      "n": 11,
+      "alive": 11,
+      "land": 170249,
+      "cells": 217933,
+      "ratio": 0.781,
+      "medianRatio": 0.804,
+      "medianLand": 16509
+     },
+     "敌队T2": {
+      "n": 11,
+      "alive": 11,
+      "land": 180442,
+      "cells": 221491,
+      "ratio": 0.815,
+      "medianRatio": 0.728,
+      "medianLand": 16181
+     },
+     "路人队友": {
+      "n": 1,
+      "alive": 1,
+      "land": 10720,
+      "cells": 25034,
+      "ratio": 0.428,
+      "medianRatio": 0.428,
+      "medianLand": 10720
+     },
+     "我方号": {
+      "n": 9,
+      "alive": 9,
+      "land": 46839,
+      "cells": 81694,
+      "ratio": 0.573,
+      "medianRatio": 0.555,
+      "medianLand": 5318
+     }
+    },
+    "othersMedianRatio": 0.728,
+    "othersMedianLand": 16181,
+    "perBot": [
+     {
+      "bot": "ryan_m",
+      "land": 5318,
+      "cells": 5152,
+      "ratio": 1.032
+     },
+     {
+      "bot": "sora_w",
+      "land": 5525,
+      "cells": 6184,
+      "ratio": 0.893
+     },
+     {
+      "bot": "noah88",
+      "land": 3067,
+      "cells": 11301,
+      "ratio": 0.271
+     },
+     {
+      "bot": "leo_tx",
+      "land": 6699,
+      "cells": 7053,
+      "ratio": 0.95
+     },
+     {
+      "bot": "talon5",
+      "land": 6682,
+      "cells": 12142,
+      "ratio": 0.55
+     },
+     {
+      "bot": "alex_k",
+      "land": 4885,
+      "cells": 13612,
+      "ratio": 0.359
+     },
+     {
+      "bot": "zero_7",
+      "land": 7386,
+      "cells": 13307,
+      "ratio": 0.555
+     },
+     {
+      "bot": "kaito9",
+      "land": 3998,
+      "cells": 8233,
+      "ratio": 0.486
+     },
+     {
+      "bot": "riku_x",
+      "land": 3279,
+      "cells": 4710,
+      "ratio": 0.696
+     }
+    ]
+   }
+  ],
+  "cellOwners": [
+   {
+    "t": 600,
+    "自己": 22923,
+    "我方别的号": 322,
+    "路人队友": 0,
+    "敌方真人": 70,
+    "机器人": 32554,
+    "中立": 25825,
+    "total": 81694
+   },
+   {
+    "t": 630,
+    "自己": 25717,
+    "我方别的号": 662,
+    "路人队友": 0,
+    "敌方真人": 95,
+    "机器人": 37569,
+    "中立": 17651,
+    "total": 81694
+   },
+   {
+    "t": 900,
+    "自己": 33878,
+    "我方别的号": 3885,
+    "路人队友": 0,
+    "敌方真人": 1681,
+    "机器人": 41938,
+    "中立": 312,
+    "total": 81694
+   },
+   {
+    "t": 1200,
+    "自己": 35693,
+    "我方别的号": 5926,
+    "路人队友": 1522,
+    "敌方真人": 9404,
+    "机器人": 28464,
+    "中立": 685,
+    "total": 81694
+   },
+   {
+    "t": 1500,
+    "自己": 37609,
+    "我方别的号": 7155,
+    "路人队友": 1410,
+    "敌方真人": 22378,
+    "机器人": 12752,
+    "中立": 390,
+    "total": 81694
+   },
+   {
+    "t": 1800,
+    "自己": 41568,
+    "我方别的号": 7893,
+    "路人队友": 1335,
+    "敌方真人": 26864,
+    "机器人": 3674,
+    "中立": 360,
+    "total": 81694
+   }
+  ],
+  "botLand": {
+   "A": {
+    "tiles": 32554,
+    "neutralInCells": 25825
+   },
+   "B": {
+    "tiles": 16283,
+    "bots": 44
+   },
+   "C": {
+    "tiles": 206599
+   },
+   "fate": {
+    "A": [
+     {
+      "t": 900,
+      "我方号": 5988,
+      "路人队友": 0,
+      "敌方真人": 833,
+      "机器人": 25714,
+      "中立": 19,
+      "byHuman": {
+       "10": 481,
+       "12": 352,
+       "21": 2042,
+       "22": 216,
+       "23": 257,
+       "25": 788,
+       "26": 466,
+       "27": 133,
+       "28": 1207,
+       "29": 161,
+       "30": 718
+      }
+     },
+     {
+      "t": 1200,
+      "我方号": 8920,
+      "路人队友": 1122,
+      "敌方真人": 4629,
+      "机器人": 17573,
+      "中立": 310,
+      "byHuman": {
+       "2": 2,
+       "4": 1122,
+       "10": 2533,
+       "11": 202,
+       "12": 1410,
+       "20": 482,
+       "21": 2449,
+       "22": 261,
+       "23": 343,
+       "25": 1062,
+       "26": 917,
+       "27": 338,
+       "28": 2278,
+       "29": 495,
+       "30": 777
+      }
+     },
+     {
+      "t": 1500,
+      "我方号": 11424,
+      "路人队友": 1076,
+      "敌方真人": 12392,
+      "机器人": 7590,
+      "中立": 72,
+      "byHuman": {
+       "1": 1590,
+       "2": 1661,
+       "4": 1076,
+       "10": 2579,
+       "11": 3028,
+       "12": 2574,
+       "13": 57,
+       "20": 903,
+       "21": 2456,
+       "22": 1398,
+       "23": 353,
+       "25": 2131,
+       "26": 1299,
+       "27": 338,
+       "28": 2150,
+       "29": 522,
+       "30": 777
+      }
+     },
+     {
+      "t": 1800,
+      "我方号": 15004,
+      "路人队友": 1001,
+      "敌方真人": 14398,
+      "机器人": 2125,
+      "中立": 26,
+      "byHuman": {
+       "1": 3979,
+       "2": 1729,
+       "4": 1001,
+       "10": 2128,
+       "11": 3028,
+       "12": 2574,
+       "13": 57,
+       "20": 903,
+       "21": 2557,
+       "22": 1924,
+       "23": 417,
+       "25": 2495,
+       "26": 2026,
+       "27": 346,
+       "28": 2634,
+       "29": 1828,
+       "30": 777
+      }
+     }
+    ],
+    "B": [
+     {
+      "t": 900,
+      "我方号": 5228,
+      "路人队友": 0,
+      "敌方真人": 2017,
+      "机器人": 9035,
+      "中立": 3,
+      "byHuman": {
+       "10": 1011,
+       "12": 1006,
+       "21": 2026,
+       "23": 257,
+       "25": 788,
+       "26": 375,
+       "27": 74,
+       "28": 829,
+       "29": 161,
+       "30": 718
+      }
+     },
+     {
+      "t": 1200,
+      "我方号": 6633,
+      "路人队友": 509,
+      "敌方真人": 4468,
+      "机器人": 4673,
+      "中立": 0,
+      "byHuman": {
+       "4": 509,
+       "10": 3063,
+       "12": 1405,
+       "21": 2270,
+       "22": 45,
+       "23": 343,
+       "25": 1062,
+       "26": 339,
+       "27": 279,
+       "28": 1023,
+       "29": 495,
+       "30": 777
+      }
+     },
+     {
+      "t": 1500,
+      "我方号": 8066,
+      "路人队友": 509,
+      "敌方真人": 5254,
+      "机器人": 2452,
+      "中立": 2,
+      "byHuman": {
+       "4": 509,
+       "10": 3063,
+       "12": 2191,
+       "21": 2277,
+       "22": 781,
+       "23": 353,
+       "25": 1767,
+       "26": 317,
+       "27": 279,
+       "28": 993,
+       "29": 522,
+       "30": 777
+      }
+     },
+     {
+      "t": 1800,
+      "我方号": 10130,
+      "路人队友": 509,
+      "敌方真人": 4720,
+      "机器人": 922,
+      "中立": 2,
+      "byHuman": {
+       "4": 509,
+       "10": 2529,
+       "12": 2191,
+       "21": 2378,
+       "22": 1315,
+       "23": 353,
+       "25": 2131,
+       "26": 575,
+       "27": 287,
+       "28": 1178,
+       "29": 1136,
+       "30": 777
+      }
+     }
+    ],
+    "C": [
+     {
+      "t": 900,
+      "我方号": 6231,
+      "路人队友": 1373,
+      "敌方真人": 14564,
+      "机器人": 183508,
+      "中立": 923,
+      "byHuman": {
+       "1": 36,
+       "2": 297,
+       "3": 948,
+       "4": 1373,
+       "5": 1998,
+       "6": 916,
+       "7": 2213,
+       "8": 674,
+       "9": 431,
+       "10": 1205,
+       "11": 18,
+       "12": 1017,
+       "13": 1089,
+       "14": 99,
+       "17": 161,
+       "18": 625,
+       "19": 409,
+       "20": 288,
+       "21": 2049,
+       "22": 364,
+       "23": 257,
+       "24": 1031,
+       "25": 788,
+       "26": 466,
+       "27": 133,
+       "28": 1295,
+       "29": 161,
+       "30": 718,
+       "31": 436,
+       "32": 673
+      }
+     },
+     {
+      "t": 1200,
+      "我方号": 9942,
+      "路人队友": 5636,
+      "敌方真人": 71546,
+      "机器人": 117586,
+      "中立": 1889,
+      "byHuman": {
+       "0": 2627,
+       "1": 4172,
+       "2": 2504,
+       "3": 3761,
+       "4": 5636,
+       "5": 7517,
+       "6": 4688,
+       "7": 6902,
+       "8": 2635,
+       "9": 2558,
+       "10": 3314,
+       "11": 3066,
+       "12": 2210,
+       "13": 4173,
+       "14": 1131,
+       "15": 1948,
+       "17": 2208,
+       "18": 2923,
+       "19": 2989,
+       "20": 2109,
+       "21": 2657,
+       "22": 409,
+       "23": 343,
+       "24": 2409,
+       "25": 1062,
+       "26": 917,
+       "27": 338,
+       "28": 2944,
+       "29": 495,
+       "30": 777,
+       "31": 1785,
+       "32": 3917
+      }
+     },
+     {
+      "t": 1500,
+      "我方号": 12515,
+      "路人队友": 4629,
+      "敌方真人": 130522,
+      "机器人": 58132,
+      "中立": 801,
+      "byHuman": {
+       "0": 5943,
+       "1": 7294,
+       "2": 8118,
+       "3": 4084,
+       "4": 4629,
+       "5": 11353,
+       "6": 7927,
+       "7": 9922,
+       "8": 6128,
+       "9": 5443,
+       "10": 4378,
+       "11": 7298,
+       "12": 3432,
+       "13": 5228,
+       "14": 2652,
+       "15": 6887,
+       "17": 9273,
+       "18": 5515,
+       "19": 3712,
+       "20": 4953,
+       "21": 2664,
+       "22": 1615,
+       "23": 353,
+       "24": 5096,
+       "25": 2131,
+       "26": 1299,
+       "27": 338,
+       "28": 2816,
+       "29": 522,
+       "30": 777,
+       "31": 3660,
+       "32": 2226
+      }
+     },
+     {
+      "t": 1800,
+      "我方号": 16124,
+      "路人队友": 4166,
+      "敌方真人": 171849,
+      "机器人": 13722,
+      "中立": 738,
+      "byHuman": {
+       "0": 7277,
+       "1": 10474,
+       "2": 11178,
+       "3": 4453,
+       "4": 4166,
+       "5": 13533,
+       "6": 7099,
+       "7": 14530,
+       "8": 10053,
+       "9": 7447,
+       "10": 4286,
+       "11": 10303,
+       "12": 3432,
+       "13": 8278,
+       "14": 3159,
+       "15": 9252,
+       "17": 13378,
+       "18": 13090,
+       "19": 4235,
+       "20": 4953,
+       "21": 2765,
+       "22": 2170,
+       "23": 417,
+       "24": 7125,
+       "25": 2495,
+       "26": 2026,
+       "27": 346,
+       "28": 3300,
+       "29": 1828,
+       "30": 777,
+       "31": 4314
+      }
+     }
+    ]
+   },
+   "perBotAdj": [
+    {
+     "bot": "ryan_m",
+     "team": 3,
+     "bots": 13,
+     "tiles": 4556,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 2026,
+       "同队真人": 116,
+       "异队我方号": 0,
+       "其他队真人": 1006,
+       "机器人": 1408,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 2270,
+       "同队真人": 428,
+       "异队我方号": 0,
+       "其他队真人": 1164,
+       "机器人": 694,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 2277,
+       "同队真人": 465,
+       "异队我方号": 0,
+       "其他队真人": 1372,
+       "机器人": 440,
+       "中立": 2
+      },
+      {
+       "t": 1800,
+       "自己": 2378,
+       "同队真人": 804,
+       "异队我方号": 0,
+       "其他队真人": 1372,
+       "机器人": 0,
+       "中立": 2
+      }
+     ]
+    },
+    {
+     "bot": "zero_7",
+     "team": 3,
+     "bots": 4,
+     "tiles": 1178,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 829,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 346,
+       "中立": 3
+      },
+      {
+       "t": 1200,
+       "自己": 1023,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 155,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 993,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 185,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 1178,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "talon5",
+     "team": 3,
+     "bots": 3,
+     "tiles": 1342,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 313,
+       "同队真人": 107,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 922,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 313,
+       "同队真人": 107,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 922,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 313,
+       "同队真人": 107,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 922,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 313,
+       "同队真人": 107,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 922,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "kaito9",
+     "team": 3,
+     "bots": 7,
+     "tiles": 2726,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 154,
+       "同队真人": 257,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 2315,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 488,
+       "同队真人": 274,
+       "异队我方号": 0,
+       "其他队真人": 587,
+       "机器人": 1377,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 515,
+       "同队真人": 1010,
+       "异队我方号": 0,
+       "其他队真人": 587,
+       "机器人": 614,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 1129,
+       "同队真人": 1020,
+       "异队我方号": 0,
+       "其他队真人": 577,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "sora_w",
+     "team": 3,
+     "bots": 1,
+     "tiles": 452,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 0,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 136,
+       "机器人": 316,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 13,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 439,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 13,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 439,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 408,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 44,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "noah88",
+     "team": 3,
+     "bots": 9,
+     "tiles": 4106,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 257,
+       "同队真人": 677,
+       "异队我方号": 0,
+       "其他队真人": 75,
+       "机器人": 3097,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 343,
+       "同队真人": 1130,
+       "异队我方号": 0,
+       "其他队真人": 2045,
+       "机器人": 588,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 353,
+       "同队真人": 1118,
+       "异队我方号": 0,
+       "其他队真人": 2623,
+       "机器人": 12,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 353,
+       "同队真人": 1269,
+       "异队我方号": 0,
+       "其他队真人": 2484,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "alex_k",
+     "team": 3,
+     "bots": 4,
+     "tiles": 1458,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 0,
+       "同队真人": 536,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 922,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 205,
+       "同队真人": 1009,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 244,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 205,
+       "同队真人": 987,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 266,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 213,
+       "同队真人": 1245,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "leo_tx",
+     "team": 3,
+     "bots": 6,
+     "tiles": 2050,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 639,
+       "同队真人": 596,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 815,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 761,
+       "同队真人": 596,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 693,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 1429,
+       "同队真人": 596,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 25,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 1454,
+       "同队真人": 596,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "riku_x",
+     "team": 3,
+     "bots": 8,
+     "tiles": 3068,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 661,
+       "同队真人": 760,
+       "异队我方号": 0,
+       "其他队真人": 800,
+       "机器人": 847,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 720,
+       "同队真人": 760,
+       "异队我方号": 0,
+       "其他队真人": 1588,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 720,
+       "同队真人": 760,
+       "异队我方号": 0,
+       "其他队真人": 1588,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 720,
+       "同队真人": 760,
+       "异队我方号": 0,
+       "其他队真人": 1588,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    }
+   ],
+   "perGroupLast": {
+    "敌队T1": {
+     "n": 11,
+     "tiles": 93349,
+     "median": 9252
+    },
+    "敌队T2": {
+     "n": 11,
+     "tiles": 78500,
+     "median": 7125
+    },
+    "路人队友": {
+     "n": 1,
+     "tiles": 4166,
+     "median": 4166
+    },
+    "我方号": {
+     "n": 9,
+     "tiles": 16124,
+     "median": 2026
+    }
+   }
+  },
+  "multiTeam": false,
+  "squadTeams": {
+   "3": [
+    "ryan_m",
+    "zero_7",
+    "talon5",
+    "kaito9",
+    "sora_w",
+    "noah88",
+    "alex_k",
+    "leo_tx",
+    "riku_x"
+   ]
+  }
+ },
+ "tickAttribution": {
+  "source": "scripts/shadow.mjs A034 --quiet --tc 600:1500 → scripts/tick_attrib.py A034（每个决策拍归一类，类别互斥）",
+  "window": [
+   600,
+   1500
+  ],
+  "rows": 1620,
+  "cats": {
+   "有效": 132,
+   "迟到·目标已死": 176,
+   "迟到·不接壤": 2,
+   "没落地": 335,
+   "留底锁·无在途": 375,
+   "留底·有在途": 489,
+   "有目标没发": 32,
+   "只剩中立边": 4,
+   "只贴敌方真人": 75,
+   "围在里面": 0
+  },
+  "layers": {
+   "有效": 132,
+   "②留底": 864,
+   "其余": 36,
+   "③执行": 513,
+   "①结构": 75
+  },
+  "floorSetter": {
+   "我方号": 487,
+   "敌方真人": 143
+  },
+  "safeFiniteHalf": {
+   "留底·有在途": 296,
+   "留底锁·无在途": 334
+  },
+  "issuedByClass": {
+   "有效": {
+    "N": 16,
+    "B": 116
+   },
+   "迟到·目标已死": {
+    "B": 176
+   },
+   "没落地": {
+    "B": 335
+   },
+   "迟到·不接壤": {
+    "B": 1,
+    "N": 1
+   }
+  },
+  "byBot": {
+   "ryan_m": {
+    "有效": 23,
+    "迟到·目标已死": 7,
+    "迟到·不接壤": 0,
+    "没落地": 2,
+    "留底锁·无在途": 86,
+    "留底·有在途": 61,
+    "有目标没发": 1,
+    "只剩中立边": 0,
+    "只贴敌方真人": 0,
+    "围在里面": 0
+   },
+   "zero_7": {
+    "有效": 32,
+    "迟到·目标已死": 20,
+    "迟到·不接壤": 0,
+    "没落地": 50,
+    "留底锁·无在途": 0,
+    "留底·有在途": 63,
+    "有目标没发": 15,
+    "只剩中立边": 0,
+    "只贴敌方真人": 0,
+    "围在里面": 0
+   },
+   "talon5": {
+    "有效": 10,
+    "迟到·目标已死": 14,
+    "迟到·不接壤": 0,
+    "没落地": 0,
+    "留底锁·无在途": 66,
+    "留底·有在途": 87,
+    "有目标没发": 3,
+    "只剩中立边": 0,
+    "只贴敌方真人": 0,
+    "围在里面": 0
+   },
+   "kaito9": {
+    "有效": 9,
+    "迟到·目标已死": 29,
+    "迟到·不接壤": 0,
+    "没落地": 48,
+    "留底锁·无在途": 55,
+    "留底·有在途": 37,
+    "有目标没发": 2,
+    "只剩中立边": 0,
+    "只贴敌方真人": 0,
+    "围在里面": 0
+   },
+   "sora_w": {
+    "有效": 12,
+    "迟到·目标已死": 23,
+    "迟到·不接壤": 0,
+    "没落地": 47,
+    "留底锁·无在途": 25,
+    "留底·有在途": 68,
+    "有目标没发": 5,
+    "只剩中立边": 0,
+    "只贴敌方真人": 0,
+    "围在里面": 0
+   },
+   "noah88": {
+    "有效": 11,
+    "迟到·目标已死": 23,
+    "迟到·不接壤": 0,
+    "没落地": 62,
+    "留底锁·无在途": 49,
+    "留底·有在途": 34,
+    "有目标没发": 1,
+    "只剩中立边": 0,
+    "只贴敌方真人": 0,
+    "围在里面": 0
+   },
+   "alex_k": {
+    "有效": 4,
+    "迟到·目标已死": 32,
+    "迟到·不接壤": 0,
+    "没落地": 100,
+    "留底锁·无在途": 15,
+    "留底·有在途": 28,
+    "有目标没发": 1,
+    "只剩中立边": 0,
+    "只贴敌方真人": 0,
+    "围在里面": 0
+   },
+   "leo_tx": {
+    "有效": 25,
+    "迟到·目标已死": 17,
+    "迟到·不接壤": 2,
+    "没落地": 16,
+    "留底锁·无在途": 46,
+    "留底·有在途": 74,
+    "有目标没发": 0,
+    "只剩中立边": 0,
+    "只贴敌方真人": 0,
+    "围在里面": 0
+   },
+   "riku_x": {
+    "有效": 6,
+    "迟到·目标已死": 11,
+    "迟到·不接壤": 0,
+    "没落地": 10,
+    "留底锁·无在途": 33,
+    "留底·有在途": 37,
+    "有目标没发": 4,
+    "只剩中立边": 4,
+    "只贴敌方真人": 75,
+    "围在里面": 0
+   }
+  }
+ },
+ "squadVsRealHumans": [
+  {
+   "t": 300,
+   "realHumansActive": 23,
+   "realTerrMedian": 476,
+   "realTerrUpperQ": 553,
+   "realDensMedian": 4.5,
+   "squadActive": 9,
+   "squadTerrMedianActive": 459,
+   "squadTerrMedianAllAlive": 459,
+   "squadDensMedianActive": 3.1
+  },
+  {
+   "t": 600,
+   "realHumansActive": 23,
+   "realTerrMedian": 2185,
+   "realTerrUpperQ": 2692,
+   "realDensMedian": 3.2,
+   "squadActive": 9,
+   "squadTerrMedianActive": 2663,
+   "squadTerrMedianAllAlive": 2663,
+   "squadDensMedianActive": 2.0
+  },
+  {
+   "t": 900,
+   "realHumansActive": 23,
+   "realTerrMedian": 4625,
+   "realTerrUpperQ": 5966,
+   "realDensMedian": 4.7,
+   "squadActive": 9,
+   "squadTerrMedianActive": 4599,
+   "squadTerrMedianAllAlive": 4599,
+   "squadDensMedianActive": 6.0
+  },
+  {
+   "t": 1200,
+   "realHumansActive": 23,
+   "realTerrMedian": 8944,
+   "realTerrUpperQ": 12286,
+   "realDensMedian": 4.6,
+   "squadActive": 9,
+   "squadTerrMedianActive": 4885,
+   "squadTerrMedianAllAlive": 4885,
+   "squadDensMedianActive": 20.5
+  },
+  {
+   "t": 1500,
+   "realHumansActive": 23,
+   "realTerrMedian": 16181,
+   "realTerrUpperQ": 20809,
+   "realDensMedian": 5.9,
+   "squadActive": 9,
+   "squadTerrMedianActive": 5318,
+   "squadTerrMedianAllAlive": 5318,
+   "squadDensMedianActive": 31.6
+  },
+  {
+   "t": 1800,
+   "realHumansActive": 22,
+   "realTerrMedian": 21033,
+   "realTerrUpperQ": 29630,
+   "realDensMedian": 8.1,
+   "squadActive": 9,
+   "squadTerrMedianActive": 5538,
+   "squadTerrMedianAllAlive": 5538,
+   "squadDensMedianActive": 38.6
+  },
+  {
+   "t": 2100,
+   "realHumansActive": 20,
+   "realTerrMedian": 24625,
+   "realTerrUpperQ": 30841,
+   "realDensMedian": 10.4,
+   "squadActive": 9,
+   "squadTerrMedianActive": 7096,
+   "squadTerrMedianAllAlive": 7096,
+   "squadDensMedianActive": 12.6
+  },
+  {
+   "t": 2400,
+   "realHumansActive": 18,
+   "realTerrMedian": 27077,
+   "realTerrUpperQ": 35745,
+   "realDensMedian": 19.6,
+   "squadActive": 8,
+   "squadTerrMedianActive": 8388,
+   "squadTerrMedianAllAlive": 8388,
+   "squadDensMedianActive": 26.2
+  },
+  {
+   "t": 3000,
+   "realHumansActive": 18,
+   "realTerrMedian": 27546,
+   "realTerrUpperQ": 35987,
+   "realDensMedian": 47.9,
+   "squadActive": 8,
+   "squadTerrMedianActive": 8955,
+   "squadTerrMedianAllAlive": 8955,
+   "squadDensMedianActive": 56.2
+  },
+  {
+   "t": 3600,
+   "realHumansActive": 17,
+   "realTerrMedian": 30339,
+   "realTerrUpperQ": 37828,
+   "realDensMedian": 63.8,
+   "squadActive": 8,
+   "squadTerrMedianActive": 10241,
+   "squadTerrMedianAllAlive": 10241,
+   "squadDensMedianActive": 98.1
+  },
+  {
+   "t": 4500,
+   "realHumansActive": 15,
+   "realTerrMedian": 35550,
+   "realTerrUpperQ": 46245,
+   "realDensMedian": 68.6,
+   "squadActive": 4,
+   "squadTerrMedianActive": 7789,
+   "squadTerrMedianAllAlive": 7789,
+   "squadDensMedianActive": 92.4
+  }
+ ],
+ "teamTroops": {
+  "note": "A034_facts.py §1（T30）：各队 占图/总兵/密度；squadVsT1、squadVsT2 = 编队兵 ÷ 该队兵",
+  "900": {
+   "T1": "9.3%/279k",
+   "T2": "10.7%/239k",
+   "bots": "68.7%",
+   "squad": "7.1%/211k/密度 5",
+   "squadVsT1": 0.76,
+   "squadVsT2": 0.88
+  },
+  "1200": {
+   "T1": "19.6%/590k",
+   "T2": "20.4%/578k",
+   "bots": "48.2%",
+   "squad": "8.0%/704k/密度 16",
+   "squadVsT1": 1.19,
+   "squadVsT2": 1.22
+  },
+  "1500": {
+   "T1": "31.2%/1.12M/密度 7",
+   "T2": "33.0%/1.16M/密度 6",
+   "bots": "24.2%",
+   "squad": "8.6%/1.59M/密度 34",
+   "squadVsT1": 1.43,
+   "squadVsT2": 1.37
+  },
+  "1800": {
+   "T1": "41.9%/2.02M",
+   "T2": "39.8%/1.75M",
+   "bots": "6.1%",
+   "squad": "9.6%/2.20M/密度 42",
+   "squadVsT1": 1.09,
+   "squadVsT2": 1.26
+  },
+  "2100": {
+   "T1": "42.2%/3.24M",
+   "T2": "40.4%/2.42M",
+   "squad": "14.1%/1.40M/密度 18",
+   "squadVsT1": 0.43,
+   "squadVsT2": 0.58
+  },
+  "2400": {
+   "T1": "44.5%/5.10M",
+   "T2": "38.3%/3.56M",
+   "squad": "13.3%/2.51M/密度 35",
+   "squadVsT1": 0.49,
+   "squadVsT2": 0.7
+  },
+  "3000": {
+   "T1": "48.0%/12.40M/密度 47",
+   "T2": "35.4%/7.64M/密度 40",
+   "squad": "14.2%/4.57M/密度 59",
+   "squadVsT1": 0.37,
+   "squadVsT2": 0.6
+  },
+  "3600": {
+   "T1": "51.0%/21.22M/密度 76",
+   "T2": "33.7%/12.36M/密度 67",
+   "squad": "15.1%/7.32M/密度 89",
+   "squadVsT1": 0.34,
+   "squadVsT2": 0.59
+  },
+  "4200": {
+   "T1": "61.4%/26.83M",
+   "T2": "28.6%/10.30M",
+   "squad": "9.2%/4.35M/密度 87",
+   "squadVsT1": 0.16,
+   "squadVsT2": 0.42
+  },
+  "4800": {
+   "T1": "72.3%/31.27M",
+   "T2": "23.0%/9.20M",
+   "squad": "3.8%/2.06M",
+   "squadVsT1": 0.07,
+   "squadVsT2": 0.22
+  },
+  "fronts": {
+   "note": "A034_facts.py §2：边界上有在线敌方真人的号数 / 没有敌邻的号握着的兵占编队的比例",
+   "900": "7 / 24%",
+   "1200": "8 / 10%",
+   "1500": "8 / 11%",
+   "1800": "9 / 0%",
+   "2100": "8 / 1%",
+   "2400": "7 / 2%",
+   "3000": "7 / 3%",
+   "3600": "7 / 3%",
+   "4200": "7 / 0%"
+  },
+  "neighbours3600": "Trace 36,496 格/3.97M；jet 26,150/3.27M；SPARTUS 300 23,343/2.05M；Patliputra 29,044/1.95M；Player 31 31,951/1.79M；Player 813 41,551/1.71M；Player 607 11,552/1.05M；合计 15.79M",
+  "randomTeammates": "★：出生 (761,410)，峰值 12,803 格@1204，1947 拍离线，3157 拍阵亡；丢的 13,697 格里 Player 31 8,204、ALBOSS 3,613、Trace 1,880。Nutter 没有落子。"
+ },
+ "squadLedger": {
+  "note": "编队收支（A034_facts.py §11、§12；eco = 利息 + 地租）",
+  "whole": {
+   "eco": 19800000.0,
+   "attackHumans": -8950000.0,
+   "attackNeutral": -1570000.0,
+   "attackBots": -784000.0,
+   "boats": -14000.0,
+   "returned": 3190000.0,
+   "damageTaken": -9150000.0,
+   "donatedOut": -4890000.0,
+   "donatedIn": 3730000.0,
+   "tax": 1160000.0,
+   "taxShareOfEco": 0.058,
+   "overSoftCapLoss": 191000.0
+  },
+  "(0,900]": {
+   "eco": 326000.0,
+   "attackNeutral": -83000.0,
+   "attackBots": -77000.0,
+   "balEnd": 211000.0
+  },
+  "(900,1500]": {
+   "eco": 1510000.0,
+   "attackNeutral": -262000.0,
+   "attackBots": -209000.0,
+   "returned": 374000.0,
+   "balEnd": 1590000.0
+  },
+  "(1500,2100]": {
+   "eco": 2040000.0,
+   "attackNeutral": -660000.0,
+   "attackBots": -499000.0,
+   "attackHumans": -2350000.0,
+   "returned": 1320000.0,
+   "balEnd": 1400000.0
+  },
+  "(2100,3600]": {
+   "eco": 8520000.0,
+   "attackHumans": -2820000.0,
+   "donatedOut": -797000.0,
+   "donatedIn": 614000.0,
+   "returned": 823000.0,
+   "damageTaken": -302000.0,
+   "balEnd": 7320000.0
+  },
+  "(3600,4200]": {
+   "eco": 4400000.0,
+   "attackHumans": -2240000.0,
+   "donatedOut": -2530000.0,
+   "donatedIn": 1920000.0,
+   "damageTaken": -4320000.0,
+   "balEnd": 4350000.0
+  },
+  "(4200,4800]": {
+   "eco": 2210000.0,
+   "attackHumans": -1000000.0,
+   "donatedOut": -1180000.0,
+   "donatedIn": 891000.0,
+   "damageTaken": -2700000.0,
+   "balEnd": 2060000.0
+  },
+  "(4800,5810]": {
+   "eco": 799000.0,
+   "attackHumans": -555000.0,
+   "donatedOut": -382000.0,
+   "donatedIn": 302000.0,
+   "damageTaken": -1750000.0,
+   "balEnd": 90
+  },
+  "exchange": "编队对真人投兵 8.13M（167 条）拿 55,494 格（每格 146 兵，净 125）；真人对编队投兵 26.01M（106 条）拿 92,239 格（每格 282 兵）",
+  "perBotAttackHumans": "leo_tx 1.48M/4,885 格（每格净 259）｜kaito9 1.47M/9,436（111）｜alex_k 1.41M/7,318｜talon5 1.32M/8,509（98）｜ryan_m 1.16M/5,723｜sora_w 439k/4,851｜noah88 301k/4,949（42）｜riku_x 297k/4,537｜zero_7 254k/5,286",
+  "heldAtElimination": "阵亡前最后一个采样点九个号合计 1.11M（ryan_m 110k、zero_7 7k、talon5 152k、kaito9 215k、sora_w 108k、noah88 115k、alex_k 183k、leo_tx 193k、riku_x 26k）；地÷峰值 0.17–0.28"
+ },
+ "landFlows": {
+  "note": "易手的地（A034_facts.py §7、§12、§13；pairAll 600 拍窗口；land_takers.py）",
+  "fromBots": {
+   "600-1199": "全场真人 135,134 格，编队 11,804（8.7%；每号中位 814 对别人 4,673）",
+   "1200-1799": "全场 187,870 格，编队 6,454（3.4%；每号中位 591 对 7,967）",
+   "900→1500": "机器人让出 242,942 格，编队 +8,293（全图 1.5%）；T1 +21.9 个点、T2 +22.3"
+  },
+  "squadVsHumans": {
+   "1200-1799": "+1,569 / −0",
+   "1800-2399": "+30,335 / −12,761",
+   "2400-2999": "+4,873 / −248",
+   "3000-3599": "+6,928 / −1,657",
+   "3600-4199": "+6,794 / −36,861",
+   "4200-4799": "+2,951 / −23,281",
+   "4800-": "+2,044 / −17,264"
+  },
+  "victims": "ALBOSS（T2）11,349 格 → riku_x 4,537、sora_w 3,990、alex_k 1,725、noah88 607、★ 355、kaito9 135｜ProfChaos（T2）→ SPARTUS 300 17,901、kaito9 6,195、noah88 4,342｜Player 607（T2）16,273 格 → SPARTUS 300 8,387、ryan_m 3,100、Trace 2,626、leo_tx 1,857、talon5 303",
+  "takersFromSquad": "Trace 7.26M（11 条）拿 20,295 格｜Player 31 5.37M（12）/20,566｜SPARTUS 300 5.15M（13）/17,790｜Player 813 2.51M（18）/16,464｜jet 2.23M（3）/6,314｜Patliputra 1.73M（21）/4,261｜Player 607 1.52M（17）/4,036",
+  "firstStrikes": "30 对「我方号×敌方真人」：我方先动手 18 对、对方先 12 对（A034_facts.py §17）"
+ },
+ "boats": {
+  "note": "match_truth.mjs events（boat、boat-land）；A034_facts.py §21",
+  "launched": 1,
+  "list": "leo_tx 4445 拍 pct 4：1,897 兵、手续费 12,142、航程 6；5008 拍 827 兵落在 jet 的地上（1 格）",
+  "collapse": "leo_tx 4480 拍 2,456 格/193k → 4490 拍 0/0：海上有船，引擎不除名，地变中立、存兵归零"
+ },
+ "hubReconciliation": {
+  "note": "与广播 0004、0005 的逐条对账",
+  "botLock(R01/R04)": "成立，分两段：500–900 拍 144 个有相邻机器人的样本锁死 116 个，其中 84 个 safeFinite 为 0（卡在价格项），32 个是队友；900–1500 拍 201 个样本锁死 88 个，58 个由我方号的存兵定。没锁的时候 63–98% 的决策只发最小额。",
+  "oneCmdPerTick(R01)": "成立，且有硬证据：影子按每拍受理 1 条运行，被挤掉 83 条，results.csv 的 sent − accepted 逐号等于这个数（合计 83）。被挤掉的 58 条打机器人（189k）、17 条打真人（704k）；ryan_m 一个号 47 条。",
+  "repeatWhileInTransit(R07/R08)": "成立：打真人 166 条归成 47 轮，首条 3.63M、跟单 5.33M（59%）；≥3 条的 29 轮占 81%。另：同拍批 46 个 392 条，是迟到造成的重复。",
+  "R10-1 quota": "本局不成立：调度日志 19 条落地 19 条，t<4284 的 15 条全部落地（已用配额最多 108/209 点）。",
+  "R10-2 clamp/pingpong": "不成立：受赠方上限截掉 0、互捐 0；超软上限少拿的利息 191k（3000–4284 拍 143k）。",
+  "R10-7 drop30": "28 个窗口：被打 12、打真人 11、打机器人 3、打中立 1、捐出 1；残差只有 leo_tx 4410–4500 拍一个（−184k，引擎 collapse）。",
+  "0005-1 t≥1500 队友互锁": "规模小：1500–1700 拍 62 个样本锁死 10 个（ryan_m 7/7，6 个经 leo_tx）。1500 拍以后拦住出手的留底是 dpKeep（noah88 149 个决策拍、kaito9 56 个），不是队友。",
+  "0005-2 残余机器人门槛": "基本不成立：非真人分支 L5452 只命中 2 个决策拍。",
+  "0005-3 over 跳过价格门": "成立，是 2100 拍以后打真人的主要出口：21 轮 5.26M（59%），报价是估值的 1.5–5.3 倍；16/20 轮的目标存兵不少于自己。",
+  "0005-4 yield_opt": "本局没有 yield_opt_dispatch。",
+  "0005-5 弃子线第二分支": "0 个；第一分支 11 个（候选×拍），zero_7 2150–2300 拍 3 个。",
+  "0005-6 船": "1 条（leo_tx 4445 拍 1,897 兵、手续费 12,142）；idleBoats 82% 的调用在 L5060 返回，四个号全程没有海岸。"
+ },
+ "decisions": [
+  {
+   "id": "D01",
+   "t": "t=−42…−2",
+   "bots": "后端协调器",
+   "what": "首次求解在空盘上选中东北角并锁定；一拍后五个敌人落在角里，此后 32 次求解都不再比较其他角。",
+   "why": "「首次求解时盘面为空」由选角结果反推；换角后别人如何落子无法验证。",
+   "codePath": "src/strategy/spawn-coordinator-c116-vb.mjs: 锁角 L1084-1090、L1276；方案总分 L1258-1268",
+   "evidence": [
+    "shadow_spawn.mjs --corners（K=10）：t=−42 东北角 16,859 对西南角 15,650；t=−41 13,337 对 15,650；t=−38 13,151 对 15,650",
+    "首次求解的九个点与日志第一批 [HL-SPAWN-BACKEND] 逐点相同",
+    "A034_facts.py §24：我方第一条出生指令 t=−38，四个敌人 t=−41…−39 已落在锚点 217 格内"
+   ],
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "SP-CORNER-LOCK",
+   "statementType": "inferred"
+  },
+  {
+   "id": "D02",
+   "t": "t=−41…−2",
+   "bots": "后端协调器",
+   "what": "扇形点位排在已落子的敌人身边：锚点离 SPARTUS 300 16 格、Player 607 22 格；ryan_m 的点离 SPARTUS 300 43 格，riku_x 的目标点离 ALBOSS 34 格，都小于协调器自己的 enemyMinClearance（53）。",
+   "why": "",
+   "codePath": "src/strategy/spawn-coordinator-c116-vb.mjs: 锚点打分 L1122（无敌人项）；落点吸附 L1172-1207；通用路径才用 reqEnemyClear L943、L961、L1042",
+   "evidence": [
+    "shadow_spawn.mjs A034 --at -6 --corners：各点到最近敌人 34/43/60/92/98/105/106/130/162，<53 的 2 个",
+    "spawn_truth.mjs：阵的半径内有 5 个其他真人（4 个敌人、1 个路人队友）",
+    "SPARTUS 300 终局 56,367 格（峰值），全程从编队手里拿走 17,790 格；ALBOSS 2082 拍被编队吃掉"
+   ],
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "SP-ENEMY-INSIDE",
+   "statementType": "observed"
+  },
+  {
+   "id": "D03",
+   "t": "选点期",
+   "bots": "全部",
+   "what": "九个号按最小间距 68 格排在一块四周 93% 是陆地的内陆，名下陆地 15.0%（人数占 28.1%）。",
+   "why": "份额与后来的地之间是同一局 32 个真人的横截面关系，不是重放对照。",
+   "codePath": "src/strategy/spawn-coordinator-c116-vb.mjs: minReqSep/r0/r1/r2 L1074-1077；锚点 L1091-1132；fanHalf L1135",
+   "evidence": [
+    "spawn_voronoi.mjs：份额÷人数 0.53；每号中位 8,233 格对其他真人 19,589",
+    "地÷份额 编队 0.53（1200）、0.57（1500）、0.94（2100）；其他真人 0.50、0.78、1.05",
+    "1500 拍份额名次与地名次秩相关 0.74；kaito9、sora_w、noah88、riku_x 全程海岸 0 格"
+   ],
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "SP-SHARE-SHORT",
+   "statementType": "inferred"
+  },
+  {
+   "id": "D04",
+   "t": "选点期",
+   "bots": "后端协调器",
+   "what": "squadBots 里的 zexos1 没有进房，33 次求解都按 K=10 给它留一个点（槽位 8）。",
+   "why": "多留一个点对其余九个点的影响没有单独量。",
+   "codePath": "src/strategy/spawn-coordinator-c116-vb.mjs: K L836；matchBotsToTargets L1431",
+   "evidence": [
+    "in_game.log：33 条 Solved 10 bots；九个号的槽位 0–7、9",
+    "shadow_spawn.mjs --phantom 8:99：首次求解留给它的点 (755,378)"
+   ],
+   "verdict": "unclear",
+   "patternId": "NEW",
+   "patternKey": "SP-PHANTOM-SLOT",
+   "statementType": "observed"
+  },
+  {
+   "id": "D05",
+   "t": "0–600",
+   "bots": "全部",
+   "what": "开局按地租周期扩中立，地不输真人。",
+   "why": "",
+   "codePath": "src/strategy/v27-team-c116-vb.js: V13.expandNeutral L2373-2374 → dpNeutral L2383-2412",
+   "evidence": [
+    "review_skel.py cmp：t=300 地中位 459 对 476（0.96）；t=600 2,663 对 2,185",
+    "A034_facts.py §23：0–599 拍 87 条过闸指令全部在录像里",
+    "A034_facts.py §8：t=600 我方号名次 4–20/32"
+   ],
+   "verdict": "good",
+   "patternId": "NEW",
+   "patternKey": "OP-DP-PAR",
+   "statementType": "observed"
+  },
+  {
+   "id": "D06",
+   "t": "500–1500",
+   "bots": "全部",
+   "what": "身边有机器人的时候留底高于可用兵，不打：500–900 拍卡在价格项，900–1500 拍卡在队友的存兵。",
+   "why": "锁是量出来的；不锁能多拿多少没有重放，而且同期指令本身也送不到。",
+   "codePath": "src/strategy/v27-team-c116-vb.js: floorFor0 L2233-2241；Policy.winFloor L4562-4570；botOk L2467-2473；safeFinite L2500；pickTarget L1144-1161",
+   "evidence": [
+    "floor_tally.py：407 个有相邻机器人的样本锁死 214 个（留底 ≥ 全部存兵的 94 个；我方号定的 96 个）",
+    "talon5 900–1500 拍 22/24 被 alex_k 锁住，身边机器人地中位 5,644→11,529 格；这些机器人的地 jet 拿走 7,770 格",
+    "A034_facts.py §7：600–1799 拍机器人让给真人 323,004 格，编队 18,258 格"
+   ],
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "AT-BOTLOCK",
+   "statementType": "inferred"
+  },
+  {
+   "id": "D07",
+   "t": "600–2030",
+   "bots": "全部",
+   "what": "指令每个决策拍重发、不登记在途；这一段过闸的指令一半没有出现在录像里，出现的成批迟到 200–400 拍。",
+   "why": "量到的是「决策拍与落地拍的差」和「没出现的条数」；是客户端落后还是途中丢失、9 条上限在哪一层，对局包里看不到。",
+   "codePath": "src/strategy/v27-team-c116-vb.js: Strategy.send L479-487；Policy.act L4836-4963；src/strategy/make_v27_team.py: L10-106（afterTick 在途门、patchLoop 每帧最多追 35 步）",
+   "evidence": [
+    "A034_facts.py §23：过闸 1,441 条、录像里 725 条；sent−accepted 83 条与影子的同拍挤掉数逐号相等",
+    "batch_origin.py：46 个同拍批全部倒序落地；唯一匹配的 33 批陈旧度中位 236 拍",
+    "cmd_staleness.py：连续发令（前 60 拍 ≥8 条）时的决定落地 13–45%；traj.csv：策略自身 avgMs 约 0.8、maxMs ≤13.4"
+   ],
+   "verdict": "unclear",
+   "patternId": "NEW",
+   "patternKey": "IO-LAG-STALE",
+   "statementType": "observed"
+  },
+  {
+   "id": "D08",
+   "t": "1500–1825",
+   "bots": "ryan_m",
+   "what": "每个决策拍先发一条最小额的中立指令（存兵的 4.7%），同拍 buyLand 的指令被「每拍 1 条」拒掉。",
+   "why": "",
+   "codePath": "src/strategy/v27-team-c116-vb.js: Policy.act L4941（expandNeutral）在 L4942（buyLand）之前；General.expandNeutral L944-954；minCmd L474-476",
+   "evidence": [
+    "shadow.mjs --match：ryan_m 被挤掉 47 条，其中 15 条是打 ALBOSS 的（合计 625k）；results.csv sent 188 − accepted 141 = 47",
+    "录像：1827 拍 9 条中立指令 278k→171k，退回 93k，地 5,434→5,436",
+    "ryan_m 的地 5,318（1500）→5,436（2400），存兵 153k→538k"
+   ],
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "AT-NEUTRAL-CROWD",
+   "statementType": "observed"
+  },
+  {
+   "id": "D09",
+   "t": "1799–2023",
+   "bots": "riku_x、kaito9、zero_7、alex_k、sora_w、noah88",
+   "what": "九个打真人的同拍批：8–9 条旧决定同拍落地，逐条按当拍存兵折算，一批打出存兵的 57–99%。",
+   "why": "批是迟到造成的；策略侧的部分是「在途不可见就重发」和「指令只带百分比」。",
+   "codePath": "src/strategy/v27-team-c116-vb.js: buyLand 通用出口 L5611-5616、波次 L5595-5607；Strategy.send L479-487；engine-evidence.txt [A2]",
+   "evidence": [
+    "A034_facts.py §5：riku_x 96%、97%；kaito9 94%、57%；zero_7 95%、99%；noah88 83%；alex_k 74%；sora_w 74%",
+    "编队存兵 2.20M→1.40M（1800→2100），T1 2.02M→3.24M；编队兵÷T1 兵 1.09→0.43",
+    "zero_7 批后 235 兵/10,371 格，Player 813 七条 204k 拿走 10,374 格，2388 拍阵亡"
+   ],
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "IO-BATCH9",
+   "statementType": "inferred"
+  },
+  {
+   "id": "D10",
+   "t": "1750–2082",
+   "bots": "sora_w、riku_x、noah88、kaito9、alex_k",
+   "what": "五个号在 240 拍内都打 ALBOSS（T2，阵内），把它吃掉。",
+   "why": "",
+   "codePath": "src/strategy/v27-team-c116-vb.js: Policy.offers L5072-5191（allyAtk 合并需要量 L5182-5185）；buyLand L5342-5619",
+   "evidence": [
+    "A034_facts.py §15：58 条 1.34M（退回 449k）",
+    "land_takers.py：ALBOSS 的 11,349 格里 10,994 格（97%）归编队",
+    "编队 9.6%→14.1%（1800→2100），是全程唯一一次明显长地"
+   ],
+   "verdict": "good",
+   "patternId": "NEW",
+   "patternKey": "AT-FOCUS-KILL",
+   "statementType": "observed"
+  },
+  {
+   "id": "D11",
+   "t": "1862、2051–2065",
+   "bots": "noah88、talon5",
+   "what": "对密度不到自己一半的真人邻居出兵：noah88 一条 117k 打 ProfChaos（密度 7.5 对 106），talon5 三条 191k 打 jet（10.7 对 34.2）。",
+   "why": "",
+   "codePath": "src/strategy/v27-team-c116-vb.js: Policy.offers 报价 L5097-5100；buyLand 通用出口 L5611-5616",
+   "evidence": [
+    "A034_facts.py §27：talon5 拿 5,222 格（每格净 36.4 兵），地 10,330→15,552（+51%）；jet 到 3605 拍才还手",
+    "noah88 全程对 ProfChaos 三条 173k 拿 4,342 格（每格净 39.9 兵），地 3,132→6,816（+118%）",
+    "这两手的决定分别在 1740、2040 拍，落地晚了 122 拍和 11 拍"
+   ],
+   "verdict": "good",
+   "patternId": "NEW",
+   "patternKey": "AT-THIN-KILL",
+   "statementType": "observed"
+  },
+  {
+   "id": "D12",
+   "t": "2150–2300",
+   "bots": "全部捐出方",
+   "what": "zero_7（12,856 格/13k）挨 Player 813 打的时候没有一个队友把它列为可捐对象：它被判为弃子，急援分支又要求不被围的捐出方密度 ≥102。",
+   "why": "给了能不能守住没有推演：捐兵落地要 13–21 拍，税约三成。",
+   "codePath": "src/strategy/v27-team-c116-vb.js: tryDonateToTeammate L4455-4456（isDoomedPocket）、L4463-4473（L4466）",
+   "evidence": [
+    "donprobe_why.py 2100–3100 拍：正被真人打的 8 个（候选×拍）没有一个被列为候选；拦截 L4466 ×31、L4456 ×17",
+    "donprobe_tally.py：zero_7 2150–2300 拍被打量÷存兵 1.99–4.05",
+    "当时 ryan_m 369k–538k（密度 68–99）、leo_tx 357k–531k；Player 813 的七条合计 204k"
+   ],
+   "verdict": "unclear",
+   "patternId": "NEW",
+   "patternKey": "DN-DONOR-GATE",
+   "statementType": "inferred"
+  },
+  {
+   "id": "D13",
+   "t": "2105–2400",
+   "bots": "ryan_m",
+   "what": "对 Player 607 的报价被接触面罚价乘了 1.80，从估值的 0.63–0.89 倍变成 1.14–1.60 倍，价格门收口；存兵 369k→538k，到密度 100 才出手。",
+   "why": "吃掉 Player 607 需要 ryan_m 存兵的 1.44–1.55 倍，早打是赚是亏没有推演。",
+   "codePath": "src/strategy/v27-team-c116-vb.js: Policy.offers L5177-5180（contactStepsMax 350、contactPenalty 0.002）；buyLand L5359",
+   "evidence": [
+    "offers_price.py --contact：2105–2400 拍 7 个样本去掉罚价都能过价格门；接触 10 格、steps 946",
+    "2150–3000 拍探针 22 个被收口的（号×拍）里 6 个带罚价、6 个去掉后能过；2105–4200 拍 40 个里 5 个带、4 个能过",
+    "Player 607 2100 拍 286k → 2400 拍 456k → 3600 拍 1.05M"
+   ],
+   "verdict": "unclear",
+   "patternId": "NEW",
+   "patternKey": "AT-CONTACT-PENALTY",
+   "statementType": "inferred"
+  },
+  {
+   "id": "D14",
+   "t": "2150–2850",
+   "bots": "noah88、kaito9",
+   "what": "ProfChaos 垮的时候（密度 0–2），紧挨着它的两个号报价过了价格门，存兵却低于按 SPARTUS 300 的存兵算的留底，可用兵为负，没有出手。",
+   "why": "SPARTUS 300 2150–3000 拍没有打过这两个号（对 noah88 的下一条在 4466 拍，对 kaito9 在 4970 拍）；不拦能拿多少没有重放。",
+   "codePath": "src/strategy/v27-team-c116-vb.js: dpKeep L2459-2464；V17.safeAt L2728-2739；Policy.safeAt L4543-4560；buyLand L5414-5418、L5444、L5446-5447",
+   "evidence": [
+    "offers_price.py A034-offers-pc.txt：noah88 15 个样本可用兵 −240k…−66k（报价 0.04–0.99×估值）；kaito9 2500–2700 拍 −128k…−14k",
+    "mids_tally：noah88 L5447 命中 149 个决策拍（2100–2999），kaito9 56 个",
+    "land_takers.py：ProfChaos 2400–2999 拍丢的地 SPARTUS 300 17,373、kaito9 1,837、noah88 0"
+   ],
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "AT-SAFEAT-HOLD",
+   "statementType": "inferred"
+  },
+  {
+   "id": "D15",
+   "t": "2100–3600",
+   "bots": "talon5、sora_w、alex_k、noah88",
+   "what": "有 135–319 格敌邻的号每个决策拍在价格门收口，只攒兵：talon5 177k→1.20M、sora_w 48k→1.08M。",
+   "why": "邻居也在攒，而且地是我方号的 2–3 倍；这一段打出去是赚是亏没有推演。",
+   "codePath": "src/strategy/v27-team-c116-vb.js: buyLand L5350-5359；winRatio L2875-2882；Policy.offers L5097-5100",
+   "evidence": [
+    "mids_tally：talon5、sora_w 2100–3299 拍每 300 拍 60/60 次调用在 L5359 收口",
+    "offers_price.py：被收口的号握着编队 75–82% 的兵；最便宜报价÷估值中位 1.50（2105）→3.02（3300）",
+    "talon5 的邻居 jet 同期 317k→3.27M（26,150 格没有变过），3605 拍一条 674k 打过来"
+   ],
+   "verdict": "unclear",
+   "patternId": "NEW",
+   "patternKey": "AT-PRICE-HOLD",
+   "statementType": "inferred"
+  },
+  {
+   "id": "D16",
+   "t": "2410–5054",
+   "bots": "ryan_m、alex_k、talon5、leo_tx、kaito9、sora_w",
+   "what": "一条波次指令变成一轮：在途的兵 13–21 拍后才看得到，期间每个决策拍再发一条，一轮 3 条、打出存兵的 28–38%。",
+   "why": "",
+   "codePath": "src/strategy/v27-team-c116-vb.js: buyLand 波次 L5595-5607（L5596 在途门 curAtk ≥ 4%×存兵）；Strategy.send L479-487",
+   "evidence": [
+    "volleys.py：47 轮里 ≥3 条的 29 轮 140 条 7.23M（81%）；首条合计 3.63M、跟单 5.33M（59%）",
+    "2100 拍以后的 20 个 3 条轮每轮打出批前存兵的 25–38%",
+    "A034_facts.py §19：影子里每段 2–4 个决定、间隔 5 拍"
+   ],
+   "verdict": "unclear",
+   "patternId": "NEW",
+   "patternKey": "AT-PULSE-REPEAT",
+   "statementType": "observed"
+  },
+  {
+   "id": "D17",
+   "t": "2422–4438",
+   "bots": "ryan_m、leo_tx、talon5",
+   "what": "三个号各自密度到 100 就打 Player 607（密度 37→91），8 轮 25 条 1.82M，没有打死它。",
+   "why": "每格净花费是自己密度的 2.7 倍；换目标或攒着是否更好没有推演。",
+   "codePath": "src/strategy/v27-team-c116-vb.js: buyLand L5353、L5359（over 跳过价格门）、L5440-5443；波次 L5595-5607",
+   "evidence": [
+    "A034_facts.py §12、§15、§28：25 条 1.82M（退回 369k）拿 5,260 格，每格净约 276 兵；放行的 7 轮 1.61M",
+    "Player 607 反手 17 条 1.52M 拿走 4,036 格，4789 拍才阵亡；它丢的 16,273 格里 SPARTUS 300 拿走 8,387",
+    "3514–3584 拍三个号 70 拍内 9 条 968k 打它，它当时 13,346 格/1.18M"
+   ],
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "AT-OVER-GRIND",
+   "statementType": "inferred"
+  },
+  {
+   "id": "D18",
+   "t": "2996–4935",
+   "bots": "alex_k、talon5、leo_tx、kaito9",
+   "what": "存兵过 100×地 的那一拍不看价格出手，目标多数比自己强：放行的 20 轮里 16 轮目标存兵 ≥ 自己，4 轮 ≥2 倍。",
+   "why": "先后不等于因果：Player 31 3451 拍先打的 alex_k，jet 3605 拍与 talon5 同拍出手。",
+   "codePath": "src/strategy/v27-team-c116-vb.js: buyLand L5353、L5359、L5440-5443",
+   "evidence": [
+    "A034_facts.py §28：alex_k→Trace 3395 拍 394k（Trace 3.07M＝2.49 倍），Trace 3745 拍起六条 3.36M",
+    "talon5→Player 813 3605 拍 556k，其后 300 拍 Player 813 四条 1.15M；alex_k→Player 31 3612 拍 212k，其后 808k",
+    "A034_facts.py §17：30 对里我方先动手 18 对；3514–3619 拍 16 条 1.85M 分给 Player 813、Player 607、Player 31、jet"
+   ],
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "AT-OVER-POKE",
+   "statementType": "inferred"
+  },
+  {
+   "id": "D19",
+   "t": "3465–4921",
+   "bots": "sora_w、kaito9、noah88、riku_x",
+   "what": "17 笔 defense_dispatch 把后排满仓号的兵送给正在挨打的前排，税 31%；14 笔到账后 300 拍内受赠方的地少了两成以上。",
+   "why": "不捐这些号也守不住；量到的是「税 899k 换来的兵 300 拍内被打掉」。",
+   "codePath": "src/strategy/v27-team-c116-vb.js: tryDonateToTeammate L4457、Case A L4463-4473、L4500-4508；src/sim/sim/game.js: transfer L388-400",
+   "evidence": [
+    "A034_facts.py §4、§28：19 笔到账 3.73M、税 1.16M；少 ≥20% 的 14 笔到账 2.89M、税 899k",
+    "A034_facts.py §14：3724 拍 264k→talon5 之后被打掉 1.19M、地 14,159→5,761；4221、4340、4424 拍三笔 671k→leo_tx，300 拍内清零",
+    "yield_payback.py：13 笔捐后两号合计利息变多（每 10 拍 +25k），回本中位 393 拍；受赠方多数活不到回本"
+   ],
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "DN-SINK-FEED",
+   "statementType": "inferred"
+  },
+  {
+   "id": "D20",
+   "t": "3600–5040",
+   "bots": "sora_w、noah88、kaito9",
+   "what": "后排三个号密度 85–113、敌邻 145–362 格，自己不打：报价高于估值（L5359）或邻居是唯一缓冲（L5364），兵只以捐的形式出去。",
+   "why": "这三个号的邻居（Player 31 1.79M–2.62M、SPARTUS 300 2.05M–2.36M）都比它们强。",
+   "codePath": "src/strategy/v27-team-c116-vb.js: buyLand L5359、L5361-5365",
+   "evidence": [
+    "mids_tally：L5364 命中 sora_w 108 个决策拍（3600–5099）、noah88 74 个（3300–4499）、kaito9 64 个（3300–4499）",
+    "A034_facts.py §16：sora_w 3600–4500 拍打真人 0、捐出 1.56M（含税）；noah88 1953 拍以后打真人 0 条",
+    "sora_w 5040 拍第一次出手（三条 173k 打 Player 31），28 拍后 Player 31 三条 855k"
+   ],
+   "verdict": "unclear",
+   "patternId": "NEW",
+   "patternKey": "AT-PRICE-HOLD",
+   "statementType": "inferred"
+  },
+  {
+   "id": "D21",
+   "t": "2100–3900",
+   "bots": "riku_x",
+   "what": "ALBOSS 死后四周全是队友：1,800 拍没有敌邻、没有海岸，存兵 14k→212k，三次捐出 212k。",
+   "why": "",
+   "codePath": "src/strategy/v27-team-c116-vb.js: idleBoats L5019-5070（L5031）；tryDonateToTeammate L4355（boxedIn）、L4466",
+   "evidence": [
+    "A034_facts.py §2：2100–3900 拍 riku_x 敌邻 0 格，握着编队 1–3% 的兵",
+    "idleBoats 汇总：riku_x 476 次调用里 L5031 返回 362 次；coast_len.mjs 海岸 0 格",
+    "4067 拍 Player 31 443k、4088 拍 Trace 657k 打 162k 的它，4217 拍阵亡"
+   ],
+   "verdict": "unclear",
+   "patternId": "NEW",
+   "patternKey": "SP-ENCLOSED",
+   "statementType": "observed"
+  },
+  {
+   "id": "D22",
+   "t": "3969–4544",
+   "bots": "ryan_m",
+   "what": "客户端 3960 拍以后没有日志、3969 拍以后没有指令落地；上报离场时本地拍 4011、服务器约 4387 拍；录像里 4543 拍出现离场指令（4214 拍已阵亡）。",
+   "why": "客户端为什么停住没有线索。",
+   "codePath": "src/strategy/v27-team-c116-vb.js: 离场规则不满足（t ≤ 8500）；src/strategy/make_v27_team.py: 客户端运行层不在对局包里",
+   "evidence": [
+    "client_clock.py：用 7 条阵亡行拟合服务器每拍 56.02 ms，ryan_m 落后 376 拍（21.1 秒）",
+    "review_skel.py：lastLogT 3960、lastCmdT 3969、diedT 4214、leftT 4544",
+    "A034_facts.py §6：最后 245 拍它有 373k–578k 没有再出手，SPARTUS 300 两条 988k"
+   ],
+   "verdict": "unclear",
+   "patternId": "NEW",
+   "patternKey": "IO-CLIENT-EXIT",
+   "statementType": "guess"
+  },
+  {
+   "id": "D23",
+   "t": "4445",
+   "bots": "leo_tx",
+   "what": "被打到 3,416 格/389k 时出了一条 1,897 兵的船，手续费 12,142。",
+   "why": "",
+   "codePath": "src/strategy/v27-team-c116-vb.js: idleBoats L5058（boatFood）→ V13.boatFood L2003 → boatOut L2327 / General.boatOut L1014；src/sim/sim/game.js: collapse L1314-1334",
+   "evidence": [
+    "match_truth.mjs：boat t=4445 pct 4、兵 1,897、手续费 12,142；boat-land t=5008 兵 827，落在 jet 的地上",
+    "A034_facts.py §21：4480 拍 2,456 格/193k → 4490 拍 0/0；终局 1 格/90 兵",
+    "全程只有这一条船；idleBoats 4,661 次调用里 3,844 次在 L5060 返回（有邻居且存兵 <125×地）"
+   ],
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "SE-SCOUT-FEE",
+   "statementType": "observed"
+  }
+ ],
+ "newPatterns": [
+  {
+   "key": "SP-CORNER-LOCK",
+   "prefix": "SP",
+   "name": "角在空盘上选定后被锁住，不再比较",
+   "definition": "后端首次求解选中的角被写入 lockedCornerName；在我方第一条出生指令那一拍，用不带记忆的协调器对录像里的同一盘面求解，选中的是另一个角（按 L1258-1268 复算的方案总分更高）。记两角分差、锁定角内已落子的敌人数。",
+   "detector": "scripts/shadow_spawn.mjs <局> --at <首条出生指令拍前后> --corners [--slots … --phantom …]"
+  },
+  {
+   "key": "SP-ENEMY-INSIDE",
+   "prefix": "SP",
+   "name": "敌人站在阵里或贴着点位，协调器照排不误",
+   "definition": "某个非我方真人的最终出生点落在「编队质心 + 最远号半径」内，且它的最后一条出生指令早于我方任一号的最后一条；或协调器解出的点离已落点的敌人 < scales.enemyMinClearance。",
+   "detector": "scripts/review_build/A034_facts.py §24；scripts/shadow_spawn.mjs --at <拍> --corners"
+  },
+  {
+   "key": "SP-SHARE-SHORT",
+   "prefix": "SP",
+   "name": "出生份额不足：阵排得太密，名下的陆地先天就少",
+   "definition": "把全图每格陆地分给直线距离最近的真人出生点；编队名下陆地占比 ÷ 编队人数占比 < 0.6。附：实际地 ÷ 出生份额、份额名次与 t=1500 地名次的秩相关。",
+   "detector": "scripts/spawn_voronoi.mjs <局> --vs 900,1200,1500,3000 [--list]"
+  },
+  {
+   "key": "SP-INLAND-ANCHOR",
+   "prefix": "SP",
+   "name": "「角」锚点落在内陆",
+   "definition": "协调器重放里最佳锚点四周的陆地采样占比 ≥85% 且陆地偏向度 <0.15；记锚点到地图角的距离。",
+   "detector": "scripts/shadow_spawn.mjs <局> --anchors"
+  },
+  {
+   "key": "SP-PHANTOM-SLOT",
+   "prefix": "SP",
+   "name": "协调器给没进房的号留位",
+   "definition": "squadBots 里有号全程没有出生指令，而后端每次求解的 K 都含它；记留给它的点位。",
+   "detector": "scripts/spawn_truth.mjs <局> --detail；scripts/shadow_spawn.mjs --phantom"
+  },
+  {
+   "key": "OP-DP-PAR",
+   "prefix": "OP",
+   "name": "开局中立扩张不输真人（有效）",
+   "definition": "t=300 我方号地中位 ≥ 0.9×在场真人地中位。",
+   "detector": "scripts/review_skel.py（cmp）"
+  },
+  {
+   "key": "AT-BOTLOCK",
+   "prefix": "AT",
+   "name": "机器人锁：留底高于可用兵，身边的机器人不打",
+   "definition": "t<1800，某号有相邻 AI 机器人但没有任何非真人目标满足 pickTarget L1161；按定留底的项分：safeFinite 取到队友的存兵 / 价格项（safeFinite 为 0 仍无目标）。",
+   "detector": "scripts/shadow.mjs <局> --cold --floor <拍…> → scripts/floor_tally.py --by-bot --who"
+  },
+  {
+   "key": "IO-LAG-STALE",
+   "prefix": "IO",
+   "name": "指令按旧局面决策、迟到落地或不落地",
+   "definition": "每条已执行指令对到影子的决策，陈旧度 = 执行拍 − 决策拍；某 300 拍窗口内陈旧度中位 ≥90 拍，或过闸指令出现在录像里的不到一半，记一次。",
+   "detector": "scripts/batch_origin.py；scripts/cmd_staleness.py；scripts/review_build/A034_facts.py §23（过闸对录像）"
+  },
+  {
+   "key": "IO-BATCH9",
+   "prefix": "IO",
+   "name": "同拍连发批（≤9 条、逐条重新计价）",
+   "definition": "同一号在同一拍执行 ≥3 条陆攻/出船指令；附整批花掉的存兵占比、批内落空与目标改写的条数。",
+   "detector": "scripts/burst_rounds.py；scripts/batch_origin.py；scripts/review_build/A034_facts.py §5、§22"
+  },
+  {
+   "key": "AT-NEUTRAL-CROWD",
+   "prefix": "AT",
+   "name": "中立最小额指令挤掉同拍的 buyLand 指令",
+   "definition": "影子按每拍受理 1 条运行：同一决策拍里 expandNeutral 的指令被受理、buyLand 的指令被拒。",
+   "detector": "scripts/shadow.mjs <局> --quiet --match"
+  },
+  {
+   "key": "AT-FOCUS-KILL",
+   "prefix": "AT",
+   "name": "多个号在 100 拍内打同一个真人并把它吃掉（有效）",
+   "definition": "≥3 个我方号在 100 拍内对同一敌方真人各有已执行陆攻，且该真人在其后 600 拍内阵亡；记投入、它丢的地里归编队的比例。",
+   "detector": "scripts/review_build/A034_facts.py §15；scripts/land_takers.py"
+  },
+  {
+   "key": "AT-THIN-KILL",
+   "prefix": "AT",
+   "name": "吃掉没兵的真人邻居（有效）",
+   "definition": "对密度 < 自己一半的真人邻居出兵，每格净花费 <40 兵且 300 拍内地增 ≥50%。",
+   "detector": "scripts/review_build/A034_facts.py §27"
+  },
+  {
+   "key": "DN-DONOR-GATE",
+   "prefix": "DN",
+   "name": "不被围的捐出方门槛挡住急援",
+   "definition": "队友正被真人打的（候选×采样拍）里被列为可捐对象的比例 <20%，拦截以 L4466 为主。",
+   "detector": "scripts/shadow.mjs --don-probe；scripts/donprobe_why.py"
+  },
+  {
+   "key": "DF-DOOMED-POCKET",
+   "prefix": "DF",
+   "name": "挨打的小号被判弃子",
+   "definition": "tryDonateToTeammate 候选循环在 L4455-4456 跳过某个正被真人进攻的队友；按（候选×评估拍）计数。",
+   "detector": "scripts/shadow.mjs --don-probe；scripts/donprobe_tally.py"
+  },
+  {
+   "key": "AT-CONTACT-PENALTY",
+   "prefix": "AT",
+   "name": "接触面罚价把过得了价格门的报价抬过估值",
+   "definition": "t≥1500，某号最便宜的真人报价被 L5359 收口，该报价带 L5177-5180 的接触面罚价（接触 <25 格、0.75×对方地÷接触格 > contactStepsMax），去掉罚价后 < 估值；按（号×采样拍）计。",
+   "detector": "scripts/shadow.mjs --cold --offers <拍…> → scripts/offers_price.py --contact"
+  },
+  {
+   "key": "AT-SAFEAT-HOLD",
+   "prefix": "AT",
+   "name": "存兵低于 safeAt 留底：过了价格门的目标也不打",
+   "definition": "t≥1500，有报价过了 L5359 而存兵 − 手续费 ≤ 留底（L5447 跳过），连续 ≥100 拍没有指令；记定留底的项（dpKeep / safeFinite / 88×地）与目标同期丢的地归谁。",
+   "detector": "scripts/shadow.mjs --offers → scripts/offers_price.py；scripts/mids_tally.py --lines 5447"
+  },
+  {
+   "key": "AT-PRICE-HOLD",
+   "prefix": "AT",
+   "name": "有接触面的前排号被价格门按住只攒兵",
+   "definition": "某号对在线敌方真人的接触 ≥50 格，buyLand 连续 ≥600 拍 ≥95% 的调用在 L5359（或 L5364）收口，期间自己的存兵翻 ≥2 倍；记最便宜报价÷估值、放行（over）出现的拍。",
+   "detector": "scripts/shadow.mjs --mids buyLand → scripts/mids_tally.py --lines 5359,5364；scripts/offers_price.py"
+  },
+  {
+   "key": "AT-PULSE-REPEAT",
+   "prefix": "AT",
+   "name": "重复下单（一条 pulse 变一轮）",
+   "definition": "同号同目标间隔 ≤21 拍的已执行陆攻归成一轮；记各轮首条合计与跟单合计。",
+   "detector": "scripts/volleys.py <局> --list"
+  },
+  {
+   "key": "AT-OVER-GRIND",
+   "prefix": "AT",
+   "name": "放行的兵反复磨同一个邻居",
+   "definition": "批前存兵 >100×地 的放行对同一个真人 ≥5 轮；记每格净花费 ÷ 自己密度、对方同期从编队手里拿走的地。",
+   "detector": "scripts/review_build/A034_facts.py §28、§12、§15；scripts/volleys.py"
+  },
+  {
+   "key": "AT-OVER-POKE",
+   "prefix": "AT",
+   "name": "存兵刚过软上限的那一拍，不看价格地打比自己强的邻居",
+   "definition": "一轮打真人的进攻（同号同目标间隔 ≤21 拍）首条指令执行时存兵 > 100×地；按目标存兵 ≥ 自己、≥2×自己分别计轮数与兵力，并记目标其后 300 拍对我方号的出兵。",
+   "detector": "scripts/review_build/A034_facts.py §28"
+  },
+  {
+   "key": "DN-SINK-FEED",
+   "prefix": "DN",
+   "name": "捐兵落到正在被打穿的号手里",
+   "definition": "一笔已落地的捐兵之后 300 拍内，受赠方的地减少 ≥20%（含阵亡、清零）；按笔数、到账、税计。",
+   "detector": "scripts/review_build/A034_facts.py §14、§28"
+  },
+  {
+   "key": "DN-TAX",
+   "prefix": "DN",
+   "name": "捐兵税占比",
+   "definition": "全局捐兵 税/到账 ≥20%。",
+   "detector": "scripts/match_facts.py --sec don；scripts/review_build/A034_facts.py §4"
+  },
+  {
+   "key": "SP-ENCLOSED",
+   "prefix": "SP",
+   "name": "阵内的号被队友围死",
+   "definition": "t≤1500 时某号陆上邻格 ≥70% 属于队友；或 t=3000 时对敌接触格数为 0。",
+   "detector": "scripts/review_build/A034_facts.py §2；scripts/border_owners.mjs"
+  },
+  {
+   "key": "IO-CLIENT-EXIT",
+   "prefix": "IO",
+   "name": "客户端中途停住或退出",
+   "definition": "某号的日志在阵亡之前中断 ≥200 拍，随后录像里出现它的离场指令，而策略离场规则的条件当时不满足。",
+   "detector": "scripts/client_clock.py；scripts/review_skel.py（lastLogT）"
+  },
+  {
+   "key": "SE-SCOUT-FEE",
+   "prefix": "SE",
+   "name": "探路船：载几千兵、付上万手续费",
+   "definition": "出船兵力 < 10k 且手续费 > 出船兵力。",
+   "detector": "scripts/match_truth.mjs（events: boat）；scripts/review_build/A034_facts.py §21"
+  }
+ ],
+ "lossArchetype": "never-grew",
+ "archetypeNote": "编队全程峰值 15.1%（3600 拍），人数占 28.1%；T3 峰值 16.6%（2160 拍），900 拍起一直第三。分机器人的地那 900 拍（900–1800）编队从 7.1% 到 9.6%，两支敌队各到四成；之后是地 14% 对 86% 的攒兵比赛。",
+ "winnerNotes": "T1 赢（终局 99.7%）。1500 拍 T1 31.2%/1.12M（密度 7）、T2 33.0%/1.16M（密度 6）：两队把兵全部换成了机器人的地，真人地中位 16,181 格对我方号 5,318 格。Trace（峰值 28.3%@5706）600 拍 2,669 格、1500 拍 19,266 格、3000 拍 35,228 格/1.90M、4500 拍 51,913 格/5.15M；2400–3600 拍地基本不动、只攒兵，3745 拍起每 70–90 拍一条 40–88 万打 alex_k，后期收到队友 jet 2 笔 2.85M、SPARTUS 300 1 笔 1.33M。SPARTUS 300 出生在我方阵里（离 ryan_m 43 格），名下陆地只有 3,689 格（全场最少），靠 2400–3000 拍吃掉 ProfChaos 的 17,373 格翻身，终局前 56,367 格，全程从编队手里拿走 17,790 格。T1 的打法是单条大指令：对编队 11–13 条就是 5–7M（每条 40–160 万），编队对真人 167 条 8.13M。",
+ "wentWell": [
+  "开局中立扩张不输真人（t=300 地中位 459 对 476；t=600 2,663 对 2,185），0–599 拍 87 条指令全部落地。",
+  "五个号合吃 ALBOSS：58 条 1.34M（退回 449k）拿到它 97% 的地，编队 9.6%→14.1%。",
+  "talon5 2051–2065 拍三条 191k 从 jet 手里拿 5,222 格（每格 36 兵），jet 1,540 拍没有还手；noah88 一条 117k 打 ProfChaos，地翻了一倍多。",
+  "调度日志 19 条全部落地，没有被配额拒绝；受赠方上限截掉 0，互捐 0。",
+  "13 笔捐兵让捐受两号的合计利息变多（每 10 拍 +25k）。",
+  "2100 拍以后下发恢复正常（过闸与录像逐窗基本相等）。"
+ ],
+ "unknowns": [
+  "600–2030 拍过闸的指令为什么一半没有出现在录像里、出现的为什么成批迟到 200–400 拍并且倒序：策略每拍耗时 1 ms 上下；客户端运行层（sent/accepted 计数、在途门）和服务器接入层都不在对局包里。9 条上限在哪一层也不知道。",
+  "首次求解时后端看到的盘面：由「选了东北角」反推是空盘（或敌人的位置还没传到）；后端收到的真人位置序列不在对局包里。",
+  "换到西南角以后别的真人会怎么落子：t=−20 时西南角里也已经有 5 个敌人，其中 Player 280 是从东北角搬过去的。",
+  "留底锁、最小额、指令迟到三层各自少拿了多少机器人的地：没有做逐层去掉的重放。",
+  "500–900 拍 84 个「safeFinite 为 0 仍锁死」的样本没有逐个拆到具体哪一项（价格项、dpKeep 或 peopleFloor）。",
+  "ProfChaos 垮的时候如果 noah88、kaito9 出手，SPARTUS 300（564k–891k）会不会转头打它们：没有推演。",
+  "ryan_m 的客户端 3969 拍以后为什么停住（上报时落后 376 拍）。",
+  "results.csv 的 sent 合计 1,736＝策略想发 1,524 + 选点期 212，而录像里的出生指令是 179 条：选点期多出的 33 条 sent 是什么没有核对。"
+ ],
+ "mechanicsQuestions": [
+  "海上有船的玩家地被打到除名线以下时不除名、存兵清零（game.js collapse L1314-1334）：leo_tx 4490 拍 193k 归零。线上是否一致？清掉的兵算不算给进攻方？",
+  "同一拍同一玩家最多执行 9 条指令、并且倒序执行：超出的是丢掉还是排到后面的拍？本局 46 个批没有一个超过 9 条，1500–1799 拍过闸 429 条、落地 99 条。",
+  "目标已死的陆攻被改写成打中立（engine-evidence [A5]）：本局同拍批里 197 条的目标类别变了、152 条落空。落空的指令手续费是否照扣（[A7] 写的是付费前失败）？",
+  "捐兵手续费是捐出方全部存兵的 64/1024，与捐多少无关（game.js transfer L388-400）：本局税占到账的 31.1%。线上是否一致？",
+  "除名线是历史峰值地的 1/4，峰值按 (峰值−地)/1000 每次回落（game.js aliveTick L1298-1312）：本局九个号被除名时手里合计还有 1.11M。除名时这些兵去哪了？",
+  "离线的队友（★ 1947 拍离线）按机器人处理（game.js isBot L215）：队友能不能打它的地？它的 8,204 格被 Player 31 拿走。"
+ ],
+ "scripts": [
+  "scripts/replay_cmds.mjs A034 → scripts/shadow.mjs A034 --quiet --tc 600:1500 --json /tmp/c136-r05/work/A034-shadow.json → scripts/atk_fate.mjs A034 --json（三本账的输入；批量见 scripts/accounts_batch.sh、scripts/shadow_refresh.sh）",
+  "scripts/delay_account.py A034 --json /tmp/c136-r05/work/A034-delay.json --list-batches（延迟硬账：出生执行、分时段延迟、漏斗、迟到落空、同拍批、在途重复）；scripts/delay_detail.py A034（按号 × 300 拍摊开）",
+  "scripts/land_account.mjs A034 --json /tmp/c136-r05/work/A034-land.json（好地账：名下份额、实际地 ÷ 份额、机器人地去向）",
+  "scripts/tick_attrib.py A034 --json /tmp/c136-r05/work/A034-attrib.json --by-bot --exits（600–1500 拍每个决策拍归一类）；scripts/quota_guard.py A034 --by-bot（Policy.send 拒发与 isNoFullSend 置位拍）",
+  "scripts/accounts_md.py A034（把三本账渲染成 .md 的 6b 节）",
+  "scripts/sim_replay.mjs A034 --check（逐拍精确重放；与 442 条 [HL-TICK] 的地、兵逐条相等）",
+  "scripts/match_truth.mjs A034 → /tmp/c136-r05/truth/A034.json",
+  "scripts/review_skel.py A034 → /tmp/c136-r05/skel/A034.json",
+  "scripts/truth_digest.py A034",
+  "scripts/match_facts.py A034 [--sec bots,line,hits,batch,don,cap,ledger,top,cmds,enc,deaths]",
+  "scripts/match_extra.py A034",
+  "scripts/review_build/A034_facts.py [--sec 1,…,28]（§1 各队兵力、§2 接敌面、§3 路人队友与邻居、§4 捐兵、§5 打真人的同拍批、§6 阵亡、§7 机器人的地、§8 名次、§11 分段收支、§12 交换比、§13 谁拿了谁的地、§14 捐兵之后、§15 多号打同一人、§16 各号每 300 拍、§17 3380–4300 拍时间线与谁先动手、§18 影子决策构成、§19 2100 拍后的出手段、§20 ProfChaos、§21 leo_tx 的船、§22 批前后、§23 指令对账、§24 锚点周围的敌人、§25 除名时的存兵、§26 崩盘段合计、§27 做对的几手、§28 放行轮与捐兵去向）",
+  "scripts/replay_cmds.mjs A034 --out /tmp/c136-r05/work/A034-cmds.tsv（录像里的全部指令）",
+  "scripts/spawn_truth.mjs A034 --detail；scripts/shadow_spawn.mjs A034 --at -14,-6,-5,-1 --anchors；--at -6 --drop 12,20,10,11；--at -42,-41,-38,-20,-6 --corners；--at -42,-41,-38,-6 --corners --slots 21:0,23:1,25:2,27:3,28:4,29:5,30:6,22:7,26:9 --phantom 8:99（逐角强制求解、方案总分复算）",
+  "scripts/spawn_voronoi.mjs A034 --vs 600,900,1200,1500,2100,3000 --list（出生份额、地÷份额、秩相关）",
+  "scripts/coast_len.mjs A034（海岸格数）",
+  "scripts/border_owners.mjs A034（邻格构成）",
+  "scripts/shadow_prep.cjs vb；scripts/shadow.mjs A034 --quiet --match --match-json /tmp/c136-r05/skel/A034.match.json（下发对账、每拍限 1 条）；scripts/shadow.mjs A034 --quiet --json /tmp/c136-r05/work/A034-shadow.json",
+  "scripts/shadow_gap.py A034；scripts/burst_rounds.py A034；scripts/batch_origin.py A034（同拍批对到决策拍、落地顺序、陈旧度）；scripts/cmd_staleness.py A034；scripts/client_clock.py A034",
+  "scripts/shadow.mjs A034 --cold --t0 490 --t1 1710 --floor 500,525,…,1700 > floor.txt；scripts/floor_tally.py floor.txt --wins 500:900,900:1200,1200:1500,1500:1700,500:1700 --by-bot --who（机器人锁）",
+  "scripts/bot_fate.mjs A034 --ids <1200–1500 拍相邻的 25 个机器人>；scripts/botfate_sum.py；scripts/raw_targets.mjs",
+  "scripts/shadow.mjs A034 --quiet --win 300 --mids buyLand；--mids idleBoats；scripts/mids_tally.py（各出口/跳过行命中数：L5359、L5364、L5447、L5031、L5060）",
+  "scripts/shadow.mjs A034 --cold --quiet --offers 2105,2400,…,4200 > A034-offers.txt；--bots noah88,kaito9,ryan_m --offers 2150,2200,…,3000 > A034-offers-pc.txt；scripts/offers_price.py <文件> [--brief] [--contact]（价格门、留底、接触面罚价）",
+  "scripts/shadow.mjs A034 --cold --quiet --don-probe <2100–5200 每 50 拍> > probe.txt；scripts/donprobe_tally.py probe.txt --match A034；scripts/donprobe_why.py probe.txt --win 2100,3100 --win 3100,3600 --win 3600,4300 --win 4300,5200 --by-donor",
+  "scripts/volleys.py A034 --list --min 3（连续下单、放行占比）",
+  "scripts/land_takers.py A034 --victims 10,11,20,4（谁拿走了 ALBOSS、ProfChaos、Player 607、★ 的地）",
+  "scripts/ret_jumps.py A034",
+  "scripts/quota_room.py A034（配额账）",
+  "scripts/yield_payback.py A034（捐兵利息回本）",
+  "scripts/cap_clip.mjs A034（超软上限少拿的利息）",
+  "scripts/review_build/A034.py（本文件的组装脚本）"
+ ],
+ "confidenceOverall": {
+  "level": "high",
+  "note": "时间线、阵亡、DROP30、捐兵账、批次、易手的地、指令对账来自逐拍精确重放（与 442 条 [HL-TICK] 逐条相等）和影子策略的逐决策拍重算（sent−accepted 与影子的挤掉数逐号相等）。选点一节是用线上同一份协调器源码对录像里各拍的盘面重新求解；「首次求解时盘面为空」是推断。指令为什么迟到与丢失、各层原因的占比、所有「换一种做法会怎样」都没有重放，标为推断或未知。"
+ }
+}

@@ -1,0 +1,59 @@
+# match-log  源码=g09.js  日志=squad.log  日志总行数=46752
+[HL-…] 行数=6544  README 点名的编排层标签行数：BACKEND-SPAWN-COORD=303 OPENING-CHECK=8 RESULT=77  其他行（连接/编排层，不在 R05 范围）=39820
+
+## 日志里每个 [HL-…] 标签的行数
+   3186  HL-TICK  源码里同标签打印语句=2
+   1394  HL-SPAWN-BACKEND  源码里同标签打印语句=1
+    656  HL-OPENING  源码里同标签打印语句=1
+    447  HL-SLOW-TICK  源码里同标签打印语句=0  （策略文件里没有，出自别处）
+    382  HL-DONATE  源码里同标签打印语句=4
+    277  HL-INTERCEPT  源码里同标签打印语句=1
+    125  HL-ASSIST  源码里同标签打印语句=2
+     77  HL-GAME-INIT  源码里同标签打印语句=0  （策略文件里没有，出自别处）
+
+## 源码里每条打印语句配上的日志行数
+    656  L2385 V13.dpNeutral [HL-OPENING]  首次出现在日志第 253 行
+         [HL-OPENING] t=${g.t} cyc=${cyc} DP expand rings=${n} spend=${Math.round(X)}/${bal} terr=${g.terr[me]}
+   1394  L4273 Policy.chooseSpawn [HL-SPAWN-BACKEND]  首次出现在日志第 93 行
+         [HL-SPAWN-BACKEND] me=${me} slot=${res.slot ?? rankIdx} role=${res.role || "SQUAD"} -> (${res.x},${res.y}) bossDist=${res.bossDist ?? -1} minAllyDist=${res.minAllyDist ?? -1} voronoi=${res.voronoiPixe
+      0  L4382 Policy.tryPeaceVote [HL-PEACE]
+         [HL-PEACE] t=${g.t} voted YES on our squad's mop-up peace call by p=${caller}(${g.names?.[caller] || ""})
+      0  L4390 Policy.tryPeaceVote [HL-PEACE]
+         [HL-PEACE] t=${g.t} initiated mop-up peace vote (all enemies eliminated!)
+      0  L4462 Policy.tryEmergencyBossRescue [HL-DONATE]
+         [HL-DONATE] t=${g.t} emergency boss donate pct=${pct}/1024 (~5%) -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)} dBoss=${Math.round(dBoss)}
+      0  L4479 Policy.tryEmergencyBossRescue [HL-ASSIST]
+         [HL-ASSIST] t=${g.t} 10% boss-assist poke -> target=${q}(${g.names?.[q] || ""}) myBal=${B} dMe=${Math.round(dMe)}
+    277  L4665 Policy.tryInterceptEnemyBoats [HL-INTERCEPT]  首次出现在日志第 550 行
+         [HL-INTERCEPT] t=${g.t} unified sea intercept pct=${bestPct}/1024 -> boatId=${bestBoatId} owner=${bestOwner}(${g.names?.[bestOwner] || ""}) boatTroops=${bestTroops}
+      0  L4778 Policy.tryClaimNearTeamIslands [HL-ISLAND-GUARD]
+         [HL-ISLAND-GUARD] t=${g.t} preemptively claimed near-shore island (${bestHit.sz}px, dist=${bestHit.d}) pct=${pct}/1024
+      0  L4831 Policy.tryDonateToTeammate [HL-DONATE]
+         [HL-DONATE] t=${g.t} boss donate pct=${pct}/1024 (~5%) -> boss=${bossId}(${g.names?.[bossId] || "npl"}) myBal=${B} dMe=${Math.round(dMe)}
+     86  L4859 Policy.tryDonateToTeammate [HL-DONATE]  首次出现在日志第 496 行
+         [HL-DONATE] t=${g.t} squad rescue donate pct=${pct}/1024 (~5%) -> ally=${p}(${g.names?.[p] || ""}) myBal=${B} dMe=${Math.round(dMe)} dAlly=${Math.round(dAlly)}
+    125  L4870 Policy.tryDonateToTeammate [HL-ASSIST]  首次出现在日志第 1753 行
+         [HL-ASSIST] t=${g.t} 10% squad-rescue poke -> enemy=${mainAttacker}(${g.names?.[mainAttacker] || ""}) for ally=${p}(${g.names?.[p] || ""})
+    296  L4910 Policy.tryDonateToTeammate [HL-DONATE]  首次出现在日志第 608 行
+         [HL-DONATE] t=${g.t} surplus donate pct=${pct}/1024 (~5%) -> ally=${bestAlly}(${g.names?.[bestAlly] || ""}) boxedIn=${boxedIn} myBal=${B} dMe=${Math.round(dMe)}
+   3186  L5285 Policy.act [HL-TICK]  首次出现在日志第 307 行
+         [HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${thi
+      0  L5329 Policy.act [HL-TICK]
+         [HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${thi
+
+## 配不上任何源码句式的 [HL-…] 行
+     77  HL-GAME-INIT
+         L85: [HL-GAME-INIT] mode=1 map=10 mapSeed=7652 players=62 me=21
+         L87: [HL-GAME-INIT] mode=1 map=10 mapSeed=7652 players=62 me=23
+         L88: [HL-GAME-INIT] mode=1 map=10 mapSeed=7652 players=62 me=25
+    447  HL-SLOW-TICK
+         L328: [HL-SLOW-TICK] t=750 took 38.6ms (max=38.6ms)
+         L329: [HL-SLOW-TICK] t=750 took 39.2ms (max=39.2ms)
+         L330: [HL-SLOW-TICK] t=764 took 28.7ms (max=28.7ms)
+
+## 一行配上多条句式（前 5 例）
+  L307 同时配上源码 L5285,L5329
+  L308 同时配上源码 L5285,L5329
+  L309 同时配上源码 L5285,L5329
+  L310 同时配上源码 L5285,L5329
+  L311 同时配上源码 L5285,L5329

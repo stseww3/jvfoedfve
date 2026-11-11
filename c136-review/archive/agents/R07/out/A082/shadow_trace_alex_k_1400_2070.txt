@@ -1,0 +1,616 @@
+# A082 alex_k 影子决策明细 t=1400~2070（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没走到 buyLand: 20 拍（t=1400~1495）
+#   出手打人/bot: 13 拍（t=1500~1560）；可用兵 25050~31291，一条指令下限(20%余额) 35675~40653，比值 70%~79%
+#   首选目标价高（c>=worth）: 58 拍（t=1565~2025）
+#   首选目标要发的兵低于最小指令（x < max(minCmd, pulseMinShare×B)）: 1 拍（t=1675~1675）；可用兵 6225~6225，一条指令下限(20%余额) 40989~40989，比值 15%~15%
+#   首选目标无可用兵（avail<=0）: 6 拍（t=1680~1720）；可用兵 -1433~-632，一条指令下限(20%余额) 40159~44269，比值 -4%~-1%
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 34 拍（t=1725~2070）；可用兵 1~33002，一条指令下限(20%余额) 47781~75729，比值 0%~54%
+#   只打无主地: 3 拍（t=1990~2000）；可用兵 -405~-222，一条指令下限(20%余额) 70403~70403，比值 -1%~-0%
+#   └ 「出手打人/bot」里：13 条对人/bot 的出兵共约 29449 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1400 alex_k B=135573 L=5663 d=23.9 nb=4 neut=0 cmds=51 noFull=1 shQ=32539 | m=1.400 worth=33.5 cheap=3.8 over=0 dMedOther=9.2 safe(-1)=118147
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1405 alex_k B=135573 L=5663 d=23.9 nb=4 neut=0 cmds=51 noFull=1 shQ=33893 | m=1.405 worth=33.6 cheap=3.8 over=0 dMedOther=9.0 safe(-1)=111573
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1410 alex_k B=139084 L=5663 d=24.6 nb=4 neut=0 cmds=51 noFull=1 shQ=34771 | m=1.410 worth=34.6 cheap=3.9 over=0 dMedOther=9.2 safe(-1)=114586
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1415 alex_k B=139084 L=5663 d=24.6 nb=4 neut=0 cmds=51 noFull=1 shQ=34771 | m=1.415 worth=34.8 cheap=3.9 over=0 dMedOther=9.2 safe(-1)=117750
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1420 alex_k B=142644 L=5663 d=25.2 nb=4 neut=0 cmds=51 noFull=1 shQ=35661 | m=1.420 worth=35.8 cheap=3.9 over=0 dMedOther=9.4 safe(-1)=120764
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1425 alex_k B=142644 L=5663 d=25.2 nb=4 neut=0 cmds=51 noFull=1 shQ=35661 | m=1.425 worth=35.9 cheap=3.9 over=0 dMedOther=9.2 safe(-1)=120764
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1430 alex_k B=146252 L=5663 d=25.8 nb=4 neut=0 cmds=51 noFull=1 shQ=36563 | m=1.430 worth=36.9 cheap=4.0 over=0 dMedOther=9.4 safe(-1)=123819
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1435 alex_k B=146252 L=5663 d=25.8 nb=4 neut=0 cmds=51 noFull=1 shQ=36563 | m=1.435 worth=37.1 cheap=4.0 over=0 dMedOther=9.4 safe(-1)=123819
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1440 alex_k B=149908 L=5663 d=26.5 nb=4 neut=0 cmds=51 noFull=1 shQ=37477 | m=1.440 worth=38.1 cheap=4.0 over=0 dMedOther=9.7 safe(-1)=126914
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1445 alex_k B=149908 L=5663 d=26.5 nb=4 neut=0 cmds=51 noFull=1 shQ=37477 | m=1.445 worth=38.3 cheap=4.0 over=0 dMedOther=9.7 safe(-1)=126914
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1450 alex_k B=153610 L=5663 d=27.1 nb=4 neut=0 cmds=51 noFull=1 shQ=38402 | m=1.450 worth=39.3 cheap=4.1 over=0 dMedOther=9.9 safe(-1)=130048
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1455 alex_k B=153610 L=5663 d=27.1 nb=4 neut=0 cmds=51 noFull=1 shQ=38402 | m=1.455 worth=39.5 cheap=4.1 over=0 dMedOther=9.8 safe(-1)=130048
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1460 alex_k B=157358 L=5663 d=27.8 nb=4 neut=0 cmds=51 noFull=1 shQ=39339 | m=1.460 worth=40.6 cheap=4.1 over=0 dMedOther=10.1 safe(-1)=133221
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1465 alex_k B=157358 L=5663 d=27.8 nb=4 neut=0 cmds=51 noFull=1 shQ=39339 | m=1.465 worth=40.7 cheap=4.1 over=0 dMedOther=10.1 safe(-1)=133221
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1470 alex_k B=161134 L=5663 d=28.5 nb=4 neut=0 cmds=51 noFull=1 shQ=40283 | m=1.470 worth=41.8 cheap=4.2 over=0 dMedOther=10.3 safe(-1)=136418
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1475 alex_k B=161134 L=5663 d=28.5 nb=4 neut=0 cmds=51 noFull=1 shQ=40283 | m=1.475 worth=42.0 cheap=4.2 over=0 dMedOther=10.3 safe(-1)=136418
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1480 alex_k B=164952 L=5663 d=29.1 nb=4 neut=0 cmds=51 noFull=1 shQ=41238 | m=1.480 worth=43.1 cheap=4.2 over=0 dMedOther=10.6 safe(-1)=139651
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1485 alex_k B=164952 L=5663 d=29.1 nb=4 neut=0 cmds=51 noFull=1 shQ=41238 | m=1.485 worth=43.3 cheap=4.2 over=0 dMedOther=10.6 safe(-1)=139651
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1490 alex_k B=168811 L=5663 d=29.8 nb=4 neut=0 cmds=51 noFull=1 shQ=42202 | m=1.490 worth=44.4 cheap=4.3 over=0 dMedOther=10.9 safe(-1)=142918
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1495 alex_k B=168811 L=5663 d=29.8 nb=4 neut=0 cmds=51 noFull=1 shQ=42202 | m=1.495 worth=44.6 cheap=4.3 over=0 dMedOther=10.9 safe(-1)=142918
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1500 alex_k B=178373 L=5663 d=31.5 nb=4 neut=0 cmds=52 noFull=1 shQ=43232 | m=1.500 worth=47.2 cheap=4.3 over=0 dMedOther=12.1 safe(-1)=151233
+    → AI#255 terr=1072 bal=0 dq=0.0 cnt=6 | c=4.6 rankC=4.6 need=1608 tD=0.00 机 | safe=151233 keep=151233 avail=25050 chunkB=35675 pulseB=21405  x=2028 hNb=3
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=172712 dq=25.3 cnt=71 | c=61.9 rankC=61.9 need=318100 tD=2.08 人 | safe=151233 keep=Inf avail=-Inf chunkB=35675 pulseB=21405 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=272358 dq=31.9 cnt=83 | c=77.6 rankC=77.6 need=498272 tD=2.63 人 | safe=151233 keep=Inf avail=-Inf chunkB=35675 pulseB=21405 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=240131 dq=65.4 cnt=4 | c=357.9 rankC=357.9 need=433558 tD=5.39 人 crowdedHard | safe=151233 keep=Inf avail=-Inf chunkB=35675 pulseB=21405 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=11 → AI#255（约 2090 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1505 alex_k B=178373 L=5663 d=31.5 nb=4 neut=0 cmds=53 noFull=1 shQ=44593 | m=1.499 worth=47.2 cheap=4.4 over=0 dMedOther=12.1 safe(-1)=148238
+    → AI#255 terr=1072 bal=0 dq=0.0 cnt=6 | c=4.6 rankC=4.6 need=1608 tD=0.00 机 | safe=148238 keep=148238 avail=28045 chunkB=35675 pulseB=21405  x=2028 hNb=3
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=172712 dq=25.3 cnt=71 | c=61.9 rankC=61.9 need=318100 tD=2.08 人 | safe=148238 keep=Inf avail=-Inf chunkB=35675 pulseB=21405 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=272358 dq=31.9 cnt=83 | c=77.6 rankC=77.6 need=498272 tD=2.63 人 | safe=148238 keep=Inf avail=-Inf chunkB=35675 pulseB=21405 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=240131 dq=65.4 cnt=4 | c=357.9 rankC=357.9 need=433558 tD=5.39 人 crowdedHard | safe=148238 keep=Inf avail=-Inf chunkB=35675 pulseB=21405 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=11 → AI#255（约 2090 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1510 alex_k B=182439 L=5663 d=32.2 nb=4 neut=0 cmds=54 noFull=1 shQ=45609 | m=1.498 worth=48.3 cheap=4.4 over=0 dMedOther=12.4 safe(-1)=151726
+    → AI#255 terr=1072 bal=0 dq=0.0 cnt=6 | c=4.6 rankC=4.6 need=1608 tD=0.00 机 | safe=151726 keep=151726 avail=28576 chunkB=36488 pulseB=21893  x=2028 hNb=3
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=176649 dq=25.8 cnt=71 | c=63.2 rankC=63.2 need=325118 tD=2.08 人 | safe=151726 keep=Inf avail=-Inf chunkB=36488 pulseB=21893 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=278567 dq=32.7 cnt=83 | c=79.3 rankC=79.3 need=509339 tD=2.63 人 | safe=151726 keep=Inf avail=-Inf chunkB=36488 pulseB=21893 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=245605 dq=66.8 cnt=4 | c=365.9 rankC=365.9 need=443316 tD=5.39 人 crowdedHard | safe=151726 keep=Inf avail=-Inf chunkB=36488 pulseB=21893 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=11 → AI#255（约 2137 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1515 alex_k B=182439 L=5663 d=32.2 nb=4 neut=0 cmds=55 noFull=1 shQ=45609 | m=1.498 worth=48.3 cheap=4.4 over=0 dMedOther=12.4 safe(-1)=151726
+    → AI#255 terr=1164 bal=0 dq=0.0 cnt=7 | c=4.4 rankC=4.4 need=1746 tD=0.00 机 | safe=151726 keep=151726 avail=28576 chunkB=36488 pulseB=21893  x=2204 hNb=3
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=176649 dq=25.8 cnt=71 | c=63.2 rankC=63.2 need=325118 tD=2.08 人 | safe=151726 keep=Inf avail=-Inf chunkB=36488 pulseB=21893 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=278567 dq=32.7 cnt=83 | c=79.3 rankC=79.3 need=509339 tD=2.63 人 | safe=151726 keep=Inf avail=-Inf chunkB=36488 pulseB=21893 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=245605 dq=66.8 cnt=4 | c=365.9 rankC=365.9 need=443316 tD=5.39 人 crowdedHard | safe=151726 keep=Inf avail=-Inf chunkB=36488 pulseB=21893 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=12 → AI#255（约 2316 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1520 alex_k B=186543 L=5663 d=32.9 nb=4 neut=0 cmds=56 noFull=1 shQ=46635 | m=1.497 worth=49.3 cheap=4.4 over=0 dMedOther=12.7 safe(-1)=155247
+    → AI#255 terr=1164 bal=0 dq=0.0 cnt=7 | c=4.5 rankC=4.5 need=1746 tD=0.00 机 | safe=155247 keep=155247 avail=29110 chunkB=37309 pulseB=22385  x=2204 hNb=3
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=180623 dq=26.4 cnt=71 | c=64.6 rankC=64.6 need=332201 tD=2.08 人 | safe=155247 keep=Inf avail=-Inf chunkB=37309 pulseB=22385 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=284834 dq=33.4 cnt=83 | c=81.0 rankC=81.0 need=520510 tD=2.63 人 | safe=155247 keep=Inf avail=-Inf chunkB=37309 pulseB=22385 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=251131 dq=68.4 cnt=4 | c=374.0 rankC=374.0 need=453166 tD=5.39 人 crowdedHard | safe=155247 keep=Inf avail=-Inf chunkB=37309 pulseB=22385 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=12 → AI#255（约 2368 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1525 alex_k B=186543 L=5663 d=32.9 nb=4 neut=0 cmds=57 noFull=1 shQ=46635 | m=1.496 worth=49.3 cheap=4.5 over=0 dMedOther=12.7 safe(-1)=155247
+    → AI#255 terr=1164 bal=0 dq=0.0 cnt=7 | c=4.5 rankC=4.5 need=1746 tD=0.00 机 | safe=155247 keep=155247 avail=29110 chunkB=37309 pulseB=22385  x=2204 hNb=3
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=180623 dq=26.4 cnt=71 | c=64.6 rankC=64.6 need=332201 tD=2.08 人 | safe=155247 keep=Inf avail=-Inf chunkB=37309 pulseB=22385 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=284834 dq=33.4 cnt=83 | c=81.0 rankC=81.0 need=520510 tD=2.63 人 | safe=155247 keep=Inf avail=-Inf chunkB=37309 pulseB=22385 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=251131 dq=68.4 cnt=4 | c=374.0 rankC=374.0 need=453166 tD=5.39 人 crowdedHard | safe=155247 keep=Inf avail=-Inf chunkB=37309 pulseB=22385 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=12 → AI#255（约 2368 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1530 alex_k B=190684 L=5663 d=33.7 nb=4 neut=0 cmds=58 noFull=1 shQ=47671 | m=1.496 worth=50.4 cheap=4.5 over=0 dMedOther=13.8 safe(-1)=158799
+    → AI#255 terr=1164 bal=0 dq=0.0 cnt=7 | c=4.5 rankC=4.5 need=1746 tD=0.00 机 | safe=158799 keep=158799 avail=29651 chunkB=38137 pulseB=22882  x=2204 hNb=3
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=184632 dq=27.0 cnt=71 | c=66.0 rankC=66.0 need=339347 tD=1.95 人 | safe=158799 keep=Inf avail=-Inf chunkB=38137 pulseB=22882 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=291157 dq=34.1 cnt=83 | c=82.8 rankC=82.8 need=531781 tD=2.47 人 | safe=158799 keep=Inf avail=-Inf chunkB=38137 pulseB=22882 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=256706 dq=69.9 cnt=4 | c=382.2 rankC=382.2 need=463104 tD=5.05 人 crowdedHard | safe=158799 keep=Inf avail=-Inf chunkB=38137 pulseB=22882 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=11 → AI#255（约 2234 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1535 alex_k B=190684 L=5663 d=33.7 nb=4 neut=0 cmds=59 noFull=1 shQ=47671 | m=1.495 worth=50.3 cheap=4.5 over=0 dMedOther=13.0 safe(-1)=158799
+    → AI#255 terr=1164 bal=0 dq=0.0 cnt=7 | c=4.5 rankC=4.5 need=1746 tD=0.00 机 | safe=158799 keep=158799 avail=29651 chunkB=38137 pulseB=22882  x=2204 hNb=3
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=184632 dq=27.0 cnt=71 | c=66.0 rankC=66.0 need=339347 tD=2.08 人 | safe=158799 keep=Inf avail=-Inf chunkB=38137 pulseB=22882 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=291157 dq=34.1 cnt=83 | c=82.8 rankC=82.8 need=531781 tD=2.63 人 | safe=158799 keep=Inf avail=-Inf chunkB=38137 pulseB=22882 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=256706 dq=69.9 cnt=4 | c=382.2 rankC=382.2 need=463104 tD=5.38 人 crowdedHard | safe=158799 keep=Inf avail=-Inf chunkB=38137 pulseB=22882 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=11 → AI#255（约 2234 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1540 alex_k B=194859 L=5663 d=34.4 nb=4 neut=0 cmds=60 noFull=1 shQ=48714 | m=1.494 worth=51.4 cheap=4.6 over=0 dMedOther=13.3 safe(-1)=162381
+    → AI#255 terr=1164 bal=0 dq=0.0 cnt=7 | c=4.6 rankC=4.6 need=1746 tD=0.00 机 | safe=162381 keep=162381 avail=30195 chunkB=38972 pulseB=23383  x=2204 hNb=3
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=188675 dq=27.6 cnt=71 | c=67.4 rankC=67.4 need=346553 tD=2.08 人 | safe=162381 keep=Inf avail=-Inf chunkB=38972 pulseB=23383 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=297533 dq=34.9 cnt=83 | c=84.6 rankC=84.6 need=543146 tD=2.63 人 | safe=162381 keep=Inf avail=-Inf chunkB=38972 pulseB=23383 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=262327 dq=71.4 cnt=4 | c=390.5 rankC=390.5 need=473123 tD=5.38 人 crowdedHard | safe=162381 keep=Inf avail=-Inf chunkB=38972 pulseB=23383 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=11 → AI#255（约 2283 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1545 alex_k B=194859 L=5663 d=34.4 nb=4 neut=0 cmds=61 noFull=1 shQ=48714 | m=1.493 worth=51.4 cheap=4.6 over=0 dMedOther=13.2 safe(-1)=162381
+    → AI#255 terr=1164 bal=0 dq=0.0 cnt=7 | c=4.6 rankC=4.6 need=1746 tD=0.00 机 | safe=162381 keep=162381 avail=30195 chunkB=38972 pulseB=23383  x=2204 hNb=3
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=188675 dq=27.6 cnt=71 | c=67.4 rankC=67.4 need=346553 tD=2.08 人 | safe=162381 keep=Inf avail=-Inf chunkB=38972 pulseB=23383 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=297533 dq=34.9 cnt=83 | c=84.6 rankC=84.6 need=543146 tD=2.63 人 | safe=162381 keep=Inf avail=-Inf chunkB=38972 pulseB=23383 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=262327 dq=71.4 cnt=4 | c=390.5 rankC=390.5 need=473123 tD=5.39 人 crowdedHard | safe=162381 keep=Inf avail=-Inf chunkB=38972 pulseB=23383 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=11 → AI#255（约 2283 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1550 alex_k B=199048 L=5663 d=35.1 nb=4 neut=0 cmds=62 noFull=1 shQ=49762 | m=1.492 worth=52.5 cheap=4.6 over=0 dMedOther=13.5 safe(-1)=165974
+    → AI#255 terr=1164 bal=0 dq=0.0 cnt=7 | c=4.7 rankC=4.7 need=1746 tD=0.00 机 | safe=165974 keep=165974 avail=30742 chunkB=39810 pulseB=23886  x=2204 hNb=3
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=192731 dq=28.2 cnt=71 | c=68.8 rankC=68.8 need=353782 tD=2.08 人 | safe=165974 keep=Inf avail=-Inf chunkB=39810 pulseB=23886 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=303929 dq=35.6 cnt=83 | c=86.3 rankC=86.3 need=554547 tD=2.63 人 | safe=165974 keep=Inf avail=-Inf chunkB=39810 pulseB=23886 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=267967 dq=72.9 cnt=4 | c=398.8 rankC=398.8 need=483177 tD=5.39 人 crowdedHard | safe=165974 keep=Inf avail=-Inf chunkB=39810 pulseB=23886 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=11 → AI#255（约 2332 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1555 alex_k B=199048 L=5663 d=35.1 nb=4 neut=0 cmds=63 noFull=1 shQ=49762 | m=1.492 worth=52.4 cheap=4.7 over=0 dMedOther=13.5 safe(-1)=165974
+    → AI#255 terr=1164 bal=0 dq=0.0 cnt=7 | c=4.7 rankC=4.7 need=1746 tD=0.00 机 | safe=165974 keep=165974 avail=30742 chunkB=39810 pulseB=23886  x=2204 hNb=3
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=192731 dq=28.2 cnt=71 | c=68.8 rankC=68.8 need=353782 tD=2.08 人 | safe=165974 keep=Inf avail=-Inf chunkB=39810 pulseB=23886 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=303929 dq=35.6 cnt=83 | c=86.3 rankC=86.3 need=554547 tD=2.63 人 | safe=165974 keep=Inf avail=-Inf chunkB=39810 pulseB=23886 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=267967 dq=72.9 cnt=4 | c=398.8 rankC=398.8 need=483177 tD=5.39 人 crowdedHard | safe=165974 keep=Inf avail=-Inf chunkB=39810 pulseB=23886 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=11 → AI#255（约 2332 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1560 alex_k B=203267 L=5663 d=35.9 nb=4 neut=0 cmds=64 noFull=1 shQ=50816 | m=1.491 worth=53.5 cheap=4.7 over=0 dMedOther=13.8 safe(-1)=169594
+    → AI#255 terr=1164 bal=0 dq=0.0 cnt=7 | c=4.7 rankC=4.7 need=1746 tD=0.00 机 | safe=169594 keep=169594 avail=31291 chunkB=40653 pulseB=24392  x=2204 hNb=3
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=196816 dq=28.8 cnt=71 | c=70.2 rankC=70.2 need=361063 tD=2.08 人 | safe=169594 keep=Inf avail=-Inf chunkB=40653 pulseB=24392 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=310372 dq=36.4 cnt=83 | c=88.1 rankC=88.1 need=566031 tD=2.63 人 | safe=169594 keep=Inf avail=-Inf chunkB=40653 pulseB=24392 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=273647 dq=74.5 cnt=4 | c=407.2 rankC=407.2 need=493302 tD=5.39 人 crowdedHard | safe=169594 keep=Inf avail=-Inf chunkB=40653 pulseB=24392 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=11 → AI#255（约 2382 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1565 alex_k B=163714 L=5663 d=28.9 nb=4 neut=0 cmds=64 noFull=1 shQ=6350 | m=1.490 worth=43.1 cheap=4.7 over=0 dMedOther=13.8 safe(-1)=169594
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=196816 dq=28.8 cnt=71 | c=101.7 rankC=147.5 need=361063 tD=2.08 人 | safe=169594 keep=Inf avail=-Inf chunkB=32743 pulseB=19646 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=310372 dq=36.4 cnt=83 | c=172.4 rankC=249.9 need=566031 tD=2.63 人 crowdedHard | safe=169594 keep=Inf avail=-Inf chunkB=32743 pulseB=19646 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=273647 dq=74.5 cnt=4 | c=406.8 rankC=406.8 need=493302 tD=5.39 人 crowdedHard | safe=169594 keep=Inf avail=-Inf chunkB=32743 pulseB=19646 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1570 alex_k B=167135 L=5670 d=29.5 nb=4 neut=0 cmds=64 noFull=1 shQ=10663 | m=1.490 worth=43.9 cheap=4.8 over=0 dMedOther=14.1 safe(-1)=173232
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=200929 dq=29.4 cnt=71 | c=103.8 rankC=150.5 need=368395 tD=2.08 人 | safe=173232 keep=Inf avail=-Inf chunkB=33427 pulseB=20056 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=316858 dq=37.1 cnt=83 | c=175.9 rankC=255.0 need=577593 tD=2.63 人 crowdedHard | safe=173232 keep=Inf avail=-Inf chunkB=33427 pulseB=20056 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=279366 dq=76.0 cnt=4 | c=415.2 rankC=415.2 need=503496 tD=5.39 人 crowdedHard | safe=173232 keep=Inf avail=-Inf chunkB=33427 pulseB=20056 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1575 alex_k B=167135 L=5687 d=29.4 nb=4 neut=0 cmds=64 noFull=1 shQ=15016 | m=1.489 worth=43.8 cheap=4.8 over=0 dMedOther=14.1 safe(-1)=173218
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=200929 dq=29.4 cnt=71 | c=103.8 rankC=150.5 need=368395 tD=2.08 人 | safe=173218 keep=Inf avail=-Inf chunkB=33427 pulseB=20056 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=316858 dq=37.1 cnt=83 | c=175.9 rankC=255.0 need=577593 tD=2.63 人 crowdedHard | safe=173218 keep=Inf avail=-Inf chunkB=33427 pulseB=20056 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=279366 dq=76.0 cnt=4 | c=415.2 rankC=415.2 need=503496 tD=5.39 人 crowdedHard | safe=173218 keep=Inf avail=-Inf chunkB=33427 pulseB=20056 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1580 alex_k B=170577 L=5697 d=29.9 nb=4 neut=0 cmds=64 noFull=1 shQ=19355 | m=1.488 worth=44.6 cheap=4.8 over=0 dMedOther=13.8 safe(-1)=176876
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=205068 dq=30.0 cnt=71 | c=105.9 rankC=153.5 need=375772 tD=2.17 人 | safe=176876 keep=Inf avail=-Inf chunkB=34115 pulseB=20469 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=323385 dq=37.9 cnt=83 | c=179.4 rankC=260.2 need=589227 tD=2.74 人 crowdedHard | safe=176876 keep=Inf avail=-Inf chunkB=34115 pulseB=20469 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=285120 dq=77.6 cnt=4 | c=423.7 rankC=423.7 need=513753 tD=5.61 人 crowdedHard | safe=176876 keep=Inf avail=-Inf chunkB=34115 pulseB=20469 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1585 alex_k B=170577 L=5720 d=29.8 nb=4 neut=0 cmds=64 noFull=1 shQ=23733 | m=1.487 worth=44.4 cheap=4.9 over=0 dMedOther=13.3 safe(-1)=176857
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=205068 dq=30.0 cnt=71 | c=105.9 rankC=153.5 need=375772 tD=2.25 人 | safe=176857 keep=Inf avail=-Inf chunkB=34115 pulseB=20469 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=323385 dq=37.9 cnt=83 | c=179.4 rankC=260.2 need=589227 tD=2.84 人 crowdedHard | safe=176857 keep=Inf avail=-Inf chunkB=34115 pulseB=20469 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=285120 dq=77.6 cnt=4 | c=423.7 rankC=423.7 need=513753 tD=5.82 人 crowdedHard | safe=176857 keep=Inf avail=-Inf chunkB=34115 pulseB=20469 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1590 alex_k B=174039 L=5747 d=30.3 nb=4 neut=0 cmds=64 noFull=1 shQ=28088 | m=1.486 worth=45.0 cheap=4.9 over=0 dMedOther=13.6 safe(-1)=180522
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=209230 dq=30.6 cnt=71 | c=108.0 rankC=156.5 need=383190 tD=2.25 人 | safe=180522 keep=Inf avail=-Inf chunkB=34808 pulseB=20885 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=329949 dq=38.7 cnt=83 | c=183.0 rankC=265.3 need=600927 tD=2.84 人 crowdedHard | safe=180522 keep=Inf avail=-Inf chunkB=34808 pulseB=20885 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=290907 dq=79.2 cnt=4 | c=432.2 rankC=432.2 need=524069 tD=5.82 人 crowdedHard | safe=180522 keep=Inf avail=-Inf chunkB=34808 pulseB=20885 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1595 alex_k B=174039 L=5762 d=30.2 nb=4 neut=0 cmds=64 noFull=1 shQ=32488 | m=1.486 worth=44.9 cheap=5.0 over=0 dMedOther=13.6 safe(-1)=180509
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=209230 dq=30.6 cnt=71 | c=108.0 rankC=156.5 need=383190 tD=2.25 人 | safe=180509 keep=Inf avail=-Inf chunkB=34808 pulseB=20885 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=329949 dq=38.7 cnt=83 | c=183.0 rankC=265.3 need=600927 tD=2.84 人 crowdedHard | safe=180509 keep=Inf avail=-Inf chunkB=34808 pulseB=20885 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=290907 dq=79.2 cnt=4 | c=432.2 rankC=432.2 need=524069 tD=5.82 人 crowdedHard | safe=180509 keep=Inf avail=-Inf chunkB=34808 pulseB=20885 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1600 alex_k B=183314 L=5795 d=31.6 nb=4 neut=0 cmds=64 noFull=1 shQ=36896 | m=1.485 worth=47.0 cheap=5.0 over=0 dMedOther=14.9 safe(-1)=188981
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=220251 dq=32.2 cnt=71 | c=113.5 rankC=164.6 need=402834 tD=2.16 人 | safe=188981 keep=Inf avail=-Inf chunkB=36663 pulseB=21998 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=345078 dq=40.4 cnt=83 | c=191.2 rankC=277.3 need=627894 tD=2.72 人 crowdedHard | safe=188981 keep=Inf avail=-Inf chunkB=36663 pulseB=21998 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=300399 dq=81.8 cnt=4 | c=446.2 rankC=446.2 need=540989 tD=5.49 人 crowdedHard | safe=188981 keep=Inf avail=-Inf chunkB=36663 pulseB=21998 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1605 alex_k B=183314 L=5832 d=31.4 nb=4 neut=0 cmds=64 noFull=1 shQ=41452 | m=1.484 worth=46.7 cheap=5.0 over=0 dMedOther=14.9 safe(-1)=188949
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=220251 dq=32.2 cnt=71 | c=113.5 rankC=164.6 need=402834 tD=2.16 人 | safe=188949 keep=Inf avail=-Inf chunkB=36663 pulseB=21998 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=345078 dq=40.4 cnt=83 | c=191.2 rankC=277.3 need=627894 tD=2.72 人 crowdedHard | safe=188949 keep=Inf avail=-Inf chunkB=36663 pulseB=21998 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=300399 dq=81.8 cnt=4 | c=446.2 rankC=446.2 need=540989 tD=5.49 人 crowdedHard | safe=188949 keep=Inf avail=-Inf chunkB=36663 pulseB=21998 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1610 alex_k B=186925 L=5852 d=31.9 nb=4 neut=0 cmds=64 noFull=1 shQ=45995 | m=1.484 worth=47.4 cheap=5.1 over=0 dMedOther=15.2 safe(-1)=192752
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=224589 dq=32.8 cnt=71 | c=115.7 rankC=167.7 need=410566 tD=2.16 人 | safe=192752 keep=Inf avail=-Inf chunkB=37385 pulseB=22431 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=351876 dq=41.2 cnt=83 | c=194.9 rankC=282.6 need=640012 tD=2.72 人 crowdedHard | safe=192752 keep=Inf avail=-Inf chunkB=37385 pulseB=22431 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=306316 dq=83.4 cnt=4 | c=454.9 rankC=454.9 need=551536 tD=5.49 人 crowdedHard | safe=192752 keep=Inf avail=-Inf chunkB=37385 pulseB=22431 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1615 alex_k B=186925 L=5897 d=31.7 nb=4 neut=0 cmds=64 noFull=1 shQ=46731 | m=1.483 worth=47.0 cheap=5.1 over=0 dMedOther=15.2 safe(-1)=175726
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=224589 dq=32.8 cnt=71 | c=115.7 rankC=167.7 need=410566 tD=2.16 人 | safe=175726 keep=Inf avail=-Inf chunkB=37385 pulseB=22431 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8531 bal=321638 dq=37.7 cnt=83 | c=178.5 rankC=258.9 need=586113 tD=2.48 人 crowdedHard | safe=175726 keep=Inf avail=-Inf chunkB=37385 pulseB=22431 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=306316 dq=83.4 cnt=4 | c=454.9 rankC=454.9 need=551536 tD=5.49 人 crowdedHard | safe=175726 keep=Inf avail=-Inf chunkB=37385 pulseB=22431 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1620 alex_k B=190551 L=5949 d=32.0 nb=4 neut=0 cmds=64 noFull=1 shQ=47637 | m=1.482 worth=47.5 cheap=5.2 over=0 dMedOther=15.5 safe(-1)=179187
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=228946 dq=33.5 cnt=71 | c=117.9 rankC=170.9 need=418332 tD=2.16 人 | safe=179187 keep=Inf avail=-Inf chunkB=38110 pulseB=22866 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8574 bal=327877 dq=38.2 cnt=83 | c=181.0 rankC=262.5 need=597284 tD=2.47 人 crowdedHard | safe=179187 keep=Inf avail=-Inf chunkB=38110 pulseB=22866 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=312258 dq=85.0 cnt=4 | c=463.6 rankC=463.6 need=562128 tD=5.49 人 crowdedHard | safe=179187 keep=Inf avail=-Inf chunkB=38110 pulseB=22866 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1625 alex_k B=190551 L=5976 d=31.9 nb=4 neut=0 cmds=64 noFull=1 shQ=47637 | m=1.481 worth=47.2 cheap=5.2 over=0 dMedOther=15.5 safe(-1)=179165
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=228946 dq=33.5 cnt=71 | c=117.9 rankC=170.9 need=418332 tD=2.16 人 | safe=179165 keep=Inf avail=-Inf chunkB=38110 pulseB=22866 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8661 bal=327877 dq=37.9 cnt=83 | c=179.3 rankC=259.9 need=597401 tD=2.45 人 crowdedHard | safe=179165 keep=Inf avail=-Inf chunkB=38110 pulseB=22866 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=312258 dq=85.0 cnt=4 | c=463.6 rankC=463.6 need=562128 tD=5.49 人 crowdedHard | safe=179165 keep=Inf avail=-Inf chunkB=38110 pulseB=22866 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1630 alex_k B=194171 L=6031 d=32.2 nb=4 neut=0 cmds=64 noFull=1 shQ=48542 | m=1.480 worth=47.7 cheap=5.2 over=0 dMedOther=15.8 safe(-1)=182618
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=233295 dq=34.1 cnt=71 | c=120.0 rankC=174.1 need=426084 tD=2.16 人 | safe=182618 keep=Inf avail=-Inf chunkB=38834 pulseB=23301 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8749 bal=334106 dq=38.2 cnt=83 | c=180.8 rankC=262.2 need=608635 tD=2.42 人 crowdedHard | safe=182618 keep=Inf avail=-Inf chunkB=38834 pulseB=23301 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=318190 dq=86.6 cnt=4 | c=472.3 rankC=472.3 need=572702 tD=5.49 人 crowdedHard | safe=182618 keep=Inf avail=-Inf chunkB=38834 pulseB=23301 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1635 alex_k B=194171 L=6090 d=31.9 nb=4 neut=0 cmds=64 noFull=1 shQ=48542 | m=1.480 worth=47.2 cheap=5.3 over=0 dMedOther=15.6 safe(-1)=182568
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=233295 dq=34.1 cnt=71 | c=120.0 rankC=174.1 need=426084 tD=2.19 人 | safe=182568 keep=Inf avail=-Inf chunkB=38834 pulseB=23301 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8790 bal=334106 dq=38.0 cnt=83 | c=180.0 rankC=261.0 need=608710 tD=2.44 人 crowdedHard | safe=182568 keep=Inf avail=-Inf chunkB=38834 pulseB=23301 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=318190 dq=86.6 cnt=4 | c=472.3 rankC=472.3 need=572702 tD=5.57 人 crowdedHard | safe=182568 keep=Inf avail=-Inf chunkB=38834 pulseB=23301 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1640 alex_k B=197801 L=6120 d=32.3 nb=4 neut=0 cmds=64 noFull=1 shQ=49450 | m=1.479 worth=47.8 cheap=5.3 over=0 dMedOther=15.8 safe(-1)=186052
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=237657 dq=34.8 cnt=71 | c=122.2 rankC=177.2 need=433859 tD=2.19 人 | safe=186052 keep=Inf avail=-Inf chunkB=39560 pulseB=23736 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8873 bal=340353 dq=38.4 cnt=83 | c=181.6 rankC=263.3 need=619956 tD=2.42 人 crowdedHard | safe=186052 keep=Inf avail=-Inf chunkB=39560 pulseB=23736 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=324140 dq=88.2 cnt=4 | c=481.1 rankC=481.1 need=583308 tD=5.57 人 crowdedHard | safe=186052 keep=Inf avail=-Inf chunkB=39560 pulseB=23736 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1645 alex_k B=197801 L=6184 d=32.0 nb=4 neut=0 cmds=64 noFull=1 shQ=49450 | m=1.478 worth=47.3 cheap=5.4 over=0 dMedOther=15.8 safe(-1)=185998
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=237657 dq=34.8 cnt=71 | c=165.0 rankC=239.3 need=433859 tD=2.19 人 crowdedHard | safe=185998 keep=Inf avail=-Inf chunkB=39560 pulseB=23736 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=8961 bal=340353 dq=38.0 cnt=83 | c=179.9 rankC=260.8 need=620088 tD=2.40 人 crowdedHard | safe=185998 keep=Inf avail=-Inf chunkB=39560 pulseB=23736 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=324140 dq=88.2 cnt=4 | c=481.1 rankC=481.1 need=583308 tD=5.57 人 crowdedHard | safe=185998 keep=Inf avail=-Inf chunkB=39560 pulseB=23736 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1650 alex_k B=201440 L=6252 d=32.2 nb=4 neut=0 cmds=64 noFull=1 shQ=50360 | m=1.478 worth=47.6 cheap=5.4 over=0 dMedOther=16.1 safe(-1)=189459
+    → Zbyszko 3 cytryny#54[T5] terr=6837 bal=213431 dq=31.2 cnt=71 | c=57.0 rankC=39.9 need=390678 tD=1.93 人 | safe=189459 keep=Inf avail=-Inf chunkB=40288 pulseB=24173 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=9007 bal=346615 dq=38.5 cnt=83 | c=182.2 rankC=264.2 need=631346 tD=2.39 人 crowdedHard | safe=189459 keep=Inf avail=-Inf chunkB=40288 pulseB=24173 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=330104 dq=89.8 cnt=4 | c=489.8 rankC=489.8 need=593940 tD=5.57 人 crowdedHard | safe=189459 keep=Inf avail=-Inf chunkB=40288 pulseB=24173 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1655 alex_k B=201440 L=6288 d=32.0 nb=4 neut=0 cmds=64 noFull=1 shQ=50360 | m=1.477 worth=47.3 cheap=5.5 over=0 dMedOther=16.1 safe(-1)=189429
+    → Zbyszko 3 cytryny#54[T5] terr=6905 bal=213431 dq=30.9 cnt=71 | c=56.4 rankC=39.5 need=390780 tD=1.92 人 | safe=189429 keep=Inf avail=-Inf chunkB=40288 pulseB=24173 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=9104 bal=346615 dq=38.1 cnt=83 | c=180.3 rankC=261.4 need=631450 tD=2.36 人 crowdedHard | safe=189429 keep=Inf avail=-Inf chunkB=40288 pulseB=24173 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=330104 dq=89.8 cnt=4 | c=489.8 rankC=489.8 need=593940 tD=5.57 人 crowdedHard | safe=189429 keep=Inf avail=-Inf chunkB=40288 pulseB=24173 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1660 alex_k B=205086 L=6362 d=32.2 nb=4 neut=0 cmds=64 noFull=1 shQ=51271 | m=1.476 worth=47.6 cheap=5.5 over=0 dMedOther=16.4 safe(-1)=192890
+    → Zbyszko 3 cytryny#54[T5] terr=7047 bal=217294 dq=30.8 cnt=72 | c=56.3 rankC=39.4 need=397901 tD=1.88 人 | safe=192890 keep=Inf avail=-Inf chunkB=41017 pulseB=24610 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=9205 bal=352888 dq=38.3 cnt=83 | c=181.5 rankC=263.2 need=642796 tD=2.34 人 crowdedHard | safe=192890 keep=Inf avail=-Inf chunkB=41017 pulseB=24610 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=336078 dq=91.5 cnt=4 | c=498.6 rankC=498.6 need=604588 tD=5.59 人 crowdedHard | safe=192890 keep=Inf avail=-Inf chunkB=41017 pulseB=24610 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1665 alex_k B=205086 L=6439 d=31.9 nb=4 neut=0 cmds=64 noFull=1 shQ=51271 | m=1.475 worth=47.0 cheap=5.6 over=0 dMedOther=16.3 safe(-1)=192826
+    → Zbyszko 3 cytryny#54[T5] terr=7197 bal=217294 dq=30.2 cnt=73 | c=55.2 rankC=38.6 need=398103 tD=1.85 人 | safe=192826 keep=Inf avail=-Inf chunkB=41017 pulseB=24610 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=9257 bal=352888 dq=38.1 cnt=83 | c=180.5 rankC=261.8 need=642874 tD=2.34 人 crowdedHard | safe=192826 keep=Inf avail=-Inf chunkB=41017 pulseB=24610 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=336078 dq=91.5 cnt=4 | c=498.6 rankC=498.6 need=604588 tD=5.60 人 crowdedHard | safe=192826 keep=Inf avail=-Inf chunkB=41017 pulseB=24610 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1670 alex_k B=208736 L=6478 d=32.2 nb=4 neut=0 cmds=64 noFull=1 shQ=52184 | m=1.474 worth=47.5 cheap=5.6 over=0 dMedOther=16.5 safe(-1)=196321
+    → Zbyszko 3 cytryny#54[T5] terr=7275 bal=221161 dq=30.4 cnt=74 | c=55.5 rankC=38.9 need=405135 tD=1.84 人 | safe=196321 keep=Inf avail=-Inf chunkB=41747 pulseB=25048 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=9364 bal=359169 dq=38.4 cnt=83 | c=181.6 rankC=263.4 need=654215 tD=2.32 人 crowdedHard | safe=196321 keep=Inf avail=-Inf chunkB=41747 pulseB=25048 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=342060 dq=93.1 cnt=4 | c=507.4 rankC=507.4 need=615252 tD=5.63 人 crowdedHard | safe=196321 keep=Inf avail=-Inf chunkB=41747 pulseB=25048 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1675 alex_k B=204945 L=6481 d=31.6 nb=4 neut=0 cmds=64 noFull=1 shQ=51236 | m=1.474 worth=46.6 cheap=5.7 over=0 dMedOther=15.3 safe(-1)=196319
+    → Zbyszko 3 cytryny#54[T5] terr=7511 bal=195029 dq=26.0 cnt=74 | c=42.0 rankC=29.4 need=374718 tD=1.70 人 pulse onMe agg | safe=196319 keep=196319 avail=6225 chunkB=40989 pulseB=24593 低于最小指令(x=6225<9604)→continue hNb=3
+    → KUKU#18[T6] terr=9474 bal=359169 dq=37.9 cnt=82 | c=179.6 rankC=260.4 need=654408 tD=2.48 人 crowdedHard | safe=196319 keep=Inf avail=-Inf chunkB=40989 pulseB=24593 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=342060 dq=93.1 cnt=4 | c=507.4 rankC=507.4 need=615252 tD=6.10 人 crowdedHard | safe=196319 keep=Inf avail=-Inf chunkB=40989 pulseB=24593 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1680 alex_k B=201014 L=6412 d=31.3 nb=4 neut=0 cmds=64 noFull=1 shQ=50253 | m=1.473 worth=46.2 cheap=5.7 over=0 dMedOther=15.3 safe(-1)=199908
+    → Zbyszko 3 cytryny#54[T5] terr=7826 bal=198442 dq=25.4 cnt=73 | c=41.0 rankC=28.7 need=366066 tD=1.65 人 pulse onMe agg | safe=199908 keep=199908 avail=-1249 chunkB=40203 pulseB=24122 无可用(avail<=0) hNb=3
+    → KUKU#18[T6] terr=9531 bal=365454 dq=38.3 cnt=80 | c=181.6 rankC=263.3 need=665710 tD=2.50 人 crowdedHard | safe=199908 keep=Inf avail=-Inf chunkB=40203 pulseB=24122 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=348046 dq=94.7 cnt=4 | c=516.1 rankC=516.1 need=625922 tD=6.18 人 crowdedHard | safe=199908 keep=Inf avail=-Inf chunkB=40203 pulseB=24122 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1685 alex_k B=200795 L=6451 d=31.1 nb=3 neut=40 cmds=64 noFull=1 shQ=50198 | m=1.472 worth=45.8 cheap=5.8 over=0 dMedOther=15.1 safe(-1)=199875
+    → Zbyszko 3 cytryny#54[T5] terr=7912 bal=198471 dq=25.1 cnt=73 | c=40.6 rankC=28.4 need=365615 tD=1.66 人 agg | safe=199875 keep=199875 avail=-1433 chunkB=40159 pulseB=24095 无可用(avail<=0) hNb=3
+    → KUKU#18[T6] terr=9651 bal=365454 dq=37.9 cnt=80 | c=179.4 rankC=260.1 need=665889 tD=2.51 人 crowdedHard | safe=199875 keep=Inf avail=-Inf chunkB=40159 pulseB=24095 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=348046 dq=94.7 cnt=4 | c=516.1 rankC=516.1 need=625922 tD=6.28 人 crowdedHard | safe=199875 keep=Inf avail=-Inf chunkB=40159 pulseB=24095 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1690 alex_k B=204248 L=6530 d=31.3 nb=3 neut=20 cmds=64 noFull=1 shQ=51062 | m=1.472 worth=46.0 cheap=5.8 over=0 dMedOther=15.3 safe(-1)=203339
+    → Zbyszko 3 cytryny#54[T5] terr=8087 bal=201884 dq=25.0 cnt=74 | c=78.1 rankC=113.2 need=371989 tD=1.63 人 agg | safe=203339 keep=Inf avail=-Inf chunkB=40850 pulseB=24510 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=9776 bal=371739 dq=38.0 cnt=80 | c=180.1 rankC=261.2 need=677238 tD=2.48 人 crowdedHard | safe=203339 keep=Inf avail=-Inf chunkB=40850 pulseB=24510 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=354032 dq=96.4 cnt=4 | c=524.9 rankC=524.9 need=636592 tD=6.28 人 crowdedHard | safe=203339 keep=Inf avail=-Inf chunkB=40850 pulseB=24510 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1695 alex_k B=204248 L=6568 d=31.1 nb=3 neut=17 cmds=64 noFull=1 shQ=51062 | m=1.471 worth=45.7 cheap=5.9 over=0 dMedOther=15.3 safe(-1)=203307
+    → Zbyszko 3 cytryny#54[T5] terr=8261 bal=201884 dq=24.4 cnt=75 | c=76.5 rankC=110.9 need=372231 tD=1.59 人 agg | safe=203307 keep=Inf avail=-Inf chunkB=40850 pulseB=24510 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=9840 bal=371739 dq=37.8 cnt=80 | c=179.0 rankC=259.5 need=677334 tD=2.46 人 crowdedHard | safe=203307 keep=Inf avail=-Inf chunkB=40850 pulseB=24510 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=354032 dq=96.4 cnt=4 | c=524.9 rankC=524.9 need=636592 tD=6.28 人 crowdedHard | safe=203307 keep=Inf avail=-Inf chunkB=40850 pulseB=24510 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1700 alex_k B=214284 L=6585 d=32.5 nb=3 neut=12 cmds=64 noFull=1 shQ=51967 | m=1.470 worth=47.8 cheap=5.9 over=0 dMedOther=16.6 safe(-1)=212425
+    → Zbyszko 3 cytryny#54[T5] terr=8350 bal=213645 dq=25.6 cnt=76 | c=79.9 rankC=115.9 need=393337 tD=1.54 人 agg | safe=212425 keep=Inf avail=-Inf chunkB=42857 pulseB=25714 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=9973 bal=387994 dq=38.9 cnt=80 | c=184.2 rankC=267.1 need=706519 tD=2.34 人 crowdedHard | safe=212425 keep=Inf avail=-Inf chunkB=42857 pulseB=25714 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=363689 dq=99.0 cnt=4 | c=539.1 rankC=539.1 need=653807 tD=5.97 人 crowdedHard | safe=212425 keep=Inf avail=-Inf chunkB=42857 pulseB=25714 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1705 alex_k B=214284 L=6609 d=32.4 nb=3 neut=12 cmds=64 noFull=1 shQ=53571 | m=1.469 worth=47.6 cheap=6.0 over=0 dMedOther=16.6 safe(-1)=212405
+    → Zbyszko 3 cytryny#54[T5] terr=8540 bal=188401 dq=22.1 cnt=77 | c=35.9 rankC=25.1 need=348609 tD=1.33 人 agg | safe=212405 keep=212405 avail=-632 chunkB=42857 pulseB=25714 无可用(avail<=0) hNb=3
+    → DV2 [Normal]#11[T7] terr=3674 bal=301537 dq=82.1 cnt=4 | c=336.1 rankC=235.3 need=543017 tD=4.95 人 crowdedHard | safe=212405 keep=Inf avail=-Inf chunkB=42857 pulseB=25714 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=10103 bal=387994 dq=38.4 cnt=80 | c=181.9 rankC=263.8 need=706742 tD=2.31 人 crowdedHard | safe=212405 keep=Inf avail=-Inf chunkB=42857 pulseB=25714 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1710 alex_k B=217819 L=6633 d=32.8 nb=3 neut=13 cmds=64 noFull=1 shQ=54454 | m=1.468 worth=48.2 cheap=6.0 over=0 dMedOther=16.9 safe(-1)=215981
+    → Zbyszko 3 cytryny#54[T5] terr=8751 bal=191509 dq=21.9 cnt=78 | c=35.6 rankC=24.9 need=354489 tD=1.30 人 agg | safe=215981 keep=215981 avail=-714 chunkB=43564 pulseB=26138 无可用(avail<=0) hNb=3
+    → DV2 [Normal]#11[T7] terr=3768 bal=306512 dq=81.3 cnt=4 | c=340.2 rankC=238.1 need=551967 tD=4.82 人 crowdedHard | safe=215981 keep=Inf avail=-Inf chunkB=43564 pulseB=26138 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=10232 bal=394395 dq=38.5 cnt=80 | c=182.6 rankC=264.7 need=718303 tD=2.29 人 crowdedHard | safe=215981 keep=Inf avail=-Inf chunkB=43564 pulseB=26138 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1715 alex_k B=217819 L=6646 d=32.8 nb=3 neut=13 cmds=64 noFull=1 shQ=54454 | m=1.468 worth=48.1 cheap=6.1 over=0 dMedOther=16.9 safe(-1)=215970
+    → Zbyszko 3 cytryny#54[T5] terr=8862 bal=191509 dq=21.6 cnt=78 | c=35.2 rankC=24.6 need=354647 tD=1.28 人 agg | safe=215970 keep=215970 avail=-703 chunkB=43564 pulseB=26138 无可用(avail<=0) hNb=3
+    → DV2 [Normal]#11[T7] terr=3949 bal=306512 dq=77.6 cnt=4 | c=337.6 rankC=236.3 need=552266 tD=4.60 人 crowdedHard | safe=215970 keep=Inf avail=-Inf chunkB=43564 pulseB=26138 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=10416 bal=394395 dq=37.9 cnt=80 | c=179.4 rankC=260.2 need=718579 tD=2.25 人 crowdedHard | safe=215970 keep=Inf avail=-Inf chunkB=43564 pulseB=26138 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1720 alex_k B=221347 L=6673 d=33.2 nb=3 neut=13 cmds=64 noFull=1 shQ=55336 | m=1.467 worth=48.7 cheap=6.2 over=0 dMedOther=17.1 safe(-1)=219536
+    → Zbyszko 3 cytryny#54[T5] terr=9088 bal=194611 dq=21.4 cnt=79 | c=34.9 rankC=24.4 need=360499 tD=1.25 人 agg | safe=219536 keep=219536 avail=-782 chunkB=44269 pulseB=26562 无可用(avail<=0) hNb=3
+    → DV2 [Normal]#11[T7] terr=4039 bal=311477 dq=77.1 cnt=4 | c=339.0 rankC=237.3 need=561305 tD=4.50 人 crowdedHard | safe=219536 keep=Inf avail=-Inf chunkB=44269 pulseB=26562 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=10538 bal=400784 dq=38.0 cnt=80 | c=180.2 rankC=261.3 need=730177 tD=2.22 人 crowdedHard | safe=219536 keep=Inf avail=-Inf chunkB=44269 pulseB=26562 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1725 alex_k B=238906 L=6686 d=35.7 nb=3 neut=0 cmds=64 noFull=1 shQ=56297 | m=1.466 worth=52.4 cheap=6.2 over=0 dMedOther=17.0 safe(-1)=219525
+    → Zbyszko 3 cytryny#54[T5] terr=9327 bal=194611 dq=20.9 cnt=81 | c=34.0 rankC=23.8 need=360881 tD=1.23 人 agg | safe=219525 keep=219525 avail=16582 chunkB=47781 pulseB=28669 不够一条(x=16582)→continue hNb=3
+    → KUKU#18[T6] terr=10722 bal=400784 dq=37.4 cnt=80 | c=131.3 rankC=190.4 need=730452 tD=2.20 人 | safe=219525 keep=Inf avail=-Inf chunkB=47781 pulseB=28669 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4196 bal=311477 dq=74.2 cnt=4 | c=326.6 rankC=228.6 need=561459 tD=4.37 人 crowdedHard | safe=219525 keep=Inf avail=-Inf chunkB=47781 pulseB=28669 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1730 alex_k B=242704 L=6686 d=36.3 nb=3 neut=0 cmds=64 noFull=1 shQ=60676 | m=1.466 worth=53.2 cheap=6.3 over=0 dMedOther=17.0 safe(-1)=223105
+    → Zbyszko 3 cytryny#54[T5] terr=9452 bal=197705 dq=20.9 cnt=82 | c=34.1 rankC=23.9 need=366560 tD=1.23 人 agg | safe=223105 keep=223105 avail=16755 chunkB=48541 pulseB=29124 不够一条(x=16755)→continue hNb=3
+    → KUKU#18[T6] terr=10847 bal=407156 dq=37.5 cnt=80 | c=131.8 rankC=191.2 need=742011 tD=2.21 人 | safe=223105 keep=Inf avail=-Inf chunkB=48541 pulseB=29124 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4331 bal=316429 dq=73.1 cnt=4 | c=428.6 rankC=428.6 need=570565 tD=4.29 人 crowdedHard | safe=223105 keep=Inf avail=-Inf chunkB=48541 pulseB=29124 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1735 alex_k B=242704 L=6686 d=36.3 nb=3 neut=0 cmds=64 noFull=1 shQ=60676 | m=1.465 worth=53.2 cheap=6.3 over=0 dMedOther=16.7 safe(-1)=223105
+    → Zbyszko 3 cytryny#54[T5] terr=9713 bal=197705 dq=20.4 cnt=83 | c=33.2 rankC=23.3 need=366959 tD=1.22 人 agg | safe=223105 keep=223105 avail=16755 chunkB=48541 pulseB=29124 不够一条(x=16755)→continue hNb=3
+    → KUKU#18[T6] terr=11037 bal=407156 dq=36.9 cnt=80 | c=129.6 rankC=188.0 need=742268 tD=2.21 人 | safe=223105 keep=Inf avail=-Inf chunkB=48541 pulseB=29124 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4394 bal=316429 dq=72.0 cnt=4 | c=422.6 rankC=422.6 need=570633 tD=4.32 人 crowdedHard | safe=223105 keep=Inf avail=-Inf chunkB=48541 pulseB=29124 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1740 alex_k B=246490 L=6686 d=36.9 nb=3 neut=0 cmds=64 noFull=1 shQ=61622 | m=1.464 worth=54.0 cheap=6.4 over=0 dMedOther=16.9 safe(-1)=226673
+    → Zbyszko 3 cytryny#54[T5] terr=9990 bal=200789 dq=20.1 cnt=84 | c=63.5 rankC=92.0 need=372879 tD=1.19 人 agg | safe=226673 keep=Inf avail=-Inf chunkB=49298 pulseB=29579 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=11162 bal=413507 dq=37.0 cnt=80 | c=130.2 rankC=188.7 need=753789 tD=2.20 人 | safe=226673 keep=Inf avail=-Inf chunkB=49298 pulseB=29579 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4514 bal=321365 dq=71.2 cnt=4 | c=417.8 rankC=417.8 need=579610 tD=4.22 人 crowdedHard | safe=226673 keep=Inf avail=-Inf chunkB=49298 pulseB=29579 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1745 alex_k B=246490 L=6686 d=36.9 nb=3 neut=0 cmds=64 noFull=1 shQ=61622 | m=1.463 worth=53.9 cheap=6.5 over=0 dMedOther=16.9 safe(-1)=226673
+    → Zbyszko 3 cytryny#54[T5] terr=10134 bal=200789 dq=19.8 cnt=84 | c=62.6 rankC=90.8 need=373095 tD=1.17 人 agg | safe=226673 keep=Inf avail=-Inf chunkB=49298 pulseB=29579 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=11351 bal=413507 dq=36.4 cnt=80 | c=128.0 rankC=185.7 need=754085 tD=2.16 人 | safe=226673 keep=Inf avail=-Inf chunkB=49298 pulseB=29579 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=321418 dq=70.2 cnt=4 | c=412.3 rankC=412.3 need=579747 tD=4.16 人 crowdedHard | safe=226673 keep=Inf avail=-Inf chunkB=49298 pulseB=29579 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1750 alex_k B=250261 L=6686 d=37.4 nb=3 neut=0 cmds=64 noFull=1 shQ=62565 | m=1.462 worth=54.7 cheap=6.5 over=0 dMedOther=17.1 safe(-1)=230227
+    → Zbyszko 3 cytryny#54[T5] terr=10593 bal=203861 dq=19.2 cnt=86 | c=60.9 rankC=88.3 need=379251 tD=1.12 人 agg | safe=230227 keep=Inf avail=-Inf chunkB=50052 pulseB=30031 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=11479 bal=419833 dq=36.6 cnt=80 | c=128.5 rankC=186.4 need=765553 tD=2.13 人 | safe=230227 keep=Inf avail=-Inf chunkB=50052 pulseB=30031 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=326335 dq=71.3 cnt=4 | c=418.6 rankC=418.6 need=588511 tD=4.16 人 crowdedHard | safe=230227 keep=Inf avail=-Inf chunkB=50052 pulseB=30031 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1755 alex_k B=250261 L=6686 d=37.4 nb=3 neut=0 cmds=64 noFull=1 shQ=62565 | m=1.462 worth=54.7 cheap=6.6 over=0 dMedOther=17.1 safe(-1)=230227
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=203897 dq=19.0 cnt=87 | c=60.2 rankC=87.2 need=379513 tD=1.11 人 agg | safe=230227 keep=Inf avail=-Inf chunkB=50052 pulseB=30031 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=11668 bal=419833 dq=36.0 cnt=80 | c=126.5 rankC=183.4 need=765797 tD=2.10 人 | safe=230227 keep=Inf avail=-Inf chunkB=50052 pulseB=30031 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=326335 dq=71.3 cnt=4 | c=418.6 rankC=418.6 need=588511 tD=4.16 人 crowdedHard | safe=230227 keep=Inf avail=-Inf chunkB=50052 pulseB=30031 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1760 alex_k B=254014 L=6686 d=38.0 nb=3 neut=0 cmds=64 noFull=1 shQ=63503 | m=1.461 worth=55.5 cheap=6.7 over=0 dMedOther=17.4 safe(-1)=233765
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=206955 dq=19.3 cnt=87 | c=61.0 rankC=88.5 need=384964 tD=1.11 人 agg | safe=233765 keep=Inf avail=-Inf chunkB=50803 pulseB=30482 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=11788 bal=426130 dq=36.1 cnt=80 | c=127.1 rankC=184.3 need=777200 tD=2.08 人 | safe=233765 keep=Inf avail=-Inf chunkB=50803 pulseB=30482 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=331230 dq=72.4 cnt=4 | c=424.8 rankC=424.8 need=597236 tD=4.16 人 crowdedHard | safe=233765 keep=Inf avail=-Inf chunkB=50803 pulseB=30482 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1765 alex_k B=254014 L=6686 d=38.0 nb=3 neut=0 cmds=64 noFull=1 shQ=63503 | m=1.460 worth=55.5 cheap=6.7 over=0 dMedOther=17.4 safe(-1)=233765
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=206955 dq=19.3 cnt=87 | c=42.1 rankC=42.1 need=384964 tD=1.11 人 agg | safe=233765 keep=233765 avail=17273 chunkB=50803 pulseB=30482 不够一条(x=17273)→continue hNb=3
+    → KUKU#18[T6] terr=11960 bal=426130 dq=35.6 cnt=80 | c=125.3 rankC=181.7 need=777458 tD=2.05 人 | safe=233765 keep=Inf avail=-Inf chunkB=50803 pulseB=30482 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=331230 dq=72.4 cnt=4 | c=424.8 rankC=424.8 need=597236 tD=4.16 人 crowdedHard | safe=233765 keep=Inf avail=-Inf chunkB=50803 pulseB=30482 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1770 alex_k B=257748 L=6686 d=38.6 nb=3 neut=0 cmds=64 noFull=1 shQ=64437 | m=1.460 worth=56.3 cheap=6.8 over=0 dMedOther=17.6 safe(-1)=237284
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=209997 dq=19.6 cnt=87 | c=42.7 rankC=42.7 need=390386 tD=1.11 人 agg | safe=237284 keep=237284 avail=17444 chunkB=51550 pulseB=30930 不够一条(x=17444)→continue hNb=3
+    → KUKU#18[T6] terr=12078 bal=432394 dq=35.8 cnt=80 | c=125.9 rankC=182.5 need=788826 tD=2.03 人 | safe=237284 keep=Inf avail=-Inf chunkB=51550 pulseB=30930 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=336099 dq=73.4 cnt=4 | c=430.9 rankC=430.9 need=605914 tD=4.17 人 crowdedHard | safe=237284 keep=Inf avail=-Inf chunkB=51550 pulseB=30930 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1775 alex_k B=257748 L=6686 d=38.6 nb=3 neut=0 cmds=64 noFull=1 shQ=64437 | m=1.459 worth=56.2 cheap=6.9 over=0 dMedOther=17.6 safe(-1)=237284
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=209997 dq=19.6 cnt=87 | c=61.9 rankC=89.7 need=390386 tD=1.11 人 agg | safe=237284 keep=Inf avail=-Inf chunkB=51550 pulseB=30930 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=12260 bal=432394 dq=35.3 cnt=80 | c=124.1 rankC=179.9 need=789073 tD=2.01 人 | safe=237284 keep=Inf avail=-Inf chunkB=51550 pulseB=30930 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=336099 dq=73.4 cnt=4 | c=430.9 rankC=430.9 need=605914 tD=4.18 人 crowdedHard | safe=237284 keep=Inf avail=-Inf chunkB=51550 pulseB=30930 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1780 alex_k B=261459 L=6686 d=39.1 nb=3 neut=0 cmds=64 noFull=1 shQ=65364 | m=1.458 worth=57.0 cheap=7.0 over=0 dMedOther=17.8 safe(-1)=240781
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=213020 dq=19.9 cnt=87 | c=62.8 rankC=91.0 need=395774 tD=1.12 人 agg | safe=240781 keep=Inf avail=-Inf chunkB=52292 pulseB=31375 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=12387 bal=438620 dq=35.4 cnt=80 | c=124.6 rankC=180.6 need=800399 tD=1.99 人 | safe=240781 keep=Inf avail=-Inf chunkB=52292 pulseB=31375 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=340938 dq=74.5 cnt=4 | c=437.1 rankC=437.1 need=614539 tD=4.18 人 crowdedHard | safe=240781 keep=Inf avail=-Inf chunkB=52292 pulseB=31375 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1785 alex_k B=261459 L=6686 d=39.1 nb=3 neut=0 cmds=64 noFull=1 shQ=65364 | m=1.457 worth=57.0 cheap=7.0 over=0 dMedOther=17.8 safe(-1)=240781
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=213020 dq=19.9 cnt=87 | c=62.8 rankC=91.0 need=395774 tD=1.12 人 agg | safe=240781 keep=Inf avail=-Inf chunkB=52292 pulseB=31375 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=12592 bal=438620 dq=34.8 cnt=80 | c=122.6 rankC=177.8 need=800668 tD=1.96 人 | safe=240781 keep=Inf avail=-Inf chunkB=52292 pulseB=31375 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=340938 dq=74.5 cnt=4 | c=437.1 rankC=437.1 need=614539 tD=4.19 人 crowdedHard | safe=240781 keep=Inf avail=-Inf chunkB=52292 pulseB=31375 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1790 alex_k B=265119 L=6686 d=39.7 nb=3 neut=0 cmds=64 noFull=1 shQ=66279 | m=1.457 worth=57.8 cheap=7.1 over=0 dMedOther=16.7 safe(-1)=244231
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=216002 dq=20.1 cnt=87 | c=63.6 rankC=92.2 need=401089 tD=1.20 人 agg | safe=244231 keep=Inf avail=-Inf chunkB=53024 pulseB=31814 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=12733 bal=444760 dq=34.9 cnt=80 | c=122.9 rankC=178.3 need=811836 tD=2.09 人 | safe=244231 keep=Inf avail=-Inf chunkB=53024 pulseB=31814 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=345711 dq=75.5 cnt=4 | c=443.1 rankC=443.1 need=623046 tD=4.51 人 crowdedHard | safe=244231 keep=Inf avail=-Inf chunkB=53024 pulseB=31814 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1795 alex_k B=265119 L=6686 d=39.7 nb=3 neut=0 cmds=64 noFull=1 shQ=66279 | m=1.456 worth=57.7 cheap=7.2 over=0 dMedOther=16.5 safe(-1)=244231
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=216002 dq=20.1 cnt=87 | c=63.6 rankC=92.2 need=401089 tD=1.22 人 agg | safe=244231 keep=Inf avail=-Inf chunkB=53024 pulseB=31814 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=12949 bal=444760 dq=34.3 cnt=80 | c=120.9 rankC=175.4 need=812159 tD=2.08 人 | safe=244231 keep=Inf avail=-Inf chunkB=53024 pulseB=31814 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=345711 dq=75.5 cnt=4 | c=443.1 rankC=443.1 need=623046 tD=4.57 人 crowdedHard | safe=244231 keep=Inf avail=-Inf chunkB=53024 pulseB=31814 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1800 alex_k B=275437 L=6686 d=41.2 nb=3 neut=0 cmds=64 noFull=1 shQ=67229 | m=1.455 worth=59.9 cheap=7.3 over=0 dMedOther=17.5 safe(-1)=255010
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=229686 dq=21.4 cnt=87 | c=67.4 rankC=97.8 need=425479 tD=1.22 人 agg | safe=255010 keep=Inf avail=-Inf chunkB=55087 pulseB=33052 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=13094 bal=463947 dq=35.4 cnt=80 | c=124.7 rankC=180.8 need=846588 tD=2.02 人 | safe=255010 keep=Inf avail=-Inf chunkB=55087 pulseB=33052 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=355023 dq=77.6 cnt=4 | c=455.0 rankC=455.0 need=639644 tD=4.43 人 crowdedHard | safe=255010 keep=Inf avail=-Inf chunkB=55087 pulseB=33052 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1805 alex_k B=275437 L=6686 d=41.2 nb=3 neut=0 cmds=64 noFull=1 shQ=68859 | m=1.454 worth=59.9 cheap=7.4 over=0 dMedOther=17.4 safe(-1)=255010
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=229686 dq=21.4 cnt=87 | c=67.4 rankC=97.8 need=425479 tD=1.23 人 agg | safe=255010 keep=Inf avail=-Inf chunkB=55087 pulseB=33052 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=13308 bal=463947 dq=34.9 cnt=80 | c=122.7 rankC=177.9 need=846884 tD=2.01 人 | safe=255010 keep=Inf avail=-Inf chunkB=55087 pulseB=33052 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=355023 dq=77.6 cnt=4 | c=455.0 rankC=455.0 need=639644 tD=4.47 人 crowdedHard | safe=255010 keep=Inf avail=-Inf chunkB=55087 pulseB=33052 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1810 alex_k B=279127 L=6686 d=41.7 nb=3 neut=0 cmds=64 noFull=1 shQ=69781 | m=1.454 worth=60.7 cheap=7.4 over=0 dMedOther=17.2 safe(-1)=258502
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=232763 dq=21.7 cnt=87 | c=68.3 rankC=99.1 need=430964 tD=1.26 人 agg | safe=258502 keep=Inf avail=-Inf chunkB=55825 pulseB=33495 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=13446 bal=470163 dq=35.0 cnt=80 | c=123.1 rankC=178.5 need=858195 tD=2.03 人 | safe=258502 keep=Inf avail=-Inf chunkB=55825 pulseB=33495 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=359780 dq=78.6 cnt=4 | c=461.0 rankC=461.0 need=648122 tD=4.56 人 crowdedHard | safe=258502 keep=Inf avail=-Inf chunkB=55825 pulseB=33495 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1815 alex_k B=279127 L=6686 d=41.7 nb=3 neut=0 cmds=64 noFull=1 shQ=69781 | m=1.453 worth=60.6 cheap=7.5 over=0 dMedOther=17.0 safe(-1)=258502
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=232763 dq=21.7 cnt=87 | c=68.3 rankC=99.1 need=430964 tD=1.28 人 agg | safe=258502 keep=Inf avail=-Inf chunkB=55825 pulseB=33495 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=13656 bal=470163 dq=34.4 cnt=80 | c=121.2 rankC=175.8 need=858485 tD=2.02 人 | safe=258502 keep=Inf avail=-Inf chunkB=55825 pulseB=33495 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=359780 dq=78.6 cnt=4 | c=461.0 rankC=461.0 need=648122 tD=4.62 人 crowdedHard | safe=258502 keep=Inf avail=-Inf chunkB=55825 pulseB=33495 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1820 alex_k B=282783 L=6686 d=42.3 nb=3 neut=0 cmds=64 noFull=1 shQ=70695 | m=1.452 worth=61.4 cheap=7.6 over=0 dMedOther=17.1 safe(-1)=261962
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=235812 dq=22.0 cnt=87 | c=69.2 rankC=100.3 need=436398 tD=1.28 人 agg | safe=261962 keep=Inf avail=-Inf chunkB=56557 pulseB=33934 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=13798 bal=476322 dq=34.5 cnt=80 | c=121.5 rankC=176.2 need=869700 tD=2.02 人 | safe=261962 keep=Inf avail=-Inf chunkB=56557 pulseB=33934 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=364493 dq=79.7 cnt=4 | c=467.0 rankC=467.0 need=656523 tD=4.65 人 crowdedHard | safe=261962 keep=Inf avail=-Inf chunkB=56557 pulseB=33934 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1825 alex_k B=282783 L=6686 d=42.3 nb=3 neut=0 cmds=64 noFull=1 shQ=70695 | m=1.451 worth=61.4 cheap=7.7 over=0 dMedOther=17.0 safe(-1)=261962
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=235812 dq=22.0 cnt=87 | c=78.6 rankC=114.0 need=436398 tD=1.29 人 | safe=261962 keep=Inf avail=-Inf chunkB=56557 pulseB=33934 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=14003 bal=476322 dq=34.0 cnt=80 | c=119.8 rankC=173.7 need=870020 tD=2.00 人 | safe=261962 keep=Inf avail=-Inf chunkB=56557 pulseB=33934 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=364493 dq=79.7 cnt=4 | c=467.0 rankC=467.0 need=656523 tD=4.69 人 crowdedHard | safe=261962 keep=Inf avail=-Inf chunkB=56557 pulseB=33934 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1830 alex_k B=286402 L=6686 d=42.8 nb=3 neut=0 cmds=64 noFull=1 shQ=71600 | m=1.451 worth=62.1 cheap=7.8 over=0 dMedOther=16.9 safe(-1)=265387
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=238830 dq=22.3 cnt=87 | c=79.6 rankC=115.4 need=441777 tD=1.31 人 | safe=265387 keep=Inf avail=-Inf chunkB=57280 pulseB=34368 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=14132 bal=482418 dq=34.1 cnt=80 | c=120.2 rankC=174.3 need=881042 tD=2.01 人 | safe=265387 keep=Inf avail=-Inf chunkB=57280 pulseB=34368 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=369158 dq=80.7 cnt=4 | c=472.9 rankC=472.9 need=664837 tD=4.76 人 crowdedHard | safe=265387 keep=Inf avail=-Inf chunkB=57280 pulseB=34368 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1835 alex_k B=286402 L=6686 d=42.8 nb=3 neut=0 cmds=64 noFull=1 shQ=71600 | m=1.450 worth=62.1 cheap=7.9 over=0 dMedOther=16.8 safe(-1)=251096
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=238830 dq=22.3 cnt=87 | c=79.6 rankC=115.4 need=441777 tD=1.32 人 | safe=251096 keep=Inf avail=-Inf chunkB=57280 pulseB=34368 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=14332 bal=456979 dq=31.9 cnt=80 | c=112.5 rankC=163.2 need=836000 tD=1.90 人 | safe=251096 keep=Inf avail=-Inf chunkB=57280 pulseB=34368 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=369158 dq=80.7 cnt=4 | c=472.9 rankC=472.9 need=664837 tD=4.80 人 crowdedHard | safe=251096 keep=Inf avail=-Inf chunkB=57280 pulseB=34368 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1840 alex_k B=289982 L=6686 d=43.4 nb=3 neut=0 cmds=64 noFull=1 shQ=72495 | m=1.449 worth=62.8 cheap=8.0 over=0 dMedOther=16.8 safe(-1)=254304
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=241815 dq=22.5 cnt=87 | c=80.5 rankC=116.8 need=447098 tD=1.34 人 | safe=254304 keep=Inf avail=-Inf chunkB=57996 pulseB=34798 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=14482 bal=462691 dq=31.9 cnt=80 | c=112.7 rankC=163.5 need=846429 tD=1.90 人 | safe=254304 keep=Inf avail=-Inf chunkB=57996 pulseB=34798 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=373772 dq=81.7 cnt=4 | c=478.7 rankC=478.7 need=673061 tD=4.85 人 crowdedHard | safe=254304 keep=Inf avail=-Inf chunkB=57996 pulseB=34798 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1845 alex_k B=289982 L=6686 d=43.4 nb=3 neut=0 cmds=64 noFull=1 shQ=72495 | m=1.448 worth=62.8 cheap=8.1 over=0 dMedOther=16.8 safe(-1)=254304
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=241815 dq=22.5 cnt=87 | c=80.5 rankC=116.8 need=447098 tD=1.35 人 | safe=254304 keep=Inf avail=-Inf chunkB=57996 pulseB=34798 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=14711 bal=462691 dq=31.5 cnt=80 | c=111.0 rankC=161.0 need=846784 tD=1.88 人 | safe=254304 keep=Inf avail=-Inf chunkB=57996 pulseB=34798 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4576 bal=373772 dq=81.7 cnt=4 | c=478.7 rankC=478.7 need=673061 tD=4.88 人 crowdedHard | safe=254304 keep=Inf avail=-Inf chunkB=57996 pulseB=34798 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1850 alex_k B=293519 L=6686 d=43.9 nb=3 neut=0 cmds=64 noFull=1 shQ=73379 | m=1.448 worth=63.5 cheap=8.2 over=0 dMedOther=17.4 safe(-1)=257502
+    → DV2 [Normal]#11[T7] terr=4576 bal=313676 dq=68.5 cnt=4 | c=84.6 rankC=42.3 need=565948 tD=3.95 人 pulse bleeding | safe=257502 keep=Inf avail=-Inf chunkB=58704 pulseB=35222 价高(c>=worth)→break hNb=3
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=244765 dq=22.8 cnt=87 | c=81.5 rankC=118.2 need=452356 tD=1.31 人 | safe=257502 keep=Inf avail=-Inf chunkB=58704 pulseB=35222 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=14862 bal=468382 dq=31.5 cnt=80 | c=111.3 rankC=161.3 need=857142 tD=1.81 人 | safe=257502 keep=Inf avail=-Inf chunkB=58704 pulseB=35222 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1855 alex_k B=293519 L=6686 d=43.9 nb=3 neut=0 cmds=64 noFull=1 shQ=73379 | m=1.447 worth=63.5 cheap=8.3 over=0 dMedOther=17.3 safe(-1)=257502
+    → DV2 [Normal]#11[T7] terr=4576 bal=313676 dq=68.5 cnt=4 | c=84.6 rankC=42.3 need=565948 tD=3.95 人 pulse bleeding | safe=257502 keep=Inf avail=-Inf chunkB=58704 pulseB=35222 价高(c>=worth)→break hNb=3
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=244765 dq=22.8 cnt=87 | c=81.5 rankC=118.2 need=452356 tD=1.32 人 | safe=257502 keep=Inf avail=-Inf chunkB=58704 pulseB=35222 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=15097 bal=468382 dq=31.0 cnt=80 | c=109.6 rankC=158.9 need=857483 tD=1.79 人 | safe=257502 keep=Inf avail=-Inf chunkB=58704 pulseB=35222 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1860 alex_k B=297011 L=6686 d=44.4 nb=3 neut=0 cmds=64 noFull=1 shQ=74252 | m=1.446 worth=64.2 cheap=8.4 over=0 dMedOther=18.3 safe(-1)=260738
+    → DV2 [Normal]#11[T7] terr=4626 bal=309165 dq=66.8 cnt=3 | c=68.3 rankC=34.2 need=558031 tD=3.64 人 pulse bleeding | safe=260738 keep=Inf avail=-Inf chunkB=59402 pulseB=35641 价高(c>=worth)→break hNb=3
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=247702 dq=23.1 cnt=87 | c=82.4 rankC=119.5 need=457591 tD=1.26 人 | safe=260738 keep=Inf avail=-Inf chunkB=59402 pulseB=35641 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=15255 bal=474143 dq=31.1 cnt=80 | c=109.8 rankC=159.2 need=868011 tD=1.70 人 | safe=260738 keep=Inf avail=-Inf chunkB=59402 pulseB=35641 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1865 alex_k B=297011 L=6686 d=44.4 nb=2 neut=0 cmds=64 noFull=1 shQ=74252 | m=1.445 worth=64.2 cheap=8.5 over=0 dMedOther=18.2 safe(-1)=260738
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=247702 dq=23.1 cnt=87 | c=82.4 rankC=119.5 need=457591 tD=1.27 人 | safe=260738 keep=Inf avail=-Inf chunkB=59402 pulseB=35641 价高(c>=worth)→break hNb=2
+    → KUKU#18[T6] terr=15498 bal=474143 dq=30.6 cnt=80 | c=108.1 rankC=156.8 need=868364 tD=1.68 人 | safe=260738 keep=Inf avail=-Inf chunkB=59402 pulseB=35641 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1870 alex_k B=300426 L=6686 d=44.9 nb=2 neut=0 cmds=64 noFull=1 shQ=75106 | m=1.445 worth=64.9 cheap=8.6 over=0 dMedOther=18.3 safe(-1)=264041
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=250674 dq=23.4 cnt=87 | c=83.4 rankC=120.9 need=462888 tD=1.28 人 | safe=264041 keep=Inf avail=-Inf chunkB=60085 pulseB=36051 价高(c>=worth)→break hNb=2
+    → KUKU#18[T6] terr=15665 bal=480022 dq=30.6 cnt=80 | c=108.3 rankC=157.0 need=879082 tD=1.67 人 | safe=264041 keep=Inf avail=-Inf chunkB=60085 pulseB=36051 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1875 alex_k B=300426 L=6686 d=44.9 nb=2 neut=0 cmds=64 noFull=1 shQ=75106 | m=1.444 worth=64.9 cheap=8.6 over=0 dMedOther=18.2 safe(-1)=264041
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=250674 dq=23.4 cnt=87 | c=83.4 rankC=120.9 need=462888 tD=1.29 人 | safe=264041 keep=Inf avail=-Inf chunkB=60085 pulseB=36051 价高(c>=worth)→break hNb=2
+    → KUKU#18[T6] terr=15923 bal=480022 dq=30.1 cnt=80 | c=106.6 rankC=154.6 need=879491 tD=1.66 人 | safe=264041 keep=Inf avail=-Inf chunkB=60085 pulseB=36051 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1880 alex_k B=303880 L=6686 d=45.5 nb=2 neut=0 cmds=64 noFull=1 shQ=75970 | m=1.443 worth=65.6 cheap=8.6 over=0 dMedOther=18.3 safe(-1)=267385
+    → Zbyszko 3 cytryny#54[T5] terr=10725 bal=223706 dq=20.9 cnt=87 | c=38.7 rankC=27.1 need=414820 tD=1.14 人 | safe=267385 keep=267385 avail=32934 chunkB=60776 pulseB=36466 不够一条(x=32934)→continue hNb=2
+    → KUKU#18[T6] terr=16100 bal=485974 dq=30.2 cnt=80 | c=106.7 rankC=154.8 need=890332 tD=1.65 人 | safe=267385 keep=Inf avail=-Inf chunkB=60776 pulseB=36466 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1885 alex_k B=303880 L=6686 d=45.5 nb=2 neut=0 cmds=64 noFull=1 shQ=75970 | m=1.442 worth=65.6 cheap=8.6 over=0 dMedOther=17.6 safe(-1)=267385
+    → Zbyszko 3 cytryny#54[T5] terr=10877 bal=223706 dq=20.6 cnt=87 | c=38.2 rankC=26.7 need=415048 tD=1.17 人 | safe=267385 keep=267385 avail=32934 chunkB=60776 pulseB=36466 不够一条(x=32934)→continue hNb=2
+    → KUKU#18[T6] terr=16375 bal=485974 dq=29.7 cnt=80 | c=105.0 rankC=152.2 need=890777 tD=1.69 人 | safe=267385 keep=Inf avail=-Inf chunkB=60776 pulseB=36466 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1890 alex_k B=307374 L=6686 d=46.0 nb=2 neut=0 cmds=64 noFull=1 shQ=76843 | m=1.442 worth=66.3 cheap=8.6 over=0 dMedOther=17.8 safe(-1)=270770
+    → Zbyszko 3 cytryny#54[T5] terr=11347 bal=226390 dq=20.0 cnt=89 | c=37.1 rankC=26.0 need=420552 tD=1.12 人 | safe=270770 keep=270770 avail=33002 chunkB=61475 pulseB=36885 不够一条(x=33002)→continue hNb=2
+    → KUKU#18[T6] terr=16561 bal=492000 dq=29.7 cnt=80 | c=105.1 rankC=152.4 need=901775 tD=1.67 人 | safe=270770 keep=Inf avail=-Inf chunkB=61475 pulseB=36885 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1895 alex_k B=307374 L=6686 d=46.0 nb=2 neut=0 cmds=64 noFull=1 shQ=76843 | m=1.441 worth=66.2 cheap=8.6 over=0 dMedOther=17.8 safe(-1)=270770
+    → Zbyszko 3 cytryny#54[T5] terr=11659 bal=226390 dq=19.4 cnt=90 | c=36.1 rankC=25.3 need=421019 tD=1.09 人 | safe=270770 keep=270770 avail=33002 chunkB=61475 pulseB=36885 不够一条(x=33002)→continue hNb=2
+    → KUKU#18[T6] terr=16761 bal=492000 dq=29.4 cnt=80 | c=103.9 rankC=150.6 need=902075 tD=1.65 人 | safe=270770 keep=Inf avail=-Inf chunkB=61475 pulseB=36885 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1900 alex_k B=317594 L=6686 d=47.5 nb=2 neut=0 cmds=64 noFull=1 shQ=77764 | m=1.440 worth=68.4 cheap=8.6 over=0 dMedOther=19.0 safe(-1)=283663
+    → Zbyszko 3 cytryny#54[T5] terr=12139 bal=241107 dq=19.9 cnt=92 | c=71.4 rankC=103.5 need=447971 tD=1.04 人 | safe=283663 keep=Inf avail=-Inf chunkB=63519 pulseB=38111 价高(c>=worth)→break hNb=2
+    → KUKU#18[T6] terr=16849 bal=514949 dq=30.6 cnt=80 | c=108.0 rankC=156.7 need=943110 tD=1.61 人 | safe=283663 keep=Inf avail=-Inf chunkB=63519 pulseB=38111 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1905 alex_k B=317594 L=6686 d=47.5 nb=2 neut=0 cmds=64 noFull=1 shQ=79398 | m=1.439 worth=68.4 cheap=8.6 over=0 dMedOther=19.0 safe(-1)=283663
+    → Zbyszko 3 cytryny#54[T5] terr=12467 bal=241107 dq=19.3 cnt=93 | c=69.6 rankC=100.9 need=448462 tD=1.02 人 | safe=283663 keep=Inf avail=-Inf chunkB=63519 pulseB=38111 价高(c>=worth)→break hNb=2
+    → KUKU#18[T6] terr=16940 bal=514949 dq=30.4 cnt=80 | c=107.5 rankC=155.9 need=943236 tD=1.60 人 | safe=283663 keep=Inf avail=-Inf chunkB=63519 pulseB=38111 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1910 alex_k B=321246 L=6686 d=48.0 nb=2 neut=0 cmds=64 noFull=1 shQ=80311 | m=1.439 worth=69.1 cheap=8.6 over=0 dMedOther=18.8 safe(-1)=287279
+    → Zbyszko 3 cytryny#54[T5] terr=12959 bal=244024 dq=18.8 cnt=108 | c=67.7 rankC=98.2 need=454399 tD=1.00 人 | safe=287279 keep=315878 avail=1604 chunkB=64249 pulseB=38550 不够一条(x=1604)→continue hNb=2
+    → KUKU#18[T6] terr=16992 bal=521385 dq=30.7 cnt=80 | c=108.5 rankC=157.3 need=954785 tD=1.63 人 | safe=287279 keep=Inf avail=-Inf chunkB=64249 pulseB=38550 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1915 alex_k B=321246 L=6686 d=48.0 nb=2 neut=0 cmds=64 noFull=1 shQ=80311 | m=1.438 worth=69.1 cheap=8.6 over=0 dMedOther=19.3 safe(-1)=297520
+    → Zbyszko 3 cytryny#54[T5] terr=12959 bal=244096 dq=18.8 cnt=108 | c=67.7 rankC=98.2 need=454527 tD=0.98 人 | safe=297520 keep=316028 avail=1454 chunkB=64249 pulseB=38550 不够一条(x=1454)→continue hNb=2
+    → KUKU#18[T6] terr=17024 bal=539614 dq=31.7 cnt=80 | c=112.0 rankC=162.3 need=987324 tD=1.65 人 | safe=297520 keep=Inf avail=-Inf chunkB=64249 pulseB=38550 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1920 alex_k B=324940 L=6686 d=48.6 nb=2 neut=0 cmds=64 noFull=1 shQ=81235 | m=1.437 worth=69.8 cheap=8.6 over=0 dMedOther=19.6 safe(-1)=285123
+    → Zbyszko 3 cytryny#54[T5] terr=12959 bal=247049 dq=19.1 cnt=108 | c=68.5 rankC=99.4 need=459791 tD=0.97 人 | safe=285123 keep=319775 avail=1358 chunkB=64988 pulseB=38993 不够一条(x=1358)→continue hNb=2
+    → KUKU#18[T6] terr=17024 bal=517548 dq=30.4 cnt=80 | c=107.5 rankC=155.9 need=947994 tD=1.55 人 | safe=285123 keep=Inf avail=-Inf chunkB=64988 pulseB=38993 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1925 alex_k B=324940 L=6686 d=48.6 nb=2 neut=0 cmds=64 noFull=1 shQ=81235 | m=1.436 worth=69.8 cheap=8.6 over=0 dMedOther=19.6 safe(-1)=285123
+    → Zbyszko 3 cytryny#54[T5] terr=12959 bal=247049 dq=19.1 cnt=108 | c=68.5 rankC=99.4 need=459791 tD=0.97 人 | safe=285123 keep=319873 avail=1260 chunkB=64988 pulseB=38993 不够一条(x=1260)→continue hNb=2
+    → KUKU#18[T6] terr=17024 bal=517548 dq=30.4 cnt=80 | c=107.5 rankC=155.9 need=947994 tD=1.55 人 | safe=285123 keep=Inf avail=-Inf chunkB=64988 pulseB=38993 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1930 alex_k B=328676 L=6686 d=49.2 nb=2 neut=0 cmds=64 noFull=1 shQ=82169 | m=1.435 worth=70.6 cheap=8.6 over=0 dMedOther=19.8 safe(-1)=288757
+    → Zbyszko 3 cytryny#54[T5] terr=12959 bal=250038 dq=19.3 cnt=108 | c=69.3 rankC=100.5 need=465118 tD=0.97 人 | safe=288757 keep=323668 avail=1157 chunkB=65735 pulseB=39441 不够一条(x=1157)→continue hNb=2
+    → KUKU#18[T6] terr=17040 bal=524017 dq=30.8 cnt=80 | c=108.7 rankC=157.7 need=959548 tD=1.55 人 | safe=288757 keep=Inf avail=-Inf chunkB=65735 pulseB=39441 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1935 alex_k B=328676 L=6686 d=49.2 nb=2 neut=0 cmds=64 noFull=1 shQ=82169 | m=1.435 worth=70.5 cheap=8.6 over=0 dMedOther=19.7 safe(-1)=288757
+    → Zbyszko 3 cytryny#54[T5] terr=12959 bal=250038 dq=19.3 cnt=108 | c=69.3 rankC=100.5 need=465118 tD=0.98 人 | safe=288757 keep=323767 avail=1058 chunkB=65735 pulseB=39441 不够一条(x=1058)→continue hNb=2
+    → KUKU#18[T6] terr=17048 bal=524017 dq=30.7 cnt=80 | c=108.7 rankC=157.6 need=959560 tD=1.56 人 | safe=288757 keep=Inf avail=-Inf chunkB=65735 pulseB=39441 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1940 alex_k B=332455 L=6686 d=49.7 nb=2 neut=0 cmds=64 noFull=1 shQ=83113 | m=1.434 worth=71.3 cheap=8.6 over=0 dMedOther=20.0 safe(-1)=292437
+    → Zbyszko 3 cytryny#54[T5] terr=12960 bal=253063 dq=19.5 cnt=108 | c=70.1 rankC=101.7 need=470490 tD=0.98 人 | safe=292437 keep=327604 avail=956 chunkB=66491 pulseB=39895 不够一条(x=956)→continue hNb=2
+    → KUKU#18[T6] terr=17056 bal=530567 dq=31.1 cnt=80 | c=110.0 rankC=159.4 need=971247 tD=1.56 人 | safe=292437 keep=Inf avail=-Inf chunkB=66491 pulseB=39895 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1945 alex_k B=332455 L=6686 d=49.7 nb=2 neut=0 cmds=64 noFull=1 shQ=83113 | m=1.433 worth=71.3 cheap=8.6 over=0 dMedOther=20.0 safe(-1)=304666
+    → Zbyszko 3 cytryny#54[T5] terr=12963 bal=253064 dq=19.5 cnt=108 | c=70.1 rankC=101.7 need=470518 tD=0.98 人 | safe=304666 keep=327666 avail=894 chunkB=66491 pulseB=39895 不够一条(x=894)→continue hNb=2
+    → KUKU#18[T6] terr=17057 bal=552335 dq=32.4 cnt=80 | c=114.3 rankC=165.8 need=1010058 tD=1.62 人 | safe=304666 keep=Inf avail=-Inf chunkB=66491 pulseB=39895 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1950 alex_k B=336278 L=6686 d=50.3 nb=2 neut=0 cmds=64 noFull=1 shQ=84069 | m=1.433 worth=72.0 cheap=8.6 over=0 dMedOther=20.2 safe(-1)=308545
+    → Zbyszko 3 cytryny#54[T5] terr=12963 bal=256126 dq=19.8 cnt=108 | c=70.9 rankC=102.8 need=475976 tD=0.98 人 | safe=308545 keep=331555 avail=783 chunkB=67256 pulseB=40353 不够一条(x=783)→continue hNb=2
+    → KUKU#18[T6] terr=17057 bal=559239 dq=32.8 cnt=80 | c=115.7 rankC=167.8 need=1022364 tD=1.62 人 | safe=308545 keep=Inf avail=-Inf chunkB=67256 pulseB=40353 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1955 alex_k B=336278 L=6686 d=50.3 nb=2 neut=0 cmds=64 noFull=1 shQ=84069 | m=1.432 worth=72.0 cheap=8.6 over=0 dMedOther=19.8 safe(-1)=308545
+    → Zbyszko 3 cytryny#54[T5] terr=12963 bal=256126 dq=19.8 cnt=108 | c=70.9 rankC=102.8 need=475976 tD=1.00 人 | safe=308545 keep=331658 avail=680 chunkB=67256 pulseB=40353 不够一条(x=680)→continue hNb=2
+    → KUKU#18[T6] terr=17057 bal=559239 dq=32.8 cnt=80 | c=115.7 rankC=167.8 need=1022364 tD=1.66 人 | safe=308545 keep=Inf avail=-Inf chunkB=67256 pulseB=40353 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1960 alex_k B=340145 L=6686 d=50.9 nb=2 neut=0 cmds=64 noFull=1 shQ=85036 | m=1.431 worth=72.8 cheap=8.6 over=0 dMedOther=20.0 safe(-1)=312472
+    → Zbyszko 3 cytryny#54[T5] terr=12963 bal=259225 dq=20.0 cnt=108 | c=71.7 rankC=104.0 need=481500 tD=1.00 人 | safe=312472 keep=335595 avail=564 chunkB=68029 pulseB=40817 不够一条(x=564)→continue hNb=2
+    → KUKU#18[T6] terr=17057 bal=566229 dq=33.2 cnt=80 | c=117.1 rankC=169.8 need=1034823 tD=1.66 人 | safe=312472 keep=Inf avail=-Inf chunkB=68029 pulseB=40817 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1965 alex_k B=340145 L=6686 d=50.9 nb=2 neut=0 cmds=64 noFull=1 shQ=85036 | m=1.430 worth=72.8 cheap=8.6 over=0 dMedOther=20.0 safe(-1)=312472
+    → Zbyszko 3 cytryny#54[T5] terr=12963 bal=259225 dq=20.0 cnt=108 | c=71.7 rankC=104.0 need=481500 tD=1.00 人 | safe=312472 keep=335699 avail=460 chunkB=68029 pulseB=40817 不够一条(x=460)→continue hNb=2
+    → KUKU#18[T6] terr=17057 bal=566229 dq=33.2 cnt=80 | c=117.1 rankC=169.8 need=1034823 tD=1.66 人 | safe=312472 keep=Inf avail=-Inf chunkB=68029 pulseB=40817 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1970 alex_k B=344056 L=6686 d=51.5 nb=2 neut=0 cmds=64 noFull=1 shQ=86014 | m=1.429 worth=73.6 cheap=8.6 over=0 dMedOther=20.2 safe(-1)=316448
+    → Zbyszko 3 cytryny#54[T5] terr=12963 bal=262361 dq=20.2 cnt=108 | c=72.6 rankC=105.2 need=487090 tD=1.00 人 | safe=316448 keep=339685 avail=340 chunkB=68811 pulseB=41287 不够一条(x=340)→continue hNb=2
+    → KUKU#18[T6] terr=17057 bal=573306 dq=33.6 cnt=80 | c=118.6 rankC=171.9 need=1047437 tD=1.66 人 | safe=316448 keep=Inf avail=-Inf chunkB=68811 pulseB=41287 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1975 alex_k B=344056 L=6686 d=51.5 nb=2 neut=0 cmds=64 noFull=1 shQ=86014 | m=1.429 worth=73.5 cheap=8.6 over=0 dMedOther=18.8 safe(-1)=316448
+    → Zbyszko 3 cytryny#54[T5] terr=12963 bal=262361 dq=20.2 cnt=108 | c=72.6 rankC=105.2 need=487090 tD=1.08 人 | safe=316448 keep=339790 avail=235 chunkB=68811 pulseB=41287 不够一条(x=235)→continue hNb=2
+    → KUKU#18[T6] terr=17057 bal=573306 dq=33.6 cnt=80 | c=118.6 rankC=171.9 need=1047437 tD=1.79 人 | safe=316448 keep=Inf avail=-Inf chunkB=68811 pulseB=41287 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1980 alex_k B=348012 L=6686 d=52.1 nb=2 neut=0 cmds=64 noFull=1 shQ=87003 | m=1.428 worth=74.3 cheap=8.6 over=0 dMedOther=19.1 safe(-1)=320474
+    → Zbyszko 3 cytryny#54[T5] terr=12963 bal=265535 dq=20.5 cnt=108 | c=73.4 rankC=106.5 need=492747 tD=1.08 人 | safe=320474 keep=343827 avail=107 chunkB=69602 pulseB=41761 不够一条(x=107)→continue hNb=2
+    → KUKU#18[T6] terr=17057 bal=580472 dq=34.0 cnt=80 | c=120.0 rankC=174.0 need=1060209 tD=1.79 人 | safe=320474 keep=Inf avail=-Inf chunkB=69602 pulseB=41761 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1985 alex_k B=348012 L=6686 d=52.1 nb=2 neut=0 cmds=64 noFull=1 shQ=87003 | m=1.427 worth=74.3 cheap=8.6 over=0 dMedOther=19.1 safe(-1)=320474
+    → Zbyszko 3 cytryny#54[T5] terr=12963 bal=265535 dq=20.5 cnt=108 | c=73.4 rankC=106.5 need=492747 tD=1.08 人 | safe=320474 keep=343933 avail=1 chunkB=69602 pulseB=41761 不够一条(x=1)→continue hNb=2
+    → KUKU#18[T6] terr=17057 bal=580472 dq=34.0 cnt=80 | c=120.0 rankC=174.0 need=1060209 tD=1.79 人 | safe=320474 keep=Inf avail=-Inf chunkB=69602 pulseB=41761 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1990 alex_k B=352014 L=6686 d=52.6 nb=2 neut=17 cmds=65 noFull=1 shQ=88003 | m=1.427 worth=75.1 cheap=8.6 over=0 dMedOther=19.3 safe(-1)=324549
+    → Zbyszko 3 cytryny#54[T5] terr=12963 bal=268747 dq=20.7 cnt=108 | c=74.3 rankC=107.7 need=498472 tD=1.07 人 | safe=324549 keep=348111 avail=-222 chunkB=70403 pulseB=42242 无可用(avail<=0) hNb=2
+    → KUKU#18[T6] terr=17057 bal=587727 dq=34.5 cnt=80 | c=121.5 rankC=176.1 need=1073140 tD=1.79 人 | safe=324549 keep=Inf avail=-Inf chunkB=70403 pulseB=42242 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 16500 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=1995 alex_k B=352014 L=6686 d=52.6 nb=2 neut=17 cmds=66 noFull=1 shQ=88003 | m=1.426 worth=75.1 cheap=8.6 over=0 dMedOther=19.3 safe(-1)=324549
+    → Zbyszko 3 cytryny#54[T5] terr=12963 bal=268747 dq=20.7 cnt=108 | c=74.3 rankC=107.7 need=498472 tD=1.07 人 | safe=324549 keep=348294 avail=-405 chunkB=70403 pulseB=42242 无可用(avail<=0) hNb=2
+    → KUKU#18[T6] terr=17057 bal=587727 dq=34.5 cnt=80 | c=121.5 rankC=176.1 need=1073140 tD=1.79 人 | safe=324549 keep=Inf avail=-Inf chunkB=70403 pulseB=42242 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 16500 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2000 alex_k B=362748 L=6686 d=54.3 nb=2 neut=17 cmds=67 noFull=1 shQ=89054 | m=1.425 worth=77.3 cheap=8.6 over=0 dMedOther=22.0 safe(-1)=338259
+    → Zbyszko 3 cytryny#54[T5] terr=12963 bal=284961 dq=22.0 cnt=108 | c=78.6 rankC=113.9 need=527373 tD=1.00 人 | safe=338259 keep=Inf avail=-Inf chunkB=72550 pulseB=43530 价高(c>=worth)→break hNb=2
+    → KUKU#18[T6] terr=17057 bal=612130 dq=35.9 cnt=80 | c=126.4 rankC=183.3 need=1116636 tD=1.63 人 | safe=338259 keep=Inf avail=-Inf chunkB=72550 pulseB=43530 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 17003 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2005 alex_k B=321487 L=6686 d=48.1 nb=2 neut=17 cmds=67 noFull=1 shQ=45224 | m=1.420 worth=68.3 cheap=8.6 over=0 dMedOther=22.0 safe(-1)=338259
+    → Zbyszko 3 cytryny#54[T5] terr=12963 bal=284961 dq=22.0 cnt=108 | c=78.5 rankC=113.8 need=527373 tD=1.00 人 | safe=338259 keep=Inf avail=-Inf chunkB=64297 pulseB=38578 价高(c>=worth)→break hNb=2
+    → KUKU#18[T6] terr=17057 bal=612130 dq=35.9 cnt=80 | c=126.3 rankC=183.2 need=1116636 tD=1.63 人 | safe=338259 keep=Inf avail=-Inf chunkB=64297 pulseB=38578 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2010 alex_k B=306131 L=6703 d=45.7 nb=2 neut=17 cmds=67 noFull=1 shQ=49839 | m=1.415 worth=64.6 cheap=8.6 over=0 dMedOther=22.2 safe(-1)=342543
+    → Zbyszko 3 cytryny#54[T5] terr=12963 bal=288409 dq=22.2 cnt=108 | c=79.4 rankC=115.1 need=533519 tD=1.00 人 | safe=342543 keep=Inf avail=-Inf chunkB=61226 pulseB=36736 价高(c>=worth)→break hNb=2
+    → KUKU#18[T6] terr=17057 bal=619781 dq=36.3 cnt=80 | c=127.8 rankC=185.4 need=1130273 tD=1.63 人 | safe=342543 keep=Inf avail=-Inf chunkB=61226 pulseB=36736 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2015 alex_k B=306131 L=6720 d=45.6 nb=2 neut=12 cmds=67 noFull=1 shQ=54274 | m=1.409 worth=64.2 cheap=8.6 over=0 dMedOther=22.2 safe(-1)=342529
+    → Zbyszko 3 cytryny#54[T5] terr=12963 bal=288409 dq=22.2 cnt=113 | c=79.3 rankC=115.0 need=533519 tD=1.00 人 | safe=342529 keep=Inf avail=-Inf chunkB=61226 pulseB=36736 价高(c>=worth)→break hNb=2
+    → KUKU#18[T6] terr=17057 bal=619781 dq=36.3 cnt=80 | c=127.8 rankC=185.4 need=1130273 tD=1.63 人 | safe=342529 keep=Inf avail=-Inf chunkB=61226 pulseB=36736 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2020 alex_k B=309651 L=6741 d=45.9 nb=2 neut=5 cmds=67 noFull=1 shQ=58719 | m=1.404 worth=64.5 cheap=8.6 over=0 dMedOther=21.5 safe(-1)=346863
+    → Zbyszko 3 cytryny#54[T5] terr=12963 bal=257408 dq=19.9 cnt=117 | c=71.2 rankC=103.2 need=478261 tD=0.92 人 | safe=346863 keep=Inf avail=-Inf chunkB=61930 pulseB=37158 价高(c>=worth)→break hNb=2
+    → KUKU#18[T6] terr=17057 bal=627528 dq=36.8 cnt=80 | c=129.4 rankC=187.6 need=1144081 tD=1.71 人 | safe=346863 keep=Inf avail=-Inf chunkB=61930 pulseB=37158 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2025 alex_k B=309651 L=6748 d=45.9 nb=2 neut=0 cmds=67 noFull=1 shQ=63204 | m=1.399 worth=64.2 cheap=8.6 over=0 dMedOther=21.5 safe(-1)=346857
+    → Zbyszko 3 cytryny#54[T5] terr=13004 bal=257408 dq=19.8 cnt=121 | c=70.9 rankC=102.8 need=478300 tD=0.92 人 | safe=346857 keep=Inf avail=-Inf chunkB=61930 pulseB=37158 价高(c>=worth)→break hNb=2
+    → KUKU#18[T6] terr=17057 bal=627528 dq=36.8 cnt=80 | c=129.4 rankC=187.6 need=1144081 tD=1.71 人 | safe=346857 keep=Inf avail=-Inf chunkB=61930 pulseB=37158 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2030 alex_k B=361718 L=6748 d=53.6 nb=2 neut=0 cmds=67 noFull=1 shQ=68120 | m=1.393 worth=74.7 cheap=8.6 over=0 dMedOther=21.8 safe(-1)=351264
+    → Zbyszko 3 cytryny#54[T5] terr=13111 bal=260548 dq=19.9 cnt=121 | c=49.2 rankC=49.2 need=484080 tD=0.91 人 | safe=351264 keep=351264 avail=6216 chunkB=72344 pulseB=43406 不够一条(x=6216)→continue hNb=2
+    → KUKU#18[T6] terr=17057 bal=635372 dq=37.2 cnt=80 | c=90.4 rankC=90.4 need=1158062 tD=1.71 人 | safe=351264 keep=Inf avail=-Inf chunkB=72344 pulseB=43406 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2035 alex_k B=361718 L=6748 d=53.6 nb=2 neut=0 cmds=67 noFull=1 shQ=73360 | m=1.388 worth=74.4 cheap=8.6 over=0 dMedOther=21.8 safe(-1)=351264
+    → Zbyszko 3 cytryny#54[T5] terr=13187 bal=260548 dq=19.8 cnt=121 | c=48.9 rankC=48.9 need=484194 tD=0.91 人 | safe=351264 keep=351264 avail=6216 chunkB=72344 pulseB=43406 不够一条(x=6216)→continue hNb=2
+    → KUKU#18[T6] terr=17057 bal=635372 dq=37.2 cnt=80 | c=90.4 rankC=90.4 need=1158062 tD=1.71 人 | safe=351264 keep=Inf avail=-Inf chunkB=72344 pulseB=43406 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2040 alex_k B=365877 L=6748 d=54.2 nb=2 neut=0 cmds=67 noFull=1 shQ=78613 | m=1.383 worth=75.0 cheap=8.6 over=0 dMedOther=21.6 safe(-1)=355726
+    → Zbyszko 3 cytryny#54[T5] terr=13318 bal=263726 dq=19.8 cnt=121 | c=49.0 rankC=49.0 need=490047 tD=0.92 人 | safe=355726 keep=355726 avail=5864 chunkB=73175 pulseB=43905 不够一条(x=5864)→continue hNb=2
+    → KUKU#18[T6] terr=17057 bal=643314 dq=37.7 cnt=80 | c=91.5 rankC=91.5 need=1172218 tD=1.75 人 | safe=355726 keep=Inf avail=-Inf chunkB=73175 pulseB=43905 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2045 alex_k B=365877 L=6748 d=54.2 nb=2 neut=0 cmds=67 noFull=1 shQ=83918 | m=1.378 worth=74.7 cheap=8.6 over=0 dMedOther=21.1 safe(-1)=355726
+    → Zbyszko 3 cytryny#54[T5] terr=13415 bal=263726 dq=19.7 cnt=121 | c=48.7 rankC=48.7 need=490200 tD=0.93 人 | safe=355726 keep=355726 avail=5864 chunkB=73175 pulseB=43905 不够一条(x=5864)→continue hNb=2
+    → KUKU#18[T6] terr=17057 bal=643314 dq=37.7 cnt=80 | c=91.5 rankC=91.5 need=1172218 tD=1.79 人 | safe=355726 keep=Inf avail=-Inf chunkB=73175 pulseB=43905 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2050 alex_k B=370084 L=6748 d=54.8 nb=2 neut=0 cmds=67 noFull=1 shQ=89235 | m=1.373 worth=75.3 cheap=8.6 over=0 dMedOther=21.3 safe(-1)=360243
+    → Zbyszko 3 cytryny#54[T5] terr=13547 bal=266943 dq=19.7 cnt=121 | c=48.8 rankC=48.8 need=496132 tD=0.93 人 | safe=360243 keep=360243 avail=5505 chunkB=74017 pulseB=44410 不够一条(x=5505)→continue hNb=2
+    → KUKU#18[T6] terr=17057 bal=651355 dq=38.2 cnt=80 | c=92.6 rankC=92.6 need=1186550 tD=1.80 人 | safe=360243 keep=Inf avail=-Inf chunkB=74017 pulseB=44410 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2055 alex_k B=370084 L=6748 d=54.8 nb=2 neut=0 cmds=67 noFull=1 shQ=92521 | m=1.367 worth=75.0 cheap=8.6 over=0 dMedOther=21.3 safe(-1)=360243
+    → Zbyszko 3 cytryny#54[T5] terr=13626 bal=266943 dq=19.6 cnt=121 | c=48.5 rankC=48.5 need=496243 tD=0.92 人 | safe=360243 keep=360243 avail=5505 chunkB=74017 pulseB=44410 不够一条(x=5505)→continue hNb=2
+    → KUKU#18[T6] terr=17057 bal=651355 dq=38.2 cnt=80 | c=92.6 rankC=92.6 need=1186550 tD=1.80 人 | safe=360243 keep=Inf avail=-Inf chunkB=74017 pulseB=44410 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2060 alex_k B=374339 L=6748 d=55.5 nb=2 neut=0 cmds=67 noFull=1 shQ=93584 | m=1.362 worth=75.6 cheap=8.6 over=0 dMedOther=21.5 safe(-1)=364817
+    → Zbyszko 3 cytryny#54[T5] terr=13722 bal=270199 dq=19.7 cnt=121 | c=48.8 rankC=48.8 need=502190 tD=0.92 人 | safe=364817 keep=364817 avail=5136 chunkB=74868 pulseB=44921 不够一条(x=5136)→continue hNb=2
+    → KUKU#18[T6] terr=17057 bal=659496 dq=38.7 cnt=80 | c=93.7 rankC=93.7 need=1201060 tD=1.80 人 | safe=364817 keep=Inf avail=-Inf chunkB=74868 pulseB=44921 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2065 alex_k B=374339 L=6748 d=55.5 nb=2 neut=0 cmds=67 noFull=1 shQ=93584 | m=1.357 worth=75.3 cheap=8.6 over=0 dMedOther=21.5 safe(-1)=364817
+    → Zbyszko 3 cytryny#54[T5] terr=13753 bal=270199 dq=19.6 cnt=121 | c=48.7 rankC=48.7 need=502229 tD=0.91 人 | safe=364817 keep=364817 avail=5136 chunkB=74868 pulseB=44921 不够一条(x=5136)→continue hNb=2
+    → KUKU#18[T6] terr=17057 bal=659496 dq=38.7 cnt=80 | c=93.7 rankC=93.7 need=1201060 tD=1.80 人 | safe=364817 keep=Inf avail=-Inf chunkB=74868 pulseB=44921 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2070 alex_k B=378643 L=6748 d=56.1 nb=2 neut=0 cmds=67 noFull=1 shQ=94660 | m=1.352 worth=75.8 cheap=8.6 over=0 dMedOther=21.8 safe(-1)=369448
+    → Zbyszko 3 cytryny#54[T5] terr=13787 bal=273495 dq=19.8 cnt=121 | c=49.1 rankC=49.1 need=508170 tD=0.91 人 | safe=369448 keep=369448 avail=4758 chunkB=75729 pulseB=45437 不够一条(x=4758)→continue hNb=2
+    → KUKU#18[T6] terr=17057 bal=667739 dq=39.1 cnt=80 | c=94.9 rankC=94.9 need=1215752 tD=1.80 人 | safe=369448 keep=Inf avail=-Inf chunkB=75729 pulseB=45437 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令

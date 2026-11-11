@@ -1,0 +1,6510 @@
+{
+ "matchId": "B025",
+ "reviewer": "R06",
+ "protocol": "v2.0",
+ "context": {
+  "time": "2026-11-10T01:20:00Z",
+  "squad": "squad20",
+  "bots": 20,
+  "strategyVersion": "v27-team-c110",
+  "gameVersion": "2.17.1",
+  "map": 11,
+  "mapSeed": 1913,
+  "mapLand": 517334,
+  "teams": 5,
+  "humans": 64,
+  "ourTeam": 4,
+  "teamSplitTrue": {
+   "1": 3,
+   "2": 4,
+   "3": 4,
+   "4": 6,
+   "5": 3
+  },
+  "teamSplitSource": "engine-replay(bj.fX)",
+  "teamSplitCard": {
+   "1": 3,
+   "2": 4,
+   "3": 4,
+   "4": 5,
+   "5": 2
+  },
+  "presence": {
+   "died": 15,
+   "left": 1,
+   "end": 3,
+   "silent": 1
+  },
+  "leftTicks": {},
+  "neverPlayed": [],
+  "sameMatchPeer": null,
+  "dataCompleteness": {
+   "results": true,
+   "squadLog": true,
+   "truth": "真引擎重放（录像 B025）到 t=1435；日志快照指纹 260/260 逐兵一致"
+  },
+  "contamination": [
+   "录像只到 t=1435：之后的攻击者、指令是否生效、策略分支都看不到。捐款全部发生在 t>=1500，执行与否只能用捐款人自己的余额读数推（logdigest donlog；这套推法在有录像的 B023/B039/B038 上的一致率是 87.4% / 85.4% / 81.2%）",
+   "对局卡写 squadBots=19、分队 {1:3,2:4,3:4,4:5,5:2}：只数了带队号的结算行（Chosokabe 的 left 行没有队号、DesertFox 没有结算行）。本复盘用录像队伍表 20 个号 {1:3,2:4,3:4,4:6,5:3}",
+   "卡片的编队峰值 15.27%；按日志快照是 t=1170 的 16.02%（82,865 格）；按录像真值 t=1435 是 17.6%（91,173 格，含日志已经停掉的 DesertFox 和落后的号）",
+   "日志里的号名会变（同一个号在不同时段打出不同名字，如 OmniMan 后来打成 Zoro / Almoravid，Chosokabe 的结算行叫 Two Sicilies）；本复盘按玩家编号归并，统一用开局时的名字",
+   "延迟的量法：影子策略（同一份源码逐拍跑在重放出来的真实局面上，指令只记不执行）给出「策略在第 τ 拍会下这条令」，录像给出它实际在第 s 拍执行；s−τ = 客户端落后服务器的拍数 + 上行。影子与日志的 cmds 计数核对：重放末拍 609 对 632，单号最多差 4 条。进录像的 487 条里配上 462 条（pct 完全相同 428、近似 34），25 条配不上",
+   "日志的 nb 只数「非同队、非编队」的邻居，真人还是内置 AI 分不清；nb=0 且 neut=0 说明四周只有队友、受保护的编队号或水"
+  ],
+  "huskDeaths": [],
+  "truthEnd": 1435
+ },
+ "outcome": {
+  "result": "lost",
+  "resultLabel": "split_straggler_won",
+  "anyBotWon": true,
+  "ourTeamRank": 4,
+  "winnerTeam": 5,
+  "endTick": 13567,
+  "ourFinalShare": 0.0,
+  "peakSquadLandShare": 0.1527,
+  "peakPrimaryTeamShareSeen": 0.1572,
+  "note": "卡片标签 split_straggler_won：主队按人数是队4（6 个号），Tryhard（t=3484）、MI6（3581）、Messi（4046）、Vatican City（4105）、Golden Horde（4141）先后阵亡，DesertFox 失联；赢的是队5，我方三个队5 的号里 Mali t=1974 阵亡、Chosokabe 离开，只有 OmniMan 以 6,012 格活到终局（存活 9 个玩家里第 5）。"
+ },
+ "timeline": [
+  {
+   "t": 90,
+   "alive": 20,
+   "seen": 20,
+   "husks": 0,
+   "squadLand": 879,
+   "squadLandShare": 0.0017,
+   "teamTroops": 10536,
+   "squadDens": 12.0,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 106,
+     "troops": 1493
+    },
+    "2": {
+     "bots": 4,
+     "land": 225,
+     "troops": 1954
+    },
+    "3": {
+     "bots": 4,
+     "land": 151,
+     "troops": 1967
+    },
+    "4": {
+     "bots": 6,
+     "land": 258,
+     "troops": 3143
+    },
+    "5": {
+     "bots": 3,
+     "land": 139,
+     "troops": 1979
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0017,
+     "troops": 7745,
+     "activeHumans": 12,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.002,
+     "troops": 5916,
+     "activeHumans": 12,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0013,
+     "troops": 8707,
+     "activeHumans": 13,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.002,
+     "troops": 7375,
+     "activeHumans": 13,
+     "huskLandShare": 0.0
+    },
+    "5": {
+     "landShare": 0.0008,
+     "troops": 8812,
+     "activeHumans": 12,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0237,
+   "src": "engine-replay",
+   "teamLandShare": 0.002,
+   "teamRank": 1,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.002
+  },
+  {
+   "t": 180,
+   "alive": 20,
+   "seen": 20,
+   "husks": 0,
+   "squadLand": 3319,
+   "squadLandShare": 0.0064,
+   "teamTroops": 18707,
+   "squadDens": 5.6,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 510,
+     "troops": 2149
+    },
+    "2": {
+     "bots": 4,
+     "land": 831,
+     "troops": 3210
+    },
+    "3": {
+     "bots": 4,
+     "land": 557,
+     "troops": 4253
+    },
+    "4": {
+     "bots": 6,
+     "land": 913,
+     "troops": 6163
+    },
+    "5": {
+     "bots": 3,
+     "land": 508,
+     "troops": 2932
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0036,
+     "troops": 11961,
+     "activeHumans": 12,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.0052,
+     "troops": 9437,
+     "activeHumans": 12,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0036,
+     "troops": 13147,
+     "activeHumans": 13,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.0045,
+     "troops": 12499,
+     "activeHumans": 13,
+     "huskLandShare": 0.0
+    },
+    "5": {
+     "landShare": 0.0042,
+     "troops": 10816,
+     "activeHumans": 12,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0444,
+   "src": "engine-replay",
+   "teamLandShare": 0.0045,
+   "teamRank": 2,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.0052
+  },
+  {
+   "t": 270,
+   "alive": 20,
+   "seen": 20,
+   "husks": 0,
+   "squadLand": 7123,
+   "squadLandShare": 0.0138,
+   "teamTroops": 27018,
+   "squadDens": 3.8,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 1080,
+     "troops": 4469
+    },
+    "2": {
+     "bots": 4,
+     "land": 1596,
+     "troops": 3991
+    },
+    "3": {
+     "bots": 4,
+     "land": 1345,
+     "troops": 5785
+    },
+    "4": {
+     "bots": 6,
+     "land": 2161,
+     "troops": 8407
+    },
+    "5": {
+     "bots": 3,
+     "land": 941,
+     "troops": 4366
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0064,
+     "troops": 18701,
+     "activeHumans": 12,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.0096,
+     "troops": 14212,
+     "activeHumans": 12,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0079,
+     "troops": 19512,
+     "activeHumans": 13,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.0088,
+     "troops": 19504,
+     "activeHumans": 13,
+     "huskLandShare": 0.0
+    },
+    "5": {
+     "landShare": 0.0065,
+     "troops": 18366,
+     "activeHumans": 12,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0733,
+   "src": "engine-replay",
+   "teamLandShare": 0.0088,
+   "teamRank": 2,
+   "topEnemyTeam": 2,
+   "topEnemyShare": 0.0096
+  },
+  {
+   "t": 630,
+   "alive": 20,
+   "seen": 20,
+   "husks": 0,
+   "squadLand": 46607,
+   "squadLandShare": 0.0901,
+   "teamTroops": 108372,
+   "squadDens": 2.3,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 5011,
+     "troops": 19160
+    },
+    "2": {
+     "bots": 4,
+     "land": 9447,
+     "troops": 19727
+    },
+    "3": {
+     "bots": 4,
+     "land": 11322,
+     "troops": 22840
+    },
+    "4": {
+     "bots": 6,
+     "land": 14431,
+     "troops": 29976
+    },
+    "5": {
+     "bots": 3,
+     "land": 6396,
+     "troops": 16669
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.042,
+     "troops": 87619,
+     "activeHumans": 12,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.0615,
+     "troops": 67793,
+     "activeHumans": 12,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.0715,
+     "troops": 76294,
+     "activeHumans": 13,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.0613,
+     "troops": 74898,
+     "activeHumans": 13,
+     "huskLandShare": 0.0
+    },
+    "5": {
+     "landShare": 0.0558,
+     "troops": 78320,
+     "activeHumans": 12,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.4137,
+   "src": "engine-replay",
+   "teamLandShare": 0.0613,
+   "teamRank": 3,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.0715
+  },
+  {
+   "t": 1170,
+   "alive": 20,
+   "seen": 20,
+   "husks": 0,
+   "squadLand": 83054,
+   "squadLandShare": 0.1605,
+   "teamTroops": 1254260,
+   "squadDens": 15.1,
+   "boxed": 2,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 6759,
+     "troops": 227600
+    },
+    "2": {
+     "bots": 4,
+     "land": 15898,
+     "troops": 255138
+    },
+    "3": {
+     "bots": 4,
+     "land": 23428,
+     "troops": 243358
+    },
+    "4": {
+     "bots": 6,
+     "land": 29360,
+     "troops": 313660
+    },
+    "5": {
+     "bots": 3,
+     "land": 7609,
+     "troops": 214504
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.1186,
+     "troops": 557967,
+     "activeHumans": 11,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.1557,
+     "troops": 554287,
+     "activeHumans": 11,
+     "huskLandShare": 0.0037
+    },
+    "3": {
+     "landShare": 0.1985,
+     "troops": 696555,
+     "activeHumans": 13,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.138,
+     "troops": 562516,
+     "activeHumans": 13,
+     "huskLandShare": 0.0
+    },
+    "5": {
+     "landShare": 0.1415,
+     "troops": 632759,
+     "activeHumans": 12,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.215,
+   "src": "engine-replay",
+   "teamLandShare": 0.138,
+   "teamRank": 4,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.1985
+  },
+  {
+   "t": 1435,
+   "alive": 20,
+   "seen": 20,
+   "husks": 0,
+   "squadLand": 91173,
+   "squadLandShare": 0.1762,
+   "teamTroops": 1948366,
+   "squadDens": 21.4,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 6764,
+     "troops": 254851
+    },
+    "2": {
+     "bots": 4,
+     "land": 17318,
+     "troops": 400637
+    },
+    "3": {
+     "bots": 4,
+     "land": 27794,
+     "troops": 391434
+    },
+    "4": {
+     "bots": 6,
+     "land": 31095,
+     "troops": 567119
+    },
+    "5": {
+     "bots": 3,
+     "land": 8202,
+     "troops": 334325
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.1483,
+     "troops": 1065437,
+     "activeHumans": 11,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.1981,
+     "troops": 1195164,
+     "activeHumans": 11,
+     "huskLandShare": 0.0
+    },
+    "3": {
+     "landShare": 0.2288,
+     "troops": 1569047,
+     "activeHumans": 13,
+     "huskLandShare": 0.0
+    },
+    "4": {
+     "landShare": 0.1506,
+     "troops": 1154860,
+     "activeHumans": 12,
+     "huskLandShare": 0.0
+    },
+    "5": {
+     "landShare": 0.1686,
+     "troops": 1397572,
+     "activeHumans": 12,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0841,
+   "src": "engine-replay",
+   "teamLandShare": 0.1506,
+   "teamRank": 4,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.2288
+  },
+  {
+   "t": 1530,
+   "alive": 18,
+   "seen": 18,
+   "squadLand": 77235,
+   "squadLandShare": 0.1493,
+   "teamTroops": 2133609,
+   "squadDens": 27.6,
+   "boxed": 8,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 6769,
+     "troops": 429476
+    },
+    "2": {
+     "bots": 4,
+     "land": 17262,
+     "troops": 451821
+    },
+    "3": {
+     "bots": 4,
+     "land": 26559,
+     "troops": 497307
+    },
+    "4": {
+     "bots": 5,
+     "land": 22038,
+     "troops": 524994
+    },
+    "5": {
+     "bots": 2,
+     "land": 4607,
+     "troops": 230011
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 1974,
+   "alive": 17,
+   "seen": 17,
+   "squadLand": 75240,
+   "squadLandShare": 0.1454,
+   "teamTroops": 2288776,
+   "squadDens": 30.4,
+   "boxed": 5,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 10791,
+     "troops": 240065
+    },
+    "2": {
+     "bots": 4,
+     "land": 18339,
+     "troops": 370837
+    },
+    "3": {
+     "bots": 4,
+     "land": 22977,
+     "troops": 943105
+    },
+    "4": {
+     "bots": 5,
+     "land": 22523,
+     "troops": 650051
+    },
+    "5": {
+     "bots": 1,
+     "land": 610,
+     "troops": 84718
+    }
+   },
+   "teamLandShare": 0.1572,
+   "teamRank": 5,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.241,
+   "teamSnapT": 1974
+  },
+  {
+   "t": 2070,
+   "alive": 17,
+   "seen": 17,
+   "squadLand": 74232,
+   "squadLandShare": 0.1435,
+   "teamTroops": 2534732,
+   "squadDens": 34.1,
+   "boxed": 6,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 16161,
+     "troops": 203768
+    },
+    "2": {
+     "bots": 4,
+     "land": 14576,
+     "troops": 270163
+    },
+    "3": {
+     "bots": 4,
+     "land": 22921,
+     "troops": 1167810
+    },
+    "4": {
+     "bots": 5,
+     "land": 19959,
+     "troops": 822334
+    },
+    "5": {
+     "bots": 1,
+     "land": 615,
+     "troops": 70657
+    }
+   },
+   "teamLandShare": 0.1572,
+   "teamRank": 5,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.241,
+   "teamSnapT": 1974
+  },
+  {
+   "t": 3060,
+   "alive": 17,
+   "seen": 17,
+   "squadLand": 74059,
+   "squadLandShare": 0.1432,
+   "teamTroops": 5140086,
+   "squadDens": 69.4,
+   "boxed": 4,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 12588,
+     "troops": 578436
+    },
+    "2": {
+     "bots": 4,
+     "land": 10126,
+     "troops": 425410
+    },
+    "3": {
+     "bots": 4,
+     "land": 31431,
+     "troops": 2764073
+    },
+    "4": {
+     "bots": 5,
+     "land": 19268,
+     "troops": 1365316
+    },
+    "5": {
+     "bots": 1,
+     "land": 646,
+     "troops": 6851
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 3484,
+   "alive": 16,
+   "seen": 16,
+   "squadLand": 74775,
+   "squadLandShare": 0.1445,
+   "teamTroops": 5857836,
+   "squadDens": 78.3,
+   "boxed": 5,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 11855,
+     "troops": 642552
+    },
+    "2": {
+     "bots": 4,
+     "land": 9827,
+     "troops": 530653
+    },
+    "3": {
+     "bots": 4,
+     "land": 37259,
+     "troops": 3480892
+    },
+    "4": {
+     "bots": 4,
+     "land": 15186,
+     "troops": 1194718
+    },
+    "5": {
+     "bots": 1,
+     "land": 648,
+     "troops": 9021
+    }
+   },
+   "teamLandShare": 0.1127,
+   "teamRank": 5,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.311,
+   "teamSnapT": 3484
+  },
+  {
+   "t": 3581,
+   "alive": 15,
+   "seen": 15,
+   "squadLand": 73550,
+   "squadLandShare": 0.1422,
+   "teamTroops": 5979757,
+   "squadDens": 81.3,
+   "boxed": 2,
+   "perTeam": {
+    "1": {
+     "bots": 3,
+     "land": 12026,
+     "troops": 707366
+    },
+    "2": {
+     "bots": 4,
+     "land": 9862,
+     "troops": 532450
+    },
+    "3": {
+     "bots": 4,
+     "land": 39083,
+     "troops": 3863836
+    },
+    "4": {
+     "bots": 3,
+     "land": 11904,
+     "troops": 865665
+    },
+    "5": {
+     "bots": 1,
+     "land": 675,
+     "troops": 10440
+    }
+   },
+   "teamLandShare": 0.1061,
+   "teamRank": 5,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.314,
+   "teamSnapT": 3581
+  },
+  {
+   "t": 3827,
+   "alive": 14,
+   "seen": 14,
+   "squadLand": 75703,
+   "squadLandShare": 0.1463,
+   "teamTroops": 5533614,
+   "squadDens": 73.1,
+   "boxed": 5,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 7324,
+     "troops": 447026
+    },
+    "2": {
+     "bots": 4,
+     "land": 12088,
+     "troops": 528787
+    },
+    "3": {
+     "bots": 4,
+     "land": 44826,
+     "troops": 3787139
+    },
+    "4": {
+     "bots": 3,
+     "land": 10790,
+     "troops": 755481
+    },
+    "5": {
+     "bots": 1,
+     "land": 675,
+     "troops": 15181
+    }
+   },
+   "teamLandShare": 0.0854,
+   "teamRank": 5,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.3269,
+   "teamSnapT": 3827
+  },
+  {
+   "t": 4029,
+   "alive": 13,
+   "seen": 13,
+   "squadLand": 74770,
+   "squadLandShare": 0.1445,
+   "teamTroops": 5438400,
+   "squadDens": 72.7,
+   "boxed": 5,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 7324,
+     "troops": 566981
+    },
+    "2": {
+     "bots": 3,
+     "land": 12030,
+     "troops": 492481
+    },
+    "3": {
+     "bots": 4,
+     "land": 46930,
+     "troops": 3836340
+    },
+    "4": {
+     "bots": 3,
+     "land": 7621,
+     "troops": 523486
+    },
+    "5": {
+     "bots": 1,
+     "land": 865,
+     "troops": 19112
+    }
+   },
+   "teamLandShare": 0.0595,
+   "teamRank": 5,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.3374,
+   "teamSnapT": 4029
+  },
+  {
+   "t": 4046,
+   "alive": 12,
+   "seen": 12,
+   "squadLand": 73088,
+   "squadLandShare": 0.1413,
+   "teamTroops": 5303153,
+   "squadDens": 72.6,
+   "boxed": 5,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 7324,
+     "troops": 566981
+    },
+    "2": {
+     "bots": 3,
+     "land": 12030,
+     "troops": 492481
+    },
+    "3": {
+     "bots": 4,
+     "land": 46930,
+     "troops": 3836340
+    },
+    "4": {
+     "bots": 2,
+     "land": 5939,
+     "troops": 388239
+    },
+    "5": {
+     "bots": 1,
+     "land": 865,
+     "troops": 19112
+    }
+   },
+   "teamLandShare": 0.0561,
+   "teamRank": 5,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.3389,
+   "teamSnapT": 4046
+  },
+  {
+   "t": 4050,
+   "alive": 12,
+   "seen": 12,
+   "squadLand": 72112,
+   "squadLandShare": 0.1394,
+   "teamTroops": 5545934,
+   "squadDens": 76.9,
+   "boxed": 5,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 7324,
+     "troops": 636856
+    },
+    "2": {
+     "bots": 3,
+     "land": 10883,
+     "troops": 446221
+    },
+    "3": {
+     "bots": 4,
+     "land": 48606,
+     "troops": 4163017
+    },
+    "4": {
+     "bots": 2,
+     "land": 4434,
+     "troops": 278034
+    },
+    "5": {
+     "bots": 1,
+     "land": 865,
+     "troops": 21806
+    }
+   },
+   "teamLandShare": 0.0561,
+   "teamRank": 5,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.3389,
+   "teamSnapT": 4046
+  },
+  {
+   "t": 4105,
+   "alive": 11,
+   "seen": 11,
+   "squadLand": 69855,
+   "squadLandShare": 0.135,
+   "teamTroops": 5453991,
+   "squadDens": 78.1,
+   "boxed": 5,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 7324,
+     "troops": 636856
+    },
+    "2": {
+     "bots": 3,
+     "land": 10883,
+     "troops": 446221
+    },
+    "3": {
+     "bots": 4,
+     "land": 48606,
+     "troops": 4163017
+    },
+    "4": {
+     "bots": 1,
+     "land": 2177,
+     "troops": 186091
+    },
+    "5": {
+     "bots": 1,
+     "land": 865,
+     "troops": 21806
+    }
+   },
+   "teamLandShare": 0.0478,
+   "teamRank": 5,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.343,
+   "teamSnapT": 4105
+  },
+  {
+   "t": 4141,
+   "alive": 10,
+   "seen": 10,
+   "squadLand": 67468,
+   "squadLandShare": 0.1304,
+   "teamTroops": 5540248,
+   "squadDens": 82.1,
+   "boxed": 3,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 7322,
+     "troops": 573131
+    },
+    "2": {
+     "bots": 3,
+     "land": 9773,
+     "troops": 437683
+    },
+    "3": {
+     "bots": 4,
+     "land": 49493,
+     "troops": 4510094
+    },
+    "5": {
+     "bots": 1,
+     "land": 880,
+     "troops": 19340
+    }
+   },
+   "teamLandShare": 0.0435,
+   "teamRank": 5,
+   "topEnemyTeam": 3,
+   "topEnemyShare": 0.3449,
+   "teamSnapT": 4141
+  },
+  {
+   "t": 4500,
+   "alive": 10,
+   "seen": 10,
+   "squadLand": 67371,
+   "squadLandShare": 0.1302,
+   "teamTroops": 5744308,
+   "squadDens": 85.3,
+   "boxed": 5,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 7766,
+     "troops": 718381
+    },
+    "2": {
+     "bots": 3,
+     "land": 10315,
+     "troops": 668777
+    },
+    "3": {
+     "bots": 4,
+     "land": 48103,
+     "troops": 4326783
+    },
+    "5": {
+     "bots": 1,
+     "land": 1187,
+     "troops": 30367
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 5040,
+   "alive": 10,
+   "seen": 10,
+   "squadLand": 66400,
+   "squadLandShare": 0.1284,
+   "teamTroops": 5884326,
+   "squadDens": 88.6,
+   "boxed": 5,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 7579,
+     "troops": 882091
+    },
+    "2": {
+     "bots": 3,
+     "land": 9675,
+     "troops": 801661
+    },
+    "3": {
+     "bots": 4,
+     "land": 47934,
+     "troops": 4143018
+    },
+    "5": {
+     "bots": 1,
+     "land": 1212,
+     "troops": 57556
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 6030,
+   "alive": 10,
+   "seen": 10,
+   "squadLand": 66848,
+   "squadLandShare": 0.1292,
+   "teamTroops": 6571756,
+   "squadDens": 98.3,
+   "boxed": 5,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 9073,
+     "troops": 952067
+    },
+    "2": {
+     "bots": 3,
+     "land": 3988,
+     "troops": 366475
+    },
+    "3": {
+     "bots": 4,
+     "land": 52557,
+     "troops": 5092332
+    },
+    "5": {
+     "bots": 1,
+     "land": 1230,
+     "troops": 160882
+    }
+   },
+   "teamLandShare": 0.0295,
+   "teamRank": 5,
+   "topEnemyTeam": 5,
+   "topEnemyShare": 0.3183,
+   "teamSnapT": 6164
+  },
+  {
+   "t": 6164,
+   "alive": 9,
+   "seen": 9,
+   "squadLand": 63002,
+   "squadLandShare": 0.1218,
+   "teamTroops": 6753176,
+   "squadDens": 107.2,
+   "boxed": 5,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 8731,
+     "troops": 982748
+    },
+    "2": {
+     "bots": 2,
+     "land": 528,
+     "troops": 32159
+    },
+    "3": {
+     "bots": 4,
+     "land": 52507,
+     "troops": 5574992
+    },
+    "5": {
+     "bots": 1,
+     "land": 1236,
+     "troops": 163277
+    }
+   },
+   "teamLandShare": 0.0295,
+   "teamRank": 5,
+   "topEnemyTeam": 5,
+   "topEnemyShare": 0.3183,
+   "teamSnapT": 6164
+  },
+  {
+   "t": 7020,
+   "alive": 9,
+   "seen": 9,
+   "squadLand": 60891,
+   "squadLandShare": 0.1177,
+   "teamTroops": 6157637,
+   "squadDens": 101.1,
+   "boxed": 3,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 8748,
+     "troops": 916484
+    },
+    "2": {
+     "bots": 2,
+     "land": 418,
+     "troops": 16064
+    },
+    "3": {
+     "bots": 4,
+     "land": 49652,
+     "troops": 4997161
+    },
+    "5": {
+     "bots": 1,
+     "land": 2073,
+     "troops": 227928
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 7229,
+   "alive": 8,
+   "seen": 8,
+   "squadLand": 47362,
+   "squadLandShare": 0.0916,
+   "teamTroops": 4106965,
+   "squadDens": 86.7,
+   "boxed": 3,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 9080,
+     "troops": 993953
+    },
+    "2": {
+     "bots": 2,
+     "land": 473,
+     "troops": 17112
+    },
+    "3": {
+     "bots": 3,
+     "land": 35658,
+     "troops": 2873635
+    },
+    "5": {
+     "bots": 1,
+     "land": 2151,
+     "troops": 222265
+    }
+   },
+   "teamLandShare": 0.0409,
+   "teamRank": 5,
+   "topEnemyTeam": 5,
+   "topEnemyShare": 0.3816,
+   "teamSnapT": 7229
+  },
+  {
+   "t": 7602,
+   "alive": 7,
+   "seen": 7,
+   "squadLand": 38495,
+   "squadLandShare": 0.0744,
+   "teamTroops": 3341873,
+   "squadDens": 86.8,
+   "boxed": 3,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 10172,
+     "troops": 1029456
+    },
+    "2": {
+     "bots": 2,
+     "land": 431,
+     "troops": 11222
+    },
+    "3": {
+     "bots": 2,
+     "land": 25689,
+     "troops": 2088333
+    },
+    "5": {
+     "bots": 1,
+     "land": 2203,
+     "troops": 212862
+    }
+   },
+   "teamLandShare": 0.0406,
+   "teamRank": 5,
+   "topEnemyTeam": 5,
+   "topEnemyShare": 0.4095,
+   "teamSnapT": 7602
+  },
+  {
+   "t": 8010,
+   "alive": 7,
+   "seen": 7,
+   "squadLand": 42235,
+   "squadLandShare": 0.0816,
+   "teamTroops": 3979900,
+   "squadDens": 94.2,
+   "boxed": 3,
+   "perTeam": {
+    "1": {
+     "bots": 2,
+     "land": 10285,
+     "troops": 1231669
+    },
+    "2": {
+     "bots": 2,
+     "land": 468,
+     "troops": 12984
+    },
+    "3": {
+     "bots": 2,
+     "land": 28784,
+     "troops": 2501781
+    },
+    "5": {
+     "bots": 1,
+     "land": 2698,
+     "troops": 233466
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 8181,
+   "alive": 6,
+   "seen": 6,
+   "squadLand": 33639,
+   "squadLandShare": 0.065,
+   "teamTroops": 2971405,
+   "squadDens": 88.3,
+   "boxed": 3,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 290,
+     "troops": 2150
+    },
+    "2": {
+     "bots": 2,
+     "land": 468,
+     "troops": 14662
+    },
+    "3": {
+     "bots": 2,
+     "land": 29854,
+     "troops": 2693961
+    },
+    "5": {
+     "bots": 1,
+     "land": 3027,
+     "troops": 260632
+    }
+   },
+   "teamLandShare": 0.0428,
+   "teamRank": 5,
+   "topEnemyTeam": 5,
+   "topEnemyShare": 0.4279,
+   "teamSnapT": 8181
+  },
+  {
+   "t": 9000,
+   "alive": 6,
+   "seen": 6,
+   "squadLand": 36884,
+   "squadLandShare": 0.0713,
+   "teamTroops": 3361304,
+   "squadDens": 91.1,
+   "boxed": 1,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 310,
+     "troops": 5979
+    },
+    "2": {
+     "bots": 2,
+     "land": 931,
+     "troops": 39508
+    },
+    "3": {
+     "bots": 2,
+     "land": 33491,
+     "troops": 3130302
+    },
+    "5": {
+     "bots": 1,
+     "land": 2152,
+     "troops": 185515
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 9990,
+   "alive": 6,
+   "seen": 6,
+   "squadLand": 39070,
+   "squadLandShare": 0.0755,
+   "teamTroops": 5266347,
+   "squadDens": 134.8,
+   "boxed": 2,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 335,
+     "troops": 12460
+    },
+    "2": {
+     "bots": 2,
+     "land": 1257,
+     "troops": 98354
+    },
+    "3": {
+     "bots": 2,
+     "land": 33492,
+     "troops": 4897578
+    },
+    "5": {
+     "bots": 1,
+     "land": 3986,
+     "troops": 257955
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 10980,
+   "alive": 6,
+   "seen": 6,
+   "squadLand": 43789,
+   "squadLandShare": 0.0846,
+   "teamTroops": 3713128,
+   "squadDens": 84.8,
+   "boxed": 2,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 753,
+     "troops": 38409
+    },
+    "2": {
+     "bots": 2,
+     "land": 1627,
+     "troops": 80607
+    },
+    "3": {
+     "bots": 2,
+     "land": 36455,
+     "troops": 2964929
+    },
+    "5": {
+     "bots": 1,
+     "land": 4954,
+     "troops": 629183
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 11188,
+   "alive": 5,
+   "seen": 5,
+   "squadLand": 29917,
+   "squadLandShare": 0.0578,
+   "teamTroops": 2892563,
+   "squadDens": 96.7,
+   "boxed": 2,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 753,
+     "troops": 47616
+    },
+    "2": {
+     "bots": 2,
+     "land": 1627,
+     "troops": 97600
+    },
+    "3": {
+     "bots": 1,
+     "land": 22583,
+     "troops": 2167075
+    },
+    "5": {
+     "bots": 1,
+     "land": 4954,
+     "troops": 580272
+    }
+   },
+   "teamLandShare": 0.0,
+   "teamRank": 5,
+   "topEnemyTeam": 5,
+   "topEnemyShare": 0.665,
+   "teamSnapT": 11188
+  },
+  {
+   "t": 11970,
+   "alive": 5,
+   "seen": 5,
+   "squadLand": 16532,
+   "squadLandShare": 0.032,
+   "teamTroops": 1474252,
+   "squadDens": 89.2,
+   "boxed": 2,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 849,
+     "troops": 52631
+    },
+    "2": {
+     "bots": 2,
+     "land": 1034,
+     "troops": 77804
+    },
+    "3": {
+     "bots": 1,
+     "land": 9023,
+     "troops": 827937
+    },
+    "5": {
+     "bots": 1,
+     "land": 5626,
+     "troops": 515880
+    }
+   },
+   "teamLandShare": null,
+   "teamRank": null,
+   "topEnemyTeam": null,
+   "topEnemyShare": null
+  },
+  {
+   "t": 12960,
+   "alive": 5,
+   "seen": 5,
+   "squadLand": 13029,
+   "squadLandShare": 0.0252,
+   "teamTroops": 1526052,
+   "squadDens": 117.1,
+   "boxed": 2,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 807,
+     "troops": 45076
+    },
+    "2": {
+     "bots": 2,
+     "land": 1090,
+     "troops": 118666
+    },
+    "3": {
+     "bots": 1,
+     "land": 5159,
+     "troops": 615771
+    },
+    "5": {
+     "bots": 1,
+     "land": 5973,
+     "troops": 746539
+    }
+   },
+   "teamLandShare": 0.0,
+   "teamRank": 5,
+   "topEnemyTeam": 5,
+   "topEnemyShare": 0.9829,
+   "teamSnapT": 12983
+  },
+  {
+   "t": 12983,
+   "alive": 4,
+   "seen": 4,
+   "squadLand": 7870,
+   "squadLandShare": 0.0152,
+   "teamTroops": 910281,
+   "squadDens": 115.7,
+   "boxed": 2,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 807,
+     "troops": 45076
+    },
+    "2": {
+     "bots": 2,
+     "land": 1090,
+     "troops": 118666
+    },
+    "5": {
+     "bots": 1,
+     "land": 5973,
+     "troops": 746539
+    }
+   },
+   "teamLandShare": 0.0,
+   "teamRank": 5,
+   "topEnemyTeam": 5,
+   "topEnemyShare": 0.9829,
+   "teamSnapT": 12983
+  },
+  {
+   "t": 13346,
+   "alive": 3,
+   "seen": 3,
+   "squadLand": 6815,
+   "squadLandShare": 0.0132,
+   "teamTroops": 909826,
+   "squadDens": 133.5,
+   "boxed": 2,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 721,
+     "troops": 50468
+    },
+    "2": {
+     "bots": 1,
+     "land": 100,
+     "troops": 4188
+    },
+    "5": {
+     "bots": 1,
+     "land": 5994,
+     "troops": 855170
+    }
+   },
+   "teamLandShare": 0.0,
+   "teamRank": 5,
+   "topEnemyTeam": 5,
+   "topEnemyShare": 0.9891,
+   "teamSnapT": 13346
+  },
+  {
+   "t": 13567,
+   "alive": 3,
+   "seen": 3,
+   "squadLand": 6277,
+   "squadLandShare": 0.0121,
+   "teamTroops": 898139,
+   "squadDens": 143.1,
+   "boxed": 3,
+   "perTeam": {
+    "1": {
+     "bots": 1,
+     "land": 162,
+     "troops": 5280
+    },
+    "2": {
+     "bots": 1,
+     "land": 103,
+     "troops": 4354
+    },
+    "5": {
+     "bots": 1,
+     "land": 6012,
+     "troops": 888505
+    }
+   },
+   "teamLandShare": 0.0,
+   "teamRank": 4,
+   "topEnemyTeam": 5,
+   "topEnemyShare": 0.9914,
+   "teamSnapT": 13567
+  }
+ ],
+ "phases": {
+  "opening": {
+   "facts": [
+    "地图 11（陆地 517,334 格）、64 个真人、五队。选点阶段 51 步：日志 HL-SPAWN 204 行（每号 7~15 行），进录像 155 条（76%）。「最后一条下发的选点 = 出生点」只有 4/20 个号；另外 16 个号停在更早一版坐标上（差 1 条的 10 个、2 条的 2 个、>=3 条的 4 个），没有一个号是引擎随机落位。",
+    "同一步里进录像的选点按下发的倒序执行（OmniMan 第 47 步的 9 条、Messi 第 38 步的 4 条，与日志顺序逐条相反），所以一批一起落地时生效的是这批里最早下发的那条：OmniMan 下发 14 条，出生点是第 4 条的 (1602,98)，最后一条下发的 (530,178) 在 1,075 格外。Ashanti 下发 11 条只落地 1 条（第 23 步），也是 (1602,98)。",
+    "最终出生点相距 <80 格的 8 对，7 对是异队：OmniMan（队5）与 Ashanti（队1）选的是同一个像素（实际落点相距 5 格）；PizzaTime↔Golden Horde 16 格、Deadpool↔Vatican City 18 格、MI6↔Khazar 39 格、OmniMan↔Khazar 61、Ashanti↔Khazar 61（同队）、BlueScreen↔Tryhard 64、BlueScreen↔Alpha 72。",
+    "按真实出生点做陆路 Voronoi（可达陆地 491,437 格）：我方 20 个号的自然份额合计 84,936 格 = 17.3%，人头占 31.2%（比值 0.55）；单号中位 4,484 格，其他真人 8,559。10 个号不到人均（7,678）的一半：OmniMan 212、Ashanti 579、Golden Horde 1,290、BlueScreen 1,756、Alpha 2,038、FedReserve 2,318、Messi 2,421、Belgium 2,555、PizzaTime 2,747、Khazar 3,217。64 个真人里自然份额前 16 名没有我方号，后 16 名里有 11 个。",
+    "开局周期出兵：HL-OPENING 136 行，没有空转的周期；下令到执行中位 12 拍（P90 19）。t=630 我方 46,607 格 = 自然份额的 54.9%（单号中位 57.9%），其他真人 104,460 格 = 25.7%（中位 29.8%）；在场真人的单号领土中位 2,347 对 2,649。",
+    "80 格内有另一个我方号的 11 个号 t=630 领土中位 1,911，其余 9 个号 2,669。OmniMan t=540 起 609 格不再变（被 Ashanti、Khazar 围住），Alpha 2,192 格、Khazar 2,297 格从 t=720 起不变。"
+   ],
+   "issues": [
+    "选点各机各算、互不排斥，又有 16 个号的最后一版选点没赶上开局：自然份额只有人头的 55%，10 个号的地盘不到人均的一半。",
+    "开局周期本身比别的真人快（同样时间拿到自然份额的 54.9% 对 25.7%），但只是把一半大小的自然份额先吃满。"
+   ]
+  },
+  "expansion": {
+   "facts": [
+    "t=630→900→1170→1435（录像真值）：在场真人的单号领土中位，我方 2,347→3,388→3,724→3,921，其他真人 2,649→4,819→8,253→9,729。内置 AI 的地 41.4%（t=630）→46.7%（900）→21.5%（1170）→8.4%（1435）。",
+    "t=1435：我方 20 个号 91,173 格（17.6%）、195 万兵、密度 21.4；其他 39 个在场真人 371,570 格（71.8%）、443 万兵、密度 11.9。我方最大的 Magikarp 9,231 格，59 个在场真人里第 25。",
+    "好地账：t=630 贴着我方或一半以上落在我方自然份额里的内置 AI 81 个、34,704 格（全部 AI 地的 16.2%）。到 t=1435 我方拿到 20,825 格（60.0%）、其他真人 9,041（26.1%）、还在 AI 手里 4,724（13.6%）。其余 179,301 格 AI 地：我方 7,692（4.3%）、其他真人 152,754（85.2%）。t=630→1435 人均从内置 AI 手里拿到的地：我方 1,425 格，其他真人 3,677；净增长 2,228 对 6,070。",
+    "到 t=1435 我方领土 = 自然份额的 107.3%（单号中位 133.8%），其他真人 91.4%（中位 100.8%）：我方把自己那一半大小的自然份额吃满并多拿了一点，差距来自份额本身。",
+    "延迟：下令拍 600~1500 的 324 条指令延迟中位 131 拍（陆攻 271 条 113 / 242 / 410，发船 53 条 223 / 445 / 530）；每 150 拍一格的中位 18（t=600）→83（750）→175（900）→191（1050）→185（1200）。单号中位：Alpha 11、Khazar 18、MI6 49、BlueScreen 83、Messi 92、Deadpool 105、Tryhard 109、PizzaTime 120、Magikarp 128、Golden Horde 134、Mithridates 140、FedReserve 141、Mali 143、Belgium 143、Chosokabe 166、Cuirassier 175、Vatican City 184、DesertFox 197、OmniMan 374、Ashanti 415。",
+    "漏斗（下令拍 600~1500）：影子下令 524 条 → 进录像 324（62%）→ 生效 238（45%）；进了录像没生效 86，丢了或影子多想 40，重放结束时还在路上 160 条。",
+    "迟到落空：执行拍 600~1500 的 294 条陆攻里 95 条没生效（32%），其中 81 条是下令时打的内置 AI 落地时已经出局（影子下令时想发合计 17.7 万兵；延迟中位 197 拍），一兵没扣；另有 32 条生效了但目标已出局、兵进了无主地线（实发 7.5 万）。打内置 AI 的 100 条线出兵 39.1 万，其中 23.2 万（59%）在目标出局时还挂在线上、被改挂到无主地线；这些改挂的线之后只打掉 1.5 万、得 7,569 格，26.0 万退回余额（挂着的拍数中位 29、最大 113）。",
+    "确认窗内重复下单：下令拍 600~1500 的 271 条陆攻里 141 条（52%，全部打内置 AI）是在前一条同目标的令还没进录像时下的：生效 70 条（实发 20.6 万、手续费 2.3 万），没生效 71 条；下令时已有 1 / 2 / 3 / >=4 条同目标在途的 54 / 30 / 21 / 36 条。发船 53 条里 41 条（77%）是这样下的（实发 67.7 万、手续费 6.6 万）。",
+    "同拍批：同一个号同一个服务器回合进录像 >=3 条的 38 批、188 条（每批 3~9 条）；整批没生效的 9 批 49 条；清仓批 16 批，抽走批前余额的 51%~96%，共 60.8 万兵（Ashanti t=1428 5 条船 96%、OmniMan t=1414 4 条船 94%、Golden Horde t=1358 4 条船 90%、Magikarp t=1330 7 条陆攻 80%）。",
+    "策略自己不出兵的拍（影子，t=600~1499，眼里有内置 AI 邻居的 1,869 个决策拍）：可出兵 988（52.9%）；地价闸 botOk 162；底线取 winR 项 115、dpKeep 96；底线取 safeFinite 且去掉就能出兵 361（19.3%），其中 192 拍取到的是异队我方号的兵（FedReserve 46 拍 = 它这类决策拍的 63%，Mali 36，Cuirassier 34，Mithridates 21，Vatican City 19，Deadpool 18）。",
+    "被自己人围住（策略眼里没有可打的邻居也没有无主邻格的决策拍）：Ashanti 177、OmniMan 137、Golden Horde 109、FedReserve 89、Mithridates 80。Mithridates t=1080~1350 贴着 FedReserve 263 格、DesertFox 126 格；OmniMan t=990~1350 密度 61→134。Alpha、Khazar 各剩 3 格够不着的无主邻格，t=720 起 630 拍以上一条指令不发（密度 5.9→79、→96.5）。",
+    "船（t<=1435）：59 条、84.8 万兵。靠在自己岸上的约 16 条（Ashanti 8 条 7.6 万、BlueScreen 3 条 4.5 万）；重放结束时还在海上 27 条；FedReserve（队2）的船 t=1340 靠上 Mithridates（队3）的岸（2.6 万兵，打掉它 903 格），Golden Horde（队4）t=1330 靠上 PizzaTime（队2）（1.4 万兵、277 格）；OmniMan 与 Ashanti 的船 t=1429~1433 在海上互打掉 3.6 万兵。"
+   ],
+   "issues": [
+    "t=630~1435 其他真人人均从内置 AI 手里拿到 3,677 格，我方 1,425 格。三层原因都量得到：自然份额只有人均的 55%；有 AI 邻居的决策拍里 19.3% 被 safeFinite 底线挡住（一半以上是两个异队我方号互相拿对方的兵当底线）；出了兵的又有 32% 落空、59% 的兵挂到了无主地线上。",
+    "客户端越落越多（中位 18→191 拍），策略照常每 5 拍决策、同一目标每 15 个本机拍再下一条，于是同一个目标上叠了 2~4 条以上在途指令，到服务器时一批落地。"
+   ]
+  },
+  "midgame": {
+   "facts": [
+    "t=1530→2070→3510（日志）：在场 18→17→16 个号，领土 77,235→74,232→76,150 格（14.9%→14.4%→14.7%），兵 213 万→253 万→623 万（密度 28→34→82）。出兵/发船指令每千号·拍 28.0（t=630~1530）→16.0（1530~2070）→3.7（2070~3510）；t=2070~3510 全队 90 条出兵/发船、63 条捐款、9 条协防戳。",
+    "本机追赶服务器的那一段（本机拍 900~2250 有 16%~30% 的快照落后最快的号 >=180 拍，最多 540 拍）出现 14 段「发令不见效 → 一个间隔清仓」，9 个号；没有回弹的 7 段共 89.5 万兵。Mali t=1440~1710 发 14 条不见效，t=1710~1800 余额 28.2 万→7,749，领土 3,997→5,583→3,768，174 拍后（t=1974）阵亡。Tryhard t=1620~1890 21.0 万→4,894 兵，3,853→5,121 格，t=2160 只剩 1,791 格。",
+    "队4 的五个号 t=1530~3510 几乎不出兵：MI6 0 条、Messi 0 条（各 1,980 拍），Golden Horde 9 条、Vatican City 7 条、Tryhard 17 条（清仓那一轮 14 条）。MI6 t=1350~2880 cmds 一直是 34：nb=2~3，领土 5,941→3,559，密度 9→86；Messi t=1350~2520 cmds 31 不变：nb=2，3,552→3,903 格，密度 22→84。",
+    "队4 的号到密度 85~100 后开始互相发救援捐款（pct 59~91，每笔手续费是余额的 6.25%）：Messi 9 条、MI6 3 条、Vatican City 10 条、Golden Horde 2 条、Tryhard 2 条；其中给失联的 DesertFox 4 条（Golden Horde、Messi、Tryhard，手续费 7.7 万）。",
+    "t=3484~4141 队4 的五个号在 657 拍里全部阵亡：Tryhard（账上 9.3 万）、MI6（6.1 万）、Messi（4.3 万）、Vatican City（3.8 万）、Golden Horde（5.9 万）；死前 600 拍密度 38~101、nb=0~4。结算行里队4 15.7%（t=1974）→11.3%（3484）→4.3%（4141），队3 24.1%→31.1%→34.5%。",
+    "同期队3 的四个号在涨：22,921 格（t=2070）→39,083（3510）→49,493（4141）。Cuirassier t=2250~2430 neut 从 0 跳到 52，+4,038 格（估算净支出为负）；Mithridates t=2970~4050 3,663→16,603 格（t=3420 neut=37）。它们拿的是谁的地看不到。",
+    "队1、队2 的号：Khazar t=3600 还有 4,814 格（密度 94），t=3780 剩 2,501 格，t=3827 阵亡；PizzaTime t=1890~2520 3,863→1,051 格、630 拍零出兵，t=4029 阵亡。"
+   ],
+   "issues": [
+    "t>=1530 策略几乎不再出兵：1,440 拍里兵从 253 万攒到 623 万，领土没变。主队的五个号带着 4 万~9 万兵阵亡，死前 600 拍几乎没有一条出兵指令。",
+    "满仓之后的出口是捐款：小 pct 的救援每笔手续费约等于想给的数，给失联席位的也照发。"
+   ]
+  },
+  "endgame": {
+   "facts": [
+    "t=4141→6164：我方 10→9 个号，63,002 格（12.2%）、675 万兵（密度 107）；其中队3 的四个号 52,507 格、557 万兵。队5 21.2%→31.8%，队3 34.5%→27.4%。",
+    "队3 四个号之间的捐款：整局 108 条日志、98 条执行、手续费 871 万（到账约 1,885 万）；150 拍内你给我、我又给你的 21 对、34 笔、手续费 297 万。Mithridates「只捐款」的 28 个间隔净支出 944 万、领土 −1 格；Cuirassier 23 个间隔 752 万、−7,145 格。收款人密度 >=100 的 54 笔：手续费 415 万，想给 1,170 万，到账约 835 万。",
+    "超软上限：12 个号、1,187 个快照里 282 个密度 >100；估算实得利息 4,506 万、少拿 1,467 万（Magikarp 666 万、Mithridates 321 万、OmniMan 173 万、Deadpool 98 万、BlueScreen 91 万、Cuirassier 87 万）。Cuirassier t=2430~6120 16,061~16,713 格 3,690 拍基本不变（nb=0~2），密度 42→123。Mithridates t=4050~10530 nb=0，16,603~17,253 格。",
+    "t=6840~7602：队3 的四个号 55,339 格 / 505 万兵 → 25,689 格 / 209 万兵（两个号）。Cuirassier 18,376 格（密度 105）→14,272→9,557→4,768→4,065，t=7602 阵亡（账上 42.0 万）；这 720 拍它的 4 条指令全是捐款。Deadpool 7,634→3,281 格，t=7229 阵亡（11.8 万）。OmniMan（队5）替 Cuirassier 戳 [RU] Rotigus（队2）5 次；BlueScreen 替 Deadpool 戳 [VS] Evxkyr（队5）。",
+    "t=8181 BlueScreen 阵亡（10,232 格、密度 126~133 → 一个间隔 5,585 格；账上 21.1 万；Magikarp 替它戳 [VS] Evxkyr 3 次）。",
+    "t=9720~10530 Mithridates（nb=0）密度 121→150、810 拍零指令；t=10595~10675 给 Magikarp 连发 5 条余粮捐款（pct 280、185×4；前两条之间 40 拍余额 259 万→135 万，两条手续费 27.0 万），自己密度 150→66；Magikarp 同期 16,239→22,583 格（t=10800）。t=10710 起 Mithridates 挨打，17,253→7,748 格，t=11188 阵亡（14.5 万）。Magikarp t=11790~11880 一个间隔 16,589→8,845 格，t=12983 阵亡（27.2 万）。",
+    "结算行里队5：31.8%（t=6164）→41.0%（7602）→66.5%（11188）→98.3%（12983）→99.1%（终局）。终局我方 3 个号：OmniMan 6,012 格（队5）、Ashanti 162、Alpha 103。全局丢地 145,567 格，其中 87% 丢在零出兵的间隔里，27% 丢在零出兵且密度 >=100 的间隔里。"
+   ],
+   "issues": [
+    "队3 的四个号是全队唯一成规模的一块（最高 55,339 格、505 万兵），3,000 多拍里兵在四个号之间转（手续费 871 万），没有变成地；被打时照样零出兵。"
+   ]
+  }
+ },
+ "turningPoints": [
+  {
+   "t0": 0,
+   "t1": 630,
+   "what": "选点：16 个号的最后一版选点没赶上开局，8 对出生点叠在 80 格以内（1 对同像素）；自然份额只有人头的 55%",
+   "shareBefore": 0.0,
+   "shareAfter": 0.0864,
+   "ourBots": [
+    "OmniMan",
+    "Ashanti",
+    "Khazar",
+    "Golden Horde",
+    "PizzaTime",
+    "BlueScreen",
+    "Alpha",
+    "Tryhard",
+    "Deadpool",
+    "Vatican City",
+    "MI6",
+    "Messi",
+    "Belgium"
+   ],
+   "enemies": [
+    "全场其他 44 个真人（自然份额中位 8,559 格）"
+   ],
+   "evidence": [
+    "latency spawn：HL-SPAWN 204 行、进录像 155 条、BACKEND 0 行；最后一条下发的选点 = 出生点的 4/20；停在更早坐标的 16 个号（差 1 条 10、2 条 2、>=3 条 4）；选点延迟下界 中位 / P90 / 最大 0 / 1 / 22 步，>=5 步的 11 条",
+    "latency spawn：OmniMan 第 47 步一次落地 9 条，倒序执行，出生点 = 第 4 条下发的 (1602,98)，离最后一条下发的 1,075 格；Ashanti 11 条只落地 1 条，同一个像素",
+    "landcap voronoi：我方自然份额 84,936 格 = 可达陆地的 17.3%，人头 31.2%，比值 0.55；直线距离版 19.4%（0.62）；单号中位 4,484 对 8,559；前 16 名 0 个、后 16 名 11 个",
+    "digest spawn：80 格内有另一个我方号的 11 个号 t=630 领土中位 1,911，其余 9 个号 2,669",
+    "landcap capture：t=630 我方领土 = 自然份额的 54.9%，其他真人 25.7%；simdigest medians：在场真人单号领土中位 2,347 对 2,649"
+   ],
+   "priorDecisions": [
+    {
+     "t": "选点阶段 51 步",
+     "bot": "20 个号",
+     "what": "每个号在本机每 2.2 秒重算候选表、按自己的槽位取点，7~15 次改点；编队号之间互不排斥",
+     "codePath": "src/strategy/v27-team-c110.js chooseSpawn L4007-4154：L4062-4072 把名字在池里的号从局面里抹掉再算；L4074-4085 候选表每 2.2 秒重算；L4117 取 chosenSlots[slot]；L4147-4150 移动 >6 格才打日志。把选点发给服务器的外层不在对局包里",
+     "why": "本局没有后端协调行；改点越勤，最后一版赶不上开局的概率越大，而同一步落地的几条是倒序执行的"
+    }
+   ],
+   "alternatives": [
+    "人头占 31.2% 的 20 个号如果自然份额也是 31.2%，是 153,574 格；实际 84,936 格（少 44.7%）",
+    "OmniMan、Ashanti 的自然份额 212、579 格：两个号整个开局期就是 609、984 格"
+   ],
+   "statementType": "observed",
+   "confidence": "high"
+  },
+  {
+   "t0": 600,
+   "t1": 1435,
+   "what": "内置 AI 的地 41.4%→8.4%：其他真人人均拿走 3,677 格，我方 1,425 格。我方客户端落后服务器中位 131 拍，32% 的陆攻落空、59% 的兵挂上无主地线；19.3% 的决策拍被 safeFinite 底线挡住",
+   "shareBefore": 0.0864,
+   "shareAfter": 0.1762,
+   "ourBots": [
+    "全部 20 个号"
+   ],
+   "enemies": [
+    "popstodes（队2，16,462 格）",
+    "Player 795（队3）",
+    "Empire Of Québec（队1）",
+    "BaisHaMikdash / [VS] Evxkyr / Women and Chi!dren（队5）"
+   ],
+   "evidence": [
+    "simdigest medians：在场真人单号领土中位 我方 2,347→3,388→3,724→3,921，其他 2,649→4,819→8,253→9,729（t=630/900/1170/1435）",
+    "landcap ai / flow：我方身边的 81 个 AI（34,704 格）到 t=1435 我方 60.0%、其他真人 26.1%；其余 179,301 格 AI 地我方 4.3%、其他真人 85.2%；人均从 AI 手里拿到 1,425 对 3,677 格",
+    "latency delay：下令拍 600~1500 的 324 条 131 / 318 / 530 拍（0~600 是 12 / 19 / 74）；>=90 拍的 210 条",
+    "latency void：执行拍 600~1500 的陆攻 294 条，没生效 95（A1 目标已出局 81，想发 17.7 万），打错进无主地线 32（实发 7.5 万）；打 AI 的线出兵 39.1 万，改挂 23.2 万（59%）",
+    "latency dups / batches：陆攻重复 141/271（52%）；同拍批 38 批 188 条，清仓批 16 批 60.8 万兵",
+    "simdigest gates 600 1500：1,869 个决策拍，可出兵 988；safeFinite 去掉就能出兵 361（取我方异队号的兵 192）；dpKeep 96；winR 115；botOk 162",
+    "strat_probe --dump：t=715~775 Deadpool 与 Vatican City、t=765~960 Mithridates 与 FedReserve、t=1100~1200 Mali 与 Cuirassier 互相拿对方的余额当底线（经由同一个内置 AI 邻居），两边这一拍都不出兵"
+   ],
+   "priorDecisions": [
+    {
+     "t": "600~1435",
+     "bot": "17 个有 AI 邻居的号",
+     "what": "同一目标每 15 个本机拍再下一条，不看前一条有没有生效",
+     "codePath": "src/strategy/v27-team-c110.js General.act L804-846（L830-833 pickTarget → send）；Strategy.send L526-539：同一目标 15 个本机拍内不重发，没有「已发未生效」的记账；对无主地没有这条限制",
+     "why": "本机落后 100~400 拍时，本机局面里前几条都还没生效，于是每 15 拍照旧再下一条"
+    },
+    {
+     "t": "605~1245",
+     "bot": "FedReserve、Mali、Cuirassier、Mithridates、Vatican City、Deadpool",
+     "what": "两个相邻的异队我方号各自把余额留在对方的余额之上，谁也不打夹在中间的内置 AI",
+     "codePath": "src/strategy/v27-team-c110.js Policy.winFloor L4542-4550 = max(winR 项, dpKeep L2491-2496, safeFinite)；safeFinite L2532-2543 对每个内置 AI 邻居取 threatOf().minOther（它的其他邻居里兵最少的那个）；Style.pickTarget L1197 可用兵 <= minSend×余额 就跳过",
+     "why": "safeFinite 不区分那个「其他邻居」是不是编队号；两边余额一起涨，互相追不上"
+    }
+   ],
+   "alternatives": [
+    "同一时段的两个对照：MI6（延迟中位 49 拍，全队第三小）t=630→1350 2,467→5,941 格；Belgium（延迟中位 143，没有被我方号的兵锁住的决策拍）2,751→7,352 格",
+    "被改挂到无主地线上的 29.7 万兵只换到 7,569 格，26.0 万退回：兵没丢，丢的是挂在线上的那几十到一百多拍和目标本身"
+   ],
+   "statementType": "observed",
+   "confidence": "high"
+  },
+  {
+   "t0": 1530,
+   "t1": 4141,
+   "what": "buyLand 接管后全队出兵从每千号·拍 28.0 条掉到 3.7 条，兵 213 万→623 万而领土不变；主队队4 的五个号 t=3484~4141 带着 4 万~9 万兵阵亡",
+   "shareBefore": 0.1493,
+   "shareAfter": 0.1304,
+   "ourBots": [
+    "MI6",
+    "Messi",
+    "Tryhard",
+    "Vatican City",
+    "Golden Horde",
+    "DesertFox",
+    "Mali",
+    "Khazar",
+    "PizzaTime"
+   ],
+   "enemies": [
+    "Women and Chi!dren（队5）",
+    "[CN]唐（队2）",
+    "Empire Of Québec（队1）",
+    "Hi（队3）",
+    "虎（队5）——HL-ASSIST 点到名的；其余看不到"
+   ],
+   "evidence": [
+    "logdigest cmdmix：出兵/发船指令每千号·拍 28.0（630~1530）→16.0（1530~2070）→3.7（2070~3510）；t=2070~3510 90 条出兵/发船、63 条捐款、9 条戳；全队余额 253 万→634 万、领土 74,232→77,247",
+    "digest bot 15 / 24：MI6 t=1350~2880 cmds=34 不变（nb=2~3，5,941→3,559 格，密度 9→86），之后 5 条指令是 3 条捐款 + 2 条戳；Messi t=1350~2520 cmds=31 不变，之后 9 条全是捐款",
+    "digest deaths：Tryhard / MI6 / Messi / Vatican City / Golden Horde 阵亡时账上 9.3 万 / 6.1 万 / 4.3 万 / 3.8 万 / 5.9 万；死前 600 拍密度 38~101",
+    "digest outsiders：队4 15.7%（我方 4.4%）→11.3%（2.9%）→4.3%（0）；队3 24.1%→31.1%→34.5%（我方 4.4%→7.2%→9.6%）",
+    "logdigest stale：14 段 / 9 个号，没有回弹的 7 段 89.5 万兵；Mali t=1710~1800 28.2 万→7,749（k=26.4），174 拍后阵亡",
+    "simdigest contact（t=1350）：MI6 的三个敌方真人邻居的兵是它的 1.63~2.34 倍（冻结线上）；Mithridates、Vatican City、DesertFox 没有敌方真人邻居，贴着异队我方号 389 / 215 / 126 格",
+    "logdigest idleloss：MI6 丢的 3,711 格、Messi 2,221 格、Tryhard 5,924 格 100% 丢在零出兵的间隔里"
+   ],
+   "priorDecisions": [
+    {
+     "t": "1530~3510",
+     "bot": "MI6、Messi、PizzaTime、Golden Horde、Vatican City",
+     "what": "有 1~4 个非编队邻居、密度从 20 涨到 90 以上，1,980 拍里 0~9 条出兵指令",
+     "codePath": "src/strategy/v27-team-c110.js Policy.act L4899-4902 → buyLand L5250-5534：L5258-5267 worth 闸；L5322 → Policy.safeAt L4524-4540（L4528 oppFloorCap）→ dpKeep；L5348-5361 keep=max(min(keep, 倍数×100×地), safe)，avail<=0 → continue；L5526-5531 chunk",
+     "why": "推断：停在保底线（L5360-5361）或 worth 闸。t=1350 的接敌表里 MI6 的邻居是它的 1.63~2.34 倍；录像到 1435 为止，之后停在哪一行看不到"
+    },
+    {
+     "t": "1440~1800",
+     "bot": "Mali、Tryhard、BlueScreen、Belgium、OmniMan",
+     "what": "本机追赶期间发的令不见效，随后一个间隔里把余额打空",
+     "codePath": "src/strategy/v27-team-c110.js buyLand L5510-5523 pulse（每条 <=12% 余额；L5511 只看本机局面里的在途兵）；Strategy.send L526-539",
+     "why": "推断（与 t<=1435 录像里实测的同拍清仓批是同一个机制）：积压的指令到服务器后逐条按当时余额执行"
+    }
+   ],
+   "alternatives": [
+    "同一时段队3 的 Cuirassier 用 8 条指令 +4,038 格（t=2250~2430），Mithridates 3,663→16,603 格（t=2970~4050）：邻居崩盘、出现无主地时策略是会出手的",
+    "队4 剩下的四个号 t=3510 合计 112 万兵（密度 64~101），留到阵亡时账上还有 3.8 万~6.1 万"
+   ],
+   "statementType": "inferred",
+   "confidence": "medium"
+  },
+  {
+   "t0": 6840,
+   "t1": 7602,
+   "what": "队3 的四个号（55,339 格、505 万兵）762 拍里丢掉 29,650 格和两个号；Cuirassier 丢 14,311 格期间 4 条指令全是捐款",
+   "shareBefore": 0.1281,
+   "shareAfter": 0.0744,
+   "ourBots": [
+    "Cuirassier",
+    "Deadpool",
+    "Magikarp",
+    "Mithridates"
+   ],
+   "enemies": [
+    "[RU] Rotigus（队2；打 Cuirassier）",
+    "[VS] Evxkyr（队5；打 Deadpool、BlueScreen、Magikarp）",
+    "Empire Of Québec（队1；打 Deadpool）"
+   ],
+   "evidence": [
+    "digest timeline：队3 的我方号 55,339 格 / 505 万兵（t=6840，4 个）→35,658 / 287 万（7229，3 个）→25,689 / 209 万（7602，2 个）",
+    "digest bot 18：Cuirassier 18,376 格 / 193 万兵（密度 105，t=6840）→14,272→13,999→9,557→7,755→4,768→4,065（t=7560）；cmds 117→121，四条都是捐款（→Deadpool t=7030、→Magikarp t=7130 / 7370 / 7515）；阵亡时账上 42.0 万",
+    "digest deaths：Deadpool 7,634 格 / 46 万（t=7110）→3,281 / 13 万（7200），t=7229 阵亡；死前 600 拍还捐出 2 条",
+    "logdigest foes：[RU] Rotigus 5 条 HL-ASSIST（t=6900~7275，全是 OmniMan 替 Cuirassier 戳）；[VS] Evxkyr 26 条（t=5500~12945）",
+    "logdigest donlog：队3 四个号之间 108 条日志、98 条执行、手续费 871 万；Cuirassier→Deadpool 16 条日志 / 14 条执行 / 手续费 148 万，Cuirassier→Magikarp 13 / 13 / 138 万",
+    "logdigest idleloss：Cuirassier 丢的 14,299 格 100% 在零出兵间隔里（62% 在密度 >=100 时）；Deadpool 73%"
+   ],
+   "priorDecisions": [
+    {
+     "t": "3060~6750",
+     "bot": "Cuirassier",
+     "what": "16,062~18,396 格、nb=0~3，3,690 拍里密度一到 100 上下就捐 15%（s153）或救援 r155 给 Deadpool / Magikarp / Mithridates，30 多条",
+     "codePath": "src/strategy/v27-team-c110.js Policy.act L4922 → tryDonateToTeammate L4369-4499：L4434-4438 救援；L4462-4463、L4466-4489 余粮（候选 = 同队编队号；pct 153 / 185 / 280）；函数里不看对方离上限还有多少空间",
+     "why": "buyLand 这一拍没出兵就轮到捐款；四个号密度都在 100 上下，谁高谁往外捐"
+    },
+    {
+     "t": "6840~7560",
+     "bot": "Cuirassier",
+     "what": "被打掉 14,311 格的 720 拍里没有一条出兵或发船指令",
+     "codePath": "src/strategy/v27-team-c110.js buyLand L5322-5361（保底线）/ L5258-5267（worth 闸）；counterAttack 在 t<1500 的 General.act L826 才有",
+     "why": "推断：攻击者的兵比它多，保底线 >= 余额。看不到攻击者的兵"
+    }
+   ],
+   "alternatives": [
+    "队3 的四个号 t=6164 合计 557 万兵（密度 100 以上），是全场我方最后一块成规模的兵",
+    "同期（t=5940→7560）OmniMan（队5）在赢家队里靠船从 1,230 格涨到 2,203 格"
+   ],
+   "statementType": "inferred",
+   "confidence": "medium"
+  }
+ ],
+ "deaths": [
+  {
+   "bot": "Magikarp",
+   "me": 12,
+   "team": 3,
+   "t": 12983,
+   "peakLand": 22901,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     12420,
+     5309,
+     520626,
+     98
+    ],
+    [
+     12510,
+     5309,
+     579055,
+     109
+    ],
+    [
+     12600,
+     5309,
+     630503,
+     119
+    ],
+    [
+     12690,
+     5309,
+     668222,
+     126
+    ],
+    [
+     12780,
+     5429,
+     705120,
+     130
+    ],
+    [
+     12870,
+     5440,
+     625747,
+     115
+    ],
+    [
+     12960,
+     5159,
+     615771,
+     119
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 126→127 boats 15→16"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [],
+   "assistsForMe": [
+    "Belgium@12885→[VS] Evxkyr",
+    "Belgium@12945→[VS] Evxkyr"
+   ],
+   "stillDonating": [],
+   "balanceAtDeath": 272087,
+   "cause": "队3，我方最大的号。t=1440 9,230 格、密度 4（t=1330 一批 7 条陆攻抽走余额的 80%），360 拍零出兵丢到 4,540 格。t=8910~9720、9810~10530 两段共 1,530 拍零指令（16,239 格、密度 98~150）。t=10800 22,583 格；t=11790~11880 一个间隔 16,589→8,845 格、兵 208 万→83 万；t=12983 阵亡（账上 27.2 万）。整局少拿利息 666 万；丢的 29,913 格 86% 在零出兵间隔里。攻击者 [VS] Evxkyr（队5）。",
+   "patternIds": [
+    "NEW:EC-thin-big-target",
+    "NEW:EG-cap-idle-death",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Mithridates",
+   "me": 13,
+   "team": 3,
+   "t": 11188,
+   "peakLand": 17253,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     10620,
+     17253,
+     1760419,
+     102
+    ],
+    [
+     10710,
+     17253,
+     1145666,
+     66
+    ],
+    [
+     10800,
+     13544,
+     887080,
+     66
+    ],
+    [
+     10890,
+     14609,
+     895527,
+     61
+    ],
+    [
+     10980,
+     13872,
+     769395,
+     56
+    ],
+    [
+     11070,
+     10683,
+     498665,
+     47
+    ],
+    [
+     11160,
+     7748,
+     350136,
+     45
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 86→91 boats 25→25"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "Magikarp@10715r102",
+    "Magikarp@10735r88",
+    "Magikarp@10820r55",
+    "Magikarp@10910r60",
+    "Magikarp@11000r58",
+    "Magikarp@11100r71"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [
+    "s280→*Magikarp@10595",
+    "s185→*Magikarp@10615",
+    "s185→*Magikarp@10635",
+    "s185→*Magikarp@10655",
+    "s185→*Magikarp@10675"
+   ],
+   "balanceAtDeath": 144688,
+   "cause": "队3。t=1080 起被 FedReserve、DesertFox 围住（nb=0），t=2970~4050 3,663→16,603 格；之后 6,480 拍 nb=0、17,252 格不变，兵只能捐或发船（「只捐款」的 28 个间隔净支出 944 万）。t=9720~10530 密度 121→150、零指令；t=10595~10675 给 Magikarp 连发 5 条余粮捐款（前两条 40 拍里余额 259 万→135 万、手续费 27.0 万），自己密度 150→66；t=10710 起挨打 17,253→7,748 格，t=11188 阵亡（账上 14.5 万）。",
+   "patternIds": [
+    "NEW:EG-boxed-hardcap",
+    "NEW:DN-to-overcap",
+    "NEW:DN-dying-donor"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Mali",
+   "me": 14,
+   "team": 5,
+   "t": 1974,
+   "peakLand": 5583,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     1440,
+     3947,
+     150628,
+     38
+    ],
+    [
+     1530,
+     3997,
+     193949,
+     48
+    ],
+    [
+     1620,
+     3997,
+     237190,
+     59
+    ],
+    [
+     1710,
+     3997,
+     282039,
+     71
+    ],
+    [
+     1800,
+     5583,
+     7749,
+     1
+    ],
+    [
+     1890,
+     3768,
+     15619,
+     4
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 24→39 boats 0→0"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "OmniMan@1730s280",
+    "OmniMan@1750s280",
+    "OmniMan@1770s280",
+    "OmniMan@1790s280",
+    "OmniMan@1810r155",
+    "OmniMan@1830r155",
+    "OmniMan@1850r155",
+    "OmniMan@1870r155",
+    "OmniMan@1890r155",
+    "OmniMan@1910r155",
+    "OmniMan@1930r155",
+    "OmniMan@1950r155"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 4546,
+   "cause": "队5。出生点离 [OG]0r@nge（队3）等真人很近（t=810 nb=12）。t=870~1245 的 36 个决策拍被异队我方号的余额当底线（t=1100~1200 实测是 Cuirassier）、53 拍被敌方真人的余额当底线，领土 3,162（t=810）→2,957（1350）而余额 1.7 万→11.6 万。t=1440~1710 发 14 条不见效（本机落后），t=1710~1800 一个间隔余额 28.2 万→7,749、领土 3,997→5,583，下一个间隔 3,768，t=1974 阵亡（账上 4,546）。OmniMan 给它的 12 条捐款只执行 1 条。",
+   "patternIds": [
+    "NEW:IO-stale-pulse-dump",
+    "NEW:AT-dump-then-dead",
+    "NEW:OP-safefinite-squad-lock"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "MI6",
+   "me": 15,
+   "team": 4,
+   "t": 3581,
+   "peakLand": 6140,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     2970,
+     3559,
+     329253,
+     92
+    ],
+    [
+     3060,
+     3661,
+     326401,
+     89
+    ],
+    [
+     3150,
+     3661,
+     364708,
+     100
+    ],
+    [
+     3240,
+     3764,
+     361386,
+     96
+    ],
+    [
+     3330,
+     3764,
+     352063,
+     94
+    ],
+    [
+     3420,
+     3736,
+     337163,
+     90
+    ],
+    [
+     3510,
+     2600,
+     254306,
+     98
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 35→39 boats 0→0"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "Golden Horde@3450s185"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [
+    "r65→*Tryhard@3290",
+    "r70→*Tryhard@3400"
+   ],
+   "balanceAtDeath": 61391,
+   "cause": "队4。t=1350 时三个敌方真人邻居的兵是它的 1.63~2.34 倍（Women and Chi!dren 接壤 289 格）。t=1350~2880 的 1,530 拍 cmds 不变：5,941→3,559 格（t=2070），密度 9→86。之后只发了 3 条救援捐款（pct 65~79）和 2 条替 Ashanti 的协防戳；t=3420~3510 3,736→2,600 格，t=3581 阵亡（账上 6.1 万）。丢的 3,711 格 100% 在零出兵间隔里。",
+   "patternIds": [
+    "NEW:DF-passive-death",
+    "NEW:EG-giant-neighbor-freeze",
+    "NEW:DN-small-pct"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "PizzaTime",
+   "me": 16,
+   "team": 2,
+   "t": 4029,
+   "peakLand": 4090,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     3420,
+     1170,
+     109081,
+     93
+    ],
+    [
+     3510,
+     1170,
+     121165,
+     104
+    ],
+    [
+     3600,
+     1170,
+     109926,
+     94
+    ],
+    [
+     3690,
+     1170,
+     120900,
+     103
+    ],
+    [
+     3780,
+     1170,
+     112481,
+     96
+    ],
+    [
+     3870,
+     1170,
+     124624,
+     106
+    ],
+    [
+     3960,
+     558,
+     41562,
+     74
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 28→30 boats 3→3"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [],
+   "assistsForMe": [],
+   "stillDonating": [
+    "r119→*FedReserve@3550",
+    "r100→*Alpha@3700"
+   ],
+   "balanceAtDeath": 27436,
+   "cause": "队2。出生点离 Golden Horde 16 格，自然份额 2,747 格。t=1890~2520 的 630 拍零出兵，3,863→1,051 格（密度 19→104）。此后在 1,051~1,200 格、nb=2~3 守了 1,350 拍（密度 81~106），只发救援捐款和协防戳；t=3870~3960 1,170→558 格，t=4029 阵亡（账上 2.7 万）。",
+   "patternIds": [
+    "NEW:DF-passive-death",
+    "NEW:EG-cap-idle-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Deadpool",
+   "me": 17,
+   "team": 3,
+   "t": 7229,
+   "peakLand": 12819,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     6660,
+     6780,
+     650884,
+     96
+    ],
+    [
+     6750,
+     6923,
+     555772,
+     80
+    ],
+    [
+     6840,
+     6885,
+     618899,
+     90
+    ],
+    [
+     6930,
+     6847,
+     693913,
+     101
+    ],
+    [
+     7020,
+     6769,
+     754717,
+     112
+    ],
+    [
+     7110,
+     7634,
+     461660,
+     60
+    ],
+    [
+     7200,
+     3281,
+     131039,
+     40
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 107→111 boats 7→7"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "Magikarp@7035s153",
+    "Mithridates@7200r58",
+    "Cuirassier@7030s153"
+   ],
+   "assistsForMe": [
+    "BlueScreen@7200→[VS] Evxkyr"
+   ],
+   "stillDonating": [
+    "r73→*Magikarp@6710",
+    "r155→*Cuirassier@7055"
+   ],
+   "balanceAtDeath": 118255,
+   "cause": "队3。t=4320 12,819 格，之后在 5,574~8,328 格之间；整局收到队友执行的捐款最多（Cuirassier 14 条、Mithridates 9 条、Magikarp 9 条）。t=7020 6,769 格 / 75 万兵（密度 112）→t=7200 3,281 格 / 13 万，t=7229 阵亡（账上 11.8 万）。点到名的攻击者：Empire Of Québec（队1）4 次、[VS] Evxkyr（队5）、[PL]KillaMonjaro（队1）。",
+   "patternIds": [
+    "NEW:DN-pingpong",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Cuirassier",
+   "me": 18,
+   "team": 3,
+   "t": 7602,
+   "peakLand": 18396,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     7020,
+     13999,
+     1664181,
+     119
+    ],
+    [
+     7110,
+     9557,
+     942929,
+     99
+    ],
+    [
+     7200,
+     9545,
+     928948,
+     97
+    ],
+    [
+     7290,
+     7755,
+     738054,
+     95
+    ],
+    [
+     7380,
+     4768,
+     439779,
+     92
+    ],
+    [
+     7470,
+     4429,
+     437258,
+     99
+    ],
+    [
+     7560,
+     4065,
+     493568,
+     121
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 117→121 boats 3→3"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "Magikarp@7590s153",
+    "Mithridates@7300s185",
+    "Mithridates@7500s185",
+    "Deadpool@7055r155"
+   ],
+   "assistsForMe": [
+    "OmniMan@7040→[RU] Rotigus",
+    "OmniMan@7070→[RU] Rotigus",
+    "OmniMan@7275→[RU] Rotigus"
+   ],
+   "stillDonating": [
+    "s153→*Deadpool@7030",
+    "r61→*Magikarp@7130",
+    "s153→*Magikarp@7370",
+    "s153→*Magikarp@7515"
+   ],
+   "balanceAtDeath": 419544,
+   "cause": "队3。t=2250~2430 收了 4,038 格到 16,061 格，之后 3,690 拍基本不变，密度一到 100 就往外捐（「只捐款」的 23 个间隔净支出 752 万）。t=6840 18,376 格 / 193 万兵 → t=7560 4,065 格；这 720 拍 4 条指令全是捐款、0 条出兵。t=7602 阵亡（账上 42.0 万）。攻击者 [RU] Rotigus（队2；OmniMan 替它戳了 5 次）。",
+   "patternIds": [
+    "NEW:DN-pingpong",
+    "NEW:EG-cap-idle-death",
+    "NEW:DN-dying-donor"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Golden Horde",
+   "me": 19,
+   "team": 4,
+   "t": 4141,
+   "peakLand": 5042,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     3600,
+     4318,
+     309372,
+     72
+    ],
+    [
+     3690,
+     4284,
+     338291,
+     79
+    ],
+    [
+     3780,
+     3914,
+     339798,
+     87
+    ],
+    [
+     3870,
+     2870,
+     239214,
+     83
+    ],
+    [
+     3960,
+     2705,
+     242878,
+     90
+    ],
+    [
+     4050,
+     2177,
+     186091,
+     86
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 30→30 boats 20→20"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "Messi@3735r60",
+    "Messi@3840r61"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 58640,
+   "cause": "队4。出生点离 PizzaTime 16 格，自然份额 1,290 格；t=540 起 nb=0，靠船突围（t=1204 出海的一条 t=1330 靠上 PizzaTime 的岸；t=1358 一批 4 条船抽走余额的 90%）。t=2160 5,042 格 → t=2700 3,415 格。t=3600~4050 4,318→2,177 格、密度 72~90、0 条出兵，t=4141 阵亡（账上 5.9 万）。队4 最后一个号。",
+   "patternIds": [
+    "NEW:SP-squad-stack",
+    "NEW:DF-passive-death",
+    "NEW:BT-hit-squadmate"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "BlueScreen",
+   "me": 20,
+   "team": 1,
+   "t": 8181,
+   "peakLand": 10802,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     7650,
+     9773,
+     1127784,
+     115
+    ],
+    [
+     7740,
+     10057,
+     1092876,
+     109
+    ],
+    [
+     7830,
+     10232,
+     1293488,
+     126
+    ],
+    [
+     7920,
+     10232,
+     1364264,
+     133
+    ],
+    [
+     8010,
+     10008,
+     1230544,
+     123
+    ],
+    [
+     8100,
+     5585,
+     530299,
+     95
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 87→90 boats 26→26"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [],
+   "assistsForMe": [
+    "Magikarp@7955→[VS] Evxkyr",
+    "Magikarp@8010→[VS] Evxkyr",
+    "Magikarp@8150→[VS] Evxkyr"
+   ],
+   "stillDonating": [],
+   "balanceAtDeath": 210761,
+   "cause": "队1。出生点离 Alpha 72 格、Tryhard 64 格，自然份额 1,756 格；靠船打出去（t<=1435 8 条船 15.2 万兵，3 条靠在自己岸上）。t=1710~1890 清仓 13.1 万→5,976，领土 3,483→5,906→8,708。t=4590~5670 7,416~7,632 格、密度 105~132。t=7830~8010 10,232 格、密度 126~133，t=8010~8100 一个间隔剩 5,585 格，t=8181 阵亡（账上 21.1 万）。攻击者 [VS] Evxkyr（队5；9 条 HL-ASSIST）。",
+   "patternIds": [
+    "NEW:EG-cap-idle-death",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "FedReserve",
+   "me": 21,
+   "team": 2,
+   "t": 6164,
+   "peakLand": 7772,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     5580,
+     7536,
+     678275,
+     90
+    ],
+    [
+     5670,
+     7034,
+     682271,
+     97
+    ],
+    [
+     5760,
+     5991,
+     585443,
+     98
+    ],
+    [
+     5850,
+     4547,
+     404049,
+     89
+    ],
+    [
+     5940,
+     3643,
+     316244,
+     87
+    ],
+    [
+     6030,
+     3469,
+     326703,
+     94
+    ],
+    [
+     6120,
+     2269,
+     189783,
+     84
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 38→38 boats 19→19"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "Alpha@6050s185"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 111037,
+   "cause": "队2。出生点离 Mithridates 113 格、自然份额 2,318 格；t=690~960 的 46 个决策拍被 Mithridates 的余额当底线，t=1000 起 nb=0。t=1400 一批 3 条船（延迟 345~405 拍）抽走余额的 58%。t=3510~4050 3,909→7,772 格，之后 nb=0、密度 39→97。t=5580~6120 7,536→2,269 格、零出兵（只有 2 条捐款），t=6164 阵亡（账上 11.1 万）。",
+   "patternIds": [
+    "NEW:OP-safefinite-squad-lock",
+    "NEW:TS-squad-wall",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Messi",
+   "me": 24,
+   "team": 4,
+   "t": 4046,
+   "peakLand": 3903,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     3510,
+     2826,
+     286001,
+     101
+    ],
+    [
+     3600,
+     2826,
+     279221,
+     99
+    ],
+    [
+     3690,
+     2329,
+     222969,
+     96
+    ],
+    [
+     3780,
+     2329,
+     218189,
+     94
+    ],
+    [
+     3870,
+     2329,
+     213300,
+     92
+    ],
+    [
+     3960,
+     1682,
+     135247,
+     80
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 37→40 boats 3→3"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [],
+   "assistsForMe": [],
+   "stillDonating": [
+    "r62→*Vatican City@3510",
+    "r60→*Golden Horde@3735",
+    "r61→*Golden Horde@3840"
+   ],
+   "balanceAtDeath": 43343,
+   "cause": "队4。t=1350~2520 cmds=31 不变（nb=2，3,552→3,903 格，密度 22→84）；t=1350 时邻居 🇵🇾 的兵是它的 1.72 倍。t=2590~3840 发了 9 条指令，全是 pct 60~91 的救援捐款（其中 2 条给失联的 DesertFox）。t=3085 起每一两个间隔丢几百格，t=4046 阵亡（账上 4.3 万）。整局 t>=1530 没有一条出兵指令。",
+   "patternIds": [
+    "NEW:DF-passive-death",
+    "NEW:DN-small-pct",
+    "NEW:DN-husk-donate"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Tryhard",
+   "me": 27,
+   "team": 4,
+   "t": 3484,
+   "peakLand": 6342,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     2880,
+     1727,
+     123488,
+     72
+    ],
+    [
+     2970,
+     2133,
+     96126,
+     45
+    ],
+    [
+     3060,
+     2406,
+     114616,
+     48
+    ],
+    [
+     3150,
+     2353,
+     124466,
+     53
+    ],
+    [
+     3240,
+     2241,
+     129273,
+     58
+    ],
+    [
+     3330,
+     1636,
+     131689,
+     80
+    ],
+    [
+     3420,
+     1097,
+     102771,
+     94
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 57→60 boats 7→7"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "MI6@3290r65",
+    "MI6@3400r70",
+    "Messi@3300r64"
+   ],
+   "assistsForMe": [
+    "Magikarp@3375→Empire Of Québec",
+    "Belgium@3375→Empire Of Québec"
+   ],
+   "stillDonating": [],
+   "balanceAtDeath": 92974,
+   "cause": "队4。t=1620~1890 余额 21.0 万→4,894、领土 3,853→5,121（追赶期清仓，最低只剩纯利息预测的 3%），t=2160 剩 1,791 格（密度 3）。之后 900 拍零指令，t=2880~3060 收了一轮无主地（+679 格）；t=3240~3420 2,241→1,097 格，t=3484 阵亡（账上 9.3 万 = 历史最高余额的 44%）。死前 600 拍丢的地全在零出兵间隔里。攻击者：Belgium、Magikarp 在 t=3375 替它戳的是 Empire Of Québec（队1）。",
+   "patternIds": [
+    "NEW:IO-stale-pulse-dump",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Belgium",
+   "me": 29,
+   "team": 2,
+   "t": 13346,
+   "peakLand": 9377,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     12780,
+     717,
+     103731,
+     145
+    ],
+    [
+     12870,
+     717,
+     105249,
+     147
+    ],
+    [
+     12960,
+     740,
+     96632,
+     131
+    ],
+    [
+     13140,
+     261,
+     11618,
+     44
+    ],
+    [
+     13230,
+     208,
+     9044,
+     44
+    ],
+    [
+     13320,
+     164,
+     4524,
+     28
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 173→181 boats 76→81"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [],
+   "assistsForMe": [],
+   "stillDonating": [],
+   "balanceAtDeath": 4297,
+   "cause": "队2。t=1435 7,118 格（59 个在场真人里第 31）、t=1350 密度 11；t=1800~1890 清仓 16.3 万→2.0 万、8,366 格，t=1890~3330 的 1,440 拍零出兵丢到 1,705 格。t=5130 起只剩 0~几百格，靠船和零碎地活到 t=12960（740 格、密度 131），t=13140 剩 261 格，t=13346 阵亡（账上 4,297）。",
+   "patternIds": [
+    "NEW:EC-thin-big-target",
+    "NEW:IO-stale-pulse-dump",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Vatican City",
+   "me": 30,
+   "team": 4,
+   "t": 4105,
+   "peakLand": 6573,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     3510,
+     4754,
+     303584,
+     64
+    ],
+    [
+     3600,
+     3900,
+     171383,
+     44
+    ],
+    [
+     3690,
+     4575,
+     175583,
+     38
+    ],
+    [
+     3780,
+     4547,
+     197494,
+     43
+    ],
+    [
+     3870,
+     3677,
+     158951,
+     43
+    ],
+    [
+     3960,
+     3234,
+     145361,
+     45
+    ],
+    [
+     4050,
+     2257,
+     91943,
+     41
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 72→72 boats 11→11"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [
+    "Messi@3510r62"
+   ],
+   "assistsForMe": [
+    "Deadpool@3510→[CN]唐",
+    "Deadpool@3545→[CN]唐",
+    "Deadpool@3855→[CN]唐"
+   ],
+   "stillDonating": [],
+   "balanceAtDeath": 38461,
+   "cause": "队4。出生点离 Deadpool 18 格。t=1620~2160 6,000 格、nb=0（t=1350 时贴着异队我方号 215 格），密度 36→80。t=2530 起 10 条救援捐款（一条给 Golden Horde 的手续费 3.1 万、想给 2.9 万）。t=2700 后被打：6,573→4,685（t=3240）→2,257（4050），t=4105 阵亡（账上 3.8 万）。Deadpool 替它戳 [CN]唐（队2）5 次。",
+   "patternIds": [
+    "NEW:DF-passive-death",
+    "NEW:TS-squad-wall",
+    "NEW:DN-fee-exceeds-delivery"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Khazar",
+   "me": 36,
+   "team": 1,
+   "t": 3827,
+   "peakLand": 4814,
+   "killers": [
+    "录像没覆盖"
+   ],
+   "densityLast500": [
+    [
+     3240,
+     4814,
+     477937,
+     99
+    ],
+    [
+     3330,
+     4814,
+     529995,
+     110
+    ],
+    [
+     3420,
+     4814,
+     361460,
+     75
+    ],
+    [
+     3510,
+     4814,
+     405146,
+     84
+    ],
+    [
+     3600,
+     4814,
+     453470,
+     94
+    ],
+    [
+     3690,
+     4478,
+     347378,
+     78
+    ],
+    [
+     3780,
+     2501,
+     152462,
+     61
+    ]
+   ],
+   "lastDecisions": [
+    "cmds 27→31 boats 9→9"
+   ],
+   "donationsReceivedReplay": null,
+   "rescueLogsForMe": [],
+   "assistsForMe": [],
+   "stillDonating": [
+    "s153→*BlueScreen@3375",
+    "s153→*BlueScreen@3395"
+   ],
+   "balanceAtDeath": 50434,
+   "cause": "队1。出生点离 MI6 39 格、离 OmniMan / Ashanti 61 格，自然份额 3,217 格。t=720~1440 剩 2~3 格够不着的无主邻格、零指令，2,297 格、密度 9→96。t=1530 后发船打出去（t=2160 4,800 格），t=2430~3600 4,814 格不变、密度 52→110，期间 4 条捐款给 BlueScreen。t=3600~3780 4,814→2,501 格，t=3827 阵亡（账上 5.0 万）。",
+   "patternIds": [
+    "NEW:OP-neutral-crumb-lock",
+    "NEW:DF-passive-death"
+   ],
+   "statementType": "inferred"
+  }
+ ],
+ "truthSummary": {
+  "source": "真引擎重放（录像 B025）到 t=1435；日志快照指纹 260/260 逐兵一致",
+  "donationsExecuted": {
+   "n": 0,
+   "delivered": 0,
+   "fee": 0,
+   "smallPctN": 0,
+   "smallPctDelivered": 0,
+   "smallPctFee": 0,
+   "toHuskN": 0,
+   "toHuskDelivered": 0,
+   "toHuskFee": 0
+  },
+  "donationLogVerdicts": {
+   "录像没覆盖": 269
+  },
+  "boatGiftsOut": {
+   "n": 1,
+   "troops": 553,
+   "delivered": 553
+  },
+  "ledgerTotals": {
+   "Magikarp": {
+    "利息+地租": 87273,
+    "顶格少拿": 209,
+    "陆攻出兵": 77367,
+    "出兵手续费": 4768,
+    "战斗耗兵": 32066,
+    "得地": 10241,
+    "失地": 1013,
+    "被打掉兵": 6761
+   },
+   "Mithridates": {
+    "利息+地租": 164459,
+    "陆攻出兵": 28974,
+    "发船出兵": 93383,
+    "出兵手续费": 13124,
+    "战斗耗兵": 10608,
+    "得地": 5211,
+    "失地": 1177,
+    "被打掉兵": 13925
+   },
+   "Mali": {
+    "利息+地租": 175496,
+    "陆攻出兵": 17035,
+    "出兵手续费": 2109,
+    "战斗耗兵": 9518,
+    "得地": 4758,
+    "失地": 845,
+    "被打掉兵": 13740
+   },
+   "MI6": {
+    "利息+地租": 107869,
+    "陆攻出兵": 52775,
+    "出兵手续费": 3390,
+    "战斗耗兵": 24591,
+    "得地": 7089,
+    "失地": 1868,
+    "被打掉兵": 19305
+   },
+   "PizzaTime": {
+    "利息+地租": 135430,
+    "陆攻出兵": 26827,
+    "发船出兵": 73051,
+    "出兵手续费": 9001,
+    "战斗耗兵": 32465,
+    "得地": 4715,
+    "失地": 637,
+    "被打掉兵": 12988
+   },
+   "Deadpool": {
+    "利息+地租": 166047,
+    "陆攻出兵": 59825,
+    "出兵手续费": 9132,
+    "战斗耗兵": 20438,
+    "得地": 7183,
+    "失地": 258,
+    "被打掉兵": 5535
+   },
+   "Cuirassier": {
+    "利息+地租": 223498,
+    "陆攻出兵": 41978,
+    "出兵手续费": 4175,
+    "战斗耗兵": 18644,
+    "得地": 7592,
+    "失地": 24,
+    "被打掉兵": 713
+   },
+   "Golden Horde": {
+    "利息+地租": 107267,
+    "顶格少拿": 128,
+    "陆攻出兵": 8161,
+    "发船出兵": 86385,
+    "出兵手续费": 7917,
+    "战斗耗兵": 20313,
+    "得地": 3683
+   },
+   "BlueScreen": {
+    "利息+地租": 143189,
+    "陆攻出兵": 9152,
+    "发船出兵": 151710,
+    "出兵手续费": 14091,
+    "战斗耗兵": 11170,
+    "得地": 3534,
+    "失地": 63,
+    "被打掉兵": 303
+   },
+   "FedReserve": {
+    "利息+地租": 147460,
+    "陆攻出兵": 9799,
+    "发船出兵": 82274,
+    "出兵手续费": 10664,
+    "战斗耗兵": 32145,
+    "得地": 4344,
+    "失地": 438,
+    "被打掉兵": 2421
+   },
+   "Chosokabe": {
+    "利息+地租": 208561,
+    "陆攻出兵": 21885,
+    "出兵手续费": 2218,
+    "战斗耗兵": 8681,
+    "得地": 4065,
+    "失地": 410,
+    "被打掉兵": 16156
+   },
+   "Alpha": {
+    "利息+地租": 220564,
+    "顶格少拿": 28,
+    "陆攻出兵": 6947,
+    "出兵手续费": 314,
+    "战斗耗兵": 4464,
+    "得地": 2231,
+    "失地": 45,
+    "被打掉兵": 276
+   },
+   "Messi": {
+    "利息+地租": 126991,
+    "陆攻出兵": 31092,
+    "发船出兵": 21828,
+    "出兵手续费": 7445,
+    "战斗耗兵": 11270,
+    "得地": 3882,
+    "失地": 342,
+    "被打掉兵": 2595
+   },
+   "DesertFox": {
+    "利息+地租": 181991,
+    "陆攻出兵": 76866,
+    "出兵手续费": 7080,
+    "战斗耗兵": 29672,
+    "得地": 8758
+   },
+   "Tryhard": {
+    "利息+地租": 193569,
+    "陆攻出兵": 28822,
+    "发船出兵": 46454,
+    "出兵手续费": 15810,
+    "战斗耗兵": 8170,
+    "得地": 3911,
+    "失地": 70,
+    "被打掉兵": 329
+   },
+   "OmniMan": {
+    "利息+地租": 94058,
+    "顶格少拿": 22377,
+    "陆攻出兵": 1875,
+    "发船出兵": 114323,
+    "出兵手续费": 7701,
+    "战斗耗兵": 2242,
+    "得地": 598
+   },
+   "Belgium": {
+    "利息+地租": 137408,
+    "陆攻出兵": 57577,
+    "出兵手续费": 4792,
+    "战斗耗兵": 25056,
+    "得地": 7454,
+    "失地": 346,
+    "被打掉兵": 6532
+   },
+   "Vatican City": {
+    "利息+地租": 159370,
+    "陆攻出兵": 45049,
+    "出兵手续费": 4474,
+    "战斗耗兵": 16384,
+    "得地": 6446,
+    "失地": 458,
+    "被打掉兵": 6265
+   },
+   "Ashanti": {
+    "利息+地租": 116851,
+    "顶格少拿": 306,
+    "陆攻出兵": 3395,
+    "发船出兵": 180350,
+    "出兵手续费": 14611,
+    "战斗耗兵": 2080,
+    "得地": 1040,
+    "失地": 65,
+    "被打掉兵": 320,
+    "船兵交友军": 553
+   },
+   "Khazar": {
+    "利息+地租": 220456,
+    "陆攻出兵": 7627,
+    "出兵手续费": 314,
+    "战斗耗兵": 4882,
+    "得地": 2285,
+    "收到船兵": 553
+   }
+  }
+ },
+ "latencyLedger": {
+  "matchId": "B025",
+  "replayLast": 1435,
+  "edges": [
+   0,
+   600,
+   1500,
+   3000
+  ],
+  "spawn": {
+   "logged": 204,
+   "landed": 155,
+   "lastOk": 4,
+   "late": 16,
+   "late1": 10,
+   "late2": 2,
+   "late3": 4,
+   "zero": 0,
+   "batch3": 2,
+   "staleBatch": 3,
+   "backendLines": 0,
+   "steps": 51,
+   "lbP50": 0,
+   "lbP90": 1,
+   "lbMax": 22,
+   "near": 8,
+   "samePixel": 1,
+   "per": {
+    "12": {
+     "name": "Magikarp",
+     "team": 3,
+     "logged": 10,
+     "landed": 8,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 46,
+     "final": [
+      98,
+      150
+     ],
+     "lastLog": [
+      558,
+      594
+     ]
+    },
+    "13": {
+     "name": "Mithridates",
+     "team": 3,
+     "logged": 11,
+     "landed": 8,
+     "late": 2,
+     "lateAlt": 2,
+     "batch": 2,
+     "finalBatch": 1,
+     "finalStep": 44,
+     "final": [
+      1362,
+      946
+     ],
+     "lastLog": [
+      466,
+      850
+     ]
+    },
+    "14": {
+     "name": "Mali",
+     "team": 5,
+     "logged": 11,
+     "landed": 9,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 46,
+     "final": [
+      942,
+      238
+     ],
+     "lastLog": [
+      1174,
+      934
+     ]
+    },
+    "15": {
+     "name": "MI6",
+     "team": 4,
+     "logged": 7,
+     "landed": 6,
+     "late": 0,
+     "lateAlt": 0,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 50,
+     "final": [
+      1510,
+      106
+     ],
+     "lastLog": [
+      1510,
+      106
+     ]
+    },
+    "16": {
+     "name": "PizzaTime",
+     "team": 2,
+     "logged": 13,
+     "landed": 11,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 50,
+     "final": [
+      1378,
+      482
+     ],
+     "lastLog": [
+      450,
+      66
+     ]
+    },
+    "17": {
+     "name": "Deadpool",
+     "team": 3,
+     "logged": 7,
+     "landed": 5,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 45,
+     "final": [
+      410,
+      486
+     ],
+     "lastLog": [
+      718,
+      986
+     ]
+    },
+    "18": {
+     "name": "Cuirassier",
+     "team": 3,
+     "logged": 7,
+     "landed": 6,
+     "late": 0,
+     "lateAlt": 0,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 50,
+     "final": [
+      942,
+      110
+     ],
+     "lastLog": [
+      942,
+      110
+     ]
+    },
+    "19": {
+     "name": "Golden Horde",
+     "team": 4,
+     "logged": 13,
+     "landed": 12,
+     "late": 0,
+     "lateAlt": 0,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 44,
+     "final": [
+      1378,
+      498
+     ],
+     "lastLog": [
+      1378,
+      498
+     ]
+    },
+    "20": {
+     "name": "BlueScreen",
+     "team": 1,
+     "logged": 11,
+     "landed": 8,
+     "late": 2,
+     "lateAlt": 2,
+     "batch": 2,
+     "finalBatch": 1,
+     "finalStep": 49,
+     "final": [
+      242,
+      402
+     ],
+     "lastLog": [
+      930,
+      82
+     ]
+    },
+    "21": {
+     "name": "FedReserve",
+     "team": 2,
+     "logged": 10,
+     "landed": 8,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 45,
+     "final": [
+      1474,
+      962
+     ],
+     "lastLog": [
+      1602,
+      122
+     ]
+    },
+    "22": {
+     "name": "Chosokabe",
+     "team": 5,
+     "logged": 7,
+     "landed": 5,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 45,
+     "final": [
+      1238,
+      378
+     ],
+     "lastLog": [
+      182,
+      106
+     ]
+    },
+    "23": {
+     "name": "Alpha",
+     "team": 2,
+     "logged": 11,
+     "landed": 9,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 45,
+     "final": [
+      314,
+      402
+     ],
+     "lastLog": [
+      558,
+      594
+     ]
+    },
+    "24": {
+     "name": "Messi",
+     "team": 4,
+     "logged": 15,
+     "landed": 12,
+     "late": 3,
+     "lateAlt": 3,
+     "batch": 4,
+     "finalBatch": 2,
+     "finalStep": 50,
+     "final": [
+      466,
+      850
+     ],
+     "lastLog": [
+      450,
+      834
+     ]
+    },
+    "25": {
+     "name": "DesertFox",
+     "team": 4,
+     "logged": 7,
+     "landed": 6,
+     "late": 0,
+     "lateAlt": 0,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 49,
+     "final": [
+      1278,
+      963
+     ],
+     "lastLog": [
+      1278,
+      963
+     ]
+    },
+    "27": {
+     "name": "Tryhard",
+     "team": 4,
+     "logged": 7,
+     "landed": 5,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 45,
+     "final": [
+      250,
+      338
+     ],
+     "lastLog": [
+      1430,
+      954
+     ]
+    },
+    "28": {
+     "name": "OmniMan",
+     "team": 5,
+     "logged": 14,
+     "landed": 11,
+     "late": 10,
+     "lateAlt": 10,
+     "batch": 9,
+     "finalBatch": 9,
+     "finalStep": 47,
+     "final": [
+      1602,
+      98
+     ],
+     "lastLog": [
+      530,
+      178
+     ]
+    },
+    "29": {
+     "name": "Belgium",
+     "team": 2,
+     "logged": 14,
+     "landed": 11,
+     "late": 3,
+     "lateAlt": 3,
+     "batch": 2,
+     "finalBatch": 2,
+     "finalStep": 50,
+     "final": [
+      450,
+      66
+     ],
+     "lastLog": [
+      450,
+      834
+     ]
+    },
+    "30": {
+     "name": "Vatican City",
+     "team": 4,
+     "logged": 9,
+     "landed": 7,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 48,
+     "final": [
+      394,
+      478
+     ],
+     "lastLog": [
+      1174,
+      934
+     ]
+    },
+    "31": {
+     "name": "Ashanti",
+     "team": 1,
+     "logged": 11,
+     "landed": 1,
+     "late": 9,
+     "lateAlt": 6,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 23,
+     "final": [
+      1602,
+      98
+     ],
+     "lastLog": [
+      770,
+      242
+     ]
+    },
+    "36": {
+     "name": "Khazar",
+     "team": 1,
+     "logged": 9,
+     "landed": 7,
+     "late": 1,
+     "lateAlt": 1,
+     "batch": 1,
+     "finalBatch": 1,
+     "finalStep": 47,
+     "final": [
+      1546,
+      122
+     ],
+     "lastLog": [
+      910,
+      978
+     ]
+    }
+   }
+  },
+  "fidelity": {
+   "logCmds": 609,
+   "shadowCmds": 632,
+   "landed": 487,
+   "exact": 428,
+   "fuzzy": 34,
+   "unmatched": 25,
+   "lost": 209,
+   "lostBefore": 49,
+   "maxDev": 4
+  },
+  "delay": [
+   {
+    "band": "0~600",
+    "n": 138,
+    "p50": 12,
+    "p90": 19,
+    "max": 74,
+    "nUniq": 138,
+    "p50Uniq": 12,
+    "p90Uniq": 19,
+    "ge35": 5,
+    "ge90": 0,
+    "atk": [
+     133,
+     12,
+     19
+    ],
+    "boat": [
+     5,
+     13,
+     71
+    ],
+    "don": [
+     0,
+     null,
+     null
+    ]
+   },
+   {
+    "band": "600~1500",
+    "n": 324,
+    "p50": 131,
+    "p90": 318,
+    "max": 530,
+    "nUniq": 244,
+    "p50Uniq": 110,
+    "p90Uniq": 315,
+    "ge35": 274,
+    "ge90": 210,
+    "atk": [
+     271,
+     113,
+     242
+    ],
+    "boat": [
+     53,
+     223,
+     445
+    ],
+    "don": [
+     0,
+     null,
+     null
+    ]
+   }
+  ],
+  "bots": [
+   {
+    "me": 12,
+    "name": "Magikarp",
+    "team": 3,
+    "n": 38,
+    "p50": 113,
+    "max": 220,
+    "cmdsLog": 49,
+    "landed": 38
+   },
+   {
+    "me": 13,
+    "name": "Mithridates",
+    "team": 3,
+    "n": 25,
+    "p50": 96,
+    "max": 260,
+    "cmdsLog": 30,
+    "landed": 25
+   },
+   {
+    "me": 14,
+    "name": "Mali",
+    "team": 5,
+    "n": 16,
+    "p50": 60,
+    "max": 271,
+    "cmdsLog": 24,
+    "landed": 16
+   },
+   {
+    "me": 15,
+    "name": "MI6",
+    "team": 4,
+    "n": 34,
+    "p50": 36,
+    "max": 184,
+    "cmdsLog": 34,
+    "landed": 34
+   },
+   {
+    "me": 16,
+    "name": "PizzaTime",
+    "team": 2,
+    "n": 22,
+    "p50": 39,
+    "max": 251,
+    "cmdsLog": 22,
+    "landed": 22
+   },
+   {
+    "me": 17,
+    "name": "Deadpool",
+    "team": 3,
+    "n": 45,
+    "p50": 91,
+    "max": 275,
+    "cmdsLog": 52,
+    "landed": 45
+   },
+   {
+    "me": 18,
+    "name": "Cuirassier",
+    "team": 3,
+    "n": 23,
+    "p50": 140,
+    "max": 278,
+    "cmdsLog": 30,
+    "landed": 23
+   },
+   {
+    "me": 19,
+    "name": "Golden Horde",
+    "team": 4,
+    "n": 17,
+    "p50": 40,
+    "max": 228,
+    "cmdsLog": 17,
+    "landed": 17
+   },
+   {
+    "me": 20,
+    "name": "BlueScreen",
+    "team": 1,
+    "n": 22,
+    "p50": 14,
+    "max": 249,
+    "cmdsLog": 24,
+    "landed": 22
+   },
+   {
+    "me": 21,
+    "name": "FedReserve",
+    "team": 2,
+    "n": 15,
+    "p50": 26,
+    "max": 405,
+    "cmdsLog": 23,
+    "landed": 15
+   },
+   {
+    "me": 22,
+    "name": "Chosokabe",
+    "team": 5,
+    "n": 14,
+    "p50": 28,
+    "max": 197,
+    "cmdsLog": 43,
+    "landed": 14
+   },
+   {
+    "me": 23,
+    "name": "Alpha",
+    "team": 2,
+    "n": 8,
+    "p50": 11,
+    "max": 13,
+    "cmdsLog": 8,
+    "landed": 8
+   },
+   {
+    "me": 24,
+    "name": "Messi",
+    "team": 4,
+    "n": 30,
+    "p50": 48,
+    "max": 209,
+    "cmdsLog": 31,
+    "landed": 30
+   },
+   {
+    "me": 25,
+    "name": "DesertFox",
+    "team": 4,
+    "n": 34,
+    "p50": 114,
+    "max": 410,
+    "cmdsLog": 42,
+    "landed": 34
+   },
+   {
+    "me": 27,
+    "name": "Tryhard",
+    "team": 4,
+    "n": 36,
+    "p50": 75,
+    "max": 220,
+    "cmdsLog": 37,
+    "landed": 36
+   },
+   {
+    "me": 28,
+    "name": "OmniMan",
+    "team": 5,
+    "n": 14,
+    "p50": 13,
+    "max": 434,
+    "cmdsLog": 22,
+    "landed": 14
+   },
+   {
+    "me": 29,
+    "name": "Belgium",
+    "team": 2,
+    "n": 32,
+    "p50": 125,
+    "max": 250,
+    "cmdsLog": 32,
+    "landed": 32
+   },
+   {
+    "me": 30,
+    "name": "Vatican City",
+    "team": 4,
+    "n": 30,
+    "p50": 139,
+    "max": 390,
+    "cmdsLog": 50,
+    "landed": 30
+   },
+   {
+    "me": 31,
+    "name": "Ashanti",
+    "team": 1,
+    "n": 24,
+    "p50": 353,
+    "max": 530,
+    "cmdsLog": 31,
+    "landed": 24
+   },
+   {
+    "me": 36,
+    "name": "Khazar",
+    "team": 1,
+    "n": 8,
+    "p50": 18,
+    "max": 19,
+    "cmdsLog": 8,
+    "landed": 8
+   }
+  ],
+  "funnel": {
+   "bands": [
+    {
+     "band": "0~600",
+     "shadow": 147,
+     "landed": 138,
+     "ok": 137,
+     "void": 1,
+     "lost": 9,
+     "pending": 0,
+     "pendingAmt": 0
+    },
+    {
+     "band": "600~1500",
+     "shadow": 524,
+     "landed": 324,
+     "ok": 238,
+     "void": 86,
+     "lost": 40,
+     "pending": 160,
+     "pendingAmt": 1831074
+    }
+   ],
+   "check": [
+    [
+     270,
+     40,
+     44,
+     37
+    ],
+    [
+     540,
+     118,
+     124,
+     116
+    ],
+    [
+     810,
+     186,
+     198,
+     164
+    ],
+    [
+     1080,
+     307,
+     318,
+     227
+    ],
+    [
+     1350,
+     550,
+     572,
+     404
+    ]
+   ]
+  },
+  "void": [
+   {
+    "band": "0~600",
+    "atk": 134,
+    "void": 1,
+    "a1": 0,
+    "a1Ai": 0,
+    "a1Amt": 0,
+    "a2": 1,
+    "a2Amt": 312,
+    "a3": 0,
+    "a0": 0,
+    "b": 0,
+    "bSent": 0
+   },
+   {
+    "band": "600~1500",
+    "atk": 294,
+    "void": 95,
+    "a1": 81,
+    "a1Ai": 81,
+    "a1Amt": 177373,
+    "a2": 1,
+    "a2Amt": 453,
+    "a3": 4,
+    "a0": 9,
+    "b": 32,
+    "bSent": 74552
+   },
+   {
+    "band": "0~600",
+    "cls": "ai",
+    "lines": 16,
+    "cmds": 17,
+    "sent": 8744,
+    "spent": 7612,
+    "gain": 2400,
+    "ret": 500,
+    "redirLines": 3,
+    "moved": 632,
+    "emptyLines": 0,
+    "emptySent": 0
+   },
+   {
+    "band": "0~600",
+    "cls": "neu",
+    "lines": 102,
+    "cmds": 127,
+    "sent": 122070,
+    "spent": 93928,
+    "gain": 46964,
+    "ret": 28142,
+    "redirLines": 0,
+    "moved": 0,
+    "emptyLines": 0,
+    "emptySent": 0
+   },
+   {
+    "band": "600~1500",
+    "cls": "ai",
+    "lines": 100,
+    "cmds": 146,
+    "sent": 390864,
+    "spent": 132293,
+    "gain": 34742,
+    "ret": 10856,
+    "redirLines": 70,
+    "moved": 231772,
+    "emptyLines": 3,
+    "emptySent": 7415
+   },
+   {
+    "band": "600~1500",
+    "cls": "neu",
+    "lines": 19,
+    "cmds": 35,
+    "sent": 86827,
+    "spent": 9410,
+    "gain": 4705,
+    "ret": 77417,
+    "redirLines": 0,
+    "moved": 0,
+    "emptyLines": 1,
+    "emptySent": 1095
+   }
+  ],
+  "dups": [
+   {
+    "band": "0~600",
+    "kind": "atk",
+    "base": 133,
+    "dups": 2,
+    "ok": 2,
+    "sent": 1275,
+    "fee": 51,
+    "void": 0,
+    "stack": [
+     2,
+     0,
+     0,
+     0
+    ],
+    "byTarget": {
+     "内置 AI": 1,
+     "无主地": 1
+    }
+   },
+   {
+    "band": "0~600",
+    "kind": "boat",
+    "base": 5,
+    "dups": 1,
+    "ok": 1,
+    "sent": 1129,
+    "fee": 203,
+    "void": 0,
+    "stack": [
+     1,
+     0,
+     0,
+     0
+    ],
+    "byTarget": {
+     "发船": 1
+    }
+   },
+   {
+    "band": "600~1500",
+    "kind": "atk",
+    "base": 271,
+    "dups": 141,
+    "ok": 70,
+    "sent": 206437,
+    "fee": 22724,
+    "void": 71,
+    "stack": [
+     54,
+     30,
+     21,
+     36
+    ],
+    "byTarget": {
+     "内置 AI": 141
+    }
+   },
+   {
+    "band": "600~1500",
+    "kind": "boat",
+    "base": 53,
+    "dups": 41,
+    "ok": 41,
+    "sent": 677355,
+    "fee": 65580,
+    "void": 0,
+    "stack": [
+     11,
+     9,
+     8,
+     13
+    ],
+    "byTarget": {
+     "发船": 41
+    }
+   }
+  ],
+  "batches": {
+   "bands": [
+    {
+     "band": "600~1500",
+     "batches": 38,
+     "cmds": 188,
+     "allVoid": 9,
+     "drain": 16,
+     "drainCost": 607542,
+     "extra": 473623
+    }
+   ],
+   "rows": [
+    {
+     "me": 15,
+     "name": "MI6",
+     "t": 840,
+     "n": 3,
+     "ok": 3,
+     "B0": 14106,
+     "cost": 4045,
+     "frac": 0.28675740819509427,
+     "tau0": 780,
+     "tau1": 795,
+     "kinds": "a",
+     "extra": 2255
+    },
+    {
+     "me": 17,
+     "name": "Deadpool",
+     "t": 896,
+     "n": 4,
+     "ok": 4,
+     "B0": 20327,
+     "cost": 6034,
+     "frac": 0.29684655876420524,
+     "tau0": 800,
+     "tau1": 830,
+     "kinds": "a",
+     "extra": 4844
+    },
+    {
+     "me": 30,
+     "name": "Vatican City",
+     "t": 910,
+     "n": 3,
+     "ok": 0,
+     "B0": 25940,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 800,
+     "tau1": 830,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 12,
+     "name": "Magikarp",
+     "t": 938,
+     "n": 4,
+     "ok": 4,
+     "B0": 16112,
+     "cost": 10070,
+     "frac": 0.625,
+     "tau0": 825,
+     "tau1": 865,
+     "kinds": "a",
+     "extra": 6783
+    },
+    {
+     "me": 27,
+     "name": "Tryhard",
+     "t": 945,
+     "n": 3,
+     "ok": 1,
+     "B0": 35215,
+     "cost": 2062,
+     "frac": 0.058554593213119406,
+     "tau0": 855,
+     "tau1": 880,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 24,
+     "name": "Messi",
+     "t": 973,
+     "n": 3,
+     "ok": 3,
+     "B0": 22728,
+     "cost": 13816,
+     "frac": 0.6078845476944738,
+     "tau0": 835,
+     "tau1": 890,
+     "kinds": "a",
+     "extra": 7269
+    },
+    {
+     "me": 17,
+     "name": "Deadpool",
+     "t": 980,
+     "n": 3,
+     "ok": 3,
+     "B0": 28658,
+     "cost": 6973,
+     "frac": 0.24331774722590552,
+     "tau0": 860,
+     "tau1": 880,
+     "kinds": "a",
+     "extra": 5295
+    },
+    {
+     "me": 18,
+     "name": "Cuirassier",
+     "t": 980,
+     "n": 5,
+     "ok": 5,
+     "B0": 44262,
+     "cost": 22634,
+     "frac": 0.511364149835073,
+     "tau0": 805,
+     "tau1": 850,
+     "kinds": "a",
+     "extra": 19393
+    },
+    {
+     "me": 13,
+     "name": "Mithridates",
+     "t": 987,
+     "n": 4,
+     "ok": 4,
+     "B0": 34421,
+     "cost": 11302,
+     "frac": 0.32834606780744313,
+     "tau0": 840,
+     "tau1": 890,
+     "kinds": "a",
+     "extra": 8614
+    },
+    {
+     "me": 15,
+     "name": "MI6",
+     "t": 1008,
+     "n": 5,
+     "ok": 5,
+     "B0": 13672,
+     "cost": 7302,
+     "frac": 0.5340842598010532,
+     "tau0": 865,
+     "tau1": 1005,
+     "kinds": "a",
+     "extra": 6502
+    },
+    {
+     "me": 29,
+     "name": "Belgium",
+     "t": 1022,
+     "n": 4,
+     "ok": 4,
+     "B0": 28443,
+     "cost": 18014,
+     "frac": 0.6333368491368703,
+     "tau0": 895,
+     "tau1": 920,
+     "kinds": "a",
+     "extra": 15098
+    },
+    {
+     "me": 12,
+     "name": "Magikarp",
+     "t": 1036,
+     "n": 5,
+     "ok": 5,
+     "B0": 16289,
+     "cost": 9201,
+     "frac": 0.5648597212843023,
+     "tau0": 905,
+     "tau1": 940,
+     "kinds": "a",
+     "extra": 8248
+    },
+    {
+     "me": 16,
+     "name": "PizzaTime",
+     "t": 1050,
+     "n": 4,
+     "ok": 4,
+     "B0": 42846,
+     "cost": 14743,
+     "frac": 0.3440927974606731,
+     "tau0": 900,
+     "tau1": 945,
+     "kinds": "a",
+     "extra": 11354
+    },
+    {
+     "me": 27,
+     "name": "Tryhard",
+     "t": 1050,
+     "n": 4,
+     "ok": 2,
+     "B0": 56590,
+     "cost": 6436,
+     "frac": 0.11373034104965542,
+     "tau0": 905,
+     "tau1": 940,
+     "kinds": "a",
+     "extra": 3121
+    },
+    {
+     "me": 30,
+     "name": "Vatican City",
+     "t": 1064,
+     "n": 6,
+     "ok": 6,
+     "B0": 50315,
+     "cost": 27562,
+     "frac": 0.5477889297426215,
+     "tau0": 850,
+     "tau1": 925,
+     "kinds": "a",
+     "extra": 18817
+    },
+    {
+     "me": 17,
+     "name": "Deadpool",
+     "t": 1085,
+     "n": 5,
+     "ok": 1,
+     "B0": 43139,
+     "cost": 10236,
+     "frac": 0.23727949187510142,
+     "tau0": 920,
+     "tau1": 1085,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 25,
+     "name": "DesertFox",
+     "t": 1092,
+     "n": 7,
+     "ok": 7,
+     "B0": 51555,
+     "cost": 21865,
+     "frac": 0.4241101736010086,
+     "tau0": 850,
+     "tau1": 920,
+     "kinds": "a",
+     "extra": 18241
+    },
+    {
+     "me": 24,
+     "name": "Messi",
+     "t": 1106,
+     "n": 5,
+     "ok": 0,
+     "B0": 38221,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 905,
+     "tau1": 965,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 13,
+     "name": "Mithridates",
+     "t": 1120,
+     "n": 4,
+     "ok": 0,
+     "B0": 69250,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 920,
+     "tau1": 980,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 15,
+     "name": "MI6",
+     "t": 1141,
+     "n": 5,
+     "ok": 3,
+     "B0": 31403,
+     "cost": 18417,
+     "frac": 0.5864726300035028,
+     "tau0": 1100,
+     "tau1": 1100,
+     "kinds": "a",
+     "extra": 18417
+    },
+    {
+     "me": 29,
+     "name": "Belgium",
+     "t": 1148,
+     "n": 7,
+     "ok": 7,
+     "B0": 38914,
+     "cost": 18549,
+     "frac": 0.4766664953487177,
+     "tau0": 950,
+     "tau1": 1020,
+     "kinds": "a",
+     "extra": 16193
+    },
+    {
+     "me": 12,
+     "name": "Magikarp",
+     "t": 1176,
+     "n": 7,
+     "ok": 1,
+     "B0": 26900,
+     "cost": 9561,
+     "frac": 0.3554275092936803,
+     "tau0": 970,
+     "tau1": 1045,
+     "kinds": "a",
+     "extra": 9561
+    },
+    {
+     "me": 18,
+     "name": "Cuirassier",
+     "t": 1183,
+     "n": 7,
+     "ok": 0,
+     "B0": 85627,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 905,
+     "tau1": 970,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 27,
+     "name": "Tryhard",
+     "t": 1190,
+     "n": 6,
+     "ok": 0,
+     "B0": 90857,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 970,
+     "tau1": 1045,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 31,
+     "name": "Ashanti",
+     "t": 1225,
+     "n": 4,
+     "ok": 4,
+     "B0": 66900,
+     "cost": 58120,
+     "frac": 0.8687593423019432,
+     "tau0": 750,
+     "tau1": 835,
+     "kinds": "b",
+     "extra": 32119
+    },
+    {
+     "me": 17,
+     "name": "Deadpool",
+     "t": 1232,
+     "n": 6,
+     "ok": 0,
+     "B0": 74732,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 1090,
+     "tau1": 1090,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 13,
+     "name": "Mithridates",
+     "t": 1295,
+     "n": 3,
+     "ok": 3,
+     "B0": 125122,
+     "cost": 81517,
+     "frac": 0.6515001358673934,
+     "tau0": 1035,
+     "tau1": 1095,
+     "kinds": "b",
+     "extra": 33986
+    },
+    {
+     "me": 29,
+     "name": "Belgium",
+     "t": 1295,
+     "n": 7,
+     "ok": 0,
+     "B0": 61824,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 1045,
+     "tau1": 1135,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 14,
+     "name": "Mali",
+     "t": 1316,
+     "n": 3,
+     "ok": 0,
+     "B0": 110292,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 1045,
+     "tau1": 1075,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 12,
+     "name": "Magikarp",
+     "t": 1330,
+     "n": 7,
+     "ok": 7,
+     "B0": 43384,
+     "cost": 34645,
+     "frac": 0.7985662917204499,
+     "tau0": 1110,
+     "tau1": 1185,
+     "kinds": "a",
+     "extra": 27571
+    },
+    {
+     "me": 30,
+     "name": "Vatican City",
+     "t": 1330,
+     "n": 8,
+     "ok": 0,
+     "B0": 100390,
+     "cost": 0,
+     "frac": 0.0,
+     "tau0": 940,
+     "tau1": 1030,
+     "kinds": "a",
+     "extra": 0
+    },
+    {
+     "me": 19,
+     "name": "Golden Horde",
+     "t": 1358,
+     "n": 4,
+     "ok": 4,
+     "B0": 45984,
+     "cost": 41578,
+     "frac": 0.9041840640222686,
+     "tau0": 1130,
+     "tau1": 1195,
+     "kinds": "b",
+     "extra": 20607
+    },
+    {
+     "me": 25,
+     "name": "DesertFox",
+     "t": 1365,
+     "n": 8,
+     "ok": 1,
+     "B0": 126135,
+     "cost": 24881,
+     "frac": 0.19725690728188053,
+     "tau0": 955,
+     "tau1": 1050,
+     "kinds": "a",
+     "extra": 24881
+    },
+    {
+     "me": 17,
+     "name": "Deadpool",
+     "t": 1400,
+     "n": 9,
+     "ok": 3,
+     "B0": 128478,
+     "cost": 21284,
+     "frac": 0.1656626037142546,
+     "tau0": 1125,
+     "tau1": 1235,
+     "kinds": "a",
+     "extra": 13757
+    },
+    {
+     "me": 21,
+     "name": "FedReserve",
+     "t": 1400,
+     "n": 3,
+     "ok": 3,
+     "B0": 100026,
+     "cost": 58507,
+     "frac": 0.5849179213404515,
+     "tau0": 995,
+     "tau1": 1055,
+     "kinds": "b",
+     "extra": 42879
+    },
+    {
+     "me": 31,
+     "name": "Ashanti",
+     "t": 1400,
+     "n": 4,
+     "ok": 4,
+     "B0": 106049,
+     "cost": 95503,
+     "frac": 0.9005554036341691,
+     "tau0": 870,
+     "tau1": 955,
+     "kinds": "b",
+     "extra": 46311
+    },
+    {
+     "me": 28,
+     "name": "OmniMan",
+     "t": 1414,
+     "n": 4,
+     "ok": 4,
+     "B0": 86041,
+     "cost": 80951,
+     "frac": 0.94084215664625,
+     "tau0": 980,
+     "tau1": 1045,
+     "kinds": "b",
+     "extra": 37092
+    },
+    {
+     "me": 31,
+     "name": "Ashanti",
+     "t": 1428,
+     "n": 5,
+     "ok": 5,
+     "B0": 30823,
+     "cost": 29705,
+     "frac": 0.963728384647828,
+     "tau0": 990,
+     "tau1": 1110,
+     "kinds": "b",
+     "extra": 14415
+    }
+   ]
+  }
+ },
+ "landLedger": {
+  "matchId": "B025",
+  "gridTicks": [
+   0,
+   150,
+   300,
+   450,
+   630,
+   900,
+   1200,
+   1435
+  ],
+  "replayLast": 1435,
+  "voronoi": {
+   "land": 517334,
+   "humans": 64,
+   "squad": 20,
+   "unreach": 25897,
+   "reach": 491437,
+   "squadVor": 84936,
+   "squadVorPct": 17.28,
+   "headPct": 31.25,
+   "ratio": 0.553,
+   "squadMed": 4484,
+   "otherMed": 8559,
+   "squadEuclid": 100236,
+   "squadEuclidPct": 19.38,
+   "euclidSquadMed": 5280,
+   "euclidOtherMed": 9101,
+   "small": 10,
+   "top16": 0,
+   "bottom16": 11,
+   "bots": [
+    {
+     "me": 25,
+     "name": "*DesertFox",
+     "team": 4,
+     "vor": 9932,
+     "rank": 18,
+     "euclid": 9750,
+     "spawn": [
+      1278,
+      963
+     ],
+     "nearest": 86,
+     "nearestWho": "*Mithridates",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 18,
+     "name": "*Cuirassier",
+     "team": 3,
+     "vor": 8437,
+     "rank": 25,
+     "euclid": 7911,
+     "spawn": [
+      942,
+      110
+     ],
+     "nearest": 102,
+     "nearestWho": "[OG]0r@nge",
+     "nearestKind": "其他真人同队"
+    },
+    {
+     "me": 22,
+     "name": "*Chosokabe",
+     "team": 5,
+     "vor": 7489,
+     "rank": 31,
+     "euclid": 7818,
+     "spawn": [
+      1238,
+      378
+     ],
+     "nearest": 81,
+     "nearestWho": "Player 486",
+     "nearestKind": "其他真人异队"
+    },
+    {
+     "me": 15,
+     "name": "*MI6",
+     "team": 4,
+     "vor": 7170,
+     "rank": 34,
+     "euclid": 6740,
+     "spawn": [
+      1510,
+      106
+     ],
+     "nearest": 39,
+     "nearestWho": "*Khazar",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 17,
+     "name": "*Deadpool",
+     "team": 3,
+     "vor": 6437,
+     "rank": 37,
+     "euclid": 6747,
+     "spawn": [
+      410,
+      486
+     ],
+     "nearest": 18,
+     "nearestWho": "*Vatican City",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 13,
+     "name": "*Mithridates",
+     "team": 3,
+     "vor": 6269,
+     "rank": 42,
+     "euclid": 6359,
+     "spawn": [
+      1362,
+      946
+     ],
+     "nearest": 86,
+     "nearestWho": "*DesertFox",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 27,
+     "name": "*Tryhard",
+     "team": 4,
+     "vor": 5493,
+     "rank": 44,
+     "euclid": 5915,
+     "spawn": [
+      251,
+      339
+     ],
+     "nearest": 64,
+     "nearestWho": "*BlueScreen",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 14,
+     "name": "*Mali",
+     "team": 5,
+     "vor": 5115,
+     "rank": 46,
+     "euclid": 6659,
+     "spawn": [
+      942,
+      238
+     ],
+     "nearest": 83,
+     "nearestWho": "Imperatorius",
+     "nearestKind": "其他真人异队"
+    },
+    {
+     "me": 12,
+     "name": "*Magikarp",
+     "team": 3,
+     "vor": 4977,
+     "rank": 47,
+     "euclid": 5280,
+     "spawn": [
+      98,
+      149
+     ],
+     "nearest": 168,
+     "nearestWho": "Blob",
+     "nearestKind": "其他真人异队"
+    },
+    {
+     "me": 30,
+     "name": "*Vatican City",
+     "team": 4,
+     "vor": 4484,
+     "rank": 49,
+     "euclid": 4150,
+     "spawn": [
+      394,
+      478
+     ],
+     "nearest": 18,
+     "nearestWho": "*Deadpool",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 36,
+     "name": "*Khazar",
+     "team": 1,
+     "vor": 3217,
+     "rank": 51,
+     "euclid": 3076,
+     "spawn": [
+      1546,
+      122
+     ],
+     "nearest": 39,
+     "nearestWho": "*MI6",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 16,
+     "name": "*PizzaTime",
+     "team": 2,
+     "vor": 2747,
+     "rank": 52,
+     "euclid": 4580,
+     "spawn": [
+      1378,
+      482
+     ],
+     "nearest": 20,
+     "nearestWho": "*Golden Horde",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 29,
+     "name": "*Belgium",
+     "team": 2,
+     "vor": 2555,
+     "rank": 53,
+     "euclid": 10729,
+     "spawn": [
+      454,
+      63
+     ],
+     "nearest": 141,
+     "nearestWho": "Empire Of Québec",
+     "nearestKind": "其他真人异队"
+    },
+    {
+     "me": 24,
+     "name": "*Messi",
+     "team": 4,
+     "vor": 2421,
+     "rank": 54,
+     "euclid": 2695,
+     "spawn": [
+      466,
+      850
+     ],
+     "nearest": 128,
+     "nearestWho": "[Corgi] goy land",
+     "nearestKind": "其他真人异队"
+    },
+    {
+     "me": 21,
+     "name": "*FedReserve",
+     "team": 2,
+     "vor": 2318,
+     "rank": 55,
+     "euclid": 2266,
+     "spawn": [
+      1474,
+      962
+     ],
+     "nearest": 113,
+     "nearestWho": "*Mithridates",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 23,
+     "name": "*Alpha",
+     "team": 2,
+     "vor": 2038,
+     "rank": 56,
+     "euclid": 2694,
+     "spawn": [
+      312,
+      406
+     ],
+     "nearest": 70,
+     "nearestWho": "*BlueScreen",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 20,
+     "name": "*BlueScreen",
+     "team": 1,
+     "vor": 1756,
+     "rank": 57,
+     "euclid": 1760,
+     "spawn": [
+      242,
+      402
+     ],
+     "nearest": 64,
+     "nearestWho": "*Tryhard",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 19,
+     "name": "*Golden Horde",
+     "team": 4,
+     "vor": 1290,
+     "rank": 58,
+     "euclid": 4147,
+     "spawn": [
+      1377,
+      502
+     ],
+     "nearest": 20,
+     "nearestWho": "*PizzaTime",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 31,
+     "name": "*Ashanti",
+     "team": 1,
+     "vor": 579,
+     "rank": 60,
+     "euclid": 619,
+     "spawn": [
+      1602,
+      99
+     ],
+     "nearest": 5,
+     "nearestWho": "*OmniMan",
+     "nearestKind": "我方异队"
+    },
+    {
+     "me": 28,
+     "name": "*OmniMan",
+     "team": 5,
+     "vor": 212,
+     "rank": 61,
+     "euclid": 341,
+     "spawn": [
+      1606,
+      102
+     ],
+     "nearest": 5,
+     "nearestWho": "*Ashanti",
+     "nearestKind": "我方异队"
+    }
+   ],
+   "teams": {
+    "1": [
+     13,
+     105037,
+     3,
+     5552
+    ],
+    "2": [
+     12,
+     107251,
+     4,
+     9658
+    ],
+    "3": [
+     13,
+     115597,
+     4,
+     26120
+    ],
+    "4": [
+     13,
+     82050,
+     6,
+     30790
+    ],
+    "5": [
+     13,
+     81502,
+     3,
+     12816
+    ]
+   }
+  },
+  "capture": [
+   {
+    "t": 630,
+    "squadTerr": 46607,
+    "squadVor": 84936,
+    "squadRate": 0.5487,
+    "squadMedRate": 0.5791,
+    "squadDead": 0,
+    "otherTerr": 104460,
+    "otherVor": 406501,
+    "otherRate": 0.257,
+    "otherMedRate": 0.298,
+    "otherDead": 2,
+    "aiLand": 214005,
+    "neutral": 152262,
+    "teams": {
+     "1o": [
+      16712,
+      99485,
+      10
+     ],
+     "1s": [
+      5011,
+      5552,
+      3
+     ],
+     "2o": [
+      22374,
+      97593,
+      8
+     ],
+     "2s": [
+      9447,
+      9658,
+      4
+     ],
+     "3o": [
+      25666,
+      89477,
+      9
+     ],
+     "3s": [
+      11322,
+      26120,
+      4
+     ],
+     "4o": [
+      17261,
+      51260,
+      7
+     ],
+     "4s": [
+      14431,
+      30790,
+      6
+     ],
+     "5o": [
+      22447,
+      68686,
+      10
+     ],
+     "5s": [
+      6396,
+      12816,
+      3
+     ]
+    }
+   },
+   {
+    "t": 1435,
+    "squadTerr": 91173,
+    "squadVor": 84936,
+    "squadRate": 1.0734,
+    "squadMedRate": 1.3381,
+    "squadDead": 0,
+    "otherTerr": 371570,
+    "otherVor": 406501,
+    "otherRate": 0.9141,
+    "otherMedRate": 1.008,
+    "otherDead": 5,
+    "aiLand": 43501,
+    "neutral": 11090,
+    "teams": {
+     "1o": [
+      69980,
+      99485,
+      10
+     ],
+     "1s": [
+      6764,
+      5552,
+      3
+     ],
+     "2o": [
+      85163,
+      97593,
+      8
+     ],
+     "2s": [
+      17318,
+      9658,
+      4
+     ],
+     "3o": [
+      90579,
+      89477,
+      9
+     ],
+     "3s": [
+      27794,
+      26120,
+      4
+     ],
+     "4o": [
+      46819,
+      51260,
+      7
+     ],
+     "4s": [
+      31095,
+      30790,
+      6
+     ],
+     "5o": [
+      79029,
+      68686,
+      10
+     ],
+     "5s": [
+      8202,
+      12816,
+      3
+     ]
+    }
+   }
+  ],
+  "natural": {
+   "ticks": [
+    {
+     "t": 630,
+     "squad": {
+      "n": 84936,
+      "self": 42316,
+      "squad": 2763,
+      "other": 0,
+      "ai": 29284,
+      "neutral": 10573
+     },
+     "other": {
+      "n": 406501,
+      "self": 98508,
+      "squad": 1528,
+      "other": 5952,
+      "ai": 181198,
+      "neutral": 119315
+     }
+    },
+    {
+     "t": 1435,
+     "squad": {
+      "n": 84936,
+      "self": 61424,
+      "squad": 7251,
+      "other": 9435,
+      "ai": 6638,
+      "neutral": 188
+     },
+     "other": {
+      "n": 406501,
+      "self": 276211,
+      "squad": 20362,
+      "other": 78678,
+      "ai": 30823,
+      "neutral": 427
+     }
+    }
+   ],
+   "perBot": [
+    {
+     "me": 25,
+     "name": "*DesertFox",
+     "n": 9932,
+     "self": 8134,
+     "squad": 13,
+     "other": 0,
+     "ai": 1785,
+     "neutral": 0,
+     "outside": 636
+    },
+    {
+     "me": 18,
+     "name": "*Cuirassier",
+     "n": 8437,
+     "self": 5018,
+     "squad": 13,
+     "other": 3406,
+     "ai": 0,
+     "neutral": 0,
+     "outside": 2562
+    },
+    {
+     "me": 22,
+     "name": "*Chosokabe",
+     "n": 7489,
+     "self": 3631,
+     "squad": 0,
+     "other": 2064,
+     "ai": 1794,
+     "neutral": 0,
+     "outside": 36
+    },
+    {
+     "me": 15,
+     "name": "*MI6",
+     "n": 7170,
+     "self": 3825,
+     "squad": 0,
+     "other": 1989,
+     "ai": 1274,
+     "neutral": 82,
+     "outside": 1408
+    },
+    {
+     "me": 17,
+     "name": "*Deadpool",
+     "n": 6437,
+     "self": 5180,
+     "squad": 517,
+     "other": 711,
+     "ai": 0,
+     "neutral": 29,
+     "outside": 1757
+    },
+    {
+     "me": 13,
+     "name": "*Mithridates",
+     "n": 6269,
+     "self": 3746,
+     "squad": 2523,
+     "other": 0,
+     "ai": 0,
+     "neutral": 0,
+     "outside": 300
+    },
+    {
+     "me": 27,
+     "name": "*Tryhard",
+     "n": 5493,
+     "self": 3627,
+     "squad": 1133,
+     "other": 733,
+     "ai": 0,
+     "neutral": 0,
+     "outside": 226
+    },
+    {
+     "me": 14,
+     "name": "*Mali",
+     "n": 5115,
+     "self": 3161,
+     "squad": 1350,
+     "other": 532,
+     "ai": 0,
+     "neutral": 72,
+     "outside": 764
+    },
+    {
+     "me": 12,
+     "name": "*Magikarp",
+     "n": 4977,
+     "self": 4027,
+     "squad": 0,
+     "other": 0,
+     "ai": 950,
+     "neutral": 0,
+     "outside": 5204
+    },
+    {
+     "me": 30,
+     "name": "*Vatican City",
+     "n": 4484,
+     "self": 4294,
+     "squad": 190,
+     "other": 0,
+     "ai": 0,
+     "neutral": 0,
+     "outside": 1706
+    },
+    {
+     "me": 36,
+     "name": "*Khazar",
+     "n": 3217,
+     "self": 2297,
+     "squad": 915,
+     "other": 0,
+     "ai": 0,
+     "neutral": 5,
+     "outside": 0
+    },
+    {
+     "me": 16,
+     "name": "*PizzaTime",
+     "n": 2747,
+     "self": 1680,
+     "squad": 232,
+     "other": 0,
+     "ai": 835,
+     "neutral": 0,
+     "outside": 2410
+    },
+    {
+     "me": 29,
+     "name": "*Belgium",
+     "n": 2555,
+     "self": 2555,
+     "squad": 0,
+     "other": 0,
+     "ai": 0,
+     "neutral": 0,
+     "outside": 4563
+    },
+    {
+     "me": 24,
+     "name": "*Messi",
+     "n": 2421,
+     "self": 2421,
+     "squad": 0,
+     "other": 0,
+     "ai": 0,
+     "neutral": 0,
+     "outside": 1131
+    },
+    {
+     "me": 21,
+     "name": "*FedReserve",
+     "n": 2318,
+     "self": 2031,
+     "squad": 287,
+     "other": 0,
+     "ai": 0,
+     "neutral": 0,
+     "outside": 1887
+    },
+    {
+     "me": 23,
+     "name": "*Alpha",
+     "n": 2038,
+     "self": 2038,
+     "squad": 0,
+     "other": 0,
+     "ai": 0,
+     "neutral": 0,
+     "outside": 154
+    },
+    {
+     "me": 20,
+     "name": "*BlueScreen",
+     "n": 1756,
+     "self": 1755,
+     "squad": 1,
+     "other": 0,
+     "ai": 0,
+     "neutral": 0,
+     "outside": 1728
+    },
+    {
+     "me": 19,
+     "name": "*Golden Horde",
+     "n": 1290,
+     "self": 1290,
+     "squad": 0,
+     "other": 0,
+     "ai": 0,
+     "neutral": 0,
+     "outside": 2397
+    },
+    {
+     "me": 31,
+     "name": "*Ashanti",
+     "n": 579,
+     "self": 510,
+     "squad": 69,
+     "other": 0,
+     "ai": 0,
+     "neutral": 0,
+     "outside": 474
+    },
+    {
+     "me": 28,
+     "name": "*OmniMan",
+     "n": 212,
+     "self": 204,
+     "squad": 8,
+     "other": 0,
+     "ai": 0,
+     "neutral": 0,
+     "outside": 406
+    }
+   ],
+   "perBotTick": 1435
+  },
+  "ai": {
+   "t0": 630,
+   "touch": 69,
+   "inside": 68,
+   "n": 81,
+   "cells": 34704,
+   "allAi": 439,
+   "allCells": 214005,
+   "later": [
+    {
+     "t": 900,
+     "near": {
+      "n": 34704,
+      "squad": 8844,
+      "other": 1975,
+      "ai": 23809,
+      "neutral": 76
+     },
+     "rest": {
+      "n": 179301,
+      "squad": 2482,
+      "other": 42207,
+      "ai": 132732,
+      "neutral": 1880
+     },
+     "dead": 27
+    },
+    {
+     "t": 1200,
+     "near": {
+      "n": 34704,
+      "squad": 17111,
+      "other": 6894,
+      "ai": 10684,
+      "neutral": 15
+     },
+     "rest": {
+      "n": 179301,
+      "squad": 5729,
+      "other": 123562,
+      "ai": 49394,
+      "neutral": 616
+     },
+     "dead": 64
+    },
+    {
+     "t": 1435,
+     "near": {
+      "n": 34704,
+      "squad": 20825,
+      "other": 9041,
+      "ai": 4724,
+      "neutral": 114
+     },
+     "rest": {
+      "n": 179301,
+      "squad": 7692,
+      "other": 152754,
+      "ai": 18661,
+      "neutral": 194
+     },
+     "dead": 74
+    }
+   ],
+   "only": {
+    "ais": 73,
+    "cells": 31350,
+    "squad": 19513,
+    "other": 6999,
+    "ai": 4724,
+    "neutral": 114
+   },
+   "both": {
+    "ais": 8,
+    "cells": 3354,
+    "squad": 1312,
+    "other": 2042,
+    "ai": 0,
+    "neutral": 0
+   },
+   "credit": {
+    "其他真人拿到一半以上": [
+     18,
+     9480
+    ],
+    "仍有一半以上是 AI 的": [
+     9,
+     4589
+    ],
+    "我方拿到一半以上": [
+     54,
+     20635
+    ]
+   }
+  },
+  "flow": {
+   "t0": 630,
+   "t1": 1435,
+   "rows": [
+    {
+     "me": 12,
+     "name": "*Magikarp",
+     "team": 3,
+     "t0": 2020,
+     "t1": 9231,
+     "gain": {
+      "neutral": 2928,
+      "ai": 4304,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 21,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 13,
+     "name": "*Mithridates",
+     "team": 3,
+     "t0": 3511,
+     "t1": 4046,
+     "gain": {
+      "neutral": 266,
+      "ai": 526,
+      "other": 0,
+      "squad": 251
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 508
+     }
+    },
+    {
+     "me": 14,
+     "name": "*Mali",
+     "team": 5,
+     "t0": 2669,
+     "t1": 3925,
+     "gain": {
+      "neutral": 718,
+      "ai": 684,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 117,
+      "squad": 29
+     }
+    },
+    {
+     "me": 15,
+     "name": "*MI6",
+     "team": 4,
+     "t0": 2467,
+     "t1": 5233,
+     "gain": {
+      "neutral": 1493,
+      "ai": 1941,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 53,
+      "ai": 418,
+      "other": 197,
+      "squad": 0
+     }
+    },
+    {
+     "me": 16,
+     "name": "*PizzaTime",
+     "team": 2,
+     "t0": 2228,
+     "t1": 4090,
+     "gain": {
+      "neutral": 1207,
+      "ai": 905,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 250,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 17,
+     "name": "*Deadpool",
+     "team": 3,
+     "t0": 2479,
+     "t1": 6937,
+     "gain": {
+      "neutral": 102,
+      "ai": 4270,
+      "other": 86,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 18,
+     "name": "*Cuirassier",
+     "team": 3,
+     "t0": 3312,
+     "t1": 7580,
+     "gain": {
+      "neutral": 2105,
+      "ai": 2158,
+      "other": 0,
+      "squad": 29
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 24,
+      "squad": 0
+     }
+    },
+    {
+     "me": 19,
+     "name": "*Golden Horde",
+     "team": 4,
+     "t0": 1290,
+     "t1": 3687,
+     "gain": {
+      "neutral": 2296,
+      "ai": 101,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 20,
+     "name": "*BlueScreen",
+     "team": 1,
+     "t0": 2184,
+     "t1": 3483,
+     "gain": {
+      "neutral": 551,
+      "ai": 748,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 21,
+     "name": "*FedReserve",
+     "team": 2,
+     "t0": 2665,
+     "t1": 3918,
+     "gain": {
+      "neutral": 153,
+      "ai": 864,
+      "other": 0,
+      "squad": 487
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 251
+     }
+    },
+    {
+     "me": 22,
+     "name": "*Chosokabe",
+     "team": 5,
+     "t0": 3118,
+     "t1": 3667,
+     "gain": {
+      "neutral": 759,
+      "ai": 49,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 198,
+      "other": 61,
+      "squad": 0
+     }
+    },
+    {
+     "me": 23,
+     "name": "*Alpha",
+     "team": 2,
+     "t0": 1803,
+     "t1": 2192,
+     "gain": {
+      "neutral": 1,
+      "ai": 388,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 24,
+     "name": "*Messi",
+     "team": 4,
+     "t0": 2191,
+     "t1": 3552,
+     "gain": {
+      "neutral": 37,
+      "ai": 1324,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 25,
+     "name": "*DesertFox",
+     "team": 4,
+     "t0": 3209,
+     "t1": 8770,
+     "gain": {
+      "neutral": 497,
+      "ai": 5043,
+      "other": 0,
+      "squad": 21
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 27,
+     "name": "*Tryhard",
+     "team": 4,
+     "t0": 3102,
+     "t1": 3853,
+     "gain": {
+      "neutral": 326,
+      "ai": 425,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 28,
+     "name": "*OmniMan",
+     "team": 5,
+     "t0": 609,
+     "t1": 610,
+     "gain": {
+      "neutral": 1,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 29,
+     "name": "*Belgium",
+     "team": 2,
+     "t0": 2751,
+     "t1": 7118,
+     "gain": {
+      "neutral": 2463,
+      "ai": 1904,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 30,
+     "name": "*Vatican City",
+     "team": 4,
+     "t0": 2172,
+     "t1": 6000,
+     "gain": {
+      "neutral": 1173,
+      "ai": 2655,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 31,
+     "name": "*Ashanti",
+     "team": 1,
+     "t0": 964,
+     "t1": 984,
+     "gain": {
+      "neutral": 20,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    },
+    {
+     "me": 36,
+     "name": "*Khazar",
+     "team": 1,
+     "t0": 1863,
+     "t1": 2297,
+     "gain": {
+      "neutral": 206,
+      "ai": 228,
+      "other": 0,
+      "squad": 0
+     },
+     "loss": {
+      "neutral": 0,
+      "ai": 0,
+      "other": 0,
+      "squad": 0
+     }
+    }
+   ],
+   "squad": {
+    "t0": 46607,
+    "t1": 91173,
+    "g_neutral": 17302,
+    "g_ai": 28517,
+    "g_other": 86,
+    "g_squad": 788,
+    "l_neutral": 53,
+    "l_ai": 887,
+    "l_other": 399,
+    "l_squad": 788
+   },
+   "other": {
+    "n": 44,
+    "t0": 104460,
+    "t1": 371570,
+    "fromAi": 161795,
+    "fromSquad": 399,
+    "fromNeutral": 105031,
+    "toAi": 29
+   }
+  },
+  "layers": {
+   "spawn": {
+    "squadVor": 84936,
+    "par": 153574,
+    "small": [
+     [
+      "*PizzaTime",
+      2747
+     ],
+     [
+      "*Golden Horde",
+      1290
+     ],
+     [
+      "*BlueScreen",
+      1756
+     ],
+     [
+      "*FedReserve",
+      2318
+     ],
+     [
+      "*Alpha",
+      2038
+     ],
+     [
+      "*Messi",
+      2421
+     ],
+     [
+      "*OmniMan",
+      212
+     ],
+     [
+      "*Belgium",
+      2555
+     ],
+     [
+      "*Ashanti",
+      579
+     ],
+     [
+      "*Khazar",
+      3217
+     ]
+    ]
+   },
+   "gates": {
+    "n": 1869,
+    "ok": 988,
+    "botOk": 162,
+    "winR": 115,
+    "dpKeep": 96,
+    "safeFinite": 361,
+    "safeFiniteSquad": 192,
+    "safeFiniteNoPass": 37
+   },
+   "late": {
+    "atk": 294,
+    "a1": 81,
+    "a1Amt": 177373,
+    "b": 32,
+    "bSent": 74552,
+    "aiSent": 390864,
+    "aiMoved": 231772,
+    "pending": 111
+   }
+  }
+ },
+ "latencyNotes": [
+  "选点：204 行下发、155 条落地；16/20 个号的最后一版选点没有成为出生点；0 个号被引擎随机落位；同像素 1 对、<80 格 8 对。",
+  "指令延迟（下令→执行，拍）：0~600 P50/P90/Max 12/19/74；600~1500 131/318/530；1500 以后录像没有覆盖（日志侧：本机拍 900~2250 有 16%~30% 的快照落后最快的号 >=180 拍）。",
+  "漏斗（600~1500）：影子 524 → 进录像 324 → 生效 238；到重放末拍还在路上 160 条。日志 cmds 609 条里进录像 443 条（72.7%）。",
+  "迟到落空：81 条（想发 17.7 万兵，一兵没扣）+ 打错进无主地线 32 条（7.5 万）；打 AI 的线 39.1 万兵里 23.2 万被改挂。",
+  "重复下单：陆攻 141/271，发船 41/53；同拍批 38 批 188 条，清仓批 16 批 60.8 万兵。"
+ ],
+ "landNotes": [
+  "Voronoi 自然份额：我方 17.3%（人头 31.2%），单号中位 4,484 对 8,559。",
+  "实抢 ÷ 自然份额：t=630 我方 54.9% 对其他真人 25.7%；t=1435 107.3% 对 91.4%。",
+  "身边的内置 AI（81 个、34,704 格）：我方 60.0%、其他真人 26.1%、仍是 AI 13.6%；其余 AI 地我方 4.3%、其他真人 85.2%。人均从 AI 手里拿到 1,425 对 3,677 格。",
+  "三层归因（600~1500）：① 出生太挤：自然份额比按人头少 44.7%；② 策略底线：1,869 个决策拍里 safeFinite 361、dpKeep 96、winR 115、botOk 162；③ 迟到：294 条陆攻里落空 81、打错 32，59.3% 的兵被改挂。"
+ ],
+ "decisions": [
+  {
+   "t": 0,
+   "bot": "20 个号（选点）",
+   "kind": "spawn",
+   "verdict": "error",
+   "state": "选点阶段 51 步；日志 204 行选点、进录像 155 条；最后一条下发的 = 出生点只有 4/20；OmniMan 第 47 步 9 条一起落地、倒序执行，出生点是第 4 条下发的，与 Ashanti 同一个像素 (1602,98)",
+   "codePath": "src/strategy/v27-team-c110.js chooseSpawn L4007-4154：L4074-4085 候选表每 2.2 秒重算；L4117 取 chosenSlots[slot]；L4147-4150 移动 >6 格才打日志。发送层不在对局包里。本局 0 行 HL-SPAWN-BACKEND",
+   "why": "每次重算都可能换到几百格外的点（16 个号最后一条下发的选点离出生点 23~1,331 格），而选点指令到服务器要 0~22 步、同一步里倒序执行：最后生效的是哪一版不由策略决定",
+   "estCost": "OmniMan、Ashanti 自然份额 212 / 579 格（人均 7,678）；两个号 t=1435 是 610 / 984 格",
+   "patternId": "NEW:SP-stale-pick-lands",
+   "evidenceRef": "latency.py B025 spawn；digest.py B025 picks / slots"
+  },
+  {
+   "t": 0,
+   "bot": "20 个号（阵型）",
+   "kind": "spawn",
+   "verdict": "error",
+   "state": "出生点 8 对相距 <80 格（7 对异队）；11 个号 80 格内有另一个我方号。陆路 Voronoi 自然份额 17.3%，人头 31.2%",
+   "codePath": "src/strategy/v27-team-c110.js chooseSpawn L4062-4072：把名字在池里的号从局面里抹掉再算（编队号之间互不排斥）；L4090-4116 minSep 只在本机自己的候选表里生效",
+   "why": "20 个客户端各自按槽位取点，彼此看不见对方最后选了哪；五队局里叠在一起的大多是异队的号，谁也不能打谁",
+   "estCost": "自然份额 84,936 格，按人头应有 153,574 格（−44.7%）；10 个号不到人均的一半",
+   "patternId": "NEW:SP-squad-stack",
+   "evidenceRef": "landcap.py B025 voronoi；digest.py B025 spawn"
+  },
+  {
+   "t": 300,
+   "bot": "20 个号",
+   "kind": "expand",
+   "verdict": "good",
+   "state": "HL-OPENING 136 行、没有空转周期；下令到执行中位 12 拍。t=630 我方拿到自然份额的 54.9%（其他真人 25.7%），在场真人单号领土中位 2,347 对 2,649",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4820-4860 开局周期 → V13.expandNeutral → dpNeutral L2418-2444",
+   "why": "同样的时间里把自己自然份额吃掉的比例是别人的两倍；在只有一半自然份额的前提下，t=630 的单号领土中位只比别人低 11%",
+   "estCost": "—",
+   "patternId": "NEW:OP-cycle-open",
+   "evidenceRef": "landcap.py B025 capture；latency.py B025 delay；logdigest.py B025 opening"
+  },
+  {
+   "t": 720,
+   "bot": "Alpha、Khazar",
+   "kind": "expand",
+   "verdict": "error",
+   "state": "Alpha t=720~1350 2,192 格不变、密度 5.9→79；Khazar t=720~1440 2,297 格、→96.5。影子在 t=800/1050/1300（Alpha）、900/1100/1300（Khazar）：nb=0、neut=3（或 2），这一拍不发任何指令",
+   "codePath": "src/strategy/v27-team-c110.js t<1500：General.act L828 expandNeutral → dpNeutral L2418-2444（L2440 X < minCmd 不发）；L830 pickTarget 没有邻居；L835 `if (this.neutral > 0) return` → 走不到 L837-845 的发船；boatFood L2038-2058 的 neutral>0 也直接返回",
+   "why": "只剩两三格够不着的无主邻格时，neutral>0 把发船和其他出路都挡住；到 t>=1500 才解开",
+   "estCost": "两个号 t=1350 合计 34.7 万兵闲置（密度 79 / 76），领土 630 拍以上没变",
+   "patternId": "NEW:OP-neutral-crumb-lock",
+   "evidenceRef": "strat_probe.mjs B025 --dump 23:800:1300:250,36:900:1300:200；logdigest.py B025 crumb"
+  },
+  {
+   "t": 715,
+   "bot": "Deadpool↔Vatican City、Mithridates↔FedReserve、Mali↔Cuirassier",
+   "kind": "expand",
+   "verdict": "error",
+   "state": "t=715：Deadpool 余额 9,567、底线 11,010（= Vatican City 的余额）；Vatican City 余额 11,010、底线 9,567（= Deadpool 的余额），经由同一个内置 AI 邻居 Wadai Empire；两边这一拍都不出兵。t=765~960 Mithridates 与 FedReserve（经由 Cebu Rajahnate）、t=1100~1200 Mali 与 Cuirassier（经由 Aztec Empire）同样。t=600~1499 这类决策拍 192 个",
+   "codePath": "src/strategy/v27-team-c110.js Policy.winFloor L4542-4550 → safeFinite L2532-2543（threatOf(q).minOther：内置 AI 的其他邻居里兵最少的）→ Style.pickTarget L1197（可用兵 <= minSend×余额）",
+   "why": "safeFinite 的本意是别让内置 AI 把自己当成最软的邻居；这里另一个邻居是异队的编队号，两个号的余额一起涨、谁也压不过谁。影子显示去掉这一项当拍就能出兵",
+   "estCost": "FedReserve 有 AI 邻居的决策拍 63% 卡在这里；Mali t=810~1350 领土 3,162→2,957 而余额 1.7 万→11.6 万，身边的 Ashikaga Shogunate（t=1100 时 916 格、0 兵）到 t=1403 才出局",
+   "patternId": "NEW:OP-safefinite-squad-lock",
+   "evidenceRef": "strat_probe.mjs B025 --dump 17:715:775:30,30:715:775:30,21:770:960:95,13:765:960:95,14:1100:1200:50,18:1100:1200:50；simdigest.py B025 gates 600 1500"
+  },
+  {
+   "t": 865,
+   "bot": "Vatican City",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "对内置 AI bot464（Ankole）每 15 拍下一条：τ=865~925 的 5 条在 t=1064 同一拍落地（延迟 139~199 拍；实发 22,712 兵，拿下它 910 格里的 869 格）；τ=940~1030 的 7 条在 t=1330 落地（延迟 300~390），bot464 已在 t=1141 出局，全部没生效。t=1064~1330 的 266 拍它没有一条指令落地，余额 2.5 万→10.0 万",
+   "codePath": "src/strategy/v27-team-c110.js General.act L830-833 pickTarget → send；Strategy.send L526-539（同一目标 15 个本机拍不重发；不记已发未生效）",
+   "why": "客户端落后服务器 140~390 拍，本机局面里前一条还没生效就再下一条；到服务器时目标已经被自己前一批打光",
+   "estCost": "没生效的指令不扣兵；代价是那 266 拍里它的兵（2.5 万→10.0 万）一条指令都没用上",
+   "patternId": "NEW:CMD-repeat-before-effect",
+   "evidenceRef": "simdigest.py B025 cmdlist 30 850 1436；latency.py B025 dups / void"
+  },
+  {
+   "t": 1000,
+   "bot": "OmniMan、Ashanti",
+   "kind": "boat",
+   "verdict": "error",
+   "state": "两个号同一个像素出生，互相围住（OmniMan 610 格、Ashanti 984 格，nb=0）。OmniMan τ=980~1045 的 4 条船在 t=1414 一拍落地（延迟 369~434），抽走余额 8.6 万的 94%；Ashanti τ=990~1110 的 5 条船在 t=1428 落地（延迟 318~438），抽走 96%。两家的船 t=1429~1433 在海上互打掉 3.6 万兵。Ashanti t<=1435 的 18 条船里 8 条（7.6 万兵）靠在自己岸上、3 条沉没",
+   "codePath": "src/strategy/v27-team-c110.js General.act L837-843：nb=0 时 boatOut；`g.t - this.lastBoat >= P.boatEvery` 数的是本机拍；boatOut L1035-1051。src/engine/live_game_js.js：7.5 格内不同队的船每 2 拍互打",
+   "why": "发船间隔按本机拍数，积压的几条船到服务器时同一拍出海；异队的编队号在引擎里是敌船",
+   "estCost": "两批合计 11.1 万兵出海；互打掉 3.6 万；Ashanti 靠回自己岸上的 7.6 万兵各付了 3.125% 手续费",
+   "patternId": "NEW:IO-lag-burst",
+   "evidenceRef": "latency.py B025 batches；simdigest.py B025 boats / boatwar"
+  },
+  {
+   "t": 1340,
+   "bot": "FedReserve、Golden Horde",
+   "kind": "boat",
+   "verdict": "error",
+   "state": "FedReserve（队2）的一条船 t=1340 靠上 Mithridates（队3）的岸：2.6 万兵，打掉它 903 格。Golden Horde（队4）t=1330 靠上 PizzaTime（队2）：1.4 万兵、277 格",
+   "codePath": "src/strategy/v27-team-c110.js boatOut L1035-1051 / searchWater：下令时找的是「不受保护、非陆邻」的登陆点；isOurSquadBot L3973-3976 只管选目标。src/engine/live_game_js.js：登陆 = 对登陆格当时的主人发起进攻",
+   "why": "FedReserve 这条船是 τ=990 下的令、t=1218 才出海（延迟 228 拍），Golden Horde 的两条是 τ=1070 / 1075、t=1204 出海（延迟 134 / 129 拍）；船到岸时登陆格的主人已经是异队的编队号。保护名单只管选目标，管不到已经出海的船",
+   "estCost": "4.0 万兵打在异队的编队号身上，对方丢 1,180 格",
+   "patternId": "NEW:BT-hit-squadmate",
+   "evidenceRef": "simdigest.py B025 landings / front"
+  },
+  {
+   "t": 1000,
+   "bot": "Magikarp",
+   "kind": "defend",
+   "verdict": "error",
+   "state": "名字在编队名字池里的内置 AI bot109「Saxony」贴着 Magikarp，拿走它 334 格；Magikarp 一条指令都没对它发过。本局这样撞名的内置 AI 21 个（t=630 合计 9,521 格）",
+   "codePath": "src/strategy/v27-team-c110.js isOurSquadBot L3973-3976：只按名字（小写）查名字池，不看是不是真人；受保护的号在 analyze 里不进 nb",
+   "why": "策略眼里它是「自己人」，既不会打它，也不会把它算进邻居",
+   "estCost": "334 格；21 个撞名 AI 的 9,521 格我方的号都不会去拿",
+   "patternId": "NEW:PL-pool-ai",
+   "evidenceRef": "simdigest.py B025 poolai / front"
+  },
+  {
+   "t": 1100,
+   "bot": "我方 17 个有 AI 邻居的号",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "t=630 贴着我方或在我方自然份额里的 81 个内置 AI（34,704 格），到 t=1435 我方拿到 20,825 格（60.0%）、其他真人 26.1%；只贴着我方的 73 个 AI 是 62.2% 对 22.3%。打内置 AI 的 100 条线：打掉 13.2 万兵、得地 34,742 格（每格 3.8 兵）",
+   "codePath": "src/strategy/v27-team-c110.js General.act L830-833 → Style.pickTarget L1180-1213（L1208 可出兵）；V13.amount L2350-2358",
+   "why": "出手的价格是对的：身边的 AI 六成进了自己口袋，单价不到 4 兵一格。问题在量（见延迟与底线两条）",
+   "estCost": "—",
+   "patternId": "NEW:AT-bot-farm",
+   "evidenceRef": "landcap.py B025 ai；latency.py B025 void（进攻线账）"
+  },
+  {
+   "t": 1710,
+   "bot": "Mali",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "t=1440~1710 发 14 条指令，余额正好等于纯利息预测、领土不动（本机局面里一条没生效）；t=1710~1800 一个间隔余额 28.2 万→7,749（相当于 26 条 12% 的 pulse 连续执行），领土 3,997→5,583；下一个间隔密度 1.4、领土 3,768，t=1974 阵亡",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5510-5523 pulse（每条 <=12% 余额；L5511 只在本机局面里的在途兵 >=4% 余额时跳过）；Strategy.send L526-539",
+   "why": "推断（录像到 1435 为止；机制与录像里实测的 16 个同拍清仓批相同）：追赶期积压的指令到服务器后逐条按当时余额执行",
+   "estCost": "27 万兵换 1,586 格、守了不到一个间隔；174 拍后阵亡",
+   "patternId": "NEW:IO-stale-pulse-dump",
+   "evidenceRef": "logdigest.py B025 stale；digest.py B025 bot 14"
+  },
+  {
+   "t": 2070,
+   "bot": "MI6、Messi",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "MI6 t=1350~2880、Messi t=1350~2520 cmds 不变：nb=2~3，密度 9→86 / 22→84。到密度 85~100 后的全部指令是 pct 60~91 的救援捐款和协防戳。阵亡时账上 6.1 万 / 4.3 万",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4899-4902 → buyLand L5322 → Policy.safeAt L4524-4540 → dpKeep L2491-2496；L5348-5361 avail<=0 → continue；L5258-5267 worth 闸",
+   "why": "推断：邻居的兵是它的 1.6~2.3 倍（t=1350 的接敌表），保底线 >= 余额；之后停在哪一行看不到",
+   "estCost": "两个号 t=3510 合计 54 万兵，没有一条变成出兵",
+   "patternId": "NEW:DF-passive-death",
+   "evidenceRef": "digest.py B025 bot 15 / bot 24；simdigest.py B025 contact；logdigest.py B025 silent / idleloss"
+  },
+  {
+   "t": 2590,
+   "bot": "Messi、MI6、Vatican City",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "救援捐款 pct 59~91：每笔手续费 = 余额的 6.25%，想给的只有余额的 5.9%~9%。Messi t=2590 pct=62 给失联的 DesertFox；Vatican City t=2530 pct=59 →Golden Horde 手续费 3.1 万、想给 2.9 万。全队 pct<=63 的 15 笔执行：手续费 84.8 万、想给 78.2 万",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4422-4445：救援（对方在挨打、自己密度 >= max(55, 对方+15)），pct=min(maxSafePct, …)；L4380-4389 maxSafePct>=55 即可。src/engine/live_game_js.js：手续费按捐款人余额的 6.25% 收，与 pct 无关",
+   "why": "保底线很高时 maxSafePct 只剩 55~91，照样发出去；手续费比送到的还多",
+   "estCost": "15 笔手续费 84.8 万 > 想给 78.2 万；给 DesertFox 的 4 条手续费 7.7 万",
+   "patternId": "NEW:DN-fee-exceeds-delivery",
+   "evidenceRef": "logdigest.py B025 donlog；digest.py B025 bot 24"
+  },
+  {
+   "t": 2250,
+   "bot": "Cuirassier",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "t=2340 neut 从 0 跳到 52；t=2250~2430 领土 12,023→16,061（+4,038 格），8 条指令，估算净支出为负（−5.8 万：利息比花掉的多）",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4901 expandNeutral（t>=1500 按最小指令量发）→ L4902 buyLand",
+   "why": "邻居崩盘留下无主地时出手快、便宜，这是它成为全队最大号之一（16,061 格）的来源",
+   "estCost": "—",
+   "patternId": "NEW:AT-collapse-harvest",
+   "evidenceRef": "logdigest.py B025 harvest；digest.py B025 bot 18 2300 7700"
+  },
+  {
+   "t": 3060,
+   "bot": "Cuirassier、Mithridates、Magikarp、Deadpool",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "队3 四个号整局：108 条捐款日志、98 条执行、手续费 871 万（到账约 1,885 万）；150 拍内互相回捐 21 对、手续费 297 万。收款人密度 >=100 的 54 笔：想给 1,170 万、到账约 835 万、手续费 415 万",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4922 → tryDonateToTeammate L4462-4463（没被围 dMe>=112；被围 >=55）、L4466-4489（候选、pct 153 / 185 / 280）、L4434-4438（救援）；L4372 冷却只管自己；没有「对方离硬上限还有多少」的计算",
+   "why": "四个号都在软上限附近，谁高谁往外捐，收的人自己也快满；兵在四个号之间转，每转一次交 6.25%",
+   "estCost": "手续费 871 万；四个号整局少拿利息合计 1,171 万",
+   "patternId": "NEW:DN-pingpong",
+   "evidenceRef": "logdigest.py B025 donlog / overcap / spend"
+  },
+  {
+   "t": 10595,
+   "bot": "Mithridates",
+   "kind": "donate",
+   "verdict": "unclear",
+   "state": "自己 17,253 格、nb=0、密度 150（t=9720 起 810 拍零指令）；80 拍里给 Magikarp 连发 5 条余粮捐款（pct 280、185×4）。日志里它自己的余额：2,587,950（t=10595）→1,738,171（10615）→1,347,130（10635），前两条手续费 161,746 + 108,635；密度 150→78。Magikarp 同期 16,239 格（t=10530）→22,583 格（10800）。t=10800 Mithridates 出现 1 个邻居、13,544 格，t=11160 7,748 格，t=11188 阵亡",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4462-4463（被围时密度 >=55 就可捐）、L4466-4489：boxedIn 时 pct=185，dMe>110 时 280；L4372 冷却 18~20 拍",
+   "why": "被围满仓的号唯一的出口就是捐款，收款的 Magikarp 也确实把兵打成了地（+6,344 格）；但 40 拍里捐掉一半之后一百来拍自己就开始挨打。捐的时候它没有邻居，代码看不到谁会来",
+   "estCost": "两条手续费 27.0 万；捐后密度 78→66，t=10710~11160 的 450 拍里丢 9,505 格",
+   "patternId": "NEW:DN-dying-donor",
+   "evidenceRef": "in_game.log HL-DONATE t=10595~10675；digest.py B025 deaths；logdigest.py B025 capidle"
+  },
+  {
+   "t": 1570,
+   "bot": "OmniMan",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "t=1570~2355 给已经离开的 Chosokabe 发了 25 条捐款日志（执行 1 条）；t=1730~1950 给正在清仓、随后阵亡的 Mali 12 条（执行 1 条）。自己 610 格、密度 114~139",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4466-4467：候选只要求是同队的编队号，不看对方席位还在不在；L4372 冷却 18~20 拍后再试；没有额度计算",
+   "why": "被围满仓、同队只有这两个编队号；一个已经离开、一个额度不够，于是每 20 拍重发",
+   "estCost": "37 条日志执行 2 条；这 800 拍它的密度一直在 114~139（超软上限）",
+   "patternId": "NEW:DN-husk-donate",
+   "evidenceRef": "logdigest.py B025 donlog 28"
+  },
+  {
+   "t": 3510,
+   "bot": "OmniMan",
+   "kind": "boat",
+   "verdict": "good",
+   "state": "开局被 Ashanti、Khazar 围在 609 格里（自然份额 212 格），t=2430 清仓后只剩 615 格、密度 19。此后靠船：675（t=3510）→1,230（5670）→2,203（7560）→4,954（10530）→6,012 格（终局，存活 9 人里第 5），在赢家队5 里活到最后",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4922-4923 → idleBoats L4979-5006 → boatOut L1035-1051",
+   "why": "自然份额最小（212 格）的号，靠船换到了 10 倍的地；全局被围发船 49 段里算得上突围的只有 10 段",
+   "estCost": "—",
+   "patternId": "NEW:BT-boxed-breakout",
+   "evidenceRef": "logdigest.py B025 boxboats / harvest；digest.py B025 bot 28"
+  }
+ ],
+ "newPatterns": [
+  {
+   "name": "NEW:SP-stale-pick-lands",
+   "definition": "录像里的出生点不是日志最后一条 HL-SPAWN 的坐标：最后一版选点没赶上选点阶段结束，或同一步落地的一批选点倒序执行、生效的是更早下发的一条",
+   "detectionSketch": "latency.py <id> spawn：把日志 HL-SPAWN 的下发次序与录像选点指令（步号升序、同一步内倒序）对齐",
+   "instances": [
+    {
+     "t": 0,
+     "bot": "OmniMan"
+    },
+    {
+     "t": 0,
+     "bot": "Ashanti"
+    },
+    {
+     "t": 0,
+     "bot": "Messi"
+    },
+    {
+     "t": 0,
+     "bot": "Belgium"
+    },
+    {
+     "t": 0,
+     "bot": "另外 12 个号"
+    }
+   ]
+  },
+  {
+   "name": "NEW:IO-late-void",
+   "definition": "下令时目标是一个活着的玩家（内置 AI 或真人），进录像时它已出局：录像把目标记成无主地（512）。身边没有无主地时整条不生效、一兵不扣（A1）；有无主地时兵进了无主地线（B）",
+   "detectionSketch": "latency.py <id> void：影子指令与录像指令配对后，看影子目标 != 512 而录像目标 == 512 的条数、延迟和想发的兵",
+   "instances": [
+    {
+     "t": 1330,
+     "bot": "Vatican City"
+    },
+    {
+     "t": 1316,
+     "bot": "Mali"
+    },
+    {
+     "t": 1400,
+     "bot": "Deadpool"
+    }
+   ]
+  },
+  {
+   "name": "NEW:CMD-repeat-before-effect",
+   "definition": "同一个号对同一目标的后一条指令，下令拍落在前一条「已下令、还没进录像」的窗口里",
+   "detectionSketch": "latency.py <id> dups：配对后按 τ_前 < τ_后 < s_前 计数，分陆攻 / 发船，并数下令时已有几条在途",
+   "instances": [
+    {
+     "t": 865,
+     "bot": "Vatican City"
+    },
+    {
+     "t": 980,
+     "bot": "OmniMan"
+    },
+    {
+     "t": 870,
+     "bot": "Ashanti"
+    }
+   ]
+  },
+  {
+   "name": "NEW:IO-lag-burst",
+   "definition": "同一个号同一个服务器回合进录像 >=3 条指令；其中出兵+手续费 >= 批前余额 50% 的叫清仓批",
+   "detectionSketch": "latency.py <id> batches",
+   "instances": [
+    {
+     "t": 1428,
+     "bot": "Ashanti"
+    },
+    {
+     "t": 1414,
+     "bot": "OmniMan"
+    },
+    {
+     "t": 1358,
+     "bot": "Golden Horde"
+    },
+    {
+     "t": 1330,
+     "bot": "Magikarp"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AT-redirect-parked",
+   "definition": "打内置 AI 的进攻线在目标出局时还有兵挂在线上，被引擎改挂到无主地线；兵要等这条无主地线走完才退回余额",
+   "detectionSketch": "eng_replay.cjs 的 episodes（end=redirect）+ latency.py <id> void 的进攻线账",
+   "instances": [
+    {
+     "t": 1064,
+     "bot": "Vatican City"
+    },
+    {
+     "t": 1330,
+     "bot": "Magikarp"
+    }
+   ]
+  },
+  {
+   "name": "NEW:OP-safefinite-squad-lock",
+   "definition": "t<1500，打内置 AI 的底线取到 safeFinite，而它取的是另一个编队号的余额，且去掉这一项当拍就能出兵",
+   "detectionSketch": "strat_probe.mjs --tally 的 gate=floor:sb、sbKind=我方号、passNoSb=1；simdigest.py <id> gates 600 1500",
+   "instances": [
+    {
+     "t": 715,
+     "bot": "Deadpool / Vatican City"
+    },
+    {
+     "t": 770,
+     "bot": "FedReserve / Mithridates"
+    },
+    {
+     "t": 1100,
+     "bot": "Mali / Cuirassier"
+    }
+   ]
+  },
+  {
+   "name": "NEW:SP-squad-stack",
+   "definition": "两个编队号的最终出生点相距 <80 格",
+   "detectionSketch": "latency.py <id> spawn 的近距对；landcap.py <id> voronoi 的自然份额",
+   "instances": [
+    {
+     "t": 0,
+     "bot": "OmniMan / Ashanti"
+    },
+    {
+     "t": 0,
+     "bot": "PizzaTime / Golden Horde"
+    },
+    {
+     "t": 0,
+     "bot": "Deadpool / Vatican City"
+    },
+    {
+     "t": 0,
+     "bot": "MI6 / Khazar"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DF-passive-death",
+   "definition": "阵亡前 600 拍里丢地 >=25%，而这段没有一条出兵/发船指令（只有捐款或戳，或什么都没有），阵亡时账上还有 >=2 万兵",
+   "detectionSketch": "logdigest.py <id> idleloss + digest.py <id> deaths",
+   "instances": [
+    {
+     "t": 3581,
+     "bot": "MI6"
+    },
+    {
+     "t": 4046,
+     "bot": "Messi"
+    },
+    {
+     "t": 4141,
+     "bot": "Golden Horde"
+    },
+    {
+     "t": 7602,
+     "bot": "Cuirassier"
+    },
+    {
+     "t": 6164,
+     "bot": "FedReserve"
+    }
+   ]
+  }
+ ],
+ "lossArchetype": "never-grew",
+ "secondaryArchetype": "team-split",
+ "teamSplit": true,
+ "externalFactors": [
+  "五队局（每队上限 13 个真人）、64 个真人：20 个号被拆成 队1 3 个、队2 4 个、队3 4 个、队4 6 个、队5 3 个（录像队伍表；16 个进了首选色、4 个第二志愿）。卡片的主队是队4，t=4141 六个号全部阵亡；赢的是队5（终局 99.1%），里面我方只剩 OmniMan 的 6,012 格（1.2%）",
+  "客户端落后服务器：下令拍在 600~1500 的 324 条指令，从策略下令到进录像中位 131 拍（约 7.3 秒）、P90 318 拍、最大 530 拍；开局 0~600 的 138 条是 12 / 19 / 74 拍。结算行拟合 秒=23.2+0.056×拍，Chosokabe 的客户端走到本机拍 1435 时服务器约在 2,015 拍",
+  "选点阶段 51 步，本局还没有后端选点协调（HL-SPAWN-BACKEND 0 行；VERSION-TIMELINE：无 Boss 时的后端协调 2026-11-10T14:08Z 才启用，本局 01:20Z）",
+  "两个席位中途没了：Chosokabe（队5）本机拍 1435 离开（3,667 格）；DesertFox（队4）的日志停在本机拍 1170（7,127 格），之后没有日志也没有结算行，录像里它的指令还在落地（最后一条 t=1365），t=1435 有 8,770 格",
+  "t=1435 全场领土前 12 名全是外人（11,873~16,462 格）；队5 的外人占了前 6 名里的 3 个（BaisHaMikdash、[VS] Evxkyr、Women and Chi!dren，各 1.3 万格以上）"
+ ],
+ "winnerNotes": "赢家队5。结算行里队5 的份额 17.3%（t=1974）→18.9%（3484）→21.2%（4141）→31.8%（6164）→41.0%（7602）→42.8%（8181）→66.5%（11188）→98.3%（12983）→99.1%（终局）。其中我方只有 OmniMan：0.1%~0.6%，终局 1.2%（6,012 格）；其余 98.0% 是队5 的外人。t=1435 的录像真值里，全场领土前 6 名有 3 个是队5 的外人（BaisHaMikdash 13,751 格、[VS] Evxkyr 13,694、Women and Chi!dren 13,177），密度 9.1~9.4；队5 的 12 个真人共 16.9%，我方三个队5 的号只占 1.6%。也就是说赢家在 t=1435 之前就靠内置 AI 的地长成了我方单号中位（3,921 格）的 3.4 倍。之后能点出名字的是 [VS] Evxkyr：26 条 HL-ASSIST（t=5500~12945），打过 BlueScreen、Magikarp、Alpha、Deadpool；Women and Chi!dren t=3040~3190 打 Ashanti。队5 的外人 t=4141~7602 +19.5 个点、t=8181~11188 +23.3 个点；这两段里被吃掉的是队4 剩下的外人、队2、队1 和我方队3 的四个号。它们用了多少兵、怎么出手没有录像看不到。",
+ "wentWell": [
+  "开局周期快：t=630 拿到自然份额的 54.9%（其他真人 25.7%），没有空转的周期。",
+  "身边的内置 AI 六成进了我方口袋（只贴着我方的 73 个 AI：62.2% 对 22.3%），每格 3.8 兵。",
+  "邻居崩盘时会收地：Cuirassier t=2250~2430 +4,038 格、Mithridates t=2970~4050 +12,940 格；全局 16 次、+22,499 格。",
+  "OmniMan 从 609 格的死角靠船长到 6,012 格，在赢家队里活到终局。",
+  "队3 的四个号在 t=4141 占到队3 的 9.6%（全图），是本局我方唯一成规模的一块。"
+ ],
+ "unknowns": [
+  "客户端为什么越落越多（t=600 中位 18 拍 → t=1050 191 拍）：策略自己很快（快照 avgMs <=1.9；HL-SLOW-TICK 1,025 行、25~144 毫秒，t<1500 只有 49 行）。是浏览器 / 机器 / 网络哪一层慢，对局包里没有数据。",
+  "把选点发给服务器的外层不在对局包里：为什么 16 个号的最后一版选点没落地、Ashanti 11 条只落地 1 条，只能看到结果。",
+  "t>1435 每个阵亡号是被谁打死的：只有 57 条 HL-ASSIST 点到 9 个外人的名字；攻击者有多少兵看不到。",
+  "队4 的五个号满仓不出手停在 buyLand 的哪一行（保底线、worth 闸还是 chunk）：录像到 1435 为止，影子探针跑不到。",
+  "队3 的 Cuirassier、Mithridates 在 t=2250~4050 收的 1.7 万格原来是谁的（是不是队4 的号或失联的 DesertFox 留下的）：看不到。",
+  "DesertFox 的客户端为什么停在本机拍 1170（那时它的指令延迟已到 315~410 拍）；之后它的 8,770 格归了谁。",
+  "t>=1500 的捐款有多少真的到账：只能按捐款人余额推（155 条执行、114 条没执行，其中 70 条看不出原因）。",
+  "重放末拍还在路上的 160 条指令（想发 183 万兵，按各自下令时的余额算、不能相加）后来生效了多少。"
+ ],
+ "mechanicsQuestions": [
+  {
+   "q": "延迟 / 执行延迟",
+   "a": "选点 16/20 个号停在旧坐标；指令延迟 0~600 是 12/19/74 拍，600~1500 是 131/318/530 拍（陆攻 113/242/410，发船 223/445/530）。漏斗 524→324→238。迟到落空 81 条 + 打错 32 条；重复下单 陆攻 52%、发船 77%；同拍批 38 批、清仓批 16 批 60.8 万兵。全部来自 latency.py（JSON 的 latencyLedger）。"
+  },
+  {
+   "q": "好地实际抢到多少",
+   "a": "自然份额 17.3% 对人头 31.2%；实抢率 t=630 54.9% 对 25.7%，t=1435 107.3% 对 91.4%；身边 AI 的地我方拿 60.0%，其余 AI 地只拿 4.3%；人均 AI 地 1,425 对 3,677 格。全部来自 landcap.py（JSON 的 landLedger）。"
+  },
+  {
+   "q": "额度拒单",
+   "a": "269 条捐款日志：执行 155、没执行 114（额度不够 44、看不出 70）。OmniMan→Chosokabe 25 条执行 1 条（对方已离开）、→Mali 12 条执行 1 条；Khazar→BlueScreen 10 条执行 4 条（6 条额度不够）。t>=4284 引擎不再检查额度，队3 的 108 条里 98 条执行。"
+  },
+  {
+   "q": "小额捐款的 6.25% 全额税",
+   "a": "执行的 155 笔手续费 969 万；金额干净的 120 笔手续费 785 万、到账约 1,663 万、想给 1,900 万。到账 < 手续费的 23 笔（手续费 151 万）。pct<=63 的 15 笔：手续费 84.8 万 > 想给 78.2 万。"
+  },
+  {
+   "q": "内陆被围高密度",
+   "a": "t<=1435 策略眼里无邻居无无主地的决策拍：Ashanti 177、OmniMan 137（13 拍密度 >=133.3）、Golden Horde 109、FedReserve 89、Mithridates 80，围住它们的都是异队的编队号。日志侧：Mithridates 被围快照 91/122（密度 >=95 的 15 个，t=9360~10620 顶到 150）；超软上限少拿利息 1,467 万。"
+  },
+  {
+   "q": "出生与开局被围",
+   "a": "8 对 <80 格（OmniMan / Ashanti 同像素）；自然份额 10 个号不到人均一半；OmniMan t=540 起 609 格不动。没有后端协调（本局早于启用时间）。"
+  },
+  {
+   "q": "前线消耗与底线",
+   "a": "t<1500：有 AI 邻居的决策拍 19.3% 卡在 safeFinite（10.3% 取的是异队编队号的兵）、5.1% dpKeep、6.2% winR、8.7% 地价闸。t>=1530：出兵指令每千号·拍 3.7~6.3 条；丢的 145,567 格里 87% 在零出兵间隔，27% 在零出兵且密度 >=100 的间隔。"
+  },
+  {
+   "q": "squad20 拆队",
+   "a": "3/4/4/6/3。异队的编队号互相：围住（Mithridates 贴 FedReserve 263 格）、拿对方的兵当底线（192 个决策拍）、船靠上对方的岸（4.0 万兵、1,180 格）、海上互打（3.6 万兵）、跨队协防戳（Magikarp 替 BlueScreen 6 次、Deadpool 替 Vatican City 5 次、OmniMan 替 Cuirassier 5 次）。没有陆攻对方（保护名单）。HL-PEACE 0 行。"
+  },
+  {
+   "q": "名字撞池",
+   "a": "21 个内置 AI 的名字在编队名字池里（t=630 合计 9,521 格）：Saxony 拿走 Magikarp 334 格而不被还手；外人 Muzan（队3）、Chola（队4）也撞名，Mithridates、Magikarp t=8440~8840 给 Muzan 捐了 5 笔（手续费 46.4 万）。"
+  }
+ ],
+ "scripts": [
+  "bash c136-review/agents/R06/scripts/run_truth.sh B025（sim_prep.py + eng_replay.cjs：真引擎重放到 t=1435，写 out/B025/sim_state.json 和领土网格 grids.bin.gz；套 run-heavy.sh）",
+  "node c136-review/agents/R06/scripts/strat_probe.mjs B025 --me squad --json --tally [--dump 玩家:起拍:止拍:步长,...]（影子策略；套 run-heavy.sh；本局两次 dump 的输出在 out/B025/probe_dump1.txt、probe_dump2.txt）",
+  "python3 c136-review/agents/R06/scripts/latency.py B025 spawn|delay|bots|funnel|void|dups|batches|json|all（延迟账；输出存 out/B025/sec/lat_all.txt、out/B025/latency.json）",
+  "python3 c136-review/agents/R06/scripts/landcap.py B025 voronoi|capture|natural|ai|flow|layers|json|all（好地账；输出存 out/B025/sec/land_all.txt、out/B025/landcap.json）",
+  "python3 c136-review/agents/R06/scripts/simdigest.py B025 check|teams|top|medians|gates 600 1500|contact|boats|landings|boatwar|poolai|protbox|boxed|front|cmdlist <me> [t0 t1]|json（录像真值；各节输出存 out/B025/sec/sim_*.txt）",
+  "python3 c136-review/agents/R06/scripts/digest.py B025 roster|teams|timeline [t ...]|outsiders|deaths|bot <me> [t0 t1]|spawn|slots|picks|lag|drops|json（日志快照 + 结算行；out/B025/sec/dig_*.txt）",
+  "python3 c136-review/agents/R06/scripts/logdigest.py B025 stale|silent|seqlag|wall|cmdmix|spend|idleloss|overcap|capidle|drop30|donlog [me]|foes|harvest|boxboats|crumb|noeffect|issued|json（只用日志；out/B025/sec/log_*.txt）",
+  "python3 c136-review/agents/R06/scripts/make_review.py B025（合并 reviews_src/B025.py、latency.json、landcap.json，自检）"
+ ],
+ "confidenceOverall": "medium：t<=1435 的数字（出生点、自然份额、延迟、落空、重复下单、底线互锁、AI 地的去向）是录像真值或影子探针实测，可由脚本重算；t>1435 的 12,000 多拍只有日志，攻击者、捐款到账、停在哪个分支都是推断。分型 never-grew 的依据在录像覆盖的时段内。"
+}

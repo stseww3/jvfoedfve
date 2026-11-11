@@ -1,0 +1,443 @@
+# A053 ryan_m 影子决策明细 t=7300~7764（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 88 拍（t=7300~7760）
+#   出手打人/bot: 3 拍（t=7500~7510）；可用兵 138864~156563，一条指令下限(20%余额) 288864~292446，比值 48%~54%
+#   首选目标无可用兵（avail<=0）: 2 拍（t=7610~7615）；可用兵 -512148~-263249，一条指令下限(20%余额) 185220~185220，比值 -277%~-142%
+#   └ 「出手打人/bot」里：3 条对人/bot 的出兵共约 436347 兵；其中超过软上限（over=1）时发的 3 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 3 条约 436347 兵，c/worth = 3.76~3.78
+t=7300 ryan_m B=1441910 L=16866 d=85.5 nb=3 neut=0 cmds=96 noFull=1 shQ=356372 | m=0.900 worth=93.2 cheap=7.8 over=0 dMedOther=121.8 safe(-1)=1484208
+    → brocstrailia#36[T2] terr=31965 bal=3557804 dq=111.3 cnt=166 | c=359.0 rankC=359.0 need=6362738 tD=0.91 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=288382 pulseB=173029 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4639665 dq=126.2 cnt=91 | c=407.2 rankC=407.2 need=8324824 tD=1.04 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=288382 pulseB=173029 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3220339 dq=113.7 cnt=3 | c=663.3 rankC=663.3 need=5782374 tD=0.93 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=288382 pulseB=173029 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7305 ryan_m B=1441910 L=16866 d=85.5 nb=3 neut=0 cmds=96 noFull=1 shQ=360477 | m=0.900 worth=93.2 cheap=7.8 over=0 dMedOther=121.8 safe(-1)=1484208
+    → brocstrailia#36[T2] terr=31965 bal=3557804 dq=111.3 cnt=166 | c=359.0 rankC=359.0 need=6362897 tD=0.91 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=288382 pulseB=173029 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4639665 dq=126.2 cnt=91 | c=407.2 rankC=407.2 need=8324824 tD=1.04 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=288382 pulseB=173029 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3220339 dq=113.7 cnt=3 | c=663.3 rankC=663.3 need=5782374 tD=0.93 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=288382 pulseB=173029 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7310 ryan_m B=1460366 L=16866 d=86.6 nb=3 neut=0 cmds=96 noFull=1 shQ=365091 | m=0.900 worth=93.9 cheap=7.8 over=0 dMedOther=122.7 safe(-1)=1484208
+    → brocstrailia#36[T2] terr=31965 bal=3596228 dq=112.5 cnt=166 | c=362.8 rankC=362.8 need=6431262 tD=0.92 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=292073 pulseB=175244 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4671214 dq=127.1 cnt=91 | c=410.0 rankC=410.0 need=8381057 tD=1.04 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=292073 pulseB=175244 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3252220 dq=114.8 cnt=3 | c=669.9 rankC=669.9 need=5839198 tD=0.94 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=292073 pulseB=175244 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7315 ryan_m B=1460366 L=16866 d=86.6 nb=3 neut=0 cmds=96 noFull=1 shQ=365091 | m=0.900 worth=93.9 cheap=7.8 over=0 dMedOther=122.7 safe(-1)=1484208
+    → brocstrailia#36[T2] terr=31965 bal=3596228 dq=112.5 cnt=166 | c=362.8 rankC=362.8 need=6431583 tD=0.92 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=292073 pulseB=175244 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4671214 dq=127.1 cnt=91 | c=410.0 rankC=410.0 need=8381057 tD=1.04 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=292073 pulseB=175244 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3252220 dq=114.8 cnt=3 | c=669.9 rankC=669.9 need=5839198 tD=0.94 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=292073 pulseB=175244 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7320 ryan_m B=1479058 L=16866 d=87.7 nb=3 neut=0 cmds=96 noFull=1 shQ=369764 | m=0.900 worth=94.5 cheap=7.8 over=0 dMedOther=123.6 safe(-1)=1484208
+    → brocstrailia#36[T2] terr=31965 bal=3299194 dq=103.2 cnt=166 | c=194.4 rankC=136.1 need=6202956 tD=0.84 人 pulse onMe | safe=1484208 keep=Inf avail=-Inf chunkB=295812 pulseB=177487 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4702044 dq=127.9 cnt=91 | c=412.7 rankC=412.7 need=8436008 tD=1.04 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=295812 pulseB=177487 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3283441 dq=115.9 cnt=3 | c=676.3 rankC=676.3 need=5894846 tD=0.94 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=295812 pulseB=177487 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7325 ryan_m B=1432060 L=16530 d=86.6 nb=3 neut=0 cmds=96 noFull=1 shQ=358015 | m=0.900 worth=94.1 cheap=7.8 over=0 dMedOther=123.0 safe(-1)=1454640
+    → brocstrailia#36[T2] terr=32301 bal=3299194 dq=102.1 cnt=167 | c=189.2 rankC=132.4 need=6121409 tD=0.83 人 pulse onMe | safe=1454640 keep=Inf avail=-Inf chunkB=286412 pulseB=171847 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4702044 dq=127.9 cnt=90 | c=412.7 rankC=412.7 need=8436008 tD=1.04 人 pulse crowdedHard | safe=1454640 keep=Inf avail=-Inf chunkB=286412 pulseB=171847 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3283441 dq=115.9 cnt=3 | c=676.2 rankC=676.2 need=5894846 tD=0.94 人 pulse crowdedHard | safe=1454640 keep=Inf avail=-Inf chunkB=286412 pulseB=171847 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7330 ryan_m B=1404346 L=16201 d=86.7 nb=3 neut=0 cmds=96 noFull=1 shQ=351086 | m=0.900 worth=94.8 cheap=7.8 over=0 dMedOther=123.9 safe(-1)=1425688
+    → brocstrailia#36[T2] terr=32630 bal=3344392 dq=102.5 cnt=164 | c=249.0 rankC=249.0 need=6122201 tD=0.83 人 pulse onMe | safe=1425688 keep=Inf avail=-Inf chunkB=280869 pulseB=168522 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4731666 dq=128.7 cnt=89 | c=415.3 rankC=415.3 need=8488806 tD=1.04 人 pulse crowdedHard | safe=1425688 keep=Inf avail=-Inf chunkB=280869 pulseB=168522 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3313977 dq=117.0 cnt=3 | c=682.4 rankC=682.4 need=5949273 tD=0.94 人 pulse crowdedHard | safe=1425688 keep=Inf avail=-Inf chunkB=280869 pulseB=168522 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7335 ryan_m B=1348770 L=15876 d=85.0 nb=3 neut=0 cmds=96 noFull=1 shQ=337192 | m=0.900 worth=94.8 cheap=7.8 over=0 dMedOther=123.9 safe(-1)=1397088
+    → brocstrailia#36[T2] terr=32955 bal=3344535 dq=101.5 cnt=160 | c=326.8 rankC=326.8 need=6010713 tD=0.82 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=269754 pulseB=161852 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4731666 dq=128.7 cnt=89 | c=415.2 rankC=415.2 need=8488806 tD=1.04 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=269754 pulseB=161852 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3313977 dq=117.0 cnt=3 | c=682.3 rankC=682.3 need=5949273 tD=0.94 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=269754 pulseB=161852 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7340 ryan_m B=1365899 L=15876 d=86.0 nb=3 neut=0 cmds=96 noFull=1 shQ=341474 | m=0.900 worth=95.4 cheap=7.8 over=0 dMedOther=124.7 safe(-1)=1397088
+    → brocstrailia#36[T2] terr=32955 bal=3390020 dq=102.9 cnt=160 | c=331.2 rankC=331.2 need=6091786 tD=0.82 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=273180 pulseB=163908 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4760529 dq=129.5 cnt=89 | c=417.7 rankC=417.7 need=8540251 tD=1.04 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=273180 pulseB=163908 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3343802 dq=118.1 cnt=3 | c=688.4 rankC=688.4 need=6002433 tD=0.95 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=273180 pulseB=163908 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7345 ryan_m B=1365899 L=15876 d=86.0 nb=3 neut=0 cmds=96 noFull=1 shQ=341474 | m=0.900 worth=95.4 cheap=7.8 over=0 dMedOther=124.7 safe(-1)=1397088
+    → brocstrailia#36[T2] terr=32955 bal=3390020 dq=102.9 cnt=160 | c=331.2 rankC=331.2 need=6091786 tD=0.82 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=273180 pulseB=163908 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4760529 dq=129.5 cnt=89 | c=417.7 rankC=417.7 need=8540251 tD=1.04 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=273180 pulseB=163908 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=2945420 dq=104.0 cnt=3 | c=607.2 rankC=607.2 need=5292362 tD=0.83 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=273180 pulseB=163908 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7350 ryan_m B=1383245 L=15876 d=87.1 nb=3 neut=0 cmds=96 noFull=1 shQ=345811 | m=0.900 worth=96.0 cheap=7.8 over=0 dMedOther=125.5 safe(-1)=1397088
+    → brocstrailia#36[T2] terr=32955 bal=3434768 dq=104.2 cnt=160 | c=335.5 rankC=335.5 need=6171544 tD=0.83 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=276649 pulseB=165989 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4788616 dq=130.3 cnt=89 | c=420.2 rankC=420.2 need=8590313 tD=1.04 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=276649 pulseB=165989 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=2982532 dq=105.3 cnt=3 | c=614.8 rankC=614.8 need=5358510 tD=0.84 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=276649 pulseB=165989 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7355 ryan_m B=1383245 L=15876 d=87.1 nb=3 neut=0 cmds=96 noFull=1 shQ=345811 | m=0.900 worth=96.0 cheap=7.8 over=0 dMedOther=125.5 safe(-1)=1397088
+    → brocstrailia#36[T2] terr=32955 bal=3434768 dq=104.2 cnt=160 | c=335.5 rankC=335.5 need=6171544 tD=0.83 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=276649 pulseB=165989 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4788616 dq=130.3 cnt=89 | c=420.2 rankC=420.2 need=8590313 tD=1.04 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=276649 pulseB=165989 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28775 bal=2982532 dq=103.7 cnt=3 | c=605.2 rankC=605.2 need=5359225 tD=0.83 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=276649 pulseB=165989 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7360 ryan_m B=1400812 L=15876 d=88.2 nb=3 neut=0 cmds=96 noFull=1 shQ=350203 | m=0.900 worth=96.6 cheap=7.8 over=0 dMedOther=126.3 safe(-1)=1397088
+    → brocstrailia#36[T2] terr=32955 bal=3479076 dq=105.6 cnt=160 | c=339.8 rankC=339.8 need=6250518 tD=0.84 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=280162 pulseB=168097 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4815432 dq=131.0 cnt=89 | c=422.5 rankC=422.5 need=8638110 tD=1.04 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=280162 pulseB=168097 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3021603 dq=103.9 cnt=3 | c=606.5 rankC=606.5 need=5429300 tD=0.82 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=280162 pulseB=168097 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7365 ryan_m B=1400812 L=15876 d=88.2 nb=3 neut=0 cmds=96 noFull=1 shQ=350203 | m=0.900 worth=96.6 cheap=7.8 over=0 dMedOther=126.3 safe(-1)=1397088
+    → brocstrailia#36[T2] terr=32955 bal=3479076 dq=105.6 cnt=160 | c=339.8 rankC=339.8 need=6250518 tD=0.84 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=280162 pulseB=168097 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4815432 dq=131.0 cnt=89 | c=422.5 rankC=422.5 need=8638110 tD=1.04 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=280162 pulseB=168097 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3021624 dq=103.9 cnt=3 | c=606.5 rankC=606.5 need=5429337 tD=0.82 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=280162 pulseB=168097 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7370 ryan_m B=1418602 L=15876 d=89.4 nb=3 neut=0 cmds=96 noFull=1 shQ=354650 | m=0.900 worth=97.7 cheap=7.8 over=0 dMedOther=127.7 safe(-1)=1397088
+    → brocstrailia#36[T2] terr=32955 bal=3522564 dq=106.9 cnt=160 | c=344.0 rankC=344.0 need=6328031 tD=0.84 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=283720 pulseB=170232 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4841435 dq=131.7 cnt=89 | c=424.8 rankC=424.8 need=8684457 tD=1.03 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=283720 pulseB=170232 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3059998 dq=105.2 cnt=3 | c=614.1 rankC=614.1 need=5497735 tD=0.82 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=283720 pulseB=170232 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7375 ryan_m B=1418602 L=15876 d=89.4 nb=3 neut=0 cmds=96 noFull=1 shQ=354650 | m=0.900 worth=97.7 cheap=7.8 over=0 dMedOther=127.7 safe(-1)=1397088
+    → brocstrailia#36[T2] terr=32955 bal=3522564 dq=106.9 cnt=160 | c=498.8 rankC=723.3 need=6328031 tD=0.84 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=283720 pulseB=170232 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4841435 dq=131.7 cnt=89 | c=616.0 rankC=893.2 need=8684457 tD=1.03 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=283720 pulseB=170232 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3059998 dq=105.2 cnt=3 | c=890.4 rankC=1291.1 need=5497735 tD=0.82 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=283720 pulseB=170232 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7380 ryan_m B=1436618 L=15876 d=90.5 nb=3 neut=0 cmds=96 noFull=1 shQ=359154 | m=0.900 worth=98.2 cheap=7.8 over=0 dMedOther=128.4 safe(-1)=1397088
+    → brocstrailia#36[T2] terr=32955 bal=3565187 dq=108.2 cnt=160 | c=504.8 rankC=732.0 need=6404002 tD=0.84 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=287324 pulseB=172394 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4866610 dq=132.4 cnt=89 | c=619.2 rankC=897.8 need=8729329 tD=1.03 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=287324 pulseB=172394 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3097635 dq=106.5 cnt=3 | c=901.3 rankC=1306.9 need=5564818 tD=0.83 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=287324 pulseB=172394 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7385 ryan_m B=1436618 L=15876 d=90.5 nb=3 neut=0 cmds=96 noFull=1 shQ=359154 | m=0.900 worth=98.2 cheap=7.8 over=0 dMedOther=128.4 safe(-1)=1397088
+    → brocstrailia#36[T2] terr=32955 bal=3565187 dq=108.2 cnt=160 | c=504.8 rankC=732.0 need=6404002 tD=0.84 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=287324 pulseB=172394 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4866610 dq=132.4 cnt=89 | c=619.2 rankC=897.8 need=8729329 tD=1.03 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=287324 pulseB=172394 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3097635 dq=106.5 cnt=3 | c=901.3 rankC=1306.9 need=5564818 tD=0.83 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=287324 pulseB=172394 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7390 ryan_m B=1454863 L=15876 d=91.6 nb=3 neut=0 cmds=96 noFull=1 shQ=363715 | m=0.900 worth=98.8 cheap=7.8 over=0 dMedOther=129.2 safe(-1)=1397088
+    → brocstrailia#36[T2] terr=32955 bal=3607256 dq=109.5 cnt=160 | c=510.7 rankC=740.6 need=6478986 tD=0.85 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=290973 pulseB=174584 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4890943 dq=133.1 cnt=89 | c=622.3 rankC=902.3 need=8772700 tD=1.03 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=290973 pulseB=174584 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3134806 dq=107.8 cnt=3 | c=912.0 rankC=1322.5 need=5631071 tD=0.83 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=290973 pulseB=174584 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7395 ryan_m B=1454863 L=15876 d=91.6 nb=3 neut=0 cmds=96 noFull=1 shQ=363715 | m=0.900 worth=98.3 cheap=7.8 over=0 dMedOther=128.5 safe(-1)=1397088
+    → brocstrailia#36[T2] terr=32955 bal=3607256 dq=109.5 cnt=160 | c=510.7 rankC=740.6 need=6478986 tD=0.85 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=290973 pulseB=174584 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4890943 dq=133.1 cnt=89 | c=622.3 rankC=902.3 need=8772700 tD=1.04 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=290973 pulseB=174584 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3134806 dq=107.8 cnt=3 | c=912.0 rankC=1322.5 need=5631071 tD=0.84 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=290973 pulseB=174584 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7400 ryan_m B=1489215 L=15876 d=93.8 nb=3 neut=0 cmds=96 noFull=1 shQ=368443 | m=0.900 worth=99.6 cheap=7.8 over=0 dMedOther=130.2 safe(-1)=1397088
+    → brocstrailia#36[T2] terr=32955 bal=3176341 dq=96.4 cnt=160 | c=186.6 rankC=130.6 need=6175922 tD=0.74 人 pulse onMe | safe=1397088 keep=Inf avail=-Inf chunkB=297843 pulseB=178706 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4951659 dq=134.7 cnt=89 | c=630.0 rankC=913.4 need=8880919 tD=1.03 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=297843 pulseB=178706 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3200259 dq=110.0 cnt=3 | c=930.9 rankC=1349.9 need=5747734 tD=0.84 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=297843 pulseB=178706 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7405 ryan_m B=1489215 L=15876 d=93.8 nb=3 neut=0 cmds=96 noFull=1 shQ=372303 | m=0.900 worth=99.6 cheap=7.8 over=0 dMedOther=130.2 safe(-1)=1397088
+    → brocstrailia#36[T2] terr=32955 bal=3176341 dq=96.4 cnt=160 | c=186.6 rankC=130.6 need=6175922 tD=0.74 人 pulse onMe | safe=1397088 keep=Inf avail=-Inf chunkB=297843 pulseB=178706 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4951659 dq=134.7 cnt=89 | c=630.0 rankC=913.4 need=8880919 tD=1.03 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=297843 pulseB=178706 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3200259 dq=110.0 cnt=3 | c=930.9 rankC=1349.9 need=5747734 tD=0.84 人 pulse crowdedHard | safe=1397088 keep=Inf avail=-Inf chunkB=297843 pulseB=178706 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7410 ryan_m B=1459793 L=15557 d=93.8 nb=3 neut=0 cmds=96 noFull=1 shQ=364948 | m=0.900 worth=100.1 cheap=7.8 over=0 dMedOther=130.8 safe(-1)=1369016
+    → brocstrailia#36[T2] terr=33274 bal=3220809 dq=96.8 cnt=155 | c=184.3 rankC=129.0 need=6159531 tD=0.74 人 pulse onMe | safe=1369016 keep=Inf avail=-Inf chunkB=291959 pulseB=175175 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4973446 dq=135.3 cnt=86 | c=632.7 rankC=917.5 need=8919752 tD=1.03 人 pulse crowdedHard | safe=1369016 keep=Inf avail=-Inf chunkB=291959 pulseB=175175 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3235461 dq=111.2 cnt=3 | c=941.0 rankC=1364.5 need=5810477 tD=0.85 人 pulse crowdedHard | safe=1369016 keep=Inf avail=-Inf chunkB=291959 pulseB=175175 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7415 ryan_m B=1390408 L=15092 d=92.1 nb=3 neut=0 cmds=96 noFull=1 shQ=347602 | m=0.900 worth=100.1 cheap=7.9 over=0 dMedOther=130.8 safe(-1)=1328096
+    → brocstrailia#36[T2] terr=33739 bal=3220809 dq=95.5 cnt=155 | c=177.7 rankC=124.4 need=6020561 tD=0.73 人 pulse onMe | safe=1328096 keep=Inf avail=-Inf chunkB=278082 pulseB=166849 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4973446 dq=135.3 cnt=85 | c=632.7 rankC=917.4 need=8919752 tD=1.03 人 pulse crowdedHard | safe=1328096 keep=Inf avail=-Inf chunkB=278082 pulseB=166849 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3235461 dq=111.2 cnt=3 | c=940.9 rankC=1364.3 need=5810477 tD=0.85 人 pulse crowdedHard | safe=1328096 keep=Inf avail=-Inf chunkB=278082 pulseB=166849 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7420 ryan_m B=1361803 L=14782 d=92.1 nb=3 neut=0 cmds=96 noFull=1 shQ=340450 | m=0.900 worth=100.6 cheap=7.9 over=0 dMedOther=131.5 safe(-1)=1300816
+    → brocstrailia#36[T2] terr=34049 bal=3265900 dq=95.9 cnt=155 | c=234.3 rankC=234.3 need=6009608 tD=0.73 人 pulse onMe | safe=1300816 keep=Inf avail=-Inf chunkB=272361 pulseB=163416 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4994334 dq=135.9 cnt=84 | c=635.3 rankC=921.3 need=8956983 tD=1.03 人 pulse crowdedHard | safe=1300816 keep=Inf avail=-Inf chunkB=272361 pulseB=163416 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3270080 dq=112.4 cnt=3 | c=950.8 rankC=1378.7 need=5872182 tD=0.85 人 pulse crowdedHard | safe=1300816 keep=Inf avail=-Inf chunkB=272361 pulseB=163416 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7425 ryan_m B=1293703 L=14317 d=90.4 nb=3 neut=0 cmds=96 noFull=1 shQ=323425 | m=0.900 worth=100.6 cheap=7.9 over=0 dMedOther=131.5 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3265900 dq=94.6 cnt=155 | c=225.9 rankC=225.9 need=5873208 tD=0.72 人 pulse onMe | safe=1259896 keep=Inf avail=-Inf chunkB=258741 pulseB=155244 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4994334 dq=135.9 cnt=82 | c=635.3 rankC=921.2 need=8956983 tD=1.03 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=258741 pulseB=155244 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3270080 dq=112.4 cnt=3 | c=950.7 rankC=1378.5 need=5872182 tD=0.85 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=258741 pulseB=155244 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7430 ryan_m B=1310003 L=14317 d=91.5 nb=3 neut=0 cmds=96 noFull=1 shQ=327500 | m=0.900 worth=101.1 cheap=7.9 over=0 dMedOther=132.1 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3312307 dq=96.0 cnt=155 | c=332.1 rankC=481.6 need=5955570 tD=0.73 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=262001 pulseB=157200 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5014810 dq=136.5 cnt=82 | c=637.9 rankC=925.0 need=8993479 tD=1.03 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=262001 pulseB=157200 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3303761 dq=113.6 cnt=3 | c=960.4 rankC=1392.6 need=5932214 tD=0.86 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=262001 pulseB=157200 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7435 ryan_m B=1310003 L=14317 d=91.5 nb=3 neut=0 cmds=96 noFull=1 shQ=327500 | m=0.900 worth=101.1 cheap=7.9 over=0 dMedOther=132.1 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3312307 dq=96.0 cnt=155 | c=332.1 rankC=481.6 need=5955570 tD=0.73 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=262001 pulseB=157200 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5014810 dq=136.5 cnt=82 | c=637.9 rankC=925.0 need=8993479 tD=1.03 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=262001 pulseB=157200 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3303761 dq=113.6 cnt=3 | c=960.4 rankC=1392.6 need=5932214 tD=0.86 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=262001 pulseB=157200 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7440 ryan_m B=1326509 L=14317 d=92.7 nb=3 neut=0 cmds=96 noFull=1 shQ=331627 | m=0.900 worth=101.5 cheap=7.9 over=0 dMedOther=132.7 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3359010 dq=97.3 cnt=155 | c=336.8 rankC=488.3 need=6038813 tD=0.73 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=265302 pulseB=159181 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5034367 dq=137.0 cnt=82 | c=640.4 rankC=928.6 need=9028337 tD=1.03 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=265302 pulseB=159181 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3336798 dq=114.7 cnt=3 | c=969.9 rankC=1406.4 need=5991099 tD=0.86 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=265302 pulseB=159181 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7445 ryan_m B=1326509 L=14317 d=92.7 nb=3 neut=0 cmds=96 noFull=1 shQ=331627 | m=0.900 worth=100.6 cheap=7.9 over=0 dMedOther=131.5 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3359010 dq=97.3 cnt=155 | c=336.8 rankC=488.3 need=6038813 tD=0.74 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=265302 pulseB=159181 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5034367 dq=137.0 cnt=82 | c=640.4 rankC=928.6 need=9028337 tD=1.04 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=265302 pulseB=159181 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3336798 dq=114.7 cnt=3 | c=969.9 rankC=1406.4 need=5991099 tD=0.87 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=265302 pulseB=159181 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7450 ryan_m B=1343223 L=14317 d=93.8 nb=3 neut=0 cmds=96 noFull=1 shQ=335805 | m=0.900 worth=101.1 cheap=7.9 over=0 dMedOther=132.2 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3406372 dq=98.7 cnt=155 | c=341.5 rankC=495.2 need=6123230 tD=0.75 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=268645 pulseB=161187 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5052994 dq=137.5 cnt=82 | c=642.8 rankC=932.0 need=9061538 tD=1.04 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=268645 pulseB=161187 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3369164 dq=115.8 cnt=3 | c=979.3 rankC=1420.0 need=6048788 tD=0.88 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=268645 pulseB=161187 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7455 ryan_m B=1343223 L=14317 d=93.8 nb=3 neut=0 cmds=96 noFull=1 shQ=335805 | m=0.900 worth=100.9 cheap=7.9 over=0 dMedOther=131.8 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3406372 dq=98.7 cnt=155 | c=341.5 rankC=495.2 need=6123230 tD=0.75 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=268645 pulseB=161187 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5052994 dq=137.5 cnt=82 | c=642.8 rankC=932.0 need=9061538 tD=1.04 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=268645 pulseB=161187 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3369164 dq=115.8 cnt=3 | c=979.3 rankC=1420.0 need=6048788 tD=0.88 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=268645 pulseB=161187 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7460 ryan_m B=1360147 L=14317 d=95.0 nb=3 neut=0 cmds=96 noFull=1 shQ=340036 | m=0.900 worth=100.2 cheap=7.9 over=0 dMedOther=131.0 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3454401 dq=100.1 cnt=155 | c=346.3 rankC=502.1 need=6208836 tD=0.76 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=272029 pulseB=163218 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5071184 dq=138.0 cnt=82 | c=645.1 rankC=935.4 need=9093960 tD=1.05 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=272029 pulseB=163218 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29090 bal=3006935 dq=103.4 cnt=3 | c=875.1 rankC=1268.8 need=5403156 tD=0.79 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=272029 pulseB=163218 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7465 ryan_m B=1360147 L=14317 d=95.0 nb=3 neut=0 cmds=96 noFull=1 shQ=340036 | m=0.900 worth=98.2 cheap=7.9 over=0 dMedOther=128.3 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3454401 dq=100.1 cnt=155 | c=346.3 rankC=502.1 need=6208836 tD=0.78 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=272029 pulseB=163218 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29313 bal=3006935 dq=102.6 cnt=3 | c=643.3 rankC=932.8 need=5403453 tD=0.80 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=272029 pulseB=163218 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5071184 dq=138.0 cnt=82 | c=645.1 rankC=935.4 need=9093960 tD=1.08 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=272029 pulseB=163218 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7470 ryan_m B=1377284 L=14317 d=96.2 nb=3 neut=0 cmds=96 noFull=1 shQ=344321 | m=0.900 worth=98.6 cheap=7.9 over=0 dMedOther=128.9 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3503108 dq=101.5 cnt=155 | c=351.1 rankC=509.1 need=6295651 tD=0.79 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=275457 pulseB=165274 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29523 bal=3046927 dq=103.2 cnt=3 | c=647.2 rankC=938.4 need=5475122 tD=0.80 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=275457 pulseB=165274 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5088933 dq=138.5 cnt=82 | c=647.3 rankC=938.6 need=9125595 tD=1.07 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=275457 pulseB=165274 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7475 ryan_m B=1377284 L=14317 d=96.2 nb=3 neut=0 cmds=96 noFull=1 shQ=344321 | m=0.900 worth=98.3 cheap=7.9 over=0 dMedOther=128.5 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3503108 dq=101.5 cnt=155 | c=351.1 rankC=509.1 need=6295651 tD=0.79 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=275457 pulseB=165274 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29818 bal=3046927 dq=102.2 cnt=3 | c=640.8 rankC=929.2 need=5475527 tD=0.80 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=275457 pulseB=165274 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5088933 dq=138.5 cnt=82 | c=647.3 rankC=938.6 need=9125595 tD=1.08 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=275457 pulseB=165274 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7480 ryan_m B=1394637 L=14317 d=97.4 nb=3 neut=0 cmds=96 noFull=1 shQ=348659 | m=0.900 worth=98.7 cheap=7.9 over=0 dMedOther=129.1 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3551100 dq=102.9 cnt=155 | c=355.9 rankC=516.0 need=6381191 tD=0.80 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=278927 pulseB=167356 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29911 bal=3087458 dq=103.2 cnt=3 | c=647.3 rankC=938.6 need=5547945 tD=0.80 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=278927 pulseB=167356 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5105726 dq=138.9 cnt=82 | c=649.5 rankC=941.7 need=9155527 tD=1.08 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=278927 pulseB=167356 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7485 ryan_m B=1394637 L=14317 d=97.4 nb=3 neut=0 cmds=96 noFull=1 shQ=348659 | m=0.900 worth=98.4 cheap=7.9 over=0 dMedOther=128.7 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3551100 dq=102.9 cnt=155 | c=355.9 rankC=516.0 need=6381191 tD=0.80 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=278927 pulseB=167356 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29911 bal=3087458 dq=103.2 cnt=3 | c=647.3 rankC=938.6 need=5547945 tD=0.80 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=278927 pulseB=167356 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5105726 dq=138.9 cnt=82 | c=649.5 rankC=941.7 need=9155527 tD=1.08 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=278927 pulseB=167356 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7490 ryan_m B=1412209 L=14317 d=98.6 nb=3 neut=0 cmds=96 noFull=1 shQ=353052 | m=0.900 worth=96.7 cheap=7.9 over=0 dMedOther=126.4 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3598329 dq=104.3 cnt=155 | c=360.6 rankC=522.8 need=6465371 tD=0.83 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=282442 pulseB=169465 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5122064 dq=139.4 cnt=82 | c=651.6 rankC=944.8 need=9184648 tD=1.10 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=282442 pulseB=169465 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29911 bal=3127594 dq=104.6 cnt=3 | c=655.6 rankC=950.7 need=5619483 tD=0.83 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=282442 pulseB=169465 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7495 ryan_m B=1412209 L=14317 d=98.6 nb=3 neut=0 cmds=96 noFull=1 shQ=353052 | m=0.900 worth=96.7 cheap=7.9 over=0 dMedOther=126.4 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3598329 dq=104.3 cnt=155 | c=360.6 rankC=522.8 need=6465371 tD=0.83 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=282442 pulseB=169465 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5122064 dq=139.4 cnt=82 | c=651.6 rankC=944.8 need=9184648 tD=1.10 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=282442 pulseB=169465 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29911 bal=3127594 dq=104.6 cnt=3 | c=655.6 rankC=950.7 need=5619483 tD=0.83 人 pulse | safe=1259896 keep=Inf avail=-Inf chunkB=282442 pulseB=169465 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7500 ryan_m B=1444319 L=14317 d=100.9 nb=3 neut=0 cmds=97 noFull=1 shQ=357529 | m=0.900 worth=98.0 cheap=7.9 over=1 dMedOther=128.1 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3679261 dq=106.6 cnt=155 | c=368.6 rankC=534.5 need=6609623 tD=0.83 人 pulse | safe=1259896 keep=1288530 avail=138864 chunkB=288864 pulseB=173318  x=138864 hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5174693 dq=140.8 cnt=82 | c=658.2 rankC=954.4 need=9278453 tD=1.10 人 pulse crowdedHard | safe=1259896 keep=1288530 avail=138864 chunkB=288864 pulseB=173318 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29911 bal=3196912 dq=106.9 cnt=3 | c=670.1 rankC=971.6 need=5743035 tD=0.83 人 pulse | safe=1259896 keep=1288530 avail=138864 chunkB=288864 pulseB=173318  x=138864 hNb=3
+    ⇒ 影子指令 attack pct=98 → brocstrailia#36[T2]（约 139636 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=7505 ryan_m B=1444319 L=14317 d=100.9 nb=3 neut=0 cmds=98 noFull=1 shQ=361079 | m=0.900 worth=98.0 cheap=7.9 over=1 dMedOther=128.1 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3679261 dq=106.6 cnt=155 | c=368.6 rankC=534.5 need=6609623 tD=0.83 人 pulse | safe=1259896 keep=1288530 avail=138864 chunkB=288864 pulseB=173318  x=138864 hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5174693 dq=140.8 cnt=82 | c=658.2 rankC=954.4 need=9278453 tD=1.10 人 pulse crowdedHard | safe=1259896 keep=1288530 avail=138864 chunkB=288864 pulseB=173318 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29911 bal=3196912 dq=106.9 cnt=3 | c=670.1 rankC=971.6 need=5743035 tD=0.83 人 pulse | safe=1259896 keep=1288530 avail=138864 chunkB=288864 pulseB=173318  x=138864 hNb=3
+    ⇒ 影子指令 attack pct=98 → brocstrailia#36[T2]（约 139636 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=7510 ryan_m B=1462228 L=14317 d=102.1 nb=3 neut=0 cmds=99 noFull=1 shQ=365502 | m=0.900 worth=98.6 cheap=7.9 over=1 dMedOther=128.9 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3724515 dq=107.9 cnt=155 | c=373.1 rankC=541.0 need=6690282 tD=0.84 人 pulse | safe=1259896 keep=1288530 avail=156563 chunkB=292446 pulseB=175467  x=156563 hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5188664 dq=141.2 cnt=82 | c=660.0 rankC=957.0 need=9303355 tD=1.10 人 pulse crowdedHard | safe=1259896 keep=1288530 avail=156563 chunkB=292446 pulseB=175467 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29911 bal=3235274 dq=108.2 cnt=3 | c=678.0 rankC=983.1 need=5811412 tD=0.84 人 pulse | safe=1259896 keep=1288530 avail=156563 chunkB=292446 pulseB=175467  x=156563 hNb=3
+    ⇒ 影子指令 attack pct=109 → brocstrailia#36[T2]（约 157075 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=7515 ryan_m B=1303726 L=14317 d=91.1 nb=3 neut=0 cmds=99 noFull=1 shQ=196981 | m=0.900 worth=98.6 cheap=7.9 over=0 dMedOther=128.9 safe(-1)=1259896
+    → brocstrailia#36[T2] terr=34514 bal=3724515 dq=107.9 cnt=155 | c=340.0 rankC=340.0 need=6548915 tD=0.84 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=260745 pulseB=156447 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5188664 dq=141.2 cnt=82 | c=659.9 rankC=956.8 need=9303355 tD=1.10 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=260745 pulseB=156447 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29911 bal=3235274 dq=108.2 cnt=3 | c=915.0 rankC=1326.8 need=5811412 tD=0.84 人 pulse crowdedHard | safe=1259896 keep=Inf avail=-Inf chunkB=260745 pulseB=156447 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7520 ryan_m B=1036818 L=14472 d=71.6 nb=3 neut=0 cmds=99 noFull=1 shQ=215939 | m=0.900 worth=99.2 cheap=7.9 over=0 dMedOther=129.6 safe(-1)=1273536
+    → brocstrailia#36[T2] terr=34359 bal=3741757 dq=108.9 cnt=155 | c=332.8 rankC=332.8 need=6376210 tD=0.84 人 pulse crowdedHard | safe=1273536 keep=Inf avail=-Inf chunkB=207364 pulseB=124418 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5202154 dq=141.6 cnt=83 | c=661.3 rankC=958.9 need=9327399 tD=1.09 人 pulse crowdedHard | safe=1273536 keep=Inf avail=-Inf chunkB=207364 pulseB=124418 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29911 bal=3272803 dq=109.4 cnt=3 | c=925.1 rankC=1341.3 need=5878303 tD=0.84 人 pulse crowdedHard | safe=1273536 keep=Inf avail=-Inf chunkB=207364 pulseB=124418 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7525 ryan_m B=1036818 L=14937 d=69.4 nb=3 neut=0 cmds=99 noFull=1 shQ=232394 | m=0.900 worth=99.2 cheap=7.9 over=0 dMedOther=129.6 safe(-1)=1314456
+    → brocstrailia#36[T2] terr=33894 bal=3660958 dq=108.0 cnt=155 | c=338.9 rankC=338.9 need=6376542 tD=0.83 人 pulse crowdedHard | safe=1314456 keep=Inf avail=-Inf chunkB=207364 pulseB=124418 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5202154 dq=141.6 cnt=84 | c=661.3 rankC=958.9 need=9327399 tD=1.09 人 pulse crowdedHard | safe=1314456 keep=Inf avail=-Inf chunkB=207364 pulseB=124418 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29911 bal=3272803 dq=109.4 cnt=3 | c=925.1 rankC=1341.3 need=5878303 tD=0.84 人 pulse crowdedHard | safe=1314456 keep=Inf avail=-Inf chunkB=207364 pulseB=124418 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7530 ryan_m B=1049985 L=15247 d=68.9 nb=3 neut=0 cmds=99 noFull=1 shQ=248891 | m=0.900 worth=99.7 cheap=7.8 over=0 dMedOther=130.3 safe(-1)=1341736
+    → brocstrailia#36[T2] terr=33584 bal=3650749 dq=108.7 cnt=155 | c=347.2 rankC=347.2 need=6453454 tD=0.83 人 pulse crowdedHard | safe=1341736 keep=Inf avail=-Inf chunkB=209997 pulseB=125998 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5214639 dq=141.9 cnt=85 | c=662.9 rankC=961.2 need=9349652 tD=1.09 人 pulse crowdedHard | safe=1341736 keep=Inf avail=-Inf chunkB=209997 pulseB=125998 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29911 bal=2922663 dq=97.7 cnt=3 | c=827.1 rankC=1199.3 need=5254215 tD=0.75 人 pulse crowdedHard | safe=1341736 keep=Inf avail=-Inf chunkB=209997 pulseB=125998 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7535 ryan_m B=1050121 L=15402 d=68.2 nb=3 neut=0 cmds=99 noFull=1 shQ=262530 | m=0.900 worth=99.4 cheap=7.8 over=0 dMedOther=129.9 safe(-1)=1355376
+    → brocstrailia#36[T2] terr=33429 bal=3616895 dq=108.2 cnt=155 | c=506.7 rankC=734.7 need=6455644 tD=0.83 人 pulse crowdedHard | safe=1355376 keep=Inf avail=-Inf chunkB=210024 pulseB=126015 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5214639 dq=141.9 cnt=86 | c=662.8 rankC=961.1 need=9349652 tD=1.09 人 pulse crowdedHard | safe=1355376 keep=Inf avail=-Inf chunkB=210024 pulseB=126015 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=30036 bal=2922663 dq=97.3 cnt=3 | c=823.7 rankC=1194.3 need=5254299 tD=0.75 人 pulse crowdedHard | safe=1355376 keep=Inf avail=-Inf chunkB=210024 pulseB=126015 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7540 ryan_m B=1063457 L=15402 d=69.0 nb=3 neut=0 cmds=99 noFull=1 shQ=265864 | m=0.900 worth=99.9 cheap=7.8 over=0 dMedOther=130.6 safe(-1)=1355376
+    → brocstrailia#36[T2] terr=33429 bal=3659574 dq=109.5 cnt=155 | c=512.6 rankC=743.3 need=6531392 tD=0.84 人 pulse crowdedHard | safe=1355376 keep=Inf avail=-Inf chunkB=212691 pulseB=127615 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5227154 dq=142.2 cnt=86 | c=664.4 rankC=963.4 need=9371959 tD=1.09 人 pulse crowdedHard | safe=1355376 keep=Inf avail=-Inf chunkB=212691 pulseB=127615 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=30159 bal=2962995 dq=98.2 cnt=3 | c=831.6 rankC=1205.8 need=5326473 tD=0.75 人 pulse crowdedHard | safe=1355376 keep=Inf avail=-Inf chunkB=212691 pulseB=127615 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7545 ryan_m B=1063457 L=15402 d=69.0 nb=3 neut=0 cmds=99 noFull=1 shQ=265864 | m=0.900 worth=99.9 cheap=7.8 over=0 dMedOther=130.6 safe(-1)=1355376
+    → brocstrailia#36[T2] terr=33429 bal=3659574 dq=109.5 cnt=155 | c=512.6 rankC=743.3 need=6531706 tD=0.84 人 pulse crowdedHard | safe=1355376 keep=Inf avail=-Inf chunkB=212691 pulseB=127615 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5227154 dq=142.2 cnt=86 | c=664.4 rankC=963.4 need=9371959 tD=1.09 人 pulse crowdedHard | safe=1355376 keep=Inf avail=-Inf chunkB=212691 pulseB=127615 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=30342 bal=2962995 dq=97.7 cnt=3 | c=826.6 rankC=1198.5 need=5326713 tD=0.75 人 pulse crowdedHard | safe=1355376 keep=Inf avail=-Inf chunkB=212691 pulseB=127615 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7550 ryan_m B=1076962 L=15402 d=69.9 nb=3 neut=0 cmds=99 noFull=1 shQ=269240 | m=0.900 worth=100.5 cheap=7.8 over=0 dMedOther=131.3 safe(-1)=1355376
+    → brocstrailia#36[T2] terr=33429 bal=3188977 dq=95.4 cnt=155 | c=185.5 rankC=129.9 need=6170031 tD=0.73 人 pulse onMe | safe=1355376 keep=Inf avail=-Inf chunkB=215392 pulseB=129235 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5239176 dq=142.6 cnt=86 | c=666.0 rankC=965.6 need=9393387 tD=1.09 人 pulse crowdedHard | safe=1355376 keep=Inf avail=-Inf chunkB=215392 pulseB=129235 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=30342 bal=3003905 dq=99.0 cnt=3 | c=837.9 rankC=1215.0 need=5399630 tD=0.75 人 pulse crowdedHard | safe=1355376 keep=Inf avail=-Inf chunkB=215392 pulseB=129235 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7555 ryan_m B=1059623 L=15247 d=69.5 nb=3 neut=0 cmds=99 noFull=1 shQ=264905 | m=0.900 worth=100.5 cheap=7.8 over=0 dMedOther=131.3 safe(-1)=1341736
+    → brocstrailia#36[T2] terr=33584 bal=3188977 dq=95.0 cnt=155 | c=183.5 rankC=128.5 need=6140867 tD=0.72 人 pulse onMe | safe=1341736 keep=Inf avail=-Inf chunkB=211925 pulseB=127155 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5239176 dq=142.6 cnt=85 | c=666.0 rankC=965.7 need=9393387 tD=1.09 人 pulse crowdedHard | safe=1341736 keep=Inf avail=-Inf chunkB=211925 pulseB=127155 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=30342 bal=3003905 dq=99.0 cnt=3 | c=837.9 rankC=1214.9 need=5399630 tD=0.75 人 pulse crowdedHard | safe=1341736 keep=Inf avail=-Inf chunkB=211925 pulseB=127155 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7560 ryan_m B=1020943 L=14782 d=69.1 nb=3 neut=0 cmds=99 noFull=1 shQ=255235 | m=0.900 worth=101.0 cheap=7.9 over=0 dMedOther=132.0 safe(-1)=1300816
+    → brocstrailia#36[T2] terr=34049 bal=3233622 dq=95.0 cnt=155 | c=179.9 rankC=126.0 need=6132934 tD=0.72 人 pulse onMe | safe=1300816 keep=Inf avail=-Inf chunkB=204189 pulseB=122513 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5250702 dq=142.9 cnt=84 | c=667.4 rankC=967.8 need=9413931 tD=1.08 人 pulse crowdedHard | safe=1300816 keep=Inf avail=-Inf chunkB=204189 pulseB=122513 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=30342 bal=3045358 dq=100.4 cnt=3 | c=849.2 rankC=1231.4 need=5473515 tD=0.76 人 pulse crowdedHard | safe=1300816 keep=Inf avail=-Inf chunkB=204189 pulseB=122513 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7565 ryan_m B=986796 L=14472 d=68.2 nb=3 neut=0 cmds=99 noFull=1 shQ=246699 | m=0.900 worth=101.0 cheap=7.9 over=0 dMedOther=132.0 safe(-1)=1273536
+    → brocstrailia#36[T2] terr=34359 bal=3233622 dq=94.1 cnt=155 | c=176.1 rankC=123.3 need=6075241 tD=0.71 人 pulse onMe | safe=1273536 keep=Inf avail=-Inf chunkB=197359 pulseB=118416 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5250702 dq=142.9 cnt=83 | c=667.4 rankC=967.7 need=9413931 tD=1.08 人 pulse crowdedHard | safe=1273536 keep=Inf avail=-Inf chunkB=197359 pulseB=118416 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=30342 bal=3045358 dq=100.4 cnt=3 | c=849.2 rankC=1231.3 need=5473515 tD=0.76 人 pulse crowdedHard | safe=1273536 keep=Inf avail=-Inf chunkB=197359 pulseB=118416 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7570 ryan_m B=948106 L=14007 d=67.7 nb=3 neut=0 cmds=99 noFull=1 shQ=237026 | m=0.900 worth=101.0 cheap=8.0 over=0 dMedOther=132.0 safe(-1)=1232616
+    → brocstrailia#36[T2] terr=34824 bal=3279216 dq=94.2 cnt=155 | c=230.8 rankC=230.8 need=6058564 tD=0.71 人 pulse onMe | safe=1232616 keep=Inf avail=-Inf chunkB=189621 pulseB=113773 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5261728 dq=143.2 cnt=81 | c=668.8 rankC=969.8 need=9433583 tD=1.08 人 pulse crowdedHard | safe=1232616 keep=Inf avail=-Inf chunkB=189621 pulseB=113773 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=30296 bal=3079896 dq=101.7 cnt=3 | c=860.1 rankC=1247.1 need=5533498 tD=0.77 人 pulse crowdedHard | safe=1232616 keep=Inf avail=-Inf chunkB=189621 pulseB=113773 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7575 ryan_m B=914756 L=13698 d=66.8 nb=3 neut=0 cmds=99 noFull=1 shQ=228689 | m=0.900 worth=100.8 cheap=8.0 over=0 dMedOther=131.8 safe(-1)=1205424
+    → brocstrailia#36[T2] terr=35133 bal=3279216 dq=93.3 cnt=154 | c=226.2 rankC=226.2 need=5991743 tD=0.71 人 pulse onMe | safe=1205424 keep=Inf avail=-Inf chunkB=182951 pulseB=109771 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=30207 bal=2700212 dq=89.4 cnt=3 | c=561.2 rankC=813.7 need=4854108 tD=0.68 人 pulse bleeding | safe=1205424 keep=Inf avail=-Inf chunkB=182951 pulseB=109771 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5261728 dq=143.2 cnt=80 | c=668.8 rankC=969.8 need=9433583 tD=1.09 人 pulse crowdedHard | safe=1205424 keep=Inf avail=-Inf chunkB=182951 pulseB=109771 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7580 ryan_m B=879159 L=13392 d=65.6 nb=3 neut=0 cmds=99 noFull=1 shQ=219789 | m=0.900 worth=100.9 cheap=8.0 over=0 dMedOther=131.9 safe(-1)=1178496
+    → brocstrailia#36[T2] terr=35439 bal=3325549 dq=93.8 cnt=151 | c=438.2 rankC=635.4 need=5980591 tD=0.71 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=175832 pulseB=105499 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5272251 dq=143.5 cnt=79 | c=670.1 rankC=971.7 need=9452340 tD=1.09 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=175832 pulseB=105499 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=30207 bal=2737474 dq=90.6 cnt=3 | c=767.8 rankC=1113.4 need=4920598 tD=0.69 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=175832 pulseB=105499 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7585 ryan_m B=879159 L=13392 d=65.6 nb=3 neut=0 cmds=99 noFull=1 shQ=219789 | m=0.900 worth=100.4 cheap=8.0 over=0 dMedOther=131.2 safe(-1)=1178496
+    → brocstrailia#36[T2] terr=35439 bal=3325549 dq=93.8 cnt=151 | c=438.2 rankC=635.4 need=5980591 tD=0.72 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=175832 pulseB=105499 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=30281 bal=2737474 dq=90.4 cnt=3 | c=567.2 rankC=822.4 need=4923216 tD=0.69 人 pulse bleeding | safe=1178496 keep=Inf avail=-Inf chunkB=175832 pulseB=105499 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5272251 dq=143.5 cnt=79 | c=670.1 rankC=971.7 need=9452340 tD=1.09 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=175832 pulseB=105499 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7590 ryan_m B=890148 L=13392 d=66.5 nb=3 neut=0 cmds=99 noFull=1 shQ=222537 | m=0.900 worth=95.9 cheap=8.0 over=0 dMedOther=125.4 safe(-1)=1178496
+    → brocstrailia#36[T2] terr=35439 bal=3372439 dq=95.2 cnt=151 | c=444.4 rankC=644.3 need=6064168 tD=0.76 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=178030 pulseB=106818 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5282268 dq=143.7 cnt=79 | c=671.4 rankC=973.5 need=9470194 tD=1.15 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=178030 pulseB=106818 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=30372 bal=2775251 dq=91.4 cnt=3 | c=773.7 rankC=1121.9 need=4992061 tD=0.73 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=178030 pulseB=106818 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7595 ryan_m B=890148 L=13392 d=66.5 nb=3 neut=0 cmds=99 noFull=1 shQ=222537 | m=0.900 worth=95.7 cheap=8.0 over=0 dMedOther=125.1 safe(-1)=1178496
+    → brocstrailia#36[T2] terr=35439 bal=3372439 dq=95.2 cnt=151 | c=306.4 rankC=306.4 need=6064168 tD=0.76 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=178030 pulseB=106818 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5282268 dq=143.7 cnt=79 | c=671.4 rankC=973.5 need=9470194 tD=1.15 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=178030 pulseB=106818 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=30419 bal=2775251 dq=91.2 cnt=3 | c=772.5 rankC=1120.2 need=4992228 tD=0.73 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=178030 pulseB=106818 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7600 ryan_m B=914666 L=13392 d=68.3 nb=3 neut=0 cmds=99 noFull=1 shQ=225418 | m=0.900 worth=97.0 cheap=8.0 over=0 dMedOther=126.8 safe(-1)=1178496
+    → brocstrailia#36[T2] terr=35384 bal=3446882 dq=97.4 cnt=151 | c=313.7 rankC=313.7 need=6194878 tD=0.77 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=182933 pulseB=109760 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=30473 bal=2844006 dq=93.3 cnt=3 | c=585.3 rankC=848.6 need=5114792 tD=0.74 人 pulse bleeding | safe=1178496 keep=Inf avail=-Inf chunkB=182933 pulseB=109760 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5328527 dq=145.0 cnt=79 | c=677.3 rankC=982.0 need=9552645 tD=1.14 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=182933 pulseB=109760 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7605 ryan_m B=914666 L=13392 d=68.3 nb=3 neut=0 cmds=99 noFull=1 shQ=228666 | m=0.900 worth=96.6 cheap=8.0 over=0 dMedOther=126.2 safe(-1)=1178496
+    → brocstrailia#36[T2] terr=35384 bal=3445100 dq=97.4 cnt=151 | c=454.6 rankC=659.2 need=6191978 tD=0.77 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=182933 pulseB=109760 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5328527 dq=145.0 cnt=79 | c=677.3 rankC=982.0 need=9552645 tD=1.15 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=182933 pulseB=109760 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=30499 bal=2844006 dq=93.2 cnt=3 | c=789.4 rankC=1144.7 need=5114897 tD=0.74 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=182933 pulseB=109760 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7610 ryan_m B=926099 L=13392 d=69.2 nb=3 neut=0 cmds=99 noFull=1 shQ=231524 | m=0.900 worth=97.6 cheap=8.0 over=0 dMedOther=127.6 safe(-1)=1178496
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=29911 bal=2791055 dq=93.3 cnt=3 | c=78.4 rankC=23.5 need=4999592 tD=0.73 人 pulse bleeding | safe=1178496 keep=1178496 avail=-263249 chunkB=185220 pulseB=111132 无可用(avail<=0) hNb=3
+    → brocstrailia#36[T2] terr=35384 bal=3493675 dq=98.7 cnt=151 | c=461.0 rankC=668.4 need=6278675 tD=0.77 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=185220 pulseB=111132 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5336519 dq=145.2 cnt=79 | c=678.3 rankC=983.5 need=9566890 tD=1.14 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=185220 pulseB=111132 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7615 ryan_m B=926099 L=13392 d=69.2 nb=3 neut=0 cmds=99 noFull=1 shQ=231524 | m=0.900 worth=97.6 cheap=8.0 over=0 dMedOther=127.6 safe(-1)=1178496
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28716 bal=2612739 dq=91.0 cnt=2 | c=95.9 rankC=35.7 need=4641195 tD=0.71 人 pulse bleeding | safe=1178496 keep=1427395 avail=-512148 chunkB=185220 pulseB=111132 无可用(avail<=0) hNb=3
+    → brocstrailia#36[T2] terr=35384 bal=3493675 dq=98.7 cnt=151 | c=461.0 rankC=668.4 need=6278815 tD=0.77 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=185220 pulseB=111132 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=5336519 dq=145.2 cnt=79 | c=678.3 rankC=983.5 need=9566890 tD=1.14 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=185220 pulseB=111132 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7620 ryan_m B=937675 L=13392 d=70.0 nb=3 neut=0 cmds=99 noFull=1 shQ=234418 | m=0.900 worth=97.0 cheap=8.0 over=0 dMedOther=126.8 safe(-1)=1178496
+    → [OG] Gallo#55[T4] terr=36751 bal=4380638 dq=119.2 cnt=79 | c=239.0 rankC=167.3 need=8795985 tD=0.94 人 pulse onMe | safe=1178496 keep=Inf avail=-Inf chunkB=187535 pulseB=112521 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=35384 bal=3542935 dq=100.1 cnt=151 | c=322.3 rankC=322.3 need=6366738 tD=0.79 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=187535 pulseB=112521 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28124 bal=2647230 dq=94.1 cnt=1 | c=556.0 rankC=556.0 need=4679630 tD=0.74 人 pulse crowdedHard | safe=1178496 keep=Inf avail=-Inf chunkB=187535 pulseB=112521 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7625 ryan_m B=928714 L=13312 d=69.8 nb=2 neut=0 cmds=99 noFull=1 shQ=232178 | m=0.900 worth=96.8 cheap=8.0 over=0 dMedOther=126.6 safe(-1)=1171456
+    → [OG] Gallo#55[T4] terr=36831 bal=4380638 dq=118.9 cnt=78 | c=238.0 rankC=166.6 need=8778023 tD=0.94 人 pulse onMe | safe=1171456 keep=Inf avail=-Inf chunkB=185743 pulseB=111446 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=35384 bal=3542935 dq=100.1 cnt=151 | c=322.3 rankC=322.3 need=6367021 tD=0.79 人 pulse crowdedHard | safe=1171456 keep=Inf avail=-Inf chunkB=185743 pulseB=111446 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7630 ryan_m B=913771 L=13077 d=69.9 nb=2 neut=0 cmds=99 noFull=1 shQ=228442 | m=0.900 worth=96.5 cheap=8.0 over=0 dMedOther=126.2 safe(-1)=1150776
+    → [OG] Gallo#55[T4] terr=37066 bal=4420063 dq=119.2 cnt=76 | c=236.9 rankC=165.9 need=8795653 tD=0.95 人 pulse onMe | safe=1150776 keep=Inf avail=-Inf chunkB=182754 pulseB=109653 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=35384 bal=3592890 dq=101.5 cnt=149 | c=326.8 rankC=326.8 need=6456191 tD=0.80 人 pulse crowdedHard | safe=1150776 keep=Inf avail=-Inf chunkB=182754 pulseB=109653 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7635 ryan_m B=896697 L=12924 d=69.4 nb=2 neut=0 cmds=99 noFull=1 shQ=224174 | m=0.900 worth=95.5 cheap=8.0 over=0 dMedOther=124.8 safe(-1)=1137312
+    → [OG] Gallo#55[T4] terr=37219 bal=4420063 dq=118.8 cnt=77 | c=235.0 rankC=164.5 need=8761470 tD=0.95 人 pulse onMe | safe=1137312 keep=Inf avail=-Inf chunkB=179339 pulseB=107604 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=35384 bal=3592890 dq=101.5 cnt=148 | c=326.8 rankC=326.8 need=6456334 tD=0.81 人 pulse crowdedHard | safe=1137312 keep=Inf avail=-Inf chunkB=179339 pulseB=107604 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7640 ryan_m B=881727 L=12691 d=69.5 nb=2 neut=0 cmds=99 noFull=1 shQ=220431 | m=0.900 worth=95.0 cheap=8.0 over=0 dMedOther=124.2 safe(-1)=1116808
+    → [OG] Gallo#55[T4] terr=37452 bal=4460285 dq=119.1 cnt=78 | c=234.1 rankC=163.9 need=8781166 tD=0.96 人 pulse onMe | safe=1116808 keep=Inf avail=-Inf chunkB=176345 pulseB=105807 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=35384 bal=3642112 dq=102.9 cnt=147 | c=331.3 rankC=331.3 need=6544203 tD=0.83 人 pulse crowdedHard | safe=1116808 keep=Inf avail=-Inf chunkB=176345 pulseB=105807 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7645 ryan_m B=864198 L=12533 d=69.0 nb=2 neut=0 cmds=99 noFull=1 shQ=216049 | m=0.900 worth=95.0 cheap=8.0 over=0 dMedOther=124.2 safe(-1)=1102904
+    → [OG] Gallo#55[T4] terr=37610 bal=4460285 dq=118.6 cnt=79 | c=232.2 rankC=162.5 need=8746113 tD=0.95 人 pulse onMe | safe=1102904 keep=Inf avail=-Inf chunkB=172840 pulseB=103704 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=35384 bal=3642112 dq=102.9 cnt=146 | c=331.3 rankC=331.3 need=6544494 tD=0.83 人 pulse crowdedHard | safe=1102904 keep=Inf avail=-Inf chunkB=172840 pulseB=103704 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7650 ryan_m B=847770 L=12289 d=69.0 nb=2 neut=0 cmds=99 noFull=1 shQ=211942 | m=0.900 worth=95.6 cheap=8.0 over=0 dMedOther=125.0 safe(-1)=1081432
+    → [OG] Gallo#55[T4] terr=37854 bal=4501319 dq=118.9 cnt=82 | c=231.2 rankC=161.8 need=8765284 tD=0.95 人 pulse onMe | safe=1081432 keep=Inf avail=-Inf chunkB=169554 pulseB=101732 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=35384 bal=3690552 dq=104.3 cnt=144 | c=335.6 rankC=335.6 need=6630977 tD=0.83 人 pulse crowdedHard | safe=1081432 keep=Inf avail=-Inf chunkB=169554 pulseB=101732 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7655 ryan_m B=829597 L=12124 d=68.4 nb=2 neut=0 cmds=99 noFull=1 shQ=207399 | m=0.900 worth=95.6 cheap=8.1 over=0 dMedOther=125.0 safe(-1)=1066912
+    → brocstrailia#36[T2] terr=35384 bal=3171569 dq=89.6 cnt=143 | c=173.9 rankC=121.7 need=6181696 tD=0.72 人 pulse onMe | safe=1066912 keep=Inf avail=-Inf chunkB=165919 pulseB=99552 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=38019 bal=4501319 dq=118.4 cnt=83 | c=229.2 rankC=160.4 need=8728897 tD=0.95 人 pulse onMe | safe=1066912 keep=Inf avail=-Inf chunkB=165919 pulseB=99552 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7660 ryan_m B=796345 L=11729 d=67.9 nb=2 neut=0 cmds=99 noFull=1 shQ=199086 | m=0.900 worth=95.6 cheap=8.1 over=0 dMedOther=125.0 safe(-1)=1032152
+    → brocstrailia#36[T2] terr=35526 bal=3216288 dq=90.5 cnt=142 | c=174.5 rankC=122.2 need=6230565 tD=0.72 人 pulse onMe | safe=1032152 keep=Inf avail=-Inf chunkB=159269 pulseB=95561 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=38272 bal=4542731 dq=118.7 cnt=85 | c=228.1 rankC=159.7 need=8747207 tD=0.95 人 pulse onMe | safe=1032152 keep=Inf avail=-Inf chunkB=159269 pulseB=95561 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7665 ryan_m B=733565 L=11144 d=65.8 nb=2 neut=0 cmds=99 noFull=1 shQ=183391 | m=0.900 worth=95.2 cheap=8.1 over=0 dMedOther=124.4 safe(-1)=980672
+    → brocstrailia#36[T2] terr=35942 bal=3216288 dq=89.5 cnt=135 | c=170.1 rankC=119.0 need=6141028 tD=0.72 人 pulse onMe | safe=980672 keep=Inf avail=-Inf chunkB=146713 pulseB=88028 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=38441 bal=4542731 dq=118.2 cnt=82 | c=226.2 rankC=158.3 need=8710932 tD=0.95 人 pulse onMe | safe=980672 keep=Inf avail=-Inf chunkB=146713 pulseB=88028 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7670 ryan_m B=688230 L=10629 d=64.8 nb=2 neut=0 cmds=99 noFull=1 shQ=172057 | m=0.900 worth=95.8 cheap=8.2 over=0 dMedOther=125.2 safe(-1)=935352
+    → brocstrailia#36[T2] terr=36206 bal=3261637 dq=90.1 cnt=131 | c=169.5 rankC=118.7 need=6166701 tD=0.72 人 pulse onMe | safe=935352 keep=Inf avail=-Inf chunkB=137646 pulseB=82588 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=38692 bal=4584978 dq=118.5 cnt=85 | c=225.3 rankC=157.7 need=8733616 tD=0.95 人 pulse onMe | safe=935352 keep=Inf avail=-Inf chunkB=137646 pulseB=82588 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7675 ryan_m B=631061 L=10070 d=62.7 nb=2 neut=0 cmds=99 noFull=1 shQ=157765 | m=0.900 worth=95.8 cheap=8.2 over=0 dMedOther=125.2 safe(-1)=886160
+    → brocstrailia#36[T2] terr=36592 bal=3261637 dq=89.1 cnt=127 | c=165.6 rankC=115.9 need=6087460 tD=0.71 人 pulse onMe | safe=886160 keep=Inf avail=-Inf chunkB=126212 pulseB=75727 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=38865 bal=4584978 dq=118.0 cnt=87 | c=223.3 rankC=156.3 need=8698217 tD=0.94 人 pulse onMe | safe=886160 keep=Inf avail=-Inf chunkB=126212 pulseB=75727 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7680 ryan_m B=587384 L=9558 d=61.5 nb=2 neut=0 cmds=99 noFull=1 shQ=146846 | m=0.900 worth=97.5 cheap=8.2 over=0 dMedOther=127.4 safe(-1)=841104
+    → [OG] Gallo#55[T4] terr=39132 bal=4628076 dq=118.3 cnt=90 | c=222.4 rankC=155.7 need=8721800 tD=0.93 人 pulse onMe | safe=841104 keep=Inf avail=-Inf chunkB=117477 pulseB=70486 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=36779 bal=3299592 dq=89.7 cnt=120 | c=220.4 rankC=220.4 need=6106443 tD=0.70 人 pulse onMe | safe=841104 keep=Inf avail=-Inf chunkB=117477 pulseB=70486 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7685 ryan_m B=535789 L=9026 d=59.4 nb=2 neut=0 cmds=99 noFull=1 shQ=133947 | m=0.900 worth=97.5 cheap=8.3 over=0 dMedOther=127.4 safe(-1)=794288
+    → [OG] Gallo#55[T4] terr=39317 bal=4628076 dq=117.7 cnt=90 | c=220.4 rankC=154.3 need=8685893 tD=0.92 人 pulse onMe | safe=794288 keep=Inf avail=-Inf chunkB=107158 pulseB=64295 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=37126 bal=3296286 dq=88.8 cnt=112 | c=215.8 rankC=215.8 need=6033011 tD=0.70 人 pulse onMe | safe=794288 keep=Inf avail=-Inf chunkB=107158 pulseB=64295 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7690 ryan_m B=499497 L=8576 d=58.2 nb=2 neut=0 cmds=99 noFull=1 shQ=124874 | m=0.900 worth=97.6 cheap=8.3 over=0 dMedOther=127.6 safe(-1)=754688
+    → [OG] Gallo#55[T4] terr=39570 bal=5050314 dq=127.6 cnt=78 | c=236.9 rankC=165.8 need=9390752 tD=1.00 人 pulse onMe | safe=754688 keep=Inf avail=-Inf chunkB=99899 pulseB=59940 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=37323 bal=3343093 dq=89.6 cnt=93 | c=216.5 rankC=216.5 need=6079410 tD=0.70 人 pulse onMe | safe=754688 keep=Inf avail=-Inf chunkB=99899 pulseB=59940 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7695 ryan_m B=461831 L=8167 d=56.5 nb=2 neut=0 cmds=99 noFull=1 shQ=115457 | m=0.900 worth=97.3 cheap=8.3 over=0 dMedOther=127.1 safe(-1)=718696
+    → brocstrailia#36[T2] terr=37580 bal=3343093 dq=89.0 cnt=80 | c=213.4 rankC=213.4 need=6031838 tD=0.70 人 pulse onMe | safe=718696 keep=Inf avail=-Inf chunkB=92366 pulseB=55420 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=39722 bal=5050314 dq=127.1 cnt=73 | c=313.7 rankC=313.7 need=9362692 tD=1.00 人 pulse onMe | safe=718696 keep=Inf avail=-Inf chunkB=92366 pulseB=55420 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7700 ryan_m B=447166 L=7876 d=56.8 nb=2 neut=0 cmds=99 noFull=1 shQ=111456 | m=0.900 worth=98.5 cheap=8.4 over=0 dMedOther=128.7 safe(-1)=693088
+    → brocstrailia#36[T2] terr=37655 bal=3428563 dq=91.1 cnt=74 | c=294.1 rankC=294.1 need=6167521 tD=0.71 人 pulse crowdedHard | safe=693088 keep=Inf avail=-Inf chunkB=89433 pulseB=53660 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=39938 bal=5124523 dq=128.3 cnt=71 | c=315.1 rankC=315.1 need=9455794 tD=1.00 人 pulse onMe | safe=693088 keep=Inf avail=-Inf chunkB=89433 pulseB=53660 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7705 ryan_m B=434033 L=7731 d=56.1 nb=2 neut=0 cmds=99 noFull=1 shQ=108508 | m=0.900 worth=98.5 cheap=8.4 over=0 dMedOther=128.7 safe(-1)=680328
+    → brocstrailia#36[T2] terr=37655 bal=3428563 dq=91.1 cnt=73 | c=294.1 rankC=294.1 need=6167521 tD=0.71 人 pulse crowdedHard | safe=680328 keep=Inf avail=-Inf chunkB=86807 pulseB=52084 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=40083 bal=5124523 dq=127.8 cnt=73 | c=313.1 rankC=313.1 need=9429500 tD=0.99 人 pulse onMe | safe=680328 keep=Inf avail=-Inf chunkB=86807 pulseB=52084 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7710 ryan_m B=419098 L=7509 d=55.8 nb=2 neut=0 cmds=99 noFull=1 shQ=104774 | m=0.900 worth=99.1 cheap=8.4 over=0 dMedOther=129.5 safe(-1)=660792
+    → brocstrailia#36[T2] terr=37655 bal=2988555 dq=79.4 cnt=72 | c=154.3 rankC=108.0 need=5825218 tD=0.61 人 pulse onMe | safe=660792 keep=Inf avail=-Inf chunkB=83820 pulseB=50292 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=40305 bal=5158344 dq=128.0 cnt=75 | c=312.0 rankC=312.0 need=9449779 tD=0.99 人 pulse onMe | safe=660792 keep=Inf avail=-Inf chunkB=83820 pulseB=50292 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7715 ryan_m B=399485 L=7288 d=54.8 nb=2 neut=0 cmds=99 noFull=1 shQ=99871 | m=0.900 worth=99.1 cheap=8.4 over=0 dMedOther=129.5 safe(-1)=641344
+    → brocstrailia#36[T2] terr=37724 bal=2988555 dq=79.2 cnt=66 | c=153.8 rankC=107.6 need=5812931 tD=0.61 人 pulse onMe | safe=641344 keep=Inf avail=-Inf chunkB=79897 pulseB=47938 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=40457 bal=5158344 dq=127.5 cnt=76 | c=309.9 rankC=309.9 need=9422645 tD=0.98 人 pulse onMe | safe=641344 keep=Inf avail=-Inf chunkB=79897 pulseB=47938 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7720 ryan_m B=372433 L=6926 d=53.8 nb=2 neut=0 cmds=99 noFull=1 shQ=93108 | m=0.900 worth=99.6 cheap=8.5 over=0 dMedOther=130.2 safe(-1)=609488
+    → brocstrailia#36[T2] terr=37856 bal=3031291 dq=80.1 cnt=66 | c=154.6 rankC=108.2 need=5866172 tD=0.61 人 pulse onMe | safe=609488 keep=Inf avail=-Inf chunkB=74487 pulseB=44692 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=40687 bal=5192904 dq=127.6 cnt=77 | c=308.9 rankC=308.9 need=9444210 tD=0.98 人 pulse onMe | safe=609488 keep=Inf avail=-Inf chunkB=74487 pulseB=44692 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7725 ryan_m B=342191 L=6570 d=52.1 nb=2 neut=0 cmds=99 noFull=1 shQ=85547 | m=0.900 worth=99.6 cheap=8.5 over=0 dMedOther=130.2 safe(-1)=578160
+    → brocstrailia#36[T2] terr=38058 bal=3031291 dq=79.6 cnt=68 | c=152.9 rankC=107.0 need=5831815 tD=0.61 人 pulse onMe | safe=578160 keep=Inf avail=-Inf chunkB=68438 pulseB=41063 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=40841 bal=5192904 dq=127.1 cnt=76 | c=306.9 rankC=306.9 need=9417871 tD=0.98 人 pulse onMe | safe=578160 keep=Inf avail=-Inf chunkB=68438 pulseB=41063 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7730 ryan_m B=315680 L=6203 d=50.9 nb=2 neut=0 cmds=99 noFull=1 shQ=78920 | m=0.900 worth=98.2 cheap=8.5 over=0 dMedOther=128.3 safe(-1)=545864
+    → brocstrailia#36[T2] terr=38193 bal=3074638 dq=80.5 cnt=67 | c=153.8 rankC=107.6 need=5886798 tD=0.63 人 pulse onMe | safe=545864 keep=Inf avail=-Inf chunkB=63136 pulseB=37882 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=41073 bal=4281757 dq=104.2 cnt=76 | c=210.5 rankC=147.4 need=8663210 tD=0.81 人 pulse onMe | safe=545864 keep=Inf avail=-Inf chunkB=63136 pulseB=37882 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7735 ryan_m B=287340 L=5850 d=49.1 nb=2 neut=0 cmds=99 noFull=1 shQ=71835 | m=0.900 worth=98.2 cheap=8.6 over=0 dMedOther=128.3 safe(-1)=514800
+    → brocstrailia#36[T2] terr=38392 bal=3074638 dq=80.1 cnt=66 | c=152.1 rankC=106.5 need=5854722 tD=0.62 人 pulse onMe | safe=514800 keep=Inf avail=-Inf chunkB=57468 pulseB=34481 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=41227 bal=4281757 dq=103.9 cnt=77 | c=209.1 rankC=146.4 need=8638474 tD=0.81 人 pulse onMe | safe=514800 keep=Inf avail=-Inf chunkB=57468 pulseB=34481 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7740 ryan_m B=261615 L=5479 d=47.7 nb=2 neut=0 cmds=99 noFull=1 shQ=65403 | m=0.900 worth=98.7 cheap=8.6 over=0 dMedOther=129.0 safe(-1)=482152
+    → brocstrailia#36[T2] terr=38526 bal=3118605 dq=80.9 cnt=67 | c=153.1 rankC=107.2 need=5912352 tD=0.63 人 pulse onMe | safe=482152 keep=Inf avail=-Inf chunkB=52323 pulseB=31394 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=41464 bal=4339560 dq=104.7 cnt=80 | c=209.5 rankC=146.6 need=8704459 tD=0.81 人 pulse onMe | safe=482152 keep=Inf avail=-Inf chunkB=52323 pulseB=31394 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7745 ryan_m B=234041 L=5112 d=45.8 nb=2 neut=0 cmds=99 noFull=1 shQ=58510 | m=0.900 worth=98.7 cheap=8.6 over=0 dMedOther=129.0 safe(-1)=449856
+    → brocstrailia#36[T2] terr=38729 bal=3118605 dq=80.5 cnt=68 | c=151.5 rankC=106.0 need=5881729 tD=0.62 人 pulse onMe | safe=449856 keep=Inf avail=-Inf chunkB=46808 pulseB=28085 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=41628 bal=4339560 dq=104.2 cnt=83 | c=208.0 rankC=145.6 need=8679721 tD=0.81 人 pulse onMe | safe=449856 keep=Inf avail=-Inf chunkB=46808 pulseB=28085 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7750 ryan_m B=208219 L=4720 d=44.1 nb=2 neut=0 cmds=99 noFull=1 shQ=52054 | m=0.900 worth=99.2 cheap=8.8 over=0 dMedOther=129.7 safe(-1)=415360
+    → brocstrailia#36[T2] terr=38866 bal=3163201 dq=81.4 cnt=69 | c=152.5 rankC=106.7 need=5941496 tD=0.63 人 pulse onMe | safe=415360 keep=Inf avail=-Inf chunkB=41644 pulseB=24986 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=41883 bal=4397710 dq=105.0 cnt=86 | c=208.3 rankC=145.8 need=8746553 tD=0.81 人 pulse onMe | safe=415360 keep=Inf avail=-Inf chunkB=41644 pulseB=24986 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7755 ryan_m B=181798 L=4338 d=41.9 nb=2 neut=0 cmds=99 noFull=1 shQ=45449 | m=0.900 worth=99.2 cheap=8.8 over=0 dMedOther=129.7 safe(-1)=381744
+    → brocstrailia#36[T2] terr=39073 bal=3163201 dq=81.0 cnt=69 | c=150.9 rankC=105.7 need=5912748 tD=0.62 人 pulse onMe | safe=381744 keep=Inf avail=-Inf chunkB=36360 pulseB=21816 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=42058 bal=4397710 dq=104.6 cnt=88 | c=206.9 rankC=144.8 need=8722203 tD=0.81 人 pulse onMe | safe=381744 keep=Inf avail=-Inf chunkB=36360 pulseB=21816 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7760 ryan_m B=156494 L=3925 d=39.9 nb=2 neut=0 cmds=99 noFull=1 shQ=39123 | m=0.900 worth=98.9 cheap=8.9 over=0 dMedOther=129.3 safe(-1)=345400
+    → brocstrailia#36[T2] terr=39135 bal=3198205 dq=81.7 cnt=65 | c=151.8 rankC=106.3 need=5956463 tD=0.63 人 pulse onMe | safe=345400 keep=Inf avail=-Inf chunkB=31299 pulseB=18779 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=42331 bal=4456639 dq=105.3 cnt=92 | c=207.1 rankC=145.0 need=8791245 tD=0.81 人 pulse onMe | safe=345400 keep=Inf avail=-Inf chunkB=31299 pulseB=18779 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令

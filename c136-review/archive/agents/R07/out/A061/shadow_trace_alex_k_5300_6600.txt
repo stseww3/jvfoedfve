@@ -1,0 +1,792 @@
+# A061 alex_k 影子决策明细 t=5300~6600（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 160 拍（t=5300~6600）
+#   过了软上限，但首选目标是唯一的真人邻居（isSoleHealthyBuffer：余额 < overHumanCap×100×领土 不打）: 90 拍（t=5320~6500）；可用兵 -236836~22515，一条指令下限(20%余额) 368193~424369，比值 -63%~5%
+#   捐兵: 5 拍（t=5415~6290）；可用兵 -117568~2782，一条指令下限(20%余额) 397825~420375，比值 -29%~1%
+#   只打无主地: 3 拍（t=6030~6040）；可用兵 -68859~-47600，一条指令下限(20%余额) 405877~410179，比值 -17%~-12%
+#   出手打人/bot: 2 拍（t=6505~6510）；可用兵 266130~288050，一条指令下限(20%余额) 385742~390178，比值 69%~74%
+#   有可用兵但没发（脉冲下限/冷却/其他）: 1 拍（t=6515~6515）；可用兵 266546~266546，一条指令下限(20%余额) 380854~380854，比值 70%~70%
+#   └ 「出手打人/bot」里：2 条对人/bot 的出兵共约 466006 兵；其中超过软上限（over=1）时发的 2 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 2 条约 466006 兵，c/worth = 2.38~2.39
+t=5300 alex_k B=1815742 L=18522 d=98.0 nb=1 neut=0 cmds=59 noFull=1 shQ=449485 | m=0.900 worth=88.2 cheap=7.6 over=0 dMedOther=87.5 safe(-1)=1021560
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1846159 dq=116.5 cnt=22 | c=1211.6 rankC=1756.8 need=3314418 tD=1.33 人 pulse crowdedHard | safe=1021560 keep=Inf avail=-Inf chunkB=363148 pulseB=217889 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5305 alex_k B=1815742 L=18522 d=98.0 nb=1 neut=0 cmds=59 noFull=1 shQ=453935 | m=0.900 worth=88.2 cheap=7.6 over=0 dMedOther=87.5 safe(-1)=1021560
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1846159 dq=116.5 cnt=22 | c=1211.6 rankC=1756.8 need=3314418 tD=1.33 人 pulse crowdedHard | safe=1021560 keep=Inf avail=-Inf chunkB=363148 pulseB=217889 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5310 alex_k B=1839346 L=18522 d=99.3 nb=1 neut=0 cmds=59 noFull=1 shQ=459836 | m=0.900 worth=89.4 cheap=7.6 over=0 dMedOther=88.6 safe(-1)=1030479
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1862035 dq=117.5 cnt=22 | c=1221.9 rankC=1771.8 need=3342716 tD=1.33 人 pulse crowdedHard | safe=1030479 keep=Inf avail=-Inf chunkB=367869 pulseB=220722 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5315 alex_k B=1839346 L=18522 d=99.3 nb=1 neut=0 cmds=59 noFull=1 shQ=459836 | m=0.900 worth=89.4 cheap=7.6 over=0 dMedOther=88.5 safe(-1)=1030479
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1862035 dq=117.5 cnt=22 | c=1221.9 rankC=1771.8 need=3342716 tD=1.33 人 pulse crowdedHard | safe=1030479 keep=Inf avail=-Inf chunkB=367869 pulseB=220722 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5320 alex_k B=1863257 L=18522 d=100.6 nb=1 neut=0 cmds=59 noFull=1 shQ=465814 | m=0.900 worth=90.5 cheap=7.6 over=1 dMedOther=88.0 safe(-1)=1039266
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1877676 dq=118.5 cnt=22 | c=1232.2 rankC=1786.6 need=3370595 tD=1.35 人 pulse crowdedHard | safe=1039266 keep=2074464 avail=-233042 chunkB=372651 pulseB=223591 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5325 alex_k B=1863257 L=18522 d=100.6 nb=1 neut=0 cmds=59 noFull=1 shQ=465814 | m=0.900 worth=90.5 cheap=7.6 over=1 dMedOther=85.8 safe(-1)=1039266
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1877676 dq=118.5 cnt=22 | c=849.8 rankC=849.8 need=3370595 tD=1.38 人 pulse crowdedHard | safe=1039266 keep=2074464 avail=-233042 chunkB=372651 pulseB=223591 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5330 alex_k B=1887293 L=18522 d=101.9 nb=1 neut=0 cmds=59 noFull=1 shQ=471758 | m=0.900 worth=91.7 cheap=7.6 over=1 dMedOther=85.4 safe(-1)=1047810
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1892885 dq=119.4 cnt=22 | c=856.6 rankC=856.6 need=3397704 tD=1.40 人 pulse crowdedHard | safe=1047810 keep=2074464 avail=-209287 chunkB=377459 pulseB=226475 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5335 alex_k B=1887293 L=18522 d=101.9 nb=1 neut=0 cmds=59 noFull=1 shQ=471823 | m=0.900 worth=91.7 cheap=7.6 over=1 dMedOther=83.3 safe(-1)=1047810
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1892885 dq=119.4 cnt=22 | c=856.6 rankC=856.6 need=3397704 tD=1.43 人 pulse crowdedHard | safe=1047810 keep=2074464 avail=-209287 chunkB=377459 pulseB=226475 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5340 alex_k B=1911072 L=18522 d=103.2 nb=1 neut=0 cmds=59 noFull=1 shQ=477699 | m=0.900 worth=92.9 cheap=7.6 over=1 dMedOther=82.9 safe(-1)=1056211
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1907838 dq=120.4 cnt=22 | c=1251.9 rankC=1815.2 need=3424356 tD=1.45 人 pulse crowdedHard | safe=1056211 keep=2074464 avail=-185787 chunkB=382214 pulseB=229329 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5345 alex_k B=1911072 L=18522 d=103.2 nb=1 neut=0 cmds=59 noFull=1 shQ=477768 | m=0.900 worth=92.9 cheap=7.6 over=1 dMedOther=82.8 safe(-1)=1056211
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1907838 dq=120.4 cnt=22 | c=863.4 rankC=863.4 need=3424356 tD=1.45 人 pulse crowdedHard | safe=1056211 keep=2074464 avail=-185787 chunkB=382214 pulseB=229329 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5350 alex_k B=1934387 L=18522 d=104.4 nb=1 neut=0 cmds=59 noFull=1 shQ=483522 | m=0.900 worth=94.0 cheap=7.6 over=1 dMedOther=83.7 safe(-1)=1064356
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1922337 dq=121.3 cnt=22 | c=869.9 rankC=869.9 need=3450200 tD=1.45 人 pulse crowdedHard | safe=1064356 keep=2074464 avail=-162745 chunkB=386877 pulseB=232126 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5355 alex_k B=1934387 L=18522 d=104.4 nb=1 neut=0 cmds=59 noFull=1 shQ=483596 | m=0.900 worth=94.0 cheap=7.6 over=1 dMedOther=83.6 safe(-1)=1064356
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1922337 dq=121.3 cnt=22 | c=869.9 rankC=869.9 need=3450200 tD=1.45 人 pulse crowdedHard | safe=1064356 keep=2074464 avail=-162745 chunkB=386877 pulseB=232126 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5360 alex_k B=1957406 L=18522 d=105.7 nb=1 neut=0 cmds=59 noFull=1 shQ=489272 | m=0.900 worth=95.1 cheap=7.6 over=1 dMedOther=84.6 safe(-1)=1072348
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1936562 dq=122.2 cnt=22 | c=876.3 rankC=876.3 need=3475555 tD=1.44 人 pulse crowdedHard | safe=1072348 keep=2074464 avail=-139996 chunkB=391481 pulseB=234889 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5365 alex_k B=1957406 L=18522 d=105.7 nb=1 neut=0 cmds=59 noFull=1 shQ=489351 | m=0.900 worth=95.1 cheap=7.6 over=1 dMedOther=84.6 safe(-1)=1072348
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1936562 dq=122.2 cnt=22 | c=876.3 rankC=876.3 need=3475555 tD=1.44 人 pulse crowdedHard | safe=1072348 keep=2074464 avail=-139996 chunkB=391481 pulseB=234889 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5370 alex_k B=1980111 L=18522 d=106.9 nb=1 neut=0 cmds=59 noFull=1 shQ=494944 | m=0.900 worth=96.2 cheap=7.6 over=1 dMedOther=85.7 safe(-1)=1080181
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1950505 dq=123.1 cnt=22 | c=882.6 rankC=882.6 need=3500407 tD=1.44 人 pulse crowdedHard | safe=1080181 keep=2074464 avail=-117557 chunkB=396022 pulseB=237613 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5375 alex_k B=1980111 L=18522 d=106.9 nb=1 neut=0 cmds=59 noFull=1 shQ=495027 | m=0.900 worth=96.2 cheap=7.6 over=1 dMedOther=85.7 safe(-1)=1080181
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1950505 dq=123.1 cnt=22 | c=882.6 rankC=882.6 need=3500407 tD=1.44 人 pulse crowdedHard | safe=1080181 keep=2074464 avail=-117557 chunkB=396022 pulseB=237613 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5380 alex_k B=2002486 L=18522 d=108.1 nb=1 neut=0 cmds=59 noFull=1 shQ=500533 | m=0.900 worth=97.3 cheap=7.6 over=1 dMedOther=86.8 safe(-1)=1087742
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1963963 dq=123.9 cnt=22 | c=888.7 rankC=888.7 need=3524395 tD=1.43 人 pulse crowdedHard | safe=1087742 keep=2074464 avail=-95444 chunkB=400497 pulseB=240298 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5385 alex_k B=2002486 L=18522 d=108.1 nb=1 neut=0 cmds=59 noFull=1 shQ=500621 | m=0.900 worth=97.3 cheap=7.6 over=1 dMedOther=86.8 safe(-1)=1087742
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1963963 dq=123.9 cnt=22 | c=888.7 rankC=888.7 need=3524395 tD=1.43 人 pulse crowdedHard | safe=1087742 keep=2074464 avail=-95444 chunkB=400497 pulseB=240298 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5390 alex_k B=2024313 L=18522 d=109.3 nb=1 neut=0 cmds=59 noFull=1 shQ=506036 | m=0.900 worth=98.4 cheap=7.6 over=1 dMedOther=87.9 safe(-1)=1095134
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1977121 dq=124.8 cnt=22 | c=894.6 rankC=894.6 need=3547848 tD=1.42 人 pulse crowdedHard | safe=1095134 keep=2074464 avail=-73873 chunkB=404863 pulseB=242918 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5395 alex_k B=2024313 L=18522 d=109.3 nb=1 neut=0 cmds=59 noFull=1 shQ=506078 | m=0.900 worth=98.4 cheap=7.6 over=1 dMedOther=87.9 safe(-1)=1095134
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1977121 dq=124.8 cnt=22 | c=894.6 rankC=894.6 need=3547848 tD=1.42 人 pulse crowdedHard | safe=1095134 keep=2074464 avail=-73873 chunkB=404863 pulseB=242918 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5400 alex_k B=2064292 L=18522 d=111.5 nb=1 neut=0 cmds=59 noFull=1 shQ=511290 | m=0.900 worth=100.3 cheap=7.6 over=1 dMedOther=90.0 safe(-1)=1111256
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2005819 dq=126.6 cnt=22 | c=907.6 rankC=907.6 need=3599001 tD=1.41 人 pulse crowdedHard | safe=1111256 keep=2074464 avail=-34362 chunkB=412858 pulseB=247715 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5405 alex_k B=2064292 L=18522 d=111.5 nb=1 neut=0 cmds=59 noFull=1 shQ=516073 | m=0.900 worth=100.3 cheap=7.6 over=1 dMedOther=90.0 safe(-1)=1111256
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2005819 dq=126.6 cnt=22 | c=1316.0 rankC=1908.2 need=3599001 tD=1.41 人 pulse crowdedHard | safe=1111256 keep=2074464 avail=-34362 chunkB=412858 pulseB=247715 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5410 alex_k B=2085141 L=18522 d=112.6 nb=1 neut=0 cmds=59 noFull=1 shQ=521285 | m=0.900 worth=101.3 cheap=7.6 over=1 dMedOther=91.2 safe(-1)=1118017
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2017853 dq=127.3 cnt=22 | c=1323.9 rankC=1919.6 need=3620450 tD=1.40 人 pulse crowdedHard | safe=1118017 keep=2074464 avail=-13758 chunkB=417028 pulseB=250217 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5415 alex_k B=2085141 L=18522 d=112.6 nb=1 neut=0 cmds=60 noFull=1 shQ=521285 | m=0.900 worth=101.3 cheap=7.6 over=1 dMedOther=91.2 safe(-1)=1118017
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2017853 dq=127.3 cnt=22 | c=1323.9 rankC=1919.6 need=3620450 tD=1.40 人 pulse crowdedHard | safe=1118017 keep=2074464 avail=-13758 chunkB=417028 pulseB=250217 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=187 → [APEX] kaito9#17[T2]（约 382818 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=5420 alex_k B=2105575 L=18522 d=113.7 nb=1 neut=0 cmds=60 noFull=1 shQ=526393 | m=0.900 worth=102.3 cheap=7.6 over=1 dMedOther=92.4 safe(-1)=1124705
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2029758 dq=128.1 cnt=22 | c=918.4 rankC=918.4 need=3641670 tD=1.39 人 pulse crowdedHard | safe=1124705 keep=2074464 avail=6437 chunkB=421115 pulseB=252669 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5425 alex_k B=2105575 L=18522 d=113.7 nb=1 neut=0 cmds=60 noFull=1 shQ=526393 | m=0.900 worth=102.3 cheap=7.6 over=1 dMedOther=92.4 safe(-1)=1124705
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2029758 dq=128.1 cnt=22 | c=918.4 rankC=918.4 need=3641670 tD=1.39 人 pulse crowdedHard | safe=1124705 keep=2074464 avail=6437 chunkB=421115 pulseB=252669 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5430 alex_k B=1608043 L=18522 d=86.8 nb=1 neut=0 cmds=60 noFull=1 shQ=402010 | m=0.900 worth=78.1 cheap=7.6 over=0 dMedOther=93.6 safe(-1)=1131204
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2041327 dq=128.8 cnt=22 | c=1337.0 rankC=1938.7 need=3662291 tD=1.38 人 pulse crowdedHard | safe=1131204 keep=Inf avail=-Inf chunkB=321609 pulseB=192965 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5435 alex_k B=1608043 L=18522 d=86.8 nb=1 neut=0 cmds=60 noFull=1 shQ=402010 | m=0.900 worth=78.1 cheap=7.6 over=0 dMedOther=93.6 safe(-1)=1131204
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2041327 dq=128.8 cnt=22 | c=1337.0 rankC=1938.7 need=3662291 tD=1.38 人 pulse crowdedHard | safe=1131204 keep=Inf avail=-Inf chunkB=321609 pulseB=192965 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5440 alex_k B=1628947 L=18522 d=87.9 nb=1 neut=0 cmds=60 noFull=1 shQ=407236 | m=0.900 worth=79.2 cheap=7.6 over=0 dMedOther=82.8 safe(-1)=1137512
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2052554 dq=129.5 cnt=22 | c=1344.4 rankC=1949.3 need=3682302 tD=1.56 人 pulse crowdedHard | safe=1137512 keep=Inf avail=-Inf chunkB=325789 pulseB=195474 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5445 alex_k B=1628947 L=18522 d=87.9 nb=1 neut=0 cmds=60 noFull=1 shQ=407236 | m=0.900 worth=79.2 cheap=7.6 over=0 dMedOther=82.8 safe(-1)=1137512
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2052554 dq=129.5 cnt=22 | c=1344.4 rankC=1949.3 need=3682302 tD=1.56 人 pulse crowdedHard | safe=1137512 keep=Inf avail=-Inf chunkB=325789 pulseB=195474 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5450 alex_k B=1650123 L=18522 d=89.1 nb=1 neut=0 cmds=60 noFull=1 shQ=412530 | m=0.900 worth=80.2 cheap=7.6 over=0 dMedOther=82.6 safe(-1)=1143623
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2063432 dq=130.2 cnt=22 | c=1351.5 rankC=1959.7 need=3701692 tD=1.58 人 pulse crowdedHard | safe=1143623 keep=Inf avail=-Inf chunkB=330025 pulseB=198015 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5455 alex_k B=1650123 L=18522 d=89.1 nb=1 neut=0 cmds=60 noFull=1 shQ=412530 | m=0.900 worth=80.2 cheap=7.6 over=0 dMedOther=80.9 safe(-1)=1143623
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2063432 dq=130.2 cnt=22 | c=1351.5 rankC=1959.7 need=3701692 tD=1.61 人 pulse crowdedHard | safe=1143623 keep=Inf avail=-Inf chunkB=330025 pulseB=198015 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5460 alex_k B=1671574 L=18522 d=90.2 nb=1 neut=0 cmds=60 noFull=1 shQ=417893 | m=0.900 worth=81.2 cheap=7.6 over=0 dMedOther=80.9 safe(-1)=1149535
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2073955 dq=130.9 cnt=22 | c=1358.4 rankC=1969.7 need=3720448 tD=1.62 人 pulse crowdedHard | safe=1149535 keep=Inf avail=-Inf chunkB=334315 pulseB=200589 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5465 alex_k B=1671574 L=18522 d=90.2 nb=1 neut=0 cmds=60 noFull=1 shQ=417893 | m=0.900 worth=81.2 cheap=7.6 over=0 dMedOther=91.4 safe(-1)=1149535
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2073955 dq=130.9 cnt=22 | c=1358.4 rankC=1969.7 need=3720448 tD=1.43 人 pulse crowdedHard | safe=1149535 keep=Inf avail=-Inf chunkB=334315 pulseB=200589 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5470 alex_k B=1693304 L=18522 d=91.4 nb=1 neut=0 cmds=60 noFull=1 shQ=423326 | m=0.900 worth=82.3 cheap=7.6 over=0 dMedOther=92.7 safe(-1)=1155244
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2084117 dq=131.5 cnt=22 | c=1365.1 rankC=1979.4 need=3738561 tD=1.42 人 pulse crowdedHard | safe=1155244 keep=Inf avail=-Inf chunkB=338661 pulseB=203196 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5475 alex_k B=1693304 L=18522 d=91.4 nb=1 neut=0 cmds=60 noFull=1 shQ=423326 | m=0.900 worth=82.3 cheap=7.6 over=0 dMedOther=82.0 safe(-1)=1155244
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2084117 dq=131.5 cnt=22 | c=1365.1 rankC=1979.4 need=3738561 tD=1.60 人 pulse crowdedHard | safe=1155244 keep=Inf avail=-Inf chunkB=338661 pulseB=203196 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5480 alex_k B=1715316 L=18522 d=92.6 nb=1 neut=0 cmds=60 noFull=1 shQ=428829 | m=0.900 worth=83.3 cheap=7.6 over=0 dMedOther=83.1 safe(-1)=1160863
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2094120 dq=132.1 cnt=22 | c=1371.7 rankC=1988.9 need=3756391 tD=1.59 人 pulse crowdedHard | safe=1160863 keep=Inf avail=-Inf chunkB=343063 pulseB=205838 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5485 alex_k B=1715316 L=18522 d=92.6 nb=1 neut=0 cmds=60 noFull=1 shQ=428829 | m=0.900 worth=83.3 cheap=7.6 over=0 dMedOther=83.1 safe(-1)=1160863
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2094120 dq=132.1 cnt=22 | c=1371.7 rankC=1988.9 need=3756391 tD=1.59 人 pulse crowdedHard | safe=1160863 keep=Inf avail=-Inf chunkB=343063 pulseB=205838 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5490 alex_k B=1737615 L=18522 d=93.8 nb=1 neut=0 cmds=60 noFull=1 shQ=434403 | m=0.900 worth=84.4 cheap=7.6 over=0 dMedOther=80.0 safe(-1)=1166275
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2103752 dq=132.8 cnt=22 | c=1378.0 rankC=1998.1 need=3773559 tD=1.66 人 pulse crowdedHard | safe=1166275 keep=Inf avail=-Inf chunkB=347523 pulseB=208514 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5495 alex_k B=1737615 L=18522 d=93.8 nb=1 neut=0 cmds=60 noFull=1 shQ=434403 | m=0.900 worth=84.4 cheap=7.6 over=0 dMedOther=80.0 safe(-1)=1166275
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2103752 dq=132.8 cnt=22 | c=950.3 rankC=950.3 need=3773559 tD=1.66 人 pulse crowdedHard | safe=1166275 keep=Inf avail=-Inf chunkB=347523 pulseB=208514 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5500 alex_k B=1778725 L=18522 d=96.0 nb=1 neut=0 cmds=60 noFull=1 shQ=440228 | m=0.900 worth=86.4 cheap=7.6 over=0 dMedOther=81.9 safe(-1)=1180496
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2129065 dq=134.4 cnt=22 | c=961.8 rankC=961.8 need=3818678 tD=1.64 人 pulse crowdedHard | safe=1180496 keep=Inf avail=-Inf chunkB=355745 pulseB=213447 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5505 alex_k B=1778725 L=18522 d=96.0 nb=1 neut=0 cmds=60 noFull=1 shQ=444681 | m=0.900 worth=86.4 cheap=7.6 over=0 dMedOther=81.9 safe(-1)=1180496
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2129065 dq=134.4 cnt=22 | c=961.8 rankC=961.8 need=3818678 tD=1.64 人 pulse crowdedHard | safe=1180496 keep=Inf avail=-Inf chunkB=355745 pulseB=213447 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5510 alex_k B=1801848 L=18522 d=97.3 nb=1 neut=0 cmds=60 noFull=1 shQ=450462 | m=0.900 worth=87.6 cheap=7.6 over=0 dMedOther=82.9 safe(-1)=1185399
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2137794 dq=134.9 cnt=22 | c=965.7 rankC=965.7 need=3834236 tD=1.63 人 pulse crowdedHard | safe=1185399 keep=Inf avail=-Inf chunkB=360370 pulseB=216222 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5515 alex_k B=1801848 L=18522 d=97.3 nb=1 neut=0 cmds=60 noFull=1 shQ=450462 | m=0.900 worth=87.6 cheap=7.6 over=0 dMedOther=82.9 safe(-1)=1185399
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2137794 dq=134.9 cnt=22 | c=965.7 rankC=965.7 need=3834236 tD=1.63 人 pulse crowdedHard | safe=1185399 keep=Inf avail=-Inf chunkB=360370 pulseB=216222 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5520 alex_k B=1825272 L=18522 d=98.5 nb=1 neut=0 cmds=60 noFull=1 shQ=456318 | m=0.900 worth=88.7 cheap=7.6 over=0 dMedOther=83.9 safe(-1)=1190083
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2146131 dq=135.4 cnt=22 | c=969.5 rankC=969.5 need=3849097 tD=1.61 人 pulse crowdedHard | safe=1190083 keep=Inf avail=-Inf chunkB=365054 pulseB=219033 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5525 alex_k B=1825272 L=18522 d=98.5 nb=1 neut=0 cmds=60 noFull=1 shQ=456318 | m=0.900 worth=88.7 cheap=7.6 over=0 dMedOther=83.9 safe(-1)=1190083
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2146131 dq=135.4 cnt=22 | c=969.5 rankC=969.5 need=3849097 tD=1.61 人 pulse crowdedHard | safe=1190083 keep=Inf avail=-Inf chunkB=365054 pulseB=219033 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5530 alex_k B=1849000 L=18522 d=99.8 nb=1 neut=0 cmds=60 noFull=1 shQ=462250 | m=0.900 worth=89.8 cheap=7.6 over=0 dMedOther=84.9 safe(-1)=1194665
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2154286 dq=135.9 cnt=22 | c=973.2 rankC=973.2 need=3863632 tD=1.60 人 pulse crowdedHard | safe=1194665 keep=Inf avail=-Inf chunkB=369800 pulseB=221880 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5535 alex_k B=1849000 L=18522 d=99.8 nb=1 neut=0 cmds=60 noFull=1 shQ=462250 | m=0.900 worth=89.8 cheap=7.6 over=0 dMedOther=84.9 safe(-1)=1194665
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2154286 dq=135.9 cnt=22 | c=973.2 rankC=973.2 need=3863632 tD=1.60 人 pulse crowdedHard | safe=1194665 keep=Inf avail=-Inf chunkB=369800 pulseB=221880 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5540 alex_k B=1873037 L=18522 d=101.1 nb=1 neut=0 cmds=60 noFull=1 shQ=468243 | m=0.900 worth=91.0 cheap=7.6 over=1 dMedOther=86.0 safe(-1)=1199021
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2162041 dq=136.4 cnt=22 | c=976.8 rankC=976.8 need=3877455 tD=1.59 人 pulse crowdedHard | safe=1199021 keep=2074464 avail=-223376 chunkB=374607 pulseB=224764 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5545 alex_k B=1873037 L=18522 d=101.1 nb=1 neut=0 cmds=60 noFull=1 shQ=468259 | m=0.900 worth=91.0 cheap=7.6 over=1 dMedOther=78.8 safe(-1)=1199021
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2162041 dq=136.4 cnt=22 | c=976.8 rankC=976.8 need=3877455 tD=1.73 人 pulse crowdedHard | safe=1199021 keep=2074464 avail=-223376 chunkB=374607 pulseB=224764 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5550 alex_k B=1897011 L=18522 d=102.4 nb=1 neut=0 cmds=60 noFull=1 shQ=474187 | m=0.900 worth=92.2 cheap=7.6 over=1 dMedOther=79.9 safe(-1)=1203272
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2169608 dq=136.9 cnt=22 | c=980.2 rankC=980.2 need=3890943 tD=1.71 人 pulse crowdedHard | safe=1203272 keep=2074464 avail=-199683 chunkB=379402 pulseB=227641 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5555 alex_k B=1897011 L=18522 d=102.4 nb=1 neut=0 cmds=60 noFull=1 shQ=474252 | m=0.900 worth=92.2 cheap=7.6 over=1 dMedOther=79.9 safe(-1)=1203272
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2169608 dq=136.9 cnt=22 | c=980.2 rankC=980.2 need=3890943 tD=1.71 人 pulse crowdedHard | safe=1203272 keep=2074464 avail=-199683 chunkB=379402 pulseB=227641 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5560 alex_k B=1920533 L=18522 d=103.7 nb=1 neut=0 cmds=60 noFull=1 shQ=480061 | m=0.900 worth=93.3 cheap=7.6 over=1 dMedOther=81.0 safe(-1)=1207416
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2176984 dq=137.4 cnt=22 | c=983.6 rankC=983.6 need=3904090 tD=1.70 人 pulse crowdedHard | safe=1207416 keep=2074464 avail=-176437 chunkB=384107 pulseB=230464 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5565 alex_k B=1920533 L=18522 d=103.7 nb=1 neut=0 cmds=60 noFull=1 shQ=480133 | m=0.900 worth=93.3 cheap=7.6 over=1 dMedOther=81.0 safe(-1)=1207416
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2176984 dq=137.4 cnt=22 | c=983.6 rankC=983.6 need=3904090 tD=1.70 人 pulse crowdedHard | safe=1207416 keep=2074464 avail=-176437 chunkB=384107 pulseB=230464 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5570 alex_k B=1943771 L=18522 d=104.9 nb=1 neut=0 cmds=60 noFull=1 shQ=485867 | m=0.900 worth=94.4 cheap=7.6 over=1 dMedOther=82.1 safe(-1)=1211452
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2184168 dq=137.8 cnt=22 | c=986.8 rankC=986.8 need=3916895 tD=1.68 人 pulse crowdedHard | safe=1211452 keep=2074464 avail=-153471 chunkB=388754 pulseB=233253 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5575 alex_k B=1943771 L=18522 d=104.9 nb=1 neut=0 cmds=60 noFull=1 shQ=485942 | m=0.900 worth=94.4 cheap=7.6 over=1 dMedOther=82.1 safe(-1)=1211452
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2184168 dq=137.8 cnt=22 | c=986.8 rankC=986.8 need=3916895 tD=1.68 人 pulse crowdedHard | safe=1211452 keep=2074464 avail=-153471 chunkB=388754 pulseB=233253 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5580 alex_k B=1966707 L=18522 d=106.2 nb=1 neut=0 cmds=60 noFull=1 shQ=491596 | m=0.900 worth=95.6 cheap=7.6 over=1 dMedOther=83.1 safe(-1)=1215379
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2191157 dq=138.3 cnt=22 | c=1435.5 rankC=2081.5 need=3929352 tD=1.66 人 pulse crowdedHard | safe=1215379 keep=2074464 avail=-130804 chunkB=393341 pulseB=236005 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5585 alex_k B=1966707 L=18522 d=106.2 nb=1 neut=0 cmds=60 noFull=1 shQ=491676 | m=0.900 worth=95.6 cheap=7.6 over=1 dMedOther=83.1 safe(-1)=1215379
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=2191157 dq=138.3 cnt=22 | c=1435.5 rankC=2081.5 need=3929352 tD=1.66 人 pulse crowdedHard | safe=1215379 keep=2074464 avail=-130804 chunkB=393341 pulseB=236005 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5590 alex_k B=1989127 L=18522 d=107.4 nb=1 neut=0 cmds=61 noFull=1 shQ=497245 | m=0.900 worth=96.7 cheap=7.6 over=1 dMedOther=84.1 safe(-1)=1088304
+    → Micha [🇩🇪]#47[T1] terr=15847 bal=1964965 dq=124.0 cnt=22 | c=666.8 rankC=466.8 need=3526181 tD=1.47 人 pulse crowdedHard | safe=1088304 keep=2074464 avail=-108647 chunkB=397825 pulseB=238695 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=184 → [APEX] leo_tx#14[T2]（约 359363 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=5595 alex_k B=1989127 L=18522 d=107.4 nb=1 neut=0 cmds=61 noFull=1 shQ=497281 | m=0.900 worth=96.7 cheap=7.6 over=1 dMedOther=84.0 safe(-1)=1088304
+    → Micha [🇩🇪]#47[T1] terr=15946 bal=1964965 dq=123.2 cnt=23 | c=643.2 rankC=450.3 need=3526285 tD=1.47 人 pulse crowdedHard | safe=1088304 keep=2074464 avail=-108647 chunkB=397825 pulseB=238695 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5600 alex_k B=2029728 L=18522 d=109.6 nb=1 neut=0 cmds=61 noFull=1 shQ=502659 | m=0.900 worth=98.6 cheap=7.6 over=1 dMedOther=86.0 safe(-1)=1105428
+    → Micha [🇩🇪]#47[T1] terr=16230 bal=1995444 dq=122.9 cnt=25 | c=925.9 rankC=1342.6 need=3581036 tD=1.43 人 pulse crowdedHard | safe=1105428 keep=2074464 avail=-68521 chunkB=405946 pulseB=243567 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5605 alex_k B=1536172 L=18522 d=82.9 nb=1 neut=0 cmds=61 noFull=1 shQ=384043 | m=0.900 worth=74.6 cheap=7.6 over=0 dMedOther=85.9 safe(-1)=1105428
+    → Micha [🇩🇪]#47[T1] terr=16415 bal=1995444 dq=121.6 cnt=26 | c=914.0 rankC=1325.3 need=3581355 tD=1.41 人 pulse crowdedHard | safe=1105428 keep=Inf avail=-Inf chunkB=307234 pulseB=184341 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5610 alex_k B=1556142 L=18522 d=84.0 nb=1 neut=0 cmds=61 noFull=1 shQ=389035 | m=0.900 worth=75.6 cheap=7.6 over=0 dMedOther=87.1 safe(-1)=1113844
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2010426 dq=121.8 cnt=26 | c=916.2 rankC=1328.4 need=3608058 tD=1.40 人 pulse crowdedHard | safe=1113844 keep=Inf avail=-Inf chunkB=311228 pulseB=186737 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5615 alex_k B=1556142 L=18522 d=84.0 nb=1 neut=0 cmds=61 noFull=1 shQ=389035 | m=0.900 worth=75.6 cheap=7.6 over=0 dMedOther=87.0 safe(-1)=1113844
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2010426 dq=121.8 cnt=26 | c=916.2 rankC=1328.4 need=3608058 tD=1.40 人 pulse crowdedHard | safe=1113844 keep=Inf avail=-Inf chunkB=311228 pulseB=186737 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5620 alex_k B=1576371 L=18522 d=85.1 nb=1 neut=0 cmds=61 noFull=1 shQ=394092 | m=0.900 worth=76.6 cheap=7.6 over=0 dMedOther=88.2 safe(-1)=1122089
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2025102 dq=122.7 cnt=26 | c=922.8 rankC=1338.1 need=3634216 tD=1.39 人 pulse crowdedHard | safe=1122089 keep=Inf avail=-Inf chunkB=315274 pulseB=189165 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5625 alex_k B=1576371 L=18522 d=85.1 nb=1 neut=0 cmds=61 noFull=1 shQ=394092 | m=0.900 worth=76.6 cheap=7.6 over=0 dMedOther=92.2 safe(-1)=1122089
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2025102 dq=122.7 cnt=26 | c=636.4 rankC=636.4 need=3634216 tD=1.33 人 pulse crowdedHard | safe=1122089 keep=Inf avail=-Inf chunkB=315274 pulseB=189165 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5630 alex_k B=1596863 L=18522 d=86.2 nb=1 neut=0 cmds=61 noFull=1 shQ=399215 | m=0.900 worth=77.6 cheap=7.6 over=0 dMedOther=93.0 safe(-1)=1130167
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2039480 dq=123.6 cnt=26 | c=640.9 rankC=640.9 need=3659842 tD=1.33 人 pulse crowdedHard | safe=1130167 keep=Inf avail=-Inf chunkB=319373 pulseB=191624 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5635 alex_k B=1596863 L=18522 d=86.2 nb=1 neut=0 cmds=61 noFull=1 shQ=399215 | m=0.900 worth=77.6 cheap=7.6 over=0 dMedOther=92.5 safe(-1)=1130167
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2039480 dq=123.6 cnt=26 | c=640.9 rankC=640.9 need=3659842 tD=1.34 人 pulse crowdedHard | safe=1130167 keep=Inf avail=-Inf chunkB=319373 pulseB=191624 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5640 alex_k B=1617622 L=18522 d=87.3 nb=1 neut=0 cmds=61 noFull=1 shQ=404405 | m=0.900 worth=78.6 cheap=7.6 over=0 dMedOther=93.2 safe(-1)=1138072
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2053552 dq=124.5 cnt=26 | c=645.4 rankC=645.4 need=3684924 tD=1.34 人 pulse crowdedHard | safe=1138072 keep=Inf avail=-Inf chunkB=323524 pulseB=194115 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5645 alex_k B=1617622 L=18522 d=87.3 nb=1 neut=0 cmds=61 noFull=1 shQ=404405 | m=0.900 worth=78.6 cheap=7.6 over=0 dMedOther=92.4 safe(-1)=1138072
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2053552 dq=124.5 cnt=26 | c=645.4 rankC=645.4 need=3684924 tD=1.35 人 pulse crowdedHard | safe=1138072 keep=Inf avail=-Inf chunkB=323524 pulseB=194115 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5650 alex_k B=1638651 L=18522 d=88.5 nb=1 neut=0 cmds=61 noFull=1 shQ=409662 | m=0.900 worth=79.6 cheap=7.6 over=0 dMedOther=92.9 safe(-1)=1145687
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2067105 dq=125.3 cnt=26 | c=649.6 rankC=649.6 need=3709080 tD=1.35 人 pulse crowdedHard | safe=1145687 keep=Inf avail=-Inf chunkB=327730 pulseB=196638 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5655 alex_k B=1638651 L=18522 d=88.5 nb=1 neut=0 cmds=61 noFull=1 shQ=409662 | m=0.900 worth=79.6 cheap=7.6 over=0 dMedOther=91.9 safe(-1)=1145687
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2067105 dq=125.3 cnt=26 | c=649.6 rankC=649.6 need=3709080 tD=1.36 人 pulse crowdedHard | safe=1145687 keep=Inf avail=-Inf chunkB=327730 pulseB=196638 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5660 alex_k B=1659953 L=18522 d=89.6 nb=1 neut=0 cmds=61 noFull=1 shQ=414988 | m=0.900 worth=80.7 cheap=7.6 over=0 dMedOther=92.2 safe(-1)=1153119
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2080334 dq=126.1 cnt=26 | c=653.8 rankC=653.8 need=3732659 tD=1.37 人 pulse crowdedHard | safe=1153119 keep=Inf avail=-Inf chunkB=331991 pulseB=199194 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5665 alex_k B=1659953 L=18522 d=89.6 nb=1 neut=0 cmds=61 noFull=1 shQ=414988 | m=0.900 worth=80.7 cheap=7.6 over=0 dMedOther=90.9 safe(-1)=1153119
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2080334 dq=126.1 cnt=26 | c=653.8 rankC=653.8 need=3732659 tD=1.39 人 pulse crowdedHard | safe=1153119 keep=Inf avail=-Inf chunkB=331991 pulseB=199194 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5670 alex_k B=1681532 L=18522 d=90.8 nb=1 neut=0 cmds=61 noFull=1 shQ=420383 | m=0.900 worth=81.7 cheap=7.6 over=0 dMedOther=91.0 safe(-1)=1160365
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2093232 dq=126.9 cnt=26 | c=657.8 rankC=657.8 need=3755648 tD=1.39 人 pulse crowdedHard | safe=1160365 keep=Inf avail=-Inf chunkB=336306 pulseB=201784 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5675 alex_k B=1681532 L=18522 d=90.8 nb=1 neut=0 cmds=61 noFull=1 shQ=420383 | m=0.900 worth=81.7 cheap=7.6 over=0 dMedOther=90.8 safe(-1)=1160365
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2093232 dq=126.9 cnt=26 | c=657.8 rankC=657.8 need=3755648 tD=1.40 人 pulse crowdedHard | safe=1160365 keep=Inf avail=-Inf chunkB=336306 pulseB=201784 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5680 alex_k B=1703391 L=18522 d=92.0 nb=1 neut=0 cmds=61 noFull=1 shQ=425847 | m=0.900 worth=82.8 cheap=7.6 over=0 dMedOther=91.9 safe(-1)=1167420
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2105791 dq=127.6 cnt=26 | c=661.8 rankC=661.8 need=3778033 tD=1.39 人 pulse crowdedHard | safe=1167420 keep=Inf avail=-Inf chunkB=340678 pulseB=204407 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5685 alex_k B=1703391 L=18522 d=92.0 nb=1 neut=0 cmds=61 noFull=1 shQ=425847 | m=0.900 worth=82.8 cheap=7.6 over=0 dMedOther=91.9 safe(-1)=1167420
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2105791 dq=127.6 cnt=26 | c=661.8 rankC=661.8 need=3778033 tD=1.39 人 pulse crowdedHard | safe=1167420 keep=Inf avail=-Inf chunkB=340678 pulseB=204407 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5690 alex_k B=1725535 L=18522 d=93.2 nb=1 neut=0 cmds=61 noFull=1 shQ=431383 | m=0.900 worth=83.8 cheap=7.6 over=0 dMedOther=93.0 safe(-1)=1174281
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2118004 dq=128.4 cnt=26 | c=665.6 rankC=665.6 need=3799801 tD=1.38 人 pulse crowdedHard | safe=1174281 keep=Inf avail=-Inf chunkB=345107 pulseB=207064 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5695 alex_k B=1725535 L=18522 d=93.2 nb=1 neut=0 cmds=61 noFull=1 shQ=431383 | m=0.900 worth=83.8 cheap=7.6 over=0 dMedOther=93.0 safe(-1)=1174281
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2118004 dq=128.4 cnt=26 | c=665.6 rankC=665.6 need=3799801 tD=1.38 人 pulse crowdedHard | safe=1174281 keep=Inf avail=-Inf chunkB=345107 pulseB=207064 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5700 alex_k B=1766488 L=18522 d=95.4 nb=1 neut=0 cmds=61 noFull=1 shQ=437168 | m=0.900 worth=85.8 cheap=7.6 over=0 dMedOther=95.1 safe(-1)=1190214
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2146364 dq=130.1 cnt=26 | c=674.5 rankC=674.5 need=3850348 tD=1.37 人 pulse crowdedHard | safe=1190214 keep=Inf avail=-Inf chunkB=353298 pulseB=211979 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5705 alex_k B=1766488 L=18522 d=95.4 nb=1 neut=0 cmds=61 noFull=1 shQ=441622 | m=0.900 worth=85.8 cheap=7.6 over=0 dMedOther=95.1 safe(-1)=1190214
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2146364 dq=130.1 cnt=26 | c=674.5 rankC=674.5 need=3850348 tD=1.37 人 pulse crowdedHard | safe=1190214 keep=Inf avail=-Inf chunkB=353298 pulseB=211979 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5710 alex_k B=1789452 L=18522 d=96.6 nb=1 neut=0 cmds=61 noFull=1 shQ=447363 | m=0.900 worth=87.0 cheap=7.6 over=0 dMedOther=96.2 safe(-1)=1196484
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2157525 dq=130.8 cnt=26 | c=678.0 rankC=678.0 need=3870241 tD=1.36 人 pulse crowdedHard | safe=1196484 keep=Inf avail=-Inf chunkB=357890 pulseB=214734 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5715 alex_k B=1789452 L=18522 d=96.6 nb=1 neut=0 cmds=61 noFull=1 shQ=447363 | m=0.900 worth=87.0 cheap=7.6 over=0 dMedOther=94.8 safe(-1)=1196484
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2157525 dq=130.8 cnt=26 | c=678.0 rankC=678.0 need=3870241 tD=1.38 人 pulse crowdedHard | safe=1196484 keep=Inf avail=-Inf chunkB=357890 pulseB=214734 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5720 alex_k B=1812714 L=18522 d=97.9 nb=1 neut=0 cmds=61 noFull=1 shQ=453178 | m=0.900 worth=88.1 cheap=7.6 over=0 dMedOther=94.5 safe(-1)=1202544
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2168312 dq=131.4 cnt=26 | c=681.4 rankC=681.4 need=3889468 tD=1.39 人 pulse crowdedHard | safe=1202544 keep=Inf avail=-Inf chunkB=362543 pulseB=217526 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5725 alex_k B=1812714 L=18522 d=97.9 nb=1 neut=0 cmds=61 noFull=1 shQ=453178 | m=0.900 worth=88.1 cheap=7.6 over=0 dMedOther=91.9 safe(-1)=1202544
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2168312 dq=131.4 cnt=26 | c=681.4 rankC=681.4 need=3889468 tD=1.43 人 pulse crowdedHard | safe=1202544 keep=Inf avail=-Inf chunkB=362543 pulseB=217526 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5730 alex_k B=1836279 L=18522 d=99.1 nb=1 neut=0 cmds=61 noFull=1 shQ=459069 | m=0.900 worth=89.2 cheap=7.6 over=0 dMedOther=93.0 safe(-1)=1208391
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2178719 dq=132.0 cnt=26 | c=684.7 rankC=684.7 need=3908017 tD=1.42 人 pulse crowdedHard | safe=1208391 keep=Inf avail=-Inf chunkB=367256 pulseB=220353 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5735 alex_k B=1836279 L=18522 d=99.1 nb=1 neut=0 cmds=61 noFull=1 shQ=459069 | m=0.900 worth=89.2 cheap=7.6 over=0 dMedOther=93.0 safe(-1)=1208391
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2178719 dq=132.0 cnt=26 | c=684.7 rankC=684.7 need=3908017 tD=1.42 人 pulse crowdedHard | safe=1208391 keep=Inf avail=-Inf chunkB=367256 pulseB=220353 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5740 alex_k B=1860150 L=18522 d=100.4 nb=1 neut=0 cmds=61 noFull=1 shQ=465037 | m=0.900 worth=90.4 cheap=7.6 over=1 dMedOther=94.1 safe(-1)=1214143
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2188958 dq=132.7 cnt=26 | c=687.9 rankC=687.9 need=3926266 tD=1.41 人 pulse crowdedHard | safe=1214143 keep=2074464 avail=-236112 chunkB=372030 pulseB=223218 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5745 alex_k B=1860150 L=18522 d=100.4 nb=1 neut=0 cmds=61 noFull=1 shQ=465037 | m=0.900 worth=90.4 cheap=7.6 over=1 dMedOther=94.1 safe(-1)=1214143
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2188958 dq=132.7 cnt=26 | c=687.9 rankC=687.9 need=3926266 tD=1.41 人 pulse crowdedHard | safe=1214143 keep=2074464 avail=-236112 chunkB=372030 pulseB=223218 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5750 alex_k B=1884145 L=18522 d=101.7 nb=1 neut=0 cmds=61 noFull=1 shQ=470972 | m=0.900 worth=91.6 cheap=7.6 over=1 dMedOther=92.9 safe(-1)=1219677
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2198808 dq=133.3 cnt=26 | c=691.0 rankC=691.0 need=3943823 tD=1.43 人 pulse crowdedHard | safe=1219677 keep=2074464 avail=-212398 chunkB=376829 pulseB=226097 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5755 alex_k B=1884145 L=18522 d=101.7 nb=1 neut=0 cmds=61 noFull=1 shQ=471036 | m=0.900 worth=91.6 cheap=7.6 over=1 dMedOther=92.9 safe(-1)=1219677
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2198808 dq=133.3 cnt=26 | c=691.0 rankC=691.0 need=3943823 tD=1.43 人 pulse crowdedHard | safe=1219677 keep=2074464 avail=-212398 chunkB=376829 pulseB=226097 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5760 alex_k B=1907885 L=18522 d=103.0 nb=1 neut=0 cmds=61 noFull=1 shQ=476902 | m=0.900 worth=92.7 cheap=7.6 over=1 dMedOther=94.2 safe(-1)=1225112
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2208482 dq=133.8 cnt=26 | c=694.1 rankC=694.1 need=3961065 tD=1.42 人 pulse crowdedHard | safe=1225112 keep=2074464 avail=-188937 chunkB=381577 pulseB=228946 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5765 alex_k B=1907885 L=18522 d=103.0 nb=1 neut=0 cmds=61 noFull=1 shQ=476971 | m=0.900 worth=92.7 cheap=7.6 over=1 dMedOther=94.2 safe(-1)=1225112
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2208482 dq=133.8 cnt=26 | c=694.1 rankC=694.1 need=3961065 tD=1.42 人 pulse crowdedHard | safe=1225112 keep=2074464 avail=-188937 chunkB=381577 pulseB=228946 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5770 alex_k B=1931351 L=18522 d=104.3 nb=1 neut=0 cmds=61 noFull=1 shQ=482765 | m=0.900 worth=93.8 cheap=7.6 over=1 dMedOther=95.5 safe(-1)=1230322
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2217757 dq=134.4 cnt=26 | c=697.0 rankC=697.0 need=3977597 tD=1.41 人 pulse crowdedHard | safe=1230322 keep=2074464 avail=-165746 chunkB=386270 pulseB=231762 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5775 alex_k B=1931351 L=18522 d=104.3 nb=1 neut=0 cmds=61 noFull=1 shQ=482837 | m=0.900 worth=93.8 cheap=7.6 over=1 dMedOther=95.5 safe(-1)=1230322
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2217757 dq=134.4 cnt=26 | c=697.0 rankC=697.0 need=3977597 tD=1.41 人 pulse crowdedHard | safe=1230322 keep=2074464 avail=-165746 chunkB=386270 pulseB=231762 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5780 alex_k B=1954334 L=18522 d=105.5 nb=1 neut=0 cmds=61 noFull=1 shQ=488553 | m=0.900 worth=95.0 cheap=7.6 over=1 dMedOther=91.5 safe(-1)=1235430
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2226849 dq=135.0 cnt=26 | c=1014.8 rankC=1471.5 need=3993802 tD=1.47 人 pulse crowdedHard | safe=1235430 keep=2074464 avail=-143032 chunkB=390867 pulseB=234520 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5785 alex_k B=1954334 L=18522 d=105.5 nb=1 neut=0 cmds=61 noFull=1 shQ=488583 | m=0.900 worth=95.0 cheap=7.6 over=1 dMedOther=91.2 safe(-1)=1235430
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2226849 dq=135.0 cnt=26 | c=1014.8 rankC=1471.5 need=3993802 tD=1.48 人 pulse crowdedHard | safe=1235430 keep=2074464 avail=-143032 chunkB=390867 pulseB=234520 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5790 alex_k B=1977004 L=18522 d=106.7 nb=1 neut=0 cmds=61 noFull=1 shQ=494168 | m=0.900 worth=96.1 cheap=7.6 over=1 dMedOther=92.2 safe(-1)=1240309
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2235533 dq=135.5 cnt=26 | c=702.6 rankC=702.6 need=4009280 tD=1.47 人 pulse crowdedHard | safe=1240309 keep=2074464 avail=-120628 chunkB=395401 pulseB=237240 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5795 alex_k B=1977004 L=18522 d=106.7 nb=1 neut=0 cmds=61 noFull=1 shQ=494251 | m=0.900 worth=96.1 cheap=7.6 over=1 dMedOther=92.2 safe(-1)=1240309
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2235533 dq=135.5 cnt=26 | c=702.6 rankC=702.6 need=4009280 tD=1.47 人 pulse crowdedHard | safe=1240309 keep=2074464 avail=-120628 chunkB=395401 pulseB=237240 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5800 alex_k B=2017866 L=18522 d=108.9 nb=1 neut=0 cmds=61 noFull=1 shQ=499699 | m=0.900 worth=98.0 cheap=7.6 over=1 dMedOther=93.1 safe(-1)=1254351
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2260528 dq=137.0 cnt=26 | c=710.5 rankC=710.5 need=4053830 tD=1.47 人 pulse crowdedHard | safe=1254351 keep=2074464 avail=-80244 chunkB=403573 pulseB=242144 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5805 alex_k B=2017866 L=18522 d=108.9 nb=1 neut=0 cmds=61 noFull=1 shQ=504466 | m=0.900 worth=98.0 cheap=7.6 over=1 dMedOther=92.4 safe(-1)=1254351
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2260528 dq=137.0 cnt=26 | c=710.5 rankC=710.5 need=4053830 tD=1.48 人 pulse crowdedHard | safe=1254351 keep=2074464 avail=-80244 chunkB=403573 pulseB=242144 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5810 alex_k B=2039457 L=18522 d=110.1 nb=1 neut=0 cmds=61 noFull=1 shQ=509768 | m=0.900 worth=99.1 cheap=7.6 over=1 dMedOther=93.6 safe(-1)=1258669
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2268213 dq=137.5 cnt=26 | c=712.9 rankC=712.9 need=4067527 tD=1.47 人 pulse crowdedHard | safe=1258669 keep=2074464 avail=-58906 chunkB=407891 pulseB=244735 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5815 alex_k B=2039457 L=18522 d=110.1 nb=1 neut=0 cmds=61 noFull=1 shQ=509864 | m=0.900 worth=99.1 cheap=7.6 over=1 dMedOther=91.2 safe(-1)=1258669
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2268213 dq=137.5 cnt=26 | c=1033.7 rankC=1498.8 need=4067527 tD=1.51 人 pulse crowdedHard | safe=1258669 keep=2074464 avail=-58906 chunkB=407891 pulseB=244735 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5820 alex_k B=2060667 L=18522 d=111.3 nb=1 neut=0 cmds=61 noFull=1 shQ=515067 | m=0.900 worth=100.1 cheap=7.6 over=1 dMedOther=92.4 safe(-1)=1262874
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2275698 dq=137.9 cnt=26 | c=1037.1 rankC=1503.8 need=4080868 tD=1.49 人 pulse crowdedHard | safe=1262874 keep=2074464 avail=-37945 chunkB=412133 pulseB=247280 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5825 alex_k B=2060667 L=18522 d=111.3 nb=1 neut=0 cmds=61 noFull=1 shQ=515166 | m=0.900 worth=100.1 cheap=7.6 over=1 dMedOther=92.4 safe(-1)=1262874
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2275698 dq=137.9 cnt=26 | c=1037.1 rankC=1503.8 need=4080868 tD=1.49 人 pulse crowdedHard | safe=1262874 keep=2074464 avail=-37945 chunkB=412133 pulseB=247280 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5830 alex_k B=2081479 L=18522 d=112.4 nb=1 neut=0 cmds=61 noFull=1 shQ=520369 | m=0.900 worth=101.1 cheap=7.6 over=1 dMedOther=93.6 safe(-1)=1266965
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2282980 dq=138.4 cnt=26 | c=1040.5 rankC=1508.7 need=4093848 tD=1.48 人 pulse crowdedHard | safe=1266965 keep=2074464 avail=-17377 chunkB=416296 pulseB=249777 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5835 alex_k B=2081479 L=18522 d=112.4 nb=1 neut=0 cmds=61 noFull=1 shQ=520369 | m=0.900 worth=101.1 cheap=7.6 over=1 dMedOther=93.6 safe(-1)=1266965
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2282980 dq=138.4 cnt=26 | c=1040.5 rankC=1508.7 need=4093848 tD=1.48 人 pulse crowdedHard | safe=1266965 keep=2074464 avail=-17377 chunkB=416296 pulseB=249777 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5840 alex_k B=2101877 L=18522 d=113.5 nb=1 neut=0 cmds=62 noFull=1 shQ=525469 | m=0.900 worth=102.1 cheap=7.6 over=1 dMedOther=94.8 safe(-1)=1270940
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2290057 dq=138.8 cnt=26 | c=1043.7 rankC=1513.4 need=4106461 tD=1.46 人 pulse crowdedHard | safe=1270940 keep=2074464 avail=2782 chunkB=420375 pulseB=252225 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=193 → [APEX] leo_tx#14[T2]（约 398207 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=5845 alex_k B=2101877 L=18522 d=113.5 nb=1 neut=0 cmds=62 noFull=1 shQ=525469 | m=0.900 worth=102.1 cheap=7.6 over=1 dMedOther=94.8 safe(-1)=1270940
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2290057 dq=138.8 cnt=26 | c=1043.7 rankC=1513.4 need=4106461 tD=1.46 人 pulse crowdedHard | safe=1270940 keep=2074464 avail=2782 chunkB=420375 pulseB=252225 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5850 alex_k B=2121844 L=18522 d=114.6 nb=1 neut=0 cmds=62 noFull=1 shQ=530461 | m=0.900 worth=103.1 cheap=7.6 over=1 dMedOther=96.1 safe(-1)=1274671
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2296698 dq=139.2 cnt=26 | c=1046.7 rankC=1517.8 need=4118298 tD=1.45 人 pulse crowdedHard | safe=1274671 keep=2074464 avail=22515 chunkB=424369 pulseB=254621 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5855 alex_k B=1587240 L=18522 d=85.7 nb=1 neut=0 cmds=62 noFull=1 shQ=396810 | m=0.900 worth=77.1 cheap=7.6 over=0 dMedOther=96.1 safe(-1)=1274671
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2296698 dq=139.2 cnt=26 | c=1045.2 rankC=1515.5 need=4118298 tD=1.45 人 pulse crowdedHard | safe=1274671 keep=Inf avail=-Inf chunkB=317448 pulseB=190469 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5860 alex_k B=1607874 L=18522 d=86.8 nb=1 neut=0 cmds=62 noFull=1 shQ=401968 | m=0.900 worth=78.1 cheap=7.6 over=0 dMedOther=97.4 safe(-1)=1278284
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2303128 dq=139.6 cnt=26 | c=1048.1 rankC=1519.8 need=4129759 tD=1.43 人 pulse crowdedHard | safe=1278284 keep=Inf avail=-Inf chunkB=321575 pulseB=192945 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5865 alex_k B=1607874 L=18522 d=86.8 nb=1 neut=0 cmds=62 noFull=1 shQ=401968 | m=0.900 worth=78.1 cheap=7.6 over=0 dMedOther=97.4 safe(-1)=1278284
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2303128 dq=139.6 cnt=26 | c=1048.1 rankC=1519.8 need=4129759 tD=1.43 人 pulse crowdedHard | safe=1278284 keep=Inf avail=-Inf chunkB=321575 pulseB=192945 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5870 alex_k B=1628776 L=18522 d=87.9 nb=1 neut=0 cmds=62 noFull=1 shQ=407194 | m=0.900 worth=79.1 cheap=7.6 over=0 dMedOther=98.7 safe(-1)=1144486
+    → Micha [🇩🇪]#47[T1] terr=16500 bal=2064968 dq=125.1 cnt=26 | c=486.7 rankC=340.7 need=3705271 tD=1.27 人 pulse crowdedHard | safe=1144486 keep=Inf avail=-Inf chunkB=325755 pulseB=195453 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5875 alex_k B=1628776 L=18522 d=87.9 nb=1 neut=0 cmds=62 noFull=1 shQ=407194 | m=0.900 worth=79.1 cheap=7.6 over=0 dMedOther=98.7 safe(-1)=1144486
+    → Micha [🇩🇪]#47[T1] terr=16583 bal=2064968 dq=124.5 cnt=27 | c=484.2 rankC=339.0 need=3705527 tD=1.26 人 pulse crowdedHard | safe=1144486 keep=Inf avail=-Inf chunkB=325755 pulseB=195453 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5880 alex_k B=1649950 L=18522 d=89.1 nb=1 neut=0 cmds=62 noFull=1 shQ=412487 | m=0.900 worth=80.2 cheap=7.6 over=0 dMedOther=100.0 safe(-1)=1152490
+    → Micha [🇩🇪]#47[T1] terr=16808 bal=2079216 dq=123.7 cnt=29 | c=930.0 rankC=1348.5 need=3731128 tD=1.24 人 pulse crowdedHard | safe=1152490 keep=Inf avail=-Inf chunkB=329990 pulseB=197994 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5885 alex_k B=1649950 L=18522 d=89.1 nb=1 neut=0 cmds=62 noFull=1 shQ=412487 | m=0.900 worth=80.2 cheap=7.6 over=0 dMedOther=100.0 safe(-1)=1152490
+    → Micha [🇩🇪]#47[T1] terr=16946 bal=2079216 dq=122.7 cnt=30 | c=922.4 rankC=1337.4 need=3731422 tD=1.23 人 pulse crowdedHard | safe=1152490 keep=Inf avail=-Inf chunkB=329990 pulseB=197994 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5890 alex_k B=1671399 L=18522 d=90.2 nb=1 neut=0 cmds=62 noFull=1 shQ=417849 | m=0.900 worth=81.2 cheap=7.6 over=0 dMedOther=100.4 safe(-1)=1161134
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=2094602 dq=122.4 cnt=31 | c=920.4 rankC=1334.6 need=3759002 tD=1.22 人 pulse crowdedHard | safe=1161134 keep=Inf avail=-Inf chunkB=334280 pulseB=200568 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5895 alex_k B=1671399 L=18522 d=90.2 nb=1 neut=0 cmds=62 noFull=1 shQ=417849 | m=0.900 worth=81.2 cheap=7.6 over=0 dMedOther=100.4 safe(-1)=1161135
+    → Micha [🇩🇪]#47[T1] terr=17158 bal=2094604 dq=122.1 cnt=32 | c=917.7 rankC=1330.6 need=3759166 tD=1.22 人 pulse crowdedHard | safe=1161135 keep=Inf avail=-Inf chunkB=334280 pulseB=200568 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5900 alex_k B=1711649 L=18522 d=92.4 nb=1 neut=0 cmds=62 noFull=1 shQ=423454 | m=0.900 worth=83.2 cheap=7.6 over=0 dMedOther=102.6 safe(-1)=1179365
+    → Micha [🇩🇪]#47[T1] terr=17158 bal=2127052 dq=124.0 cnt=32 | c=931.8 rankC=1351.1 need=3817002 tD=1.21 人 pulse crowdedHard | safe=1179365 keep=Inf avail=-Inf chunkB=342330 pulseB=205398 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5905 alex_k B=1711649 L=18522 d=92.4 nb=1 neut=0 cmds=62 noFull=1 shQ=427912 | m=0.900 worth=83.2 cheap=7.6 over=0 dMedOther=102.6 safe(-1)=1179365
+    → Micha [🇩🇪]#47[T1] terr=17158 bal=2127052 dq=124.0 cnt=32 | c=371.1 rankC=185.6 need=3817002 tD=1.21 人 pulse crowdedHard | safe=1179365 keep=Inf avail=-Inf chunkB=342330 pulseB=205398 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5910 alex_k B=1733900 L=18522 d=93.6 nb=1 neut=0 cmds=62 noFull=1 shQ=433475 | m=0.900 worth=84.3 cheap=7.6 over=0 dMedOther=103.8 safe(-1)=1182000
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=2131743 dq=124.6 cnt=31 | c=374.8 rankC=187.4 need=3823092 tD=1.20 人 pulse crowdedHard | safe=1182000 keep=Inf avail=-Inf chunkB=346780 pulseB=208068 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5915 alex_k B=1733900 L=18522 d=93.6 nb=1 neut=0 cmds=62 noFull=1 shQ=433475 | m=0.900 worth=84.3 cheap=7.6 over=0 dMedOther=103.8 safe(-1)=1182000
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=2131743 dq=124.6 cnt=31 | c=937.0 rankC=1358.6 need=3823444 tD=1.20 人 pulse crowdedHard | safe=1182000 keep=Inf avail=-Inf chunkB=346780 pulseB=208068 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5920 alex_k B=1756440 L=18522 d=94.8 nb=1 neut=0 cmds=62 noFull=1 shQ=439110 | m=0.900 worth=85.3 cheap=7.6 over=0 dMedOther=105.0 safe(-1)=1190024
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=2146025 dq=125.4 cnt=31 | c=943.2 rankC=1367.7 need=3849065 tD=1.20 人 pulse crowdedHard | safe=1190024 keep=Inf avail=-Inf chunkB=351288 pulseB=210773 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5925 alex_k B=1756440 L=18522 d=94.8 nb=1 neut=0 cmds=62 noFull=1 shQ=439110 | m=0.900 worth=85.3 cheap=7.6 over=0 dMedOther=105.0 safe(-1)=1190024
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=2146025 dq=125.4 cnt=31 | c=943.2 rankC=1367.6 need=3849242 tD=1.20 人 pulse crowdedHard | safe=1190024 keep=Inf avail=-Inf chunkB=351288 pulseB=210773 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5930 alex_k B=1779273 L=18522 d=96.1 nb=1 neut=0 cmds=62 noFull=1 shQ=444818 | m=0.900 worth=86.5 cheap=7.6 over=0 dMedOther=106.1 safe(-1)=1197739
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=2159759 dq=126.2 cnt=31 | c=654.6 rankC=654.6 need=3873890 tD=1.19 人 pulse crowdedHard | safe=1197739 keep=Inf avail=-Inf chunkB=355855 pulseB=213513 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5935 alex_k B=1779273 L=18522 d=96.1 nb=1 neut=0 cmds=62 noFull=1 shQ=444818 | m=0.900 worth=86.5 cheap=7.6 over=0 dMedOther=106.1 safe(-1)=1197739
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=2159759 dq=126.2 cnt=31 | c=654.6 rankC=654.6 need=3874246 tD=1.19 人 pulse crowdedHard | safe=1197739 keep=Inf avail=-Inf chunkB=355855 pulseB=213513 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5940 alex_k B=1802403 L=18522 d=97.3 nb=1 neut=0 cmds=62 noFull=1 shQ=450600 | m=0.900 worth=87.6 cheap=7.6 over=0 dMedOther=107.2 safe(-1)=1205262
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=2173149 dq=127.0 cnt=31 | c=658.6 rankC=658.6 need=3898285 tD=1.18 人 pulse crowdedHard | safe=1205262 keep=Inf avail=-Inf chunkB=360481 pulseB=216288 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5945 alex_k B=1802403 L=18522 d=97.3 nb=1 neut=0 cmds=62 noFull=1 shQ=450600 | m=0.900 worth=87.6 cheap=7.6 over=0 dMedOther=107.2 safe(-1)=1205262
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=2173149 dq=127.0 cnt=31 | c=658.6 rankC=658.6 need=3898464 tD=1.18 人 pulse crowdedHard | safe=1205262 keep=Inf avail=-Inf chunkB=360481 pulseB=216288 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5950 alex_k B=1825834 L=18522 d=98.6 nb=1 neut=0 cmds=62 noFull=1 shQ=456458 | m=0.900 worth=88.7 cheap=7.6 over=0 dMedOther=108.4 safe(-1)=1212587
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=2186187 dq=127.8 cnt=31 | c=662.5 rankC=662.5 need=3921879 tD=1.18 人 pulse crowdedHard | safe=1212587 keep=Inf avail=-Inf chunkB=365167 pulseB=219100 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5955 alex_k B=1825834 L=18522 d=98.6 nb=1 neut=0 cmds=62 noFull=1 shQ=456458 | m=0.900 worth=88.7 cheap=7.6 over=0 dMedOther=108.4 safe(-1)=1212587
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=2186187 dq=127.8 cnt=31 | c=662.5 rankC=662.5 need=3922239 tD=1.18 人 pulse crowdedHard | safe=1212587 keep=Inf avail=-Inf chunkB=365167 pulseB=219100 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5960 alex_k B=1849569 L=18522 d=99.9 nb=1 neut=0 cmds=62 noFull=1 shQ=462392 | m=0.900 worth=89.9 cheap=7.6 over=0 dMedOther=109.5 safe(-1)=1219710
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=2198866 dq=128.5 cnt=31 | c=666.3 rankC=666.3 need=3944838 tD=1.17 人 pulse crowdedHard | safe=1219710 keep=Inf avail=-Inf chunkB=369914 pulseB=221948 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5965 alex_k B=1849569 L=18522 d=99.9 nb=1 neut=0 cmds=62 noFull=1 shQ=462392 | m=0.900 worth=89.9 cheap=7.6 over=0 dMedOther=109.5 safe(-1)=1219710
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=2198866 dq=128.5 cnt=31 | c=666.3 rankC=666.3 need=3944838 tD=1.17 人 pulse crowdedHard | safe=1219710 keep=Inf avail=-Inf chunkB=369914 pulseB=221948 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5970 alex_k B=1873613 L=18522 d=101.2 nb=1 neut=0 cmds=62 noFull=1 shQ=468387 | m=0.900 worth=91.0 cheap=7.6 over=1 dMedOther=110.5 safe(-1)=1226627
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=2211179 dq=129.2 cnt=31 | c=971.6 rankC=1408.8 need=3966784 tD=1.17 人 pulse crowdedHard | safe=1226627 keep=2074464 avail=-222807 chunkB=374723 pulseB=224834 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5975 alex_k B=1873613 L=18522 d=101.2 nb=1 neut=0 cmds=62 noFull=1 shQ=468403 | m=0.900 worth=91.0 cheap=7.6 over=1 dMedOther=110.5 safe(-1)=1226627
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=2211179 dq=129.2 cnt=31 | c=971.6 rankC=1408.8 need=3966784 tD=1.17 人 pulse crowdedHard | safe=1226627 keep=2074464 avail=-222807 chunkB=374723 pulseB=224834 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5980 alex_k B=1897407 L=18522 d=102.4 nb=1 neut=0 cmds=62 noFull=1 shQ=474332 | m=0.900 worth=92.2 cheap=7.6 over=1 dMedOther=111.6 safe(-1)=1233335
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=2223119 dq=129.9 cnt=31 | c=976.8 rankC=1416.4 need=3988066 tD=1.16 人 pulse crowdedHard | safe=1233335 keep=2074464 avail=-199292 chunkB=379481 pulseB=227689 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5985 alex_k B=1897407 L=18522 d=102.4 nb=1 neut=0 cmds=62 noFull=1 shQ=474351 | m=0.900 worth=92.2 cheap=7.6 over=1 dMedOther=111.6 safe(-1)=1233335
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=2223119 dq=129.9 cnt=31 | c=976.8 rankC=1416.4 need=3988066 tD=1.16 人 pulse crowdedHard | safe=1233335 keep=2074464 avail=-199292 chunkB=379481 pulseB=227689 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5990 alex_k B=1920934 L=18522 d=103.7 nb=1 neut=0 cmds=62 noFull=1 shQ=480161 | m=0.900 worth=93.3 cheap=7.6 over=1 dMedOther=112.6 safe(-1)=1239954
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=2234901 dq=130.6 cnt=31 | c=982.0 rankC=1423.9 need=4009065 tD=1.16 人 pulse crowdedHard | safe=1239954 keep=2074464 avail=-176040 chunkB=384187 pulseB=230512 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5995 alex_k B=1920934 L=18522 d=103.7 nb=1 neut=0 cmds=62 noFull=1 shQ=480233 | m=0.900 worth=93.3 cheap=7.6 over=1 dMedOther=112.6 safe(-1)=1102627
+    → Micha [🇩🇪]#47[T1] terr=17108 bal=1990459 dq=116.3 cnt=31 | c=453.0 rankC=317.1 need=3573381 tD=1.03 人 pulse crowdedHard | safe=1102627 keep=2074464 avail=-176040 chunkB=384187 pulseB=230512 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6000 alex_k B=1962699 L=18522 d=106.0 nb=1 neut=0 cmds=62 noFull=1 shQ=485875 | m=0.900 worth=95.4 cheap=7.6 over=1 dMedOther=114.7 safe(-1)=1122079
+    → Micha [🇩🇪]#47[T1] terr=17158 bal=2025083 dq=118.0 cnt=32 | c=459.5 rankC=321.7 need=3635252 tD=1.03 人 pulse crowdedHard | safe=1122079 keep=2074464 avail=-134765 chunkB=392540 pulseB=235524 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6005 alex_k B=1962699 L=18522 d=106.0 nb=1 neut=0 cmds=62 noFull=1 shQ=490674 | m=0.900 worth=95.4 cheap=7.6 over=1 dMedOther=114.7 safe(-1)=1122079
+    → Micha [🇩🇪]#47[T1] terr=17256 bal=2025083 dq=117.4 cnt=33 | c=456.9 rankC=319.8 need=3635316 tD=1.02 人 pulse crowdedHard | safe=1122079 keep=2074464 avail=-134765 chunkB=392540 pulseB=235524 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6010 alex_k B=1985270 L=18522 d=107.2 nb=1 neut=0 cmds=62 noFull=1 shQ=496232 | m=0.900 worth=96.5 cheap=7.6 over=1 dMedOther=115.6 safe(-1)=1131976
+    → Micha [🇩🇪]#47[T1] terr=17399 bal=2042701 dq=117.4 cnt=34 | c=457.1 rankC=320.0 need=3667056 tD=1.02 人 pulse crowdedHard | safe=1131976 keep=2074464 avail=-112458 chunkB=397054 pulseB=238232 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6015 alex_k B=1985270 L=18522 d=107.2 nb=1 neut=0 cmds=62 noFull=1 shQ=496317 | m=0.900 worth=96.5 cheap=7.6 over=1 dMedOther=115.6 safe(-1)=1131976
+    → Micha [🇩🇪]#47[T1] terr=17492 bal=2042701 dq=116.8 cnt=35 | c=879.0 rankC=1274.5 need=3667071 tD=1.01 人 pulse crowdedHard | safe=1131976 keep=2074464 avail=-112458 chunkB=397054 pulseB=238232 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6020 alex_k B=2007505 L=18522 d=108.4 nb=1 neut=0 cmds=62 noFull=1 shQ=501787 | m=0.900 worth=97.5 cheap=7.6 over=1 dMedOther=116.6 safe(-1)=1142075
+    → Micha [🇩🇪]#47[T1] terr=17628 bal=2060676 dq=116.9 cnt=37 | c=651.7 rankC=945.0 need=3699313 tD=1.00 人 pulse | safe=1142075 keep=2074464 avail=-90484 chunkB=401501 pulseB=240901 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6025 alex_k B=2007505 L=18522 d=108.4 nb=1 neut=0 cmds=62 noFull=1 shQ=501876 | m=0.900 worth=97.5 cheap=7.6 over=1 dMedOther=116.3 safe(-1)=1142075
+    → Micha [🇩🇪]#47[T1] terr=17716 bal=2060676 dq=116.3 cnt=38 | c=648.5 rankC=940.3 need=3699445 tD=1.00 人 pulse | safe=1142075 keep=2074464 avail=-90484 chunkB=401501 pulseB=240901 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6030 alex_k B=2029386 L=18522 d=109.6 nb=1 neut=66 cmds=63 noFull=1 shQ=507253 | m=0.900 worth=98.6 cheap=7.6 over=1 dMedOther=116.5 safe(-1)=1152494
+    → Micha [🇩🇪]#47[T1] terr=17844 bal=2079222 dq=116.5 cnt=39 | c=649.6 rankC=941.9 need=3732693 tD=1.00 人 pulse | safe=1152494 keep=2074464 avail=-68859 chunkB=405877 pulseB=243526 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 95127 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=6035 alex_k B=2029386 L=18522 d=109.6 nb=1 neut=65 cmds=64 noFull=1 shQ=507346 | m=0.900 worth=98.6 cheap=7.6 over=1 dMedOther=116.0 safe(-1)=1152494
+    → Micha [🇩🇪]#47[T1] terr=17925 bal=2079222 dq=116.0 cnt=40 | c=646.6 rankC=937.6 need=3732855 tD=1.00 人 pulse | safe=1152494 keep=2074464 avail=-68859 chunkB=405877 pulseB=243526 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 95127 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=6040 alex_k B=2050897 L=18522 d=110.7 nb=1 neut=63 cmds=65 noFull=1 shQ=512627 | m=0.900 worth=99.7 cheap=7.6 over=1 dMedOther=116.3 safe(-1)=1163006
+    → Micha [🇩🇪]#47[T1] terr=18040 bal=2097934 dq=116.3 cnt=42 | c=648.2 rankC=939.9 need=3766339 tD=1.00 人 pulse | safe=1163006 keep=2074464 avail=-47600 chunkB=410179 pulseB=246108 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 96135 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=6045 alex_k B=1930729 L=18522 d=104.2 nb=1 neut=62 cmds=65 noFull=1 shQ=403923 | m=0.900 worth=93.8 cheap=7.6 over=1 dMedOther=115.8 safe(-1)=1163006
+    → Micha [🇩🇪]#47[T1] terr=18114 bal=2097934 dq=115.8 cnt=43 | c=871.2 rankC=1263.2 need=3766531 tD=1.00 人 pulse crowdedHard | safe=1163006 keep=2074464 avail=-166360 chunkB=386146 pulseB=231687 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6050 alex_k B=1733346 L=18583 d=93.3 nb=1 neut=60 cmds=65 noFull=1 shQ=432578 | m=0.900 worth=88.9 cheap=7.6 over=0 dMedOther=116.2 safe(-1)=1173680
+    → Micha [🇩🇪]#47[T1] terr=18221 bal=2117025 dq=116.2 cnt=45 | c=873.3 rankC=1266.2 need=3800678 tD=1.00 人 pulse crowdedHard | safe=1173680 keep=Inf avail=-Inf chunkB=346669 pulseB=208002 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6055 alex_k B=1733346 L=18756 d=92.4 nb=1 neut=52 cmds=65 noFull=1 shQ=433336 | m=0.900 worth=88.6 cheap=7.6 over=0 dMedOther=115.8 safe(-1)=1173534
+    → Micha [🇩🇪]#47[T1] terr=18288 bal=2117025 dq=115.8 cnt=47 | c=870.0 rankC=1261.5 need=3800738 tD=1.00 人 pulse crowdedHard | safe=1173534 keep=Inf avail=-Inf chunkB=346669 pulseB=208002 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6060 alex_k B=1755879 L=18857 d=93.1 nb=1 neut=41 cmds=65 noFull=1 shQ=438969 | m=0.900 worth=89.0 cheap=7.6 over=0 dMedOther=116.3 safe(-1)=1184272
+    → Micha [🇩🇪]#47[T1] terr=18369 bal=2136289 dq=116.3 cnt=57 | c=873.5 rankC=1266.6 need=3835236 tD=1.00 人 pulse crowdedHard | safe=1184272 keep=Inf avail=-Inf chunkB=351176 pulseB=210705 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6065 alex_k B=1755879 L=18971 d=92.6 nb=1 neut=27 cmds=65 noFull=1 shQ=438969 | m=0.900 worth=88.9 cheap=7.6 over=0 dMedOther=116.2 safe(-1)=1184176
+    → Micha [🇩🇪]#47[T1] terr=18392 bal=2136289 dq=116.2 cnt=61 | c=872.2 rankC=1264.8 need=3835229 tD=1.00 人 pulse crowdedHard | safe=1184176 keep=Inf avail=-Inf chunkB=351176 pulseB=210705 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6070 alex_k B=1778881 L=19011 d=93.6 nb=1 neut=12 cmds=65 noFull=1 shQ=444720 | m=0.900 worth=89.5 cheap=7.6 over=0 dMedOther=117.0 safe(-1)=1194823
+    → Micha [🇩🇪]#47[T1] terr=18419 bal=2155301 dq=117.0 cnt=67 | c=878.4 rankC=1273.6 need=3869280 tD=1.00 人 pulse crowdedHard | safe=1194823 keep=Inf avail=-Inf chunkB=355776 pulseB=213466 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6075 alex_k B=1778881 L=19038 d=93.4 nb=1 neut=5 cmds=65 noFull=1 shQ=444720 | m=0.900 worth=89.5 cheap=7.6 over=0 dMedOther=116.9 safe(-1)=1194800
+    → Micha [🇩🇪]#47[T1] terr=18432 bal=2155301 dq=116.9 cnt=71 | c=877.6 rankC=1272.5 need=3869175 tD=1.00 人 pulse crowdedHard | safe=1194800 keep=Inf avail=-Inf chunkB=355776 pulseB=213466 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6080 alex_k B=2072437 L=19038 d=108.9 nb=1 neut=0 cmds=65 noFull=1 shQ=467532 | m=0.900 worth=98.0 cheap=7.6 over=1 dMedOther=120.8 safe(-1)=1234783
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2226470 dq=120.8 cnt=76 | c=906.5 rankC=1314.4 need=3996074 tD=1.00 人 pulse crowdedHard | safe=1234783 keep=2132256 avail=-84105 chunkB=414487 pulseB=248692 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6085 alex_k B=2072437 L=19038 d=108.9 nb=1 neut=0 cmds=65 noFull=1 shQ=495507 | m=0.900 worth=98.0 cheap=7.6 over=1 dMedOther=115.5 safe(-1)=1234783
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2226470 dq=120.8 cnt=76 | c=906.5 rankC=1314.4 need=3996074 tD=1.05 人 pulse crowdedHard | safe=1234783 keep=2132256 avail=-84105 chunkB=414487 pulseB=248692 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6090 alex_k B=2094819 L=19038 d=110.0 nb=1 neut=0 cmds=66 noFull=1 shQ=523385 | m=0.900 worth=99.0 cheap=7.6 over=1 dMedOther=116.7 safe(-1)=1244413
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2243613 dq=121.7 cnt=76 | c=913.4 rankC=1324.4 need=4026630 tD=1.04 人 pulse crowdedHard | safe=1244413 keep=2132256 avail=-61985 chunkB=418964 pulseB=251378 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=205 → [APEX] leo_tx#14[T2]（约 421418 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=6095 alex_k B=2094819 L=19038 d=110.0 nb=1 neut=0 cmds=66 noFull=1 shQ=523704 | m=0.900 worth=99.0 cheap=7.6 over=1 dMedOther=116.3 safe(-1)=1244413
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2243613 dq=121.7 cnt=76 | c=913.4 rankC=1324.4 need=4026630 tD=1.05 人 pulse crowdedHard | safe=1244413 keep=2132256 avail=-61985 chunkB=418964 pulseB=251378 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6100 alex_k B=1581719 L=19038 d=83.1 nb=1 neut=0 cmds=66 noFull=1 shQ=390837 | m=0.900 worth=90.4 cheap=7.6 over=0 dMedOther=118.2 safe(-1)=1264098
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2278652 dq=123.6 cnt=76 | c=926.1 rankC=1342.9 need=4089083 tD=1.05 人 pulse crowdedHard | safe=1264098 keep=Inf avail=-Inf chunkB=316344 pulseB=189806 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6105 alex_k B=1581719 L=19038 d=83.1 nb=1 neut=0 cmds=66 noFull=1 shQ=395429 | m=0.900 worth=90.1 cheap=7.6 over=0 dMedOther=117.8 safe(-1)=1264098
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2278652 dq=123.6 cnt=76 | c=926.1 rankC=1342.9 need=4089083 tD=1.05 人 pulse crowdedHard | safe=1264098 keep=Inf avail=-Inf chunkB=316344 pulseB=189806 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6110 alex_k B=1602439 L=19038 d=84.2 nb=1 neut=0 cmds=66 noFull=1 shQ=400609 | m=0.900 worth=90.8 cheap=7.6 over=0 dMedOther=118.7 safe(-1)=1272931
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2294374 dq=124.4 cnt=76 | c=932.5 rankC=1352.1 need=4117105 tD=1.05 人 pulse crowdedHard | safe=1272931 keep=Inf avail=-Inf chunkB=320488 pulseB=192293 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6115 alex_k B=1602439 L=19038 d=84.2 nb=1 neut=0 cmds=66 noFull=1 shQ=400609 | m=0.900 worth=90.6 cheap=7.6 over=0 dMedOther=118.4 safe(-1)=1272931
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2294374 dq=124.4 cnt=76 | c=932.5 rankC=1352.1 need=4117105 tD=1.05 人 pulse crowdedHard | safe=1272931 keep=Inf avail=-Inf chunkB=320488 pulseB=192293 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6120 alex_k B=1623430 L=19038 d=85.3 nb=1 neut=0 cmds=66 noFull=1 shQ=405857 | m=0.900 worth=91.2 cheap=7.6 over=0 dMedOther=119.3 safe(-1)=1281567
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2309746 dq=125.3 cnt=76 | c=938.7 rankC=1361.2 need=4144504 tD=1.05 人 pulse crowdedHard | safe=1281567 keep=Inf avail=-Inf chunkB=324686 pulseB=194812 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6125 alex_k B=1623430 L=19038 d=85.3 nb=1 neut=0 cmds=66 noFull=1 shQ=405857 | m=0.900 worth=91.0 cheap=7.6 over=0 dMedOther=119.0 safe(-1)=1281567
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2309746 dq=125.3 cnt=76 | c=938.7 rankC=1361.2 need=4144504 tD=1.05 人 pulse crowdedHard | safe=1281567 keep=Inf avail=-Inf chunkB=324686 pulseB=194812 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6130 alex_k B=1644696 L=19038 d=86.4 nb=1 neut=0 cmds=66 noFull=1 shQ=411174 | m=0.900 worth=91.8 cheap=7.6 over=0 dMedOther=119.9 safe(-1)=1290001
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2324759 dq=126.1 cnt=76 | c=944.8 rankC=1370.0 need=4171263 tD=1.05 人 pulse crowdedHard | safe=1290001 keep=Inf avail=-Inf chunkB=328939 pulseB=197364 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6135 alex_k B=1644696 L=19038 d=86.4 nb=1 neut=0 cmds=66 noFull=1 shQ=411174 | m=0.900 worth=91.7 cheap=7.6 over=0 dMedOther=119.9 safe(-1)=1290001
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2324759 dq=126.1 cnt=76 | c=944.8 rankC=1370.0 need=4171263 tD=1.05 人 pulse crowdedHard | safe=1290001 keep=Inf avail=-Inf chunkB=328939 pulseB=197364 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6140 alex_k B=1666241 L=19038 d=87.5 nb=1 neut=0 cmds=66 noFull=1 shQ=416560 | m=0.900 worth=92.5 cheap=7.6 over=0 dMedOther=120.9 safe(-1)=1298229
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2339404 dq=126.9 cnt=76 | c=950.8 rankC=1378.6 need=4197366 tD=1.05 人 pulse crowdedHard | safe=1298229 keep=Inf avail=-Inf chunkB=333248 pulseB=199949 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6145 alex_k B=1666241 L=19038 d=87.5 nb=1 neut=0 cmds=66 noFull=1 shQ=416560 | m=0.900 worth=92.4 cheap=7.6 over=0 dMedOther=120.8 safe(-1)=1298229
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2339404 dq=126.9 cnt=76 | c=950.8 rankC=1378.6 need=4197366 tD=1.05 人 pulse crowdedHard | safe=1298229 keep=Inf avail=-Inf chunkB=333248 pulseB=199949 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6150 alex_k B=1688068 L=19038 d=88.7 nb=1 neut=0 cmds=66 noFull=1 shQ=422017 | m=0.900 worth=94.1 cheap=7.6 over=0 dMedOther=123.0 safe(-1)=1306246
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2353674 dq=127.7 cnt=76 | c=956.6 rankC=1387.0 need=4222800 tD=1.04 人 pulse crowdedHard | safe=1306246 keep=Inf avail=-Inf chunkB=337614 pulseB=202568 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6155 alex_k B=1688068 L=19038 d=88.7 nb=1 neut=0 cmds=66 noFull=1 shQ=422017 | m=0.900 worth=94.0 cheap=7.6 over=0 dMedOther=122.9 safe(-1)=1306246
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2353674 dq=127.7 cnt=76 | c=659.7 rankC=659.7 need=4222800 tD=1.04 人 pulse crowdedHard | safe=1306246 keep=Inf avail=-Inf chunkB=337614 pulseB=202568 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6160 alex_k B=1710181 L=19038 d=89.8 nb=1 neut=0 cmds=66 noFull=1 shQ=427545 | m=0.900 worth=94.6 cheap=7.6 over=0 dMedOther=123.7 safe(-1)=1314047
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2367560 dq=128.4 cnt=76 | c=663.6 rankC=663.6 need=4247551 tD=1.04 人 pulse crowdedHard | safe=1314047 keep=Inf avail=-Inf chunkB=342036 pulseB=205222 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6165 alex_k B=1710181 L=19038 d=89.8 nb=1 neut=0 cmds=66 noFull=1 shQ=427545 | m=0.900 worth=94.5 cheap=7.6 over=0 dMedOther=123.5 safe(-1)=1314047
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2367560 dq=128.4 cnt=76 | c=962.2 rankC=1395.2 need=4247551 tD=1.04 人 pulse crowdedHard | safe=1314047 keep=Inf avail=-Inf chunkB=342036 pulseB=205222 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6170 alex_k B=1732584 L=19038 d=91.0 nb=1 neut=0 cmds=66 noFull=1 shQ=433146 | m=0.900 worth=95.1 cheap=7.6 over=0 dMedOther=124.3 safe(-1)=1321628
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2381055 dq=129.1 cnt=76 | c=967.7 rankC=1403.1 need=4271604 tD=1.04 人 pulse crowdedHard | safe=1321628 keep=Inf avail=-Inf chunkB=346517 pulseB=207910 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6175 alex_k B=1732584 L=19038 d=91.0 nb=1 neut=0 cmds=66 noFull=1 shQ=433146 | m=0.900 worth=81.9 cheap=7.6 over=0 dMedOther=92.3 safe(-1)=1321628
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2381055 dq=129.1 cnt=76 | c=967.7 rankC=1403.1 need=4271604 tD=1.40 人 pulse crowdedHard | safe=1321628 keep=Inf avail=-Inf chunkB=346517 pulseB=207910 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6180 alex_k B=1755280 L=19038 d=92.2 nb=1 neut=0 cmds=66 noFull=1 shQ=438820 | m=0.900 worth=83.0 cheap=7.6 over=0 dMedOther=93.4 safe(-1)=1328985
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2394150 dq=129.9 cnt=76 | c=973.0 rankC=1410.8 need=4294944 tD=1.39 人 pulse crowdedHard | safe=1328985 keep=Inf avail=-Inf chunkB=351056 pulseB=210634 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6185 alex_k B=1755280 L=19038 d=92.2 nb=1 neut=0 cmds=66 noFull=1 shQ=438820 | m=0.900 worth=83.0 cheap=7.6 over=0 dMedOther=93.4 safe(-1)=1328985
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2394150 dq=129.9 cnt=76 | c=973.0 rankC=1410.8 need=4294944 tD=1.39 人 pulse crowdedHard | safe=1328985 keep=Inf avail=-Inf chunkB=351056 pulseB=210634 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6190 alex_k B=1778274 L=19038 d=93.4 nb=1 neut=0 cmds=66 noFull=1 shQ=444568 | m=0.900 worth=84.1 cheap=7.6 over=0 dMedOther=94.6 safe(-1)=1336113
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2406838 dq=130.5 cnt=76 | c=978.2 rankC=1418.3 need=4317559 tD=1.38 人 pulse crowdedHard | safe=1336113 keep=Inf avail=-Inf chunkB=355655 pulseB=213393 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6195 alex_k B=1778274 L=19038 d=93.4 nb=1 neut=0 cmds=66 noFull=1 shQ=444568 | m=0.900 worth=84.1 cheap=7.6 over=0 dMedOther=94.6 safe(-1)=1336113
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2406838 dq=130.5 cnt=76 | c=978.2 rankC=1418.3 need=4317559 tD=1.38 人 pulse crowdedHard | safe=1336113 keep=Inf avail=-Inf chunkB=355655 pulseB=213393 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6200 alex_k B=1820607 L=19038 d=95.6 nb=1 neut=0 cmds=66 noFull=1 shQ=450575 | m=0.900 worth=86.1 cheap=7.6 over=0 dMedOther=96.7 safe(-1)=1353366
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2437549 dq=132.2 cnt=76 | c=990.6 rankC=1436.4 need=4372298 tD=1.37 人 pulse crowdedHard | safe=1353366 keep=Inf avail=-Inf chunkB=364121 pulseB=218473 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6205 alex_k B=1820607 L=19038 d=95.6 nb=1 neut=0 cmds=66 noFull=1 shQ=455151 | m=0.900 worth=86.1 cheap=7.6 over=0 dMedOther=96.7 safe(-1)=1353366
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2437549 dq=132.2 cnt=76 | c=990.6 rankC=1436.4 need=4372298 tD=1.37 人 pulse crowdedHard | safe=1353366 keep=Inf avail=-Inf chunkB=364121 pulseB=218473 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6210 alex_k B=1844456 L=19038 d=96.9 nb=1 neut=0 cmds=66 noFull=1 shQ=461114 | m=0.900 worth=87.2 cheap=7.6 over=0 dMedOther=97.9 safe(-1)=1359802
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2449005 dq=132.8 cnt=76 | c=995.3 rankC=1443.2 need=4392717 tD=1.36 人 pulse crowdedHard | safe=1359802 keep=Inf avail=-Inf chunkB=368891 pulseB=221335 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6215 alex_k B=1844456 L=19038 d=96.9 nb=1 neut=0 cmds=66 noFull=1 shQ=461114 | m=0.900 worth=87.2 cheap=7.6 over=0 dMedOther=97.9 safe(-1)=1359802
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2449005 dq=132.8 cnt=76 | c=995.3 rankC=1443.2 need=4392717 tD=1.36 人 pulse crowdedHard | safe=1359802 keep=Inf avail=-Inf chunkB=368891 pulseB=221335 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6220 alex_k B=1868618 L=19038 d=98.2 nb=1 neut=0 cmds=66 noFull=1 shQ=467154 | m=0.900 worth=88.3 cheap=7.6 over=0 dMedOther=99.1 safe(-1)=1365993
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2460025 dq=133.4 cnt=76 | c=999.8 rankC=1449.7 need=4412358 tD=1.35 人 pulse crowdedHard | safe=1365993 keep=Inf avail=-Inf chunkB=373724 pulseB=224234 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6225 alex_k B=1868618 L=19038 d=98.2 nb=1 neut=0 cmds=66 noFull=1 shQ=467154 | m=0.900 worth=88.3 cheap=7.6 over=0 dMedOther=99.1 safe(-1)=1365993
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2460025 dq=133.4 cnt=76 | c=999.8 rankC=1449.7 need=4412358 tD=1.35 人 pulse crowdedHard | safe=1365993 keep=Inf avail=-Inf chunkB=373724 pulseB=224234 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6230 alex_k B=1893096 L=19038 d=99.4 nb=1 neut=0 cmds=66 noFull=1 shQ=473274 | m=0.900 worth=89.5 cheap=7.6 over=0 dMedOther=100.3 safe(-1)=1372074
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2470849 dq=134.0 cnt=76 | c=1004.2 rankC=1456.1 need=4431651 tD=1.34 人 pulse crowdedHard | safe=1372074 keep=Inf avail=-Inf chunkB=378619 pulseB=227172 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6235 alex_k B=1893096 L=19038 d=99.4 nb=1 neut=0 cmds=66 noFull=1 shQ=473274 | m=0.900 worth=89.5 cheap=7.6 over=0 dMedOther=100.3 safe(-1)=1372074
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2470849 dq=134.0 cnt=76 | c=1004.2 rankC=1456.1 need=4431651 tD=1.34 人 pulse crowdedHard | safe=1372074 keep=Inf avail=-Inf chunkB=378619 pulseB=227172 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6240 alex_k B=1917895 L=19038 d=100.7 nb=1 neut=0 cmds=66 noFull=1 shQ=479473 | m=0.900 worth=90.7 cheap=7.6 over=1 dMedOther=101.5 safe(-1)=1377904
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2481226 dq=134.6 cnt=76 | c=1008.4 rankC=1462.2 need=4450147 tD=1.33 人 pulse crowdedHard | safe=1377904 keep=2132256 avail=-236836 chunkB=383579 pulseB=230147 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6245 alex_k B=1917895 L=19038 d=100.7 nb=1 neut=0 cmds=66 noFull=1 shQ=479473 | m=0.900 worth=90.7 cheap=7.6 over=1 dMedOther=101.5 safe(-1)=1377904
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2481226 dq=134.6 cnt=76 | c=1008.4 rankC=1462.2 need=4450147 tD=1.33 人 pulse crowdedHard | safe=1377904 keep=2132256 avail=-236836 chunkB=383579 pulseB=230147 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6250 alex_k B=1942827 L=19038 d=102.0 nb=1 neut=0 cmds=66 noFull=1 shQ=485592 | m=0.900 worth=91.8 cheap=7.6 over=1 dMedOther=102.7 safe(-1)=1383619
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2491399 dq=135.1 cnt=76 | c=1012.6 rankC=1468.2 need=4468279 tD=1.32 人 pulse crowdedHard | safe=1383619 keep=2132256 avail=-212196 chunkB=388565 pulseB=233139 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6255 alex_k B=1942827 L=19038 d=102.0 nb=1 neut=0 cmds=66 noFull=1 shQ=485706 | m=0.900 worth=91.8 cheap=7.6 over=1 dMedOther=102.7 safe(-1)=1383619
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2491399 dq=135.1 cnt=76 | c=1012.6 rankC=1468.2 need=4468279 tD=1.32 人 pulse crowdedHard | safe=1383619 keep=2132256 avail=-212196 chunkB=388565 pulseB=233139 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6260 alex_k B=1967306 L=19038 d=103.3 nb=1 neut=0 cmds=66 noFull=1 shQ=491755 | m=0.900 worth=93.0 cheap=7.6 over=1 dMedOther=103.8 safe(-1)=1389078
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2501115 dq=135.7 cnt=76 | c=1016.5 rankC=1474.0 need=4485596 tD=1.31 人 pulse crowdedHard | safe=1389078 keep=2132256 avail=-188004 chunkB=393461 pulseB=236077 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6265 alex_k B=1967306 L=19038 d=103.3 nb=1 neut=0 cmds=66 noFull=1 shQ=491826 | m=0.900 worth=93.0 cheap=7.6 over=1 dMedOther=103.8 safe(-1)=1389078
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2501115 dq=135.7 cnt=76 | c=1016.5 rankC=1474.0 need=4485596 tD=1.31 人 pulse crowdedHard | safe=1389078 keep=2132256 avail=-188004 chunkB=393461 pulseB=236077 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6270 alex_k B=1991503 L=19038 d=104.6 nb=1 neut=0 cmds=66 noFull=1 shQ=497800 | m=0.900 worth=94.1 cheap=7.6 over=1 dMedOther=105.0 safe(-1)=1394417
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2510619 dq=136.2 cnt=76 | c=1020.4 rankC=1479.6 need=4502536 tD=1.30 人 pulse crowdedHard | safe=1394417 keep=2132256 avail=-164090 chunkB=398301 pulseB=238980 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6275 alex_k B=1991503 L=19038 d=104.6 nb=1 neut=0 cmds=66 noFull=1 shQ=497875 | m=0.900 worth=94.1 cheap=7.6 over=1 dMedOther=105.0 safe(-1)=1394417
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2510619 dq=136.2 cnt=76 | c=1020.4 rankC=1479.6 need=4502536 tD=1.30 人 pulse crowdedHard | safe=1394417 keep=2132256 avail=-164090 chunkB=398301 pulseB=238980 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6280 alex_k B=2015201 L=19038 d=105.9 nb=1 neut=0 cmds=66 noFull=1 shQ=503719 | m=0.900 worth=95.3 cheap=7.6 over=1 dMedOther=106.2 safe(-1)=1399494
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2519657 dq=136.7 cnt=76 | c=1024.1 rankC=1485.0 need=4518645 tD=1.29 人 pulse crowdedHard | safe=1399494 keep=2132256 avail=-140670 chunkB=403040 pulseB=241824 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6285 alex_k B=2015201 L=19038 d=105.9 nb=1 neut=0 cmds=66 noFull=1 shQ=503800 | m=0.900 worth=95.3 cheap=7.6 over=1 dMedOther=106.2 safe(-1)=1399494
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2519657 dq=136.7 cnt=76 | c=1024.1 rankC=1485.0 need=4518645 tD=1.29 人 pulse crowdedHard | safe=1399494 keep=2132256 avail=-140670 chunkB=403040 pulseB=241824 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6290 alex_k B=2038577 L=19038 d=107.1 nb=1 neut=0 cmds=67 noFull=1 shQ=509558 | m=0.900 worth=96.4 cheap=7.6 over=1 dMedOther=107.3 safe(-1)=1404448
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2528475 dq=137.1 cnt=76 | c=1027.7 rankC=1490.2 need=4534362 tD=1.28 人 pulse crowdedHard | safe=1404448 keep=2132256 avail=-117568 chunkB=407715 pulseB=244629 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=182 → [APEX] leo_tx#14[T2]（约 364316 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=6295 alex_k B=2038577 L=19038 d=107.1 nb=1 neut=0 cmds=67 noFull=1 shQ=509644 | m=0.900 worth=96.4 cheap=7.6 over=1 dMedOther=107.3 safe(-1)=1404448
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2528475 dq=137.1 cnt=76 | c=1027.7 rankC=1490.2 need=4534362 tD=1.28 人 pulse crowdedHard | safe=1404448 keep=2132256 avail=-117568 chunkB=407715 pulseB=244629 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6300 alex_k B=2080650 L=19038 d=109.3 nb=1 neut=0 cmds=67 noFull=1 shQ=515209 | m=0.900 worth=98.4 cheap=7.6 over=1 dMedOther=109.4 safe(-1)=1419635
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2555508 dq=138.6 cnt=76 | c=1038.7 rankC=1506.1 need=4582546 tD=1.27 人 pulse crowdedHard | safe=1419635 keep=2132256 avail=-75988 chunkB=416130 pulseB=249678 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6305 alex_k B=1578776 L=19038 d=82.9 nb=1 neut=0 cmds=67 noFull=1 shQ=394694 | m=0.900 worth=83.7 cheap=7.6 over=0 dMedOther=109.4 safe(-1)=1419635
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2555508 dq=138.6 cnt=76 | c=1037.4 rankC=1504.2 need=4582546 tD=1.27 人 pulse crowdedHard | safe=1419635 keep=Inf avail=-Inf chunkB=315755 pulseB=189453 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6310 alex_k B=1599457 L=19038 d=84.0 nb=1 neut=0 cmds=67 noFull=1 shQ=399864 | m=0.900 worth=84.5 cheap=7.6 over=0 dMedOther=110.5 safe(-1)=1423942
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2563174 dq=139.0 cnt=76 | c=1040.5 rankC=1508.7 need=4596209 tD=1.26 人 pulse crowdedHard | safe=1423942 keep=Inf avail=-Inf chunkB=319891 pulseB=191935 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6315 alex_k B=1599457 L=19038 d=84.0 nb=1 neut=0 cmds=67 noFull=1 shQ=399864 | m=0.900 worth=84.3 cheap=7.6 over=0 dMedOther=110.2 safe(-1)=1423942
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2563174 dq=139.0 cnt=76 | c=1040.5 rankC=1508.7 need=4596209 tD=1.26 人 pulse crowdedHard | safe=1423942 keep=Inf avail=-Inf chunkB=319891 pulseB=191935 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6320 alex_k B=1620409 L=19038 d=85.1 nb=1 neut=0 cmds=67 noFull=1 shQ=405102 | m=0.900 worth=85.1 cheap=7.6 over=0 dMedOther=111.2 safe(-1)=1428118
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2570607 dq=139.4 cnt=76 | c=1043.6 rankC=1513.2 need=4609458 tD=1.25 人 pulse crowdedHard | safe=1428118 keep=Inf avail=-Inf chunkB=324082 pulseB=194449 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6325 alex_k B=1620409 L=19038 d=85.1 nb=1 neut=0 cmds=67 noFull=1 shQ=405102 | m=0.900 worth=84.9 cheap=7.6 over=0 dMedOther=111.0 safe(-1)=1428118
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2570607 dq=139.4 cnt=76 | c=1043.6 rankC=1513.2 need=4609458 tD=1.26 人 pulse crowdedHard | safe=1428118 keep=Inf avail=-Inf chunkB=324082 pulseB=194449 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6330 alex_k B=1641636 L=19038 d=86.2 nb=1 neut=0 cmds=67 noFull=1 shQ=410409 | m=0.900 worth=85.8 cheap=7.6 over=0 dMedOther=112.2 safe(-1)=1432161
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2577804 dq=139.8 cnt=76 | c=1046.5 rankC=1517.4 need=4622286 tD=1.25 人 pulse crowdedHard | safe=1432161 keep=Inf avail=-Inf chunkB=328327 pulseB=196996 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6335 alex_k B=1641636 L=19038 d=86.2 nb=1 neut=0 cmds=67 noFull=1 shQ=410409 | m=0.900 worth=85.8 cheap=7.6 over=0 dMedOther=112.1 safe(-1)=1432161
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2577804 dq=139.8 cnt=76 | c=1046.5 rankC=1517.4 need=4622286 tD=1.25 人 pulse crowdedHard | safe=1432161 keep=Inf avail=-Inf chunkB=328327 pulseB=196996 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6340 alex_k B=1663141 L=19038 d=87.4 nb=1 neut=0 cmds=67 noFull=1 shQ=415785 | m=0.900 worth=86.6 cheap=7.6 over=0 dMedOther=113.2 safe(-1)=1423832
+    → Micha [🇩🇪]#47[T1] terr=18437 bal=2311240 dq=125.4 cnt=76 | c=238.6 rankC=167.0 need=4398905 tD=1.11 人 pulse onMe | safe=1423832 keep=Inf avail=-Inf chunkB=332628 pulseB=199577 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6345 alex_k B=1641643 L=18884 d=86.9 nb=1 neut=0 cmds=67 noFull=1 shQ=410410 | m=0.900 worth=86.4 cheap=7.6 over=0 dMedOther=112.9 safe(-1)=1399634
+    → Micha [🇩🇪]#47[T1] terr=18591 bal=2311240 dq=124.3 cnt=77 | c=234.2 rankC=164.0 need=4355919 tD=1.10 人 pulse onMe | safe=1399634 keep=Inf avail=-Inf chunkB=328329 pulseB=196997 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6350 alex_k B=1640753 L=18726 d=87.6 nb=1 neut=0 cmds=67 noFull=1 shQ=410188 | m=0.900 worth=87.1 cheap=7.6 over=0 dMedOther=113.9 safe(-1)=1384020
+    → Micha [🇩🇪]#47[T1] terr=18749 bal=2327418 dq=124.1 cnt=79 | c=189.3 rankC=108.7 need=4340695 tD=1.09 人 pulse onMe agg | safe=1384020 keep=Inf avail=-Inf chunkB=328151 pulseB=196890 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6355 alex_k B=1606220 L=18479 d=86.9 nb=1 neut=0 cmds=67 noFull=1 shQ=401555 | m=0.900 worth=86.8 cheap=7.6 over=0 dMedOther=113.5 safe(-1)=1345149
+    → Micha [🇩🇪]#47[T1] terr=18996 bal=2327418 dq=122.5 cnt=84 | c=249.1 rankC=204.2 need=4271462 tD=1.08 人 pulse onMe agg | safe=1345149 keep=Inf avail=-Inf chunkB=321244 pulseB=192746 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6360 alex_k B=1603185 L=18309 d=87.6 nb=1 neut=0 cmds=67 noFull=1 shQ=400796 | m=0.900 worth=87.5 cheap=7.6 over=0 dMedOther=114.4 safe(-1)=1328382
+    → Micha [🇩🇪]#47[T1] terr=19166 bal=2344873 dq=122.3 cnt=86 | c=248.7 rankC=203.9 need=4255359 tD=1.07 人 pulse onMe agg | safe=1328382 keep=Inf avail=-Inf chunkB=320637 pulseB=192382 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6365 alex_k B=1579838 L=18222 d=86.7 nb=1 neut=0 cmds=67 noFull=1 shQ=394959 | m=0.900 worth=87.2 cheap=7.6 over=0 dMedOther=113.9 safe(-1)=1302024
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2344935 dq=121.8 cnt=87 | c=775.3 rankC=921.9 need=4208446 tD=1.07 人 pulse crowdedHard agg | safe=1302024 keep=Inf avail=-Inf chunkB=315968 pulseB=189581 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6370 alex_k B=1600375 L=18222 d=87.8 nb=1 neut=0 cmds=67 noFull=1 shQ=400093 | m=0.900 worth=87.8 cheap=7.6 over=0 dMedOther=114.7 safe(-1)=1311772
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2362287 dq=122.7 cnt=87 | c=781.1 rankC=928.7 need=4239374 tD=1.07 人 pulse crowdedHard agg | safe=1311772 keep=Inf avail=-Inf chunkB=320075 pulseB=192045 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6375 alex_k B=1600375 L=18222 d=87.8 nb=1 neut=0 cmds=67 noFull=1 shQ=400093 | m=0.900 worth=87.4 cheap=7.6 over=0 dMedOther=114.2 safe(-1)=1311772
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2362287 dq=122.7 cnt=87 | c=781.1 rankC=928.7 need=4239374 tD=1.07 人 pulse crowdedHard agg | safe=1311772 keep=Inf avail=-Inf chunkB=320075 pulseB=192045 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6380 alex_k B=1621179 L=18222 d=89.0 nb=1 neut=0 cmds=67 noFull=1 shQ=405294 | m=0.900 worth=87.9 cheap=7.6 over=0 dMedOther=115.0 safe(-1)=1321327
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2379295 dq=123.6 cnt=87 | c=786.7 rankC=935.3 need=4269689 tD=1.08 人 pulse crowdedHard agg | safe=1321327 keep=Inf avail=-Inf chunkB=324236 pulseB=194541 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6385 alex_k B=1621179 L=18222 d=89.0 nb=1 neut=0 cmds=67 noFull=1 shQ=405294 | m=0.900 worth=87.5 cheap=7.6 over=0 dMedOther=114.4 safe(-1)=1321327
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2379295 dq=123.6 cnt=87 | c=786.7 rankC=935.3 need=4269689 tD=1.08 人 pulse crowdedHard agg | safe=1321327 keep=Inf avail=-Inf chunkB=324236 pulseB=194541 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6390 alex_k B=1642254 L=18222 d=90.1 nb=1 neut=0 cmds=67 noFull=1 shQ=410563 | m=0.900 worth=88.0 cheap=7.6 over=0 dMedOther=115.0 safe(-1)=1330684
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2395950 dq=124.4 cnt=87 | c=792.2 rankC=941.9 need=4299374 tD=1.08 人 pulse crowdedHard agg | safe=1330684 keep=Inf avail=-Inf chunkB=328451 pulseB=197070 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6395 alex_k B=1642254 L=18222 d=90.1 nb=1 neut=0 cmds=67 noFull=1 shQ=410563 | m=0.900 worth=87.5 cheap=7.6 over=0 dMedOther=114.4 safe(-1)=1330684
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2395950 dq=124.4 cnt=87 | c=792.2 rankC=941.9 need=4299374 tD=1.09 人 pulse crowdedHard agg | safe=1330684 keep=Inf avail=-Inf chunkB=328451 pulseB=197070 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6400 alex_k B=1681825 L=18222 d=92.3 nb=1 neut=0 cmds=67 noFull=1 shQ=416070 | m=0.900 worth=88.7 cheap=7.6 over=0 dMedOther=116.0 safe(-1)=1350518
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2431255 dq=126.3 cnt=87 | c=803.8 rankC=955.7 need=4362301 tD=1.09 人 pulse crowdedHard agg | safe=1350518 keep=Inf avail=-Inf chunkB=336365 pulseB=201819 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6405 alex_k B=1681825 L=18222 d=92.3 nb=1 neut=0 cmds=67 noFull=1 shQ=420456 | m=0.900 worth=88.1 cheap=7.6 over=0 dMedOther=115.2 safe(-1)=1350518
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2431255 dq=126.3 cnt=87 | c=803.8 rankC=955.7 need=4362301 tD=1.10 人 pulse crowdedHard agg | safe=1350518 keep=Inf avail=-Inf chunkB=336365 pulseB=201819 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6410 alex_k B=1703688 L=18222 d=93.5 nb=1 neut=0 cmds=67 noFull=1 shQ=425922 | m=0.900 worth=88.6 cheap=7.6 over=0 dMedOther=115.8 safe(-1)=1359122
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2446571 dq=127.1 cnt=87 | c=808.8 rankC=961.7 need=4389600 tD=1.10 人 pulse crowdedHard agg | safe=1359122 keep=Inf avail=-Inf chunkB=340738 pulseB=204443 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6415 alex_k B=1703688 L=18222 d=93.5 nb=1 neut=0 cmds=67 noFull=1 shQ=425922 | m=0.900 worth=84.1 cheap=7.6 over=0 dMedOther=101.1 safe(-1)=1359122
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2446571 dq=127.1 cnt=87 | c=808.8 rankC=961.7 need=4389600 tD=1.26 人 pulse crowdedHard agg | safe=1359122 keep=Inf avail=-Inf chunkB=340738 pulseB=204443 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6420 alex_k B=1725835 L=18222 d=94.7 nb=1 neut=0 cmds=67 noFull=1 shQ=431458 | m=0.900 worth=85.2 cheap=7.6 over=0 dMedOther=102.0 safe(-1)=1367507
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2461495 dq=127.8 cnt=87 | c=813.8 rankC=967.6 need=4416201 tD=1.25 人 pulse crowdedHard agg | safe=1367507 keep=Inf avail=-Inf chunkB=345167 pulseB=207100 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6425 alex_k B=1725835 L=18222 d=94.7 nb=1 neut=0 cmds=67 noFull=1 shQ=431458 | m=0.900 worth=85.2 cheap=7.6 over=0 dMedOther=101.2 safe(-1)=1367507
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2461495 dq=127.8 cnt=87 | c=813.8 rankC=967.6 need=4416201 tD=1.26 人 pulse crowdedHard agg | safe=1367507 keep=Inf avail=-Inf chunkB=345167 pulseB=207100 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6430 alex_k B=1748270 L=18222 d=95.9 nb=1 neut=0 cmds=67 noFull=1 shQ=437067 | m=0.900 worth=86.3 cheap=7.6 over=0 dMedOther=101.9 safe(-1)=1375665
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2476017 dq=128.6 cnt=87 | c=564.5 rankC=462.9 need=4442084 tD=1.26 人 pulse crowdedHard agg | safe=1375665 keep=Inf avail=-Inf chunkB=349654 pulseB=209792 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6435 alex_k B=1748270 L=18222 d=95.9 nb=1 neut=0 cmds=67 noFull=1 shQ=437067 | m=0.900 worth=86.3 cheap=7.6 over=0 dMedOther=101.2 safe(-1)=1375665
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2476017 dq=128.6 cnt=87 | c=564.5 rankC=462.9 need=4442084 tD=1.27 人 pulse crowdedHard agg | safe=1375665 keep=Inf avail=-Inf chunkB=349654 pulseB=209792 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6440 alex_k B=1770997 L=18222 d=97.2 nb=1 neut=0 cmds=67 noFull=1 shQ=442749 | m=0.900 worth=87.5 cheap=7.6 over=0 dMedOther=102.1 safe(-1)=1383594
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2490130 dq=129.3 cnt=87 | c=567.7 rankC=465.5 need=4467239 tD=1.27 人 pulse crowdedHard agg | safe=1383594 keep=Inf avail=-Inf chunkB=354199 pulseB=212520 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6445 alex_k B=1770997 L=18222 d=97.2 nb=1 neut=0 cmds=67 noFull=1 shQ=442749 | m=0.900 worth=87.5 cheap=7.6 over=0 dMedOther=88.1 safe(-1)=1383594
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2490130 dq=129.3 cnt=87 | c=567.7 rankC=465.5 need=4467239 tD=1.47 人 pulse crowdedHard agg | safe=1383594 keep=Inf avail=-Inf chunkB=354199 pulseB=212520 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6450 alex_k B=1794019 L=18222 d=98.5 nb=1 neut=0 cmds=67 noFull=1 shQ=448504 | m=0.900 worth=88.6 cheap=7.6 over=0 dMedOther=89.1 safe(-1)=1391288
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2503825 dq=130.0 cnt=87 | c=570.9 rankC=468.1 need=4491649 tD=1.46 人 pulse crowdedHard agg | safe=1391288 keep=Inf avail=-Inf chunkB=358804 pulseB=215282 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6455 alex_k B=1794019 L=18222 d=98.5 nb=1 neut=0 cmds=67 noFull=1 shQ=448504 | m=0.900 worth=88.6 cheap=7.6 over=0 dMedOther=89.1 safe(-1)=1391288
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2503825 dq=130.0 cnt=87 | c=570.9 rankC=468.1 need=4491649 tD=1.46 人 pulse crowdedHard agg | safe=1391288 keep=Inf avail=-Inf chunkB=358804 pulseB=215282 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6460 alex_k B=1817341 L=18222 d=99.7 nb=1 neut=0 cmds=67 noFull=1 shQ=454335 | m=0.900 worth=89.8 cheap=7.6 over=0 dMedOther=90.2 safe(-1)=1398743
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2517095 dq=130.7 cnt=87 | c=573.9 rankC=470.6 need=4515301 tD=1.45 人 pulse crowdedHard agg | safe=1398743 keep=Inf avail=-Inf chunkB=363468 pulseB=218081 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6465 alex_k B=1817341 L=18222 d=99.7 nb=1 neut=0 cmds=67 noFull=1 shQ=454335 | m=0.900 worth=89.8 cheap=7.6 over=0 dMedOther=90.2 safe(-1)=1398743
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2517095 dq=130.7 cnt=87 | c=573.9 rankC=470.6 need=4515301 tD=1.45 人 pulse crowdedHard agg | safe=1398743 keep=Inf avail=-Inf chunkB=363468 pulseB=218081 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6470 alex_k B=1840966 L=18222 d=101.0 nb=1 neut=0 cmds=67 noFull=1 shQ=460226 | m=0.900 worth=90.9 cheap=7.6 over=1 dMedOther=91.3 safe(-1)=1405954
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2529932 dq=131.4 cnt=87 | c=576.8 rankC=473.0 need=4538181 tD=1.44 人 pulse crowdedHard agg | safe=1405954 keep=2040864 avail=-221471 chunkB=368193 pulseB=220916 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6475 alex_k B=1840966 L=18222 d=101.0 nb=1 neut=0 cmds=67 noFull=1 shQ=460241 | m=0.900 worth=90.9 cheap=7.6 over=1 dMedOther=91.3 safe(-1)=1405954
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2529932 dq=131.4 cnt=87 | c=576.8 rankC=473.0 need=4538181 tD=1.44 人 pulse crowdedHard agg | safe=1405954 keep=2040864 avail=-221471 chunkB=368193 pulseB=220916 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6480 alex_k B=1864530 L=18222 d=102.3 nb=1 neut=0 cmds=67 noFull=1 shQ=466067 | m=0.900 worth=92.1 cheap=7.6 over=1 dMedOther=92.4 safe(-1)=1412919
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2542328 dq=132.0 cnt=87 | c=579.6 rankC=475.3 need=4560276 tD=1.43 人 pulse crowdedHard agg | safe=1412919 keep=2040864 avail=-198183 chunkB=372906 pulseB=223744 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6485 alex_k B=1864530 L=18222 d=102.3 nb=1 neut=0 cmds=67 noFull=1 shQ=466132 | m=0.900 worth=92.1 cheap=7.6 over=1 dMedOther=92.4 safe(-1)=1412919
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2542328 dq=132.0 cnt=87 | c=579.6 rankC=475.3 need=4560276 tD=1.43 人 pulse crowdedHard agg | safe=1412919 keep=2040864 avail=-198183 chunkB=372906 pulseB=223744 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6490 alex_k B=1887650 L=18222 d=103.6 nb=1 neut=0 cmds=67 noFull=1 shQ=471889 | m=0.900 worth=93.2 cheap=7.6 over=1 dMedOther=93.5 safe(-1)=1419774
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2554531 dq=132.7 cnt=87 | c=582.4 rankC=477.6 need=4582026 tD=1.42 人 pulse crowdedHard agg | safe=1419774 keep=2040864 avail=-175334 chunkB=377530 pulseB=226518 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6495 alex_k B=1887650 L=18222 d=103.6 nb=1 neut=0 cmds=67 noFull=1 shQ=471912 | m=0.900 worth=93.2 cheap=7.6 over=1 dMedOther=93.5 safe(-1)=1419774
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2554531 dq=132.7 cnt=87 | c=582.4 rankC=477.6 need=4582026 tD=1.42 人 pulse crowdedHard agg | safe=1419774 keep=2040864 avail=-175334 chunkB=377530 pulseB=226518 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6500 alex_k B=1928712 L=18222 d=105.8 nb=1 neut=0 cmds=67 noFull=1 shQ=477505 | m=0.900 worth=95.3 cheap=7.6 over=1 dMedOther=95.7 safe(-1)=1437192
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2585534 dq=134.3 cnt=87 | c=589.5 rankC=483.4 need=4637285 tD=1.40 人 pulse crowdedHard agg | safe=1437192 keep=2040864 avail=-134754 chunkB=385742 pulseB=231445 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6505 alex_k B=1928712 L=18222 d=105.8 nb=1 neut=0 cmds=68 noFull=1 shQ=482178 | m=0.900 worth=95.3 cheap=7.6 over=1 dMedOther=94.5 safe(-1)=1420170
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2302742 dq=119.6 cnt=87 | c=227.8 rankC=159.5 need=4385735 tD=1.27 人 pulse onMe | safe=1420170 keep=1639980 avail=266130 chunkB=385742 pulseB=231445  hNb=1
+    ⇒ 影子指令 attack pct=122 → Micha [🇩🇪]#47[T1]（约 231671 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=6510 alex_k B=1950892 L=18222 d=107.1 nb=1 neut=0 cmds=69 noFull=1 shQ=487640 | m=0.900 worth=96.4 cheap=7.6 over=1 dMedOther=95.1 safe(-1)=1430519
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2321163 dq=120.6 cnt=87 | c=229.5 rankC=160.7 need=4418569 tD=1.27 人 pulse onMe | safe=1430519 keep=1639980 avail=288050 chunkB=390178 pulseB=234107  hNb=1
+    ⇒ 影子指令 attack pct=122 → Micha [🇩🇪]#47[T1]（约 234335 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=6515 alex_k B=1904271 L=17949 d=106.1 nb=1 neut=0 cmds=69 noFull=1 shQ=10898 | m=0.900 worth=95.5 cheap=7.7 over=1 dMedOther=93.9 safe(-1)=1378059
+    → Micha [🇩🇪]#47[T1] terr=19526 bal=2321163 dq=118.9 cnt=92 | c=181.4 rankC=104.1 need=4325231 tD=1.27 人 pulse onMe agg | safe=1378059 keep=1615410 avail=266546 chunkB=380854 pulseB=228513  hNb=1
+    ⇒ 本拍没有指令
+t=6520 alex_k B=1441873 L=17856 d=80.8 nb=1 neut=0 cmds=69 noFull=1 shQ=35690 | m=0.900 worth=72.7 cheap=7.7 over=0 dMedOther=94.6 safe(-1)=1299952
+    → Micha [🇩🇪]#47[T1] terr=19619 bal=2340698 dq=119.3 cnt=93 | c=572.5 rankC=572.5 need=3904474 tD=1.26 人 pulse crowdedHard | safe=1299952 keep=Inf avail=-Inf chunkB=288375 pulseB=173025 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6525 alex_k B=1441873 L=17949 d=80.3 nb=1 neut=0 cmds=69 noFull=1 shQ=59120 | m=0.900 worth=72.3 cheap=7.7 over=0 dMedOther=93.4 safe(-1)=1289900
+    → Micha [🇩🇪]#47[T1] terr=19526 bal=2322946 dq=119.0 cnt=92 | c=576.2 rankC=576.2 need=3904479 tD=1.27 人 pulse crowdedHard | safe=1289900 keep=Inf avail=-Inf chunkB=288375 pulseB=173025 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6530 alex_k B=1460617 L=18131 d=80.6 nb=1 neut=0 cmds=69 noFull=1 shQ=82755 | m=0.900 worth=72.5 cheap=7.6 over=0 dMedOther=94.4 safe(-1)=1281112
+    → Micha [🇩🇪]#47[T1] terr=19344 bal=2307576 dq=119.3 cnt=89 | c=588.6 rankC=588.6 need=3938825 tD=1.26 人 pulse crowdedHard | safe=1281112 keep=Inf avail=-Inf chunkB=292123 pulseB=175274 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6535 alex_k B=1460617 L=18395 d=79.4 nb=1 neut=0 cmds=69 noFull=1 shQ=106670 | m=0.900 worth=71.8 cheap=7.6 over=0 dMedOther=93.9 safe(-1)=1252662
+    → Micha [🇩🇪]#47[T1] terr=19080 bal=2257331 dq=118.3 cnt=84 | c=599.6 rankC=599.6 need=3939009 tD=1.26 人 pulse crowdedHard | safe=1252662 keep=Inf avail=-Inf chunkB=292123 pulseB=175274 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6540 alex_k B=1479605 L=18563 d=79.7 nb=1 neut=0 cmds=69 noFull=1 shQ=130647 | m=0.900 worth=72.7 cheap=7.6 over=0 dMedOther=95.0 safe(-1)=1245308
+    → Micha [🇩🇪]#47[T1] terr=18912 bal=2244492 dq=118.7 cnt=82 | c=612.0 rankC=612.0 need=3972831 tD=1.25 人 pulse crowdedHard | safe=1245308 keep=Inf avail=-Inf chunkB=295921 pulseB=177553 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6545 alex_k B=1479658 L=18563 d=79.7 nb=1 neut=0 cmds=69 noFull=1 shQ=154872 | m=0.900 worth=72.5 cheap=7.6 over=0 dMedOther=94.7 safe(-1)=1237799
+    → Micha [🇩🇪]#47[T1] terr=18912 bal=2231126 dq=118.0 cnt=82 | c=612.5 rankC=612.5 need=3976298 tD=1.25 人 pulse crowdedHard | safe=1237799 keep=Inf avail=-Inf chunkB=295932 pulseB=177559 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6550 alex_k B=1498893 L=18563 d=80.7 nb=1 neut=0 cmds=69 noFull=1 shQ=179160 | m=0.900 worth=73.4 cheap=7.6 over=0 dMedOther=96.0 safe(-1)=1248327
+    → Micha [🇩🇪]#47[T1] terr=18912 bal=2249867 dq=119.0 cnt=82 | c=617.6 rankC=617.6 need=4009634 tD=1.24 人 pulse crowdedHard | safe=1248327 keep=Inf avail=-Inf chunkB=299779 pulseB=179867 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6555 alex_k B=1498893 L=18563 d=80.7 nb=1 neut=0 cmds=69 noFull=1 shQ=203700 | m=0.900 worth=73.2 cheap=7.6 over=0 dMedOther=95.7 safe(-1)=1248327
+    → Micha [🇩🇪]#47[T1] terr=18912 bal=2249867 dq=119.0 cnt=82 | c=617.6 rankC=617.6 need=4009805 tD=1.24 人 pulse crowdedHard | safe=1248327 keep=Inf avail=-Inf chunkB=299779 pulseB=179867 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6560 alex_k B=1518378 L=18563 d=81.8 nb=1 neut=0 cmds=69 noFull=1 shQ=228304 | m=0.900 worth=74.2 cheap=7.6 over=0 dMedOther=97.0 safe(-1)=1258565
+    → Micha [🇩🇪]#47[T1] terr=18912 bal=2268090 dq=119.9 cnt=82 | c=529.1 rankC=433.9 need=4042401 tD=1.24 人 pulse crowdedHard agg | safe=1258565 keep=Inf avail=-Inf chunkB=303676 pulseB=182205 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6565 alex_k B=1518378 L=18563 d=81.8 nb=1 neut=0 cmds=69 noFull=1 shQ=253164 | m=0.900 worth=73.6 cheap=7.6 over=0 dMedOther=96.1 safe(-1)=1258565
+    → Micha [🇩🇪]#47[T1] terr=18912 bal=2268090 dq=119.9 cnt=82 | c=529.1 rankC=433.9 need=4042574 tD=1.25 人 pulse crowdedHard agg | safe=1258565 keep=Inf avail=-Inf chunkB=303676 pulseB=182205 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6570 alex_k B=1538116 L=18563 d=82.9 nb=1 neut=0 cmds=69 noFull=1 shQ=278089 | m=0.900 worth=74.6 cheap=7.6 over=0 dMedOther=97.0 safe(-1)=1268631
+    → Micha [🇩🇪]#47[T1] terr=18912 bal=2286007 dq=120.9 cnt=82 | c=533.3 rankC=437.3 need=4074461 tD=1.25 人 pulse crowdedHard agg | safe=1268631 keep=Inf avail=-Inf chunkB=307623 pulseB=184574 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6575 alex_k B=1538116 L=18563 d=82.9 nb=1 neut=0 cmds=69 noFull=1 shQ=303274 | m=0.900 worth=74.6 cheap=7.6 over=0 dMedOther=96.1 safe(-1)=1268631
+    → Micha [🇩🇪]#47[T1] terr=18912 bal=2286007 dq=120.9 cnt=82 | c=533.2 rankC=437.3 need=4074635 tD=1.26 人 pulse crowdedHard agg | safe=1268631 keep=Inf avail=-Inf chunkB=307623 pulseB=184574 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6580 alex_k B=1558111 L=18563 d=83.9 nb=1 neut=0 cmds=69 noFull=1 shQ=328524 | m=0.900 worth=75.5 cheap=7.6 over=0 dMedOther=97.0 safe(-1)=1278391
+    → Micha [🇩🇪]#47[T1] terr=18912 bal=2303380 dq=121.8 cnt=82 | c=537.3 rankC=440.5 need=4105738 tD=1.26 人 pulse crowdedHard agg | safe=1278391 keep=Inf avail=-Inf chunkB=311622 pulseB=186973 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6585 alex_k B=1558111 L=18563 d=83.9 nb=1 neut=0 cmds=69 noFull=1 shQ=354034 | m=0.900 worth=75.5 cheap=7.6 over=0 dMedOther=96.2 safe(-1)=1263227
+    → Micha [🇩🇪]#47[T1] terr=18912 bal=2051449 dq=108.5 cnt=82 | c=207.7 rankC=145.4 need=3884838 tD=1.13 人 pulse onMe | safe=1263227 keep=Inf avail=-Inf chunkB=311622 pulseB=186973 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6590 alex_k B=1555544 L=18395 d=84.6 nb=1 neut=0 cmds=69 noFull=1 shQ=379462 | m=0.900 worth=76.1 cheap=7.6 over=0 dMedOther=97.0 safe(-1)=1250495
+    → Micha [🇩🇪]#47[T1] terr=19080 bal=2074220 dq=108.7 cnt=84 | c=166.5 rankC=95.6 need=3886649 tD=1.12 人 pulse onMe agg | safe=1250495 keep=Inf avail=-Inf chunkB=311109 pulseB=186665 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6595 alex_k B=1532172 L=18222 d=84.1 nb=1 neut=0 cmds=69 noFull=1 shQ=383043 | m=0.900 worth=75.7 cheap=7.6 over=0 dMedOther=96.5 safe(-1)=1224185
+    → Micha [🇩🇪]#47[T1] terr=19253 bal=2074220 dq=107.7 cnt=87 | c=164.8 rankC=94.6 need=3846789 tD=1.12 人 pulse onMe agg | safe=1224185 keep=Inf avail=-Inf chunkB=306434 pulseB=183861 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6600 alex_k B=1532894 L=17949 d=85.4 nb=1 neut=0 cmds=69 noFull=1 shQ=381946 | m=0.900 worth=76.9 cheap=7.7 over=0 dMedOther=98.7 safe(-1)=1206827
+    → Micha [🇩🇪]#47[T1] terr=19526 bal=2117300 dq=108.4 cnt=92 | c=220.6 rankC=180.9 need=3860324 tD=1.10 人 pulse onMe agg | safe=1206827 keep=Inf avail=-Inf chunkB=306579 pulseB=183947 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令

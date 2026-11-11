@@ -1,0 +1,21 @@
+# A086 核心期行动拍的去向 [3470,4284)：共 1368 个号·行动拍
+合计：nooffer 585（43%），price 578（42%），sole 70（5%），出手 51（4%），donate 38（3%），send 18（1%），inflight 13（1%），floor 11（1%），boat 4（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：cap+dp 11
+  ryan_m    163 拍：nooffer 85（52%），price 67（41%），出手 2（1%），donate 8（5%），send 1（1%）
+          按目标：price→19 49，price→13 18，send→19 1
+  leo_tx    163 拍：nooffer 115（71%），price 37（23%），出手 8（5%），donate 3（2%）
+          按目标：price→13 37
+  talon5    163 拍：nooffer 37（23%），price 75（46%），sole 38（23%），出手 4（2%），donate 9（6%）
+          按目标：price→19 75，sole→19 38
+  alex_k    163 拍：nooffer 140（86%），price 16（10%），donate 7（4%）
+          按目标：price→13 16
+  kaito9    163 拍：price 113（69%），sole 6（4%），出手 17（10%），send 2（1%），inflight 12（7%），floor 11（7%），boat 2（1%）
+          按目标：price→13 59，price→17 37，price→19 17，inflight→13 11，floor→17 10，sole→13 6，send→17 2，inflight→17 1
+  riku_x    150 拍：nooffer 45（30%），price 72（48%），sole 2（1%），出手 10（7%），donate 3（2%），send 15（10%），inflight 1（1%），boat 2（1%）
+          按目标：price→19 72，send→19 15，sole→19 2，inflight→19 1
+  noah88    140 拍：nooffer 31（22%），price 103（74%），出手 4（3%），donate 2（1%）
+          按目标：price→13 103
+  zexos1    138 拍：nooffer 117（85%），price 18（13%），donate 3（2%）
+          按目标：price→13 18
+  zero_7    125 拍：nooffer 15（12%），price 77（62%），sole 24（19%），出手 6（5%），donate 3（2%）
+          按目标：price→13 77，sole→13 24
