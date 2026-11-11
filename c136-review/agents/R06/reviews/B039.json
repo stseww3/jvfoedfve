@@ -2275,7 +2275,7 @@
    "balanceAtDeath": 61667,
    "cause": "出生时与敌对队的 ArthurMorgan 只隔 16 格，t=630 领土 364；t=1260~2160 只挨着 ArthurMorgan 一家（188 格），无地可打。整局 39 条船，21 条靠回自己的岸。t=2471~3276 用 6 条船吃下 BlackRock 空壳，领土到 7,741（t=3480），但密度只有 17~40。t=3479 起被队2 的 Furry🦊[Corgi]（4 条陆攻共 44.4 万兵，对方 4.9 万格、密度 88）拿走 5,386 格，再被 Name/队1（21.5 万兵）和 Ice Barrier Clan 收尾。Sus 三笔捐款（pct=74/185/55）到账 9.9 万。",
    "patternIds": [
-    "NEW:SP-cross-team-stack",
+    "NEW:SP-squad-stack",
     "NEW:PL-protect-box",
     "NEW:BT-own-shore",
     "NEW:DN-small-pct",
@@ -2620,7 +2620,7 @@
    "codePath": "src/strategy/v27-team-c110.js chooseSpawn L4007-4154：L4067-4072 把名字池里的号从局面里抹掉再算候选；L4090-4117 每个客户端各自按 minSep 贪心取 chosenSlots[slot]",
    "why": "候选表在各号本机各算一份、时刻不同，两个槽位在两份表里落到同一点；名单内的号互不排斥，而这两个号分属敌对的队2 和队3",
    "estCost": "Thanos t=630 领土 364（其余在场号 2,221~4,052）；两号此后共用 188~251 格互不进攻的边界",
-   "patternId": "NEW:SP-cross-team-stack",
+   "patternId": "NEW:SP-squad-stack",
    "evidenceRef": "digest.py B039 spawn；simdigest.py B039 roster；protbox"
   },
   {
@@ -3059,9 +3059,9 @@
    ]
   },
   {
-   "name": "NEW:SP-cross-team-stack",
-   "definition": "两个我方号最终出生点相距 <60 格（含分属不同队的情况）",
-   "detectionSketch": "录像选点指令取每号最后一次落点，两两算距离；无录像用 HL-SPAWN 最后一行近似",
+   "name": "NEW:SP-squad-stack",
+   "definition": "两个我方号最终出生点相距 <80 格（同队或异队）",
+   "detectionSketch": "录像选点指令取每号最后一条生效的落点，两两算距离（digest picks）；无录像用 HL-SPAWN 最后一行近似（不可靠：最后几条日志里的改点可能没生效）",
    "instances": [
     {
      "t": 40,
@@ -3852,9 +3852,11 @@
   "node c136-review/agents/R06/scripts/replay_decode.mjs B039（套 run-heavy.sh）",
   "python3 c136-review/agents/R06/scripts/team_assign.py B039",
   "bash c136-review/agents/R06/scripts/run_truth.sh B039（sim_prep.py + eng_replay.cjs：真引擎重放，写 out/B039/sim_state.json）",
-  "python3 c136-review/agents/R06/scripts/simdigest.py B039 check|teams|roster|ledger [me]|deaths [me]|don|probe|gifts|boats [me]|landings|fees|nfs|cmds|cmdlist <me> [t0 t1]|pair <me> [t0 t1]|neigh <me>|front|boxed|gaps|husks|poolai|protbox|medians [前缀]|shadow|gates|dups|crowd",
+  "python3 c136-review/agents/R06/scripts/simdigest.py B039 check|teams|roster|ledger [me]|deaths [me]|don|probe|gifts|boats [me]|landings|fees|nfs|cmds|cmdlist <me> [t0 t1]|pair <me> [t0 t1]|neigh <me>|front|boxed|gaps|husks|poolai|protbox|medians [前缀]|dens [t]|shadow|gates|dups|crowd",
   "node c136-review/agents/R06/scripts/strat_probe.mjs B039 --me squad --json --tally [--dump 玩家:起拍:止拍:步长,...]（套 run-heavy.sh；影子策略：同一份策略源码逐拍跑在重放局面上，打印 buyLand 逐报价的 c/worth/safe/keep/avail 和出口行号）",
   "python3 c136-review/agents/R06/scripts/digest.py B039 roster|teams|timeline|deaths|donations -v|drops|spawn|boxed|attacks|lag|teamwar|bot <me>|json",
+  "python3 c136-review/agents/R06/scripts/digest.py B039 picks（选点指令真值：改点次数、最后两步的改点、撞点）",
+  "python3 c136-review/agents/R06/scripts/logdigest.py B039 stale|silent|seqlag|wall|overcap|drop30|oplag|issued|json（只用日志快照的事实：发令不见效→集中清仓、零指令时段、本地拍落后、墙上时钟对拍、超软上限、全量 DROP30）",
   "python3 c136-review/agents/R06/scripts/make_review.py B039"
  ],
  "confidenceOverall": "high：全场状态来自真引擎重放（日志快照 475/475 条逐兵一致），出兵/捐款/船/离开/阵亡都是重放真值；策略侧走了哪个分支：断档之后的时段由影子探针给出（同一份 c110 源码跑在重放局面上，与录像同向的时段才引用）；isNoFullSend 的真实状态、停摆与离开的原因属于推断或未知。"

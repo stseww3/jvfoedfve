@@ -299,10 +299,12 @@ def main():
         f"python3 c136-review/agents/R06/scripts/team_assign.py {mid}",
     ] + ([
         f"bash c136-review/agents/R06/scripts/run_truth.sh {mid}（sim_prep.py + eng_replay.cjs：真引擎重放，写 out/{mid}/sim_state.json）",
-        f"python3 c136-review/agents/R06/scripts/simdigest.py {mid} check|teams|roster|ledger [me]|deaths [me]|don|probe|gifts|boats [me]|landings|fees|nfs|cmds|cmdlist <me> [t0 t1]|pair <me> [t0 t1]|neigh <me>|front|boxed|gaps|husks|poolai|protbox|medians [前缀]|shadow|gates|dups|crowd",
+        f"python3 c136-review/agents/R06/scripts/simdigest.py {mid} check|teams|roster|ledger [me]|deaths [me]|don|probe|gifts|boats [me]|landings|fees|nfs|cmds|cmdlist <me> [t0 t1]|pair <me> [t0 t1]|neigh <me>|front|boxed|gaps|husks|poolai|protbox|medians [前缀]|dens [t]|shadow|gates|dups|crowd",
         f"node c136-review/agents/R06/scripts/strat_probe.mjs {mid} --me squad --json --tally [--dump 玩家:起拍:止拍:步长,...]（套 run-heavy.sh；影子策略：同一份策略源码逐拍跑在重放局面上，打印 buyLand 逐报价的 c/worth/safe/keep/avail 和出口行号）",
     ] if X else []) + [
         f"python3 c136-review/agents/R06/scripts/digest.py {mid} roster|teams|timeline|deaths|donations -v|drops|spawn|boxed|attacks|lag|teamwar|bot <me>|json",
+        f"python3 c136-review/agents/R06/scripts/digest.py {mid} picks（选点指令真值：改点次数、最后两步的改点、撞点）",
+        f"python3 c136-review/agents/R06/scripts/logdigest.py {mid} stale|silent|seqlag|wall|overcap|drop30|oplag|issued|json（只用日志快照的事实：发令不见效→集中清仓、零指令时段、本地拍落后、墙上时钟对拍、超软上限、全量 DROP30）",
         f"python3 c136-review/agents/R06/scripts/make_review.py {mid}",
     ])
     doc['confidenceOverall'] = A['confidenceOverall']

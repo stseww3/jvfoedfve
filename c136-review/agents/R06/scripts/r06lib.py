@@ -344,22 +344,33 @@ def load_match(mid, with_replay=True, use_sim=True):
             M.peace.append((line, name, rest))
     # 解析不出 me 的名字：按「前一个号的快照到此为止、领土接得上」推断改名
     M.inferredRenames = []
-    for name, items in list(M.unresolved.items()):
+    def _first_tick(items):
+        tk = [x[1]['t'] for x in items if x[0] == 'TICK']
+        return min(tk) if tk else 10 ** 9
+    # 按首次出现的拍依次处理：同一个号可能连着改几次名（B041：SonHeungMin → Maurya → Mughal → Rossi）
+    for name, items in sorted(M.unresolved.items(), key=lambda kv: _first_tick(kv[1])):
         ticks = [x[1] for x in items if x[0] == 'TICK']
         if not ticks:
             continue
         first = min(ticks, key=lambda s: s['t'])
+        last = max(ticks, key=lambda s: s['t'])
         best, bestScore = None, None
         for me, b in M.bots.items():
             if not b.traj:
                 continue
             prev = [s for s in b.traj if s['t'] < first['t']]
-            later = [s for s in b.traj if s['t'] >= first['t']]
-            if not prev or later:
+            inside = [s for s in b.traj if first['t'] <= s['t'] <= last['t']]
+            later = [s for s in b.traj if s['t'] > last['t']]
+            if not prev or inside:
                 continue
             p = prev[-1]
             gap = first['t'] - p['t']
             if gap > 400:
+                continue
+            # 计数器只增不减：改名前后的 cmds / boats 必须接得上（后面还有快照时，后面的也不能比这段小）
+            if p['cmds'] > first['cmds'] or p['boats'] > first['boats']:
+                continue
+            if later and (later[0]['cmds'] < last['cmds'] or later[0]['boats'] < last['boats']):
                 continue
             rel = abs(first['terr'] - p['terr']) / max(1, p['terr'])
             score = rel + gap / 4000

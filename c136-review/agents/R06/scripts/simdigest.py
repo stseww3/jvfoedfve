@@ -15,6 +15,7 @@
   cmdlist <me> [t0 t1]  某个号在窗口内进了录像的每条指令，以及别人对它下的陆攻、给它的捐款
   teams              各队真实领土/兵力/在场真人/空壳占地（协议拍 + 我方阵亡拍）
   roster             我方每个号：队、出生、离开拍、阵亡拍、被谁拿走的地、峰值
+  dens [t]           各队在场真人：我方号 vs 外人的地、兵、密度、单号领土中位（缺省取重放末拍）
   ledger [me]        兵力去向账：整局合计；给 me 则按 500 拍窗口展开
   deaths [me]        死因链：死前 900 拍的领土/兵力、邻居、谁拿走了地、谁打掉了兵、自己做了什么、收到什么援助
   don                我方参与的每笔捐款：到账、手续费、收款人当时的状态与之后 300 拍的去向；对倒
@@ -30,6 +31,11 @@
                      （winR 项 / dpKeep / safeFinite，safeFinite 取到的是谁的兵）；t>=1500 对真人邻居的出口行号
   dups [gap]         重复下单：同一个号对同一目标的陆攻在 gap 拍（缺省 21）内又下一条；影子在同一段里想发几条
   crowd              同拍两条指令：影子在一拍里既发无主地小单又发对玩家陆攻，录像里随后执行的是哪条
+  bursts [min] [frac] 同拍连发清仓：同一个号同一拍进录像 >=min 条（缺省 3）且一拍内出兵+费 >= frac×拍前兵（缺省 0.4，拍前兵 >=2 万）
+  collapse           清地规则核对（领土 <= 衰减峰值/4 → 剩下的地全变无主地、余额清零；有船在海上的不出局）：
+                     每个号清地拍、清地前一拍领土、当时的衰减峰值、冲高前的领土、正式阵亡拍、清地后又上岸的最大领土
+  lumps              空壳整笔转交（引擎规则：离开的真人由内置 AI 托管，没有可打的目标时把全部余额捐给一个队友，手续费 6.25%，
+                     不是指令、不进录像）：我方号收到的、我方空壳转出的
   json               写 out/<id>/simdigest.json（复盘 JSON 引用的事实）
 所有数字都来自重演；重演可信范围见 check 段。
 """
@@ -215,6 +221,209 @@ def sec_teams(X):
         ai = f" | {100 * r['teamLand'][0] / X.land:5.1f}" if not bots_teamed else ''
         sq = ' '.join(f"队{tm}:{r['sqAlive'].get(tm, 0)}/{100 * r['sqLand'].get(tm, 0) / X.land:.1f}" for tm in sorted(sq_team))
         print(f"{r['t']:5d} | " + ' | '.join(cells) + ai + ' | ' + sq)
+
+
+# ------------------------------------------------------------------ dens（各队：我方号 vs 外人，在场号的地/兵/密度/单号领土中位）
+def dens_rows(X, t=None):
+    S = X.S
+    i = X.ix(t if t is not None else X.endT)
+    tt = S['ticks'][i]
+    out = []
+    for k in range(1, S['nTeams'] + 1):
+        row = dict(team=k, t=tt)
+        for tag, sel in (('ours', lambda p: p in X.squad), ('rest', lambda p: p not in X.squad)):
+            ps = [p for p in range(X.H) if X.team[p] == k and sel(p) and X.alive_active(p, tt)]
+            land = sum(S['hum'][p]['terr'][i] for p in ps)
+            bal = sum(S['hum'][p]['bal'][i] for p in ps)
+            row[tag] = dict(n=len(ps), land=land, bal=bal, dens=round(bal / land, 1) if land else 0,
+                            med=median([S['hum'][p]['terr'][i] for p in ps]) if ps else 0,
+                            names=[X.name(p) for p in sorted(ps, key=lambda q: -S['hum'][q]['terr'][i])[:4]])
+        out.append(row)
+    return tt, out
+
+
+def burst_rows(X, min_n=3, frac=0.4):
+    """同拍连发清仓：按 (号, 拍) 聚合进了录像的我方指令。"""
+    S = X.S
+    pt = S['perTick']
+    t0 = pt['t0']
+    by = defaultdict(list)
+    for c in S['squadCmds']:
+        by[(c['p'], c['t'])].append(c)
+    dt = {d['p']: d['t'] for d in S['deaths']}
+    rows = []
+    for (p, t), cs in sorted(by.items(), key=lambda kv: (kv[0][1], kv[0][0])):
+        if len(cs) < min_n:
+            continue
+        eff = [c for c in cs if c['ok']]
+        B0 = cs[0]['B0']
+        out = sum(c.get('sent', 0) + c.get('fee', 0) + c.get('delivered', 0) for c in eff)
+        if B0 < 20000 or out < frac * B0:
+            continue
+        te = pt['terr'][str(p)]
+        i = t - t0
+        peak = max(te[i:i + 301]) if 0 <= i < len(te) else 0
+        tg = defaultdict(int)
+        for c in cs:
+            if c['k'] == 'boat':
+                tg['发船'] += 1
+            elif c['k'] == 'don':
+                tg['捐→' + X.name(c['to'])] += 1
+            elif c['to'] >= 512:
+                tg['无主地' + ('' if c['ok'] else '(没生效)')] += 1
+            else:
+                tg['攻→' + X.name(c['to'])] += 1
+        pcts = [c['pct'] for c in eff if c['k'] == 'atk' and c['to'] < 512]
+        rows.append(dict(t=t, p=p, name=X.name(p), n=len(cs), eff=len(eff), B0=B0, out=out, share=out / B0, terr0=te[i] if 0 <= i < len(te) else 0, peak300=peak,
+                         deathT=dt.get(p, -1), targets=dict(tg), pcts=pcts))
+    return rows
+
+
+def sec_bursts(X, min_n=3, frac=0.4):
+    rows = burst_rows(X, min_n, frac)
+    print(f"同拍连发清仓（同一个号同一拍进录像 >={min_n} 条，且这一拍出兵+手续费 >= {frac:.0%} 拍前兵，拍前兵 >=2 万）。引擎按指令顺序逐条按「当时余额」结算，所以 k 条同样百分比的指令一拍内拿走 1-(1-pct-费率)^k")
+    print('    t  号              条/生效   拍前兵   一拍出兵+费 占比 | 领土 → 300 拍内峰值 | 阵亡拍(距) | 目标（条数）；对玩家陆攻的 pct‰')
+    for r in rows:
+        d = r['deathT']
+        print(f"{r['t']:5d}  {r['name'][:14]:14s} {r['n']:2d}/{r['eff']:<2d} {fmt(r['B0']):>8s} {fmt(r['out']):>8s} {100 * r['share']:5.1f}% | {r['terr0']:5d} → {r['peak300']:5d} | "
+              f"{(str(d) + '(' + str(d - r['t']) + ')') if d > 0 else '-':>11s} | " + '，'.join(f"{k}×{v}" for k, v in r['targets'].items()) + (('；' + '/'.join(str(x) for x in r['pcts'])) if r['pcts'] else ''))
+    big = [r for r in rows if r['share'] >= 0.7]
+    dead = [r for r in big if r['deathT'] > 0 and r['deathT'] - r['t'] <= 900]
+    print(f"合计 {len(rows)} 组，出兵+费 {fmt(sum(r['out'] for r in rows))}；其中一拍拿走 >=70% 的 {len(big)} 组（{fmt(sum(r['out'] for r in big))}），涉及 {len(set(r['p'] for r in big))} 个号；这些组里 900 拍内阵亡的 {len(dead)} 组（{len(set(r['p'] for r in dead))} 个号）")
+    return rows
+
+
+def collapse_rows(X):
+    """引擎清地规则（干净模拟器 game.js aliveTick/collapse，与真引擎逐拍对上）：每拍 peak = 领土>=peak ? 领土 : peak - max(1, (peak-领土)//1000)；
+    领土 <= peak//4 → 清地（剩下的格子全部变无主地、余额清零）；有船在海上则只清地不出局，船靠岸后可以再上岸。"""
+    S = X.S
+    pt = S['perTick']
+    t0 = pt['t0']
+    dt = {d['p']: d['t'] for d in S['deaths']}
+    rows = []
+    for p in X.squad:
+        te = pt['terr'].get(str(p))
+        if not te:
+            continue
+        peak = 0
+        mx, mxT = 0, -1
+        for i, x in enumerate(te):
+            if x < 0:
+                continue
+            if i > 0 and x == 0 and te[i - 1] > 0 and peak > 0:
+                pre = te[max(0, (mxT - t0) - 300)] if mxT >= 0 else 0
+                after = max([v for v in te[i:] if v >= 0] or [0])
+                rows.append(dict(p=p, name=X.name(p), t=t0 + i, terrBefore=te[i - 1], peak=peak, line=peak // 4, maxTerr=mx, maxT=mxT, pre300=pre,
+                                 deathT=dt.get(p, -1), afterMax=after, ok=te[i - 1] > peak // 4))
+                break
+            if x >= peak:
+                peak = x
+            else:
+                peak = peak - max(1, (peak - x) // 1000)
+            if x > mx:
+                mx, mxT = x, t0 + i
+    return rows
+
+
+def sec_collapse(X):
+    rows = collapse_rows(X)
+    print('清地规则核对：每拍 peak = 领土>=peak ? 领土 : peak - max(1,(peak-领土)//1000)；领土 <= peak//4 → 剩下的地全变无主地、余额清零（有船在海上的不出局）')
+    print('号              清地拍  前一拍领土  衰减峰值  峰值/4 | 历史最大领土@拍  最大前300拍的领土  按「最大前300拍领土」算的清地线 | 正式阵亡拍  清地后再上岸的最大领土')
+    for r in sorted(rows, key=lambda r: r['t']):
+        print(f"{r['name']:14s} {r['t']:6d} {r['terrBefore']:8d} {r['peak']:9d} {r['line']:7d} | {r['maxTerr']:6d}@{r['maxT']:<5d} {r['pre300']:8d} {r['pre300'] // 4:12d} | {r['deathT']:8d} {r['afterMax']:8d}"
+              + ('' if r['ok'] else '  ← 前一拍已经在线下'))
+    print(f"清地 {len(rows)} 个号，清地那一拍变成无主地的格子合计 {sum(r['terrBefore'] for r in rows)}；前一拍领土都在线上、下一拍清地的 {sum(1 for r in rows if r['ok'])} 个")
+    up = [r for r in rows if r['pre300'] > 0 and r['maxTerr'] >= 1.3 * r['pre300']]
+    print(f"其中清地前冲高过（历史最大 >= 1.3×最大前 300 拍的领土）的 {len(up)} 个号：清地时还剩 {sum(r['terrBefore'] for r in up)} 格，按冲高前领土算的清地线合计 {sum(r['pre300'] // 4 for r in up)} 格")
+    return rows
+
+
+def lump_rows(X):
+    """空壳整笔转交。收款侧：我方号一拍内余额跳涨（不是利息拍的正常利息、不是捐款指令、不是船移交），
+    且同队某个已离开的真人在前后两个采样拍之间余额掉到接近 0、掉的量 ×(1-64/1024) 与跳涨相差 <3% → 确认。
+    转出侧：我方空壳一拍内余额掉 >=80% 且领土不变。"""
+    S = X.S
+    pt = S['perTick']
+    t0 = pt['t0']
+    tk = S['ticks']
+    don = defaultdict(int)
+    for d in S['donations']:
+        don[(d['to'], d['t'])] += d['delivered']
+    gift = defaultdict(int)
+    for g in S.get('boatGifts', []):
+        gift[(g['to'], g['t'])] += g['delivered']
+    ins, outs = [], []
+    for p in X.squad:
+        b = pt['bal'].get(str(p))
+        te = pt['terr'].get(str(p))
+        if not b:
+            continue
+        for i in range(1, len(b)):
+            t = t0 + i
+            if b[i] < 0 or b[i - 1] < 0:
+                continue
+            d = b[i] - b[i - 1]
+            if d >= 20000 and d > 0.04 * max(1, b[i - 1]):
+                if sum(don.get((p, x), 0) for x in (t - 1, t, t + 1)) >= 0.8 * d or sum(gift.get((p, x), 0) for x in (t - 1, t, t + 1)) >= 0.8 * d:
+                    continue
+                a = max(x for x in tk if x <= t - 1)
+                bb = min(x for x in tk if x >= t)
+                ia, ib = tk.index(a), tk.index(bb)
+                src = None
+                for q in range(X.H):
+                    if q == p or X.team[q] != X.team[p] or q not in X.leave or X.leave[q]['t'] > t:
+                        continue
+                    drop = S['hum'][q]['bal'][ia] - S['hum'][q]['bal'][ib]
+                    if not (drop > 0 and S['hum'][q]['bal'][ib] <= 0.05 * S['hum'][q]['bal'][ia]):
+                        continue
+                    # 空壳的余额在前一个采样拍之后还会变（离开前的利息）：离开拍落在两个采样拍之间时，用离开那一拍的余额再对一次
+                    bases = [S['hum'][q]['bal'][ia]] + ([X.leave[q]['bal']] if a < X.leave[q]['t'] <= t else [])
+                    hit = [x for x in bases if abs(x * 960 / 1024 - d) <= 0.03 * d]
+                    if hit:
+                        src = dict(q=q, name=X.name(q), leftT=X.leave[q]['t'], bal0=hit[0], bal1=S['hum'][q]['bal'][ib])
+                        break
+                if src:
+                    ins.append(dict(t=t, p=p, name=X.name(p), bal0=b[i - 1], bal1=b[i], amount=d, terr=te[i], src=src))
+            lv = X.leave.get(p)
+            if lv and t > lv['t'] and b[i - 1] >= 20000 and b[i] <= 0.2 * b[i - 1] and te[i] == te[i - 1]:
+                a = max(x for x in tk if x <= t - 1)
+                bb = min(x for x in tk if x >= t)
+                ia, ib = tk.index(a), tk.index(bb)
+                want = (b[i - 1] - b[i]) * 960 / 1024
+                cand = sorted(((S['hum'][q]['bal'][ib] - S['hum'][q]['bal'][ia], q) for q in range(X.H) if q != p and X.team[q] == X.team[p]), reverse=True)
+                to = [dict(q=q, name=X.name(q), gain=g) for g, q in cand[:1] if g >= 0.7 * want]
+                outs.append(dict(t=t, p=p, name=X.name(p), bal0=b[i - 1], bal1=b[i], terr=te[i], to=to))
+    return ins, outs
+
+
+def sec_lumps(X):
+    ins, outs = lump_rows(X)
+    print('空壳整笔转交（引擎规则 = 干净模拟器 bots.js botAttackTeam/botDonate：离开的真人由内置 AI 托管，没有可打的地、发不了船时，把全部余额交给一个「最近在打仗」的队友，手续费 64/1024，不占配额、不是指令）')
+    print(f"我方号收到 {len(ins)} 笔，共 {fmt(sum(r['amount'] for r in ins))}：")
+    for r in ins:
+        s = r['src']
+        print(f"   t={r['t']:5d} {r['name']:14s} 地 {r['terr']:5d} 兵 {fmt(r['bal0'])}→{fmt(r['bal1'])}（+{r['amount']}）← {s['name']}（t={s['leftT']} 离开；余额 {s['bal0']}→{s['bal1']}，×960/1024={s['bal0'] * 960 // 1024}）")
+    print(f"我方空壳转出 {len(outs)} 笔，共 {fmt(sum(r['bal0'] - r['bal1'] for r in outs))}：")
+    for r in outs:
+        print(f"   t={r['t']:5d} 空壳 {r['name']:14s} 地 {r['terr']:5d} 兵 {fmt(r['bal0'])}→{fmt(r['bal1'])} → " + '去向没有逐笔核对' + (''.join(f"（同队里同一采样段余额涨得最多的：{x['name']} +{fmt(x['gain'])}）" for x in r['to'])))
+    return ins, outs
+
+
+def sec_dens(X, t=None):
+    tt, rows = dens_rows(X, t)
+    print(f"t={tt} 各队在场真人：我方号 vs 外人（地、兵、密度=兵/地、单号领土中位）")
+    tot = dict(ours=[0, 0, 0], rest=[0, 0, 0])
+    for r in rows:
+        o, e = r['ours'], r['rest']
+        for tag, v in (('ours', o), ('rest', e)):
+            tot[tag][0] += v['n']
+            tot[tag][1] += v['land']
+            tot[tag][2] += v['bal']
+        print(f"   队{r['team']}：我方 {o['n']} 个 地 {o['land']}（{100 * o['land'] / X.land:.1f}%）兵 {fmt(o['bal'])} 密度 {o['dens']} 中位 {o['med']}"
+              f" ｜ 外人 {e['n']} 个 地 {e['land']}（{100 * e['land'] / X.land:.1f}%）兵 {fmt(e['bal'])} 密度 {e['dens']} 中位 {e['med']}；最大的：{'、'.join(e['names'])}")
+    for tag, nm in (('ours', '我方合计'), ('rest', '外人合计')):
+        n, land, bal = tot[tag]
+        print(f"   {nm}：{n} 个 地 {land}（{100 * land / X.land:.1f}%）兵 {fmt(bal)} 密度 {bal / max(1, land):.1f}")
 
 
 # ------------------------------------------------------------------ roster
@@ -1152,9 +1361,14 @@ def median_rows(X, ticks=None, prefix=None):
     """各拍：我方在场号 / 其余在场真人（可选：名字带 prefix 的一组单列）的单号领土中位数。在场 = 存活且未离开。"""
     S = X.S
     out = []
-    for t in (ticks or [t for t in PROTO if t <= X.endT]):
+    base = ticks or sorted(set([t for t in PROTO if t <= X.endT] + [t for t in (900, X.endT) if t <= X.endT]))
+    seen = set()
+    for t in base:
         i = X.ix(t)
         tt = S['ticks'][i]
+        if tt in seen:
+            continue
+        seen.add(tt)
         ours, grp, rest = [], [], []
         for p in range(X.H):
             if X.deathT[p] >= 0 and tt >= X.deathT[p]:
@@ -1168,7 +1382,7 @@ def median_rows(X, ticks=None, prefix=None):
                 grp.append(v)
             else:
                 rest.append(v)
-        out.append(dict(t=tt, ours=ours, grp=grp, rest=rest))
+        out.append(dict(t=tt, ours=ours, grp=grp, rest=rest, oursBal=[S['hum'][p]['bal'][i] for p in X.squad if not (X.deathT[p] >= 0 and tt >= X.deathT[p]) and not (p in X.leave and tt >= X.leave[p]['t'])]))
     return out
 
 
@@ -1615,6 +1829,14 @@ def main():
         sec_check(X)
     elif sec == 'teams':
         sec_teams(X)
+    elif sec == 'bursts':
+        sec_bursts(X, int(sys.argv[3]) if len(sys.argv) > 3 else 3, float(sys.argv[4]) if len(sys.argv) > 4 else 0.4)
+    elif sec == 'collapse':
+        sec_collapse(X)
+    elif sec == 'lumps':
+        sec_lumps(X)
+    elif sec == 'dens':
+        sec_dens(X, int(sys.argv[3]) if len(sys.argv) > 3 else None)
     elif sec == 'roster':
         sec_roster(X)
     elif sec == 'ledger':

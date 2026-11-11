@@ -11,6 +11,7 @@
 //
 // 用法（先跑 sim_prep.py <id> 生成 out/<id>/sim_in.json）：
 //   bash c136-review/tools/run-heavy.sh node c136-review/agents/R06/scripts/eng_replay.cjs <id> [--to T] [--every N] [--trace p:t0:t1]
+//   带 --to 或 --trace 的运行写 out/<id>/sim_state.partial.json，不动整局的 sim_state.json
 const fs = require('fs');
 const path = require('path');
 const { createHost } = require('/agent/repos/c136-data/src/tools/engine_host.cjs');
@@ -537,7 +538,9 @@ const res = fn(cfg);
 const out = Object.assign({ matchId: mid, replayPath: inp.replayPath, producer: 'engine-live_game_js(R04 host)', map: String(info.map), wallMs: Date.now() - t0 }, res);
 const tr = out.trace;
 delete out.trace;
-fs.writeFileSync(path.join(OUT, mid, 'sim_state.json'), JSON.stringify(out));
+// 只重放到一半（--to）或只为逐拍跟踪（--trace）的运行不覆盖整局的 sim_state.json，另写一个文件
+const partial = +opt('--to', 1e9) < 1e9 || !!trace;
+fs.writeFileSync(path.join(OUT, mid, partial ? 'sim_state.partial.json' : 'sim_state.json'), JSON.stringify(out));
 for (const l of tr) console.log(l);
 const c = out.check;
 console.log(`${mid}: 真引擎重放到 t=${out.endT}（over=${out.over}，出生阶段后首拍 ${out.firstT}），耗时 ${((Date.now() - t0) / 1000).toFixed(1)}s；真人 ${out.humans}，队 ${out.nTeams}，陆地 ${out.land}；没生效的指令 ${out.rejectedCmds} 条`);

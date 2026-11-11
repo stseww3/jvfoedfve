@@ -10,6 +10,7 @@
     python3 digest.py <matchId> donations   # 捐款台账：录像真值（接受/被拒）、手续费、到账、额度点
     python3 digest.py <matchId> drops       # 兵力跌 30% 以上的区间与去向
     python3 digest.py <matchId> spawn       # 出生几何
+    python3 digest.py <matchId> picks       # 选点指令（录像真值）：每号改点次数、最后两步的改点、撞点
     python3 digest.py <matchId> boxed       # 被围（nb=0,neut=0）高密度滞留
     python3 digest.py <matchId> attacks [t0 t1]    # 我方各号被谁打 / 打了谁（录像）
     python3 digest.py <matchId> json        # 写 out/<matchId>/digest.json（复盘 JSON 的数字来源）
@@ -70,6 +71,8 @@ def active_at(M, pres, me, t):
         return t <= p['lastSnap'] + 180 and p['lastSnap'] > 0
     if p['outT'] is None:
         return True
+    if p['how'] == 'end':
+        return t <= p['outT'] + 60      # 活到终局的号在终局那一行仍算在场
     return t < p['outT']
 
 
@@ -176,6 +179,10 @@ def timeline_rows(M, ticks=None):
         boxed = 0
         for me in act:
             s = M.bots[me].at(t, max_age=200)
+            r = M.bots[me].result
+            if pres[me]['how'] == 'end' and t >= pres[me]['outT'] and r and r.get('territory') is not None and r.get('balance') is not None:
+                # 终局行：用结算行的领土/余额（最后一条快照可能早几十拍）
+                s = dict(s or {}, terr=int(r['territory']), bal=int(r['balance']), nb=(s or {}).get('nb', 1), neut=(s or {}).get('neut', 0))
             if not s:
                 continue
             seen += 1
@@ -534,13 +541,72 @@ def sec_spawn(M):
         enemy = next(((d, p) for d, p in ds if pteam(M, p) != pteam(M, me)), None)
         tm = next(((d, p) for d, p in ds if pteam(M, p) == pteam(M, me)), None)
         b = M.bots[me]
-        s270 = b.at(270, 200)
-        s630 = b.at(630, 200)
+        s270 = b.at(270, 0)   # 只取恰好在该拍的快照（缺快照就打印 -，不拿更早的顶替）
+        s630 = b.at(630, 0)
         within = sum(1 for d, p in ds if d <= 150)
         print(f"  {b.name}({me}) 队{b.team} ({x},{y}) 选点{len(b.spawns)}次 | 150px 内真人 {within} 个 | 最近: " +
               ' '.join(f"{pname(M, p)}/T{pteam(M, p)}:{d:.0f}" for d, p in near) +
               f" | 最近我方号 {mate[0]:.0f} 最近敌队真人 {enemy[0]:.0f} 最近同队真人 {tm[0]:.0f}" +
               f" | 地@270={s270['terr'] if s270 else '-'} @630={s630['terr'] if s630 else '-'}")
+
+
+def picks_rows(M):
+    """选点指令（录像真值）：每号生效的选点次数、落在哪一步、最后两步的改点、坐标被几个号选过、最终落点两两相距 <80 的。"""
+    d = M.replay
+    if not d or not M.mapW:
+        return None
+    W = M.mapW
+    c0 = [c for c in d['cmds'] if c['id'] == 0]
+    steps = max((c['step'] for c in c0), default=0)
+    by = defaultdict(list)
+    for c in c0:
+        by[c['player']].append((c['step'], c['dX'] % W, c['dX'] // W))
+    per = {me: by.get(me, []) for me in M.squad}
+    pts = defaultdict(set)
+    for me, v in per.items():
+        for _, x, y in v:
+            pts[(x, y)].add(me)
+    late = [(me, st, x, y) for me, v in per.items() for st, x, y in v if st >= steps - 1]
+    near = []
+    sq = sorted(M.squad)
+    for i, a in enumerate(sq):
+        for b in sq[i + 1:]:
+            if per[a] and per[b]:
+                dd = math.hypot(per[a][-1][1] - per[b][-1][1], per[a][-1][2] - per[b][-1][2])
+                if dd < 80:
+                    near.append(dict(a=a, b=b, dist=round(dd), stepA=per[a][-1][0], stepB=per[b][-1][0], xyA=per[a][-1][1:], xyB=per[b][-1][1:],
+                                     teamA=M.bots[a].team, teamB=M.bots[b].team))
+    return dict(steps=steps + 1, per=per, logPicks={me: len(M.bots[me].spawns) for me in M.squad}, distinct=len(pts),
+                shared2=sum(1 for v in pts.values() if len(v) >= 2), shared3=sum(1 for v in pts.values() if len(v) >= 3),
+                late=sorted(late, key=lambda r: (r[1], r[0])), near=near, allCmds=len(c0), pts=pts)
+
+
+def sec_picks(M):
+    R = picks_rows(M)
+    if not R:
+        print('（没有录像，选点指令看不到；日志侧见 spawn）')
+        return
+    n = [len(v) for v in R['per'].values()]
+    print(f"== {M.id} 选点指令（录像真值）：选点阶段 {R['steps']} 步；我方 {len(n)} 个号生效选点 {sum(n)} 条（每号 {min(n)}~{max(n)}，中位 {sorted(n)[len(n) // 2]}），"
+          f"日志 HL-SPAWN {sum(R['logPicks'].values())} 行；全场选点指令 {R['allCmds']} 条")
+    print(f"   我方选过的不同坐标 {R['distinct']} 个，其中被 >=2 个号先后选过的 {R['shared2']} 个、>=3 个号的 {R['shared3']} 个")
+    for me in sorted(M.squad):
+        v = R['per'][me]
+        print(f"   {M.bots[me].name:14s} 队{M.bots[me].team} 生效 {len(v):2d} 条（日志 {R['logPicks'][me]:2d} 行）：" + ' '.join(f"{st}:({x},{y})" for st, x, y in v))
+    print(f"   最后两步（第 {R['steps'] - 2}、{R['steps'] - 1} 步）的改点 {len(R['late'])} 条：" + '；'.join(f"{M.bots[me].name} 步{st}→({x},{y})" for me, st, x, y in R['late']))
+    for r in R['near']:
+        print(f"   最终落点相距 <80：{M.bots[r['a']].name}(队{r['teamA']}) {tuple(r['xyA'])} 步{r['stepA']} ↔ {M.bots[r['b']].name}(队{r['teamB']}) {tuple(r['xyB'])} 步{r['stepB']}：{r['dist']} 格"
+              + ('（同队）' if r['teamA'] == r['teamB'] else '（异队）'))
+    # 最终落点那个坐标之前还被谁选过
+    for me in sorted(M.squad):
+        v = R['per'][me]
+        if not v:
+            continue
+        xy = (v[-1][1], v[-1][2])
+        others = [o for o in R['pts'][xy] if o != me]
+        if others:
+            print(f"   {M.bots[me].name} 的最终坐标 {xy} 还被这些号选过：" + '、'.join(
+                f"{M.bots[o].name}(步{','.join(str(st) for st, x, y in R['per'][o] if (x, y) == xy)})" for o in others))
 
 
 def boxed_rows(M, dens=95):
@@ -767,6 +833,8 @@ def main():
         sec_drops(M)
     elif sec == 'spawn':
         sec_spawn(M)
+    elif sec == 'picks':
+        sec_picks(M)
     elif sec == 'boxed':
         sec_boxed(M)
     elif sec == 'attacks':

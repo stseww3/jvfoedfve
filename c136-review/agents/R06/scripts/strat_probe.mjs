@@ -27,7 +27,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { decodeReplay, mapOf } from '/agent/repos/c136-data/src/sim/tools/c102-replay-lib.mjs';
-import { Game, MAX_PLAYERS, NEUTRAL, iV } from '/agent/repos/c136-data/src/sim/sim/game.js';
+import { Game, MAX_PLAYERS, NEUTRAL, P_INNER, iV } from '/agent/repos/c136-data/src/sim/sim/game.js';
 import { loadMap, T_LAND } from '/agent/repos/c136-data/src/sim/sim/map.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -93,7 +93,32 @@ class TeamGame extends Game {
     this.humans = h;
     this.humanColors = hc;
   }
+
+  // 船落在「不是空地、也没人占」的格子（水 / 边界 / 山）：真引擎 acN 用像素的归属位 (地形码 & 3) << 3 当目标席位
+  // （水 16、边界 24、山 8），对那个席位开一条攻击线，没有接壤时下一次结算原数退回余额；干净模拟器的 landAt 在这种落点
+  // 直接返回（船上的兵凭空消失）。这段改法取自统筹入库的 R01 工具 /agent/repos/c136-data/src/tools/resim_lib_r01.mjs。
+  landAt(p, troops, c, at) {
+    const v = this.px[c];
+    if (v !== T_LAND && v < P_INNER) {
+      const target = (v & 3) << 3;
+      oddLandings.push({ t: this.t, p, troops, target });
+      if (target === p) { this.addBalance(p, troops); return; }
+      if (!this.isEnemy(p, target)) {
+        const room = this.receiverRoom(target, troops);
+        if (room >= 1 && this.bookDonation(target, room)) this.addBalance(target, room);
+        return;
+      }
+      if (this.hasAttack(p, target) || this.hasFreeSlot(p)) {
+        this.front[p].push(at);
+        this.addAttack(p, troops, target);
+        this.schedule(p, true);
+      }
+      return;
+    }
+    return super.landAt(p, troops, c, at);
+  }
 }
+const oddLandings = [];
 const g = new TeamGame({
   map, humans: H, players: vu.playerCount, difficulty: H > 1 ? 0 : vu.botDifficultyValue, spawnSeed: vu.spawningSeed,
   selectableSpawn: !!vu.selectableSpawn, battleRoyaleMode: vu.battleRoyaleMode,
@@ -550,13 +575,55 @@ for (const c of inp.checks) {
   checksAt.get(c.t).push(c);
 }
 let chkN = 0, chkOk = 0;
+// 与真引擎重放（eng_replay.cjs 写的 sim_state.json）逐采样拍核对全体真人的 (领土, 兵力)；我方号另有逐拍核对
+let truth = null;
+try { truth = JSON.parse(fs.readFileSync(path.join(OUT, mid, 'sim_state.json'), 'utf8')); } catch (err) { truth = null; }
+const truthIdx = new Map();
+if (truth) truth.ticks.forEach((t, i) => truthIdx.set(t, i));
+const div = { firstT: -1, firstWho: [], squadFirst: {}, lastOkT: -1, drift: {} };
+const cmpTruth = () => {
+  if (!truth) return;
+  const pt = truth.perTick;
+  if (pt && pt.bal) {
+    const i = g.t - pt.t0;
+    for (const p of squad) {
+      if (div.squadFirst[p] !== undefined) continue;
+      const tb = pt.bal[p] ? pt.bal[p][i] : undefined, tt = pt.terr[p] ? pt.terr[p][i] : undefined;
+      if (tb === undefined || tb === null || tt === undefined) continue;
+      const sb = g.alive[p] ? g.bal[p] : -1, stt = g.alive[p] ? g.terr[p] : 0;
+      if (sb !== tb || stt !== tt) div.squadFirst[p] = { t: g.t, sim: [stt, sb], eng: [tt, tb] };
+    }
+    // 分叉之后偏了多少：每个我方号记兵力相对偏差和领土偏差的最大值（两边都活着的拍）
+    for (const p of squad) {
+      const tb = pt.bal[p] ? pt.bal[p][i] : undefined, tt = pt.terr[p] ? pt.terr[p][i] : undefined;
+      if (tb === undefined || tb === null || tb < 0 || !g.alive[p]) continue;
+      const m = (div.drift[p] = div.drift[p] || { balRel: 0, balT: -1, terrAbs: 0, terrT: -1 });
+      const r = Math.abs(g.bal[p] - tb) / Math.max(1000, tb), dt = Math.abs(g.terr[p] - tt);
+      if (m.offT === undefined && (r > 0.02 || dt > Math.max(10, 0.02 * tt))) m.offT = g.t;
+      if (r > m.balRel) { m.balRel = r; m.balT = g.t; }
+      if (dt > m.terrAbs) { m.terrAbs = dt; m.terrT = g.t; }
+    }
+  }
+  const i = truthIdx.get(g.t);
+  if (i === undefined || div.firstT >= 0) return;
+  const bad = [];
+  for (let p = 0; p < H; p++) {
+    const tt = truth.hum[p].terr[i], tb = truth.hum[p].bal[i];
+    const stt = g.alive[p] ? g.terr[p] : 0;
+    if (stt !== tt || (g.alive[p] && tt > 0 && g.bal[p] !== tb)) bad.push({ p, sim: [stt, g.alive[p] ? g.bal[p] : -1], eng: [tt, tb] });
+  }
+  if (bad.length) { div.firstT = g.t; div.firstWho = bad.slice(0, 8); } else div.lastOkT = g.t;
+};
 const t0 = Date.now();
 while (!g.over && g.t < TO) {
+  cmpTruth();
   const cs = checksAt.get(g.t);
   if (cs) {
     for (const c of cs) {
       chkN++;
-      for (const p of squad) if (g.alive[p] && g.terr[p] === c.terr && g.bal[p] === c.bal) { chkOk++; break; }
+      let hit = false;
+      for (const p of squad) if (g.alive[p] && g.terr[p] === c.terr && g.bal[p] === c.bal) { chkOk++; hit = true; break; }
+      if (!hit && process.env.PROBE_CHECK_DEBUG && chkN - chkOk <= 12) console.log(`[核对不上] t=${c.t} ${c.name} 日志 地${c.terr} 兵${c.bal}`);
     }
   }
   if (!step()) break;
@@ -580,6 +647,14 @@ while (!g.over && g.t < TO) {
   }
   g.tick();
 }
+if (truth) {
+  const sq = Object.entries(div.squadFirst).sort((a, b) => a[1].t - b[1].t);
+  console.log(`${mid}: 干净模拟器 vs 真引擎重放：全体真人在采样拍一致到 t=${div.lastOkT}` + (div.firstT >= 0 ? `，第一处不同 t=${div.firstT}：${div.firstWho.map((b) => `${nm(b.p)}#${b.p} 模拟器 地${b.sim[0]}/兵${b.sim[1]} 真引擎 地${b.eng[0]}/兵${b.eng[1]}`).join('；')}` : '，没有不同'));
+  const dr = Object.entries(div.drift).filter(([, v]) => v.balRel > 0 || v.terrAbs > 0).sort((a, b) => b[1].balRel - a[1].balRel);
+  console.log(`        我方号分叉后的最大偏差（兵力相对值@拍，领土格数@拍）：${dr.length ? dr.map(([p, v]) => `${nm(+p)} ${(100 * v.balRel).toFixed(2)}%@${v.balT} ${v.terrAbs}格@${v.terrT}${v.offT !== undefined ? ` 偏差首次超过2%的拍=${v.offT}` : ' 全程偏差≤2%'}`).join('；') : '没有'}`);
+  console.log(`        我方号逐拍第一处不同：${sq.length ? sq.slice(0, 20).map(([p, v]) => `${nm(+p)}@${v.t}(模拟器 ${v.sim[0]}/${v.sim[1]} 真 ${v.eng[0]}/${v.eng[1]})`).join('；') : '没有'}`);
+}
+if (oddLandings.length) console.log(`        船落在水/边界/山格（按真引擎 acN 处理：对归属位席位开攻击线或原数退回）${oddLandings.length} 次，共 ${k(oddLandings.reduce((a, b) => a + b.troops, 0))} 兵；第一次 t=${oddLandings[0].t} #${oddLandings[0].p}`);
 console.log(`${mid}: 影子重演到 t=${g.t}，耗时 ${((Date.now() - t0) / 1000).toFixed(1)}s；日志快照核对 ${chkOk}/${chkN}；策略 ${VER}，g.online=${ONLINE}${NFS !== null ? `，强制 NFS=${NFS}` : ''}`);
 for (const sh of shadows.values()) {
   if (sh.err) console.log(`  me=${sh.me} 影子策略抛错 ${sh.err} 次，第一次：${sh.firstErr}`);
@@ -617,5 +692,5 @@ if (WIN > 0) {
 if (has('json')) {
   const o = {};
   for (const sh of shadows.values()) o[sh.me] = { cmds: sh.cmds, sends: sh.pol._sends, nfs: sh.pol.isNoFullSend ? 1 : 0, nfsT: sh.nfsT ?? -1, err: sh.err };
-  fs.writeFileSync(path.join(OUT, mid, 'probe.json'), JSON.stringify({ matchId: mid, strategy: VER, online: ONLINE, to: g.t, check: [chkOk, chkN], shadows: o, actual, tally }));
+  fs.writeFileSync(path.join(OUT, mid, 'probe.json'), JSON.stringify({ matchId: mid, strategy: VER, online: ONLINE, to: g.t, check: [chkOk, chkN], simVsEngine: truth ? { lastOkT: div.lastOkT, firstT: div.firstT, firstWho: div.firstWho, squadFirst: div.squadFirst, drift: div.drift } : null, shadows: o, actual, tally }));
 }
