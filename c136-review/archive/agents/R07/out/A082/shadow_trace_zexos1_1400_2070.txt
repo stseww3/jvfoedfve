@@ -1,0 +1,419 @@
+# A082 zexos1 影子决策明细 t=1400~2070（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没走到 buyLand: 20 拍（t=1400~1495）
+#   出手打人/bot: 16 拍（t=1500~1705）；可用兵 98420~115776，一条指令下限(20%余额) 40809~46505，比值 241%~253%
+#   没有可打的邻居: 57 拍（t=1565~2055）
+#   首选目标无可用兵（avail<=0）: 13 拍（t=1570~2070）；可用兵 -84821~-1290，一条指令下限(20%余额) 24~54751，比值 -242908%~-2%
+#   首选目标价高（c>=worth）: 12 拍（t=1630~2065）
+#   有可用兵但没发（其他）: 3 拍（t=1680~1690）；可用兵 103706~106852，一条指令下限(20%余额) 42359~42748，比值 245%~250%
+#   首选目标已有在途进攻（curAtk 过门槛）: 11 拍（t=1710~1760）；可用兵 81778~118522，一条指令下限(20%余额) 25168~32859，比值 325%~401%
+#   只打无主地: 3 拍（t=1990~2000）
+#   └ 「出手打人/bot」里：16 条对人/bot 的出兵共约 1486457 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1400 zexos1 B=157066 L=3953 d=39.7 nb=1 neut=0 cmds=32 noFull=1 shQ=38333 | m=1.400 worth=55.6 cheap=3.8 over=0 dMedOther=9.2 safe(-1)=43555
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1405 zexos1 B=157066 L=3953 d=39.7 nb=1 neut=0 cmds=32 noFull=1 shQ=39266 | m=1.405 worth=55.8 cheap=3.8 over=0 dMedOther=9.0 safe(-1)=43576
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1410 zexos1 B=161134 L=3953 d=40.8 nb=1 neut=0 cmds=32 noFull=1 shQ=40283 | m=1.410 worth=57.5 cheap=3.9 over=0 dMedOther=9.2 safe(-1)=41830
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1415 zexos1 B=161134 L=3953 d=40.8 nb=1 neut=0 cmds=32 noFull=1 shQ=40283 | m=1.415 worth=57.7 cheap=3.9 over=0 dMedOther=9.2 safe(-1)=41237
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1420 zexos1 B=165259 L=3953 d=41.8 nb=1 neut=0 cmds=32 noFull=1 shQ=41314 | m=1.420 worth=59.4 cheap=3.9 over=0 dMedOther=9.4 safe(-1)=42377
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1425 zexos1 B=165259 L=3953 d=41.8 nb=1 neut=0 cmds=32 noFull=1 shQ=41314 | m=1.425 worth=59.6 cheap=3.9 over=0 dMedOther=9.2 safe(-1)=42377
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1430 zexos1 B=169440 L=3953 d=42.9 nb=1 neut=0 cmds=32 noFull=1 shQ=42360 | m=1.430 worth=61.3 cheap=4.0 over=0 dMedOther=9.4 safe(-1)=43533
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1435 zexos1 B=169440 L=3953 d=42.9 nb=1 neut=0 cmds=32 noFull=1 shQ=42360 | m=1.435 worth=61.5 cheap=4.0 over=0 dMedOther=9.4 safe(-1)=43533
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1440 zexos1 B=173676 L=3953 d=43.9 nb=1 neut=0 cmds=32 noFull=1 shQ=43419 | m=1.440 worth=63.3 cheap=4.0 over=0 dMedOther=9.7 safe(-1)=41750
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1445 zexos1 B=173676 L=3953 d=43.9 nb=1 neut=0 cmds=32 noFull=1 shQ=43419 | m=1.445 worth=63.5 cheap=4.0 over=0 dMedOther=9.7 safe(-1)=41766
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1450 zexos1 B=177965 L=3953 d=45.0 nb=1 neut=0 cmds=32 noFull=1 shQ=44491 | m=1.450 worth=65.3 cheap=4.1 over=0 dMedOther=9.9 safe(-1)=42879
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1455 zexos1 B=177965 L=3953 d=45.0 nb=1 neut=0 cmds=32 noFull=1 shQ=44491 | m=1.455 worth=65.5 cheap=4.1 over=0 dMedOther=9.8 safe(-1)=42879
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1460 zexos1 B=182307 L=3953 d=46.1 nb=1 neut=0 cmds=32 noFull=1 shQ=45576 | m=1.460 worth=67.3 cheap=4.1 over=0 dMedOther=10.1 safe(-1)=44007
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1465 zexos1 B=182307 L=3953 d=46.1 nb=1 neut=0 cmds=32 noFull=1 shQ=45576 | m=1.465 worth=67.6 cheap=4.1 over=0 dMedOther=10.1 safe(-1)=44007
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1470 zexos1 B=186682 L=3953 d=47.2 nb=1 neut=0 cmds=32 noFull=1 shQ=46670 | m=1.470 worth=69.4 cheap=4.2 over=0 dMedOther=10.3 safe(-1)=44918
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1475 zexos1 B=186682 L=3953 d=47.2 nb=1 neut=0 cmds=32 noFull=1 shQ=46670 | m=1.475 worth=69.7 cheap=4.2 over=0 dMedOther=10.3 safe(-1)=44824
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1480 zexos1 B=191106 L=3953 d=48.3 nb=1 neut=0 cmds=32 noFull=1 shQ=47776 | m=1.480 worth=71.5 cheap=4.2 over=0 dMedOther=10.6 safe(-1)=45965
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1485 zexos1 B=191106 L=3953 d=48.3 nb=1 neut=0 cmds=32 noFull=1 shQ=47776 | m=1.485 worth=71.8 cheap=4.2 over=0 dMedOther=10.6 safe(-1)=45965
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1490 zexos1 B=195577 L=3953 d=49.5 nb=1 neut=0 cmds=32 noFull=1 shQ=48894 | m=1.490 worth=73.7 cheap=4.3 over=0 dMedOther=10.9 safe(-1)=47118
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1495 zexos1 B=195577 L=3953 d=49.5 nb=1 neut=0 cmds=32 noFull=1 shQ=48894 | m=1.495 worth=74.0 cheap=4.3 over=0 dMedOther=10.9 safe(-1)=44015
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1500 zexos1 B=204047 L=3953 d=51.6 nb=1 neut=0 cmds=33 noFull=1 shQ=50072 | m=1.500 worth=77.4 cheap=4.3 over=0 dMedOther=12.1 safe(-1)=53183
+    → bigdi#1[T7] terr=19677 bal=100596 dq=5.1 cnt=61 | c=14.3 rankC=14.3 need=208816 tD=0.42 人 | safe=53183 keep=103236 avail=98420 chunkB=40809 pulseB=24486  x=98420 sole hNb=1
+    ⇒ 影子指令 attack pct=493 → bigdi#1[T7]（约 98436 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1505 zexos1 B=204047 L=3953 d=51.6 nb=1 neut=0 cmds=34 noFull=1 shQ=51011 | m=1.499 worth=77.4 cheap=4.4 over=0 dMedOther=12.1 safe(-1)=53183
+    → bigdi#1[T7] terr=20283 bal=100596 dq=5.0 cnt=61 | c=13.9 rankC=13.9 need=209730 tD=0.41 人 | safe=53183 keep=102686 avail=98970 chunkB=40809 pulseB=24486  x=98970 sole hNb=1
+    ⇒ 影子指令 attack pct=496 → bigdi#1[T7]（约 99034 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1510 zexos1 B=208699 L=3953 d=52.8 nb=1 neut=0 cmds=35 noFull=1 shQ=52174 | m=1.498 worth=79.1 cheap=4.4 over=0 dMedOther=12.4 safe(-1)=54472
+    → bigdi#1[T7] terr=20657 bal=102889 dq=5.0 cnt=61 | c=14.0 rankC=14.0 need=214373 tD=0.40 人 | safe=54472 keep=104637 avail=101617 chunkB=41740 pulseB=25044  x=101617 sole hNb=1
+    ⇒ 影子指令 attack pct=498 → bigdi#1[T7]（约 101700 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1515 zexos1 B=208699 L=3953 d=52.8 nb=1 neut=0 cmds=36 noFull=1 shQ=52174 | m=1.498 worth=79.1 cheap=4.4 over=0 dMedOther=12.4 safe(-1)=54561
+    → bigdi#1[T7] terr=20790 bal=103048 dq=5.0 cnt=61 | c=13.9 rankC=13.9 need=214858 tD=0.40 人 | safe=54561 keep=104576 avail=101678 chunkB=41740 pulseB=25044  x=101678 sole hNb=1
+    ⇒ 影子指令 attack pct=498 → bigdi#1[T7]（约 101700 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1520 zexos1 B=213394 L=3953 d=54.0 nb=1 neut=0 cmds=37 noFull=1 shQ=53348 | m=1.497 worth=80.8 cheap=4.4 over=0 dMedOther=12.7 safe(-1)=55236
+    → bigdi#1[T7] terr=20726 bal=104250 dq=5.0 cnt=61 | c=14.1 rankC=14.1 need=216679 tD=0.40 人 | safe=55236 keep=106759 avail=104135 chunkB=42679 pulseB=25607  x=104135 sole hNb=1
+    ⇒ 影子指令 attack pct=499 → bigdi#1[T7]（约 104196 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1525 zexos1 B=213394 L=3953 d=54.0 nb=1 neut=0 cmds=38 noFull=1 shQ=53348 | m=1.496 worth=80.8 cheap=4.5 over=0 dMedOther=12.7 safe(-1)=55547
+    → bigdi#1[T7] terr=20810 bal=104804 dq=5.0 cnt=61 | c=14.1 rankC=14.1 need=217991 tD=0.40 人 | safe=55547 keep=106802 avail=104092 chunkB=42679 pulseB=25607  x=104092 sole hNb=1
+    ⇒ 影子指令 attack pct=499 → bigdi#1[T7]（约 104196 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1530 zexos1 B=218131 L=3953 d=55.2 nb=1 neut=0 cmds=39 noFull=1 shQ=54532 | m=1.496 worth=82.5 cheap=4.5 over=0 dMedOther=13.8 safe(-1)=56854
+    → bigdi#1[T7] terr=20856 bal=107130 dq=5.1 cnt=61 | c=14.3 rankC=14.3 need=222228 tD=0.37 人 | safe=56854 keep=109090 avail=106485 chunkB=43626 pulseB=26176  x=106485 sole hNb=1
+    ⇒ 影子指令 attack pct=499 → bigdi#1[T7]（约 106509 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1535 zexos1 B=218131 L=3953 d=55.2 nb=1 neut=0 cmds=40 noFull=1 shQ=54532 | m=1.495 worth=82.5 cheap=4.5 over=0 dMedOther=13.0 safe(-1)=56854
+    → bigdi#1[T7] terr=20924 bal=107130 dq=5.1 cnt=61 | c=14.3 rankC=14.3 need=222330 tD=0.39 人 | safe=56854 keep=109060 avail=106515 chunkB=43626 pulseB=26176  x=106515 sole hNb=1
+    ⇒ 影子指令 attack pct=500 → bigdi#1[T7]（约 106722 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1540 zexos1 B=222908 L=3953 d=56.4 nb=1 neut=0 cmds=41 noFull=1 shQ=55727 | m=1.494 worth=84.2 cheap=4.6 over=0 dMedOther=13.3 safe(-1)=58172
+    → bigdi#1[T7] terr=20971 bal=109476 dq=5.2 cnt=61 | c=14.5 rankC=14.5 need=226589 tD=0.39 人 | safe=58172 keep=111367 avail=108929 chunkB=44582 pulseB=26749  x=108929 sole hNb=1
+    ⇒ 影子指令 attack pct=500 → bigdi#1[T7]（约 109059 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1545 zexos1 B=222908 L=3953 d=56.4 nb=1 neut=0 cmds=42 noFull=1 shQ=55727 | m=1.493 worth=84.2 cheap=4.6 over=0 dMedOther=13.2 safe(-1)=58172
+    → bigdi#1[T7] terr=21042 bal=109476 dq=5.2 cnt=61 | c=14.5 rankC=14.5 need=226694 tD=0.39 人 | safe=58172 keep=111334 avail=108962 chunkB=44582 pulseB=26749  x=108962 sole hNb=1
+    ⇒ 影子指令 attack pct=500 → bigdi#1[T7]（约 109059 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1550 zexos1 B=227700 L=3953 d=57.6 nb=1 neut=0 cmds=43 noFull=1 shQ=56925 | m=1.492 worth=86.0 cheap=4.6 over=0 dMedOther=13.5 safe(-1)=55629
+    → bigdi#1[T7] terr=21230 bal=104950 dq=4.9 cnt=61 | c=13.9 rankC=13.9 need=218908 tD=0.37 人 | safe=55629 keep=112296 avail=112736 chunkB=45540 pulseB=27324  x=112736 sole hNb=1
+    ⇒ 影子指令 attack pct=506 → bigdi#1[T7]（约 112738 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1555 zexos1 B=227700 L=3953 d=57.6 nb=1 neut=0 cmds=44 noFull=1 shQ=56925 | m=1.492 worth=85.9 cheap=4.7 over=0 dMedOther=13.5 safe(-1)=55629
+    → bigdi#1[T7] terr=21694 bal=104950 dq=4.8 cnt=61 | c=13.6 rankC=13.6 need=219604 tD=0.36 人 | safe=55629 keep=111927 avail=113105 chunkB=45540 pulseB=27324  x=113105 sole hNb=1
+    ⇒ 影子指令 attack pct=508 → bigdi#1[T7]（约 113182 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1560 zexos1 B=232527 L=3953 d=58.8 nb=1 neut=0 cmds=45 noFull=1 shQ=58131 | m=1.491 worth=87.7 cheap=4.7 over=0 dMedOther=13.8 safe(-1)=56879
+    → bigdi#1[T7] terr=21972 bal=107174 dq=4.9 cnt=61 | c=13.7 rankC=13.7 need=223981 tD=0.35 人 | safe=56879 keep=114027 avail=115776 chunkB=46505 pulseB=27903  x=115776 sole hNb=1
+    ⇒ 影子指令 attack pct=509 → bigdi#1[T7]（约 115809 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1565 zexos1 B=928 L=3953 d=0.2 nb=1 neut=0 cmds=45 noFull=1 shQ=129 | m=1.490 worth=0.3 cheap=4.7 over=0 dMedOther=13.8 safe(-1)=56879
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1570 zexos1 B=473 L=4014 d=0.1 nb=1 neut=0 cmds=45 noFull=1 shQ=343 | m=1.490 worth=0.2 cheap=4.8 over=0 dMedOther=14.1 safe(-1)=57819
+    → bigdi#1[T7] terr=22471 bal=108938 dq=4.8 cnt=62 | c=0.2 rankC=0.2 need=2300 tD=0.34 人 crowdedHard | safe=57819 keep=57819 avail=-57351 chunkB=95 pulseB=57 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=1575 zexos1 B=473 L=4138 d=0.1 nb=1 neut=0 cmds=45 noFull=1 shQ=553 | m=1.489 worth=0.2 cheap=4.8 over=0 dMedOther=14.1 safe(-1)=57178
+    → bigdi#1[T7] terr=22624 bal=107984 dq=4.8 cnt=63 | c=0.2 rankC=0.2 need=2979 tD=0.34 人 crowdedHard | safe=57178 keep=57178 avail=-56710 chunkB=95 pulseB=57 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=1580 zexos1 B=482 L=4201 d=0.1 nb=1 neut=0 cmds=45 noFull=1 shQ=763 | m=1.488 worth=0.2 cheap=4.8 over=0 dMedOther=13.8 safe(-1)=58100
+    → bigdi#1[T7] terr=22692 bal=109719 dq=4.8 cnt=63 | c=0.6 rankC=0.6 need=7257 tD=0.35 人 crowdedHard | safe=58100 keep=58100 avail=-57623 chunkB=96 pulseB=58 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=1585 zexos1 B=118 L=4328 d=0.0 nb=1 neut=0 cmds=45 noFull=1 shQ=970 | m=1.487 worth=0.0 cheap=4.9 over=0 dMedOther=13.3 safe(-1)=57443
+    → bigdi#1[T7] terr=22731 bal=108741 dq=4.8 cnt=64 | c=0.0 rankC=0.0 need=7397 tD=0.36 人 pulse nearCollapse bleeding | safe=57443 keep=57443 avail=-57326 chunkB=24 pulseB=14 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=1590 zexos1 B=120 L=4452 d=0.0 nb=1 neut=0 cmds=45 noFull=1 shQ=1175 | m=1.486 worth=0.0 cheap=4.9 over=0 dMedOther=13.6 safe(-1)=56749
+    → bigdi#1[T7] terr=22386 bal=107692 dq=4.8 cnt=52 | c=0.0 rankC=0.0 need=6415 tD=0.35 人 pulse nearCollapse bleeding | safe=56749 keep=56749 avail=-56630 chunkB=24 pulseB=14 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=1595 zexos1 B=120 L=4503 d=0.0 nb=1 neut=0 cmds=45 noFull=1 shQ=1380 | m=1.486 worth=0.0 cheap=5.0 over=0 dMedOther=13.6 safe(-1)=55217
+    → bigdi#1[T7] terr=22107 bal=105041 dq=4.8 cnt=51 | c=0.0 rankC=0.0 need=1559 tD=0.35 人 pulse nearCollapse bleeding | safe=55217 keep=55217 avail=-55098 chunkB=24 pulseB=14 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=1600 zexos1 B=4723 L=4601 d=1.0 nb=1 neut=0 cmds=45 noFull=1 shQ=1583 | m=1.485 worth=1.5 cheap=5.0 over=0 dMedOther=14.9 safe(-1)=65435
+    → bigdi#1[T7] terr=21448 bal=123375 dq=5.8 cnt=49 | c=0.0 rankC=0.0 need=33028 tD=0.39 人 pulse nearCollapse bleeding | safe=65435 keep=65435 avail=-60767 chunkB=945 pulseB=567 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=1605 zexos1 B=4723 L=4696 d=1.0 nb=1 neut=0 cmds=45 noFull=1 shQ=1783 | m=1.484 worth=1.5 cheap=5.0 over=0 dMedOther=14.9 safe(-1)=62853
+    → bigdi#1[T7] terr=20775 bal=118923 dq=5.7 cnt=45 | c=0.0 rankC=0.0 need=24280 tD=0.38 人 pulse nearCollapse bleeding | safe=62853 keep=62853 avail=-58185 chunkB=945 pulseB=567 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=1610 zexos1 B=4816 L=4740 d=1.0 nb=1 neut=0 cmds=45 noFull=1 shQ=1983 | m=1.484 worth=1.5 cheap=5.1 over=0 dMedOther=15.2 safe(-1)=62179
+    → bigdi#1[T7] terr=20401 bal=117789 dq=5.8 cnt=36 | c=0.0 rankC=0.0 need=21583 tD=0.38 人 pulse nearCollapse bleeding | safe=62179 keep=62179 avail=-57419 chunkB=963 pulseB=578 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=1615 zexos1 B=4816 L=4808 d=1.0 nb=2 neut=0 cmds=45 noFull=1 shQ=2048 | m=1.483 worth=1.5 cheap=5.1 over=0 dMedOther=15.2 safe(-1)=89581
+    → bigdi#1[T7] terr=19798 bal=112263 dq=5.7 cnt=29 | c=0.0 rankC=0.0 need=10722 tD=0.37 人 pulse nearCollapse bleeding | safe=89581 keep=89581 avail=-84821 chunkB=963 pulseB=578 无可用(avail<=0) hNb=2
+    → öylesine#23[T7] terr=10407 bal=166667 dq=16.0 cnt=3 | c=9.6 rankC=4.8 need=310778 tD=1.06 人 pulse nearCollapse bleeding | safe=89581 keep=Inf avail=-Inf chunkB=963 pulseB=578 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1620 zexos1 B=4909 L=4862 d=1.0 nb=2 neut=0 cmds=45 noFull=1 shQ=2048 | m=1.482 worth=1.5 cheap=5.2 over=0 dMedOther=15.5 safe(-1)=86709
+    → bigdi#1[T7] terr=19284 bal=109721 dq=5.7 cnt=23 | c=0.0 rankC=0.0 need=5147 tD=0.37 人 pulse nearCollapse bleeding | safe=86709 keep=86709 avail=-81857 chunkB=982 pulseB=589 无可用(avail<=0) hNb=2
+    → öylesine#23[T7] terr=10089 bal=161635 dq=16.0 cnt=9 | c=10.2 rankC=5.1 need=299375 tD=1.04 人 pulse nearCollapse bleeding | safe=86709 keep=Inf avail=-Inf chunkB=982 pulseB=589 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1625 zexos1 B=4909 L=4884 d=1.0 nb=2 neut=0 cmds=45 noFull=1 shQ=2048 | m=1.481 worth=1.5 cheap=5.2 over=0 dMedOther=15.5 safe(-1)=84372
+    → bigdi#1[T7] terr=19046 bal=107562 dq=5.6 cnt=19 | c=0.0 rankC=0.0 need=838 tD=0.37 人 pulse nearCollapse bleeding | safe=84372 keep=84372 avail=-79520 chunkB=982 pulseB=589 无可用(avail<=0) hNb=2
+    → öylesine#23[T7] terr=9928 bal=157509 dq=15.9 cnt=11 | c=10.3 rankC=5.2 need=290830 tD=1.03 人 pulse nearCollapse bleeding | safe=84372 keep=Inf avail=-Inf chunkB=982 pulseB=589 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1630 zexos1 B=5002 L=4921 d=1.0 nb=2 neut=0 cmds=45 noFull=1 shQ=2048 | m=1.480 worth=1.5 cheap=5.2 over=0 dMedOther=15.8 safe(-1)=81296
+    → öylesine#23[T7] terr=9601 bal=152088 dq=15.8 cnt=13 | c=11.0 rankC=5.5 need=278661 tD=1.01 人 pulse bleeding | safe=81296 keep=Inf avail=-Inf chunkB=1000 pulseB=600 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1635 zexos1 B=5002 L=4950 d=1.0 nb=2 neut=0 cmds=45 noFull=1 shQ=2048 | m=1.480 worth=1.5 cheap=5.3 over=0 dMedOther=15.6 safe(-1)=76965
+    → öylesine#23[T7] terr=9297 bal=144422 dq=15.5 cnt=14 | c=10.7 rankC=5.3 need=262756 tD=1.00 人 pulse bleeding | safe=76965 keep=Inf avail=-Inf chunkB=1000 pulseB=600 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1640 zexos1 B=5095 L=4963 d=1.0 nb=2 neut=0 cmds=45 noFull=1 shQ=2048 | m=1.479 worth=1.5 cheap=5.3 over=0 dMedOther=15.8 safe(-1)=76536
+    → öylesine#23[T7] terr=9161 bal=143679 dq=15.7 cnt=14 | c=11.2 rankC=5.6 need=260292 tD=0.99 人 pulse bleeding | safe=76536 keep=Inf avail=-Inf chunkB=1019 pulseB=611 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1645 zexos1 B=5095 L=4988 d=1.0 nb=2 neut=0 cmds=45 noFull=1 shQ=2048 | m=1.478 worth=1.5 cheap=5.4 over=0 dMedOther=15.8 safe(-1)=73132
+    → öylesine#23[T7] terr=8920 bal=137657 dq=15.4 cnt=15 | c=11.5 rankC=5.7 need=247799 tD=0.97 人 pulse bleeding | safe=73132 keep=Inf avail=-Inf chunkB=1019 pulseB=611 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1650 zexos1 B=5188 L=5011 d=1.0 nb=2 neut=0 cmds=45 noFull=1 shQ=2048 | m=1.478 worth=1.5 cheap=5.4 over=0 dMedOther=16.1 safe(-1)=71482
+    → öylesine#23[T7] terr=8703 bal=134754 dq=15.5 cnt=16 | c=12.1 rankC=6.1 need=240881 tD=0.96 人 pulse bleeding | safe=71482 keep=Inf avail=-Inf chunkB=1038 pulseB=623 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1655 zexos1 B=5188 L=5022 d=1.0 nb=2 neut=0 cmds=45 noFull=1 shQ=2048 | m=1.477 worth=1.5 cheap=5.5 over=0 dMedOther=16.1 safe(-1)=70012
+    → öylesine#23[T7] terr=8598 bal=132154 dq=15.4 cnt=17 | c=12.3 rankC=6.1 need=235526 tD=0.95 人 pulse bleeding | safe=70012 keep=Inf avail=-Inf chunkB=1038 pulseB=623 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1660 zexos1 B=5281 L=5042 d=1.0 nb=2 neut=0 cmds=45 noFull=1 shQ=2048 | m=1.476 worth=1.5 cheap=5.5 over=0 dMedOther=16.4 safe(-1)=68704
+    → öylesine#23[T7] terr=8410 bal=129856 dq=15.4 cnt=18 | c=10.7 rankC=5.3 need=229877 tD=0.94 人 pulse bleeding | safe=68704 keep=Inf avail=-Inf chunkB=1056 pulseB=634 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1665 zexos1 B=5281 L=5059 d=1.0 nb=2 neut=0 cmds=45 noFull=1 shQ=2048 | m=1.475 worth=1.5 cheap=5.6 over=0 dMedOther=16.3 safe(-1)=66835
+    → öylesine#23[T7] terr=8276 bal=126555 dq=15.3 cnt=20 | c=10.8 rankC=5.4 need=223089 tD=0.94 人 pulse bleeding | safe=66835 keep=Inf avail=-Inf chunkB=1056 pulseB=634 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1670 zexos1 B=5375 L=5066 d=1.1 nb=2 neut=0 cmds=45 noFull=1 shQ=2048 | m=1.474 worth=1.6 cheap=5.6 over=0 dMedOther=16.5 safe(-1)=66504
+    → öylesine#23[T7] terr=8162 bal=125977 dq=15.4 cnt=23 | c=9.3 rankC=4.6 need=221027 tD=0.93 人 pulse nearCollapse bleeding | safe=66504 keep=Inf avail=-Inf chunkB=1075 pulseB=645 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1675 zexos1 B=5375 L=5072 d=1.1 nb=2 neut=0 cmds=45 noFull=1 shQ=2048 | m=1.474 worth=1.6 cheap=5.7 over=0 dMedOther=15.3 safe(-1)=64468
+    → öylesine#23[T7] terr=8015 bal=122361 dq=15.3 cnt=25 | c=9.4 rankC=4.7 need=213584 tD=1.00 人 pulse nearCollapse bleeding | safe=64468 keep=Inf avail=-Inf chunkB=1075 pulseB=645 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1680 zexos1 B=211796 L=5073 d=41.7 nb=1 neut=0 cmds=45 noFull=1 shQ=2974 | m=1.473 worth=61.5 cheap=5.7 over=0 dMedOther=15.3 safe(-1)=63253
+    → öylesine#23[T7] terr=7841 bal=120200 dq=15.3 cnt=26 | c=10.2 rankC=5.1 need=208239 tD=1.00 人 pulse nearCollapse bleeding | safe=63253 keep=105609 avail=103706 chunkB=42359 pulseB=25416  x=62471 hNb=1
+    ⇒ 本拍没有指令
+t=1685 zexos1 B=211796 L=5073 d=41.7 nb=1 neut=0 cmds=45 noFull=1 shQ=7579 | m=1.472 worth=61.5 cheap=5.8 over=0 dMedOther=15.1 safe(-1)=61103
+    → öylesine#23[T7] terr=7729 bal=103813 dq=13.4 cnt=25 | c=9.2 rankC=4.6 need=192817 tD=0.89 人 pulse nearCollapse bleeding onMe agg | safe=61103 keep=103499 avail=105816 chunkB=42359 pulseB=25416  x=57845 hNb=1
+    ⇒ 本拍没有指令
+t=1690 zexos1 B=213741 L=5048 d=42.3 nb=1 neut=0 cmds=45 noFull=1 shQ=12141 | m=1.472 worth=62.3 cheap=5.8 over=0 dMedOther=15.3 safe(-1)=58417
+    → öylesine#23[T7] terr=7606 bal=102383 dq=13.5 cnt=23 | c=9.3 rankC=4.6 need=185952 tD=0.88 人 pulse nearCollapse bleeding onMe agg | safe=58417 keep=104385 avail=106852 chunkB=42748 pulseB=25649  x=55785 hNb=1
+    ⇒ 本拍没有指令
+t=1695 zexos1 B=210496 L=5000 d=42.1 nb=1 neut=0 cmds=46 noFull=1 shQ=16658 | m=1.471 worth=61.9 cheap=5.9 over=0 dMedOther=15.3 safe(-1)=52662
+    → öylesine#23[T7] terr=7479 bal=98653 dq=13.2 cnt=23 | c=8.6 rankC=4.3 need=172110 tD=0.86 人 pulse nearCollapse bleeding onMe | safe=52662 keep=101666 avail=106364 chunkB=42099 pulseB=25260  x=51632 hNb=1
+    ⇒ 影子指令 attack pct=251 → öylesine#23[T7]（约 51801 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1700 zexos1 B=217772 L=5000 d=43.6 nb=1 neut=0 cmds=47 noFull=1 shQ=21129 | m=1.470 worth=64.0 cheap=5.9 over=0 dMedOther=16.6 safe(-1)=54914
+    → öylesine#23[T7] terr=7365 bal=105247 dq=14.3 cnt=22 | c=10.2 rankC=5.1 need=179095 tD=0.86 人 pulse bleeding | safe=54914 keep=107848 avail=107372 chunkB=43554 pulseB=26133  x=26132 hNb=1
+    ⇒ 影子指令 attack pct=122 → öylesine#23[T7]（约 26158 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1705 zexos1 B=217772 L=5000 d=43.6 nb=1 neut=0 cmds=48 noFull=1 shQ=25694 | m=1.469 worth=64.0 cheap=6.0 over=0 dMedOther=16.6 safe(-1)=46382
+    → öylesine#23[T7] terr=7218 bal=90060 dq=12.5 cnt=21 | c=9.2 rankC=4.6 need=153270 tD=0.75 人 pulse bleeding | safe=46382 keep=105706 avail=109514 chunkB=43554 pulseB=26133  x=26132 hNb=1
+    ⇒ 影子指令 attack pct=122 → öylesine#23[T7]（约 26158 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1710 zexos1 B=164294 L=5000 d=32.9 nb=1 neut=0 cmds=48 noFull=1 shQ=681 | m=1.468 worth=48.3 cheap=6.0 over=0 dMedOther=16.9 safe(-1)=45234
+    → öylesine#23[T7] terr=7043 bal=88016 dq=12.5 cnt=20 | c=2.6 rankC=1.3 need=94745 tD=0.74 人 pulse nearCollapse bleeding | safe=45234 keep=45234 avail=117135 chunkB=32859 pulseB=19715 在途(curAtk=53592)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1715 zexos1 B=164294 L=5000 d=32.9 nb=1 neut=0 cmds=48 noFull=1 shQ=4058 | m=1.468 worth=48.2 cheap=6.1 over=0 dMedOther=16.9 safe(-1)=43847
+    → öylesine#23[T7] terr=6919 bal=85547 dq=12.4 cnt=19 | c=2.6 rankC=1.3 need=89632 tD=0.73 人 pulse nearCollapse bleeding | safe=43847 keep=43847 avail=118522 chunkB=32859 pulseB=19715 在途(curAtk=53592)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1720 zexos1 B=125838 L=5037 d=25.0 nb=1 neut=0 cmds=48 noFull=1 shQ=6589 | m=1.467 worth=36.6 cheap=6.2 over=0 dMedOther=17.1 safe(-1)=42586
+    → öylesine#23[T7] terr=6740 bal=83358 dq=12.4 cnt=18 | c=0.2 rankC=0.1 need=49068 tD=0.72 人 pulse nearCollapse bleeding | safe=42586 keep=42586 avail=81778 chunkB=25168 pulseB=15101 在途(curAtk=88930)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1725 zexos1 B=125838 L=5062 d=24.9 nb=1 neut=0 cmds=48 noFull=1 shQ=9128 | m=1.466 worth=36.5 cheap=6.2 over=0 dMedOther=17.0 safe(-1)=35270
+    → öylesine#23[T7] terr=6550 bal=70374 dq=10.7 cnt=9 | c=0.2 rankC=0.1 need=28097 tD=0.63 人 pulse nearCollapse bleeding | safe=35270 keep=35270 avail=89094 chunkB=25168 pulseB=15101 在途(curAtk=87934)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1730 zexos1 B=127838 L=5071 d=25.2 nb=1 neut=0 cmds=48 noFull=1 shQ=11651 | m=1.466 worth=36.9 cheap=6.3 over=0 dMedOther=17.0 safe(-1)=34800
+    → öylesine#23[T7] terr=6503 bal=69550 dq=10.7 cnt=11 | c=0.2 rankC=0.1 need=26777 tD=0.63 人 pulse nearCollapse bleeding | safe=34800 keep=34800 avail=91540 chunkB=25568 pulseB=15341 在途(curAtk=87608)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1735 zexos1 B=127838 L=5093 d=25.1 nb=1 neut=0 cmds=48 noFull=1 shQ=14179 | m=1.465 worth=36.8 cheap=6.3 over=0 dMedOther=16.7 safe(-1)=33461
+    → öylesine#23[T7] terr=6429 bal=67200 dq=10.5 cnt=14 | c=0.2 rankC=0.1 need=23342 tD=0.63 人 pulse nearCollapse bleeding | safe=33461 keep=33461 avail=92879 chunkB=25568 pulseB=15341 在途(curAtk=86820)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1740 zexos1 B=129832 L=5120 d=25.4 nb=1 neut=0 cmds=48 noFull=1 shQ=16692 | m=1.464 worth=37.1 cheap=6.4 over=0 dMedOther=16.9 safe(-1)=32488
+    → öylesine#23[T7] terr=6396 bal=65509 dq=10.2 cnt=16 | c=0.2 rankC=0.1 need=21487 tD=0.61 人 pulse nearCollapse bleeding | safe=32488 keep=32488 avail=95823 chunkB=25966 pulseB=15580 在途(curAtk=85878)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1745 zexos1 B=129832 L=5135 d=25.3 nb=1 neut=0 cmds=48 noFull=1 shQ=19213 | m=1.463 worth=37.0 cheap=6.5 over=0 dMedOther=16.9 safe(-1)=31444
+    → öylesine#23[T7] terr=6405 bal=63673 dq=9.9 cnt=17 | c=0.2 rankC=0.1 need=19393 tD=0.59 人 pulse nearCollapse bleeding | safe=31444 keep=31444 avail=96867 chunkB=25966 pulseB=15580 在途(curAtk=85364)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1750 zexos1 B=131818 L=5168 d=25.5 nb=1 neut=0 cmds=48 noFull=1 shQ=21710 | m=1.462 worth=37.3 cheap=6.5 over=0 dMedOther=17.1 safe(-1)=30727
+    → öylesine#23[T7] terr=6330 bal=62446 dq=9.9 cnt=19 | c=0.2 rankC=0.1 need=18014 tD=0.58 人 pulse nearCollapse bleeding | safe=30727 keep=30727 avail=99547 chunkB=26364 pulseB=15818 在途(curAtk=84260)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1755 zexos1 B=131818 L=5205 d=25.3 nb=1 neut=0 cmds=48 noFull=1 shQ=24218 | m=1.462 worth=37.0 cheap=6.6 over=0 dMedOther=17.1 safe(-1)=25310
+    → öylesine#23[T7] terr=6289 bal=52860 dq=8.4 cnt=21 | c=0.2 rankC=0.1 need=4280 tD=0.49 人 pulse nearCollapse bleeding | safe=25310 keep=25310 avail=104964 chunkB=26364 pulseB=15818 在途(curAtk=83180)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1760 zexos1 B=133795 L=5225 d=25.6 nb=1 neut=0 cmds=48 noFull=1 shQ=26704 | m=1.461 worth=37.4 cheap=6.7 over=0 dMedOther=17.4 safe(-1)=24865
+    → öylesine#23[T7] terr=6309 bal=52098 dq=8.3 cnt=22 | c=0.2 rankC=0.1 need=3952 tD=0.47 人 pulse nearCollapse bleeding | safe=24865 keep=24865 avail=107363 chunkB=26759 pulseB=16055 在途(curAtk=82610)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1765 zexos1 B=133795 L=5268 d=25.4 nb=1 neut=0 cmds=48 noFull=1 shQ=29194 | m=1.460 worth=37.1 cheap=6.7 over=0 dMedOther=17.4 safe(-1)=20465
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1770 zexos1 B=135761 L=5315 d=25.5 nb=1 neut=0 cmds=48 noFull=1 shQ=31668 | m=1.460 worth=37.3 cheap=6.8 over=0 dMedOther=17.6 safe(-1)=19642
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1775 zexos1 B=135761 L=5340 d=25.4 nb=1 neut=0 cmds=48 noFull=1 shQ=33940 | m=1.459 worth=37.1 cheap=6.9 over=0 dMedOther=17.6 safe(-1)=18876
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1780 zexos1 B=137715 L=5393 d=25.5 nb=1 neut=0 cmds=48 noFull=1 shQ=34428 | m=1.458 worth=37.2 cheap=7.0 over=0 dMedOther=17.8 safe(-1)=18200
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1785 zexos1 B=137715 L=5448 d=25.3 nb=1 neut=0 cmds=48 noFull=1 shQ=34428 | m=1.457 worth=36.8 cheap=7.0 over=0 dMedOther=17.8 safe(-1)=17033
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1790 zexos1 B=139643 L=5476 d=25.5 nb=1 neut=0 cmds=48 noFull=1 shQ=34910 | m=1.457 worth=37.1 cheap=7.1 over=0 dMedOther=16.7 safe(-1)=14090
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1795 zexos1 B=139643 L=5533 d=25.2 nb=1 neut=0 cmds=48 noFull=1 shQ=34910 | m=1.456 worth=36.7 cheap=7.2 over=0 dMedOther=16.5 safe(-1)=11068
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1800 zexos1 B=147120 L=5597 d=26.3 nb=1 neut=0 cmds=48 noFull=1 shQ=35417 | m=1.455 worth=38.2 cheap=7.3 over=0 dMedOther=17.5 safe(-1)=13446
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1805 zexos1 B=147120 L=5633 d=26.1 nb=1 neut=0 cmds=48 noFull=1 shQ=36780 | m=1.454 worth=38.0 cheap=7.4 over=0 dMedOther=17.4 safe(-1)=12717
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1810 zexos1 B=149091 L=5706 d=26.1 nb=1 neut=0 cmds=48 noFull=1 shQ=37272 | m=1.454 worth=38.0 cheap=7.4 over=0 dMedOther=17.2 safe(-1)=11947
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1815 zexos1 B=149091 L=5779 d=25.8 nb=1 neut=0 cmds=48 noFull=1 shQ=37272 | m=1.453 worth=37.5 cheap=7.5 over=0 dMedOther=17.0 safe(-1)=10860
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1820 zexos1 B=151044 L=5817 d=26.0 nb=1 neut=0 cmds=48 noFull=1 shQ=37761 | m=1.452 worth=37.7 cheap=7.6 over=0 dMedOther=17.1 safe(-1)=10449
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1825 zexos1 B=151044 L=5894 d=25.6 nb=1 neut=0 cmds=48 noFull=1 shQ=37761 | m=1.451 worth=37.2 cheap=7.7 over=0 dMedOther=17.0 safe(-1)=8869
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1830 zexos1 B=152977 L=5968 d=25.6 nb=1 neut=0 cmds=48 noFull=1 shQ=38244 | m=1.451 worth=37.2 cheap=7.8 over=0 dMedOther=16.9 safe(-1)=7920
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1835 zexos1 B=152977 L=6003 d=25.5 nb=1 neut=0 cmds=48 noFull=1 shQ=38244 | m=1.450 worth=36.9 cheap=7.9 over=0 dMedOther=16.8 safe(-1)=5686
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1840 zexos1 B=154889 L=6064 d=25.5 nb=1 neut=0 cmds=48 noFull=1 shQ=38722 | m=1.449 worth=37.0 cheap=8.0 over=0 dMedOther=16.8 safe(-1)=4793
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1845 zexos1 B=154889 L=6119 d=25.3 nb=1 neut=0 cmds=48 noFull=1 shQ=38722 | m=1.448 worth=36.7 cheap=8.1 over=0 dMedOther=16.8 safe(-1)=4122
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1850 zexos1 B=156778 L=6147 d=25.5 nb=1 neut=0 cmds=48 noFull=1 shQ=39194 | m=1.448 worth=36.9 cheap=8.2 over=0 dMedOther=17.4 safe(-1)=3878
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1855 zexos1 B=156778 L=6205 d=25.3 nb=1 neut=0 cmds=48 noFull=1 shQ=39194 | m=1.447 worth=36.6 cheap=8.3 over=0 dMedOther=17.3 safe(-1)=3512
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1860 zexos1 B=158643 L=6261 d=25.3 nb=1 neut=0 cmds=48 noFull=1 shQ=39660 | m=1.446 worth=36.6 cheap=8.4 over=0 dMedOther=18.3 safe(-1)=2321
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1865 zexos1 B=158643 L=6289 d=25.2 nb=1 neut=0 cmds=48 noFull=1 shQ=39660 | m=1.445 worth=36.5 cheap=8.5 over=0 dMedOther=18.2 safe(-1)=1450
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1870 zexos1 B=160467 L=6345 d=25.3 nb=1 neut=0 cmds=48 noFull=1 shQ=40116 | m=1.445 worth=36.5 cheap=8.6 over=0 dMedOther=18.3 safe(-1)=732
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1875 zexos1 B=160467 L=6401 d=25.1 nb=1 neut=0 cmds=48 noFull=1 shQ=40116 | m=1.444 worth=36.2 cheap=8.8 over=0 dMedOther=18.2 safe(-1)=91
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1880 zexos1 B=162296 L=6430 d=25.2 nb=1 neut=0 cmds=48 noFull=1 shQ=40574 | m=1.443 worth=36.4 cheap=8.8 over=0 dMedOther=18.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1885 zexos1 B=162296 L=6489 d=25.0 nb=1 neut=0 cmds=48 noFull=1 shQ=40574 | m=1.442 worth=36.1 cheap=8.8 over=0 dMedOther=17.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1890 zexos1 B=164162 L=6536 d=25.1 nb=1 neut=0 cmds=48 noFull=1 shQ=41040 | m=1.442 worth=36.2 cheap=8.6 over=0 dMedOther=17.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1895 zexos1 B=164162 L=6561 d=25.0 nb=1 neut=0 cmds=48 noFull=1 shQ=41040 | m=1.441 worth=36.0 cheap=8.6 over=0 dMedOther=17.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1900 zexos1 B=172663 L=6614 d=26.1 nb=1 neut=0 cmds=48 noFull=1 shQ=41540 | m=1.440 worth=37.6 cheap=8.6 over=0 dMedOther=19.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1905 zexos1 B=172663 L=6671 d=25.9 nb=1 neut=0 cmds=48 noFull=1 shQ=43165 | m=1.439 worth=37.3 cheap=8.6 over=0 dMedOther=19.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1910 zexos1 B=174648 L=6701 d=26.1 nb=0 neut=31 cmds=48 noFull=1 shQ=43662 | m=1.439 worth=37.5 cheap=8.6 over=0 dMedOther=18.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1915 zexos1 B=174648 L=6761 d=25.8 nb=0 neut=25 cmds=48 noFull=1 shQ=43662 | m=1.438 worth=37.1 cheap=8.6 over=0 dMedOther=19.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1920 zexos1 B=235760 L=6761 d=34.9 nb=0 neut=0 cmds=48 noFull=1 shQ=46370 | m=1.437 worth=50.1 cheap=8.6 over=0 dMedOther=19.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1925 zexos1 B=235760 L=6761 d=34.9 nb=0 neut=0 cmds=48 noFull=1 shQ=49785 | m=1.436 worth=50.1 cheap=8.6 over=0 dMedOther=19.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1930 zexos1 B=238471 L=6761 d=35.3 nb=0 neut=0 cmds=48 noFull=1 shQ=53208 | m=1.435 worth=50.6 cheap=8.6 over=0 dMedOther=19.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1935 zexos1 B=238471 L=6761 d=35.3 nb=0 neut=0 cmds=48 noFull=1 shQ=56663 | m=1.435 worth=50.6 cheap=8.6 over=0 dMedOther=19.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1940 zexos1 B=241213 L=6761 d=35.7 nb=0 neut=0 cmds=48 noFull=1 shQ=60126 | m=1.434 worth=51.2 cheap=8.6 over=0 dMedOther=20.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1945 zexos1 B=241213 L=6761 d=35.7 nb=0 neut=0 cmds=48 noFull=1 shQ=60303 | m=1.433 worth=51.1 cheap=8.6 over=0 dMedOther=20.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1950 zexos1 B=243986 L=6761 d=36.1 nb=0 neut=0 cmds=48 noFull=1 shQ=60996 | m=1.433 worth=51.7 cheap=8.6 over=0 dMedOther=20.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1955 zexos1 B=243986 L=6761 d=36.1 nb=0 neut=0 cmds=48 noFull=1 shQ=60996 | m=1.432 worth=51.7 cheap=8.6 over=0 dMedOther=19.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1960 zexos1 B=246791 L=6761 d=36.5 nb=0 neut=0 cmds=48 noFull=1 shQ=61697 | m=1.431 worth=52.2 cheap=8.6 over=0 dMedOther=20.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1965 zexos1 B=246791 L=6761 d=36.5 nb=0 neut=0 cmds=48 noFull=1 shQ=61697 | m=1.430 worth=52.2 cheap=8.6 over=0 dMedOther=20.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1970 zexos1 B=249629 L=6761 d=36.9 nb=0 neut=0 cmds=48 noFull=1 shQ=62407 | m=1.429 worth=52.8 cheap=8.6 over=0 dMedOther=20.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1975 zexos1 B=249629 L=6761 d=36.9 nb=0 neut=0 cmds=48 noFull=1 shQ=62407 | m=1.429 worth=52.8 cheap=8.6 over=0 dMedOther=18.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1980 zexos1 B=252499 L=6761 d=37.3 nb=0 neut=0 cmds=48 noFull=1 shQ=63124 | m=1.428 worth=53.3 cheap=8.6 over=0 dMedOther=19.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1985 zexos1 B=252499 L=6761 d=37.3 nb=0 neut=0 cmds=48 noFull=1 shQ=63124 | m=1.427 worth=53.3 cheap=8.6 over=0 dMedOther=19.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1990 zexos1 B=255402 L=6761 d=37.8 nb=0 neut=43 cmds=49 noFull=1 shQ=63850 | m=1.427 worth=53.9 cheap=8.6 over=0 dMedOther=19.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → 无主地（约 11971 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=1995 zexos1 B=255402 L=6761 d=37.8 nb=0 neut=43 cmds=50 noFull=1 shQ=63850 | m=1.426 worth=53.9 cheap=8.6 over=0 dMedOther=19.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → 无主地（约 11971 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2000 zexos1 B=265100 L=6761 d=39.2 nb=0 neut=43 cmds=51 noFull=1 shQ=64618 | m=1.425 worth=55.9 cheap=8.6 over=0 dMedOther=22.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → 无主地（约 12426 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2005 zexos1 B=249568 L=6761 d=36.9 nb=0 neut=43 cmds=51 noFull=1 shQ=51412 | m=1.420 worth=52.4 cheap=8.6 over=0 dMedOther=22.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2010 zexos1 B=223723 L=6804 d=32.9 nb=0 neut=43 cmds=51 noFull=1 shQ=54952 | m=1.415 worth=46.5 cheap=8.6 over=0 dMedOther=22.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2015 zexos1 B=223723 L=6847 d=32.7 nb=0 neut=45 cmds=51 noFull=1 shQ=55930 | m=1.409 worth=46.0 cheap=8.6 over=0 dMedOther=22.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2020 zexos1 B=226295 L=6936 d=32.6 nb=0 neut=43 cmds=51 noFull=1 shQ=56573 | m=1.404 worth=45.8 cheap=8.6 over=0 dMedOther=21.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2025 zexos1 B=226295 L=7021 d=32.2 nb=0 neut=42 cmds=51 noFull=1 shQ=56573 | m=1.399 worth=45.1 cheap=8.6 over=0 dMedOther=21.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2030 zexos1 B=228897 L=7062 d=32.4 nb=0 neut=41 cmds=51 noFull=1 shQ=57224 | m=1.393 worth=45.2 cheap=8.6 over=0 dMedOther=21.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2035 zexos1 B=228897 L=7144 d=32.0 nb=0 neut=41 cmds=51 noFull=1 shQ=57224 | m=1.388 worth=44.5 cheap=8.6 over=0 dMedOther=21.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2040 zexos1 B=231529 L=7225 d=32.0 nb=0 neut=41 cmds=51 noFull=1 shQ=57882 | m=1.383 worth=44.3 cheap=8.6 over=0 dMedOther=21.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2045 zexos1 B=231529 L=7265 d=31.9 nb=0 neut=40 cmds=51 noFull=1 shQ=57882 | m=1.378 worth=43.9 cheap=8.6 over=0 dMedOther=21.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2050 zexos1 B=234191 L=7345 d=31.9 nb=0 neut=39 cmds=51 noFull=1 shQ=58547 | m=1.373 worth=43.8 cheap=8.6 over=0 dMedOther=21.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2055 zexos1 B=234191 L=7423 d=31.5 nb=0 neut=39 cmds=51 noFull=1 shQ=58547 | m=1.367 worth=43.1 cheap=8.6 over=0 dMedOther=21.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2060 zexos1 B=236884 L=7435 d=31.9 nb=1 neut=10 cmds=51 noFull=1 shQ=59221 | m=1.362 worth=43.4 cheap=8.6 over=0 dMedOther=21.5 safe(-1)=145532
+    → Zbyszko 3 cytryny#54[T5] terr=13722 bal=270199 dq=19.7 cnt=27 | c=49.0 rankC=49.0 need=502190 tD=0.92 人 | safe=145532 keep=Inf avail=-Inf chunkB=47377 pulseB=28426 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2065 zexos1 B=236884 L=7449 d=31.8 nb=1 neut=2 cmds=51 noFull=1 shQ=59221 | m=1.357 worth=43.1 cheap=8.6 over=0 dMedOther=21.5 safe(-1)=145520
+    → Zbyszko 3 cytryny#54[T5] terr=13753 bal=270199 dq=19.6 cnt=33 | c=48.8 rankC=48.8 need=502229 tD=0.91 人 | safe=145520 keep=Inf avail=-Inf chunkB=47377 pulseB=28426 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2070 zexos1 B=273757 L=7449 d=36.8 nb=1 neut=0 cmds=51 noFull=1 shQ=62366 | m=1.352 worth=49.7 cheap=8.6 over=0 dMedOther=21.8 safe(-1)=147372
+    → Zbyszko 3 cytryny#54[T5] terr=13787 bal=273495 dq=19.8 cnt=35 | c=49.3 rankC=49.3 need=508170 tD=0.91 人 | safe=147372 keep=271839 avail=-1290 chunkB=54751 pulseB=32851 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令

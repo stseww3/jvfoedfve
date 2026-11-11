@@ -1,0 +1,547 @@
+# A089 zero_7 影子决策明细 t=2800~3700（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没有可打的邻居: 178 拍（t=2800~3700）
+#   捐兵: 3 拍（t=2820~3620）
+t=2800 zero_7 B=431214 L=8351 d=51.6 nb=0 neut=0 cmds=192 noFull=1 shQ=105754 | m=0.900 worth=46.5 cheap=8.5 over=0 dMedOther=35.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2805 zero_7 B=431214 L=8351 d=51.6 nb=0 neut=0 cmds=192 noFull=1 shQ=107803 | m=0.900 worth=46.5 cheap=8.5 over=0 dMedOther=35.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2810 zero_7 B=436259 L=8351 d=52.2 nb=0 neut=0 cmds=192 noFull=1 shQ=109064 | m=0.900 worth=47.0 cheap=8.5 over=0 dMedOther=35.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2815 zero_7 B=436259 L=8351 d=52.2 nb=0 neut=0 cmds=192 noFull=1 shQ=109064 | m=0.900 worth=47.0 cheap=8.5 over=0 dMedOther=35.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2820 zero_7 B=441363 L=8351 d=52.9 nb=0 neut=0 cmds=193 noFull=1 shQ=110340 | m=0.900 worth=47.6 cheap=8.5 over=0 dMedOther=35.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] kaito9#39[T1]（约 164218 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=2825 zero_7 B=441363 L=8351 d=52.9 nb=0 neut=0 cmds=193 noFull=1 shQ=110340 | m=0.900 worth=47.6 cheap=8.5 over=0 dMedOther=35.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2830 zero_7 B=446526 L=8351 d=53.5 nb=0 neut=0 cmds=193 noFull=1 shQ=111631 | m=0.900 worth=48.1 cheap=8.5 over=0 dMedOther=36.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2835 zero_7 B=446526 L=8351 d=53.5 nb=0 neut=0 cmds=193 noFull=1 shQ=111631 | m=0.900 worth=48.1 cheap=8.5 over=0 dMedOther=36.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2840 zero_7 B=255434 L=8351 d=30.6 nb=0 neut=0 cmds=193 noFull=1 shQ=63858 | m=0.900 worth=28.1 cheap=8.5 over=0 dMedOther=36.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2845 zero_7 B=255434 L=8351 d=30.6 nb=0 neut=0 cmds=193 noFull=1 shQ=63858 | m=0.900 worth=28.1 cheap=8.5 over=0 dMedOther=36.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2850 zero_7 B=258422 L=8351 d=30.9 nb=0 neut=0 cmds=193 noFull=1 shQ=64605 | m=0.900 worth=28.5 cheap=8.5 over=0 dMedOther=37.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2855 zero_7 B=258422 L=8351 d=30.9 nb=0 neut=0 cmds=193 noFull=1 shQ=64605 | m=0.900 worth=28.5 cheap=8.5 over=0 dMedOther=37.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2860 zero_7 B=261445 L=8351 d=31.3 nb=0 neut=0 cmds=193 noFull=1 shQ=65361 | m=0.900 worth=28.9 cheap=8.5 over=0 dMedOther=37.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2865 zero_7 B=261445 L=8351 d=31.3 nb=0 neut=0 cmds=193 noFull=1 shQ=65361 | m=0.900 worth=28.9 cheap=8.5 over=0 dMedOther=37.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2870 zero_7 B=264503 L=8351 d=31.7 nb=0 neut=0 cmds=193 noFull=1 shQ=66125 | m=0.900 worth=29.2 cheap=8.5 over=0 dMedOther=38.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2875 zero_7 B=264503 L=8351 d=31.7 nb=0 neut=0 cmds=193 noFull=1 shQ=66125 | m=0.900 worth=29.2 cheap=8.5 over=0 dMedOther=38.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2880 zero_7 B=267597 L=8351 d=32.0 nb=0 neut=0 cmds=193 noFull=1 shQ=66899 | m=0.900 worth=28.8 cheap=8.5 over=0 dMedOther=35.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2885 zero_7 B=267597 L=8351 d=32.0 nb=0 neut=0 cmds=193 noFull=1 shQ=66899 | m=0.900 worth=28.8 cheap=8.5 over=0 dMedOther=35.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2890 zero_7 B=270727 L=8351 d=32.4 nb=0 neut=0 cmds=193 noFull=1 shQ=67681 | m=0.900 worth=29.2 cheap=8.5 over=0 dMedOther=35.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2895 zero_7 B=270727 L=8351 d=32.4 nb=0 neut=0 cmds=193 noFull=1 shQ=67681 | m=0.900 worth=29.2 cheap=8.5 over=0 dMedOther=35.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2900 zero_7 B=282245 L=8351 d=33.8 nb=0 neut=0 cmds=193 noFull=1 shQ=68506 | m=0.900 worth=30.4 cheap=8.5 over=0 dMedOther=37.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2905 zero_7 B=282245 L=8351 d=33.8 nb=0 neut=0 cmds=193 noFull=1 shQ=70561 | m=0.900 worth=30.4 cheap=8.5 over=0 dMedOther=37.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2910 zero_7 B=285547 L=8351 d=34.2 nb=0 neut=0 cmds=193 noFull=1 shQ=71386 | m=0.900 worth=30.8 cheap=8.5 over=0 dMedOther=37.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2915 zero_7 B=285547 L=8351 d=34.2 nb=0 neut=0 cmds=193 noFull=1 shQ=71386 | m=0.900 worth=30.8 cheap=8.5 over=0 dMedOther=37.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2920 zero_7 B=288887 L=8351 d=34.6 nb=0 neut=0 cmds=193 noFull=1 shQ=72221 | m=0.900 worth=31.1 cheap=8.5 over=0 dMedOther=37.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2925 zero_7 B=288887 L=8351 d=34.6 nb=0 neut=0 cmds=193 noFull=1 shQ=72221 | m=0.900 worth=31.1 cheap=8.5 over=0 dMedOther=37.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2930 zero_7 B=292266 L=8351 d=35.0 nb=0 neut=0 cmds=193 noFull=1 shQ=73066 | m=0.900 worth=31.5 cheap=8.5 over=0 dMedOther=38.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2935 zero_7 B=292266 L=8351 d=35.0 nb=0 neut=0 cmds=193 noFull=1 shQ=73066 | m=0.900 worth=31.5 cheap=8.5 over=0 dMedOther=37.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2940 zero_7 B=295685 L=8351 d=35.4 nb=0 neut=0 cmds=193 noFull=1 shQ=73921 | m=0.900 worth=31.9 cheap=8.5 over=0 dMedOther=38.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2945 zero_7 B=295685 L=8351 d=35.4 nb=0 neut=0 cmds=193 noFull=1 shQ=73921 | m=0.900 worth=31.9 cheap=8.5 over=0 dMedOther=38.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2950 zero_7 B=299144 L=8351 d=35.8 nb=0 neut=0 cmds=193 noFull=1 shQ=74786 | m=0.900 worth=32.2 cheap=8.5 over=0 dMedOther=38.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2955 zero_7 B=299144 L=8351 d=35.8 nb=0 neut=0 cmds=193 noFull=1 shQ=74786 | m=0.900 worth=32.2 cheap=8.5 over=0 dMedOther=38.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2960 zero_7 B=302643 L=8351 d=36.2 nb=0 neut=0 cmds=193 noFull=1 shQ=75660 | m=0.900 worth=32.6 cheap=8.5 over=0 dMedOther=39.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2965 zero_7 B=302643 L=8351 d=36.2 nb=0 neut=0 cmds=193 noFull=1 shQ=75660 | m=0.900 worth=32.6 cheap=8.5 over=0 dMedOther=38.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2970 zero_7 B=306183 L=8351 d=36.7 nb=0 neut=0 cmds=193 noFull=1 shQ=76545 | m=0.900 worth=33.0 cheap=8.5 over=0 dMedOther=39.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2975 zero_7 B=306183 L=8351 d=36.7 nb=0 neut=0 cmds=193 noFull=1 shQ=76545 | m=0.900 worth=33.0 cheap=8.5 over=0 dMedOther=39.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2980 zero_7 B=309765 L=8351 d=37.1 nb=0 neut=0 cmds=193 noFull=1 shQ=77441 | m=0.900 worth=33.4 cheap=8.5 over=0 dMedOther=39.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2985 zero_7 B=309765 L=8351 d=37.1 nb=0 neut=0 cmds=193 noFull=1 shQ=77441 | m=0.900 worth=33.4 cheap=8.5 over=0 dMedOther=39.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2990 zero_7 B=313389 L=8351 d=37.5 nb=0 neut=0 cmds=193 noFull=1 shQ=78347 | m=0.900 worth=33.8 cheap=8.5 over=0 dMedOther=40.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2995 zero_7 B=313389 L=8351 d=37.5 nb=0 neut=0 cmds=193 noFull=1 shQ=78347 | m=0.900 worth=33.8 cheap=8.5 over=0 dMedOther=40.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3000 zero_7 B=325406 L=8351 d=39.0 nb=0 neut=0 cmds=193 noFull=1 shQ=79298 | m=0.900 worth=35.1 cheap=8.5 over=0 dMedOther=41.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3005 zero_7 B=325406 L=8351 d=39.0 nb=0 neut=0 cmds=193 noFull=1 shQ=81351 | m=0.900 worth=35.1 cheap=8.5 over=0 dMedOther=41.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3010 zero_7 B=329213 L=8351 d=39.4 nb=0 neut=0 cmds=193 noFull=1 shQ=82303 | m=0.900 worth=35.5 cheap=8.5 over=0 dMedOther=42.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3015 zero_7 B=329213 L=8351 d=39.4 nb=0 neut=0 cmds=193 noFull=1 shQ=82303 | m=0.900 worth=35.5 cheap=8.5 over=0 dMedOther=42.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3020 zero_7 B=333064 L=8351 d=39.9 nb=0 neut=0 cmds=193 noFull=1 shQ=83266 | m=0.900 worth=35.9 cheap=8.5 over=0 dMedOther=42.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3025 zero_7 B=333064 L=8351 d=39.9 nb=0 neut=0 cmds=193 noFull=1 shQ=83266 | m=0.900 worth=35.9 cheap=8.5 over=0 dMedOther=42.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3030 zero_7 B=336960 L=8351 d=40.3 nb=0 neut=0 cmds=193 noFull=1 shQ=84240 | m=0.900 worth=36.3 cheap=8.5 over=0 dMedOther=43.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3035 zero_7 B=336960 L=8351 d=40.3 nb=0 neut=0 cmds=193 noFull=1 shQ=84240 | m=0.900 worth=36.3 cheap=8.5 over=0 dMedOther=43.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3040 zero_7 B=340902 L=8351 d=40.8 nb=0 neut=0 cmds=193 noFull=1 shQ=85225 | m=0.900 worth=36.7 cheap=8.5 over=0 dMedOther=43.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3045 zero_7 B=340902 L=8351 d=40.8 nb=0 neut=0 cmds=193 noFull=1 shQ=85225 | m=0.900 worth=36.7 cheap=8.5 over=0 dMedOther=43.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3050 zero_7 B=344890 L=8351 d=41.3 nb=0 neut=0 cmds=193 noFull=1 shQ=86222 | m=0.900 worth=37.2 cheap=8.5 over=0 dMedOther=44.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3055 zero_7 B=344890 L=8351 d=41.3 nb=0 neut=0 cmds=193 noFull=1 shQ=86222 | m=0.900 worth=37.2 cheap=8.5 over=0 dMedOther=44.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3060 zero_7 B=348925 L=8351 d=41.8 nb=0 neut=0 cmds=193 noFull=1 shQ=87231 | m=0.900 worth=37.6 cheap=8.5 over=0 dMedOther=44.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3065 zero_7 B=348925 L=8351 d=41.8 nb=0 neut=0 cmds=193 noFull=1 shQ=87231 | m=0.900 worth=37.6 cheap=8.5 over=0 dMedOther=44.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3070 zero_7 B=353007 L=8351 d=42.3 nb=0 neut=0 cmds=193 noFull=1 shQ=88251 | m=0.900 worth=38.0 cheap=8.5 over=0 dMedOther=45.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3075 zero_7 B=353007 L=8351 d=42.3 nb=0 neut=0 cmds=193 noFull=1 shQ=88251 | m=0.900 worth=38.0 cheap=8.5 over=0 dMedOther=45.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3080 zero_7 B=357137 L=8351 d=42.8 nb=0 neut=0 cmds=193 noFull=1 shQ=89284 | m=0.900 worth=38.5 cheap=8.5 over=0 dMedOther=46.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3085 zero_7 B=357137 L=8351 d=42.8 nb=0 neut=0 cmds=193 noFull=1 shQ=89284 | m=0.900 worth=38.5 cheap=8.5 over=0 dMedOther=46.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3090 zero_7 B=361315 L=8351 d=43.3 nb=0 neut=0 cmds=193 noFull=1 shQ=90328 | m=0.900 worth=38.9 cheap=8.5 over=0 dMedOther=46.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3095 zero_7 B=361315 L=8351 d=43.3 nb=0 neut=0 cmds=193 noFull=1 shQ=90328 | m=0.900 worth=38.9 cheap=8.5 over=0 dMedOther=46.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3100 zero_7 B=373893 L=8351 d=44.8 nb=0 neut=0 cmds=193 noFull=1 shQ=91421 | m=0.900 worth=40.3 cheap=8.5 over=0 dMedOther=47.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3105 zero_7 B=373893 L=8351 d=44.8 nb=0 neut=0 cmds=193 noFull=1 shQ=93473 | m=0.900 worth=40.3 cheap=8.5 over=0 dMedOther=47.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3110 zero_7 B=378267 L=8351 d=45.3 nb=0 neut=0 cmds=193 noFull=1 shQ=94566 | m=0.900 worth=40.8 cheap=8.5 over=0 dMedOther=48.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3115 zero_7 B=378267 L=8351 d=45.3 nb=0 neut=0 cmds=193 noFull=1 shQ=94566 | m=0.900 worth=40.8 cheap=8.5 over=0 dMedOther=48.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3120 zero_7 B=382692 L=8351 d=45.8 nb=0 neut=0 cmds=193 noFull=1 shQ=95673 | m=0.900 worth=41.2 cheap=8.5 over=0 dMedOther=48.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3125 zero_7 B=382692 L=8351 d=45.8 nb=0 neut=0 cmds=193 noFull=1 shQ=95673 | m=0.900 worth=41.2 cheap=8.5 over=0 dMedOther=48.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3130 zero_7 B=387169 L=8351 d=46.4 nb=0 neut=0 cmds=193 noFull=1 shQ=96792 | m=0.900 worth=41.7 cheap=8.5 over=0 dMedOther=49.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3135 zero_7 B=387169 L=8351 d=46.4 nb=0 neut=0 cmds=193 noFull=1 shQ=96792 | m=0.900 worth=41.7 cheap=8.5 over=0 dMedOther=49.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3140 zero_7 B=391698 L=8351 d=46.9 nb=0 neut=0 cmds=193 noFull=1 shQ=97924 | m=0.900 worth=42.2 cheap=8.5 over=0 dMedOther=49.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3145 zero_7 B=391698 L=8351 d=46.9 nb=0 neut=0 cmds=193 noFull=1 shQ=97924 | m=0.900 worth=42.2 cheap=8.5 over=0 dMedOther=49.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3150 zero_7 B=396280 L=8351 d=47.5 nb=0 neut=0 cmds=193 noFull=1 shQ=99070 | m=0.900 worth=42.7 cheap=8.5 over=0 dMedOther=50.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3155 zero_7 B=396280 L=8351 d=47.5 nb=0 neut=0 cmds=193 noFull=1 shQ=99070 | m=0.900 worth=42.7 cheap=8.5 over=0 dMedOther=50.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3160 zero_7 B=400916 L=8351 d=48.0 nb=0 neut=0 cmds=193 noFull=1 shQ=100229 | m=0.900 worth=43.2 cheap=8.5 over=0 dMedOther=51.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3165 zero_7 B=400916 L=8351 d=48.0 nb=0 neut=0 cmds=193 noFull=1 shQ=100229 | m=0.900 worth=43.2 cheap=8.5 over=0 dMedOther=51.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3170 zero_7 B=405606 L=8351 d=48.6 nb=0 neut=0 cmds=193 noFull=1 shQ=101401 | m=0.900 worth=43.7 cheap=8.5 over=0 dMedOther=51.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3175 zero_7 B=405606 L=8351 d=48.6 nb=0 neut=0 cmds=193 noFull=1 shQ=101401 | m=0.900 worth=43.7 cheap=8.5 over=0 dMedOther=51.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3180 zero_7 B=410351 L=8351 d=49.1 nb=0 neut=0 cmds=193 noFull=1 shQ=102587 | m=0.900 worth=44.2 cheap=8.5 over=0 dMedOther=52.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3185 zero_7 B=410351 L=8351 d=49.1 nb=0 neut=0 cmds=193 noFull=1 shQ=102587 | m=0.900 worth=44.2 cheap=8.5 over=0 dMedOther=51.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3190 zero_7 B=415152 L=8351 d=49.7 nb=0 neut=0 cmds=193 noFull=1 shQ=103788 | m=0.900 worth=44.7 cheap=8.5 over=0 dMedOther=52.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3195 zero_7 B=415152 L=8351 d=49.7 nb=0 neut=0 cmds=193 noFull=1 shQ=103788 | m=0.900 worth=44.7 cheap=8.5 over=0 dMedOther=51.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3200 zero_7 B=428360 L=8351 d=51.3 nb=0 neut=0 cmds=193 noFull=1 shQ=105040 | m=0.900 worth=46.2 cheap=8.5 over=0 dMedOther=53.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3205 zero_7 B=428360 L=8351 d=51.3 nb=0 neut=0 cmds=193 noFull=1 shQ=107090 | m=0.900 worth=46.2 cheap=8.5 over=0 dMedOther=52.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3210 zero_7 B=433371 L=8351 d=51.9 nb=0 neut=0 cmds=193 noFull=1 shQ=108342 | m=0.900 worth=46.7 cheap=8.5 over=0 dMedOther=52.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3215 zero_7 B=433371 L=8351 d=51.9 nb=0 neut=0 cmds=193 noFull=1 shQ=108342 | m=0.900 worth=46.7 cheap=8.5 over=0 dMedOther=51.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3220 zero_7 B=438441 L=8351 d=52.5 nb=0 neut=0 cmds=193 noFull=1 shQ=109610 | m=0.900 worth=47.3 cheap=8.5 over=0 dMedOther=50.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3225 zero_7 B=438441 L=8351 d=52.5 nb=0 neut=0 cmds=193 noFull=1 shQ=109610 | m=0.900 worth=47.3 cheap=8.5 over=0 dMedOther=50.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3230 zero_7 B=443570 L=8351 d=53.1 nb=0 neut=0 cmds=193 noFull=1 shQ=110892 | m=0.900 worth=47.8 cheap=8.5 over=0 dMedOther=50.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3235 zero_7 B=443570 L=8351 d=53.1 nb=0 neut=0 cmds=193 noFull=1 shQ=110892 | m=0.900 worth=47.8 cheap=8.5 over=0 dMedOther=55.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3240 zero_7 B=448759 L=8351 d=53.7 nb=0 neut=0 cmds=193 noFull=1 shQ=112189 | m=0.900 worth=48.4 cheap=8.5 over=0 dMedOther=55.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3245 zero_7 B=448759 L=8351 d=53.7 nb=0 neut=0 cmds=193 noFull=1 shQ=112189 | m=0.900 worth=48.4 cheap=8.5 over=0 dMedOther=53.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3250 zero_7 B=454009 L=8351 d=54.4 nb=0 neut=0 cmds=193 noFull=1 shQ=113502 | m=0.900 worth=48.9 cheap=8.5 over=0 dMedOther=54.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3255 zero_7 B=454009 L=8351 d=54.4 nb=0 neut=0 cmds=193 noFull=1 shQ=113502 | m=0.900 worth=48.9 cheap=8.5 over=0 dMedOther=54.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3260 zero_7 B=459320 L=8351 d=55.0 nb=0 neut=0 cmds=193 noFull=1 shQ=114830 | m=0.900 worth=49.5 cheap=8.5 over=0 dMedOther=55.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3265 zero_7 B=459320 L=8351 d=55.0 nb=0 neut=0 cmds=193 noFull=1 shQ=114830 | m=0.900 worth=49.5 cheap=8.5 over=0 dMedOther=55.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3270 zero_7 B=464694 L=8351 d=55.6 nb=0 neut=0 cmds=193 noFull=1 shQ=116173 | m=0.900 worth=50.1 cheap=8.5 over=0 dMedOther=55.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3275 zero_7 B=464694 L=8351 d=55.6 nb=0 neut=0 cmds=193 noFull=1 shQ=116173 | m=0.900 worth=50.1 cheap=8.5 over=0 dMedOther=55.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3280 zero_7 B=470130 L=8351 d=56.3 nb=0 neut=0 cmds=193 noFull=1 shQ=117532 | m=0.900 worth=50.7 cheap=8.5 over=0 dMedOther=56.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3285 zero_7 B=470130 L=8351 d=56.3 nb=0 neut=0 cmds=193 noFull=1 shQ=117532 | m=0.900 worth=50.7 cheap=8.5 over=0 dMedOther=52.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3290 zero_7 B=475630 L=8351 d=57.0 nb=0 neut=0 cmds=193 noFull=1 shQ=118907 | m=0.900 worth=51.3 cheap=8.5 over=0 dMedOther=52.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3295 zero_7 B=475630 L=8351 d=57.0 nb=0 neut=0 cmds=193 noFull=1 shQ=118907 | m=0.900 worth=51.3 cheap=8.5 over=0 dMedOther=52.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3300 zero_7 B=489545 L=8351 d=58.6 nb=0 neut=0 cmds=193 noFull=1 shQ=120338 | m=0.900 worth=52.8 cheap=8.5 over=0 dMedOther=54.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3305 zero_7 B=489545 L=8351 d=58.6 nb=0 neut=0 cmds=193 noFull=1 shQ=122386 | m=0.900 worth=52.8 cheap=8.5 over=0 dMedOther=54.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3310 zero_7 B=495272 L=8351 d=59.3 nb=0 neut=0 cmds=193 noFull=1 shQ=123818 | m=0.900 worth=53.4 cheap=8.5 over=0 dMedOther=55.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3315 zero_7 B=495272 L=8351 d=59.3 nb=0 neut=0 cmds=193 noFull=1 shQ=123818 | m=0.900 worth=53.4 cheap=8.5 over=0 dMedOther=55.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3320 zero_7 B=501066 L=8351 d=60.0 nb=0 neut=0 cmds=194 noFull=1 shQ=125266 | m=0.900 worth=54.0 cheap=8.5 over=0 dMedOther=56.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=273 → [APEX] sora_w#29[T1]（约 134074 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3325 zero_7 B=501066 L=8351 d=60.0 nb=0 neut=0 cmds=194 noFull=1 shQ=125266 | m=0.900 worth=54.0 cheap=8.5 over=0 dMedOther=56.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3330 zero_7 B=506928 L=8351 d=60.7 nb=0 neut=0 cmds=194 noFull=1 shQ=126732 | m=0.900 worth=54.6 cheap=8.5 over=0 dMedOther=56.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3335 zero_7 B=339603 L=8351 d=40.7 nb=0 neut=0 cmds=194 noFull=1 shQ=84900 | m=0.900 worth=43.4 cheap=8.5 over=0 dMedOther=56.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3340 zero_7 B=343576 L=8351 d=41.1 nb=0 neut=0 cmds=194 noFull=1 shQ=85894 | m=0.900 worth=42.7 cheap=8.5 over=0 dMedOther=55.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3345 zero_7 B=343576 L=8351 d=41.1 nb=0 neut=0 cmds=194 noFull=1 shQ=85894 | m=0.900 worth=42.7 cheap=8.5 over=0 dMedOther=55.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3350 zero_7 B=347595 L=8351 d=41.6 nb=0 neut=0 cmds=194 noFull=1 shQ=86898 | m=0.900 worth=43.3 cheap=8.5 over=0 dMedOther=56.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3355 zero_7 B=347595 L=8351 d=41.6 nb=0 neut=0 cmds=194 noFull=1 shQ=86898 | m=0.900 worth=41.9 cheap=8.5 over=0 dMedOther=54.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3360 zero_7 B=351661 L=8351 d=42.1 nb=0 neut=0 cmds=194 noFull=1 shQ=87915 | m=0.900 worth=42.4 cheap=8.5 over=0 dMedOther=55.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3365 zero_7 B=351661 L=8351 d=42.1 nb=0 neut=0 cmds=194 noFull=1 shQ=87915 | m=0.900 worth=42.4 cheap=8.5 over=0 dMedOther=55.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3370 zero_7 B=355775 L=8351 d=42.6 nb=0 neut=0 cmds=194 noFull=1 shQ=88943 | m=0.900 worth=42.9 cheap=8.5 over=0 dMedOther=56.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3375 zero_7 B=355775 L=8351 d=42.6 nb=0 neut=0 cmds=194 noFull=1 shQ=88943 | m=0.900 worth=42.9 cheap=8.5 over=0 dMedOther=56.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3380 zero_7 B=359937 L=8351 d=43.1 nb=0 neut=0 cmds=194 noFull=1 shQ=89984 | m=0.900 worth=43.3 cheap=8.5 over=0 dMedOther=56.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3385 zero_7 B=359937 L=8351 d=43.1 nb=0 neut=0 cmds=194 noFull=1 shQ=89984 | m=0.900 worth=43.3 cheap=8.5 over=0 dMedOther=56.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3390 zero_7 B=364148 L=8351 d=43.6 nb=0 neut=0 cmds=194 noFull=1 shQ=91037 | m=0.900 worth=43.8 cheap=8.5 over=0 dMedOther=57.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3395 zero_7 B=364148 L=8351 d=43.6 nb=0 neut=0 cmds=194 noFull=1 shQ=91037 | m=0.900 worth=45.2 cheap=8.5 over=0 dMedOther=59.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3400 zero_7 B=376759 L=8351 d=45.1 nb=0 neut=0 cmds=194 noFull=1 shQ=92139 | m=0.900 worth=46.6 cheap=8.5 over=0 dMedOther=60.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3405 zero_7 B=376759 L=8351 d=45.1 nb=0 neut=0 cmds=194 noFull=1 shQ=94189 | m=0.900 worth=46.6 cheap=8.5 over=0 dMedOther=60.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3410 zero_7 B=381167 L=8351 d=45.6 nb=0 neut=0 cmds=194 noFull=1 shQ=95291 | m=0.900 worth=47.2 cheap=8.5 over=0 dMedOther=61.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3415 zero_7 B=381167 L=8351 d=45.6 nb=0 neut=0 cmds=194 noFull=1 shQ=95291 | m=0.900 worth=47.2 cheap=8.5 over=0 dMedOther=61.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3420 zero_7 B=385626 L=8351 d=46.2 nb=0 neut=0 cmds=194 noFull=1 shQ=96406 | m=0.900 worth=47.8 cheap=8.5 over=0 dMedOther=62.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3425 zero_7 B=385626 L=8351 d=46.2 nb=0 neut=0 cmds=194 noFull=1 shQ=96406 | m=0.900 worth=47.8 cheap=8.5 over=0 dMedOther=62.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3430 zero_7 B=390137 L=8351 d=46.7 nb=0 neut=0 cmds=194 noFull=1 shQ=97534 | m=0.900 worth=48.5 cheap=8.5 over=0 dMedOther=63.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3435 zero_7 B=390137 L=8351 d=46.7 nb=0 neut=0 cmds=194 noFull=1 shQ=97534 | m=0.900 worth=48.5 cheap=8.5 over=0 dMedOther=63.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3440 zero_7 B=394701 L=8351 d=47.3 nb=0 neut=0 cmds=194 noFull=1 shQ=98675 | m=0.900 worth=49.1 cheap=8.5 over=0 dMedOther=64.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3445 zero_7 B=394701 L=8351 d=47.3 nb=0 neut=0 cmds=194 noFull=1 shQ=98675 | m=0.900 worth=49.1 cheap=8.5 over=0 dMedOther=64.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3450 zero_7 B=399319 L=8351 d=47.8 nb=0 neut=0 cmds=194 noFull=1 shQ=99829 | m=0.900 worth=49.8 cheap=8.5 over=0 dMedOther=65.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3455 zero_7 B=399319 L=8351 d=47.8 nb=0 neut=0 cmds=194 noFull=1 shQ=99829 | m=0.900 worth=49.8 cheap=8.5 over=0 dMedOther=65.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3460 zero_7 B=403991 L=8351 d=48.4 nb=0 neut=0 cmds=194 noFull=1 shQ=100997 | m=0.900 worth=50.1 cheap=8.5 over=0 dMedOther=65.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3465 zero_7 B=403991 L=8351 d=48.4 nb=0 neut=0 cmds=194 noFull=1 shQ=100997 | m=0.900 worth=50.1 cheap=8.5 over=0 dMedOther=65.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3470 zero_7 B=408717 L=8351 d=48.9 nb=0 neut=0 cmds=194 noFull=1 shQ=102179 | m=0.900 worth=50.8 cheap=8.5 over=0 dMedOther=66.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3475 zero_7 B=408717 L=8351 d=48.9 nb=0 neut=0 cmds=194 noFull=1 shQ=102179 | m=0.900 worth=48.0 cheap=8.5 over=0 dMedOther=62.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3480 zero_7 B=413498 L=8351 d=49.5 nb=0 neut=0 cmds=194 noFull=1 shQ=103374 | m=0.900 worth=48.6 cheap=8.5 over=0 dMedOther=63.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3485 zero_7 B=413498 L=8351 d=49.5 nb=0 neut=0 cmds=194 noFull=1 shQ=103374 | m=0.900 worth=44.6 cheap=8.5 over=0 dMedOther=56.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3490 zero_7 B=418335 L=8351 d=50.1 nb=0 neut=0 cmds=194 noFull=1 shQ=104583 | m=0.900 worth=45.1 cheap=8.5 over=0 dMedOther=53.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3495 zero_7 B=418335 L=8351 d=50.1 nb=0 neut=0 cmds=194 noFull=1 shQ=104583 | m=0.900 worth=45.1 cheap=8.5 over=0 dMedOther=52.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3500 zero_7 B=431580 L=8351 d=51.7 nb=0 neut=0 cmds=194 noFull=1 shQ=105845 | m=0.900 worth=46.5 cheap=8.5 over=0 dMedOther=52.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3505 zero_7 B=431580 L=8351 d=51.7 nb=0 neut=0 cmds=194 noFull=1 shQ=107895 | m=0.900 worth=46.5 cheap=8.5 over=0 dMedOther=50.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3510 zero_7 B=436629 L=8351 d=52.3 nb=0 neut=0 cmds=194 noFull=1 shQ=109157 | m=0.900 worth=47.1 cheap=8.5 over=0 dMedOther=51.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3515 zero_7 B=436629 L=8351 d=52.3 nb=0 neut=0 cmds=194 noFull=1 shQ=109157 | m=0.900 worth=47.1 cheap=8.5 over=0 dMedOther=51.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3520 zero_7 B=441737 L=8351 d=52.9 nb=0 neut=0 cmds=194 noFull=1 shQ=110434 | m=0.900 worth=47.6 cheap=8.5 over=0 dMedOther=52.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3525 zero_7 B=441737 L=8351 d=52.9 nb=0 neut=0 cmds=194 noFull=1 shQ=110434 | m=0.900 worth=47.6 cheap=8.5 over=0 dMedOther=52.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3530 zero_7 B=446905 L=8351 d=53.5 nb=0 neut=0 cmds=194 noFull=1 shQ=111726 | m=0.900 worth=48.2 cheap=8.5 over=0 dMedOther=52.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3535 zero_7 B=446905 L=8351 d=53.5 nb=0 neut=0 cmds=194 noFull=1 shQ=111726 | m=0.900 worth=48.2 cheap=8.5 over=0 dMedOther=52.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3540 zero_7 B=452133 L=8351 d=54.1 nb=0 neut=0 cmds=194 noFull=1 shQ=113033 | m=0.900 worth=48.7 cheap=8.5 over=0 dMedOther=53.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3545 zero_7 B=452133 L=8351 d=54.1 nb=0 neut=0 cmds=194 noFull=1 shQ=113033 | m=0.900 worth=48.8 cheap=8.5 over=0 dMedOther=63.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3550 zero_7 B=457422 L=8351 d=54.8 nb=0 neut=0 cmds=194 noFull=1 shQ=114355 | m=0.900 worth=49.3 cheap=8.5 over=0 dMedOther=63.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3555 zero_7 B=457422 L=8351 d=54.8 nb=0 neut=0 cmds=194 noFull=1 shQ=114355 | m=0.900 worth=49.3 cheap=8.5 over=0 dMedOther=62.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3560 zero_7 B=462773 L=8351 d=55.4 nb=0 neut=0 cmds=194 noFull=1 shQ=115693 | m=0.900 worth=49.9 cheap=8.5 over=0 dMedOther=62.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3565 zero_7 B=462773 L=8351 d=55.4 nb=0 neut=0 cmds=194 noFull=1 shQ=115693 | m=0.900 worth=49.9 cheap=8.5 over=0 dMedOther=55.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3570 zero_7 B=468187 L=8351 d=56.1 nb=0 neut=0 cmds=194 noFull=1 shQ=117046 | m=0.900 worth=50.5 cheap=8.5 over=0 dMedOther=55.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3575 zero_7 B=468187 L=8351 d=56.1 nb=0 neut=0 cmds=194 noFull=1 shQ=117046 | m=0.900 worth=50.5 cheap=8.5 over=0 dMedOther=55.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3580 zero_7 B=473664 L=8351 d=56.7 nb=0 neut=0 cmds=194 noFull=1 shQ=118416 | m=0.900 worth=51.0 cheap=8.5 over=0 dMedOther=56.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3585 zero_7 B=473664 L=8351 d=56.7 nb=0 neut=0 cmds=194 noFull=1 shQ=118416 | m=0.900 worth=51.0 cheap=8.5 over=0 dMedOther=56.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3590 zero_7 B=479205 L=8351 d=57.4 nb=0 neut=0 cmds=194 noFull=1 shQ=119801 | m=0.900 worth=51.6 cheap=8.5 over=0 dMedOther=57.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3595 zero_7 B=479205 L=8351 d=57.4 nb=0 neut=0 cmds=194 noFull=1 shQ=119801 | m=0.900 worth=51.6 cheap=8.5 over=0 dMedOther=54.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3600 zero_7 B=493162 L=8351 d=59.1 nb=0 neut=0 cmds=194 noFull=1 shQ=121243 | m=0.900 worth=53.1 cheap=8.5 over=0 dMedOther=55.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3605 zero_7 B=493162 L=8351 d=59.1 nb=0 neut=0 cmds=194 noFull=1 shQ=123290 | m=0.900 worth=53.1 cheap=8.5 over=0 dMedOther=60.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3610 zero_7 B=498931 L=8351 d=59.7 nb=0 neut=0 cmds=194 noFull=1 shQ=124732 | m=0.900 worth=53.8 cheap=8.5 over=0 dMedOther=61.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3615 zero_7 B=498931 L=8351 d=59.7 nb=0 neut=0 cmds=194 noFull=1 shQ=124732 | m=0.900 worth=53.8 cheap=8.5 over=0 dMedOther=61.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3620 zero_7 B=504768 L=8351 d=60.4 nb=0 neut=0 cmds=195 noFull=1 shQ=126192 | m=0.900 worth=54.4 cheap=8.5 over=0 dMedOther=62.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=278 → [APEX] sora_w#29[T1]（约 137529 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3625 zero_7 B=504768 L=8351 d=60.4 nb=0 neut=0 cmds=195 noFull=1 shQ=126192 | m=0.900 worth=54.4 cheap=8.5 over=0 dMedOther=61.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3630 zero_7 B=510673 L=8351 d=61.2 nb=0 neut=0 cmds=195 noFull=1 shQ=127668 | m=0.900 worth=55.0 cheap=8.5 over=0 dMedOther=69.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3635 zero_7 B=339618 L=8351 d=40.7 nb=0 neut=0 cmds=195 noFull=1 shQ=84904 | m=0.900 worth=52.8 cheap=8.5 over=0 dMedOther=69.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3640 zero_7 B=343591 L=8351 d=41.1 nb=0 neut=0 cmds=195 noFull=1 shQ=85897 | m=0.900 worth=53.5 cheap=8.5 over=0 dMedOther=69.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3645 zero_7 B=343591 L=8351 d=41.1 nb=0 neut=0 cmds=195 noFull=1 shQ=85897 | m=0.900 worth=53.5 cheap=8.5 over=0 dMedOther=69.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3650 zero_7 B=347611 L=8351 d=41.6 nb=0 neut=0 cmds=195 noFull=1 shQ=86902 | m=0.900 worth=54.2 cheap=8.5 over=0 dMedOther=70.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3655 zero_7 B=347611 L=8351 d=41.6 nb=0 neut=0 cmds=195 noFull=1 shQ=86902 | m=0.900 worth=54.2 cheap=8.5 over=0 dMedOther=70.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3660 zero_7 B=351678 L=8351 d=42.1 nb=0 neut=0 cmds=195 noFull=1 shQ=87919 | m=0.900 worth=54.8 cheap=8.5 over=0 dMedOther=71.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3665 zero_7 B=351678 L=8351 d=42.1 nb=0 neut=0 cmds=195 noFull=1 shQ=87919 | m=0.900 worth=54.8 cheap=8.5 over=0 dMedOther=71.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3670 zero_7 B=355792 L=8351 d=42.6 nb=0 neut=0 cmds=195 noFull=1 shQ=88948 | m=0.900 worth=55.5 cheap=8.5 over=0 dMedOther=72.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3675 zero_7 B=355792 L=8351 d=42.6 nb=0 neut=0 cmds=195 noFull=1 shQ=88948 | m=0.900 worth=55.4 cheap=8.5 over=0 dMedOther=72.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3680 zero_7 B=359954 L=8351 d=43.1 nb=0 neut=0 cmds=195 noFull=1 shQ=89988 | m=0.900 worth=55.5 cheap=8.5 over=0 dMedOther=72.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3685 zero_7 B=359954 L=8351 d=43.1 nb=0 neut=0 cmds=195 noFull=1 shQ=89988 | m=0.900 worth=54.3 cheap=8.5 over=0 dMedOther=70.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3690 zero_7 B=364165 L=8351 d=43.6 nb=0 neut=0 cmds=195 noFull=1 shQ=91041 | m=0.900 worth=46.5 cheap=8.5 over=0 dMedOther=60.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3695 zero_7 B=364165 L=8351 d=43.6 nb=0 neut=0 cmds=195 noFull=1 shQ=91041 | m=0.900 worth=45.6 cheap=8.5 over=0 dMedOther=59.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3700 zero_7 B=376776 L=8351 d=45.1 nb=0 neut=0 cmds=195 noFull=1 shQ=92143 | m=0.900 worth=45.8 cheap=8.5 over=0 dMedOther=59.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令

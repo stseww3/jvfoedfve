@@ -1,0 +1,5 @@
+B021: 干净模拟器 vs 真引擎重放：全体真人在采样拍一致到 t=2970，没有不同
+        我方号分叉后的最大偏差（兵力相对值@拍，领土格数@拍）：没有
+        我方号逐拍第一处不同：没有
+B021: 影子重演到 t=3000，耗时 17.4s；日志快照核对 398/398；策略 c110，g.online=true
+影子的 isNoFullSend 置真拍（按代码 L3831-3843 的条件在真实余额轨迹上演化；影子的指令不执行，余额下跌只来自录像里真实执行的指令和挨打）：Takeda@803，Mataram@886，Kasparov@462，Ayutthaya@773，Macedon@1022，BlackRock@763，Levi@786，Marlborough@462，KebabRemover@560，Prussia@896，Transvaal@1092，Abyssinia@899，Streltsy@770｜始终为假：无

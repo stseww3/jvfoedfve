@@ -1,0 +1,52 @@
+# A091 t=300~1499 身边既没有内置 AI、也没有无主地的决策拍：开局逻辑为什么不打贴着的敌方真人（策略 v27-team-c116-vb.js；Policy.act → super.act（V13 Style.act）→ pickTarget → allow / floorFor）
+# floorAt 复刻核对：448 次里不一致 0 次
+# 生效参数：preyKill=1 preyFloor=0.5 personMax=0 idleCap=1.25 minSend=0.2141 sendFrac=0.746 feeK=4 reserve=1 cRef=60 keepCap=1 kDef=4 capMin=0.1 denW=1 defCap=1 ref=0 earlyEnd=513 coreFrom=1500 dpEnd=1500
+alex_k: 这样的决策拍 82（t=840~1245）；其中有指令 2；余额 14031→77214，领土 3046→3046
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）: 72 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是我方队友: 8 拍
+    最便宜的敌方真人邻居 [IND]Magadha Empire#6：80 拍，每格 13.3~57.5 兵；它 3572 格 / 13118 兵 → 4253 格 / 73825 兵
+riku_x: 这样的决策拍 105（t=975~1495）；其中有指令 0；余额 10403→159747，领土 3950→3950
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）: 105 拍
+    最便宜的敌方真人邻居 LostDog#21：105 拍，每格 12.2~54.8 兵；它 5585 格 / 17757 兵 → 7542 格 / 124499 兵
+ryan_m: 这样的决策拍 49（t=980~1220）；其中有指令 1；余额 15065→67044，领土 5448→5448
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）: 48 拍
+    最便宜的敌方真人邻居 LostDog#21：48 拍，每格 12.6~23.6 兵；它 5590 格 / 18456 兵 → 7542 格 / 49445 兵
+talon5: 这样的决策拍 58（t=1210~1495）；其中有指令 0；余额 66752→174324，领土 10815→10815
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）: 44 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed：按邻居的另一个邻居里最低的单价: 14 拍
+    最便宜的敌方真人邻居 [f] Mean Little Girl#30：58 拍，每格 18.4~27.8 兵；它 13374 格 / 72494 兵 → 20796 格 / 145803 兵
+leo_tx: 这样的决策拍 58（t=1210~1495）；其中有指令 0；余额 39420→105749，领土 7364→7364
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）: 58 拍
+    最便宜的敌方真人邻居 LostDog#21：58 拍，每格 22.3~54.8 兵；它 7394 格 / 47878 兵 → 7542 格 / 124499 兵
+noah88: 这样的决策拍 29（t=1265~1495）；其中有指令 0；余额 44549→136923，领土 8724→8724
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）: 29 拍
+    最便宜的敌方真人邻居 [f] Mean Little Girl#30：29 拍，每格 18.4~27.8 兵；它 14139 格 / 72359 兵 → 20796 格 / 145803 兵
+sora_w: 这样的决策拍 32（t=1340~1495）；其中有指令 0；余额 71249→184305，领土 3654→3654
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）: 32 拍
+    最便宜的敌方真人邻居 [IND]Magadha Empire#6：32 拍，每格 79.8~114.5 兵；它 4253 格 / 103498 兵 → 4265 格 / 146220 兵
+zexos1: 这样的决策拍 25（t=1375~1495）；其中有指令 0；余额 32686→64181，领土 5314→5314
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：价格留底（reserve×100×领土×min(1, 单价/cRef)）: 25 拍
+    最便宜的敌方真人邻居 LostDog#21：25 拍，每格 38.3~54.8 兵；它 7542 格 / 85462 兵 → 7542 格 / 124499 兵
+kaito9: 这样的决策拍 13（t=1435~1495）；其中有指令 0；余额 79495→91755，领土 9237→9237
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）: 13 拍
+    最便宜的敌方真人邻居 Player 14#23：13 拍，每格 12.6~13.6 兵；它 22374 格 / 74358 兵 → 23652 格 / 85826 兵
+# 合计：决策拍 451，有指令 3；零指令按原因：让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)） 327；让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高） 74；让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：价格留底（reserve×100×领土×min(1, 单价/cRef)） 25；让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed：按邻居的另一个邻居里最低的单价 14；让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是我方队友 8
+# 例子（每 100 拍取一条）
+  t=1000 ryan_m B=29712 L=5448（密度 5.5）| 最便宜的敌方真人 LostDog#21[T3]（5591 格 / 26609 兵）每格 17.2 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 78210（floorFor0 78210、safeP×peopleSafe 0、dpKeep 10358、peopleFloor 0、floorAt 156420〔价格留底 156420、ref×邻居均值 0、defenseNeed 38612、keepCap 封顶 544800〕）、可用 -48498、吃光要 55820
+  t=1000 alex_k B=30327 L=3046（密度 10.0）| 最便宜的敌方真人 [IND]Magadha Empire#6[T1]（4227 格 / 28930 兵）每格 23.9 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 60666（floorFor0 60666、safeP×peopleSafe 0、dpKeep 13686、peopleFloor 0、floorAt 121333〔价格留底 121333、ref×邻居均值 0、defenseNeed 114832、keepCap 封顶 304600〕）、可用 -30339、吃光要 57913
+  t=1000 riku_x B=28681 L=3950（密度 7.3）| 最便宜的敌方真人 LostDog#21[T3]（5591 格 / 26609 兵）每格 17.2 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 56705（floorFor0 56705、safeP×peopleSafe 0、dpKeep 11620、peopleFloor 0、floorAt 113410〔价格留底 113410、ref×邻居均值 0、defenseNeed 38612、keepCap 封顶 395000〕）、可用 -28024、吃光要 55820
+  t=1100 ryan_m B=41206 L=5448（密度 7.6）| 最便宜的敌方真人 LostDog#21[T3]（6147 格 / 36003 兵）每格 20.7 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 94168（floorFor0 94168、safeP×peopleSafe 0、dpKeep 15635、peopleFloor 0、floorAt 188336〔价格留底 188336、ref×邻居均值 0、defenseNeed 33176、keepCap 封顶 544800〕）、可用 -52962、吃光要 73399
+  t=1100 alex_k B=46658 L=3046（密度 15.3）| 最便宜的敌方真人 [IND]Magadha Empire#6[T1]（4251 格 / 45203 兵）每格 36.0 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 91445（floorFor0 91445、safeP×peopleSafe 0、dpKeep 22828、peopleFloor 0、floorAt 182890〔价格留底 182890、ref×邻居均值 0、defenseNeed 78280、keepCap 封顶 304600〕）、可用 -44787、吃光要 86957
+  t=1100 riku_x B=45194 L=3950（密度 11.4）| 最便宜的敌方真人 LostDog#21[T3]（6147 格 / 36003 兵）每格 20.7 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 68275（floorFor0 68275、safeP×peopleSafe 0、dpKeep 16898、peopleFloor 0、floorAt 136550〔价格留底 136550、ref×邻居均值 0、defenseNeed 33176、keepCap 封顶 395000〕）、可用 -23081、吃光要 73399
+  t=1200 ryan_m B=62946 L=5448（密度 11.6）| 最便宜的敌方真人 LostDog#21[T3]（7176 格 / 46385 兵）每格 22.7 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 102967（floorFor0 102967、safeP×peopleSafe 0、dpKeep 21468、peopleFloor 0、floorAt 205933〔价格留底 205933、ref×邻居均值 0、defenseNeed 76041、keepCap 封顶 544800〕）、可用 -40021、吃光要 93439
+  t=1200 alex_k B=68154 L=3046（密度 22.4）| 最便宜的敌方真人 [IND]Magadha Empire#6[T1]（4253 格 / 65163 兵）每格 51.0 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 129488（floorFor0 129488、safeP×peopleSafe 0、dpKeep 34042、peopleFloor 0、floorAt 258977〔价格留底 258977、ref×邻居均值 0、defenseNeed 185492、keepCap 封顶 304600〕）、可用 -61334、吃光要 122529
+  t=1200 riku_x B=67015 L=3950（密度 17.0）| 最便宜的敌方真人 LostDog#21[T3]（7176 格 / 46385 兵）每格 22.7 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 74655（floorFor0 74655、safeP×peopleSafe 0、dpKeep 22730、peopleFloor 0、floorAt 149309〔价格留底 149309、ref×邻居均值 0、defenseNeed 73228、keepCap 封顶 395000〕）、可用 -7640、吃光要 93439
+  t=1300 talon5 B=98371 L=10815（密度 9.1）| 最便宜的敌方真人 [f] Mean Little Girl#30[T1]（15031 格 / 96422 兵）每格 22.5 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 203018（floorFor0 203018、safeP×peopleSafe 0、dpKeep 45056、peopleFloor 0、floorAt 406035〔价格留底 406035、ref×邻居均值 0、defenseNeed 225621、keepCap 封顶 1081500〕）、可用 -104647、吃光要 194414
+  t=1300 riku_x B=94684 L=3950（密度 24.0）| 最便宜的敌方真人 LostDog#21[T3]（7542 格 / 70395 兵）每格 31.9 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 104893（floorFor0 104893、safeP×peopleSafe 0、dpKeep 36219、peopleFloor 0、floorAt 209787〔价格留底 209787、ref×邻居均值 0、defenseNeed 107704、keepCap 封顶 395000〕）、可用 -10209、吃光要 136790
+  t=1300 noah88 B=77092 L=8724（密度 8.8）| 最便宜的敌方真人 [f] Mean Little Girl#30[T1]（15031 格 / 96422 兵）每格 22.5 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）；底线 436200（floorFor0 436200、safeP×peopleSafe 0、dpKeep 46818、peopleFloor 0、floorAt 872400〔价格留底 327531、ref×邻居均值 0、defenseNeed 872400、keepCap 封顶 872400〕）、可用 -359108、吃光要 194414
+  t=1300 leo_tx B=59067 L=7364（密度 8.0）| 最便宜的敌方真人 LostDog#21[T3]（7542 格 / 70395 兵）每格 31.9 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 195553（floorFor0 195553、safeP×peopleSafe 0、dpKeep 33342、peopleFloor 0、floorAt 391106〔价格留底 391106、ref×邻居均值 0、defenseNeed 153629、keepCap 封顶 736400〕）、可用 -136486、吃光要 136790
+  t=1400 zexos1 B=51546 L=5314（密度 9.7）| 最便宜的敌方真人 LostDog#21[T3]（7542 格 / 99987 兵）每格 44.4 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 393425（floorFor0 393425、safeP×peopleSafe 0、dpKeep 51694、peopleFloor 0、floorAt 393425〔价格留底 393425、ref×邻居均值 0、defenseNeed 339720、keepCap 封顶 531400〕）、可用 -341879、吃光要 189536
+  t=1400 sora_w B=148014 L=3654（密度 40.5）| 最便宜的敌方真人 [IND]Magadha Empire#6[T1]（4265 格 / 126178 兵）每格 96.7 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）；底线 182700（floorFor0 182700、safeP×peopleSafe 0、dpKeep 127282、peopleFloor 0、floorAt 365400〔价格留底 365400、ref×邻居均值 0、defenseNeed 365400、keepCap 封顶 365400〕）、可用 -34686、吃光要 419507
+  t=1400 talon5 B=140001 L=10815（密度 12.9）| 最便宜的敌方真人 [f] Mean Little Girl#30[T1]（16815 格 / 111391 兵）每格 23.2 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed：按邻居的另一个邻居里最低的单价；底线 209784（floorFor0 209784、safeP×peopleSafe 0、dpKeep 53465、peopleFloor 0、floorAt 419568〔价格留底 418129、ref×邻居均值 0、defenseNeed 419568、keepCap 封顶 1081500〕，参照 [APEX] zexos1#13[T2] 的 51546 兵（经由 LostDog#21[T3]））、可用 -69783、吃光要 223770
+  t=1400 riku_x B=128294 L=3950（密度 32.5）| 最便宜的敌方真人 LostDog#21[T3]（7542 格 / 99987 兵）每格 44.4 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 146220（floorFor0 146220、safeP×peopleSafe 0、dpKeep 52844、peopleFloor 0、floorAt 292440〔价格留底 292440、ref×邻居均值 0、defenseNeed 206184、keepCap 封顶 395000〕）、可用 -17926、吃光要 189536
+  t=1400 leo_tx B=84930 L=7364（密度 11.5）| 最便宜的敌方真人 LostDog#21[T3]（7542 格 / 99987 兵）每格 44.4 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 272599（floorFor0 272599、safeP×peopleSafe 0、dpKeep 49967、peopleFloor 0、floorAt 545197〔价格留底 545197、ref×邻居均值 0、defenseNeed 285691、keepCap 封顶 736400〕）、可用 -187669、吃光要 189536

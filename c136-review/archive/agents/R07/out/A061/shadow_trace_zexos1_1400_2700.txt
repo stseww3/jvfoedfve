@@ -1,0 +1,906 @@
+# A061 zexos1 影子决策明细 t=1400~2700（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没走到 buyLand: 20 拍（t=1400~1495）
+#   出手打人/bot: 5 拍（t=1500~2030）；可用兵 56641~116033，一条指令下限(20%余额) 41148~48747，比值 138%~238%
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 10 拍（t=1515~2050）；可用兵 2271~37521，一条指令下限(20%余额) 24993~42099，比值 6%~89%
+#   首选目标无可用兵（avail<=0）: 20 拍（t=1520~2085）；可用兵 -70608~-2143，一条指令下限(20%余额) 6692~22366，比值 -1055%~-10%
+#   首选目标价高（c>=worth）: 156 拍（t=1560~2700）
+#   没有可打的邻居: 38 拍（t=1785~1970）
+#   只打无主地: 5 拍（t=2035~2540）；可用兵 36865~36865，一条指令下限(20%余额) 41621~41621，比值 89%~89%
+#   有可用兵但没发（脉冲下限/冷却/其他）: 7 拍（t=2090~2120）；可用兵 1610~15639，一条指令下限(20%余额) 22623~24609，比值 7%~64%
+#   └ 「出手打人/bot」里：5 条对人/bot 的出兵共约 457937 兵；其中超过软上限（over=1）时发的 3 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1400 zexos1 B=186351 L=2231 d=83.5 nb=1 neut=0 cmds=16 noFull=0 shQ=46080 | m=1.400 worth=116.9 cheap=3.8 over=0 dMedOther=11.6 safe(-1)=71096
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1405 zexos1 B=186351 L=2231 d=83.5 nb=1 neut=0 cmds=16 noFull=0 shQ=46587 | m=1.405 worth=117.4 cheap=3.8 over=0 dMedOther=11.6 safe(-1)=71096
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1410 zexos1 B=191177 L=2231 d=85.7 nb=1 neut=0 cmds=16 noFull=0 shQ=47794 | m=1.410 worth=120.8 cheap=3.9 over=0 dMedOther=11.9 safe(-1)=72986
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1415 zexos1 B=191177 L=2231 d=85.7 nb=1 neut=0 cmds=16 noFull=0 shQ=47794 | m=1.415 worth=121.3 cheap=3.9 over=0 dMedOther=11.8 safe(-1)=72986
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1420 zexos1 B=196071 L=2231 d=87.9 nb=1 neut=0 cmds=16 noFull=0 shQ=49017 | m=1.420 worth=124.8 cheap=3.9 over=0 dMedOther=12.0 safe(-1)=74903
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1425 zexos1 B=196071 L=2231 d=87.9 nb=1 neut=0 cmds=16 noFull=0 shQ=49017 | m=1.425 worth=125.2 cheap=3.9 over=0 dMedOther=12.0 safe(-1)=74903
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1430 zexos1 B=201031 L=2231 d=90.1 nb=1 neut=0 cmds=16 noFull=0 shQ=50257 | m=1.430 worth=128.9 cheap=4.0 over=0 dMedOther=12.5 safe(-1)=76845
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1435 zexos1 B=201031 L=2231 d=90.1 nb=1 neut=0 cmds=16 noFull=0 shQ=50257 | m=1.435 worth=129.3 cheap=4.0 over=0 dMedOther=12.5 safe(-1)=76845
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1440 zexos1 B=206056 L=2231 d=92.4 nb=1 neut=0 cmds=16 noFull=0 shQ=51514 | m=1.440 worth=133.0 cheap=4.0 over=0 dMedOther=12.8 safe(-1)=78813
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1445 zexos1 B=206056 L=2231 d=92.4 nb=1 neut=0 cmds=16 noFull=0 shQ=51514 | m=1.445 worth=133.5 cheap=4.0 over=0 dMedOther=12.8 safe(-1)=73612
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1450 zexos1 B=211145 L=2231 d=94.6 nb=1 neut=0 cmds=16 noFull=0 shQ=52786 | m=1.450 worth=137.2 cheap=4.1 over=0 dMedOther=13.1 safe(-1)=75477
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1455 zexos1 B=211145 L=2231 d=94.6 nb=1 neut=0 cmds=16 noFull=0 shQ=52786 | m=1.455 worth=137.7 cheap=4.1 over=0 dMedOther=13.1 safe(-1)=78192
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1460 zexos1 B=216296 L=2231 d=97.0 nb=1 neut=0 cmds=16 noFull=0 shQ=54074 | m=1.460 worth=141.5 cheap=4.1 over=0 dMedOther=13.4 safe(-1)=80145
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1465 zexos1 B=216296 L=2231 d=97.0 nb=1 neut=0 cmds=16 noFull=0 shQ=54074 | m=1.465 worth=142.0 cheap=4.1 over=0 dMedOther=13.4 safe(-1)=83272
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1470 zexos1 B=221487 L=2231 d=99.3 nb=1 neut=0 cmds=16 noFull=0 shQ=55371 | m=1.470 worth=145.9 cheap=4.2 over=0 dMedOther=13.7 safe(-1)=85315
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1475 zexos1 B=221487 L=2231 d=99.3 nb=1 neut=0 cmds=16 noFull=0 shQ=55371 | m=1.475 worth=146.4 cheap=4.2 over=0 dMedOther=12.8 safe(-1)=85315
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1480 zexos1 B=226736 L=2231 d=101.6 nb=1 neut=0 cmds=16 noFull=0 shQ=56674 | m=1.480 worth=150.4 cheap=4.2 over=1 dMedOther=14.1 safe(-1)=87381
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1485 zexos1 B=226736 L=2231 d=101.6 nb=1 neut=0 cmds=16 noFull=0 shQ=56684 | m=1.485 worth=150.9 cheap=4.2 over=1 dMedOther=14.1 safe(-1)=87381
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1490 zexos1 B=231882 L=2231 d=103.9 nb=1 neut=0 cmds=16 noFull=0 shQ=57936 | m=1.490 worth=154.9 cheap=4.3 over=1 dMedOther=14.4 safe(-1)=89469
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1495 zexos1 B=231882 L=2231 d=103.9 nb=1 neut=0 cmds=16 noFull=0 shQ=57970 | m=1.495 worth=155.4 cheap=4.3 over=1 dMedOther=14.4 safe(-1)=89469
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1500 zexos1 B=239052 L=2231 d=107.2 nb=1 neut=0 cmds=17 noFull=0 shQ=59153 | m=1.500 worth=160.7 cheap=4.3 over=1 dMedOther=15.7 safe(-1)=99783
+    → Player 625#31[T1] terr=14644 bal=180960 dq=12.4 cnt=62 | c=31.5 rankC=31.5 need=344502 tD=0.79 人 | safe=99783 keep=122571 avail=113680 chunkB=47810 pulseB=28686  sole hNb=1
+    ⇒ 影子指令 attack pct=486 → Player 625#31[T1]（约 113689 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1505 zexos1 B=239052 L=2231 d=107.2 nb=1 neut=0 cmds=18 noFull=0 shQ=59763 | m=1.499 worth=160.6 cheap=4.4 over=1 dMedOther=15.7 safe(-1)=99783
+    → Player 625#31[T1] terr=14711 bal=180960 dq=12.3 cnt=62 | c=31.3 rankC=31.3 need=344617 tD=0.78 人 | safe=99783 keep=122482 avail=113769 chunkB=47810 pulseB=28686  sole hNb=1
+    ⇒ 影子指令 attack pct=487 → Player 625#31[T1]（约 113923 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1510 zexos1 B=243737 L=2231 d=109.3 nb=1 neut=0 cmds=19 noFull=0 shQ=60896 | m=1.498 worth=163.7 cheap=4.4 over=1 dMedOther=16.1 safe(-1)=102100
+    → Player 625#31[T1] terr=14776 bal=185085 dq=12.5 cnt=62 | c=31.8 rankC=31.8 need=352053 tD=0.78 人 | safe=102100 keep=124848 avail=116033 chunkB=48747 pulseB=29248  sole hNb=1
+    ⇒ 影子指令 attack pct=487 → Player 625#31[T1]（约 116155 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1515 zexos1 B=124964 L=2231 d=56.0 nb=1 neut=0 cmds=19 noFull=0 shQ=1418 | m=1.498 worth=83.9 cheap=4.4 over=0 dMedOther=16.1 safe(-1)=102100
+    → Player 625#31[T1] terr=14804 bal=185085 dq=12.5 cnt=62 | c=21.3 rankC=21.3 need=236178 tD=0.78 人 | safe=102100 keep=102100 avail=21400 chunkB=24993 pulseB=14996 不够一条 sole hNb=1
+    ⇒ 本拍没有指令
+t=1520 zexos1 B=33460 L=2293 d=14.6 nb=1 neut=0 cmds=19 noFull=0 shQ=4426 | m=1.497 worth=21.8 cheap=4.4 over=0 dMedOther=15.0 safe(-1)=103676
+    → Player 625#31[T1] terr=14774 bal=187983 dq=12.7 cnt=60 | c=13.8 rankC=13.8 need=153680 tD=0.85 人 | safe=103676 keep=103676 avail=-70608 chunkB=6692 pulseB=4015 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=1525 zexos1 B=33460 L=2353 d=14.2 nb=1 neut=0 cmds=19 noFull=0 shQ=5361 | m=1.496 worth=21.3 cheap=4.5 over=0 dMedOther=15.0 safe(-1)=102940
+    → Player 625#31[T1] terr=14735 bal=186763 dq=12.7 cnt=57 | c=13.9 rankC=13.9 need=153836 tD=0.84 人 | safe=102940 keep=102940 avail=-69872 chunkB=6692 pulseB=4015 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=1530 zexos1 B=34202 L=2464 d=13.9 nb=1 neut=0 cmds=19 noFull=0 shQ=6293 | m=1.496 worth=20.8 cheap=4.5 over=0 dMedOther=15.3 safe(-1)=103886
+    → Player 625#31[T1] terr=14648 bal=188613 dq=12.9 cnt=55 | c=14.7 rankC=14.7 need=161315 tD=0.84 人 | safe=103886 keep=103886 avail=-70084 chunkB=6840 pulseB=4104 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=1535 zexos1 B=34202 L=2569 d=13.3 nb=1 neut=0 cmds=19 noFull=0 shQ=7234 | m=1.495 worth=19.9 cheap=4.5 over=0 dMedOther=15.3 safe(-1)=103323
+    → Player 625#31[T1] terr=14549 bal=187769 dq=12.9 cnt=50 | c=15.1 rankC=15.1 need=163724 tD=0.84 人 | safe=103323 keep=103323 avail=-69521 chunkB=6840 pulseB=4104 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=1540 zexos1 B=34951 L=2619 d=13.3 nb=1 neut=0 cmds=19 noFull=0 shQ=8175 | m=1.494 worth=19.9 cheap=4.6 over=0 dMedOther=15.6 safe(-1)=104999
+    → Player 625#31[T1] terr=14499 bal=190826 dq=13.2 cnt=51 | c=15.8 rankC=15.8 need=171002 tD=0.84 人 | safe=104999 keep=104999 avail=-70457 chunkB=6990 pulseB=4194 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=1545 zexos1 B=34951 L=2721 d=12.8 nb=1 neut=0 cmds=19 noFull=0 shQ=8737 | m=1.493 worth=19.2 cheap=4.6 over=0 dMedOther=16.8 safe(-1)=103708
+    → Player 625#31[T1] terr=14397 bal=188682 dq=13.1 cnt=51 | c=15.9 rankC=15.9 need=171023 tD=0.78 人 | safe=103708 keep=103708 avail=-69166 chunkB=6990 pulseB=4194 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=1550 zexos1 B=35702 L=2823 d=12.6 nb=1 neut=0 cmds=19 noFull=0 shQ=8925 | m=1.492 worth=18.9 cheap=4.6 over=0 dMedOther=17.2 safe(-1)=104676
+    → Player 625#31[T1] terr=14295 bal=190557 dq=13.3 cnt=53 | c=16.8 rankC=16.8 need=178209 tD=0.78 人 | safe=104676 keep=104676 avail=-69392 chunkB=7140 pulseB=4284 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=1555 zexos1 B=35702 L=2876 d=12.4 nb=1 neut=0 cmds=19 noFull=0 shQ=8925 | m=1.492 worth=18.5 cheap=4.7 over=0 dMedOther=17.2 safe(-1)=103996
+    → Player 625#31[T1] terr=14242 bal=189427 dq=13.3 cnt=53 | c=16.8 rankC=16.8 need=178230 tD=0.78 人 | safe=103996 keep=103996 avail=-68712 chunkB=7140 pulseB=4284 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=1560 zexos1 B=36458 L=2983 d=12.2 nb=1 neut=0 cmds=19 noFull=0 shQ=9114 | m=1.491 worth=18.2 cheap=4.7 over=0 dMedOther=17.5 safe(-1)=104858
+    → Player 625#31[T1] terr=14135 bal=191121 dq=13.5 cnt=55 | c=23.9 rankC=23.9 need=185257 tD=0.77 人 crowdedHard | safe=104858 keep=Inf avail=-Inf chunkB=7292 pulseB=4375 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1565 zexos1 B=36458 L=3093 d=11.8 nb=1 neut=0 cmds=19 noFull=0 shQ=9114 | m=1.490 worth=17.6 cheap=4.7 over=0 dMedOther=17.5 safe(-1)=103431
+    → Player 625#31[T1] terr=14025 bal=188746 dq=13.5 cnt=55 | c=12.7 rankC=6.4 need=185279 tD=0.77 人 crowdedHard | safe=103431 keep=103431 avail=-67400 chunkB=7292 pulseB=4375 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=1570 zexos1 B=37219 L=3148 d=11.8 nb=1 neut=0 cmds=19 noFull=0 shQ=9304 | m=1.490 worth=17.6 cheap=4.8 over=0 dMedOther=17.9 safe(-1)=103394
+    → Player 625#31[T1] terr=13846 bal=188763 dq=13.6 cnt=50 | c=9.1 rankC=4.5 need=186545 tD=0.76 人 pulse bleeding | safe=103394 keep=103394 avail=-66611 chunkB=7444 pulseB=4466 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=1575 zexos1 B=37219 L=3243 d=11.5 nb=1 neut=0 cmds=19 noFull=0 shQ=9304 | m=1.489 worth=17.1 cheap=4.8 over=0 dMedOther=17.9 safe(-1)=99243
+    → Player 625#31[T1] terr=13512 bal=181517 dq=13.4 cnt=46 | c=12.6 rankC=6.3 need=175728 tD=0.75 人 crowdedHard | safe=99243 keep=99243 avail=-62460 chunkB=7444 pulseB=4466 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=1580 zexos1 B=37985 L=3336 d=11.4 nb=1 neut=0 cmds=19 noFull=0 shQ=9496 | m=1.488 worth=16.9 cheap=4.8 over=0 dMedOther=18.3 safe(-1)=98661
+    → Player 625#31[T1] terr=13300 bal=180620 dq=13.6 cnt=49 | c=9.8 rankC=4.9 need=176804 tD=0.74 人 pulse bleeding | safe=98661 keep=98661 avail=-61121 chunkB=7597 pulseB=4558 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=1585 zexos1 B=37985 L=3385 d=11.2 nb=1 neut=0 cmds=19 noFull=0 shQ=9496 | m=1.487 worth=16.7 cheap=4.9 over=0 dMedOther=18.3 safe(-1)=95217
+    → Player 625#31[T1] terr=13020 bal=174563 dq=13.4 cnt=50 | c=10.0 rankC=5.0 need=166369 tD=0.73 人 pulse bleeding | safe=95217 keep=95217 avail=-57677 chunkB=7597 pulseB=4558 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=1590 zexos1 B=38756 L=3487 d=11.1 nb=1 neut=0 cmds=19 noFull=0 shQ=9689 | m=1.486 worth=16.5 cheap=4.9 over=0 dMedOther=18.6 safe(-1)=93050
+    → Player 625#31[T1] terr=12687 bal=170860 dq=13.5 cnt=53 | c=9.9 rankC=4.9 need=161963 tD=0.72 人 pulse bleeding | safe=93050 keep=93050 avail=-54748 chunkB=7751 pulseB=4651 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=1595 zexos1 B=38756 L=3595 d=10.8 nb=1 neut=0 cmds=19 noFull=0 shQ=9689 | m=1.486 worth=16.0 cheap=5.0 over=0 dMedOther=18.6 safe(-1)=90246
+    → Player 625#31[T1] terr=12462 bal=166030 dq=13.3 cnt=53 | c=10.1 rankC=5.0 need=156749 tD=0.72 人 pulse bleeding | safe=90246 keep=90246 avail=-51944 chunkB=7751 pulseB=4651 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=1600 zexos1 B=43179 L=3648 d=11.8 nb=1 neut=0 cmds=19 noFull=0 shQ=9904 | m=1.485 worth=17.6 cheap=5.0 over=0 dMedOther=20.0 safe(-1)=97159
+    → Player 625#31[T1] terr=12409 bal=178415 dq=14.4 cnt=55 | c=27.7 rankC=27.7 need=179946 tD=0.72 人 crowdedHard | safe=97159 keep=Inf avail=-Inf chunkB=8636 pulseB=5181 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1605 zexos1 B=43179 L=3757 d=11.5 nb=1 neut=0 cmds=19 noFull=0 shQ=10794 | m=1.484 worth=17.1 cheap=5.0 over=0 dMedOther=19.7 safe(-1)=95661
+    → Player 625#31[T1] terr=12300 bal=175912 dq=14.3 cnt=55 | c=28.0 rankC=28.0 need=179995 tD=0.72 人 crowdedHard | safe=95661 keep=Inf avail=-Inf chunkB=8636 pulseB=5181 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1610 zexos1 B=44029 L=3866 d=11.4 nb=1 neut=0 cmds=19 noFull=0 shQ=11007 | m=1.484 worth=16.9 cheap=5.1 over=0 dMedOther=19.8 safe(-1)=96089
+    → Player 625#31[T1] terr=12191 bal=176838 dq=14.5 cnt=53 | c=29.3 rankC=29.3 need=185944 tD=0.73 人 crowdedHard | safe=96089 keep=Inf avail=-Inf chunkB=8806 pulseB=5283 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1615 zexos1 B=44029 L=3919 d=11.2 nb=1 neut=0 cmds=19 noFull=0 shQ=11007 | m=1.483 worth=16.7 cheap=5.1 over=0 dMedOther=19.8 safe(-1)=95354
+    → Player 625#31[T1] terr=12138 bal=175609 dq=14.5 cnt=54 | c=29.5 rankC=29.5 need=185993 tD=0.73 人 crowdedHard | safe=95354 keep=Inf avail=-Inf chunkB=8806 pulseB=5283 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1620 zexos1 B=44883 L=4023 d=11.2 nb=1 neut=0 cmds=19 noFull=0 shQ=11220 | m=1.482 worth=16.5 cheap=5.2 over=0 dMedOther=20.2 safe(-1)=95804
+    → Player 625#31[T1] terr=12034 bal=176566 dq=14.7 cnt=49 | c=30.8 rankC=30.8 need=191781 tD=0.73 人 crowdedHard | safe=95804 keep=Inf avail=-Inf chunkB=8977 pulseB=5386 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1625 zexos1 B=44883 L=4120 d=10.9 nb=1 neut=0 cmds=19 noFull=0 shQ=11220 | m=1.481 worth=16.1 cheap=5.2 over=0 dMedOther=20.2 safe(-1)=94445
+    → Player 625#31[T1] terr=11937 bal=174292 dq=14.6 cnt=44 | c=12.5 rankC=6.3 need=191832 tD=0.72 人 pulse bleeding | safe=94445 keep=94445 avail=-50087 chunkB=8977 pulseB=5386 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=1630 zexos1 B=45735 L=4164 d=11.0 nb=1 neut=0 cmds=19 noFull=0 shQ=11433 | m=1.480 worth=16.3 cheap=5.2 over=0 dMedOther=20.6 safe(-1)=95680
+    → Player 625#31[T1] terr=11893 bal=176557 dq=14.8 cnt=43 | c=13.0 rankC=6.5 need=197489 tD=0.72 人 pulse bleeding | safe=95680 keep=95680 avail=-50480 chunkB=9147 pulseB=5488 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=1635 zexos1 B=45735 L=4252 d=10.8 nb=1 neut=0 cmds=19 noFull=0 shQ=11433 | m=1.480 worth=15.9 cheap=5.3 over=0 dMedOther=19.8 safe(-1)=91335
+    → Player 625#31[T1] terr=11571 bal=168955 dq=14.6 cnt=45 | c=12.6 rankC=6.3 need=186060 tD=0.74 人 pulse bleeding | safe=91335 keep=91335 avail=-46135 chunkB=9147 pulseB=5488 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=1640 zexos1 B=46590 L=4340 d=10.7 nb=1 neut=0 cmds=19 noFull=0 shQ=11647 | m=1.479 worth=15.9 cheap=5.3 over=0 dMedOther=19.2 safe(-1)=90304
+    → Player 625#31[T1] terr=11366 bal=167252 dq=14.7 cnt=43 | c=16.9 rankC=8.4 need=185627 tD=0.77 人 crowdedHard | safe=90304 keep=Inf avail=-Inf chunkB=9318 pulseB=5591 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1645 zexos1 B=46590 L=4383 d=10.6 nb=1 neut=0 cmds=19 noFull=0 shQ=11647 | m=1.478 worth=15.7 cheap=5.4 over=0 dMedOther=19.0 safe(-1)=86622
+    → Player 625#31[T1] terr=11089 bal=160762 dq=14.5 cnt=41 | c=17.3 rankC=8.7 need=174298 tD=0.76 人 crowdedHard | safe=86622 keep=Inf avail=-Inf chunkB=9318 pulseB=5591 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1650 zexos1 B=47447 L=4462 d=10.6 nb=1 neut=0 cmds=19 noFull=0 shQ=11861 | m=1.478 worth=15.7 cheap=5.4 over=0 dMedOther=17.9 safe(-1)=84234
+    → Player 625#31[T1] terr=10787 bal=156629 dq=14.5 cnt=35 | c=17.5 rankC=8.7 need=168339 tD=0.81 人 crowdedHard | safe=84234 keep=Inf avail=-Inf chunkB=9489 pulseB=5694 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1655 zexos1 B=47447 L=4531 d=10.5 nb=1 neut=0 cmds=19 noFull=0 shQ=11861 | m=1.477 worth=15.5 cheap=5.5 over=0 dMedOther=17.9 safe(-1)=81860
+    → Player 625#31[T1] terr=10609 bal=152507 dq=14.4 cnt=32 | c=17.0 rankC=8.5 need=163177 tD=0.80 人 crowdedHard | safe=81860 keep=Inf avail=-Inf chunkB=9489 pulseB=5694 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1660 zexos1 B=48305 L=4563 d=10.6 nb=1 neut=0 cmds=19 noFull=0 shQ=12076 | m=1.476 worth=15.6 cheap=5.5 over=0 dMedOther=18.2 safe(-1)=80083
+    → Player 625#31[T1] terr=10357 bal=149393 dq=14.4 cnt=33 | c=17.9 rankC=9.0 need=157108 tD=0.79 人 crowdedHard | safe=80083 keep=Inf avail=-Inf chunkB=9661 pulseB=5797 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1665 zexos1 B=48305 L=4627 d=10.4 nb=1 neut=0 cmds=19 noFull=0 shQ=12076 | m=1.475 worth=15.4 cheap=5.6 over=0 dMedOther=18.1 safe(-1)=78371
+    → Player 625#31[T1] terr=10293 bal=146441 dq=14.2 cnt=27 | c=31.3 rankC=31.3 need=154832 tD=0.78 人 crowdedHard | safe=78371 keep=Inf avail=-Inf chunkB=9661 pulseB=5797 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1670 zexos1 B=49164 L=4675 d=10.5 nb=1 neut=0 cmds=19 noFull=0 shQ=12291 | m=1.474 worth=15.5 cheap=5.6 over=0 dMedOther=18.4 safe(-1)=79171
+    → Player 625#31[T1] terr=10245 bal=147937 dq=14.4 cnt=18 | c=37.5 rankC=37.5 need=159168 tD=0.79 人 crowdedHard | safe=79171 keep=Inf avail=-Inf chunkB=9833 pulseB=5900 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1675 zexos1 B=49164 L=4693 d=10.5 nb=1 neut=0 cmds=19 noFull=0 shQ=12291 | m=1.474 worth=15.4 cheap=5.7 over=0 dMedOther=18.3 safe(-1)=78923
+    → Player 625#31[T1] terr=10227 bal=147522 dq=14.4 cnt=15 | c=43.1 rankC=43.1 need=159302 tD=0.79 人 crowdedHard | safe=78923 keep=Inf avail=-Inf chunkB=9833 pulseB=5900 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1680 zexos1 B=50024 L=4719 d=10.6 nb=1 neut=0 cmds=19 noFull=0 shQ=12506 | m=1.473 worth=15.6 cheap=5.7 over=0 dMedOther=18.5 safe(-1)=80009
+    → Player 625#31[T1] terr=10201 bal=149494 dq=14.7 cnt=11 | c=56.8 rankC=56.8 need=163595 tD=0.79 人 crowdedHard | safe=80009 keep=Inf avail=-Inf chunkB=10005 pulseB=6003 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1685 zexos1 B=50024 L=4742 d=10.5 nb=1 neut=0 cmds=19 noFull=0 shQ=12506 | m=1.472 worth=15.5 cheap=5.8 over=0 dMedOther=18.4 safe(-1)=79687
+    → Player 625#31[T1] terr=10178 bal=148956 dq=14.6 cnt=12 | c=53.0 rankC=53.0 need=163731 tD=0.80 人 crowdedHard | safe=79687 keep=Inf avail=-Inf chunkB=10005 pulseB=6003 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1690 zexos1 B=50884 L=4754 d=10.7 nb=1 neut=0 cmds=19 noFull=0 shQ=12721 | m=1.472 worth=15.8 cheap=5.8 over=0 dMedOther=18.0 safe(-1)=80956
+    → Player 625#31[T1] terr=10166 bal=151233 dq=14.9 cnt=13 | c=51.0 rankC=51.0 need=168002 tD=0.82 人 crowdedHard | safe=80956 keep=Inf avail=-Inf chunkB=10177 pulseB=6106 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1695 zexos1 B=50884 L=4780 d=10.6 nb=1 neut=0 cmds=19 noFull=0 shQ=12721 | m=1.471 worth=15.7 cheap=5.9 over=0 dMedOther=17.9 safe(-1)=80587
+    → Player 625#31[T1] terr=10140 bal=150615 dq=14.9 cnt=13 | c=51.1 rankC=51.1 need=168140 tD=0.83 人 crowdedHard | safe=80587 keep=Inf avail=-Inf chunkB=10177 pulseB=6106 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1700 zexos1 B=56536 L=4806 d=11.8 nb=1 neut=0 cmds=19 noFull=0 shQ=12959 | m=1.470 worth=17.3 cheap=5.9 over=0 dMedOther=19.1 safe(-1)=87321
+    → Player 625#31[T1] terr=10114 bal=162640 dq=16.1 cnt=13 | c=57.4 rankC=57.4 need=188759 tD=0.84 人 crowdedHard | safe=87321 keep=Inf avail=-Inf chunkB=11307 pulseB=6784 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1705 zexos1 B=56536 L=4819 d=11.7 nb=1 neut=0 cmds=19 noFull=0 shQ=14134 | m=1.469 worth=17.2 cheap=6.0 over=0 dMedOther=19.0 safe(-1)=87122
+    → Player 625#31[T1] terr=10101 bal=162306 dq=16.1 cnt=12 | c=61.3 rankC=61.3 need=188907 tD=0.85 人 crowdedHard | safe=87122 keep=Inf avail=-Inf chunkB=11307 pulseB=6784 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1710 zexos1 B=57468 L=4842 d=11.9 nb=1 neut=0 cmds=19 noFull=0 shQ=14367 | m=1.468 worth=17.4 cheap=6.0 over=0 dMedOther=19.1 safe(-1)=88270
+    → Player 625#31[T1] terr=10078 bal=164384 dq=16.3 cnt=10 | c=72.5 rankC=72.5 need=193366 tD=0.85 人 crowdedHard | safe=88270 keep=Inf avail=-Inf chunkB=11494 pulseB=6896 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1715 zexos1 B=57468 L=4862 d=11.8 nb=1 neut=0 cmds=19 noFull=0 shQ=14367 | m=1.468 worth=17.3 cheap=6.1 over=0 dMedOther=18.9 safe(-1)=87961
+    → Player 625#31[T1] terr=10058 bal=163864 dq=16.3 cnt=9 | c=72.8 rankC=72.8 need=193516 tD=0.86 人 crowdedHard | safe=87961 keep=Inf avail=-Inf chunkB=11494 pulseB=6896 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1720 zexos1 B=58398 L=4871 d=12.0 nb=1 neut=0 cmds=19 noFull=0 shQ=14599 | m=1.467 worth=17.6 cheap=6.2 over=0 dMedOther=18.9 safe(-1)=89311
+    → Player 625#31[T1] terr=10049 bal=166280 dq=16.5 cnt=8 | c=74.5 rankC=74.5 need=197947 tD=0.88 人 crowdedHard | safe=89311 keep=Inf avail=-Inf chunkB=11680 pulseB=7008 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1725 zexos1 B=58398 L=4887 d=11.9 nb=1 neut=0 cmds=19 noFull=0 shQ=14599 | m=1.466 worth=17.5 cheap=6.2 over=0 dMedOther=18.6 safe(-1)=89060
+    → Player 625#31[T1] terr=10033 bal=165858 dq=16.5 cnt=7 | c=74.7 rankC=74.7 need=198099 tD=0.89 人 crowdedHard | safe=89060 keep=Inf avail=-Inf chunkB=11680 pulseB=7008 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1730 zexos1 B=59326 L=4901 d=12.1 nb=1 neut=0 cmds=19 noFull=0 shQ=14831 | m=1.466 worth=17.7 cheap=6.3 over=0 dMedOther=18.7 safe(-1)=90319
+    → Player 625#31[T1] terr=10019 bal=168120 dq=16.8 cnt=7 | c=76.5 rankC=76.5 need=202507 tD=0.90 人 crowdedHard | safe=90319 keep=Inf avail=-Inf chunkB=11865 pulseB=7119 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1735 zexos1 B=59326 L=4908 d=12.1 nb=1 neut=0 cmds=19 noFull=0 shQ=14831 | m=1.465 worth=17.7 cheap=6.3 over=0 dMedOther=18.0 safe(-1)=90208
+    → Player 625#31[T1] terr=10012 bal=167933 dq=16.8 cnt=7 | c=76.6 rankC=76.6 need=202662 tD=0.93 人 crowdedHard | safe=90208 keep=Inf avail=-Inf chunkB=11865 pulseB=7119 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1740 zexos1 B=60251 L=4922 d=12.2 nb=1 neut=0 cmds=19 noFull=0 shQ=15062 | m=1.464 worth=17.9 cheap=6.4 over=0 dMedOther=17.8 safe(-1)=91454
+    → Player 625#31[T1] terr=9998 bal=170172 dq=17.0 cnt=7 | c=78.3 rankC=78.3 need=207038 tD=0.96 人 crowdedHard | safe=91454 keep=Inf avail=-Inf chunkB=12050 pulseB=7230 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1745 zexos1 B=60251 L=4935 d=12.2 nb=1 neut=0 cmds=19 noFull=0 shQ=15062 | m=1.463 worth=17.9 cheap=6.5 over=0 dMedOther=17.2 safe(-1)=91245
+    → Player 625#31[T1] terr=9985 bal=169819 dq=17.0 cnt=6 | c=78.5 rankC=78.5 need=207194 tD=0.99 人 crowdedHard | safe=91245 keep=Inf avail=-Inf chunkB=12050 pulseB=7230 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1750 zexos1 B=61172 L=4941 d=12.4 nb=1 neut=0 cmds=19 noFull=0 shQ=15293 | m=1.462 worth=18.1 cheap=6.5 over=0 dMedOther=17.3 safe(-1)=92606
+    → Player 625#31[T1] terr=9979 bal=172251 dq=17.3 cnt=6 | c=80.2 rankC=80.2 need=211545 tD=1.00 人 crowdedHard | safe=92606 keep=Inf avail=-Inf chunkB=12234 pulseB=7341 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1755 zexos1 B=61172 L=4953 d=12.4 nb=1 neut=0 cmds=19 noFull=0 shQ=15293 | m=1.462 worth=18.1 cheap=6.6 over=0 dMedOther=17.2 safe(-1)=92411
+    → Player 625#31[T1] terr=9967 bal=171921 dq=17.2 cnt=5 | c=80.3 rankC=80.3 need=211703 tD=1.00 人 crowdedHard | safe=92411 keep=Inf avail=-Inf chunkB=12234 pulseB=7341 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1760 zexos1 B=62089 L=4962 d=12.5 nb=1 neut=0 cmds=19 noFull=0 shQ=15522 | m=1.461 worth=18.3 cheap=6.7 over=0 dMedOther=17.5 safe(-1)=93711
+    → Player 625#31[T1] terr=9958 bal=174248 dq=17.5 cnt=3 | c=82.1 rankC=82.1 need=216027 tD=1.00 人 crowdedHard | safe=93711 keep=Inf avail=-Inf chunkB=12418 pulseB=7451 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1765 zexos1 B=62089 L=4965 d=12.5 nb=1 neut=0 cmds=19 noFull=0 shQ=15522 | m=1.460 worth=18.3 cheap=6.7 over=0 dMedOther=17.5 safe(-1)=93662
+    → Player 625#31[T1] terr=9955 bal=174165 dq=17.5 cnt=3 | c=82.1 rankC=82.1 need=216187 tD=1.00 人 crowdedHard | safe=93662 keep=Inf avail=-Inf chunkB=12418 pulseB=7451 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1770 zexos1 B=63001 L=4970 d=12.7 nb=1 neut=0 cmds=19 noFull=0 shQ=15750 | m=1.460 worth=18.5 cheap=6.8 over=0 dMedOther=17.5 safe(-1)=95017
+    → Player 625#31[T1] terr=9950 bal=176585 dq=17.7 cnt=2 | c=83.8 rankC=83.8 need=220486 tD=1.01 人 crowdedHard | safe=95017 keep=Inf avail=-Inf chunkB=12600 pulseB=7560 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1775 zexos1 B=63001 L=4974 d=12.7 nb=1 neut=0 cmds=19 noFull=0 shQ=15750 | m=1.459 worth=18.5 cheap=6.9 over=0 dMedOther=17.4 safe(-1)=94951
+    → Player 625#31[T1] terr=9946 bal=176473 dq=17.7 cnt=1 | c=83.8 rankC=83.8 need=220648 tD=1.02 人 crowdedHard | safe=94951 keep=Inf avail=-Inf chunkB=12600 pulseB=7560 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1780 zexos1 B=63908 L=4975 d=12.8 nb=1 neut=0 cmds=19 noFull=0 shQ=15977 | m=1.458 worth=18.7 cheap=7.0 over=0 dMedOther=17.3 safe(-1)=96361
+    → Player 625#31[T1] terr=9945 bal=178985 dq=18.0 cnt=1 | c=85.4 rankC=85.4 need=224924 tD=1.04 人 crowdedHard | safe=96361 keep=Inf avail=-Inf chunkB=12782 pulseB=7669 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1785 zexos1 B=141638 L=4976 d=28.5 nb=0 neut=0 cmds=19 noFull=0 shQ=16985 | m=1.457 worth=41.5 cheap=7.0 over=0 dMedOther=17.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1790 zexos1 B=143620 L=4976 d=28.9 nb=0 neut=0 cmds=19 noFull=0 shQ=19493 | m=1.457 worth=42.0 cheap=7.1 over=0 dMedOther=17.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1795 zexos1 B=143620 L=4976 d=28.9 nb=0 neut=0 cmds=19 noFull=0 shQ=21997 | m=1.456 worth=42.0 cheap=7.2 over=0 dMedOther=18.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1800 zexos1 B=150563 L=4976 d=30.3 nb=0 neut=0 cmds=19 noFull=0 shQ=24500 | m=1.455 worth=44.0 cheap=7.3 over=0 dMedOther=19.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1805 zexos1 B=150563 L=4976 d=30.3 nb=0 neut=0 cmds=19 noFull=0 shQ=27067 | m=1.454 worth=44.0 cheap=7.4 over=0 dMedOther=19.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1810 zexos1 B=152580 L=4976 d=30.7 nb=0 neut=0 cmds=19 noFull=0 shQ=29613 | m=1.454 worth=44.6 cheap=7.4 over=0 dMedOther=19.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1815 zexos1 B=152580 L=4976 d=30.7 nb=0 neut=0 cmds=19 noFull=0 shQ=32156 | m=1.453 worth=44.5 cheap=7.5 over=0 dMedOther=19.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1820 zexos1 B=154578 L=4976 d=31.1 nb=0 neut=0 cmds=19 noFull=0 shQ=34678 | m=1.452 worth=45.1 cheap=7.6 over=0 dMedOther=20.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1825 zexos1 B=154578 L=4976 d=31.1 nb=0 neut=0 cmds=19 noFull=0 shQ=37196 | m=1.451 worth=45.1 cheap=7.7 over=0 dMedOther=20.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1830 zexos1 B=156556 L=4976 d=31.5 nb=0 neut=0 cmds=19 noFull=0 shQ=39139 | m=1.451 worth=45.6 cheap=7.8 over=0 dMedOther=19.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1835 zexos1 B=156556 L=4976 d=31.5 nb=0 neut=0 cmds=19 noFull=0 shQ=39139 | m=1.450 worth=45.6 cheap=7.9 over=0 dMedOther=19.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1840 zexos1 B=158512 L=4976 d=31.9 nb=0 neut=0 cmds=19 noFull=0 shQ=39628 | m=1.449 worth=46.2 cheap=8.0 over=0 dMedOther=19.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1845 zexos1 B=158512 L=4976 d=31.9 nb=0 neut=0 cmds=19 noFull=0 shQ=39628 | m=1.448 worth=46.1 cheap=8.1 over=0 dMedOther=19.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1850 zexos1 B=160445 L=4976 d=32.2 nb=0 neut=0 cmds=19 noFull=0 shQ=40111 | m=1.448 worth=46.7 cheap=8.2 over=0 dMedOther=19.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1855 zexos1 B=160445 L=4976 d=32.2 nb=0 neut=0 cmds=19 noFull=0 shQ=40111 | m=1.447 worth=46.6 cheap=8.3 over=0 dMedOther=19.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1860 zexos1 B=162354 L=4976 d=32.6 nb=0 neut=0 cmds=19 noFull=0 shQ=40588 | m=1.446 worth=47.2 cheap=8.4 over=0 dMedOther=20.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1865 zexos1 B=162354 L=4976 d=32.6 nb=0 neut=0 cmds=19 noFull=0 shQ=40588 | m=1.445 worth=47.2 cheap=8.5 over=0 dMedOther=20.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1870 zexos1 B=164221 L=4976 d=33.0 nb=0 neut=0 cmds=19 noFull=0 shQ=41055 | m=1.445 worth=47.7 cheap=8.6 over=0 dMedOther=20.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1875 zexos1 B=164221 L=4976 d=33.0 nb=0 neut=0 cmds=19 noFull=0 shQ=41055 | m=1.444 worth=47.6 cheap=8.6 over=0 dMedOther=20.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1880 zexos1 B=166109 L=4976 d=33.4 nb=0 neut=0 cmds=19 noFull=0 shQ=41527 | m=1.443 worth=48.2 cheap=8.6 over=0 dMedOther=20.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1885 zexos1 B=166109 L=4976 d=33.4 nb=0 neut=0 cmds=19 noFull=0 shQ=41527 | m=1.442 worth=48.1 cheap=8.6 over=0 dMedOther=20.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1890 zexos1 B=168019 L=4976 d=33.8 nb=0 neut=0 cmds=19 noFull=0 shQ=42004 | m=1.442 worth=48.7 cheap=8.6 over=0 dMedOther=20.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1895 zexos1 B=168019 L=4976 d=33.8 nb=0 neut=0 cmds=19 noFull=0 shQ=42004 | m=1.441 worth=48.6 cheap=8.6 over=0 dMedOther=20.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1900 zexos1 B=174927 L=4976 d=35.2 nb=0 neut=0 cmds=19 noFull=0 shQ=42511 | m=1.440 worth=50.6 cheap=8.6 over=0 dMedOther=22.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1905 zexos1 B=174927 L=4976 d=35.2 nb=0 neut=0 cmds=19 noFull=0 shQ=43731 | m=1.439 worth=50.6 cheap=8.6 over=0 dMedOther=22.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1910 zexos1 B=176938 L=4976 d=35.6 nb=0 neut=0 cmds=19 noFull=0 shQ=44234 | m=1.439 worth=51.2 cheap=8.6 over=0 dMedOther=22.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1915 zexos1 B=176938 L=4976 d=35.6 nb=0 neut=0 cmds=19 noFull=0 shQ=44234 | m=1.438 worth=51.1 cheap=8.6 over=0 dMedOther=21.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1920 zexos1 B=178972 L=4976 d=36.0 nb=0 neut=0 cmds=19 noFull=0 shQ=44743 | m=1.437 worth=51.7 cheap=8.6 over=0 dMedOther=21.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1925 zexos1 B=178972 L=4976 d=36.0 nb=0 neut=0 cmds=19 noFull=0 shQ=44743 | m=1.436 worth=51.7 cheap=8.6 over=0 dMedOther=21.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1930 zexos1 B=181030 L=4976 d=36.4 nb=0 neut=0 cmds=19 noFull=0 shQ=45257 | m=1.435 worth=52.2 cheap=8.6 over=0 dMedOther=22.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1935 zexos1 B=181030 L=4976 d=36.4 nb=0 neut=0 cmds=19 noFull=0 shQ=45257 | m=1.435 worth=52.2 cheap=8.6 over=0 dMedOther=22.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1940 zexos1 B=183111 L=4976 d=36.8 nb=0 neut=0 cmds=19 noFull=0 shQ=45777 | m=1.434 worth=52.8 cheap=8.6 over=0 dMedOther=22.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1945 zexos1 B=183111 L=4976 d=36.8 nb=0 neut=0 cmds=19 noFull=0 shQ=45777 | m=1.433 worth=52.7 cheap=8.6 over=0 dMedOther=22.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1950 zexos1 B=185216 L=4976 d=37.2 nb=0 neut=0 cmds=19 noFull=0 shQ=46304 | m=1.433 worth=53.3 cheap=8.6 over=0 dMedOther=22.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1955 zexos1 B=185216 L=4976 d=37.2 nb=0 neut=0 cmds=19 noFull=0 shQ=46304 | m=1.432 worth=53.3 cheap=8.6 over=0 dMedOther=22.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1960 zexos1 B=187345 L=4976 d=37.6 nb=0 neut=0 cmds=19 noFull=0 shQ=46836 | m=1.431 worth=53.9 cheap=8.6 over=0 dMedOther=22.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1965 zexos1 B=187345 L=4976 d=37.6 nb=0 neut=0 cmds=19 noFull=0 shQ=46836 | m=1.430 worth=53.8 cheap=8.6 over=0 dMedOther=22.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1970 zexos1 B=189499 L=4976 d=38.1 nb=0 neut=0 cmds=19 noFull=0 shQ=47374 | m=1.429 worth=54.4 cheap=8.6 over=0 dMedOther=22.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1975 zexos1 B=189499 L=4976 d=38.1 nb=1 neut=0 cmds=19 noFull=0 shQ=47374 | m=1.429 worth=54.4 cheap=8.6 over=0 dMedOther=22.8 safe(-1)=113664
+    → Player 625#31[T1] terr=12119 bal=209786 dq=17.3 cnt=1 | c=79.4 rankC=79.4 need=381825 tD=0.76 人 | safe=113664 keep=Inf avail=-Inf chunkB=37900 pulseB=22740 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1980 zexos1 B=191678 L=4976 d=38.5 nb=1 neut=0 cmds=19 noFull=0 shQ=47919 | m=1.428 worth=55.0 cheap=8.6 over=0 dMedOther=23.0 safe(-1)=115125
+    → Player 625#31[T1] terr=12228 bal=212387 dq=17.4 cnt=3 | c=79.5 rankC=79.5 need=387411 tD=0.76 人 | safe=115125 keep=Inf avail=-Inf chunkB=38336 pulseB=23001 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1985 zexos1 B=191678 L=4976 d=38.5 nb=1 neut=0 cmds=19 noFull=0 shQ=47919 | m=1.427 worth=55.0 cheap=8.6 over=0 dMedOther=23.0 safe(-1)=115125
+    → Player 625#31[T1] terr=12309 bal=212387 dq=17.3 cnt=5 | c=78.9 rankC=78.9 need=388178 tD=0.75 人 | safe=115125 keep=Inf avail=-Inf chunkB=38336 pulseB=23001 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1990 zexos1 B=193882 L=4976 d=39.0 nb=1 neut=0 cmds=19 noFull=0 shQ=48470 | m=1.427 worth=55.6 cheap=8.6 over=0 dMedOther=23.2 safe(-1)=116616
+    → Player 625#31[T1] terr=12439 bal=215041 dq=17.3 cnt=8 | c=78.9 rankC=78.9 need=394012 tD=0.74 人 | safe=116616 keep=Inf avail=-Inf chunkB=38776 pulseB=23266 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1995 zexos1 B=193882 L=4976 d=39.0 nb=1 neut=0 cmds=19 noFull=0 shQ=48470 | m=1.426 worth=55.6 cheap=8.6 over=0 dMedOther=23.2 safe(-1)=116616
+    → Player 625#31[T1] terr=12523 bal=215041 dq=17.2 cnt=20 | c=53.8 rankC=53.8 need=394787 tD=0.74 人 | safe=116616 keep=189339 avail=2271 chunkB=38776 pulseB=23266 不够一条 sole hNb=1
+    ⇒ 本拍没有指令
+t=2000 zexos1 B=201087 L=4976 d=40.4 nb=1 neut=0 cmds=19 noFull=0 shQ=49053 | m=1.425 worth=57.6 cheap=8.6 over=0 dMedOther=25.0 safe(-1)=117322
+    → Player 625#31[T1] terr=12644 bal=216297 dq=17.1 cnt=22 | c=50.2 rankC=50.2 need=398104 tD=0.68 人 | safe=117322 keep=184941 avail=13790 chunkB=40217 pulseB=24130 不够一条 sole hNb=1
+    ⇒ 本拍没有指令
+t=2005 zexos1 B=201087 L=4976 d=40.4 nb=1 neut=0 cmds=19 noFull=0 shQ=50271 | m=1.420 worth=57.4 cheap=8.6 over=0 dMedOther=25.0 safe(-1)=117322
+    → Player 625#31[T1] terr=12732 bal=216297 dq=17.0 cnt=23 | c=48.4 rankC=48.4 need=398891 tD=0.68 人 | safe=117322 keep=181756 avail=16975 chunkB=40217 pulseB=24130 不够一条 sole hNb=1
+    ⇒ 本拍没有指令
+t=2010 zexos1 B=203399 L=4976 d=40.9 nb=1 neut=0 cmds=19 noFull=0 shQ=50849 | m=1.415 worth=57.8 cheap=8.6 over=0 dMedOther=25.3 safe(-1)=118840
+    → Player 625#31[T1] terr=12858 bal=219000 dq=17.0 cnt=26 | c=42.9 rankC=42.9 need=404750 tD=0.67 人 | safe=118840 keep=171649 avail=29367 chunkB=40680 pulseB=24408 不够一条 sole hNb=1
+    ⇒ 本拍没有指令
+t=2015 zexos1 B=203399 L=4976 d=40.9 nb=1 neut=0 cmds=19 noFull=0 shQ=50849 | m=1.409 worth=57.6 cheap=8.6 over=0 dMedOther=25.3 safe(-1)=118840
+    → Player 625#31[T1] terr=12938 bal=219000 dq=16.9 cnt=27 | c=42.6 rankC=42.6 need=405452 tD=0.67 人 | safe=118840 keep=171417 avail=29599 chunkB=40680 pulseB=24408 不够一条 sole hNb=1
+    ⇒ 本拍没有指令
+t=2020 zexos1 B=205738 L=4976 d=41.3 nb=1 neut=0 cmds=19 noFull=0 shQ=51434 | m=1.404 worth=58.0 cheap=8.6 over=0 dMedOther=25.7 safe(-1)=120378
+    → Player 625#31[T1] terr=13053 bal=221737 dq=17.0 cnt=31 | c=42.7 rankC=42.7 need=411298 tD=0.66 人 | safe=120378 keep=172903 avail=30425 chunkB=41148 pulseB=24689 不够一条 sole hNb=1
+    ⇒ 本拍没有指令
+t=2025 zexos1 B=205738 L=4976 d=41.3 nb=1 neut=0 cmds=20 noFull=0 shQ=51434 | m=1.399 worth=57.8 cheap=8.6 over=0 dMedOther=25.7 safe(-1)=112349
+    → Player 625#31[T1] terr=13126 bal=207446 dq=15.8 cnt=36 | c=29.9 rankC=20.9 need=386633 tD=0.62 人 | safe=112349 keep=146687 avail=56641 chunkB=41148 pulseB=24689  sole hNb=1
+    ⇒ 影子指令 attack pct=281 → Player 625#31[T1]（约 56658 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2030 zexos1 B=208103 L=4976 d=41.8 nb=1 neut=0 cmds=21 noFull=0 shQ=52025 | m=1.393 worth=58.3 cheap=8.6 over=0 dMedOther=26.0 safe(-1)=113806
+    → Player 625#31[T1] terr=13231 bal=210039 dq=15.9 cnt=39 | c=29.9 rankC=21.0 need=392069 tD=0.61 人 | safe=113806 keep=148164 avail=57501 chunkB=41621 pulseB=24972  sole hNb=1
+    ⇒ 影子指令 attack pct=282 → Player 625#31[T1]（约 57512 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2035 zexos1 B=208103 L=4976 d=41.8 nb=1 neut=1 cmds=22 noFull=0 shQ=52025 | m=1.388 worth=58.1 cheap=8.6 over=0 dMedOther=26.0 safe(-1)=113806
+    → Player 625#31[T1] terr=13298 bal=210039 dq=15.8 cnt=42 | c=39.7 rankC=39.7 need=392611 tD=0.61 人 | safe=113806 keep=168800 avail=36865 chunkB=41621 pulseB=24972 不够一条 sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 9754 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2040 zexos1 B=210496 L=4976 d=42.3 nb=1 neut=0 cmds=22 noFull=0 shQ=52624 | m=1.383 worth=58.5 cheap=8.6 over=0 dMedOther=26.3 safe(-1)=115293
+    → Player 625#31[T1] terr=13392 bal=212685 dq=15.9 cnt=43 | c=39.8 rankC=39.8 need=398080 tD=0.60 人 | safe=115293 keep=170509 avail=37521 chunkB=42099 pulseB=25260 不够一条 sole hNb=1
+    ⇒ 本拍没有指令
+t=2045 zexos1 B=150062 L=4976 d=30.2 nb=1 neut=0 cmds=22 noFull=0 shQ=37515 | m=1.378 worth=41.5 cheap=8.6 over=0 dMedOther=26.3 safe(-1)=115293
+    → Player 625#31[T1] terr=13452 bal=212685 dq=15.8 cnt=43 | c=33.9 rankC=33.9 need=340593 tD=0.60 人 | safe=115293 keep=133223 avail=15081 chunkB=30012 pulseB=18007 不够一条 sole hNb=1
+    ⇒ 本拍没有指令
+t=2050 zexos1 B=151787 L=4976 d=30.5 nb=1 neut=0 cmds=22 noFull=0 shQ=37946 | m=1.373 worth=41.9 cheap=8.6 over=0 dMedOther=26.7 safe(-1)=116798
+    → Player 625#31[T1] terr=13538 bal=215364 dq=15.9 cnt=43 | c=34.1 rankC=34.1 need=346039 tD=0.60 人 | safe=116798 keep=134759 avail=15250 chunkB=30357 pulseB=18214 不够一条 sole hNb=1
+    ⇒ 本拍没有指令
+t=2055 zexos1 B=108061 L=5062 d=21.3 nb=1 neut=0 cmds=22 noFull=0 shQ=27015 | m=1.367 worth=29.2 cheap=8.6 over=0 dMedOther=26.7 safe(-1)=115500
+    → Player 625#31[T1] terr=13507 bal=213183 dq=15.8 cnt=44 | c=30.1 rankC=30.1 need=304530 tD=0.59 人 | safe=115500 keep=Inf avail=-Inf chunkB=21612 pulseB=12967 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2060 zexos1 B=109303 L=5106 d=21.4 nb=1 neut=0 cmds=22 noFull=0 shQ=27325 | m=1.362 worth=29.2 cheap=8.6 over=0 dMedOther=27.0 safe(-1)=116342
+    → Player 625#31[T1] terr=13542 bal=214747 dq=15.9 cnt=44 | c=30.5 rankC=30.5 need=309932 tD=0.59 人 | safe=116342 keep=Inf avail=-Inf chunkB=21861 pulseB=13116 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2065 zexos1 B=109303 L=5195 d=21.0 nb=1 neut=0 cmds=22 noFull=0 shQ=27325 | m=1.357 worth=28.5 cheap=8.6 over=0 dMedOther=27.0 safe(-1)=115001
+    → Player 625#31[T1] terr=13503 bal=212494 dq=15.7 cnt=46 | c=30.6 rankC=30.6 need=310332 tD=0.58 人 | safe=115001 keep=Inf avail=-Inf chunkB=21861 pulseB=13116 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2070 zexos1 B=110559 L=5289 d=20.9 nb=1 neut=0 cmds=22 noFull=0 shQ=27639 | m=1.352 worth=28.3 cheap=8.6 over=0 dMedOther=27.3 safe(-1)=115085
+    → Player 625#31[T1] terr=13480 bal=212784 dq=15.8 cnt=49 | c=31.2 rankC=31.2 need=315632 tD=0.58 人 | safe=115085 keep=Inf avail=-Inf chunkB=22112 pulseB=13267 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2075 zexos1 B=110559 L=5338 d=20.7 nb=1 neut=0 cmds=22 noFull=0 shQ=27639 | m=1.346 worth=27.9 cheap=8.6 over=0 dMedOther=27.3 safe(-1)=114349
+    → Player 625#31[T1] terr=13476 bal=211549 dq=15.7 cnt=51 | c=31.3 rankC=31.3 need=315995 tD=0.57 人 | safe=114349 keep=Inf avail=-Inf chunkB=22112 pulseB=13267 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2080 zexos1 B=111830 L=5441 d=20.6 nb=1 neut=0 cmds=22 noFull=0 shQ=27957 | m=1.341 worth=27.6 cheap=8.6 over=0 dMedOther=27.7 safe(-1)=114294
+    → Player 625#31[T1] terr=13437 bal=211604 dq=15.7 cnt=54 | c=17.6 rankC=8.8 need=321209 tD=0.57 人 pulse bleeding | safe=114294 keep=114294 avail=-3774 chunkB=22366 pulseB=13420 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2085 zexos1 B=111830 L=5550 d=20.1 nb=1 neut=0 cmds=22 noFull=0 shQ=27957 | m=1.336 worth=26.9 cheap=8.6 over=0 dMedOther=27.7 safe(-1)=112663
+    → Player 625#31[T1] terr=13368 bal=208866 dq=15.6 cnt=56 | c=17.7 rankC=8.9 need=321535 tD=0.56 人 pulse bleeding | safe=112663 keep=112663 avail=-2143 chunkB=22366 pulseB=13420 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2090 zexos1 B=113116 L=5606 d=20.2 nb=1 neut=0 cmds=22 noFull=0 shQ=28279 | m=1.331 worth=26.8 cheap=8.6 over=0 dMedOther=28.0 safe(-1)=110181
+    → Player 625#31[T1] terr=13142 bal=204532 dq=15.6 cnt=56 | c=17.7 rankC=8.9 need=315040 tD=0.56 人 pulse bleeding | safe=110181 keep=110181 avail=1610 chunkB=22623 pulseB=13574  hNb=1
+    ⇒ 本拍没有指令
+t=2095 zexos1 B=113116 L=5719 d=19.8 nb=1 neut=0 cmds=22 noFull=0 shQ=28279 | m=1.325 worth=26.2 cheap=8.5 over=0 dMedOther=28.0 safe(-1)=106981
+    → Player 625#31[T1] terr=12950 bal=199004 dq=15.4 cnt=57 | c=17.1 rankC=8.5 need=309629 tD=0.55 人 pulse bleeding | safe=106981 keep=106981 avail=4810 chunkB=22623 pulseB=13574  hNb=1
+    ⇒ 本拍没有指令
+t=2100 zexos1 B=120215 L=5834 d=20.6 nb=1 neut=0 cmds=22 noFull=0 shQ=28630 | m=1.320 worth=27.2 cheap=8.5 over=0 dMedOther=29.4 safe(-1)=110729
+    → Player 625#31[T1] terr=12659 bal=205848 dq=16.3 cnt=58 | c=19.2 rankC=9.6 need=325455 tD=0.55 人 pulse bleeding | safe=110729 keep=110729 avail=8078 chunkB=24043 pulseB=14426  hNb=1
+    ⇒ 本拍没有指令
+t=2105 zexos1 B=120215 L=5892 d=20.4 nb=1 neut=0 cmds=22 noFull=0 shQ=30053 | m=1.315 worth=26.8 cheap=8.5 over=0 dMedOther=29.4 safe(-1)=106625
+    → Player 625#31[T1] terr=12406 bal=198630 dq=16.0 cnt=60 | c=18.7 rankC=9.3 need=313821 tD=0.54 人 pulse bleeding | safe=106625 keep=106625 avail=12182 chunkB=24043 pulseB=14426  hNb=1
+    ⇒ 本拍没有指令
+t=2110 zexos1 B=121621 L=6012 d=20.2 nb=1 neut=0 cmds=22 noFull=0 shQ=30405 | m=1.310 worth=26.5 cheap=8.5 over=0 dMedOther=29.8 safe(-1)=104557
+    → Player 625#31[T1] terr=12209 bal=195130 dq=16.0 cnt=61 | c=18.9 rankC=9.5 need=312417 tD=0.54 人 pulse bleeding | safe=104557 keep=104557 avail=15639 chunkB=24324 pulseB=14595  hNb=1
+    ⇒ 本拍没有指令
+t=2115 zexos1 B=121621 L=6134 d=19.8 nb=1 neut=0 cmds=22 noFull=0 shQ=30405 | m=1.304 worth=25.9 cheap=8.5 over=0 dMedOther=29.8 safe(-1)=105980
+    → Player 625#31[T1] terr=11864 bal=197846 dq=16.7 cnt=62 | c=21.0 rankC=10.5 need=320727 tD=0.56 人 pulse bleeding | safe=105980 keep=107970 avail=12226 chunkB=24324 pulseB=14595  hNb=1
+    ⇒ 本拍没有指令
+t=2120 zexos1 B=123043 L=6196 d=19.9 nb=1 neut=0 cmds=22 noFull=0 shQ=30760 | m=1.299 worth=25.8 cheap=8.5 over=0 dMedOther=30.1 safe(-1)=103018
+    → Player 625#31[T1] terr=11580 bal=192666 dq=16.6 cnt=62 | c=21.8 rankC=10.9 need=312614 tD=0.55 人 pulse bleeding | safe=103018 keep=111769 avail=9833 chunkB=24609 pulseB=14765  hNb=1
+    ⇒ 本拍没有指令
+t=2125 zexos1 B=123043 L=6321 d=19.5 nb=1 neut=0 cmds=22 noFull=0 shQ=30760 | m=1.294 worth=25.2 cheap=8.5 over=0 dMedOther=30.1 safe(-1)=100323
+    → Player 625#31[T1] terr=11455 bal=188057 dq=16.4 cnt=61 | c=38.3 rankC=38.3 need=310409 tD=0.54 人 | safe=100323 keep=Inf avail=-Inf chunkB=24609 pulseB=14765 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2130 zexos1 B=124482 L=6444 d=19.3 nb=1 neut=0 cmds=22 noFull=0 shQ=31120 | m=1.288 worth=24.9 cheap=8.5 over=0 dMedOther=30.5 safe(-1)=99696
+    → Player 625#31[T1] terr=11332 bal=187124 dq=16.5 cnt=63 | c=39.3 rankC=39.3 need=314457 tD=0.54 人 | safe=99696 keep=Inf avail=-Inf chunkB=24896 pulseB=14938 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2135 zexos1 B=124482 L=6507 d=19.1 nb=1 neut=0 cmds=22 noFull=0 shQ=31120 | m=1.283 worth=24.5 cheap=8.5 over=0 dMedOther=30.5 safe(-1)=98708
+    → Player 625#31[T1] terr=11269 bal=185460 dq=16.5 cnt=64 | c=39.6 rankC=39.6 need=314513 tD=0.54 人 | safe=98708 keep=Inf avail=-Inf chunkB=24896 pulseB=14938 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2140 zexos1 B=125950 L=6636 d=19.0 nb=1 neut=0 cmds=22 noFull=0 shQ=31487 | m=1.278 worth=24.3 cheap=8.4 over=0 dMedOther=29.3 safe(-1)=97952
+    → Player 625#31[T1] terr=11140 bal=184309 dq=16.5 cnt=66 | c=40.8 rankC=40.8 need=318416 tD=0.56 人 | safe=97952 keep=Inf avail=-Inf chunkB=25190 pulseB=15114 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2145 zexos1 B=125950 L=6768 d=18.6 nb=2 neut=0 cmds=22 noFull=0 shQ=31487 | m=1.273 worth=23.7 cheap=8.4 over=0 dMedOther=29.3 safe(-1)=125855
+    → Player 625#31[T1] terr=11008 bal=180822 dq=16.4 cnt=66 | c=41.5 rankC=41.5 need=318473 tD=0.56 人 | safe=125855 keep=Inf avail=-Inf chunkB=25190 pulseB=15114 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=234174 dq=20.6 cnt=1 | c=125.3 rankC=125.3 need=427463 tD=0.70 人 crowdedHard | safe=125855 keep=Inf avail=-Inf chunkB=25190 pulseB=15114 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2150 zexos1 B=127436 L=6834 d=18.6 nb=2 neut=0 cmds=22 noFull=0 shQ=31859 | m=1.268 worth=23.6 cheap=8.4 over=0 dMedOther=29.6 safe(-1)=127430
+    → Player 625#31[T1] terr=10942 bal=181290 dq=16.6 cnt=64 | c=42.3 rankC=42.3 need=322295 tD=0.56 人 | safe=127430 keep=Inf avail=-Inf chunkB=25487 pulseB=15292 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=237077 dq=20.8 cnt=3 | c=126.8 rankC=126.8 need=432621 tD=0.70 人 crowdedHard | safe=127430 keep=Inf avail=-Inf chunkB=25487 pulseB=15292 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2155 zexos1 B=127446 L=6834 d=18.6 nb=2 neut=0 cmds=22 noFull=0 shQ=31861 | m=1.262 worth=23.5 cheap=8.4 over=0 dMedOther=29.6 safe(-1)=127430
+    → Player 625#31[T1] terr=10942 bal=181034 dq=16.5 cnt=64 | c=42.3 rankC=42.3 need=322567 tD=0.56 人 | safe=127430 keep=Inf avail=-Inf chunkB=25489 pulseB=15294 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=237077 dq=20.8 cnt=3 | c=126.8 rankC=126.8 need=432653 tD=0.70 人 crowdedHard | safe=127430 keep=Inf avail=-Inf chunkB=25489 pulseB=15294 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2160 zexos1 B=128949 L=6834 d=18.9 nb=2 neut=0 cmds=22 noFull=0 shQ=32237 | m=1.257 worth=23.7 cheap=8.4 over=0 dMedOther=30.0 safe(-1)=129081
+    → Player 625#31[T1] terr=10942 bal=183260 dq=16.7 cnt=64 | c=42.8 rankC=42.8 need=326432 tD=0.56 人 | safe=129081 keep=Inf avail=-Inf chunkB=25790 pulseB=15474 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=240016 dq=21.1 cnt=3 | c=128.3 rankC=128.3 need=437843 tD=0.70 人 crowdedHard | safe=129081 keep=Inf avail=-Inf chunkB=25790 pulseB=15474 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2165 zexos1 B=128949 L=6834 d=18.9 nb=2 neut=0 cmds=22 noFull=0 shQ=32237 | m=1.252 worth=23.6 cheap=8.4 over=0 dMedOther=30.0 safe(-1)=129081
+    → Player 625#31[T1] terr=10942 bal=183260 dq=16.7 cnt=64 | c=42.8 rankC=42.8 need=326489 tD=0.56 人 | safe=129081 keep=Inf avail=-Inf chunkB=25790 pulseB=15474 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=240016 dq=21.1 cnt=3 | c=128.3 rankC=128.3 need=437876 tD=0.70 人 crowdedHard | safe=129081 keep=Inf avail=-Inf chunkB=25790 pulseB=15474 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2170 zexos1 B=130470 L=6834 d=19.1 nb=2 neut=0 cmds=22 noFull=0 shQ=32617 | m=1.247 worth=23.8 cheap=8.4 over=0 dMedOther=30.3 safe(-1)=130753
+    → Player 625#31[T1] terr=10942 bal=185514 dq=17.0 cnt=64 | c=43.3 rankC=43.3 need=330403 tD=0.56 人 | safe=130753 keep=Inf avail=-Inf chunkB=26094 pulseB=15656 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=242992 dq=21.3 cnt=3 | c=129.8 rankC=129.8 need=443165 tD=0.70 人 crowdedHard | safe=130753 keep=Inf avail=-Inf chunkB=26094 pulseB=15656 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2175 zexos1 B=130470 L=6834 d=19.1 nb=2 neut=0 cmds=22 noFull=0 shQ=32617 | m=1.241 worth=23.7 cheap=8.4 over=0 dMedOther=30.3 safe(-1)=130753
+    → Player 625#31[T1] terr=10942 bal=185514 dq=17.0 cnt=64 | c=43.3 rankC=43.3 need=330461 tD=0.56 人 | safe=130753 keep=Inf avail=-Inf chunkB=26094 pulseB=15656 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=242992 dq=21.3 cnt=3 | c=129.8 rankC=129.8 need=443198 tD=0.70 人 crowdedHard | safe=130753 keep=Inf avail=-Inf chunkB=26094 pulseB=15656 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2180 zexos1 B=132009 L=6834 d=19.3 nb=2 neut=0 cmds=22 noFull=0 shQ=33002 | m=1.236 worth=23.9 cheap=8.4 over=0 dMedOther=30.7 safe(-1)=132446
+    → Player 625#31[T1] terr=10942 bal=187795 dq=17.2 cnt=64 | c=43.8 rankC=43.8 need=334424 tD=0.56 人 | safe=132446 keep=Inf avail=-Inf chunkB=26402 pulseB=15841 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=246005 dq=21.6 cnt=3 | c=131.3 rankC=131.3 need=448520 tD=0.70 人 crowdedHard | safe=132446 keep=Inf avail=-Inf chunkB=26402 pulseB=15841 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2185 zexos1 B=132009 L=6834 d=19.3 nb=2 neut=0 cmds=22 noFull=0 shQ=33002 | m=1.231 worth=23.8 cheap=8.4 over=0 dMedOther=30.7 safe(-1)=132446
+    → Player 625#31[T1] terr=10942 bal=187795 dq=17.2 cnt=64 | c=43.8 rankC=43.8 need=334482 tD=0.56 人 | safe=132446 keep=Inf avail=-Inf chunkB=26402 pulseB=15841 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=246005 dq=21.6 cnt=3 | c=131.3 rankC=131.3 need=448554 tD=0.70 人 crowdedHard | safe=132446 keep=Inf avail=-Inf chunkB=26402 pulseB=15841 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2190 zexos1 B=133566 L=6834 d=19.5 nb=2 neut=0 cmds=22 noFull=0 shQ=33391 | m=1.226 worth=24.0 cheap=8.4 over=0 dMedOther=31.0 safe(-1)=134160
+    → Player 625#31[T1] terr=10942 bal=190104 dq=17.4 cnt=64 | c=44.3 rankC=44.3 need=338496 tD=0.56 人 | safe=134160 keep=Inf avail=-Inf chunkB=26713 pulseB=16028 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=249055 dq=21.9 cnt=3 | c=132.9 rankC=132.9 need=453976 tD=0.71 人 crowdedHard | safe=134160 keep=Inf avail=-Inf chunkB=26713 pulseB=16028 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2195 zexos1 B=133566 L=6834 d=19.5 nb=2 neut=0 cmds=22 noFull=0 shQ=33391 | m=1.220 worth=23.8 cheap=8.4 over=0 dMedOther=31.0 safe(-1)=134160
+    → Player 625#31[T1] terr=10942 bal=190104 dq=17.4 cnt=64 | c=44.3 rankC=44.3 need=338554 tD=0.56 人 | safe=134160 keep=Inf avail=-Inf chunkB=26713 pulseB=16028 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=249055 dq=21.9 cnt=3 | c=132.9 rankC=132.9 need=454010 tD=0.71 人 crowdedHard | safe=134160 keep=Inf avail=-Inf chunkB=26713 pulseB=16028 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2200 zexos1 B=141976 L=6834 d=20.8 nb=2 neut=0 cmds=22 noFull=0 shQ=33813 | m=1.215 worth=25.2 cheap=8.4 over=0 dMedOther=32.4 safe(-1)=142291
+    → Player 625#31[T1] terr=10942 bal=203384 dq=18.6 cnt=64 | c=47.3 rankC=47.3 need=361235 tD=0.57 人 | safe=142291 keep=Inf avail=-Inf chunkB=28395 pulseB=17037 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=263529 dq=23.1 cnt=3 | c=140.3 rankC=140.3 need=479463 tD=0.72 人 crowdedHard | safe=142291 keep=Inf avail=-Inf chunkB=28395 pulseB=17037 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2205 zexos1 B=141976 L=6834 d=20.8 nb=2 neut=0 cmds=22 noFull=0 shQ=35494 | m=1.210 worth=25.1 cheap=8.4 over=0 dMedOther=32.4 safe(-1)=142291
+    → Player 625#31[T1] terr=10942 bal=203384 dq=18.6 cnt=64 | c=47.3 rankC=47.3 need=361298 tD=0.57 人 | safe=142291 keep=Inf avail=-Inf chunkB=28395 pulseB=17037 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=263529 dq=23.1 cnt=3 | c=140.3 rankC=140.3 need=479498 tD=0.72 人 crowdedHard | safe=142291 keep=Inf avail=-Inf chunkB=28395 pulseB=17037 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2210 zexos1 B=143651 L=6834 d=21.0 nb=2 neut=0 cmds=22 noFull=0 shQ=35912 | m=1.205 worth=25.3 cheap=8.4 over=0 dMedOther=32.7 safe(-1)=150311
+    → Player 625#31[T1] terr=10942 bal=205885 dq=18.8 cnt=64 | c=47.8 rankC=47.8 need=365648 tD=0.57 人 | safe=150311 keep=Inf avail=-Inf chunkB=28730 pulseB=17238 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=277804 dq=24.4 cnt=3 | c=147.6 rankC=147.6 need=504644 tD=0.75 人 crowdedHard | safe=150311 keep=Inf avail=-Inf chunkB=28730 pulseB=17238 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2215 zexos1 B=143651 L=6834 d=21.0 nb=2 neut=0 cmds=22 noFull=0 shQ=35912 | m=1.199 worth=25.2 cheap=8.4 over=0 dMedOther=34.8 safe(-1)=150311
+    → Player 625#31[T1] terr=10942 bal=205885 dq=18.8 cnt=64 | c=47.8 rankC=47.8 need=365711 tD=0.54 人 | safe=150311 keep=Inf avail=-Inf chunkB=28730 pulseB=17238 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=277804 dq=24.4 cnt=3 | c=147.6 rankC=147.6 need=504682 tD=0.70 人 crowdedHard | safe=150311 keep=Inf avail=-Inf chunkB=28730 pulseB=17238 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2220 zexos1 B=145346 L=6834 d=21.3 nb=2 neut=0 cmds=22 noFull=0 shQ=36336 | m=1.194 worth=25.4 cheap=8.4 over=0 dMedOther=35.2 safe(-1)=152246
+    → Player 625#31[T1] terr=10942 bal=208417 dq=19.0 cnt=64 | c=48.4 rankC=48.4 need=370116 tD=0.54 人 | safe=152246 keep=Inf avail=-Inf chunkB=29069 pulseB=17442 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=281248 dq=24.7 cnt=3 | c=149.4 rankC=149.4 need=510770 tD=0.70 人 crowdedHard | safe=152246 keep=Inf avail=-Inf chunkB=29069 pulseB=17442 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2225 zexos1 B=145346 L=6834 d=21.3 nb=2 neut=0 cmds=22 noFull=0 shQ=36336 | m=1.189 worth=25.3 cheap=8.4 over=0 dMedOther=35.2 safe(-1)=152246
+    → Player 625#31[T1] terr=10942 bal=208417 dq=19.0 cnt=64 | c=48.4 rankC=48.4 need=370180 tD=0.54 人 | safe=152246 keep=Inf avail=-Inf chunkB=29069 pulseB=17442 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=281248 dq=24.7 cnt=3 | c=149.4 rankC=149.4 need=510807 tD=0.70 人 crowdedHard | safe=152246 keep=Inf avail=-Inf chunkB=29069 pulseB=17442 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2230 zexos1 B=147061 L=6834 d=21.5 nb=2 neut=0 cmds=22 noFull=0 shQ=36765 | m=1.183 worth=25.5 cheap=8.4 over=0 dMedOther=35.7 safe(-1)=154204
+    → Player 625#31[T1] terr=10942 bal=210980 dq=19.3 cnt=64 | c=48.9 rankC=48.9 need=374641 tD=0.54 人 | safe=154204 keep=Inf avail=-Inf chunkB=29412 pulseB=17647 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=284735 dq=25.0 cnt=3 | c=151.1 rankC=151.1 need=517011 tD=0.70 人 crowdedHard | safe=154204 keep=Inf avail=-Inf chunkB=29412 pulseB=17647 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2235 zexos1 B=147061 L=6834 d=21.5 nb=2 neut=0 cmds=22 noFull=0 shQ=36765 | m=1.178 worth=25.4 cheap=8.4 over=0 dMedOther=35.7 safe(-1)=154204
+    → Player 625#31[T1] terr=10942 bal=210980 dq=19.3 cnt=64 | c=48.9 rankC=48.9 need=374706 tD=0.54 人 | safe=154204 keep=Inf avail=-Inf chunkB=29412 pulseB=17647 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=284735 dq=25.0 cnt=3 | c=151.1 rankC=151.1 need=517049 tD=0.70 人 crowdedHard | safe=154204 keep=Inf avail=-Inf chunkB=29412 pulseB=17647 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2240 zexos1 B=148796 L=6834 d=21.8 nb=2 neut=0 cmds=22 noFull=0 shQ=37199 | m=1.173 worth=25.5 cheap=8.4 over=0 dMedOther=36.1 safe(-1)=156188
+    → Player 625#31[T1] terr=10942 bal=213575 dq=19.5 cnt=64 | c=49.5 rankC=49.5 need=379225 tD=0.54 人 | safe=156188 keep=Inf avail=-Inf chunkB=29759 pulseB=17856 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=288265 dq=25.3 cnt=3 | c=152.9 rankC=152.9 need=523291 tD=0.70 人 crowdedHard | safe=156188 keep=Inf avail=-Inf chunkB=29759 pulseB=17856 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2245 zexos1 B=148796 L=6834 d=21.8 nb=2 neut=0 cmds=22 noFull=0 shQ=37199 | m=1.168 worth=25.4 cheap=8.4 over=0 dMedOther=36.1 safe(-1)=156188
+    → Player 625#31[T1] terr=10942 bal=213575 dq=19.5 cnt=64 | c=49.5 rankC=49.5 need=379290 tD=0.54 人 | safe=156188 keep=Inf avail=-Inf chunkB=29759 pulseB=17856 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=288265 dq=25.3 cnt=3 | c=152.9 rankC=152.9 need=523330 tD=0.70 人 crowdedHard | safe=156188 keep=Inf avail=-Inf chunkB=29759 pulseB=17856 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2250 zexos1 B=150551 L=6834 d=22.0 nb=2 neut=0 cmds=22 noFull=0 shQ=37637 | m=1.163 worth=25.6 cheap=8.4 over=0 dMedOther=36.4 safe(-1)=158196
+    → Player 625#31[T1] terr=10942 bal=216201 dq=19.8 cnt=64 | c=50.1 rankC=50.1 need=383864 tD=0.54 人 | safe=158196 keep=Inf avail=-Inf chunkB=30110 pulseB=18066 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=291839 dq=25.6 cnt=3 | c=154.8 rankC=154.8 need=529690 tD=0.70 人 crowdedHard | safe=158196 keep=Inf avail=-Inf chunkB=30110 pulseB=18066 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2255 zexos1 B=150551 L=6834 d=22.0 nb=2 neut=0 cmds=22 noFull=0 shQ=37637 | m=1.157 worth=25.5 cheap=8.4 over=0 dMedOther=36.0 safe(-1)=158196
+    → Player 625#31[T1] terr=10942 bal=216201 dq=19.8 cnt=64 | c=50.1 rankC=50.1 need=383930 tD=0.55 人 | safe=158196 keep=Inf avail=-Inf chunkB=30110 pulseB=18066 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=291839 dq=25.6 cnt=3 | c=154.8 rankC=154.8 need=529729 tD=0.71 人 crowdedHard | safe=158196 keep=Inf avail=-Inf chunkB=30110 pulseB=18066 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2260 zexos1 B=152327 L=6834 d=22.3 nb=2 neut=0 cmds=22 noFull=0 shQ=38081 | m=1.152 worth=25.7 cheap=8.4 over=0 dMedOther=36.0 safe(-1)=160228
+    → Player 625#31[T1] terr=10942 bal=218860 dq=20.0 cnt=64 | c=50.7 rankC=50.7 need=388563 tD=0.56 人 | safe=160228 keep=Inf avail=-Inf chunkB=30465 pulseB=18279 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=295457 dq=25.9 cnt=3 | c=156.6 rankC=156.6 need=536129 tD=0.72 人 crowdedHard | safe=160228 keep=Inf avail=-Inf chunkB=30465 pulseB=18279 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2265 zexos1 B=152327 L=6834 d=22.3 nb=2 neut=0 cmds=22 noFull=0 shQ=38081 | m=1.147 worth=25.6 cheap=8.4 over=0 dMedOther=35.8 safe(-1)=160228
+    → Player 625#31[T1] terr=10942 bal=218860 dq=20.0 cnt=64 | c=50.6 rankC=50.6 need=388630 tD=0.56 人 | safe=160228 keep=Inf avail=-Inf chunkB=30465 pulseB=18279 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=295457 dq=25.9 cnt=3 | c=156.6 rankC=156.6 need=536168 tD=0.73 人 crowdedHard | safe=160228 keep=Inf avail=-Inf chunkB=30465 pulseB=18279 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2270 zexos1 B=154124 L=6834 d=22.6 nb=2 neut=0 cmds=22 noFull=0 shQ=38531 | m=1.142 worth=25.7 cheap=8.4 over=0 dMedOther=35.8 safe(-1)=162286
+    → Player 625#31[T1] terr=10942 bal=221551 dq=20.2 cnt=64 | c=51.2 rankC=51.2 need=393321 tD=0.57 人 | safe=162286 keep=Inf avail=-Inf chunkB=30825 pulseB=18495 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=299120 dq=26.3 cnt=3 | c=158.5 rankC=158.5 need=542689 tD=0.73 人 crowdedHard | safe=162286 keep=Inf avail=-Inf chunkB=30825 pulseB=18495 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2275 zexos1 B=154124 L=6834 d=22.6 nb=2 neut=0 cmds=22 noFull=0 shQ=38531 | m=1.136 worth=25.6 cheap=8.4 over=0 dMedOther=35.5 safe(-1)=162286
+    → Player 625#31[T1] terr=10942 bal=221551 dq=20.2 cnt=64 | c=51.2 rankC=51.2 need=393388 tD=0.57 人 | safe=162286 keep=Inf avail=-Inf chunkB=30825 pulseB=18495 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=299120 dq=26.3 cnt=3 | c=158.5 rankC=158.5 need=542729 tD=0.74 人 crowdedHard | safe=162286 keep=Inf avail=-Inf chunkB=30825 pulseB=18495 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2280 zexos1 B=155942 L=6834 d=22.8 nb=2 neut=0 cmds=22 noFull=0 shQ=38985 | m=1.131 worth=25.8 cheap=8.4 over=0 dMedOther=35.8 safe(-1)=164370
+    → Player 625#31[T1] terr=10942 bal=205441 dq=18.8 cnt=64 | c=47.7 rankC=47.7 need=365989 tD=0.52 人 | safe=164370 keep=Inf avail=-Inf chunkB=31188 pulseB=18713 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=302829 dq=26.6 cnt=3 | c=160.4 rankC=160.4 need=549292 tD=0.74 人 crowdedHard | safe=164370 keep=Inf avail=-Inf chunkB=31188 pulseB=18713 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2285 zexos1 B=155942 L=6834 d=22.8 nb=2 neut=0 cmds=22 noFull=0 shQ=38985 | m=1.126 worth=25.7 cheap=8.4 over=0 dMedOther=35.5 safe(-1)=164370
+    → Player 625#31[T1] terr=10944 bal=205441 dq=18.8 cnt=64 | c=47.7 rankC=47.7 need=366073 tD=0.53 人 | safe=164370 keep=Inf avail=-Inf chunkB=31188 pulseB=18713 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=302829 dq=26.6 cnt=3 | c=160.3 rankC=160.3 need=549332 tD=0.75 人 crowdedHard | safe=164370 keep=Inf avail=-Inf chunkB=31188 pulseB=18713 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2290 zexos1 B=157782 L=6834 d=23.1 nb=2 neut=0 cmds=22 noFull=0 shQ=39445 | m=1.121 worth=25.9 cheap=8.4 over=0 dMedOther=35.8 safe(-1)=166479
+    → Player 625#31[T1] terr=10961 bal=207967 dq=19.0 cnt=64 | c=48.1 rankC=48.1 need=370665 tD=0.53 人 | safe=166479 keep=Inf avail=-Inf chunkB=31556 pulseB=18934 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=306584 dq=26.9 cnt=3 | c=162.3 rankC=162.3 need=556019 tD=0.75 人 crowdedHard | safe=166479 keep=Inf avail=-Inf chunkB=31556 pulseB=18934 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2295 zexos1 B=157782 L=6834 d=23.1 nb=2 neut=0 cmds=22 noFull=0 shQ=39445 | m=1.115 worth=25.7 cheap=8.4 over=0 dMedOther=35.8 safe(-1)=166479
+    → Player 625#31[T1] terr=10985 bal=207967 dq=18.9 cnt=64 | c=48.0 rankC=48.0 need=370987 tD=0.53 人 | safe=166479 keep=Inf avail=-Inf chunkB=31556 pulseB=18934 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=306584 dq=26.9 cnt=3 | c=162.2 rankC=162.2 need=556060 tD=0.75 人 crowdedHard | safe=166479 keep=Inf avail=-Inf chunkB=31556 pulseB=18934 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2300 zexos1 B=166477 L=6834 d=24.4 nb=2 neut=0 cmds=22 noFull=0 shQ=39940 | m=1.110 worth=27.0 cheap=8.4 over=0 dMedOther=37.2 safe(-1)=175011
+    → Player 625#31[T1] terr=11038 bal=221543 dq=20.1 cnt=64 | c=50.8 rankC=50.8 need=394899 tD=0.54 人 | safe=175011 keep=Inf avail=-Inf chunkB=33295 pulseB=19977 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=321771 dq=28.3 cnt=3 | c=170.0 rankC=170.0 need=582820 tD=0.76 人 crowdedHard | safe=175011 keep=Inf avail=-Inf chunkB=33295 pulseB=19977 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2305 zexos1 B=166477 L=6834 d=24.4 nb=2 neut=0 cmds=22 noFull=0 shQ=41619 | m=1.105 worth=26.9 cheap=8.4 over=0 dMedOther=37.2 safe(-1)=175011
+    → Player 625#31[T1] terr=11077 bal=221543 dq=20.0 cnt=64 | c=50.6 rankC=50.6 need=395401 tD=0.54 人 | safe=175011 keep=Inf avail=-Inf chunkB=33295 pulseB=19977 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=321771 dq=28.3 cnt=3 | c=170.0 rankC=170.0 need=582863 tD=0.76 人 crowdedHard | safe=175011 keep=Inf avail=-Inf chunkB=33295 pulseB=19977 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2310 zexos1 B=168441 L=6834 d=24.6 nb=2 neut=0 cmds=22 noFull=0 shQ=42110 | m=1.099 worth=27.1 cheap=8.4 over=0 dMedOther=37.7 safe(-1)=177252
+    → Player 625#31[T1] terr=11145 bal=224267 dq=20.1 cnt=64 | c=50.8 rankC=50.8 need=400930 tD=0.53 人 | safe=177252 keep=Inf avail=-Inf chunkB=33688 pulseB=20213 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=325760 dq=28.6 cnt=3 | c=172.1 rankC=172.1 need=589968 tD=0.76 人 crowdedHard | safe=177252 keep=Inf avail=-Inf chunkB=33688 pulseB=20213 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2315 zexos1 B=168441 L=6834 d=24.6 nb=2 neut=0 cmds=22 noFull=0 shQ=42110 | m=1.094 worth=27.0 cheap=8.4 over=0 dMedOther=37.7 safe(-1)=177252
+    → Player 625#31[T1] terr=11145 bal=224289 dq=20.1 cnt=64 | c=50.8 rankC=50.8 need=401000 tD=0.53 人 | safe=177252 keep=Inf avail=-Inf chunkB=33688 pulseB=20213 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=325760 dq=28.6 cnt=3 | c=172.1 rankC=172.1 need=590012 tD=0.76 人 crowdedHard | safe=177252 keep=Inf avail=-Inf chunkB=33688 pulseB=20213 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2320 zexos1 B=170428 L=6834 d=24.9 nb=2 neut=0 cmds=22 noFull=0 shQ=42607 | m=1.089 worth=27.2 cheap=8.4 over=0 dMedOther=38.1 safe(-1)=179521
+    → Player 625#31[T1] terr=11145 bal=212414 dq=19.1 cnt=64 | c=48.2 rankC=48.2 need=380634 tD=0.50 人 | safe=179521 keep=Inf avail=-Inf chunkB=34086 pulseB=20451 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=329799 dq=29.0 cnt=3 | c=174.1 rankC=174.1 need=597163 tD=0.76 人 crowdedHard | safe=179521 keep=Inf avail=-Inf chunkB=34086 pulseB=20451 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2325 zexos1 B=170428 L=6834 d=24.9 nb=2 neut=0 cmds=22 noFull=0 shQ=42607 | m=1.084 worth=27.0 cheap=8.4 over=0 dMedOther=36.6 safe(-1)=179521
+    → Player 625#31[T1] terr=11166 bal=212414 dq=19.0 cnt=64 | c=48.1 rankC=48.1 need=380887 tD=0.52 人 | safe=179521 keep=Inf avail=-Inf chunkB=34086 pulseB=20451 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=329799 dq=29.0 cnt=3 | c=174.1 rankC=174.1 need=597207 tD=0.79 人 crowdedHard | safe=179521 keep=Inf avail=-Inf chunkB=34086 pulseB=20451 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2330 zexos1 B=172439 L=6834 d=25.2 nb=2 neut=0 cmds=22 noFull=0 shQ=43109 | m=1.079 worth=27.2 cheap=8.4 over=0 dMedOther=37.1 safe(-1)=181819
+    → Player 625#31[T1] terr=11212 bal=215026 dq=19.2 cnt=64 | c=48.5 rankC=48.5 need=385928 tD=0.52 人 | safe=181819 keep=Inf avail=-Inf chunkB=34488 pulseB=20693 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=333888 dq=29.3 cnt=3 | c=176.2 rankC=176.2 need=604493 tD=0.79 人 crowdedHard | safe=181819 keep=Inf avail=-Inf chunkB=34488 pulseB=20693 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2335 zexos1 B=172439 L=6834 d=25.2 nb=2 neut=0 cmds=22 noFull=0 shQ=43109 | m=1.073 worth=27.1 cheap=8.4 over=0 dMedOther=37.1 safe(-1)=181819
+    → Player 625#31[T1] terr=11295 bal=215026 dq=19.0 cnt=64 | c=48.1 rankC=48.1 need=386829 tD=0.51 人 | safe=181819 keep=Inf avail=-Inf chunkB=34488 pulseB=20693 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=333888 dq=29.3 cnt=3 | c=176.2 rankC=176.2 need=604538 tD=0.79 人 crowdedHard | safe=181819 keep=Inf avail=-Inf chunkB=34488 pulseB=20693 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2340 zexos1 B=174473 L=6834 d=25.5 nb=2 neut=0 cmds=22 noFull=0 shQ=43618 | m=1.068 worth=27.3 cheap=8.4 over=0 dMedOther=37.5 safe(-1)=184144
+    → Player 625#31[T1] terr=11363 bal=217692 dq=19.2 cnt=64 | c=48.4 rankC=48.4 need=392166 tD=0.51 人 | safe=184144 keep=Inf avail=-Inf chunkB=34895 pulseB=20937 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=338028 dq=29.7 cnt=3 | c=178.3 rankC=178.3 need=611871 tD=0.79 人 crowdedHard | safe=184144 keep=Inf avail=-Inf chunkB=34895 pulseB=20937 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2345 zexos1 B=174473 L=6834 d=25.5 nb=2 neut=0 cmds=22 noFull=0 shQ=43618 | m=1.063 worth=27.1 cheap=8.4 over=0 dMedOther=37.5 safe(-1)=184144
+    → Player 625#31[T1] terr=11363 bal=217715 dq=19.2 cnt=64 | c=48.4 rankC=48.4 need=392237 tD=0.51 人 | safe=184144 keep=Inf avail=-Inf chunkB=34895 pulseB=20937 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=338028 dq=29.7 cnt=3 | c=178.3 rankC=178.3 need=611916 tD=0.79 人 crowdedHard | safe=184144 keep=Inf avail=-Inf chunkB=34895 pulseB=20937 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2350 zexos1 B=176531 L=6834 d=25.8 nb=2 neut=0 cmds=22 noFull=0 shQ=44132 | m=1.058 worth=27.3 cheap=8.4 over=0 dMedOther=38.0 safe(-1)=186499
+    → Player 625#31[T1] terr=11363 bal=220414 dq=19.4 cnt=64 | c=48.9 rankC=48.9 need=396962 tD=0.51 人 | safe=186499 keep=Inf avail=-Inf chunkB=35306 pulseB=21184 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=342219 dq=30.1 cnt=3 | c=180.4 rankC=180.4 need=619386 tD=0.79 人 crowdedHard | safe=186499 keep=Inf avail=-Inf chunkB=35306 pulseB=21184 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2355 zexos1 B=176531 L=6834 d=25.8 nb=2 neut=0 cmds=22 noFull=0 shQ=44132 | m=1.052 worth=27.2 cheap=8.4 over=0 dMedOther=38.0 safe(-1)=186499
+    → Player 625#31[T1] terr=11363 bal=206209 dq=18.1 cnt=64 | c=45.9 rankC=45.9 need=372451 tD=0.48 人 | safe=186499 keep=Inf avail=-Inf chunkB=35306 pulseB=21184 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=342219 dq=30.1 cnt=3 | c=180.4 rankC=180.4 need=619431 tD=0.79 人 crowdedHard | safe=186499 keep=Inf avail=-Inf chunkB=35306 pulseB=21184 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2360 zexos1 B=178614 L=6834 d=26.1 nb=2 neut=0 cmds=22 noFull=0 shQ=44653 | m=1.047 worth=27.4 cheap=8.4 over=0 dMedOther=38.4 safe(-1)=188883
+    → Player 625#31[T1] terr=11401 bal=208765 dq=18.3 cnt=64 | c=46.3 rankC=46.3 need=377276 tD=0.48 人 | safe=188883 keep=Inf avail=-Inf chunkB=35723 pulseB=21434 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=346462 dq=30.4 cnt=3 | c=182.6 rankC=182.6 need=626949 tD=0.79 人 crowdedHard | safe=188883 keep=Inf avail=-Inf chunkB=35723 pulseB=21434 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2365 zexos1 B=178614 L=6834 d=26.1 nb=2 neut=0 cmds=22 noFull=0 shQ=44653 | m=1.042 worth=27.2 cheap=8.4 over=0 dMedOther=38.4 safe(-1)=188883
+    → Player 625#31[T1] terr=11484 bal=208765 dq=18.2 cnt=64 | c=45.9 rankC=45.9 need=378124 tD=0.47 人 | safe=188883 keep=Inf avail=-Inf chunkB=35723 pulseB=21434 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=346462 dq=30.4 cnt=3 | c=182.6 rankC=182.6 need=626995 tD=0.79 人 crowdedHard | safe=188883 keep=Inf avail=-Inf chunkB=35723 pulseB=21434 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2370 zexos1 B=180721 L=6834 d=26.4 nb=2 neut=0 cmds=22 noFull=0 shQ=45180 | m=1.036 worth=27.4 cheap=8.4 over=0 dMedOther=38.9 safe(-1)=169743
+    → Player 625#31[T1] terr=11576 bal=211397 dq=18.3 cnt=67 | c=46.1 rankC=46.1 need=383644 tD=0.47 人 | safe=169743 keep=Inf avail=-Inf chunkB=36144 pulseB=21687 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=312394 dq=27.4 cnt=3 | c=91.8 rankC=64.2 need=567072 tD=0.70 人 | safe=169743 keep=Inf avail=-Inf chunkB=36144 pulseB=21687 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2375 zexos1 B=180721 L=6834 d=26.4 nb=2 neut=0 cmds=22 noFull=0 shQ=45180 | m=1.031 worth=27.3 cheap=8.4 over=0 dMedOther=38.9 safe(-1)=169743
+    → Player 625#31[T1] terr=11576 bal=211397 dq=18.3 cnt=67 | c=46.1 rankC=46.1 need=383673 tD=0.47 人 | safe=169743 keep=Inf avail=-Inf chunkB=36144 pulseB=21687 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11509 bal=312394 dq=27.1 cnt=3 | c=90.7 rankC=63.5 need=568628 tD=0.70 人 | safe=169743 keep=Inf avail=-Inf chunkB=36144 pulseB=21687 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2380 zexos1 B=182853 L=6834 d=26.8 nb=2 neut=0 cmds=22 noFull=0 shQ=45713 | m=1.026 worth=27.5 cheap=8.4 over=0 dMedOther=39.4 safe(-1)=171919
+    → Player 625#31[T1] terr=11576 bal=214018 dq=18.5 cnt=67 | c=46.6 rankC=46.6 need=388253 tD=0.47 人 | safe=171919 keep=Inf avail=-Inf chunkB=36571 pulseB=21942 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11877 bal=316267 dq=26.6 cnt=3 | c=118.1 rankC=118.1 need=579879 tD=0.68 人 | safe=171919 keep=Inf avail=-Inf chunkB=36571 pulseB=21942 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2385 zexos1 B=182853 L=6834 d=26.8 nb=2 neut=0 cmds=22 noFull=0 shQ=45713 | m=1.021 worth=27.3 cheap=8.4 over=0 dMedOther=39.4 safe(-1)=171919
+    → Player 625#31[T1] terr=11576 bal=214018 dq=18.5 cnt=67 | c=46.6 rankC=46.6 need=388283 tD=0.47 人 | safe=171919 keep=Inf avail=-Inf chunkB=36571 pulseB=21942 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12113 bal=316267 dq=26.1 cnt=3 | c=115.7 rankC=115.7 need=581881 tD=0.66 人 | safe=171919 keep=Inf avail=-Inf chunkB=36571 pulseB=21942 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2390 zexos1 B=185010 L=6834 d=27.1 nb=2 neut=0 cmds=22 noFull=0 shQ=46252 | m=1.016 worth=27.5 cheap=8.4 over=0 dMedOther=39.9 safe(-1)=174192
+    → Player 625#31[T1] terr=11576 bal=216671 dq=18.7 cnt=67 | c=47.2 rankC=47.2 need=392950 tD=0.47 人 | safe=174192 keep=Inf avail=-Inf chunkB=37002 pulseB=22201 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=320312 dq=25.9 cnt=3 | c=114.9 rankC=114.9 need=589456 tD=0.65 人 | safe=174192 keep=Inf avail=-Inf chunkB=37002 pulseB=22201 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2395 zexos1 B=185010 L=6834 d=27.1 nb=2 neut=0 cmds=22 noFull=0 shQ=46252 | m=1.010 worth=27.3 cheap=8.4 over=0 dMedOther=39.9 safe(-1)=174192
+    → Player 625#31[T1] terr=11576 bal=216671 dq=18.7 cnt=67 | c=47.2 rankC=47.2 need=392980 tD=0.47 人 | safe=174192 keep=Inf avail=-Inf chunkB=37002 pulseB=22201 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=320312 dq=25.9 cnt=3 | c=114.9 rankC=114.9 need=589456 tD=0.65 人 | safe=174192 keep=Inf avail=-Inf chunkB=37002 pulseB=22201 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2400 zexos1 B=194027 L=6834 d=28.4 nb=2 neut=0 cmds=22 noFull=0 shQ=46829 | m=1.005 worth=28.5 cheap=8.4 over=0 dMedOther=41.4 safe(-1)=183379
+    → Player 625#31[T1] terr=11576 bal=230933 dq=19.9 cnt=67 | c=50.1 rankC=50.1 need=417784 tD=0.48 人 pulse | safe=183379 keep=Inf avail=-Inf chunkB=38805 pulseB=23283 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=336665 dq=27.3 cnt=3 | c=120.6 rankC=120.6 need=618604 tD=0.66 人 pulse | safe=183379 keep=Inf avail=-Inf chunkB=38805 pulseB=23283 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2405 zexos1 B=194027 L=6834 d=28.4 nb=2 neut=0 cmds=22 noFull=0 shQ=48506 | m=1.000 worth=28.4 cheap=8.4 over=0 dMedOther=41.4 safe(-1)=183379
+    → Player 625#31[T1] terr=11576 bal=230933 dq=19.9 cnt=67 | c=50.1 rankC=50.1 need=417816 tD=0.48 人 pulse | safe=183379 keep=Inf avail=-Inf chunkB=38805 pulseB=23283 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=336665 dq=27.3 cnt=3 | c=120.6 rankC=120.6 need=618604 tD=0.66 人 pulse | safe=183379 keep=Inf avail=-Inf chunkB=38805 pulseB=23283 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2410 zexos1 B=196316 L=6834 d=28.7 nb=2 neut=0 cmds=22 noFull=0 shQ=49079 | m=0.995 worth=28.6 cheap=8.4 over=0 dMedOther=42.2 safe(-1)=185743
+    → Player 625#31[T1] terr=11576 bal=233796 dq=20.2 cnt=67 | c=73.6 rankC=106.7 need=422854 tD=0.48 人 pulse | safe=185743 keep=Inf avail=-Inf chunkB=39263 pulseB=23558 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=340873 dq=27.6 cnt=3 | c=177.0 rankC=256.7 need=626104 tD=0.65 人 pulse | safe=185743 keep=Inf avail=-Inf chunkB=39263 pulseB=23558 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2415 zexos1 B=196316 L=6834 d=28.7 nb=2 neut=0 cmds=22 noFull=0 shQ=49079 | m=0.989 worth=28.4 cheap=8.4 over=0 dMedOther=42.2 safe(-1)=185743
+    → Player 625#31[T1] terr=11576 bal=233796 dq=20.2 cnt=67 | c=73.6 rankC=106.7 need=422886 tD=0.48 人 pulse | safe=185743 keep=Inf avail=-Inf chunkB=39263 pulseB=23558 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=340873 dq=27.6 cnt=3 | c=177.0 rankC=256.7 need=626104 tD=0.65 人 pulse | safe=185743 keep=Inf avail=-Inf chunkB=39263 pulseB=23558 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2420 zexos1 B=198632 L=6834 d=29.1 nb=2 neut=0 cmds=22 noFull=0 shQ=49658 | m=0.984 worth=28.6 cheap=8.4 over=0 dMedOther=42.4 safe(-1)=188136
+    → Player 625#31[T1] terr=11576 bal=236695 dq=20.4 cnt=67 | c=74.4 rankC=107.9 need=427956 tD=0.48 人 pulse | safe=188136 keep=Inf avail=-Inf chunkB=39726 pulseB=23836 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=345133 dq=27.9 cnt=3 | c=179.2 rankC=259.8 need=633698 tD=0.66 人 pulse | safe=188136 keep=Inf avail=-Inf chunkB=39726 pulseB=23836 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2425 zexos1 B=198632 L=6834 d=29.1 nb=2 neut=0 cmds=22 noFull=0 shQ=49658 | m=0.979 worth=28.4 cheap=8.4 over=0 dMedOther=41.8 safe(-1)=188136
+    → Player 625#31[T1] terr=11576 bal=236695 dq=20.4 cnt=67 | c=74.4 rankC=107.9 need=427988 tD=0.49 人 pulse | safe=188136 keep=Inf avail=-Inf chunkB=39726 pulseB=23836 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=345133 dq=27.9 cnt=3 | c=179.2 rankC=259.8 need=633698 tD=0.67 人 pulse | safe=188136 keep=Inf avail=-Inf chunkB=39726 pulseB=23836 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2430 zexos1 B=200975 L=6834 d=29.4 nb=2 neut=0 cmds=22 noFull=0 shQ=50243 | m=0.974 worth=28.6 cheap=8.4 over=0 dMedOther=36.7 safe(-1)=190560
+    → Player 625#31[T1] terr=11576 bal=239630 dq=20.7 cnt=67 | c=75.3 rankC=109.2 need=433155 tD=0.56 人 pulse | safe=190560 keep=Inf avail=-Inf chunkB=40195 pulseB=24117 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=349447 dq=28.3 cnt=3 | c=181.3 rankC=263.0 need=641387 tD=0.77 人 pulse | safe=190560 keep=Inf avail=-Inf chunkB=40195 pulseB=24117 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2435 zexos1 B=200975 L=6834 d=29.4 nb=2 neut=0 cmds=22 noFull=0 shQ=50243 | m=0.968 worth=28.5 cheap=8.4 over=0 dMedOther=36.6 safe(-1)=190560
+    → Player 625#31[T1] terr=11576 bal=239630 dq=20.7 cnt=67 | c=75.3 rankC=109.2 need=433188 tD=0.57 人 pulse | safe=190560 keep=Inf avail=-Inf chunkB=40195 pulseB=24117 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=349447 dq=28.3 cnt=3 | c=181.3 rankC=263.0 need=641387 tD=0.77 人 pulse | safe=190560 keep=Inf avail=-Inf chunkB=40195 pulseB=24117 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2440 zexos1 B=203346 L=6834 d=29.8 nb=2 neut=0 cmds=22 noFull=0 shQ=50836 | m=0.963 worth=28.7 cheap=8.4 over=0 dMedOther=36.3 safe(-1)=193013
+    → Player 625#31[T1] terr=11576 bal=242601 dq=21.0 cnt=67 | c=76.2 rankC=110.5 need=438385 tD=0.58 人 pulse | safe=193013 keep=Inf avail=-Inf chunkB=40669 pulseB=24402 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=353815 dq=28.6 cnt=3 | c=183.6 rankC=266.1 need=649172 tD=0.79 人 pulse | safe=193013 keep=Inf avail=-Inf chunkB=40669 pulseB=24402 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2445 zexos1 B=203346 L=6834 d=29.8 nb=2 neut=0 cmds=22 noFull=0 shQ=50836 | m=0.958 worth=28.5 cheap=8.4 over=0 dMedOther=35.8 safe(-1)=193013
+    → Player 625#31[T1] terr=11576 bal=242601 dq=21.0 cnt=67 | c=76.2 rankC=110.5 need=438419 tD=0.59 人 pulse | safe=193013 keep=Inf avail=-Inf chunkB=40669 pulseB=24402 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=353815 dq=28.6 cnt=3 | c=183.6 rankC=266.1 need=649172 tD=0.80 人 pulse | safe=193013 keep=Inf avail=-Inf chunkB=40669 pulseB=24402 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2450 zexos1 B=205745 L=6834 d=30.1 nb=2 neut=0 cmds=22 noFull=0 shQ=51436 | m=0.953 worth=28.7 cheap=8.4 over=0 dMedOther=35.9 safe(-1)=195498
+    → Player 625#31[T1] terr=11576 bal=245609 dq=21.2 cnt=67 | c=77.1 rankC=111.8 need=443715 tD=0.59 人 pulse | safe=195498 keep=Inf avail=-Inf chunkB=41149 pulseB=24689 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=358237 dq=29.0 cnt=3 | c=185.8 rankC=269.4 need=657054 tD=0.81 人 pulse | safe=195498 keep=Inf avail=-Inf chunkB=41149 pulseB=24689 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2455 zexos1 B=205745 L=6834 d=30.1 nb=2 neut=0 cmds=22 noFull=0 shQ=51436 | m=0.947 worth=28.5 cheap=8.4 over=0 dMedOther=35.4 safe(-1)=195498
+    → Player 625#31[T1] terr=11576 bal=245609 dq=21.2 cnt=67 | c=77.1 rankC=111.8 need=443749 tD=0.60 人 pulse | safe=195498 keep=Inf avail=-Inf chunkB=41149 pulseB=24689 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=358237 dq=29.0 cnt=3 | c=185.8 rankC=269.4 need=657054 tD=0.82 人 pulse | safe=195498 keep=Inf avail=-Inf chunkB=41149 pulseB=24689 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2460 zexos1 B=208172 L=6834 d=30.5 nb=2 neut=0 cmds=22 noFull=0 shQ=52043 | m=0.942 worth=28.7 cheap=8.4 over=0 dMedOther=35.4 safe(-1)=198013
+    → Player 625#31[T1] terr=11576 bal=248654 dq=21.5 cnt=67 | c=78.0 rankC=113.1 need=449078 tD=0.61 人 pulse | safe=198013 keep=Inf avail=-Inf chunkB=41634 pulseB=24981 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=362714 dq=29.4 cnt=3 | c=188.0 rankC=272.7 need=665034 tD=0.83 人 pulse | safe=198013 keep=Inf avail=-Inf chunkB=41634 pulseB=24981 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2465 zexos1 B=208172 L=6834 d=30.5 nb=2 neut=0 cmds=22 noFull=0 shQ=52043 | m=0.937 worth=28.5 cheap=8.4 over=0 dMedOther=35.2 safe(-1)=198013
+    → Player 625#31[T1] terr=11576 bal=232629 dq=20.1 cnt=67 | c=73.2 rankC=106.1 need=421242 tD=0.57 人 pulse | safe=198013 keep=Inf avail=-Inf chunkB=41634 pulseB=24981 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=362714 dq=29.4 cnt=3 | c=188.0 rankC=272.7 need=665034 tD=0.83 人 pulse | safe=198013 keep=Inf avail=-Inf chunkB=41634 pulseB=24981 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2470 zexos1 B=210628 L=6834 d=30.8 nb=2 neut=0 cmds=22 noFull=0 shQ=52657 | m=0.931 worth=28.7 cheap=8.4 over=0 dMedOther=35.4 safe(-1)=200560
+    → Player 625#31[T1] terr=11576 bal=235513 dq=20.3 cnt=67 | c=74.1 rankC=107.4 need=426323 tD=0.58 人 pulse | safe=200560 keep=Inf avail=-Inf chunkB=42126 pulseB=25275 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=367247 dq=29.7 cnt=3 | c=190.3 rankC=276.0 need=673114 tD=0.84 人 pulse | safe=200560 keep=Inf avail=-Inf chunkB=42126 pulseB=25275 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2475 zexos1 B=210628 L=6834 d=30.8 nb=2 neut=0 cmds=22 noFull=0 shQ=52657 | m=0.926 worth=28.5 cheap=8.4 over=0 dMedOther=35.3 safe(-1)=200560
+    → Player 625#31[T1] terr=11647 bal=235513 dq=20.2 cnt=71 | c=73.5 rankC=106.6 need=427094 tD=0.57 人 pulse | safe=200560 keep=Inf avail=-Inf chunkB=42126 pulseB=25275 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=367247 dq=29.7 cnt=3 | c=190.3 rankC=276.0 need=673114 tD=0.84 人 pulse | safe=200560 keep=Inf avail=-Inf chunkB=42126 pulseB=25275 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2480 zexos1 B=213113 L=6834 d=31.2 nb=2 neut=0 cmds=22 noFull=0 shQ=53278 | m=0.921 worth=28.7 cheap=8.4 over=0 dMedOther=35.7 safe(-1)=203138
+    → Player 625#31[T1] terr=11746 bal=238433 dq=20.3 cnt=77 | c=73.7 rankC=106.8 need=433238 tD=0.57 人 pulse | safe=203138 keep=Inf avail=-Inf chunkB=42623 pulseB=25574 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=371837 dq=30.1 cnt=3 | c=192.6 rankC=279.3 need=681295 tD=0.84 人 pulse | safe=203138 keep=Inf avail=-Inf chunkB=42623 pulseB=25574 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2485 zexos1 B=213113 L=6834 d=31.2 nb=2 neut=0 cmds=22 noFull=0 shQ=53278 | m=0.916 worth=28.6 cheap=8.4 over=0 dMedOther=40.1 safe(-1)=203138
+    → Player 625#31[T1] terr=11810 bal=238433 dq=20.2 cnt=80 | c=73.2 rankC=106.2 need=433923 tD=0.50 人 pulse | safe=203138 keep=Inf avail=-Inf chunkB=42623 pulseB=25574 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=371837 dq=30.1 cnt=3 | c=192.6 rankC=279.3 need=681295 tD=0.75 人 pulse | safe=203138 keep=Inf avail=-Inf chunkB=42623 pulseB=25574 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2490 zexos1 B=215627 L=6834 d=31.6 nb=2 neut=0 cmds=22 noFull=0 shQ=53906 | m=0.911 worth=28.7 cheap=8.4 over=0 dMedOther=40.6 safe(-1)=205749
+    → Player 625#31[T1] terr=11810 bal=241415 dq=20.4 cnt=80 | c=74.1 rankC=107.4 need=439200 tD=0.50 人 pulse | safe=205749 keep=Inf avail=-Inf chunkB=43125 pulseB=25875 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=376484 dq=30.5 cnt=3 | c=195.0 rankC=282.7 need=689578 tD=0.75 人 pulse | safe=205749 keep=Inf avail=-Inf chunkB=43125 pulseB=25875 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2495 zexos1 B=215627 L=6834 d=31.6 nb=2 neut=0 cmds=22 noFull=0 shQ=53906 | m=0.905 worth=28.6 cheap=8.4 over=0 dMedOther=40.6 safe(-1)=205749
+    → Player 625#31[T1] terr=11810 bal=225856 dq=19.1 cnt=80 | c=69.5 rankC=100.8 need=412029 tD=0.47 人 pulse | safe=205749 keep=Inf avail=-Inf chunkB=43125 pulseB=25875 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=376484 dq=30.5 cnt=3 | c=195.0 rankC=282.7 need=689578 tD=0.75 人 pulse | safe=205749 keep=Inf avail=-Inf chunkB=43125 pulseB=25875 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2500 zexos1 B=225005 L=6834 d=32.9 nb=2 neut=0 cmds=22 noFull=0 shQ=54575 | m=0.900 worth=32.2 cheap=8.4 over=0 dMedOther=42.1 safe(-1)=215331
+    → Player 625#31[T1] terr=11939 bal=225730 dq=18.9 cnt=81 | c=35.5 rankC=24.9 need=413075 tD=0.45 人 pulse | safe=215331 keep=Inf avail=-Inf chunkB=45001 pulseB=27001 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=393540 dq=31.9 cnt=3 | c=203.6 rankC=295.2 need=719979 tD=0.76 人 pulse | safe=215331 keep=Inf avail=-Inf chunkB=45001 pulseB=27001 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2505 zexos1 B=225005 L=6834 d=32.9 nb=2 neut=0 cmds=22 noFull=0 shQ=56251 | m=0.900 worth=32.2 cheap=8.4 over=0 dMedOther=42.1 safe(-1)=215331
+    → Player 625#31[T1] terr=12192 bal=225730 dq=18.5 cnt=84 | c=67.1 rankC=97.3 need=415451 tD=0.44 人 pulse | safe=215331 keep=Inf avail=-Inf chunkB=45001 pulseB=27001 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=393540 dq=31.9 cnt=3 | c=203.6 rankC=295.2 need=719979 tD=0.76 人 pulse | safe=215331 keep=Inf avail=-Inf chunkB=45001 pulseB=27001 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2510 zexos1 B=227660 L=6834 d=33.3 nb=2 neut=0 cmds=22 noFull=0 shQ=56915 | m=0.900 worth=32.6 cheap=8.4 over=0 dMedOther=42.6 safe(-1)=218094
+    → Player 625#31[T1] terr=12277 bal=228619 dq=18.6 cnt=87 | c=67.4 rankC=97.8 need=421370 tD=0.44 人 pulse | safe=218094 keep=Inf avail=-Inf chunkB=45532 pulseB=27319 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=398459 dq=32.3 cnt=3 | c=206.0 rankC=298.8 need=728747 tD=0.76 人 pulse | safe=218094 keep=Inf avail=-Inf chunkB=45532 pulseB=27319 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2515 zexos1 B=227660 L=6834 d=33.3 nb=2 neut=0 cmds=22 noFull=0 shQ=56915 | m=0.900 worth=32.6 cheap=8.4 over=0 dMedOther=42.6 safe(-1)=218094
+    → Player 625#31[T1] terr=12334 bal=228619 dq=18.5 cnt=89 | c=67.1 rankC=97.3 need=421911 tD=0.44 人 pulse | safe=218094 keep=Inf avail=-Inf chunkB=45532 pulseB=27319 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=398459 dq=32.3 cnt=3 | c=206.0 rankC=298.8 need=728747 tD=0.76 人 pulse | safe=218094 keep=Inf avail=-Inf chunkB=45532 pulseB=27319 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2520 zexos1 B=230346 L=6834 d=33.7 nb=2 neut=56 cmds=22 noFull=0 shQ=57586 | m=0.900 worth=33.0 cheap=8.4 over=0 dMedOther=43.1 safe(-1)=220892
+    → Player 625#31[T1] terr=12423 bal=231476 dq=18.6 cnt=92 | c=67.3 rankC=97.6 need=427783 tD=0.43 人 pulse | safe=220892 keep=Inf avail=-Inf chunkB=46069 pulseB=27642 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=403439 dq=32.7 cnt=3 | c=208.6 rankC=302.4 need=737623 tD=0.76 人 pulse | safe=220892 keep=Inf avail=-Inf chunkB=46069 pulseB=27642 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2525 zexos1 B=230346 L=6834 d=33.7 nb=2 neut=56 cmds=23 noFull=0 shQ=57586 | m=0.900 worth=30.3 cheap=8.4 over=0 dMedOther=38.0 safe(-1)=196103
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=359314 dq=29.1 cnt=3 | c=96.4 rankC=67.5 need=658974 tD=0.77 人 pulse | safe=196103 keep=Inf avail=-Inf chunkB=46069 pulseB=27642 价高(c>=worth)→break hNb=2
+    → Player 625#31[T1] terr=12423 bal=231566 dq=18.6 cnt=92 | c=67.4 rankC=97.7 need=427970 tD=0.49 人 pulse | safe=196103 keep=Inf avail=-Inf chunkB=46069 pulseB=27642 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 10797 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2530 zexos1 B=233064 L=6834 d=34.1 nb=2 neut=55 cmds=24 noFull=0 shQ=58266 | m=0.900 worth=30.7 cheap=8.4 over=0 dMedOther=38.5 safe(-1)=198626
+    → Micha [🇩🇪]#47[T1] terr=12515 bal=363805 dq=29.1 cnt=3 | c=96.3 rankC=67.4 need=667237 tD=0.75 人 pulse | safe=198626 keep=Inf avail=-Inf chunkB=46613 pulseB=27968 价高(c>=worth)→break hNb=2
+    → Player 625#31[T1] terr=12423 bal=219350 dq=17.7 cnt=92 | c=64.0 rankC=92.8 need=406418 tD=0.46 人 pulse | safe=198626 keep=Inf avail=-Inf chunkB=46613 pulseB=27968 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 10924 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2535 zexos1 B=233064 L=6834 d=34.1 nb=2 neut=55 cmds=25 noFull=0 shQ=58266 | m=0.900 worth=30.7 cheap=8.4 over=0 dMedOther=38.5 safe(-1)=198626
+    → Micha [🇩🇪]#47[T1] terr=12676 bal=363805 dq=28.7 cnt=3 | c=95.1 rankC=66.6 need=667446 tD=0.74 人 pulse | safe=198626 keep=Inf avail=-Inf chunkB=46613 pulseB=27968 价高(c>=worth)→break hNb=2
+    → Player 625#31[T1] terr=12503 bal=219350 dq=17.5 cnt=92 | c=63.5 rankC=92.1 need=407123 tD=0.46 人 pulse | safe=198626 keep=Inf avail=-Inf chunkB=46613 pulseB=27968 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 10924 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2540 zexos1 B=235814 L=6834 d=34.5 nb=2 neut=54 cmds=26 noFull=0 shQ=58953 | m=0.900 worth=31.1 cheap=8.4 over=0 dMedOther=39.0 safe(-1)=201180
+    → Micha [🇩🇪]#47[T1] terr=12916 bal=368352 dq=28.5 cnt=3 | c=94.6 rankC=66.2 need=675911 tD=0.73 人 pulse | safe=201180 keep=Inf avail=-Inf chunkB=47163 pulseB=28298 价高(c>=worth)→break hNb=2
+    → Player 625#31[T1] terr=12659 bal=222091 dq=17.5 cnt=92 | c=63.4 rankC=92.0 need=413314 tD=0.45 人 pulse | safe=201180 keep=Inf avail=-Inf chunkB=47163 pulseB=28298 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 11053 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2545 zexos1 B=208991 L=6834 d=30.6 nb=2 neut=53 cmds=26 noFull=0 shQ=30050 | m=0.900 worth=29.9 cheap=8.4 over=0 dMedOther=39.0 safe(-1)=201180
+    → Player 625#31[T1] terr=12879 bal=222091 dq=17.2 cnt=92 | c=42.9 rankC=42.9 need=415133 tD=0.44 人 pulse | safe=201180 keep=Inf avail=-Inf chunkB=41798 pulseB=25079 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=13075 bal=368352 dq=28.2 cnt=3 | c=124.5 rankC=124.5 need=676180 tD=0.72 人 pulse | safe=201180 keep=Inf avail=-Inf chunkB=41798 pulseB=25079 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2550 zexos1 B=199067 L=6886 d=28.9 nb=2 neut=50 cmds=26 noFull=0 shQ=33090 | m=0.900 worth=30.3 cheap=8.4 over=0 dMedOther=39.6 safe(-1)=203723
+    → Player 625#31[T1] terr=12879 bal=196822 dq=15.3 cnt=92 | c=38.3 rankC=38.3 need=370144 tD=0.39 人 pulse | safe=203723 keep=Inf avail=-Inf chunkB=39813 pulseB=23888 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=13307 bal=372956 dq=28.0 cnt=3 | c=123.9 rankC=123.9 need=684734 tD=0.71 人 pulse | safe=203723 keep=Inf avail=-Inf chunkB=39813 pulseB=23888 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2555 zexos1 B=199067 L=6980 d=28.5 nb=2 neut=45 cmds=26 noFull=0 shQ=36050 | m=0.900 worth=30.3 cheap=8.4 over=0 dMedOther=39.6 safe(-1)=203644
+    → Player 625#31[T1] terr=12879 bal=196822 dq=15.3 cnt=93 | c=38.3 rankC=38.3 need=370144 tD=0.39 人 pulse | safe=203644 keep=Inf avail=-Inf chunkB=39813 pulseB=23888 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=13457 bal=372956 dq=27.7 cnt=3 | c=122.5 rankC=122.5 need=684938 tD=0.70 人 pulse | safe=203644 keep=Inf avail=-Inf chunkB=39813 pulseB=23888 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2560 zexos1 B=189615 L=7023 d=27.0 nb=2 neut=41 cmds=26 noFull=0 shQ=38842 | m=0.900 worth=30.7 cheap=8.4 over=0 dMedOther=40.1 safe(-1)=206247
+    → Player 625#31[T1] terr=13142 bal=199282 dq=15.2 cnt=95 | c=55.0 rankC=79.8 need=374917 tD=0.38 人 pulse | safe=206247 keep=Inf avail=-Inf chunkB=37923 pulseB=22754 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=13652 bal=377655 dq=27.7 cnt=3 | c=177.3 rankC=257.1 need=693596 tD=0.69 人 pulse | safe=206247 keep=Inf avail=-Inf chunkB=37923 pulseB=22754 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2565 zexos1 B=189615 L=7100 d=26.7 nb=2 neut=33 cmds=26 noFull=0 shQ=41662 | m=0.900 worth=30.4 cheap=8.4 over=0 dMedOther=39.7 safe(-1)=206183
+    → Player 625#31[T1] terr=13310 bal=199282 dq=15.0 cnt=97 | c=54.4 rankC=78.9 need=375169 tD=0.38 人 pulse | safe=206183 keep=Inf avail=-Inf chunkB=37923 pulseB=22754 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=13772 bal=377655 dq=27.4 cnt=3 | c=175.8 rankC=255.0 need=693776 tD=0.69 人 pulse | safe=206183 keep=Inf avail=-Inf chunkB=37923 pulseB=22754 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2570 zexos1 B=191852 L=7151 d=26.8 nb=2 neut=17 cmds=26 noFull=0 shQ=44488 | m=0.900 worth=30.8 cheap=8.4 over=0 dMedOther=40.2 safe(-1)=208813
+    → Player 625#31[T1] terr=13546 bal=201792 dq=14.9 cnt=103 | c=54.1 rankC=78.4 need=379997 tD=0.37 人 pulse | safe=208813 keep=Inf avail=-Inf chunkB=38370 pulseB=23022 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=13933 bal=382413 dq=27.4 cnt=3 | c=176.0 rankC=255.2 need=702508 tD=0.68 人 pulse | safe=208813 keep=Inf avail=-Inf chunkB=38370 pulseB=23022 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2575 zexos1 B=191852 L=7167 d=26.8 nb=2 neut=8 cmds=26 noFull=0 shQ=47338 | m=0.900 worth=30.8 cheap=8.4 over=0 dMedOther=40.2 safe(-1)=208799
+    → Player 625#31[T1] terr=13683 bal=201792 dq=14.7 cnt=105 | c=37.0 rankC=37.0 need=380208 tD=0.37 人 pulse | safe=208799 keep=Inf avail=-Inf chunkB=38370 pulseB=23022 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14028 bal=382413 dq=27.3 cnt=3 | c=120.6 rankC=120.6 need=702641 tD=0.68 人 pulse | safe=208799 keep=Inf avail=-Inf chunkB=38370 pulseB=23022 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2580 zexos1 B=194115 L=7182 d=27.0 nb=2 neut=2 cmds=26 noFull=0 shQ=48528 | m=0.900 worth=31.1 cheap=8.4 over=0 dMedOther=40.7 safe(-1)=211493
+    → Player 625#31[T1] terr=13858 bal=204334 dq=14.7 cnt=109 | c=36.9 rankC=36.9 need=384995 tD=0.36 人 pulse | safe=211493 keep=Inf avail=-Inf chunkB=38823 pulseB=23294 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14154 bal=387231 dq=27.4 cnt=3 | c=121.0 rankC=121.0 need=711437 tD=0.67 人 pulse | safe=211493 keep=Inf avail=-Inf chunkB=38823 pulseB=23294 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2585 zexos1 B=234003 L=7183 d=32.6 nb=2 neut=0 cmds=26 noFull=0 shQ=49224 | m=0.900 worth=29.3 cheap=8.4 over=0 dMedOther=38.2 safe(-1)=211492
+    → Player 625#31[T1] terr=13953 bal=204334 dq=14.6 cnt=111 | c=36.7 rankC=36.7 need=385132 tD=0.38 人 pulse | safe=211492 keep=Inf avail=-Inf chunkB=46801 pulseB=28080 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14229 bal=387231 dq=27.2 cnt=3 | c=120.5 rankC=120.5 need=711539 tD=0.71 人 pulse | safe=211492 keep=Inf avail=-Inf chunkB=46801 pulseB=28080 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2590 zexos1 B=236764 L=7183 d=33.0 nb=2 neut=0 cmds=26 noFull=0 shQ=52712 | m=0.900 worth=29.7 cheap=8.4 over=0 dMedOther=37.9 safe(-1)=214255
+    → Player 625#31[T1] terr=14041 bal=206908 dq=14.7 cnt=111 | c=37.0 rankC=37.0 need=389852 tD=0.39 人 pulse | safe=214255 keep=Inf avail=-Inf chunkB=47353 pulseB=28412 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14319 bal=392148 dq=27.4 cnt=3 | c=121.2 rankC=121.2 need=720458 tD=0.72 人 pulse | safe=214255 keep=Inf avail=-Inf chunkB=47353 pulseB=28412 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2595 zexos1 B=236764 L=7183 d=33.0 nb=2 neut=0 cmds=26 noFull=0 shQ=56232 | m=0.900 worth=29.7 cheap=8.4 over=0 dMedOther=37.4 safe(-1)=214255
+    → Player 625#31[T1] terr=14083 bal=206908 dq=14.7 cnt=111 | c=36.9 rankC=36.9 need=389926 tD=0.39 人 pulse | safe=214255 keep=Inf avail=-Inf chunkB=47353 pulseB=28412 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14369 bal=392148 dq=27.3 cnt=3 | c=120.8 rankC=120.8 need=720513 tD=0.73 人 pulse | safe=214255 keep=Inf avail=-Inf chunkB=47353 pulseB=28412 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2600 zexos1 B=246740 L=7183 d=34.4 nb=2 neut=0 cmds=26 noFull=0 shQ=59782 | m=0.900 worth=30.9 cheap=8.4 over=0 dMedOther=28.6 safe(-1)=225141
+    → Player 625#31[T1] terr=14122 bal=223626 dq=15.8 cnt=111 | c=39.6 rankC=39.6 need=419778 tD=0.55 人 pulse | safe=225141 keep=Inf avail=-Inf chunkB=49348 pulseB=29609 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14407 bal=411525 dq=28.6 cnt=3 | c=126.2 rankC=126.2 need=755129 tD=1.00 人 pulse | safe=225141 keep=Inf avail=-Inf chunkB=49348 pulseB=29609 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2605 zexos1 B=246740 L=7183 d=34.4 nb=2 neut=0 cmds=26 noFull=0 shQ=61685 | m=0.900 worth=30.9 cheap=8.4 over=0 dMedOther=40.4 safe(-1)=225141
+    → Player 625#31[T1] terr=14139 bal=223626 dq=15.8 cnt=111 | c=39.5 rankC=39.5 need=419809 tD=0.39 人 pulse | safe=225141 keep=Inf avail=-Inf chunkB=49348 pulseB=29609 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=411525 dq=28.5 cnt=3 | c=126.1 rankC=126.1 need=755129 tD=0.71 人 pulse | safe=225141 keep=Inf avail=-Inf chunkB=49348 pulseB=29609 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2610 zexos1 B=249651 L=7183 d=34.8 nb=2 neut=0 cmds=26 noFull=0 shQ=62412 | m=0.900 worth=31.3 cheap=8.4 over=0 dMedOther=39.9 safe(-1)=234965
+    → Player 625#31[T1] terr=14139 bal=245655 dq=17.4 cnt=111 | c=43.2 rankC=43.2 need=459074 tD=0.44 人 pulse | safe=234965 keep=Inf avail=-Inf chunkB=49930 pulseB=29958 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=429013 dq=29.7 cnt=3 | c=131.3 rankC=131.3 need=786299 tD=0.75 人 pulse | safe=234965 keep=Inf avail=-Inf chunkB=49930 pulseB=29958 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2615 zexos1 B=249651 L=7183 d=34.8 nb=2 neut=0 cmds=26 noFull=0 shQ=62412 | m=0.900 worth=31.3 cheap=8.4 over=0 dMedOther=39.3 safe(-1)=234965
+    → Player 625#31[T1] terr=14139 bal=245655 dq=17.4 cnt=111 | c=43.2 rankC=43.2 need=459074 tD=0.44 人 pulse | safe=234965 keep=Inf avail=-Inf chunkB=49930 pulseB=29958 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=429013 dq=29.7 cnt=3 | c=131.3 rankC=131.3 need=786299 tD=0.76 人 pulse | safe=234965 keep=Inf avail=-Inf chunkB=49930 pulseB=29958 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2620 zexos1 B=252596 L=7183 d=35.2 nb=2 neut=0 cmds=26 noFull=0 shQ=63149 | m=0.900 worth=31.6 cheap=8.4 over=0 dMedOther=39.2 safe(-1)=238026
+    → Player 625#31[T1] terr=14139 bal=248750 dq=17.6 cnt=111 | c=43.7 rankC=43.7 need=464591 tD=0.45 人 pulse | safe=238026 keep=Inf avail=-Inf chunkB=50519 pulseB=30312 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=434461 dq=30.1 cnt=3 | c=132.9 rankC=132.9 need=796009 tD=0.77 人 pulse | safe=238026 keep=Inf avail=-Inf chunkB=50519 pulseB=30312 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2625 zexos1 B=252596 L=7183 d=35.2 nb=2 neut=0 cmds=26 noFull=0 shQ=63149 | m=0.900 worth=31.6 cheap=8.4 over=0 dMedOther=39.0 safe(-1)=238026
+    → Player 625#31[T1] terr=14139 bal=248750 dq=17.6 cnt=111 | c=43.7 rankC=43.7 need=464591 tD=0.45 人 pulse | safe=238026 keep=Inf avail=-Inf chunkB=50519 pulseB=30312 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=434461 dq=30.1 cnt=3 | c=132.9 rankC=132.9 need=796009 tD=0.77 人 pulse | safe=238026 keep=Inf avail=-Inf chunkB=50519 pulseB=30312 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2630 zexos1 B=255576 L=7183 d=35.6 nb=2 neut=0 cmds=26 noFull=0 shQ=63894 | m=0.900 worth=32.0 cheap=8.4 over=0 dMedOther=39.3 safe(-1)=241126
+    → Player 625#31[T1] terr=14139 bal=251884 dq=17.8 cnt=111 | c=44.2 rankC=44.2 need=470177 tD=0.45 人 pulse | safe=241126 keep=Inf avail=-Inf chunkB=51115 pulseB=30669 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=439978 dq=30.5 cnt=3 | c=134.6 rankC=134.6 need=805843 tD=0.78 人 pulse | safe=241126 keep=Inf avail=-Inf chunkB=51115 pulseB=30669 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2635 zexos1 B=255576 L=7183 d=35.6 nb=2 neut=0 cmds=26 noFull=0 shQ=63894 | m=0.900 worth=32.0 cheap=8.4 over=0 dMedOther=39.1 safe(-1)=241126
+    → Player 625#31[T1] terr=14139 bal=251884 dq=17.8 cnt=111 | c=44.2 rankC=44.2 need=470177 tD=0.46 人 pulse | safe=241126 keep=Inf avail=-Inf chunkB=51115 pulseB=30669 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=439978 dq=30.5 cnt=3 | c=134.6 rankC=134.6 need=805843 tD=0.78 人 pulse | safe=241126 keep=Inf avail=-Inf chunkB=51115 pulseB=30669 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2640 zexos1 B=258591 L=7183 d=36.0 nb=2 neut=0 cmds=26 noFull=0 shQ=64647 | m=0.900 worth=33.5 cheap=8.4 over=0 dMedOther=43.7 safe(-1)=244264
+    → Player 625#31[T1] terr=14139 bal=255057 dq=18.0 cnt=111 | c=44.8 rankC=44.8 need=475833 tD=0.41 人 pulse | safe=244264 keep=Inf avail=-Inf chunkB=51718 pulseB=31031 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=445565 dq=30.9 cnt=3 | c=136.2 rankC=136.2 need=815801 tD=0.71 人 pulse | safe=244264 keep=Inf avail=-Inf chunkB=51718 pulseB=31031 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2645 zexos1 B=258591 L=7183 d=36.0 nb=2 neut=0 cmds=26 noFull=0 shQ=64647 | m=0.900 worth=34.3 cheap=8.4 over=0 dMedOther=44.8 safe(-1)=244264
+    → Player 625#31[T1] terr=14139 bal=255057 dq=18.0 cnt=111 | c=44.8 rankC=44.8 need=475833 tD=0.40 人 pulse | safe=244264 keep=Inf avail=-Inf chunkB=51718 pulseB=31031 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=445565 dq=30.9 cnt=3 | c=136.2 rankC=136.2 need=815801 tD=0.69 人 pulse | safe=244264 keep=Inf avail=-Inf chunkB=51718 pulseB=31031 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2650 zexos1 B=261642 L=7183 d=36.4 nb=2 neut=0 cmds=26 noFull=0 shQ=65410 | m=0.900 worth=34.7 cheap=8.4 over=0 dMedOther=45.4 safe(-1)=247443
+    → Player 625#31[T1] terr=14139 bal=258270 dq=18.3 cnt=111 | c=45.3 rankC=45.3 need=481560 tD=0.40 人 pulse | safe=247443 keep=Inf avail=-Inf chunkB=52328 pulseB=31397 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=451223 dq=31.3 cnt=3 | c=137.9 rankC=137.9 need=825886 tD=0.69 人 pulse | safe=247443 keep=Inf avail=-Inf chunkB=52328 pulseB=31397 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2655 zexos1 B=261642 L=7183 d=36.4 nb=2 neut=0 cmds=26 noFull=0 shQ=65410 | m=0.900 worth=34.7 cheap=8.4 over=0 dMedOther=45.4 safe(-1)=247443
+    → Player 625#31[T1] terr=14139 bal=258270 dq=18.3 cnt=111 | c=45.3 rankC=45.3 need=481560 tD=0.40 人 pulse | safe=247443 keep=Inf avail=-Inf chunkB=52328 pulseB=31397 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=451223 dq=31.3 cnt=3 | c=137.9 rankC=137.9 need=825886 tD=0.69 人 pulse | safe=247443 keep=Inf avail=-Inf chunkB=52328 pulseB=31397 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2660 zexos1 B=264729 L=7183 d=36.9 nb=2 neut=0 cmds=26 noFull=0 shQ=66182 | m=0.900 worth=35.1 cheap=8.4 over=0 dMedOther=45.9 safe(-1)=250662
+    → Player 625#31[T1] terr=14139 bal=261524 dq=18.5 cnt=111 | c=45.8 rankC=45.8 need=487360 tD=0.40 人 pulse | safe=250662 keep=Inf avail=-Inf chunkB=52946 pulseB=31767 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=456953 dq=31.7 cnt=3 | c=139.6 rankC=139.6 need=836099 tD=0.69 人 pulse | safe=250662 keep=Inf avail=-Inf chunkB=52946 pulseB=31767 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2665 zexos1 B=264729 L=7183 d=36.9 nb=2 neut=0 cmds=26 noFull=0 shQ=66182 | m=0.900 worth=35.1 cheap=8.4 over=0 dMedOther=45.9 safe(-1)=250662
+    → Player 625#31[T1] terr=14139 bal=261524 dq=18.5 cnt=111 | c=45.8 rankC=45.8 need=487360 tD=0.40 人 pulse | safe=250662 keep=Inf avail=-Inf chunkB=52946 pulseB=31767 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=456953 dq=31.7 cnt=3 | c=139.6 rankC=139.6 need=836099 tD=0.69 人 pulse | safe=250662 keep=Inf avail=-Inf chunkB=52946 pulseB=31767 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2670 zexos1 B=267852 L=7183 d=37.3 nb=2 neut=0 cmds=26 noFull=0 shQ=66963 | m=0.900 worth=35.6 cheap=8.4 over=0 dMedOther=46.5 safe(-1)=253922
+    → Player 625#31[T1] terr=14139 bal=264819 dq=18.7 cnt=111 | c=46.4 rankC=46.4 need=493233 tD=0.40 人 pulse | safe=253922 keep=Inf avail=-Inf chunkB=53570 pulseB=32142 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=462756 dq=32.1 cnt=3 | c=141.4 rankC=141.4 need=846442 tD=0.69 人 pulse | safe=253922 keep=Inf avail=-Inf chunkB=53570 pulseB=32142 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2675 zexos1 B=267852 L=7183 d=37.3 nb=2 neut=0 cmds=26 noFull=0 shQ=66963 | m=0.900 worth=35.1 cheap=8.4 over=0 dMedOther=45.8 safe(-1)=253922
+    → Player 625#31[T1] terr=14139 bal=264819 dq=18.7 cnt=111 | c=46.4 rankC=46.4 need=493233 tD=0.41 人 pulse | safe=253922 keep=Inf avail=-Inf chunkB=53570 pulseB=32142 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=462756 dq=32.1 cnt=3 | c=141.4 rankC=141.4 need=846442 tD=0.70 人 pulse | safe=253922 keep=Inf avail=-Inf chunkB=53570 pulseB=32142 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2680 zexos1 B=271012 L=7183 d=37.7 nb=2 neut=0 cmds=26 noFull=0 shQ=67753 | m=0.900 worth=34.6 cheap=8.4 over=0 dMedOther=45.2 safe(-1)=257224
+    → Player 625#31[T1] terr=14139 bal=268155 dq=19.0 cnt=111 | c=47.0 rankC=47.0 need=499179 tD=0.42 人 pulse | safe=257224 keep=Inf avail=-Inf chunkB=54202 pulseB=32521 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=468633 dq=32.5 cnt=3 | c=143.1 rankC=143.1 need=856917 tD=0.72 人 pulse | safe=257224 keep=Inf avail=-Inf chunkB=54202 pulseB=32521 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2685 zexos1 B=271012 L=7183 d=37.7 nb=2 neut=0 cmds=26 noFull=0 shQ=67753 | m=0.900 worth=34.5 cheap=8.4 over=0 dMedOther=45.2 safe(-1)=257224
+    → Player 625#31[T1] terr=14139 bal=268155 dq=19.0 cnt=111 | c=47.0 rankC=47.0 need=499179 tD=0.42 人 pulse | safe=257224 keep=Inf avail=-Inf chunkB=54202 pulseB=32521 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=468633 dq=32.5 cnt=3 | c=143.1 rankC=143.1 need=856917 tD=0.72 人 pulse | safe=257224 keep=Inf avail=-Inf chunkB=54202 pulseB=32521 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2690 zexos1 B=274209 L=7183 d=38.2 nb=2 neut=0 cmds=26 noFull=0 shQ=68552 | m=0.900 worth=35.0 cheap=8.4 over=0 dMedOther=45.7 safe(-1)=260567
+    → Player 625#31[T1] terr=14139 bal=271533 dq=19.2 cnt=111 | c=47.5 rankC=47.5 need=505200 tD=0.42 人 pulse | safe=260567 keep=Inf avail=-Inf chunkB=54842 pulseB=32905 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=474584 dq=32.9 cnt=3 | c=144.9 rankC=144.9 need=867524 tD=0.72 人 pulse | safe=260567 keep=Inf avail=-Inf chunkB=54842 pulseB=32905 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2695 zexos1 B=274209 L=7183 d=38.2 nb=2 neut=0 cmds=26 noFull=0 shQ=68552 | m=0.900 worth=35.0 cheap=8.4 over=0 dMedOther=45.7 safe(-1)=260567
+    → Player 625#31[T1] terr=14139 bal=271533 dq=19.2 cnt=111 | c=47.5 rankC=47.5 need=505200 tD=0.42 人 pulse | safe=260567 keep=Inf avail=-Inf chunkB=54842 pulseB=32905 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=474584 dq=32.9 cnt=3 | c=144.9 rankC=144.9 need=867524 tD=0.72 人 pulse | safe=260567 keep=Inf avail=-Inf chunkB=54842 pulseB=32905 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2700 zexos1 B=284627 L=7183 d=39.6 nb=2 neut=0 cmds=26 noFull=0 shQ=69398 | m=0.900 worth=36.2 cheap=8.4 over=0 dMedOther=47.3 safe(-1)=272055
+    → Player 625#31[T1] terr=14139 bal=289093 dq=20.4 cnt=111 | c=50.5 rankC=50.5 need=536500 tD=0.43 人 pulse | safe=272055 keep=Inf avail=-Inf chunkB=56925 pulseB=34155 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=14421 bal=495032 dq=34.3 cnt=3 | c=151.0 rankC=151.0 need=903970 tD=0.73 人 pulse | safe=272055 keep=Inf avail=-Inf chunkB=56925 pulseB=34155 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令

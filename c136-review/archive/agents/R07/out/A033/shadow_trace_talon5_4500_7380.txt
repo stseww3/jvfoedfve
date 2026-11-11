@@ -1,0 +1,320 @@
+# A033 talon5 影子决策明细 t=4500~7380（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没有可打的邻居: 565 拍（t=4500~7375）
+#   捐兵: 11 拍（t=4520~7120）
+#   只打无主地: 1 拍（t=7380~7380）
+t=4500 talon5 B=855845 L=12445 d=68.8 nb=0 neut=16 cmds=63 noFull=1 shQ=129397 | m=0.900 worth=81.4 cheap=8.1 over=0 dMedOther=106.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4520 talon5 B=976816 L=12511 d=78.1 nb=0 neut=0 cmds=64 noFull=1 shQ=185294 | m=0.900 worth=83.1 cheap=8.1 over=0 dMedOther=108.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zero_7#52[T2]（约 306208 兵）
+t=4530 talon5 B=617054 L=12511 d=49.3 nb=0 neut=0 cmds=64 noFull=1 shQ=154263 | m=0.900 worth=80.7 cheap=8.1 over=0 dMedOther=105.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4560 talon5 B=640103 L=12511 d=51.2 nb=0 neut=0 cmds=64 noFull=1 shQ=160025 | m=0.900 worth=79.9 cheap=8.1 over=0 dMedOther=104.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4590 talon5 B=664014 L=12511 d=53.1 nb=0 neut=0 cmds=64 noFull=1 shQ=166003 | m=0.900 worth=78.0 cheap=8.1 over=0 dMedOther=101.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4620 talon5 B=701638 L=12511 d=56.1 nb=0 neut=0 cmds=64 noFull=1 shQ=175409 | m=0.900 worth=81.6 cheap=8.1 over=0 dMedOther=106.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4650 talon5 B=727847 L=12511 d=58.2 nb=0 neut=0 cmds=64 noFull=1 shQ=181961 | m=0.900 worth=81.6 cheap=8.1 over=0 dMedOther=106.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4670 talon5 B=745861 L=12511 d=59.6 nb=0 neut=0 cmds=65 noFull=1 shQ=186465 | m=0.900 worth=77.8 cheap=8.1 over=0 dMedOther=101.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=268 → [APEX] zero_7#52[T2]（约 195934 兵）
+t=4680 talon5 B=755035 L=12511 d=60.3 nb=0 neut=0 cmds=65 noFull=1 shQ=188758 | m=0.900 worth=77.9 cheap=8.1 over=0 dMedOther=101.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4710 talon5 B=541197 L=12511 d=43.3 nb=0 neut=0 cmds=65 noFull=1 shQ=135299 | m=0.900 worth=80.0 cheap=8.1 over=0 dMedOther=104.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4740 talon5 B=561412 L=12511 d=44.9 nb=0 neut=0 cmds=65 noFull=1 shQ=140353 | m=0.900 worth=77.4 cheap=8.1 over=0 dMedOther=101.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4770 talon5 B=582383 L=12511 d=46.5 nb=0 neut=0 cmds=65 noFull=1 shQ=145595 | m=0.900 worth=80.2 cheap=8.1 over=0 dMedOther=104.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4800 talon5 B=616648 L=12511 d=49.3 nb=0 neut=0 cmds=65 noFull=1 shQ=151110 | m=0.900 worth=78.4 cheap=8.1 over=0 dMedOther=102.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4830 talon5 B=639682 L=12511 d=51.1 nb=0 neut=0 cmds=65 noFull=1 shQ=159920 | m=0.900 worth=85.2 cheap=8.1 over=0 dMedOther=111.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4860 talon5 B=663576 L=12511 d=53.0 nb=0 neut=0 cmds=65 noFull=1 shQ=165894 | m=0.900 worth=74.6 cheap=8.1 over=0 dMedOther=97.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4890 talon5 B=688362 L=12511 d=55.0 nb=0 neut=0 cmds=65 noFull=1 shQ=172090 | m=0.900 worth=85.8 cheap=8.1 over=0 dMedOther=112.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4920 talon5 B=726895 L=12511 d=58.1 nb=0 neut=0 cmds=66 noFull=1 shQ=181723 | m=0.900 worth=83.4 cheap=8.1 over=0 dMedOther=109.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=248 → [APEX] zexos1#50[T2]（约 176754 兵）
+t=4950 talon5 B=523563 L=12511 d=41.8 nb=0 neut=0 cmds=66 noFull=1 shQ=130890 | m=0.900 worth=86.3 cheap=8.1 over=0 dMedOther=112.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4980 talon5 B=543120 L=12511 d=43.4 nb=0 neut=0 cmds=66 noFull=1 shQ=135780 | m=0.900 worth=77.6 cheap=8.1 over=0 dMedOther=101.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5010 talon5 B=576072 L=12511 d=46.0 nb=0 neut=0 cmds=66 noFull=1 shQ=144018 | m=0.900 worth=81.3 cheap=8.1 over=0 dMedOther=106.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5040 talon5 B=597590 L=12511 d=47.8 nb=0 neut=0 cmds=66 noFull=1 shQ=149397 | m=0.900 worth=84.0 cheap=8.1 over=0 dMedOther=109.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5070 talon5 B=630033 L=12511 d=50.4 nb=0 neut=0 cmds=66 noFull=1 shQ=157508 | m=0.900 worth=92.4 cheap=8.1 over=0 dMedOther=120.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5100 talon5 B=666078 L=12511 d=53.2 nb=0 neut=0 cmds=66 noFull=1 shQ=163470 | m=0.900 worth=98.9 cheap=8.1 over=0 dMedOther=129.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5130 talon5 B=690958 L=12511 d=55.2 nb=0 neut=0 cmds=66 noFull=1 shQ=172739 | m=0.900 worth=89.8 cheap=8.1 over=0 dMedOther=117.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5160 talon5 B=716768 L=12511 d=57.3 nb=0 neut=0 cmds=66 noFull=1 shQ=179192 | m=0.900 worth=89.1 cheap=8.1 over=0 dMedOther=116.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5190 talon5 B=743542 L=12511 d=59.4 nb=0 neut=0 cmds=66 noFull=1 shQ=185885 | m=0.900 worth=87.0 cheap=8.1 over=0 dMedOther=113.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5195 talon5 B=743542 L=12511 d=59.4 nb=0 neut=0 cmds=67 noFull=1 shQ=185885 | m=0.900 worth=86.8 cheap=8.1 over=0 dMedOther=113.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=265 → [APEX] sora_w#49[T2]（约 193146 兵）
+t=5220 talon5 B=531437 L=12511 d=42.5 nb=0 neut=0 cmds=67 noFull=1 shQ=132859 | m=0.900 worth=87.1 cheap=8.1 over=0 dMedOther=113.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5250 talon5 B=551288 L=12511 d=44.1 nb=0 neut=0 cmds=67 noFull=1 shQ=137822 | m=0.900 worth=89.6 cheap=8.1 over=0 dMedOther=117.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5280 talon5 B=571880 L=12511 d=45.7 nb=0 neut=0 cmds=67 noFull=1 shQ=142970 | m=0.900 worth=89.3 cheap=8.1 over=0 dMedOther=116.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5310 talon5 B=605907 L=12511 d=48.4 nb=0 neut=0 cmds=67 noFull=1 shQ=151476 | m=0.900 worth=90.2 cheap=8.1 over=0 dMedOther=117.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5340 talon5 B=628540 L=12511 d=50.2 nb=0 neut=0 cmds=67 noFull=1 shQ=157135 | m=0.900 worth=92.6 cheap=8.1 over=0 dMedOther=121.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5370 talon5 B=652019 L=12511 d=52.1 nb=0 neut=0 cmds=67 noFull=1 shQ=163004 | m=0.900 worth=93.2 cheap=8.1 over=0 dMedOther=121.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5400 talon5 B=688885 L=12511 d=55.1 nb=0 neut=0 cmds=67 noFull=1 shQ=169174 | m=0.900 worth=90.7 cheap=8.1 over=0 dMedOther=118.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5430 talon5 B=714618 L=12511 d=57.1 nb=0 neut=0 cmds=67 noFull=1 shQ=178654 | m=0.900 worth=86.8 cheap=8.1 over=0 dMedOther=113.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5460 talon5 B=741311 L=12511 d=59.3 nb=0 neut=0 cmds=67 noFull=1 shQ=185327 | m=0.900 worth=93.5 cheap=8.1 over=0 dMedOther=122.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5470 talon5 B=750429 L=12511 d=60.0 nb=0 neut=0 cmds=68 noFull=1 shQ=187607 | m=0.900 worth=94.2 cheap=8.1 over=0 dMedOther=123.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] zero_7#52[T2]（约 279212 兵）
+t=5490 talon5 B=434818 L=12511 d=34.8 nb=0 neut=0 cmds=68 noFull=1 shQ=108704 | m=0.900 worth=95.7 cheap=8.1 over=0 dMedOther=125.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5520 talon5 B=463880 L=12511 d=37.1 nb=0 neut=0 cmds=68 noFull=1 shQ=115970 | m=0.900 worth=84.4 cheap=8.1 over=0 dMedOther=110.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5550 talon5 B=481206 L=12511 d=38.5 nb=0 neut=0 cmds=68 noFull=1 shQ=120301 | m=0.900 worth=87.0 cheap=8.1 over=0 dMedOther=113.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5580 talon5 B=499180 L=12511 d=39.9 nb=0 neut=0 cmds=68 noFull=1 shQ=124795 | m=0.900 worth=80.4 cheap=8.1 over=0 dMedOther=105.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5610 talon5 B=530490 L=12511 d=42.4 nb=0 neut=0 cmds=68 noFull=1 shQ=132622 | m=0.900 worth=77.8 cheap=8.1 over=0 dMedOther=101.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5620 talon5 B=537015 L=12511 d=42.9 nb=0 neut=0 cmds=69 noFull=1 shQ=134253 | m=0.900 worth=73.9 cheap=8.1 over=0 dMedOther=96.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=260 → [APEX] zero_7#52[T2]（约 136875 兵）
+t=5640 talon5 B=375649 L=12511 d=30.0 nb=0 neut=0 cmds=69 noFull=1 shQ=93912 | m=0.900 worth=74.0 cheap=8.1 over=0 dMedOther=96.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5670 talon5 B=389680 L=12511 d=31.1 nb=0 neut=0 cmds=69 noFull=1 shQ=97420 | m=0.900 worth=80.3 cheap=8.1 over=0 dMedOther=104.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5700 talon5 B=416747 L=12511 d=33.3 nb=0 neut=0 cmds=69 noFull=1 shQ=101122 | m=0.900 worth=80.7 cheap=8.1 over=0 dMedOther=105.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5730 talon5 B=432313 L=12511 d=34.6 nb=0 neut=0 cmds=69 noFull=1 shQ=108078 | m=0.900 worth=83.7 cheap=8.1 over=0 dMedOther=109.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5760 talon5 B=448461 L=12511 d=35.8 nb=0 neut=0 cmds=69 noFull=1 shQ=112115 | m=0.900 worth=78.7 cheap=8.1 over=0 dMedOther=102.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5790 talon5 B=465212 L=12511 d=37.2 nb=0 neut=0 cmds=69 noFull=1 shQ=116303 | m=0.900 worth=79.1 cheap=8.1 over=0 dMedOther=103.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5820 talon5 B=495410 L=12511 d=39.6 nb=0 neut=0 cmds=69 noFull=1 shQ=123852 | m=0.900 worth=80.4 cheap=8.1 over=0 dMedOther=105.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5850 talon5 B=513915 L=12511 d=41.1 nb=0 neut=0 cmds=69 noFull=1 shQ=128478 | m=0.900 worth=85.3 cheap=8.1 over=0 dMedOther=111.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5880 talon5 B=533111 L=12511 d=42.6 nb=0 neut=0 cmds=69 noFull=1 shQ=133277 | m=0.900 worth=85.3 cheap=8.1 over=0 dMedOther=111.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5910 talon5 B=565689 L=12511 d=45.2 nb=0 neut=0 cmds=69 noFull=1 shQ=141422 | m=0.900 worth=87.4 cheap=8.1 over=0 dMedOther=114.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5920 talon5 B=572646 L=12511 d=45.8 nb=0 neut=0 cmds=70 noFull=1 shQ=143161 | m=0.900 worth=88.3 cheap=8.1 over=0 dMedOther=115.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=308 → [APEX] zero_7#52[T2]（约 172800 兵）
+t=5940 talon5 B=383063 L=12511 d=30.6 nb=0 neut=0 cmds=70 noFull=1 shQ=95765 | m=0.900 worth=90.0 cheap=8.1 over=0 dMedOther=117.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5970 talon5 B=397371 L=12511 d=31.8 nb=0 neut=0 cmds=70 noFull=1 shQ=99342 | m=0.900 worth=87.7 cheap=8.1 over=0 dMedOther=114.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6000 talon5 B=424724 L=12511 d=33.9 nb=0 neut=0 cmds=70 noFull=1 shQ=103117 | m=0.900 worth=75.9 cheap=8.1 over=0 dMedOther=99.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6030 talon5 B=440589 L=12511 d=35.2 nb=0 neut=0 cmds=70 noFull=1 shQ=110147 | m=0.900 worth=82.8 cheap=8.1 over=0 dMedOther=108.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6060 talon5 B=457046 L=12511 d=36.5 nb=0 neut=0 cmds=70 noFull=1 shQ=114261 | m=0.900 worth=85.4 cheap=8.1 over=0 dMedOther=111.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6090 talon5 B=474117 L=12511 d=37.9 nb=0 neut=0 cmds=70 noFull=1 shQ=118529 | m=0.900 worth=87.0 cheap=8.1 over=0 dMedOther=113.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6120 talon5 B=504647 L=12511 d=40.3 nb=0 neut=0 cmds=70 noFull=1 shQ=126161 | m=0.900 worth=89.0 cheap=8.1 over=0 dMedOther=116.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6150 talon5 B=523497 L=12511 d=41.8 nb=0 neut=0 cmds=70 noFull=1 shQ=130874 | m=0.900 worth=91.3 cheap=8.1 over=0 dMedOther=119.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6180 talon5 B=543052 L=12511 d=43.4 nb=0 neut=0 cmds=70 noFull=1 shQ=135763 | m=0.900 worth=93.4 cheap=8.1 over=0 dMedOther=122.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6210 talon5 B=576001 L=12511 d=46.0 nb=0 neut=0 cmds=70 noFull=1 shQ=144000 | m=0.900 worth=81.9 cheap=8.1 over=0 dMedOther=107.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6240 talon5 B=597516 L=12511 d=47.8 nb=0 neut=0 cmds=70 noFull=1 shQ=149379 | m=0.900 worth=84.6 cheap=8.1 over=0 dMedOther=110.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6270 talon5 B=619835 L=12511 d=49.5 nb=0 neut=0 cmds=70 noFull=1 shQ=154958 | m=0.900 worth=77.2 cheap=8.1 over=0 dMedOther=100.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6300 talon5 B=655498 L=12511 d=52.4 nb=0 neut=0 cmds=70 noFull=1 shQ=160825 | m=0.900 worth=81.1 cheap=8.1 over=0 dMedOther=106.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6320 talon5 B=671721 L=12511 d=53.7 nb=0 neut=0 cmds=71 noFull=1 shQ=167930 | m=0.900 worth=79.0 cheap=8.1 over=0 dMedOther=103.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] sora_w#49[T2]（约 249927 兵）
+t=6330 talon5 B=679983 L=12511 d=54.4 nb=0 neut=0 cmds=71 noFull=1 shQ=169995 | m=0.900 worth=78.5 cheap=8.1 over=0 dMedOther=102.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6360 talon5 B=398846 L=12511 d=31.9 nb=0 neut=0 cmds=71 noFull=1 shQ=99711 | m=0.900 worth=83.9 cheap=8.1 over=0 dMedOther=109.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6390 talon5 B=413744 L=12511 d=33.1 nb=0 neut=0 cmds=71 noFull=1 shQ=103436 | m=0.900 worth=84.1 cheap=8.1 over=0 dMedOther=110.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6420 talon5 B=442019 L=12511 d=35.3 nb=0 neut=0 cmds=71 noFull=1 shQ=110504 | m=0.900 worth=87.5 cheap=8.1 over=0 dMedOther=114.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6450 talon5 B=458529 L=12511 d=36.7 nb=0 neut=0 cmds=71 noFull=1 shQ=114632 | m=0.900 worth=87.0 cheap=8.1 over=0 dMedOther=113.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6480 talon5 B=475656 L=12511 d=38.0 nb=0 neut=0 cmds=71 noFull=1 shQ=118914 | m=0.900 worth=89.5 cheap=8.1 over=0 dMedOther=117.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6510 talon5 B=506088 L=12511 d=40.5 nb=0 neut=0 cmds=71 noFull=1 shQ=126522 | m=0.900 worth=82.1 cheap=8.1 over=0 dMedOther=107.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6540 talon5 B=524991 L=12511 d=42.0 nb=0 neut=0 cmds=71 noFull=1 shQ=131247 | m=0.900 worth=83.0 cheap=8.1 over=0 dMedOther=108.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6570 talon5 B=544601 L=12511 d=43.5 nb=0 neut=0 cmds=72 noFull=1 shQ=136150 | m=0.900 worth=80.9 cheap=8.1 over=0 dMedOther=105.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=271 → [APEX] zero_7#52[T2]（约 144659 兵）
+t=6600 talon5 B=392083 L=12511 d=31.3 nb=0 neut=0 cmds=72 noFull=1 shQ=94955 | m=0.900 worth=84.6 cheap=8.1 over=0 dMedOther=110.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6630 talon5 B=406727 L=12511 d=32.5 nb=0 neut=0 cmds=72 noFull=1 shQ=101681 | m=0.900 worth=80.9 cheap=8.1 over=0 dMedOther=105.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6660 talon5 B=421919 L=12511 d=33.7 nb=0 neut=0 cmds=72 noFull=1 shQ=105479 | m=0.900 worth=77.1 cheap=8.1 over=0 dMedOther=100.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6690 talon5 B=437679 L=12511 d=35.0 nb=0 neut=0 cmds=72 noFull=1 shQ=109419 | m=0.900 worth=79.2 cheap=8.1 over=0 dMedOther=103.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6720 talon5 B=466848 L=12511 d=37.3 nb=0 neut=0 cmds=72 noFull=1 shQ=116712 | m=0.900 worth=82.5 cheap=8.1 over=0 dMedOther=107.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6750 talon5 B=484286 L=12511 d=38.7 nb=0 neut=0 cmds=72 noFull=1 shQ=121071 | m=0.900 worth=83.2 cheap=8.1 over=0 dMedOther=108.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6780 talon5 B=502375 L=12511 d=40.2 nb=0 neut=0 cmds=72 noFull=1 shQ=125593 | m=0.900 worth=86.0 cheap=8.1 over=0 dMedOther=112.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6810 talon5 B=533806 L=12511 d=42.7 nb=0 neut=0 cmds=72 noFull=1 shQ=133451 | m=0.900 worth=89.3 cheap=8.1 over=0 dMedOther=116.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6840 talon5 B=553745 L=12511 d=44.3 nb=0 neut=0 cmds=72 noFull=1 shQ=138436 | m=0.900 worth=83.5 cheap=8.1 over=0 dMedOther=109.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6870 talon5 B=574429 L=12511 d=45.9 nb=0 neut=0 cmds=73 noFull=1 shQ=143607 | m=0.900 worth=74.5 cheap=8.1 over=0 dMedOther=97.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=310 → [APEX] sora_w#49[T2]（约 174460 兵）
+t=6900 talon5 B=390177 L=12511 d=31.2 nb=0 neut=0 cmds=73 noFull=1 shQ=94478 | m=0.900 worth=82.9 cheap=8.1 over=0 dMedOther=108.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6930 talon5 B=404751 L=12511 d=32.4 nb=0 neut=0 cmds=73 noFull=1 shQ=101187 | m=0.900 worth=76.9 cheap=8.1 over=0 dMedOther=100.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6960 talon5 B=419869 L=12511 d=33.6 nb=0 neut=0 cmds=73 noFull=1 shQ=104967 | m=0.900 worth=70.7 cheap=8.1 over=0 dMedOther=92.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6990 talon5 B=435552 L=12511 d=34.8 nb=0 neut=0 cmds=73 noFull=1 shQ=108888 | m=0.900 worth=73.5 cheap=8.1 over=0 dMedOther=96.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7020 talon5 B=464642 L=12511 d=37.1 nb=0 neut=0 cmds=73 noFull=1 shQ=116160 | m=0.900 worth=77.2 cheap=8.1 over=0 dMedOther=100.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7050 talon5 B=481998 L=12511 d=38.5 nb=0 neut=0 cmds=73 noFull=1 shQ=120499 | m=0.900 worth=79.6 cheap=8.1 over=0 dMedOther=104.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7080 talon5 B=500002 L=12511 d=40.0 nb=0 neut=0 cmds=73 noFull=1 shQ=125000 | m=0.900 worth=81.5 cheap=8.1 over=0 dMedOther=106.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7110 talon5 B=531344 L=12511 d=42.5 nb=0 neut=0 cmds=73 noFull=1 shQ=132836 | m=0.900 worth=76.3 cheap=8.1 over=0 dMedOther=99.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7120 talon5 B=537879 L=12511 d=43.0 nb=0 neut=0 cmds=74 noFull=1 shQ=134469 | m=0.900 worth=76.2 cheap=8.1 over=0 dMedOther=99.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=261 → [APEX] sora_w#49[T2]（约 137621 兵）
+t=7140 talon5 B=375716 L=12511 d=30.0 nb=0 neut=0 cmds=74 noFull=1 shQ=93929 | m=0.900 worth=73.9 cheap=8.1 over=0 dMedOther=96.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7170 talon5 B=389750 L=12511 d=31.2 nb=0 neut=0 cmds=74 noFull=1 shQ=97437 | m=0.900 worth=75.5 cheap=8.1 over=0 dMedOther=98.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7200 talon5 B=416818 L=12511 d=33.3 nb=0 neut=0 cmds=74 noFull=1 shQ=101140 | m=0.900 worth=79.2 cheap=8.1 over=0 dMedOther=103.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7230 talon5 B=432386 L=12511 d=34.6 nb=0 neut=0 cmds=74 noFull=1 shQ=108096 | m=0.900 worth=70.5 cheap=8.1 over=0 dMedOther=92.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7260 talon5 B=448536 L=12511 d=35.9 nb=0 neut=0 cmds=74 noFull=1 shQ=112134 | m=0.900 worth=60.5 cheap=8.1 over=0 dMedOther=79.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7290 talon5 B=465289 L=12511 d=37.2 nb=0 neut=0 cmds=74 noFull=1 shQ=116322 | m=0.900 worth=63.0 cheap=8.1 over=0 dMedOther=82.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7320 talon5 B=495490 L=12511 d=39.6 nb=0 neut=0 cmds=74 noFull=1 shQ=123872 | m=0.900 worth=60.2 cheap=8.1 over=0 dMedOther=78.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7350 talon5 B=513998 L=12511 d=41.1 nb=0 neut=0 cmds=74 noFull=1 shQ=128499 | m=0.900 worth=61.7 cheap=8.1 over=0 dMedOther=80.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7380 talon5 B=533197 L=12511 d=42.6 nb=0 neut=30 cmds=75 noFull=1 shQ=133299 | m=0.900 worth=63.2 cheap=8.1 over=0 dMedOther=82.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → 无主地（约 24993 兵）

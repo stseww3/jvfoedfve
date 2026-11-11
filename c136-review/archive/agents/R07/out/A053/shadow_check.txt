@@ -1,0 +1,35 @@
+# A053 影子运行（策略 v27-team-c116-vb.js；重演 8344 拍，用时 21.3 秒）
+# 重演与 traj.csv 快照核对：679 行，领土一致 679，余额一致 679，都一致 679
+# HL-TICK 比对：真日志 679 条；影子同拍 领土余额一致 679，nb 一致 679，neut 一致 679，cmds 计数一致 520，三项全一致 520
+#   sora_w: 80 条，影子缺 0，nb 一致 80，neut 一致 80，cmds 一致 80；最后一条 cmds 差（影子-真）0
+#   ryan_m: 86 条，影子缺 0，nb 一致 86，neut 一致 86，cmds 一致 5；最后一条 cmds 差（影子-真）2
+#       变化点 (450,540] 差 0→1；这一段影子指令：460:attack 153→AI#407、465:attack 440→无主地、465:attack 168→AI#407、535:attack 135→AI#246、540:attack 130→AI#246
+#       变化点 (540,630] 差 1→2；这一段影子指令：545:attack 469→无主地、545:attack 132→AI#246、615:attack 464→无主地
+#   alex_k: 76 条，影子缺 0，nb 一致 76，neut 一致 76，cmds 一致 72；最后一条 cmds 差（影子-真）1
+#       变化点 (6480,6570] 差 0→1；这一段影子指令：6545:attack 47→无主地、6550:attack 47→无主地、6550:attack 112→[OG] Gallo#55[T4]、6570:attack 90→💫🇰🇬[KGZ]🇰🇬🎀#40[T5]
+#   zero_7: 69 条，影子缺 0，nb 一致 69，neut 一致 69，cmds 一致 69；最后一条 cmds 差（影子-真）0
+#   kaito9: 79 条，影子缺 0，nb 一致 79，neut 一致 79，cmds 一致 5；最后一条 cmds 差（影子-真）1
+#       变化点 (450,540] 差 0→1；这一段影子指令：455:attack 210→AI#340、535:attack 458→无主地
+#   talon5: 72 条，影子缺 0，nb 一致 72，neut 一致 72，cmds 一致 72；最后一条 cmds 差（影子-真）0
+#   zexos1: 75 条，影子缺 0，nb 一致 75，neut 一致 75，cmds 一致 75；最后一条 cmds 差（影子-真）0
+#   noah88: 71 条，影子缺 0，nb 一致 71，neut 一致 71，cmds 一致 71；最后一条 cmds 差（影子-真）0
+#   leo_tx: 71 条，影子缺 0，nb 一致 71，neut 一致 71，cmds 一致 71；最后一条 cmds 差（影子-真）0
+# HL-DISPATCH 比对：真日志 165 条；影子在同一拍给出同对象同比例 165 条（其中种类也相同 165）；影子多出 0 条
+# HL-OPENING 比对：真日志 64 条；影子同拍同金额 64 条；影子共 64 条
+# 影子策略报错 0 条
+# 影子指令计数：alex_k:attack×117 alex_k:donate×11 kaito9:attack×82 kaito9:boatTo×6 kaito9:donate×10 leo_tx:attack×26 leo_tx:donate×27 noah88:attack×95 ryan_m:attack×75 ryan_m:donate×24 sora_w:attack×48 sora_w:boatTo×10 sora_w:donate×37 talon5:attack×22 talon5:donate×17 zero_7:attack×113 zero_7:boatTo×6 zero_7:donate×4 zexos1:attack×75 zexos1:boatTo×2 zexos1:donate×35
+# 影子指令的发令位置（策略源码行号）：
+#   attack→内置AI 〔send:484<send:1827<send:3865<act:796〕：308 条，约 570,576 兵，t=445~1225
+#   attack→真人 〔send:484<send:1827<send:3865<buyLand:5607〕：192 条，约 13,768,380 兵，t=1570~7510
+#   donate 〔tryDonateToTeammate:4508<act:4962〕：165 条，约 19,890,313 兵，t=1570~6535
+#   attack→无主地 〔send:484<send:1827<send:3865<dpNeutral:2406〕：64 条，约 60,622 兵，t=50~1005
+#   attack→真人 〔send:484<send:1827<send:3865<buyLand:5585〕：22 条，约 1,496,785 兵，t=4180~6425
+#   attack→真人 〔send:484<send:1827<send:3865<buyLand:5592〕：19 条，约 1,389,807 兵，t=1515~3695
+#   attack→真人 〔send:484<send:1827<send:3865<act:796〕：18 条，约 206,383 兵，t=620~1495
+#   attack→真人 〔send:484<send:1827<send:3865<buyLand:5616〕：16 条，约 825,446 兵，t=1500~1780
+#   attack→无主地 〔send:484<send:1827<send:3865<expandNeutral:952〕：14 条，约 400,505 兵，t=4290~6550
+#   boatTo 〔boatFood:2017<boatFood:5623<act:1822<act:2692〕：11 条，约 106,316 兵，t=940~1445
+#   boatTo 〔boatOut:1011<boatOut:2327<act:806<act:1820〕：6 条，约 69,617 兵，t=935~1420
+#   boatTo 〔boatFood:2017<boatFood:5623<idleBoats:5058<act:4963〕：5 条，约 80,675 兵，t=1850~2095
+#   boatTo 〔boatOut:1011<boatOut:2327<idleBoats:5068<act:4963〕：2 条，约 817,809 兵，t=3820~3880
+# isNoFullSend（影子）：talon5: 锁上@274 之后被挡 1 次、改 1 兵试探 0 次（t=855~855）；kaito9: 锁上@456 之后被挡 3 次、改 1 兵试探 0 次（t=1320~3710）；leo_tx: 锁上@463 之后被挡 0 次、改 1 兵试探 0 次；ryan_m: 锁上@470 之后被挡 2 次、改 1 兵试探 0 次（t=800~1045）；zero_7: 锁上@614 之后被挡 15 次、改 1 兵试探 0 次（t=615~5960）；zexos1: 锁上@616 之后被挡 1 次、改 1 兵试探 0 次（t=1195~1195）；alex_k: 锁上@738 之后被挡 5 次、改 1 兵试探 0 次（t=740~1155）；sora_w: 锁上@767 之后被挡 1 次、改 1 兵试探 0 次（t=770~770）；noah88: 锁上@802 之后被挡 19 次、改 1 兵试探 7 次（t=3280~6430）

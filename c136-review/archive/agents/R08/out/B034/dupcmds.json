@@ -1,0 +1,3451 @@
+{
+ "squad20": {
+  "gap": {
+   "gap": 14,
+   "byKind": {
+    "attack": {
+     "cmds": 658,
+     "clusters": 352,
+     "dupClusters": 99,
+     "dupCmds": 405,
+     "extraCmds": 306,
+     "sizes": {
+      "1": 253,
+      "8": 12,
+      "2": 45,
+      "5": 7,
+      "6": 5,
+      "9": 7,
+      "3": 13,
+      "7": 4,
+      "4": 6
+     }
+    },
+    "boat": {
+     "cmds": 14,
+     "clusters": 14,
+     "dupClusters": 0,
+     "dupCmds": 0,
+     "extraCmds": 0,
+     "sizes": {
+      "1": 14
+     }
+    },
+    "donate": {
+     "cmds": 3,
+     "clusters": 1,
+     "dupClusters": 1,
+     "dupCmds": 3,
+     "extraCmds": 2,
+     "sizes": {
+      "3": 1
+     }
+    }
+   },
+   "dups": [
+    {
+     "me": 38,
+     "name": "Zhuge Liang",
+     "kind": "attack",
+     "target": "21",
+     "targetName": "[OG]cyankwastaken",
+     "t0": 1834,
+     "t1": 1834,
+     "n": 9,
+     "pcts": [
+      396,
+      395,
+      395,
+      397,
+      416,
+      415,
+      414,
+      411,
+      409
+     ],
+     "first": 0.3877,
+     "comb": 0.9894
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "attack",
+     "target": "2",
+     "targetName": "[CORGI] Mr Bass",
+     "t0": 2072,
+     "t1": 2072,
+     "n": 9,
+     "pcts": [
+      309,
+      309,
+      314,
+      315,
+      315,
+      316,
+      316,
+      317,
+      317
+     ],
+     "first": 0.3027,
+     "comb": 0.9635
+    },
+    {
+     "me": 26,
+     "name": "Jokic",
+     "kind": "attack",
+     "target": "15",
+     "targetName": "Ill full send",
+     "t0": 2044,
+     "t1": 2044,
+     "n": 9,
+     "pcts": [
+      122,
+      122,
+      295,
+      296,
+      297,
+      312,
+      266,
+      268,
+      268
+     ],
+     "first": 0.1201,
+     "comb": 0.9227
+    },
+    {
+     "me": 29,
+     "name": "British Empire",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1414,
+     "t1": 1414,
+     "n": 9,
+     "pcts": [
+      83,
+      239,
+      245,
+      198,
+      47,
+      254,
+      247,
+      140,
+      73
+     ],
+     "first": 0.082,
+     "comb": 0.8133
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "4",
+     "targetName": "Salchichador",
+     "t0": 2051,
+     "t1": 2051,
+     "n": 6,
+     "pcts": [
+      237,
+      238,
+      240,
+      241,
+      242,
+      243
+     ],
+     "first": 0.2324,
+     "comb": 0.8004
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "attack",
+     "target": "1",
+     "targetName": "[RU]: Bashkort Yola",
+     "t0": 2156,
+     "t1": 2156,
+     "n": 3,
+     "pcts": [
+      414,
+      392,
+      295
+     ],
+     "first": 0.4053,
+     "comb": 0.7395
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "164",
+     "targetName": "bot#164",
+     "t0": 1197,
+     "t1": 1197,
+     "n": 5,
+     "pcts": [
+      99,
+      258,
+      285,
+      316,
+      216
+     ],
+     "first": 0.0977,
+     "comb": 0.7356
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 161,
+     "t1": 175,
+     "n": 2,
+     "pcts": [
+      476,
+      490
+     ],
+     "first": 0.4658,
+     "comb": 0.722
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 168,
+     "t1": 182,
+     "n": 2,
+     "pcts": [
+      476,
+      490
+     ],
+     "first": 0.4658,
+     "comb": 0.722
+    },
+    {
+     "me": 41,
+     "name": "Kilwa",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 154,
+     "t1": 168,
+     "n": 2,
+     "pcts": [
+      462,
+      498
+     ],
+     "first": 0.4521,
+     "comb": 0.7191
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "4",
+     "targetName": "Salchichador",
+     "t0": 2093,
+     "t1": 2093,
+     "n": 4,
+     "pcts": [
+      230,
+      276,
+      289,
+      305
+     ],
+     "first": 0.2256,
+     "comb": 0.7161
+    },
+    {
+     "me": 30,
+     "name": "Broly",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 154,
+     "t1": 161,
+     "n": 2,
+     "pcts": [
+      486,
+      468
+     ],
+     "first": 0.4756,
+     "comb": 0.7158
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 168,
+     "t1": 182,
+     "n": 2,
+     "pcts": [
+      493,
+      438
+     ],
+     "first": 0.4824,
+     "comb": 0.7043
+    },
+    {
+     "me": 41,
+     "name": "Kilwa",
+     "kind": "attack",
+     "target": "285",
+     "targetName": "bot#285",
+     "t0": 994,
+     "t1": 994,
+     "n": 5,
+     "pcts": [
+      208,
+      230,
+      223,
+      202,
+      199
+     ],
+     "first": 0.2041,
+     "comb": 0.6893
+    },
+    {
+     "me": 29,
+     "name": "British Empire",
+     "kind": "attack",
+     "target": "85",
+     "targetName": "bot#85",
+     "t0": 147,
+     "t1": 147,
+     "n": 5,
+     "pcts": [
+      225,
+      230,
+      243,
+      161,
+      178
+     ],
+     "first": 0.2207,
+     "comb": 0.6807
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 175,
+     "t1": 189,
+     "n": 2,
+     "pcts": [
+      374,
+      489
+     ],
+     "first": 0.3662,
+     "comb": 0.6695
+    },
+    {
+     "me": 24,
+     "name": "Levi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1589,
+     "t1": 1589,
+     "n": 8,
+     "pcts": [
+      50,
+      50,
+      118,
+      144,
+      143,
+      144,
+      137,
+      220
+     ],
+     "first": 0.0498,
+     "comb": 0.6572
+    },
+    {
+     "me": 41,
+     "name": "Kilwa",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1176,
+     "t1": 1176,
+     "n": 7,
+     "pcts": [
+      182,
+      209,
+      78,
+      73,
+      63,
+      142,
+      243
+     ],
+     "first": 0.1787,
+     "comb": 0.6566
+    },
+    {
+     "me": 38,
+     "name": "Zhuge Liang",
+     "kind": "attack",
+     "target": "21",
+     "targetName": "[OG]cyankwastaken",
+     "t0": 1680,
+     "t1": 1687,
+     "n": 2,
+     "pcts": [
+      424,
+      395
+     ],
+     "first": 0.415,
+     "comb": 0.6413
+    },
+    {
+     "me": 41,
+     "name": "Kilwa",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1750,
+     "t1": 1750,
+     "n": 6,
+     "pcts": [
+      88,
+      96,
+      103,
+      112,
+      155,
+      356
+     ],
+     "first": 0.0869,
+     "comb": 0.6352
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1652,
+     "t1": 1652,
+     "n": 8,
+     "pcts": [
+      104,
+      111,
+      100,
+      47,
+      207,
+      131,
+      137,
+      115
+     ],
+     "first": 0.1025,
+     "comb": 0.6343
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1659,
+     "t1": 1659,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      101,
+      55,
+      59,
+      61,
+      154,
+      163,
+      167
+     ],
+     "first": 0.0469,
+     "comb": 0.5926
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1183,
+     "t1": 1183,
+     "n": 8,
+     "pcts": [
+      47,
+      196,
+      120,
+      47,
+      47,
+      119,
+      134,
+      124
+     ],
+     "first": 0.0469,
+     "comb": 0.5851
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "7",
+     "targetName": "[APEX] zero_7",
+     "t0": 2289,
+     "t1": 2289,
+     "n": 3,
+     "pcts": [
+      255,
+      263,
+      258
+     ],
+     "first": 0.25,
+     "comb": 0.5842
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1890,
+     "t1": 1890,
+     "n": 8,
+     "pcts": [
+      117,
+      119,
+      105,
+      123,
+      68,
+      70,
+      68,
+      159
+     ],
+     "first": 0.1152,
+     "comb": 0.5797
+    },
+    {
+     "me": 41,
+     "name": "Kilwa",
+     "kind": "attack",
+     "target": "33",
+     "targetName": "Sigmalambo empire",
+     "t0": 1582,
+     "t1": 1582,
+     "n": 3,
+     "pcts": [
+      245,
+      248,
+      257
+     ],
+     "first": 0.2402,
+     "comb": 0.5699
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "4",
+     "targetName": "Salchichador",
+     "t0": 1995,
+     "t1": 1995,
+     "n": 3,
+     "pcts": [
+      276,
+      243,
+      211
+     ],
+     "first": 0.2705,
+     "comb": 0.5594
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "19",
+     "targetName": "ZxZxZ",
+     "t0": 2100,
+     "t1": 2100,
+     "n": 2,
+     "pcts": [
+      360,
+      306
+     ],
+     "first": 0.3525,
+     "comb": 0.5467
+    },
+    {
+     "me": 29,
+     "name": "British Empire",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1050,
+     "t1": 1050,
+     "n": 6,
+     "pcts": [
+      48,
+      128,
+      90,
+      157,
+      138,
+      129
+     ],
+     "first": 0.0479,
+     "comb": 0.5162
+    },
+    {
+     "me": 41,
+     "name": "Kilwa",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1372,
+     "t1": 1372,
+     "n": 6,
+     "pcts": [
+      47,
+      49,
+      47,
+      241,
+      146,
+      142
+     ],
+     "first": 0.0469,
+     "comb": 0.5138
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1358,
+     "t1": 1358,
+     "n": 9,
+     "pcts": [
+      47,
+      216,
+      47,
+      47,
+      47,
+      47,
+      82,
+      67,
+      64
+     ],
+     "first": 0.0469,
+     "comb": 0.5019
+    },
+    {
+     "me": 23,
+     "name": "Fischer",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1386,
+     "t1": 1386,
+     "n": 8,
+     "pcts": [
+      143,
+      83,
+      53,
+      47,
+      72,
+      69,
+      69,
+      131
+     ],
+     "first": 0.1406,
+     "comb": 0.4999
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "attack",
+     "target": "2",
+     "targetName": "[CORGI] Mr Bass",
+     "t0": 2156,
+     "t1": 2156,
+     "n": 2,
+     "pcts": [
+      297,
+      298
+     ],
+     "first": 0.291,
+     "comb": 0.498
+    },
+    {
+     "me": 24,
+     "name": "Levi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1127,
+     "t1": 1127,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      63,
+      47,
+      169,
+      178
+     ],
+     "first": 0.0469,
+     "comb": 0.4925
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1526,
+     "t1": 1526,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      110,
+      120,
+      58,
+      66,
+      68,
+      73,
+      68
+     ],
+     "first": 0.0469,
+     "comb": 0.4924
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "7",
+     "targetName": "[APEX] zero_7",
+     "t0": 4767,
+     "t1": 4781,
+     "n": 2,
+     "pcts": [
+      279,
+      283
+     ],
+     "first": 0.2734,
+     "comb": 0.4749
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "4",
+     "targetName": "Salchichador",
+     "t0": 2156,
+     "t1": 2156,
+     "n": 5,
+     "pcts": [
+      122,
+      122,
+      122,
+      122,
+      122
+     ],
+     "first": 0.1201,
+     "comb": 0.4726
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 903,
+     "t1": 903,
+     "n": 4,
+     "pcts": [
+      58,
+      194,
+      166,
+      168
+     ],
+     "first": 0.0576,
+     "comb": 0.4669
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "271",
+     "targetName": "bot#271",
+     "t0": 784,
+     "t1": 784,
+     "n": 3,
+     "pcts": [
+      193,
+      193,
+      189
+     ],
+     "first": 0.1895,
+     "comb": 0.4649
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 735,
+     "t1": 735,
+     "n": 3,
+     "pcts": [
+      187,
+      195,
+      180
+     ],
+     "first": 0.1836,
+     "comb": 0.4565
+    },
+    {
+     "me": 41,
+     "name": "Kilwa",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1582,
+     "t1": 1582,
+     "n": 5,
+     "pcts": [
+      73,
+      47,
+      145,
+      151,
+      160
+     ],
+     "first": 0.0723,
+     "comb": 0.4559
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1442,
+     "t1": 1442,
+     "n": 7,
+     "pcts": [
+      47,
+      47,
+      97,
+      118,
+      102,
+      114,
+      54
+     ],
+     "first": 0.0469,
+     "comb": 0.4515
+    },
+    {
+     "me": 23,
+     "name": "Fischer",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 847,
+     "t1": 847,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      387
+     ],
+     "first": 0.0469,
+     "comb": 0.4358
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "374",
+     "targetName": "bot#374",
+     "t0": 1197,
+     "t1": 1197,
+     "n": 3,
+     "pcts": [
+      151,
+      170,
+      166
+     ],
+     "first": 0.1484,
+     "comb": 0.4063
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1022,
+     "t1": 1022,
+     "n": 4,
+     "pcts": [
+      47,
+      116,
+      175,
+      147
+     ],
+     "first": 0.0469,
+     "comb": 0.4019
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "8",
+     "targetName": "[APEX] leo_tx",
+     "t0": 2254,
+     "t1": 2261,
+     "n": 4,
+     "pcts": [
+      122,
+      122,
+      122,
+      122
+     ],
+     "first": 0.1201,
+     "comb": 0.4006
+    },
+    {
+     "me": 40,
+     "name": "Ireland",
+     "kind": "attack",
+     "target": "407",
+     "targetName": "bot#407",
+     "t0": 1253,
+     "t1": 1253,
+     "n": 4,
+     "pcts": [
+      86,
+      123,
+      173,
+      90
+     ],
+     "first": 0.085,
+     "comb": 0.3917
+    },
+    {
+     "me": 35,
+     "name": "Tal",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1162,
+     "t1": 1162,
+     "n": 8,
+     "pcts": [
+      47,
+      50,
+      54,
+      47,
+      47,
+      47,
+      99,
+      92
+     ],
+     "first": 0.0469,
+     "comb": 0.3912
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "donate",
+     "target": "30",
+     "targetName": "Broly",
+     "t0": 2156,
+     "t1": 2156,
+     "n": 3,
+     "pcts": [
+      155,
+      155,
+      155
+     ],
+     "first": 0.1523,
+     "comb": 0.3909
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 847,
+     "t1": 847,
+     "n": 2,
+     "pcts": [
+      208,
+      227
+     ],
+     "first": 0.2041,
+     "comb": 0.3813
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "296",
+     "targetName": "bot#296",
+     "t0": 938,
+     "t1": 938,
+     "n": 2,
+     "pcts": [
+      208,
+      223
+     ],
+     "first": 0.2041,
+     "comb": 0.3782
+    },
+    {
+     "me": 28,
+     "name": "Bulgar",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1190,
+     "t1": 1190,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      77,
+      82,
+      47,
+      49
+     ],
+     "first": 0.0469,
+     "comb": 0.3648
+    },
+    {
+     "me": 38,
+     "name": "Zhuge Liang",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1512,
+     "t1": 1512,
+     "n": 8,
+     "pcts": [
+      92,
+      47,
+      47,
+      47,
+      47,
+      65,
+      47,
+      47
+     ],
+     "first": 0.0908,
+     "comb": 0.3623
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "attack",
+     "target": "329",
+     "targetName": "bot#329",
+     "t0": 1022,
+     "t1": 1022,
+     "n": 2,
+     "pcts": [
+      265,
+      138
+     ],
+     "first": 0.2598,
+     "comb": 0.3602
+    },
+    {
+     "me": 30,
+     "name": "Broly",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 959,
+     "t1": 966,
+     "n": 5,
+     "pcts": [
+      47,
+      105,
+      47,
+      47,
+      173
+     ],
+     "first": 0.0469,
+     "comb": 0.3557
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "457",
+     "targetName": "bot#457",
+     "t0": 1064,
+     "t1": 1064,
+     "n": 2,
+     "pcts": [
+      201,
+      200
+     ],
+     "first": 0.1973,
+     "comb": 0.3548
+    },
+    {
+     "me": 29,
+     "name": "British Empire",
+     "kind": "attack",
+     "target": "294",
+     "targetName": "bot#294",
+     "t0": 861,
+     "t1": 861,
+     "n": 2,
+     "pcts": [
+      212,
+      182
+     ],
+     "first": 0.208,
+     "comb": 0.3495
+    },
+    {
+     "me": 29,
+     "name": "British Empire",
+     "kind": "attack",
+     "target": "499",
+     "targetName": "bot#499",
+     "t0": 1050,
+     "t1": 1050,
+     "n": 2,
+     "pcts": [
+      198,
+      195
+     ],
+     "first": 0.1943,
+     "comb": 0.3485
+    },
+    {
+     "me": 24,
+     "name": "Levi",
+     "kind": "attack",
+     "target": "301",
+     "targetName": "bot#301",
+     "t0": 749,
+     "t1": 749,
+     "n": 3,
+     "pcts": [
+      108,
+      152,
+      128
+     ],
+     "first": 0.1064,
+     "comb": 0.3357
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "309",
+     "targetName": "bot#309",
+     "t0": 756,
+     "t1": 770,
+     "n": 2,
+     "pcts": [
+      173,
+      186
+     ],
+     "first": 0.1699,
+     "comb": 0.3215
+    },
+    {
+     "me": 26,
+     "name": "Jokic",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1981,
+     "t1": 1981,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 2184,
+     "t1": 2184,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 2002,
+     "t1": 2002,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 26,
+     "name": "Jokic",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1141,
+     "t1": 1141,
+     "n": 5,
+     "pcts": [
+      87,
+      87,
+      47,
+      66,
+      68
+     ],
+     "first": 0.0859,
+     "comb": 0.3059
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "69",
+     "targetName": "bot#69",
+     "t0": 1470,
+     "t1": 1470,
+     "n": 7,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      53,
+      55,
+      58
+     ],
+     "first": 0.0469,
+     "comb": 0.3036
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "attack",
+     "target": "97",
+     "targetName": "bot#97",
+     "t0": 672,
+     "t1": 679,
+     "n": 2,
+     "pcts": [
+      155,
+      161
+     ],
+     "first": 0.1523,
+     "comb": 0.2864
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 2100,
+     "t1": 2100,
+     "n": 7,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.2854
+    },
+    {
+     "me": 23,
+     "name": "Fischer",
+     "kind": "attack",
+     "target": "257",
+     "targetName": "bot#257",
+     "t0": 1036,
+     "t1": 1036,
+     "n": 2,
+     "pcts": [
+      152,
+      161
+     ],
+     "first": 0.1494,
+     "comb": 0.284
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "225",
+     "targetName": "bot#225",
+     "t0": 756,
+     "t1": 756,
+     "n": 2,
+     "pcts": [
+      154,
+      158
+     ],
+     "first": 0.1514,
+     "comb": 0.2831
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "255",
+     "targetName": "bot#255",
+     "t0": 805,
+     "t1": 805,
+     "n": 2,
+     "pcts": [
+      164,
+      146
+     ],
+     "first": 0.1611,
+     "comb": 0.2816
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "236",
+     "targetName": "bot#236",
+     "t0": 672,
+     "t1": 686,
+     "n": 2,
+     "pcts": [
+      144,
+      151
+     ],
+     "first": 0.1416,
+     "comb": 0.269
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1995,
+     "t1": 1995,
+     "n": 6,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.2503
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 840,
+     "t1": 840,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      164
+     ],
+     "first": 0.0469,
+     "comb": 0.2379
+    },
+    {
+     "me": 41,
+     "name": "Kilwa",
+     "kind": "attack",
+     "target": "429",
+     "targetName": "bot#429",
+     "t0": 1372,
+     "t1": 1372,
+     "n": 2,
+     "pcts": [
+      129,
+      128
+     ],
+     "first": 0.127,
+     "comb": 0.2369
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "463",
+     "targetName": "bot#463",
+     "t0": 1064,
+     "t1": 1064,
+     "n": 2,
+     "pcts": [
+      111,
+      135
+     ],
+     "first": 0.1094,
+     "comb": 0.2277
+    },
+    {
+     "me": 26,
+     "name": "Jokic",
+     "kind": "attack",
+     "target": "306",
+     "targetName": "bot#306",
+     "t0": 924,
+     "t1": 924,
+     "n": 2,
+     "pcts": [
+      127,
+      109
+     ],
+     "first": 0.125,
+     "comb": 0.219
+    },
+    {
+     "me": 40,
+     "name": "Ireland",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1253,
+     "t1": 1253,
+     "n": 2,
+     "pcts": [
+      183,
+      47
+     ],
+     "first": 0.1797,
+     "comb": 0.2181
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1267,
+     "t1": 1274,
+     "n": 3,
+     "pcts": [
+      47,
+      50,
+      108
+     ],
+     "first": 0.0469,
+     "comb": 0.1907
+    },
+    {
+     "me": 24,
+     "name": "Levi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 882,
+     "t1": 882,
+     "n": 2,
+     "pcts": [
+      82,
+      116
+     ],
+     "first": 0.0811,
+     "comb": 0.1861
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 2093,
+     "t1": 2093,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1747
+    },
+    {
+     "me": 35,
+     "name": "Tal",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 889,
+     "t1": 889,
+     "n": 2,
+     "pcts": [
+      106,
+      69
+     ],
+     "first": 0.1045,
+     "comb": 0.1657
+    },
+    {
+     "me": 23,
+     "name": "Fischer",
+     "kind": "attack",
+     "target": "201",
+     "targetName": "bot#201",
+     "t0": 742,
+     "t1": 742,
+     "n": 2,
+     "pcts": [
+      88,
+      83
+     ],
+     "first": 0.0869,
+     "comb": 0.1618
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1092,
+     "t1": 1092,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      72
+     ],
+     "first": 0.0469,
+     "comb": 0.1563
+    },
+    {
+     "me": 26,
+     "name": "Jokic",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1463,
+     "t1": 1463,
+     "n": 2,
+     "pcts": [
+      65,
+      88
+     ],
+     "first": 0.0645,
+     "comb": 0.1458
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "467",
+     "targetName": "bot#467",
+     "t0": 945,
+     "t1": 945,
+     "n": 2,
+     "pcts": [
+      84,
+      69
+     ],
+     "first": 0.083,
+     "comb": 0.1457
+    },
+    {
+     "me": 24,
+     "name": "Levi",
+     "kind": "attack",
+     "target": "476",
+     "targetName": "bot#476",
+     "t0": 882,
+     "t1": 882,
+     "n": 2,
+     "pcts": [
+      82,
+      70
+     ],
+     "first": 0.0811,
+     "comb": 0.1448
+    },
+    {
+     "me": 40,
+     "name": "Ireland",
+     "kind": "attack",
+     "target": "269",
+     "targetName": "bot#269",
+     "t0": 924,
+     "t1": 924,
+     "n": 2,
+     "pcts": [
+      72,
+      79
+     ],
+     "first": 0.0713,
+     "comb": 0.1438
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1064,
+     "t1": 1064,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 861,
+     "t1": 861,
+     "n": 2,
+     "pcts": [
+      66,
+      61
+     ],
+     "first": 0.0654,
+     "comb": 0.122
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "7",
+     "targetName": "[APEX] zero_7",
+     "t0": 3997,
+     "t1": 4004,
+     "n": 2,
+     "pcts": [
+      57,
+      69
+     ],
+     "first": 0.0566,
+     "comb": 0.1211
+    },
+    {
+     "me": 30,
+     "name": "Broly",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 819,
+     "t1": 819,
+     "n": 2,
+     "pcts": [
+      47,
+      76
+     ],
+     "first": 0.0469,
+     "comb": 0.1185
+    },
+    {
+     "me": 26,
+     "name": "Jokic",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1827,
+     "t1": 1827,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 4970,
+     "t1": 4984,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 41,
+     "name": "Kilwa",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 4795,
+     "t1": 4802,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 30,
+     "name": "Broly",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1197,
+     "t1": 1197,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1470,
+     "t1": 1470,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1827,
+     "t1": 1827,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 3206,
+     "t1": 3213,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 945,
+     "t1": 945,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 4207,
+     "t1": 4214,
+     "n": 2,
+     "pcts": [
+      46,
+      47
+     ],
+     "first": 0.0459,
+     "comb": 0.0906
+    }
+   ]
+  },
+  "sameTick": {
+   "gap": 0,
+   "byKind": {
+    "attack": {
+     "cmds": 658,
+     "clusters": 371,
+     "dupClusters": 83,
+     "dupCmds": 370,
+     "extraCmds": 287,
+     "sizes": {
+      "1": 288,
+      "8": 12,
+      "2": 30,
+      "5": 6,
+      "6": 5,
+      "9": 7,
+      "3": 13,
+      "7": 4,
+      "4": 6
+     }
+    },
+    "boat": {
+     "cmds": 14,
+     "clusters": 14,
+     "dupClusters": 0,
+     "dupCmds": 0,
+     "extraCmds": 0,
+     "sizes": {
+      "1": 14
+     }
+    },
+    "donate": {
+     "cmds": 3,
+     "clusters": 1,
+     "dupClusters": 1,
+     "dupCmds": 3,
+     "extraCmds": 2,
+     "sizes": {
+      "3": 1
+     }
+    }
+   },
+   "dups": [
+    {
+     "me": 38,
+     "name": "Zhuge Liang",
+     "kind": "attack",
+     "target": "21",
+     "targetName": "[OG]cyankwastaken",
+     "t0": 1834,
+     "t1": 1834,
+     "n": 9,
+     "pcts": [
+      396,
+      395,
+      395,
+      397,
+      416,
+      415,
+      414,
+      411,
+      409
+     ],
+     "first": 0.3877,
+     "comb": 0.9894
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "attack",
+     "target": "2",
+     "targetName": "[CORGI] Mr Bass",
+     "t0": 2072,
+     "t1": 2072,
+     "n": 9,
+     "pcts": [
+      309,
+      309,
+      314,
+      315,
+      315,
+      316,
+      316,
+      317,
+      317
+     ],
+     "first": 0.3027,
+     "comb": 0.9635
+    },
+    {
+     "me": 26,
+     "name": "Jokic",
+     "kind": "attack",
+     "target": "15",
+     "targetName": "Ill full send",
+     "t0": 2044,
+     "t1": 2044,
+     "n": 9,
+     "pcts": [
+      122,
+      122,
+      295,
+      296,
+      297,
+      312,
+      266,
+      268,
+      268
+     ],
+     "first": 0.1201,
+     "comb": 0.9227
+    },
+    {
+     "me": 29,
+     "name": "British Empire",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1414,
+     "t1": 1414,
+     "n": 9,
+     "pcts": [
+      83,
+      239,
+      245,
+      198,
+      47,
+      254,
+      247,
+      140,
+      73
+     ],
+     "first": 0.082,
+     "comb": 0.8133
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "4",
+     "targetName": "Salchichador",
+     "t0": 2051,
+     "t1": 2051,
+     "n": 6,
+     "pcts": [
+      237,
+      238,
+      240,
+      241,
+      242,
+      243
+     ],
+     "first": 0.2324,
+     "comb": 0.8004
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "attack",
+     "target": "1",
+     "targetName": "[RU]: Bashkort Yola",
+     "t0": 2156,
+     "t1": 2156,
+     "n": 3,
+     "pcts": [
+      414,
+      392,
+      295
+     ],
+     "first": 0.4053,
+     "comb": 0.7395
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "164",
+     "targetName": "bot#164",
+     "t0": 1197,
+     "t1": 1197,
+     "n": 5,
+     "pcts": [
+      99,
+      258,
+      285,
+      316,
+      216
+     ],
+     "first": 0.0977,
+     "comb": 0.7356
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "4",
+     "targetName": "Salchichador",
+     "t0": 2093,
+     "t1": 2093,
+     "n": 4,
+     "pcts": [
+      230,
+      276,
+      289,
+      305
+     ],
+     "first": 0.2256,
+     "comb": 0.7161
+    },
+    {
+     "me": 41,
+     "name": "Kilwa",
+     "kind": "attack",
+     "target": "285",
+     "targetName": "bot#285",
+     "t0": 994,
+     "t1": 994,
+     "n": 5,
+     "pcts": [
+      208,
+      230,
+      223,
+      202,
+      199
+     ],
+     "first": 0.2041,
+     "comb": 0.6893
+    },
+    {
+     "me": 29,
+     "name": "British Empire",
+     "kind": "attack",
+     "target": "85",
+     "targetName": "bot#85",
+     "t0": 147,
+     "t1": 147,
+     "n": 5,
+     "pcts": [
+      225,
+      230,
+      243,
+      161,
+      178
+     ],
+     "first": 0.2207,
+     "comb": 0.6807
+    },
+    {
+     "me": 24,
+     "name": "Levi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1589,
+     "t1": 1589,
+     "n": 8,
+     "pcts": [
+      50,
+      50,
+      118,
+      144,
+      143,
+      144,
+      137,
+      220
+     ],
+     "first": 0.0498,
+     "comb": 0.6572
+    },
+    {
+     "me": 41,
+     "name": "Kilwa",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1176,
+     "t1": 1176,
+     "n": 7,
+     "pcts": [
+      182,
+      209,
+      78,
+      73,
+      63,
+      142,
+      243
+     ],
+     "first": 0.1787,
+     "comb": 0.6566
+    },
+    {
+     "me": 41,
+     "name": "Kilwa",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1750,
+     "t1": 1750,
+     "n": 6,
+     "pcts": [
+      88,
+      96,
+      103,
+      112,
+      155,
+      356
+     ],
+     "first": 0.0869,
+     "comb": 0.6352
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1652,
+     "t1": 1652,
+     "n": 8,
+     "pcts": [
+      104,
+      111,
+      100,
+      47,
+      207,
+      131,
+      137,
+      115
+     ],
+     "first": 0.1025,
+     "comb": 0.6343
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1659,
+     "t1": 1659,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      101,
+      55,
+      59,
+      61,
+      154,
+      163,
+      167
+     ],
+     "first": 0.0469,
+     "comb": 0.5926
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1183,
+     "t1": 1183,
+     "n": 8,
+     "pcts": [
+      47,
+      196,
+      120,
+      47,
+      47,
+      119,
+      134,
+      124
+     ],
+     "first": 0.0469,
+     "comb": 0.5851
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "7",
+     "targetName": "[APEX] zero_7",
+     "t0": 2289,
+     "t1": 2289,
+     "n": 3,
+     "pcts": [
+      255,
+      263,
+      258
+     ],
+     "first": 0.25,
+     "comb": 0.5842
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1890,
+     "t1": 1890,
+     "n": 8,
+     "pcts": [
+      117,
+      119,
+      105,
+      123,
+      68,
+      70,
+      68,
+      159
+     ],
+     "first": 0.1152,
+     "comb": 0.5797
+    },
+    {
+     "me": 41,
+     "name": "Kilwa",
+     "kind": "attack",
+     "target": "33",
+     "targetName": "Sigmalambo empire",
+     "t0": 1582,
+     "t1": 1582,
+     "n": 3,
+     "pcts": [
+      245,
+      248,
+      257
+     ],
+     "first": 0.2402,
+     "comb": 0.5699
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "4",
+     "targetName": "Salchichador",
+     "t0": 1995,
+     "t1": 1995,
+     "n": 3,
+     "pcts": [
+      276,
+      243,
+      211
+     ],
+     "first": 0.2705,
+     "comb": 0.5594
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "19",
+     "targetName": "ZxZxZ",
+     "t0": 2100,
+     "t1": 2100,
+     "n": 2,
+     "pcts": [
+      360,
+      306
+     ],
+     "first": 0.3525,
+     "comb": 0.5467
+    },
+    {
+     "me": 29,
+     "name": "British Empire",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1050,
+     "t1": 1050,
+     "n": 6,
+     "pcts": [
+      48,
+      128,
+      90,
+      157,
+      138,
+      129
+     ],
+     "first": 0.0479,
+     "comb": 0.5162
+    },
+    {
+     "me": 41,
+     "name": "Kilwa",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1372,
+     "t1": 1372,
+     "n": 6,
+     "pcts": [
+      47,
+      49,
+      47,
+      241,
+      146,
+      142
+     ],
+     "first": 0.0469,
+     "comb": 0.5138
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1358,
+     "t1": 1358,
+     "n": 9,
+     "pcts": [
+      47,
+      216,
+      47,
+      47,
+      47,
+      47,
+      82,
+      67,
+      64
+     ],
+     "first": 0.0469,
+     "comb": 0.5019
+    },
+    {
+     "me": 23,
+     "name": "Fischer",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1386,
+     "t1": 1386,
+     "n": 8,
+     "pcts": [
+      143,
+      83,
+      53,
+      47,
+      72,
+      69,
+      69,
+      131
+     ],
+     "first": 0.1406,
+     "comb": 0.4999
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "attack",
+     "target": "2",
+     "targetName": "[CORGI] Mr Bass",
+     "t0": 2156,
+     "t1": 2156,
+     "n": 2,
+     "pcts": [
+      297,
+      298
+     ],
+     "first": 0.291,
+     "comb": 0.498
+    },
+    {
+     "me": 24,
+     "name": "Levi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1127,
+     "t1": 1127,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      63,
+      47,
+      169,
+      178
+     ],
+     "first": 0.0469,
+     "comb": 0.4925
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1526,
+     "t1": 1526,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      110,
+      120,
+      58,
+      66,
+      68,
+      73,
+      68
+     ],
+     "first": 0.0469,
+     "comb": 0.4924
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "4",
+     "targetName": "Salchichador",
+     "t0": 2156,
+     "t1": 2156,
+     "n": 5,
+     "pcts": [
+      122,
+      122,
+      122,
+      122,
+      122
+     ],
+     "first": 0.1201,
+     "comb": 0.4726
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 903,
+     "t1": 903,
+     "n": 4,
+     "pcts": [
+      58,
+      194,
+      166,
+      168
+     ],
+     "first": 0.0576,
+     "comb": 0.4669
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "271",
+     "targetName": "bot#271",
+     "t0": 784,
+     "t1": 784,
+     "n": 3,
+     "pcts": [
+      193,
+      193,
+      189
+     ],
+     "first": 0.1895,
+     "comb": 0.4649
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 735,
+     "t1": 735,
+     "n": 3,
+     "pcts": [
+      187,
+      195,
+      180
+     ],
+     "first": 0.1836,
+     "comb": 0.4565
+    },
+    {
+     "me": 41,
+     "name": "Kilwa",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1582,
+     "t1": 1582,
+     "n": 5,
+     "pcts": [
+      73,
+      47,
+      145,
+      151,
+      160
+     ],
+     "first": 0.0723,
+     "comb": 0.4559
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1442,
+     "t1": 1442,
+     "n": 7,
+     "pcts": [
+      47,
+      47,
+      97,
+      118,
+      102,
+      114,
+      54
+     ],
+     "first": 0.0469,
+     "comb": 0.4515
+    },
+    {
+     "me": 23,
+     "name": "Fischer",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 847,
+     "t1": 847,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      387
+     ],
+     "first": 0.0469,
+     "comb": 0.4358
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "374",
+     "targetName": "bot#374",
+     "t0": 1197,
+     "t1": 1197,
+     "n": 3,
+     "pcts": [
+      151,
+      170,
+      166
+     ],
+     "first": 0.1484,
+     "comb": 0.4063
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1022,
+     "t1": 1022,
+     "n": 4,
+     "pcts": [
+      47,
+      116,
+      175,
+      147
+     ],
+     "first": 0.0469,
+     "comb": 0.4019
+    },
+    {
+     "me": 40,
+     "name": "Ireland",
+     "kind": "attack",
+     "target": "407",
+     "targetName": "bot#407",
+     "t0": 1253,
+     "t1": 1253,
+     "n": 4,
+     "pcts": [
+      86,
+      123,
+      173,
+      90
+     ],
+     "first": 0.085,
+     "comb": 0.3917
+    },
+    {
+     "me": 35,
+     "name": "Tal",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1162,
+     "t1": 1162,
+     "n": 8,
+     "pcts": [
+      47,
+      50,
+      54,
+      47,
+      47,
+      47,
+      99,
+      92
+     ],
+     "first": 0.0469,
+     "comb": 0.3912
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "donate",
+     "target": "30",
+     "targetName": "Broly",
+     "t0": 2156,
+     "t1": 2156,
+     "n": 3,
+     "pcts": [
+      155,
+      155,
+      155
+     ],
+     "first": 0.1523,
+     "comb": 0.3909
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 847,
+     "t1": 847,
+     "n": 2,
+     "pcts": [
+      208,
+      227
+     ],
+     "first": 0.2041,
+     "comb": 0.3813
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "296",
+     "targetName": "bot#296",
+     "t0": 938,
+     "t1": 938,
+     "n": 2,
+     "pcts": [
+      208,
+      223
+     ],
+     "first": 0.2041,
+     "comb": 0.3782
+    },
+    {
+     "me": 28,
+     "name": "Bulgar",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1190,
+     "t1": 1190,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      77,
+      82,
+      47,
+      49
+     ],
+     "first": 0.0469,
+     "comb": 0.3648
+    },
+    {
+     "me": 38,
+     "name": "Zhuge Liang",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1512,
+     "t1": 1512,
+     "n": 8,
+     "pcts": [
+      92,
+      47,
+      47,
+      47,
+      47,
+      65,
+      47,
+      47
+     ],
+     "first": 0.0908,
+     "comb": 0.3623
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "attack",
+     "target": "329",
+     "targetName": "bot#329",
+     "t0": 1022,
+     "t1": 1022,
+     "n": 2,
+     "pcts": [
+      265,
+      138
+     ],
+     "first": 0.2598,
+     "comb": 0.3602
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "457",
+     "targetName": "bot#457",
+     "t0": 1064,
+     "t1": 1064,
+     "n": 2,
+     "pcts": [
+      201,
+      200
+     ],
+     "first": 0.1973,
+     "comb": 0.3548
+    },
+    {
+     "me": 29,
+     "name": "British Empire",
+     "kind": "attack",
+     "target": "294",
+     "targetName": "bot#294",
+     "t0": 861,
+     "t1": 861,
+     "n": 2,
+     "pcts": [
+      212,
+      182
+     ],
+     "first": 0.208,
+     "comb": 0.3495
+    },
+    {
+     "me": 29,
+     "name": "British Empire",
+     "kind": "attack",
+     "target": "499",
+     "targetName": "bot#499",
+     "t0": 1050,
+     "t1": 1050,
+     "n": 2,
+     "pcts": [
+      198,
+      195
+     ],
+     "first": 0.1943,
+     "comb": 0.3485
+    },
+    {
+     "me": 24,
+     "name": "Levi",
+     "kind": "attack",
+     "target": "301",
+     "targetName": "bot#301",
+     "t0": 749,
+     "t1": 749,
+     "n": 3,
+     "pcts": [
+      108,
+      152,
+      128
+     ],
+     "first": 0.1064,
+     "comb": 0.3357
+    },
+    {
+     "me": 26,
+     "name": "Jokic",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1981,
+     "t1": 1981,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 2184,
+     "t1": 2184,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 2002,
+     "t1": 2002,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "8",
+     "targetName": "[APEX] leo_tx",
+     "t0": 2254,
+     "t1": 2254,
+     "n": 3,
+     "pcts": [
+      122,
+      122,
+      122
+     ],
+     "first": 0.1201,
+     "comb": 0.3188
+    },
+    {
+     "me": 26,
+     "name": "Jokic",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1141,
+     "t1": 1141,
+     "n": 5,
+     "pcts": [
+      87,
+      87,
+      47,
+      66,
+      68
+     ],
+     "first": 0.0859,
+     "comb": 0.3059
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "69",
+     "targetName": "bot#69",
+     "t0": 1470,
+     "t1": 1470,
+     "n": 7,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      53,
+      55,
+      58
+     ],
+     "first": 0.0469,
+     "comb": 0.3036
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 2100,
+     "t1": 2100,
+     "n": 7,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.2854
+    },
+    {
+     "me": 23,
+     "name": "Fischer",
+     "kind": "attack",
+     "target": "257",
+     "targetName": "bot#257",
+     "t0": 1036,
+     "t1": 1036,
+     "n": 2,
+     "pcts": [
+      152,
+      161
+     ],
+     "first": 0.1494,
+     "comb": 0.284
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "225",
+     "targetName": "bot#225",
+     "t0": 756,
+     "t1": 756,
+     "n": 2,
+     "pcts": [
+      154,
+      158
+     ],
+     "first": 0.1514,
+     "comb": 0.2831
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "255",
+     "targetName": "bot#255",
+     "t0": 805,
+     "t1": 805,
+     "n": 2,
+     "pcts": [
+      164,
+      146
+     ],
+     "first": 0.1611,
+     "comb": 0.2816
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1995,
+     "t1": 1995,
+     "n": 6,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.2503
+    },
+    {
+     "me": 27,
+     "name": "Pagan",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 840,
+     "t1": 840,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      164
+     ],
+     "first": 0.0469,
+     "comb": 0.2379
+    },
+    {
+     "me": 41,
+     "name": "Kilwa",
+     "kind": "attack",
+     "target": "429",
+     "targetName": "bot#429",
+     "t0": 1372,
+     "t1": 1372,
+     "n": 2,
+     "pcts": [
+      129,
+      128
+     ],
+     "first": 0.127,
+     "comb": 0.2369
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "463",
+     "targetName": "bot#463",
+     "t0": 1064,
+     "t1": 1064,
+     "n": 2,
+     "pcts": [
+      111,
+      135
+     ],
+     "first": 0.1094,
+     "comb": 0.2277
+    },
+    {
+     "me": 30,
+     "name": "Broly",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 959,
+     "t1": 959,
+     "n": 4,
+     "pcts": [
+      47,
+      105,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.2238
+    },
+    {
+     "me": 26,
+     "name": "Jokic",
+     "kind": "attack",
+     "target": "306",
+     "targetName": "bot#306",
+     "t0": 924,
+     "t1": 924,
+     "n": 2,
+     "pcts": [
+      127,
+      109
+     ],
+     "first": 0.125,
+     "comb": 0.219
+    },
+    {
+     "me": 40,
+     "name": "Ireland",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1253,
+     "t1": 1253,
+     "n": 2,
+     "pcts": [
+      183,
+      47
+     ],
+     "first": 0.1797,
+     "comb": 0.2181
+    },
+    {
+     "me": 24,
+     "name": "Levi",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 882,
+     "t1": 882,
+     "n": 2,
+     "pcts": [
+      82,
+      116
+     ],
+     "first": 0.0811,
+     "comb": 0.1861
+    },
+    {
+     "me": 48,
+     "name": "LightYagami",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 2093,
+     "t1": 2093,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1747
+    },
+    {
+     "me": 35,
+     "name": "Tal",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 889,
+     "t1": 889,
+     "n": 2,
+     "pcts": [
+      106,
+      69
+     ],
+     "first": 0.1045,
+     "comb": 0.1657
+    },
+    {
+     "me": 23,
+     "name": "Fischer",
+     "kind": "attack",
+     "target": "201",
+     "targetName": "bot#201",
+     "t0": 742,
+     "t1": 742,
+     "n": 2,
+     "pcts": [
+      88,
+      83
+     ],
+     "first": 0.0869,
+     "comb": 0.1618
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1092,
+     "t1": 1092,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      72
+     ],
+     "first": 0.0469,
+     "comb": 0.1563
+    },
+    {
+     "me": 26,
+     "name": "Jokic",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1463,
+     "t1": 1463,
+     "n": 2,
+     "pcts": [
+      65,
+      88
+     ],
+     "first": 0.0645,
+     "comb": 0.1458
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "467",
+     "targetName": "bot#467",
+     "t0": 945,
+     "t1": 945,
+     "n": 2,
+     "pcts": [
+      84,
+      69
+     ],
+     "first": 0.083,
+     "comb": 0.1457
+    },
+    {
+     "me": 24,
+     "name": "Levi",
+     "kind": "attack",
+     "target": "476",
+     "targetName": "bot#476",
+     "t0": 882,
+     "t1": 882,
+     "n": 2,
+     "pcts": [
+      82,
+      70
+     ],
+     "first": 0.0811,
+     "comb": 0.1448
+    },
+    {
+     "me": 40,
+     "name": "Ireland",
+     "kind": "attack",
+     "target": "269",
+     "targetName": "bot#269",
+     "t0": 924,
+     "t1": 924,
+     "n": 2,
+     "pcts": [
+      72,
+      79
+     ],
+     "first": 0.0713,
+     "comb": 0.1438
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1064,
+     "t1": 1064,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 45,
+     "name": "Cyrus",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 861,
+     "t1": 861,
+     "n": 2,
+     "pcts": [
+      66,
+      61
+     ],
+     "first": 0.0654,
+     "comb": 0.122
+    },
+    {
+     "me": 30,
+     "name": "Broly",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 819,
+     "t1": 819,
+     "n": 2,
+     "pcts": [
+      47,
+      76
+     ],
+     "first": 0.0469,
+     "comb": 0.1185
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1267,
+     "t1": 1267,
+     "n": 2,
+     "pcts": [
+      47,
+      50
+     ],
+     "first": 0.0469,
+     "comb": 0.0943
+    },
+    {
+     "me": 26,
+     "name": "Jokic",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1827,
+     "t1": 1827,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 30,
+     "name": "Broly",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1197,
+     "t1": 1197,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1470,
+     "t1": 1470,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 31,
+     "name": "East India Co",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1827,
+     "t1": 1827,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 22,
+     "name": "Sanada",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 945,
+     "t1": 945,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    }
+   ]
+  }
+ }
+}

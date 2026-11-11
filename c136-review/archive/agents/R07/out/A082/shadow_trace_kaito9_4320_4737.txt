@@ -1,0 +1,422 @@
+# A082 kaito9 影子决策明细 t=4320~4737（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 67 拍（t=4320~4730）
+#   过了软上限，但首选目标判为 crowdedHard（余额 < crowdedHardCap×100×领土 不打）: 13 拍（t=4340~4405）；可用兵 60628~109595，一条指令下限(20%余额) 130584~140493，比值 46%~78%
+#   捐兵: 1 拍（t=4400~4400）；可用兵 109595~109595，一条指令下限(20%余额) 140493~140493，比值 78%~78%
+#   出手打人/bot: 2 拍（t=4410~4415）；可用兵 116259~116259，一条指令下限(20%余额) 141842~141842，比值 82%~82%
+#   └ 「出手打人/bot」里：2 条对人/bot 的出兵共约 170376 兵；其中超过软上限（over=1）时发的 2 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 2 条约 170376 兵，c/worth = 2.94~2.94
+t=4320 kaito9 B=638284 L=6496 d=98.3 nb=3 neut=0 cmds=38 noFull=1 shQ=159571 | m=0.900 worth=88.4 cheap=8.8 over=0 dMedOther=111.3 safe(-1)=571648
+    → KUKU#18[T6] terr=31484 bal=4069139 dq=129.2 cnt=26 | c=604.9 rankC=877.2 need=7299906 tD=1.16 人 pulse crowdedHard | safe=571648 keep=Inf avail=-Inf chunkB=127657 pulseB=76594 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22296 bal=3288638 dq=147.5 cnt=135 | c=681.6 rankC=988.3 need=5894989 tD=1.33 人 pulse crowdedHard | safe=571648 keep=Inf avail=-Inf chunkB=127657 pulseB=76594 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4025 bal=590094 dq=146.6 cnt=97 | c=682.1 rankC=989.1 need=1057850 tD=1.32 人 pulse crowdedHard | safe=571648 keep=Inf avail=-Inf chunkB=127657 pulseB=76594 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4325 kaito9 B=638284 L=6496 d=98.3 nb=3 neut=0 cmds=38 noFull=1 shQ=159571 | m=0.900 worth=88.4 cheap=8.8 over=0 dMedOther=110.6 safe(-1)=571648
+    → KUKU#18[T6] terr=31499 bal=4069139 dq=129.2 cnt=26 | c=604.6 rankC=876.7 need=7300065 tD=1.17 人 pulse crowdedHard | safe=571648 keep=Inf avail=-Inf chunkB=127657 pulseB=76594 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22296 bal=3288638 dq=147.5 cnt=135 | c=681.6 rankC=988.3 need=5894989 tD=1.33 人 pulse crowdedHard | safe=571648 keep=Inf avail=-Inf chunkB=127657 pulseB=76594 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4025 bal=590094 dq=146.6 cnt=97 | c=682.1 rankC=989.1 need=1057850 tD=1.33 人 pulse crowdedHard | safe=571648 keep=Inf avail=-Inf chunkB=127657 pulseB=76594 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4330 kaito9 B=645560 L=6496 d=99.4 nb=3 neut=0 cmds=38 noFull=1 shQ=161390 | m=0.900 worth=89.4 cheap=8.8 over=0 dMedOther=110.6 safe(-1)=571648
+    → KUKU#18[T6] terr=31516 bal=4091926 dq=129.8 cnt=26 | c=607.7 rankC=881.2 need=7340569 tD=1.17 人 pulse crowdedHard | safe=571648 keep=Inf avail=-Inf chunkB=129112 pulseB=77467 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22296 bal=3290940 dq=147.6 cnt=135 | c=682.1 rankC=989.0 need=5899092 tD=1.33 人 pulse crowdedHard | safe=571648 keep=Inf avail=-Inf chunkB=129112 pulseB=77467 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=4025 bal=590566 dq=146.7 cnt=97 | c=682.7 rankC=989.9 need=1058692 tD=1.33 人 pulse crowdedHard | safe=571648 keep=Inf avail=-Inf chunkB=129112 pulseB=77467 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4335 kaito9 B=645560 L=6496 d=99.4 nb=3 neut=0 cmds=38 noFull=1 shQ=161390 | m=0.900 worth=89.4 cheap=8.8 over=0 dMedOther=107.1 safe(-1)=571648
+    → DV2 [Normal]#11[T7] terr=4025 bal=489640 dq=121.6 cnt=97 | c=293.5 rankC=205.5 need=878796 tD=1.14 人 pulse crowdedHard | safe=571648 keep=Inf avail=-Inf chunkB=129112 pulseB=77467 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=31530 bal=4091926 dq=129.8 cnt=26 | c=607.4 rankC=880.8 need=7340681 tD=1.21 人 pulse crowdedHard | safe=571648 keep=Inf avail=-Inf chunkB=129112 pulseB=77467 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22296 bal=3290940 dq=147.6 cnt=135 | c=682.1 rankC=989.0 need=5899092 tD=1.38 人 pulse crowdedHard | safe=571648 keep=Inf avail=-Inf chunkB=129112 pulseB=77467 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4340 kaito9 B=652919 L=6496 d=100.5 nb=3 neut=0 cmds=38 noFull=1 shQ=163229 | m=0.900 worth=90.5 cheap=8.8 over=1 dMedOther=108.1 safe(-1)=571648
+    → DV2 [Normal]#11[T7] terr=4025 bal=492773 dq=122.4 cnt=97 | c=295.4 rankC=206.8 need=884381 tD=1.13 人 pulse crowdedHard | safe=571648 keep=584640 avail=60628 chunkB=130584 pulseB=78350 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → KUKU#18[T6] terr=31561 bal=4114431 dq=130.4 cnt=26 | c=610.2 rankC=884.7 need=7380794 tD=1.21 人 pulse crowdedHard | safe=571648 keep=584640 avail=60628 chunkB=130584 pulseB=78350 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22296 bal=3293243 dq=147.7 cnt=135 | c=682.5 rankC=989.7 need=5903196 tD=1.37 人 pulse crowdedHard | safe=571648 keep=584640 avail=60628 chunkB=130584 pulseB=78350 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 本拍没有指令
+t=4345 kaito9 B=652919 L=6496 d=100.5 nb=3 neut=0 cmds=38 noFull=1 shQ=163229 | m=0.900 worth=90.5 cheap=8.8 over=1 dMedOther=107.9 safe(-1)=571648
+    → DV2 [Normal]#11[T7] terr=4153 bal=492773 dq=118.7 cnt=97 | c=286.5 rankC=200.5 need=884571 tD=1.10 人 pulse crowdedHard | safe=571648 keep=584640 avail=60628 chunkB=130584 pulseB=78350 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → KUKU#18[T6] terr=31588 bal=4114431 dq=130.3 cnt=26 | c=609.7 rankC=884.0 need=7380789 tD=1.21 人 pulse crowdedHard | safe=571648 keep=584640 avail=60628 chunkB=130584 pulseB=78350 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22296 bal=3293243 dq=147.7 cnt=135 | c=682.5 rankC=989.7 need=5903196 tD=1.37 人 pulse crowdedHard | safe=571648 keep=584640 avail=60628 chunkB=130584 pulseB=78350 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 本拍没有指令
+t=4350 kaito9 B=660296 L=6496 d=101.6 nb=3 neut=0 cmds=38 noFull=1 shQ=165044 | m=0.900 worth=91.5 cheap=8.8 over=1 dMedOther=108.8 safe(-1)=571648
+    → DV2 [Normal]#11[T7] terr=4221 bal=496474 dq=117.6 cnt=97 | c=217.4 rankC=108.7 need=891270 tD=1.08 人 pulse crowdedHard | safe=571648 keep=584640 avail=67919 chunkB=132059 pulseB=79236 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → KUKU#18[T6] terr=31634 bal=4136648 dq=130.8 cnt=26 | c=612.1 rankC=887.5 need=7420549 tD=1.20 人 pulse crowdedHard | safe=571648 keep=584640 avail=67919 chunkB=132059 pulseB=79236 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22296 bal=3295218 dq=147.8 cnt=135 | c=683.0 rankC=990.3 need=5906717 tD=1.36 人 pulse crowdedHard | safe=571648 keep=584640 avail=67919 chunkB=132059 pulseB=79236 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 本拍没有指令
+t=4355 kaito9 B=660296 L=6496 d=101.6 nb=3 neut=0 cmds=38 noFull=1 shQ=165074 | m=0.900 worth=91.5 cheap=8.8 over=1 dMedOther=108.6 safe(-1)=571648
+    → DV2 [Normal]#11[T7] terr=4159 bal=484810 dq=116.6 cnt=97 | c=212.1 rankC=106.1 need=867828 tD=1.07 人 pulse crowdedHard | safe=571648 keep=584640 avail=67919 chunkB=132059 pulseB=79236 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → KUKU#18[T6] terr=31670 bal=4136648 dq=130.6 cnt=26 | c=611.4 rankC=886.5 need=7420603 tD=1.20 人 pulse crowdedHard | safe=571648 keep=584640 avail=67919 chunkB=132059 pulseB=79236 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22296 bal=3295218 dq=147.8 cnt=135 | c=683.0 rankC=990.3 need=5906717 tD=1.36 人 pulse crowdedHard | safe=571648 keep=584640 avail=67919 chunkB=132059 pulseB=79236 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 本拍没有指令
+t=4360 kaito9 B=667625 L=6496 d=102.8 nb=3 neut=0 cmds=38 noFull=1 shQ=166876 | m=0.900 worth=92.5 cheap=8.8 over=1 dMedOther=109.6 safe(-1)=571648
+    → DV2 [Normal]#11[T7] terr=4099 bal=477317 dq=116.4 cnt=97 | c=217.0 rankC=108.5 need=852224 tD=1.06 人 pulse crowdedHard | safe=571648 keep=584640 avail=75162 chunkB=133525 pulseB=80115 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → KUKU#18[T6] terr=31706 bal=4158572 dq=131.2 cnt=26 | c=613.9 rankC=890.2 need=7459734 tD=1.20 人 pulse crowdedHard | safe=571648 keep=584640 avail=75162 chunkB=133525 pulseB=80115 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22296 bal=3297195 dq=147.9 cnt=135 | c=683.4 rankC=990.9 need=5910240 tD=1.35 人 pulse crowdedHard | safe=571648 keep=584640 avail=75162 chunkB=133525 pulseB=80115 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 本拍没有指令
+t=4365 kaito9 B=667625 L=6496 d=102.8 nb=3 neut=0 cmds=38 noFull=1 shQ=166906 | m=0.900 worth=92.5 cheap=8.8 over=1 dMedOther=109.3 safe(-1)=571648
+    → DV2 [Normal]#11[T7] terr=4099 bal=474497 dq=115.8 cnt=97 | c=542.5 rankC=786.6 need=847391 tD=1.06 人 pulse crowdedHard | safe=571648 keep=584640 avail=75162 chunkB=133525 pulseB=80115 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → KUKU#18[T6] terr=31732 bal=3935212 dq=124.0 cnt=26 | c=580.7 rankC=842.0 need=7061572 tD=1.14 人 pulse crowdedHard | safe=571648 keep=584640 avail=75162 chunkB=133525 pulseB=80115 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22296 bal=3297195 dq=147.9 cnt=135 | c=683.4 rankC=990.9 need=5910240 tD=1.35 人 pulse crowdedHard | safe=571648 keep=584640 avail=75162 chunkB=133525 pulseB=80115 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 本拍没有指令
+t=4370 kaito9 B=674835 L=6496 d=103.9 nb=3 neut=0 cmds=38 noFull=1 shQ=168677 | m=0.900 worth=93.5 cheap=8.8 over=1 dMedOther=110.4 safe(-1)=571648
+    → DV2 [Normal]#11[T7] terr=4099 bal=478150 dq=116.7 cnt=97 | c=546.6 rankC=792.5 need=854035 tD=1.06 人 pulse crowdedHard | safe=571648 keep=584640 avail=82287 chunkB=134967 pulseB=80980 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → KUKU#18[T6] terr=31771 bal=3962758 dq=124.7 cnt=26 | c=584.0 rankC=846.9 need=7110859 tD=1.13 人 pulse crowdedHard | safe=571648 keep=584640 avail=82287 chunkB=134967 pulseB=80980 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22296 bal=3299173 dq=148.0 cnt=135 | c=683.8 rankC=991.5 need=5913766 tD=1.34 人 pulse crowdedHard | safe=571648 keep=584640 avail=82287 chunkB=134967 pulseB=80980 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 本拍没有指令
+t=4375 kaito9 B=674835 L=6496 d=103.9 nb=3 neut=0 cmds=38 noFull=1 shQ=168708 | m=0.900 worth=93.5 cheap=8.8 over=1 dMedOther=110.4 safe(-1)=571648
+    → DV2 [Normal]#11[T7] terr=4099 bal=478150 dq=116.7 cnt=97 | c=376.9 rankC=376.9 need=854202 tD=1.06 人 pulse crowdedHard | safe=571648 keep=584640 avail=82287 chunkB=134967 pulseB=80980 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → KUKU#18[T6] terr=31797 bal=3962758 dq=124.6 cnt=26 | c=402.5 rankC=402.5 need=7110810 tD=1.13 人 pulse crowdedHard | safe=571648 keep=584640 avail=82287 chunkB=134967 pulseB=80980 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22296 bal=3299173 dq=148.0 cnt=135 | c=471.6 rankC=471.6 need=5913766 tD=1.34 人 pulse crowdedHard | safe=571648 keep=584640 avail=82287 chunkB=134967 pulseB=80980 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 本拍没有指令
+t=4380 kaito9 B=681988 L=6496 d=105.0 nb=3 neut=0 cmds=38 noFull=1 shQ=170464 | m=0.900 worth=94.5 cheap=8.8 over=1 dMedOther=110.5 safe(-1)=571648
+    → DV2 [Normal]#11[T7] terr=4099 bal=481736 dq=117.5 cnt=97 | c=379.6 rankC=379.6 need=860898 tD=1.06 人 pulse crowdedHard | safe=571648 keep=584640 avail=89356 chunkB=136398 pulseB=81839 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → KUKU#18[T6] terr=31833 bal=3990101 dq=125.3 cnt=26 | c=404.8 rankC=404.8 need=7159599 tD=1.13 人 pulse crowdedHard | safe=571648 keep=584640 avail=89356 chunkB=136398 pulseB=81839 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22296 bal=3301152 dq=148.1 cnt=135 | c=471.9 rankC=471.9 need=5917293 tD=1.34 人 pulse crowdedHard | safe=571648 keep=584640 avail=89356 chunkB=136398 pulseB=81839 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 本拍没有指令
+t=4385 kaito9 B=681988 L=6496 d=105.0 nb=3 neut=0 cmds=38 noFull=1 shQ=170497 | m=0.900 worth=94.5 cheap=8.8 over=1 dMedOther=108.9 safe(-1)=571648
+    → DV2 [Normal]#11[T7] terr=4099 bal=481736 dq=117.5 cnt=97 | c=379.6 rankC=379.6 need=861066 tD=1.08 人 pulse crowdedHard | safe=571648 keep=584640 avail=89356 chunkB=136398 pulseB=81839 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → KUKU#18[T6] terr=31857 bal=3990101 dq=125.3 cnt=26 | c=404.5 rankC=404.5 need=7159635 tD=1.15 人 pulse crowdedHard | safe=571648 keep=584640 avail=89356 chunkB=136398 pulseB=81839 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22296 bal=3301152 dq=148.1 cnt=135 | c=471.9 rankC=471.9 need=5917293 tD=1.36 人 pulse crowdedHard | safe=571648 keep=584640 avail=89356 chunkB=136398 pulseB=81839 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 本拍没有指令
+t=4390 kaito9 B=689012 L=6496 d=106.1 nb=3 neut=0 cmds=38 noFull=1 shQ=172219 | m=0.900 worth=95.5 cheap=8.8 over=1 dMedOther=108.5 safe(-1)=571648
+    → DV2 [Normal]#11[T7] terr=4099 bal=485252 dq=118.4 cnt=97 | c=382.3 rankC=382.3 need=867475 tD=1.09 人 pulse crowdedHard | safe=571648 keep=584640 avail=96298 chunkB=137802 pulseB=82681 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → KUKU#18[T6] terr=31893 bal=4016834 dq=125.9 cnt=26 | c=406.7 rankC=406.7 need=7207338 tD=1.16 人 pulse crowdedHard | safe=571648 keep=584640 avail=96298 chunkB=137802 pulseB=82681 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22296 bal=3303132 dq=148.1 cnt=135 | c=472.2 rankC=472.2 need=5920822 tD=1.37 人 pulse crowdedHard | safe=571648 keep=584640 avail=96298 chunkB=137802 pulseB=82681 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 本拍没有指令
+t=4395 kaito9 B=689012 L=6496 d=106.1 nb=3 neut=0 cmds=38 noFull=1 shQ=172253 | m=0.900 worth=95.5 cheap=8.8 over=1 dMedOther=108.5 safe(-1)=571648
+    → DV2 [Normal]#11[T7] terr=4099 bal=485252 dq=118.4 cnt=97 | c=382.3 rankC=382.3 need=867644 tD=1.09 人 pulse crowdedHard | safe=571648 keep=584640 avail=96298 chunkB=137802 pulseB=82681 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → KUKU#18[T6] terr=31916 bal=4016834 dq=125.9 cnt=26 | c=406.4 rankC=406.4 need=7207328 tD=1.16 人 pulse crowdedHard | safe=571648 keep=584640 avail=96298 chunkB=137802 pulseB=82681 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3299103 dq=148.1 cnt=135 | c=472.0 rankC=472.0 need=5912939 tD=1.36 人 pulse crowdedHard | safe=571648 keep=584640 avail=96298 chunkB=137802 pulseB=82681 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 本拍没有指令
+t=4400 kaito9 B=702467 L=6496 d=108.1 nb=3 neut=0 cmds=39 noFull=1 shQ=174009 | m=0.900 worth=97.3 cheap=8.8 over=1 dMedOther=110.6 safe(-1)=571648
+    → DV2 [Normal]#11[T7] terr=4099 bal=492796 dq=120.2 cnt=97 | c=388.1 rankC=388.1 need=881381 tD=1.09 人 pulse crowdedHard | safe=571648 keep=584640 avail=109595 chunkB=140493 pulseB=84296 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → KUKU#18[T6] terr=31945 bal=4074878 dq=127.6 cnt=26 | c=411.9 rankC=411.9 need=7310872 tD=1.15 人 pulse crowdedHard | safe=571648 keep=584640 avail=109595 chunkB=140493 pulseB=84296 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3323031 dq=149.2 cnt=135 | c=475.4 rankC=475.4 need=5955792 tD=1.35 人 pulse crowdedHard | safe=571648 keep=584640 avail=109595 chunkB=140493 pulseB=84296 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 影子指令 donate pct=190 → [APEX] zero_7#39[T3]（约 131026 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4405 kaito9 B=702467 L=6496 d=108.1 nb=3 neut=0 cmds=39 noFull=1 shQ=175616 | m=0.900 worth=97.3 cheap=8.8 over=1 dMedOther=110.6 safe(-1)=571648
+    → DV2 [Normal]#11[T7] terr=4099 bal=492796 dq=120.2 cnt=97 | c=388.0 rankC=388.0 need=881552 tD=1.09 人 pulse crowdedHard | safe=571648 keep=584640 avail=109595 chunkB=140493 pulseB=84296 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → KUKU#18[T6] terr=31968 bal=4074878 dq=127.5 cnt=26 | c=411.6 rankC=411.6 need=7310861 tD=1.15 人 pulse crowdedHard | safe=571648 keep=584640 avail=109595 chunkB=140493 pulseB=84296 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3323031 dq=149.2 cnt=135 | c=475.4 rankC=475.4 need=5956002 tD=1.35 人 pulse crowdedHard | safe=571648 keep=584640 avail=109595 chunkB=140493 pulseB=84296 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 本拍没有指令
+t=4410 kaito9 B=709210 L=6496 d=109.2 nb=3 neut=0 cmds=40 noFull=1 shQ=177302 | m=0.900 worth=98.3 cheap=8.8 over=1 dMedOther=111.8 safe(-1)=571648
+    → DV2 [Normal]#11[T7] terr=4099 bal=496097 dq=121.0 cnt=97 | c=289.3 rankC=289.3 need=887588 tD=1.08 人 pulse | safe=571648 keep=584640 avail=116259 chunkB=141842 pulseB=85105  x=85105 hNb=3
+    → KUKU#18[T6] terr=32005 bal=4099734 dq=128.1 cnt=26 | c=413.6 rankC=413.6 need=7355264 tD=1.15 人 pulse crowdedHard | safe=571648 keep=584640 avail=116259 chunkB=141842 pulseB=85105 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3324027 dq=149.2 cnt=135 | c=475.5 rankC=475.5 need=5958196 tD=1.34 人 pulse crowdedHard | safe=571648 keep=584640 avail=116259 chunkB=141842 pulseB=85105 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 影子指令 attack pct=122 → DV2 [Normal]#11[T7]（约 85188 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4415 kaito9 B=709210 L=6496 d=109.2 nb=3 neut=0 cmds=41 noFull=1 shQ=177302 | m=0.900 worth=98.3 cheap=8.8 over=1 dMedOther=107.8 safe(-1)=571648
+    → DV2 [Normal]#11[T7] terr=4099 bal=496097 dq=121.0 cnt=97 | c=289.3 rankC=289.3 need=887760 tD=1.12 人 pulse | safe=571648 keep=584640 avail=116259 chunkB=141842 pulseB=85105  x=85105 hNb=3
+    → KUKU#18[T6] terr=32034 bal=4099734 dq=128.0 cnt=26 | c=413.3 rankC=413.3 need=7355353 tD=1.19 人 pulse crowdedHard | safe=571648 keep=584640 avail=116259 chunkB=141842 pulseB=85105 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3324027 dq=149.2 cnt=135 | c=475.5 rankC=475.5 need=5958196 tD=1.38 人 pulse crowdedHard | safe=571648 keep=584640 avail=116259 chunkB=141842 pulseB=85105 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 影子指令 attack pct=122 → DV2 [Normal]#11[T7]（约 85188 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4420 kaito9 B=467657 L=6496 d=72.0 nb=3 neut=0 cmds=41 noFull=1 shQ=2649 | m=0.900 worth=83.4 cheap=8.8 over=0 dMedOther=109.0 safe(-1)=571648
+    → DV2 [Normal]#11[T7] terr=4099 bal=499321 dq=121.8 cnt=97 | c=354.6 rankC=354.6 need=808648 tD=1.12 人 pulse crowdedHard | safe=571648 keep=Inf avail=-Inf chunkB=93531 pulseB=56119 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=32086 bal=4124332 dq=128.5 cnt=26 | c=601.6 rankC=872.3 need=7399274 tD=1.18 人 pulse crowdedHard | safe=571648 keep=Inf avail=-Inf chunkB=93531 pulseB=56119 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3325024 dq=149.2 cnt=135 | c=689.4 rankC=999.6 need=5959974 tD=1.37 人 pulse crowdedHard | safe=571648 keep=Inf avail=-Inf chunkB=93531 pulseB=56119 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4425 kaito9 B=406004 L=6593 d=61.6 nb=3 neut=0 cmds=41 noFull=1 shQ=9154 | m=0.900 worth=82.6 cheap=8.6 over=0 dMedOther=108.0 safe(-1)=580184
+    → DV2 [Normal]#11[T7] terr=4002 bal=480417 dq=120.0 cnt=95 | c=340.5 rankC=340.5 need=752679 tD=1.11 人 pulse crowdedHard | safe=580184 keep=Inf avail=-Inf chunkB=81201 pulseB=48720 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=32129 bal=4124332 dq=128.4 cnt=26 | c=600.7 rankC=871.1 need=7399293 tD=1.19 人 pulse crowdedHard | safe=580184 keep=Inf avail=-Inf chunkB=81201 pulseB=48720 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3325024 dq=149.2 cnt=135 | c=689.3 rankC=999.5 need=5959974 tD=1.38 人 pulse crowdedHard | safe=580184 keep=Inf avail=-Inf chunkB=81201 pulseB=48720 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4430 kaito9 B=410673 L=6688 d=61.4 nb=3 neut=0 cmds=41 noFull=1 shQ=15052 | m=0.900 worth=83.5 cheap=8.6 over=0 dMedOther=109.2 safe(-1)=588544
+    → DV2 [Normal]#11[T7] terr=3907 bal=465503 dq=119.1 cnt=93 | c=354.4 rankC=354.4 need=758740 tD=1.09 人 pulse crowdedHard | safe=588544 keep=Inf avail=-Inf chunkB=82135 pulseB=49281 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=32197 bal=4148665 dq=128.9 cnt=26 | c=603.0 rankC=874.4 need=7442765 tD=1.18 人 pulse crowdedHard | safe=588544 keep=Inf avail=-Inf chunkB=82135 pulseB=49281 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3325689 dq=149.3 cnt=135 | c=689.4 rankC=999.7 need=5961159 tD=1.37 人 pulse crowdedHard | safe=588544 keep=Inf avail=-Inf chunkB=82135 pulseB=49281 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4435 kaito9 B=410746 L=6781 d=60.6 nb=3 neut=0 cmds=41 noFull=1 shQ=21004 | m=0.900 worth=81.7 cheap=8.6 over=0 dMedOther=106.8 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3814 bal=432378 dq=113.4 cnt=89 | c=368.1 rankC=368.1 need=763017 tD=1.06 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=82149 pulseB=49290 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=32250 bal=4148665 dq=128.6 cnt=26 | c=415.2 rankC=415.2 need=7442890 tD=1.20 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=82149 pulseB=49290 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3212019 dq=144.2 cnt=135 | c=459.3 rankC=459.3 need=5758552 tD=1.35 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=82149 pulseB=49290 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4440 kaito9 B=415469 L=6781 d=61.3 nb=3 neut=0 cmds=41 noFull=1 shQ=26972 | m=0.900 worth=78.6 cheap=8.6 over=0 dMedOther=102.8 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3814 bal=435880 dq=114.3 cnt=89 | c=131.4 rankC=65.7 need=769490 tD=1.11 人 pulse bleeding | safe=596728 keep=Inf avail=-Inf chunkB=83094 pulseB=49856 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=32336 bal=4172727 dq=129.0 cnt=26 | c=603.9 rankC=875.7 need=7485816 tD=1.26 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=83094 pulseB=49856 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3217158 dq=144.4 cnt=135 | c=667.1 rankC=967.3 need=5767712 tD=1.40 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=83094 pulseB=49856 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4445 kaito9 B=415469 L=6781 d=61.3 nb=3 neut=0 cmds=41 noFull=1 shQ=32992 | m=0.900 worth=77.9 cheap=8.6 over=0 dMedOther=101.8 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3814 bal=435880 dq=114.3 cnt=89 | c=131.4 rankC=65.7 need=769659 tD=1.12 人 pulse bleeding | safe=596728 keep=Inf avail=-Inf chunkB=83094 pulseB=49856 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=32398 bal=4172727 dq=128.8 cnt=26 | c=602.8 rankC=874.0 need=7485999 tD=1.27 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=83094 pulseB=49856 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3217158 dq=144.4 cnt=135 | c=667.1 rankC=967.3 need=5767712 tD=1.42 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=83094 pulseB=49856 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4450 kaito9 B=420246 L=6781 d=62.0 nb=3 neut=0 cmds=41 noFull=1 shQ=39026 | m=0.900 worth=78.7 cheap=8.6 over=0 dMedOther=102.8 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3672 bal=413553 dq=112.6 cnt=89 | c=126.0 rankC=63.0 need=724013 tD=1.10 人 pulse bleeding | safe=596728 keep=Inf avail=-Inf chunkB=84049 pulseB=50430 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=32498 bal=3979011 dq=122.4 cnt=26 | c=573.2 rankC=831.2 need=7140873 tD=1.19 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=84049 pulseB=50430 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3221983 dq=144.6 cnt=135 | c=668.1 rankC=968.7 need=5776312 tD=1.41 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=84049 pulseB=50430 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4455 kaito9 B=420246 L=6781 d=62.0 nb=3 neut=0 cmds=41 noFull=1 shQ=45116 | m=0.900 worth=78.7 cheap=8.6 over=0 dMedOther=102.8 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3530 bal=388128 dq=110.0 cnt=89 | c=120.1 rankC=60.1 need=673086 tD=1.07 人 pulse bleeding | safe=596728 keep=Inf avail=-Inf chunkB=84049 pulseB=50430 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=32570 bal=3979011 dq=122.2 cnt=26 | c=572.0 rankC=829.4 need=7140981 tD=1.19 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=84049 pulseB=50430 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3221983 dq=144.6 cnt=135 | c=668.1 rankC=968.7 need=5776312 tD=1.41 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=84049 pulseB=50430 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4460 kaito9 B=425078 L=6781 d=62.7 nb=3 neut=0 cmds=41 noFull=1 shQ=51220 | m=0.900 worth=79.6 cheap=8.6 over=0 dMedOther=104.1 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3459 bal=379097 dq=109.6 cnt=89 | c=124.0 rankC=62.0 need=654251 tD=1.05 人 pulse bleeding | safe=596728 keep=Inf avail=-Inf chunkB=85016 pulseB=51009 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=32688 bal=4009251 dq=122.7 cnt=26 | c=574.2 rankC=832.6 need=7194970 tD=1.18 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=85016 pulseB=51009 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3226493 dq=144.8 cnt=135 | c=669.0 rankC=970.1 need=5784351 tD=1.39 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=85016 pulseB=51009 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4465 kaito9 B=425078 L=6781 d=62.7 nb=3 neut=0 cmds=41 noFull=1 shQ=57380 | m=0.900 worth=79.6 cheap=8.6 over=0 dMedOther=104.1 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3328 bal=356262 dq=107.0 cnt=89 | c=129.3 rankC=64.6 need=608529 tD=1.03 人 pulse bleeding | safe=596728 keep=Inf avail=-Inf chunkB=85016 pulseB=51009 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=32772 bal=4009251 dq=122.3 cnt=26 | c=572.8 rankC=830.5 need=7195096 tD=1.18 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=85016 pulseB=51009 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3226493 dq=144.8 cnt=135 | c=669.0 rankC=970.1 need=5784351 tD=1.39 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=85016 pulseB=51009 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4470 kaito9 B=429966 L=6781 d=63.4 nb=3 neut=0 cmds=41 noFull=1 shQ=63554 | m=0.900 worth=79.2 cheap=8.6 over=0 dMedOther=103.5 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3198 bal=337413 dq=105.5 cnt=89 | c=136.6 rankC=68.3 need=569718 tD=1.02 人 pulse bleeding | safe=596728 keep=Inf avail=-Inf chunkB=85993 pulseB=51596 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=32905 bal=4039721 dq=122.8 cnt=26 | c=574.8 rankC=833.4 need=7249647 tD=1.19 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=85993 pulseB=51596 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3231010 dq=145.0 cnt=135 | c=670.0 rankC=971.4 need=5792402 tD=1.40 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=85993 pulseB=51596 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4475 kaito9 B=429966 L=6781 d=63.4 nb=3 neut=0 cmds=41 noFull=1 shQ=69784 | m=0.900 worth=79.7 cheap=8.6 over=0 dMedOther=104.2 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3133 bal=326442 dq=104.2 cnt=89 | c=188.7 rankC=94.4 need=547841 tD=1.00 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=85993 pulseB=51596 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=32999 bal=3822745 dq=115.8 cnt=26 | c=542.6 rankC=786.8 need=6863138 tD=1.11 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=85993 pulseB=51596 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3231010 dq=145.0 cnt=135 | c=670.0 rankC=971.4 need=5792402 tD=1.39 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=85993 pulseB=51596 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4480 kaito9 B=434910 L=6781 d=64.1 nb=3 neut=0 cmds=41 noFull=1 shQ=76029 | m=0.900 worth=78.5 cheap=8.6 over=0 dMedOther=102.6 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3068 bal=309260 dq=100.8 cnt=89 | c=336.9 rankC=336.9 need=515905 tD=0.98 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=86982 pulseB=52189 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=33148 bal=3858678 dq=116.4 cnt=26 | c=376.0 rankC=376.0 need=6927284 tD=1.13 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=86982 pulseB=52189 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3235210 dq=145.2 cnt=135 | c=462.6 rankC=462.6 need=5799888 tD=1.41 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=86982 pulseB=52189 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4485 kaito9 B=434910 L=6781 d=64.1 nb=3 neut=0 cmds=41 noFull=1 shQ=82334 | m=0.900 worth=78.5 cheap=8.6 over=0 dMedOther=102.6 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3068 bal=309260 dq=100.8 cnt=89 | c=336.8 rankC=336.8 need=516073 tD=0.98 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=86982 pulseB=52189 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=33252 bal=3858678 dq=116.0 cnt=26 | c=374.9 rankC=374.9 need=6927440 tD=1.13 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=86982 pulseB=52189 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3235210 dq=145.2 cnt=135 | c=462.6 rankC=462.6 need=5799888 tD=1.41 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=86982 pulseB=52189 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4490 kaito9 B=439911 L=6781 d=64.9 nb=3 neut=0 cmds=41 noFull=1 shQ=88653 | m=0.900 worth=78.0 cheap=8.6 over=0 dMedOther=101.9 safe(-1)=596728
+    → KUKU#18[T6] terr=33478 bal=3691591 dq=110.3 cnt=26 | c=267.3 rankC=187.1 need=6630048 tD=1.08 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=87982 pulseB=52789 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3068 bal=312630 dq=101.9 cnt=89 | c=340.4 rankC=340.4 need=521823 tD=1.00 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=87982 pulseB=52789 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3239415 dq=145.4 cnt=135 | c=463.2 rankC=463.2 need=5807383 tD=1.43 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=87982 pulseB=52789 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4495 kaito9 B=439911 L=6781 d=64.9 nb=3 neut=0 cmds=41 noFull=1 shQ=95028 | m=0.900 worth=78.0 cheap=8.6 over=0 dMedOther=101.9 safe(-1)=596728
+    → KUKU#18[T6] terr=33645 bal=3691591 dq=109.7 cnt=26 | c=266.0 rankC=186.2 need=6630259 tD=1.08 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=87982 pulseB=52789 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3068 bal=312630 dq=101.9 cnt=89 | c=340.4 rankC=340.4 need=521994 tD=1.00 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=87982 pulseB=52789 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22279 bal=3239415 dq=145.4 cnt=135 | c=463.2 rankC=463.2 need=5807383 tD=1.43 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=87982 pulseB=52789 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4500 kaito9 B=451750 L=6781 d=66.6 nb=3 neut=0 cmds=41 noFull=1 shQ=101438 | m=0.900 worth=79.5 cheap=8.6 over=0 dMedOther=104.0 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3068 bal=319011 dq=104.0 cnt=89 | c=347.2 rankC=347.2 need=532912 tD=1.00 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=90350 pulseB=54210 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=33905 bal=3766752 dq=111.1 cnt=26 | c=359.0 rankC=359.0 need=6764614 tD=1.07 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=90350 pulseB=54210 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22261 bal=3261694 dq=146.5 cnt=135 | c=466.9 rankC=466.9 need=5846139 tD=1.41 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=90350 pulseB=54210 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4505 kaito9 B=451750 L=6781 d=66.6 nb=3 neut=0 cmds=41 noFull=1 shQ=107988 | m=0.900 worth=79.2 cheap=8.6 over=0 dMedOther=103.5 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3068 bal=319011 dq=104.0 cnt=89 | c=347.2 rankC=347.2 need=533085 tD=1.00 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=90350 pulseB=54210 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=34084 bal=3766752 dq=110.5 cnt=26 | c=357.2 rankC=357.2 need=6764843 tD=1.07 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=90350 pulseB=54210 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22261 bal=3261694 dq=146.5 cnt=135 | c=466.8 rankC=466.8 need=5846551 tD=1.42 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=90350 pulseB=54210 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4510 kaito9 B=456945 L=6781 d=67.4 nb=3 neut=0 cmds=41 noFull=1 shQ=114236 | m=0.900 worth=80.1 cheap=8.6 over=0 dMedOther=104.7 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3068 bal=322264 dq=105.0 cnt=89 | c=350.6 rankC=350.6 need=538655 tD=1.00 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=91389 pulseB=54833 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=34361 bal=3808186 dq=110.8 cnt=26 | c=358.2 rankC=358.2 need=6839148 tD=1.06 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=91389 pulseB=54833 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22261 bal=3264629 dq=146.7 cnt=135 | c=467.2 rankC=467.2 need=5851989 tD=1.40 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=91389 pulseB=54833 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4515 kaito9 B=456945 L=6781 d=67.4 nb=3 neut=0 cmds=41 noFull=1 shQ=114236 | m=0.900 worth=80.1 cheap=8.6 over=0 dMedOther=104.7 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3068 bal=322264 dq=105.0 cnt=89 | c=350.6 rankC=350.6 need=538830 tD=1.00 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=91389 pulseB=54833 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=34553 bal=3808186 dq=110.2 cnt=26 | c=356.2 rankC=356.2 need=6839436 tD=1.05 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=91389 pulseB=54833 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22261 bal=3264629 dq=146.7 cnt=135 | c=467.2 rankC=467.2 need=5852195 tD=1.40 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=91389 pulseB=54833 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4520 kaito9 B=462199 L=6781 d=68.2 nb=3 neut=12 cmds=41 noFull=1 shQ=115549 | m=0.900 worth=76.9 cheap=8.6 over=0 dMedOther=100.5 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3068 bal=270130 dq=88.0 cnt=89 | c=218.4 rankC=218.4 need=452619 tD=0.88 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=92440 pulseB=55464 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=34857 bal=3850076 dq=110.5 cnt=26 | c=357.0 rankC=357.0 need=6914555 tD=1.10 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=92440 pulseB=55464 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22274 bal=3267567 dq=146.7 cnt=135 | c=467.5 rankC=467.5 need=5857503 tD=1.46 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=92440 pulseB=55464 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4525 kaito9 B=462199 L=6781 d=68.2 nb=3 neut=11 cmds=41 noFull=1 shQ=115549 | m=0.900 worth=70.1 cheap=8.6 over=0 dMedOther=91.6 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3115 bal=270130 dq=86.7 cnt=90 | c=214.6 rankC=214.6 need=455062 tD=0.95 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=92440 pulseB=55464 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35077 bal=3850076 dq=109.8 cnt=26 | c=354.7 rankC=354.7 need=6914885 tD=1.20 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=92440 pulseB=55464 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22292 bal=3267567 dq=146.6 cnt=135 | c=467.2 rankC=467.2 need=5857426 tD=1.60 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=92440 pulseB=55464 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4530 kaito9 B=467514 L=6781 d=68.9 nb=3 neut=8 cmds=41 noFull=1 shQ=116878 | m=0.900 worth=67.2 cheap=8.6 over=0 dMedOther=87.8 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3206 bal=273101 dq=85.2 cnt=91 | c=209.9 rankC=209.9 need=464411 tD=0.97 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=93503 pulseB=56102 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35409 bal=3893196 dq=109.9 cnt=28 | c=355.3 rankC=355.3 need=6992238 tD=1.25 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=93503 pulseB=56102 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22327 bal=3270834 dq=146.5 cnt=135 | c=466.9 rankC=466.9 need=5863456 tD=1.67 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=93503 pulseB=56102 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4535 kaito9 B=467514 L=6781 d=68.9 nb=3 neut=2 cmds=41 noFull=1 shQ=116878 | m=0.900 worth=67.0 cheap=8.6 over=0 dMedOther=87.6 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3240 bal=273101 dq=84.3 cnt=91 | c=207.5 rankC=207.5 need=466057 tD=0.96 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=93503 pulseB=56102 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35599 bal=3893196 dq=109.4 cnt=34 | c=353.4 rankC=353.4 need=6992600 tD=1.25 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=93503 pulseB=56102 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22343 bal=3270834 dq=146.4 cnt=135 | c=466.6 rankC=466.6 need=5863480 tD=1.67 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=93503 pulseB=56102 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4540 kaito9 B=472890 L=6781 d=69.7 nb=3 neut=0 cmds=41 noFull=1 shQ=118222 | m=0.900 worth=67.7 cheap=8.6 over=0 dMedOther=88.5 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3247 bal=276105 dq=85.0 cnt=91 | c=209.2 rankC=209.2 need=471717 tD=0.96 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=94578 pulseB=56747 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35792 bal=3936835 dq=110.0 cnt=36 | c=355.4 rankC=355.4 need=7070555 tD=1.24 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=94578 pulseB=56747 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22367 bal=3274104 dq=146.4 cnt=135 | c=466.5 rankC=466.5 need=5869345 tD=1.65 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=94578 pulseB=56747 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4545 kaito9 B=472890 L=6781 d=69.7 nb=3 neut=0 cmds=41 noFull=1 shQ=118222 | m=0.900 worth=67.7 cheap=8.6 over=0 dMedOther=88.5 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3258 bal=276105 dq=84.7 cnt=91 | c=208.4 rankC=208.4 need=472334 tD=0.96 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=94578 pulseB=56747 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35815 bal=3936835 dq=109.9 cnt=36 | c=355.1 rankC=355.1 need=7070705 tD=1.24 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=94578 pulseB=56747 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22381 bal=3274104 dq=146.3 cnt=135 | c=466.2 rankC=466.2 need=5869263 tD=1.65 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=94578 pulseB=56747 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4550 kaito9 B=478328 L=6781 d=70.5 nb=3 neut=0 cmds=41 noFull=1 shQ=119582 | m=0.900 worth=70.2 cheap=8.6 over=0 dMedOther=91.7 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3263 bal=279142 dq=85.5 cnt=91 | c=210.3 rankC=210.3 need=477836 tD=0.93 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=95666 pulseB=57399 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35845 bal=3980140 dq=111.0 cnt=36 | c=358.7 rankC=358.7 need=7147858 tD=1.21 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=95666 pulseB=57399 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22404 bal=3277378 dq=146.3 cnt=135 | c=466.2 rankC=466.2 need=5875081 tD=1.59 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=95666 pulseB=57399 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4555 kaito9 B=478328 L=6781 d=70.5 nb=3 neut=0 cmds=41 noFull=1 shQ=119582 | m=0.900 worth=68.5 cheap=8.6 over=0 dMedOther=89.6 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3264 bal=279142 dq=85.5 cnt=91 | c=210.2 rankC=210.2 need=478017 tD=0.95 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=95666 pulseB=57399 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35860 bal=3980140 dq=111.0 cnt=36 | c=358.6 rankC=358.6 need=7147842 tD=1.24 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=95666 pulseB=57399 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22420 bal=3277378 dq=146.2 cnt=135 | c=465.9 rankC=465.9 need=5875105 tD=1.63 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=95666 pulseB=57399 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4560 kaito9 B=483828 L=6781 d=71.4 nb=3 neut=0 cmds=41 noFull=1 shQ=120957 | m=0.900 worth=74.1 cheap=8.6 over=0 dMedOther=96.9 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3264 bal=333611 dq=102.2 cnt=91 | c=250.4 rankC=250.4 need=570737 tD=1.06 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=96766 pulseB=58059 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4029862 dq=112.4 cnt=36 | c=363.0 rankC=363.0 need=7236588 tD=1.16 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=96766 pulseB=58059 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22443 bal=3280983 dq=146.2 cnt=135 | c=465.9 rankC=465.9 need=5881719 tD=1.51 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=96766 pulseB=58059 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4565 kaito9 B=483828 L=6781 d=71.4 nb=3 neut=0 cmds=41 noFull=1 shQ=120957 | m=0.900 worth=74.0 cheap=8.6 over=0 dMedOther=96.7 safe(-1)=596728
+    → Scottish Fold [UA]#44[T5] terr=22457 bal=3280983 dq=146.1 cnt=135 | c=465.6 rankC=465.6 need=5881637 tD=1.51 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=96766 pulseB=58059 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3264 bal=333611 dq=102.2 cnt=91 | c=363.0 rankC=526.3 need=570900 tD=1.06 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=96766 pulseB=58059 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4029862 dq=112.4 cnt=36 | c=526.3 rankC=763.2 need=7236588 tD=1.16 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=96766 pulseB=58059 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4570 kaito9 B=489392 L=6781 d=72.2 nb=3 neut=0 cmds=41 noFull=1 shQ=122348 | m=0.900 worth=74.6 cheap=8.6 over=0 dMedOther=97.5 safe(-1)=596728
+    → Scottish Fold [UA]#44[T5] terr=22482 bal=3284592 dq=146.1 cnt=135 | c=465.7 rankC=465.7 need=5888159 tD=1.50 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=97878 pulseB=58727 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3264 bal=337147 dq=103.3 cnt=91 | c=366.7 rankC=531.8 need=577068 tD=1.06 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=97878 pulseB=58727 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4071369 dq=113.5 cnt=36 | c=531.7 rankC=771.0 need=7310569 tD=1.16 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=97878 pulseB=58727 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4575 kaito9 B=489392 L=6781 d=72.2 nb=3 neut=0 cmds=41 noFull=1 shQ=122348 | m=0.900 worth=74.1 cheap=8.6 over=0 dMedOther=96.9 safe(-1)=596728
+    → Scottish Fold [UA]#44[T5] terr=22500 bal=3284592 dq=146.0 cnt=135 | c=465.3 rankC=465.3 need=5888083 tD=1.51 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=97878 pulseB=58727 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3264 bal=337147 dq=103.3 cnt=91 | c=366.7 rankC=531.7 need=577232 tD=1.07 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=97878 pulseB=58727 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4071369 dq=113.5 cnt=36 | c=531.7 rankC=771.0 need=7310569 tD=1.17 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=97878 pulseB=58727 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4580 kaito9 B=495020 L=6781 d=73.0 nb=3 neut=0 cmds=41 noFull=1 shQ=123755 | m=0.900 worth=74.8 cheap=8.6 over=0 dMedOther=97.8 safe(-1)=596728
+    → Scottish Fold [UA]#44[T5] terr=22520 bal=3288205 dq=146.0 cnt=135 | c=465.3 rankC=465.3 need=5894553 tD=1.49 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=99004 pulseB=59402 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3264 bal=340619 dq=104.4 cnt=91 | c=370.3 rankC=537.0 need=583462 tD=1.07 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=99004 pulseB=59402 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4112082 dq=114.7 cnt=36 | c=537.0 rankC=778.6 need=7383136 tD=1.17 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=99004 pulseB=59402 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4585 kaito9 B=495020 L=6781 d=73.0 nb=3 neut=0 cmds=41 noFull=1 shQ=123755 | m=0.900 worth=74.4 cheap=8.6 over=0 dMedOther=97.3 safe(-1)=596728
+    → Scottish Fold [UA]#44[T5] terr=22528 bal=3288205 dq=146.0 cnt=135 | c=465.2 rankC=465.2 need=5894565 tD=1.50 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=99004 pulseB=59402 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3264 bal=340619 dq=104.4 cnt=91 | c=370.3 rankC=536.9 need=583628 tD=1.07 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=99004 pulseB=59402 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4112082 dq=114.7 cnt=36 | c=537.0 rankC=778.6 need=7383136 tD=1.18 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=99004 pulseB=59402 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4590 kaito9 B=500712 L=6781 d=73.8 nb=3 neut=0 cmds=41 noFull=1 shQ=125178 | m=0.900 worth=73.8 cheap=8.6 over=0 dMedOther=96.5 safe(-1)=596728
+    → Scottish Fold [UA]#44[T5] terr=22536 bal=3291822 dq=146.1 cnt=135 | c=465.4 rankC=465.4 need=5901024 tD=1.51 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=100142 pulseB=60085 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3264 bal=344059 dq=105.4 cnt=91 | c=374.0 rankC=542.2 need=589644 tD=1.09 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=100142 pulseB=60085 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4151969 dq=115.8 cnt=36 | c=542.2 rankC=786.1 need=7454230 tD=1.20 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=100142 pulseB=60085 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4595 kaito9 B=500712 L=6781 d=73.8 nb=3 neut=0 cmds=41 noFull=1 shQ=125178 | m=0.900 worth=72.9 cheap=8.6 over=0 dMedOther=95.3 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3264 bal=344059 dq=105.4 cnt=91 | c=257.9 rankC=257.9 need=589812 tD=1.11 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=100142 pulseB=60085 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4151969 dq=115.8 cnt=36 | c=373.9 rankC=373.9 need=7454230 tD=1.22 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=100142 pulseB=60085 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22536 bal=3299874 dq=146.4 cnt=135 | c=466.6 rankC=466.6 need=5915375 tD=1.54 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=100142 pulseB=60085 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4600 kaito9 B=513251 L=6781 d=75.7 nb=3 neut=0 cmds=41 noFull=1 shQ=126666 | m=0.900 worth=74.2 cheap=8.6 over=0 dMedOther=97.0 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3264 bal=350729 dq=107.5 cnt=91 | c=262.8 rankC=262.8 need=601499 tD=1.11 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=102650 pulseB=61590 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4226860 dq=117.9 cnt=36 | c=380.6 rankC=380.6 need=7587715 tD=1.21 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=102650 pulseB=61590 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22536 bal=3325709 dq=147.6 cnt=135 | c=470.2 rankC=470.2 need=5961423 tD=1.52 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=102650 pulseB=61590 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4605 kaito9 B=513251 L=6781 d=75.7 nb=3 neut=0 cmds=41 noFull=1 shQ=128312 | m=0.900 worth=74.2 cheap=8.6 over=0 dMedOther=97.0 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3264 bal=350729 dq=107.5 cnt=91 | c=262.7 rankC=262.7 need=601669 tD=1.11 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=102650 pulseB=61590 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4226860 dq=117.9 cnt=36 | c=380.6 rankC=380.6 need=7587715 tD=1.21 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=102650 pulseB=61590 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22517 bal=3321224 dq=147.5 cnt=135 | c=470.0 rankC=470.0 need=5952622 tD=1.52 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=102650 pulseB=61590 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4610 kaito9 B=519153 L=6781 d=76.6 nb=3 neut=0 cmds=41 noFull=1 shQ=129788 | m=0.900 worth=75.2 cheap=8.6 over=0 dMedOther=98.2 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3264 bal=354025 dq=108.5 cnt=91 | c=265.2 rankC=265.2 need=607453 tD=1.10 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=103831 pulseB=62298 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4264056 dq=118.9 cnt=36 | c=383.9 rankC=383.9 need=7654013 tD=1.21 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=103831 pulseB=62298 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22517 bal=3323548 dq=147.6 cnt=135 | c=470.3 rankC=470.3 need=5957179 tD=1.50 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=103831 pulseB=62298 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4615 kaito9 B=519153 L=6781 d=76.6 nb=3 neut=0 cmds=41 noFull=1 shQ=129788 | m=0.900 worth=75.0 cheap=8.6 over=0 dMedOther=98.0 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3264 bal=354025 dq=108.5 cnt=91 | c=265.1 rankC=265.1 need=607624 tD=1.11 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=103831 pulseB=62298 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4264056 dq=118.9 cnt=36 | c=383.9 rankC=383.9 need=7654013 tD=1.21 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=103831 pulseB=62298 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22517 bal=3323548 dq=147.6 cnt=135 | c=470.3 rankC=470.3 need=5957387 tD=1.51 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=103831 pulseB=62298 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4620 kaito9 B=525123 L=6781 d=77.4 nb=3 neut=0 cmds=41 noFull=1 shQ=131280 | m=0.900 worth=75.3 cheap=8.6 over=0 dMedOther=98.5 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3264 bal=357282 dq=109.5 cnt=91 | c=267.5 rankC=267.5 need=613519 tD=1.11 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=105025 pulseB=63015 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4300300 dq=119.9 cnt=36 | c=387.2 rankC=387.2 need=7718614 tD=1.22 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=105025 pulseB=63015 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22517 bal=3325874 dq=147.7 cnt=135 | c=470.6 rankC=470.6 need=5961740 tD=1.50 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=105025 pulseB=63015 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4625 kaito9 B=525123 L=6781 d=77.4 nb=3 neut=0 cmds=41 noFull=1 shQ=131280 | m=0.900 worth=75.0 cheap=8.6 over=0 dMedOther=98.0 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3264 bal=357282 dq=109.5 cnt=91 | c=267.4 rankC=267.4 need=613692 tD=1.12 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=105025 pulseB=63015 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4300300 dq=119.9 cnt=36 | c=387.2 rankC=387.2 need=7718614 tD=1.22 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=105025 pulseB=63015 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22517 bal=3325874 dq=147.7 cnt=135 | c=470.6 rankC=470.6 need=5961740 tD=1.51 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=105025 pulseB=63015 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4630 kaito9 B=531161 L=6781 d=78.3 nb=3 neut=0 cmds=41 noFull=1 shQ=132790 | m=0.900 worth=75.4 cheap=8.6 over=0 dMedOther=98.5 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3264 bal=360497 dq=110.4 cnt=91 | c=269.8 rankC=269.8 need=619348 tD=1.12 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=106232 pulseB=63739 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4335562 dq=120.9 cnt=36 | c=390.3 rankC=390.3 need=7781465 tD=1.23 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=106232 pulseB=63739 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22517 bal=3327869 dq=147.8 cnt=135 | c=470.9 rankC=470.9 need=5965296 tD=1.50 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=106232 pulseB=63739 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4635 kaito9 B=531161 L=6781 d=78.3 nb=3 neut=0 cmds=41 noFull=1 shQ=132790 | m=0.900 worth=75.4 cheap=8.6 over=0 dMedOther=98.5 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3264 bal=360497 dq=110.4 cnt=91 | c=269.8 rankC=269.8 need=619522 tD=1.12 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=106232 pulseB=63739 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4335562 dq=120.9 cnt=36 | c=390.3 rankC=390.3 need=7781465 tD=1.23 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=106232 pulseB=63739 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22517 bal=3327869 dq=147.8 cnt=135 | c=470.9 rankC=470.9 need=5965296 tD=1.50 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=106232 pulseB=63739 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4640 kaito9 B=537269 L=6781 d=79.2 nb=3 neut=0 cmds=41 noFull=1 shQ=134317 | m=0.900 worth=76.3 cheap=8.6 over=0 dMedOther=99.8 safe(-1)=596728
+    → DV2 [Normal]#11[T7] terr=3264 bal=363669 dq=111.4 cnt=91 | c=272.1 rankC=272.1 need=625284 tD=1.12 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=107454 pulseB=64472 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4370246 dq=121.9 cnt=36 | c=393.4 rankC=393.4 need=7843285 tD=1.22 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=107454 pulseB=64472 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=22517 bal=3329865 dq=147.9 cnt=135 | c=471.2 rankC=471.2 need=5968854 tD=1.48 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=107454 pulseB=64472 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4645 kaito9 B=537269 L=6781 d=79.2 nb=3 neut=0 cmds=41 noFull=1 shQ=134317 | m=0.900 worth=73.4 cheap=8.6 over=0 dMedOther=95.9 safe(-1)=596728
+    → Scottish Fold [UA]#44[T5] terr=22517 bal=2624221 dq=116.5 cnt=135 | c=235.9 rankC=165.1 need=5377752 tD=1.22 人 pulse onMe | safe=596728 keep=Inf avail=-Inf chunkB=107454 pulseB=64472 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3264 bal=363669 dq=111.4 cnt=91 | c=272.0 rankC=272.0 need=625460 tD=1.16 人 pulse | safe=596728 keep=Inf avail=-Inf chunkB=107454 pulseB=64472 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4370246 dq=121.9 cnt=36 | c=393.4 rankC=393.4 need=7843285 tD=1.27 人 pulse crowdedHard | safe=596728 keep=Inf avail=-Inf chunkB=107454 pulseB=64472 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4650 kaito9 B=526269 L=6647 d=79.2 nb=3 neut=0 cmds=41 noFull=1 shQ=131567 | m=0.900 worth=74.3 cheap=8.6 over=0 dMedOther=97.2 safe(-1)=584936
+    → Scottish Fold [UA]#44[T5] terr=22651 bal=2647576 dq=116.9 cnt=133 | c=234.9 rankC=164.4 need=5385429 tD=1.20 人 pulse onMe | safe=584936 keep=Inf avail=-Inf chunkB=105254 pulseB=63152 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3264 bal=366760 dq=112.4 cnt=91 | c=274.2 rankC=274.2 need=630914 tD=1.16 人 pulse | safe=584936 keep=Inf avail=-Inf chunkB=105254 pulseB=63152 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4403896 dq=122.8 cnt=35 | c=396.4 rankC=396.4 need=7903263 tD=1.26 人 pulse crowdedHard | safe=584936 keep=Inf avail=-Inf chunkB=105254 pulseB=63152 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4655 kaito9 B=476601 L=6250 d=76.3 nb=3 neut=0 cmds=41 noFull=1 shQ=119150 | m=0.900 worth=74.3 cheap=8.8 over=0 dMedOther=97.2 safe(-1)=550000
+    → Scottish Fold [UA]#44[T5] terr=23048 bal=2647576 dq=114.9 cnt=132 | c=226.5 rankC=158.6 need=5285771 tD=1.18 人 pulse onMe | safe=550000 keep=Inf avail=-Inf chunkB=95320 pulseB=57192 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3264 bal=366760 dq=112.4 cnt=91 | c=369.8 rankC=369.8 need=631091 tD=1.16 人 pulse crowdedHard | safe=550000 keep=Inf avail=-Inf chunkB=95320 pulseB=57192 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4403896 dq=122.8 cnt=33 | c=396.4 rankC=396.4 need=7903263 tD=1.26 人 pulse crowdedHard | safe=550000 keep=Inf avail=-Inf chunkB=95320 pulseB=57192 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4660 kaito9 B=450162 L=5990 d=75.2 nb=3 neut=0 cmds=41 noFull=1 shQ=112540 | m=0.900 worth=74.7 cheap=8.8 over=0 dMedOther=97.6 safe(-1)=527120
+    → Scottish Fold [UA]#44[T5] terr=23308 bal=2113434 dq=90.7 cnt=130 | c=203.5 rankC=142.5 need=4800612 tD=0.93 人 pulse onMe | safe=527120 keep=Inf avail=-Inf chunkB=90032 pulseB=54019 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3264 bal=369804 dq=113.3 cnt=91 | c=372.5 rankC=372.5 need=636647 tD=1.16 人 pulse crowdedHard | safe=527120 keep=Inf avail=-Inf chunkB=90032 pulseB=54019 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4436484 dq=123.7 cnt=32 | c=399.4 rankC=399.4 need=7961347 tD=1.27 人 pulse crowdedHard | safe=527120 keep=Inf avail=-Inf chunkB=90032 pulseB=54019 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4665 kaito9 B=404487 L=5605 d=72.2 nb=3 neut=0 cmds=41 noFull=1 shQ=101121 | m=0.900 worth=74.5 cheap=8.8 over=0 dMedOther=97.4 safe(-1)=493240
+    → Scottish Fold [UA]#44[T5] terr=23693 bal=2113434 dq=89.2 cnt=127 | c=196.4 rankC=137.5 need=4709101 tD=0.92 人 pulse onMe | safe=493240 keep=Inf avail=-Inf chunkB=80897 pulseB=48538 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=3264 bal=369804 dq=113.3 cnt=91 | c=539.6 rankC=782.5 need=636824 tD=1.16 人 pulse crowdedHard | safe=493240 keep=Inf avail=-Inf chunkB=80897 pulseB=48538 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4436484 dq=123.7 cnt=31 | c=579.0 rankC=839.6 need=7961347 tD=1.27 人 pulse crowdedHard | safe=493240 keep=Inf avail=-Inf chunkB=80897 pulseB=48538 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4670 kaito9 B=379762 L=5352 d=71.0 nb=3 neut=0 cmds=41 noFull=1 shQ=94940 | m=0.900 worth=75.4 cheap=8.8 over=0 dMedOther=98.6 safe(-1)=470976
+    → DV2 [Normal]#11[T7] terr=3264 bal=372799 dq=114.2 cnt=91 | c=149.1 rankC=74.6 need=642124 tD=1.16 人 pulse bleeding | safe=470976 keep=Inf avail=-Inf chunkB=75952 pulseB=45571 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=23946 bal=2140908 dq=89.4 cnt=126 | c=194.0 rankC=135.8 need=4699965 tD=0.91 人 pulse onMe | safe=470976 keep=Inf avail=-Inf chunkB=75952 pulseB=45571 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4468426 dq=124.6 cnt=30 | c=583.2 rankC=845.6 need=8018280 tD=1.26 人 pulse crowdedHard | safe=470976 keep=Inf avail=-Inf chunkB=75952 pulseB=45571 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4675 kaito9 B=337920 L=4978 d=67.9 nb=3 neut=0 cmds=41 noFull=1 shQ=84480 | m=0.900 worth=75.3 cheap=8.9 over=0 dMedOther=98.4 safe(-1)=438064
+    → DV2 [Normal]#11[T7] terr=3264 bal=372799 dq=114.2 cnt=91 | c=149.0 rankC=74.5 need=642303 tD=1.16 人 pulse bleeding | safe=438064 keep=Inf avail=-Inf chunkB=67584 pulseB=40550 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=24320 bal=2140908 dq=88.0 cnt=124 | c=187.6 rankC=131.3 need=4616031 tD=0.89 人 pulse onMe | safe=438064 keep=Inf avail=-Inf chunkB=67584 pulseB=40550 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4468426 dq=124.6 cnt=28 | c=583.2 rankC=845.6 need=8018280 tD=1.27 人 pulse crowdedHard | safe=438064 keep=Inf avail=-Inf chunkB=67584 pulseB=40550 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4680 kaito9 B=314898 L=4732 d=66.5 nb=3 neut=0 cmds=41 noFull=1 shQ=78724 | m=0.900 worth=76.3 cheap=8.9 over=0 dMedOther=99.7 safe(-1)=416416
+    → DV2 [Normal]#11[T7] terr=3179 bal=360259 dq=113.3 cnt=91 | c=143.5 rankC=71.7 need=616547 tD=1.14 人 pulse bleeding | safe=416416 keep=Inf avail=-Inf chunkB=62980 pulseB=37788 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=24566 bal=2168739 dq=88.3 cnt=123 | c=185.6 rankC=129.9 need=4612557 tD=0.89 人 pulse onMe | safe=416416 keep=Inf avail=-Inf chunkB=62980 pulseB=37788 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35863 bal=4265634 dq=118.9 cnt=27 | c=291.5 rankC=291.5 need=7844464 tD=1.19 人 pulse onMe | safe=416416 keep=Inf avail=-Inf chunkB=62980 pulseB=37788 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4685 kaito9 B=274741 L=4348 d=63.2 nb=3 neut=0 cmds=41 noFull=1 shQ=68685 | m=0.900 worth=76.1 cheap=8.9 over=0 dMedOther=99.5 safe(-1)=382624
+    → DV2 [Normal]#11[T7] terr=3147 bal=354458 dq=112.6 cnt=91 | c=144.9 rankC=72.4 need=605066 tD=1.13 人 pulse bleeding | safe=382624 keep=Inf avail=-Inf chunkB=54948 pulseB=32969 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=24924 bal=2168739 dq=87.0 cnt=117 | c=180.0 rankC=126.0 need=4537362 tD=0.87 人 pulse onMe | safe=382624 keep=Inf avail=-Inf chunkB=54948 pulseB=32969 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35889 bal=4265634 dq=118.9 cnt=26 | c=291.1 rankC=291.1 need=7839007 tD=1.19 人 pulse onMe | safe=382624 keep=Inf avail=-Inf chunkB=54948 pulseB=32969 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4690 kaito9 B=247023 L=4042 d=61.1 nb=3 neut=0 cmds=41 noFull=1 shQ=61755 | m=0.900 worth=77.1 cheap=8.9 over=0 dMedOther=100.8 safe(-1)=355696
+    → DV2 [Normal]#11[T7] terr=3088 bal=346816 dq=112.3 cnt=88 | c=201.5 rankC=100.8 need=588924 tD=1.11 人 pulse crowdedHard | safe=355696 keep=Inf avail=-Inf chunkB=49405 pulseB=29643 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=25148 bal=2196932 dq=87.4 cnt=111 | c=178.7 rankC=125.1 need=4542836 tD=0.87 人 pulse onMe | safe=355696 keep=Inf avail=-Inf chunkB=49405 pulseB=29643 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=35971 bal=4302318 dq=119.6 cnt=26 | c=292.2 rankC=292.2 need=7888133 tD=1.19 人 pulse onMe | safe=355696 keep=Inf avail=-Inf chunkB=49405 pulseB=29643 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4695 kaito9 B=211426 L=3670 d=57.6 nb=3 neut=0 cmds=41 noFull=1 shQ=52856 | m=0.900 worth=77.0 cheap=9.1 over=0 dMedOther=100.7 safe(-1)=322960
+    → DV2 [Normal]#11[T7] terr=3028 bal=336071 dq=111.0 cnt=87 | c=205.9 rankC=103.0 need=567504 tD=1.10 人 pulse crowdedHard | safe=322960 keep=Inf avail=-Inf chunkB=42285 pulseB=25371 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=25467 bal=2196932 dq=86.3 cnt=104 | c=174.2 rankC=121.9 need=4481656 tD=0.86 人 pulse onMe | safe=322960 keep=Inf avail=-Inf chunkB=42285 pulseB=25371 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=36024 bal=4302318 dq=119.4 cnt=27 | c=291.4 rankC=291.4 need=7877898 tD=1.19 人 pulse onMe | safe=322960 keep=Inf avail=-Inf chunkB=42285 pulseB=25371 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4700 kaito9 B=191477 L=3390 d=56.5 nb=3 neut=0 cmds=41 noFull=1 shQ=47613 | m=0.900 worth=78.8 cheap=9.1 over=0 dMedOther=103.1 safe(-1)=298320
+    → DV2 [Normal]#11[T7] terr=2997 bal=336473 dq=112.3 cnt=85 | c=212.0 rankC=106.0 need=566677 tD=1.09 人 pulse crowdedHard | safe=298320 keep=Inf avail=-Inf chunkB=38295 pulseB=22977 价高(c>=worth)→break hNb=3
+    → Scottish Fold [UA]#44[T5] terr=25668 bal=2251160 dq=87.7 cnt=99 | c=175.2 rankC=122.6 need=4541626 tD=0.85 人 pulse onMe | safe=298320 keep=Inf avail=-Inf chunkB=38295 pulseB=22977 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=36103 bal=4374534 dq=121.2 cnt=26 | c=295.0 rankC=295.0 need=7992321 tD=1.18 人 pulse onMe | safe=298320 keep=Inf avail=-Inf chunkB=38295 pulseB=22977 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4705 kaito9 B=160790 L=3042 d=52.9 nb=3 neut=0 cmds=41 noFull=1 shQ=40197 | m=0.900 worth=78.7 cheap=9.1 over=0 dMedOther=102.9 safe(-1)=267696
+    → Scottish Fold [UA]#44[T5] terr=25959 bal=1774109 dq=68.3 cnt=93 | c=156.1 rankC=109.3 need=4090564 tD=0.66 人 pulse onMe | safe=267696 keep=Inf avail=-Inf chunkB=32158 pulseB=19295 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=36160 bal=4374534 dq=121.0 cnt=28 | c=294.1 rankC=294.1 need=7982173 tD=1.18 人 pulse onMe | safe=267696 keep=Inf avail=-Inf chunkB=32158 pulseB=19295 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=2997 bal=331963 dq=110.8 cnt=84 | c=530.0 rankC=768.5 need=559318 tD=1.08 人 pulse crowdedHard | safe=267696 keep=Inf avail=-Inf chunkB=32158 pulseB=19295 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4710 kaito9 B=140607 L=2780 d=50.6 nb=3 neut=0 cmds=41 noFull=1 shQ=35151 | m=0.900 worth=79.8 cheap=9.1 over=0 dMedOther=104.3 safe(-1)=244640
+    → Scottish Fold [UA]#44[T5] terr=26113 bal=1795135 dq=68.7 cnt=85 | c=155.6 rankC=108.9 need=4098977 tD=0.66 人 pulse onMe | safe=244640 keep=Inf avail=-Inf chunkB=28121 pulseB=16873 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=36248 bal=4409530 dq=121.6 cnt=30 | c=295.1 rankC=295.1 need=8029924 tD=1.17 人 pulse onMe | safe=244640 keep=Inf avail=-Inf chunkB=28121 pulseB=16873 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=2997 bal=334851 dq=111.7 cnt=83 | c=534.4 rankC=774.8 need=564332 tD=1.07 人 pulse crowdedHard | safe=244640 keep=Inf avail=-Inf chunkB=28121 pulseB=16873 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4715 kaito9 B=115958 L=2467 d=47.0 nb=3 neut=0 cmds=41 noFull=1 shQ=28989 | m=0.900 worth=79.7 cheap=9.3 over=0 dMedOther=104.2 safe(-1)=217096
+    → Scottish Fold [UA]#44[T5] terr=26372 bal=1795135 dq=68.1 cnt=87 | c=152.5 rankC=106.8 need=4057997 tD=0.65 人 pulse onMe | safe=217096 keep=Inf avail=-Inf chunkB=23192 pulseB=13915 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=36302 bal=4409530 dq=121.5 cnt=23 | c=294.4 rankC=294.4 need=8021511 tD=1.17 人 pulse onMe | safe=217096 keep=Inf avail=-Inf chunkB=23192 pulseB=13915 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=2997 bal=334851 dq=111.7 cnt=78 | c=534.7 rankC=775.3 need=564515 tD=1.07 人 pulse crowdedHard | safe=217096 keep=Inf avail=-Inf chunkB=23192 pulseB=13915 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4720 kaito9 B=99217 L=2225 d=44.6 nb=3 neut=0 cmds=41 noFull=1 shQ=24804 | m=0.900 worth=80.7 cheap=9.3 over=0 dMedOther=105.5 safe(-1)=195800
+    → Scottish Fold [UA]#44[T5] terr=26543 bal=1818651 dq=68.5 cnt=78 | c=152.3 rankC=106.6 need=4074691 tD=0.65 人 pulse onMe | safe=195800 keep=Inf avail=-Inf chunkB=19843 pulseB=11906 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=36373 bal=4444365 dq=122.2 cnt=24 | c=295.7 rankC=295.7 need=8073111 tD=1.16 人 pulse onMe | safe=195800 keep=Inf avail=-Inf chunkB=19843 pulseB=11906 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=2997 bal=337697 dq=112.7 cnt=76 | c=539.1 rankC=781.7 need=569647 tD=1.07 人 pulse crowdedHard | safe=195800 keep=Inf avail=-Inf chunkB=19843 pulseB=11906 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4725 kaito9 B=80115 L=1949 d=41.1 nb=3 neut=0 cmds=41 noFull=1 shQ=20028 | m=0.900 worth=80.6 cheap=9.3 over=0 dMedOther=105.4 safe(-1)=171512
+    → Scottish Fold [UA]#44[T5] terr=26767 bal=1818651 dq=67.9 cnt=73 | c=149.9 rankC=104.9 need=4043524 tD=0.64 人 pulse onMe | safe=171512 keep=Inf avail=-Inf chunkB=16023 pulseB=9614 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=36425 bal=4444365 dq=122.0 cnt=26 | c=295.0 rankC=295.0 need=8065935 tD=1.16 人 pulse onMe | safe=171512 keep=Inf avail=-Inf chunkB=16023 pulseB=9614 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=2997 bal=337697 dq=112.7 cnt=75 | c=371.7 rankC=371.7 need=569832 tD=1.07 人 pulse crowdedHard | safe=171512 keep=Inf avail=-Inf chunkB=16023 pulseB=9614 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4730 kaito9 B=66058 L=1718 d=38.5 nb=3 neut=0 cmds=41 noFull=1 shQ=16514 | m=0.900 worth=81.6 cheap=9.3 over=0 dMedOther=106.6 safe(-1)=151184
+    → Scottish Fold [UA]#44[T5] terr=26910 bal=1842475 dq=68.5 cnt=71 | c=150.0 rankC=105.0 need=4067566 tD=0.64 人 pulse onMe | safe=151184 keep=Inf avail=-Inf chunkB=13212 pulseB=7927 价高(c>=worth)→break hNb=3
+    → KUKU#18[T6] terr=36513 bal=4479031 dq=122.7 cnt=30 | c=296.1 rankC=296.1 need=8116453 tD=1.15 人 pulse onMe | safe=151184 keep=Inf avail=-Inf chunkB=13212 pulseB=7927 价高(c>=worth)→break hNb=3
+    → DV2 [Normal]#11[T7] terr=2997 bal=340499 dq=113.6 cnt=74 | c=374.7 rankC=374.7 need=574712 tD=1.07 人 pulse crowdedHard | safe=151184 keep=Inf avail=-Inf chunkB=13212 pulseB=7927 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令

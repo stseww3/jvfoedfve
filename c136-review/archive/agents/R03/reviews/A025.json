@@ -1,0 +1,8057 @@
+{
+ "matchId": "A025",
+ "reviewer": "R03",
+ "protocol": "v2.0",
+ "context": {
+  "time": "2026-11-10T01:00:56Z",
+  "squad": "squad10",
+  "bots": 6,
+  "strategyVersion": "Vb（v27-team-c116-vb.js）",
+  "map": 18,
+  "mapSeed": 6001,
+  "mapLand": 374820,
+  "teams": 2,
+  "teamsInReplayHeader": 2,
+  "teamSizes": [
+   0,
+   6,
+   6
+  ],
+  "humans": 12,
+  "ourTeam": 1,
+  "teamSplitCard": {
+   "1": 7
+  },
+  "baseWinExpectation": 0.5,
+  "sameMatchPeer": null,
+  "presence": {
+   "end": 4,
+   "left": 2
+  },
+  "leftTicks": {
+   "riku_x": 3570,
+   "alex_k": 931
+  },
+  "dataCompleteness": {
+   "replay": true,
+   "resimTrajCheck": {
+    "rows": 689,
+    "terrExact": 689,
+    "balExact": 689,
+    "bothExact": 689,
+    "mism": []
+   },
+   "shadowCheck": {
+    "rows": 689,
+    "cmds": 689,
+    "nb": 689,
+    "neut": 689,
+    "dl": 391,
+    "ds": 391,
+    "ol": 47,
+    "os": 47,
+    "ex": 1422,
+    "mt": 1422
+   }
+  },
+  "peerSquad": "无。选点名单里有 10 个名字，本房间只有 6 个号（全在队1，队1 没有路人）；sora_w、noah88、ryan_m 在另一个房间（results.csv：seeded=20，6952 拍胜），zero_7 不在任何结果里",
+  "tickRate": "results.csv：riku_x 3472 拍@247 秒（约 14 拍/秒），终局 14689 拍@843 秒（后段平均约 19 拍/秒；4567 拍队1 过 90% 触发引擎提速）。HL-SLOW-TICK 705 条，其中 zexos1 380 条（中位 46.7 毫秒，9000 拍之后 322 条）",
+  "pageStops": "alex_k 的页面本地 308 拍（71 秒）退出，服务器 931 拍离线；riku_x 的页面本地 3472 拍（247 秒）退出，服务器 3570 拍离线，日志里没有报错。其余 4 个号控到终局",
+  "liveAdapterModel": "影子策略用的页面适配规则（每拍只收 1 条指令、陆攻按相邻受理、船不发队友地）是从日志计数器反推的；本局 689/689 行 HL-TICK 的 cmds/nb/neut/boats、391/391 条调度、47/47 条开局日志、1422/1422 条成交全部对上；整局重放 689/689 行地、兵与 traj 逐行相等",
+  "cardNote": "card.json 的 squadBots=9、teamSplitCounts={1:7}、peakSquadLandShare=1.2597 都把另一个房间的 3 个号算了进来；traj.csv 里这 3 个号的行（到 6930 拍）和 events.csv 里它们的 83 条调度也是另一局的。本房间编队的峰值是终局的 94.23%（加上两个空壳，队1 是 100%）",
+  "execDelay": "成交延迟（服务器落地拍 − 本地发令拍）中位：talon5 10、zexos1 11、kaito9 11、leo_tx 16、riku_x 16，最大 20~32；alex_k 3 条指令中位 195、最大 259"
+ },
+ "outcome": {
+  "result": "won",
+  "resultLabel": "won",
+  "winnerTeam": 1,
+  "endTick": 14689,
+  "ourFinalShare": 1.0,
+  "peakSquadLandShare": 1.2597,
+  "peakPrimaryTeamShareSeen": 1.0,
+  "anyBotWon": true,
+  "note": "队1 赢。两队图（12 个真人各 6 个，另有 500 个不入队的内置 AI）。地的走势：1530 拍 23.3 对 18.5%，2130 拍被反超（39.3 对 41.7%），2700 拍 40.9 对 57.0%；但在线兵力一直是我方多（2700 拍 359 万对 223 万，3300 拍 544 万对 269 万）。2830 拍起 zexos1、kaito9 用脉冲把兵换成地，队2 的真人 3192~3759 拍接连离场，3600 拍 51.3 对 47.1%，4500 拍 86.8 对 8.2%。4567 拍过 90% 之后又用了 10,102 拍（占全局 69%）：岛上的 Player 804 到 7607 拍、最后一个 AI 到 8863 拍、中立小岛到 14669 拍才清完。",
+  "archetypeSecondary": "赢局。险处在 1700~3300 拍：kaito9 把余额打空后被吃掉四分之一的地，队2 的地一度领先 16 个点；收尾阶段整局 6.75 亿利息里 5.60 亿付了捐款税和船费"
+ },
+ "timeline": [
+  {
+   "t": 90,
+   "alive": 6,
+   "sqTerr": 241,
+   "sqSharePct": 0.06,
+   "sqBal": 3399,
+   "sqDens": 14.1,
+   "teamOnlineBal": {
+    "T1": 3399,
+    "T2": 2534
+   },
+   "teamOnlineHumans": {
+    "T1": 6,
+    "T2": 6
+   },
+   "teamSharePct": {
+    "T1": 0.1,
+    "T2": 0.2
+   },
+   "aiSharePct": 3.6,
+   "neutralSharePct": 96.1
+  },
+  {
+   "t": 180,
+   "alive": 6,
+   "sqTerr": 879,
+   "sqSharePct": 0.23,
+   "sqBal": 6504,
+   "sqDens": 7.4,
+   "teamOnlineBal": {
+    "T1": 6504,
+    "T2": 4570
+   },
+   "teamOnlineHumans": {
+    "T1": 6,
+    "T2": 6
+   },
+   "teamSharePct": {
+    "T1": 0.2,
+    "T2": 0.4
+   },
+   "aiSharePct": 6.8,
+   "neutralSharePct": 92.6,
+   "note": "6 个号出生在地图中部偏东的一小团里，互隔 69~87 像素。alex_k 的页面只有正常速度的三成左右，整局只发出 3 条指令。队2 的 Tickle 231 拍离场"
+  },
+  {
+   "t": 270,
+   "alive": 6,
+   "sqTerr": 1872,
+   "sqSharePct": 0.5,
+   "sqBal": 8375,
+   "sqDens": 4.5,
+   "teamOnlineBal": {
+    "T1": 8375,
+    "T2": 3678
+   },
+   "teamOnlineHumans": {
+    "T1": 6,
+    "T2": 5
+   },
+   "teamSharePct": {
+    "T1": 0.5,
+    "T2": 0.6
+   },
+   "aiSharePct": 11.3,
+   "neutralSharePct": 87.6
+  },
+  {
+   "t": 630,
+   "alive": 6,
+   "sqTerr": 14991,
+   "sqSharePct": 4.0,
+   "sqBal": 26568,
+   "sqDens": 1.8,
+   "teamOnlineBal": {
+    "T1": 26568,
+    "T2": 21777
+   },
+   "teamOnlineHumans": {
+    "T1": 6,
+    "T2": 5
+   },
+   "teamSharePct": {
+    "T1": 4.0,
+    "T2": 2.8
+   },
+   "aiSharePct": 64.7,
+   "neutralSharePct": 28.6,
+   "note": "两队 4.0/2.8%，AI 64.7%，中立 28.6%。编队单号地的中位数 2,648（zexos1 3,576 是 12 个真人里最大的），队2 中位 1,889；开局周期出兵 47/47 成交"
+  },
+  {
+   "t": 1080,
+   "alive": 5,
+   "sqTerr": 42571,
+   "sqSharePct": 11.36,
+   "sqBal": 71052,
+   "sqDens": 1.7,
+   "husks": {
+    "n": 1,
+    "terr": 894,
+    "sharePct": 0.24,
+    "bal": 24499
+   },
+   "teamOnlineBal": {
+    "T1": 71052,
+    "T2": 68873
+   },
+   "teamOnlineHumans": {
+    "T1": 5,
+    "T2": 5
+   },
+   "teamSharePct": {
+    "T1": 11.6,
+    "T2": 7.6
+   },
+   "aiSharePct": 78.2,
+   "neutralSharePct": 2.6,
+   "note": "AI 的地 900 拍前后到 83.3% 的高点后开始被分。alex_k 931 拍离线成空壳（760 格）。600~1500 拍有 60 个决策拍被 safeFinite 冻住（talon5 25 个）"
+  },
+  {
+   "t": 1530,
+   "alive": 5,
+   "sqTerr": 85772,
+   "sqSharePct": 22.88,
+   "sqBal": 399649,
+   "sqDens": 4.7,
+   "husks": {
+    "n": 1,
+    "terr": 1519,
+    "sharePct": 0.41,
+    "bal": 1527
+   },
+   "teamOnlineBal": {
+    "T1": 399649,
+    "T2": 221435
+   },
+   "teamOnlineHumans": {
+    "T1": 5,
+    "T2": 5
+   },
+   "teamSharePct": {
+    "T1": 23.3,
+    "T2": 18.5
+   },
+   "aiSharePct": 55.6,
+   "neutralSharePct": 2.7,
+   "note": "两队 23.3/18.5%，AI 55.6%；在线兵力 40.0 万对 22.1 万。talon5（9,347 格）陆上的敌人只有 Player 804，riku_x（8,423 格）四周多是队友；kaito9 22,044 格、密度不到 2"
+  },
+  {
+   "t": 2130,
+   "alive": 5,
+   "sqTerr": 145953,
+   "sqSharePct": 38.94,
+   "sqBal": 1237209,
+   "sqDens": 8.5,
+   "husks": {
+    "n": 1,
+    "terr": 1519,
+    "sharePct": 0.41,
+    "bal": 1531
+   },
+   "teamOnlineBal": {
+    "T1": 1237209,
+    "T2": 681037
+   },
+   "teamOnlineHumans": {
+    "T1": 5,
+    "T2": 5
+   },
+   "teamSharePct": {
+    "T1": 39.3,
+    "T2": 41.7
+   },
+   "aiSharePct": 16.8,
+   "neutralSharePct": 2.2,
+   "note": "kaito9 1701~1715 拍三条指令把余额打到 0（39,960 格），Player 845、691 用 10 万兵吃掉它 15,689 格；队2 反超（41.7 对 39.3%）。leo_tx 1725 拍起被围（33,269 格）"
+  },
+  {
+   "t": 2700,
+   "alive": 5,
+   "sqTerr": 151870,
+   "sqSharePct": 40.52,
+   "sqBal": 3593950,
+   "sqDens": 23.7,
+   "husks": {
+    "n": 1,
+    "terr": 1519,
+    "sharePct": 0.41,
+    "bal": 1524
+   },
+   "teamOnlineBal": {
+    "T1": 3593950,
+    "T2": 2230938
+   },
+   "teamOnlineHumans": {
+    "T1": 5,
+    "T2": 5
+   },
+   "teamSharePct": {
+    "T1": 40.9,
+    "T2": 57.0
+   },
+   "aiSharePct": 0.8,
+   "neutralSharePct": 1.3,
+   "note": "队2 吃完剩下的 AI 地：57.0 对 40.9%。zexos1 2210~2825 拍守着 6.4~6.6 万格没出手（Russia 的报价一直高于 worth），余额 33 万→131 万；在线兵力 359 万对 223 万"
+  },
+  {
+   "t": 3060,
+   "alive": 5,
+   "sqTerr": 153341,
+   "sqSharePct": 40.91,
+   "sqBal": 4942804,
+   "sqDens": 32.2,
+   "husks": {
+    "n": 1,
+    "terr": 1519,
+    "sharePct": 0.41,
+    "bal": 1
+   },
+   "teamOnlineBal": {
+    "T1": 4942804,
+    "T2": 2978344
+   },
+   "teamOnlineHumans": {
+    "T1": 5,
+    "T2": 5
+   },
+   "teamSharePct": {
+    "T1": 41.3,
+    "T2": 56.8
+   },
+   "aiSharePct": 0.8,
+   "neutralSharePct": 1.1,
+   "note": "Russia 2716 拍起 7 次打 zexos1（烧 36.2 万换 3,611 格）；从 2828 拍那次起，它每压一次兵，zexos1 就回一串脉冲（2842~3143 拍 10 条，76.7 万兵换 32,688 格）。后排的 10 条协防调度 2935~3185 拍被额度拒收"
+  },
+  {
+   "t": 3600,
+   "alive": 4,
+   "sqTerr": 177407,
+   "sqSharePct": 47.33,
+   "sqBal": 4710980,
+   "sqDens": 26.6,
+   "husks": {
+    "n": 2,
+    "terr": 14729,
+    "sharePct": 3.93,
+    "bal": 510613
+   },
+   "teamOnlineBal": {
+    "T1": 4710980,
+    "T2": 2015410
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 4
+   },
+   "teamSharePct": {
+    "T1": 51.3,
+    "T2": 47.1
+   },
+   "aiSharePct": 0.5,
+   "neutralSharePct": 1.1,
+   "note": "3213 拍额度换算放宽，leo_tx 3227、3304 拍两笔 132.8 万到 zexos1；Russia 3192 拍离场。zexos1 3305~3605 拍四串脉冲吃 691 的 29,682 格：51.3 对 47.1%。riku_x 的页面 3570 拍退出"
+  },
+  {
+   "t": 4500,
+   "alive": 4,
+   "sqTerr": 305836,
+   "sqSharePct": 81.6,
+   "sqBal": 14167314,
+   "sqDens": 46.3,
+   "husks": {
+    "n": 2,
+    "terr": 19431,
+    "sharePct": 5.18,
+    "bal": 76794
+   },
+   "teamOnlineBal": {
+    "T1": 14167314,
+    "T2": 458810
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 1
+   },
+   "teamSharePct": {
+    "T1": 86.8,
+    "T2": 8.2
+   },
+   "aiSharePct": 0.6,
+   "neutralSharePct": 4.4,
+   "note": "691 3619 拍、يحيى 3759 拍离场，845 3862 拍出局。zexos1 等到自己密度 77（4305 拍）才吃 691 的空壳，4200~4500 拍 +85,830 格。队2 只剩岛上的 Player 804（3,284 格、密度 140）"
+  },
+  {
+   "t": 5400,
+   "alive": 4,
+   "sqTerr": 345005,
+   "sqSharePct": 92.05,
+   "sqBal": 40066945,
+   "sqDens": 116.1,
+   "husks": {
+    "n": 2,
+    "terr": 20035,
+    "sharePct": 5.35,
+    "bal": 20055
+   },
+   "teamOnlineBal": {
+    "T1": 40066945,
+    "T2": 529572
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 1
+   },
+   "teamSharePct": {
+    "T1": 97.4,
+    "T2": 1.0
+   },
+   "aiSharePct": 0.4,
+   "neutralSharePct": 1.2,
+   "note": "4567 拍队1 过 90%，引擎提速。编队余额 4,007 万（密度 116），kaito9 贴着硬上限。zexos1 4900/4977 拍头两条大船去了 395 步外 AI148 的岛，648 拍后靠在 kaito9 的岸上"
+  },
+  {
+   "t": 6300,
+   "alive": 4,
+   "sqTerr": 347916,
+   "sqSharePct": 92.82,
+   "sqBal": 31011891,
+   "sqDens": 89.1,
+   "husks": {
+    "n": 2,
+    "terr": 20156,
+    "sharePct": 5.38,
+    "bal": 29410
+   },
+   "teamOnlineBal": {
+    "T1": 31011891,
+    "T2": 200000
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 1
+   },
+   "teamSharePct": {
+    "T1": 98.2,
+    "T2": 0.4
+   },
+   "aiSharePct": 0.6,
+   "neutralSharePct": 0.8,
+   "note": "zexos1 5674~6221 拍 6 条船靠上 Player 804 的岛（船上 2,515 万兵），拿下 2,104 格只烧 80.2 万。zexos1 与 kaito9 开始来回捐款：5000~5999 拍 56 笔、税 4,843 万"
+  },
+  {
+   "t": 7200,
+   "alive": 4,
+   "sqTerr": 348519,
+   "sqSharePct": 92.98,
+   "sqBal": 37676695,
+   "sqDens": 108.1,
+   "husks": {
+    "n": 2,
+    "terr": 21201,
+    "sharePct": 5.66,
+    "bal": 24646
+   },
+   "teamOnlineBal": {
+    "T1": 37676695,
+    "T2": 41348
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 1
+   },
+   "teamSharePct": {
+    "T1": 98.6,
+    "T2": 0.3
+   },
+   "aiSharePct": 0.2,
+   "neutralSharePct": 0.8,
+   "note": "kaito9 7000~7580 拍 10 条船收掉 Player 804 最后的 758 格（7607 拍出局）。非本队的地还剩 1% 左右，全在水的另一边"
+  },
+  {
+   "t": 8100,
+   "alive": 4,
+   "sqTerr": 350584,
+   "sqSharePct": 93.53,
+   "sqBal": 36156863,
+   "sqDens": 103.1,
+   "husks": {
+    "n": 2,
+    "terr": 21324,
+    "sharePct": 5.69,
+    "bal": 21271
+   },
+   "teamOnlineBal": {
+    "T1": 36156863,
+    "T2": 0
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 0
+   },
+   "teamSharePct": {
+    "T1": 99.2,
+    "T2": 0.0
+   },
+   "aiSharePct": 0.1,
+   "neutralSharePct": 0.7,
+   "note": "最后一个 AI（AI148，几百到一千多格、1~3 千兵）8863 拍才死。zexos1 7903~8624 拍对它发的 5 条船（2,216 万兵）航程 641~710 拍，靠岸时落点都已是 talon5 的地，到账 257 万"
+  },
+  {
+   "t": 9000,
+   "alive": 4,
+   "sqTerr": 351029,
+   "sqSharePct": 93.65,
+   "sqBal": 39317694,
+   "sqDens": 112.0,
+   "husks": {
+    "n": 2,
+    "terr": 21435,
+    "sharePct": 5.72,
+    "bal": 21450
+   },
+   "teamOnlineBal": {
+    "T1": 39317694,
+    "T2": 0
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 0
+   },
+   "teamSharePct": {
+    "T1": 99.4,
+    "T2": 0.0
+   },
+   "aiSharePct": 0.0,
+   "neutralSharePct": 0.6,
+   "note": "队1 99.4%，剩 2,300 格中立小岛（9300 拍 114 块）。扫尾分支接手：每条船只带余额的 1/1024，船费照付余额的 32/1024"
+  },
+  {
+   "t": 10800,
+   "alive": 4,
+   "sqTerr": 352700,
+   "sqSharePct": 94.1,
+   "sqBal": 34805583,
+   "sqDens": 98.7,
+   "husks": {
+    "n": 2,
+    "terr": 21549,
+    "sharePct": 5.75,
+    "bal": 23280
+   },
+   "teamOnlineBal": {
+    "T1": 34805583,
+    "T2": 0
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 0
+   },
+   "teamSharePct": {
+    "T1": 99.8,
+    "T2": 0.0
+   },
+   "aiSharePct": 0.0,
+   "neutralSharePct": 0.2,
+   "note": "非本队的地 971 格（10200 拍）→475 格（11100 拍）。在线号的中立登陆几乎全是 zexos1 一个号做的；kaito9、leo_tx、talon5 的船位被远处的慢船占着"
+  },
+  {
+   "t": 12600,
+   "alive": 4,
+   "sqTerr": 353099,
+   "sqSharePct": 94.2,
+   "sqBal": 30651507,
+   "sqDens": 86.8,
+   "husks": {
+    "n": 2,
+    "terr": 21605,
+    "sharePct": 5.76,
+    "bal": 21605
+   },
+   "teamOnlineBal": {
+    "T1": 30651507,
+    "T2": 0
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 0
+   },
+   "teamSharePct": {
+    "T1": 100.0,
+    "T2": 0.0
+   },
+   "aiSharePct": 0.0,
+   "neutralSharePct": 0.0,
+   "note": "还剩 76 格/33 块（13200 拍）。zexos1 12300~12600 拍发了 29 条船：带 57.4 万兵，付船费 1,837 万，+50 格"
+  },
+  {
+   "t": 14689,
+   "alive": 4,
+   "sqTerr": 353205,
+   "sqSharePct": 94.23,
+   "sqBal": 35952347,
+   "sqDens": 101.8,
+   "husks": {
+    "n": 2,
+    "terr": 21615,
+    "sharePct": 5.77,
+    "bal": 12
+   },
+   "teamOnlineBal": {
+    "T1": 35952347,
+    "T2": 0
+   },
+   "teamOnlineHumans": {
+    "T1": 4,
+    "T2": 0
+   },
+   "teamSharePct": {
+    "T1": 100.0,
+    "T2": 0.0
+   },
+   "aiSharePct": 0.0,
+   "neutralSharePct": 0.0,
+   "note": "14669 拍最后一格拿下，对局结束（引擎要领先队占满全部陆地才判结束）。整局利息 6.75 亿，捐款税 3.04 亿、船费 2.56 亿；终局余额 3,595 万"
+  }
+ ],
+ "phases": {
+  "spawn_0_90": {
+   "facts": [
+    "6 个号落在 x 612~780、y 296~488：zexos1 (710,320)、leo_tx (780,296)、talon5 (732,423)、kaito9 (612,488)、riku_x (680,468)、alex_k (626,342)，最近的编队号 69~87 像素。150 像素内有敌方真人的 5 个号：talon5 离 Player 804 72 像素，leo_tx、riku_x 131，zexos1 142，kaito9 离 Player 845 148",
+    "选点器 35 轮都按 10 个名字解（日志 minSep 68~70 像素、boss=none、全部 BANK）。最后一轮（日志行 7090445）给不在场的 sora_w、noah88、ryan_m、zero_7 的点 (667,396)、(769,364)、(583,418)、(543,478) 空着；在场 6 个号的落点与指派相差 ≤2 像素",
+    "选点期编队发了 43 条出生指令（单号 4~9 条）；alex_k 只有 4 条"
+   ],
+   "problems": [
+    "选点名单里有 4 个不在本房间的名字；6 个号排成互隔 70 像素的一小团，Player 804 就出生在 talon5 旁边 72 像素",
+    "alex_k 的页面从选点期就慢"
+   ]
+  },
+  "opening_90_630": {
+   "facts": [
+    "开局周期出兵 47/47 条全部成交（alex_k 的 3 条延迟 195~259 拍）",
+    "t=630 两队 4.0/2.8%，AI 64.7%，中立 28.6%；编队 6 个号的地 760~3,576（中位 2,648，zexos1 是 12 个真人里的第 1），队2 中位 1,889、最大 2,957；在线兵力 2.7 万对 2.2 万",
+    "5 个在控号 463~792 拍先后被翻成 isNoFullSend=true（对局不是限额模式）"
+   ],
+   "problems": [
+    "alex_k 本地 308 拍退出时只有 12 格；3 条迟到的指令让它在 931 拍离线时有 760 格，之后是 1,519 格的空壳"
+   ]
+  },
+  "midgame_630_3500": {
+   "facts": [
+    "630→1530：AI 的地先涨到 83.3%（900 拍）再被分，两队 4.0/2.8% → 23.3/18.5%。600~1500 拍 900 个决策拍：选到目标 318、在扩中立 369、没有 AI 邻居 102、被 safeFinite 冻结 60（卡在编队友 56、敌方真人 4；其中 35 拍只去掉这一项就能出手）。talon5 25 拍（riku_x×16、leo_tx×6、Player 804×3），zexos1 11 拍全卡在 alex_k 的空壳",
+    "1500 拍各号：zexos1 23,445 格/7.3 万兵，kaito9 22,044/3.9 万，leo_tx 19,533/6.8 万，talon5 9,347/12.4 万（密度 13），riku_x 8,423/9.0 万（密度 11）；队2 最大的 Player 691 26,870 格/7.8 万",
+    "kaito9 1695~1715 拍：36k 格、余额 1.2~5.2 万（密度 0.3~1.4），留底算出来是 0（dpKeep→0；邻居 Player 845 有 3.0~5.0 万兵、接壤 204 格）。1701/1708/1715 拍三条 pct 617/638/1012 打向 AI62、AI451，余额到 0，1755~1795 拍一直是 0（地峰值 39,960@1757）。845 的两条指令（1750 拍 17,893 兵、1869 拍 20,316 兵）吃掉 10,250 格（3.7 兵/格），691 的三条（6.2 万兵）吃掉 5,439 格；2100 拍 kaito9 29,564 格",
+    "2100→2700：剩下的 AI 地（17.4%→0.8%）几乎全进了队2（41.7%→57.0%，队1 39.3%→40.9%）。我方 5 个号：leo_tx 1725 拍起被围（33,269 格），riku_x 大半时间被围，talon5 陆上只挨着 Player 804（报价 58→255，worth 20→90，1500~2905 拍 282 个决策拍报价都高于 worth），zexos1 2210~2825 拍 124 个决策拍报价高于 worth（Russia c 12.7→25.3，worth 6.2→18.3；余额 33 万→131 万），kaito9 2560~3170 拍 123 个",
+    "兵力对比：2400 拍 202 万对 105 万，2700 拍 359 万对 223 万，3300 拍 544 万对 269 万。2700 拍的密度：zexos1 16、kaito9 12、leo_tx 30、riku_x 35、talon5 76；队2 的 691 10、Russia 11、يحيى 5、845 8",
+    "Russia 2716~3066 拍 7 条指令打 zexos1：烧 36.2 万换 3,611 格（100 兵/格）。第一次（2716 拍）zexos1 看到的报价 15.6 对 worth 15.0，没回；2828 拍第二次压出 10.1 万兵，报价 25.26→15.55（worth 约 18.6），zexos1 当拍起连发三条（9.6 万、9.6 万、10.1 万）。2842~3143 拍 10 条指令烧 76.7 万换 32,688 格（23.5 兵/格）；Russia 3192 拍离场（14,018 格/4.9 万兵），zexos1 3241 拍起 3 条吃它的空壳 5,178 格，3270 拍空壳的兵被打光，剩下约 8,500 格变成中立地",
+    "调度：2142~3212 拍日志 13 条，成交 2 条（riku_x→zexos1 158,594、riku_x→kaito9 217,210），10 条被额度拒收（leo_tx→zexos1 2935~3135 拍 6 条：首条要 333 点、只剩 57 点）。3213 拍额度换成按接收方软上限折算后，3227 拍 leo_tx→zexos1 745,167（只占 14 点）、3304 拍 582,826 立刻成交；3213~4283 拍共 10 笔 357 万",
+    "691 2877 拍起 11 条指令打 zexos1（3000~3300 拍 zexos1 丢 22,121 格）。3304 拍 leo_tx 的捐款到账、691 又压出 16.6 万兵，报价从 28.2 掉到 18.9：zexos1 3305~3605 拍四串脉冲烧 114 万换 29,682 格（38 兵/格）；其中 3595 拍那一串是 kaito9 3591 拍打 691 的 11.5 万兵落地后跟上的（691 自己没变，报价 26.86→14.84）。kaito9 收到 4 笔 109.8 万后 3425~3675 拍三串脉冲打 845（3600~3900 拍 28,131 格/53.8 万兵）",
+    "2700~3600 拍的总账（重放 pairLog）：编队对队2 烧 298 万换 80,798 格（37 兵/格），队2 对编队烧 343 万换 53,346 格（64 兵/格）",
+    "talon5 2910~3330 拍三次密度刚过 100 就对 Player 804 发脉冲：烧 40.4 万换 1,120 格（360 兵/格）"
+   ],
+   "problems": [
+    "kaito9 在真人邻居旁边把余额打到 0，丢掉 15,689 格（全图的 4.2%），队2 靠这一段反超",
+    "2100~2825 拍两个前线号都卡在价格线上，队2 把剩下的 AI 地吃完，地领先到 57.0 对 40.9",
+    "前线最吃紧的 2935~3185 拍，后排 10 条协防调度全被额度拒收"
+   ]
+  },
+  "endgame_3500_end": {
+   "facts": [
+    "队2 散掉：691 3619 拍离场（93,957 格/126 万兵），يحيى 3703 拍把 20.5 万兵全捐给 691 的空壳、3759 拍离场（40,678 格/5 个兵），845 3862 拍出局；队2 在线兵力 3600 拍 202 万 → 3900 拍 42 万（只剩 Player 804）",
+    "zexos1 3620~4300 拍没有吃 691 的空壳（9.4 万→8.6 万格、125~134 万兵，吃光要 171~231 万兵）：先是报价 28.5~38.3 高于 worth 15.0~18.8，3770 拍 worth 跳到 90 之后卡在留底和预算上，等到自己密度 77.3（4295 拍，余额 909 万）才放行。4305/4310 拍两条 203 万+163 万：4200~4500 拍吃 AI/空壳 75,604 格只烧 242 万（32 兵/格），地 117,526→203,356",
+    "4500 拍 86.8 对 8.2%，5400 拍 97.4%。之后三段：4567~7607 拍对付岛上的 Player 804（密度 140~146）——46 条船带走 1.02 亿兵、船费 2,240 万，其中 17 条靠在 804 的地上（船上 4,651 万）；7607~9300 拍（最后一个 AI 8863 拍出局）——22 条船 2,802 万兵、船费 573 万；9300~14669 拍中立小岛——386 条船带 710 万兵、船费 2.27 亿",
+    "zexos1 被围分支的大船 21 条：7 条靠在 804 的地上；13 条对着 AI 的岛（出港时落点属 AI148 的 10 条）——出港 5,294 万兵、船费 1,038 万，航程 383~710 拍，靠岸时船上剩 2,145 万，落点全部已是队友的地（kaito9 6、talon5 5、riku_x 空壳 2），到账 1,325 万；1 条靠回自己的岸",
+    "非本队的地：7620 拍 3,811 格/128 块 → 9300 拍 2,300/114 → 10200 拍 971/99 → 11100 拍 475/79 → 12000 拍 227/60 → 13200 拍 76/33 → 14400 拍 4/4",
+    "扫尾的 386 条船全是 pct 0（装的兵比船费少）；266 条是 60 拍内发往同一落点的重复船（船费 1.53 亿）。zexos1 317 条：靠在中立地上 100 条、靠在自己地上 209 条；leo_tx 52 条：中立 2、队友地 38；talon5 14 条：中立 1；kaito9 3 条都没靠岸。riku_x 的空壳（内置 AI）同期做了 26 次中立登陆",
+    "4500 拍之后各号 2,034 个决策拍里「在途船数已满」的拍数：leo_tx 1,704、kaito9 1,454、talon5 1,376、zexos1 1,190。kaito9 7694/7715 拍两条 9 千兵的船走 1,224 像素的航线，在海上 3,715/3,704 拍衰减到 1 个兵后消失",
+    "捐款：4284 拍之后 352 笔到账 8.46 亿。zexos1→kaito9 109 笔到账 3.73 亿、税 1.89 亿，kaito9→zexos1 127 笔到账 3.40 亿、税 6,783 万：净流量 3,237 万，税 2.56 亿；100 拍内掉头 207 次，间隔中位 28 拍。138 笔被接收方硬上限截短",
+    "整局账（卷宗[L]）：利息 6.75 亿；捐款税 3.04 亿（45.1%）、船费 2.56 亿（37.9%）、攻击费 744 万；打中立/AI/真人各烧 302 万/1,025 万/891 万；终局余额 3,648 万"
+   ],
+   "problems": [
+    "过 90% 之后又用了 10,102 拍：Player 804 的岛 3,040 拍，最后一个 AI 1,256 拍，中立小岛 5,806 拍",
+    "zexos1 对着 AI 岛发的 13 条大船没有一条靠在敌人的地上；扫尾实际只有 zexos1 一个号的船在拿地，而且它每个岛平均多发两三条",
+    "两个被围的号把兵来回捐，利息的 45% 变成了税；kaito9 4284 拍之后有 3,090 拍贴着硬上限"
+   ]
+  }
+ },
+ "turningPoints": [
+  {
+   "t0": 1530,
+   "t1": 2130,
+   "what": "kaito9 把余额打空，被两个真人邻居吃掉四分之一的地；队2 反超",
+   "shareKind": "队1 占全图陆地",
+   "shareBefore": 0.233,
+   "shareAfter": 0.393,
+   "enemyShareBefore": 0.185,
+   "enemyShareAfter": 0.417,
+   "squadShareBefore": 0.2288,
+   "squadShareAfter": 0.3894,
+   "ourBots": [
+    "kaito9"
+   ],
+   "enemies": [
+    "Player 845#9",
+    "Player 691#5"
+   ],
+   "evidence": [
+    "卷宗[B]：1500 拍 22.5/17.5%、AI 57.6% → 1800 拍 35.5/28.7%、AI 33.3% → 2100 拍 39.3/41.7%、AI 17.4%；在线兵力 1500 拍 39.6 万对 24.1 万，2100 拍 119 万对 73.6 万",
+    "重放 cmdLog：kaito9 1701 拍 pct 617 → AI62 31,291 兵（余额 51,848）；1708 拍 pct 638 → AI451 19,619（余额 31,440）；1715 拍 pct 1012 → AI451 11,505（余额 11,641）；1750~1764 拍三条 pct 1023 只带出 4/0/0 个兵。快照：1755~1795 拍余额 0，地峰值 39,960@1757",
+    "out/trace/A025-act-kaito9-1695.txt：1695/1700 拍 safeFinite→307/5.0k、dpKeep→0；报价里 Player 845 14,020 格/3.0 万兵、接壤 204 格、tD 1.02~1.05",
+    "out/trace/A025-buywhy-kaito9-1500.txt：1520~1710 拍密度 0.3~1.4，10 个决策拍原样重跑就出手；1720~1795 拍余额 0~2",
+    "重放 cmdLog/pairLog：Player 845 1750 拍 pct 342 → 17,893 兵、1869 拍 pct 342 → 20,316 兵，共吃 kaito9 10,250 格、烧 37,743（3.7 兵/格）；Player 691 1883/1925/2072 拍三条 pct 105（15,607/19,845/26,696 兵）吃 5,439 格、烧 61,911（11.4 兵/格）。kaito9 同期只从 845 手里打回 236 格",
+    "卷宗[E]：kaito9 1500~1900 拍吃 AI 19,151 格（7.3 万兵）、中立 5,878 格（1.2 万兵）；1800~2100 拍地 37,324→29,564"
+   ],
+   "priorDecisions": [
+    {
+     "t": "1695~1715",
+     "bot": "kaito9",
+     "what": "有真人邻居时留底为 0，把余额全部压向 AI 和中立地",
+     "codePath": "src/strategy/v27-team-c116-vb.js V17.safeAt L2728-2738（killW=1 → dpKeep）→ dpKeep L2459-2464：(最强真人邻居的兵 − 1.5×我的地)/1.78，为负取 0 → Policy.buyLand L5414-5418、L5449-5453（非真人目标 x = min(avail, 1.25×need+3×接壤) 直接 send）",
+     "why": "845 的兵（3.0~5.0 万）不到 1.5×36k 格，公式认为它构不成威胁；但 kaito9 自己每格不到 1 个兵"
+    },
+    {
+     "t": "1500~1700",
+     "bot": "kaito9",
+     "what": "分 AI 地时密度一直 0.3~1.4",
+     "codePath": "src/strategy/v27-team-c116-vb.js General.expandNeutral L944-955；Policy.buyLand L5449-5453",
+     "why": "同一时段 zexos1、leo_tx 密度 3~4，talon5、riku_x 11~13；kaito9 是 5 个号里最薄、又唯一同时挨着两个敌方真人的"
+    }
+   ],
+   "alternatives": [
+    "845、691 为什么选这时候动手不可见；845 的第一条指令在 kaito9 余额归零后 35 拍",
+    "kaito9 1500~1900 拍用 8.5 万兵换了 25,029 格 AI 和中立地，随后丢 15,689 格，净赚仍是正的；如果留着兵，AI 地会少拿，守不守得住也没有重演过",
+    "如果不丢这 15,689 格（全图 4.2%），2100 拍是 43.5 对 37.5 而不是 39.3 对 41.7——这是算术，不是重演"
+   ],
+   "statementType": "observed",
+   "confidence": "high"
+  },
+  {
+   "t0": 2700,
+   "t1": 3600,
+   "what": "决定胜负的一段：兵多的一方用脉冲把兵换成地，队2 的真人接连离场",
+   "shareKind": "队1 占全图陆地",
+   "shareBefore": 0.409,
+   "shareAfter": 0.513,
+   "enemyShareBefore": 0.57,
+   "enemyShareAfter": 0.471,
+   "squadShareBefore": 0.4052,
+   "squadShareAfter": 0.4733,
+   "ourBots": [
+    "zexos1",
+    "kaito9",
+    "leo_tx",
+    "talon5",
+    "riku_x"
+   ],
+   "enemies": [
+    "Russia#8",
+    "Player 691#5",
+    "Player 845#9"
+   ],
+   "evidence": [
+    "卷宗[B]：2700 拍 40.9/57.0% → 3000 拍 42.3/55.9% → 3300 拍 42.4/54.1% → 3600 拍 51.3/47.1%；在线兵力 359 万对 223 万 → 474 万对 283 万 → 544 万对 269 万 → 471 万对 202 万",
+    "重放 pairLog 2700~3600 拍：编队→队2 80,798 格/298 万（37 兵/格），队2→编队 53,346 格/343 万（64 兵/格）。逐对：zexos1→Russia 37,866 格/84.5 万（22）；zexos1→691 29,682/114 万（38.5）；kaito9→691 9,529/36.6 万（38）；talon5→804 1,120/40.4 万（360）；691→zexos1 32,381/170 万（52.5）；845→kaito9 12,626/117 万（93）；Russia→zexos1 3,611/36.2 万（100）",
+    "重放 cmdLog 的先后：Russia 打 zexos1 的指令 2828、2926、3045 拍落地，zexos1 打 Russia 的三串 2842、2940、3059 拍起落地（各晚 14 拍）；691 打 zexos1 的指令 3304、3360、3430 拍，zexos1 打 691 的三串 3318、3388、3451 拍起；kaito9 3591 拍打 691（11.5 万兵），zexos1 第四串 3605 拍起",
+    "out/trace/A025-act-zexos1-2822.txt：2825 拍 Russia c=25.26、不出手；2830 拍 Russia 压出 10.1 万兵（onMe）c=15.55 → send 9.6 万；2835 拍 9.6 万；2840 拍 10.1 万。out/trace/A025-buywhy-zexos1-2600.txt：2720 拍（Russia 第一次打过来）c=15.6 对 worth=15.0，拦在 worth",
+    "out/trace/A025-act-zexos1-3296.txt：3300 拍余额 151 万、691 c=28.16；3305 拍余额 209 万（3304 拍 leo_tx 的 582,826 到账）、691 压出 16.6 万 c=18.9 → send 20.6 万。out/trace/A025-act-zexos1-3586.txt：3590 拍 691 c=26.86 不出手；3595 拍 691 的地、兵没变，c=14.84 → send 18.0 万、16.5 万、15.9 万",
+    "重放 cmdLog 捐款行：2842 riku_x→zexos1 158,594（128 点/上限 177）；3171 riku_x→kaito9 217,210（175/201）；3227 leo_tx→zexos1 745,167（税 148,569；14 点）；3304 leo_tx→zexos1 582,826；3381 talon5→zexos1 383,719；3402 talon5→kaito9 226,377；3423 riku_x→kaito9 155,201；3577 leo_tx→kaito9 499,617",
+    "卷宗[H]：额度拒 10 条——leo_tx→zexos1 2935~3135 拍 6 条（首条要 333 点、剩 57 点；捐方余额 148 万→205 万）、3185 拍 1 条（556/73），riku_x→zexos1 3105~3130 拍 2 条（139/73），leo_tx→kaito9 3160 拍 1 条（640/201）",
+    "重放快照：zexos1 的地 66,262（2700）→73,138（3000）→77,159（3300）→107,230（3600）；691 3300 拍 126,195 格/160 万兵，3619 拍离场时 93,957 格/126 万兵"
+   ],
+   "priorDecisions": [
+    {
+     "t": "2210~2825",
+     "bot": "zexos1",
+     "what": "守着 6.4~6.6 万格不出手，余额 33 万→131 万",
+     "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5350-5352（worth = maxW×winRatio×refDens，本局约 0.9×自己的密度）→ L5359（c ≥ worth 且没过软上限 → break）",
+     "why": "Russia 的报价（12.7→25.3）约是它密度的 2 倍多，worth（6.2→18.3）约是自己密度的 0.9 倍：对手不动时，要比它密 2.5 倍才会出手"
+    },
+    {
+     "t": "2830~3605",
+     "bot": "zexos1、kaito9",
+     "what": "对手把兵压出来、或队友先打上去的那一拍回脉冲",
+     "codePath": "src/strategy/v27-team-c116-vb.js Policy.offers L5171-5175（正在打我的人 aggQ 报价打折）、L5182-5185 与 L5204-5206（有编队号在打同一目标：need 减去队友的兵，再 ×0.58）、L5210-5212（它在打队友 ×0.75）→ Policy.buyLand L5359 → L5594-5607（pulseMode：capFrac = pulseFrac×余额 = 12%；L5595 在途兵 ≥ 4% 余额才跳过；L5607 send）",
+     "why": "对手一动手报价就掉到 worth 以下；每串 2~3 条是上一条还没落地（延迟 11 拍）就又发了"
+    },
+    {
+     "t": "2935~3185",
+     "bot": "leo_tx、riku_x",
+     "what": "协防调度发了 10 条，全被额度拒收",
+     "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4463-4473（defense_dispatch）、L4500-4505（被围捐方 pct 至多 380）；src/sim/sim/game.js donationCost L348-357（2142≤t<3213：2 + 100×兵数/(100×uw)，uw = 1+陆地/300）",
+     "why": "策略算 pct 时不看接收方还剩多少额度；一笔 41 万兵的捐款要 333 点"
+    },
+    {
+     "t": "3227~3577",
+     "bot": "leo_tx、talon5、riku_x",
+     "what": "额度换算放宽后 6 笔 259 万到 zexos1、kaito9",
+     "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4463-4495；src/sim/sim/game.js donationCost L350（t≥3213：4 + 100×兵数/接收方软上限）",
+     "why": "同样 75 万的捐款 3213 拍之后只占 14 点"
+    }
+   ],
+   "alternatives": [
+    "Russia、691、يحيى 为什么离场不可见。Russia 是在 350 拍里丢了 32,688 格之后走的；691 走的时候还有 93,957 格/126 万兵，是全场第二大。如果他们不走，3600 拍的 51.3 对 47.1 之后还要接着打",
+    "换地价的差别来自密度：2700 拍我方前线号密度 12~16、后排 30~76，队2 的四个号 5~11；我方前线号又只在对手压兵出来时才出手",
+    "如果 2935~3185 拍那 10 条调度成交，zexos1 会早 290 拍拿到兵；会不会少丢 3000~3300 拍那 22,121 格，没有重演"
+   ],
+   "statementType": "inferred",
+   "confidence": "medium"
+  },
+  {
+   "t0": 3600,
+   "t1": 4500,
+   "what": "把优势变成地：队2 只剩空壳，zexos1 等了 685 拍才吃",
+   "shareKind": "队1 占全图陆地",
+   "shareBefore": 0.513,
+   "shareAfter": 0.868,
+   "enemyShareBefore": 0.471,
+   "enemyShareAfter": 0.082,
+   "squadShareBefore": 0.4733,
+   "squadShareAfter": 0.816,
+   "ourBots": [
+    "zexos1",
+    "kaito9"
+   ],
+   "enemies": [
+    "Player 691#5（空壳）",
+    "يحيى#6（空壳）",
+    "Player 845#9"
+   ],
+   "evidence": [
+    "卷宗[B]：3600 拍 51.3/47.1% → 3900 拍 62.9/33.9% → 4200 拍 63.3/34.5% → 4500 拍 86.8/8.2%；队2 在线兵力 202 万 → 42.2 万 → 48.4 万 → 45.9 万（3900 拍起只有 Player 804 在线）",
+    "重放：691 3619 拍离线；يحيى 3703 拍 pct 1023 把 205k 捐给 691 的空壳（[N]），3759 拍离线时 40,678 格/5 个兵；845 3862 拍出局（kaito9 3600~3900 拍吃它 28,131 格/53.8 万兵，自己 26,404→57,205 格）",
+    "out/trace/A025-buywhy-zexos1-3560.txt（采样 49 个决策拍：worth 27、worth+pulseMin 1、worth+chunk 21）：3620 拍余额 184 万、691 空壳 c=28.5 对 worth 15.0（need 171 万）；3770 拍 worth 跳到 90.1、c=38.3（need 204 万）；4010 拍余额 516 万、密度 43.8、c=38.7、拦在 worth+chunk；4295 拍余额 909 万、密度 77.3、c=39.6（need 231 万）",
+    "影子摘要[S6]：zexos1 4305~4310 拍对 691 空壳首条 203 万、重发多花 163 万（buyLand:5453）；4370~4380 拍对 يحيى 空壳 24.8 万+46.4 万。卷宗[E]：zexos1 4200~4500 拍吃 AI/空壳 75,604 格、烧 242 万，地 117,526→203,356",
+    "引擎 game.js interestRate L739-740：离线真人（state=2）利率为 0，只有每 100 拍每格 1 兵的领土收入；691 空壳 3900 拍 125 万 → 4200 拍 134 万"
+   ],
+   "priorDecisions": [
+    {
+     "t": "3620~4300",
+     "bot": "zexos1",
+     "what": "贴着 8.6~9.4 万格的空壳 685 拍不出手",
+     "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5359（3620~3755 拍 c ≥ worth）；L5351（3770 拍起 refDens 取到 marketFloor×别人的密度中位，worth 约 90）→ L5422-5427（c < worth 时：minKeep = c×L/m；4000 拍起 worthOwn = m×自己的密度，预算 = (worthOwn×L − 手续费×m − c×L)/(1+m)）→ L5449-5453（x < want 且 x < chunk×余额 → continue）",
+     "why": "按代码推算（m≈0.9、chunk=0.2）：4000 拍前要余额 > 报价×地/0.9（密度约 43）；4000 拍起要预算 ≥ 20% 余额，相当于自己的密度 ≥ 报价的 1.9 倍（39.6×1.9≈76）。实际放行时密度 77~81"
+    },
+    {
+     "t": "3425~3675",
+     "bot": "kaito9",
+     "what": "收到 109.8 万捐款后三串脉冲打 845",
+     "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5594-5607",
+     "why": "845 正在同时打 kaito9（3388、3458、3542、3654 拍各一条 pct 476）"
+    }
+   ],
+   "alternatives": [
+    "这 685 拍里没有人来抢这块空壳（队2 只剩岛上的 Player 804），队1 的份额也没掉（62.9→63.3%）。等的代价是时间，以及 8.6 万格地晚 685 拍才开始给收入",
+    "3620 拍就吃要压出 171 万（当时余额的 93%），旁边 845 还在；3900 拍余额 412 万时吃光要 210 万左右——哪个时点更好没有重演"
+   ],
+   "statementType": "observed",
+   "confidence": "high"
+  },
+  {
+   "t0": 4500,
+   "t1": 14669,
+   "what": "收尾：最后 13% 的地用了约 1 万拍",
+   "shareKind": "队1 占全图陆地",
+   "shareBefore": 0.868,
+   "shareAfter": 1.0,
+   "enemyShareBefore": 0.082,
+   "enemyShareAfter": 0.0,
+   "squadShareBefore": 0.816,
+   "squadShareAfter": 0.9423,
+   "ourBots": [
+    "zexos1",
+    "kaito9",
+    "leo_tx",
+    "talon5"
+   ],
+   "enemies": [
+    "Player 804#11（岛上，密度 140~146）",
+    "AI148",
+    "中立小岛"
+   ],
+   "evidence": [
+    "卷宗[B]：4500 拍 86.8% → 5400 拍 97.4% → 7200 拍 98.6% → 9000 拍 99.4% → 10800 拍 99.8% → 12600 拍 100.0%（四舍五入）→ 14669 拍结束。out/trace/A025-leftover.txt：非本队的地 4800 拍 11,972 格/174 块（敌方真人 3,615、AI 2,236、中立 6,121）→ 7620 拍 3,811/128 → 9300 拍 2,300/114 → 12000 拍 227/60 → 14400 拍 4/4；除 1~2 块外都只隔着水或山",
+    "out/trace/A025-boat-audit.txt（在线号合计）：4567~7607 拍 46 条船、兵 1.02 亿、船费 2,240 万；7607~9300 拍 22 条、2,802 万、573 万；9300~14669 拍 386 条、710 万、2.27 亿（同落点多余 266 条、船费 1.53 亿；靠岸：中立 103、自己的地 221、队友的地 55）",
+    "重放 cmdLog/landings（zexos1 4567~9300 拍 21 条 pct>0 的船）：靠在 804 的地上 7 条（5674~6221 拍 6 条 + 7304 拍 1 条，船上 3,010 万）；出港时落点属 AI148/AI15/已是队友的 13 条（4900、4977、6223、6244、6622、6685、7357、7399、7903、7945、8554、8610、8624 拍）出港 5,294 万兵、船费 1,038 万，航程 383~710 拍，靠岸时船上 2,145 万、全部落在队友地上、到账 1,325 万；7308 拍 1 条靠回自己的岸",
+    "out/trace/A025-leftover.txt：离 zexos1 岸边 5~9 像素有一块 563 格的中立岛，4800、6000、7620 拍都还在（8400 拍已拿下）；同期 zexos1 的大船去的是 355~465 步外的 AI 岛（out/trace/A025-idleboats-zexos1.txt）",
+    "out/trace/A025-idleboats-*.txt（4500~14665 拍各 2,034 个决策拍）：zexos1 扫尾发船 318、船位满 1,190；kaito9 船位满 1,454、扫尾发船 3；leo_tx 船位满 1,704、扫尾发船 53；talon5 船位满 1,376、扫尾发船 18。扫尾期平均在海上的船 zexos1 1.8~3.4、kaito9 2.0~3.0、leo_tx 4.2~5.0、talon5 2.9~4.0 条（高于 maxBoats=2：本地船数比发令晚 7~20 拍才变，一串能连发 3~6 条）",
+    "out/trace/A025-boats-kaito9-7600.txt：7694/7715 拍两条 9,037/8,902 兵的船，航线 9 段 1,224 像素，在海上 3,715/3,704 拍，走到第 7 段时只剩 1 个兵后消失，没有靠岸；11425~11432 拍三条去 1,065 像素外，终局时还在第 7~8 段、剩 36~95 个兵",
+    "out/trace/A025-pingpong.txt：zexos1⇄kaito9 236 笔，总流量 7.13 亿、净流量 3,237 万、税 2.56 亿；376 笔里 182 笔落地当拍双方每 10 拍利息合计不增（这些笔的税 1.70 亿）；zexos1→kaito9 109 笔全部被硬上限截短",
+    "卷宗[L]、[P]：利息 6.75 亿，捐款税 3.04 亿、船费 2.56 亿（zexos1 一个号 2.42 亿）；4284 拍之后 kaito9 5,250 拍在软上限以上、3,090 拍贴硬上限，实得利息是软上限口径的 57%"
+   ],
+   "priorDecisions": [
+    {
+     "t": "4900~8624",
+     "bot": "zexos1",
+     "what": "被围分支的远程船：13 条对着 AI 的岛，一条装 270~660 万兵，全部靠在队友岸上",
+     "codePath": "src/strategy/v27-team-c116-vb.js Policy.idleBoats L5022-5044（L5035 留底 68×领土；L5038 boatRange 放到 2500；L5040 maxEff=Infinity）→ General.boatOut L999-1015（L1001 在途 ≥ maxBoats 不发；L1009 落点不是中立时 amount = boatFrac×(余额−留底)）→ searchWater L1020-1079（L1061 中立：eff = 2×exp(0.004×步数) + 船费/岛的格数；L1070 别家：eff = price×exp(0.004×步数) + 船费/(0.75×对方的总领土)）",
+     "why": "余额 2,500 万时船费 78 万，「船费÷格数」这一项压过了距离和报价：总共 1,400 格的 AI148（eff 约 790）排在 5 像素外 563 格的中立岛（约 1,420）前面；装多少兵只看自己的余额，不看对方只有 1~3 千兵"
+    },
+    {
+     "t": "8863~14669",
+     "bot": "4 个在线号",
+     "what": "扫尾分支：每个决策拍都想发船，同一个岛连发；各号都先挑最大的岛",
+     "codePath": "src/strategy/v27-team-c116-vb.js Policy.isMopUp L4520-4533 → Policy.idleBoats L5045-5052（没有间隔检查；L5046 的上限 6 条被 boatOut L1001 的 maxBoats=2 盖住）→ General.boatOut L1009-1010（中立落点 3×岛的格数+300 → pct 0）→ searchWater L1061（不看在途的船，也不看队友）；src/sim/sim/boats.js moveBoats L303、decayBoats L360-366",
+     "why": "余额大的号船费高，船费÷岛的格数这一项压过距离 → 四个号都盯着同一个最大的岛，最近、船最快的 zexos1 先到；另外三个号的慢船占着船位"
+    },
+    {
+     "t": "4984~14637",
+     "bot": "zexos1、kaito9、leo_tx、talon5",
+     "what": "被围号之间的收益优化捐款来回倒",
+     "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4453（没有战事的候选人：我被围、对方有海岸、我密度 ≥105、对方 ≤112 就不跳过）→ L4479-4481（reqD 58、对方 ≤128）→ L4492 yield_opt_dispatch → L4500-4505（pct 320）；src/sim/sim/game.js transfer L388-400",
+     "why": "规则是对称的：谁过 105 就给 112 以下的人 31%；给完自己掉到 93 左右、对方被顶到 150，下一轮反过来"
+    }
+   ],
+   "alternatives": [
+    "这一段没有对手了，慢不会输；代价是时间（全局 69%）和手续费。引擎的结束条件（game.js victoryTick L1398-1412）是领先队占满全部陆地、没有前线、海上没有敌船，所以每一块 1 格的小岛都要有船靠上去",
+    "同一张图的 A018（bundles/A018/results.csv）也是 374,820/374,820 才结束，用了 16,673 拍；别的赢局有在 87.7%（A079）、97.7%（A075）、99.8%（A022）就记了 end 的，原因没有查",
+    "kaito9、leo_tx、talon5 三个号如果各清各的近岛会快多少，没有重演；能确认的只是 9300 拍之后 103 次中立登陆里它们只占 3 次"
+   ],
+   "statementType": "observed",
+   "confidence": "high"
+  }
+ ],
+ "deaths": [
+  {
+   "bot": "zexos1",
+   "me": 0,
+   "event": "end",
+   "t": null,
+   "localStopTick": 14689,
+   "leftServerTick": null,
+   "peakLand": 245999,
+   "peakTick": 14669,
+   "landAtDeath": null,
+   "balanceAtDeath": null,
+   "killers": [],
+   "last500": {
+    "land0": null,
+    "bal0": null,
+    "tilesLost": null,
+    "balLostDefending": null,
+    "lostTo": [],
+    "donatedOut": null,
+    "donationTax": null,
+    "received": null,
+    "attackSent": null
+   },
+   "cause": "活到终局（245,999 格，全图 65.6%）。本局的前线载体：2210~2825 拍在价格线后面把余额从 33 万攒到 131 万；2830~3605 拍对 Russia、691 回了 7 串脉冲和 2 条单发（烧 191 万换 62,370 格），期间收到后排 4 笔 187 万；4305 拍吃 691 的空壳（+85,830 格）。4385 拍起被围，之后发了 343 条船、付船费 2.42 亿，给 kaito9、leo_tx 捐出 4.11 亿（税 2.15 亿）、收到 4.10 亿。",
+   "patternIds": [
+    "NEW-R01-AT05",
+    "NEW-R03-AT01",
+    "R07-GOOD-FED-PUSH",
+    "NEW-EG-G1",
+    "NEW-R03-SE02",
+    "NEW-R03-SE03",
+    "NEW-R01-DN07",
+    "NEW-R03-DN02"
+   ]
+  },
+  {
+   "bot": "leo_tx",
+   "me": 1,
+   "event": "end",
+   "t": null,
+   "localStopTick": 14689,
+   "leftServerTick": null,
+   "peakLand": 34069,
+   "peakTick": 13240,
+   "landAtDeath": null,
+   "balanceAtDeath": null,
+   "killers": [],
+   "last500": {
+    "land0": null,
+    "bal0": null,
+    "tilesLost": null,
+    "balLostDefending": null,
+    "lostTo": [],
+    "donatedOut": null,
+    "donationTax": null,
+    "received": null,
+    "attackSent": null
+   },
+   "cause": "活到终局（34,069 格）。1725 拍起被队友围住（30,132→33,269 格），余额 2100 拍 29 万 → 3300 拍 170 万（密度 51）。2935~3185 拍 8 条调度被额度拒收，3227/3304 拍两笔 132.8 万到 zexos1，3577 拍 50 万到 kaito9。4284 拍之后给 zexos1 捐 45 笔。扫尾期 52 条船里 38 条靠在队友地上、2 条拿到中立地。",
+   "patternIds": [
+    "R07-SP-CLUSTER",
+    "R07-EC-BOXED-RICH",
+    "NEW-R03-DN01",
+    "R07-GOOD-FED-PUSH",
+    "NEW-SE-06"
+   ]
+  },
+  {
+   "bot": "talon5",
+   "me": 2,
+   "event": "end",
+   "t": null,
+   "localStopTick": 14689,
+   "leftServerTick": null,
+   "peakLand": 10953,
+   "peakTick": 13450,
+   "landAtDeath": null,
+   "balanceAtDeath": null,
+   "killers": [],
+   "last500": {
+    "land0": null,
+    "bal0": null,
+    "tilesLost": null,
+    "balLostDefending": null,
+    "lostTo": [],
+    "donatedOut": null,
+    "donationTax": null,
+    "received": null,
+    "attackSent": null
+   },
+   "cause": "活到终局（10,953 格）。出生点离 Player 804 72 像素，开局 25 个决策拍被队友的余额冻住，1500 拍 9,347 格后基本不再长。陆上唯一的敌人是 804（密度 24→113），2910~3330 拍三次密度刚过 100 就对它发脉冲（40.4 万兵换 1,120 格，360 兵/格）；3381 拍起才开始给 zexos1、kaito9 捐款（整局 42 笔 1,319 万）。3360 拍起被围。",
+   "patternIds": [
+    "R07-SP-CLUSTER",
+    "NEW-R03-OP01",
+    "R08:超软上限后高价倾泻",
+    "NEW-SE-06"
+   ]
+  },
+  {
+   "bot": "kaito9",
+   "me": 3,
+   "event": "end",
+   "t": null,
+   "localStopTick": 14689,
+   "leftServerTick": null,
+   "peakLand": 62184,
+   "peakTick": 7680,
+   "landAtDeath": null,
+   "balanceAtDeath": null,
+   "killers": [],
+   "last500": {
+    "land0": null,
+    "bal0": null,
+    "tilesLost": null,
+    "balLostDefending": null,
+    "lostTo": [],
+    "donatedOut": null,
+    "donationTax": null,
+    "received": null,
+    "attackSent": null
+   },
+   "cause": "活到终局（62,184 格）。1701~1715 拍把余额打到 0，被 845、691 吃掉 15,689 格（39,960→29,564）；3171~3577 拍收到 4 笔 109.8 万后三串脉冲打 845，3600~3900 拍 26,404→57,205 格。4915 拍起被围，4284 拍之后 3,090 拍贴着硬上限：进攻退回的兵和靠回自己岸的船约 1,550 万在硬上限上被截掉；与 zexos1 来回捐款 236 笔。7694 拍起两个船位被 1,224 像素外的慢船占了 3,700 拍。",
+   "patternIds": [
+    "R08:出手后变薄，随后被吃",
+    "NEW-R03-AT01",
+    "NEW-R01-EC01",
+    "NEW-R01-DN07",
+    "NEW-SE-06"
+   ]
+  },
+  {
+   "bot": "riku_x",
+   "me": 4,
+   "event": "left",
+   "t": null,
+   "localStopTick": 3472,
+   "leftServerTick": 3570,
+   "peakLand": 20096,
+   "peakTick": 14080,
+   "landAtDeath": null,
+   "balanceAtDeath": null,
+   "killers": [],
+   "last500": {
+    "land0": null,
+    "bal0": null,
+    "tilesLost": null,
+    "balLostDefending": null,
+    "lostTo": [],
+    "donatedOut": null,
+    "donationTax": null,
+    "received": null,
+    "attackSent": null
+   },
+   "cause": "页面本地 3472 拍（247 秒）退出，日志最后一行在本地 3420 拍（13,210 格、58.9 万兵、cmds=80），之前没有报错记录，原因没有查明；服务器 3570 拍判离线（13,210 格/49.6 万兵）。离线前它是被围的后排号（2370 拍起），给 zexos1、kaito9 捐过 3 笔 53.1 万。空壳没有被吃，地反而从 13,210 长到 20,096（内置 AI 自己发船），整局给队友送了 78 次共 622 万（zexos1 335 万、kaito9 210 万、talon5 62.7 万、leo_tx 14.9 万），9300 拍之后还做了 26 次中立登陆。",
+   "patternIds": [
+    "NEW:IO-disconnect-husk",
+    "NEW-R03-EX01",
+    "R07-EC-BOXED-RICH"
+   ]
+  },
+  {
+   "bot": "alex_k",
+   "me": 7,
+   "event": "left",
+   "t": null,
+   "localStopTick": 308,
+   "leftServerTick": 931,
+   "peakLand": 1519,
+   "peakTick": 1260,
+   "landAtDeath": null,
+   "balanceAtDeath": null,
+   "killers": [],
+   "last500": {
+    "land0": null,
+    "bal0": null,
+    "tilesLost": null,
+    "balLostDefending": null,
+    "lostTo": [],
+    "donatedOut": null,
+    "donationTax": null,
+    "received": null,
+    "attackSent": null
+   },
+   "cause": "页面只有正常速度的三成左右：本地 308 拍时已是 71 秒，服务器同时刻约 931 拍。选点期只成交 4 条出生指令，开局 3 条指令成交延迟 195~259 拍；本地 308 拍退出（12 格），服务器 931 拍离线时 760 格/2.9 万兵。之后是 1,519 格的空壳，一直留到终局，整局给 5 个队友送了 135 次共 21.4 万兵（zexos1 71 次 12.4 万）。页面为什么慢没有查明。",
+   "patternIds": [
+    "NEW:IO-disconnect-husk",
+    "NEW-R03-EX01"
+   ]
+  }
+ ],
+ "decisions": [
+  {
+   "t": "0~90",
+   "bot": "全部 6 个号",
+   "kind": "spawn",
+   "verdict": "unclear",
+   "state": "选点器收到的名单是 10 个名字，本房间只有 6 个",
+   "codePath": "src/strategy/spawn-coordinator-c116-vb.mjs solve L790（按 squadBots 全部名字解；L836-849 K = squadBots.length 进 rCell、allyMinSep）→ L938-941（间距放宽系数）→ L1346、L1431（指派）；HTTP /solve L1527-1541 不核对名字是否同房间",
+   "why": "日志里 35 轮都是「Solved 10 bots」，minSep 68~70 像素。4 个不在场的名字占了 4 个点（中心 1 个、东侧 1 个、西侧 2 个），这些点没人去，反而给在场的号留了些空间；能确认的是 6 个号互隔 69~87 像素：talon5（9,347 格）、riku_x（8,423 格）1500 拍、leo_tx（33,269 格）1725 拍起基本被队友围住",
+   "estCost": "说不清。三个号 1725 拍之后合计 5.1~5.7 万格不再长；它们攒的兵 3213~4283 拍有 357 万到了前线",
+   "patternId": "NEW-R01-SP02",
+   "evidenceRef": "in_game.log 行 7090244~7090445 的 35 条 BACKEND-SPAWN-COORD；卷宗[D]；results.csv"
+  },
+  {
+   "t": "0~931",
+   "bot": "alex_k",
+   "kind": "io",
+   "verdict": "unclear",
+   "state": "页面本地拍数只有服务器的三成（308 对 931）",
+   "codePath": "src/strategy/v27-team-c116-vb.js General.act L752-810（开局按本地拍数出兵，发令在 L796）",
+   "why": "3 条指令成交延迟 195~259 拍；931 拍离线时 760 格，之后是 1,519 格的空壳（利率 0）",
+   "estCost": "少一个号；zexos1 1000~1100 拍 11 个决策拍被这个空壳的余额冻住",
+   "patternId": "NEW:IO-disconnect-husk",
+   "evidenceRef": "results.csv（alex_k left@308/71 秒）；影子摘要[S1]；卷宗[G]；out/dossier/A025-freeze.txt"
+  },
+  {
+   "t": "625~1205",
+   "bot": "talon5、zexos1、riku_x、kaito9、leo_tx",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "贴着内置 AI，pickTarget 返回空：safeFinite ≥ (1−minSend)×余额",
+   "codePath": "src/strategy/v27-team-c116-vb.js Style.pickTarget L1144-1177 → V13.floorFor0 L2233-2241 → Policy.winFloor L4562-4570 → V17.safeFinite L2757-2768",
+   "why": "900 个决策拍里 60 个被冻住（卡在编队友 56、敌方真人 4），35 个只去掉这一项就会出手：talon5 25（riku_x×16、leo_tx×6、Player 804×3），zexos1 11（alex_k 的空壳），riku_x 11，kaito9 8，leo_tx 5",
+   "estCost": "35 次出手，各号平均想发余额的 5~10%；量级小",
+   "patternId": "NEW-R03-OP01",
+   "evidenceRef": "out/dossier/A025-freeze.txt 第一段"
+  },
+  {
+   "t": "1695~1715",
+   "bot": "kaito9",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "36k 格、余额 1.2~5.2 万（密度 0.3~1.4）；邻居 Player 845 14,020 格/3.0~5.0 万兵、接壤 204 格",
+   "codePath": "src/strategy/v27-team-c116-vb.js V17.safeAt L2728-2738 → dpKeep L2459-2464（(最强真人邻居的兵 − 1.5×我的地)/1.78 → 0）→ Policy.buyLand L5449-5453；General.expandNeutral L944-955",
+   "why": "留底是 0。1701/1708/1715 拍三条 pct 617/638/1012 把余额从 5.2 万打到 0，1755~1795 拍余额一直是 0",
+   "estCost": "845 两条指令 3.8 万兵吃 10,250 格（3.7 兵/格），691 三条 6.2 万兵吃 5,439 格；kaito9 39,960→29,564 格，队2 在 2100 拍反超",
+   "patternId": "R08:出手后变薄，随后被吃",
+   "evidenceRef": "out/trace/A025-act-kaito9-1695.txt；out/trace/A025-buywhy-kaito9-1500.txt；重放 cmdLog 1701~1764、pairLog 1700~2130"
+  },
+  {
+   "t": "2210~2825",
+   "bot": "zexos1",
+   "kind": "attack",
+   "verdict": "unclear",
+   "state": "64.3k~66.3k 格，余额 33 万→131 万（密度 5→20）；邻居 Russia（2700 拍 44,190 格/49 万兵，密度 11）、691、804",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5350-5352（worth = maxW×winRatio×refDens）→ L5359（c ≥ worth 且没过软上限 → break）",
+   "why": "124 个决策拍最便宜的报价都高于 worth（Russia c 12.7→25.3，worth 6.2→18.3）。这 615 拍里队2 把剩下的 AI 地吃完（41.7%→57.0%），zexos1 的余额翻了 4 倍",
+   "estCost": "说不清：地落后到 40.9 对 57.0；但攒下的兵让之后的对换是 23.5 兵/格对 100 兵/格",
+   "patternId": "NEW-R01-AT05",
+   "evidenceRef": "out/dossier/A025-freeze.txt 第二段；out/trace/A025-buywhy-zexos1-2600.txt"
+  },
+  {
+   "t": "2830~3143",
+   "bot": "zexos1",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "Russia 2716 拍起打 zexos1；2825 拍 Russia c=25.26，2830 拍它压出 10.1 万兵后 c=15.55（worth 约 18.6）",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.offers L5171-5175（aggQ 折价）、L5210-5212 → Policy.buyLand L5359（c < worth 通过）→ L5594-5607（pulseMode：capFrac = 12% 余额，L5607 send）",
+   "why": "Russia 的指令 2828、2926、3045 拍落地，zexos1 的三串各晚 14 拍落地。10 条指令烧 76.7 万换 32,688 格（23.5 兵/格）；Russia 同期烧 36.2 万只换到 3,611 格（100 兵/格），3192 拍离场",
+   "estCost": "+32,688 格（另吃空壳 5,178 格）；余额 131 万（2825 拍）→ 77.8 万（3190 拍）",
+   "patternId": "NEW-R03-AT01",
+   "evidenceRef": "out/trace/A025-act-zexos1-2822.txt；重放 cmdLog（双方指令的落地拍）、pairLog；影子摘要[S6]"
+  },
+  {
+   "t": "2935~3185",
+   "bot": "leo_tx、riku_x",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "zexos1 正被 Russia、691 两家打（密度 10~19）；leo_tx 被围，余额 148 万→221 万（密度 44~66）",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4463-4473（defense_dispatch）、L4500-4505；src/sim/sim/game.js donationCost L348-357（2142≤t<3213 的折算）",
+   "why": "10 条被额度拒收：leo_tx→zexos1 6 条（首条要 333 点、只剩 57 点）+1 条（556/73），riku_x→zexos1 2 条（139/73），leo_tx→kaito9 1 条（640/201）。3213 拍换成按接收方软上限折算后，3227 拍 745,167 只占 14 点、立刻成交",
+   "estCost": "后排的兵晚到 290 拍；zexos1 3000~3300 拍丢 22,121 格",
+   "patternId": "NEW-R03-DN01",
+   "evidenceRef": "卷宗[H]（最长的连续未成交串）；重放 cmdLog 3227、3304（已用额度/上限/本笔点数）"
+  },
+  {
+   "t": "3227~3605",
+   "bot": "leo_tx → zexos1",
+   "kind": "donate",
+   "verdict": "good",
+   "state": "691 2877 拍起打 zexos1；3300 拍 zexos1 151 万兵/77,159 格（密度 19.5），691 报价 28.2 高于 worth",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4463-4495、L4500-4505；接收方 Policy.buyLand L5594-5607",
+   "why": "3304 拍 leo_tx 的 582,826 到账，zexos1 密度 19.5→26.9；同一拍 691 压出 16.6 万、报价掉到 18.9 → 3305/3310 拍两条脉冲 20.6 万、20.5 万。四串共烧 114 万换 29,682 格（38 兵/格）；691 3619 拍离场",
+   "estCost": "zexos1 3300~3600 拍 77,159→107,230 格，同期收捐 96.7 万；队1 42.4%→51.3%",
+   "patternId": "R07-GOOD-FED-PUSH",
+   "evidenceRef": "out/trace/A025-act-zexos1-3296.txt；重放 cmdLog 3227~3808 的捐款行；pairLog"
+  },
+  {
+   "t": "3425~3675",
+   "bot": "kaito9（3595 拍 zexos1 跟上）",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "kaito9 3300 拍 23,471 格/72.3 万兵；3171~3577 拍收到 4 笔 109.8 万；845 同时在打它，691 3570 拍也打过来",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5594-5607；Policy.offers L5182-5185、L5204-5206（队友在打同一目标时的折价）",
+   "why": "三串脉冲打 845（3437、3612、3675 拍起落地）：3600~3900 拍烧 53.8 万吃 28,131 格，845 3862 拍出局。3591 拍 kaito9 回了 691 一条 11.5 万；4 拍后 zexos1 看到的 691 报价从 26.86 掉到 14.84，跟了一串三条共 48 万兵——两个号打到了同一个目标上",
+   "estCost": "kaito9 26,404（3600 拍）→57,205 格（3900 拍）",
+   "patternId": "NEW-R03-AT01",
+   "evidenceRef": "影子摘要[S6]；重放 cmdLog 3416~3689；out/trace/A025-act-zexos1-3586.txt；卷宗[E]"
+  },
+  {
+   "t": "2910~3330",
+   "bot": "talon5",
+   "kind": "attack",
+   "verdict": "unclear",
+   "state": "9,384~10,370 格；陆上唯一的敌人 Player 804（报价 223~283，worth 82~90）；密度三次刚过 100（余额 94.8 万、99.6 万、106 万）",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5353（over = B > 100×L）→ L5359（over 时不 break）→ L5594-5607；Policy.tryDonateToTeammate L4465、L4479（不算被围的号要密度 ≥102/108 才捐）",
+   "why": "三串烧 40.4 万换 1,120 格（360 兵/格）。它有 804 这个邻居、不算被围，donate-why 里 2142~3212 拍 38 次卡在 B:dMe；密度一过 100 先被 buyLand 打出去了，3381 拍才第一次捐成",
+   "estCost": "40.4 万兵；同一时段 zexos1 的换地价是 22~38 兵/格",
+   "patternId": "R08:超软上限后高价倾泻",
+   "evidenceRef": "out/dossier/A025-freeze.txt（talon5 报价高于 worth 三段）；out/dossier/A025-donwhy.txt；影子摘要[S6]；pairLog"
+  },
+  {
+   "t": "3620~4300",
+   "bot": "zexos1",
+   "kind": "attack",
+   "verdict": "unclear",
+   "state": "691 的空壳 9.4 万→8.6 万格、125~134 万兵（没有利息）；zexos1 余额 184 万→909 万",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5359；L5351（3770 拍起 worth 约 90）→ L5422-5427（minKeep、预算）→ L5449-5453（x < chunk×余额 → continue）",
+   "why": "采样 49 个决策拍：worth 27、worth+pulseMin 1、worth+chunk 21。到密度 77.3（4295 拍）才放行。期间没有人来抢，队1 62.9%→63.3%",
+   "estCost": "8.6 万格晚 685 拍到手；没有丢地",
+   "patternId": "NEW-R01-AT05",
+   "evidenceRef": "out/trace/A025-buywhy-zexos1-3560.txt；out/dossier/A025-freeze.txt"
+  },
+  {
+   "t": "4305~4380",
+   "bot": "zexos1",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "zexos1 952 万兵/117,526 格（密度 81）；691 空壳 8.6 万格/128 万兵、报价 39.6",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5449-5453（空壳按非真人处理：x = min(avail, 1.25×need + 3×接壤) 一次发够）",
+   "why": "4305/4310 拍两条 203 万+163 万，4370~4380 拍对 يحيى 的空壳 24.8 万+46.4 万。4200~4500 拍吃 AI/空壳 75,604 格只烧 242 万（32 兵/格），队1 63.3%→86.8%",
+   "estCost": "+85,830 格；余额 952 万→597 万（4320 拍）→802 万（4500 拍）",
+   "patternId": "NEW-EG-G1",
+   "evidenceRef": "影子摘要[S6]；卷宗[E] zexos1 4200~4500；重放快照"
+  },
+  {
+   "t": "4900~8624",
+   "bot": "zexos1",
+   "kind": "boat",
+   "verdict": "error",
+   "state": "被围（nb=0、neut=0），密度 71~145，余额 1,740~3,520 万；水对面是 Player 804（4800 拍 3,615 格）和 AI（2,236 格，AI148 只有 1~3 千兵）",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.idleBoats L5022-5044 → General.boatOut L999-1015（L1009：落点不是中立时 amount = boatFrac×(余额−留底)）→ searchWater L1061、L1070",
+   "why": "21 条大船里 13 条对着 AI 的岛：出港 5,294 万兵、船费 1,038 万，航程 383~710 拍，靠岸时船上只剩 2,145 万（海上衰减 3,150 万），落点全部已是队友的地，到账 1,325 万、被对方硬上限截掉 819 万。头两条（4900/4977 拍，335 万、327 万）的落点出港时属 AI148、靠岸时已属 kaito9：kaito9 4977 拍自己也发了一条 117 万兵的船，64 拍后就靠上了 AI148 的地。离岸 5~9 像素的 563 格中立岛 4800~7620 拍没人拿",
+   "estCost": "13 条船：船费 1,038 万 + 衰减 3,150 万 + 截掉 819 万，没有换到一格地。804 从 4567 拍拖到 7607 拍，AI148 到 8863 拍",
+   "patternId": "NEW-R03-SE02",
+   "evidenceRef": "重放 cmdLog/landings（zexos1 4567~9400 拍）；out/trace/A025-boat-audit.txt；out/trace/A025-idleboats-zexos1.txt；out/trace/A025-leftover.txt；out/trace/A025-track-ai148-p804.txt"
+  },
+  {
+   "t": "9300~14669",
+   "bot": "zexos1（另有 leo_tx、talon5、kaito9）",
+   "kind": "boat",
+   "verdict": "error",
+   "state": "只剩中立小岛：9300 拍 2,300 格/114 块；zexos1 余额 1,530~2,950 万",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.idleBoats L5045-5052（扫尾分支没有间隔检查）→ General.boatOut L1001、L1009-1010（3×岛的格数+300 → pct 0）→ searchWater L1061（不看在途的船）",
+   "why": "386 条船全是 pct 0：带 710 万兵，付船费 2.27 亿（zexos1 一条 48~92 万）。266 条是 60 拍内发往同一落点的重复船（船费 1.53 亿）：zexos1 82 串多发 215 条、leo_tx 11 串 39 条、talon5 4 串 10 条、kaito9 1 串 2 条。zexos1 的 317 条里靠在中立地上的 100 条，靠在自己刚打下的地上 209 条",
+   "estCost": "船费 2.27 亿；zexos1 12300~12600 拍 29 条船、船费 1,837 万、+50 格",
+   "patternId": "NEW-R03-SE03",
+   "evidenceRef": "out/trace/A025-boat-audit.txt；out/trace/A025-idleboats-zexos1.txt"
+  },
+  {
+   "t": "7694~14669",
+   "bot": "kaito9、leo_tx、talon5",
+   "kind": "boat",
+   "verdict": "error",
+   "state": "三个号都被围、都有海岸；余额 100~900 万，pct 0 的船只带 1~9 千兵",
+   "codePath": "src/strategy/v27-team-c116-vb.js General.boatOut L1001（在途 ≥ maxBoats=2 不发）→ searchWater L1061（先挑最大的岛，不看远近、不看队友）；src/sim/sim/boats.js moveBoats L303（船速随兵数：≥1.5 万兵每拍 0.52 像素以上，9 千兵 0.41，空船 0.24）、decayBoats L360-366",
+   "why": "kaito9 7694/7715 拍两条船走 1,224 像素，3,700 拍后在海上衰减到 0，两个船位一直占着；9300 拍之后它的 3 条船都没靠岸。leo_tx 52 条船里 38 条靠在队友地上（落点先被 zexos1 拿了），talon5 14 条里 7 条",
+   "estCost": "9300 拍之后在线号 103 次中立登陆里 zexos1 占 100 次；114 块小岛清了 5,369 拍",
+   "patternId": "NEW-SE-06",
+   "evidenceRef": "out/trace/A025-idleboats-{kaito9,leo_tx,talon5}.txt；out/trace/A025-boats-kaito9-7600.txt；out/trace/A025-boat-audit.txt；out/trace/A025-leftover.txt"
+  },
+  {
+   "t": "4984~14637",
+   "bot": "zexos1 ⇄ kaito9（另有 zexos1 ⇄ leo_tx）",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "都被围、都有海岸、身边没有敌人；kaito9 贴着硬上限（密度 150），zexos1 发令时密度中位 111（91~145）",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4453 → L4479-4481 → L4492（yield_opt_dispatch）→ L4500-4505（pct = min(留底允许, 320)，留底 44×领土）",
+   "why": "kaito9→zexos1 127 笔到账 3.40 亿（税 6,783 万），zexos1→kaito9 109 笔到账 3.73 亿（税 1.89 亿）；净流量 3,237 万，税 2.56 亿是它的 7.9 倍。207 次是对方给完 100 拍内又给回去（间隔中位 28 拍）。按引擎利率公式逐笔算，376 笔里 182 笔落地当拍双方每 10 拍利息合计不增",
+   "estCost": "捐款税 3.04 亿 = 整局利息的 45.1%",
+   "patternId": "NEW-R01-DN07",
+   "evidenceRef": "out/trace/A025-pingpong.txt；卷宗[H]、[N]；events.csv（4284 拍后 350 条 yield_opt_dispatch）"
+  },
+  {
+   "t": "5075~14623",
+   "bot": "zexos1 → kaito9、leo_tx",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "接收方离硬上限只剩 300~500 万的余量；捐出方余额 1,500~3,500 万",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.tryDonateToTeammate L4500-4508（pct 320 = 余额的 31.3%，不看对方还能收多少）；src/sim/sim/game.js transfer L388-400、receiverRoom L340-345",
+   "why": "zexos1→kaito9 109 笔全部被截短：税/到账 0.51（没截短的 pct 320 捐款是 0.20），每笔落地后 kaito9 正好 150.0；zexos1→leo_tx 16 笔全部截短（0.68）；kaito9→talon5 一笔到账 64.6 万、税 56.6 万。全队 138 笔",
+   "estCost": "对照 0.20 的税率，这些笔多付的税约 1.3 亿（估算）",
+   "patternId": "NEW-R03-DN02",
+   "evidenceRef": "out/trace/A025-pingpong.txt [1]；卷宗[H] 成交的大额捐款"
+  },
+  {
+   "t": "4900~8860",
+   "bot": "kaito9",
+   "kind": "attack",
+   "verdict": "error",
+   "state": "余额贴着硬上限 906 万（=150×60,407）；陆上只挨着 AI148 的零碎地和 Player 804 的一小段",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5449-5453（非真人目标没有最小额，每条照付余额的 12/1024）、L5585/L5616（对 804）；General.boatOut L1009；src/sim/sim/game.js addBalance L752-764（超过 150×领土的部分丢掉）",
+   "why": "4500 拍之后重放的烧兵账：对 AI148 630 万换 1,823 格（对方只掉 3.5 千兵）、对 804 494 万换 758 格（对方掉 2.6 万）、对中立地 225 万换 2,255 格（正常 2 兵/格）。推断差额是打完退回来时余额已被捐款顶满、被硬上限截掉的。另有两条靠回自己岸的船 198 万兵只到账 1,289。对 AI148 的 32 条陆攻带 27.6 万兵、付手续费 330.7 万",
+   "estCost": "约 1,550 万兵在硬上限上蒸发（估算），攻击费 576 万；4284 拍之后利息只拿到软上限口径的 57%",
+   "patternId": "NEW-R01-EC01",
+   "evidenceRef": "重放 pairLog（4500 拍之后逐对的烧兵与对方掉兵）、landings（6802、6961 拍）；卷宗[L]、[P]；影子摘要[S6]"
+  },
+  {
+   "t": "2830~4380",
+   "bot": "zexos1、kaito9、talon5",
+   "kind": "io",
+   "verdict": "unclear",
+   "state": "成交延迟中位 11 拍，决策周期 5 拍",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.buyLand L5595（在途兵 ≥ 4% 余额才跳过；上一条没落地时在途兵是 0）、L5449-5453（非真人分支没有在途检查）",
+   "why": "全局同步串 152 个、393 条：首条合计 915 万，没等首条落地又发的 241 条多花 1,221 万。对 Russia 三串首条 34.6 万、多发 44.4 万；对 691 四串首条 70.4 万、多发 102.6 万——12% 的脉冲实际发出去 2~4 倍",
+   "estCost": "本局这些重发都落在对手正薄的时候，没看到坏处；同一机制在 A066 让 zero_7 一次切走余额的 75%",
+   "patternId": "NEW-R03-IO01",
+   "evidenceRef": "影子摘要[S6]"
+  },
+  {
+   "t": "463~7375",
+   "bot": "5 个在控号",
+   "kind": "flag",
+   "verdict": "error",
+   "state": "对局不是限额模式",
+   "codePath": "src/strategy/v27-team-c116-vb.js Policy.updateShadowQuota L3800-3836（L3821-3834 翻转）→ Policy.send L3844-3862（守卫）",
+   "why": "5 个号 463~792 拍全部被翻成 isNoFullSend=true；之后 123 次出手被守卫挡掉（kaito9 41、zexos1 39、leo_tx 23、riku_x 15、talon5 5），14 次目标是真人。zexos1 1965/1970 拍 Russia 报价掉到 5.6 时想发的 6.1 万、5.1 万两条都被挡，1975 拍报价回到 10.0；kaito9 3585~3595 拍对 845 的三次被挡，3600 拍才发出去",
+   "estCost": "1965 拍那 6.1 万兵按 5.6 兵/格约合 1 万格；但当时 zexos1 密度只有 1.7，发出去之后与 kaito9 1750 拍的处境相同，得失说不清",
+   "patternId": "NEW-R03-IO02",
+   "evidenceRef": "影子摘要[S5]；out/trace/A025-act-zexos1-1956.txt"
+  }
+ ],
+ "newPatterns": [
+  {
+   "proposedId": "NEW-R03-DN02",
+   "prefix": "DN",
+   "name": "捐款被接收方的硬上限截短：税按捐出方整笔余额收，到账只有对方剩下的余量",
+   "sameAs": [
+    "NEW-DN-14（R08，喂给已经超软上限的号；这条说的是到账被截短、税照收）",
+    "NEW-R01-DN10（相近：yield_opt_dispatch 落地后双方利息合计下降）"
+   ],
+   "definition": "引擎 transfer（game.js L388-400）：税 = 捐出方余额的 64/1024，与实际到账无关；到账 = min(指令兵数, 接收方 150×领土 − 余额)（receiverRoom L340-345）。tryDonateToTeammate 算 pct 时（L4500-4505）只看自己的留底，不看对方还能收多少。一笔捐款的到账比指令兵数（(pct+1)/1024×捐出方余额）少 1 个兵以上记为被截短。计：笔数、到账、税、税/到账（没被截短的 pct 320 捐款是 0.20）、接收方落地后的密度。",
+   "detect": "pingpong.py <局>（只读重放 cmdLog 的捐款行：逐对的笔数/到账/税、接收方落地前后密度、顶到硬上限与被截短的笔数）。",
+   "instances": [
+    {
+     "t": 5075,
+     "bot": "zexos1",
+     "note": "→kaito9 109 笔（5075~14623 拍）全部被截短：到账 3.73 亿、税 1.89 亿；接收方密度中位 95.1→150.0"
+    },
+    {
+     "t": 5173,
+     "bot": "zexos1",
+     "note": "→leo_tx 16 笔全部被截短：到账 3,822 万、税 2,612 万"
+    },
+    {
+     "t": 5313,
+     "bot": "kaito9",
+     "note": "→leo_tx 7 笔全部被截短：到账 1,205 万、税 393 万"
+    },
+    {
+     "t": 5334,
+     "bot": "kaito9",
+     "note": "→talon5 1 笔：到账 64.6 万、税 56.6 万"
+    },
+    {
+     "t": 3402,
+     "bot": "talon5",
+     "note": "→kaito9 17 笔里 4 笔被截短；leo_tx→kaito9 11 笔里 1 笔"
+    }
+   ],
+   "note": "A025：138 笔。另有 13 条调度发出后没有成交记录、而接收方在发令后 10~30 拍内贴上了硬上限（余量不到 1 个兵时引擎整笔不执行，也不收税）。"
+  },
+  {
+   "proposedId": "NEW-R03-SE03",
+   "prefix": "SE",
+   "name": "扫尾分支发船不设间隔、找落点不看在途的船：同一个小岛连发几条，后面的船靠在自己刚打下的地上",
+   "sameAs": [
+    "NEW-SE-06（R08，扫尾船被在途上限卡住、先挑最大的岛；这条是同一落点的重复船）",
+    "NEW:BT-own-shore（R06，船靠回自己的岸，白付 32/1024）",
+    "NEW-R01-SE04（装兵比船费少的小船）"
+   ],
+   "definition": "Policy.idleBoats 的扫尾分支（L5045-5052）每个决策拍都调 boatOut，没有被围分支 L5033 那样的间隔检查；boatOut（L999-1015）只看页面上的 boatCount < maxBoats（本地船数比发令晚 7~20 拍才变），searchWater（L1020-1079）每次从头找，不记已经在路上的船。同一个号对同一落点、相邻间隔 ≤60 拍的发船并成一串，串里第一条之外的记为多余。计：串数、多余条数、多余船的船费（每条 = 当时余额的 32/1024，与装兵无关）、靠岸时落点已是自己的地的条数。",
+   "detect": "boat-audit.py <局> [--cuts ..] [--burst 60]（重放 cmdLog 的发船行按 dZ 同落点分串 + landings 按落点归属分类）；dbg/idle-boats.mjs <局> <号> <t0> <t1>（影子逐决策拍归类：哪个分支、被哪一道拦、落点水路步数与岛的大小）。",
+   "instances": [
+    {
+     "t": 9300,
+     "bot": "zexos1",
+     "note": "9300~14669 拍 317 条船：82 串同落点连发、多余 215 条、多余船费 1.48 亿；靠岸 中立 100 / 自己的地 209 / 队友的地 10"
+    },
+    {
+     "t": 9300,
+     "bot": "leo_tx",
+     "note": "52 条：11 串、多余 39 条、船费 353 万"
+    },
+    {
+     "t": 9300,
+     "bot": "talon5",
+     "note": "14 条：4 串、多余 10 条、船费 27.4 万"
+    },
+    {
+     "t": 11425,
+     "bot": "kaito9",
+     "note": "3 条：1 串、多余 2 条、船费 57.4 万（11425~11432 拍三条去同一个 1,065 像素外的落点）"
+    }
+   ],
+   "note": "A025：9300 拍之后 98 串、多余 266 条、多余船费 1.53 亿（全部船费 2.27 亿）。扫尾之前也有：4567~7607 拍多余 8 条 348 万，7607~9300 拍 5 条 189 万。最长一串 6 条（zexos1）。"
+  },
+  {
+   "proposedId": "NEW-R03-SE02",
+   "prefix": "SE",
+   "name": "被围号的远程船：选落点不计航程，兵在海上衰减、被敌船打沉，没有靠岸",
+   "sameAs": [
+    "统筹 0005 号广播第 ⑥ 项（idleBoats 选目标不计航程）",
+    "R05 远程船：兵在海上耗掉或落到不能打的地方",
+    "NEW:BT-sunk（R06）"
+   ],
+   "definition": "Policy.idleBoats（L5019-5044）在 nb=0、neutral=0 且自身密度 ≥115（L5031）时，把 boatRange 临时放到 2500、maxEff 传 Infinity 去调 boatOut（L5038-5040）；选中的落点航线 ≥300 像素。引擎里船每拍约走半个像素（moveBoats L289-326；被打中后的 4 拍只走 0.04 像素），每 5 拍掉 v>>7（decayBoats L360-366），奇数拍与 7.5 像素内的敌船互打（fightBoats L328-358；FIGHT_RANGE2=14400 子格²，1 像素=16 子格）。计：船数、出港兵、船费（余额的 32/1024）、在海上的拍数、靠岸时剩下的兵（没靠岸记 0）、被敌船打到的拍数。",
+   "detect": "dbg/boat-life.mjs <局> <席位列表> [t0] [t1]（真值重演逐条船：航线段数与像素长度、每 100 拍的兵数与位置、被敌船打到的拍数与对方船主、消失拍、有没有 landAt 记录）。",
+   "instances": [
+    {
+     "t": 4900,
+     "bot": "zexos1",
+     "note": "4900/4977 拍两条 335 万/327 万兵去 395 步外 AI148 的岛，航程 648 拍，靠在 kaito9 岸上时各剩 122 万/118 万"
+    },
+    {
+     "t": 6223,
+     "bot": "zexos1",
+     "note": "6223/6244 拍两条 420 万/456 万兵，航程 383/386 拍，海上损耗 191 万/207 万，靠在 riku_x 空壳的岸上"
+    },
+    {
+     "t": 7357,
+     "bot": "zexos1",
+     "note": "383 万兵，航程 533 拍，损耗 218 万，靠在 kaito9 岸上到账 0"
+    },
+    {
+     "t": 8554,
+     "bot": "zexos1",
+     "note": "663 万兵（船费 93.9 万），航程 656 拍，损耗 426 万，靠在 talon5 岸上到账 71.2 万"
+    },
+    {
+     "t": 7694,
+     "bot": "kaito9",
+     "note": "7694/7715 拍两条 9 千兵的船，1,224 像素，在海上 3,715/3,704 拍后衰减到 0，没有靠岸"
+    }
+   ],
+   "note": "A025：zexos1 被围分支对着 AI 岛的 13 条大船（出港 5,294 万兵、船费 1,038 万）全部靠在队友岸上。本局没有敌船，损耗全部是衰减；船速随兵数变化（boats.js L303），几百万兵的船 0.57 像素/拍，9 千兵的船起步 0.41、衰减后 0.24。"
+  },
+  {
+   "proposedId": "NEW-R03-SE01",
+   "prefix": "SE",
+   "name": "远程发船到岸时落点已是队友的地，整船兵并入对方余额",
+   "sameAs": [
+    "NEW:AT-boat-dump（相近：装船后领土不涨）"
+   ],
+   "definition": "boatFood（打隔海的 AI/空壳）或被围分支 idleBoats→boatOut 发出的船，靠岸时落点属于队友（非编队号）→ 船上的兵按捐款并入对方余额。计：船数、发船兵、船费、海上损耗、移交给编队外的兵。",
+   "detect": "dossier.py [H]「船靠队友岸移交」（每条靠岸的船配回它的发船指令：发船拍、发船兵、船费、航程）、[L]「移交路人」列；facts.boatHandovers。",
+   "instances": [
+    {
+     "t": 6606,
+     "bot": "zexos1",
+     "note": "→riku_x 空壳：船上 230 万到账 230 万；6611 拍空壳转手送回 zexos1 220 万"
+    },
+    {
+     "t": 7890,
+     "bot": "zexos1",
+     "note": "→kaito9：船上 165 万、到账 0（对方贴着硬上限）"
+    },
+    {
+     "t": 9210,
+     "bot": "zexos1",
+     "note": "→talon5：船上 237 万、到账 71.2 万"
+    },
+    {
+     "t": 9300,
+     "bot": "leo_tx",
+     "note": "9300 拍之后 38 条 pct 0 的船靠在队友地上（船上 27 万）"
+    }
+   ],
+   "note": "A025：81 次，船上 2,260 万、到账 1,410 万、蒸发 850 万；全部落在编队号或编队空壳的岸上（本队没有路人）。"
+  },
+  {
+   "proposedId": "NEW-R03-OP01",
+   "prefix": "OP",
+   "name": "买 AI 地被编队友的余额冻住（按决策拍计数；t<1500 走 winFloor，t≥1500 走 safeAt）",
+   "sameAs": [
+    "NEW-R01-OP02 保底线死锁：safeFinite 取到队友余额",
+    "R04 打内置 AI 的底线被队友的余额顶住（队友互锁）"
+   ],
+   "definition": "第一段 t < dpEnd（1500）：该号有 ≥1 个存活的内置 AI 邻居、没有在扩中立、pickTarget 返回空，且 safeFinite ≥ (1-minSend)×余额（minSend=0.2141）。第二段 t ≥ 1500：buyLand 没出手，但只把 safeFinite 当 0 重跑同一拍就会出手。两段都按卡住它的「最弱的别的邻居」分类：编队友 / 路人队友 / 敌方真人 / AI。",
+   "detect": "scripts/freeze-scan.mjs <局>（需要录像；影子策略逐拍包住 pickTarget 与 buyLand）。输出 out/cache/<局>-freeze.json：第一段 team/bots，第二段 post.team/post.bots（frozenSF 及其 binders、spans）。",
+   "instances": [
+    {
+     "t": 695,
+     "bot": "talon5",
+     "note": "695~725 拍 7 个决策拍卡在 riku_x（门槛 4,702，余额 3,497→8,064）；1165~1190 拍 6 个卡在 leo_tx"
+    },
+    {
+     "t": 1000,
+     "bot": "zexos1",
+     "note": "1000~1100 拍 11 个决策拍卡在 alex_k 的空壳"
+    },
+    {
+     "t": 1520,
+     "bot": "leo_tx",
+     "note": "t≥1500：1520~1540 拍 5 拍卡在 zexos1（想买 AI185，need 36）"
+    },
+    {
+     "t": 1930,
+     "bot": "kaito9",
+     "note": "t≥1500：1930~1985 拍 12 拍卡在 Player 691（门槛 18 万，余额 9.8 万）"
+    }
+   ],
+   "note": "A025：第一段 60/900 个决策拍（编队友 56、敌方真人 4；反事实可出手 35）；第二段 24/10,931（编队友 8、敌方真人 12、AI 4）。量级小。"
+  },
+  {
+   "proposedId": "NEW-R03-IO01",
+   "prefix": "IO",
+   "name": "上一条没成交就重发同一个决定",
+   "sameAs": [
+    "统筹 0004 号广播第 iii 项（往返 11~19 拍内按未生效状态重发）",
+    "R07-IO-DUP-ASSIST（协防分支的同类现象）",
+    "R08 连发清仓 / 超软上限后高价倾泻（无录像时的替代口径）"
+   ],
+   "definition": "同一个号对同一目标、由同一源码行发出的同一决定，在上一条还没被服务器执行时再次发令（决策周期 5 拍 < 成交延迟）。相邻发令间隔 ≤10 拍并成一串；按首条成交延迟分两类：同步串（≤45 拍）与落后串（>45 拍）。计：串数、条数、首条实际送出的兵+手续费、「首条成交之前发出的其余各条」实际送出的兵+手续费。",
+   "detect": "shadow-digest.py [S6]（影子发令与录像成交逐条配对；只统计陆攻、目标非中立）。facts 里是 reissue.{syncBursts,syncCmds,syncFirst,syncExtra,lagBursts,lagIssued,lagExecuted,deadBursts,deadIssued}。",
+   "instances": [
+    {
+     "t": 2830,
+     "bot": "zexos1",
+     "note": "→Russia 首条 11.3 万、多发 22.7 万"
+    },
+    {
+     "t": 3375,
+     "bot": "zexos1",
+     "note": "→691 首条 13.9 万、多发 41.3 万"
+    },
+    {
+     "t": 4305,
+     "bot": "zexos1",
+     "note": "→691 空壳 首条 203 万、多发 163 万"
+    },
+    {
+     "t": 6380,
+     "bot": "kaito9",
+     "note": "→804 首条 44.5 万、多发 122 万"
+    }
+   ],
+   "note": "A025：同步串 152 个、393 条，首条 915 万，多花 1,221 万（241 条）；落后串 0。"
+  },
+  {
+   "proposedId": "NEW-R03-IO02",
+   "prefix": "IO",
+   "name": "isNoFullSend 假翻转后出手被守卫挡掉",
+   "sameAs": [
+    "NEW-R01-IO03 isNoFullSend 误置真",
+    "R04 isNoFullSend 误锁，出兵被自己的守卫拦掉"
+   ],
+   "definition": "对局不是限额模式，但 isNoFullSend 被 updateShadowQuota 翻成 true（pendingQuotaCheck 的 7 拍窗口内余额因别的原因下降）；计数 = 翻转的号数 + 翻转后 Policy.send L3844 守卫挡掉的对非中立目标的出手次数。",
+   "detect": "shadow.mjs 输出的 nfsFlip（翻转拍、当时的 pending）和 blocked 列表；shadow-digest.py [S5]。",
+   "instances": [
+    {
+     "t": 463,
+     "bot": "zexos1",
+     "note": "翻转；之后 39 次被挡（835~4315 拍），含 1965/1970 拍对 Russia、4315 拍对 691 空壳"
+    },
+    {
+     "t": 673,
+     "bot": "kaito9",
+     "note": "翻转；之后 41 次被挡（790~7375 拍），含对 691 4 次、对 845 4 次、对 804 1 次"
+    },
+    {
+     "t": 735,
+     "bot": "leo_tx",
+     "note": "翻转；23 次被挡"
+    },
+    {
+     "t": 734,
+     "bot": "riku_x",
+     "note": "翻转；15 次被挡，含对 845 2 次"
+    },
+    {
+     "t": 792,
+     "bot": "talon5",
+     "note": "翻转；5 次被挡"
+    }
+   ],
+   "note": "A025：5 个号翻转，123 次出手被守卫挡掉，其中 14 次目标是真人。"
+  },
+  {
+   "proposedId": "NEW-R03-DN01",
+   "prefix": "DN",
+   "name": "调度撞额度：同一收款人连续多条被拒",
+   "sameAs": [
+    "NEW-R01-DN05 调度额超过受赠者的反喂养配额",
+    "R04 调度不看收款人的反喂养配额",
+    "NEW:DN-not-executed"
+   ],
+   "definition": "日志有 HL-DISPATCH/HL-DONATE，但录像里没有对应的捐款（录像只记成交的捐款），且按引擎额度公式复算：收款人已用点数 + 本笔点数 > 当拍上限。同一捐款人对同一收款人连续 ≥5 条记为一串。",
+   "detect": "dossier.py [H]（日志条目与重放逐笔配对；没成交的按额度复算分成「额度拒」与「其它」）。",
+   "instances": [
+    {
+     "t": 2935,
+     "bot": "leo_tx",
+     "note": "→zexos1 2935~3135 拍连续 6 条 defense_dispatch（首条要 333 点、剩 57 点）"
+    },
+    {
+     "t": 3105,
+     "bot": "riku_x",
+     "note": "→zexos1 2 条（139/73）"
+    },
+    {
+     "t": 3160,
+     "bot": "leo_tx",
+     "note": "→kaito9 1 条（640/201）"
+    },
+    {
+     "t": 3185,
+     "bot": "leo_tx",
+     "note": "→zexos1 offense_dispatch 1 条（556/73）"
+    }
+   ],
+   "note": "A025：额度拒 10 条，全部在 2935~3185 拍；≥5 条的串 1 个。"
+  },
+  {
+   "proposedId": "NEW-R03-AT01",
+   "prefix": "AT",
+   "name": "（正例）同步状态下的小脉冲把兵换成地",
+   "sameAs": [
+    "R07-GOOD-SAVED-PUSH（相近）"
+   ],
+   "definition": "对真人的脉冲出手（pct ≤130）在 ≤45 拍内成交、同一拍至多落 2 条；一串脉冲之后余额不低于出手前的 55%，300 拍内领土 +≥10%。",
+   "detect": "shadow-digest.py 决策串里源码行为 buyLand:5607/5585 的串 + 卷宗 [E] 同窗口地、兵变化。",
+   "instances": [
+    {
+     "t": 2830,
+     "bot": "zexos1",
+     "note": "对 Russia 三串加两条单发：76.7 万换 32,688 格；三串都在 Russia 的指令落地后 14 拍落地"
+    },
+    {
+     "t": 3305,
+     "bot": "zexos1",
+     "note": "对 691 四串：114 万换 29,682 格，地 77,159→107,230；三串跟在 691 的指令后 14~28 拍，一串跟在 kaito9 打 691 之后 14 拍"
+    },
+    {
+     "t": 3425,
+     "bot": "kaito9",
+     "note": "对 845 三串：3600~3900 拍 53.8 万换 28,131 格"
+    }
+   ],
+   "note": "A025：zexos1 7 串、kaito9 对 845 3 串、对 691 2 串。逐拍追踪过的三个时点（2830、3305、3595）触发点分别是：对手压兵过来、对手压兵过来加捐款到账、队友先打上去。"
+  },
+  {
+   "proposedId": "NEW-R03-EX01",
+   "prefix": "EX",
+   "name": "离线空壳把全部余额送给队友（引擎规则，录像和日志里都看不到）",
+   "sameAs": [
+    "NEW:IO-disconnect-husk（R06，说的是我方号掉线变空壳；这条是空壳往外送兵）"
+   ],
+   "definition": "真人离线后由内置 AI 接管。它在陆上没有可打的目标、发不了船、翻不了山时走 botDonate（bots.js L180-200）：真人席位给的是全部余额（L185），手续费 64/1024（game.js transfer L388-395），不占受捐额度，只受接收方硬上限 150×领土 的余量限制；接收方按随机起点在同队里找第一个「最近在交战」（recentWar）的号，没有就找「有船在海上」的号。计：送给本编队的次数与到账、把接收方顶到硬上限的次数、接收方随后 300 拍内把这笔兵转捐出去的金额与税；敌方各队同类到账。",
+   "detect": "resim.mjs 的 botGifts（挂在引擎 botGive 上）→ dossier.py [L]「表外进项」、[N]「表外」；dbg/husk-gifts.mjs <局> 单独列全场。",
+   "instances": [
+    {
+     "t": 6611,
+     "bot": "riku_x（空壳）",
+     "note": "→zexos1 220 万（来自 5 拍前 zexos1 靠在它岸上的一条船）"
+    },
+    {
+     "t": 6671,
+     "bot": "riku_x（空壳）",
+     "note": "→kaito9 107 万；6686 拍又 78 万"
+    },
+    {
+     "t": 3701,
+     "bot": "riku_x（空壳）",
+     "note": "→talon5 42.8 万（离线时的余额）"
+    },
+    {
+     "t": 1292,
+     "bot": "alex_k（空壳）",
+     "note": "→zexos1 2.2 万；整局给 5 个队友 135 次 21.4 万"
+    }
+   ],
+   "note": "A025：空壳送给本编队 213 次 643 万（riku_x 78 次 622 万、alex_k 135 次 21.4 万）；队2 的 يحيى 空壳送出 4 次 17.7 万。"
+  }
+ ],
+ "lossArchetype": "win",
+ "winnerNotes": "赢家是队1，也就是我方 6 个号（队1 没有路人）。赢法：在线的兵一直是对手的 1.6~2.3 倍（1530~3600 拍），地一度比对手少。队2 把兵都花在抢 AI 地上——2700 拍 57.0% 的地、223 万兵，四个主力密度只有 5~11；我方有三个被队友围住的号在攒兵（2700 拍 leo_tx 100 万、talon5 72 万、riku_x 46 万），前线的 zexos1 也在价格线后面攒到 107 万。队2 先动手（Russia 2716 拍、691 2877 拍打 zexos1），打密度 15~20 的号要 52~100 兵/格；他们一压兵出来，zexos1、kaito9 看到的报价就掉到 worth 以下，脉冲回过去只要 22~38 兵/格。3213 拍额度放宽后后排的 357 万兵到了前线。Russia 丢了 32,688 格后 3192 拍离场，691（全场最大，3300 拍 33.7% 的地）丢了 3.2 万格后 3619 拍离场，يحيى 把兵全捐给 691 的空壳后 3759 拍也走了，845 被 kaito9 吃光。之后是对空壳和小岛的收割。队2 最后一个人是 Player 804：出生在我方中间，3,000 多格，密度一路攒到 146（53 万兵），没人愿意按 220~280 兵/格的价钱打它；4800 拍它的地都在水对面，靠 zexos1 的 7 条船和 kaito9 的 10 条船才清掉。打错对象的情形：没有看到我方打队友。绕远的有：zexos1 13 条大船对着只有 1~3 千兵的 AI 岛，没有一条靠在敌人的地上。",
+ "wentWell": [
+  "开局周期出兵 47/47 成交；t=630 单号地的中位数 2,648 对队2 的 1,889",
+  "全程成交延迟中位 10~16 拍，没有页面落后（alex_k 除外）",
+  "前线号只在对手把兵压出来（或队友先打上去）时出手：2700~3600 拍编队对队2 37 兵/格，队2 对编队 64 兵/格",
+  "3213 拍额度一放宽，被围的后排号 6 笔 259 万兵在 350 拍内到了正在挨打的 zexos1、kaito9，两个号随即吃掉 691 和 845 的 5.8 万格",
+  "3591 拍 kaito9 打 691，4 拍后 zexos1 跟上：两个号的脉冲落在同一个目标上（offers 里队友在打同一目标的折价起了作用）",
+  "被围的号没有被抽干：leo_tx、talon5 2700 拍之后密度最低 30（3580/3810 拍，刚捐完），4284 拍之后中位 87/82",
+  "zexos1 吃空壳的价钱是 32 兵/格（4200~4500 拍 75,604 格）"
+ ],
+ "unknowns": [
+  "riku_x 的页面为什么在本地 3472 拍退出：日志里它最后几行没有报错。",
+  "alex_k 的页面为什么只有三成速度：只有 3 行 HL-TICK，看不出原因。",
+  "选点名单为什么有 10 个名字：另外 3 个号确实在另一个房间，推测两个房间共用一个选点器实例；zero_7 在两边的结果里都没有，没有查它去了哪。",
+  "Russia、691、يحيى 为什么离场：真人行为，不可见。",
+  "引擎的结束条件：本局重放在 14669 拍按「领先队占满全部陆地」结束，与 results.csv 的 14689 拍对得上；但 bundles 里别的赢局有在 87.7%（A079）、97.7%（A075）、99.4%（本包里另一个房间）就记 end 的，是否另有一条结束规则没有查。",
+  "三处没有重演的反事实：kaito9 1700 拍留着兵、zexos1 1965 拍那条 6.1 万兵打出去、zexos1 3620 或 3900 拍就吃 691 的空壳。",
+  "17 条不是额度拒的未成交调度：13 条在发令后 10~30 拍内接收方贴上了硬上限（其中 7 条在 10 拍内；推断为余量 0 不执行），1 条发在终局拍；剩下 3 条（zexos1→kaito9 6540 拍，leo_tx→kaito9 7235、7285 拍）没有查明。",
+  "对手压兵过来时报价具体被哪几项折价压下去（aggQ 折价、打队友 ×0.75、need 变小）没有逐项拆；只确认了报价在那一拍掉到 worth 以下。",
+  "kaito9、leo_tx、talon5 如果各清各的近岛，收尾能快多少：没有做。"
+ ],
+ "mechanicsQuestions": [
+  {
+   "q": "对局什么时候结束",
+   "a": "src/sim/sim/game.js victoryTick L1398-1412：领先队的地 ≥ 全图陆地、所有活着的席位都没有前线、领先者没有敌船在海上，三条同时满足才结束。本局 12600 拍队1 四舍五入已是 100.0%，到 14669 拍最后一格拿下才结束；14400 拍还剩 4 块 1 格的小岛。4567 拍队1 过 90% 时引擎只是提速（endgameSpeedTick），不结束。"
+  },
+  {
+   "q": "船速和衰减",
+   "a": "src/sim/sim/boats.js moveBoats L303：每拍进度 = 25 万 + min(20×兵, 30 万) + min(兵>>3, 5 万)（单位 1/2^20 像素）：空船 0.24 像素/拍，9 千兵 0.41，≥1.5 万兵 0.52 以上，最高 0.57。decayBoats L360-366：每 5 拍掉 max(1, 兵>>7)。kaito9 的 9,037 兵的船 3,715 拍后剩 1 个兵，走完 9 段航线里的 7 段；zexos1 的 663 万兵的船 656 拍掉了 426 万（64%）。"
+  },
+  {
+   "q": "船费",
+   "a": "每条船 = 发船方余额的 32/1024，与装多少兵无关。zexos1 余额 2,700 万时一条 pct 0 的船带 2.6 万兵、付 84 万；talon5 余额 100 万时同样一条付 3 万。本局船费 2.56 亿里 zexos1 占 2.42 亿。"
+  },
+  {
+   "q": "船靠岸时落点的归属",
+   "a": "src/sim/sim/boats.js landAt L262-287：落在自己的地上 → 兵退回余额（addBalance，超过 150×领土的部分丢掉）；落在队友（含空壳）的地上 → 并给对方，同样受对方硬上限余量限制；落在敌人或中立地上 → 进攻。本局 81 次靠在队友岸上：船上 2,260 万、到账 1,410 万、蒸发 850 万。kaito9 6802/6961 拍两条靠回自己岸的船 198 万兵只到账 1,289。"
+  },
+  {
+   "q": "捐款的税和截短",
+   "a": "src/sim/sim/game.js transfer L388-400：税 = 捐出方余额×64/1024，先扣；到账 = min(指令兵数, 接收方 150×领土 − 余额)；余量不到 1 个兵时整笔不执行、不收税。zexos1 余额 2,800 万时 pct 320 想给 878 万，kaito9 只收得下 330~340 万，税照收 175 万。"
+  },
+  {
+   "q": "进攻退回的兵遇到硬上限",
+   "a": "src/sim/sim/game.js addBalance L752-764：v = min(v, 150×领土 − 余额)。kaito9 4500 拍之后重放的烧兵账上对 AI148 630 万、对 804 494 万、对中立 225 万，而对方掉的兵分别只有 3.5 千、2.6 万、0：推断是退兵回来时余额已被捐款重新顶满，被截掉了。leo_tx 同期对中立 57.6 万换 800 格，同理。"
+  },
+  {
+   "q": "出局后剩下的地",
+   "a": "Russia 的空壳 3270 拍兵被打光：3270 拍还有 10,118 格，3280 拍为 0，同时 12 个真人的地合计少了 8,541 格——剩下的地变成中立，之后被 691、845、zexos1 重新分掉。"
+  },
+  {
+   "q": "空壳的收入",
+   "a": "src/sim/sim/game.js interestRate L739-740：离线真人（state=2）利率为 0；economyTick L778-790 每 100 拍每格仍加 1 个兵。691 的空壳 8.3~8.5 万格，3900 拍 125 万 → 4200 拍 134 万。"
+  },
+  {
+   "q": "DROP30 对账",
+   "a": "card 记 59 个区间。本房间 5 个号 47 个（kaito9 21、talon5 11、leo_tx 10、zexos1 3、riku_x 2）全部用重放对上：捐款 35、打 AI 6、发船 4、打真人 1、打中立 1，没有无法解释的掉兵。其余 12 个属于另一个房间的 ryan_m 6、noah88 4、sora_w 2（traj.csv 里混进来的），那一局没有录像；按日志 8 个区间里有同号的调度（yield_opt/defense/offense），4 个在开局和 4050 拍没有调度记录，无法对账。"
+  },
+  {
+   "q": "调度对账",
+   "a": "events.csv 本房间 391 条 DISPATCH = 影子策略 391 条（逐条相同）；另外 83 条是另一个房间 3 个号的。录像成交 364 条（到账 8.50 亿、税 3.04 亿）。未成交 27 条：额度拒 10 条（全在 2935~3185 拍），其它 17 条（13 条发令后 10~30 拍内接收方贴上硬上限、1 条在终局拍、3 条不明）。按本地发令拍：2142~3212 拍 defense 11/offense 2；3213~4283 拍 defense 7/offense 2；4284 拍之后 yield_opt 350/offense 17/defense 2。391 条发令时全部是被围状态。"
+  },
+  {
+   "q": "整局兵力去向（编队在控期间，总利息 6.75 亿；另有空壳送来的 642 万）",
+   "a": "打中立 0.4%（30.8 兵/格）、打 AI 1.5%（42.9 兵/格）、打真人 1.4%（80.6 兵/格）、捐款税 45.1%、船费 37.9%、攻击费 1.1%、挨打掉兵 0.3%、终局还在手里 5.4%；其余是硬上限截掉的退兵和船上的衰减。决定胜负的 2700~3600 拍，编队对队2 只烧了 298 万兵。"
+  },
+  {
+   "q": "统筹广播 0005 的六条在本局的对照",
+   "a": "① t≥1500 经 safeAt 的队友互锁：有，量级很小——24/10,931 个决策拍（leo_tx 1520~1540 拍被 zexos1 卡 5 拍等，编队友 8、敌方真人 12、AI 4）。② 吃残余 AI 的小指令：Vb 的非真人分支（L5449-5453）没有最小额。本局表现为相反的毛病：kaito9 贴着硬上限时对 AI148 的 32 条小指令带 27.6 万兵、付手续费 330.7 万。③ 过软上限后跳过价格线：有一例，talon5 2910~3330 拍对 Player 804 三串 40.4 万兵换 1,120 格（360 兵/格，报价是 worth 的 2.7~3.2 倍）。④ yield_opt_dispatch 净利息为负：是本局最大的一项。350 条 yield_opt 调度；按引擎利率公式逐笔算，376 笔成交捐款里 182 笔落地当拍双方每 10 拍利息合计不增（税 1.70 亿），其余 194 笔靠多出来的利息挣回税要 191 拍（中位），其中 142 笔在挣回之前接收方又捐出去了。zexos1⇄kaito9 税是净流量的 7.9 倍。⑤ isDoomedPocket：第一分支 6 次（都是 kaito9 做候选人时），第二分支 0 次。⑥ 船：远程船的问题本局不是被打沉，而是落点被队友先拿、衰减和占船位（见 SE02/SE03/NEW-SE-06 三条）；pct 0 的小船 386 条，装兵 710 万、船费 2.27 亿。"
+  }
+ ],
+ "execLayer": {
+  "teamWindows": [
+   {
+    "t0": 0,
+    "issued": 18,
+    "executed": 18,
+    "lagMedian": 12,
+    "lagMax": 259
+   },
+   {
+    "t0": 300,
+    "issued": 25,
+    "executed": 25,
+    "lagMedian": 13,
+    "lagMax": 20
+   },
+   {
+    "t0": 600,
+    "issued": 105,
+    "executed": 105,
+    "lagMedian": 13,
+    "lagMax": 32
+   },
+   {
+    "t0": 900,
+    "issued": 101,
+    "executed": 101,
+    "lagMedian": 14,
+    "lagMax": 22
+   },
+   {
+    "t0": 1200,
+    "issued": 71,
+    "executed": 71,
+    "lagMedian": 13,
+    "lagMax": 19
+   },
+   {
+    "t0": 1500,
+    "issued": 88,
+    "executed": 88,
+    "lagMedian": 12,
+    "lagMax": 19
+   },
+   {
+    "t0": 1800,
+    "issued": 37,
+    "executed": 37,
+    "lagMedian": 12,
+    "lagMax": 30
+   },
+   {
+    "t0": 2100,
+    "issued": 20,
+    "executed": 20,
+    "lagMedian": 14,
+    "lagMax": 20
+   },
+   {
+    "t0": 2400,
+    "issued": 3,
+    "executed": 3,
+    "lagMedian": 14,
+    "lagMax": 14
+   },
+   {
+    "t0": 2700,
+    "issued": 11,
+    "executed": 9,
+    "lagMedian": 11,
+    "lagMax": 14
+   },
+   {
+    "t0": 3000,
+    "issued": 22,
+    "executed": 14,
+    "lagMedian": 11,
+    "lagMax": 19
+   },
+   {
+    "t0": 3300,
+    "issued": 28,
+    "executed": 28,
+    "lagMedian": 11,
+    "lagMax": 18
+   },
+   {
+    "t0": 3600,
+    "issued": 15,
+    "executed": 15,
+    "lagMedian": 12,
+    "lagMax": 16
+   },
+   {
+    "t0": 3900,
+    "issued": 2,
+    "executed": 2,
+    "lagMedian": 10,
+    "lagMax": 11
+   },
+   {
+    "t0": 4200,
+    "issued": 15,
+    "executed": 15,
+    "lagMedian": 12,
+    "lagMax": 23
+   },
+   {
+    "t0": 4500,
+    "issued": 6,
+    "executed": 6,
+    "lagMedian": 14,
+    "lagMax": 24
+   },
+   {
+    "t0": 4800,
+    "issued": 10,
+    "executed": 10,
+    "lagMedian": 12,
+    "lagMax": 16
+   },
+   {
+    "t0": 5100,
+    "issued": 17,
+    "executed": 17,
+    "lagMedian": 12,
+    "lagMax": 16
+   },
+   {
+    "t0": 5400,
+    "issued": 24,
+    "executed": 24,
+    "lagMedian": 12,
+    "lagMax": 20
+   },
+   {
+    "t0": 5700,
+    "issued": 26,
+    "executed": 26,
+    "lagMedian": 12,
+    "lagMax": 21
+   },
+   {
+    "t0": 6000,
+    "issued": 28,
+    "executed": 27,
+    "lagMedian": 11,
+    "lagMax": 19
+   },
+   {
+    "t0": 6300,
+    "issued": 24,
+    "executed": 22,
+    "lagMedian": 10,
+    "lagMax": 14
+   },
+   {
+    "t0": 6600,
+    "issued": 17,
+    "executed": 17,
+    "lagMedian": 12,
+    "lagMax": 17
+   },
+   {
+    "t0": 6900,
+    "issued": 31,
+    "executed": 27,
+    "lagMedian": 11,
+    "lagMax": 15
+   },
+   {
+    "t0": 7200,
+    "issued": 27,
+    "executed": 25,
+    "lagMedian": 11,
+    "lagMax": 15
+   },
+   {
+    "t0": 7500,
+    "issued": 22,
+    "executed": 21,
+    "lagMedian": 12,
+    "lagMax": 20
+   },
+   {
+    "t0": 7800,
+    "issued": 18,
+    "executed": 18,
+    "lagMedian": 12,
+    "lagMax": 19
+   },
+   {
+    "t0": 8100,
+    "issued": 22,
+    "executed": 22,
+    "lagMedian": 11,
+    "lagMax": 15
+   },
+   {
+    "t0": 8400,
+    "issued": 24,
+    "executed": 24,
+    "lagMedian": 12,
+    "lagMax": 22
+   },
+   {
+    "t0": 8700,
+    "issued": 27,
+    "executed": 27,
+    "lagMedian": 13,
+    "lagMax": 24
+   }
+  ],
+  "perBot": {
+   "talon5": {
+    "issued": 98,
+    "executed": 96,
+    "dropped": 2,
+    "lagMedian": 10,
+    "lagMax": 21
+   },
+   "zexos1": {
+    "issued": 261,
+    "executed": 260,
+    "dropped": 1,
+    "lagMedian": 11,
+    "lagMax": 20
+   },
+   "kaito9": {
+    "issued": 289,
+    "executed": 288,
+    "dropped": 1,
+    "lagMedian": 11,
+    "lagMax": 20
+   },
+   "leo_tx": {
+    "issued": 153,
+    "executed": 139,
+    "dropped": 14,
+    "lagMedian": 16,
+    "lagMax": 28
+   },
+   "riku_x": {
+    "issued": 80,
+    "executed": 78,
+    "dropped": 2,
+    "lagMedian": 16,
+    "lagMax": 32
+   },
+   "alex_k": {
+    "issued": 3,
+    "executed": 3,
+    "dropped": 0,
+    "lagMedian": 195,
+    "lagMax": 259
+   }
+  },
+  "misfire": {
+   "exec": 1422,
+   "noop": 9,
+   "dupInBatch": 14,
+   "deadTarget": 16,
+   "late30": 8,
+   "deadTargetNoop": 1,
+   "late150": 2
+  },
+  "nfsFlips": {
+   "talon5": {
+    "t": 792,
+    "blockedSends": 5
+   },
+   "zexos1": {
+    "t": 463,
+    "blockedSends": 39
+   },
+   "kaito9": {
+    "t": 673,
+    "blockedSends": 41
+   },
+   "leo_tx": {
+    "t": 735,
+    "blockedSends": 23
+   },
+   "riku_x": {
+    "t": 734,
+    "blockedSends": 15
+   }
+  },
+  "sendSites": [
+   {
+    "site": "boatOut:1011",
+    "n": 461
+   },
+   {
+    "site": "tryDonateToTeammate:4508",
+    "n": 391
+   },
+   {
+    "site": "act:796",
+    "n": 277
+   },
+   {
+    "site": "buyLand:5453",
+    "n": 188
+   },
+   {
+    "site": "buyLand:5607",
+    "n": 48
+   },
+   {
+    "site": "dpNeutral:2406",
+    "n": 47
+   },
+   {
+    "site": "boatFood:2017",
+    "n": 24
+   },
+   {
+    "site": "buyLand:5616",
+    "n": 19
+   },
+   {
+    "site": "expandNeutral:952",
+    "n": 18
+   },
+   {
+    "site": "buyLand:5585",
+    "n": 2
+   }
+  ],
+  "reissueBeforeExec": {
+   "syncBursts": 152,
+   "syncCmds": 393,
+   "syncFirst": 9149445,
+   "syncExtra": 12206970,
+   "syncExtraCmds": 241,
+   "lagBursts": 0,
+   "lagIssued": 0,
+   "lagExecuted": 0,
+   "deadBursts": 0,
+   "deadIssued": 0,
+   "list": [
+    {
+     "bot": "zexos1",
+     "t0": 4305,
+     "t1": 4310,
+     "target": "Player 691#5T2",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 7,
+     "firstExec": 4312,
+     "B0": 9515730,
+     "B1": 5858816,
+     "first": 2025809,
+     "extra": 1631105
+    },
+    {
+     "bot": "kaito9",
+     "t0": 6380,
+     "t1": 6390,
+     "target": "Player 804#11T2",
+     "site": "buyLand:5616",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 11,
+     "firstExec": 6391,
+     "B0": 6607105,
+     "B1": 8450073,
+     "first": 445205,
+     "extra": 1221054
+    },
+    {
+     "bot": "kaito9",
+     "t0": 6525,
+     "t1": 6535,
+     "target": "Player 804#11T2",
+     "site": "buyLand:5616",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 13,
+     "firstExec": 6538,
+     "B0": 9055022,
+     "B1": 7767130,
+     "first": 468667,
+     "extra": 859934
+    },
+    {
+     "bot": "kaito9",
+     "t0": 7365,
+     "t1": 7370,
+     "target": "Player 804#11T2",
+     "site": "buyLand:5585",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 13,
+     "firstExec": 7378,
+     "B0": 6662324,
+     "B1": 8338940,
+     "first": 611580,
+     "extra": 842860
+    },
+    {
+     "bot": "kaito9",
+     "t0": 6925,
+     "t1": 6935,
+     "target": "Player 804#11T2",
+     "site": "buyLand:5616",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 6937,
+     "B0": 9085503,
+     "B1": 8037440,
+     "first": 381519,
+     "extra": 700731
+    },
+    {
+     "bot": "zexos1",
+     "t0": 4370,
+     "t1": 4380,
+     "target": "يحيى#6T2",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 4382,
+     "B0": 6696355,
+     "B1": 6214881,
+     "first": 248496,
+     "extra": 463607
+    },
+    {
+     "bot": "kaito9",
+     "t0": 6255,
+     "t1": 6265,
+     "target": "Player 804#11T2",
+     "site": "buyLand:5616",
+     "issued": 3,
+     "beforeFirstExec": 2,
+     "firstLag": 10,
+     "firstExec": 6265,
+     "B0": 9060750,
+     "B1": 8218009,
+     "first": 442418,
+     "extra": 421868
+    },
+    {
+     "bot": "zexos1",
+     "t0": 3375,
+     "t1": 3385,
+     "target": "Player 691#5T2",
+     "site": "buyLand:5607",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 13,
+     "firstExec": 3388,
+     "B0": 2127020,
+     "B1": 1756499,
+     "first": 139170,
+     "extra": 413271
+    },
+    {
+     "bot": "kaito9",
+     "t0": 4300,
+     "t1": 4310,
+     "target": "يحيى#6T2",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 4312,
+     "B0": 2390048,
+     "B1": 2007588,
+     "first": 203060,
+     "extra": 348005
+    },
+    {
+     "bot": "kaito9",
+     "t0": 8835,
+     "t1": 8855,
+     "target": "AI148",
+     "site": "buyLand:5453",
+     "issued": 5,
+     "beforeFirstExec": 4,
+     "firstLag": 20,
+     "firstExec": 8855,
+     "B0": 9327450,
+     "B1": 8874259,
+     "first": 118414,
+     "extra": 346596
+    },
+    {
+     "bot": "kaito9",
+     "t0": 7535,
+     "t1": 7550,
+     "target": "Player 804#11T2",
+     "site": "buyLand:5616",
+     "issued": 4,
+     "beforeFirstExec": 4,
+     "firstLag": 18,
+     "firstExec": 7553,
+     "B0": 9228750,
+     "B1": 8785615,
+     "first": 117161,
+     "extra": 342849
+    },
+    {
+     "bot": "kaito9",
+     "t0": 6050,
+     "t1": 6065,
+     "target": "AI148",
+     "site": "buyLand:5453",
+     "issued": 4,
+     "beforeFirstExec": 4,
+     "firstLag": 19,
+     "firstExec": 6069,
+     "B0": 9060600,
+     "B1": 8625540,
+     "first": 115026,
+     "extra": 336601
+    },
+    {
+     "bot": "zexos1",
+     "t0": 3440,
+     "t1": 3450,
+     "target": "Player 691#5T2",
+     "site": "buyLand:5607",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 11,
+     "firstExec": 3451,
+     "B0": 1992369,
+     "B1": 1756091,
+     "first": 118685,
+     "extra": 233925
+    },
+    {
+     "bot": "kaito9",
+     "t0": 8360,
+     "t1": 8370,
+     "target": "AI148",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 8372,
+     "B0": 9327450,
+     "B1": 8976698,
+     "first": 118414,
+     "extra": 232338
+    },
+    {
+     "bot": "zexos1",
+     "t0": 2830,
+     "t1": 2840,
+     "target": "Russia#8T2",
+     "site": "buyLand:5607",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 2842,
+     "B0": 1334446,
+     "B1": 1152725,
+     "first": 113375,
+     "extra": 226940
+    },
+    {
+     "bot": "kaito9",
+     "t0": 6960,
+     "t1": 6970,
+     "target": "AI148",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 6972,
+     "B0": 9108300,
+     "B1": 8765792,
+     "first": 115631,
+     "extra": 226877
+    },
+    {
+     "bot": "kaito9",
+     "t0": 5855,
+     "t1": 5865,
+     "target": "AI148",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 11,
+     "firstExec": 5866,
+     "B0": 9060600,
+     "B1": 8725986,
+     "first": 115026,
+     "extra": 225849
+    },
+    {
+     "bot": "talon5",
+     "t0": 3320,
+     "t1": 3330,
+     "target": "Player 804#11T2",
+     "site": "buyLand:5607",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 3332,
+     "B0": 1060649,
+     "B1": 740265,
+     "first": 116008,
+     "extra": 204376
+    },
+    {
+     "bot": "zexos1",
+     "t0": 3305,
+     "t1": 3310,
+     "target": "Player 691#5T2",
+     "site": "buyLand:5607",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 13,
+     "firstExec": 3318,
+     "B0": 2044612,
+     "B1": 1649708,
+     "first": 225625,
+     "extra": 200565
+    },
+    {
+     "bot": "kaito9",
+     "t0": 3600,
+     "t1": 3610,
+     "target": "Player 845#9T2",
+     "site": "buyLand:5607",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 3612,
+     "B0": 880489,
+     "B1": 576146,
+     "first": 116079,
+     "extra": 188264
+    },
+    {
+     "bot": "zexos1",
+     "t0": 3595,
+     "t1": 3605,
+     "target": "Player 691#5T2",
+     "site": "buyLand:5607",
+     "issued": 3,
+     "beforeFirstExec": 2,
+     "firstLag": 10,
+     "firstExec": 3605,
+     "B0": 2320696,
+     "B1": 1962119,
+     "first": 219830,
+     "extra": 177613
+    },
+    {
+     "bot": "zexos1",
+     "t0": 3230,
+     "t1": 3240,
+     "target": "Russia#8T2",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 11,
+     "firstExec": 3241,
+     "B0": 1625019,
+     "B1": 1364240,
+     "first": 92041,
+     "extra": 168738
+    },
+    {
+     "bot": "kaito9",
+     "t0": 4900,
+     "t1": 4910,
+     "target": "AI426",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 14,
+     "firstExec": 4914,
+     "B0": 6083484,
+     "B1": 5947225,
+     "first": 77230,
+     "extra": 153927
+    },
+    {
+     "bot": "kaito9",
+     "t0": 3425,
+     "t1": 3435,
+     "target": "Player 845#9T2",
+     "site": "buyLand:5607",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 3437,
+     "B0": 886172,
+     "B1": 721281,
+     "first": 97789,
+     "extra": 152018
+    },
+    {
+     "bot": "kaito9",
+     "t0": 8245,
+     "t1": 8250,
+     "target": "AI148",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 8,
+     "firstExec": 8253,
+     "B0": 9327300,
+     "B1": 9098343,
+     "first": 118412,
+     "extra": 116991
+    },
+    {
+     "bot": "kaito9",
+     "t0": 8495,
+     "t1": 8505,
+     "target": "AI148",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 2,
+     "firstLag": 10,
+     "firstExec": 8505,
+     "B0": 9327300,
+     "B1": 9098343,
+     "first": 118412,
+     "extra": 116991
+    },
+    {
+     "bot": "kaito9",
+     "t0": 5645,
+     "t1": 5655,
+     "target": "AI148",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 11,
+     "firstExec": 5656,
+     "B0": 9060900,
+     "B1": 8866692,
+     "first": 115030,
+     "extra": 113649
+    },
+    {
+     "bot": "kaito9",
+     "t0": 6430,
+     "t1": 6440,
+     "target": "AI148",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 2,
+     "firstLag": 10,
+     "firstExec": 6440,
+     "B0": 9060121,
+     "B1": 8831541,
+     "first": 115020,
+     "extra": 113560
+    },
+    {
+     "bot": "zexos1",
+     "t0": 3050,
+     "t1": 3055,
+     "target": "Russia#8T2",
+     "site": "buyLand:5607",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 9,
+     "firstExec": 3059,
+     "B0": 1131629,
+     "B1": 915706,
+     "first": 120456,
+     "extra": 112454
+    },
+    {
+     "bot": "zexos1",
+     "t0": 2930,
+     "t1": 2940,
+     "target": "Russia#8T2",
+     "site": "buyLand:5607",
+     "issued": 3,
+     "beforeFirstExec": 2,
+     "firstLag": 10,
+     "firstExec": 2940,
+     "B0": 1343721,
+     "B1": 1126296,
+     "first": 112850,
+     "extra": 104575
+    },
+    {
+     "bot": "talon5",
+     "t0": 3120,
+     "t1": 3125,
+     "target": "Player 804#11T2",
+     "site": "buyLand:5607",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 9,
+     "firstExec": 3129,
+     "B0": 995884,
+     "B1": 808618,
+     "first": 104061,
+     "extra": 94352
+    },
+    {
+     "bot": "talon5",
+     "t0": 2910,
+     "t1": 2915,
+     "target": "Player 804#11T2",
+     "site": "buyLand:5607",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 9,
+     "firstExec": 2919,
+     "B0": 948427,
+     "B1": 759964,
+     "first": 104660,
+     "extra": 94265
+    },
+    {
+     "bot": "kaito9",
+     "t0": 4440,
+     "t1": 4450,
+     "target": "AI148",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 4452,
+     "B0": 2904601,
+     "B1": 2762329,
+     "first": 48220,
+     "extra": 94052
+    },
+    {
+     "bot": "kaito9",
+     "t0": 7355,
+     "t1": 7360,
+     "target": "AI148",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 9,
+     "firstExec": 7364,
+     "B0": 6732305,
+     "B1": 6650651,
+     "first": 85468,
+     "extra": 85517
+    },
+    {
+     "bot": "kaito9",
+     "t0": 8105,
+     "t1": 8110,
+     "target": "AI148",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 8,
+     "firstExec": 8113,
+     "B0": 9327450,
+     "B1": 5767317,
+     "first": 118414,
+     "extra": 74158
+    },
+    {
+     "bot": "kaito9",
+     "t0": 3665,
+     "t1": 3675,
+     "target": "Player 845#9T2",
+     "site": "buyLand:5607",
+     "issued": 3,
+     "beforeFirstExec": 2,
+     "firstLag": 10,
+     "firstExec": 3675,
+     "B0": 619401,
+     "B1": 473519,
+     "first": 81658,
+     "extra": 71905
+    },
+    {
+     "bot": "kaito9",
+     "t0": 3455,
+     "t1": 3465,
+     "target": "Player 691#5T2",
+     "site": "buyLand:5607",
+     "issued": 3,
+     "beforeFirstExec": 2,
+     "firstLag": 10,
+     "firstExec": 3465,
+     "B0": 665847,
+     "B1": 534778,
+     "first": 52668,
+     "extra": 52788
+    },
+    {
+     "bot": "riku_x",
+     "t0": 2255,
+     "t1": 2270,
+     "target": "AI201",
+     "site": "buyLand:5453",
+     "issued": 4,
+     "beforeFirstExec": 4,
+     "firstLag": 20,
+     "firstExec": 2275,
+     "B0": 276000,
+     "B1": 191633,
+     "first": 14015,
+     "extra": 35985
+    },
+    {
+     "bot": "riku_x",
+     "t0": 2295,
+     "t1": 2310,
+     "target": "AI201",
+     "site": "buyLand:5453",
+     "issued": 4,
+     "beforeFirstExec": 3,
+     "firstLag": 15,
+     "firstExec": 2310,
+     "B0": 211084,
+     "B1": 167537,
+     "first": 9275,
+     "extra": 34272
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1885,
+     "t1": 1900,
+     "target": "AI130",
+     "site": "buyLand:5453",
+     "issued": 4,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 1897,
+     "B0": 40615,
+     "B1": 85972,
+     "first": 5750,
+     "extra": 31500
+    },
+    {
+     "bot": "talon5",
+     "t0": 8780,
+     "t1": 8790,
+     "target": "AI148",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 8792,
+     "B0": 1115187,
+     "B1": 1073254,
+     "first": 14157,
+     "extra": 27776
+    },
+    {
+     "bot": "riku_x",
+     "t0": 1955,
+     "t1": 1970,
+     "target": "AI473",
+     "site": "buyLand:5453",
+     "issued": 4,
+     "beforeFirstExec": 4,
+     "firstLag": 19,
+     "firstExec": 1974,
+     "B0": 185561,
+     "B1": 159725,
+     "first": 8878,
+     "extra": 27293
+    },
+    {
+     "bot": "kaito9",
+     "t0": 2550,
+     "t1": 2555,
+     "target": "Player 845#9T2",
+     "site": "buyLand:5607",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 12,
+     "firstExec": 2562,
+     "B0": 376263,
+     "B1": 322485,
+     "first": 27925,
+     "extra": 25853
+    },
+    {
+     "bot": "riku_x",
+     "t0": 2350,
+     "t1": 2365,
+     "target": "AI426",
+     "site": "buyLand:5453",
+     "issued": 4,
+     "beforeFirstExec": 4,
+     "firstLag": 16,
+     "firstExec": 2366,
+     "B0": 178531,
+     "B1": 147443,
+     "first": 12204,
+     "extra": 22981
+    },
+    {
+     "bot": "kaito9",
+     "t0": 3830,
+     "t1": 3840,
+     "target": "AI148",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 13,
+     "firstExec": 3843,
+     "B0": 1011486,
+     "B1": 987032,
+     "first": 20743,
+     "extra": 19661
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1815,
+     "t1": 1825,
+     "target": "AI248",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 1827,
+     "B0": 86128,
+     "B1": 57626,
+     "first": 11186,
+     "extra": 18485
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 1605,
+     "t1": 1615,
+     "target": "AI283",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 19,
+     "firstExec": 1624,
+     "B0": 56049,
+     "B1": 40944,
+     "first": 8318,
+     "extra": 17765
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 1195,
+     "t1": 1210,
+     "target": "AI485",
+     "site": "act:796",
+     "issued": 4,
+     "beforeFirstExec": 4,
+     "firstLag": 16,
+     "firstExec": 1211,
+     "B0": 39509,
+     "B1": 18263,
+     "first": 6095,
+     "extra": 15830
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1400,
+     "t1": 1405,
+     "target": "AI463",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 14,
+     "firstExec": 1414,
+     "B0": 70421,
+     "B1": 34335,
+     "first": 21249,
+     "extra": 14837
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 1545,
+     "t1": 1560,
+     "target": "AI188",
+     "site": "buyLand:5453",
+     "issued": 4,
+     "beforeFirstExec": 4,
+     "firstLag": 16,
+     "firstExec": 1561,
+     "B0": 67228,
+     "B1": 57437,
+     "first": 4988,
+     "extra": 14811
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1855,
+     "t1": 1865,
+     "target": "AI130",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 14,
+     "firstExec": 1869,
+     "B0": 51370,
+     "B1": 39339,
+     "first": 6771,
+     "extra": 13706
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 1710,
+     "t1": 1720,
+     "target": "AI255",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 1722,
+     "B0": 43566,
+     "B1": 20556,
+     "first": 10082,
+     "extra": 13340
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1695,
+     "t1": 1705,
+     "target": "AI451",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 13,
+     "firstExec": 1708,
+     "B0": 31440,
+     "B1": 0,
+     "first": 19987,
+     "extra": 11641
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1685,
+     "t1": 1690,
+     "target": "AI302",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 9,
+     "firstExec": 1694,
+     "B0": 84889,
+     "B1": 103274,
+     "first": 8040,
+     "extra": 10683
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1640,
+     "t1": 1650,
+     "target": "AI379",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 1652,
+     "B0": 35738,
+     "B1": 22392,
+     "first": 7502,
+     "extra": 10632
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1665,
+     "t1": 1670,
+     "target": "AI445",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 8,
+     "firstExec": 1673,
+     "B0": 79789,
+     "B1": 83454,
+     "first": 9038,
+     "extra": 10557
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 1565,
+     "t1": 1575,
+     "target": "AI222",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 17,
+     "firstExec": 1582,
+     "B0": 58620,
+     "B1": 48404,
+     "first": 4979,
+     "extra": 9869
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1185,
+     "t1": 1195,
+     "target": "AI429",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 1197,
+     "B0": 20169,
+     "B1": 22329,
+     "first": 3407,
+     "extra": 8954
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1755,
+     "t1": 1760,
+     "target": "AI75",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 9,
+     "firstExec": 1764,
+     "B0": 74308,
+     "B1": 56355,
+     "first": 10085,
+     "extra": 8850
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1535,
+     "t1": 1545,
+     "target": "AI387",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 1547,
+     "B0": 33578,
+     "B1": 23719,
+     "first": 5606,
+     "extra": 8813
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1555,
+     "t1": 1565,
+     "target": "AI127",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 13,
+     "firstExec": 1568,
+     "B0": 51797,
+     "B1": 44561,
+     "first": 3995,
+     "extra": 8689
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1605,
+     "t1": 1610,
+     "target": "AI283",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 12,
+     "firstExec": 1617,
+     "B0": 74501,
+     "B1": 51649,
+     "first": 9749,
+     "extra": 8043
+    },
+    {
+     "bot": "talon5",
+     "t0": 1150,
+     "t1": 1160,
+     "target": "AI319",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 1162,
+     "B0": 23371,
+     "B1": 15927,
+     "first": 4518,
+     "extra": 7284
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1925,
+     "t1": 1935,
+     "target": "AI292",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 14,
+     "firstExec": 1939,
+     "B0": 84010,
+     "B1": 78208,
+     "first": 3527,
+     "extra": 7186
+    },
+    {
+     "bot": "zexos1",
+     "t0": 2190,
+     "t1": 2205,
+     "target": "AI354",
+     "site": "buyLand:5453",
+     "issued": 4,
+     "beforeFirstExec": 2,
+     "firstLag": 8,
+     "firstExec": 2198,
+     "B0": 270964,
+     "B1": 326342,
+     "first": 5821,
+     "extra": 7164
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 1505,
+     "t1": 1515,
+     "target": "AI185",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 14,
+     "firstExec": 1519,
+     "B0": 70550,
+     "B1": 63067,
+     "first": 3306,
+     "extra": 7137
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1955,
+     "t1": 1960,
+     "target": "AI354",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 12,
+     "firstExec": 1967,
+     "B0": 103969,
+     "B1": 91383,
+     "first": 10558,
+     "extra": 7014
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1940,
+     "t1": 1950,
+     "target": "AI87",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 13,
+     "firstExec": 1953,
+     "B0": 76937,
+     "B1": 103969,
+     "first": 2328,
+     "extra": 6131
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1545,
+     "t1": 1550,
+     "target": "AI232",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 9,
+     "firstExec": 1554,
+     "B0": 66917,
+     "B1": 56246,
+     "first": 6207,
+     "extra": 5751
+    },
+    {
+     "bot": "talon5",
+     "t0": 1110,
+     "t1": 1125,
+     "target": "AI50",
+     "site": "act:796",
+     "issued": 4,
+     "beforeFirstExec": 4,
+     "firstLag": 17,
+     "firstExec": 1127,
+     "B0": 30194,
+     "B1": 27575,
+     "first": 1768,
+     "extra": 5073
+    },
+    {
+     "bot": "zexos1",
+     "t0": 910,
+     "t1": 920,
+     "target": "AI312",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 14,
+     "firstExec": 924,
+     "B0": 13336,
+     "B1": 9532,
+     "first": 2239,
+     "extra": 4900
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1330,
+     "t1": 1340,
+     "target": "AI67",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 14,
+     "firstExec": 1344,
+     "B0": 44553,
+     "B1": 38241,
+     "first": 2610,
+     "extra": 4837
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1520,
+     "t1": 1530,
+     "target": "AI339",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 13,
+     "firstExec": 1533,
+     "B0": 70650,
+     "B1": 65509,
+     "first": 2206,
+     "extra": 4387
+    },
+    {
+     "bot": "zexos1",
+     "t0": 2060,
+     "t1": 2065,
+     "target": "AI354",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 12,
+     "firstExec": 2072,
+     "B0": 167608,
+     "B1": 167608,
+     "first": 3928,
+     "extra": 4194
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1410,
+     "t1": 1420,
+     "target": "AI461",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 11,
+     "firstExec": 1421,
+     "B0": 40565,
+     "B1": 31841,
+     "first": 2376,
+     "extra": 4086
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1500,
+     "t1": 1515,
+     "target": "AI454",
+     "site": "buyLand:5453",
+     "issued": 4,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 1512,
+     "B0": 37839,
+     "B1": 33814,
+     "first": 1847,
+     "extra": 3927
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 960,
+     "t1": 970,
+     "target": "AI71",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 13,
+     "firstExec": 973,
+     "B0": 12299,
+     "B1": 6336,
+     "first": 2594,
+     "extra": 3751
+    },
+    {
+     "bot": "riku_x",
+     "t0": 905,
+     "t1": 920,
+     "target": "AI407",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 19,
+     "firstExec": 924,
+     "B0": 9041,
+     "B1": 5489,
+     "first": 2206,
+     "extra": 3724
+    },
+    {
+     "bot": "kaito9",
+     "t0": 905,
+     "t1": 915,
+     "target": "AI407",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 917,
+     "B0": 13763,
+     "B1": 9898,
+     "first": 2271,
+     "extra": 3709
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1445,
+     "t1": 1450,
+     "target": "AI454",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 11,
+     "firstExec": 1456,
+     "B0": 23377,
+     "B1": 16154,
+     "first": 4108,
+     "extra": 3585
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1480,
+     "t1": 1490,
+     "target": "AI463",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 11,
+     "firstExec": 1491,
+     "B0": 19241,
+     "B1": 36872,
+     "first": 1126,
+     "extra": 3559
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1560,
+     "t1": 1565,
+     "target": "AI309",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 8,
+     "firstExec": 1568,
+     "B0": 20178,
+     "B1": 12795,
+     "first": 4196,
+     "extra": 3521
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1290,
+     "t1": 1295,
+     "target": "AI143",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 12,
+     "firstExec": 1302,
+     "B0": 27012,
+     "B1": 18536,
+     "first": 4800,
+     "extra": 3508
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1170,
+     "t1": 1180,
+     "target": "AI266",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 13,
+     "firstExec": 1183,
+     "B0": 30982,
+     "B1": 26724,
+     "first": 1815,
+     "extra": 3428
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1230,
+     "t1": 1245,
+     "target": "AI176",
+     "site": "act:796",
+     "issued": 4,
+     "beforeFirstExec": 4,
+     "firstLag": 16,
+     "firstExec": 1246,
+     "B0": 20940,
+     "B1": 17476,
+     "first": 1226,
+     "extra": 3362
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 1400,
+     "t1": 1405,
+     "target": "AI446",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 14,
+     "firstExec": 1414,
+     "B0": 57735,
+     "B1": 52478,
+     "first": 3382,
+     "extra": 3266
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 1415,
+     "t1": 1420,
+     "target": "AI90",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 13,
+     "firstExec": 1428,
+     "B0": 52478,
+     "B1": 47096,
+     "first": 3483,
+     "extra": 3138
+    },
+    {
+     "bot": "talon5",
+     "t0": 1130,
+     "t1": 1140,
+     "target": "AI266",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 11,
+     "firstExec": 1141,
+     "B0": 25176,
+     "B1": 22175,
+     "first": 1475,
+     "extra": 2976
+    },
+    {
+     "bot": "riku_x",
+     "t0": 865,
+     "t1": 880,
+     "target": "AI443",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 17,
+     "firstExec": 882,
+     "B0": 10787,
+     "B1": 6529,
+     "first": 1653,
+     "extra": 2923
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1605,
+     "t1": 1610,
+     "target": "AI463",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 12,
+     "firstExec": 1617,
+     "B0": 43230,
+     "B1": 35109,
+     "first": 3630,
+     "extra": 2894
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1570,
+     "t1": 1575,
+     "target": "AI93",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 12,
+     "firstExec": 1582,
+     "B0": 45478,
+     "B1": 39765,
+     "first": 2930,
+     "extra": 2783
+    },
+    {
+     "bot": "zexos1",
+     "t0": 820,
+     "t1": 830,
+     "target": "AI163",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 13,
+     "firstExec": 833,
+     "B0": 14183,
+     "B1": 11999,
+     "first": 1634,
+     "extra": 2715
+    },
+    {
+     "bot": "talon5",
+     "t0": 995,
+     "t1": 1000,
+     "target": "AI364",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 13,
+     "firstExec": 1008,
+     "B0": 15251,
+     "B1": 15251,
+     "first": 1816,
+     "extra": 2699
+    },
+    {
+     "bot": "riku_x",
+     "t0": 1120,
+     "t1": 1125,
+     "target": "AI263",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 14,
+     "firstExec": 1134,
+     "B0": 31454,
+     "B1": 24283,
+     "first": 3501,
+     "extra": 2627
+    },
+    {
+     "bot": "talon5",
+     "t0": 940,
+     "t1": 950,
+     "target": "AI482",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 952,
+     "B0": 14755,
+     "B1": 12391,
+     "first": 1195,
+     "extra": 2410
+    },
+    {
+     "bot": "riku_x",
+     "t0": 1170,
+     "t1": 1175,
+     "target": "AI319",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 13,
+     "firstExec": 1183,
+     "B0": 22220,
+     "B1": 16670,
+     "first": 3796,
+     "extra": 2358
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1275,
+     "t1": 1280,
+     "target": "AI296",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 13,
+     "firstExec": 1288,
+     "B0": 15911,
+     "B1": 15911,
+     "first": 2081,
+     "extra": 2333
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1015,
+     "t1": 1020,
+     "target": "AI64",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 14,
+     "firstExec": 1029,
+     "B0": 17804,
+     "B1": 12823,
+     "first": 2694,
+     "extra": 2287
+    },
+    {
+     "bot": "talon5",
+     "t0": 770,
+     "t1": 780,
+     "target": "AI163",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 14,
+     "firstExec": 784,
+     "B0": 7584,
+     "B1": 6160,
+     "first": 1006,
+     "extra": 2276
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1205,
+     "t1": 1210,
+     "target": "AI485",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 13,
+     "firstExec": 1218,
+     "B0": 40181,
+     "B1": 35612,
+     "first": 2353,
+     "extra": 2216
+    },
+    {
+     "bot": "riku_x",
+     "t0": 1050,
+     "t1": 1070,
+     "target": "AI271",
+     "site": "act:796",
+     "issued": 4,
+     "beforeFirstExec": 2,
+     "firstLag": 14,
+     "firstExec": 1064,
+     "B0": 20332,
+     "B1": 16047,
+     "first": 1766,
+     "extra": 2069
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 860,
+     "t1": 875,
+     "target": "AI414",
+     "site": "act:796",
+     "issued": 4,
+     "beforeFirstExec": 3,
+     "firstLag": 15,
+     "firstExec": 875,
+     "B0": 14458,
+     "B1": 10446,
+     "first": 1171,
+     "extra": 2068
+    },
+    {
+     "bot": "zexos1",
+     "t0": 870,
+     "t1": 880,
+     "target": "AI414",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 882,
+     "B0": 13233,
+     "B1": 10785,
+     "first": 1447,
+     "extra": 1990
+    },
+    {
+     "bot": "kaito9",
+     "t0": 605,
+     "t1": 615,
+     "target": "AI124",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 11,
+     "firstExec": 616,
+     "B0": 6623,
+     "B1": 5584,
+     "first": 1098,
+     "extra": 1983
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1320,
+     "t1": 1330,
+     "target": "AI67",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 2,
+     "firstLag": 10,
+     "firstExec": 1330,
+     "B0": 25979,
+     "B1": 21987,
+     "first": 2079,
+     "extra": 1913
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1345,
+     "t1": 1355,
+     "target": "AI310",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 13,
+     "firstExec": 1358,
+     "B0": 17616,
+     "B1": 15124,
+     "first": 1031,
+     "extra": 1912
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 1645,
+     "t1": 1655,
+     "target": "AI208",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 14,
+     "firstExec": 1659,
+     "B0": 39988,
+     "B1": 30426,
+     "first": 1131,
+     "extra": 1879
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 1040,
+     "t1": 1050,
+     "target": "AI221",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 17,
+     "firstExec": 1057,
+     "B0": 14362,
+     "B1": 13103,
+     "first": 855,
+     "extra": 1827
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1580,
+     "t1": 1585,
+     "target": "AI198",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 9,
+     "firstExec": 1589,
+     "B0": 13058,
+     "B1": 9398,
+     "first": 2091,
+     "extra": 1791
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1230,
+     "t1": 1235,
+     "target": "AI167",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 9,
+     "firstExec": 1239,
+     "B0": 31391,
+     "B1": 28690,
+     "first": 1838,
+     "extra": 1785
+    },
+    {
+     "bot": "riku_x",
+     "t0": 840,
+     "t1": 850,
+     "target": "AI135",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 14,
+     "firstExec": 854,
+     "B0": 13079,
+     "B1": 9924,
+     "first": 995,
+     "extra": 1725
+    },
+    {
+     "bot": "zexos1",
+     "t0": 855,
+     "t1": 865,
+     "target": "AI279",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 13,
+     "firstExec": 868,
+     "B0": 11318,
+     "B1": 12694,
+     "first": 662,
+     "extra": 1628
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 765,
+     "t1": 775,
+     "target": "AI161",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 19,
+     "firstExec": 784,
+     "B0": 5940,
+     "B1": 4644,
+     "first": 759,
+     "extra": 1604
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1115,
+     "t1": 1120,
+     "target": "AI50",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 12,
+     "firstExec": 1127,
+     "B0": 32315,
+     "B1": 25299,
+     "first": 1924,
+     "extra": 1602
+    },
+    {
+     "bot": "talon5",
+     "t0": 610,
+     "t1": 620,
+     "target": "AI495",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 13,
+     "firstExec": 623,
+     "B0": 4766,
+     "B1": 3528,
+     "first": 767,
+     "extra": 1593
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 1665,
+     "t1": 1675,
+     "target": "AI262",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 15,
+     "firstExec": 1680,
+     "B0": 30958,
+     "B1": 29198,
+     "first": 815,
+     "extra": 1529
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 920,
+     "t1": 935,
+     "target": "AI133",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 18,
+     "firstExec": 938,
+     "B0": 13137,
+     "B1": 11375,
+     "first": 768,
+     "extra": 1460
+    },
+    {
+     "bot": "talon5",
+     "t0": 870,
+     "t1": 880,
+     "target": "AI408",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 882,
+     "B0": 10366,
+     "B1": 9047,
+     "first": 657,
+     "extra": 1410
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1035,
+     "t1": 1040,
+     "target": "AI271",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 8,
+     "firstExec": 1043,
+     "B0": 13806,
+     "B1": 9850,
+     "first": 1590,
+     "extra": 1381
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 1230,
+     "t1": 1240,
+     "target": "AI465",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 16,
+     "firstExec": 1246,
+     "B0": 16524,
+     "B1": 14476,
+     "first": 1193,
+     "extra": 1377
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 740,
+     "t1": 755,
+     "target": "AI28",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 16,
+     "firstExec": 756,
+     "B0": 9109,
+     "B1": 8534,
+     "first": 684,
+     "extra": 1350
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1630,
+     "t1": 1650,
+     "target": "AI379",
+     "site": "buyLand:5453",
+     "issued": 5,
+     "beforeFirstExec": 2,
+     "firstLag": 8,
+     "firstExec": 1638,
+     "B0": 80699,
+     "B1": 79660,
+     "first": 1181,
+     "extra": 1344
+    },
+    {
+     "bot": "riku_x",
+     "t0": 820,
+     "t1": 825,
+     "target": "AI218",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 27,
+     "firstExec": 847,
+     "B0": 13669,
+     "B1": 13669,
+     "first": 1134,
+     "extra": 1300
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1045,
+     "t1": 1055,
+     "target": "AI507",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 1057,
+     "B0": 12670,
+     "B1": 9616,
+     "first": 741,
+     "extra": 1295
+    },
+    {
+     "bot": "riku_x",
+     "t0": 755,
+     "t1": 765,
+     "target": "AI26",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 15,
+     "firstExec": 770,
+     "B0": 11727,
+     "B1": 10233,
+     "first": 686,
+     "extra": 1282
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1100,
+     "t1": 1105,
+     "target": "AI287",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 13,
+     "firstExec": 1113,
+     "B0": 21865,
+     "B1": 19380,
+     "first": 1280,
+     "extra": 1205
+    },
+    {
+     "bot": "kaito9",
+     "t0": 855,
+     "t1": 860,
+     "target": "AI335",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 13,
+     "firstExec": 868,
+     "B0": 8918,
+     "B1": 8918,
+     "first": 1018,
+     "extra": 1194
+    },
+    {
+     "bot": "riku_x",
+     "t0": 1040,
+     "t1": 1045,
+     "target": "AI204",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 17,
+     "firstExec": 1057,
+     "B0": 20829,
+     "B1": 17479,
+     "first": 1220,
+     "extra": 1087
+    },
+    {
+     "bot": "kaito9",
+     "t0": 770,
+     "t1": 780,
+     "target": "AI150",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 14,
+     "firstExec": 784,
+     "B0": 8654,
+     "B1": 6972,
+     "first": 608,
+     "extra": 1075
+    },
+    {
+     "bot": "kaito9",
+     "t0": 705,
+     "t1": 710,
+     "target": "AI145",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 9,
+     "firstExec": 714,
+     "B0": 7569,
+     "B1": 5687,
+     "first": 1152,
+     "extra": 1068
+    },
+    {
+     "bot": "riku_x",
+     "t0": 770,
+     "t1": 780,
+     "target": "AI150",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 14,
+     "firstExec": 784,
+     "B0": 10233,
+     "B1": 7663,
+     "first": 598,
+     "extra": 1066
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 725,
+     "t1": 730,
+     "target": "AI82",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 17,
+     "firstExec": 742,
+     "B0": 10912,
+     "B1": 8705,
+     "first": 1171,
+     "extra": 1036
+    },
+    {
+     "bot": "zexos1",
+     "t0": 955,
+     "t1": 965,
+     "target": "AI482",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 11,
+     "firstExec": 966,
+     "B0": 11066,
+     "B1": 10341,
+     "first": 961,
+     "extra": 1020
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1665,
+     "t1": 1670,
+     "target": "AI379",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 8,
+     "firstExec": 1673,
+     "B0": 18241,
+     "B1": 15413,
+     "first": 2101,
+     "extra": 1009
+    },
+    {
+     "bot": "kaito9",
+     "t0": 840,
+     "t1": 845,
+     "target": "AI135",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 14,
+     "firstExec": 854,
+     "B0": 10549,
+     "B1": 10549,
+     "first": 854,
+     "extra": 991
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1250,
+     "t1": 1260,
+     "target": "AI217",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 2,
+     "firstLag": 10,
+     "firstExec": 1260,
+     "B0": 17476,
+     "B1": 15490,
+     "first": 1023,
+     "extra": 963
+    },
+    {
+     "bot": "kaito9",
+     "t0": 980,
+     "t1": 985,
+     "target": "AI287",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 14,
+     "firstExec": 994,
+     "B0": 8715,
+     "B1": 8715,
+     "first": 748,
+     "extra": 932
+    },
+    {
+     "bot": "zexos1",
+     "t0": 1015,
+     "t1": 1020,
+     "target": "AI323",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 14,
+     "firstExec": 1029,
+     "B0": 15912,
+     "B1": 14668,
+     "first": 931,
+     "extra": 912
+    },
+    {
+     "bot": "riku_x",
+     "t0": 450,
+     "t1": 465,
+     "target": "AI411",
+     "site": "act:796",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 19,
+     "firstExec": 469,
+     "B0": 2676,
+     "B1": 1030,
+     "first": 470,
+     "extra": 817
+    },
+    {
+     "bot": "riku_x",
+     "t0": 800,
+     "t1": 805,
+     "target": "AI223",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 19,
+     "firstExec": 819,
+     "B0": 12815,
+     "B1": 12815,
+     "first": 950,
+     "extra": 797
+    },
+    {
+     "bot": "talon5",
+     "t0": 665,
+     "t1": 670,
+     "target": "AI385",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 7,
+     "firstExec": 672,
+     "B0": 5830,
+     "B1": 3182,
+     "first": 1098,
+     "extra": 728
+    },
+    {
+     "bot": "zexos1",
+     "t0": 840,
+     "t1": 845,
+     "target": "AI277",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 14,
+     "firstExec": 854,
+     "B0": 12242,
+     "B1": 10851,
+     "first": 716,
+     "extra": 675
+    },
+    {
+     "bot": "kaito9",
+     "t0": 660,
+     "t1": 665,
+     "target": "AI150",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 12,
+     "firstExec": 672,
+     "B0": 5982,
+     "B1": 3381,
+     "first": 952,
+     "extra": 653
+    },
+    {
+     "bot": "talon5",
+     "t0": 825,
+     "t1": 830,
+     "target": "AI241",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 8,
+     "firstExec": 833,
+     "B0": 8841,
+     "B1": 7331,
+     "first": 698,
+     "extra": 554
+    },
+    {
+     "bot": "zexos1",
+     "t0": 765,
+     "t1": 770,
+     "target": "AI28",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 12,
+     "firstExec": 777,
+     "B0": 7575,
+     "B1": 6715,
+     "first": 443,
+     "extra": 417
+    },
+    {
+     "bot": "leo_tx",
+     "t0": 545,
+     "t1": 550,
+     "target": "AI172",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 15,
+     "firstExec": 560,
+     "B0": 2361,
+     "B1": 1709,
+     "first": 444,
+     "extra": 373
+    },
+    {
+     "bot": "kaito9",
+     "t0": 365,
+     "t1": 370,
+     "target": "AI456",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 13,
+     "firstExec": 378,
+     "B0": 1201,
+     "B1": 1201,
+     "first": 152,
+     "extra": 188
+    },
+    {
+     "bot": "talon5",
+     "t0": 810,
+     "t1": 815,
+     "target": "AI241",
+     "site": "act:796",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 9,
+     "firstExec": 819,
+     "B0": 9826,
+     "B1": 8469,
+     "first": 0,
+     "extra": 0
+    },
+    {
+     "bot": "zexos1",
+     "t0": 6005,
+     "t1": 6010,
+     "target": "Player 804#11T2",
+     "site": "buyLand:5616",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 8,
+     "firstExec": 6013,
+     "B0": 25611270,
+     "B1": 25599840,
+     "first": 550242,
+     "extra": 0
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1740,
+     "t1": 1750,
+     "target": "AI250",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 2,
+     "firstLag": 10,
+     "firstExec": 1750,
+     "B0": 4,
+     "B1": 0,
+     "first": 4,
+     "extra": 0
+    },
+    {
+     "bot": "kaito9",
+     "t0": 1990,
+     "t1": 2000,
+     "target": "AI142",
+     "site": "buyLand:5453",
+     "issued": 3,
+     "beforeFirstExec": 3,
+     "firstLag": 12,
+     "firstExec": 2002,
+     "B0": 133339,
+     "B1": 133339,
+     "first": 0,
+     "extra": 0
+    },
+    {
+     "bot": "kaito9",
+     "t0": 4135,
+     "t1": 4140,
+     "target": "AI148",
+     "site": "buyLand:5453",
+     "issued": 2,
+     "beforeFirstExec": 2,
+     "firstLag": 9,
+     "firstExec": 4144,
+     "B0": 1778053,
+     "B1": 1781532,
+     "first": 34727,
+     "extra": 0
+    }
+   ]
+  },
+  "pageStops": {
+   "riku_x": {
+    "resultsTick": 3472,
+    "lastLogTick": 3420,
+    "shadowUntil": 3471
+   },
+   "alex_k": {
+    "resultsTick": 308,
+    "lastLogTick": 270,
+    "shadowUntil": 307
+   }
+  },
+  "sameTickRejected": {
+   "byPair": {
+    "dpNeutral:2406 → act:796": 6,
+    "expandNeutral:952 → buyLand:5453": 4,
+    "boatOut:1011 → boatFood:2017": 1
+   },
+   "total": 11,
+   "withHumanTarget": 1
+  }
+ },
+ "openingFreeze": {
+  "window": [
+   600,
+   1500
+  ],
+  "team": {
+   "ticks": 900,
+   "target": 318,
+   "neutral": 369,
+   "noai": 102,
+   "frozen": 60,
+   "other": 51,
+   "frozenBy": {
+    "squad": 56,
+    "mate": 0,
+    "enemy": 4,
+    "ai": 0
+   },
+   "frozenBalTicks": 900320,
+   "frozenWould": 35
+  },
+  "perBot": {
+   "talon5": {
+    "ticks": 180,
+    "target": 45,
+    "neutral": 47,
+    "noai": 52,
+    "frozen": 25,
+    "frozenWould": 14,
+    "other": 11,
+    "frozenBy": {
+     "squad": 22,
+     "mate": 0,
+     "enemy": 3,
+     "ai": 0
+    },
+    "binders": {
+     "riku_x#4": 16,
+     "Player 804#11": 3,
+     "leo_tx#1": 6
+    },
+    "B0": 5867,
+    "B1": 112627,
+    "L0": 2415,
+    "L1": 9347
+   },
+   "zexos1": {
+    "ticks": 180,
+    "target": 70,
+    "neutral": 98,
+    "noai": 0,
+    "frozen": 11,
+    "frozenWould": 5,
+    "other": 1,
+    "frozenBy": {
+     "squad": 11,
+     "mate": 0,
+     "enemy": 0,
+     "ai": 0
+    },
+    "binders": {
+     "alex_k#7": 11
+    },
+    "B0": 6096,
+    "B1": 48731,
+    "L0": 3576,
+    "L1": 23377
+   },
+   "kaito9": {
+    "ticks": 180,
+    "target": 88,
+    "neutral": 60,
+    "noai": 0,
+    "frozen": 8,
+    "frozenWould": 6,
+    "other": 24,
+    "frozenBy": {
+     "squad": 8,
+     "mate": 0,
+     "enemy": 0,
+     "ai": 0
+    },
+    "binders": {
+     "riku_x#4": 8
+    },
+    "B0": 6303,
+    "B1": 18115,
+    "L0": 2530,
+    "L1": 21675
+   },
+   "leo_tx": {
+    "ticks": 180,
+    "target": 62,
+    "neutral": 98,
+    "noai": 0,
+    "frozen": 5,
+    "frozenWould": 1,
+    "other": 15,
+    "frozenBy": {
+     "squad": 4,
+     "mate": 0,
+     "enemy": 1,
+     "ai": 0
+    },
+    "binders": {
+     "zexos1#0": 4,
+     "Player 804#11": 1
+    },
+    "B0": 4656,
+    "B1": 48329,
+    "L0": 2599,
+    "L1": 19411
+   },
+   "riku_x": {
+    "ticks": 180,
+    "target": 53,
+    "neutral": 66,
+    "noai": 50,
+    "frozen": 11,
+    "frozenWould": 9,
+    "other": 0,
+    "frozenBy": {
+     "squad": 11,
+     "mate": 0,
+     "enemy": 0,
+     "ai": 0
+    },
+    "binders": {
+     "talon5#2": 7,
+     "kaito9#3": 4
+    },
+    "B0": 5141,
+    "B1": 79774,
+    "L0": 2427,
+    "L1": 8423
+   },
+   "alex_k": {
+    "ticks": 0,
+    "target": 0,
+    "neutral": 0,
+    "noai": 0,
+    "frozen": 0,
+    "frozenWould": 0,
+    "other": 0,
+    "frozenBy": {
+     "squad": 0,
+     "mate": 0,
+     "enemy": 0,
+     "ai": 0
+    },
+    "binders": {},
+    "B0": null,
+    "B1": null,
+    "L0": null,
+    "L1": null
+   }
+  }
+ },
+ "coreDecisionTicks": {
+  "from": 1500,
+  "classes": {
+   "sent": "buyLand 发了令",
+   "slotTaken": "同一拍前面已有指令被受理（每拍只收 1 条）",
+   "noOffer": "没有任何陆上邻居（被围）",
+   "blocked": "走到 send 被 Policy.send 守卫或适配层拒掉",
+   "frozenSF": "只把 safeFinite 当 0 就会出手",
+   "frozenKeep": "把整个 safeAt 当 0 才会出手（对真人邻居的留底）",
+   "pricedHigh": "最便宜的报价 ≥ worth 且没过软上限（L5359 break）",
+   "pulseWait": "有报价进了循环，但对它已有在途兵",
+   "pricedOther": "其余不出手"
+  },
+  "team": {
+   "ticks": 10931,
+   "sent": 253,
+   "slotTaken": 18,
+   "noOffer": 9092,
+   "blocked": 68,
+   "frozenSF": 24,
+   "frozenKeep": 50,
+   "pricedHigh": 1064,
+   "pulseWait": 49,
+   "pricedOther": 313,
+   "frozenSFBy": {
+    "squad": 8,
+    "mate": 0,
+    "enemy": 12,
+    "ai": 4
+   },
+   "frozenSFBotTarget": 24,
+   "frozenSFPersonTarget": 0,
+   "frozenSFBalTicks": 1699121,
+   "frozenKeepBalTicks": 18070795,
+   "noOfferBalTicks": 69902434181,
+   "pricedHighBalTicks": 971503701
+  },
+  "perBot": {
+   "talon5": {
+    "ticks": 2634,
+    "sent": 10,
+    "slotTaken": 0,
+    "noOffer": 2250,
+    "blocked": 0,
+    "frozenSF": 0,
+    "frozenKeep": 0,
+    "pricedHigh": 374,
+    "pulseWait": 0,
+    "pricedOther": 0,
+    "t0": 1500,
+    "t1": 14665,
+    "binders": {},
+    "safeFiniteSpans": [],
+    "keepSpans": [],
+    "boxedSpans": [
+     {
+      "t0": 3360,
+      "t1": 8730,
+      "n": 1075,
+      "B0": 1005805,
+      "B1": 903999,
+      "L0": 10504
+     },
+     {
+      "t0": 8795,
+      "t1": 14665,
+      "n": 1175,
+      "B0": 1087053,
+      "B1": 1088059,
+      "L0": 10947
+     }
+    ],
+    "pricedHighSpans": [
+     {
+      "t0": 1500,
+      "t1": 2905,
+      "n": 282,
+      "B0": 124575,
+      "B1": 936811,
+      "L0": 9347,
+      "target": "Player 804#11",
+      "person": 1,
+      "c0": 58.33,
+      "w0": 19.99,
+      "c1": 255.13,
+      "w1": 89.85,
+      "target1": "Player 804#11"
+     },
+     {
+      "t0": 2920,
+      "t1": 3115,
+      "n": 40,
+      "B0": 854229,
+      "B1": 983590,
+      "L0": 9384,
+      "target": "Player 804#11",
+      "person": 1,
+      "c0": 223.07,
+      "w0": 81.93,
+      "c1": 282.56,
+      "w1": 89.29,
+      "target1": "Player 804#11"
+     },
+     {
+      "t0": 3130,
+      "t1": 3315,
+      "n": 38,
+      "B0": 902970,
+      "B1": 1034623,
+      "L0": 9914,
+      "target": "Player 804#11",
+      "person": 1,
+      "c0": 245.7,
+      "w0": 81.97,
+      "c1": 279.73,
+      "w1": 89.79,
+      "target1": "Player 804#11"
+     }
+    ]
+   },
+   "zexos1": {
+    "ticks": 2634,
+    "sent": 88,
+    "slotTaken": 12,
+    "noOffer": 2070,
+    "blocked": 24,
+    "frozenSF": 2,
+    "frozenKeep": 4,
+    "pricedHigh": 284,
+    "pulseWait": 34,
+    "pricedOther": 116,
+    "t0": 1500,
+    "t1": 14665,
+    "binders": {
+     "leo_tx#1": 2
+    },
+    "safeFiniteSpans": [],
+    "keepSpans": [],
+    "boxedSpans": [
+     {
+      "t0": 4385,
+      "t1": 6000,
+      "n": 324,
+      "B0": 6447859,
+      "B1": 29307960,
+      "L0": 138372
+     },
+     {
+      "t0": 6015,
+      "t1": 14665,
+      "n": 1731,
+      "B0": 25061028,
+      "B1": 27174476,
+      "L0": 242918
+     }
+    ],
+    "pricedHighSpans": [
+     {
+      "t0": 2070,
+      "t1": 2185,
+      "n": 24,
+      "B0": 171802,
+      "B1": 266915,
+      "L0": 64072,
+      "target": "Russia#8",
+      "person": 1,
+      "c0": 7.99,
+      "w0": 3.62,
+      "c1": 6.63,
+      "w1": 5.14,
+      "target1": "AI354"
+     },
+     {
+      "t0": 2210,
+      "t1": 2825,
+      "n": 124,
+      "B0": 331759,
+      "B1": 1312587,
+      "L0": 64306,
+      "target": "Russia#8",
+      "person": 1,
+      "c0": 12.73,
+      "w0": 6.21,
+      "c1": 25.26,
+      "w1": 18.31,
+      "target1": "Russia#8"
+     },
+     {
+      "t0": 3620,
+      "t1": 3755,
+      "n": 28,
+      "B0": 1836618,
+      "B1": 2470496,
+      "L0": 110085,
+      "target": "Player 691#5",
+      "person": 0,
+      "c0": 28.51,
+      "w0": 15.02,
+      "c1": 38.33,
+      "w1": 18.81,
+      "target1": "Player 691#5"
+     }
+    ]
+   },
+   "kaito9": {
+    "ticks": 2634,
+    "sent": 113,
+    "slotTaken": 1,
+    "noOffer": 1883,
+    "blocked": 28,
+    "frozenSF": 16,
+    "frozenKeep": 46,
+    "pricedHigh": 337,
+    "pulseWait": 15,
+    "pricedOther": 195,
+    "t0": 1500,
+    "t1": 14665,
+    "binders": {
+     "AI437": 4,
+     "Player 691#5": 12
+    },
+    "safeFiniteSpans": [
+     {
+      "t0": 1720,
+      "t1": 1735,
+      "n": 4,
+      "B0": 1,
+      "B1": 2,
+      "L0": 37284,
+      "target": "AI250",
+      "person": 0,
+      "c": 4.24,
+      "need": 10671,
+      "x": 1,
+      "sb0": 1162,
+      "binder": "AI437",
+      "binders": {
+       "AI437": 4
+      }
+     },
+     {
+      "t0": 1930,
+      "t1": 1985,
+      "n": 12,
+      "B0": 98304,
+      "B1": 99403,
+      "L0": 32152,
+      "target": "AI142",
+      "person": 0,
+      "c": 2.34,
+      "need": 11139,
+      "x": 13963,
+      "sb0": 180029,
+      "binder": "Player 691#5",
+      "binders": {
+       "Player 691#5": 12
+      }
+     }
+    ],
+    "keepSpans": [
+     {
+      "t0": 1830,
+      "t1": 1915,
+      "n": 18,
+      "B0": 31469,
+      "B1": 58410,
+      "L0": 37910,
+      "target": "AI78",
+      "person": 0,
+      "c": 2.21,
+      "need": 4585,
+      "x": 5740
+     },
+     {
+      "t0": 2290,
+      "t1": 2320,
+      "n": 7,
+      "B0": 218104,
+      "B1": 258082,
+      "L0": 29564,
+      "target": "Player 845#9",
+      "person": 1,
+      "c": 5.34,
+      "need": 199069,
+      "x": 26172
+     },
+     {
+      "t0": 3305,
+      "t1": 3340,
+      "n": 7,
+      "B0": 690717,
+      "B1": 718795,
+      "L0": 22793,
+      "target": "Player 691#5",
+      "person": 1,
+      "c": 21.47,
+      "need": 2714184,
+      "x": 65830
+     }
+    ],
+    "boxedSpans": [
+     {
+      "t0": 4915,
+      "t1": 5640,
+      "n": 146,
+      "B0": 6006254,
+      "B1": 9061050,
+      "L0": 59128
+     },
+     {
+      "t0": 5660,
+      "t1": 5840,
+      "n": 37,
+      "B0": 8952132,
+      "B1": 5747039,
+      "L0": 60406
+     },
+     {
+      "t0": 5870,
+      "t1": 6045,
+      "n": 36,
+      "B0": 8951835,
+      "B1": 6309779,
+      "L0": 60404
+     },
+     {
+      "t0": 6070,
+      "t1": 6240,
+      "n": 35,
+      "B0": 8736451,
+      "B1": 3930192,
+      "L0": 60404
+     },
+     {
+      "t0": 6270,
+      "t1": 6375,
+      "n": 22,
+      "B0": 8639877,
+      "B1": 6424531,
+      "L0": 60405
+     },
+     {
+      "t0": 6445,
+      "t1": 6520,
+      "n": 16,
+      "B0": 8945101,
+      "B1": 5747039,
+      "L0": 60402
+     }
+    ],
+    "pricedHighSpans": [
+     {
+      "t0": 2005,
+      "t1": 2100,
+      "n": 20,
+      "B0": 133339,
+      "B1": 171386,
+      "L0": 31013,
+      "target": "Player 845#9",
+      "person": 1,
+      "c0": 7.73,
+      "w0": 6.1,
+      "c1": 9.77,
+      "w1": 7.65,
+      "target1": "Player 845#9"
+     },
+     {
+      "t0": 2325,
+      "t1": 2470,
+      "n": 29,
+      "B0": 258082,
+      "B1": 302514,
+      "L0": 29564,
+      "target": "Player 845#9",
+      "person": 1,
+      "c0": 13.12,
+      "w0": 9.46,
+      "c1": 12.65,
+      "w1": 9.53,
+      "target1": "Player 845#9"
+     },
+     {
+      "t0": 2560,
+      "t1": 3170,
+      "n": 123,
+      "B0": 376263,
+      "B1": 588327,
+      "L0": 29564,
+      "target": "Player 845#9",
+      "person": 1,
+      "c0": 12.68,
+      "w0": 11.45,
+      "c1": 22.31,
+      "w1": 20.48,
+      "target1": "Player 691#5"
+     },
+     {
+      "t0": 4600,
+      "t1": 4895,
+      "n": 60,
+      "B0": 3560265,
+      "B1": 5834049,
+      "L0": 59159,
+      "target": "AI426",
+      "person": 0,
+      "c0": 105.56,
+      "w0": 104.73,
+      "c1": 162.25,
+      "w1": 98.04,
+      "target1": "AI426"
+     }
+    ]
+   },
+   "leo_tx": {
+    "ticks": 2634,
+    "sent": 25,
+    "slotTaken": 5,
+    "noOffer": 2585,
+    "blocked": 12,
+    "frozenSF": 6,
+    "frozenKeep": 0,
+    "pricedHigh": 1,
+    "pulseWait": 0,
+    "pricedOther": 0,
+    "t0": 1500,
+    "t1": 14665,
+    "binders": {
+     "zexos1#0": 6
+    },
+    "safeFiniteSpans": [
+     {
+      "t0": 1520,
+      "t1": 1540,
+      "n": 5,
+      "B0": 68756,
+      "B1": 64448,
+      "L0": 20111,
+      "target": "AI185",
+      "person": 0,
+      "c": 0.75,
+      "need": 36,
+      "x": 165,
+      "sb0": 71319,
+      "binder": "zexos1#0",
+      "binders": {
+       "zexos1#0": 5
+      }
+     }
+    ],
+    "keepSpans": [],
+    "boxedSpans": [
+     {
+      "t0": 1725,
+      "t1": 7895,
+      "n": 1235,
+      "B0": 33484,
+      "B1": 3322282,
+      "L0": 30132
+     },
+     {
+      "t0": 7920,
+      "t1": 14665,
+      "n": 1350,
+      "B0": 3299718,
+      "B1": 2452008,
+      "L0": 33383
+     }
+    ],
+    "pricedHighSpans": []
+   },
+   "riku_x": {
+    "ticks": 395,
+    "sent": 17,
+    "slotTaken": 0,
+    "noOffer": 304,
+    "blocked": 4,
+    "frozenSF": 0,
+    "frozenKeep": 0,
+    "pricedHigh": 68,
+    "pulseWait": 0,
+    "pricedOther": 2,
+    "t0": 1500,
+    "t1": 3470,
+    "binders": {},
+    "safeFiniteSpans": [],
+    "keepSpans": [],
+    "boxedSpans": [
+     {
+      "t0": 1500,
+      "t1": 1815,
+      "n": 64,
+      "B0": 90039,
+      "B1": 190078,
+      "L0": 8423
+     },
+     {
+      "t0": 2095,
+      "t1": 2185,
+      "n": 19,
+      "B0": 189239,
+      "B1": 221553,
+      "L0": 9065
+     },
+     {
+      "t0": 2370,
+      "t1": 3470,
+      "n": 221,
+      "B0": 168472,
+      "B1": 423086,
+      "L0": 12879
+     }
+    ],
+    "pricedHighSpans": [
+     {
+      "t0": 1820,
+      "t1": 1950,
+      "n": 27,
+      "B0": 192568,
+      "B1": 194085,
+      "L0": 8747,
+      "target": "AI426",
+      "person": 0,
+      "c0": 143.57,
+      "w0": 31.97,
+      "c1": 85.96,
+      "w1": 31.93,
+      "target1": "AI426"
+     },
+     {
+      "t0": 1975,
+      "t1": 2090,
+      "n": 24,
+      "B0": 176683,
+      "B1": 189305,
+      "L0": 8633,
+      "target": "AI426",
+      "person": 0,
+      "c0": 61.11,
+      "w0": 29.24,
+      "c1": 34.81,
+      "w1": 27.92,
+      "target1": "AI426"
+     }
+    ]
+   }
+  }
+ },
+ "drop30": {
+  "count": 47,
+  "countInCard": 59,
+  "byMainCause": {
+   "攻AI": 6,
+   "攻真人": 1,
+   "捐款": 35,
+   "发船": 4,
+   "攻中立": 1
+  },
+  "list": [
+   {
+    "bot": "kaito9",
+    "t0": 1620,
+    "t1": 1710,
+    "bal0": 40368,
+    "bal1": 11641,
+    "dropPct": 71.2,
+    "main": "攻AI",
+    "parts": {
+     "攻中立": 2365,
+     "攻AI": 77350
+    },
+    "cmds": 10,
+    "tilesGained": 5346,
+    "burnt": 21706,
+    "target": ""
+   },
+   {
+    "bot": "kaito9",
+    "t0": 3600,
+    "t1": 3690,
+    "bal0": 868076,
+    "bal1": 295452,
+    "dropPct": 66.0,
+    "main": "攻真人",
+    "parts": {
+     "攻真人": 640367,
+     "挨打": 9775
+    },
+    "cmds": 7,
+    "tilesGained": 13418,
+    "burnt": 406368,
+    "target": "对 Player 845#9T2"
+   },
+   {
+    "bot": "kaito9",
+    "t0": 5400,
+    "t1": 5490,
+    "bal0": 9061050,
+    "bal1": 5747039,
+    "dropPct": 36.6,
+    "main": "捐款",
+    "parts": {
+     "捐款": 10220223
+    },
+    "cmds": 3,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "kaito9",
+    "t0": 5760,
+    "t1": 5850,
+    "bal0": 9061050,
+    "bal1": 5840826,
+    "dropPct": 35.5,
+    "main": "捐款",
+    "parts": {
+     "捐款": 10220223,
+     "挨打": 456
+    },
+    "cmds": 3,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "kaito9",
+    "t0": 6120,
+    "t1": 6210,
+    "bal0": 8802563,
+    "bal1": 5999942,
+    "dropPct": 31.8,
+    "main": "捐款",
+    "parts": {
+     "捐款": 6721262
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "kaito9",
+    "t0": 6480,
+    "t1": 6570,
+    "bal0": 9061050,
+    "bal1": 4598073,
+    "dropPct": 49.3,
+    "main": "发船",
+    "parts": {
+     "攻真人": 1328601,
+     "捐款": 3406741,
+     "发船": 4610162,
+     "挨打": 7107
+    },
+    "cmds": 5,
+    "tilesGained": 35,
+    "burnt": 9580,
+    "target": ""
+   },
+   {
+    "bot": "kaito9",
+    "t0": 6750,
+    "t1": 6840,
+    "bal0": 9073200,
+    "bal1": 4013122,
+    "dropPct": 55.8,
+    "main": "捐款",
+    "parts": {
+     "捐款": 3421348,
+     "发船": 1730183
+    },
+    "cmds": 2,
+    "tilesGained": 177,
+    "burnt": 1638940,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "kaito9",
+    "t0": 6930,
+    "t1": 7020,
+    "bal0": 9089050,
+    "bal1": 4409644,
+    "dropPct": 51.5,
+    "main": "捐款",
+    "parts": {
+     "攻AI": 342508,
+     "攻真人": 1082250,
+     "捐款": 2613958,
+     "发船": 2102536,
+     "挨打": 5036
+    },
+    "cmds": 8,
+    "tilesGained": 208,
+    "burnt": 2906077,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "kaito9",
+    "t0": 7200,
+    "t1": 7290,
+    "bal0": 9151200,
+    "bal1": 5840772,
+    "dropPct": 36.2,
+    "main": "发船",
+    "parts": {
+     "捐款": 4658170,
+     "发船": 4740902
+    },
+    "cmds": 5,
+    "tilesGained": 181,
+    "burnt": 1971224,
+    "target": ""
+   },
+   {
+    "bot": "kaito9",
+    "t0": 7380,
+    "t1": 7470,
+    "bal0": 8377299,
+    "bal1": 4412842,
+    "dropPct": 47.3,
+    "main": "发船",
+    "parts": {
+     "捐款": 2400551,
+     "发船": 2797853
+    },
+    "cmds": 2,
+    "tilesGained": 195,
+    "burnt": 464654,
+    "target": ""
+   },
+   {
+    "bot": "kaito9",
+    "t0": 7830,
+    "t1": 7920,
+    "bal0": 9327600,
+    "bal1": 5916682,
+    "dropPct": 36.6,
+    "main": "捐款",
+    "parts": {
+     "捐款": 7013916
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "kaito9",
+    "t0": 8460,
+    "t1": 8550,
+    "bal0": 9327600,
+    "bal1": 5743373,
+    "dropPct": 38.4,
+    "main": "捐款",
+    "parts": {
+     "攻AI": 350909,
+     "捐款": 6911191,
+     "挨打": 479
+    },
+    "cmds": 5,
+    "tilesGained": 2,
+    "burnt": 569,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "kaito9",
+    "t0": 8910,
+    "t1": 9000,
+    "bal0": 9327600,
+    "bal1": 6076491,
+    "dropPct": 34.9,
+    "main": "捐款",
+    "parts": {
+     "捐款": 7013916
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "kaito9",
+    "t0": 9180,
+    "t1": 9270,
+    "bal0": 9327600,
+    "bal1": 5916682,
+    "dropPct": 36.6,
+    "main": "捐款",
+    "parts": {
+     "捐款": 7013916
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "kaito9",
+    "t0": 9900,
+    "t1": 9990,
+    "bal0": 9327600,
+    "bal1": 4353554,
+    "dropPct": 53.3,
+    "main": "捐款",
+    "parts": {
+     "捐款": 6087412
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "kaito9",
+    "t0": 10350,
+    "t1": 10440,
+    "bal0": 9327600,
+    "bal1": 6480555,
+    "dropPct": 30.5,
+    "main": "捐款",
+    "parts": {
+     "捐款": 7013916
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "kaito9",
+    "t0": 10980,
+    "t1": 11070,
+    "bal0": 9327600,
+    "bal1": 5916682,
+    "dropPct": 36.6,
+    "main": "捐款",
+    "parts": {
+     "捐款": 7013916
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "kaito9",
+    "t0": 11430,
+    "t1": 11520,
+    "bal0": 9041448,
+    "bal1": 6278669,
+    "dropPct": 30.6,
+    "main": "捐款",
+    "parts": {
+     "捐款": 8916425,
+     "发船": 291374
+    },
+    "cmds": 4,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "kaito9",
+    "t0": 12780,
+    "t1": 12870,
+    "bal0": 9327600,
+    "bal1": 6214416,
+    "dropPct": 33.4,
+    "main": "捐款",
+    "parts": {
+     "捐款": 7013916
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "kaito9",
+    "t0": 13230,
+    "t1": 13320,
+    "bal0": 9327600,
+    "bal1": 6278669,
+    "dropPct": 32.7,
+    "main": "捐款",
+    "parts": {
+     "捐款": 7013916
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "kaito9",
+    "t0": 13680,
+    "t1": 13770,
+    "bal0": 9327600,
+    "bal1": 4235554,
+    "dropPct": 54.6,
+    "main": "捐款",
+    "parts": {
+     "捐款": 9524429
+    },
+    "cmds": 3,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 900,
+    "t1": 990,
+    "bal0": 16532,
+    "bal1": 6583,
+    "dropPct": 60.2,
+    "main": "攻AI",
+    "parts": {
+     "攻AI": 17875
+    },
+    "cmds": 11,
+    "tilesGained": 1739,
+    "burnt": 5840,
+    "target": ""
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 1170,
+    "t1": 1260,
+    "bal0": 24121,
+    "bal1": 14918,
+    "dropPct": 38.2,
+    "main": "攻AI",
+    "parts": {
+     "攻AI": 27308
+    },
+    "cmds": 7,
+    "tilesGained": 1332,
+    "burnt": 6106,
+    "target": ""
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 1620,
+    "t1": 1710,
+    "bal0": 65958,
+    "bal1": 43143,
+    "dropPct": 34.6,
+    "main": "攻AI",
+    "parts": {
+     "攻中立": 3927,
+     "攻AI": 53534,
+     "挨打": 1110
+    },
+    "cmds": 12,
+    "tilesGained": 4945,
+    "burnt": 19580,
+    "target": ""
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 3240,
+    "t1": 3330,
+    "bal0": 1527303,
+    "bal1": 1056483,
+    "dropPct": 30.8,
+    "main": "捐款",
+    "parts": {
+     "捐款": 689096
+    },
+    "cmds": 1,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 5580,
+    "t1": 5670,
+    "bal0": 4990350,
+    "bal1": 3447885,
+    "dropPct": 30.9,
+    "main": "捐款",
+    "parts": {
+     "捐款": 1876253
+    },
+    "cmds": 1,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 5670,
+    "t1": 5760,
+    "bal0": 3447885,
+    "bal1": 1538873,
+    "dropPct": 55.4,
+    "main": "捐款",
+    "parts": {
+     "捐款": 2235852
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 5940,
+    "t1": 6030,
+    "bal0": 3571256,
+    "bal1": 1604254,
+    "dropPct": 55.1,
+    "main": "捐款",
+    "parts": {
+     "捐款": 2284792
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 6120,
+    "t1": 6210,
+    "bal0": 4990350,
+    "bal1": 3467743,
+    "dropPct": 30.5,
+    "main": "捐款",
+    "parts": {
+     "捐款": 1876253,
+     "发船": 101831
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 7290,
+    "t1": 7380,
+    "bal0": 3206324,
+    "bal1": 1438355,
+    "dropPct": 55.1,
+    "main": "捐款",
+    "parts": {
+     "捐款": 2101820
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1,kaito9"
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 9360,
+    "t1": 9450,
+    "bal0": 5089016,
+    "bal1": 3019950,
+    "dropPct": 40.7,
+    "main": "捐款",
+    "parts": {
+     "捐款": 1920863,
+     "发船": 302739
+    },
+    "cmds": 4,
+    "tilesGained": 92,
+    "burnt": 184,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "riku_x",
+    "t0": 900,
+    "t1": 990,
+    "bal0": 11616,
+    "bal1": 6386,
+    "dropPct": 45.0,
+    "main": "攻AI",
+    "parts": {
+     "攻中立": 475,
+     "攻AI": 10212
+    },
+    "cmds": 6,
+    "tilesGained": 1601,
+    "burnt": 8708,
+    "target": ""
+   },
+   {
+    "bot": "riku_x",
+    "t0": 3150,
+    "t1": 3240,
+    "bal0": 633775,
+    "bal1": 443552,
+    "dropPct": 30.0,
+    "main": "捐款",
+    "parts": {
+     "捐款": 257857
+    },
+    "cmds": 1,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 kaito9"
+   },
+   {
+    "bot": "talon5",
+    "t0": 3330,
+    "t1": 3420,
+    "bal0": 1060649,
+    "bal1": 352746,
+    "dropPct": 66.7,
+    "main": "捐款",
+    "parts": {
+     "攻真人": 320384,
+     "捐款": 712578
+    },
+    "cmds": 5,
+    "tilesGained": 134,
+    "burnt": 49820,
+    "target": "给 zexos1,kaito9"
+   },
+   {
+    "bot": "talon5",
+    "t0": 5400,
+    "t1": 5490,
+    "bal0": 1057236,
+    "bal1": 735740,
+    "dropPct": 30.4,
+    "main": "捐款",
+    "parts": {
+     "捐款": 421631
+    },
+    "cmds": 1,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "talon5",
+    "t0": 5670,
+    "t1": 5760,
+    "bal0": 946189,
+    "bal1": 431493,
+    "dropPct": 54.4,
+    "main": "捐款",
+    "parts": {
+     "捐款": 608323
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "talon5",
+    "t0": 6480,
+    "t1": 6570,
+    "bal0": 808089,
+    "bal1": 538097,
+    "dropPct": 33.4,
+    "main": "捐款",
+    "parts": {
+     "捐款": 367110
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 kaito9"
+   },
+   {
+    "bot": "talon5",
+    "t0": 7020,
+    "t1": 7110,
+    "bal0": 951336,
+    "bal1": 454482,
+    "dropPct": 52.2,
+    "main": "捐款",
+    "parts": {
+     "捐款": 572031
+    },
+    "cmds": 2,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 kaito9"
+   },
+   {
+    "bot": "talon5",
+    "t0": 8550,
+    "t1": 8640,
+    "bal0": 1578300,
+    "bal1": 1022596,
+    "dropPct": 35.2,
+    "main": "捐款",
+    "parts": {
+     "捐款": 1015505,
+     "发船": 480887
+    },
+    "cmds": 3,
+    "tilesGained": 46,
+    "burnt": 156,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "talon5",
+    "t0": 9000,
+    "t1": 9090,
+    "bal0": 1068659,
+    "bal1": 744573,
+    "dropPct": 30.3,
+    "main": "捐款",
+    "parts": {
+     "捐款": 443024
+    },
+    "cmds": 1,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "talon5",
+    "t0": 9900,
+    "t1": 9990,
+    "bal0": 1102650,
+    "bal1": 767269,
+    "dropPct": 30.4,
+    "main": "捐款",
+    "parts": {
+     "捐款": 439700
+    },
+    "cmds": 1,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 kaito9"
+   },
+   {
+    "bot": "talon5",
+    "t0": 10620,
+    "t1": 10710,
+    "bal0": 1136691,
+    "bal1": 788700,
+    "dropPct": 30.6,
+    "main": "捐款",
+    "parts": {
+     "捐款": 469281
+    },
+    "cmds": 1,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "talon5",
+    "t0": 10980,
+    "t1": 11070,
+    "bal0": 1130969,
+    "bal1": 787302,
+    "dropPct": 30.4,
+    "main": "捐款",
+    "parts": {
+     "捐款": 462621
+    },
+    "cmds": 1,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "talon5",
+    "t0": 11430,
+    "t1": 11520,
+    "bal0": 1136279,
+    "bal1": 790825,
+    "dropPct": 30.4,
+    "main": "捐款",
+    "parts": {
+     "捐款": 464691
+    },
+    "cmds": 1,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": "给 zexos1"
+   },
+   {
+    "bot": "zexos1",
+    "t0": 540,
+    "t1": 630,
+    "bal0": 5185,
+    "bal1": 3624,
+    "dropPct": 30.1,
+    "main": "攻中立",
+    "parts": {
+     "攻中立": 5475,
+     "攻AI": 1534
+    },
+    "cmds": 4,
+    "tilesGained": 1510,
+    "burnt": 3244,
+    "target": ""
+   },
+   {
+    "bot": "zexos1",
+    "t0": 1800,
+    "t1": 1890,
+    "bal0": 90559,
+    "bal1": 40615,
+    "dropPct": 55.2,
+    "main": "攻AI",
+    "parts": {
+     "攻AI": 58625
+    },
+    "cmds": 9,
+    "tilesGained": 12117,
+    "burnt": 58969,
+    "target": ""
+   },
+   {
+    "bot": "zexos1",
+    "t0": 8550,
+    "t1": 8640,
+    "bal0": 30059583,
+    "bal1": 17912167,
+    "dropPct": 40.4,
+    "main": "发船",
+    "parts": {
+     "捐款": 3170682,
+     "发船": 15878615
+    },
+    "cmds": 4,
+    "tilesGained": 0,
+    "burnt": 0,
+    "target": ""
+   }
+  ]
+ },
+ "squadLedger": {
+  "perBot": {
+   "zexos1": {
+    "inc": 544038137,
+    "burnN": 122648,
+    "burnAI": 3362967,
+    "burnH": 2671435,
+    "netH": 92283,
+    "atkFee": 1334343,
+    "defBal": 1032931,
+    "defSlot": 150924,
+    "donOut": 410824109,
+    "donTax": 214698385,
+    "donIn": 410027573,
+    "donOutNonSquad": 0,
+    "boatOut": 94204986,
+    "boatFee": 242105485,
+    "boatToMate": 21569852,
+    "boatToOutside": 4790874,
+    "boatOnEnemy": 30149624,
+    "balEnd": 26298737,
+    "outEnd": 26535,
+    "lostTiles": 37144,
+    "lostBurn": 2283964,
+    "tilesN": 61324,
+    "tilesAI": 158417,
+    "tilesH": 65003,
+    "end": 14669,
+    "husk": false,
+    "giftIn": 3469346
+   },
+   "leo_tx": {
+    "inc": 48188241,
+    "burnN": 595075,
+    "burnAI": 98929,
+    "burnH": 0,
+    "netH": 0,
+    "atkFee": 177074,
+    "defBal": 2003,
+    "defSlot": 0,
+    "donOut": 72335255,
+    "donTax": 14485819,
+    "donIn": 50273288,
+    "donOutNonSquad": 0,
+    "boatOut": 2822534,
+    "boatFee": 5763619,
+    "boatToMate": 773810,
+    "boatToOutside": 0,
+    "boatOnEnemy": 0,
+    "balEnd": 2452008,
+    "outEnd": 0,
+    "lostTiles": 0,
+    "lostBurn": 0,
+    "tilesN": 10340,
+    "tilesAI": 24510,
+    "tilesH": 0,
+    "end": 14669,
+    "husk": false,
+    "giftIn": 174763
+   },
+   "talon5": {
+    "inc": 14252211,
+    "burnN": 7122,
+    "burnAI": 99581,
+    "burnH": 403754,
+    "netH": 0,
+    "atkFee": 122125,
+    "defBal": 0,
+    "defSlot": 0,
+    "donOut": 13192295,
+    "donTax": 2832369,
+    "donIn": 645611,
+    "donOutNonSquad": 0,
+    "boatOut": 1147464,
+    "boatFee": 775229,
+    "boatToMate": 28167,
+    "boatToOutside": 0,
+    "boatOnEnemy": 0,
+    "balEnd": 1088059,
+    "outEnd": 0,
+    "lostTiles": 0,
+    "lostBurn": 0,
+    "tilesN": 3561,
+    "tilesAI": 6265,
+    "tilesH": 1120,
+    "end": 14669,
+    "husk": false,
+    "giftIn": 651768
+   },
+   "kaito9": {
+    "inc": 66979645,
+    "burnN": 2283648,
+    "burnAI": 6595528,
+    "burnH": 5834631,
+    "netH": 288977,
+    "atkFee": 5759333,
+    "defBal": 1003179,
+    "defSlot": 136679,
+    "donOut": 352925309,
+    "donTax": 72326045,
+    "donIn": 388861501,
+    "donOutNonSquad": 0,
+    "boatOut": 40096050,
+    "boatFee": 7138232,
+    "boatToMate": 40113,
+    "boatToOutside": 0,
+    "boatOnEnemy": 16410085,
+    "balEnd": 6113543,
+    "outEnd": 0,
+    "lostTiles": 37959,
+    "lostBurn": 2146110,
+    "tilesN": 17242,
+    "tilesAI": 40286,
+    "tilesH": 44112,
+    "end": 14669,
+    "husk": false,
+    "giftIn": 2117804
+   },
+   "riku_x": {
+    "inc": 1275897,
+    "burnN": 9698,
+    "burnAI": 90975,
+    "burnH": 4598,
+    "netH": 0,
+    "atkFee": 47511,
+    "defBal": 34983,
+    "defSlot": 1230,
+    "donOut": 531005,
+    "donTax": 114077,
+    "donIn": 0,
+    "donOutNonSquad": 0,
+    "boatOut": 38101,
+    "boatFee": 9071,
+    "boatToMate": 0,
+    "boatToOutside": 0,
+    "boatOnEnemy": 0,
+    "balEnd": 495874,
+    "outEnd": 0,
+    "lostTiles": 306,
+    "lostBurn": 21750,
+    "tilesN": 4849,
+    "tilesAI": 9217,
+    "tilesH": 306,
+    "end": 3570,
+    "husk": true,
+    "giftIn": 8616
+   },
+   "alex_k": {
+    "inc": 30017,
+    "burnN": 1496,
+    "burnAI": 0,
+    "burnH": 0,
+    "netH": 0,
+    "atkFee": 43,
+    "defBal": 0,
+    "defSlot": 0,
+    "donOut": 0,
+    "donTax": 0,
+    "donIn": 0,
+    "donOutNonSquad": 0,
+    "boatOut": 0,
+    "boatFee": 0,
+    "boatToMate": 0,
+    "boatToOutside": 0,
+    "boatOnEnemy": 0,
+    "balEnd": 28990,
+    "outEnd": 0,
+    "lostTiles": 0,
+    "lostBurn": 0,
+    "tilesN": 748,
+    "tilesAI": 0,
+    "tilesH": 0,
+    "end": 931,
+    "husk": true,
+    "giftIn": 0
+   }
+  },
+  "total": {
+   "inc": 674764148,
+   "burnN": 3019687,
+   "burnAI": 10247980,
+   "burnH": 8914418,
+   "netH": 381260,
+   "atkFee": 7440429,
+   "defBal": 2073096,
+   "defSlot": 288833,
+   "donOut": 849807973,
+   "donTax": 304456695,
+   "donIn": 849807973,
+   "donOutNonSquad": 0,
+   "boatOut": 138309135,
+   "boatFee": 255791636,
+   "boatToMate": 22411942,
+   "boatToOutside": 4790874,
+   "boatOnEnemy": 46559709,
+   "balEnd": 36477211,
+   "outEnd": 26535,
+   "lostTiles": 75409,
+   "lostBurn": 4451824,
+   "tilesN": 98064,
+   "tilesAI": 238695,
+   "tilesH": 110541
+  },
+  "giftIn": 6422297,
+  "gifts": [
+   [
+    6611,
+    "riku_x",
+    "zexos1",
+    2204126,
+    146941
+   ],
+   [
+    6671,
+    "riku_x",
+    "kaito9",
+    1072613,
+    126967
+   ],
+   [
+    6686,
+    "riku_x",
+    "kaito9",
+    779910,
+    51993
+   ],
+   [
+    3701,
+    "riku_x",
+    "talon5",
+    427675,
+    28511
+   ],
+   [
+    4521,
+    "riku_x",
+    "zexos1",
+    70564,
+    4704
+   ],
+   [
+    4021,
+    "riku_x",
+    "zexos1",
+    62885,
+    4192
+   ],
+   [
+    11201,
+    "riku_x",
+    "zexos1",
+    37775,
+    2518
+   ],
+   [
+    8531,
+    "riku_x",
+    "talon5",
+    37715,
+    2514
+   ],
+   [
+    14111,
+    "riku_x",
+    "talon5",
+    37634,
+    2508
+   ],
+   [
+    9911,
+    "riku_x",
+    "zexos1",
+    37352,
+    2490
+   ],
+   [
+    11711,
+    "riku_x",
+    "zexos1",
+    36975,
+    2465
+   ],
+   [
+    10511,
+    "riku_x",
+    "kaito9",
+    36894,
+    2459
+   ]
+  ]
+ },
+ "boatHandovers": [
+  {
+   "t": 2459,
+   "bot": "talon5",
+   "to": "riku_x",
+   "toSquad": true,
+   "landed": 22578,
+   "got": 22578,
+   "launchT": 2093,
+   "launched": 40288,
+   "fee": 10072,
+   "B0": 322311,
+   "pct": 127
+  },
+  {
+   "t": 2585,
+   "bot": "kaito9",
+   "to": "riku_x",
+   "toSquad": true,
+   "landed": 18210,
+   "got": 18210,
+   "launchT": 2254,
+   "launched": 30515,
+   "fee": 7628,
+   "B0": 244125,
+   "pct": 127
+  },
+  {
+   "t": 2732,
+   "bot": "kaito9",
+   "to": "riku_x",
+   "toSquad": true,
+   "landed": 19726,
+   "got": 19726,
+   "launchT": 2373,
+   "launched": 34650,
+   "fee": 8662,
+   "B0": 277205,
+   "pct": 127
+  },
+  {
+   "t": 5184,
+   "bot": "leo_tx",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 129603,
+   "got": 12967,
+   "launchT": 4480,
+   "launched": 391616,
+   "fee": 97145,
+   "B0": 3108648,
+   "pct": 128
+  },
+  {
+   "t": 5187,
+   "bot": "riku_x",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 51,
+   "got": 51
+  },
+  {
+   "t": 5548,
+   "bot": "zexos1",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 1217263,
+   "got": 1217263,
+   "launchT": 4900,
+   "launched": 3347923,
+   "fee": 749185,
+   "B0": 23973940,
+   "pct": 142
+  },
+  {
+   "t": 5549,
+   "bot": "talon5",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 3027,
+   "got": 3027,
+   "launchT": 4501,
+   "launched": 15447,
+   "fee": 27461,
+   "B0": 878771,
+   "pct": 17
+  },
+  {
+   "t": 5625,
+   "bot": "zexos1",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 1180808,
+   "got": 1180808,
+   "launchT": 4977,
+   "launched": 3273225,
+   "fee": 727383,
+   "B0": 23276273,
+   "pct": 143
+  },
+  {
+   "t": 5941,
+   "bot": "talon5",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 689,
+   "got": 689
+  },
+  {
+   "t": 6003,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 587,
+   "got": 587
+  },
+  {
+   "t": 6540,
+   "bot": "kaito9",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1329,
+   "got": 1329,
+   "launchT": 5306,
+   "launched": 8848,
+   "fee": 283157,
+   "B0": 9061050,
+   "pct": 0
+  },
+  {
+   "t": 6606,
+   "bot": "zexos1",
+   "to": "riku_x",
+   "toSquad": true,
+   "landed": 2298305,
+   "got": 2298305,
+   "launchT": 6223,
+   "launched": 4204193,
+   "fee": 791377,
+   "B0": 25324083,
+   "pct": 169
+  },
+  {
+   "t": 6630,
+   "bot": "zexos1",
+   "to": "riku_x",
+   "toSquad": true,
+   "landed": 2492569,
+   "got": 2492569,
+   "launchT": 6244,
+   "launched": 4559566,
+   "fee": 853252,
+   "B0": 27304071,
+   "pct": 170
+  },
+  {
+   "t": 6661,
+   "bot": "kaito9",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 848,
+   "got": 848
+  },
+  {
+   "t": 6785,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 439,
+   "got": 439
+  },
+  {
+   "t": 6818,
+   "bot": "riku_x",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 186767,
+   "got": 0
+  },
+  {
+   "t": 7192,
+   "bot": "zexos1",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 2125236,
+   "got": 2125236,
+   "launchT": 6622,
+   "launched": 5196508,
+   "fee": 894023,
+   "B0": 28608737,
+   "pct": 185
+  },
+  {
+   "t": 7255,
+   "bot": "zexos1",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 1314926,
+   "got": 0,
+   "launchT": 6685,
+   "launched": 3215152,
+   "fee": 729679,
+   "B0": 23349759,
+   "pct": 140
+  },
+  {
+   "t": 7890,
+   "bot": "zexos1",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 1654996,
+   "got": 0,
+   "launchT": 7357,
+   "launched": 3830508,
+   "fee": 950203,
+   "B0": 30406519,
+   "pct": 128
+  },
+  {
+   "t": 7932,
+   "bot": "zexos1",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 1372316,
+   "got": 1372316,
+   "launchT": 7399,
+   "launched": 3151403,
+   "fee": 715212,
+   "B0": 22886790,
+   "pct": 140
+  },
+  {
+   "t": 8220,
+   "bot": "riku_x",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 103,
+   "got": 103
+  },
+  {
+   "t": 8544,
+   "bot": "zexos1",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 1560265,
+   "got": 464981,
+   "launchT": 7903,
+   "launched": 4291351,
+   "fee": 803059,
+   "B0": 25697915,
+   "pct": 170
+  },
+  {
+   "t": 8586,
+   "bot": "zexos1",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 1597060,
+   "got": 877716,
+   "launchT": 7945,
+   "launched": 4358231,
+   "fee": 801513,
+   "B0": 25648443,
+   "pct": 173
+  },
+  {
+   "t": 8841,
+   "bot": "leo_tx",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 373193,
+   "got": 373193,
+   "launchT": 8008,
+   "launched": 1382684,
+   "fee": 158587,
+   "B0": 5074800,
+   "pct": 278
+  },
+  {
+   "t": 9030,
+   "bot": "riku_x",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 1182,
+   "got": 1182
+  },
+  {
+   "t": 9210,
+   "bot": "zexos1",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 2374543,
+   "got": 711677,
+   "launchT": 8554,
+   "launched": 6634243,
+   "fee": 939361,
+   "B0": 30059583,
+   "pct": 225
+  },
+  {
+   "t": 9320,
+   "bot": "zexos1",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 1137007,
+   "got": 512936,
+   "launchT": 8610,
+   "launched": 3462843,
+   "fee": 764213,
+   "B0": 24454839,
+   "pct": 144
+  },
+  {
+   "t": 9334,
+   "bot": "zexos1",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 1121473,
+   "got": 0,
+   "launchT": 8624,
+   "launched": 3415546,
+   "fee": 662409,
+   "B0": 21197089,
+   "pct": 164
+  },
+  {
+   "t": 9499,
+   "bot": "leo_tx",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 207797,
+   "got": 207797,
+   "launchT": 8589,
+   "launched": 865920,
+   "fee": 98962,
+   "B0": 3166795,
+   "pct": 279
+  },
+  {
+   "t": 9699,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2059,
+   "got": 2059,
+   "launchT": 9429,
+   "launched": 3113,
+   "fee": 99629,
+   "B0": 3188137,
+   "pct": 0
+  },
+  {
+   "t": 9707,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2024,
+   "got": 2024,
+   "launchT": 9436,
+   "launched": 3057,
+   "fee": 97845,
+   "B0": 3131058,
+   "pct": 0
+  },
+  {
+   "t": 9715,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1972,
+   "got": 1972,
+   "launchT": 9443,
+   "launched": 3002,
+   "fee": 96093,
+   "B0": 3075002,
+   "pct": 0
+  },
+  {
+   "t": 9804,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2479,
+   "got": 2479,
+   "launchT": 9730,
+   "launched": 2780,
+   "fee": 88966,
+   "B0": 2846942,
+   "pct": 0
+  },
+  {
+   "t": 9804,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2560,
+   "got": 2560,
+   "launchT": 9730,
+   "launched": 2872,
+   "fee": 91929,
+   "B0": 2941743,
+   "pct": 0
+  },
+  {
+   "t": 9812,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2398,
+   "got": 2398,
+   "launchT": 9737,
+   "launched": 2690,
+   "fee": 86099,
+   "B0": 2755196,
+   "pct": 0
+  },
+  {
+   "t": 9819,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2281,
+   "got": 2281,
+   "launchT": 9744,
+   "launched": 2557,
+   "fee": 81833,
+   "B0": 2618669,
+   "pct": 0
+  },
+  {
+   "t": 9819,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2356,
+   "got": 2356,
+   "launchT": 9744,
+   "launched": 2642,
+   "fee": 84558,
+   "B0": 2705869,
+   "pct": 0
+  },
+  {
+   "t": 9850,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2808,
+   "got": 2808,
+   "launchT": 9849,
+   "launched": 2808,
+   "fee": 89865,
+   "B0": 2875702,
+   "pct": 0
+  },
+  {
+   "t": 9850,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2901,
+   "got": 2901,
+   "launchT": 9849,
+   "launched": 2901,
+   "fee": 92858,
+   "B0": 2971461,
+   "pct": 0
+  },
+  {
+   "t": 9864,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2687,
+   "got": 2687,
+   "launchT": 9863,
+   "launched": 2708,
+   "fee": 86676,
+   "B0": 2773655,
+   "pct": 0
+  },
+  {
+   "t": 9864,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2777,
+   "got": 2777
+  },
+  {
+   "t": 10104,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1747,
+   "got": 1747,
+   "launchT": 9898,
+   "launched": 2403,
+   "fee": 76897,
+   "B0": 2460724,
+   "pct": 0
+  },
+  {
+   "t": 10114,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1832,
+   "got": 1832,
+   "launchT": 9870,
+   "launched": 2660,
+   "fee": 85124,
+   "B0": 2723998,
+   "pct": 0
+  },
+  {
+   "t": 10115,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1773,
+   "got": 1773,
+   "launchT": 9891,
+   "launched": 2483,
+   "fee": 79458,
+   "B0": 2542665,
+   "pct": 0
+  },
+  {
+   "t": 10117,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1716,
+   "got": 1716,
+   "launchT": 9870,
+   "launched": 2491,
+   "fee": 79726,
+   "B0": 2551259,
+   "pct": 0
+  },
+  {
+   "t": 10138,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1712,
+   "got": 1712,
+   "launchT": 9870,
+   "launched": 2574,
+   "fee": 82381,
+   "B0": 2636214,
+   "pct": 0
+  },
+  {
+   "t": 10147,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1591,
+   "got": 1591,
+   "launchT": 9898,
+   "launched": 2325,
+   "fee": 74419,
+   "B0": 2381424,
+   "pct": 0
+  },
+  {
+   "t": 11200,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 684,
+   "got": 684
+  },
+  {
+   "t": 11209,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 673,
+   "got": 673
+  },
+  {
+   "t": 11213,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 652,
+   "got": 652,
+   "launchT": 10157,
+   "launched": 3253,
+   "fee": 104118,
+   "B0": 3331794,
+   "pct": 0
+  },
+  {
+   "t": 11222,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 635,
+   "got": 635,
+   "launchT": 10164,
+   "launched": 3195,
+   "fee": 102254,
+   "B0": 3272144,
+   "pct": 0
+  },
+  {
+   "t": 11238,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 626,
+   "got": 626
+  },
+  {
+   "t": 11711,
+   "bot": "talon5",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 394,
+   "got": 394
+  },
+  {
+   "t": 11719,
+   "bot": "talon5",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 379,
+   "got": 379
+  },
+  {
+   "t": 11720,
+   "bot": "talon5",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 370,
+   "got": 370,
+   "launchT": 11151,
+   "launched": 861,
+   "fee": 27559,
+   "B0": 881904,
+   "pct": 0
+  },
+  {
+   "t": 11727,
+   "bot": "talon5",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 366,
+   "got": 366
+  },
+  {
+   "t": 13113,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 235,
+   "got": 235
+  },
+  {
+   "t": 13124,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 230,
+   "got": 230
+  },
+  {
+   "t": 13129,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 225,
+   "got": 225
+  },
+  {
+   "t": 13138,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 222,
+   "got": 222
+  },
+  {
+   "t": 13153,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 222,
+   "got": 222
+  },
+  {
+   "t": 13204,
+   "bot": "zexos1",
+   "to": "leo_tx",
+   "toSquad": true,
+   "landed": 15465,
+   "got": 15465,
+   "launchT": 12992,
+   "launched": 21591,
+   "fee": 690912,
+   "B0": 22109211,
+   "pct": 0
+  },
+  {
+   "t": 13211,
+   "bot": "zexos1",
+   "to": "leo_tx",
+   "toSquad": true,
+   "landed": 15307,
+   "got": 15307,
+   "launchT": 12985,
+   "launched": 21810,
+   "fee": 697937,
+   "B0": 22333992,
+   "pct": 0
+  },
+  {
+   "t": 13218,
+   "bot": "zexos1",
+   "to": "leo_tx",
+   "toSquad": true,
+   "landed": 14928,
+   "got": 14928,
+   "launchT": 12999,
+   "launched": 20895,
+   "fee": 668647,
+   "B0": 21396708,
+   "pct": 0
+  },
+  {
+   "t": 13219,
+   "bot": "zexos1",
+   "to": "leo_tx",
+   "toSquad": true,
+   "landed": 14339,
+   "got": 14339,
+   "launchT": 12999,
+   "launched": 20221,
+   "fee": 647098,
+   "B0": 20707166,
+   "pct": 0
+  },
+  {
+   "t": 13345,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2430,
+   "got": 2430,
+   "launchT": 13265,
+   "launched": 2747,
+   "fee": 87922,
+   "B0": 2813506,
+   "pct": 0
+  },
+  {
+   "t": 13345,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2511,
+   "got": 2511,
+   "launchT": 13265,
+   "launched": 2839,
+   "fee": 90849,
+   "B0": 2907194,
+   "pct": 0
+  },
+  {
+   "t": 13353,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2388,
+   "got": 2388,
+   "launchT": 13272,
+   "launched": 2698,
+   "fee": 86347,
+   "B0": 2763134,
+   "pct": 0
+  },
+  {
+   "t": 13360,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2236,
+   "got": 2236,
+   "launchT": 13174,
+   "launched": 2995,
+   "fee": 95856,
+   "B0": 3067400,
+   "pct": 0
+  },
+  {
+   "t": 13360,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 2310,
+   "got": 2310,
+   "launchT": 13279,
+   "launched": 2611,
+   "fee": 83565,
+   "B0": 2674089,
+   "pct": 0
+  },
+  {
+   "t": 13405,
+   "bot": "talon5",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 126,
+   "got": 126
+  },
+  {
+   "t": 13407,
+   "bot": "talon5",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 121,
+   "got": 121
+  },
+  {
+   "t": 13415,
+   "bot": "talon5",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 117,
+   "got": 117
+  },
+  {
+   "t": 13458,
+   "bot": "zexos1",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 16452,
+   "got": 16452,
+   "launchT": 13335,
+   "launched": 19870,
+   "fee": 635863,
+   "B0": 20347630,
+   "pct": 0
+  },
+  {
+   "t": 13465,
+   "bot": "zexos1",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 15409,
+   "got": 15409,
+   "launchT": 13349,
+   "launched": 18446,
+   "fee": 590291,
+   "B0": 18889312,
+   "pct": 0
+  },
+  {
+   "t": 13465,
+   "bot": "zexos1",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 15925,
+   "got": 15925,
+   "launchT": 13349,
+   "launched": 19060,
+   "fee": 609947,
+   "B0": 19518319,
+   "pct": 0
+  },
+  {
+   "t": 13472,
+   "bot": "zexos1",
+   "to": "talon5",
+   "toSquad": true,
+   "landed": 15260,
+   "got": 15260,
+   "launchT": 13356,
+   "launched": 18263,
+   "fee": 584424,
+   "B0": 18701588,
+   "pct": 0
+  },
+  {
+   "t": 13756,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1610,
+   "got": 1610,
+   "launchT": 13377,
+   "launched": 2869,
+   "fee": 91832,
+   "B0": 2938624,
+   "pct": 0
+  },
+  {
+   "t": 13764,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1581,
+   "got": 1581,
+   "launchT": 13384,
+   "launched": 2818,
+   "fee": 90187,
+   "B0": 2886013,
+   "pct": 0
+  },
+  {
+   "t": 13772,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1554,
+   "got": 1554,
+   "launchT": 13391,
+   "launched": 2767,
+   "fee": 88573,
+   "B0": 2834344,
+   "pct": 0
+  },
+  {
+   "t": 13781,
+   "bot": "leo_tx",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 1494,
+   "got": 1494,
+   "launchT": 13398,
+   "launched": 2678,
+   "fee": 85718,
+   "B0": 2743004,
+   "pct": 0
+  }
+ ],
+ "donationNetwork": {
+  "botGiftsByClass": {
+   "本编队": 6430903,
+   "队2": 176607
+  },
+  "botGiftPairs": [
+   {
+    "from": "riku_x",
+    "fromLeft": 3570,
+    "to": "zexos1",
+    "n": 46,
+    "delivered": 3345234,
+    "fee": 222991,
+    "t0": 4021,
+    "t1": 14606
+   },
+   {
+    "from": "riku_x",
+    "fromLeft": 3570,
+    "to": "kaito9",
+    "n": 14,
+    "delivered": 2095248,
+    "fee": 331674,
+    "t0": 6011,
+    "t1": 11906
+   },
+   {
+    "from": "riku_x",
+    "fromLeft": 3570,
+    "to": "talon5",
+    "n": 8,
+    "delivered": 627389,
+    "fee": 41821,
+    "t0": 3701,
+    "t1": 14306
+   },
+   {
+    "from": "riku_x",
+    "fromLeft": 3570,
+    "to": "leo_tx",
+    "n": 10,
+    "delivered": 148964,
+    "fee": 17160,
+    "t0": 8306,
+    "t1": 10301
+   },
+   {
+    "from": "يحيى#6T2",
+    "fromLeft": 3759,
+    "to": "Player 691#5T2",
+    "n": 3,
+    "delivered": 134096,
+    "fee": 8938,
+    "t0": 4087,
+    "t1": 4247
+   },
+   {
+    "from": "alex_k",
+    "fromLeft": 931,
+    "to": "zexos1",
+    "n": 71,
+    "delivered": 124112,
+    "fee": 8232,
+    "t0": 1292,
+    "t1": 14502
+   },
+   {
+    "from": "يحيى#6T2",
+    "fromLeft": 3759,
+    "to": "Player 804#11T2",
+    "n": 1,
+    "delivered": 42511,
+    "fee": 6942,
+    "t0": 4007,
+    "t1": 4007
+   },
+   {
+    "from": "alex_k",
+    "fromLeft": 931,
+    "to": "leo_tx",
+    "n": 18,
+    "delivered": 25799,
+    "fee": 1710,
+    "t0": 2412,
+    "t1": 14607
+   }
+  ],
+  "byClass": {
+   "本编队": {
+    "n": 364,
+    "delivered": 849807973,
+    "tax": 304456695,
+    "toHusk": 0,
+    "bands": {
+     "<2142": 0,
+     "2142~3212": 375804,
+     "3213~4283": 3566999,
+     "≥4284": 845865170
+    }
+   },
+   "队2": {
+    "n": 12,
+    "delivered": 857488,
+    "tax": 239526,
+    "toHusk": 204543,
+    "bands": {
+     "<2142": 0,
+     "2142~3212": 201308,
+     "3213~4283": 656180,
+     "≥4284": 0
+    }
+   }
+  },
+  "topReceivers": [
+   {
+    "who": "zexos1",
+    "left": null,
+    "n": 201,
+    "delivered": 410027573,
+    "t0": 2842,
+    "t1": 14651,
+    "from": [
+     {
+      "who": "kaito9",
+      "delivered": 340228719
+     },
+     {
+      "who": "leo_tx",
+      "delivered": 60775740
+     },
+     {
+      "who": "talon5",
+      "delivered": 8864520
+     },
+     {
+      "who": "riku_x",
+      "delivered": 158594
+     }
+    ]
+   },
+   {
+    "who": "kaito9",
+    "left": null,
+    "n": 139,
+    "delivered": 388861501,
+    "t0": 3171,
+    "t1": 14623,
+    "from": [
+     {
+      "who": "zexos1",
+      "delivered": 372601800
+     },
+     {
+      "who": "leo_tx",
+      "delivered": 11559515
+     },
+     {
+      "who": "talon5",
+      "delivered": 4327775
+     },
+     {
+      "who": "riku_x",
+      "delivered": 372411
+     }
+    ]
+   },
+   {
+    "who": "leo_tx",
+    "left": null,
+    "n": 23,
+    "delivered": 50273288,
+    "t0": 5173,
+    "t1": 11207,
+    "from": [
+     {
+      "who": "zexos1",
+      "delivered": 38222309
+     },
+     {
+      "who": "kaito9",
+      "delivered": 12050979
+     }
+    ]
+   },
+   {
+    "who": "Player 845#9T2",
+    "left": 4088,
+    "n": 11,
+    "delivered": 652945,
+    "t0": 3178,
+    "t1": 3486,
+    "from": [
+     {
+      "who": "يحيى#6T2",
+      "delivered": 652945
+     }
+    ]
+   },
+   {
+    "who": "talon5",
+    "left": null,
+    "n": 1,
+    "delivered": 645611,
+    "t0": 5334,
+    "t1": 5334,
+    "from": [
+     {
+      "who": "kaito9",
+      "delivered": 645611
+     }
+    ]
+   },
+   {
+    "who": "Player 691#5T2",
+    "left": 3619,
+    "n": 1,
+    "delivered": 204543,
+    "t0": 3703,
+    "t1": 3703,
+    "from": [
+     {
+      "who": "يحيى#6T2",
+      "delivered": 204543
+     }
+    ]
+   }
+  ],
+  "toHusks": [
+   {
+    "from": "يحيى#6T2",
+    "to": "Player 691#5T2",
+    "n": 1,
+    "delivered": 204543,
+    "tax": 13636,
+    "t0": 3703,
+    "t1": 3703
+   }
+  ],
+  "leaveGifts": [
+   {
+    "t": 3703,
+    "from": "يحيى#6T2",
+    "to": "Player 691#5T2*",
+    "got": 204543,
+    "leftT": 3759
+   }
+  ]
+ },
+ "donationAudit": {
+  "logged": 391,
+  "exec": 364,
+  "quota": 10,
+  "other": 17,
+  "amount": 849807973,
+  "fee": 304456695,
+  "byBand": "events.csv 本房间 391 条 DISPATCH 按本地发令拍与类别：2142~3212 defense 11/offense 2；3213~4283 defense 7/offense 2；4284~5999 yield_opt 56/offense 4；6000~9299 yield_opt 135/offense 13/defense 2；9300 拍之后 yield_opt 159。全部发令时 boxedIn=True",
+  "executedByBand": "录像成交（编队捐出，按服务器落地拍）：2142 拍前 0；2142~3212 拍 2 笔 37.6 万（riku_x→zexos1、riku_x→kaito9）；3213~4283 拍 10 笔 357 万（leo_tx 4 笔 220 万、talon5 5 笔 121 万、riku_x 1 笔 15.5 万）；4284 拍之后 352 笔 8.46 亿。按 1000 拍：5000~5999 56 笔 1.19 亿（税 4,843 万），9000~9999 47 笔 1.18 亿（税 4,116 万）",
+  "fromRandoms": "队1 没有路人。队2 12 笔 85.7 万（يحيى→845 11 笔 65.3 万；يحيى→691 的空壳 1 笔 20.5 万）",
+  "clipped": "138 笔被接收方硬上限截短：zexos1→kaito9 109、zexos1→leo_tx 16、kaito9→leo_tx 7、talon5→kaito9 4、kaito9→talon5 1、leo_tx→kaito9 1",
+  "toOverCap": "kaito9→zexos1 127 笔里 92 笔落地后 zexos1 在软上限以上；zexos1→kaito9 109 笔每笔都把 kaito9 顶到 150.0"
+ },
+ "donateGates": {
+  "calls": 10660,
+  "replicaAgrees": 10660,
+  "total": {
+   "slotPhase": 7717,
+   "B:dMe": 348,
+   "busy": 63,
+   "sent": 391,
+   "cooldown12": 778,
+   "noFront": 1324,
+   "A:dMe": 2,
+   "bal<30000": 37
+  },
+  "perBot": {
+   "talon5": {
+    "calls": 2624,
+    "stops": {
+     "slotPhase": 2002,
+     "B:dMe": 90,
+     "busy": 5,
+     "sent": 49,
+     "cooldown12": 98,
+     "noFront": 380
+    },
+    "byBand": {
+     "1500-2141": {
+      "边:slotPhase": 104,
+      "边:B:dMe": 25
+     },
+     "2142-3212": {
+      "边:B:dMe": 38,
+      "边:slotPhase": 168,
+      "边:busy": 4
+     },
+     "3213-4283": {
+      "边:slotPhase": 21,
+      "边:B:dMe": 4,
+      "边:busy": 1,
+      "围:slotPhase": 138,
+      "围:sent": 5,
+      "·:cooldown12": 10,
+      "围:B:dMe": 15,
+      "围:noFront": 17
+     },
+     "4284-5999": {
+      "围:slotPhase": 260,
+      "围:noFront": 61,
+      "围:sent": 7,
+      "·:cooldown12": 14,
+      "围:B:dMe": 1
+     },
+     "6000-7999": {
+      "围:slotPhase": 300,
+      "围:sent": 10,
+      "·:cooldown12": 20,
+      "围:noFront": 63,
+      "围:B:dMe": 7
+     },
+     "8000+": {
+      "围:slotPhase": 986,
+      "围:noFront": 230,
+      "边:slotPhase": 25,
+      "边:noFront": 9,
+      "围:sent": 27,
+      "·:cooldown12": 54
+     }
+    },
+    "sentTo": {
+     "[APEX] zexos1": 25,
+     "[APEX] kaito9": 24
+    }
+   },
+   "zexos1": {
+    "calls": 2534,
+    "stops": {
+     "slotPhase": 1774,
+     "B:dMe": 54,
+     "busy": 26,
+     "A:dMe": 2,
+     "noFront": 299,
+     "sent": 127,
+     "cooldown12": 252
+    },
+    "byBand": {
+     "1500-2141": {
+      "边:slotPhase": 55,
+      "边:B:dMe": 12
+     },
+     "2142-3212": {
+      "边:slotPhase": 161,
+      "边:B:dMe": 30,
+      "边:busy": 9
+     },
+     "3213-4283": {
+      "边:B:dMe": 12,
+      "边:slotPhase": 156,
+      "边:busy": 10,
+      "边:A:dMe": 2,
+      "边:noFront": 17
+     },
+     "4284-5999": {
+      "边:slotPhase": 83,
+      "边:noFront": 20,
+      "围:slotPhase": 146,
+      "围:noFront": 25,
+      "围:sent": 20,
+      "·:cooldown12": 40,
+      "边:busy": 3,
+      "围:busy": 1
+     },
+     "6000-7999": {
+      "围:slotPhase": 244,
+      "边:busy": 3,
+      "围:sent": 31,
+      "·:cooldown12": 62,
+      "围:noFront": 45,
+      "边:slotPhase": 12,
+      "边:noFront": 1
+     },
+     "8000+": {
+      "围:slotPhase": 883,
+      "围:noFront": 178,
+      "围:sent": 76,
+      "·:cooldown12": 150,
+      "边:slotPhase": 34,
+      "边:noFront": 13
+     }
+    },
+    "sentTo": {
+     "[APEX] kaito9": 111,
+     "[APEX] leo_tx": 16
+    }
+   },
+   "kaito9": {
+    "calls": 2520,
+    "stops": {
+     "slotPhase": 1719,
+     "B:dMe": 57,
+     "bal<30000": 28,
+     "busy": 31,
+     "noFront": 279,
+     "sent": 136,
+     "cooldown12": 270
+    },
+    "byBand": {
+     "1500-2141": {
+      "边:slotPhase": 54,
+      "边:B:dMe": 13,
+      "·:bal<30000": 28,
+      "边:busy": 4
+     },
+     "2142-3212": {
+      "边:slotPhase": 169,
+      "边:B:dMe": 38,
+      "边:busy": 4
+     },
+     "3213-4283": {
+      "边:slotPhase": 154,
+      "边:B:dMe": 5,
+      "边:busy": 16,
+      "边:noFront": 19
+     },
+     "4284-5999": {
+      "边:slotPhase": 145,
+      "边:noFront": 35,
+      "围:slotPhase": 82,
+      "围:sent": 18,
+      "·:cooldown12": 36,
+      "围:noFront": 11
+     },
+     "6000-7999": {
+      "围:noFront": 25,
+      "围:slotPhase": 167,
+      "边:slotPhase": 71,
+      "边:noFront": 15,
+      "围:sent": 28,
+      "·:cooldown12": 56,
+      "围:busy": 1,
+      "边:busy": 6,
+      "边:B:dMe": 1
+     },
+     "8000+": {
+      "围:noFront": 173,
+      "围:slotPhase": 871,
+      "围:sent": 90,
+      "·:cooldown12": 178,
+      "边:slotPhase": 6,
+      "边:noFront": 1
+     }
+    },
+    "sentTo": {
+     "[APEX] zexos1": 127,
+     "[APEX] leo_tx": 8,
+     "[APEX] talon5": 1
+    }
+   },
+   "leo_tx": {
+    "calls": 2604,
+    "stops": {
+     "slotPhase": 1929,
+     "B:dMe": 78,
+     "bal<30000": 9,
+     "sent": 74,
+     "cooldown12": 148,
+     "noFront": 366
+    },
+    "byBand": {
+     "1500-2141": {
+      "边:slotPhase": 31,
+      "边:B:dMe": 7,
+      "·:bal<30000": 9,
+      "围:slotPhase": 45,
+      "围:B:dMe": 11
+     },
+     "2142-3212": {
+      "围:slotPhase": 155,
+      "围:B:dMe": 34,
+      "围:sent": 9,
+      "·:cooldown12": 16
+     },
+     "3213-4283": {
+      "·:cooldown12": 8,
+      "围:slotPhase": 164,
+      "围:B:dMe": 23,
+      "围:sent": 3,
+      "围:noFront": 16
+     },
+     "4284-5999": {
+      "围:noFront": 54,
+      "围:slotPhase": 244,
+      "围:sent": 15,
+      "·:cooldown12": 30
+     },
+     "6000-7999": {
+      "围:slotPhase": 267,
+      "围:B:dMe": 3,
+      "围:noFront": 54,
+      "围:sent": 18,
+      "·:cooldown12": 36,
+      "边:slotPhase": 14,
+      "边:noFront": 4
+     },
+     "8000+": {
+      "围:slotPhase": 989,
+      "围:sent": 29,
+      "·:cooldown12": 58,
+      "围:noFront": 234,
+      "边:slotPhase": 20,
+      "边:noFront": 4
+     }
+    },
+    "sentTo": {
+     "[APEX] zexos1": 55,
+     "[APEX] kaito9": 19
+    }
+   },
+   "riku_x": {
+    "calls": 378,
+    "stops": {
+     "slotPhase": 293,
+     "B:dMe": 69,
+     "busy": 1,
+     "sent": 5,
+     "cooldown12": 10
+    },
+    "byBand": {
+     "1500-2141": {
+      "围:slotPhase": 37,
+      "围:B:dMe": 10,
+      "边:slotPhase": 63,
+      "边:B:dMe": 15
+     },
+     "2142-3212": {
+      "边:slotPhase": 36,
+      "边:B:dMe": 8,
+      "边:busy": 1,
+      "围:slotPhase": 117,
+      "围:B:dMe": 27,
+      "围:sent": 4,
+      "·:cooldown12": 8
+     },
+     "3213-4283": {
+      "围:slotPhase": 40,
+      "围:B:dMe": 9,
+      "围:sent": 1,
+      "·:cooldown12": 2
+     }
+    },
+    "sentTo": {
+     "[APEX] zexos1": 3,
+     "[APEX] kaito9": 2
+    }
+   },
+   "alex_k": {
+    "calls": 0,
+    "stops": {},
+    "byBand": {},
+    "sentTo": {}
+   }
+  },
+  "legend": "围/边 = 源码 L4355 的 boxedIn 真/假；· = 算到 boxedIn 之前就返回。闸名见 scripts/donate-why.mjs 文件头"
+ },
+ "teamFall": {
+  "husks": [
+   {
+    "t": 1530,
+    "T1": {
+     "online": 5,
+     "onlineSharePct": 22.9,
+     "husks": 1,
+     "huskSharePct": 0.4
+    },
+    "T2": {
+     "online": 5,
+     "onlineSharePct": 18.5,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   },
+   {
+    "t": 3060,
+    "T1": {
+     "online": 5,
+     "onlineSharePct": 40.9,
+     "husks": 1,
+     "huskSharePct": 0.4
+    },
+    "T2": {
+     "online": 5,
+     "onlineSharePct": 56.8,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   },
+   {
+    "t": 4500,
+    "T1": {
+     "online": 4,
+     "onlineSharePct": 81.6,
+     "husks": 2,
+     "huskSharePct": 5.2
+    },
+    "T2": {
+     "online": 1,
+     "onlineSharePct": 0.9,
+     "husks": 1,
+     "huskSharePct": 7.4
+    }
+   },
+   {
+    "t": 6000,
+    "T1": {
+     "online": 4,
+     "onlineSharePct": 92.6,
+     "husks": 2,
+     "huskSharePct": 5.4
+    },
+    "T2": {
+     "online": 1,
+     "onlineSharePct": 0.4,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   },
+   {
+    "t": 7500,
+    "T1": {
+     "online": 4,
+     "onlineSharePct": 93.2,
+     "husks": 2,
+     "huskSharePct": 5.7
+    },
+    "T2": {
+     "online": 1,
+     "onlineSharePct": 0.2,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   },
+   {
+    "t": 9000,
+    "T1": {
+     "online": 4,
+     "onlineSharePct": 93.7,
+     "husks": 2,
+     "huskSharePct": 5.7
+    },
+    "T2": {
+     "online": 0,
+     "onlineSharePct": 0.0,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   },
+   {
+    "t": 10800,
+    "T1": {
+     "online": 4,
+     "onlineSharePct": 94.1,
+     "husks": 2,
+     "huskSharePct": 5.7
+    },
+    "T2": {
+     "online": 0,
+     "onlineSharePct": 0.0,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   },
+   {
+    "t": 12600,
+    "T1": {
+     "online": 4,
+     "onlineSharePct": 94.2,
+     "husks": 2,
+     "huskSharePct": 5.8
+    },
+    "T2": {
+     "online": 0,
+     "onlineSharePct": 0.0,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   }
+  ],
+  "windows": []
+ },
+ "interestEfficiency": {
+  "phases": [
+   {
+    "from": 600,
+    "to": 1500,
+    "botTicks": 4840,
+    "ticksOverSoftCap": 0,
+    "ticksAtHardCap": 0,
+    "income": 748968,
+    "incomeAtSoftCap": 13071788,
+    "lostWhileOverSoftCap": 0
+   },
+   {
+    "from": 1500,
+    "to": 4284,
+    "botTicks": 13230,
+    "ticksOverSoftCap": 40,
+    "ticksAtHardCap": 0,
+    "income": 22538503,
+    "incomeAtSoftCap": 78724842,
+    "lostWhileOverSoftCap": 6234
+   },
+   {
+    "from": 4284,
+    "to": 14669,
+    "botTicks": 41516,
+    "ticksOverSoftCap": 13709,
+    "ticksAtHardCap": 3930,
+    "income": 651411298,
+    "incomeAtSoftCap": 781083906,
+    "lostWhileOverSoftCap": 58605812
+   }
+  ],
+  "perBot": {
+   "zexos1": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 2.0,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 173170,
+     "incomeAtSoftCap": 3347359,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 2790,
+     "meanDensity": 17.6,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 11034970,
+     "incomeAtSoftCap": 41111560,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 4284,
+     "to": 14669,
+     "ticks": 10379,
+     "meanDensity": 96.1,
+     "ticksOverSoftCap": 4399,
+     "ticksAtHardCap": 0,
+     "income": 532816533,
+     "incomeAtSoftCap": 599189517,
+     "lostWhileOverSoftCap": 23947651
+    }
+   ],
+   "leo_tx": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 2.1,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 142267,
+     "incomeAtSoftCap": 2692124,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 2790,
+     "meanDensity": 29.9,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 4924607,
+     "incomeAtSoftCap": 14470387,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 4284,
+     "to": 14669,
+     "ticks": 10379,
+     "meanDensity": 89.4,
+     "ticksOverSoftCap": 2490,
+     "ticksAtHardCap": 700,
+     "income": 43110506,
+     "incomeAtSoftCap": 55232734,
+     "lostWhileOverSoftCap": 3637359
+    }
+   ],
+   "talon5": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 3.9,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 149542,
+     "incomeAtSoftCap": 2188849,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 2790,
+     "meanDensity": 52.9,
+     "ticksOverSoftCap": 40,
+     "ticksAtHardCap": 0,
+     "income": 2097774,
+     "incomeAtSoftCap": 3865426,
+     "lostWhileOverSoftCap": 6234
+    },
+    {
+     "from": 4284,
+     "to": 14669,
+     "ticks": 10379,
+     "meanDensity": 81.5,
+     "ticksOverSoftCap": 1570,
+     "ticksAtHardCap": 140,
+     "income": 11993688,
+     "incomeAtSoftCap": 15191088,
+     "lostWhileOverSoftCap": 339080
+    }
+   ],
+   "kaito9": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 1.7,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 134808,
+     "incomeAtSoftCap": 2796816,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 2790,
+     "meanDensity": 15.5,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 3342233,
+     "incomeAtSoftCap": 15822497,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 4284,
+     "to": 14669,
+     "ticks": 10379,
+     "meanDensity": 109.7,
+     "ticksOverSoftCap": 5250,
+     "ticksAtHardCap": 3090,
+     "income": 63490571,
+     "incomeAtSoftCap": 111470567,
+     "lostWhileOverSoftCap": 30681722
+    }
+   ],
+   "riku_x": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 3.7,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 125827,
+     "incomeAtSoftCap": 1926123,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 2070,
+     "meanDensity": 27.7,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 1138919,
+     "incomeAtSoftCap": 3454972,
+     "lostWhileOverSoftCap": 0
+    },
+    null
+   ],
+   "alex_k": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 340,
+     "meanDensity": 19.4,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 23354,
+     "incomeAtSoftCap": 120517,
+     "lostWhileOverSoftCap": 0
+    },
+    null,
+    null
+   ]
+  }
+ },
+ "dumpBatches": [],
+ "scripts": [
+  "scripts/resim.mjs（整局精确重放，traj 逐行核对）",
+  "scripts/shadow.mjs（影子策略：同一份源码在重放状态上逐拍运行，对日志计数器与录像成交）",
+  "scripts/dossier.py（卷宗：各队走势、逐号分段账、DROP30 对账、捐款审计、整局兵力去向总账、全场捐款网络）",
+  "scripts/shadow-digest.py（决策串、执行层延迟、落地错位、isNoFullSend 翻转、未成交就重发的串）",
+  "scripts/freeze-scan.mjs（t<1500：safeFinite 冻结计数与反事实；t≥1500：buyLand 每个决策拍为什么没出手的九类计数）",
+  "scripts/donate-why.mjs（tryDonateToTeammate 每次调用卡在哪一道闸；照抄判定与真调用逐次对账）",
+  "scripts/dbg/act-trace.mjs（逐决策拍打印各分支的输入与返回值）",
+  "scripts/mkreview.py（合成本文件并自检）",
+  "node scripts/shadow.mjs A025 --quiet --maps 630,1530,3000,4500,6000,7620,10000,13000 → out/cache/A025-{resim,shadow}.json",
+  "python3 scripts/dossier.py A025 --quiet --map … → out/dossier/A025.txt（本局改了 [L]：船靠岸按落点归属分成「编队外队友/空壳」「编队内队友」「敌方真人」，旧口径把登陆敌方真人的 4,656 万也算成了送给路人）",
+  "python3 scripts/shadow-digest.py A025 --quiet → out/dossier/A025-shadow.txt",
+  "node scripts/freeze-scan.mjs A025 → out/dossier/A025-freeze.txt；node scripts/donate-why.mjs A025 → out/dossier/A025-donwhy.txt",
+  "node scripts/dbg/buy-why.mjs A025 kaito9 1500 2110；zexos1 2600 3320；zexos1 3560 4400 → out/trace/A025-buywhy-*.txt",
+  "node scripts/dbg/act-trace.mjs A025 kaito9 1695 1710；zexos1 1956 1984；zexos1 2822 2842；zexos1 3140 3240；zexos1 3296 3312；zexos1 3586 3608；kaito9 10000 … → out/trace/A025-act-*.txt",
+  "node scripts/dbg/boat-life.mjs A025 3 7600 14669 → out/trace/A025-boats-kaito9-7600.txt；node scripts/dbg/params.mjs A025 '<正则>'（本局实际参数）",
+  "node scripts/dbg/leftover.mjs A025 4800,6000,7620,8400,9300,10200,11100,12000,13200,14400 → out/trace/A025-leftover.txt（新：某一拍非本队陆地的连通块——块数、大小分布、是否与在线号陆上相邻、离谁的岸最近）",
+  "node scripts/dbg/player-track.mjs A025 148,11 4200 8900 → out/trace/A025-track-ai148-p804.txt（新：指定席位的地/兵轨迹）",
+  "node scripts/dbg/idle-boats.mjs A025 <号> 4500 14665 --bucket 600|1200 → out/trace/A025-idleboats-*.txt（新：影子逐决策拍归类 idleBoats 走了哪个分支、被哪一道拦、发出的船的落点水路步数与岛的大小）",
+  "python3 scripts/boat-audit.py A025 --cuts 1500,4567,7607,9300 → out/trace/A025-boat-audit.txt（新：重放里每个号分段的发船数/兵/船费、同落点 60 拍内的重复船、靠岸按落点归属分类）",
+  "python3 scripts/pingpong.py A025 → out/trace/A025-pingpong.txt（新：逐对捐款的笔数/到账/税/密度变化/硬上限截短、100 拍内掉头、按引擎利率公式算每笔落地当拍双方利息的变化）"
+ ],
+ "confidenceOverall": "high：重放与 traj 689/689 行逐行相等，影子策略与日志的调度 391/391、开局 47/47、成交 1,422/1,422 全部对上，donate-why 10,660/10,660；数字都是重放精确值。判断部分：队2 真人离场的原因、两个页面退出的原因不可见；「对手压兵出来时回脉冲」逐拍追踪了三个时点（2830、3305、3595），其余各串只对过双方指令落地的先后；硬上限截掉的兵（kaito9 约 1,550 万、多付的税约 1.3 亿）是按账面差额估的；反事实都没有重演，已在各处标明"
+}

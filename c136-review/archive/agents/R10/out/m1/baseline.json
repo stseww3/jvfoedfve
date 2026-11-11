@@ -1,0 +1,2673 @@
+{
+ "excess_vs_base": {
+  "A_dispatch_G01_G09": {
+   "T": [
+    6,
+    5,
+    4,
+    3,
+    6,
+    5,
+    2,
+    6,
+    5
+   ],
+   "excess_per_game": -0.13148148148148145,
+   "expected": 2.183333333333333,
+   "ids": [
+    "G01",
+    "G02",
+    "G03",
+    "G04",
+    "G05",
+    "G06",
+    "G07",
+    "G08",
+    "G09"
+   ],
+   "logit_shift": {
+    "delta_hat": -0.9903730590994144,
+    "delta_hi": 0.757513095422939,
+    "delta_lo": -3.933401885219525,
+    "mean_base": 0.24259259259259258,
+    "mean_p_hat": 0.1111111111111111,
+    "mean_p_hi": 0.3947656104981548,
+    "mean_p_lo": 0.006854397422636839,
+    "n": 9,
+    "odds_ratio": 0.371438096809853,
+    "odds_ratio_hi": 2.1329651383915276,
+    "odds_ratio_lo": 0.01957696057133928,
+    "wins": 1
+   },
+   "n": 9,
+   "p_lower": 0.30987654320987673,
+   "p_two_sided": 0.6197530864197535,
+   "p_upper": 0.9259259259259264,
+   "wins": 1
+  },
+  "B_auto_session_G00_G09": {
+   "T": [
+    3,
+    6,
+    5,
+    4,
+    3,
+    6,
+    5,
+    2,
+    6,
+    5
+   ],
+   "excess_per_game": -0.15166666666666667,
+   "expected": 2.5166666666666666,
+   "ids": [
+    "G00",
+    "G01",
+    "G02",
+    "G03",
+    "G04",
+    "G05",
+    "G06",
+    "G07",
+    "G08",
+    "G09"
+   ],
+   "logit_shift": {
+    "delta_hat": -1.1592031020484037,
+    "delta_hi": 0.5577280706248535,
+    "delta_lo": -4.09150889105609,
+    "mean_base": 0.25166666666666665,
+    "mean_p_hat": 0.1,
+    "mean_p_hi": 0.3624837956317436,
+    "mean_p_lo": 0.006103348765775657,
+    "n": 10,
+    "odds_ratio": 0.31373609694357724,
+    "odds_ratio_hi": 1.7466996107874997,
+    "odds_ratio_lo": 0.016713994924741224,
+    "wins": 1
+   },
+   "n": 10,
+   "p_lower": 0.23127572016460915,
+   "p_two_sided": 0.4625514403292183,
+   "p_upper": 0.9506172839506176,
+   "wins": 1
+  },
+  "D_all_played_determinable": {
+   "T": [
+    5,
+    3,
+    6,
+    5,
+    4,
+    3,
+    6,
+    5,
+    2,
+    6,
+    5
+   ],
+   "excess_per_game": -0.15606060606060607,
+   "expected": 2.716666666666667,
+   "ids": [
+    "P3",
+    "G00",
+    "G01",
+    "G02",
+    "G03",
+    "G04",
+    "G05",
+    "G06",
+    "G07",
+    "G08",
+    "G09"
+   ],
+   "logit_shift": {
+    "delta_hat": -1.2391028261694017,
+    "delta_hi": 0.4545210456870886,
+    "delta_lo": -4.164567805892528,
+    "mean_base": 0.24696969696969698,
+    "mean_p_hat": 0.09090909090909091,
+    "mean_p_hi": 0.3351202340194517,
+    "mean_p_lo": 0.0055124394239418235,
+    "n": 11,
+    "odds_ratio": 0.28964396238691154,
+    "odds_ratio_hi": 1.5754186487503388,
+    "odds_ratio_lo": 0.015536428201996313,
+    "wins": 1
+   },
+   "n": 11,
+   "p_lower": 0.19489711934156384,
+   "p_two_sided": 0.3897942386831277,
+   "p_upper": 0.9604938271604941,
+   "wins": 1
+  },
+  "E_per_protocol_clean": {
+   "T": [
+    5,
+    4,
+    3,
+    6,
+    5,
+    2
+   ],
+   "excess_per_game": -0.10833333333333332,
+   "expected": 1.65,
+   "ids": [
+    "G02",
+    "G03",
+    "G04",
+    "G05",
+    "G06",
+    "G07"
+   ],
+   "logit_shift": {
+    "delta_hat": -0.6795977508621975,
+    "delta_hi": 1.2102103274672515,
+    "delta_lo": -3.6629375839389517,
+    "mean_base": 0.27499999999999997,
+    "mean_p_hat": 0.16666666666666666,
+    "mean_p_hi": 0.5397250376834684,
+    "mean_p_lo": 0.0106688386960437,
+    "n": 6,
+    "odds_ratio": 0.5068208196058822,
+    "odds_ratio_hi": 3.354190056662791,
+    "odds_ratio_lo": 0.025657032229692747,
+    "wins": 1
+   },
+   "n": 6,
+   "p_lower": 0.47111111111111126,
+   "p_two_sided": 0.9422222222222225,
+   "p_upper": 0.8666666666666667,
+   "wins": 1
+  }
+ },
+ "games": [
+  {
+   "H": 50,
+   "K_clan_tagged": null,
+   "K_in_game": 3,
+   "K_records": 3,
+   "T": null,
+   "T_nominal": null,
+   "T_obs": 0,
+   "T_source": "obs(lower bound)",
+   "base": null,
+   "death_ticks": [],
+   "flags": [
+    "short-handed",
+    "reload",
+    "no-squad-log"
+   ],
+   "id": "P1",
+   "land": 762763,
+   "last_record_subtype": "left_reload",
+   "last_view": null,
+   "max_tick": 1638,
+   "outcome": "censored",
+   "per_record": [
+    {
+     "bot": "[Nope] ryan_m",
+     "sub": "left_reload",
+     "territory": 724,
+     "tick": 357
+    },
+    {
+     "bot": "[Nope] dave_w",
+     "sub": "left_reload",
+     "territory": 684,
+     "tick": 371
+    },
+    {
+     "bot": "[Nope] leo_tx",
+     "sub": "left_reload",
+     "territory": 32225,
+     "tick": 1638
+    }
+   ],
+   "snapshots": {},
+   "squad_weight_in_team": null,
+   "subtypes": {
+    "died": 0,
+    "end": 0,
+    "left_alive": 0,
+    "left_dead": 0,
+    "left_reload": 3
+   },
+   "t0_utc": "2026-11-07T14:42:08.397Z",
+   "team_humans_expected": null,
+   "win": 0
+  },
+  {
+   "H": 38,
+   "K_clan_tagged": null,
+   "K_in_game": 8,
+   "K_records": 8,
+   "T": 4,
+   "T_nominal": null,
+   "T_obs": 4,
+   "T_source": "obs(lower bound)",
+   "base": 0.25,
+   "death_ticks": [
+    4615,
+    5492,
+    5633
+   ],
+   "flags": [
+    "reload",
+    "pulled-out-alive",
+    "no-squad-log"
+   ],
+   "id": "P2",
+   "land": 374820,
+   "last_record_subtype": "left_alive",
+   "last_view": {
+    "best": 1,
+    "best_share_of_land": 0.4853422976361987,
+    "bot": "[Nope] ethan21",
+    "mine": 3,
+    "mine_share_of_land": 0.08241822741582626,
+    "teams_alive": 4,
+    "tick": 5633
+   },
+   "max_tick": 6013,
+   "outcome": "censored",
+   "per_record": [
+    {
+     "bot": "[Nope] kevin_k",
+     "sub": "left_reload",
+     "territory": 16315,
+     "tick": 1890
+    },
+    {
+     "bot": "[Nope] noah88",
+     "sub": "left_reload",
+     "territory": 1412,
+     "tick": 3738
+    },
+    {
+     "bot": "[Nope] ryan_m",
+     "sub": "left_reload",
+     "territory": 13048,
+     "tick": 3745
+    },
+    {
+     "bot": "[Nope] lucas94",
+     "sub": "died",
+     "territory": 0,
+     "tick": 4615
+    },
+    {
+     "bot": "[Nope] leo_tx",
+     "sub": "died",
+     "territory": 0,
+     "tick": 5492
+    },
+    {
+     "bot": "[Nope] ethan21",
+     "sub": "died",
+     "territory": 0,
+     "tick": 5633
+    },
+    {
+     "bot": "[Nope] mark07",
+     "sub": "left_alive",
+     "territory": 15911,
+     "tick": 6010
+    },
+    {
+     "bot": "[Nope] dave_w",
+     "sub": "left_alive",
+     "territory": 10321,
+     "tick": 6013
+    }
+   ],
+   "snapshots": {},
+   "squad_weight_in_team": 0.8421052631578947,
+   "subtypes": {
+    "died": 3,
+    "end": 0,
+    "left_alive": 2,
+    "left_dead": 0,
+    "left_reload": 3
+   },
+   "t0_utc": "2026-11-07T14:51:08.000Z",
+   "team_humans_expected": 9.5,
+   "win": 0
+  },
+  {
+   "H": 46,
+   "K_clan_tagged": null,
+   "K_in_game": 7,
+   "K_records": 7,
+   "T": 5,
+   "T_nominal": null,
+   "T_obs": 5,
+   "T_source": "obs(lower bound)",
+   "base": 0.2,
+   "death_ticks": [
+    6402,
+    6674,
+    6752,
+    6789,
+    6791
+   ],
+   "flags": [
+    "short-handed",
+    "reload",
+    "no-squad-log"
+   ],
+   "id": "P3",
+   "land": 667024,
+   "last_record_subtype": "died",
+   "last_view": {
+    "best": 4,
+    "best_share_of_land": 0.6673058240782941,
+    "bot": "[Nope] dave_w",
+    "mine": 1,
+    "mine_share_of_land": 0.22530973398258533,
+    "teams_alive": 5,
+    "tick": 6791
+   },
+   "max_tick": 6791,
+   "outcome": "lost_wiped",
+   "per_record": [
+    {
+     "bot": "[Nope] noah88",
+     "sub": "left_reload",
+     "territory": 144,
+     "tick": 112
+    },
+    {
+     "bot": "[Nope] leo_tx",
+     "sub": "left_reload",
+     "territory": 13204,
+     "tick": 2254
+    },
+    {
+     "bot": "[Nope] mark07",
+     "sub": "died",
+     "territory": 0,
+     "tick": 6402
+    },
+    {
+     "bot": "[Nope] ethan21",
+     "sub": "died",
+     "territory": 0,
+     "tick": 6674
+    },
+    {
+     "bot": "[Nope] lucas94",
+     "sub": "died",
+     "territory": 0,
+     "tick": 6752
+    },
+    {
+     "bot": "[Nope] kevin_k",
+     "sub": "died",
+     "territory": 0,
+     "tick": 6789
+    },
+    {
+     "bot": "[Nope] dave_w",
+     "sub": "died",
+     "territory": 0,
+     "tick": 6791
+    }
+   ],
+   "snapshots": {},
+   "squad_weight_in_team": 0.7608695652173914,
+   "subtypes": {
+    "died": 5,
+    "end": 0,
+    "left_alive": 0,
+    "left_dead": 0,
+    "left_reload": 2
+   },
+   "t0_utc": "2026-11-07T15:16:37.889Z",
+   "team_humans_expected": 9.2,
+   "win": 0
+  },
+  {
+   "H": 62,
+   "K_clan_tagged": 8,
+   "K_in_game": 8,
+   "K_records": 8,
+   "T": 3,
+   "T_nominal": 3,
+   "T_obs": 3,
+   "T_source": "rule(mode,H,clan)=obs",
+   "base": 0.3333333333333333,
+   "death_ticks": [
+    1905,
+    1933,
+    2160,
+    2610,
+    4123,
+    4514,
+    5502,
+    5506
+   ],
+   "flags": [
+    "strategy-error"
+   ],
+   "id": "G00",
+   "land": 546152,
+   "last_record_subtype": "left_dead",
+   "last_view": {
+    "best": 1,
+    "best_share_of_land": 0.5885046653678829,
+    "bot": "[Nope] mark07",
+    "mine": 3,
+    "mine_share_of_land": 0.051549751717470595,
+    "teams_alive": 3,
+    "tick": 5502
+   },
+   "max_tick": 5506,
+   "outcome": "lost_wiped",
+   "per_record": [
+    {
+     "bot": "[Nope] noah88",
+     "sub": "died",
+     "territory": 0,
+     "tick": 1905
+    },
+    {
+     "bot": "[Nope] lucas94",
+     "sub": "died",
+     "territory": 0,
+     "tick": 1933
+    },
+    {
+     "bot": "[Nope] ethan21",
+     "sub": "died",
+     "territory": 0,
+     "tick": 2160
+    },
+    {
+     "bot": "[Nope] ryan_m",
+     "sub": "died",
+     "territory": 0,
+     "tick": 2610
+    },
+    {
+     "bot": "[Nope] kevin_k",
+     "sub": "died",
+     "territory": 0,
+     "tick": 4123
+    },
+    {
+     "bot": "[Nope] dave_w",
+     "sub": "died",
+     "territory": 0,
+     "tick": 4514
+    },
+    {
+     "bot": "[Nope] mark07",
+     "sub": "died",
+     "territory": 0,
+     "tick": 5502
+    },
+    {
+     "bot": "[Nope] leo_tx",
+     "sub": "left_dead",
+     "territory": 1,
+     "tick": 5506
+    }
+   ],
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.09472271455565484
+    },
+    "3060": {
+     "n_missing": 3,
+     "n_with_snapshot": 1,
+     "squad_share": 0.010101583441972197
+    },
+    "4500": {
+     "n_missing": 2,
+     "n_with_snapshot": 1,
+     "squad_share": 1.8309921047620443e-06
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.04191873324642224
+    }
+   },
+   "squad_weight_in_team": 0.3870967741935484,
+   "subtypes": {
+    "died": 7,
+    "end": 0,
+    "left_alive": 0,
+    "left_dead": 1,
+    "left_reload": 0
+   },
+   "t0_utc": "2026-11-07T16:18:31.053Z",
+   "team_humans_expected": 20.666666666666668,
+   "win": 0
+  },
+  {
+   "H": 50,
+   "K_clan_tagged": 8,
+   "K_in_game": 8,
+   "K_records": 8,
+   "T": 6,
+   "T_nominal": 7,
+   "T_obs": 6,
+   "T_source": "rule(mode,H,clan)=obs",
+   "base": 0.16666666666666666,
+   "death_ticks": [
+    5139,
+    5291,
+    5545,
+    5570,
+    5618,
+    5645,
+    5651,
+    5858
+   ],
+   "flags": [
+    "strategy-error",
+    "hot-import"
+   ],
+   "id": "G01",
+   "land": 546152,
+   "last_record_subtype": "died",
+   "last_view": {
+    "best": 6,
+    "best_share_of_land": 0.3777098683150478,
+    "bot": "[Nope] leo_tx",
+    "mine": 4,
+    "mine_share_of_land": 0.05381102696685172,
+    "teams_alive": 5,
+    "tick": 5858
+   },
+   "max_tick": 5858,
+   "outcome": "lost_wiped",
+   "per_record": [
+    {
+     "bot": "[Nope] mark07",
+     "sub": "died",
+     "territory": 0,
+     "tick": 5139
+    },
+    {
+     "bot": "[Nope] noah88",
+     "sub": "died",
+     "territory": 0,
+     "tick": 5291
+    },
+    {
+     "bot": "[Nope] dave_w",
+     "sub": "died",
+     "territory": 0,
+     "tick": 5545
+    },
+    {
+     "bot": "[Nope] lucas94",
+     "sub": "died",
+     "territory": 0,
+     "tick": 5570
+    },
+    {
+     "bot": "[Nope] ethan21",
+     "sub": "died",
+     "territory": 0,
+     "tick": 5618
+    },
+    {
+     "bot": "[Nope] ryan_m",
+     "sub": "died",
+     "territory": 0,
+     "tick": 5645
+    },
+    {
+     "bot": "[Nope] kevin_k",
+     "sub": "died",
+     "territory": 0,
+     "tick": 5651
+    },
+    {
+     "bot": "[Nope] leo_tx",
+     "sub": "died",
+     "territory": 0,
+     "tick": 5858
+    }
+   ],
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.1921260015526813
+    },
+    "3060": {
+     "n_missing": 5,
+     "n_with_snapshot": 3,
+     "squad_share": 0.0902862206858164
+    },
+    "4500": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.2504614100104
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.042541270562041336
+    }
+   },
+   "squad_weight_in_team": 0.96,
+   "subtypes": {
+    "died": 8,
+    "end": 0,
+    "left_alive": 0,
+    "left_dead": 0,
+    "left_reload": 0
+   },
+   "t0_utc": "2026-11-07T16:24:31.404Z",
+   "team_humans_expected": 8.333333333333334,
+   "win": 0
+  },
+  {
+   "H": 61,
+   "K_clan_tagged": 8,
+   "K_in_game": 8,
+   "K_records": 8,
+   "T": 5,
+   "T_nominal": 5,
+   "T_obs": 5,
+   "T_source": "rule(mode,H,clan)=obs",
+   "base": 0.2,
+   "death_ticks": [
+    2356,
+    2690,
+    3486,
+    3781,
+    4338,
+    4411,
+    4467,
+    4470
+   ],
+   "flags": [],
+   "id": "G02",
+   "land": 664497,
+   "last_record_subtype": "left_dead",
+   "last_view": {
+    "best": 1,
+    "best_share_of_land": 0.5363395169579396,
+    "bot": "[Nope] kevin_k",
+    "mine": 2,
+    "mine_share_of_land": 0.03233573665494351,
+    "teams_alive": 5,
+    "tick": 4467
+   },
+   "max_tick": 4470,
+   "outcome": "lost_wiped",
+   "per_record": [
+    {
+     "bot": "[Nope] ryan_m",
+     "sub": "died",
+     "territory": 0,
+     "tick": 2356
+    },
+    {
+     "bot": "[Nope] noah88",
+     "sub": "died",
+     "territory": 0,
+     "tick": 2690
+    },
+    {
+     "bot": "[Nope] leo_tx",
+     "sub": "died",
+     "territory": 0,
+     "tick": 3486
+    },
+    {
+     "bot": "[Nope] lucas94",
+     "sub": "died",
+     "territory": 0,
+     "tick": 3781
+    },
+    {
+     "bot": "[Nope] ethan21",
+     "sub": "died",
+     "territory": 0,
+     "tick": 4338
+    },
+    {
+     "bot": "[Nope] mark07",
+     "sub": "died",
+     "territory": 0,
+     "tick": 4411
+    },
+    {
+     "bot": "[Nope] kevin_k",
+     "sub": "died",
+     "territory": 0,
+     "tick": 4467
+    },
+    {
+     "bot": "[Nope] dave_w",
+     "sub": "left_dead",
+     "territory": 65,
+     "tick": 4470
+    }
+   ],
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.12059046165746422
+    },
+    "3060": {
+     "n_missing": 0,
+     "n_with_snapshot": 6,
+     "squad_share": 0.08996428877782744
+    },
+    "4500": {
+     "n_missing": 1,
+     "n_with_snapshot": 2,
+     "squad_share": 0.006508682507219746
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.03406486410021415
+    }
+   },
+   "squad_weight_in_team": 0.6557377049180328,
+   "subtypes": {
+    "died": 7,
+    "end": 0,
+    "left_alive": 0,
+    "left_dead": 1,
+    "left_reload": 0
+   },
+   "t0_utc": "2026-11-07T16:30:30.709Z",
+   "team_humans_expected": 12.2,
+   "win": 0
+  },
+  {
+   "H": 58,
+   "K_clan_tagged": 8,
+   "K_in_game": 8,
+   "K_records": 8,
+   "T": 4,
+   "T_nominal": 4,
+   "T_obs": 4,
+   "T_source": "rule(mode,H,clan)=obs",
+   "base": 0.25,
+   "death_ticks": [
+    2024,
+    3146,
+    3475,
+    4835,
+    4902,
+    5026,
+    5237,
+    5472
+   ],
+   "flags": [],
+   "id": "G03",
+   "land": 292727,
+   "last_record_subtype": "left_dead",
+   "last_view": {
+    "best": 1,
+    "best_share_of_land": 0.6905000222049896,
+    "bot": "[Nope] kevin_k",
+    "mine": 3,
+    "mine_share_of_land": 0.07742367461833038,
+    "teams_alive": 4,
+    "tick": 5237
+   },
+   "max_tick": 5472,
+   "outcome": "lost_wiped",
+   "per_record": [
+    {
+     "bot": "[Nope] mark07",
+     "sub": "died",
+     "territory": 0,
+     "tick": 2024
+    },
+    {
+     "bot": "[Nope] lucas94",
+     "sub": "died",
+     "territory": 0,
+     "tick": 3146
+    },
+    {
+     "bot": "[Nope] leo_tx",
+     "sub": "died",
+     "territory": 0,
+     "tick": 3475
+    },
+    {
+     "bot": "[Nope] ryan_m",
+     "sub": "died",
+     "territory": 0,
+     "tick": 4835
+    },
+    {
+     "bot": "[Nope] ethan21",
+     "sub": "died",
+     "territory": 0,
+     "tick": 4902
+    },
+    {
+     "bot": "[Nope] noah88",
+     "sub": "died",
+     "territory": 0,
+     "tick": 5026
+    },
+    {
+     "bot": "[Nope] kevin_k",
+     "sub": "died",
+     "territory": 0,
+     "tick": 5237
+    },
+    {
+     "bot": "[Nope] dave_w",
+     "sub": "left_dead",
+     "territory": 0,
+     "tick": 5472
+    }
+   ],
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.20605547148025294
+    },
+    "3060": {
+     "n_missing": 0,
+     "n_with_snapshot": 7,
+     "squad_share": 0.1882675667089131
+    },
+    "4500": {
+     "n_missing": 0,
+     "n_with_snapshot": 5,
+     "squad_share": 0.12233582826319403
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.07103205375657182
+    }
+   },
+   "squad_weight_in_team": 0.5517241379310345,
+   "subtypes": {
+    "died": 7,
+    "end": 0,
+    "left_alive": 0,
+    "left_dead": 1,
+    "left_reload": 0
+   },
+   "t0_utc": "2026-11-07T16:35:30.796Z",
+   "team_humans_expected": 14.5,
+   "win": 0
+  },
+  {
+   "H": 48,
+   "K_clan_tagged": 8,
+   "K_in_game": 8,
+   "K_records": 8,
+   "T": 3,
+   "T_nominal": 3,
+   "T_obs": 3,
+   "T_source": "rule(mode,H,clan)=obs",
+   "base": 0.3333333333333333,
+   "death_ticks": [
+    1809,
+    1836,
+    5422,
+    6988,
+    7237,
+    7404,
+    8720,
+    8736
+   ],
+   "flags": [],
+   "id": "G04",
+   "land": 546152,
+   "last_record_subtype": "left_dead",
+   "last_view": {
+    "best": 2,
+    "best_share_of_land": 0.9949775886566378,
+    "bot": "[Nope] mark07",
+    "mine": 1,
+    "mine_share_of_land": 2.197190525714453e-05,
+    "teams_alive": 2,
+    "tick": 8720
+   },
+   "max_tick": 8736,
+   "outcome": "lost_wiped",
+   "per_record": [
+    {
+     "bot": "[Nope] dave_w",
+     "sub": "died",
+     "territory": 0,
+     "tick": 1809
+    },
+    {
+     "bot": "[Nope] ethan21",
+     "sub": "died",
+     "territory": 0,
+     "tick": 1836
+    },
+    {
+     "bot": "[Nope] kevin_k",
+     "sub": "died",
+     "territory": 0,
+     "tick": 5422
+    },
+    {
+     "bot": "[Nope] lucas94",
+     "sub": "died",
+     "territory": 0,
+     "tick": 6988
+    },
+    {
+     "bot": "[Nope] leo_tx",
+     "sub": "died",
+     "territory": 0,
+     "tick": 7237
+    },
+    {
+     "bot": "[Nope] noah88",
+     "sub": "died",
+     "territory": 0,
+     "tick": 7404
+    },
+    {
+     "bot": "[Nope] mark07",
+     "sub": "died",
+     "territory": 0,
+     "tick": 8720
+    },
+    {
+     "bot": "[Nope] ryan_m",
+     "sub": "left_dead",
+     "territory": 0,
+     "tick": 8736
+    }
+   ],
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.1114488274326561
+    },
+    "3060": {
+     "n_missing": 0,
+     "n_with_snapshot": 6,
+     "squad_share": 0.07269954151957697
+    },
+    "4500": {
+     "n_missing": 0,
+     "n_with_snapshot": 6,
+     "squad_share": 0.07504321141367239
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.03460941276421216
+    }
+   },
+   "squad_weight_in_team": 0.5,
+   "subtypes": {
+    "died": 7,
+    "end": 0,
+    "left_alive": 0,
+    "left_dead": 1,
+    "left_reload": 0
+   },
+   "t0_utc": "2026-11-07T16:41:31.032Z",
+   "team_humans_expected": 16.0,
+   "win": 0
+  },
+  {
+   "H": 55,
+   "K_clan_tagged": 8,
+   "K_in_game": 8,
+   "K_records": 8,
+   "T": 6,
+   "T_nominal": 7,
+   "T_obs": 6,
+   "T_source": "rule(mode,H,clan)=obs",
+   "base": 0.16666666666666666,
+   "death_ticks": [
+    2417,
+    2967,
+    3220,
+    3411,
+    3595,
+    3882,
+    3889,
+    3890
+   ],
+   "flags": [],
+   "id": "G05",
+   "land": 664497,
+   "last_record_subtype": "left_dead",
+   "last_view": {
+    "best": 5,
+    "best_share_of_land": 0.2486015738220037,
+    "bot": "[Nope] leo_tx",
+    "mine": 2,
+    "mine_share_of_land": 0.0006155031550180061,
+    "teams_alive": 6,
+    "tick": 3882
+   },
+   "max_tick": 3890,
+   "outcome": "lost_wiped",
+   "per_record": [
+    {
+     "bot": "[Nope] lucas94",
+     "sub": "died",
+     "territory": 0,
+     "tick": 2417
+    },
+    {
+     "bot": "[Nope] ryan_m",
+     "sub": "died",
+     "territory": 0,
+     "tick": 2967
+    },
+    {
+     "bot": "[Nope] noah88",
+     "sub": "died",
+     "territory": 0,
+     "tick": 3220
+    },
+    {
+     "bot": "[Nope] ethan21",
+     "sub": "died",
+     "territory": 0,
+     "tick": 3411
+    },
+    {
+     "bot": "[Nope] dave_w",
+     "sub": "died",
+     "territory": 0,
+     "tick": 3595
+    },
+    {
+     "bot": "[Nope] leo_tx",
+     "sub": "died",
+     "territory": 0,
+     "tick": 3882
+    },
+    {
+     "bot": "[Nope] mark07",
+     "sub": "left_dead",
+     "territory": 11,
+     "tick": 3889
+    },
+    {
+     "bot": "[Nope] kevin_k",
+     "sub": "left_dead",
+     "territory": 2,
+     "tick": 3890
+    }
+   ],
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.07738936368410994
+    },
+    "3060": {
+     "n_missing": 0,
+     "n_with_snapshot": 6,
+     "squad_share": 0.02344028641212827
+    },
+    "4500": {
+     "n_missing": 0,
+     "n_with_snapshot": 0,
+     "squad_share": 0.0
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.027944445196893288
+    }
+   },
+   "squad_weight_in_team": 0.8727272727272728,
+   "subtypes": {
+    "died": 6,
+    "end": 0,
+    "left_alive": 0,
+    "left_dead": 2,
+    "left_reload": 0
+   },
+   "t0_utc": "2026-11-07T16:50:31.398Z",
+   "team_humans_expected": 9.166666666666666,
+   "win": 0
+  },
+  {
+   "H": 44,
+   "K_clan_tagged": 8,
+   "K_in_game": 8,
+   "K_records": 8,
+   "T": 5,
+   "T_nominal": 6,
+   "T_obs": 5,
+   "T_source": "rule(mode,H,clan)=obs",
+   "base": 0.2,
+   "death_ticks": [
+    4611,
+    4935,
+    5219,
+    5383,
+    5464
+   ],
+   "flags": [],
+   "id": "G06",
+   "land": 762763,
+   "last_record_subtype": "end",
+   "last_view": {
+    "best": 4,
+    "best_share_of_land": 0.9938080373589175,
+    "bot": "[Nope] kevin_k",
+    "mine": 1,
+    "mine_share_of_land": 0.0024306370392900545,
+    "teams_alive": 4,
+    "tick": 6539
+   },
+   "max_tick": 6539,
+   "outcome": "lost_observed",
+   "per_record": [
+    {
+     "bot": "[Nope] ryan_m",
+     "sub": "died",
+     "territory": 0,
+     "tick": 4611
+    },
+    {
+     "bot": "[Nope] lucas94",
+     "sub": "died",
+     "territory": 0,
+     "tick": 4935
+    },
+    {
+     "bot": "[Nope] dave_w",
+     "sub": "died",
+     "territory": 0,
+     "tick": 5219
+    },
+    {
+     "bot": "[Nope] mark07",
+     "sub": "died",
+     "territory": 0,
+     "tick": 5383
+    },
+    {
+     "bot": "[Nope] leo_tx",
+     "sub": "died",
+     "territory": 0,
+     "tick": 5464
+    },
+    {
+     "bot": "[Nope] kevin_k",
+     "sub": "end",
+     "territory": 989,
+     "tick": 6539
+    },
+    {
+     "bot": "[Nope] ethan21",
+     "sub": "end",
+     "territory": 16,
+     "tick": 6539
+    },
+    {
+     "bot": "[Nope] noah88",
+     "sub": "end",
+     "territory": 849,
+     "tick": 6539
+    }
+   ],
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.13277125398059422
+    },
+    "3060": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.18670806003961912
+    },
+    "4500": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.20031910305035772
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.0317202066696995
+    }
+   },
+   "squad_weight_in_team": 0.9090909090909091,
+   "subtypes": {
+    "died": 5,
+    "end": 3,
+    "left_alive": 0,
+    "left_dead": 0,
+    "left_reload": 0
+   },
+   "t0_utc": "2026-11-07T16:55:00.519Z",
+   "team_humans_expected": 8.8,
+   "win": 0
+  },
+  {
+   "H": 59,
+   "K_clan_tagged": 8,
+   "K_in_game": 8,
+   "K_records": 8,
+   "T": 2,
+   "T_nominal": 2,
+   "T_obs": 2,
+   "T_source": "rule(mode,H,clan)=obs",
+   "base": 0.5,
+   "death_ticks": [
+    1776,
+    3157,
+    3295,
+    3909
+   ],
+   "flags": [
+    "reload"
+   ],
+   "id": "G07",
+   "land": 546152,
+   "last_record_subtype": "end",
+   "last_view": {
+    "best": 2,
+    "best_share_of_land": 0.9991723915686476,
+    "bot": "[Nope] kevin_k",
+    "mine": 2,
+    "mine_share_of_land": 0.9991723915686476,
+    "teams_alive": 2,
+    "tick": 5405
+   },
+   "max_tick": 5405,
+   "outcome": "won",
+   "per_record": [
+    {
+     "bot": "[Nope] leo_tx",
+     "sub": "died",
+     "territory": 0,
+     "tick": 1776
+    },
+    {
+     "bot": "[Nope] ryan_m",
+     "sub": "died",
+     "territory": 0,
+     "tick": 3157
+    },
+    {
+     "bot": "[Nope] dave_w",
+     "sub": "died",
+     "territory": 0,
+     "tick": 3295
+    },
+    {
+     "bot": "[Nope] noah88",
+     "sub": "left_reload",
+     "territory": 7869,
+     "tick": 3437
+    },
+    {
+     "bot": "[Nope] ethan21",
+     "sub": "died",
+     "territory": 0,
+     "tick": 3909
+    },
+    {
+     "bot": "[Nope] kevin_k",
+     "sub": "end",
+     "territory": 1412,
+     "tick": 5405
+    },
+    {
+     "bot": "[Nope] lucas94",
+     "sub": "end",
+     "territory": 17077,
+     "tick": 5405
+    },
+    {
+     "bot": "[Nope] mark07",
+     "sub": "end",
+     "territory": 6977,
+     "tick": 5405
+    }
+   ],
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.09864836162826465
+    },
+    "3060": {
+     "n_missing": 0,
+     "n_with_snapshot": 7,
+     "squad_share": 0.0951731386134263
+    },
+    "4500": {
+     "n_missing": 0,
+     "n_with_snapshot": 3,
+     "squad_share": 0.04557888646384157
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 8,
+     "squad_share": 0.035645754295507474
+    }
+   },
+   "squad_weight_in_team": 0.2711864406779661,
+   "subtypes": {
+    "died": 4,
+    "end": 3,
+    "left_alive": 0,
+    "left_dead": 0,
+    "left_reload": 1
+   },
+   "t0_utc": "2026-11-07T17:02:00.858Z",
+   "team_humans_expected": 29.5,
+   "win": 1
+  },
+  {
+   "H": 49,
+   "K_clan_tagged": 7,
+   "K_in_game": 7,
+   "K_records": 7,
+   "T": 6,
+   "T_nominal": 6,
+   "T_obs": 6,
+   "T_source": "rule(mode,H,clan)=obs",
+   "base": 0.16666666666666666,
+   "death_ticks": [
+    2585,
+    4392,
+    4630,
+    4638,
+    4942,
+    5425
+   ],
+   "flags": [
+    "short-handed"
+   ],
+   "id": "G08",
+   "land": 430654,
+   "last_record_subtype": "end",
+   "last_view": {
+    "best": 5,
+    "best_share_of_land": 0.7298202269106986,
+    "bot": "[Nope] lucas94",
+    "mine": 1,
+    "mine_share_of_land": 0.028071259061799032,
+    "teams_alive": 4,
+    "tick": 5895
+   },
+   "max_tick": 5895,
+   "outcome": "lost_observed",
+   "per_record": [
+    {
+     "bot": "[Nope] leo_tx",
+     "sub": "died",
+     "territory": 0,
+     "tick": 2585
+    },
+    {
+     "bot": "[Nope] kevin_k",
+     "sub": "died",
+     "territory": 0,
+     "tick": 4392
+    },
+    {
+     "bot": "[Nope] mark07",
+     "sub": "died",
+     "territory": 0,
+     "tick": 4630
+    },
+    {
+     "bot": "[Nope] dave_w",
+     "sub": "died",
+     "territory": 0,
+     "tick": 4638
+    },
+    {
+     "bot": "[Nope] ethan21",
+     "sub": "died",
+     "territory": 0,
+     "tick": 4942
+    },
+    {
+     "bot": "[Nope] ryan_m",
+     "sub": "died",
+     "territory": 0,
+     "tick": 5425
+    },
+    {
+     "bot": "[Nope] lucas94",
+     "sub": "end",
+     "territory": 12089,
+     "tick": 5895
+    }
+   ],
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 7,
+     "squad_share": 0.16734547920140067
+    },
+    "3060": {
+     "n_missing": 0,
+     "n_with_snapshot": 6,
+     "squad_share": 0.16509541302298364
+    },
+    "4500": {
+     "n_missing": 0,
+     "n_with_snapshot": 5,
+     "squad_share": 0.16631216707612143
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 7,
+     "squad_share": 0.04969418605191174
+    }
+   },
+   "squad_weight_in_team": 0.8571428571428572,
+   "subtypes": {
+    "died": 6,
+    "end": 1,
+    "left_alive": 0,
+    "left_dead": 0,
+    "left_reload": 0
+   },
+   "t0_utc": "2026-11-07T17:08:01.022Z",
+   "team_humans_expected": 8.166666666666666,
+   "win": 0
+  },
+  {
+   "H": 41,
+   "K_clan_tagged": 4,
+   "K_in_game": 6,
+   "K_records": 6,
+   "T": 5,
+   "T_nominal": 5,
+   "T_obs": 5,
+   "T_source": "rule(mode,H,clan)=obs",
+   "base": 0.2,
+   "death_ticks": [
+    2012,
+    2085,
+    3609,
+    3827
+   ],
+   "flags": [
+    "split-teams",
+    "short-handed",
+    "reload"
+   ],
+   "id": "G09",
+   "land": 423950,
+   "last_record_subtype": "end",
+   "last_view": {
+    "best": 1,
+    "best_share_of_land": 0.975183394268192,
+    "bot": "[Nope] lucas94",
+    "mine": 2,
+    "mine_share_of_land": 0.014296497228446751,
+    "teams_alive": 3,
+    "tick": 14666
+   },
+   "max_tick": 14666,
+   "outcome": "lost_observed",
+   "per_record": [
+    {
+     "bot": "[Nope] kevin_k",
+     "sub": "died",
+     "territory": 0,
+     "tick": 2012
+    },
+    {
+     "bot": "[Nope] mark07",
+     "sub": "died",
+     "territory": 0,
+     "tick": 2085
+    },
+    {
+     "bot": "[Nope] ethan21",
+     "sub": "died",
+     "territory": 0,
+     "tick": 3609
+    },
+    {
+     "bot": "[Nope] ryan_m",
+     "sub": "died",
+     "territory": 0,
+     "tick": 3827
+    },
+    {
+     "bot": "[Nope] leo_tx",
+     "sub": "left_reload",
+     "territory": 3247,
+     "tick": 6685
+    },
+    {
+     "bot": "[Nope] lucas94",
+     "sub": "end",
+     "territory": 4874,
+     "tick": 14666
+    }
+   ],
+   "snapshots": {
+    "1530": {
+     "n_missing": 0,
+     "n_with_snapshot": 6,
+     "squad_share": 0.1170798443212643
+    },
+    "3060": {
+     "n_missing": 0,
+     "n_with_snapshot": 4,
+     "squad_share": 0.10734520580257106
+    },
+    "4500": {
+     "n_missing": 0,
+     "n_with_snapshot": 2,
+     "squad_share": 0.01762943743365963
+    },
+    "630": {
+     "n_missing": 0,
+     "n_with_snapshot": 6,
+     "squad_share": 0.02958603608916146
+    }
+   },
+   "squad_weight_in_team": 0.48780487804878053,
+   "subtypes": {
+    "died": 4,
+    "end": 1,
+    "left_alive": 0,
+    "left_dead": 0,
+    "left_reload": 1
+   },
+   "t0_utc": "2026-11-07T17:14:01.274Z",
+   "team_humans_expected": 8.2,
+   "win": 0
+  }
+ ],
+ "legacy_recomputed": {
+  "auto_1_of_9": {
+   "clopper_pearson95": [
+    0.002809136746599221,
+    0.4824965149173368
+   ],
+   "k": 1,
+   "n": 9,
+   "p": 0.1111111111111111,
+   "wilson95": [
+    0.019890887638544935,
+    0.4349997055766559
+   ]
+  },
+  "bayes_P_10of74_gt_1of9": 0.4291414727081145,
+  "c110_35_of_53": {
+   "clopper_pearson95": [
+    0.5173306935406303,
+    0.784800362052537
+   ],
+   "k": 35,
+   "n": 53,
+   "p": 0.660377358490566,
+   "wilson95": [
+    0.5259478663754831,
+    0.7731296089867581
+   ]
+  },
+  "c116_day_10_of_74": {
+   "clopper_pearson95": [
+    0.06675098126268328,
+    0.23450980079469802
+   ],
+   "k": 10,
+   "n": 74,
+   "p": 0.13513513513513514,
+   "wilson95": [
+    0.07509048592618375,
+    0.2311917855252331
+   ]
+  },
+  "diff_10of74_minus_1of9": {
+   "diff": 0.024024024024024038,
+   "hi": 0.15649292322134664,
+   "lo": -0.30538329453992674
+  },
+  "diff_35of53_minus_10of74": {
+   "diff": 0.5252422233554308,
+   "hi": 0.6529858333348817,
+   "lo": 0.36002064959920294
+  },
+  "fisher_10of74_vs_35of53": 1.3614793994273209e-09,
+  "fisher_1of9_vs_10of74": 0.9999999999999936
+ },
+ "plan_table": {
+  "intervals": [
+   {
+    "clopper_pearson95": [
+     0.002809136746599221,
+     0.4824965149173368
+    ],
+    "k": 1,
+    "label": "自动局 1/9",
+    "n": 9,
+    "p": 0.1111111111111111,
+    "wilson95": [
+     0.019890887638544935,
+     0.4349997055766559
+    ]
+   },
+   {
+    "clopper_pearson95": [
+     0.06675098126268328,
+     0.23450980079469802
+    ],
+    "k": 10,
+    "label": "c116 白天 10/74",
+    "n": 74,
+    "p": 0.13513513513513514,
+    "wilson95": [
+     0.07509048592618375,
+     0.2311917855252331
+    ]
+   },
+   {
+    "clopper_pearson95": [
+     0.5173306935406303,
+     0.784800362052537
+    ],
+    "k": 35,
+    "label": "c110 35/53",
+    "n": 53,
+    "p": 0.660377358490566,
+    "wilson95": [
+     0.5259478663754831,
+     0.7731296089867581
+    ]
+   }
+  ],
+  "sample_size": [
+   {
+    "n_continuity": 50,
+    "n_uncorrected": 43,
+    "p1": 0.135,
+    "p2": 0.4,
+    "plan_says": 45,
+    "power_exact_fisher_at_n_continuity": 0.8192524710325009,
+    "power_exact_fisher_at_plan": 0.7610592240093714,
+    "power_normal_at_plan": 0.8217368453451834
+   },
+   {
+    "n_continuity": 109,
+    "n_uncorrected": 97,
+    "p1": 0.135,
+    "p2": 0.3,
+    "plan_says": 100,
+    "power_exact_fisher_at_n_continuity": 0.809334922489924,
+    "power_exact_fisher_at_plan": 0.7698133786329905,
+    "power_normal_at_plan": 0.8122050495959083
+   },
+   {
+    "n_continuity": 171,
+    "n_uncorrected": 157,
+    "p1": 0.66,
+    "p2": 0.8,
+    "plan_says": 160,
+    "power_exact_fisher_at_n_continuity": 0.8058774102162352,
+    "power_exact_fisher_at_plan": 0.776176683590307,
+    "power_normal_at_plan": 0.8082491577075785
+   },
+   {
+    "n_continuity": 1394,
+    "n_uncorrected": 1354,
+    "p1": 0.66,
+    "p2": 0.71,
+    "plan_says": 1350,
+    "power_normal_at_plan": 0.798927220961629
+   }
+  ]
+ },
+ "rates": {
+  "A_dispatch_G01_G09": {
+   "clopper_pearson95": [
+    0.002809136746599221,
+    0.4824965149173368
+   ],
+   "desc": "上一轮口径：DISPATCH.md 的 9 局（G01~G09）",
+   "ids": [
+    "G01",
+    "G02",
+    "G03",
+    "G04",
+    "G05",
+    "G06",
+    "G07",
+    "G08",
+    "G09"
+   ],
+   "k": 1,
+   "n": 9,
+   "p": 0.1111111111111111,
+   "wilson95": [
+    0.019890887638544935,
+    0.4349997055766559
+   ]
+  },
+  "B_auto_session_G00_G09": {
+   "clopper_pearson95": [
+    0.0025285785444617848,
+    0.4450161170281953
+   ],
+   "desc": "自动挂机时段全部 10 局（G00~G09，日志里都有）",
+   "ids": [
+    "G00",
+    "G01",
+    "G02",
+    "G03",
+    "G04",
+    "G05",
+    "G06",
+    "G07",
+    "G08",
+    "G09"
+   ],
+   "k": 1,
+   "n": 10,
+   "p": 0.1,
+   "wilson95": [
+    0.017876213095072896,
+    0.40415002679523837
+   ]
+  },
+  "C_all_played_censored_as_nonwin": {
+   "clopper_pearson95": [
+    0.0019456284973467506,
+    0.3602974352678773
+   ],
+   "desc": "结算文件里全部 13 个打过的房间，结局未被观察到的 2 局记为未赢",
+   "ids": [
+    "P1",
+    "P2",
+    "P3",
+    "G00",
+    "G01",
+    "G02",
+    "G03",
+    "G04",
+    "G05",
+    "G06",
+    "G07",
+    "G08",
+    "G09"
+   ],
+   "k": 1,
+   "n": 13,
+   "p": 0.07692307692307693,
+   "wilson95": [
+    0.013710421242556586,
+    0.3331395092109958
+   ]
+  },
+  "C_bounds": {
+   "censored": 2,
+   "desc": "13 局的胜率上下界：2 局未观察到的结局全算输 / 全算赢",
+   "lower": 0.07692307692307693,
+   "upper": 0.23076923076923078
+  },
+  "D_all_played_determinable": {
+   "clopper_pearson95": [
+    0.002298972213814264,
+    0.41277991698838257
+   ],
+   "desc": "同上但剔除结局未被观察到的 2 局（P1、P2）",
+   "ids": [
+    "P3",
+    "G00",
+    "G01",
+    "G02",
+    "G03",
+    "G04",
+    "G05",
+    "G06",
+    "G07",
+    "G08",
+    "G09"
+   ],
+   "k": 1,
+   "n": 11,
+   "p": 0.09090909090909091,
+   "wilson95": [
+    0.016232172885884827,
+    0.3773584364515956
+   ]
+  },
+  "E_per_protocol_clean": {
+   "clopper_pearson95": [
+    0.0042107445144894725,
+    0.6412345789976748
+   ],
+   "desc": "自动时段里没有策略报错、热更新、拆队、缺员的局",
+   "ids": [
+    "G02",
+    "G03",
+    "G04",
+    "G05",
+    "G06",
+    "G07"
+   ],
+   "k": 1,
+   "n": 6,
+   "p": 0.16666666666666666,
+   "wilson95": [
+    0.030053369748306635,
+    0.5635028221864702
+   ]
+  }
+ },
+ "semantics_checks": [
+  {
+   "n_checked": [
+    69,
+    8,
+    42
+   ],
+   "name": "记录数：died / end / left",
+   "ok": true,
+   "violations": []
+  },
+  {
+   "n_checked": null,
+   "name": "died ⇒ result == lost",
+   "ok": true,
+   "violations": []
+  },
+  {
+   "n_checked": null,
+   "name": "died ⇒ place == alivePlayers + 1",
+   "ok": true,
+   "violations": []
+  },
+  {
+   "n_checked": null,
+   "name": "died ⇒ 带 team 字段",
+   "ok": true,
+   "violations": []
+  },
+  {
+   "n_checked": null,
+   "name": "died ⇒ territory == 0 且 alive == false",
+   "ok": true,
+   "violations": []
+  },
+  {
+   "n_checked": null,
+   "name": "left ⇒ result == left 且不带 team 字段",
+   "ok": true,
+   "violations": []
+  },
+  {
+   "n_checked": null,
+   "name": "end ⇒ result == (best==mine ? won : alive ? over : lost)",
+   "ok": true,
+   "violations": []
+  },
+  {
+   "n_checked": null,
+   "name": "team.best 是 totals 里领土最大的队；各队领土之和 <= land",
+   "ok": true,
+   "violations": []
+  },
+  {
+   "n_checked": null,
+   "name": "players == 512（房间总席位，含内置 AI）",
+   "ok": true,
+   "violations": []
+  },
+  {
+   "n_checked": null,
+   "name": "me.id < 真人数 H（我方的号都是真人席位）",
+   "ok": true,
+   "violations": []
+  },
+  {
+   "n_checked": null,
+   "name": "humans[me.id] == 'me'",
+   "ok": true,
+   "violations": []
+  },
+  {
+   "n_checked": null,
+   "name": "mode == team",
+   "ok": true,
+   "violations": []
+  }
+ ],
+ "source": {
+  "branch": "cursor/c116-winrate-liaison-b3bc",
+  "log": {
+   "lines": 46752,
+   "lines_used": 7992,
+   "path": "c116-winrate/data/G01-G09-squad.log",
+   "sha256": "b77c00d118baeeba0f386ed1740e7918c9ab8ed14c45b13bb777b1862b6ec50e"
+  },
+  "results": {
+   "path": "c116-winrate/data/tsb-team-results.jsonl",
+   "rows": 119,
+   "sha256": "c3dcc776d3d45b0fd6e34f4eb6ab90f5059f6119054a9c70b2fa9d6ad1dbbf33"
+  }
+ },
+ "strata_by_T_auto10": {
+  "T=2": {
+   "base_sum": 0.5,
+   "clopper_pearson95": [
+    0.025000000000000015,
+    1.0
+   ],
+   "ids": [
+    "G07"
+   ],
+   "k": 1,
+   "mean_base": 0.5,
+   "n": 1,
+   "p": 1.0,
+   "wilson95": [
+    0.20654931437723745,
+    1.0
+   ]
+  },
+  "T=3~4": {
+   "base_sum": 0.9166666666666665,
+   "clopper_pearson95": [
+    0.0,
+    0.707598226178713
+   ],
+   "ids": [
+    "G00",
+    "G03",
+    "G04"
+   ],
+   "k": 0,
+   "mean_base": 0.3055555555555555,
+   "n": 3,
+   "p": 0.0,
+   "wilson95": [
+    0.0,
+    0.5614970317550454
+   ]
+  },
+  "T>=5": {
+   "base_sum": 1.1,
+   "clopper_pearson95": [
+    0.0,
+    0.45925812643990027
+   ],
+   "ids": [
+    "G01",
+    "G02",
+    "G05",
+    "G06",
+    "G08",
+    "G09"
+   ],
+   "k": 0,
+   "mean_base": 0.18333333333333335,
+   "n": 6,
+   "p": 0.0,
+   "wilson95": [
+    0.0,
+    0.39033428790216523
+   ]
+  }
+ },
+ "survival_auto10": [
+  {
+   "1500": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "3000": {
+    "ended_before": false,
+    "in_game": 4,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "4500": {
+    "ended_before": false,
+    "in_game": 3,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "600": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "6000": {
+    "ended_before": false,
+    "in_game": 0,
+    "left_technical_before": 0,
+    "squad_gone_before": true
+   },
+   "K": 8,
+   "id": "G00"
+  },
+  {
+   "1500": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "3000": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "4500": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "600": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "6000": {
+    "ended_before": false,
+    "in_game": 0,
+    "left_technical_before": 0,
+    "squad_gone_before": true
+   },
+   "K": 8,
+   "id": "G01"
+  },
+  {
+   "1500": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "3000": {
+    "ended_before": false,
+    "in_game": 6,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "4500": {
+    "ended_before": false,
+    "in_game": 0,
+    "left_technical_before": 0,
+    "squad_gone_before": true
+   },
+   "600": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "6000": {
+    "ended_before": false,
+    "in_game": 0,
+    "left_technical_before": 0,
+    "squad_gone_before": true
+   },
+   "K": 8,
+   "id": "G02"
+  },
+  {
+   "1500": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "3000": {
+    "ended_before": false,
+    "in_game": 7,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "4500": {
+    "ended_before": false,
+    "in_game": 5,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "600": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "6000": {
+    "ended_before": false,
+    "in_game": 0,
+    "left_technical_before": 0,
+    "squad_gone_before": true
+   },
+   "K": 8,
+   "id": "G03"
+  },
+  {
+   "1500": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "3000": {
+    "ended_before": false,
+    "in_game": 6,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "4500": {
+    "ended_before": false,
+    "in_game": 6,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "600": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "6000": {
+    "ended_before": false,
+    "in_game": 5,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "K": 8,
+   "id": "G04"
+  },
+  {
+   "1500": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "3000": {
+    "ended_before": false,
+    "in_game": 6,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "4500": {
+    "ended_before": false,
+    "in_game": 0,
+    "left_technical_before": 0,
+    "squad_gone_before": true
+   },
+   "600": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "6000": {
+    "ended_before": false,
+    "in_game": 0,
+    "left_technical_before": 0,
+    "squad_gone_before": true
+   },
+   "K": 8,
+   "id": "G05"
+  },
+  {
+   "1500": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "3000": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "4500": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "600": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "6000": {
+    "ended_before": false,
+    "in_game": 3,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "K": 8,
+   "id": "G06"
+  },
+  {
+   "1500": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "3000": {
+    "ended_before": false,
+    "in_game": 7,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "4500": {
+    "ended_before": false,
+    "in_game": 3,
+    "left_technical_before": 1,
+    "squad_gone_before": false
+   },
+   "600": {
+    "ended_before": false,
+    "in_game": 8,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "6000": {
+    "ended_before": true,
+    "in_game": 0,
+    "left_technical_before": 1,
+    "squad_gone_before": false
+   },
+   "K": 8,
+   "id": "G07"
+  },
+  {
+   "1500": {
+    "ended_before": false,
+    "in_game": 7,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "3000": {
+    "ended_before": false,
+    "in_game": 6,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "4500": {
+    "ended_before": false,
+    "in_game": 5,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "600": {
+    "ended_before": false,
+    "in_game": 7,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "6000": {
+    "ended_before": true,
+    "in_game": 0,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "K": 7,
+   "id": "G08"
+  },
+  {
+   "1500": {
+    "ended_before": false,
+    "in_game": 6,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "3000": {
+    "ended_before": false,
+    "in_game": 4,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "4500": {
+    "ended_before": false,
+    "in_game": 2,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "600": {
+    "ended_before": false,
+    "in_game": 6,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "6000": {
+    "ended_before": false,
+    "in_game": 2,
+    "left_technical_before": 0,
+    "squad_gone_before": false
+   },
+   "K": 6,
+   "id": "G09"
+  }
+ ],
+ "team_cap_table": [
+  {
+   "H": 30,
+   "K": 8,
+   "T_actual_for_nominal_2to8": [
+    2,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.35714285714285715
+  },
+  {
+   "H": 40,
+   "K": 8,
+   "T_actual_for_nominal_2to8": [
+    2,
+    3,
+    4,
+    5,
+    5,
+    5,
+    5
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.26904761904761904
+  },
+  {
+   "H": 50,
+   "K": 8,
+   "T_actual_for_nominal_2to8": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    6,
+    6
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.25476190476190474
+  },
+  {
+   "H": 60,
+   "K": 8,
+   "T_actual_for_nominal_2to8": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    7
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.2479591836734694
+  },
+  {
+   "H": 80,
+   "K": 8,
+   "T_actual_for_nominal_2to8": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.2454081632653061
+  },
+  {
+   "H": 100,
+   "K": 8,
+   "T_actual_for_nominal_2to8": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.2454081632653061
+  },
+  {
+   "H": 164,
+   "K": 8,
+   "T_actual_for_nominal_2to8": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.2454081632653061
+  },
+  {
+   "H": 30,
+   "K": 10,
+   "T_actual_for_nominal_2to8": [
+    2,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.35714285714285715
+  },
+  {
+   "H": 40,
+   "K": 10,
+   "T_actual_for_nominal_2to8": [
+    2,
+    3,
+    4,
+    4,
+    4,
+    4,
+    4
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.2976190476190476
+  },
+  {
+   "H": 50,
+   "K": 10,
+   "T_actual_for_nominal_2to8": [
+    2,
+    3,
+    4,
+    5,
+    5,
+    5,
+    5
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.26904761904761904
+  },
+  {
+   "H": 60,
+   "K": 10,
+   "T_actual_for_nominal_2to8": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    6,
+    6
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.25476190476190474
+  },
+  {
+   "H": 80,
+   "K": 10,
+   "T_actual_for_nominal_2to8": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.2454081632653061
+  },
+  {
+   "H": 100,
+   "K": 10,
+   "T_actual_for_nominal_2to8": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.2454081632653061
+  },
+  {
+   "H": 164,
+   "K": 10,
+   "T_actual_for_nominal_2to8": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.2454081632653061
+  },
+  {
+   "H": 30,
+   "K": 20,
+   "T_actual_for_nominal_2to8": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.5
+  },
+  {
+   "H": 40,
+   "K": 20,
+   "T_actual_for_nominal_2to8": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.5
+  },
+  {
+   "H": 50,
+   "K": 20,
+   "T_actual_for_nominal_2to8": [
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.5
+  },
+  {
+   "H": 60,
+   "K": 20,
+   "T_actual_for_nominal_2to8": [
+    2,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.35714285714285715
+  },
+  {
+   "H": 80,
+   "K": 20,
+   "T_actual_for_nominal_2to8": [
+    2,
+    3,
+    4,
+    4,
+    4,
+    4,
+    4
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.2976190476190476
+  },
+  {
+   "H": 100,
+   "K": 20,
+   "T_actual_for_nominal_2to8": [
+    2,
+    3,
+    4,
+    5,
+    5,
+    5,
+    5
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.26904761904761904
+  },
+  {
+   "H": 164,
+   "K": 20,
+   "T_actual_for_nominal_2to8": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "mean_base_if_nominal_uniform_2to8": 0.2454081632653061
+  }
+ ]
+}
