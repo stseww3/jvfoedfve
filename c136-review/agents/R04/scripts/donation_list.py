@@ -34,6 +34,7 @@ def main():
     relay_out = collections.Counter()               # 每个号又捐出去的（到账）
     relay_tax = collections.Counter()
     by_rcpt = collections.Counter(); by_kind = collections.Counter(); boxed_n = 0
+    kind_cred = collections.Counter(); kind_tax = collections.Counter(); kind_thin = collections.Counter()
     over_n = over_cred = over128_n = over128_cred = 0  # 到账后收款人余额 > 100×领土（利息开始被折扣）/ > 128×领土
     for c in M.cmd:
         if c['id'] != 2 or c['p'] not in M.ours or not (t0 <= c['t'] <= t1) or 'q' not in c:
@@ -68,6 +69,9 @@ def main():
         relay_in[M.nm(c['q'])] += cred; relay_out[M.nm(c['p'])] += cred; relay_tax[M.nm(c['p'])] += tax
         if k:
             by_kind[k[0]] += 1
+            kind_cred[k[0]] += cred; kind_tax[k[0]] += tax
+            if d1 <= 45:
+                kind_thin[k[0]] += 1
             if k[1] == 'true':
                 boxed_n += 1
         if not quiet:
@@ -76,6 +80,9 @@ def main():
                 c['terrQ'], c['balQ0'] / max(1, c['terrQ']), ('%s%s' % (k[0], '（封死号）' if k[1] == 'true' else '')) if k else '?'))
     print('[%d,%d] 落地 %d 笔，到账 %s，税 %s；捐后密度 ≤32 的 %d 笔；封死号发出的 %d 笔；按种类 %s' % (
         t0, min(t1, M.last), n, fmt(cred_tot), fmt(tax_tot), thin, boxed_n, dict(by_kind)))
+    if by_kind:
+        print('按调度种类（笔数 / 到账 / 税 / 捐后密度 ≤45 的笔数）：' + '；'.join('%s %d 笔 / %s / %s / %d' % (k, v, fmt(kind_cred[k]), fmt(kind_tax[k]), kind_thin[k]) for k, v in by_kind.most_common())
+              + '；对不上影子日志的 %d 笔' % (n - sum(by_kind.values())))
     print('收款人到账：', {k: fmt(v) for k, v in by_rcpt.most_common()})
     print('到账 < 税 的捐款：%d 笔，到账合计 %s，税合计 %s' % (under_n, fmt(under_cred), fmt(under_tax)))
     print('到账后收款人余额 > 100×领土（软上限，利息开始打折）的捐款：%d 笔 %s；其中 > 128×领土 的 %d 笔 %s' % (over_n, fmt(over_cred), over128_n, fmt(over128_cred)))

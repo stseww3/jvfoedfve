@@ -89,6 +89,42 @@ export function diagWinFloor(pol, g, nm) {
   return out;
 }
 
+// V13.safeFinite（L2500~2510）取到最大值的那个内置 AI，以及它「最弱的别的邻居」（threatOf L417~444 的 minOther 是谁）。
+// 返回 { val, ref }：ref = 'squad:编号'（编队号）/ 'ally:编号'（同队真人）/ 'enemy:编号'（敌方真人）/ 'ai:编号'。
+export function safeFiniteRef(pol, g, ourSet) {
+  const me = pol.me;
+  let top = -Infinity, who = -1;
+  for (const q of pol.nb) {
+    if (g.alive[q] === 0 || !g.isBot(q) || !g.hasFreeSlot(q) || g.hasAttack(q, me)) continue;
+    const B = g.border[q], px = g.px, own = g.own, d = g.dir4;
+    const busyNeutral = g.hasAttack(q, NEUTRAL);
+    let neutral = false, best = -1, bestS = Infinity;
+    const seen = new Set();
+    const n = B.length, step = n > 1024 ? Math.ceil(n / 1024) : 1;
+    for (let i = n - 1; i >= 0 && !neutral; i -= step) {
+      const b = B[i];
+      for (let k = 0; k < 4; k++) {
+        const c = b + d[k], v = px[c];
+        if (v === 1) { if (!busyNeutral) { neutral = true; break; } continue; }
+        if (v < 16) continue;
+        const o = own[c];
+        if (o === q || o === me || seen.has(o)) continue;
+        seen.add(o);
+        if (g.hasAttack(q, o)) continue;
+        const s2 = g.bal[o] + g.attackTroopsOn(o, q);
+        if (s2 < bestS) { bestS = s2; best = o; }
+      }
+    }
+    if (neutral || best < 0) continue;
+    const keep = bestS - g.attackTroopsOn(me, q);
+    if (keep > top) { top = keep; who = best; }
+  }
+  let ref = '';
+  if (who >= 0) ref = (ourSet && ourSet.has(who) ? 'squad:' : g.isTeammate(me, who) ? 'ally:' : g.isBot(who) ? 'ai:' : 'enemy:') + who;
+  return { val: who >= 0 ? Math.max(0, top) : 0, ref };
+}
+
+
 // 核心期之前，贴着内置 AI 却没出手的那一拍：对「底线最低的那个 AI 邻居」，底线是被哪一项顶住的。
 // 返回 { bind, ref, floor, avail, need }：
 //   bind = 't1'（项1 = mult×botPx×地/(winR×t)）| 'dp'（项2 dpKeep）| 'sb'（项3 safeFinite）| 'pf'（peopleFloor）| 'ok'（底线没卡住，是别的原因）
@@ -124,36 +160,7 @@ export function floorBind(pol, g, ourSet) {
   terms.sort((a, b) => b[1] - a[1]);
   const bind = terms.length ? terms[0][0] : '?';
   let ref = '';
-  if (bind === 'sb') {
-    // 找出 safeFinite 取到最大值的那个 AI，以及它「最弱的别的邻居」
-    let top = -Infinity, who = -1;
-    for (const q of pol.nb) {
-      if (g.alive[q] === 0 || !g.isBot(q) || !g.hasFreeSlot(q) || g.hasAttack(q, me)) continue;
-      const B = g.border[q], px = g.px, own = g.own, d = g.dir4;
-      const busyNeutral = g.hasAttack(q, NEUTRAL);
-      let neutral = false, best = -1, bestS = Infinity;
-      const seen = new Set();
-      const n = B.length, step = n > 1024 ? Math.ceil(n / 1024) : 1;
-      for (let i = n - 1; i >= 0 && !neutral; i -= step) {
-        const b = B[i];
-        for (let k = 0; k < 4; k++) {
-          const c = b + d[k], v = px[c];
-          if (v === 1) { if (!busyNeutral) { neutral = true; break; } continue; }
-          if (v < 16) continue;
-          const o = own[c];
-          if (o === q || o === me || seen.has(o)) continue;
-          seen.add(o);
-          if (g.hasAttack(q, o)) continue;
-          const s2 = g.bal[o] + g.attackTroopsOn(o, q);
-          if (s2 < bestS) { bestS = s2; best = o; }
-        }
-      }
-      if (neutral || best < 0) continue;
-      const keep = bestS - g.attackTroopsOn(me, q);
-      if (keep > top) { top = keep; who = best; }
-    }
-    if (who >= 0) ref = (ourSet && ourSet.has(who) ? 'squad:' : g.isTeammate(me, who) ? 'ally:' : g.isBot(who) ? 'ai:' : 'enemy:') + who;
-  }
+  if (bind === 'sb') ref = safeFiniteRef(pol, g, ourSet).ref;
   return { bind, ref, floor: bestF, avail, need };
 }
 
@@ -201,7 +208,7 @@ export function diagCore(pol, g, nm, offers) {
 //   small   L5583/L5591/L5605 这一发 < max(最小指令, pulseMinShare×余额)
 //   chunk   L5612  不走脉冲、兵不够一次打穿且 < chunk×余额
 //   send    这些门都过了（若这一拍仍没有意图：被 send 的守卫拦了，或 tryDonate / 发船先返回）
-export function coreGate(pol, g, offers) {
+export function coreGate(pol, g, offers, ourSet = null) {
   const P = pol.p, me = pol.me;
   const B = g.bal[me], L = Math.max(1, g.terr[me]), fee = iV(12 * B, 1024), dMe = B / L;
   const dMed = pol.otherHumanMedDens(g);
@@ -241,9 +248,26 @@ export function coreGate(pol, g, offers) {
       const overKeepMult = dMe >= 122 ? 0.82 : sole ? P.overHumanKeep : P.hold;
       keep = Math.min(keep, overKeepMult * 100 * L);
     }
+    const keepPrice = keep;
     keep = Math.max(keep, safe);
     const avail = B - fee - keep;
-    if (avail <= 0) { res.push([q, 'floor']); continue; }
+    if (avail <= 0) {
+      // 是哪一项把可用兵压到 0：keep = 价格预算要留的兵（L5420~5427）；否则是 safeAt（L4543~4560 → V17.safeAt L2728）：
+      // sf = safeFinite（botSkip=0 时不排除要买的这个 AI，也不排除队友）、dp = killW×dpKeep、cap = 被 oppFloorCap×地 截住
+      // empty = 余额扣掉手续费已经是 0
+      let det = 'keep';
+      if (B - fee <= 0) det = 'empty';
+      else if (safe >= keepPrice) {
+        let sfv = NaN, dpv = NaN;
+        try { sfv = pol.safeFinite(g, P.botSkip > 0 && q >= 0 && !person ? q : -1); dpv = (P.killW ?? 0) * pol.dpKeep(g); } catch (e) { sfv = NaN; }
+        const capped = safe >= P.oppFloorCap * L - 1e-6;
+        if (!Number.isFinite(sfv)) det = '?';
+        else if (sfv >= dpv) det = (capped ? 'cap+' : '') + 'sf/' + (safeFiniteRef(pol, g, ourSet).ref || '-');
+        else det = (capped ? 'cap+' : '') + 'dp';
+      }
+      res.push([q, 'floor', det]);
+      continue;
+    }
     if (!person) {
       const want = 1.25 * need + 3 * pol.cnt[q];
       const x = Math.min(avail, want);

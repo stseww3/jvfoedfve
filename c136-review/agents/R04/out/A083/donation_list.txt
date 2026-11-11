@@ -101,6 +101,7 @@
  7868 noah88→alex_k 比例 228/1024 到账 499k 税 140k | 捐款人 余额 2232k 密度 114→82 | 收款人 地 21310 密度 64 | defense_dispatch
  8134 zero_7→ryan_m 比例 195/1024 到账 51.2k 税 16.7k | 捐款人 余额 268k 密度 115→86 | 收款人 地 14312 密度 36 | yield_opt_dispatch
 [0,8542] 落地 102 笔，到账 17.1M，税 4714k；捐后密度 ≤32 的 47 笔；封死号发出的 60 笔；按种类 {'defense_dispatch': 79, 'offense_dispatch': 4, 'yield_opt_dispatch': 18}
+按调度种类（笔数 / 到账 / 税 / 捐后密度 ≤45 的笔数）：defense_dispatch 79 笔 / 12.1M / 3057k / 51；yield_opt_dispatch 18 笔 / 4408k / 1503k / 1；offense_dispatch 4 笔 / 591k / 148k / 0；对不上影子日志的 1 笔
 收款人到账： {'alex_k': '8916k', 'talon5': '4912k', 'kaito9': '1216k', 'leo_tx': '680k', 'noah88': '457k', 'zexos1': '269k', 'riku_x': '251k', 'sora_w': '212k', 'zero_7': '157k', 'ryan_m': '51.2k'}
 到账 < 税 的捐款：1 笔，到账合计 321，税合计 8756
 到账后收款人余额 > 100×领土（软上限，利息开始打折）的捐款：38 笔 8888k；其中 > 128×领土 的 8 笔 2152k

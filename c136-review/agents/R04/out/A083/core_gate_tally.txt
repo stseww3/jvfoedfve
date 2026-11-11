@@ -1,5 +1,6 @@
 # A083 核心期行动拍的去向 [1500,3000)：共 2988 个号·行动拍
 合计：price 1216（41%），nooffer 998（33%），floor 189（6%），chunk 166（6%），donate 147（5%），inflight 87（3%），出手 84（3%），sole 75（3%），small 17（1%），send 9（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：dp 154，keep 24，empty 11
   ryan_m    300 拍：price 3（1%），nooffer 225（75%），floor 11（4%），inflight 30（10%），出手 27（9%），send 4（1%）
           按目标：inflight→38 30，floor→38 11，send→38 4，price→38 3
   noah88    300 拍：price 254（85%），floor 16（5%），chunk 7（2%），inflight 9（3%），出手 10（3%），small 3（1%），send 1（0%）
@@ -21,6 +22,7 @@
 
 # A083 核心期行动拍的去向 [3000,4500)：共 2573 个号·行动拍
 合计：nooffer 1279（50%），price 774（30%），small 125（5%），floor 98（4%），donate 89（3%），sole 78（3%），出手 73（3%），inflight 46（2%），send 9（0%），chunk 1（0%），boat 1（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：dp 73，cap+dp 13，keep 12
   ryan_m    300 拍：nooffer 288（96%），donate 12（4%）
   noah88    300 拍：nooffer 72（24%），price 125（42%），small 40（13%），donate 13（4%），sole 43（14%），出手 5（2%），chunk 1（0%），boat 1（0%）
           按目标：price→10 84，sole→13 43，price→13 41，small→10 40，chunk→10 1
@@ -39,6 +41,7 @@
 
 # A083 核心期行动拍的去向 [4500,6030)：共 2334 个号·行动拍
 合计：nooffer 903（39%），price 805（34%），sole 389（17%），floor 77（3%），出手 49（2%），small 34（1%），donate 32（1%），inflight 26（1%），send 18（1%），boat 1（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：cap+dp 65，keep 7，dp 5
   ryan_m    306 拍：nooffer 301（98%），donate 5（2%）
   noah88    306 拍：price 175（57%），sole 125（41%），donate 6（2%）
           按目标：price→13 175，sole→13 125
@@ -55,6 +58,7 @@
 
 # A083 核心期行动拍的去向 [6030,7500)：共 2008 个号·行动拍
 合计：price 845（42%），nooffer 735（37%），sole 312（16%），出手 57（3%），donate 30（1%），send 19（1%），floor 9（0%），inflight 1（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：cap+dp 9
   ryan_m    294 拍：nooffer 289（98%），donate 5（2%）
   noah88    294 拍：price 135（46%），sole 151（51%），donate 8（3%）
           按目标：sole→13 151，price→13 135
@@ -69,18 +73,7 @@
   kaito9    244 拍：price 145（59%），nooffer 5（2%），sole 60（25%），出手 14（6%），donate 4（2%），send 15（6%），inflight 1（0%）
           按目标：price→13 137，sole→13 44，sole→36 16，send→13 15，price→36 8，inflight→13 1
 
-# A083 核心期行动拍的去向 [7500,8435)：共 718 个号·行动拍
-合计：price 470（65%），sole 121（17%），nooffer 97（14%），出手 13（2%），floor 10（1%），donate 5（1%），boat 1（0%），send 1（0%）
-  ryan_m    187 拍：price 89（48%），nooffer 97（52%），donate 1（1%）
-          按目标：price→13 89
-  zero_7    181 拍：price 114（63%），sole 63（35%），出手 2（1%），donate 2（1%）
-          按目标：price→13 114，sole→13 63
-  noah88    161 拍：price 99（61%），sole 58（36%），出手 1（1%），donate 2（1%），send 1（1%）
-          按目标：price→13 99，sole→13 58，send→13 1
-  alex_k     82 拍：price 69（84%），出手 3（4%），floor 9（11%），boat 1（1%）
-          按目标：price→50 29，price→36 24，floor→50 9，price→11 7，price→13 6，price→5 3
-  sora_w     73 拍：price 65（89%），出手 7（10%），floor 1（1%）
-          按目标：price→13 52，price→50 13，floor→50 1
-  riku_x     34 拍：price 34（100%）
-          按目标：price→13 34
-
+==== 全核心期 ====
+# A083 核心期行动拍的去向 [1500,8435)：共 10621 个号·行动拍
+合计：price 4110（39%），nooffer 4012（38%），sole 975（9%），floor 383（4%），donate 303（3%），出手 276（3%），small 176（2%），chunk 167（2%），inflight 160（2%），send 56（1%），boat 3（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：dp 232，cap+dp 97，keep 43，empty 11

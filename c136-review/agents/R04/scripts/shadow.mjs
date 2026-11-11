@@ -314,7 +314,7 @@ async function main() {
         let fb = null;
         if (t < coreFrom && nAI > 0 && ints2 === 0) { try { fb = DIAG.floorBind(pol, g, ourSet); } catch (e) { fb = null; } }
         // 核心期、这一拍没有陆攻意图：buyLand 在第一条真人报价上被哪道门拦下（shadow_diag.coreGate）
-        let gate = '';
+        let gate = '', gateAI = '';
         if (t >= coreFrom) {
           const kinds = M.intents.slice(i0).map((x) => x.kind);
           if (kinds.includes('attack')) gate = '';
@@ -324,14 +324,42 @@ async function main() {
           else if (!offers.length) gate = 'nooffer';
           else {
             try {
-              const res = DIAG.coreGate(pol, g, offers);
+              const res = DIAG.coreGate(pol, g, offers, ourSet);
               const hit = res.find((r) => pol.person(g, r[0])) || res[0];
-              gate = hit ? hit[1] + ':' + hit[0] : 'unreached';
+              gate = hit ? hit[1] + ':' + hit[0] + (hit[2] ? ':' + hit[2] : '') : 'unreached';
             } catch (e) { gate = 'err'; }
+          }
+          // 第一条非真人（内置 AI）报价的去向，不管这一拍有没有别的意图；floor 带上是哪一项顶住的
+          if (offers && offers.length) {
+            try {
+              const resA = DIAG.coreGate(pol, g, offers, ourSet);
+              const hitA = resA.find((r) => !pol.person(g, r[0]));
+              if (hitA) gateAI = hitA[1] + ':' + hitA[0] + (hitA[2] ? ':' + hitA[2] : '');
+              else if (offers.some((o) => !pol.person(g, o.q))) gateAI = 'behind:' + offers.find((o) => !pol.person(g, o.q)).q;
+            } catch (e) { gateAI = 'err'; }
+          }
+          // 贴着内置 AI 但报价单里没有它：covered = 在途的兵已经够吃掉它（offers L5096 rawNeed ≤ 0）；
+          // slots = 目标数已满 / 没有空槽（L5089）；nobuy = 这一拍 buyLand 没走到报价单（调度、救急等先返回）
+          if (gateAI === '' && nAI > 0) {
+            try {
+              const P = pol.p, base = g.slotBase(p);
+              let active = 0;
+              for (let i = g.atkCount[p] - 1; i >= 0; i--) if (g.atkTarget[base + i] !== 512) active++;
+              let nOffer = 0, nCov = 0, nSlot = 0, qq = -1;
+              for (const q of pol.nb) {
+                if (!g.alive[q] || !g.terr[q] || pol.person(g, q)) continue;
+                const already = g.hasAttack(p, q);
+                if (!already && (active >= P.maxTargets || !g.hasFreeSlot(p))) { nSlot++; if (qq < 0) qq = q; continue; }
+                const rawNeed = pol.elimCost(g, q) + g.attackTroopsOn(q, p) - g.attackTroopsOn(p, q);
+                if (rawNeed <= 0) { nCov++; qq = q; continue; }
+                nOffer++; qq = q;
+              }
+              gateAI = (nOffer ? 'nobuy' : nCov ? 'covered' : nSlot ? 'slots' : 'none') + ':' + qq;
+            } catch (e) { gateAI = 'err2'; }
           }
         }
         rowsOut.push([t, b, g.terr[p], g.bal[p], pol.nb.length, nAI, nAIweak, weakLand, nHum, pol.neutral, g.coast[p].length, ints2, Math.round(minFloor), pol.isNoFullSend ? 1 : 0, g.totalAttackTroops(p),
-          fb ? fb.bind : '', fb ? fb.ref : '', fb ? Math.round(fb.avail) : '', fb ? Math.round(fb.need) : '', gate].join('\t'));
+          fb ? fb.bind : '', fb ? fb.ref : '', fb ? Math.round(fb.avail) : '', fb ? Math.round(fb.need) : '', gate, gateAI].join('\t'));
       }
       const ints = M.intents.slice(i0);
       const newLogs = logs.slice(l0);
@@ -401,7 +429,7 @@ async function main() {
     const nameOf = new Map(pols.map((S) => [S.p, S.b]));
     fs.writeFileSync(path.join(outDir, 'intents.tsv'), 't\tp\tbot\tkind\tpct\ttarget\ttroops\n' + M.intents.map((x) => [x.t, x.p, nameOf.get(x.p), x.kind, x.pct, x.target, x.troops].join('\t')).join('\n') + '\n');
     fs.writeFileSync(path.join(outDir, 'logs.txt'), logs.join('\n') + '\n');
-    if (rowsOn) fs.writeFileSync(path.join(outDir, 'rows.tsv'), 't\tbot\tterr\tbal\tnb\tnAI\tnAIweak\tweakLand\tnHum\tneut\tcoast\tintents\tfloorAI\tnfs\tatkOut\tbind\tsbRef\tavail\tneed\tgate\n' + rowsOut.join('\n') + '\n');
+    if (rowsOn) fs.writeFileSync(path.join(outDir, 'rows.tsv'), 't\tbot\tterr\tbal\tnb\tnAI\tnAIweak\tweakLand\tnHum\tneut\tcoast\tintents\tfloorAI\tnfs\tatkOut\tbind\tsbRef\tavail\tneed\tgate\tgateAI\n' + rowsOut.join('\n') + '\n');
     fs.writeFileSync(path.join(outDir, 'check.json'), JSON.stringify({ match: mid, ver: VERS[ver], from, to: st[0], ku: info.ku, bots: pols.map((S) => ({ bot: S.b, p: S.p, slot: S.slot, cmds: S.pol.cmds, boats: S.pol.boats, errs: S.errs, lockAt: S.lockAt, blocked: S.blocked, probes: S.probes })), cmp }, null, 1) + '\n');
   }
   for (const l of outLines) console.log(l);
