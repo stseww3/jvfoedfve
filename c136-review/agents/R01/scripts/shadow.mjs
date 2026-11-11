@@ -254,7 +254,7 @@ export async function runShadow(mid, o = {}) {
       wrap('pickTarget', (r) => JSON.stringify(r && { q: r.q, amount: num(r.amount) }));
       wrap('peopleSafe', (r) => String(num(r)));
       wrap('baseRate', (r) => String(num(r)));
-      for (const nm of ['allow', 'expandNeutral', 'dpNeutral', 'tryDonateToTeammate', 'idleBoats', 'boatOut', 'boatFood', 'frontBoat', 'buyLand', 'counterAttack', 'searchWater', 'searchFood', 'isMopUp', 'winFloor', 'peopleFloor', 'botMax']) wrap(nm, (r) => JSON.stringify(typeof r === 'number' ? num(r) : r));
+      for (const nm of ['allow', 'expandNeutral', 'dpNeutral', 'tryDonateToTeammate', 'idleBoats', 'boatOut', 'boatFood', 'frontBoat', 'buyLand', 'counterAttack', 'searchWater', 'searchFood', 'isMopUp', 'winFloor', 'peopleFloor', 'botMax', 'floorFor', 'price', 'minShare', 'peopleSafe', 'food', 'motive', 'reserve', 'dpKeep']) wrap(nm, (r) => JSON.stringify(typeof r === 'number' ? num(r) : r));
       st.probeState = () => {
         if (!(g.t >= probe.t0 && g.t <= probe.t1)) return;
         const d = (q) => (g.terr[q] > 0 ? (g.bal[q] / g.terr[q]).toFixed(1) : '0');

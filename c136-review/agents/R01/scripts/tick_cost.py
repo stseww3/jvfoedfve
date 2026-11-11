@@ -40,3 +40,30 @@ for lid in logs:
             if sp > worst[0]:
                 worst = (sp, t)
     print(f'   按日志写入顺序，仍在推进的各号本地拍极差最大 {worst[0]} 拍（出现在本地拍 {worst[1]} 附近）：各客户端是一起变慢的')
+
+    # [HL-SLOW-TICK] 行：单次决策超过阈值时策略自己打的日志。按号、按 1000 拍分窗计数；
+    # 再和影子策略里“走到出海搜索”的决策拍（shadow_cmds.csv 里 kind=boatTo 的行）对一下，看慢拍是不是出在找船上。
+    slow = defaultdict(list)
+    sp = re.compile(r'\[([^\]]+)\] \[HL-SLOW-TICK\] t=(\d+) took ([\d.]+)ms')
+    for line in open(f'/agent/repos/c136-data/bundles/{lid}/in_game.log', errors='replace'):
+        m = sp.search(line)
+        if m:
+            slow[m.group(1)].append((int(m.group(2)), float(m.group(3))))
+    if slow:
+        import csv, os
+        n = sum(len(v) for v in slow.values())
+        print(f'== {lid} HL-SLOW-TICK {n} 条：号 | 条数 | 最慢毫秒 | 按 1000 拍分窗的条数 | 相邻两条的间隔（拍）中位')
+        boats = defaultdict(set)
+        cp = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'out', lid, 'shadow_cmds.csv')
+        if os.path.exists(cp):
+            for r in csv.DictReader(open(cp, encoding='utf8')):
+                if r['kind'] == 'boatTo':
+                    boats[r['bot']].add(int(r['t']))
+        for b, xs in sorted(slow.items()):
+            win = defaultdict(int)
+            for t, ms in xs:
+                win[t // 1000 * 1000] += 1
+            gaps = sorted(y[0] - x[0] for x, y in zip(xs, xs[1:]))
+            hit = sum(1 for t, ms in xs if t in boats.get(b, ()))
+            print(f"   {b:10s} {len(xs):3d} | {max(ms for t, ms in xs):6.1f} | " + ' '.join(f'{k}:{v}' for k, v in sorted(win.items()))
+                  + f" | {gaps[len(gaps) // 2] if gaps else '-'}" + (f" | 其中 {hit} 条的拍正好是影子策略发出船令的决策拍（共 {len(boats.get(b, ()))} 条船令）" if boats else ''))

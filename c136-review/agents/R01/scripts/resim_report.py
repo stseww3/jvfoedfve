@@ -288,6 +288,88 @@ def main():
             for d in det:
                 print(f"    t={d[0]} {d[1]}→{d[2]} {d[3]} 密度 {d[4]:.0f}→{d[5]:.0f} 到账 {d[6]} 手续费 {d[7]} 利息净变化 {d[8]:+d}/10拍")
 
+    if 'pingpong' in sections:
+        # 两个本队号之间来回捐：对每一对号，按时间排好它们之间落地的捐款指令；相邻两笔方向相反且间隔 <= --window（默认 60）拍算一次“折返”。
+        # 给出每对的笔数、到账、手续费、净流向，以及有折返的连续段；再给同一时段这两个号实拿的利息（引擎利率公式，按 resim_squad.csv 的采样累加）。
+        win = int(opt('window', 60))
+        tr = [r for r in load(mid, 'resim_transfers.csv') if r['kind'] == 'cmd' and r['ok'] == '1' and int(r['from']) in sq_ids and int(r['to']) in sq_ids and t0 <= int(r['t']) <= t1]
+        fee_of = lambda r: 64 * int(r['fromBal']) // 1024
+        pairs = defaultdict(list)
+        for r in tr:
+            pairs[tuple(sorted((int(r['from']), int(r['to']))))].append(r)
+        sqrows = [r for r in load(mid, 'resim_squad.csv') if r['bot'] in squad and r['alive'] == '1']
+        ts = sorted({int(r['t']) for r in sqrows}); step = ts[1] - ts[0] if len(ts) > 1 else 30
+        def interest(pids, a, z):
+            tot = 0
+            for r in sqrows:
+                t = int(r['t'])
+                if squad[r['bot']] in pids and a <= t <= z and int(r['terr']) > 0:
+                    tot += interest_rates(t, int(r['terr']), int(r['bal']), meta['land'])[1] * int(r['bal']) // 10 ** 4 * step // 10
+            return tot
+        print(f"== pingpong 本队两个号之间来回捐 [{t0},{t1}]（折返 = 相邻两笔方向相反且间隔 <= {win} 拍）")
+        tot_flip = 0
+        for (a, b2), rows in sorted(pairs.items(), key=lambda kv: -len(kv[1])):
+            ab = [r for r in rows if int(r['from']) == a]; ba = [r for r in rows if int(r['from']) == b2]
+            flips = sum(1 for x, y in zip(rows, rows[1:]) if x['from'] != y['from'] and int(y['t']) - int(x['t']) <= win)
+            tot_flip += flips
+            rec = sum(int(r['received']) for r in rows); fee = sum(fee_of(r) for r in rows)
+            net = sum(int(r['received']) for r in ab) - sum(int(r['received']) for r in ba)
+            print(f"  {nm(a)} ↔ {nm(b2)}: {len(rows)} 笔（{nm(a)}→ {len(ab)} 笔，{nm(b2)}→ {len(ba)} 笔） 到账 {rec} 手续费 {fee} 净流向 {nm(a) if net >= 0 else nm(b2)}→ {abs(net)} 折返 {flips} 次")
+            if flips == 0:
+                continue
+            seg = [rows[0]]; segs = []
+            for x, y in zip(rows, rows[1:]):
+                if int(y['t']) - int(x['t']) <= win:
+                    seg.append(y)
+                else:
+                    segs.append(seg); seg = [y]
+            segs.append(seg)
+            for sg in segs:
+                fl = sum(1 for x, y in zip(sg, sg[1:]) if x['from'] != y['from'])
+                if fl == 0:
+                    continue
+                a0, z0 = int(sg[0]['t']), int(sg[-1]['t'])
+                it = interest({a, b2}, a0, z0)
+                f2 = sum(fee_of(r) for r in sg)
+                print(f"    连续段 {a0}–{z0}：{len(sg)} 笔 折返 {fl} 次 到账 {sum(int(r['received']) for r in sg)} 手续费 {f2}；同期两号实拿利息 {it}（手续费/利息 {100 * f2 / max(1, it):.0f}%）")
+        print(f"  折返合计 {tot_flip} 次")
+
+    if 'ledger' in sections:
+        # 本队兵力流水账 [t0,t1]：期初余额 + 利息/领土收入（估算）+ 外部转入 − 进攻扣兵 − 捐款手续费 − 出海装兵与手续费 + 船回岸 = 期末余额（差额列为“未归类”）。
+        # 利息按引擎公式在 resim_squad.csv 的采样点上累加（采样间隔 30 拍，是估算）；每 100 拍的领土收入 = 领土格数。
+        # 进攻扣兵取 shadow_match.csv 的 spent（落地时实扣，含 12/1024 手续费）；捐款取 resim_transfers.csv；船取 boat_trace.csv（要先跑 boat_trace.mjs）。
+        sqrows = [r for r in load(mid, 'resim_squad.csv') if r['bot'] in squad and ':' not in r['bot']]
+        ts = sorted({int(r['t']) for r in sqrows}); step = ts[1] - ts[0] if len(ts) > 1 else 30
+        a0 = min((t for t in ts if t >= t0), default=ts[0]); z0 = max((t for t in ts if t <= t1), default=ts[-1])
+        bal_at = lambda t: sum(int(r['bal']) for r in sqrows if int(r['t']) == t and r['alive'] == '1')
+        intr = 0; terr_inc = 0
+        for r in sqrows:
+            t = int(r['t'])
+            if a0 <= t < z0 and r['alive'] == '1' and int(r['terr']) > 0:
+                intr += interest_rates(t, int(r['terr']), int(r['bal']), meta['land'])[1] * int(r['bal']) // 10 ** 4 * step // 10
+                terr_inc += int(r['terr']) * step // 100
+        atk = defaultdict(int)
+        for x in load(mid, 'shadow_match.csv'):
+            if x['kind'] == 'attack' and x['bot'] in squad and a0 <= int(x['tick']) < z0:
+                tgt = int(x['target'])
+                atk['无主地' if tgt == 512 else ('人类席位' if tgt < meta['humans'] else '内置AI')] += int(float(x['spent'] or 0))
+        tr = [r for r in load(mid, 'resim_transfers.csv') if r['ok'] == '1' and a0 <= int(r['t']) < z0]
+        fee_in = sum(64 * int(r['fromBal']) // 1024 for r in tr if r['kind'] == 'cmd' and int(r['from']) in sq_ids and int(r['to']) in sq_ids)
+        out_ext = sum(int(r['received']) + 64 * int(r['fromBal']) // 1024 for r in tr if r['kind'] == 'cmd' and int(r['from']) in sq_ids and int(r['to']) not in sq_ids)
+        in_ext = sum(int(r['received']) for r in tr if int(r['to']) in sq_ids and int(r['from']) not in sq_ids)
+        clip = sum(max(0, min(int(r['fromBal']) * (int(r['pct']) + 1) // 1024, int(r['fromBal']) - 64 * int(r['fromBal']) // 1024) - int(r['received'])) for r in tr if r['kind'] == 'cmd' and int(r['from']) in sq_ids and int(r['to']) in sq_ids)
+        bt = [r for r in load(mid, 'boat_trace.csv') if a0 <= int(r['launch']) < z0]
+        b_load = sum(int(r['troops0']) for r in bt); b_fee = sum(int(r['fee']) for r in bt if r.get('fee'))
+        b_back = sum(int(r['troopsArr']) for r in load(mid, 'boat_trace.csv') if r['landedOn'] == 'self' and r['arrive'] and a0 <= int(r['arrive']) < z0)
+        b0, b1 = bal_at(a0), bal_at(z0)
+        known = intr + terr_inc + in_ext - sum(atk.values()) - fee_in - out_ext - b_load - b_fee + b_back
+        print(f"== ledger 本队兵力流水账 [{a0},{z0}]")
+        print(f"  期初余额 {b0} → 期末余额 {b1}（净变化 {b1 - b0:+d}）")
+        print(f"  收入：利息（估算）{intr}，领土收入 {terr_inc}，队外转入（队友捐款/船/自动）{in_ext}，船回自己岸 {b_back}")
+        print(f"  支出：进攻落地实扣 {sum(atk.values())}（" + '、'.join(f"{k} {v}" for k, v in sorted(atk.items(), key=lambda kv: -kv[1])) + f"），本队内部捐款手续费 {fee_in}，捐给队外 {out_ext}，出海装兵 {b_load}，出海手续费 {b_fee}")
+        print(f"  （另：被受赠者 150 倍上限截掉、没送出去的 {clip}——这部分留在捐出方手里，不算支出，但手续费照付）")
+        print(f"  未归类（进攻线上回流的兵、被打掉的兵、利息估算误差等）{b1 - b0 - known:+d}")
+
     if 'events' in sections:
         ev = load(mid, 'resim_events.csv')
         cnt = defaultdict(lambda: defaultdict(int))
@@ -428,6 +510,29 @@ def spawnseq_section(mid, meta, squad):
     lp_list = sorted(lastplan.values())
     dup = sorted({v for v in lp_list if lp_list.count(v) > 1})
     print(f"  各号“最后一版”之间重复的位置：{' '.join(f'({v[0]},{v[1]})' for v in dup) or '无'}（有重复 = 各号手里的最后一版不是同一次求解的结果）")
+    # 协调器最后一次求解的整份名单（[BACKEND-SPAWN-COORD] 行）：名单里不在本局的号，它的计划位上实际出生的是谁
+    last = None; nsolve = 0; seps = []
+    for line in open(lp, encoding='utf8'):
+        m = re.search(r'\[BACKEND-SPAWN-COORD\] Solved (\d+) bots .*?minSep=(\d+)px.*?\): (.*)$', line)
+        if m:
+            nsolve += 1; seps.append(int(m.group(2))); last = m
+    if last:
+        roster = re.findall(r'\[APEX\] (\w+)\(\w+\)->\((\d+),(\d+)\)', last.group(3))
+        spawn = {int(k): tuple(v) for k, v in meta['spawn'].items() if int(k) < meta['humans']}
+        names = meta['names']; teams = meta['teams']
+        absent = [(b, (int(x), int(y))) for b, x, y in roster if b not in squad]
+        print(f"  协调器求解 {nsolve} 次，名单 {last.group(1)} 人，minSep {max(seps)}→{seps[-1]} 像素；最后一次名单里不在本局的 {len(absent)} 个号的计划位，以及离它最近的实际出生点：")
+        for b, pos in absent:
+            near = sorted((dist(pos, s), p) for p, s in spawn.items())[:2]
+            print(f"    {b:<8} ({pos[0]},{pos[1]}) ← " + '；'.join(
+                f"{squad_name(squad, p) or names[p]}/T{teams[str(p)]} {d:.0f} 像素" for d, p in near))
+
+
+def squad_name(squad, p):
+    for b, q in squad.items():
+        if q == p:
+            return b
+    return None
 
 
 def drops_section(mid, meta, squad):
