@@ -24,7 +24,24 @@ def check(mid):
     print('统计:', json.dumps(stats, ensure_ascii=False))
     if md is not None:
         print('md 行数:', md.count('\n'))
+def _flat(x):
+    if isinstance(x, (list, tuple)):
+        return [z for y in x for z in _flat(y)]
+    return [str(x)]
+
+
+def normalize(doc):
+    """各局 decisions[] 的字段类型统一：bots 一律是字符串（多个号用顿号隔开），evidence 一律是字符串列表。"""
+    for d in doc.get('decisions') or []:
+        if isinstance(d.get('bots'), (list, tuple)):
+            d['bots'] = '、'.join(_flat(d['bots']))
+        if isinstance(d.get('evidence'), str):
+            d['evidence'] = [d['evidence']]
+    return doc
+
+
 def dump(mid, doc):
+    normalize(doc)
     json.dump(doc, open(f'{ROOT}/agents/R05/reviews/{mid}.json', 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     print('写入', f'{ROOT}/agents/R05/reviews/{mid}.json', len(json.dumps(doc, ensure_ascii=False)), '字符')
 
@@ -60,7 +77,8 @@ def accounts(mid, work='/tmp/c136-r05/work'):
             'delayBy300': D.get('delayBy300'),
             'lagByBotP50': {b: [x.get('p50') if x else None for x in v] for b, v in (D.get('lagByBot') or {}).items()},
             'funnel': D.get('funnel'),
-            'selfReport': {k: (D.get('selfReport') or {}).get(k) for k in ('shadow', 'cmds', 'landed')},
+            'funnelTotals': D.get('funnelTotals'),
+            'selfReport': {k: (D.get('selfReport') or {}).get(k) for k in ('shadow', 'cmds', 'landed', 'executedAll')},
             'phantomDecisions': D.get('phantom'),
             'lateVoid': D.get('lateVoid'),
             'batches': D.get('batches'),
@@ -93,3 +111,15 @@ def accounts(mid, work='/tmp/c136-r05/work'):
             **{k: Q.get(k) for k in ('ver', 'okLine', 'calls', 'refused', 'nfsAt', 'byPeriod', 'byBot')},
         })
     return out
+
+
+def account_scripts(mid):
+    """三本账的复现命令（写进复盘 JSON 的 scripts 字段）。"""
+    w = '/tmp/c136-r05/work'
+    return [
+        f'scripts/replay_cmds.mjs {mid} → scripts/shadow.mjs {mid} --quiet --tc 600:1500 --json {w}/{mid}-shadow.json → scripts/atk_fate.mjs {mid} --json（三本账的输入；批量见 scripts/accounts_batch.sh、scripts/shadow_refresh.sh）',
+        f'scripts/delay_account.py {mid} --json {w}/{mid}-delay.json --list-batches（延迟硬账：出生执行、分时段延迟、漏斗、迟到落空、同拍批、在途重复）；scripts/delay_detail.py {mid}（按号 × 300 拍摊开）',
+        f'scripts/land_account.mjs {mid} --json {w}/{mid}-land.json（好地账：名下份额、实际地 ÷ 份额、机器人地去向）',
+        f'scripts/tick_attrib.py {mid} --json {w}/{mid}-attrib.json --by-bot --exits（600–1500 拍每个决策拍归一类）；scripts/quota_guard.py {mid} --by-bot（Policy.send 拒发与 isNoFullSend 置位拍）',
+        f'scripts/accounts_md.py {mid}（把三本账渲染成 .md 的 6b 节）',
+    ]

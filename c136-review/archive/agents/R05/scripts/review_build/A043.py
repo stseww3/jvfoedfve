@@ -4,7 +4,7 @@
 # 其余数字逐条来自 scripts 字段里列的脚本输出。用法：python3 scripts/review_build/A043.py
 import os, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from common import skel, pick_timeline, dump, check, accounts
+from common import skel, pick_timeline, dump, check, accounts, account_scripts
 
 M = 'A043'
 S = skel(M)
@@ -563,6 +563,7 @@ doc = {
     'shadow': {'summary': {'shadowIssued': 188, 'selfReported': 188, 'executed': 188, 'matched': 184, 'staleMedian': 9, 'staleMax': 24, 'staleGE90': 0,
                            'noFullSendFirstTrue': 'ryan_m t=771（拒 11 次整额）、sora_w t=1002（1 次）', 'oneCmdPerTickSqueezed': '2 条（ryan_m，打机器人，想出 19k）'}},
     **ACC,
+    'accountsNote': '这三本账只覆盖 X 盘（有录像的那一盘）的 ryan_m、sora_w 两个号；Y 盘的 8 个号没有录像，做不了延迟配对、好地账和决策拍归因（它们的被围、配额拒单见第 6 节）。',
     'squadVsRealHumans': S['cmp'],
     'teamTroops': {
         'note': 'match_extra.py --sec team（X 盘，HS 每 300 拍）：各队 占图/总兵；编队兵 ÷ 最大敌队兵',
@@ -648,6 +649,7 @@ doc = {
         '离场真人的地在它阵亡后变中立、对它的进攻槽自动改打中立（redirectAttackToNeutral）：3216 拍 Lascia stare 阵亡后 ryan_m 的槽又拿了 3,378 格才退兵。',
     ],
     'scripts': [
+        *account_scripts(M),
         'scripts/sim_replay.mjs A043 --check（X 盘逐拍重放；与 165 条 [HL-TICK] 的地、兵逐条相等）', 'scripts/match_truth.mjs A043 → /tmp/c136-r05/truth/A043.json', 'scripts/review_skel.py A043 → /tmp/c136-r05/skel/A043.json',
         'scripts/truth_digest.py A043', 'scripts/match_facts.py A043', 'scripts/match_extra.py A043 --sec disp,team,mates,grab,active,rate,form,qeff',
         'scripts/split_spawn.mjs A043 --sets "N:…" "S:…" "M:…"（拆盘选点账：指派条数、点集族游程、串盘的点、每号换点次数、录像里的出生指令）',

@@ -263,8 +263,15 @@ def main():
         return 2
     mid = sys.argv[1]
     M = load_match(mid)
-    X = SD.Sim(mid, M) if M.sim else None
+    # 录像只到选点阶段的局（重放末拍 < 30）：sim_state.json 只当「出生点 / 分队 / t=0 局面」的真值用，
+    # t>0 的时间线、死因、捐款仍然只来自日志和结算行。
+    spawn_only = bool(M.sim) and (M.sim.get('endT') or 0) < 30
+    X = SD.Sim(mid, M) if (M.sim and not spawn_only) else None
     F = facts(M, X)
+    if spawn_only:
+        F['context']['dataCompleteness']['truth'] = (
+            f"录像只有选点阶段（真引擎重放到 t={M.sim.get('endT')}：出生点、分队、t=0 的局面是真值；t>0 没有录像）")
+        F['context']['truthEnd'] = M.sim.get('endT')
     if '--facts' in sys.argv:
         print(json.dumps(F, ensure_ascii=False, indent=1, default=str))
         return 0

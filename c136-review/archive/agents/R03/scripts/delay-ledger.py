@@ -111,7 +111,12 @@ class Ledger:
                         e = ENTRY_RE.match(ent.strip())
                         if e:
                             sol[e.group(1).strip()] = (int(e.group(3)), int(e.group(4)))
-                    rounds.append({"line": int(m.group(1)), "n": int(m.group(2)), "ms": float(m.group(3)), "minSep": int(m.group(6)), "boss": m.group(7), "sol": sol})
+                    rounds.append({"line": int(m.group(1)), "n": int(m.group(2)), "ms": float(m.group(3)), "map": (int(m.group(4)), int(m.group(5))),
+                                   "minSep": int(m.group(6)), "boss": m.group(7), "sol": sol})
+        # 求解行写着它用的地图尺寸。和本房间录像的地图尺寸不同 = 这些求解属于另一个房间（编队里有号进了别的局），不能拿来对账。
+        here = (self.W, self.R.get("Hh"))
+        foreign_rounds = [r for r in rounds if here[1] and r["map"] != here]
+        rounds = [r for r in rounds if r not in foreign_rounds]
         spawn_rows = defaultdict(list)
         try:
             for r in L.load_spawn(self.mid):
@@ -135,6 +140,11 @@ class Ledger:
                         execd[pl].append((t, xy[0], xy[1]))
         steps = self.rep.get("spawnSteps") if self.rep else None
         fr = {"rounds": len(rounds), "spawnSteps": steps, "bots": {}}
+        if foreign_rounds:
+            fm = foreign_rounds[0]["map"]
+            fr["foreignRounds"] = {"rounds": len(foreign_rounds), "map": list(fm), "roomMap": list(here)}
+            self.w(f"  日志里有 {len(foreign_rounds)} 轮 [BACKEND-SPAWN-COORD] 求解是在 {fm[0]}x{fm[1]} 的地图上做的，本房间的地图是 {here[0]}x{here[1]}"
+                   f"——它们属于另一个房间（不在本房间的号那一局），下面不拿来对账")
         if rounds:
             distinct = len({tuple(sorted(r["sol"].items())) for r in rounds})
             names_solved = sorted(rounds[-1]["sol"])
@@ -253,8 +263,10 @@ class Ledger:
         fr.update({"onFinal": on_final, "notOnFinal": stale, "zeroExecuted": zero, "stackPairs": [list(s) for s in sorted(stacks)],
                    "trailingUnexecutedBots": sum(1 for r in fr["bots"].values() if r["trailingUnexecuted"] > 0),
                    "sameStepInversionBots": inv, "lastStepMultiCmdBots": multi})
-        self.w(f"  小结：在场 {len(self.sq)} 个号——生效坐标是终解的 {on_final} 个，不是的 {stale} 个，0 条落地 {zero} 个；"
-               f"末尾有指派没落地的 {fr['trailingUnexecutedBots']} 个；最后一步落地 ≥2 条的 {len(multi)} 个" + (f"（{'、'.join(multi)}）" if multi else "")
+        fr["comparable"] = bool(rounds) and any(r["assigned"] for r in fr["bots"].values())
+        head = (f"生效坐标是终解的 {on_final} 个，不是的 {stale} 个，0 条落地 {zero} 个；末尾有指派没落地的 {fr['trailingUnexecutedBots']} 个"
+                if fr["comparable"] else f"本包日志里没有这些号的指派（无法和终解对账），0 条落地 {zero} 个")
+        self.w(f"  小结：在场 {len(self.sq)} 个号——{head}；最后一步落地 ≥2 条的 {len(multi)} 个" + (f"（{'、'.join(multi)}）" if multi else "")
                + f"，其中先发的旧坐标盖掉后发的新坐标的 {len(inv)} 个" + (f"（{'、'.join(inv)}）" if inv else "")
                + f"；开局叠点 {len(stacks)} 对" + ("（" + "、".join("+".join(s) for s in sorted(stacks)) + "）" if stacks else ""))
         self.facts["spawn"] = fr

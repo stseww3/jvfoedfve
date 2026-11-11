@@ -81,7 +81,7 @@ for r in S['ticks']:
         if kk:
             D[r['bot']].append({'t': r['t'], 'k': kk, 'pct': c['pct'], 'q': c.get('q', -1), 'troops': c.get('troops', 0), 'bal': r['bal'], 'terr': r['terr'],
                                 'c': 'D' if kk == 'donate' else 'S' if kk == 'boat' else cls(c.get('q', 512)), 'x': None})
-# 客户端本地最后一拍：有结算行（results.csv）的取它的 tick；没有的（中途离场的号）取最后一条日志的拍 + 89（下一条日志没写出来）。
+# 客户端本地最后一拍：有结算行（results.csv）的取它的 tick；没有的（中途离场的号）、或结算行比最后一条日志还早的，取最后一条日志的拍 + 89（下一条日志没写出来）。
 # 影子在这之后算出的决策，真实客户端没有跑到，不算「想发」。
 LASTLOC = {}
 _tj = defaultdict(int)
@@ -94,7 +94,13 @@ if os.path.exists(f'{B}/results.csv'):
         _rs[r['bot']] = int(r['tick'])
 PHANTOM = defaultdict(list)
 for b_ in list(D):
-    cap = _rs.get(b_, _tj.get(b_, 10 ** 9) + 89 if b_ in _tj else 10 ** 9)
+    rt_, lt_ = _rs.get(b_), _tj.get(b_)
+    if rt_ is None and lt_ is None:
+        cap = 10 ** 9
+    elif rt_ is None or (lt_ is not None and lt_ > rt_):
+        cap = lt_ + 89   # 没有结算行，或结算行的拍号早于最后一条日志（A058 四个失联的号：结算行 805–987，日志写到 1080–1350）：按日志算
+    else:
+        cap = rt_
     LASTLOC[b_] = cap
     PHANTOM[b_] = [d for d in D[b_] if d['t'] > cap]
     D[b_] = [d for d in D[b_] if d['t'] <= cap]
@@ -439,7 +445,14 @@ print('   号自报对账（到各号最后一条日志为止）：' + '；'.joi
 tot_sh, tot_cl, tot_ex = sum(x[2] for x in cm), sum(x[3] for x in cm), sum(x[4] for x in cm)
 print(f'   合计：影子 {tot_sh}｜自报 {tot_cl}｜落地 {tot_ex}（{pc(tot_ex, tot_cl)}）')
 OUT['funnel'] = FN
-OUT['selfReport'] = {'shadow': tot_sh, 'cmds': tot_cl, 'landed': tot_ex, 'byBot': [{'bot': b, 'lastLogT': tl, 'shadow': sh, 'cmds': cl, 'landed': ex} for b, tl, sh, cl, ex in cm]}
+# 条数口径的校正：配对失败的落地指令（录像里有、没找到对应决策）会让「没落地」多算；真正没落地的条数上限 = 想发 − 录像里落地
+OUT['funnelTotals'] = {'intended': len(dab), 'matched': sum(1 for d in dab if d['x']), 'executed': len(ab), 'unmatchedExec': sum(nm_exec.values()),
+                       'unmatchedExecByPeriod': [nm_exec.get(i, 0) for i in range(4)], 'neverLandedByMatch': sum(1 for d in dab if not d['x']),
+                       'neverLandedByCount': max(0, len(dab) - len(ab))}
+ex_all = sum(len(E[b]) for b in bots)
+print(f'   录像里这些号全程执行 {ex_all} 条（陆攻/出船/捐兵）；其中落在各号最后一条日志的拍号之后的 {ex_all - tot_ex} 条（落后的号的指令晚到）')
+OUT['selfReport'] = {'shadow': tot_sh, 'cmds': tot_cl, 'landed': tot_ex, 'executedAll': ex_all,
+                     'byBot': [{'bot': b, 'lastLogT': tl, 'shadow': sh, 'cmds': cl, 'landed': ex, 'executedAll': len(E[b])} for b, tl, sh, cl, ex in cm]}
 
 # ---------- ③(a) 迟到落空 / 目标已死 ----------
 print('\n== ③(a) 迟到落空与目标已死（按落地拍分时段；决策目标 = 配上的那条影子决策的目标）==')

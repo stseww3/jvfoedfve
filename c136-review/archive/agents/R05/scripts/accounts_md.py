@@ -105,7 +105,12 @@ def render(mid, J, title):
         sr = D.get('selfReport') or {}
         s = '- **漏斗**（影子想发 → 落地 → 按原意）：' + '；'.join(segs)
         if sr:
-            s += f"。全程影子 {n(sr.get('shadow'))} 条、客户端自报 {n(sr.get('cmds'))} 条、录像里配上 {n(sr.get('landed'))} 条"
+            s += f"。影子与客户端对账（含捐兵，数到各号最后一条日志）：影子 {n(sr.get('shadow'))} 条、自报 {n(sr.get('cmds'))} 条"
+        ft = D.get('funnelTotals') or {}
+        if ft:
+            s += f"；全程陆攻/出船想发 {n(ft['intended'])} 条、录像里执行 {n(ft['executed'])} 条"
+            if ft.get('unmatchedExec'):
+                s += f"（其中 {ft['unmatchedExec']} 条没配上决策，上面的「没落地」因此最多多算 {ft['unmatchedExec']} 条）"
         ph = D.get('phantomDecisions') or {}
         phn = sum(v2 if isinstance(v2, int) else (v2.get('n', 0) if isinstance(v2, dict) else 0) for v2 in ph.values()) if isinstance(ph, dict) else 0
         if phn:
@@ -128,7 +133,7 @@ def render(mid, J, title):
         if r.get('attackDecisions'):
             s += f"(b) 陆攻决策 {r['attackDecisions']} 条里 {r['repeatDecisions']} 条（{pct(r['repeatDecisions'], r['attackDecisions'])}）是在途重复，落地的重复打出 {k(r.get('repeatOut'))}（占打出兵数的 {pct(r.get('repeatOut', 0), r.get('allOut', 0))}）+ 手续费 {k(r.get('repeatFee'))}；"
         b = BT.get('600–1500') or {}
-        s += f"同拍批 {b.get('batches', 0)} 个 {b.get('cmds', 0)} 条（落地指令的 {pct(b.get('cmds', 0), b.get('landedAll', 0))}），整批作废 {b.get('allVoidBatches', 0)} 批，一拍打掉一半以上存兵 {b.get('drain50', 0)} 批"
+        s += f"同拍批（一个号一拍落地 ≥3 条）{b.get('batches', 0)} 个 {b.get('cmds', 0)} 条（落地指令的 {pct(b.get('cmds', 0), b.get('landedAll', 0))}），整批作废 {b.get('allVoidBatches', 0)} 批，一拍打掉一半以上存兵 {b.get('drain50', 0)} 批"
         b2 = BT.get('1500–3000') or {}
         if b2.get('batches'):
             s += f"；1500–3000 拍 {b2['batches']} 批 {b2['cmds']} 条（{pct(b2['cmds'], b2.get('landedAll', 0))}），整批作废 {b2.get('allVoidBatches', 0)}、打掉一半以上 {b2.get('drain50', 0)} 批"

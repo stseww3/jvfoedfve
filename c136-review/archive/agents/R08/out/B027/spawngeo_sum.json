@@ -1,0 +1,171 @@
+{
+ "matchId": "B027",
+ "W": 1756,
+ "H": 1000,
+ "edgeLimit": 120,
+ "squad": {
+  "n": 19,
+  "edgeMedian": 122,
+  "nearEdge": 9,
+  "nnAny": 94.36630754670864,
+  "nnMate": 116.48175822848829,
+  "nnWild": 109.04127658827184,
+  "nearestIsMate": 9
+ },
+ "others": {
+  "n": 48,
+  "edgeMedian": 249.5,
+  "nearEdge": 7,
+  "nnAny": 70.83078426785913
+ },
+ "groups": [
+  {
+   "n": 5,
+   "bots": [
+    "Phoenicia",
+    "Liao",
+    "Hashashin",
+    "King",
+    "New England"
+   ],
+   "teams": {
+    "0": 5
+   },
+   "crossPairs": 7,
+   "samePairs": 0
+  },
+  {
+   "n": 3,
+   "bots": [
+    "Ronin",
+    "Raeder",
+    "SyntaxError"
+   ],
+   "teams": {
+    "0": 3
+   },
+   "crossPairs": 3,
+   "samePairs": 0
+  },
+  {
+   "n": 3,
+   "bots": [
+    "Habsburg",
+    "Davout",
+    "Cringe"
+   ],
+   "teams": {
+    "0": 3
+   },
+   "crossPairs": 3,
+   "samePairs": 0
+  },
+  {
+   "n": 2,
+   "bots": [
+    "Kuban",
+    "Mewtwo"
+   ],
+   "teams": {
+    "0": 2
+   },
+   "crossPairs": 1,
+   "samePairs": 0
+  },
+  {
+   "n": 2,
+   "bots": [
+    "Tripoli",
+    "Vinland"
+   ],
+   "teams": {
+    "0": 2
+   },
+   "crossPairs": 1,
+   "samePairs": 0
+  },
+  {
+   "n": 1,
+   "bots": [
+    "Doge"
+   ],
+   "teams": {
+    "0": 1
+   },
+   "crossPairs": 0,
+   "samePairs": 0
+  },
+  {
+   "n": 1,
+   "bots": [
+    "Savoy"
+   ],
+   "teams": {
+    "0": 1
+   },
+   "crossPairs": 0,
+   "samePairs": 0
+  },
+  {
+   "n": 1,
+   "bots": [
+    "player_007"
+   ],
+   "teams": {
+    "0": 1
+   },
+   "crossPairs": 0,
+   "samePairs": 0
+  },
+  {
+   "n": 1,
+   "bots": [
+    "Sparta"
+   ],
+   "teams": {
+    "0": 1
+   },
+   "crossPairs": 0,
+   "samePairs": 0
+  }
+ ],
+ "edgeRows": [
+  {
+   "side": "上",
+   "bots": [
+    "Davout",
+    "Cringe",
+    "Sparta"
+   ],
+   "gaps": [
+    0,
+    296
+   ],
+   "teams": [
+    0
+   ]
+  },
+  {
+   "side": "下",
+   "bots": [
+    "Savoy",
+    "Liao",
+    "Hashashin",
+    "King",
+    "Phoenicia",
+    "New England"
+   ],
+   "gaps": [
+    428,
+    0,
+    0,
+    106,
+    158
+   ],
+   "teams": [
+    0
+   ]
+  }
+ ],
+ "nn3CrossTeamMates": 20
+}

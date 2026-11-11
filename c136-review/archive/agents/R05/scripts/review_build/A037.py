@@ -4,7 +4,7 @@
 # 用法：python3 scripts/review_build/A037.py
 import os, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from common import skel, pick_timeline, dump, check, accounts
+from common import skel, pick_timeline, dump, check, accounts, account_scripts
 
 M = 'A037'
 S = skel(M)
@@ -466,6 +466,7 @@ doc = {
         '除名线不是「历史峰值的四分之一」：引擎的 peak 在地低于它时每拍至少降 1 格（aliveTick L1298-1308，差距每满 1,000 格多降 1 格）。leo_tx 历史峰值 3,158，挨打时引擎 peak 是 2,951→2,837，除名线 737→709 格。长期缩水的号比按历史峰值算的更耐打，各局的「四分之一线」应按引擎 peak 取。',
     ],
     'scripts': [
+        *account_scripts(M),
         'scripts/sim_replay.mjs（逐拍精确重放）', 'scripts/match_truth.mjs A037 → /tmp/c136-r05/truth/A037.json', 'scripts/review_skel.py A037 → /tmp/c136-r05/skel/A037.json',
         'scripts/truth_digest.py A037 [--sec 99 --win bot,t0,t1,step,maxEvents]', 'scripts/match_facts.py A037 [--sec bots,line,hits,batch,don,cap,ledger,top,cmds,enc,deaths]',
         'scripts/match_extra.py A037 [--sec disp,team,mates,grab,active,rate,form,quota,qeff]（调度分段、各队兵力、拿地对比、在场人数、利率表、阵形半径、配额试算与配额效率）',

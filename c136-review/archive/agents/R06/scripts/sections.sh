@@ -27,7 +27,7 @@ case "$grp" in
     run dig_snap.txt digest.py snap 630 1170 1530 2070 3060 4050
     ;;
   log)
-    for s in stale silent seqlag overcap drop30 wall donlog cmdmix idleloss spend fireband capidle freezebound quotacap foes assists opening peace oplag issued bursts boxboats harvest crumb thinbig noeffect; do
+    for s in stale silent seqlag overcap drop30 wall wallms donlog cmdmix idleloss spend fireband capidle freezebound quotacap foes assists opening peace oplag issued bursts boxboats harvest crumb thinbig noeffect noefftl gaps sentchk zerodrop; do
       run "log_$s.txt" logdigest.py "$s"
     done
     run log_donval.txt logdigest.py donval

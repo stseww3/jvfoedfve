@@ -42,7 +42,7 @@ def classify(T, me, lst, t):
                 c["teamAi"] += n
             else:
                 c["ai"] += n
-        elif T.team(q) == tm:
+        elif T.same(q, me):
             c["own"] += n
         elif q in T.sqIds:
             c["mateX"] += n
@@ -211,7 +211,7 @@ def main():
     fight = defaultdict(lambda: [0, 0])
     for r in R["pairLog"]:
         a, q = r[1], r[2]
-        if a in T.sqIds and q in T.sqIds and T.team(a) != T.team(q):
+        if a in T.sqIds and q in T.sqIds and not T.same(a, q):
             fight[(a, q)][0] += r[3]
             fight[(a, q)][1] += r[4]
     npairs = 0

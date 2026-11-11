@@ -46,7 +46,7 @@ def main():
     tgt = opt("--target")
     d = json.load(open(os.path.join(ROOT, "out", "cache", f"{mid}-resim.json")))
     H, names = d["H"], d["names"]
-    sq = {v["id"]: n for n, v in d["squad"].items()}
+    sq = {v["id"]: n for n, v in d["squad"].items() if v["id"] >= 0 and not v.get("mismatch")}
 
     def nm(p):
         if p == NEUTRAL:
