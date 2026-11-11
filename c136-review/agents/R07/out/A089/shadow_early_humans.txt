@@ -1,0 +1,31 @@
+# A089 t=300~1499 身边既没有内置 AI、也没有无主地的决策拍：开局逻辑为什么不打贴着的敌方真人（策略 v27-team-c116-vb.js；Policy.act → super.act（V13 Style.act）→ pickTarget → allow / floorFor）
+# floorAt 复刻核对：193 次里不一致 0 次
+# 生效参数：preyKill=1 preyFloor=0.5 personMax=0 idleCap=1.25 minSend=0.2141 sendFrac=0.746 feeK=4 reserve=1 cRef=60 keepCap=1 kDef=4 capMin=0.1 denW=1 defCap=1 ref=0 earlyEnd=513 coreFrom=1500 dpEnd=1500
+riku_x: 这样的决策拍 97（t=1015~1495）；其中有指令 0；余额 24249→96108，领土 3818→3094
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）: 46 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）: 32 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是我方队友: 19 拍
+    最便宜的敌方真人邻居 Player 726#18：56 拍，每格 14.1~35.8 兵；它 2768 格 / 10969 兵 → 3384 格 / 35783 兵
+    最便宜的敌方真人邻居 OnlyDamage#0：41 拍，每格 14.6~25.2 兵；它 7047 格 / 29187 兵 → 10667 格 / 77390 兵
+talon5: 这样的决策拍 37（t=1315~1495）；其中有指令 4；余额 117073→192255，领土 4987→4987
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）: 31 拍
+    让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发）: 2 拍
+    最便宜的敌方真人邻居 Lugunica Kingdom#25：33 拍，每格 33.4~39.4 兵；它 9983 格 / 104762 兵 → 15048 格 / 155137 兵
+ryan_m: 这样的决策拍 31（t=1345~1495）；其中有指令 0；余额 96309→148050，领土 5886→5886
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是我方队友: 31 拍
+    最便宜的敌方真人邻居 Player 726#18：22 拍，每格 22.4~35.8 兵；它 3384 格 / 21612 兵 → 3384 格 / 35783 兵
+    最便宜的敌方真人邻居 Gahhhaha#5：9 拍，每格 22.7~27.7 兵；它 8113 格 / 52489 兵 → 8327 格 / 66723 兵
+zexos1: 这样的决策拍 17（t=1415~1495）；其中有指令 0；余额 57650→69968，领土 6741→6741
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）: 17 拍
+    最便宜的敌方真人邻居 OnlyDamage#0：17 拍，每格 34.5~41.3 兵；它 11079 格 / 112436 兵 → 11120 格 / 136467 兵
+alex_k: 这样的决策拍 17（t=1415~1495）；其中有指令 0；余额 142888→173428，领土 6330→6330
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）: 17 拍
+    最便宜的敌方真人邻居 Gahhhaha#5：17 拍，每格 27.6~43.1 兵；它 8327 格 / 66723 兵 → 8329 格 / 106970 兵
+# 合计：决策拍 199，有指令 4；零指令按原因：让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)） 111；让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是我方队友 50；让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高） 32；让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发） 2
+# 例子（每 100 拍取一条）
+  t=1100 riku_x B=30978 L=3416（密度 9.1）| 最便宜的敌方真人 Player 726#18[T4]（3062 格 / 14828 兵）每格 17.5 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 56332（floorFor0 56332、safeP×peopleSafe 0、dpKeep 23190、peopleFloor 0、floorAt 112664〔价格留底 112664、ref×邻居均值 0、defenseNeed 59548、keepCap 封顶 341600〕）、可用 -25354、吃光要 95229
+  t=1200 riku_x B=44914 L=3352（密度 13.4）| 最便宜的敌方真人 OnlyDamage#0[T2]（10124 格 / 69660 兵）每格 24.0 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 67086（floorFor0 67086、safeP×peopleSafe 0、dpKeep 36310、peopleFloor 0、floorAt 134172〔价格留底 134172、ref×邻居均值 0、defenseNeed 108988、keepCap 封顶 335200〕）、可用 -22172、吃光要 139345
+  t=1300 riku_x B=56550 L=3094（密度 18.3）| 最便宜的敌方真人 Player 726#18[T4]（3384 格 / 19249 兵）每格 20.2 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 75231（floorFor0 75231、safeP×peopleSafe 0、dpKeep 49626、peopleFloor 0、floorAt 150461〔价格留底 150461、ref×邻居均值 0、defenseNeed 128364、keepCap 封顶 309400〕）、可用 -18681、吃光要 182143
+  t=1400 ryan_m B=118898 L=5886（密度 20.2）| 最便宜的敌方真人 Gahhhaha#5[T2]（8262 格 / 65039 兵）每格 27.2 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是我方队友；底线 154370（floorFor0 154370、safeP×peopleSafe 0、dpKeep 61458、peopleFloor 0、floorAt 308740〔价格留底 266728、ref×邻居均值 0、defenseNeed 308740、keepCap 封顶 588600〕，参照 [APEX] riku_x#41[T1] 的 77185 兵（经由 Player 726#18[T4]））、可用 -35472、吃光要 128323
+  t=1400 talon5 B=154400 L=4987（密度 31.0）| 最便宜的敌方真人 Lugunica Kingdom#25[T4]（12482 格 / 142618 兵）每格 38.6 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 160246（floorFor0 160246、safeP×peopleSafe 0、dpKeep 75920、peopleFloor 0、floorAt 320492〔价格留底 320492、ref×邻居均值 0、defenseNeed 20269、keepCap 封顶 498700〕）、可用 -5846、吃光要 272929
+  t=1400 riku_x B=77185 L=3094（密度 24.9）| 最便宜的敌方真人 Player 726#18[T4]（3384 格 / 28740 兵）每格 29.2 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）；底线 154700（floorFor0 154700、safeP×peopleSafe 0、dpKeep 58965、peopleFloor 0、floorAt 309400〔价格留底 173537、ref×邻居均值 0、defenseNeed 309400、keepCap 封顶 309400〕）、可用 -77515、吃光要 211974
