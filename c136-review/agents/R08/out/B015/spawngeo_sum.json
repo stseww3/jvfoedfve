@@ -1,0 +1,121 @@
+{
+ "matchId": "B015",
+ "W": 1541,
+ "H": 1080,
+ "edgeLimit": 130,
+ "squad": {
+  "n": 11,
+  "edgeMedian": 22,
+  "nearEdge": 8,
+  "nnAny": 164.84234892769516,
+  "nnMate": 230.26940743398808,
+  "nnWild": 175.82377541163197,
+  "nearestIsMate": 3
+ },
+ "others": {
+  "n": 33,
+  "edgeMedian": 264,
+  "nearEdge": 4,
+  "nnAny": 97.082439194738
+ },
+ "groups": [
+  {
+   "n": 3,
+   "bots": [
+    "Kaiser",
+    "System32",
+    "Darius"
+   ],
+   "teams": {
+    "8": 1,
+    "7": 2
+   },
+   "crossPairs": 2,
+   "samePairs": 0
+  },
+  {
+   "n": 3,
+   "bots": [
+    "Cataphract",
+    "Luigi",
+    "Yi Sun-sin"
+   ],
+   "teams": {
+    "5": 2,
+    "8": 1
+   },
+   "crossPairs": 1,
+   "samePairs": 1
+  },
+  {
+   "n": 2,
+   "bots": [
+    "Panzergrenadier",
+    "ProGamer99"
+   ],
+   "teams": {
+    "2": 1,
+    "8": 1
+   },
+   "crossPairs": 1,
+   "samePairs": 0
+  },
+  {
+   "n": 1,
+   "bots": [
+    "Guts"
+   ],
+   "teams": {
+    "4": 1
+   },
+   "crossPairs": 0,
+   "samePairs": 0
+  },
+  {
+   "n": 1,
+   "bots": [
+    "Don"
+   ],
+   "teams": {
+    "5": 1
+   },
+   "crossPairs": 0,
+   "samePairs": 0
+  },
+  {
+   "n": 1,
+   "bots": [
+    "Aurelian"
+   ],
+   "teams": {
+    "2": 1
+   },
+   "crossPairs": 0,
+   "samePairs": 0
+  }
+ ],
+ "edgeRows": [
+  {
+   "side": "下",
+   "bots": [
+    "Panzergrenadier",
+    "ProGamer99",
+    "Luigi",
+    "Cataphract",
+    "Yi Sun-sin"
+   ],
+   "gaps": [
+    259,
+    336,
+    208,
+    128
+   ],
+   "teams": [
+    2,
+    5,
+    8
+   ]
+  }
+ ],
+ "nn3CrossTeamMates": 9
+}
