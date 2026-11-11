@@ -411,8 +411,22 @@ def main():
         if tr:
             print('  日志最后几个快照（拍 领土 余额 密度 邻敌数 邻无主）：' + '  '.join(f'{r["t"]}:{r["terr"]}/{r["bal"]}/{r["dens"]}/nb{r["nb"]}/neut{r["neut"]}' for r in tr))
 
-    section('6 余额骤降对账（对局包标的 DROP30：90 拍内余额跌 30% 以上）')
-    drops = M.anom.get('drop30Events', []) if isinstance(M.anom, dict) else []
+    section('6 余额骤降对账（全量 DROP30：traj.csv 里同一个号相邻两行快照之间余额跌 30% 以上；对局包 anomalies.json 只列前 30 条）')
+    # 全量口径与统筹工具 audit_data.drop30_full 相同，也与 anomalies.json 的 drop30Count 相同
+    drops = []
+    _sn = collections.defaultdict(list)
+    for r in M.traj:
+        try:
+            _sn[r['bot']].append((int(r['t']), int(float(r['bal'])), int(float(r['terr']))))
+        except (KeyError, ValueError):
+            continue
+    for _b, _rows in _sn.items():
+        for x, y in zip(_rows, _rows[1:]):
+            if x[1] > 0 and (x[1] - y[1]) / x[1] >= 0.30:
+                drops.append({'bot': _b, 't0': x[0], 't1': y[0], 'bal0': x[1], 'bal1': y[1], 'terr0': x[2], 'terr1': y[2]})
+    _cnt = M.anom.get('drop30Count') if isinstance(M.anom, dict) else None
+    print(f'全量 {len(drops)} 次（对局包 drop30Count = {_cnt}，drop30Events 只列了 {len(M.anom.get("drop30Events", [])) if isinstance(M.anom, dict) else 0} 条）')
+    tot_drop = tot_atk = tot_don = tot_boat = tot_fee = 0
     idof = {v.replace('[APEX] ', ''): k for k, v in M.ours.items()}
     cls = collections.Counter()
     lines = []
@@ -460,6 +474,7 @@ def main():
         if refund:
             parts.append(f'撤兵退回 {fmt(refund)}')
         main = max([('陆攻', sa), ('捐款', sd), ('装船', boat), ('挨打或其他', drop - sa - sd - boat - fee)], key=lambda x: x[1])[0]
+        tot_drop += max(0, drop); tot_atk += sa; tot_don += sd; tot_boat += boat; tot_fee += fee
         if sa:
             tgt = atk.most_common(1)[0][0]
             main = '陆攻-无主地' if tgt == 512 else ('陆攻-内置AI' if tgt >= ku else '陆攻-真人') if main == '陆攻' else main
@@ -467,11 +482,16 @@ def main():
         nb = max((c for c in [0]), default=0)
         lines.append(f'  {b:8s} [{t0},{t1}] 余额 {fmt(b0)}→{fmt(b1)}（-{100*drop/max(b0,1):.0f}%） 领土 {dv["terr0"]}→{dv["terr1"]}：' + '；'.join(parts) + f' ⇒ {main}')
     print(f'共 {len(lines)} 次；主因分类：' + '，'.join(f'{k} {v}' for k, v in cls.most_common()))
+    if tot_drop > 0:
+        own = tot_atk + tot_don + tot_boat + tot_fee
+        print(f'这些窗口里余额合计跌了 {fmt(tot_drop)}；同期自己花出去的：陆攻 {fmt(tot_atk)}、捐款到账 {fmt(tot_don)}、装船 {fmt(tot_boat)}、手续费/税 {fmt(tot_fee)}，合计 {fmt(own)}'
+              f'（按主因计：自己花掉的 {sum(v for k, v in cls.items() if k != "挨打或其他")} 次 = {100*sum(v for k, v in cls.items() if k != "挨打或其他")/max(1,len(lines)):.0f}%，其中捐款 {cls.get("捐款",0)} 次 = {100*cls.get("捐款",0)/max(1,len(lines)):.0f}%；挨打或其他 {cls.get("挨打或其他",0)} 次 = {100*cls.get("挨打或其他",0)/max(1,len(lines)):.0f}%）')
     lines.sort(key=lambda l: -float(l.split('（-')[1].split('%')[0]))
-    for l in lines[:14]:
+    show_all = bool(os.environ.get('DIGEST_ALL_DROPS'))   # 设了就把全部骤降逐条列出
+    for l in (lines if show_all else lines[:14]):
         print(l)
-    if len(lines) > 14:
-        print(f'  …其余 {len(lines)-14} 次略（按跌幅排序）')
+    if len(lines) > 14 and not show_all:
+        print(f'  …其余 {len(lines)-14} 次略（按跌幅排序；设环境变量 DIGEST_ALL_DROPS=1 可全部列出）')
     # 单批清仓：同一拍同一号 3 条以上出兵指令
     batches = collections.defaultdict(list)
     for c in M.cmd:
