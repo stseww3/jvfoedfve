@@ -268,6 +268,94 @@ export function diagBoats(pol, g, nm) {
     }
   } else {
     out.push(`    [idleBoats] 非封死分支（nb=${pol.nb.length} neut=${pol.neutral} mopUp=${mop}）；闲置线 idleCap×100×地=${f(P.idleCap * 100 * L)}，余额 ${f(B)}`);
+    // 两个发船入口各自的门（Policy.idleBoats L5058~5069 → V13.boatFood L2001~2021 / General.boatOut L999~1015）
+    if (!mop) {
+      const why = [];
+      if (!(P.boatFood > 0)) why.push('boatFood 参数为 0');
+      if (pol.neutral > 0) why.push('身边还有无主地（L2003）');
+      if (!g.boatsAllowed(me) || g.boatCount[me] >= P.maxBoats) why.push(`不能发船或在航船 ${g.boatCount[me]} 条 ≥ maxBoats ${P.maxBoats}（L2004）`);
+      let cheapNb = null;
+      for (const q of pol.nb) {
+        if (!g.alive[q] || pol.person(g, q)) continue;
+        let pr = Infinity;
+        try { pr = pol.price(g, q); } catch (e) { /* ignore */ }
+        if (pr <= P.botMax && (!cheapNb || pr < cheapNb.pr)) cheapNb = { q, pr };
+      }
+      if (cheapNb) why.push(`陆上邻居里有单价 ≤ botMax ${P.botMax} 的内置 AI：${nm(cheapNb.q)} 地 ${g.terr[cheapNb.q]} 兵 ${f(g.bal[cheapNb.q])} 单价 ${cheapNb.pr.toFixed(1)}（L2005 直接返回，不找海对面的地）`);
+      let hit = null;
+      if (!why.length) {
+        try { hit = pol.searchFood(g); } catch (e) { hit = null; }
+        if (!hit) why.push('searchFood 找不到落点');
+        else if (hit.eff > P.botMax) why.push(`searchFood 最好的落点折算 ${hit.eff.toFixed(1)} > botMax ${P.botMax}（L2008）`);
+        else {
+          // L2010~2014：可装 = boatFrac×(余额 − max(reserve, floorAt))，不够最小船量就不发
+          let fl = NaN;
+          try { const { floorAt } = pol.floors(g); fl = Math.max(pol.reserve(g, hit.price), floorAt(hit.price)); } catch (e) { fl = NaN; }
+          const max = P.boatFrac * (B - fl), min = Math.max(60, P.feeK * iV(32 * B, 1024));
+          if (Number.isFinite(fl) && max < min) why.push(`searchFood 落点 ${g.px[hit.land] === 1 ? '无主地' : nm(g.own[hit.land])} 折算 ${hit.eff.toFixed(1)}，但可装 boatFrac×(余额 ${f(B)} − 底线 ${f(fl)}) = ${f(max)} < 最小船量 ${f(min)}（L2014）`);
+        }
+      }
+      out.push(`      boatFood（吃海对面的无主地 / 内置 AI，最小船量 = feeK×船手续费 = 余额的 12.5%）：${why.length ? '不发：' + why.join('；') : `会发，落点 ${g.px[hit.land] === 1 ? '无主地' : nm(g.own[hit.land])}，折算 ${hit.eff.toFixed(1)}（冷却另计）`}`);
+      const why2 = [];
+      if (pol.neutral > 0) why2.push('身边还有无主地（L5059）');
+      if (pol.nb.length && B < P.idleCap * 100 * L) why2.push(`有陆上邻居且余额 < 闲置线 ${f(P.idleCap * 100 * L)}（L5060）`);
+      if (!g.boatsAllowed(me) || g.boatCount[me] >= P.maxBoats) why2.push(`不能发船或在航船已满`);
+      out.push(`      boatOut（把 boatFrac×(余额−底线) 装船去最便宜的落点）：${why2.length ? '不发：' + why2.join('；') : '门都过（冷却另计）'}`);
+    }
   }
+  return out;
+}
+
+// 发船选落点（General.searchWater L1020~1079）的候选清单：照抄它的水面广搜和折算公式，但不提前收工，
+// 把每个可登陆对象（无主陆块 / 内置 AI / 真人）各自最好的落点都列出来，看它为什么选了这个、没选那个。
+//   折算 eff：无主地 = 2×grow + 船手续费/连片格数；别人的地 = 单价×grow + 船手续费/(0.75×它的领土)，
+//   单价 = 2 + 2×它的余额/(1 + 它的领土×10/16)，grow = exp(boatDecay×水程)。水程超过 boatRange 的不在候选里。
+// range 给大一点（默认 2500）是为了看「超出 boatRange 的对象离多远」。
+export function diagWater(pol, g, nm, range = 2500) {
+  const P = pol.p, me = pol.me, N = g.N, px = g.px, own = g.own, d = g.dir4;
+  const out = [];
+  let comp = null;
+  try { comp = pol.compSize(g); } catch (e) { return ['    [searchWater 候选] compSize 出错 ' + String(e).slice(0, 60)]; }
+  const dist = new Int32Array(N).fill(-1), q = new Int32Array(N);
+  let h = 0, t = 0;
+  const seed = (list) => { for (let i = list.length - 1; i >= 0; i--) for (let k = 0; k < 4; k++) { const c = list[i] + d[k]; if (px[c] === 2 && dist[c] < 0) { dist[c] = 0; q[t++] = c; } } };
+  seed(g.coast[me]); seed(g.border[me]);
+  const fee = P.boatFee > 0 ? iV(32 * g.bal[me], 1024) : 0;
+  const noBots = !!pol.botOk && g.bal[me] < P.idleCap * 100 * g.terr[me];
+  const best = new Map(); // key -> {eff, dc, price, skip}
+  const put = (key, v) => { const o = best.get(key); if (!o || v.eff < o.eff) best.set(key, v); };
+  while (h < t) {
+    const c = q[h++], dc = dist[c];
+    if (dc > range) break;
+    const grow = Math.exp(P.boatDecay * dc);
+    for (let k = 0; k < 4; k++) {
+      const n = c + d[k], v = px[n];
+      if (v === 2) { if (dist[n] < 0) { dist[n] = dc + 1; q[t++] = n; } }
+      else if (v === 1) put('N' + comp[n], { eff: 2 * grow + fee / Math.max(1, comp[n]), dc, price: 2, what: `无主地（连片 ${comp[n]} 格）`, skip: '' });
+      else if (v >= 16) {
+        const o = own[n];
+        if (o === me) continue;
+        let skip = '';
+        if (g.teams && g.teams[me] > 0 && g.teams[o] === g.teams[me]) skip = '队友';
+        else if (pol.cnt[o] > 0) skip = '已是陆上邻居（L1068 跳过）';
+        else if (noBots && g.isBot(o) && !pol.botOk(g, o)) skip = '余额未到闲置线且 botOk=false';
+        const price = 2 + (2 * g.bal[o]) / (1 + iV(10 * g.terr[o], 16));
+        put('P' + o, { eff: price * grow + fee / Math.max(1, 0.75 * g.terr[o]), dc, price, what: `${nm(o)}${o < g.humans ? '(真人)' : ''} 地 ${g.terr[o]} 兵 ${f(g.bal[o])}`, skip });
+      }
+    }
+  }
+  const all = [...best.values()].sort((a, b) => a.eff - b.eff);
+  const inR = all.filter((x) => x.dc <= P.boatRange && !x.skip);
+  let hit = null;
+  try { hit = pol.searchWater(g); } catch (e) { hit = null; }
+  const hitTxt = !hit ? '无' : hit.neutral ? `无主地（连片 ${hit.size} 格）` : `${nm(own[hit.land])} 折算 ${hit.eff.toFixed(1)}`;
+  out.push(`    [searchWater 候选 L1020~1079] 船手续费 ${f(fee)}，boatRange ${P.boatRange}，boatDecay ${P.boatDecay}；策略自己选的落点：${hitTxt}；范围内可选 ${inR.length} 个，折算最低的几个：`);
+  for (const x of inR.slice(0, 4)) out.push(`      ${x.what} 水程 ${x.dc} 单价 ${x.price.toFixed(1)} 折算 ${x.eff.toFixed(1)}`);
+  const hum = all.filter((x) => x.what.includes('(真人)'));
+  for (const x of hum) {
+    const rank = inR.indexOf(x);
+    out.push(`      真人对象 ${x.what} 水程 ${x.dc} 单价 ${x.price.toFixed(1)} 折算 ${x.eff.toFixed(1)} → ${x.skip ? x.skip : x.dc > P.boatRange ? '超出 boatRange' : `范围内第 ${rank + 1} 名`}`);
+  }
+  if (!hum.length) out.push(`      水程 ${range} 以内没有任何真人的岸`);
   return out;
 }

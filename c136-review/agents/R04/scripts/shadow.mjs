@@ -11,6 +11,7 @@
 //     --from/--to   影子策略运行的拍段（之前只快进引擎；策略内部记忆从 --from 开始积累）
 //     --trace       每个行动拍都打印：报价单前几条、底线、想发的指令
 //     --at          只在这些拍打印详细状态（报价单、底线、捐款判定）
+//     --water       配合 --at：另外打印发船选落点（searchWater）的候选清单（每个可登陆对象的水程、单价、折算）
 //     --every 5     像素层每 5 拍抄一次（默认；玩家/进攻/船每拍都抄）；--every 1 每拍都抄像素
 //   输出末尾有保真度自检：影子策略自己算的 nb/neut 与该号真实日志 [HL-TICK] 同拍的 nb/neut 是否一致，
 //   以及影子发出的调度（[HL-DISPATCH]）与真实日志同拍调度是否一致。
@@ -337,7 +338,7 @@ async function main() {
           if (t % 5 === 0) {
             const coreFrom = pol.p.coreFrom ?? 1500;
             if (t < coreFrom) outLines.push(...DIAG.diagPre(pol, g, nm));
-            else { outLines.push(...DIAG.diagCore(pol, g, nm, offers)); outLines.push(...DIAG.diagDonate(pol, g, nm)); outLines.push(...DIAG.diagBoats(pol, g, nm)); }
+            else { outLines.push(...DIAG.diagCore(pol, g, nm, offers)); outLines.push(...DIAG.diagDonate(pol, g, nm)); outLines.push(...DIAG.diagBoats(pol, g, nm)); if (has('--water')) outLines.push(...DIAG.diagWater(pol, g, nm)); }
           }
           for (const L2 of newLogs) if (!/HL-TICK/.test(L2)) outLines.push('    日志：' + L2.slice(0, 260));
         }
