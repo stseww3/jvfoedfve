@@ -1,11 +1,14 @@
-# 逐局复盘汇总（机械检查，2026-11-11 01:52 UTC）
+# 逐局复盘汇总（机械检查，2026-11-11 02:42 UTC）
 
 只查字段、数量和取值；内容对不对由 R10 抽查和 c136 复核。
 
-共 7 份复盘，来自 3 名复盘员。
+共 10 份复盘，来自 5 名复盘员。
 
 | 对局 | 复盘员 | 结果 | 分型 | 时间线 | 转折点 | 阵亡 | 决策（错/对/不清） | 新模式 | 未解 | 清单未过 |
 | :-- | :-: | :-: | :-- | --: | --: | --: | :-- | --: | --: | :-- |
+| A057 | R01 | lost | never-grew | 19 | 3 | 10 | 15（10/3/2） | 8 | 3 | 全过 |
+| A059 | R01 | lost | never-grew | 18 | 3 | 9 | 13（8/4/1） | 5 | 4 | 全过 |
+| A022 | R04 | won | win | 17 | 3 | 0 | 15（9/3/3） | 13 | 4 | 全过 |
 | B039 | R06 | lost | external | 21 | 3 | 6 | 14（8/3/3） | 15 | 5 | 全过 |
 | G01 | R07 | lost | lead-thrown | 16 | 3 | 8 | 17（9/3/5） | 18 | 8 | 全过 |
 | G04 | R07 | lost | lead-thrown | 17 | 3 | 7 | 16（9/4/3） | 17 | 6 | 全过 |
@@ -22,25 +25,56 @@
 | NEW-AT-02 | 6 | 0 | 1 |
 | NEW-AT-03 | 4 | 0 | 0 |
 | NEW-AT-04 | 3 | 0 | 1 |
+| NEW-AT-CHEAPKILL | 0 | 1 | 0 |
 | NEW-AT-G1 | 0 | 3 | 0 |
+| NEW-AT-NFSLOCK | 1 | 0 | 0 |
 | NEW-DF-01 | 4 | 0 | 0 |
 | NEW-DN-01 | 3 | 0 | 0 |
 | NEW-DN-02 | 3 | 0 | 0 |
 | NEW-DN-03 | 1 | 0 | 0 |
+| NEW-DN-CARRIER | 0 | 1 | 0 |
+| NEW-DN-QUOTABLIND | 1 | 0 | 0 |
 | NEW-EC-01 | 2 | 0 | 0 |
 | NEW-EC-02 | 1 | 0 | 1 |
 | NEW-EC-03 | 1 | 0 | 0 |
 | NEW-EC-04 | 0 | 0 | 1 |
 | NEW-EC-G1 | 0 | 1 | 0 |
+| NEW-EC-LANDLOCK | 1 | 0 | 0 |
+| NEW-EG-TAXBURN | 1 | 0 | 0 |
 | NEW-EX-02 | 3 | 0 | 0 |
 | NEW-EX-03 | 2 | 0 | 0 |
+| NEW-EX-LEAVER | 0 | 0 | 1 |
+| NEW-IO-DRAINBATCH | 1 | 0 | 1 |
+| NEW-IO-LAGLOSS | 1 | 0 | 0 |
 | NEW-OP-02 | 1 | 0 | 0 |
+| NEW-OP-ALLYLOCK | 2 | 0 | 0 |
+| NEW-OP-DPGOOD | 0 | 1 | 0 |
 | NEW-OP-G1 | 0 | 2 | 0 |
 | NEW-OP-G2 | 0 | 1 | 0 |
+| NEW-R01-AT01 | 0 | 2 | 0 |
+| NEW-R01-AT02 | 1 | 0 | 0 |
+| NEW-R01-AT04 | 0 | 1 | 0 |
+| NEW-R01-DF01 | 0 | 0 | 1 |
+| NEW-R01-DN01 | 0 | 2 | 0 |
+| NEW-R01-DN02 | 1 | 0 | 0 |
+| NEW-R01-DN04 | 2 | 0 | 0 |
+| NEW-R01-DN05 | 2 | 0 | 0 |
+| NEW-R01-DN06 | 0 | 0 | 1 |
+| NEW-R01-DN07 | 1 | 0 | 0 |
+| NEW-R01-EC01 | 2 | 0 | 0 |
+| NEW-R01-EG01 | 1 | 0 | 0 |
+| NEW-R01-IO01 | 1 | 0 | 0 |
+| NEW-R01-IO02 | 3 | 0 | 0 |
+| NEW-R01-IO03 | 2 | 0 | 0 |
+| NEW-R01-OP01 | 0 | 2 | 0 |
+| NEW-R01-OP02 | 1 | 0 | 0 |
+| NEW-R01-SP01 | 1 | 0 | 1 |
 | NEW-SE-01 | 1 | 0 | 2 |
 | NEW-SP-01 | 2 | 0 | 0 |
 | NEW-SP-02 | 1 | 0 | 0 |
 | NEW-SP-03 | 1 | 0 | 0 |
+| NEW-SP-DISC | 1 | 0 | 0 |
+| NEW-SP-RESOLVE | 0 | 0 | 1 |
 | NEW:AT-bot-farm | 0 | 1 | 0 |
 | NEW:DF-passive-death | 0 | 0 | 1 |
 | NEW:DN-husk-donate | 2 | 0 | 0 |
