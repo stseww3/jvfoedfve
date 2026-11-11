@@ -3,6 +3,7 @@
 // 用法：node region_share.mjs <matchId> [--replay id] [--log id1,id2] [--bots a,b] [--radius 100,150,200] [--ticks 180,630,...] [--per-bot]
 //   --per-bot：再按“离哪个号的出生点最近”把圈内的地分给各号（泰森多边形），逐号给出同样的分类（只用第一个半径）。
 // 输出：标准输出一张表 + out/<matchId>/region_share.csv（t,radius,scope,land,squad,mates,enemy,ai,neutral）。
+// 出生点取每个号最后一条落地的出生指令；没有出生指令的号（引擎随机安放）要先跑 spawn_actual.mjs，本脚本会读 out/<matchId>/spawn_actual.csv 补上。
 // 说明：分母是圈内的全部陆地格（含山以外的可占陆地；水和山不算）。出生阶段结束之前（t=0）圈内几乎全是无主地。
 import fs from 'node:fs';
 import path from 'node:path';
@@ -34,6 +35,15 @@ const label = Object.fromEntries(Object.entries(squad).map(([b, p]) => [p, b]));
 // openMatch 已经把出生阶段放完，m.spawn 里是每个号最后一条出生指令的坐标
 const sp = [];
 for (const p of sqIds) if (m.spawn[p]) sp.push([p, m.spawn[p][0], m.spawn[p][1]]);
+// 没有出生指令落地的号（被引擎随机安放，A003 有 7 个）：用 spawn_actual.mjs 量出来的实际出生点补上
+const saFile = path.join(OUT, 'spawn_actual.csv');
+if (fs.existsSync(saFile)) {
+  const have = new Set(sp.map((x) => x[0]));
+  for (const line of fs.readFileSync(saFile, 'utf8').trim().split('\n').slice(1)) {
+    const [, pp, x, y] = line.split(',');
+    if (sqIds.has(+pp) && !have.has(+pp)) sp.push([+pp, +x, +y]);
+  }
+}
 if (!sp.length) { console.error('没有出生点'); process.exit(1); }
 
 // 每个陆地格：到最近出生点的距离、最近的是哪个号

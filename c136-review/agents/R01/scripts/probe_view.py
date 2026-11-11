@@ -154,7 +154,7 @@ if gate is not None:
         pk = keep
         if safe is not None: keep = max(keep, safe)
         avail = (B - fee - keep) if keep != INF else None
-        fl = ''.join(k for k, f in (('M', o.get('onMe')), ('N', nc), ('B', o.get('bleeding')), ('H', o.get('isCrowdedHard')), ('O', over), ('A', not person)) if f)
+        fl = ''.join(k for k, f in (('M', o.get('onMe')), ('N', nc), ('B', o.get('bleeding')), ('H', o.get('isCrowdedHard')), ('O', over), ('A', not person), ('P', o.get('pulseMode'))) if f)
         f0 = lambda v, w: (f"{v:{w}.0f}" if v is not None and v != INF else f"{'-':>{w}s}")
         sent = str(d.get('buy')) == 'true'
         cnt['n'] += 1
@@ -178,7 +178,7 @@ if gate is not None:
             if o['need'] < B: cnt['canKillBlocked'] += 1
         else: cnt['held'] += 1
         print(f"  {t:5d} {B:8d} {L:6d} {dMe:5.1f} | {c:6.1f} {worth:6.1f} | {o['need']:7.0f} | {f0(safe, 14)} {f0(budget, 7)} {f0(pk, 9)} | {f0(avail, 8)} {0.2 * B:8.0f} {max(4 * fee, 0.04 * B):9.0f} | {fl:4s} | {d.get('buy')}")
-    print('（标记：M=对方正在打我 N=nearCollapse B=bleeding H=isCrowdedHard O=余额过 100 倍领土 A=非真人（离场壳或 AI）；c ≥ worth 且不 over 时 buyLand 在价格线（Vb L5359 / Va L5358）直接退出）')
+    print('（标记：M=对方正在打我 N=nearCollapse B=bleeding H=isCrowdedHard O=余额过 100 倍领土 A=非真人（离场壳或 AI） P=pulseMode（真人目标走脉冲分支 Vb L5595–5607 / Va L5594–5606，否则走预算分支）；c ≥ worth 且不 over 时 buyLand 在价格线（Vb L5359 / Va L5358）直接退出）')
     print(f"汇总 [{t0},{min(t1, 99999)}] 对 {nm(gq)}：有报价的决策拍 {cnt['n']}；这一拍 buyLand 出手 {cnt['sent']}（不一定是打它）；没出手的：卡在价格线 {cnt['price']}，"
           f"过了价格线但 avail ≤ 0 的 {cnt['noavail']}（其中 keep 取自 safeAt 的 {cnt['bysafe']}），avail > 0 但没出手 {cnt['held']}")
     if cs:

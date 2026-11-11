@@ -12,26 +12,33 @@
 //
 // 用法：node shadow.mjs <matchId> [--replay other] [--log id1,id2] [--bots a,b|all] [--strategy va|vb|c110|c116|g09]
 //                        [--to T] [--accept always|sim] [--per-tick 1] [--quit 1|0] [--probe bot:t0:t1] [--tag x] [--nocut] [--pin-no-full] [--quiet]
-//   --pc-shift cause（默认）| auto | 0 | 1 | slot：Policy.send 记下的 pendingQuotaCheck（isNoFullSend 的核对记录）从哪一拍开始核对。
+//   --pc-shift land（默认）| cause | auto | turn | 0 | 1 | slot | landslot：Policy.send 记下的 pendingQuotaCheck（isNoFullSend 的核对记录）从哪一拍开始核对。
+//       land  = 发令拍 +1 那一拍如果本号丢了地（领土比上一拍少），这条记录晚 1 拍才核对；否则代码原样（+1 起）。A003 起的默认。
+//               12 局 5170 个 HL-TICK 点（nb/neut/进攻+捐兵受理条数）全部对得上，是目前唯一一种全对的口径（python3 scripts/pc_modes.py）：
+//               cause 在 A003 alex_k 对不上（1045 拍发令，1046 拍 Bank of Rah 的进攻收线砸掉 518 兵、没有丢地；日志要求 1046 拍就核对）；
+//               auto / turn 在 A031 zexos1 对不上（1205 拍发令，1206 拍被 AI#428 吃掉 41 格、余额掉 1138；日志要求不早于 1207 拍核对）。
+//               快照拍正好丢地的点上日志的 terr/bal 都是“本拍结算完”的值（snap_loss.mjs：A003 19/19），所以不是策略看到的余额晚了一拍；
+//               landslot（丢地的拍整次 act 不跑）在 A003 上大面积对不上，也排除。线上外壳为什么这样，镜像里没有外壳源码，仍记为 unknown。
+//       turn  = auto + “发令拍 +1 正好是新回合第一拍（拍号 %7==0）时晚 1 拍”（对照用，A031 对不上）。
 //       0    = 代码原样：发令拍 +1 到 +7。
 //       1    = 一律晚 1 拍：发令拍 +2 到 +7（--pc-end shift 则到 +8）。
 //       auto = 代码原样，但“本拍受理了一条、同一拍策略又下了第二条被适配层拒掉”时，这条记录晚 1 拍才开始核对（A050 之前的默认）。
 //       cause = 发令拍 +1 那一拍只有“上一拍执行过本号自己的指令（陆攻/捐款/船落地）”才核对，否则晚 1 拍。
 //       slot  = 对照：同样的条件下整次 act 不跑（假设外壳的 canAct 在这一拍返回假）。A050 上与 cause 的 HL-TICK 结果相同，分不出来。
-//       11 局对照（HL-TICK 的 cmds 逐点对比）：cause 是唯一一种全部对得上的口径——
+//       【旧记录：A050 时的结论，A003 的 alex_k 推翻了它，现在以上面的 land 为准】11 局对照（HL-TICK 的 cmds 逐点对比）：当时 cause 是唯一一种全部对得上的口径——
 //         A050：auto 下 riku_x 990 拍起 cmds 多 1（965 拍发令，966 拍余额被 AI#129 打掉 947，影子在 966 拍核对并清额度，970 拍的下一条放行；
 //               日志是 18 条 = 970 拍那条被拦，即核对不早于 967 拍）；1 下 zero_7 990 拍起少 1（945 拍发令，946 拍余额因 850 拍那条旧令落地而下降，
 //               日志要求 946 拍就核对）；cause 下 10 个号 502/502 点全同。
 //         A055 539/539、A057 全同且 riku_x 53/53 条配上、A059、A094-Y 86/86、A075、A054、A031、A009、A023 516/516 全同；A019 与 auto 相同（只差船指令受理，见 PROGRESS）。
 //       机制不明（线上外壳源码不在镜像里）：现象是“自己指令的扣款在 +1 拍就被核对，别人打掉的余额要到 +2 拍才被核对”。
-//       四局的对照（都是机械对比，命令见 notes/PROGRESS.md）：
+//       【旧记录：M1 时的结论】四局的对照（都是机械对比，命令见 notes/PROGRESS.md）：
 //         A055：0 → 539/539 个 HL-TICK 点全同；1 → kaito9（900 拍起）、riku_x（1260 拍起）、alex_k（4140 拍起）的 cmds 各少 1；auto → 539/539。
 //               例：kaito9 875 拍发令，876 拍余额因更早一条指令落地而下降 → 876 拍额度清零，到 880 拍回到 727，下一条（门槛 697）放行；
 //               若 877 拍才清零，880 拍只有 547，下一条被拦，和日志（cmds=25）、录像（896 拍落地 pct=73）都对不上。
 //         A057：0 → HL-TICK 全同，但 riku_x 最后 4 条对 [ua] 的指令影子是 pct=0、录像是 pct=122（11905、11910 拍发令后 +1 拍余额正被 [ua] 打掉，
 //               原样会把 isNoFullSend 置真）；1 和 auto → 53/53 条全部配上。这两次发令都是“同拍第二条被拒”的情形。
 //         A059、A094：三种口径的 HL-TICK 点全同（290/290、86/86）；置真拍号最多差 1 拍。
-//       所以默认用 auto：它是唯一一种四局都对得上的口径。线上外壳为什么在这种情形下少核对 1 拍，镜像里没有外壳源码，查不到（记为 unknown）。
+//       当时因此默认用 auto（现在默认是 land，见上）。线上外壳为什么在这种情形下少核对 1 拍，镜像里没有外壳源码，查不到（记为 unknown）。
 //   --pc-end keep（默认）：核对窗口的终点不后移，仍是“发令拍 + 7”（A094 noah88 560 拍发令、余额 568 拍才掉：窗口若延到 568 拍，570 拍的下一条被拦，对不上日志）。
 //   --pc-trace：把每条待检记录的去向（pcEval 被核对 / pcDrop 超时作废 / pcOver 被下一条覆盖）记进 shadow_flags.csv
 //   --act-every N：对照用，假设外壳每 N 拍才调一次 act（N=5 时 A057 有 4 个号的 cmds 对不上日志，已排除）
@@ -368,6 +375,7 @@ export async function runShadow(mid, o = {}) {
   while (g.t < TO && m.tick()) {
     for (const s of sh) {
       const p = s.p;
+      const lostLand = s.prevTerr != null && g.terr[p] < s.prevTerr; s.prevTerr = g.terr[p];
       if (!g.alive[p] || g.state[p] === 2) continue;
       // 日志每 90 拍必有一行 HL-TICK：最后一行之后超过 89 拍，说明真实客户端没有算到这一拍（卡死或已断开），影子也停。
       if (!o.nocut && g.t > (s.b.lastLogT ?? 0) + 89) continue;
@@ -378,6 +386,10 @@ export async function runShadow(mid, o = {}) {
       if (o.pcEnd === 'keep' && s.pol.pendingQuotaCheck?._sh && g.t > s.pol.pendingQuotaCheck.t + 6 - s.pol.pendingQuotaCheck._sh) s.pol.pendingQuotaCheck = null;
       // --pc-shift cause：待检记录第一次到期的那一拍（发令拍 +1），只有“上一拍执行过本号自己的指令”才核对；否则晚 1 拍。
       if (o.pcCause && s.pol.pendingQuotaCheck && s.pol.pendingQuotaCheck.t === g.t && !s.pol.pendingQuotaCheck._sh && ownCmdStep[p] !== g.t - 1) { s.pol.pendingQuotaCheck.t += 1; s.pol.pendingQuotaCheck._sh = 1; }
+      // --pc-shift land（对照用）：待检记录第一次到期的那一拍，如果本号这一拍丢了地，晚 1 拍核对。
+      if (o.pcLand && s.pol.pendingQuotaCheck && s.pol.pendingQuotaCheck.t === g.t && !s.pol.pendingQuotaCheck._sh && lostLand) { s.pol.pendingQuotaCheck.t += 1; s.pol.pendingQuotaCheck._sh = 1; }
+      // --pc-shift landslot（对照用）：假设外壳在本号丢地的那一拍让 canAct 返回假，整次 act 不跑。
+      if (o.pcLandSlot && lostLand) continue;
       // --pc-shift slot（对照用）：假设外壳在“上一拍刚发过令、且上一拍没有本号自己的指令被执行”时让 canAct 返回假，整次 act 不跑。
       if (o.pcSlot && s.lastOkT === g.t - 1 && ownCmdStep[p] !== g.t - 1) continue;
       const nf0 = !!s.pol.isNoFullSend, pc0 = s.pol.pendingQuotaCheck ? { ...s.pol.pendingQuotaCheck } : null, bal0 = g.bal[p];
@@ -386,6 +398,7 @@ export async function runShadow(mid, o = {}) {
         // --pc-shift auto：只有“本拍受理了一条、同拍又有一条被适配层拒掉”时才把核对起点后移 1 拍（见文件头）。
         let shiftBy = o.pcShift;
         if (o.pcAuto) { let nOk = 0, nNo = 0; for (let k = nCmd0; k < cmds.length; k++) { if (cmds[k].ok) nOk++; else nNo++; } shiftBy = nOk > 0 && nNo > 0 ? 1 : 0; }
+        if (o.pcTurn && !shiftBy && (g.t + 1) % 7 === 0) shiftBy = 1; // 对照口径 turn：发令拍 +1 正好是新回合的第一拍时晚 1 拍核对
         if (shiftBy && s.pol.pendingQuotaCheck && s.pol.pendingQuotaCheck.t === g.t + 1 && !s.pol.pendingQuotaCheck._sh && !s.pol.pendingQuotaCheck._seen) { s.pol.pendingQuotaCheck.t += shiftBy; s.pol.pendingQuotaCheck._sh = shiftBy; }
         if (s.pol.pendingQuotaCheck) s.pol.pendingQuotaCheck._seen = 1;
         for (let k = nCmd0; k < cmds.length; k++) if (cmds[k].ok) s.lastOkT = g.t;
@@ -531,7 +544,7 @@ if (IS_MAIN) {
   const t0 = Date.now();
   const r = await runShadow(mid, {
     replay: opt('replay', mid), log: opt('log', mid).split(','), bots: opt('bots', 'all'), strategy: opt('strategy', null),
-    nocut: argv.includes('--nocut'), pinNoFull: argv.includes('--pin-no-full'), to: opt('to', null) ? +opt('to') : undefined, accept: opt('accept', 'always'), perTick: +opt('per-tick', 1), actEvery: +opt('act-every', 1), pcShift: ['auto', 'cause', 'slot'].includes(opt('pc-shift', 'cause')) ? 0 : +opt('pc-shift', 0), pcAuto: opt('pc-shift', 'cause') === 'auto', pcCause: opt('pc-shift', 'cause') === 'cause', pcSlot: opt('pc-shift', 'cause') === 'slot', pcTrace: argv.includes('--pc-trace'), pcEnd: opt('pc-end', 'keep'), quit: +opt('quit', 1), probe: opt('probe', null),
+    nocut: argv.includes('--nocut'), pinNoFull: argv.includes('--pin-no-full'), to: opt('to', null) ? +opt('to') : undefined, accept: opt('accept', 'always'), perTick: +opt('per-tick', 1), actEvery: +opt('act-every', 1), pcShift: ['auto', 'cause', 'slot', 'turn', 'land', 'landauto', 'landslot'].includes(opt('pc-shift', 'land')) ? 0 : +opt('pc-shift', 0), pcAuto: ['auto', 'turn', 'landauto'].includes(opt('pc-shift', 'land')), pcTurn: opt('pc-shift', 'land') === 'turn', pcLand: ['land', 'landauto'].includes(opt('pc-shift', 'land')), pcLandSlot: opt('pc-shift', 'land') === 'landslot', pcCause: opt('pc-shift', 'land') === 'cause', pcSlot: opt('pc-shift', 'land') === 'slot', pcTrace: argv.includes('--pc-trace'), pcEnd: opt('pc-end', 'keep'), quit: +opt('quit', 1), probe: opt('probe', null),
   });
   const { m, sh, cmds, slog, check, probeOut, idleAgg } = r;
   const dir = path.join(OUT_ROOT, mid);

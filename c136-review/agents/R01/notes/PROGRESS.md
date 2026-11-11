@@ -3,14 +3,16 @@
 ## 状态
 - M1 完成：A057、A059、A094；M2 完成：A055、A075、A054。全部通过本地机械检查（`python3 scripts/check_my_review.py`）。
 - M3 完成：A031（never-grew）、A019（mid-collapse）、A009（never-grew，Va）；m3-reviews 报告已发（里面更正了 A075 的判定数：错 10 / 不清 5 / 对 5）。
-- M4 进行中：A023 完成（never-grew；错 9 / 不清 8 / 对 3；新模式 AT12、AT13）；A050 完成（external；错 9 / 不清 5 / 对 6；新模式 EG03）；接着 A003（Va），做完发 m4-reviews。
+- M4 完成：A023（never-grew；错 9 / 不清 8 / 对 3；新模式 AT12、AT13）；A050（external；错 9 / 不清 5 / 对 6；新模式 EG03）；A003（never-grew，Va；错 7 / 不清 9 / 对 3；新模式 SP04、DN13）。
+- M5 进行中：A005（Va，没有地图，只有日志）→ B039 → B043；然后 M6。
 - 总部 0006：所有 node 重演/影子命令必须 `bash ../../tools/run-heavy.sh node scripts/...`（在 agents/R01 下），串行、一次一局，结果缓存在 out/。
   **一次 Shell 调用只跑一条 node 命令**（机器 load 高时一条 shadow 就要 30–90 秒，两条串在一起会被 timeout 120 杀掉）。
 
 ## 每局流水线
 1. `bash c136-review/tools/run-heavy.sh node scripts/resim.mjs <mid> [--replay 同局A包] [--log 包1,包2] [--bots a,b]`：整局重演，和日志 [HL-TICK] 逐号核对。
 2. `run-heavy.sh node scripts/shadow.mjs <mid> [--bots ..] [--pin-no-full --tag nf0] [--probe bot:t0:t1 --tag x]`：把重演的每拍状态喂给部署的策略原文。
-   默认 isNoFullSend 检查窗口 = 发令拍 +2..+7（`--pc-shift 1 --pc-end keep`），三局全对。
+   默认 `--pc-shift land`（isNoFullSend 的核对点取发令后 1 拍；这一拍本号丢了地就再晚 1 拍）：12 局 5170/5170 个 HL-TICK 点全对（`python3 scripts/pc_modes.py`）。
+   旧口径 1 / auto / cause 都各有一局对不上（见 shadow.mjs 文件头）；外壳源码不在镜像里，机制仍是 unknown。
 3. `resim_report.py --section meta,timeline,percap,bots,events,pairs,transfers,front,spawn,drops`；
    `shadow_report.py --section check,lagcurve,chunks,bursts,paths,repeat,donate,idle`（idle 里有价格线细分）；`shadow_diff.py <mid> nf0`。
 4. `burst_audit.mjs`、`dispatch_audit.mjs`、`tick_cost.py`、`q.py <mid> <表> --where .. --show ..`。
@@ -18,7 +20,7 @@
 - 没有录像的实例（A094 的 X、A005）：`log_only.py`（spawn/squad/idle/dispatch/results/drops/share/late/chain）、`log_sync.py`；
   build_review 的 `timelineLog` 从日志填时间线，`timelineSpecB` 给第二个实例另填一张表。
 - 总部共享工具：`/agent/repos/c136-data/src/tools/engine_replay.cjs`（真引擎）、`engine_vs_resim.py` 对比。
-- `match_facts.py`（M1 的旧底稿脚本，读 bundle）的按席位对账在混了两个实例的包上不能用（A094）。
+- `match_facts.py`（M1 的旧底稿脚本，读 bundle）的按席位对账在混了两个实例的包上不能用（A094）。**别覆盖它**：A057、A059 的复盘引用它；A003 起的席位小表在 `seat_facts.py`。
 - M2 新增（都读 out/<mid>/）：`recon_facts.py --section dispatch,husk,slot,safe,ainb,doomed,peak [--siege bot:t0:t1]`（对账一节的汇总数）、
   `probe_view.py`（探针按决策拍一行）、`death_ledger.py`（阵亡号的最后一围）、`exchange_price.py`/`target_price.py`（换地与公式价）、
   `boat_fight.mjs`（海战）、`sea_landings.mjs` + `landing_math.py`（敌方登陆）、`map_ascii.mjs`（字符地图）。
@@ -110,6 +112,17 @@ RESULT 全是 left，7 条 leave 同在 4802 拍；停住前本队 30.05%、全�
 3213 拍前调度 242 条落地 9 条；翻盘靠 zexos1 打垮 Tennessee、talon5 吃壳 + 过 100 倍后脉冲连杀（AT08 判对）、3213 拍后后排输血（DN01 判对）。
 A050 里 safeFinite（threatOf L417–445）读清楚了：对一块 AI 地取它其他邻居（不排除队友）里余额最小的一个减去我在它身上的在途兵；密集出生时就是围在旁边的队友。
 M6 可做的全量计数：调度落地率（日志 HL-DISPATCH 行数 vs 录像 donate 条数）、被围死快照占比（card 的 boxedHighDensSnapshots）、船落在队友岸上的条数。
+A003 新增脚本：`spawn_actual.mjs`（每个号录像里的出生指令条数、实际出生点、离计划落点的距离；写 spawn_actual.csv，`region_share.mjs` 会读它补出生点）；
+  `seat_facts.py <mid> --section foecmds|who|flows|series|squad|kills|cmdcount|teamdon|adjacency`（人类席位打本队的每条令、指定席位自己的令、领土流向、并排序列、敌方阵亡、各队捐款）；
+  `strike_reply.py <mid>`（本队每一轮打真人：实扣/本意、打前打后密度、之后第一条打回来的人类进攻令隔几拍、是不是目标同队；末尾有基线）；
+  `donate_gate.py <mid> --tags 号:探针标签,…`（“有队友正被人类进攻”的决策拍里捐出方密度够不够 102、当拍 buyLand 是否先出手）；
+  `pc_modes.py`（12 局 × 各种 --pc-shift 口径的 HL-TICK 对比表）、`snap_loss.mjs`（快照拍正好丢地的点上日志值是不是本拍结算完的值）；
+  `step_cost.cjs --win W`（按窗口的引擎每拍耗时）；`probe_view.py --gate` 的标记多一个 P = pulseMode（判一条令走脉冲分支还是预算分支，**写 codePath 前先看这个标记**）。
+A003 新增模式：SP04 出生指令没落地、号被引擎随机安放（协调器第一版 10 条落地 0；A009 第一版 8 条落地 0）；DN13 有敌邻的号密度够不到 102，协防捐款的门全场开不了几次。
+A003 的主线：7 个号随机出生散在全图（开局人均反而全场最高）→ 750–1350 拍客户端落后 42–201 拍，AI 地被别人分走 → 1500 拍后重复下令把首击叠成余额五到七成
+  （41 个重复组实扣/本意 中位 2.78；riku_x、talon5、ryan_m 打完余额低于自己的 safeAt，35–77 拍后被目标同队反推）→ 其余号停在价格线/safeAt/20% 线攒兵 → 3060–3724 拍被 46 条令约 818 万兵逐个吃掉。
+  重复下令的机理：延迟 6–19 拍、决策周期 5 拍，预算分支（L5610–5615）没有在途检查，脉冲分支只看已落地的进攻线（L5595 curAtk ≥ 4% 余额）。M6 要全量数 IO04（`shadow_report --section repeat`）和 strike_reply。
+  OPENING-CHECK 行的 sent 计数比录像里 221 拍前落地的条数多 1–2 条，可能就是没落地的第一版出生指令（口径不明，别当结论）。
 
 ## 逐局进度
 - [x] A057（never-grew）
@@ -117,6 +130,6 @@ M6 可做的全量计数：调度落地率（日志 HL-DISPATCH 行数 vs 录像
 - [x] A094（lead-thrown；两个实例）
 - [x] A055（outscaled）  - [x] A075（win）  - [x] A054（mid-collapse）   （M2）
 - [x] A031（never-grew）  - [x] A019（mid-collapse）  - [x] A009（never-grew）   （M3）
-- [x] A023（never-grew）  - [x] A050（external）  - [ ] A003   （M4）
+- [x] A023（never-grew）  - [x] A050（external）  - [x] A003（never-grew）   （M4）
 - [ ] A005  - [ ] B039  - [ ] B043   （M5）
 - [ ] M6：reports/CROSS-MATCH-SUMMARY.md、全量模式计数脚本、cards/
