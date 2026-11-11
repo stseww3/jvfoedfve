@@ -32,6 +32,38 @@
   ]
  },
  {
+  "matchId": "A023",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-AT12",
+  "prefix": "AT",
+  "name": "余额过 100 倍后，溢出的兵脉冲打给杀不动的大邻居，够杀的邻居被跳过",
+  "definition": "buyLand 在 over（余额 > 100×领土）时把 keep 压到 90×领土，avail 只是溢出的一截。need ≤ 30% 余额的目标不算 pulseMode（offers L5291–5294），走满预算分支，avail 不够 1.25×need 就跳过（L5611–5613）；need > 30% 余额的目标是 pulseMode，按 12% 余额发脉冲（L5595–5607）。溢出的兵于是打给了杀不动的那个。",
+  "detect": "探针 offers() 同一拍里有 need < 余额、pulseMode=false 的目标，而 buyLand 本拍对 need 更大的 pulseMode 目标出手；probe_view --gate 对两个目标同拍都带 O 标记、buyLand=true。",
+  "instances": [
+   {
+    "matchId": "A023",
+    "t": 3405,
+    "note": "ryan_m 余额 2618386：Fagner（need 743006）被跳过，三条脉冲 789062 兵打 DARK（need 2517858），夺 1657 格"
+   }
+  ]
+ },
+ {
+  "matchId": "A023",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-AT13",
+  "prefix": "AT",
+  "name": "只有一个健康真人邻居：128 倍才打、108 倍就捐，两个门槛互锁",
+  "definition": "buyLand L5361–5365：只有一个真人邻居、它没在掉地也没打我、单价 ≥ worth 时，余额不到 overHumanCap(1.28)×100×领土就跳过。tryDonateToTeammate L4479 对不被围的号 reqD = 108，密度一过 108 就捐走余额的 18%–24%。两条叠在一起，这个号的密度在 80–120 之间来回，对唯一的邻居不出手。",
+  "detect": "probe_view --gate 汇总行“按唯一健康真人邻居跳过”> 0，且 dispatch_audit 同窗口该号有 dMe 108–127 的落地调度。",
+  "instances": [
+   {
+    "matchId": "A023",
+    "t": 3210,
+    "note": "talon5 对 Tenekld：3200–4878 拍 336 个报价拍里跳过 150、价格线 176；7 笔调度付出 2168412"
+   }
+  ]
+ },
+ {
   "matchId": "A031",
   "reviewer": "R01",
   "proposedId": "NEW-R01-IO01",
