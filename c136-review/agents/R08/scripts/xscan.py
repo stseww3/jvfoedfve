@@ -16,6 +16,8 @@
   [XS-E] R08 的 16 局逐局（模式命中表）
   [XS-F] 出局的时间：全部阵亡号的出局拍分位、峰值拍 → 出局拍的间隔
   [XS-G] 编队合计领土占全图陆地的份额，t=630 / 1530 / 3060 / 4500 / 6030（日志口径）
+  [XS-H] 离开的号：离开拍的分位、分段占比、离开时留下的地和兵
+  [XS-I] 捐款日志行按引擎受捐额度的分段：成交 / 被拒 / 定不了、到账上限、手续费
 """
 import json
 import os
@@ -85,7 +87,14 @@ def basics(m):
                 tot += tk[-1]["terr"]
                 n += 1
         share[t] = [tot / m.land if m.land else None, n]
-    return dict(bots=len(bots), died=len(died), left=len(left), leftWithLand=len(left_land), deathRows=death_rows, share=share,
+    # 离开的号：[离开拍, 离开时的地, 离开时结果行里的余额, 离开时这个号最后一条快照的兵密度]
+    left_rows = []
+    for b in left:
+        tk = [s for s in b["ticks"] if s["terr"] > 0]
+        left_rows.append([b.get("deathTick"), b.get("lastTerritory") or b.get("resTerritory") or 0, b.get("resBalance") or 0, tk[-1]["dens"] if tk else None])
+    # 捐款日志行：[发令拍, 种类, 余额观测的判定 ACC / REJ / ?, 手续费, 按受捐方 150 倍上限夹过的到账, pct, 捐出方发令时的余额]
+    don_rows = [[d["t"], d.get("kind") or "?", d.get("obsVerdict") or "?", d.get("fee") or 0, d.get("amountEff") or 0, d.get("pct"), d.get("myBal") or 0] for d in dons]
+    return dict(bots=len(bots), died=len(died), left=len(left), leftWithLand=len(left_land), deathRows=death_rows, leftRows=left_rows, donRows=don_rows, share=share,
                 firstDeath=min((m.death(b) for b in died), default=None),
                 bank=sum(b.get("resBalance") or 0 for b in died), bankBig=sum(1 for b in died if (b.get("resBalance") or 0) >= 100_000),
                 snaps=len(snaps), boxedSnaps=len(boxed), boxedHighDens=sum(1 for s in boxed if s["dens"] >= 95),
@@ -217,6 +226,50 @@ def main():
                 bt = max(sv)[1]
                 best[bt] = best.get(bt, 0) + 1
         out.append(f"    {nm} | " + " | ".join(cells) + " | " + "，".join(f"t={t}：{best.get(t, 0)}" for t in SHARE_T))
+    # [XS-H] 离开
+    out.append("[XS-H] 离开的号（日志口径；结果行 event=left）：组 | 离开的号 | 有离开的局 | 一局里 ≥ 一半的号离开的局 | 离开拍的 10% / 25% / 50% / 75% / 90% 分位 | ≤1500 拍 | 1500~3000 | 3000~8500 | >8500 拍 | "
+               "离开时还有 ≥100 格的 | 这些号离开时的地合计（每号中位）| 离开时账上的兵合计 | 离开时地 ≥ 全图 1% 的号")
+    left_agg = {}
+    for nm, rs in [("全部", rows)] + [(c, [r for r in rows if r["cohort"] == c]) for c in cohorts] + [("主队赢的局", won), ("没赢的局", lost)]:
+        lr = [(x, r) for r in rs for x in r["basics"].get("leftRows", []) if x[0] is not None]
+        if not lr:
+            continue
+        ts = sorted(x[0] for x, _ in lr)
+        q = statistics.quantiles(ts, n=20) if len(ts) >= 2 else [ts[0]] * 19
+        withland = [x for x, _ in lr if x[1] >= 100]
+        big = sum(1 for x, r in lr if r["land"] and x[1] >= 0.01 * r["land"])
+        half = sum(1 for r in rs if r["basics"]["left"] * 2 >= r["basics"]["bots"] and r["basics"]["left"] > 0)
+        n = len(ts)
+        out.append(f"    {nm} | {n} | {sum(1 for r in rs if r['basics']['left'] > 0)} | {half} | {q[1]:.0f} / {q[4]:.0f} / {q[9]:.0f} / {q[14]:.0f} / {q[17]:.0f} | "
+                   f"{rate(sum(1 for t in ts if t <= 1500), n)} | {rate(sum(1 for t in ts if 1500 < t <= 3000), n)} | {rate(sum(1 for t in ts if 3000 < t <= 8500), n)} | {rate(sum(1 for t in ts if t > 8500), n)} | "
+                   f"{len(withland)} | {sum(x[1] for x in withland)}（{statistics.median([x[1] for x in withland]) if withland else 0:.0f}）| {sum(x[2] for x, _ in lr)} | {big}")
+        left_agg[nm] = dict(n=n, matches=sum(1 for r in rs if r["basics"]["left"] > 0), halfMatches=half, q50=q[9], le1500=sum(1 for t in ts if t <= 1500), gt8500=sum(1 for t in ts if t > 8500),
+                            withLand=len(withland), land=sum(x[1] for x in withland), balance=sum(x[2] for x, _ in lr), big=big)
+    # [XS-I] 捐款日志行按引擎的受捐额度分段
+    DB = [("0~2142", 0, 2142), ("2142~3213", 2142, 3213), ("3213~4284", 3213, 4284), ("4284+", 4284, 10 ** 9)]
+    out.append("[XS-I] 捐款日志行按引擎受捐额度的分段（donationCost L348-357 的换算在 t=2142 / 3213 换档；t≥4284 不限额）。判定 = 捐出方下一条余额观测对『成交 / 被拒』两个预期的比对（facts.py）：")
+    out.append("    组 | 时段 | 有捐款的局 | 日志行 | 看得到成交 | 看得到被拒 | 定不了 | 成交 ÷（成交 + 被拒）| 成交的那些：到账上限 | 手续费 | 手续费 ÷ 到账 | pct < 63 的行（其中看得到成交的；这种捐款到账比手续费还少）")
+    don_agg = {}
+    for nm, rs in [("全部", rows)] + [(c, [r for r in rows if r["cohort"] == c]) for c in cohorts]:
+        for bn, a, z in DB:
+            dr = [x for r in rs for x in r["basics"].get("donRows", []) if a <= x[0] < z]
+            if not dr:
+                continue
+            acc = [x for x in dr if x[2] == "ACC"]
+            rej = [x for x in dr if x[2] == "REJ"]
+            small = [x for x in dr if x[5] is not None and x[5] < 63]
+            got, fee = sum(x[4] for x in acc), sum(x[3] for x in acc)
+            out.append(f"    {nm} | {bn} | {sum(1 for r in rs if any(a <= x[0] < z for x in r['basics'].get('donRows', [])))} | {len(dr)} | {len(acc)} | {len(rej)} | {len(dr) - len(acc) - len(rej)} | "
+                       f"{rate(len(acc), len(acc) + len(rej))} | {got} | {fee} | {rate(fee, got)} | {len(small)}（{sum(1 for x in small if x[2] == 'ACC')}）")
+            don_agg[f"{nm}|{bn}"] = dict(lines=len(dr), acc=len(acc), rej=len(rej), arrived=got, fee=fee, small=len(small))
+    kinds = {}
+    for r in rows:
+        for x in r["basics"].get("donRows", []):
+            k = kinds.setdefault(x[1], [0, 0, 0])
+            k[0] += 1
+            k[1] += x[2] == "ACC"
+            k[2] += x[2] == "REJ"
+    out.append("    按种类（全部）：" + "；".join(f"{k} {v[0]} 行（成交 {v[1]} / 被拒 {v[2]}）" for k, v in sorted(kinds.items(), key=lambda kv: -kv[1][0])))
     # [XS-E]
     mine = [r for r in rows if r["matchId"] in MINE]
     mine.sort(key=lambda r: MINE.index(r["matchId"]))
@@ -232,7 +285,7 @@ def main():
     os.makedirs(od, exist_ok=True)
     name = "xscan_mine" if mine_only else "xscan"
     open(os.path.join(od, f"{name}.txt"), "w", encoding="utf-8").write("\n".join(out) + "\n")
-    json.dump(dict(matches=len(rows), cohorts=cohorts, won=len(won), lost=len(lost), failed=failed, agg=agg, base=base, cadence=cadence, deathTiming=death_agg, shareTrajectory=share_agg,
+    json.dump(dict(matches=len(rows), cohorts=cohorts, won=len(won), lost=len(lost), failed=failed, agg=agg, base=base, cadence=cadence, deathTiming=death_agg, shareTrajectory=share_agg, leaves=left_agg, donationBands=don_agg, donationKinds=kinds,
                    quarter=dict(n=len(ratios), le026=sum(1 for x in ratios if x <= 0.26), le030=sum(1 for x in ratios if x <= 0.30), gt035=sum(1 for x in ratios if x > 0.35)),
                    rows=[{k: v for k, v in r.items()} for r in rows]),
               open(os.path.join(od, f"{name}.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1, default=str)
