@@ -2,11 +2,14 @@
 """snapq.py — 从重放缓存里打出若干真人席位在若干拍的 地 / 余额 / 密度（不重跑重放；快照每 10 拍一行）。
 
 用法：
-  python3 scripts/snapq.py <mid> <席位或名字片段[,…]|squad> <t1,t2,…|t0:t1:步长> [--sum] [--press]
+  python3 scripts/snapq.py <mid> <席位或名字片段[,…]|squad> <t1,t2,…|t0:t1:步长> [--sum] [--press] [--peaks]
   --sum    末尾加一列：所列席位的地、余额合计
+  --peaks  另起一段：各队（全部真人）、编队、所列席位各自的地盘峰值（拍、格数、占全图陆地 %）
+  --fate   另起一段：所列席位的离线拍、出局拍、最后一个有地的快照
   --press  另起一段：pairLog 里这些席位在相邻两个采样拍之间「被谁打掉多少格/多少余额」「对谁烧了多少兵/得多少格」
 名字片段匹配真人名字（大小写敏感、子串）；编队号可直接写 kaito9。
-pairLog 每行：[拍(每 30 拍一桶), 攻方, 守方, 得地, 攻方烧的兵, 守方掉的余额, 守方反击槽被消, 桶长]
+pairLog 每行：[拍(每 30 拍一桶，记的是桶的末拍：这一行覆盖 (拍−30, 拍]), 攻方, 守方, 得地, 攻方烧的兵, 守方掉的余额, 守方反击槽被消, 桶长]
+相邻采样拍 a~b 之间取 a < 拍 ≤ b 的行（与 dossier.py 的分段账同一口径）。
 """
 import json
 import os
@@ -85,6 +88,28 @@ def main():
         if "--sum" in sys.argv:
             line += f" || 合计 地 {sl} 兵 {k(sb)}"
         print(line)
+    if "--peaks" in sys.argv:
+        land = d["land"]
+        print(f"# 地盘峰值（快照每 10 拍一行；全图陆地 {land} 格）")
+        for tm in sorted(set(teams[p] for p in range(H) if teams[p] > 0)):
+            best = max(range(len(snapT)), key=lambda i: sum(d["snapTerr"][i][p] for p in range(H) if teams[p] == tm))
+            s = sum(d["snapTerr"][best][p] for p in range(H) if teams[p] == tm)
+            print(f"  队{tm} 全部真人（含已离线的）：{snapT[best]} 拍 {s} 格 = {s / land * 100:.2f}%")
+        best = max(range(len(snapT)), key=lambda i: sum(d["snapTerr"][i][p] for p in sq))
+        s = sum(d["snapTerr"][best][p] for p in sq)
+        n = sum(1 for p in sq if d["snapTerr"][best][p] > 0)
+        print(f"  编队：{snapT[best]} 拍 {s} 格 = {s / land * 100:.2f}%（有地的号 {n} 个，余额合计 {k(sum(d['snapBal'][best][p] for p in sq))}）")
+        for p in ids:
+            best = max(range(len(snapT)), key=lambda i: d["snapTerr"][i][p])
+            L, B = d["snapTerr"][best][p], d["snapBal"][best][p]
+            print(f"  {nm(p)}：{snapT[best]} 拍 {L} 格 = {L / land * 100:.2f}%（余额 {k(B)}）")
+    if "--fate" in sys.argv:
+        print("# 去向（重放缓存的 leftT = 离线拍、deathT = 出局拍；−1 或缺 = 到录像末尾都没有发生）")
+        for p in ids:
+            lt, dt = d["leftT"][p], d["deathT"][p]
+            last = max((i for i in range(len(snapT)) if d["snapTerr"][i][p] > 0), default=None)
+            tail = f"最后一个有地的快照 {snapT[last]} 拍（{d['snapTerr'][last][p]} 格/{k(d['snapBal'][last][p])}）" if last is not None else "从没有地"
+            print(f"  {nm(p)}：离线 {lt if lt is not None and lt >= 0 else '—'}，出局 {dt if dt is not None and dt >= 0 else '—'}；{tail}")
     if "--press" in sys.argv:
         print("# 相邻采样拍之间的交战（pairLog；只列涉及所列席位的）")
         S = set(ids)
@@ -92,7 +117,7 @@ def main():
             agg = {}
             for r in d["pairLog"]:
                 t, atk, dfn, gain, burn, lostB, slot = r[:7]
-                if a <= t < b and (atk in S or dfn in S):
+                if a < t <= b and (atk in S or dfn in S):
                     key = (atk, dfn)
                     x = agg.setdefault(key, [0, 0, 0, 0])
                     x[0] += gain
