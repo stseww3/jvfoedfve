@@ -535,8 +535,11 @@ if (PER_TICK > 0) {
   }
   console.log(`[每拍限 ${PER_TICK} 条] ${mid}: 被挤掉的指令 ${DROPS.length} 条｜${[...by.entries()].sort((a, c) => c[1][0] - a[1][0]).map(([k, [n, tr]]) => `${k} ×${n}（想出 ${Math.round(tr / 1000)}k）`).join('；') || '无'}`);
   console.log(`    按号：${[...perBot.entries()].sort((a, c) => c[1] - a[1]).map(([k, n]) => `${k} ${n}`).join(' ') || '无'}`);
+  const w300 = new Map();
+  for (const d of DROPS) { const w = Math.floor(d.t / 300) * 300; w300.set(w, (w300.get(w) || 0) + 1); }
+  if (w300.size) console.log(`    按 300 拍：${[...w300.entries()].sort((a, c) => a[0] - c[0]).map(([w, n]) => `${w}: ${n}`).join('；')}`);
   const ws = [...win.entries()].sort((a, c) => c[1][0] - a[1][0]).slice(0, 12);
   if (ws.length) console.log(`    被挤掉的「打真人」按 号×300 拍（前 12）：${ws.map(([k, [n, tr, tg]]) => `${k}: ×${n}（${Math.round(tr / 1000)}k → ${[...tg].join('/')}）`).join('；')}`);
 }
 if (floorT.size) console.log(`[留底汇总] ${mid} 采样拍 ${[...floorT].join(',')}｜有相邻机器人的(号×拍)样本 ${FL.n}｜其中没有任何机器人目标过得了留底 ${FL.locked}（${(100 * FL.locked / Math.max(1, FL.n)).toFixed(0)}%），留底≥全部存兵 ${FL.fullLock}｜锁死样本里定留底的「最弱其它邻居」：${Object.entries(FL.setter).map(([k, v]) => `${k} ${v}`).join('，')}｜其中 safeFinite ≥ 一半存兵（留底是卡住的原因）${FL.half} 个，按定留底的邻居：${Object.entries(FL.halfSetter).map(([k, v]) => `${k} ${v}`).join('，')}；safeFinite < 一半存兵却仍无目标（别的门槛）${FL.lowFloor} 个`);
-if (args.includes('--json')) { fs.writeFileSync(val('--json'), JSON.stringify({ mid, ver, ticks: ticksOut, logs, tc: tcOut, tcWin: TC })); console.log(`→ ${val('--json')}${TC ? `（决策拍分类 ${tcOut.length} 行，窗口 ${TC.join('–')}）` : ''}`); }
+if (args.includes('--json')) { fs.writeFileSync(val('--json'), JSON.stringify({ mid, ver, ticks: ticksOut, logs, tc: tcOut, tcWin: TC, drops: DROPS.map((d) => ({ t: d.t, bot: d.bot, by: { k: d.by.k, q: d.by.q, pct: d.by.pct }, c: { k: d.c.k, q: d.c.q, pct: d.c.pct, troops: d.c.troops || 0 } })) })); console.log(`→ ${val('--json')}${TC ? `（决策拍分类 ${tcOut.length} 行，窗口 ${TC.join('–')}）` : ''}`); }
