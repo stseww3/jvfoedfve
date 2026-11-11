@@ -150,6 +150,15 @@ def main():
             d["AIRATIO"] = (bd_["own"]["ai"] / bd_["own"]["heads"]) / (bd_["wild"]["ai"] / bd_["wild"]["heads"])
             if bd_["wild"]["neutral"] > 0:
                 d["NEUTRATIO"] = (bd_["own"]["neutral"] / bd_["own"]["heads"]) / (bd_["wild"]["neutral"] / bd_["wild"]["heads"])
+            nf_ = r.get("neutralFrom")
+            if nf_:
+                ho_, hw_ = bd_["own"]["heads"], bd_["wild"]["heads"]
+                if nf_["wild"][0] > 0:
+                    d["NORIG"] = (nf_["own"][0] / ho_) / (nf_["wild"][0] / hw_)
+                if nf_["wild"][1] + nf_["wild"][2] > 0:
+                    d["NLEFT"] = ((nf_["own"][1] + nf_["own"][2]) / ho_) / ((nf_["wild"][1] + nf_["wild"][2]) / hw_)
+        if r.get("reach") and r["reach"][0] and r["reach"][0]["own"][0] >= 20 and r["reach"][0]["wild"][0] >= 20 and r["reach"][0]["wild"][2] > 0:
+            d["NADJ"] = (r["reach"][0]["own"][2] / r["reach"][0]["own"][0]) / (r["reach"][0]["wild"][2] / r["reach"][0]["wild"][0])
         rows.append(d)
     out = []
     P = out.append
@@ -307,10 +316,31 @@ def main():
     rest_ = [d for d in rows if d not in lowlag]
     P("  其余的局各量的中位：" + "；".join(f"{k} {f2(med([d[k] for d in rest_ if d.get(k) is not None]))}" for k in XV + ("AIRATIO", "NEUTRATIO", "R1500", "AISHARE")))
 
+    P("")
+    P("[XD-J] 600 拍以后的无主地（按来历）和别的量（秩相关）：量 | 局数 | 中位 | 不卡的局中位 / 其余 | × B | × CLUSTER | × EDGE | × NNDIST | × NADJ | × R630 | × PAIRS | × R1500 | × R1500 扣掉 B")
+    P("  NORIG = own 人均吃到的「开局就是无主地」的格 ÷ 野人人均（600~1500）；NLEFT = 垮掉的内置 AI 留下的地，同口径；")
+    P("  NADJ = 600~900 拍 own 的样本里挨着无主地的占比 ÷ 野人的")
+    neut = {}
+    for k in ("NORIG", "NLEFT", "NADJ"):
+        xs = [d[k] for d in rows if d.get(k) is not None]
+        cells = []
+        for o in ("B", "CLUSTER", "EDGE", "NNDIST", "NADJ", "R630", "PAIRS", "R1500"):
+            if o == k:
+                cells.append("—")
+                continue
+            pr = [(d[k], d[o]) for d in rows if d.get(k) is not None and d.get(o) is not None]
+            rho = spearman(*zip(*pr)) if len(pr) >= 8 else None
+            cells.append(f2(rho))
+            neut[f"{k}|{o}"] = dict(n=len(pr), rho=rho)
+        tr = [(d[k], d["R1500"], d["B"]) for d in rows if d.get(k) is not None and d.get("R1500") is not None and "B" in d]
+        par = partial_spearman([a for a, _, _ in tr], [b for _, b, _ in tr], [c for _, _, c in tr]) if len(tr) >= 8 else None
+        neut[f"{k}|R1500|B"] = dict(n=len(tr), partial=par)
+        P(f"  {k} | {len(xs)} | {f2(med(xs))} | {f2(med([d[k] for d in lowlag if d.get(k) is not None]))} / {f2(med([d[k] for d in rest_ if d.get(k) is not None]))} | " + " | ".join(cells) + f" | {f2(par)}")
+
     with open(os.path.join(OUT, "xdose.txt"), "w", encoding="utf-8") as f:
         f.write("\n".join(out) + "\n")
     with open(os.path.join(OUT, "xdose.json"), "w", encoding="utf-8") as f:
-        json.dump(dict(rows=rows, corr=corr, terciles=terc, calm=[d["matchId"] for d in calm], gate=gate, other=other), f, ensure_ascii=False, separators=(",", ":"))
+        json.dump(dict(rows=rows, corr=corr, terciles=terc, calm=[d["matchId"] for d in calm], gate=gate, other=other, neutral=neut), f, ensure_ascii=False, separators=(",", ":"))
     if not quiet:
         print("\n".join(out))
 

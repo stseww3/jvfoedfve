@@ -364,6 +364,8 @@ def scan(mid, row, pool):
         for e in X["pairs"]:
             by_q[e[1]].append(e)
         pr = {g: {c: [0] * 14 for c in ("alone", "mate", "wild")} for g in GROUPS}
+        # 按第一条落地的窗（600~900 / 900~1260 / 1260~1500）：[对数, 条数, 下手时 AI 的地, 下手时 AI 的余额, 吃到的格, 独吃的对数, 派出的兵]
+        pwin = {g: [[0] * 7 for _ in range(3)] for g in GROUPS}
         for e in X["pairs"]:
             a_, q, n, sent, t0, t1, cells, burnt, T0, B0q, peak0, _gone = e[:12]
             if a_ not in keep:
@@ -374,13 +376,44 @@ def scan(mid, row, pool):
             acc = pr[grp[a_]][cls]
             for i, v in enumerate((1, n, sent, burnt, cells, max(0, T0 - peak0 // 4), 2 * B0q * (1 - x ** 1.6) + 2 * T0 * (1 - x), T0)):
                 acc[i] += v
-            acc[8 + (0 if t0 < 900 else 1 if t0 < 1260 else 2)] += 1
+            wi = 0 if t0 < 900 else 1 if t0 < 1260 else 2
+            acc[8 + wi] += 1
+            for i, v in enumerate((1, n, T0, B0q, cells, 1 if cls == "alone" else 0, sent)):
+                pwin[grp[a_]][wi][i] += v
             # [11] 续兵条数（落地时已有兵压在这个 AI 身上）；[12] 和上一条同拍落地的条数；[13] 续兵那些条派出的兵
             if len(e) >= 15:
                 acc[11] += e[12]
                 acc[12] += e[13]
                 acc[13] += e[14]
     rec["pairs"] = pr
+    rec["pairwin"] = pwin if pr is not None else None
+    # (600,1500] 吃下的无主地按来历（同一批席位）：[开局就是无主地, 垮掉的内置 AI 留下的·这个号对它下过生效陆攻, 垮掉的内置 AI 留下的·没对它下过手, 出局的真人留下的]
+    nf = None
+    if X.get("neutralFrom") and X["endTick"] >= 1500:
+        c0 = X["cp"].get("600")
+        keep = {q for q in spawned if not (0 <= left_t[q] <= 1500) and (c0["terr"][q] > 0 if c0 else True)}
+        mine = {(e[0], e[1]) for e in (X.get("pairs") or [])}
+        nf = {g: [0, 0, 0, 0] for g in GROUPS}
+        for a_, q, v in X["neutralFrom"]["rows"]:
+            if a_ not in keep:
+                continue
+            nf[grp[a_]][0 if q < 0 else 3 if q < H else 1 if (a_, q) in mine else 2] += v
+        nf["bad"] = X["neutralFrom"].get("bad", 0)
+        # 同一批席位按「1500 拍前有没有船落地」分开：[人头, 开局就是无主地, AI 留下的, 从内置 AI 吃的格, 船的条数]
+        by_seat = defaultdict(lambda: [0, 0])
+        for a_, q, v in X["neutralFrom"]["rows"]:
+            by_seat[a_][0 if q < 0 else 1] += v if (q < 0 or q >= H) else 0
+        bs = {g: [[0] * 5 for _ in range(2)] for g in GROUPS}
+        for q in keep:
+            nb_ = X["cmds"][0][q][3] + X["cmds"][1][q][3]
+            acc = bs[grp[q]][1 if nb_ else 0]
+            acc[0] += 1
+            acc[1] += by_seat[q][0]
+            acc[2] += by_seat[q][1]
+            acc[3] += sum(gain[k][q][0] for k in (1, 2, 3))
+            acc[4] += nb_
+        nf["boat"] = bs
+    rec["neutralFrom"] = nf
 
     # ---- 出生点 ----
     W, Hh = X["W"], X["Hh"]
@@ -737,6 +770,8 @@ def main():
     # 地的收支
     bsel = [r for r in full if r.get("budget600_1500")]
     P(f"  地的收支（600 → 1500，人均；{len(bsel)} 局；人头 = t=600 还有地、到 1500 拍没离开的席位，中途出局的按 0 格算）：")
+    P("    读法：合计行是各局的人头和格数直接相加——own 每局人头差不多，野人的人头集中在大房间（人均地小），所以合计口径对 own 偏乐观，只用来拆构成；")
+    P("    比高低以「逐局」行为准（每局先各自算人均，再取各局的中位）。下面的「一条生效陆攻」「逐对账」「续兵」几张表的合计行同理。")
     P("    范围 | 组 | 人头 | t=600 人均地 | t=1500 人均地 | 净增 | 从内置 AI 吃 | 从无主地吃 | 从真人吃 | 被真人吃走 | 其余（被 AI 吃走、出局时变成无主地等） | t=600 人均兵 | t=1500 人均兵 | 这批人里 1500 拍前出局的")
     agg_bd = {}
     for nm, sel in (("全部", bsel), ("几乎不卡的局", [r for r in bsel if calm_of(r)]), ("其余的局", [r for r in bsel if not calm_of(r)]),
@@ -812,6 +847,54 @@ def main():
             P(f"    {nm}（{len(sel)} 局）：人均生效条数 中位 {med([x[1] for x in sel]):.2f}；每条吃到的格 中位 {med([x[2] for x in sel]):.2f}；每条派出的兵 中位 {med([x[3] for x in sel]):.2f}；"
               f"烧掉 ÷ 派出：own 中位 {100 * med([x[4] for x in sel]):.0f}%，野人 中位 {100 * med([x[5] for x in sel]):.0f}%")
 
+    # 无主地的来历
+    nsel = [r for r in full if r.get("neutralFrom") and r.get("budget600_1500")]
+    agg_nf = {}
+    if nsel:
+        NCN = ("开局就是无主地", "垮掉的内置 AI 留下的·自己对它下过手", "垮掉的内置 AI 留下的·没对它下过手", "出局的真人留下的")
+        P(f"  (600,1500] 吃下的无主地按来历（{len(nsel)} 局；和地的收支同一批席位；人均格数；窗的边界和收支表差一拍以内）：")
+        P("    范围 | 组 | 人头 | 人均合计 | " + " | ".join(NCN))
+
+        def nf_rows(nm, sel):
+            for g in ("own", "wild"):
+                heads = sum(r["budget600_1500"][g]["heads"] for r in sel)
+                a = [sum(r["neutralFrom"][g][i] for r in sel) for i in range(4)]
+                if not heads:
+                    continue
+                tot = sum(a)
+                P(f"    {nm} | {GROUP_CN[g]} | {heads} | {tot / heads:.0f} | " + " | ".join(f"{a[i] / heads:.0f}（{pct(a[i], tot)}）" for i in range(4)))
+                agg_nf[f"{nm}|{g}"] = dict(heads=heads, cells=a)
+
+        nf_rows("全部", nsel)
+        nf_rows("几乎不卡的局", [r for r in nsel if calm_of(r)])
+        nf_rows("其余的局", [r for r in nsel if not calm_of(r)])
+        nf_rows("squad10", [r for r in nsel if r["cohort"] == "squad10"])
+        nf_rows("squad20", [r for r in nsel if r["cohort"] == "squad20"])
+        for nm, sel in (("全部", nsel), ("几乎不卡的局", [r for r in nsel if calm_of(r)]), ("其余的局", [r for r in nsel if not calm_of(r)])):
+            rows = []
+            for r in sel:
+                ho, hw = r["budget600_1500"]["own"]["heads"], r["budget600_1500"]["wild"]["heads"]
+                if ho >= 3 and hw >= 5:
+                    o, w = r["neutralFrom"]["own"], r["neutralFrom"]["wild"]
+                    rows.append([(o[i] / ho) / (w[i] / hw) if w[i] else None for i in range(4)] + [((o[1] + o[2]) / ho) / ((w[1] + w[2]) / hw) if (w[1] + w[2]) else None,
+                                                                                                 (o[1] + o[2]) / max(1, sum(o)), (w[1] + w[2]) / max(1, sum(w))])
+            if rows:
+                def mm(i):
+                    xs = [x[i] for x in rows if x[i] is not None]
+                    return f"{med(xs):.2f}（<1 的 {sum(1 for v in xs if v < 1)}/{len(xs)} 局）"
+                P(f"    {nm}·逐局（{len(rows)} 局），own 人均 ÷ 野人人均：开局就是无主地 {mm(0)}；AI 留下的·对它下过手 {mm(1)}；AI 留下的·没下过手 {mm(2)}；AI 留下的合计 {mm(4)}；"
+                  f"AI 留下的占吃到的无主地：own 中位 {100 * med([x[5] for x in rows]):.0f}%，野人 中位 {100 * med([x[6] for x in rows]):.0f}%")
+        P("    按 1500 拍前有没有船落地分开（同一批席位）：组 | 有没有船 | 人头（占比） | 人均船数 | 人均：开局就是无主地 | AI 留下的 | 从内置 AI 吃的格")
+        for g in ("own", "wild"):
+            tot_h = sum(r["neutralFrom"]["boat"][g][j][0] for r in nsel for j in (0, 1))
+            for j, nm in ((0, "没有"), (1, "有")):
+                a = [sum(r["neutralFrom"]["boat"][g][j][i] for r in nsel) for i in range(5)]
+                if a[0]:
+                    P(f"    {GROUP_CN[g]} | {nm} | {a[0]}（{pct(a[0], tot_h)}） | {a[4] / a[0]:.2f} | {a[1] / a[0]:.0f} | {a[2] / a[0]:.0f} | {a[3] / a[0]:.0f}")
+                    agg_nf[f"boat|{g}|{j}"] = dict(heads=a[0], orig=a[1], left=a[2], ai=a[3], boats=a[4])
+        bad = sum(r["neutralFrom"].get("bad", 0) for r in nsel)
+        P(f"    核对：刚吃下的格里归属对不上的 {bad} 格（应为 0）")
+
     # 逐对账
     psel = [r for r in full if r.get("pairs") and r.get("yield600_1500")]
     P(f"  逐对账（600~1500；{len(psel)} 局；把每个号对同一个内置 AI 的生效陆攻合成一对）：")
@@ -852,6 +935,25 @@ def main():
         heads = sum(r["yield600_1500"][g]["heads"] for r in psel)
         a = pair_sum(psel, g, "all")
         P(f"    {GROUP_CN[g]} | {a[8] / heads:.2f} | {a[9] / heads:.2f} | {a[10] / heads:.2f}")
+    P("    按第一条落地的窗：窗 | 组 | 对数 | 人均对数 | 下手时 AI 的地 | 下手时 AI 的兵密度 | 每对条数 | 每对派出的兵 | 每对吃到的格 | 独吃的占比")
+    WN = ("600~900", "900~1260", "1260~1500")
+    for wi in range(3):
+        for g in ("own", "wild"):
+            heads = sum(r["yield600_1500"][g]["heads"] for r in psel)
+            a = [sum(r["pairwin"][g][wi][i] for r in psel) for i in range(7)]
+            if a[0]:
+                P(f"    {WN[wi]} | {GROUP_CN[g]} | {a[0]} | {a[0] / heads:.2f} | {a[2] / a[0]:.0f} | {a[3] / max(1, a[2]):.1f} | {a[1] / a[0]:.2f} | {a[6] / a[0]:.0f} | {a[4] / a[0]:.0f} | {pct(a[5], a[0])}")
+                agg_p[f"win|{WN[wi]}|{g}"] = dict(heads=heads, pairs=a[0], cmds=a[1], aiLand=a[2], aiBal=a[3], cells=a[4], alone=a[5], sent=a[6])
+    for wi in range(3):
+        rows = []
+        for r in psel:
+            ho, hw = r["yield600_1500"]["own"]["heads"], r["yield600_1500"]["wild"]["heads"]
+            o, w = r["pairwin"]["own"][wi], r["pairwin"]["wild"][wi]
+            if ho >= 3 and hw >= 5 and o[0] >= 5 and w[0] >= 5:
+                rows.append(((o[0] / ho) / (w[0] / hw), (o[2] / o[0]) / (w[2] / w[0]), (o[4] / o[0]) / max(1e-9, w[4] / w[0])))
+        if rows:
+            P(f"    逐局·{WN[wi]}（这一窗 own 和野人各 ≥5 对的 {len(rows)} 局），own ÷ 野人：人均对数 中位 {med([x[0] for x in rows]):.2f}（<1 的 {sum(1 for x in rows if x[0] < 1)} 局）；"
+              f"下手时 AI 的地 中位 {med([x[1] for x in rows]):.2f}（<1 的 {sum(1 for x in rows if x[1] < 1)} 局）；每对吃到的格 中位 {med([x[2] for x in rows]):.2f}（<1 的 {sum(1 for x in rows if x[2] < 1)} 局）")
     pmp = []
     for r in psel:
         ho, hw = r["yield600_1500"]["own"]["heads"], r["yield600_1500"]["wild"]["heads"]
@@ -1217,7 +1319,7 @@ def main():
         f.write("\n".join(out) + "\n")
     with open(os.path.join(OUT, "_cross", "xtruth.json"), "w", encoding="utf-8") as f:
         json.dump(dict(replays=len(recs), valid=len(val), full=len(full), failed=failed, perHead=agg_b, dist=agg_dist, drop=dict(both=len(both), hit=[r["matchId"] for r in drop]),
-                       aiHarvest=dict(matches=len(hv), cells=tot, heads=heads, burnt=burn), cmdEffect=agg_d, attackSize=agg_sz, spawn=agg_e, spawnAssign=agg_sa, flow=agg_f, reach=agg_i, rule=agg_j, aiYield=agg_y, aiPairs=agg_p, budget=agg_bd,
+                       aiHarvest=dict(matches=len(hv), cells=tot, heads=heads, burnt=burn), cmdEffect=agg_d, attackSize=agg_sz, spawn=agg_e, spawnAssign=agg_sa, flow=agg_f, reach=agg_i, rule=agg_j, aiYield=agg_y, aiPairs=agg_p, budget=agg_bd, neutralFrom=agg_nf,
                        matches=[{k: v for k, v in r.items()} for r in recs]), f, ensure_ascii=False, separators=(",", ":"))
     if not quiet:
         print("\n".join(out))

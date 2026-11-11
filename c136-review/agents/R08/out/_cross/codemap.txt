@@ -63,6 +63,10 @@
   attackTroopsOn | L805-809
   redirectAttackToNeutral | L858-872
   attackersOf | L874-887
+  cancelAttack | L852-856
+  damage | L1062-1074
+  endAttack | L1076-1080
+  loseTiles | L1083-1108
   commitAttack | L1229-1236
   quote | L1239-1248
   payQuote | L1250-1254
@@ -72,6 +76,7 @@
   aliveTick | L1298-1312
   collapse | L1314-1334
   eliminate | L1336-1350
+  clearTerritory | L1352-1365
   victoryTick | L1398-1412
 
 [CM-C] 正文逐字比对（去掉每行首尾空白；同名方法按出现顺序一一对；「同」= 和 c110 的正文完全一样）：函数 | c116-vb | c116 | c116-va | g09

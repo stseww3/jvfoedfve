@@ -26,7 +26,8 @@ FUNCS = ["chooseSpawn", "analyze", "threatOf", "safeBalance", "elimCost", "minCm
          "tryEmergencyBossRescue", "tryDonateToTeammate", "updateShadowQuota", "hasBorderFood"]
 GAME_FUNCS = ["slotBase", "isBot", "isAlive", "isEnemy", "isEnemyOf", "isTeammate", "leave", "runAsBot", "receiverRoom", "donationCost", "donate", "tick",
               "interestRate", "softCap", "addBalance", "takeBalance", "economyTick", "hasAttack", "hasFreeSlot", "attackTroopsOn", "redirectAttackToNeutral",
-              "attackersOf", "commitAttack", "quote", "payQuote", "canAct", "attack", "retreat", "aliveTick", "collapse", "eliminate", "victoryTick"]
+              "attackersOf", "cancelAttack", "damage", "endAttack", "loseTiles", "commitAttack", "quote", "payQuote", "canAct", "attack", "retreat", "aliveTick", "collapse",
+              "eliminate", "clearTerritory", "victoryTick"]
 
 
 def scan(path):
