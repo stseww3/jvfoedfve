@@ -3,6 +3,8 @@
 状态（余额/领土/密度）、offers() 里每个报价（目标、单价 c、要的兵 need、onMe、来袭兵 inAtk、nearCollapse/bleeding/crowdedHard），
 以及 buyLand()/tryDonateToTeammate()/idleBoats() 的返回值。
 用法：python3 probe_view.py <matchId> [--tag x] [--t0 a --t1 b] [--every 5] [--names]
+      python3 probe_view.py <matchId> --tag x --pick [--t0 a --t1 b] [--every 50]
+        --pick：1500 拍前（走 Style.pickTarget 的决策拍）逐邻居列 allow / 每格价 / floorFor / avail / minShare×余额，末尾按邻居汇总卡在哪一关。
       python3 probe_view.py <matchId> --tag x --gate <席位> [--t0 a --t1 b]
         --gate：只看对某个目标的报价，逐决策拍复算 buyLand 的几道闸门（v27-team-c116-vb.js L5350–5359、L5414–5447、L5594–5605）：
         worth = 0.5×winRatio×refDens（refDens：2500 拍起取 max(自己密度, 0.85×其他真人密度中位)）；
@@ -47,9 +49,65 @@ for line in open(fn, encoding='utf8'):
         d.setdefault('safe', []).append(rest)
     elif rest.startswith('send('):
         d.setdefault('send', []).append(rest[:120])
+    elif rest.startswith('pickTarget('):
+        mp = re.match(r'pickTarget\(fn,([\d.eE+-]+|Infinity)\) -> (.*)', rest)
+        if mp: d['ptMax'] = float('inf') if mp.group(1) == 'Infinity' else float(mp.group(1)); d['pt'] = mp.group(2)
+    elif re.match(r'(allow|price|motive|minShare)\((\d+)\) -> ', rest):
+        mp = re.match(r'(allow|price|motive|minShare)\((\d+)\) -> (.*)', rest)
+        d.setdefault('pick', {}).setdefault(int(mp.group(2)), {})[mp.group(1)] = mp.group(3)
+    elif rest.startswith('floorFor('):
+        mp = re.match(r'floorFor\((\d+),([\d.eE+-]+|Infinity)\) -> ([\d.eE+-]+|Infinity)', rest)
+        if mp:
+            e = d.setdefault('pick', {}).setdefault(int(mp.group(1)), {})
+            e['f'] = float('inf') if mp.group(2) == 'Infinity' else float(mp.group(2))
+            e['floor'] = float('inf') if mp.group(3) == 'Infinity' else float(mp.group(3))
     elif rest.startswith('winRatio() -> '): d.setdefault('wr', float(rest.split('-> ')[1]))
     elif rest.startswith('otherHumanMedDens() -> '): d.setdefault('med', float(rest.split('-> ')[1]))
     elif rest.startswith('baseRate() -> '): d.setdefault('br', float(rest.split('-> ')[1]))
+if '--pick' in a:
+    # 1500 拍（coreFrom）之前走 Style.pickTarget（Vb/Va L1144–1177）：逐个邻居 allow → price ≤ maxCost → avail = 余额 − floorFor(q, floorAt(price))
+    # → avail ≤ minShare×余额 就跳过。这里把每个决策拍、每个被问到的邻居的这几项列出来，末尾按邻居汇总。
+    print(f"== {mid} 探针[{tag}] pickTarget 复算（t < 1500 的决策拍；Style.pickTarget L1144–1177 → V13.floorFor0 L2233–2242）")
+    print("      t     余额   领土  密度 | 目标              allow  每格价  maxCost  motive    floorAt(价)   floorFor    avail  minShare×余额 | 卡在 | pickTarget")
+    agg = {}
+    npick = nnull = 0
+    for t in order:
+        d = cur[t]
+        if 'pt' not in d: continue
+        ms = re.match(r'bal=(\d+) terr=(\d+) dens=([\d.]+)', d.get('state', ''))
+        if not ms: continue
+        B, L = int(ms.group(1)), max(1, int(ms.group(2)))
+        npick += 1
+        isnull = d['pt'].strip() == 'null'
+        if isnull: nnull += 1
+        mx = d.get('ptMax', float('inf'))
+        for q, e in sorted(d.get('pick', {}).items()):
+            if 'allow' not in e: continue
+            al = e.get('allow') == 'true'
+            price = float(e['price']) if 'price' in e else None
+            fl = e.get('floor'); f = e.get('f')
+            msh = float(e['minShare']) if 'minShare' in e else None
+            avail = (B - fl) if fl is not None else None
+            if not al: why = 'allow'
+            elif price is not None and price > mx: why = 'maxCost'
+            elif avail is not None and msh is not None and avail <= msh * B: why = '保底线'
+            elif fl is None: why = '?'
+            else: why = '-'
+            g_ = agg.setdefault(q, {'n': 0, 'allow': 0, 'maxCost': 0, '保底线': 0, '-': 0, '?': 0, 'B': [], 'floor': [], 'price': [], 'nomotive': 0})
+            g_['n'] += 1; g_[why] += 1
+            if why == '保底线':
+                g_['B'].append(B); g_['floor'].append(fl); g_['price'].append(price)
+                if e.get('motive') == 'null': g_['nomotive'] += 1
+            if t % every == 0:
+                fv = lambda v, w: (f"{v:{w}.0f}" if v is not None and v != float('inf') else f"{'-':>{w}s}")
+                print(f"  {t:5d} {B:8d} {L:6d} {B / L:5.1f} | {nm(q):16s} {str(al):5s} {price if price is not None else 0:7.1f} {mx:8.1f}  {str(e.get('motive'))[:8]:8s} {fv(f, 12)} {fv(fl, 10)} {fv(avail, 8)} {fv(msh * B if msh is not None else None, 12)} | {why:6s} | {d['pt'][:40]}")
+    print(f"汇总 [{t0},{min(t1, 99999)}]：走到 pickTarget 的决策拍 {npick} 个，其中返回空的 {nnull} 个")
+    for q, g_ in sorted(agg.items()):
+        s = f"   对 {nm(q)}（席位 {q}）：被问到 {g_['n']} 拍；allow 不过 {g_['allow']}，每格价高于 maxCost {g_['maxCost']}，余额减保底线不到 minShare×余额 {g_['保底线']}（其中 motive 为空的 {g_['nomotive']}），过了这三关 {g_['-']}"
+        if g_['B']:
+            s += f"；卡在保底线的拍里 余额 {min(g_['B']):.0f}–{max(g_['B']):.0f}，floorFor {min(g_['floor']):.0f}–{max(g_['floor']):.0f}，每格价 {min(g_['price']):.1f}–{max(g_['price']):.1f}"
+        print(s)
+    sys.exit(0)
 gate = opt('gate')
 if gate is not None:
     gq = int(gate)
@@ -103,6 +161,15 @@ if gate is not None:
         cs.append(c); ws.append(worth); rs.append(c / worth if worth else 0); bs.append(B)
         if safe is not None: ss.append(safe)
         if o['need'] < B: cnt['canKill'] += 1
+        n_person = len([x for x in d['offers'] if x.get('person', True)])
+        plain = person and not o.get('isDoorSea') and not nc and not o.get('bleeding') and not o.get('onMe')
+        if over:
+            cnt['over'] = cnt.get('over', 0) + 1
+            if sent: cnt['overSent'] = cnt.get('overSent', 0) + 1
+            elif plain and o.get('newNbs', 0) > 0 and n_person == 1 and c >= worth and c >= cheap and B < 1.28 * 100 * L:
+                cnt['sole'] = cnt.get('sole', 0) + 1
+            elif person and not o.get('isDoorSea') and o.get('isCrowdedHard') and c >= worth and c >= cheap and B < 1.26 * 100 * L:
+                cnt['hard'] = cnt.get('hard', 0) + 1
         if sent: cnt['sent'] += 1
         elif c >= worth and c >= cheap and not over: cnt['price'] += 1
         elif avail is not None and avail <= 0:
@@ -119,6 +186,8 @@ if gate is not None:
         print(f"   单价 c {min(cs):.1f}–{max(cs):.1f}（中位 {_st.median(cs):.1f}），worth {min(ws):.1f}–{max(ws):.1f}（中位 {_st.median(ws):.1f}），c/worth {min(rs):.2f}–{max(rs):.2f}（中位 {_st.median(rs):.2f}）；"
               f"余额 {min(bs):.0f}–{max(bs):.0f}" + (f"；过了价格线的拍里 safeAt(封顶后) {min(ss):.0f}–{max(ss):.0f}" if ss else ''))
         print(f"   need（策略自己算的、把对方打到阵亡线要的兵）低于本号余额的决策拍 {cnt['canKill']} 个，其中过了价格线却因 avail ≤ 0 没出手的 {cnt['canKillBlocked']} 个")
+        print(f"   余额过 100 倍领土的决策拍 {cnt.get('over', 0)} 个：这一拍 buyLand 出手 {cnt.get('overSent', 0)}；没出手的里，按“唯一健康真人邻居”跳过（buyLand L5361–5365：只有它一个真人邻居、它没在掉地也没打我、c ≥ worth、余额 < 128 倍领土）{cnt.get('sole', 0)}，"
+              f"按 isCrowdedHard 跳过（L5371–5374，余额 < 126 倍领土）{cnt.get('hard', 0)}")
     sys.exit(0)
 for t in order:
     d = cur[t]

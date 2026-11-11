@@ -3,8 +3,9 @@
 ## 状态
 - M1 完成：A057、A059、A094；M2 完成：A055、A075、A054。全部通过本地机械检查（`python3 scripts/check_my_review.py`）。
 - M3 完成：A031（never-grew）、A019（mid-collapse）、A009（never-grew，Va）；m3-reviews 报告已发（里面更正了 A075 的判定数：错 10 / 不清 5 / 对 5）。
-- 下一步 M4：A023、A050（Vb）、A003（Va）。其余见下方「逐局进度」。
+- M4 进行中：A023 完成（never-grew；错 9 / 不清 8 / 对 3；新模式 AT12、AT13）；接着 A050（Vb）、A003（Va），三局做完发 m4-reviews。
 - 总部 0006：所有 node 重演/影子命令必须 `bash ../../tools/run-heavy.sh node scripts/...`（在 agents/R01 下），串行、一次一局，结果缓存在 out/。
+  **一次 Shell 调用只跑一条 node 命令**（机器 load 高时一条 shadow 就要 30–90 秒，两条串在一起会被 timeout 120 杀掉）。
 
 ## 每局流水线
 1. `bash c136-review/tools/run-heavy.sh node scripts/resim.mjs <mid> [--replay 同局A包] [--log 包1,包2] [--bots a,b]`：整局重演，和日志 [HL-TICK] 逐号核对。
@@ -31,6 +32,9 @@
   `probe_view.py --gate` 对 Va 局（A003/A005/A009）自动换参数（封顶 78、bleeding/thin 折扣），末尾多三行汇总（出手/价格线/avail≤0/keep 来自 safeAt 各几拍；c、worth、余额、safeAt 的范围；
   need 低于余额的拍数及其中被拦下的拍数）——判 DF03 时直接引这三行；`recon_facts.py --section leave` 多了 results.csv 的 accepted = 出生版数 + cmds 的核对；
   `recon_facts.py --section peak` 末行有“阵亡时还剩多少格多少兵”的合计。
+- A023 新增：`seats.py <mid> [--t 拍]`（席位号 ↔ 名字 ↔ 队，带某一拍的领土/余额）；`probe_view.py --pick`（1500 拍前 Style.pickTarget 的逐目标复算：allow、每格价、
+  floorAt、floorFor、avail、minShare×余额、卡在哪一关，末尾按目标汇总）；`probe_view.py --gate` 汇总多一行“余额过 100 倍的决策拍里按唯一健康真人邻居 / isCrowdedHard 跳过各几拍”。
+  shadow_flags.csv 的 targetName 对 AI 席位（target ≥ 人类席位数）不可靠（A023 全显示成 rubysta），看 target 列。sea_landings.csv 可以直接用 q.py（列 t,owner,troops,bot,hadLandBorder…）。
 - q.py 的坑：数字样子的字符串会被当成数（`toName==777`）；dispatch_audit 的 would 是 'accept'/'quota'，executed 是 0/1；resim_transfers 的 `from` 列不能写进 --where。
 - 影子对 boatTo 的受理比真实客户端宽（A019：影子 42 条、日志 10 条），**船指令的“受理”不能引用**；进攻、捐兵两类与日志 cmds 计数一致。cmd_gaps、lagcurve、flow 都不含船。
 - 批次落地的兵不都是净损失：打无主地（目标已死改打无主地、pct=47 中立令成批）的兵在进攻结束后流回余额；写“实扣”时要分开打真人和打无主地
@@ -41,6 +45,16 @@
   海上有船时 collapse 不清号（L1316–1330）：地、余额、峰值清零，船靠岸后重来（A019 sora_w）。捐款手续费 = 捐出方余额×64/1024，与捐多少无关（donate L404–416）。
   expandNeutral：t < dpEnd(1500) 只走 dpNeutral；之后走 General.expandNeutral L944–953，线上兵不够就每个决策拍补一条 pct=47。
 - Vb buyLand 非真人目标：safe = min(safeAt, 88×L)（L5414–5418）→ keep = max(keep, safe)（L5444）→ avail ≤ 0 continue（L5446–5447）→ x < want 且 x < chunk(0.2)×B 不发（L5449–5453）。
+- 捐款配额（A023 读清楚的）：game.js donationCost L347–356、bookDonation L370–376、donationCapTick L379–383。每个受赠方累计 donQuota，全场一个 donCap（开局 15，每 100 拍 +4/6/8/10）；
+  3213 拍前一笔 v 记 2 + v÷(k×uw÷100) 点，uw = 1 + 陆地÷300，k = 1/4/10/30/100（分界 357/714/1071/2142）；3213 拍起 4 + 100v÷softCap(q)；4284 拍起不限。
+  dispatch_audit.csv 的 cap/used/maxByQuota 就是这套算式。引擎有 donateQuote（L418–428）可以事先问，策略没有调用（三个版本都没有）。被拒的捐款不进录像。
+  船靠在队友岸上也按捐款入账、占同一个配额，配额不收的沉海（boats.js landAt L273–279）。
+- 进攻收线：一圈付不起时剩下的兵全砸进去（只伤兵不占地）再 endAttack；没有接壤（cnt=0）时剩兵退回余额（game.js L990–1059、endAttack L1076–1080）。“发出”≠净损失。
+- Vb 其他读清楚的门：idleBoats L5022–5040（没有非队友邻居的号，只要还有本队号有陆上前线、自己密度 < 115 就不出海）；offers L5291–5294 pulseMode =
+  nearCollapse || bleeding || ((tD < thinMaxTD || need > 0.30B) && !(t < 2400 && !onMe && need > 0.35B))；buyLand L5361–5365 唯一健康真人邻居（B < 1.28×100L 跳过）、
+  L5371–5374 isCrowdedHard（B < 1.26×100L 跳过）、L5440–5443 over 时 keep = 0.9×100L（密度 ≥ 122 时 0.82）、L5605 脉冲额 < max(minCmd, 0.04B) 跳过；
+  tryDonateToTeammate L4479 reqD = boxedIn ? 58 : 108；floorFor L2228–2231 = max(floorFor0, safeP×peopleSafe)（peopleSafe L2280–2298 跟着真人邻居的余额走）；
+  winRatio 1500 拍是 3（m = 1.5），2500 拍后 1.8（m = 0.9）。
 
 ## 重演核对（ok/bad）
 A057 1324/0（含 B038）；A059 290/0；A094-Y 86/0（--bots ryan_m,zexos1,noah88）。
@@ -82,6 +96,9 @@ AT11 单价过了价格线但预算不到余额 20%（buyLand L5611–5616），
 A009 新增：DN12 名单里的旧号名撞上同队路人，把路人当本队号捐兵（talon5 → 777）。A009 里 AT08 判“对”（riku_x 过 100 倍后连发脉冲对掉登陆）；
 DF03 有两处：sora_w（挨打中，不清）、kaito9（3800–4580 拍 143/157 拍被 safeAt 拦下，其中 91 拍 need < 余额，判错/推断）。
 A009 的主因是客户端落后服务器（300–2400 拍，延迟中位到 764 拍，每号每次最多落地 9 条，其余丢失），不在策略文件里；M6 要做“每局指令延迟”的全量计数。
+A023 新增：AT12 余额过 100 倍后溢出的兵脉冲打给杀不动的大邻居、够杀的邻居被跳过（ryan_m 3405 拍 DARK vs Fagner）；AT13 只有一个健康真人邻居：128 倍才打、108 倍就捐，
+两个门槛互锁（talon5 对 Tenekld 1668 拍不出手）。A023 的主线：出生挤成一团 → 7 个号被队友围死 → 八成的兵 1000 拍没有敌方接壤 → 调度 348 条落地 40 条（配额）。
+M6 可做的全量计数：调度落地率（日志 HL-DISPATCH 行数 vs 录像 donate 条数）、被围死快照占比（card 的 boxedHighDensSnapshots）、船落在队友岸上的条数。
 
 ## 逐局进度
 - [x] A057（never-grew）
@@ -89,6 +106,6 @@ A009 的主因是客户端落后服务器（300–2400 拍，延迟中位到 764
 - [x] A094（lead-thrown；两个实例）
 - [x] A055（outscaled）  - [x] A075（win）  - [x] A054（mid-collapse）   （M2）
 - [x] A031（never-grew）  - [x] A019（mid-collapse）  - [x] A009（never-grew）   （M3）
-- [ ] A023  - [ ] A050  - [ ] A003   （M4）
+- [x] A023（never-grew）  - [ ] A050  - [ ] A003   （M4）
 - [ ] A005  - [ ] B039  - [ ] B043   （M5）
 - [ ] M6：reports/CROSS-MATCH-SUMMARY.md、全量模式计数脚本、cards/
