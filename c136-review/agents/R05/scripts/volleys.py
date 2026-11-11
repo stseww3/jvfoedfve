@@ -18,6 +18,18 @@ ev = [e for e in J['events'] if e['type'] == 'attack' and e['p'] in sq and e.get
 seq = defaultdict(list)
 for e in ev:
     seq[(e['p'], e['q'])].append(e)
+S10 = J.get('S10', {})
+
+
+def land_at(p, t):
+    """该号在 t 拍前最近一个 10 拍采样点的地（S10）；没有采样返回 0。"""
+    s = S10.get(str(p))
+    if not s:
+        return 0
+    i = min(len(s['t']) - 1, max(0, t // 10 - 1))
+    return s['terr'][i]
+
+
 vol = []
 for (p, q), es in seq.items():
     es.sort(key=lambda e: e['t'])
@@ -35,7 +47,7 @@ for p, q, es in vol:
     first = (es[0].get('troops') or 0) + (es[0].get('fee') or 0)
     rows.append({'bot': sq[p], 'q': P[q]['name'], 't0': es[0]['t'], 't1': es[-1]['t'], 'n': len(es), 'ticks': len({e['t'] for e in es}), 'B0': B0, 'spent': spent,
                  'share': spent / B0 if B0 else 0, 'firstShare': first / B0 if B0 else 0, 'pct': sorted({e['pct'] for e in es}), 'first': first,
-                 'span': es[-1]['t'] - es[0]['t']})
+                 'span': es[-1]['t'] - es[0]['t'], 'L0': land_at(p, es[0]['t'])})
 n = len(rows)
 if not n:
     print(f'[连续下单] {mid}: 无'); sys.exit(0)
@@ -49,7 +61,9 @@ print(f"    各轮首条合计 {firsts/1e6:.2f}M；同一轮里跟在首条后�
 dist = defaultdict(int)
 for r in rows:
     dist[min(r['n'], 9)] += 1
+over = [r for r in rows if r['L0'] and r['B0'] > 100 * r['L0']]
+print(f"    批前存兵 > 100×地（over 放行）的轮 {len(over)} 个，打出 {sum(r['spent'] for r in over)/1e6:.2f}M（占 {100*sum(r['spent'] for r in over)/max(1,tot):.0f}%）")
 print('    轮的条数分布：' + ' '.join(f"{k}{'+' if k == 9 else ''}条×{v}" for k, v in sorted(dist.items())))
 if '--list' in a:
     for r in sorted(big, key=lambda r: r['t0']):
-        print(f"    {r['bot']} → {r['q'][:16]} t={r['t0']}–{r['t1']} {r['n']} 条/{r['ticks']} 拍 pct {r['pct']} 批前 {r['B0']/1000:.0f}k 打出 {r['spent']/1000:.0f}k（{100*r['share']:.0f}%；首条 {100*r['firstShare']:.0f}%）")
+        print(f"    {r['bot']} → {r['q'][:16]} t={r['t0']}–{r['t1']} {r['n']} 条/{r['ticks']} 拍 pct {r['pct']} 批前 {r['B0']/1000:.0f}k（地 {r['L0']}，密度 {r['B0']/max(1,r['L0']):.1f}）打出 {r['spent']/1000:.0f}k（{100*r['share']:.0f}%；首条 {100*r['firstShare']:.0f}%）")

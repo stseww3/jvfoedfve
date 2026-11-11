@@ -223,6 +223,13 @@ if 'quota' in SEC:
         for b in sorted({d['bot'] for d in rows}):
             L = [d for d in rows if d['bot'] == b]
             print(f'  {b}: 日志 {len(L)}｜单笔就超上限 {sum(1 for d in L if d["qcls"] == "单笔就超上限")}｜加上已用下界超 {sum(1 for d in L if d["qcls"] == "加上已用下界超上限")}｜放得进 {sum(1 for d in L if d["qcls"] == "按下界放得进")}（其中捐成 {sum(1 for d in L if d["qcls"] == "按下界放得进" and d["done"])}）｜不限 {sum(1 for d in L if d["qcls"].startswith("不限"))}')
+        for lo, hi in ((0, 3213), (3213, 4284)):
+            for q in sorted({d['allyName'] for d in rows}):
+                L = [d for d in rows if d['allyName'] == q and lo <= d['t'] < hi]
+                if not L:
+                    continue
+                ok = [d for d in L if d['done']]
+                print(f'  受赠方 {q} 拍 [{lo},{hi})：日志 {len(L)} 捐成 {len(ok)}（想捐合计 {k(sum(d["v"] for d in ok))}，点数合计 {sum(d["qcost"] for d in ok)}）没成 {len(L) - len(ok)}（想捐合计 {k(sum(d["v"] for d in L if not d["done"]))}）｜捐成的拍：{" ".join(str(d["t"]) for d in ok)}')
         if '--list' in a:
             for d in rows:
                 print(f'    t={d["t"]} {d["bot"]}→{d["allyName"]} pct={d["pct"]} 想捐 {k(d["v"])} → 要 {d["qcost"]} 点｜上限 {d["qcap"]}｜已用下界 {d["qused"]}｜{d["qcls"]}｜{"捐成" if d["done"] else "没捐成" if d["done"] is False else "无后续"}')
