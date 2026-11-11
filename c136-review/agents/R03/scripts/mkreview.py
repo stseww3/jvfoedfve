@@ -262,8 +262,9 @@ def main():
         return 0
     os.makedirs(os.path.join(ROOT, "reviews"), exist_ok=True)
     out = os.path.join(ROOT, "reviews", f"{mid}.json")
-    with open(out, "w", encoding="utf-8") as f:
-        json.dump(doc, f, ensure_ascii=False, indent=1)
+    with open(out, "w", encoding="utf-8", errors="replace") as f:
+        s = json.dumps(doc, ensure_ascii=False, indent=1)
+        f.write(s.encode("utf-16", "surrogatepass").decode("utf-16", "replace"))
     print(f"  已写 {out}（{os.path.getsize(out)} 字节）")
     return 0 if not fails else 1
 
