@@ -104,6 +104,29 @@ def main():
     split(6, "600~1500 连发窗口数", 4, "AI 脚印到 1500 我方吃到")
     split(6, "600~1500 连发窗口数", 5, "1500 拍实际 ÷ 天然", "{:.2f}")
 
+    P("")
+    P("## 表 D：人均领土是全场人均的几倍（份额 ÷ 人头占比；份额取 56_cross_match.py 表 1）：局 | 人头占比 | 人均天然地盘倍数 | 540 拍 | 990 拍 | 1530 拍 | 1530 拍的倍数 ÷ 人均天然地盘倍数")
+    shares = {}
+    for ln in open(os.path.join(CROSS, "cross_match.txt"), encoding="utf-8"):
+        c = ln.rstrip("\n").split("\t")
+        if len(c) >= 8 and c[0] in GAMES and " / " in c[7] and "%" in c[7]:
+            shares[c[0]] = [None if x.strip() == "-" else float(x.strip().rstrip("%")) / 100 for x in c[7].split(" / ")]
+    drel = []
+    for g in GAMES:
+        v = jload(os.path.join(OUT, g, "voronoi.json"))
+        if not v or g not in shares:
+            continue
+        hs = v["groups"]["我方号"]["headShare"]
+        ph = v["groups"]["我方号"]["perHeadRel"]
+        sh = shares[g]
+        cell = [f"{x / hs:.2f}" if x is not None else "-" for x in sh]
+        last = sh[2] / hs / ph if sh[2] is not None else None
+        P(f"{g}\t{hs:.1%}\t{ph:.2f}\t" + "\t".join(cell) + "\t" + (f"{last:.2f}" if last is not None else "-"))
+        if sh[2] is not None:
+            drel.append((g, sh[2] / hs, ph))
+    P(f"1530 拍人均领土倍数：最小 {min(x[1] for x in drel):.2f}（{min(drel, key=lambda x: x[1])[0]}）、中位 {statistics.median([x[1] for x in drel]):.2f}、最大 {max(x[1] for x in drel):.2f}（{max(drel, key=lambda x: x[1])[0]}）；"
+      f"人均天然地盘倍数：最小 {min(x[2] for x in drel):.2f}、中位 {statistics.median([x[2] for x in drel]):.2f}、最大 {max(x[2] for x in drel):.2f}")
+
     open(os.path.join(CROSS, "three_layer.txt"), "w", encoding="utf-8").write("\n".join(L) + "\n")
     print("\n".join(L))
 
