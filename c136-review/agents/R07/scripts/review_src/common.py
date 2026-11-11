@@ -192,8 +192,10 @@ PATTERN_DEFS = {
     # ---- A033 起新增：检测依赖 67_troop_flow.mjs（cmd_effect.tsv）/ 69_quota_truth.mjs / 70_team_density.py / 72_repeat_sends.py / 65_shadow.mjs ----
     "R07-DN-CAP-TRUNC": {
         "category": "DN",
-        "definition": "捐款被收方的硬上限截断：引擎里到账 = min(名义额, 150×收方领土 − 收方余额)，截掉的部分直接消失，而手续费仍按捐方全部余额的 6.25% 全额收取。"
-                      "调度逻辑只看收方密度是否低于 128~142，不看它离硬上限还剩多少空间，所以收方密度 115 以上时一笔 31% 余额的调度大半到不了账。",
+        "definition": "捐款被收方的硬上限截断：引擎里到账 = min(名义额, 150×收方领土 − 收方余额)，截下的部分不扣、留在捐方手里（game.js transfer L388-400：`bal[p] = B − v − fee`，v 是封顶后的数），"
+                      "而手续费仍按捐方全部余额的 6.25% 全额收取——到账越少，手续费占到账的比例越高，到账几千、手续费几万的都有。"
+                      "调度逻辑只看收方密度是否低于 128~142，不看它离硬上限还剩多少空间，所以收方密度 115 以上时一笔 31% 余额的调度大半到不了账。"
+                      "（船靠到队友岸上是另一回事：过不了上限或配额的兵直接丢掉，boats.js landAt L273-279。）",
         "detectionSketch": "67_troop_flow.mjs 的 cmd_effect.tsv（每条指令扣款前后的真实余额）→ 63_replay_ledger.py B 节标「顶格截断」的行：名义额、实际到账、手续费。",
     },
     "R07-AT-INFLIGHT-REPEAT": {
