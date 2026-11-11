@@ -58,6 +58,10 @@ def pc(a, b, d=0):
     return "–" if not b else f"{100 * a / b:.{d}f}%"
 
 
+def plain(x):
+    return "–" if x is None else str(int(round(x)))
+
+
 def num(x, d=2):
     if x is None:
         return "–"
@@ -311,7 +315,7 @@ def main():
 
     # ------------------------------------------------------------------ [XM-G]
     out.append("[XM-G] 捐款（日志口径；复盘稿 ledger + xscan 的 NEW-DN-02 / DN-07 / DN-17 检出）。局 | 日志里的捐款行 | 看得到成交的 | 看得到被拒的 | 定不了的 | 到账上限 | 手续费上限 | "
-               "小额捐款『税 − 到账』合计（DN-02）| 600 拍内互相倒手的次数（DN-07）| 顶硬上限回弹（DN-17）")
+               "小额捐款『税 − 到账』合计（DN-02）| 600 拍内互相倒手的次数（DN-07）| 顶硬上限回弹（DN-17）| 看得到成交的那些：到账 / 手续费（按发令时的余额估）| t<4284 的日志行 / 成交 / 被拒")
     J["donations"] = {}
     for m in MINE:
         lg = R[m].get("ledger") or {}
@@ -320,8 +324,20 @@ def main():
                                  undetermined=lg.get("donationsUndetermined"), arrivedUpper=lg.get("donatedArrivedUpperBound"), taxUpper=lg.get("donationTaxUpperBound"),
                                  taxMinusGift=(p.get("NEW-DN-02") or {}).get("taxMinusGift"), pingpong=(p.get("NEW-DN-07") or {}).get("n"), bounce=(p.get("NEW-DN-17") or {}).get("n"))
         d = J["donations"][m]
-        out.append(f"    {m} | {num(d['logged'])} | {num(d['accepted'])} | {num(d['rejected'])} | {num(d['undetermined'])} | {num(d['arrivedUpper'])} | {num(d['taxUpper'])} | "
-                   f"{num(d['taxMinusGift'])} | {num(d['pingpong'])} | {num(d['bounce'])}")
+        dr = ((xrow.get(m) or {}).get("basics") or {}).get("donRows") or []
+        acc = [x for x in dr if x[2] == "ACC"]
+        d["accArrived"], d["accFee"] = sum(x[4] for x in acc), sum(x[3] for x in acc)
+        d["before4284"] = [sum(1 for x in dr if x[0] < 4284), sum(1 for x in dr if x[0] < 4284 and x[2] == "ACC"), sum(1 for x in dr if x[0] < 4284 and x[2] == "REJ")]
+        out.append(f"    {m} | {num(d['logged'])} | {num(d['accepted'])} | {num(d['rejected'])} | {num(d['undetermined'])} | {plain(d['arrivedUpper'])} | {plain(d['taxUpper'])} | "
+                   f"{plain(d['taxMinusGift'])} | {num(d['pingpong'])} | {num(d['bounce'])} | {d['accArrived']} / {d['accFee']} | {d['before4284'][0]} / {d['before4284'][1]} / {d['before4284'][2]}")
+    dd = list(J["donations"].values())
+    tot = lambda k: sum(x.get(k) or 0 for x in dd)
+    b4 = [sum(x["before4284"][i] for x in dd) for i in range(3)]
+    J["donationTotals"] = dict(logged=tot("logged"), accepted=tot("accepted"), rejected=tot("rejected"), undetermined=tot("undetermined"), taxMinusGift=tot("taxMinusGift"),
+                               pingpong=tot("pingpong"), bounce=tot("bounce"), accArrived=tot("accArrived"), accFee=tot("accFee"), before4284=b4)
+    J["donationTotals"].update(arrivedUpper=tot("arrivedUpper"), taxUpper=tot("taxUpper"))
+    out.append(f"    合计 | {tot('logged')} | {tot('accepted')} | {tot('rejected')} | {tot('undetermined')} | {plain(tot('arrivedUpper'))} | {plain(tot('taxUpper'))} | {tot('taxMinusGift')} | {tot('pingpong')} | {tot('bounce')} | "
+               f"{tot('accArrived')} / {tot('accFee')}（手续费 ÷ 到账 {pc(tot('accFee'), tot('accArrived'))}）| {b4[0]} / {b4[1]} / {b4[2]}")
 
     # ------------------------------------------------------------------ [XM-H]
     out.append("[XM-H] 出局（日志口径；xscan.py 的基础量 + NEW-DF-08 / DF-07 / DF-01 检出）。局 | 阵亡 / 离开（离开时还有 ≥100 格的）/ 号数 | 阵亡号结果行里的余额合计 | 其中 ≥10 万的号 | "

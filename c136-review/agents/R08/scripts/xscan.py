@@ -246,7 +246,7 @@ def main():
         left_agg[nm] = dict(n=n, matches=sum(1 for r in rs if r["basics"]["left"] > 0), halfMatches=half, q50=q[9], le1500=sum(1 for t in ts if t <= 1500), gt8500=sum(1 for t in ts if t > 8500),
                             withLand=len(withland), land=sum(x[1] for x in withland), balance=sum(x[2] for x, _ in lr), big=big)
     # [XS-I] 捐款日志行按引擎的受捐额度分段
-    DB = [("0~2142", 0, 2142), ("2142~3213", 2142, 3213), ("3213~4284", 3213, 4284), ("4284+", 4284, 10 ** 9)]
+    DB = [("0~2142", 0, 2142), ("2142~3213", 2142, 3213), ("3213~4284", 3213, 4284), ("4284+", 4284, 10 ** 9), ("其中 t<4284 合计", 0, 4284), ("全程合计", 0, 10 ** 9)]
     out.append("[XS-I] 捐款日志行按引擎受捐额度的分段（donationCost L348-357 的换算在 t=2142 / 3213 换档；t≥4284 不限额）。判定 = 捐出方下一条余额观测对『成交 / 被拒』两个预期的比对（facts.py）：")
     out.append("    组 | 时段 | 有捐款的局 | 日志行 | 看得到成交 | 看得到被拒 | 定不了 | 成交 ÷（成交 + 被拒）| 成交的那些：到账上限 | 手续费 | 手续费 ÷ 到账 | pct < 63 的行（其中看得到成交的；这种捐款到账比手续费还少）")
     don_agg = {}
