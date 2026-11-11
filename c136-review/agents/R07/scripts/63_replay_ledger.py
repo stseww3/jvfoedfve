@@ -25,7 +25,7 @@ import re
 import sys
 from collections import defaultdict
 
-from r07lib import attack_quote, DATA, OUT, g0, load_card, quota_cap, quota_exempt, quota_points
+from r07lib import attack_quote, donate_quote, DATA, OUT, g0, load_card, quota_cap, quota_exempt, quota_points
 
 RE_DIS = re.compile(r"\[HL-DISPATCH\] t=(\d+) (\w+) pct=(\d+)/1024 -> ally=(\d+)\(([^)]*)\) boxedIn=(true|false) myBal=(\d+) dMe=(-?\d+) dAlly=(-?\d+)")
 RE_DON = re.compile(r"\[HL-DONATE\] t=(\d+) ([a-z ]+?) pct=(\d+)/1024 -> (?:boss|ally)=(\d+)\(([^)]*)\)(?: boxedIn=(true|false))? myBal=(\d+) dMe=(-?\d+)")
