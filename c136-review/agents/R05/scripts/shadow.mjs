@@ -274,6 +274,11 @@ function tickClass(g, b, p, B, t, cmds, tree) {
   }
   const leaf = tree.length ? tree[tree.length - 1] : null;
   r.exit = leaf ? `${short(leaf.fn)}:${leaf.exit ?? 'end'}` : '';
+  // 通用出手路径（1500 拍前各版本都走 General.act → pickTarget）：General.act 的出口行、pickTarget 循环里命中过的 continue 行
+  const pts = tree.filter((n) => /pickTarget$/.test(n.fn));
+  r.pt = pts.length ? [...new Set(pts.flatMap((n) => n.mids))] : null;
+  const ga = tree.find((n) => n.fn === 'General.act');
+  r.ga = ga ? (ga.exit ?? 'end') : null;
   return r;
 }
 // 复刻 threatOf（策略 417–443 行）并返回「机器人 q 的其它邻居里最弱的是谁」
@@ -307,7 +312,10 @@ const R = simulate(mid, {
   maxTick: Math.min(T1, 1e9),
   onStart(g, { names, H }) {
     g.online = true;
-    g.names = names;
+    // 录像头的名字表有 512 项，真人之后的项是「最后一个真人的名字」的填充；c110 按名字认队内兄弟（isOurSquadBot → analyze 里不算邻居），
+    // 最后一个真人恰好是我方号时（B010 的 Khiva#94），全部 AI 机器人都会被影子当成兄弟而永不进攻。真实客户端照常打机器人
+    // （B010 录像里我方号对机器人的进攻 100+ 条），所以这里只给真人名字。
+    g.names = names.slice(0, H);
     R0.H = H; R0.names = names;
     const sq = squadIds(mid, names, H).squad;
     globalThis.__SQ = new Set(sq.keys());
