@@ -40,7 +40,8 @@ def main():
     mid, who, ts = args[0], args[1], args[2]
     d = json.load(open(os.path.join(ROOT, "out", "cache", f"{mid}-resim.json")))
     H, names, teams = d["H"], d["names"], d["teams"]
-    sq = {v["id"]: n for n, v in d["squad"].items()}
+    # 不在本房间的编队号（id=-1 / mismatch）不算：否则 -1 会被当成「最后一个席位」
+    sq = {v["id"]: n for n, v in d["squad"].items() if v["id"] >= 0 and not v.get("mismatch")}
 
     def nm(p):
         if p == NEUTRAL:
@@ -59,6 +60,9 @@ def main():
             if w.isdigit():
                 ids.append(int(w))
             elif w in d["squad"]:
+                if d["squad"][w]["id"] < 0 or d["squad"][w].get("mismatch"):
+                    print(f"{w} 不在本房间")
+                    sys.exit(2)
                 ids.append(d["squad"][w]["id"])
             else:
                 hit = [p for p in range(H) if w in names[p]]

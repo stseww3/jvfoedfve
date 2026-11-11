@@ -39,7 +39,7 @@ def main():
     sh = json.load(open(os.path.join(ROOT, "out", "cache", f"{mid}-shadow.json")))
     rs = json.load(open(os.path.join(ROOT, "out", "cache", f"{mid}-resim.json")))
     H, names = rs["H"], rs["names"]
-    sq = {v["id"]: n for n, v in rs["squad"].items()}
+    sq = {v["id"]: n for n, v in rs["squad"].items() if v["id"] >= 0 and not v.get("mismatch")}
 
     def nm(p):
         if p == NEUTRAL:
