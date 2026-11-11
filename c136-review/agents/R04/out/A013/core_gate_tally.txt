@@ -1,0 +1,23 @@
+# A013 核心期行动拍的去向 [1500,3500)：共 3435 个号·行动拍
+合计：price 891（26%），nooffer 880（26%），出手 827（24%），floor 575（17%），chunk 112（3%），inflight 72（2%），send 29（1%），small 22（1%），donate 19（1%），boat 8（0%）
+floor 是哪一项顶住的（keep = 价格预算要留的兵 L5420~5427；dp = safeAt 里的 killW×dpKeep，即最强的非队友真人邻居的全部余额打不垮我要留的兵；sf = safeFinite；cap+ = 被 oppFloorCap×地 截住后仍不够；empty = 余额已经是 0）：dp 362，cap+dp 121，sf/squad 89，keep 3
+  ryan_m    400 拍：price 9（2%），nooffer 373（93%），chunk 12（3%），donate 6（2%）
+          按目标：chunk→84 12，price→84 9
+  noah88    400 拍：price 223（56%），出手 89（22%），floor 53（13%），chunk 11（3%），inflight 12（3%），send 4（1%），small 8（2%）
+          按目标：price→12 166，floor→12 53，price→2 52，chunk→12 11，small→2 8，inflight→2 7，inflight→12 5，price→11 5
+  sora_w    400 拍：price 35（9%），nooffer 250（62%），出手 47（12%），floor 18（4%），chunk 41（10%），send 2（0%），donate 6（2%），boat 1（0%）
+          按目标：price→11 32，chunk→84 22，chunk→422 19，floor→422 18，price→84 3，send→422 1，send→84 1
+  zero_7    400 拍：price 209（52%），出手 115（29%），floor 45（11%），chunk 22（6%），send 5（1%），boat 4（1%）
+          按目标：price→12 209，floor→12 45，chunk→12 22，send→441 3，send→12 2
+  riku_x    400 拍：price 104（26%），nooffer 94（24%），出手 41（10%），floor 106（26%），chunk 24（6%），inflight 27（7%），send 2（0%），boat 2（0%）
+          按目标：price→0 87，floor→422 37，floor→209 32，floor→0 30，inflight→17 26，chunk→17 24，price→17 12，floor→17 7
+  leo_tx    363 拍：price 58（16%），nooffer 137（38%），出手 57（16%），floor 91（25%），inflight 12（3%），small 1（0%），donate 7（2%）
+          按目标：floor→0 85，price→0 33，price→11 25，inflight→0 12，floor→11 6，small→0 1
+  alex_k    355 拍：price 60（17%），出手 165（46%），floor 105（30%），inflight 10（3%），send 2（1%），small 13（4%）
+          按目标：floor→18 74，price→2 41，floor→2 30，price→11 19，small→18 13，inflight→2 10，send→2 2，floor→12 1
+  kaito9    313 拍：price 118（38%），nooffer 26（8%），出手 146（47%），floor 20（6%），send 2（1%），boat 1（0%）
+          按目标：price→0 118，floor→17 20，send→209 2
+  talon5    215 拍：price 64（30%），出手 73（34%），floor 63（29%），chunk 2（1%），inflight 11（5%），send 2（1%）
+          按目标：floor→18 63，price→18 47，inflight→18 11，price→0 9，price→2 6，send→18 2，chunk→18 2，price→11 2
+  zexos1    189 拍：price 11（6%），出手 94（50%），floor 74（39%），send 10（5%）
+          按目标：floor→17 45，floor→18 29，price→18 11，send→18 9，send→31 1

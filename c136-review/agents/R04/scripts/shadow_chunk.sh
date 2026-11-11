@@ -37,5 +37,6 @@ if [ -z "$bots" ]; then echo "## $m：剩 ${left} 秒，不够带 1 个号（还
 first=${bots%%,*}
 echo "## $m：剩 ${left} 秒，这一次带 $bots（还差 $pend 个号）"
 t0=$(date +%s)
-node --max-old-space-size=700 scripts/shadow.mjs "$m" --bots "$bots" --quiet --rows --out "tmp/shadow/$m.chunk-$first" 2>&1 | grep '^#\|不一致\|报错' | cut -c1-330
+# 到 DEADLINE 前 2 秒还没跑完就杀掉（这一份作废、下次重跑），不让整条命令超过 120 秒
+timeout "$(( left > 4 ? left - 2 : 2 ))" node --max-old-space-size=700 scripts/shadow.mjs "$m" --bots "$bots" --quiet --rows --out "tmp/shadow/$m.chunk-$first" 2>&1 | grep '^#\|不一致\|报错' | cut -c1-330
 echo "## 用时 $(( $(date +%s) - t0 )) 秒"
