@@ -255,7 +255,7 @@ R = dict(
             priorDecisions=[
                 dict(t="6300~9410", bot="Kandy / Genos / New York / Goguryeo", decision="盈余捐款找不到收款方：候选只有同队名字池里的号，四个在线号彼此密度都 ≥132 或没有战事，停摆的 Mansa Musa 这一段也没有战事；同队的野人不在候选里",
                      codePath=DON_SURPLUS, judgement="error", why="840 万兵停了 3100 拍，Kandy / Genos 被硬上限截掉利息 55 万；同期 T2 的地是野人队友在前线打下来的"),
-                dict(t="2070~12286", bot="Genos", decision="12062 格被围 10200 拍，一条船没发",
+                dict(t="2070~12286", bot="Genos", decision="12062 格被围 10170 拍（t=2070~12240 的 111 条快照），一条船没发",
                      codePath=BOAT, judgement="unclear", why="被围时闲置船分支每 60 拍会找一次落点；Genos 一次没成，是没有落点还是别的门槛，没有录像和影子追踪到这一段"),
                 dict(t="2250~11070", bot="Goguryeo / New York", decision="被围时每 60 拍一条闲置船，不设价格上限：Goguryeo 纯船窗 50 条船少掉 458.8 万兵换 +169 格（之后 180 拍内最高 +2470 格），New York 33 条少掉 93.0 万兵、领土反而 −826 格",
                      codePath=BOAT, judgement="error", why="每条船先付余额的 32/1024 手续费；落点是几格小岛或很快被拿回去的滩头。船落在谁身上没有录像"),
@@ -332,7 +332,7 @@ R = dict(
                    "t=5310~6210 14995→2915 格（单窗最多 2642 格），cmds=71 不变，余额 726849→132859", "t=6221 出局（第 17 名），余额 124109；t=6210~6300 Kandy（T2）用 2 条指令多出 1266 格"],
             statementType="inferred"),
         "Goguryeo": dict(
-            cause="T2 分支最大的号（峰值 26239 格）。被围的 7000 拍里兵花在 61 条船上；t=9410 起四个号互相捐，它被补到密度 148（硬上限）。t=10710 出现 1 个敌邻，360 拍丢 16066 格、余额 369 万→114 万，一条指令没有；"
+            cause="T2 分支最大的号（峰值 26239 格）。t=3420~10620 的 7200 拍没有敌邻，兵花在船上（t≥2250 发了 61 条）；t=9410 起四个号互相捐，它被补到密度 148（贴着 150 倍硬上限）。t=10710 出现 1 个敌邻，360 拍丢 16066 格、余额 369 万→114 万，一条指令没有；"
                   "领土到峰值的 23% 出局，带走 700963 兵。",
             chain=["t=1800~2520 积压的旧单子落地：7284→22480 格，余额 434580→18162（t=2340）", "t=3510~10620 领土 23905→26221 格，余额 931181→3362456；整局 66 条船",
                    "t=3990~4370 5 笔 pct 57~83 的救援捐款（Charlemagne / Barbary / New York），每笔到账 10.7~14.7 万、税 11.2~12.5 万", "t=10420~11150 队友对它 22 笔、成交 11 笔 2258461（9 笔被夹小）",
@@ -408,7 +408,7 @@ R = dict(
              codePath=DRIVER, verdict="unclear", patternId="NEW-IO-05",
              evidence=["lagstats [LA]：900~1080 168 条配上 26（15%），1080~1260 164 条配上 7（4%）", "bursts [BB]：本地发出 1293 条，录像记下 376 条", "shadowcmp [SC]"],
              statementType="observed"),
-        dict(id="D09", t="本地拍 900~1246", bot="Barbary / Sukuna / bruh / Zenobia / CJ / Charlemagne / Swiss Guard / Mansa Musa / EZ_Clap / xX_Shadow_Xx", decision="10 个号的客户端先后停掉：9 个没有结果行，1 个冻在 1246 拍后记了 left。停摆时它们合计 62200 多格，是编队的一半。",
+        dict(id="D09", t="本地拍 900~1246", bot="Barbary / Sukuna / bruh / Zenobia / CJ / Charlemagne / Swiss Guard / Mansa Musa / EZ_Clap / xX_Shadow_Xx", decision="10 个号的客户端先后停掉：9 个没有结果行，1 个冻在 1246 拍后记了 left。录像末拍（t=1246）它们合计 64879 格，是编队 125782 格的 52%。",
              codePath=DRIVER, verdict="unclear", patternId="NEW-IO-13",
              evidence=["squadfog [HA]：9 个号最后一条 HL-TICK 在本地拍 900~1080，录像里最后一条已执行指令 t=1008~1232；录像末拍它们各有 4818~9641 格", "L8584212：xX_Shadow_Xx 的 left 行夹在别的号 t=2790 的 HL-TICK 之间",
                        "squadfog [HL]：之后救援日志里这些号的密度 65 条读数 最小 1 / 中位 14 / 最大 59，在线号同期中位 75——没有利息，按引擎规则是已离开、由引擎托管的状态"],
@@ -495,9 +495,135 @@ R = dict(
              evidence=["perhead [PH-C]：t=1230 Kandy 与 Watermelon 接壤 65~66 格", "digest [J]：Kandy 129 条快照里 102 条被围", "truth [TF]：录像期编队内部互打 0 格"],
              statementType="observed"),
         dict(id="D29", t="6210~6300", bot="Kandy", decision="Watermelon 出局留下空地，Kandy 当窗用 2 条指令（不是船）拿到 1266 格，13760→15026。",
-             codePath=f"{C110}: Policy.act L4781-4944 → Policy.buyLand L5250-5548（空地报价）", verdict="good", patternId="NEW-EG-G1",
+             codePath=f"{C110}: Policy.act L4781-4944 → Policy.buyLand L5250-5548（空地报价）", verdict="good", patternId="NEW-EG-G2",
              evidence=["Kandy t=6210 13760 格 cmds=126 → L8584691 t=6300 15026 格 cmds=128，boats=20 不变", "L8584689：Watermelon 结果行 t=6221，最后一次领土 2795 格"],
              statementType="inferred"),
     ],
-    # ==TAIL==
+    newPatterns=pick("NEW-SP-04", "NEW-SP-07", "NEW-SP-05", "NEW-OP-G1", "NEW-AT-G1", "NEW-EC-05", "NEW-EC-06", "NEW-IO-01", "NEW-IO-02", "NEW-IO-03", "NEW-IO-05", "NEW-EX-05", "NEW-IO-13", "NEW-IO-06",
+                     "NEW-IO-11", "NEW-IO-12", "NEW-DN-10", "NEW-DN-04", "NEW-DN-02", "NEW-DN-12", "NEW-DN-06", "NEW-DN-14", "NEW-DN-15", "NEW-EC-03", "NEW-EC-08", "NEW-DF-03", "NEW-MT-01", "NEW-MT-02",
+                     "NEW-MT-06", "NEW-SE-G1", "NEW-SE-05", "NEW-AT-02", "NEW-DF-01", "NEW-DF-04", "NEW-EG-G2"),
+    lossArchetype="win",
+    archetypeNote="对局卡的主队 T2 获胜，按清单记 win。实际是搭车赢：T2 的 9 个编队账号里 4 个在本地拍 900~990 停摆、3 个阵亡，活到终局的 Genos、New York 合计 19773 格，是 T2 领土的 4.0%；"
+                  "T2 从 t=2351 的 28.0% 涨到终局 64.4%（+277861 格）的同时，T2 在线的编队号从 61608 格掉到 19773 格。T2 的在线编队号 t≥2250 的 41580 号·拍里只有 30 条陆攻，Genos 一条都没有。"
+                  "另外两个分支按落败口径看：T1 的 5 个号是 external + early-wipe（Farnese 161 拍出局，3 个停摆，Watermelon 被受保护名单里的号吃掉）；"
+                  "T3 的 6 个号是 external + mid-collapse（3 个停摆，Carthage 被积压的捐款清仓，Denmark、Leif Erikson 挨打不还手）。"
+                  "全局最大的一项损失不是策略决策：20 个客户端从 t≈540 起一起变慢，10 个在 t≈1000~1250 停掉，录像期人均领土从其他真人的 1.06 倍掉到 0.55 倍。",
+    winnerNotes="T2 获胜（终局 64.4% 对 T1 34.7%，活着 9 人）。靠的是 T2 的非编队真人：录像末拍（t=1240）T2 只有 18.4%，排第三（T1 24.2%、T3 19.5%），头部是 Player 719（15171 格）、Women and Chi!（15030）、Player 292（14797）、Bolsonaro 22（13718）。"
+                "t=2351→4907 T2 从 28.0% 涨到 46.3%（+139388 格），同期 T3 从 30.6% 掉到 14.2%（−125335 格）、T1 从 40.4% 到 38.0%：T2 吃下了 T3 的大半（按全队领土推断，没有录像）；这一段 T2 在线的 5 个编队号只多了 4855 格。"
+                "t=4907→6221 T1 吃掉 T3 的残余（T1 38.0%→46.2%，T3 14.2%→1.9%），两队在 51.3 对 46.2 僵持到 t=11162（56.1 对 43.0），t=11162→12267 的 1105 拍里 T2 再涨 60176 格。"
+                "对局在 T2 占 64.4% 时结束；引擎的胜利条件是领先的队拿下全部陆地（game.js victoryTick L1398-1412），提前结束的原因不在包里。"
+                "编队对这场胜利的贡献：在线的编队号占 T2 领土的 28.8%（t=2351）→ 4.0%（终局）；224 笔捐款日志的收款方全是编队账号，没有一笔给到编队外的 T2 队友（盈余捐只认名字池和 Boss）；"
+                "T2 在线的 4 个编队号 t=7200~9000 握着 837~859 万兵（密度 140~143），t=6300~9360 Kandy、Genos 一条指令没发，New York 的 17 条、Goguryeo 的 37 条全是船。",
+    peerComparison="本包没有同房的另一支受控编队（sameMatchPeer 为空）。能比的是同房的 30 个其他真人（真值，到 t=1240）：人均领土 编队 / 其他真人 = 366 / 417（t=270）、3015 / 2838（t=630）、5296 / 5950（t=900）、5838 / 8873（t=1080）、6597 / 12013（t=1240）；"
+                   "人均余额 t=1240 是 85119 对 59554。(900,1246] 人均吃人机 1155 对 4847 格，每格花费 4.5 对 4.6 兵——单价一样，差在出手次数：(900,1080] 生效的陆攻人均 2.1 对 5.0 条。"
+                   "同一拍到达 ≥3 条指令的批，编队 23 批 121 条，其他真人 0。内置 AI 啃真人的交换比（余额损失 ÷ AI 耗兵）编队 1.08，其他真人 0.49。",
+    teamSplitNotes="20 个账号没有战队标签，被分成 T1×5、T2×9、T3×6（各队 17 个真人）。跨队的表现："
+                   "① 互不攻击——录像期编队内部互打 0 格（truth [TF]）；Kandy（T2）和 Watermelon（T1）贴着 4000 拍互不出手。"
+                   "② 互相锁——打人机前的留底 sb 取共用同一个人机的另一个真人的余额，不分队：900~1260 被 sb 挡的 212 个号·点里 95 个是异队编队友定的（New York ↔ Denmark 互锁 35 / 34 点，Zenobia ↔ Mansa Musa 10 / 10 点）。"
+                   "③ 不能跨队捐款（引擎只许捐给队友）；跨队的协防戳刺 2 次（Raiden 为 T3 的 Leif Erikson 打 T1 的 Plant）。"
+                   "④ 按名字保护在账号停摆以后照旧：Watermelon（T1）被一个不在 nb 里的号吃掉 15787 格（推断是停摆后由引擎托管的 T2 账号 Mansa Musa），同期 Kandy / Genos / New York / Goguryeo 正把 2240535 兵捐给 Mansa Musa。"
+                   "三个分支的结局：T2（获胜队）9 个号 = 4 停摆 + 3 阵亡 + 2 存活；T1 5 个号 = 1 个 161 拍出局 + 3 停摆 + 1 阵亡；T3 6 个号 = 3 停摆（含冻结后离开的 xX_Shadow_Xx）+ 3 阵亡。"
+                   "对局卡的 teamSplitCounts={1:2, 2:5, 3:3} 只数了有结果行的号。",
+    ledgerExtra=dict(
+        stalledAccounts=dict(count=9, plusFrozenThenLeft="xX_Shadow_Xx（本地拍 1246）", lastLocalTick="900×5、990×3、1080×1", lastExecutedCmdTick="1008~1232",
+                             terrAtReplayEnd=59916, balAtReplayEnd=787377, note="9 个停摆账号录像末拍（t=1246）的地 / 兵合计；加上 xX_Shadow_Xx 是 64879 格 / 880196 兵，编队 20 个号合计 125782 格 / 1617262 兵",
+                             dAllyReadings=dict(n=65, min=1, median=14, max=59, onlineMedianAfter1800=75), src="scripts/squadfog.py [HA][HL]"),
+        lagWave=dict(byExecTick=["0~539：时延中位 11~12 拍 / P90 16~19", "540~719：25 / 43", "720~899：70 / 112，陆攻落地无效 11%", "900~1079：187 / 253 / 最大 583，无效 42%", "1080~1259：288 / 373 / 最大 687，无效 20%"],
+                     shadowWanted=dict(w900_1080=168, matched900_1080=26, w1080_1260=164, matched1080_1260=7),
+                     batches=dict(batches=23, commands=121, noEffect=34, largest=9, othersBatches=0), staleRatio=dict(orders=121, intended=243858, sent=559601, ratio=2.29),
+                     strategyAvgMsMax=1.13, src="scripts/shadowcmp.py [SF][SG]；scripts/lagstats.py [LA]；scripts/bursts.py [BA][BC]；scripts/squadfog.py [HM]"),
+        perCapitaVsOthers=["t=270 366 / 417（0.88）", "t=630 3015 / 2838（1.06）", "t=900 5296 / 5950（0.89）", "t=1080 5838 / 8873（0.66）", "t=1240 6597 / 12013（0.55）"],
+        botHarvest=dict(w630_900=dict(squadPerCapita=605, othersPerCapita=531), w900_1246=dict(total=167347, squad=21941, squadPerCapita=1155, othersPerCapita=4847, squadCostPerTile=4.5, othersCostPerTile=4.6),
+                        src="scripts/harvest.py"),
+        sbLock=dict(window="900~1260", botPointsNextToAi=494, allBlocked=222, blockedBySb=212, sbFromSquadSameTeam=53, sbFromSquadOtherTeam=95, sbFromEnemyHuman=60, sbFromTeammateHuman=4, mutual=118,
+                    blockedAiWithZeroTroops=137, costAtMost10pctOfBalance=206, src="scripts/shadowcmp.py [SH]"),
+        aiExchange=dict(squadLostTiles=4259, aiSpent=47200, squadBalanceDestroyed=50887, ratio=1.08, othersRatio=0.49, pairsLossExceedsAiSpend=10, src="scripts/truth.py [TN]"),
+        donations=dict(logged=224, executed=118, notExecuted=53, undetermined=53, delivered=17909772, tax=7996782, taxShareOfPaid="30.9%",
+                       byKind=dict(rescue=dict(logged=75, executed=35, delivered=2692054, tax=2369288), surplus=dict(logged=149, executed=83, delivered=15217718, tax=5627494)),
+                       toStalledAccounts=dict(logged=126, executed=70, delivered=8833877, tax=4193699, shareOfDelivered="49%"),
+                       toOnlineAccounts=dict(logged=98, executed=48, delivered=9075895, tax=3803083),
+                       clippedByReceiverCap=dict(count=20, delivered=3108710, tax=1740805),
+                       pctAtMost70=dict(logged=26, executed=22, delivered=1456089, tax=1499782, taxAtLeastDelivered=13),
+                       sameTickSameReceiver=dict(groups=30, logged=75, executed=37, notExecuted=23, undetermined=15),
+                       refires=dict(count=20, extraDelivered=2510136, extraTax=994029),
+                       receiverOverSoftCap=dict(count=16, delivered=3428398, tax=1241019, goguryeo=dict(count=12, delivered=2876962, tax=1043560, terr="26011→8851")),
+                       byEra=["发令拍 0~2300：50 笔，成交 0 / 没成交 25 / 定不了 25", "2300~4284：46 笔，44 / 1 / 1，到账 4647242、税 2782932", "4284~6300：60 笔，39 / 6 / 15，到账 6416705、税 2352774",
+                              "6300~9400：0 笔", "9400~10000：22 笔，8 / 11 / 3，到账 1830375、税 854475", "10000~11200：35 笔，17 / 10 / 8，到账 3582187、税 1470030", "11200~12241：11 笔，10 / 0 / 1，到账 1433263、税 536571"],
+                       topReceivers=["Mansa Musa（停摆）31 笔 4987780", "New York 19 笔 3357352", "Goguryeo 13 笔 3048557", "Raiden 11 笔 1989692", "Barbary（停摆）12 笔 1613088", "Charlemagne（停摆）10 笔 1071956"],
+                       byTeam=dict(T1="4 笔全成交 362344（全给停摆的 Swiss Guard）", T2="177 笔，成交 97，到账 16238717、税 6958827", T3="43 笔，成交 17，到账 1308711、税 858607"),
+                       src="scripts/donfit.py [FA]~[FE]；scripts/squadfog.py [HB][HH][HJ]；scripts/donwall.py [WG][WH]"),
+        backlogDrain=dict(newYork=dict(window="2160~2340", bal="660108→23910", ratio=0.0362, fittedDonations=11, fittedProduct=0.0362, delivered=504965, tax=131269),
+                          carthage=dict(window="2160~2340", bal="313768→3471", ratio=0.0111, fittedDonations=19, fittedProduct=0.0103, delivered=219564, tax=90971, diedAt=2351),
+                          note="只是算术：每笔按当时余额扣 (pct+1+64)/1024 连乘；这 30 笔不在上面『成交 118 笔』里", src="scripts/squadfog.py [HG]"),
+        quotaWall=dict(before4284=dict(logged=96, executed=44, notExecuted=26, soloOverQuota=5, cumulativeOverQuota=0, other=21, undetermined=26),
+                       after4284=dict(logged=128, executed=74, notExecuted=27, undetermined=27),
+                       ceilings="陆地 762763 格（uv=2543）：一个受捐方开局以来累计最多收 t=1500 63320 兵、t=2141 90785、t=2142 302617、t=3212 526401；收款方是已离开的账号时引擎不查额度（donationFree）",
+                       note="这一局额度不是主因：t<4284 没成交的 26 笔里单笔超额度的只有 5 笔，其余 21 笔发在客户端落后的那一段（发令拍 <2300）", src="scripts/donwall.py [WA][WE]"),
+        cardLikelyRejectedNote="对局卡『疑似被拒 84 / 224』。facts.py 旧口径（发令 20 拍后看余额）判拒 112 笔：其中 50 笔确实没成交、24 笔晚落地成交、38 笔定不了（donfit [FA]）。"
+                               "没成交的集中在两段：发令拍 <2300（客户端落后，50 笔窗内成交 0）和 ≥9400（收款方顶着 150 倍上限，整单不成交 21 笔）。",
+        hoard=dict(window="6300~9410", bots=4, terr="59230~59948", bal="8372731~8590869", density="140~143", readingsAt="t=7200 / 8100 / 9000", donationsLogged=0,
+                   commands6300to9360=dict(Kandy=0, Genos=0, NewYork="17 条，全是船", Goguryeo="37 条，全是船"),
+                   hardCapSnapshots=dict(Genos=24, Kandy=23, NewYork=9), interestCut=dict(Genos=253509, Kandy=296623, NewYork=32857),
+                   teamShare="T2 51.3%→56.1%，T1 46.2%→43.0%（t=6221→11162）", src="scripts/squadfog.py [HE][HH]；scripts/logstats.py [QB]"),
+        boats=dict(total=165, byBot=dict(Goguryeo=66, NewYork=47, Kandy=20, Watermelon=14, LeifErikson=14, Raiden=4),
+                   pureBoatWindows=dict(Goguryeo="50 条 / 少掉 4588400 兵 / +169 格", NewYork="33 条 / 929895 兵 / −826 格", Kandy="20 条 / 1025190 兵 / +664 格",
+                                        Watermelon="14 条 / 1197997 兵 / +8415 格", LeifErikson="10 条 / 556357 兵 / +593 格"),
+                   caveat="『少掉的兵』= 按利息公式应有的余额 − 实际余额，窗内有捐款入账时偏小；没有录像，船的去向看不到", src="scripts/logstats.py [QE]"),
+        commandMixAfter2250=dict(T1="1 个号 3960 号·拍：18 条 = 陆攻 2 + 船 12 + 捐款 4", T2="5 个号 41580 号·拍：300 条 = 陆攻 30 + 船 119 + 捐款 149 + 戳刺 2", T3="3 个号 5580 号·拍：42 条 = 陆攻 12 + 船 10 + 捐款 20",
+                                 zeroLandAndBoat=["Genos（9990 拍，40 条全是捐款）", "Carthage（90 拍）"], src="scripts/logstats.py [QG]"),
+        invisibleLoss=dict(bot="Watermelon", windows=27, ofBoxedWindows=39, tilesLost=15787, span="3060~6210", largestWindow=2642, newCommands=8, boats=4, landAttacks=0, src="scripts/squadfog.py [HC][HF]"),
+        diedWithBalance=dict(total=1931824, byBot=dict(Farnese=40, Carthage=2691, Denmark=51346, LeifErikson=327612, Raiden=499193, Watermelon=124109, Goguryeo=700963, Kandy=225870),
+                             lastTerrOverPeak=dict(Denmark=0.204, LeifErikson=0.241, Raiden=0.201, Watermelon=0.194, Goguryeo=0.230, Kandy=0.257), src="scripts/squadfog.py [HK]"),
+        teamTotals=["t=164 T1 2276 / T2 3019 / T3 2803", "t=2351 308147 / 213719 / 233576", "t=4907 289793 / 353107 / 108241", "t=5173 317049 / 388384 / 45822", "t=6221 352037 / 391349 / 14177",
+                    "t=11162 327927 / 427571", "t=12267 267674 / 487747", "t=12286 264734 / 491580"],
+        onlineSquadShareOfT2=["t=2351 5 个号 61608 格（28.8%）", "t=4907 5 个号 66463（18.8%）", "t=6221 4 个号 57083（14.6%）", "t=11162 3 个号 34222（8.0%）", "t=12286 2 个号 19773（4.0%）"],
+        drop30Note="DROP30 42 段（digest [F]）；录像期只有 3 段，都是成批落地的陆攻（bruh 900~990、Watermelon 990~1080、Sukuna 1080~1170，truth [TK]）。",
+    ),
+    wentWell=[
+        "开局 DP 扩张 19 个号全部按期（t=190 检查全 OK），t=630 人均 3015 格，是同房其他真人的 1.06 倍；影子的 HL-OPENING 行和真机逐字相同。",
+        "卡顿还轻的 t=630~900 吃人机人均 605 格（其他真人 531），每格 3.3 兵（其他真人 4.3）。",
+        "录像期编队内部互打 0 格（truth [TF]）。",
+        "Watermelon 四周没有能打的邻居时靠船换地：14 条船，纯船窗里 +8415 格（t=4050~4230 3 条船 7936→9262，之后 180 拍最高 12068；t=5130~5310 2 条船 10170→14995）。",
+        "Watermelon 出局（t=6221）的那一窗 Kandy 发了 2 条不是船的指令，13760→15026 格（+1266；推断拿的是出局留下的空地）。",
+        "t=2300~4284 的 46 笔捐款 44 笔成交（这张图大，受捐额度宽），Raiden 最后 700 拍收到 181 万兵。",
+        "Genos、New York 在获胜队活到终局（第 6、7 名）。",
+    ],
+    unknowns=[
+        "20 个客户端为什么从 t≈540 起一起变慢、10 个在本地拍 900~1246 停掉：策略单拍耗时平均 ≤1.13 ms，同房其他真人没有成批落地；包里没有主机侧的数据（CPU、内存、网络）。",
+        "停摆的 9 个账号 t>1246 的下落：没有结果行、没有录像。队友的救援日志里它们的密度读数不随时间涨（没有利息），和引擎里『已离开、由引擎托管』的状态对得上，但服务器什么时候判它们离开不知道；Mansa Musa t=11900 还活着。",
+        "谁吃掉了 Watermelon：只能确定对手不在它的 nb 里（27 个窗两端都是 nb=0、neut=0）。推断是 Mansa Musa（唯一在附近的异队停摆账号，收款段和失地同期），没有直接证据；Zenobia（夹在两者中间的 T1 停摆账号）是否先被吃掉也不知道。",
+        "Denmark 的单邻（t=2340~4140 每窗啃一口）是谁、有多少兵：按节奏和每口递增 2 格推断是余额很少的内置 AI；t=4590 之后吃掉它 6600 格的又是谁，没有录像。",
+        "Leif Erikson、Goguryeo、Kandy 挨打的窗里一条指令没有，是哪道门槛在挡（对真人的留底高过余额，还是报价门槛）：对手的余额不在日志里，没有录像跑不了影子。日志只记到 Leif Erikson 的进攻者是 T1 的 Plant。",
+        "Genos 被围 10170 拍（t=2070~12240 的 111 条快照）、有海岸（盈余捐款发令时的密度中位 78.5，对得上 68 倍留底那条线）却一条船没发：是水路搜索没有落点，还是 boatOut 的金额门槛，没有数据；它也没有一条 HL-SLOW-TICK。",
+        "发令拍 <2300 的 50 笔捐款最后落没落地：New York、Carthage 的清仓和『最后 11 / 19 笔一起扣款』的连乘对得上（0.0362 对 0.0362，0.0111 对 0.0103），其余 20 笔（Kandy 4、Goguryeo 4、New York 7、Carthage 5）定不了。",
+        "被围的号发的 165 条船去了哪：纯船窗里少掉的兵是按利息公式反推的，船靠没靠岸、落在谁身上看不到。",
+        "对局为什么在 T2 占 64.4% 时结束（T1 还有 264734 格、活着 9 人）：日志里没有求和 / 投降相关的行。",
+        "T2 的非编队真人是谁、怎么在 t=2351~4907 吃下 T3 的：t>1246 只有结果行的全队领土。",
+        "捐款的到账额是捐出方余额序列的拟合值：224 笔里 53 笔定不了；成交的 118 笔里 5 笔（都是给 Barbary 的，t=4140~4230）记账后超出额度模型，到账额或归属存疑——如果 Barbary 当时已是离开状态，引擎本来就不查它的额度。",
+    ],
+    mechanicsQuestions=[
+        "出局线：任何玩家的领土 ≤ 历史峰值的 1/4 就出局，剩下的地变空地、余额清零（game.js aliveTick L1298-1312；峰值在领土低于它时每拍只回落 (峰值−领土)/1000）。本局 6 个中后期阵亡的号出局前最后一次领土 ÷ 峰值 = 0.19~0.26，出局时余额合计 1929093。",
+        "捐款：到账 = 捐出方余额×(pct+1)/1024，再按收款方 150×领土 − 余额 夹小，夹到不足 1 兵整单不成交；手续费 = 捐出方余额的 64/1024，和 pct、和夹没夹小都无关（game.js receiverRoom L340-345、transfer L388-401、donate L404-416）。"
+        "pct ≤ 63 时手续费 ≥ 到账；收款方离上限只差几千兵时，手续费可以是到账的 15~20 倍（Genos→New York：到账 4576、税 89594）。",
+        "受捐额度：t≥4284 或收款方是已离开的账号时不查（donationFree L360-362）；所以给停摆账号的捐款在任何时段都不会被额度挡住。",
+        "离开的账号（state=2）：没有利息，在别人眼里是 bot（isBot L215-217），由引擎按难度 6 托管——每 80 拍向随机一个敌队邻居或空地出兵，1.5% 起、每次加 0.5%、最多 25%（leave L229-233；bots.js L69-74、botAttackTeam L142-169）；"
+        "陆上没有可打的、船也发不出时把全部余额交给一个队友（botDonate L180-200）。策略里按名字保护的判断（isProtectedSquadMate L3993-3996）不看这个状态。",
+        "内置 AI 新开进攻的第一圈必赢，不够的兵记欠账（game.js expandAttack L958-1057）：余额为 0 的 AI 每次出手都能啃走一圈边界。录像期编队被 AI 拿走 4259 格、余额被打掉 50887，AI 只花 47200。",
+        "指令带的是占余额的比例，落地时按当时的余额折算；客户端落后时同一拍最多 9 条指令成批落地，逐条按落地时的余额重新折算。",
+        "余额硬上限 150×领土，到顶后利息截掉；软上限 100×领土以上利息递减。",
+    ],
+    scripts=[
+        "bash c136-review/agents/R08/scripts/pipeline.sh B019（facts.py / resim_r08.mjs / truth.py / shadow.mjs / shadowcmp.py / harvest.py / top.py / spawncheck.py / donrej.py；resim 与 traj.csv 202/202 条逐兵一致）",
+        "c136-review/agents/R08/scripts/squadfog.py B019（本局新写：[HA] 停摆账号、[HB][HH][HJ] 捐款去向与分段、[HC][HF] 看不见的失地、[HD] 大幅失地窗、[HE] 整队囤兵、[HG] 清仓拟合、[HI] 结果拍全队领土对照在线编队号、"
+        "[HK] 结果行、[HL] 救援日志里的收款方密度、[HM] 策略耗时、[HN] 规则啃地）",
+        "c136-review/agents/R08/scripts/perhead.py B019 270,630,900,1080,1240（本局新写：[PH-A] 人均对照、[PH-B] 陆攻对照、[PH-C] 录像末拍各号贴着谁）",
+        "c136-review/agents/R08/scripts/donfit.py B019；donwall.py B019；teamshare.py B019",
+        "c136-review/agents/R08/scripts/logstats.py B019（[QA]~[QG]）；noeffect.py B019（[NA][NB][ND]）；lagorder.py B019（[LA]~[LC]）；clockskew.py B019（单房间：参照 = 本房间最先打出该拍的号；[KC] 结果行对表）",
+        "c136-review/agents/R08/scripts/lagstats.py B019 0,540,720,900,1080,1260；bursts.py B019",
+        "c136-review/agents/R08/scripts/build_review.py B019",
+    ],
+    confidenceOverall="medium",
+    confidenceNote="t≤1246 的数字来自逐兵对上的真引擎重演（202/202 条快照一致）和在真值上重跑的策略源码，可信度高：出生、卡顿波、成批落地、sb 互锁、人机收割都是实测。"
+                   "t>1246（占全局 90%）只有日志：各号自己的地、兵、指令数、船数、捐款发令和结果行的全队领土是直接读数；捐款成交与否是余额序列拟合（224 笔里 53 笔定不了）；"
+                   "停摆账号的状态、谁吃了 Watermelon / Denmark、挨打不出手是哪道门槛都是推断，转折 ③④ 标 inferred。",
 )

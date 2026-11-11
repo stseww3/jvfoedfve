@@ -70,9 +70,10 @@ CATALOG = [
          definition="DROP30 且两段净增领土 ≥500，两段口径的每格花费 ≤12",
          detect="scripts/patterns.py: at_cheap_buy"),
     # ---- 防守 ----
-    dict(id="NEW-DF-01", prefix="DF", name="挨打不还手：失地 ≥30% 的过程中指令数为 0",
-         definition="从某条快照起连续若干段合计失地 ≥30%（相对起点领土）且全程 Δcmds=0、Δboats=0",
-         detect="scripts/patterns.py: df_passive"),
+    dict(id="NEW-DF-01", prefix="DF", name="挨打不还手：失地 ≥30% 的过程中没有打向进攻者的指令",
+         definition="从某条快照起连续若干段合计失地 ≥30%（相对起点领土）。严格口径：全程 Δcmds=0、Δboats=0。"
+                    "宽口径：这段时间的指令只有捐款、替别人的协防戳刺和船，陆攻 ≤1 条（有录像时按真值指令账确认没有一条打向进攻者）。两个口径分开计数",
+         detect="scripts/patterns.py: df_passive（严格口径）；scripts/logstats.py [QD]（宽口径：领土从局部峰值掉 ≥30%，列出期间的指令数 / 船数）"),
     # ---- 海上 ----
     dict(id="NEW-SE-01", prefix="SE", name="大额或连续海上拦截",
          definition="HL-INTERCEPT 的 pct≥200（≥19.6% 余额），或同一个号 900 拍内 ≥5 次拦截；同时记这些段的净花费（公式余额 - 实际余额）",
@@ -332,6 +333,10 @@ CATALOG = [
          definition="HL-GAME-INIT 的 me 里，HL-TICK 最后一拍比终局拍早 ≥500 且没有结果行的号 ≥3 个；记号数、停摆的本地拍、当时的领土合计，"
                     "以及之后 squad rescue donate 行里它们的 dAlly 读数（最小 / 中位 / 最大）对照在线号同期密度",
          detect="scripts/squadfog.py [HA][HL]"),
+    dict(id="NEW-EG-G2", prefix="EG", name="（正面）贴身的号出局后，当窗接收它留下的空地",
+         definition="一个编队号的结果行 died（引擎把它剩下的地变成空地）落在另一个编队号的某个 90 拍快照窗里，后者这一窗发出非船指令（Δcmds − Δboats ≥1）、领土 +≥500 格，"
+                    "之后两条快照没有吐回去；记号、格数、指令数。只看日志时『拿的就是那片空地』是推断（两端快照的 neut 可能都是 0）",
+         detect="bundles/<局>/results.csv 的 died 拍 + traj.csv 跨过该拍的快照窗（scripts/patterns.py）"),
 ]
 
 BY_ID = {p["id"]: p for p in CATALOG}
