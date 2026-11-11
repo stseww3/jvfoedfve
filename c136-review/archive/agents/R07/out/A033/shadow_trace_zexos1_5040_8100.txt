@@ -1,0 +1,341 @@
+# A033 zexos1 影子决策明细 t=5040~8100（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   捐兵: 13 拍（t=5040~7940）
+#   没有可打的邻居: 568 拍（t=5045~7935）
+#   首选目标价高（c>=worth）: 32 拍（t=7945~8100）
+t=5040 zexos1 B=1753742 L=15643 d=112.1 nb=0 neut=0 cmds=84 noFull=1 shQ=438435 | m=0.900 worth=100.9 cheap=7.9 over=1 dMedOther=109.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zero_7#52[T2]（约 549757 兵）
+t=5065 zexos1 B=1118803 L=15643 d=71.5 nb=0 neut=0 cmds=85 noFull=1 shQ=279700 | m=0.900 worth=91.6 cheap=7.9 over=0 dMedOther=119.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zero_7#52[T2]（约 350718 兵）
+t=5070 zexos1 B=1132899 L=15643 d=72.4 nb=0 neut=0 cmds=85 noFull=1 shQ=283224 | m=0.900 worth=92.4 cheap=7.9 over=0 dMedOther=120.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5100 zexos1 B=749658 L=15643 d=47.9 nb=0 neut=0 cmds=85 noFull=1 shQ=183600 | m=0.900 worth=98.9 cheap=7.9 over=0 dMedOther=129.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5130 zexos1 B=778352 L=15643 d=49.8 nb=0 neut=0 cmds=85 noFull=1 shQ=194588 | m=0.900 worth=89.8 cheap=7.9 over=0 dMedOther=117.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5160 zexos1 B=808144 L=15643 d=51.7 nb=0 neut=0 cmds=85 noFull=1 shQ=202036 | m=0.900 worth=89.1 cheap=7.9 over=0 dMedOther=116.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5190 zexos1 B=839076 L=15643 d=53.6 nb=0 neut=0 cmds=85 noFull=1 shQ=209769 | m=0.900 worth=87.0 cheap=7.9 over=0 dMedOther=113.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5220 zexos1 B=887233 L=15643 d=56.7 nb=0 neut=0 cmds=85 noFull=1 shQ=221808 | m=0.900 worth=87.1 cheap=7.9 over=0 dMedOther=113.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5240 zexos1 B=909731 L=15643 d=58.2 nb=0 neut=0 cmds=86 noFull=1 shQ=227432 | m=0.900 worth=88.8 cheap=7.9 over=0 dMedOther=116.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=249 → [APEX] sora_w#49[T2]（约 222102 兵）
+t=5250 zexos1 B=921193 L=15643 d=58.9 nb=0 neut=0 cmds=86 noFull=1 shQ=230298 | m=0.900 worth=89.6 cheap=7.9 over=0 dMedOther=117.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5280 zexos1 B=663166 L=15643 d=42.4 nb=0 neut=0 cmds=86 noFull=1 shQ=165791 | m=0.900 worth=89.3 cheap=7.9 over=0 dMedOther=116.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5310 zexos1 B=704389 L=15643 d=45.0 nb=0 neut=0 cmds=86 noFull=1 shQ=176097 | m=0.900 worth=90.2 cheap=7.9 over=0 dMedOther=117.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5340 zexos1 B=731351 L=15643 d=46.8 nb=0 neut=0 cmds=86 noFull=1 shQ=182837 | m=0.900 worth=92.6 cheap=7.9 over=0 dMedOther=121.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5370 zexos1 B=759345 L=15643 d=48.5 nb=0 neut=0 cmds=86 noFull=1 shQ=189836 | m=0.900 worth=93.2 cheap=7.9 over=0 dMedOther=121.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5400 zexos1 B=804053 L=15643 d=51.4 nb=0 neut=0 cmds=86 noFull=1 shQ=197202 | m=0.900 worth=90.7 cheap=7.9 over=0 dMedOther=118.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5430 zexos1 B=834829 L=15643 d=53.4 nb=0 neut=0 cmds=86 noFull=1 shQ=208707 | m=0.900 worth=86.8 cheap=7.9 over=0 dMedOther=113.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5460 zexos1 B=866783 L=15643 d=55.4 nb=0 neut=0 cmds=86 noFull=1 shQ=216695 | m=0.900 worth=93.5 cheap=7.9 over=0 dMedOther=122.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5490 zexos1 B=899961 L=15643 d=57.5 nb=0 neut=0 cmds=87 noFull=1 shQ=224990 | m=0.900 worth=95.7 cheap=7.9 over=0 dMedOther=125.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] zero_7#52[T2]（约 334848 兵）
+t=5520 zexos1 B=537413 L=15643 d=34.4 nb=0 neut=0 cmds=87 noFull=1 shQ=134353 | m=0.900 worth=84.4 cheap=7.9 over=0 dMedOther=110.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5550 zexos1 B=557983 L=15643 d=35.7 nb=0 neut=0 cmds=87 noFull=1 shQ=139495 | m=0.900 worth=87.0 cheap=7.9 over=0 dMedOther=113.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5580 zexos1 B=579340 L=15643 d=37.0 nb=0 neut=0 cmds=87 noFull=1 shQ=144835 | m=0.900 worth=80.4 cheap=7.9 over=0 dMedOther=105.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5610 zexos1 B=617354 L=15643 d=39.5 nb=0 neut=0 cmds=87 noFull=1 shQ=154338 | m=0.900 worth=77.8 cheap=7.9 over=0 dMedOther=101.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5640 zexos1 B=640983 L=15643 d=41.0 nb=0 neut=0 cmds=87 noFull=1 shQ=160245 | m=0.900 worth=74.0 cheap=7.9 over=0 dMedOther=96.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5670 zexos1 B=665518 L=15643 d=42.5 nb=0 neut=0 cmds=87 noFull=1 shQ=166379 | m=0.900 worth=80.3 cheap=7.9 over=0 dMedOther=104.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5700 zexos1 B=706635 L=15643 d=45.2 nb=0 neut=0 cmds=87 noFull=1 shQ=172841 | m=0.900 worth=80.7 cheap=7.9 over=0 dMedOther=105.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5730 zexos1 B=733682 L=15643 d=46.9 nb=0 neut=0 cmds=87 noFull=1 shQ=183420 | m=0.900 worth=83.7 cheap=7.9 over=0 dMedOther=109.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5760 zexos1 B=761764 L=15643 d=48.7 nb=0 neut=0 cmds=87 noFull=1 shQ=190441 | m=0.900 worth=78.7 cheap=7.9 over=0 dMedOther=102.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5790 zexos1 B=790922 L=15643 d=50.6 nb=0 neut=0 cmds=88 noFull=1 shQ=197730 | m=0.900 worth=79.1 cheap=7.9 over=0 dMedOther=103.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=375 → [APEX] zero_7#52[T2]（约 290416 兵）
+t=5820 zexos1 B=477486 L=15643 d=30.5 nb=0 neut=0 cmds=88 noFull=1 shQ=119371 | m=0.900 worth=80.4 cheap=7.9 over=0 dMedOther=105.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5850 zexos1 B=495762 L=15643 d=31.7 nb=0 neut=0 cmds=88 noFull=1 shQ=123940 | m=0.900 worth=85.3 cheap=7.9 over=0 dMedOther=111.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5880 zexos1 B=514737 L=15643 d=32.9 nb=0 neut=0 cmds=88 noFull=1 shQ=128684 | m=0.900 worth=85.3 cheap=7.9 over=0 dMedOther=111.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5910 zexos1 B=550279 L=15643 d=35.2 nb=0 neut=0 cmds=88 noFull=1 shQ=137569 | m=0.900 worth=87.4 cheap=7.9 over=0 dMedOther=114.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5940 zexos1 B=571341 L=15643 d=36.5 nb=0 neut=0 cmds=88 noFull=1 shQ=142835 | m=0.900 worth=90.0 cheap=7.9 over=0 dMedOther=117.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5970 zexos1 B=593209 L=15643 d=37.9 nb=0 neut=0 cmds=88 noFull=1 shQ=148302 | m=0.900 worth=87.7 cheap=7.9 over=0 dMedOther=114.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6000 zexos1 B=631557 L=15643 d=40.4 nb=0 neut=0 cmds=88 noFull=1 shQ=154067 | m=0.900 worth=75.9 cheap=7.9 over=0 dMedOther=99.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6030 zexos1 B=655730 L=15643 d=41.9 nb=0 neut=0 cmds=88 noFull=1 shQ=163932 | m=0.900 worth=82.8 cheap=7.9 over=0 dMedOther=108.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6060 zexos1 B=680829 L=15643 d=43.5 nb=0 neut=0 cmds=88 noFull=1 shQ=170207 | m=0.900 worth=85.4 cheap=7.9 over=0 dMedOther=111.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6090 zexos1 B=706888 L=15643 d=45.2 nb=0 neut=0 cmds=88 noFull=1 shQ=176722 | m=0.900 worth=87.0 cheap=7.9 over=0 dMedOther=113.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6120 zexos1 B=749985 L=15643 d=47.9 nb=0 neut=0 cmds=88 noFull=1 shQ=187496 | m=0.900 worth=89.0 cheap=7.9 over=0 dMedOther=116.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6150 zexos1 B=778691 L=15643 d=49.8 nb=0 neut=0 cmds=88 noFull=1 shQ=194672 | m=0.900 worth=91.3 cheap=7.9 over=0 dMedOther=119.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6180 zexos1 B=818505 L=15643 d=52.3 nb=0 neut=0 cmds=88 noFull=1 shQ=204626 | m=0.900 worth=93.4 cheap=7.9 over=0 dMedOther=122.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6210 zexos1 B=865675 L=15643 d=55.3 nb=0 neut=0 cmds=88 noFull=1 shQ=216418 | m=0.900 worth=81.9 cheap=7.9 over=0 dMedOther=107.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6240 zexos1 B=898810 L=15643 d=57.5 nb=0 neut=0 cmds=88 noFull=1 shQ=224702 | m=0.900 worth=84.6 cheap=7.9 over=0 dMedOther=110.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6265 zexos1 B=921602 L=15643 d=58.9 nb=0 neut=0 cmds=89 noFull=1 shQ=230400 | m=0.900 worth=82.3 cheap=7.9 over=0 dMedOther=107.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=259 → [APEX] sora_w#49[T2]（约 234000 兵）
+t=6270 zexos1 B=933214 L=15643 d=59.7 nb=0 neut=0 cmds=89 noFull=1 shQ=233303 | m=0.900 worth=77.2 cheap=7.9 over=0 dMedOther=100.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6300 zexos1 B=678002 L=15643 d=43.3 nb=0 neut=0 cmds=89 noFull=1 shQ=165681 | m=0.900 worth=81.1 cheap=7.9 over=0 dMedOther=106.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6315 zexos1 B=686544 L=15643 d=43.9 nb=0 neut=0 cmds=90 noFull=1 shQ=171636 | m=0.900 worth=77.9 cheap=7.9 over=0 dMedOther=101.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=277 → [APEX] sora_w#49[T2]（约 186385 兵）
+t=6330 zexos1 B=468844 L=15643 d=30.0 nb=0 neut=0 cmds=90 noFull=1 shQ=117211 | m=0.900 worth=78.5 cheap=7.9 over=0 dMedOther=102.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6360 zexos1 B=486789 L=15643 d=31.1 nb=0 neut=0 cmds=90 noFull=1 shQ=121697 | m=0.900 worth=83.9 cheap=7.9 over=0 dMedOther=109.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6390 zexos1 B=505421 L=15643 d=32.3 nb=0 neut=0 cmds=90 noFull=1 shQ=126355 | m=0.900 worth=84.1 cheap=7.9 over=0 dMedOther=110.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6420 zexos1 B=540806 L=15643 d=34.6 nb=0 neut=0 cmds=90 noFull=1 shQ=135201 | m=0.900 worth=87.5 cheap=7.9 over=0 dMedOther=114.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6450 zexos1 B=561506 L=15643 d=35.9 nb=0 neut=0 cmds=90 noFull=1 shQ=140376 | m=0.900 worth=87.0 cheap=7.9 over=0 dMedOther=113.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6480 zexos1 B=582998 L=15643 d=37.3 nb=0 neut=0 cmds=90 noFull=1 shQ=145749 | m=0.900 worth=89.5 cheap=7.9 over=0 dMedOther=117.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6510 zexos1 B=621153 L=15643 d=39.7 nb=0 neut=0 cmds=90 noFull=1 shQ=155288 | m=0.900 worth=82.1 cheap=7.9 over=0 dMedOther=107.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6540 zexos1 B=644928 L=15643 d=41.2 nb=0 neut=0 cmds=90 noFull=1 shQ=161232 | m=0.900 worth=83.0 cheap=7.9 over=0 dMedOther=108.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6565 zexos1 B=661282 L=15643 d=42.3 nb=0 neut=0 cmds=91 noFull=1 shQ=165320 | m=0.900 worth=79.9 cheap=7.9 over=0 dMedOther=104.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=248 → [APEX] zero_7#52[T2]（约 160800 兵）
+t=6570 zexos1 B=669614 L=15643 d=42.8 nb=0 neut=0 cmds=91 noFull=1 shQ=167403 | m=0.900 worth=80.9 cheap=7.9 over=0 dMedOther=105.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6600 zexos1 B=505502 L=15643 d=32.3 nb=0 neut=0 cmds=91 noFull=1 shQ=122545 | m=0.900 worth=84.6 cheap=7.9 over=0 dMedOther=110.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6630 zexos1 B=524850 L=15643 d=33.6 nb=0 neut=0 cmds=91 noFull=1 shQ=131212 | m=0.900 worth=80.9 cheap=7.9 over=0 dMedOther=105.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6660 zexos1 B=544939 L=15643 d=34.8 nb=0 neut=0 cmds=91 noFull=1 shQ=136234 | m=0.900 worth=77.1 cheap=7.9 over=0 dMedOther=100.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6690 zexos1 B=565797 L=15643 d=36.2 nb=0 neut=0 cmds=91 noFull=1 shQ=141449 | m=0.900 worth=79.2 cheap=7.9 over=0 dMedOther=103.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6720 zexos1 B=603493 L=15643 d=38.6 nb=0 neut=0 cmds=91 noFull=1 shQ=150873 | m=0.900 worth=82.5 cheap=7.9 over=0 dMedOther=107.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6750 zexos1 B=626592 L=15643 d=40.1 nb=0 neut=0 cmds=91 noFull=1 shQ=156648 | m=0.900 worth=83.2 cheap=7.9 over=0 dMedOther=108.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6780 zexos1 B=650576 L=15643 d=41.6 nb=0 neut=0 cmds=91 noFull=1 shQ=162644 | m=0.900 worth=86.0 cheap=7.9 over=0 dMedOther=112.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6810 zexos1 B=691318 L=15643 d=44.2 nb=0 neut=0 cmds=91 noFull=1 shQ=172829 | m=0.900 worth=89.3 cheap=7.9 over=0 dMedOther=116.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6840 zexos1 B=717779 L=15643 d=45.9 nb=0 neut=0 cmds=92 noFull=1 shQ=179444 | m=0.900 worth=83.5 cheap=7.9 over=0 dMedOther=109.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=309 → [APEX] sora_w#49[T2]（约 217296 兵）
+t=6870 zexos1 B=473062 L=15643 d=30.2 nb=0 neut=0 cmds=92 noFull=1 shQ=118265 | m=0.900 worth=74.5 cheap=7.9 over=0 dMedOther=97.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6900 zexos1 B=506811 L=15643 d=32.4 nb=0 neut=0 cmds=92 noFull=1 shQ=122873 | m=0.900 worth=82.9 cheap=7.9 over=0 dMedOther=108.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6930 zexos1 B=526209 L=15643 d=33.6 nb=0 neut=0 cmds=92 noFull=1 shQ=131552 | m=0.900 worth=76.9 cheap=7.9 over=0 dMedOther=100.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6960 zexos1 B=546350 L=15643 d=34.9 nb=0 neut=0 cmds=92 noFull=1 shQ=136587 | m=0.900 worth=70.7 cheap=7.9 over=0 dMedOther=92.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6990 zexos1 B=567262 L=15643 d=36.3 nb=0 neut=0 cmds=92 noFull=1 shQ=141815 | m=0.900 worth=73.5 cheap=7.9 over=0 dMedOther=96.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7020 zexos1 B=605014 L=15643 d=38.7 nb=0 neut=0 cmds=92 noFull=1 shQ=151253 | m=0.900 worth=77.2 cheap=7.9 over=0 dMedOther=100.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7050 zexos1 B=628172 L=15643 d=40.2 nb=0 neut=0 cmds=92 noFull=1 shQ=157043 | m=0.900 worth=79.6 cheap=7.9 over=0 dMedOther=104.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7080 zexos1 B=652215 L=15643 d=41.7 nb=0 neut=0 cmds=92 noFull=1 shQ=163053 | m=0.900 worth=81.5 cheap=7.9 over=0 dMedOther=106.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7090 zexos1 B=660432 L=15643 d=42.2 nb=0 neut=0 cmds=93 noFull=1 shQ=165108 | m=0.900 worth=81.9 cheap=7.9 over=0 dMedOther=107.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=247 → [APEX] sora_w#49[T2]（约 159948 兵）
+t=7110 zexos1 B=486692 L=15643 d=31.1 nb=0 neut=0 cmds=93 noFull=1 shQ=121673 | m=0.900 worth=76.3 cheap=7.9 over=0 dMedOther=99.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7140 zexos1 B=505320 L=15643 d=32.3 nb=0 neut=0 cmds=93 noFull=1 shQ=126330 | m=0.900 worth=73.9 cheap=7.9 over=0 dMedOther=96.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7170 zexos1 B=524662 L=15643 d=33.5 nb=0 neut=0 cmds=93 noFull=1 shQ=131165 | m=0.900 worth=75.5 cheap=7.9 over=0 dMedOther=98.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7200 zexos1 B=560387 L=15643 d=35.8 nb=0 neut=0 cmds=93 noFull=1 shQ=136270 | m=0.900 worth=79.2 cheap=7.9 over=0 dMedOther=103.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7230 zexos1 B=581835 L=15643 d=37.2 nb=0 neut=0 cmds=93 noFull=1 shQ=145458 | m=0.900 worth=70.5 cheap=7.9 over=0 dMedOther=92.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7260 zexos1 B=604106 L=15643 d=38.6 nb=0 neut=0 cmds=93 noFull=1 shQ=151026 | m=0.900 worth=60.5 cheap=7.9 over=0 dMedOther=79.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7290 zexos1 B=627228 L=15643 d=40.1 nb=0 neut=0 cmds=93 noFull=1 shQ=156807 | m=0.900 worth=63.0 cheap=7.9 over=0 dMedOther=82.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7315 zexos1 B=658973 L=15643 d=42.1 nb=0 neut=0 cmds=94 noFull=1 shQ=164743 | m=0.900 worth=59.5 cheap=7.9 over=0 dMedOther=77.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=246 → [APEX] sora_w#49[T2]（约 158951 兵）
+t=7320 zexos1 B=667276 L=15643 d=42.7 nb=0 neut=0 cmds=94 noFull=1 shQ=166819 | m=0.900 worth=60.2 cheap=7.9 over=0 dMedOther=78.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7350 zexos1 B=482401 L=15643 d=30.8 nb=0 neut=0 cmds=94 noFull=1 shQ=120600 | m=0.900 worth=61.7 cheap=7.9 over=0 dMedOther=80.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7380 zexos1 B=500865 L=15643 d=32.0 nb=0 neut=0 cmds=94 noFull=1 shQ=125216 | m=0.900 worth=63.2 cheap=7.9 over=0 dMedOther=82.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7410 zexos1 B=535876 L=15643 d=34.3 nb=0 neut=0 cmds=94 noFull=1 shQ=133969 | m=0.900 worth=65.5 cheap=7.9 over=0 dMedOther=85.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7440 zexos1 B=556388 L=15643 d=35.6 nb=0 neut=0 cmds=94 noFull=1 shQ=139097 | m=0.900 worth=66.3 cheap=7.9 over=0 dMedOther=86.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7470 zexos1 B=577684 L=15643 d=36.9 nb=0 neut=0 cmds=94 noFull=1 shQ=144421 | m=0.900 worth=74.7 cheap=7.9 over=0 dMedOther=97.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7500 zexos1 B=615438 L=15643 d=39.3 nb=0 neut=0 cmds=94 noFull=1 shQ=150037 | m=0.900 worth=78.5 cheap=7.9 over=0 dMedOther=102.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7530 zexos1 B=638995 L=15643 d=40.8 nb=0 neut=0 cmds=94 noFull=1 shQ=159748 | m=0.900 worth=81.5 cheap=7.9 over=0 dMedOther=106.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7560 zexos1 B=663453 L=15643 d=42.4 nb=0 neut=0 cmds=94 noFull=1 shQ=165863 | m=0.900 worth=83.7 cheap=7.9 over=0 dMedOther=109.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7590 zexos1 B=688847 L=15643 d=44.0 nb=0 neut=0 cmds=94 noFull=1 shQ=172211 | m=0.900 worth=81.9 cheap=7.9 over=0 dMedOther=107.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7615 zexos1 B=732030 L=15643 d=46.8 nb=0 neut=0 cmds=95 noFull=1 shQ=183007 | m=0.900 worth=84.5 cheap=7.9 over=0 dMedOther=110.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=323 → [APEX] talon5#51[T2]（约 231618 兵）
+t=7620 zexos1 B=741253 L=15643 d=47.4 nb=0 neut=0 cmds=95 noFull=1 shQ=185313 | m=0.900 worth=85.5 cheap=7.9 over=0 dMedOther=111.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7650 zexos1 B=478008 L=15643 d=30.6 nb=0 neut=0 cmds=95 noFull=1 shQ=119502 | m=0.900 worth=79.6 cheap=7.9 over=0 dMedOther=104.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7680 zexos1 B=496303 L=15643 d=31.7 nb=0 neut=0 cmds=95 noFull=1 shQ=124075 | m=0.900 worth=78.3 cheap=7.9 over=0 dMedOther=102.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7710 zexos1 B=531140 L=15643 d=34.0 nb=0 neut=0 cmds=95 noFull=1 shQ=132785 | m=0.900 worth=70.6 cheap=7.9 over=0 dMedOther=92.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7740 zexos1 B=551470 L=15643 d=35.3 nb=0 neut=0 cmds=95 noFull=1 shQ=137867 | m=0.900 worth=71.1 cheap=7.9 over=0 dMedOther=93.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7770 zexos1 B=572578 L=15643 d=36.6 nb=0 neut=0 cmds=95 noFull=1 shQ=143144 | m=0.900 worth=74.2 cheap=7.9 over=0 dMedOther=97.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7800 zexos1 B=620400 L=15643 d=39.7 nb=0 neut=0 cmds=95 noFull=1 shQ=151277 | m=0.900 worth=78.1 cheap=7.9 over=0 dMedOther=102.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7830 zexos1 B=644147 L=15643 d=41.2 nb=0 neut=0 cmds=95 noFull=1 shQ=161036 | m=0.900 worth=79.8 cheap=7.9 over=0 dMedOther=104.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7860 zexos1 B=668803 L=15643 d=42.8 nb=0 neut=0 cmds=95 noFull=1 shQ=167200 | m=0.900 worth=75.3 cheap=7.9 over=0 dMedOther=98.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7890 zexos1 B=694402 L=15643 d=44.4 nb=0 neut=0 cmds=95 noFull=1 shQ=173600 | m=0.900 worth=72.7 cheap=7.9 over=0 dMedOther=95.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7920 zexos1 B=737020 L=15643 d=47.1 nb=0 neut=0 cmds=95 noFull=1 shQ=184255 | m=0.900 worth=76.0 cheap=7.9 over=0 dMedOther=99.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=7940 zexos1 B=755709 L=15643 d=48.3 nb=0 neut=0 cmds=96 noFull=1 shQ=188927 | m=0.900 worth=76.7 cheap=7.9 over=0 dMedOther=100.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=345 → [APEX] zero_7#52[T2]（约 255346 兵）
+t=7950 zexos1 B=765230 L=15643 d=48.9 nb=1 neut=0 cmds=96 noFull=1 shQ=191307 | m=0.900 worth=74.4 cheap=7.9 over=0 dMedOther=97.3 safe(-1)=1376584
+    → [UA]i🍇TV#44[T1] terr=112577 bal=10691337 dq=95.0 cnt=12 | c=491.9 rankC=344.4 need=19224736 tD=0.98 人 pulse | safe=1376584 keep=Inf avail=-Inf chunkB=153046 pulseB=91828 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=7980 zexos1 B=476402 L=15643 d=30.5 nb=1 neut=0 cmds=96 noFull=1 shQ=119100 | m=0.900 worth=74.7 cheap=7.9 over=0 dMedOther=97.7 safe(-1)=1376584
+    → [UA]i🍇TV#44[T1] terr=114718 bal=11215046 dq=97.8 cnt=32 | c=374.9 rankC=374.9 need=20152573 tD=1.00 人 pulse | safe=1376584 keep=Inf avail=-Inf chunkB=95280 pulseB=57168 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=8010 zexos1 B=510476 L=15643 d=32.6 nb=1 neut=0 cmds=96 noFull=1 shQ=127619 | m=0.900 worth=78.5 cheap=7.9 over=0 dMedOther=102.7 safe(-1)=1376584
+    → [UA]i🍇TV#44[T1] terr=114718 bal=11915731 dq=103.9 cnt=32 | c=398.1 rankC=398.1 need=21402082 tD=1.01 人 pulse | safe=1376584 keep=Inf avail=-Inf chunkB=102095 pulseB=61257 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=8040 zexos1 B=530015 L=15643 d=33.9 nb=1 neut=0 cmds=96 noFull=1 shQ=132503 | m=0.900 worth=75.2 cheap=7.9 over=0 dMedOther=98.3 safe(-1)=1376584
+    → [UA]i🍇TV#44[T1] terr=114718 bal=13743285 dq=119.8 cnt=32 | c=458.7 rankC=458.7 need=24659397 tD=1.22 人 pulse | safe=1376584 keep=Inf avail=-Inf chunkB=106003 pulseB=63602 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=8070 zexos1 B=550302 L=15643 d=35.2 nb=1 neut=121 cmds=96 noFull=1 shQ=137575 | m=0.900 worth=78.1 cheap=7.9 over=0 dMedOther=102.1 safe(-1)=1376584
+    → [UA]i🍇TV#44[T1] terr=119109 bal=12353433 dq=103.7 cnt=79 | c=397.2 rankC=397.2 need=22196994 tD=1.02 人 pulse | safe=1376584 keep=Inf avail=-Inf chunkB=110060 pulseB=66036 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=8100 zexos1 B=587008 L=15643 d=37.5 nb=1 neut=64 cmds=96 noFull=1 shQ=142927 | m=0.900 worth=70.0 cheap=7.9 over=0 dMedOther=91.5 safe(-1)=1376584
+    → [UA]i🍇TV#44[T1] terr=122718 bal=11232214 dq=91.5 cnt=142 | c=262.9 rankC=184.0 need=20204017 tD=1.00 人 pulse | safe=1376584 keep=Inf avail=-Inf chunkB=117402 pulseB=70441 价高(c>=worth)→break
+    ⇒ 本拍没有指令

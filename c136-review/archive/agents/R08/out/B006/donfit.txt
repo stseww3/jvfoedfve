@@ -1,0 +1,603 @@
+[FA] B006 捐款定案（余额序列拟合）：日志 525 笔；成交 158，没成交 296，定不了 71
+     成交的到账合计 10859650，税合计 4393158（税占捐出方付出的 28.8%）
+     其中到账被收款方 150 倍上限夹小的 8 笔：到账 531799，税 554861（税占 51%）
+     与 facts.py [G]「只看发令 20 拍后那条余额」的判定对照（旧判定→新定案：笔数）：REJ→NOEXEC:295；ACC→EXEC:123；REJ→AMB:53；?→EXEC:24；REJ→EXEC:11；ACC→AMB:10；?→AMB:8；ACC→NOEXEC:1
+     成交的 158 笔里，发令 20 拍后的观测仍未扣款（时延 ≥20 拍）的 9 笔（6%）；时延上界 中位 60 拍
+     连发（同号 ≤25 拍内第二笔，发令时前一笔还没落地，两笔都成交）：7 笔，多付出 到账 466240 + 税 160423
+[FB] 按捐出方：号 | 日志笔数 | 成交 / 没成交 / 定不了 | 到账合计 | 税合计 | 连发笔数 | 时延≥20 的成交笔数
+     Kokand         |  92 | 20 / 70 / 2 |   1258347 |   411314 | 0 | 0
+     Georgia        |  70 | 7 / 51 / 12 |   1429688 |   434920 | 0 | 0
+     Norway         |  63 | 19 / 36 / 8 |    904039 |   384684 | 1 | 2
+     Savoy          |  56 | 15 / 38 / 3 |    639186 |   217901 | 0 | 0
+     KiraYoshikage  |  42 | 7 / 24 / 11 |    389684 |   247413 | 0 | 0
+     Musketeer      |  40 | 14 / 26 / 0 |    879592 |   361749 | 0 | 0
+     Kalmar Union   |  39 | 9 / 17 / 13 |    444385 |   203988 | 1 | 1
+     Amogus         |  22 | 5 / 17 / 0 |    287378 |   166349 | 0 | 0
+     Sokoto         |  18 | 15 / 3 / 0 |    990844 |   340930 | 3 | 3
+     Malacca        |  16 | 10 / 0 / 6 |    433837 |   135784 | 0 | 0
+     Cyrus          |  14 | 1 / 4 / 9 |     84474 |    80063 | 0 | 0
+     Lannes         |  14 | 10 / 2 / 2 |   1099064 |   395324 | 2 | 2
+     Kaido          |   9 | 9 / 0 / 0 |    997921 |   361124 | 0 | 0
+     Maratha        |   8 | 4 / 4 / 0 |    333552 |   138393 | 0 | 0
+     Saladin        |   7 | 6 / 1 / 0 |    200495 |    68985 | 0 | 0
+     Konev          |   6 | 2 / 2 / 2 |    271889 |   328504 | 0 | 0
+     Cossack        |   6 | 4 / 1 / 1 |    195240 |    81139 | 0 | 0
+     Patton         |   3 | 1 / 0 / 2 |     20035 |    34594 | 0 | 1
+[FC] 按收款方：号 | 成交笔数 | 到账合计 | 捐出方付的税 | 首末拍
+     Konev(17)          |  54 |   3594621 |  1271346 | 1960~6120
+     Cyrus(19)          |  31 |   2198018 |   859697 | 2950~5880
+     Malacca(20)        |  18 |   1333639 |   494980 | 1980~5480
+     Lannes(27)         |  10 |    679012 |   219990 | 2340~4000
+     KiraYoshikage(6)   |   7 |    632198 |   275095 | 2390~5750
+     Patton(29)         |   7 |    623836 |   219661 | 2135~3800
+     Kaido(24)          |   4 |    445160 |   245941 | 2160~5620
+     Maratha(12)        |   7 |    339640 |   267481 | 2000~4530
+     Red Army(10)       |   6 |    337459 |   170764 | 2290~3970
+     Cossack(22)        |   4 |    233672 |   101409 | 4490~5010
+     Amogus(5)          |   2 |    175898 |    69962 | 2620~5300
+     Georgia(15)        |   4 |    166658 |   121178 | 5070~5120
+     Saladin(16)        |   3 |     61318 |    62400 | 2190~2630
+     Kalmar Union(7)    |   1 |     38521 |    13254 | 5250~5250
+[FQ] 引擎受捐额度对账（归属口径：先取过得了额度的，再取发令最晚的；--fifo 可换回旧的队首口径）：成交的 158 笔里记账后超出额度的 2 笔（编队外队友的捐款看不到，已用点数是下限；超出 = 余额拟合和额度模型对不上，这几笔的到账额或归属存疑）
+     存疑：t=3600 Norway→Cyrus 到账 58181，折 13 点，累计 258 > 额度 249
+     存疑：t=3760 Musketeer→Cyrus 到账 69857，折 15 点，累计 273 > 额度 259
+     受捐方 | t<2142 成交 笔数 / 到账 / 点数 | 2142~3212 | 3213~4283 | t≥4284 笔数 / 到账（不查额度）| t=4283 累计点数（额度 309）
+     Konev          | 1 / 45151 / 114 | 0 / 0 / 0 | 21 / 1273995 / 150 | 32 / 2275475 | 264
+     Cyrus          | 0 / 0 / 0 | 3 / 212944 / 163 | 9 / 574184 / 140 | 19 / 1410890 | 303
+     Malacca        | 1 / 42269 / 107 | 2 / 71517 / 56 | 0 / 0 / 0 | 15 / 1219853 | 163
+     Lannes         | 0 / 0 / 0 | 4 / 215447 / 167 | 6 / 463565 / 85 | 0 / 0 | 252
+     KiraYoshikage  | 0 / 0 / 0 | 3 / 219781 / 169 | 0 / 0 / 0 | 4 / 412417 | 169
+     Patton         | 0 / 0 / 0 | 2 / 125761 / 97 | 5 / 498075 / 165 | 0 / 0 | 262
+     Kaido          | 0 / 0 / 0 | 1 / 137856 / 104 | 0 / 0 / 0 | 3 / 307304 | 104
+     Maratha        | 1 / 31949 / 81 | 2 / 112026 / 86 | 3 / 110084 / 32 | 1 / 85581 | 199
+     Red Army       | 0 / 0 / 0 | 4 / 219835 / 169 | 2 / 117624 / 54 | 0 / 0 | 223
+     Cossack        | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 4 / 233672 | 0
+     Amogus         | 0 / 0 / 0 | 1 / 142652 / 108 | 0 / 0 / 0 | 1 / 33246 | 108
+     Georgia        | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 4 / 166658 | 0
+     Saladin        | 0 / 0 / 0 | 3 / 61318 / 50 | 0 / 0 / 0 | 0 / 0 | 50
+     Kalmar Union   | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 1 / 38521 | 0
+[FE] 盈余捐款成交后的密度（捐后余额 = 发令时余额 − 到账 − 税；连发的第二笔再减去第一笔）：号 | 成交笔数 | 发令时密度 中位 | 捐后密度 中位 / 最低 | 捐后 <68 的笔数 | 捐后 <55 的笔数
+     Kokand         |  18 | 78.9 | 59.4 / 58.3 | 13 | 0
+     Sokoto         |  15 | 78.5 | 58.8 / 45.7 | 15 | 3
+     Savoy          |  14 | 79.7 | 60.2 / 58.7 | 10 | 0
+     Norway         |  13 | 78.8 | 59.2 / 47.2 | 10 | 1
+     Musketeer      |  12 | 78.5 | 60.9 / 57.8 | 7 | 0
+     Malacca        |  10 | 89.6 | 68.4 / 57.8 | 5 | 0
+     Lannes         |  10 | 80.1 | 59.5 / 45.6 | 9 | 2
+     Kaido          |   9 | 146.3 | 115.0 / 58.7 | 1 | 0
+     Kalmar Union   |   6 | 149.3 | 117.5 / 64.0 | 1 | 0
+     Saladin        |   6 | 78.4 | 59.1 / 58.6 | 6 | 0
+     Georgia        |   5 | 78.5 | 59.4 / 58.8 | 3 | 0
+     Cossack        |   4 | 147.5 | 116.1 / 90.6 | 0 | 0
+     KiraYoshikage  |   4 | 90.9 | 68.5 / 48.3 | 2 | 1
+     Amogus         |   2 | 146.3 | 115.1 / 100.2 | 0 | 0
+     Maratha        |   2 | 124.2 | 97.8 / 88.6 | 0 | 0
+     Patton         |   1 | 149.0 | 135.1 / 135.1 | 0 | 0
+     Cyrus          |   1 | 110.6 | 96.4 / 96.4 | 0 | 0
+     Konev          |   1 | 150.0 | 130.5 / 130.5 | 0 | 0
+[FD] 逐笔：拍 捐出→收款 类型 pct | 发令时余额 | 定案 | 时延区间(拍) | 到账 / 税 | 旧判定 | 连发
+      1500 KiraYoshikage→Morphy(21) squad rescue 240 | 113592 | AMB | (>160) | None / None | REJ |  L10732
+      1500 Kalmar Union→Kaido(24) surplus 185 | 237861 | NOEXEC | (>160) | None / None | REJ |  L10736
+      1520 Savoy→Lannes(27) squad rescue 155 | 164062 | AMB | (>100) | None / None | REJ |  L10623
+      1520 KiraYoshikage→Morphy(21) squad rescue 240 | 118795 | AMB | (>160) | None / None | REJ |  L10737
+      1520 Kalmar Union→Lannes(27) squad rescue 155 | 248757 | NOEXEC | (>160) | None / None | REJ |  L10741
+      1540 KiraYoshikage→Morphy(21) squad rescue 240 | 124091 | AMB | (>160) | None / None | REJ |  L10743
+      1540 Kalmar Union→Kaido(24) surplus 185 | 259847 | NOEXEC | (>160) | None / None | REJ |  L10751
+      1545 Savoy→Lannes(27) squad rescue 113 | 161272 | AMB | (>75) | None / None | REJ |  L10628
+      1560 KiraYoshikage→Morphy(21) squad rescue 240 | 129445 | AMB | (>150) | None / None | REJ |  L10754
+      1580 KiraYoshikage→Morphy(21) squad rescue 240 | 126606 | NOEXEC | (>160) | None / None | REJ |  L10757
+      1580 Kalmar Union→Kaido(24) surplus 185 | 282425 | NOEXEC | (>160) | None / None | REJ |  L10759
+      1600 Kalmar Union→Kaido(24) squad rescue 155 | 296655 | NOEXEC | (>160) | None / None | REJ |  L10764
+      1620 KiraYoshikage→Morphy(21) squad rescue 240 | 138446 | NOEXEC | (>160) | None / None | REJ |  L10766
+      1620 Kalmar Union→Kaido(24) surplus 185 | 307188 | NOEXEC | (>160) | None / None | REJ |  L10770
+      1640 KiraYoshikage→Morphy(21) squad rescue 240 | 143714 | NOEXEC | (>160) | None / None | REJ |  L10774
+      1640 Kalmar Union→Kaido(24) squad rescue 155 | 316877 | NOEXEC | (>160) | None / None | REJ |  L10776
+      1660 KiraYoshikage→Morphy(21) squad rescue 240 | 148874 | NOEXEC | (>160) | None / None | REJ |  L10778
+      1660 Kalmar Union→Kaido(24) squad rescue 155 | 325747 | NOEXEC | (>160) | None / None | REJ |  L10793
+      1680 KiraYoshikage→Morphy(21) squad rescue 240 | 153660 | NOEXEC | (>160) | None / None | REJ |  L10790
+      1680 Kalmar Union→Kaido(24) squad rescue 155 | 333874 | NOEXEC | (>160) | None / None | REJ |  L10802
+      1700 Kokand→Kaido(24) squad rescue 155 | 361125 | AMB | (>160) | None / None | REJ |  L10670
+      1700 KiraYoshikage→Saladin(16) surplus 280 | 159515 | NOEXEC | (>160) | None / None | REJ |  L10801
+      1700 Kalmar Union→Kaido(24) squad rescue 155 | 344143 | NOEXEC | (>160) | None / None | REJ |  L10807
+      1720 Kokand→Kaido(24) squad rescue 155 | 336292 | NOEXEC | (>160) | None / None | REJ |  L10683
+      1720 KiraYoshikage→Saladin(16) surplus 280 | 163478 | NOEXEC | (>160) | None / None | REJ |  L10805
+      1720 Kalmar Union→Kaido(24) squad rescue 155 | 350643 | NOEXEC | (>160) | None / None | REJ |  L10815
+      1740 Kokand→Kaido(24) squad rescue 155 | 346968 | NOEXEC | (>150) | None / None | REJ |  L10691
+      1740 KiraYoshikage→Saladin(16) surplus 280 | 167126 | NOEXEC | (>150) | None / None | REJ |  L10813
+      1740 Kalmar Union→Kaido(24) squad rescue 155 | 356522 | NOEXEC | (>150) | None / None | REJ |  L10817
+      1760 Kokand→Kaido(24) squad rescue 155 | 369806 | NOEXEC | (>160) | None / None | REJ |  L10700
+      1760 KiraYoshikage→Saladin(16) surplus 280 | 170450 | NOEXEC | (>160) | None / None | REJ |  L10816
+      1760 Kalmar Union→Kaido(24) squad rescue 155 | 361853 | NOEXEC | (>160) | None / None | REJ |  L10820
+      1780 Kokand→Malacca(20) squad rescue 155 | 380307 | NOEXEC | (>160) | None / None | REJ |  L10706
+      1780 KiraYoshikage→Morphy(21) squad rescue 240 | 173480 | NOEXEC | (>160) | None / None | REJ |  L10818
+      1780 Kalmar Union→Malacca(20) squad rescue 155 | 352132 | AMB | (>140) | None / None | REJ |  L10826
+      1795 Norway→Saladin(16) surplus 185 | 343168 | NOEXEC | (>160) | None / None | REJ |  L10824
+      1800 Kokand→Malacca(20) squad rescue 155 | 393649 | NOEXEC | (>160) | None / None | REJ |  L10712
+      1800 KiraYoshikage→Saladin(16) surplus 280 | 177265 | NOEXEC | (>160) | None / None | REJ |  L10822
+      1800 Kalmar Union→Malacca(20) squad rescue 155 | 360105 | AMB | (>160) | None / None | REJ |  L10834
+      1815 Norway→Saladin(16) surplus 185 | 356409 | NOEXEC | (>160) | None / None | REJ |  L10831
+      1820 Kokand→Lannes(27) squad rescue 155 | 402475 | NOEXEC | (>160) | None / None | REJ |  L10733
+      1820 KiraYoshikage→Saladin(16) surplus 280 | 179683 | NOEXEC | (>160) | None / None | REJ |  L10825
+      1820 Kalmar Union→Lannes(27) squad rescue 155 | 364800 | AMB | (>160) | None / None | REJ |  L10837
+      1835 Norway→Saladin(16) surplus 185 | 365698 | NOEXEC | (>160) | None / None | REJ |  L10836
+      1840 Kokand→Kaido(24) surplus 280 | 410604 | NOEXEC | (>160) | None / None | REJ |  L10752
+      1840 KiraYoshikage→Saladin(16) surplus 280 | 181863 | AMB | (>140) | None / None | REJ |  L10830
+      1840 Kalmar Union→Kaido(24) surplus 280 | 369557 | AMB | (>140) | None / None | REJ |  L10840
+      1855 Norway→Saladin(16) surplus 185 | 374786 | AMB | (>140) | None / None | REJ |  L10839
+      1860 Kokand→Malacca(20) squad rescue 155 | 418068 | NOEXEC | (>160) | None / None | REJ |  L10762
+      1860 KiraYoshikage→Saladin(16) squad rescue 240 | 183850 | AMB | (>120) | None / None | REJ |  L10835
+      1860 Kalmar Union→Malacca(20) squad rescue 155 | 374339 | AMB | (>210) | None / None | REJ |  L10842
+      1875 Norway→Saladin(16) squad rescue 155 | 383606 | AMB | (>160) | None / None | REJ |  L10847
+      1880 Kokand→Malacca(20) squad rescue 155 | 424909 | NOEXEC | (>160) | None / None | REJ |  L10780
+      1880 KiraYoshikage→Saladin(16) squad rescue 240 | 185618 | AMB | (>100) | None / None | REJ |  L10841
+      1880 Kalmar Union→Malacca(20) squad rescue 155 | 380340 | AMB | (>190) | None / None | REJ |  L10851
+      1895 Norway→Saladin(16) squad rescue 155 | 392285 | AMB | (>160) | None / None | REJ |  L10852
+      1900 Kokand→Konev(17) surplus 280 | 435138 | NOEXEC | (>160) | None / None | REJ |  L10804
+      1900 KiraYoshikage→Saladin(16) squad rescue 240 | 188645 | AMB | (>80) | None / None | REJ |  L10846
+      1900 Patton→Saladin(16) squad rescue 150 | 315601 | AMB | (>20) | None / None | REJ |  L10856
+      1900 Kalmar Union→Konev(17) surplus 280 | 387395 | AMB | (>170) | None / None | REJ |  L10860
+      1915 Norway→Saladin(16) squad rescue 155 | 404552 | AMB | (>155) | None / None | REJ |  L10859
+      1920 Kokand→Malacca(20) squad rescue 155 | 441337 | NOEXEC | (>150) | None / None | REJ |  L10819
+      1920 KiraYoshikage→Saladin(16) squad rescue 240 | 190099 | AMB | (>60) | None / None | REJ |  L10848
+      1920 Patton→Saladin(16) squad rescue 148 | 322836 | AMB | (>0) | None / None | ? |  L10861
+      1920 Kalmar Union→Malacca(20) squad rescue 155 | 391122 | AMB | (>150) | None / None | ACC |  L10863
+      1935 Norway→Saladin(16) squad rescue 155 | 412723 | AMB | (>160) | None / None | REJ |  L10864
+      1940 Kokand→Konev(17) surplus 280 | 447270 | NOEXEC | (>160) | None / None | REJ |  L10838
+      1940 KiraYoshikage→Saladin(16) squad rescue 240 | 191488 | AMB | (>220) | None / None | REJ |  L10857
+      1940 Kalmar Union→Konev(17) surplus 185 | 303952 | AMB | (>220) | None / None | REJ |  L10867
+      1955 Norway→Saladin(16) squad rescue 155 | 420643 | AMB | (>160) | None / None | REJ |  L10866
+      1960 Kokand→Konev(17) surplus 280 | 452922 | NOEXEC | (>160) | None / None | REJ |  L10853
+      1960 KiraYoshikage→Saladin(16) squad rescue 240 | 192811 | AMB | (>200) | None / None | REJ |  L10862
+      1960 Kalmar Union→Konev(17) surplus 185 | 310644 | EXEC | (20,110] | 45151 / 18523 | REJ |  L10884
+      1975 Norway→Saladin(16) squad rescue 155 | 428332 | AMB | (>160) | None / None | REJ |  L10885
+      1980 Kokand→Malacca(20) squad rescue 155 | 458327 | NOEXEC | (>160) | None / None | REJ |  L10874
+      1980 Kalmar Union→Malacca(20) squad rescue 155 | 317169 | EXEC | (0,90] | 42269 / 14544 | REJ | 连发@1960 L10890
+      1995 Norway→KiraYoshikage(6) surplus 280 | 435730 | AMB | (>160) | None / None | ACC |  L10892
+      2000 Kokand→Maratha(12) surplus 280 | 467135 | NOEXEC | (>160) | None / None | REJ |  L10893
+      2000 Kalmar Union→Maratha(12) surplus 185 | 296382 | EXEC | (0,70] | 31949 / 10993 | ? |  L10894
+      2015 Norway→Red Army(10) surplus 185 | 405903 | NOEXEC | (>175) | None / None | REJ |  L10896
+      2020 Kokand→Malacca(20) squad rescue 155 | 471911 | NOEXEC | (>160) | None / None | REJ |  L10897
+      2035 Norway→Patton(29) squad rescue 155 | 414020 | NOEXEC | (>155) | None / None | REJ |  L10898
+      2040 Kokand→Lannes(27) squad rescue 155 | 476451 | NOEXEC | (>160) | None / None | REJ |  L10899
+      2055 Norway→Patton(29) squad rescue 155 | 421923 | NOEXEC | (>195) | None / None | REJ |  L10900
+      2060 Kokand→Malacca(20) squad rescue 155 | 480748 | NOEXEC | (>160) | None / None | REJ |  L10901
+      2075 Norway→Patton(29) squad rescue 155 | 429551 | NOEXEC | (>175) | None / None | REJ |  L10922
+      2080 Kokand→Konev(17) surplus 280 | 484842 | NOEXEC | (>160) | None / None | REJ |  L10923
+      2095 Norway→Patton(29) squad rescue 155 | 436927 | NOEXEC | (>155) | None / None | REJ |  L10924
+      2100 Kokand→Maratha(12) squad rescue 155 | 492388 | NOEXEC | (>150) | None / None | REJ |  L10925
+      2115 Norway→Patton(29) squad rescue 155 | 447802 | NOEXEC | (>175) | None / None | REJ |  L10926
+      2120 Kokand→Lannes(27) squad rescue 155 | 495889 | NOEXEC | (>160) | None / None | REJ |  L10927
+      2135 Norway→Patton(29) squad rescue 155 | 454543 | EXEC | (0,20] | 69745 / 28613 | ACC |  L10929
+      2140 Kokand→Konev(17) surplus 280 | 499216 | NOEXEC | (>160) | None / None | REJ |  L10930
+      2155 Norway→Patton(29) squad rescue 155 | 363554 | EXEC | (5,35] | 56016 / 22981 | ACC |  L10931
+      2160 Kokand→Kaido(24) surplus 280 | 502365 | EXEC | (0,20] | 137856 / 31397 | ACC |  L10940
+      2180 Kokand→Malacca(20) squad rescue 155 | 337919 | NOEXEC | (>160) | None / None | REJ |  L10952
+      2190 Norway→Saladin(16) squad rescue 60 | 298686 | EXEC | (0,60] | 18641 / 19558 | ACC |  L10954
+      2200 Kokand→Malacca(20) squad rescue 155 | 349328 | NOEXEC | (>230) | None / None | REJ |  L10955
+      2220 Kokand→Maratha(12) surplus 185 | 357337 | NOEXEC | (>210) | None / None | REJ |  L10956
+      2240 Kokand→Maratha(12) surplus 185 | 365530 | NOEXEC | (>190) | None / None | REJ |  L10957
+      2260 Kokand→Maratha(12) surplus 185 | 373837 | NOEXEC | (>170) | None / None | REJ |  L10977
+      2280 Kokand→Malacca(20) squad rescue 155 | 381993 | NOEXEC | (>150) | None / None | REJ |  L10978
+      2290 Norway→Red Army(10) squad rescue 56 | 297418 | EXEC | (0,50] | 17346 / 19476 | ACC |  L10979
+      2300 Kokand→Maratha(12) squad rescue 155 | 393601 | EXEC | (0,20] | 59962 / 24600 | ACC |  L10980
+      2320 Kokand→Maratha(12) squad rescue 151 | 315593 | NOEXEC | (>150) | None / None | REJ |  L10981
+      2320 Savoy→Maratha(12) squad rescue 58 | 211109 | NOEXEC | (>200) | None / None | REJ |  L10982
+      2340 Kokand→Lannes(27) surplus 185 | 322828 | EXEC | (0,90] | 58638 / 20176 | ACC |  L10984
+      2340 Savoy→Lannes(27) surplus 185 | 215863 | EXEC | (0,90] | 39209 / 13491 | ACC |  L10990
+      2350 Amogus→Red Army(10) squad rescue 155 | 272476 | EXEC | (0,80] | 41510 / 17029 | ACC |  L11004
+      2360 Kalmar Union→Maratha(12) surplus 185 | 244915 | AMB | (>20) | None / None | REJ |  L11005
+      2380 Kalmar Union→Maratha(12) surplus 185 | 250431 | AMB | (>230) | None / None | REJ |  L11006
+      2390 Norway→KiraYoshikage(6) surplus 185 | 297490 | EXEC | (0,40] | 56616 / 19480 | ACC |  L11007
+      2410 Musketeer→KiraYoshikage(6) surplus 185 | 383351 | EXEC | (0,20] | 71270 / 24523 | ACC |  L11008
+      2410 Kalmar Union→Malacca(20) squad rescue 69 | 246749 | AMB | (>200) | None / None | ACC |  L11009
+      2470 Kokand→Maratha(12) surplus 185 | 286712 | NOEXEC | (>160) | None / None | REJ |  L11030
+      2490 Kokand→Malacca(20) squad rescue 85 | 293285 | NOEXEC | (>160) | None / None | REJ |  L11031
+      2510 Kokand→Malacca(20) squad rescue 117 | 303712 | NOEXEC | (>160) | None / None | REJ |  L11032
+      2510 Kalmar Union→Malacca(20) squad rescue 56 | 255075 | EXEC | (10,100] | 14360 / 16123 | ACC |  L11033
+      2530 Kokand→Maratha(12) surplus 185 | 310675 | NOEXEC | (>160) | None / None | REJ |  L11053
+      2540 Georgia→Saladin(16) surplus 185 | 806812 | NOEXEC | (>160) | None / None | REJ |  L11054
+      2550 Savoy→Maratha(12) surplus 185 | 212213 | NOEXEC | (>150) | None / None | REJ |  L11055
+      2550 Kokand→Maratha(12) surplus 185 | 317798 | NOEXEC | (>150) | None / None | REJ |  L11056
+      2560 Georgia→Saladin(16) surplus 185 | 827108 | NOEXEC | (>160) | None / None | REJ |  L11057
+      2565 Cyrus→Saladin(16) squad rescue 155 | 404192 | NOEXEC | (>160) | None / None | REJ |  L11058
+      2570 Savoy→Maratha(12) surplus 185 | 216992 | NOEXEC | (>210) | None / None | REJ |  L11059
+      2570 Kokand→Maratha(12) surplus 185 | 325084 | NOEXEC | (>160) | None / None | REJ |  L11060
+      2580 Georgia→Saladin(16) squad rescue 102 | 847914 | NOEXEC | (>160) | None / None | REJ |  L11061
+      2585 Cyrus→Saladin(16) squad rescue 155 | 413541 | NOEXEC | (>160) | None / None | REJ |  L11062
+      2590 Savoy→Maratha(12) surplus 185 | 221879 | NOEXEC | (>190) | None / None | REJ |  L11063
+      2590 Kokand→Maratha(12) surplus 185 | 332537 | NOEXEC | (>160) | None / None | REJ |  L11064
+      2600 Georgia→Saladin(16) squad rescue 135 | 879633 | NOEXEC | (>160) | None / None | REJ |  L11065
+      2605 Cyrus→Saladin(16) squad rescue 155 | 427739 | NOEXEC | (>160) | None / None | REJ |  L11066
+      2610 Savoy→Malacca(20) squad rescue 136 | 229616 | NOEXEC | (>170) | None / None | REJ |  L11068
+      2610 Kokand→Malacca(20) squad rescue 155 | 343863 | NOEXEC | (>160) | None / None | REJ |  L11077
+      2610 Kalmar Union→Maratha(12) surplus 185 | 255877 | NOEXEC | (>180) | None / None | REJ |  L11083
+      2610 Norway→Saladin(16) squad rescue 65 | 300415 | EXEC | (0,90] | 19362 / 18775 | ACC |  L11089
+      2620 Georgia→Amogus(5) squad rescue 155 | 902130 | EXEC | (0,80] | 142652 / 58523 | ACC |  L11090
+      2625 Cyrus→Saladin(16) squad rescue 155 | 437632 | NOEXEC | (>160) | None / None | REJ |  L11091
+      2630 Kokand→Maratha(12) surplus 185 | 351747 | NOEXEC | (>160) | None / None | REJ |  L11092
+      2630 Kalmar Union→Maratha(12) surplus 185 | 261743 | NOEXEC | (>160) | None / None | REJ |  L11093
+      2630 Musketeer→Saladin(16) squad rescue 61 | 385084 | EXEC | (0,70] | 23315 / 24067 | ACC |  L11094
+      2630 Savoy→Maratha(12) surplus 185 | 234787 | NOEXEC | (>150) | None / None | REJ |  L11095
+      2635 Amogus→Saladin(16) squad rescue 155 | 435005 | NOEXEC | (>155) | None / None | REJ |  L11096
+      2645 Cyrus→Saladin(16) squad rescue 155 | 447754 | AMB | (>145) | None / None | REJ |  L11097
+      2650 Savoy→Malacca(20) squad rescue 155 | 240075 | NOEXEC | (>150) | None / None | REJ |  L11098
+      2650 Kalmar Union→Maratha(12) surplus 185 | 267743 | NOEXEC | (>230) | None / None | REJ |  L11099
+      2650 Kokand→Malacca(20) squad rescue 155 | 359811 | NOEXEC | (>160) | None / None | REJ |  L11100
+      2655 Amogus→Saladin(16) squad rescue 155 | 445243 | NOEXEC | (>160) | None / None | REJ |  L11101
+      2665 Cyrus→Saladin(16) squad rescue 155 | 458111 | AMB | (>125) | None / None | REJ |  L11102
+      2670 Savoy→Maratha(12) surplus 185 | 245481 | NOEXEC | (>150) | None / None | REJ |  L11103
+      2670 Kokand→Maratha(12) surplus 185 | 368060 | NOEXEC | (>160) | None / None | REJ |  L11104
+      2670 Kalmar Union→Maratha(12) surplus 185 | 273882 | NOEXEC | (>210) | None / None | REJ |  L11105
+      2675 Amogus→Saladin(16) squad rescue 155 | 455722 | NOEXEC | (>160) | None / None | REJ |  L11106
+      2685 Cyrus→Saladin(16) squad rescue 155 | 468707 | AMB | (>105) | None / None | REJ |  L11107
+      2690 Savoy→Maratha(12) surplus 185 | 251010 | NOEXEC | (>150) | None / None | REJ |  L11108
+      2690 Kokand→Maratha(12) surplus 185 | 376350 | NOEXEC | (>160) | None / None | REJ |  L11109
+      2690 Kalmar Union→Maratha(12) surplus 185 | 280161 | EXEC | (10,100] | 52064 / 17914 | ACC |  L11110
+      2695 Amogus→Saladin(16) squad rescue 155 | 466447 | NOEXEC | (>160) | None / None | REJ |  L11111
+      2705 Cyrus→Saladin(16) squad rescue 155 | 483850 | AMB | (>85) | None / None | REJ |  L11131
+      2710 Savoy→Lannes(27) surplus 185 | 259403 | EXEC | (0,70] | 47118 / 16212 | ACC |  L11132
+      2710 Kokand→Lannes(27) surplus 185 | 388030 | EXEC | (0,20] | 70482 / 24251 | ACC |  L11133
+      2710 Norway→Saladin(16) squad rescue 56 | 297625 | NOEXEC | (>160) | None / None | REJ |  L11134
+      2715 Amogus→Saladin(16) squad rescue 155 | 482249 | NOEXEC | (>160) | None / None | REJ |  L11135
+      2720 Georgia→Saladin(16) squad rescue 62 | 812650 | NOEXEC | (>160) | None / None | REJ |  L11136
+      2725 Cyrus→Saladin(16) squad rescue 155 | 493965 | AMB | (>65) | None / None | REJ |  L11137
+      2730 Musketeer→Saladin(16) squad rescue 60 | 384458 | NOEXEC | (>150) | None / None | REJ |  L11138
+      2730 Kokand→Lannes(27) surplus 185 | 299637 | NOEXEC | (>150) | None / None | REJ |  L11139
+      2730 Norway→Saladin(16) squad rescue 78 | 304448 | NOEXEC | (>150) | None / None | REJ |  L11140
+      2735 Amogus→Saladin(16) squad rescue 155 | 493257 | NOEXEC | (>160) | None / None | REJ |  L11141
+      2740 Georgia→Saladin(16) squad rescue 86 | 833093 | NOEXEC | (>160) | None / None | REJ |  L11142
+      2745 Cyrus→Saladin(16) squad rescue 155 | 503793 | AMB | (>45) | None / None | REJ |  L11143
+      2750 Musketeer→Saladin(16) squad rescue 82 | 393506 | NOEXEC | (>160) | None / None | REJ |  L11144
+      2750 Kokand→Lannes(27) surplus 185 | 306506 | NOEXEC | (>160) | None / None | REJ |  L11145
+      2750 Norway→Saladin(16) squad rescue 99 | 311428 | NOEXEC | (>160) | None / None | REJ |  L11146
+      2755 Amogus→Saladin(16) squad rescue 155 | 503968 | NOEXEC | (>160) | None / None | REJ |  L11147
+      2760 Georgia→Saladin(16) squad rescue 109 | 854049 | NOEXEC | (>160) | None / None | REJ |  L11148
+      2765 Cyrus→Saladin(16) squad rescue 155 | 513308 | AMB | (>25) | None / None | REJ |  L11149
+      2770 Kokand→Lannes(27) surplus 185 | 313534 | NOEXEC | (>160) | None / None | REJ |  L11150
+      2770 Musketeer→Saladin(16) squad rescue 103 | 402767 | NOEXEC | (>160) | None / None | REJ |  L11151
+      2770 Norway→Saladin(16) squad rescue 120 | 318568 | NOEXEC | (>160) | None / None | REJ |  L11152
+      2775 Amogus→Saladin(16) squad rescue 155 | 514402 | NOEXEC | (>160) | None / None | REJ |  L11153
+      2780 Savoy→Lannes(27) surplus 185 | 211968 | NOEXEC | (>160) | None / None | REJ |  L11154
+      2780 Georgia→Saladin(16) squad rescue 131 | 875533 | NOEXEC | (>160) | None / None | REJ |  L11155
+      2785 Cyrus→Saladin(16) squad rescue 155 | 522537 | AMB | (>5) | None / None | ? |  L11156
+      2790 Kokand→Lannes(27) squad rescue 155 | 320723 | NOEXEC | (>160) | None / None | REJ |  L11169
+      2790 Musketeer→Saladin(16) squad rescue 125 | 412246 | NOEXEC | (>160) | None / None | REJ |  L11170
+      2790 Norway→Saladin(16) squad rescue 140 | 325872 | NOEXEC | (>160) | None / None | REJ |  L11178
+      2795 Amogus→Saladin(16) squad rescue 155 | 524533 | NOEXEC | (>160) | None / None | REJ |  L11179
+      2800 Savoy→Lannes(27) surplus 185 | 219451 | NOEXEC | (>160) | None / None | REJ |  L11180
+      2800 Georgia→Saladin(16) squad rescue 155 | 907947 | NOEXEC | (>160) | None / None | REJ |  L11181
+      2810 Musketeer→Saladin(16) squad rescue 155 | 426934 | NOEXEC | (>160) | None / None | REJ |  L11182
+      2810 Kokand→Lannes(27) surplus 185 | 331779 | NOEXEC | (>160) | None / None | REJ |  L11183
+      2810 Norway→Saladin(16) squad rescue 155 | 337214 | NOEXEC | (>160) | None / None | REJ |  L11184
+      2815 Amogus→Saladin(16) squad rescue 155 | 538985 | NOEXEC | (>155) | None / None | REJ |  L11185
+      2820 Georgia→Saladin(16) squad rescue 155 | 930787 | NOEXEC | (>150) | None / None | REJ |  L11186
+      2820 Savoy→Lannes(27) surplus 185 | 224393 | NOEXEC | (>150) | None / None | REJ |  L11187
+      2830 Kokand→Lannes(27) surplus 185 | 339386 | NOEXEC | (>160) | None / None | REJ |  L11188
+      2830 Musketeer→Saladin(16) squad rescue 155 | 436982 | NOEXEC | (>220) | None / None | REJ |  L11189
+      2830 Norway→Saladin(16) squad rescue 155 | 344946 | NOEXEC | (>220) | None / None | REJ |  L11190
+      2835 Amogus→Saladin(16) squad rescue 155 | 548295 | NOEXEC | (>225) | None / None | REJ |  L11191
+      2840 Savoy→Lannes(27) squad rescue 136 | 229447 | NOEXEC | (>160) | None / None | REJ |  L11192
+      2840 Georgia→Saladin(16) squad rescue 155 | 954201 | NOEXEC | (>160) | None / None | REJ |  L11193
+      2850 Kokand→Lannes(27) squad rescue 155 | 347168 | NOEXEC | (>160) | None / None | REJ |  L11194
+      2850 Musketeer→Saladin(16) squad rescue 155 | 447266 | NOEXEC | (>200) | None / None | REJ |  L11195
+      2850 Norway→Saladin(16) squad rescue 155 | 352855 | NOEXEC | (>200) | None / None | REJ |  L11196
+      2855 Amogus→Saladin(16) squad rescue 155 | 557213 | NOEXEC | (>205) | None / None | REJ |  L11197
+      2860 Savoy→Lannes(27) squad rescue 155 | 234614 | NOEXEC | (>160) | None / None | REJ |  L11198
+      2860 Georgia→Saladin(16) squad rescue 155 | 978204 | NOEXEC | (>160) | None / None | REJ |  L11199
+      2870 Kokand→Lannes(27) squad rescue 155 | 355127 | NOEXEC | (>160) | None / None | REJ |  L11200
+      2870 Musketeer→Saladin(16) squad rescue 155 | 457793 | NOEXEC | (>180) | None / None | REJ |  L11201
+      2870 Norway→Saladin(16) squad rescue 155 | 360945 | NOEXEC | (>180) | None / None | REJ |  L11202
+      2875 Amogus→Saladin(16) squad rescue 155 | 565826 | NOEXEC | (>185) | None / None | REJ |  L11203
+      2880 Savoy→Lannes(27) squad rescue 155 | 239898 | NOEXEC | (>160) | None / None | REJ |  L11205
+      2880 Georgia→Saladin(16) squad rescue 155 | 1002811 | NOEXEC | (>160) | None / None | REJ |  L11212
+      2890 Kokand→Malacca(20) squad rescue 155 | 363269 | NOEXEC | (>160) | None / None | REJ |  L11225
+      2890 Musketeer→Saladin(16) squad rescue 155 | 468567 | NOEXEC | (>160) | None / None | REJ |  L11226
+      2890 Norway→Saladin(16) squad rescue 155 | 369220 | NOEXEC | (>160) | None / None | REJ |  L11227
+      2895 Amogus→Saladin(16) squad rescue 155 | 574117 | NOEXEC | (>165) | None / None | REJ |  L11228
+      2900 Georgia→Saladin(16) squad rescue 155 | 1038427 | NOEXEC | (>160) | None / None | REJ |  L11229
+      2900 Savoy→Lannes(27) squad rescue 155 | 248009 | NOEXEC | (>160) | None / None | REJ |  L11230
+      2910 Kokand→Malacca(20) squad rescue 155 | 375189 | EXEC | (0,20] | 57157 / 23449 | ACC |  L11231
+      2910 Musketeer→Saladin(16) squad rescue 155 | 484581 | NOEXEC | (>150) | None / None | REJ |  L11232
+      2910 Norway→Saladin(16) squad rescue 155 | 381557 | NOEXEC | (>150) | None / None | REJ |  L11233
+      2915 Amogus→Saladin(16) squad rescue 155 | 586691 | NOEXEC | (>235) | None / None | REJ |  L11234
+      2920 Savoy→Lannes(27) surplus 185 | 253594 | NOEXEC | (>160) | None / None | REJ |  L11235
+      2920 Georgia→Saladin(16) squad rescue 155 | 1064339 | NOEXEC | (>160) | None / None | REJ |  L11236
+      2930 Kokand→Lannes(27) surplus 185 | 301337 | NOEXEC | (>160) | None / None | REJ |  L11237
+      2930 Musketeer→Red Army(10) surplus 185 | 495985 | EXEC | (0,20] | 90091 / 30999 | ACC |  L11238
+      2930 Norway→Red Army(10) surplus 185 | 390266 | EXEC | (0,20] | 70888 / 24391 | ACC |  L11239
+      2935 Amogus→Red Army(10) surplus 153 | 594105 | NOEXEC | (>215) | None / None | REJ |  L11240
+      2940 Savoy→Lannes(27) surplus 185 | 259306 | NOEXEC | (>160) | None / None | REJ |  L11241
+      2940 Georgia→Red Army(10) surplus 185 | 1089497 | NOEXEC | (>160) | None / None | REJ |  L11242
+      2950 Kokand→Lannes(27) surplus 185 | 308246 | NOEXEC | (>160) | None / None | REJ |  L11243
+      2950 Musketeer→Cyrus(19) squad rescue 58 | 383681 | EXEC | (0,20] | 22626 / 24544 | ACC |  L11244
+      2950 Norway→Cyrus(19) squad rescue 69 | 301631 | EXEC | (0,20] | 20619 / 18851 | ACC |  L11245
+      2955 Amogus→Cyrus(19) squad rescue 155 | 601135 | NOEXEC | (>195) | None / None | REJ |  L11246
+      2960 Georgia→Cyrus(19) squad rescue 155 | 1113927 | EXEC | (0,10] | 169699 / 69620 | ACC |  L11247
+      2960 Savoy→Lannes(27) surplus 185 | 265146 | NOEXEC | (>160) | None / None | REJ |  L11248
+      2970 Kokand→Lannes(27) surplus 185 | 315314 | NOEXEC | (>160) | None / None | REJ |  L11263
+      2975 Amogus→KiraYoshikage(6) surplus 153 | 607825 | EXEC | (0,85] | 91895 / 38190 | ACC |  L11269
+      2980 Georgia→KiraYoshikage(6) surplus 185 | 896609 | NOEXEC | (>160) | None / None | REJ |  L11270
+      2980 Savoy→Lannes(27) surplus 185 | 271117 | NOEXEC | (>160) | None / None | REJ |  L11271
+      2990 Kokand→Lannes(27) surplus 185 | 322543 | NOEXEC | (>160) | None / None | REJ |  L11272
+      3000 Georgia→Red Army(10) surplus 185 | 929553 | NOEXEC | (>150) | None / None | REJ |  L11273
+      3000 Savoy→Lannes(27) surplus 185 | 279877 | NOEXEC | (>150) | None / None | REJ |  L11274
+      3010 Kokand→Lannes(27) surplus 185 | 333640 | NOEXEC | (>160) | None / None | REJ |  L11275
+      3020 Savoy→Lannes(27) surplus 185 | 285727 | NOEXEC | (>160) | None / None | REJ |  L11276
+      3020 Georgia→Red Army(10) surplus 185 | 952936 | NOEXEC | (>160) | None / None | REJ |  L11277
+      3030 Kokand→Lannes(27) surplus 185 | 341289 | NOEXEC | (>160) | None / None | REJ |  L11278
+      3040 Georgia→Red Army(10) surplus 185 | 976907 | NOEXEC | (>160) | None / None | REJ |  L11279
+      3040 Savoy→Lannes(27) surplus 185 | 291412 | NOEXEC | (>160) | None / None | REJ |  L11280
+      3050 Maratha→Lannes(27) squad rescue 155 | 468981 | NOEXEC | (>190) | None / None | REJ |  L11281
+      3050 Kokand→Lannes(27) squad rescue 155 | 349114 | NOEXEC | (>160) | None / None | REJ |  L11282
+      3050 Musketeer→Red Army(10) surplus 185 | 384458 | NOEXEC | (>160) | None / None | REJ |  L11283
+      3050 Konev→Lannes(27) squad rescue 84 | 1181365 | NOEXEC | (>190) | None / None | REJ |  L11284
+      3050 Norway→Red Army(10) surplus 185 | 297675 | NOEXEC | (>160) | None / None | REJ |  L11285
+      3060 Savoy→Lannes(27) squad rescue 155 | 296945 | NOEXEC | (>160) | None / None | REJ |  L11287
+      3060 Georgia→Red Army(10) surplus 185 | 1001481 | NOEXEC | (>160) | None / None | REJ |  L11290
+      3070 Kokand→Lannes(27) squad rescue 155 | 357118 | NOEXEC | (>170) | None / None | REJ |  L11307
+      3070 Maratha→Lannes(27) squad rescue 155 | 480019 | NOEXEC | (>170) | None / None | REJ |  L11308
+      3070 Konev→Lannes(27) squad rescue 108 | 1212279 | NOEXEC | (>170) | None / None | REJ |  L11309
+      3070 Musketeer→Red Army(10) surplus 185 | 393506 | NOEXEC | (>170) | None / None | REJ |  L11310
+      3070 Norway→Red Army(10) surplus 185 | 304500 | NOEXEC | (>170) | None / None | REJ |  L11311
+      3080 Savoy→Lannes(27) surplus 280 | 302313 | NOEXEC | (>160) | None / None | REJ |  L11312
+      3080 Georgia→Red Army(10) surplus 185 | 1026673 | NOEXEC | (>160) | None / None | REJ |  L11313
+      3090 Kokand→Lannes(27) surplus 185 | 365306 | NOEXEC | (>150) | None / None | REJ |  L11314
+      3090 Musketeer→Red Army(10) surplus 185 | 402767 | NOEXEC | (>150) | None / None | REJ |  L11315
+      3090 Norway→Red Army(10) surplus 185 | 311481 | NOEXEC | (>150) | None / None | REJ |  L11316
+      3100 Savoy→Lannes(27) surplus 280 | 310213 | NOEXEC | (>160) | None / None | REJ |  L11317
+      3100 Georgia→Red Army(10) surplus 185 | 1062889 | NOEXEC | (>160) | None / None | REJ |  L11318
+      3110 Kokand→Lannes(27) surplus 185 | 377235 | NOEXEC | (>150) | None / None | REJ |  L11319
+      3110 Musketeer→Red Army(10) surplus 185 | 417232 | NOEXEC | (>160) | None / None | REJ |  L11320
+      3110 Norway→Red Army(10) surplus 185 | 322493 | NOEXEC | (>170) | None / None | REJ |  L11321
+      3120 Savoy→Lannes(27) surplus 280 | 315133 | NOEXEC | (>160) | None / None | REJ |  L11322
+      3120 Georgia→Red Army(10) surplus 185 | 1088228 | NOEXEC | (>160) | None / None | REJ |  L11323
+      3130 Kokand→Lannes(27) surplus 185 | 385312 | NOEXEC | (>150) | None / None | REJ |  L11324
+      3130 Musketeer→Red Army(10) surplus 185 | 427051 | NOEXEC | (>160) | None / None | REJ |  L11325
+      3130 Norway→Red Army(10) surplus 185 | 329887 | NOEXEC | (>150) | None / None | REJ |  L11326
+      3140 Savoy→Lannes(27) surplus 280 | 319877 | NOEXEC | (>160) | None / None | REJ |  L11327
+      3140 Georgia→Red Army(10) surplus 185 | 1112850 | NOEXEC | (>160) | None / None | REJ |  L11328
+      3150 Kokand→Lannes(27) surplus 185 | 393172 | NOEXEC | (>150) | None / None | REJ |  L11340
+      3150 Musketeer→Red Army(10) surplus 185 | 437101 | NOEXEC | (>180) | None / None | REJ |  L11343
+      3150 Norway→Red Army(10) surplus 185 | 337450 | NOEXEC | (>180) | None / None | REJ |  L11350
+      3160 Savoy→Lannes(27) surplus 280 | 324435 | NOEXEC | (>160) | None / None | REJ |  L11351
+      3160 Georgia→Red Army(10) surplus 185 | 1136679 | NOEXEC | (>160) | None / None | REJ |  L11352
+      3170 Kokand→Lannes(27) surplus 185 | 400796 | NOEXEC | (>150) | None / None | REJ |  L11353
+      3170 Musketeer→Red Army(10) surplus 185 | 447388 | NOEXEC | (>160) | None / None | REJ |  L11354
+      3170 Norway→Red Army(10) surplus 185 | 345186 | NOEXEC | (>160) | None / None | REJ |  L11355
+      3180 Savoy→Lannes(27) surplus 280 | 328796 | NOEXEC | (>150) | None / None | REJ |  L11356
+      3180 Georgia→Red Army(10) surplus 280 | 1159640 | NOEXEC | (>150) | None / None | REJ |  L11357
+      3190 Musketeer→Red Army(10) surplus 185 | 457917 | NOEXEC | (>230) | None / None | REJ |  L11358
+      3190 Kokand→Lannes(27) surplus 280 | 408204 | NOEXEC | (>150) | None / None | REJ |  L11359
+      3190 Norway→Red Army(10) surplus 185 | 353100 | NOEXEC | (>170) | None / None | REJ |  L11360
+      3200 Savoy→Lannes(27) surplus 280 | 335726 | NOEXEC | (>200) | None / None | REJ |  L11361
+      3200 Georgia→Cyrus(19) surplus 280 | 1192167 | NOEXEC | (>160) | None / None | REJ |  L11362
+      3210 Musketeer→Cyrus(19) surplus 185 | 473679 | EXEC | (0,30] | 89094 / 30656 | ACC |  L11363
+      3210 Kokand→Lannes(27) surplus 280 | 418946 | EXEC | (0,30] | 114964 / 26184 | ACC |  L11364
+      3210 Norway→Cyrus(19) surplus 185 | 365067 | EXEC | (0,30] | 66310 / 22816 | ACC |  L11365
+      3220 Savoy→Lannes(27) surplus 280 | 339630 | EXEC | (0,20] | 93199 / 21226 | ACC |  L11366
+      3220 Georgia→Cyrus(19) surplus 280 | 1213120 | NOEXEC | (>160) | None / None | REJ |  L11367
+      3240 Savoy→Lannes(27) surplus 185 | 230277 | NOEXEC | (>160) | None / None | REJ |  L11370
+      3240 Georgia→Cyrus(19) surplus 280 | 1233218 | NOEXEC | (>160) | None / None | REJ |  L11374
+      3240 Kokand→Lannes(27) surplus 185 | 286497 | NOEXEC | (>180) | None / None | REJ |  L11381
+      3260 Savoy→Lannes(27) surplus 185 | 235463 | NOEXEC | (>160) | None / None | REJ |  L11390
+      3260 Georgia→Cyrus(19) surplus 280 | 1252406 | NOEXEC | (>160) | None / None | REJ |  L11391
+      3260 Kokand→Lannes(27) surplus 185 | 293066 | NOEXEC | (>160) | None / None | REJ |  L11392
+      3270 Musketeer→Cyrus(19) surplus 185 | 383913 | NOEXEC | (>150) | None / None | REJ |  L11393
+      3280 Savoy→Lannes(27) surplus 185 | 240766 | NOEXEC | (>230) | None / None | REJ |  L11394
+      3280 Georgia→Patton(29) surplus 280 | 1270757 | EXEC | (0,20] | 348713 / 79422 | ? |  L11395
+      3280 Kokand→Lannes(27) surplus 185 | 299785 | NOEXEC | (>180) | None / None | REJ |  L11396
+      3280 Norway→Patton(29) surplus 185 | 298725 | EXEC(夹小) | (0,50] | 11303 / 18670 | REJ |  L11397
+      3290 Musketeer→Patton(29) surplus 185 | 392948 | EXEC(夹小) | (0,40] | 6065 / 24559 | REJ |  L11398
+      3295 Patton→Cyrus(19) surplus 153 | 587700 | EXEC(夹小) | (125,215] | 20035 / 34594 | ACC |  L11399
+      3300 Savoy→Lannes(27) surplus 185 | 248897 | NOEXEC | (>210) | None / None | REJ |  L11400
+      3300 Georgia→Cyrus(19) surplus 185 | 880952 | NOEXEC | (>160) | None / None | REJ |  L11401
+      3300 Kokand→Lannes(27) surplus 185 | 310319 | NOEXEC | (>160) | None / None | REJ |  L11402
+      3300 Maratha→Lannes(27) surplus 153 | 618116 | NOEXEC | (>170) | None / None | REJ |  L11403
+      3300 Sokoto→Lannes(27) surplus 185 | 378509 | EXEC | (0,30] | 68752 / 23656 | ACC |  L11404
+      3320 Savoy→Lannes(27) surplus 185 | 254502 | NOEXEC | (>190) | None / None | REJ |  L11405
+      3320 Georgia→Patton(29) surplus 185 | 903112 | NOEXEC | (>160) | None / None | REJ |  L11406
+      3320 Maratha→Lannes(27) surplus 153 | 626426 | NOEXEC | (>150) | None / None | REJ |  L11407
+      3320 Kokand→Lannes(27) surplus 185 | 317433 | NOEXEC | (>190) | None / None | REJ |  L11408
+      3330 Musketeer→Patton(29) surplus 185 | 384971 | EXEC | (0,90] | 69926 / 24060 | ACC |  L11414
+      3340 Savoy→Konev(17) surplus 185 | 260234 | EXEC | (0,60] | 47269 / 16264 | ACC |  L11429
+      3340 Georgia→Patton(29) surplus 185 | 925830 | NOEXEC | (>160) | None / None | REJ |  L11430
+      3340 Maratha→Konev(17) surplus 153 | 634406 | EXEC | (0,80] | 95408 / 39650 | ACC |  L11431
+      3340 Kokand→Konev(17) surplus 185 | 324710 | EXEC | (0,80] | 58980 / 20294 | ACC |  L11432
+      3360 Georgia→Cyrus(19) surplus 185 | 949119 | NOEXEC | (>150) | None / None | REJ |  L11434
+      3360 Norway→Cyrus(19) surplus 185 | 299039 | EXEC | (0,60] | 54317 / 18689 | ACC |  L11435
+      3380 Georgia→Cyrus(19) surplus 185 | 972994 | NOEXEC | (>160) | None / None | REJ |  L11436
+      3400 Savoy→Konev(17) surplus 185 | 213001 | EXEC | (0,20] | 38689 / 13312 | ACC |  L11437
+      3400 Georgia→Patton(29) surplus 185 | 1007860 | NOEXEC | (>160) | None / None | REJ |  L11438
+      3400 Kaido→Konev(17) surplus 153 | 550230 | EXEC | (0,20] | 82749 / 34389 | ACC |  L11439
+      3420 Georgia→Patton(29) surplus 185 | 1033213 | AMB | (>140) | None / None | REJ |  L11447
+      3440 Georgia→Patton(29) surplus 185 | 1059099 | AMB | (>160) | None / None | REJ |  L11460
+      3460 Kokand→Konev(17) surplus 185 | 285112 | EXEC | (0,50] | 51787 / 17819 | ACC |  L11461
+      3460 Georgia→Cyrus(19) surplus 185 | 1084562 | AMB | (>160) | None / None | REJ |  L11462
+      3470 Maratha→Konev(17) surplus 153 | 574767 | EXEC | (0,40] | 86439 / 35922 | ACC |  L11463
+      3480 Georgia→Cyrus(19) surplus 185 | 1109320 | AMB | (>160) | None / None | REJ |  L11464
+      3500 Georgia→Cyrus(19) surplus 280 | 1143687 | AMB | (>140) | None / None | REJ |  L11465
+      3500 Sokoto→Konev(17) surplus 185 | 371154 | EXEC | (10,100] | 68205 / 23468 | ACC |  L11466
+      3520 Georgia→Cyrus(19) surplus 280 | 1166443 | AMB | (>120) | None / None | REJ |  L11486
+      3540 Georgia→Cyrus(19) surplus 280 | 1188357 | AMB | (>100) | None / None | REJ |  L11487
+      3550 Musketeer→Cyrus(19) surplus 185 | 386923 | EXEC | (0,50] | 72776 / 25041 | ACC |  L11488
+      3560 Georgia→Cyrus(19) squad rescue 155 | 1209483 | AMB | (>220) | None / None | ACC |  L11489
+      3580 Georgia→Cyrus(19) surplus 185 | 996111 | AMB | (>200) | None / None | REJ |  L11490
+      3580 Maratha→Konev(17) squad rescue 155 | 519707 | EXEC | (0,20] | 79174 / 32481 | ACC |  L11491
+      3580 Norway→Cyrus(19) surplus 185 | 298923 | NOEXEC | (>200) | None / None | REJ |  L11492
+      3600 Georgia→Cyrus(19) surplus 185 | 1031559 | AMB | (>180) | None / None | REJ |  L11498
+      3600 Norway→Cyrus(19) surplus 185 | 309604 | EXEC | (0,90] | 58181 / 20019 | ACC |  L11511
+      3620 Savoy→Konev(17) squad rescue 61 | 211559 | EXEC | (0,70] | 12809 / 13222 | ACC |  L11514
+      3620 Georgia→Patton(29) surplus 185 | 1057404 | AMB | (>160) | None / None | REJ |  L11515
+      3635 Malacca→Konev(17) surplus 280 | 254964 | EXEC | (0,20] | 70301 / 16011 | ACC |  L11516
+      3640 Georgia→Patton(29) surplus 185 | 1082826 | AMB | (>230) | None / None | ? |  L11517
+      3655 Malacca→Konev(17) surplus 185 | 171743 | EXEC | (0,35] | 31538 / 10852 | ACC |  L11518
+      3680 Kokand→Konev(17) surplus 185 | 285029 | EXEC | (0,10] | 51772 / 17814 | ACC |  L11519
+      3680 Kalmar Union→Konev(17) surplus 153 | 498150 | EXEC | (0,10] | 74917 / 31134 | ACC |  L11520
+      3685 Maratha→Konev(17) squad rescue 152 | 463806 | EXEC | (5,95] | 72531 / 30340 | ACC |  L11521
+      3690 KiraYoshikage→Patton(29) squad rescue 55 | 867998 | NOEXEC | (>180) | None / None | REJ |  L11534
+      3710 KiraYoshikage→Patton(29) squad rescue 63 | 875415 | NOEXEC | (>160) | None / None | REJ |  L11542
+      3720 Sokoto→Konev(17) surplus 185 | 372706 | EXEC | (20,60] | 69291 / 23842 | REJ |  L11543
+      3730 KiraYoshikage→Patton(29) squad rescue 65 | 876552 | NOEXEC | (>230) | None / None | REJ |  L11544
+      3730 Savoy→Konev(17) surplus 185 | 212503 | EXEC | (0,50] | 38599 / 13281 | ACC |  L11545
+      3740 Sokoto→Konev(17) surplus 185 | 381477 | EXEC | (0,40] | 52374 / 18021 | ? | 连发@3720 L11546
+      3750 KiraYoshikage→Patton(29) squad rescue 66 | 877603 | NOEXEC | (>210) | None / None | REJ |  L11547
+      3760 Musketeer→Cyrus(19) surplus 185 | 384590 | EXEC | (0,20] | 69857 / 24036 | ACC |  L11548
+      3770 KiraYoshikage→Cyrus(19) squad rescue 67 | 878568 | NOEXEC | (>190) | None / None | REJ |  L11549
+      3790 KiraYoshikage→Red Army(10) squad rescue 68 | 879446 | EXEC | (0,80] | 59259 / 54965 | ACC |  L11569
+      3800 Malacca→Maratha(12) surplus 185 | 157157 | EXEC | (0,70] | 28546 / 9822 | ACC |  L11570
+      3800 Norway→Patton(29) surplus 185 | 301675 | EXEC | (100,160] | 62068 / 21356 | REJ |  L11571
+      3820 Cyrus→Patton(29) squad rescue 86 | 423390 | AMB | (>50) | None / None | REJ |  L11572
+      3820 Norway→Patton(29) squad rescue 91 | 308592 | NOEXEC | (>200) | None / None | REJ |  L11573
+      3840 Norway→Cyrus(19) surplus 185 | 315667 | NOEXEC | (>180) | None / None | REJ |  L11575
+      3860 Norway→Cyrus(19) surplus 185 | 322904 | NOEXEC | (>160) | None / None | REJ |  L11576
+      3880 Norway→Cyrus(19) surplus 185 | 330308 | NOEXEC | (>170) | None / None | REJ |  L11595
+      3885 Lannes→Konev(17) surplus 153 | 979322 | AMB | (>0) | None / None | ? |  L11596
+      3900 Kokand→Maratha(12) surplus 185 | 288805 | EXEC | (0,60] | 52458 / 18050 | ACC |  L11597
+      3900 Norway→Cyrus(19) surplus 185 | 341709 | NOEXEC | (>150) | None / None | ACC |  L11598
+      3940 Kaido→Lannes(27) surplus 153 | 547104 | EXEC | (0,20] | 82279 / 34194 | ACC |  L11599
+      3950 Savoy→Lannes(27) surplus 185 | 211278 | EXEC | (10,100] | 38806 / 13352 | ACC |  L11600
+      3970 Musketeer→Red Army(10) surplus 185 | 382469 | EXEC(夹小) | (0,80] | 58365 / 23904 | ACC |  L11619
+      4000 Georgia→Cyrus(19) surplus 185 | 814710 | NOEXEC | (>160) | None / None | REJ |  L11620
+      4000 Cossack→Lannes(27) surplus 153 | 435969 | EXEC | (0,50] | 65565 / 27248 | ACC |  L11621
+      4015 Lannes→Malacca(20) surplus 280 | 1023419 | AMB | (>215) | None / None | ACC |  L11622
+      4020 Georgia→Cyrus(19) surplus 185 | 835204 | NOEXEC | (>160) | None / None | REJ |  L11623
+      4020 Norway→Cyrus(19) surplus 185 | 299830 | EXEC | (0,30] | 54461 / 18739 | ACC |  L11624
+      4035 Lannes→Konev(17) surplus 185 | 802375 | EXEC | (0,105] | 72036 / 24786 | ? |  L11625
+      4040 Georgia→Cyrus(19) surplus 185 | 856214 | NOEXEC | (>160) | None / None | REJ |  L11626
+      4060 Georgia→Cyrus(19) surplus 185 | 877752 | NOEXEC | (>160) | None / None | REJ |  L11646
+      4080 Georgia→Cyrus(19) surplus 185 | 899832 | NOEXEC | (>150) | None / None | REJ |  L11665
+      4100 Georgia→Cyrus(19) surplus 185 | 932857 | NOEXEC | (>160) | None / None | REJ |  L11667
+      4110 Kokand→Konev(17) surplus 185 | 284803 | EXEC | (0,30] | 51731 / 17800 | ACC |  L11668
+      4120 Georgia→Cyrus(19) surplus 185 | 956323 | NOEXEC | (>160) | None / None | REJ |  L11669
+      4140 Georgia→Cyrus(19) surplus 185 | 980380 | NOEXEC | (>170) | None / None | REJ |  L11676
+      4140 Sokoto→Konev(17) surplus 185 | 371045 | EXEC | (0,90] | 67396 / 23190 | ACC |  L11680
+      4140 Musketeer→Cyrus(19) surplus 185 | 383113 | NOEXEC | (>180) | None / None | REJ |  L11686
+      4160 Musketeer→Cyrus(19) surplus 185 | 392129 | NOEXEC | (>160) | None / None | REJ |  L11692
+      4160 Georgia→Cyrus(19) surplus 185 | 1005041 | NOEXEC | (>150) | None / None | REJ |  L11693
+      4180 Savoy→Maratha(12) surplus 185 | 212585 | AMB | (>230) | None / None | ACC |  L11694
+      4180 KiraYoshikage→Cyrus(19) surplus 153 | 868016 | NOEXEC | (>220) | None / None | REJ |  L11695
+      4180 Georgia→Cyrus(19) surplus 185 | 1030324 | NOEXEC | (>230) | None / None | REJ |  L11696
+      4180 Musketeer→Cyrus(19) surplus 185 | 401357 | NOEXEC | (>180) | None / None | REJ |  L11697
+      4195 Konev→Maratha(12) surplus 153 | 2275999 | AMB | (>215) | None / None | ACC |  L11698
+      4200 KiraYoshikage→Cyrus(19) surplus 153 | 875603 | NOEXEC | (>200) | None / None | REJ |  L11699
+      4200 Georgia→Cyrus(19) surplus 185 | 1066528 | NOEXEC | (>210) | None / None | REJ |  L11700
+      4200 Kalmar Union→Maratha(12) squad rescue 60 | 488175 | EXEC | (0,30] | 29080 / 30510 | ACC |  L11701
+      4200 Amogus→Cyrus(19) surplus 153 | 592810 | EXEC | (0,30] | 89153 / 37050 | ACC |  L11702
+      4200 Musketeer→Cyrus(19) surplus 185 | 415730 | NOEXEC | (>160) | None / None | REJ |  L11703
+      4220 Georgia→Cyrus(19) surplus 185 | 1091737 | NOEXEC | (>190) | None / None | REJ |  L11705
+      4220 Musketeer→Cyrus(19) surplus 185 | 425514 | NOEXEC | (>190) | None / None | REJ |  L11706
+      4220 KiraYoshikage→Cyrus(19) surplus 153 | 876740 | NOEXEC | (>180) | None / None | REJ |  L11707
+      4240 KiraYoshikage→Cyrus(19) surplus 153 | 877792 | NOEXEC | (>160) | None / None | REJ |  L11725
+      4240 Georgia→Cyrus(19) surplus 185 | 1116217 | NOEXEC | (>170) | None / None | REJ |  L11726
+      4240 Musketeer→Cyrus(19) surplus 185 | 435528 | NOEXEC | (>170) | None / None | REJ |  L11727
+      4240 Norway→Cyrus(19) surplus 185 | 299297 | NOEXEC | (>170) | None / None | REJ |  L11728
+      4260 KiraYoshikage→Cyrus(19) surplus 153 | 878757 | NOEXEC | (>150) | None / None | REJ |  L11729
+      4260 Georgia→Cyrus(19) surplus 185 | 1139892 | NOEXEC | (>150) | None / None | REJ |  L11730
+      4260 Musketeer→Cyrus(19) surplus 185 | 445778 | NOEXEC | (>150) | None / None | REJ |  L11731
+      4260 Norway→Cyrus(19) surplus 185 | 306158 | NOEXEC | (>150) | None / None | REJ |  L11732
+      4280 Musketeer→Cyrus(19) surplus 185 | 456269 | EXEC | (0,40] | 82876 / 28516 | ACC |  L11734
+      4280 Georgia→Cyrus(19) surplus 280 | 1162687 | EXEC | (0,30] | 319057 / 72667 | ACC |  L11735
+      4280 KiraYoshikage→Cyrus(19) surplus 153 | 879635 | NOEXEC | (>220) | None / None | REJ |  L11736
+      4280 Norway→Cyrus(19) surplus 185 | 313177 | EXEC | (0,40] | 56885 / 19573 | ACC |  L11737
+      4310 Georgia→KiraYoshikage(6) surplus 185 | 808463 | EXEC | (0,10] | 146849 / 50528 | ? |  L11755
+      4360 Musketeer→Cyrus(19) surplus 185 | 383791 | EXEC | (0,50] | 69712 / 23986 | ACC |  L11773
+      4360 Kokand→Malacca(20) surplus 185 | 284173 | EXEC | (0,50] | 51617 / 17760 | ? |  L11774
+      4360 Sokoto→Malacca(20) surplus 185 | 373093 | NOEXEC | (>230) | None / None | REJ |  L11775
+      4380 Sokoto→Malacca(20) surplus 185 | 381874 | EXEC | (30,120] | 72703 / 25016 | REJ |  L11776
+      4400 KiraYoshikage→Cyrus(19) surplus 153 | 871827 | EXEC | (10,100] | 131219 / 54532 | ACC |  L11777
+      4400 Sokoto→Malacca(20) surplus 185 | 395630 | EXEC | (10,100] | 56246 / 19353 | ? | 连发@4380 L11778
+      4420 Norway→Cyrus(19) surplus 185 | 298748 | EXEC | (0,80] | 56141 / 19317 | ACC |  L11796
+      4470 Malacca→Kalmar Union(7) surplus 280 | 284100 | AMB | (>120) | None / None | ? |  L11797
+      4490 Malacca→Cossack(22) surplus 185 | 153707 | EXEC | (10,100] | 28570 / 9830 | ACC |  L11798
+      4520 Georgia→KiraYoshikage(6) surplus 185 | 815928 | EXEC | (0,70] | 148205 / 50995 | ACC |  L11816
+      4530 Konev→Maratha(12) squad rescue 115 | 2489484 | EXEC(夹小) | (0,60] | 85581 / 155592 | ACC |  L11817
+      4580 Savoy→Maratha(12) surplus 185 | 212119 | NOEXEC | (>190) | None / None | REJ |  L11818
+      4590 Kokand→Malacca(20) surplus 185 | 287356 | EXEC | (0,90] | 52195 / 17959 | ACC |  L11828
+      4600 Savoy→Malacca(20) surplus 185 | 219617 | EXEC | (0,80] | 39891 / 13726 | ACC |  L11836
+      4600 Kaido→Malacca(20) surplus 153 | 570266 | EXEC | (0,80] | 85762 / 35641 | ACC |  L11837
+      4620 Lannes→Cossack(22) surplus 185 | 671131 | NOEXEC | (>150) | None / None | REJ |  L11840
+      4640 Lannes→Cossack(22) surplus 185 | 687605 | EXEC(夹小) | (0,40] | 79668 / 44567 | ACC |  L11841
+      4690 Musketeer→Cyrus(19) surplus 185 | 444341 | EXEC | (0,80] | 80710 / 27771 | ACC |  L11859
+      4690 KiraYoshikage→Cyrus(19) surplus 153 | 890700 | NOEXEC | (>170) | None / None | REJ |  L11860
+      4690 Konev→Cossack(22) surplus 153 | 2428812 | AMB | (>0) | None / None | ? |  L11861
+      4690 Saladin→Cyrus(19) surplus 185 | 194329 | EXEC | (0,80] | 35298 / 12145 | ACC |  L11862
+      4690 Malacca→Cossack(22) surplus 153 | 274881 | EXEC | (0,130] | 53883 / 22393 | ? |  L11863
+      4690 Norway→Cyrus(19) surplus 185 | 305159 | EXEC | (20,80] | 57403 / 19751 | REJ |  L11864
+      4700 Cossack→Konev(17) surplus 153 | 279600 | EXEC | (0,70] | 42049 / 17475 | ACC |  L11865
+      4710 Norway→Cyrus(19) surplus 185 | 316027 | EXEC | (0,60] | 43389 / 14929 | ? | 连发@4690 L11866
+      4730 Cyrus→KiraYoshikage(6) surplus 280 | 1281011 | EXEC(夹小) | (0,40] | 84474 / 80063 | ? |  L11867
+      4740 Amogus→Cyrus(19) squad rescue 55 | 592699 | EXEC | (0,30] | 32413 / 37043 | ACC |  L11868
+      4750 KiraYoshikage→Cyrus(19) squad rescue 80 | 890700 | EXEC | (0,20] | 70455 / 55668 | ACC |  L11870
+      4760 Sokoto→Malacca(20) surplus 185 | 373502 | EXEC | (10,100] | 68636 / 23616 | ? |  L11887
+      4760 Lannes→Malacca(20) surplus 185 | 667018 | EXEC | (10,100] | 125645 / 43233 | ? |  L11888
+      4770 Georgia→Cyrus(19) surplus 185 | 850654 | EXEC | (0,90] | 154513 / 53165 | ACC |  L11898
+      4790 Musketeer→Cyrus(19) surplus 185 | 382758 | EXEC | (0,70] | 72909 / 25087 | ACC |  L11906
+      4800 Kokand→Konev(17) surplus 185 | 287924 | EXEC | (0,60] | 52298 / 17995 | ACC |  L11907
+      4800 Savoy→Konev(17) surplus 185 | 213172 | EXEC | (0,60] | 38720 / 13323 | ACC |  L11908
+      4800 Malacca→Konev(17) surplus 280 | 358290 | EXEC | (0,20] | 78779 / 17942 | ACC |  L11909
+      4820 Malacca→Cossack(22) surplus 185 | 190097 | AMB | (>0) | None / None | ? |  L11910
+      4825 Kalmar Union→Malacca(20) surplus 153 | 515100 | EXEC | (0,35] | 77466 / 32193 | ACC |  L11911
+      4840 Saladin→Cyrus(19) surplus 185 | 178117 | EXEC | (0,20] | 33068 / 11378 | ACC |  L11912
+      4940 Cossack→Malacca(20) surplus 153 | 293700 | NOEXEC | (>190) | None / None | REJ |  L11929
+      4950 Lannes→Malacca(20) surplus 185 | 669092 | NOEXEC | (>180) | None / None | REJ |  L11945
+      4970 Lannes→Malacca(20) surplus 185 | 685516 | EXEC | (0,70] | 130685 / 44967 | ACC |  L11947
+      4970 Sokoto→Malacca(20) surplus 185 | 371405 | NOEXEC | (>160) | None / None | REJ |  L11948
+      4990 Sokoto→Cossack(22) surplus 185 | 380146 | NOEXEC | (>210) | None / None | REJ |  L11949
+      5010 Sokoto→Cossack(22) surplus 185 | 393917 | EXEC | (0,30] | 71551 / 24619 | ? |  L11952
+      5020 Kokand→Cossack(22) surplus 185 | 287198 | NOEXEC | (>150) | None / None | REJ |  L11950
+      5020 Savoy→Cossack(22) surplus 185 | 211745 | NOEXEC | (>150) | None / None | REJ |  L11951
+      5070 Saladin→Georgia(15) surplus 185 | 178355 | EXEC | (0,60] | 32396 / 11147 | ACC |  L11969
+      5100 Norway→Georgia(15) surplus 185 | 299207 | EXEC | (0,30] | 54348 / 18700 | ACC |  L11970
+      5110 Amogus→Georgia(15) squad rescue 55 | 592602 | EXEC | (0,20] | 32407 / 37037 | ACC |  L11971
+      5120 KiraYoshikage→Georgia(15) squad rescue 55 | 867841 | EXEC | (10,100] | 47507 / 54294 | ACC |  L11972
+      5170 Savoy→Konev(17) surplus 185 | 253182 | EXEC | (0,50] | 45988 / 15823 | ACC |  L11989
+      5170 Kokand→Konev(17) surplus 185 | 344382 | EXEC | (0,40] | 62553 / 21523 | ACC |  L11990
+      5170 Cossack→Konev(17) surplus 153 | 293700 | EXEC | (0,50] | 44169 / 18356 | ACC |  L11991
+      5170 Kaido→Konev(17) surplus 153 | 584550 | EXEC | (0,50] | 87910 / 36534 | ACC |  L11992
+      5190 Lannes→Konev(17) surplus 185 | 672003 | EXEC | (0,30] | 128178 / 44104 | ? |  L11993
+      5200 Sokoto→Konev(17) surplus 185 | 376195 | EXEC | (0,20] | 69940 / 24065 | ACC |  L11994
+      5210 Kokand→Konev(17) surplus 185 | 288917 | EXEC | (10,100] | 53077 / 18263 | ACC |  L11995
+      5250 Savoy→Kalmar Union(7) surplus 185 | 212076 | EXEC | (0,60] | 38521 / 13254 | ACC |  L12029
+      5300 Saladin→Amogus(5) surplus 185 | 181041 | EXEC | (10,100] | 33246 / 11439 | ACC |  L12032
+      5350 Konev→Kaido(24) surplus 153 | 2766600 | EXEC(夹小) | (0,50] | 186308 / 172912 | ? |  L12047
+      5390 Lannes→Malacca(20) surplus 185 | 665039 | EXEC | (20,100] | 125337 / 43126 | REJ |  L12048
+      5410 Lannes→Malacca(20) surplus 185 | 690030 | EXEC | (0,80] | 94737 / 32597 | ? | 连发@5390 L12063
+      5410 Sokoto→Malacca(20) surplus 185 | 373265 | EXEC | (0,80] | 67800 / 23329 | ACC |  L12064
+      5420 Kokand→Malacca(20) surplus 185 | 285001 | AMB | (>70) | None / None | REJ |  L12065
+      5445 Malacca→Kaido(24) surplus 280 | 380100 | AMB | (>225) | None / None | ACC |  L12066
+      5450 Kokand→Kaido(24) surplus 185 | 285699 | EXEC | (0,40] | 53689 / 18473 | ACC |  L12067
+      5465 Malacca→Kalmar Union(7) surplus 185 | 207961 | AMB | (>205) | None / None | REJ |  L12068
+      5470 Kaido→Malacca(20) surplus 153 | 880200 | EXEC | (0,20] | 132373 / 55012 | ACC |  L12070
+      5480 Savoy→Malacca(20) surplus 185 | 213391 | EXEC | (0,10] | 38760 / 13336 | ACC |  L12071
+      5520 Saladin→Cyrus(19) surplus 185 | 179003 | EXEC | (0,60] | 33598 / 11560 | ACC |  L12086
+      5520 Malacca→Konev(17) surplus 280 | 376843 | AMB | (>150) | None / None | ACC |  L12087
+      5540 Malacca→Konev(17) surplus 185 | 244038 | AMB | (>220) | None / None | REJ |  L12088
+      5560 Malacca→Konev(17) surplus 185 | 233531 | EXEC | (0,20] | 43373 / 14924 | ACC |  L12089
+      5620 Sokoto→Kaido(24) surplus 185 | 370553 | EXEC | (0,50] | 67307 / 23159 | ACC |  L12102
+      5750 Saladin→KiraYoshikage(6) surplus 185 | 179101 | EXEC | (10,100] | 32889 / 11316 | ACC |  L12129
+      5785 Savoy→Konev(17) surplus 185 | 235283 | EXEC | (0,65] | 43215 / 14869 | ACC |  L12142
+      5785 Kokand→Konev(17) surplus 185 | 344459 | EXEC | (0,65] | 63280 / 21774 | ? |  L12143
+      5785 Malacca→Konev(17) surplus 185 | 231497 | EXEC | (0,65] | 42520 / 14630 | ACC |  L12144
+      5785 Kalmar Union→Konev(17) surplus 153 | 512762 | EXEC | (0,65] | 77129 / 32054 | ? |  L12145
+      5785 Kaido→Konev(17) surplus 153 | 858672 | EXEC | (0,65] | 130329 / 54162 | ? |  L12146
+      5785 Cossack→Konev(17) surplus 153 | 288790 | EXEC | (0,65] | 43457 / 18060 | ACC |  L12147
+      5800 Lannes→Konev(17) surplus 185 | 676201 | EXEC | (0,50] | 122825 / 42262 | ? |  L12148
+      5805 KiraYoshikage→Cyrus(19) surplus 185 | 183277 | EXEC | (0,45] | 33640 / 11575 | ACC |  L12149
+      5840 Sokoto→Konev(17) surplus 185 | 372369 | EXEC | (10,100] | 68428 / 23545 | ? |  L12150
+      5850 Kokand→Konev(17) surplus 185 | 285734 | EXEC | (0,90] | 51900 / 17858 | ACC |  L12157
+      5860 KiraYoshikage→Cyrus(19) surplus 185 | 147853 | EXEC | (0,20] | 26856 / 9240 | ACC |  L12164
+      5880 KiraYoshikage→Cyrus(19) surplus 185 | 114228 | EXEC | (0,60] | 20748 / 7139 | ACC |  L12165
+      5890 Malacca→Konev(17) surplus 185 | 200635 | EXEC | (0,50] | 38161 / 13130 | ACC |  L12166
+      5910 Savoy→Konev(17) surplus 185 | 211372 | EXEC | (0,30] | 38393 / 13210 | ACC |  L12167
+      5970 Saladin→Cyrus(19) surplus 185 | 177418 | NOEXEC | (>150) | None / None | REJ |  L12180
+      6000 Lannes→Konev(17) surplus 185 | 669610 | EXEC | (30,120] | 95339 / 32805 | REJ |  L12182
+      6020 Lannes→Konev(17) surplus 185 | 686047 | EXEC | (0,10] | 124614 / 42877 | ? | 连发@6000 L12183
+      6030 Kokand→Konev(17) surplus 185 | 286013 | EXEC | (0,90] | 51951 / 17875 | ACC |  L12187
+      6030 Kaido→Konev(17) surplus 280 | 790767 | EXEC | (0,20] | 216997 / 49422 | ACC |  L12194
+      6050 Kaido→Konev(17) surplus 185 | 532444 | EXEC | (0,70] | 96713 / 33277 | ACC |  L12198
+      6060 Sokoto→Konev(17) surplus 185 | 374388 | EXEC | (20,60] | 69604 / 23949 | REJ |  L12199
+      6080 Sokoto→Konev(17) surplus 185 | 383199 | EXEC | (0,40] | 52611 / 18102 | ? | 连发@6060 L12200
+      6105 Kalmar Union→Konev(17) surplus 153 | 419557 | AMB | (>0) | None / None | ? |  L12201
+      6105 Cossack→Konev(17) surplus 153 | 233035 | AMB | (>0) | None / None | ACC |  L12202
+      6110 Malacca→Konev(17) surplus 185 | 201749 | EXEC | (0,100] | 18166 / 6250 | ? |  L12203
+      6120 Kaido→Konev(17) surplus 185 | 455895 | EXEC | (0,90] | 82809 / 28493 | ACC |  L12214

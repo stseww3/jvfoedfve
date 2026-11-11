@@ -1,0 +1,278 @@
+[FA] B019 捐款定案（余额序列拟合）：日志 224 笔；成交 118，没成交 53，定不了 53
+     成交的到账合计 17909772，税合计 7996782（税占捐出方付出的 30.9%）
+     其中到账被收款方 150 倍上限夹小的 20 笔：到账 3108710，税 1740805（税占 36%）
+     与 facts.py [G]「只看发令 20 拍后那条余额」的判定对照（旧判定→新定案：笔数）：ACC→EXEC:78；REJ→NOEXEC:50；REJ→AMB:38；REJ→EXEC:24；?→EXEC:16；?→AMB:11；ACC→AMB:4；?→NOEXEC:2；ACC→NOEXEC:1
+     成交的 118 笔里，发令 20 拍后的观测仍未扣款（时延 ≥20 拍）的 22 笔（19%）；时延上界 中位 60 拍
+     连发（同号 ≤25 拍内第二笔，发令时前一笔还没落地，两笔都成交）：20 笔，多付出 到账 2510136 + 税 994029
+[FB] 按捐出方：号 | 日志笔数 | 成交 / 没成交 / 定不了 | 到账合计 | 税合计 | 连发笔数 | 时延≥20 的成交笔数
+     New York       |  65 | 26 / 16 / 23 |   2432024 |  1008688 | 8 | 9
+     Genos          |  41 | 35 / 5 / 1 |   5310355 |  2365428 | 6 | 6
+     Kandy          |  36 | 22 / 10 / 4 |   5290059 |  1908613 | 1 | 2
+     Goguryeo       |  29 | 11 / 9 / 9 |   2596386 |  1283555 | 3 | 3
+     Carthage       |  24 | 0 / 12 / 12 |         0 |        0 | 0 | 0
+     Denmark        |  19 | 17 / 1 / 1 |   1308711 |   858607 | 1 | 1
+     Raiden         |   6 | 3 / 0 / 3 |    609893 |   392543 | 0 | 0
+     Watermelon     |   4 | 4 / 0 / 0 |    362344 |   179348 | 1 | 1
+[FC] 按收款方：号 | 成交笔数 | 到账合计 | 捐出方付的税 | 首末拍
+     Mansa Musa(22)     |  31 |   4987780 |  1681919 | 3000~11900
+     CIA(15)            |  19 |   3357352 |  1750918 | 2570~10400
+     Goguryeo(28)       |  13 |   3048557 |  1102603 | 2880~11110
+     Raiden(30)         |  11 |   1989692 |   712695 | 3600~5110
+     Barbary(17)        |  12 |   1613088 |   978142 | 3090~4230
+     Charlemagne(10)    |  10 |   1071956 |   673955 | 3220~5905
+     xX_Shadow_Xx(9)    |   9 |    587249 |   474475 | 2530~3950
+     Leif Erikson(23)   |   4 |    510002 |   178272 | 4285~4580
+     Cao Cao(12)        |   4 |    362344 |   179348 | 3140~3640
+     EZ_Clap(11)        |   4 |    211460 |   205860 | 3160~3490
+     Kandy(8)           |   1 |    170292 |    58595 | 12030~12030
+[FQ] 引擎受捐额度对账（归属口径：先取过得了额度的，再取发令最晚的；--fifo 可换回旧的队首口径）：成交的 118 笔里记账后超出额度的 5 笔（编队外队友的捐款看不到，已用点数是下限；超出 = 余额拟合和额度模型对不上，这几笔的到账额或归属存疑）
+     存疑：t=4140 New York→Barbary 到账 63754，折 16 点，累计 310 > 额度 299
+     存疑：t=4160 New York→Barbary 到账 38242，折 11 点，累计 321 > 额度 309
+     存疑：t=4170 Goguryeo→Barbary 到账 114768，折 26 点，累计 347 > 额度 309
+     存疑：t=4190 Goguryeo→Barbary 到账 147476，折 33 点，累计 380 > 额度 309
+     存疑：t=4230 Genos→Barbary 到账 57105，折 15 点，累计 395 > 额度 319
+     受捐方 | t<2142 成交 笔数 / 到账 / 点数 | 2142~3212 | 3213~4283 | t≥4284 笔数 / 到账（不查额度）| t=4283 累计点数（额度 309）
+     Mansa Musa     | 0 / 0 / 0 | 1 / 83681 / 34 | 2 / 273257 / 41 | 28 / 4630842 | 75
+     CIA            | 0 / 0 / 0 | 2 / 225259 / 92 | 1 / 170929 / 33 | 16 / 2961164 | 125
+     Goguryeo       | 0 / 0 / 0 | 1 / 171595 / 69 | 0 / 0 / 0 | 12 / 2876962 | 69
+     Raiden         | 0 / 0 / 0 | 0 / 0 / 0 | 1 / 177610 / 14 | 10 / 1812082 | 14
+     Barbary        | 0 / 0 / 0 | 1 / 180313 / 72 | 10 / 1375670 / 308 | 1 / 57105 | 380
+     Charlemagne    | 0 / 0 / 0 | 0 / 0 / 0 | 7 / 770770 / 147 | 3 / 301186 | 147
+     xX_Shadow_Xx   | 0 / 0 / 0 | 5 / 359348 / 149 | 4 / 227901 / 59 | 0 / 0 | 208
+     Leif Erikson   | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 4 / 510002 | 0
+     Cao Cao        | 0 / 0 / 0 | 0 / 0 / 0 | 4 / 362344 / 100 | 0 / 0 | 100
+     EZ_Clap        | 0 / 0 / 0 | 0 / 0 / 0 | 4 / 211460 / 52 | 0 / 0 | 52
+     Kandy          | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 1 / 170292 | 0
+[FE] 盈余捐款成交后的密度（捐后余额 = 发令时余额 − 到账 − 税；连发的第二笔再减去第一笔）：号 | 成交笔数 | 发令时密度 中位 | 捐后密度 中位 / 最低 | 捐后 <68 的笔数 | 捐后 <55 的笔数
+     Genos          |  31 | 78.5 | 59.0 / 44.5 | 23 | 4
+     Kandy          |  20 | 94.0 | 59.3 / 58.0 | 11 | 0
+     New York       |  19 | 123.5 | 87.8 / 45.4 | 6 | 2
+     Goguryeo       |   6 | 82.1 | 59.7 / 46.9 | 6 | 2
+     Denmark        |   4 | 81.9 | 72.7 / 54.6 | 2 | 1
+     Watermelon     |   2 | 77.8 | 58.8 / 58.1 | 2 | 0
+     Raiden         |   1 | 112.3 | 88.4 / 88.4 | 0 | 0
+[FD] 逐笔：拍 捐出→收款 类型 pct | 发令时余额 | 定案 | 时延区间(拍) | 到账 / 税 | 旧判定 | 连发
+      1645 Carthage→Nelson(19) squad rescue 128 | 226269 | NOEXEC | (>155) | None / None | REJ |  L8584060
+      1710 Carthage→Nelson(19) squad rescue 155 | 258194 | NOEXEC | (>160) | None / None | REJ |  L8584067
+      1730 Carthage→Nelson(19) squad rescue 155 | 266547 | NOEXEC | (>160) | None / None | REJ |  L8584070
+      1750 Carthage→Nelson(19) squad rescue 155 | 274819 | NOEXEC | (>160) | None / None | REJ |  L8584073
+      1770 Carthage→Nelson(19) squad rescue 155 | 282595 | NOEXEC | (>160) | None / None | REJ |  L8584075
+      1790 Carthage→Nelson(19) squad rescue 155 | 289789 | NOEXEC | (>160) | None / None | REJ |  L8584080
+      1810 Carthage→xX_Shadow_Xx(9) squad rescue 155 | 299068 | NOEXEC | (>160) | None / None | REJ |  L8584085
+      1830 Carthage→xX_Shadow_Xx(9) squad rescue 155 | 305078 | NOEXEC | (>150) | None / None | REJ |  L8584089
+      1850 New York→bruh(20) squad rescue 56 | 457909 | NOEXEC | (>160) | None / None | REJ |  L8584076
+      1850 Carthage→xX_Shadow_Xx(9) squad rescue 155 | 310593 | NOEXEC | (>160) | None / None | REJ |  L8584093
+      1870 New York→Barbary(17) surplus 185 | 468686 | NOEXEC | (>160) | None / None | REJ |  L8584081
+      1870 Carthage→Nelson(19) squad rescue 155 | 315612 | NOEXEC | (>200) | None / None | REJ |  L8584096
+      1890 New York→Barbary(17) surplus 185 | 479243 | NOEXEC | (>160) | None / None | REJ |  L8584087
+      1890 Carthage→Nelson(19) squad rescue 155 | 320172 | NOEXEC | (>180) | None / None | REJ |  L8584102
+      1910 New York→Barbary(17) surplus 185 | 495997 | NOEXEC | (>160) | None / None | REJ |  L8584090
+      1910 Carthage→Nelson(19) squad rescue 155 | 327058 | NOEXEC | (>160) | None / None | REJ |  L8584108
+      1930 New York→bruh(20) surplus 185 | 507169 | NOEXEC | (>160) | None / None | REJ |  L8584094
+      1930 Carthage→EZ_Clap(11) surplus 153 | 331059 | AMB | (>140) | None / None | REJ |  L8584114
+      1945 Kandy→bruh(20) squad rescue 104 | 378170 | AMB | (>215) | None / None | REJ |  L8584077
+      1950 New York→bruh(20) squad rescue 155 | 518592 | NOEXEC | (>160) | None / None | REJ |  L8584099
+      1950 Carthage→EZ_Clap(11) surplus 153 | 334910 | AMB | (>120) | None / None | REJ |  L8584116
+      1970 New York→bruh(20) squad rescue 155 | 530273 | NOEXEC | (>160) | None / None | REJ |  L8584105
+      1970 Carthage→EZ_Clap(11) surplus 153 | 338570 | AMB | (>100) | None / None | REJ |  L8584119
+      1985 Kandy→bruh(20) squad rescue 144 | 395396 | AMB | (>175) | None / None | REJ |  L8584084
+      1990 New York→bruh(20) squad rescue 155 | 542217 | NOEXEC | (>160) | None / None | REJ |  L8584110
+      1990 Carthage→xX_Shadow_Xx(9) squad rescue 155 | 342099 | AMB | (>80) | None / None | REJ |  L8584124
+      2005 Kandy→bruh(20) squad rescue 155 | 408925 | AMB | (>155) | None / None | REJ |  L8584088
+      2010 New York→bruh(20) squad rescue 155 | 560389 | NOEXEC | (>150) | None / None | REJ |  L8584113
+      2010 Carthage→xX_Shadow_Xx(9) squad rescue 155 | 348096 | AMB | (>60) | None / None | REJ |  L8584128
+      2015 Goguryeo→bruh(20) squad rescue 64 | 571143 | NOEXEC | (>210) | None / None | REJ |  L8584109
+      2025 Kandy→bruh(20) squad rescue 131 | 389552 | AMB | (>135) | None / None | REJ |  L8584091
+      2030 New York→bruh(20) squad rescue 155 | 573011 | NOEXEC | (>160) | None / None | REJ |  L8584115
+      2035 Goguryeo→bruh(20) squad rescue 86 | 584239 | NOEXEC | (>190) | None / None | REJ |  L8584112
+      2050 New York→bruh(20) squad rescue 155 | 585917 | AMB | (>140) | None / None | REJ |  L8584120
+      2055 Goguryeo→bruh(20) squad rescue 107 | 597635 | NOEXEC | (>170) | None / None | ? |  L8584117
+      2070 New York→Raiden(30) surplus 185 | 599055 | AMB | (>120) | None / None | REJ |  L8584126
+      2090 New York→Raiden(30) surplus 185 | 612003 | AMB | (>100) | None / None | REJ |  L8584127
+      2110 New York→Raiden(30) surplus 185 | 630441 | AMB | (>80) | None / None | REJ |  L8584129
+      2130 New York→Raiden(30) surplus 185 | 642603 | AMB | (>60) | None / None | REJ |  L8584130
+      2140 Carthage→xX_Shadow_Xx(9) squad rescue 155 | 341823 | AMB | (>120) | None / None | REJ |  L8584144
+      2150 New York→Raiden(30) surplus 280 | 654350 | AMB | (>40) | None / None | REJ |  L8584132
+      2160 Carthage→xX_Shadow_Xx(9) squad rescue 155 | 313768 | AMB | (>100) | None / None | REJ |  L8584148
+      2170 New York→Raiden(30) surplus 280 | 665784 | AMB | (>20) | None / None | REJ |  L8584135
+      2180 Carthage→EZ_Clap(11) surplus 153 | 317733 | AMB | (>80) | None / None | REJ |  L8584149
+      2190 New York→bruh(20) surplus 280 | 676747 | AMB | (>0) | None / None | ? |  L8584137
+      2200 Carthage→EZ_Clap(11) surplus 153 | 324127 | AMB | (>60) | None / None | REJ |  L8584150
+      2220 Carthage→EZ_Clap(11) surplus 153 | 327668 | AMB | (>40) | None / None | REJ |  L8584151
+      2225 Goguryeo→bruh(20) squad rescue 155 | 740360 | AMB | (>205) | None / None | ? |  L8584136
+      2240 Carthage→Leif Erikson(23) surplus 153 | 331050 | AMB | (>20) | None / None | REJ |  L8584152
+      2260 Carthage→Leif Erikson(23) surplus 153 | 334268 | AMB | (>0) | None / None | ? |  L8584154
+      2530 Denmark→xX_Shadow_Xx(9) squad rescue 59 | 871227 | EXEC | (0,80] | 51048 / 54451 | ACC |  L8584183
+      2570 Genos→CIA(15) surplus 185 | 938537 | EXEC | (0,40] | 170476 / 58658 | ACC |  L8584185
+      2650 Denmark→xX_Shadow_Xx(9) squad rescue 78 | 881041 | EXEC | (0,50] | 67970 / 55065 | ACC |  L8584195
+      2760 Denmark→xX_Shadow_Xx(9) squad rescue 65 | 861917 | EXEC | (0,30] | 55553 / 53869 | ACC |  L8584204
+      2780 Genos→CIA(15) squad rescue 58 | 939553 | EXEC | (10,100] | 54783 / 59426 | ACC |  L8584205
+      2880 Genos→Goguryeo(28) surplus 185 | 944699 | EXEC | (0,90] | 171595 / 59043 | ACC |  L8584225
+      2900 Denmark→xX_Shadow_Xx(9) squad rescue 111 | 896925 | EXEC | (0,70] | 98101 / 56057 | ACC |  L8584226
+      3000 New York→Mansa Musa(22) surplus 185 | 460698 | EXEC | (0,60] | 83681 / 28793 | ACC |  L8584237
+      3050 Denmark→xX_Shadow_Xx(9) squad rescue 101 | 870166 | EXEC | (0,10] | 86676 / 54385 | ACC |  L8584238
+      3090 Genos→Barbary(17) surplus 185 | 945879 | EXEC | (0,60] | 180313 / 62043 | ACC |  L8584247
+      3140 Watermelon→Cao Cao(12) surplus 185 | 752388 | EXEC | (10,100] | 138263 / 47574 | ACC |  L8584249
+      3160 Denmark→EZ_Clap(11) squad rescue 63 | 827615 | EXEC | (0,80] | 51725 / 51725 | ACC |  L8584259
+      3220 New York→Charlemagne(10) squad rescue 55 | 457662 | EXEC | (0,20] | 25592 / 29248 | ACC |  L8584261
+      3220 Kandy→Charlemagne(10) squad rescue 64 | 1026380 | EXEC | (0,20] | 65151 / 64148 | ACC |  L8584263
+      3270 Denmark→EZ_Clap(11) squad rescue 66 | 821715 | EXEC | (0,60] | 53764 / 51357 | ACC |  L8584273
+      3300 Genos→Charlemagne(10) surplus 185 | 955692 | EXEC | (0,30] | 173592 / 59730 | ACC |  L8584274
+      3320 Kandy→Mansa Musa(22) surplus 185 | 1024137 | EXEC | (10,100] | 188257 / 64776 | ACC |  L8584275
+      3320 New York→Mansa Musa(22) surplus 185 | 457653 | EXEC | (20,100] | 85000 / 29247 | REJ |  L8584283
+      3340 New York→Barbary(17) surplus 185 | 467961 | EXEC | (0,80] | 64248 / 22107 | ? | 连发@3320 L8584285
+      3380 Denmark→EZ_Clap(11) squad rescue 66 | 812547 | EXEC | (0,40] | 53164 / 50784 | ACC |  L8584287
+      3380 Watermelon→Cao Cao(12) squad rescue 55 | 731027 | EXEC | (20,40] | 41433 / 47352 | REJ |  L8584288
+      3400 Watermelon→Cao Cao(12) squad rescue 89 | 757645 | EXEC | (0,20] | 58786 / 41803 | ? | 连发@3380 L8584289
+      3490 Denmark→EZ_Clap(11) squad rescue 64 | 802668 | EXEC | (0,20] | 52807 / 51994 | ACC |  L8584297
+      3500 Genos→Charlemagne(10) squad rescue 61 | 942643 | EXEC | (10,100] | 57758 / 59622 | ACC |  L8584298
+      3530 Kandy→Barbary(17) surplus 185 | 1023314 | EXEC | (0,70] | 192647 / 66287 | ACC |  L8584308
+      3600 Denmark→EZ_Clap(11) squad rescue 75 | 803101 | NOEXEC | (>180) | None / None | REJ |  L8584312
+      3600 Genos→Raiden(30) surplus 185 | 943442 | EXEC | (0,90] | 177610 / 61113 | ACC |  L8584317
+      3620 Denmark→xX_Shadow_Xx(9) squad rescue 97 | 822003 | EXEC | (0,70] | 78668 / 51375 | ACC |  L8584319
+      3640 Watermelon→Cao Cao(12) surplus 185 | 681909 | EXEC | (0,50] | 123862 / 42619 | ACC |  L8584321
+      3730 Denmark→xX_Shadow_Xx(9) squad rescue 61 | 782354 | EXEC | (0,50] | 49051 / 50633 | ACC |  L8584330
+      3740 Kandy→Barbary(17) surplus 185 | 1022859 | EXEC | (0,40] | 185792 / 63928 | ACC |  L8584332
+      3810 Genos→Charlemagne(10) surplus 185 | 942062 | EXEC | (0,60] | 171116 / 58878 | ACC |  L8584342
+      3840 Denmark→xX_Shadow_Xx(9) squad rescue 64 | 775514 | EXEC | (0,30] | 50975 / 50190 | ACC |  L8584343
+      3870 Raiden→Barbary(17) surplus 153 | 2222743 | EXEC | (0,90] | 334279 / 138921 | ACC |  L8584346
+      3950 Denmark→xX_Shadow_Xx(9) squad rescue 64 | 766241 | EXEC | (10,100] | 49207 / 48450 | ACC |  L8584355
+      3985 Raiden→Charlemagne(10) squad rescue 73 | 2027175 | EXEC | (0,65] | 148238 / 128206 | ACC |  L8584363
+      3990 Goguryeo→Charlemagne(10) squad rescue 65 | 1907367 | EXEC | (0,60] | 129323 / 125405 | ACC |  L8584364
+      4020 Genos→CIA(15) surplus 185 | 941029 | EXEC | (0,30] | 170929 / 58814 | ACC |  L8584366
+      4080 Raiden→Barbary(17) squad rescue 64 | 2006662 | EXEC | (0,60] | 127376 / 125416 | ACC |  L8584376
+      4080 Goguryeo→Barbary(17) squad rescue 57 | 1890665 | EXEC | (0,60] | 107088 / 118166 | ACC |  L8584377
+      4140 New York→Barbary(17) squad rescue 155 | 714501 | EXEC(夹小) | (0,20] | 63754 / 44656 | ACC |  L8584383
+      4160 New York→Barbary(17) squad rescue 62 | 621585 | EXEC | (0,70] | 38242 / 38849 | ACC |  L8584387
+      4170 Goguryeo→Barbary(17) squad rescue 58 | 1893952 | EXEC | (20,60] | 114768 / 124494 | REJ |  L8584388
+      4190 Goguryeo→Barbary(17) squad rescue 83 | 1942746 | EXEC | (0,40] | 147476 / 112363 | ? | 连发@4170 L8584390
+      4220 Raiden→Barbary(17) squad rescue 62 | 1849146 | AMB | (>150) | None / None | ? |  L8584391
+      4230 Genos→Barbary(17) squad rescue 59 | 940341 | EXEC | (0,90] | 57105 / 60912 | ACC |  L8584398
+      4285 Denmark→Leif Erikson(23) surplus 185 | 949969 | EXEC | (0,35] | 174571 / 60067 | ACC |  L8584402
+      4285 New York→Charlemagne(10) squad rescue 151 | 790997 | EXEC(夹小) | (35,125] | 39375 / 41308 | REJ |  L8584404
+      4305 New York→Charlemagne(10) squad rescue 155 | 818791 | EXEC | (0,15] | 126196 / 51773 | ACC | 连发@4285 L8584414
+      4320 Denmark→Leif Erikson(23) surplus 185 | 762274 | EXEC | (0,90] | 138459 / 47642 | ACC |  L8584408
+      4330 Genos→Mansa Musa(22) surplus 185 | 943677 | EXEC | (0,80] | 171410 / 58979 | ACC |  L8584415
+      4370 Raiden→CIA(15) squad rescue 59 | 1662288 | AMB | (>0) | None / None | ACC |  L8584419
+      4370 Goguryeo→CIA(15) squad rescue 57 | 1890903 | EXEC | (0,40] | 107101 / 118181 | ACC |  L8584420
+      4460 Goguryeo→CIA(15) surplus 185 | 1893850 | NOEXEC | (>220) | None / None | REJ |  L8584432
+      4480 Goguryeo→CIA(15) surplus 185 | 1942642 | EXEC | (20,110] | 366368 / 126062 | REJ |  L8584433
+      4500 Goguryeo→Raiden(30) surplus 185 | 2016996 | EXEC | (0,90] | 276923 / 95285 | ? | 连发@4480 L8584443
+      4505 New York→Raiden(30) squad rescue 155 | 1062150 | EXEC | (0,45] | 161811 / 66384 | ACC |  L8584448
+      4540 Genos→Raiden(30) surplus 185 | 943232 | EXEC | (50,140] | 137459 / 47297 | REJ |  L8584450
+      4540 Denmark→Leif Erikson(23) surplus 185 | 765997 | AMB | (>230) | None / None | REJ |  L8584452
+      4550 New York→Raiden(30) surplus 153 | 883474 | AMB | (>130) | None / None | REJ |  L8584464
+      4560 Genos→Raiden(30) surplus 185 | 966004 | EXEC | (0,30] | 181858 / 62574 | ACC | 连发@4540 L8584455
+      4560 Denmark→Leif Erikson(23) surplus 185 | 784026 | EXEC(夹小) | (30,210] | 51210 / 20409 | REJ |  L8584457
+      4570 New York→Raiden(30) surplus 153 | 886657 | EXEC | (20,110] | 134947 / 56081 | REJ |  L8584471
+      4580 Denmark→Leif Erikson(23) surplus 185 | 802479 | EXEC | (0,10] | 145762 / 50154 | ? | 连发@4560 L8584463
+      4590 New York→Raiden(30) surplus 153 | 889673 | EXEC | (0,90] | 107967 / 44869 | ? | 连发@4570 L8584476
+      4595 Raiden→Mansa Musa(22) surplus 153 | 1420890 | AMB | (>0) | None / None | ? |  L8584465
+      4870 Goguryeo→CIA(15) surplus 185 | 1891184 | EXEC | (0,80] | 343515 / 118199 | ACC |  L8584516
+      4950 Genos→Raiden(30) surplus 185 | 940597 | EXEC | (90,180] | 145511 / 50068 | REJ |  L8584528
+      4970 Genos→Raiden(30) surplus 185 | 963306 | EXEC | (70,160] | 109986 / 37844 | REJ | 连发@4950 L8584534
+      4975 New York→Raiden(30) surplus 153 | 809256 | NOEXEC | (>160) | None / None | REJ |  L8584541
+      4990 Genos→Raiden(30) surplus 185 | 986563 | EXEC | (0,50] | 187972 / 64678 | ACC | 连发@4970 L8584539
+      4995 New York→Mansa Musa(22) surplus 153 | 816961 | AMB | (>140) | None / None | REJ |  L8584547
+      5030 New York→Raiden(30) squad rescue 155 | 874601 | AMB | (>165) | None / None | REJ |  L8584555
+      5050 New York→Raiden(30) squad rescue 155 | 879242 | AMB | (>165) | None / None | REJ |  L8584558
+      5070 Goguryeo→Raiden(30) surplus 185 | 1900253 | NOEXEC | (>150) | None / None | REJ |  L8584554
+      5070 New York→Raiden(30) squad rescue 155 | 883555 | AMB | (>165) | None / None | REJ |  L8584566
+      5090 Goguryeo→Raiden(30) surplus 185 | 1949210 | NOEXEC | (>160) | None / None | REJ |  L8584557
+      5090 New York→Raiden(30) squad rescue 155 | 887623 | AMB | (>165) | None / None | REJ |  L8584572
+      5110 Goguryeo→Raiden(30) surplus 185 | 2024044 | EXEC | (0,20] | 367648 / 126502 | ACC |  L8584565
+      5110 New York→Raiden(30) squad rescue 155 | 897590 | AMB | (>165) | None / None | REJ |  L8584574
+      5135 New York→Mansa Musa(22) surplus 153 | 902088 | AMB | (>140) | None / None | ACC |  L8584579
+      5155 New York→Mansa Musa(22) surplus 153 | 759471 | AMB | (>120) | None / None | REJ |  L8584582
+      5175 New York→Mansa Musa(22) surplus 153 | 769681 | AMB | (>225) | None / None | REJ |  L8584587
+      5195 New York→Mansa Musa(22) surplus 153 | 779563 | EXEC | (80,205] | 52519 / 21826 | REJ |  L8584588
+      5200 Kandy→Mansa Musa(22) surplus 185 | 1080111 | EXEC | (0,20] | 196192 / 67506 | ACC |  L8584576
+      5215 New York→Mansa Musa(22) surplus 153 | 795137 | EXEC | (60,185] | 41338 / 17179 | REJ | 连发@5195 L8584591
+      5235 New York→Mansa Musa(22) surplus 153 | 803827 | EXEC | (40,165] | 32538 / 13522 | REJ | 连发@5215 L8584593
+      5250 Goguryeo→Mansa Musa(22) surplus 185 | 1895747 | AMB | (>60) | None / None | REJ |  L8584589
+      5255 New York→Mansa Musa(22) surplus 153 | 812126 | EXEC | (20,145] | 25611 / 10643 | REJ | 连发@5235 L8584597
+      5270 Goguryeo→Mansa Musa(22) surplus 185 | 1944588 | EXEC | (20,40] | 362316 / 124667 | REJ |  L8584592
+      5275 New York→Mansa Musa(22) surplus 153 | 820022 | EXEC | (0,125] | 20158 / 8377 | ? | 连发@5255 L8584601
+      5290 Goguryeo→Mansa Musa(22) surplus 185 | 1994687 | EXEC | (0,20] | 273860 / 94231 | ? | 连发@5270 L8584598
+      5410 Kandy→Mansa Musa(22) surplus 185 | 1080622 | EXEC | (0,80] | 203496 / 70020 | ACC |  L8584615
+      5570 Genos→Mansa Musa(22) surplus 185 | 945638 | EXEC | (10,100] | 173827 / 59811 | ACC |  L8584624
+      5610 Kandy→CIA(15) surplus 185 | 1068115 | EXEC | (0,60] | 201141 / 69209 | ACC |  L8584630
+      5770 Genos→CIA(15) surplus 185 | 936887 | EXEC | (0,80] | 170176 / 58555 | ACC |  L8584641
+      5820 Kandy→CIA(15) surplus 185 | 1069306 | EXEC | (0,30] | 194229 / 66831 | ACC |  L8584644
+      5875 Goguryeo→Mansa Musa(22) surplus 185 | 1893074 | AMB | (>0) | None / None | ACC |  L8584652
+      5875 New York→Mansa Musa(22) surplus 153 | 904606 | NOEXEC | (>155) | None / None | REJ |  L8584655
+      5905 New York→Charlemagne(10) squad rescue 155 | 887885 | EXEC | (0,20] | 135615 / 55637 | ACC |  L8584656
+      5925 New York→Charlemagne(10) squad rescue 144 | 707126 | NOEXEC | (>190) | None / None | REJ |  L8584657
+      5980 Genos→CIA(15) surplus 185 | 937954 | EXEC | (0,50] | 170370 / 58622 | ACC |  L8584665
+      6035 New York→Mansa Musa(22) surplus 280 | 767922 | EXEC | (0,80] | 212308 / 48355 | ACC |  L8584672
+      6035 Kandy→Mansa Musa(22) surplus 185 | 1070826 | EXEC | (0,85] | 196858 / 67736 | ACC |  L8584673
+      6115 New York→Mansa Musa(22) surplus 185 | 562004 | EXEC | (0,95] | 103246 / 35525 | ACC |  L8584675
+      6195 Genos→Mansa Musa(22) surplus 185 | 939330 | EXEC | (0,15] | 174858 / 60166 | ACC |  L8584682
+      9410 Kandy→Goguryeo(28) surplus 280 | 2253900 | EXEC | (0,40] | 618501 / 140868 | ACC |  L8584924
+      9410 Genos→Goguryeo(28) surplus 280 | 1809300 | NOEXEC | (>215) | None / None | REJ |  L8584925
+      9410 New York→Goguryeo(28) surplus 153 | 998271 | NOEXEC | (>220) | None / None | REJ |  L8584926
+      9465 Kandy→CIA(15) surplus 185 | 1566949 | EXEC | (50,75] | 302755 / 104173 | REJ |  L8584932
+      9465 Goguryeo→CIA(15) surplus 280 | 3138281 | AMB | (>160) | None / None | REJ |  L8584934
+      9465 Genos→CIA(15) surplus 280 | 1809300 | EXEC(夹小) | (0,50] | 373238 / 113081 | ? |  L8584935
+      9480 New York→Goguryeo(28) surplus 153 | 1046700 | NOEXEC | (>150) | None / None | REJ |  L8584936
+      9515 Kandy→CIA(15) surplus 280 | 1666782 | NOEXEC | (>180) | None / None | ? |  L8584939
+      9515 Genos→CIA(15) surplus 280 | 1349357 | NOEXEC | (>180) | None / None | REJ |  L8584940
+      9515 Goguryeo→CIA(15) surplus 280 | 3253376 | AMB | (>110) | None / None | ACC |  L8584941
+      9625 Kandy→CIA(15) surplus 185 | 1522064 | NOEXEC | (>150) | None / None | REJ |  L8584949
+      9625 Genos→CIA(15) surplus 280 | 1503752 | NOEXEC | (>150) | None / None | REJ |  L8584950
+      9625 Goguryeo→CIA(15) surplus 280 | 3316348 | AMB | (>150) | None / None | ? |  L8584951
+      9695 Goguryeo→CIA(15) surplus 153 | 3029125 | NOEXEC | (>185) | None / None | REJ |  L8584957
+      9695 Genos→CIA(15) surplus 280 | 1563694 | EXEC(夹小) | (0,25] | 183626 / 98963 | ACC |  L8584958
+      9695 Kandy→CIA(15) surplus 185 | 1643846 | NOEXEC | (>185) | None / None | REJ |  L8584959
+      9775 Kandy→CIA(15) surplus 280 | 1799168 | EXEC(夹小) | (0,35] | 154233 / 113280 | ? |  L8584968
+      9775 Genos→CIA(15) surplus 280 | 1382275 | EXEC(夹小) | (0,35] | 5878 / 87126 | ACC |  L8584969
+      9775 Goguryeo→CIA(15) surplus 280 | 3164827 | NOEXEC | (>215) | None / None | ACC |  L8584970
+      9880 Kandy→CIA(15) surplus 280 | 1718247 | EXEC(夹小) | (0,20] | 187568 / 107390 | ? |  L8584978
+      9880 Goguryeo→CIA(15) surplus 280 | 3246262 | NOEXEC | (>200) | None / None | REJ |  L8584979
+      9880 Genos→CIA(15) surplus 280 | 1433519 | EXEC(夹小) | (0,20] | 4576 / 89594 | ACC |  L8584980
+     10400 Kandy→CIA(15) surplus 280 | 2129404 | EXEC(夹小) | (0,20] | 191059 / 133087 | ? |  L8585023
+     10400 Genos→CIA(15) surplus 280 | 1786674 | EXEC(夹小) | (0,20] | 5331 / 111667 | ACC |  L8585025
+     10400 Goguryeo→CIA(15) surplus 280 | 3040733 | AMB | (>220) | None / None | ? |  L8585026
+     10420 New York→Goguryeo(28) surplus 153 | 1028490 | EXEC | (20,110] | 155248 / 64518 | REJ |  L8585027
+     10420 Genos→Goguryeo(28) surplus 280 | 1678564 | NOEXEC | (>200) | None / None | REJ |  L8585028
+     10420 Kandy→Goguryeo(28) surplus 280 | 1821861 | EXEC(夹小) | (0,20] | 360023 / 113866 | ACC |  L8585029
+     10445 Kandy→CIA(15) surplus 185 | 1378164 | NOEXEC | (>175) | None / None | REJ |  L8585036
+     10445 Goguryeo→CIA(15) surplus 280 | 3932250 | AMB | (>175) | None / None | ? |  L8585038
+     10445 Genos→CIA(15) surplus 280 | 1687472 | NOEXEC | (>175) | None / None | REJ |  L8585039
+     10640 Kandy→Goguryeo(28) surplus 280 | 1746612 | EXEC(夹小) | (0,70] | 375039 / 109163 | ACC |  L8585056
+     10640 New York→Goguryeo(28) surplus 280 | 926889 | EXEC | (0,70] | 254351 / 57930 | ACC |  L8585057
+     10640 Genos→Goguryeo(28) squad rescue 155 | 1767904 | EXEC(夹小) | (0,70] | 23299 / 110494 | REJ |  L8585058
+     10835 Kandy→Goguryeo(28) surplus 185 | 1612885 | NOEXEC | (>210) | None / None | REJ |  L8585075
+     10835 Genos→Goguryeo(28) surplus 280 | 1734730 | EXEC(夹小) | (0,55] | 347582 / 108583 | ACC |  L8585076
+     10835 New York→Goguryeo(28) surplus 280 | 827120 | EXEC(夹小) | (0,55] | 23578 / 52098 | REJ |  L8585081
+     10975 New York→Goguryeo(28) surplus 280 | 852355 | NOEXEC | (>155) | None / None | REJ |  L8585093
+     10975 Kandy→Goguryeo(28) surplus 280 | 1836314 | NOEXEC | (>155) | None / None | REJ |  L8585094
+     10975 Genos→Goguryeo(28) surplus 280 | 1437483 | EXEC(夹小) | (0,70] | 341068 / 90507 | ? |  L8585095
+     11045 New York→Goguryeo(28) surplus 280 | 898051 | AMB | (>145) | None / None | REJ |  L8585102
+     11045 Genos→Goguryeo(28) surplus 185 | 1097878 | EXEC(夹小) | (20,115] | 128339 / 70274 | REJ |  L8585103
+     11045 Kandy→Goguryeo(28) surplus 280 | 1931542 | NOEXEC | (>195) | None / None | REJ |  L8585104
+     11065 Genos→Goguryeo(28) surplus 185 | 1124384 | EXEC(夹小) | (0,95] | 128339 / 66672 | ACC | 连发@11045 L8585106
+     11065 New York→Goguryeo(28) surplus 280 | 907866 | AMB | (>125) | None / None | REJ |  L8585107
+     11065 Kandy→Goguryeo(28) surplus 280 | 1951682 | NOEXEC | (>175) | None / None | REJ |  L8585108
+     11110 Kandy→Goguryeo(28) surplus 280 | 2031461 | NOEXEC | (>230) | None / None | REJ |  L8585111
+     11110 New York→Goguryeo(28) surplus 280 | 937398 | EXEC(夹小) | (0,20] | 121595 / 58587 | ACC |  L8585112
+     11120 Goguryeo→Mansa Musa(22) surplus 153 | 824052 | AMB | (>0) | None / None | ? |  L8585115
+     11130 New York→Mansa Musa(22) surplus 185 | 767969 | EXEC | (0,20] | 139494 / 47998 | ACC |  L8585116
+     11130 Kandy→Mansa Musa(22) surplus 280 | 2046113 | EXEC | (0,20] | 561482 / 127882 | ACC |  L8585117
+     11150 New York→Goguryeo(28) surplus 185 | 592789 | AMB | (>190) | None / None | REJ |  L8585118
+     11150 Kandy→Goguryeo(28) surplus 185 | 1377970 | NOEXEC | (>190) | None / None | REJ |  L8585119
+     11170 Kandy→Mansa Musa(22) surplus 185 | 1411797 | EXEC | (80,170] | 163626 / 56301 | REJ |  L8585125
+     11170 New York→Mansa Musa(22) surplus 185 | 606380 | AMB | (>170) | None / None | REJ |  L8585126
+     11190 New York→Mansa Musa(22) surplus 185 | 620283 | AMB | (>150) | None / None | ? |  L8585128
+     11190 Kandy→Mansa Musa(22) surplus 185 | 1446454 | EXEC | (0,50] | 262734 / 90403 | ACC | 连发@11170 L8585129
+     11220 Genos→Mansa Musa(22) surplus 185 | 946581 | EXEC | (40,120] | 180339 / 62052 | REJ |  L8585131
+     11240 Kandy→Mansa Musa(22) surplus 185 | 1177427 | EXEC | (0,10] | 213868 / 73589 | ? |  L8585134
+     11240 Genos→Mansa Musa(22) surplus 185 | 969434 | EXEC | (20,100] | 136311 / 46903 | REJ | 连发@11220 L8585135
+     11260 Genos→Mansa Musa(22) surplus 185 | 992839 | EXEC | (0,80] | 103032 / 35452 | ? | 连发@11240 L8585138
+     11590 New York→Mansa Musa(22) surplus 185 | 555748 | EXEC | (20,110] | 104571 / 35981 | REJ |  L8585154
+     11610 New York→Mansa Musa(22) surplus 185 | 575706 | EXEC | (0,90] | 79041 / 27197 | ? | 连发@11590 L8585156
+     11640 Kandy→Mansa Musa(22) surplus 185 | 1168974 | EXEC | (0,60] | 212333 / 73060 | ACC |  L8585159
+     11820 Genos→Mansa Musa(22) surplus 185 | 938124 | EXEC | (0,60] | 170401 / 58632 | ACC |  L8585169
+     11900 Kandy→Mansa Musa(22) squad rescue 61 | 1041770 | EXEC | (0,70] | 63075 / 65110 | ACC |  L8585177
+     12030 Genos→Kandy(8) surplus 185 | 937522 | EXEC | (0,30] | 170292 / 58595 | ACC |  L8585182
+     12240 Genos→Kandy(8) surplus 185 | 937253 | AMB | (>0) | None / None | ? |  L8585191

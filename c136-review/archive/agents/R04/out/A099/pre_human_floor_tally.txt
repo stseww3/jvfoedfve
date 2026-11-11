@@ -1,0 +1,39 @@
+# A099 拍段 [1080,1500)：核心期前贴着真人、这一拍没出手的决策拍 287 个（只算「只贴真人」的）（该拍段全部决策拍 840 个）
+对底线最低的那个真人，底线是被哪一项顶住的：defenseNeed·参照外队真人 82（29%）；reserve 项 61（21%）；defenseNeed·参照我方编队的号 47（16%）；封顶·defenseNeed 参照我方编队的号 46（16%）；底线没卡住 37（13%）；封顶·defenseNeed 参照外队真人 14（5%）
+被底线卡住的 250 个里：参照对象是我方编队的号 93（37%）、同队其他真人/同队AI 0、外队真人 96
+  alex_k     84 拍：defenseNeed·参照外队真人 9，reserve 项 11，defenseNeed·参照我方编队的号 11，封顶·defenseNeed 参照我方编队的号 20，底线没卡住 27，封顶·defenseNeed 参照外队真人 6
+  kaito9     56 拍：defenseNeed·参照外队真人 11，reserve 项 5，defenseNeed·参照我方编队的号 2，封顶·defenseNeed 参照我方编队的号 20，底线没卡住 10，封顶·defenseNeed 参照外队真人 8
+  talon5     73 拍：defenseNeed·参照外队真人 21，reserve 项 21，defenseNeed·参照我方编队的号 25，封顶·defenseNeed 参照我方编队的号 6
+  noah88     55 拍：defenseNeed·参照外队真人 37，reserve 项 9，defenseNeed·参照我方编队的号 9
+  zero_7     10 拍：reserve 项 10
+  ryan_m      9 拍：defenseNeed·参照外队真人 4，reserve 项 5
+两道门（底线 / 一次吃到出局）：两道门都过不了 250（87%）；底线过了但一次吃不到出局 37（13%）
+按「同一拍、同一个真人目标」归组 151 组，其中 ≥2 个我方号贴着同一个目标的 83 组；这些组里余额合计的 74.6% ≥ 出局价的 66 组（80%）；任何一个号单独的 74.6% 余额就够出局价的 0 组
+  合起来够的组：拍 1080~1495；目标 🫥#49(队1) 66 组
+  样例：拍 1335 目标 🫥#49(队1) 出局价 215.8k；noah88 107.6k、alex_k 134.9k、kaito9 113.3k
+参照对象（次数）：ADA#60(队8) 86；noah88 66；kaito9 27；Player 174☦️#8(队3) 6；❤️#4(队3) 4
+底线最低的真人目标（次数）：🫥#49(队1) 220；Player 944#69(队3) 48；[VOID]Toast#10(队1) 10；attack = fullse…#82(队8) 9
+样例（拍 号 余额 / 余额−底线 / 出手至少要的可用兵 / 目标 / 顶住的项 / 参照）：
+  拍  1080 alex_k   余额 51.7k，余额−底线 10.0k（要 > 11.1k），目标 🫥#49(队1)，reserve 项
+  拍  1240 noah88   余额 89.5k，余额−底线 -41.9k（要 > 19.2k），目标 🫥#49(队1)，reserve 项
+  拍  1310 kaito9   余额 95.5k，余额−底线 -99.9k（要 > 20.4k），目标 🫥#49(队1)，defenseNeed·参照外队真人：ADA#60(队8)
+  拍  1365 noah88   余额 116.9k，余额−底线 -107.5k（要 > 25.0k），目标 🫥#49(队1)，defenseNeed·参照外队真人：ADA#60(队8)
+  拍  1415 talon5   余额 167.0k，余额−底线 -75.4k（要 > 35.8k），目标 Player 944#69(队3)，defenseNeed·参照我方编队的号：noah88
+  拍  1460 alex_k   余额 194.9k，余额−底线 -26.8k（要 > 41.7k），目标 🫥#49(队1)，封顶·defenseNeed 参照我方编队的号：noah88
+
+# A099 拍段 [630,1500)：核心期前贴着真人、这一拍没出手的决策拍 698 个（含同时还贴着内置 AI / 无主地的）（该拍段全部决策拍 1740 个）
+对底线最低的那个真人，底线是被哪一项顶住的：reserve 项 432（62%）；defenseNeed·参照外队真人 106（15%）；defenseNeed·参照我方编队的号 49（7%）；封顶·defenseNeed 参照我方编队的号 46（7%）；底线没卡住 43（6%）；封顶·defenseNeed 参照外队真人 14（2%）；defenseNeed·密度项 8（1%）
+被底线卡住的 655 个里：参照对象是我方编队的号 95（15%）、同队其他真人/同队AI 0、外队真人 120
+  ryan_m    103 拍：reserve 项 94，defenseNeed·参照外队真人 9
+  talon5    148 拍：reserve 项 96，defenseNeed·参照外队真人 21，defenseNeed·参照我方编队的号 25，封顶·defenseNeed 参照我方编队的号 6
+  zero_7    113 拍：reserve 项 105，defenseNeed·密度项 8
+  kaito9    135 拍：reserve 项 73，defenseNeed·参照外队真人 16，defenseNeed·参照我方编队的号 2，封顶·defenseNeed 参照我方编队的号 20，底线没卡住 16，封顶·defenseNeed 参照外队真人 8
+  alex_k     96 拍：reserve 项 23，defenseNeed·参照外队真人 9，defenseNeed·参照我方编队的号 11，封顶·defenseNeed 参照我方编队的号 20，底线没卡住 27，封顶·defenseNeed 参照外队真人 6
+  zexos1     41 拍：reserve 项 25，defenseNeed·参照外队真人 14，defenseNeed·参照我方编队的号 2
+  noah88     62 拍：reserve 项 16，defenseNeed·参照外队真人 37，defenseNeed·参照我方编队的号 9
+两道门（底线 / 一次吃到出局）：两道门都过不了 655（94%）；底线过了但一次吃不到出局 43（6%）
+按「同一拍、同一个真人目标」归组 445 组，其中 ≥2 个我方号贴着同一个目标的 158 组；这些组里余额合计的 74.6% ≥ 出局价的 88 组（56%）；任何一个号单独的 74.6% 余额就够出局价的 0 组
+  合起来够的组：拍 1020~1495；目标 🫥#49(队1) 86 组；Player 944#69(队3) 2 组
+  样例：拍 1280 目标 🫥#49(队1) 出局价 148.7k；noah88 85.2k、alex_k 112.7k、kaito9 79.0k
+参照对象（次数）：ADA#60(队8) 91；noah88 66；kaito9 27；attack = fullse…#82(队8) 15；zexos1 8；❤️#4(队3) 8；Player 174☦️#8(队3) 6；ryan_m 2
+底线最低的真人目标（次数）：🫥#49(队1) 381；Player 944#69(队3) 157；[VOID]Toast#10(队1) 128；attack = fullse…#82(队8) 32

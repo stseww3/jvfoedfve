@@ -1,0 +1,51 @@
+# distinct shapes=25
+499	399	ERROR: Strategy bot stopped: TypeError: rnd is not a function
+		例: [[Nope] kevin_k] ERROR: Strategy bot stopped: TypeError: rnd is not a function
+303	86	[BACKEND-SPAWN-COORD] Solved N bots in Nms (map=NxN, minSep=Npx, boss=none): …
+		例: [BACKEND-SPAWN-COORD] Solved 8 bots in 218.18ms (map=931x959, minSep=158px, boss=none): [Nope] mark07(BANK)->(850,76) | [Nope] kevin_k(BANK)->(594,92) | [Nope] ethan21(BANK)->(742,202) | [Nope] lucas94(BANK)->(452,196) | [Nope] dave_w(BANK)->(886,268) | [Nope] ryan_m(BANK)->(586,280) | [Nope] noah88
+125	1753	[HL-ASSIST] t=N N% squad-rescue poke -> enemy=N(NAME) for ally=N(NAME)
+		例: [[Nope] kevin_k] [HL-ASSIST] t=5280 10% squad-rescue poke -> enemy=8(dsc.gg/cold1 [COLD]) for ally=19([Nope] ryan_m)
+286	608	[HL-DONATE] t=N surplus donate pct=N/N (~N%) -> ally=N(NAME) boxedIn=true myBal=N dMe=N
+		例: [[Nope] leo_tx] [HL-DONATE] t=3364 surplus donate pct=51/1024 (~5%) -> ally=23([Nope] kevin_k) boxedIn=true myBal=359505 dMe=102
+86	496	[HL-DONATE] t=N squad rescue donate pct=N/N (~N%) -> ally=N(NAME) myBal=N dMe=N dAlly=N
+		例: [[Nope] ryan_m] [HL-DONATE] t=2240 squad rescue donate pct=51/1024 (~5%) -> ally=28([Nope] dave_w) myBal=530279 dMe=107 dAlly=5
+10	3775	[HL-DONATE] t=N surplus donate pct=N/N (~N%) -> ally=N(NAME) boxedIn=false myBal=N dMe=N
+		例: [[Nope] lucas94] [HL-DONATE] t=4184 surplus donate pct=51/1024 (~5%) -> ally=8([Nope] kevin_k) boxedIn=false myBal=57300 dMe=150
+77	85	[HL-GAME-INIT] mode=N map=N mapSeed=N players=N me=N
+		例: [[Nope] ryan_m] [HL-GAME-INIT] mode=1 map=10 mapSeed=7652 players=62 me=21
+277	550	[HL-INTERCEPT] t=N unified sea intercept pct=N/N -> boatId=N owner=N(NAME) boatTroops=N
+		例: [[Nope] kevin_k] [HL-INTERCEPT] t=2785 unified sea intercept pct=37/1024 -> boatId=185 owner=12(Mensheviky) boatTroops=16199
+656	253	[HL-OPENING] t=N cyc=N DP expand rings=N spend=N/N terr=N
+		例: [[Nope] noah88] [HL-OPENING] t=18 cyc=0 DP expand rings=19 spend=258/547 terr=7
+447	328	[HL-SLOW-TICK] t=N took Nms (max=Nms)
+		例: [[Nope] kevin_k] [HL-SLOW-TICK] t=750 took 38.6ms (max=38.6ms)
+1394	93	[HL-SPAWN-BACKEND] me=N slot=N role=ECO_BANK -> (N,N) bossDist=N minAllyDist=N voronoi=N
+		例: [[Nope] ryan_m] [HL-SPAWN-BACKEND] me=21 slot=7 role=ECO_BANK -> (586,280) bossDist=-1 minAllyDist=158 voronoi=14353
+3186	307	[HL-TICK] t=N terr=N(N%) bal=N dens=N nb=N neut=N cmds=N boats=N avgMs=N maxMs=N skip=N
+		例: [[Nope] kevin_k] [HL-TICK] t=630 terr=2970(0.5%) bal=7336 dens=2.5 nb=1 neut=18 cmds=6 boats=0 avgMs=1.23 maxMs=4.6 skip=0
+1	1595	[HOT-IMPORT] Injected updated vNteam.js (NAME) into [Nope] markN live!
+		例: [HOT-IMPORT] Injected updated v27team.js (249271 bytes) into [Nope] mark07 live!
+1	1596	[HOT-IMPORT] Injected updated vNteam.js (NAME) into [Nope] kevin_k live!
+		例: [HOT-IMPORT] Injected updated v27team.js (249271 bytes) into [Nope] kevin_k live!
+1	1597	[HOT-IMPORT] Injected updated vNteam.js (NAME) into [Nope] ethanN live!
+		例: [HOT-IMPORT] Injected updated v27team.js (249271 bytes) into [Nope] ethan21 live!
+1	1598	[HOT-IMPORT] Injected updated vNteam.js (NAME) into [Nope] lucasN live!
+		例: [HOT-IMPORT] Injected updated v27team.js (249271 bytes) into [Nope] lucas94 live!
+1	1599	[HOT-IMPORT] Injected updated vNteam.js (NAME) into [Nope] dave_w live!
+		例: [HOT-IMPORT] Injected updated v27team.js (249271 bytes) into [Nope] dave_w live!
+1	1600	[HOT-IMPORT] Injected updated vNteam.js (NAME) into [Nope] ryan_m live!
+		例: [HOT-IMPORT] Injected updated v27team.js (249271 bytes) into [Nope] ryan_m live!
+1	1601	[HOT-IMPORT] Injected updated vNteam.js (NAME) into [Nope] noahN live!
+		例: [HOT-IMPORT] Injected updated v27team.js (249271 bytes) into [Nope] noah88 live!
+1	1602	[HOT-IMPORT] Injected updated vNteam.js (NAME) into [Nope] leo_tx live!
+		例: [HOT-IMPORT] Injected updated v27team.js (249271 bytes) into [Nope] leo_tx live!
+8	269	[OPENING-CHECK N bots @ tick N] …
+		例: [OPENING-CHECK 8 bots @ tick 184] [Nope] mark07:tick=181,terr=144,sent=27(OK) | [Nope] kevin_k:tick=184,terr=164,sent=21(OK) | [Nope] ethan21:tick=183,terr=179,sent=24(OK) | [Nope] lucas94:tick=180,terr=178,sent=13(OK) | [Nope] dave_w:tick=182,terr=144,sent=26(OK) | [Nope] ryan_m:tick=180,terr=144,s
+61	464	[RESULT BOT] result=lost event=died place=N peak=N team={…}
+		例: [RESULT [Nope] noah88] result=lost event=died place=52 peak=9116 team={"mine":3,"best":2,"totals":{"0":3717,"1":183610,"2":197936,"3":156687}}
+8	736	[RESULT BOT] result=left event=left place=N peak=N team=null
+		例: [RESULT [Nope] leo_tx] result=left event=left place=23 peak=3511 team=null
+5	5759	[RESULT BOT] result=over event=end place=N peak=N team={…}
+		例: [RESULT [Nope] kevin_k] result=over event=end place=9 peak=31058 team={"mine":1,"best":4,"totals":{"1":1854,"2":331,"3":19,"4":758040}}
+3	6491	[RESULT BOT] result=won event=end place=N peak=N team={…}
+		例: [RESULT [Nope] kevin_k] result=won event=end place=16 peak=1710 team={"mine":2,"best":2,"totals":{"1":7,"2":545700}}

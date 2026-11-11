@@ -1,0 +1,220 @@
+# A033 talon5 影子决策明细 t=3240~4490（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   出手打人/bot: 23 拍（t=3240~4470）；可用兵 40229~708503，一条指令下限(20%余额) 136338~238642，比值 24%~481%
+#   有可用兵但没发（脉冲下限/冷却/其他）: 29 拍（t=3250~4460）；可用兵 2574~462857，一条指令下限(20%余额) 111105~227365，比值 1%~308%
+#   首选目标价高（c>=worth）: 139 拍（t=3260~4390）
+#   首选目标无可用兵（avail<=0）: 56 拍（t=3300~4435）；可用兵 -262089~-26180，一条指令下限(20%余额) 102461~185286，比值 -227%~-15%
+#   没有可打的邻居: 4 拍（t=4475~4490）
+#   └ 「出手打人/bot」里：23 条对人/bot 的出兵共约 1975802 兵；其中超过软上限（over=1）时发的 13 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 13 条约 1348092 兵，c/worth = 1.12~3.85
+t=3240 talon5 B=681691 L=6711 d=101.6 nb=3 neut=0 cmds=41 noFull=1 shQ=141127 | m=0.900 worth=91.4 cheap=8.5 over=1 dMedOther=76.6 safe(-1)=590568
+    → Player 999#29[T3] terr=8453 bal=647517 dq=76.6 cnt=124 | c=183.7 rankC=183.7 need=1166817 tD=1.00 人 pulse | safe=590568 keep=603990 avail=69713 chunkB=136338 pulseB=81803 
+    → [AZE] Azerbaijan288#20[T1] terr=9054 bal=422121 dq=46.6 cnt=100 | c=165.5 rankC=240.0 need=755338 tD=0.61 人 pulse | safe=590568 keep=603990 avail=69713 chunkB=136338 pulseB=81803 
+    → [Cn] McRep#13[T1] terr=21264 bal=1576565 dq=74.1 cnt=12 | c=466.1 rankC=675.8 need=2841906 tD=0.97 人 pulse | safe=590568 keep=603990 avail=69713 chunkB=136338 pulseB=81803 
+    ⇒ 影子指令 attack pct=104 → Player 999#29[T3]（约 69899 兵）
+t=3245 talon5 B=827683 L=6711 d=123.3 nb=3 neut=0 cmds=42 noFull=1 shQ=151345 | m=0.900 worth=111.0 cheap=8.5 over=1 dMedOther=75.6 safe(-1)=590568
+    → Player 999#29[T3] terr=8560 bal=647517 dq=75.6 cnt=124 | c=181.7 rankC=181.7 need=1166950 tD=1.00 人 pulse | safe=590568 keep=590568 avail=227416 chunkB=165537 pulseB=99322 
+    → [AZE] Azerbaijan288#20[T1] terr=9054 bal=422121 dq=46.6 cnt=100 | c=165.9 rankC=240.5 need=755477 tD=0.62 人 pulse | safe=590568 keep=590568 avail=227416 chunkB=165537 pulseB=99322 
+    → [Cn] McRep#13[T1] terr=21264 bal=1576565 dq=74.1 cnt=12 | c=466.4 rankC=676.3 need=2841906 tD=0.98 人 pulse | safe=590568 keep=590568 avail=227416 chunkB=165537 pulseB=99322 
+    ⇒ 影子指令 attack pct=122 → Player 999#29[T3]（约 99418 兵）
+t=3270 talon5 B=588801 L=7269 d=81.0 nb=3 neut=0 cmds=42 noFull=1 shQ=36690 | m=0.900 worth=72.9 cheap=8.5 over=0 dMedOther=77.1 safe(-1)=639672
+    → [AZE] Azerbaijan288#20[T1] terr=9054 bal=437499 dq=48.3 cnt=100 | c=118.0 rankC=118.0 need=782948 tD=0.63 人 pulse | safe=639672 keep=Inf avail=-Inf chunkB=117760 pulseB=70656 价高(c>=worth)→break
+    → Player 999#29[T3] terr=8208 bal=603628 dq=73.5 cnt=95 | c=161.6 rankC=161.6 need=973974 tD=0.95 人 pulse | safe=639672 keep=Inf avail=-Inf chunkB=117760 pulseB=70656 价高(c>=worth)→break
+    → [Cn] McRep#13[T1] terr=21264 bal=1638852 dq=77.1 cnt=17 | c=333.8 rankC=333.8 need=2952924 tD=1.00 人 pulse | safe=639672 keep=Inf avail=-Inf chunkB=117760 pulseB=70656 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3300 talon5 B=617570 L=7628 d=81.0 nb=3 neut=0 cmds=42 noFull=1 shQ=89762 | m=0.900 worth=72.9 cheap=8.4 over=0 dMedOther=80.5 safe(-1)=671264
+    → [AZE] Azerbaijan288#20[T1] terr=9054 bal=462490 dq=51.1 cnt=100 | c=43.9 rankC=13.2 need=827444 tD=0.63 人 pulse bleeding | safe=671264 keep=671264 avail=-60931 chunkB=123514 pulseB=74108 无可用(avail<=0)
+    → [Cn] McRep#13[T1] terr=21264 bal=1724865 dq=81.1 cnt=23 | c=328.9 rankC=328.9 need=3106230 tD=1.01 人 pulse | safe=671264 keep=Inf avail=-Inf chunkB=123514 pulseB=74108 价高(c>=worth)→break
+    → Player 999#29[T3] terr=7849 bal=582084 dq=74.2 cnt=88 | c=262.1 rankC=380.0 need=1025592 tD=0.92 人 pulse | safe=671264 keep=Inf avail=-Inf chunkB=123514 pulseB=74108 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3330 talon5 B=944854 L=7628 d=123.9 nb=3 neut=0 cmds=43 noFull=1 shQ=150016 | m=0.900 worth=111.5 cheap=8.4 over=1 dMedOther=80.8 safe(-1)=671264
+    → [AZE] Azerbaijan288#20[T1] terr=8456 bal=426713 dq=50.5 cnt=95 | c=124.9 rankC=124.9 need=752076 tD=0.62 人 pulse | safe=671264 keep=671264 avail=262518 chunkB=188971 pulseB=113382 
+    → [Cn] McRep#13[T1] terr=21702 bal=1351544 dq=62.3 cnt=29 | c=150.4 rankC=150.4 need=2441539 tD=0.77 人 pulse | safe=671264 keep=671264 avail=262518 chunkB=188971 pulseB=113382 
+    → Player 999#29[T3] terr=7309 bal=537558 dq=73.5 cnt=82 | c=181.9 rankC=181.9 need=931128 tD=0.91 人 pulse bleeding | safe=671264 keep=671264 avail=262518 chunkB=188971 pulseB=113382 
+    ⇒ 影子指令 attack pct=122 → [AZE] Azerbaijan288#20[T1]（约 113493 兵）
+t=3335 talon5 B=944854 L=7628 d=123.9 nb=3 neut=0 cmds=44 noFull=1 shQ=161826 | m=0.900 worth=111.5 cheap=8.4 over=1 dMedOther=80.8 safe(-1)=671264
+    → [AZE] Azerbaijan288#20[T1] terr=8456 bal=426713 dq=50.5 cnt=95 | c=124.9 rankC=124.9 need=752154 tD=0.62 人 pulse | safe=671264 keep=671264 avail=262518 chunkB=188971 pulseB=113382 
+    → [Cn] McRep#13[T1] terr=21983 bal=1351544 dq=61.5 cnt=32 | c=148.5 rankC=148.5 need=2441981 tD=0.76 人 pulse | safe=671264 keep=671264 avail=262518 chunkB=188971 pulseB=113382 
+    → Player 999#29[T3] terr=7028 bal=504690 dq=71.8 cnt=79 | c=178.7 rankC=178.7 need=865002 tD=0.89 人 pulse bleeding | safe=671264 keep=671264 avail=262518 chunkB=188971 pulseB=113382 
+    ⇒ 影子指令 attack pct=122 → [AZE] Azerbaijan288#20[T1]（约 113493 兵）
+t=3340 talon5 B=950712 L=7628 d=124.6 nb=3 neut=0 cmds=45 noFull=1 shQ=173650 | m=0.900 worth=112.2 cheap=8.4 over=1 dMedOther=81.8 safe(-1)=671264
+    → [AZE] Azerbaijan288#20[T1] terr=8456 bal=431748 dq=51.1 cnt=95 | c=126.3 rankC=126.3 need=760964 tD=0.62 人 pulse | safe=671264 keep=671264 avail=268307 chunkB=190142 pulseB=114085 
+    → [Cn] McRep#13[T1] terr=22344 bal=1369249 dq=61.3 cnt=38 | c=148.0 rankC=148.0 need=2474014 tD=0.75 人 pulse | safe=671264 keep=671264 avail=268307 chunkB=190142 pulseB=114085 
+    → Player 999#29[T3] terr=6667 bal=469079 dq=70.4 cnt=73 | c=176.7 rankC=176.7 need=791440 tD=0.86 人 pulse bleeding | safe=671264 keep=671264 avail=268307 chunkB=190142 pulseB=114085 
+    ⇒ 影子指令 attack pct=122 → [AZE] Azerbaijan288#20[T1]（约 114196 兵）
+t=3345 talon5 B=950712 L=7628 d=124.6 nb=3 neut=0 cmds=46 noFull=1 shQ=185530 | m=0.900 worth=112.2 cheap=8.4 over=1 dMedOther=81.8 safe(-1)=671264
+    → [AZE] Azerbaijan288#20[T1] terr=8456 bal=431748 dq=51.1 cnt=95 | c=126.3 rankC=126.3 need=761122 tD=0.62 人 pulse | safe=671264 keep=671264 avail=268307 chunkB=190142 pulseB=114085 
+    → [Cn] McRep#13[T1] terr=22563 bal=1369249 dq=60.7 cnt=44 | c=146.5 rankC=146.5 need=2474407 tD=0.74 人 pulse | safe=671264 keep=671264 avail=268307 chunkB=190142 pulseB=114085 
+    → Player 999#29[T3] terr=6448 bal=444552 dq=68.9 cnt=67 | c=174.2 rankC=174.2 need=742339 tD=0.84 人 pulse bleeding | safe=671264 keep=671264 avail=268307 chunkB=190142 pulseB=114085 
+    ⇒ 影子指令 attack pct=122 → [AZE] Azerbaijan288#20[T1]（约 114196 兵）
+t=3360 talon5 B=552901 L=7898 d=70.0 nb=3 neut=0 cmds=46 noFull=1 shQ=24280 | m=0.900 worth=64.3 cheap=8.4 over=0 dMedOther=84.0 safe(-1)=695024
+    → [AZE] Azerbaijan288#20[T1] terr=8186 bal=419565 dq=51.3 cnt=76 | c=70.1 rankC=70.1 need=402767 tD=0.61 人 pulse | safe=695024 keep=Inf avail=-Inf chunkB=110580 pulseB=66348 价高(c>=worth)→break
+    → [Cn] McRep#13[T1] terr=22933 bal=1405719 dq=61.3 cnt=49 | c=147.7 rankC=147.7 need=2539922 tD=0.73 人 pulse | safe=695024 keep=Inf avail=-Inf chunkB=110580 pulseB=66348 价高(c>=worth)→break
+    → Player 999#29[T3] terr=6078 bal=409591 dq=67.4 cnt=62 | c=247.8 rankC=359.3 need=670527 tD=0.80 人 pulse | safe=695024 keep=Inf avail=-Inf chunkB=110580 pulseB=66348 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3390 talon5 B=659257 L=8526 d=77.3 nb=3 neut=0 cmds=46 noFull=1 shQ=78312 | m=0.900 worth=69.6 cheap=8.4 over=0 dMedOther=83.5 safe(-1)=750288
+    → [AZE] Azerbaijan288#20[T1] terr=6752 bal=319040 dq=47.3 cnt=51 | c=9.1 rankC=4.6 need=296612 tD=0.57 人 pulse nearCollapse bleeding | safe=750288 keep=750288 avail=-98756 chunkB=131851 pulseB=79111 无可用(avail<=0)
+    → [Cn] McRep#13[T1] terr=22621 bal=1430414 dq=63.2 cnt=43 | c=88.1 rankC=44.0 need=2576779 tD=0.76 人 pulse | safe=750288 keep=Inf avail=-Inf chunkB=131851 pulseB=79111 价高(c>=worth)→break
+    → Player 999#29[T3] terr=6078 bal=423884 dq=69.7 cnt=62 | c=256.4 rankC=371.8 need=695478 tD=0.84 人 pulse | safe=750288 keep=Inf avail=-Inf chunkB=131851 pulseB=79111 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3420 talon5 B=692164 L=8972 d=77.1 nb=3 neut=0 cmds=46 noFull=1 shQ=138929 | m=0.900 worth=69.4 cheap=8.3 over=0 dMedOther=87.6 safe(-1)=789536
+    → [AZE] Azerbaijan288#20[T1] terr=4685 bal=187620 dq=40.0 cnt=30 | c=1.4 rankC=0.4 need=89272 tD=0.46 人 pulse nearCollapse bleeding | safe=789536 keep=789536 avail=-105483 chunkB=138433 pulseB=83060 无可用(avail<=0)
+    → [Cn] McRep#13[T1] terr=22317 bal=1475193 dq=66.1 cnt=38 | c=85.1 rankC=42.5 need=2649275 tD=0.75 人 pulse bleeding | safe=789536 keep=Inf avail=-Inf chunkB=138433 pulseB=83060 价高(c>=worth)→break
+    → Player 999#29[T3] terr=5976 bal=432950 dq=72.4 cnt=62 | c=266.7 rankC=386.8 need=707397 tD=0.83 人 pulse | safe=789536 keep=Inf avail=-Inf chunkB=138433 pulseB=83060 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3450 talon5 B=717380 L=9190 d=78.1 nb=3 neut=0 cmds=46 noFull=1 shQ=179345 | m=0.900 worth=70.3 cheap=8.3 over=0 dMedOther=90.0 safe(-1)=807333
+    → [Cn] McRep#13[T1] terr=21554 bal=1450837 dq=67.3 cnt=29 | c=92.0 rankC=46.0 need=2586531 tD=0.75 人 pulse bleeding | safe=807333 keep=Inf avail=-Inf chunkB=143476 pulseB=86086 价高(c>=worth)→break
+    → Player 999#29[T3] terr=5976 bal=448058 dq=75.0 cnt=62 | c=275.6 rankC=399.7 need=733777 tD=0.83 人 pulse | safe=807333 keep=Inf avail=-Inf chunkB=143476 pulseB=86086 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3480 talon5 B=743515 L=9304 d=79.9 nb=3 neut=0 cmds=46 noFull=1 shQ=185878 | m=0.900 worth=71.9 cheap=8.3 over=0 dMedOther=92.6 safe(-1)=776713
+    → [Cn] McRep#13[T1] terr=20568 bal=1396505 dq=67.9 cnt=25 | c=111.9 rankC=67.1 need=2463733 tD=0.73 人 pulse bleeding | safe=776713 keep=Inf avail=-Inf chunkB=148703 pulseB=89222 价高(c>=worth)→break
+    → Player 999#29[T3] terr=5976 bal=463692 dq=77.6 cnt=62 | c=196.4 rankC=196.4 need=761134 tD=0.84 人 pulse | safe=776713 keep=Inf avail=-Inf chunkB=148703 pulseB=89222 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3510 talon5 B=905473 L=9341 d=96.9 nb=2 neut=0 cmds=46 noFull=1 shQ=203469 | m=0.900 worth=87.2 cheap=8.3 over=0 dMedOther=97.9 safe(-1)=811561
+    → [Cn] McRep#13[T1] terr=20568 bal=1458590 dq=70.9 cnt=25 | c=173.4 rankC=173.4 need=2573548 tD=0.72 人 pulse | safe=811561 keep=Inf avail=-Inf chunkB=181095 pulseB=108657 价高(c>=worth)→break
+    → Player 999#29[T3] terr=5874 bal=472713 dq=80.5 cnt=62 | c=204.4 rankC=204.4 need=772743 tD=0.82 人 pulse | safe=811561 keep=Inf avail=-Inf chunkB=181095 pulseB=108657 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3540 talon5 B=938462 L=9341 d=100.5 nb=2 neut=0 cmds=47 noFull=1 shQ=234615 | m=0.900 worth=90.4 cheap=8.3 over=1 dMedOther=95.8 safe(-1)=822008
+    → Player 999#29[T3] terr=5874 bal=489208 dq=83.3 cnt=62 | c=211.3 rankC=211.3 need=801615 tD=0.87 人 pulse | safe=822008 keep=840690 avail=86775 chunkB=187692 pulseB=112615 
+    → [Cn] McRep#13[T1] terr=20568 bal=1516216 dq=73.7 cnt=25 | c=261.2 rankC=378.7 need=2675714 tD=0.77 人 pulse | safe=822008 keep=840690 avail=86775 chunkB=187692 pulseB=112615 
+    ⇒ 影子指令 attack pct=94 → Player 999#29[T3]（约 87064 兵）
+t=3545 talon5 B=938462 L=9341 d=100.5 nb=2 neut=0 cmds=48 noFull=1 shQ=234615 | m=0.900 worth=90.4 cheap=8.3 over=1 dMedOther=95.7 safe(-1)=822008
+    → Player 999#29[T3] terr=5874 bal=489208 dq=83.3 cnt=62 | c=211.2 rankC=211.2 need=802049 tD=0.87 人 pulse | safe=822008 keep=840690 avail=86775 chunkB=187692 pulseB=112615 
+    → [Cn] McRep#13[T1] terr=20568 bal=1516216 dq=73.7 cnt=25 | c=261.1 rankC=378.7 need=2676047 tD=0.77 人 pulse | safe=822008 keep=840690 avail=86775 chunkB=187692 pulseB=112615 
+    ⇒ 影子指令 attack pct=94 → Player 999#29[T3]（约 87064 兵）
+t=3550 talon5 B=949629 L=9341 d=101.7 nb=2 neut=0 cmds=49 noFull=1 shQ=237368 | m=0.900 worth=91.5 cheap=8.3 over=1 dMedOther=97.0 safe(-1)=822008
+    → Player 999#29[T3] terr=5874 bal=494833 dq=84.2 cnt=62 | c=213.6 rankC=213.6 need=811475 tD=0.87 人 pulse | safe=822008 keep=840690 avail=97811 chunkB=189926 pulseB=113955 
+    → [Cn] McRep#13[T1] terr=20568 bal=1535926 dq=74.7 cnt=25 | c=264.5 rankC=383.5 need=2710672 tD=0.77 人 pulse | safe=822008 keep=840690 avail=97811 chunkB=189926 pulseB=113955 
+    ⇒ 影子指令 attack pct=105 → Player 999#29[T3]（约 98301 兵）
+t=3555 talon5 B=949629 L=9341 d=101.7 nb=2 neut=0 cmds=50 noFull=1 shQ=237407 | m=0.900 worth=91.5 cheap=8.3 over=1 dMedOther=97.0 safe(-1)=822008
+    → [Cn] McRep#13[T1] terr=20568 bal=1535926 dq=74.7 cnt=25 | c=182.4 rankC=182.4 need=2711008 tD=0.77 人 pulse | safe=822008 keep=840690 avail=97811 chunkB=189926 pulseB=113955 
+    → Player 999#29[T3] terr=5874 bal=494833 dq=84.2 cnt=62 | c=213.5 rankC=213.5 need=811913 tD=0.87 人 pulse | safe=822008 keep=840690 avail=97811 chunkB=189926 pulseB=113955 
+    ⇒ 影子指令 attack pct=105 → [Cn] McRep#13[T1]（约 98301 兵）
+t=3570 talon5 B=690054 L=9525 d=72.4 nb=2 neut=0 cmds=50 noFull=1 shQ=41582 | m=0.900 worth=78.6 cheap=8.3 over=0 dMedOther=102.8 safe(-1)=838200
+    → [Cn] McRep#13[T1] terr=20568 bal=1576119 dq=76.6 cnt=27 | c=67.9 rankC=20.4 need=2781978 tD=0.75 人 pulse bleeding | safe=838200 keep=838200 avail=-156232 chunkB=138011 pulseB=82806 无可用(avail<=0)
+    → Player 999#29[T3] terr=5996 bal=463558 dq=77.3 cnt=60 | c=144.7 rankC=144.7 need=567983 tD=0.75 人 pulse | safe=838200 keep=Inf avail=-Inf chunkB=138011 pulseB=82806 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3600 talon5 B=643431 L=10437 d=61.6 nb=2 neut=0 cmds=50 noFull=1 shQ=97667 | m=0.900 worth=82.2 cheap=8.2 over=0 dMedOther=107.4 safe(-1)=800122
+    → [Cn] McRep#13[T1] terr=18888 bal=1439872 dq=76.2 cnt=34 | c=98.7 rankC=49.3 need=2489727 tD=0.71 人 pulse bleeding | safe=800122 keep=Inf avail=-Inf chunkB=128686 pulseB=77212 价高(c>=worth)→break
+    → Player 999#29[T3] terr=6359 bal=414091 dq=65.1 cnt=50 | c=149.7 rankC=149.7 need=644208 tD=0.61 人 pulse | safe=800122 keep=Inf avail=-Inf chunkB=128686 pulseB=77212 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3630 talon5 B=667091 L=10680 d=62.5 nb=2 neut=0 cmds=50 noFull=1 shQ=156818 | m=0.900 worth=77.5 cheap=8.2 over=0 dMedOther=101.3 safe(-1)=771663
+    → [Cn] McRep#13[T1] terr=18036 bal=1389581 dq=77.0 cnt=28 | c=61.8 rankC=18.5 need=2374543 tD=0.76 人 pulse bleeding | safe=771663 keep=771663 avail=-112389 chunkB=133418 pulseB=80051 无可用(avail<=0)
+    → Player 999#29[T3] terr=6860 bal=399114 dq=58.2 cnt=50 | c=209.1 rankC=303.1 need=693574 tD=0.57 人 pulse | safe=771663 keep=Inf avail=-Inf chunkB=133418 pulseB=80051 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3650 talon5 B=683331 L=10680 d=64.0 nb=2 neut=0 cmds=51 noFull=1 shQ=170832 | m=0.900 worth=72.7 cheap=8.2 over=0 dMedOther=95.1 safe(-1)=615027
+    → [Cn] McRep#13[T1] terr=17307 bal=1110768 dq=64.2 cnt=25 | c=53.5 rankC=16.1 need=1880649 tD=0.68 人 pulse bleeding | safe=615027 keep=635095 avail=40229 chunkB=136666 pulseB=82000 
+    → Player 999#29[T3] terr=7189 bal=408507 dq=56.8 cnt=50 | c=202.8 rankC=294.0 need=719213 tD=0.60 人 pulse | safe=615027 keep=Inf avail=-Inf chunkB=136666 pulseB=82000 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=60 → [Cn] McRep#13[T1]（约 40706 兵）
+t=3655 talon5 B=683331 L=10680 d=64.0 nb=2 neut=0 cmds=52 noFull=1 shQ=170832 | m=0.900 worth=72.5 cheap=8.2 over=0 dMedOther=94.8 safe(-1)=608676
+    → [Cn] McRep#13[T1] terr=17430 bal=1099464 dq=63.1 cnt=25 | c=48.1 rankC=14.4 need=1866578 tD=0.67 人 pulse bleeding | safe=608676 keep=608676 avail=66648 chunkB=136666 pulseB=82000 
+    → Player 999#29[T3] terr=7269 bal=408507 dq=56.2 cnt=50 | c=200.2 rankC=290.3 need=721356 tD=0.59 人 pulse | safe=608676 keep=Inf avail=-Inf chunkB=136666 pulseB=82000 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=99 → [Cn] McRep#13[T1]（约 66731 兵）
+t=3660 talon5 B=691599 L=10680 d=64.8 nb=2 neut=0 cmds=53 noFull=1 shQ=172899 | m=0.900 worth=73.3 cheap=8.2 over=0 dMedOther=95.8 safe(-1)=612114
+    → [Cn] McRep#13[T1] terr=17468 bal=1105583 dq=63.3 cnt=25 | c=48.8 rankC=14.6 need=1878676 tD=0.66 人 pulse bleeding | safe=612114 keep=612114 avail=71381 chunkB=138320 pulseB=82992 
+    → Player 999#29[T3] terr=7333 bal=413286 dq=56.4 cnt=50 | c=200.4 rankC=290.6 need=731381 tD=0.59 人 pulse | safe=612114 keep=Inf avail=-Inf chunkB=138320 pulseB=82992 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=105 → [Cn] McRep#13[T1]（约 71591 兵）
+t=3690 talon5 B=524879 L=10874 d=48.3 nb=2 neut=0 cmds=53 noFull=1 shQ=46225 | m=0.900 worth=75.1 cheap=8.2 over=0 dMedOther=98.1 safe(-1)=511187
+    → [Cn] McRep#13[T1] terr=15276 bal=926223 dq=60.6 cnt=13 | c=46.9 rankC=14.1 need=1381724 tD=0.62 人 pulse bleeding | safe=511187 keep=566518 avail=-47789 chunkB=104976 pulseB=62985 无可用(avail<=0)
+    → Player 999#29[T3] terr=7535 bal=428004 dq=56.8 cnt=56 | c=270.5 rankC=392.3 need=762792 tD=0.58 人 pulse crowdedHard | safe=511187 keep=Inf avail=-Inf chunkB=104976 pulseB=62985 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3720 talon5 B=555527 L=11023 d=50.4 nb=2 neut=0 cmds=53 noFull=1 shQ=95579 | m=0.900 worth=73.3 cheap=8.2 over=0 dMedOther=95.8 safe(-1)=443877
+    → [Cn] McRep#13[T1] terr=13585 bal=806635 dq=59.4 cnt=11 | c=38.6 rankC=11.6 need=1155506 tD=0.62 人 pulse bleeding | safe=443877 keep=473354 avail=75663 chunkB=111105 pulseB=66663 
+    → Player 999#29[T3] terr=7658 bal=451100 dq=58.9 cnt=63 | c=279.2 rankC=404.8 need=807021 tD=0.61 人 pulse crowdedHard | safe=443877 keep=Inf avail=-Inf chunkB=111105 pulseB=66663 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3750 talon5 B=576107 L=11121 d=51.8 nb=2 neut=0 cmds=53 noFull=1 shQ=144026 | m=0.900 worth=67.6 cheap=8.2 over=0 dMedOther=88.4 safe(-1)=352747
+    → [Cn] McRep#13[T1] terr=11575 bal=644571 dq=55.7 cnt=2 | c=67.3 rankC=33.6 need=840987 tD=0.63 人 pulse bleeding | safe=352747 keep=831445 avail=-262089 chunkB=115221 pulseB=69133 无可用(avail<=0)
+    → Player 999#29[T3] terr=7659 bal=474881 dq=62.0 cnt=73 | c=293.0 rankC=424.8 need=849723 tD=0.70 人 pulse crowdedHard | safe=352747 keep=Inf avail=-Inf chunkB=115221 pulseB=69133 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3780 talon5 B=676681 L=11127 d=60.8 nb=1 neut=0 cmds=53 noFull=1 shQ=169170 | m=0.900 worth=69.0 cheap=8.2 over=0 dMedOther=90.2 safe(-1)=265813
+    → Player 999#29[T3] terr=7639 bal=489837 dq=64.1 cnt=75 | c=53.3 rankC=16.0 need=876265 tD=0.71 人 pulse bleeding | safe=265813 keep=658848 avail=9904 chunkB=135336 pulseB=81202 
+    ⇒ 本拍没有指令
+t=3810 talon5 B=713012 L=11127 d=64.1 nb=1 neut=0 cmds=53 noFull=1 shQ=178253 | m=0.900 worth=70.3 cheap=8.2 over=0 dMedOther=91.9 safe(-1)=246548
+    → Player 999#29[T3] terr=7291 bal=455546 dq=62.5 cnt=75 | c=65.8 rankC=24.5 need=807505 tD=0.68 人 pulse bleeding | safe=246548 keep=813398 avail=-108741 chunkB=142602 pulseB=85561 无可用(avail<=0)
+    ⇒ 本拍没有指令
+t=3840 talon5 B=739426 L=11127 d=66.5 nb=1 neut=0 cmds=53 noFull=1 shQ=184856 | m=0.900 worth=72.3 cheap=8.2 over=0 dMedOther=94.6 safe(-1)=237753
+    → Player 999#29[T3] terr=7060 bal=439890 dq=62.3 cnt=75 | c=221.2 rankC=320.8 need=774493 tD=0.66 人 pulse | safe=237753 keep=Inf avail=-Inf chunkB=147885 pulseB=88731 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3870 talon5 B=766819 L=11127 d=68.9 nb=1 neut=0 cmds=53 noFull=1 shQ=191704 | m=0.900 worth=72.8 cheap=8.2 over=0 dMedOther=95.1 safe(-1)=246527
+    → Player 999#29[T3] terr=7128 bal=455509 dq=63.9 cnt=75 | c=226.4 rankC=328.2 need=804362 tD=0.67 人 pulse | safe=246527 keep=Inf avail=-Inf chunkB=153364 pulseB=92018 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3900 talon5 B=806354 L=11127 d=72.5 nb=1 neut=0 cmds=53 noFull=1 shQ=198869 | m=0.900 worth=76.1 cheap=8.2 over=0 dMedOther=99.5 safe(-1)=263904
+    → Player 999#29[T3] terr=7142 bal=486439 dq=68.1 cnt=75 | c=240.8 rankC=349.2 need=859419 tD=0.68 人 pulse | safe=263904 keep=Inf avail=-Inf chunkB=161271 pulseB=96762 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3930 talon5 B=836227 L=11127 d=75.2 nb=1 neut=0 cmds=53 noFull=1 shQ=209056 | m=0.900 worth=78.4 cheap=8.2 over=0 dMedOther=102.5 safe(-1)=273608
+    → Player 999#29[T3] terr=7142 bal=503712 dq=70.5 cnt=75 | c=171.8 rankC=171.8 need=890417 tD=0.69 人 pulse | safe=273608 keep=Inf avail=-Inf chunkB=167245 pulseB=100347 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3960 talon5 B=867206 L=11127 d=77.9 nb=1 neut=0 cmds=53 noFull=1 shQ=216801 | m=0.900 worth=75.6 cheap=8.2 over=0 dMedOther=98.8 safe(-1)=283656
+    → Player 999#29[T3] terr=7142 bal=521599 dq=73.0 cnt=75 | c=177.8 rankC=177.8 need=922434 tD=0.74 人 pulse | safe=283656 keep=Inf avail=-Inf chunkB=173441 pulseB=104065 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3990 talon5 B=899332 L=11127 d=80.8 nb=1 neut=0 cmds=53 noFull=1 shQ=224833 | m=0.900 worth=77.3 cheap=8.2 over=0 dMedOther=101.1 safe(-1)=294062
+    → Player 999#29[T3] terr=7142 bal=540121 dq=75.6 cnt=75 | c=183.9 rankC=183.9 need=955726 tD=0.75 人 pulse | safe=294062 keep=Inf avail=-Inf chunkB=179866 pulseB=107920 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4000 talon5 B=921430 L=11127 d=82.8 nb=1 neut=0 cmds=54 noFull=1 shQ=227643 | m=0.900 worth=79.0 cheap=8.2 over=0 dMedOther=103.2 safe(-1)=301624
+    → Player 999#29[T3] terr=7142 bal=553582 dq=77.5 cnt=75 | c=63.5 rankC=19.1 need=979517 tD=0.75 人 pulse bleeding | safe=301624 keep=851356 avail=59276 chunkB=184286 pulseB=110572 
+    ⇒ 影子指令 attack pct=65 → Player 999#29[T3]（约 59389 兵）
+t=4005 talon5 B=921430 L=11127 d=82.8 nb=1 neut=0 cmds=55 noFull=1 shQ=230357 | m=0.900 worth=78.9 cheap=8.2 over=0 dMedOther=103.1 safe(-1)=295146
+    → Player 999#29[T3] terr=7049 bal=542050 dq=76.9 cnt=75 | c=64.4 rankC=19.3 need=956509 tD=0.75 人 pulse bleeding | safe=295146 keep=856384 avail=54248 chunkB=184286 pulseB=110572 
+    ⇒ 影子指令 attack pct=60 → Player 999#29[T3]（约 54889 兵）
+t=4010 talon5 B=932671 L=11127 d=83.8 nb=1 neut=0 cmds=56 noFull=1 shQ=233167 | m=0.900 worth=79.8 cheap=8.2 over=0 dMedOther=104.3 safe(-1)=286379
+    → Player 999#29[T3] terr=6872 bal=526446 dq=76.6 cnt=75 | c=67.0 rankC=20.1 need=923473 tD=0.73 人 pulse bleeding | safe=286379 keep=877547 avail=44195 chunkB=186534 pulseB=111921 
+    ⇒ 影子指令 attack pct=48 → Player 999#29[T3]（约 44629 兵）
+t=4020 talon5 B=872140 L=11200 d=77.9 nb=1 neut=0 cmds=56 noFull=1 shQ=176343 | m=0.900 worth=79.2 cheap=8.2 over=0 dMedOther=103.6 safe(-1)=256128
+    → Player 999#29[T3] terr=6438 bal=472707 dq=73.4 cnt=72 | c=171.9 rankC=171.9 need=773167 tD=0.71 人 pulse | safe=256128 keep=Inf avail=-Inf chunkB=174428 pulseB=104657 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4050 talon5 B=790018 L=11700 d=67.5 nb=1 neut=0 cmds=56 noFull=1 shQ=197504 | m=0.900 worth=81.5 cheap=8.2 over=0 dMedOther=106.6 safe(-1)=227012
+    → Player 999#29[T3] terr=5938 bal=421631 dq=71.0 cnt=70 | c=177.3 rankC=177.3 need=711514 tD=0.67 人 pulse | safe=227012 keep=Inf avail=-Inf chunkB=158004 pulseB=94802 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4080 talon5 B=819285 L=11700 d=70.0 nb=1 neut=0 cmds=56 noFull=1 shQ=204821 | m=0.900 worth=79.6 cheap=8.2 over=0 dMedOther=104.0 safe(-1)=235277
+    → Player 999#29[T3] terr=5938 bal=436343 dq=73.5 cnt=70 | c=183.3 rankC=183.3 need=736913 tD=0.71 人 pulse | safe=235277 keep=Inf avail=-Inf chunkB=163857 pulseB=98314 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4110 talon5 B=861480 L=11700 d=73.6 nb=1 neut=0 cmds=56 noFull=1 shQ=215370 | m=0.900 worth=81.6 cheap=8.2 over=0 dMedOther=106.6 safe(-1)=247205
+    → Player 999#29[T3] terr=5938 bal=457575 dq=77.1 cnt=70 | c=192.0 rankC=192.0 need=773398 tD=0.72 人 pulse | safe=247205 keep=Inf avail=-Inf chunkB=172296 pulseB=103378 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4140 talon5 B=893396 L=11700 d=76.4 nb=1 neut=0 cmds=56 noFull=1 shQ=223349 | m=0.900 worth=79.6 cheap=8.2 over=0 dMedOther=104.1 safe(-1)=256175
+    → Player 999#29[T3] terr=5938 bal=473542 dq=79.7 cnt=70 | c=287.9 rankC=417.4 need=801024 tD=0.77 人 pulse | safe=256175 keep=Inf avail=-Inf chunkB=178679 pulseB=107208 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4170 talon5 B=926493 L=11700 d=79.2 nb=1 neut=0 cmds=56 noFull=1 shQ=231623 | m=0.900 worth=81.8 cheap=8.2 over=0 dMedOther=107.0 safe(-1)=265458
+    → Player 999#29[T3] terr=5938 bal=490066 dq=82.5 cnt=70 | c=297.6 rankC=431.6 need=829778 tD=0.77 人 pulse | safe=265458 keep=Inf avail=-Inf chunkB=185299 pulseB=111179 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4200 talon5 B=972517 L=11700 d=83.1 nb=1 neut=0 cmds=56 noFull=1 shQ=240275 | m=0.900 worth=81.4 cheap=8.2 over=0 dMedOther=106.5 safe(-1)=278402
+    → Player 999#29[T3] terr=5938 bal=513105 dq=86.4 cnt=70 | c=311.3 rankC=451.5 need=869398 tD=0.81 人 pulse | safe=278402 keep=Inf avail=-Inf chunkB=194503 pulseB=116702 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4230 talon5 B=1008545 L=11700 d=86.2 nb=1 neut=0 cmds=56 noFull=1 shQ=252136 | m=0.900 worth=77.6 cheap=8.2 over=0 dMedOther=101.2 safe(-1)=279987
+    → Player 999#29[T3] terr=5832 bal=515926 dq=88.5 cnt=70 | c=74.9 rankC=22.5 need=870242 tD=0.87 人 pulse bleeding | safe=279987 keep=986001 avail=10726 chunkB=201709 pulseB=121025 
+    ⇒ 本拍没有指令
+t=4260 talon5 B=1045909 L=11700 d=89.4 nb=1 neut=0 cmds=56 noFull=1 shQ=261477 | m=0.900 worth=80.5 cheap=8.2 over=0 dMedOther=100.2 safe(-1)=288131
+    → Player 999#29[T3] terr=5808 bal=530424 dq=91.3 cnt=70 | c=329.7 rankC=478.1 need=894327 tD=0.91 人 pulse | safe=288131 keep=Inf avail=-Inf chunkB=209182 pulseB=125509 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4290 talon5 B=1084657 L=11700 d=92.7 nb=1 neut=0 cmds=56 noFull=1 shQ=271164 | m=0.900 worth=83.4 cheap=8.2 over=0 dMedOther=99.4 safe(-1)=298530
+    → Player 999#29[T3] terr=5808 bal=548933 dq=94.5 cnt=70 | c=235.1 rankC=235.1 need=926504 tD=0.95 人 pulse | safe=298530 keep=Inf avail=-Inf chunkB=216931 pulseB=130159 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4320 talon5 B=1136827 L=11700 d=97.2 nb=1 neut=0 cmds=56 noFull=1 shQ=284206 | m=0.900 worth=87.4 cheap=8.2 over=0 dMedOther=104.3 safe(-1)=285865
+    → Player 999#29[T3] terr=5503 bal=526390 dq=95.7 cnt=66 | c=85.9 rankC=25.8 need=873810 tD=0.92 人 pulse bleeding | safe=285865 keep=1120402 avail=3103 chunkB=227365 pulseB=136419 
+    ⇒ 本拍没有指令
+t=4350 talon5 B=1178943 L=11700 d=100.8 nb=1 neut=0 cmds=57 noFull=1 shQ=294735 | m=0.900 worth=90.7 cheap=8.2 over=1 dMedOther=97.3 safe(-1)=268316
+    → Player 999#29[T3] terr=5198 bal=495153 dq=95.3 cnt=63 | c=349.6 rankC=506.9 need=807538 tD=0.98 人 pulse | safe=268316 keep=1053000 avail=112128 chunkB=235789 pulseB=141473 
+    ⇒ 影子指令 attack pct=97 → Player 999#29[T3]（约 112828 兵）
+t=4355 talon5 B=1178943 L=11700 d=100.8 nb=1 neut=0 cmds=58 noFull=1 shQ=294735 | m=0.900 worth=90.7 cheap=8.2 over=1 dMedOther=97.2 safe(-1)=268316
+    → Player 999#29[T3] terr=5198 bal=495153 dq=95.3 cnt=63 | c=241.0 rankC=241.0 need=808036 tD=0.98 人 pulse | safe=268316 keep=1053000 avail=112128 chunkB=235789 pulseB=141473 
+    ⇒ 影子指令 attack pct=97 → Player 999#29[T3]（约 112828 兵）
+t=4360 talon5 B=1193208 L=11700 d=102.0 nb=1 neut=0 cmds=59 noFull=1 shQ=298254 | m=0.900 worth=91.8 cheap=8.2 over=1 dMedOther=98.4 safe(-1)=271487
+    → Player 999#29[T3] terr=5198 bal=500797 dq=96.3 cnt=63 | c=243.7 rankC=243.7 need=817505 tD=0.98 人 pulse | safe=271487 keep=1053000 avail=126226 chunkB=238642 pulseB=143185 
+    ⇒ 影子指令 attack pct=108 → Player 999#29[T3]（约 127011 兵）
+t=4380 talon5 B=859045 L=12074 d=71.1 nb=1 neut=0 cmds=59 noFull=1 shQ=203114 | m=0.900 worth=76.7 cheap=8.1 over=0 dMedOther=100.2 safe(-1)=245106
+    → Player 999#29[T3] terr=4824 bal=454399 dq=94.2 cnt=62 | c=173.4 rankC=173.4 need=518918 tD=0.94 人 pulse | safe=245106 keep=Inf avail=-Inf chunkB=171809 pulseB=103085 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4410 talon5 B=904054 L=12706 d=71.2 nb=1 neut=0 cmds=59 noFull=1 shQ=226013 | m=0.900 worth=77.7 cheap=8.1 over=0 dMedOther=101.6 safe(-1)=192423
+    → Player 999#29[T3] terr=4126 bal=361572 dq=87.6 cnt=63 | c=67.3 rankC=20.2 need=533418 tD=0.86 人 pulse bleeding | safe=192423 keep=950353 avail=-56893 chunkB=180811 pulseB=108486 无可用(avail<=0)
+    ⇒ 本拍没有指令
+t=4440 talon5 B=937824 L=12706 d=73.8 nb=1 neut=0 cmds=60 noFull=1 shQ=234456 | m=0.900 worth=80.4 cheap=8.1 over=0 dMedOther=105.1 safe(-1)=170343
+    → Player 999#29[T3] terr=3785 bal=1 dq=0.0 cnt=63 | c=52.3 rankC=15.7 need=326254 tD=0.00 人 pulse bleeding onMe | safe=170343 keep=837539 avail=89295 chunkB=187565 pulseB=112539 
+    ⇒ 影子指令 attack pct=97 → Player 999#29[T3]（约 89752 兵）
+t=4445 talon5 B=937824 L=12706 d=73.8 nb=1 neut=0 cmds=61 noFull=1 shQ=234456 | m=0.900 worth=80.3 cheap=8.1 over=0 dMedOther=105.0 safe(-1)=170343
+    → Player 999#29[T3] terr=3687 bal=1 dq=0.0 cnt=63 | c=54.8 rankC=16.4 need=326066 tD=0.00 人 pulse bleeding onMe | safe=170343 keep=854305 avail=72529 chunkB=187565 pulseB=112539 
+    ⇒ 影子指令 attack pct=79 → Player 999#29[T3]（约 73267 兵）
+t=4465 talon5 B=738657 L=12274 d=60.2 nb=1 neut=0 cmds=62 noFull=1 shQ=40294 | m=0.900 worth=81.8 cheap=8.1 over=0 dMedOther=106.9 safe(-1)=31998
+    → Player 999#29[T3] terr=3722 bal=3 dq=0.0 cnt=59 | c=4.7 rankC=1.4 need=79264 tD=0.00 人 pulse nearCollapse bleeding onMe agg | safe=31998 keep=31998 avail=698003 chunkB=147731 pulseB=88639 
+    ⇒ 影子指令 attack pct=93 → Player 999#29[T3]（约 67806 兵）
+t=4470 talon5 B=736162 L=12155 d=60.6 nb=1 neut=0 cmds=63 noFull=1 shQ=51678 | m=0.900 worth=82.7 cheap=8.1 over=0 dMedOther=108.1 safe(-1)=19033
+    → Player 999#29[T3] terr=3750 bal=4 dq=0.0 cnt=59 | c=1.7 rankC=0.5 need=56074 tD=0.00 人 pulse nearCollapse bleeding onMe agg | safe=19033 keep=19033 avail=708503 chunkB=147232 pulseB=88339 
+    ⇒ 影子指令 attack pct=81 → Player 999#29[T3]（约 58950 兵）

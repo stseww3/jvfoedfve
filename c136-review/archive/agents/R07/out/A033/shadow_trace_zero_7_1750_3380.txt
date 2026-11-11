@@ -1,0 +1,272 @@
+# A033 zero_7 影子决策明细 t=1750~3380（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 291 拍（t=1750~3345）
+#   有可用兵但没发（脉冲下限/冷却/其他）: 8 拍（t=2515~3370）；可用兵 2393~62028，一条指令下限(20%余额) 69974~170300，比值 3%~80%
+#   出手打人/bot: 12 拍（t=2705~3365）；可用兵 32521~334733，一条指令下限(20%余额) 86119~257124，比值 28%~145%
+#   首选目标无可用兵（avail<=0）: 13 拍（t=2840~3380）；可用兵 -388263~-20552，一条指令下限(20%余额) 69137~154534，比值 -331%~-20%
+#   只打无主地: 3 拍（t=2985~2995）
+#   └ 「出手打人/bot」里：12 条对人/bot 的出兵共约 901962 兵；其中超过软上限（over=1）时发的 4 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 1 条约 102457 兵，c/worth = 1.64~1.64
+t=1770 zero_7 B=132771 L=8260 d=16.1 nb=2 neut=0 cmds=28 noFull=0 shQ=33192 | m=1.460 worth=23.5 cheap=6.8 over=0 dMedOther=23.2 safe(-1)=155370
+    → [AZE] Azerbaijan288#20[T1] terr=7558 bal=154967 dq=20.5 cnt=51 | c=63.6 rankC=63.6 need=235257 tD=0.88 人 crowdedHard | safe=155370 keep=Inf avail=-Inf chunkB=26554 pulseB=15933 价高(c>=worth)→break
+    → P world#32[T3] terr=9171 bal=288948 dq=31.5 cnt=100 | c=149.9 rankC=217.3 need=528801 tD=1.36 人 crowdedHard | safe=155370 keep=Inf avail=-Inf chunkB=26554 pulseB=15933 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1800 zero_7 B=147141 L=8685 d=16.9 nb=2 neut=0 cmds=28 noFull=0 shQ=34653 | m=1.455 worth=24.7 cheap=7.3 over=0 dMedOther=22.0 safe(-1)=167093
+    → [AZE] Azerbaijan288#20[T1] terr=7133 bal=153959 dq=21.6 cnt=58 | c=75.7 rankC=75.7 need=257819 tD=0.98 人 crowdedHard | safe=167093 keep=Inf avail=-Inf chunkB=29428 pulseB=17657 价高(c>=worth)→break
+    → P world#32[T3] terr=9171 bal=310453 dq=33.9 cnt=100 | c=110.9 rankC=110.9 need=567133 tD=1.54 人 crowdedHard | safe=167093 keep=Inf avail=-Inf chunkB=29428 pulseB=17657 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1830 zero_7 B=152998 L=8685 d=17.6 nb=2 neut=0 cmds=28 noFull=0 shQ=38249 | m=1.451 worth=25.6 cheap=7.8 over=0 dMedOther=22.4 safe(-1)=174037
+    → [AZE] Azerbaijan288#20[T1] terr=7133 bal=160088 dq=22.4 cnt=58 | c=78.5 rankC=78.5 need=268529 tD=1.00 人 crowdedHard | safe=174037 keep=Inf avail=-Inf chunkB=30600 pulseB=18360 价高(c>=worth)→break
+    → P world#32[T3] terr=9171 bal=322813 dq=35.2 cnt=100 | c=115.2 rankC=115.2 need=589165 tD=1.57 人 crowdedHard | safe=174037 keep=Inf avail=-Inf chunkB=30600 pulseB=18360 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1860 zero_7 B=158680 L=8685 d=18.3 nb=2 neut=0 cmds=28 noFull=0 shQ=39670 | m=1.446 worth=26.4 cheap=8.3 over=0 dMedOther=23.3 safe(-1)=180774
+    → [AZE] Azerbaijan288#20[T1] terr=7133 bal=166018 dq=23.3 cnt=58 | c=81.3 rankC=81.3 need=278763 tD=1.00 人 crowdedHard | safe=180774 keep=Inf avail=-Inf chunkB=31736 pulseB=19042 价高(c>=worth)→break
+    → P world#32[T3] terr=9171 bal=334805 dq=36.5 cnt=100 | c=119.4 rankC=119.4 need=610540 tD=1.57 人 crowdedHard | safe=180774 keep=Inf avail=-Inf chunkB=31736 pulseB=19042 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1890 zero_7 B=164461 L=8685 d=18.9 nb=2 neut=0 cmds=28 noFull=0 shQ=41115 | m=1.442 worth=27.3 cheap=8.3 over=0 dMedOther=22.9 safe(-1)=185118
+    → [AZE] Azerbaijan288#20[T1] terr=7128 bal=171720 dq=24.1 cnt=58 | c=37.3 rankC=13.9 need=288585 tD=1.05 人 crowdedHard | safe=185118 keep=Inf avail=-Inf chunkB=32892 pulseB=19735 价高(c>=worth)→break
+    → P world#32[T3] terr=9171 bal=309387 dq=33.7 cnt=100 | c=65.0 rankC=45.5 need=598383 tD=1.48 人 pulse onMe | safe=185118 keep=Inf avail=-Inf chunkB=32892 pulseB=19735 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1920 zero_7 B=194816 L=8169 d=23.8 nb=2 neut=0 cmds=28 noFull=0 shQ=41302 | m=1.437 worth=34.3 cheap=8.4 over=0 dMedOther=25.6 safe(-1)=178744
+    → [AZE] Azerbaijan288#20[T1] terr=6972 bal=178688 dq=25.6 cnt=58 | c=45.0 rankC=27.0 need=297896 tD=1.00 人 | safe=178744 keep=Inf avail=-Inf chunkB=38963 pulseB=23378 价高(c>=worth)→break
+    → P world#32[T3] terr=9687 bal=330417 dq=34.1 cnt=60 | c=162.5 rankC=235.6 need=603490 tD=1.33 人 crowdedHard | safe=178744 keep=Inf avail=-Inf chunkB=38963 pulseB=23378 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1950 zero_7 B=201792 L=8169 d=24.7 nb=2 neut=0 cmds=28 noFull=0 shQ=50448 | m=1.433 worth=35.4 cheap=8.4 over=0 dMedOther=26.5 safe(-1)=185563
+    → [AZE] Azerbaijan288#20[T1] terr=6972 bal=184655 dq=26.5 cnt=58 | c=68.4 rankC=68.4 need=308257 tD=1.00 人 | safe=185563 keep=Inf avail=-Inf chunkB=40358 pulseB=24215 价高(c>=worth)→break
+    → P world#32[T3] terr=9687 bal=342556 dq=35.4 cnt=60 | c=116.1 rankC=116.1 need=625128 tD=1.34 人 crowdedHard | safe=185563 keep=Inf avail=-Inf chunkB=40358 pulseB=24215 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=1980 zero_7 B=209019 L=8169 d=25.6 nb=2 neut=0 cmds=28 noFull=0 shQ=52254 | m=1.428 worth=36.5 cheap=8.4 over=0 dMedOther=27.4 safe(-1)=192633
+    → [AZE] Azerbaijan288#20[T1] terr=6972 bal=191211 dq=27.4 cnt=58 | c=70.7 rankC=70.7 need=319616 tD=1.00 人 | safe=192633 keep=Inf avail=-Inf chunkB=41804 pulseB=25082 价高(c>=worth)→break
+    → P world#32[T3] terr=9687 bal=355140 dq=36.7 cnt=60 | c=174.3 rankC=252.8 need=647558 tD=1.34 人 crowdedHard | safe=192633 keep=Inf avail=-Inf chunkB=41804 pulseB=25082 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2010 zero_7 B=224770 L=8169 d=27.5 nb=2 neut=0 cmds=28 noFull=0 shQ=56192 | m=1.415 worth=38.9 cheap=8.4 over=0 dMedOther=26.1 safe(-1)=205471
+    → [AZE] Azerbaijan288#20[T1] terr=6972 bal=205054 dq=29.4 cnt=58 | c=75.6 rankC=75.6 need=342883 tD=1.13 人 | safe=205471 keep=Inf avail=-Inf chunkB=44954 pulseB=26972 价高(c>=worth)→break
+    → P world#32[T3] terr=9687 bal=377992 dq=39.0 cnt=60 | c=185.3 rankC=268.7 need=688291 tD=1.49 人 crowdedHard | safe=205471 keep=Inf avail=-Inf chunkB=44954 pulseB=26972 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2040 zero_7 B=232820 L=8169 d=28.5 nb=2 neut=0 cmds=28 noFull=0 shQ=58205 | m=1.383 worth=39.4 cheap=8.4 over=0 dMedOther=27.1 safe(-1)=213273
+    → [AZE] Azerbaijan288#20[T1] terr=6972 bal=212335 dq=30.5 cnt=58 | c=78.1 rankC=78.1 need=355543 tD=1.12 人 | safe=213273 keep=Inf avail=-Inf chunkB=46564 pulseB=27938 价高(c>=worth)→break
+    → P world#32[T3] terr=9687 bal=391879 dq=40.5 cnt=60 | c=192.0 rankC=278.4 need=713045 tD=1.49 人 crowdedHard | safe=213273 keep=Inf avail=-Inf chunkB=46564 pulseB=27938 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2070 zero_7 B=241158 L=8169 d=29.5 nb=2 neut=0 cmds=28 noFull=0 shQ=60289 | m=1.352 worth=39.9 cheap=8.4 over=0 dMedOther=28.1 safe(-1)=196633
+    → [AZE] Azerbaijan288#20[T1] terr=6972 bal=219874 dq=31.5 cnt=58 | c=80.7 rankC=80.7 need=368674 tD=1.12 人 | safe=196633 keep=Inf avail=-Inf chunkB=48232 pulseB=28939 价高(c>=worth)→break
+    → P world#32[T3] terr=9963 bal=362261 dq=36.4 cnt=64 | c=173.0 rankC=250.9 need=660664 tD=1.30 人 crowdedHard | safe=196633 keep=Inf avail=-Inf chunkB=48232 pulseB=28939 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2100 zero_7 B=257964 L=8169 d=31.6 nb=2 neut=0 cmds=28 noFull=0 shQ=62487 | m=1.320 worth=41.7 cheap=8.4 over=0 dMedOther=30.0 safe(-1)=209708
+    → [AZE] Azerbaijan288#20[T1] terr=6972 bal=234653 dq=33.7 cnt=58 | c=85.9 rankC=85.9 need=393723 tD=1.12 人 | safe=209708 keep=Inf avail=-Inf chunkB=51593 pulseB=30956 价高(c>=worth)→break
+    → P world#32[T3] terr=9963 bal=385533 dq=38.7 cnt=64 | c=183.9 rankC=266.6 need=702146 tD=1.29 人 crowdedHard | safe=209708 keep=Inf avail=-Inf chunkB=51593 pulseB=30956 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2130 zero_7 B=267202 L=8169 d=32.7 nb=2 neut=0 cmds=28 noFull=0 shQ=66800 | m=1.288 worth=42.1 cheap=8.4 over=0 dMedOther=30.3 safe(-1)=217664
+    → [AZE] Azerbaijan288#20[T1] terr=6972 bal=242985 dq=34.9 cnt=58 | c=88.8 rankC=88.8 need=408287 tD=1.15 人 | safe=217664 keep=Inf avail=-Inf chunkB=53440 pulseB=32064 价高(c>=worth)→break
+    → P world#32[T3] terr=9963 bal=399696 dq=40.1 cnt=64 | c=190.5 rankC=276.2 need=727391 tD=1.32 人 crowdedHard | safe=217664 keep=Inf avail=-Inf chunkB=53440 pulseB=32064 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2160 zero_7 B=276771 L=8169 d=33.9 nb=2 neut=0 cmds=28 noFull=0 shQ=69192 | m=1.257 worth=42.6 cheap=8.4 over=0 dMedOther=31.5 safe(-1)=200679
+    → [AZE] Azerbaijan288#20[T1] terr=6972 bal=251612 dq=36.1 cnt=58 | c=91.8 rankC=91.8 need=423393 tD=1.15 人 | safe=200679 keep=Inf avail=-Inf chunkB=55354 pulseB=33213 价高(c>=worth)→break
+    → P world#32[T3] terr=10087 bal=369463 dq=36.6 cnt=65 | c=120.2 rankC=120.2 need=673687 tD=1.16 人 crowdedHard | safe=200679 keep=Inf avail=-Inf chunkB=55354 pulseB=33213 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2190 zero_7 B=286683 L=8169 d=35.1 nb=2 neut=0 cmds=28 noFull=0 shQ=71670 | m=1.226 worth=43.0 cheap=8.4 over=0 dMedOther=32.7 safe(-1)=196265
+    → [AZE] Azerbaijan288#20[T1] terr=6972 bal=260546 dq=37.4 cnt=58 | c=94.9 rankC=94.9 need=439065 tD=1.14 人 | safe=196265 keep=Inf avail=-Inf chunkB=57337 pulseB=34402 价高(c>=worth)→break
+    → P world#32[T3] terr=9795 bal=361605 dq=36.9 cnt=61 | c=130.8 rankC=189.6 need=654658 tD=1.13 人 | safe=196265 keep=Inf avail=-Inf chunkB=57337 pulseB=34402 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2220 zero_7 B=305313 L=8169 d=37.4 nb=2 neut=0 cmds=28 noFull=0 shQ=76328 | m=1.194 worth=44.6 cheap=8.4 over=0 dMedOther=34.9 safe(-1)=209364
+    → [AZE] Azerbaijan288#20[T1] terr=6972 bal=276933 dq=39.7 cnt=58 | c=100.7 rankC=100.7 need=467118 tD=1.14 人 | safe=209364 keep=Inf avail=-Inf chunkB=61063 pulseB=36638 价高(c>=worth)→break
+    → P world#32[T3] terr=9795 bal=384922 dq=39.3 cnt=61 | c=139.0 rankC=201.5 need=696398 tD=1.12 人 | safe=209364 keep=Inf avail=-Inf chunkB=61063 pulseB=36638 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2250 zero_7 B=316248 L=8169 d=38.7 nb=2 neut=0 cmds=28 noFull=0 shQ=79062 | m=1.163 worth=45.0 cheap=8.4 over=0 dMedOther=36.3 safe(-1)=217308
+    → [AZE] Azerbaijan288#20[T1] terr=6972 bal=286767 dq=41.1 cnt=58 | c=104.1 rankC=104.1 need=484427 tD=1.13 人 | safe=217308 keep=Inf avail=-Inf chunkB=63250 pulseB=37950 价高(c>=worth)→break
+    → P world#32[T3] terr=9795 bal=399062 dq=40.7 cnt=61 | c=143.9 rankC=208.7 need=721864 tD=1.12 人 | safe=217308 keep=Inf avail=-Inf chunkB=63250 pulseB=37950 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2280 zero_7 B=327574 L=8169 d=40.1 nb=2 neut=0 cmds=28 noFull=0 shQ=81893 | m=1.131 worth=45.4 cheap=8.4 over=0 dMedOther=37.7 safe(-1)=225545
+    → [AZE] Azerbaijan288#20[T1] terr=6972 bal=296950 dq=42.6 cnt=58 | c=107.6 rankC=107.6 need=502382 tD=1.13 人 | safe=225545 keep=Inf avail=-Inf chunkB=65515 pulseB=39309 价高(c>=worth)→break
+    → P world#32[T3] terr=9795 bal=413723 dq=42.2 cnt=61 | c=149.0 rankC=216.1 need=748344 tD=1.12 人 | safe=225545 keep=Inf avail=-Inf chunkB=65515 pulseB=39309 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2310 zero_7 B=347571 L=8169 d=42.5 nb=2 neut=0 cmds=28 noFull=0 shQ=86892 | m=1.099 worth=46.8 cheap=8.4 over=0 dMedOther=39.2 safe(-1)=213588
+    → [AZE] Azerbaijan288#20[T1] terr=6972 bal=314547 dq=45.1 cnt=58 | c=113.7 rankC=113.7 need=532741 tD=1.15 人 | safe=213588 keep=Inf avail=-Inf chunkB=69514 pulseB=41709 价高(c>=worth)→break
+    → P world#32[T3] terr=10024 bal=392440 dq=39.2 cnt=65 | c=138.0 rankC=200.0 need=714506 tD=1.00 人 | safe=213588 keep=Inf avail=-Inf chunkB=69514 pulseB=41709 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2340 zero_7 B=360019 L=8169 d=44.1 nb=2 neut=0 cmds=28 noFull=0 shQ=90004 | m=1.068 worth=47.1 cheap=8.4 over=0 dMedOther=40.6 safe(-1)=221687
+    → [AZE] Azerbaijan288#20[T1] terr=6972 bal=325716 dq=46.7 cnt=58 | c=117.6 rankC=117.6 need=552502 tD=1.15 人 | safe=221687 keep=Inf avail=-Inf chunkB=72004 pulseB=43202 价高(c>=worth)→break
+    → P world#32[T3] terr=10024 bal=406857 dq=40.6 cnt=65 | c=142.9 rankC=207.2 need=740203 tD=1.00 人 | safe=221687 keep=Inf avail=-Inf chunkB=72004 pulseB=43202 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2370 zero_7 B=372914 L=8169 d=45.6 nb=2 neut=0 cmds=28 noFull=0 shQ=93228 | m=1.036 worth=47.3 cheap=8.4 over=0 dMedOther=42.1 safe(-1)=230084
+    → P world#32[T3] terr=10024 bal=421803 dq=42.1 cnt=65 | c=102.1 rankC=102.1 need=766842 tD=1.00 人 | safe=230084 keep=Inf avail=-Inf chunkB=74583 pulseB=44750 价高(c>=worth)→break
+    → [AZE] Azerbaijan288#20[T1] terr=6972 bal=337281 dq=48.4 cnt=58 | c=121.5 rankC=121.5 need=572998 tD=1.15 人 | safe=230084 keep=Inf avail=-Inf chunkB=74583 pulseB=44750 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2400 zero_7 B=394439 L=8169 d=48.3 nb=2 neut=0 cmds=28 noFull=0 shQ=96614 | m=1.005 worth=48.5 cheap=8.4 over=0 dMedOther=42.3 safe(-1)=217902
+    → [AZE] Azerbaijan288#20[T1] terr=6972 bal=277784 dq=39.8 cnt=58 | c=75.4 rankC=52.8 need=474583 tD=0.94 人 pulse | safe=217902 keep=Inf avail=-Inf chunkB=78888 pulseB=47333 价高(c>=worth)→break
+    → P world#32[T3] terr=10222 bal=400119 dq=39.1 cnt=67 | c=95.2 rankC=95.2 need=728518 tD=0.93 人 pulse | safe=217902 keep=Inf avail=-Inf chunkB=78888 pulseB=47333 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2430 zero_7 B=408566 L=8169 d=50.0 nb=2 neut=0 cmds=28 noFull=0 shQ=102141 | m=0.974 worth=48.7 cheap=8.4 over=0 dMedOther=42.2 safe(-1)=226198
+    → [AZE] Azerbaijan288#20[T1] terr=7515 bal=287800 dq=38.3 cnt=62 | c=95.6 rankC=95.6 need=503465 tD=0.91 人 pulse | safe=226198 keep=Inf avail=-Inf chunkB=81713 pulseB=49028 价高(c>=worth)→break
+    → P world#32[T3] terr=10222 bal=414886 dq=40.6 cnt=67 | c=98.6 rankC=98.6 need=754839 tD=0.96 人 pulse | safe=226198 keep=Inf avail=-Inf chunkB=81713 pulseB=49028 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2460 zero_7 B=423199 L=8169 d=51.8 nb=2 neut=0 cmds=28 noFull=0 shQ=105799 | m=0.942 worth=48.8 cheap=8.4 over=0 dMedOther=43.8 safe(-1)=234761
+    → P world#32[T3] terr=10222 bal=430128 dq=42.1 cnt=67 | c=102.2 rankC=102.2 need=782007 tD=0.96 人 pulse | safe=234761 keep=Inf avail=-Inf chunkB=84640 pulseB=50784 价高(c>=worth)→break
+    → [AZE] Azerbaijan288#20[T1] terr=7515 bal=298108 dq=39.7 cnt=62 | c=143.4 rankC=207.9 need=521625 tD=0.91 人 pulse | safe=234761 keep=Inf avail=-Inf chunkB=84640 pulseB=50784 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2490 zero_7 B=438356 L=8169 d=53.7 nb=2 neut=0 cmds=28 noFull=0 shQ=109589 | m=0.911 worth=48.9 cheap=8.4 over=0 dMedOther=45.3 safe(-1)=216483
+    → P world#32[T3] terr=10222 bal=397593 dq=38.9 cnt=67 | c=71.0 rankC=49.7 need=724016 tD=0.86 人 pulse | safe=216483 keep=Inf avail=-Inf chunkB=87671 pulseB=52603 价高(c>=worth)→break
+    → [AZE] Azerbaijan288#20[T1] terr=7515 bal=308785 dq=41.1 cnt=62 | c=102.3 rankC=102.3 need=540386 tD=0.91 人 pulse | safe=216483 keep=Inf avail=-Inf chunkB=87671 pulseB=52603 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2520 zero_7 B=462419 L=8169 d=56.6 nb=2 neut=0 cmds=28 noFull=0 shQ=115604 | m=0.900 worth=50.9 cheap=8.4 over=0 dMedOther=48.0 safe(-1)=230663
+    → [AZE] Azerbaijan288#20[T1] terr=7515 bal=327537 dq=43.6 cnt=62 | c=47.8 rankC=17.8 need=573112 tD=0.91 人 pulse | safe=230663 keep=445983 avail=11018 chunkB=92484 pulseB=55490 
+    → P world#32[T3] terr=10369 bal=422834 dq=40.8 cnt=69 | c=99.1 rankC=99.1 need=769212 tD=0.85 人 pulse | safe=230663 keep=Inf avail=-Inf chunkB=92484 pulseB=55490 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2550 zero_7 B=478981 L=8169 d=58.6 nb=2 neut=0 cmds=28 noFull=0 shQ=119745 | m=0.900 worth=52.8 cheap=8.4 over=0 dMedOther=45.2 safe(-1)=239390
+    → [AZE] Azerbaijan288#20[T1] terr=7297 bal=323239 dq=44.3 cnt=62 | c=110.6 rankC=110.6 need=561388 tD=0.98 人 pulse | safe=239390 keep=Inf avail=-Inf chunkB=95796 pulseB=57478 价高(c>=worth)→break
+    → P world#32[T3] terr=10369 bal=438368 dq=42.3 cnt=69 | c=148.9 rankC=215.9 need=796899 tD=0.93 人 pulse | safe=239390 keep=Inf avail=-Inf chunkB=95796 pulseB=57478 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2580 zero_7 B=496136 L=8169 d=60.7 nb=2 neut=0 cmds=28 noFull=0 shQ=124034 | m=0.900 worth=54.7 cheap=8.4 over=0 dMedOther=47.0 safe(-1)=248438
+    → [AZE] Azerbaijan288#20[T1] terr=7297 bal=334716 dq=45.9 cnt=62 | c=114.3 rankC=114.3 need=581547 tD=0.98 人 pulse | safe=248438 keep=Inf avail=-Inf chunkB=99227 pulseB=59536 价高(c>=worth)→break
+    → P world#32[T3] terr=10369 bal=454473 dq=43.8 cnt=69 | c=154.3 rankC=223.7 need=825605 tD=0.93 人 pulse | safe=248438 keep=Inf avail=-Inf chunkB=99227 pulseB=59536 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2610 zero_7 B=522171 L=8169 d=63.9 nb=2 neut=0 cmds=28 noFull=0 shQ=130542 | m=0.900 worth=57.5 cheap=8.4 over=0 dMedOther=49.8 safe(-1)=235081
+    → [AZE] Azerbaijan288#20[T1] terr=7297 bal=353983 dq=48.5 cnt=62 | c=120.8 rankC=120.8 need=614977 tD=0.97 人 pulse | safe=235081 keep=Inf avail=-Inf chunkB=104434 pulseB=62661 价高(c>=worth)→break
+    → P world#32[T3] terr=10521 bal=430698 dq=40.9 cnt=70 | c=144.4 rankC=209.4 need=783456 tD=0.82 人 pulse | safe=235081 keep=Inf avail=-Inf chunkB=104434 pulseB=62661 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2640 zero_7 B=540873 L=8169 d=66.2 nb=2 neut=0 cmds=28 noFull=0 shQ=135218 | m=0.900 worth=59.6 cheap=8.4 over=0 dMedOther=51.0 safe(-1)=243971
+    → [AZE] Azerbaijan288#20[T1] terr=7297 bal=366553 dq=50.2 cnt=62 | c=124.9 rankC=124.9 need=637092 tD=0.98 人 pulse | safe=243971 keep=Inf avail=-Inf chunkB=108175 pulseB=64905 价高(c>=worth)→break
+    → P world#32[T3] terr=10521 bal=446521 dq=42.4 cnt=70 | c=149.6 rankC=216.9 need=811659 tD=0.83 人 pulse | safe=243971 keep=Inf avail=-Inf chunkB=108175 pulseB=64905 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2670 zero_7 B=560245 L=8169 d=68.6 nb=2 neut=0 cmds=28 noFull=0 shQ=140061 | m=0.900 worth=61.7 cheap=8.4 over=0 dMedOther=53.7 safe(-1)=253186
+    → P world#32[T3] terr=10521 bal=462925 dq=44.0 cnt=70 | c=106.9 rankC=106.9 need=840897 tD=0.82 人 pulse | safe=253186 keep=Inf avail=-Inf chunkB=112049 pulseB=67229 价高(c>=worth)→break
+    → [AZE] Azerbaijan288#20[T1] terr=7297 bal=379568 dq=52.0 cnt=62 | c=187.4 rankC=271.7 need=659928 tD=0.97 人 pulse | safe=253186 keep=Inf avail=-Inf chunkB=112049 pulseB=67229 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2700 zero_7 B=588479 L=8169 d=72.0 nb=2 neut=0 cmds=28 noFull=0 shQ=145135 | m=0.900 worth=64.8 cheap=8.4 over=0 dMedOther=55.9 safe(-1)=239529
+    → [AZE] Azerbaijan288#20[T1] terr=7297 bal=400342 dq=54.9 cnt=62 | c=136.1 rankC=136.1 need=696180 tD=0.98 人 pulse | safe=239529 keep=Inf avail=-Inf chunkB=117696 pulseB=70617 价高(c>=worth)→break
+    → P world#32[T3] terr=10682 bal=438615 dq=41.1 cnt=71 | c=145.0 rankC=210.2 need=797823 tD=0.73 人 pulse | safe=239529 keep=Inf avail=-Inf chunkB=117696 pulseB=70617 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2705 zero_7 B=588479 L=8169 d=72.0 nb=2 neut=0 cmds=29 noFull=0 shQ=147119 | m=0.900 worth=64.8 cheap=8.4 over=0 dMedOther=55.9 safe(-1)=239529
+    → P world#32[T3] terr=10682 bal=438615 dq=41.1 cnt=71 | c=56.5 rankC=28.3 need=797823 tD=0.73 人 pulse bleeding | safe=239529 keep=549062 avail=32521 chunkB=117696 pulseB=70617 
+    → [AZE] Azerbaijan288#20[T1] terr=7297 bal=400342 dq=54.9 cnt=62 | c=136.1 rankC=136.1 need=696267 tD=0.98 人 pulse | safe=239529 keep=Inf avail=-Inf chunkB=117696 pulseB=70617 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=56 → P world#32[T3]（约 32757 兵）
+t=2710 zero_7 B=595423 L=8169 d=72.9 nb=2 neut=0 cmds=30 noFull=0 shQ=148855 | m=0.900 worth=65.6 cheap=8.4 over=0 dMedOther=56.6 safe(-1)=239448
+    → P world#32[T3] terr=10600 bal=438471 dq=41.4 cnt=70 | c=56.3 rankC=28.1 need=796219 tD=0.73 人 pulse bleeding | safe=239448 keep=551664 avail=36782 chunkB=119085 pulseB=71451 
+    → [AZE] Azerbaijan288#20[T1] terr=7297 bal=405026 dq=55.5 cnt=62 | c=137.6 rankC=137.6 need=704381 tD=0.98 人 pulse | safe=239448 keep=Inf avail=-Inf chunkB=119085 pulseB=71451 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=63 → P world#32[T3]（约 37213 兵）
+t=2715 zero_7 B=595423 L=8169 d=72.9 nb=2 neut=0 cmds=31 noFull=0 shQ=148855 | m=0.900 worth=65.6 cheap=8.4 over=0 dMedOther=56.6 safe(-1)=236512
+    → P world#32[T3] terr=10521 bal=433244 dq=41.2 cnt=70 | c=56.7 rankC=28.4 need=785669 tD=0.73 人 pulse bleeding | safe=236512 keep=553567 avail=34879 chunkB=119085 pulseB=71451 
+    → [AZE] Azerbaijan288#20[T1] terr=7297 bal=405026 dq=55.5 cnt=62 | c=137.6 rankC=137.6 need=704469 tD=0.98 人 pulse | safe=236512 keep=Inf avail=-Inf chunkB=119085 pulseB=71451 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=59 → P world#32[T3]（约 34888 兵）
+t=2730 zero_7 B=489289 L=8377 d=58.4 nb=2 neut=0 cmds=31 noFull=0 shQ=122322 | m=0.900 worth=52.6 cheap=8.4 over=0 dMedOther=58.0 safe(-1)=227526
+    → P world#32[T3] terr=10161 bal=417561 dq=41.1 cnt=70 | c=91.2 rankC=91.2 need=681052 tD=0.71 人 pulse | safe=227526 keep=Inf avail=-Inf chunkB=97858 pulseB=58715 价高(c>=worth)→break
+    → [AZE] Azerbaijan288#20[T1] terr=7297 bal=414558 dq=56.8 cnt=62 | c=140.5 rankC=140.5 need=721165 tD=0.98 人 pulse | safe=227526 keep=Inf avail=-Inf chunkB=97858 pulseB=58715 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2760 zero_7 B=507168 L=8873 d=57.2 nb=2 neut=0 cmds=31 noFull=0 shQ=126792 | m=0.900 worth=51.4 cheap=8.3 over=0 dMedOther=58.8 safe(-1)=233691
+    → P world#32[T3] terr=9303 bal=373238 dq=40.1 cnt=69 | c=56.5 rankC=28.2 need=659250 tD=0.68 人 pulse bleeding | safe=233691 keep=Inf avail=-Inf chunkB=101434 pulseB=60860 价高(c>=worth)→break
+    → [AZE] Azerbaijan288#20[T1] terr=7297 bal=429279 dq=58.8 cnt=62 | c=145.4 rankC=145.4 need=747149 tD=1.00 人 pulse | safe=233691 keep=Inf avail=-Inf chunkB=101434 pulseB=60860 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2780 zero_7 B=519413 L=8873 d=58.5 nb=2 neut=0 cmds=32 noFull=0 shQ=129853 | m=0.900 worth=52.7 cheap=8.3 over=0 dMedOther=60.2 safe(-1)=239367
+    → P world#32[T3] terr=9203 bal=373797 dq=40.6 cnt=68 | c=35.5 rankC=10.7 need=658579 tD=0.67 人 pulse bleeding | safe=239367 keep=436005 avail=77322 chunkB=103883 pulseB=62330 
+    → [AZE] Azerbaijan288#20[T1] terr=7297 bal=439382 dq=60.2 cnt=62 | c=148.7 rankC=148.7 need=764964 tD=1.00 人 pulse | safe=239367 keep=Inf avail=-Inf chunkB=103883 pulseB=62330 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=122 → P world#32[T3]（约 62390 兵）
+t=2785 zero_7 B=519413 L=8873 d=58.5 nb=2 neut=0 cmds=33 noFull=0 shQ=129853 | m=0.900 worth=52.7 cheap=8.3 over=0 dMedOther=60.2 safe(-1)=239367
+    → P world#32[T3] terr=9203 bal=373797 dq=40.6 cnt=68 | c=35.5 rankC=10.7 need=658643 tD=0.67 人 pulse bleeding | safe=239367 keep=435998 avail=77329 chunkB=103883 pulseB=62330 
+    → [AZE] Azerbaijan288#20[T1] terr=7297 bal=439382 dq=60.2 cnt=62 | c=148.7 rankC=148.7 need=765058 tD=1.00 人 pulse | safe=239367 keep=Inf avail=-Inf chunkB=103883 pulseB=62330 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=122 → P world#32[T3]（约 62390 兵）
+t=2790 zero_7 B=525645 L=8873 d=59.2 nb=2 neut=0 cmds=34 noFull=0 shQ=131411 | m=0.900 worth=53.3 cheap=8.3 over=0 dMedOther=60.9 safe(-1)=242254
+    → P world#32[T3] terr=8860 bal=355854 dq=40.2 cnt=67 | c=44.0 rankC=16.4 need=620947 tD=0.66 人 pulse bleeding | safe=242254 keep=478683 avail=40803 chunkB=105129 pulseB=63077 
+    → [AZE] Azerbaijan288#20[T1] terr=7297 bal=444522 dq=60.9 cnt=62 | c=150.4 rankC=150.4 need=773983 tD=1.00 人 pulse | safe=242254 keep=Inf avail=-Inf chunkB=105129 pulseB=63077 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=79 → P world#32[T3]（约 41066 兵）
+t=2820 zero_7 B=381999 L=9354 d=40.8 nb=2 neut=0 cmds=34 noFull=0 shQ=29696 | m=0.900 worth=45.0 cheap=8.3 over=0 dMedOther=58.9 safe(-1)=190753
+    → P world#32[T3] terr=8212 bal=326646 dq=39.8 cnt=73 | c=84.6 rankC=84.6 need=470662 tD=0.68 人 pulse | safe=190753 keep=Inf avail=-Inf chunkB=76400 pulseB=45840 价高(c>=worth)→break
+    → [AZE] Azerbaijan288#20[T1] terr=7297 bal=353572 dq=48.5 cnt=62 | c=161.8 rankC=161.8 need=618343 tD=0.82 人 pulse crowdedHard | safe=190753 keep=Inf avail=-Inf chunkB=76400 pulseB=45840 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2850 zero_7 B=396002 L=10049 d=39.4 nb=2 neut=0 cmds=34 noFull=0 shQ=64708 | m=0.900 worth=48.8 cheap=8.2 over=0 dMedOther=63.8 safe(-1)=252940
+    → P world#32[T3] terr=6918 bal=253344 dq=36.6 cnt=81 | c=94.9 rankC=94.9 need=408119 tD=0.57 人 pulse | safe=252940 keep=Inf avail=-Inf chunkB=79200 pulseB=47520 价高(c>=worth)→break
+    → [AZE] Azerbaijan288#20[T1] terr=7298 bal=465307 dq=63.8 cnt=62 | c=211.7 rankC=211.7 need=811217 tD=1.00 人 pulse crowdedHard | safe=252940 keep=Inf avail=-Inf chunkB=79200 pulseB=47520 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2880 zero_7 B=410550 L=10049 d=40.9 nb=2 neut=0 cmds=34 noFull=0 shQ=101112 | m=0.900 worth=50.5 cheap=8.2 over=0 dMedOther=66.0 safe(-1)=262223
+    → P world#32[T3] terr=6918 bal=262339 dq=37.9 cnt=81 | c=98.1 rankC=98.1 need=423904 tD=0.57 人 pulse | safe=262223 keep=Inf avail=-Inf chunkB=82110 pulseB=49266 价高(c>=worth)→break
+    → [AZE] Azerbaijan288#20[T1] terr=7298 bal=481830 dq=66.0 cnt=62 | c=219.0 rankC=219.0 need=840478 tD=1.00 人 pulse crowdedHard | safe=262223 keep=Inf avail=-Inf chunkB=82110 pulseB=49266 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2900 zero_7 B=430593 L=10049 d=42.8 nb=2 neut=0 cmds=35 noFull=0 shQ=105181 | m=0.900 worth=49.9 cheap=8.2 over=0 dMedOther=65.2 safe(-1)=210588
+    → P world#32[T3] terr=6918 bal=275431 dq=39.8 cnt=81 | c=34.4 rankC=10.3 need=445718 tD=0.61 人 pulse bleeding | safe=210588 keep=383588 avail=41959 chunkB=86119 pulseB=51671 
+    → [AZE] Azerbaijan288#20[T1] terr=7483 bal=389921 dq=52.1 cnt=63 | c=129.8 rankC=90.8 need=687146 tD=0.80 人 pulse crowdedHard | safe=210588 keep=Inf avail=-Inf chunkB=86119 pulseB=51671 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=99 → P world#32[T3]（约 42050 兵）
+t=2905 zero_7 B=430593 L=10049 d=42.8 nb=2 neut=0 cmds=36 noFull=0 shQ=107648 | m=0.900 worth=49.5 cheap=8.2 over=0 dMedOther=64.7 safe(-1)=210588
+    → P world#32[T3] terr=6918 bal=275431 dq=39.8 cnt=81 | c=34.4 rankC=10.3 need=445935 tD=0.62 人 pulse bleeding | safe=210588 keep=383549 avail=41998 chunkB=86119 pulseB=51671 
+    → [AZE] Azerbaijan288#20[T1] terr=7868 bal=389921 dq=49.6 cnt=65 | c=122.6 rankC=85.8 need=695968 tD=0.77 人 pulse crowdedHard | safe=210588 keep=Inf avail=-Inf chunkB=86119 pulseB=51671 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=99 → P world#32[T3]（约 42050 兵）
+t=2910 zero_7 B=435803 L=10049 d=43.4 nb=2 neut=0 cmds=36 noFull=0 shQ=108950 | m=0.900 worth=50.1 cheap=8.2 over=0 dMedOther=65.5 safe(-1)=213173
+    → P world#32[T3] terr=6487 bal=251235 dq=38.7 cnt=78 | c=44.2 rankC=16.5 need=395721 tD=0.59 人 pulse bleeding | safe=213173 keep=493927 avail=-63231 chunkB=87161 pulseB=52296 无可用(avail<=0)
+    → [AZE] Azerbaijan288#20[T1] terr=8063 bal=394522 dq=48.9 cnt=66 | c=120.7 rankC=84.5 need=708214 tD=0.75 人 pulse crowdedHard | safe=213173 keep=Inf avail=-Inf chunkB=87161 pulseB=52296 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2940 zero_7 B=358458 L=10685 d=33.5 nb=2 neut=0 cmds=36 noFull=0 shQ=89614 | m=0.900 worth=48.0 cheap=8.2 over=0 dMedOther=62.8 safe(-1)=375961
+    → P world#32[T3离] terr=4940 bal=158696 dq=32.1 cnt=80 | c=88.3 rankC=88.3 need=212278 tD=0.51 机 | safe=375961 keep=Inf avail=-Inf chunkB=71692 pulseB=43015 价高(c>=worth)→break
+    → [AZE] Azerbaijan288#20[T1] terr=8262 bal=408819 dq=49.5 cnt=67 | c=161.9 rankC=161.9 need=738096 tD=0.79 人 pulse crowdedHard | safe=375961 keep=Inf avail=-Inf chunkB=71692 pulseB=43015 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2970 zero_7 B=371626 L=10685 d=34.8 nb=2 neut=0 cmds=36 noFull=0 shQ=92906 | m=0.900 worth=43.6 cheap=8.2 over=0 dMedOther=57.0 safe(-1)=372846
+    → [AZE] Azerbaijan288#20[T1] terr=8268 bal=320078 dq=38.7 cnt=67 | c=95.5 rankC=66.9 need=581043 tD=0.68 人 pulse crowdedHard | safe=372846 keep=Inf avail=-Inf chunkB=74325 pulseB=44595 价高(c>=worth)→break
+    → P world#32[T3离] terr=3378 bal=82830 dq=24.5 cnt=64 | c=73.6 rankC=73.6 need=64801 tD=0.43 机 | safe=372846 keep=Inf avail=-Inf chunkB=74325 pulseB=44595 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2985 zero_7 B=376122 L=10685 d=35.2 nb=1 neut=57 cmds=37 noFull=0 shQ=94030 | m=0.900 worth=43.9 cheap=8.2 over=0 dMedOther=57.4 safe(-1)=172936
+    → [AZE] Azerbaijan288#20[T1] terr=8312 bal=323854 dq=39.0 cnt=67 | c=96.1 rankC=67.2 need=588678 tD=0.68 人 pulse crowdedHard | safe=172936 keep=Inf avail=-Inf chunkB=75224 pulseB=45135 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=47 → 无主地（约 17630 兵）
+t=2990 zero_7 B=380673 L=10685 d=35.6 nb=1 neut=54 cmds=38 noFull=0 shQ=95168 | m=0.900 worth=44.4 cheap=8.2 over=0 dMedOther=58.1 safe(-1)=175083
+    → [AZE] Azerbaijan288#20[T1] terr=8345 bal=327675 dq=39.3 cnt=67 | c=96.7 rankC=67.7 need=596056 tD=0.68 人 pulse crowdedHard | safe=175083 keep=Inf avail=-Inf chunkB=76135 pulseB=45681 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=47 → 无主地（约 17844 兵）
+t=2995 zero_7 B=380673 L=10685 d=35.6 nb=1 neut=51 cmds=39 noFull=0 shQ=95168 | m=0.900 worth=44.4 cheap=8.2 over=0 dMedOther=58.1 safe(-1)=175083
+    → [AZE] Azerbaijan288#20[T1] terr=8386 bal=327675 dq=39.1 cnt=67 | c=96.2 rankC=67.4 need=596643 tD=0.67 人 pulse crowdedHard | safe=175083 keep=Inf avail=-Inf chunkB=76135 pulseB=45681 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=47 → 无主地（约 17844 兵）
+t=3000 zero_7 B=373389 L=10685 d=34.9 nb=1 neut=49 cmds=39 noFull=0 shQ=75045 | m=0.900 worth=45.5 cheap=8.2 over=0 dMedOther=59.5 safe(-1)=181977
+    → [AZE] Azerbaijan288#20[T1] terr=8406 bal=339947 dq=40.4 cnt=67 | c=99.5 rankC=69.6 need=618547 tD=0.68 人 pulse crowdedHard | safe=181977 keep=Inf avail=-Inf chunkB=74678 pulseB=44807 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3030 zero_7 B=343175 L=11111 d=30.9 nb=2 neut=8 cmds=39 noFull=0 shQ=85793 | m=0.900 worth=46.2 cheap=8.2 over=0 dMedOther=60.3 safe(-1)=616013
+    → [AZE] Azerbaijan288#20[T1] terr=8677 bal=352262 dq=40.6 cnt=67 | c=99.8 rankC=69.9 need=640889 tD=0.67 人 pulse crowdedHard | safe=616013 keep=Inf avail=-Inf chunkB=68635 pulseB=41181 价高(c>=worth)→break
+    → [Cn] McRep#13[T1] terr=21241 bal=1113170 dq=52.4 cnt=33 | c=170.9 rankC=170.9 need=2015953 tD=0.87 人 pulse crowdedHard | safe=616013 keep=Inf avail=-Inf chunkB=68635 pulseB=41181 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3060 zero_7 B=408073 L=11129 d=36.7 nb=2 neut=0 cmds=39 noFull=0 shQ=102018 | m=0.900 worth=47.1 cheap=8.2 over=0 dMedOther=61.5 safe(-1)=671287
+    → [AZE] Azerbaijan288#20[T1] terr=9077 bal=365095 dq=40.2 cnt=67 | c=99.0 rankC=69.3 need=664362 tD=0.65 人 pulse crowdedHard | safe=671287 keep=Inf avail=-Inf chunkB=81615 pulseB=48969 价高(c>=worth)→break
+    → [Cn] McRep#13[T1] terr=21264 bal=1211584 dq=57.0 cnt=38 | c=185.5 rankC=185.5 need=2191378 tD=0.93 人 pulse crowdedHard | safe=671287 keep=Inf avail=-Inf chunkB=81615 pulseB=48969 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3090 zero_7 B=423190 L=11129 d=38.0 nb=2 neut=0 cmds=39 noFull=0 shQ=105797 | m=0.900 worth=48.0 cheap=8.2 over=0 dMedOther=62.7 safe(-1)=698178
+    → [AZE] Azerbaijan288#20[T1] terr=9430 bal=378395 dq=40.1 cnt=67 | c=97.6 rankC=97.6 need=688611 tD=0.64 人 pulse | safe=698178 keep=Inf avail=-Inf chunkB=84638 pulseB=50783 价高(c>=worth)→break
+    → [Cn] McRep#13[T1] terr=21264 bal=1259451 dq=59.2 cnt=38 | c=192.7 rankC=192.7 need=2276694 tD=0.94 人 pulse crowdedHard | safe=698178 keep=Inf avail=-Inf chunkB=84638 pulseB=50783 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3120 zero_7 B=450269 L=11129 d=40.5 nb=2 neut=0 cmds=39 noFull=0 shQ=112567 | m=0.900 worth=52.8 cheap=8.2 over=0 dMedOther=69.0 safe(-1)=738391
+    → [AZE] Azerbaijan288#20[T1] terr=9738 bal=402114 dq=41.3 cnt=67 | c=100.4 rankC=100.4 need=731350 tD=0.60 人 pulse | safe=738391 keep=Inf avail=-Inf chunkB=90054 pulseB=54032 价高(c>=worth)→break
+    → [Cn] McRep#13[T1] terr=21264 bal=1331030 dq=62.6 cnt=38 | c=203.5 rankC=203.5 need=2404274 tD=0.91 人 pulse crowdedHard | safe=738391 keep=Inf avail=-Inf chunkB=90054 pulseB=54032 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3150 zero_7 B=466950 L=11129 d=42.0 nb=2 neut=0 cmds=39 noFull=0 shQ=116737 | m=0.900 worth=54.9 cheap=8.2 over=0 dMedOther=71.8 safe(-1)=767935
+    → [AZE] Azerbaijan288#20[T1] terr=9738 bal=416887 dq=42.8 cnt=67 | c=104.0 rankC=104.0 need=757682 tD=0.60 人 pulse | safe=767935 keep=Inf avail=-Inf chunkB=93390 pulseB=56034 价高(c>=worth)→break
+    → [Cn] McRep#13[T1] terr=21264 bal=1383617 dq=65.1 cnt=38 | c=211.5 rankC=211.5 need=2498003 tD=0.91 人 pulse crowdedHard | safe=767935 keep=Inf avail=-Inf chunkB=93390 pulseB=56034 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3180 zero_7 B=484248 L=11129 d=43.5 nb=2 neut=0 cmds=39 noFull=0 shQ=121062 | m=0.900 worth=57.1 cheap=8.2 over=0 dMedOther=74.7 safe(-1)=798645
+    → [AZE] Azerbaijan288#20[T1] terr=9659 bal=426594 dq=44.2 cnt=67 | c=38.3 rankC=11.5 need=773608 tD=0.59 人 pulse bleeding | safe=798645 keep=798645 avail=-320071 chunkB=96850 pulseB=58110 无可用(avail<=0)
+    → [Cn] McRep#13[T1] terr=21264 bal=1438281 dq=67.6 cnt=38 | c=219.7 rankC=219.7 need=2595434 tD=0.91 人 pulse crowdedHard | safe=798645 keep=Inf avail=-Inf chunkB=96850 pulseB=58110 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3210 zero_7 B=513451 L=11129 d=46.1 nb=2 neut=0 cmds=39 noFull=0 shQ=128362 | m=0.900 worth=60.2 cheap=8.2 over=0 dMedOther=78.7 safe(-1)=842669
+    → [AZE] Azerbaijan288#20[T1] terr=9054 bal=407283 dq=45.0 cnt=67 | c=159.9 rankC=231.8 need=728783 tD=0.57 人 pulse | safe=842669 keep=Inf avail=-Inf chunkB=102690 pulseB=61614 价高(c>=worth)→break
+    → [Cn] McRep#13[T1] terr=21264 bal=1516645 dq=71.3 cnt=38 | c=335.8 rankC=486.8 need=2735107 tD=0.91 人 pulse crowdedHard | safe=842669 keep=Inf avail=-Inf chunkB=102690 pulseB=61614 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3240 zero_7 B=532472 L=11129 d=47.8 nb=2 neut=0 cmds=39 noFull=0 shQ=133118 | m=0.900 worth=58.6 cheap=8.2 over=0 dMedOther=76.6 safe(-1)=876332
+    → [AZE] Azerbaijan288#20[T1] terr=9054 bal=422121 dq=46.6 cnt=67 | c=165.6 rankC=240.0 need=755338 tD=0.61 人 pulse | safe=876332 keep=Inf avail=-Inf chunkB=106494 pulseB=63897 价高(c>=worth)→break
+    → [Cn] McRep#13[T1] terr=21264 bal=1576565 dq=74.1 cnt=38 | c=348.9 rankC=505.9 need=2841906 tD=0.97 人 pulse crowdedHard | safe=876332 keep=Inf avail=-Inf chunkB=106494 pulseB=63897 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3270 zero_7 B=552198 L=11129 d=49.6 nb=2 neut=0 cmds=39 noFull=0 shQ=138049 | m=0.900 worth=59.0 cheap=8.2 over=0 dMedOther=77.1 safe(-1)=911325
+    → [AZE] Azerbaijan288#20[T1] terr=9054 bal=437499 dq=48.3 cnt=67 | c=118.2 rankC=118.2 need=782948 tD=0.63 人 pulse | safe=911325 keep=Inf avail=-Inf chunkB=110440 pulseB=66264 价高(c>=worth)→break
+    → [Cn] McRep#13[T1] terr=21264 bal=1638852 dq=77.1 cnt=38 | c=250.0 rankC=250.0 need=2952924 tD=1.00 人 pulse crowdedHard | safe=911325 keep=Inf avail=-Inf chunkB=110440 pulseB=66264 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3300 zero_7 B=583783 L=11129 d=52.5 nb=2 neut=0 cmds=39 noFull=0 shQ=143218 | m=0.900 worth=61.6 cheap=8.2 over=0 dMedOther=80.5 safe(-1)=959647
+    → [AZE] Azerbaijan288#20[T1] terr=9054 bal=462490 dq=51.1 cnt=67 | c=44.0 rankC=13.2 need=827444 tD=0.63 人 pulse bleeding | safe=959647 keep=959647 avail=-382705 chunkB=116757 pulseB=70054 无可用(avail<=0)
+    → [Cn] McRep#13[T1] terr=21264 bal=1724865 dq=81.1 cnt=38 | c=263.0 rankC=263.0 need=3106230 tD=1.01 人 pulse crowdedHard | safe=959647 keep=Inf avail=-Inf chunkB=116757 pulseB=70054 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3330 zero_7 B=605410 L=11129 d=54.4 nb=2 neut=0 cmds=39 noFull=0 shQ=151352 | m=0.900 worth=61.8 cheap=8.2 over=0 dMedOther=80.8 safe(-1)=749916
+    → [AZE] Azerbaijan288#20[T1] terr=8456 bal=426713 dq=50.5 cnt=67 | c=124.6 rankC=124.6 need=752076 tD=0.62 人 pulse | safe=749916 keep=Inf avail=-Inf chunkB=121082 pulseB=72649 价高(c>=worth)→break
+    → [Cn] McRep#13[T1] terr=21702 bal=1351544 dq=62.3 cnt=38 | c=202.7 rankC=202.7 need=2441539 tD=0.77 人 pulse crowdedHard | safe=749916 keep=Inf avail=-Inf chunkB=121082 pulseB=72649 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3350 zero_7 B=1142083 L=11129 d=102.6 nb=2 neut=0 cmds=40 noFull=0 shQ=166582 | m=0.900 worth=92.4 cheap=8.2 over=1 dMedOther=82.9 safe(-1)=770017
+    → [AZE] Azerbaijan288#20[T1] terr=8456 bal=436842 dq=51.7 cnt=67 | c=57.2 rankC=28.6 need=770038 tD=0.62 人 pulse bleeding | safe=770017 keep=929384 avail=199316 chunkB=228417 pulseB=137050 
+    → [Cn] McRep#13[T1] terr=22848 bal=1387323 dq=60.7 cnt=38 | c=146.8 rankC=146.8 need=2506984 tD=0.73 人 pulse | safe=770017 keep=1001610 avail=127090 chunkB=228417 pulseB=137050 
+    ⇒ 影子指令 attack pct=122 → [AZE] Azerbaijan288#20[T1]（约 137183 兵）
+t=3355 zero_7 B=1274532 L=11129 d=114.5 nb=2 neut=0 cmds=41 noFull=0 shQ=182890 | m=0.900 worth=103.1 cheap=8.2 over=1 dMedOther=82.9 safe(-1)=770063
+    → [AZE] Azerbaijan288#20[T1] terr=8361 bal=428992 dq=51.3 cnt=67 | c=44.7 rankC=22.4 need=754234 tD=0.62 人 pulse bleeding | safe=770063 keep=924864 avail=334733 chunkB=254906 pulseB=152944 
+    → [Cn] McRep#13[T1] terr=22933 bal=1387406 dq=60.5 cnt=38 | c=146.3 rankC=146.3 need=2507281 tD=0.73 人 pulse | safe=770063 keep=1001610 avail=257987 chunkB=254906 pulseB=152944 
+    ⇒ 影子指令 attack pct=122 → [AZE] Azerbaijan288#20[T1]（约 153093 兵）
+t=3360 zero_7 B=1285620 L=11129 d=115.5 nb=2 neut=0 cmds=42 noFull=0 shQ=198848 | m=0.900 worth=104.0 cheap=8.2 over=1 dMedOther=84.0 safe(-1)=780351
+    → [AZE] Azerbaijan288#20[T1] terr=8186 bal=419565 dq=51.3 cnt=66 | c=46.5 rankC=23.2 need=733758 tD=0.61 人 pulse bleeding | safe=780351 keep=940988 avail=329567 chunkB=257124 pulseB=154274 
+    → [Cn] McRep#13[T1] terr=22933 bal=1405719 dq=61.3 cnt=38 | c=148.2 rankC=148.2 need=2539922 tD=0.73 人 pulse | safe=780351 keep=1001610 avail=268945 chunkB=257124 pulseB=154274 
+    ⇒ 影子指令 attack pct=122 → [AZE] Azerbaijan288#20[T1]（约 154425 兵）
+t=3365 zero_7 B=1116130 L=11129 d=100.3 nb=2 neut=0 cmds=43 noFull=0 shQ=61443 | m=0.900 worth=90.3 cheap=8.2 over=1 dMedOther=80.2 safe(-1)=780351
+    → [AZE] Azerbaijan288#20[T1] terr=8110 bal=413334 dq=51.0 cnt=65 | c=31.2 rankC=15.6 need=566884 tD=0.64 人 pulse bleeding | safe=780351 keep=780351 avail=322700 chunkB=223226 pulseB=133936 
+    → [Cn] McRep#13[T1] terr=22933 bal=1405719 dq=61.3 cnt=38 | c=148.1 rankC=148.1 need=2539922 tD=0.76 人 pulse | safe=780351 keep=1001610 avail=101441 chunkB=223226 pulseB=133936 
+    ⇒ 影子指令 attack pct=93 → [Cn] McRep#13[T1]（约 102457 兵）

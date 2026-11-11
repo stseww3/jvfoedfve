@@ -1,0 +1,104 @@
+##### tsb/squad/live_game_js.js  sha256=2b5731c7247dad761598fb8d978cb96b485e3264f4cef8f82c951b1c1d1dcba6  chars=677952
+
+=== A. 大厅模式 → 名义队伍数
+说明：vz 是大厅给的模式号；vz<7 是组队局，名义队伍数 = vz + 2（2~8 队）。小队日志里 [HL-GAME-INIT] mode=<vz>（headless-bot.mjs：modeVal = tN.vz ?? tN.aFp）。
+位置：字符偏移 251009~251127（第 8 行）；起始锚点在文件里出现 1 次
+if(aFy.vz<7){fc.gameMode=1;fc.numberTeams=aFy.vz+2}else if(aFy.vz===9){fc.gameMode=fc.isZombieMode=1;fc.numberTeams=2}
+
+=== B. 开局时的模式变量
+说明：lC = numberTeams − 2；iT（是否组队局）= lC<7 或 lC==9；a0L = 队伍数（后面会被改）。
+位置：字符偏移 153700~153999（第 2 行）；起始锚点在文件里出现 1 次
+this.lC=this.data.gameMode===0?[7,10,8][this.data.battleRoyaleMode]:this.data.isZombieMode?9:this.data.numberTeams-2;this.a1a=this.data.isContest;this.iT=this.lC<7||this.lC===9;this.lC=this.lC===10&&this.lE?7:this.lC;this.lC=this.lC===8&&this.ku!==2?7:this.lC;b0.dk();this.a0L=this.data.numberTeams;
+
+=== C. 分队入口
+说明：fX[玩家] = 队伍槽位，0 表示不属于任何队。多人组队局走 this.ee()。
+位置：字符偏移 660263~660414（第 31 行）；起始锚点在文件里出现 1 次
+this.dk=function(){this.fX.fill(0);this.aDn.fill(0);this.aec();if(!aE.iT){return}if(aE.lC===9){aed()}else{if(aE.lE){aee()}else{this.ee()}}aef();aeg()};
+
+=== D. 多人组队局的分队主流程
+说明：依次：按颜色算每个真人的第一、第二志愿队 → 按人气给颜色排序 → 战队整体入队（含队伍数下调）→ 散人入队 → 内置 AI 的处理。
+位置：字符偏移 660670~660910（第 31 行）；起始锚点在文件里出现 1 次
+this.ee=function(){var a2F=new Uint8Array(aE.ku);var a2G=new Uint8Array(aE.ku);var aeh=new Uint16Array(8);var aei=new Uint16Array(this.lH.length);this.aej(a2F,a2G,aeh,1);this.aKa(aeh);this.aek(aei,a2F,a2G);this.ael(a2F,a2G,aei);this.aem()};
+
+=== E. 战队整体入队 + 队伍数下调（关键）
+说明：按名字里的 [标签] 把真人归成战队；aeu = 最大战队人数。while(a0L>2 && aeu > floor(真人数/a0L)) { a0L--; lC-- }：最大战队装不进一个队，就减少队伍数，最少 2 队。之后每个战队（从大到小）整体放进同一个队：选战队成员颜色志愿得分最高的队，但跳过「人数已经严格多于其他所有队」的那个队。
+位置：字符偏移 662544~663609（第 31 行）；起始锚点在文件里出现 1 次
+this.aek=function(aei,a2F,a2G){var ft,a3q,ej,fc,e,o7,uv;var aes=this.lH.length-1;var sp=new Uint16Array(aes);var aet=[];var aeu=0;var a3p=[];var aev=[];loop:for(var aC=0;aC<aE.ku;aC++){a3q=bD.tK.a3r(ah.a3o[aC]);if(a3q!==null){for(ft=a3p.length-1;ft>=0;ft--){if(a3q===a3p[ft]){aev[ft].push(aC);aeu=Math.max(aeu,aev[ft].length);continue loop}}a3p.push(a3q);aet.push(false);aev.push([aC]);aeu=Math.max(aeu,1)}}while(aE.a0L>2&&aeu>bO.g0(aE.ku,aE.a0L)){aE.a0L--;aE.lC--}for(ft=a3p.length-1;ft>=0;ft--){fc=-1;for(ej=a3p.length-1;ej>=0;ej--){if(!aet[ej]&&(fc===-1||aev[ej].length>aev[fc].length)){fc=ej}}for(ej=aes-1;ej>=0;ej--){sp[ej]=1}for(ej=aev[fc].length-1;ej>=0;ej--){sp[a2F[aev[fc][ej]]]+=3;sp[a2G[aev[fc][ej]]]++}for(aC=aes-1;aC>=0;aC--){e=fc%aes;for(ej=aes-1;ej>=0;ej--){if(sp[ej]>sp[e]){e=ej}}o7=-1;for(ej=aE.a0L;ej>0;ej--){if(this.lH[ej]===e+1){o7=ej;break}}sp[e]=0;if(o7===-1){continue}uv=0;for(ej=aE.a0L;ej>0;ej--){if(aei[o7]>aei[ej]){uv++}}if(uv===aE.a0L-1){continue}for(ej=aev[fc].length-1;ej>=0;ej--){aei[o7]++;this.fX[aev[fc][ej]]=o7}break}aet[fc]=true}};
+
+=== F. 散人入队（每队人数上限 = ceil(真人数/队伍数)）
+说明：border = floor(H/T)，有余数再加 1。先按第一志愿、再按第二志愿、最后从最后一个队往前补满。
+位置：字符偏移 663609~664167（第 31 行）；起始锚点在文件里出现 1 次
+this.ael=function(a2F,a2G,aei){var aC,ft,iv;var fZ=this.lH.length-1;var border=bO.g0(aE.ku,aE.a0L);if(aE.ku%aE.a0L>0){border++}var aew=new Uint8Array(fZ+1);for(ft=fZ;ft>=1;ft--){aew[this.lH[ft]]=ft}for(aC=0;aC<aE.ku;aC++){iv=aew[a2F[aC]+1];if(this.fX[aC]===0&&iv<=aE.a0L&&aei[iv]<border){aei[iv]++;this.fX[aC]=iv}}for(aC=0;aC<aE.ku;aC++){iv=aew[a2G[aC]+1];if(this.fX[aC]===0&&iv<=aE.a0L&&aei[iv]<border){aei[iv]++;this.fX[aC]=iv}}for(ft=aE.a0L;ft>=1;ft--){for(aC=aE.ku-1;aC>=0;aC--){if(aei[ft]>=border){break}if(this.fX[aC]===0){aei[ft]++;this.fX[aC]=ft}}}};
+
+=== G. 内置 AI 的归属
+说明：队伍数 < 8：内置 AI 不入队（fX 保持 0），a0L 加 1；队伍数 = 8：内置 AI 轮流分进 8 个队。
+位置：字符偏移 664167~664291（第 31 行）；起始锚点在文件里出现 1 次
+this.aem=function(){if(aE.a0L<8){aE.a0L++;aE.lC++;aE.a0M=1;return}for(var aC=aE.ku;aC<aE.fW;aC++){this.fX[aC]=1+aC%aE.a0L}};
+
+=== H. 敌我判定
+说明：fS(a,b) 为真 = a 可以打 b：a 不属于任何队（fX==0），或两人队伍不同。所以没入队的内置 AI 和所有人为敌，彼此之间也为敌。
+位置：字符偏移 667294~667375（第 31 行）；起始锚点在文件里出现 1 次
+this.fS=function(player,k3){return bj.fX[player]===0||bj.fX[player]!==bj.fX[k3]};
+
+=== I. 战队标签的解析
+说明：名字里第一个 '[' 到第一个 ']' 之间的 1~7 个字符，转大写去空格。没有就是散人。
+位置：字符偏移 151328~151530（第 2 行）；起始锚点在文件里出现 1 次
+this.a3r=function(username){var fO,fd;fO=username.indexOf("[");if(fO<0){return null}fd=username.indexOf("]");if(fd-fO>1&&fd-fO<=7+1){return username.substring(fO+1,fd).toUpperCase().trim()}return null};
+
+=== J. 整数除法
+说明：g0(a,b) = floor((a+0.5)/b)，即整除。
+位置：字符偏移 493236~493291（第 18 行）；起始锚点在文件里出现 1 次
+this.g0=function(fs,ft){return Math.floor((fs+.5)/ft)};
+
+##### tsb/squad/page.js  sha256=c51044b417a2a4f8b86026d73a26d9c532a926832bf54d11ed54b7117e9888f5  chars=590289
+
+=== P1. 结算记录里的 team 字段
+说明：totals 只统计领土>0 的玩家，按 fX 分组求和（键 "0" = 不属于任何队的玩家，即内置 AI）；best = 领土最大的组；mine = 我的队伍槽位。
+位置：字符偏移 563005~563669（第 748 行）；起始锚点在文件里出现 1 次
+  function teams(d, g) {
+    if (!g[d.gIsTeamGame] || !d.sbTeams || !d.sbTeamHolder) return null;
+    const holder = window[d.sbTeamHolder], t = holder && holder[d.sbTeams], pd = read("playerData"), terr = pd && pd[d.playerTerritories];
+    if (!t || !terr) return null;
+    const totals = {};
+    for (let i = 0, n = Math.min(t.length, terr.length); i < n; i++) terr[i] > 0 && (totals[t[i]] = (totals[t[i]] || 0) + terr[i]);
+    let best = null;
+    for (const k of Object.keys(totals)) (null === best || totals[k] > totals[best]) && (best = k);
+    return { mine: t[g[d.playerId]], best: null === best ? null : Number(best), totals };
+  }
+  function meta(d, g) {
+
+=== P2. 结算记录的生成（每个号每局只报一次）
+说明：died → 一律 lost（不管本队后来赢没赢）；end → 终局时本队领土最大记 won，否则活着记 over、死了记 lost；left → 不带 team。
+位置：字符偏移 564065~564559（第 764 行）；起始锚点在文件里出现 1 次
+  function report(r, event, why) {
+    r.done = !0;
+    const d = dict(), g = read("game"), info = r.info, last = r.lastAlive || info, m = r.meta,
+      team = "left" === event ? null : teams(d, g), gt = r.gate || { ok: !1, blocked: [], blockedIds: [] };
+    let result = "left";
+    "died" === event ? result = "lost" : "end" === event && (result = team ? team.best === team.mine ? "won" : info.alive ? "over" : "lost" : info.alive ? info.leader === m.id ? "won" : "over" : "lost");
+    post({
+
+=== P3. 什么时候报
+说明：活过又死了且对局仍在进行 → died；对局结束（gameState==2）→ end；还没报就离开了对局 → left。
+位置：字符偏移 565826~567167（第 806 行）；起始锚点在文件里出现 1 次
+  function track(info) {
+    const d = dict(), g = read("game");
+    if (!ue.manual || !d || !g) return void(state.game = null);
+    const gs = g[d.gameState], pixels = read("sbPixels"), now = Date.now();
+    let r = state.game;
+    r && (0 === gs || pixels !== r.pixels) && (r.done || !r.info || report(r, "left"), r = state.game = null);
+    if (1 !== gs && 2 !== gs || g[d.gIsReplay]) return;
+    // dead with "stay" on: leave once the game is over, the option is turned off, or after STAY_MAX_MS
+    if (r && r.stayAt) return void((2 === gs || !ue.stay || now - r.stayAt >= STAY_MAX_MS) && (r.stayAt = 0, ue.armed && (r.exitAt = now + EXIT_MS)));
+    if (!info) return;
+    if (!r) {
+      if (2 === gs) return;
+      r = state.game = { pixels, id: `${now.toString(36)}-${Math.floor(1e9 * Math.random()).toString(36)}`, t0: now, done: !1, info: null, lastAlive: null, wasAlive: !1, peak: 0, exitAt: 0, stayAt: 0 };
+    }
+    if (r.done) return;
+    r.info = info, r.meta = meta(d, g), r.gate = gate(), r.peak = Math.max(r.peak, info.territory | 0), info.alive && !info.spawnPhase && (r.wasAlive = !0, r.lastAlive = info);
+    r.wasAlive && !info.alive && 1 === gs ? report(r, "died") : 2 === gs && report(r, "end");
+    r.done && ue.armed && (ue.stay && 1 === gs ? r.stayAt = now : r.exitAt = now + EXIT_MS);
+  }
+  function frame(info) {
+

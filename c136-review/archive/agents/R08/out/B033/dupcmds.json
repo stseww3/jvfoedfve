@@ -1,0 +1,2763 @@
+{
+ "squad20": {
+  "gap": {
+   "gap": 14,
+   "byKind": {
+    "attack": {
+     "cmds": 284,
+     "clusters": 161,
+     "dupClusters": 34,
+     "dupCmds": 157,
+     "extraCmds": 123,
+     "sizes": {
+      "1": 127,
+      "3": 9,
+      "4": 4,
+      "9": 3,
+      "7": 2,
+      "2": 8,
+      "6": 2,
+      "8": 5,
+      "5": 1
+     }
+    },
+    "boat": {
+     "cmds": 27,
+     "clusters": 16,
+     "dupClusters": 5,
+     "dupCmds": 16,
+     "extraCmds": 11,
+     "sizes": {
+      "1": 11,
+      "2": 2,
+      "3": 1,
+      "5": 1,
+      "4": 1
+     }
+    }
+   },
+   "dups": [
+    {
+     "me": 47,
+     "name": "Mossad",
+     "kind": "attack",
+     "target": "64",
+     "targetName": "☭СССР☭",
+     "t0": 1715,
+     "t1": 1715,
+     "n": 5,
+     "pcts": [
+      412,
+      424,
+      486,
+      444,
+      396
+     ],
+     "first": 0.4033,
+     "comb": 0.9366
+    },
+    {
+     "me": 45,
+     "name": "Guderian",
+     "kind": "boat",
+     "target": "1326056:0",
+     "targetName": "",
+     "t0": 1610,
+     "t1": 1610,
+     "n": 5,
+     "pcts": [
+      439,
+      430,
+      127,
+      414,
+      160
+     ],
+     "first": 0.4297,
+     "comb": 0.8552
+    },
+    {
+     "me": 44,
+     "name": "Kanem-Bornu",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1218,
+     "t1": 1218,
+     "n": 7,
+     "pcts": [
+      346,
+      343,
+      328,
+      168,
+      77,
+      129,
+      133
+     ],
+     "first": 0.3389,
+     "comb": 0.8256
+    },
+    {
+     "me": 58,
+     "name": "Lannes",
+     "kind": "boat",
+     "target": "1333428:0",
+     "targetName": "",
+     "t0": 1673,
+     "t1": 1673,
+     "n": 4,
+     "pcts": [
+      439,
+      127,
+      424,
+      396
+     ],
+     "first": 0.4297,
+     "comb": 0.8213
+    },
+    {
+     "me": 52,
+     "name": "Livonian",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1533,
+     "t1": 1533,
+     "n": 8,
+     "pcts": [
+      59,
+      159,
+      164,
+      166,
+      174,
+      219,
+      205,
+      47
+     ],
+     "first": 0.0586,
+     "comb": 0.7236
+    },
+    {
+     "me": 48,
+     "name": "Tunis",
+     "kind": "attack",
+     "target": "272",
+     "targetName": "bot#272",
+     "t0": 1295,
+     "t1": 1295,
+     "n": 7,
+     "pcts": [
+      93,
+      99,
+      100,
+      194,
+      123,
+      123,
+      113
+     ],
+     "first": 0.0918,
+     "comb": 0.5895
+    },
+    {
+     "me": 48,
+     "name": "Tunis",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1071,
+     "t1": 1071,
+     "n": 6,
+     "pcts": [
+      124,
+      118,
+      133,
+      47,
+      168,
+      166
+     ],
+     "first": 0.1221,
+     "comb": 0.5508
+    },
+    {
+     "me": 44,
+     "name": "Kanem-Bornu",
+     "kind": "attack",
+     "target": "159",
+     "targetName": "bot#159",
+     "t0": 952,
+     "t1": 952,
+     "n": 3,
+     "pcts": [
+      193,
+      171,
+      262
+     ],
+     "first": 0.1895,
+     "comb": 0.4988
+    },
+    {
+     "me": 52,
+     "name": "Livonian",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1260,
+     "t1": 1260,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      142,
+      47,
+      47,
+      47,
+      47,
+      227
+     ],
+     "first": 0.0469,
+     "comb": 0.4986
+    },
+    {
+     "me": 48,
+     "name": "Tunis",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1820,
+     "t1": 1820,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      102,
+      86,
+      109,
+      128
+     ],
+     "first": 0.0469,
+     "comb": 0.4701
+    },
+    {
+     "me": 67,
+     "name": "JinKazama",
+     "kind": "boat",
+     "target": "108276:0",
+     "targetName": "",
+     "t0": 1155,
+     "t1": 1155,
+     "n": 2,
+     "pcts": [
+      299,
+      242
+     ],
+     "first": 0.293,
+     "comb": 0.4608
+    },
+    {
+     "me": 49,
+     "name": "Ainz",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1512,
+     "t1": 1512,
+     "n": 8,
+     "pcts": [
+      47,
+      187,
+      116,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.4579
+    },
+    {
+     "me": 67,
+     "name": "JinKazama",
+     "kind": "boat",
+     "target": "108276:0",
+     "targetName": "",
+     "t0": 1442,
+     "t1": 1442,
+     "n": 3,
+     "pcts": [
+      140,
+      184,
+      229
+     ],
+     "first": 0.1377,
+     "comb": 0.4522
+    },
+    {
+     "me": 48,
+     "name": "Tunis",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1596,
+     "t1": 1596,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      198
+     ],
+     "first": 0.0469,
+     "comb": 0.4513
+    },
+    {
+     "me": 52,
+     "name": "Livonian",
+     "kind": "attack",
+     "target": "484",
+     "targetName": "bot#484",
+     "t0": 1043,
+     "t1": 1057,
+     "n": 2,
+     "pcts": [
+      156,
+      334
+     ],
+     "first": 0.1533,
+     "comb": 0.4303
+    },
+    {
+     "me": 47,
+     "name": "Mossad",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1295,
+     "t1": 1295,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      75,
+      140
+     ],
+     "first": 0.0469,
+     "comb": 0.4295
+    },
+    {
+     "me": 51,
+     "name": "Gladiator",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1015,
+     "t1": 1015,
+     "n": 4,
+     "pcts": [
+      129,
+      128,
+      113,
+      120
+     ],
+     "first": 0.127,
+     "comb": 0.402
+    },
+    {
+     "me": 52,
+     "name": "Livonian",
+     "kind": "attack",
+     "target": "300",
+     "targetName": "bot#300",
+     "t0": 910,
+     "t1": 917,
+     "n": 2,
+     "pcts": [
+      213,
+      222
+     ],
+     "first": 0.209,
+     "comb": 0.3812
+    },
+    {
+     "me": 51,
+     "name": "Gladiator",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1344,
+     "t1": 1344,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      70,
+      48,
+      54,
+      56,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3771
+    },
+    {
+     "me": 45,
+     "name": "Guderian",
+     "kind": "attack",
+     "target": "180",
+     "targetName": "bot#180",
+     "t0": 1092,
+     "t1": 1106,
+     "n": 6,
+     "pcts": [
+      86,
+      88,
+      75,
+      51,
+      52,
+      85
+     ],
+     "first": 0.085,
+     "comb": 0.3623
+    },
+    {
+     "me": 47,
+     "name": "Mossad",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1015,
+     "t1": 1015,
+     "n": 4,
+     "pcts": [
+      151,
+      102,
+      80,
+      78
+     ],
+     "first": 0.1484,
+     "comb": 0.3491
+    },
+    {
+     "me": 48,
+     "name": "Tunis",
+     "kind": "attack",
+     "target": "429",
+     "targetName": "bot#429",
+     "t0": 714,
+     "t1": 721,
+     "n": 2,
+     "pcts": [
+      199,
+      191
+     ],
+     "first": 0.1953,
+     "comb": 0.3462
+    },
+    {
+     "me": 49,
+     "name": "Ainz",
+     "kind": "attack",
+     "target": "416",
+     "targetName": "bot#416",
+     "t0": 1099,
+     "t1": 1099,
+     "n": 3,
+     "pcts": [
+      88,
+      91,
+      214
+     ],
+     "first": 0.0869,
+     "comb": 0.3434
+    },
+    {
+     "me": 52,
+     "name": "Livonian",
+     "kind": "attack",
+     "target": "134",
+     "targetName": "bot#134",
+     "t0": 1764,
+     "t1": 1764,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 58,
+     "name": "Lannes",
+     "kind": "attack",
+     "target": "91",
+     "targetName": "bot#91",
+     "t0": 889,
+     "t1": 889,
+     "n": 2,
+     "pcts": [
+      106,
+      242
+     ],
+     "first": 0.1045,
+     "comb": 0.317
+    },
+    {
+     "me": 44,
+     "name": "Kanem-Bornu",
+     "kind": "attack",
+     "target": "270",
+     "targetName": "bot#270",
+     "t0": 819,
+     "t1": 826,
+     "n": 3,
+     "pcts": [
+      125,
+      100,
+      130
+     ],
+     "first": 0.123,
+     "comb": 0.3107
+    },
+    {
+     "me": 49,
+     "name": "Ainz",
+     "kind": "attack",
+     "target": "416",
+     "targetName": "bot#416",
+     "t0": 784,
+     "t1": 784,
+     "n": 2,
+     "pcts": [
+      169,
+      167
+     ],
+     "first": 0.166,
+     "comb": 0.3028
+    },
+    {
+     "me": 67,
+     "name": "JinKazama",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 980,
+     "t1": 980,
+     "n": 3,
+     "pcts": [
+      81,
+      123,
+      124
+     ],
+     "first": 0.0801,
+     "comb": 0.2902
+    },
+    {
+     "me": 45,
+     "name": "Guderian",
+     "kind": "attack",
+     "target": "446",
+     "targetName": "bot#446",
+     "t0": 700,
+     "t1": 714,
+     "n": 2,
+     "pcts": [
+      159,
+      157
+     ],
+     "first": 0.1562,
+     "comb": 0.2864
+    },
+    {
+     "me": 45,
+     "name": "Guderian",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 938,
+     "t1": 952,
+     "n": 4,
+     "pcts": [
+      68,
+      69,
+      99,
+      67
+     ],
+     "first": 0.0674,
+     "comb": 0.268
+    },
+    {
+     "me": 58,
+     "name": "Lannes",
+     "kind": "boat",
+     "target": "1553669:0",
+     "targetName": "",
+     "t0": 1673,
+     "t1": 1673,
+     "n": 2,
+     "pcts": [
+      127,
+      127
+     ],
+     "first": 0.125,
+     "comb": 0.2344
+    },
+    {
+     "me": 45,
+     "name": "Guderian",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1323,
+     "t1": 1323,
+     "n": 4,
+     "pcts": [
+      55,
+      53,
+      47,
+      84
+     ],
+     "first": 0.0547,
+     "comb": 0.2174
+    },
+    {
+     "me": 67,
+     "name": "JinKazama",
+     "kind": "attack",
+     "target": "368",
+     "targetName": "bot#368",
+     "t0": 665,
+     "t1": 686,
+     "n": 3,
+     "pcts": [
+      66,
+      84,
+      84
+     ],
+     "first": 0.0654,
+     "comb": 0.2141
+    },
+    {
+     "me": 47,
+     "name": "Mossad",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1715,
+     "t1": 1715,
+     "n": 3,
+     "pcts": [
+      47,
+      66,
+      84
+     ],
+     "first": 0.0469,
+     "comb": 0.1832
+    },
+    {
+     "me": 44,
+     "name": "Kanem-Bornu",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1694,
+     "t1": 1694,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 52,
+     "name": "Livonian",
+     "kind": "attack",
+     "target": "354",
+     "targetName": "bot#354",
+     "t0": 1043,
+     "t1": 1043,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 47,
+     "name": "Mossad",
+     "kind": "attack",
+     "target": "413",
+     "targetName": "bot#413",
+     "t0": 1015,
+     "t1": 1015,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 48,
+     "name": "Tunis",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 924,
+     "t1": 924,
+     "n": 2,
+     "pcts": [
+      60,
+      60
+     ],
+     "first": 0.0596,
+     "comb": 0.1156
+    },
+    {
+     "me": 49,
+     "name": "Ainz",
+     "kind": "attack",
+     "target": "120",
+     "targetName": "bot#120",
+     "t0": 1099,
+     "t1": 1113,
+     "n": 2,
+     "pcts": [
+      48,
+      47
+     ],
+     "first": 0.0479,
+     "comb": 0.0925
+    }
+   ]
+  },
+  "sameTick": {
+   "gap": 0,
+   "byKind": {
+    "attack": {
+     "cmds": 284,
+     "clusters": 171,
+     "dupClusters": 28,
+     "dupCmds": 141,
+     "extraCmds": 113,
+     "sizes": {
+      "1": 143,
+      "3": 8,
+      "4": 3,
+      "9": 3,
+      "7": 2,
+      "2": 4,
+      "6": 1,
+      "8": 5,
+      "5": 2
+     }
+    },
+    "boat": {
+     "cmds": 27,
+     "clusters": 16,
+     "dupClusters": 5,
+     "dupCmds": 16,
+     "extraCmds": 11,
+     "sizes": {
+      "1": 11,
+      "2": 2,
+      "3": 1,
+      "5": 1,
+      "4": 1
+     }
+    }
+   },
+   "dups": [
+    {
+     "me": 47,
+     "name": "Mossad",
+     "kind": "attack",
+     "target": "64",
+     "targetName": "☭СССР☭",
+     "t0": 1715,
+     "t1": 1715,
+     "n": 5,
+     "pcts": [
+      412,
+      424,
+      486,
+      444,
+      396
+     ],
+     "first": 0.4033,
+     "comb": 0.9366
+    },
+    {
+     "me": 45,
+     "name": "Guderian",
+     "kind": "boat",
+     "target": "1326056:0",
+     "targetName": "",
+     "t0": 1610,
+     "t1": 1610,
+     "n": 5,
+     "pcts": [
+      439,
+      430,
+      127,
+      414,
+      160
+     ],
+     "first": 0.4297,
+     "comb": 0.8552
+    },
+    {
+     "me": 44,
+     "name": "Kanem-Bornu",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1218,
+     "t1": 1218,
+     "n": 7,
+     "pcts": [
+      346,
+      343,
+      328,
+      168,
+      77,
+      129,
+      133
+     ],
+     "first": 0.3389,
+     "comb": 0.8256
+    },
+    {
+     "me": 58,
+     "name": "Lannes",
+     "kind": "boat",
+     "target": "1333428:0",
+     "targetName": "",
+     "t0": 1673,
+     "t1": 1673,
+     "n": 4,
+     "pcts": [
+      439,
+      127,
+      424,
+      396
+     ],
+     "first": 0.4297,
+     "comb": 0.8213
+    },
+    {
+     "me": 52,
+     "name": "Livonian",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1533,
+     "t1": 1533,
+     "n": 8,
+     "pcts": [
+      59,
+      159,
+      164,
+      166,
+      174,
+      219,
+      205,
+      47
+     ],
+     "first": 0.0586,
+     "comb": 0.7236
+    },
+    {
+     "me": 48,
+     "name": "Tunis",
+     "kind": "attack",
+     "target": "272",
+     "targetName": "bot#272",
+     "t0": 1295,
+     "t1": 1295,
+     "n": 7,
+     "pcts": [
+      93,
+      99,
+      100,
+      194,
+      123,
+      123,
+      113
+     ],
+     "first": 0.0918,
+     "comb": 0.5895
+    },
+    {
+     "me": 48,
+     "name": "Tunis",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1071,
+     "t1": 1071,
+     "n": 6,
+     "pcts": [
+      124,
+      118,
+      133,
+      47,
+      168,
+      166
+     ],
+     "first": 0.1221,
+     "comb": 0.5508
+    },
+    {
+     "me": 44,
+     "name": "Kanem-Bornu",
+     "kind": "attack",
+     "target": "159",
+     "targetName": "bot#159",
+     "t0": 952,
+     "t1": 952,
+     "n": 3,
+     "pcts": [
+      193,
+      171,
+      262
+     ],
+     "first": 0.1895,
+     "comb": 0.4988
+    },
+    {
+     "me": 52,
+     "name": "Livonian",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1260,
+     "t1": 1260,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      142,
+      47,
+      47,
+      47,
+      47,
+      227
+     ],
+     "first": 0.0469,
+     "comb": 0.4986
+    },
+    {
+     "me": 48,
+     "name": "Tunis",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1820,
+     "t1": 1820,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      102,
+      86,
+      109,
+      128
+     ],
+     "first": 0.0469,
+     "comb": 0.4701
+    },
+    {
+     "me": 67,
+     "name": "JinKazama",
+     "kind": "boat",
+     "target": "108276:0",
+     "targetName": "",
+     "t0": 1155,
+     "t1": 1155,
+     "n": 2,
+     "pcts": [
+      299,
+      242
+     ],
+     "first": 0.293,
+     "comb": 0.4608
+    },
+    {
+     "me": 49,
+     "name": "Ainz",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1512,
+     "t1": 1512,
+     "n": 8,
+     "pcts": [
+      47,
+      187,
+      116,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.4579
+    },
+    {
+     "me": 67,
+     "name": "JinKazama",
+     "kind": "boat",
+     "target": "108276:0",
+     "targetName": "",
+     "t0": 1442,
+     "t1": 1442,
+     "n": 3,
+     "pcts": [
+      140,
+      184,
+      229
+     ],
+     "first": 0.1377,
+     "comb": 0.4522
+    },
+    {
+     "me": 48,
+     "name": "Tunis",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1596,
+     "t1": 1596,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      198
+     ],
+     "first": 0.0469,
+     "comb": 0.4513
+    },
+    {
+     "me": 47,
+     "name": "Mossad",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1295,
+     "t1": 1295,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      75,
+      140
+     ],
+     "first": 0.0469,
+     "comb": 0.4295
+    },
+    {
+     "me": 51,
+     "name": "Gladiator",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1015,
+     "t1": 1015,
+     "n": 4,
+     "pcts": [
+      129,
+      128,
+      113,
+      120
+     ],
+     "first": 0.127,
+     "comb": 0.402
+    },
+    {
+     "me": 51,
+     "name": "Gladiator",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1344,
+     "t1": 1344,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      70,
+      48,
+      54,
+      56,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3771
+    },
+    {
+     "me": 47,
+     "name": "Mossad",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1015,
+     "t1": 1015,
+     "n": 4,
+     "pcts": [
+      151,
+      102,
+      80,
+      78
+     ],
+     "first": 0.1484,
+     "comb": 0.3491
+    },
+    {
+     "me": 49,
+     "name": "Ainz",
+     "kind": "attack",
+     "target": "416",
+     "targetName": "bot#416",
+     "t0": 1099,
+     "t1": 1099,
+     "n": 3,
+     "pcts": [
+      88,
+      91,
+      214
+     ],
+     "first": 0.0869,
+     "comb": 0.3434
+    },
+    {
+     "me": 52,
+     "name": "Livonian",
+     "kind": "attack",
+     "target": "134",
+     "targetName": "bot#134",
+     "t0": 1764,
+     "t1": 1764,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 58,
+     "name": "Lannes",
+     "kind": "attack",
+     "target": "91",
+     "targetName": "bot#91",
+     "t0": 889,
+     "t1": 889,
+     "n": 2,
+     "pcts": [
+      106,
+      242
+     ],
+     "first": 0.1045,
+     "comb": 0.317
+    },
+    {
+     "me": 45,
+     "name": "Guderian",
+     "kind": "attack",
+     "target": "180",
+     "targetName": "bot#180",
+     "t0": 1092,
+     "t1": 1092,
+     "n": 5,
+     "pcts": [
+      86,
+      88,
+      75,
+      51,
+      52
+     ],
+     "first": 0.085,
+     "comb": 0.3038
+    },
+    {
+     "me": 49,
+     "name": "Ainz",
+     "kind": "attack",
+     "target": "416",
+     "targetName": "bot#416",
+     "t0": 784,
+     "t1": 784,
+     "n": 2,
+     "pcts": [
+      169,
+      167
+     ],
+     "first": 0.166,
+     "comb": 0.3028
+    },
+    {
+     "me": 67,
+     "name": "JinKazama",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 980,
+     "t1": 980,
+     "n": 3,
+     "pcts": [
+      81,
+      123,
+      124
+     ],
+     "first": 0.0801,
+     "comb": 0.2902
+    },
+    {
+     "me": 58,
+     "name": "Lannes",
+     "kind": "boat",
+     "target": "1553669:0",
+     "targetName": "",
+     "t0": 1673,
+     "t1": 1673,
+     "n": 2,
+     "pcts": [
+      127,
+      127
+     ],
+     "first": 0.125,
+     "comb": 0.2344
+    },
+    {
+     "me": 45,
+     "name": "Guderian",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1323,
+     "t1": 1323,
+     "n": 4,
+     "pcts": [
+      55,
+      53,
+      47,
+      84
+     ],
+     "first": 0.0547,
+     "comb": 0.2174
+    },
+    {
+     "me": 45,
+     "name": "Guderian",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 938,
+     "t1": 938,
+     "n": 3,
+     "pcts": [
+      68,
+      69,
+      99
+     ],
+     "first": 0.0674,
+     "comb": 0.216
+    },
+    {
+     "me": 44,
+     "name": "Kanem-Bornu",
+     "kind": "attack",
+     "target": "270",
+     "targetName": "bot#270",
+     "t0": 819,
+     "t1": 819,
+     "n": 2,
+     "pcts": [
+      125,
+      100
+     ],
+     "first": 0.123,
+     "comb": 0.2095
+    },
+    {
+     "me": 47,
+     "name": "Mossad",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1715,
+     "t1": 1715,
+     "n": 3,
+     "pcts": [
+      47,
+      66,
+      84
+     ],
+     "first": 0.0469,
+     "comb": 0.1832
+    },
+    {
+     "me": 44,
+     "name": "Kanem-Bornu",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1694,
+     "t1": 1694,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 52,
+     "name": "Livonian",
+     "kind": "attack",
+     "target": "354",
+     "targetName": "bot#354",
+     "t0": 1043,
+     "t1": 1043,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 47,
+     "name": "Mossad",
+     "kind": "attack",
+     "target": "413",
+     "targetName": "bot#413",
+     "t0": 1015,
+     "t1": 1015,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 48,
+     "name": "Tunis",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 924,
+     "t1": 924,
+     "n": 2,
+     "pcts": [
+      60,
+      60
+     ],
+     "first": 0.0596,
+     "comb": 0.1156
+    }
+   ]
+  }
+ },
+ "squad10:A051": {
+  "gap": {
+   "gap": 14,
+   "byKind": {
+    "attack": {
+     "cmds": 286,
+     "clusters": 154,
+     "dupClusters": 36,
+     "dupCmds": 168,
+     "extraCmds": 132,
+     "sizes": {
+      "1": 118,
+      "9": 5,
+      "5": 3,
+      "8": 3,
+      "7": 3,
+      "2": 10,
+      "4": 4,
+      "3": 7,
+      "6": 1
+     }
+    }
+   },
+   "dups": [
+    {
+     "me": 17,
+     "name": "[APEX] leo_tx",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1771,
+     "t1": 1771,
+     "n": 9,
+     "pcts": [
+      427,
+      407,
+      403,
+      312,
+      503,
+      501,
+      494,
+      476,
+      455
+     ],
+     "first": 0.418,
+     "comb": 0.9942
+    },
+    {
+     "me": 17,
+     "name": "[APEX] leo_tx",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1456,
+     "t1": 1463,
+     "n": 7,
+     "pcts": [
+      348,
+      317,
+      222,
+      185,
+      180,
+      47,
+      455
+     ],
+     "first": 0.3408,
+     "comb": 0.8734
+    },
+    {
+     "me": 18,
+     "name": "[APEX] zero_7",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1288,
+     "t1": 1288,
+     "n": 6,
+     "pcts": [
+      269,
+      260,
+      196,
+      192,
+      197,
+      194
+     ],
+     "first": 0.2637,
+     "comb": 0.7652
+    },
+    {
+     "me": 20,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1484,
+     "t1": 1484,
+     "n": 9,
+     "pcts": [
+      57,
+      47,
+      146,
+      143,
+      142,
+      136,
+      138,
+      132,
+      175
+     ],
+     "first": 0.0566,
+     "comb": 0.6929
+    },
+    {
+     "me": 12,
+     "name": "[APEX] sora_w",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1253,
+     "t1": 1253,
+     "n": 7,
+     "pcts": [
+      130,
+      129,
+      131,
+      131,
+      132,
+      132,
+      133
+     ],
+     "first": 0.1279,
+     "comb": 0.6198
+    },
+    {
+     "me": 20,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1085,
+     "t1": 1085,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      148,
+      151,
+      155,
+      163
+     ],
+     "first": 0.0469,
+     "comb": 0.5925
+    },
+    {
+     "me": 17,
+     "name": "[APEX] leo_tx",
+     "kind": "attack",
+     "target": "73",
+     "targetName": "bot#73",
+     "t0": 728,
+     "t1": 735,
+     "n": 4,
+     "pcts": [
+      185,
+      188,
+      182,
+      189
+     ],
+     "first": 0.1816,
+     "comb": 0.5536
+    },
+    {
+     "me": 16,
+     "name": "[APEX] alex_k",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1050,
+     "t1": 1050,
+     "n": 7,
+     "pcts": [
+      65,
+      73,
+      87,
+      91,
+      96,
+      95,
+      99
+     ],
+     "first": 0.0645,
+     "comb": 0.4655
+    },
+    {
+     "me": 13,
+     "name": "[APEX] ryan_m",
+     "kind": "attack",
+     "target": "197",
+     "targetName": "bot#197",
+     "t0": 651,
+     "t1": 665,
+     "n": 3,
+     "pcts": [
+      163,
+      176,
+      205
+     ],
+     "first": 0.1602,
+     "comb": 0.4451
+    },
+    {
+     "me": 12,
+     "name": "[APEX] sora_w",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1036,
+     "t1": 1036,
+     "n": 8,
+     "pcts": [
+      69,
+      69,
+      70,
+      70,
+      72,
+      72,
+      73,
+      72
+     ],
+     "first": 0.0684,
+     "comb": 0.4413
+    },
+    {
+     "me": 17,
+     "name": "[APEX] leo_tx",
+     "kind": "attack",
+     "target": "424",
+     "targetName": "bot#424",
+     "t0": 560,
+     "t1": 574,
+     "n": 3,
+     "pcts": [
+      178,
+      167,
+      188
+     ],
+     "first": 0.1748,
+     "comb": 0.4375
+    },
+    {
+     "me": 14,
+     "name": "[APEX] zexos1",
+     "kind": "attack",
+     "target": "136",
+     "targetName": "bot#136",
+     "t0": 819,
+     "t1": 819,
+     "n": 3,
+     "pcts": [
+      176,
+      168,
+      185
+     ],
+     "first": 0.1729,
+     "comb": 0.4348
+    },
+    {
+     "me": 21,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1309,
+     "t1": 1309,
+     "n": 9,
+     "pcts": [
+      56,
+      55,
+      57,
+      55,
+      57,
+      57,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0557,
+     "comb": 0.3866
+    },
+    {
+     "me": 13,
+     "name": "[APEX] ryan_m",
+     "kind": "attack",
+     "target": "197",
+     "targetName": "bot#197",
+     "t0": 693,
+     "t1": 693,
+     "n": 2,
+     "pcts": [
+      212,
+      193
+     ],
+     "first": 0.208,
+     "comb": 0.3581
+    },
+    {
+     "me": 15,
+     "name": "[APEX] noah88",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1680,
+     "t1": 1680,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3508
+    },
+    {
+     "me": 18,
+     "name": "[APEX] zero_7",
+     "kind": "attack",
+     "target": "191",
+     "targetName": "bot#191",
+     "t0": 756,
+     "t1": 756,
+     "n": 4,
+     "pcts": [
+      47,
+      120,
+      120,
+      126
+     ],
+     "first": 0.0469,
+     "comb": 0.3507
+    },
+    {
+     "me": 19,
+     "name": "[APEX] talon5",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1106,
+     "t1": 1106,
+     "n": 5,
+     "pcts": [
+      77,
+      77,
+      76,
+      75,
+      73
+     ],
+     "first": 0.0762,
+     "comb": 0.3221
+    },
+    {
+     "me": 19,
+     "name": "[APEX] talon5",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1351,
+     "t1": 1351,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 19,
+     "name": "[APEX] talon5",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1638,
+     "t1": 1638,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 18,
+     "name": "[APEX] zero_7",
+     "kind": "attack",
+     "target": "122",
+     "targetName": "bot#122",
+     "t0": 1288,
+     "t1": 1288,
+     "n": 3,
+     "pcts": [
+      121,
+      123,
+      122
+     ],
+     "first": 0.1191,
+     "comb": 0.3188
+    },
+    {
+     "me": 16,
+     "name": "[APEX] alex_k",
+     "kind": "attack",
+     "target": "165",
+     "targetName": "bot#165",
+     "t0": 1274,
+     "t1": 1274,
+     "n": 4,
+     "pcts": [
+      80,
+      80,
+      81,
+      80
+     ],
+     "first": 0.0791,
+     "comb": 0.2816
+    },
+    {
+     "me": 21,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "206",
+     "targetName": "bot#206",
+     "t0": 490,
+     "t1": 490,
+     "n": 2,
+     "pcts": [
+      150,
+      133
+     ],
+     "first": 0.1475,
+     "comb": 0.259
+    },
+    {
+     "me": 16,
+     "name": "[APEX] alex_k",
+     "kind": "attack",
+     "target": "496",
+     "targetName": "bot#496",
+     "t0": 693,
+     "t1": 693,
+     "n": 2,
+     "pcts": [
+      137,
+      132
+     ],
+     "first": 0.1348,
+     "comb": 0.2471
+    },
+    {
+     "me": 18,
+     "name": "[APEX] zero_7",
+     "kind": "attack",
+     "target": "239",
+     "targetName": "bot#239",
+     "t0": 833,
+     "t1": 833,
+     "n": 3,
+     "pcts": [
+      86,
+      89,
+      94
+     ],
+     "first": 0.085,
+     "comb": 0.2428
+    },
+    {
+     "me": 15,
+     "name": "[APEX] noah88",
+     "kind": "attack",
+     "target": "489",
+     "targetName": "bot#489",
+     "t0": 287,
+     "t1": 294,
+     "n": 2,
+     "pcts": [
+      119,
+      140
+     ],
+     "first": 0.1172,
+     "comb": 0.2387
+    },
+    {
+     "me": 14,
+     "name": "[APEX] zexos1",
+     "kind": "attack",
+     "target": "476",
+     "targetName": "bot#476",
+     "t0": 462,
+     "t1": 469,
+     "n": 2,
+     "pcts": [
+      109,
+      148
+     ],
+     "first": 0.1074,
+     "comb": 0.2373
+    },
+    {
+     "me": 16,
+     "name": "[APEX] alex_k",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1274,
+     "t1": 1274,
+     "n": 5,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      63
+     ],
+     "first": 0.0469,
+     "comb": 0.2263
+    },
+    {
+     "me": 18,
+     "name": "[APEX] zero_7",
+     "kind": "attack",
+     "target": "390",
+     "targetName": "bot#390",
+     "t0": 833,
+     "t1": 833,
+     "n": 2,
+     "pcts": [
+      120,
+      116
+     ],
+     "first": 0.1182,
+     "comb": 0.2189
+    },
+    {
+     "me": 21,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "434",
+     "targetName": "bot#434",
+     "t0": 1001,
+     "t1": 1008,
+     "n": 5,
+     "pcts": [
+      47,
+      47,
+      49,
+      49,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.2166
+    },
+    {
+     "me": 18,
+     "name": "[APEX] zero_7",
+     "kind": "attack",
+     "target": "433",
+     "targetName": "bot#433",
+     "t0": 756,
+     "t1": 756,
+     "n": 2,
+     "pcts": [
+      107,
+      106
+     ],
+     "first": 0.1055,
+     "comb": 0.1989
+    },
+    {
+     "me": 14,
+     "name": "[APEX] zexos1",
+     "kind": "attack",
+     "target": "269",
+     "targetName": "bot#269",
+     "t0": 819,
+     "t1": 819,
+     "n": 3,
+     "pcts": [
+      65,
+      63,
+      66
+     ],
+     "first": 0.0645,
+     "comb": 0.1803
+    },
+    {
+     "me": 12,
+     "name": "[APEX] sora_w",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1568,
+     "t1": 1568,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1747
+    },
+    {
+     "me": 12,
+     "name": "[APEX] sora_w",
+     "kind": "attack",
+     "target": "122",
+     "targetName": "bot#122",
+     "t0": 1253,
+     "t1": 1253,
+     "n": 2,
+     "pcts": [
+      83,
+      83
+     ],
+     "first": 0.082,
+     "comb": 0.1573
+    },
+    {
+     "me": 18,
+     "name": "[APEX] zero_7",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 833,
+     "t1": 833,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 14,
+     "name": "[APEX] zexos1",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 819,
+     "t1": 819,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 21,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 847,
+     "t1": 847,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    }
+   ]
+  },
+  "sameTick": {
+   "gap": 0,
+   "byKind": {
+    "attack": {
+     "cmds": 286,
+     "clusters": 162,
+     "dupClusters": 33,
+     "dupCmds": 157,
+     "extraCmds": 124,
+     "sizes": {
+      "1": 129,
+      "9": 5,
+      "5": 2,
+      "8": 3,
+      "7": 2,
+      "6": 2,
+      "2": 9,
+      "4": 4,
+      "3": 6
+     }
+    }
+   },
+   "dups": [
+    {
+     "me": 17,
+     "name": "[APEX] leo_tx",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1771,
+     "t1": 1771,
+     "n": 9,
+     "pcts": [
+      427,
+      407,
+      403,
+      312,
+      503,
+      501,
+      494,
+      476,
+      455
+     ],
+     "first": 0.418,
+     "comb": 0.9942
+    },
+    {
+     "me": 17,
+     "name": "[APEX] leo_tx",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1456,
+     "t1": 1456,
+     "n": 6,
+     "pcts": [
+      348,
+      317,
+      222,
+      185,
+      180,
+      47
+     ],
+     "first": 0.3408,
+     "comb": 0.7717
+    },
+    {
+     "me": 18,
+     "name": "[APEX] zero_7",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1288,
+     "t1": 1288,
+     "n": 6,
+     "pcts": [
+      269,
+      260,
+      196,
+      192,
+      197,
+      194
+     ],
+     "first": 0.2637,
+     "comb": 0.7652
+    },
+    {
+     "me": 20,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1484,
+     "t1": 1484,
+     "n": 9,
+     "pcts": [
+      57,
+      47,
+      146,
+      143,
+      142,
+      136,
+      138,
+      132,
+      175
+     ],
+     "first": 0.0566,
+     "comb": 0.6929
+    },
+    {
+     "me": 12,
+     "name": "[APEX] sora_w",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1253,
+     "t1": 1253,
+     "n": 7,
+     "pcts": [
+      130,
+      129,
+      131,
+      131,
+      132,
+      132,
+      133
+     ],
+     "first": 0.1279,
+     "comb": 0.6198
+    },
+    {
+     "me": 20,
+     "name": "[APEX] kaito9",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1085,
+     "t1": 1085,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      148,
+      151,
+      155,
+      163
+     ],
+     "first": 0.0469,
+     "comb": 0.5925
+    },
+    {
+     "me": 16,
+     "name": "[APEX] alex_k",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1050,
+     "t1": 1050,
+     "n": 7,
+     "pcts": [
+      65,
+      73,
+      87,
+      91,
+      96,
+      95,
+      99
+     ],
+     "first": 0.0645,
+     "comb": 0.4655
+    },
+    {
+     "me": 17,
+     "name": "[APEX] leo_tx",
+     "kind": "attack",
+     "target": "73",
+     "targetName": "bot#73",
+     "t0": 728,
+     "t1": 728,
+     "n": 3,
+     "pcts": [
+      185,
+      188,
+      182
+     ],
+     "first": 0.1816,
+     "comb": 0.4519
+    },
+    {
+     "me": 12,
+     "name": "[APEX] sora_w",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1036,
+     "t1": 1036,
+     "n": 8,
+     "pcts": [
+      69,
+      69,
+      70,
+      70,
+      72,
+      72,
+      73,
+      72
+     ],
+     "first": 0.0684,
+     "comb": 0.4413
+    },
+    {
+     "me": 14,
+     "name": "[APEX] zexos1",
+     "kind": "attack",
+     "target": "136",
+     "targetName": "bot#136",
+     "t0": 819,
+     "t1": 819,
+     "n": 3,
+     "pcts": [
+      176,
+      168,
+      185
+     ],
+     "first": 0.1729,
+     "comb": 0.4348
+    },
+    {
+     "me": 21,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1309,
+     "t1": 1309,
+     "n": 9,
+     "pcts": [
+      56,
+      55,
+      57,
+      55,
+      57,
+      57,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0557,
+     "comb": 0.3866
+    },
+    {
+     "me": 13,
+     "name": "[APEX] ryan_m",
+     "kind": "attack",
+     "target": "197",
+     "targetName": "bot#197",
+     "t0": 693,
+     "t1": 693,
+     "n": 2,
+     "pcts": [
+      212,
+      193
+     ],
+     "first": 0.208,
+     "comb": 0.3581
+    },
+    {
+     "me": 15,
+     "name": "[APEX] noah88",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1680,
+     "t1": 1680,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3508
+    },
+    {
+     "me": 18,
+     "name": "[APEX] zero_7",
+     "kind": "attack",
+     "target": "191",
+     "targetName": "bot#191",
+     "t0": 756,
+     "t1": 756,
+     "n": 4,
+     "pcts": [
+      47,
+      120,
+      120,
+      126
+     ],
+     "first": 0.0469,
+     "comb": 0.3507
+    },
+    {
+     "me": 19,
+     "name": "[APEX] talon5",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1106,
+     "t1": 1106,
+     "n": 5,
+     "pcts": [
+      77,
+      77,
+      76,
+      75,
+      73
+     ],
+     "first": 0.0762,
+     "comb": 0.3221
+    },
+    {
+     "me": 19,
+     "name": "[APEX] talon5",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1351,
+     "t1": 1351,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 19,
+     "name": "[APEX] talon5",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1638,
+     "t1": 1638,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 18,
+     "name": "[APEX] zero_7",
+     "kind": "attack",
+     "target": "122",
+     "targetName": "bot#122",
+     "t0": 1288,
+     "t1": 1288,
+     "n": 3,
+     "pcts": [
+      121,
+      123,
+      122
+     ],
+     "first": 0.1191,
+     "comb": 0.3188
+    },
+    {
+     "me": 17,
+     "name": "[APEX] leo_tx",
+     "kind": "attack",
+     "target": "424",
+     "targetName": "bot#424",
+     "t0": 560,
+     "t1": 560,
+     "n": 2,
+     "pcts": [
+      178,
+      167
+     ],
+     "first": 0.1748,
+     "comb": 0.3102
+    },
+    {
+     "me": 16,
+     "name": "[APEX] alex_k",
+     "kind": "attack",
+     "target": "165",
+     "targetName": "bot#165",
+     "t0": 1274,
+     "t1": 1274,
+     "n": 4,
+     "pcts": [
+      80,
+      80,
+      81,
+      80
+     ],
+     "first": 0.0791,
+     "comb": 0.2816
+    },
+    {
+     "me": 21,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "206",
+     "targetName": "bot#206",
+     "t0": 490,
+     "t1": 490,
+     "n": 2,
+     "pcts": [
+      150,
+      133
+     ],
+     "first": 0.1475,
+     "comb": 0.259
+    },
+    {
+     "me": 16,
+     "name": "[APEX] alex_k",
+     "kind": "attack",
+     "target": "496",
+     "targetName": "bot#496",
+     "t0": 693,
+     "t1": 693,
+     "n": 2,
+     "pcts": [
+      137,
+      132
+     ],
+     "first": 0.1348,
+     "comb": 0.2471
+    },
+    {
+     "me": 18,
+     "name": "[APEX] zero_7",
+     "kind": "attack",
+     "target": "239",
+     "targetName": "bot#239",
+     "t0": 833,
+     "t1": 833,
+     "n": 3,
+     "pcts": [
+      86,
+      89,
+      94
+     ],
+     "first": 0.085,
+     "comb": 0.2428
+    },
+    {
+     "me": 16,
+     "name": "[APEX] alex_k",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1274,
+     "t1": 1274,
+     "n": 5,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      63
+     ],
+     "first": 0.0469,
+     "comb": 0.2263
+    },
+    {
+     "me": 18,
+     "name": "[APEX] zero_7",
+     "kind": "attack",
+     "target": "390",
+     "targetName": "bot#390",
+     "t0": 833,
+     "t1": 833,
+     "n": 2,
+     "pcts": [
+      120,
+      116
+     ],
+     "first": 0.1182,
+     "comb": 0.2189
+    },
+    {
+     "me": 18,
+     "name": "[APEX] zero_7",
+     "kind": "attack",
+     "target": "433",
+     "targetName": "bot#433",
+     "t0": 756,
+     "t1": 756,
+     "n": 2,
+     "pcts": [
+      107,
+      106
+     ],
+     "first": 0.1055,
+     "comb": 0.1989
+    },
+    {
+     "me": 14,
+     "name": "[APEX] zexos1",
+     "kind": "attack",
+     "target": "269",
+     "targetName": "bot#269",
+     "t0": 819,
+     "t1": 819,
+     "n": 3,
+     "pcts": [
+      65,
+      63,
+      66
+     ],
+     "first": 0.0645,
+     "comb": 0.1803
+    },
+    {
+     "me": 21,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "434",
+     "targetName": "bot#434",
+     "t0": 1001,
+     "t1": 1001,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      49,
+      49
+     ],
+     "first": 0.0469,
+     "comb": 0.1781
+    },
+    {
+     "me": 12,
+     "name": "[APEX] sora_w",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1568,
+     "t1": 1568,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1747
+    },
+    {
+     "me": 12,
+     "name": "[APEX] sora_w",
+     "kind": "attack",
+     "target": "122",
+     "targetName": "bot#122",
+     "t0": 1253,
+     "t1": 1253,
+     "n": 2,
+     "pcts": [
+      83,
+      83
+     ],
+     "first": 0.082,
+     "comb": 0.1573
+    },
+    {
+     "me": 18,
+     "name": "[APEX] zero_7",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 833,
+     "t1": 833,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 14,
+     "name": "[APEX] zexos1",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 819,
+     "t1": 819,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 21,
+     "name": "[APEX] riku_x",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 847,
+     "t1": 847,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    }
+   ]
+  }
+ }
+}

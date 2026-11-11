@@ -1,0 +1,26 @@
+# [HL-DISPATCH] 日志行 × 三份源码门槛 的违例矩阵（行=对局所属时期，列=拿哪份源码去套）
+时期	日志行数	套Va违例	套Vb违例	套Vc违例	套Va的违例构成	套Vb的违例构成	套Vc的违例构成
+E1(A001-A017)	1131	0	42	923	-	pct<min:42	pct>ideal:693 dMe<reqD:243 dMe<dAlly+gap:238 dAlly>max:177 dAlly>=max:46 pct<min:16
+E2(A018-A095)	16253	15975	0	16181	pct>ideal:15975 dMe<reqD:2735	-	pct>ideal:15975 dMe<reqD:5728 dMe<dAlly+gap:4124 dAlly>max:2786 dAlly>=max:799
+E3(A097-A099)	750	0	86	0	-	pct<min:86	-
+
+# 各时期实测边界（kind×是否内陆 boxedIn）：条数 / 最小 dMe / 最大 dAlly / pct 众数(占比) / 最小 pct / 最小 myBal / dMe<dAlly 的条数（倒挂：捐出方密度低于受援方）
+时期	kind	boxedIn	条数	最小dMe	最大dAlly	pct众数	最小pct	最小myBal	倒挂条数	倒挂占比
+E1(A001-A017)	defense_dispatch	false	15	102	89	190(40%)	142	447258	0	0.0%
+E1(A001-A017)	defense_dispatch	true	367	30	142	260(98%)	244	54441	102	27.8%
+E1(A001-A017)	offense_dispatch	false	13	108	92	170(30%)	133	252290	0	0.0%
+E1(A001-A017)	offense_dispatch	true	418	82	96	225(93%)	129	188930	7	1.7%
+E1(A001-A017)	yield_opt_dispatch	false	10	109	93	170(30%)	139	477329	0	0.0%
+E1(A001-A017)	yield_opt_dispatch	true	308	83	134	225(96%)	142	296741	53	17.2%
+E2(A018-A095)	defense_dispatch	false	390	107	108	240(21%)	180	201796	0	0.0%
+E2(A018-A095)	defense_dispatch	true	3504	30	142	380(66%)	243	39969	1505	43.0%
+E2(A018-A095)	offense_dispatch	false	362	112	96	220(42%)	180	221446	0	0.0%
+E2(A018-A095)	offense_dispatch	true	6308	58	96	320(93%)	247	78503	489	7.8%
+E2(A018-A095)	yield_opt_dispatch	false	269	112	96	220(39%)	180	187597	0	0.0%
+E2(A018-A095)	yield_opt_dispatch	true	5420	58	140	320(95%)	247	78538	976	18.0%
+E3(A097-A099)	defense_dispatch	false	33	104	84	190(54%)	153	213443	0	0.0%
+E3(A097-A099)	defense_dispatch	true	154	59	84	260(90%)	158	118636	0	0.0%
+E3(A097-A099)	offense_dispatch	false	43	110	87	170(62%)	150	308484	0	0.0%
+E3(A097-A099)	offense_dispatch	true	373	96	94	220(97%)	213	231458	0	0.0%
+E3(A097-A099)	yield_opt_dispatch	false	24	110	86	170(62%)	150	470389	0	0.0%
+E3(A097-A099)	yield_opt_dispatch	true	123	96	91	220(95%)	213	145936	0	0.0%

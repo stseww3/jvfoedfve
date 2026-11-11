@@ -1,0 +1,22 @@
+t=1000 B=35k L=4628 密=7.6 在途中立=0 槽=0 nfs=1 sq=7.3k | 决策后 nb=2 neut=1
+    tryEmergencyBossRescue→false ×2
+    floors cap=463k avgNb=33k floorAt(2)=20k floorAt(20)=154k
+    warAct→false
+    expandNeutral(spend=16k)
+    dpNeutral→undef
+    dpKeep→16k
+    pickTarget(maxCost=338.15)→null
+    boatFood→false
+      · Uruguay#30 地 3928 兵 30k 我压它 0 它压我 0 接壤 27：allow=true price=26.11 floorFor=201k(f 201k) minShare=0.21
+      · [CAT]energy #7 地 5093 兵 36k 我压它 0 它压我 0 接壤 83：allow=true price=24.72×2 floorFor=95k(f 191k) minShare=0.21
+t=1005 B=35k L=4628 密=7.6 在途中立=0 槽=0 nfs=1 sq=8.8k | 决策后 nb=2 neut=1
+    tryEmergencyBossRescue→false ×2
+    floors cap=463k avgNb=33k floorAt(2)=15k floorAt(20)=154k
+    warAct→false
+    expandNeutral(spend=20k)
+    dpNeutral→undef
+    dpKeep→16k
+    pickTarget(maxCost=338.15)→null
+    boatFood→false
+      · Uruguay#30 地 4020 兵 30k 我压它 0 它压我 0 接壤 27：allow=true price=25.56 floorFor=197k(f 197k) minShare=0.21
+      · [CAT]energy #7 地 5174 兵 36k 我压它 0 它压我 0 接壤 83：allow=true price=24.37×2 floorFor=94k(f 188k) minShare=0.21

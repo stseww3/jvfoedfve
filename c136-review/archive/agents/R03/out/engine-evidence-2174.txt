@@ -1,0 +1,448 @@
+# engine-evidence  sha256=c7d41fee823185ea4d0ffaf6557141bce9d5b387fea67b5502b63d7139f5f551  chars=679968
+# 偏移是 JS 字符串下标（UTF-16 码元），以上述 sha256 的 live_game_js.js 为准。
+
+[V1] 版本号 2.17.1
+    定位：dM @5927+616
+    L5: var dz = 2;
+    L6: var e0 = 17;
+
+[T1] 每拍名义时长 56 ms
+    定位：dX @674140+678
+    L5: this.aEY = 56;
+
+[T2] 联机循环：每个服务器回合包推进 7 拍
+    定位：af2.af6 @671622+283
+    L3: if (this.af1 !== this.aK3 * 7) {
+
+[T3] 联机循环：积压时一次补跑一个回合剩下的 af4-1 拍
+    定位：af2 @670729+1294
+    L7: this.af4 = 7;
+
+[T4] 一拍内各子系统的执行顺序（n8）
+    定位：n8 @36934+347
+    L3: b2.ee();
+    L4: aH.ee();
+    L5: ao.ee();
+    L6: af.ee();
+    L7: b5.ee();
+    L8: aG.ee();
+    L9: ap.ee();
+    L10: bQ.z.ee();
+    L11: am.n9();
+    L12: aW.ee();
+    L13: b0.ee();
+    L14: bY.ee();
+    L15: ag.ee();
+    L16: ag.nA();
+    L17: aX.ee();
+    L18: bS.ee();
+    L19: aV.ee();
+    L20: aQ.ee();
+    L21: b9.nB();
+    L22: aO.ee();
+    L23: b6.ee();
+    L24: aS.ee();
+    L25: ax.ee();
+    L26: bg.ee();
+    L27: bk.ee();
+    L28: b1.z.ee();
+    L29: b1.nC.ee();
+    L30: u.ee();
+    L31: bX.eS.ee();
+    L32: bC.ee();
+    L33: bi.ee();
+
+[T5] 单机循环：按 bi.aEY 的整数倍推进，不补拍
+    定位：afN.ee @673678+461
+    L9: eZ += bi.aEY * Math.floor(1 + (bi.eZ - eZ) / bi.aEY);
+
+[C1] 全局常量：最多 512 人、兵力硬顶 15e8、软上限顶 1e9、欠款顶 5e4、每格基础成本 2、硬上限倍数 150
+    定位：c5 @153158+2642
+    L2: this.fW = 512;
+    L3: this.a6e = 15e8;
+    L4: this.a7X = 1e9;
+    L5: this.a6n = 5e4;
+    L7: this.gt = 2;
+    L15: this.a6d = 150;
+
+[C2] 整数除法 g0(a,b)=floor((a+0.5)/b)
+    定位：c1.g0 @494351+55
+    L2: return Math.floor((fs + .5) / ft);
+
+[C3] 整数开方 aQk（牛顿迭代）
+    定位：aQk @493934+104
+    L2: var ej = bO.g0(g1 + 1, 2);
+    L4: ej = bO.g0(ej + bO.g0(g1, ej), 2);
+
+[E1] 利息每 10 拍结算（t%10==9）
+    定位：cd.ee @348475+52
+    L2: if (bi.kr() % 10 !== 9) {
+
+[E2] 领土收入每 100 拍结算（t%100==99）
+    定位：cd.aMj @349346+70
+    L5: if (bi.kr() % 100 !== 99) {
+
+[E3] 利息表：100 + isqrt(25600*i/508)，i=0..511
+    定位：cd.dr @348037+133
+    L4: var kA = 100;
+    L6: aMg[aC] = kA + aMh(bO.g0(aC * 25600, fZ - 4), 9);
+
+[E4] 利息率：查表下标 = floor(511*领土/全图陆地)
+    定位：cd.aMi @348527+297
+    L5: var eH = aMg[bO.g0((aE.fW - 1) * ah.hN[player], aE.ke)];
+
+[E5] 利息率：t<1920 的开局下限 floor(100*(13440-6t)/1920)
+    定位：cd.aMi @348527+297
+    L6: if (bi.kr() < 1920) {
+    L7: eH = Math.max(bO.g0(100 * (13440 - 6 * bi.kr()), 1920), eH);
+
+[E6] 利息率：超过软上限后的扣减 floor(2*r*(B-cap)/cap)，最后夹在 0..700
+    定位：cd.aMi @348527+297
+    L11: eH -= bO.g0(2 * eH * (ah.hb[player] - kZ), kZ);
+    L13: return Math.min(Math.max(eH, 0), 700);
+
+[E7] 软上限 = min(100*领土, 1e9)
+    定位：cd.ka @348824+68
+    L2: return Math.min(100 * ah.hN[player], aE.a7X);
+
+[E8] 离开的真人（状态 2）利息率为 0
+    定位：cd.aMi @348527+297
+    L2: if (bD.gv.kH(player) && player < aE.ku) {
+
+[E9] 利息入账：max(floor(r*B/1e4),1)，经 gy 入账
+    定位：cd.aMo @349416+165
+    L7: var aMs = bO.g0(af.aEX(h7) * hb[h7], 1e4);
+    L8: bD.gv.gy(h7, Math.max(aMs, 1));
+
+[E10] 领土收入：默认 tIncomeType=0 → floor(32*领土/32)=领土
+    定位：cd.aMq @349581+134
+    L4: aMu(32);
+
+[E11] 领土收入入账
+    定位：cd.aMu @349715+122
+    L6: bD.gv.gy(h7, bO.g0(o7 * hN[h7], 32));
+
+[E12] 利息倍率类型（默认 iIncomeType=0 → 不缩放）
+    定位：cd.dk @348170+305
+    L3: if (aE.data.iIncomeType === 0) {
+
+[E13] 默认场景数据：aIncomeType=0、tIncomeType=0、tIncomeValue=32、iIncomeType=0、iIncomeValue=64
+    定位：a7b @155800+1050
+    L38: this.aIncomeType = 0;
+    L41: this.tIncomeType = 0;
+    L42: this.tIncomeValue = 32;
+    L44: this.iIncomeType = 0;
+    L45: this.iIncomeValue = 64;
+
+[E14] 入账 gy：先夹到上限，再入账，再用余额抵欠款
+    定位：a5M.gy @145631+185
+    L2: g1 = this.a6a(player, g1);
+    L3: ah.hb[player] += g1;
+    L5: var min = Math.min(ah.a6b[player], ah.hb[player]);
+
+[E15] 入账上限 a6a：min(150*领土-B, 15e8-B)，不小于 0
+    定位：a5M.a6a @145816+142
+    L3: g1 = Math.min(g1, ah.hN[player] * aE.a6d - a6c);
+    L4: g1 = Math.min(g1, aE.a6e - a6c);
+    L5: return Math.max(g1, 0);
+
+[E16] 扣款 gw：余额不够时余额清零，差额按 5*(差额>>2) 记欠款，欠款顶 5e4
+    定位：a5M.gw @146703+302
+    L7: ah.hb[player] = 0;
+    L9: var gK = 5 * (gI >> 2);
+    L13: if (gM <= aE.a6n) {
+    L17: ah.a6b[player] = aE.a6n;
+
+[E17] 初始兵力：真人 512
+    定位：cE.adg @645535+163
+    L5: hb[aC] = 512;
+
+[A1] 陆攻指令处理：报价费率参数 12，最小兵力 0
+    定位：qj.i6 @51647+377
+    L11: if (!bD.gv.n2(player, jC, 12, 0)) {
+
+[A2] 报价 n2：兵 = floor(B*(pct+1)/1024)，费 = floor(k*B/1024)，兵 ≤ B-费
+    定位：a5M.n2 @145958+202
+    L3: var iI = bO.g0(a6c * (jC + 1), 1024);
+    L4: var a6h = bO.g0(a6f * a6c, 1024);
+    L5: iI = Math.min(iI, a6c - a6h);
+
+[A3] 付款 n4：B -= 兵 + 费
+    定位：a5M.n4 @147349+87
+    L3: ah.hb[player] -= iI + bR.g6[1];
+
+[A4] 陆攻前置：对局进行中、存活未离开、目标不是自己、目标可打（非队友；死人改成无主地）、有空槽或已在打
+    定位：qj.i6 @51647+377
+    L2: if (!bD.gv.hk(1)) {
+    L5: if (!bD.gv.hl(player)) {
+    L8: if (!bD.gv.rj(player, k3)) {
+    L14: if (!bD.gv.rk(player, k3)) {
+    L18: if (!ju && !ae.kY(player)) {
+
+[A5] 目标解析 rk：≥512 或已死 → 512（无主地）；否则要求 bv.fS（不同队）
+    定位：a5M.rk @147436+136
+    L2: k3 = Math.min(k3, aE.fW);
+    L3: if (k3 < aE.fW && ah.nU[k3] === 0) {
+    L7: return k3 === aE.fW || bv.fS(player, k3);
+
+[A6] 可打判定 fS：自己队号为 0 或与对方队号不同
+    定位：dh.fS @669310+81
+    L2: return bj.fX[player] === 0 || bj.fX[player] !== bj.fX[k3];
+
+[A7] 战线生成 jt：没有任何战线格 → 失败；新目标且没有新增战线格 → 失败（都发生在付款之前）
+    定位：jg.jt @21500+307
+    L8: if (bR.fV[1] === 0 && ah.h1[player].length === 0) {
+    L11: if (!ju && bR.fV[1] === ah.h1[player].length) {
+
+[A8] 战线格来源 jw：自己的「边界态」格且四邻有目标的格
+    定位：jg.jw @22087+266
+    L5: if (ad.k5(ah.hF[player][aC])) {
+    L7: if (ad.h9(ah.hF[player][aC] + fb[iQ]) && ad.fR(ah.hF[player][aC] + fb[iQ]) === k3) {
+
+[A9] 提交 jz：登记进攻槽并进入推进调度（首次等待标记 64）
+    定位：jg.jz @21807+98
+    L3: ae.ei(player, bR.g6[0], bR.fV[0]);
+    L4: aG.k1(player, false);
+
+[A10] 进攻槽数：真人 <16 人的局 12 个，否则 8 个；内置 AI 4 个
+    定位：cc.dk @345400+313
+    L2: aMX = aE.ku < 16 ? 12 : 8;
+    L3: aMY = 4;
+
+[A11] 同目标再发兵：并入已有槽，兵力顶 15e8；新目标占新槽并标记「新发」
+    定位：cc.ei @347183+428
+    L9: iI[lp + aC] += aMf;
+    L10: iI[lp + aC] = iI[lp + aC] > aE.a6e ? aE.a6e : iI[lp + aC];
+    L16: aMZ[lp + size[player]] = 1;
+
+[A12] 撤回 r2：目标夹到 512，要求正在打它，然后 ru
+    定位：qj.r2 @53086+208
+    L12: k3 = Math.min(k3, aE.fW);
+    L13: if (!ae.kF(player, k3)) {
+    L17: ae.ru(player, k3);
+
+[A13] 撤回 ru：槽里的兵清零并经 gy 回到余额（超上限部分丢失）
+    定位：cc.ru @345714+119
+    L3: this.ha(aB1, aMb, 0);
+    L4: var aMd = bD.gv.gy(aB1, aMc);
+
+[A14] 内置 AI 的陆攻提交 k2：同样收 12/1024 的费，发兵 ≥ 余额一半时费从兵里扣
+    定位：jg.k2 @21905+182
+    L2: var k4 = bO.g0(12 * ah.hb[player], 1024);
+    L3: iI -= iI >= bO.g0(ah.hb[player], 2) ? k4 : 0;
+    L6: ah.hb[player] -= iI + k4;
+
+[A15] 指令编码：id 4 位 + 玩家 9 位；陆攻 pct 10 位 + 目标 10 位
+    定位：ql.ee @50269+545
+    L7: id = bK.rU(4);
+    L8: gI = bK.rU(9);
+    L12: this.rV(id, gI, bK.rU(10), bK.rU(10));
+
+[S1] 调度 k1：已在表里不重复登记；新登记等待值 64（来自船/山为 2）
+    定位：cA.k1 @38302+119
+    L8: nL[player] = nR ? 2 : 64;
+
+[S2] 调度节拍 nM：64→6；领土 <1e3:3、<1e4:2、<6e4:1、否则 0
+    定位：cA.nM @37989+181
+    L3: nL[player] = 6;
+    L6: if (ea < 1e3) {
+    L7: nL[player] = 3;
+    L9: nL[player] = 2;
+    L11: nL[player] = 1;
+    L13: nL[player] = 0;
+
+[S3] 调度主循环：等待值 64 只换算不推进；等待值减到 0 的那拍推进一步
+    定位：cA.ee @37615+196
+    L3: if (nL[nK[aC]] === 64) {
+    L5: } else if (nL[nK[aC]]-- === 0) {
+
+[S4] 全场第一名领土 ≥16 万 / ≥30 万时，大玩家每拍额外推进
+    定位：cA.ee @37615+196
+    L10: if (ah.hN[mV[0]] >= 16e4) {
+    L12: if (ah.hN[mV[0]] >= 3e5) {
+
+[S5] 额外推进 nN：只对等待值为 0 且领土 ≥ 阈值的玩家
+    定位：cA.nN @37811+95
+    L3: if (nL[nK[aC]] === 0 && ah.hN[nK[aC]] >= nP) {
+
+[X1] 战线上限 2048 格
+    定位：gc @13572+111
+    L3: gW = 2048;
+
+[X2] 推进 gd：先拷贝战线、战线格退回边界态，再按槽号从大到小逐个进攻推进
+    定位：gd @13683+108
+    L6: for (var aC = ae.gg(gQ) - 1; aC >= 0; aC--) {
+
+[X3] 拷贝战线 ge：只取战线表前 min(长度,2048) 项
+    定位：ge @14255+156
+    L4: var fZ = Math.min(h1[player].length, gW);
+
+[X4] 候选格（打无主地）：战线格四邻中的无主陆地，去重
+    定位：h5 @14769+170
+    L8: if (ga[h8] === 0 && ad.fQ(h7)) {
+
+[X5] 候选格（打玩家）：战线格四邻中属于目标的格，去重
+    定位：h6 @14583+186
+    L8: if (ga[h8] === 0 && ad.h9(h7) && ad.fR(h7) === gU) {
+
+[X6] 没有候选格 → 结束进攻（gp）
+    定位：gh @13821+122
+    L6: if (gV === 0) {
+
+[X7] 人均兵 gr：per=floor(兵/候选数)，per>2 才继续；不够且是新发则从余额补到 3*候选数
+    定位：gr @13943+147
+    L2: gT = bO.g0(gR, gV);
+    L3: if (gT > aE.gt) {
+    L6: if (!gS) {
+    L9: var gu = gV * (1 + aE.gt);
+    L10: gR += bD.gv.gw(gQ, gu - gR);
+    L11: gT = bO.g0(gR, gV);
+
+[X8] 结束进攻 gp：剩余兵经 gy 回余额，最后一个槽结束时退出调度
+    定位：gp @14158+97
+    L3: aG.gx(gQ);
+    L5: var ea = bD.gv.gy(gQ, gR);
+    L7: ae.h0(gQ, gP);
+
+[X9] 打无主地 hQ：成本 = 2*候选数，必成
+    定位：hQ @15852+65
+    L2: var hd = gV * aE.gt;
+    L3: gR -= hd;
+    L5: return true;
+
+[X10] 打玩家 hR：成本 = 2*候选数 + 2*防御 + 对攻兵；可用 = per*候选数；可用 > 成本才占地
+    定位：hR @15293+285
+    L2: var hS = gV * aE.gt;
+    L5: var hX = hS + 2 * hT + hV;
+    L6: var hY = gT * gV;
+    L7: if (hY > hX) {
+
+[X11] 防御量 hU = floor(候选数*目标余额 / (1+floor(10*目标领土/16)))
+    定位：hU @15786+66
+    L2: return bO.g0(gV * ah.hb[gU], 1 + bO.g0(10 * ah.hN[gU], 16));
+
+[X12] 对攻兵 hW = 目标正在打我的那个槽里的兵
+    定位：hW @15752+34
+    L2: return ae.hc(gU, gQ);
+
+[X13] 新发且无对攻时兵不够：从余额补足「成本-可用+1」后照样占地
+    定位：hR @15293+285
+    L13: if (gS && hV === 0) {
+    L15: hY += bD.gv.gw(gQ, hX - hY + 1);
+
+[X14] 兵不够且不满足补足条件：可用兵全部打掉，不占地，进攻结束
+    定位：hR @15293+285
+    L22: hZ(hY - hS, hV);
+    L23: return false;
+
+[X15] 伤害 hZ：先 1:1 抵消对攻槽里的兵，剩余的一半（向下取整）从目标余额扣，不低于 0
+    定位：hZ @15578+174
+    L3: if (hY <= hV) {
+    L5: ae.ha(gU, gQ, hV - hY);
+    L11: hY = bO.g0(hY, 2);
+    L12: hY = Math.min(ah.hb[gU], hY);
+    L14: ah.hb[gU] -= hY;
+
+[X16] 占地 hB：槽内剩余兵写回（不小于 0）、清「新发」标记、领土 += 候选数
+    定位：hB @15156+78
+    L3: ae.hL(gQ, gP, gR);
+    L4: ae.hM(gQ, gP);
+    L5: ah.hN[gQ] += gV;
+
+[X17] 新占的格进入战线表和边界表
+    定位：hP @15917+106
+    L3: ah.h1[gQ].push(gX[aC]);
+    L4: ah.hF[gQ].push(gX[aC]);
+
+[X18] 失地方 hD：领土 -= 候选数（兵力不随失地另行扣减）
+    定位：dh.hD @668000+34
+    L2: ah.hN[gU] -= gV;
+
+[X19] 推进后刷新战线 gj：只保留四邻有无主地或他人格的战线格
+    定位：dh.gj @667248+276
+    L8: if (ad.fQ(h7) || ad.h9(h7) && ad.fR(h7) !== gQ) {
+
+[D1] 存活检查 aOV：领土 ≤ floor(峰值/4) → 崩溃；领土 ≥ 峰值 → 峰值=领土；否则峰值每拍下降 max(1,floor((峰值-领土)/1000))
+    定位：cZ.aOV @372566+272
+    L10: if (ea <= bO.g0(lp, 4)) {
+    L11: al.dt(h7);
+    L13: a0i[h7] = ea;
+    L18: a0i[h7] = lp - Math.max(1, bO.g0(lp - ea, 1e3));
+
+[D2] 崩溃 dt：海上有船 → 只清空领土与兵力但不出局；否则出局
+    定位：cY.dt @333688+156
+    L3: if (bQ.z.ky[h7]) {
+    L5: aL3(h7);
+    L10: this.aL4(h7);
+    L16: this.aL4(h7);
+
+[D3] 出局 aL4 的顺序：改道进攻者、清领土、清余额、标记死亡、退出调度、清进攻槽、清船
+    定位：cY.aL4 @334245+140
+    L2: aLC(player);
+    L4: aL8(player);
+    L5: aL9(player);
+    L6: aLD(player);
+    L7: aG.gx(player);
+    L8: ae.clear(player);
+    L9: bQ.aLE.aLF(player);
+
+[D4] 清领土 aL8：包围盒内属于该玩家的格全部变成无主陆地
+    定位：cY.aL8 @335416+347
+    L15: ad.a19(h7);
+
+[D5] 清余额 aL9：余额与欠款归零
+    定位：cY.aL9 @334080+165
+    L6: ah.hb[player] = 0;
+    L7: ah.a6b[player] = 0;
+
+[D6] 进攻者改道 aLK：打死者的槽改成打无主地（兵力并入）
+    定位：cc.aLK @345958+155
+    L7: this.h0(player, aC);
+    L8: this.ei(player, aMf, aE.fW);
+
+[B1] 捐款 rD：费 = floor(64*捐出方余额/1024)，额 ≤ 余额-费，再夹到受捐方入账上限，≥1 才成立
+    定位：a5M.rD @146160+162
+    L3: var a6h = bO.g0(64 * a6c, 1024);
+    L4: qv = Math.min(qv, a6c - a6h);
+    L5: qv = this.a6a(qu, qv);
+    L8: return qv >= 1;
+
+[B2] 捐款指令 qv：仅组队局、受捐方存活且是队友、过受捐额度 ao.ei
+    定位：qj.qv @52024+292
+    L8: if (!aE.iT) {
+    L14: if (!bD.gv.rn(player, qu)) {
+    L20: if (!ao.ei(qu, bR.g6[0])) {
+
+[B3] 受捐额度 ca：每个受捐者累计点数不得超过全场额度 aOY（初值 15，每 100 拍 +4/6/8/10）
+    定位：ca @372839+1023
+    L6: aOY = 15;
+    L55: if (aOX[a9h] + g1 > aOY) {
+    L66: aOY += 4;
+    L68: aOY += 6;
+    L70: aOY += 8;
+    L72: aOY += 10;
+
+[B4] 受捐点数 aOc：随时间分段
+    定位：ca.aOc @373222+304
+    L3: if (ej >= 3213) {
+    L4: return 4 + bO.g0(100 * aOa, af.ka(a9h));
+    L6: var uv = 1 + bO.g0(aE.ke, 300);
+    L7: if (ej < 357) {
+    L10: if (ej < 714) {
+    L13: if (ej < 1071) {
+    L16: if (ej < 2142) {
+
+[B5] 受捐额度豁免：单机、t≥4284、受捐方是内置 AI/已离开
+    定位：ca.aOb @373800+61
+    L2: return aE.lE || bi.kr() >= 4284 || bD.gv.kH(a9h);
+
+[B6] 发船/追船报价费率参数 32
+    定位：qj.iB @52316+348
+    L19: if (!bD.gv.n2(player, jC, 32, 0)) {
+
+[B7] 翻山进攻 m6：费 = max(floor(B/10), 1000)
+    定位：a5M.m6 @147005+344
+    L5: var a6h = Math.max(bO.g0(a6c, 10), 1e3);
+
+# 条目 78，问题 1
+# V1 COUNT 2 != 3 in dM

@@ -1,0 +1,51 @@
+t=3300 B=1.51M L=77159 密=19.5 在途中立=138k 槽=1 nfs=1 sq=351k | 决策后 nb=2 neut=91
+    tryEmergencyBossRescue→false
+    safeFinite→0
+    dpKeep→834k
+    expandNeutral(spend=672k)
+    buyLand→false
+    offers→2
+        报价 Player 691#5：c=28.16 need=3.04M inAtk=0 tD=0.97 person
+        报价 Player 804#11：c=279.9 need=508k inAtk=0 tD=8.62 person
+    tryDonateToTeammate→false
+    idleBoats→undef
+    boatFood→false
+    safeFinite→0
+    dpKeep→834k
+      · （不针对目标）：safeAt=834k×2
+      · Player 691#5 地 126195 兵 1.60M 我压它 0 它压我 0 接壤 398：elimCost=3.04M×2
+      · Player 804#11 地 2580 兵 292k 我压它 0 它压我 0 接壤 18：elimCost=508k
+t=3305 B=2.09M L=77619 密=26.9 在途中立=137k 槽=1 nfs=1 sq=377k | 决策后 nb=2 neut=94
+    tryEmergencyBossRescue→false
+    safeFinite→0
+    dpKeep→824k
+    expandNeutral(spend=1.27M)
+    buyLand→true
+    offers→2
+        报价 Player 691#5：c=18.9 need=2.88M inAtk=166k tD=0.87 person/onMe
+        报价 Player 804#11：c=283.49 need=508k inAtk=0 tD=8.79 person
+    safeFinite→0
+    dpKeep→824k
+      send(Player 691#5, 206k)→true
+    safeFinite→0
+    dpKeep→824k
+      · （不针对目标）：safeAt=824k×2
+      · Player 691#5 地 126195 兵 1.42M 我压它 0 它压我 166k 接壤 401：elimCost=2.71M×2 safeAt=824k
+      · Player 804#11 地 2580 兵 292k 我压它 0 它压我 0 接壤 18：elimCost=508k
+t=3310 B=2.13M L=78076 密=27.2 在途中立=136k 槽=1 nfs=1 sq=422k | 决策后 nb=2 neut=90
+    tryEmergencyBossRescue→false
+    safeFinite→0
+    dpKeep→839k
+    expandNeutral(spend=1.29M)
+    buyLand→true
+    offers→2
+        报价 Player 691#5：c=19.24 need=2.93M inAtk=166k tD=0.88 person/onMe
+        报价 Player 804#11：c=285.89 need=513k inAtk=0 tD=8.73 person
+    safeFinite→0
+    dpKeep→839k
+      send(Player 691#5, 205k)→true
+    safeFinite→0
+    dpKeep→839k
+      · （不针对目标）：safeAt=839k×2
+      · Player 691#5 地 126195 兵 1.44M 我压它 0 它压我 166k 接壤 403：elimCost=2.76M×2 safeAt=839k
+      · Player 804#11 地 2580 兵 295k 我压它 0 它压我 0 接壤 18：elimCost=513k

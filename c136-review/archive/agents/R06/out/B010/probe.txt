@@ -1,0 +1,1177 @@
+# B010 影子探针的逐报价账（strat_probe.mjs 的 --dump 输出，按号、按拍排序；同一拍只留一份）
+# 重新生成任意一块：bash c136-review/tools/run-heavy.sh node c136-review/agents/R06/scripts/strat_probe.mjs B010 --me squad --dump <号>:<拍>:<拍>:5
+# 本文件收录的号与拍：
+#   AltF4(59)：600 730 860 990 1120 1250 1380 1510 1640 1770 1900 2030 2160
+#   Chosokabe(61)：900 960 1020 1080 1140 1200 1260 1320 1380 1440 1500
+#   Mansa Musa(62)：1500 1615 1730 1845 1960 2075 2190 2305 2420 2535 2650 2765 2880 2995 3110 3225 3330 3335 3340 3345 3390 3395 3400 3405 3410 3420 3590 3760 3930 4100 4270 4440 4610 4770 4780 4800 4805 4810 4815 4820 4825 4860 4905 4950 4995 5040 5065 5070 5075 5080 5085 5130 5175 5220 5265 5310 5355 5400 5460 5520 5580 5640 5700 5760 5820 5880 5940 6000 6060
+#   Cleopatra(63)：1500 1590 1680 1770 1860 1950 2040 2130 2220 2310 2400 2490 2580 2670 2760 2850 2940 3030 3120 3210 3300 3390 3480 3570 3660
+#   Bowser(64)：1500 1540 1580 1620 1660 1700 1740 1780 1820 1860 1900
+#   BlackRock(65)：1500 1595 1690 1785 1880 1975 2070 2095 2110 2125 2140 2155 2165 2170 2185 2200 2215 2230 2245 2260 2355 2450 2580 2710 2840 2970 3100 3230 3360 3365 3370 3375 3390 3420 3450 3480 3510 3540 3570 3600 3630 3640 3780 3920 3985 3990 3995 4000 4060 4200 4340 4480 4620 4760 4900 5040 5180 5320 5460 5600 5630 5660 5690 5720 5750 5780 5810 5840 5900 5930 5960 5990 6020 6050 6080 6110
+#   Enderman(77)：1500 1620 1740 1860 1980 2100 2220 2340 2510 2680 2850 3020 3190 3360 3530 3700 3870 3945 3950 3955 3960 4020 4170 4320 4470 4620 4760 4765 4770 4775 4780 4785 4790 4795 4800 4805 4810 5300 5315 5330 5345 5360 5375 5390 5405
+
+[探针·开局段] t=600 AltF4(59·队8) 地 510 兵 940 密 1.8 ｜策略眼里 nb=1 neut=15 ｜dpKeep=0 safeFinite=0
+        邻居 Shan States(491·AI) 非真人 接35 地416 兵478 price=5.7 → L2147 botOk=false：botPx=4.0 > winWorth=2.2（=winR×t×自己密度）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=730 AltF4(59·队8) 地 1052 兵 1558 密 1.5 ｜策略眼里 nb=1 neut=32 ｜dpKeep=0 safeFinite=0
+        邻居 Shan States(491·AI) 非真人 接56 地574 兵573 price=5.2 → L2147 botOk=false：botPx=3.8 > winWorth=2.2（=winR×t×自己密度）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=860 AltF4(59·队8) 地 1460 兵 4533 密 3.1 ｜策略眼里 nb=1 neut=38 ｜dpKeep=0 safeFinite=0
+        邻居 Shan States(491·AI) 非真人 接66 地753 兵27 price=2.1 → L1208 可出兵 1671
+        影子 act() 这一拍发出：无
+[探针·开局段] t=990 AltF4(59·队8) 地 2421 兵 6429 密 2.7 ｜策略眼里 nb=3 neut=7 ｜dpKeep=1538 safeFinite=625（经由 Bilayanga(386·AI)；它的另一个邻居 Zulu Empire(304·AI)·内置AI）
+        邻居 Player 802(15·队1) 真人 接53 地4560 兵3682 price=4.6 → L1197 可用兵 -12k 不足（底线 18k）
+        邻居 Bilayanga(386·AI) 非真人 接18 地1033 兵41 price=2.1 → L1208 可出兵 1931
+        邻居 Shan States(491·AI) 非真人 接82 地1066 兵49 price=2.1 → L1208 可出兵 2355
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1120 AltF4(59·队8) 地 2418 兵 6797 密 2.8 ｜策略眼里 nb=3 neut=0 ｜dpKeep=5075 safeFinite=617（经由 Shan States(491·AI)；它的另一个邻居 Bilayanga(386·AI)·内置AI）
+        邻居 Player 802(15·队1) 真人 接32 地5395 兵13k price=9.5 → L1197 可用兵 -32k 不足（底线 38k）
+        邻居 Shan States(491·AI) 非真人 接84 地760 兵795 price=5.3 → L1208 可出兵 1285
+        邻居 Bilayanga(386·AI) 非真人 接5 地537 兵617 price=5.7 → L1208 可出兵 1285
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1250 AltF4(59·队8) 地 1807 兵 8456 密 4.7 ｜策略眼里 nb=2 neut=0 ｜dpKeep=7402 safeFinite=0
+        邻居 Player 802(15·队1) 真人 接37 地6006 兵16k price=10.5 → L1197 可用兵 -23k 不足（底线 32k）
+        邻居 Shan States(491·AI) 非真人 接74 地1000 兵1178 price=5.8 → L1197 可用兵 1054 <= minSend(0.2141)×兵=1810：底线 7402 = max(winR 项 2961, dpKeep 7402, safeFinite 0)
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1380 AltF4(59·队8) 地 2107 兵 11k 密 5.3 ｜策略眼里 nb=2 neut=0 ｜dpKeep=3354 safeFinite=17k（经由 Shan States(491·AI)；它的另一个邻居 Player 802(15·队1)·敌方真人）
+        邻居 Player 802(15·队1) 真人 接48 地7380 兵9130 price=6.0 → L1197 可用兵 -9764 不足（底线 21k）
+        邻居 Shan States(491·AI) 非真人 接33 地379 兵13 price=2.1 → L1197 可用兵 -5475 <= minSend(0.2141)×兵=2389：底线 17k = max(winR 项 1573, dpKeep 3354, safeFinite 17k〔经由 Shan States(491·AI) 的另一个邻居 Player 802(15·队1)·敌方真人〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针] t=1510 AltF4(59·队8) 地 1716 兵 14k 密 8.4 ｜策略眼里 nb=1 neut=2 ｜worth=12.6（m=1.498）cheap=4.4 超软上限=否 其余真人密度中位=16 ｜NFS 锁=是 影子配额=3599
+        报价 Player 802(15·队1) 真人 接66 地8180 兵25k 密3 tD=0.19 c=9.1 need=56k safe=12k(封顶 88×地；原 12k) keep=12k avail=1795 → L5528 买不起整笔（want=71k）且 avail=1795 不足 chunk×兵=2879 → 跳过
+        影子 act() 这一拍发出：攻→无主地 47‰ 674
+[探针] t=1640 AltF4(59·队8) 地 1425 兵 14k 密 9.6 ｜策略眼里 nb=1 neut=0 ｜worth=14.1（m=1.479）cheap=5.3 超软上限=否 其余真人密度中位=19 ｜NFS 锁=是 影子配额=2424
+        报价 Player 802(15·队1) 真人 接53 地8399 兵28k 密3 tD=0.17 c=9.8 need=62k safe=14k(封顶 88×地；原 14k) keep=14k avail=-993 → L5361 avail<=0：保底线 keep=14k（safe=14k，来自 dpKeep=14k）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=1770 AltF4(59·队8) 地 1425 兵 18k 密 13.0 ｜策略眼里 nb=1 neut=0 ｜worth=18.9（m=1.460）cheap=6.8 超软上限=否 其余真人密度中位=19 ｜NFS 锁=是 影子配额=4613
+        报价 Player 802(15·队1) 真人 接53 地8399 兵44k 密5 tD=0.28 c=14.3 need=91k safe=23k(封顶 88×地；原 23k) keep=23k avail=-5207 → L5361 avail<=0：保底线 keep=23k（safe=23k，来自 dpKeep=23k）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=1900 AltF4(59·队8) 地 1425 兵 25k 密 17.3 ｜策略眼里 nb=1 neut=0 ｜worth=25.0（m=1.440）cheap=9.3 超软上限=否 其余真人密度中位=23 ｜NFS 锁=是 影子配额=5825
+        报价 Player 802(15·队1) 真人 接53 地8399 兵70k 密8 tD=0.36 c=21.7 need=137k safe=38k(封顶 88×地；原 38k) keep=38k avail=-14k → L5361 avail<=0：保底线 keep=38k（safe=38k，来自 dpKeep=38k）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=2030 AltF4(59·队8) 地 725 兵 10k 密 13.9 ｜策略眼里 nb=1 neut=0 ｜worth=19.4（m=1.393）cheap=10.0 超软上限=否 其余真人密度中位=25 ｜NFS 锁=是 影子配额=2524
+        报价 Player 802(15·队1) 真人 接26 地6850 兵31k 密5 tD=0.19 c=13.3 need=62k [被别人打,pulse] safe=17k(封顶 88×地；原 17k) keep=17k avail=-7080 → L5361 avail<=0：保底线 keep=17k（safe=17k，来自 dpKeep=17k）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=2160 AltF4(59·队8) 地 805 兵 11k 密 13.3 ｜策略眼里 nb=1 neut=0 ｜worth=16.7（m=1.257）cheap=10.0 超软上限=否 其余真人密度中位=24 ｜NFS 锁=是 影子配额=2670
+        报价 Player 802(15·队1) 真人 接28 地2663 兵9590 密4 tD=0.15 c=6.3 need=6768 [将崩,被别人打,pulse] safe=4709(封顶 88×地；原 4709) keep=4709 avail=5850 → L5507 出兵（将崩目标：pulse）：2030（19.0% 兵）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=900 Chosokabe(61·队8) 地 2081 兵 13k 密 6.1 ｜策略眼里 nb=6 neut=0 ｜dpKeep=9750 safeFinite=20k（经由 Rozwi Empire(238·AI)；它的另一个邻居 United Kingdom(57·队4)·敌方真人）
+        邻居 Bornu Empire(97·AI) 非真人 接37 地388 兵222 price=3.8 → L1197 可用兵 -7859 <= minSend(0.2141)×兵=2702：底线 20k = max(winR 项 3490, dpKeep 9750, safeFinite 20k〔经由 Rozwi Empire(238·AI) 的另一个邻居 United Kingdom(57·队4)·敌方真人〕)；去掉 safeFinite 项就能出兵
+        邻居 Player 123(36·队5) 真人 接28 地7226 兵13k price=7.6 → L1197 可用兵 -62k 不足（底线 74k）
+        邻居 Rozwi Empire(238·AI) 非真人 接76 地838 兵874 price=5.3 → L1197 可用兵 -7859 <= minSend(0.2141)×兵=2702：底线 20k = max(winR 项 4459, dpKeep 9750, safeFinite 20k〔经由 Rozwi Empire(238·AI) 的另一个邻居 United Kingdom(57·队4)·敌方真人〕)；去掉 safeFinite 项就能出兵
+        邻居 United Kingdom(57·队4) 真人 接11 地5982 兵20k price=13.0 → L1197 可用兵 -25k 不足（底线 37k）
+        邻居 Palembang Sultanate(508·AI) 非真人 接18 地387 兵420 price=5.5 → L1197 可用兵 -7859 <= minSend(0.2141)×兵=2702：底线 20k = max(winR 项 4546, dpKeep 9750, safeFinite 20k〔经由 Rozwi Empire(238·AI) 的另一个邻居 United Kingdom(57·队4)·敌方真人〕)；去掉 safeFinite 项就能出兵
+        邻居 Bruh Union(20·队5) 真人 接41 地6341 兵19k price=11.4 → L1197 可用兵 -25k 不足（底线 37k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=960 Chosokabe(61·队8) 地 2081 兵 16k 密 7.7 ｜策略眼里 nb=5 neut=13 ｜dpKeep=12k safeFinite=24k（经由 Rozwi Empire(238·AI)；它的另一个邻居 United Kingdom(57·队4)·敌方真人）
+        邻居 Bornu Empire(97·AI) 非真人 接37 地388 兵279 price=4.3 → L1197 可用兵 -8339 <= minSend(0.2141)×兵=3432：底线 24k = max(winR 项 3555, dpKeep 12k, safeFinite 24k〔经由 Rozwi Empire(238·AI) 的另一个邻居 United Kingdom(57·队4)·敌方真人〕)；去掉 safeFinite 项就能出兵
+        邻居 Player 123(36·队5) 真人 接28 地7275 兵19k price=10.6 → L1197 可用兵 -45k 不足（底线 61k）
+        邻居 Rozwi Empire(238·AI) 非真人 接74 地809 兵16 price=2.1 → L1197 可用兵 -8339 <= minSend(0.2141)×兵=3432：底线 24k = max(winR 项 2206, dpKeep 12k, safeFinite 24k〔经由 Rozwi Empire(238·AI) 的另一个邻居 United Kingdom(57·队4)·敌方真人〕)；去掉 safeFinite 项就能出兵
+        邻居 United Kingdom(57·队4) 真人 接19 地6492 兵24k price=14.0 → L1197 可用兵 -14k 不足（底线 30k）
+        邻居 Bruh Union(20·队5) 真人 接51 地7143 兵15k price=8.8 → L1197 可用兵 -14k 不足（底线 30k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1020 Chosokabe(61·队8) 地 2041 兵 22k 密 10.6 ｜策略眼里 nb=5 neut=2 ｜dpKeep=19k safeFinite=36k（经由 Rozwi Empire(238·AI)；它的另一个邻居 United Kingdom(57·队4)·敌方真人）
+        邻居 Bornu Empire(97·AI) 非真人 接40 地428 兵0 price=2.0 → L1197 可用兵 -14k <= minSend(0.2141)×兵=4653：底线 36k = max(winR 项 2001, dpKeep 19k, safeFinite 36k〔经由 Rozwi Empire(238·AI) 的另一个邻居 United Kingdom(57·队4)·敌方真人〕)；去掉 safeFinite 项仍不够
+        邻居 Player 123(36·队5) 真人 接28 地7275 兵32k price=16.2 → L1197 可用兵 -88k 不足（底线 110k）
+        邻居 Rozwi Empire(238·AI) 非真人 接78 地552 兵964 price=7.6 → L1197 可用兵 -14k <= minSend(0.2141)×兵=4653：底线 36k = max(winR 项 5111, dpKeep 19k, safeFinite 36k〔经由 Rozwi Empire(238·AI) 的另一个邻居 United Kingdom(57·队4)·敌方真人〕)；去掉 safeFinite 项仍不够
+        邻居 United Kingdom(57·队4) 真人 接25 地6927 兵36k price=18.6 → L1197 可用兵 -33k 不足（底线 55k）
+        邻居 Bruh Union(20·队5) 真人 接52 地8033 兵27k price=13.0 → L1197 可用兵 -33k 不足（底线 55k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1080 Chosokabe(61·队8) 地 1993 兵 26k 密 13.1 ｜策略眼里 nb=5 neut=2 ｜dpKeep=21k safeFinite=39k（经由 Rozwi Empire(238·AI)；它的另一个邻居 United Kingdom(57·队4)·敌方真人）
+        邻居 Rozwi Empire(238·AI) 非真人 接47 地344 兵0 price=2.0 → L1197 可用兵 -13k <= minSend(0.2141)×兵=5569：底线 39k = max(winR 项 1845, dpKeep 21k, safeFinite 39k〔经由 Rozwi Empire(238·AI) 的另一个邻居 United Kingdom(57·队4)·敌方真人〕)；去掉 safeFinite 项仍不够
+        邻居 Player 123(36·队5) 真人 接28 地7275 兵40k price=19.7 → L1197 可用兵 -39k 不足（底线 65k）
+        邻居 United Kingdom(57·队4) 真人 接58 地7263 兵39k price=19.3 → L1197 可用兵 -5998 不足（底线 32k）
+        邻居 Bornu Empire(97·AI) 非真人 接40 地428 兵0 price=2.0 → L1197 可用兵 -13k <= minSend(0.2141)×兵=5569：底线 39k = max(winR 项 1845, dpKeep 21k, safeFinite 39k〔经由 Rozwi Empire(238·AI) 的另一个邻居 United Kingdom(57·队4)·敌方真人〕)；去掉 safeFinite 项仍不够
+        邻居 Bruh Union(20·队5) 真人 接52 地8332 兵38k price=16.6 → L1197 可用兵 -1629 不足（底线 28k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1140 Chosokabe(61·队8) 地 1950 兵 33k 密 17.0 ｜策略眼里 nb=5 neut=2 ｜dpKeep=31k safeFinite=55k（经由 Rozwi Empire(238·AI)；它的另一个邻居 United Kingdom(57·队4)·敌方真人）
+        邻居 Bornu Empire(97·AI) 非真人 接43 地471 兵0 price=2.0 → L1197 可用兵 -22k <= minSend(0.2141)×兵=7093：底线 55k = max(winR 项 1711, dpKeep 31k, safeFinite 55k〔经由 Rozwi Empire(238·AI) 的另一个邻居 United Kingdom(57·队4)·敌方真人〕)；去掉 safeFinite 项仍不够
+        邻居 Rozwi Empire(238·AI) 非真人 接47 地344 兵0 price=2.0 → L1197 可用兵 -22k <= minSend(0.2141)×兵=7093：底线 55k = max(winR 项 1711, dpKeep 31k, safeFinite 55k〔经由 Rozwi Empire(238·AI) 的另一个邻居 United Kingdom(57·队4)·敌方真人〕)；去掉 safeFinite 项仍不够
+        邻居 Player 123(36·队5) 真人 接28 地7275 兵58k price=27.4 → L1197 可用兵 -56k 不足（底线 89k）
+        邻居 United Kingdom(57·队4) 真人 接58 地7203 兵55k price=26.4 → L1197 可用兵 -9774 不足（底线 43k）
+        邻居 Bruh Union(20·队5) 真人 接52 地8332 兵56k price=23.7 → L1197 可用兵 -5352 不足（底线 38k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1200 Chosokabe(61·队8) 地 1855 兵 39k 密 21.1 ｜策略眼里 nb=5 neut=2 ｜dpKeep=42k safeFinite=72k（经由 Rozwi Empire(238·AI)；它的另一个邻居 United Kingdom(57·队4)·敌方真人）
+        邻居 Bornu Empire(97·AI) 非真人 接43 地516 兵0 price=2.0 → L1197 可用兵 -33k <= minSend(0.2141)×兵=8360：底线 72k = max(winR 项 1546, dpKeep 42k, safeFinite 72k〔经由 Rozwi Empire(238·AI) 的另一个邻居 United Kingdom(57·队4)·敌方真人〕)；去掉 safeFinite 项仍不够
+        邻居 Rozwi Empire(238·AI) 非真人 接49 地394 兵0 price=2.0 → L1197 可用兵 -33k <= minSend(0.2141)×兵=8360：底线 72k = max(winR 项 1546, dpKeep 42k, safeFinite 72k〔经由 Rozwi Empire(238·AI) 的另一个邻居 United Kingdom(57·队4)·敌方真人〕)；去掉 safeFinite 项仍不够
+        邻居 Player 123(36·队5) 真人 接27 地7275 兵78k price=36.1 → L1197 可用兵 -73k 不足（底线 112k）
+        邻居 United Kingdom(57·队4) 真人 接57 地7347 兵72k price=33.4 → L1197 可用兵 -13k 不足（底线 52k）
+        邻居 Bruh Union(20·队5) 真人 接52 地8373 兵64k price=26.5 → L1197 可用兵 -1920 不足（底线 41k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1260 Chosokabe(61·队8) 地 1592 兵 37k 密 23.0 ｜策略眼里 nb=5 neut=2 ｜dpKeep=45k safeFinite=70k（经由 Rozwi Empire(238·AI)；它的另一个邻居 Player 123(36·队5)·敌方真人）
+        邻居 Player 123(36·队5) 真人 接28 地7538 兵70k price=31.5 → L1197 可用兵 -47k 不足（底线 84k）
+        邻居 Bornu Empire(97·AI) 非真人 接43 地516 兵0 price=2.0 → L1197 可用兵 -33k <= minSend(0.2141)×兵=7827：底线 70k = max(winR 项 1263, dpKeep 45k, safeFinite 70k〔经由 Rozwi Empire(238·AI) 的另一个邻居 Player 123(36·队5)·敌方真人〕)；去掉 safeFinite 项仍不够
+        邻居 United Kingdom(57·队4) 真人 接58 地7728 兵82k price=35.9 → L1197 可用兵 -11k 不足（底线 48k）
+        邻居 Rozwi Empire(238·AI) 非真人 接33 地232 兵0 price=2.0 → L1197 可用兵 -33k <= minSend(0.2141)×兵=7827：底线 70k = max(winR 项 1263, dpKeep 45k, safeFinite 70k〔经由 Rozwi Empire(238·AI) 的另一个邻居 Player 123(36·队5)·敌方真人〕)；去掉 safeFinite 项仍不够
+        邻居 Bruh Union(20·队5) 真人 接48 地9238 兵77k price=28.7 → L1197 可用兵 -1565 不足（底线 38k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1320 Chosokabe(61·队8) 地 1267 兵 26k 密 20.9 ｜策略眼里 nb=4 neut=0 ｜dpKeep=61k safeFinite=0
+        邻居 Player 123(36·队5) 真人 接8 地7737 兵70k price=30.8 → L1197 可用兵 -100k 不足（底线 127k）
+        邻居 Bruh Union(20·队5) 真人 接35 地10074 兵83k price=28.4 → L1197 可用兵 -100k 不足（底线 127k）
+        邻居 United Kingdom(57·队4) 真人 接55 地7875 兵110k price=46.6 → L1197 可用兵 -37k 不足（底线 63k）
+        邻居 Bornu Empire(97·AI) 非真人 接45 地561 兵0 price=2.0 → L1197 可用兵 -34k <= minSend(0.2141)×兵=5670：底线 61k = max(winR 项 960, dpKeep 61k, safeFinite 0)
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1380 Chosokabe(61·队8) 地 893 兵 17k 密 18.8 ｜策略眼里 nb=4 neut=0 ｜dpKeep=72k safeFinite=0
+        邻居 Bruh Union(20·队5) 真人 接20 地10397 兵94k price=30.9 → L1197 可用兵 -72k 不足（底线 89k）
+        邻居 Player 123(36·队5) 真人 接3 地7788 兵61k price=27.1 → L1197 可用兵 -72k 不足（底线 89k）
+        邻居 United Kingdom(57·队4) 真人 接51 地7863 兵129k price=54.5 → L1197 可用兵 -28k 不足（底线 45k）
+        邻居 Bornu Empire(97·AI) 非真人 接45 地561 兵0 price=2.0 → L1197 可用兵 -55k <= minSend(0.2141)×兵=3602：底线 72k = max(winR 项 647, dpKeep 72k, safeFinite 0)
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1440 Chosokabe(61·队8) 地 777 兵 16k 密 21.2 ｜策略眼里 nb=4 neut=0 ｜dpKeep=86k safeFinite=0
+        邻居 Player 123(36·队5) 真人 接7 地7857 兵80k price=34.5 → L1197 可用兵 -61k 不足（底线 78k）
+        邻居 Bornu Empire(97·AI) 非真人 接39 地608 兵0 price=2.0 → L1197 可用兵 -70k <= minSend(0.2141)×兵=3531：底线 86k = max(winR 项 540, dpKeep 86k, safeFinite 0)
+        邻居 United Kingdom(57·队4) 真人 接40 地7726 兵155k price=66.1 → L1197 可用兵 -22k 不足（底线 39k）
+        邻居 Bruh Union(20·队5) 真人 接12 地10884 兵98k price=30.8 → L1197 可用兵 -61k 不足（底线 78k）
+        影子 act() 这一拍发出：无
+[探针] t=1500 Chosokabe(61·队8) 地 534 兵 10k 密 19.5 ｜策略眼里 nb=4 neut=0 ｜worth=29.2（m=1.500）cheap=4.3 超软上限=否 其余真人密度中位=15 ｜NFS 锁=是 影子配额=2469
+        报价 Bornu Empire(97·AI) 非真人 接40 地648 兵0 密0 tD=0.00 c=2.2 need=972 safe=47k(封顶 88×地；原 47k) keep=47k avail=-37k → L5361 avail<=0：保底线 keep=47k（safe=47k，来自 dpKeep=102k）不低于余额
+        报价 Player 123(36·队5) 真人 接21 地8060 兵100k 密12 tD=0.82 c=31.5 need=191k → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Bruh Union(20·队5) 真人 接5 地11013 兵166k 密15 tD=1.00 c=68.0 need=312k → （排在后面：前一个报价已 break）
+        报价 United Kingdom(57·队4) 真人 接33 地7721 兵182k 密24 tD=1.56 c=78.1 need=336k [crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=1500 Mansa Musa(62·队7) 地 6225 兵 127k 密 20.4 ｜策略眼里 nb=1 neut=0 ｜worth=30.7（m=1.500）cheap=4.3 超软上限=否 其余真人密度中位=15 ｜NFS 锁=是 影子配额=30k
+        不在 nb 里的真实邻居（保护名单）：TaxCollector(78·队6) 接16 地3681 密67
+        offers 为空（nb 里没有可报价的邻居）
+        影子 act() 这一拍发出：无
+[探针] t=1615 Mansa Musa(62·队7) 地 7380 兵 166k 密 22.5 ｜策略眼里 nb=1 neut=13 ｜worth=33.3（m=1.483）cheap=5.1 超软上限=否 其余真人密度中位=19 ｜NFS 锁=是 影子配额=41k
+        不在 nb 里的真实邻居（保护名单）：TaxCollector(78·空壳) 接16 地3681 密84
+        报价 Jaxa(439·AI) 非真人 接25 地4377 兵108 密0 tD=0.00 c=2.6 need=6759 safe=873(封顶 88×地；原 873) keep=873 avail=163k → L5368 出兵（非真人，整笔）：8523（5.1% 兵）
+        影子 act() 这一拍发出：无
+[探针] t=1730 Mansa Musa(62·队7) 地 7285 兵 247k 密 33.9 ｜策略眼里 nb=1 neut=0 ｜worth=49.7（m=1.466）cheap=6.3 超软上限=否 其余真人密度中位=20 ｜NFS 锁=是 影子配额=62k
+        不在 nb 里的真实邻居（保护名单）：TaxCollector(78·空壳) 接33 地3779 密78
+        报价 Jaxa(439·AI) 非真人 接38 地4449 兵135 密0 tD=0.00 c=2.9 need=6915 safe=898(封顶 88×地；原 898) keep=898 avail=243k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=8757 < minCmd=feeK×手续费=12k（余额的 4.7%）→ 跳过
+        影子 act() 这一拍发出：无
+[探针] t=1845 Mansa Musa(62·队7) 地 7188 兵 289k 密 40.2 ｜策略眼里 nb=1 neut=0 ｜worth=58.3（m=1.448）cheap=8.1 超软上限=否 其余真人密度中位=22 ｜NFS 锁=是 影子配额=72k
+        不在 nb 里的真实邻居（保护名单）：TaxCollector(78·空壳) 接31 地3838 密75
+        报价 Jaxa(439·AI) 非真人 接38 地4487 兵0 密0 tD=0.00 c=2.9 need=6732 safe=900(封顶 88×地；原 900) keep=900 avail=285k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=8529 < minCmd=feeK×手续费=14k（余额的 4.7%）→ 跳过
+        影子 act() 这一拍发出：无
+[探针] t=1960 Mansa Musa(62·队7) 地 8058 兵 225k 密 27.9 ｜策略眼里 nb=1 neut=0 ｜worth=40.0（m=1.431）cheap=8.5 超软上限=否 其余真人密度中位=25 ｜NFS 锁=是 影子配额=56k
+        不在 nb 里的真实邻居（保护名单）：TaxCollector(78·空壳) 接31 地3996 密67
+        报价 Jaxa(439·AI) 非真人 接40 地3459 兵65k 密19 tD=0.77 c=26.8 need=63k safe=0(封顶 88×地；原 0) keep=180k avail=42k → L5364 已在打这个非真人目标 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=2075 Mansa Musa(62·队7) 地 8530 兵 109k 密 12.8 ｜策略眼里 nb=1 neut=0 ｜worth=17.2（m=1.346）cheap=8.5 超软上限=否 其余真人密度中位=22 ｜NFS 锁=是 影子配额=16k
+        不在 nb 里的真实邻居（保护名单）：TaxCollector(78·空壳) 接30 地4157 密62；Enderman(77·队8) 接4 地5640 密10
+        offers 为空（nb 里没有可报价的邻居）
+        影子 act() 这一拍发出：无
+[探针] t=2190 Mansa Musa(62·队7) 地 8834 兵 105k 密 11.8 ｜策略眼里 nb=1 neut=0 ｜worth=14.5（m=1.226）cheap=8.5 超软上限=否 其余真人密度中位=27 ｜NFS 锁=是 影子配额=26k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6658 密13；TaxCollector(78·空壳) 接32 地4467 密52
+        offers 为空（nb 里没有可报价的邻居）
+        影子 act() 这一拍发出：无
+[探针] t=2305 Mansa Musa(62·队7) 地 9523 兵 128k 密 13.4 ｜策略眼里 nb=1 neut=3 ｜worth=14.8（m=1.105）cheap=8.4 超软上限=否 其余真人密度中位=30 ｜NFS 锁=是 影子配额=32k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6827 密15；TaxCollector(78·空壳) 接32 地4961 密45
+        报价 Samanid Empire(247·AI) 非真人 接23 地859 兵873 密1 tD=0.03 c=6.6 need=2847 safe=104k(封顶 88×地；原 104k) keep=104k avail=22k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=3628 < minCmd=feeK×手续费=5980（余额的 4.7%）→ 跳过
+        影子 act() 这一拍发出：无
+[探针] t=2420 Mansa Musa(62·队7) 地 9239 兵 187k 密 20.2 ｜策略眼里 nb=1 neut=0 ｜worth=19.9（m=0.984）cheap=8.4 超软上限=否 其余真人密度中位=34 ｜NFS 锁=是 影子配额=47k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6838 密19；TaxCollector(78·空壳) 接40 地5223 密38
+        报价 Samanid Empire(247·AI) 非真人 接25 地884 兵42 密0 tD=0.00 c=5.3 need=1401 safe=131k(封顶 88×地；原 131k) keep=131k avail=53k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=1826 < minCmd=feeK×手续费=8744（余额的 4.7%）→ 跳过
+        影子 act() 这一拍发出：无
+[探针] t=2535 Mansa Musa(62·队7) 地 9048 兵 207k 密 22.9 ｜策略眼里 nb=1 neut=0 ｜worth=29.3（m=0.900）cheap=8.5 超软上限=否 其余真人密度中位=38 ｜NFS 锁=是 影子配额=52k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6859 密23；TaxCollector(78·空壳) 接38 地5576 密34
+        报价 Samanid Empire(247·AI) 非真人 接31 地722 兵0 密0 tD=0.00 c=6.4 need=944 safe=156k(封顶 88×地；原 156k) keep=156k avail=49k → L5364 已在打这个非真人目标 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=2650 Mansa Musa(62·队7) 地 8882 兵 239k 密 26.9 ｜策略眼里 nb=1 neut=0 ｜worth=32.3（m=0.900）cheap=8.5 超软上限=否 其余真人密度中位=42 ｜NFS 锁=是 影子配额=60k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密27；TaxCollector(78·空壳) 接45 地5042 密28
+        报价 Samanid Empire(247·AI) 非真人 接31 地722 兵0 密0 tD=0.00 c=7.1 need=1084 safe=177k(封顶 88×地；原 177k) keep=177k avail=59k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=1448 < minCmd=feeK×手续费=11k（余额的 4.7%）→ 跳过
+        影子 act() 这一拍发出：无
+[探针] t=2765 Mansa Musa(62·队7) 地 8749 兵 273k 密 31.2 ｜策略眼里 nb=1 neut=0 ｜worth=37.5（m=0.900）cheap=8.5 超软上限=否 其余真人密度中位=49 ｜NFS 锁=是 影子配额=68k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密31；TaxCollector(78·空壳) 接43 地4676 密21
+        报价 Samanid Empire(247·AI) 非真人 接31 地753 兵0 密0 tD=0.00 c=7.5 need=1130 safe=208k(封顶 88×地；原 208k) keep=208k avail=62k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=1506 < minCmd=feeK×手续费=13k（余额的 4.7%）→ 跳过
+        影子 act() 这一拍发出：无
+[探针] t=2880 Mansa Musa(62·队7) 地 8718 兵 322k 密 36.9 ｜策略眼里 nb=1 neut=0 ｜worth=39.0（m=0.900）cheap=8.5 超软上限=否 其余真人密度中位=51 ｜NFS 锁=是 影子配额=80k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密37；TaxCollector(78·空壳) 接43 地3580 密17
+        报价 Samanid Empire(247·AI) 非真人 接31 地784 兵0 密0 tD=0.00 c=8.3 need=1176 safe=245k(封顶 88×地；原 245k) keep=245k avail=73k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=1563 < minCmd=feeK×手续费=15k（余额的 4.7%）→ 跳过
+        影子 act() 这一拍发出：无
+[探针] t=2995 Mansa Musa(62·队7) 地 8662 兵 372k 密 42.9 ｜策略眼里 nb=1 neut=0 ｜worth=43.1（m=0.900）cheap=8.5 超软上限=否 其余真人密度中位=56 ｜NFS 锁=是 影子配额=93k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密43；TaxCollector(78·空壳) 接43 地2389 密10
+        报价 Samanid Empire(247·AI) 非真人 接31 地815 兵0 密0 tD=0.00 c=9.0 need=1224 safe=286k(封顶 88×地；原 286k) keep=286k avail=81k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=1623 < minCmd=feeK×手续费=17k（余额的 4.7%）→ 跳过
+        影子 act() 这一拍发出：无
+[探针] t=3110 Mansa Musa(62·队7) 地 8606 兵 441k 密 51.3 ｜策略眼里 nb=1 neut=0 ｜worth=49.1（m=0.900）cheap=8.5 超软上限=否 其余真人密度中位=64 ｜NFS 锁=是 影子配额=110k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密51；TaxCollector(78·空壳) 接42 地1842 密9
+        报价 Samanid Empire(247·AI) 非真人 接31 地846 兵0 密0 tD=0.00 c=10.0 need=1270 safe=342k(封顶 88×地；原 342k) keep=342k avail=94k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=1681 < minCmd=feeK×手续费=21k（余额的 4.7%）→ 跳过
+        影子 act() 这一拍发出：无
+[探针] t=3225 Mansa Musa(62·队7) 地 8752 兵 450k 密 51.4 ｜策略眼里 nb=1 neut=25 ｜worth=55.6（m=0.900）cheap=8.5 超软上限=否 其余真人密度中位=73 ｜NFS 锁=是 影子配额=113k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密59
+        报价 Samanid Empire(247·AI) 非真人 接31 地877 兵0 密0 tD=0.00 c=9.9 need=1316 safe=395k(封顶 88×地；原 395k) keep=395k avail=50k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=1738 < minCmd=feeK×手续费=21k（余额的 4.7%）→ 跳过
+        影子 act() 这一拍发出：无
+[探针] t=3330 Mansa Musa(62·队7) 地 8934 兵 566k 密 63.3 ｜策略眼里 nb=2 neut=0 ｜worth=61.5（m=0.900）cheap=8.5 超软上限=否 其余真人密度中位=80 ｜NFS 锁=是 影子配额=141k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密68
+        报价 Samanid Empire(247·AI) 非真人 接31 地908 兵0 密0 tD=0.00 c=11.6 need=1362 safe=455k(封顶 88×地；原 455k) keep=455k avail=104k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=1796 < minCmd=feeK×手续费=27k（余额的 4.7%）→ 跳过
+        报价 [☪️]UZBEKISTAN🇺🇿(50·队4) 真人 接21 地15306 兵193k 密13 tD=0.16 c=72.9 need=364k [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        影子 act() 这一拍发出：无
+[探针] t=3335 Mansa Musa(62·队7) 地 8934 兵 566k 密 63.3 ｜策略眼里 nb=2 neut=0 ｜worth=61.5（m=0.900）cheap=8.5 超软上限=否 其余真人密度中位=80 ｜NFS 锁=是 影子配额=141k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密68
+        报价 Samanid Empire(247·AI) 非真人 接31 地908 兵0 密0 tD=0.00 c=11.6 need=1362 safe=455k(封顶 88×地；原 455k) keep=455k avail=104k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=1796 < minCmd=feeK×手续费=27k（余额的 4.7%）→ 跳过
+        报价 [☪️]UZBEKISTAN🇺🇿(50·队4) 真人 接21 地15371 兵164k 密11 tD=0.13 c=62.6 need=313k [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        影子 act() 这一拍发出：无
+[探针] t=3340 Mansa Musa(62·队7) 地 8934 兵 535k 密 59.9 ｜策略眼里 nb=2 neut=0 ｜worth=62.3（m=0.900）cheap=8.5 超软上限=否 其余真人密度中位=81 ｜NFS 锁=是 影子配额=134k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密69
+        报价 Samanid Empire(247·AI) 非真人 接31 地908 兵0 密0 tD=0.00 c=11.0 need=1362 safe=72k(封顶 88×地；原 72k) keep=291k avail=238k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=1796 < minCmd=feeK×手续费=25k（余额的 4.7%）→ 跳过
+        报价 [☪️]UZBEKISTAN🇺🇿(50·队4) 真人 接21 地15400 兵141k 密9 tD=0.11 c=48.7 need=243k [pulse] safe=72k(封顶 88×地；原 72k) keep=483k avail=46k → L5511 对它的在途兵 >= 4% 兵 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=3345 Mansa Musa(62·队7) 地 8903 兵 532k 密 59.8 ｜策略眼里 nb=2 neut=0 ｜worth=61.2（m=0.900）cheap=8.5 超软上限=否 其余真人密度中位=80 ｜NFS 锁=是 影子配额=133k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密69
+        报价 Samanid Empire(247·AI) 非真人 接31 地939 兵0 密0 tD=0.00 c=10.7 need=1410 safe=72k(封顶 88×地；原 72k) keep=293k avail=234k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=1856 < minCmd=feeK×手续费=25k（余额的 4.7%）→ 跳过
+        报价 [☪️]UZBEKISTAN🇺🇿(50·队4) 真人 接21 地15400 兵141k 密9 tD=0.11 c=48.7 need=243k [pulse] safe=72k(封顶 88×地；原 72k) keep=482k avail=45k → L5511 对它的在途兵 >= 4% 兵 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=3390 Mansa Musa(62·队7) 地 9255 兵 564k 密 61.0 ｜策略眼里 nb=2 neut=0 ｜worth=61.6（m=0.900）cheap=8.4 超软上限=否 其余真人密度中位=81 ｜NFS 锁=是 影子配额=141k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密73
+        报价 Samanid Empire(247·AI) 非真人 接31 地939 兵0 密0 tD=0.00 c=11.2 need=1410 safe=487k(封顶 88×地；原 487k) keep=487k avail=71k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=1856 < minCmd=feeK×手续费=26k（余额的 4.7%）→ 跳过
+        报价 [☪️]UZBEKISTAN🇺🇿(50·队4) 真人 接23 地15148 兵123k 密8 tD=0.10 c=41.4 need=219k [pulse] safe=487k(封顶 88×地；原 487k) keep=487k avail=71k → L5522 出兵（pulse：上限 12% 兵）：68k（12.0% 兵）
+        影子 act() 这一拍发出：无
+[探针] t=3395 Mansa Musa(62·队7) 地 9300 兵 490k 密 52.7 ｜策略眼里 nb=2 neut=0 ｜worth=61.6（m=0.900）cheap=8.4 超软上限=否 其余真人密度中位=81 ｜NFS 锁=是 影子配额=123k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密73
+        报价 Samanid Empire(247·AI) 非真人 接31 地939 兵0 密0 tD=0.00 c=10.0 need=1410 safe=487k(封顶 88×地；原 487k) keep=487k avail=-2571 → L5361 avail<=0：保底线 keep=487k（safe=487k，来自 safeFinite=487k〔经由 Samanid Empire(247·AI) 的另一个邻居 Enderman(77·队8)·我方号·异队〕）不低于余额
+        报价 [☪️]UZBEKISTAN🇺🇿(50·队4) 真人 接21 地15103 兵122k 密8 tD=0.10 c=30.9 need=151k [pulse] safe=487k(封顶 88×地；原 487k) keep=487k avail=-2571 → L5361 avail<=0：保底线 keep=487k（safe=487k，来自 safeFinite=487k〔经由 Samanid Empire(247·AI) 的另一个邻居 Enderman(77·队8)·我方号·异队〕；去掉这一项就能出兵）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=3400 Mansa Musa(62·队7) 地 9321 兵 505k 密 54.2 ｜策略眼里 nb=2 neut=0 ｜worth=63.2（m=0.900）cheap=8.4 超软上限=否 其余真人密度中位=83 ｜NFS 锁=是 影子配额=124k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密75
+        报价 Samanid Empire(247·AI) 非真人 接31 地939 兵0 密0 tD=0.00 c=10.2 need=1410 safe=499k(封顶 88×地；原 499k) keep=499k avail=90 → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=90 < minCmd=feeK×手续费=24k（余额的 4.7%）→ 跳过
+        报价 [☪️]UZBEKISTAN🇺🇿(50·队4) 真人 接19 地15082 兵138k 密9 tD=0.11 c=39.8 need=180k [pulse] safe=499k(封顶 88×地；原 499k) keep=499k avail=90 → L5511 对它的在途兵 >= 4% 兵 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=3405 Mansa Musa(62·队7) 地 9359 兵 505k 密 54.0 ｜策略眼里 nb=2 neut=0 ｜worth=63.2（m=0.900）cheap=8.4 超软上限=否 其余真人密度中位=83 ｜NFS 锁=是 影子配额=126k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密75
+        报价 Samanid Empire(247·AI) 非真人 接31 地939 兵0 密0 tD=0.00 c=10.2 need=1410 safe=499k(封顶 88×地；原 499k) keep=499k avail=90 → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=90 < minCmd=feeK×手续费=24k（余额的 4.7%）→ 跳过
+        报价 [☪️]UZBEKISTAN🇺🇿(50·队4) 真人 接19 地15044 兵138k 密9 tD=0.11 c=39.9 need=180k [pulse] safe=499k(封顶 88×地；原 499k) keep=499k avail=90 → L5511 对它的在途兵 >= 4% 兵 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=3410 Mansa Musa(62·队7) 地 9397 兵 444k 密 47.2 ｜策略眼里 nb=2 neut=0 ｜worth=63.7（m=0.900）cheap=8.4 超软上限=否 其余真人密度中位=83 ｜NFS 锁=是 影子配额=111k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密76
+        报价 Samanid Empire(247·AI) 非真人 接31 地939 兵0 密0 tD=0.00 c=9.2 need=1410 safe=505k(封顶 88×地；原 505k) keep=505k avail=-66k → L5361 avail<=0：保底线 keep=505k（safe=505k，来自 safeFinite=505k〔经由 Samanid Empire(247·AI) 的另一个邻居 Enderman(77·队8)·我方号·异队〕）不低于余额
+        报价 [☪️]UZBEKISTAN🇺🇿(50·队4) 真人 接19 地15006 兵139k 密9 tD=0.11 c=27.4 need=122k [pulse] safe=505k(封顶 88×地；原 505k) keep=505k avail=-66k → L5361 avail<=0：保底线 keep=505k（safe=505k，来自 safeFinite=505k〔经由 Samanid Empire(247·AI) 的另一个邻居 Enderman(77·队8)·我方号·异队〕；去掉这一项就能出兵）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=3420 Mansa Musa(62·队7) 地 9454 兵 449k 密 47.5 ｜策略眼里 nb=2 neut=0 ｜worth=64.1（m=0.900）cheap=8.4 超软上限=否 其余真人密度中位=84 ｜NFS 锁=是 影子配额=112k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密77
+        报价 Samanid Empire(247·AI) 非真人 接31 地939 兵0 密0 tD=0.00 c=9.3 need=1410 safe=511k(封顶 88×地；原 511k) keep=511k avail=-67k → L5361 avail<=0：保底线 keep=511k（safe=511k，来自 safeFinite=511k〔经由 Samanid Empire(247·AI) 的另一个邻居 Enderman(77·队8)·我方号·异队〕）不低于余额
+        报价 [☪️]UZBEKISTAN🇺🇿(50·队4) 真人 接19 地14949 兵140k 密9 tD=0.11 c=28.1 need=125k [pulse] safe=511k(封顶 88×地；原 511k) keep=511k avail=-67k → L5361 avail<=0：保底线 keep=511k（safe=511k，来自 safeFinite=511k〔经由 Samanid Empire(247·AI) 的另一个邻居 Enderman(77·队8)·我方号·异队〕；去掉这一项就能出兵）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=3590 Mansa Musa(62·队7) 地 10639 兵 554k 密 52.1 ｜策略眼里 nb=2 neut=0 ｜worth=67.3（m=0.900）cheap=8.3 超软上限=否 其余真人密度中位=88 ｜NFS 锁=是 影子配额=139k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密94
+        报价 Samanid Empire(247·AI) 非真人 接30 地999 兵0 密0 tD=0.00 c=10.5 need=1500 safe=628k(封顶 88×地；原 628k) keep=628k avail=-80k → L5361 avail<=0：保底线 keep=628k（safe=628k，来自 safeFinite=628k〔经由 Samanid Empire(247·AI) 的另一个邻居 Enderman(77·队8)·我方号·异队〕）不低于余额
+        报价 [☪️]UZBEKISTAN🇺🇿(50·队4) 真人 接15 地12293 兵145k 密12 tD=0.13 c=30.7 need=162k [被别人打,pulse] safe=628k(封顶 88×地；原 628k) keep=628k avail=-80k → L5361 avail<=0：保底线 keep=628k（safe=628k，来自 safeFinite=628k〔经由 Samanid Empire(247·AI) 的另一个邻居 Enderman(77·队8)·我方号·异队〕；去掉这一项就能出兵）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=3760 Mansa Musa(62·队7) 地 11569 兵 701k 密 60.6 ｜策略眼里 nb=2 neut=0 ｜worth=66.0（m=0.900）cheap=8.3 超软上限=否 其余真人密度中位=86 ｜NFS 锁=是 影子配额=175k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密114
+        报价 Samanid Empire(247·AI) 非真人 接30 地1029 兵0 密0 tD=0.00 c=12.4 need=1544 safe=47k(封顶 88×地；原 47k) keep=370k avail=322k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=2020 < minCmd=feeK×手续费=33k（余额的 4.7%）→ 跳过
+        报价 [☪️]UZBEKISTAN🇺🇿(50·队4) 真人 接20 地8566 兵101k 密12 tD=0.14 c=26.0 need=119k [被别人打,pulse] safe=47k(封顶 88×地；原 47k) keep=453k avail=240k → L5511 对它的在途兵 >= 4% 兵 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=3930 Mansa Musa(62·队7) 地 14066 兵 882k 密 62.7 ｜策略眼里 nb=2 neut=0 ｜worth=62.0（m=0.900）cheap=8.2 超软上限=否 其余真人密度中位=81 ｜NFS 锁=是 影子配额=221k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密130
+        报价 Samanid Empire(247·AI) 非真人 接30 地1089 兵0 密0 tD=0.00 c=14.4 need=1634 safe=865k(封顶 88×地；原 865k) keep=865k avail=6875 → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=2133 < minCmd=feeK×手续费=41k（余额的 4.7%）→ 跳过
+        影子 act() 这一拍发出：无
+[探针] t=4100 Mansa Musa(62·队7) 地 14199 兵 1.12M 密 79.2 ｜策略眼里 nb=1 neut=0 ｜worth=71.3（m=0.900）cheap=8.2 超软上限=否 其余真人密度中位=91 ｜NFS 锁=是 影子配额=278k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6667 密137
+        报价 Samanid Empire(247·AI) 非真人 接29 地1147 兵0 密0 tD=0.00 c=17.0 need=1722 safe=914k(封顶 88×地；原 914k) keep=914k avail=197k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=2240 < minCmd=feeK×手续费=53k（余额的 4.7%）→ 跳过
+        影子 act() 这一拍发出：无
+[探针] t=4270 Mansa Musa(62·队7) 地 14171 兵 1.39M 密 98.3 ｜策略眼里 nb=1 neut=0 ｜worth=88.4（m=0.900）cheap=8.2 超软上限=否 其余真人密度中位=90 ｜NFS 锁=是 影子配额=348k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6646 密143
+        报价 Samanid Empire(247·AI) 非真人 接28 地1175 兵0 密0 tD=0.00 c=20.2 need=1764 safe=952k(封顶 88×地；原 952k) keep=952k avail=424k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=2289 < minCmd=feeK×手续费=65k（余额的 4.7%）→ 跳过
+        影子 act() 这一拍发出：无
+[探针] t=4440 Mansa Musa(62·队7) 地 14116 兵 1.67M 密 118.6 ｜策略眼里 nb=1 neut=0 ｜worth=106.7（m=0.900）cheap=8.2 超软上限=是 其余真人密度中位=98 ｜NFS 锁=是 影子配额=419k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6646 密148
+        报价 Samanid Empire(247·AI) 非真人 接27 地1230 兵0 密0 tD=0.00 c=22.9 need=1846 safe=982k(封顶 88×地；原 982k) keep=1.04M avail=613k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=2389 < minCmd=feeK×手续费=78k（余额的 4.7%）→ 跳过
+        影子 act() 这一拍发出：无
+[探针] t=4610 Mansa Musa(62·队7) 地 14062 兵 1.87M 密 133.0 ｜策略眼里 nb=1 neut=0 ｜worth=119.7（m=0.900）cheap=8.2 超软上限=是 其余真人密度中位=91 ｜NFS 锁=是 影子配额=468k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6646 密150
+        报价 Samanid Empire(247·AI) 非真人 接24 地1284 兵0 密0 tD=0.00 c=24.4 need=1926 safe=997k(封顶 88×地；原 997k) keep=1.15M avail=695k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=2480 < minCmd=feeK×手续费=88k（余额的 4.7%）→ 跳过
+        影子 act() 这一拍发出：无
+[探针] t=4770 Mansa Musa(62·队7) 地 14062 兵 1.98M 密 141.0 ｜策略眼里 nb=1 neut=13 ｜worth=126.9（m=0.900）cheap=8.2 超软上限=是 其余真人密度中位=90 ｜NFS 锁=是 影子配额=496k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6646 密142
+        报价 Full send(74·队2) 真人 接11 地24812 兵3.42M 密138 tD=1.53 c=952.2 need=6.13M [pulse] safe=1.91M keep=1.91M avail=50k → L5528 买不起整笔（want=7.67M）且 avail=50k 不足 chunk×兵=397k → 跳过
+        影子 act() 这一拍发出：攻→无主地 47‰ 93k
+[探针] t=4780 Mansa Musa(62·队7) 地 14062 兵 1.88M 密 133.3 ｜策略眼里 nb=1 neut=9 ｜worth=120.0（m=0.900）cheap=8.2 超软上限=是 其余真人密度中位=92 ｜NFS 锁=是 影子配额=402k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6647 密147
+        报价 Full send(74·队2) 真人 接15 地24871 兵3.43M 密138 tD=1.51 c=952.6 need=6.16M [pulse] safe=1.92M keep=1.92M avail=-63k → L5361 avail<=0：保底线 keep=1.92M（safe=1.92M，来自 dpKeep=1.92M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=4800 Mansa Musa(62·队7) 地 14080 兵 1.98M 密 140.4 ｜策略眼里 nb=1 neut=0 ｜worth=126.3（m=0.900）cheap=8.2 超软上限=是 其余真人密度中位=91 ｜NFS 锁=是 影子配额=488k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6647 密148
+        报价 Full send(74·队2) 真人 接24 地24892 兵3.61M 密145 tD=1.59 c=1000.8 need=6.48M [pulse] safe=2.02M keep=2.02M avail=-65k → L5361 avail<=0：保底线 keep=2.02M（safe=2.02M，来自 dpKeep=2.02M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=4805 Mansa Musa(62·队7) 地 14080 兵 1.98M 密 140.4 ｜策略眼里 nb=1 neut=0 ｜worth=126.3（m=0.900）cheap=8.2 超软上限=是 其余真人密度中位=91 ｜NFS 锁=是 影子配额=494k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6647 密148
+        报价 Full send(74·队2) 真人 接24 地24892 兵2.97M 密119 tD=1.31 c=701.7 need=5.34M [pulse] safe=1.66M keep=1.66M avail=294k → L5528 买不起整笔（want=6.67M）且 avail=294k 不足 chunk×兵=395k → 跳过
+        影子 act() 这一拍发出：攻→Full send(74·队2) 102‰ 199k
+[探针] t=4810 Mansa Musa(62·队7) 地 14080 兵 1.98M 密 140.7 ｜策略眼里 nb=1 neut=0 ｜worth=126.6（m=0.900）cheap=8.2 超软上限=是 其余真人密度中位=92 ｜NFS 锁=是 影子配额=495k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6610 密148
+        报价 Full send(74·队2) 真人 接24 地24929 兵3.00M 密120 tD=1.30 c=706.2 need=5.38M [pulse] safe=1.67M keep=1.67M avail=285k → L5528 买不起整笔（want=6.73M）且 avail=285k 不足 chunk×兵=396k → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=4815 Mansa Musa(62·队7) 地 14080 兵 1.98M 密 140.7 ｜策略眼里 nb=1 neut=0 ｜worth=126.6（m=0.900）cheap=8.2 超软上限=是 其余真人密度中位=92 ｜NFS 锁=是 影子配额=495k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6534 密147
+        报价 Full send(74·队2) 真人 接24 地25005 兵3.00M 密120 tD=1.30 c=704.1 need=5.38M [pulse] safe=1.67M keep=1.67M avail=285k → L5528 买不起整笔（want=6.73M）且 avail=285k 不足 chunk×兵=396k → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=4820 Mansa Musa(62·队7) 地 14080 兵 1.99M 密 141.0 ｜策略眼里 nb=1 neut=0 ｜worth=126.9（m=0.900）cheap=8.2 超软上限=是 其余真人密度中位=93 ｜NFS 锁=是 影子配额=496k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6418 密145
+        报价 Full send(74·队2) 真人 接24 地25121 兵3.02M 密120 tD=1.30 c=706.4 need=5.42M [pulse] safe=1.69M keep=1.69M avail=276k → L5528 买不起整笔（want=6.78M）且 avail=276k 不足 chunk×兵=397k → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=4825 Mansa Musa(62·队7) 地 14080 兵 1.76M 密 125.2 ｜策略眼里 nb=1 neut=0 ｜worth=112.7（m=0.900）cheap=8.2 超软上限=是 其余真人密度中位=93 ｜NFS 锁=是 影子配额=441k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地6340 密144
+        报价 Full send(74·队2) 真人 接24 地25199 兵3.02M 密120 tD=1.29 c=678.1 need=5.22M [pulse] → L5271 唯一的真人缓冲邻居且 c>=worth、兵 < overHumanCap×100×地 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=4860 Mansa Musa(62·队7) 地 14485 兵 1.81M 密 124.8 ｜策略眼里 nb=1 neut=0 ｜worth=112.3（m=0.900）cheap=8.1 超软上限=是 其余真人密度中位=93 ｜NFS 锁=是 影子配额=452k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地5614 密135
+        报价 Full send(74·队2) 真人 接30 地25520 兵3.04M 密119 tD=1.28 c=453.6 need=5.42M [pulse] → L5271 唯一的真人缓冲邻居且 c>=worth、兵 < overHumanCap×100×地 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=4905 Mansa Musa(62·队7) 地 14575 兵 1.87M 密 128.1 ｜策略眼里 nb=1 neut=0 ｜worth=115.3（m=0.900）cheap=8.1 超软上限=是 其余真人密度中位=95 ｜NFS 锁=是 影子配额=467k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地5362 密133
+        报价 Full send(74·队2) 真人 接31 地25682 兵3.15M 密122 tD=1.29 c=469.6 need=5.64M [pulse] safe=1.75M keep=1.75M avail=90k → L5528 买不起整笔（want=7.06M）且 avail=90k 不足 chunk×兵=373k → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=4950 Mansa Musa(62·队7) 地 14575 兵 1.91M 密 131.4 ｜策略眼里 nb=1 neut=0 ｜worth=118.2（m=0.900）cheap=8.1 超软上限=是 其余真人密度中位=90 ｜NFS 锁=是 影子配额=479k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地5362 密136
+        报价 Full send(74·队2) 真人 接31 地25682 兵3.25M 密127 tD=1.41 c=485.6 need=5.84M [pulse] safe=1.82M keep=1.82M avail=77k → L5528 买不起整笔（want=7.30M）且 avail=77k 不足 chunk×兵=383k → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=4995 Mansa Musa(62·队7) 地 14575 兵 1.95M 密 133.7 ｜策略眼里 nb=1 neut=0 ｜worth=120.3（m=0.900）cheap=8.1 超软上限=是 其余真人密度中位=90 ｜NFS 锁=是 影子配额=487k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地5362 密137
+        报价 Full send(74·队2) 真人 接31 地25682 兵3.33M 密130 tD=1.43 c=496.8 need=5.97M [pulse] safe=1.86M keep=1.86M avail=68k → L5528 买不起整笔（want=7.47M）且 avail=68k 不足 chunk×兵=390k → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=5040 Mansa Musa(62·队7) 地 14575 兵 2.00M 密 137.2 ｜策略眼里 nb=1 neut=0 ｜worth=123.4（m=0.900）cheap=8.1 超软上限=是 其余真人密度中位=90 ｜NFS 锁=是 影子配额=500k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地5362 密140
+        报价 Full send(74·队2) 真人 接31 地25682 兵3.44M 密134 tD=1.49 c=512.6 need=6.16M [pulse] safe=1.92M keep=1.92M avail=58k → L5528 买不起整笔（want=7.70M）且 avail=58k 不足 chunk×兵=400k → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=5065 Mansa Musa(62·队7) 地 14575 兵 2.01M 密 138.0 ｜策略眼里 nb=1 neut=0 ｜worth=124.2（m=0.900）cheap=8.1 超软上限=是 其余真人密度中位=92 ｜NFS 锁=是 影子配额=503k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地5362 密141
+        报价 Full send(74·队2) 真人 接31 地25682 兵3.46M 密135 tD=1.47 c=516.9 need=6.21M [pulse] safe=1.93M keep=1.93M avail=54k → L5528 买不起整笔（want=7.77M）且 avail=54k 不足 chunk×兵=402k → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=5070 Mansa Musa(62·队7) 地 14575 兵 2.02M 密 138.4 ｜策略眼里 nb=1 neut=0 ｜worth=124.6（m=0.900）cheap=8.1 超软上限=是 其余真人密度中位=93 ｜NFS 锁=是 影子配额=504k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地5362 密141
+        报价 Full send(74·队2) 真人 接31 地25682 兵3.48M 密135 tD=1.46 c=518.9 need=6.24M [pulse] safe=1.94M keep=1.94M avail=52k → L5528 买不起整笔（want=7.80M）且 avail=52k 不足 chunk×兵=404k → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=5075 Mansa Musa(62·队7) 地 14575 兵 1.67M 密 114.9 ｜策略眼里 nb=1 neut=0 ｜worth=103.4（m=0.900）cheap=8.1 超软上限=是 其余真人密度中位=93 ｜NFS 锁=是 影子配额=419k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地5362 密141
+        报价 Full send(74·队2) 真人 接31 地25682 兵3.48M 密135 tD=1.46 c=700.1 need=6.24M [pulse,crowdedHard] → L5271 唯一的真人缓冲邻居且 c>=worth、兵 < overHumanCap×100×地 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=5080 Mansa Musa(62·队7) 地 14575 兵 1.69M 密 115.9 ｜策略眼里 nb=1 neut=0 ｜worth=104.3（m=0.900）cheap=8.1 超软上限=是 其余真人密度中位=94 ｜NFS 锁=是 影子配额=422k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地5362 密141
+        报价 Full send(74·队2) 真人 接31 地25682 兵3.49M 密136 tD=1.45 c=702.8 need=6.26M [pulse,crowdedHard] → L5271 唯一的真人缓冲邻居且 c>=worth、兵 < overHumanCap×100×地 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=5085 Mansa Musa(62·队7) 地 14575 兵 1.69M 密 115.9 ｜策略眼里 nb=1 neut=0 ｜worth=104.3（m=0.900）cheap=8.1 超软上限=是 其余真人密度中位=93 ｜NFS 锁=是 影子配额=422k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地5362 密141
+        报价 Full send(74·队2) 真人 接31 地25682 兵3.49M 密136 tD=1.47 c=702.8 need=6.26M [pulse,crowdedHard] → L5271 唯一的真人缓冲邻居且 c>=worth、兵 < overHumanCap×100×地 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=5130 Mansa Musa(62·队7) 地 14575 兵 1.77M 密 121.5 ｜策略眼里 nb=1 neut=0 ｜worth=109.4（m=0.900）cheap=8.1 超软上限=是 其余真人密度中位=102 ｜NFS 锁=是 影子配额=443k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地5362 密144
+        报价 Full send(74·队2) 真人 接31 地25682 兵3.58M 密139 tD=1.36 c=719.7 need=6.41M [pulse,crowdedHard] → L5271 唯一的真人缓冲邻居且 c>=worth、兵 < overHumanCap×100×地 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=5175 Mansa Musa(62·队7) 地 14575 兵 1.82M 密 124.8 ｜策略眼里 nb=1 neut=0 ｜worth=112.4（m=0.900）cheap=8.1 超软上限=是 其余真人密度中位=106 ｜NFS 锁=是 影子配额=455k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地5362 密145
+        报价 Full send(74·队2) 真人 接31 地25682 兵3.61M 密141 tD=1.33 c=727.5 need=6.48M [pulse,crowdedHard] → L5271 唯一的真人缓冲邻居且 c>=worth、兵 < overHumanCap×100×地 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=5220 Mansa Musa(62·队7) 地 14585 兵 1.89M 密 129.4 ｜策略眼里 nb=2 neut=0 ｜worth=116.5（m=0.900）cheap=8.1 超软上限=是 其余真人密度中位=108 ｜NFS 锁=是 影子配额=472k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接131 地5362 密146
+        报价 Full send(74·队2) 真人 接31 地25682 兵3.68M 密143 tD=1.32 c=462.9 need=6.60M [pulse,crowdedHard] → L5280 crowdedHard 且 c>=worth、兵 < 1.5×100×地 → 跳过
+        报价 [IND] Skandan(40·队2) 真人 接3 地31254 兵3.57M 密114 tD=1.06 c=477.0 need=6.19M [pulse] safe=2.06M keep=2.06M avail=-190k → L5361 avail<=0：保底线 keep=2.06M（safe=2.06M，来自 dpKeep=2.06M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=5265 Mansa Musa(62·队7) 地 14717 兵 1.93M 密 130.9 ｜策略眼里 nb=2 neut=0 ｜worth=117.8（m=0.900）cheap=8.1 超软上限=是 其余真人密度中位=97 ｜NFS 锁=是 影子配额=481k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接155 地5362 密147
+        报价 Full send(74·队2) 真人 接31 地25682 兵3.71M 密144 tD=1.49 c=466.1 need=6.64M [pulse,crowdedHard] → L5280 crowdedHard 且 c>=worth、兵 < 1.5×100×地 → 跳过
+        报价 [IND] Skandan(40·队2) 真人 接7 地31122 兵3.68M 密118 tD=1.22 c=497.8 need=6.43M [pulse] safe=2.07M keep=2.07M avail=-166k → L5361 avail<=0：保底线 keep=2.07M（safe=2.07M，来自 dpKeep=2.07M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=5310 Mansa Musa(62·队7) 地 14968 兵 1.99M 密 132.7 ｜策略眼里 nb=2 neut=0 ｜worth=119.4（m=0.900）cheap=8.1 超软上限=是 其余真人密度中位=101 ｜NFS 锁=是 影子配额=497k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接183 地5362 密148
+        报价 Full send(74·队2) 真人 接31 地25682 兵3.76M 密146 tD=1.44 c=472.5 need=6.73M [pulse,crowdedHard] → L5280 crowdedHard 且 c>=worth、兵 < 1.5×100×地 → 跳过
+        报价 [IND] Skandan(40·队2) 真人 接16 地30871 兵3.81M 密124 tD=1.22 c=528.0 need=6.75M [pulse] safe=2.13M keep=2.13M avail=-167k → L5361 avail<=0：保底线 keep=2.13M（safe=2.13M，来自 dpKeep=2.13M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=5355 Mansa Musa(62·队7) 地 14453 兵 1.89M 密 130.5 ｜策略眼里 nb=2 neut=0 ｜worth=117.4（m=0.900）cheap=8.1 超软上限=是 其余真人密度中位=102 ｜NFS 锁=是 影子配额=471k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接185 地5530 密115
+        报价 [IND] Skandan(40·队2) 真人 接16 地30891 兵3.33M 密108 tD=1.06 c=229.2 need=6.44M [在打我,pulse] safe=2.12M keep=2.12M avail=-258k → L5361 avail<=0：保底线 keep=2.12M（safe=2.12M，来自 dpKeep=2.12M）不低于余额
+        报价 Full send(74·队2) 真人 接24 地26009 兵3.15M 密121 tD=1.18 c=264.6 need=6.06M [在打我,pulse] safe=2.12M keep=2.12M avail=-258k → L5361 avail<=0：保底线 keep=2.12M（safe=2.12M，来自 dpKeep=2.12M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=5400 Mansa Musa(62·队7) 地 13603 兵 1.77M 密 130.1 ｜策略眼里 nb=2 neut=0 ｜worth=117.1（m=0.900）cheap=8.2 超软上限=是 其余真人密度中位=110 ｜NFS 锁=是 影子配额=441k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接153 地5855 密103
+        报价 [IND] Skandan(40·队2) 真人 接7 地30811 兵3.48M 密113 tD=1.03 c=244.2 need=6.60M [在打我,pulse] safe=2.15M keep=2.15M avail=-399k → L5361 avail<=0：保底线 keep=2.15M（safe=2.15M，来自 dpKeep=2.15M）不低于余额
+        报价 Full send(74·队2) 真人 接36 地26614 兵3.30M 密124 tD=1.12 c=304.5 need=6.07M [在打我,pulse] safe=2.15M keep=2.15M avail=-399k → L5361 avail<=0：保底线 keep=2.15M（safe=2.15M，来自 dpKeep=2.15M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=5460 Mansa Musa(62·队7) 地 12264 兵 1.55M 密 126.4 ｜策略眼里 nb=1 neut=0 ｜worth=113.7（m=0.900）cheap=8.2 超软上限=是 其余真人密度中位=105 ｜NFS 锁=是 影子配额=387k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地3464 密69
+        报价 Full send(74·队2) 真人 接40 地27825 兵2.91M 密105 tD=1.00 c=260.6 need=5.44M [在打我,pulse] safe=1.74M keep=1.74M avail=-210k → L5361 avail<=0：保底线 keep=1.74M（safe=1.74M，来自 dpKeep=1.74M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=5520 Mansa Musa(62·队7) 地 11662 兵 1.49M 密 127.6 ｜策略眼里 nb=2 neut=0 ｜worth=114.9（m=0.900）cheap=8.3 超软上限=是 其余真人密度中位=104 ｜NFS 锁=是 影子配额=372k
+        不在 nb 里的真实邻居（保护名单）：Enderman(77·队8) 接127 地1702 密46
+        报价 Player 887(49·队5) 真人 接21 地29682 兵3.95M 密133 tD=1.28 c=285.2 need=7.46M [在打我,pulse] safe=2.42M keep=2.42M avail=-948k → L5361 avail<=0：保底线 keep=2.42M（safe=2.42M，来自 dpKeep=2.42M）不低于余额
+        报价 Full send(74·队2) 真人 接41 地28317 兵3.15M 密111 tD=1.07 c=266.0 need=5.65M [pulse] safe=2.42M keep=2.42M avail=-948k → L5361 avail<=0：保底线 keep=2.42M（safe=2.42M，来自 dpKeep=2.42M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=5580 Mansa Musa(62·队7) 地 11742 兵 1.26M 密 107.4 ｜策略眼里 nb=2 neut=35 ｜worth=96.7（m=0.900）cheap=8.2 超软上限=是 其余真人密度中位=103 ｜NFS 锁=是 影子配额=315k
+        报价 Full send(74·队2) 真人 接42 地28482 兵2.76M 密97 tD=0.94 c=216.9 need=5.45M [在打我,pulse] safe=2.37M keep=2.37M avail=-1.12M → L5361 avail<=0：保底线 keep=2.37M（safe=2.37M，来自 dpKeep=2.37M）不低于余额
+        报价 Player 887(49·队5) 真人 接15 地30193 兵4.06M 密134 tD=1.31 c=329.6 need=7.46M [在打我,pulse] safe=2.37M keep=2.37M avail=-1.12M → L5361 avail<=0：保底线 keep=2.37M（safe=2.37M，来自 dpKeep=2.37M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=5640 Mansa Musa(62·队7) 地 10168 兵 1.15M 密 113.2 ｜策略眼里 nb=2 neut=0 ｜worth=101.9（m=0.900）cheap=8.4 超软上限=是 其余真人密度中位=101 ｜NFS 锁=是 影子配额=288k
+        报价 Full send(74·队2) 真人 接42 地29846 兵3.02M 密101 tD=1.00 c=242.7 need=5.44M [在打我,pulse] safe=2.35M keep=2.35M avail=-1.21M → L5361 avail<=0：保底线 keep=2.35M（safe=2.35M，来自 dpKeep=2.35M）不低于余额
+        报价 Player 887(49·队5) 真人 接19 地30667 兵4.19M 密137 tD=1.35 c=327.1 need=7.52M [在打我,pulse] safe=2.35M keep=2.35M avail=-1.21M → L5361 avail<=0：保底线 keep=2.35M（safe=2.35M，来自 dpKeep=2.35M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=5700 Mansa Musa(62·队7) 地 9746 兵 1.14M 密 116.8 ｜策略眼里 nb=2 neut=0 ｜worth=105.1（m=0.900）cheap=8.4 超软上限=是 其余真人密度中位=102 ｜NFS 锁=是 影子配额=283k
+        报价 Full send(74·队2) 真人 接42 地29846 兵3.28M 密110 tD=1.08 c=263.0 need=5.89M [pulse] safe=2.34M keep=2.34M avail=-1.22M → L5361 avail<=0：保底线 keep=2.34M（safe=2.34M，来自 dpKeep=2.34M）不低于余额
+        报价 Player 887(49·队5) 真人 接18 地31089 兵3.92M 密126 tD=1.23 c=313.1 need=7.29M [在打我,pulse] safe=2.34M keep=2.34M avail=-1.22M → L5361 avail<=0：保底线 keep=2.34M（safe=2.34M，来自 dpKeep=2.34M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=5760 Mansa Musa(62·队7) 地 8885 兵 1.03M 密 115.9 ｜策略眼里 nb=2 neut=0 ｜worth=104.3（m=0.900）cheap=8.5 超软上限=是 其余真人密度中位=104 ｜NFS 锁=是 影子配额=257k
+        报价 Full send(74·队2) 真人 接39 地30128 兵2.89M 密96 tD=0.92 c=212.5 need=5.65M [在打我,pulse] safe=2.30M keep=2.30M avail=-1.29M → L5361 avail<=0：保底线 keep=2.30M（safe=2.30M，来自 dpKeep=2.30M）不低于余额
+        报价 Player 887(49·队5) 真人 接23 地31668 兵4.07M 密128 tD=1.23 c=309.4 need=7.34M [在打我,pulse] safe=2.30M keep=2.30M avail=-1.29M → L5361 avail<=0：保底线 keep=2.30M（safe=2.30M，来自 dpKeep=2.30M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=5820 Mansa Musa(62·队7) 地 7495 兵 832k 密 110.9 ｜策略眼里 nb=2 neut=0 ｜worth=99.8（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=83 ｜NFS 锁=是 影子配额=208k
+        报价 Full send(74·队2) 真人 接32 地31250 兵2.60M 密83 tD=1.00 c=190.0 need=5.24M [在打我,pulse] safe=2.33M keep=2.33M avail=-1.50M → L5361 avail<=0：保底线 keep=2.33M（safe=2.33M，来自 dpKeep=2.33M）不低于余额
+        报价 Player 887(49·队5) 真人 接37 地31936 兵3.79M 密119 tD=1.43 c=254.2 need=7.16M [在打我,pulse] safe=2.33M keep=2.33M avail=-1.50M → L5361 avail<=0：保底线 keep=2.33M（safe=2.33M，来自 dpKeep=2.33M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=5880 Mansa Musa(62·队7) 地 5410 兵 526k 密 97.3 ｜策略眼里 nb=2 neut=0 ｜worth=87.5（m=0.900）cheap=8.8 超软上限=否 其余真人密度中位=87 ｜NFS 锁=是 影子配额=132k
+        报价 Player 887(49·队5) 真人 接16 地33018 兵3.58M 密108 tD=1.24 c=234.0 need=6.82M [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Full send(74·队2) 真人 接31 地32253 兵2.82M 密87 tD=1.00 c=218.7 need=5.30M [在打我,pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=5940 Mansa Musa(62·队7) 地 4175 兵 372k 密 89.1 ｜策略眼里 nb=2 neut=0 ｜worth=80.2（m=0.900）cheap=8.9 超软上限=否 其余真人密度中位=87 ｜NFS 锁=是 影子配额=93k
+        报价 Full send(74·队2) 真人 接28 地32973 兵2.49M 密75 tD=0.87 c=181.2 need=4.49M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 887(49·队5) 真人 接19 地33533 兵3.85M 密115 tD=1.32 c=283.7 need=7.14M [在打我,pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=6000 Mansa Musa(62·队7) 地 3608 兵 318k 密 88.2 ｜策略眼里 nb=2 neut=0 ｜worth=79.4（m=0.900）cheap=9.1 超软上限=否 其余真人密度中位=92 ｜NFS 锁=是 影子配额=79k
+        报价 Player 887(49·队5) 真人 接19 地34100 兵3.71M 密109 tD=1.18 c=235.1 need=7.08M [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Full send(74·队2) 真人 接28 地32973 兵3.04M 密92 tD=1.00 c=220.9 need=5.47M [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=6060 Mansa Musa(62·队7) 地 2951 兵 246k 密 83.4 ｜策略眼里 nb=2 neut=0 ｜worth=75.1（m=0.900）cheap=9.1 超软上限=否 其余真人密度中位=90 ｜NFS 锁=是 影子配额=62k
+        报价 Full send(74·队2) 真人 接29 地33059 兵2.75M 密83 tD=0.92 c=185.6 need=5.42M [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 887(49·队5) 真人 接20 地34671 兵3.95M 密114 tD=1.26 c=282.8 need=7.36M [在打我,pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=1500 Cleopatra(63·队5) 地 4996 兵 161k 密 32.2 ｜策略眼里 nb=2 neut=0 ｜worth=48.3（m=1.500）cheap=4.3 超软上限=否 其余真人密度中位=16 ｜NFS 锁=否 影子配额=39k
+        报价 Kingdom of Kent(18·队4) 真人 接27 地5335 兵91k 密17 tD=1.04 c=42.7 need=170k safe=98k keep=149k avail=10k → L5528 买不起整笔（want=213k）且 avail=10k 不足 chunk×兵=32k → 跳过
+        报价 United Kingdom(57·队4) 真人 接113 地7721 兵182k 密24 tD=1.44 c=57.7 need=336k → L5267 报价 c >= worth 且没超软上限 → break
+        影子 act() 这一拍发出：无
+[探针] t=1590 Cleopatra(63·队5) 地 4996 兵 195k 密 39.0 ｜策略眼里 nb=2 neut=0 ｜worth=58.0（m=1.486）cheap=4.9 超软上限=否 其余真人密度中位=20 ｜NFS 锁=否 影子配额=49k
+        报价 Kingdom of Kent(18·队4) 真人 接27 地5430 兵104k 密19 tD=0.98 c=47.6 need=193k safe=120k keep=173k avail=19k → L5528 买不起整笔（want=242k）且 avail=19k 不足 chunk×兵=39k → 跳过
+        报价 United Kingdom(57·队4) 真人 接113 地7721 兵220k 密29 tD=1.46 c=69.5 need=405k → L5267 报价 c >= worth 且没超软上限 → break
+        影子 act() 这一拍发出：无
+[探针] t=1680 Cleopatra(63·队5) 地 4996 兵 236k 密 47.3 ｜策略眼里 nb=2 neut=0 ｜worth=69.6（m=1.473）cheap=5.7 超软上限=否 其余真人密度中位=21 ｜NFS 锁=否 影子配额=59k
+        报价 Kingdom of Kent(18·队4) 真人 接27 地5537 兵123k 密22 tD=1.05 c=55.1 need=228k safe=147k keep=206k avail=28k → L5528 买不起整笔（want=285k）且 avail=28k 不足 chunk×兵=47k → 跳过
+        报价 United Kingdom(57·队4) 真人 接113 地7721 兵269k 密35 tD=1.65 c=84.5 need=492k → L5267 报价 c >= worth 且没超软上限 → break
+        影子 act() 这一拍发出：无
+[探针] t=1770 Cleopatra(63·队5) 地 4996 兵 278k 密 55.6 ｜策略眼里 nb=2 neut=0 ｜worth=81.2（m=1.460）cheap=6.8 超软上限=否 其余真人密度中位=24 ｜NFS 锁=否 影子配额=69k
+        报价 Kingdom of Kent(18·队4) 真人 接27 地5601 兵174k 密31 tD=1.28 c=76.1 need=319k safe=175k keep=266k avail=8278 → L5528 买不起整笔（want=399k）且 avail=8278 不足 chunk×兵=56k → 跳过
+        报价 United Kingdom(57·队4) 真人 接113 地7721 兵319k 密41 tD=1.71 c=99.8 need=581k → L5267 报价 c >= worth 且没超软上限 → break
+        影子 act() 这一拍发出：无
+[探针] t=1860 Cleopatra(63·队5) 地 4996 兵 318k 密 63.6 ｜策略眼里 nb=2 neut=0 ｜worth=92.0（m=1.446）cheap=8.4 超软上限=否 其余真人密度中位=28 ｜NFS 锁=否 影子配额=79k
+        报价 Kingdom of Kent(18·队4) 真人 接27 地5601 兵202k 密36 tD=1.27 c=87.9 need=368k safe=202k keep=308k avail=6083 → L5528 买不起整笔（want=461k）且 avail=6083 不足 chunk×兵=64k → 跳过
+        报价 United Kingdom(57·队4) 真人 接113 地7721 兵367k 密48 tD=1.68 c=114.5 need=666k → L5267 报价 c >= worth 且没超软上限 → break
+        影子 act() 这一拍发出：无
+[探针] t=1950 Cleopatra(63·队5) 地 4996 兵 277k 密 55.5 ｜策略眼里 nb=2 neut=0 ｜worth=79.5（m=1.433）cheap=8.9 超软上限=否 其余真人密度中位=30 ｜NFS 锁=否 影子配额=69k
+        报价 Kingdom of Kent(18·队4) 真人 接27 地5601 兵230k 密41 tD=1.37 c=81.1 need=340k → L5267 报价 c >= worth 且没超软上限 → break
+        报价 United Kingdom(57·队4) 真人 接113 地7721 兵415k 密54 tD=1.80 c=129.0 need=752k → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2040 Cleopatra(63·队5) 地 5500 兵 309k 密 56.3 ｜策略眼里 nb=2 neut=0 ｜worth=77.8（m=1.383）cheap=8.8 超软上限=否 其余真人密度中位=28 ｜NFS 锁=否 影子配额=77k
+        报价 Kingdom of Kent(18·队4) 真人 接34 地5097 兵1 密0 tD=0.00 c=13.3 need=215k [将崩,被别人打,在打我,pulse] safe=258k(封顶 88×地；原 258k) keep=258k avail=47k → L5507 出兵（将崩目标：pulse）：47k（15.3% 兵）
+        报价 United Kingdom(57·队4) 真人 接113 地7721 兵468k 密61 tD=2.18 c=145.2 need=846k → （排在后面：已出兵）
+        影子 act() 这一拍发出：无
+[探针] t=2130 Cleopatra(63·队5) 地 4758 兵 179k 密 37.6 ｜策略眼里 nb=3 neut=0 ｜worth=48.4（m=1.288）cheap=8.9 超软上限=否 其余真人密度中位=33 ｜NFS 锁=是 影子配额=39k
+        报价 Kingdom of Kent(18·队4) 真人 接21 地5827 兵1 密0 tD=0.00 c=1.8 need=16k [在打我,pulse,agg] safe=292k(封顶 88×地；原 292k) keep=292k avail=-115k → L5361 avail<=0：保底线 keep=292k（safe=292k，来自 dpKeep=292k）不低于余额
+        报价 fegrze(8·队1) 真人 接5 地7481 兵431k 密58 tD=1.73 c=132.3 need=872k [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 United Kingdom(57·队4) 真人 接111 地7721 兵527k 密68 tD=2.06 c=219.9 need=951k [crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2220 Cleopatra(63·队5) 地 4145 兵 223k 密 53.7 ｜策略眼里 nb=3 neut=0 ｜worth=64.2（m=1.194）cheap=8.9 超软上限=否 其余真人密度中位=31 ｜NFS 锁=是 影子配额=56k
+        报价 Kingdom of Kent(18·队4) 真人 接17 地5905 兵0 密0 tD=0.00 c=2.6 need=8858 [pulse] safe=329k(封顶 88×地；原 329k) keep=329k avail=-109k → L5361 avail<=0：保底线 keep=329k（safe=329k，来自 dpKeep=329k）不低于余额
+        报价 fegrze(8·队1) 真人 接35 地8016 兵489k 密61 tD=1.97 c=198.1 need=883k [crowdedHard] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 United Kingdom(57·队4) 真人 接90 地7721 兵592k 密77 tD=2.48 c=247.3 need=1.07M [crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2310 Cleopatra(63·队5) 地 4145 兵 251k 密 60.7 ｜策略眼里 nb=3 neut=0 ｜worth=66.7（m=1.099）cheap=8.9 超软上限=否 其余真人密度中位=32 ｜NFS 锁=是 影子配额=63k
+        报价 Kingdom of Kent(18·队4) 真人 接17 地5905 兵4303 密1 tD=0.02 c=4.4 need=17k [pulse] safe=365k(封顶 88×地；原 370k) keep=365k avail=-116k → L5361 avail<=0：保底线 keep=365k（safe=365k，来自 dpKeep=370k）不低于余额
+        报价 fegrze(8·队1) 真人 接35 地8016 兵465k 密58 tD=1.79 c=139.6 need=840k → L5267 报价 c >= worth 且没超软上限 → break
+        报价 United Kingdom(57·队4) 真人 接90 地7721 兵664k 密86 tD=2.66 c=277.0 need=1.20M [crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2400 Cleopatra(63·队5) 地 4145 兵 282k 密 68.0 ｜策略眼里 nb=3 neut=0 ｜worth=68.4（m=1.005）cheap=8.9 超软上限=否 其余真人密度中位=35 ｜NFS 锁=是 影子配额=69k
+        报价 Kingdom of Kent(18·队4) 真人 接17 地5905 兵11k 密2 tD=0.05 c=7.0 need=28k [pulse] safe=365k(封顶 88×地；原 401k) keep=365k avail=-86k → L5361 avail<=0：保底线 keep=365k（safe=365k，来自 dpKeep=401k）不低于余额
+        报价 fegrze(8·队1) 真人 接35 地8016 兵524k 密65 tD=1.87 c=157.2 need=946k [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 United Kingdom(57·队4) 真人 接90 地7721 兵682k 密88 tD=2.53 c=217.3 need=1.27M [在打我,pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2490 Cleopatra(63·队5) 地 3983 兵 294k 密 73.7 ｜策略眼里 nb=3 neut=0 ｜worth=67.1（m=0.911）cheap=8.9 超软上限=否 其余真人密度中位=37 ｜NFS 锁=是 影子配额=73k
+        报价 Kingdom of Kent(18·空壳) 非真人 接17 地5814 兵12k 密2 tD=0.05 c=7.5 need=29k safe=351k(封顶 88×地；原 351k) keep=351k avail=-60k → L5361 avail<=0：保底线 keep=351k（safe=351k，来自 dpKeep=422k）不低于余额
+        报价 fegrze(8·队1) 真人 接35 地8016 兵582k 密73 tD=1.97 c=174.3 need=1.05M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 United Kingdom(57·队4) 真人 接99 地7883 兵757k 密96 tD=2.61 c=308.8 need=1.36M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2580 Cleopatra(63·队5) 地 3883 兵 316k 密 81.3 ｜策略眼里 nb=3 neut=0 ｜worth=73.2（m=0.900）cheap=9.1 超软上限=否 其余真人密度中位=40 ｜NFS 锁=是 影子配额=79k
+        报价 Kingdom of Kent(18·空壳) 非真人 接9 地4791 兵9207 密2 tD=0.05 c=7.8 need=22k safe=342k(封顶 88×地；原 342k) keep=342k avail=-30k → L5361 avail<=0：保底线 keep=342k（safe=342k，来自 dpKeep=445k）不低于余额
+        报价 fegrze(8·队1) 真人 接43 地8410 兵655k 密78 tD=1.94 c=186.7 need=1.18M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 United Kingdom(57·队4) 真人 接101 地7966 兵758k 密95 tD=2.37 c=233.1 need=1.40M [在打我,pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2670 Cleopatra(63·队5) 地 3742 兵 334k 密 89.2 ｜策略眼里 nb=2 neut=0 ｜worth=80.3（m=0.900）cheap=9.1 超软上限=否 其余真人密度中位=46 ｜NFS 锁=是 影子配额=83k
+        报价 fegrze(8·队1) 真人 接52 地8695 兵663k 密76 tD=1.68 c=182.9 need=1.20M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 United Kingdom(57·队4) 真人 接98 地8107 兵849k 密105 tD=2.30 c=336.5 need=1.53M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2760 Cleopatra(63·队5) 地 3684 兵 363k 密 98.5 ｜策略眼里 nb=2 neut=0 ｜worth=88.7（m=0.900）cheap=9.1 超软上限=否 其余真人密度中位=50 ｜NFS 锁=是 影子配额=91k
+        报价 fegrze(8·队1) 真人 接52 地8695 兵746k 密86 tD=1.70 c=205.4 need=1.34M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 United Kingdom(57·队4) 真人 接90 地8165 兵867k 密106 tD=2.11 c=253.1 need=1.56M [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2850 Cleopatra(63·队5) 地 3541 兵 377k 密 106.6 ｜策略眼里 nb=2 neut=0 ｜worth=95.9（m=0.900）cheap=9.1 超软上限=是 其余真人密度中位=56 ｜NFS 锁=是 影子配额=94k
+        报价 fegrze(8·队1) 真人 接52 地8705 兵843k 密97 tD=1.73 c=231.5 need=1.52M [pulse] safe=492k keep=492k avail=-118k → L5361 avail<=0：保底线 keep=492k（safe=492k，来自 dpKeep=492k）不低于余额
+        报价 United Kingdom(57·队4) 真人 接107 地8308 兵860k 密104 tD=1.85 c=249.6 need=1.57M [在打我,pulse] safe=492k keep=492k avail=-118k → L5361 avail<=0：保底线 keep=492k（safe=492k，来自 dpKeep=492k）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=2940 Cleopatra(63·队5) 地 3500 兵 402k 密 114.8 ｜策略眼里 nb=2 neut=0 ｜worth=103.3（m=0.900）cheap=9.1 超软上限=是 其余真人密度中位=59 ｜NFS 锁=是 影子配额=100k
+        报价 fegrze(8·队1) 真人 接52 地8711 兵811k 密93 tD=1.58 c=222.6 need=1.46M [pulse] safe=473k keep=473k avail=-76k → L5361 avail<=0：保底线 keep=473k（safe=473k，来自 dpKeep=473k）不低于余额
+        报价 United Kingdom(57·队4) 真人 接111 地8349 兵847k 密102 tD=1.73 c=241.6 need=1.52M [pulse] safe=473k keep=473k avail=-76k → L5361 avail<=0：保底线 keep=473k（safe=473k，来自 dpKeep=473k）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=3030 Cleopatra(63·队5) 地 3314 兵 396k 密 119.5 ｜策略眼里 nb=2 neut=0 ｜worth=107.5（m=0.900）cheap=9.1 超软上限=是 其余真人密度中位=64 ｜NFS 锁=是 影子配额=99k
+        报价 fegrze(8·队1) 真人 接52 地8711 兵908k 密104 tD=1.64 c=249.0 need=1.63M [pulse] safe=526k keep=526k avail=-134k → L5361 avail<=0：保底线 keep=526k（safe=526k，来自 dpKeep=526k）不低于余额
+        报价 United Kingdom(57·队4) 真人 接117 地8535 兵941k 密110 tD=1.73 c=262.0 need=1.69M [pulse] safe=526k keep=526k avail=-134k → L5361 avail<=0：保底线 keep=526k（safe=526k，来自 dpKeep=526k）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=3120 Cleopatra(63·队5) 地 3168 兵 393k 密 124.0 ｜策略眼里 nb=2 neut=0 ｜worth=111.6（m=0.900）cheap=9.1 超软上限=是 其余真人密度中位=67 ｜NFS 锁=是 影子配额=98k
+        报价 fegrze(8·队1) 真人 接52 地8711 兵844k 密97 tD=1.45 c=231.6 need=1.52M [pulse] safe=530k keep=530k avail=-142k → L5361 avail<=0：保底线 keep=530k（safe=530k，来自 dpKeep=530k）不低于余额
+        报价 United Kingdom(57·队4) 真人 接113 地8681 兵934k 密108 tD=1.61 c=258.0 need=1.69M [在打我,pulse] safe=530k keep=530k avail=-142k → L5361 avail<=0：保底线 keep=530k（safe=530k，来自 dpKeep=530k）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=3210 Cleopatra(63·队5) 地 3146 兵 395k 密 125.6 ｜策略眼里 nb=2 neut=0 ｜worth=113.1（m=0.900）cheap=9.1 超软上限=是 其余真人密度中位=72 ｜NFS 锁=是 影子配额=99k
+        报价 United Kingdom(57·队4) 真人 接114 地8703 兵918k 密105 tD=1.46 c=222.7 need=1.72M [在打我,pulse] safe=554k keep=554k avail=-164k → L5361 avail<=0：保底线 keep=554k（safe=554k，来自 dpKeep=554k）不低于余额
+        报价 fegrze(8·队1) 真人 接51 地9245 兵946k 密102 tD=1.42 c=244.7 need=1.70M [pulse] safe=554k keep=554k avail=-164k → L5361 avail<=0：保底线 keep=554k（safe=554k，来自 dpKeep=554k）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=3300 Cleopatra(63·队5) 地 2964 兵 369k 密 124.4 ｜策略眼里 nb=2 neut=0 ｜worth=111.9（m=0.900）cheap=9.1 超软上限=是 其余真人密度中位=79 ｜NFS 锁=是 影子配额=92k
+        报价 fegrze(8·队1) 真人 接42 地9377 兵1.05M 密112 tD=1.42 c=267.5 need=1.88M [pulse] safe=587k keep=587k avail=-223k → L5361 avail<=0：保底线 keep=587k（safe=587k，来自 dpKeep=587k）不低于余额
+        报价 United Kingdom(57·队4) 真人 接110 地8885 兵1.01M 密114 tD=1.44 c=270.6 need=1.82M [pulse] safe=587k keep=587k avail=-223k → L5361 avail<=0：保底线 keep=587k（safe=587k，来自 dpKeep=587k）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=3390 Cleopatra(63·队5) 地 2584 兵 313k 密 121.3 ｜策略眼里 nb=2 neut=0 ｜worth=109.1（m=0.900）cheap=9.3 超软上限=是 其余真人密度中位=83 ｜NFS 锁=是 影子配额=78k
+        报价 United Kingdom(57·队4) 真人 接104 地8885 兵970k 密109 tD=1.32 c=231.1 need=1.82M [在打我,pulse] safe=589k keep=589k avail=-279k → L5361 avail<=0：保底线 keep=589k（safe=589k，来自 dpKeep=589k）不低于余额
+        报价 fegrze(8·队1) 真人 接50 地9757 兵980k 密100 tD=1.21 c=240.0 need=1.76M [pulse] safe=589k keep=589k avail=-279k → L5361 avail<=0：保底线 keep=589k（safe=589k，来自 dpKeep=589k）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=3480 Cleopatra(63·队5) 地 2149 兵 247k 密 114.7 ｜策略眼里 nb=2 neut=0 ｜worth=103.2（m=0.900）cheap=9.3 超软上限=是 其余真人密度中位=87 ｜NFS 锁=是 影子配额=62k
+        报价 fegrze(8·队1) 真人 接50 地9807 兵923k 密94 tD=1.08 c=206.6 need=1.79M [在打我,pulse] safe=591k keep=591k avail=-348k → L5361 avail<=0：保底线 keep=591k（safe=591k，来自 dpKeep=591k）不低于余额
+        报价 United Kingdom(57·队4) 真人 接120 地9270 兵965k 密104 tD=1.20 c=247.4 need=1.73M [pulse] safe=591k keep=591k avail=-348k → L5361 avail<=0：保底线 keep=591k（safe=591k，来自 dpKeep=591k）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=3570 Cleopatra(63·队5) 地 1668 兵 160k 密 96.1 ｜策略眼里 nb=2 neut=0 ｜worth=86.4（m=0.900）cheap=9.3 超软上限=否 其余真人密度中位=86 ｜NFS 锁=是 影子配额=40k
+        报价 United Kingdom(57·队4) 真人 接113 地9386 兵879k 密94 tD=1.09 c=198.1 need=1.65M [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 fegrze(8·队1) 真人 接52 地10172 兵1.04M 密102 tD=1.19 c=243.4 need=1.86M [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=3660 Cleopatra(63·队5) 地 1 兵 0 密 0.0 ｜策略眼里 nb=0 neut=0 ｜worth=67.3（m=0.900）cheap=10.0 超软上限=否 其余真人密度中位=88 ｜NFS 锁=是 影子配额=2048
+        offers 为空（nb 里没有可报价的邻居）
+        影子 act() 这一拍发出：无
+[探针] t=1500 Bowser(64·队7) 地 5589 兵 150k 密 26.8 ｜策略眼里 nb=1 neut=0 ｜worth=40.2（m=1.500）cheap=4.3 超软上限=否 其余真人密度中位=15 ｜NFS 锁=是 影子配额=36k
+        报价 No attack me pls(45·队5) 真人 接39 地9919 兵165k 密17 tD=1.08 c=41.5 need=308k → L5267 报价 c >= worth 且没超软上限 → break
+        影子 act() 这一拍发出：无
+[探针] t=1540 Bowser(64·队7) 地 5589 兵 164k 密 29.3 ｜策略眼里 nb=1 neut=0 ｜worth=43.8（m=1.494）cheap=4.6 超软上限=否 其余真人密度中位=17 ｜NFS 锁=是 影子配额=41k
+        报价 No attack me pls(45·队5) 真人 接39 地9919 兵180k 密18 tD=1.08 c=45.2 need=335k → L5267 报价 c >= worth 且没超软上限 → break
+        影子 act() 这一拍发出：无
+[探针] t=1580 Bowser(64·队7) 地 5589 兵 56k 密 10.0 ｜策略眼里 nb=1 neut=0 ｜worth=14.9（m=1.488）cheap=4.8 超软上限=否 其余真人密度中位=18 ｜NFS 锁=是 影子配额=14k
+        报价 No attack me pls(45·队5) 真人 接39 地10077 兵164k 密16 tD=0.91 c=54.9 need=308k [crowdedHard] → L5267 报价 c >= worth 且没超软上限 → break
+        影子 act() 这一拍发出：无
+[探针] t=1620 Bowser(64·队7) 地 5663 兵 66k 密 11.7 ｜策略眼里 nb=2 neut=0 ｜worth=17.3（m=1.482）cheap=5.2 超软上限=否 其余真人密度中位=19 ｜NFS 锁=是 影子配额=17k
+        报价 jfabri03(38·队5) 真人 接4 地13835 兵139k 密10 tD=0.53 c=44.6 need=256k → L5267 报价 c >= worth 且没超软上限 → break
+        报价 No attack me pls(45·队5) 真人 接49 地10058 兵217k 密22 tD=1.13 c=61.9 need=347k [crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=1660 Bowser(64·队7) 地 5929 兵 70k 密 11.9 ｜策略眼里 nb=2 neut=0 ｜worth=17.5（m=1.476）cheap=5.5 超软上限=否 其余真人密度中位=19 ｜NFS 锁=是 影子配额=18k
+        报价 jfabri03(38·队5) 真人 接5 地13864 兵75k 密5 tD=0.29 c=16.6 need=210k [被别人打,在打我,pulse] safe=98k(封顶 88×地；原 98k) keep=98k avail=-29k → L5361 avail<=0：保底线 keep=98k（safe=98k，来自 dpKeep=98k）不低于余额
+        报价 No attack me pls(45·队5) 真人 接74 地9656 兵184k 密19 tD=1.03 c=63.5 need=338k [crowdedHard] → L5267 报价 c >= worth 且没超软上限 → break
+        影子 act() 这一拍发出：无
+[探针] t=1700 Bowser(64·队7) 地 5902 兵 80k 密 13.6 ｜策略眼里 nb=1 neut=0 ｜worth=19.9（m=1.470）cheap=5.9 超软上限=否 其余真人密度中位=21 ｜NFS 锁=是 影子配额=19k
+        报价 No attack me pls(45·队5) 真人 接72 地9659 兵204k 密21 tD=1.00 c=57.8 need=376k [crowdedHard] → L5267 报价 c >= worth 且没超软上限 → break
+        影子 act() 这一拍发出：无
+[探针] t=1740 Bowser(64·队7) 地 5902 兵 85k 密 14.4 ｜策略眼里 nb=1 neut=0 ｜worth=21.2（m=1.464）cheap=6.4 超软上限=否 其余真人密度中位=21 ｜NFS 锁=是 影子配额=21k
+        不在 nb 里的真实邻居（保护名单）：jerry stankleton(23·队7) 接6 地1486 密0
+        报价 No attack me pls(45·队5) 真人 接68 地9495 兵174k 密18 tD=0.88 c=61.5 need=321k [crowdedHard] → L5267 报价 c >= worth 且没超软上限 → break
+        影子 act() 这一拍发出：无
+[探针] t=1780 Bowser(64·队7) 地 5574 兵 83k 密 14.8 ｜策略眼里 nb=2 neut=0 ｜worth=21.6（m=1.458）cheap=7.0 超软上限=否 其余真人密度中位=21 ｜NFS 锁=是 影子配额=21k
+        不在 nb 里的真实邻居（保护名单）：jerry stankleton(23·队7) 接6 地1496 密0
+        报价 Bruh Union(20·队5) 真人 接26 地11153 兵191k 密17 tD=0.82 c=38.8 need=396k [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 No attack me pls(45·队5) 真人 接87 地9656 兵151k 密16 tD=0.75 c=38.9 need=330k [在打我,pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=1820 Bowser(64·队7) 地 4326 兵 62k 密 14.3 ｜策略眼里 nb=2 neut=0 ｜worth=20.8（m=1.452）cheap=7.6 超软上限=否 其余真人密度中位=22 ｜NFS 锁=是 影子配额=15k
+        不在 nb 里的真实邻居（保护名单）：jerry stankleton(23·队7) 接6 地1520 密0
+        报价 No attack me pls(45·队5) 真人 接64 地10118 兵170k 密17 tD=0.76 c=38.2 need=343k [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Bruh Union(20·队5) 真人 接68 地11915 兵212k 密18 tD=0.81 c=59.6 need=396k [crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=1860 Bowser(64·队7) 地 3356 兵 8290 密 2.5 ｜策略眼里 nb=2 neut=0 ｜worth=3.6（m=1.446）cheap=8.4 超软上限=否 其余真人密度中位=24 ｜NFS 锁=是 影子配额=2072
+        报价 Bruh Union(20·队5) 真人 接53 地12544 兵181k 密14 tD=0.61 c=33.8 need=375k [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 No attack me pls(45·队5) 真人 接8 地10643 兵150k 密14 tD=0.59 c=34.3 need=322k [在打我,pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=1900 Bowser(64·队7) 地 2129 兵 5658 密 2.7 ｜策略眼里 nb=2 neut=0 ｜worth=3.8（m=1.440）cheap=9.3 超软上限=否 其余真人密度中位=23 ｜NFS 锁=是 影子配额=2048
+        报价 Bruh Union(20·队5) 真人 接61 地14531 兵205k 密14 tD=0.61 c=31.9 need=411k [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 No attack me pls(45·队5) 真人 接2 地10735 兵168k 密16 tD=0.68 c=37.4 need=354k [在打我,pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=1500 BlackRock(65·队2) 地 6274 兵 115k 密 18.3 ｜策略眼里 nb=3 neut=0 ｜worth=27.5（m=1.500）cheap=4.3 超软上限=否 其余真人密度中位=15 ｜NFS 锁=否 影子配额=27k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·队7) 接54 地4944 密13；Harwarorn(14·队2) 接43 地9441 密27
+        报价 Hunan Soviet(442·AI) 非真人 接13 地1501 兵1579 密1 tD=0.07 c=5.8 need=4786 safe=24k(封顶 88×地；原 24k) keep=60k avail=54k → L5368 出兵（非真人，整笔）：6021（5.2% 兵）
+        报价 Zand Dynasty(302·AI) 非真人 接55 地1001 兵1059 密1 tD=0.07 c=6.8 need=2780 → （排在后面：已出兵）
+        报价 Player 802(15·队1) 真人 接13 地8180 兵24k 密3 tD=0.19 c=11.5 need=55k → （排在后面：已出兵）
+        影子 act() 这一拍发出：攻→Hunan Soviet(442·AI) 53‰ 6069
+[探针] t=1595 BlackRock(65·队2) 地 7261 兵 89k 密 12.3 ｜策略眼里 nb=2 neut=0 ｜worth=18.3（m=1.486）cheap=5.0 超软上限=否 其余真人密度中位=18 ｜NFS 锁=否 影子配额=22k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·队7) 接54 地5344 密18；Harwarorn(14·队2) 接43 地9441 密33
+        报价 Hunan Soviet(442·AI) 非真人 接32 地1562 兵340 密0 tD=0.01 c=3.4 need=2858 safe=17k(封顶 88×地；原 17k) keep=17k avail=71k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=3668 < minCmd=feeK×手续费=4184（余额的 4.7%）→ 跳过
+        报价 Player 802(15·队1) 真人 接85 地8399 兵17k 密2 tD=0.11 c=5.9 need=43k safe=17k(封顶 88×地；原 17k) keep=53k avail=36k → L5531 出兵（真人，非 pulse：min(avail, 1.25×need)）：36k（39.9% 兵）
+        影子 act() 这一拍发出：无
+[探针] t=1690 BlackRock(65·队2) 地 7261 兵 161k 密 22.2 ｜策略眼里 nb=2 neut=4 ｜worth=32.6（m=1.472）cheap=5.8 超软上限=否 其余真人密度中位=19 ｜NFS 锁=否 影子配额=40k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接54 地5616 密19；Harwarorn(14·队2) 接43 地9441 密40
+        报价 Player 802(15·队1) 真人 接85 地8399 兵30k 密4 tD=0.20 c=10.8 need=67k safe=11k(封顶 88×地；原 11k) keep=96k avail=63k → L5531 出兵（真人，非 pulse：min(avail, 1.25×need)）：63k（39.2% 兵）
+        报价 [APEX] zexos1(27·空壳) 非真人 接28 地4859 兵140k 密29 tD=1.56 c=70.9 need=257k → （排在后面：已出兵）
+        影子 act() 这一拍发出：攻→无主地 47‰ 7540
+[探针] t=1785 BlackRock(65·队2) 地 7261 兵 193k 密 26.6 ｜策略眼里 nb=3 neut=0 ｜worth=38.8（m=1.457）cheap=7.0 超软上限=否 其余真人密度中位=19 ｜NFS 锁=否 影子配额=48k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接54 地5784 密19；Harwarorn(14·队2) 接43 地9061 密42
+        报价 Player 802(15·队1) 真人 接85 地8399 兵45k 密5 tD=0.28 c=14.8 need=92k safe=156k(封顶 88×地；原 156k) keep=156k avail=35k → L5528 买不起整笔（want=115k）且 avail=35k 不足 chunk×兵=39k → 跳过
+        报价 [APEX] zexos1(27·空壳) 非真人 接28 地4919 兵139k 密28 tD=1.49 c=69.8 need=256k → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] sora_w(26·队1) 真人 接4 地7551 兵289k 密38 tD=2.01 c=226.9 need=527k [crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=1880 BlackRock(65·队2) 地 7226 兵 225k 密 31.2 ｜策略眼里 nb=3 neut=0 ｜worth=45.0（m=1.443）cheap=8.6 超软上限=否 其余真人密度中位=19 ｜NFS 锁=否 影子配额=56k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接55 地5819 密19；Harwarorn(14·队2) 接43 地8912 密48
+        报价 Player 802(15·队1) 真人 接85 地8399 兵60k 密7 tD=0.38 c=19.2 need=120k safe=169k(封顶 88×地；原 169k) keep=169k avail=54k → L5531 出兵（真人，非 pulse：min(avail, 1.25×need)）：54k（24.0% 兵）
+        报价 [APEX] zexos1(27·空壳) 非真人 接28 地4981 兵136k 密27 tD=1.44 c=67.6 need=250k → （排在后面：已出兵）
+        报价 [APEX] sora_w(26·队1) 真人 接4 地7302 兵311k 密43 tD=2.25 c=252.9 need=561k [crowdedHard] → （排在后面：已出兵）
+        影子 act() 这一拍发出：无
+[探针] t=1975 BlackRock(65·队2) 地 7136 兵 252k 密 35.3 ｜策略眼里 nb=3 neut=0 ｜worth=50.4（m=1.429）cheap=8.6 超软上限=否 其余真人密度中位=21 ｜NFS 锁=否 影子配额=63k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接55 地5855 密19；Harwarorn(14·队2) 接39 地8663 密37
+        报价 Player 802(15·队1) 真人 接85 地8714 兵34k 密4 tD=0.19 c=11.7 need=74k [被别人打,pulse] safe=192k(封顶 88×地；原 192k) keep=192k avail=57k → L5522 出兵（pulse：上限 12% 兵）：30k（12.0% 兵）
+        报价 [APEX] zexos1(27·空壳) 非真人 接26 地5035 兵133k 密26 tD=1.25 c=65.2 need=244k → （排在后面：已出兵）
+        报价 [APEX] sora_w(26·队1) 真人 接4 地7302 兵353k 密48 tD=2.30 c=285.8 need=637k [crowdedHard] → （排在后面：已出兵）
+        影子 act() 这一拍发出：无
+[探针] t=2070 BlackRock(65·队2) 地 7062 兵 285k 密 40.4 ｜策略眼里 nb=3 neut=0 ｜worth=54.6（m=1.352）cheap=8.6 超软上限=否 其余真人密度中位=22 ｜NFS 锁=否 影子配额=71k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接61 地5929 密18；Harwarorn(14·队2) 接39 地10179 密32
+        报价 Player 802(15·队1) 真人 接85 地6850 兵33k 密5 tD=0.22 c=14.3 need=64k [pulse] safe=152k(封顶 88×地；原 152k) keep=163k avail=119k → L5522 出兵（pulse：上限 12% 兵）：34k（12.0% 兵）
+        报价 [APEX] zexos1(27·空壳) 非真人 接26 地5122 兵120k 密23 tD=1.06 c=58.2 need=221k → （排在后面：已出兵）
+        报价 [APEX] sora_w(26·队1) 真人 接4 地7431 兵282k 密38 tD=1.72 c=166.7 need=513k → （排在后面：已出兵）
+        影子 act() 这一拍发出：攻→Player 802(15·队1) 122‰ 34k
+[探针] t=2095 BlackRock(65·队2) 地 7062 兵 292k 密 41.3 ｜策略眼里 nb=3 neut=0 ｜worth=54.8（m=1.325）cheap=8.6 超软上限=否 其余真人密度中位=21 ｜NFS 锁=否 影子配额=73k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接61 地5929 密18；Harwarorn(14·队2) 接38 地10070 密32
+        报价 Player 802(15·队1) 真人 接85 地6138 兵28k 密5 tD=0.22 c=14.2 need=54k [被别人打,pulse] safe=10k(封顶 88×地；原 10k) keep=167k avail=121k → L5522 出兵（pulse：上限 12% 兵）：35k（12.0% 兵）
+        报价 [APEX] sora_w(26·队1) 真人 接4 地8027 兵29k 密4 tD=0.17 c=20.1 need=64k [pulse] → （排在后面：已出兵）
+        报价 [APEX] zexos1(27·空壳) 非真人 接27 地5297 兵109k 密21 tD=0.99 c=51.7 need=202k → （排在后面：已出兵）
+        影子 act() 这一拍发出：无
+[探针] t=2110 BlackRock(65·队2) 地 7147 兵 56k 密 7.9 ｜策略眼里 nb=3 neut=0 ｜worth=10.3（m=1.310）cheap=8.6 超软上限=否 其余真人密度中位=22 ｜NFS 锁=否 影子配额=14k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接61 地5929 密19；Harwarorn(14·队2) 接38 地10081 密38
+        报价 [APEX] sora_w(26·队1) 真人 接5 地8616 兵38k 密4 tD=0.20 c=22.7 need=81k → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] zexos1(27·空壳) 非真人 接27 地5297 兵114k 密22 tD=0.97 c=53.4 need=212k → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2125 BlackRock(65·队2) 地 7579 兵 57k 密 7.5 ｜策略眼里 nb=3 neut=0 ｜worth=9.7（m=1.294）cheap=8.6 超软上限=否 其余真人密度中位=23 ｜NFS 锁=否 影子配额=14k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接61 地5929 密19；Harwarorn(14·队2) 接38 地10081 密39
+        报价 [APEX] sora_w(26·队1) 真人 接9 地9134 兵39k 密4 tD=0.19 c=21.8 need=82k → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] zexos1(27·空壳) 非真人 接27 地5297 兵114k 密22 tD=0.95 c=53.4 need=212k → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2140 BlackRock(65·队2) 地 7998 兵 58k 密 7.3 ｜策略眼里 nb=4 neut=0 ｜worth=9.3（m=1.278）cheap=8.5 超软上限=否 其余真人密度中位=23 ｜NFS 锁=否 影子配额=15k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接61 地5929 密18；Harwarorn(14·队2) 接38 地10079 密40
+        报价 [APEX] sora_w(26·队1) 真人 接12 地9617 兵4635 密0 tD=0.02 c=4.9 need=23k safe=188k(封顶 88×地；原 188k) keep=188k avail=-130k → L5361 avail<=0：保底线 keep=188k（safe=188k，来自 dpKeep=188k）不低于余额
+        报价 [APEX] zexos1(27·空壳) 非真人 接27 地5297 兵114k 密22 tD=0.95 c=53.4 need=212k → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 914(55·队3) 真人 接13 地20154 兵347k 密17 tD=0.75 c=77.3 need=646k [被别人打,pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2155 BlackRock(65·队2) 地 8236 兵 57k 密 6.9 ｜策略眼里 nb=4 neut=0 ｜worth=8.8（m=1.262）cheap=8.5 超软上限=否 其余真人密度中位=23 ｜NFS 锁=否 影子配额=14k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接54 地6078 密17；Harwarorn(14·队2) 接38 地9902 密40
+        报价 [APEX] sora_w(26·队1) 真人 接15 地10073 兵4689 密0 tD=0.02 c=4.2 need=23k safe=164k(封顶 88×地；原 164k) keep=164k avail=-108k → L5361 avail<=0：保底线 keep=164k（safe=164k，来自 dpKeep=164k）不低于余额
+        报价 [APEX] zexos1(27·空壳) 非真人 接27 地5470 兵90k 密17 tD=0.72 c=41.3 need=169k → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 914(55·队3) 真人 接21 地20212 兵305k 密15 tD=0.66 c=66.1 need=573k [被别人打,pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2165 BlackRock(65·队2) 地 8480 兵 57k 密 6.8 ｜策略眼里 nb=4 neut=0 ｜worth=8.5（m=1.252）cheap=8.5 超软上限=否 其余真人密度中位=23 ｜NFS 锁=否 影子配额=14k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接54 地6112 密17；Harwarorn(14·队2) 接38 地9902 密40
+        报价 [APEX] sora_w(26·队1) 真人 接18 地10505 兵4744 密0 tD=0.02 c=3.7 need=24k safe=163k(封顶 88×地；原 163k) keep=163k avail=-107k → L5361 avail<=0：保底线 keep=163k（safe=163k，来自 dpKeep=163k）不低于余额
+        报价 Player 914(55·队3) 真人 接30 地20418 兵303k 密15 tD=0.65 c=37.3 need=572k [被别人打,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] zexos1(27·空壳) 非真人 接27 地5470 兵91k 密17 tD=0.72 c=41.4 need=170k → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2170 BlackRock(65·队2) 地 8543 兵 58k 密 6.8 ｜策略眼里 nb=3 neut=63 ｜worth=8.5（m=1.247）cheap=8.5 超软上限=否 其余真人密度中位=24 ｜NFS 锁=否 影子配额=14k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接54 地6112 密17；Harwarorn(14·队2) 接38 地9902 密41
+        报价 [APEX] sora_w(26·队1) 真人 接18 地10733 兵4800 密0 tD=0.02 c=3.8 need=25k safe=164k(封顶 88×地；原 164k) keep=164k avail=-106k → L5361 avail<=0：保底线 keep=164k（safe=164k，来自 dpKeep=164k）不低于余额
+        报价 Player 914(55·队3) 真人 接34 地20518 兵304k 密15 tD=0.61 c=37.2 need=573k [被别人打,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] zexos1(27·空壳) 非真人 接27 地5470 兵91k 密17 tD=0.69 c=41.4 need=170k → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2185 BlackRock(65·队2) 地 8836 兵 59k 密 6.6 ｜策略眼里 nb=3 neut=47 ｜worth=8.2（m=1.231）cheap=8.5 超软上限=否 其余真人密度中位=25 ｜NFS 锁=否 影子配额=15k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接54 地6108 密17；Harwarorn(14·队2) 接38 地9902 密36
+        报价 [APEX] sora_w(26·队1) 真人 接23 地11225 兵4857 密0 tD=0.02 c=3.2 need=25k safe=160k(封顶 88×地；原 160k) keep=160k avail=-102k → L5361 avail<=0：保底线 keep=160k（safe=160k，来自 dpKeep=160k）不低于余额
+        报价 Player 914(55·队3) 真人 接53 地20613 兵298k 密14 tD=0.57 c=36.3 need=562k [被别人打,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] zexos1(27·空壳) 非真人 接27 地5470 兵91k 密17 tD=0.65 c=41.4 need=170k → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2200 BlackRock(65·队2) 地 8954 兵 69k 密 7.7 ｜策略眼里 nb=3 neut=15 ｜worth=9.4（m=1.215）cheap=8.5 超软上限=否 其余真人密度中位=27 ｜NFS 锁=否 影子配额=15k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接54 地6084 密18；Harwarorn(14·队2) 接38 地9913 密38
+        报价 [APEX] zexos1(27·空壳) 非真人 接27 地5470 兵96k 密18 tD=0.66 c=43.8 need=179k → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] sora_w(26·队1) 真人 接31 地11297 兵239k 密21 tD=0.79 c=52.1 need=442k [被别人打,pulse] → （排在后面：前一个报价已 break）
+        报价 Player 914(55·队3) 真人 接84 地20872 兵323k 密15 tD=0.58 c=52.2 need=608k [crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2215 BlackRock(65·队2) 地 9015 兵 70k 密 7.7 ｜策略眼里 nb=3 neut=10 ｜worth=9.3（m=1.199）cheap=8.5 超软上限=否 其余真人密度中位=27 ｜NFS 锁=否 影子配额=17k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接54 地6081 密18；Harwarorn(14·队2) 接40 地10511 密32
+        报价 [APEX] zexos1(27·空壳) 非真人 接25 地4951 兵78k 密16 tD=0.58 c=40.1 need=143k → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 914(55·队3) 真人 接90 地21042 兵328k 密16 tD=0.58 c=52.4 need=615k [crowdedHard] → （排在后面：前一个报价已 break）
+        报价 [APEX] sora_w(26·队1) 真人 接31 地11168 兵237k 密21 tD=0.79 c=52.5 need=439k [被别人打,pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2230 BlackRock(65·队2) 地 9058 兵 71k 密 7.9 ｜策略眼里 nb=3 neut=8 ｜worth=9.3（m=1.183）cheap=8.5 超软上限=否 其余真人密度中位=27 ｜NFS 锁=否 影子配额=18k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接54 地6088 密17；Harwarorn(14·队2) 接40 地10710 密32
+        报价 [APEX] zexos1(27·空壳) 非真人 接25 地4951 兵72k 密14 tD=0.53 c=37.0 need=132k → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 914(55·队3) 真人 接96 地21093 兵336k 密16 tD=0.58 c=53.6 need=631k [crowdedHard] → （排在后面：前一个报价已 break）
+        报价 [APEX] sora_w(26·队1) 真人 接31 地10978 兵271k 密25 tD=0.91 c=60.8 need=497k [被别人打,pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2245 BlackRock(65·队2) 地 9083 兵 272k 密 30.0 ｜策略眼里 nb=3 neut=0 ｜worth=35.0（m=1.168）cheap=8.5 超软上限=否 其余真人密度中位=27 ｜NFS 锁=否 影子配额=20k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接54 地6109 密17；Harwarorn(14·队2) 接39 地10796 密31；AltF4(59·队8) 接7 地1054 密9
+        报价 Player 914(55·队3) 真人 接102 地21293 兵322k 密15 tD=0.55 c=32.2 need=605k safe=173k keep=259k avail=9931 → L5528 买不起整笔（want=757k）且 avail=9931 不足 chunk×兵=54k → 跳过
+        报价 [APEX] zexos1(27·空壳) 非真人 接26 地5122 兵59k 密12 tD=0.42 c=30.5 need=112k safe=173k(封顶 88×地；原 173k) keep=252k avail=17k → L5367b 能出的兵 x=17k 小于 want=140k 且不足 chunk×兵=54k → 跳过
+        报价 [APEX] sora_w(26·队1) 真人 接31 地10773 兵269k 密25 tD=0.91 c=61.9 need=491k → L5267 报价 c >= worth 且没超软上限 → break
+        影子 act() 这一拍发出：无
+[探针] t=2260 BlackRock(65·队2) 地 9083 兵 279k 密 30.7 ｜策略眼里 nb=3 neut=0 ｜worth=35.3（m=1.152）cheap=8.5 超软上限=否 其余真人密度中位=28 ｜NFS 锁=否 影子配额=32k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接54 地6112 密18；Harwarorn(14·队2) 接39 地11116 密31
+        报价 [APEX] zexos1(27·空壳) 非真人 接26 地5122 兵59k 密12 tD=0.42 c=30.5 need=112k safe=178k(封顶 88×地；原 178k) keep=257k avail=18k → L5367b 能出的兵 x=18k 小于 want=140k 且不足 chunk×兵=56k → 跳过
+        报价 Player 914(55·队3) 真人 接106 地21573 兵330k 密15 tD=0.55 c=38.3 need=621k → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] sora_w(26·队1) 真人 接31 地10543 兵266k 密25 tD=0.91 c=62.7 need=484k → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2355 BlackRock(65·队2) 地 9051 兵 316k 密 34.9 ｜策略眼里 nb=3 neut=0 ｜worth=36.7（m=1.052）cheap=8.5 超软上限=否 其余真人密度中位=30 ｜NFS 锁=否 影子配额=79k
+        不在 nb 里的真实邻居（保护名单）：Angkor(70·空壳) 接52 地6144 密18；Harwarorn(14·队2) 接44 地13198 密27
+        报价 [APEX] zexos1(27·空壳) 非真人 接23 地4310 兵43k 密10 tD=0.33 c=27.7 need=79k safe=221k(封顶 88×地；原 221k) keep=274k avail=38k → L5367b 能出的兵 x=38k 小于 want=99k 且不足 chunk×兵=63k → 跳过
+        报价 Player 914(55·队3) 真人 接106 地22347 兵408k 密18 tD=0.60 c=45.3 need=760k → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] sora_w(26·队1) 真人 接31 地10543 兵308k 密29 tD=0.96 c=72.1 need=557k → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2450 BlackRock(65·队2) 地 9019 兵 291k 密 32.2 ｜策略眼里 nb=3 neut=0 ｜worth=30.7（m=0.953）cheap=8.5 超软上限=否 其余真人密度中位=35 ｜NFS 锁=否 影子配额=73k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接56 地16382 密18；Angkor(70·空壳) 接52 地6176 密17
+        报价 Player 914(55·队3) 真人 接106 地22536 兵468k 密21 tD=0.59 c=51.2 need=867k [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] sora_w(26·队1) 真人 接31 地10543 兵358k 密34 tD=0.97 c=83.3 need=647k [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2580 BlackRock(65·队2) 地 9238 兵 341k 密 36.9 ｜策略眼里 nb=3 neut=0 ｜worth=33.2（m=0.900）cheap=8.4 超软上限=否 其余真人密度中位=40 ｜NFS 锁=否 影子配额=85k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接114 地17343 密24；Angkor(70·空壳) 接52 地6302 密15
+        报价 Player 914(55·队3) 真人 接106 地22536 兵577k 密26 tD=0.65 c=62.7 need=1.06M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] sora_w(26·队1) 真人 接82 地10543 兵429k 密41 tD=1.03 c=133.4 need=775k [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2710 BlackRock(65·队2) 地 9178 兵 478k 密 52.1 ｜策略眼里 nb=2 neut=0 ｜worth=46.9（m=0.900）cheap=8.4 超软上限=否 其余真人密度中位=45 ｜NFS 锁=否 影子配额=119k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接116 地19869 密21；Angkor(70·空壳) 接54 地6367 密14
+        报价 [APEX] sora_w(26·队1) 真人 接86 地10543 兵449k 密43 tD=0.94 c=87.7 need=812k [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 914(55·队3) 真人 接106 地22536 兵731k 密32 tD=0.71 c=78.9 need=1.34M [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2840 BlackRock(65·队2) 地 9145 兵 562k 密 61.5 ｜策略眼里 nb=2 neut=0 ｜worth=55.3（m=0.900）cheap=8.4 超软上限=否 其余真人密度中位=48 ｜NFS 锁=否 影子配额=141k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接93 地19832 密27；Angkor(70·空壳) 接52 地6400 密14
+        报价 Player 914(55·队3) 真人 接106 地22536 兵887k 密39 tD=0.81 c=95.3 need=1.61M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] sora_w(26·队1) 真人 接99 地11646 兵529k 密45 tD=0.94 c=109.8 need=961k [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2970 BlackRock(65·队2) 地 9086 兵 656k 密 72.2 ｜策略眼里 nb=2 neut=0 ｜worth=65.0（m=0.900）cheap=8.5 超软上限=否 其余真人密度中位=55 ｜NFS 锁=否 影子配额=164k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接93 地20009 密33；Angkor(70·空壳) 接50 地6459 密12
+        报价 Player 914(55·队3) 真人 接106 地22536 兵1.07M 密48 tD=0.86 c=114.8 need=1.95M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] sora_w(26·队1) 真人 接99 地11646 兵631k 密54 tD=0.98 c=130.4 need=1.14M [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=3100 BlackRock(65·队2) 地 9058 兵 778k 密 85.9 ｜策略眼里 nb=2 neut=0 ｜worth=77.3（m=0.900）cheap=8.5 超软上限=否 其余真人密度中位=65 ｜NFS 锁=否 影子配额=192k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接93 地20009 密41；Angkor(70·空壳) 接50 地6487 密11
+        报价 Player 914(55·队3) 真人 接106 地22536 兵1.32M 密58 tD=0.90 c=140.3 need=2.38M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] sora_w(26·队1) 真人 接99 地11646 兵761k 密65 tD=1.01 c=157.0 need=1.37M [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=3230 BlackRock(65·队2) 地 9002 兵 906k 密 100.6 ｜策略眼里 nb=2 neut=0 ｜worth=90.6（m=0.900）cheap=8.5 超软上限=是 其余真人密度中位=74 ｜NFS 锁=否 影子配额=226k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接93 地20009 密49；Angkor(70·空壳) 接48 地6543 密11
+        报价 Player 914(55·队3) 真人 接106 地22536 兵1.37M 密61 tD=0.82 c=145.7 need=2.47M [pulse] safe=760k keep=810k avail=85k → L5528 买不起整笔（want=3.09M）且 avail=85k 不足 chunk×兵=181k → 跳过
+        报价 [APEX] sora_w(26·队1) 真人 接99 地11646 兵901k 密77 tD=1.05 c=185.4 need=1.62M [pulse] safe=760k keep=810k avail=85k → L5528 买不起整笔（want=2.03M）且 avail=85k 不足 chunk×兵=181k → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=3360 BlackRock(65·队2) 地 8950 兵 1.03M 密 115.2 ｜策略眼里 nb=2 neut=0 ｜worth=103.7（m=0.900）cheap=8.5 超软上限=是 其余真人密度中位=81 ｜NFS 锁=否 影子配额=258k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接93 地19689 密58；Angkor(70·空壳) 接47 地6595 密9
+        报价 Player 914(55·队3) 真人 接106 地22536 兵1.64M 密73 tD=0.90 c=174.3 need=2.95M [pulse] safe=913k keep=913k avail=106k → L5528 买不起整笔（want=3.69M）且 avail=106k 不足 chunk×兵=206k → 跳过
+        报价 [APEX] sora_w(26·队1) 真人 接99 地11646 兵1.06M 密91 tD=1.14 c=218.7 need=1.92M [pulse] safe=913k keep=913k avail=106k → L5528 买不起整笔（want=2.39M）且 avail=106k 不足 chunk×兵=206k → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=3365 BlackRock(65·队2) 地 8950 兵 1.03M 密 115.2 ｜策略眼里 nb=2 neut=0 ｜worth=103.7（m=0.900）cheap=8.5 超软上限=是 其余真人密度中位=81 ｜NFS 锁=否 影子配额=258k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接93 地19689 密58；Angkor(70·空壳) 接47 地6593 密9
+        报价 Player 914(55·队3) 真人 接106 地22538 兵1.64M 密73 tD=0.90 c=174.3 need=2.95M [pulse] safe=913k keep=913k avail=106k → L5528 买不起整笔（want=3.69M）且 avail=106k 不足 chunk×兵=206k → 跳过
+        报价 [APEX] sora_w(26·队1) 真人 接99 地11646 兵1.06M 密91 tD=1.14 c=218.7 need=1.92M [pulse] safe=913k keep=913k avail=106k → L5528 买不起整笔（want=2.39M）且 avail=106k 不足 chunk×兵=206k → 跳过
+        影子 act() 这一拍发出：攻→Player 914(55·队3) 102‰ 104k
+[探针] t=3370 BlackRock(65·队2) 地 8950 兵 1.04M 密 116.1 ｜策略眼里 nb=2 neut=0 ｜worth=104.5（m=0.900）cheap=8.5 超软上限=是 其余真人密度中位=82 ｜NFS 锁=否 影子配额=260k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接93 地19689 密58；Angkor(70·空壳) 接47 地6583 密8
+        报价 Player 914(55·队3) 真人 接106 地22548 兵1.66M 密74 tD=0.90 c=176.5 need=2.99M [pulse] safe=925k keep=925k avail=103k → L5528 买不起整笔（want=3.74M）且 avail=103k 不足 chunk×兵=208k → 跳过
+        报价 [APEX] sora_w(26·队1) 真人 接99 地11646 兵1.08M 密93 tD=1.14 c=221.3 need=1.94M [pulse] safe=925k keep=925k avail=103k → L5528 买不起整笔（want=2.42M）且 avail=103k 不足 chunk×兵=208k → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=3375 BlackRock(65·队2) 地 8950 兵 923k 密 103.1 ｜策略眼里 nb=2 neut=0 ｜worth=92.8（m=0.900）cheap=8.5 超软上限=是 其余真人密度中位=82 ｜NFS 锁=否 影子配额=231k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接93 地19689 密58；Angkor(70·空壳) 接47 地6556 密8
+        报价 Player 914(55·队3) 真人 接106 地22575 兵1.66M 密73 tD=0.90 c=170.0 need=2.89M [pulse] safe=925k keep=925k avail=-13k → L5361 avail<=0：保底线 keep=925k（safe=925k，来自 dpKeep=925k）不低于余额
+        报价 [APEX] sora_w(26·队1) 真人 接99 地11646 兵1.08M 密93 tD=1.14 c=221.1 need=1.94M [pulse] safe=925k keep=925k avail=-13k → L5361 avail<=0：保底线 keep=925k（safe=925k，来自 dpKeep=925k）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=3390 BlackRock(65·队2) 地 9267 兵 944k 密 101.8 ｜策略眼里 nb=2 neut=0 ｜worth=91.6（m=0.900）cheap=8.4 超软上限=是 其余真人密度中位=81 ｜NFS 锁=否 影子配额=236k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接93 地19689 密60；Angkor(70·空壳) 接47 地6425 密8
+        报价 Player 914(55·队3) 真人 接107 地22389 兵1.66M 密74 tD=0.92 c=176.7 need=2.97M [pulse] safe=927k keep=927k avail=5477 → L5528 买不起整笔（want=3.71M）且 avail=5477 不足 chunk×兵=189k → 跳过
+        报价 [APEX] sora_w(26·队1) 真人 接100 地11646 兵1.10M 密95 tD=1.18 c=226.4 need=1.98M [pulse] safe=927k keep=927k avail=5477 → L5528 买不起整笔（want=2.48M）且 avail=5477 不足 chunk×兵=189k → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=3420 BlackRock(65·队2) 地 9701 兵 876k 密 90.3 ｜策略眼里 nb=2 neut=0 ｜worth=81.3（m=0.900）cheap=8.4 超软上限=否 其余真人密度中位=83 ｜NFS 锁=否 影子配额=219k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接93 地19689 密63；Angkor(70·空壳) 接47 地6057 密8
+        报价 Player 914(55·队3) 真人 接111 地22323 兵1.69M 密76 tD=0.91 c=181.5 need=3.04M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] sora_w(26·队1) 真人 接103 地11646 兵1.16M 密99 tD=1.19 c=319.6 need=2.08M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=3450 BlackRock(65·队2) 地 9676 兵 904k 密 93.4 ｜策略眼里 nb=2 neut=0 ｜worth=84.1（m=0.900）cheap=8.4 超软上限=否 其余真人密度中位=82 ｜NFS 锁=否 影子配额=226k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接93 地19689 密66；Angkor(70·空壳) 接40 地5871 密8
+        报价 [APEX] sora_w(26·队1) 真人 接103 地11646 兵1.07M 密92 tD=1.12 c=187.0 need=1.93M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 914(55·队3) 真人 接111 地22534 兵1.76M 密78 tD=0.95 c=186.5 need=3.16M [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=3480 BlackRock(65·队2) 地 9676 兵 936k 密 96.8 ｜策略眼里 nb=2 neut=0 ｜worth=87.1（m=0.900）cheap=8.4 超软上限=否 其余真人密度中位=81 ｜NFS 锁=否 影子配额=234k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接65 地18485 密66；Angkor(70·空壳) 接40 地5616 密7
+        报价 [APEX] sora_w(26·队1) 真人 接120 地12850 兵881k 密69 tD=0.85 c=164.5 need=1.59M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 914(55·队3) 真人 接111 地22789 兵1.82M 密80 tD=0.99 c=191.6 need=3.29M [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=3510 BlackRock(65·队2) 地 9676 兵 980k 密 101.2 ｜策略眼里 nb=2 neut=0 ｜worth=91.1（m=0.900）cheap=8.4 超软上限=是 其余真人密度中位=80 ｜NFS 锁=否 影子配额=245k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接56 地17989 密62；Angkor(70·空壳) 接40 地5317 密7
+        报价 [APEX] sora_w(26·队1) 真人 接126 地13104 兵927k 密71 tD=0.89 c=169.6 need=1.67M [pulse] safe=1.07M keep=1.07M avail=-102k → L5361 avail<=0：保底线 keep=1.07M（safe=1.07M，来自 dpKeep=1.07M）不低于余额
+        报价 Player 914(55·队3) 真人 接111 地23088 兵1.92M 密83 tD=1.04 c=198.9 need=3.45M [pulse] safe=1.07M keep=1.07M avail=-102k → L5361 avail<=0：保底线 keep=1.07M（safe=1.07M，来自 dpKeep=1.07M）不低于余额
+        影子 act() 这一拍发出：攻→Player 914(55·队3) 102‰ 99k
+[探针] t=3540 BlackRock(65·队2) 地 10013 兵 901k 密 89.9 ｜策略眼里 nb=2 neut=0 ｜worth=80.9（m=0.900）cheap=8.4 超软上限=否 其余真人密度中位=79 ｜NFS 锁=否 影子配额=225k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接56 地18571 密61；Angkor(70·空壳) 接40 地5023 密7
+        报价 Player 914(55·队3) 真人 接115 地23045 兵1.67M 密73 tD=0.92 c=174.2 need=3.01M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] sora_w(26·队1) 真人 接127 地13104 兵961k 密73 tD=0.93 c=175.7 need=1.73M [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=3570 BlackRock(65·队2) 地 10013 兵 933k 密 93.2 ｜策略眼里 nb=2 neut=0 ｜worth=83.8（m=0.900）cheap=8.4 超软上限=否 其余真人密度中位=77 ｜NFS 锁=否 影子配额=233k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接56 地18990 密57；Angkor(70·空壳) 接40 地4714 密7
+        报价 [APEX] sora_w(26·队1) 真人 接127 地13104 兵997k 密76 tD=0.98 c=149.3 need=1.80M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 914(55·队3) 真人 接115 地23354 兵1.74M 密74 tD=0.96 c=151.6 need=3.13M [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=3600 BlackRock(65·队2) 地 9993 兵 973k 密 97.4 ｜策略眼里 nb=2 neut=0 ｜worth=87.6（m=0.900）cheap=8.4 超软上限=否 其余真人密度中位=86 ｜NFS 锁=否 影子配额=241k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接65 地19352 密62；Angkor(70·空壳) 接39 地4414 密6
+        报价 Player 914(55·队3) 真人 接115 地23674 兵1.59M 密67 tD=0.78 c=136.6 need=2.86M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] sora_w(26·队1) 真人 接121 地12800 兵999k 密78 tD=0.91 c=187.3 need=1.79M [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=3630 BlackRock(65·队2) 地 9993 兵 1.01M 密 100.9 ｜策略眼里 nb=2 neut=0 ｜worth=90.8（m=0.900）cheap=8.4 超软上限=是 其余真人密度中位=84 ｜NFS 锁=否 影子配额=252k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接65 地19352 密64；Angkor(70·空壳) 接39 地4046 密6
+        报价 Player 914(55·队3) 真人 接115 地23893 兵1.65M 密69 tD=0.82 c=140.7 need=2.97M [pulse] safe=918k keep=918k avail=78k → L5528 买不起整笔（want=3.72M）且 avail=78k 不足 chunk×兵=202k → 跳过
+        报价 [APEX] sora_w(26·队1) 真人 接121 地12800 兵1.04M 密81 tD=0.96 c=194.1 need=1.86M [pulse] safe=918k keep=918k avail=78k → L5528 买不起整笔（want=2.32M）且 avail=78k 不足 chunk×兵=202k → 跳过
+        影子 act() 这一拍发出：攻→Player 914(55·队3) 102‰ 101k
+[探针] t=3640 BlackRock(65·队2) 地 9993 兵 905k 密 90.6 ｜策略眼里 nb=2 neut=0 ｜worth=81.5（m=0.900）cheap=8.4 超软上限=否 其余真人密度中位=85 ｜NFS 锁=否 影子配额=226k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接65 地19352 密65；Angkor(70·空壳) 接39 地3822 密5
+        报价 Player 914(55·队3) 真人 接115 地23965 兵1.67M 密70 tD=0.82 c=137.2 need=2.91M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] sora_w(26·队1) 真人 接121 地12800 兵1.05M 密82 tD=0.96 c=196.2 need=1.88M [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=3780 BlackRock(65·队2) 地 10738 兵 957k 密 89.1 ｜策略眼里 nb=2 neut=13 ｜worth=80.2（m=0.900）cheap=8.3 超软上限=否 其余真人密度中位=87 ｜NFS 锁=否 影子配额=239k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接73 地20363 密62
+        报价 Player 914(55·队3) 真人 接125 地24454 兵2.12M 密87 tD=1.00 c=188.0 need=4.07M [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [APEX] sora_w(26·队1) 真人 接117 地12475 兵1.20M 密96 tD=1.11 c=230.4 need=2.14M [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=3920 BlackRock(65·队2) 地 10230 兵 1.10M 密 107.2 ｜策略眼里 nb=2 neut=0 ｜worth=96.5（m=0.900）cheap=8.4 超软上限=是 其余真人密度中位=88 ｜NFS 锁=否 影子配额=274k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接2 地17844 密69
+        报价 [APEX] sora_w(26·队1) 真人 接157 地15888 兵445k 密28 tD=0.32 c=58.5 need=817k [pulse] safe=900k(封顶 88×地；原 1.45M) keep=900k avail=184k → L5528 买不起整笔（want=1.02M）且 avail=184k 不足 chunk×兵=219k → 跳过
+        报价 Player 914(55·队3) 真人 接116 地25294 兵2.60M 密103 tD=1.17 c=245.4 need=4.67M [pulse] safe=1.45M keep=1.45M avail=-368k → L5361 avail<=0：保底线 keep=1.45M（safe=1.45M，来自 dpKeep=1.45M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=3985 BlackRock(65·队2) 地 10230 兵 1.16M 密 113.5 ｜策略眼里 nb=2 neut=0 ｜worth=102.1（m=0.900）cheap=8.4 超软上限=是 其余真人密度中位=86 ｜NFS 锁=否 影子配额=290k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接5 地17401 密61
+        报价 [APEX] sora_w(26·队1) 真人 接154 地15344 兵433k 密28 tD=0.33 c=70.0 need=786k [pulse] safe=900k(封顶 88×地；原 1.56M) keep=921k avail=227k → L5528 买不起整笔（want=983k）且 avail=227k 不足 chunk×兵=232k → 跳过
+        报价 Player 914(55·队3) 真人 接116 地25294 兵2.78M 密110 tD=1.28 c=262.6 need=5.00M [pulse] safe=1.56M keep=1.56M avail=-409k → L5361 avail<=0：保底线 keep=1.56M（safe=1.56M，来自 dpKeep=1.56M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=3990 BlackRock(65·队2) 地 10230 兵 1.17M 密 114.5 ｜策略眼里 nb=2 neut=0 ｜worth=103.0（m=0.900）cheap=8.4 超软上限=是 其余真人密度中位=87 ｜NFS 锁=否 影子配额=293k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接5 地17401 密62
+        报价 [APEX] sora_w(26·队1) 真人 接154 地15344 兵438k 密29 tD=0.33 c=70.8 need=795k [pulse] safe=900k(封顶 88×地；原 1.57M) keep=921k avail=237k → L5531 出兵（真人，非 pulse：min(avail, 1.25×need)）：237k（20.2% 兵）
+        报价 Player 914(55·队3) 真人 接116 地25294 兵2.81M 密111 tD=1.28 c=265.4 need=5.05M [pulse] → （排在后面：已出兵）
+        影子 act() 这一拍发出：攻→[APEX] sora_w(26·队1) 206‰ 237k
+[探针] t=3995 BlackRock(65·队2) 地 10230 兵 1.17M 密 114.5 ｜策略眼里 nb=2 neut=0 ｜worth=103.0（m=0.900）cheap=8.4 超软上限=是 其余真人密度中位=87 ｜NFS 锁=否 影子配额=293k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接5 地17401 密62
+        报价 [APEX] sora_w(26·队1) 真人 接154 地15344 兵438k 密29 tD=0.33 c=70.8 need=795k [pulse] safe=900k(封顶 88×地；原 1.57M) keep=921k avail=237k → L5531 出兵（真人，非 pulse：min(avail, 1.25×need)）：237k（20.2% 兵）
+        报价 Player 914(55·队3) 真人 接116 地25294 兵2.81M 密111 tD=1.28 c=265.4 need=5.05M [pulse] → （排在后面：已出兵）
+        影子 act() 这一拍发出：无
+[探针] t=4000 BlackRock(65·队2) 地 10230 兵 942k 密 92.1 ｜策略眼里 nb=2 neut=0 ｜worth=82.8（m=0.900）cheap=8.4 超软上限=否 其余真人密度中位=89 ｜NFS 锁=否 影子配额=8277
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接5 地17401 密63
+        报价 [APEX] sora_w(26·队1) 真人 接154 地15344 兵459k 密30 tD=0.34 c=53.1 need=595k [pulse] safe=900k(封顶 88×地；原 1.60M) keep=900k avail=30k → L5511 对它的在途兵 >= 4% 兵 → 跳过
+        报价 Player 914(55·队3) 真人 接116 地25294 兵2.87M 密113 tD=1.27 c=364.8 need=5.15M [pulse,crowdedHard] → L5267 报价 c >= worth 且没超软上限 → break
+        影子 act() 这一拍发出：无
+[探针] t=4060 BlackRock(65·队2) 地 12622 兵 1.01M 密 80.2 ｜策略眼里 nb=2 neut=0 ｜worth=72.2（m=0.900）cheap=8.2 超软上限=否 其余真人密度中位=89 ｜NFS 锁=否 影子配额=184k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·队2) 接22 地17803 密59
+        报价 [APEX] sora_w(26·队1) 真人 接123 地11844 兵322k 密27 tD=0.31 c=70.1 need=546k [被别人打,pulse] safe=1.11M(封顶 88×地；原 1.69M) keep=1.11M avail=-111k → L5361 avail<=0：保底线 keep=1.11M（safe=1.11M，来自 dpKeep=1.69M）不低于余额
+        报价 Player 914(55·队3) 真人 接124 地25294 兵3.02M 密120 tD=1.34 c=384.4 need=5.43M [pulse,crowdedHard] → L5267 报价 c >= worth 且没超软上限 → break
+        影子 act() 这一拍发出：无
+[探针] t=4200 BlackRock(65·队2) 地 12801 兵 1.09M 密 84.8 ｜策略眼里 nb=2 neut=42 ｜worth=76.4（m=0.900）cheap=8.2 超软上限=否 其余真人密度中位=91 ｜NFS 锁=否 影子配额=270k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·空壳) 接26 地17468 密70
+        报价 Suuiiiii(48·队3) 真人 接44 地33316 兵1.59M 密48 tD=0.53 c=115.9 need=2.89M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 914(55·队3) 真人 接166 地28972 兵3.17M 密109 tD=1.20 c=352.0 need=5.70M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=4340 BlackRock(65·队2) 地 13759 兵 1.42M 密 103.1 ｜策略眼里 nb=2 neut=0 ｜worth=92.8（m=0.900）cheap=8.2 超软上限=是 其余真人密度中位=94 ｜NFS 锁=否 影子配额=355k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·空壳) 接122 地17657 密68
+        报价 Suuiiiii(48·队3) 真人 接58 地33657 兵2.25M 密67 tD=0.71 c=161.4 need=4.07M [pulse] safe=2.08M keep=2.08M avail=-674k → L5361 avail<=0：保底线 keep=2.08M（safe=2.08M，来自 dpKeep=2.08M）不低于余额
+        报价 Player 914(55·队3) 真人 接166 地29201 兵3.72M 密127 tD=1.35 c=408.8 need=6.67M [pulse,crowdedHard] → L5280 crowdedHard 且 c>=worth、兵 < 1.5×100×地 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=4480 BlackRock(65·队2) 地 13400 兵 1.14M 密 84.9 ｜策略眼里 nb=2 neut=0 ｜worth=76.4（m=0.900）cheap=8.2 超软上限=否 其余真人密度中位=97 ｜NFS 锁=是 影子配额=134k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·空壳) 接122 地17925 密62
+        报价 Suuiiiii(48·队3) 真人 接62 地29220 兵2.19M 密75 tD=0.77 c=177.2 need=3.69M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 914(55·队3) 真人 接173 地30191 兵3.62M 密120 tD=1.24 c=385.3 need=6.50M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=4620 BlackRock(65·队2) 地 11368 兵 998k 密 87.8 ｜策略眼里 nb=2 neut=0 ｜worth=79.0（m=0.900）cheap=8.3 超软上限=否 其余真人密度中位=94 ｜NFS 锁=是 影子配额=249k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·空壳) 接122 地18125 密58
+        报价 Suuiiiii(48·队3) 真人 接55 地28741 兵2.62M 密91 tD=0.97 c=222.6 need=4.57M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 914(55·队3) 真人 接154 地32702 兵3.33M 密102 tD=1.08 c=244.6 need=6.03M [在打我,pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=4760 BlackRock(65·队2) 地 11213 兵 1.16M 密 103.5 ｜策略眼里 nb=2 neut=0 ｜worth=93.1（m=0.900）cheap=8.3 超软上限=是 其余真人密度中位=89 ｜NFS 锁=是 影子配额=290k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·空壳) 接122 地18315 密51
+        报价 Suuiiiii(48·队3) 真人 接54 地30661 兵2.48M 密81 tD=0.91 c=196.1 need=4.42M [pulse] safe=2.19M keep=2.19M avail=-1.04M → L5361 avail<=0：保底线 keep=2.19M（safe=2.19M，来自 dpKeep=2.19M）不低于余额
+        报价 Player 914(55·队3) 真人 接154 地32857 兵3.91M 密119 tD=1.33 c=382.2 need=7.02M [pulse,crowdedHard] → L5280 crowdedHard 且 c>=worth、兵 < 1.5×100×地 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=4900 BlackRock(65·队2) 地 11213 兵 1.35M 密 120.0 ｜策略眼里 nb=2 neut=0 ｜worth=108.0（m=0.900）cheap=8.3 超软上限=是 其余真人密度中位=100 ｜NFS 锁=是 影子配额=334k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·空壳) 接122 地18428 密52
+        报价 Suuiiiii(48·队3) 真人 接54 地30661 兵3.06M 密100 tD=1.00 c=240.8 need=5.43M [pulse] safe=2.44M keep=2.44M avail=-1.11M → L5361 avail<=0：保底线 keep=2.44M（safe=2.44M，来自 dpKeep=2.44M）不低于余额
+        报价 Player 914(55·队3) 真人 接154 地32857 兵4.36M 密133 tD=1.33 c=425.8 need=7.82M [pulse,crowdedHard] → L5280 crowdedHard 且 c>=worth、兵 < 1.5×100×地 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=5040 BlackRock(65·队2) 地 10166 兵 1.24M 密 122.0 ｜策略眼里 nb=2 neut=0 ｜worth=109.8（m=0.900）cheap=8.4 超软上限=是 其余真人密度中位=97 ｜NFS 锁=是 影子配额=310k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·空壳) 接122 地18582 密49
+        报价 Suuiiiii(48·队3) 真人 接48 地33689 兵2.93M 密87 tD=0.89 c=208.5 need=5.26M [pulse] safe=2.33M keep=2.33M avail=-1.10M → L5361 avail<=0：保底线 keep=2.33M（safe=2.33M，来自 dpKeep=2.33M）不低于余额
+        报价 Player 914(55·队3) 真人 接147 地33904 兵4.16M 密123 tD=1.26 c=292.3 need=7.47M [pulse] safe=2.33M keep=2.33M avail=-1.10M → L5361 avail<=0：保底线 keep=2.33M（safe=2.33M，来自 dpKeep=2.33M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=5180 BlackRock(65·队2) 地 10166 兵 1.35M 密 132.6 ｜策略眼里 nb=2 neut=0 ｜worth=119.4（m=0.900）cheap=8.4 超软上限=是 其余真人密度中位=107 ｜NFS 锁=是 影子配额=337k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·空壳) 接122 地18776 密45
+        报价 Suuiiiii(48·队3) 真人 接48 地33689 兵3.56M 密106 tD=0.99 c=253.2 need=6.39M [pulse] safe=2.30M keep=2.30M avail=-966k → L5361 avail<=0：保底线 keep=2.30M（safe=2.30M，来自 dpKeep=2.30M）不低于余额
+        报价 Player 914(55·队3) 真人 接147 地34255 兵4.11M 密120 tD=1.12 c=285.5 need=7.37M [pulse] safe=2.30M keep=2.30M avail=-966k → L5361 avail<=0：保底线 keep=2.30M（safe=2.30M，来自 dpKeep=2.30M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=5320 BlackRock(65·队2) 地 10166 兵 1.26M 密 124.3 ｜策略眼里 nb=2 neut=0 ｜worth=111.9（m=0.900）cheap=8.4 超软上限=是 其余真人密度中位=109 ｜NFS 锁=是 影子配额=316k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·空壳) 接122 地19018 密38
+        报价 Suuiiiii(48·队3) 真人 接48 地36359 兵3.43M 密94 tD=0.86 c=226.2 need=6.17M [pulse] safe=2.39M keep=2.39M avail=-1.14M → L5361 avail<=0：保底线 keep=2.39M（safe=2.39M，来自 dpKeep=2.39M）不低于余额
+        报价 Player 914(55·队3) 真人 接147 地36461 兵4.27M 密117 tD=1.07 c=278.5 need=7.66M [pulse] safe=2.39M keep=2.39M avail=-1.14M → L5361 avail<=0：保底线 keep=2.39M（safe=2.39M，来自 dpKeep=2.39M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=5460 BlackRock(65·队2) 地 10354 兵 1.28M 密 123.8 ｜策略眼里 nb=2 neut=0 ｜worth=111.4（m=0.900）cheap=8.4 超软上限=是 其余真人密度中位=109 ｜NFS 锁=是 影子配额=320k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·空壳) 接122 地17782 密32
+        报价 Suuiiiii(48·队3) 真人 接48 地38265 兵3.27M 密86 tD=0.79 c=174.6 need=5.89M [pulse] safe=2.63M keep=2.63M avail=-1.37M → L5361 avail<=0：保底线 keep=2.63M（safe=2.63M，来自 dpKeep=2.63M）不低于余额
+        报价 Player 914(55·队3) 真人 接147 地37180 兵4.70M 密126 tD=1.17 c=300.9 need=8.44M [pulse] safe=2.63M keep=2.63M avail=-1.37M → L5361 avail<=0：保底线 keep=2.63M（safe=2.63M，来自 dpKeep=2.63M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=5600 BlackRock(65·队2) 地 10483 兵 1.55M 密 147.8 ｜策略眼里 nb=2 neut=0 ｜worth=133.0（m=0.900）cheap=8.3 超软上限=是 其余真人密度中位=102 ｜NFS 锁=是 影子配额=376k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·空壳) 接122 地11032 密20
+        报价 Suuiiiii(48·队3) 真人 接48 地43562 兵2.94M 密68 tD=0.67 c=138.5 need=5.31M [pulse] safe=2.47M keep=2.47M avail=-939k → L5361 avail<=0：保底线 keep=2.47M（safe=2.47M，来自 dpKeep=2.47M）不低于余额
+        报价 Player 914(55·队3) 真人 接147 地38493 兵4.41M 密115 tD=1.13 c=273.0 need=7.92M [pulse] safe=2.47M keep=2.47M avail=-939k → L5361 avail<=0：保底线 keep=2.47M（safe=2.47M，来自 dpKeep=2.47M）不低于余额
+        影子 act() 这一拍发出：船→Johor Empire(168·AI) 165‰ 251k
+[探针] t=5630 BlackRock(65·队2) 地 10488 兵 1.08M 密 102.9 ｜策略眼里 nb=3 neut=0 ｜worth=92.6（m=0.900）cheap=8.3 超软上限=是 其余真人密度中位=101 ｜NFS 锁=是 影子配额=270k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·空壳) 接90 地10376 密19
+        报价 Suuiiiii(48·队3) 真人 接65 地44176 兵3.07M 密69 tD=0.69 c=142.1 need=5.54M [pulse] safe=2.40M keep=2.40M avail=-1.33M → L5361 avail<=0：保底线 keep=2.40M（safe=2.40M，来自 dpKeep=2.40M）不低于余额
+        报价 Player 914(55·队3) 真人 接147 地38507 兵4.28M 密111 tD=1.11 c=357.6 need=7.69M [pulse,crowdedHard] → L5280 crowdedHard 且 c>=worth、兵 < 1.5×100×地 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=5660 BlackRock(65·队2) 地 10499 兵 1.49M 密 142.0 ｜策略眼里 nb=2 neut=0 ｜worth=127.8（m=0.900）cheap=8.3 超软上限=是 其余真人密度中位=94 ｜NFS 锁=是 影子配额=351k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·空壳) 接73 地9801 密16
+        报价 Suuiiiii(48·队3) 真人 接76 地44803 兵3.20M 密71 tD=0.76 c=146.1 need=5.77M [pulse] safe=2.47M keep=2.47M avail=-1.00M → L5361 avail<=0：保底线 keep=2.47M（safe=2.47M，来自 dpKeep=2.47M）不低于余额
+        报价 Player 914(55·队3) 真人 接147 地38575 兵4.42M 密115 tD=1.22 c=272.9 need=7.94M [pulse] safe=2.47M keep=2.47M avail=-1.00M → L5361 avail<=0：保底线 keep=2.47M（safe=2.47M，来自 dpKeep=2.47M）不低于余额
+        影子 act() 这一拍发出：船→Johor Empire(168·AI) 151‰ 221k
+[探针] t=5690 BlackRock(65·队2) 地 10499 兵 1.28M 密 122.4 ｜策略眼里 nb=2 neut=0 ｜worth=110.1（m=0.900）cheap=8.3 超软上限=是 其余真人密度中位=95 ｜NFS 锁=是 影子配额=321k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·空壳) 接57 地8751 密15
+        报价 Suuiiiii(48·队3) 真人 接84 地45771 兵3.34M 密73 tD=0.77 c=149.0 need=6.02M [pulse] safe=2.55M keep=2.55M avail=-1.28M → L5361 avail<=0：保底线 keep=2.55M（safe=2.55M，来自 dpKeep=2.55M）不低于余额
+        报价 Player 914(55·队3) 真人 接147 地38662 兵4.55M 密118 tD=1.24 c=280.0 need=8.16M [pulse] safe=2.55M keep=2.55M avail=-1.28M → L5361 avail<=0：保底线 keep=2.55M（safe=2.55M，来自 dpKeep=2.55M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=5720 BlackRock(65·队2) 地 10499 兵 1.32M 密 125.7 ｜策略眼里 nb=2 neut=0 ｜worth=113.2（m=0.900）cheap=8.3 超软上限=是 其余真人密度中位=112 ｜NFS 锁=是 影子配额=330k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·空壳) 接43 地7313 密12
+        报价 Suuiiiii(48·队3) 真人 接91 地47034 兵3.53M 密75 tD=0.67 c=153.2 need=6.36M [pulse] safe=2.64M keep=2.64M avail=-1.33M → L5361 avail<=0：保底线 keep=2.64M（safe=2.64M，来自 dpKeep=2.64M）不低于余额
+        报价 Player 914(55·队3) 真人 接147 地38965 兵4.71M 密121 tD=1.08 c=244.4 need=8.45M [pulse] safe=2.64M keep=2.64M avail=-1.33M → L5361 avail<=0：保底线 keep=2.64M（safe=2.64M，来自 dpKeep=2.64M）不低于余额
+        影子 act() 这一拍发出：船→Johor Empire(168·AI) 313‰ 405k
+[探针] t=5750 BlackRock(65·队2) 地 10503 兵 756k 密 72.0 ｜策略眼里 nb=3 neut=0 ｜worth=81.8（m=0.900）cheap=8.3 超软上限=否 其余真人密度中位=107 ｜NFS 锁=是 影子配额=189k
+        不在 nb 里的真实邻居（保护名单）：Harwarorn(14·空壳) 接27 地5399 密10
+        报价 Suuiiiii(48·队3) 真人 接99 地48484 兵3.68M 密76 tD=0.71 c=154.9 need=6.64M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 914(55·队3) 真人 接147 地39801 兵4.82M 密121 tD=1.13 c=389.3 need=8.66M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=5780 BlackRock(65·队2) 地 10504 兵 954k 密 90.9 ｜策略眼里 nb=2 neut=7 ｜worth=83.9（m=0.900）cheap=8.3 超软上限=否 其余真人密度中位=110 ｜NFS 锁=是 影子配额=239k
+        报价 Suuiiiii(48·队3) 真人 接106 地50113 兵3.84M 密77 tD=0.70 c=183.9 need=6.93M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 914(55·队3) 真人 接147 地41107 兵4.95M 密120 tD=1.10 c=386.7 need=8.88M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=5810 BlackRock(65·队2) 地 10504 兵 1.45M 密 138.1 ｜策略眼里 nb=2 neut=0 ｜worth=124.3（m=0.900）cheap=8.3 超软上限=是 其余真人密度中位=108 ｜NFS 锁=是 影子配额=266k
+        报价 Suuiiiii(48·队3) 真人 接113 地50755 兵4.00M 密79 tD=0.73 c=189.2 need=7.20M [被别人打,pulse] safe=924k(封顶 88×地；原 2.86M) keep=945k avail=488k → L5531 出兵（真人，非 pulse：min(avail, 1.25×need)）：488k（33.7% 兵）
+        报价 Player 914(55·队3) 真人 接147 地41960 兵5.11M 密122 tD=1.13 c=290.3 need=9.18M [pulse] → （排在后面：已出兵）
+        影子 act() 这一拍发出：攻→Suuiiiii(48·队3) 344‰ 489k
+[探针] t=5840 BlackRock(65·队2) 地 11130 兵 705k 密 63.4 ｜策略眼里 nb=2 neut=0 ｜worth=75.8（m=0.900）cheap=8.3 超软上限=否 其余真人密度中位=99 ｜NFS 锁=是 影子配额=176k
+        报价 Suuiiiii(48·队3) 真人 接144 地49367 兵3.92M 密79 tD=0.80 c=245.4 need=6.68M [pulse,crowdedHard] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 914(55·队3) 真人 接149 地42579 兵4.65M 密109 tD=1.10 c=350.8 need=8.35M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=5900 BlackRock(65·队2) 地 12500 兵 770k 密 61.6 ｜策略眼里 nb=3 neut=0 ｜worth=77.0（m=0.900）cheap=8.2 超软上限=否 其余真人密度中位=101 ｜NFS 锁=是 影子配额=190k
+        报价 Suuiiiii(48·队3) 真人 接168 地48437 兵4.57M 密94 tD=0.94 c=306.2 need=8.13M [pulse,crowdedHard] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 914(55·队3) 真人 接153 地43060 兵5.00M 密116 tD=1.15 c=373.1 need=8.98M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=5930 BlackRock(65·队2) 地 12617 兵 799k 密 63.3 ｜策略眼里 nb=3 neut=0 ｜worth=71.8（m=0.900）cheap=8.2 超软上限=否 其余真人密度中位=94 ｜NFS 锁=是 影子配额=200k
+        报价 Suuiiiii(48·队3) 真人 接168 地48437 兵3.75M 密77 tD=0.82 c=181.0 need=7.64M [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 914(55·队3) 真人 接153 地43205 兵5.14M 密119 tD=1.27 c=382.3 need=9.23M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=5960 BlackRock(65·队2) 地 10926 兵 852k 密 78.0 ｜策略眼里 nb=3 neut=0 ｜worth=74.4（m=0.900）cheap=8.3 超软上限=否 其余真人密度中位=97 ｜NFS 锁=是 影子配额=213k
+        报价 Suuiiiii(48·队3) 真人 接118 地50201 兵3.91M 密78 tD=0.80 c=171.5 need=7.58M [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 777[RU](5·队3) 真人 接9 地59878 兵5.43M 密91 tD=0.93 c=449.7 need=9.77M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        报价 Player 914(55·队3) 真人 接147 地43362 兵5.27M 密122 tD=1.25 c=390.8 need=9.46M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=5990 BlackRock(65·队2) 地 8912 兵 636k 密 71.4 ｜策略眼里 nb=3 neut=0 ｜worth=75.1（m=0.900）cheap=8.5 超软上限=否 其余真人密度中位=98 ｜NFS 锁=是 影子配额=159k
+        报价 Player 914(55·队3) 真人 接138 地43976 兵4.79M 密109 tD=1.11 c=232.4 need=9.07M [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Suuiiiii(48·队3) 真人 接107 地51796 兵4.08M 密79 tD=0.80 c=193.1 need=7.52M [在打我,pulse] → （排在后面：前一个报价已 break）
+        报价 777[RU](5·队3) 真人 接9 地61619 兵5.68M 密92 tD=0.94 c=456.5 need=10.21M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=6020 BlackRock(65·队2) 地 6306 兵 378k 密 59.9 ｜策略眼里 nb=3 neut=0 ｜worth=79.2（m=0.900）cheap=8.8 超软上限=否 其余真人密度中位=104 ｜NFS 锁=是 影子配额=94k
+        报价 Player 914(55·队3) 真人 接116 地46165 兵5.01M 密109 tD=1.05 c=260.3 need=9.05M [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Suuiiiii(48·队3) 真人 接93 地52468 兵4.32M 密82 tD=0.79 c=266.0 need=7.77M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        报价 777[RU](5·队3) 真人 接9 地63193 兵6.55M 密104 tD=1.00 c=603.1 need=11.76M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=6050 BlackRock(65·队2) 地 6013 兵 356k 密 59.2 ｜策略眼里 nb=3 neut=0 ｜worth=80.6（m=0.900）cheap=8.8 超软上限=否 其余真人密度中位=105 ｜NFS 锁=是 影子配额=89k
+        报价 Player 914(55·队3) 真人 接128 地46482 兵5.78M 密124 tD=1.18 c=264.0 need=10.88M [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Suuiiiii(48·队3) 真人 接91 地52468 兵4.51M 密86 tD=0.81 c=277.6 need=8.11M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        报价 777[RU](5·队3) 真人 接9 地64000 兵6.74M 密105 tD=1.00 c=613.4 need=12.12M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=6080 BlackRock(65·队2) 地 5516 兵 321k 密 58.2 ｜策略眼里 nb=3 neut=0 ｜worth=86.9（m=0.900）cheap=8.8 超软上限=否 其余真人密度中位=114 ｜NFS 锁=是 影子配额=80k
+        报价 Suuiiiii(48·队3) 真人 接111 地52572 兵3.61M 密69 tD=0.60 c=158.8 need=7.39M [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 914(55·队3) 真人 接155 地46875 兵5.91M 密126 tD=1.11 c=311.9 need=11.03M [在打我,pulse] → （排在后面：前一个报价已 break）
+        报价 777[RU](5·队3) 真人 接9 地64294 兵7.49M 密117 tD=1.03 c=677.6 need=13.45M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=6110 BlackRock(65·队2) 地 4140 兵 213k 密 51.5 ｜策略眼里 nb=3 neut=0 ｜worth=77.3（m=0.900）cheap=8.9 超软上限=否 其余真人密度中位=101 ｜NFS 锁=是 影子配额=53k
+        报价 Suuiiiii(48·队3) 真人 接125 地53049 兵3.82M 密72 tD=0.71 c=163.5 need=7.68M [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Player 914(55·队3) 真人 接147 地47774 兵5.39M 密113 tD=1.12 c=249.7 need=10.59M [在打我,pulse] → （排在后面：前一个报价已 break）
+        报价 777[RU](5·队3) 真人 接9 地64736 兵6.54M 密101 tD=1.00 c=588.4 need=11.76M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=1500 Enderman(77·队8) 地 5686 兵 209k 密 36.8 ｜策略眼里 nb=0 neut=0 ｜worth=55.1（m=1.500）cheap=4.3 超软上限=否 其余真人密度中位=15 ｜NFS 锁=否 影子配额=51k
+        不在 nb 里的真实邻居（保护名单）：Khiva(94·队8) 接168 地2784 密66；Frieren(60·空壳) 接59 地1999 密58；Samanid Empire(247·AI) 接59 地853 密2
+        offers 为空（nb 里没有可报价的邻居）
+        影子 act() 这一拍发出：无
+[探针] t=1620 Enderman(77·队8) 地 5638 兵 271k 密 48.0 ｜策略眼里 nb=0 neut=0 ｜worth=71.1（m=1.482）cheap=5.2 超软上限=否 其余真人密度中位=19 ｜NFS 锁=否 影子配额=68k
+        不在 nb 里的真实邻居（保护名单）：Khiva(94·空壳) 接167 地2719 密81；Samanid Empire(247·AI) 接59 地853 密1；Frieren(60·空壳) 接55 地2047 密54
+        offers 为空（nb 里没有可报价的邻居）
+        影子 act() 这一拍发出：无
+[探针] t=1740 Enderman(77·队8) 地 5638 兵 216k 密 38.2 ｜策略眼里 nb=0 neut=0 ｜worth=56.0（m=1.464）cheap=6.4 超软上限=否 其余真人密度中位=21 ｜NFS 锁=否 影子配额=54k
+        不在 nb 里的真实邻居（保护名单）：Khiva(94·空壳) 接167 地2674 密64；Samanid Empire(247·AI) 接59 地853 密1；Frieren(60·空壳) 接55 地2047 密27
+        offers 为空（nb 里没有可报价的邻居）
+        影子 act() 这一拍发出：无
+[探针] t=1860 Enderman(77·队8) 地 5638 兵 82k 密 14.5 ｜策略眼里 nb=0 neut=0 ｜worth=21.0（m=1.446）cheap=8.4 超软上限=否 其余真人密度中位=24 ｜NFS 锁=否 影子配额=20k
+        不在 nb 里的真实邻居（保护名单）：Khiva(94·空壳) 接166 地3364 密47；Samanid Empire(247·AI) 接59 地853 密1；Frieren(60·空壳) 接56 地2138 密18
+        offers 为空（nb 里没有可报价的邻居）
+        影子 act() 这一拍发出：无
+[探针] t=1980 Enderman(77·队8) 地 5638 兵 46k 密 8.1 ｜策略眼里 nb=0 neut=0 ｜worth=11.6（m=1.428）cheap=8.8 超软上限=否 其余真人密度中位=25 ｜NFS 锁=否 影子配额=11k
+        不在 nb 里的真实邻居（保护名单）：Khiva(94·空壳) 接164 地4563 密30；Samanid Empire(247·AI) 接59 地853 密1；Frieren(60·空壳) 接58 地2324 密7
+        offers 为空（nb 里没有可报价的邻居）
+        影子 act() 这一拍发出：无
+[探针] t=2100 Enderman(77·队8) 地 5727 兵 76k 密 13.3 ｜策略眼里 nb=0 neut=0 ｜worth=17.6（m=1.320）cheap=8.8 超软上限=否 其余真人密度中位=22 ｜NFS 锁=否 影子配额=18k
+        不在 nb 里的真实邻居（保护名单）：Khiva(94·空壳) 接164 地5711 密25；Samanid Empire(247·AI) 接59 地853 密1；Frieren(60·空壳) 接58 地2419 密5；Mansa Musa(62·队7) 接40 地8765 密14
+        offers 为空（nb 里没有可报价的邻居）
+        影子 act() 这一拍发出：无
+[探针] t=2220 Enderman(77·队8) 地 6658 兵 94k 密 14.2 ｜策略眼里 nb=0 neut=0 ｜worth=16.9（m=1.194）cheap=8.6 超软上限=否 其余真人密度中位=29 ｜NFS 锁=否 影子配额=24k
+        不在 nb 里的真实邻居（保护名单）：Khiva(94·空壳) 接175 地5953 密17；Mansa Musa(62·队7) 接127 地9046 密13；Samanid Empire(247·AI) 接59 地853 密1；Frieren(60·空壳) 接47 地1446 密0
+        offers 为空（nb 里没有可报价的邻居）
+        影子 act() 这一拍发出：无
+[探针] t=2340 Enderman(77·队8) 地 6838 兵 113k 密 16.6 ｜策略眼里 nb=0 neut=0 ｜worth=17.7（m=1.068）cheap=8.6 超软上限=否 其余真人密度中位=30 ｜NFS 锁=否 影子配额=28k
+        不在 nb 里的真实邻居（保护名单）：Khiva(94·空壳) 接206 地5343 密15；Mansa Musa(62·队7) 接127 地9488 密18；Samanid Empire(247·AI) 接59 地859 密2
+        offers 为空（nb 里没有可报价的邻居）
+        影子 act() 这一拍发出：无
+[探针] t=2510 Enderman(77·队8) 地 6859 兵 152k 密 22.2 ｜策略眼里 nb=2 neut=0 ｜worth=25.3（m=0.900）cheap=8.6 超软上限=否 其余真人密度中位=33 ｜NFS 锁=否 影子配额=38k
+        不在 nb 里的真实邻居（保护名单）：Khiva(94·空壳) 接190 地1710 密8；Mansa Musa(62·队7) 接127 地9039 密23；Samanid Empire(247·AI) 接59 地824 密0
+        报价 Full send(74·队2) 真人 接9 地18301 兵396k 密22 tD=0.66 c=96.7 need=730k [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [IND] Skandan(40·队2) 真人 接9 地14699 兵481k 密33 tD=0.99 c=194.2 need=880k [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2680 Enderman(77·队8) 地 6667 兵 183k 密 27.4 ｜策略眼里 nb=2 neut=59 ｜worth=32.8（m=0.900）cheap=8.6 超软上限=否 其余真人密度中位=43 ｜NFS 锁=否 影子配额=46k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地8780 密28；Samanid Empire(247·AI) 接59 地722 密0
+        报价 [IND] Skandan(40·队2) 真人 接89 地16093 兵551k 密34 tD=0.80 c=111.9 need=1.01M [pulse,crowdedHard] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Full send(74·队2) 真人 接9 地18301 兵511k 密28 tD=0.65 c=123.5 need=935k [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=2850 Enderman(77·队8) 地 6667 兵 237k 密 35.6 ｜策略眼里 nb=2 neut=0 ｜worth=37.3（m=0.900）cheap=8.6 超软上限=否 其余真人密度中位=49 ｜NFS 锁=否 影子配额=59k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地8718 密36；Samanid Empire(247·AI) 接59 地784 密0
+        报价 [IND] Skandan(40·队2) 真人 接148 地16601 兵727k 密44 tD=0.90 c=141.8 need=1.32M [pulse,crowdedHard] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Full send(74·队2) 真人 接9 地18301 兵674k 密37 tD=0.76 c=161.5 need=1.23M [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=3020 Enderman(77·队8) 地 6667 兵 303k 密 45.4 ｜策略眼里 nb=2 neut=0 ｜worth=42.6（m=0.900）cheap=8.6 超软上限=否 其余真人密度中位=56 ｜NFS 锁=否 影子配额=76k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地8662 密45；Samanid Empire(247·AI) 接59 地815 密0
+        报价 [IND] Skandan(40·队2) 真人 接148 地16351 兵910k 密56 tD=1.00 c=179.8 need=1.64M [pulse,crowdedHard] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Full send(74·队2) 真人 接9 地18301 兵874k 密48 tD=0.86 c=208.1 need=1.58M [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=3190 Enderman(77·队8) 地 6667 兵 375k 密 56.2 ｜策略眼里 nb=2 neut=0 ｜worth=51.7（m=0.900）cheap=8.6 超软上限=否 其余真人密度中位=68 ｜NFS 锁=否 影子配额=94k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地8575 密56；Samanid Empire(247·AI) 接59 地877 密0
+        报价 [IND] Skandan(40·队2) 真人 接148 地16103 兵1.11M 密69 tD=1.02 c=222.7 need=2.00M [pulse,crowdedHard] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Full send(74·队2) 真人 接9 地18301 兵1.10M 密60 tD=0.89 c=261.4 need=1.99M [pulse] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=3360 Enderman(77·队8) 地 6667 兵 470k 密 70.6 ｜策略眼里 nb=2 neut=0 ｜worth=63.5（m=0.900）cheap=8.6 超软上限=否 其余真人密度中位=77 ｜NFS 锁=否 影子配额=118k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地9014 密60；Samanid Empire(247·AI) 接59 地939 密0
+        报价 [IND] Skandan(40·队2) 真人 接148 地16468 兵937k 密57 tD=0.74 c=136.1 need=1.70M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Full send(74·队2) 真人 接9 地18301 兵1.40M 密77 tD=1.00 c=448.7 need=2.53M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=3530 Enderman(77·队8) 地 6667 兵 586k 密 87.9 ｜策略眼里 nb=2 neut=0 ｜worth=79.1（m=0.900）cheap=8.6 超软上限=否 其余真人密度中位=78 ｜NFS 锁=否 影子配额=146k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地10173 密51；Samanid Empire(247·AI) 接59 地969 密0
+        报价 [IND] Skandan(40·队2) 真人 接148 地22395 兵1.01M 密45 tD=0.58 c=107.9 need=1.83M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Full send(74·队2) 真人 接9 地18301 兵1.78M 密97 tD=1.25 c=566.7 need=3.20M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
+[探针] t=3700 Enderman(77·队8) 地 6667 兵 723k 密 108.4 ｜策略眼里 nb=2 neut=0 ｜worth=97.5（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=83 ｜NFS 锁=否 影子配额=179k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地11180 密58；Samanid Empire(247·AI) 接59 地1029 密0
+        报价 [IND] Skandan(40·队2) 真人 接148 地23093 兵1.28M 密55 tD=0.67 c=132.1 need=2.31M [pulse] safe=1.21M keep=1.21M avail=-500k → L5361 avail<=0：保底线 keep=1.21M（safe=1.21M，来自 dpKeep=1.21M）不低于余额
+        报价 Full send(74·队2) 真人 接9 地18301 兵2.17M 密119 tD=1.43 c=690.8 need=3.90M [pulse,crowdedHard] → L5280 crowdedHard 且 c>=worth、兵 < 1.5×100×地 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=3870 Enderman(77·队8) 地 6667 兵 831k 密 124.7 ｜策略眼里 nb=2 neut=0 ｜worth=112.2（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=78 ｜NFS 锁=否 影子配额=208k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地13581 密59；Samanid Empire(247·AI) 接59 地1089 密0
+        报价 [IND] Skandan(40·队2) 真人 接148 地23093 兵1.61M 密70 tD=0.89 c=166.3 need=2.91M [pulse] safe=1.05M keep=1.05M avail=-231k → L5361 avail<=0：保底线 keep=1.05M（safe=1.05M，来自 dpKeep=1.05M）不低于余额
+        报价 Full send(74·队2) 真人 接9 地21161 兵1.88M 密89 tD=1.14 c=385.0 need=3.39M [pulse] safe=1.05M keep=1.05M avail=-231k → L5361 avail<=0：保底线 keep=1.05M（safe=1.05M，来自 dpKeep=1.05M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=3945 Enderman(77·队8) 地 6667 兵 869k 密 130.4 ｜策略眼里 nb=2 neut=0 ｜worth=117.3（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=80 ｜NFS 锁=否 影子配额=217k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14138 密63；Samanid Empire(247·AI) 接59 地1089 密0
+        报价 [IND] Skandan(40·队2) 真人 接148 地23093 兵1.79M 密77 tD=0.97 c=184.2 need=3.22M [pulse] safe=999k keep=999k avail=-140k → L5361 avail<=0：保底线 keep=999k（safe=999k，来自 dpKeep=999k）不低于余额
+        报价 Full send(74·队2) 真人 接9 地23500 兵1.75M 密75 tD=0.93 c=323.5 need=3.16M [pulse] safe=999k keep=999k avail=-140k → L5361 avail<=0：保底线 keep=999k（safe=999k，来自 dpKeep=999k）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=3950 Enderman(77·队8) 地 6667 兵 873k 密 131.0 ｜策略眼里 nb=2 neut=0 ｜worth=117.9（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=80 ｜NFS 锁=否 影子配额=218k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14158 密64；Samanid Empire(247·AI) 接59 地1089 密0
+        报价 [IND] Skandan(40·队2) 真人 接148 地23093 兵1.81M 密78 tD=0.98 c=186.5 need=3.26M [pulse] safe=1.01M keep=1.01M avail=-149k → L5361 avail<=0：保底线 keep=1.01M（safe=1.01M，来自 dpKeep=1.01M）不低于余额
+        报价 Full send(74·队2) 真人 接9 地23540 兵1.78M 密75 tD=0.95 c=327.1 need=3.20M [pulse] safe=1.01M keep=1.01M avail=-149k → L5361 avail<=0：保底线 keep=1.01M（safe=1.01M，来自 dpKeep=1.01M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=3955 Enderman(77·队8) 地 6667 兵 845k 密 126.7 ｜策略眼里 nb=2 neut=0 ｜worth=114.1（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=78 ｜NFS 锁=否 影子配额=211k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14186 密64；Samanid Empire(247·AI) 接59 地1089 密0
+        报价 [IND] Skandan(40·队2) 真人 接148 地23093 兵1.81M 密78 tD=1.00 c=186.5 need=3.26M [pulse] safe=1.01M keep=1.01M avail=-177k → L5361 avail<=0：保底线 keep=1.01M（safe=1.01M，来自 dpKeep=1.01M）不低于余额
+        报价 Full send(74·队2) 真人 接9 地23561 兵1.78M 密75 tD=0.96 c=326.8 need=3.20M [pulse] safe=1.01M keep=1.01M avail=-177k → L5361 avail<=0：保底线 keep=1.01M（safe=1.01M，来自 dpKeep=1.01M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=3960 Enderman(77·队8) 地 6667 兵 850k 密 127.4 ｜策略眼里 nb=2 neut=0 ｜worth=114.7（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=79 ｜NFS 锁=否 影子配额=212k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14198 密64；Samanid Empire(247·AI) 接59 地1089 密0
+        报价 [IND] Skandan(40·队2) 真人 接148 地23093 兵1.84M 密79 tD=1.00 c=188.9 need=3.31M [pulse] safe=1.03M keep=1.03M avail=-186k → L5361 avail<=0：保底线 keep=1.03M（safe=1.03M，来自 dpKeep=1.03M）不低于余额
+        报价 Full send(74·队2) 真人 接9 地23585 兵1.80M 密76 tD=0.96 c=330.6 need=3.24M [pulse] safe=1.03M keep=1.03M avail=-186k → L5361 avail<=0：保底线 keep=1.03M（safe=1.03M，来自 dpKeep=1.03M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=4020 Enderman(77·队8) 地 6667 兵 881k 密 132.1 ｜策略眼里 nb=2 neut=0 ｜worth=118.9（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=84 ｜NFS 锁=否 影子配额=220k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14228 密71；Samanid Empire(247·AI) 接59 地1118 密0
+        报价 [IND] Skandan(40·队2) 真人 接148 地23234 兵1.74M 密75 tD=0.89 c=178.1 need=3.13M [pulse] safe=1.27M keep=1.27M avail=-396k → L5361 avail<=0：保底线 keep=1.27M（safe=1.27M，来自 dpKeep=1.27M）不低于余额
+        报价 Full send(74·队2) 真人 接9 地23606 兵2.27M 密96 tD=1.14 c=414.8 need=4.07M [pulse] safe=1.27M keep=1.27M avail=-396k → L5361 avail<=0：保底线 keep=1.27M（safe=1.27M，来自 dpKeep=1.27M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=4170 Enderman(77·队8) 地 6667 兵 932k 密 139.8 ｜策略眼里 nb=2 neut=0 ｜worth=125.8（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=86 ｜NFS 锁=否 影子配额=233k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14199 密86；Samanid Empire(247·AI) 接59 地1147 密0
+        报价 [IND] Skandan(40·队2) 真人 接148 地23943 兵1.85M 密77 tD=0.90 c=183.6 need=3.33M [pulse] safe=1.52M keep=1.52M avail=-600k → L5361 avail<=0：保底线 keep=1.52M（safe=1.52M，来自 dpKeep=1.52M）不低于余额
+        报价 Full send(74·队2) 真人 接9 地23606 兵2.72M 密115 tD=1.34 c=496.6 need=4.88M [pulse] safe=1.52M keep=1.52M avail=-600k → L5361 avail<=0：保底线 keep=1.52M（safe=1.52M，来自 dpKeep=1.52M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=4320 Enderman(77·队8) 地 6646 兵 965k 密 145.3 ｜策略眼里 nb=1 neut=0 ｜worth=130.7（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=93 ｜NFS 锁=否 影子配额=241k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14143 密105；Samanid Empire(247·AI) 接59 地1203 密0
+        报价 [IND] Skandan(40·队2) 真人 接148 地24603 兵2.30M 密93 tD=1.00 c=354.3 need=4.13M [pulse] safe=1.28M keep=1.28M avail=-331k → L5361 avail<=0：保底线 keep=1.28M（safe=1.28M，来自 dpKeep=1.28M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=4470 Enderman(77·队8) 地 6646 兵 984k 密 148.0 ｜策略眼里 nb=1 neut=0 ｜worth=133.2（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=96 ｜NFS 锁=否 影子配额=246k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14116 密121；Samanid Empire(247·AI) 接59 地1230 密0
+        报价 [IND] Skandan(40·队2) 真人 接148 地25614 兵2.44M 密95 tD=1.00 c=361.5 need=4.39M [pulse] safe=1.36M keep=1.36M avail=-393k → L5361 avail<=0：保底线 keep=1.36M（safe=1.36M，来自 dpKeep=1.36M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=4620 Enderman(77·队8) 地 6646 兵 997k 密 150.0 ｜策略眼里 nb=1 neut=0 ｜worth=135.0（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=95 ｜NFS 锁=否 影子配额=249k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14062 密134；Samanid Empire(247·AI) 接59 地1284 密0
+        报价 [IND] Skandan(40·队2) 真人 接148 地25913 兵2.61M 密101 tD=1.05 c=381.6 need=4.68M [pulse] safe=1.46M keep=1.46M avail=-473k → L5361 avail<=0：保底线 keep=1.46M（safe=1.46M，来自 dpKeep=1.46M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=4760 Enderman(77·队8) 地 6646 兵 997k 密 150.0 ｜策略眼里 nb=2 neut=4 ｜worth=135.0（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=93 ｜NFS 锁=否 影子配额=249k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14062 密141
+        报价 [IND] Skandan(40·队2) 真人 接148 地27000 兵2.56M 密95 tD=1.02 c=225.0 need=4.60M [pulse] safe=1.91M keep=1.91M avail=-925k → L5361 avail<=0：保底线 keep=1.91M（safe=1.91M，来自 dpKeep=1.91M）不低于余额
+        报价 Full send(74·队2) 真人 接34 地24725 兵3.41M 密138 tD=1.49 c=329.5 need=6.11M [pulse] safe=1.91M keep=1.91M avail=-925k → L5361 avail<=0：保底线 keep=1.91M（safe=1.91M，来自 dpKeep=1.91M）不低于余额
+        影子 act() 这一拍发出：攻→无主地 47‰ 47k
+[探针] t=4765 Enderman(77·队8) 地 6646 兵 997k 密 150.0 ｜策略眼里 nb=2 neut=2 ｜worth=135.0（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=93 ｜NFS 锁=否 影子配额=249k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14062 密141
+        报价 [IND] Skandan(40·队2) 真人 接148 地27007 兵2.56M 密95 tD=1.02 c=224.9 need=4.60M [pulse] safe=1.91M keep=1.91M avail=-925k → L5361 avail<=0：保底线 keep=1.91M（safe=1.91M，来自 dpKeep=1.91M）不低于余额
+        报价 Full send(74·队2) 真人 接36 地24782 兵3.41M 密138 tD=1.49 c=328.7 need=6.11M [pulse] safe=1.91M keep=1.91M avail=-925k → L5361 avail<=0：保底线 keep=1.91M（safe=1.91M，来自 dpKeep=1.91M）不低于余额
+        影子 act() 这一拍发出：攻→无主地 47‰ 47k
+[探针] t=4770 Enderman(77·队8) 地 6646 兵 940k 密 141.5 ｜策略眼里 nb=2 neut=1 ｜worth=127.4（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=90 ｜NFS 锁=否 影子配额=195k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14062 密141
+        报价 [IND] Skandan(40·队2) 真人 接148 地27015 兵2.59M 密96 tD=1.06 c=227.8 need=4.66M [pulse] safe=1.92M keep=1.92M avail=-987k → L5361 avail<=0：保底线 keep=1.92M（safe=1.92M，来自 dpKeep=1.92M）不低于余额
+        报价 Full send(74·队2) 真人 接37 地24812 兵3.42M 密138 tD=1.53 c=329.3 need=6.13M [pulse] safe=1.92M keep=1.92M avail=-987k → L5361 avail<=0：保底线 keep=1.92M（safe=1.92M，来自 dpKeep=1.92M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=4775 Enderman(77·队8) 地 6647 兵 885k 密 133.2 ｜策略眼里 nb=2 neut=0 ｜worth=119.9（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=90 ｜NFS 锁=否 影子配额=206k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14062 密133
+        报价 [IND] Skandan(40·队2) 真人 接148 地27034 兵2.59M 密96 tD=1.06 c=227.6 need=4.66M [pulse] safe=1.92M keep=1.92M avail=-1.04M → L5361 avail<=0：保底线 keep=1.92M（safe=1.92M，来自 dpKeep=1.92M）不低于余额
+        报价 Full send(74·队2) 真人 接37 地24850 兵3.42M 密138 tD=1.52 c=328.8 need=6.13M [pulse] safe=1.92M keep=1.92M avail=-1.04M → L5361 avail<=0：保底线 keep=1.92M（safe=1.92M，来自 dpKeep=1.92M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=4780 Enderman(77·队8) 地 6647 兵 977k 密 147.0 ｜策略眼里 nb=2 neut=0 ｜worth=132.3（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=92 ｜NFS 锁=否 影子配额=218k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14062 密133
+        报价 [IND] Skandan(40·队2) 真人 接148 地27052 兵2.63M 密97 tD=1.06 c=230.4 need=4.72M [pulse] safe=1.92M keep=1.92M avail=-957k → L5361 avail<=0：保底线 keep=1.92M（safe=1.92M，来自 dpKeep=1.92M）不低于余额
+        报价 Full send(74·队2) 真人 接37 地24871 兵3.43M 密138 tD=1.51 c=329.6 need=6.16M [pulse] safe=1.92M keep=1.92M avail=-957k → L5361 avail<=0：保底线 keep=1.92M（safe=1.92M，来自 dpKeep=1.92M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=4785 Enderman(77·队8) 地 6647 兵 977k 密 147.0 ｜策略眼里 nb=2 neut=0 ｜worth=132.3（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=92 ｜NFS 锁=否 影子配额=230k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14074 密125
+        报价 [IND] Skandan(40·队2) 真人 接148 地27079 兵2.63M 密97 tD=1.06 c=230.2 need=4.72M [pulse] safe=1.92M keep=1.92M avail=-957k → L5361 avail<=0：保底线 keep=1.92M（safe=1.92M，来自 dpKeep=1.92M）不低于余额
+        报价 Full send(74·队2) 真人 接37 地24889 兵3.43M 密138 tD=1.51 c=329.4 need=6.15M [pulse] safe=1.92M keep=1.92M avail=-957k → L5361 avail<=0：保底线 keep=1.92M（safe=1.92M，来自 dpKeep=1.92M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=4790 Enderman(77·队8) 地 6647 兵 978k 密 147.1 ｜策略眼里 nb=2 neut=0 ｜worth=132.4（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=93 ｜NFS 锁=否 影子配额=243k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14080 密126
+        报价 [IND] Skandan(40·队2) 真人 接148 地27096 兵2.66M 密98 tD=1.06 c=233.0 need=4.78M [pulse] safe=1.93M keep=1.93M avail=-963k → L5361 avail<=0：保底线 keep=1.93M（safe=1.93M，来自 dpKeep=1.93M）不低于余额
+        报价 Full send(74·队2) 真人 接37 地24892 兵3.44M 密138 tD=1.49 c=330.4 need=6.17M [pulse] safe=1.93M keep=1.93M avail=-963k → L5361 avail<=0：保底线 keep=1.93M（safe=1.93M，来自 dpKeep=1.93M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=4795 Enderman(77·队8) 地 6647 兵 978k 密 147.1 ｜策略眼里 nb=2 neut=0 ｜worth=132.4（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=93 ｜NFS 锁=否 影子配额=244k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14080 密139
+        报价 [IND] Skandan(40·队2) 真人 接148 地27125 兵2.66M 密98 tD=1.06 c=232.8 need=4.78M [pulse] safe=2.01M keep=2.01M avail=-1.04M → L5361 avail<=0：保底线 keep=2.01M（safe=2.01M，来自 dpKeep=2.01M）不低于余额
+        报价 Full send(74·队2) 真人 接37 地24892 兵3.58M 密144 tD=1.55 c=343.6 need=6.42M [pulse] safe=2.01M keep=2.01M avail=-1.04M → L5361 avail<=0：保底线 keep=2.01M（safe=2.01M，来自 dpKeep=2.01M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=4800 Enderman(77·队8) 地 6647 兵 985k 密 148.2 ｜策略眼里 nb=2 neut=0 ｜worth=133.4（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=95 ｜NFS 锁=否 影子配额=246k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14080 密140
+        报价 [IND] Skandan(40·队2) 真人 接148 地27148 兵2.72M 密100 tD=1.06 c=238.0 need=4.89M [pulse] safe=2.02M keep=2.02M avail=-1.05M → L5361 avail<=0：保底线 keep=2.02M（safe=2.02M，来自 dpKeep=2.02M）不低于余额
+        报价 Full send(74·队2) 真人 接37 地24892 兵3.61M 密145 tD=1.53 c=346.5 need=6.48M [pulse] safe=2.02M keep=2.02M avail=-1.05M → L5361 avail<=0：保底线 keep=2.02M（safe=2.02M，来自 dpKeep=2.02M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=4805 Enderman(77·队8) 地 6647 兵 985k 密 148.2 ｜策略眼里 nb=2 neut=0 ｜worth=133.4（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=95 ｜NFS 锁=否 影子配额=246k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14080 密140
+        报价 Full send(74·队2) 真人 接37 地24892 兵2.97M 密119 tD=1.26 c=270.0 need=5.93M [在打我,pulse] safe=2.00M keep=2.00M avail=-1.03M → L5361 avail<=0：保底线 keep=2.00M（safe=2.00M，来自 dpKeep=2.00M）不低于余额
+        报价 [IND] Skandan(40·队2) 真人 接148 地27176 兵2.72M 密100 tD=1.05 c=237.7 need=4.89M [pulse] safe=2.00M keep=2.00M avail=-1.03M → L5361 avail<=0：保底线 keep=2.00M（safe=2.00M，来自 dpKeep=2.00M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=4810 Enderman(77·队8) 地 6610 兵 977k 密 147.8 ｜策略眼里 nb=2 neut=0 ｜worth=133.0（m=0.900）cheap=8.6 超软上限=是 其余真人密度中位=96 ｜NFS 锁=否 影子配额=244k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接127 地14080 密141
+        报价 Full send(74·队2) 真人 接37 地24929 兵3.00M 密120 tD=1.25 c=270.7 need=5.96M [在打我,pulse] safe=2.00M keep=2.00M avail=-1.04M → L5361 avail<=0：保底线 keep=2.00M（safe=2.00M，来自 dpKeep=2.00M）不低于余额
+        报价 [IND] Skandan(40·队2) 真人 接148 地27187 兵2.76M 密101 tD=1.05 c=240.7 need=4.96M [pulse] safe=2.00M keep=2.00M avail=-1.04M → L5361 avail<=0：保底线 keep=2.00M（safe=2.00M，来自 dpKeep=2.00M）不低于余额
+        影子 act() 这一拍发出：无
+[探针] t=5300 Enderman(77·队8) 地 5362 兵 795k 密 148.2 ｜策略眼里 nb=2 neut=0 ｜worth=133.4（m=0.900）cheap=8.8 超软上限=是 其余真人密度中位=109 ｜NFS 锁=否 影子配额=199k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接176 地14890 密133
+        报价 [IND] Skandan(40·队2) 真人 接113 地30949 兵3.80M 密123 tD=1.13 c=323.3 need=6.81M [pulse,crowdedHard] → L5280 crowdedHard 且 c>=worth、兵 < 1.5×100×地 → 跳过
+        报价 Full send(74·队2) 真人 接42 地25682 兵3.75M 密146 tD=1.34 c=470.7 need=6.73M [pulse,crowdedHard] → L5280 crowdedHard 且 c>=worth、兵 < 1.5×100×地 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=5315 Enderman(77·队8) 地 5362 兵 795k 密 148.3 ｜策略眼里 nb=2 neut=0 ｜worth=133.5（m=0.900）cheap=8.8 超软上限=是 其余真人密度中位=110 ｜NFS 锁=否 影子配额=199k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接188 地15016 密132
+        报价 [IND] Skandan(40·队2) 真人 接103 地30823 兵3.80M 密123 tD=1.12 c=325.2 need=6.81M [pulse,crowdedHard] → L5280 crowdedHard 且 c>=worth、兵 < 1.5×100×地 → 跳过
+        报价 Full send(74·队2) 真人 接42 地25682 兵3.09M 密120 tD=1.10 c=330.2 need=5.55M [pulse,crowdedHard] → L5280 crowdedHard 且 c>=worth、兵 < 1.5×100×地 → 跳过
+        影子 act() 这一拍发出：攻→Full send(74·队2) 102‰ 80k
+[探针] t=5330 Enderman(77·队8) 地 5362 兵 709k 密 132.3 ｜策略眼里 nb=2 neut=0 ｜worth=119.0（m=0.900）cheap=8.8 超软上限=是 其余真人密度中位=110 ｜NFS 锁=否 影子配额=177k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接196 地14955 密132
+        报价 [IND] Skandan(40·队2) 真人 接96 地30734 兵3.26M 密106 tD=0.96 c=214.8 need=5.84M [pulse] safe=1.83M keep=1.83M avail=-1.12M → L5361 avail<=0：保底线 keep=1.83M（safe=1.83M，来自 dpKeep=1.83M）不低于余额
+        报价 Full send(74·队2) 真人 接42 地25832 兵3.14M 密122 tD=1.10 c=328.6 need=5.56M [pulse,crowdedHard] → L5280 crowdedHard 且 c>=worth、兵 < 1.5×100×地 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=5345 Enderman(77·队8) 地 5530 兵 712k 密 128.8 ｜策略眼里 nb=2 neut=0 ｜worth=115.9（m=0.900）cheap=8.8 超软上限=是 其余真人密度中位=112 ｜NFS 锁=否 影子配额=178k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接190 地14653 密131
+        报价 [IND] Skandan(40·队2) 真人 接101 地30815 兵3.30M 密107 tD=0.96 c=216.7 need=5.91M [pulse] safe=1.85M keep=1.85M avail=-1.14M → L5361 avail<=0：保底线 keep=1.85M（safe=1.85M，来自 dpKeep=1.85M）不低于余额
+        报价 Full send(74·队2) 真人 接42 地25885 兵3.13M 密121 tD=1.08 c=330.9 need=5.61M [pulse,crowdedHard] → L5280 crowdedHard 且 c>=worth、兵 < 1.5×100×地 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=5360 Enderman(77·队8) 地 5736 兵 643k 密 112.1 ｜策略眼里 nb=2 neut=0 ｜worth=100.9（m=0.900）cheap=8.8 超软上限=是 其余真人密度中位=114 ｜NFS 锁=否 影子配额=161k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接183 地14375 密131
+        报价 [IND] Skandan(40·队2) 真人 接109 地30717 兵3.34M 密109 tD=0.95 c=219.9 need=5.98M [pulse] safe=1.87M keep=1.87M avail=-1.23M → L5361 avail<=0：保底线 keep=1.87M（safe=1.87M，来自 dpKeep=1.87M）不低于余额
+        报价 Full send(74·队2) 真人 接42 地26055 兵3.17M 密122 tD=1.07 c=333.8 need=5.69M [pulse,crowdedHard] → L5280 crowdedHard 且 c>=worth、兵 < 1.5×100×地 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=5375 Enderman(77·队8) 地 5736 兵 649k 密 113.2 ｜策略眼里 nb=2 neut=0 ｜worth=101.8（m=0.900）cheap=8.8 超软上限=是 其余真人密度中位=109 ｜NFS 锁=否 影子配额=162k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接174 地14074 密130
+        报价 [IND] Skandan(40·队2) 真人 接117 地30830 兵3.37M 密109 tD=1.00 c=221.4 need=6.05M [pulse] safe=1.89M keep=1.89M avail=-1.25M → L5361 avail<=0：保底线 keep=1.89M（safe=1.89M，来自 dpKeep=1.89M）不低于余额
+        报价 Full send(74·队2) 真人 接42 地26243 兵3.20M 密122 tD=1.11 c=333.9 need=5.74M [pulse,crowdedHard] → L5280 crowdedHard 且 c>=worth、兵 < 1.5×100×地 → 跳过
+        影子 act() 这一拍发出：无
+[探针] t=5390 Enderman(77·队8) 地 5855 兵 589k 密 100.7 ｜策略眼里 nb=2 neut=0 ｜worth=90.6（m=0.900）cheap=8.8 超软上限=是 其余真人密度中位=110 ｜NFS 锁=否 影子配额=147k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接158 地13807 密130
+        报价 [IND] Skandan(40·队2) 真人 接126 地30776 兵3.42M 密111 tD=1.01 c=302.8 need=6.12M [pulse,crowdedHard] → L5280 crowdedHard 且 c>=worth、兵 < 1.5×100×地 → 跳过
+        报价 Full send(74·队2) 真人 接42 地26445 兵3.24M 密123 tD=1.12 c=395.6 need=5.82M [pulse,crowdedHard] → L5280 crowdedHard 且 c>=worth、兵 < 1.5×100×地 → 跳过
+        影子 act() 这一拍发出：攻→[IND] Skandan(40·队2) 102‰ 59k
+[探针] t=5405 Enderman(77·队8) 地 5723 兵 515k 密 90.0 ｜策略眼里 nb=2 neut=0 ｜worth=81.3（m=0.900）cheap=8.8 超软上限=否 其余真人密度中位=106 ｜NFS 锁=否 影子配额=129k
+        不在 nb 里的真实邻居（保护名单）：Mansa Musa(62·队7) 接150 地13466 密129
+        报价 [IND] Skandan(40·队2) 真人 接133 地30964 兵2.94M 密95 tD=0.89 c=206.4 need=5.68M [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 Full send(74·队2) 真人 接42 地26730 兵3.30M 密123 tD=1.16 c=397.4 need=5.91M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        影子 act() 这一拍发出：无
