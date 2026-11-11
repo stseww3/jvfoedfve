@@ -172,7 +172,7 @@ SRC = {
                 {"t": 650, "bot": "zexos1 / sora_w / riku_x / talon5 / alex_k 等", "action": "打内置 AI 的留底取「这个 AI 的其他邻居里余额最小的那个」的余额，不排除队友：例 t=900 riku_x 余额 17,284，隔壁 AI#340 有 636 格 / 702 兵，留底 27,634 正好是 sora_w 的余额", "logRef": "shadow_early.txt",
                  "codePath": f"{VB}:Style.pickTarget:L1144-1176 → V13.floorFor0:L2234 → Policy.winFloor:L4562-4570 → V13.safeFinite:L2500-2510 → threatOf:L417-444"},
                 {"t": 1220, "bot": "leo_tx / riku_x", "action": "没有邻居可打的号在开局逻辑里每 5 拍轮流走两段发船（找海对面的地 / 找海对面最便宜的 AI），各有各的冷却；选点时不看队友正在往那里长", "logRef": "shadow_cmds.tsv t=1220~1475（发令行 boatOut:1011 / boatFood:2017）；boat_targets.txt",
-                 "codePath": f"{VB}:Style.act:L799-806（`this.nb.length === 0 || idle → boatOut`）、L999-1015 boatOut；L1813-1823 `if (P.boatFood > 0 && this.cmds === n) this.boatFood(g)`、L2001-2020 boatFood；"
+                 "codePath": f"{VB}:General.act:L799-806（`this.nb.length === 0 || idle → boatOut`）、L999-1015 boatOut；L1813-1823 `if (P.boatFood > 0 && this.cmds === n) this.boatFood(g)`、L2001-2020 boatFood；"
                              "引擎 boats.js landAt L262-287：靠到队友的岸 = 一笔要过配额的捐款，过不了的兵丢掉"},
             ],
             "alternatives": "这一段内置 AI 的地 T1 实付 6 兵一格。内圈五个号 1530 时有 41.4 万兵、1800 时 95.1 万兵压在手里，而全图 1530 时还剩 13.2 万格 AI 的地。它们够不着：自己没有 AI 邻居；"
@@ -312,7 +312,7 @@ SRC = {
          "estCost": "774 个决策拍；全队 990~1530 打 AI 平均每条 3,527 兵（T1 6,562）", "patternId": "NEW:R07-OP-WINFLOOR-MATE", "evidenceRef": "out/A039/shadow_early.txt；side_flow_tp1.txt A"},
         {"t": 1220, "bot": "leo_tx / riku_x", "kind": "boat", "verdict": "error",
          "state": "两个号都没有可打的邻居。1220~1475 八个决策拍各发一条船（pct=140~463），目标是海对面 (529~538, 798~856) 一带的无主地和 AI#34；riku_x 第一条发船前余额 75,811、2,083 格",
-         "codePath": f"{VB}:Style.act:L799-806 → boatOut:L999-1015；act:L1813-1823 → boatFood:L2001-2020（两段各有冷却 lastBoat / lastFood，隔 5 拍各发一条去同一片岸）；引擎 boats.js landAt:L262-287",
+         "codePath": f"{VB}:General.act:L799-806 → boatOut:L999-1015；act:L1813-1823 → boatFood:L2001-2020（两段各有冷却 lastBoat / lastFood，隔 5 拍各发一条去同一片岸）；引擎 boats.js landAt:L262-287",
          "why": "那片岸正是 sora_w 在长的方向：8 条船靠岸时目标格全成了 sora_w 的地，引擎按捐款过配额——3 条到账 36,269，5 条被拒、81,294 兵丢掉（riku_x 丢 43,201，是它发船前余额的 57%）。两个最小的号用这种方式把开局的兵送掉了",
          "estCost": "带兵 145,029 + 发船费 12,515，到账 36,269", "patternId": "NEW:R07-SE-BOAT-MATE-SHORE", "evidenceRef": "out/A039/boat_targets.txt；quota_truth.txt B"},
         {"t": 1512, "bot": "alex_k / talon5 / ryan_m", "kind": "attack", "verdict": "unclear",

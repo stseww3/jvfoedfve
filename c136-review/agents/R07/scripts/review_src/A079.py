@@ -168,7 +168,7 @@ SRC = {
                 {"t": 650, "bot": "kaito9 / talon5", "action": "打内置 AI 之前先过 winFloor：留底取「这个 AI 的其他邻居里余额最小的那个」的余额，不排除队友——两个号互相拿对方的余额当留底", "logRef": "shadow_early.txt（t=650 / 700 / 750 的例子）",
                  "codePath": f"{VB}:Policy.winFloor:L4562-4570 → safeFinite:L2500-2510 → threatOf:L417-444"},
                 {"t": 300, "bot": "全队", "action": "开局阶段对内置 AI 逐个比价：AI 的每格成本高于当拍地价 / winWorth 就不打（507 个零指令拍卡在这里）", "logRef": "shadow_early.txt",
-                 "codePath": f"{VB}:Style.act:L796-806 → pickTarget:L956-992（allow / botOk）；发令位置 〔send:484<send:1827<send:3865<act:796〕"},
+                 "codePath": f"{VB}:General.act:L796-806 → pickTarget:L956-992（allow / botOk）；发令位置 〔send:484<send:1827<send:3865<act:796〕"},
             ],
             "alternatives": "同一张图上 T1 的 25 个真人到最近同队的中位数是 107 像素，990~1530 人均往内置 AI 身上发了 1.9 万兵、人均净增 2,851 格；我方人均 8,021 兵、608 格。"
                             "差距主要不是不肯打：多数号 1000~1300 之后身边已经没有 AI。站得开一些能多拿多少，没有可对照的站位，是推断；留底互锁（286 拍）和延迟批（手续费 18,835）是叠在上面的小头。",
