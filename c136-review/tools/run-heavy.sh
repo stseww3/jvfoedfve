@@ -10,7 +10,7 @@
 #   - 默认超时 110 秒（HEAVY_TIMEOUT 可调）
 #   - 排队最多等 HEAVY_QUEUE 秒（默认 900），等不到就退出码 75
 set -u
-SLOTS=${HEAVY_SLOTS:-3}
+SLOTS=${HEAVY_SLOTS:-2}
 LIMIT=${HEAVY_TIMEOUT:-110}
 QUEUE=${HEAVY_QUEUE:-900}
 DIR=${HEAVY_DIR:-/tmp/c135-slots}
