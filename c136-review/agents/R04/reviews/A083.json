@@ -1450,9 +1450,9 @@
    "t": "1200~1500",
    "bot": "noah88、alex_k、kaito9、zero_7（Moose）；ryan_m、noah88（water）",
    "what": "只贴着真人不出手：[1200,1500) 600 个决策拍里 415 个（69%）。Moose 1100 拍 5,626 格、5.0 万兵，四个邻居合计 22.4 万兵；1400 拍 7,140 格、12.5 万兵，四个邻居合计 62.2 万兵（5 倍）。water 1100 拍 7,952 格、5.3 万兵，1500 拍 17,896 格、13.9 万兵（密度 7.8）；1400 拍 ryan_m 9.8 万兵、底线 13.3 万。这 300 拍全队余额 68.8 万→174.8 万，领土 +805 格。",
-   "why": "核心期前打真人的底线约为 1.5×邻居均兵，封顶 50×自己的领土；邻居（包括队友）的兵都在涨，底线跟着涨，每个号各算各的都够不着。noah88 的底线就是 50×领土的封顶（3,291 格→16.5 万）。",
-   "codePath": "Policy.act L4850 → Style.pickTarget L1144~1161 ← V13.floorFor L2228~2231 / floorFor0 L2233~2241；General floors L819~831",
-   "evidence": "window_tally.py A083 1200 1500（out/A083/window_tally_sub.txt）；shadow.mjs A083 --bots noah88,alex_k,kaito9,zero_7,ryan_m --at 1100,1400（out/A083/shadow_at_1100_1400.txt）；truth_query.py A083 bal 10 / bal 38；enemy_ledger.py A083 --p 38。1512~1540 拍核心期一接手这 5 个号就出手了（D08）。",
+   "why": "核心期前对没惹过自己的真人有两道门。① 留兵底线 = 0.5×min(100×领土, max(100×领土×min(1, 对方每格价/60), 4×「对方别的邻居里余额最小者」))，要「余额 − 底线 > 21.4%×余额」；对方每格价 = 2 + 3.2×对方密度。② 74.6%×(余额 − 底线) ≥ 把对方一次吃到出局的价，否则出兵量为 0。1400 拍 Moose 每格价 58.0、出局价 23.3 万：noah88、kaito9 的底线是 50×领土的封顶（16.5 万、15.6 万；defenseNeed = 4×water 的 9.4 万兵，高过 100×领土），alex_k、zero_7 是 reserve 项（22.0 万、21.3 万）；四个号合计 62.2 万兵，74.6% 是 46.4 万，是出局价的两倍。ryan_m 对 water 的底线 13.3 万是 reserve 项（water 每格价 19.7、出局价 19.4 万）。[1200,1500) 只贴真人没出手的 415 个决策拍：377 个被底线卡住（defenseNeed 顶住 284：参照外队真人 205、参照我方号 67、密度项 12；reserve 项 85；100×领土封顶 8），38 个底线过了但一个号吃不到出局；≥2 个号贴着同一个真人的 136 组里 69 组（51%：Moose 42 组、PERU 27 组）合计余额的 74.6% 已经够出局价，没有一组里有哪个号单独够。每个号只看自己的余额。（2.0 版初稿这里写成「底线约 1.5×邻居均兵」，是按现象估的；ref 在 513 拍以后是 0。）",
+   "codePath": "Policy.act L4850 → Style.pickTarget L1144~1165（L1160~1161 可用兵、L1162 出局价）→ V13.amount0 L2347~2349（preyKill）；V13.floorFor0 L2233~2240（preyFloor）← General.floors L819~830 ← General.defenseNeed L899~913 ← General.altOf L918~940；Strategy.elimCost L464~469",
+   "evidence": "window_tally.py A083 1200 1500（out/A083/window_tally_sub.txt）；pre_human_floor_tally.py A083 1200 1500 --only-human（out/A083/pre_human_floor_tally.txt）；shadow.mjs A083 --bots noah88,alex_k,kaito9,zero_7,ryan_m --to 1410 --at 1400（[底线拆解] 行，out/A083/shadow_at_1400_floor.txt）；shadow.mjs A083 --bots noah88,alex_k,kaito9,zero_7,ryan_m --at 1100,1400（out/A083/shadow_at_1100_1400.txt）；truth_query.py A083 bal 10 / bal 38；enemy_ledger.py A083 --p 38。1512~1540 拍核心期一接手这 5 个号就出手了（D08）。",
    "verdict": "error",
    "patternId": "NEW-OP-REFCHASE",
    "statementType": "observed"
@@ -1701,10 +1701,10 @@
   },
   {
    "prefix": "OP",
-   "name": "核心期前打真人的底线跟着邻居的兵一起涨：几个号围着一个密度更低的真人，各算各的都够不着",
-   "definition": "核心期之前（t < coreFrom=1500）某号的非队友陆上邻居只剩真人（没有内置 AI、没有无主地），这一拍没有出手，影子诊断里对这个真人的底线（约 1.5×邻居均兵，封顶 50×自己的领土）高于「余额 −（最小出兵比例×余额）」；同一拍贴着同一个真人的我方号合计余额 ≥ 这个真人余额的 2 倍。计数 = 号·拍数（window_tally.py 的「只贴真人」类 ×5）、段首段末我方合计余额与对方余额之比、对方在这段时间的领土变化、核心期接手后的第一次出手拍。",
-   "detector": "scripts/window_tally.py <局号> <t0> <t1>（「只贴真人」列）；scripts/shadow.mjs <局号> --bots <号> --at <拍>（[核心期前] 一段逐个邻居给出 需 / 底线 / 可用兵）；scripts/truth_query.py <局号> bal <号> t0 t1",
-   "codePath": "Policy.act L4850（coreFrom 之前走 super.act）→ Style.pickTarget L1144~1161（avail = 余额 − floorFor(…, floorAt(单价))，要 > minShare×余额 = 21.4%×余额）← V13.floorFor L2228~2231 / floorFor0 L2233~2240（真人目标直接用 floorAt）← General.floors L819~830（refFloor = ref×邻居均兵；floorAt = floorK×min(keepCap×100×领土, max(reserve…, refFloor))）；每个号只看自己的余额，没有「几个号合起来够」的判断",
+   "name": "核心期前对真人只有「一次吃到出局」一种打法，留兵底线又跟着对方别的邻居（含队友）的余额涨：几个号围着一个密度更低的真人，各算各的都够不着",
+   "definition": "核心期之前（t < coreFrom=1500）某号的非队友陆上邻居只剩真人（没有内置 AI、没有无主地），这一拍没有出手。两道门：① 留兵底线 = preyFloor(0.5)×min(100×领土, max(100×领土×min(1, 单价/60), defenseNeed))，defenseNeed = kDef(4)×「这个真人别的邻居里余额最小者」（队友也算），要 余额 − 底线 > 21.4%×余额；② 对没打过自己的真人（motive 为 null）要 sendFrac(0.746)×(余额 − 底线) ≥ 出局价（elimCost ≈ 1.8×对方余额 + 1.5×对方领土），否则这一拍出兵量为 0。计数 = 「只贴真人」没出手的号·决策拍数；其中两道门都过不了 / 只差底线 / 底线过了但一次吃不到出局 的拍数；底线被 defenseNeed 顶住且参照对象是我方编队号的拍数；按「同一拍、同一个目标」归组后，≥2 个我方号贴着同一个真人、合计余额的 74.6% ≥ 出局价的组数占比（合起来够、各算各的不够）。另列段首段末我方合计余额与对方余额之比、对方在这段时间的领土变化、核心期接手后的第一次出手拍。（2.0 版之前这条的说明写成「底线约 1.5×邻居均兵」，是按现象估的；四个版本 ref 在 513 拍以后都是 0，实际是上面两道门。）",
+   "detector": "scripts/window_tally.py <局号> <t0> <t1>（「只贴真人」列）；scripts/pre_human_floor_tally.py <局号> [t0 t1] [--only-human]（rows.tsv 的 hbind / href / hkneed 列：底线被哪一项顶住、参照对象、出局价、归组后合起来够不够）；scripts/shadow.mjs <局号> --bots <号> --at <拍>（[核心期前] 一段逐个邻居给出 需 / 底线 / 可用兵，[底线拆解] 一行给出各项和参照对象）；scripts/truth_query.py <局号> bal <号> t0 t1",
+   "codePath": "Policy.act L4850（coreFrom 之前走 super.act）→ Style.pickTarget L1144~1165（L1160~1161：avail = 余额 − floorFor(…, floorAt(单价))，要 > minShare×余额 = 21.4%×余额；L1162 出局价 need）→ V13.amount0 L2347~2349（motive 为 null：sendFrac×avail ≥ preyKill×need 才出手）；V13.floorFor0 L2233~2240（真人、motive 为 null：preyFloor×floorAt）← General.floors L819~830 ← General.defenseNeed L899~913 ← General.altOf L918~940（不排除队友）；Strategy.elimCost L464~469。每个号只看自己的余额，没有「几个号合起来够」的判断",
    "id": "NEW-OP-REFCHASE"
   },
   {
@@ -1865,6 +1865,7 @@
   "scripts/ascii_map.mjs A083 --at 630,1080,1530,2100 | 3060,4500,6030,7500 --map --cell 20 --top 3 --heads（接壤、陆块归属与粗网格图，out/A083/map_*.txt）；--at 1700,…,3300 --also 10 --heads（Moose 的接壤，out/A083/moose_heads.txt）",
   "scripts/shadow_all.sh A083（全队影子策略 → tmp/shadow/A083/，rows.tsv 带 bind / sbRef / gate 列）；scripts/shadow.mjs A083 --bots <号> --from … --to … --at <拍,…>（out/A083/shadow_*.txt）；scripts/shadow_diag.mjs（floorBind、coreGate）",
   "scripts/window_tally.py A083 <t0> <t1>（out/A083/window_tally_*.txt）；scripts/floor_bind_tally.py A083 [t0 t1]（核心期前底线是哪一项顶住的）；scripts/core_gate_tally.py A083 <t0> <t1> --by-target（核心期 buyLand 被哪道门拦下）",
+  "scripts/pre_human_floor_tally.py A083 1200 1500 --only-human（核心期前只贴真人没出手的决策拍：底线被哪一项顶住、参照对象、「一次吃到出局」够不够；out/A083/pre_human_floor_tally.txt）；shadow.mjs --at 1400 的 [底线拆解] 行（out/A083/shadow_at_1400_floor.txt）",
   "scripts/ai_life.mjs A083（内置 AI 的出局拍）；scripts/batch_targets.py A083 --list（迟到指令落地时的目标）；scripts/exec_gap.py A083；scripts/burst_runs.py A083 --list；scripts/client_lag.py A083；scripts/same_tick.py A083 --list；scripts/max_per_tick.py（执行层）",
   "scripts/squad_ledger.py A083 --win 630,1530,2250,3060,4500,6030,7500,8540（兵力流水，out/A083/squad_ledger_tp.txt）；scripts/interest_rate.py A083 --win … --at 3060,6030",
   "scripts/enemy_ledger.py A083 --p 13 | 50 | 10 | 38 --win … --strikes …（Player 752、Ｅｍｐｅｒｙ、Moose、water 的地块来源与逐发进攻；out/A083/enemy_*.txt）",
@@ -1924,7 +1925,7 @@
   "note": "没落地的 201 笔里 200 笔发在 4284 拍之前：151 笔是收款人累计配额用满，45 笔是单笔就超过上限。税 471.4 万 = 到账的 28%。种类：救急 79 笔、增产 18 笔、进攻 4 笔；60 笔出自封死号，47 笔捐后密度 ≤32；38 笔 888.8 万到账后收款人过了 100×领土。到账最多的线：noah88→alex_k 11 笔 500.8 万（税 152.8 万）、noah88→talon5 5 笔 212.8 万（税 67.6 万）、kaito9→alex_k 9 笔 112.5 万、sora_w→alex_k 8 笔 109.0 万。二传手 kaito9 收 121.6 万又捐出 153.3 万（再交税 38.0 万）。没有一笔给同队的真人，也没有收到过同队真人的捐款。"
  },
  "hub0004": [
-  "(1) t<1500 打 AI 的 winFloor → safeFinite 互锁：本局对上了，而且不只是队友互锁。1500 拍前贴着弱 AI 不出手合计 3,100 号·拍；[630,900) 占决策拍的 62%。按底线是哪一项顶住的拆开（floor_bind_tally.py，[630,1500)）：第 1 项 149 个决策拍、第 2 项 32 个、第 3 项 safeFinite 333 个；safeFinite 的参照对象是编队号的 111 次、同队真人的 67 次、敌方真人的 155 次（D04）。另有一条同期的锁：只贴着真人的号，底线跟着邻居的兵涨（D07）。",
+  "(1) t<1500 打 AI 的 winFloor → safeFinite 互锁：本局对上了，而且不只是队友互锁。1500 拍前贴着弱 AI 不出手合计 3,100 号·拍；[630,900) 占决策拍的 62%。按底线是哪一项顶住的拆开（floor_bind_tally.py，[630,1500)）：第 1 项 149 个决策拍、第 2 项 32 个、第 3 项 safeFinite 333 个；safeFinite 的参照对象是编队号的 111 次、同队真人的 67 次、敌方真人的 155 次（D04）。另有一条同期的锁：只贴着真人的号要一个号单独吃到出局，留兵底线又取「对方别的邻居里余额最小者」的 2 倍、队友也算（D07：[1200,1500) 415 个决策拍里 377 个被底线卡住，defenseNeed 的参照对象是我方号的 67 个、外队真人的 205 个；136 组里 69 组合起来够、没有一组单独够）。",
   "(2) 同一拍只受理一条指令、expandNeutral 挤掉 buyLand：本局对上了，量小。同一个决策拍出两条的有 5 个号·拍，第 2 条落地 0 次；有分量的是 talon5 3160 拍 8.7 万兵、alex_k 5545 拍 13.7 万兵（D20）。",
   "(3) 确认窗内重复下单：本局对上了。落地的打真人 / 内置 AI 的陆攻 416 条 2,121 万兵里，重复单 216 条 1,082 万兵（51%）（D19）。1500 拍前的重复单后果不一样：指令晚到 60~130 拍，重复的那几条落地时目标已经出局，被引擎改成打无主地（D06）。",
   "R10 ①（4284 拍前调度落不了地）：本局对上了。4284 拍前发出 231 笔、落地 31 笔；没落地的 200 笔里 151 笔是累计配额用满、45 笔是单笔超上限（D11）。",

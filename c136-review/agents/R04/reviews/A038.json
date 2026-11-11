@@ -1511,7 +1511,7 @@
    "prefix": "OP",
    "name": "打内置 AI 的底线被队友的余额顶住（队友互锁）",
    "definition": "核心期之前（t < coreFrom=1500）某号贴着「兵比地少」的内置 AI、这一拍没有出手，且对该 AI 的出兵底线高于自己的余额；底线来自 winFloor 的第 3 项 safeFinite = 这个 AI 的其他邻居里「余额 + 正在打它的兵」最小者，不排除队友、也不看这个 AI 自己有没有兵。",
-   "detector": "scripts/idle_scan.py（「贴弱AI不出手」列）；scripts/shadow.mjs --at <拍>（winFloor 拆解会标出最弱邻居是不是队友）",
+   "detector": "scripts/idle_scan.py（「贴弱AI不出手」列）；scripts/shadow.mjs --at <拍>（winFloor 拆解会标出最弱邻居是不是队友）；scripts/floor_bind_tally.py <局号> [t0 t1]（rows.tsv 的 bind / sbRef 列：底线是 winFloor 的哪一项顶住的，项 3 的参照对象分成 编队号 / 同队真人 / 外队真人 / 另一个 AI 四类计数）",
    "codePath": "Style.pickTarget L1160~1161 ← V13.floorFor0 L2233~2236 ← Policy.winFloor L4562~4570 ← V13.safeFinite L2500~2510 ← Strategy.threatOf L417~444",
    "id": "NEW-OP-ALLYLOCK"
   },
@@ -1542,9 +1542,9 @@
   {
    "prefix": "DN",
    "name": "封死的后排号按 32~44×领土 留底把兵调走，长期只剩三成密度，敌人一贴上来就被逐个打穿",
-   "definition": "某号在 boxedIn 状态下捐款后密度 ≤ 32，并在首次被敌方真人进攻前 600 拍内密度中位 ≤ 45；随后在首次被打后的 400 拍内出局。计数 = 这样出局的号数。",
-   "detector": "scripts/truth_query.py <局号> cmds <号> t0 t1 --id 2（捐后密度）；scripts/match_digest.py 第 5 节（出局链）；scripts/shadow.mjs --at（调度诊断里的两条底线）",
-   "codePath": "Policy.tryDonateToTeammate L4355（boxedIn 判定）、L4382（prodOptFloor = 44/34×地，emergDefFloor = 32/22×地）、L4502~4506（封死号比例 320/380）",
+   "definition": "某号最后一轮挨打的第一发之前 600 拍内有过捐款、最后一笔捐后密度 ≤ 32，挨第一发时密度 ≤ 45，随后 400 拍内出局（没地）。计数 = 这样出局的号数（hollow_rear.py 末尾的口径行；另给 700 拍内的放宽口径）。成因分两种，复盘里要写清是哪一种：封死的号按规则把兵调到三成密度（Vb：留底 32~44×领土）；或者调度指令迟到、几笔叠在一起落地把余额抽空（A099 的 leo_tx：留底 70×领土只在下单那一拍核对）。",
+   "detector": "scripts/hollow_rear.py <局号>（末尾「按 NEW-DN-HOLLOWREAR 的口径」一行）；scripts/truth_query.py <局号> cmds <号> t0 t1 --id 2（捐后密度）；scripts/match_digest.py 第 5 节（出局链）；scripts/shadow.mjs --at（调度诊断里的两条底线）",
+   "codePath": "Policy.tryDonateToTeammate L4355（boxedIn 判定）、L4381~4387（两条留底线：Vb prodOptFloor 44/34×地、emergDefFloor 32/22×地；Vc 76/70×地、58/48×地）、L4500~4509（定比例后直接 donate；Vb 封死号比例 320/380，Vc 220/260）；L4329、L4331（24 拍冷却 + 槽位相位：前一笔没落地时每 25 拍再下一笔）",
    "id": "NEW-DN-HOLLOWREAR"
   },
   {

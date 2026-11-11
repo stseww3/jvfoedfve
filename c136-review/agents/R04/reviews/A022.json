@@ -963,7 +963,7 @@
    "prefix": "OP",
    "name": "打内置 AI 的底线被队友的余额顶住（队友互锁）",
    "definition": "核心期之前（t < coreFrom=1500）某号贴着「兵比地少」的内置 AI、这一拍没有出手，且对该 AI 的出兵底线高于自己的余额；底线来自 winFloor 的第 3 项 safeFinite = 这个 AI 的其他邻居里「余额 + 正在打它的兵」最小者，不排除队友、也不看这个 AI 自己有没有兵。",
-   "detector": "scripts/idle_scan.py（「贴弱AI不出手」列）；scripts/shadow.mjs --at <拍>（winFloor 拆解会标出最弱邻居是不是队友）",
+   "detector": "scripts/idle_scan.py（「贴弱AI不出手」列）；scripts/shadow.mjs --at <拍>（winFloor 拆解会标出最弱邻居是不是队友）；scripts/floor_bind_tally.py <局号> [t0 t1]（rows.tsv 的 bind / sbRef 列：底线是 winFloor 的哪一项顶住的，项 3 的参照对象分成 编队号 / 同队真人 / 外队真人 / 另一个 AI 四类计数）",
    "codePath": "Style.pickTarget L1160~1161 ← V13.floorFor0 L2233~2236 ← Policy.winFloor L4562~4570 ← V13.safeFinite L2500~2510 ← Strategy.threatOf L417~444",
    "id": "NEW-OP-ALLYLOCK"
   },
