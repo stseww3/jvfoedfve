@@ -39,6 +39,7 @@
 import json
 import math
 import os
+import re
 import sys
 from collections import defaultdict
 
@@ -442,6 +443,72 @@ def sec_wall(M):
             af = f"{s['after'][1]} 之后" if s['after'] else '第一条结算行之前'
             bf = f"{s['before'][1]}（服务器拍≈{s['before'][2]:.0f}）之前" if s['before'] else '最后一条结算行之后'
             print(f"   {s['name']:14s} 最后快照 本机拍 {s['lastT']}（行号 {s['line']}）：{af}、{bf}")
+
+# ------------------------------------------------------------------ wallms（结算行的毫秒时间戳 at → 服务器拍；对照那一刻各号日志打到哪一拍）
+def _at_s(r):
+    """results.csv 的 at（ISO，毫秒）→ 当天秒数。跨零点的局不处理（本批 15 局没有）。"""
+    m = re.search(r'T(\d\d):(\d\d):(\d\d)(?:\.(\d+))?Z', r.get('at') or '')
+    if not m:
+        return None
+    return int(m.group(1)) * 3600 + int(m.group(2)) * 60 + int(m.group(3)) + (float('0.' + m.group(4)) if m.group(4) else 0.0)
+
+
+def wallms_rows(M):
+    """拟合 at = A + 0.056×tick（A 取阵亡行里的最小值：写结算行只会晚、不会早）。
+    每条结算行：服务器拍 = (at − A)/0.056；按落盘行号取每个号在这条结算行之前最后一条、之后第一条 HL-TICK 快照的拍号。
+    「日志位置落后」= 服务器拍 − 之后第一条快照拍（下界）~ 服务器拍 − 之前最后一条快照拍（上界）。
+    快照 90 拍一条，所以不落后时下界应在 −90~0、上界在 0~90。日志是否实时落盘无法单独验证：恒定的偏移也可能是落盘延迟。"""
+    rs = [r for r in M.results if _at_s(r) is not None]
+    fit = [r for r in rs if r['event'] == 'died' and r['tick']]
+    if len(fit) < 2:
+        return None
+    A = min(_at_s(r) - TICK_S * r['tick'] for r in fit)
+    rl = {x['name']: x['line'] for x in M.results_log}
+    out = []
+    for r in rs:
+        line = rl.get(r['bot'])
+        srv = (_at_s(r) - A) / TICK_S
+        before, after = {}, {}
+        if line is not None:
+            for me, b in M.bots.items():
+                for s in b.traj:
+                    if s['line'] < line:
+                        before[me] = s['t']
+                    elif me not in after:
+                        after[me] = s['t']
+        both = [me for me in before if me in after and after[me] - before[me] <= 180]
+        out.append(dict(bot=r['bot'], me=r['meId'], event=r['event'], tick=r['tick'], serverTick=srv, resid=_at_s(r) - A - TICK_S * r['tick'], line=line,
+                        before=sorted(before[me] for me in both), after=sorted(after[me] for me in both), n=len(both)))
+    return dict(A=A, rows=out)
+
+
+def sec_wallms(M):
+    W = wallms_rows(M)
+    if not W:
+        print('结算行不足（或没有 at 时间戳），拟合不了')
+        return
+    a = W['A']
+    print(f"毫秒对表：阵亡行拟合 at = A + 0.056×tick，A = {int(a // 3600):02d}:{int(a % 3600 // 60):02d}:{a % 60:06.3f}（取最小值）。服务器拍 = (at − A)/0.056")
+    print('   每条结算行：结算 tick｜服务器拍（残差秒 = 写结算行比 tick 晚多少）｜这条结算行落盘时，其余在场号日志里「之前最后一条 / 之后第一条」快照的拍号范围｜日志位置落后（服务器拍 − 之后第一条 ~ 服务器拍 − 之前最后一条，取各号中位）')
+    lows, highs = [], []
+    for r in W['rows']:
+        if not r['n']:
+            print(f"   {r['bot']:12s} {r['event']:5s} tick={r['tick']:5d}｜服务器拍≈{r['serverTick']:.0f}（残差 {r['resid']:+.2f} 秒）｜没有同时在场、快照连续的号")
+            continue
+        mb, ma = r['before'][len(r['before']) // 2], r['after'][len(r['after']) // 2]
+        # 阵亡/终局行的 tick 本身就是「本机拍」：本机知道自己死了的那一拍
+        lo, hi = r['serverTick'] - ma, r['serverTick'] - mb
+        if r['event'] == 'died':
+            lows.append(lo)
+            highs.append(hi)
+        print(f"   {r['bot']:12s} {r['event']:5s} tick={r['tick']:5d}｜服务器拍≈{r['serverTick']:.0f}（残差 {r['resid']:+.2f} 秒）｜{r['n']} 个号 之前 {r['before'][0]}~{r['before'][-1]}（中位 {mb}） / 之后 {r['after'][0]}~{r['after'][-1]}（中位 {ma}）"
+              f"｜落后 {lo:+.0f} ~ {hi:+.0f} 拍")
+    if lows:
+        lows.sort()
+        highs.sort()
+        print(f"   阵亡行合计 {len(lows)} 条：落后下界 中位 {lows[len(lows) // 2]:+.0f}（最小 {lows[0]:+.0f}、最大 {lows[-1]:+.0f}）；上界 中位 {highs[len(highs) // 2]:+.0f}（最小 {highs[0]:+.0f}、最大 {highs[-1]:+.0f}）")
+        print('   读法：下界 > 0 = 这条结算行写下时，别的号连「下一条」快照都还没打到服务器拍，即日志位置至少落后这么多拍；它可能是本机真的落后，也可能是日志晚落盘，日志自己分不开')
+
 
 # ------------------------------------------------------------------ donlog（没有录像时的捐款账：只靠捐款方自己的余额读数）
 DON_NOEXEC = 0.99    # 下一条余额读数 >= 「只涨利息」预测 × 0.99 → 这一段里没有任何支出（这条捐款没被执行，手续费也没扣）
@@ -1279,6 +1346,92 @@ def sec_noeffect(M, t_from=NOEFF_T_FROM):
             print(f"       t={g['t0']}~{g['t1']}（{g['t1'] - g['t0']} 拍）发了 {g['cmds']} 条（其中发船 {g['boats']} 条）；nb {g['nbMin']}~{g['nbMax']}；领土 {g['terr0']}→{g['terr1']}；余额 {fmt(g['bal0'])}→{fmt(g['bal1'])}；起点密度 {g['dens0']:.0f}；{tail}")
 
 
+def noefftl_rows(M, t_from=NOEFF_T_FROM, t_to=3600):
+    """按时间看「发令不见效」和「集中清仓」是不是全编队同时发生（同时 = 公共原因，例如整机卡顿；各自 = 各号自己的局面）。
+    每个 90 拍间隔 [a, c]（a.t 落在哪一档就记哪一档）：
+      有令 = 其余指令（cmds 增量 − 捐款日志 − 协防戳日志）>= 1；不见效 = noeffect 的判据；
+      清仓 = 余额 < 纯利息预测 × 0.5 且领土没丢（c.terr >= 0.9 × a.terr）；k = ln(余额/预测)/ln(0.868)。
+      超发 = k − 这段里的其余指令条数 >= 3（执行掉的 12% 出手比这段里新发的指令多 3 条以上 → 有更早发的令在这段才生效，或单条比例远大于 12%）。"""
+    bins = defaultdict(lambda: dict(alive=0, withCmd=0, cmds=0, noeff=0, noeffCmds=0, dump=0, over=0, who=[]))
+    for me, b in sorted(M.bots.items()):
+        tr = [x for x in b.traj if t_from <= x['t'] <= t_to]
+        for a, c in zip(tr, tr[1:]):
+            if c['t'] - a['t'] > 90:
+                continue
+            g = bins[a['t']]
+            g['alive'] += 1
+            logged = sum(1 for e in b.donations if a['t'] <= e['t'] < c['t']) + sum(1 for e in b.assists if a['t'] <= e['t'] < c['t'])
+            other = (c['cmds'] - a['cmds']) - logged
+            ratio = c['bal'] / max(1, pure_interest(a, c, M.land))
+            if other >= 1:
+                g['withCmd'] += 1
+                g['cmds'] += other
+            if other >= NOEFF_MIN_CMDS and ratio >= NOEFF_RATIO and c['terr'] <= NOEFF_GROW * a['terr']:
+                g['noeff'] += 1
+                g['noeffCmds'] += other
+            if ratio < 0.5 and c['terr'] >= 0.9 * a['terr'] and not logged and a['bal'] >= 1000 and a['terr'] >= 50:
+                k = math.log(max(ratio, 1e-9)) / math.log(0.868)
+                g['dump'] += 1
+                if k - max(0, other) >= 3:
+                    g['over'] += 1
+                    g['who'].append(f"{name_of(b)} k={k:.1f}/令{max(0, other)}")
+    return [dict(t=t, **g) for t, g in sorted(bins.items())]
+
+
+def sec_noefftl(M, t_from=NOEFF_T_FROM, t_to=3600):
+    rows = noefftl_rows(M, t_from, t_to)
+    print(f"「发令不见效 / 清仓」时间分布（只用日志；每档 = 起点在这一拍的 90 拍间隔；t={t_from}~{t_to}）")
+    print('   起点拍｜有连续快照的号｜有令的号 / 指令条数｜不见效的号 / 条数｜清仓的号（余额 < 纯利息预测的一半、领土没丢、这段没有捐款/戳日志）｜其中超发（k − 新发指令 >= 3）')
+    for r in rows:
+        if not r['withCmd'] and not r['dump']:
+            continue
+        print(f"   t={r['t']:5d}｜{r['alive']:2d}｜{r['withCmd']:2d} / {r['cmds']:3d}｜{r['noeff']:2d} / {r['noeffCmds']:3d}｜{r['dump']:2d}｜{r['over']:2d} {'；'.join(r['who'])}")
+    a = sum(r['cmds'] for r in rows)
+    n = sum(r['noeffCmds'] for r in rows)
+    print(f"   合计：指令 {a} 条，不见效 {n} 条（{100 * n / max(1, a):.1f}%）；清仓 {sum(r['dump'] for r in rows)} 段，其中超发 {sum(r['over'] for r in rows)} 段")
+    for lo, hi in ((630, 1260), (1260, 1890), (1890, 2520), (2520, 3600)):
+        sub = [r for r in rows if lo <= r['t'] < hi]
+        a = sum(r['cmds'] for r in sub)
+        n = sum(r['noeffCmds'] for r in sub)
+        print(f"      t={lo}~{hi}：指令 {a} 条，不见效 {n} 条（{100 * n / max(1, a):.1f}%）；清仓 {sum(r['dump'] for r in sub)} 段、超发 {sum(r['over'] for r in sub)} 段")
+
+
+def gaps_rows(M):
+    """缺掉的 HL-TICK 快照。策略只在「本机拍是 90 的倍数、且这一拍 act() 走到了打印处」时打一条快照（c110 L4797 / L4822）；
+    act() 开头有 `if (!g.canAct(me)) return`（L4782）。所以首尾快照之间缺掉的 90 的倍数 = 那一拍策略没被调用或被 canAct 挡回。
+    对局包里没有适配层（LiveGame.canAct）的代码，缺口的成因只能推断：本机快进追帧时一批拍只调一次策略、或那一拍不许下令。"""
+    out = []
+    for me, b in sorted(M.bots.items()):
+        have = {s['t'] for s in b.traj}
+        if not have:
+            continue
+        lo, hi = min(have), max(have)
+        miss = [t for t in range(lo, hi + 1, 90) if t not in have]
+        out.append(dict(me=me, name=name_of(b), team=b.team, first=lo, last=hi, n=len(have), miss=miss))
+    return out
+
+
+def sec_gaps(M):
+    rows = gaps_rows(M)
+    tot = sum(r['n'] + len(r['miss']) for r in rows)
+    mis = sum(len(r['miss']) for r in rows)
+    print(f"缺掉的 HL-TICK 快照（首尾快照之间、拍号是 90 的倍数却没有打印）：{mis} 个 / 应有 {tot} 个（{100 * mis / max(1, tot):.1f}%）；涉及 {sum(1 for r in rows if r['miss'])} 个号")
+    for r in rows:
+        if r['miss']:
+            print(f"   {r['name']:13s}(队{r['team']}) 缺 {len(r['miss']):2d} / {r['n'] + len(r['miss']):3d}：" + ' '.join(str(t) for t in r['miss']))
+    by = defaultdict(list)
+    for r in rows:
+        for t in r['miss']:
+            by[t].append(r['name'])
+    alive = lambda t: sum(1 for r in rows if r['first'] <= t <= r['last'])
+    print('   按拍（缺的号数 / 那一拍应有快照的号数）：' + '；'.join(f"t={t} {len(v)}/{alive(t)}" for t, v in sorted(by.items())))
+    for lo, hi in ((90, 630), (630, 1260), (1260, 1890), (1890, 3600), (3600, 10 ** 9)):
+        n = sum(len(v) for t, v in by.items() if lo <= t < hi)
+        d = sum(alive(t) for t in range(90, 20000, 90) if lo <= t < hi)
+        if d:
+            print(f"      t={lo}~{hi if hi < 10 ** 9 else '终局'}：缺 {n} / 应有 {d}（{100 * n / d:.1f}%）")
+
+
 THIN_DENS = 12            # 「薄」的密度上限
 THIN_MIN_LEN = 450        # 连续多少拍
 THIN_BIG = 2.0            # 领土 >= 在场我方号中位的几倍
@@ -1808,6 +1961,8 @@ def main():
         sec_drop30(M)
     elif sec == 'wall':
         sec_wall(M)
+    elif sec == 'wallms':
+        sec_wallms(M)
     elif sec == 'overcap':
         sec_overcap(M)
     elif sec == 'oplag':
@@ -1849,6 +2004,10 @@ def main():
         sec_crumb(M)
     elif sec == 'noeffect':
         sec_noeffect(M, *([int(sys.argv[3])] if len(sys.argv) > 3 else []))
+    elif sec == 'noefftl':
+        sec_noefftl(M, *[int(x) for x in sys.argv[3:5]])
+    elif sec == 'gaps':
+        sec_gaps(M)
     elif sec == 'harvest':
         sec_harvest(M, *([int(sys.argv[3])] if len(sys.argv) > 3 else []))
     elif sec == 'boxboats':

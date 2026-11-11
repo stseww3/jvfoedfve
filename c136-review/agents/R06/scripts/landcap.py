@@ -279,6 +279,64 @@ def sec_capture(X):
     return out
 
 
+def snap_at(b, want, tol=90):
+    """HL-TICK 快照里 <= want、离 want 不超过 tol 拍的最后一条。"""
+    c = [s for s in b.traj if s['t'] <= want and want - s['t'] <= tol]
+    return c[-1] if c else None
+
+
+def sec_logcap(X):
+    """录像没到对局阶段时的替代口径：我方各号 HL-TICK 快照的领土 ÷ 天然份额（陆路版）。
+    其他真人、内置 AI 没有日志，所以「其他真人兑现率」「天然份额里的地归谁」「内置 AI 地的去向」这几项算不了。"""
+    sh = shares(X)
+    vb = sh['vb']
+    out = []
+    print('-- 兑现率（日志版；录像没覆盖对局阶段）：我方各号 HL-TICK 快照的领土 ÷ 天然份额（陆路版）。那一拍没有快照的号（没开页面 / 已出局）领土按 0 算，另列「有快照的号」一项')
+    ticks = (630, 1530)
+    snaps = {t: {p: snap_at(X.M.bots[p], t) for p in X.squad} for t in ticks}
+    for t in ticks:
+        have = [p for p in X.squad if snaps[t][p]]
+        tt = sum(snaps[t][p]['terr'] for p in have)
+        tv_all = sum(int(vb[p]) for p in X.squad)
+        tv_have = sum(int(vb[p]) for p in have)
+        rr = sorted(snaps[t][p]['terr'] / vb[p] for p in have if vb[p] > 0)
+        q = lambda f: 100 * rr[min(len(rr) - 1, int(f * len(rr)))] if rr else 0
+        print(f"   t={t}：我方 领土 {tt} ÷ 天然 {tv_all} = {pc(tt, tv_all)}（20 个号全算）；有快照的 {len(have)} 个号 {tt} ÷ {tv_have} = {pc(tt, tv_have)}；"
+              f"各号兑现率 25% / 50% / 75% 分位 {q(.25):.0f}% / {q(.5):.0f}% / {q(.75):.0f}%；领土中位 {med([snaps[t][p]['terr'] for p in have])} 格；占全图陆地 {pc(tt, X.nland)}")
+        teams = defaultdict(lambda: [0, 0, 0])
+        for p in X.squad:
+            k = X.team[p]
+            teams[k][1] += int(vb[p])
+            teams[k][2] += 1
+            if snaps[t][p]:
+                teams[k][0] += snaps[t][p]['terr']
+        print('      按队：' + '；'.join(f"队{k} {v[2]} 个号 {v[0]}÷{v[1]}={pc(v[0], v[1])}" for k, v in sorted(teams.items())))
+        out.append(dict(t=t, squadTerr=tt, squadVor=tv_all, squadRate=round(tt / tv_all, 4) if tv_all else None, haveSnap=len(have), haveVor=tv_have,
+                        haveRate=round(tt / tv_have, 4) if tv_have else None, medRate=round(q(.5) / 100, 4), medTerr=med([snaps[t][p]['terr'] for p in have]),
+                        teams={str(k): v for k, v in sorted(teams.items())}))
+    print('   各号（领土 / 兑现率；- = 那一拍没有快照）：' + ' '.join(f"t={t}" for t in ticks))
+    rows = []
+    for p in sorted(X.squad, key=lambda p: -vb[p]):
+        cells = []
+        r = dict(me=p, name=name(X, p), team=X.team[p], vor=int(vb[p]))
+        for t in ticks:
+            s = snaps[t][p]
+            cells.append(f"{s['terr']:6d} {pc(s['terr'], int(vb[p])):>7s}" if s else f"{'-':>6s} {'-':>7s}")
+            r[f"t{t}"] = s['terr'] if s else None
+        rows.append(r)
+        print(f"      {name(X, p):14s} 队{X.team[p]} 天然 {int(vb[p]):6d}｜" + '｜'.join(cells))
+    # 天然份额大小两半各自的兑现率（看「份额小」和「没兑现」哪一层更重）
+    order = sorted((p for p in X.squad if snaps[630][p]), key=lambda p: -vb[p])
+    half = len(order) // 2
+    for label, ps in (('天然份额较大的一半', order[:half]), ('较小的一半', order[half:])):
+        if not ps:
+            continue
+        a = sum(int(vb[p]) for p in ps)
+        print(f"   {label}（{len(ps)} 个号，天然合计 {a}）：" + '；'.join(
+            f"t={t} 领土 {sum(snaps[t][p]['terr'] for p in ps if snaps[t][p])}（{pc(sum(snaps[t][p]['terr'] for p in ps if snaps[t][p]), a)}，还有快照的 {sum(1 for p in ps if snaps[t][p])} 个）" for t in ticks))
+    return dict(source='log', ticks=out, bots=rows)
+
+
 def owner_classes(X, g, cells_mask, me_lab=None):
     """cells_mask 里的格在网格 g 上归谁：self（= 该格的天然主人）/ squad / other / ai / neutral。me_lab = 每格的天然主人。"""
     o = g[cells_mask].astype(np.int64)
@@ -590,6 +648,8 @@ def main():
             doc['flow'] = sec_flow(X)
         if sec in ('layers', 'all', 'json'):
             doc['layers'] = sec_layers(X)
+    if X.last < 630 and sec in ('logcap', 'all', 'json'):
+        doc['logCapture'] = sec_logcap(X)
     if sec == 'json':
         p = os.path.join(OUT, mid, 'landcap.json')
         json.dump(doc, open(p, 'w'), ensure_ascii=False, default=lambda o: int(o) if isinstance(o, (np.integer,)) else float(o))
