@@ -378,6 +378,25 @@ export function resim(mid, opts = {}) {
     pairAcc = new Map();
   };
 
+  // ---- 钩子：利息/地租入账、进攻结束退回的兵 ----
+  const incCum = new Float64Array(H), retCum = new Float64Array(H);
+  const balTmp = new Float64Array(H);
+  g.economyTick = function () {
+    if (this.t % 10 !== 9) return;
+    for (let p = 0; p < H; p++) balTmp[p] = this.bal[p];
+    proto.economyTick.call(this);
+    for (let p = 0; p < H; p++) incCum[p] += this.bal[p] - balTmp[p];
+  };
+  g.endAttack = function (p, a, troops) {
+    if (p < H) {
+      const b0 = this.bal[p];
+      proto.endAttack.call(this, p, a, troops);
+      retCum[p] += this.bal[p] - b0;
+      return;
+    }
+    return proto.endAttack.call(this, p, a, troops);
+  };
+
   const engineEvents = [];
   g.onHunt = (lead, n) => engineEvents.push([g.t, 'hunt', lead, n]);
   g.onFast = (lead) => engineEvents.push([g.t, 'fast', lead, 0]);
@@ -507,6 +526,7 @@ export function resim(mid, opts = {}) {
   // ---- 快照 ----
   const until = opts.until ?? Infinity;
   const snapT = [], snapTerr = [], snapBal = [], teamLand = [], botLand = [], aliveH = [];
+  const snapInc = [], snapRet = [], snapOut = [];
   const sq = {};
   for (const [b, s] of Object.entries(squad)) if (s.id >= 0) sq[b] = { t: [], out: [], inn: [], nb: [], box: [], boats: [], quota: [] };
   const startBox = [];
@@ -577,6 +597,9 @@ export function resim(mid, opts = {}) {
     let nAlive = 0;
     for (let p = 0; p < H; p++) { a[p] = g.terr[p]; b[p] = g.bal[p]; if (g.alive[p] && g.state[p] !== 2) nAlive++; }
     snapTerr.push(a); snapBal.push(b); aliveH.push(nAlive);
+    const oo = new Array(H);
+    for (let p = 0; p < H; p++) oo[p] = g.alive[p] ? g.totalAttackTroops(p) : 0;
+    snapInc.push(Array.from(incCum)); snapRet.push(Array.from(retCum)); snapOut.push(oo);
     const tl = new Array(Math.max(ta.nTeams, 0) + 1).fill(0);
     let bl = 0;
     for (let i = g.aliveCount - 1; i >= 0; i--) {
@@ -633,9 +656,13 @@ export function resim(mid, opts = {}) {
     for (const p of squadIds) row.push(g.terr[p], g.bal[p]);
     perTick[g.t] = row;
   };
+  // opts.onState(g, ctx)：每拍在「本拍指令落地之前」调用一次——这正是页面本地拍号 g.t 时策略读到的状态
+  //（traj.csv 逐行核对用的就是这个时刻）。shadow.mjs 用它在真实状态上旁路运行策略源码。
+  const ctx = { H, names, squad, vu, leftT, teamGame, teamsInfo: ta, bdir, cmdLog, deathT };
   snap();
   checkTraj();
   notePerTick();
+  if (opts.onState) opts.onState(g, ctx);
   while (!g.over && g.t < until && step()) {
     g.tick();
     notePerTick();
@@ -644,6 +671,7 @@ export function resim(mid, opts = {}) {
     if (g.t % 10 === 0) snap();
     checkTraj();
     if (mapsAt.has(g.t)) maps[g.t] = coarseMap();
+    if (opts.onState) opts.onState(g, ctx);
   }
   flushPairs(g.t);
   snap();
@@ -674,7 +702,7 @@ export function resim(mid, opts = {}) {
     endTick: g.t, over: g.over, winner: g.winner, winnerTeam: g.winnerTeam,
     spawnXY, startBox, leftT: Array.from(leftT), deathT: Array.from(deathT.subarray(0, H)),
     validate: val,
-    snapT, snapTerr, snapBal, teamLand, botLand, aliveH,
+    snapT, snapTerr, snapBal, snapInc, snapRet, snapOut, teamLand, botLand, aliveH,
     sq, pairLog, cmdLog, deaths, landings, maps, engineEvents,
   };
   return out;
