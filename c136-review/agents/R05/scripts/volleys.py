@@ -34,7 +34,8 @@ for p, q, es in vol:
     spent = sum((e.get('troops') or 0) + (e.get('fee') or 0) for e in es)
     first = (es[0].get('troops') or 0) + (es[0].get('fee') or 0)
     rows.append({'bot': sq[p], 'q': P[q]['name'], 't0': es[0]['t'], 't1': es[-1]['t'], 'n': len(es), 'ticks': len({e['t'] for e in es}), 'B0': B0, 'spent': spent,
-                 'share': spent / B0 if B0 else 0, 'firstShare': first / B0 if B0 else 0, 'pct': sorted({e['pct'] for e in es})})
+                 'share': spent / B0 if B0 else 0, 'firstShare': first / B0 if B0 else 0, 'pct': sorted({e['pct'] for e in es}), 'first': first,
+                 'span': es[-1]['t'] - es[0]['t']})
 n = len(rows)
 if not n:
     print(f'[连续下单] {mid}: 无'); sys.exit(0)
@@ -43,6 +44,8 @@ tot = sum(r['spent'] for r in rows)
 print(f"[连续下单] {mid} t={T0}–{T1} 间隔≤{GAP} 拍：我方号打真人 {sum(r['n'] for r in rows)} 条，归成 {n} 轮；每轮条数 中位 {st.median(r['n'] for r in rows)} 最大 {max(r['n'] for r in rows)}；"
       f"≥{MIN} 条的轮 {len(big)} 个（含 {sum(r['n'] for r in big)} 条，打出 {sum(r['spent'] for r in big)/1e6:.2f}M＝全部打真人支出 {tot/1e6:.2f}M 的 {100*sum(r['spent'] for r in big)/max(1,tot):.0f}%）")
 print(f"    每轮打出批前存兵的比例：全部轮 中位 {100*st.median(r['share'] for r in rows):.0f}%；首条 中位 {100*st.median(r['firstShare'] for r in rows):.0f}%；≥{MIN} 条的轮 中位 {100*st.median([r['share'] for r in big] or [0]):.0f}% 最大 {100*max([r['share'] for r in big] or [0]):.0f}%")
+firsts = sum(r['first'] for r in rows)
+print(f"    各轮首条合计 {firsts/1e6:.2f}M；同一轮里跟在首条后面的那些条合计 {(tot-firsts)/1e6:.2f}M（占全部打真人支出的 {100*(tot-firsts)/max(1,tot):.0f}%）；一轮从首条到末条的拍数 中位 {st.median(r['span'] for r in rows)} 最大 {max(r['span'] for r in rows)}")
 dist = defaultdict(int)
 for r in rows:
     dist[min(r['n'], 9)] += 1

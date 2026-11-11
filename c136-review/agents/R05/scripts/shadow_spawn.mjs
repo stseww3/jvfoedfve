@@ -12,6 +12,12 @@
 //     --drop  求解时把这些玩家编号从真人列表里拿掉（看某个敌人在不在对结果的影响）
 //     --anchors 打印每个角 metric 前 5 的锚点候选
 //     --rcell 55,52,51 锚点打分那一段改用这些 rCell 各算一遍（rCell 随已落点真人数变：L838）
+//   拆盘局（我方号被大厅分进两个并行实例，协调器只有一台）专用：
+//     --slots 18:0,19:7            录像这一盘里的我方号用日志里的真实槽位（玩家编号:槽位），不用默认的按编号排序
+//     --phantom 8:0,1:1,…          另一盘里的我方号也登记进 squadBots（槽位:它在另一盘的玩家编号），位置未知（curX=-1）
+//                                  → 协调器 L818 会把本盘里「编号与它相同」的真人当成我方号跳过
+//     --points                      只打印每个采样拍解出的点集（按 x,y 排序），用来和日志里的 [HL-SPAWN-BACKEND] 对
+//     --every a:b                   采样拍改为 a..b 每拍
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { loadReplay, timeline } from './replay_cmds.mjs';
@@ -23,7 +29,11 @@ const mid = args[0];
 const val = (k, d) => (args.includes(k) ? args[args.indexOf(k) + 1] : d);
 const verOf = (id) => { if (id[0] === 'B') return 'c110'; const n = +id.slice(1); return n <= 17 ? 'va' : n <= 95 ? 'vb' : 'vc'; };
 const ver = val('--ver', verOf(mid));
-const AT = String(val('--at', '-14,-6,-5,-1')).split(',').map(Number);
+let AT = String(val('--at', '-14,-6,-5,-1')).split(',').map(Number);
+if (args.includes('--every')) { const [a, b] = String(val('--every', '')).split(':').map(Number); AT = []; for (let t = a; t <= b; t++) AT.push(t); }
+const SLOTS = new Map(String(val('--slots', '')).split(',').filter(Boolean).map((s) => s.split(':').map(Number)));
+const PHANTOM = String(val('--phantom', '')).split(',').filter(Boolean).map((s) => s.split(':').map(Number));
+const POINTS = args.includes('--points');
 const DROP = new Set(String(val('--drop', '')).split(',').filter(Boolean).map(Number));
 const chain = args.includes('--chain');
 const SRC = { va: 'spawn-coordinator-c116-va.mjs', vb: 'spawn-coordinator-c116-vb.mjs', vc: 'spawn-coordinator-c116-vc.mjs', c110: 'spawn-coordinator-c110.mjs' }[ver];
@@ -48,11 +58,12 @@ spawns.sort((a, b) => a.t - b.t);
 
 const posAt = (t) => { const m = new Map(); for (const s of spawns) { if (s.t > t) break; m.set(s.p, { x: s.x, y: s.y }); } return m; };
 const mk = () => { const c = new TeamSpawnCoordinator(); c.setMap({ matchKey: mid, W, H, mapType }); return c; };
-const slotOf = new Map([...sq.keys()].sort((a, b) => a - b).map((p, i) => [p, i]));
+const slotOf = SLOTS.size ? SLOTS : new Map([...sq.keys()].sort((a, b) => a - b).map((p, i) => [p, i]));
 
 function solveAt(co, t) {
   const pos = posAt(t);
   const squadBots = [...sq.entries()].map(([p, bot]) => ({ slot: slotOf.get(p), port: 0, name: names[p], meId: p, curX: pos.get(p)?.x ?? -1, curY: pos.get(p)?.y ?? -1 }));
+  for (const [slot, meId] of PHANTOM) squadBots.push({ slot, port: 0, name: `[APEX] phantom${slot}`, meId, curX: -1, curY: -1 });
   const humans = [];
   for (let p = 0; p < HN; p++) {
     if (DROP.has(p)) continue;
@@ -73,6 +84,12 @@ for (const t of AT) {
   if (!plan.ok) { console.log(`t=${t} 求解失败 ${plan.error}`); continue; }
   const placed = [...pos.keys()].filter((p) => !sq.has(p) && !DROP.has(p)).length;
   const L = plan.list.slice().sort((a, b) => a.slot - b.slot);
+  if (POINTS) {
+    const key = L.map((e) => `${e.x},${e.y}`).sort().join(' ');
+    const mine = L.filter((e) => sq.has(e.meId) && !PHANTOM.some(([s]) => s === e.slot)).map((e) => `${bare(e.name)}=s${e.slot}:${e.role}(${e.x},${e.y})`).join(' ');
+    console.log(`t=${t} 已落点 ${placed}（敌 ${plan.enemyCount} 友 ${plan.randomAllyCount}）rCell ${plan.scales.rCell}｜${mine}｜点集 ${key}`);
+    continue;
+  }
   const cx = L.reduce((s, e) => s + e.x, 0) / L.length, cy = L.reduce((s, e) => s + e.y, 0) / L.length;
   const apex = L.find((e) => e.role === 'CORNER_APEX_BANK');
   const far = Math.max(...L.map((e) => Math.hypot(e.x - cx, e.y - cy)));
@@ -92,7 +109,7 @@ for (const rcArg of RC) {
   const { plan } = solveAt(co, AT[AT.length - 1]);
   const rCell = rcArg ?? plan.scales.rCell;
   const clamp = (v, lo, hi) => (v < lo ? lo : v > hi ? hi : v);
-  const K = sq.size;
+  const K = sq.size + PHANTOM.length;
   const coef = { va: [1.38, 78, 132, 2.35, 142, 225], vb: [1.12, 66, 108, 1.88, 122, 182], vc: [1.32, 76, 126, 2.28, 145, 220] }[ver];
   if (coef && K >= 6) {
     const minReqSep = clamp(Math.round(0.95 * rCell), 42, 68);
