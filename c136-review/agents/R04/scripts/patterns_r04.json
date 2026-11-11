@@ -243,5 +243,89 @@
   "definition": "出兵串 = 同一个号对同一个目标（真人或内置 AI）的陆攻，相邻两条的落地拍相隔 ≤7 拍。串首那条生效后的两个决策拍里影子策略不再对这个目标下单的叫关闸串（策略一看到第一条生效就停手），串里第 2 条起算重复单。计数 = 重复单的条数与兵、占全部打人/AI 出征兵的比例；整串出兵占串首执行前余额的比例（对比第一条单独的比例）。串里某一拍落 ≥3 条的（指令积压过）同时记 NEW-IO-DRAINBATCH。",
   "detector": "scripts/blind_reorders.py <局号> [--list N] [--lag]",
   "codePath": "Policy.buyLand L5459（curAtk = g.attackTroopsOn(me, q)）、L5575 / L5589 / L5596（在途进攻兵 ≥ 4%~8% 余额才不再加）、L5352（over 读当前余额）、L5446（avail 不扣已发未生效的兵）；Strategy.send L479~487（发出后不记「已发未生效」的账）；Policy.act L4838（每 5 拍一个决策拍，而线上指令最快 7 拍、一般 7~15 拍后才在引擎里执行）"
+ },
+ "NEW-EX-MODE1V1": {
+  "prefix": "EX",
+  "name": "对局是 1v1 模式：编队的号被两两分进不同房间，对手就是自己人",
+  "definition": "对局卡 mode=8（引擎 aE.lC=8：不分队 a0L=0、不能捐款 iT=false、每个房间 2 个真人 + 510 个内置 AI）。计数 = 这类对局的局数、编队内互打的房间数。这种局的卡片 resultLabel=won 只表示「有一个号赢了」，不是队伍获胜。",
+  "detector": "scripts/engine_settings.cjs <局号>（lC、ku、a0L、iT）；对局包 results.csv 的 meId / tick / result 两两配对；in_game.log 的 [HL-GAME-INIT] mode=8 seeded=2",
+  "codePath": "Policy.isTeammate L3927、Policy.idleBoats L5019（封死分支要求 g.teams[me] > 0）、Policy.tryDonateToTeammate L4325（没有队友可捐）；spawn-coordinator-c116-vb.mjs TeamSpawnCoordinator.solve（仍按 10 个号同房求解）"
+ },
+ "NEW-SP-NOEXEC": {
+  "prefix": "SP",
+  "name": "选点指令没有落地，出生点是引擎随机给的",
+  "definition": "录像出生阶段里这个号的选点指令（id=0）条数为 0，而日志里有 [HL-SPAWN] / [HL-SPAWN-BACKEND] 选点记录。计数 = 这样的号数。",
+  "detector": "tmp/truth/<局号>/cmd.tsv 里 spawnStep ≥ 0 的行数（engine_truth.cjs）；对局包 spawn.csv",
+  "codePath": "Policy.chooseSpawn L3983~4129；引擎 qi.i0（只查阶段、存活、格子可用）；出生阶段步数 a7a（真人 ≤2 时 30 步，约 11.8 秒）"
+ },
+ "NEW-IO-STACK9": {
+  "prefix": "IO",
+  "name": "指令在路上被攒成一摞（最多 9 条）再倒序一起落地，晚 60~130 拍；多出来的丢失",
+  "definition": "同一个号同一拍落地 ≥3 条陆攻算一批；把批里的比例序列倒过来，等于影子策略某一段连续决策拍各发的一条（整段对上）。计数 = 批数、对上的批数、最新一条意图到落地的拍数（中位）、相邻两批的间隔（中位）、每批花掉余额的比例（中位）；另计发了没落地的意图条数。",
+  "detector": "scripts/burst_runs.py <局号> [--list]；scripts/exec_gap.py <局号> --profile 250",
+  "codePath": "Strategy.send L479~487（比例按发令拍的余额换算，落地时引擎按当时余额重新计价）；Policy.act L4838（每 5 拍一个决策拍，每拍照发）；策略里没有「已发未落地」的账。传输层（适配层 / 服务器）不在仓库里：引擎客户端 b1.qo.qs → b1.z.send 是直接写 WebSocket，没有排队"
+ },
+ "NEW-AT-FEELOCK": {
+  "prefix": "AT",
+  "name": "贴着一小块内置 AI（常是海岛 AI 登在我岸上的滩头）一直不吃：报价把整笔余额的陆攻手续费摊到它头上；而它又让发船找地直接返回",
+  "definition": "核心期（t ≥ 1500）某个号的陆上邻居里有内置 AI，影子诊断里这个 AI 的 c ≥ worth、c ≥ cheap、未 over（L5359 break），吃掉它的需要量 < 可用兵的 5%；同一拍 boatFood 因「陆上邻居里有单价 ≤ botMax 的内置 AI」返回 false（V13.boatFood L2005 / Policy.boatFood L5630），boatOut 因余额 < idleCap×100×领土 不发（L5060）。计数 = 这样的号·拍数（影子 rows.tsv：nAI>0 且 intents=0 的行动拍 ×5）、期间领土变化、余额倍数；另列这个 AI 的主体在哪块陆地上（ascii_map.mjs --also）。",
+  "detector": "scripts/shadow.mjs <局号> --bots <号> --at <拍> --water（[buyLand]、[idleBoats] 两段）；tmp/shadow/<局号>/rows.tsv（shadow_all.sh）；scripts/flat_windows.py <局号>；scripts/ascii_map.mjs <局号> --at <拍> --also <AI 编号>",
+  "codePath": "Policy.offers L5072~5100（fee = iV(12*B, 1024) 取整笔余额；need 按这个 AI 的全部领土和余额算；c = (rawNeed + fee) / baseGain）、Policy.buyLand L5350~5359（worth = m×refDens；c ≥ worth && c ≥ cheap && !over → break）、V13.boatFood L2001~2021（L2005 用不含手续费的 this.price）、Policy.idleBoats L5058~5060"
+ },
+ "NEW-SE-WRONGISLAND": {
+  "prefix": "SE",
+  "name": "发船落点按「单价 + 船费 ÷ 对方总领土」排、登陆的却是离岸最近的那一格：富号反复把四五成余额装船去吃内置 AI 的碎岛，隔一格水的真人排在后面",
+  "definition": "没有陆上邻居（nb=0）的号 boatOut 选的落点是内置 AI，载兵 ≥ 余额的 30%，而发船范围内有敌方真人（影子诊断 [searchWater 候选] 里真人排在第 2 名以后）。计数 = 这样的船数、载兵、手续费、登陆后 300 拍从目标净得地；对照登陆敌方真人的船。另记登陆到的陆块有多大（ascii_map.mjs 前后两拍的归属差）：登陆的陆块 ≤ 500 格而目标另有 ≥ 1 万格的主体，算「登在碎岛上」。",
+  "detector": "scripts/boat_list.py <局号>；scripts/boat_pairs.py <局号> --list；scripts/shadow.mjs <局号> --bots <号> --at <拍> --water（[searchWater 候选]）；scripts/ascii_map.mjs <局号> --at <登陆前后的拍> --also <AI 编号> --top 14",
+  "codePath": "General.searchWater L1020~1079（从自己的岸在水上做广搜，每个对象取最先碰到的那一格当落点；L1061 无主地的船费按那一片的大小 comp[n] 摊，L1069~1070 有主的地按对方总领土摊：price = 2 + 2×余额/(1+地×10/16)，eff = price×grow + fee / max(1, 0.75×对方总领土)）、General.boatOut L999~1015（L1006 max = boatFrac×(余额 − floorAt(落点单价))；L1009 目标不是无主地时装 max，不看需要多少）、General.floors L819~830（L829 floorAt = 100×领土×min(1, 单价/cRef 60)：落点单价越低底线越低、装得越多；单价 ≥ 60 时底线是 100×领土，要密度 ≥ 133 才够最小船量）、V13.boatOut L2325~2330、Policy.idleBoats L5059~5068（nb=0 时 maxEff = Infinity）；V13.searchFood L2028~2080（boatFood 的小船用的搜索，同一个做法：L2067~2068 无主地按 comp[n]，L2071~2074 内置 AI 按 g.terr[o] − peak/4 摊，落点 land: n 也是最先碰到的一格；L2071 跳过真人）"
+ },
+ "NEW-AT-TINYFEE": {
+  "prefix": "AT",
+  "name": "比例只有 0~4/1024 的陆攻：出的兵比这条指令的手续费还少",
+  "definition": "陆攻指令实际出兵 < 这条指令付的手续费（引擎按余额的 12/1024 收）。计数 = 条数、出兵合计、手续费合计、目标分布。",
+  "detector": "scripts/fee_ledger.py <局号>",
+  "codePath": "Policy.buyLand L5449~5454（内置 AI 目标：want = 1.25×need + 3×接触数，x = min(avail, want)，不和手续费比）→ Strategy.send L479~487（pct = ceil(x×1024/余额) − 1，可以是 0）"
+ },
+ "NEW-AT-STANDOFF": {
+  "prefix": "AT",
+  "name": "两个真人接壤对峙：没过 100×领土时要自己的密度是对方的两倍半以上才出手，双方都攒兵不动，谁先过线谁先打",
+  "definition": "某号与某真人接壤，buyLand 对它的报价 c ≥ worth、c ≥ cheap 且未 over，连续 ≥ 300 拍没有任何落地的陆攻，同期自己余额翻倍以上、领土变化 ≤ 4%。计数 = 号·拍数、段首段末双方密度、段末谁的余额先过 100×领土。只有日志的房间用 flat_windows.py 的口径（地不动、指令增量 ≤ 12、≥ 360 拍）。对方同期从我方净拿地 ≥ 5000 格的情形另记 NEW-AT-PRICEGATE。",
+  "detector": "scripts/flat_windows.py <局号>；scripts/shadow.mjs <局号> --bots <号> --at <拍>（[buyLand] 一段的 worth、c）；scripts/human_strikes.py <局号> --list（出手时的密度比）",
+  "codePath": "Policy.offers L5072~5100（真人目标的 c 约为对方密度的 2.2~2.6 倍）、Policy.buyLand L5350~5359（worth = maxW×winRatio×max(自己密度, marketFloor×其他真人密度中位)；L5353 over = 余额 > 100×领土；L5359 break）"
+ },
+ "NEW-SE-FOODBOAT": {
+  "prefix": "SE",
+  "name": "陆上没有内置 AI 可吃时，用一成多的余额发船吃海对面的 AI 并站住（有效）",
+  "definition": "boatFood 发的船（发船那一拍陆上邻居里没有内置 AI；比例 ≤ 205/1024），登陆后 300 拍内从登陆目标净得地 ≥ 5000 格。计数 = 条数、载兵、净得地。",
+  "detector": "scripts/boat_list.py <局号>；scripts/shadow.mjs <局号> --bots <号> --at <拍> --water（[idleBoats] 一段）",
+  "codePath": "Policy.idleBoats L5058 → V13.boatFood L2001~2021（载兵 = max(foodK×需要量, feeK×船手续费 = 余额的 12.5%)）→ V13.searchFood L2028"
+ },
+ "NEW-AT-DENSEDGE": {
+  "prefix": "AT",
+  "name": "自己密度是对方两倍以上时出手并净得地（有效）",
+  "definition": "对某真人目标的一轮出兵（human_strikes.py 的一轮）落地时未 over、我方密度 ≥ 对方的 2.2 倍，随后 300 拍从它净得地 > 5000 格且 ≥ 出兵量 / 100。计数 = 轮数、出兵、净得地。",
+  "detector": "scripts/human_strikes.py <局号> --list",
+  "codePath": "Policy.buyLand L5350~5359（c < worth 或 c < cheap 才买）、L5455~5609（对真人的脉冲出兵量）"
+ },
+ "NEW-EG-SLOWFINISH": {
+  "prefix": "EG",
+  "name": "大幅领先之后收不了口：兵是最后一个对手的三倍以上，出的兵却大半不落在它身上",
+  "definition": "某号（组队局按本队）占全图陆地 ≥ 75% 且自己余额 ≥ 3×场上最大的敌方真人余额（过线拍）之后，到对局结束敌方真人仍在场。计数 = 过线到结束的拍数、其间出兵合计（陆攻 + 船）、落在敌方真人身上的比例、从敌方真人净得地。",
+  "detector": "scripts/finish_ledger.py <局号> [--share 75] [--ratio 3] [--until 拍]",
+  "codePath": "Policy.idleBoats L5019~5070（没有陆上邻居时只剩发船）；Policy.isMopUp L4520~4533（不分队时要场上只剩自己一个真人才算清场）；General.searchWater L1069~1070（落点按单价 + 船费摊销排）；General.boatOut L999~1015"
+ },
+ "NEW-AT-OVERSTRIKE": {
+  "prefix": "AT",
+  "name": "余额过 100×领土后不比单价，对接壤真人一轮一轮出手：结果看谁的地多",
+  "definition": "human_strikes.py 的一轮出手，串首执行前余额 > 100×领土（buyLand 的 over=true）。计数 = 轮数、出兵、随后 300 拍从目标净得地为正 / 为负的轮数，按「出手时自己的领土不比对方少 / 比对方少」分两组。两个号同一拍对打的轮次净得地互为相反数，分不开是谁造成的，单列。",
+  "detector": "scripts/human_strikes.py <局号> --list N（「over 的出手里，出手时地不比对方少的 / 地比对方少的」两行）",
+  "codePath": "Policy.buyLand L5353（over = surplus>0 && B > 100×L）、L5359（over 时不 break）、L5456~5457 与 L5612~5617（over 且需要量 ≤ 0.30×余额时不走脉冲，一次出 1.25×需要量）"
+ },
+ "NEW-AT-BEACHDUMP": {
+  "prefix": "AT",
+  "name": "对只隔着一小块滩头接壤的真人按「吃掉它全部领土」的量出兵：打完滩头没地可打，兵退回，白付手续费",
+  "definition": "对真人的一轮大笔出手（整串出兵 ≥ 余额的 10% 且 ≥ 1 万兵），同时满足：进攻在串尾之后 40 拍内结束；目标领土少了不到 100 格；不是对打（同期目标打过来的在途兵 < 整串出兵的 25%）；兵回到了余额（串尾 30 拍后的余额 + 其间别的指令的花费 ≥ 出手前余额 − 整串出兵的 25%）。计数 = 轮数、出兵、手续费。",
+  "detector": "scripts/refund_strikes.py <局号> --list",
+  "codePath": "Policy.offers L5072~5100（need 按对方全部领土和余额算，不看接壤多长）、Policy.buyLand L5353~5359（over 时不比单价）、L5456~5457、L5612~5617（want = 1.25×need + 3×接触数）"
  }
 }

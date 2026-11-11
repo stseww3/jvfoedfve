@@ -105,6 +105,11 @@ def main():
         print('  %s：%d 次，出兵 %s；密度比（我/它）25%% 位 %.2f、中位 %.2f、75%% 位 %.2f；密度比 <1.5 的 %d 次、<1 的 %d 次；净得地 >0 的 %d 次，净得地合计 %+d' % (
             lab, len(grp), k(sum(o['v'] for o in grp)), q(rs, 0.25), q(rs, 0.5), q(rs, 0.75),
             sum(1 for r in rs if r < 1.5), sum(1 for r in rs if r < 1.0), sum(1 for o in grp if o['gain'] > 0), sum(o['gain'] for o in grp)))
+    ov = [o for o in out if o['over']]
+    for lab, grp in (('地不比对方少', [o for o in ov if o['t0'] >= o['tq']]), ('地比对方少', [o for o in ov if o['t0'] < o['tq']])):
+        if grp:
+            print('  over 的出手里，出手时%s的：%d 次，出兵 %s；随后 300 拍净得地 >0 的 %d 次、<0 的 %d 次' % (
+                lab, len(grp), k(sum(o['v'] for o in grp)), sum(1 for o in grp if o['gain'] > 0), sum(1 for o in grp if o['gain'] < 0)))
     per = collections.defaultdict(list)
     for o in out:
         per[o['p']].append(o)
