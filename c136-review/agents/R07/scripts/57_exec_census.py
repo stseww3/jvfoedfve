@@ -182,6 +182,7 @@ def main():
     # 每个号每一帧（7 拍）落了几条：直接数缓存里的 humans_cmd.tsv
     sizes = {"1": Counter(), "0": Counter()}
     nine = {"1": [0, 0, 0], "0": [0, 0, 0]}   # 正好 9 条的帧数、其中下一帧（+7 拍）同一个号还有指令的、上一帧（−7 拍）有指令的
+    gaps = {}                                 # (我方?, 帧里几条) -> [下一条指令隔 1 / 2 / 3 / ≥4 个回合的帧数, 上一条指令隔 1 / 2 / 3 / ≥4 个回合的帧数]
     for mid in mids:
         per = defaultdict(Counter)
         sq = {}
@@ -190,6 +191,13 @@ def main():
                 per[row["p"]][int(row["t"])] += 1
                 sq[row["p"]] = row["squad"]
         for pl, cnt in per.items():
+            ts = sorted(cnt)
+            for i, t in enumerate(ts):
+                gk = gaps.setdefault((sq[pl], cnt[t]), [[0, 0, 0, 0], [0, 0, 0, 0]])
+                if i + 1 < len(ts):
+                    gk[0][min((ts[i + 1] - t) // 7, 4) - 1] += 1
+                if i > 0:
+                    gk[1][min((t - ts[i - 1]) // 7, 4) - 1] += 1
             for t, k in cnt.items():
                 sizes[sq[pl]][k] += 1
                 if k == 9:
@@ -202,6 +210,15 @@ def main():
         c = sizes[key]
         P(f"{lab}：" + "、".join(f"{k} 条 {c[k]:,} 帧" for k in sorted(c)) + f"；最多 {max(c)} 条")
         P(f"{lab}正好 9 条的 {nine[key][0]:,} 帧里，下一帧同一个号还有指令的 {nine[key][1]} 帧、上一帧有指令的 {nine[key][2]} 帧")
+
+    P("")
+    P("## B3. 一帧落了 k 条之后，同一个号的下一条指令隔几个回合（1 回合 = 7 拍）；之前的上一条隔几个回合")
+    P("   谁 | 帧里几条 | 下一条隔 1 / 2 / 3 / ≥4 个回合的帧数 | 上一条隔 1 / 2 / 3 / ≥4 个回合的帧数")
+    for key, lab in (("1", "我方"), ("0", "其他真人")):
+        for k in (9, 8, 7, 6, 5, 4, 3, 2, 1):
+            gk = gaps.get((key, k))
+            if gk:
+                P(f"  {lab}\t{k}\t" + " / ".join(f"{x:,}" for x in gk[0]) + "\t" + " / ".join(f"{x:,}" for x in gk[1]))
 
     P("")
     P("## C. 发出 vs 落地（进攻和船；真号 cmds 计数减捐款 vs 录像）")

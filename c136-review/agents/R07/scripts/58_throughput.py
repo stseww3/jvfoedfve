@@ -244,6 +244,34 @@ def main():
     P("  这种窗口最多的 15 局：" + "、".join(f"{m}（{n}）" for n, m in nz[:15]))
     P("  （只列我逐局复盘过的 11 局带录像的局；全部局在 throughput_flood.tsv）")
 
+    P("")
+    P("## K. 同一个 90 拍窗口里，队友在连发时，发得慢的号怎么样（慢号 = 这一窗发出 1~5 条、没有捐款）")
+    P("   同窗队友的情况 | 时段 | 慢号窗口数 | 发出 / 落地（比）| 一条都没落地的窗口占比")
+    res = defaultdict(lambda: [0, 0, 0, 0])
+    for g, w, team in per_game:
+        tw2 = defaultdict(list)
+        for b, a, z, i, l, d in w:
+            tw2[(a, z)].append((b, i, l, d))
+        for (a, z), ws in tw2.items():
+            stalled = any(x[1] >= 15 and x[2] <= 1 and x[3] == 0 for x in ws)
+            fast_ok = any(x[1] >= 15 and x[2] >= 6 and x[3] == 0 for x in ws)
+            tag = "有队友发 ≥15 条、落地 ≤1 条" if stalled else ("有队友发 ≥15 条、落地 ≥6 条" if fast_ok else "没有队友发 ≥15 条")
+            for b, i, l, d in ws:
+                if d == 0 and 1 <= i <= 5:
+                    for p in PERIODS:
+                        if p[0] <= a < p[1]:
+                            r = res[(tag, plabel(p))]
+                            r[0] += 1
+                            r[1] += i
+                            r[2] += l
+                            r[3] += 1 if l == 0 else 0
+    for tag in ("没有队友发 ≥15 条", "有队友发 ≥15 条、落地 ≥6 条", "有队友发 ≥15 条、落地 ≤1 条"):
+        for p in PERIODS:
+            r = res.get((tag, plabel(p)))
+            if r and r[0] >= 20:
+                P(f"  {tag}\t{plabel(p)}\t{r[0]:,}\t{r[1]:,} / {r[2]:,}（{r[2] / r[1]:.2f}）\t{r[3] / r[0]:.0%}")
+    P("  （不足 20 个窗口的格子不列）")
+
     os.makedirs(CROSS, exist_ok=True)
     open(os.path.join(CROSS, "throughput.txt"), "w", encoding="utf-8").write("\n".join(L) + "\n")
     print("\n".join(L))
