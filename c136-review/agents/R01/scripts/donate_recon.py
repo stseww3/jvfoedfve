@@ -30,7 +30,7 @@ for r in tr:
         paid[(int(r['t']), int(r['from']), int(r['to']))] = paid.get((int(r['t']), int(r['from']), int(r['to'])), [])
         paid[(int(r['t']), int(r['from']), int(r['to']))].append((int(float(r['paid'] or 0)), int(float(r['received'] or 0))))
 B = '/agent/repos/c136-data/bundles'
-alias = {}
+alias = {k: int(v) for k, v in (meta.get('alias') or {}).items() if ':' not in k}
 res = list(csv.DictReader(open(os.path.join(B, mid, 'results.csv'), encoding='utf8')))
 for r in res:
     if r.get('meId') not in (None, ''):

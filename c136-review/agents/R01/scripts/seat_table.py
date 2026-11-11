@@ -58,6 +58,12 @@ def main():
         if r['bot'] not in info[p]['labels']:
             info[p]['labels'].append(r['bot'])
             label_seat[r['bot']] = p
+    # 中间名（没有 RESULT 行的轮换名，resim_lib.midAliases 认出来的）：插在最后一个名字前面
+    for lb, p in (meta.get('alias') or {}).items():
+        if ':' in lb or p not in info or lb in info[p]['labels']:
+            continue
+        info[p]['labels'].insert(max(1, len(info[p]['labels']) - 1) if len(info[p]['labels']) > 1 else 1, lb)
+        label_seat[lb] = p
     lp = os.path.join(DATA, mid, 'in_game.log')
     for line in open(lp, encoding='utf8', errors='replace'):
         m = re.search(r'\[([^\]]+)\] \[(HL-[A-Z-]+)\] (.*)$', line)
