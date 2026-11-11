@@ -90,7 +90,8 @@ def render(doc, src):
              "11_winFloorMateLock": "t<1500 打内置 AI 的留底互锁（广播 0004-①）", "12_oneCmdPerTick": "每个决策拍只发出一条指令（广播 0004-②）",
              "13_inflightRepeat": "未生效就重复下单（广播 0004-③）", "14_capTruncPingPong": "硬上限截断与来回倒手（广播 0004 审计②）",
              "15_lateAiFloors": "t≥1500 吃内置 AI 的留底与门槛（广播 0005-①②）", "16_overSkipsPrice": "过软上限后不比价（广播 0005-③）",
-             "17_yieldDispatch": "调度的利息账（广播 0005-④）", "18_doomedPocket": "弃子判定（广播 0005-⑤）", "19_boatVoyage": "船的损耗（广播 0005-⑥）"}
+             "17_yieldDispatch": "调度的利息账（广播 0005-④）", "18_doomedPocket": "弃子判定（广播 0005-⑤）", "19_boatVoyage": "船的损耗（广播 0005-⑥）",
+             "20_execLatency": "指令延迟与执行延迟（广播 0007-②）", "21_landCapture": "好地实际抢到多少（广播 0007-③）"}
     for k, v in (doc.get("mechanismChecks") or {}).items():
         L.append(f"- **{names.get(k, k)}**：{v}")
     L.append("")

@@ -1,0 +1,3336 @@
+{
+ "matchId": "A067",
+ "land": 664497,
+ "humans": 58,
+ "nTeams": 5,
+ "nTeamsHeader": 8,
+ "teamSizes": [
+  0,
+  12,
+  11,
+  11,
+  12,
+  12
+ ],
+ "myTeam": 5,
+ "squadInRoom": [
+  "alex_k",
+  "kaito9",
+  "leo_tx",
+  "noah88",
+  "riku_x",
+  "ryan_m",
+  "sora_w",
+  "talon5",
+  "zero_7",
+  "zexos1"
+ ],
+ "foreign": [],
+ "version": "Vb",
+ "timeline": [
+  {
+   "t": 90,
+   "alive": 10,
+   "sqTerr": 285,
+   "sqSharePct": 0.04,
+   "sqBal": 5878,
+   "sqDens": 20.6,
+   "teamOnlineBal": {
+    "T1": 7838,
+    "T2": 4971,
+    "T3": 5863,
+    "T4": 8372,
+    "T5": 6884
+   },
+   "teamOnlineHumans": {
+    "T1": 11,
+    "T2": 11,
+    "T3": 10,
+    "T4": 12,
+    "T5": 12
+   },
+   "teamSharePct": {
+    "T1": 0.1,
+    "T2": 0.2,
+    "T3": 0.2,
+    "T4": 0.1,
+    "T5": 0.1
+   },
+   "aiSharePct": 1.9,
+   "neutralSharePct": 97.4
+  },
+  {
+   "t": 180,
+   "alive": 10,
+   "sqTerr": 1522,
+   "sqSharePct": 0.23,
+   "sqBal": 10951,
+   "sqDens": 7.2,
+   "teamOnlineBal": {
+    "T1": 10954,
+    "T2": 5239,
+    "T3": 8409,
+    "T4": 10246,
+    "T5": 12588
+   },
+   "teamOnlineHumans": {
+    "T1": 11,
+    "T2": 10,
+    "T3": 10,
+    "T4": 12,
+    "T5": 12
+   },
+   "teamSharePct": {
+    "T1": 0.2,
+    "T2": 0.5,
+    "T3": 0.3,
+    "T4": 0.4,
+    "T5": 0.3
+   },
+   "aiSharePct": 3.5,
+   "neutralSharePct": 94.8
+  },
+  {
+   "t": 270,
+   "alive": 10,
+   "sqTerr": 3773,
+   "sqSharePct": 0.57,
+   "sqBal": 15446,
+   "sqDens": 4.1,
+   "teamOnlineBal": {
+    "T1": 13578,
+    "T2": 9280,
+    "T3": 13854,
+    "T4": 16271,
+    "T5": 17615
+   },
+   "teamOnlineHumans": {
+    "T1": 11,
+    "T2": 10,
+    "T3": 10,
+    "T4": 12,
+    "T5": 12
+   },
+   "teamSharePct": {
+    "T1": 0.5,
+    "T2": 0.6,
+    "T3": 0.6,
+    "T4": 0.7,
+    "T5": 0.7
+   },
+   "aiSharePct": 5.8,
+   "neutralSharePct": 91.1
+  },
+  {
+   "t": 630,
+   "alive": 10,
+   "sqTerr": 28754,
+   "sqSharePct": 4.33,
+   "sqBal": 50678,
+   "sqDens": 1.8,
+   "teamOnlineBal": {
+    "T1": 61526,
+    "T2": 43886,
+    "T3": 62311,
+    "T4": 69148,
+    "T5": 67796
+   },
+   "teamOnlineHumans": {
+    "T1": 10,
+    "T2": 8,
+    "T3": 10,
+    "T4": 12,
+    "T5": 12
+   },
+   "teamSharePct": {
+    "T1": 3.5,
+    "T2": 3.3,
+    "T3": 3.6,
+    "T4": 5.5,
+    "T5": 5.0
+   },
+   "aiSharePct": 33.4,
+   "neutralSharePct": 45.7
+  },
+  {
+   "t": 1080,
+   "alive": 10,
+   "sqTerr": 53597,
+   "sqSharePct": 8.07,
+   "sqBal": 452357,
+   "sqDens": 8.4,
+   "teamOnlineBal": {
+    "T1": 346278,
+    "T2": 193399,
+    "T3": 281805,
+    "T4": 349539,
+    "T5": 517785
+   },
+   "teamOnlineHumans": {
+    "T1": 10,
+    "T2": 7,
+    "T3": 10,
+    "T4": 12,
+    "T5": 12
+   },
+   "teamSharePct": {
+    "T1": 9.1,
+    "T2": 8.3,
+    "T3": 10.8,
+    "T4": 15.8,
+    "T5": 9.9
+   },
+   "aiSharePct": 41.7,
+   "neutralSharePct": 4.3
+  },
+  {
+   "t": 1530,
+   "alive": 10,
+   "sqTerr": 65535,
+   "sqSharePct": 9.86,
+   "sqBal": 1938479,
+   "sqDens": 29.6,
+   "teamOnlineBal": {
+    "T1": 1286172,
+    "T2": 790433,
+    "T3": 1144670,
+    "T4": 1620909,
+    "T5": 2272364
+   },
+   "teamOnlineHumans": {
+    "T1": 9,
+    "T2": 7,
+    "T3": 9,
+    "T4": 12,
+    "T5": 12
+   },
+   "teamSharePct": {
+    "T1": 15.6,
+    "T2": 15.1,
+    "T3": 21.1,
+    "T4": 25.9,
+    "T5": 12.0
+   },
+   "aiSharePct": 8.1,
+   "neutralSharePct": 2.2
+  },
+  {
+   "t": 2130,
+   "alive": 9,
+   "sqTerr": 68017,
+   "sqSharePct": 10.24,
+   "sqBal": 1990559,
+   "sqDens": 29.3,
+   "teamOnlineBal": {
+    "T1": 2762529,
+    "T2": 983229,
+    "T3": 2950402,
+    "T4": 4183759,
+    "T5": 2621672
+   },
+   "teamOnlineHumans": {
+    "T1": 8,
+    "T2": 5,
+    "T3": 9,
+    "T4": 11,
+    "T5": 11
+   },
+   "teamSharePct": {
+    "T1": 16.9,
+    "T2": 14.7,
+    "T3": 23.2,
+    "T4": 29.6,
+    "T5": 13.6
+   },
+   "aiSharePct": 0.8,
+   "neutralSharePct": 1.2
+  },
+  {
+   "t": 2700,
+   "alive": 9,
+   "sqTerr": 67995,
+   "sqSharePct": 10.23,
+   "sqBal": 3485889,
+   "sqDens": 51.3,
+   "teamOnlineBal": {
+    "T1": 3633656,
+    "T2": 1519099,
+    "T3": 5012578,
+    "T4": 7448626,
+    "T5": 4892612
+   },
+   "teamOnlineHumans": {
+    "T1": 7,
+    "T2": 2,
+    "T3": 7,
+    "T4": 11,
+    "T5": 11
+   },
+   "teamSharePct": {
+    "T1": 17.6,
+    "T2": 10.0,
+    "T3": 23.5,
+    "T4": 33.8,
+    "T5": 13.8
+   },
+   "aiSharePct": 0.2,
+   "neutralSharePct": 1.1
+  },
+  {
+   "t": 3060,
+   "alive": 9,
+   "sqTerr": 85081,
+   "sqSharePct": 12.8,
+   "sqBal": 3959082,
+   "sqDens": 46.5,
+   "teamOnlineBal": {
+    "T1": 5226264,
+    "T2": 2315799,
+    "T3": 7311638,
+    "T4": 10504137,
+    "T5": 5397207
+   },
+   "teamOnlineHumans": {
+    "T1": 6,
+    "T2": 2,
+    "T3": 7,
+    "T4": 9,
+    "T5": 11
+   },
+   "teamSharePct": {
+    "T1": 19.4,
+    "T2": 8.1,
+    "T3": 24.4,
+    "T4": 30.2,
+    "T5": 16.6
+   },
+   "aiSharePct": 0.4,
+   "neutralSharePct": 0.9
+  },
+  {
+   "t": 3600,
+   "alive": 8,
+   "sqTerr": 86809,
+   "sqSharePct": 13.06,
+   "sqBal": 4777118,
+   "sqDens": 55.0,
+   "teamOnlineBal": {
+    "T1": 7818158,
+    "T2": 4599687,
+    "T3": 11274059,
+    "T4": 12030792,
+    "T5": 4777118
+   },
+   "teamOnlineHumans": {
+    "T1": 6,
+    "T2": 2,
+    "T3": 6,
+    "T4": 8,
+    "T5": 8
+   },
+   "teamSharePct": {
+    "T1": 18.9,
+    "T2": 8.5,
+    "T3": 24.7,
+    "T4": 32.1,
+    "T5": 15.0
+   },
+   "aiSharePct": 0.2,
+   "neutralSharePct": 0.7
+  },
+  {
+   "t": 4500,
+   "alive": 7,
+   "sqTerr": 94424,
+   "sqSharePct": 14.21,
+   "sqBal": 7900731,
+   "sqDens": 83.7,
+   "teamOnlineBal": {
+    "T1": 14426837,
+    "T2": 5438376,
+    "T3": 15765505,
+    "T4": 19803323,
+    "T5": 7900731
+   },
+   "teamOnlineHumans": {
+    "T1": 5,
+    "T2": 2,
+    "T3": 5,
+    "T4": 8,
+    "T5": 7
+   },
+   "teamSharePct": {
+    "T1": 20.8,
+    "T2": 7.8,
+    "T3": 23.5,
+    "T4": 33.0,
+    "T5": 14.2
+   },
+   "aiSharePct": 0.2,
+   "neutralSharePct": 0.5
+  },
+  {
+   "t": 5400,
+   "alive": 6,
+   "sqTerr": 85809,
+   "sqSharePct": 12.91,
+   "sqBal": 5919110,
+   "sqDens": 69.0,
+   "teamOnlineBal": {
+    "T1": 22931976,
+    "T2": 5785807,
+    "T3": 20687478,
+    "T4": 15489019,
+    "T5": 5919110
+   },
+   "teamOnlineHumans": {
+    "T1": 5,
+    "T2": 1,
+    "T3": 5,
+    "T4": 5,
+    "T5": 6
+   },
+   "teamSharePct": {
+    "T1": 27.2,
+    "T2": 6.5,
+    "T3": 29.9,
+    "T4": 22.7,
+    "T5": 12.9
+   },
+   "aiSharePct": 0.2,
+   "neutralSharePct": 0.6
+  },
+  {
+   "t": 6300,
+   "alive": 4,
+   "sqTerr": 69639,
+   "sqSharePct": 10.48,
+   "sqBal": 4933366,
+   "sqDens": 70.8,
+   "teamOnlineBal": {
+    "T1": 26989100,
+    "T2": 6554396,
+    "T3": 20583860,
+    "T4": 14587490,
+    "T5": 4933366
+   },
+   "teamOnlineHumans": {
+    "T1": 5,
+    "T2": 1,
+    "T3": 5,
+    "T4": 4,
+    "T5": 4
+   },
+   "teamSharePct": {
+    "T1": 30.6,
+    "T2": 7.7,
+    "T3": 27.7,
+    "T4": 22.8,
+    "T5": 10.5
+   },
+   "aiSharePct": 0.2,
+   "neutralSharePct": 0.5
+  },
+  {
+   "t": 7200,
+   "alive": 3,
+   "sqTerr": 54813,
+   "sqSharePct": 8.25,
+   "sqBal": 5202845,
+   "sqDens": 94.9,
+   "teamOnlineBal": {
+    "T1": 22919501,
+    "T2": 7337676,
+    "T3": 15887795,
+    "T4": 17287488,
+    "T5": 5202845
+   },
+   "teamOnlineHumans": {
+    "T1": 5,
+    "T2": 1,
+    "T3": 4,
+    "T4": 4,
+    "T5": 3
+   },
+   "teamSharePct": {
+    "T1": 30.8,
+    "T2": 9.3,
+    "T3": 24.7,
+    "T4": 26.0,
+    "T5": 8.2
+   },
+   "aiSharePct": 0.2,
+   "neutralSharePct": 0.9
+  },
+  {
+   "t": 8100,
+   "alive": 1,
+   "sqTerr": 550,
+   "sqSharePct": 0.08,
+   "sqBal": 43887,
+   "sqDens": 79.8,
+   "teamOnlineBal": {
+    "T1": 25365411,
+    "T2": 8847352,
+    "T3": 14541200,
+    "T4": 25439312,
+    "T5": 43887
+   },
+   "teamOnlineHumans": {
+    "T1": 5,
+    "T2": 1,
+    "T3": 3,
+    "T4": 3,
+    "T5": 1
+   },
+   "teamSharePct": {
+    "T1": 41.8,
+    "T2": 11.7,
+    "T3": 17.5,
+    "T4": 28.1,
+    "T5": 0.1
+   },
+   "aiSharePct": 0.1,
+   "neutralSharePct": 0.6
+  },
+  {
+   "t": 8501,
+   "alive": 1,
+   "sqTerr": 949,
+   "sqSharePct": 0.14,
+   "sqBal": 57927,
+   "sqDens": 61.0,
+   "teamOnlineBal": {
+    "T1": 30382354,
+    "T2": 11340852,
+    "T3": 9124943,
+    "T4": 28401217,
+    "T5": 57927
+   },
+   "teamOnlineHumans": {
+    "T1": 5,
+    "T2": 1,
+    "T3": 2,
+    "T4": 3,
+    "T5": 1
+   },
+   "teamSharePct": {
+    "T1": 38.8,
+    "T2": 14.3,
+    "T3": 12.6,
+    "T4": 33.4,
+    "T5": 0.1
+   },
+   "aiSharePct": 0.1,
+   "neutralSharePct": 0.7
+  }
+ ],
+ "deaths": [
+  {
+   "bot": "riku_x",
+   "event": "died",
+   "localTick": 2009,
+   "lastLogTick": 1980,
+   "leftServerTick": null,
+   "deathServerTick": 2000,
+   "peakTerr": 16887,
+   "peakTick": 1850,
+   "terrAtDeath": 4072,
+   "balAtDeath": 10805,
+   "attackersAtDeath": [
+    {
+     "who": "[VOID] Seyau#36T4",
+     "troops": 53528
+    },
+    {
+     "who": "Kagan [BOUN]#33T2",
+     "troops": 5126
+    }
+   ],
+   "last500": {
+    "terr0": 8453,
+    "bal0": 187371,
+    "tilesLost": 12828,
+    "balLostDefending": 53563,
+    "lostTo": [
+     {
+      "who": "[VOID] Seyau#36T4",
+      "tiles": 8981,
+      "bal": 36973
+     },
+     {
+      "who": "[🇬🇪☦️]#23T1",
+      "tiles": 3535,
+      "bal": 15459
+     },
+     {
+      "who": "Kagan [BOUN]#33T2",
+      "tiles": 312,
+      "bal": 1131
+     }
+    ],
+    "donatedOut": 0,
+    "donationTax": 0,
+    "received": 0,
+    "attackSent": 261112
+   }
+  },
+  {
+   "bot": "talon5",
+   "event": "died",
+   "localTick": 3467,
+   "lastLogTick": 3420,
+   "leftServerTick": null,
+   "deathServerTick": 3462,
+   "peakTerr": 10837,
+   "peakTick": 3030,
+   "terrAtDeath": 2321,
+   "balAtDeath": 59713,
+   "attackersAtDeath": [
+    {
+     "who": "[VOID] Seyau#36T4",
+     "troops": 45713
+    }
+   ],
+   "last500": {
+    "terr0": 8882,
+    "bal0": 494452,
+    "tilesLost": 8291,
+    "balLostDefending": 466627,
+    "lostTo": [
+     {
+      "who": "[VOID] Seyau#36T4",
+      "tiles": 7307,
+      "bal": 412534
+     },
+     {
+      "who": "ᴜɴɪᴛᴇᴅ ꜱᴛᴀᴛᴇ#46T1",
+      "tiles": 984,
+      "bal": 54093
+     }
+    ],
+    "donatedOut": 0,
+    "donationTax": 0,
+    "received": 46787,
+    "attackSent": 165221
+   }
+  },
+  {
+   "bot": "alex_k",
+   "event": "died",
+   "localTick": 3740,
+   "lastLogTick": 3690,
+   "leftServerTick": null,
+   "deathServerTick": 3734,
+   "peakTerr": 6065,
+   "peakTick": 1730,
+   "terrAtDeath": 771,
+   "balAtDeath": 59520,
+   "attackersAtDeath": [
+    {
+     "who": "Player 573#54T4",
+     "troops": 270023
+    },
+    {
+     "who": "[SWE] sevenS#20T4",
+     "troops": 10577
+    }
+   ],
+   "last500": {
+    "terr0": 2365,
+    "bal0": 155326,
+    "tilesLost": 1901,
+    "balLostDefending": 233041,
+    "lostTo": [
+     {
+      "who": "Player 573#54T4",
+      "tiles": 1018,
+      "bal": 120735
+     },
+     {
+      "who": "[SWE] sevenS#20T4",
+      "tiles": 883,
+      "bal": 112306
+     }
+    ],
+    "donatedOut": 0,
+    "donationTax": 0,
+    "received": 70769,
+    "attackSent": 15163
+   }
+  },
+  {
+   "bot": "zexos1",
+   "event": "died",
+   "localTick": 5222,
+   "lastLogTick": 5130,
+   "leftServerTick": null,
+   "deathServerTick": 5174,
+   "peakTerr": 10854,
+   "peakTick": 4140,
+   "terrAtDeath": 2331,
+   "balAtDeath": 90628,
+   "attackersAtDeath": [
+    {
+     "who": "Player 573#54T4",
+     "troops": 197243
+    },
+    {
+     "who": "[SWE] sevenS#20T4",
+     "troops": 112839
+    }
+   ],
+   "last500": {
+    "terr0": 9962,
+    "bal0": 863137,
+    "tilesLost": 7538,
+    "balLostDefending": 851076,
+    "lostTo": [
+     {
+      "who": "Player 573#54T4",
+      "tiles": 4821,
+      "bal": 558625
+     },
+     {
+      "who": "[SWE] sevenS#20T4",
+      "tiles": 2717,
+      "bal": 292451
+     }
+    ],
+    "donatedOut": 0,
+    "donationTax": 0,
+    "received": 165226,
+    "attackSent": 383818
+   }
+  },
+  {
+   "bot": "noah88",
+   "event": "died",
+   "localTick": 5450,
+   "lastLogTick": 5400,
+   "leftServerTick": null,
+   "deathServerTick": 5444,
+   "peakTerr": 5379,
+   "peakTick": 3790,
+   "terrAtDeath": 1225,
+   "balAtDeath": 14255,
+   "attackersAtDeath": [
+    {
+     "who": "[SWE] sevenS#20T4",
+     "troops": 125630
+    }
+   ],
+   "last500": {
+    "terr0": 4759,
+    "bal0": 116260,
+    "tilesLost": 3961,
+    "balLostDefending": 108943,
+    "lostTo": [
+     {
+      "who": "[SWE] sevenS#20T4",
+      "tiles": 3961,
+      "bal": 108943
+     }
+    ],
+    "donatedOut": 49501,
+    "donationTax": 9629,
+    "received": 0,
+    "attackSent": 13400
+   }
+  },
+  {
+   "bot": "ryan_m",
+   "event": "died",
+   "localTick": 6283,
+   "lastLogTick": 6210,
+   "leftServerTick": null,
+   "deathServerTick": 6282,
+   "peakTerr": 12683,
+   "peakTick": 3650,
+   "terrAtDeath": 2682,
+   "balAtDeath": 43820,
+   "attackersAtDeath": [
+    {
+     "who": "[SWE] sevenS#20T4",
+     "troops": 31042
+    }
+   ],
+   "last500": {
+    "terr0": 10600,
+    "bal0": 1095761,
+    "tilesLost": 7404,
+    "balLostDefending": 666024,
+    "lostTo": [
+     {
+      "who": "[SWE] sevenS#20T4",
+      "tiles": 7404,
+      "bal": 666024
+     }
+    ],
+    "donatedOut": 210928,
+    "donationTax": 71425,
+    "received": 0,
+    "attackSent": 474173
+   }
+  },
+  {
+   "bot": "leo_tx",
+   "event": "died",
+   "localTick": 6327,
+   "lastLogTick": 6300,
+   "leftServerTick": null,
+   "deathServerTick": 6316,
+   "peakTerr": 27273,
+   "peakTick": 5320,
+   "terrAtDeath": 4504,
+   "balAtDeath": 58147,
+   "attackersAtDeath": [
+    {
+     "who": "Player 573#54T4",
+     "troops": 603659
+    }
+   ],
+   "last500": {
+    "terr0": 13279,
+    "bal0": 941044,
+    "tilesLost": 15746,
+    "balLostDefending": 1084707,
+    "lostTo": [
+     {
+      "who": "Player 573#54T4",
+      "tiles": 15746,
+      "bal": 1084707
+     }
+    ],
+    "donatedOut": 0,
+    "donationTax": 0,
+    "received": 0,
+    "attackSent": 214139
+   }
+  },
+  {
+   "bot": "sora_w",
+   "event": "died",
+   "localTick": 7359,
+   "lastLogTick": 7290,
+   "leftServerTick": null,
+   "deathServerTick": 7352,
+   "peakTerr": 7823,
+   "peakTick": 6230,
+   "terrAtDeath": 1574,
+   "balAtDeath": 54774,
+   "attackersAtDeath": [
+    {
+     "who": "Player 573#54T4",
+     "troops": 622886
+    },
+    {
+     "who": "EnSlZ#35T1",
+     "troops": 60229
+    }
+   ],
+   "last500": {
+    "terr0": 6068,
+    "bal0": 417720,
+    "tilesLost": 4768,
+    "balLostDefending": 462959,
+    "lostTo": [
+     {
+      "who": "Player 573#54T4",
+      "tiles": 3952,
+      "bal": 359151
+     },
+     {
+      "who": "EnSlZ#35T1",
+      "tiles": 816,
+      "bal": 103808
+     }
+    ],
+    "donatedOut": 0,
+    "donationTax": 0,
+    "received": 0,
+    "attackSent": 142556
+   }
+  },
+  {
+   "bot": "kaito9",
+   "event": "died",
+   "localTick": 7668,
+   "lastLogTick": 7650,
+   "leftServerTick": null,
+   "deathServerTick": 7665,
+   "peakTerr": 66677,
+   "peakTick": 6540,
+   "terrAtDeath": 12596,
+   "balAtDeath": 605563,
+   "attackersAtDeath": [
+    {
+     "who": "Player 573#54T4",
+     "troops": 1302501
+    },
+    {
+     "who": "Мирас жалеп#34T2",
+     "troops": 815527
+    },
+    {
+     "who": "EnSlZ#35T1",
+     "troops": 76553
+    }
+   ],
+   "last500": {
+    "terr0": 50490,
+    "bal0": 4532191,
+    "tilesLost": 41930,
+    "balLostDefending": 5062227,
+    "lostTo": [
+     {
+      "who": "Player 573#54T4",
+      "tiles": 18789,
+      "bal": 2169689
+     },
+     {
+      "who": "Мирас жалеп#34T2",
+      "tiles": 15342,
+      "bal": 1838253
+     },
+     {
+      "who": "Tobiáš#27T3",
+      "tiles": 7678,
+      "bal": 1044953
+     }
+    ],
+    "donatedOut": 0,
+    "donationTax": 0,
+    "received": 0,
+    "attackSent": 1044732
+   }
+  },
+  {
+   "bot": "zero_7",
+   "event": "left",
+   "localTick": 8501,
+   "lastLogTick": 8460,
+   "leftServerTick": 8519,
+   "deathServerTick": null,
+   "peakTerr": 3825,
+   "peakTick": 1320,
+   "terrAtDeath": 881,
+   "balAtDeath": 10309,
+   "attackersAtDeath": [
+    {
+     "who": "[SWE] sevenS#20T4",
+     "troops": 113337
+    }
+   ],
+   "last500": {
+    "terr0": 3740,
+    "bal0": 280981,
+    "tilesLost": 2574,
+    "balLostDefending": 112846,
+    "lostTo": [
+     {
+      "who": "[SWE] sevenS#20T4",
+      "tiles": 2394,
+      "bal": 76995
+     },
+     {
+      "who": "EnSlZ#35T1",
+      "tiles": 180,
+      "bal": 35851
+     }
+    ],
+    "donatedOut": 306477,
+    "donationTax": 58846,
+    "received": 249957,
+    "attackSent": 118594
+   }
+  }
+ ],
+ "drops": [
+  {
+   "bot": "alex_k",
+   "t0": 540,
+   "t1": 630,
+   "bal0": 5472,
+   "bal1": 3677,
+   "dropPct": 32.8,
+   "main": "攻中立",
+   "parts": {
+    "攻中立": 5527,
+    "攻AI": 994
+   },
+   "cmds": 4,
+   "tilesGained": 1532,
+   "burnt": 3128,
+   "target": ""
+  },
+  {
+   "bot": "alex_k",
+   "t0": 1620,
+   "t1": 1710,
+   "bal0": 319395,
+   "bal1": 47585,
+   "dropPct": 85.1,
+   "main": "攻真人",
+   "parts": {
+    "攻真人": 300064
+   },
+   "cmds": 9,
+   "tilesGained": 771,
+   "burnt": 66472,
+   "target": "对 [PL] Pat#0T2"
+  },
+  {
+   "bot": "alex_k",
+   "t0": 1710,
+   "t1": 1800,
+   "bal0": 47585,
+   "bal1": 19726,
+   "dropPct": 58.5,
+   "main": "挨打",
+   "parts": {
+    "挨打": 35911
+   },
+   "cmds": 0,
+   "tilesGained": 1041,
+   "burnt": 83426,
+   "target": "被 ᴜɴɪᴛᴇᴅ ꜱᴛᴀᴛᴇ#46T1"
+  },
+  {
+   "bot": "alex_k",
+   "t0": 1800,
+   "t1": 1890,
+   "bal0": 19726,
+   "bal1": 4194,
+   "dropPct": 78.7,
+   "main": "挨打",
+   "parts": {
+    "挨打": 17157
+   },
+   "cmds": 0,
+   "tilesGained": 1359,
+   "burnt": 86819,
+   "target": "被 ᴜɴɪᴛᴇᴅ ꜱᴛᴀᴛᴇ#46T1,[PL] Pat#0T2"
+  },
+  {
+   "bot": "alex_k",
+   "t0": 3510,
+   "t1": 3600,
+   "bal0": 220136,
+   "bal1": 87330,
+   "dropPct": 60.3,
+   "main": "挨打",
+   "parts": {
+    "挨打": 149609
+   },
+   "cmds": 0,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "被 Player 573#54T4,[SWE] sevenS#20T4"
+  },
+  {
+   "bot": "kaito9",
+   "t0": 900,
+   "t1": 990,
+   "bal0": 17720,
+   "bal1": 5991,
+   "dropPct": 66.2,
+   "main": "攻AI",
+   "parts": {
+    "攻中立": 4812,
+    "攻AI": 20144
+   },
+   "cmds": 12,
+   "tilesGained": 1219,
+   "burnt": 4644,
+   "target": ""
+  },
+  {
+   "bot": "kaito9",
+   "t0": 1080,
+   "t1": 1170,
+   "bal0": 35399,
+   "bal1": 9629,
+   "dropPct": 72.8,
+   "main": "攻AI",
+   "parts": {
+    "攻AI": 45965
+   },
+   "cmds": 9,
+   "tilesGained": 252,
+   "burnt": 516,
+   "target": ""
+  },
+  {
+   "bot": "kaito9",
+   "t0": 2700,
+   "t1": 2790,
+   "bal0": 829068,
+   "bal1": 422095,
+   "dropPct": 49.1,
+   "main": "攻AI",
+   "parts": {
+    "攻AI": 483975
+   },
+   "cmds": 3,
+   "tilesGained": 1512,
+   "burnt": 35968,
+   "target": ""
+  },
+  {
+   "bot": "kaito9",
+   "t0": 7380,
+   "t1": 7470,
+   "bal0": 3027537,
+   "bal1": 1794408,
+   "dropPct": 40.7,
+   "main": "挨打",
+   "parts": {
+    "挨打": 1591743
+   },
+   "cmds": 0,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "被 Player 573#54T4,Мирас жалеп#34T2"
+  },
+  {
+   "bot": "kaito9",
+   "t0": 7560,
+   "t1": 7650,
+   "bal0": 1516439,
+   "bal1": 645170,
+   "dropPct": 57.5,
+   "main": "挨打",
+   "parts": {
+    "挨打": 1001736
+   },
+   "cmds": 0,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "被 Player 573#54T4,Мирас жалеп#34T2"
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 1620,
+   "t1": 1710,
+   "bal0": 110682,
+   "bal1": 31762,
+   "dropPct": 71.3,
+   "main": "攻真人",
+   "parts": {
+    "攻真人": 99635
+   },
+   "cmds": 6,
+   "tilesGained": 546,
+   "burnt": 18622,
+   "target": "对 Kagan [BOUN]#33T2"
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 3330,
+   "t1": 3420,
+   "bal0": 756302,
+   "bal1": 523700,
+   "dropPct": 30.8,
+   "main": "攻真人",
+   "parts": {
+    "攻真人": 317625
+   },
+   "cmds": 4,
+   "tilesGained": 479,
+   "burnt": 38574,
+   "target": "对 [VOID] Seyau#36T4"
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 3510,
+   "t1": 3600,
+   "bal0": 574125,
+   "bal1": 378296,
+   "dropPct": 34.1,
+   "main": "攻真人",
+   "parts": {
+    "攻真人": 251581
+   },
+   "cmds": 4,
+   "tilesGained": 2570,
+   "burnt": 229182,
+   "target": "对 [VOID] Seyau#36T4"
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 4680,
+   "t1": 4770,
+   "bal0": 1867328,
+   "bal1": 1206420,
+   "dropPct": 35.4,
+   "main": "攻真人",
+   "parts": {
+    "攻真人": 810837
+   },
+   "cmds": 4,
+   "tilesGained": 3554,
+   "burnt": 738635,
+   "target": "对 [VOID] Seyau#36T4"
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 5310,
+   "t1": 5400,
+   "bal0": 1554347,
+   "bal1": 863677,
+   "dropPct": 44.4,
+   "main": "挨打",
+   "parts": {
+    "挨打": 917894
+   },
+   "cmds": 0,
+   "tilesGained": 833,
+   "burnt": 580951,
+   "target": "被 [VOID] Seyau#36T4,Player 573#54T4"
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 6030,
+   "t1": 6120,
+   "bal0": 999240,
+   "bal1": 583211,
+   "dropPct": 41.6,
+   "main": "挨打",
+   "parts": {
+    "挨打": 520393
+   },
+   "cmds": 0,
+   "tilesGained": 2423,
+   "burnt": 7224,
+   "target": "被 Player 573#54T4"
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 6120,
+   "t1": 6210,
+   "bal0": 583211,
+   "bal1": 265539,
+   "dropPct": 54.5,
+   "main": "挨打",
+   "parts": {
+    "挨打": 376480
+   },
+   "cmds": 0,
+   "tilesGained": 3249,
+   "burnt": 19834,
+   "target": "被 Player 573#54T4"
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 6210,
+   "t1": 6300,
+   "bal0": 265539,
+   "bal1": 100909,
+   "dropPct": 62.0,
+   "main": "挨打",
+   "parts": {
+    "挨打": 187834
+   },
+   "cmds": 0,
+   "tilesGained": 2556,
+   "burnt": 8286,
+   "target": "被 Player 573#54T4"
+  },
+  {
+   "bot": "noah88",
+   "t0": 2340,
+   "t1": 2430,
+   "bal0": 676018,
+   "bal1": 420585,
+   "dropPct": 37.8,
+   "main": "捐款",
+   "parts": {
+    "捐款": 295394
+   },
+   "cmds": 1,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 leo_tx"
+  },
+  {
+   "bot": "noah88",
+   "t0": 2430,
+   "t1": 2520,
+   "bal0": 420585,
+   "bal1": 293261,
+   "dropPct": 30.3,
+   "main": "捐款",
+   "parts": {
+    "捐款": 174732
+   },
+   "cmds": 1,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 talon5"
+  },
+  {
+   "bot": "noah88",
+   "t0": 3150,
+   "t1": 3240,
+   "bal0": 263058,
+   "bal1": 110308,
+   "dropPct": 58.1,
+   "main": "捐款",
+   "parts": {
+    "捐款": 171636
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 alex_k,zexos1"
+  },
+  {
+   "bot": "noah88",
+   "t0": 3600,
+   "t1": 3690,
+   "bal0": 188099,
+   "bal1": 117568,
+   "dropPct": 37.5,
+   "main": "捐款",
+   "parts": {
+    "捐款": 82656
+   },
+   "cmds": 1,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 alex_k"
+  },
+  {
+   "bot": "noah88",
+   "t0": 4050,
+   "t1": 4140,
+   "bal0": 344830,
+   "bal1": 126843,
+   "dropPct": 63.2,
+   "main": "捐款",
+   "parts": {
+    "捐款": 240120
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 ryan_m"
+  },
+  {
+   "bot": "noah88",
+   "t0": 5130,
+   "t1": 5220,
+   "bal0": 154071,
+   "bal1": 92560,
+   "dropPct": 39.9,
+   "main": "捐款",
+   "parts": {
+    "攻中立": 16749,
+    "捐款": 59130
+   },
+   "cmds": 4,
+   "tilesGained": 413,
+   "burnt": 826,
+   "target": "给 zero_7"
+  },
+  {
+   "bot": "noah88",
+   "t0": 5310,
+   "t1": 5400,
+   "bal0": 83344,
+   "bal1": 23612,
+   "dropPct": 71.7,
+   "main": "挨打",
+   "parts": {
+    "挨打": 65893
+   },
+   "cmds": 0,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "被 [SWE] sevenS#20T4"
+  },
+  {
+   "bot": "riku_x",
+   "t0": 1710,
+   "t1": 1800,
+   "bal0": 300944,
+   "bal1": 43441,
+   "dropPct": 85.6,
+   "main": "攻真人",
+   "parts": {
+    "攻真人": 274658,
+    "挨打": 428
+   },
+   "cmds": 9,
+   "tilesGained": 5501,
+   "burnt": 157213,
+   "target": "对 [🇬🇪☦️]#23T1"
+  },
+  {
+   "bot": "riku_x",
+   "t0": 1890,
+   "t1": 1980,
+   "bal0": 34869,
+   "bal1": 12367,
+   "dropPct": 64.5,
+   "main": "挨打",
+   "parts": {
+    "挨打": 40033
+   },
+   "cmds": 0,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "被 [VOID] Seyau#36T4,[🇬🇪☦️]#23T1"
+  },
+  {
+   "bot": "ryan_m",
+   "t0": 900,
+   "t1": 990,
+   "bal0": 23286,
+   "bal1": 10447,
+   "dropPct": 55.1,
+   "main": "攻AI",
+   "parts": {
+    "攻AI": 18990
+   },
+   "cmds": 9,
+   "tilesGained": 1725,
+   "burnt": 8134,
+   "target": ""
+  },
+  {
+   "bot": "ryan_m",
+   "t0": 1080,
+   "t1": 1170,
+   "bal0": 40482,
+   "bal1": 25637,
+   "dropPct": 36.7,
+   "main": "攻AI",
+   "parts": {
+    "攻AI": 37196
+   },
+   "cmds": 8,
+   "tilesGained": 434,
+   "burnt": 1100,
+   "target": ""
+  },
+  {
+   "bot": "ryan_m",
+   "t0": 1620,
+   "t1": 1710,
+   "bal0": 255622,
+   "bal1": 8383,
+   "dropPct": 96.7,
+   "main": "攻真人",
+   "parts": {
+    "攻真人": 294726
+   },
+   "cmds": 7,
+   "tilesGained": 158,
+   "burnt": 13810,
+   "target": "对 [PL] Pat#0T2"
+  },
+  {
+   "bot": "ryan_m",
+   "t0": 3600,
+   "t1": 3690,
+   "bal0": 1256601,
+   "bal1": 744527,
+   "dropPct": 40.8,
+   "main": "攻真人",
+   "parts": {
+    "攻真人": 489602,
+    "捐款": 432682
+   },
+   "cmds": 5,
+   "tilesGained": 453,
+   "burnt": 123662,
+   "target": "对 EnSlZ#35T1"
+  },
+  {
+   "bot": "ryan_m",
+   "t0": 5940,
+   "t1": 6030,
+   "bal0": 730706,
+   "bal1": 248588,
+   "dropPct": 66.0,
+   "main": "挨打",
+   "parts": {
+    "攻真人": 188792,
+    "挨打": 350626
+   },
+   "cmds": 5,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "被 [SWE] sevenS#20T4"
+  },
+  {
+   "bot": "ryan_m",
+   "t0": 6030,
+   "t1": 6120,
+   "bal0": 248588,
+   "bal1": 0,
+   "dropPct": 100.0,
+   "main": "挨打",
+   "parts": {
+    "攻真人": 35096,
+    "发船": 9608,
+    "挨打": 166245
+   },
+   "cmds": 3,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "被 [SWE] sevenS#20T4"
+  },
+  {
+   "bot": "sora_w",
+   "t0": 2340,
+   "t1": 2430,
+   "bal0": 345962,
+   "bal1": 182468,
+   "dropPct": 47.3,
+   "main": "攻真人",
+   "parts": {
+    "攻真人": 187708
+   },
+   "cmds": 3,
+   "tilesGained": 679,
+   "burnt": 177696,
+   "target": "对 EnSlZ#35T1"
+  },
+  {
+   "bot": "sora_w",
+   "t0": 5940,
+   "t1": 6030,
+   "bal0": 561057,
+   "bal1": 244762,
+   "dropPct": 56.4,
+   "main": "捐款",
+   "parts": {
+    "捐款": 475420
+   },
+   "cmds": 2,
+   "tilesGained": 1,
+   "burnt": 182,
+   "target": "给 kaito9"
+  },
+  {
+   "bot": "sora_w",
+   "t0": 6030,
+   "t1": 6120,
+   "bal0": 244762,
+   "bal1": 152964,
+   "dropPct": 37.5,
+   "main": "攻真人",
+   "parts": {
+    "攻中立": 43428,
+    "攻真人": 79882
+   },
+   "cmds": 6,
+   "tilesGained": 337,
+   "burnt": 958,
+   "target": "对 [SWE] sevenS#20T4"
+  },
+  {
+   "bot": "sora_w",
+   "t0": 7200,
+   "t1": 7290,
+   "bal0": 528909,
+   "bal1": 370069,
+   "dropPct": 30.0,
+   "main": "攻真人",
+   "parts": {
+    "攻真人": 159776,
+    "挨打": 44150
+   },
+   "cmds": 3,
+   "tilesGained": 443,
+   "burnt": 142523,
+   "target": "对 EnSlZ#35T1"
+  },
+  {
+   "bot": "talon5",
+   "t0": 1800,
+   "t1": 1890,
+   "bal0": 314620,
+   "bal1": 86439,
+   "dropPct": 72.5,
+   "main": "攻真人",
+   "parts": {
+    "攻真人": 255689
+   },
+   "cmds": 4,
+   "tilesGained": 376,
+   "burnt": 30122,
+   "target": "对 ᴜɴɪᴛᴇᴅ ꜱᴛᴀᴛᴇ#46T1"
+  },
+  {
+   "bot": "talon5",
+   "t0": 3060,
+   "t1": 3150,
+   "bal0": 363853,
+   "bal1": 247078,
+   "dropPct": 32.1,
+   "main": "挨打",
+   "parts": {
+    "挨打": 159530
+   },
+   "cmds": 0,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "被 [VOID] Seyau#36T4"
+  },
+  {
+   "bot": "talon5",
+   "t0": 3240,
+   "t1": 3330,
+   "bal0": 281525,
+   "bal1": 167552,
+   "dropPct": 40.5,
+   "main": "挨打",
+   "parts": {
+    "挨打": 141206
+   },
+   "cmds": 0,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "被 [VOID] Seyau#36T4"
+  },
+  {
+   "bot": "zero_7",
+   "t0": 1440,
+   "t1": 1530,
+   "bal0": 205992,
+   "bal1": 112158,
+   "dropPct": 45.6,
+   "main": "发船",
+   "parts": {
+    "发船": 142476
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": ""
+  },
+  {
+   "bot": "zero_7",
+   "t0": 1530,
+   "t1": 1620,
+   "bal0": 112158,
+   "bal1": 72144,
+   "dropPct": 35.7,
+   "main": "发船",
+   "parts": {
+    "发船": 57852
+   },
+   "cmds": 1,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": ""
+  },
+  {
+   "bot": "zero_7",
+   "t0": 1620,
+   "t1": 1710,
+   "bal0": 72144,
+   "bal1": 13350,
+   "dropPct": 81.5,
+   "main": "发船",
+   "parts": {
+    "捐款": 28673,
+    "发船": 39053
+   },
+   "cmds": 5,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": ""
+  },
+  {
+   "bot": "zero_7",
+   "t0": 5220,
+   "t1": 5310,
+   "bal0": 423225,
+   "bal1": 192227,
+   "dropPct": 54.6,
+   "main": "捐款",
+   "parts": {
+    "捐款": 280133
+   },
+   "cmds": 2,
+   "tilesGained": 31,
+   "burnt": 10940,
+   "target": "给 kaito9"
+  },
+  {
+   "bot": "zero_7",
+   "t0": 5310,
+   "t1": 5400,
+   "bal0": 192227,
+   "bal1": 89780,
+   "dropPct": 53.3,
+   "main": "捐款",
+   "parts": {
+    "捐款": 85190,
+    "发船": 17968,
+    "挨打": 14750
+   },
+   "cmds": 2,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "给 leo_tx"
+  },
+  {
+   "bot": "zero_7",
+   "t0": 5400,
+   "t1": 5490,
+   "bal0": 89780,
+   "bal1": 20113,
+   "dropPct": 77.6,
+   "main": "挨打",
+   "parts": {
+    "发船": 11777,
+    "挨打": 62245
+   },
+   "cmds": 1,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "被 [SWE] sevenS#20T4"
+  },
+  {
+   "bot": "zero_7",
+   "t0": 5490,
+   "t1": 5580,
+   "bal0": 20113,
+   "bal1": 0,
+   "dropPct": 100.0,
+   "main": "挨打",
+   "parts": {
+    "挨打": 12307
+   },
+   "cmds": 0,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "被 [SWE] sevenS#20T4"
+  },
+  {
+   "bot": "zexos1",
+   "t0": 1620,
+   "t1": 1710,
+   "bal0": 333244,
+   "bal1": 33415,
+   "dropPct": 90.0,
+   "main": "攻真人",
+   "parts": {
+    "攻真人": 323232
+   },
+   "cmds": 5,
+   "tilesGained": 760,
+   "burnt": 65356,
+   "target": "对 [PL] Pat#0T2"
+  },
+  {
+   "bot": "zexos1",
+   "t0": 1710,
+   "t1": 1800,
+   "bal0": 33415,
+   "bal1": 5577,
+   "dropPct": 83.3,
+   "main": "攻真人",
+   "parts": {
+    "攻真人": 34815
+   },
+   "cmds": 9,
+   "tilesGained": 1104,
+   "burnt": 88684,
+   "target": "对 [PL] Pat#0T2"
+  },
+  {
+   "bot": "zexos1",
+   "t0": 2970,
+   "t1": 3060,
+   "bal0": 660358,
+   "bal1": 232730,
+   "dropPct": 64.8,
+   "main": "攻真人",
+   "parts": {
+    "攻真人": 475163
+   },
+   "cmds": 9,
+   "tilesGained": 1307,
+   "burnt": 221116,
+   "target": "对 ᴜɴɪᴛᴇᴅ ꜱᴛᴀᴛᴇ#46T1"
+  },
+  {
+   "bot": "zexos1",
+   "t0": 3960,
+   "t1": 4050,
+   "bal0": 785437,
+   "bal1": 253453,
+   "dropPct": 67.7,
+   "main": "攻真人",
+   "parts": {
+    "攻真人": 585453
+   },
+   "cmds": 9,
+   "tilesGained": 1282,
+   "burnt": 256304,
+   "target": "对 ᴜɴɪᴛᴇᴅ ꜱᴛᴀᴛᴇ#46T1"
+  },
+  {
+   "bot": "zexos1",
+   "t0": 4860,
+   "t1": 4950,
+   "bal0": 703141,
+   "bal1": 351899,
+   "dropPct": 50.0,
+   "main": "攻真人",
+   "parts": {
+    "攻真人": 423359,
+    "挨打": 146
+   },
+   "cmds": 6,
+   "tilesGained": 383,
+   "burnt": 383792,
+   "target": "对 [SWE] sevenS#20T4"
+  },
+  {
+   "bot": "zexos1",
+   "t0": 5040,
+   "t1": 5130,
+   "bal0": 519094,
+   "bal1": 206739,
+   "dropPct": 60.2,
+   "main": "挨打",
+   "parts": {
+    "挨打": 355211
+   },
+   "cmds": 0,
+   "tilesGained": 0,
+   "burnt": 0,
+   "target": "被 [SWE] sevenS#20T4,Player 573#54T4"
+  }
+ ],
+ "drop30CountCard": 53,
+ "donations": {
+  "logged": 75,
+  "exec": 31,
+  "quota": 41,
+  "other": 3,
+  "amount": 5932968,
+  "fee": 1815092
+ },
+ "dumpBatches": [
+  {
+   "t": 1701,
+   "bot": "ryan_m",
+   "n": 5,
+   "ok": 5,
+   "dump": true,
+   "bal0": 231595,
+   "bal1": 8247,
+   "targets": {
+    "[PL] Pat#0T2": 5
+   },
+   "pcts": [
+    452,
+    469,
+    486,
+    510,
+    508
+   ]
+  },
+  {
+   "t": 1666,
+   "bot": "zexos1",
+   "n": 5,
+   "ok": 5,
+   "dump": true,
+   "bal0": 350633,
+   "bal1": 27401,
+   "targets": {
+    "[PL] Pat#0T2": 5
+   },
+   "pcts": [
+    396,
+    396,
+    396,
+    396,
+    396
+   ]
+  },
+  {
+   "t": 1757,
+   "bot": "zexos1",
+   "n": 9,
+   "ok": 9,
+   "dump": true,
+   "bal0": 35569,
+   "bal1": 754,
+   "targets": {
+    "[PL] Pat#0T2": 9
+   },
+   "pcts": [
+    300,
+    300,
+    300,
+    300,
+    300,
+    395,
+    395,
+    395,
+    395
+   ]
+  },
+  {
+   "t": 1687,
+   "bot": "leo_tx",
+   "n": 6,
+   "ok": 6,
+   "dump": true,
+   "bal0": 123365,
+   "bal1": 23730,
+   "targets": {
+    "Kagan [BOUN]#33T2": 6
+   },
+   "pcts": [
+    239,
+    238,
+    235,
+    233,
+    228,
+    225
+   ]
+  },
+  {
+   "t": 1659,
+   "bot": "alex_k",
+   "n": 9,
+   "ok": 9,
+   "dump": true,
+   "bal0": 337649,
+   "bal1": 37585,
+   "targets": {
+    "[PL] Pat#0T2": 9
+   },
+   "pcts": [
+    208,
+    208,
+    209,
+    208,
+    209,
+    209,
+    209,
+    209,
+    209
+   ]
+  },
+  {
+   "t": 903,
+   "bot": "kaito9",
+   "n": 7,
+   "ok": 7,
+   "dump": true,
+   "bal0": 17720,
+   "bal1": 3201,
+   "targets": {
+    "AI312": 4,
+    "中立": 3
+   },
+   "pcts": [
+    191,
+    173,
+    158,
+    163,
+    242,
+    262,
+    267
+   ]
+  },
+  {
+   "t": 1155,
+   "bot": "kaito9",
+   "n": 9,
+   "ok": 9,
+   "dump": true,
+   "bal0": 54980,
+   "bal1": 9015,
+   "targets": {
+    "AI329": 1,
+    "AI93": 8
+   },
+   "pcts": [
+    161,
+    124,
+    125,
+    118,
+    218,
+    206,
+    203,
+    198,
+    200
+   ]
+  },
+  {
+   "t": 1295,
+   "bot": "kaito9",
+   "n": 9,
+   "ok": 9,
+   "dump": true,
+   "bal0": 61896,
+   "bal1": 12106,
+   "targets": {
+    "AI327": 1,
+    "AI329": 8
+   },
+   "pcts": [
+    216,
+    143,
+    143,
+    147,
+    147,
+    151,
+    151,
+    156,
+    155
+   ]
+  },
+  {
+   "t": 1715,
+   "bot": "riku_x",
+   "n": 9,
+   "ok": 9,
+   "dump": true,
+   "bal0": 300944,
+   "bal1": 26286,
+   "targets": {
+    "[🇬🇪☦️]#23T1": 9
+   },
+   "pcts": [
+    231,
+    230,
+    230,
+    230,
+    230,
+    230,
+    230,
+    229,
+    230
+   ]
+  },
+  {
+   "t": 1659,
+   "bot": "zero_7",
+   "n": 5,
+   "ok": 5,
+   "dump": true,
+   "bal0": 76265,
+   "bal1": 8539,
+   "targets": {
+    "捐→kaito9": 1,
+    "船": 4
+   },
+   "pcts": [
+    320,
+    479,
+    127,
+    475,
+    127
+   ]
+  }
+ ],
+ "squadLedger": {
+  "perBot": {
+   "ryan_m": {
+    "inc": 4533416,
+    "burnN": 13782,
+    "burnAI": 10374,
+    "burnH": 1217744,
+    "netH": 0,
+    "atkFee": 218016,
+    "defBal": 930225,
+    "defSlot": 193394,
+    "donOut": 1622061,
+    "donTax": 441323,
+    "donIn": 205586,
+    "donOutNonSquad": 0,
+    "boatOut": 40021,
+    "boatFee": 10004,
+    "boatToMate": 32082,
+    "boatToOutside": 0,
+    "boatOnEnemy": 0,
+    "balEnd": 1240,
+    "outEnd": 0,
+    "lostTiles": 11668,
+    "lostBurn": 2087636,
+    "tilesN": 6891,
+    "tilesAI": 2686,
+    "tilesH": 4784,
+    "end": 6282,
+    "husk": false,
+    "giftIn": 0
+   },
+   "sora_w": {
+    "inc": 3025291,
+    "burnN": 6602,
+    "burnAI": 2426,
+    "burnH": 1350464,
+    "netH": 0,
+    "atkFee": 224539,
+    "defBal": 687200,
+    "defSlot": 0,
+    "donOut": 526786,
+    "donTax": 106124,
+    "donIn": 218827,
+    "donOutNonSquad": 0,
+    "boatOut": 396045,
+    "boatFee": 99007,
+    "boatToMate": 43181,
+    "boatToOutside": 0,
+    "boatOnEnemy": 35403,
+    "balEnd": 64558,
+    "outEnd": 0,
+    "lostTiles": 7259,
+    "lostBurn": 1397630,
+    "tilesN": 3301,
+    "tilesAI": 1082,
+    "tilesH": 4723,
+    "end": 7352,
+    "husk": false,
+    "giftIn": 0
+   },
+   "zexos1": {
+    "inc": 2391103,
+    "burnN": 8416,
+    "burnAI": 348,
+    "burnH": 1183445,
+    "netH": 204638,
+    "atkFee": 172765,
+    "defBal": 984543,
+    "defSlot": 0,
+    "donOut": 0,
+    "donTax": 0,
+    "donIn": 252368,
+    "donOutNonSquad": 0,
+    "boatOut": 0,
+    "boatFee": 0,
+    "boatToMate": 0,
+    "boatToOutside": 0,
+    "boatOnEnemy": 0,
+    "balEnd": 99843,
+    "outEnd": 0,
+    "lostTiles": 9648,
+    "lostBurn": 2049776,
+    "tilesN": 4208,
+    "tilesAI": 137,
+    "tilesH": 7758,
+    "end": 5174,
+    "husk": false,
+    "giftIn": 0
+   },
+   "noah88": {
+    "inc": 1454108,
+    "burnN": 8510,
+    "burnAI": 5700,
+    "burnH": 5848,
+    "netH": 0,
+    "atkFee": 35380,
+    "defBal": 161980,
+    "defSlot": 0,
+    "donOut": 1183390,
+    "donTax": 218866,
+    "donIn": 181832,
+    "donOutNonSquad": 0,
+    "boatOut": 0,
+    "boatFee": 0,
+    "boatToMate": 0,
+    "boatToOutside": 0,
+    "boatOnEnemy": 0,
+    "balEnd": 15045,
+    "outEnd": 0,
+    "lostTiles": 4778,
+    "lostBurn": 336034,
+    "tilesN": 4255,
+    "tilesAI": 1935,
+    "tilesH": 32,
+    "end": 5444,
+    "husk": false,
+    "giftIn": 0
+   },
+   "leo_tx": {
+    "inc": 5298650,
+    "burnN": 9974,
+    "burnAI": 6272,
+    "burnH": 4162227,
+    "netH": 586915,
+    "atkFee": 563470,
+    "defBal": 2633535,
+    "defSlot": 177,
+    "donOut": 0,
+    "donTax": 0,
+    "donIn": 2998644,
+    "donOutNonSquad": 0,
+    "boatOut": 70944,
+    "boatFee": 6524,
+    "boatToMate": 0,
+    "boatToOutside": 0,
+    "boatOnEnemy": 15890,
+    "balEnd": 72234,
+    "outEnd": 175229,
+    "lostTiles": 35977,
+    "lostBurn": 5416148,
+    "tilesN": 4987,
+    "tilesAI": 1883,
+    "tilesH": 34408,
+    "end": 6316,
+    "husk": false,
+    "giftIn": 0
+   },
+   "talon5": {
+    "inc": 962295,
+    "burnN": 5232,
+    "burnAI": 8678,
+    "burnH": 661192,
+    "netH": 0,
+    "atkFee": 62152,
+    "defBal": 525264,
+    "defSlot": 0,
+    "donOut": 0,
+    "donTax": 0,
+    "donIn": 378822,
+    "donOutNonSquad": 0,
+    "boatOut": 0,
+    "boatFee": 0,
+    "boatToMate": 0,
+    "boatToOutside": 0,
+    "boatOnEnemy": 0,
+    "balEnd": 65066,
+    "outEnd": 0,
+    "lostTiles": 10162,
+    "lostBurn": 1107834,
+    "tilesN": 2616,
+    "tilesAI": 2367,
+    "tilesH": 7740,
+    "end": 3462,
+    "husk": false,
+    "giftIn": 0
+   },
+   "alex_k": {
+    "inc": 656819,
+    "burnN": 10660,
+    "burnAI": 1898,
+    "burnH": 346945,
+    "netH": 2831,
+    "atkFee": 32731,
+    "defBal": 354934,
+    "defSlot": 5301,
+    "donOut": 0,
+    "donTax": 0,
+    "donIn": 169741,
+    "donOutNonSquad": 0,
+    "boatOut": 0,
+    "boatFee": 0,
+    "boatToMate": 0,
+    "boatToOutside": 0,
+    "boatOnEnemy": 0,
+    "balEnd": 63532,
+    "outEnd": 0,
+    "lostTiles": 9331,
+    "lostBurn": 758297,
+    "tilesN": 5330,
+    "tilesAI": 883,
+    "tilesH": 3926,
+    "end": 3734,
+    "husk": false,
+    "giftIn": 0
+   },
+   "kaito9": {
+    "inc": 27802223,
+    "burnN": 30182,
+    "burnAI": 204635,
+    "burnH": 9378488,
+    "netH": 1335415,
+    "atkFee": 2833377,
+    "defBal": 9272936,
+    "defSlot": 2335531,
+    "donOut": 2223560,
+    "donTax": 974511,
+    "donIn": 1437672,
+    "donOutNonSquad": 0,
+    "boatOut": 79465,
+    "boatFee": 19865,
+    "boatToMate": 0,
+    "boatToOutside": 0,
+    "boatOnEnemy": 0,
+    "balEnd": 641528,
+    "outEnd": 0,
+    "lostTiles": 71798,
+    "lostBurn": 21125313,
+    "tilesN": 15091,
+    "tilesAI": 19826,
+    "tilesH": 49659,
+    "end": 7665,
+    "husk": false,
+    "giftIn": 0
+   },
+   "riku_x": {
+    "inc": 371159,
+    "burnN": 9902,
+    "burnAI": 10218,
+    "burnH": 232248,
+    "netH": 28777,
+    "atkFee": 20211,
+    "defBal": 53563,
+    "defSlot": 10,
+    "donOut": 0,
+    "donTax": 0,
+    "donIn": 0,
+    "donOutNonSquad": 0,
+    "boatOut": 0,
+    "boatFee": 0,
+    "boatToMate": 0,
+    "boatToOutside": 0,
+    "boatOnEnemy": 0,
+    "balEnd": 11324,
+    "outEnd": 0,
+    "lostTiles": 14731,
+    "lostBurn": 148694,
+    "tilesN": 4951,
+    "tilesAI": 3490,
+    "tilesH": 10350,
+    "end": 2000,
+    "husk": false,
+    "giftIn": 0
+   },
+   "zero_7": {
+    "inc": 1187658,
+    "burnN": 6996,
+    "burnAI": 4446,
+    "burnH": 369074,
+    "netH": 0,
+    "atkFee": 46284,
+    "defBal": 202667,
+    "defSlot": 16587,
+    "donOut": 377171,
+    "donTax": 74268,
+    "donIn": 249957,
+    "donOutNonSquad": 0,
+    "boatOut": 264683,
+    "boatFee": 32118,
+    "boatToMate": 204246,
+    "boatToOutside": 0,
+    "boatOnEnemy": 0,
+    "balEnd": 58506,
+    "outEnd": 5258,
+    "lostTiles": 4034,
+    "lostBurn": 425338,
+    "tilesN": 3498,
+    "tilesAI": 1511,
+    "tilesH": 1090,
+    "end": 8519,
+    "husk": true,
+    "giftIn": 0
+   }
+  },
+  "total": {
+   "inc": 47682722,
+   "burnN": 110256,
+   "burnAI": 254995,
+   "burnH": 18907675,
+   "netH": 2158576,
+   "atkFee": 4208925,
+   "defBal": 15806847,
+   "defSlot": 2551000,
+   "donOut": 5932968,
+   "donTax": 1815092,
+   "donIn": 6093449,
+   "donOutNonSquad": 0,
+   "boatOut": 851158,
+   "boatFee": 167518,
+   "boatToMate": 279509,
+   "boatToOutside": 0,
+   "boatOnEnemy": 51293,
+   "balEnd": 1092876,
+   "outEnd": 180487,
+   "lostTiles": 179386,
+   "lostBurn": 34852700,
+   "tilesN": 55128,
+   "tilesAI": 35800,
+   "tilesH": 124470
+  },
+  "giftIn": 0,
+  "gifts": []
+ },
+ "boatHandovers": [
+  {
+   "t": 1530,
+   "bot": "zero_7",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 31278,
+   "got": 31278,
+   "launchT": 1526,
+   "launched": 31524,
+   "fee": 7881,
+   "B0": 252199,
+   "pct": 127
+  },
+  {
+   "t": 1530,
+   "bot": "zero_7",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 95669,
+   "got": 0,
+   "launchT": 1526,
+   "launched": 96422,
+   "fee": 6649,
+   "B0": 212794,
+   "pct": 463
+  },
+  {
+   "t": 1663,
+   "bot": "zero_7",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 22308,
+   "got": 0,
+   "launchT": 1659,
+   "launched": 22308,
+   "fee": 1487,
+   "B0": 47592,
+   "pct": 479
+  },
+  {
+   "t": 1664,
+   "bot": "zero_7",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 9262,
+   "got": 0,
+   "launchT": 1659,
+   "launched": 9334,
+   "fee": 627,
+   "B0": 20080,
+   "pct": 475
+  },
+  {
+   "t": 1665,
+   "bot": "zero_7",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 2951,
+   "got": 0,
+   "launchT": 1659,
+   "launched": 2974,
+   "fee": 743,
+   "B0": 23797,
+   "pct": 127
+  },
+  {
+   "t": 1666,
+   "bot": "zero_7",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 1255,
+   "got": 1255,
+   "launchT": 1659,
+   "launched": 1264,
+   "fee": 316,
+   "B0": 10119,
+   "pct": 127
+  },
+  {
+   "t": 1726,
+   "bot": "zero_7",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 41523,
+   "got": 0,
+   "launchT": 1554,
+   "launched": 54194,
+   "fee": 3658,
+   "B0": 117078,
+   "pct": 473
+  },
+  {
+   "t": 1767,
+   "bot": "sora_w",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 22417,
+   "got": 0
+  },
+  {
+   "t": 1802,
+   "bot": "sora_w",
+   "to": "kaito9",
+   "toSquad": true,
+   "landed": 20764,
+   "got": 0
+  },
+  {
+   "t": 1950,
+   "bot": "ryan_m",
+   "to": "zexos1",
+   "toSquad": true,
+   "landed": 32082,
+   "got": 32082,
+   "launchT": 1946,
+   "launched": 32334,
+   "fee": 8083,
+   "B0": 258673,
+   "pct": 127
+  }
+ ],
+ "donationNetwork": {
+  "botGiftsByClass": {},
+  "botGiftPairs": [],
+  "byClass": {
+   "本编队": {
+    "n": 31,
+    "delivered": 5932968,
+    "tax": 1815092,
+    "toHusk": 0,
+    "bands": {
+     "<2142": 23907,
+     "2142~3212": 777025,
+     "3213~4283": 1071221,
+     "≥4284": 4060815
+    }
+   },
+   "本队路人": {
+    "n": 1,
+    "delivered": 160481,
+    "tax": 51872,
+    "toHusk": 0,
+    "bands": {
+     "<2142": 0,
+     "2142~3212": 160481,
+     "3213~4283": 0,
+     "≥4284": 0
+    }
+   },
+   "队3": {
+    "n": 11,
+    "delivered": 8389126,
+    "tax": 1841168,
+    "toHusk": 0,
+    "bands": {
+     "<2142": 0,
+     "2142~3212": 247730,
+     "3213~4283": 0,
+     "≥4284": 8141396
+    }
+   },
+   "队4": {
+    "n": 7,
+    "delivered": 4480180,
+    "tax": 671929,
+    "toHusk": 0,
+    "bands": {
+     "<2142": 0,
+     "2142~3212": 0,
+     "3213~4283": 0,
+     "≥4284": 4480180
+    }
+   }
+  },
+  "topReceivers": [
+   {
+    "who": "Dreamin🥦#5T3",
+    "left": null,
+    "n": 7,
+    "delivered": 6164075,
+    "t0": 2947,
+    "t1": 8330,
+    "from": [
+     {
+      "who": "Tobiáš#27T3",
+      "delivered": 4456392
+     },
+     {
+      "who": "Yolo🙋‍♂️#51T3",
+      "delivered": 1426497
+     },
+     {
+      "who": "Player 642#4T3",
+      "delivered": 167702
+     },
+     {
+      "who": "Toucher#39T3",
+      "delivered": 113484
+     }
+    ]
+   },
+   {
+    "who": "leo_tx",
+    "left": null,
+    "n": 7,
+    "delivered": 2998644,
+    "t0": 2366,
+    "t1": 5334,
+    "from": [
+     {
+      "who": "kaito9",
+      "delivered": 2023104
+     },
+     {
+      "who": "ryan_m",
+      "delivered": 649718
+     },
+     {
+      "who": "noah88",
+      "delivered": 252911
+     },
+     {
+      "who": "zero_7",
+      "delivered": 72911
+     }
+    ]
+   },
+   {
+    "who": "[TR] Flawlës#29T4",
+    "left": null,
+    "n": 3,
+    "delivered": 2498887,
+    "t0": 4991,
+    "t1": 5243,
+    "from": [
+     {
+      "who": "France 🇨🇵#19T4",
+      "delivered": 2498887
+     }
+    ]
+   },
+   {
+    "who": "Toucher#39T3",
+    "left": null,
+    "n": 3,
+    "delivered": 2090805,
+    "t0": 5915,
+    "t1": 6013,
+    "from": [
+     {
+      "who": "Player 642#4T3",
+      "delivered": 1108760
+     },
+     {
+      "who": "Tobiáš#27T3",
+      "delivered": 982045
+     }
+    ]
+   },
+   {
+    "who": "kaito9",
+    "left": null,
+    "n": 9,
+    "delivered": 1437672,
+    "t0": 1659,
+    "t1": 5992,
+    "from": [
+     {
+      "who": "ryan_m",
+      "delivered": 571684
+     },
+     {
+      "who": "sora_w",
+      "delivered": 407046
+     },
+     {
+      "who": "zero_7",
+      "delivered": 257473
+     },
+     {
+      "who": "Player 670#42T5",
+      "delivered": 160481
+     }
+    ]
+   },
+   {
+    "who": "[SWE] sevenS#20T4",
+    "left": null,
+    "n": 1,
+    "delivered": 1149911,
+    "t0": 4928,
+    "t1": 4928,
+    "from": [
+     {
+      "who": "C🤨MING😭SUN!!#55T4",
+      "delivered": 1149911
+     }
+    ]
+   },
+   {
+    "who": "C🤨MING😭SUN!!#55T4",
+    "left": 5068,
+    "n": 1,
+    "delivered": 521116,
+    "t0": 4844,
+    "t1": 4844,
+    "from": [
+     {
+      "who": "[HFR] Safe#37T4",
+      "delivered": 521116
+     }
+    ]
+   },
+   {
+    "who": "talon5",
+    "left": null,
+    "n": 4,
+    "delivered": 378822,
+    "t0": 2513,
+    "t1": 3059,
+    "from": [
+     {
+      "who": "noah88",
+      "delivered": 332035
+     },
+     {
+      "who": "zero_7",
+      "delivered": 46787
+     }
+    ]
+   }
+  ],
+  "toHusks": [],
+  "leaveGifts": [
+   {
+    "t": 5243,
+    "from": "France 🇨🇵#19T4",
+    "to": "[TR] Flawlës#29T4",
+    "got": 13770,
+    "leftT": 5362
+   }
+  ]
+ },
+ "teamFall": {
+  "husks": [
+   {
+    "t": 1530,
+    "T1": {
+     "online": 9,
+     "onlineSharePct": 15.6,
+     "husks": 0,
+     "huskSharePct": 0.0
+    },
+    "T2": {
+     "online": 7,
+     "onlineSharePct": 15.1,
+     "husks": 1,
+     "huskSharePct": 0.1
+    },
+    "T3": {
+     "online": 9,
+     "onlineSharePct": 21.1,
+     "husks": 0,
+     "huskSharePct": 0.0
+    },
+    "T4": {
+     "online": 12,
+     "onlineSharePct": 25.9,
+     "husks": 0,
+     "huskSharePct": 0.0
+    },
+    "T5": {
+     "online": 12,
+     "onlineSharePct": 12.0,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   },
+   {
+    "t": 3060,
+    "T1": {
+     "online": 6,
+     "onlineSharePct": 17.1,
+     "husks": 1,
+     "huskSharePct": 2.3
+    },
+    "T2": {
+     "online": 2,
+     "onlineSharePct": 8.1,
+     "husks": 0,
+     "huskSharePct": 0.0
+    },
+    "T3": {
+     "online": 7,
+     "onlineSharePct": 24.4,
+     "husks": 0,
+     "huskSharePct": 0.0
+    },
+    "T4": {
+     "online": 9,
+     "onlineSharePct": 30.2,
+     "husks": 0,
+     "huskSharePct": 0.0
+    },
+    "T5": {
+     "online": 11,
+     "onlineSharePct": 16.6,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   },
+   {
+    "t": 4500,
+    "T1": {
+     "online": 5,
+     "onlineSharePct": 20.8,
+     "husks": 0,
+     "huskSharePct": 0.0
+    },
+    "T2": {
+     "online": 2,
+     "onlineSharePct": 7.8,
+     "husks": 0,
+     "huskSharePct": 0.0
+    },
+    "T3": {
+     "online": 5,
+     "onlineSharePct": 23.5,
+     "husks": 0,
+     "huskSharePct": 0.0
+    },
+    "T4": {
+     "online": 8,
+     "onlineSharePct": 33.0,
+     "husks": 0,
+     "huskSharePct": 0.0
+    },
+    "T5": {
+     "online": 7,
+     "onlineSharePct": 14.2,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   },
+   {
+    "t": 6000,
+    "T1": {
+     "online": 5,
+     "onlineSharePct": 27.8,
+     "husks": 0,
+     "huskSharePct": 0.0
+    },
+    "T2": {
+     "online": 1,
+     "onlineSharePct": 7.6,
+     "husks": 0,
+     "huskSharePct": 0.0
+    },
+    "T3": {
+     "online": 5,
+     "onlineSharePct": 31.0,
+     "husks": 0,
+     "huskSharePct": 0.0
+    },
+    "T4": {
+     "online": 4,
+     "onlineSharePct": 21.1,
+     "husks": 0,
+     "huskSharePct": 0.0
+    },
+    "T5": {
+     "online": 5,
+     "onlineSharePct": 11.8,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   },
+   {
+    "t": 7500,
+    "T1": {
+     "online": 5,
+     "onlineSharePct": 32.3,
+     "husks": 0,
+     "huskSharePct": 0.0
+    },
+    "T2": {
+     "online": 1,
+     "onlineSharePct": 10.5,
+     "husks": 0,
+     "huskSharePct": 0.0
+    },
+    "T3": {
+     "online": 4,
+     "onlineSharePct": 24.1,
+     "husks": 0,
+     "huskSharePct": 0.0
+    },
+    "T4": {
+     "online": 4,
+     "onlineSharePct": 28.2,
+     "husks": 0,
+     "huskSharePct": 0.0
+    },
+    "T5": {
+     "online": 2,
+     "onlineSharePct": 4.1,
+     "husks": 0,
+     "huskSharePct": 0.0
+    }
+   }
+  ],
+  "windows": [
+   {
+    "t0": 7200,
+    "t1": 7500,
+    "teamShare0": 8.2,
+    "teamShare1": 4.1,
+    "netByClassPct": {
+     "在控的号": -4.12,
+     "本队空壳": 0.0,
+     "路人在线": 0.0,
+     "路人已离线": 0.0
+    },
+    "losers": [
+     {
+      "who": "kaito9",
+      "class": "在控的号",
+      "leftT": null,
+      "deathT": 7665,
+      "terr0": 49245,
+      "terr1": 27247,
+      "bal0": 4647451,
+      "attackers": [
+       {
+        "who": "Player 573#54T4",
+        "tiles": 9765,
+        "burn": 2551982
+       },
+       {
+        "who": "Мирас жалеп#34T2",
+        "tiles": 8237,
+        "burn": 2112366
+       },
+       {
+        "who": "Tobiáš#27T3",
+        "tiles": 6714,
+        "burn": 1813452
+       }
+      ]
+     },
+     {
+      "who": "sora_w",
+      "class": "在控的号",
+      "leftT": null,
+      "deathT": 7352,
+      "terr0": 5380,
+      "terr1": 0,
+      "bal0": 528909,
+      "attackers": [
+       {
+        "who": "Player 573#54T4",
+        "tiles": 4083,
+        "burn": 741676
+       },
+       {
+        "who": "EnSlZ#35T1",
+        "tiles": 166,
+        "burn": 21158
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "t0": 7500,
+    "t1": 7800,
+    "teamShare0": 4.1,
+    "teamShare1": 0.1,
+    "netByClassPct": {
+     "在控的号": -4.06,
+     "本队空壳": 0.0,
+     "路人在线": 0.0,
+     "路人已离线": 0.0
+    },
+    "losers": [
+     {
+      "who": "kaito9",
+      "class": "在控的号",
+      "leftT": null,
+      "deathT": 7665,
+      "terr0": 27247,
+      "terr1": 0,
+      "bal0": 1739823,
+      "attackers": [
+       {
+        "who": "Player 573#54T4",
+        "tiles": 8238,
+        "burn": 1542299
+       },
+       {
+        "who": "Мирас жалеп#34T2",
+        "tiles": 6162,
+        "burn": 1231044
+       },
+       {
+        "who": "EnSlZ#35T1",
+        "tiles": 189,
+        "burn": 29652
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ "interest": {
+  "phases": [
+   {
+    "from": 600,
+    "to": 1500,
+    "botTicks": 9000,
+    "ticksOverSoftCap": 0,
+    "ticksAtHardCap": 0,
+    "income": 2128497,
+    "incomeAtSoftCap": 16398397,
+    "lostWhileOverSoftCap": 0
+   },
+   {
+    "from": 1500,
+    "to": 4284,
+    "botTicks": 24240,
+    "ticksOverSoftCap": 1000,
+    "ticksAtHardCap": 0,
+    "income": 15208619,
+    "incomeAtSoftCap": 30172865,
+    "lostWhileOverSoftCap": 124636
+   },
+   {
+    "from": 4284,
+    "to": 8536,
+    "botTicks": 16460,
+    "ticksOverSoftCap": 3140,
+    "ticksAtHardCap": 10,
+    "income": 30225666,
+    "incomeAtSoftCap": 36935618,
+    "lostWhileOverSoftCap": 423023
+   }
+  ],
+  "perBot": {
+   "ryan_m": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 6.1,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 210529,
+     "incomeAtSoftCap": 2385173,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 2790,
+     "meanDensity": 53.2,
+     "ticksOverSoftCap": 50,
+     "ticksAtHardCap": 0,
+     "income": 2311312,
+     "incomeAtSoftCap": 4187393,
+     "lostWhileOverSoftCap": 6479
+    },
+    {
+     "from": 4284,
+     "to": 8536,
+     "ticks": 1890,
+     "meanDensity": 85.3,
+     "ticksOverSoftCap": 480,
+     "ticksAtHardCap": 0,
+     "income": 1999068,
+     "incomeAtSoftCap": 2294787,
+     "lostWhileOverSoftCap": 47723
+    }
+   ],
+   "sora_w": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 26.3,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 220662,
+     "incomeAtSoftCap": 870188,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 2790,
+     "meanDensity": 76.4,
+     "ticksOverSoftCap": 200,
+     "ticksAtHardCap": 0,
+     "income": 1080059,
+     "incomeAtSoftCap": 1404800,
+     "lostWhileOverSoftCap": 9372
+    },
+    {
+     "from": 4284,
+     "to": 8536,
+     "ticks": 3070,
+     "meanDensity": 74.0,
+     "ticksOverSoftCap": 300,
+     "ticksAtHardCap": 0,
+     "income": 1712746,
+     "incomeAtSoftCap": 2367022,
+     "lostWhileOverSoftCap": 17928
+    }
+   ],
+   "zexos1": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 29.0,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 258907,
+     "incomeAtSoftCap": 1001541,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 2790,
+     "meanDensity": 52.2,
+     "ticksOverSoftCap": 170,
+     "ticksAtHardCap": 0,
+     "income": 1394626,
+     "incomeAtSoftCap": 2568064,
+     "lostWhileOverSoftCap": 12949
+    },
+    {
+     "from": 4284,
+     "to": 8536,
+     "ticks": 890,
+     "meanDensity": 72.6,
+     "ticksOverSoftCap": 30,
+     "ticksAtHardCap": 0,
+     "income": 725147,
+     "incomeAtSoftCap": 983347,
+     "lostWhileOverSoftCap": 1078
+    }
+   ],
+   "noah88": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 16.1,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 251611,
+     "incomeAtSoftCap": 1482573,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 2790,
+     "meanDensity": 61.8,
+     "ticksOverSoftCap": 470,
+     "ticksAtHardCap": 0,
+     "income": 997681,
+     "incomeAtSoftCap": 1769505,
+     "lostWhileOverSoftCap": 86432
+    },
+    {
+     "from": 4284,
+     "to": 8536,
+     "ticks": 1160,
+     "meanDensity": 23.6,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 192118,
+     "incomeAtSoftCap": 639382,
+     "lostWhileOverSoftCap": 0
+    }
+   ],
+   "leo_tx": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 6.4,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 152685,
+     "incomeAtSoftCap": 1696730,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 2790,
+     "meanDensity": 47.2,
+     "ticksOverSoftCap": 10,
+     "ticksAtHardCap": 0,
+     "income": 1831249,
+     "incomeAtSoftCap": 3614731,
+     "lostWhileOverSoftCap": 2794
+    },
+    {
+     "from": 4284,
+     "to": 8536,
+     "ticks": 2030,
+     "meanDensity": 69.1,
+     "ticksOverSoftCap": 100,
+     "ticksAtHardCap": 0,
+     "income": 3304027,
+     "incomeAtSoftCap": 4588955,
+     "lostWhileOverSoftCap": 24569
+    }
+   ],
+   "talon5": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 11.7,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 180911,
+     "incomeAtSoftCap": 1325713,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 1970,
+     "meanDensity": 40.4,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 769516,
+     "incomeAtSoftCap": 1755537,
+     "lostWhileOverSoftCap": 0
+    },
+    null
+   ],
+   "alex_k": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 14.8,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 246869,
+     "incomeAtSoftCap": 1589524,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 2240,
+     "meanDensity": 49.3,
+     "ticksOverSoftCap": 60,
+     "ticksAtHardCap": 0,
+     "income": 397117,
+     "incomeAtSoftCap": 848280,
+     "lostWhileOverSoftCap": 1084
+    },
+    null
+   ],
+   "kaito9": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 2.7,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 161958,
+     "incomeAtSoftCap": 2758164,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 2790,
+     "meanDensity": 38.3,
+     "ticksOverSoftCap": 20,
+     "ticksAtHardCap": 0,
+     "income": 5775409,
+     "incomeAtSoftCap": 11891727,
+     "lostWhileOverSoftCap": 4933
+    },
+    {
+     "from": 4284,
+     "to": 8536,
+     "ticks": 3380,
+     "meanDensity": 87.1,
+     "ticksOverSoftCap": 570,
+     "ticksAtHardCap": 0,
+     "income": 21853345,
+     "incomeAtSoftCap": 25464629,
+     "lostWhileOverSoftCap": 303194
+    }
+   ],
+   "riku_x": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 6.6,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 201863,
+     "incomeAtSoftCap": 2171783,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 500,
+     "meanDensity": 14.0,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 157515,
+     "incomeAtSoftCap": 850962,
+     "lostWhileOverSoftCap": 0
+    },
+    null
+   ],
+   "zero_7": [
+    {
+     "from": 600,
+     "to": 1500,
+     "ticks": 900,
+     "meanDensity": 22.0,
+     "ticksOverSoftCap": 0,
+     "ticksAtHardCap": 0,
+     "income": 242502,
+     "incomeAtSoftCap": 1117008,
+     "lostWhileOverSoftCap": 0
+    },
+    {
+     "from": 1500,
+     "to": 4284,
+     "ticks": 2790,
+     "meanDensity": 37.5,
+     "ticksOverSoftCap": 20,
+     "ticksAtHardCap": 0,
+     "income": 494135,
+     "incomeAtSoftCap": 1281866,
+     "lostWhileOverSoftCap": 593
+    },
+    {
+     "from": 4284,
+     "to": 8536,
+     "ticks": 4040,
+     "meanDensity": 91.6,
+     "ticksOverSoftCap": 1660,
+     "ticksAtHardCap": 10,
+     "income": 439215,
+     "incomeAtSoftCap": 597496,
+     "lostWhileOverSoftCap": 28531
+    }
+   ]
+  }
+ }
+}

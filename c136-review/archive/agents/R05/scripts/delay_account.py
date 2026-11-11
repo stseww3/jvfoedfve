@@ -41,7 +41,7 @@ a = sys.argv[1:]
 mid = a[0]
 val = lambda k, d=None: (a[a.index(k) + 1] if k in a else d)
 only = set((val('--bots', '') or '').split(',')) - {''}
-B = f'/agent/repos/c136-data/bundles/{mid}'
+B = os.environ.get('C136_DATA', '/agent/repos/c136-data') + f'/bundles/{mid}'
 W = '/tmp/c136-r05/work'
 J = json.load(open(f'/tmp/c136-r05/truth/{mid}.json'))
 S = json.load(open(f'{W}/{mid}-shadow.json'))

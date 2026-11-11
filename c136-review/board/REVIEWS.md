@@ -1,8 +1,8 @@
-# 逐局复盘汇总（机械检查，2026-11-11 15:30 UTC）
+# 逐局复盘汇总（机械检查，2026-11-11 16:20 UTC）
 
 只查字段、数量和取值；内容对不对由 R10 抽查和 c136 复核。
 
-共 73 份复盘，来自 7 名复盘员。
+共 75 份复盘，来自 7 名复盘员。
 
 | 对局 | 复盘员 | 结果 | 分型 | 时间线 | 转折点 | 阵亡 | 决策（错/对/不清） | 新模式 | 未解 | 清单未过 |
 | :-- | :-: | :-: | :-- | --: | --: | --: | :-- | --: | --: | :-- |
@@ -36,6 +36,7 @@
 | A014 | R05 | lost | lead-thrown | 25 | 3 | 10 | 18（11/4/3） | 18 | 5 | 全过 |
 | A017 | R05 | lost | external | 17 | 5 | 10 | 18（7/2/9） | 19 | 8 | 全过 |
 | A021 | R05 | lost | mid-collapse | 33 | 6 | 8 | 25（14/4/7） | 25 | 7 | 全过 |
+| A026 | R05 | lost | external | 15 | 5 | 9 | 16（7/3/6） | 14 | 7 | 全过 |
 | A030 | R05 | lost | outscaled | 22 | 5 | 10 | 25（9/6/10） | 26 | 7 | 全过 |
 | A034 | R05 | lost | never-grew | 22 | 5 | 9 | 23（11/3/9） | 25 | 8 | 全过 |
 | A037 | R05 | won | win | 34 | 3 | 1 | 17（10/4/3） | 16 | 6 | 全过 |
@@ -60,6 +61,7 @@
 | A061 | R07 | lost | outscaled | 19 | 3 | 8 | 20（12/4/4） | 32 | 7 | 全过 |
 | A062 | R07 | lost | external | 19 | 3 | 4 | 14（8/3/3） | 21 | 8 | 全过 |
 | A079 | R07 | won | win | 17 | 3 | 0 | 17（8/3/6） | 28 | 7 | 全过 |
+| A082 | R07 | lost | never-grew | 18 | 4 | 10 | 20（11/3/6） | 27 | 9 | 全过 |
 | A089 | R07 | lost | never-grew | 16 | 4 | 9 | 20（10/4/6） | 27 | 8 | 全过 |
 | A091 | R07 | lost | outscaled | 18 | 3 | 7 | 18（12/4/2） | 26 | 7 | 全过 |
 | G00 | R07 | lost | mid-collapse | 16 | 3 | 7 | 14（7/3/4） | 16 | 7 | 全过 |
@@ -68,7 +70,7 @@
 | G07 | R07 | won | win | 15 | 3 | 4 | 16（7/5/4） | 19 | 8 | 全过 |
 | B006 | R08 | lost | never-grew | 30 | 4 | 9 | 21（13/3/5） | 22 | 11 | 全过 |
 | B009 | R08 | open | external | 23 | 3 | 1 | 24（8/4/12） | 20 | 7 | 全过 |
-| B015 | R08 | lost | never-grew | 38 | 3 | 9 | 25（19/3/3） | 31 | 6 | 缺叙述版 .md |
+| B015 | R08 | lost | never-grew | 38 | 3 | 9 | 25（19/3/3） | 31 | 6 | 全过 |
 | B019 | R08 | won | win | 36 | 6 | 18 | 29（18/4/7） | 35 | 11 | 全过 |
 | B030 | R08 | won | win | 131 | 4 | 4 | 18（10/4/4） | 19 | 6 | 全过 |
 | B031 | R08 | lost | external | 18 | 3 | 13 | 20（13/3/4） | 20 | 7 | 全过 |
@@ -84,7 +86,7 @@
 
 | 模式 | 错 | 对 | 不清 |
 | :-- | --: | --: | --: |
-| NEW | 110 | 45 | 79 |
+| NEW | 117 | 48 | 85 |
 | NEW-AT-01 | 2 | 0 | 2 |
 | NEW-AT-02 | 12 | 0 | 2 |
 | NEW-AT-03 | 5 | 0 | 0 |
@@ -356,11 +358,12 @@
 | NEW:PV-cross-team-peace-call | 0 | 0 | 3 |
 | NEW:R07-AT-BIG-BURN | 3 | 0 | 6 |
 | NEW:R07-AT-BOAT-FAR | 1 | 0 | 0 |
-| NEW:R07-AT-CARCASS-FLOOR | 4 | 0 | 0 |
+| NEW:R07-AT-CARCASS-FLOOR | 4 | 0 | 1 |
 | NEW:R07-AT-CHUNK-DIVERT | 2 | 0 | 0 |
-| NEW:R07-AT-INFLIGHT-REPEAT | 5 | 0 | 2 |
+| NEW:R07-AT-INFLIGHT-REPEAT | 6 | 0 | 2 |
 | NEW:R07-AT-MINCMD-SKIP | 3 | 0 | 0 |
-| NEW:R07-AT-OVER-BURN | 5 | 0 | 1 |
+| NEW:R07-AT-NEUT-MINCMD-FEE | 1 | 0 | 0 |
+| NEW:R07-AT-OVER-BURN | 7 | 0 | 1 |
 | NEW:R07-DF-AI-NIBBLE | 1 | 0 | 0 |
 | NEW:R07-DF-BANK-DRAIN | 5 | 0 | 0 |
 | NEW:R07-DF-DOOMED-SKIP | 0 | 0 | 2 |
@@ -368,47 +371,48 @@
 | NEW:R07-DF-RICH-BLEED | 3 | 0 | 0 |
 | NEW:R07-DN-CAP-TRUNC | 3 | 0 | 0 |
 | NEW:R07-DN-CHAIN18 | 1 | 0 | 0 |
-| NEW:R07-DN-DEAD-RECV | 2 | 0 | 0 |
+| NEW:R07-DN-DEAD-RECV | 3 | 0 | 0 |
 | NEW:R07-DN-IDLE-RECV | 5 | 0 | 0 |
 | NEW:R07-DN-INVERTED | 4 | 0 | 0 |
 | NEW:R07-DN-NO-DONOR | 1 | 0 | 1 |
 | NEW:R07-DN-NOFRONT-LOOP | 1 | 0 | 0 |
 | NEW:R07-DN-PINGPONG | 1 | 0 | 0 |
 | NEW:R07-DN-QUOTA-OVERSIZE | 6 | 0 | 0 |
+| NEW:R07-DN-RELAY | 1 | 0 | 0 |
 | NEW:R07-DN-TAX51 | 4 | 0 | 1 |
 | NEW:R07-EC-BOXED-RICH | 2 | 0 | 0 |
 | NEW:R07-EC-HARDCAP | 2 | 0 | 0 |
 | NEW:R07-EC-IDLE-RICH | 1 | 0 | 3 |
 | NEW:R07-EC-NEUT-LOCK | 1 | 0 | 0 |
 | NEW:R07-EC-NO-OUTLET | 2 | 0 | 0 |
-| NEW:R07-EC-SOLE-BUFFER-BANK | 3 | 0 | 0 |
+| NEW:R07-EC-SOLE-BUFFER-BANK | 4 | 0 | 0 |
 | NEW:R07-EG-FRONT-STARVE | 0 | 0 | 5 |
 | NEW:R07-EG-SQUAD-ONLY-RECV | 1 | 0 | 2 |
 | NEW:R07-EG-WRONG-FRONT | 0 | 0 | 1 |
 | NEW:R07-GOOD-BOXED-BOAT | 0 | 1 | 0 |
 | NEW:R07-GOOD-COUNTER-ALLIN | 0 | 1 | 0 |
-| NEW:R07-GOOD-FED-PUSH | 0 | 10 | 0 |
+| NEW:R07-GOOD-FED-PUSH | 0 | 11 | 0 |
 | NEW:R07-GOOD-INTERCEPT | 0 | 7 | 1 |
-| NEW:R07-GOOD-OPENING-DP | 0 | 12 | 0 |
-| NEW:R07-GOOD-SAVED-PUSH | 0 | 11 | 0 |
+| NEW:R07-GOOD-OPENING-DP | 0 | 13 | 0 |
+| NEW:R07-GOOD-SAVED-PUSH | 0 | 12 | 0 |
 | NEW:R07-IO-CRASH | 2 | 0 | 0 |
 | NEW:R07-IO-DUP-ASSIST | 5 | 0 | 0 |
-| NEW:R07-IO-LAG-BATCH | 3 | 0 | 4 |
+| NEW:R07-IO-LAG-BATCH | 3 | 0 | 5 |
 | NEW:R07-IO-ONE-CMD-DROP | 2 | 0 | 1 |
 | NEW:R07-IO-SEAT-LOST | 0 | 0 | 2 |
-| NEW:R07-MT-NOFULL-LOCK | 1 | 0 | 1 |
-| NEW:R07-MT-PRE2400-HOLD | 2 | 0 | 4 |
-| NEW:R07-MT-PRICE-FREEZE | 1 | 0 | 1 |
+| NEW:R07-MT-NOFULL-LOCK | 2 | 0 | 1 |
+| NEW:R07-MT-PRE2400-HOLD | 2 | 0 | 5 |
+| NEW:R07-MT-PRICE-FREEZE | 1 | 0 | 2 |
 | NEW:R07-OP-AI-RACE | 0 | 0 | 1 |
-| NEW:R07-OP-PREY-FLOOR | 4 | 0 | 0 |
-| NEW:R07-OP-WINFLOOR-MATE | 6 | 0 | 0 |
+| NEW:R07-OP-PREY-FLOOR | 5 | 0 | 0 |
+| NEW:R07-OP-WINFLOOR-MATE | 7 | 0 | 1 |
 | NEW:R07-SE-BOAT-MATE-SHORE | 2 | 0 | 1 |
 | NEW:R07-SE-BOXED-NO-BOAT | 2 | 0 | 0 |
 | NEW:R07-SE-NEUT-BOAT-FEE | 1 | 0 | 0 |
-| NEW:R07-SP-CLUSTER | 9 | 0 | 1 |
+| NEW:R07-SP-CLUSTER | 10 | 0 | 1 |
 | NEW:R07-SP-OVERLAP | 1 | 0 | 0 |
 | NEW:R07-SP-SCATTER | 2 | 0 | 0 |
-| NEW:R07-SP-SWAP-CHURN | 0 | 0 | 2 |
+| NEW:R07-SP-SWAP-CHURN | 0 | 0 | 3 |
 | NEW:SP-high-slot-single-pick | 0 | 0 | 1 |
 | NEW:SP-squad-stack | 7 | 0 | 2 |
 | NEW:SP-stale-pick-lands | 1 | 0 | 0 |

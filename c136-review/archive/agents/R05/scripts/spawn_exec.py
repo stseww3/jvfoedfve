@@ -15,7 +15,10 @@
       0 条落地       录像里没有它的出生指令（选点期结束时由引擎随机落子）
   本地发送数（近似）= results.csv 的 accepted − 最后一条 [HL-TICK] 的 cmds（accepted 含出生发送；只有有结算行的号才有）。
 输出：每局一行（TSV，可 --tsv），或带 --detail 逐号。
-用法：python3 scripts/spawn_exec.py <matchId> [...] [--detail] [--tsv]
+  --seq：把每个号在日志里的出生坐标序列（L = 策略兜底点 [HL-SPAWN]，B = 协调器点 [HL-SPAWN-BACKEND]；坐标每变一次一行）
+      与录像里它的出生指令序列对齐：开头没落地的条数 = 录像第一条指令的坐标在日志序列里第一次出现的位置；
+      结尾没落地的条数 = 录像最后一条指令的坐标在日志序列里最后一次出现之后还剩几行（选点期结束后才算出来的坐标）。
+用法：python3 scripts/spawn_exec.py <matchId> [...] [--detail] [--tsv] [--seq]
 """
 import csv
 import math
@@ -26,13 +29,13 @@ from collections import Counter, defaultdict
 
 a = sys.argv[1:]
 ids = [x for x in a if not x.startswith('--')]
-detail, tsv = '--detail' in a, '--tsv' in a
+detail, tsv, seqmode = '--detail' in a, '--tsv' in a, '--seq' in a
 bare = lambda n: re.sub(r'\[[^\]]*\]', '', n or '').strip().lower()
 COLS = ['matchId', 'logBots', 'inReplay', 'solveRounds', 'distinctSolutions', 'finalLanded', 'stuckOld', 'offLog', 'zeroLanded', 'spawnCmdTicks', 'phaseStart', 'othersWithSpawn', 'others', 'localSends(min-max)', 'sendsMinusLanded(min/med/max)', 'firstLandedTickMin', 'assignMinusLanded(med)']
 if tsv:
     print('\t'.join(COLS))
 for mid in ids:
-    B = f'/agent/repos/c136-data/bundles/{mid}'
+    B = os.environ.get('C136_DATA', '/agent/repos/c136-data') + f'/bundles/{mid}'
     cp = f'/tmp/c136-r05/cmds/{mid}.tsv'
     if not os.path.exists(cp):
         alt = f'/tmp/c136-r05/work/{mid}-cmds.tsv'
@@ -50,6 +53,11 @@ for mid in ids:
         if m:
             solves.append(m.group(5).strip())
             W = int(m.group(3))
+    logseq = defaultdict(list)
+    for ln in open(f'{B}/in_game.log', encoding='utf-8', errors='replace'):
+        m = re.search(r'\[(\w+)\] \[(HL-SPAWN(?:-BACKEND)?)\].*?-> \((\d+),(\d+)\)', ln)
+        if m:
+            logseq[m.group(1)].append(('L' if m.group(2) == 'HL-SPAWN' else 'B', int(m.group(3)), int(m.group(4))))
     bots = set(assign)
     lastcmds = {}
     if os.path.exists(f'{B}/traj.csv'):
@@ -122,6 +130,32 @@ for mid in ids:
     else:
         print(f'{mid}: 号 {len(bots)} 个（在这盘录像里 {len(inrep)}）｜求解 {len(solves)} 轮、不同的解 {len(set(solves))} 个｜最终坐标落地 {verd["最终坐标落地"]}、停在旧坐标 {verd["停在旧坐标"]}、日志外坐标 {verd["日志外坐标"]}、0 条落地 {verd["0 条落地"]}'
               f'｜我方出生指令落地拍 {line[9]}（选点期从 {phase0} 起）｜其他玩家有出生指令的 {oth_sp} 个｜本地发送数 {line[13]}｜每号 本地发送 − 录像落地（最小/中位/最大）{line[14]}｜每号 日志指派次数 − 录像落地 中位 {line[16]}')
+    if seqmode and W:
+        leads, trails, kinds, n0 = [], [], Counter(), 0
+        for b, v, d in rows:
+            if d is None:
+                continue
+            sq, R = logseq.get(b, []), d['replay']
+            if not sq:
+                continue
+            if not R:
+                n0 += 1
+                leads.append(len(sq))
+                trails.append(0)
+                kinds.update(k for k, _, _ in sq)
+                continue
+            near = lambda e, r: abs(e[1] - r[1]) <= 2 and abs(e[2] - r[2]) <= 2
+            first = next((i for i, e in enumerate(sq) if near(e, R[0])), None)
+            last = next((i for i in range(len(sq) - 1, -1, -1) if near(sq[i], R[-1])), None)
+            if first is None or last is None:
+                continue
+            leads.append(first)
+            trails.append(len(sq) - 1 - last)
+            kinds.update(k for k, _, _ in sq[:first])
+        if leads:
+            leads_s, trails_s = sorted(leads), sorted(trails)
+            print(f'   [序列对齐] {mid}: 对得上的号 {len(leads)}｜开头没落地的条数 最小/中位/最大 {leads_s[0]}/{leads_s[len(leads_s) // 2]}/{leads_s[-1]}（≥1 条的号 {sum(1 for x in leads if x >= 1)}；其中 兜底点 L {kinds["L"]} 条、协调器点 B {kinds["B"]} 条）'
+                  f'｜结尾没落地的条数 中位 {trails_s[len(trails_s) // 2]}、最大 {trails_s[-1]}（≥1 条的号 {sum(1 for x in trails if x >= 1)}）｜整条序列都没落地的号 {n0}')
     if detail:
         for b, v, d in rows:
             if d is None:

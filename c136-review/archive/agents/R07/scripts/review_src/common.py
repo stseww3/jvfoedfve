@@ -181,8 +181,11 @@ PATTERN_DEFS = {
     "R07-MT-NOFULL-LOCK": {
         "category": "MT",
         "definition": "`isNoFullSend` 被误锁：出兵后的 1~6 拍内余额因为别的原因下降（挨打掉兵、更早的指令晚到），updateShadowQuota 把它当成「引擎没让我发全额」，把标记永久置真。"
-                      "之后对真人的出兵要先等影子额度回满，不够就整条不发（或改成 1 兵试探）。",
-        "detectionSketch": "65_shadow.mjs 的 shadow_nofull.tsv：影子策略里标记第一次置真的拍与当时的待核对出兵、之后被挡掉/改成试探的出兵（前提：影子日志与真日志逐条对得上，见 shadow_check.txt）。",
+                      "之后对真人的出兵要先等影子额度回满，不够就整条不发（或改成 1 兵试探）。"
+                      "锁上之后同一段核对还会一次次把影子额度清零（A082 起用 99_quota_checks.py 逐次列出）：发令后 7 拍内余额只要比「发令时余额 − 手续费」少就核对，"
+                      "落差不到想发的 1/1.12 就归零——挨打的号指令还没落地就被判；落地了的，同段入账的利息也会把落差抹到线下（指令越小越容易，pct=47 的捡地指令一拍利息就够）。",
+        "detectionSketch": "65_shadow.mjs 的 shadow_nofull.tsv：影子策略里标记第一次置真的拍与当时的待核对出兵、之后被挡掉/改成试探的出兵（前提：影子日志与真日志逐条对得上，见 shadow_check.txt）；"
+                           "shadow_quota_checks.tsv + 99_quota_checks.py：每次核对是过期 / 扣减 / 清零、清零时真号那条指令落地了没有、之后 60 拍被挡的指令。",
     },
     "R07-SP-SWAP-CHURN": {
         "category": "SP",
@@ -400,7 +403,8 @@ PATTERN_DEFS = {
         "definition": "t≥1500 捡零碎无主地的指令被最小指令垫高。General.expandNeutral（Vb L944-953；t≥dpEnd 时由 V13.expandNeutral L2373 转进来）先算吃一圈要的兵 want，再和 minCmd 取大（L951 `Math.max(…, min)`）；"
                       "minCmd = feeK(4)×手续费 = 余额的 4.69%（Strategy.minCmd L474-476），折成比例恒为 pct=47。引擎对陆上进攻另收全部余额 12/1024 的手续费，和发多少兵无关——"
                       "所以每一条都是「发出去余额的 4.6%、手续费是发兵的四分之一」。余额几十万到两百万的号为了几十格到几百格空地，一条付几千到两万七的手续费；"
-                      "吃一圈用不完的兵转一圈退回。邻居一倒、地一块块空出来（清场）时，每个决策拍来一条，而且它排在 buyLand 前面，同拍打真人的那条发不出去（见 R07-IO-ONE-CMD-DROP）。",
+                      "吃一圈用不完的兵转一圈退回。邻居一倒、地一块块空出来（清场）时，每个决策拍来一条，而且它排在 buyLand 前面（Policy.act L4941 / L4942），同拍打真人的那条发不出去（见 R07-IO-ONE-CMD-DROP）；"
+                      "isNoFullSend 已经锁上的号，这条小指令落地时同拍有利息入账，出兵后的核对就把影子额度清零，之后几个决策拍对真人的指令被挡（见 R07-MT-NOFULL-LOCK）。",
         "detectionSketch": "humans_cmd.tsv（或 replay 的逐条指令）：我方号 t≥1500、目标是无主地（tt=N）、pct=47 的进攻；按号合计条数 / 发兵 / 手续费，"
                            "对 94_conquest.mjs 同期从「清场放掉」的地里吃进的格数。影子侧：shadow_cmds.tsv 里发令位置是 expandNeutral:952 的指令。"
                            "只有日志时：HL-TICK 的 neut>0 且 cmds 增加、领土几乎不动、余额每 90 拍多掉 1%~5%。",

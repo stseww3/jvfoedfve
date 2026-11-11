@@ -10,6 +10,7 @@
       以及 sent / accepted 两列（sent − accepted 与影子的「同拍第二条被拒」条数对照）。
 用法：python3 scripts/client_clock.py <matchId> [--tol 8]
 """
+import os
 import csv
 import json
 import sys
@@ -18,7 +19,7 @@ from datetime import datetime
 a = sys.argv[1:]
 mid = a[0]
 TOL = int(a[a.index('--tol') + 1]) if '--tol' in a else 8
-B = f'/agent/repos/c136-data/bundles/{mid}'
+B = os.environ.get('C136_DATA', '/agent/repos/c136-data') + f'/bundles/{mid}'
 J = json.load(open(f'/tmp/c136-r05/truth/{mid}.json'))
 sq = {s['bot']: s['p'] for s in J['squad']}
 P = {p['id']: p for p in J['players']}
