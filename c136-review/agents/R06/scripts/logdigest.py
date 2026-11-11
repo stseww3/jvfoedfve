@@ -428,7 +428,7 @@ def sec_oplag(M):
         for t, d in rows:
             if d is not None:
                 buckets[min(7, t // 100)].append(d)
-    print('   按下令拍分段的延迟中位数 / 最大值：' + '；'.join(f"t={k * 100}~{k * 100 + 99} 中位 {sorted(v)[len(v) // 2]} 最大 {max(v)}（{len(v)} 条）" for k, v in sorted(buckets.items())))
+    print('   按下令拍分段的延迟中位数 / 最大值：' + '；'.join(f"{'t>=700' if k == 7 else f't={k * 100}~{k * 100 + 99}'} 中位 {sorted(v)[len(v) // 2]} 最大 {max(v)}（{len(v)} 条）" for k, v in sorted(buckets.items())))
 
 
 def issued_rows(M):

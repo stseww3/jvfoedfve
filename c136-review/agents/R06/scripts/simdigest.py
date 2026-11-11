@@ -36,6 +36,10 @@
                      每个号清地拍、清地前一拍领土、当时的衰减峰值、冲高前的领土、正式阵亡拍、清地后又上岸的最大领土
   lumps              空壳整笔转交（引擎规则：离开的真人由内置 AI 托管，没有可打的目标时把全部余额捐给一个队友，手续费 6.25%，
                      不是指令、不进录像）：我方号收到的、我方空壳转出的
+  top [t] [n]        某一拍领土最大的 n 个真人号（队、地、兵、密度）和我方在场号的名次
+  pokes              HL-ASSIST 的 10% 协防戳：替谁打的（同队/异队/空壳）、打了谁、录像里的执行、戳前戳后对方对出手号的陆攻
+  boatwar            船打船（引擎 acV：每 2 拍，7.5 格内不同队的船互相打）：我方号的船被谁的船打掉多少兵、打掉了谁的；
+                     其中两头都是我方号（异队的我方号在海上互打）单列
   json               写 out/<id>/simdigest.json（复盘 JSON 引用的事实）
 所有数字都来自重演；重演可信范围见 check 段。
 """
@@ -888,6 +892,11 @@ def boat_rows(X):
                 if r['land'] is None:
                     r['how'] = 'sunk' if e['troops'] == 0 else 'gone'
                 break
+    # 逐条挨打账（eng_replay.cjs 在引擎的船打船函数里装的只读口子）：[船主, 船编号, 10 拍格起点, 打掉的兵]
+    hits = defaultdict(list)
+    for o, bid, tb, d in S.get('boatHits') or []:
+        hits[(o, bid)].append((tb, d))
+    exact = S.get('boatHits') is not None
     for r in rows:
         c = r['c']
         t1 = r['land']['t'] if r['land'] else (r['end']['t'] if r['end'] else X.endT)
@@ -898,10 +907,18 @@ def boat_rows(X):
             if t % 5 == 3:
                 v = max(v - max(1, v >> 7), 0)
         r['t1'] = t1
-        r['decayOnly'] = v
         r['left'] = left
         r['seaLoss'] = c['sent'] - left if left is not None else None
-        r['hitLoss'] = max(0, v - left) if left is not None else None   # 自然损耗之外的部分 = 被敌船打掉的
+        if exact and left is not None:
+            # 真值：被敌船打掉 = 口子记下的；自然损耗 = 总损耗 − 被打掉
+            h = sum(d for tb, d in hits.get((c['p'], c.get('bid', -1)), []) if c['t'] - 10 < tb <= t1)
+            h = min(h, c['sent'] - left)
+            r['hitLoss'] = h
+            r['decayOnly'] = c['sent'] - (c['sent'] - left - h)
+        else:
+            # 旧版 sim_state 没有逐条挨打账：按「一路没挨打」估自然损耗，剩下的算被打掉（会低估被打掉的）
+            r['decayOnly'] = v
+            r['hitLoss'] = max(0, v - left) if left is not None else None
     return rows
 
 
@@ -1089,6 +1106,18 @@ def sec_cmds(X):
         mx = max(tick.items(), key=lambda kv: len(kv[1]))
         print(f"{p:3d} {X.M.bots[p].name:14s} {len(atk):4d} {sum(c['ok'] for c in atk):4d} {sum(1 - c['ok'] for c in atk):3d}  {len(boat):4d} {sum(c['ok'] for c in boat):4d} | {fmt(sent):>8s} {fmt(fee):>7s} {pc(fee, sent):>6s} |"
               f" {len(bursts):4d} {b_ok:6d} {fmt(b_sent):>10s} {fmt(b_fee):>8s} | t={mx[0]} {len(mx[1])}条")
+    # 合计：没生效的陆攻打的是谁、落在哪一段
+    atk_all = [c for cs in by.values() for c in cs if c['k'] == 'atk']
+    dead = [c for c in atk_all if not c['ok']]
+    neut_id = S.get('neutralId', 512)
+    is_neut = lambda c: c.get('to') == neut_id or c.get('raw') == neut_id  # noqa: E731
+    seg = lambda lo, hi: sum(1 for c in dead if lo <= c['t'] < hi)  # noqa: E731
+    p47 = [c for c in atk_all if is_neut(c) and c['pct'] == 47]
+    p47ok = [c for c in p47 if c['ok']]
+    print(f"合计：陆攻 {len(atk_all)} 条，没生效 {len(dead)} 条（{pc(len(dead), len(atk_all))}），其中打无主地的 {sum(1 for c in dead if is_neut(c))} 条；"
+          f"按拍：t<1500 {seg(0, 1500)}，1500~2199 {seg(1500, 2200)}，>=2200 {seg(2200, 10 ** 9)}")
+    print(f"      无主地 47‰ 小单 {len(p47)} 条：没生效 {len(p47) - len(p47ok)}，生效 {len(p47ok)} 条出兵 {fmt(sum(c['sent'] for c in p47ok))}、手续费 {fmt(sum(c['fee'] for c in p47ok))}"
+          f"（余额 >=50 万时的 {sum(1 for c in p47ok if c['B0'] >= 500000)} 条：出兵 {fmt(sum(c['sent'] for c in p47ok if c['B0'] >= 500000))}、手续费 {fmt(sum(c['fee'] for c in p47ok if c['B0'] >= 500000))}）")
     # 最贵的连发
     allb = []
     for p, cs in by.items():
@@ -1401,6 +1430,121 @@ def sec_medians(X, prefix=None):
         print('   内置 AI 存活数/兵：' + ' '.join(f"t{S['ticks'][i]}:{an[i]}/{fmt(ab[i])}" for i in range(len(S['ticks'])) if S['ticks'][i] in (270, 630, 900, 1170, 1530, 2070, 3060)))
 
 
+# ------------------------------------------------------------------ top（某一拍全场最大的真人号）
+def top_rows(X, t=None, n=12):
+    S = X.S
+    i = X.ix(t if t is not None else X.endT)
+    tt = S['ticks'][i]
+    rows = []
+    for p in range(X.H):
+        if X.deathT[p] >= 0 and tt >= X.deathT[p]:
+            continue
+        terr, bal = S['hum'][p]['terr'][i], S['hum'][p]['bal'][i]
+        if terr <= 0:
+            continue
+        rows.append(dict(p=p, name=X.name(p), team=X.team[p], terr=terr, bal=bal, ours=p in X.squad,
+                         husk=p in X.leave and tt >= X.leave[p]['t']))
+    rows.sort(key=lambda r: -r['terr'])
+    return tt, rows[:n], rows
+
+
+def sec_top(X, t=None, n=12):
+    tt, top, allr = top_rows(X, t, n)
+    print(f"t={tt} 领土最大的 {len(top)} 个真人号（全场在场真人 {sum(1 for r in allr if not r['husk'])} 个、空壳 {sum(1 for r in allr if r['husk'])} 个）")
+    for k, r in enumerate(top, 1):
+        tag = ('*我方' if r['ours'] else '') + ('·空壳' if r['husk'] else '')
+        print(f"   {k:2d}. {r['name'][:22]:22s} 队{r['team']} 地 {r['terr']:6d}（{100 * r['terr'] / X.land:4.1f}%）兵 {fmt(r['bal']):>6s} 密度 {r['bal'] / max(1, r['terr']):5.1f} {tag}")
+    ours = [(k, r) for k, r in enumerate(allr, 1) if r['ours'] and not r['husk']]
+    if ours:
+        print('   我方在场号的名次：' + '；'.join(f"{r['name']} 第 {k}（{r['terr']} 格，队{r['team']}）" for k, r in ours))
+
+
+# ------------------------------------------------------------------ pokes（HL-ASSIST 的 10% 协防戳：替谁打的、打了谁、之后对方对我做了什么）
+def poke_rows(X, before=900, after=600):
+    S = X.S
+    out = []
+    atk_on = defaultdict(list)   # (attacker, target) -> [(t, sent)]
+    for c in S['squadCmds']:
+        if c['k'] == 'atk' and c['ok'] and c.get('to', 512) < 512:
+            atk_on[(c['p'], c['to'])].append((c['t'], c.get('sent', 0)))
+    for land in S.get('boatLands', []):
+        if land.get('to', 512) < 512 and not land.get('friend') and not land.get('self'):
+            atk_on[(land['p'], land['to'])].append((land['t'], land.get('troops', 0)))
+    for me in X.squad:
+        if me not in X.M.bots:
+            continue
+        for e in X.M.bots[me].assists:
+            enemy, ally = e['enemy'], e['ally']
+            ex = [c for c in S['squadCmds'] if c['p'] == me and c['k'] == 'atk' and c.get('to') == enemy and c.get('pct') == 102 and 0 <= c['t'] - e['t'] <= 60]
+            c = ex[0] if ex else None
+            t = c['t'] if c else e['t']
+            pre = [(tt, s) for tt, s in atk_on[(enemy, me)] if t - before <= tt < t]
+            post = [(tt, s) for tt, s in atk_on[(enemy, me)] if t <= tt <= t + after]
+            w = S['ledgerWindow']
+            gain = sum(v for ww, d in X.led[me]['gain'].items() if t - w < ww <= t + 300 for o, v in d.items() if o == enemy)
+            lost = sum(v for ww, d in X.led[me]['lost'].items() if t - w < ww <= t + after for o, v in d.items() if o == enemy)
+            out.append(dict(logT=e['t'], t=t, me=me, enemy=enemy, ally=ally, executed=bool(c and c['ok']), sent=c.get('sent', 0) if c else 0, fee=c.get('fee', 0) if c else 0,
+                            B0=c.get('B0', 0) if c else 0, myTerr=c.get('myTerr', 0) if c else 0, enemyTerr=c.get('toTerr', 0) if c else 0, enemyBal=c.get('toBal', 0) if c else 0,
+                            allyCls=X.cls(me, ally, t), allyTerr=X.terr(ally, t), enemyTeam=X.team[enemy],
+                            preN=len(pre), preTroops=sum(s for _, s in pre), postN=len(post), postTroops=sum(s for _, s in post),
+                            postFirst=post[0][0] if post else None, gain300=gain, lost600=lost))
+    out.sort(key=lambda r: (r['t'], r['me']))
+    return out
+
+
+def sec_pokes(X):
+    rows = poke_rows(X)
+    print('HL-ASSIST 的「10% squad-rescue poke」（tryDonateToTeammate L4448-4457：对「正在打某个编队号的主攻手」发一条 102‰ 的陆攻）')
+    print('   之前/之后 = 被戳的那个人在戳之前 900 拍 / 之后 600 拍内对出手号的陆攻指令与登陆（条数、兵）；得地 = 戳后 300 拍内从它手里拿到的格数；失地 = 戳后 600 拍内被它拿走的格数')
+    for r in rows:
+        ex = f"执行 t={r['t']} 出兵 {fmt(r['sent'])} 费 {fmt(r['fee'])}（余额 {fmt(r['B0'])}，我地 {r['myTerr']}）" if r['executed'] else '录像里没有对应指令'
+        print(f"   日志 t={r['logT']:5d} {X.name(r['me'])}(队{X.team[r['me']]}) → {X.name(r['enemy'])}(队{r['enemyTeam']}，地 {r['enemyTerr']} 兵 {fmt(r['enemyBal'])})，替 {X.name(r['ally'])}[{r['allyCls']}，地 {r['allyTerr']}]：{ex}"
+              f"｜之前 {r['preN']} 条 {fmt(r['preTroops'])}｜之后 {r['postN']} 条 {fmt(r['postTroops'])}" + (f"（首条 t={r['postFirst']}，隔 {r['postFirst'] - r['t']} 拍）" if r['postFirst'] is not None else '')
+              + f"｜得地 {r['gain300']} 失地 {r['lost600']}")
+    if rows:
+        exed = [r for r in rows if r['executed']]
+        cross = [r for r in rows if '异队' in r['allyCls']]
+        husk = [r for r in rows if '空壳' in r['allyCls']]
+        quiet = [r for r in exed if r['preN'] == 0]
+        hit = [r for r in quiet if r['postN'] > 0]
+        print(f"合计 {len(rows)} 条（执行 {len(exed)} 条，出兵 {fmt(sum(r['sent'] for r in exed))}、手续费 {fmt(sum(r['fee'] for r in exed))}）；替异队号打的 {len(cross)} 条，被救的号已是空壳的 {len(husk)} 条")
+        print(f"   戳之前 900 拍对方没有对出手号下过陆攻/登陆的 {len(quiet)} 条，其中戳后 600 拍内对方对出手号动手的 {len(hit)} 条")
+    else:
+        print('   （本局没有 HL-ASSIST）')
+
+
+# ------------------------------------------------------------------ boatwar（船打船）
+def boatwar_rows(X):
+    """eng_replay.cjs 在引擎的 acV（船打船）里装的只读口子：按（开火的船主, 挨打的船主）累计打掉的兵。"""
+    bs = X.S.get('boatShots')
+    if bs is None:
+        return None
+    rows = []
+    for e in bs:
+        f, t = e['from'], e['to']
+        rows.append(dict(t0=e['t0'], t1=e['t1'], frm=f, to=t, dmg=e['dmg'], n=e['n'], fromSquad=f in X.squad, toSquad=t in X.squad,
+                         fromTeam=X.team[f] if f < len(X.team) else 0, toTeam=X.team[t] if t < len(X.team) else 0))
+    rows.sort(key=lambda r: -r['dmg'])
+    return rows
+
+
+def sec_boatwar(X):
+    rows = boatwar_rows(X)
+    if rows is None:
+        print('sim_state.json 里没有 boatShots（用新版 eng_replay.cjs 重跑 run_truth.sh）')
+        return
+    print('船打船（引擎 acV：每 2 拍，7.5 格内不同队的船互相打；同队的船不打）。只列至少一方是我方号的')
+    both = [r for r in rows if r['fromSquad'] and r['toSquad']]
+    print(f"两头都是我方号（异队的我方号在海上互打）：{len(both)} 组，共打掉 {fmt(sum(r['dmg'] for r in both))} 兵")
+    for r in both:
+        print(f"   t={r['t0']}~{r['t1']} {X.name(r['frm'])}(队{r['fromTeam']}) 的船 → {X.name(r['to'])}(队{r['toTeam']}) 的船：打掉 {fmt(r['dmg'])} 兵（{r['n']} 次）")
+    inn = [r for r in rows if r['toSquad'] and not r['fromSquad']]
+    out = [r for r in rows if r['fromSquad'] and not r['toSquad']]
+    print(f"外人的船打我方号的船：{len(inn)} 组，共 {fmt(sum(r['dmg'] for r in inn))} 兵；我方号的船打外人的船：{len(out)} 组，共 {fmt(sum(r['dmg'] for r in out))} 兵")
+    for r in (inn + out)[:16]:
+        print(f"   t={r['t0']}~{r['t1']} {X.name(r['frm'])}(队{r['fromTeam']}) → {X.name(r['to'])}(队{r['toTeam']})：{fmt(r['dmg'])} 兵（{r['n']} 次）")
+
+
 # ------------------------------------------------------------------ landings（登陆：谁的船靠上了我方号的岸）
 def landing_rows(X):
     """boatLands 里登陆格主人是我方号的全部靠岸事件（发船人可以是任何人）。
@@ -1684,6 +1828,17 @@ def sec_gates(X):
         parts = '，'.join(f"{gate_txt(g)} {v}（{pc(v, n)}）" for g, v in sorted(tot.items(), key=lambda kv: -kv[1]))
         print(f"   合计 {n} 个决策拍：{parts}")
         print(f"   正被真人打的决策拍 {te.get('humOnMe', 0)}，其中这一拍没有对任何真人出兵 {te.get('humOnMeNoSend', 0)}（{pc(te.get('humOnMeNoSend', 0), te.get('humOnMe', 0))}）")
+        # 超软上限时 buyLand 不比价（L5267 的 !over）：这一拍对真人出了兵、排第一的报价 hc >= worth
+        D = shadow_load(X)
+        sends = [r for r in D['tally'] if r['t'] >= 1500 and r.get('hum', 0) > 0 and X.alive_active(r['p'], r['t']) and 'send' in (r.get('hg') or '').split(',')]
+        osk = [r for r in sends if r.get('over') and r.get('hc') is not None and r.get('worth') is not None and r['hc'] >= r['worth']]
+        if sends:
+            by = defaultdict(list)
+            for r in osk:
+                by[r['p']].append(r)
+            det = '；'.join(f"{X.M.bots[p].name} {len(v)} 拍（报价中位 {sorted(x['hc'] for x in v)[len(v) // 2]:.1f}、worth 中位 {sorted(x['worth'] for x in v)[len(v) // 2]:.1f}）"
+                            for p, v in sorted(by.items(), key=lambda kv: -len(kv[1])))
+            print(f"   对真人出兵的决策拍 {len(sends)}，其中超软上限且报价 >= worth（靠 L5267 的「超软上限不比价」放行）{len(osk)} 拍{'：' + det if det else ''}")
     print('三、t>=1500，offers 里至少有一个非真人报价（内置 AI / 空壳）的决策拍（闸 = 这一拍有没有对非真人出兵，没有则取排第一的非真人报价的出口）')
     tot = defaultdict(int)
     for p in X.squad:
@@ -1892,6 +2047,12 @@ def main():
         sec_dups(X, int(a[0]) if a else 21)
     elif sec == 'crowd':
         sec_crowd(X)
+    elif sec == 'top':
+        sec_top(X, int(a[0]) if a else None, int(a[1]) if len(a) > 1 else 12)
+    elif sec == 'pokes':
+        sec_pokes(X)
+    elif sec == 'boatwar':
+        sec_boatwar(X)
     elif sec == 'json':
         doc = build_json(X)
         p = os.path.join(OUT, mid, 'simdigest.json')

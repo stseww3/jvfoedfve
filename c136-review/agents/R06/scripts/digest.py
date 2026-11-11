@@ -732,11 +732,12 @@ def sec_lag(M):
         print(f"  已接受捐款的「日志拍→执行拍」延迟：中位 {lat[len(lat) // 2]}，90 分位 {lat[int(0.9 * len(lat))]}，最大 {lat[-1]}（共 {len(lat)} 笔）")
     ol = opening_latency(M)
     if ol:
-        print("  开局周期指令「日志拍→执行拍」延迟序列（本地拍:延迟）：")
+        print("  开局周期指令「日志拍→执行拍」延迟序列（本地拍:延迟；x = 录像里没有同千分比的指令）：")
         for me in M.squad:
             if me in ol:
                 ser = ol[me]
-                print(f"   {M.bots[me].name:<14}({me}) " + ' '.join(f"{t}:{d}" for t, d in ser) + f" | 最大 {max(d for _, d in ser)}")
+                got = [d for _, d in ser if d is not None]
+                print(f"   {M.bots[me].name:<14}({me}) " + ' '.join(f"{t}:{'x' if d is None else d}" for t, d in ser) + (f" | 最大 {max(got)}" if got else '') + (f" | 没进录像 {len(ser) - len(got)} 条" if len(got) < len(ser) else ''))
 
 
 def leave_ticks(M):
@@ -749,18 +750,27 @@ def leave_ticks(M):
 
 
 def opening_latency(M):
-    """每条 HL-OPENING 日志（本地拍）配到录像里同号下一条无主地出兵（执行拍）→ 延迟序列。"""
+    """每条 HL-OPENING 日志（本地拍）按「同号、同千分比、还没配过、不早于下令拍」配到录像里的无主地出兵（执行拍）→ 延迟序列。
+    千分比按引擎的整数规则由日志的 spend/bal 还原；配不上记 None（这条指令没进录像）。与 logdigest.py oplag 同一规则。"""
     out = {}
     for me in M.squad:
         b = M.bots[me]
-        neu = [c['t'] for c in M.cmds if c['player'] == me and c['id'] == 1 and c['dZ'] == 512]
-        j, ser = 0, []
+        neu = [(c['t'], c['dX']) for c in M.cmds if c['player'] == me and c['id'] == 1 and c['dZ'] == 512]
+        used, ser = set(), []
         for o in b.opening:
-            while j < len(neu) and neu[j] < o['t']:
-                j += 1
-            if j < len(neu):
-                ser.append((o['t'], neu[j] - o['t']))
-                j += 1
+            pct = max(0, min(1023, math.ceil(o['spend'] * 1024 / max(1, o['bal'])) - 1))
+            hit = None
+            for i, (t, x) in enumerate(neu):
+                if i in used or t < o['t']:
+                    continue
+                if x == pct:
+                    hit = i
+                    break
+            if hit is None:
+                ser.append((o['t'], None))
+            else:
+                used.add(hit)
+                ser.append((o['t'], neu[hit][0] - o['t']))
         if ser:
             out[me] = ser
     return out

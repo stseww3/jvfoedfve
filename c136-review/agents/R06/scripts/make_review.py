@@ -219,6 +219,11 @@ def facts(M, X=None):
             d['t'] = X.deathT[me]
             d['truth'] = truth_death(X, me, X.deathT[me])
             d['killers'] = [f"{k['by']}[{k['cls']}] 拿走 {k['cells']} 格" for k in d['truth']['landTakenLast900']]
+            pt = X.S.get('perTick') or {}
+            if str(me) in (pt.get('terr') or {}):
+                # 峰值领土用重放逐拍真值（日志快照 90 拍一条，会漏掉两条快照之间的峰）
+                d['peakLandLog'] = d['peakLand']
+                d['peakLand'] = max(pt['terr'][str(me)])
     out = dict(context=ctx, outcome=outcome, timeline=tl, deaths=deaths)
     if X:
         S = X.S
@@ -299,7 +304,7 @@ def main():
         f"python3 c136-review/agents/R06/scripts/team_assign.py {mid}",
     ] + ([
         f"bash c136-review/agents/R06/scripts/run_truth.sh {mid}（sim_prep.py + eng_replay.cjs：真引擎重放，写 out/{mid}/sim_state.json）",
-        f"python3 c136-review/agents/R06/scripts/simdigest.py {mid} check|teams|roster|ledger [me]|deaths [me]|don|probe|gifts|boats [me]|landings|fees|nfs|cmds|cmdlist <me> [t0 t1]|pair <me> [t0 t1]|neigh <me>|front|boxed|gaps|husks|poolai|protbox|medians [前缀]|dens [t]|shadow|gates|dups|crowd",
+        f"python3 c136-review/agents/R06/scripts/simdigest.py {mid} check|teams|roster|ledger [me]|deaths [me]|don|probe|gifts|boats [me]|landings|fees|nfs|cmds|cmdlist <me> [t0 t1]|pair <me> [t0 t1]|neigh <me>|front|boxed|gaps|husks|poolai|protbox|medians [前缀]|dens [t]|shadow|gates|dups|crowd|bursts|collapse|lumps|top [t] [n]|pokes|boatwar",
         f"node c136-review/agents/R06/scripts/strat_probe.mjs {mid} --me squad --json --tally [--dump 玩家:起拍:止拍:步长,...]（套 run-heavy.sh；影子策略：同一份策略源码逐拍跑在重放局面上，打印 buyLand 逐报价的 c/worth/safe/keep/avail 和出口行号）",
     ] if X else []) + [
         f"python3 c136-review/agents/R06/scripts/digest.py {mid} roster|teams|timeline|deaths|donations -v|drops|spawn|boxed|attacks|lag|teamwar|bot <me>|json",

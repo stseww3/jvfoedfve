@@ -2012,7 +2012,7 @@
     "simdigest gates 第一段：t=600~1499 有内置 AI 邻居的 2,199 个决策拍，可出兵 944（42.9%）；底线=safeFinite 且取的是我方在场号的兵、去掉就能出兵 889（40.4%；同队 102、异队 787）；botOk 108、winR 项 39、dpKeep 19",
     "out/B038/probe.txt：t=900 Dream 内置 AI 邻居 0 兵、地价 2.0，底线 3.1 万（Pontus 的兵），L1197 可用兵 887 <= 最小出兵量 6,841；t=1000 Golden Horde 底线 5.0 万（Dream 的兵）",
     "simdigest gaps：31 段指令断档、17 个号、最长 609 拍（Eugene t=812~1421），断档期间日志里发了 458 条；logdigest issued：cmds 计数 1,434 条，录像 944 条",
-    "logdigest oplag：下令拍 <470 延迟中位 10~12 拍；500~600 中位 33~100；620~800 为 65~684（guest_104 下令拍 700 延迟 329、800 延迟 684）",
+    "logdigest oplag：下令拍 <470 延迟中位 10~12 拍；500~600 中位 33~100；620~800 为 109~684（guest_104 下令拍 700 延迟 329、800 延迟 684）",
     "simdigest shadow：guest_104 t=1484~1862（378 拍）影子在 25 个 15 拍格里想打 [MKKM] 04，录像里这段执行 0 条"
    ],
    "priorDecisions": [
@@ -2180,7 +2180,7 @@
    "me": 34,
    "team": 1,
    "t": 2798,
-   "peakLand": 10919,
+   "peakLand": 10945,
    "killers": [
     "🔱[CN] TT٩(๑ˆoˆ๑)۶[敌方真人] 拿走 5009 格",
     "[CN] [IND] 😼[敌方真人] 拿走 3493 格"
@@ -2298,6 +2298,7 @@
      "t= 2790 地     0 兵     0 密  0.0 边0 岸0 无主邻格0 船1 | 邻居0: "
     ]
    },
+   "peakLandLog": 10919,
    "statementType": "observed"
   },
   {
@@ -2305,7 +2306,7 @@
    "me": 35,
    "team": 3,
    "t": 2478,
-   "peakLand": 933,
+   "peakLand": 1152,
    "killers": [
     "[FR] 1312[敌方真人] 拿走 977 格",
     "*Rimuru[我方号·异队(空壳)] 拿走 124 格",
@@ -2473,6 +2474,7 @@
      "t= 2430 地     0 兵     0 密  0.0 边0 岸0 无主邻格0 船1 | 邻居0: "
     ]
    },
+   "peakLandLog": 933,
    "statementType": "observed"
   },
   {
@@ -2480,7 +2482,7 @@
    "me": 37,
    "team": 3,
    "t": 2436,
-   "peakLand": 4401,
+   "peakLand": 4572,
    "killers": [
     "[FR] 1312[敌方真人] 拿走 2504 格",
     "Kem[敌方真人] 拿走 1573 格",
@@ -2652,6 +2654,7 @@
      "t= 2430 地    28 兵  1138 密 40.6 边10 岸6 无主邻格0 船0 | 邻居1: Ø[敌方真人] 接20 地10062 密21 | 被攻: Ø:25k"
     ]
    },
+   "peakLandLog": 4401,
    "statementType": "observed"
   },
   {
@@ -2659,7 +2662,7 @@
    "me": 40,
    "team": 2,
    "t": 8176,
-   "peakLand": 4664,
+   "peakLand": 5293,
    "killers": [
     "[ua][敌方真人] 拿走 4073 格"
    ],
@@ -2762,6 +2765,7 @@
      "t= 8100 地  4664 兵  512k 密109.8 边141 岸4 无主邻格0 船0 | 邻居2: [FR] 1312[队友] 接117 地45999 密98；[ua][敌方真人] 接98 地77898 密107 | 被攻: [ua]:246k"
     ]
    },
+   "peakLandLog": 4664,
    "statementType": "observed"
   },
   {
@@ -2888,6 +2892,7 @@
      "t= 5220 地  1973 兵  170k 密 85.9 边203 岸130 无主邻格0 船0 | 邻居3: [titan] zim[敌方真人] 接222 地33626 密106；[ua][敌方真人] 接106 地39245 密116；[?] Taurant[敌方真人] 接12 地16443 密80 | 被攻: [ua]:67k | 在攻: [?] Taurant:83k"
     ]
    },
+   "peakLandLog": 3512,
    "statementType": "observed"
   },
   {
@@ -2895,7 +2900,7 @@
    "me": 43,
    "team": 3,
    "t": 2355,
-   "peakLand": 5681,
+   "peakLand": 5907,
    "killers": [
     "bruh [off][敌方真人] 拿走 4883 格"
    ],
@@ -3031,6 +3036,7 @@
      "t= 2340 地  1626 兵  2619 密  1.6 边152 岸32 无主邻格0 船0 | 邻居3: bruh [off][敌方真人] 接113 地3472 密0；*Joseon[我方号·同队] 接82 地5206 密3；Democratic Republic[队友] 接29 地9616 密47 | 被攻: bruh [off]:86k"
     ]
    },
+   "peakLandLog": 5681,
    "statementType": "observed"
   },
   {
@@ -3038,7 +3044,7 @@
    "me": 44,
    "team": 1,
    "t": 3971,
-   "peakLand": 10625,
+   "peakLand": 11177,
    "killers": [
     "[PH] Madros[敌方真人] 拿走 2445 格"
    ],
@@ -3153,6 +3159,7 @@
      "t= 3960 地  1578 兵  177k 密111.9 边100 岸0 无主邻格0 船0 | 邻居2: [PH] Madros[敌方真人] 接133 地25154 密84；[void]Neutral[敌方真人] 接65 地35308 密77 | 被攻: [PH] Madros:695k"
     ]
    },
+   "peakLandLog": 10625,
    "statementType": "observed"
   },
   {
@@ -3308,6 +3315,7 @@
      "t= 2250 地  3833 兵  4859 密  1.3 边320 岸17 无主邻格0 船0 | 邻居3: [omen]Estda[敌方真人] 接305 地9809 密7；*L_Lawliet[我方号·异队] 接167 地3736 密95；[FR] 1312[敌方真人] 接79 地11734 密37 | 被攻: [omen]Estda:19k"
     ]
    },
+   "peakLandLog": 5670,
    "statementType": "observed"
   },
   {
@@ -3315,7 +3323,7 @@
    "me": 47,
    "team": 2,
    "t": 4707,
-   "peakLand": 5777,
+   "peakLand": 5848,
    "killers": [
     "Player 71[敌方真人] 拿走 5094 格",
     "[CORGI]NANNU[敌方真人(空壳)] 拿走 122 格"
@@ -3455,6 +3463,7 @@
      "t= 4680 地  2076 兵  212k 密102.3 边230 岸143 无主邻格0 船0 | 邻居5: Player 71[敌方真人] 接169 地34338 密116；hearts/wire[OFF][队友] 接125 地20038 密90；Tony Baloni[队友] 接38 地45959 密90；🇹🇷Tr[敌方真人] 接30 地38473 密130；*Sokoto[我方号·异队] 接5 地120 密9"
     ]
    },
+   "peakLandLog": 5777,
    "statementType": "observed"
   },
   {
@@ -3462,7 +3471,7 @@
    "me": 48,
    "team": 3,
    "t": 2512,
-   "peakLand": 8020,
+   "peakLand": 8524,
    "killers": [
     "Tony Baloni[敌方真人] 拿走 7965 格",
     "Ø[敌方真人] 拿走 117 格"
@@ -3594,6 +3603,7 @@
      "t= 2430 地  4838 兵   22k 密  4.6 边320 岸84 无主邻格58 船0 | 邻居4: Tony Baloni[敌方真人] 接143 地18161 密34；Democratic Republic[队友] 接111 地12173 密42；🦅🦅[队友] 接107 地6286 密55；*Siam[我方号·异队] 接79 地2196 密48"
     ]
    },
+   "peakLandLog": 8020,
    "statementType": "observed"
   },
   {
@@ -3731,6 +3741,7 @@
      "t= 2160 地  1176 兵  2139 密  1.8 边183 岸74 无主邻格0 船0 | 邻居5: 🔱[CN] TT٩(๑ˆoˆ๑)۶[敌方真人] 接104 地15088 密39；*Eugene[我方号·同队] 接84 地3096 密53；[CN] [IND] 😼[敌方真人] 接46 地17324 密23；*Carinthia[我方号·同队] 接40 地7319 密1；🇹🇷Tr[队友] 接30 地20523 密18 | 被攻: 🔱[CN] TT٩(๑ˆoˆ๑)۶:913"
     ]
    },
+   "peakLandLog": 3195,
    "statementType": "observed"
   },
   {
@@ -3738,7 +3749,7 @@
    "me": 67,
    "team": 3,
    "t": 2692,
-   "peakLand": 3592,
+   "peakLand": 3707,
    "killers": [
     "[OMEN][敌方真人] 拿走 2562 格",
     "[omen]Estda[敌方真人] 拿走 386 格"
@@ -3875,6 +3886,7 @@
      "t= 2610 地  1421 兵   60k 密 42.4 边227 岸30 无主邻格0 船0 | 邻居4: *Pontus[我方号·异队] 接123 地2062 密10；*Dream[我方号·异队] 接115 地3215 密55；[OMEN][敌方真人] 接109 地9510 密61；[omen]Estda[敌方真人] 接9 地21544 密7 | 被攻: [OMEN]:30k"
     ]
    },
+   "peakLandLog": 3592,
    "statementType": "observed"
   },
   {
@@ -3974,6 +3986,7 @@
      "t= 8910 地   109 兵  4320 密 39.6 边12 岸63 无主邻格0 船0 | 邻居1: *Siam[我方号·异队(空壳)] 接20 地3889 密90 | 被攻: *Siam:12k"
     ]
    },
+   "peakLandLog": 2373,
    "statementType": "observed"
   },
   {
@@ -3981,7 +3994,7 @@
    "me": 69,
    "team": 3,
    "t": 11841,
-   "peakLand": 3160,
+   "peakLand": 3308,
    "killers": [
     "Player 71[敌方真人] 拿走 1352 格"
    ],
@@ -4081,6 +4094,7 @@
      "t=11790 地  1112 兵  9842 密  8.9 边48 岸276 无主邻格0 船0 | 邻居2: Player 71[敌方真人] 接93 地21978 密1；*Eugene[我方号·异队] 接2 地8830 密74"
     ]
    },
+   "peakLandLog": 3160,
    "statementType": "observed"
   },
   {
@@ -4088,7 +4102,7 @@
    "me": 75,
    "team": 3,
    "t": 2450,
-   "peakLand": 8963,
+   "peakLand": 9371,
    "killers": [
     "[omen]Estda[敌方真人] 拿走 11059 格",
     "Kem[敌方真人] 拿走 1784 格"
@@ -4233,6 +4247,7 @@
      "t= 2430 地  3371 兵  4245 密  1.3 边200 岸28 无主邻格27 船0 | 邻居2: [omen]Estda[敌方真人] 接188 地20350 密4；Kem[敌方真人] 接149 地9753 密25 | 被攻: Kem:22k [omen]Estda:4995 | 在攻: 无主地:29k"
     ]
    },
+   "peakLandLog": 8963,
    "statementType": "observed"
   }
  ],
@@ -5528,7 +5543,7 @@
  "secondaryArchetype": "external",
  "teamSplit": true,
  "externalFactors": [
-  "客户端落后服务器：开局周期指令「下令拍→执行拍」的延迟中位 10~12 拍（下令拍 <470）→33~100（500~600）→65~684（620~800）；捐款指令从日志拍到执行拍的延迟中位 371 拍（日志拍 1500~1799）、158 拍（1800~2099）、46 拍（2100~2399），2400 之后 7~21 拍",
+  "客户端落后服务器：开局周期指令「下令拍→执行拍」的延迟中位 10~12 拍（下令拍 <470）→33~100（500~600）→109~684（620~800）；捐款指令从日志拍到执行拍的延迟中位 371 拍（日志拍 1500~1799）、158 拍（1800~2099）、46 拍（2100~2399），2400 之后 7~21 拍",
   "指令没送到：日志 cmds 计数合计 1,434 条，录像里只有 944 条（65.8%）；31 段「指令断档」（>=300 拍没有一条进录像，而日志里同期发了 >=5 条），涉及 17 个号，最长 609 拍（Eugene t=812~1421），断档期间共发 458 条",
   "4 个号被登记离开、由内置 AI 托管（空壳，利息为 0）：Babylon t=343（只有 12 格，从没出过兵）、Dai Viet t=1379（3,678 格、15.3 万兵）、Rimuru t=1386（1,274 格、11.5 万兵）、Siam t=7959（3,517 格、50.3 万兵）。同机的 [APEX] 十人队有 3 个号在同一拍 t=1400 离开",
   "20 个号被引擎分到全部 3 支队里：队1=5、队2=6、队3=9（卡片只数到 4+4+8）。同局 [APEX] 十人队（squad10，包 A057）全在队1"
@@ -5589,7 +5604,7 @@
   "node c136-review/agents/R06/scripts/replay_decode.mjs B038（套 run-heavy.sh）",
   "python3 c136-review/agents/R06/scripts/team_assign.py B038",
   "bash c136-review/agents/R06/scripts/run_truth.sh B038（sim_prep.py + eng_replay.cjs：真引擎重放，写 out/B038/sim_state.json）",
-  "python3 c136-review/agents/R06/scripts/simdigest.py B038 check|teams|roster|ledger [me]|deaths [me]|don|probe|gifts|boats [me]|landings|fees|nfs|cmds|cmdlist <me> [t0 t1]|pair <me> [t0 t1]|neigh <me>|front|boxed|gaps|husks|poolai|protbox|medians [前缀]|dens [t]|shadow|gates|dups|crowd",
+  "python3 c136-review/agents/R06/scripts/simdigest.py B038 check|teams|roster|ledger [me]|deaths [me]|don|probe|gifts|boats [me]|landings|fees|nfs|cmds|cmdlist <me> [t0 t1]|pair <me> [t0 t1]|neigh <me>|front|boxed|gaps|husks|poolai|protbox|medians [前缀]|dens [t]|shadow|gates|dups|crowd|bursts|collapse|lumps|top [t] [n]|pokes|boatwar",
   "node c136-review/agents/R06/scripts/strat_probe.mjs B038 --me squad --json --tally [--dump 玩家:起拍:止拍:步长,...]（套 run-heavy.sh；影子策略：同一份策略源码逐拍跑在重放局面上，打印 buyLand 逐报价的 c/worth/safe/keep/avail 和出口行号）",
   "python3 c136-review/agents/R06/scripts/digest.py B038 roster|teams|timeline|deaths|donations -v|drops|spawn|boxed|attacks|lag|teamwar|bot <me>|json",
   "python3 c136-review/agents/R06/scripts/digest.py B038 picks（选点指令真值：改点次数、最后两步的改点、撞点）",

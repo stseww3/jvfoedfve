@@ -35,7 +35,10 @@ function patchAll(src) {
   src = once(src, 'function ca(){var aOX=new Uint16Array(aE.fW);var aOY=0;', 'function ca(){var aOX=new Uint16Array(aE.fW);var aOY=0;this.__q=function(){return [aOX,aOY]};this.__chk=function(a,b){return aOZ(a,b)};this.__cost=function(a,b){return aOc(a,b)};');
   src = once(src, 'function acN(player,iI,acL,aae){var k3;', 'function acN(player,iI,acL,aae){__R06.land(player,iI,acL,aae);var k3;');
   src = once(src, 'function acJ(aC,aae,iQ){', 'function acJ(aC,aae,iQ){__R06.slot=aC;');
-  return 'var __R06={pre:function(){},post:function(){},land:function(){},slot:-1};' + src;
+  // 船打船（acV：每 2 拍，7.5 格内的敌船互相打）：记下谁的船打掉了谁的船多少兵。锚点找不到就不装这个口子，其余照常
+  const shotAnchor = 'a9g[aco]=Math.max(acr-acp,0);abA[aco]=4';
+  if (src.split(shotAnchor).length === 2) src = src.replace(shotAnchor, () => shotAnchor + ';__R06.shot(iR,aco,acr,a9g[aco])');
+  return 'var __R06={pre:function(){},post:function(){},land:function(){},shot:function(){},slot:-1};' + src;
 }
 
 // 这个函数的源码会在引擎作用域里求值：里面的 ah / ae / ad / aE / bi / bj / bB / af / ao / am / bg / bQ 都是引擎自己的对象。
@@ -218,6 +221,22 @@ function collector(cfg) {
   }
   wrapLeave('rf');
   wrapLeave('rA');
+
+  // ---- 船打船：按（开火的船主, 挨打的船主）累计打掉的兵；只记至少一方是我方号的
+  var boatShots = new Map(), boatHits = new Map();
+  __R06.shot = function (sSlot, tSlot, before, after) {
+    var so = bQ.z.mo[sSlot] >> 3, to = bQ.z.mo[tSlot] >> 3;
+    if (!isSquad[so] && !isSquad[to]) return;
+    var d = before - after;
+    if (d <= 0) return;
+    var k = so + '|' + to, e = boatShots.get(k), t = bi.kr();
+    if (e) { e.dmg += d; e.n++; e.t1 = t; } else boatShots.set(k, { from: so, to: to, dmg: d, n: 1, t0: t, t1: t });
+    // 我方船逐条挨打账：按（船主, 船编号, 10 拍一格）累计，simdigest boats 用它把「被敌船打掉」和「自然损耗」分开
+    if (isSquad[to]) {
+      var hk = to + '|' + bQ.z.mn[tSlot] + '|' + Math.floor(t / 10);
+      boatHits.set(hk, (boatHits.get(hk) || 0) + d);
+    }
+  };
 
   // ---- 船从海上消失（靠岸后移除 / 兵掉到 0 沉没 / 主人阵亡）：记下消失时船上还剩多少兵
   var boatEnds = [];
@@ -511,7 +530,7 @@ function collector(cfg) {
     teams: teams, engineNames: names, allNames: allNames, poolAi: poolAi,
     deathT: deathT, deaths: deaths, leaveT: leaveT, donations: donations, squadCmds: squadCmds, spawnBox: spawnBox,
     ledgerWindow: LW, ledger: led, neighEvery: NE, neigh: neigh, finalBots: finalBots,
-    quota: { Y: quotaY, X: quotaX }, quotaLog: quotaLog, boatGifts: boatGifts, boatLands: boatLands, boatEnds: boatEnds, probes: probeOut, trace: traceOut,
+    quota: { Y: quotaY, X: quotaX }, quotaLog: quotaLog, boatGifts: boatGifts, boatLands: boatLands, boatEnds: boatEnds, boatShots: Array.from(boatShots.values()), boatHits: Array.from(boatHits.entries()).map(function (e) { var a = e[0].split('|'); return [+a[0], +a[1], +a[2] * 10, e[1]]; }), probes: probeOut, trace: traceOut,
     perTick: { t0: firstT, bal: balTick, terr: terrTick },
   };
 }
