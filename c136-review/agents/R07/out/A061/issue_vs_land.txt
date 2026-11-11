@@ -38,17 +38,18 @@ A. 全队逐快照（只列每 270 拍一行和差的峰值附近）：拍 | 有
   8820	1	93	93	0	-80 / -80
 
 B. 各号：最后一个计数（拍；来源）| 发出 | 落地 | 没落地（占发出）| 差的峰值（拍）
-  alex_k	8786（results.csv died）	109	80	29（27%）	1（180）
-  kaito9	8822（results.csv died）	118	93	25（21%）	3（7920）
-  leo_tx	8356（results.csv died）	159	125	34（21%）	7（1170）
-  noah88	882（results.csv left）	40	17	23（58%）	1（180）
-  riku_x	2559（results.csv died）	86	56	30（35%）	9（2070）
-  ryan_m	2646（results.csv died）	53	20	33（62%）	1（180）
-  sora_w	2523（results.csv died）	64	35	29（45%）	6（1260）
-  talon5	882（results.csv left）	40	15	25（62%）	1（180）
-  zero_7	1977（results.csv died）	45	17	28（62%）	1（180）
-  zexos1	6030（results.csv died）	75	46	29（39%）	4（900）
-  合计		789	504	285（36%）
+  alex_k	8786（results.csv died，已减去 29 条选点指令）	80	80	0（0%）	1（180）
+  kaito9	8822（results.csv died，已减去 25 条选点指令）	93	93	0（0%）	3（7920）
+  leo_tx	8356（results.csv died，已减去 31 条选点指令）	128	125	3（2%）	7（1170）
+  noah88	882（results.csv left，已减去 23 条选点指令）	17	17	0（0%）	1（180）
+  riku_x	2559（results.csv died，已减去 30 条选点指令）	56	56	0（0%）	9（2070）
+  ryan_m	2646（results.csv died，已减去 33 条选点指令）	20	20	0（0%）	1（180）
+  sora_w	2523（results.csv died，已减去 29 条选点指令）	35	35	0（0%）	6（1260）
+  talon5	882（results.csv left，已减去 25 条选点指令）	15	15	0（0%）	1（180）
+  zero_7	1977（results.csv died，已减去 28 条选点指令）	17	17	0（0%）	1（180）
+  zexos1	6030（results.csv died，已减去 29 条选点指令）	46	46	0（0%）	4（900）
+  合计		507	504	3（1%）
+  其中捐款：日志里 [HL-DISPATCH] 21 条、录像里我方捐款指令 21 条，没进录像 0 条（服务器按配额拒收的捐款不进录像）；其余（进攻 / 船）发出 486、落地 483、没落地 3（1%）
 
 C. 不靠影子的迟到下限（各号相加）：时段（按落地拍）| 落地条数 | 其中一定晚 >90 拍的 | 一定晚 >180 拍的
   0~600	87	0	0
