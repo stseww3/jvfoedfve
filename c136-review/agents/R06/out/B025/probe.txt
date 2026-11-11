@@ -1,0 +1,5 @@
+B025: 干净模拟器 vs 真引擎重放：全体真人在采样拍一致到 t=1435，没有不同
+        我方号分叉后的最大偏差（兵力相对值@拍，领土格数@拍）：没有
+        我方号逐拍第一处不同：没有
+B025: 影子重演到 t=1435，耗时 4.9s；日志快照核对 260/260；策略 c110，g.online=true
+影子的 isNoFullSend 置真拍（按代码 L3831-3843 的条件在真实余额轨迹上演化；影子的指令不执行，余额下跌只来自录像里真实执行的指令和挨打）：Mithridates@532，Mali@539，MI6@854，PizzaTime@602，Deadpool@637，BlueScreen@644，FedReserve@795，Chosokabe@1205，Alpha@622，Messi@595，DesertFox@462，Tryhard@539，Vatican City@605｜始终为假：Magikarp，Cuirassier，Golden Horde，OmniMan，Belgium，Ashanti，Khazar

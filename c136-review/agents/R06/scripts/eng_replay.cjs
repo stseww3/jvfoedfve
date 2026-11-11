@@ -7,7 +7,10 @@
 //   · 把指令入口（bB.qi.*）、经济结算（af.ee）、配额检查（ao.ei）、友军船移交（bB.kw.rE）、统计入口（bg.gz）各包一层，
 //     调用前后各读一次状态，差值记进账本，原函数照常执行。
 // 输出 out/<id>/sim_state.json，字段与 sim_replay.mjs 相同（simdigest.py / r06lib.py 通用），另加：
-//   quota（每个真人的已用受捐点数、全场额度）、quotaLog（每次配额检查）、boatGifts（船靠友军岸的移交）。
+//   quota（每个真人的已用受捐点数、全场额度）、quotaLog（每次配额检查）、boatGifts（船靠友军岸的移交）、
+//   episodes（我方每条进攻线从第一条生效的陆攻到线结束：条数、出兵、打掉、得地、退回、改挂无主地）、
+//   spawnAll / aiDeathT（全部玩家的出生框、内置 AI 的出局拍）、grids（若干拍的全图格子归属，另存 out/<id>/grids.bin.gz）。
+//   没生效的陆攻（ok=0）另记 adj（下令那一拍与目标接壤的格数）、tgAlive、lines（已有进攻线条数）、hasLine。
 //
 // 用法（先跑 sim_prep.py <id> 生成 out/<id>/sim_in.json）：
 //   bash c136-review/tools/run-heavy.sh node c136-review/agents/R06/scripts/eng_replay.cjs <id> [--to T] [--every N] [--trace p:t0:t1]
@@ -83,10 +86,59 @@ function collector(cfg) {
     var tr1 = has ? ae.hc(p, tg) : 0;
     var spent = cur.tr0 + cur.b0 - (tr1 + ah.hb[p]);
     var gained = ah.hN[p] - cur.t0;
-    if (isSquad[p]) { add(p, 'spent', tg, spent); add(p, 'gain', tg, gained); }
+    if (isSquad[p]) {
+      add(p, 'spent', tg, spent); add(p, 'gain', tg, gained);
+      var e = eps.get(p + '|' + tg);
+      if (!e) { e = epOpen(p, tg, bi.kr()); e.redir = 1; e.sent = cur.tr0; }
+      e.spent += spent; e.gain += gained;
+      if (!has) { var back = Math.max(0, ah.hb[p] - cur.b0); if (back > 0) add(p, 'ret', tg, back); epClose(e, bi.kr(), 'ring', back, 0); } else e.tr = tr1;
+    }
     if (tg < NP && isSquad[tg]) { add(tg, 'lost', p, gained); add(tg, 'dmg', p, cur.vb0 - ah.hb[tg] + (cur.vc0 - ae.hc(tg, p))); }
     if (cur.rg) traceOut.push('RING t=' + bi.kr() + ' ' + p + '→' + tg + ' fresh=' + cur.fresh + ' 兵 ' + cur.tr0 + '→' + tr1 + (has ? '' : '(结束)') + ' 余额 ' + cur.b0 + '→' + ah.hb[p] + ' 得 ' + gained + ' 格（领土 ' + ah.hN[p] + '）｜对方 领土 ' + cur.vt0 + ' 兵 ' + cur.vb0 + '→' + (tg < NP ? ah.hb[tg] : 0) + ' 反击兵 ' + cur.vc0 + '→' + (tg < NP ? ae.hc(tg, p) : 0));
   };
+
+  // ---- 进攻线账（只记我方号）：一条线从第一条生效的陆攻指令到线结束算一段
+  var eps = new Map(), epDone = [];
+  function epOpen(p, tg, t) {
+    var e = { p: p, to: tg, t0: t, n: 0, sent: 0, spent: 0, gain: 0, tr: 0, redir: 0, toTerr0: tg < NP ? ah.hN[tg] : -1, toBal0: tg < NP ? ah.hb[tg] : -1 };
+    eps.set(p + '|' + tg, e);
+    return e;
+  }
+  function epClose(e, t, how, ret, moved) {
+    e.t1 = t; e.end = how; e.ret = ret; e.moved = moved || 0;
+    e.toTerr1 = e.to < NP ? ah.hN[e.to] : -1; e.toAlive1 = e.to < NP ? (ah.nU[e.to] !== 0 ? 1 : 0) : -1;
+    epDone.push(e); eps.delete(e.p + '|' + e.to);
+  }
+  // 线不是在自己这一圈里结束的（目标被别人清掉后引擎把线改挂到无主地；或自己出局）：每拍查一遍
+  function epSweep(t) {
+    var gone = [];
+    eps.forEach(function (e) { if (!ae.kF(e.p, e.to)) gone.push(e); });
+    for (var i = 0; i < gone.length; i++) {
+      var e = gone[i], dead = ah.nU[e.p] === 0;
+      var ne = eps.get(e.p + '|' + NP);
+      var np = (!dead && e.to !== NP && ae.kF(e.p, NP)) ? ae.hc(e.p, NP) : 0;
+      var moved = Math.max(0, np - (ne ? ne.tr : 0));
+      epClose(e, t, dead ? 'dead' : (moved > 0 ? 'redirect' : 'gone'), (dead || moved > 0) ? 0 : e.tr, moved);
+      if (moved > 0) {
+        if (!ne) { ne = epOpen(e.p, NP, t); ne.redir = 1; }
+        ne.sent += moved; ne.tr = np; ne.from = e.to;
+      }
+    }
+  }
+  // 下令那一拍 p 与 tg 接壤的格数（tg = NP 时数挨着的无主地格）
+  function borderCount(p, tg) {
+    var fb = ad.fb, B = ah.hF[p], n = 0;
+    if (!B) return 0;
+    for (var i = 0; i < B.length; i++) {
+      var b = B[i];
+      if (!(ad.h9(b) && ad.fR(b) === p)) continue;
+      for (var q = 0; q < 4; q++) {
+        var c = b + fb[q];
+        if (tg === NP) { if (ad.fQ(c)) n++; } else if (ad.h9(c) && ad.fR(c) === tg) n++;
+      }
+    }
+    return n;
+  }
 
   // ---- 引擎自己的统计入口：12 = 白白损失（回兵撞硬顶、船靠自己岸溢出、友军船被拒、欠债罚金），15 = 船在海上损失
   var o_gz = bg.gz;
@@ -154,8 +206,14 @@ function collector(cfg) {
     var cost = B0 - ah.hb[player];
     var ok = cost > 0 ? 1 : 0;
     if (!ok) noEffect++;
-    squadCmds.push({ t: bi.kr(), k: 'atk', p: player, to: to, raw: tgt, pct: jC, ok: ok, B0: B0, sent: sent, fee: cost - sent, toTerr: toTerr, toBal: toBal, myTerr: myTerr });
-    if (isSquad[player] && ok) { add(player, 'atkOut', to, sent); add(player, 'fee', -1, cost - sent); }
+    var rec = { t: bi.kr(), k: 'atk', p: player, to: to, raw: tgt, pct: jC, ok: ok, B0: B0, sent: sent, fee: cost - sent, toTerr: toTerr, toBal: toBal, myTerr: myTerr };
+    if (isSquad[player] && !ok) { rec.adj = borderCount(player, tgt); rec.tgAlive = tgt < NP ? (ah.nU[tgt] !== 0 ? 1 : 0) : -1; rec.lines = ae.gg(player); rec.hasLine = ae.kF(player, tgt) ? 1 : 0; }
+    squadCmds.push(rec);
+    if (isSquad[player] && ok) {
+      add(player, 'atkOut', to, sent); add(player, 'fee', -1, cost - sent);
+      var e = eps.get(player + '|' + to) || epOpen(player, to, bi.kr());
+      e.n++; e.sent += sent; e.tr = ae.kF(player, to) ? ae.hc(player, to) : 0;
+    }
   };
   // 翻山陆攻（录像指令号 10，只有山地图有）：bB.qi.i2(player, pct, 点的格子, 目标)。出兵 = (pct+1)/1024×余额，另扣 max(余额/10, 1000)。
   // 记成 k='atk' 且 mtn=1（之后的进攻线与普通陆攻相同）；引擎没有这个入口的版本直接跳过
@@ -180,7 +238,11 @@ function collector(cfg) {
     var ok = cost > 0 ? 1 : 0;
     if (!ok) noEffect++;
     squadCmds.push({ t: bi.kr(), k: 'atk', mtn: 1, cell: fL, p: player, to: to, raw: tgt, pct: jC, ok: ok, B0: B0, sent: sent, fee: cost - sent, toTerr: toTerr, toBal: toBal, myTerr: myTerr });
-    if (isSquad[player] && ok) { add(player, 'atkOut', to, sent); add(player, 'fee', -1, cost - sent); }
+    if (isSquad[player] && ok) {
+      add(player, 'atkOut', to, sent); add(player, 'fee', -1, cost - sent);
+      var e2 = eps.get(player + '|' + to) || epOpen(player, to, bi.kr());
+      e2.n++; e2.sent += sent; e2.tr = ae.kF(player, to) ? ae.hc(player, to) : 0;
+    }
   };
   var o_qv = Q.qv;
   Q.qv = function (player, jC, qu) {
@@ -477,6 +539,13 @@ function collector(cfg) {
   for (var h2 = 0; h2 < H; h2++) deathT.push(-1);
   var st = bi.a3I, steps = 0, lastT = -1, spawnDone = false, firstT = -1;
   var balTick = {}, terrTick = {};
+  var aiDeathT = {}, spawnAll = {}, grids = [], gridAt = {};
+  for (var g0 = 0; g0 < (cfg.grids || []).length; g0++) gridAt[cfg.grids[g0]] = 1;
+  function snapGrid(t) {
+    var n = bV.fk * bV.fl, g = new Uint16Array(n);
+    for (var c = 0; c < n; c++) { var a = c << 2; g[c] = !ad.fU(a) ? 65535 : (ad.fQ(a) ? NP : ad.fR(a)); }
+    grids.push({ t: t, g: g });
+  }
   for (var s9 = 0; s9 < squad.length; s9++) { balTick[squad[s9]] = []; terrTick[squad[s9]] = []; }
   function onTick(t) {
     for (var s8 = 0; s8 < squad.length; s8++) {
@@ -497,6 +566,9 @@ function collector(cfg) {
         leaveT[p] = { t: t, terr: ah.hN[p], bal: ah.hb[p], polled: 1 };
       }
     }
+    for (var pa2 = H; pa2 < NP; pa2++) if (aiDeathT[pa2] === undefined && spawnAll[pa2] && ah.nU[pa2] === 0) aiDeathT[pa2] = t;
+    epSweep(t);
+    if (gridAt[t] && t !== firstT) snapGrid(t);
     doChecks(t);
     doProbes(t);
     if (t % NE === 0) sampleNeigh(t);
@@ -521,6 +593,8 @@ function collector(cfg) {
       firstT = t;
       for (var p3 = 0; p3 < NP; p3++) if (fX[p3] > nT) nT = fX[p3];
       for (var s3 = 0; s3 < squad.length; s3++) { var q3 = squad[s3]; spawnBox[q3] = [ah.jS[q3], ah.jU[q3], ah.jT[q3], ah.jV[q3], ah.hN[q3]]; }
+      for (var p4 = 0; p4 < NP; p4++) if (ah.nU[p4] !== 0) spawnAll[p4] = [ah.jS[p4], ah.jU[p4], ah.jT[p4], ah.jV[p4], ah.hN[p4], ah.hb[p4]];
+      snapGrid(t);
       sample(t);
     }
     if (t === lastT) continue;
@@ -529,6 +603,8 @@ function collector(cfg) {
     if (t >= TO) break;
   }
   if (ticks[ticks.length - 1] !== lastT) sample(lastT);
+  if (!grids.length || grids[grids.length - 1].t !== lastT) snapGrid(lastT);
+  eps.forEach(function (e) { e.t1 = lastT; e.end = 'open'; e.ret = 0; e.moved = 0; e.toTerr1 = e.to < NP ? ah.hN[e.to] : -1; e.toAlive1 = e.to < NP ? (ah.nU[e.to] !== 0 ? 1 : 0) : -1; epDone.push(e); });
 
   var led = [];
   ledger.forEach(function (v, k) {
@@ -557,6 +633,7 @@ function collector(cfg) {
     ledgerWindow: LW, ledger: led, neighEvery: NE, neigh: neigh, finalBots: finalBots,
     quota: { Y: quotaY, X: quotaX }, quotaLog: quotaLog, boatGifts: boatGifts, boatLands: boatLands, boatEnds: boatEnds, boatShots: Array.from(boatShots.values()), boatHits: Array.from(boatHits.entries()).map(function (e) { var a = e[0].split('|'); return [+a[0], +a[1], +a[2] * 10, e[1]]; }), probes: probeOut, trace: traceOut,
     perTick: { t0: firstT, bal: balTick, terr: terrTick },
+    episodes: epDone, spawnAll: spawnAll, aiDeathT: aiDeathT, __grids: grids,
   };
 }
 /* eslint-enable no-undef */
@@ -581,15 +658,23 @@ try {
 const cfg = {
   squad: inp.squad, checks: inp.checks, probes: inp.probes || [], every: +opt('--every', 30), to: +opt('--to', 1e9),
   trace: trace ? trace.split(':').map(Number) : null, pool,
+  grids: String(opt('--grids', '150,300,450,630,900,1200,1500,1800,2400,3000')).split(',').filter(Boolean).map(Number),
 };
 const fn = h.run('(' + collector.toString() + ')');
 const res = fn(cfg);
 const out = Object.assign({ matchId: mid, replayPath: inp.replayPath, producer: 'engine-live_game_js(R04 host)', map: String(info.map), wallMs: Date.now() - t0 }, res);
 const tr = out.trace;
 delete out.trace;
+const gridList = out.__grids || [];
+delete out.__grids;
+out.grids = { ticks: gridList.map((x) => x.t), W: out.W, H: out.Hmap, neutral: 512, notLand: 65535, file: 'grids.bin.gz' };
 // 只重放到一半（--to）或只为逐拍跟踪（--trace）的运行不覆盖整局的 sim_state.json，另写一个文件
 const partial = +opt('--to', 1e9) < 1e9 || !!trace;
 fs.writeFileSync(path.join(OUT, mid, partial ? 'sim_state.partial.json' : 'sim_state.json'), JSON.stringify(out));
+if (!partial && gridList.length) {
+  const bufs = gridList.map((x) => Buffer.from(new Uint8Array(x.g.buffer, x.g.byteOffset, x.g.byteLength)));
+  fs.writeFileSync(path.join(OUT, mid, 'grids.bin.gz'), require('zlib').gzipSync(Buffer.concat(bufs), { level: 6 }));
+}
 for (const l of tr) console.log(l);
 const c = out.check;
 console.log(`${mid}: 真引擎重放到 t=${out.endT}（over=${out.over}，出生阶段后首拍 ${out.firstT}），耗时 ${((Date.now() - t0) / 1000).toFixed(1)}s；真人 ${out.humans}，队 ${out.nTeams}，陆地 ${out.land}；没生效的指令 ${out.rejectedCmds} 条`);
