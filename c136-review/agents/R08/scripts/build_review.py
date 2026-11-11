@@ -146,6 +146,14 @@ def auto_deaths(F, notes):
     return out
 
 
+def load_truth(mid):
+    """有真引擎重演产物（out/<mid>/resim.json）的局，把全场真值并进 timeline / deaths。"""
+    if not os.path.exists(os.path.join(ROOT, "out", mid, "resim.json")):
+        return None
+    import truth
+    return truth, truth.Truth(mid)
+
+
 def build(mid):
     F = facts.build(mid)
     F["dons"] = facts.donation_ledger(F)
@@ -207,6 +215,21 @@ def build(mid):
     for k in ("peerComparison", "teamSplitNotes"):
         if k in R:
             doc[k] = R[k]
+    tr = load_truth(mid)
+    if tr:
+        truth, T = tr
+        for pt in doc["timeline"]:
+            if pt["t"] <= T.end + 30:
+                pt["truth"] = truth.timeline_point(T, pt["t"])
+            if str(pt.get("event", "")).endswith(" left"):
+                pt["note"] = "结果表里的拍是掉线号冻结的本地拍；录像里真正的离开拍见 deaths[].truth.engineLeftTick"
+        if doc["timeline"] and doc["timeline"][-1]["t"] < T.end:
+            doc["timeline"].append(dict(t=T.end, src="真引擎重演的最后一拍", truth=truth.timeline_point(T, T.end)))
+        for d in doc["deaths"]:
+            if isinstance(d.get("me"), int) and d["me"] < T.H:
+                d["truth"] = truth.death_summary(T, d["me"])
+        doc["context"]["truthSource"] = dict(replayFrom=T.R.get("replayFrom"), peer=T.R.get("peer"), engineEndTick=T.end,
+                                             trajRowsExact=f"{T.R['validate']['bothExact']}/{T.R['validate']['rows']}")
     os.makedirs(REVIEWS, exist_ok=True)
     out = os.path.join(REVIEWS, f"{mid}.json")
     with open(out, "w", encoding="utf-8") as f:

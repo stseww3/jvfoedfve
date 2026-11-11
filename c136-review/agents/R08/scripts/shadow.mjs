@@ -247,7 +247,10 @@ const res = {
   traces,
 };
 fs.mkdirSync(path.join(OUT, mid), { recursive: true });
-fs.writeFileSync(path.join(OUT, mid, side === 'peer' ? 'shadow_peer.json' : 'shadow.json'), JSON.stringify(res));
+// --tag X：写到 shadow_X.json（例如 --guard 0 --tag g0 做「不模拟静默窗」的对照，不覆盖主产物）
+const tag = opt('tag', null);
+fs.writeFileSync(path.join(OUT, mid, tag ? `shadow_${tag}.json` : side === 'peer' ? 'shadow_peer.json' : 'shadow.json'), JSON.stringify(res));
+if (tag) console.log(`  isNoFullSend 置位（${tag}，guard=${guardTicks}）：${bots.filter((b) => b.locks.length).map((b) => `${b.name}@${b.locks[0].t}`).join(' ') || '无'}（${bots.filter((b) => b.locks.length).length}/${bots.length} 个号）`);
 console.log(`${mid}: 影子 ${bots.length} 个号，策略 ${stratName}，到 t=${out.endTick}，总耗时 ${((Date.now() - t0) / 1000).toFixed(1)}s（策略 ${(actMs / 1000).toFixed(1)}s）`);
 if (!args.includes('--quiet')) {
   for (const b of bots) {

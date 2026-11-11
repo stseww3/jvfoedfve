@@ -12,7 +12,7 @@
   [TE] 交战账：我方每个号打谁/被谁打（整局合计，按对手）   [TF] 编队内部互打、与同房另一支编队互打
   [TG] 指令账：每个号各类指令条数、没生效的条数、叠加到已有进攻上的条数、重发串
   [TH] 捐款账（真值：是否成交、到账、扣税、收款人额度）   [TI] 离开的号：离开时的地/兵，之后被谁吃掉
-  [TJ] 船靠岸到队友身上（兵是否蒸发）
+  [TJ] 船靠岸到队友身上（兵是否蒸发）   [TK] 余额单窗跌 ≥30% 的真值对账
 名字后缀：*=本编队  +=同房另一支编队  ~=已离开的空壳  #=内置 AI  T<n>=队号
 """
 import json
@@ -411,6 +411,59 @@ def sec_TJ(T, out):
         out.append(f"     {l[0]} {T.nm(l[1], l[0])}→{T.nm(l[2], l[0])} {l[3]} | {l[4]} | {l[5]}/{l[6]}")
 
 
+def sec_TK(T, out, win=90, frac=0.30):
+    """余额单窗（90 拍）跌 ≥30% 的真值对账：自己执行的指令（陆攻/船/捐款，含手续费与税）、挨打被打掉的余额，剩下的差额=利息/回流/误差。"""
+    R = T.R
+    rows = []
+    for name, info in sorted(R["squad"].items(), key=lambda kv: kv[1]["id"]):
+        p = info["id"]
+        if p < 0 or info.get("peer"):
+            continue
+        for t0 in range(90, T.end - win + 1, win):
+            t1 = t0 + win
+            if T.terr(p, t0) <= 0 or T.is_husk(p, t0):
+                continue
+            b0, b1 = T.bal(p, t0), T.bal(p, t1)
+            if b0 < 1000 or b1 > (1 - frac) * b0:
+                continue
+            atk = boat = don = 0
+            n_atk = n_boat = n_don = 0
+            tgts = defaultdict(int)
+            for c in R["cmdLog"]:
+                if c[1] != p or not (t0 < c[0] <= t1) or not c[5]:
+                    continue
+                if c[2] == 1:
+                    atk += c[6] + c[7]
+                    n_atk += 1
+                    tgts[min(c[4], NEUTRAL)] += c[6]
+                elif c[2] == 3:
+                    boat += c[6] + c[7]
+                    n_boat += 1
+                elif c[2] == 2:
+                    don += c[6] + c[7]
+                    n_don += 1
+            hit = 0
+            who = defaultdict(int)
+            for t, a, d, tiles, burnt, dB, dS, n in R["pairLog"]:
+                if d == p and t0 < t <= t1:
+                    hit += dB + dS
+                    who[a] += dB + dS
+            resid = (b1 - b0) + atk + boat + don + hit
+            top_t = max(tgts.items(), key=lambda kv: kv[1])[0] if tgts else None
+            top_w = max(who.items(), key=lambda kv: kv[1])[0] if who else None
+            cause = max((("陆攻", atk), ("发船", boat), ("捐款", don), ("挨打", hit)), key=lambda kv: kv[1])[0]
+            rows.append((t0, name, p, b0, b1, T.terr(p, t0), T.terr(p, t1), atk, n_atk, top_t, boat, n_boat, don, n_don, hit, top_w, resid, cause))
+    out.append(f"[TK] 余额单窗（{win} 拍）跌 ≥{int(frac * 100)}% 的真值对账（{len(rows)} 段）：窗口 号 | 余额 前→后（跌幅）| 地 前→后 | 陆攻 条数/兵+费→主要目标 | 船 条数/兵+费 | 捐款 笔数/到账+税 | 挨打被打掉（主要来源）| 其余（利息、回流等）| 主因")
+    for t0, name, p, b0, b1, l0, l1, atk, n_atk, top_t, boat, n_boat, don, n_don, hit, top_w, resid, cause in sorted(rows):
+        tt = "" if top_t is None else "→" + ("空地" if top_t >= NEUTRAL else f"AI{top_t}" if top_t >= T.H else T.nm(top_t, t0))
+        ww = "" if top_w is None else "（" + (f"AI{top_w}" if top_w >= T.H else T.nm(top_w, t0)) + "）"
+        out.append(f"     {t0}-{t0 + win} {name}*T{T.team(p)} | {b0}→{b1}（-{100 * (b0 - b1) / b0:.0f}%）| {l0}→{l1} | {n_atk}/{atk}{tt} | {n_boat}/{boat} | {n_don}/{don} | {hit}{ww} | {resid:+d} | {cause}")
+    by = defaultdict(int)
+    for r in rows:
+        by[r[-1]] += 1
+    out.append("     主因合计：" + "，".join(f"{k} {v}" for k, v in sorted(by.items(), key=lambda kv: -kv[1])))
+
+
 def bot_detail(T, name, t0, t1, every):
     p = T.id_of(name)
     o = T.sq_of(name)
@@ -455,6 +508,52 @@ def cmds_detail(T, name, t0, t1):
             print(f"  {c[0]:>5} | 撤军 目标={T.nm(min(c[3], NEUTRAL), c[0])} | {c[5]} | 退回 {c[6]} | {c[8]}/{c[9]} |")
         else:
             print(f"  {c[0]:>5} | {KIND.get(k, k)} {c[3]} {c[4]} | {c[5]} | {c[6]} | {c[8]}/{c[9]} |")
+
+
+def timeline_point(T, t):
+    """给复盘 JSON 的 timeline 用：t 拍（取不晚于 t 的最近快照）的全场真值。"""
+    R = T.R
+    i = T.at(t)
+    tl = R["teamLand"][i]
+    terr = R["snapTerr"][i]
+    ts = T.snapT[i]
+    act = [p for p in range(T.H) if T.active(p, ts) and terr[p] > 0]
+    sq = [p for p in T.sqIds if T.active(p, ts) and terr[p] > 0]
+    husk = sum(terr[p] for p in T.sqIds if T.is_husk(p, ts))
+    sq_land = sum(terr[p] for p in sq)
+    all_land = sum(terr[p] for p in act)
+    by = defaultdict(lambda: [0, 0])
+    for p in sq:
+        by[T.team(p)][0] += 1
+        by[T.team(p)][1] += terr[p]
+    d = dict(snapT=ts,
+             teamSharePct={f"T{k}": round(pct(tl[k], T.land), 1) for k in range(1, T.nTeams + 1)},
+             builtInAiSharePct=round(pct(R["botLand"][i], T.land), 1),
+             activeHumansByTeam={f"T{k}": sum(1 for p in act if T.team(p) == k) for k in range(1, T.nTeams + 1)},
+             squadActive=len(sq), squadActiveSharePct=round(pct(sq_land, T.land), 2),
+             squadHuskSharePct=round(pct(husk, T.land), 2),
+             squadPerCapitaVsRoomActive=round((sq_land / len(sq)) / (all_land / len(act)), 2) if sq and act and all_land else None,
+             squadByTeam={f"T{k}": dict(bots=v[0], sharePct=round(pct(v[1], T.land), 2)) for k, v in sorted(by.items())})
+    if T.peerIds:
+        pe = [p for p in T.peerIds if T.active(p, ts) and terr[p] > 0]
+        d["peerActive"] = len(pe)
+        d["peerActiveSharePct"] = round(pct(sum(terr[p] for p in pe), T.land), 2)
+    return d
+
+
+def death_summary(T, p, span=420):
+    """给复盘 JSON 的 deaths 用：引擎里的离开拍 / 阵亡拍，阵亡前 span 拍谁拿走了地、花了多少兵。"""
+    lt, dt = T.leftT[p], T.deathT[p]
+    d = dict(engineLeftTick=lt if lt >= 0 else None, engineDeathTick=dt if dt >= 0 else None)
+    if lt >= 0:
+        d["leftWith"] = dict(terr=T.terr(p, lt), bal=T.bal(p, lt))
+    if dt >= 0:
+        tot = pair_totals(T, max(0, dt - span), dt + 30)
+        takers = sorted(((a, r) for (a, dd), r in tot.items() if dd == p and r[0] > 0), key=lambda kv: -kv[1][0])[:3]
+        d["takersLast420"] = [dict(by=T.nm(a, dt), tiles=r[0], troopsSpent=r[1], perTile=round(r[1] / max(r[0], 1), 1)) for a, r in takers]
+        mine = sorted(((dd, r) for (a, dd), r in tot.items() if a == p and r[1] > 0), key=lambda kv: -kv[1][1])[:2]
+        d["ownAttacksLast420"] = [dict(on=T.nm(dd, dt), tiles=r[0], troopsSpent=r[1], perTile=round(r[1] / max(r[0], 1), 1)) for dd, r in mine]
+    return d
 
 
 def death_detail(T, name, span=420):
@@ -502,7 +601,7 @@ def main():
         cmds_detail(T, opt("--cmds"), t0, t1)
         return 0
     out = []
-    for sec in (sec_TA, sec_TB, sec_TC, sec_TD, sec_TE, sec_TF, sec_TG, sec_TH, sec_TI, sec_TJ):
+    for sec in (sec_TA, sec_TB, sec_TC, sec_TD, sec_TE, sec_TF, sec_TG, sec_TH, sec_TI, sec_TJ, sec_TK):
         sec(T, out)
     txt = "\n".join(out)
     with open(os.path.join(OUT, mid, "truth.txt"), "w", encoding="utf-8") as f:

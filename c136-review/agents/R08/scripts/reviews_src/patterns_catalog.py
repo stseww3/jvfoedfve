@@ -100,6 +100,80 @@ CATALOG = [
          definition="≥1 个号最后一条 HL-SPAWN-BACKEND 的点，与最后一条 BACKEND-SPAWN-COORD 里分给它的点不一致（相差 >4 像素）；"
                     "兑现口径：按各号最后收到的点算，有两个队友相距不到最后一解 minSep 的一半",
          detect="scripts/patterns.py: sp_mixed_solutions"),
+    # ================= 以下为 B 组（有录像、能做真引擎重演）新增 =================
+    # 口径：「真值」= scripts/resim_r08.mjs 用录像逐拍重演 512 个玩家得到的全场状态（out/<局>/resim.json）；
+    #       「影子决策」= scripts/shadow.mjs 在真值的每一拍上跑干净策略源码、只记不发得到的「不落后的客户端此刻会发什么」；
+    #       「时延」= 录像里的执行拍 − 配上的影子决策拍（scripts/shadowcmp.py，同类型、同 pct、同目标）。
+    # ---- 输入输出 / 客户端（IO）----
+    dict(id="NEW-IO-01", prefix="IO", name="客户端卡顿波：指令比决策晚几十到几百拍才落地",
+         definition="按执行拍每 180 拍一窗，本编队配上影子的已执行指令时延中位 ≥35 拍（5 个服务器回合）的窗口连续 ≥2 个记为一波；"
+                    "记起止拍、峰值窗口的中位 / P90、受影响号数（该波内自身中位 ≥35 的号）、波内陆攻落地时已无效的比例",
+         detect="scripts/shadowcmp.py [SF][SB]（需要录像）"),
+    dict(id="NEW-IO-02", prefix="IO", name="补拍成批落地：一个服务器拍里冲出 ≥3 条指令，原本分散在 ≥30 拍里",
+         definition="同一个号同一个执行拍 ≥3 条指令，且配上的影子决策拍跨度 ≥30 拍；记批数、每批条数（实测上限 9 条）、"
+                    "该批合计派出占执行前余额的比例；≥50% 记为『清仓批』。只有录像没有影子时退回『同一执行拍 ≥3 条』",
+         detect="scripts/shadowcmp.py [SB2]；scripts/truth.py [TG]"),
+    dict(id="NEW-IO-03", prefix="IO", name="旧比例放大：单子按余额比例下，落地时余额已是下单时的 ≥2 倍",
+         definition="时延 ≥35 拍、落地生效的陆攻或发船，实发兵力（执行时余额×(pct+1)/1024）≥ 2×本意兵力（决策时余额×(pct+1)/1024）且实发 ≥5000；"
+                    "记条数、最大倍数、多发出去的兵",
+         detect="scripts/shadowcmp.py [SG]"),
+    dict(id="NEW-IO-04", prefix="IO", name="掉线成空壳：号在录像里执行『离开』，领土和兵留给引擎托管",
+         definition="真值 leftT ≥ 0 且离开时领土 >0；记号数、离开拍、离开时领土 / 余额合计，以及这些地最后被哪一队拿走（按队合计）",
+         detect="scripts/truth.py [TI]"),
+    dict(id="NEW-IO-05", prefix="IO", name="决策了没落地：影子在卡顿窗里要发的指令，录像里找不到",
+         definition="影子决策拍落在卡顿波内的指令里，后来在录像中配不上的比例 ≥40%；另记 HL-DONATE 有日志、录像没有的笔数及拒因（scripts/donrej.py：受捐方已死 / 超额度 / 到硬上限 / 没发到引擎）",
+         detect="scripts/shadowcmp.py [SC]；scripts/donrej.py"),
+    # ---- 执行层 ----
+    dict(id="NEW-EX-04", prefix="EX", name="发令后 7 拍额度自检：在线时被 8 拍静默窗整个跳过；去掉静默窗则大面积误锁",
+         definition="影子按『发令后 8 拍不调用策略』模拟时，updateShadowQuota 的 7 拍检查窗一次都没执行、isNoFullSend 置位号数 = 0；"
+                    "同一局把静默窗设为 0 再跑，置位号数 ≥1。记两种设定下的置位号数",
+         detect="scripts/shadow.mjs --guard 0 --tag g0 对比 --tag g8"),
+    # ---- 出生 ----
+    dict(id="NEW-SP-04", prefix="SP", name="同像素 / 贴脸出生：两个编队号的引擎落点相距 <40 像素",
+         definition="真值出生点两两距离 <40 像素的号对数（0 像素另计）；兑现：该对里较小的号 t=630 领土 < 全房在线真人中位的 70%",
+         detect="scripts/spawncheck.py [PB]"),
+    dict(id="NEW-SP-05", prefix="SP", name="最后一条出生指派没执行",
+         definition="引擎落点 ≠ 日志里该号最后一条 [HL-SPAWN] 的点；记号数 / 总号数、人均指派条数、『最后一条指派相同』的号对数",
+         detect="scripts/spawncheck.py [PC]"),
+    # ---- 经济 ----
+    dict(id="NEW-EC-05", prefix="EC", name="贴着白给的人机不出手：防人机留底 × 最小出手比例",
+         definition="t<1500 的影子普查（每 30 拍）里，该号最便宜的人机邻居每格 ≤3 兵、吃光所需 ≤5% 余额，原因栏却是 floor:sb 或 minShare(floor:sb)，连续 ≥3 条（≥60 拍）",
+         detect="scripts/shadow.mjs census + --trace"),
+    dict(id="NEW-EC-06", prefix="EC", name="人机收割落后：t=630~1260 人均吃到的人机地不到其它真人的一半",
+         definition="真值逐对战损账里，(630,1260] 本编队在线号人均从内置 AI 手里拿到的格数 < 0.5×其它真人人均",
+         detect="scripts/harvest.py"),
+    # ---- 捐款 ----
+    dict(id="NEW-DN-04", prefix="DN", name="捐给空壳：受捐方已经离开",
+         definition="已执行的捐款里，受捐方在执行拍是空壳（leftT ≤ 执行拍 < 阵亡拍）；记笔数、到账、税，以及这些空壳最后被谁吃掉",
+         detect="scripts/truth.py [TH]"),
+    dict(id="NEW-DN-05", prefix="DN", name="名字池误认：给名字撞上编队名字池的陌生真人捐款 / 协防",
+         definition="HL-DONATE / HL-ASSIST 的受益人不是本编队的号（按引擎号核对），却通过了 isOurSquadBot（名字池）；记笔数、到账、税",
+         detect="scripts/truth.py [TH] + 身份表"),
+    dict(id="NEW-DN-06", prefix="DN", name="同拍多号捐同一人：第一笔把受捐方顶到上限，其余被拒",
+         definition="≥2 个号在同一个本地拍对同一受捐方打印 HL-DONATE，其中 ≥1 笔没进录像（拒因：到 150×领土硬上限或超额度）",
+         detect="scripts/donrej.py"),
+    # ---- 海上 ----
+    dict(id="NEW-SE-02", prefix="SE", name="船靠岸在同队真人的地上：兵并给队友，超额度时整船蒸发",
+         definition="真值 landings 里地主是同队真人；记次数、船上兵合计、到账 0（蒸发）的次数与兵数",
+         detect="scripts/truth.py [TJ]"),
+    # ---- 进攻 ----
+    dict(id="NEW-AT-05", prefix="AT", name="清仓打一个真人，兵压在进攻槽里，本土被别人吃掉",
+         definition="180 拍内对同一个真人目标的陆攻 / 发船合计派出 ≥70% 余额，打完本土密度 <10；兑现：420 拍内阵亡，且拿走最多地的不是该目标",
+         detect="scripts/truth.py [TK] + --death"),
+    # ---- 多队 ----
+    dict(id="NEW-MT-01", prefix="MT", name="编队被分到多个队",
+         definition="真值里本编队的号分属 ≥2 个队；记各队号数、各分支峰值份额、哪个分支所在队获胜",
+         detect="scripts/truth.py [TA]"),
+    dict(id="NEW-MT-02", prefix="MT", name="跨队协防戳刺：为别的队里的编队号出兵",
+         definition="HL-ASSIST 的受益人与出手号不同队；记条数、派出兵、受益人是空壳或编队外真人的条数",
+         detect="scripts/truth.py + in_game.log HL-ASSIST"),
+    # ---- 终局 ----
+    dict(id="NEW-EG-01", prefix="EG", name="小号顶着软上限等死：领土 <6000、密度 ≥85，被大号高价买走",
+         definition="t≥2000 连续 ≥10 条真值快照（每 270 拍）领土 <6000、密度 ≥85、领土变化 <5%；兑现：阵亡，且主攻手领土 ≥3×该号、买价 ≥200 兵/格",
+         detect="scripts/truth.py [TD][TE]"),
+    dict(id="NEW-EG-G1", prefix="EG", name="（正面）终局吃空壳和残血邻居持续长大",
+         definition="t≥3500 起 1800 拍内领土 +≥60%，新增领土里 ≥50% 来自空壳或已被第三方打掉一半以上领土的邻居，且该号存活到终局",
+         detect="scripts/truth.py [TE]"),
 ]
 
 BY_ID = {p["id"]: p for p in CATALOG}
