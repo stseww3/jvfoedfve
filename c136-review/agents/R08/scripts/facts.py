@@ -190,7 +190,9 @@ def build(mid, room=None):
                   anyBotWon=any_won, peakSquadLandShare=round(peak_sq / land, 4),
                   peakPrimaryTeamShareSeen=round(max(prim_sh), 4) if prim_sh else None,
                   ourFinalTeamShare=round(prim_sh[-1], 4) if prim_sh else None)
-        oc["resultLabel"] = "won" if oc["primaryTeamWon"] else "lost"
+        # 自由混战的房间（没有一个号带队伍号）：没有「主队」可言，有号拿到 won 就按赢记，并标 ffaWin
+        oc["ffaWin"] = bool(primary is None and any_won)
+        oc["resultLabel"] = "won" if oc["primaryTeamWon"] or oc["ffaWin"] else "lost"
         card.update(mapLand=land, seededPlayers=rm.get("seeded") or card.get("seededPlayers"), squadBots=len(bots),
                     ourPrimaryTeam=primary, teamSplitCounts=dict(sorted(split.items())), distinctSquadTeams=len(split), outcome=oc,
                     roomIdx=sel_room, roomsInBundle=len(rooms_meta), cardOriginal=orig)

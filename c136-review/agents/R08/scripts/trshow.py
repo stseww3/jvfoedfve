@@ -9,3 +9,9 @@ for o in D['traces']:
     if o.get('core'): print('     core',o['core'])
     for r in o.get('offers',[]):
         print('     offer',{k:(v if k!='name' else v[:16]) for k,v in r.items()})
+    w=o.get('walk')
+    if w:
+        print(f"     walk B={w['B']} L={w['L']} fee={w['fee']} worth={w['worth']} cheap={w['cheap']} over={w['over']} minCmd={w['minCmd']} nHumans={w['nHumans']} humanNb={w['humanNbCount']}")
+        for r in w['rows']:
+            print('       ', {k:(v if k!='name' else v[:16]) for k,v in r.items()})
+

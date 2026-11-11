@@ -247,7 +247,7 @@ def build(mid):
     R = mod.R
     oc = card["outcome"]
     label = oc["resultLabel"]
-    result = "won" if oc["primaryTeamWon"] else "lost"
+    result = "won" if oc["primaryTeamWon"] or oc.get("ffaWin") else "lost"
     acc = [d for d in F["dons"] if d["accepted"]]
     doc = dict(
         matchId=mid, reviewer="R08", protocol="v2.0",

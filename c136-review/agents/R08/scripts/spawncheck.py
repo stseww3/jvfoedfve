@@ -26,7 +26,17 @@ def analyse(mid):
     T = Truth(mid)
     R = T.R
     seqs = defaultdict(list)
-    n_lines = n_backend = 0
+    n_lines = n_backend = n_other = 0
+    # 一个包里混了几个房间时，几个房间的玩家号会撞：只收「标签属于录像所在房间、且玩家号对得上」的行
+    import r08lib
+    lm, info = r08lib.room_label_map(mid)
+    ok_labels = None
+    if lm is not None:
+        # 录像所在的房间不一定是主房间：按「玩家号 + 录像头里的名字在这个号的名字链里」认
+        ok_labels = defaultdict(set)
+        for key, inf in info.items():
+            if isinstance(inf, dict) and inf.get("me") in T.sqIds and T.names[inf["me"]] in inf.get("names", []):
+                ok_labels[inf["me"]].update(inf["names"])
     with open(os.path.join(DATA, "bundles", mid, "in_game.log"), encoding="utf-8", errors="replace") as f:
         for l in f:
             # 本地兜底选点打 [HL-SPAWN]，后端协调器的指派打 [HL-SPAWN-BACKEND]（11-10 14:08 UTC 起无 Boss 也启用）；两种都是一次出生指派
@@ -34,6 +44,11 @@ def analyse(mid):
                 continue
             m = re.search(r"me=(\d+) .*?-> \((\d+),(\d+)\)", l)
             if m:
+                lab = re.search(r"\t\[([^\]]+)\] \[HL-SPAWN", l)
+                if ok_labels is not None and lab:
+                    if lab.group(1).replace("[Nope] ", "") not in ok_labels.get(int(m.group(1)), ()):
+                        n_other += 1
+                        continue
                 n_lines += 1
                 n_backend += "[HL-SPAWN-BACKEND]" in l
                 seqs[int(m.group(1))].append((int(m.group(2)), int(m.group(3))))
@@ -59,7 +74,7 @@ def analyse(mid):
         for b in rows[i + 1:]:
             if a["last"] and a["last"] == b["last"]:
                 same_last.append((a, b))
-    return T, rows, sorted(pairs, key=lambda x: x[0]), same_last, (n_lines, n_backend)
+    return T, rows, sorted(pairs, key=lambda x: x[0]), same_last, (n_lines, n_backend, n_other)
 
 
 def main():
@@ -68,8 +83,9 @@ def main():
         print(__doc__)
         return 1
     mid = args[0]
-    T, rows, pairs, same_last, (n_lines, n_backend) = analyse(mid)
-    out = [f"[PA] {mid} 出生点：日志出生指派 {n_lines} 行（其中后端协调器 [HL-SPAWN-BACKEND] {n_backend} 行）。号 | 队 | 指派条数 | 引擎落点 | 落点是第几条指派 | 最后一条指派 | 最后一条执行了吗 | 最近编队友（距离）"]
+    T, rows, pairs, same_last, (n_lines, n_backend, n_other) = analyse(mid)
+    out = [f"[PA] {mid} 出生点：日志出生指派 {n_lines} 行（其中后端协调器 [HL-SPAWN-BACKEND] {n_backend} 行"
+           + (f"；另有 {n_other} 行是别的号的（同一个包里别的房间，或本房间没有局内数据的号），没算" if n_other else "") + f"）。号 | 队 | 指派条数 | 引擎落点 | 落点是第几条指派 | 最后一条指派 | 最后一条执行了吗 | 最近编队友（距离）"]
     for r in rows:
         out.append(f"     {r['name']:<12} | T{r['team']} | {r['n']:>2} | {r['engine']} | {r['hit'] or '不在日志里'} | {r['last']} | {'是' if r['lastExecuted'] else '否'} | "
                    f"{T.names[r['nearId']] if r['nearId'] is not None else '-'}（{r['nearDist']:.0f}）" if r["nearDist"] is not None else "")
@@ -83,8 +99,9 @@ def main():
                f"同像素号对 {sum(1 for d, a, b in pairs if d == 0)}；<40 像素号对 {len(pairs)}；最后一条指派相同的号对 {len(same_last)}；"
                f"最近编队友距离 中位 {d_near[len(d_near) // 2] if d_near else 0:.0f}、最小 {d_near[0] if d_near else 0:.0f}")
     txt = "\n".join(out)
-    with open(os.path.join(OUT, mid, "spawncheck.txt"), "w", encoding="utf-8") as f:
-        f.write(txt + "\n")
+    if "--no-write" not in args:
+        with open(os.path.join(OUT, mid, "spawncheck.txt"), "w", encoding="utf-8") as f:
+            f.write(txt + "\n")
     if "--quiet" not in args:
         print(txt)
     else:

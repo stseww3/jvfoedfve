@@ -201,6 +201,57 @@ def load_rooms(mid):
     return _ROOMS_CACHE["all"].get(mid)
 
 
+def _fix_rooms_by_replay(mid, rooms, main):
+    """房间表（统筹按日志推的）和录像头对不上时，以录像头为准改主房间的成员。
+
+    录像头的 names[号] 是这个房间里每个玩家号的真名。主房间里某个号的名字链不含录像里这个号的名字时：
+    别的房间有同一个玩家号、名字对得上的号就换进来（原来那个换过去）；没有可换的（录像里这个号不是编队号）
+    就把它挪到非主房间。返回 (新的房间表, 改动说明列表)；没有重演产物或不用改时原样返回。
+    """
+    tr = load_truth(mid)
+    if not tr or (tr.get("replayFrom") or mid) != mid:
+        return rooms, []
+    names = [str(x).strip().lower() for x in tr["names"]]
+    rooms = json.loads(json.dumps(rooms))
+    by_idx = {r["roomIdx"]: r for r in rooms}
+    if main not in by_idx:
+        return rooms, []
+    has = lambda b, nm: any(nm.endswith(str(x).strip().lower()) for x in b["names"])
+    mr = by_idx[main]
+    # 录像头和主房间至少有 2 个号对得上才动手（否则录像多半属于别的房间）
+    if sum(1 for b in mr["bots"] if b.get("me") is not None and b["me"] < len(names) and has(b, names[b["me"]])) < 2:
+        return rooms, []
+    fixes = []
+    for b in list(mr["bots"]):
+        me = b.get("me")
+        if me is None or me >= len(names) or has(b, names[me]):
+            continue
+        swap = None
+        for r in rooms:
+            if r["roomIdx"] == main:
+                continue
+            for b2 in r["bots"]:
+                if b2.get("me") == me and has(b2, names[me]):
+                    swap = (r, b2)
+                    break
+            if swap:
+                break
+        mr["bots"].remove(b)
+        if swap:
+            r, b2 = swap
+            r["bots"].remove(b2)
+            mr["bots"].append(b2)
+            r["bots"].append(b)
+            fixes.append(f"玩家号 {me}：房间表写 {b['names'][0]}，录像头是 {tr['names'][me]}；按录像把 {b2['names'][0]} 换进主房间")
+        else:
+            others = [r for r in rooms if r["roomIdx"] != main]
+            dest = next((r for r in others if all(x.get("me") != me for x in r["bots"])), others[0] if others else None)
+            if dest is not None:
+                dest["bots"].append(b)
+            fixes.append(f"玩家号 {me}：房间表写 {b['names'][0]}，录像头是 {tr['names'][me]}（不是编队号）；把 {b['names'][0]} 挪出主房间")
+    return rooms, fixes
+
+
 def room_label_map(mid):
     """一个对局包里混了几个物理房间（或某个房间没有 HL-GAME-INIT 行）时，按名字链表把 label 直接定到号。
 
@@ -218,7 +269,8 @@ def room_label_map(mid):
     main = m.get("mainRoom", 0)
     info, owner, collide = {}, {}, set()
     used = set()
-    order = sorted(m["rooms"], key=lambda r: (r["roomIdx"] != main, r["roomIdx"]))
+    rooms, fixes = _fix_rooms_by_replay(mid, m["rooms"], main)
+    order = sorted(rooms, key=lambda r: (r["roomIdx"] != main, r["roomIdx"]))
     for r in order:
         k = 0
         for b in r["bots"]:
@@ -239,6 +291,7 @@ def room_label_map(mid):
         owner.pop(nm, None)
     info["_collide"] = sorted(collide)
     info["_main"] = main
+    info["_replayFixes"] = fixes
     info["_rooms"] = {r["roomIdx"]: dict(land=r.get("land"), seeded=r.get("seeded"), nBots=r.get("nBots"), startUtc=r.get("startUtc"),
                                          lastTick=r.get("lastTick"), init=r.get("initKey"), winner=r.get("winner"),
                                          physRoom=r.get("physRoom")) for r in m["rooms"]}

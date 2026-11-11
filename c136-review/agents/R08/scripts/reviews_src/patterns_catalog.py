@@ -297,6 +297,27 @@ CATALOG = [
     dict(id="NEW-DN-G3", prefix="DN", name="（正面）前线号一出手，银行集中补给：一个受捐方 360 拍内从 ≥5 个捐出方收到的成交捐款 ≥ 窗前余额的 40%，同期领土 +≥25%",
          definition="donwall [WI] 的窗：捐出方 ≥5 个、到账 ÷ 受捐方窗前余额 ≥40%、受捐方窗内自己发过指令、窗后领土 ≥ 窗前的 1.25 倍；记到账、税、领土前后",
          detect="scripts/donwall.py [WI]"),
+    # ---- B030 起新增 ----
+    dict(id="NEW-MT-05", prefix="MT", name="房间里没有野人时编队号互相当敌人：超软上限后按『唯一缓冲留 1.12×100×领土』一次放出 20% 余额打编队友，每格 200~460 兵",
+         definition="真值指令账里攻守双方都是本编队的号、且发令时房间里没有『不是内置 AI、不在名字池、领土 ≥80』的活人（c110 isProtectedSquadMate L3993-3996 → hasWildOutsidersAlive L3978-3990 返回 false）："
+                    "记条数、格数、攻方耗兵、守方余额损失，以及同一拍攻方接壤的内置 AI 合计格数和吃光所需。没有录像的局：自由混战房间（结果行 team 为空）里一个编队号阵亡前 900 拍内，另一个编队号有 DROP30 且领土在涨",
+         detect="scripts/truth.py [TF]；scripts/aigate.py [GG][GH]"),
+    dict(id="NEW-DF-05", prefix="DF", name="防人机留底 sb 连打真人也挡：两个号共用人机邻居时 sb = 对方的余额，对真人报价不封顶，较穷的号对谁都出不了手；只在对方『正在流血』时封顶放行",
+         definition="影子逐报价重走 buyLand（walkBuyLand）里，真人报价的结论是 skip:avail<=0(safe) 且 safeRaw ≥ 自己余额的追踪点 ≥5 个、跨度 ≥300 拍，期间该号领土掉 ≥30%；"
+                    "另记该号发出的陆攻里目标带 bleeding 标记的条数（c110 L5323-5326：只有 nearCollapse / bleeding / tD<0.45 的真人目标才按 oppFloorCap×领土封顶）",
+         detect="scripts/shadow.mjs --trace（walk）+ scripts/aigate.py [GH]"),
+    dict(id="NEW-EG-02", prefix="EG", name="赢面局拖成马拉松：全场只剩一个真人以后还打了 ≥10000 拍",
+         definition="本房间除最终赢家以外的最后一个真人（含编队友）出局的拍号到终局拍 ≥10000 拍；记多出来的拍数、秒数（结果行 seconds），以及这段时间里赢家密度 ≥149 的快照占比、领土最低占比。"
+                    "没有录像时用结果行：最后一个不是赢家的编队号的出局拍 → 赢家的 end 拍",
+         detect="scripts/aigate.py [GD][GF]；bundles/<局>/results.csv"),
+    dict(id="NEW-EG-03", prefix="EG", name="打坍的人机靠在途的船回来（引擎规则）：坍缩时有船在海上就不除名，船靠岸后带几格地重新长；号因为 minCmd 不打它",
+         definition="真值逐拍盯（aiwatch）：某内置 AI 领土归 0 但 alive=1 且在途船 ≥1，之后领土又 >0（game.js collapse L1314-1335，有船的分支 L1316-1331）；记坍缩拍、靠岸拍、回来时的格数和兵，以及此后它长到多大、号什么时候才再打它。"
+                    "只有日志时：号进入扫尾状态（nb=0、neut=0、领土 ≥98% 陆地）之后又出现 nb≥1 且领土连续下降 ≥900 拍",
+         detect="scripts/aiwatch.mjs；scripts/aigate.py [GF][GJ]"),
+    dict(id="NEW-SE-06", prefix="SE", name="扫尾船被在途上限卡住：base boatOut 按 maxBoats（2 条）放行，扫尾分支写的 6 条不生效；找岛按『手续费÷岛的格数』先挑最大的、不看远近，最后几条船在路上的几百拍里一次搜索都不做",
+         definition="HL-TICK 里连续 ≥3 条快照（≥270 拍）nb=0、neut=0、领土 ≥98% 陆地但 < 陆地总格数、boats 不变，且这段时间里没有 HL-SLOW-TICK（找船的水路搜索一次没做）；"
+                    "记空档拍数、剩下的格数，以及这段时间之后是赢了还是又冒出敌邻",
+         detect="scripts/aigate.py [GJ]"),
 ]
 
 BY_ID = {p["id"]: p for p in CATALOG}

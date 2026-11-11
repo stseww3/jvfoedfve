@@ -190,12 +190,16 @@ function censusCore(g, b) {
     const worth = m * refDens, over = P.surplus > 0 && B > 100 * L, cheap = P.growth > 0 ? 0.1 / pol.baseRate(g) : 0;
     const minCmd = pol.minCmd(g);
     let nAi = 0, anyOk = 0, best = null, gated = false, nAiNb = 0;
+    let sumNeed = 0, sumTerr = 0, sumBal = 0, maxWant = 0, nZero = 0;   // 所有非真人报价合计：吃光所需、格数、兵；单个最大的 want；0 兵的个数
     for (const q of pol.nb) if (g.alive[q] && g.terr[q] > 0 && !pol.person(g, q)) nAiNb++;
     for (const o of pol.offers(g)) {
       const { q, c, need, person } = o;
       if (c >= worth && c >= cheap && !over) gated = true;
       if (person || o.isDoorSea) continue;
       nAi++;
+      sumNeed += Math.max(0, need); sumTerr += g.terr[q]; sumBal += g.bal[q];
+      maxWant = Math.max(maxWant, 1.25 * need + 3 * pol.cnt[q]);
+      if (g.bal[q] === 0) nZero++;
       let why, x = 0, want = 0, safe = 0, keep = Infinity, tag = '';
       if (gated) why = 'price';
       else {
@@ -231,8 +235,129 @@ function censusCore(g, b) {
     let src = null;
     if (best && /^safe:sb/.test(best.why)) { const sbs = sbSource(g, pol); if (sbs) src = [sbs.ai, sbs.who, whoCat(g, me, sbs.who), sbs.whoBal, sbs.whoTerr, sbs.v]; }
     b.census2.push([g.t, B, g.terr[me], nAiNb, nAi, anyOk, best ? best.q : -1, best ? best.c : 0, best ? best.terr : 0, best ? best.aiBal : 0, best ? best.need : 0, best ? best.want : 0, best ? best.x : 0,
-      Math.round(minCmd), best ? best.safe : 0, best ? best.keep : 0, best ? best.why : (nAiNb ? 'noOffer' : 'noAI'), src, +worth.toFixed(1), over ? 1 : 0]);
+      Math.round(minCmd), best ? best.safe : 0, best ? best.keep : 0, best ? best.why : (nAiNb ? 'noOffer' : 'noAI'), src, +worth.toFixed(1), over ? 1 : 0,
+      Math.round(sumNeed), sumTerr, sumBal, Math.round(maxWant), nZero]);
   } catch (e) { if (b.errors.length < 20) b.errors.push([g.t, 'census2 ' + String(e).slice(0, 200)]); }
+}
+
+// 把 Policy.buyLand（c110 L5250-5534）的循环照抄一遍但不发指令：逐个报价记下每一关的数和结论，直到第一个会发出去的为止。
+// 照抄范围：价格截断 L5265、唯一缓冲 L5267-5271、小目标手续费 L5273、拥挤硬顶 L5277-5280、吸波 L5282、留底 safe/keep L5322-5358、
+// 非真人分支 L5363-5368、脉冲块三个分支（L5505-5519 nearCollapse/bleeding、L5521-5526 nearCollapse、L5528-5540 pulseMode）的金额与门槛、
+// 末尾整笔 L5543-5548。没照抄的：海上门（isDoorSea，记为 doorSea 跳过）、窄边先发船（seaCore=0 时不生效）、零兵脉冲（只在离线生效）、
+// 多圈对齐 alignMultiRing（只会把金额往下修，不改变「发不发」以外的结论，记 amount 时注明是修整前）。
+const iV = (a, b) => Math.floor((a + 0.5) / b);   // 和引擎 game.js L30 的 iV 一致
+function walkBuyLand(g, pol) {
+  const P = pol.p, me = pol.me;
+  const B = g.bal[me], L = Math.max(1, g.terr[me]), fee = iV(12 * B, 1024);
+  const dMe = B / L;
+  const dMedOther = pol.otherHumanMedDens(g);
+  const nHumans = pol.livingHumanCount(g);
+  const humanNbCount = pol.nb.filter((p) => g.alive[p] && pol.person(g, p)).length;
+  const m = P.maxW * pol.winRatio(g.t);
+  const refDens = dMedOther !== null && g.t >= P.marketFrom ? Math.max(dMe, P.marketFloor * dMedOther) : dMe;
+  const worth = m * refDens;
+  const over = P.surplus > 0 && B > 100 * L;
+  const cheap = P.growth > 0 ? 0.1 / pol.baseRate(g) : 0;
+  const minCmd = pol.minCmd(g);
+  const rows = [];
+  for (const o of pol.offers(g)) {
+    const { q, c, need, person } = o;
+    const r = { q, name: q < g.humans ? names[q] : `AI${q}`, person: !!person, c: +(+c).toFixed(1), need: Math.round(need), cnt: pol.cnt[q] ?? 0, terr: g.terr[q], bal: g.bal[q] };
+    for (const k of ['nearCollapse', 'bleeding', 'onMe', 'isCrowdedHard', 'isDoorSea', 'pulseMode', 'isAgg']) if (o[k]) r[k] = 1;
+    rows.push(r);
+    if (c >= worth && c >= cheap && !over) { r.v = 'break:price>=worth'; break; }
+    const isSoleHealthyBuffer = person && !o.isDoorSea && nHumans >= 3 && !o.nearCollapse && !o.bleeding && !o.onMe && o.newNbs > 0 && humanNbCount === 1;
+    if (isSoleHealthyBuffer && c >= worth && c >= cheap && B < P.overHumanCap * 100 * L) { r.v = 'skip:soleBuffer'; continue; }
+    if (person && !o.isDoorSea && g.terr[q] < 250 && fee > 2 * need && c > 8 * worth && nHumans >= 3) { r.v = 'skip:tinyFee'; continue; }
+    const hardCapMult = o.isCrowdedHard && c >= 2.15 * worth && g.bal[q] >= 0.55 * B ? 1.50 : P.crowdedHardCap;
+    if (person && !o.isDoorSea && o.isCrowdedHard && c >= worth && c >= cheap && B < hardCapMult * 100 * L) { r.v = `skip:crowdedHard(<${hardCapMult}x100xL)`; continue; }
+    if (P.absorbMode >= 1 && person && !o.isDoorSea && !o.nearCollapse && (o.inAtk ?? 0) >= P.absorbWaveMin * B) { r.v = 'skip:absorb'; continue; }
+    if (o.isDoorSea) { r.v = 'skip:doorSea(没照抄)'; continue; }
+    let safe = pol.safeAt(g, q);
+    r.safeRaw = Math.round(safe);
+    if (!person || o.nearCollapse || (P.bleedSafeCap > 0 && (o.bleeding || o.tD < 0.45))) {
+      const capPerPx = person && o.nearCollapse && (o.inAtk ?? 0) < 0.02 * B && ((c < 0.25 * worth && need <= 0.10 * B) || (g.bal[q] <= 0.05 * B && c < 25)) ? Math.min(P.oppFloorCap, P.collapseFloorCap ?? 85) : P.oppFloorCap;
+      safe = Math.min(safe, capPerPx * L);
+    }
+    let keep = Infinity;
+    if (c < cheap) keep = 0;
+    if (c < worth) {
+      const worthOwn = P.ownWorthMinKeep > 0 && g.t >= P.ownWorthFrom && !o.nearCollapse ? m * dMe : worth;
+      const budget = Math.max(0, (worthOwn * L - fee * m - c * L) / (1 + m));
+      const minKeep = person && (o.nearCollapse || (P.bleedDiscount < 1 && o.bleeding) || (P.thinDiscount < 1 && o.tD < P.thinMaxTD)) ? (0.70 * c * L) / m : (c * L) / m;
+      keep = Math.min(keep, P.post > 0 ? Math.max(minKeep, B - fee - budget) : minKeep);
+    }
+    const isSiegeShrink = P.siegeShrinkRatio > 0 && !pol.isNoFullSend && g.t >= P.leaderHardFrom && L < P.siegeShrinkRatio * (g.peak?.[me] ?? L) && nHumans >= 4 && person && !o.nearCollapse && !o.bleeding;
+    if (isSiegeShrink && c >= worth && c >= cheap && B < P.crowdedHardCap * 100 * L) { r.v = 'skip:siegeShrink'; continue; }
+    r.keepPrice = Number.isFinite(keep) ? Math.round(keep) : null;
+    if (over) {
+      const overKeepMult = isSoleHealthyBuffer ? P.overHumanKeep : isSiegeShrink ? P.siegeOverKeep : o.isCrowdedHard ? 1.08 : P.hold;
+      keep = Math.min(keep, overKeepMult * 100 * L);
+      r.overKeep = Math.round(overKeepMult * 100 * L);
+    }
+    keep = Math.max(keep, safe);
+    const avail = B - fee - keep;
+    r.safe = Math.round(safe); r.keep = Number.isFinite(keep) ? Math.round(keep) : null; r.avail = Number.isFinite(avail) ? Math.round(avail) : null;
+    if (avail <= 0) { r.v = `skip:avail<=0(${keep === safe ? 'safe' : 'keep'})`; continue; }
+    if (!person) {
+      if (g.hasAttack(me, q) && (!g.hasAttack(q, me) || g.attackTroopsOn(me, q) >= 0.35 * need)) { r.v = 'skip:attacking'; continue; }
+      const want = 1.25 * need + 3 * pol.cnt[q];
+      const x = Math.min(avail, want);
+      r.want = Math.round(want); r.x = Math.round(x);
+      if (x < minCmd) { r.v = `skip:x<minCmd(${minCmd})`; continue; }
+      if (x < want && x < P.chunk * B) { r.v = 'skip:chunk'; continue; }
+      r.v = 'SEND'; break;
+    }
+    const usePulseBlock = P.pulseFrac > 0 && (!over || (P.overPulseMode > 0 && (o.nearCollapse || o.bleeding || avail < P.chunk * B)));
+    const inAtk = o.inAtk ?? 0;
+    const curAtk = g.attackTroopsOn(me, q);
+    r.inAtk = Math.round(inAtk); r.curAtk = curAtk; r.pulse = usePulseBlock ? 1 : 0;
+    const blockUndersized = (amt) => {
+      if (P.counterClearMode === 6) return false;
+      if (!(P.counterClearMode >= 1) || o.nearCollapse || !(inAtk > 0) || !(curAtk + amt <= 1.05 * inAtk)) return false;
+      if (P.counterClearMode >= 3 && o.bleeding) return false;
+      if (P.counterClearMode >= 4 && g.t < 3500) return false;
+      return true;
+    };
+    const pulseMin = Math.max(minCmd, P.pulseMinShare * B);
+    if (usePulseBlock) {
+      if (g.t >= 3800 && (o.nearCollapse || o.bleeding || (P.aggMemMode === 2 && o.isAgg))) {
+        if (curAtk >= 0.08 * B || curAtk >= 0.65 * need) { r.v = 'skip:pulseA:alreadyOn'; continue; }
+        const targetSlot = Math.min(0.85 * need + 3 * pol.cnt[q], Math.floor(P.pulseFrac * B));
+        let pulse = Math.min(avail, Math.max(targetSlot - curAtk, Math.floor(0.08 * B)));
+        if (P.counterClearMode === 2 && !o.nearCollapse && inAtk > 0 && curAtk + pulse <= 1.05 * inAtk) pulse = Math.min(avail, Math.min(Math.floor(0.28 * B), Math.ceil(1.05 * inAtk - curAtk + 0.05 * B)));
+        r.x = Math.round(pulse);
+        if (blockUndersized(pulse)) { r.v = 'skip:pulseA:undersized'; continue; }
+        if (pulse < pulseMin) { r.v = `skip:pulseA:<min(${Math.round(pulseMin)})`; continue; }
+        r.v = 'SEND:pulseA'; break;
+      }
+      if (o.nearCollapse) {
+        if (curAtk >= 0.04 * B || curAtk >= 0.30 * need) { r.v = 'skip:pulseB:alreadyOn'; continue; }
+        const pulse = Math.min(avail, Math.max(Math.floor(P.pulseFrac * B), Math.min(avail, Math.floor(0.30 * need))));
+        r.x = Math.round(pulse);
+        if (pulse < pulseMin) { r.v = `skip:pulseB:<min(${Math.round(pulseMin)})`; continue; }
+        r.v = 'SEND:pulseB'; break;
+      }
+      if (o.pulseMode) {
+        if (curAtk >= 0.04 * B) { r.v = 'skip:pulseC:alreadyOn'; continue; }
+        let capFrac = Math.floor(P.pulseFrac * B);
+        if (P.counterClearMode === 2 && inAtk > 0) capFrac = Math.max(capFrac, Math.min(Math.floor(0.28 * B), Math.ceil(1.05 * inAtk - curAtk + 0.05 * B)));
+        const want = Math.min(1.20 * need + 3 * pol.cnt[q], capFrac);
+        const x = Math.min(avail, want);
+        r.want = Math.round(want); r.x = Math.round(x);
+        if (blockUndersized(x)) { r.v = 'skip:pulseC:undersized'; continue; }
+        if (x < pulseMin) { r.v = `skip:pulseC:<min(${Math.round(pulseMin)})`; continue; }
+        r.v = 'SEND:pulseC'; break;
+      }
+    }
+    const want = 1.25 * need + 3 * pol.cnt[q];
+    const x = Math.min(avail, want);
+    r.want = Math.round(want); r.x = Math.round(x);
+    if (x <= 0 || (x < want && (x < P.chunk * B || (P.pplKill > 0 && person)))) { r.v = x < want && x < P.chunk * B ? `skip:x<chunk(${Math.round(P.chunk * B)})` : 'skip:pplKill'; continue; }
+    if (person && blockUndersized(x)) { r.v = 'skip:undersized'; continue; }
+    r.v = 'SEND'; break;
+  }
+  return { B, L, fee, worth: +worth.toFixed(1), cheap: +cheap.toFixed(1), over, minCmd, nHumans, humanNbCount, rows };
 }
 
 function traceOne(g, b) {
@@ -287,6 +412,7 @@ function traceOne(g, b) {
         r.terr = g.terr[of.q]; r.bal = g.bal[of.q];
         o.offers.push(r);
       }
+      o.walk = walkBuyLand(g, pol);
     }
   } catch (e) { o.err = String(e).slice(0, 200); }
   traces.push(o);
