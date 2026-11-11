@@ -248,7 +248,11 @@ def hard_ledgers(mid):
     out = {}
     for key, fn, src in (("latencyLedger", "lagledger_sum.json", "scripts/lagledger.py [GA]~[GG]（out/<局>/lagledger.txt）"),
                          ("latencyLedgerPeer", "lagledger_sum_peer.json", "scripts/lagledger.py --side peer"),
-                         ("landCapture", "landcap_sum.json", "scripts/landcap.mjs + landcap.py [KA]~[KF]（out/<局>/landcap.txt）")):
+                         ("landCapture", "landcap_sum.json", "scripts/landcap.mjs + landcap.py [KA]~[KF]（out/<局>/landcap.txt）"),
+                         ("enclosure", "enclose_sum.json", "scripts/enclose.py [EA]~[EE]（out/<局>/enclose.txt）：编队号被受保护的异队编队友封死的账"),
+                         ("troopLedger", "econ_sum.json", "scripts/econ.py [NA]~[ND]（out/<局>/econ.txt）：产兵 / 花兵 / 漏损，编队对其他真人"),
+                         ("donationPairs", "donpairs_sum.json", "scripts/donpairs.py [YA]~[YF]（out/<局>/donpairs.txt）：捐款对子、净转移与来回倒手"),
+                         ("deathDossier", "dossier_sum.json", "scripts/dossier.py（out/<局>/dossier.txt）：每个阵亡号最后一轮下坡里的指令和被打掉的余额")):
         p = os.path.join(ROOT, "out", mid, fn)
         if os.path.exists(p):
             d = json.load(open(p, encoding="utf-8"))
