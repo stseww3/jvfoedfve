@@ -35,6 +35,27 @@ def load(name):
     return out
 
 
+def spearman(xs, ys):
+    def rk(v):
+        o = sorted(range(len(v)), key=lambda i: v[i])
+        r = [0.0] * len(v)
+        i = 0
+        while i < len(o):
+            j = i
+            while j + 1 < len(o) and v[o[j + 1]] == v[o[i]]:
+                j += 1
+            for k in range(i, j + 1):
+                r[o[k]] = (i + j) / 2.0 + 1
+            i = j + 1
+        return r
+    a, b = rk(xs), rk(ys)
+    n = len(a)
+    ma, mb = sum(a) / n, sum(b) / n
+    sa = sum((x - ma) ** 2 for x in a) ** 0.5
+    sb = sum((y - mb) ** 2 for y in b) ** 0.5
+    return sum((x - ma) * (y - mb) for x, y in zip(a, b)) / (sa * sb) if sa and sb else float('nan')
+
+
 def table(title, head, rows, note=None):
     print('### ' + title)
     print()
@@ -356,6 +377,19 @@ def main():
                 body.append([m] + [tsv.get(lab, {}).get(m, '—').replace('　', '；') for lab, _ in picks])
             table(title, head, body, note)
 
+        def pair(lab, m):
+            v = re.findall(r'-?\d+\.\d+', tsv.get(lab, {}).get(m, ''))
+            return (float(v[0]), float(v[1])) if len(v) >= 2 else None
+
+        def note21():
+            out = []
+            for w in ('630', '1500', '3000'):
+                hi = [m for m in MIDS if pair('实际 ÷ 天然，%s 拍：我方 / 其他真人' % w, m) and pair('实际 ÷ 天然，%s 拍：我方 / 其他真人' % w, m)[0] > pair('实际 ÷ 天然，%s 拍：我方 / 其他真人' % w, m)[1]]
+                n = len([m for m in MIDS if pair('实际 ÷ 天然，%s 拍：我方 / 其他真人' % w, m)])
+                lo = [m for m in MIDS if pair('实际 ÷ 天然，%s 拍：我方 / 其他真人' % w, m) and m not in hi]
+                out.append('%s 拍 %d 局里 %d 局我方更高%s' % (w, n, len(hi), ('（不高的：%s）' % '、'.join(lo)) if lo else ''))
+            return '「实际 ÷ 天然」我方高于其他真人的局数（A073 没有对照，不算）：' + '；'.join(out) + '。'
+
         trans('19 延迟账·一：出生指令与落地延迟（每局一行；out/hub0007/m7_table.md 转置）', [
             ('协调器求解轮数 / 点位最后一次变动的轮', '求解轮数 / 点位最后变动的轮'),
             ('出生：落在最后一轮的点上 / 停在旧坐标 / 没落地 / 其他；同点对数', '落在最后一轮的点 / 停在旧点 / 没落地 / 其他；同点对数'),
@@ -387,7 +421,7 @@ def main():
             ('实际 ÷ 天然，3000 拍：我方 / 其他真人', '3000'),
             ('630 拍身边的内置 AI：个 / 格', '630 拍身边的内置 AI：个 / 格'),
             ('这些格 1500 拍在谁手里：我方 / 同队其他真人 / 敌方真人 / 内置 AI', '这些格 1500 拍：我方 / 同队真人 / 敌方真人 / AI'),
-            ('这些格 3000 拍在谁手里：我方 / 同队其他真人 / 敌方真人 / 内置 AI', '3000 拍')])
+            ('这些格 3000 拍在谁手里：我方 / 同队其他真人 / 敌方真人 / 内置 AI', '3000 拍')], note21())
         trans('22 没抢到好地的三层归因（每局一行）', [
             ('三层归因 600~1499 拍：出生 / 策略闸门 / 迟到（对数占比）', '600~1499：出生 / 策略闸门 / 迟到'),
             ('贴着内置 AI 的号·决策拍 600~1499 拍：总数 / 出手 / 被闸门卡住', '贴着 AI 的号·决策拍：总数 / 出手 / 被闸门卡住'),
@@ -439,8 +473,22 @@ def main():
             if r[0] == 'B034':
                 for i in range(3, 8):
                     r[i] = '—'
+        extra = ''
+        if os.path.exists(fp):
+            nat, l630, l1530 = [], [], []
+            for r in body:
+                g = re.search(r'（([\d.]+) 倍）', tsv.get('单号天然地盘中位：我方 / 其他真人', {}).get(r[0], ''))
+                try:
+                    v = (float(g.group(1)), float(r[8]), float(r[9]))
+                except (AttributeError, ValueError):
+                    continue
+                nat.append(v[0]); l630.append(v[1]); l1530.append(v[2])
+            if len(nat) >= 5:
+                extra = ('把表 21 的「单号天然地盘中位，我方 ÷ 其他真人」和这里的两栏放在一起（%d 局队伍战）：天然地盘之比 %.2f~%.2f，630 拍领土之比 %.2f~%.2f，1530 拍 %.2f~%.2f；'
+                         '天然地盘之比和 630 拍领土之比的秩相关 %+.2f，和 1530 拍领土之比的秩相关 %+.2f。' % (
+                             len(nat), min(nat), max(nat), min(l630), max(l630), min(l1530), max(l1530), spearman(nat, l630), spearman(nat, l1530)))
         table('25 出生阵型的几何，和 630 / 1530 拍的领土、密度对比（spawn_geometry.py；真人位按对局卡）', head, body,
-              'B034 的编队被拆进 4 支队，脚本按第一个号所在的队分敌我，距离类的五栏对它不适用，留空（B034 的复盘里另算：18 个号到最近的本方号中位 167 像素）。A073 是 1v1，后四栏没有对照。')
+              'B034 的编队被拆进 4 支队，脚本按第一个号所在的队分敌我，距离类的五栏对它不适用，留空（B034 的复盘里另算：18 个号到最近的本方号中位 167 像素）。A073 是 1v1，后四栏没有对照。' + extra)
 
     rows = []
     for ln in lines('allin_strikes_all.txt'):
