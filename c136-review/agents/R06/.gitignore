@@ -5,6 +5,9 @@ __pycache__/
 *.pyc
 out/_strat/
 out/*/probe.json
-out/*/sec/
+out/*/sec/*
+!out/*/sec/lat_all.txt
+!out/*/sec/land_all.txt
+!out/*/sec/sim_gates_*.txt
 out/*/sim_state.partial.json
 out/*/grids.bin.gz
