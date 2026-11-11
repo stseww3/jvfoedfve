@@ -1,7 +1,7 @@
 // exec_layer_scan.mjs — 全部对局的「执行层」体检：策略发令到引擎执行的延迟、我方号离场(leave)时点、捐款实际执行率。
 // 证据来源：replay.txt 的命令流（只含通过引擎校验的指令，见 donation_ledger.mjs 头注）+ in_game.log。
 // 每局一行 TSV：
-//   matchId cohort endTick replayTicks nBots
+//   matchId cohort endTick replayTicks nBots botsInReplay(号名校验后确实在录像这一盘里的号数；以下各列只统计这些号)
 //   openN openMatched lagMed lagP90 lagMax lag>=35 lag>=90      ← [HL-OPENING] 指令的执行延迟（拍）
 //   leavers leaveTicks(号:录像离场拍/本地最后一拍)                ← 录像里我方号的 leave 指令
 //   donLogged donExecuted execPct                                ← 日志捐款/调度条数 vs 录像里真正执行的条数
@@ -15,7 +15,7 @@ const DATA = process.env.C136_DATA || '/agent/repos/c136-data';
 const ids = process.argv.slice(2).length ? process.argv.slice(2) : fs.readdirSync(path.join(DATA, 'bundles')).sort();
 const q = (arr, p) => (arr.length ? arr[Math.min(arr.length - 1, Math.floor(p * arr.length))] : '');
 
-console.log(['matchId', 'cohort', 'endTick', 'replayTicks', 'nBots', 'openN', 'openMatched', 'lagMed', 'lagP90', 'lagMax', 'lagGE35', 'lagGE90',
+console.log(['matchId', 'cohort', 'endTick', 'replayTicks', 'nBots', 'botsInReplay', 'openN', 'openMatched', 'lagMed', 'lagP90', 'lagMax', 'lagGE35', 'lagGE90',
   'leavers', 'leaveDetail', 'donLogged', 'donExecuted', 'execPct'].join('\t'));
 for (const id of ids) {
   const dir = path.join(DATA, 'bundles', id);
@@ -41,10 +41,18 @@ for (const id of ids) {
     if (m) opens.push({ bot: m[1], t: +m[2], pct: Math.ceil((+m[5]) * 1024 / (+m[6])) - 1 });
   }
   const bots = new Set([...meOf.keys(), ...lastT.keys()]);
+  // 号 -> 录像玩家：必须号名校验（去掉 [前缀] 后全等）。日志 me= 只在名字对得上时才用；
+  // 对不上 = 这个号不在录像这一盘里（拆盘，见 instance_split.mjs），不参与延迟/离场/捐款统计。
+  const bare = (n) => String(n ?? '').replace(/\[[^\]]*\]/g, '').trim().toLowerCase();
+  const pidCache = new Map();
   const pid = (bot) => {
-    if (meOf.has(bot)) return meOf.get(bot);
-    for (let p = 0; p < H; p++) if (String(names[p] ?? '').trim().toLowerCase().endsWith(bot.toLowerCase())) return p;
-    return -1;
+    if (pidCache.has(bot)) return pidCache.get(bot);
+    let r = -1;
+    const me = meOf.get(bot);
+    if (me !== undefined && me < H && bare(names[me]) === bot.toLowerCase()) r = me;
+    else { const hits = []; for (let p = 0; p < H; p++) if (bare(names[p]) === bot.toLowerCase()) hits.push(p); if (hits.length === 1 && me === undefined) r = hits[0]; }
+    pidCache.set(bot, r);
+    return r;
   };
   // 开局延迟
   const lags = [];
@@ -59,7 +67,7 @@ for (const id of ids) {
   // 离场
   const leave = [];
   for (const c of tl.cmds) if (c.id === 8 || c.id === 9) {
-    for (const b of bots) if (pid(b) === c.player && c.tick >= 0) leave.push(`${b}:${c.tick}/${lastT.get(b) ?? '?'}`);
+    for (const b of bots) if (pid(b) >= 0 && pid(b) === c.player && c.tick >= 0) leave.push(`${b}:${c.tick}/${lastT.get(b) ?? '?'}`);
   }
   // 捐款执行率
   const logs = parseLogDonations(id);
@@ -71,7 +79,9 @@ for (const id of ids) {
     const r = R.find((x) => !x.used && x.tick >= l.t && x.tick - l.t <= 600);
     if (r) { r.used = true; ex++; }
   }
-  console.log([id, card.cohort, card.outcome?.endTick ?? '', tl.totalTicks, bots.size, opens.length, lags.length, q(lags, 0.5), q(lags, 0.9),
+  const inRep = [...bots].filter((b) => pid(b) >= 0);
+  const opensIn = opens.filter((o) => pid(o.bot) >= 0).length, logsIn = logs.filter((l) => pid(l.bot) >= 0).length;
+  console.log([id, card.cohort, card.outcome?.endTick ?? '', tl.totalTicks, bots.size, inRep.length, opensIn, lags.length, q(lags, 0.5), q(lags, 0.9),
     lags.length ? lags[lags.length - 1] : '', lags.filter((x) => x >= 35).length, lags.filter((x) => x >= 90).length,
-    leave.length, leave.join(' '), logs.length, ex, logs.length ? (100 * ex / logs.length).toFixed(1) : ''].join('\t'));
+    leave.length, leave.join(' '), logsIn, ex, logsIn ? (100 * ex / logsIn).toFixed(1) : ''].join('\t'));
 }

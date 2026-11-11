@@ -36,7 +36,8 @@ export function ledger(matchId, maxLag = 400) {
   for (const l of logs) {
     if (idOf.has(l.bot)) continue;
     let id = -1;
-    for (let p = 0; p < H; p++) if (String(names[p] ?? '').trim().toLowerCase().endsWith(l.bot.toLowerCase())) { id = p; break; }
+    // 号名校验：去掉 [前缀] 后全等才算（拆盘时不在录像这一盘里的号 id=-1，其日志捐款不参与对账）
+    for (let p = 0; p < H; p++) if (String(names[p] ?? '').replace(/\[[^\]]*\]/g, '').trim().toLowerCase() === l.bot.toLowerCase()) { id = p; break; }
     idOf.set(l.bot, id);
   }
   const rec = tl.cmds.filter((c) => c.id === 2);
@@ -67,8 +68,9 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   const quiet = args.includes('--quiet');
   const L = ledger(id, ml);
   if (args.includes('--json')) { console.log(JSON.stringify(L.res)); process.exit(0); }
-  let tot = 0, ex = 0, orphan = 0;
+  let tot = 0, ex = 0, orphan = 0, outN = 0;
   for (const b of L.res) {
+    if (b.id < 0) { outN += b.logs.length; console.log(`## ${id} ${b.bot} 不在录像这一盘里（拆盘）：日志捐款=${b.logs.length} 条，无法对账`); continue; }
     const n = b.logs.length, e = b.logs.filter((l) => l.execTick !== null).length;
     const lags = b.logs.filter((l) => l.execTick !== null).map((l) => l.execTick - l.t).sort((a, c) => a - c);
     const un = b.replayRecs.filter((r) => !r.used).length;
@@ -79,5 +81,5 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       for (const r of b.replayRecs.filter((x) => !x.used)) console.log(`  [录像独有] tick=${r.tick} pct=${r.pct} -> ${r.to}(${L.names[r.to] ?? ''})`);
     }
   }
-  console.log(`# ${id} 合计 日志捐款=${tot} 被执行=${ex} (${tot ? (100 * ex / tot).toFixed(1) : '0'}%) 未执行=${tot - ex} 录像独有=${orphan} 全场捐款指令(所有真人)=${L.allDonations.length}`);
+  console.log(`# ${id} 合计（只算在录像这一盘里的号） 日志捐款=${tot} 被执行=${ex} (${tot ? (100 * ex / tot).toFixed(1) : '0'}%) 未执行=${tot - ex} 录像独有=${orphan} 全场捐款指令(所有真人)=${L.allDonations.length}${outN ? ` ；另有不在录像盘内的号的日志捐款 ${outN} 条未对账` : ''}`);
 }

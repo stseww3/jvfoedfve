@@ -31,7 +31,8 @@ for (const id of ids) {
   const all = [];
   for (const bot of bots) {
     let pid = -1;
-    for (let p = 0; p < H; p++) if (String(names[p] ?? '').trim().toLowerCase().endsWith(bot.toLowerCase())) { pid = p; break; }
+    for (let p = 0; p < H; p++) if (String(names[p] ?? '').replace(/\[[^\]]*\]/g, '').trim().toLowerCase() === bot.toLowerCase()) { pid = p; break; }
+    if (pid < 0) { console.log(`${id} ${bot} 不在录像这一盘里（拆盘），跳过`); continue; }
     const R = tl.cmds.filter((c) => c.id === 1 && c.player === pid && c.dZ === 512).map((c) => ({ tick: c.tick, pct: c.dX, used: false }));
     const L = logs.filter((l) => l.bot === bot);
     const lags = [];
