@@ -404,5 +404,19 @@
   "definition": "t ≥ 1500 的号·决策拍里，第一条内置 AI 报价（含离场后按 AI 算的真人）被 safeAt → safeFinite 顶住、且参照对象是敌方真人（core_gate_tally.py --ai 的 floor/sf/enemy 与 floor/cap+sf/enemy 两类）。计数 = 号·决策拍数、参照对象分布、其中封顶 oppFloorCap×领土 之后仍不够的拍数。参照对象是队友的另记 NEW-AT-ALLYFLOOR。",
   "detector": "scripts/core_gate_tally.py <局号> t0 t1 --ai [--by-target] [--bots …]；scripts/shadow.mjs <局号> --bots <号> --at <拍>（[buyLand] 一段每条报价的 safeAt 与「余额−费−底线」）；scripts/idle_scan.py（「贴弱AI不出手」列）",
   "codePath": "V17.safeAt L2728~2737（botSkip = 0：不排除要买的这个 AI）← V13.safeFinite L2500~2510 ← Strategy.threatOf L417~444（minOther）；Policy.buyLand L5413~5417（非真人目标的 safe 封顶 capPerPx×领土）、L5445（avail = 余额 − 手续费 − max(keep, safe)，不分这一单要多少兵）。Vb / Vc 的行号。"
+ },
+ "NEW-SE-SEALFLOOR": {
+  "prefix": "SE",
+  "name": "被封住的号发船要先攒到 68×领土以上（打 AI/真人要到 90.7×领土）：整支编队封在陆块里时，带海岸的大号迟迟发不出船，够密度的小号又没有海岸",
+  "definition": "号·决策拍里 陆上邻居 0 且 无主地 0（rows.tsv 的 nb=0、neut=0）算「封住」。按海岸与密度分档：没有海岸（发不了船）；有海岸且余额 < 68×领土（低于 idleBoats 封死分支的保底线 keepFloor）；68~90.7×领土（过了保底线，但 0.5×(余额−68×领土) 还不到打 AI/真人的最小船量 = 余额/8）；≥90.7×领土。再数 全队活着的号同时封住的决策拍、封住期间实际发的船。只按密度分档，不重放 searchWater；有接敌兄弟时保底线是 92×领土且要本号密度 ≥115，本口径不区分。",
+  "detector": "scripts/seal_floor.py <局号> [<局号> …] [--from t0] [--to t1] [--list]；逐拍看谁被哪一行挡住：scripts/shadow.mjs <局号> --bots <号> --at <拍>（[idleBoats] 一段：searchWater 落点、可装、最小船量）",
+  "codePath": "Policy.idleBoats L5022~5043（封死分支：L5031 有接敌兄弟且本号密度 <115 不发；L5035 keepFloor = 有接敌兄弟 ? 92×领土 : 68×领土；L5038~5040 搜水范围 2500、boatFrac ≥0.24）→ General.boatOut L999~1015（L1002 每次调用都刷新 lastBoat；L1006 可装 = boatFrac×(余额 − floorAt)；L1007 目标不是无主地时最小船量 = feeK×船手续费 = 余额/8；L1008 不够就不发）。「接敌兄弟」只数本编队的号与 boss（L5024~5030），同队其他真人不算。Va L5034 / Vb L5035 / Vc L5035 同一行公式。"
+ },
+ "NEW-DF-DOOMSKIP": {
+  "prefix": "DF",
+  "name": "挨打的号一旦「压在身上的真人兵 > 1.65×自己的余额」就被判成弃子，不再是任何队友的调度对象：后排号先被调度抽薄，敌方大号按一成余额一发逐个点名",
+  "definition": "我方号活着、压在它身上的敌方真人在途兵 > 1.65×它的余额 的时段（中断 ≤30 拍算同一段）。每段记：号当时的地 / 余额 / 密度、在途兵峰值、此前 600 拍它捐出多少、这一段里收到的捐款、段开始时其余我方号「余额 − 88×领土」的正数部分、300 拍内是否出局。计数 = 段数、其中 300 拍内出局的段数、这些段里收到的捐款合计。只用真引擎的状态表，是 isDoomedPocket 第一个条件成立的时段，不是策略走到那一行的次数。 是 NEW-DF-NORESCUE 里能机械计数的一个子类（NORESCUE 还包括配额、不相邻、没兵）。",
+  "detector": "scripts/doomed_pocket.py <局号> [<局号> …] [--list] [--ours id,…]；逐拍看候选人怎么被跳过：scripts/shadow.mjs <局号> --bots <号> --at <拍>（[tryDonateToTeammate] 一段的「判为弃子，跳过」）",
+  "codePath": "Policy.tryDonateToTeammate L4455~4456（isDoomedPocket = 不是滩头 且（被攻 > 1.65×余额 或（t ≥ 4500 且 领土 < 0.22×编队最大领土 且 被攻 > 0.45×余额））→ continue）；救急分支 L4463~4466 还要捐款人密度 ≥102（没封死时）且比对方高 16、余额 > 1.12×救急底线。Vb 的行号。"
  }
 }
