@@ -411,6 +411,67 @@ def sec_TJ(T, out):
         out.append(f"     {l[0]} {T.nm(l[1], l[0])}→{T.nm(l[2], l[0])} {l[3]} | {l[4]} | {l[5]}/{l[6]}")
 
 
+def boat_ledger(T, ids=None):
+    """每个号的船账：发船（条数、船上兵、手续费）；靠岸分类（空地 / 敌方 / 自己的地 / 同队：到账与蒸发）；没靠岸的差额（海上衰减每 5 拍 1/128、海战、终局仍在海上）。"""
+    R = T.R
+    ids = T.sqIds if ids is None else ids
+    led = {p: dict(n=0, troops=0, fee=0, small=0, smallFee=0, neutral=[0, 0], enemy=[0, 0], own=[0, 0], mate=[0, 0, 0], evap=[0, 0]) for p in ids}
+    for c in R["cmdLog"]:
+        if c[2] == 3 and c[1] in led and c[5]:
+            d = led[c[1]]
+            d["n"] += 1
+            d["troops"] += c[6]
+            d["fee"] += c[7]
+            if c[7] > c[6]:
+                d["small"] += 1
+                d["smallFee"] += c[7]
+    for l in R["landings"]:
+        t, p, tg, troops, got = l[0], l[1], l[2], l[3], l[4]
+        if p not in led:
+            continue
+        d = led[p]
+        if tg == NEUTRAL or tg < 0:
+            k = "neutral"
+        elif tg == p:
+            k = "own"
+        elif tg < T.H and T.team(tg) == T.team(p):
+            if got <= 0:
+                d["evap"][0] += 1
+                d["evap"][1] += troops
+            else:
+                d["mate"][0] += 1
+                d["mate"][1] += troops
+                d["mate"][2] += got
+            continue
+        else:
+            k = "enemy"
+        d[k][0] += 1
+        d[k][1] += troops
+    return led
+
+
+def sec_TL(T, out):
+    led = boat_ledger(T)
+    if not any(d["n"] for d in led.values()):
+        return
+    out.append("[TL] 船账（真值）：号 | 发船 条数/船上兵/手续费（每条船收余额的 32/1024）| 其中手续费>船上兵的 条数/手续费 | 靠岸：空地 次/兵 | 敌方 次/兵 | 自己的地 次/兵 | 同队到账 次/船上兵 | 同队蒸发 次/兵 | 没靠岸的差额（海上衰减、海战、终局在海上）")
+    tot = dict(n=0, troops=0, fee=0, small=0, smallFee=0, neutral=0, enemy=0, own=0, mate=0, evap=0, landed=0)
+    for name, p in sorted(T.squad.items(), key=lambda kv: kv[1]):
+        d = led[p]
+        if not d["n"]:
+            continue
+        landed = d["neutral"][1] + d["enemy"][1] + d["own"][1] + d["mate"][1] + d["evap"][1]
+        out.append(f"     {name:12s} | {d['n']}/{d['troops']}/{d['fee']} | {d['small']}/{d['smallFee']} | {d['neutral'][0]}/{d['neutral'][1]} | {d['enemy'][0]}/{d['enemy'][1]} | {d['own'][0]}/{d['own'][1]} | "
+                   f"{d['mate'][0]}/{d['mate'][1]} | {d['evap'][0]}/{d['evap'][1]} | {d['troops'] - landed}")
+        for k in ("n", "troops", "fee", "small", "smallFee"):
+            tot[k] += d[k]
+        for k in ("neutral", "enemy", "own", "mate", "evap"):
+            tot[k] += d[k][1]
+        tot["landed"] += landed
+    out.append(f"     合计：发船 {tot['n']} 条，船上兵 {tot['troops']}，手续费 {tot['fee']}（其中 {tot['small']} 条手续费大于船上兵，共付 {tot['smallFee']}）；靠岸在空地 {tot['neutral']}、敌方 {tot['enemy']}、自己的地 {tot['own']}、"
+               f"同队到账 {tot['mate']}、同队蒸发 {tot['evap']}；没靠岸 {tot['troops'] - tot['landed']}")
+
+
 def sec_TK(T, out, win=90, frac=0.30):
     """余额单窗（90 拍）跌 ≥30% 的真值对账：自己执行的指令（陆攻/船/捐款，含手续费与税）、挨打被打掉的余额，剩下的差额=利息/回流/误差。"""
     R = T.R
@@ -601,7 +662,7 @@ def main():
         cmds_detail(T, opt("--cmds"), t0, t1)
         return 0
     out = []
-    for sec in (sec_TA, sec_TB, sec_TC, sec_TD, sec_TE, sec_TF, sec_TG, sec_TH, sec_TI, sec_TJ, sec_TK):
+    for sec in (sec_TA, sec_TB, sec_TC, sec_TD, sec_TE, sec_TF, sec_TG, sec_TH, sec_TI, sec_TJ, sec_TK, sec_TL):
         sec(T, out)
     txt = "\n".join(out)
     with open(os.path.join(OUT, mid, "truth.txt"), "w", encoding="utf-8") as f:

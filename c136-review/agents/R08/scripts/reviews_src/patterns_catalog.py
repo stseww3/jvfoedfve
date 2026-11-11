@@ -175,6 +175,25 @@ CATALOG = [
     dict(id="NEW-EG-G1", prefix="EG", name="（正面）终局吃空壳和残血邻居持续长大",
          definition="t≥3500 起 1800 拍内领土 +≥60%，新增领土里 ≥50% 来自空壳或已被第三方打掉一半以上领土的邻居，且该号存活到终局",
          detect="scripts/truth.py [TE]"),
+    # ---- B033 起新增 ----
+    dict(id="NEW-DN-07", prefix="DN", name="来回倒手：两个号在 600 拍内互相捐款",
+         definition="已执行的捐款里，A→B 与 B→A 在 600 拍内都出现过；记两个方向的到账、手续费（每笔收捐出方余额的 64/1024），净流量 = |A→B − B→A|，倒手损耗 = 两个方向手续费合计",
+         detect="scripts/truth.py [TH]"),
+    dict(id="NEW-DN-08", prefix="DN", name="救援捐款单笔超过受捐额度：整单被拒，冷却后原样重发",
+         definition="日志里同一对（捐出→受捐）连续 ≥3 笔相同 pct 的捐款都没进录像，且按引擎口径（game.js donationCost / donCap）那一笔的额度成本 > 当时额度上限 − 已用；记笔数与受捐方结局",
+         detect="scripts/donrej.py + digest [G] 的额度栏"),
+    dict(id="NEW-DN-G1", prefix="DN", name="（正面）救援捐款到账后受捐方活下来",
+         definition="受捐方当时身上有真人进攻兵 ≥ 自己余额的 30%，捐款到账 ≥ 该进攻兵，且受捐方之后 600 拍没有阵亡",
+         detect="scripts/truth.py [TH] + --bot"),
+    dict(id="NEW-SE-03", prefix="SE", name="小船高费：船上只有几百兵，手续费却是余额的 32/1024",
+         definition="已执行的发船指令里手续费 > 船上兵的那些：记条数、手续费合计、同期领土净增；每局手续费合计 ≥ 该号发船时余额中位数的 20% 算命中",
+         detect="scripts/truth.py [TL]"),
+    dict(id="NEW-DF-02", prefix="DF", name="留底只看现有陆上邻居：邻居是空壳或没兵时把 ≥90% 余额一次派出",
+         definition="影子决策里单条陆攻 pct ≥ 921（≥90% 余额）、时延 <35 拍（不是补拍造成）、决策时 safeAt ≤ 余额的 5%；兑现：600 拍内该号被当时不接壤的真人吃掉 ≥50% 领土",
+         detect="scripts/shadow.mjs --trace（core.safeNone）+ truth.py --death"),
+    dict(id="NEW-EX-05", prefix="EX", name="同一次决策发两条指令，只有第一条落地：零星空地单占掉名额",
+         definition="影子同一次 act 发出 ≥2 条指令时，第 1 条在录像里配得上、第 2 条及以后配不上；记被丢掉的第 2 条的本意兵力合计",
+         detect="scripts/shadowcmp.py [SI]"),
 ]
 
 BY_ID = {p["id"]: p for p in CATALOG}
