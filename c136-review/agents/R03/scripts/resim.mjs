@@ -435,6 +435,17 @@ export function resim(mid, opts = {}) {
     return proto.landAt.call(this, p, troops, c, at);
   };
 
+  // ---- 钩子：内置 AI / 离线空壳给队友送兵（bots.js botDonate→botGive；不是玩家指令，录像和日志里都没有）----
+  // 行：[拍, 送出方, 接收方, 到账, 手续费, 送出方原余额, 送出方领土]；只记涉及真人席位的。
+  const botGifts = [];
+  g.botGive = function (p, q, dn) {
+    const bq = this.bal[q], bp = this.bal[p];
+    const r = proto.botGive.call(this, p, q, dn);
+    const got = this.bal[q] - bq;
+    if (got > 0 && (p < H || q < H)) botGifts.push([this.t, p, q, got, bp - this.bal[p] - got, bp, this.terr[p]]);
+    return r;
+  };
+
   // ---- 指令 ----
   const cmdLog = [];
   const leftT = new Int32Array(H).fill(-1);
@@ -703,7 +714,7 @@ export function resim(mid, opts = {}) {
     spawnXY, startBox, leftT: Array.from(leftT), deathT: Array.from(deathT.subarray(0, H)),
     validate: val,
     snapT, snapTerr, snapBal, snapInc, snapRet, snapOut, teamLand, botLand, aliveH,
-    sq, pairLog, cmdLog, deaths, landings, maps, engineEvents,
+    sq, pairLog, cmdLog, deaths, landings, botGifts, maps, engineEvents,
   };
   return out;
 }

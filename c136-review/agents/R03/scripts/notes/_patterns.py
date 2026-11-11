@@ -36,6 +36,47 @@ DEFS["NEW-R03-AT02"] = {
     "detect": "donate-why.mjs（boxedIn 为假时的 sent 笔数与 pct）+ dbg/buy-why.mjs（同一段每个决策拍去掉哪一道闸、或哪几道闸的组合才会出手）+ freeze-scan 第二段的 pricedHigh/pricedOther。",
 }
 
+# ---- A066 起新增 ----
+DEFS["NEW-R03-IO03"] = {
+    "prefix": "IO",
+    "name": "同一拍先发的扩中立占掉指令位，后面对真人/AI 的出手本地就被拒",
+    "sameAs": ["统筹 0004 号广播第 ii 项（页面适配层每拍只收 1 条：Policy.act L4941 expandNeutral 挤掉 L4942 buyLand）"],
+    "definition": "影子策略同一个决策拍里已有一条被接受的指令（源码行 expandNeutral:952 或 dpNeutral:2406），同拍由 buyLand / General.act:796 发出的另一条在本地被拒收。"
+                  "计：条数、t≥1500 的条数、目标是真人的条数、同一目标连续被挤的拍数，以及被挤掉的那条想发的兵。",
+    "detect": "shadow-digest.py [S7]（shadow.json 里每条影子指令的本地受理标志 + 调用栈）；facts 里是 crowd.{n,after1500,humanTarget,list}。",
+}
+
+DEFS["NEW-R03-SE02"] = {
+    "prefix": "SE",
+    "name": "被围号的远程船：选落点不计航程，兵在海上衰减、被敌船打沉，没有靠岸",
+    "sameAs": ["统筹 0005 号广播第 ⑥ 项（idleBoats 选目标不计航程）", "R05 远程船：兵在海上耗掉或落到不能打的地方", "NEW:BT-sunk（R06）"],
+    "definition": "Policy.idleBoats（L5019-5044）在 nb=0、neutral=0 且自身密度 ≥115（L5031）时，把 boatRange 临时放到 2500、maxEff 传 Infinity 去调 boatOut（L5038-5040）；选中的落点航线 ≥300 像素。"
+                  "引擎里船每拍约走半个像素（moveBoats L289-326；被打中后的 4 拍只走 0.04 像素），每 5 拍掉 v>>7（decayBoats L360-366），"
+                  "奇数拍与 7.5 像素内的敌船互打（fightBoats L328-358；FIGHT_RANGE2=14400 子格²，1 像素=16 子格）。"
+                  "计：船数、出港兵、船费（余额的 32/1024）、在海上的拍数、靠岸时剩下的兵（没靠岸记 0）、被敌船打到的拍数。",
+    "detect": "dbg/boat-life.mjs <局> <席位列表> [t0] [t1]（真值重演逐条船：航线段数与像素长度、每 100 拍的兵数与位置、被敌船打到的拍数与对方船主、消失拍、有没有 landAt 记录）。",
+}
+
+DEFS["NEW-R03-AT03"] = {
+    "prefix": "AT",
+    "name": "几个号围着同一个薄真人，各算各的预算，谁都迈不过 chunk 闸",
+    "sameAs": ["NEW:AT-worth-gate（R06，价格线不出手；这条是价格线以下也不出手）", "R07-EC-IDLE-RICH（相近）"],
+    "definition": "≥2 个编队号与同一个真人接壤，该真人的余额小于这几个号余额之和；每个号的 buyLand 都没出手，dbg/buy-why 的分类是 chunk"
+                  "（报价低于 worth，但 L5424 按 (worth−报价)×领土 算出的预算 x 既 < want=1.25×need+3×接壤格，又 < chunk×余额，L5613 continue；本版 chunk=0.2、pplKill=0）"
+                  "或 worth（报价 ≥ worth，L5359 break）；持续 ≥300 拍。计：涉及的号数、各自被 chunk / worth 拦的决策拍数、期间目标密度的变化、最后出手时每格花的兵。",
+    "detect": "dbg/buy-why.mjs <局> <号> <t0> <t1>（逐决策拍：单独去掉哪一道闸会走到 send）+ 重放快照里目标的地/兵 + pairLog 里各号对它的得地与烧兵。",
+}
+
+DEFS["NEW-R03-EX01"] = {
+    "prefix": "EX",
+    "name": "离线空壳把全部余额送给队友（引擎规则，录像和日志里都看不到）",
+    "sameAs": ["NEW:IO-disconnect-husk（R06，说的是我方号掉线变空壳；这条是空壳往外送兵）"],
+    "definition": "真人离线后由内置 AI 接管。它在陆上没有可打的目标、发不了船、翻不了山时走 botDonate（bots.js L180-200）：真人席位给的是全部余额（L185），手续费 64/1024（game.js transfer L388-395），"
+                  "不占受捐额度，只受接收方硬上限 150×领土 的余量限制；接收方按随机起点在同队里找第一个「最近在交战」（recentWar）的号，没有就找「有船在海上」的号。"
+                  "计：送给本编队的次数与到账、把接收方顶到硬上限的次数、接收方随后 300 拍内把这笔兵转捐出去的金额与税；敌方各队同类到账。",
+    "detect": "resim.mjs 的 botGifts（挂在引擎 botGive 上）→ dossier.py [L]「表外进项」、[N]「表外」；dbg/husk-gifts.mjs <局> 单独列全场。",
+}
+
 
 def pat(pid, instances, note, extra_same=None):
     d = DEFS[pid]

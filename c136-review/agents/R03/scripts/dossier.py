@@ -767,6 +767,7 @@ class Dossier:
             r["boatOut"], r["boatFee"] = d["boat"][0], d["boat"][1]
             r["boatToMate"] = sum(tr for (t, p, tg, tr, got, q0, cap) in R["landings"] if p == pl and 0 <= tg < self.H and tg != pl and t <= R["endTick"])
             r["balEnd"], r["outEnd"] = d["bal1"], d["out1"]
+            r["giftIn"] = sum(g[3] for g in R.get("botGifts", ()) if g[2] == pl and g[0] <= end)
             for t, att, de, tiles, burnt, dB, dS, n in self.pair_def.get(pl, ()):
                 if t > end + 30 or att >= self.H:
                     continue
@@ -782,7 +783,16 @@ class Dossier:
         fees = tot["atkFee"] + tot["donTax"] + tot["boatFee"]
         self.p(f"  占总利息：打中立 {100 * tot['burnN'] / inc:.1f}% 打AI {100 * tot['burnAI'] / inc:.1f}% 打真人 {100 * (tot['burnH'] + tot['netH']) / inc:.1f}%（其中对消 {100 * tot['netH'] / inc:.1f}%） | 三种手续费 {100 * fees / inc:.1f}%（攻击费 {100 * tot['atkFee'] / inc:.1f}% 捐款税 {100 * tot['donTax'] / inc:.1f}% 船费 {100 * tot['boatFee'] / inc:.1f}%） | 挨打掉兵 {100 * tot['defBal'] / inc:.1f}% | 送给编队外 {100 * (tot['donOutNonSquad'] + tot['boatToMate']) / inc:.1f}% | 离线/灭亡时还在手里 {100 * (tot['balEnd'] + tot['outEnd']) / inc:.1f}%")
         self.p(f"  得地：中立 {tot['tilesN']} 格（{tot['burnN'] / max(1, tot['tilesN']):.1f} 兵/格） AI {tot['tilesAI']} 格（{tot['burnAI'] / max(1, tot['tilesAI']):.1f} 兵/格） 真人 {tot['tilesH']} 格（{tot['burnH'] / max(1, tot['tilesH']):.1f} 兵/格，不含对消）；带 * 的号是掉线后交给内置 AI（末余额即移交给 AI 的兵）")
-        self.squad_ledger = {"perBot": per, "total": {x: int(v) for x, v in tot.items()}}
+        gifts = [g for g in R.get("botGifts", ()) if g[2] in self.bot_of]
+        gift_tot = sum(per[b].get("giftIn", 0) for b in per)
+        if gifts:
+            by_bot = sorted(((per[b].get("giftIn", 0), b) for b in per if per[b].get("giftIn", 0) > 0), reverse=True)
+            big = sorted(gifts, key=lambda g: -g[3])[:6]
+            self.p(f"  表外进项：内置 AI / 离线空壳队友送来的兵（引擎 botDonate→botGive，不是玩家指令，不占受捐额度，只受对方硬上限限制）合计 {k(gift_tot)}（= 总利息的 {100 * gift_tot / inc:.1f}%）："
+                   + " ".join(f"{b} {k(v)}" for v, b in by_bot))
+            self.p("    最大的几笔：" + "；".join(f"{g[0]} 拍 {self.nm(g[1])} → {self.bot_of[g[2]]} {k(g[3])}（送出方原有 {k(g[5])}）" for g in big))
+        self.squad_ledger = {"perBot": per, "total": {x: int(v) for x, v in tot.items()}, "giftIn": int(gift_tot),
+                             "gifts": [[g[0], self.nm(g[1]), self.bot_of[g[2]], g[3], g[4]] for g in sorted(gifts, key=lambda g: -g[3])[:12]]}
 
     def sec_donnet(self):
         """全场捐款网络：重放里所有真人的成交捐款（回放只含成交的捐款），按阵营汇总。"""
@@ -839,7 +849,22 @@ class Dossier:
                 self.p(f"    {self.nm(p)} → {self.nm(q)} {h['n']} 笔 到账 {k(h['got'])} 税 {k(h['tax'])}（{h['t0']}~{h['t1']} 拍）")
         for g in sorted(gifts, key=lambda g: -g["got"])[:5]:
             self.p(f"  离场前清仓捐款：{g['t']} 拍 {g['from']} → {g['to']} {k(g['got'])}（{g['leftT']} 拍离线）")
+        # 内置 AI / 离线空壳给队友送兵（不是玩家指令，上面的捐款统计里没有）
+        bot_gifts = [g for g in R.get("botGifts", ()) if g[2] < self.H]
+        bg_pairs = defaultdict(lambda: {"n": 0, "got": 0, "fee": 0, "t0": 10 ** 9, "t1": 0})
+        bg_team = defaultdict(int)
+        for t, p, q, got, fee, b0, l0 in bot_gifts:
+            x = bg_pairs[(p, q)]
+            x["n"] += 1; x["got"] += got; x["fee"] += fee; x["t0"] = min(x["t0"], t); x["t1"] = max(x["t1"], t)
+            bg_team[cls(q)] += got
+        if bg_pairs:
+            self.p("  表外：内置 AI / 离线空壳把余额送给队友（引擎 botDonate，手续费 64/1024，不占额度；按接收方阵营合计）："
+                   + " ".join(f"{n}:{k(v)}" for n, v in sorted(bg_team.items(), key=lambda kv: -kv[1])))
+            for (p, q), x in sorted(bg_pairs.items(), key=lambda kv: -kv[1]["got"])[:8]:
+                self.p(f"    {self.nm(p)}{'（' + str(self.left[p]) + ' 拍离线）' if p < self.H and self.left[p] >= 0 else ''} → {self.nm(q)} {x['n']} 次 到账 {k(x['got'])} 费 {k(x['fee'])}（{x['t0']}~{x['t1']} 拍）")
         self.donnet = {
+            "botGiftsByClass": {n: int(v) for n, v in bg_team.items()},
+            "botGiftPairs": [{"from": self.nm(p), "fromLeft": self.left[p] if p < self.H and self.left[p] >= 0 else None, "to": self.nm(q), "n": x["n"], "delivered": int(x["got"]), "fee": int(x["fee"]), "t0": x["t0"], "t1": x["t1"]} for (p, q), x in sorted(bg_pairs.items(), key=lambda kv: -kv[1]["got"])[:8]],
             "byClass": {n: {"n": x["n"], "delivered": int(x["got"]), "tax": int(x["tax"]), "toHusk": int(x["toHusk"]), "bands": {b: int(v) for b, v in x["bands"].items()}} for n, x in by_cls.items()},
             "topReceivers": [{"who": self.nm(q), "left": self.left[q] if self.left[q] >= 0 else None, "n": r["n"], "delivered": int(r["got"]), "t0": r["t0"], "t1": r["t1"], "from": [{"who": self.nm(p), "delivered": int(v)} for p, v in sorted(r["from"].items(), key=lambda kv: -kv[1])[:4]]} for q, r in top],
             "toHusks": [{"from": self.nm(p), "to": self.nm(q), "n": h["n"], "delivered": int(h["got"]), "tax": int(h["tax"]), "t0": h["t0"], "t1": h["t1"]} for (p, q), h in sorted(husk.items(), key=lambda kv: -kv[1]["got"])[:6]],

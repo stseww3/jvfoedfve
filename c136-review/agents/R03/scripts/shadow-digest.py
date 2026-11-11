@@ -14,6 +14,8 @@
   [S3] 落地时的错位：目标已死改成中立、空令、同一决定重复落地的清仓批
   [S4] 不出手的窗口（t≥1500 连续 ≥60 拍无发令）：当时最便宜报价 c、门槛 worth、余额/密度
   [S5] isNoFullSend / shadowQuota 的变化（核对「7 拍窗口误锁」假设）
+  [S6] 上一条还没成交就重发（同步串 / 落后串）
+  [S7] 同拍挤占：同一决策拍先发的一条占掉指令位，后面那条本地被拒（每拍只收 1 条）
 """
 import json
 import os
@@ -373,6 +375,49 @@ class Digest:
         self.facts["reissue"] = dict(tot, list=lst)
         self.w()
 
+    # ---------- S7 ----------
+    def sec_crowd(self):
+        """同一个决策拍里先发的一条占掉了指令位，后面那条在本地就被拒收（页面适配层每拍只收 1 条）。"""
+        self.w("[S7] 同拍挤占：同一个决策拍里已经有一条被接受的指令，后面那条本地就被拒（每拍只收 1 条）。按「先发的源码行 → 被挤掉的源码行 → 目标」分组")
+        tot = {"n": 0, "after1500": 0, "humanTarget": 0, "bots": 0}
+        lst = []
+        for bot, b in self.S["bots"].items():
+            by_t = defaultdict(list)
+            for c in b["cmds"]:
+                by_t[c[0]].append(c)
+            grp = {}
+            for t, cs in by_t.items():
+                acc = [c for c in cs if c[4] == 1]
+                if not acc:
+                    continue
+                for r in cs:
+                    if r[4] != 0:
+                        continue
+                    key = (self.site(acc[0][7]), self.site(r[7]), r[1], r[3])
+                    g = grp.setdefault(key, {"n": 0, "t0": t, "t1": t, "pct": [r[2], r[2]], "B": [r[5], r[5]], "want": 0})
+                    g["n"] += 1; g["t0"] = min(g["t0"], t); g["t1"] = max(g["t1"], t)
+                    g["pct"] = [min(g["pct"][0], r[2]), max(g["pct"][1], r[2])]
+                    g["B"][1] = r[5] if t >= g["t1"] else g["B"][1]
+                    g["want"] = max(g["want"], (r[2] + 1) * r[5] // 1024)
+            if grp:
+                tot["bots"] += 1
+            for (s1, s2, kind, q), g in sorted(grp.items(), key=lambda kv: kv[1]["t0"]):
+                human = kind == 1 and q < self.R["H"]
+                tot["n"] += g["n"]
+                if g["t0"] >= 1500:
+                    tot["after1500"] += g["n"]
+                if human:
+                    tot["humanTarget"] += g["n"]
+                tgt = self.nm(q) if kind != 3 else "船"
+                item = {"bot": bot, "first": s1, "crowded": s2, "target": tgt, "human": human, "n": g["n"], "t0": g["t0"], "t1": g["t1"], "pct": g["pct"], "maxWant": int(g["want"])}
+                lst.append(item)
+                self.w(f"  {bot:7s} {g['t0']}-{g['t1']} 先发 {s1:18s} 挤掉 {s2:16s} → {tgt:18s} × {g['n']:3d}（pct {g['pct'][0]}~{g['pct'][1]}，单条想发的兵最多 {k(g['want'])}）")
+        if not lst:
+            self.w("  全队整局没有。")
+        self.w(f"  合计：{tot['n']} 条（t≥1500 的 {tot['after1500']} 条；目标是真人的 {tot['humanTarget']} 条），涉及 {tot['bots']} 个号")
+        self.facts["crowd"] = dict(tot, list=lst)
+        self.w()
+
     def run(self):
         self.w(f"===== {self.mid} 影子策略摘要（决策=策略源码在本地拍上的真实决定；成交=录像里服务器执行的指令）=====")
         self.sec_check()
@@ -380,6 +425,7 @@ class Digest:
         self.sec_misfire()
         self.sec_nfs()
         self.sec_reissue()
+        self.sec_crowd()
         self.sec_runs()
         self.sec_holds()
         os.makedirs(os.path.join(OUT, "dossier"), exist_ok=True)
