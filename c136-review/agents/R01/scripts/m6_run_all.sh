@@ -24,6 +24,7 @@ run all_outcomes.txt  python3 scripts/m6_all_outcomes.py --csv     # land.csv �
 run land_groups.md    python3 scripts/m6_all_land.py --md
 run all_coload.txt    python3 scripts/m6_all_coload.py --list
 run leave_grid.txt    python3 scripts/leave_grid.py
+run all_lobby.txt     python3 scripts/m6_all_lobby.py
 cp out/_all/pages.csv out/_all/replay_facts.csv out/_all/traj.csv out/_all/joined.csv out/_all/land.csv out/_all/match_split.csv "$D/"
 
 # —— 我复盘的 15 局 ——
@@ -35,6 +36,7 @@ run tables.md         python3 scripts/m6_tables.py all
 run patterns.md       python3 scripts/m6_patterns.py --md
 run donations.md      python3 scripts/m6_donations.py --md
 run boats.md          python3 scripts/m6_boats.py --md
+run channel_buffer.txt python3 scripts/m6_channel_buffer.py           # 另写 channel_trace.csv、channel_bursts.csv
 
 # —— 报告正文：reports/m6-data/SUMMARY.tmpl.md + 上面的表 → reports/CROSS-MATCH-SUMMARY.md ——
 timeout 60 python3 scripts/m6_build_report.py --check || echo "FAILED m6_build_report" >&2
