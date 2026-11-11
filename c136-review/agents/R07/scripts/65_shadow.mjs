@@ -15,7 +15,8 @@
 //
 // 用法（必须套重计算闸）：
 //   bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/65_shadow.mjs <matchId> [--until T]
-//        [--bots a,b|all] [--trace bot:t0:t1[:every]]… [--ver va|vb|vc]
+//        [--bots a,b|all] [--trace bot:t0:t1[:every]]… [--ver va|vb|vc] [--quit engine|none]
+//   --quit engine（默认）：把引擎里已离开（state=2）的真人放进 window.__quitPlayers（策略挑受捐方时会跳过它们）；none = 不设
 // 输出：out/<matchId>/shadow_log.txt（影子日志）、shadow_cmds.tsv（影子指令）、shadow_check.txt（与真日志比对）、
 //       shadow_coast.tsv（每 90 拍各号的海岸格数与能否出船，取自模拟器 g.coast / g.boatsAllowed）、
 //       shadow_nofull.tsv（isNoFullSend 何时被锁上、之后挡掉了哪些出兵）、
@@ -85,6 +86,7 @@ const until = +opt('--until', 1e9);
 const traces = optAll('--trace').map((s) => { const [b, t0, t1, ev] = s.split(':'); return { bot: b, t0: +t0, t1: +t1, every: ev ? +ev : 0, lines: [] }; });
 
 // ---- 影子策略实例
+const idOfRev = new Map([...idOf].map(([b, pp]) => [pp, b]));
 const pol = new Map();
 for (const b of bots) {
   const me = idOf.get(b);
@@ -167,6 +169,90 @@ function traceLine(g, b, p, tr, cmdsNow, ev) {
   tr.lines.push(...out);
 }
 
+// ---- t<dpEnd（1500）打内置 AI 的底线诊断：统筹广播 0004 的「winFloor → safeFinite 队友互锁」假设
+// 复刻 V13.threatOf（L417-444），多返回一个「余额最小的那个其他邻居是谁」
+function threatOwner(g, q, me) {
+  const Bd = g.border[q], px = g.px, own = g.own, d = g.dir4;
+  const busyNeutral = g.hasAttack(q, NEUTRAL);
+  let minOther = Infinity, owner = -1;
+  const seen = new Set();
+  const n = Bd.length;
+  const step = n > 1024 ? Math.ceil(n / 1024) : 1;
+  for (let i = n - 1; i >= 0; i -= step) {
+    const b = Bd[i];
+    for (let k = 0; k < 4; k++) {
+      const c = b + d[k];
+      const v = px[c];
+      if (v === SIM.T_LAND) { if (!busyNeutral) return { neutral: true, minOther: 0, owner: -1 }; continue; }
+      if (v < SIM.P_INNER) continue;
+      const o = own[c];
+      if (o === q || o === me || seen.has(o)) continue;
+      seen.add(o);
+      if (g.hasAttack(q, o)) continue;
+      const sv = g.bal[o] + g.attackTroopsOn(o, q);
+      if (sv < minOther) { minOther = sv; owner = o; }
+    }
+  }
+  return { neutral: false, minOther, owner };
+}
+const early = new Map(); // bot -> 统计
+const earlyEx = [];
+function earlyDiag(g, b, p, cmdsNow) {
+  const P = p.p, me = p.me;
+  if (!(g.t < (P.dpEnd ?? 1500)) || g.t < 300 || g.t % P.period !== 0) return;
+  if (typeof p.winFloor !== 'function' || typeof p.floorFor !== 'function') return;
+  const nbBots = p.nb.filter((q) => g.alive[q] && g.isBot(q) && g.terr[q] > 0);
+  if (!nbBots.length) return;
+  if (!early.has(b)) early.set(b, { dec: 0, fired: 0, neutralOnly: 0, idle: 0, cls: new Map(), idleBal: 0, sbMate: 0, sbMateBal: 0, t0: g.t, t1: g.t });
+  const st = early.get(b);
+  st.dec++; st.t1 = g.t;
+  if (cmdsNow.some((c) => c.kind === 'attack' && c.target !== NEUTRAL)) { st.fired++; return; }
+  if (cmdsNow.length) { st.neutralOnly++; return; }
+  st.idle++;
+  const B = g.bal[me], L = Math.max(1, g.terr[me]);
+  st.idleBal += B;
+  let floorAt = null;
+  try { floorAt = p.floors(g).floorAt; } catch (e) { floorAt = null; }
+  const min = p.minCmd(g);
+  let best = null, anyAllowed = false;
+  for (const q of nbBots) {
+    let allow = true;
+    try { allow = p.allow(g, q); } catch (e) { allow = true; }
+    if (!allow) continue;
+    anyAllowed = true;
+    const perPx = p.price(g, q);
+    const fl = p.floorFor(g, q, floorAt ? floorAt(perPx) : 0);
+    const avail = B - fl;
+    const pass = avail > p.minShare(g, q) * B && avail >= min;
+    const mult = p.contested(g, q) ? P.sharedBotMult : 1.0;
+    const terms = { 价格项: (mult * p.botPx(g, q) * L) / (P.winR * Math.max(1, g.t)), dpKeep: p.dpKeep(g), safeFinite: p.sb ?? 0, peopleFloor: p.peopleFloor(g) };
+    if (!best || avail > best.avail) best = { q, avail, fl, pass, terms, perPx };
+  }
+  let cls;
+  if (!anyAllowed) cls = '邻居 AI 都不让打（allow / botOk 没过：价格高于当拍地价或 winWorth）';
+  else if (best.pass) cls = '过了底线但没发（need<=0 / 数额不到一条指令 / 没有空槽）';
+  else {
+    const top = Object.entries(best.terms).sort((a, c) => c[1] - a[1])[0][0];
+    if (top === 'safeFinite') {
+      // 参照的是谁
+      let who = -1, sb = -1;
+      for (const q of p.nb) {
+        if (g.alive[q] === 0 || !g.isBot(q) || !g.hasFreeSlot(q) || g.hasAttack(q, me)) continue;
+        const th = threatOwner(g, q, me);
+        if (th.neutral || !Number.isFinite(th.minOther)) continue;
+        const v = th.minOther - g.attackTroopsOn(me, q);
+        if (v > sb) { sb = v; who = th.owner; }
+      }
+      const kind = who < 0 ? '未知' : idOfRev.has(who) ? '我方队友' : who >= H ? '另一个内置 AI' : g.isTeammate(me, who) ? '同队真人' : '敌方真人';
+      cls = `safeFinite 底线卡住（参照的最弱邻居是${kind}）`;
+      if (kind === '我方队友') { st.sbMate++; st.sbMateBal += B; if (best.perPx <= 3) { st.sbMateCheap = (st.sbMateCheap || 0) + 1; st.sbMateCheapTerr = (st.sbMateCheapTerr || 0) + g.terr[best.q]; } }
+      if (earlyEx.length < 400 && g.t % 50 === 0) earlyEx.push(`  t=${g.t} ${b} B=${B} L=${L} | 最好的目标 ${pname(g, best.q)}（${g.terr[best.q]} 格 / ${g.bal[best.q]} 兵）每格 ${best.perPx.toFixed(1)} | 底线 ${Math.round(best.fl)} = max(价格项 ${Math.round(best.terms.价格项)}, dpKeep ${Math.round(best.terms.dpKeep)}, safeFinite ${Math.round(best.terms.safeFinite)}, peopleFloor ${Math.round(best.terms.peopleFloor)}) → 可用 ${Math.round(best.avail)} | safeFinite 参照 ${who >= 0 ? pname(g, who) : '?'}（${who >= 0 ? g.bal[who] : '?'} 兵）`);
+    } else cls = `${top} 底线卡住`;
+  }
+  st.cls.set(cls, (st.cls.get(cls) || 0) + 1);
+}
+const quitMode = opt('--quit', 'engine');
+const quitSet = new Set();
 // ---- 钩子：每拍结算后跑影子
 const proto = SIM.Game.prototype;
 const origTick = proto.tick;
@@ -178,6 +264,8 @@ proto.tick = function () {
   gRef = g;
   if (!g.names) g.names = names;
   if (g.t % 90 === 0) for (const [b, me] of idOf) if (g.alive[me]) coastRows.push([g.t, b, g.terr[me], g.coast[me] ? g.coast[me].length : 0, g.boatsAllowed(me) ? 1 : 0, g.state[me] === 2 ? 1 : 0].join('\t'));
+  // window.__quitPlayers：真号由桥接层维护（本包看不到它何时更新）；影子按引擎的「已离开」状态（state=2）近似
+  if (quitMode === 'engine') { for (let q = 0; q < H; q++) if (g.state[q] === 2) quitSet.add(q); window.__quitPlayers = quitSet; }
   const onlineHad = Object.prototype.hasOwnProperty.call(g, 'online');
   const online0 = g.online;
   g.online = true;
@@ -213,6 +301,7 @@ proto.tick = function () {
       nfEvents.push([g.t, b, '锁上isNoFullSend', pc0 ? `待核对出兵:发令拍=${pc0.t - 1} 想发=${Math.round(pc0.want)} 发令时余额=${pc0.bal0} 手续费=${pc0.fee} 本拍余额=${B} 推算实发=${Math.max(0, pc0.bal0 - B - pc0.fee)}` : '无待核对记录', '', '', B].join('\t'));
     }
     delete g.attack; delete g.donate; delete g.boat; delete g.boatTo; delete g.chase; delete g.recall; delete g.retreat;
+    try { earlyDiag(g, b, p, cmdsNow); } catch (e) { if (!earlyDiag.err) { earlyDiag.err = String(e && e.message); } }
     for (const tr of traces) {
       if (tr.bot !== b || g.t < tr.t0 || g.t > tr.t1) continue;
       const P = p.p;
@@ -228,6 +317,19 @@ proto.tick = function () {
         st.availMin = Math.min(st.availMin, a); st.availMax = Math.max(st.availMax, a);
         st.chunkMin = Math.min(st.chunkMin, ck); st.chunkMax = Math.max(st.chunkMax, ck);
         st.ratioMin = Math.min(st.ratioMin, a / ck); st.ratioMax = Math.max(st.ratioMax, a / ck);
+      }
+      const fired = cmdsNow.find((c) => c.kind === 'attack' && c.target !== NEUTRAL);
+      if (fired) {
+        const row = ev.rows.find((r) => r.q === fired.target);
+        st.fireN = (st.fireN || 0) + 1;
+        st.fireTroops = (st.fireTroops || 0) + (fired.troops || 0);
+        if (ev.over) st.overN = (st.overN || 0) + 1;
+        if (row && row.o.c >= ev.worth) {
+          st.hiN = (st.hiN || 0) + 1;
+          st.hiTroops = (st.hiTroops || 0) + (fired.troops || 0);
+          const rt = row.o.c / Math.max(1e-9, ev.worth);
+          st.hiMin = Math.min(st.hiMin ?? Infinity, rt); st.hiMax = Math.max(st.hiMax ?? -Infinity, rt);
+        }
       }
       tr.stats.set(cls, st);
       if (tr.every && g.t % tr.every !== 0 && !cmdsNow.length) continue;
@@ -278,12 +380,26 @@ chk.push(`# 重演与 traj.csv 快照核对：${v.rows} 行，领土一致 ${v.t
     if (s.neut === r.neut) { neutSame++; pb.neut++; }
     if (s.cmds === r.cmds) { cmdSame++; pb.cmds++; }
     pb.dCmds.push(s.cmds - r.cmds);
+    (pb.dT = pb.dT || []).push(+k.split('@')[1]);
     if (s.nb === r.nb && s.neut === r.neut && s.cmds === r.cmds) same++;
   }
   chk.push(`# HL-TICK 比对：真日志 ${n} 条；影子同拍 领土余额一致 ${stateSame}，nb 一致 ${nbSame}，neut 一致 ${neutSame}，cmds 计数一致 ${cmdSame}，三项全一致 ${same}`);
   for (const [b, pb] of perBot) {
     const last = pb.dCmds.length ? pb.dCmds[pb.dCmds.length - 1] : 0;
     chk.push(`#   ${b}: ${pb.n} 条，影子缺 ${pb.miss}，nb 一致 ${pb.nb}，neut 一致 ${pb.neut}，cmds 一致 ${pb.cmds}；最后一条 cmds 差（影子-真）${last}`);
+    // cmds 差的变化点：影子在哪一段多发 / 少发了指令（真号的 cmds 只在 send 成功时加一）
+    const order = (pb.dT || []).map((t, i) => [t, pb.dCmds[i]]).sort((a, b2) => a[0] - b2[0]);
+    let prevD = 0, prevT = 0;
+    const chg = [];
+    for (const [t, dd] of order) {
+      if (dd !== prevD) {
+        const mine = shadowCmds.filter((c) => c.bot === b && c.t > prevT && c.t <= t).map((c) => `${c.t}:${c.kind} ${c.pct}→${c.targetName}`);
+        chg.push(`(${prevT},${t}] 差 ${prevD}→${dd}；这一段影子指令：${mine.join('、') || '无'}`);
+      }
+      prevD = dd; prevT = t;
+    }
+    for (const c of chg.slice(0, 6)) chk.push(`#       变化点 ${c}`);
+    if (chg.length > 6) chk.push(`#       …共 ${chg.length} 个变化点`);
   }
 }
 {
@@ -322,11 +438,29 @@ fs.writeFileSync(path.join(OUT, 'shadow_nofull.tsv'), 't\tbot\tevent\tdetail_or_
   console.log('# isNoFullSend（影子）：' + (line || '全程没有任何号被锁上'));
   fs.appendFileSync(path.join(OUT, 'shadow_check.txt'), '# isNoFullSend（影子）：' + (line || '全程没有任何号被锁上') + '\n');
 }
+{
+  const E = [`# ${mid} t=300~1499 有内置 AI 邻居的决策拍：影子有没有出手，没出手时卡在哪条底线（策略 ${SRC}；Style.pickTarget → floorFor → floorFor0 → winFloor = max(价格项, dpKeep, safeFinite)）`];
+  if (earlyDiag.err) E.push(`# 诊断出错：${earlyDiag.err}`);
+  let T = { dec: 0, fired: 0, neutralOnly: 0, idle: 0, sbMate: 0 };
+  for (const [b, st] of early) {
+    E.push(`${b}: 有 AI 邻居的决策拍 ${st.dec}（t=${st.t0}~${st.t1}）；出手打 AI/人 ${st.fired}；只打无主地/其他指令 ${st.neutralOnly}；零指令 ${st.idle}` + (st.idle ? `（零指令时平均余额 ${Math.round(st.idleBal / st.idle)}）` : ''));
+    for (const [k, n] of [...st.cls].sort((a, c) => c[1] - a[1])) E.push(`    ${k}: ${n} 拍`);
+    T.dec += st.dec; T.fired += st.fired; T.neutralOnly += st.neutralOnly; T.idle += st.idle; T.sbMate += st.sbMate; T.cheap = (T.cheap || 0) + (st.sbMateCheap || 0); T.cheapTerr = (T.cheapTerr || 0) + (st.sbMateCheapTerr || 0);
+    for (const [k, n] of st.cls) { const kk = k.startsWith('safeFinite') ? 'safeFinite（任何参照）' : k.startsWith('邻居 AI') ? '不让打' : k.startsWith('过了底线') ? '过了底线没发' : '其他底线'; T[kk] = (T[kk] || 0) + n; }
+  }
+  E.push(`# 合计：决策拍 ${T.dec}，出手 ${T.fired}，只打无主地/其他 ${T.neutralOnly}，零指令 ${T.idle}；其中 safeFinite 底线卡住且参照的是我方队友 ${T.sbMate} 拍（占零指令 ${T.idle ? (100 * T.sbMate / T.idle).toFixed(1) : '0'}%）`);
+  E.push(`#       零指令拍按原因：safeFinite（任何参照）${T['safeFinite（任何参照）'] || 0}，邻居 AI 不让打（价格高于 winWorth / 当拍地价）${T['不让打'] || 0}，价格项或 dpKeep 等其他底线 ${T['其他底线'] || 0}，过了底线没发 ${T['过了底线没发'] || 0}`);
+  E.push(`#       「参照我方队友」的 ${T.sbMate} 拍里，最好的目标每格成本 ≤3 兵（几乎是空地）的 ${T.cheap || 0} 拍，这些目标当时平均 ${T.cheap ? Math.round(T.cheapTerr / T.cheap) : 0} 格`);
+  if (earlyEx.length) { E.push('# 例子（每 50 拍取一条）'); E.push(...earlyEx.slice(0, 60)); }
+  fs.writeFileSync(path.join(OUT, 'shadow_early.txt'), E.join('\n') + '\n');
+  console.log(E.filter((x) => x.startsWith('# 合计') || x.startsWith('#       ')).join('\n'));
+}
 fs.writeFileSync(path.join(OUT, 'shadow_coast.tsv'), 't\tbot\tterr\tcoastPx\tboatsAllowed\tleft\n' + coastRows.join('\n') + '\n');
 for (const tr of traces) {
   const f = path.join(OUT, `shadow_trace_${tr.bot}_${tr.t0}_${tr.t1}.txt`);
   const sum = ['# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：'];
   for (const [k, st] of tr.stats || []) sum.push(`#   ${k}: ${st.n} 拍（t=${st.t0}~${st.t1}）` + (Number.isFinite(st.availMin) ? `；可用兵 ${Math.round(st.availMin)}~${Math.round(st.availMax)}，一条指令下限(20%余额) ${Math.round(st.chunkMin)}~${Math.round(st.chunkMax)}，比值 ${(100 * st.ratioMin).toFixed(0)}%~${(100 * st.ratioMax).toFixed(0)}%` : ''));
+  for (const [k, st] of tr.stats || []) if (st.fireN) sum.push(`#   └ 「${k}」里：${st.fireN} 条对人/bot 的出兵共约 ${Math.round(st.fireTroops)} 兵；其中超过软上限（over=1）时发的 ${st.overN || 0} 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 ${st.hiN || 0} 条约 ${Math.round(st.hiTroops || 0)} 兵` + (st.hiN ? `，c/worth = ${st.hiMin.toFixed(2)}~${st.hiMax.toFixed(2)}` : ''));
   fs.writeFileSync(f, `# ${mid} ${tr.bot} 影子决策明细 t=${tr.t0}~${tr.t1}（策略 ${SRC}；worth/safe/keep/avail 按 buyLand 源码公式重算）\n` + sum.join('\n') + '\n' + tr.lines.join('\n') + '\n');
   console.log(`# 轨迹 ${tr.bot} ${tr.t0}~${tr.t1}：` + [...(tr.stats || [])].map(([k, st]) => `${k} ${st.n}`).join('；'));
 }

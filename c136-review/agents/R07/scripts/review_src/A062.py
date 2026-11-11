@@ -28,11 +28,15 @@ SRC = {
     "extraCommands": [
         "node /agent/repos/c136-data/src/tools/replay_cmds.mjs A062 --out c136-review/agents/R07/out/A062/cmds.tsv",
         "bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/60_truth.cjs A062",
-        "python3 61_truth_view.py A062", "python3 62_rank.py A062 --at 180,540,630,1080,1530,1980,2340,3060,3960,4500,5400,5670", "python3 63_replay_ledger.py A062",
+        "python3 61_truth_view.py A062", "python3 62_rank.py A062 --at 180,540,630,1080,1530,1980,2340,3060,3960,4500,5400,5670",
+        "bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/67_troop_flow.mjs A062 --cuts 0,520,1500,2400,4284,5400",
+        "python3 63_replay_ledger.py A062",
+        "bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/69_quota_truth.mjs A062",
         "bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/66_spawn_truth.mjs A062",
         "bash c136-review/tools/run-heavy.sh node c136-review/agents/R07/scripts/65_shadow.mjs A062 --trace ryan_m:1515:2379:30 --trace ryan_m:1500:2420:30 --trace ryan_m:2370:2420 --trace ryan_m:2610:2880:30 "
         "--trace ryan_m:4230:4560:30 --trace kaito9:2200:2260 --trace noah88:3440:3520",
         "python3 64_cmd_loss.py A062",
+        "python3 70_team_density.py A062 --at 540,1080,1530,1980,2340,3060,3960,4500,5400,5670", "python3 71_death_chain.py A062", "python3 72_repeat_sends.py A062",
     ],
     "timelineTs": [180, 540, 630, 900, 1080, 1530, 1980, 2160, 2340, 2520, 3060, 3240, 3960, 4500, 5400, 5670, 5760, 5940],
     "timelineNotes": {
@@ -188,7 +192,7 @@ SRC = {
                 "61_truth_view.py D：さっしー→alex_k 2410~2770（进攻槽峰值 75,115 兵）、→zero_7 3390~3450（57,110）、→talon5 3470~3640（56,267）、→zexos1 3680~3800（58,519）、→sora_w 3860~3970（61,098）、→leo_tx 3890~4000（60,636）",
                 "61_truth_view.py A：已离开席位 29,021 格（2340）→21,180（3060）→8,502（3780）→0（4140）；T2 31.7%→29.2%→28.3%→25.7%",
                 "61_truth_view.py B：AI 接管后 leo_tx / sora_w / zexos1 的余额从 1620 起在 0~4 千；zero_7 离开时 327,314 兵，3060 剩 8.1 万、3420 为 0；alex_k 的 AI 曾涨到 9,661 格（2380）、余额 8 万",
-                "63_replay_ledger.py C：同一段时间 kaito9 / noah88 / riku_x 的 161 条调度（t=2150~3780）因为收方累计额度不够被拒；truth_border.tsv：三个号到 2970 仍然只和队友接壤",
+                "63_replay_ledger.py C：同一段时间 kaito9 / noah88 / riku_x 的 160 条调度（t=2150~3780）因为收方累计额度不够被拒；truth_border.tsv：三个号到 2970 仍然只和队友接壤",
                 "shadow_trace_noah88_3440_3520.txt：noah88 t=3470 第一次有敌邻（さっしー，3 格接壤，zero_7 的地刚被吃完），当拍发出 12% 脉冲",
             ],
             "priorDecisions": [
@@ -257,7 +261,7 @@ SRC = {
         {"t": 1500, "bot": "kaito9 / noah88 / riku_x", "kind": "donate", "verdict": "error",
          "state": "三个围死号密度 97~129，每 25 拍向 ryan_m 调度 pct=320（31.3% 余额，8.7~14.4 万兵）；全场上限 85 点 ≈ 4.5 万兵",
          "codePath": f"{VB}:Policy.tryDonateToTeammate:L4500-4508（`idealPct = boxedIn ? 320 : 220`，`pct < 180 → return false`，`g.donate(...)` 后不看结果）；L4329-4331（12 拍冷却 + 25 拍相位）",
-         "why": "249 次调度只执行 19 次。66 次（t≤2105）单笔就超过全场上限；161 次超过收方剩余额度；3 次卡在换档拍或被同拍先到的另一笔占掉。成功的 9 笔（t<4284）有 7 笔落在上限每 100 拍加点之后的第一个相位拍，2 笔在计点公式换档的那一拍",
+         "why": "249 次调度只执行 19 次。66 次（t≤2105）单笔就超过全场上限；160 次超过收方剩余额度；4 次卡在换档拍或额度边界上。成功的 9 笔（t<4284）有 7 笔落在上限每 100 拍加点之后的第一个相位拍，2 笔在计点公式换档的那一拍",
          "estCost": "三个号在软上限以上合计 5,950 拍", "patternId": "NEW:R07-DN-QUOTA-OVERSIZE", "evidenceRef": "replay_ledger.txt B / C 节；in_game.log L432~L440"},
         {"t": 1560, "bot": "ryan_m", "kind": "idle", "verdict": "error",
          "state": "6,805 格、余额 166,371（密度 24.4），nb=2：さっしー（20,867 格、密度 10.4，60 格接壤）和 Jordan。影子：さっしー单价 26.8 < 地价 36.5，可用兵 25,145 < 下限 33,274",
@@ -308,7 +312,7 @@ SRC = {
         np("R07-SP-SWAP-CHURN", [{"t": -25, "bot": "leo_tx"}, {"t": -25, "bot": "zexos1"}], "A062：各 26 条出生指令；全队 190 条里 21 条指向已被占的点、被引擎挪开"),
         np("R07-SP-OVERLAP", [{"t": -17, "bot": "leo_tx"}, {"t": -17, "bot": "zexos1"}], "A062：两个号实际相距 5.7 像素出生；(813,219) 空着"),
         np("R07-OP-BOXED-EARLY", [{"t": 630, "bot": "kaito9"}, {"t": 1440, "bot": "riku_x"}, {"t": 1530, "bot": "noah88"}], "A062：3 个号"),
-        np("R07-DN-QUOTA-OVERSIZE", [{"t": 1500, "bot": "kaito9"}, {"t": 1500, "bot": "noah88"}, {"t": 1520, "bot": "riku_x"}], "A062：249 条日志、执行 19 条；66 条单笔超全场上限，161 条超剩余额度，3 条卡在换档拍 / 同拍"),
+        np("R07-DN-QUOTA-OVERSIZE", [{"t": 1500, "bot": "kaito9"}, {"t": 1500, "bot": "noah88"}, {"t": 1520, "bot": "riku_x"}], "A062：249 条日志、执行 19 条；66 条单笔超全场上限，160 条超剩余额度，4 条卡在换档拍 / 额度边界"),
         np("R07-EC-HARDCAP", [{"t": 2200, "bot": "kaito9"}, {"t": 3400, "bot": "riku_x"}, {"t": 2400, "bot": "noah88"}], "A062：kaito9 1,020 拍、riku_x 220 拍、noah88 20 拍；快照口径 23 个"),
         np("R07-EC-BOXED-RICH", [{"t": 1530, "bot": "kaito9"}, {"t": 1980, "bot": "noah88"}, {"t": 2340, "bot": "riku_x"}], "A062：68 个快照"),
         np("R07-EC-SOFTCAP", [{"t": 1530, "bot": "kaito9"}, {"t": 1710, "bot": "noah88"}, {"t": 2340, "bot": "ryan_m"}], "A062：69 个快照"),
@@ -320,6 +324,10 @@ SRC = {
         np("R07-AT-BIG-BURN", [{"t": 2380, "bot": "ryan_m"}], "A062：5 个窗口，Σ跌幅 1,416,427"),
         np("R07-DF-PASSIVE-BLEED", [{"t": 4680, "bot": "riku_x"}, {"t": 5670, "bot": "riku_x"}, {"t": 5850, "bot": "ryan_m"}], "A062：8 个窗口，25,118 格（7 个在 5400 之后）"),
         np("R07-GOOD-SAVED-PUSH", [{"t": 1170, "bot": "riku_x"}, {"t": 5130, "bot": "riku_x"}], "A062：2 次，+4,808 格"),
+        np("R07-OP-WINFLOOR-MATE", [{"t": 390, "bot": "noah88"}, {"t": 300, "bot": "zexos1"}, {"t": 300, "bot": "ryan_m"}],
+           "A062（影子）：t=300~1499 有内置 AI 邻居的零指令决策拍 936 个，415 个卡在以我方队友余额为准的 safeFinite 留底上（noah88 161、zexos1 102、ryan_m 98、talon5 35、riku_x 10、leo_tx 8、sora_w 1），其中 350 个最便宜的目标每格不到 3 兵"),
+        np("R07-AT-INFLIGHT-REPEAT", [{"t": 2394, "bot": "ryan_m"}, {"t": 5236, "bot": "ryan_m"}],
+           "A062：对真人 19 组连发 56 条，第 2 条起 2,744,271 兵 / 手续费 360,820；超出吃掉整块所需 287,052 兵（2 组）"),
         np("R07-GOOD-OPENING-DP", [{"t": 62, "bot": "全队"}]),
     ],
     "lossArchetype": "external",
@@ -368,7 +376,7 @@ SRC = {
         "ryan_m@5850": "被 Bhavya 打（进攻槽峰值 1,477,020 兵）：15,858→9,399 格，余额 136.7 万→65.9 万；80 拍后出局",
     },
     "mechanismChecks": {
-        "1_quotaRejections": "证实，而且是本局储备号囤兵的直接原因。249 条调度日志、录像里执行 19 条（7.6%）：66 条单笔需点（93~257）超过全场上限（85~121），161 条超过收方剩余额度，3 条卡在换档拍或被同拍先到的另一笔占掉——230 条没执行的全部对得上账。"
+        "1_quotaRejections": "证实，而且是本局储备号囤兵的直接原因。249 条调度日志、录像里执行 19 条（7.6%）：66 条单笔需点（93~257）超过全场上限（85~121），160 条超过收方剩余额度，4 条卡在换档拍或额度边界上——230 条没执行的全部对得上账。"
                              "被拒的捐款不扣款、不进录像，策略没有任何反馈。t<4284 成功的 9 笔里 7 笔落在上限加点（t%100==99）之后的 10~23 拍，另 2 笔正好在计点公式换档的 2142 和 3213；t≥4284 免检后 10/10 执行。",
         "2_donationTax": "证实。19 笔到账 1,728,135、手续费 434,318（费 / 到账 = 0.251）；其中 pct=320 的 9 笔为 0.200，pct=183~202 的 10 笔为 0.334。",
         "3_inlandStagnation": "证实，本局最典型的现象。kaito9 t=630 起 nb=0&neut=0，硬上限 1,020 拍、软上限以上 2,350 拍；noah88 软上限以上 2,180 拍；riku_x 1,420 拍。nb=0&neut=0 且密度 ≥60 的快照 68 个。"
@@ -383,10 +391,18 @@ SRC = {
         "9_invertedFeeding": "有意图、没执行。16 条调度日志的捐方密度低于收方（66~90 → 77~114），全部被配额拒绝；执行的 19 笔里捐方密度都高于收方。",
         "10_spawnRecompute": "证实，有一对重叠。我方 190 条出生指令（每号 11~26 条），其中 21 条指向已被占的点、被引擎挪开 >6 像素。leo_tx / zexos1 生效的最后一条都指向 (814,270)，实际相距 5.7 像素出生；"
                              "协调器最后指派给 leo_tx 的 (813,219) 空着。其余 8 个号的真实落点与最后指派一致（差 <1 像素）。我方最后一条出生指令在 −17 拍，出生阶段到 −1 拍结束。",
+        "11_winFloorMateLock": "影子里证实。t=300~1499 有内置 AI 邻居的 1,723 个决策拍：出手 755、只打无主地 32、零指令 936。零指令里 safeFinite 留底绑定 427 拍，其中 415 拍参照的「AI 最弱的其他邻居」是我方队友（占零指令的 44.3%），"
+                               "这 415 拍里 350 拍最便宜的目标每格不到 3 兵（平均 398 格）；另有 391 拍是 AI 单价高于当拍出价，98 拍是价格项或 dpKeep。",
+        "12_oneCmdPerTick": "证实 5 例。影子与真号的 cmds 计数在 4 个号上差 1~2（6 处变化点）：leo_tx 365、talon5 465 / 615、alex_k 600、zexos1 600 这 5 个决策拍影子发了「打无主地 + 打内置 AI」两条，真号的计数只加 1；"
+                            "alex_k 450~540 那一处没有同拍两条，原因不明。都发生在开局阶段，被挤掉的是对内置 AI 的小单。",
+        "13_inflightRepeat": "证实，量不大。255 条生效的进攻里 163 条在「同一目标、落地间隔 ≤12 拍」的连发组里（49 组）。对真人 19 组 56 条：发兵 4,456,126，其中第 2 条起 2,744,271（手续费 360,820），几乎都是 ryan_m（12 组 3,941,960 兵）；"
+                             "发兵超过吃掉整块所需的只有 2 组、多出 287,052 兵（ryan_m 5236~5243 四条打 zim 多 193,235；2394~2415 五条打 Jordan 多 93,817）。卡顿期的同拍成批（ryan_m 1470 六条、1512 九条 pct=47 打同一个空 AI）也在这一类里。",
+        "14_capTruncPingPong": "本局没有。19 笔执行的调度没有一笔被收方硬上限截断；300 拍内来回倒手 0 笔；捐出前 300 拍内自己刚收过捐款的只有 1 笔（到账 71,446，占 4.1%）。原因是配额把 92% 的调度挡在了外面。",
     },
-    "extraScripts": ["60_truth.cjs", "61_truth_view.py", "62_rank.py", "63_replay_ledger.py", "64_cmd_loss.py", "65_shadow.mjs", "66_spawn_truth.mjs", "review_src/A062.py", "review_src/common.py"],
+    "extraScripts": ["60_truth.cjs", "61_truth_view.py", "62_rank.py", "63_replay_ledger.py", "64_cmd_loss.py", "65_shadow.mjs", "66_spawn_truth.mjs", "67_troop_flow.mjs", "69_quota_truth.mjs", "70_team_density.py", "71_death_chain.py", "72_repeat_sends.py", "review_src/A062.py", "review_src/common.py"],
     "extraOutputs": [f"c136-review/agents/R07/out/A062/{f}" for f in
-                     ("truth_view.txt", "truth_check.txt", "rank.txt", "replay_ledger.txt", "cmd_loss.txt", "spawn_truth.txt", "shadow_check.txt", "shadow_nofull.tsv", "shadow_coast.tsv",
+                     ("truth_view.txt", "truth_check.txt", "rank.txt", "replay_ledger.txt", "cmd_loss.txt", "spawn_truth.txt", "shadow_check.txt", "shadow_nofull.tsv", "shadow_coast.tsv", "shadow_early.txt",
+                      "troop_flow.txt", "drop30_recon.txt", "quota_truth.txt", "team_density.txt", "death_chain.txt", "repeat_sends.txt",
                       "shadow_trace_ryan_m_1515_2379.txt", "shadow_trace_ryan_m_1500_2420.txt", "shadow_trace_ryan_m_2370_2420.txt", "shadow_trace_ryan_m_4230_4560.txt", "shadow_trace_kaito9_2200_2260.txt", "shadow_trace_noah88_3440_3520.txt")],
     "confidenceOverall": "高（事实层）：全场真值来自真引擎重放，与日志快照 310/310 一致；捐款、延迟、离开拍都有录像命令流。中高（原因层）：ryan_m 的不出手和调度的定额由影子运行复现——"
                          "影子与真日志的 249 条调度、73 条开局指令逐条相同，但真号内存里的值看不到。未知：客户端卡顿的原因；6 个席位不丢时 T2 的走向。"

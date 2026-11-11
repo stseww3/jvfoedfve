@@ -107,6 +107,10 @@ def check_review(doc, md_text):
 def main():
     mid = sys.argv[1]
     dg = json.load(open(os.path.join(ROOT, "out", mid, "digest.json"), encoding="utf-8"))
+    _dt = os.path.join(ROOT, "out", mid, "drop30_recon.json")
+    drop_truth = json.load(open(_dt, encoding="utf-8")) if os.path.exists(_dt) else {}
+    _dc = os.path.join(ROOT, "out", mid, "death_chain.json")
+    death_truth = json.load(open(_dc, encoding="utf-8")) if os.path.exists(_dc) else {}
     src_py = os.path.join(HERE, "review_src", f"{mid}.py")
     if os.path.exists(src_py):
         sys.path.insert(0, os.path.dirname(src_py))
@@ -238,7 +242,9 @@ def main():
         "mechanicsQuestions": src.get("mechanicsQuestions", []),
         "drop30Reconciliation": [dict({k: d[k] for k in ("bot", "t0", "t1", "bal0", "bal1", "dropPct", "terr0", "terr1", "dCmds", "dBoats",
                                                           "donOutN", "donOutAmt", "donOutFee", "donInN", "donInAmt", "assistN", "interceptN", "spendLo", "spendHi", "labels")},
-                                      note=(src.get("drop30Notes") or {}).get(f"{d['bot']}@{d['t0']}", "")) for d in dg.get("drop30", [])],
+                                      note=(src.get("drop30Notes") or {}).get(f"{d['bot']}@{d['t0']}", "") or drop_truth.get(f"{d['bot']}@{d['t0']}", ""),
+                                      noteSource=("人工" if (src.get("drop30Notes") or {}).get(f"{d['bot']}@{d['t0']}") else
+                                                  ("引擎真账（67_troop_flow.mjs）" if drop_truth.get(f"{d['bot']}@{d['t0']}") else ""))) for d in dg.get("drop30", [])],
         "mechanismChecks": src.get("mechanismChecks", {}),
         "patternCounts": pat.get("patterns", {}),
         "donationLedger": {"total": led.get("total"), "latency": led.get("latency"), "perBot": led.get("bots")} if led else None,
@@ -260,6 +266,13 @@ def main():
             d.setdefault("lastTerr", a["lastTerr"])
             d.setdefault("balanceAtDeath", a["bal"])
             d.setdefault("densityLast500", [{"t": x["t"], "terr": x["terr"], "bal": x["bal"], "dens": x["dens"]} for x in a["last"]])
+            # 有录像的局：最后 500 拍的收捐 / 捐出用引擎真账（71_death_chain.py），没有才退回到日志口径
+            tc = death_truth.get(d["bot"])
+            if tc:
+                d.setdefault("donIn500", dict(tc["donIn500"], rejFlag=a["donIn500"][2]))
+                d.setdefault("donOut500", tc["donOut500"])
+                d.setdefault("killersTruth", [f"{k['name']} {k['t0']}~{k['t1']} 进攻槽峰值 {k['peak']}" for k in tc.get("killers", [])])
+                d.setdefault("troopsLostDefending500", tc.get("hit"))
             d.setdefault("donIn500", {"n": a["donIn500"][0], "amt": a["donIn500"][1], "rejFlag": a["donIn500"][2]})
             d.setdefault("donOut500", {"n": a["donOut500"][0], "amt": a["donOut500"][1], "fee": a["donOut500"][2]})
             d.setdefault("assistedTimes500", a.get("assistFor500"))

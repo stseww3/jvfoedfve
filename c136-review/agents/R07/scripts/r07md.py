@@ -86,7 +86,9 @@ def render(doc, src):
     names = {"1_quotaRejections": "防喂兵配额拒绝", "2_donationTax": "6.25% 捐款税", "3_inlandStagnation": "内陆后排囤兵",
              "4_spawnOpening": "出生阵型与开局", "5_frontlineFloors": "前线消耗与保底", "6_teamSplit": "分队",
              "7_lagBatches": "卡顿与清仓批（广播 0003-③）", "8_noFullSendLock": "isNoFullSend 误锁（广播 0003-④）",
-             "9_invertedFeeding": "低密向高密输血（广播 0003-⑤）", "10_spawnRecompute": "出生点重算（广播 0003-⑥）"}
+             "9_invertedFeeding": "低密向高密输血（广播 0003-⑤）", "10_spawnRecompute": "出生点重算（广播 0003-⑥）",
+             "11_winFloorMateLock": "t<1500 打内置 AI 的留底互锁（广播 0004-①）", "12_oneCmdPerTick": "每个决策拍只发出一条指令（广播 0004-②）",
+             "13_inflightRepeat": "未生效就重复下单（广播 0004-③）", "14_capTruncPingPong": "硬上限截断与来回倒手（广播 0004 审计②）"}
     for k, v in (doc.get("mechanismChecks") or {}).items():
         L.append(f"- **{names.get(k, k)}**：{v}")
     L.append("")

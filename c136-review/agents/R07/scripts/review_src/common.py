@@ -189,6 +189,54 @@ PATTERN_DEFS = {
         "definition": "出生阶段协调器反复重算，在最后几拍把两个号在两个点位之间来回对调，每个号发出 20 条以上出生指令；最后一条如果丢了或晚到，两个号会落在同一个点。",
         "detectionSketch": "录像命令流 cmds.tsv 里 kind=spawn 的条数/号与最后 10 拍的目标格序列；in_game.log 的 [HL-SPAWN-BACKEND] 行。",
     },
+    # ---- A033 起新增：检测依赖 67_troop_flow.mjs（cmd_effect.tsv）/ 69_quota_truth.mjs / 70_team_density.py / 72_repeat_sends.py / 65_shadow.mjs ----
+    "R07-DN-CAP-TRUNC": {
+        "category": "DN",
+        "definition": "捐款被收方的硬上限截断：引擎里到账 = min(名义额, 150×收方领土 − 收方余额)，截掉的部分直接消失，而手续费仍按捐方全部余额的 6.25% 全额收取。"
+                      "调度逻辑只看收方密度是否低于 128~142，不看它离硬上限还剩多少空间，所以收方密度 115 以上时一笔 31% 余额的调度大半到不了账。",
+        "detectionSketch": "67_troop_flow.mjs 的 cmd_effect.tsv（每条指令扣款前后的真实余额）→ 63_replay_ledger.py B 节标「顶格截断」的行：名义额、实际到账、手续费。",
+    },
+    "R07-AT-INFLIGHT-REPEAT": {
+        "category": "AT",
+        "definition": "上一条进攻还没生效就照原样再发：策略每 5 拍决策一次，指令 6~19 拍后才生效，期间 `attackTroopsOn(me,q)` 仍是 0、余额没变，于是相邻决策拍对同一目标连发 2~4 条同比例的指令。"
+                      "几条一起落地后发兵合计超过吃掉整块目标所需，多出的兵压在进攻槽里（不算防守、不吃利息），目标死后转去打它留下的无主地，退回时可能撞上硬上限。",
+        "detectionSketch": "72_repeat_sends.py：cmd_effect.tsv 里同一个号对同一目标、落地拍相差 ≤12 的进攻分组；组内第 2 条起的兵与手续费；发兵合计 − (1.5×目标领土 + 1.78×目标余额)。"
+                           "逐拍原因看 65_shadow.mjs --trace（相邻决策拍的 need 相同）。",
+    },
+    "R07-AT-OVER-BURN": {
+        "category": "AT",
+        "definition": "只因为余额过了软上限就出兵：buyLand 里 `over = B > 100×领土` 时跳过「目标每格成本 ≥ 自己的出价就停」的判断，留底降到 0.82~0.9×100×领土，按 12% 余额一条往接壤的真人身上发。"
+                      "兵多半来自队友的调度（把收方推过软上限），打的是密度比自己高的目标，净增领土很少。",
+        "detectionSketch": "65_shadow.mjs --trace 的汇总行：对人 / bot 的出兵条数、其中 over=1 的条数、c>=worth 的条数与兵数、c/worth 范围；67_troop_flow.mjs C 节给每个目标的发兵合计与目标领土前后。",
+    },
+    "R07-AT-BOAT-FAR": {
+        "category": "AT",
+        "definition": "顶格之后的闲置船：没有敌邻、没有中立地的号在密度 ≥115 时把至少 24% 的可用兵装船，航程放到 2500 像素。发船费是全部余额的 3.1%，海上每拍掉兵，靠岸后打的是随便一块敌岸。",
+        "detectionSketch": "67_troop_flow.mjs G 节：发船时的余额 / 密度、带兵、手续费；靠岸拍、靠岸时剩的兵、落在谁的岸上。68_watch.mjs --cmds 1 看靠岸后那次进攻换了几格。",
+    },
+    "R07-DF-BANK-DRAIN": {
+        "category": "DF",
+        "definition": "被队友围住的号按「后方银行」留底：tryDonateToTeammate 里 `boxedIn = 没有敌邻 && 没有 AI 邻居 && 没有中立地`（不看海岸、不看领土大小、不看隔着的那个队友还撑不撑得住），"
+                      "协防时留底 22×领土（有海岸 32×），余粮调度时 34×（有海岸 44×），一次捐 31%~37% 余额。结果是这些号在领先期被抽到密度 20~50；隔着的队友一倒或敌船一靠岸，它们就以这个密度直接面对敌人。",
+        "detectionSketch": "69_quota_truth.mjs D2 节：boxedIn=true 的调度日志与执行条数、执行时捐方 / 收方密度；70_team_density.py：我方号密度 vs 同队其他真人密度；71_death_chain.py：被打前 500 拍的密度。",
+    },
+    "R07-DF-DOOMED-SKIP": {
+        "category": "DF",
+        "definition": "挨打最重的队友被排除在协防之外：收方身上的敌兵 > 1.65×它的余额时判为「没救的口袋」直接跳过，要等敌人的这一波烧到 1.65 倍以下（这时它已经丢了一大半地）才开始调度。",
+        "detectionSketch": "68_watch.mjs --step 5：逐决策拍的「压在身上的敌兵 ÷ 余额」，对照 in_game.log 里第一条指向该号的 defense_dispatch 的拍号与各捐方的 25 拍相位。",
+    },
+    "R07-EG-WRONG-FRONT": {
+        "category": "EG",
+        "definition": "领先期兵流向错的方向：全队的余粮经调度集中到一个正在打最弱一队的号身上，被它按高价打出去；同时最强的敌人在吃我方主队里不是我方号的真人，"
+                      "而调度的收方只能是我方号（或 Boss），挨着那个真人的我方号没有敌邻、既不能打也不能给。",
+        "detectionSketch": "67_troop_flow.mjs C 节按目标所在队汇总发兵；68_watch.mjs 盯最强敌人与被吃的队友（进攻、收捐）；70_team_density.py 的各队 / 我方 / 同队其他真人密度。",
+    },
+    "R07-OP-WINFLOOR-MATE": {
+        "category": "OP",
+        "definition": "t<1500 打内置 AI 的留底互锁（统筹广播 0004-①）：winFloor 取 safeFinite，而 safeFinite 是「这个 AI 的其他邻居里余额最小的那个」的余额——不排除队友，也不看 AI 自己有没有兵。"
+                      "两个我方号夹着一个 0 兵的 AI 时，各自要求自己的余额高过对方才肯出手，谁也不动。",
+        "detectionSketch": "65_shadow.mjs 的 shadow_early.txt：t=300~1499 有 AI 邻居的决策拍里，零指令拍按绑定的底线分类（safeFinite / 价格项 / dpKeep / 不让打），safeFinite 再按参照对象（我方队友 / 同队真人 / 敌方真人）分。",
+    },
     "R07-SP-OVERLAP": {
         "category": "SP",
         "definition": "两个号实际出生在同一个点（真实落点相距 < 15 像素）：两个号生效的最后一条出生指令指向同一格，引擎把后到的挪开几格；"

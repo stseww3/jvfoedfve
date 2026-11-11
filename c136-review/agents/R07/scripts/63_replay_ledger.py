@@ -103,6 +103,14 @@ def main():
         J["cmdKinds"][b] = {"kinds": dict(per[p]), "inGame": ingame, "first": first.get(p), "last": last.get(p), "leave": leave.get(p), "lastLog": last_log.get(b)}
 
     # ---- B. 捐款执行
+    # 逐条指令的真实效果（67_troop_flow.mjs 的 cmd_effect.tsv；有就用它的实际到账——受捐方顶到硬上限时到账会被截断，手续费照收）
+    eff_by = defaultdict(list)
+    eff_path = os.path.join(out, "cmd_effect.tsv")
+    have_eff = os.path.exists(eff_path)
+    if have_eff:
+        for r in load_tsv(eff_path):
+            if r["kind"] == "donate":
+                eff_by[(int(r["t"]), r["bot"], int(r["pct"]), int(r["target"]))].append(r)
     don = [r for r in tcmd if r["kind"] == "donate"]
     cum = defaultdict(int)
     execs = []
@@ -113,6 +121,14 @@ def main():
         b1 = int(float(r["bal_p1"])) if r["bal_p1"] != "" else None
         fee = g0(64 * b0, 1024)
         amt = max(0, min(g0(b0 * (pct + 1), 1024), b0 - fee))
+        nominal = amt
+        er = eff_by.get((T, squad.get(p), pct, to))
+        if er:
+            e0 = er.pop(0)
+            b0, b1 = int(e0["b0"]), int(e0["b1"])
+            fee = int(e0["fee"])
+            nominal = max(0, min(g0(b0 * (pct + 1), 1024), b0 - g0(64 * b0, 1024)))
+            amt = int(e0["troops"])
         tterr = int(float(r["tterr"])) if r["tterr"] != "" else 0
         tb0 = int(float(r["tbal_m1"])) if r["tbal_m1"] != "" else None
         tb1 = int(float(r["tbal_p1"])) if r["tbal_p1"] != "" else None
@@ -123,7 +139,7 @@ def main():
         if not exempt:
             cum[to] += need
         execs.append(dict(T=T, p=p, donor=squad.get(p, pname.get(p, str(p))), to=to, toName=squad.get(to, pname.get(to, str(to))), pct=pct, bal0=b0, bal1=b1,
-                          amt=amt, fee=fee, tterr=tterr, tbal0=tb0, tbal1=tb1, need=need, cumBefore=before, cap=cap, exempt=exempt, mine=p in squad))
+                          amt=amt, fee=fee, nominal=nominal, capped=amt < nominal - 1, tterr=tterr, tbal0=tb0, tbal1=tb1, need=need, cumBefore=before, cap=cap, exempt=exempt, mine=p in squad))
     # 配对：每条执行记录 ← 同号、同 pct、同对象、t<=T 的「最近一条还没配上的日志」
     used = set()
     for e in execs:
@@ -139,7 +155,10 @@ def main():
     P(f"B. 捐款/调度：日志 {len(logs)} 条，引擎执行 {len(mine_exec)} 条（{100 * len(mine_exec) / max(1, len(logs)):.1f}%）；另有非我方号捐给我方号 {len(execs) - len(mine_exec)} 条")
     tot_amt = sum(e["amt"] for e in mine_exec)
     tot_fee = sum(e["fee"] for e in mine_exec)
-    P(f"   我方执行合计：到账 {tot_amt}，手续费 {tot_fee}（费/到账 = {tot_fee / max(1, tot_amt):.3f}）")
+    P(f"   我方执行合计：到账 {tot_amt}，手续费 {tot_fee}（费/到账 = {tot_fee / max(1, tot_amt):.3f}）" + ("" if have_eff else "  〔没有 cmd_effect.tsv：到账按名义公式算，受捐方顶格时会偏大〕"))
+    capped = [e for e in mine_exec if e.get("capped")]
+    if capped:
+        P(f"     受捐方顶到硬上限、到账被截断的 {len(capped)} 笔：名义 {sum(e['nominal'] for e in capped)}，实际到账 {sum(e['amt'] for e in capped)}，手续费 {sum(e['fee'] for e in capped)}（费/到账 = {sum(e['fee'] for e in capped) / max(1, sum(e['amt'] for e in capped)):.3f}）")
     J_split = {}
     for nm, sel in (("有配额期（t<4284）", [e for e in mine_exec if not e["exempt"]]), ("免检期（t>=4284）", [e for e in mine_exec if e["exempt"]])):
         if not sel:
@@ -152,7 +171,8 @@ def main():
     for e in execs:
         q = "免检" if e["exempt"] else f"{e['need']}/{e['cumBefore']}/{e['cap']}"
         lg = f"t={e.get('logT')}(+{e.get('lag')}) L{e.get('logLine')} {e.get('kind')}" if e.get("logLine") else "(无日志)"
-        P(f"   {e['T']} {e['donor']}→{e['toName']} pct={e['pct']} | {e['bal0']}→{e['bal1']} | {e['amt']} {e['fee']} | {e['tterr']} {e['tbal0']}→{e['tbal1']} | {q} | {lg}")
+        capn = f" 〔顶格截断：名义 {e['nominal']}，受捐方硬上限 {150 * e['tterr']}〕" if e.get("capped") else ""
+        P(f"   {e['T']} {e['donor']}→{e['toName']} pct={e['pct']} | {e['bal0']}→{e['bal1']} | {e['amt']} {e['fee']}{capn} | {e['tterr']} {e['tbal0']}→{e['tbal1']} | {q} | {lg}")
     J["donations"] = {"logged": len(logs), "executed": len(mine_exec), "execAmt": tot_amt, "execFee": tot_fee, "split": J_split, "execs": execs}
     by_donor = defaultdict(lambda: [0, 0, 0, 0])
     for l in logs:
