@@ -7,6 +7,8 @@
 身份还原（B 组必需）：20 号编队的日志前缀名（label）会在一局中途整体轮换，
 同一个局内玩家（HL-GAME-INIT 的 me=）前后会用不同的 label 打日志。
 这里按 HL-TICK 里的工作进程统计量（maxMs、cmds、boats、skip 单调不减）把 label 串回同一个玩家。
+有全场真值（out/<局>/resim.json，见 resim_r08.mjs）时改用「指纹」：一条 HL-TICK 的 (拍, 领土, 余额)
+在该拍全体真人里只对得上一个玩家，就直接认这个玩家；结算行（RESULT）按 results.csv 的 meId 列认。
 """
 import csv
 import json
@@ -116,6 +118,28 @@ def parse_log(mid):
     return out
 
 
+def load_truth(mid):
+    """读 out/<mid>/resim.json（没有就返回 None）。"""
+    path = os.path.join(OUT, mid, "resim.json")
+    if not os.path.exists(path):
+        return None
+    with open(path, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def fingerprints(R):
+    """{拍: {(领土, 余额): [玩家号...]}}，只收真人。"""
+    fp = {}
+    H = R["H"]
+    for i, t in enumerate(R["snapT"]):
+        d = fp.setdefault(t, {})
+        terr, bal = R["snapTerr"][i], R["snapBal"][i]
+        for p in range(H):
+            if terr[p] > 0:
+                d.setdefault((terr[p], bal[p]), []).append(p)
+    return fp
+
+
 class Track:
     """一个局内玩家（一个工作进程）的全部日志。"""
 
@@ -162,8 +186,11 @@ def _dist(tr, s):
     return d
 
 
-def resolve_identities(recs):
-    """把日志记录按玩家归并。返回 (tracks: {me: Track}, notes: [str], unresolved: [rec])。"""
+def resolve_identities(recs, fp=None, res_me=None):
+    """把日志记录按玩家归并。返回 (tracks: {me: Track}, notes: [str], unresolved: [rec])。
+
+    fp：fingerprints() 的结果（有全场真值时）；res_me：{结算行的 label: 玩家号}（results.csv 的 meId 列）。
+    """
     tracks = {}
     cur = {}          # label -> me（当前绑定）
     pending = defaultdict(list)   # label -> 还没归属的记录
@@ -208,7 +235,23 @@ def resolve_identities(recs):
         if tag == "HL-TICK" and "tick" in r:
             s = r["tick"]
             me = cur.get(label)
-            if me is not None and not tracks[me].closed and _consistent(tracks[me], s):
+            cands_fp = (fp.get(s["t"], {}).get((s["terr"], s["bal"])) if fp else None) or []
+            me_fp = None
+            if len(cands_fp) == 1:
+                me_fp = cands_fp[0]
+            elif len(cands_fp) > 1:
+                if me in cands_fp:
+                    me_fp = me
+                else:
+                    ok = [c for c in cands_fp if c in tracks and not tracks[c].closed and _consistent(tracks[c], s)]
+                    me_fp = ok[0] if len(ok) == 1 else None
+            if me_fp is not None:
+                if me_fp not in tracks:
+                    tracks[me_fp] = Track(me_fp, label)
+                if cur.get(label) != me_fp:
+                    bind(label, me_fp, "指纹", r["line"])
+                me = me_fp
+            elif me is not None and not tracks[me].closed and _consistent(tracks[me], s):
                 # label 当前绑定且连续
                 pass
             else:
@@ -237,7 +280,11 @@ def resolve_identities(recs):
             continue
         if tag == "RESULT":
             me = cur.get(label)
-            if me is None or tracks[me].closed:
+            if res_me and res_me.get(label) is not None and res_me[label] in tracks:
+                me = res_me[label]
+                if cur.get(label) != me:
+                    bind(label, me, "results.csv meId", r["line"])
+            elif me is None or tracks[me].closed:
                 # 轮换后还没打过 HL-TICK 就结算：按 peak 与最后领土匹配
                 cands = [tr for tr in tracks.values() if not tr.closed]
                 best = None

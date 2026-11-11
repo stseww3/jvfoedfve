@@ -45,7 +45,13 @@ def build(mid):
     card = L.load_card(mid)
     land = card["mapLand"]
     recs = L.parse_log(mid)
-    tracks, notes, unresolved = L.resolve_identities(recs)
+    truth = L.load_truth(mid)
+    res_rows0 = L.load_results(mid)
+    res_me = {}
+    for rr in res_rows0:
+        if rr.get("meId") is not None and rr.get("bot"):
+            res_me[str(rr["bot"])] = int(rr["meId"])
+    tracks, notes, unresolved = L.resolve_identities(recs, L.fingerprints(truth) if truth else None, res_me)
     end_tick = card["outcome"]["endTick"]
     primary = card.get("ourPrimaryTeam")
 
@@ -119,6 +125,17 @@ def build(mid):
             b["resBalance"] = rr.get("balance")
             b["resTerritory"] = rr.get("territory")
             b["alivePlayers"] = rr.get("alivePlayers")
+    if truth:
+        # 全场真值：队号、离开拍、阵亡拍以重演为准
+        for me, b in bots.items():
+            if me < truth["H"]:
+                b["team"] = truth["teams"][me] or b["team"]
+                b["teamTruth"] = True
+                b["leftTick"] = truth["leftT"][me] if truth["leftT"][me] >= 0 else None
+                b["deathTickTruth"] = truth["deathT"][me] if truth["deathT"][me] >= 0 else None
+                if b["event"] is None and b["leftTick"] is not None:
+                    # 没有结算行、但录像里执行过「离开」：按离开处理，拍号取引擎执行离开的那一拍
+                    b["event"], b["result"], b["deathTick"], b["leftInferred"] = "left", "left", b["leftTick"], True
     name_of = {me: b["name"] for me, b in bots.items()}
     # 没拆队的局：离开（left，结算里 team=null）的号按主队算，并标记为推断
     if len(card.get("teamSplitCounts") or {}) == 1:
@@ -136,7 +153,7 @@ def build(mid):
                 items = re.findall(r"([^|]+?):tick=(\d+),terr=(\d+),sent=(\d+)\((\w+)\)", m.group(3))
                 ochk.append(dict(line=r["line"], n=int(m.group(1)), tick=int(m.group(2)),
                                  items=[dict(name=a.strip(), tick=int(b_), terr=int(c), sent=int(d), ok=e) for a, b_, c, d, e in items]))
-    return dict(card=card, land=land, bots=bots, notes=notes, unresolved=[u["line"] for u in unresolved],
+    return dict(card=card, land=land, bots=bots, notes=notes, unresolved=[u["line"] for u in unresolved], hasTruth=bool(truth),
                 endTick=end_tick, primary=primary, ochk=ochk, name_of=name_of, results=res_rows)
 
 
