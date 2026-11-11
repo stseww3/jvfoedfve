@@ -1,15 +1,16 @@
-# 逐局复盘汇总（机械检查，2026-11-11 02:42 UTC）
+# 逐局复盘汇总（机械检查，2026-11-11 03:32 UTC）
 
 只查字段、数量和取值；内容对不对由 R10 抽查和 c136 复核。
 
-共 10 份复盘，来自 5 名复盘员。
+共 11 份复盘，来自 5 名复盘员。
 
 | 对局 | 复盘员 | 结果 | 分型 | 时间线 | 转折点 | 阵亡 | 决策（错/对/不清） | 新模式 | 未解 | 清单未过 |
 | :-- | :-: | :-: | :-- | --: | --: | --: | :-- | --: | --: | :-- |
 | A057 | R01 | lost | never-grew | 19 | 3 | 10 | 15（10/3/2） | 8 | 3 | 全过 |
 | A059 | R01 | lost | never-grew | 18 | 3 | 9 | 13（8/4/1） | 5 | 4 | 全过 |
+| A094 | R01 | lost | lead-thrown | 14 | 4 | 9 | 15（8/3/4） | 5 | 3 | 全过 |
 | A022 | R04 | won | win | 17 | 3 | 0 | 15（9/3/3） | 13 | 4 | 全过 |
-| B039 | R06 | lost | external | 21 | 3 | 6 | 14（8/3/3） | 15 | 5 | 全过 |
+| B039 | R06 | lost | external | 20 | 3 | 6 | 24（15/6/3） | 33 | 6 | 全过 |
 | G01 | R07 | lost | lead-thrown | 16 | 3 | 8 | 17（9/3/5） | 18 | 8 | 全过 |
 | G04 | R07 | lost | lead-thrown | 17 | 3 | 7 | 16（9/4/3） | 17 | 6 | 全过 |
 | G07 | R07 | won | win | 15 | 3 | 4 | 16（7/5/4） | 19 | 8 | 全过 |
@@ -54,38 +55,52 @@
 | NEW-R01-AT01 | 0 | 2 | 0 |
 | NEW-R01-AT02 | 1 | 0 | 0 |
 | NEW-R01-AT04 | 0 | 1 | 0 |
+| NEW-R01-AT05 | 0 | 0 | 2 |
+| NEW-R01-AT06 | 0 | 1 | 0 |
 | NEW-R01-DF01 | 0 | 0 | 1 |
-| NEW-R01-DN01 | 0 | 2 | 0 |
-| NEW-R01-DN02 | 1 | 0 | 0 |
-| NEW-R01-DN04 | 2 | 0 | 0 |
+| NEW-R01-DF02 | 0 | 0 | 1 |
+| NEW-R01-DN01 | 0 | 3 | 0 |
+| NEW-R01-DN02 | 2 | 0 | 0 |
+| NEW-R01-DN04 | 3 | 0 | 0 |
 | NEW-R01-DN05 | 2 | 0 | 0 |
 | NEW-R01-DN06 | 0 | 0 | 1 |
 | NEW-R01-DN07 | 1 | 0 | 0 |
 | NEW-R01-EC01 | 2 | 0 | 0 |
+| NEW-R01-EC02 | 1 | 0 | 0 |
 | NEW-R01-EG01 | 1 | 0 | 0 |
 | NEW-R01-IO01 | 1 | 0 | 0 |
-| NEW-R01-IO02 | 3 | 0 | 0 |
-| NEW-R01-IO03 | 2 | 0 | 0 |
-| NEW-R01-OP01 | 0 | 2 | 0 |
-| NEW-R01-OP02 | 1 | 0 | 0 |
-| NEW-R01-SP01 | 1 | 0 | 1 |
+| NEW-R01-IO02 | 4 | 0 | 1 |
+| NEW-R01-IO03 | 3 | 0 | 0 |
+| NEW-R01-OP01 | 0 | 3 | 0 |
+| NEW-R01-OP02 | 2 | 0 | 0 |
+| NEW-R01-SP01 | 2 | 0 | 1 |
+| NEW-R01-SP02 | 1 | 0 | 0 |
 | NEW-SE-01 | 1 | 0 | 2 |
 | NEW-SP-01 | 2 | 0 | 0 |
 | NEW-SP-02 | 1 | 0 | 0 |
 | NEW-SP-03 | 1 | 0 | 0 |
 | NEW-SP-DISC | 1 | 0 | 0 |
 | NEW-SP-RESOLVE | 0 | 0 | 1 |
-| NEW:AT-bot-farm | 0 | 1 | 0 |
-| NEW:DF-passive-death | 0 | 0 | 1 |
-| NEW:DN-husk-donate | 2 | 0 | 0 |
+| NEW:AT-ai-order-too-small | 1 | 0 | 0 |
+| NEW:AT-bot-farm | 0 | 3 | 0 |
+| NEW:AT-over-cap-dump | 0 | 1 | 0 |
+| NEW:AT-worth-gate | 1 | 0 | 0 |
+| NEW:BT-gift | 1 | 0 | 0 |
+| NEW:BT-sunk | 1 | 0 | 0 |
+| NEW:DN-husk-donate | 1 | 0 | 0 |
 | NEW:DN-not-executed | 0 | 0 | 1 |
 | NEW:DN-pingpong | 1 | 0 | 0 |
 | NEW:DN-rear-to-front | 0 | 1 | 0 |
 | NEW:DN-small-pct | 1 | 0 | 0 |
-| NEW:EC-boxed-cap | 0 | 0 | 1 |
-| NEW:EG-cap-idle-death | 1 | 0 | 0 |
+| NEW:DN-to-overcap | 1 | 0 | 0 |
+| NEW:EG-giant-neighbor-freeze | 1 | 0 | 0 |
+| NEW:FE-tiny-cmd-fee | 0 | 0 | 1 |
+| NEW:HK-husk-eats-us | 1 | 0 | 0 |
+| NEW:IO-cmd-blackout | 0 | 0 | 1 |
 | NEW:IO-lag-burst | 2 | 0 | 0 |
 | NEW:OP-cycle-open | 0 | 1 | 0 |
+| NEW:OP-safefinite-squad-lock | 1 | 0 | 0 |
+| NEW:PL-pool-ai | 1 | 0 | 0 |
 | NEW:R07-AT-BIG-BURN | 2 | 0 | 4 |
 | NEW:R07-DF-PASSIVE-BLEED | 1 | 0 | 1 |
 | NEW:R07-DF-RICH-BLEED | 2 | 0 | 0 |
