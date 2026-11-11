@@ -35,6 +35,7 @@ COMMON_SCRIPTS = [
     "scripts/dossier.py（卷宗：各队走势、逐号分段账、DROP30 对账、捐款审计、整局兵力去向总账、全场捐款网络）",
     "scripts/shadow-digest.py（决策串、执行层延迟、落地错位、isNoFullSend 翻转、未成交就重发的串）",
     "scripts/freeze-scan.mjs（t<1500：safeFinite 冻结计数与反事实；t≥1500：buyLand 每个决策拍为什么没出手的九类计数）",
+    "scripts/donate-why.mjs（tryDonateToTeammate 每次调用卡在哪一道闸；照抄判定与真调用逐次对账）",
     "scripts/dbg/act-trace.mjs（逐决策拍打印各分支的输入与返回值）",
     "scripts/mkreview.py（合成本文件并自检）",
 ]
@@ -188,6 +189,16 @@ def build(mid):
                            for b, v in post["bots"].items() if v["ticks"]},
             }
 
+    donwhy = _load(os.path.join(ROOT, "out", "cache", f"{mid}-donwhy.json"))
+    donate_gates = None
+    if donwhy:
+        donate_gates = {
+            "calls": donwhy["calls"], "replicaAgrees": donwhy["agree"], "total": donwhy["total"],
+            "perBot": {b: {"calls": v["calls"], "stops": v["stops"], "byBand": v["byBand"], "sentTo": v["sentTo"]}
+                       for b, v in donwhy["per"].items()},
+            "legend": "围/边 = 源码 L4355 的 boxedIn 真/假；· = 算到 boxedIn 之前就返回。闸名见 scripts/donate-why.mjs 文件头",
+        }
+
     drops = facts.get("drops", [])
     by_main = {}
     for d in drops:
@@ -227,6 +238,9 @@ def build(mid):
         "boatHandovers": facts.get("boatHandovers"),
         "donationNetwork": facts.get("donationNetwork"),
         "donationAudit": dict(facts.get("donations") or {}, **(notes.get("donationAudit") or {})),
+        "donateGates": donate_gates,
+        "teamFall": facts.get("teamFall"),
+        "interestEfficiency": facts.get("interest"),
         "dumpBatches": [b for b in facts.get("dumpBatches", []) if b.get("dump")],
         "scripts": COMMON_SCRIPTS + notes.get("scripts", []),
         "confidenceOverall": notes["confidenceOverall"],

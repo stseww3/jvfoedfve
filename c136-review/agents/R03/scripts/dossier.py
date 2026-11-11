@@ -846,6 +846,135 @@ class Dossier:
             "leaveGifts": sorted(gifts, key=lambda g: -g["got"])[:5],
         }
 
+    def sec_teamfall(self, step=300, min_drop=2.5, top_windows=4):
+        """本队整队掉地最猛的窗口：掉的是谁的地（在控的号 / 空壳 / 路人，路人里又分在线和已离线），被谁吃的。"""
+        R = self.R
+        self.teamfall = None
+        if not self.team_game:
+            return
+        end = R["endTick"]
+        teams = R["teams"]
+        mt = self.my_team
+        nT = R["nTeams"]
+        self.p()
+        self.p("[O] 各队离线情况与本队掉地窗口（空壳=已离线、由内置 AI 托管的真人；份额为占全图陆地 %）")
+        ticks = [t for t in (1530, 3060, 4500, 6000, 7500, 9000, 10800, 12600) if t < end]
+        self.p("     t | " + " | ".join(f"队{i}：在线 号/地%  空壳 号/地%" for i in range(1, nT + 1)))
+        husk_rows = []
+        for t in ticks:
+            i = self.ix(t)
+            terr = R["snapTerr"][i]
+            cells = []
+            row = {"t": t}
+            for tm in range(1, nT + 1):
+                on = [q for q in range(self.H) if teams[q] == tm and terr[q] > 0 and not (0 <= self.left[q] <= t)]
+                hs = [q for q in range(self.H) if teams[q] == tm and terr[q] > 0 and 0 <= self.left[q] <= t]
+                a, b = sum(terr[q] for q in on), sum(terr[q] for q in hs)
+                cells.append(f"      {len(on):>3}/{100 * a / self.land:5.1f}      {len(hs):>3}/{100 * b / self.land:5.1f}")
+                row[f"T{tm}"] = {"online": len(on), "onlineSharePct": round(100 * a / self.land, 1), "husks": len(hs), "huskSharePct": round(100 * b / self.land, 1)}
+            husk_rows.append(row)
+            self.p(f"{t:>6} | " + " | ".join(cells))
+        # 本队掉地最猛的窗口
+        grid = list(range(0, end, step)) + [end]
+        share = [R["teamLand"][self.ix(t)][mt] for t in grid]
+        wins = []
+        for j in range(1, len(grid)):
+            d = 100 * (share[j] - share[j - 1]) / self.land
+            if d <= -min_drop:
+                wins.append((d, grid[j - 1], grid[j]))
+        wins = sorted(wins)[:top_windows]
+        out_w = []
+        for d, a, b in sorted(wins, key=lambda w: w[1]):
+            ia, ib = self.ix(a), self.ix(b)
+            ta, tb_ = R["snapTerr"][ia], R["snapTerr"][ib]
+            ba = R["snapBal"][ia]
+            lost_by = defaultdict(lambda: defaultdict(lambda: [0, 0]))  # 守方 -> 攻方 -> [格, 攻方烧兵]
+            for t, att, de, tiles, burnt, dB, dS, n in R["pairLog"]:
+                if a < t <= b + 29 and de < self.H and teams[de] == mt and tiles > 0 and (att >= self.H or teams[att] != mt):
+                    x = lost_by[de][att]
+                    x[0] += tiles; x[1] += burnt
+            cls_tot = {"在控的号": 0, "本队空壳": 0, "路人在线": 0, "路人已离线": 0}
+            rows = []
+            for q in range(self.H):
+                if teams[q] != mt:
+                    continue
+                dl = tb_[q] - ta[q]
+                gone = 0 <= self.left[q] <= b
+                if q in self.bot_of:
+                    c = "本队空壳" if gone else "在控的号"
+                else:
+                    c = "路人已离线" if gone else "路人在线"
+                cls_tot[c] += dl
+                if dl < 0:
+                    rows.append((dl, q, c))
+            rows.sort()
+            self.p(f"  掉地窗口 {a}~{b}：本队 {100 * share[grid.index(a)] / self.land:.1f}% → {100 * share[grid.index(b)] / self.land:.1f}%（{d:+.1f} 点）| 净变化：" + " ".join(f"{c} {100 * v / self.land:+.2f}" for c, v in cls_tot.items()))
+            ws = {"t0": a, "t1": b, "teamShare0": round(100 * share[grid.index(a)] / self.land, 1), "teamShare1": round(100 * share[grid.index(b)] / self.land, 1), "netByClassPct": {c: round(100 * v / self.land, 2) for c, v in cls_tot.items()}, "losers": []}
+            for dl, q, c in rows[:6]:
+                st = f"{self.left[q]} 拍离线" if self.left[q] >= 0 else "在线"
+                if 0 <= self.death[q] <= b + 30:
+                    st += f"，{self.death[q]} 拍灭亡"
+                atk = sorted(lost_by[q].items(), key=lambda kv: -kv[1][0])[:3]
+                at = " ".join(f"{self.nm(p)}:{x[0]}格/烧{k(x[1])}" for p, x in atk)
+                self.p(f"    {self.nm(q):<22} {c} {st}：地 {ta[q]}→{tb_[q]}（{100 * dl / self.land:+.2f} 点），窗口起点兵 {k(ba[q])}（密 {ba[q] / max(1, ta[q]):.0f}）| 被吃 [{at}]")
+                ws["losers"].append({"who": self.nm(q), "class": c, "leftT": self.left[q] if self.left[q] >= 0 else None, "deathT": self.death[q] if self.death[q] >= 0 else None, "terr0": ta[q], "terr1": tb_[q], "bal0": ba[q], "attackers": [{"who": self.nm(p), "tiles": x[0], "burn": int(x[1])} for p, x in atk]})
+            out_w.append(ws)
+        self.teamfall = {"husks": husk_rows, "windows": out_w}
+
+    def sec_interest(self):
+        """利息效率：利息 = 利率 × 余额，余额到软上限（100×地）时最多，超过后递减，到硬上限（150×地）为 0。
+        对每个号、每个阶段统计：超软上限 / 贴硬上限的拍数、实得收入、同样的地一直握在软上限能得的收入。"""
+        R = self.R
+        T = self.T
+        end = R["endTick"]
+        phases = [(600, 1500), (1500, 4284), (4284, end)]
+        phases = [(a, min(b, end)) for a, b in phases if a < end]
+        self.p()
+        self.p("[P] 利息效率（只算我方在控期间；软上限=100×地，硬上限=150×地；「满额」=同样的地、余额一直等于软上限时的收入；超软=余额>软上限的拍数，贴硬=余额≥149×地的拍数）")
+        self.p("  号       | " + " | ".join(f"{a}~{b}: 均密 超软 贴硬  实得   满额  比例" for a, b in phases))
+        out = {}
+        tot = [[0, 0, 0, 0, 0, 0] for _ in phases]
+        for b_, pl in sorted(self.sq.items(), key=lambda x: x[1]):
+            stop = self.left[pl] if self.left[pl] >= 0 else self.alive_until(pl)
+            cells = []
+            out[b_] = []
+            for k_, (a, b) in enumerate(phases):
+                over = hard = n = 0
+                got = bench = dsum = 0
+                over_loss = 0
+                for i in range(len(T) - 1):
+                    t = T[i]
+                    if t < a or t >= b or t >= stop:
+                        continue
+                    terr, bal = R["snapTerr"][i][pl], R["snapBal"][i][pl]
+                    if terr <= 0:
+                        continue
+                    cap = L.soft_cap(terr)
+                    step = T[i + 1] - t
+                    inc = R["snapInc"][i + 1][pl] - R["snapInc"][i][pl]
+                    tt = t + 9
+                    full = L.g0(L.interest_rate(tt, terr, cap, self.land) * cap, 10000) + (terr if tt % 100 == 99 else 0)
+                    if step != 10:
+                        full = full * step // 10
+                    n += step; got += inc; bench += full; dsum += step * bal / terr
+                    if bal > cap:
+                        over += step
+                        over_loss += max(0, full - inc)
+                    if bal >= 149 * terr:
+                        hard += step
+                if n == 0:
+                    cells.append(" " * 44)
+                    out[b_].append(None)
+                    continue
+                cells.append(f"{dsum / n:5.0f} {over:>5} {hard:>5} {k(got):>6} {k(bench):>6} {100 * got / max(1, bench):4.0f}%")
+                out[b_].append({"from": a, "to": b, "ticks": n, "meanDensity": round(dsum / n, 1), "ticksOverSoftCap": over, "ticksAtHardCap": hard, "income": int(got), "incomeAtSoftCap": int(bench), "lostWhileOverSoftCap": int(over_loss)})
+                x = tot[k_]
+                x[0] += n; x[1] += over; x[2] += hard; x[3] += got; x[4] += bench; x[5] += over_loss
+            self.p(f"  {b_:<8} | " + " | ".join(cells))
+        self.p("  合计     | " + " | ".join(f"      {x[1]:>5} {x[2]:>5} {k(x[3]):>6} {k(x[4]):>6} {100 * x[3] / max(1, x[4]):4.0f}%" for x in tot))
+        self.p("  其中余额在软上限以上那些拍上少拿的利息：" + " ".join(f"{a}~{b}: {k(x[5])}" for (a, b), x in zip(phases, tot)))
+        self.interest = {"phases": [{"from": a, "to": b, "botTicks": x[0], "ticksOverSoftCap": x[1], "ticksAtHardCap": x[2], "income": int(x[3]), "incomeAtSoftCap": int(x[4]), "lostWhileOverSoftCap": int(x[5])} for (a, b), x in zip(phases, tot)], "perBot": out}
+
     def sec_map(self, ticks):
         R = self.R
         for t in ticks:
@@ -918,6 +1047,8 @@ class Dossier:
         f["squadLedger"] = getattr(self, "squad_ledger", None)
         f["boatHandovers"] = getattr(self, "boat_handovers", [])
         f["donationNetwork"] = getattr(self, "donnet", None)
+        f["teamFall"] = getattr(self, "teamfall", None)
+        f["interest"] = getattr(self, "interest", None)
         return f
 
     def run(self, map_ticks=(), ledger_step=300):
@@ -935,6 +1066,8 @@ class Dossier:
         self.sec_opponents()
         self.sec_total()
         self.sec_donnet()
+        self.sec_teamfall()
+        self.sec_interest()
         self.sec_map(map_ticks)
         return "\n".join(self.out) + "\n"
 
