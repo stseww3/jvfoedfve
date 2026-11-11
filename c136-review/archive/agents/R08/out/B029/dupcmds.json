@@ -1,0 +1,6228 @@
+{
+ "squad20": {
+  "gap": {
+   "gap": 14,
+   "byKind": {
+    "attack": {
+     "cmds": 1012,
+     "clusters": 595,
+     "dupClusters": 142,
+     "dupCmds": 559,
+     "extraCmds": 417,
+     "sizes": {
+      "1": 453,
+      "4": 14,
+      "8": 16,
+      "2": 63,
+      "5": 7,
+      "3": 23,
+      "9": 8,
+      "6": 4,
+      "7": 7
+     }
+    },
+    "boat": {
+     "cmds": 424,
+     "clusters": 348,
+     "dupClusters": 53,
+     "dupCmds": 129,
+     "extraCmds": 76,
+     "sizes": {
+      "1": 295,
+      "2": 38,
+      "3": 10,
+      "6": 1,
+      "4": 3,
+      "5": 1
+     }
+    },
+    "donate": {
+     "cmds": 349,
+     "clusters": 332,
+     "dupClusters": 11,
+     "dupCmds": 28,
+     "extraCmds": 17,
+     "sizes": {
+      "1": 321,
+      "2": 7,
+      "4": 2,
+      "3": 2
+     }
+    }
+   },
+   "dups": [
+    {
+     "me": 48,
+     "name": "Erwin",
+     "kind": "attack",
+     "target": "53",
+     "targetName": "[Omen] 👀",
+     "t0": 1869,
+     "t1": 1869,
+     "n": 7,
+     "pcts": [
+      381,
+      422,
+      428,
+      390,
+      390,
+      391,
+      431
+     ],
+     "first": 0.373,
+     "comb": 0.9708
+    },
+    {
+     "me": 43,
+     "name": "Iceland",
+     "kind": "boat",
+     "target": "1090214:2",
+     "targetName": "",
+     "t0": 1407,
+     "t1": 1407,
+     "n": 6,
+     "pcts": [
+      462,
+      461,
+      451,
+      449,
+      434,
+      431
+     ],
+     "first": 0.4521,
+     "comb": 0.9687
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "attack",
+     "target": "23",
+     "targetName": "USA EMPIRE",
+     "t0": 1785,
+     "t1": 1785,
+     "n": 7,
+     "pcts": [
+      351,
+      364,
+      364,
+      340,
+      340,
+      340,
+      340
+     ],
+     "first": 0.3438,
+     "comb": 0.9462
+    },
+    {
+     "me": 48,
+     "name": "Erwin",
+     "kind": "attack",
+     "target": "53",
+     "targetName": "[Omen] 👀",
+     "t0": 1750,
+     "t1": 1750,
+     "n": 7,
+     "pcts": [
+      433,
+      122,
+      122,
+      375,
+      375,
+      373,
+      373
+     ],
+     "first": 0.4238,
+     "comb": 0.928
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 10486,
+     "t1": 10486,
+     "n": 5,
+     "pcts": [
+      397,
+      397,
+      397,
+      397,
+      397
+     ],
+     "first": 0.3887,
+     "comb": 0.9146
+    },
+    {
+     "me": 45,
+     "name": "Anya",
+     "kind": "boat",
+     "target": "283582:2",
+     "targetName": "",
+     "t0": 10290,
+     "t1": 10290,
+     "n": 4,
+     "pcts": [
+      396,
+      395,
+      392,
+      382
+     ],
+     "first": 0.3877,
+     "comb": 0.8552
+    },
+    {
+     "me": 30,
+     "name": "Tomato",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1869,
+     "t1": 1869,
+     "n": 2,
+     "pcts": [
+      752,
+      444
+     ],
+     "first": 0.7354,
+     "comb": 0.8504
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "attack",
+     "target": "446",
+     "targetName": "bot#446",
+     "t0": 1680,
+     "t1": 1694,
+     "n": 8,
+     "pcts": [
+      180,
+      90,
+      150,
+      246,
+      212,
+      223,
+      273,
+      176
+     ],
+     "first": 0.1768,
+     "comb": 0.8181
+    },
+    {
+     "me": 30,
+     "name": "Tomato",
+     "kind": "boat",
+     "target": "42929:2",
+     "targetName": "",
+     "t0": 1540,
+     "t1": 1540,
+     "n": 3,
+     "pcts": [
+      405,
+      453,
+      451
+     ],
+     "first": 0.3965,
+     "comb": 0.8123
+    },
+    {
+     "me": 45,
+     "name": "Anya",
+     "kind": "boat",
+     "target": "258923:1",
+     "targetName": "",
+     "t0": 9989,
+     "t1": 9996,
+     "n": 3,
+     "pcts": [
+      428,
+      419,
+      431
+     ],
+     "first": 0.4189,
+     "comb": 0.8019
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "attack",
+     "target": "23",
+     "targetName": "USA EMPIRE",
+     "t0": 1883,
+     "t1": 1883,
+     "n": 7,
+     "pcts": [
+      122,
+      122,
+      122,
+      122,
+      122,
+      353,
+      364
+     ],
+     "first": 0.1201,
+     "comb": 0.7779
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "boat",
+     "target": "360500:2",
+     "targetName": "",
+     "t0": 10507,
+     "t1": 10507,
+     "n": 3,
+     "pcts": [
+      317,
+      427,
+      387
+     ],
+     "first": 0.3105,
+     "comb": 0.7508
+    },
+    {
+     "me": 31,
+     "name": "Angkor",
+     "kind": "boat",
+     "target": "146166:2",
+     "targetName": "",
+     "t0": 10157,
+     "t1": 10157,
+     "n": 2,
+     "pcts": [
+      498,
+      498
+     ],
+     "first": 0.4873,
+     "comb": 0.7371
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "attack",
+     "target": "11",
+     "targetName": "ACV",
+     "t0": 8645,
+     "t1": 8680,
+     "n": 4,
+     "pcts": [
+      102,
+      397,
+      311,
+      313
+     ],
+     "first": 0.1006,
+     "comb": 0.7349
+    },
+    {
+     "me": 43,
+     "name": "Iceland",
+     "kind": "boat",
+     "target": "1302732:0",
+     "targetName": "",
+     "t0": 1568,
+     "t1": 1568,
+     "n": 2,
+     "pcts": [
+      484,
+      483
+     ],
+     "first": 0.4736,
+     "comb": 0.7224
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "boat",
+     "target": "142844:0",
+     "targetName": "",
+     "t0": 10143,
+     "t1": 10143,
+     "n": 3,
+     "pcts": [
+      167,
+      500,
+      350
+     ],
+     "first": 0.1641,
+     "comb": 0.7194
+    },
+    {
+     "me": 36,
+     "name": "Lelouch",
+     "kind": "attack",
+     "target": "399",
+     "targetName": "bot#399",
+     "t0": 1477,
+     "t1": 1477,
+     "n": 5,
+     "pcts": [
+      208,
+      210,
+      234,
+      236,
+      236
+     ],
+     "first": 0.2041,
+     "comb": 0.7124
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1288,
+     "t1": 1288,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      152,
+      47,
+      153,
+      155,
+      283,
+      254
+     ],
+     "first": 0.0469,
+     "comb": 0.7122
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "attack",
+     "target": "10",
+     "targetName": "[Zellig] Kiki pirate",
+     "t0": 9940,
+     "t1": 9954,
+     "n": 5,
+     "pcts": [
+      159,
+      182,
+      385,
+      221,
+      139
+     ],
+     "first": 0.1562,
+     "comb": 0.7081
+    },
+    {
+     "me": 31,
+     "name": "Angkor",
+     "kind": "attack",
+     "target": "53",
+     "targetName": "[Omen] 👀",
+     "t0": 2058,
+     "t1": 2086,
+     "n": 3,
+     "pcts": [
+      349,
+      373,
+      302
+     ],
+     "first": 0.3418,
+     "comb": 0.7058
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "170471:0",
+     "targetName": "",
+     "t0": 1400,
+     "t1": 1400,
+     "n": 3,
+     "pcts": [
+      418,
+      127,
+      437
+     ],
+     "first": 0.4092,
+     "comb": 0.7042
+    },
+    {
+     "me": 31,
+     "name": "Angkor",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 10500,
+     "t1": 10500,
+     "n": 4,
+     "pcts": [
+      282,
+      274,
+      265,
+      246
+     ],
+     "first": 0.2764,
+     "comb": 0.7027
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "23",
+     "targetName": "USA EMPIRE",
+     "t0": 1778,
+     "t1": 1778,
+     "n": 5,
+     "pcts": [
+      213,
+      212,
+      209,
+      207,
+      206
+     ],
+     "first": 0.209,
+     "comb": 0.6834
+    },
+    {
+     "me": 30,
+     "name": "Tomato",
+     "kind": "boat",
+     "target": "141208:2",
+     "targetName": "",
+     "t0": 1540,
+     "t1": 1540,
+     "n": 2,
+     "pcts": [
+      442,
+      437
+     ],
+     "first": 0.4326,
+     "comb": 0.6753
+    },
+    {
+     "me": 45,
+     "name": "Anya",
+     "kind": "boat",
+     "target": "264186:2",
+     "targetName": "",
+     "t0": 9989,
+     "t1": 9989,
+     "n": 2,
+     "pcts": [
+      430,
+      427
+     ],
+     "first": 0.4209,
+     "comb": 0.6629
+    },
+    {
+     "me": 30,
+     "name": "Tomato",
+     "kind": "boat",
+     "target": "264263:2",
+     "targetName": "",
+     "t0": 1540,
+     "t1": 1540,
+     "n": 2,
+     "pcts": [
+      424,
+      421
+     ],
+     "first": 0.415,
+     "comb": 0.6561
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1183,
+     "t1": 1190,
+     "n": 8,
+     "pcts": [
+      115,
+      117,
+      121,
+      123,
+      128,
+      184,
+      118,
+      47
+     ],
+     "first": 0.1133,
+     "comb": 0.6336
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "attack",
+     "target": "10",
+     "targetName": "[Zellig] Kiki pirate",
+     "t0": 9548,
+     "t1": 9555,
+     "n": 2,
+     "pcts": [
+      391,
+      391
+     ],
+     "first": 0.3828,
+     "comb": 0.6191
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "attack",
+     "target": "16",
+     "targetName": "kakoscsiga",
+     "t0": 8120,
+     "t1": 8134,
+     "n": 2,
+     "pcts": [
+      397,
+      383
+     ],
+     "first": 0.3887,
+     "comb": 0.6179
+    },
+    {
+     "me": 45,
+     "name": "Anya",
+     "kind": "boat",
+     "target": "58812:2",
+     "targetName": "",
+     "t0": 8337,
+     "t1": 8344,
+     "n": 2,
+     "pcts": [
+      381,
+      382
+     ],
+     "first": 0.373,
+     "comb": 0.6075
+    },
+    {
+     "me": 45,
+     "name": "Anya",
+     "kind": "boat",
+     "target": "258915:2",
+     "targetName": "",
+     "t0": 8855,
+     "t1": 8862,
+     "n": 2,
+     "pcts": [
+      381,
+      382
+     ],
+     "first": 0.373,
+     "comb": 0.6075
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "boat",
+     "target": "160313:2",
+     "targetName": "",
+     "t0": 10507,
+     "t1": 10507,
+     "n": 2,
+     "pcts": [
+      313,
+      426
+     ],
+     "first": 0.3066,
+     "comb": 0.5958
+    },
+    {
+     "me": 43,
+     "name": "Iceland",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1197,
+     "t1": 1197,
+     "n": 9,
+     "pcts": [
+      47,
+      77,
+      106,
+      134,
+      132,
+      128,
+      48,
+      96,
+      99
+     ],
+     "first": 0.0469,
+     "comb": 0.5951
+    },
+    {
+     "me": 43,
+     "name": "Iceland",
+     "kind": "boat",
+     "target": "1086707:1",
+     "targetName": "",
+     "t0": 1568,
+     "t1": 1568,
+     "n": 3,
+     "pcts": [
+      127,
+      474,
+      127
+     ],
+     "first": 0.125,
+     "comb": 0.5895
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "boat",
+     "target": "1637907:2",
+     "targetName": "",
+     "t0": 1960,
+     "t1": 1960,
+     "n": 3,
+     "pcts": [
+      127,
+      461,
+      127
+     ],
+     "first": 0.125,
+     "comb": 0.5798
+    },
+    {
+     "me": 32,
+     "name": "Senna",
+     "kind": "attack",
+     "target": "53",
+     "targetName": "[Omen] 👀",
+     "t0": 1554,
+     "t1": 1561,
+     "n": 3,
+     "pcts": [
+      253,
+      253,
+      255
+     ],
+     "first": 0.248,
+     "comb": 0.5759
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "138954:2",
+     "targetName": "",
+     "t0": 1400,
+     "t1": 1400,
+     "n": 3,
+     "pcts": [
+      127,
+      437,
+      140
+     ],
+     "first": 0.125,
+     "comb": 0.5682
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "donate",
+     "target": "31",
+     "targetName": "Angkor",
+     "t0": 9989,
+     "t1": 9989,
+     "n": 4,
+     "pcts": [
+      185,
+      185,
+      185,
+      185
+     ],
+     "first": 0.1816,
+     "comb": 0.5515
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "79423:2",
+     "targetName": "",
+     "t0": 7119,
+     "t1": 7126,
+     "n": 2,
+     "pcts": [
+      127,
+      489
+     ],
+     "first": 0.125,
+     "comb": 0.5437
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "67146:2",
+     "targetName": "",
+     "t0": 7056,
+     "t1": 7070,
+     "n": 2,
+     "pcts": [
+      127,
+      488
+     ],
+     "first": 0.125,
+     "comb": 0.5428
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "123327:3",
+     "targetName": "",
+     "t0": 7182,
+     "t1": 7189,
+     "n": 2,
+     "pcts": [
+      127,
+      488
+     ],
+     "first": 0.125,
+     "comb": 0.5428
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "93495:2",
+     "targetName": "",
+     "t0": 6853,
+     "t1": 6860,
+     "n": 2,
+     "pcts": [
+      127,
+      484
+     ],
+     "first": 0.125,
+     "comb": 0.5394
+    },
+    {
+     "me": 40,
+     "name": "DioBrando",
+     "kind": "attack",
+     "target": "107",
+     "targetName": "bot#107",
+     "t0": 826,
+     "t1": 826,
+     "n": 3,
+     "pcts": [
+      225,
+      234,
+      226
+     ],
+     "first": 0.2207,
+     "comb": 0.5327
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1218,
+     "t1": 1218,
+     "n": 9,
+     "pcts": [
+      47,
+      108,
+      120,
+      125,
+      74,
+      75,
+      72,
+      63,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.5311
+    },
+    {
+     "me": 36,
+     "name": "Lelouch",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1204,
+     "t1": 1204,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      51,
+      196,
+      100,
+      103,
+      110
+     ],
+     "first": 0.0469,
+     "comb": 0.5207
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "boat",
+     "target": "1637907:2",
+     "targetName": "",
+     "t0": 1820,
+     "t1": 1820,
+     "n": 2,
+     "pcts": [
+      457,
+      127
+     ],
+     "first": 0.4473,
+     "comb": 0.5164
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "23",
+     "targetName": "USA EMPIRE",
+     "t0": 1701,
+     "t1": 1715,
+     "n": 3,
+     "pcts": [
+      206,
+      206,
+      207
+     ],
+     "first": 0.2021,
+     "comb": 0.4927
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "boat",
+     "target": "97048:0",
+     "targetName": "",
+     "t0": 7637,
+     "t1": 7644,
+     "n": 2,
+     "pcts": [
+      292,
+      294
+     ],
+     "first": 0.2861,
+     "comb": 0.4918
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "boat",
+     "target": "58424:0",
+     "targetName": "",
+     "t0": 8680,
+     "t1": 8694,
+     "n": 2,
+     "pcts": [
+      312,
+      272
+     ],
+     "first": 0.3057,
+     "comb": 0.4908
+    },
+    {
+     "me": 31,
+     "name": "Angkor",
+     "kind": "boat",
+     "target": "114612:2",
+     "targetName": "",
+     "t0": 10612,
+     "t1": 10626,
+     "n": 5,
+     "pcts": [
+      127,
+      127,
+      127,
+      127,
+      127
+     ],
+     "first": 0.125,
+     "comb": 0.4871
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "58",
+     "targetName": "TERRITORIAL",
+     "t0": 6573,
+     "t1": 6587,
+     "n": 2,
+     "pcts": [
+      282,
+      289
+     ],
+     "first": 0.2764,
+     "comb": 0.4813
+    },
+    {
+     "me": 31,
+     "name": "Angkor",
+     "kind": "donate",
+     "target": "34",
+     "targetName": "Interpol",
+     "t0": 10500,
+     "t1": 10500,
+     "n": 4,
+     "pcts": [
+      153,
+      153,
+      153,
+      153
+     ],
+     "first": 0.1504,
+     "comb": 0.479
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "attack",
+     "target": "16",
+     "targetName": "kakoscsiga",
+     "t0": 8176,
+     "t1": 8190,
+     "n": 2,
+     "pcts": [
+      285,
+      270
+     ],
+     "first": 0.2793,
+     "comb": 0.47
+    },
+    {
+     "me": 36,
+     "name": "Lelouch",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 966,
+     "t1": 966,
+     "n": 3,
+     "pcts": [
+      188,
+      198,
+      195
+     ],
+     "first": 0.1846,
+     "comb": 0.4688
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "donate",
+     "target": "31",
+     "targetName": "Angkor",
+     "t0": 10325,
+     "t1": 10325,
+     "n": 3,
+     "pcts": [
+      185,
+      185,
+      185
+     ],
+     "first": 0.1816,
+     "comb": 0.4519
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "donate",
+     "target": "33",
+     "targetName": "Two Sicilies",
+     "t0": 9786,
+     "t1": 9793,
+     "n": 3,
+     "pcts": [
+      185,
+      185,
+      185
+     ],
+     "first": 0.1816,
+     "comb": 0.4519
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1477,
+     "t1": 1477,
+     "n": 8,
+     "pcts": [
+      143,
+      47,
+      47,
+      96,
+      105,
+      47,
+      47,
+      47
+     ],
+     "first": 0.1406,
+     "comb": 0.4514
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "170472:0",
+     "targetName": "",
+     "t0": 1141,
+     "t1": 1141,
+     "n": 2,
+     "pcts": [
+      377,
+      127
+     ],
+     "first": 0.3691,
+     "comb": 0.448
+    },
+    {
+     "me": 35,
+     "name": "Moldavia",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1176,
+     "t1": 1176,
+     "n": 3,
+     "pcts": [
+      177,
+      183,
+      187
+     ],
+     "first": 0.1738,
+     "comb": 0.4467
+    },
+    {
+     "me": 35,
+     "name": "Moldavia",
+     "kind": "attack",
+     "target": "14",
+     "targetName": "Player 896",
+     "t0": 1855,
+     "t1": 1869,
+     "n": 2,
+     "pcts": [
+      238,
+      283
+     ],
+     "first": 0.2334,
+     "comb": 0.446
+    },
+    {
+     "me": 32,
+     "name": "Senna",
+     "kind": "attack",
+     "target": "58",
+     "targetName": "TERRITORIAL",
+     "t0": 8351,
+     "t1": 8351,
+     "n": 2,
+     "pcts": [
+      302,
+      216
+     ],
+     "first": 0.2959,
+     "comb": 0.4451
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "44",
+     "targetName": "Player 369",
+     "t0": 5166,
+     "t1": 5180,
+     "n": 2,
+     "pcts": [
+      256,
+      257
+     ],
+     "first": 0.251,
+     "comb": 0.4397
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "boat",
+     "target": "353463:2",
+     "targetName": "",
+     "t0": 9051,
+     "t1": 9065,
+     "n": 2,
+     "pcts": [
+      249,
+      252
+     ],
+     "first": 0.2441,
+     "comb": 0.4309
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "boat",
+     "target": "107532:2",
+     "targetName": "",
+     "t0": 7994,
+     "t1": 8008,
+     "n": 2,
+     "pcts": [
+      238,
+      261
+     ],
+     "first": 0.2334,
+     "comb": 0.4295
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "boat",
+     "target": "209421:2",
+     "targetName": "",
+     "t0": 6860,
+     "t1": 6867,
+     "n": 2,
+     "pcts": [
+      246,
+      249
+     ],
+     "first": 0.2412,
+     "comb": 0.4265
+    },
+    {
+     "me": 45,
+     "name": "Anya",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1323,
+     "t1": 1323,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      60,
+      186,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.4237
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "boat",
+     "target": "97048:0",
+     "targetName": "",
+     "t0": 7350,
+     "t1": 7364,
+     "n": 2,
+     "pcts": [
+      244,
+      246
+     ],
+     "first": 0.2393,
+     "comb": 0.4228
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "491",
+     "targetName": "bot#491",
+     "t0": 1071,
+     "t1": 1071,
+     "n": 3,
+     "pcts": [
+      152,
+      182,
+      163
+     ],
+     "first": 0.1494,
+     "comb": 0.4133
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "boat",
+     "target": "1634286:2",
+     "targetName": "",
+     "t0": 1862,
+     "t1": 1862,
+     "n": 2,
+     "pcts": [
+      331,
+      127
+     ],
+     "first": 0.3242,
+     "comb": 0.4087
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "donate",
+     "target": "41",
+     "targetName": "SyntaxError",
+     "t0": 8008,
+     "t1": 8022,
+     "n": 2,
+     "pcts": [
+      280,
+      185
+     ],
+     "first": 0.2744,
+     "comb": 0.4062
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "boat",
+     "target": "214697:2",
+     "targetName": "",
+     "t0": 7210,
+     "t1": 7224,
+     "n": 2,
+     "pcts": [
+      207,
+      255
+     ],
+     "first": 0.2031,
+     "comb": 0.4023
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "0",
+     "targetName": "Berlin",
+     "t0": 6356,
+     "t1": 6363,
+     "n": 2,
+     "pcts": [
+      228,
+      234
+     ],
+     "first": 0.2236,
+     "comb": 0.4018
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "360",
+     "targetName": "bot#360",
+     "t0": 1043,
+     "t1": 1043,
+     "n": 3,
+     "pcts": [
+      155,
+      160,
+      162
+     ],
+     "first": 0.1523,
+     "comb": 0.3993
+    },
+    {
+     "me": 43,
+     "name": "Iceland",
+     "kind": "attack",
+     "target": "21",
+     "targetName": "black magic",
+     "t0": 1771,
+     "t1": 1771,
+     "n": 3,
+     "pcts": [
+      226,
+      122,
+      122
+     ],
+     "first": 0.2217,
+     "comb": 0.3974
+    },
+    {
+     "me": 30,
+     "name": "Tomato",
+     "kind": "attack",
+     "target": "144",
+     "targetName": "bot#144",
+     "t0": 861,
+     "t1": 861,
+     "n": 4,
+     "pcts": [
+      113,
+      138,
+      144,
+      72
+     ],
+     "first": 0.1113,
+     "comb": 0.3877
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "0",
+     "targetName": "Berlin",
+     "t0": 6356,
+     "t1": 6370,
+     "n": 2,
+     "pcts": [
+      218,
+      225
+     ],
+     "first": 0.2139,
+     "comb": 0.3874
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "attack",
+     "target": "53",
+     "targetName": "[Omen] 👀",
+     "t0": 1785,
+     "t1": 1785,
+     "n": 2,
+     "pcts": [
+      310,
+      122
+     ],
+     "first": 0.3037,
+     "comb": 0.3873
+    },
+    {
+     "me": 35,
+     "name": "Moldavia",
+     "kind": "attack",
+     "target": "327",
+     "targetName": "bot#327",
+     "t0": 651,
+     "t1": 665,
+     "n": 2,
+     "pcts": [
+      183,
+      258
+     ],
+     "first": 0.1797,
+     "comb": 0.3872
+    },
+    {
+     "me": 30,
+     "name": "Tomato",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1057,
+     "t1": 1057,
+     "n": 6,
+     "pcts": [
+      47,
+      47,
+      47,
+      129,
+      81,
+      116
+     ],
+     "first": 0.0469,
+     "comb": 0.3841
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1330,
+     "t1": 1330,
+     "n": 8,
+     "pcts": [
+      49,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      135
+     ],
+     "first": 0.0488,
+     "comb": 0.3816
+    },
+    {
+     "me": 32,
+     "name": "Senna",
+     "kind": "attack",
+     "target": "53",
+     "targetName": "[Omen] 👀",
+     "t0": 4508,
+     "t1": 4515,
+     "n": 3,
+     "pcts": [
+      102,
+      102,
+      239
+     ],
+     "first": 0.1006,
+     "comb": 0.3807
+    },
+    {
+     "me": 32,
+     "name": "Senna",
+     "kind": "attack",
+     "target": "53",
+     "targetName": "[Omen] 👀",
+     "t0": 6342,
+     "t1": 6342,
+     "n": 2,
+     "pcts": [
+      222,
+      209
+     ],
+     "first": 0.2178,
+     "comb": 0.3782
+    },
+    {
+     "me": 40,
+     "name": "DioBrando",
+     "kind": "attack",
+     "target": "50",
+     "targetName": "[CORGI] Mr Bass",
+     "t0": 3038,
+     "t1": 3052,
+     "n": 2,
+     "pcts": [
+      215,
+      216
+     ],
+     "first": 0.2109,
+     "comb": 0.3782
+    },
+    {
+     "me": 32,
+     "name": "Senna",
+     "kind": "attack",
+     "target": "7",
+     "targetName": "[og]I",
+     "t0": 5747,
+     "t1": 5761,
+     "n": 2,
+     "pcts": [
+      209,
+      215
+     ],
+     "first": 0.2051,
+     "comb": 0.3728
+    },
+    {
+     "me": 31,
+     "name": "Angkor",
+     "kind": "attack",
+     "target": "11",
+     "targetName": "ACV",
+     "t0": 8239,
+     "t1": 8253,
+     "n": 2,
+     "pcts": [
+      207,
+      214
+     ],
+     "first": 0.2031,
+     "comb": 0.3704
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "attack",
+     "target": "179",
+     "targetName": "bot#179",
+     "t0": 826,
+     "t1": 826,
+     "n": 2,
+     "pcts": [
+      201,
+      212
+     ],
+     "first": 0.1973,
+     "comb": 0.3642
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1722,
+     "t1": 1722,
+     "n": 8,
+     "pcts": [
+      71,
+      47,
+      83,
+      47,
+      47,
+      47,
+      47,
+      51
+     ],
+     "first": 0.0703,
+     "comb": 0.3628
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "399",
+     "targetName": "bot#399",
+     "t0": 1512,
+     "t1": 1512,
+     "n": 5,
+     "pcts": [
+      65,
+      90,
+      93,
+      92,
+      94
+     ],
+     "first": 0.0645,
+     "comb": 0.3614
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "248",
+     "targetName": "bot#248",
+     "t0": 1043,
+     "t1": 1050,
+     "n": 3,
+     "pcts": [
+      113,
+      147,
+      162
+     ],
+     "first": 0.1113,
+     "comb": 0.3608
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "257",
+     "targetName": "bot#257",
+     "t0": 1862,
+     "t1": 1862,
+     "n": 8,
+     "pcts": [
+      55,
+      55,
+      54,
+      52,
+      51,
+      56,
+      56,
+      57
+     ],
+     "first": 0.0547,
+     "comb": 0.3597
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "476",
+     "targetName": "bot#476",
+     "t0": 875,
+     "t1": 875,
+     "n": 2,
+     "pcts": [
+      205,
+      193
+     ],
+     "first": 0.2012,
+     "comb": 0.3525
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1596,
+     "t1": 1596,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3508
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1750,
+     "t1": 1750,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3508
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 10367,
+     "t1": 10367,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3508
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1722,
+     "t1": 1722,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3508
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 10472,
+     "t1": 10472,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3508
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "332",
+     "targetName": "bot#332",
+     "t0": 1561,
+     "t1": 1561,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3508
+    },
+    {
+     "me": 36,
+     "name": "Lelouch",
+     "kind": "attack",
+     "target": "306",
+     "targetName": "bot#306",
+     "t0": 805,
+     "t1": 819,
+     "n": 2,
+     "pcts": [
+      192,
+      198
+     ],
+     "first": 0.1885,
+     "comb": 0.3462
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1043,
+     "t1": 1043,
+     "n": 2,
+     "pcts": [
+      177,
+      206
+     ],
+     "first": 0.1738,
+     "comb": 0.3408
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "500",
+     "targetName": "bot#500",
+     "t0": 875,
+     "t1": 882,
+     "n": 3,
+     "pcts": [
+      131,
+      126,
+      134
+     ],
+     "first": 0.1289,
+     "comb": 0.3375
+    },
+    {
+     "me": 36,
+     "name": "Lelouch",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1764,
+     "t1": 1764,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      49,
+      54,
+      61
+     ],
+     "first": 0.0469,
+     "comb": 0.3349
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "donate",
+     "target": "35",
+     "targetName": "Moldavia",
+     "t0": 8470,
+     "t1": 8470,
+     "n": 2,
+     "pcts": [
+      185,
+      185
+     ],
+     "first": 0.1816,
+     "comb": 0.3303
+    },
+    {
+     "me": 36,
+     "name": "Lelouch",
+     "kind": "donate",
+     "target": "38",
+     "targetName": "Khazar",
+     "t0": 2674,
+     "t1": 2688,
+     "n": 2,
+     "pcts": [
+      185,
+      185
+     ],
+     "first": 0.1816,
+     "comb": 0.3303
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "donate",
+     "target": "41",
+     "targetName": "SyntaxError",
+     "t0": 7721,
+     "t1": 7735,
+     "n": 2,
+     "pcts": [
+      185,
+      185
+     ],
+     "first": 0.1816,
+     "comb": 0.3303
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "donate",
+     "target": "37",
+     "targetName": "Goku",
+     "t0": 6265,
+     "t1": 6279,
+     "n": 2,
+     "pcts": [
+      185,
+      185
+     ],
+     "first": 0.1816,
+     "comb": 0.3303
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "boat",
+     "target": "385061:2",
+     "targetName": "",
+     "t0": 10507,
+     "t1": 10507,
+     "n": 3,
+     "pcts": [
+      127,
+      127,
+      127
+     ],
+     "first": 0.125,
+     "comb": 0.3301
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "351",
+     "targetName": "bot#351",
+     "t0": 1463,
+     "t1": 1463,
+     "n": 7,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      80,
+      75
+     ],
+     "first": 0.0469,
+     "comb": 0.3294
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1274,
+     "t1": 1274,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      52,
+      47,
+      47,
+      47,
+      48,
+      52
+     ],
+     "first": 0.0469,
+     "comb": 0.3266
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "attack",
+     "target": "7",
+     "targetName": "[og]I",
+     "t0": 4221,
+     "t1": 4235,
+     "n": 2,
+     "pcts": [
+      102,
+      248
+     ],
+     "first": 0.1006,
+     "comb": 0.3193
+    },
+    {
+     "me": 31,
+     "name": "Angkor",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1596,
+     "t1": 1596,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1246,
+     "t1": 1246,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 10563,
+     "t1": 10563,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 48,
+     "name": "Erwin",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1372,
+     "t1": 1372,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 48,
+     "name": "Erwin",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1596,
+     "t1": 1596,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "51",
+     "targetName": "Imperio romano",
+     "t0": 7609,
+     "t1": 7637,
+     "n": 3,
+     "pcts": [
+      122,
+      122,
+      122
+     ],
+     "first": 0.1201,
+     "comb": 0.3188
+    },
+    {
+     "me": 35,
+     "name": "Moldavia",
+     "kind": "attack",
+     "target": "92",
+     "targetName": "bot#92",
+     "t0": 833,
+     "t1": 833,
+     "n": 2,
+     "pcts": [
+      157,
+      189
+     ],
+     "first": 0.1543,
+     "comb": 0.3112
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "donate",
+     "target": "41",
+     "targetName": "SyntaxError",
+     "t0": 6538,
+     "t1": 6552,
+     "n": 2,
+     "pcts": [
+      155,
+      185
+     ],
+     "first": 0.1523,
+     "comb": 0.3063
+    },
+    {
+     "me": 32,
+     "name": "Senna",
+     "kind": "attack",
+     "target": "7",
+     "targetName": "[og]I",
+     "t0": 4928,
+     "t1": 4942,
+     "n": 2,
+     "pcts": [
+      226,
+      102
+     ],
+     "first": 0.2217,
+     "comb": 0.3
+    },
+    {
+     "me": 32,
+     "name": "Senna",
+     "kind": "attack",
+     "target": "50",
+     "targetName": "[CORGI] Mr Bass",
+     "t0": 6748,
+     "t1": 6762,
+     "n": 2,
+     "pcts": [
+      102,
+      224
+     ],
+     "first": 0.1006,
+     "comb": 0.2982
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1071,
+     "t1": 1071,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      192
+     ],
+     "first": 0.0469,
+     "comb": 0.2973
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "44",
+     "targetName": "Player 369",
+     "t0": 6867,
+     "t1": 6881,
+     "n": 2,
+     "pcts": [
+      145,
+      171
+     ],
+     "first": 0.1426,
+     "comb": 0.2866
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 10556,
+     "t1": 10556,
+     "n": 7,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.2854
+    },
+    {
+     "me": 49,
+     "name": "Conde",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1407,
+     "t1": 1421,
+     "n": 7,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.2854
+    },
+    {
+     "me": 36,
+     "name": "Lelouch",
+     "kind": "attack",
+     "target": "404",
+     "targetName": "bot#404",
+     "t0": 966,
+     "t1": 966,
+     "n": 2,
+     "pcts": [
+      157,
+      156
+     ],
+     "first": 0.1543,
+     "comb": 0.284
+    },
+    {
+     "me": 40,
+     "name": "DioBrando",
+     "kind": "attack",
+     "target": "287",
+     "targetName": "bot#287",
+     "t0": 903,
+     "t1": 903,
+     "n": 2,
+     "pcts": [
+      185,
+      127
+     ],
+     "first": 0.1816,
+     "comb": 0.2839
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "8",
+     "targetName": "Player 306",
+     "t0": 7406,
+     "t1": 7413,
+     "n": 2,
+     "pcts": [
+      102,
+      207
+     ],
+     "first": 0.1006,
+     "comb": 0.2833
+    },
+    {
+     "me": 48,
+     "name": "Erwin",
+     "kind": "donate",
+     "target": "30",
+     "targetName": "Tomato",
+     "t0": 1869,
+     "t1": 1869,
+     "n": 2,
+     "pcts": [
+      155,
+      155
+     ],
+     "first": 0.1523,
+     "comb": 0.2815
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "257",
+     "targetName": "bot#257",
+     "t0": 1848,
+     "t1": 1862,
+     "n": 5,
+     "pcts": [
+      58,
+      61,
+      64,
+      64,
+      75
+     ],
+     "first": 0.0576,
+     "comb": 0.2811
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "500",
+     "targetName": "bot#500",
+     "t0": 861,
+     "t1": 861,
+     "n": 2,
+     "pcts": [
+      158,
+      150
+     ],
+     "first": 0.1553,
+     "comb": 0.2798
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "51",
+     "targetName": "Imperio romano",
+     "t0": 7658,
+     "t1": 7686,
+     "n": 3,
+     "pcts": [
+      122,
+      122,
+      54
+     ],
+     "first": 0.1201,
+     "comb": 0.2674
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1512,
+     "t1": 1512,
+     "n": 6,
+     "pcts": [
+      69,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0684,
+     "comb": 0.2672
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "boat",
+     "target": "154900:0",
+     "targetName": "",
+     "t0": 1568,
+     "t1": 1568,
+     "n": 3,
+     "pcts": [
+      127,
+      29,
+      127
+     ],
+     "first": 0.125,
+     "comb": 0.2568
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 10164,
+     "t1": 10164,
+     "n": 6,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.2503
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1666,
+     "t1": 1666,
+     "n": 6,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.2503
+    },
+    {
+     "me": 31,
+     "name": "Angkor",
+     "kind": "boat",
+     "target": "93447:2",
+     "targetName": "",
+     "t0": 1750,
+     "t1": 1750,
+     "n": 4,
+     "pcts": [
+      127,
+      5,
+      127,
+      5
+     ],
+     "first": 0.125,
+     "comb": 0.2433
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "boat",
+     "target": "385061:2",
+     "targetName": "",
+     "t0": 10164,
+     "t1": 10164,
+     "n": 2,
+     "pcts": [
+      126,
+      137
+     ],
+     "first": 0.124,
+     "comb": 0.2421
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "312",
+     "targetName": "bot#312",
+     "t0": 1036,
+     "t1": 1036,
+     "n": 3,
+     "pcts": [
+      84,
+      88,
+      86
+     ],
+     "first": 0.083,
+     "comb": 0.2338
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 973,
+     "t1": 973,
+     "n": 4,
+     "pcts": [
+      78,
+      74,
+      47,
+      47
+     ],
+     "first": 0.0771,
+     "comb": 0.223
+    },
+    {
+     "me": 48,
+     "name": "Erwin",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1099,
+     "t1": 1099,
+     "n": 4,
+     "pcts": [
+      54,
+      47,
+      47,
+      92
+     ],
+     "first": 0.0537,
+     "comb": 0.2184
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1400,
+     "t1": 1400,
+     "n": 3,
+     "pcts": [
+      79,
+      79,
+      80
+     ],
+     "first": 0.0781,
+     "comb": 0.2174
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1820,
+     "t1": 1820,
+     "n": 5,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.2134
+    },
+    {
+     "me": 40,
+     "name": "DioBrando",
+     "kind": "attack",
+     "target": "280",
+     "targetName": "bot#280",
+     "t0": 903,
+     "t1": 903,
+     "n": 2,
+     "pcts": [
+      116,
+      113
+     ],
+     "first": 0.1143,
+     "comb": 0.2129
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 875,
+     "t1": 875,
+     "n": 3,
+     "pcts": [
+      75,
+      75,
+      82
+     ],
+     "first": 0.0742,
+     "comb": 0.2124
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "15",
+     "targetName": "Arctic Front",
+     "t0": 2387,
+     "t1": 2401,
+     "n": 2,
+     "pcts": [
+      106,
+      122
+     ],
+     "first": 0.1045,
+     "comb": 0.2121
+    },
+    {
+     "me": 49,
+     "name": "Conde",
+     "kind": "attack",
+     "target": "420",
+     "targetName": "bot#420",
+     "t0": 1134,
+     "t1": 1141,
+     "n": 4,
+     "pcts": [
+      51,
+      53,
+      47,
+      71
+     ],
+     "first": 0.0508,
+     "comb": 0.2032
+    },
+    {
+     "me": 35,
+     "name": "Moldavia",
+     "kind": "attack",
+     "target": "402",
+     "targetName": "bot#402",
+     "t0": 1176,
+     "t1": 1176,
+     "n": 2,
+     "pcts": [
+      70,
+      145
+     ],
+     "first": 0.0693,
+     "comb": 0.202
+    },
+    {
+     "me": 43,
+     "name": "Iceland",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 686,
+     "t1": 686,
+     "n": 2,
+     "pcts": [
+      86,
+      128
+     ],
+     "first": 0.085,
+     "comb": 0.2002
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "257",
+     "targetName": "bot#257",
+     "t0": 1932,
+     "t1": 1932,
+     "n": 3,
+     "pcts": [
+      70,
+      73,
+      74
+     ],
+     "first": 0.0693,
+     "comb": 0.1998
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "77",
+     "targetName": "bot#77",
+     "t0": 875,
+     "t1": 889,
+     "n": 2,
+     "pcts": [
+      95,
+      110
+     ],
+     "first": 0.0938,
+     "comb": 0.192
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "attack",
+     "target": "11",
+     "targetName": "ACV",
+     "t0": 8771,
+     "t1": 8785,
+     "n": 2,
+     "pcts": [
+      102,
+      102
+     ],
+     "first": 0.1006,
+     "comb": 0.1911
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 7112,
+     "t1": 7140,
+     "n": 4,
+     "pcts": [
+      45,
+      73,
+      41,
+      41
+     ],
+     "first": 0.0449,
+     "comb": 0.1851
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 728,
+     "t1": 728,
+     "n": 2,
+     "pcts": [
+      90,
+      97
+     ],
+     "first": 0.0889,
+     "comb": 0.1761
+    },
+    {
+     "me": 45,
+     "name": "Anya",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1071,
+     "t1": 1078,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1747
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1645,
+     "t1": 1645,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1747
+    },
+    {
+     "me": 30,
+     "name": "Tomato",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1309,
+     "t1": 1309,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1747
+    },
+    {
+     "me": 49,
+     "name": "Conde",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1498,
+     "t1": 1498,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1747
+    },
+    {
+     "me": 32,
+     "name": "Senna",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1330,
+     "t1": 1344,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1747
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1512,
+     "t1": 1512,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1747
+    },
+    {
+     "me": 45,
+     "name": "Anya",
+     "kind": "attack",
+     "target": "349",
+     "targetName": "bot#349",
+     "t0": 1071,
+     "t1": 1071,
+     "n": 2,
+     "pcts": [
+      88,
+      92
+     ],
+     "first": 0.0869,
+     "comb": 0.1698
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "413",
+     "targetName": "bot#413",
+     "t0": 1043,
+     "t1": 1043,
+     "n": 3,
+     "pcts": [
+      52,
+      50,
+      77
+     ],
+     "first": 0.0518,
+     "comb": 0.1676
+    },
+    {
+     "me": 36,
+     "name": "Lelouch",
+     "kind": "attack",
+     "target": "371",
+     "targetName": "bot#371",
+     "t0": 966,
+     "t1": 980,
+     "n": 2,
+     "pcts": [
+      66,
+      105
+     ],
+     "first": 0.0654,
+     "comb": 0.1622
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1463,
+     "t1": 1463,
+     "n": 2,
+     "pcts": [
+      86,
+      84
+     ],
+     "first": 0.085,
+     "comb": 0.1609
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "237",
+     "targetName": "bot#237",
+     "t0": 1512,
+     "t1": 1512,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      70
+     ],
+     "first": 0.0469,
+     "comb": 0.1545
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 917,
+     "t1": 917,
+     "n": 2,
+     "pcts": [
+      76,
+      79
+     ],
+     "first": 0.0752,
+     "comb": 0.1474
+    },
+    {
+     "me": 31,
+     "name": "Angkor",
+     "kind": "boat",
+     "target": "132047:2",
+     "targetName": "",
+     "t0": 1750,
+     "t1": 1750,
+     "n": 2,
+     "pcts": [
+      127,
+      22
+     ],
+     "first": 0.125,
+     "comb": 0.1447
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "41007:2",
+     "targetName": "",
+     "t0": 10486,
+     "t1": 10486,
+     "n": 2,
+     "pcts": [
+      13,
+      127
+     ],
+     "first": 0.0137,
+     "comb": 0.137
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "265257:2",
+     "targetName": "",
+     "t0": 1855,
+     "t1": 1855,
+     "n": 2,
+     "pcts": [
+      12,
+      127
+     ],
+     "first": 0.0127,
+     "comb": 0.1361
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "265257:2",
+     "targetName": "",
+     "t0": 1918,
+     "t1": 1918,
+     "n": 2,
+     "pcts": [
+      11,
+      127
+     ],
+     "first": 0.0117,
+     "comb": 0.1353
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 10325,
+     "t1": 10325,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 35,
+     "name": "Moldavia",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 3626,
+     "t1": 3633,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 49,
+     "name": "Conde",
+     "kind": "attack",
+     "target": "314",
+     "targetName": "bot#314",
+     "t0": 1001,
+     "t1": 1001,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "121489:2",
+     "targetName": "",
+     "t0": 6482,
+     "t1": 6496,
+     "n": 2,
+     "pcts": [
+      127,
+      9
+     ],
+     "first": 0.125,
+     "comb": 0.1335
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "boat",
+     "target": "328912:2",
+     "targetName": "",
+     "t0": 2212,
+     "t1": 2226,
+     "n": 2,
+     "pcts": [
+      127,
+      7
+     ],
+     "first": 0.125,
+     "comb": 0.1318
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "boat",
+     "target": "116306:0",
+     "targetName": "",
+     "t0": 8169,
+     "t1": 8176,
+     "n": 2,
+     "pcts": [
+      127,
+      7
+     ],
+     "first": 0.125,
+     "comb": 0.1318
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "335584:2",
+     "targetName": "",
+     "t0": 3521,
+     "t1": 3535,
+     "n": 2,
+     "pcts": [
+      127,
+      4
+     ],
+     "first": 0.125,
+     "comb": 0.1293
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "114560:2",
+     "targetName": "",
+     "t0": 6741,
+     "t1": 6748,
+     "n": 2,
+     "pcts": [
+      127,
+      4
+     ],
+     "first": 0.125,
+     "comb": 0.1293
+    },
+    {
+     "me": 30,
+     "name": "Tomato",
+     "kind": "boat",
+     "target": "78174:0",
+     "targetName": "",
+     "t0": 3465,
+     "t1": 3479,
+     "n": 2,
+     "pcts": [
+      3,
+      127
+     ],
+     "first": 0.0039,
+     "comb": 0.1284
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "boat",
+     "target": "727320:2",
+     "targetName": "",
+     "t0": 3521,
+     "t1": 3535,
+     "n": 2,
+     "pcts": [
+      2,
+      127
+     ],
+     "first": 0.0029,
+     "comb": 0.1276
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "boat",
+     "target": "1644627:2",
+     "targetName": "",
+     "t0": 10325,
+     "t1": 10325,
+     "n": 2,
+     "pcts": [
+      2,
+      127
+     ],
+     "first": 0.0029,
+     "comb": 0.1276
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "105853:2",
+     "targetName": "",
+     "t0": 10584,
+     "t1": 10584,
+     "n": 2,
+     "pcts": [
+      2,
+      127
+     ],
+     "first": 0.0029,
+     "comb": 0.1276
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "111120:2",
+     "targetName": "",
+     "t0": 10682,
+     "t1": 10689,
+     "n": 2,
+     "pcts": [
+      127,
+      1
+     ],
+     "first": 0.125,
+     "comb": 0.1267
+    },
+    {
+     "me": 49,
+     "name": "Conde",
+     "kind": "attack",
+     "target": "194",
+     "targetName": "bot#194",
+     "t0": 1540,
+     "t1": 1540,
+     "n": 2,
+     "pcts": [
+      65,
+      67
+     ],
+     "first": 0.0645,
+     "comb": 0.1266
+    },
+    {
+     "me": 32,
+     "name": "Senna",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 6146,
+     "t1": 6160,
+     "n": 2,
+     "pcts": [
+      84,
+      47
+     ],
+     "first": 0.083,
+     "comb": 0.126
+    },
+    {
+     "me": 49,
+     "name": "Conde",
+     "kind": "attack",
+     "target": "194",
+     "targetName": "bot#194",
+     "t0": 1498,
+     "t1": 1498,
+     "n": 2,
+     "pcts": [
+      83,
+      47
+     ],
+     "first": 0.082,
+     "comb": 0.1251
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 7539,
+     "t1": 7553,
+     "n": 2,
+     "pcts": [
+      81,
+      47
+     ],
+     "first": 0.0801,
+     "comb": 0.1232
+    },
+    {
+     "me": 36,
+     "name": "Lelouch",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1477,
+     "t1": 1477,
+     "n": 2,
+     "pcts": [
+      61,
+      64
+     ],
+     "first": 0.0605,
+     "comb": 0.1202
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1393,
+     "t1": 1407,
+     "n": 2,
+     "pcts": [
+      60,
+      47
+     ],
+     "first": 0.0596,
+     "comb": 0.1037
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1939,
+     "t1": 1939,
+     "n": 2,
+     "pcts": [
+      52,
+      54
+     ],
+     "first": 0.0518,
+     "comb": 0.1027
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1043,
+     "t1": 1043,
+     "n": 2,
+     "pcts": [
+      53,
+      53
+     ],
+     "first": 0.0527,
+     "comb": 0.1027
+    },
+    {
+     "me": 40,
+     "name": "DioBrando",
+     "kind": "attack",
+     "target": "307",
+     "targetName": "bot#307",
+     "t0": 826,
+     "t1": 833,
+     "n": 2,
+     "pcts": [
+      49,
+      55
+     ],
+     "first": 0.0488,
+     "comb": 0.1008
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "124",
+     "targetName": "bot#124",
+     "t0": 1071,
+     "t1": 1071,
+     "n": 2,
+     "pcts": [
+      53,
+      49
+     ],
+     "first": 0.0527,
+     "comb": 0.099
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 6153,
+     "t1": 6160,
+     "n": 2,
+     "pcts": [
+      53,
+      47
+     ],
+     "first": 0.0527,
+     "comb": 0.0971
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "8",
+     "targetName": "Player 306",
+     "t0": 7483,
+     "t1": 7497,
+     "n": 2,
+     "pcts": [
+      48,
+      50
+     ],
+     "first": 0.0479,
+     "comb": 0.0953
+    },
+    {
+     "me": 31,
+     "name": "Angkor",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 6468,
+     "t1": 6475,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 35,
+     "name": "Moldavia",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 3423,
+     "t1": 3430,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 35,
+     "name": "Moldavia",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 6153,
+     "t1": 6167,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 6027,
+     "t1": 6034,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 11165,
+     "t1": 11172,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 11046,
+     "t1": 11053,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 43,
+     "name": "Iceland",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1407,
+     "t1": 1407,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 30,
+     "name": "Tomato",
+     "kind": "attack",
+     "target": "410",
+     "targetName": "bot#410",
+     "t0": 749,
+     "t1": 749,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 40,
+     "name": "DioBrando",
+     "kind": "attack",
+     "target": "91",
+     "targetName": "bot#91",
+     "t0": 1519,
+     "t1": 1526,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 40,
+     "name": "DioBrando",
+     "kind": "attack",
+     "target": "91",
+     "targetName": "bot#91",
+     "t0": 1561,
+     "t1": 1561,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 49,
+     "name": "Conde",
+     "kind": "attack",
+     "target": "419",
+     "targetName": "bot#419",
+     "t0": 1498,
+     "t1": 1498,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "boat",
+     "target": "1740775:2",
+     "targetName": "",
+     "t0": 10570,
+     "t1": 10570,
+     "n": 4,
+     "pcts": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "first": 0.001,
+     "comb": 0.0039
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "boat",
+     "target": "1458635:2",
+     "targetName": "",
+     "t0": 10591,
+     "t1": 10591,
+     "n": 2,
+     "pcts": [
+      0,
+      0
+     ],
+     "first": 0.001,
+     "comb": 0.002
+    }
+   ]
+  },
+  "sameTick": {
+   "gap": 0,
+   "byKind": {
+    "attack": {
+     "cmds": 1012,
+     "clusters": 656,
+     "dupClusters": 102,
+     "dupCmds": 458,
+     "extraCmds": 356,
+     "sizes": {
+      "1": 554,
+      "3": 17,
+      "8": 14,
+      "4": 11,
+      "5": 5,
+      "2": 34,
+      "9": 8,
+      "7": 8,
+      "6": 5
+     }
+    },
+    "boat": {
+     "cmds": 424,
+     "clusters": 372,
+     "dupClusters": 32,
+     "dupCmds": 84,
+     "extraCmds": 52,
+     "sizes": {
+      "1": 340,
+      "2": 18,
+      "3": 10,
+      "6": 1,
+      "4": 3
+     }
+    },
+    "donate": {
+     "cmds": 349,
+     "clusters": 338,
+     "dupClusters": 6,
+     "dupCmds": 17,
+     "extraCmds": 11,
+     "sizes": {
+      "1": 332,
+      "2": 3,
+      "4": 2,
+      "3": 1
+     }
+    }
+   },
+   "dups": [
+    {
+     "me": 48,
+     "name": "Erwin",
+     "kind": "attack",
+     "target": "53",
+     "targetName": "[Omen] 👀",
+     "t0": 1869,
+     "t1": 1869,
+     "n": 7,
+     "pcts": [
+      381,
+      422,
+      428,
+      390,
+      390,
+      391,
+      431
+     ],
+     "first": 0.373,
+     "comb": 0.9708
+    },
+    {
+     "me": 43,
+     "name": "Iceland",
+     "kind": "boat",
+     "target": "1090214:2",
+     "targetName": "",
+     "t0": 1407,
+     "t1": 1407,
+     "n": 6,
+     "pcts": [
+      462,
+      461,
+      451,
+      449,
+      434,
+      431
+     ],
+     "first": 0.4521,
+     "comb": 0.9687
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "attack",
+     "target": "23",
+     "targetName": "USA EMPIRE",
+     "t0": 1785,
+     "t1": 1785,
+     "n": 7,
+     "pcts": [
+      351,
+      364,
+      364,
+      340,
+      340,
+      340,
+      340
+     ],
+     "first": 0.3438,
+     "comb": 0.9462
+    },
+    {
+     "me": 48,
+     "name": "Erwin",
+     "kind": "attack",
+     "target": "53",
+     "targetName": "[Omen] 👀",
+     "t0": 1750,
+     "t1": 1750,
+     "n": 7,
+     "pcts": [
+      433,
+      122,
+      122,
+      375,
+      375,
+      373,
+      373
+     ],
+     "first": 0.4238,
+     "comb": 0.928
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 10486,
+     "t1": 10486,
+     "n": 5,
+     "pcts": [
+      397,
+      397,
+      397,
+      397,
+      397
+     ],
+     "first": 0.3887,
+     "comb": 0.9146
+    },
+    {
+     "me": 45,
+     "name": "Anya",
+     "kind": "boat",
+     "target": "283582:2",
+     "targetName": "",
+     "t0": 10290,
+     "t1": 10290,
+     "n": 4,
+     "pcts": [
+      396,
+      395,
+      392,
+      382
+     ],
+     "first": 0.3877,
+     "comb": 0.8552
+    },
+    {
+     "me": 30,
+     "name": "Tomato",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1869,
+     "t1": 1869,
+     "n": 2,
+     "pcts": [
+      752,
+      444
+     ],
+     "first": 0.7354,
+     "comb": 0.8504
+    },
+    {
+     "me": 30,
+     "name": "Tomato",
+     "kind": "boat",
+     "target": "42929:2",
+     "targetName": "",
+     "t0": 1540,
+     "t1": 1540,
+     "n": 3,
+     "pcts": [
+      405,
+      453,
+      451
+     ],
+     "first": 0.3965,
+     "comb": 0.8123
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "attack",
+     "target": "446",
+     "targetName": "bot#446",
+     "t0": 1680,
+     "t1": 1680,
+     "n": 7,
+     "pcts": [
+      180,
+      90,
+      150,
+      246,
+      212,
+      223,
+      273
+     ],
+     "first": 0.1768,
+     "comb": 0.7801
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "attack",
+     "target": "23",
+     "targetName": "USA EMPIRE",
+     "t0": 1883,
+     "t1": 1883,
+     "n": 7,
+     "pcts": [
+      122,
+      122,
+      122,
+      122,
+      122,
+      353,
+      364
+     ],
+     "first": 0.1201,
+     "comb": 0.7779
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "boat",
+     "target": "360500:2",
+     "targetName": "",
+     "t0": 10507,
+     "t1": 10507,
+     "n": 3,
+     "pcts": [
+      317,
+      427,
+      387
+     ],
+     "first": 0.3105,
+     "comb": 0.7508
+    },
+    {
+     "me": 31,
+     "name": "Angkor",
+     "kind": "boat",
+     "target": "146166:2",
+     "targetName": "",
+     "t0": 10157,
+     "t1": 10157,
+     "n": 2,
+     "pcts": [
+      498,
+      498
+     ],
+     "first": 0.4873,
+     "comb": 0.7371
+    },
+    {
+     "me": 43,
+     "name": "Iceland",
+     "kind": "boat",
+     "target": "1302732:0",
+     "targetName": "",
+     "t0": 1568,
+     "t1": 1568,
+     "n": 2,
+     "pcts": [
+      484,
+      483
+     ],
+     "first": 0.4736,
+     "comb": 0.7224
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "boat",
+     "target": "142844:0",
+     "targetName": "",
+     "t0": 10143,
+     "t1": 10143,
+     "n": 3,
+     "pcts": [
+      167,
+      500,
+      350
+     ],
+     "first": 0.1641,
+     "comb": 0.7194
+    },
+    {
+     "me": 36,
+     "name": "Lelouch",
+     "kind": "attack",
+     "target": "399",
+     "targetName": "bot#399",
+     "t0": 1477,
+     "t1": 1477,
+     "n": 5,
+     "pcts": [
+      208,
+      210,
+      234,
+      236,
+      236
+     ],
+     "first": 0.2041,
+     "comb": 0.7124
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1288,
+     "t1": 1288,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      152,
+      47,
+      153,
+      155,
+      283,
+      254
+     ],
+     "first": 0.0469,
+     "comb": 0.7122
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "170471:0",
+     "targetName": "",
+     "t0": 1400,
+     "t1": 1400,
+     "n": 3,
+     "pcts": [
+      418,
+      127,
+      437
+     ],
+     "first": 0.4092,
+     "comb": 0.7042
+    },
+    {
+     "me": 31,
+     "name": "Angkor",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 10500,
+     "t1": 10500,
+     "n": 4,
+     "pcts": [
+      282,
+      274,
+      265,
+      246
+     ],
+     "first": 0.2764,
+     "comb": 0.7027
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "23",
+     "targetName": "USA EMPIRE",
+     "t0": 1778,
+     "t1": 1778,
+     "n": 5,
+     "pcts": [
+      213,
+      212,
+      209,
+      207,
+      206
+     ],
+     "first": 0.209,
+     "comb": 0.6834
+    },
+    {
+     "me": 30,
+     "name": "Tomato",
+     "kind": "boat",
+     "target": "141208:2",
+     "targetName": "",
+     "t0": 1540,
+     "t1": 1540,
+     "n": 2,
+     "pcts": [
+      442,
+      437
+     ],
+     "first": 0.4326,
+     "comb": 0.6753
+    },
+    {
+     "me": 45,
+     "name": "Anya",
+     "kind": "boat",
+     "target": "264186:2",
+     "targetName": "",
+     "t0": 9989,
+     "t1": 9989,
+     "n": 2,
+     "pcts": [
+      430,
+      427
+     ],
+     "first": 0.4209,
+     "comb": 0.6629
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "attack",
+     "target": "10",
+     "targetName": "[Zellig] Kiki pirate",
+     "t0": 9940,
+     "t1": 9940,
+     "n": 4,
+     "pcts": [
+      159,
+      182,
+      385,
+      221
+     ],
+     "first": 0.1562,
+     "comb": 0.6619
+    },
+    {
+     "me": 45,
+     "name": "Anya",
+     "kind": "boat",
+     "target": "258923:1",
+     "targetName": "",
+     "t0": 9989,
+     "t1": 9989,
+     "n": 2,
+     "pcts": [
+      428,
+      419
+     ],
+     "first": 0.4189,
+     "comb": 0.6573
+    },
+    {
+     "me": 30,
+     "name": "Tomato",
+     "kind": "boat",
+     "target": "264263:2",
+     "targetName": "",
+     "t0": 1540,
+     "t1": 1540,
+     "n": 2,
+     "pcts": [
+      424,
+      421
+     ],
+     "first": 0.415,
+     "comb": 0.6561
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1183,
+     "t1": 1183,
+     "n": 7,
+     "pcts": [
+      115,
+      117,
+      121,
+      123,
+      128,
+      184,
+      118
+     ],
+     "first": 0.1133,
+     "comb": 0.6156
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "boat",
+     "target": "160313:2",
+     "targetName": "",
+     "t0": 10507,
+     "t1": 10507,
+     "n": 2,
+     "pcts": [
+      313,
+      426
+     ],
+     "first": 0.3066,
+     "comb": 0.5958
+    },
+    {
+     "me": 43,
+     "name": "Iceland",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1197,
+     "t1": 1197,
+     "n": 9,
+     "pcts": [
+      47,
+      77,
+      106,
+      134,
+      132,
+      128,
+      48,
+      96,
+      99
+     ],
+     "first": 0.0469,
+     "comb": 0.5951
+    },
+    {
+     "me": 43,
+     "name": "Iceland",
+     "kind": "boat",
+     "target": "1086707:1",
+     "targetName": "",
+     "t0": 1568,
+     "t1": 1568,
+     "n": 3,
+     "pcts": [
+      127,
+      474,
+      127
+     ],
+     "first": 0.125,
+     "comb": 0.5895
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "boat",
+     "target": "1637907:2",
+     "targetName": "",
+     "t0": 1960,
+     "t1": 1960,
+     "n": 3,
+     "pcts": [
+      127,
+      461,
+      127
+     ],
+     "first": 0.125,
+     "comb": 0.5798
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "138954:2",
+     "targetName": "",
+     "t0": 1400,
+     "t1": 1400,
+     "n": 3,
+     "pcts": [
+      127,
+      437,
+      140
+     ],
+     "first": 0.125,
+     "comb": 0.5682
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "donate",
+     "target": "31",
+     "targetName": "Angkor",
+     "t0": 9989,
+     "t1": 9989,
+     "n": 4,
+     "pcts": [
+      185,
+      185,
+      185,
+      185
+     ],
+     "first": 0.1816,
+     "comb": 0.5515
+    },
+    {
+     "me": 40,
+     "name": "DioBrando",
+     "kind": "attack",
+     "target": "107",
+     "targetName": "bot#107",
+     "t0": 826,
+     "t1": 826,
+     "n": 3,
+     "pcts": [
+      225,
+      234,
+      226
+     ],
+     "first": 0.2207,
+     "comb": 0.5327
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1218,
+     "t1": 1218,
+     "n": 9,
+     "pcts": [
+      47,
+      108,
+      120,
+      125,
+      74,
+      75,
+      72,
+      63,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.5311
+    },
+    {
+     "me": 36,
+     "name": "Lelouch",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1204,
+     "t1": 1204,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      51,
+      196,
+      100,
+      103,
+      110
+     ],
+     "first": 0.0469,
+     "comb": 0.5207
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "boat",
+     "target": "1637907:2",
+     "targetName": "",
+     "t0": 1820,
+     "t1": 1820,
+     "n": 2,
+     "pcts": [
+      457,
+      127
+     ],
+     "first": 0.4473,
+     "comb": 0.5164
+    },
+    {
+     "me": 31,
+     "name": "Angkor",
+     "kind": "donate",
+     "target": "34",
+     "targetName": "Interpol",
+     "t0": 10500,
+     "t1": 10500,
+     "n": 4,
+     "pcts": [
+      153,
+      153,
+      153,
+      153
+     ],
+     "first": 0.1504,
+     "comb": 0.479
+    },
+    {
+     "me": 36,
+     "name": "Lelouch",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 966,
+     "t1": 966,
+     "n": 3,
+     "pcts": [
+      188,
+      198,
+      195
+     ],
+     "first": 0.1846,
+     "comb": 0.4688
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "donate",
+     "target": "31",
+     "targetName": "Angkor",
+     "t0": 10325,
+     "t1": 10325,
+     "n": 3,
+     "pcts": [
+      185,
+      185,
+      185
+     ],
+     "first": 0.1816,
+     "comb": 0.4519
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1477,
+     "t1": 1477,
+     "n": 8,
+     "pcts": [
+      143,
+      47,
+      47,
+      96,
+      105,
+      47,
+      47,
+      47
+     ],
+     "first": 0.1406,
+     "comb": 0.4514
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "170472:0",
+     "targetName": "",
+     "t0": 1141,
+     "t1": 1141,
+     "n": 2,
+     "pcts": [
+      377,
+      127
+     ],
+     "first": 0.3691,
+     "comb": 0.448
+    },
+    {
+     "me": 35,
+     "name": "Moldavia",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1176,
+     "t1": 1176,
+     "n": 3,
+     "pcts": [
+      177,
+      183,
+      187
+     ],
+     "first": 0.1738,
+     "comb": 0.4467
+    },
+    {
+     "me": 32,
+     "name": "Senna",
+     "kind": "attack",
+     "target": "58",
+     "targetName": "TERRITORIAL",
+     "t0": 8351,
+     "t1": 8351,
+     "n": 2,
+     "pcts": [
+      302,
+      216
+     ],
+     "first": 0.2959,
+     "comb": 0.4451
+    },
+    {
+     "me": 32,
+     "name": "Senna",
+     "kind": "attack",
+     "target": "53",
+     "targetName": "[Omen] 👀",
+     "t0": 1554,
+     "t1": 1554,
+     "n": 2,
+     "pcts": [
+      253,
+      253
+     ],
+     "first": 0.248,
+     "comb": 0.4346
+    },
+    {
+     "me": 45,
+     "name": "Anya",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1323,
+     "t1": 1323,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      60,
+      186,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.4237
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "491",
+     "targetName": "bot#491",
+     "t0": 1071,
+     "t1": 1071,
+     "n": 3,
+     "pcts": [
+      152,
+      182,
+      163
+     ],
+     "first": 0.1494,
+     "comb": 0.4133
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "boat",
+     "target": "1634286:2",
+     "targetName": "",
+     "t0": 1862,
+     "t1": 1862,
+     "n": 2,
+     "pcts": [
+      331,
+      127
+     ],
+     "first": 0.3242,
+     "comb": 0.4087
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "360",
+     "targetName": "bot#360",
+     "t0": 1043,
+     "t1": 1043,
+     "n": 3,
+     "pcts": [
+      155,
+      160,
+      162
+     ],
+     "first": 0.1523,
+     "comb": 0.3993
+    },
+    {
+     "me": 43,
+     "name": "Iceland",
+     "kind": "attack",
+     "target": "21",
+     "targetName": "black magic",
+     "t0": 1771,
+     "t1": 1771,
+     "n": 3,
+     "pcts": [
+      226,
+      122,
+      122
+     ],
+     "first": 0.2217,
+     "comb": 0.3974
+    },
+    {
+     "me": 30,
+     "name": "Tomato",
+     "kind": "attack",
+     "target": "144",
+     "targetName": "bot#144",
+     "t0": 861,
+     "t1": 861,
+     "n": 4,
+     "pcts": [
+      113,
+      138,
+      144,
+      72
+     ],
+     "first": 0.1113,
+     "comb": 0.3877
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "attack",
+     "target": "53",
+     "targetName": "[Omen] 👀",
+     "t0": 1785,
+     "t1": 1785,
+     "n": 2,
+     "pcts": [
+      310,
+      122
+     ],
+     "first": 0.3037,
+     "comb": 0.3873
+    },
+    {
+     "me": 30,
+     "name": "Tomato",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1057,
+     "t1": 1057,
+     "n": 6,
+     "pcts": [
+      47,
+      47,
+      47,
+      129,
+      81,
+      116
+     ],
+     "first": 0.0469,
+     "comb": 0.3841
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1330,
+     "t1": 1330,
+     "n": 8,
+     "pcts": [
+      49,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      135
+     ],
+     "first": 0.0488,
+     "comb": 0.3816
+    },
+    {
+     "me": 32,
+     "name": "Senna",
+     "kind": "attack",
+     "target": "53",
+     "targetName": "[Omen] 👀",
+     "t0": 6342,
+     "t1": 6342,
+     "n": 2,
+     "pcts": [
+      222,
+      209
+     ],
+     "first": 0.2178,
+     "comb": 0.3782
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "attack",
+     "target": "179",
+     "targetName": "bot#179",
+     "t0": 826,
+     "t1": 826,
+     "n": 2,
+     "pcts": [
+      201,
+      212
+     ],
+     "first": 0.1973,
+     "comb": 0.3642
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "23",
+     "targetName": "USA EMPIRE",
+     "t0": 1701,
+     "t1": 1701,
+     "n": 2,
+     "pcts": [
+      206,
+      206
+     ],
+     "first": 0.2021,
+     "comb": 0.3634
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1722,
+     "t1": 1722,
+     "n": 8,
+     "pcts": [
+      71,
+      47,
+      83,
+      47,
+      47,
+      47,
+      47,
+      51
+     ],
+     "first": 0.0703,
+     "comb": 0.3628
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "399",
+     "targetName": "bot#399",
+     "t0": 1512,
+     "t1": 1512,
+     "n": 5,
+     "pcts": [
+      65,
+      90,
+      93,
+      92,
+      94
+     ],
+     "first": 0.0645,
+     "comb": 0.3614
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "257",
+     "targetName": "bot#257",
+     "t0": 1862,
+     "t1": 1862,
+     "n": 8,
+     "pcts": [
+      55,
+      55,
+      54,
+      52,
+      51,
+      56,
+      56,
+      57
+     ],
+     "first": 0.0547,
+     "comb": 0.3597
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "476",
+     "targetName": "bot#476",
+     "t0": 875,
+     "t1": 875,
+     "n": 2,
+     "pcts": [
+      205,
+      193
+     ],
+     "first": 0.2012,
+     "comb": 0.3525
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1596,
+     "t1": 1596,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3508
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1750,
+     "t1": 1750,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3508
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 10367,
+     "t1": 10367,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3508
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1722,
+     "t1": 1722,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3508
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 10472,
+     "t1": 10472,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3508
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "332",
+     "targetName": "bot#332",
+     "t0": 1561,
+     "t1": 1561,
+     "n": 9,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3508
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1043,
+     "t1": 1043,
+     "n": 2,
+     "pcts": [
+      177,
+      206
+     ],
+     "first": 0.1738,
+     "comb": 0.3408
+    },
+    {
+     "me": 36,
+     "name": "Lelouch",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1764,
+     "t1": 1764,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      49,
+      54,
+      61
+     ],
+     "first": 0.0469,
+     "comb": 0.3349
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "donate",
+     "target": "35",
+     "targetName": "Moldavia",
+     "t0": 8470,
+     "t1": 8470,
+     "n": 2,
+     "pcts": [
+      185,
+      185
+     ],
+     "first": 0.1816,
+     "comb": 0.3303
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "donate",
+     "target": "33",
+     "targetName": "Two Sicilies",
+     "t0": 9786,
+     "t1": 9786,
+     "n": 2,
+     "pcts": [
+      185,
+      185
+     ],
+     "first": 0.1816,
+     "comb": 0.3303
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "boat",
+     "target": "385061:2",
+     "targetName": "",
+     "t0": 10507,
+     "t1": 10507,
+     "n": 3,
+     "pcts": [
+      127,
+      127,
+      127
+     ],
+     "first": 0.125,
+     "comb": 0.3301
+    },
+    {
+     "me": 31,
+     "name": "Angkor",
+     "kind": "boat",
+     "target": "114612:2",
+     "targetName": "",
+     "t0": 10612,
+     "t1": 10612,
+     "n": 3,
+     "pcts": [
+      127,
+      127,
+      127
+     ],
+     "first": 0.125,
+     "comb": 0.3301
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "351",
+     "targetName": "bot#351",
+     "t0": 1463,
+     "t1": 1463,
+     "n": 7,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      80,
+      75
+     ],
+     "first": 0.0469,
+     "comb": 0.3294
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1274,
+     "t1": 1274,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      52,
+      47,
+      47,
+      47,
+      48,
+      52
+     ],
+     "first": 0.0469,
+     "comb": 0.3266
+    },
+    {
+     "me": 31,
+     "name": "Angkor",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1596,
+     "t1": 1596,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1246,
+     "t1": 1246,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 10563,
+     "t1": 10563,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 48,
+     "name": "Erwin",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1372,
+     "t1": 1372,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 48,
+     "name": "Erwin",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1596,
+     "t1": 1596,
+     "n": 8,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.3189
+    },
+    {
+     "me": 35,
+     "name": "Moldavia",
+     "kind": "attack",
+     "target": "92",
+     "targetName": "bot#92",
+     "t0": 833,
+     "t1": 833,
+     "n": 2,
+     "pcts": [
+      157,
+      189
+     ],
+     "first": 0.1543,
+     "comb": 0.3112
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1071,
+     "t1": 1071,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      192
+     ],
+     "first": 0.0469,
+     "comb": 0.2973
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 10556,
+     "t1": 10556,
+     "n": 7,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.2854
+    },
+    {
+     "me": 36,
+     "name": "Lelouch",
+     "kind": "attack",
+     "target": "404",
+     "targetName": "bot#404",
+     "t0": 966,
+     "t1": 966,
+     "n": 2,
+     "pcts": [
+      157,
+      156
+     ],
+     "first": 0.1543,
+     "comb": 0.284
+    },
+    {
+     "me": 40,
+     "name": "DioBrando",
+     "kind": "attack",
+     "target": "287",
+     "targetName": "bot#287",
+     "t0": 903,
+     "t1": 903,
+     "n": 2,
+     "pcts": [
+      185,
+      127
+     ],
+     "first": 0.1816,
+     "comb": 0.2839
+    },
+    {
+     "me": 48,
+     "name": "Erwin",
+     "kind": "donate",
+     "target": "30",
+     "targetName": "Tomato",
+     "t0": 1869,
+     "t1": 1869,
+     "n": 2,
+     "pcts": [
+      155,
+      155
+     ],
+     "first": 0.1523,
+     "comb": 0.2815
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "500",
+     "targetName": "bot#500",
+     "t0": 861,
+     "t1": 861,
+     "n": 2,
+     "pcts": [
+      158,
+      150
+     ],
+     "first": 0.1553,
+     "comb": 0.2798
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1512,
+     "t1": 1512,
+     "n": 6,
+     "pcts": [
+      69,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0684,
+     "comb": 0.2672
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "boat",
+     "target": "154900:0",
+     "targetName": "",
+     "t0": 1568,
+     "t1": 1568,
+     "n": 3,
+     "pcts": [
+      127,
+      29,
+      127
+     ],
+     "first": 0.125,
+     "comb": 0.2568
+    },
+    {
+     "me": 49,
+     "name": "Conde",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1407,
+     "t1": 1407,
+     "n": 6,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.2503
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 10164,
+     "t1": 10164,
+     "n": 6,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.2503
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1666,
+     "t1": 1666,
+     "n": 6,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.2503
+    },
+    {
+     "me": 31,
+     "name": "Angkor",
+     "kind": "boat",
+     "target": "93447:2",
+     "targetName": "",
+     "t0": 1750,
+     "t1": 1750,
+     "n": 4,
+     "pcts": [
+      127,
+      5,
+      127,
+      5
+     ],
+     "first": 0.125,
+     "comb": 0.2433
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "boat",
+     "target": "385061:2",
+     "targetName": "",
+     "t0": 10164,
+     "t1": 10164,
+     "n": 2,
+     "pcts": [
+      126,
+      137
+     ],
+     "first": 0.124,
+     "comb": 0.2421
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "248",
+     "targetName": "bot#248",
+     "t0": 1043,
+     "t1": 1043,
+     "n": 2,
+     "pcts": [
+      113,
+      147
+     ],
+     "first": 0.1113,
+     "comb": 0.2398
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "500",
+     "targetName": "bot#500",
+     "t0": 875,
+     "t1": 875,
+     "n": 2,
+     "pcts": [
+      131,
+      126
+     ],
+     "first": 0.1289,
+     "comb": 0.2369
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "312",
+     "targetName": "bot#312",
+     "t0": 1036,
+     "t1": 1036,
+     "n": 3,
+     "pcts": [
+      84,
+      88,
+      86
+     ],
+     "first": 0.083,
+     "comb": 0.2338
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "257",
+     "targetName": "bot#257",
+     "t0": 1848,
+     "t1": 1848,
+     "n": 4,
+     "pcts": [
+      58,
+      61,
+      64,
+      64
+     ],
+     "first": 0.0576,
+     "comb": 0.2235
+    },
+    {
+     "me": 38,
+     "name": "Khazar",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 973,
+     "t1": 973,
+     "n": 4,
+     "pcts": [
+      78,
+      74,
+      47,
+      47
+     ],
+     "first": 0.0771,
+     "comb": 0.223
+    },
+    {
+     "me": 48,
+     "name": "Erwin",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1099,
+     "t1": 1099,
+     "n": 4,
+     "pcts": [
+      54,
+      47,
+      47,
+      92
+     ],
+     "first": 0.0537,
+     "comb": 0.2184
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1400,
+     "t1": 1400,
+     "n": 3,
+     "pcts": [
+      79,
+      79,
+      80
+     ],
+     "first": 0.0781,
+     "comb": 0.2174
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1820,
+     "t1": 1820,
+     "n": 5,
+     "pcts": [
+      47,
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.2134
+    },
+    {
+     "me": 40,
+     "name": "DioBrando",
+     "kind": "attack",
+     "target": "280",
+     "targetName": "bot#280",
+     "t0": 903,
+     "t1": 903,
+     "n": 2,
+     "pcts": [
+      116,
+      113
+     ],
+     "first": 0.1143,
+     "comb": 0.2129
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 875,
+     "t1": 875,
+     "n": 3,
+     "pcts": [
+      75,
+      75,
+      82
+     ],
+     "first": 0.0742,
+     "comb": 0.2124
+    },
+    {
+     "me": 35,
+     "name": "Moldavia",
+     "kind": "attack",
+     "target": "402",
+     "targetName": "bot#402",
+     "t0": 1176,
+     "t1": 1176,
+     "n": 2,
+     "pcts": [
+      70,
+      145
+     ],
+     "first": 0.0693,
+     "comb": 0.202
+    },
+    {
+     "me": 43,
+     "name": "Iceland",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 686,
+     "t1": 686,
+     "n": 2,
+     "pcts": [
+      86,
+      128
+     ],
+     "first": 0.085,
+     "comb": 0.2002
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "257",
+     "targetName": "bot#257",
+     "t0": 1932,
+     "t1": 1932,
+     "n": 3,
+     "pcts": [
+      70,
+      73,
+      74
+     ],
+     "first": 0.0693,
+     "comb": 0.1998
+    },
+    {
+     "me": 32,
+     "name": "Senna",
+     "kind": "attack",
+     "target": "53",
+     "targetName": "[Omen] 👀",
+     "t0": 4508,
+     "t1": 4508,
+     "n": 2,
+     "pcts": [
+      102,
+      102
+     ],
+     "first": 0.1006,
+     "comb": 0.1911
+    },
+    {
+     "me": 42,
+     "name": "Scorpion",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 728,
+     "t1": 728,
+     "n": 2,
+     "pcts": [
+      90,
+      97
+     ],
+     "first": 0.0889,
+     "comb": 0.1761
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1645,
+     "t1": 1645,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1747
+    },
+    {
+     "me": 30,
+     "name": "Tomato",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1309,
+     "t1": 1309,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1747
+    },
+    {
+     "me": 49,
+     "name": "Conde",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1498,
+     "t1": 1498,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1747
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1512,
+     "t1": 1512,
+     "n": 4,
+     "pcts": [
+      47,
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1747
+    },
+    {
+     "me": 45,
+     "name": "Anya",
+     "kind": "attack",
+     "target": "349",
+     "targetName": "bot#349",
+     "t0": 1071,
+     "t1": 1071,
+     "n": 2,
+     "pcts": [
+      88,
+      92
+     ],
+     "first": 0.0869,
+     "comb": 0.1698
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "413",
+     "targetName": "bot#413",
+     "t0": 1043,
+     "t1": 1043,
+     "n": 3,
+     "pcts": [
+      52,
+      50,
+      77
+     ],
+     "first": 0.0518,
+     "comb": 0.1676
+    },
+    {
+     "me": 39,
+     "name": "Cumania",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1463,
+     "t1": 1463,
+     "n": 2,
+     "pcts": [
+      86,
+      84
+     ],
+     "first": 0.085,
+     "comb": 0.1609
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "237",
+     "targetName": "bot#237",
+     "t0": 1512,
+     "t1": 1512,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      70
+     ],
+     "first": 0.0469,
+     "comb": 0.1545
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 917,
+     "t1": 917,
+     "n": 2,
+     "pcts": [
+      76,
+      79
+     ],
+     "first": 0.0752,
+     "comb": 0.1474
+    },
+    {
+     "me": 31,
+     "name": "Angkor",
+     "kind": "boat",
+     "target": "132047:2",
+     "targetName": "",
+     "t0": 1750,
+     "t1": 1750,
+     "n": 2,
+     "pcts": [
+      127,
+      22
+     ],
+     "first": 0.125,
+     "comb": 0.1447
+    },
+    {
+     "me": 49,
+     "name": "Conde",
+     "kind": "attack",
+     "target": "420",
+     "targetName": "bot#420",
+     "t0": 1134,
+     "t1": 1134,
+     "n": 3,
+     "pcts": [
+      51,
+      53,
+      47
+     ],
+     "first": 0.0508,
+     "comb": 0.143
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "41007:2",
+     "targetName": "",
+     "t0": 10486,
+     "t1": 10486,
+     "n": 2,
+     "pcts": [
+      13,
+      127
+     ],
+     "first": 0.0137,
+     "comb": 0.137
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "265257:2",
+     "targetName": "",
+     "t0": 1855,
+     "t1": 1855,
+     "n": 2,
+     "pcts": [
+      12,
+      127
+     ],
+     "first": 0.0127,
+     "comb": 0.1361
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "265257:2",
+     "targetName": "",
+     "t0": 1918,
+     "t1": 1918,
+     "n": 2,
+     "pcts": [
+      11,
+      127
+     ],
+     "first": 0.0117,
+     "comb": 0.1353
+    },
+    {
+     "me": 45,
+     "name": "Anya",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1071,
+     "t1": 1071,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 10325,
+     "t1": 10325,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 32,
+     "name": "Senna",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1330,
+     "t1": 1330,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 49,
+     "name": "Conde",
+     "kind": "attack",
+     "target": "314",
+     "targetName": "bot#314",
+     "t0": 1001,
+     "t1": 1001,
+     "n": 3,
+     "pcts": [
+      47,
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.1341
+    },
+    {
+     "me": 34,
+     "name": "Interpol",
+     "kind": "boat",
+     "target": "1644627:2",
+     "targetName": "",
+     "t0": 10325,
+     "t1": 10325,
+     "n": 2,
+     "pcts": [
+      2,
+      127
+     ],
+     "first": 0.0029,
+     "comb": 0.1276
+    },
+    {
+     "me": 33,
+     "name": "Two Sicilies",
+     "kind": "boat",
+     "target": "105853:2",
+     "targetName": "",
+     "t0": 10584,
+     "t1": 10584,
+     "n": 2,
+     "pcts": [
+      2,
+      127
+     ],
+     "first": 0.0029,
+     "comb": 0.1276
+    },
+    {
+     "me": 49,
+     "name": "Conde",
+     "kind": "attack",
+     "target": "194",
+     "targetName": "bot#194",
+     "t0": 1540,
+     "t1": 1540,
+     "n": 2,
+     "pcts": [
+      65,
+      67
+     ],
+     "first": 0.0645,
+     "comb": 0.1266
+    },
+    {
+     "me": 49,
+     "name": "Conde",
+     "kind": "attack",
+     "target": "194",
+     "targetName": "bot#194",
+     "t0": 1498,
+     "t1": 1498,
+     "n": 2,
+     "pcts": [
+      83,
+      47
+     ],
+     "first": 0.082,
+     "comb": 0.1251
+    },
+    {
+     "me": 36,
+     "name": "Lelouch",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1477,
+     "t1": 1477,
+     "n": 2,
+     "pcts": [
+      61,
+      64
+     ],
+     "first": 0.0605,
+     "comb": 0.1202
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1939,
+     "t1": 1939,
+     "n": 2,
+     "pcts": [
+      52,
+      54
+     ],
+     "first": 0.0518,
+     "comb": 0.1027
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1043,
+     "t1": 1043,
+     "n": 2,
+     "pcts": [
+      53,
+      53
+     ],
+     "first": 0.0527,
+     "comb": 0.1027
+    },
+    {
+     "me": 29,
+     "name": "Marlborough",
+     "kind": "attack",
+     "target": "124",
+     "targetName": "bot#124",
+     "t0": 1071,
+     "t1": 1071,
+     "n": 2,
+     "pcts": [
+      53,
+      49
+     ],
+     "first": 0.0527,
+     "comb": 0.099
+    },
+    {
+     "me": 35,
+     "name": "Moldavia",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 3626,
+     "t1": 3626,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 43,
+     "name": "Iceland",
+     "kind": "attack",
+     "target": "512",
+     "targetName": "NEUTRAL",
+     "t0": 1407,
+     "t1": 1407,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 30,
+     "name": "Tomato",
+     "kind": "attack",
+     "target": "410",
+     "targetName": "bot#410",
+     "t0": 749,
+     "t1": 749,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 40,
+     "name": "DioBrando",
+     "kind": "attack",
+     "target": "91",
+     "targetName": "bot#91",
+     "t0": 1561,
+     "t1": 1561,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 49,
+     "name": "Conde",
+     "kind": "attack",
+     "target": "419",
+     "targetName": "bot#419",
+     "t0": 1498,
+     "t1": 1498,
+     "n": 2,
+     "pcts": [
+      47,
+      47
+     ],
+     "first": 0.0469,
+     "comb": 0.0916
+    },
+    {
+     "me": 41,
+     "name": "SyntaxError",
+     "kind": "boat",
+     "target": "1740775:2",
+     "targetName": "",
+     "t0": 10570,
+     "t1": 10570,
+     "n": 4,
+     "pcts": [
+      0,
+      0,
+      0,
+      0
+     ],
+     "first": 0.001,
+     "comb": 0.0039
+    },
+    {
+     "me": 37,
+     "name": "Goku",
+     "kind": "boat",
+     "target": "1458635:2",
+     "targetName": "",
+     "t0": 10591,
+     "t1": 10591,
+     "n": 2,
+     "pcts": [
+      0,
+      0
+     ],
+     "first": 0.001,
+     "comb": 0.002
+    }
+   ]
+  }
+ }
+}

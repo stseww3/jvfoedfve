@@ -1,0 +1,10 @@
+# A081 核心期贴着内置 AI 的行动拍 [1500,3000)：共 620 个号·行动拍，其中贴着弱 AI（兵 < 地）的 481 个
+第一条 AI 报价的去向：floor/sf/enemy 130（21%），price 116（19%），covered 86（14%），floor/dp 65（10%），send 61（10%），floor/cap+sf/enemy 56（9%），behind 51（8%），chunk 41（7%），floor/sf/squad 14（2%）
+其中贴着弱 AI 的：floor/sf/enemy 128（27%），price 22（5%），covered 83（17%），floor/dp 65（14%），send 54（11%），floor/cap+sf/enemy 56（12%），behind 48（10%），chunk 11（2%），floor/sf/squad 14（3%）
+safeFinite 顶住时参照的是谁（类别:引擎编号 次数）：enemy:0 159，enemy:16 24，squad:9 14，enemy:12 3
+  zero_7    227 拍（1500~2995）：floor/sf/enemy 97，price 9，covered 27，floor/dp 21，send 3，floor/cap+sf/enemy 56，behind 14
+  kaito9    154 拍（1500~2415）：floor/sf/enemy 24，price 14，covered 33，floor/dp 19，send 33，behind 21，chunk 10
+  alex_k    102 拍（1715~2995）：floor/sf/enemy 3，price 60，covered 8，floor/dp 25，send 3，behind 3
+  talon5     60 拍（2700~2995）：price 32，chunk 28
+  noah88     50 拍（1500~1745）：floor/sf/enemy 6，covered 16，send 6，behind 8，floor/sf/squad 14
+  ryan_m     27 拍（1500~1630）：price 1，covered 2，send 16，behind 5，chunk 3

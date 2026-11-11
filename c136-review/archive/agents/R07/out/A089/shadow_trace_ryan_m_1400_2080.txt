@@ -1,0 +1,547 @@
+# A089 ryan_m 影子决策明细 t=1400~2080（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没走到 buyLand: 20 拍（t=1400~1495）
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 18 拍（t=1500~1585）；可用兵 22021~26305，一条指令下限(20%余额) 31471~37367，比值 70%~70%
+#   出手打人/bot: 33 拍（t=1590~1810）；可用兵 45908~118368，一条指令下限(20%余额) 35779~50004，比值 128%~237%
+#   首选目标要发的兵低于最小指令（x < max(minCmd, pulseMinShare×B)）: 3 拍（t=1745~1755）；可用兵 48104~49084，一条指令下限(20%余额) 36914~37479，比值 130%~131%
+#   首选目标已有在途进攻（curAtk 过门槛）: 5 拍（t=1760~1780）；可用兵 49949~54781，一条指令下限(20%余额) 38041~39156，比值 131%~140%
+#   有可用兵但没发（其他）: 8 拍（t=1790~1830）；可用兵 51465~72413，一条指令下限(20%余额) 35282~39633，比值 146%~198%
+#   首选目标无可用兵（avail<=0）: 22 拍（t=1835~2035）；可用兵 -95866~-29162，一条指令下限(20%余额) 371~2065，比值 -11774%~-2245%
+#   首选目标价高（c>=worth）: 19 拍（t=1915~2005）
+#   └ 「出手打人/bot」里：33 条对人/bot 的出兵共约 1737820 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1400 ryan_m B=118898 L=5886 d=20.2 nb=3 neut=0 cmds=115 noFull=1 shQ=28312 | m=1.400 worth=28.3 cheap=3.8 over=0 dMedOther=6.3 safe(-1)=61458
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1405 ryan_m B=118898 L=5886 d=20.2 nb=3 neut=0 cmds=115 noFull=1 shQ=29724 | m=1.405 worth=28.4 cheap=3.8 over=0 dMedOther=5.8 safe(-1)=61458
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1410 ryan_m B=121977 L=5886 d=20.7 nb=3 neut=0 cmds=115 noFull=1 shQ=30494 | m=1.410 worth=29.2 cheap=3.9 over=0 dMedOther=5.9 safe(-1)=63179
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1415 ryan_m B=121977 L=5886 d=20.7 nb=3 neut=0 cmds=115 noFull=1 shQ=30494 | m=1.415 worth=29.3 cheap=3.9 over=0 dMedOther=5.7 safe(-1)=63179
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1420 ryan_m B=125099 L=5886 d=21.3 nb=3 neut=0 cmds=115 noFull=1 shQ=31274 | m=1.420 worth=30.2 cheap=3.9 over=0 dMedOther=5.8 safe(-1)=64922
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1425 ryan_m B=125099 L=5886 d=21.3 nb=3 neut=0 cmds=115 noFull=1 shQ=31274 | m=1.425 worth=30.3 cheap=3.9 over=0 dMedOther=5.7 safe(-1)=64922
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1430 ryan_m B=128264 L=5886 d=21.8 nb=3 neut=0 cmds=115 noFull=1 shQ=32066 | m=1.430 worth=31.2 cheap=4.0 over=0 dMedOther=5.8 safe(-1)=66690
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1435 ryan_m B=128264 L=5886 d=21.8 nb=3 neut=0 cmds=115 noFull=1 shQ=32066 | m=1.435 worth=31.3 cheap=4.0 over=0 dMedOther=5.8 safe(-1)=66690
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1440 ryan_m B=131470 L=5886 d=22.3 nb=3 neut=0 cmds=115 noFull=1 shQ=32867 | m=1.440 worth=32.2 cheap=4.0 over=0 dMedOther=5.9 safe(-1)=68481
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1445 ryan_m B=131470 L=5886 d=22.3 nb=3 neut=0 cmds=115 noFull=1 shQ=32867 | m=1.445 worth=32.3 cheap=4.0 over=0 dMedOther=5.9 safe(-1)=68481
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1450 ryan_m B=134717 L=5886 d=22.9 nb=3 neut=0 cmds=115 noFull=1 shQ=33679 | m=1.450 worth=33.2 cheap=4.1 over=0 dMedOther=5.4 safe(-1)=70295
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1455 ryan_m B=134717 L=5886 d=22.9 nb=3 neut=0 cmds=115 noFull=1 shQ=33679 | m=1.455 worth=33.3 cheap=4.1 over=0 dMedOther=5.4 safe(-1)=70295
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1460 ryan_m B=138004 L=5886 d=23.4 nb=3 neut=0 cmds=115 noFull=1 shQ=34501 | m=1.460 worth=34.2 cheap=4.1 over=0 dMedOther=5.6 safe(-1)=72131
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1465 ryan_m B=138004 L=5886 d=23.4 nb=3 neut=0 cmds=115 noFull=1 shQ=34501 | m=1.465 worth=34.3 cheap=4.1 over=0 dMedOther=5.6 safe(-1)=72131
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1470 ryan_m B=141316 L=5886 d=24.0 nb=3 neut=0 cmds=115 noFull=1 shQ=35329 | m=1.470 worth=35.3 cheap=4.2 over=0 dMedOther=5.9 safe(-1)=73981
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1475 ryan_m B=141316 L=5886 d=24.0 nb=3 neut=0 cmds=115 noFull=1 shQ=35329 | m=1.475 worth=35.4 cheap=4.2 over=0 dMedOther=5.3 safe(-1)=73981
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1480 ryan_m B=144665 L=5886 d=24.6 nb=3 neut=0 cmds=115 noFull=1 shQ=36166 | m=1.480 worth=36.4 cheap=4.2 over=0 dMedOther=5.4 safe(-1)=75852
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1485 ryan_m B=144665 L=5886 d=24.6 nb=3 neut=0 cmds=115 noFull=1 shQ=36166 | m=1.485 worth=36.5 cheap=4.2 over=0 dMedOther=5.3 safe(-1)=75852
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1490 ryan_m B=148050 L=5886 d=25.2 nb=3 neut=0 cmds=115 noFull=1 shQ=37012 | m=1.490 worth=37.5 cheap=4.3 over=0 dMedOther=5.4 safe(-1)=77742
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1495 ryan_m B=148050 L=5886 d=25.2 nb=3 neut=0 cmds=115 noFull=1 shQ=37012 | m=1.495 worth=37.6 cheap=4.3 over=0 dMedOther=5.8 safe(-1)=77742
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1500 ryan_m B=157355 L=5886 d=26.7 nb=3 neut=0 cmds=115 noFull=1 shQ=37920 | m=1.500 worth=40.1 cheap=4.3 over=0 dMedOther=6.8 safe(-1)=81341
+    → Player 726#18[T4] terr=3384 bal=39993 dq=11.8 cnt=125 | c=30.3 rankC=30.3 need=76358 tD=1.73 人 | safe=81341 keep=133450 avail=22061 chunkB=31471 pulseB=18883 不够一条(x=22061)→continue hNb=3
+    → Gahhhaha#5[T2] terr=8329 bal=117770 dq=14.1 cnt=137 | c=35.5 rankC=35.5 need=222408 tD=2.06 人 | safe=81341 keep=145871 avail=9640 chunkB=31471 pulseB=18883 不够一条(x=9640)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=153616 dq=51.1 cnt=42 | c=166.9 rankC=166.9 need=278345 tD=7.46 人 crowdedHard | safe=81341 keep=Inf avail=-Inf chunkB=31471 pulseB=18883 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1505 ryan_m B=157355 L=5886 d=26.7 nb=3 neut=0 cmds=115 noFull=1 shQ=39338 | m=1.499 worth=40.1 cheap=4.4 over=0 dMedOther=6.9 safe(-1)=81341
+    → Player 726#18[T4] terr=3384 bal=39993 dq=11.8 cnt=125 | c=30.3 rankC=30.3 need=76358 tD=1.72 人 | safe=81341 keep=133490 avail=22021 chunkB=31471 pulseB=18883 不够一条(x=22021)→continue hNb=3
+    → Gahhhaha#5[T2] terr=8329 bal=117770 dq=14.1 cnt=137 | c=35.5 rankC=35.5 need=222408 tD=2.06 人 | safe=81341 keep=145915 avail=9596 chunkB=31471 pulseB=18883 不够一条(x=9596)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=153616 dq=51.1 cnt=42 | c=166.9 rankC=166.9 need=278345 tD=7.43 人 crowdedHard | safe=81341 keep=Inf avail=-Inf chunkB=31471 pulseB=18883 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1510 ryan_m B=160942 L=5886 d=27.3 nb=3 neut=0 cmds=115 noFull=1 shQ=40235 | m=1.498 worth=41.0 cheap=4.4 over=0 dMedOther=7.0 safe(-1)=83308
+    → Player 726#18[T4] terr=3384 bal=40904 dq=12.1 cnt=125 | c=30.9 rankC=30.9 need=77982 tD=1.72 人 | safe=83308 keep=136467 avail=22589 chunkB=32188 pulseB=19313 不够一条(x=22589)→continue hNb=3
+    → Gahhhaha#5[T2] terr=8329 bal=120455 dq=14.5 cnt=137 | c=36.3 rankC=36.3 need=227193 tD=2.06 人 | safe=83308 keep=149180 avail=9876 chunkB=32188 pulseB=19313 不够一条(x=9876)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=157118 dq=52.3 cnt=42 | c=170.6 rankC=170.6 need=284588 tD=7.45 人 crowdedHard | safe=83308 keep=Inf avail=-Inf chunkB=32188 pulseB=19313 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1515 ryan_m B=160942 L=5886 d=27.3 nb=3 neut=0 cmds=115 noFull=1 shQ=40235 | m=1.498 worth=41.0 cheap=4.4 over=0 dMedOther=7.0 safe(-1)=83308
+    → Player 726#18[T4] terr=3384 bal=40904 dq=12.1 cnt=125 | c=30.9 rankC=30.9 need=77982 tD=1.72 人 | safe=83308 keep=136508 avail=22548 chunkB=32188 pulseB=19313 不够一条(x=22548)→continue hNb=3
+    → Gahhhaha#5[T2] terr=8329 bal=120455 dq=14.5 cnt=137 | c=36.3 rankC=36.3 need=227193 tD=2.06 人 | safe=83308 keep=149225 avail=9831 chunkB=32188 pulseB=19313 不够一条(x=9831)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=157118 dq=52.3 cnt=42 | c=170.6 rankC=170.6 need=284588 tD=7.45 人 crowdedHard | safe=83308 keep=Inf avail=-Inf chunkB=32188 pulseB=19313 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1520 ryan_m B=164563 L=5886 d=28.0 nb=3 neut=0 cmds=115 noFull=1 shQ=41140 | m=1.497 worth=41.9 cheap=4.4 over=0 dMedOther=6.2 safe(-1)=85294
+    → Player 726#18[T4] terr=3384 bal=41824 dq=12.4 cnt=125 | c=31.6 rankC=31.6 need=79622 tD=1.98 人 | safe=85294 keep=139516 avail=23119 chunkB=32913 pulseB=19748 不够一条(x=23119)→continue hNb=3
+    → Gahhhaha#5[T2] terr=8329 bal=123165 dq=14.8 cnt=137 | c=37.1 rankC=37.1 need=232024 tD=2.37 人 | safe=85294 keep=152523 avail=10112 chunkB=32913 pulseB=19748 不够一条(x=10112)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=160653 dq=53.4 cnt=42 | c=174.4 rankC=174.4 need=290889 tD=8.56 人 crowdedHard | safe=85294 keep=Inf avail=-Inf chunkB=32913 pulseB=19748 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1525 ryan_m B=164563 L=5886 d=28.0 nb=3 neut=0 cmds=115 noFull=1 shQ=41140 | m=1.496 worth=41.8 cheap=4.5 over=0 dMedOther=6.2 safe(-1)=85294
+    → Player 726#18[T4] terr=3384 bal=41824 dq=12.4 cnt=125 | c=31.6 rankC=31.6 need=79622 tD=1.98 人 | safe=85294 keep=139558 avail=23077 chunkB=32913 pulseB=19748 不够一条(x=23077)→continue hNb=3
+    → Gahhhaha#5[T2] terr=8329 bal=123165 dq=14.8 cnt=137 | c=37.1 rankC=37.1 need=232024 tD=2.37 人 | safe=85294 keep=152569 avail=10066 chunkB=32913 pulseB=19748 不够一条(x=10066)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=160653 dq=53.4 cnt=42 | c=174.4 rankC=174.4 need=290889 tD=8.56 人 crowdedHard | safe=85294 keep=Inf avail=-Inf chunkB=32913 pulseB=19748 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1530 ryan_m B=168216 L=5886 d=28.6 nb=3 neut=0 cmds=115 noFull=1 shQ=42054 | m=1.496 worth=42.7 cheap=4.5 over=0 dMedOther=6.4 safe(-1)=87298
+    → Player 726#18[T4] terr=3384 bal=42752 dq=12.6 cnt=125 | c=32.2 rankC=32.2 need=81276 tD=1.98 人 | safe=87298 keep=142596 avail=23649 chunkB=33643 pulseB=20186 不够一条(x=23649)→continue hNb=3
+    → Gahhhaha#5[T2] terr=8329 bal=125899 dq=15.1 cnt=137 | c=37.9 rankC=37.9 need=236897 tD=2.37 人 | safe=87298 keep=155899 avail=10346 chunkB=33643 pulseB=20186 不够一条(x=10346)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=164219 dq=54.6 cnt=42 | c=178.2 rankC=178.2 need=297246 tD=8.57 人 crowdedHard | safe=87298 keep=Inf avail=-Inf chunkB=33643 pulseB=20186 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1535 ryan_m B=168216 L=5886 d=28.6 nb=3 neut=0 cmds=115 noFull=1 shQ=42054 | m=1.495 worth=42.7 cheap=4.5 over=0 dMedOther=6.3 safe(-1)=87298
+    → Player 726#18[T4] terr=3384 bal=42752 dq=12.6 cnt=125 | c=32.2 rankC=32.2 need=81276 tD=1.99 人 | safe=87298 keep=142639 avail=23606 chunkB=33643 pulseB=20186 不够一条(x=23606)→continue hNb=3
+    → Gahhhaha#5[T2] terr=8329 bal=125899 dq=15.1 cnt=137 | c=37.9 rankC=37.9 need=236897 tD=2.38 人 | safe=87298 keep=155946 avail=10299 chunkB=33643 pulseB=20186 不够一条(x=10299)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=164219 dq=54.6 cnt=42 | c=178.2 rankC=178.2 need=297246 tD=8.61 人 crowdedHard | safe=87298 keep=Inf avail=-Inf chunkB=33643 pulseB=20186 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1540 ryan_m B=171899 L=5886 d=29.2 nb=3 neut=0 cmds=115 noFull=1 shQ=42974 | m=1.494 worth=43.6 cheap=4.6 over=0 dMedOther=6.5 safe(-1)=89318
+    → Player 726#18[T4] terr=3384 bal=43688 dq=12.9 cnt=125 | c=32.9 rankC=32.9 need=82944 tD=1.99 人 | safe=89318 keep=145704 avail=24181 chunkB=34380 pulseB=20628 不够一条(x=24181)→continue hNb=3
+    → Gahhhaha#5[T2] terr=8329 bal=128656 dq=15.4 cnt=137 | c=38.6 rankC=38.6 need=241811 tD=2.39 人 | safe=89318 keep=159306 avail=10579 chunkB=34380 pulseB=20628 不够一条(x=10579)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=167815 dq=55.8 cnt=42 | c=182.0 rankC=182.0 need=303656 tD=8.62 人 crowdedHard | safe=89318 keep=Inf avail=-Inf chunkB=34380 pulseB=20628 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1545 ryan_m B=171899 L=5886 d=29.2 nb=3 neut=0 cmds=115 noFull=1 shQ=42974 | m=1.493 worth=43.6 cheap=4.6 over=0 dMedOther=6.7 safe(-1)=89318
+    → Player 726#18[T4] terr=3384 bal=43688 dq=12.9 cnt=125 | c=32.9 rankC=32.9 need=82944 tD=1.94 人 | safe=89318 keep=145748 avail=24137 chunkB=34380 pulseB=20628 不够一条(x=24137)→continue hNb=3
+    → Gahhhaha#5[T2] terr=8329 bal=128656 dq=15.4 cnt=137 | c=38.6 rankC=38.6 need=241811 tD=2.32 人 | safe=89318 keep=159354 avail=10531 chunkB=34380 pulseB=20628 不够一条(x=10531)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=167815 dq=55.8 cnt=42 | c=182.0 rankC=182.0 need=303656 tD=8.37 人 crowdedHard | safe=89318 keep=Inf avail=-Inf chunkB=34380 pulseB=20628 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1550 ryan_m B=175594 L=5886 d=29.8 nb=3 neut=0 cmds=115 noFull=1 shQ=43898 | m=1.492 worth=44.5 cheap=4.6 over=0 dMedOther=6.8 safe(-1)=91345
+    → Player 726#18[T4] terr=3384 bal=44627 dq=13.2 cnt=125 | c=33.5 rankC=33.5 need=84617 tD=1.94 人 | safe=91345 keep=148825 avail=24712 chunkB=35119 pulseB=21071 不够一条(x=24712)→continue hNb=3
+    → Gahhhaha#5[T2] terr=8329 bal=131422 dq=15.8 cnt=137 | c=39.4 rankC=39.4 need=246741 tD=2.32 人 | safe=91345 keep=162728 avail=10809 chunkB=35119 pulseB=21071 不够一条(x=10809)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=171423 dq=57.0 cnt=42 | c=185.9 rankC=185.9 need=310088 tD=8.37 人 crowdedHard | safe=91345 keep=Inf avail=-Inf chunkB=35119 pulseB=21071 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1555 ryan_m B=175594 L=5886 d=29.8 nb=3 neut=0 cmds=115 noFull=1 shQ=43898 | m=1.492 worth=44.5 cheap=4.7 over=0 dMedOther=6.8 safe(-1)=91345
+    → Player 726#18[T4] terr=3384 bal=44627 dq=13.2 cnt=125 | c=33.5 rankC=33.5 need=84617 tD=1.94 人 | safe=91345 keep=148870 avail=24667 chunkB=35119 pulseB=21071 不够一条(x=24667)→continue hNb=3
+    → Gahhhaha#5[T2] terr=8329 bal=131422 dq=15.8 cnt=137 | c=39.4 rankC=39.4 need=246741 tD=2.32 人 | safe=91345 keep=162777 avail=10760 chunkB=35119 pulseB=21071 不够一条(x=10760)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=171423 dq=57.0 cnt=42 | c=185.9 rankC=185.9 need=310088 tD=8.37 人 crowdedHard | safe=91345 keep=Inf avail=-Inf chunkB=35119 pulseB=21071 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1560 ryan_m B=179316 L=5886 d=30.5 nb=3 neut=0 cmds=115 noFull=1 shQ=44829 | m=1.491 worth=45.4 cheap=4.7 over=0 dMedOther=7.0 safe(-1)=93387
+    → Player 726#18[T4] terr=3384 bal=45573 dq=13.5 cnt=125 | c=34.2 rankC=34.2 need=86304 tD=1.94 人 | safe=93387 keep=151973 avail=25242 chunkB=35863 pulseB=21518 不够一条(x=25242)→continue hNb=3
+    → Gahhhaha#5[T2] terr=8329 bal=134208 dq=16.1 cnt=137 | c=40.2 rankC=40.2 need=251707 tD=2.32 人 | safe=93387 keep=166178 avail=11037 chunkB=35863 pulseB=21518 不够一条(x=11037)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=175057 dq=58.2 cnt=42 | c=189.8 rankC=189.8 need=316566 tD=8.37 人 crowdedHard | safe=93387 keep=Inf avail=-Inf chunkB=35863 pulseB=21518 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1565 ryan_m B=179316 L=5886 d=30.5 nb=3 neut=0 cmds=115 noFull=1 shQ=44829 | m=1.490 worth=45.4 cheap=4.7 over=0 dMedOther=7.0 safe(-1)=93387
+    → Player 726#18[T4] terr=3384 bal=45573 dq=13.5 cnt=125 | c=34.2 rankC=34.2 need=86304 tD=1.94 人 | safe=93387 keep=152019 avail=25196 chunkB=35863 pulseB=21518 不够一条(x=25196)→continue hNb=3
+    → Gahhhaha#5[T2] terr=8329 bal=134208 dq=16.1 cnt=137 | c=40.2 rankC=40.2 need=251707 tD=2.32 人 | safe=93387 keep=166228 avail=10987 chunkB=35863 pulseB=21518 不够一条(x=10987)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=175057 dq=58.2 cnt=42 | c=189.8 rankC=189.8 need=316566 tD=8.37 人 crowdedHard | safe=93387 keep=Inf avail=-Inf chunkB=35863 pulseB=21518 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1570 ryan_m B=183063 L=5886 d=31.1 nb=3 neut=0 cmds=115 noFull=1 shQ=45765 | m=1.490 worth=46.3 cheap=4.8 over=0 dMedOther=7.1 safe(-1)=95442
+    → Player 726#18[T4] terr=3384 bal=46525 dq=13.7 cnt=125 | c=34.9 rankC=34.9 need=88000 tD=1.94 人 | safe=95442 keep=155145 avail=25773 chunkB=36613 pulseB=21968 不够一条(x=25773)→continue hNb=3
+    → Gahhhaha#5[T2] terr=8329 bal=137012 dq=16.4 cnt=137 | c=41.0 rankC=41.0 need=256705 tD=2.32 人 | safe=95442 keep=169655 avail=11263 chunkB=36613 pulseB=21968 不够一条(x=11263)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=178715 dq=59.5 cnt=42 | c=193.7 rankC=193.7 need=323086 tD=8.37 人 crowdedHard | safe=95442 keep=Inf avail=-Inf chunkB=36613 pulseB=21968 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1575 ryan_m B=183063 L=5886 d=31.1 nb=3 neut=0 cmds=115 noFull=1 shQ=45765 | m=1.489 worth=46.3 cheap=4.8 over=0 dMedOther=7.0 safe(-1)=95442
+    → Player 726#18[T4] terr=3384 bal=46525 dq=13.7 cnt=125 | c=34.9 rankC=34.9 need=88000 tD=1.96 人 | safe=95442 keep=155192 avail=25726 chunkB=36613 pulseB=21968 不够一条(x=25726)→continue hNb=3
+    → Gahhhaha#5[T2] terr=8329 bal=137012 dq=16.4 cnt=137 | c=41.0 rankC=41.0 need=256705 tD=2.34 人 | safe=95442 keep=169706 avail=11212 chunkB=36613 pulseB=21968 不够一条(x=11212)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=178715 dq=59.5 cnt=42 | c=193.7 rankC=193.7 need=323086 tD=8.48 人 crowdedHard | safe=95442 keep=Inf avail=-Inf chunkB=36613 pulseB=21968 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1580 ryan_m B=186834 L=5886 d=31.7 nb=3 neut=0 cmds=115 noFull=1 shQ=46708 | m=1.488 worth=47.2 cheap=4.8 over=0 dMedOther=7.1 safe(-1)=97510
+    → Player 726#18[T4] terr=3384 bal=47483 dq=14.0 cnt=125 | c=35.6 rankC=35.6 need=89708 tD=1.98 人 | safe=97510 keep=158340 avail=26305 chunkB=37367 pulseB=22420 不够一条(x=26305)→continue hNb=3
+    → Gahhhaha#5[T2] terr=8329 bal=139834 dq=16.8 cnt=137 | c=41.8 rankC=41.8 need=261735 tD=2.36 人 | safe=97510 keep=173157 avail=11488 chunkB=37367 pulseB=22420 不够一条(x=11488)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=182396 dq=60.7 cnt=42 | c=197.6 rankC=197.6 need=329648 tD=8.54 人 crowdedHard | safe=97510 keep=Inf avail=-Inf chunkB=37367 pulseB=22420 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1585 ryan_m B=186834 L=5886 d=31.7 nb=3 neut=0 cmds=115 noFull=1 shQ=46708 | m=1.487 worth=47.2 cheap=4.9 over=0 dMedOther=7.0 safe(-1)=97510
+    → Player 726#18[T4] terr=3384 bal=47483 dq=14.0 cnt=125 | c=35.6 rankC=35.6 need=89708 tD=2.00 人 | safe=97510 keep=158388 avail=26257 chunkB=37367 pulseB=22420 不够一条(x=26257)→continue hNb=3
+    → Gahhhaha#5[T2] terr=8329 bal=139834 dq=16.8 cnt=137 | c=41.8 rankC=41.8 need=261735 tD=2.39 人 | safe=97510 keep=173210 avail=11435 chunkB=37367 pulseB=22420 不够一条(x=11435)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=182396 dq=60.7 cnt=42 | c=197.6 rankC=197.6 need=329648 tD=8.64 人 crowdedHard | safe=97510 keep=Inf avail=-Inf chunkB=37367 pulseB=22420 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1590 ryan_m B=190626 L=5886 d=32.4 nb=3 neut=0 cmds=116 noFull=1 shQ=47656 | m=1.486 worth=48.1 cheap=4.9 over=0 dMedOther=7.0 safe(-1)=99589
+    → Gahhhaha#5[T2] terr=8329 bal=108677 dq=13.0 cnt=137 | c=24.8 rankC=17.3 need=206200 tD=1.86 人 | safe=99589 keep=134407 avail=53986 chunkB=38125 pulseB=22875  x=53986 hNb=3
+    → Player 726#18[T4] terr=3384 bal=48446 dq=14.3 cnt=125 | c=36.2 rankC=36.2 need=91424 tD=2.04 人 | safe=99589 keep=161555 avail=26838 chunkB=38125 pulseB=22875 不够一条(x=26838)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=186098 dq=61.9 cnt=42 | c=201.6 rankC=201.6 need=336247 tD=8.82 人 crowdedHard | safe=99589 keep=Inf avail=-Inf chunkB=38125 pulseB=22875 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=290 → Gahhhaha#5[T2]（约 54172 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1595 ryan_m B=190626 L=5886 d=32.4 nb=3 neut=0 cmds=117 noFull=1 shQ=47656 | m=1.486 worth=48.1 cheap=5.0 over=0 dMedOther=7.0 safe(-1)=99589
+    → Gahhhaha#5[T2] terr=8329 bal=108677 dq=13.0 cnt=137 | c=24.8 rankC=17.3 need=206200 tD=1.86 人 | safe=99589 keep=134447 avail=53946 chunkB=38125 pulseB=22875  x=53946 hNb=3
+    → Player 726#18[T4] terr=3384 bal=48446 dq=14.3 cnt=125 | c=36.2 rankC=36.2 need=91424 tD=2.04 人 | safe=99589 keep=161604 avail=26789 chunkB=38125 pulseB=22875 不够一条(x=26789)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=186098 dq=61.9 cnt=42 | c=201.6 rankC=201.6 need=336247 tD=8.82 人 crowdedHard | safe=99589 keep=Inf avail=-Inf chunkB=38125 pulseB=22875 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=289 → Gahhhaha#5[T2]（约 53985 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1600 ryan_m B=200324 L=5886 d=34.0 nb=3 neut=0 cmds=118 noFull=1 shQ=48657 | m=1.485 worth=50.5 cheap=5.0 over=0 dMedOther=8.1 safe(-1)=103369
+    → Gahhhaha#5[T2] terr=8727 bal=119377 dq=13.7 cnt=137 | c=25.9 rankC=18.1 need=225879 tD=1.68 人 | safe=103369 keep=140982 avail=56995 chunkB=40065 pulseB=24039  x=56995 hNb=3
+    → Player 726#18[T4] terr=3384 bal=52798 dq=15.6 cnt=125 | c=39.3 rankC=39.3 need=99181 tD=1.92 人 | safe=103369 keep=172724 avail=25253 chunkB=40065 pulseB=24039 不够一条(x=25253)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=192825 dq=64.1 cnt=42 | c=208.8 rankC=208.8 need=348239 tD=7.89 人 crowdedHard | safe=103369 keep=Inf avail=-Inf chunkB=40065 pulseB=24039 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=291 → Gahhhaha#5[T2]（约 57123 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1605 ryan_m B=200324 L=5886 d=34.0 nb=3 neut=0 cmds=119 noFull=1 shQ=50081 | m=1.484 worth=50.5 cheap=5.0 over=0 dMedOther=8.0 safe(-1)=103369
+    → Gahhhaha#5[T2] terr=8926 bal=119377 dq=13.4 cnt=137 | c=25.3 rankC=17.7 need=226172 tD=1.66 人 | safe=103369 keep=139728 avail=58249 chunkB=40065 pulseB=24039  x=58249 hNb=3
+    → Player 726#18[T4] terr=3384 bal=52798 dq=15.6 cnt=125 | c=39.3 rankC=39.3 need=99181 tD=1.94 人 | safe=103369 keep=172776 avail=25201 chunkB=40065 pulseB=24039 不够一条(x=25201)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=192825 dq=64.1 cnt=42 | c=208.8 rankC=208.8 need=348239 tD=7.98 人 crowdedHard | safe=103369 keep=Inf avail=-Inf chunkB=40065 pulseB=24039 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=297 → Gahhhaha#5[T2]（约 58297 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1610 ryan_m B=204270 L=5886 d=34.7 nb=3 neut=0 cmds=120 noFull=1 shQ=51067 | m=1.484 worth=51.5 cheap=5.1 over=0 dMedOther=8.1 safe(-1)=105502
+    → Gahhhaha#5[T2] terr=9305 bal=121728 dq=13.1 cnt=137 | c=24.8 rankC=17.4 need=230926 tD=1.61 人 | safe=105502 keep=140106 avail=61771 chunkB=40854 pulseB=24512  x=61771 hNb=3
+    → Player 726#18[T4] terr=3384 bal=53838 dq=15.9 cnt=125 | c=40.0 rankC=40.0 need=101035 tD=1.96 人 | safe=105502 keep=176140 avail=25737 chunkB=40854 pulseB=24512 不够一条(x=25737)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=196623 dq=65.4 cnt=42 | c=212.9 rankC=212.9 need=355009 tD=8.04 人 crowdedHard | safe=105502 keep=Inf avail=-Inf chunkB=40854 pulseB=24512 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=309 → Gahhhaha#5[T2]（约 61839 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1615 ryan_m B=204270 L=5886 d=34.7 nb=3 neut=0 cmds=121 noFull=1 shQ=51067 | m=1.483 worth=51.5 cheap=5.1 over=0 dMedOther=7.2 safe(-1)=105502
+    → Gahhhaha#5[T2] terr=9685 bal=121728 dq=12.6 cnt=137 | c=23.9 rankC=16.7 need=231496 tD=1.75 人 | safe=105502 keep=137984 avail=63893 chunkB=40854 pulseB=24512  x=63893 hNb=3
+    → Player 726#18[T4] terr=3384 bal=53838 dq=15.9 cnt=125 | c=40.0 rankC=40.0 need=101035 tD=2.21 人 | safe=105502 keep=176194 avail=25683 chunkB=40854 pulseB=24512 不够一条(x=25683)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=196623 dq=65.4 cnt=42 | c=212.9 rankC=212.9 need=355009 tD=9.08 人 crowdedHard | safe=105502 keep=Inf avail=-Inf chunkB=40854 pulseB=24512 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=320 → Gahhhaha#5[T2]（约 64033 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1620 ryan_m B=208232 L=5886 d=35.4 nb=3 neut=0 cmds=122 noFull=1 shQ=52058 | m=1.482 worth=52.4 cheap=5.2 over=0 dMedOther=7.2 safe(-1)=107645
+    → Gahhhaha#5[T2] terr=9879 bal=124089 dq=12.6 cnt=137 | c=23.9 rankC=16.7 need=236005 tD=1.74 人 | safe=107645 keep=139574 avail=66218 chunkB=41646 pulseB=24988  x=66218 hNb=3
+    → Player 726#18[T4] terr=3384 bal=54882 dq=16.2 cnt=125 | c=40.8 rankC=40.8 need=102896 tD=2.24 人 | safe=107645 keep=179575 avail=26217 chunkB=41646 pulseB=24988 不够一条(x=26217)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=200437 dq=66.7 cnt=42 | c=216.9 rankC=216.9 need=361808 tD=9.22 人 crowdedHard | safe=107645 keep=Inf avail=-Inf chunkB=41646 pulseB=24988 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=325 → Gahhhaha#5[T2]（约 66292 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1625 ryan_m B=208232 L=5886 d=35.4 nb=3 neut=0 cmds=123 noFull=1 shQ=52058 | m=1.481 worth=52.4 cheap=5.2 over=0 dMedOther=7.1 safe(-1)=107645
+    → Gahhhaha#5[T2] terr=10265 bal=124089 dq=12.1 cnt=137 | c=23.0 rankC=16.1 need=236574 tD=1.70 人 | safe=107645 keep=137614 avail=68178 chunkB=41646 pulseB=24988  x=68178 hNb=3
+    → Player 726#18[T4] terr=3384 bal=54882 dq=16.2 cnt=125 | c=40.8 rankC=40.8 need=102896 tD=2.28 人 | safe=107645 keep=179629 avail=26163 chunkB=41646 pulseB=24988 不够一条(x=26163)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=200437 dq=66.7 cnt=42 | c=216.9 rankC=216.9 need=361808 tD=9.39 人 crowdedHard | safe=107645 keep=Inf avail=-Inf chunkB=41646 pulseB=24988 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=335 → Gahhhaha#5[T2]（约 68326 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1630 ryan_m B=212188 L=5886 d=36.0 nb=3 neut=0 cmds=124 noFull=1 shQ=53047 | m=1.480 worth=53.4 cheap=5.2 over=0 dMedOther=7.8 safe(-1)=109784
+    → Gahhhaha#5[T2] terr=10837 bal=126446 dq=11.7 cnt=137 | c=22.3 rankC=15.6 need=241633 tD=1.50 人 | safe=109784 keep=137434 avail=72268 chunkB=42438 pulseB=25463  x=72268 hNb=3
+    → Player 726#18[T4] terr=3384 bal=55924 dq=16.5 cnt=125 | c=41.5 rankC=41.5 need=104753 tD=2.12 人 | safe=109784 keep=183007 avail=26695 chunkB=42438 pulseB=25463 不够一条(x=26695)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=204245 dq=67.9 cnt=42 | c=221.0 rankC=221.0 need=368596 tD=8.71 人 crowdedHard | safe=109784 keep=Inf avail=-Inf chunkB=42438 pulseB=25463 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=348 → Gahhhaha#5[T2]（约 72317 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1635 ryan_m B=212188 L=5886 d=36.0 nb=3 neut=0 cmds=125 noFull=1 shQ=53047 | m=1.480 worth=53.3 cheap=5.3 over=0 dMedOther=7.8 safe(-1)=109784
+    → Gahhhaha#5[T2] terr=11179 bal=126446 dq=11.3 cnt=137 | c=21.7 rankC=15.2 need=242154 tD=1.45 人 | safe=109784 keep=135966 avail=73736 chunkB=42438 pulseB=25463  x=73736 hNb=3
+    → Player 726#18[T4] terr=3384 bal=55924 dq=16.5 cnt=125 | c=41.5 rankC=41.5 need=104753 tD=2.12 人 | safe=109784 keep=183063 avail=26639 chunkB=42438 pulseB=25463 不够一条(x=26639)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=204245 dq=67.9 cnt=42 | c=221.0 rankC=221.0 need=368596 tD=8.71 人 crowdedHard | safe=109784 keep=Inf avail=-Inf chunkB=42438 pulseB=25463 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=355 → Gahhhaha#5[T2]（约 73768 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1640 ryan_m B=216155 L=5886 d=36.7 nb=3 neut=0 cmds=126 noFull=1 shQ=54038 | m=1.479 worth=54.3 cheap=5.3 over=0 dMedOther=7.2 safe(-1)=111930
+    → Gahhhaha#5[T2] terr=11711 bal=128810 dq=11.0 cnt=137 | c=21.1 rankC=14.8 need=247166 tD=1.53 人 | safe=111930 keep=136272 avail=77350 chunkB=43231 pulseB=25939  x=77350 hNb=3
+    → Player 726#18[T4] terr=3384 bal=56969 dq=16.8 cnt=125 | c=42.2 rankC=42.2 need=106615 tD=2.34 人 | safe=111930 keep=186454 avail=27168 chunkB=43231 pulseB=25939 不够一条(x=27168)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=208064 dq=69.2 cnt=42 | c=225.1 rankC=225.1 need=375404 tD=9.62 人 crowdedHard | safe=111930 keep=Inf avail=-Inf chunkB=43231 pulseB=25939 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=366 → Gahhhaha#5[T2]（约 77469 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1645 ryan_m B=216155 L=5886 d=36.7 nb=3 neut=0 cmds=127 noFull=1 shQ=54038 | m=1.478 worth=54.3 cheap=5.4 over=0 dMedOther=7.2 safe(-1)=111930
+    → Gahhhaha#5[T2] terr=12055 bal=128810 dq=10.7 cnt=137 | c=20.5 rankC=14.4 need=247681 tD=1.49 人 | safe=111930 keep=134976 avail=78646 chunkB=43231 pulseB=25939  x=78646 hNb=3
+    → Player 726#18[T4] terr=3384 bal=56969 dq=16.8 cnt=125 | c=42.2 rankC=42.2 need=106615 tD=2.35 人 | safe=111930 keep=186510 avail=27112 chunkB=43231 pulseB=25939 不够一条(x=27112)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=208064 dq=69.2 cnt=42 | c=225.1 rankC=225.1 need=375404 tD=9.68 人 crowdedHard | safe=111930 keep=Inf avail=-Inf chunkB=43231 pulseB=25939 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=372 → Gahhhaha#5[T2]（约 78736 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1650 ryan_m B=220132 L=5886 d=37.4 nb=3 neut=0 cmds=128 noFull=1 shQ=55033 | m=1.478 worth=55.3 cheap=5.4 over=0 dMedOther=7.3 safe(-1)=114080
+    → Gahhhaha#5[T2] terr=12571 bal=131180 dq=10.4 cnt=137 | c=26.8 rankC=26.8 need=252679 tD=1.44 人 | safe=114080 keep=151463 avail=66090 chunkB=44026 pulseB=26416  x=66090 hNb=3
+    → Player 726#18[T4] terr=3384 bal=58017 dq=17.1 cnt=125 | c=43.0 rankC=43.0 need=108483 tD=2.36 人 | safe=114080 keep=189913 avail=27640 chunkB=44026 pulseB=26416 不够一条(x=27640)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=211892 dq=70.5 cnt=42 | c=229.2 rankC=229.2 need=382227 tD=9.71 人 crowdedHard | safe=114080 keep=Inf avail=-Inf chunkB=44026 pulseB=26416 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=307 → Gahhhaha#5[T2]（约 66211 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1655 ryan_m B=220132 L=5886 d=37.4 nb=3 neut=0 cmds=129 noFull=1 shQ=55033 | m=1.477 worth=55.2 cheap=5.5 over=0 dMedOther=7.2 safe(-1)=114080
+    → Gahhhaha#5[T2] terr=12925 bal=131180 dq=10.1 cnt=137 | c=26.1 rankC=26.1 need=253202 tD=1.40 人 | safe=114080 keep=149902 avail=67651 chunkB=44026 pulseB=26416  x=67651 hNb=3
+    → Player 726#18[T4] terr=3384 bal=58017 dq=17.1 cnt=125 | c=43.0 rankC=43.0 need=108483 tD=2.37 人 | safe=114080 keep=189970 avail=27583 chunkB=44026 pulseB=26416 不够一条(x=27583)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=211892 dq=70.5 cnt=42 | c=229.2 rankC=229.2 need=382227 tD=9.74 人 crowdedHard | safe=114080 keep=Inf avail=-Inf chunkB=44026 pulseB=26416 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=314 → Gahhhaha#5[T2]（约 67716 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1660 ryan_m B=224116 L=5886 d=38.1 nb=3 neut=0 cmds=130 noFull=1 shQ=56029 | m=1.476 worth=56.2 cheap=5.5 over=0 dMedOther=7.4 safe(-1)=116235
+    → Gahhhaha#5[T2] terr=13470 bal=133554 dq=9.9 cnt=137 | c=25.6 rankC=25.6 need=258255 tD=1.35 人 | safe=116235 keep=150219 avail=71271 chunkB=44823 pulseB=26894  x=71271 hNb=3
+    → Player 726#18[T4] terr=3384 bal=59067 dq=17.5 cnt=125 | c=43.7 rankC=43.7 need=110355 tD=2.37 人 | safe=116235 keep=193383 avail=28107 chunkB=44823 pulseB=26894 不够一条(x=28107)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=215727 dq=71.8 cnt=42 | c=233.3 rankC=233.3 need=389064 tD=9.76 人 crowdedHard | safe=116235 keep=Inf avail=-Inf chunkB=44823 pulseB=26894 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=325 → Gahhhaha#5[T2]（约 71349 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1665 ryan_m B=224116 L=5886 d=38.1 nb=3 neut=0 cmds=131 noFull=1 shQ=56029 | m=1.475 worth=56.2 cheap=5.6 over=0 dMedOther=7.3 safe(-1)=116235
+    → Gahhhaha#5[T2] terr=13836 bal=133554 dq=9.7 cnt=137 | c=24.9 rankC=24.9 need=258796 tD=1.32 人 | safe=116235 keep=148781 avail=72709 chunkB=44823 pulseB=26894  x=72709 hNb=3
+    → Player 726#18[T4] terr=3384 bal=59067 dq=17.5 cnt=125 | c=43.7 rankC=43.7 need=110355 tD=2.38 人 | safe=116235 keep=193441 avail=28049 chunkB=44823 pulseB=26894 不够一条(x=28049)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=215727 dq=71.8 cnt=42 | c=233.3 rankC=233.3 need=389064 tD=9.78 人 crowdedHard | safe=116235 keep=Inf avail=-Inf chunkB=44823 pulseB=26894 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=332 → Gahhhaha#5[T2]（约 72881 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1670 ryan_m B=228105 L=5886 d=38.8 nb=3 neut=0 cmds=132 noFull=1 shQ=57026 | m=1.474 worth=57.1 cheap=5.6 over=0 dMedOther=8.1 safe(-1)=118392
+    → Gahhhaha#5[T2] terr=14380 bal=135931 dq=9.5 cnt=137 | c=24.5 rankC=24.5 need=263848 tD=1.16 人 | safe=118392 keep=149284 avail=76148 chunkB=45621 pulseB=27373  x=76148 hNb=3
+    → Player 726#18[T4] terr=3384 bal=60118 dq=17.8 cnt=125 | c=44.5 rankC=44.5 need=112228 tD=2.18 人 | safe=118392 keep=196860 avail=28572 chunkB=45621 pulseB=27373 不够一条(x=28572)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=219566 dq=73.0 cnt=42 | c=237.4 rankC=237.4 need=395907 tD=8.97 人 crowdedHard | safe=118392 keep=Inf avail=-Inf chunkB=45621 pulseB=27373 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=341 → Gahhhaha#5[T2]（约 76183 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1675 ryan_m B=228105 L=5886 d=38.8 nb=3 neut=0 cmds=133 noFull=1 shQ=57026 | m=1.474 worth=57.1 cheap=5.7 over=0 dMedOther=8.0 safe(-1)=118392
+    → Gahhhaha#5[T2] terr=14731 bal=135931 dq=9.2 cnt=137 | c=23.9 rankC=23.9 need=264386 tD=1.15 人 | safe=118392 keep=148051 avail=77381 chunkB=45621 pulseB=27373  x=77381 hNb=3
+    → Player 726#18[T4] terr=3384 bal=60118 dq=17.8 cnt=125 | c=44.5 rankC=44.5 need=112228 tD=2.21 人 | safe=118392 keep=196920 avail=28512 chunkB=45621 pulseB=27373 不够一条(x=28512)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=219566 dq=73.0 cnt=42 | c=237.4 rankC=237.4 need=395907 tD=9.08 人 crowdedHard | safe=118392 keep=Inf avail=-Inf chunkB=45621 pulseB=27373 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=347 → Gahhhaha#5[T2]（约 77520 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1680 ryan_m B=232096 L=5886 d=39.4 nb=3 neut=0 cmds=134 noFull=1 shQ=58024 | m=1.473 worth=58.1 cheap=5.7 over=0 dMedOther=8.2 safe(-1)=120550
+    → Gahhhaha#5[T2] terr=14731 bal=138664 dq=9.4 cnt=137 | c=24.4 rankC=24.4 need=269257 tD=1.15 人 | safe=120550 keep=150739 avail=78638 chunkB=46419 pulseB=27852  x=78638 hNb=3
+    → Player 726#18[T4] terr=3384 bal=61170 dq=18.1 cnt=125 | c=45.2 rankC=45.2 need=114103 tD=2.21 人 | safe=120550 keep=200344 avail=29033 chunkB=46419 pulseB=27852 不够一条(x=29033)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=223408 dq=74.3 cnt=42 | c=241.5 rankC=241.5 need=402756 tD=9.08 人 crowdedHard | safe=120550 keep=Inf avail=-Inf chunkB=46419 pulseB=27852 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=346 → Gahhhaha#5[T2]（约 78649 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1685 ryan_m B=232096 L=5886 d=39.4 nb=3 neut=0 cmds=135 noFull=1 shQ=58024 | m=1.472 worth=58.1 cheap=5.8 over=0 dMedOther=8.2 safe(-1)=120550
+    → Gahhhaha#5[T2] terr=14559 bal=136074 dq=9.3 cnt=137 | c=24.2 rankC=24.2 need=263750 tD=1.14 人 | safe=120550 keep=150492 avail=78885 chunkB=46419 pulseB=27852  x=78885 hNb=3
+    → Player 726#18[T4] terr=3384 bal=61170 dq=18.1 cnt=125 | c=45.2 rankC=45.2 need=114103 tD=2.21 人 | safe=120550 keep=200405 avail=28972 chunkB=46419 pulseB=27852 不够一条(x=28972)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=223408 dq=74.3 cnt=42 | c=241.5 rankC=241.5 need=402756 tD=9.08 人 crowdedHard | safe=120550 keep=Inf avail=-Inf chunkB=46419 pulseB=27852 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=348 → Gahhhaha#5[T2]（约 79103 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1690 ryan_m B=236088 L=5886 d=40.1 nb=3 neut=0 cmds=136 noFull=1 shQ=59022 | m=1.472 worth=59.0 cheap=5.8 over=0 dMedOther=7.9 safe(-1)=122708
+    → Player 726#18[T4] terr=3384 bal=62222 dq=18.4 cnt=125 | c=16.1 rankC=8.0 need=115978 tD=2.34 人 pulse bleeding | safe=122708 keep=132739 avail=100583 chunkB=47218 pulseB=28331  x=28330 hNb=3
+    → Gahhhaha#5[T2] terr=14559 bal=138414 dq=9.5 cnt=137 | c=35.7 rankC=51.8 need=267927 tD=1.21 人 | safe=122708 keep=179431 avail=53891 chunkB=47218 pulseB=28331  x=53891 hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=227250 dq=75.6 cnt=42 | c=356.1 rankC=516.4 need=409604 tD=9.63 人 crowdedHard | safe=122708 keep=Inf avail=-Inf chunkB=47218 pulseB=28331 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=122 → Player 726#18[T4]（约 28358 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1695 ryan_m B=236088 L=5886 d=40.1 nb=3 neut=0 cmds=137 noFull=1 shQ=59022 | m=1.471 worth=59.0 cheap=5.9 over=0 dMedOther=7.8 safe(-1)=122708
+    → Player 726#18[T4] terr=3320 bal=60341 dq=18.2 cnt=124 | c=16.4 rankC=8.2 need=112118 tD=2.32 人 pulse bleeding | safe=122708 keep=133435 avail=99887 chunkB=47218 pulseB=28331  x=28330 hNb=3
+    → Gahhhaha#5[T2] terr=14388 bal=135814 dq=9.4 cnt=137 | c=24.5 rankC=24.5 need=262402 tD=1.21 人 | safe=122708 keep=152796 avail=80526 chunkB=47218 pulseB=28331  x=80526 hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=227250 dq=75.6 cnt=42 | c=245.6 rankC=245.6 need=409604 tD=9.66 人 crowdedHard | safe=122708 keep=Inf avail=-Inf chunkB=47218 pulseB=28331 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=122 → Player 726#18[T4]（约 28358 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1700 ryan_m B=245963 L=5886 d=41.8 nb=3 neut=0 cmds=138 noFull=1 shQ=60061 | m=1.470 worth=61.4 cheap=5.9 over=0 dMedOther=8.9 safe(-1)=126554
+    → Player 726#18[T4] terr=3257 bal=62755 dq=19.3 cnt=123 | c=18.5 rankC=9.2 need=115871 tD=2.16 人 pulse bleeding | safe=126554 keep=142398 avail=100683 chunkB=49193 pulseB=29516  x=29515 hNb=3
+    → Gahhhaha#5[T2] terr=14388 bal=152497 dq=10.6 cnt=137 | c=39.5 rankC=57.3 need=292038 tD=1.19 人 | safe=126554 keep=192545 avail=50536 chunkB=49193 pulseB=29516  x=50536 hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=234096 dq=77.9 cnt=42 | c=366.8 rankC=531.8 need=421808 tD=8.74 人 crowdedHard | safe=126554 keep=Inf avail=-Inf chunkB=49193 pulseB=29516 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=122 → Player 726#18[T4]（约 29544 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1705 ryan_m B=245963 L=5886 d=41.8 nb=3 neut=0 cmds=139 noFull=1 shQ=61490 | m=1.469 worth=61.4 cheap=6.0 over=0 dMedOther=8.9 safe(-1)=126554
+    → Player 726#18[T4] terr=3134 bal=58986 dq=18.8 cnt=122 | c=19.1 rankC=9.6 need=108121 tD=2.12 人 pulse bleeding | safe=126554 keep=144057 avail=99024 chunkB=49193 pulseB=29516  x=29515 hNb=3
+    → Gahhhaha#5[T2] terr=14388 bal=152497 dq=10.6 cnt=137 | c=39.5 rankC=57.3 need=292055 tD=1.20 人 | safe=126554 keep=192601 avail=50480 chunkB=49193 pulseB=29516  x=50480 hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=234096 dq=77.9 cnt=42 | c=366.8 rankC=531.8 need=421808 tD=8.78 人 crowdedHard | safe=126554 keep=Inf avail=-Inf chunkB=49193 pulseB=29516 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=122 → Player 726#18[T4]（约 29544 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1710 ryan_m B=250021 L=5886 d=42.5 nb=3 neut=0 cmds=140 noFull=1 shQ=62505 | m=1.468 worth=62.4 cheap=6.0 over=0 dMedOther=9.0 safe(-1)=128724
+    → Gahhhaha#5[T2] terr=14217 bal=152066 dq=10.7 cnt=137 | c=8.3 rankC=2.5 need=290303 tD=1.19 人 pulse bleeding | safe=128724 keep=128724 avail=118368 chunkB=50004 pulseB=30003  x=30002 hNb=3
+    → Player 726#18[T4] terr=3017 bal=56399 dq=18.7 cnt=120 | c=20.3 rankC=10.2 need=102510 tD=2.08 人 pulse bleeding | safe=128724 keep=148504 avail=98588 chunkB=50004 pulseB=30003  x=30002 hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=237958 dq=79.2 cnt=42 | c=257.1 rankC=257.1 need=428693 tD=8.79 人 crowdedHard | safe=128724 keep=Inf avail=-Inf chunkB=50004 pulseB=30003 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=122 → Gahhhaha#5[T2]（约 30031 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1715 ryan_m B=250021 L=5886 d=42.5 nb=3 neut=0 cmds=141 noFull=1 shQ=62505 | m=1.468 worth=62.3 cheap=6.1 over=0 dMedOther=9.1 safe(-1)=128724
+    → Gahhhaha#5[T2] terr=14217 bal=152066 dq=10.7 cnt=137 | c=12.2 rankC=6.1 need=290321 tD=1.17 人 pulse bleeding | safe=128724 keep=129284 avail=117808 chunkB=50004 pulseB=30003  x=30002 hNb=3
+    → Player 726#18[T4] terr=2961 bal=54725 dq=18.5 cnt=120 | c=20.7 rankC=10.3 need=99112 tD=2.03 人 pulse bleeding | safe=128724 keep=149462 avail=97630 chunkB=50004 pulseB=30003  x=30002 hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=237958 dq=79.2 cnt=42 | c=257.1 rankC=257.1 need=428693 tD=8.69 人 crowdedHard | safe=128724 keep=Inf avail=-Inf chunkB=50004 pulseB=30003 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=122 → Gahhhaha#5[T2]（约 30031 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1720 ryan_m B=178893 L=5886 d=30.4 nb=3 neut=0 cmds=142 noFull=1 shQ=2879 | m=1.467 worth=44.6 cheap=6.2 over=0 dMedOther=8.7 safe(-1)=130889
+    → Gahhhaha#5[T2] terr=14185 bal=117285 dq=8.3 cnt=137 | c=5.0 rankC=2.5 need=157557 tD=0.95 人 pulse bleeding | safe=130889 keep=130889 avail=45908 chunkB=35779 pulseB=21467 在途(curAtk=71050)→continue hNb=3
+    → Player 726#18[T4] terr=2850 bal=52296 dq=18.3 cnt=118 | c=21.7 rankC=10.8 need=93831 tD=2.10 人 pulse bleeding | safe=130889 keep=130889 avail=45908 chunkB=35779 pulseB=21467  x=21467 hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=241812 dq=80.4 cnt=42 | c=260.7 rankC=260.7 need=435563 tD=9.21 人 crowdedHard | safe=130889 keep=Inf avail=-Inf chunkB=35779 pulseB=21467 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=0 → Player 726#18[T4]（约 174 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1725 ryan_m B=178893 L=6023 d=29.7 nb=3 neut=0 cmds=143 noFull=1 shQ=6491 | m=1.466 worth=43.6 cheap=6.2 over=0 dMedOther=8.7 safe(-1)=130774
+    → Gahhhaha#5[T2] terr=14355 bal=115021 dq=8.0 cnt=135 | c=5.0 rankC=2.5 need=158297 tD=0.92 人 pulse bleeding | safe=130774 keep=130774 avail=46023 chunkB=35779 pulseB=21467 在途(curAtk=67156)→continue hNb=3
+    → Player 726#18[T4] terr=2741 bal=49116 dq=17.9 cnt=116 | c=22.6 rankC=11.3 need=87288 tD=2.06 人 pulse bleeding | safe=130774 keep=130774 avail=46023 chunkB=35779 pulseB=21467  x=21467 hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=241812 dq=80.4 cnt=42 | c=260.7 rankC=260.7 need=435563 tD=9.23 人 crowdedHard | safe=130774 keep=Inf avail=-Inf chunkB=35779 pulseB=21467 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=0 → Player 726#18[T4]（约 174 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1730 ryan_m B=181737 L=6292 d=28.9 nb=3 neut=0 cmds=144 noFull=1 shQ=10078 | m=1.466 worth=42.3 cheap=6.3 over=0 dMedOther=8.2 safe(-1)=132707
+    → Gahhhaha#5[T2] terr=14412 bal=113124 dq=7.8 cnt=131 | c=5.2 rankC=2.6 need=162589 tD=0.96 人 pulse bleeding | safe=132707 keep=132707 avail=46901 chunkB=36347 pulseB=21808 在途(curAtk=59786)→continue hNb=3
+    → Player 726#18[T4] terr=2688 bal=48354 dq=18.0 cnt=116 | c=23.5 rankC=11.7 need=85457 tD=2.20 人 pulse bleeding | safe=132707 keep=132787 avail=46821 chunkB=36347 pulseB=21808  x=21808 hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=245656 dq=81.7 cnt=44 | c=264.7 rankC=264.7 need=442415 tD=10.01 人 crowdedHard | safe=132707 keep=Inf avail=-Inf chunkB=36347 pulseB=21808 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=0 → Player 726#18[T4]（约 177 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1735 ryan_m B=181737 L=6553 d=27.7 nb=3 neut=0 cmds=145 noFull=1 shQ=13673 | m=1.465 worth=40.6 cheap=6.3 over=0 dMedOther=8.2 safe(-1)=132487
+    → Gahhhaha#5[T2] terr=14624 bal=109353 dq=7.5 cnt=131 | c=5.3 rankC=2.6 need=163829 tD=0.92 人 pulse bleeding | safe=132487 keep=132487 avail=47121 chunkB=36347 pulseB=21808 在途(curAtk=52852)→continue hNb=3
+    → Player 726#18[T4] terr=2584 bal=45381 dq=17.6 cnt=114 | c=24.5 rankC=12.3 need=79369 tD=2.15 人 | safe=132487 keep=138136 avail=41472 chunkB=36347 pulseB=21808  x=41472 hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=245656 dq=81.7 cnt=45 | c=264.7 rankC=264.7 need=442415 tD=10.01 人 crowdedHard | safe=132487 keep=Inf avail=-Inf chunkB=36347 pulseB=21808 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=233 → Player 726#18[T4]（约 41529 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1740 ryan_m B=184572 L=6684 d=27.6 nb=3 neut=0 cmds=146 noFull=1 shQ=17248 | m=1.464 worth=40.4 cheap=6.4 over=0 dMedOther=8.3 safe(-1)=134529
+    → Gahhhaha#5[T2] terr=14791 bal=108870 dq=7.4 cnt=132 | c=5.4 rankC=2.7 need=166660 tD=0.89 人 pulse bleeding | safe=134529 keep=134529 avail=47881 chunkB=36914 pulseB=22149 在途(curAtk=49496)→continue hNb=3
+    → Player 726#18[T4] terr=2483 bal=43226 dq=17.4 cnt=112 | c=26.1 rankC=13.1 need=74660 tD=2.10 人 | safe=134529 keep=144849 avail=37561 chunkB=36914 pulseB=22149  x=37561 hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=249488 dq=83.0 cnt=45 | c=268.7 rankC=268.7 need=449246 tD=10.01 人 crowdedHard | safe=134529 keep=Inf avail=-Inf chunkB=36914 pulseB=22149 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=208 → Player 726#18[T4]（约 37671 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1745 ryan_m B=184572 L=6949 d=26.6 nb=3 neut=0 cmds=146 noFull=1 shQ=20831 | m=1.463 worth=38.9 cheap=6.5 over=0 dMedOther=7.6 safe(-1)=134306
+    → Player 726#18[T4] terr=2483 bal=0 dq=0.0 cnt=112 | c=1.9 rankC=0.9 need=3300 tD=0.00 人 pulse | safe=134306 keep=134306 avail=48104 chunkB=36914 pulseB=22149 低于最小指令(x=4296<8648)→continue hNb=3
+    → Gahhhaha#5[T2] terr=15034 bal=105467 dq=7.0 cnt=133 | c=3.3 rankC=1.7 need=167715 tD=0.93 人 pulse nearCollapse bleeding | safe=134306 keep=134306 avail=48104 chunkB=36914 pulseB=22149 在途(curAtk=42822)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=249488 dq=83.0 cnt=47 | c=268.7 rankC=268.7 need=449246 tD=10.95 人 crowdedHard | safe=134306 keep=Inf avail=-Inf chunkB=36914 pulseB=22149 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1750 ryan_m B=187395 L=7216 d=26.0 nb=3 neut=0 cmds=146 noFull=1 shQ=24382 | m=1.462 worth=38.0 cheap=6.5 over=0 dMedOther=7.7 safe(-1)=136225
+    → Player 726#18[T4] terr=2483 bal=1 dq=0.0 cnt=112 | c=2.4 rankC=1.7 need=3304 tD=0.00 人 pulse | safe=136225 keep=136225 avail=48974 chunkB=37479 pulseB=22487 低于最小指令(x=4300<8784)→continue hNb=3
+    → Gahhhaha#5[T2] terr=15067 bal=103339 dq=6.9 cnt=132 | c=3.5 rankC=1.8 need=170051 tD=0.89 人 pulse nearCollapse bleeding | safe=136225 keep=136225 avail=48974 chunkB=37479 pulseB=22487 在途(curAtk=36352)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=253305 dq=84.3 cnt=49 | c=272.7 rankC=272.7 need=456050 tD=10.98 人 crowdedHard | safe=136225 keep=Inf avail=-Inf chunkB=37479 pulseB=22487 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1755 ryan_m B=187395 L=7347 d=25.5 nb=3 neut=0 cmds=146 noFull=1 shQ=27950 | m=1.462 worth=37.3 cheap=6.6 over=0 dMedOther=7.1 safe(-1)=136115
+    → Player 726#18[T4] terr=2584 bal=1 dq=0.0 cnt=114 | c=2.4 rankC=1.7 need=3510 tD=0.00 人 pulse | safe=136115 keep=136115 avail=49084 chunkB=37479 pulseB=22487 低于最小指令(x=4554<8784)→continue hNb=3
+    → Gahhhaha#5[T2] terr=15363 bal=100265 dq=6.5 cnt=132 | c=3.5 rankC=1.8 need=168501 tD=0.92 人 pulse nearCollapse bleeding | safe=136115 keep=136115 avail=49084 chunkB=37479 pulseB=22487 在途(curAtk=33260)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=253305 dq=84.3 cnt=50 | c=272.7 rankC=272.7 need=456050 tD=11.90 人 crowdedHard | safe=136115 keep=Inf avail=-Inf chunkB=37479 pulseB=22487 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1760 ryan_m B=190205 L=7609 d=25.0 nb=3 neut=0 cmds=146 noFull=1 shQ=31486 | m=1.461 worth=36.5 cheap=6.7 over=0 dMedOther=7.1 safe(-1)=138028
+    → Gahhhaha#5[T2] terr=15366 bal=97727 dq=6.4 cnt=131 | c=0.6 rankC=0.3 need=169807 tD=0.89 人 pulse nearCollapse bleeding | safe=138028 keep=138028 avail=49949 chunkB=38041 pulseB=22825 在途(curAtk=27324)→continue hNb=3
+    → Player 726#18[T4] terr=2688 bal=2 dq=0.0 cnt=116 | c=2.3 rankC=1.6 need=3721 tD=0.00 人 pulse | safe=138028 keep=138028 avail=49949 chunkB=38041 pulseB=22825 低于最小指令(x=4814<8912)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=257104 dq=85.5 cnt=52 | c=276.6 rankC=276.6 need=462822 tD=11.96 人 crowdedHard | safe=138028 keep=Inf avail=-Inf chunkB=38041 pulseB=22825 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1765 ryan_m B=190205 L=7872 d=24.2 nb=3 neut=0 cmds=146 noFull=1 shQ=35026 | m=1.460 worth=35.3 cheap=6.7 over=0 dMedOther=7.1 safe(-1)=137807
+    → Gahhhaha#5[T2] terr=15553 bal=93687 dq=6.0 cnt=133 | c=0.1 rankC=0.1 need=168734 tD=0.85 人 pulse nearCollapse bleeding | safe=137807 keep=137807 avail=50170 chunkB=38041 pulseB=22825 在途(curAtk=21582)→continue hNb=3
+    → Player 726#18[T4] terr=2741 bal=2 dq=0.0 cnt=116 | c=2.3 rankC=1.6 need=3829 tD=0.00 人 pulse | safe=137807 keep=137807 avail=50170 chunkB=38041 pulseB=22825 低于最小指令(x=4943<8912)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=257104 dq=85.5 cnt=54 | c=276.6 rankC=276.6 need=462822 tD=12.03 人 crowdedHard | safe=137807 keep=Inf avail=-Inf chunkB=38041 pulseB=22825 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1770 ryan_m B=193001 L=8004 d=24.1 nb=3 neut=0 cmds=146 noFull=1 shQ=38542 | m=1.460 worth=35.2 cheap=6.8 over=0 dMedOther=7.2 safe(-1)=139819
+    → Gahhhaha#5[T2] terr=15638 bal=91907 dq=5.9 cnt=132 | c=0.1 rankC=0.1 need=168323 tD=0.82 人 pulse nearCollapse bleeding | safe=139819 keep=139819 avail=50921 chunkB=38600 pulseB=23160 在途(curAtk=18818)→continue hNb=3
+    → Player 726#18[T4] terr=2850 bal=3 dq=0.0 cnt=118 | c=2.3 rankC=1.6 need=4051 tD=0.00 人 pulse | safe=139819 keep=139819 avail=50921 chunkB=38600 pulseB=23160 低于最小指令(x=5215<9044)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=260883 dq=86.8 cnt=55 | c=280.6 rankC=280.6 need=469558 tD=12.08 人 crowdedHard | safe=139819 keep=Inf avail=-Inf chunkB=38600 pulseB=23160 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1775 ryan_m B=193001 L=8255 d=23.4 nb=3 neut=0 cmds=146 noFull=1 shQ=42062 | m=1.459 worth=34.1 cheap=6.9 over=0 dMedOther=7.1 safe(-1)=139607
+    → Gahhhaha#5[T2] terr=15873 bal=88203 dq=5.6 cnt=107 | c=0.1 rankC=0.1 need=167346 tD=0.78 人 pulse nearCollapse bleeding | safe=139607 keep=139607 avail=51133 chunkB=38600 pulseB=23160 在途(curAtk=13676)→continue hNb=3
+    → Player 726#18[T4] terr=2961 bal=3 dq=0.0 cnt=120 | c=2.2 rankC=1.6 need=4277 tD=0.00 人 pulse | safe=139607 keep=139607 avail=51133 chunkB=38600 pulseB=23160 低于最小指令(x=5493<9044)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=260883 dq=86.8 cnt=57 | c=280.5 rankC=280.5 need=469558 tD=12.16 人 crowdedHard | safe=139607 keep=Inf avail=-Inf chunkB=38600 pulseB=23160 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1780 ryan_m B=195780 L=8471 d=23.1 nb=3 neut=0 cmds=146 noFull=1 shQ=45552 | m=1.458 worth=33.7 cheap=7.0 over=0 dMedOther=7.2 safe(-1)=138705
+    → Gahhhaha#5[T2] terr=15935 bal=86149 dq=5.4 cnt=111 | c=0.1 rankC=0.1 need=167747 tD=0.75 人 pulse nearCollapse bleeding | safe=138705 keep=138705 avail=54781 chunkB=39156 pulseB=23494 在途(curAtk=9454)→continue hNb=3
+    → Player 726#18[T4] terr=2961 bal=30 dq=0.0 cnt=120 | c=3.0 rankC=3.0 need=4326 tD=0.00 人 pulse | safe=138705 keep=138705 avail=54781 chunkB=39156 pulseB=23494 低于最小指令(x=5551<9176)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=125084 dq=41.6 cnt=58 | c=120.3 rankC=84.2 need=362001 tD=5.78 人 pulse onMe | safe=138705 keep=Inf avail=-Inf chunkB=39156 pulseB=23494 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1785 ryan_m B=195780 L=8581 d=22.8 nb=3 neut=0 cmds=147 noFull=1 shQ=48945 | m=1.457 worth=33.2 cheap=7.0 over=0 dMedOther=7.1 safe(-1)=138612
+    → Gahhhaha#5[T2] terr=16275 bal=83380 dq=5.1 cnt=110 | c=0.1 rankC=0.1 need=165667 tD=0.72 人 pulse nearCollapse bleeding | safe=138612 keep=138612 avail=54874 chunkB=39156 pulseB=23494  x=49700 hNb=3
+    → Player 726#18[T4] terr=2961 bal=30 dq=0.0 cnt=120 | c=3.0 rankC=3.0 need=4328 tD=0.00 人 pulse | safe=138612 keep=138612 avail=54874 chunkB=39156 pulseB=23494 低于最小指令(x=5554<9176)→continue hNb=3
+    → Chernobyl#32[T2] terr=3006 bal=125084 dq=41.6 cnt=58 | c=120.3 rankC=84.2 need=362001 tD=5.82 人 pulse onMe | safe=138612 keep=Inf avail=-Inf chunkB=39156 pulseB=23494 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=259 → Gahhhaha#5[T2]（约 49709 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1790 ryan_m B=194119 L=8678 d=22.4 nb=3 neut=0 cmds=147 noFull=1 shQ=684 | m=1.457 worth=32.6 cheap=7.1 over=0 dMedOther=7.1 safe(-1)=134502
+    → Gahhhaha#5[T2] terr=16320 bal=81430 dq=5.0 cnt=108 | c=0.1 rankC=0.1 need=166087 tD=0.70 人 pulse nearCollapse bleeding | safe=134502 keep=134502 avail=57343 chunkB=38824 pulseB=23294  x=49826 hNb=3
+    → Player 726#18[T4] terr=2961 bal=31 dq=0.0 cnt=120 | c=3.0 rankC=3.0 need=4332 tD=0.00 人 pulse | safe=134502 keep=134502 avail=57343 chunkB=38824 pulseB=23294 低于最小指令(x=5558<9096)→continue hNb=3
+    → Chernobyl#32[T2] terr=3126 bal=126835 dq=40.6 cnt=63 | c=113.8 rankC=79.7 need=356379 tD=5.73 人 pulse onMe | safe=134502 keep=Inf avail=-Inf chunkB=38824 pulseB=23294 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1795 ryan_m B=189506 L=8654 d=21.9 nb=3 neut=0 cmds=147 noFull=1 shQ=4029 | m=1.456 worth=31.9 cheap=7.2 over=0 dMedOther=7.2 safe(-1)=129112
+    → Gahhhaha#5[T2] terr=16698 bal=78728 dq=4.7 cnt=110 | c=0.1 rankC=0.1 need=165373 tD=0.66 人 pulse nearCollapse bleeding | safe=129112 keep=129112 avail=58174 chunkB=37901 pulseB=22741  x=49611 hNb=2
+    → Player 726#18[T4离] terr=2961 bal=31 dq=0.0 cnt=120 | c=3.0 rankC=3.0 need=4336 tD=0.00 机 | safe=129112 keep=129112 avail=58174 chunkB=37901 pulseB=22741  x=5780 hNb=2
+    → Chernobyl#32[T2] terr=3258 bal=126835 dq=38.9 cnt=69 | c=106.3 rankC=74.4 need=346946 tD=5.43 人 pulse onMe | safe=129112 keep=Inf avail=-Inf chunkB=37901 pulseB=22741 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1800 ryan_m B=198164 L=8583 d=23.1 nb=3 neut=0 cmds=147 noFull=1 shQ=7313 | m=1.455 worth=33.6 cheap=7.3 over=0 dMedOther=8.2 safe(-1)=129144
+    → Gahhhaha#5[T2] terr=16929 bal=95159 dq=5.6 cnt=108 | c=0.1 rankC=0.0 need=194856 tD=0.68 人 pulse nearCollapse bleeding | safe=129144 keep=129144 avail=66698 chunkB=39633 pulseB=23780  x=58456 hNb=2
+    → Player 726#18[T4离] terr=2961 bal=2993 dq=1.0 cnt=120 | c=5.4 rankC=5.4 need=9504 tD=0.12 机 | safe=129144 keep=129144 avail=66698 chunkB=39633 pulseB=23780  x=12240 hNb=2
+    → Chernobyl#32[T2] terr=3329 bal=131901 dq=39.6 cnt=69 | c=105.3 rankC=73.7 need=350952 tD=4.81 人 pulse onMe | safe=129144 keep=Inf avail=-Inf chunkB=39633 pulseB=23780 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1805 ryan_m B=192786 L=8437 d=22.9 nb=3 neut=0 cmds=147 noFull=1 shQ=10630 | m=1.454 worth=33.2 cheap=7.4 over=0 dMedOther=8.2 safe(-1)=123060
+    → Gahhhaha#5[T2] terr=17441 bal=93808 dq=5.4 cnt=102 | c=0.1 rankC=0.0 need=193364 tD=0.66 人 pulse nearCollapse bleeding | safe=123060 keep=123060 avail=67467 chunkB=38557 pulseB=23134  x=58009 hNb=2
+    → Player 726#18[T4离] terr=2852 bal=2819 dq=1.0 cnt=116 | c=5.4 rankC=5.4 need=8942 tD=0.12 机 | safe=123060 keep=123060 avail=67467 chunkB=38557 pulseB=23134  x=11525 hNb=2
+    → Chernobyl#32[T2] terr=3475 bal=131901 dq=38.0 cnt=71 | c=97.7 rankC=68.4 need=340150 tD=4.64 人 pulse onMe | safe=123060 keep=Inf avail=-Inf chunkB=38557 pulseB=23134 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1810 ryan_m B=189865 L=8288 d=22.9 nb=3 neut=0 cmds=148 noFull=1 shQ=13844 | m=1.454 worth=33.3 cheap=7.4 over=0 dMedOther=8.3 safe(-1)=117867
+    → Gahhhaha#5[T2] terr=17046 bal=91853 dq=5.4 cnt=102 | c=0.1 rankC=0.1 need=188353 tD=0.65 人 pulse nearCollapse bleeding | safe=117867 keep=117867 avail=69774 chunkB=37973 pulseB=22784  x=56505 hNb=2
+    → Player 726#18[T4离] terr=2799 bal=2737 dq=1.0 cnt=113 | c=5.4 rankC=5.4 need=8675 tD=0.12 机 | safe=117867 keep=117867 avail=69774 chunkB=37973 pulseB=22784  x=11182 hNb=2
+    → Chernobyl#32[T2] terr=3624 bal=133668 dq=36.9 cnt=76 | c=91.5 rankC=64.1 need=332248 tD=4.47 人 pulse onMe | safe=117867 keep=Inf avail=-Inf chunkB=37973 pulseB=22784 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=304 → Gahhhaha#5[T2]（约 56551 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1815 ryan_m B=186970 L=8209 d=22.8 nb=3 neut=0 cmds=148 noFull=1 shQ=1242 | m=1.453 worth=33.1 cheap=7.5 over=0 dMedOther=8.2 safe(-1)=114592
+    → Gahhhaha#5[T2] terr=16588 bal=87931 dq=5.3 cnt=101 | c=0.1 rankC=0.0 need=179613 tD=0.65 人 pulse nearCollapse bleeding | safe=114592 keep=114592 avail=70187 chunkB=37394 pulseB=22436  x=53883 hNb=2
+    → Player 726#18[T4离] terr=2694 bal=2575 dq=1.0 cnt=112 | c=5.4 rankC=5.4 need=8148 tD=0.12 机 | safe=114592 keep=114592 avail=70187 chunkB=37394 pulseB=22436  x=10521 hNb=2
+    → Chernobyl#32[T2] terr=3703 bal=133668 dq=36.1 cnt=79 | c=88.0 rankC=61.6 need=326458 tD=4.40 人 pulse onMe | safe=114592 keep=Inf avail=-Inf chunkB=37394 pulseB=22436 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1820 ryan_m B=183273 L=8042 d=22.8 nb=3 neut=0 cmds=148 noFull=1 shQ=4263 | m=1.452 worth=33.1 cheap=7.6 over=0 dMedOther=8.3 safe(-1)=108713
+    → Gahhhaha#5[T2] terr=16413 bal=87584 dq=5.3 cnt=95 | c=0.1 rankC=0.1 need=178307 tD=0.64 人 pulse nearCollapse bleeding | safe=108713 keep=108713 avail=72413 chunkB=36655 pulseB=21993  x=53492 hNb=2
+    → Player 726#18[T4离] terr=2584 bal=2409 dq=0.9 cnt=109 | c=5.4 rankC=5.4 need=7599 tD=0.11 机 | safe=108713 keep=108713 avail=72413 chunkB=36655 pulseB=21993  x=9826 hNb=2
+    → Chernobyl#32[T2] terr=3870 bal=135419 dq=35.0 cnt=80 | c=81.8 rankC=57.3 need=317349 tD=4.23 人 pulse onMe | safe=108713 keep=Inf avail=-Inf chunkB=36655 pulseB=21993 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1825 ryan_m B=177241 L=7876 d=22.5 nb=3 neut=0 cmds=148 noFull=1 shQ=7199 | m=1.451 worth=32.7 cheap=7.7 over=0 dMedOther=8.2 safe(-1)=121853
+    → Gahhhaha#5[T2] terr=16234 bal=86061 dq=5.3 cnt=93 | c=0.1 rankC=0.1 need=174913 tD=0.64 人 pulse nearCollapse bleeding | safe=121853 keep=121853 avail=53311 chunkB=35448 pulseB=21269  x=52473 hNb=2
+    → Player 726#18[T4离] terr=2528 bal=2264 dq=0.9 cnt=107 | c=5.3 rankC=5.3 need=7221 tD=0.11 机 | safe=121853 keep=121853 avail=53311 chunkB=35448 pulseB=21269  x=9347 hNb=2
+    → Chernobyl#32[T2] terr=4036 bal=135419 dq=33.6 cnt=83 | c=75.5 rankC=52.8 need=305177 tD=4.08 人 pulse onMe | safe=121853 keep=Inf avail=-Inf chunkB=35448 pulseB=21269 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1830 ryan_m B=176410 L=7791 d=22.6 nb=3 neut=0 cmds=148 noFull=1 shQ=10023 | m=1.451 worth=32.8 cheap=7.8 over=0 dMedOther=8.3 safe(-1)=122878
+    → Gahhhaha#5[T2] terr=15778 bal=83271 dq=5.3 cnt=92 | c=0.1 rankC=0.0 need=168164 tD=0.64 人 pulse nearCollapse bleeding | safe=122878 keep=122878 avail=51465 chunkB=35282 pulseB=21169  x=50449 hNb=2
+    → Player 726#18[T4离] terr=2470 bal=0 dq=0.0 cnt=102 | c=3.2 rankC=3.2 need=3316 tD=0.00 机 | safe=122878 keep=122878 avail=51465 chunkB=35282 pulseB=21169  x=4451 hNb=2
+    → Chernobyl#32[T2] terr=4121 bal=137152 dq=33.3 cnt=81 | c=73.2 rankC=51.2 need=302115 tD=4.01 人 pulse onMe | safe=122878 keep=Inf avail=-Inf chunkB=35282 pulseB=21169 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1835 ryan_m B=5002 L=7626 d=0.7 nb=3 neut=0 cmds=148 noFull=1 shQ=2048 | m=1.450 worth=1.0 cheap=7.9 over=0 dMedOther=8.3 safe(-1)=95228
+    → Gahhhaha#5[T2] terr=15604 bal=81807 dq=5.2 cnt=89 | c=0.0 rankC=0.0 need=5090 tD=0.63 人 pulse nearCollapse bleeding | safe=95228 keep=95228 avail=-90284 chunkB=1000 pulseB=600 无可用(avail<=0) hNb=2
+    → Player 726#18[T4离] terr=2354 bal=0 dq=0.0 cnt=96 | c=2.0 rankC=2.0 need=3088 tD=0.00 机 | safe=95228 keep=95228 avail=-90284 chunkB=1000 pulseB=600 无可用(avail<=0) hNb=2
+    → Chernobyl#32[T2] terr=4286 bal=137152 dq=32.0 cnt=82 | c=67.1 rankC=47.0 need=290130 tD=3.87 人 pulse onMe | safe=95228 keep=Inf avail=-Inf chunkB=1000 pulseB=600 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1840 ryan_m B=4888 L=7459 d=0.7 nb=3 neut=0 cmds=148 noFull=1 shQ=2048 | m=1.449 worth=0.9 cheap=8.0 over=0 dMedOther=8.3 safe(-1)=96418
+    → Gahhhaha#5[T2] terr=15361 bal=80775 dq=5.3 cnt=86 | c=0.0 rankC=0.0 need=2285 tD=0.63 人 pulse nearCollapse bleeding | safe=96418 keep=96418 avail=-91587 chunkB=978 pulseB=587 无可用(avail<=0) hNb=2
+    → Player 726#18[T4离] terr=2245 bal=0 dq=0.0 cnt=81 | c=2.0 rankC=2.0 need=2872 tD=0.00 机 | safe=96418 keep=96418 avail=-91587 chunkB=978 pulseB=587 无可用(avail<=0) hNb=2
+    → Chernobyl#32[T2] terr=4453 bal=138866 dq=31.2 cnt=82 | c=65.2 rankC=45.6 need=292739 tD=3.74 人 pulse onMe | safe=96418 keep=Inf avail=-Inf chunkB=978 pulseB=587 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1845 ryan_m B=4801 L=7547 d=0.6 nb=3 neut=0 cmds=148 noFull=1 shQ=2048 | m=1.448 worth=0.9 cheap=8.1 over=0 dMedOther=8.3 safe(-1)=96418
+    → Player 726#18[T4离] terr=2104 bal=0 dq=0.0 cnt=70 | c=2.0 rankC=2.0 need=2592 tD=0.00 机 | safe=96418 keep=96418 avail=-91673 chunkB=960 pulseB=576 无可用(avail<=0) hNb=2
+    → Chernobyl#32[T2] terr=4537 bal=138866 dq=30.6 cnt=84 | c=63.9 rankC=44.8 need=292523 tD=3.69 人 pulse onMe | safe=96418 keep=Inf avail=-Inf chunkB=960 pulseB=576 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1850 ryan_m B=4685 L=7462 d=0.6 nb=3 neut=0 cmds=148 noFull=1 shQ=2048 | m=1.448 worth=0.9 cheap=8.2 over=0 dMedOther=9.1 safe(-1)=97594
+    → Player 726#18[T4离] terr=2014 bal=0 dq=0.0 cnt=67 | c=2.0 rankC=2.0 need=2414 tD=0.00 机 | safe=97594 keep=97594 avail=-92963 chunkB=937 pulseB=562 无可用(avail<=0) hNb=2
+    → Chernobyl#32[T2] terr=4824 bal=66437 dq=13.8 cnt=83 | c=33.6 rankC=23.5 need=163160 tD=1.51 人 pulse onMe | safe=97594 keep=Inf avail=-Inf chunkB=937 pulseB=562 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1855 ryan_m B=4516 L=7462 d=0.6 nb=3 neut=0 cmds=148 noFull=1 shQ=2048 | m=1.447 worth=0.9 cheap=8.3 over=0 dMedOther=9.2 safe(-1)=97594
+    → Player 726#18[T4离] terr=1879 bal=0 dq=0.0 cnt=59 | c=2.0 rankC=2.0 need=2148 tD=0.00 机 | safe=97594 keep=97594 avail=-93130 chunkB=903 pulseB=542 无可用(avail<=0) hNb=2
+    → Chernobyl#32[T2] terr=5237 bal=66437 dq=12.7 cnt=88 | c=30.9 rankC=21.6 need=163100 tD=1.38 人 pulse onMe | safe=97594 keep=Inf avail=-Inf chunkB=903 pulseB=542 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1860 ryan_m B=4481 L=7543 d=0.6 nb=3 neut=0 cmds=148 noFull=1 shQ=2048 | m=1.446 worth=0.9 cheap=8.4 over=0 dMedOther=9.2 safe(-1)=98755
+    → Player 726#18[T4离] terr=1794 bal=0 dq=0.0 cnt=55 | c=2.0 rankC=2.0 need=1980 tD=0.00 机 | safe=98755 keep=98755 avail=-94326 chunkB=896 pulseB=538 无可用(avail<=0) hNb=2
+    → Chernobyl#32[T2] terr=5453 bal=67227 dq=12.3 cnt=93 | c=29.9 rankC=20.9 need=164476 tD=1.34 人 pulse onMe | safe=98755 keep=Inf avail=-Inf chunkB=896 pulseB=538 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1865 ryan_m B=4302 L=7439 d=0.6 nb=3 neut=0 cmds=148 noFull=1 shQ=2048 | m=1.445 worth=0.8 cheap=8.5 over=0 dMedOther=8.9 safe(-1)=98755
+    → Player 726#18[T4离] terr=1672 bal=0 dq=0.0 cnt=50 | c=2.0 rankC=2.0 need=1738 tD=0.00 机 | safe=98755 keep=98755 avail=-94503 chunkB=860 pulseB=516 无可用(avail<=0) hNb=2
+    → Chernobyl#32[T2] terr=5904 bal=67227 dq=11.4 cnt=99 | c=27.6 rankC=19.3 need=164408 tD=1.28 人 pulse onMe | safe=98755 keep=Inf avail=-Inf chunkB=860 pulseB=516 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1870 ryan_m B=4166 L=7409 d=0.6 nb=3 neut=0 cmds=148 noFull=1 shQ=2048 | m=1.445 worth=0.8 cheap=8.6 over=0 dMedOther=8.9 safe(-1)=99890
+    → Player 726#18[T4离] terr=1594 bal=0 dq=0.0 cnt=47 | c=2.0 rankC=2.0 need=1584 tD=0.00 机 | safe=99890 keep=99890 avail=-95772 chunkB=833 pulseB=500 无可用(avail<=0) hNb=2
+    → Chernobyl#32[T2] terr=6372 bal=68000 dq=10.7 cnt=105 | c=25.8 rankC=18.0 need=165714 tD=1.20 人 pulse onMe | safe=99890 keep=Inf avail=-Inf chunkB=833 pulseB=500 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1875 ryan_m B=4071 L=7477 d=0.5 nb=3 neut=0 cmds=148 noFull=1 shQ=2048 | m=1.444 worth=0.8 cheap=8.6 over=0 dMedOther=8.8 safe(-1)=99890
+    → Player 726#18[T4离] terr=1476 bal=0 dq=0.0 cnt=45 | c=2.0 rankC=2.0 need=1352 tD=0.00 机 | safe=99890 keep=99890 avail=-95866 chunkB=814 pulseB=489 无可用(avail<=0) hNb=2
+    → Chernobyl#32[T2] terr=6610 bal=68000 dq=10.3 cnt=109 | c=24.8 rankC=17.4 need=165675 tD=1.17 人 pulse onMe | safe=99890 keep=Inf avail=-Inf chunkB=814 pulseB=489 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1880 ryan_m B=3923 L=7340 d=0.5 nb=3 neut=0 cmds=148 noFull=1 shQ=2048 | m=1.443 worth=0.8 cheap=8.6 over=0 dMedOther=8.7 safe(-1)=51399
+    → Player 726#18[T4离] terr=1395 bal=0 dq=0.0 cnt=44 | c=2.0 rankC=2.0 need=1192 tD=0.00 机 | safe=51399 keep=51399 avail=-47521 chunkB=785 pulseB=471 无可用(avail<=0) hNb=2
+    → Chernobyl#32[T2] terr=7096 bal=68782 dq=9.7 cnt=114 | c=23.3 rankC=16.3 need=166957 tD=1.11 人 pulse onMe | safe=51399 keep=Inf avail=-Inf chunkB=785 pulseB=471 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1885 ryan_m B=3725 L=7278 d=0.5 nb=3 neut=0 cmds=148 noFull=1 shQ=2048 | m=1.442 worth=0.7 cheap=8.6 over=0 dMedOther=8.7 safe(-1)=50962
+    → Player 726#18[T4离] terr=1268 bal=0 dq=0.0 cnt=43 | c=2.0 rankC=2.0 need=940 tD=0.00 机 | safe=50962 keep=50962 avail=-47280 chunkB=745 pulseB=447 无可用(avail<=0) hNb=2
+    → Chernobyl#32[T2] terr=7607 bal=68782 dq=9.0 cnt=122 | c=21.7 rankC=15.2 need=166863 tD=1.04 人 pulse onMe | safe=50962 keep=Inf avail=-Inf chunkB=745 pulseB=447 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1890 ryan_m B=3667 L=7324 d=0.5 nb=3 neut=0 cmds=148 noFull=1 shQ=2048 | m=1.442 worth=0.7 cheap=8.6 over=0 dMedOther=8.6 safe(-1)=51125
+    → Player 726#18[T4离] terr=1180 bal=0 dq=0.0 cnt=39 | c=2.0 rankC=2.0 need=768 tD=0.00 机 | safe=51125 keep=51125 avail=-47500 chunkB=733 pulseB=440 无可用(avail<=0) hNb=2
+    → Chernobyl#32[T2] terr=7870 bal=69586 dq=8.8 cnt=121 | c=21.2 rankC=14.8 need=168243 tD=1.03 人 pulse onMe | safe=51125 keep=Inf avail=-Inf chunkB=733 pulseB=440 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1895 ryan_m B=3477 L=7163 d=0.5 nb=3 neut=0 cmds=148 noFull=1 shQ=2048 | m=1.441 worth=0.7 cheap=8.6 over=0 dMedOther=8.3 safe(-1)=50778
+    → Player 726#18[T4离] terr=1062 bal=0 dq=0.0 cnt=29 | c=2.0 rankC=2.0 need=536 tD=0.00 机 | safe=50778 keep=50778 avail=-47341 chunkB=695 pulseB=417 无可用(avail<=0) hNb=2
+    → Chernobyl#32[T2] terr=8398 bal=69586 dq=8.3 cnt=119 | c=19.8 rankC=13.9 need=168174 tD=1.00 人 pulse onMe | safe=50778 keep=Inf avail=-Inf chunkB=695 pulseB=417 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1900 ryan_m B=10327 L=7070 d=1.5 nb=3 neut=0 cmds=148 noFull=1 shQ=2077 | m=1.440 worth=2.1 cheap=8.6 over=0 dMedOther=9.4 safe(-1)=60488
+    → Player 726#18[T4离] terr=987 bal=0 dq=0.0 cnt=24 | c=2.4 rankC=2.4 need=392 tD=0.00 机 | safe=60488 keep=60488 avail=-50282 chunkB=2065 pulseB=1239 无可用(avail<=0) hNb=2
+    → Chernobyl#32[T2] terr=8933 bal=79064 dq=8.9 cnt=121 | c=20.5 rankC=14.3 need=184623 tD=0.94 人 pulse onMe | safe=60488 keep=Inf avail=-Inf chunkB=2065 pulseB=1239 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1905 ryan_m B=10045 L=7076 d=1.4 nb=3 neut=0 cmds=148 noFull=1 shQ=2222 | m=1.439 worth=2.0 cheap=8.6 over=0 dMedOther=9.3 safe(-1)=55023
+    → Player 726#18[T4离] terr=876 bal=0 dq=0.0 cnt=23 | c=2.8 rankC=2.8 need=174 tD=0.00 机 | safe=55023 keep=55023 avail=-45095 chunkB=2009 pulseB=1205 无可用(avail<=0) hNb=2
+    → Chernobyl#32[T2] terr=9197 bal=79064 dq=8.6 cnt=117 | c=19.9 rankC=13.9 need=184211 tD=0.92 人 pulse onMe | safe=55023 keep=Inf avail=-Inf chunkB=2009 pulseB=1205 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1910 ryan_m B=9600 L=6889 d=1.4 nb=3 neut=0 cmds=148 noFull=1 shQ=2360 | m=1.439 worth=2.0 cheap=8.6 over=0 dMedOther=9.4 safe(-1)=54881
+    → Player 726#18[T4离] terr=824 bal=0 dq=0.0 cnt=19 | c=3.6 rankC=3.6 need=76 tD=0.00 机 | safe=54881 keep=54881 avail=-45393 chunkB=1920 pulseB=1152 无可用(avail<=0) hNb=2
+    → Chernobyl#32[T2] terr=9710 bal=79996 dq=8.2 cnt=112 | c=18.9 rankC=13.2 need=185179 tD=0.88 人 pulse onMe | safe=54881 keep=Inf avail=-Inf chunkB=1920 pulseB=1152 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1915 ryan_m B=9121 L=6782 d=1.3 nb=2 neut=17 cmds=148 noFull=1 shQ=2280 | m=1.438 worth=1.9 cheap=8.6 over=0 dMedOther=8.5 safe(-1)=54187
+    → Chernobyl#32[T2] terr=10207 bal=79996 dq=7.8 cnt=108 | c=17.9 rankC=12.6 need=184531 tD=0.92 人 pulse onMe | safe=54187 keep=Inf avail=-Inf chunkB=1824 pulseB=1095 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1920 ryan_m B=2587 L=6692 d=0.4 nb=2 neut=18 cmds=148 noFull=1 shQ=2048 | m=1.437 worth=0.6 cheap=8.6 over=0 dMedOther=8.5 safe(-1)=54228
+    → Chernobyl#32[T2] terr=10710 bal=80955 dq=7.6 cnt=109 | c=17.2 rankC=12.1 need=185971 tD=0.89 人 pulse onMe | safe=54228 keep=Inf avail=-Inf chunkB=517 pulseB=310 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1925 ryan_m B=2459 L=6543 d=0.4 nb=2 neut=21 cmds=148 noFull=1 shQ=2048 | m=1.436 worth=0.5 cheap=8.6 over=0 dMedOther=8.4 safe(-1)=53974
+    → Chernobyl#32[T2] terr=11219 bal=80955 dq=7.2 cnt=101 | c=16.5 rankC=11.5 need=186062 tD=0.86 人 pulse onMe | safe=53974 keep=Inf avail=-Inf chunkB=492 pulseB=295 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1930 ryan_m B=2308 L=6360 d=0.4 nb=2 neut=20 cmds=148 noFull=1 shQ=2048 | m=1.435 worth=0.5 cheap=8.8 over=0 dMedOther=8.5 safe(-1)=54134
+    → Chernobyl#32[T2] terr=11906 bal=81926 dq=6.9 cnt=98 | c=15.7 rankC=11.0 need=187860 tD=0.81 人 pulse onMe | safe=54134 keep=Inf avail=-Inf chunkB=462 pulseB=277 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1935 ryan_m B=2197 L=6280 d=0.3 nb=2 neut=22 cmds=148 noFull=1 shQ=2048 | m=1.435 worth=0.5 cheap=8.8 over=0 dMedOther=8.1 safe(-1)=53857
+    → Chernobyl#32[T2] terr=12351 bal=81926 dq=6.6 cnt=97 | c=15.1 rankC=10.6 need=187916 tD=0.82 人 pulse onMe | safe=53857 keep=Inf avail=-Inf chunkB=439 pulseB=264 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1940 ryan_m B=2057 L=6040 d=0.3 nb=2 neut=19 cmds=148 noFull=1 shQ=2048 | m=1.434 worth=0.5 cheap=8.8 over=0 dMedOther=8.1 safe(-1)=54098
+    → Chernobyl#32[T2] terr=13037 bal=82917 dq=6.4 cnt=101 | c=14.5 rankC=10.1 need=189783 tD=0.78 人 pulse onMe | safe=54098 keep=Inf avail=-Inf chunkB=411 pulseB=247 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1945 ryan_m B=1951 L=5941 d=0.3 nb=2 neut=11 cmds=148 noFull=1 shQ=2048 | m=1.433 worth=0.5 cheap=8.8 over=0 dMedOther=8.1 safe(-1)=53838
+    → Chernobyl#32[T2] terr=13512 bal=82917 dq=6.1 cnt=99 | c=14.0 rankC=9.8 need=189883 tD=0.76 人 pulse onMe | safe=53838 keep=Inf avail=-Inf chunkB=390 pulseB=234 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1950 ryan_m B=1820 L=5729 d=0.3 nb=2 neut=9 cmds=148 noFull=1 shQ=2048 | m=1.433 worth=0.5 cheap=8.8 over=0 dMedOther=8.1 safe(-1)=54081
+    → Chernobyl#32[T2] terr=14246 bal=83928 dq=5.9 cnt=99 | c=13.4 rankC=9.4 need=191893 tD=0.73 人 pulse onMe | safe=54081 keep=Inf avail=-Inf chunkB=364 pulseB=218 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1955 ryan_m B=1721 L=5568 d=0.3 nb=2 neut=7 cmds=148 noFull=1 shQ=2048 | m=1.432 worth=0.4 cheap=8.8 over=0 dMedOther=8.1 safe(-1)=53880
+    → Chernobyl#32[T2] terr=14743 bal=83928 dq=5.7 cnt=100 | c=12.9 rankC=9.1 need=192043 tD=0.71 人 pulse onMe | safe=53880 keep=Inf avail=-Inf chunkB=344 pulseB=207 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1960 ryan_m B=1594 L=5336 d=0.3 nb=2 neut=6 cmds=148 noFull=1 shQ=2048 | m=1.431 worth=0.4 cheap=8.8 over=0 dMedOther=8.1 safe(-1)=54153
+    → Chernobyl#32[T2] terr=15495 bal=84960 dq=5.5 cnt=100 | c=12.5 rankC=8.7 need=194116 tD=0.68 人 pulse onMe | safe=54153 keep=Inf avail=-Inf chunkB=319 pulseB=191 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1965 ryan_m B=1501 L=5200 d=0.3 nb=2 neut=5 cmds=148 noFull=1 shQ=2048 | m=1.430 worth=0.4 cheap=8.9 over=0 dMedOther=8.1 safe(-1)=53941
+    → Chernobyl#32[T2] terr=16002 bal=84960 dq=5.3 cnt=100 | c=12.1 rankC=8.4 need=194292 tD=0.66 人 pulse onMe | safe=53941 keep=Inf avail=-Inf chunkB=300 pulseB=180 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1970 ryan_m B=1383 L=4932 d=0.3 nb=2 neut=3 cmds=148 noFull=1 shQ=2048 | m=1.429 worth=0.4 cheap=8.9 over=0 dMedOther=8.1 safe(-1)=54276
+    → Chernobyl#32[T2] terr=16746 bal=86013 dq=5.1 cnt=99 | c=11.7 rankC=8.2 need=196427 tD=0.63 人 pulse onMe | safe=54276 keep=Inf avail=-Inf chunkB=277 pulseB=166 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1975 ryan_m B=1297 L=4784 d=0.3 nb=1 neut=21 cmds=148 noFull=1 shQ=2048 | m=1.429 worth=0.4 cheap=8.9 over=0 dMedOther=8.8 safe(-1)=54083
+    → Chernobyl#32[T2] terr=17243 bal=86013 dq=5.0 cnt=97 | c=11.3 rankC=7.9 need=196609 tD=0.57 人 pulse onMe | safe=54083 keep=Inf avail=-Inf chunkB=259 pulseB=156 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1980 ryan_m B=1188 L=4536 d=0.3 nb=1 neut=18 cmds=148 noFull=1 shQ=2048 | m=1.428 worth=0.4 cheap=8.9 over=0 dMedOther=8.8 safe(-1)=54435
+    → Chernobyl#32[T2] terr=17986 bal=87088 dq=4.8 cnt=95 | c=11.0 rankC=7.7 need=198817 tD=0.55 人 pulse onMe | safe=54435 keep=Inf avail=-Inf chunkB=238 pulseB=143 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1985 ryan_m B=1111 L=4366 d=0.3 nb=1 neut=16 cmds=148 noFull=1 shQ=2048 | m=1.427 worth=0.4 cheap=8.9 over=0 dMedOther=8.8 safe(-1)=54281
+    → Chernobyl#32[T2] terr=18472 bal=87088 dq=4.7 cnt=94 | c=10.7 rankC=7.5 need=199011 tD=0.54 人 pulse onMe | safe=54281 keep=Inf avail=-Inf chunkB=222 pulseB=133 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1990 ryan_m B=1010 L=4115 d=0.2 nb=1 neut=14 cmds=148 noFull=1 shQ=2048 | m=1.427 worth=0.4 cheap=8.9 over=0 dMedOther=9.4 safe(-1)=54666
+    → Chernobyl#32[T2] terr=19186 bal=88185 dq=4.6 cnt=94 | c=10.4 rankC=7.3 need=201254 tD=0.49 人 pulse onMe | safe=54666 keep=Inf avail=-Inf chunkB=202 pulseB=121 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1995 ryan_m B=936 L=3951 d=0.2 nb=1 neut=12 cmds=148 noFull=1 shQ=2048 | m=1.426 worth=0.3 cheap=8.9 over=0 dMedOther=9.4 safe(-1)=54506
+    → Chernobyl#32[T2] terr=19662 bal=88185 dq=4.5 cnt=96 | c=10.2 rankC=7.1 need=201438 tD=0.48 人 pulse onMe | safe=54506 keep=Inf avail=-Inf chunkB=187 pulseB=112 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2000 ryan_m B=4445 L=3668 d=1.2 nb=1 neut=10 cmds=148 noFull=1 shQ=2048 | m=1.425 worth=1.7 cheap=9.1 over=0 dMedOther=10.5 safe(-1)=66050
+    → Chernobyl#32[T2] terr=20354 bal=109430 dq=5.4 cnt=99 | c=11.7 rankC=8.2 need=239221 tD=0.51 人 pulse onMe | safe=66050 keep=Inf avail=-Inf chunkB=889 pulseB=533 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2005 ryan_m B=4061 L=3486 d=1.2 nb=1 neut=8 cmds=148 noFull=1 shQ=2048 | m=1.420 worth=1.7 cheap=9.1 over=0 dMedOther=10.4 safe(-1)=65546
+    → Chernobyl#32[T2] terr=20810 bal=109430 dq=5.3 cnt=101 | c=11.4 rankC=8.0 need=238735 tD=0.51 人 pulse onMe | safe=65546 keep=Inf avail=-Inf chunkB=812 pulseB=487 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2010 ryan_m B=3535 L=3190 d=1.1 nb=1 neut=6 cmds=148 noFull=1 shQ=2048 | m=1.415 worth=1.6 cheap=9.1 over=0 dMedOther=10.5 safe(-1)=32764
+    → Chernobyl#32[T2] terr=21581 bal=52386 dq=2.4 cnt=102 | c=6.3 rankC=4.4 need=136463 tD=0.23 人 pulse onMe | safe=32764 keep=32764 avail=-29270 chunkB=707 pulseB=424 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2015 ryan_m B=3184 L=2994 d=1.1 nb=1 neut=4 cmds=148 noFull=1 shQ=2048 | m=1.409 worth=1.5 cheap=9.1 over=0 dMedOther=10.4 safe(-1)=32309
+    → Chernobyl#32[T2] terr=22127 bal=52386 dq=2.4 cnt=99 | c=6.1 rankC=4.3 need=136180 tD=0.23 人 pulse onMe | safe=32309 keep=32309 avail=-29162 chunkB=637 pulseB=382 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2020 ryan_m B=2732 L=2712 d=1.0 nb=1 neut=14 cmds=148 noFull=1 shQ=2048 | m=1.404 worth=1.4 cheap=9.1 over=0 dMedOther=10.5 safe(-1)=32057
+    → Chernobyl#32[T2] terr=22834 bal=53061 dq=2.3 cnt=94 | c=6.0 rankC=4.2 need=136897 tD=0.22 人 pulse onMe | safe=32057 keep=32057 avail=-29357 chunkB=546 pulseB=328 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2025 ryan_m B=2444 L=2540 d=1.0 nb=1 neut=11 cmds=148 noFull=1 shQ=2048 | m=1.399 worth=1.3 cheap=9.3 over=0 dMedOther=10.5 safe(-1)=31675
+    → Chernobyl#32[T2] terr=23247 bal=53061 dq=2.3 cnt=87 | c=5.8 rankC=4.1 need=136579 tD=0.22 人 pulse onMe | safe=31675 keep=31675 avail=-29259 chunkB=489 pulseB=293 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2030 ryan_m B=2082 L=2290 d=0.9 nb=1 neut=8 cmds=148 noFull=1 shQ=2048 | m=1.393 worth=1.3 cheap=9.3 over=0 dMedOther=10.6 safe(-1)=31553
+    → Chernobyl#32[T2] terr=23778 bal=53750 dq=2.3 cnt=79 | c=5.7 rankC=4.0 need=137321 tD=0.21 人 pulse onMe | safe=31553 keep=31553 avail=-29495 chunkB=416 pulseB=250 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2035 ryan_m B=1853 L=2143 d=0.9 nb=1 neut=7 cmds=148 noFull=1 shQ=2048 | m=1.388 worth=1.2 cheap=9.3 over=0 dMedOther=10.5 safe(-1)=31238
+    → Chernobyl#32[T2] terr=24099 bal=53750 dq=2.2 cnt=81 | c=5.7 rankC=4.0 need=137023 tD=0.21 人 pulse onMe | safe=31238 keep=31238 avail=-29406 chunkB=371 pulseB=222 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令

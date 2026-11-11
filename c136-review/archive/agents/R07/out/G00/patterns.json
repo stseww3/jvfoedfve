@@ -1,0 +1,421 @@
+{
+ "matchId": "G00",
+ "cohort": "squad8",
+ "result": "lost",
+ "endTick": 5506,
+ "actualTeams": 3,
+ "squadBots": 8,
+ "patterns": {
+  "R07-IO-CRASH": {
+   "errors": 223,
+   "bots": 4,
+   "cmdsResets": 0
+  },
+  "R07-IO-DUP-ASSIST": {
+   "bursts": 0,
+   "cmds": 0,
+   "assistTotal": 0
+  },
+  "R07-DN-CHAIN18": {
+   "pairs": 4
+  },
+  "R07-DN-TAX51": {
+   "n": 9,
+   "amt": 172033,
+   "fee": 211734,
+   "allN": 9,
+   "allAmt": 172033,
+   "allFee": 211734,
+   "rejFlag": 1
+  },
+  "R07-EC-BOXED-RICH": {
+   "snaps": 2,
+   "sumBal": 499146
+  },
+  "R07-EC-SOFTCAP": {
+   "snaps": 3
+  },
+  "R07-EC-HARDCAP": {
+   "snaps": 0
+  },
+  "R07-EC-IDLE-RICH": {
+   "windows": 7
+  },
+  "R07-DF-PASSIVE-BLEED": {
+   "windows": 7,
+   "px": 5056
+  },
+  "R07-DF-RICH-BLEED": {
+   "windows": 0,
+   "px": 0,
+   "sumBal0": 0
+  },
+  "R07-AT-BIG-BURN": {
+   "windows": 2,
+   "sumDrop": 745251
+  },
+  "R07-DN-IDLE-RECV": {
+   "denseN": 0,
+   "denseAmt": 0,
+   "denseFee": 0,
+   "staleN": 3,
+   "staleAmt": 44138,
+   "staleFee": 54325
+  },
+  "R07-DN-PINGPONG": {
+   "n": 0,
+   "amt": 0,
+   "fee": 0
+  },
+  "R07-DN-DEAD-RECV": {
+   "n": 3,
+   "amt": 80698,
+   "fee": 99321
+  },
+  "R07-OP-BOXED-EARLY": {
+   "bots": 3,
+   "list": [
+    {
+     "bot": "leo_tx",
+     "t": 1530,
+     "terr": 3511
+    },
+    {
+     "bot": "lucas94",
+     "t": 1080,
+     "terr": 4990
+    },
+    {
+     "bot": "dave_w",
+     "t": 1260,
+     "terr": 6597
+    }
+   ]
+  },
+  "R07-SP-CLUSTER": {
+   "bots": 8,
+   "closeLt140": 0,
+   "medianNearest": 474
+  },
+  "R07-SP-SCATTER": {
+   "bots": 8,
+   "farGe300": 4,
+   "farList": [
+    "ryan_m",
+    "lucas94",
+    "mark07",
+    "dave_w"
+   ],
+   "earlyGone": 2,
+   "list": [
+    {
+     "bot": "lucas94",
+     "t": 1890
+    },
+    {
+     "bot": "mark07",
+     "t": 1710
+    }
+   ]
+  },
+  "R07-EC-NO-OUTLET": {
+   "spans": 0,
+   "snaps": 0,
+   "maxBal1": 0
+  },
+  "R07-EC-NEUT-LOCK": {
+   "spans": 1,
+   "snaps": 7,
+   "maxBal1": 166513
+  },
+  "R07-EG-FRONT-STARVE": {
+   "snaps": 6,
+   "px": 11980
+  },
+  "R07-MT-PRE2400-HOLD": {
+   "tNeut0": 1260,
+   "share0": 9.31,
+   "share2400": 2.41,
+   "nbWindows": 49,
+   "idleNbWindows": 32
+  },
+  "R07-GOOD-SAVED-PUSH": {
+   "n": 1,
+   "px": 1555
+  },
+  "R07-GOOD-BOXED-BOAT": {
+   "bots": 0,
+   "px": 0
+  }
+ },
+ "instances": {
+  "R07-DN-CHAIN18": [
+   {
+    "bot": "leo_tx",
+    "t0": 3364,
+    "t1": 3382
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 3382,
+    "t1": 3400
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 3400,
+    "t1": 3420
+   },
+   {
+    "bot": "leo_tx",
+    "t0": 3550,
+    "t1": 3568
+   }
+  ],
+  "R07-AT-BIG-BURN": [
+   {
+    "bot": "kevin_k",
+    "t0": 2970,
+    "bal0": 373736,
+    "bal1": 152036,
+    "dTerr": 478,
+    "dAtk": 7,
+    "assist": 0
+   },
+   {
+    "bot": "ryan_m",
+    "t0": 2430,
+    "bal0": 523593,
+    "bal1": 42,
+    "dTerr": -618,
+    "dAtk": 4,
+    "assist": 0
+   }
+  ],
+  "R07-DF-PASSIVE-BLEED": [
+   {
+    "bot": "kevin_k",
+    "t0": 3240,
+    "dTerr": -281,
+    "bal0": 79874,
+    "dens0": 12.6
+   },
+   {
+    "bot": "ethan21",
+    "t0": 1710,
+    "dTerr": -498,
+    "bal0": 141915,
+    "dens0": 14.7
+   },
+   {
+    "bot": "lucas94",
+    "t0": 1710,
+    "dTerr": -1002,
+    "bal0": 36591,
+    "dens0": 9.1
+   },
+   {
+    "bot": "lucas94",
+    "t0": 1800,
+    "dTerr": -806,
+    "bal0": 29373,
+    "dens0": 9.8
+   },
+   {
+    "bot": "dave_w",
+    "t0": 2340,
+    "dTerr": -1310,
+    "bal0": 78534,
+    "dens0": 9.6
+   },
+   {
+    "bot": "dave_w",
+    "t0": 2430,
+    "dTerr": -878,
+    "bal0": 95975,
+    "dens0": 13.9
+   },
+   {
+    "bot": "dave_w",
+    "t0": 2520,
+    "dTerr": -281,
+    "bal0": 116376,
+    "dens0": 19.4
+   }
+  ],
+  "R07-EC-IDLE-RICH": [
+   {
+    "bot": "ryan_m",
+    "t0": 1800,
+    "dens": 61.7,
+    "bal": 305864,
+    "dTerr": 0
+   },
+   {
+    "bot": "ryan_m",
+    "t0": 1890,
+    "dens": 68.8,
+    "bal": 341263,
+    "dTerr": 0
+   },
+   {
+    "bot": "ryan_m",
+    "t0": 1980,
+    "dens": 77.3,
+    "bal": 383340,
+    "dTerr": 0
+   },
+   {
+    "bot": "ryan_m",
+    "t0": 2070,
+    "dens": 86.7,
+    "bal": 429875,
+    "dTerr": 0
+   },
+   {
+    "bot": "ryan_m",
+    "t0": 2160,
+    "dens": 97.1,
+    "bal": 481348,
+    "dTerr": 0
+   },
+   {
+    "bot": "ryan_m",
+    "t0": 2250,
+    "dens": 95.9,
+    "bal": 475569,
+    "dTerr": 0
+   },
+   {
+    "bot": "ryan_m",
+    "t0": 2340,
+    "dens": 106.9,
+    "bal": 529941,
+    "dTerr": 0
+   }
+  ],
+  "R07-DN-IDLE-RECV": [
+   {
+    "t": 3382,
+    "bot": "leo_tx",
+    "recv": "mark07",
+    "why": "stale",
+    "age": 1672
+   },
+   {
+    "t": 3550,
+    "bot": "leo_tx",
+    "recv": "kevin_k",
+    "why": "stale",
+    "age": 220
+   },
+   {
+    "t": 3568,
+    "bot": "leo_tx",
+    "recv": "kevin_k",
+    "why": "stale",
+    "age": 238
+   }
+  ],
+  "R07-DN-DEAD-RECV": [
+   {
+    "t": 2240,
+    "bot": "ryan_m",
+    "recv": "dave_w",
+    "recvTerr0": 9254,
+    "recvTerr1": 8195
+   },
+   {
+    "t": 2340,
+    "bot": "ryan_m",
+    "recv": "dave_w",
+    "recvTerr0": 8195,
+    "recvTerr1": 6885
+   },
+   {
+    "t": 2440,
+    "bot": "ryan_m",
+    "recv": "dave_w",
+    "recvTerr0": 6885,
+    "recvTerr1": 5726
+   }
+  ],
+  "R07-EC-NO-OUTLET": [],
+  "R07-EC-NEUT-LOCK": [
+   {
+    "bot": "leo_tx",
+    "t0": 900,
+    "t1": 1440,
+    "snaps": 7,
+    "terr": 3509,
+    "neut": 2,
+    "bal0": 21752,
+    "bal1": 166513,
+    "dens1": 47.5
+   }
+  ],
+  "R07-EG-FRONT-STARVE": [
+   {
+    "t": 1800,
+    "thin": [
+     "lucas94",
+     "noah88"
+    ],
+    "thinPx": 6952,
+    "backShare": 0.514
+   },
+   {
+    "t": 1980,
+    "thin": [
+     "ethan21"
+    ],
+    "thinPx": 2081,
+    "backShare": 0.808
+   },
+   {
+    "t": 2070,
+    "thin": [
+     "dave_w"
+    ],
+    "thinPx": 578,
+    "backShare": 0.821
+   },
+   {
+    "t": 2160,
+    "thin": [
+     "dave_w"
+    ],
+    "thinPx": 561,
+    "backShare": 0.935
+   },
+   {
+    "t": 2250,
+    "thin": [
+     "dave_w"
+    ],
+    "thinPx": 498,
+    "backShare": 0.873
+   },
+   {
+    "t": 2340,
+    "thin": [
+     "dave_w"
+    ],
+    "thinPx": 1310,
+    "backShare": 0.871
+   }
+  ],
+  "R07-GOOD-SAVED-PUSH": [
+   {
+    "bot": "kevin_k",
+    "t0": 2880,
+    "t1": 3150,
+    "terr0": 4937,
+    "terr1": 6492,
+    "bal0": 399696,
+    "bal1": 72833,
+    "dens0": 81.0
+   }
+  ],
+  "R07-GOOD-BOXED-BOAT": []
+ }
+}

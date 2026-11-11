@@ -1,0 +1,142 @@
+# A039 sora_w 影子决策明细 t=5580~6370（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 143 拍（t=5580~6365）
+#   出手打人/bot: 6 拍（t=5740~6185）；可用兵 191378~202031，一条指令下限(20%余额) 404170~423470，比值 45%~50%
+#   有可用兵但没发（脉冲下限/冷却/其他）: 1 拍（t=6130~6130）；可用兵 7299~7299，一条指令下限(20%余额) 396008~396008，比值 2%~2%
+#   首选目标无可用兵（avail<=0）: 8 拍（t=6290~6355）；可用兵 -323874~-271953，一条指令下限(20%余额) 88522~249814，比值 -353%~-109%
+#   └ 「出手打人/bot」里：6 条对人/bot 的出兵共约 1191290 兵；其中超过软上限（over=1）时发的 6 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 6 条约 1191290 兵，c/worth = 1.23~2.27
+t=5580 sora_w B=1758105 L=21101 d=83.3 nb=2 neut=0 cmds=83 noFull=1 shQ=397935 | m=0.900 worth=75.0 cheap=7.4 over=0 dMedOther=85.5 safe(-1)=1021040
+    → [OG] Simmy#15[T1] terr=21618 bal=1849102 dq=85.5 cnt=100 | c=217.9 rankC=217.9 need=2989480 tD=1.00 人 pulse | safe=1021040 keep=Inf avail=-Inf chunkB=351621 pulseB=210973 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1258163 dq=116.7 cnt=146 | c=383.7 rankC=383.7 need=2110401 tD=1.36 人 pulse crowdedHard | safe=1021040 keep=Inf avail=-Inf chunkB=351621 pulseB=210973 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5610 sora_w B=1851658 L=21101 d=87.8 nb=2 neut=0 cmds=83 noFull=1 shQ=462914 | m=0.900 worth=79.0 cheap=7.4 over=0 dMedOther=72.8 safe(-1)=1060838
+    → [OG] Simmy#15[T1] terr=21618 bal=1572825 dq=72.8 cnt=100 | c=158.0 rankC=110.6 need=2902797 tD=1.00 人 pulse onMe | safe=1060838 keep=Inf avail=-Inf chunkB=370332 pulseB=222199 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1299466 dq=120.5 cnt=146 | c=396.0 rankC=396.0 need=2183775 tD=1.66 人 pulse crowdedHard | safe=1060838 keep=Inf avail=-Inf chunkB=370332 pulseB=222199 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5640 sora_w B=1750579 L=19946 d=87.8 nb=2 neut=0 cmds=83 noFull=1 shQ=437644 | m=0.900 worth=79.0 cheap=7.4 over=0 dMedOther=71.9 safe(-1)=903398
+    → [OG] Simmy#15[T1] terr=22773 bal=1637967 dq=71.9 cnt=112 | c=154.3 rankC=126.6 need=2721825 tD=1.00 人 pulse agg | safe=903398 keep=Inf avail=-Inf chunkB=350116 pulseB=210069 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1327472 dq=123.1 cnt=146 | c=403.8 rankC=403.8 need=2234974 tD=1.71 人 pulse crowdedHard | safe=903398 keep=Inf avail=-Inf chunkB=350116 pulseB=210069 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5670 sora_w B=1821898 L=19946 d=91.3 nb=2 neut=0 cmds=83 noFull=1 shQ=455474 | m=0.900 worth=82.2 cheap=7.4 over=0 dMedOther=74.9 safe(-1)=941454
+    → [OG] Simmy#15[T1] terr=22773 bal=1705708 dq=74.9 cnt=112 | c=160.5 rankC=131.6 need=2840785 tD=1.00 人 pulse agg | safe=941454 keep=Inf avail=-Inf chunkB=364380 pulseB=218628 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1353525 dq=125.5 cnt=146 | c=411.5 rankC=411.5 need=2283273 tD=1.68 人 pulse crowdedHard | safe=941454 keep=Inf avail=-Inf chunkB=364380 pulseB=218628 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5700 sora_w B=1916069 L=19946 d=96.1 nb=2 neut=0 cmds=83 noFull=1 shQ=474228 | m=0.900 worth=86.5 cheap=7.4 over=0 dMedOther=79.0 safe(-1)=993879
+    → [OG] Simmy#15[T1] terr=22773 bal=1799023 dq=79.0 cnt=112 | c=168.9 rankC=138.5 need=3001624 tD=1.00 人 pulse agg | safe=993879 keep=Inf avail=-Inf chunkB=383214 pulseB=229928 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1388544 dq=128.7 cnt=146 | c=421.9 rankC=421.9 need=2345955 tD=1.63 人 pulse crowdedHard | safe=993879 keep=Inf avail=-Inf chunkB=383214 pulseB=229928 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5730 sora_w B=1994131 L=19946 d=100.0 nb=2 neut=0 cmds=83 noFull=1 shQ=498532 | m=0.900 worth=90.0 cheap=7.4 over=0 dMedOther=80.7 safe(-1)=983575
+    → [OG] Simmy#15[T1] terr=22065 bal=1780683 dq=80.7 cnt=111 | c=100.9 rankC=50.4 need=2945099 tD=1.00 人 pulse bleeding agg | safe=983575 keep=Inf avail=-Inf chunkB=398826 pulseB=239296 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1410176 dq=130.8 cnt=146 | c=428.3 rankC=428.3 need=2385460 tD=1.62 人 pulse crowdedHard | safe=983575 keep=Inf avail=-Inf chunkB=398826 pulseB=239296 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5740 sora_w B=2020852 L=19946 d=101.3 nb=2 neut=0 cmds=84 noFull=1 shQ=505150 | m=0.900 worth=91.2 cheap=7.4 over=1 dMedOther=78.0 safe(-1)=876993
+    → [OG] Simmy#15[T1] terr=20402 bal=1590967 dq=78.0 cnt=109 | c=112.5 rankC=46.1 need=2557015 tD=1.00 人 pulse agg | safe=876993 keep=1795140 avail=202031 chunkB=404170 pulseB=242502 
+    → Player 528#2[T1] terr=10785 bal=1416944 dq=131.4 cnt=146 | c=430.3 rankC=430.3 need=2397903 tD=1.68 人 pulse crowdedHard | safe=876993 keep=1795140 avail=202031 chunkB=404170 pulseB=242502 
+    ⇒ 影子指令 attack pct=102 → [OG] Simmy#15[T1]（约 203269 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=5745 sora_w B=2020852 L=19946 d=101.3 nb=2 neut=0 cmds=85 noFull=1 shQ=505213 | m=0.900 worth=91.2 cheap=7.4 over=1 dMedOther=77.1 safe(-1)=852580
+    → [OG] Simmy#15[T1] terr=20083 bal=1547511 dq=77.1 cnt=108 | c=168.2 rankC=138.0 need=2472886 tD=1.00 人 pulse agg | safe=852580 keep=1795140 avail=202031 chunkB=404170 pulseB=242502 
+    → Player 528#2[T1] terr=10785 bal=1416944 dq=131.4 cnt=146 | c=430.2 rankC=430.2 need=2398329 tD=1.71 人 pulse crowdedHard | safe=852580 keep=1795140 avail=202031 chunkB=404170 pulseB=242502 
+    ⇒ 影子指令 attack pct=102 → [OG] Simmy#15[T1]（约 203269 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=5760 sora_w B=1635402 L=20265 d=80.7 nb=2 neut=0 cmds=85 noFull=1 shQ=314684 | m=0.900 worth=72.6 cheap=7.4 over=0 dMedOther=78.4 safe(-1)=853149
+    → [OG] Simmy#15[T1] terr=19764 bal=1549003 dq=78.4 cnt=103 | c=150.0 rankC=123.0 need=2157036 tD=1.00 人 pulse agg | safe=853149 keep=Inf avail=-Inf chunkB=327080 pulseB=196248 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1430009 dq=132.6 cnt=146 | c=433.2 rankC=433.2 need=2422025 tD=1.69 人 pulse crowdedHard | safe=853149 keep=Inf avail=-Inf chunkB=327080 pulseB=196248 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5790 sora_w B=1702536 L=21415 d=79.5 nb=2 neut=0 cmds=85 noFull=1 shQ=425634 | m=0.900 worth=71.6 cheap=7.4 over=0 dMedOther=78.2 safe(-1)=799681
+    → [OG] Simmy#15[T1] terr=18614 bal=1455555 dq=78.2 cnt=94 | c=202.9 rankC=202.9 need=2262728 tD=1.00 人 pulse | safe=799681 keep=Inf avail=-Inf chunkB=340507 pulseB=204304 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1448246 dq=134.3 cnt=146 | c=438.6 rankC=438.6 need=2455980 tD=1.72 人 pulse crowdedHard | safe=799681 keep=Inf avail=-Inf chunkB=340507 pulseB=204304 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5820 sora_w B=1794419 L=21415 d=83.8 nb=2 neut=0 cmds=85 noFull=1 shQ=448604 | m=0.900 worth=75.4 cheap=7.4 over=0 dMedOther=82.4 safe(-1)=843481
+    → [OG] Simmy#15[T1] terr=18614 bal=1533518 dq=82.4 cnt=94 | c=213.2 rankC=213.2 need=2394858 tD=1.00 人 pulse | safe=843481 keep=Inf avail=-Inf chunkB=358884 pulseB=215330 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1474948 dq=136.8 cnt=146 | c=446.5 rankC=446.5 need=2504295 tD=1.66 人 pulse crowdedHard | safe=843481 keep=Inf avail=-Inf chunkB=358884 pulseB=215330 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5850 sora_w B=1868077 L=21415 d=87.2 nb=2 neut=0 cmds=85 noFull=1 shQ=467019 | m=0.900 worth=78.5 cheap=7.4 over=0 dMedOther=67.3 safe(-1)=818556
+    → [OG] Simmy#15[T1] terr=19153 bal=1288699 dq=67.3 cnt=94 | c=130.3 rankC=91.2 need=2052361 tD=1.00 人 pulse | safe=818556 keep=Inf avail=-Inf chunkB=373615 pulseB=224169 价高(c>=worth)→break
+    → Player 528#2[T1] terr=10785 bal=1489152 dq=138.1 cnt=146 | c=450.7 rankC=450.7 need=2531597 tD=2.05 人 pulse crowdedHard | safe=818556 keep=Inf avail=-Inf chunkB=373615 pulseB=224169 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5880 sora_w B=1944759 L=21415 d=90.8 nb=2 neut=0 cmds=85 noFull=1 shQ=486189 | m=0.900 worth=81.7 cheap=7.4 over=0 dMedOther=67.9 safe(-1)=820953
+    → Player 528#2[T1] terr=10785 bal=1063344 dq=98.6 cnt=146 | c=221.9 rankC=155.3 need=2244411 tD=1.45 人 pulse onMe | safe=820953 keep=Inf avail=-Inf chunkB=388952 pulseB=233371 价高(c>=worth)→break
+    → [OG] Simmy#15[T1] terr=19762 bal=1341200 dq=67.9 cnt=94 | c=174.0 rankC=174.0 need=2172351 tD=1.00 人 pulse | safe=820953 keep=Inf avail=-Inf chunkB=388952 pulseB=233371 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5910 sora_w B=1823615 L=20063 d=90.9 nb=2 neut=0 cmds=85 noFull=1 shQ=455903 | m=0.900 worth=81.8 cheap=7.4 over=0 dMedOther=70.5 safe(-1)=778645
+    → Player 528#2[T1] terr=12137 bal=1116290 dq=92.0 cnt=159 | c=187.4 rankC=153.6 need=1967027 tD=1.31 人 pulse agg | safe=778645 keep=Inf avail=-Inf chunkB=364723 pulseB=218834 价高(c>=worth)→break
+    → [OG] Simmy#15[T1] terr=20097 bal=1416083 dq=70.5 cnt=94 | c=179.6 rankC=179.6 need=2315445 tD=1.00 人 pulse | safe=778645 keep=Inf avail=-Inf chunkB=364723 pulseB=218834 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5940 sora_w B=1897909 L=20063 d=94.6 nb=2 neut=0 cmds=85 noFull=1 shQ=474477 | m=0.900 worth=85.1 cheap=7.4 over=0 dMedOther=70.9 safe(-1)=770955
+    → [OG] Simmy#15[T1] terr=19777 bal=1402394 dq=70.9 cnt=94 | c=85.8 rankC=42.9 need=2286192 tD=1.00 人 pulse bleeding | safe=770955 keep=Inf avail=-Inf chunkB=379582 pulseB=227749 价高(c>=worth)→break
+    → Player 528#2[T1] terr=12137 bal=1159018 dq=95.5 cnt=159 | c=194.4 rankC=159.4 need=2042787 tD=1.35 人 pulse agg | safe=770955 keep=Inf avail=-Inf chunkB=379582 pulseB=227749 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5970 sora_w B=1975230 L=20063 d=98.5 nb=2 neut=0 cmds=85 noFull=1 shQ=493807 | m=0.900 worth=88.6 cheap=7.4 over=0 dMedOther=68.8 safe(-1)=673562
+    → Player 528#2[T1] terr=12137 bal=1203381 dq=99.1 cnt=159 | c=201.8 rankC=165.4 need=2121339 tD=1.44 人 pulse agg | safe=673562 keep=Inf avail=-Inf chunkB=395046 pulseB=237028 价高(c>=worth)→break
+    → [OG] Simmy#15[T1] terr=17857 bal=1229034 dq=68.8 cnt=94 | c=178.9 rankC=178.9 need=1927485 tD=1.00 人 pulse | safe=673562 keep=Inf avail=-Inf chunkB=395046 pulseB=237028 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=5990 sora_w B=2028520 L=20063 d=101.1 nb=2 neut=0 cmds=86 noFull=1 shQ=507118 | m=0.900 worth=91.0 cheap=7.4 over=1 dMedOther=70.7 safe(-1)=691910
+    → Player 528#2[T1] terr=12137 bal=1233774 dq=101.7 cnt=159 | c=206.8 rankC=169.6 need=2175229 tD=1.44 人 pulse agg | safe=691910 keep=1805670 avail=199079 chunkB=405704 pulseB=243422 
+    → [OG] Simmy#15[T1] terr=17857 bal=1261694 dq=70.7 cnt=94 | c=183.3 rankC=183.3 need=1984674 tD=1.00 人 pulse | safe=691910 keep=1805670 avail=199079 chunkB=405704 pulseB=243422 
+    ⇒ 影子指令 attack pct=100 → Player 528#2[T1]（约 200078 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=5995 sora_w B=2028520 L=20063 d=101.1 nb=2 neut=0 cmds=87 noFull=1 shQ=507130 | m=0.900 worth=91.0 cheap=7.4 over=1 dMedOther=70.7 safe(-1)=691910
+    → Player 528#2[T1] terr=12137 bal=1233774 dq=101.7 cnt=159 | c=206.8 rankC=169.6 need=2175531 tD=1.44 人 pulse agg | safe=691910 keep=1805670 avail=199079 chunkB=405704 pulseB=243422 
+    → [OG] Simmy#15[T1] terr=17857 bal=1261694 dq=70.7 cnt=94 | c=183.3 rankC=183.3 need=1986240 tD=1.00 人 pulse | safe=691910 keep=1805670 avail=199079 chunkB=405704 pulseB=243422 
+    ⇒ 影子指令 attack pct=100 → Player 528#2[T1]（约 200078 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=6000 sora_w B=1848916 L=20063 d=92.2 nb=2 neut=0 cmds=87 noFull=1 shQ=0 | m=0.900 worth=82.9 cheap=7.4 over=0 dMedOther=72.6 safe(-1)=711298
+    → Player 528#2[T1] terr=12137 bal=1260963 dq=103.9 cnt=159 | c=192.2 rankC=157.6 need=2023162 tD=1.43 人 pulse agg | safe=711298 keep=Inf avail=-Inf chunkB=369783 pulseB=221870 价高(c>=worth)→break
+    → [OG] Simmy#15[T1] terr=17857 bal=1296205 dq=72.6 cnt=94 | c=187.9 rankC=187.9 need=2041447 tD=1.00 人 pulse | safe=711298 keep=Inf avail=-Inf chunkB=369783 pulseB=221870 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6030 sora_w B=1712330 L=21124 d=81.1 nb=2 neut=0 cmds=87 noFull=1 shQ=173141 | m=0.900 worth=73.0 cheap=7.4 over=0 dMedOther=58.7 safe(-1)=607556
+    → [OG] Simmy#15[T1] terr=18365 bal=879455 dq=47.9 cnt=94 | c=93.2 rankC=65.3 need=1416111 tD=0.82 人 pulse | safe=607556 keep=Inf avail=-Inf chunkB=342466 pulseB=205480 价高(c>=worth)→break
+    → Player 528#2[T1] terr=11076 bal=1113135 dq=100.5 cnt=146 | c=206.4 rankC=169.2 need=1920269 tD=1.71 人 pulse agg | safe=607556 keep=Inf avail=-Inf chunkB=342466 pulseB=205480 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6060 sora_w B=1782618 L=21124 d=84.4 nb=2 neut=0 cmds=87 noFull=1 shQ=349098 | m=0.900 worth=75.9 cheap=7.4 over=0 dMedOther=66.9 safe(-1)=659323
+    → [OG] Simmy#15[T1] terr=18785 bal=1205281 dq=64.2 cnt=94 | c=164.4 rankC=164.4 need=1957751 tD=0.96 人 pulse | safe=659323 keep=Inf avail=-Inf chunkB=356524 pulseB=213914 价高(c>=worth)→break
+    → Player 528#2[T1] terr=11076 bal=1154030 dq=104.2 cnt=146 | c=251.5 rankC=251.5 need=1992693 tD=1.56 人 pulse | safe=659323 keep=Inf avail=-Inf chunkB=356524 pulseB=213914 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6090 sora_w B=1855792 L=21124 d=87.9 nb=2 neut=0 cmds=87 noFull=1 shQ=463948 | m=0.900 worth=79.1 cheap=7.4 over=0 dMedOther=71.3 safe(-1)=686701
+    → [OG] Simmy#15[T1] terr=18785 bal=1254013 dq=66.8 cnt=94 | c=170.7 rankC=170.7 need=2043021 tD=0.94 人 pulse | safe=686701 keep=Inf avail=-Inf chunkB=371158 pulseB=222695 价高(c>=worth)→break
+    → Player 528#2[T1] terr=11076 bal=1193240 dq=107.7 cnt=146 | c=259.9 rankC=259.9 need=2062392 tD=1.51 人 pulse | safe=686701 keep=Inf avail=-Inf chunkB=371158 pulseB=222695 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6120 sora_w B=1953668 L=21124 d=92.5 nb=2 neut=0 cmds=87 noFull=1 shQ=488417 | m=0.900 worth=83.2 cheap=7.4 over=0 dMedOther=76.9 safe(-1)=726021
+    → [OG] Simmy#15[T1] terr=18785 bal=1324004 dq=70.5 cnt=94 | c=90.3 rankC=45.1 need=2163138 tD=0.92 人 pulse bleeding | safe=726021 keep=Inf avail=-Inf chunkB=390734 pulseB=234440 价高(c>=worth)→break
+    → Player 528#2[T1] terr=11076 bal=1241301 dq=112.1 cnt=146 | c=270.2 rankC=270.2 need=2146751 tD=1.46 人 pulse | safe=726021 keep=Inf avail=-Inf chunkB=390734 pulseB=234440 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6150 sora_w B=2033863 L=21124 d=96.3 nb=2 neut=0 cmds=87 noFull=1 shQ=508465 | m=0.900 worth=86.7 cheap=7.4 over=0 dMedOther=65.3 safe(-1)=699125
+    → [OG] Simmy#15[T1] terr=15969 bal=1042143 dq=65.3 cnt=94 | c=171.5 rankC=171.5 need=1591549 tD=1.00 人 pulse | safe=699125 keep=Inf avail=-Inf chunkB=406773 pulseB=244064 价高(c>=worth)→break
+    → Player 528#2[T1] terr=11076 bal=1276128 dq=115.2 cnt=146 | c=277.7 rankC=277.7 need=2207797 tD=1.77 人 pulse | safe=699125 keep=Inf avail=-Inf chunkB=406773 pulseB=244064 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6180 sora_w B=2117350 L=21124 d=100.2 nb=3 neut=0 cmds=88 noFull=1 shQ=529337 | m=0.900 worth=90.2 cheap=7.4 over=1 dMedOther=67.8 safe(-1)=1858912
+    → [OG] Simmy#15[T1] terr=15969 bal=1083315 dq=67.8 cnt=94 | c=177.9 rankC=177.9 need=1663420 tD=1.00 人 pulse | safe=1858912 keep=1901160 avail=191378 chunkB=423470 pulseB=254082 
+    → Player 49#17[T1] terr=236252 bal=11122311 dq=47.1 cnt=6 | c=205.2 rankC=205.2 need=20178366 tD=0.69 人 pulse | safe=1858912 keep=1901160 avail=191378 chunkB=423470 pulseB=254082 
+    → Player 528#2[T1] terr=11076 bal=1308816 dq=118.2 cnt=146 | c=284.7 rankC=284.7 need=2265415 tD=1.74 人 pulse | safe=1858912 keep=1901160 avail=191378 chunkB=423470 pulseB=254082 
+    ⇒ 影子指令 attack pct=92 → [OG] Simmy#15[T1]（约 192298 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=6185 sora_w B=2117350 L=21124 d=100.2 nb=3 neut=0 cmds=89 noFull=1 shQ=529337 | m=0.900 worth=90.2 cheap=7.4 over=1 dMedOther=67.8 safe(-1)=1858912
+    → [OG] Simmy#15[T1] terr=15969 bal=1083315 dq=67.8 cnt=94 | c=177.8 rankC=177.8 need=1665100 tD=1.00 人 pulse | safe=1858912 keep=1901160 avail=191378 chunkB=423470 pulseB=254082 
+    → Player 49#17[T1] terr=236252 bal=11122552 dq=47.1 cnt=6 | c=205.2 rankC=205.2 need=20178796 tD=0.69 人 pulse | safe=1858912 keep=1901160 avail=191378 chunkB=423470 pulseB=254082 
+    → Player 528#2[T1] terr=11076 bal=1308816 dq=118.2 cnt=146 | c=284.7 rankC=284.7 need=2265598 tD=1.74 人 pulse | safe=1858912 keep=1901160 avail=191378 chunkB=423470 pulseB=254082 
+    ⇒ 影子指令 attack pct=92 → [OG] Simmy#15[T1]（约 192298 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=6210 sora_w B=1797173 L=21865 d=82.2 nb=3 neut=0 cmds=89 noFull=1 shQ=411302 | m=0.900 worth=74.0 cheap=7.3 over=0 dMedOther=69.5 safe(-1)=1924120
+    → [OG] Simmy#15[T1] terr=15228 bal=1058644 dq=69.5 cnt=88 | c=160.3 rankC=160.3 need=1393129 tD=1.00 人 pulse | safe=1924120 keep=Inf avail=-Inf chunkB=359435 pulseB=215661 价高(c>=worth)→break
+    → Player 49#17[T1] terr=236252 bal=12220461 dq=51.7 cnt=19 | c=225.0 rankC=225.0 need=22135668 tD=0.74 人 pulse | safe=1924120 keep=Inf avail=-Inf chunkB=359435 pulseB=215661 价高(c>=worth)→break
+    → Player 528#2[T1] terr=11076 bal=1350438 dq=121.9 cnt=146 | c=395.6 rankC=395.6 need=2338282 tD=1.75 人 pulse crowdedHard | safe=1924120 keep=Inf avail=-Inf chunkB=359435 pulseB=215661 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6240 sora_w B=1691537 L=21442 d=78.9 nb=3 neut=0 cmds=89 noFull=1 shQ=422884 | m=0.900 worth=71.0 cheap=7.4 over=0 dMedOther=54.5 safe(-1)=1886896
+    → Player 49#17[T1] terr=254351 bal=11048081 dq=43.4 cnt=54 | c=105.2 rankC=105.2 need=20073257 tD=0.80 人 pulse | safe=1886896 keep=Inf avail=-Inf chunkB=338307 pulseB=202984 价高(c>=worth)→break
+    → Player 528#2[T1] terr=12463 bal=982940 dq=78.9 cnt=165 | c=159.9 rankC=131.1 need=1788069 tD=1.45 人 pulse onMe agg | safe=1886896 keep=Inf avail=-Inf chunkB=338307 pulseB=202984 价高(c>=worth)→break
+    → [OG] Simmy#15[T1] terr=14264 bal=777342 dq=54.5 cnt=86 | c=146.0 rankC=146.0 need=1138598 tD=1.00 人 pulse | safe=1886896 keep=Inf avail=-Inf chunkB=338307 pulseB=202984 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6270 sora_w B=1663924 L=20813 d=79.9 nb=3 neut=0 cmds=89 noFull=1 shQ=415981 | m=0.900 worth=72.0 cheap=7.4 over=0 dMedOther=56.4 safe(-1)=1831544
+    → Player 49#17[T1] terr=260849 bal=9999905 dq=38.3 cnt=62 | c=75.5 rankC=52.8 need=19700980 tD=0.68 人 pulse onMe | safe=1831544 keep=Inf avail=-Inf chunkB=332785 pulseB=199671 价高(c>=worth)→break
+    → [OG] Simmy#15[T1] terr=14313 bal=807814 dq=56.4 cnt=96 | c=95.9 rankC=55.0 need=1355135 tD=1.00 人 pulse onMe agg | safe=1831544 keep=Inf avail=-Inf chunkB=332785 pulseB=199671 价高(c>=worth)→break
+    → Player 528#2[T1] terr=12463 bal=1020952 dq=81.9 cnt=165 | c=195.2 rankC=195.2 need=1825349 tD=1.45 人 pulse | safe=1831544 keep=Inf avail=-Inf chunkB=332785 pulseB=199671 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6300 sora_w B=1021360 L=14842 d=68.8 nb=3 neut=0 cmds=89 noFull=1 shQ=255340 | m=0.900 worth=61.9 cheap=7.7 over=0 dMedOther=57.8 safe(-1)=1306096
+    → Player 49#17[T1] terr=271422 bal=9658454 dq=35.6 cnt=98 | c=87.3 rankC=87.3 need=17791304 tD=0.62 人 pulse onMe | safe=1306096 keep=Inf avail=-Inf chunkB=204272 pulseB=122563 价高(c>=worth)→break
+    → Player 528#2[T1] terr=12463 bal=755947 dq=60.7 cnt=165 | c=132.4 rankC=92.7 need=1657667 tD=1.05 人 pulse onMe | safe=1306096 keep=Inf avail=-Inf chunkB=204272 pulseB=122563 价高(c>=worth)→break
+    → [OG] Simmy#15[T1] terr=14776 bal=854208 dq=57.8 cnt=69 | c=129.4 rankC=106.1 need=1345407 tD=1.00 人 pulse onMe agg | safe=1306096 keep=Inf avail=-Inf chunkB=204272 pulseB=122563 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6330 sora_w B=794034 L=12452 d=63.8 nb=3 neut=0 cmds=89 noFull=1 shQ=198508 | m=0.900 worth=57.4 cheap=7.8 over=0 dMedOther=42.9 safe(-1)=1095776
+    → Player 49#17[T1] terr=276974 bal=7515243 dq=27.1 cnt=99 | c=49.8 rankC=34.9 need=13810367 tD=0.63 人 pulse | safe=1095776 keep=1095776 avail=-311047 chunkB=158807 pulseB=95284 无可用(avail<=0)
+    → [OG] Simmy#15[T1] terr=14995 bal=643382 dq=42.9 cnt=49 | c=84.9 rankC=59.4 need=992899 tD=1.00 人 pulse | safe=1095776 keep=Inf avail=-Inf chunkB=158807 pulseB=95284 价高(c>=worth)→break
+    → Player 528#2[T1] terr=13881 bal=785377 dq=56.6 cnt=190 | c=114.1 rankC=93.6 need=1420668 tD=1.32 人 pulse agg | safe=1095776 keep=Inf avail=-Inf chunkB=158807 pulseB=95284 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=6360 sora_w B=340701 L=7184 d=47.4 nb=2 neut=0 cmds=89 noFull=1 shQ=85175 | m=0.900 worth=42.7 cheap=8.3 over=0 dMedOther=29.1 safe(-1)=632192
+    → Player 528#2[T1] terr=14962 bal=435892 dq=29.1 cnt=172 | c=64.0 rankC=44.8 need=974401 tD=1.00 人 pulse onMe | safe=632192 keep=Inf avail=-Inf chunkB=68140 pulseB=40884 价高(c>=worth)→break
+    → Player 49#17[T1] terr=285922 bal=6813733 dq=23.8 cnt=84 | c=59.9 rankC=59.9 need=12865294 tD=0.82 人 pulse onMe | safe=632192 keep=Inf avail=-Inf chunkB=68140 pulseB=40884 价高(c>=worth)→break
+    ⇒ 本拍没有指令

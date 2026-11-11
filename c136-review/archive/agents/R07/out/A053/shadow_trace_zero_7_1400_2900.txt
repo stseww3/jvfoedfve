@@ -1,0 +1,939 @@
+# A053 zero_7 影子决策明细 t=1400~2900（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没走到 buyLand: 19 拍（t=1400~1495）
+#   其他指令: 5 拍（t=1445~2095）；可用兵 72373~72373，一条指令下限(20%余额) 28680~28680，比值 252%~252%
+#   首选目标价高（c>=worth）: 203 拍（t=1500~2735）
+#   出手打人/bot: 31 拍（t=1570~2860）；可用兵 24042~535360，一条指令下限(20%余额) 27779~165595，比值 39%~423%
+#   首选目标已有在途进攻（curAtk 过门槛）: 29 拍（t=1590~2850）；可用兵 9690~503008，一条指令下限(20%余额) 20708~150717，比值 44%~472%
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 5 拍（t=1640~1775）；可用兵 269~24361，一条指令下限(20%余额) 22344~29047，比值 1%~85%
+#   首选目标无可用兵（avail<=0）: 1 拍（t=1650~1650）；可用兵 -775~-775，一条指令下限(20%余额) 22764~22764，比值 -3%~-3%
+#   没有可打的邻居: 8 拍（t=2865~2900）
+#   └ 「出手打人/bot」里：31 条对人/bot 的出兵共约 1023096 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1400 zero_7 B=102897 L=4935 d=20.9 nb=2 neut=0 cmds=50 noFull=1 shQ=24541 | m=1.400 worth=29.2 cheap=3.8 over=0 dMedOther=13.6 safe(-1)=46225
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1405 zero_7 B=102897 L=4982 d=20.7 nb=2 neut=0 cmds=50 noFull=1 shQ=25724 | m=1.405 worth=29.0 cheap=3.8 over=0 dMedOther=13.6 safe(-1)=46185
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1410 zero_7 B=105562 L=4999 d=21.1 nb=2 neut=0 cmds=50 noFull=1 shQ=26390 | m=1.410 worth=29.8 cheap=3.9 over=0 dMedOther=13.9 safe(-1)=47476
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1415 zero_7 B=105562 L=5031 d=21.0 nb=2 neut=0 cmds=50 noFull=1 shQ=26390 | m=1.415 worth=29.7 cheap=3.9 over=0 dMedOther=13.9 safe(-1)=47449
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1420 zero_7 B=108264 L=5060 d=21.4 nb=2 neut=0 cmds=50 noFull=1 shQ=27066 | m=1.420 worth=30.4 cheap=3.9 over=0 dMedOther=14.4 safe(-1)=48747
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1425 zero_7 B=108264 L=5075 d=21.3 nb=2 neut=0 cmds=50 noFull=1 shQ=27066 | m=1.425 worth=30.4 cheap=3.9 over=0 dMedOther=14.4 safe(-1)=48735
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1430 zero_7 B=111003 L=5099 d=21.8 nb=2 neut=0 cmds=50 noFull=1 shQ=27750 | m=1.430 worth=31.1 cheap=4.0 over=0 dMedOther=14.8 safe(-1)=50055
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1435 zero_7 B=111003 L=5121 d=21.7 nb=2 neut=0 cmds=50 noFull=1 shQ=27750 | m=1.435 worth=31.1 cheap=4.0 over=0 dMedOther=14.8 safe(-1)=50037
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1440 zero_7 B=113778 L=5130 d=22.2 nb=2 neut=0 cmds=50 noFull=1 shQ=28444 | m=1.440 worth=31.9 cheap=4.0 over=0 dMedOther=15.0 safe(-1)=51388
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1445 zero_7 B=113778 L=5148 d=22.1 nb=2 neut=0 cmds=51 noFull=1 shQ=28444 | m=1.445 worth=31.9 cheap=4.0 over=0 dMedOther=14.9 safe(-1)=51372
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 boatTo pct=127 → 水/岸#897043（约 14222 兵） 〔boatFood:2017<boatFood:5623<act:1822<act:2692〕
+t=1450 zero_7 B=116588 L=5170 d=22.6 nb=2 neut=0 cmds=51 noFull=1 shQ=29147 | m=1.450 worth=32.7 cheap=4.1 over=0 dMedOther=15.2 safe(-1)=52730
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1455 zero_7 B=116588 L=5181 d=22.5 nb=2 neut=0 cmds=51 noFull=1 shQ=29147 | m=1.455 worth=32.7 cheap=4.1 over=0 dMedOther=15.0 safe(-1)=52721
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1460 zero_7 B=100772 L=5204 d=19.4 nb=2 neut=0 cmds=51 noFull=1 shQ=25193 | m=1.460 worth=28.3 cheap=4.1 over=0 dMedOther=15.3 safe(-1)=54094
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1465 zero_7 B=100772 L=5217 d=19.3 nb=1 neut=0 cmds=51 noFull=1 shQ=25193 | m=1.465 worth=28.3 cheap=4.1 over=0 dMedOther=15.2 safe(-1)=54083
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1470 zero_7 B=125732 L=5217 d=24.1 nb=1 neut=0 cmds=51 noFull=1 shQ=27428 | m=1.470 worth=35.4 cheap=4.2 over=0 dMedOther=15.4 safe(-1)=55486
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1475 zero_7 B=125732 L=5217 d=24.1 nb=1 neut=0 cmds=51 noFull=1 shQ=31192 | m=1.475 worth=35.5 cheap=4.2 over=0 dMedOther=15.3 safe(-1)=55486
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1480 zero_7 B=128711 L=5217 d=24.7 nb=1 neut=0 cmds=51 noFull=1 shQ=32177 | m=1.480 worth=36.5 cheap=4.2 over=0 dMedOther=15.6 safe(-1)=56905
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1485 zero_7 B=128711 L=5217 d=24.7 nb=1 neut=0 cmds=51 noFull=1 shQ=32177 | m=1.485 worth=36.6 cheap=4.2 over=0 dMedOther=15.3 safe(-1)=56905
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1490 zero_7 B=131722 L=5217 d=25.2 nb=1 neut=0 cmds=51 noFull=1 shQ=32930 | m=1.490 worth=37.6 cheap=4.3 over=0 dMedOther=15.6 safe(-1)=58340
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1495 zero_7 B=131722 L=5217 d=25.2 nb=1 neut=0 cmds=51 noFull=1 shQ=32930 | m=1.495 worth=37.7 cheap=4.3 over=0 dMedOther=15.4 safe(-1)=58340
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1500 zero_7 B=139981 L=5217 d=26.8 nb=1 neut=0 cmds=51 noFull=1 shQ=33738 | m=1.500 worth=40.2 cheap=4.3 over=0 dMedOther=16.7 safe(-1)=63169
+    → [TR] Oylesine#53[T5] terr=6017 bal=120266 dq=20.0 cnt=64 | c=49.4 rankC=49.4 need=223391 tD=1.20 人 | safe=63169 keep=Inf avail=-Inf chunkB=27996 pulseB=16798 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1505 zero_7 B=139981 L=5217 d=26.8 nb=1 neut=0 cmds=51 noFull=1 shQ=34995 | m=1.499 worth=40.2 cheap=4.4 over=0 dMedOther=16.6 safe(-1)=63169
+    → [TR] Oylesine#53[T5] terr=6053 bal=120266 dq=19.9 cnt=64 | c=49.2 rankC=49.2 need=223445 tD=1.20 人 | safe=63169 keep=Inf avail=-Inf chunkB=27996 pulseB=16798 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1510 zero_7 B=143172 L=5217 d=27.4 nb=1 neut=0 cmds=51 noFull=1 shQ=35793 | m=1.498 worth=41.1 cheap=4.4 over=0 dMedOther=16.8 safe(-1)=64709
+    → [TR] Oylesine#53[T5] terr=6071 bal=123008 dq=20.3 cnt=64 | c=50.1 rankC=50.1 need=228374 tD=1.21 人 | safe=64709 keep=Inf avail=-Inf chunkB=28634 pulseB=17181 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1515 zero_7 B=143172 L=5217 d=27.4 nb=1 neut=0 cmds=51 noFull=1 shQ=35793 | m=1.498 worth=41.1 cheap=4.4 over=0 dMedOther=16.8 safe(-1)=64709
+    → [TR] Oylesine#53[T5] terr=6107 bal=123008 dq=20.1 cnt=64 | c=49.8 rankC=49.8 need=228428 tD=1.20 人 | safe=64709 keep=Inf avail=-Inf chunkB=28634 pulseB=17181 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1520 zero_7 B=146393 L=5217 d=28.1 nb=1 neut=0 cmds=51 noFull=1 shQ=36598 | m=1.497 worth=42.0 cheap=4.4 over=0 dMedOther=17.2 safe(-1)=66264
+    → [TR] Oylesine#53[T5] terr=6144 bal=125775 dq=20.5 cnt=64 | c=50.6 rankC=50.6 need=233393 tD=1.19 人 | safe=66264 keep=Inf avail=-Inf chunkB=29279 pulseB=17567 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1525 zero_7 B=146393 L=5217 d=28.1 nb=1 neut=0 cmds=51 noFull=1 shQ=36598 | m=1.496 worth=42.0 cheap=4.5 over=0 dMedOther=17.2 safe(-1)=66264
+    → [TR] Oylesine#53[T5] terr=6163 bal=125775 dq=20.4 cnt=64 | c=50.5 rankC=50.5 need=233444 tD=1.19 人 | safe=66264 keep=Inf avail=-Inf chunkB=29279 pulseB=17567 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1530 zero_7 B=149642 L=5217 d=28.7 nb=1 neut=0 cmds=51 noFull=1 shQ=37410 | m=1.496 worth=42.9 cheap=4.5 over=0 dMedOther=17.5 safe(-1)=67832
+    → [TR] Oylesine#53[T5] terr=6202 bal=128567 dq=20.7 cnt=64 | c=51.2 rankC=51.2 need=238471 tD=1.18 人 | safe=67832 keep=Inf avail=-Inf chunkB=29928 pulseB=17957 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1535 zero_7 B=149642 L=5217 d=28.7 nb=1 neut=0 cmds=51 noFull=1 shQ=37410 | m=1.495 worth=42.9 cheap=4.5 over=0 dMedOther=17.5 safe(-1)=67832
+    → [TR] Oylesine#53[T5] terr=6243 bal=128567 dq=20.6 cnt=64 | c=50.9 rankC=50.9 need=238540 tD=1.17 人 | safe=67832 keep=Inf avail=-Inf chunkB=29928 pulseB=17957 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1540 zero_7 B=152919 L=5217 d=29.3 nb=1 neut=0 cmds=51 noFull=1 shQ=38229 | m=1.494 worth=43.8 cheap=4.6 over=0 dMedOther=17.9 safe(-1)=69414
+    → [TR] Oylesine#53[T5] terr=6263 bal=131382 dq=21.0 cnt=64 | c=51.8 rankC=51.8 need=243588 tD=1.17 人 | safe=69414 keep=Inf avail=-Inf chunkB=30584 pulseB=18350 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1545 zero_7 B=152919 L=5217 d=29.3 nb=1 neut=0 cmds=51 noFull=1 shQ=38229 | m=1.493 worth=43.8 cheap=4.6 over=0 dMedOther=19.7 safe(-1)=69414
+    → [TR] Oylesine#53[T5] terr=6303 bal=131382 dq=20.8 cnt=64 | c=51.5 rankC=51.5 need=243648 tD=1.06 人 | safe=69414 keep=Inf avail=-Inf chunkB=30584 pulseB=18350 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1550 zero_7 B=156206 L=5217 d=29.9 nb=1 neut=0 cmds=51 noFull=1 shQ=39051 | m=1.492 worth=44.7 cheap=4.6 over=0 dMedOther=20.0 safe(-1)=71000
+    → [TR] Oylesine#53[T5] terr=6345 bal=134206 dq=21.2 cnt=64 | c=52.2 rankC=52.2 need=248729 tD=1.06 人 | safe=71000 keep=Inf avail=-Inf chunkB=31241 pulseB=18745 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1555 zero_7 B=156206 L=5217 d=29.9 nb=1 neut=0 cmds=51 noFull=1 shQ=39051 | m=1.492 worth=44.7 cheap=4.7 over=0 dMedOther=19.3 safe(-1)=71000
+    → [TR] Oylesine#53[T5] terr=6368 bal=134206 dq=21.1 cnt=64 | c=52.1 rankC=52.1 need=248756 tD=1.09 人 | safe=71000 keep=Inf avail=-Inf chunkB=31241 pulseB=18745 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1560 zero_7 B=159517 L=5217 d=30.6 nb=1 neut=0 cmds=51 noFull=1 shQ=39879 | m=1.491 worth=45.6 cheap=4.7 over=0 dMedOther=19.7 safe(-1)=72599
+    → [TR] Oylesine#53[T5] terr=6416 bal=137051 dq=21.4 cnt=64 | c=52.7 rankC=52.7 need=253899 tD=1.08 人 | safe=72599 keep=Inf avail=-Inf chunkB=31903 pulseB=19142 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1565 zero_7 B=159517 L=5217 d=30.6 nb=1 neut=0 cmds=51 noFull=1 shQ=39879 | m=1.490 worth=45.6 cheap=4.7 over=0 dMedOther=19.0 safe(-1)=72599
+    → [TR] Oylesine#53[T5] terr=6468 bal=137051 dq=21.2 cnt=64 | c=52.3 rankC=52.3 need=253977 tD=1.11 人 | safe=72599 keep=Inf avail=-Inf chunkB=31903 pulseB=19142 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1570 zero_7 B=162850 L=5217 d=31.2 nb=1 neut=0 cmds=52 noFull=1 shQ=40712 | m=1.490 worth=46.5 cheap=4.8 over=0 dMedOther=19.5 safe(-1)=74208
+    → [TR] Oylesine#53[T5] terr=6495 bal=139915 dq=21.5 cnt=64 | c=24.3 rankC=12.2 need=259146 tD=1.11 人 pulse bleeding | safe=74208 keep=115577 avail=45365 chunkB=32570 pulseB=19542  x=19542 hNb=1
+    ⇒ 影子指令 attack pct=122 → [TR] Oylesine#53[T5]（约 19561 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1575 zero_7 B=162850 L=5217 d=31.2 nb=1 neut=0 cmds=53 noFull=1 shQ=40712 | m=1.489 worth=46.5 cheap=4.8 over=0 dMedOther=19.5 safe(-1)=74208
+    → [TR] Oylesine#53[T5] terr=6552 bal=139915 dq=21.4 cnt=64 | c=24.1 rankC=12.1 need=259207 tD=1.10 人 pulse bleeding | safe=74208 keep=115195 avail=45747 chunkB=32570 pulseB=19542  x=19542 hNb=1
+    ⇒ 影子指令 attack pct=122 → [TR] Oylesine#53[T5]（约 19561 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1580 zero_7 B=166204 L=5217 d=31.9 nb=1 neut=0 cmds=54 noFull=1 shQ=41551 | m=1.488 worth=47.4 cheap=4.8 over=0 dMedOther=19.9 safe(-1)=73100
+    → [TR] Oylesine#53[T5] terr=6473 bal=137944 dq=21.3 cnt=63 | c=22.7 rankC=11.4 need=255012 tD=1.07 人 pulse bleeding | safe=73100 keep=113679 avail=50578 chunkB=33241 pulseB=19944  x=19944 hNb=1
+    ⇒ 影子指令 attack pct=122 → [TR] Oylesine#53[T5]（约 19963 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1585 zero_7 B=166204 L=5217 d=31.9 nb=1 neut=0 cmds=55 noFull=1 shQ=41551 | m=1.487 worth=47.4 cheap=4.9 over=0 dMedOther=19.9 safe(-1)=70396
+    → [TR] Oylesine#53[T5] terr=6357 bal=133130 dq=20.9 cnt=61 | c=23.1 rankC=11.6 need=245384 tD=1.05 人 pulse bleeding | safe=70396 keep=114565 avail=49692 chunkB=33241 pulseB=19944  x=19944 hNb=1
+    ⇒ 影子指令 attack pct=122 → [TR] Oylesine#53[T5]（约 19963 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1590 zero_7 B=147223 L=5217 d=28.2 nb=1 neut=0 cmds=55 noFull=1 shQ=0 | m=1.486 worth=41.9 cheap=4.9 over=0 dMedOther=20.3 safe(-1)=70576
+    → [TR] Oylesine#53[T5] terr=6340 bal=133450 dq=21.0 cnt=60 | c=19.5 rankC=9.7 need=225855 tD=1.04 人 pulse bleeding | safe=70576 keep=99370 avail=46128 chunkB=29445 pulseB=17667 在途(curAtk=19963)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1595 zero_7 B=147223 L=5217 d=28.2 nb=1 neut=0 cmds=55 noFull=1 shQ=3723 | m=1.486 worth=41.9 cheap=5.0 over=0 dMedOther=20.3 safe(-1)=68017
+    → [TR] Oylesine#53[T5] terr=6249 bal=128896 dq=20.6 cnt=58 | c=19.7 rankC=9.9 need=216948 tD=1.02 人 pulse bleeding | safe=68017 keep=99944 avail=45554 chunkB=29445 pulseB=17667 在途(curAtk=19963)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1600 zero_7 B=103538 L=5333 d=19.4 nb=1 neut=0 cmds=55 noFull=1 shQ=6428 | m=1.485 worth=28.8 cheap=5.0 over=0 dMedOther=21.5 safe(-1)=68127
+    → [TR] Oylesine#53[T5] terr=6022 bal=129265 dq=21.5 cnt=56 | c=16.4 rankC=8.2 need=177095 tD=1.00 人 pulse bleeding | safe=68127 keep=76468 avail=25857 chunkB=20708 pulseB=12425 在途(curAtk=58239)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1605 zero_7 B=103538 L=5389 d=19.2 nb=1 neut=0 cmds=55 noFull=1 shQ=9002 | m=1.484 worth=28.5 cheap=5.0 over=0 dMedOther=21.3 safe(-1)=65778
+    → [TR] Oylesine#53[T5] terr=5934 bal=125168 dq=21.1 cnt=54 | c=16.7 rankC=8.4 need=172982 tD=0.99 人 pulse bleeding | safe=65778 keep=77498 avail=24827 chunkB=20708 pulseB=12425 在途(curAtk=54291)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1610 zero_7 B=105577 L=5497 d=19.2 nb=1 neut=0 cmds=55 noFull=1 shQ=11566 | m=1.484 worth=28.5 cheap=5.1 over=0 dMedOther=21.5 safe(-1)=62615
+    → [TR] Oylesine#53[T5] terr=5731 bal=119700 dq=20.9 cnt=55 | c=18.0 rankC=9.0 need=168772 tD=0.97 人 pulse bleeding | safe=62615 keep=81824 avail=22516 chunkB=21115 pulseB=12669 在途(curAtk=46841)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1615 zero_7 B=105577 L=5607 d=18.8 nb=1 neut=0 cmds=55 noFull=1 shQ=14150 | m=1.483 worth=27.9 cheap=5.1 over=0 dMedOther=21.7 safe(-1)=58287
+    → [TR] Oylesine#53[T5] terr=5517 bal=112162 dq=20.3 cnt=56 | c=18.8 rankC=9.4 need=160948 tD=0.94 人 pulse bleeding | safe=58287 keep=84501 avail=19839 chunkB=21115 pulseB=12669 在途(curAtk=39327)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1620 zero_7 B=107625 L=5663 d=19.0 nb=1 neut=0 cmds=55 noFull=1 shQ=16723 | m=1.482 worth=28.2 cheap=5.2 over=0 dMedOther=22.1 safe(-1)=57370
+    → [TR] Oylesine#53[T5] terr=5429 bal=110613 dq=20.4 cnt=56 | c=19.7 rankC=9.9 need=161107 tD=0.92 人 pulse bleeding | safe=57370 keep=87901 avail=18463 chunkB=21525 pulseB=12915 在途(curAtk=35583)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1625 zero_7 B=107625 L=5776 d=18.6 nb=1 neut=0 cmds=55 noFull=1 shQ=19315 | m=1.481 worth=27.6 cheap=5.2 over=0 dMedOther=22.1 safe(-1)=53181
+    → [TR] Oylesine#53[T5] terr=5226 bal=103327 dq=19.8 cnt=57 | c=20.7 rankC=10.4 need=153926 tD=0.89 人 pulse bleeding | safe=53181 keep=91061 avail=15303 chunkB=21525 pulseB=12915 在途(curAtk=28049)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1630 zero_7 B=109669 L=5891 d=18.6 nb=1 neut=0 cmds=55 noFull=1 shQ=21896 | m=1.480 worth=27.6 cheap=5.2 over=0 dMedOther=22.5 safe(-1)=50246
+    → [TR] Oylesine#53[T5] terr=5016 bal=98275 dq=19.6 cnt=58 | c=22.4 rankC=11.2 need=150456 tD=0.87 人 pulse bleeding | safe=50246 keep=96790 avail=11594 chunkB=21934 pulseB=13160 在途(curAtk=20531)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1635 zero_7 B=109669 L=5949 d=18.4 nb=1 neut=0 cmds=55 noFull=1 shQ=24492 | m=1.480 worth=27.3 cheap=5.3 over=0 dMedOther=22.5 safe(-1)=48271
+    → [TR] Oylesine#53[T5] terr=4924 bal=94846 dq=19.3 cnt=59 | c=22.9 rankC=11.5 need=147382 tD=0.86 人 pulse bleeding | safe=48271 keep=98694 avail=9690 chunkB=21934 pulseB=13160 在途(curAtk=16787)→continue hNb=1
+    ⇒ 本拍没有指令
+t=1640 zero_7 B=111719 L=6068 d=18.4 nb=1 neut=0 cmds=55 noFull=1 shQ=27080 | m=1.479 worth=27.2 cheap=5.3 over=0 dMedOther=22.9 safe(-1)=45348
+    → [TR] Oylesine#53[T5] terr=4720 bal=89821 dq=19.0 cnt=62 | c=24.7 rankC=12.4 need=144077 tD=0.83 人 | safe=45348 keep=105092 avail=5318 chunkB=22344 pulseB=13406 不够一条(x=5318)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=1645 zero_7 B=111719 L=6194 d=18.0 nb=1 neut=0 cmds=55 noFull=1 shQ=27929 | m=1.478 worth=26.7 cheap=5.4 over=0 dMedOther=22.9 safe(-1)=41807
+    → [TR] Oylesine#53[T5] terr=4524 bal=83708 dq=18.5 cnt=65 | c=26.2 rankC=13.1 need=139442 tD=0.81 人 | safe=41807 keep=110141 avail=269 chunkB=22344 pulseB=13406 不够一条(x=269)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=1650 zero_7 B=113819 L=6194 d=18.4 nb=1 neut=0 cmds=55 noFull=1 shQ=28454 | m=1.478 worth=27.2 cheap=5.4 over=0 dMedOther=23.0 safe(-1)=41682
+    → [TR] Oylesine#53[T5] terr=4497 bal=83485 dq=18.6 cnt=64 | c=27.0 rankC=13.5 need=140161 tD=0.81 人 | safe=41682 keep=113261 avail=-775 chunkB=22764 pulseB=13658 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=1655 zero_7 B=113819 L=6194 d=18.4 nb=1 neut=0 cmds=55 noFull=1 shQ=28454 | m=1.477 worth=27.1 cheap=5.5 over=0 dMedOther=21.7 safe(-1)=40419
+    → [TR] Oylesine#53[T5] terr=4428 bal=81236 dq=18.3 cnt=63 | c=27.5 rankC=13.8 need=135710 tD=0.84 人 | safe=40419 keep=Inf avail=-Inf chunkB=22764 pulseB=13658 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1660 zero_7 B=115879 L=6194 d=18.7 nb=1 neut=0 cmds=55 noFull=1 shQ=28969 | m=1.476 worth=27.6 cheap=5.5 over=0 dMedOther=22.1 safe(-1)=40799
+    → [TR] Oylesine#53[T5] terr=4430 bal=81913 dq=18.5 cnt=63 | c=48.3 rankC=48.3 need=136891 tD=0.84 人 | safe=40799 keep=Inf avail=-Inf chunkB=23176 pulseB=13905 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1665 zero_7 B=115879 L=6194 d=18.7 nb=1 neut=0 cmds=55 noFull=1 shQ=28969 | m=1.475 worth=27.6 cheap=5.6 over=0 dMedOther=23.8 safe(-1)=59977
+    → [TR] Oylesine#53[T5] terr=4431 bal=116050 dq=26.2 cnt=63 | c=91.0 rankC=91.0 need=191754 tD=1.10 人 crowdedHard | safe=59977 keep=Inf avail=-Inf chunkB=23176 pulseB=13905 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1670 zero_7 B=117941 L=6194 d=19.0 nb=1 neut=0 cmds=55 noFull=1 shQ=29485 | m=1.474 worth=28.1 cheap=5.6 over=0 dMedOther=24.2 safe(-1)=61137
+    → [TR] Oylesine#53[T5] terr=4431 bal=118115 dq=26.7 cnt=63 | c=92.6 rankC=92.6 need=195163 tD=1.10 人 crowdedHard | safe=61137 keep=Inf avail=-Inf chunkB=23588 pulseB=14153 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1675 zero_7 B=117941 L=6194 d=19.0 nb=1 neut=0 cmds=55 noFull=1 shQ=29485 | m=1.474 worth=28.1 cheap=5.7 over=0 dMedOther=24.2 safe(-1)=61137
+    → [TR] Oylesine#53[T5] terr=4431 bal=118115 dq=26.7 cnt=63 | c=92.6 rankC=92.6 need=195260 tD=1.10 人 crowdedHard | safe=61137 keep=Inf avail=-Inf chunkB=23588 pulseB=14153 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1680 zero_7 B=120004 L=6194 d=19.4 nb=1 neut=0 cmds=55 noFull=1 shQ=30001 | m=1.473 worth=28.5 cheap=5.7 over=0 dMedOther=24.7 safe(-1)=62298
+    → [TR] Oylesine#53[T5] terr=4431 bal=120182 dq=27.1 cnt=63 | c=94.1 rankC=94.1 need=198676 tD=1.10 人 crowdedHard | safe=62298 keep=Inf avail=-Inf chunkB=24001 pulseB=14400 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1685 zero_7 B=120004 L=6194 d=19.4 nb=1 neut=0 cmds=55 noFull=1 shQ=30001 | m=1.472 worth=28.5 cheap=5.8 over=0 dMedOther=24.7 safe(-1)=62298
+    → [TR] Oylesine#53[T5] terr=4431 bal=120182 dq=27.1 cnt=63 | c=94.1 rankC=94.1 need=198725 tD=1.10 人 crowdedHard | safe=62298 keep=Inf avail=-Inf chunkB=24001 pulseB=14400 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1690 zero_7 B=122068 L=6194 d=19.7 nb=1 neut=0 cmds=55 noFull=1 shQ=30517 | m=1.472 worth=29.0 cheap=5.8 over=0 dMedOther=25.1 safe(-1)=63460
+    → [TR] Oylesine#53[T5] terr=4431 bal=122249 dq=27.6 cnt=63 | c=95.7 rankC=95.7 need=202096 tD=1.10 人 crowdedHard | safe=63460 keep=Inf avail=-Inf chunkB=24414 pulseB=14648 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1695 zero_7 B=122068 L=6194 d=19.7 nb=1 neut=0 cmds=55 noFull=1 shQ=30517 | m=1.471 worth=29.0 cheap=5.9 over=0 dMedOther=25.1 safe(-1)=63460
+    → [TR] Oylesine#53[T5] terr=4431 bal=122249 dq=27.6 cnt=63 | c=95.7 rankC=95.7 need=202146 tD=1.10 人 crowdedHard | safe=63460 keep=Inf avail=-Inf chunkB=24414 pulseB=14648 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1700 zero_7 B=130324 L=6194 d=21.0 nb=1 neut=0 cmds=55 noFull=1 shQ=31067 | m=1.470 worth=30.9 cheap=5.9 over=0 dMedOther=26.5 safe(-1)=67110
+    → [TR] Oylesine#53[T5] terr=4431 bal=128746 dq=29.1 cnt=63 | c=100.6 rankC=100.6 need=212693 tD=1.10 人 crowdedHard | safe=67110 keep=Inf avail=-Inf chunkB=26065 pulseB=15639 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1705 zero_7 B=130324 L=6194 d=21.0 nb=1 neut=0 cmds=55 noFull=1 shQ=32581 | m=1.469 worth=30.9 cheap=6.0 over=0 dMedOther=24.9 safe(-1)=52771
+    → [TR] Oylesine#53[T5] terr=4431 bal=103224 dq=23.3 cnt=63 | c=61.0 rankC=42.7 need=171695 tD=0.94 人 crowdedHard | safe=52771 keep=Inf avail=-Inf chunkB=26065 pulseB=15639 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1710 zero_7 B=132474 L=6194 d=21.4 nb=1 neut=0 cmds=55 noFull=1 shQ=33118 | m=1.468 worth=31.4 cheap=6.0 over=0 dMedOther=25.3 safe(-1)=53728
+    → [TR] Oylesine#53[T5] terr=4469 bal=104927 dq=23.5 cnt=64 | c=61.4 rankC=43.0 need=175110 tD=0.93 人 crowdedHard | safe=53728 keep=Inf avail=-Inf chunkB=26495 pulseB=15897 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1715 zero_7 B=132474 L=6194 d=21.4 nb=1 neut=0 cmds=55 noFull=1 shQ=33118 | m=1.468 worth=31.4 cheap=6.1 over=0 dMedOther=25.3 safe(-1)=53728
+    → [TR] Oylesine#53[T5] terr=4545 bal=104927 dq=23.1 cnt=65 | c=44.6 rankC=31.2 need=176381 tD=0.91 人 | safe=53728 keep=Inf avail=-Inf chunkB=26495 pulseB=15897 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1720 zero_7 B=134620 L=6194 d=21.7 nb=1 neut=0 cmds=55 noFull=1 shQ=33655 | m=1.467 worth=31.9 cheap=6.2 over=0 dMedOther=25.7 safe(-1)=54683
+    → [TR] Oylesine#53[T5] terr=4583 bal=106626 dq=23.3 cnt=65 | c=44.9 rankC=31.4 need=179830 tD=0.91 人 | safe=54683 keep=Inf avail=-Inf chunkB=26924 pulseB=16154 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1725 zero_7 B=134620 L=6194 d=21.7 nb=1 neut=0 cmds=55 noFull=1 shQ=33655 | m=1.466 worth=31.9 cheap=6.2 over=0 dMedOther=25.7 safe(-1)=54683
+    → [TR] Oylesine#53[T5] terr=4660 bal=106626 dq=22.9 cnt=67 | c=44.0 rankC=30.8 need=181061 tD=0.89 人 | safe=54683 keep=Inf avail=-Inf chunkB=26924 pulseB=16154 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1730 zero_7 B=136760 L=6194 d=22.1 nb=1 neut=0 cmds=55 noFull=1 shQ=34190 | m=1.466 worth=32.4 cheap=6.3 over=0 dMedOther=25.8 safe(-1)=55635
+    → [TR] Oylesine#53[T5] terr=4742 bal=108321 dq=22.8 cnt=69 | c=58.5 rankC=58.5 need=185118 tD=0.89 人 | safe=55635 keep=Inf avail=-Inf chunkB=27352 pulseB=16411 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1735 zero_7 B=136760 L=6194 d=22.1 nb=1 neut=0 cmds=55 noFull=1 shQ=34190 | m=1.465 worth=32.3 cheap=6.3 over=0 dMedOther=25.1 safe(-1)=55635
+    → [TR] Oylesine#53[T5] terr=4785 bal=108321 dq=22.6 cnt=70 | c=57.9 rankC=57.9 need=185785 tD=0.90 人 | safe=55635 keep=Inf avail=-Inf chunkB=27352 pulseB=16411 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1740 zero_7 B=138893 L=6195 d=22.4 nb=2 neut=0 cmds=56 noFull=1 shQ=34723 | m=1.464 worth=32.8 cheap=6.4 over=0 dMedOther=25.5 safe(-1)=56588
+    → The great Malay empa#66[T1] terr=6250 bal=29126 dq=4.7 cnt=2 | c=22.9 rankC=22.9 need=57972 tD=0.18 人 pulse bleeding | safe=56588 keep=113223 avail=24043 chunkB=27779 pulseB=16667  x=16667 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=110020 dq=23.0 cnt=70 | c=85.2 rankC=123.5 need=188679 tD=0.90 人 | safe=56588 keep=Inf avail=-Inf chunkB=27779 pulseB=16667 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 16683 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1745 zero_7 B=138893 L=6201 d=22.4 nb=2 neut=0 cmds=57 noFull=1 shQ=34723 | m=1.463 worth=32.8 cheap=6.5 over=0 dMedOther=25.5 safe(-1)=56583
+    → The great Malay empa#66[T1] terr=6222 bal=28920 dq=4.6 cnt=5 | c=22.8 rankC=22.8 need=57610 tD=0.18 人 pulse bleeding | safe=56583 keep=113224 avail=24042 chunkB=27779 pulseB=16667  x=16667 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=110020 dq=23.0 cnt=70 | c=85.2 rankC=123.5 need=188719 tD=0.90 人 | safe=56583 keep=Inf avail=-Inf chunkB=27779 pulseB=16667 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 16683 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1750 zero_7 B=141018 L=6206 d=22.7 nb=2 neut=0 cmds=58 noFull=1 shQ=35254 | m=1.462 worth=33.2 cheap=6.5 over=0 dMedOther=25.9 safe(-1)=57525
+    → The great Malay empa#66[T1] terr=6202 bal=29212 dq=4.7 cnt=4 | c=23.2 rankC=23.2 need=58158 tD=0.18 人 pulse bleeding | safe=57525 keep=114967 avail=24399 chunkB=28204 pulseB=16922  x=16922 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=111703 dq=23.3 cnt=70 | c=86.4 rankC=125.3 need=191549 tD=0.90 人 | safe=57525 keep=Inf avail=-Inf chunkB=28204 pulseB=16922 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 16938 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1755 zero_7 B=141018 L=6216 d=22.7 nb=2 neut=0 cmds=59 noFull=1 shQ=35254 | m=1.462 worth=33.2 cheap=6.6 over=0 dMedOther=25.9 safe(-1)=57516
+    → The great Malay empa#66[T1] terr=6156 bal=28867 dq=4.7 cnt=7 | c=20.8 rankC=20.8 need=57554 tD=0.18 人 pulse bleeding | safe=57516 keep=109143 avail=30223 chunkB=28204 pulseB=16922  x=16922 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=111703 dq=23.3 cnt=70 | c=86.4 rankC=125.3 need=191589 tD=0.90 人 | safe=57516 keep=Inf avail=-Inf chunkB=28204 pulseB=16922 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 16938 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1760 zero_7 B=143133 L=6231 d=23.0 nb=2 neut=0 cmds=60 noFull=1 shQ=35783 | m=1.461 worth=33.6 cheap=6.7 over=0 dMedOther=26.3 safe(-1)=58445
+    → The great Malay empa#66[T1] terr=6141 bal=29164 dq=4.7 cnt=8 | c=18.9 rankC=18.9 need=58289 tD=0.18 人 | safe=58445 keep=105431 avail=36025 chunkB=28627 pulseB=17176  x=36025 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=113378 dq=23.7 cnt=70 | c=87.6 rankC=127.1 need=194449 tD=0.90 人 | safe=58445 keep=Inf avail=-Inf chunkB=28627 pulseB=17176 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=257 → The great Malay empa#66[T1]（约 36062 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1765 zero_7 B=143133 L=6239 d=22.9 nb=2 neut=0 cmds=60 noFull=1 shQ=35783 | m=1.460 worth=33.5 cheap=6.7 over=0 dMedOther=26.3 safe(-1)=58438
+    → The great Malay empa#66[T1] terr=6133 bal=29104 dq=4.7 cnt=6 | c=23.5 rankC=23.5 need=58298 tD=0.18 人 | safe=58438 keep=117203 avail=24253 chunkB=28627 pulseB=17176 不够一条(x=24253)→continue hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=113378 dq=23.7 cnt=70 | c=87.6 rankC=127.1 need=194490 tD=0.90 人 | safe=58438 keep=Inf avail=-Inf chunkB=28627 pulseB=17176 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1770 zero_7 B=145237 L=6251 d=23.2 nb=2 neut=0 cmds=60 noFull=1 shQ=36309 | m=1.460 worth=33.9 cheap=6.8 over=0 dMedOther=26.6 safe(-1)=59364
+    → The great Malay empa#66[T1] terr=6121 bal=29440 dq=4.8 cnt=4 | c=23.9 rankC=23.9 need=59072 tD=0.18 人 | safe=59364 keep=119175 avail=24361 chunkB=29047 pulseB=17428 不够一条(x=24361)→continue hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=115044 dq=24.0 cnt=70 | c=88.9 rankC=128.8 need=197295 tD=0.90 人 | safe=59364 keep=Inf avail=-Inf chunkB=29047 pulseB=17428 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1775 zero_7 B=145237 L=6259 d=23.2 nb=2 neut=0 cmds=60 noFull=1 shQ=36309 | m=1.459 worth=33.8 cheap=6.9 over=0 dMedOther=26.6 safe(-1)=59357
+    → The great Malay empa#66[T1] terr=6113 bal=29380 dq=4.8 cnt=6 | c=23.9 rankC=23.9 need=59080 tD=0.18 人 | safe=59357 keep=119343 avail=24193 chunkB=29047 pulseB=17428 不够一条(x=24193)→continue hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=115044 dq=24.0 cnt=70 | c=88.9 rankC=128.8 need=197337 tD=0.90 人 | safe=59357 keep=Inf avail=-Inf chunkB=29047 pulseB=17428 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1780 zero_7 B=147328 L=6265 d=23.5 nb=2 neut=0 cmds=61 noFull=1 shQ=36832 | m=1.458 worth=34.3 cheap=7.0 over=0 dMedOther=27.0 safe(-1)=60282
+    → The great Malay empa#66[T1] terr=6107 bal=29756 dq=4.9 cnt=7 | c=21.7 rankC=21.7 need=59838 tD=0.18 人 | safe=60282 keep=114532 avail=31070 chunkB=29466 pulseB=17679  x=31070 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=116700 dq=24.4 cnt=70 | c=90.1 rankC=130.6 need=200169 tD=0.90 人 | safe=60282 keep=Inf avail=-Inf chunkB=29466 pulseB=17679 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=215 → The great Malay empa#66[T1]（约 31077 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1785 zero_7 B=147328 L=6280 d=23.5 nb=2 neut=0 cmds=62 noFull=1 shQ=36832 | m=1.457 worth=34.2 cheap=7.0 over=0 dMedOther=27.0 safe(-1)=60270
+    → The great Malay empa#66[T1] terr=6092 bal=29640 dq=4.9 cnt=9 | c=7.3 rankC=3.6 need=59847 tD=0.18 人 pulse bleeding | safe=60270 keep=77897 avail=67705 chunkB=29466 pulseB=17679  x=17679 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=116700 dq=24.4 cnt=70 | c=90.1 rankC=130.6 need=200211 tD=0.90 人 | safe=60270 keep=Inf avail=-Inf chunkB=29466 pulseB=17679 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 17696 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1790 zero_7 B=149390 L=6300 d=23.7 nb=2 neut=0 cmds=63 noFull=1 shQ=37347 | m=1.457 worth=34.5 cheap=7.1 over=0 dMedOther=27.4 safe(-1)=61170
+    → The great Malay empa#66[T1] terr=6070 bal=29883 dq=4.9 cnt=14 | c=7.4 rankC=3.7 need=60565 tD=0.18 人 pulse bleeding | safe=61170 keep=79114 avail=68526 chunkB=29878 pulseB=17927  x=17926 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=118333 dq=24.7 cnt=70 | c=91.3 rankC=132.4 need=202966 tD=0.90 人 | safe=61170 keep=Inf avail=-Inf chunkB=29878 pulseB=17927 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 17944 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1795 zero_7 B=149390 L=6314 d=23.7 nb=2 neut=0 cmds=64 noFull=1 shQ=37347 | m=1.456 worth=34.4 cheap=7.2 over=0 dMedOther=27.4 safe(-1)=61158
+    → The great Malay empa#66[T1] terr=6051 bal=16321 dq=2.7 cnt=15 | c=4.4 rankC=2.2 need=36598 tD=0.10 人 pulse bleeding | safe=61158 keep=61158 avail=86482 chunkB=29878 pulseB=17927  x=17926 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=118333 dq=24.7 cnt=70 | c=91.3 rankC=132.3 need=203009 tD=0.90 人 | safe=61158 keep=Inf avail=-Inf chunkB=29878 pulseB=17927 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 17944 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1800 zero_7 B=157782 L=6346 d=24.9 nb=2 neut=0 cmds=65 noFull=1 shQ=37891 | m=1.455 worth=36.2 cheap=7.3 over=0 dMedOther=28.8 safe(-1)=64730
+    → The great Malay empa#66[T1] terr=6015 bal=22403 dq=3.7 cnt=18 | c=5.8 rankC=2.9 need=47609 tD=0.13 人 pulse bleeding | safe=64730 keep=64730 avail=91203 chunkB=31556 pulseB=18934  x=18933 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=124739 dq=26.1 cnt=70 | c=96.0 rankC=139.3 need=213741 tD=0.91 人 | safe=64730 keep=Inf avail=-Inf chunkB=31556 pulseB=18934 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 18952 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1805 zero_7 B=157782 L=6383 d=24.7 nb=2 neut=0 cmds=66 noFull=1 shQ=39445 | m=1.454 worth=35.9 cheap=7.4 over=0 dMedOther=28.8 safe(-1)=64699
+    → The great Malay empa#66[T1] terr=5964 bal=22102 dq=3.7 cnt=17 | c=5.9 rankC=3.0 need=47424 tD=0.13 人 pulse bleeding | safe=64699 keep=64699 avail=91234 chunkB=31556 pulseB=18934  x=18933 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=124739 dq=26.1 cnt=70 | c=96.0 rankC=139.2 need=213786 tD=0.91 人 | safe=64699 keep=Inf avail=-Inf chunkB=31556 pulseB=18934 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 18952 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1810 zero_7 B=159896 L=6400 d=25.0 nb=2 neut=0 cmds=67 noFull=1 shQ=39974 | m=1.454 worth=36.3 cheap=7.4 over=0 dMedOther=28.9 safe(-1)=65624
+    → The great Malay empa#66[T1] terr=5933 bal=12192 dq=2.1 cnt=16 | c=5.3 rankC=2.6 need=42217 tD=0.07 人 pulse bleeding onMe agg | safe=65624 keep=65624 avail=92399 chunkB=31979 pulseB=19188  x=19187 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=126410 dq=26.4 cnt=70 | c=97.3 rankC=141.0 need=216609 tD=0.91 人 | safe=65624 keep=Inf avail=-Inf chunkB=31979 pulseB=19188 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 19206 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1815 zero_7 B=159819 L=6398 d=25.0 nb=2 neut=0 cmds=68 noFull=1 shQ=39954 | m=1.453 worth=36.3 cheap=7.5 over=0 dMedOther=28.9 safe(-1)=65625
+    → The great Malay empa#66[T1] terr=5926 bal=25489 dq=4.3 cnt=17 | c=8.4 rankC=4.2 need=65571 tD=0.15 人 pulse bleeding onMe agg | safe=65625 keep=86234 avail=71713 chunkB=31964 pulseB=19178  x=19178 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=126410 dq=26.4 cnt=70 | c=97.3 rankC=141.0 need=216654 tD=0.91 人 | safe=65625 keep=Inf avail=-Inf chunkB=31964 pulseB=19178 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 19197 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1820 zero_7 B=161832 L=6396 d=25.3 nb=2 neut=0 cmds=69 noFull=1 shQ=40458 | m=1.452 worth=36.7 cheap=7.6 over=0 dMedOther=29.3 safe(-1)=66557
+    → The great Malay empa#66[T1] terr=5899 bal=25623 dq=4.3 cnt=18 | c=8.5 rankC=4.2 need=65556 tD=0.15 人 pulse bleeding onMe agg | safe=66557 keep=87278 avail=72658 chunkB=32366 pulseB=19420  x=19419 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=128065 dq=26.8 cnt=70 | c=98.5 rankC=142.8 need=219499 tD=0.91 人 | safe=66557 keep=Inf avail=-Inf chunkB=32366 pulseB=19420 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 19438 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1825 zero_7 B=161388 L=6385 d=25.3 nb=2 neut=0 cmds=70 noFull=1 shQ=40347 | m=1.451 worth=36.7 cheap=7.7 over=0 dMedOther=29.3 safe(-1)=66566
+    → The great Malay empa#66[T1] terr=5918 bal=14522 dq=2.5 cnt=22 | c=5.4 rankC=3.8 need=45108 tD=0.08 人 pulse bleeding onMe agg | safe=66566 keep=66566 avail=92931 chunkB=32278 pulseB=19367  x=19366 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=128065 dq=26.8 cnt=70 | c=67.9 rankC=67.9 need=219544 tD=0.91 人 | safe=66566 keep=Inf avail=-Inf chunkB=32278 pulseB=19367 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 19385 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1830 zero_7 B=162881 L=6371 d=25.6 nb=2 neut=0 cmds=71 noFull=1 shQ=40720 | m=1.451 worth=37.1 cheap=7.8 over=0 dMedOther=29.7 safe(-1)=67499
+    → The great Malay empa#66[T1] terr=5942 bal=14692 dq=2.5 cnt=22 | c=5.5 rankC=3.8 need=44324 tD=0.08 人 pulse bleeding onMe agg | safe=67499 keep=67499 avail=93474 chunkB=32576 pulseB=19546  x=19545 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=129704 dq=27.1 cnt=70 | c=68.7 rankC=68.7 need=222318 tD=0.91 人 | safe=67499 keep=Inf avail=-Inf chunkB=32576 pulseB=19546 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 19564 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1835 zero_7 B=162595 L=6364 d=25.5 nb=2 neut=0 cmds=72 noFull=1 shQ=40648 | m=1.450 worth=37.0 cheap=7.9 over=0 dMedOther=29.7 safe(-1)=67504
+    → The great Malay empa#66[T1] terr=5945 bal=14654 dq=2.5 cnt=23 | c=5.4 rankC=3.8 need=43685 tD=0.08 人 pulse bleeding onMe agg | safe=67504 keep=67504 avail=93186 chunkB=32519 pulseB=19511  x=19511 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=129704 dq=27.1 cnt=70 | c=68.7 rankC=68.7 need=222365 tD=0.91 人 | safe=67504 keep=Inf avail=-Inf chunkB=32519 pulseB=19511 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 19530 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1840 zero_7 B=164049 L=6350 d=25.8 nb=2 neut=0 cmds=73 noFull=1 shQ=41012 | m=1.449 worth=37.4 cheap=8.0 over=0 dMedOther=30.1 safe(-1)=68427
+    → The great Malay empa#66[T1] terr=5953 bal=14793 dq=2.5 cnt=24 | c=5.5 rankC=3.8 need=42790 tD=0.08 人 pulse bleeding onMe agg | safe=68427 keep=68427 avail=93700 chunkB=32810 pulseB=19686  x=19685 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=131325 dq=27.4 cnt=70 | c=69.6 rankC=69.6 need=225157 tD=0.91 人 | safe=68427 keep=Inf avail=-Inf chunkB=32810 pulseB=19686 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 19705 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1845 zero_7 B=163430 L=6335 d=25.8 nb=2 neut=0 cmds=74 noFull=1 shQ=40857 | m=1.448 worth=37.4 cheap=8.1 over=0 dMedOther=30.1 safe(-1)=68440
+    → The great Malay empa#66[T1] terr=5975 bal=8396 dq=1.4 cnt=23 | c=3.8 rankC=2.7 need=30257 tD=0.05 人 pulse bleeding onMe agg | safe=68440 keep=68440 avail=93075 chunkB=32686 pulseB=19612  x=19611 hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=131325 dq=27.4 cnt=70 | c=69.5 rankC=69.5 need=225204 tD=0.91 人 | safe=68440 keep=Inf avail=-Inf chunkB=32686 pulseB=19612 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 19630 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1850 zero_7 B=143398 L=6329 d=22.7 nb=2 neut=0 cmds=75 noFull=1 shQ=16009 | m=1.448 worth=32.8 cheap=8.2 over=0 dMedOther=30.6 safe(-1)=69345
+    → The great Malay empa#66[T1] terr=5968 bal=8464 dq=1.4 cnt=21 | c=0.9 rankC=0.6 need=10261 tD=0.05 人 pulse bleeding onMe agg | safe=69345 keep=69345 avail=72373 chunkB=28680 pulseB=17208 在途(curAtk=19601)→continue hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=132927 dq=27.8 cnt=70 | c=137.6 rankC=199.5 need=227920 tD=0.91 人 crowdedHard | safe=69345 keep=Inf avail=-Inf chunkB=28680 pulseB=17208 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 boatTo pct=127 → 水/岸#763604（约 17924 兵） 〔boatFood:2017<boatFood:5623<idleBoats:5058<act:4963〕
+t=1855 zero_7 B=143398 L=6329 d=22.7 nb=2 neut=0 cmds=75 noFull=1 shQ=18175 | m=1.447 worth=32.8 cheap=8.3 over=0 dMedOther=30.6 safe(-1)=69345
+    → The great Malay empa#66[T1] terr=5953 bal=8427 dq=1.4 cnt=21 | c=2.0 rankC=1.4 need=10143 tD=0.05 人 pulse bleeding | safe=69345 keep=69345 avail=72373 chunkB=28680 pulseB=17208 在途(curAtk=13616)→continue hNb=2
+    → [TR] Oylesine#53[T5] terr=4785 bal=132927 dq=27.8 cnt=70 | c=137.6 rankC=199.5 need=227968 tD=0.91 人 crowdedHard | safe=69345 keep=Inf avail=-Inf chunkB=28680 pulseB=17208 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1860 zero_7 B=69915 L=6368 d=11.0 nb=2 neut=0 cmds=75 noFull=1 shQ=17478 | m=1.446 worth=15.9 cheap=8.4 over=0 dMedOther=31.6 safe(-1)=70200
+    → [TR] Oylesine#53[T5] terr=4785 bal=134508 dq=28.1 cnt=70 | c=138.6 rankC=201.0 need=230698 tD=0.89 人 crowdedHard | safe=70200 keep=Inf avail=-Inf chunkB=13983 pulseB=8390 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1865 zero_7 B=69915 L=6400 d=10.9 nb=2 neut=0 cmds=75 noFull=1 shQ=17478 | m=1.445 worth=15.8 cheap=8.5 over=0 dMedOther=31.6 safe(-1)=70173
+    → [TR] Oylesine#53[T5] terr=4785 bal=134508 dq=28.1 cnt=70 | c=138.6 rankC=201.0 need=230746 tD=0.89 人 crowdedHard | safe=70173 keep=Inf avail=-Inf chunkB=13983 pulseB=8390 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1870 zero_7 B=70733 L=6414 d=11.0 nb=2 neut=0 cmds=75 noFull=1 shQ=17683 | m=1.445 worth=15.9 cheap=8.5 over=0 dMedOther=32.0 safe(-1)=71030
+    → [TR] Oylesine#53[T5] terr=4785 bal=136054 dq=28.4 cnt=70 | c=140.1 rankC=203.2 need=233372 tD=0.89 人 crowdedHard | safe=71030 keep=Inf avail=-Inf chunkB=14147 pulseB=8488 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1875 zero_7 B=70733 L=6431 d=11.0 nb=2 neut=0 cmds=75 noFull=1 shQ=17683 | m=1.444 worth=15.9 cheap=8.5 over=0 dMedOther=32.0 safe(-1)=71015
+    → [TR] Oylesine#53[T5] terr=4785 bal=136054 dq=28.4 cnt=70 | c=96.6 rankC=96.6 need=233421 tD=0.89 人 crowdedHard | safe=71015 keep=Inf avail=-Inf chunkB=14147 pulseB=8488 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1880 zero_7 B=71560 L=6450 d=11.1 nb=2 neut=0 cmds=75 noFull=1 shQ=17890 | m=1.443 worth=16.0 cheap=8.5 over=0 dMedOther=32.4 safe(-1)=71871
+    → [TR] Oylesine#53[T5] terr=4785 bal=137605 dq=28.8 cnt=70 | c=97.7 rankC=97.7 need=236106 tD=0.89 人 crowdedHard | safe=71871 keep=Inf avail=-Inf chunkB=14312 pulseB=8587 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1885 zero_7 B=71560 L=6457 d=11.1 nb=2 neut=0 cmds=75 noFull=1 shQ=17890 | m=1.442 worth=16.0 cheap=8.5 over=0 dMedOther=32.4 safe(-1)=71865
+    → [TR] Oylesine#53[T5] terr=4785 bal=137605 dq=28.8 cnt=70 | c=97.7 rankC=97.7 need=236155 tD=0.89 人 crowdedHard | safe=71865 keep=Inf avail=-Inf chunkB=14312 pulseB=8587 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1890 zero_7 B=72397 L=6464 d=11.2 nb=2 neut=0 cmds=75 noFull=1 shQ=18099 | m=1.442 worth=16.1 cheap=8.5 over=0 dMedOther=32.8 safe(-1)=72740
+    → [TR] Oylesine#53[T5] terr=4785 bal=139173 dq=29.1 cnt=70 | c=143.2 rankC=207.6 need=238822 tD=0.89 人 crowdedHard | safe=72740 keep=Inf avail=-Inf chunkB=14479 pulseB=8688 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1895 zero_7 B=72397 L=6469 d=11.2 nb=2 neut=0 cmds=75 noFull=1 shQ=18099 | m=1.441 worth=16.1 cheap=8.5 over=0 dMedOther=32.8 safe(-1)=72736
+    → [TR] Oylesine#53[T5] terr=4785 bal=139173 dq=29.1 cnt=70 | c=143.2 rankC=207.6 need=238871 tD=0.89 人 crowdedHard | safe=72736 keep=Inf avail=-Inf chunkB=14479 pulseB=8688 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1900 zero_7 B=79715 L=6471 d=12.3 nb=2 neut=0 cmds=75 noFull=1 shQ=18332 | m=1.440 worth=17.7 cheap=8.5 over=0 dMedOther=34.0 safe(-1)=76313
+    → [TR] Oylesine#53[T5] terr=4785 bal=145544 dq=30.4 cnt=70 | c=149.6 rankC=216.9 need=249613 tD=0.89 人 crowdedHard | safe=76313 keep=Inf avail=-Inf chunkB=15943 pulseB=9566 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1905 zero_7 B=20001 L=6474 d=3.1 nb=2 neut=0 cmds=75 noFull=1 shQ=5000 | m=1.439 worth=4.4 cheap=8.5 over=0 dMedOther=33.7 safe(-1)=76311
+    → [TR] Oylesine#53[T5] terr=4785 bal=145544 dq=30.4 cnt=70 | c=149.1 rankC=216.2 need=249664 tD=0.90 人 crowdedHard | safe=76311 keep=Inf avail=-Inf chunkB=4000 pulseB=2400 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1910 zero_7 B=20235 L=6476 d=3.1 nb=2 neut=0 cmds=75 noFull=1 shQ=5058 | m=1.439 worth=4.5 cheap=8.5 over=0 dMedOther=34.1 safe(-1)=77241
+    → [TR] Oylesine#53[T5] terr=4785 bal=147203 dq=30.8 cnt=70 | c=150.8 rankC=218.6 need=252489 tD=0.90 人 crowdedHard | safe=77241 keep=Inf avail=-Inf chunkB=4047 pulseB=2428 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1915 zero_7 B=20235 L=6478 d=3.1 nb=2 neut=0 cmds=75 noFull=1 shQ=5058 | m=1.438 worth=4.5 cheap=8.5 over=0 dMedOther=33.7 safe(-1)=73929
+    → [TR] Oylesine#53[T5] terr=4785 bal=141310 dq=29.5 cnt=70 | c=144.9 rankC=210.1 need=242690 tD=0.88 人 crowdedHard | safe=73929 keep=Inf avail=-Inf chunkB=4047 pulseB=2428 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1920 zero_7 B=146618 L=6479 d=22.6 nb=1 neut=0 cmds=75 noFull=1 shQ=5909 | m=1.437 worth=32.5 cheap=8.5 over=0 dMedOther=34.1 safe(-1)=74832
+    → [TR] Oylesine#53[T5] terr=4785 bal=142920 dq=29.9 cnt=70 | c=147.3 rankC=213.7 need=245482 tD=0.88 人 crowdedHard | safe=74832 keep=Inf avail=-Inf chunkB=29324 pulseB=17594 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1925 zero_7 B=146618 L=6479 d=22.6 nb=1 neut=0 cmds=75 noFull=1 shQ=8049 | m=1.436 worth=32.5 cheap=8.5 over=0 dMedOther=34.1 safe(-1)=74832
+    → [TR] Oylesine#53[T5] terr=4785 bal=142920 dq=29.9 cnt=70 | c=101.6 rankC=101.6 need=245533 tD=0.88 人 crowdedHard | safe=74832 keep=Inf avail=-Inf chunkB=29324 pulseB=17594 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1930 zero_7 B=148333 L=6479 d=22.9 nb=1 neut=0 cmds=75 noFull=1 shQ=10194 | m=1.435 worth=32.9 cheap=8.5 over=0 dMedOther=34.5 safe(-1)=75747
+    → [TR] Oylesine#53[T5] terr=4785 bal=144549 dq=30.2 cnt=70 | c=102.7 rankC=102.7 need=248308 tD=0.87 人 crowdedHard | safe=75747 keep=Inf avail=-Inf chunkB=29667 pulseB=17800 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1935 zero_7 B=148333 L=6479 d=22.9 nb=1 neut=0 cmds=75 noFull=1 shQ=12359 | m=1.435 worth=32.8 cheap=8.5 over=0 dMedOther=34.5 safe(-1)=75747
+    → [TR] Oylesine#53[T5] terr=4785 bal=144549 dq=30.2 cnt=70 | c=102.7 rankC=102.7 need=248359 tD=0.87 人 crowdedHard | safe=75747 keep=Inf avail=-Inf chunkB=29667 pulseB=17800 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1940 zero_7 B=150068 L=6479 d=23.2 nb=1 neut=0 cmds=75 noFull=1 shQ=14529 | m=1.434 worth=33.2 cheap=8.5 over=0 dMedOther=34.9 safe(-1)=76673
+    → [TR] Oylesine#53[T5] terr=4785 bal=146196 dq=30.6 cnt=70 | c=103.8 rankC=103.8 need=251218 tD=0.87 人 crowdedHard | safe=76673 keep=Inf avail=-Inf chunkB=30014 pulseB=18008 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1945 zero_7 B=150068 L=6479 d=23.2 nb=1 neut=0 cmds=75 noFull=1 shQ=16719 | m=1.433 worth=33.2 cheap=8.5 over=0 dMedOther=34.9 safe(-1)=76673
+    → [TR] Oylesine#53[T5] terr=4785 bal=146196 dq=30.6 cnt=70 | c=103.8 rankC=103.8 need=251270 tD=0.87 人 crowdedHard | safe=76673 keep=Inf avail=-Inf chunkB=30014 pulseB=18008 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1950 zero_7 B=151823 L=6479 d=23.4 nb=1 neut=0 cmds=75 noFull=1 shQ=18915 | m=1.433 worth=33.6 cheap=8.5 over=0 dMedOther=35.4 safe(-1)=74283
+    → [TR] Oylesine#53[T5] terr=4785 bal=141943 dq=29.7 cnt=70 | c=100.9 rankC=100.9 need=244199 tD=0.84 人 crowdedHard | safe=74283 keep=Inf avail=-Inf chunkB=30365 pulseB=18219 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1955 zero_7 B=151823 L=6479 d=23.4 nb=1 neut=0 cmds=75 noFull=1 shQ=21135 | m=1.432 worth=33.6 cheap=8.5 over=0 dMedOther=35.4 safe(-1)=74283
+    → [TR] Oylesine#53[T5] terr=4785 bal=141943 dq=29.7 cnt=70 | c=100.9 rankC=100.9 need=244249 tD=0.84 人 crowdedHard | safe=74283 keep=Inf avail=-Inf chunkB=30365 pulseB=18219 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1960 zero_7 B=153599 L=6479 d=23.7 nb=1 neut=0 cmds=75 noFull=1 shQ=23360 | m=1.431 worth=33.9 cheap=8.5 over=0 dMedOther=35.8 safe(-1)=75192
+    → [TR] Oylesine#53[T5] terr=4785 bal=143561 dq=30.0 cnt=70 | c=102.0 rankC=102.0 need=247060 tD=0.84 人 crowdedHard | safe=75192 keep=Inf avail=-Inf chunkB=30720 pulseB=18432 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1965 zero_7 B=153599 L=6479 d=23.7 nb=1 neut=0 cmds=75 noFull=1 shQ=25605 | m=1.430 worth=33.9 cheap=8.5 over=0 dMedOther=30.0 safe(-1)=75192
+    → [TR] Oylesine#53[T5] terr=4785 bal=143561 dq=30.0 cnt=70 | c=102.0 rankC=102.0 need=247111 tD=1.00 人 crowdedHard | safe=75192 keep=Inf avail=-Inf chunkB=30720 pulseB=18432 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1970 zero_7 B=155396 L=6479 d=24.0 nb=1 neut=0 cmds=76 noFull=1 shQ=27855 | m=1.429 worth=34.3 cheap=8.5 over=0 dMedOther=30.3 safe(-1)=76112
+    → [TR] Oylesine#53[T5] terr=4785 bal=145197 dq=30.3 cnt=70 | c=103.1 rankC=103.1 need=249904 tD=1.00 人 crowdedHard | safe=76112 keep=Inf avail=-Inf chunkB=31079 pulseB=18648 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 boatTo pct=127 → 水/岸#916418（约 19424 兵） 〔boatFood:2017<boatFood:5623<idleBoats:5058<act:4963〕
+t=1975 zero_7 B=155396 L=6479 d=24.0 nb=1 neut=0 cmds=76 noFull=1 shQ=30125 | m=1.429 worth=34.3 cheap=8.5 over=0 dMedOther=30.3 safe(-1)=76112
+    → [TR] Oylesine#53[T5] terr=4785 bal=145197 dq=30.3 cnt=70 | c=103.1 rankC=103.1 need=249955 tD=1.00 人 crowdedHard | safe=76112 keep=Inf avail=-Inf chunkB=31079 pulseB=18648 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1980 zero_7 B=157214 L=6479 d=24.3 nb=1 neut=0 cmds=76 noFull=1 shQ=32400 | m=1.428 worth=34.7 cheap=8.5 over=0 dMedOther=30.7 safe(-1)=77041
+    → [TR] Oylesine#53[T5] terr=4785 bal=146852 dq=30.7 cnt=70 | c=104.2 rankC=104.2 need=252833 tD=1.00 人 crowdedHard | safe=77041 keep=Inf avail=-Inf chunkB=31443 pulseB=18866 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1985 zero_7 B=132651 L=6479 d=20.5 nb=1 neut=0 cmds=76 noFull=1 shQ=33162 | m=1.427 worth=29.2 cheap=8.5 over=0 dMedOther=30.7 safe(-1)=77041
+    → [TR] Oylesine#53[T5] terr=4785 bal=146852 dq=30.7 cnt=70 | c=104.1 rankC=104.1 need=252884 tD=1.00 人 crowdedHard | safe=77041 keep=Inf avail=-Inf chunkB=26530 pulseB=15918 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1990 zero_7 B=134203 L=6479 d=20.7 nb=1 neut=0 cmds=76 noFull=1 shQ=33550 | m=1.427 worth=29.5 cheap=8.5 over=0 dMedOther=31.0 safe(-1)=77982
+    → [TR] Oylesine#53[T5] terr=4785 bal=148526 dq=31.0 cnt=70 | c=105.2 rankC=105.2 need=255745 tD=1.00 人 crowdedHard | safe=77982 keep=Inf avail=-Inf chunkB=26841 pulseB=16104 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1995 zero_7 B=134203 L=6479 d=20.7 nb=1 neut=0 cmds=76 noFull=1 shQ=33550 | m=1.426 worth=29.5 cheap=8.5 over=0 dMedOther=31.0 safe(-1)=77982
+    → [TR] Oylesine#53[T5] terr=4785 bal=148526 dq=31.0 cnt=70 | c=105.2 rankC=105.2 need=255797 tD=1.00 人 crowdedHard | safe=77982 keep=Inf avail=-Inf chunkB=26841 pulseB=16104 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2000 zero_7 B=142252 L=6479 d=22.0 nb=1 neut=0 cmds=76 noFull=1 shQ=33966 | m=1.425 worth=31.3 cheap=8.5 over=0 dMedOther=32.4 safe(-1)=81621
+    → [TR] Oylesine#53[T5] terr=4785 bal=155004 dq=32.4 cnt=70 | c=109.7 rankC=109.7 need=266778 tD=1.00 人 crowdedHard | safe=81621 keep=Inf avail=-Inf chunkB=28450 pulseB=17070 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2005 zero_7 B=142252 L=6479 d=22.0 nb=1 neut=0 cmds=76 noFull=1 shQ=35563 | m=1.420 worth=31.2 cheap=8.5 over=0 dMedOther=32.4 safe(-1)=81621
+    → [TR] Oylesine#53[T5] terr=4786 bal=155004 dq=32.4 cnt=70 | c=109.7 rankC=109.7 need=266851 tD=1.00 人 crowdedHard | safe=81621 keep=Inf avail=-Inf chunkB=28450 pulseB=17070 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2010 zero_7 B=143916 L=6479 d=22.2 nb=1 neut=0 cmds=76 noFull=1 shQ=35979 | m=1.415 worth=31.4 cheap=8.5 over=0 dMedOther=32.7 safe(-1)=82614
+    → [TR] Oylesine#53[T5] terr=4790 bal=156771 dq=32.7 cnt=70 | c=110.8 rankC=110.8 need=269948 tD=1.00 人 crowdedHard | safe=82614 keep=Inf avail=-Inf chunkB=28783 pulseB=17270 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2015 zero_7 B=143916 L=6479 d=22.2 nb=1 neut=0 cmds=76 noFull=1 shQ=35979 | m=1.409 worth=31.3 cheap=8.5 over=0 dMedOther=32.7 safe(-1)=82614
+    → [TR] Oylesine#53[T5] terr=4792 bal=156771 dq=32.7 cnt=70 | c=110.7 rankC=110.7 need=270040 tD=1.00 人 crowdedHard | safe=82614 keep=Inf avail=-Inf chunkB=28783 pulseB=17270 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2020 zero_7 B=145599 L=6479 d=22.5 nb=1 neut=0 cmds=76 noFull=1 shQ=36399 | m=1.404 worth=31.6 cheap=8.5 over=0 dMedOther=33.3 safe(-1)=84251
+    → [TR] Oylesine#53[T5] terr=4793 bal=159685 dq=33.3 cnt=70 | c=112.7 rankC=112.7 need=275068 tD=1.00 人 crowdedHard | safe=84251 keep=Inf avail=-Inf chunkB=29120 pulseB=17472 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2025 zero_7 B=145599 L=6479 d=22.5 nb=1 neut=0 cmds=76 noFull=1 shQ=36399 | m=1.399 worth=31.4 cheap=8.5 over=0 dMedOther=33.3 safe(-1)=84251
+    → [TR] Oylesine#53[T5] terr=4793 bal=159685 dq=33.3 cnt=70 | c=112.7 rankC=112.7 need=275124 tD=1.00 人 crowdedHard | safe=84251 keep=Inf avail=-Inf chunkB=29120 pulseB=17472 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2030 zero_7 B=147302 L=6479 d=22.7 nb=1 neut=0 cmds=77 noFull=1 shQ=36825 | m=1.393 worth=31.7 cheap=8.5 over=0 dMedOther=33.7 safe(-1)=85273
+    → [TR] Oylesine#53[T5] terr=4793 bal=161505 dq=33.7 cnt=70 | c=113.9 rankC=113.9 need=278241 tD=1.00 人 crowdedHard | safe=85273 keep=Inf avail=-Inf chunkB=29460 pulseB=17676 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 boatTo pct=127 → 水/岸#916418（约 18412 兵） 〔boatFood:2017<boatFood:5623<idleBoats:5058<act:4963〕
+t=2035 zero_7 B=147302 L=6479 d=22.7 nb=1 neut=0 cmds=77 noFull=1 shQ=36825 | m=1.388 worth=31.6 cheap=8.5 over=0 dMedOther=33.6 safe(-1)=85273
+    → [TR] Oylesine#53[T5] terr=4795 bal=161505 dq=33.7 cnt=70 | c=113.8 rankC=113.8 need=278335 tD=1.00 人 crowdedHard | safe=85273 keep=Inf avail=-Inf chunkB=29460 pulseB=17676 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2040 zero_7 B=149025 L=6479 d=23.0 nb=1 neut=0 cmds=77 noFull=1 shQ=37256 | m=1.383 worth=31.8 cheap=8.5 over=0 dMedOther=33.9 safe(-1)=86308
+    → [TR] Oylesine#53[T5] terr=4805 bal=163346 dq=34.0 cnt=70 | c=114.8 rankC=114.8 need=281739 tD=1.00 人 crowdedHard | safe=86308 keep=Inf avail=-Inf chunkB=29805 pulseB=17883 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2045 zero_7 B=125740 L=6479 d=19.4 nb=1 neut=0 cmds=77 noFull=1 shQ=31435 | m=1.378 worth=26.7 cheap=8.5 over=0 dMedOther=33.9 safe(-1)=86308
+    → [TR] Oylesine#53[T5] terr=4813 bal=163346 dq=33.9 cnt=70 | c=114.5 rankC=114.5 need=281948 tD=1.00 人 crowdedHard | safe=86308 keep=Inf avail=-Inf chunkB=25148 pulseB=15089 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2050 zero_7 B=127211 L=6479 d=19.6 nb=1 neut=0 cmds=77 noFull=1 shQ=31802 | m=1.373 worth=26.9 cheap=8.5 over=0 dMedOther=34.2 safe(-1)=87354
+    → [TR] Oylesine#53[T5] terr=4834 bal=165208 dq=34.2 cnt=70 | c=115.2 rankC=115.2 need=285545 tD=1.00 人 crowdedHard | safe=87354 keep=Inf avail=-Inf chunkB=25442 pulseB=15265 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2055 zero_7 B=127211 L=6479 d=19.6 nb=1 neut=0 cmds=77 noFull=1 shQ=31802 | m=1.367 worth=26.8 cheap=8.5 over=0 dMedOther=34.0 safe(-1)=87354
+    → [TR] Oylesine#53[T5] terr=4854 bal=165208 dq=34.0 cnt=70 | c=114.7 rankC=114.7 need=285981 tD=1.00 人 crowdedHard | safe=87354 keep=Inf avail=-Inf chunkB=25442 pulseB=15265 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2060 zero_7 B=128699 L=6479 d=19.9 nb=1 neut=0 cmds=77 noFull=1 shQ=32174 | m=1.362 worth=27.1 cheap=8.5 over=0 dMedOther=34.3 safe(-1)=88412
+    → [TR] Oylesine#53[T5] terr=4865 bal=167091 dq=34.3 cnt=70 | c=115.7 rankC=115.7 need=289486 tD=1.00 人 crowdedHard | safe=88412 keep=Inf avail=-Inf chunkB=25740 pulseB=15444 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2065 zero_7 B=128699 L=6479 d=19.9 nb=1 neut=0 cmds=77 noFull=1 shQ=32174 | m=1.357 worth=27.0 cheap=8.5 over=0 dMedOther=34.2 safe(-1)=88412
+    → [TR] Oylesine#53[T5] terr=4886 bal=167091 dq=34.2 cnt=70 | c=115.1 rankC=115.1 need=289937 tD=1.00 人 crowdedHard | safe=88412 keep=Inf avail=-Inf chunkB=25740 pulseB=15444 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2070 zero_7 B=130204 L=6479 d=20.1 nb=1 neut=0 cmds=77 noFull=1 shQ=32551 | m=1.352 worth=27.2 cheap=8.5 over=0 dMedOther=34.5 safe(-1)=89481
+    → [TR] Oylesine#53[T5] terr=4896 bal=168995 dq=34.5 cnt=70 | c=116.0 rankC=116.0 need=293409 tD=1.00 人 crowdedHard | safe=89481 keep=Inf avail=-Inf chunkB=26041 pulseB=15624 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2075 zero_7 B=130204 L=6479 d=20.1 nb=1 neut=0 cmds=77 noFull=1 shQ=32551 | m=1.346 worth=27.1 cheap=8.5 over=0 dMedOther=34.7 safe(-1)=90001
+    → [TR] Oylesine#53[T5] terr=4896 bal=169921 dq=34.7 cnt=70 | c=116.7 rankC=116.7 need=295036 tD=1.00 人 crowdedHard | safe=90001 keep=Inf avail=-Inf chunkB=26041 pulseB=15624 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2080 zero_7 B=131727 L=6479 d=20.3 nb=1 neut=0 cmds=77 noFull=1 shQ=32931 | m=1.341 worth=27.3 cheap=8.5 over=0 dMedOther=35.1 safe(-1)=91090
+    → [TR] Oylesine#53[T5] terr=4896 bal=171858 dq=35.1 cnt=70 | c=117.9 rankC=117.9 need=298437 tD=1.00 人 crowdedHard | safe=91090 keep=Inf avail=-Inf chunkB=26345 pulseB=15807 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2085 zero_7 B=131727 L=6479 d=20.3 nb=1 neut=0 cmds=77 noFull=1 shQ=32931 | m=1.336 worth=27.2 cheap=8.5 over=0 dMedOther=35.1 safe(-1)=91090
+    → [TR] Oylesine#53[T5] terr=4896 bal=171858 dq=35.1 cnt=70 | c=117.9 rankC=117.9 need=298494 tD=1.00 人 crowdedHard | safe=91090 keep=Inf avail=-Inf chunkB=26345 pulseB=15807 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2090 zero_7 B=133268 L=6479 d=20.6 nb=1 neut=0 cmds=77 noFull=1 shQ=33317 | m=1.331 worth=27.4 cheap=8.5 over=0 dMedOther=35.5 safe(-1)=92190
+    → [TR] Oylesine#53[T5] terr=4896 bal=173817 dq=35.5 cnt=70 | c=119.2 rankC=119.2 need=301878 tD=1.00 人 crowdedHard | safe=92190 keep=Inf avail=-Inf chunkB=26654 pulseB=15992 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2095 zero_7 B=133268 L=6479 d=20.6 nb=1 neut=0 cmds=78 noFull=1 shQ=33317 | m=1.325 worth=27.3 cheap=8.5 over=0 dMedOther=35.5 safe(-1)=92190
+    → [TR] Oylesine#53[T5] terr=4896 bal=173817 dq=35.5 cnt=70 | c=119.2 rankC=119.2 need=301935 tD=1.00 人 crowdedHard | safe=92190 keep=Inf avail=-Inf chunkB=26654 pulseB=15992 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 boatTo pct=127 → 水/岸#916418（约 16658 兵） 〔boatFood:2017<boatFood:5623<idleBoats:5058<act:4963〕
+t=2100 zero_7 B=141307 L=6482 d=21.8 nb=2 neut=0 cmds=78 noFull=1 shQ=33730 | m=1.320 worth=28.8 cheap=8.5 over=0 dMedOther=36.9 safe(-1)=96051
+    → [TR] Oylesine#53[T5] terr=4896 bal=180694 dq=36.9 cnt=70 | c=123.8 rankC=123.8 need=313733 tD=1.00 人 crowdedHard | safe=96051 keep=Inf avail=-Inf chunkB=28261 pulseB=16957 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2105 zero_7 B=141307 L=6483 d=21.8 nb=2 neut=0 cmds=78 noFull=1 shQ=35326 | m=1.315 worth=28.7 cheap=8.5 over=0 dMedOther=36.9 safe(-1)=96050
+    → [TR] Oylesine#53[T5] terr=4896 bal=180694 dq=36.9 cnt=70 | c=123.8 rankC=123.8 need=313793 tD=1.00 人 crowdedHard | safe=96050 keep=Inf avail=-Inf chunkB=28261 pulseB=16957 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2110 zero_7 B=138493 L=6485 d=21.4 nb=2 neut=0 cmds=78 noFull=1 shQ=30612 | m=1.310 worth=28.0 cheap=8.5 over=0 dMedOther=37.3 safe(-1)=97205
+    → [TR] Oylesine#53[T5] terr=4896 bal=182753 dq=37.3 cnt=70 | c=125.2 rankC=125.2 need=317352 tD=1.00 人 crowdedHard | safe=97205 keep=Inf avail=-Inf chunkB=27699 pulseB=16619 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2115 zero_7 B=138493 L=6490 d=21.3 nb=2 neut=0 cmds=78 noFull=1 shQ=32637 | m=1.304 worth=27.8 cheap=8.5 over=0 dMedOther=37.3 safe(-1)=97201
+    → [TR] Oylesine#53[T5] terr=4896 bal=182753 dq=37.3 cnt=70 | c=125.1 rankC=125.1 need=317413 tD=1.00 人 crowdedHard | safe=97201 keep=Inf avail=-Inf chunkB=27699 pulseB=16619 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2120 zero_7 B=140113 L=6494 d=21.6 nb=2 neut=0 cmds=78 noFull=1 shQ=34666 | m=1.299 worth=28.0 cheap=8.5 over=0 dMedOther=37.8 safe(-1)=98368
+    → [TR] Oylesine#53[T5] terr=4896 bal=184836 dq=37.8 cnt=70 | c=126.5 rankC=126.5 need=321076 tD=1.00 人 crowdedHard | safe=98368 keep=Inf avail=-Inf chunkB=28023 pulseB=16814 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2125 zero_7 B=140113 L=6502 d=21.5 nb=2 neut=0 cmds=78 noFull=1 shQ=35028 | m=1.294 worth=27.9 cheap=8.5 over=0 dMedOther=37.8 safe(-1)=98361
+    → [TR] Oylesine#53[T5] terr=4896 bal=184836 dq=37.8 cnt=70 | c=126.5 rankC=126.5 need=321137 tD=1.00 人 crowdedHard | safe=98361 keep=Inf avail=-Inf chunkB=28023 pulseB=16814 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2130 zero_7 B=141752 L=6513 d=21.8 nb=2 neut=0 cmds=78 noFull=1 shQ=35438 | m=1.288 worth=28.0 cheap=8.5 over=0 dMedOther=38.2 safe(-1)=99536
+    → [TR] Oylesine#53[T5] terr=4896 bal=186943 dq=38.2 cnt=70 | c=127.9 rankC=127.9 need=324782 tD=1.00 人 crowdedHard | safe=99536 keep=Inf avail=-Inf chunkB=28350 pulseB=17010 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2135 zero_7 B=141752 L=6520 d=21.7 nb=2 neut=0 cmds=78 noFull=1 shQ=35438 | m=1.283 worth=27.9 cheap=8.5 over=0 dMedOther=38.2 safe(-1)=99530
+    → [TR] Oylesine#53[T5] terr=4896 bal=186943 dq=38.2 cnt=70 | c=127.9 rankC=127.9 need=324844 tD=1.00 人 crowdedHard | safe=99530 keep=Inf avail=-Inf chunkB=28350 pulseB=17010 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2140 zero_7 B=143410 L=6538 d=21.9 nb=2 neut=0 cmds=78 noFull=1 shQ=35852 | m=1.278 worth=28.0 cheap=8.5 over=0 dMedOther=38.6 safe(-1)=100712
+    → [TR] Oylesine#53[T5] terr=4896 bal=189074 dq=38.6 cnt=70 | c=129.3 rankC=129.3 need=328594 tD=1.00 人 crowdedHard | safe=100712 keep=Inf avail=-Inf chunkB=28682 pulseB=17209 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2145 zero_7 B=236623 L=6559 d=36.1 nb=2 neut=0 cmds=78 noFull=1 shQ=37928 | m=1.273 worth=45.9 cheap=8.5 over=0 dMedOther=38.6 safe(-1)=100694
+    → [TR] Oylesine#53[T5] terr=4896 bal=189074 dq=38.6 cnt=70 | c=96.1 rankC=96.1 need=328657 tD=1.00 人 | safe=100694 keep=Inf avail=-Inf chunkB=47325 pulseB=28395 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2150 zero_7 B=255510 L=6571 d=38.9 nb=2 neut=0 cmds=78 noFull=1 shQ=41627 | m=1.268 worth=49.3 cheap=8.5 over=0 dMedOther=39.1 safe(-1)=101895
+    → [TR] Oylesine#53[T5] terr=4896 bal=191229 dq=39.1 cnt=70 | c=97.2 rankC=97.2 need=332388 tD=1.00 人 | safe=101895 keep=Inf avail=-Inf chunkB=51102 pulseB=30661 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2155 zero_7 B=255510 L=6595 d=38.7 nb=2 neut=0 cmds=78 noFull=1 shQ=45362 | m=1.262 worth=48.9 cheap=8.5 over=0 dMedOther=39.1 safe(-1)=101874
+    → [TR] Oylesine#53[T5] terr=4896 bal=191229 dq=39.1 cnt=70 | c=97.2 rankC=97.2 need=332452 tD=1.00 人 | safe=101874 keep=Inf avail=-Inf chunkB=51102 pulseB=30661 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2160 zero_7 B=258499 L=6615 d=39.1 nb=2 neut=0 cmds=78 noFull=1 shQ=49106 | m=1.257 worth=49.1 cheap=8.5 over=0 dMedOther=39.5 safe(-1)=103082
+    → [TR] Oylesine#53[T5] terr=4896 bal=193409 dq=39.5 cnt=70 | c=98.3 rankC=98.3 need=336291 tD=1.00 人 | safe=103082 keep=Inf avail=-Inf chunkB=51700 pulseB=31020 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2165 zero_7 B=258499 L=6623 d=39.0 nb=2 neut=0 cmds=78 noFull=1 shQ=52886 | m=1.252 worth=48.9 cheap=8.5 over=0 dMedOther=39.4 safe(-1)=103076
+    → [TR] Oylesine#53[T5] terr=4896 bal=193409 dq=39.5 cnt=70 | c=98.2 rankC=98.2 need=336355 tD=1.00 人 | safe=103076 keep=Inf avail=-Inf chunkB=51700 pulseB=31020 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2170 zero_7 B=261523 L=6630 d=39.4 nb=2 neut=0 cmds=78 noFull=1 shQ=56674 | m=1.247 worth=49.2 cheap=8.5 over=0 dMedOther=39.8 safe(-1)=104308
+    → [TR] Oylesine#53[T5] terr=4896 bal=195613 dq=40.0 cnt=70 | c=99.3 rankC=99.3 need=340175 tD=1.00 人 | safe=104308 keep=Inf avail=-Inf chunkB=52305 pulseB=31383 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2175 zero_7 B=261523 L=6632 d=39.4 nb=2 neut=0 cmds=78 noFull=1 shQ=60494 | m=1.241 worth=48.9 cheap=8.5 over=0 dMedOther=39.8 safe(-1)=104306
+    → [TR] Oylesine#53[T5] terr=4896 bal=195613 dq=40.0 cnt=70 | c=99.3 rankC=99.3 need=340239 tD=1.00 人 | safe=104306 keep=Inf avail=-Inf chunkB=52305 pulseB=31383 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2180 zero_7 B=264582 L=6633 d=39.9 nb=2 neut=0 cmds=78 noFull=1 shQ=64323 | m=1.236 worth=49.3 cheap=8.5 over=0 dMedOther=39.8 safe(-1)=105558
+    → [TR] Oylesine#53[T5] terr=4896 bal=197842 dq=40.4 cnt=70 | c=100.4 rankC=100.4 need=344169 tD=1.02 人 | safe=105558 keep=Inf avail=-Inf chunkB=52916 pulseB=31750 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2185 zero_7 B=264582 L=6637 d=39.9 nb=2 neut=0 cmds=78 noFull=1 shQ=66145 | m=1.231 worth=49.1 cheap=8.5 over=0 dMedOther=39.8 safe(-1)=105554
+    → [TR] Oylesine#53[T5] terr=4896 bal=197842 dq=40.4 cnt=70 | c=100.4 rankC=100.4 need=344234 tD=1.01 人 | safe=105554 keep=Inf avail=-Inf chunkB=52916 pulseB=31750 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2190 zero_7 B=267677 L=6645 d=40.3 nb=2 neut=0 cmds=78 noFull=1 shQ=66919 | m=1.226 worth=49.4 cheap=8.5 over=0 dMedOther=40.3 safe(-1)=106814
+    → [TR] Oylesine#53[T5] terr=4896 bal=200097 dq=40.9 cnt=70 | c=101.5 rankC=101.5 need=348145 tD=1.01 人 | safe=106814 keep=Inf avail=-Inf chunkB=53535 pulseB=32121 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2195 zero_7 B=267677 L=6652 d=40.2 nb=2 neut=0 cmds=78 noFull=1 shQ=66919 | m=1.220 worth=49.1 cheap=8.5 over=0 dMedOther=40.3 safe(-1)=106808
+    → [TR] Oylesine#53[T5] terr=4896 bal=200097 dq=40.9 cnt=70 | c=101.5 rankC=101.5 need=348211 tD=1.01 人 | safe=106808 keep=Inf avail=-Inf chunkB=53535 pulseB=32121 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2200 zero_7 B=277478 L=6670 d=41.6 nb=3 neut=0 cmds=79 noFull=1 shQ=67730 | m=1.215 worth=50.5 cheap=8.5 over=0 dMedOther=41.8 safe(-1)=110825
+    → The great Malay empa#66[T1] terr=5785 bal=20961 dq=3.6 cnt=1 | c=0.4 rankC=0.2 need=46011 tD=0.09 人 pulse nearCollapse bleeding | safe=110825 keep=110825 avail=163402 chunkB=55496 pulseB=33297  x=33297 hNb=2
+    → [TR] Oylesine#53[T5] terr=4896 bal=207274 dq=42.3 cnt=70 | c=152.3 rankC=220.9 need=360591 tD=1.01 人 | safe=110825 keep=Inf avail=-Inf chunkB=55496 pulseB=33297 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → The great Malay empa#66[T1]（约 33329 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2205 zero_7 B=277478 L=6691 d=41.5 nb=2 neut=0 cmds=79 noFull=1 shQ=69369 | m=1.210 worth=50.2 cheap=8.5 over=0 dMedOther=42.3 safe(-1)=110808
+    → [TR] Oylesine#53[T5] terr=4896 bal=207274 dq=42.3 cnt=70 | c=152.3 rankC=220.9 need=360659 tD=1.00 人 | safe=110808 keep=Inf avail=-Inf chunkB=55496 pulseB=33297 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2210 zero_7 B=280724 L=6700 d=41.9 nb=2 neut=0 cmds=79 noFull=1 shQ=70181 | m=1.205 worth=50.5 cheap=8.5 over=0 dMedOther=42.3 safe(-1)=109713
+    → [TR] Oylesine#53[T5] terr=4896 bal=205339 dq=41.9 cnt=70 | c=150.9 rankC=218.9 need=357423 tD=0.99 人 | safe=109713 keep=Inf avail=-Inf chunkB=56145 pulseB=33687 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2215 zero_7 B=280724 L=6720 d=41.8 nb=2 neut=0 cmds=79 noFull=1 shQ=70181 | m=1.199 worth=50.1 cheap=8.5 over=0 dMedOther=41.2 safe(-1)=108393
+    → [TR] Oylesine#53[T5] terr=4926 bal=203020 dq=41.2 cnt=71 | c=148.2 rankC=214.9 need=354168 tD=1.00 人 | safe=108393 keep=Inf avail=-Inf chunkB=56145 pulseB=33687 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2220 zero_7 B=284008 L=6738 d=42.2 nb=2 neut=0 cmds=79 noFull=1 shQ=71002 | m=1.194 worth=50.3 cheap=8.5 over=0 dMedOther=41.7 safe(-1)=109690
+    → [TR] Oylesine#53[T5] terr=4926 bal=205355 dq=41.7 cnt=71 | c=149.9 rankC=217.3 need=358295 tD=1.00 人 | safe=109690 keep=Inf avail=-Inf chunkB=56802 pulseB=34081 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2225 zero_7 B=284008 L=6745 d=42.1 nb=2 neut=0 cmds=79 noFull=1 shQ=71002 | m=1.189 worth=50.1 cheap=8.5 over=0 dMedOther=41.7 safe(-1)=109684
+    → [TR] Oylesine#53[T5] terr=4926 bal=205355 dq=41.7 cnt=71 | c=103.4 rankC=103.4 need=358362 tD=1.00 人 | safe=109684 keep=Inf avail=-Inf chunkB=56802 pulseB=34081 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2230 zero_7 B=287330 L=6760 d=42.5 nb=2 neut=0 cmds=79 noFull=1 shQ=71832 | m=1.183 worth=50.3 cheap=8.5 over=0 dMedOther=42.2 safe(-1)=110987
+    → [TR] Oylesine#53[T5] terr=4926 bal=207696 dq=42.2 cnt=71 | c=104.5 rankC=104.5 need=362435 tD=1.00 人 | safe=110987 keep=Inf avail=-Inf chunkB=57466 pulseB=34480 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2235 zero_7 B=287330 L=6776 d=42.4 nb=2 neut=0 cmds=79 noFull=1 shQ=71832 | m=1.178 worth=50.0 cheap=8.5 over=0 dMedOther=42.2 safe(-1)=110973
+    → [TR] Oylesine#53[T5] terr=4926 bal=207696 dq=42.2 cnt=71 | c=104.5 rankC=104.5 need=362503 tD=1.00 人 | safe=110973 keep=Inf avail=-Inf chunkB=57466 pulseB=34480 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2240 zero_7 B=290691 L=6785 d=42.8 nb=2 neut=0 cmds=79 noFull=1 shQ=72672 | m=1.173 worth=50.3 cheap=8.5 over=0 dMedOther=42.7 safe(-1)=112295
+    → [TR] Oylesine#53[T5] terr=4926 bal=210063 dq=42.6 cnt=71 | c=105.6 rankC=105.6 need=366691 tD=1.00 人 | safe=112295 keep=Inf avail=-Inf chunkB=58138 pulseB=34883 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2245 zero_7 B=290691 L=6805 d=42.7 nb=2 neut=0 cmds=79 noFull=1 shQ=72672 | m=1.168 worth=49.9 cheap=8.5 over=0 dMedOther=42.7 safe(-1)=112278
+    → [TR] Oylesine#53[T5] terr=4926 bal=210063 dq=42.6 cnt=71 | c=105.6 rankC=105.6 need=366759 tD=1.00 人 | safe=112278 keep=Inf avail=-Inf chunkB=58138 pulseB=34883 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2250 zero_7 B=294092 L=6827 d=43.1 nb=2 neut=0 cmds=79 noFull=1 shQ=73523 | m=1.163 worth=50.1 cheap=8.5 over=0 dMedOther=43.2 safe(-1)=113605
+    → [TR] Oylesine#53[T5] terr=4926 bal=212457 dq=43.1 cnt=71 | c=106.8 rankC=106.8 need=370928 tD=1.00 人 | safe=113605 keep=Inf avail=-Inf chunkB=58818 pulseB=35291 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2255 zero_7 B=294092 L=6840 d=43.0 nb=2 neut=0 cmds=79 noFull=1 shQ=73523 | m=1.157 worth=49.8 cheap=8.5 over=0 dMedOther=43.2 safe(-1)=113594
+    → [TR] Oylesine#53[T5] terr=4926 bal=212457 dq=43.1 cnt=71 | c=106.8 rankC=106.8 need=370997 tD=1.00 人 | safe=113594 keep=Inf avail=-Inf chunkB=58818 pulseB=35291 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2260 zero_7 B=297532 L=6867 d=43.3 nb=2 neut=0 cmds=79 noFull=1 shQ=74383 | m=1.152 worth=49.9 cheap=8.5 over=0 dMedOther=43.8 safe(-1)=114932
+    → [TR] Oylesine#53[T5] terr=4926 bal=214879 dq=43.6 cnt=71 | c=108.0 rankC=108.0 need=375286 tD=1.00 人 | safe=114932 keep=Inf avail=-Inf chunkB=59506 pulseB=35704 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2265 zero_7 B=297532 L=6899 d=43.1 nb=2 neut=0 cmds=79 noFull=1 shQ=74383 | m=1.147 worth=49.5 cheap=8.5 over=0 dMedOther=43.8 safe(-1)=114905
+    → [TR] Oylesine#53[T5] terr=4926 bal=214879 dq=43.6 cnt=71 | c=108.0 rankC=108.0 need=375355 tD=1.00 人 | safe=114905 keep=Inf avail=-Inf chunkB=59506 pulseB=35704 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2270 zero_7 B=301013 L=6915 d=43.5 nb=2 neut=0 cmds=79 noFull=1 shQ=75253 | m=1.142 worth=49.7 cheap=8.5 over=0 dMedOther=44.3 safe(-1)=116267
+    → [TR] Oylesine#53[T5] terr=4926 bal=217328 dq=44.1 cnt=71 | c=109.2 rankC=109.2 need=379624 tD=1.00 人 | safe=116267 keep=Inf avail=-Inf chunkB=60203 pulseB=36122 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2275 zero_7 B=301013 L=6949 d=43.3 nb=2 neut=0 cmds=79 noFull=1 shQ=75253 | m=1.136 worth=49.2 cheap=8.5 over=0 dMedOther=45.5 safe(-1)=116238
+    → [TR] Oylesine#53[T5] terr=4926 bal=217328 dq=44.1 cnt=71 | c=109.1 rankC=109.1 need=379694 tD=0.97 人 | safe=116238 keep=Inf avail=-Inf chunkB=60203 pulseB=36122 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2280 zero_7 B=304534 L=6985 d=43.6 nb=2 neut=0 cmds=79 noFull=1 shQ=76133 | m=1.131 worth=49.3 cheap=8.5 over=0 dMedOther=46.0 safe(-1)=117600
+    → [TR] Oylesine#53[T5] terr=4926 bal=219805 dq=44.6 cnt=71 | c=110.3 rankC=110.3 need=384084 tD=0.97 人 | safe=117600 keep=Inf avail=-Inf chunkB=60907 pulseB=36544 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2285 zero_7 B=304534 L=7005 d=43.5 nb=2 neut=0 cmds=79 noFull=1 shQ=76133 | m=1.126 worth=48.9 cheap=8.5 over=0 dMedOther=46.0 safe(-1)=117583
+    → [TR] Oylesine#53[T5] terr=4926 bal=219805 dq=44.6 cnt=71 | c=110.3 rankC=110.3 need=384155 tD=0.97 人 | safe=117583 keep=Inf avail=-Inf chunkB=60907 pulseB=36544 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2290 zero_7 B=308097 L=7048 d=43.7 nb=2 neut=0 cmds=79 noFull=1 shQ=77024 | m=1.121 worth=49.0 cheap=8.5 over=0 dMedOther=46.6 safe(-1)=118954
+    → [TR] Oylesine#53[T5] terr=4926 bal=222310 dq=45.1 cnt=71 | c=111.6 rankC=111.6 need=388525 tD=0.97 人 | safe=118954 keep=Inf avail=-Inf chunkB=61619 pulseB=36972 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2295 zero_7 B=308097 L=7094 d=43.4 nb=2 neut=0 cmds=79 noFull=1 shQ=77024 | m=1.115 worth=48.4 cheap=8.4 over=0 dMedOther=46.6 safe(-1)=118915
+    → [TR] Oylesine#53[T5] terr=4926 bal=222310 dq=45.1 cnt=71 | c=111.5 rankC=111.5 need=388596 tD=0.97 人 | safe=118915 keep=Inf avail=-Inf chunkB=61619 pulseB=36972 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2300 zero_7 B=318851 L=7119 d=44.8 nb=2 neut=0 cmds=79 noFull=1 shQ=77972 | m=1.110 worth=49.7 cheap=8.4 over=0 dMedOther=48.2 safe(-1)=123085
+    → [TR] Oylesine#53[T5] terr=4926 bal=229770 dq=46.6 cnt=71 | c=115.2 rankC=115.2 need=401551 tD=0.97 人 | safe=123085 keep=Inf avail=-Inf chunkB=63770 pulseB=38262 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2305 zero_7 B=318851 L=7168 d=44.5 nb=2 neut=0 cmds=79 noFull=1 shQ=79712 | m=1.105 worth=49.1 cheap=8.4 over=0 dMedOther=47.0 safe(-1)=123044
+    → [TR] Oylesine#53[T5] terr=4926 bal=229770 dq=46.6 cnt=71 | c=115.2 rankC=115.2 need=401624 tD=0.99 人 | safe=123044 keep=Inf avail=-Inf chunkB=63770 pulseB=38262 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2310 zero_7 B=322613 L=7217 d=44.7 nb=2 neut=0 cmds=79 noFull=1 shQ=80653 | m=1.099 worth=49.1 cheap=8.4 over=0 dMedOther=47.6 safe(-1)=124474
+    → [TR] Oylesine#53[T5] terr=4926 bal=232389 dq=47.2 cnt=71 | c=116.5 rankC=116.5 need=406197 tD=0.99 人 | safe=124474 keep=Inf avail=-Inf chunkB=64523 pulseB=38714 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2315 zero_7 B=322613 L=7240 d=44.6 nb=2 neut=0 cmds=79 noFull=1 shQ=80653 | m=1.094 worth=48.8 cheap=8.4 over=0 dMedOther=47.6 safe(-1)=124454
+    → [TR] Oylesine#53[T5] terr=4926 bal=232389 dq=47.2 cnt=71 | c=116.5 rankC=116.5 need=406272 tD=0.99 人 | safe=124454 keep=Inf avail=-Inf chunkB=64523 pulseB=38714 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2320 zero_7 B=326419 L=7286 d=44.8 nb=2 neut=0 cmds=79 noFull=1 shQ=81604 | m=1.089 worth=48.8 cheap=8.4 over=0 dMedOther=48.2 safe(-1)=125904
+    → [TR] Oylesine#53[T5] terr=4926 bal=235038 dq=47.7 cnt=71 | c=117.7 rankC=117.7 need=410974 tD=0.99 人 | safe=125904 keep=Inf avail=-Inf chunkB=65284 pulseB=39170 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2325 zero_7 B=326419 L=7335 d=44.5 nb=2 neut=0 cmds=79 noFull=1 shQ=81604 | m=1.084 worth=48.2 cheap=8.4 over=0 dMedOther=48.2 safe(-1)=125863
+    → [TR] Oylesine#53[T5] terr=4926 bal=235038 dq=47.7 cnt=71 | c=117.7 rankC=117.7 need=411049 tD=0.99 人 | safe=125863 keep=Inf avail=-Inf chunkB=65284 pulseB=39170 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2330 zero_7 B=330270 L=7360 d=44.9 nb=2 neut=0 cmds=79 noFull=1 shQ=82567 | m=1.079 worth=48.4 cheap=8.4 over=0 dMedOther=48.8 safe(-1)=127347
+    → [TR] Oylesine#53[T5] terr=4926 bal=237717 dq=48.3 cnt=71 | c=119.0 rankC=119.0 need=415731 tD=0.99 人 | safe=127347 keep=Inf avail=-Inf chunkB=66054 pulseB=39632 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2335 zero_7 B=330270 L=7411 d=44.6 nb=2 neut=0 cmds=79 noFull=1 shQ=82567 | m=1.073 worth=47.8 cheap=8.4 over=0 dMedOther=48.3 safe(-1)=127304
+    → [TR] Oylesine#53[T5] terr=4926 bal=237717 dq=48.3 cnt=71 | c=160.7 rankC=160.7 need=415807 tD=1.00 人 crowdedHard | safe=127304 keep=Inf avail=-Inf chunkB=66054 pulseB=39632 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2340 zero_7 B=334167 L=7462 d=44.8 nb=2 neut=0 cmds=79 noFull=1 shQ=83541 | m=1.068 worth=47.8 cheap=8.4 over=0 dMedOther=48.8 safe(-1)=128783
+    → [TR] Oylesine#53[T5] terr=4926 bal=240426 dq=48.8 cnt=71 | c=162.5 rankC=162.5 need=420619 tD=1.00 人 crowdedHard | safe=128783 keep=Inf avail=-Inf chunkB=66833 pulseB=40100 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2345 zero_7 B=334167 L=7487 d=44.6 nb=2 neut=0 cmds=79 noFull=1 shQ=83541 | m=1.063 worth=47.4 cheap=8.4 over=0 dMedOther=48.8 safe(-1)=128762
+    → [TR] Oylesine#53[T5] terr=4926 bal=240426 dq=48.8 cnt=71 | c=162.5 rankC=162.5 need=420696 tD=1.00 人 crowdedHard | safe=128762 keep=Inf avail=-Inf chunkB=66833 pulseB=40100 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2350 zero_7 B=338110 L=7537 d=44.9 nb=2 neut=0 cmds=79 noFull=1 shQ=84527 | m=1.058 worth=47.4 cheap=8.4 over=0 dMedOther=49.4 safe(-1)=130259
+    → [TR] Oylesine#53[T5] terr=4926 bal=243166 dq=49.4 cnt=71 | c=164.3 rankC=164.3 need=425488 tD=1.00 人 crowdedHard | safe=130259 keep=Inf avail=-Inf chunkB=67622 pulseB=40573 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2355 zero_7 B=338110 L=7588 d=44.6 nb=2 neut=0 cmds=79 noFull=1 shQ=84527 | m=1.052 worth=46.9 cheap=8.4 over=0 dMedOther=49.4 safe(-1)=130216
+    → [TR] Oylesine#53[T5] terr=4926 bal=243166 dq=49.4 cnt=71 | c=164.2 rankC=164.2 need=425566 tD=1.00 人 crowdedHard | safe=130216 keep=Inf avail=-Inf chunkB=67622 pulseB=40573 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2360 zero_7 B=342099 L=7616 d=44.9 nb=2 neut=0 cmds=79 noFull=1 shQ=85524 | m=1.047 worth=47.0 cheap=8.4 over=0 dMedOther=49.9 safe(-1)=131749
+    → [TR] Oylesine#53[T5] terr=4926 bal=245938 dq=49.9 cnt=71 | c=166.1 rankC=166.1 need=430494 tD=1.00 人 crowdedHard | safe=131749 keep=Inf avail=-Inf chunkB=68420 pulseB=41052 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2365 zero_7 B=342099 L=7674 d=44.6 nb=2 neut=0 cmds=79 noFull=1 shQ=85524 | m=1.042 worth=46.4 cheap=8.4 over=0 dMedOther=49.9 safe(-1)=131701
+    → [TR] Oylesine#53[T5] terr=4926 bal=245938 dq=49.9 cnt=71 | c=166.0 rankC=166.0 need=430572 tD=1.00 人 crowdedHard | safe=131701 keep=Inf avail=-Inf chunkB=68420 pulseB=41052 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2370 zero_7 B=346135 L=7737 d=44.7 nb=2 neut=0 cmds=79 noFull=1 shQ=86533 | m=1.036 worth=46.4 cheap=8.4 over=0 dMedOther=45.5 safe(-1)=133222
+    → [TR] Oylesine#53[T5] terr=4926 bal=248741 dq=50.5 cnt=71 | c=167.9 rankC=167.9 need=435479 tD=1.11 人 crowdedHard | safe=133222 keep=Inf avail=-Inf chunkB=69227 pulseB=41536 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2375 zero_7 B=346135 L=7770 d=44.5 nb=2 neut=0 cmds=79 noFull=1 shQ=86533 | m=1.031 worth=45.9 cheap=8.4 over=0 dMedOther=45.1 safe(-1)=133194
+    → [TR] Oylesine#53[T5] terr=4926 bal=248741 dq=50.5 cnt=71 | c=167.9 rankC=167.9 need=435558 tD=1.12 人 crowdedHard | safe=133194 keep=Inf avail=-Inf chunkB=69227 pulseB=41536 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2380 zero_7 B=350219 L=7834 d=44.7 nb=2 neut=0 cmds=79 noFull=1 shQ=87554 | m=1.026 worth=45.9 cheap=8.4 over=0 dMedOther=45.4 safe(-1)=134733
+    → [TR] Oylesine#53[T5] terr=4926 bal=251576 dq=51.1 cnt=71 | c=169.7 rankC=169.7 need=440602 tD=1.13 人 crowdedHard | safe=134733 keep=Inf avail=-Inf chunkB=70044 pulseB=42026 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2385 zero_7 B=350219 L=7897 d=44.3 nb=2 neut=0 cmds=79 noFull=1 shQ=87554 | m=1.021 worth=45.3 cheap=8.4 over=0 dMedOther=44.9 safe(-1)=134680
+    → [TR] Oylesine#53[T5] terr=4926 bal=251576 dq=51.1 cnt=71 | c=169.7 rankC=169.7 need=440682 tD=1.14 人 crowdedHard | safe=134680 keep=Inf avail=-Inf chunkB=70044 pulseB=42026 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2390 zero_7 B=354351 L=7927 d=44.7 nb=2 neut=0 cmds=79 noFull=1 shQ=88587 | m=1.016 worth=45.4 cheap=8.4 over=0 dMedOther=45.3 safe(-1)=136265
+    → [TR] Oylesine#53[T5] terr=4926 bal=254443 dq=51.7 cnt=71 | c=171.6 rankC=171.6 need=445705 tD=1.14 人 crowdedHard | safe=136265 keep=Inf avail=-Inf chunkB=70870 pulseB=42522 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2395 zero_7 B=354351 L=7985 d=44.4 nb=2 neut=0 cmds=79 noFull=1 shQ=88587 | m=1.010 worth=44.8 cheap=8.4 over=0 dMedOther=47.8 safe(-1)=136217
+    → [TR] Oylesine#53[T5] terr=4926 bal=254443 dq=51.7 cnt=71 | c=171.6 rankC=171.6 need=445786 tD=1.08 人 crowdedHard | safe=136217 keep=Inf avail=-Inf chunkB=70870 pulseB=42522 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2400 zero_7 B=366546 L=8041 d=45.6 nb=2 neut=0 cmds=79 noFull=1 shQ=89677 | m=1.005 worth=45.8 cheap=8.4 over=0 dMedOther=49.3 safe(-1)=140566
+    → [TR] Oylesine#53[T5] terr=4926 bal=262269 dq=53.2 cnt=71 | c=176.7 rankC=176.7 need=459448 tD=1.08 人 pulse crowdedHard | safe=140566 keep=Inf avail=-Inf chunkB=73309 pulseB=43986 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2405 zero_7 B=366546 L=8069 d=45.4 nb=2 neut=0 cmds=79 noFull=1 shQ=91636 | m=1.000 worth=45.4 cheap=8.4 over=0 dMedOther=49.3 safe(-1)=140542
+    → [TR] Oylesine#53[T5] terr=4926 bal=262269 dq=53.2 cnt=71 | c=176.7 rankC=176.7 need=459530 tD=1.08 人 pulse crowdedHard | safe=140542 keep=Inf avail=-Inf chunkB=73309 pulseB=43986 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2410 zero_7 B=370944 L=8124 d=45.7 nb=2 neut=0 cmds=79 noFull=1 shQ=92736 | m=0.995 worth=45.4 cheap=8.3 over=0 dMedOther=49.9 safe(-1)=142175
+    → [TR] Oylesine#53[T5] terr=4926 bal=265258 dq=53.8 cnt=71 | c=178.7 rankC=178.7 need=464772 tD=1.08 人 pulse crowdedHard | safe=142175 keep=Inf avail=-Inf chunkB=74189 pulseB=44513 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2415 zero_7 B=370944 L=8181 d=45.3 nb=2 neut=0 cmds=79 noFull=1 shQ=92736 | m=0.989 worth=44.9 cheap=8.3 over=0 dMedOther=49.9 safe(-1)=142127
+    → [TR] Oylesine#53[T5] terr=4926 bal=265258 dq=53.8 cnt=71 | c=178.7 rankC=178.7 need=464855 tD=1.08 人 pulse crowdedHard | safe=142127 keep=Inf avail=-Inf chunkB=74189 pulseB=44513 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2420 zero_7 B=375395 L=8209 d=45.7 nb=2 neut=0 cmds=79 noFull=1 shQ=93848 | m=0.984 worth=45.0 cheap=8.3 over=0 dMedOther=43.6 safe(-1)=143802
+    → [TR] Oylesine#53[T5] terr=4926 bal=268281 dq=54.5 cnt=71 | c=180.6 rankC=180.6 need=470243 tD=1.25 人 pulse crowdedHard | safe=143802 keep=Inf avail=-Inf chunkB=75079 pulseB=45047 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2425 zero_7 B=375395 L=8264 d=45.4 nb=2 neut=0 cmds=79 noFull=1 shQ=93848 | m=0.979 worth=44.5 cheap=8.3 over=0 dMedOther=43.6 safe(-1)=143756
+    → [TR] Oylesine#53[T5] terr=4926 bal=268281 dq=54.5 cnt=71 | c=180.6 rankC=180.6 need=470327 tD=1.25 人 pulse crowdedHard | safe=143756 keep=Inf avail=-Inf chunkB=75079 pulseB=45047 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2430 zero_7 B=465356 L=8315 d=56.0 nb=2 neut=0 cmds=79 noFull=1 shQ=95244 | m=0.974 worth=54.5 cheap=8.3 over=0 dMedOther=51.1 safe(-1)=145431
+    → [TR] Oylesine#53[T5] terr=4926 bal=271339 dq=55.1 cnt=71 | c=135.6 rankC=135.6 need=475694 tD=1.08 人 pulse | safe=145431 keep=Inf avail=-Inf chunkB=93071 pulseB=55843 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2435 zero_7 B=465356 L=8339 d=55.8 nb=2 neut=0 cmds=79 noFull=1 shQ=102224 | m=0.968 worth=54.0 cheap=8.3 over=0 dMedOther=51.1 safe(-1)=145410
+    → [TR] Oylesine#53[T5] terr=4926 bal=271339 dq=55.1 cnt=71 | c=135.6 rankC=135.6 need=475779 tD=1.08 人 pulse | safe=145410 keep=Inf avail=-Inf chunkB=93071 pulseB=55843 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2440 zero_7 B=470940 L=8386 d=56.2 nb=1 neut=19 cmds=79 noFull=1 shQ=109220 | m=0.963 worth=54.1 cheap=8.3 over=0 dMedOther=51.8 safe(-1)=147108
+    → [TR] Oylesine#53[T5] terr=4926 bal=274432 dq=55.7 cnt=71 | c=137.1 rankC=137.1 need=481295 tD=1.08 人 pulse | safe=147108 keep=Inf avail=-Inf chunkB=94188 pulseB=56513 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2445 zero_7 B=470940 L=8425 d=55.9 nb=1 neut=18 cmds=79 noFull=1 shQ=116280 | m=0.958 worth=53.5 cheap=8.3 over=0 dMedOther=51.8 safe(-1)=147076
+    → [TR] Oylesine#53[T5] terr=4926 bal=274432 dq=55.7 cnt=71 | c=137.0 rankC=137.0 need=481382 tD=1.08 人 pulse | safe=147076 keep=Inf avail=-Inf chunkB=94188 pulseB=56513 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2450 zero_7 B=476591 L=8443 d=56.4 nb=1 neut=16 cmds=79 noFull=1 shQ=119147 | m=0.953 worth=53.8 cheap=8.3 over=0 dMedOther=52.4 safe(-1)=148818
+    → [TR] Oylesine#53[T5] terr=4926 bal=277560 dq=56.3 cnt=71 | c=138.6 rankC=138.6 need=486876 tD=1.08 人 pulse | safe=148818 keep=Inf avail=-Inf chunkB=95318 pulseB=57191 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2455 zero_7 B=476591 L=8472 d=56.3 nb=1 neut=12 cmds=79 noFull=1 shQ=119147 | m=0.947 worth=53.3 cheap=8.3 over=0 dMedOther=52.4 safe(-1)=148793
+    → [TR] Oylesine#53[T5] terr=4926 bal=277560 dq=56.3 cnt=71 | c=138.6 rankC=138.6 need=486963 tD=1.08 人 pulse | safe=148793 keep=Inf avail=-Inf chunkB=95318 pulseB=57191 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2460 zero_7 B=482310 L=8496 d=56.8 nb=1 neut=12 cmds=79 noFull=1 shQ=120577 | m=0.942 worth=53.5 cheap=8.3 over=0 dMedOther=53.0 safe(-1)=150551
+    → [TR] Oylesine#53[T5] terr=4926 bal=280724 dq=57.0 cnt=71 | c=140.1 rankC=140.1 need=492610 tD=1.08 人 pulse | safe=150551 keep=Inf avail=-Inf chunkB=96462 pulseB=57877 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2465 zero_7 B=482310 L=8508 d=56.7 nb=1 neut=12 cmds=79 noFull=1 shQ=120577 | m=0.937 worth=53.1 cheap=8.3 over=0 dMedOther=53.0 safe(-1)=150540
+    → [TR] Oylesine#53[T5] terr=4926 bal=280724 dq=57.0 cnt=71 | c=140.1 rankC=140.1 need=492698 tD=1.08 人 pulse | safe=150540 keep=Inf avail=-Inf chunkB=96462 pulseB=57877 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2470 zero_7 B=488097 L=8532 d=57.2 nb=1 neut=12 cmds=79 noFull=1 shQ=122024 | m=0.931 worth=53.3 cheap=8.3 over=0 dMedOther=53.6 safe(-1)=152318
+    → [TR] Oylesine#53[T5] terr=4926 bal=283924 dq=57.6 cnt=71 | c=141.6 rankC=141.6 need=498323 tD=1.07 人 pulse | safe=152318 keep=Inf avail=-Inf chunkB=97619 pulseB=58572 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2475 zero_7 B=488097 L=8556 d=57.0 nb=1 neut=11 cmds=79 noFull=1 shQ=122024 | m=0.926 worth=52.8 cheap=8.3 over=0 dMedOther=53.6 safe(-1)=152298
+    → [TR] Oylesine#53[T5] terr=4926 bal=283924 dq=57.6 cnt=71 | c=141.6 rankC=141.6 need=498412 tD=1.07 人 pulse | safe=152298 keep=Inf avail=-Inf chunkB=97619 pulseB=58572 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2480 zero_7 B=493954 L=8567 d=57.7 nb=1 neut=10 cmds=79 noFull=1 shQ=123488 | m=0.921 worth=53.1 cheap=8.3 over=0 dMedOther=54.3 safe(-1)=154106
+    → [TR] Oylesine#53[T5] terr=4926 bal=287160 dq=58.3 cnt=71 | c=143.2 rankC=143.2 need=504193 tD=1.07 人 pulse | safe=154106 keep=Inf avail=-Inf chunkB=98791 pulseB=59274 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2485 zero_7 B=493954 L=8586 d=57.5 nb=1 neut=8 cmds=79 noFull=1 shQ=123488 | m=0.916 worth=52.7 cheap=8.3 over=0 dMedOther=54.3 safe(-1)=154090
+    → [TR] Oylesine#53[T5] terr=4926 bal=287160 dq=58.3 cnt=71 | c=143.2 rankC=143.2 need=504282 tD=1.07 人 pulse | safe=154090 keep=Inf avail=-Inf chunkB=98791 pulseB=59274 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2490 zero_7 B=499881 L=8600 d=58.1 nb=1 neut=6 cmds=79 noFull=1 shQ=124970 | m=0.911 worth=52.9 cheap=8.3 over=0 dMedOther=54.9 safe(-1)=155917
+    → [TR] Oylesine#53[T5] terr=4926 bal=290433 dq=59.0 cnt=71 | c=144.8 rankC=144.8 need=510041 tD=1.07 人 pulse | safe=155917 keep=Inf avail=-Inf chunkB=99976 pulseB=59986 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2495 zero_7 B=499881 L=8606 d=58.1 nb=1 neut=6 cmds=79 noFull=1 shQ=124970 | m=0.905 worth=52.6 cheap=8.3 over=0 dMedOther=54.9 safe(-1)=155912
+    → [TR] Oylesine#53[T5] terr=4926 bal=290433 dq=59.0 cnt=71 | c=144.8 rankC=144.8 need=510132 tD=1.07 人 pulse | safe=155912 keep=Inf avail=-Inf chunkB=99976 pulseB=59986 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2500 zero_7 B=514497 L=8618 d=59.7 nb=1 neut=7 cmds=79 noFull=1 shQ=126513 | m=0.900 worth=53.7 cheap=8.3 over=0 dMedOther=56.6 safe(-1)=160529
+    → [TR] Oylesine#53[T5] terr=4926 bal=298669 dq=60.6 cnt=71 | c=238.0 rankC=238.0 need=524584 tD=1.07 人 pulse | safe=160529 keep=Inf avail=-Inf chunkB=102899 pulseB=61740 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2505 zero_7 B=514497 L=8631 d=59.6 nb=1 neut=7 cmds=79 noFull=1 shQ=128624 | m=0.900 worth=53.6 cheap=8.3 over=0 dMedOther=56.6 safe(-1)=160518
+    → [TR] Oylesine#53[T5] terr=4926 bal=298669 dq=60.6 cnt=71 | c=238.0 rankC=238.0 need=524677 tD=1.07 人 pulse | safe=160518 keep=Inf avail=-Inf chunkB=102899 pulseB=61740 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2510 zero_7 B=546273 L=8638 d=63.2 nb=1 neut=7 cmds=79 noFull=1 shQ=135119 | m=0.900 worth=56.9 cheap=8.3 over=0 dMedOther=57.3 safe(-1)=162425
+    → [TR] Oylesine#53[T5] terr=4926 bal=302073 dq=61.3 cnt=71 | c=240.8 rankC=240.8 need=530671 tD=1.07 人 pulse | safe=162425 keep=Inf avail=-Inf chunkB=109255 pulseB=65553 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2515 zero_7 B=546273 L=8652 d=63.1 nb=1 neut=7 cmds=79 noFull=1 shQ=136568 | m=0.900 worth=56.8 cheap=8.3 over=0 dMedOther=57.3 safe(-1)=162413
+    → [TR] Oylesine#53[T5] terr=4926 bal=302073 dq=61.3 cnt=71 | c=240.8 rankC=240.8 need=530765 tD=1.07 人 pulse | safe=162413 keep=Inf avail=-Inf chunkB=109255 pulseB=65553 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2520 zero_7 B=552828 L=8666 d=63.8 nb=1 neut=7 cmds=79 noFull=1 shQ=138207 | m=0.900 worth=57.4 cheap=8.3 over=0 dMedOther=58.0 safe(-1)=164335
+    → [TR] Oylesine#53[T5] terr=4926 bal=305516 dq=62.0 cnt=71 | c=243.5 rankC=243.5 need=536925 tD=1.07 人 pulse | safe=164335 keep=Inf avail=-Inf chunkB=110566 pulseB=66339 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2525 zero_7 B=552828 L=8673 d=63.7 nb=1 neut=7 cmds=79 noFull=1 shQ=138207 | m=0.900 worth=57.4 cheap=8.3 over=0 dMedOther=58.0 safe(-1)=164329
+    → [TR] Oylesine#53[T5] terr=4926 bal=305516 dq=62.0 cnt=71 | c=243.4 rankC=243.4 need=537020 tD=1.07 人 pulse | safe=164329 keep=Inf avail=-Inf chunkB=110566 pulseB=66339 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2530 zero_7 B=559461 L=8686 d=64.4 nb=1 neut=6 cmds=79 noFull=1 shQ=139865 | m=0.900 worth=58.0 cheap=8.3 over=0 dMedOther=58.7 safe(-1)=166275
+    → [TR] Oylesine#53[T5] terr=4926 bal=308998 dq=62.7 cnt=71 | c=246.1 rankC=246.1 need=543156 tD=1.07 人 pulse | safe=166275 keep=Inf avail=-Inf chunkB=111892 pulseB=67135 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2535 zero_7 B=559461 L=8698 d=64.3 nb=1 neut=7 cmds=79 noFull=1 shQ=139865 | m=0.900 worth=57.9 cheap=8.3 over=0 dMedOther=58.7 safe(-1)=166265
+    → [TR] Oylesine#53[T5] terr=4926 bal=308998 dq=62.7 cnt=71 | c=246.1 rankC=246.1 need=543252 tD=1.07 人 pulse | safe=166265 keep=Inf avail=-Inf chunkB=111892 pulseB=67135 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2540 zero_7 B=566174 L=8705 d=65.0 nb=1 neut=6 cmds=79 noFull=1 shQ=141543 | m=0.900 worth=58.5 cheap=8.3 over=0 dMedOther=59.4 safe(-1)=168237
+    → [TR] Oylesine#53[T5] terr=4926 bal=312520 dq=63.4 cnt=71 | c=248.8 rankC=248.8 need=549558 tD=1.07 人 pulse | safe=168237 keep=Inf avail=-Inf chunkB=113235 pulseB=67941 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2545 zero_7 B=566174 L=8717 d=65.0 nb=1 neut=6 cmds=79 noFull=1 shQ=141543 | m=0.900 worth=58.5 cheap=8.3 over=0 dMedOther=59.4 safe(-1)=168227
+    → [TR] Oylesine#53[T5] terr=4926 bal=312520 dq=63.4 cnt=71 | c=248.8 rankC=248.8 need=549655 tD=1.07 人 pulse | safe=168227 keep=Inf avail=-Inf chunkB=113235 pulseB=67941 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2550 zero_7 B=572968 L=8729 d=65.6 nb=1 neut=6 cmds=79 noFull=1 shQ=143242 | m=0.900 worth=59.1 cheap=8.3 over=0 dMedOther=60.1 safe(-1)=170218
+    → [TR] Oylesine#53[T5] terr=4926 bal=316082 dq=64.2 cnt=71 | c=251.6 rankC=251.6 need=555937 tD=1.07 人 pulse | safe=170218 keep=Inf avail=-Inf chunkB=114594 pulseB=68756 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2555 zero_7 B=572968 L=8735 d=65.6 nb=1 neut=6 cmds=79 noFull=1 shQ=143242 | m=0.900 worth=59.0 cheap=8.3 over=0 dMedOther=60.1 safe(-1)=170213
+    → [TR] Oylesine#53[T5] terr=4926 bal=316082 dq=64.2 cnt=71 | c=251.6 rankC=251.6 need=556035 tD=1.07 人 pulse | safe=170213 keep=Inf avail=-Inf chunkB=114594 pulseB=68756 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2560 zero_7 B=579843 L=8748 d=66.3 nb=1 neut=6 cmds=79 noFull=1 shQ=144960 | m=0.900 worth=59.7 cheap=8.3 over=0 dMedOther=60.8 safe(-1)=172226
+    → [TR] Oylesine#53[T5] terr=4926 bal=319685 dq=64.9 cnt=71 | c=254.4 rankC=254.4 need=562490 tD=1.07 人 pulse | safe=172226 keep=Inf avail=-Inf chunkB=115969 pulseB=69581 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2565 zero_7 B=579843 L=8758 d=66.2 nb=1 neut=3 cmds=79 noFull=1 shQ=144960 | m=0.900 worth=59.6 cheap=8.3 over=0 dMedOther=60.8 safe(-1)=172218
+    → [TR] Oylesine#53[T5] terr=4926 bal=319685 dq=64.9 cnt=71 | c=254.3 rankC=254.3 need=562589 tD=1.07 人 pulse | safe=172218 keep=Inf avail=-Inf chunkB=115969 pulseB=69581 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2570 zero_7 B=586801 L=8761 d=67.0 nb=1 neut=4 cmds=79 noFull=1 shQ=146700 | m=0.900 worth=60.3 cheap=8.3 over=0 dMedOther=61.5 safe(-1)=174263
+    → [TR] Oylesine#53[T5] terr=4926 bal=323329 dq=65.6 cnt=71 | c=257.2 rankC=257.2 need=569021 tD=1.07 人 pulse | safe=174263 keep=Inf avail=-Inf chunkB=117360 pulseB=70416 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2575 zero_7 B=586801 L=8769 d=66.9 nb=1 neut=4 cmds=79 noFull=1 shQ=146700 | m=0.900 worth=60.2 cheap=8.3 over=0 dMedOther=61.5 safe(-1)=174256
+    → [TR] Oylesine#53[T5] terr=4926 bal=323329 dq=65.6 cnt=71 | c=257.1 rankC=257.1 need=569121 tD=1.07 人 pulse | safe=174256 keep=Inf avail=-Inf chunkB=117360 pulseB=70416 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2580 zero_7 B=593842 L=8776 d=67.7 nb=1 neut=2 cmds=79 noFull=1 shQ=148460 | m=0.900 worth=60.9 cheap=8.3 over=0 dMedOther=62.3 safe(-1)=176320
+    → [TR] Oylesine#53[T5] terr=4926 bal=327014 dq=66.4 cnt=71 | c=260.0 rankC=260.0 need=575729 tD=1.07 人 pulse | safe=176320 keep=Inf avail=-Inf chunkB=118768 pulseB=71261 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2585 zero_7 B=593842 L=8778 d=67.7 nb=1 neut=2 cmds=79 noFull=1 shQ=148460 | m=0.900 worth=60.9 cheap=8.3 over=0 dMedOther=62.3 safe(-1)=176319
+    → [TR] Oylesine#53[T5] terr=4926 bal=327014 dq=66.4 cnt=71 | c=260.0 rankC=260.0 need=575830 tD=1.07 人 pulse | safe=176319 keep=Inf avail=-Inf chunkB=118768 pulseB=71261 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2590 zero_7 B=600968 L=8782 d=68.4 nb=1 neut=2 cmds=79 noFull=1 shQ=150242 | m=0.900 worth=61.6 cheap=8.3 over=0 dMedOther=63.0 safe(-1)=178409
+    → [TR] Oylesine#53[T5] terr=4926 bal=330741 dq=67.1 cnt=71 | c=262.9 rankC=262.9 need=582414 tD=1.07 人 pulse | safe=178409 keep=Inf avail=-Inf chunkB=120194 pulseB=72116 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2595 zero_7 B=600968 L=8786 d=68.4 nb=1 neut=2 cmds=79 noFull=1 shQ=150242 | m=0.900 worth=61.6 cheap=8.3 over=0 dMedOther=63.0 safe(-1)=178406
+    → [TR] Oylesine#53[T5] terr=4926 bal=330741 dq=67.1 cnt=71 | c=262.8 rankC=262.8 need=582516 tD=1.07 人 pulse | safe=178406 keep=Inf avail=-Inf chunkB=120194 pulseB=72116 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2600 zero_7 B=616967 L=8788 d=70.2 nb=1 neut=2 cmds=79 noFull=1 shQ=152092 | m=0.900 worth=63.2 cheap=8.3 over=0 dMedOther=64.8 safe(-1)=183289
+    → [TR] Oylesine#53[T5] terr=4926 bal=339437 dq=68.9 cnt=71 | c=269.6 rankC=269.6 need=597854 tD=1.06 人 pulse | safe=183289 keep=Inf avail=-Inf chunkB=123393 pulseB=74036 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2605 zero_7 B=618274 L=8790 d=70.3 nb=1 neut=0 cmds=79 noFull=1 shQ=154568 | m=0.900 worth=63.3 cheap=8.3 over=0 dMedOther=62.9 safe(-1)=183288
+    → [TR] Oylesine#53[T5] terr=4926 bal=339437 dq=68.9 cnt=71 | c=269.6 rankC=269.6 need=597959 tD=1.10 人 pulse | safe=183288 keep=Inf avail=-Inf chunkB=123655 pulseB=74193 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2610 zero_7 B=625693 L=8790 d=71.2 nb=1 neut=0 cmds=79 noFull=1 shQ=156423 | m=0.900 worth=64.1 cheap=8.3 over=0 dMedOther=63.7 safe(-1)=185461
+    → [TR] Oylesine#53[T5] terr=4926 bal=343306 dq=69.7 cnt=71 | c=272.6 rankC=272.6 need=604799 tD=1.09 人 pulse | safe=185461 keep=Inf avail=-Inf chunkB=125139 pulseB=75083 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2615 zero_7 B=625693 L=8790 d=71.2 nb=1 neut=0 cmds=79 noFull=1 shQ=156423 | m=0.900 worth=64.1 cheap=8.3 over=0 dMedOther=62.1 safe(-1)=185461
+    → [TR] Oylesine#53[T5] terr=4926 bal=343306 dq=69.7 cnt=71 | c=272.6 rankC=272.6 need=604905 tD=1.12 人 pulse | safe=185461 keep=Inf avail=-Inf chunkB=125139 pulseB=75083 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2620 zero_7 B=633201 L=8790 d=72.0 nb=1 neut=0 cmds=79 noFull=1 shQ=158300 | m=0.900 worth=64.8 cheap=8.3 over=0 dMedOther=60.7 safe(-1)=187660
+    → [TR] Oylesine#53[T5] terr=4926 bal=347219 dq=70.5 cnt=71 | c=275.6 rankC=275.6 need=611932 tD=1.16 人 pulse | safe=187660 keep=Inf avail=-Inf chunkB=126640 pulseB=75984 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2625 zero_7 B=633201 L=8790 d=72.0 nb=1 neut=0 cmds=79 noFull=1 shQ=158300 | m=0.900 worth=64.8 cheap=8.3 over=0 dMedOther=59.4 safe(-1)=187660
+    → [TR] Oylesine#53[T5] terr=4926 bal=347219 dq=70.5 cnt=71 | c=275.6 rankC=275.6 need=612039 tD=1.19 人 pulse | safe=187660 keep=Inf avail=-Inf chunkB=126640 pulseB=75984 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2630 zero_7 B=640799 L=8790 d=72.9 nb=1 neut=0 cmds=79 noFull=1 shQ=160199 | m=0.900 worth=65.6 cheap=8.3 over=0 dMedOther=58.4 safe(-1)=189883
+    → [TR] Oylesine#53[T5] terr=4926 bal=351177 dq=71.3 cnt=71 | c=278.7 rankC=278.7 need=619042 tD=1.22 人 pulse | safe=189883 keep=Inf avail=-Inf chunkB=128160 pulseB=76896 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2635 zero_7 B=640799 L=8790 d=72.9 nb=1 neut=0 cmds=79 noFull=1 shQ=160199 | m=0.900 worth=65.6 cheap=8.3 over=0 dMedOther=57.4 safe(-1)=189883
+    → [TR] Oylesine#53[T5] terr=4926 bal=351177 dq=71.3 cnt=71 | c=278.6 rankC=278.6 need=619150 tD=1.24 人 pulse | safe=189883 keep=Inf avail=-Inf chunkB=128160 pulseB=76896 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2640 zero_7 B=648488 L=8790 d=73.8 nb=1 neut=0 cmds=79 noFull=1 shQ=162122 | m=0.900 worth=66.4 cheap=8.3 over=0 dMedOther=56.7 safe(-1)=192132
+    → [TR] Oylesine#53[T5] terr=4926 bal=355180 dq=72.1 cnt=71 | c=281.7 rankC=281.7 need=626344 tD=1.27 人 pulse | safe=192132 keep=Inf avail=-Inf chunkB=129698 pulseB=77819 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2645 zero_7 B=648488 L=8790 d=73.8 nb=1 neut=0 cmds=79 noFull=1 shQ=162122 | m=0.900 worth=66.4 cheap=8.3 over=0 dMedOther=56.0 safe(-1)=192132
+    → [TR] Oylesine#53[T5] terr=4926 bal=355180 dq=72.1 cnt=71 | c=281.7 rankC=281.7 need=626453 tD=1.29 人 pulse | safe=192132 keep=Inf avail=-Inf chunkB=129698 pulseB=77819 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2650 zero_7 B=656269 L=8790 d=74.7 nb=1 neut=0 cmds=79 noFull=1 shQ=164067 | m=0.900 worth=67.2 cheap=8.3 over=0 dMedOther=55.6 safe(-1)=194407
+    → [TR] Oylesine#53[T5] terr=4926 bal=359229 dq=72.9 cnt=71 | c=284.8 rankC=284.8 need=633623 tD=1.31 人 pulse | safe=194407 keep=Inf avail=-Inf chunkB=131254 pulseB=78752 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2655 zero_7 B=656269 L=8790 d=74.7 nb=1 neut=0 cmds=79 noFull=1 shQ=164067 | m=0.900 worth=67.2 cheap=8.3 over=0 dMedOther=55.0 safe(-1)=194407
+    → [TR] Oylesine#53[T5] terr=4926 bal=359229 dq=72.9 cnt=71 | c=284.8 rankC=284.8 need=633733 tD=1.33 人 pulse | safe=194407 keep=Inf avail=-Inf chunkB=131254 pulseB=78752 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2660 zero_7 B=664144 L=8790 d=75.6 nb=1 neut=0 cmds=79 noFull=1 shQ=166036 | m=0.900 worth=68.0 cheap=8.3 over=0 dMedOther=55.6 safe(-1)=196707
+    → [TR] Oylesine#53[T5] terr=4926 bal=363324 dq=73.8 cnt=71 | c=288.0 rankC=288.0 need=641098 tD=1.33 人 pulse | safe=196707 keep=Inf avail=-Inf chunkB=132829 pulseB=79697 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2665 zero_7 B=664144 L=8790 d=75.6 nb=1 neut=0 cmds=79 noFull=1 shQ=166036 | m=0.900 worth=68.0 cheap=8.3 over=0 dMedOther=55.6 safe(-1)=170994
+    → [TR] Oylesine#53[T5] terr=4926 bal=317555 dq=64.5 cnt=71 | c=252.5 rankC=252.5 need=561333 tD=1.16 人 pulse | safe=170994 keep=Inf avail=-Inf chunkB=132829 pulseB=79697 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2670 zero_7 B=672113 L=8790 d=76.5 nb=1 neut=0 cmds=79 noFull=1 shQ=168028 | m=0.900 worth=68.8 cheap=8.3 over=0 dMedOther=56.2 safe(-1)=173028
+    → [TR] Oylesine#53[T5] terr=4986 bal=321175 dq=64.4 cnt=71 | c=251.9 rankC=251.9 need=569437 tD=1.15 人 pulse | safe=173028 keep=Inf avail=-Inf chunkB=134423 pulseB=80654 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2675 zero_7 B=672113 L=8790 d=76.5 nb=1 neut=0 cmds=79 noFull=1 shQ=168028 | m=0.900 worth=68.8 cheap=8.3 over=0 dMedOther=56.2 safe(-1)=173028
+    → [TR] Oylesine#53[T5] terr=5091 bal=321175 dq=63.1 cnt=71 | c=245.9 rankC=245.9 need=572369 tD=1.12 人 pulse | safe=173028 keep=Inf avail=-Inf chunkB=134423 pulseB=80654 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2680 zero_7 B=680178 L=8790 d=77.4 nb=1 neut=0 cmds=79 noFull=1 shQ=170044 | m=0.900 worth=69.6 cheap=8.3 over=0 dMedOther=56.9 safe(-1)=175103
+    → [TR] Oylesine#53[T5] terr=5184 bal=324868 dq=62.7 cnt=71 | c=243.7 rankC=243.7 need=581471 tD=1.10 人 pulse | safe=175103 keep=Inf avail=-Inf chunkB=136036 pulseB=81621 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2685 zero_7 B=680178 L=8790 d=77.4 nb=1 neut=0 cmds=79 noFull=1 shQ=170044 | m=0.900 worth=69.6 cheap=8.3 over=0 dMedOther=56.9 safe(-1)=175103
+    → [TR] Oylesine#53[T5] terr=5229 bal=324868 dq=62.1 cnt=71 | c=241.3 rankC=241.3 need=582694 tD=1.09 人 pulse | safe=175103 keep=Inf avail=-Inf chunkB=136036 pulseB=81621 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2690 zero_7 B=688340 L=8790 d=78.3 nb=1 neut=0 cmds=79 noFull=1 shQ=172085 | m=0.900 worth=70.5 cheap=8.3 over=0 dMedOther=57.6 safe(-1)=177201
+    → [TR] Oylesine#53[T5] terr=5314 bal=328603 dq=61.8 cnt=71 | c=239.6 rankC=239.6 need=591490 tD=1.07 人 pulse | safe=177201 keep=Inf avail=-Inf chunkB=137668 pulseB=82601 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2695 zero_7 B=688340 L=8790 d=78.3 nb=1 neut=0 cmds=79 noFull=1 shQ=172085 | m=0.900 worth=70.5 cheap=8.3 over=0 dMedOther=57.6 safe(-1)=177201
+    → [TR] Oylesine#53[T5] terr=5390 bal=328603 dq=61.0 cnt=71 | c=235.8 rankC=235.8 need=593383 tD=1.06 人 pulse | safe=177201 keep=Inf avail=-Inf chunkB=137668 pulseB=82601 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2700 zero_7 B=705390 L=8790 d=80.2 nb=1 neut=0 cmds=79 noFull=1 shQ=174201 | m=0.900 worth=72.2 cheap=8.3 over=0 dMedOther=59.2 safe(-1)=182372
+    → [TR] Oylesine#53[T5] terr=5426 bal=337807 dq=62.3 cnt=71 | c=240.6 rankC=240.6 need=610278 tD=1.05 人 pulse | safe=182372 keep=Inf avail=-Inf chunkB=141078 pulseB=84647 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2705 zero_7 B=780037 L=8790 d=88.7 nb=1 neut=0 cmds=79 noFull=1 shQ=183367 | m=0.900 worth=79.9 cheap=8.3 over=0 dMedOther=59.2 safe(-1)=182372
+    → [TR] Oylesine#53[T5] terr=5493 bal=337807 dq=61.5 cnt=71 | c=238.0 rankC=238.0 need=610356 tD=1.04 人 pulse | safe=182372 keep=Inf avail=-Inf chunkB=156007 pulseB=93604 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2710 zero_7 B=789397 L=8790 d=89.8 nb=1 neut=0 cmds=79 noFull=1 shQ=195095 | m=0.900 worth=80.8 cheap=8.3 over=0 dMedOther=59.9 safe(-1)=184554
+    → [TR] Oylesine#53[T5] terr=5550 bal=341691 dq=61.6 cnt=71 | c=238.1 rankC=238.1 need=617386 tD=1.03 人 pulse | safe=184554 keep=Inf avail=-Inf chunkB=157879 pulseB=94728 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2715 zero_7 B=789397 L=8790 d=89.8 nb=1 neut=0 cmds=79 noFull=1 shQ=197349 | m=0.900 worth=80.8 cheap=8.3 over=0 dMedOther=59.9 safe(-1)=184554
+    → [TR] Oylesine#53[T5] terr=5571 bal=341691 dq=61.3 cnt=71 | c=237.2 rankC=237.2 need=617439 tD=1.02 人 pulse | safe=184554 keep=Inf avail=-Inf chunkB=157879 pulseB=94728 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2720 zero_7 B=798869 L=8790 d=90.9 nb=1 neut=0 cmds=79 noFull=1 shQ=199717 | m=0.900 worth=81.8 cheap=8.3 over=0 dMedOther=61.7 safe(-1)=186761
+    → [TR] Oylesine#53[T5] terr=5605 bal=345620 dq=61.7 cnt=71 | c=345.7 rankC=501.3 need=624450 tD=1.00 人 pulse | safe=186761 keep=Inf avail=-Inf chunkB=159774 pulseB=95864 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2725 zero_7 B=798869 L=8790 d=90.9 nb=1 neut=0 cmds=79 noFull=1 shQ=199717 | m=0.900 worth=81.8 cheap=8.3 over=0 dMedOther=61.4 safe(-1)=186761
+    → [TR] Oylesine#53[T5] terr=5633 bal=345620 dq=61.4 cnt=71 | c=344.0 rankC=498.8 need=624491 tD=1.00 人 pulse | safe=186761 keep=Inf avail=-Inf chunkB=159774 pulseB=95864 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2730 zero_7 B=808455 L=8790 d=92.0 nb=1 neut=0 cmds=79 noFull=1 shQ=202113 | m=0.900 worth=82.8 cheap=8.3 over=0 dMedOther=61.9 safe(-1)=188994
+    → [TR] Oylesine#53[T5] terr=5646 bal=349594 dq=61.9 cnt=71 | c=347.1 rankC=503.3 need=631616 tD=1.00 人 pulse | safe=188994 keep=Inf avail=-Inf chunkB=161691 pulseB=97015 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2735 zero_7 B=808455 L=8790 d=92.0 nb=1 neut=0 cmds=79 noFull=1 shQ=202113 | m=0.900 worth=82.8 cheap=8.3 over=0 dMedOther=61.6 safe(-1)=188994
+    → [TR] Oylesine#53[T5] terr=5673 bal=349594 dq=61.6 cnt=71 | c=345.5 rankC=500.9 need=631635 tD=1.00 人 pulse | safe=188994 keep=Inf avail=-Inf chunkB=161691 pulseB=97015 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2740 zero_7 B=818156 L=8790 d=93.1 nb=1 neut=0 cmds=80 noFull=1 shQ=204539 | m=0.900 worth=83.8 cheap=8.3 over=0 dMedOther=62.1 safe(-1)=191252
+    → [TR] Oylesine#53[T5] terr=5691 bal=353614 dq=62.1 cnt=71 | c=69.1 rankC=34.5 need=638871 tD=1.00 人 pulse bleeding | safe=191252 keep=745140 avail=63429 chunkB=163631 pulseB=98179  x=63429 hNb=1
+    ⇒ 影子指令 attack pct=79 → [TR] Oylesine#53[T5]（约 63918 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2745 zero_7 B=818156 L=8790 d=93.1 nb=1 neut=0 cmds=81 noFull=1 shQ=204539 | m=0.900 worth=83.8 cheap=8.3 over=0 dMedOther=62.1 safe(-1)=190639
+    → [TR] Oylesine#53[T5] terr=5688 bal=352522 dq=62.0 cnt=71 | c=64.0 rankC=32.0 need=636677 tD=1.00 人 pulse bleeding | safe=190639 keep=721615 avail=86954 chunkB=163631 pulseB=98179  x=86954 hNb=1
+    ⇒ 影子指令 attack pct=108 → [TR] Oylesine#53[T5]（约 87088 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2750 zero_7 B=827973 L=8790 d=94.2 nb=1 neut=0 cmds=82 noFull=1 shQ=206993 | m=0.900 worth=84.8 cheap=8.3 over=0 dMedOther=62.8 safe(-1)=192242
+    → [TR] Oylesine#53[T5] terr=5690 bal=355375 dq=62.5 cnt=71 | c=64.9 rankC=32.5 need=641898 tD=0.99 人 pulse bleeding | safe=192242 keep=731064 avail=87207 chunkB=165595 pulseB=99357  x=87207 hNb=1
+    ⇒ 影子指令 attack pct=107 → [TR] Oylesine#53[T5]（约 87325 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2755 zero_7 B=753586 L=8790 d=85.7 nb=1 neut=0 cmds=82 noFull=1 shQ=6780 | m=0.900 worth=77.2 cheap=8.3 over=0 dMedOther=62.8 safe(-1)=190672
+    → [TR] Oylesine#53[T5] terr=5670 bal=352582 dq=62.2 cnt=71 | c=49.1 rankC=24.6 need=571850 tD=0.99 人 pulse bleeding | safe=190672 keep=619308 avail=125447 chunkB=150717 pulseB=90430 在途(curAtk=64685)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2760 zero_7 B=593704 L=8861 d=67.0 nb=1 neut=0 cmds=82 noFull=1 shQ=17100 | m=0.900 worth=60.3 cheap=8.3 over=0 dMedOther=63.6 safe(-1)=185858
+    → [TR] Oylesine#53[T5] terr=5549 bal=344119 dq=62.0 cnt=72 | c=18.3 rankC=9.2 need=418015 tD=0.98 人 pulse nearCollapse bleeding | safe=185858 keep=394234 avail=192513 chunkB=118741 pulseB=71244 在途(curAtk=200739)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2765 zero_7 B=593704 L=9006 d=65.9 nb=1 neut=0 cmds=82 noFull=1 shQ=26005 | m=0.900 worth=59.3 cheap=8.3 over=0 dMedOther=63.6 safe(-1)=173760
+    → [TR] Oylesine#53[T5] terr=5338 bal=322801 dq=60.5 cnt=74 | c=19.0 rankC=9.5 need=404046 tD=0.95 人 pulse nearCollapse bleeding | safe=173760 keep=398890 avail=187857 chunkB=118741 pulseB=71244 在途(curAtk=171889)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2770 zero_7 B=600828 L=9080 d=66.2 nb=1 neut=0 cmds=82 noFull=1 shQ=34931 | m=0.900 worth=59.6 cheap=8.3 over=0 dMedOther=64.3 safe(-1)=168400
+    → [TR] Oylesine#53[T5] terr=5210 bal=313372 dq=60.1 cnt=75 | c=20.4 rankC=10.2 need=398740 tD=0.94 人 pulse nearCollapse bleeding | safe=168400 keep=409803 avail=183985 chunkB=120166 pulseB=72099 在途(curAtk=157455)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2775 zero_7 B=600828 L=9231 d=65.1 nb=1 neut=0 cmds=82 noFull=1 shQ=44016 | m=0.900 worth=58.6 cheap=8.2 over=0 dMedOther=64.3 safe(-1)=154971
+    → [TR] Oylesine#53[T5] terr=4965 bal=289695 dq=58.3 cnt=78 | c=16.1 rankC=8.0 need=380243 tD=0.91 人 pulse nearCollapse bleeding | safe=154971 keep=390656 avail=203132 chunkB=120166 pulseB=72099 在途(curAtk=128315)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2780 zero_7 B=608098 L=9388 d=64.8 nb=1 neut=0 cmds=82 noFull=1 shQ=53123 | m=0.900 worth=58.3 cheap=8.2 over=0 dMedOther=65.1 safe(-1)=142687
+    → [TR] Oylesine#53[T5] terr=4707 bal=268065 dq=57.0 cnt=80 | c=4.9 rankC=2.4 need=365496 tD=0.88 人 pulse nearCollapse bleeding | safe=142687 keep=142687 avail=458285 chunkB=121620 pulseB=72972 在途(curAtk=98859)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2785 zero_7 B=608098 L=9468 d=64.2 nb=1 neut=0 cmds=82 noFull=1 shQ=62318 | m=0.900 worth=57.8 cheap=8.2 over=0 dMedOther=65.1 safe(-1)=133544
+    → [TR] Oylesine#53[T5] terr=4538 bal=251910 dq=55.5 cnt=81 | c=4.7 rankC=2.4 need=347858 tD=0.85 人 pulse nearCollapse bleeding | safe=133544 keep=133544 avail=467428 chunkB=121620 pulseB=72972 在途(curAtk=84225)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2790 zero_7 B=615455 L=9631 d=63.9 nb=1 neut=0 cmds=82 noFull=1 shQ=71535 | m=0.900 worth=57.5 cheap=8.2 over=0 dMedOther=65.8 safe(-1)=119321
+    → [TR] Oylesine#53[T5] terr=4228 bal=226838 dq=53.7 cnt=83 | c=1.5 rankC=0.7 need=325379 tD=0.81 人 pulse nearCollapse bleeding | safe=119321 keep=119321 avail=488922 chunkB=123091 pulseB=73855 在途(curAtk=55375)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2795 zero_7 B=615455 L=9798 d=62.8 nb=1 neut=0 cmds=82 noFull=1 shQ=80840 | m=0.900 worth=56.5 cheap=8.2 over=0 dMedOther=65.8 safe(-1)=105235
+    → [TR] Oylesine#53[T5] terr=3948 bal=202015 dq=51.2 cnt=85 | c=1.6 rankC=0.8 need=304274 tD=0.78 人 pulse nearCollapse bleeding | safe=105235 keep=105235 avail=503008 chunkB=123091 pulseB=73855 在途(curAtk=26855)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2800 zero_7 B=632785 L=9883 d=64.0 nb=1 neut=0 cmds=83 noFull=1 shQ=90198 | m=0.900 worth=57.6 cheap=8.2 over=0 dMedOther=67.6 safe(-1)=100234
+    → [TR] Oylesine#53[T5] terr=3780 bal=193241 dq=51.1 cnt=86 | c=1.8 rankC=0.9 need=298569 tD=0.76 人 pulse nearCollapse bleeding | safe=100234 keep=100234 avail=525136 chunkB=126557 pulseB=75934  x=89570 hNb=1
+    ⇒ 影子指令 attack pct=144 → [TR] Oylesine#53[T5]（约 89603 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2805 zero_7 B=632844 L=9883 d=64.0 nb=1 neut=0 cmds=84 noFull=1 shQ=99768 | m=0.900 worth=57.6 cheap=8.2 over=0 dMedOther=67.6 safe(-1)=90068
+    → [TR] Oylesine#53[T5] terr=3635 bal=175145 dq=48.2 cnt=84 | c=1.9 rankC=0.9 need=277851 tD=0.71 人 pulse nearCollapse bleeding | safe=90068 keep=90068 avail=535360 chunkB=126569 pulseB=75941  x=83355 hNb=1
+    ⇒ 影子指令 attack pct=134 → [TR] Oylesine#53[T5]（约 83431 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2810 zero_7 B=542300 L=9883 d=54.9 nb=1 neut=0 cmds=84 noFull=1 shQ=18865 | m=0.900 worth=52.3 cheap=8.2 over=0 dMedOther=68.4 safe(-1)=86050
+    → [TR] Oylesine#53[T5] terr=3527 bal=167994 dq=47.6 cnt=73 | c=1.7 rankC=0.8 need=173394 tD=0.70 人 pulse nearCollapse bleeding | safe=86050 keep=86050 avail=449895 chunkB=108460 pulseB=65076 在途(curAtk=89611)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2815 zero_7 B=464451 L=9952 d=46.7 nb=1 neut=0 cmds=84 noFull=1 shQ=26829 | m=0.900 worth=52.3 cheap=8.2 over=0 dMedOther=68.4 safe(-1)=78885
+    → [TR] Oylesine#53[T5] terr=3369 bal=155343 dq=46.1 cnt=68 | c=1.6 rankC=0.8 need=87390 tD=0.67 人 pulse nearCollapse bleeding | safe=78885 keep=78885 avail=380124 chunkB=92890 pulseB=55734 在途(curAtk=150647)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2820 zero_7 B=470070 L=10019 d=46.9 nb=1 neut=0 cmds=84 noFull=1 shQ=33866 | m=0.900 worth=53.0 cheap=8.2 over=0 dMedOther=69.2 safe(-1)=71590
+    → [TR] Oylesine#53[T5] terr=3175 bal=142458 dq=44.9 cnt=66 | c=1.7 rankC=0.9 need=70672 tD=0.65 人 pulse nearCollapse bleeding | safe=71590 keep=71590 avail=392972 chunkB=94014 pulseB=56408 在途(curAtk=140749)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2825 zero_7 B=470070 L=10214 d=46.0 nb=1 neut=0 cmds=84 noFull=1 shQ=41007 | m=0.900 worth=53.0 cheap=8.2 over=0 dMedOther=69.2 safe(-1)=59488
+    → [TR] Oylesine#53[T5] terr=2881 bal=121210 dq=42.1 cnt=64 | c=2.1 rankC=1.0 need=56100 tD=0.61 人 pulse nearCollapse bleeding | safe=59488 keep=59488 avail=405074 chunkB=94014 pulseB=56408 在途(curAtk=112969)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2830 zero_7 B=475804 L=10341 d=46.0 nb=1 neut=0 cmds=84 noFull=1 shQ=48190 | m=0.900 worth=53.6 cheap=8.2 over=0 dMedOther=70.0 safe(-1)=52175
+    → [TR] Oylesine#53[T5] terr=2676 bal=108383 dq=40.5 cnt=64 | c=2.4 rankC=1.2 need=46798 tD=0.58 人 pulse nearCollapse bleeding | safe=52175 keep=52175 avail=418054 chunkB=95161 pulseB=57096 在途(curAtk=95909)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2835 zero_7 B=475804 L=10533 d=45.2 nb=1 neut=0 cmds=84 noFull=1 shQ=55445 | m=0.900 worth=53.6 cheap=8.2 over=0 dMedOther=70.0 safe(-1)=40800
+    → [TR] Oylesine#53[T5] terr=2361 bal=88423 dq=37.5 cnt=65 | c=3.1 rankC=1.6 need=31401 tD=0.53 人 pulse nearCollapse bleeding | safe=40800 keep=40800 avail=429429 chunkB=95161 pulseB=57096 在途(curAtk=71355)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2840 zero_7 B=481608 L=10663 d=45.2 nb=1 neut=0 cmds=84 noFull=1 shQ=62717 | m=0.900 worth=54.2 cheap=8.2 over=0 dMedOther=70.9 safe(-1)=33509
+    → [TR] Oylesine#53[T5] terr=2134 bal=75640 dq=35.4 cnt=66 | c=4.0 rankC=2.0 need=20871 tD=0.50 人 pulse nearCollapse bleeding | safe=33509 keep=33509 avail=442456 chunkB=96322 pulseB=57793 在途(curAtk=55797)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2845 zero_7 B=481608 L=10862 d=44.3 nb=1 neut=0 cmds=84 noFull=1 shQ=70057 | m=0.900 worth=54.2 cheap=8.2 over=0 dMedOther=70.9 safe(-1)=26063
+    → [TR] Oylesine#53[T5] terr=1909 bal=62686 dq=32.8 cnt=67 | c=5.6 rankC=2.8 need=17966 tD=0.46 人 pulse nearCollapse bleeding | safe=26063 keep=26063 avail=449902 chunkB=96322 pulseB=57793 在途(curAtk=33425)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2850 zero_7 B=487483 L=10997 d=44.3 nb=1 neut=0 cmds=84 noFull=1 shQ=77415 | m=0.900 worth=54.4 cheap=8.2 over=0 dMedOther=71.2 safe(-1)=21470
+    → [TR] Oylesine#53[T5] terr=1746 bal=54712 dq=31.3 cnt=64 | c=7.7 rankC=3.9 need=15691 tD=0.44 人 pulse nearCollapse bleeding | safe=21470 keep=21470 avail=460301 chunkB=97497 pulseB=58498 在途(curAtk=19185)→continue hNb=1
+    ⇒ 本拍没有指令
+t=2855 zero_7 B=487483 L=11182 d=43.6 nb=1 neut=0 cmds=85 noFull=1 shQ=84870 | m=0.900 worth=53.6 cheap=8.1 over=0 dMedOther=70.1 safe(-1)=15866
+    → [TR] Oylesine#53[T5] terr=1554 bal=45015 dq=29.0 cnt=60 | c=13.8 rankC=6.9 need=15348 tD=0.41 人 pulse nearCollapse bleeding | safe=15866 keep=249944 avail=231827 chunkB=97497 pulseB=58498  x=58497 hNb=1
+    ⇒ 影子指令 attack pct=122 → [TR] Oylesine#53[T5]（约 58555 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2860 zero_7 B=493480 L=11182 d=44.1 nb=1 neut=0 cmds=86 noFull=1 shQ=92443 | m=0.900 worth=53.1 cheap=8.1 over=0 dMedOther=69.4 safe(-1)=13248
+    → [TR] Oylesine#53[T5] terr=1458 bal=40354 dq=27.7 cnt=57 | c=22.7 rankC=11.3 need=7566 tD=0.40 人 pulse nearCollapse bleeding | safe=13248 keep=311296 avail=176402 chunkB=98696 pulseB=59218  x=59217 hNb=1
+    ⇒ 影子指令 attack pct=122 → [TR] Oylesine#53[T5]（约 59275 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2865 zero_7 B=428423 L=11182 d=38.3 nb=1 neut=0 cmds=86 noFull=1 shQ=40411 | m=0.900 worth=52.3 cheap=8.1 over=0 dMedOther=68.4 safe(-1)=9119
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2870 zero_7 B=433692 L=11182 d=38.8 nb=0 neut=52 cmds=86 noFull=1 shQ=47067 | m=0.900 worth=58.5 cheap=8.1 over=0 dMedOther=76.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2875 zero_7 B=376517 L=11327 d=33.2 nb=0 neut=41 cmds=86 noFull=1 shQ=52902 | m=0.900 worth=58.5 cheap=8.1 over=0 dMedOther=76.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2880 zero_7 B=381148 L=11406 d=33.4 nb=0 neut=31 cmds=86 noFull=1 shQ=58751 | m=0.900 worth=59.2 cheap=8.1 over=0 dMedOther=77.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2885 zero_7 B=381148 L=11487 d=33.2 nb=0 neut=20 cmds=86 noFull=1 shQ=64656 | m=0.900 worth=59.2 cheap=8.1 over=0 dMedOther=77.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2890 zero_7 B=385836 L=11526 d=33.5 nb=0 neut=17 cmds=86 noFull=1 shQ=70576 | m=0.900 worth=60.0 cheap=8.1 over=0 dMedOther=78.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2895 zero_7 B=385836 L=11574 d=33.3 nb=0 neut=14 cmds=86 noFull=1 shQ=76556 | m=0.900 worth=60.0 cheap=8.1 over=0 dMedOther=78.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2900 zero_7 B=402180 L=11599 d=34.7 nb=0 neut=8 cmds=86 noFull=1 shQ=82586 | m=0.900 worth=54.3 cheap=8.1 over=0 dMedOther=70.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令

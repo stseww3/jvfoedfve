@@ -1,0 +1,412 @@
+== alex_k: 捐款 11 笔；观测区间 86 个，整数吻合 44 个，不吻合 42 个
+   MISMATCH 90→180: 观测余额 1205，最近假设差 -126（领土恒定=False）
+   MISMATCH 180→270: 观测余额 1671，最近假设差 +629（领土恒定=False）
+   MISMATCH 270→360: 观测余额 2348，最近假设差 +983（领土恒定=False）
+   MISMATCH 360→450: 观测余额 3656，最近假设差 +1169（领土恒定=False）
+   MISMATCH 450→540: 观测余额 4454，最近假设差 +2918（领土恒定=False）
+   MISMATCH 540→630: 观测余额 6000，最近假设差 +3401（领土恒定=False）
+   MISMATCH 630→720: 观测余额 11492，最近假设差 +1442（领土恒定=False）
+   MISMATCH 720→810: 观测余额 16795，最近假设差 +4228（领土恒定=False）
+   MISMATCH 810→900: 观测余额 27257，最近假设差 +966（领土恒定=False）
+   MISMATCH 900→990: 观测余额 37528，最近假设差 +1360（领土恒定=False）
+   MISMATCH 990→1080: 观测余额 47604，最近假设差 +9512（领土恒定=False）
+   MISMATCH 1080→1170: 观测余额 42744，最近假设差 +26578（领土恒定=False）
+   MISMATCH 1170→1260: 观测余额 89418，最近假设差 -28403（领土恒定=True）
+   MISMATCH 1530→1620: 观测余额 64124，最近假设差 +175717（领土恒定=False）
+   MISMATCH 1620→1710: 观测余额 80130，最近假设差 +552（领土恒定=False）
+   MISMATCH 1710→1800: 观测余额 106973，最近假设差 -9317（领土恒定=True）
+   MISMATCH 2520→2610: 观测余额 369453，最近假设差 -26647（领土恒定=True）
+   MISMATCH 2610→2700: 观测余额 417951，最近假设差 -2781（领土恒定=True）
+   MISMATCH 2880→2970: 观测余额 416232，最近假设差 +165748（领土恒定=False）
+   MISMATCH 2970→3060: 观测余额 468659，最近假设差 -1174（领土恒定=True）
+   MISMATCH 3240→3330: 观测余额 473052，最近假设差 +186634（领土恒定=False）
+   MISMATCH 3330→3420: 观测余额 472057，最近假设差 +59949（领土恒定=False）
+   MISMATCH 3420→3510: 观测余额 532756，最近假设差 -646（领土恒定=False）
+   MISMATCH 3510→3600: 观测余额 643253，最近假设差 -43093（领土恒定=True）
+   MISMATCH 3940→3960: 观测余额 710967，最近假设差 +8404（领土恒定=True）
+   MISMATCH 4410→4500: 观测余额 642781，最近假设差 +283287（领土恒定=True）
+   MISMATCH 4950→5040: 观测余额 847911，最近假设差 +53782（领土恒定=True）
+   MISMATCH 5140→5220: 观测余额 529531，最近假设差 +262235（领土恒定=False）
+   MISMATCH 5220→5310: 观测余额 428005，最近假设差 +171581（领土恒定=False）
+   MISMATCH 5310→5400: 观测余额 489784，最近假设差 -815（领土恒定=False）
+   MISMATCH 5400→5490: 观测余额 562040，最近假设差 -15295（领土恒定=True）
+   MISMATCH 5670→5760: 观测余额 756690，最近假设差 +69168（领土恒定=False）
+   MISMATCH 5760→5850: 观测余额 766680，最近假设差 +88812（领土恒定=True）
+   MISMATCH 5940→6030: 观测余额 812521，最近假设差 +161117（领土恒定=False）
+   MISMATCH 6030→6120: 观测余额 629065，最近假设差 +283729（领土恒定=False）
+   MISMATCH 6120→6210: 观测余额 727132，最近假设差 -17846（领土恒定=True）
+   MISMATCH 6300→6390: 观测余额 782919，最近假设差 +122556（领土恒定=False）
+   MISMATCH 6390→6480: 观测余额 735149，最近假设差 +145812（领土恒定=False）
+   MISMATCH 6480→6570: 观测余额 791662，最近假设差 +36667（领土恒定=False）
+   MISMATCH 6570→6660: 观测余额 596304，最近假设差 +282563（领土恒定=False）
+   t=3890 DISPATCH/yield_opt_dispatch pct=187 → noah88 myBal=914570 名义到账167909 费57160 | UNDETERMINED | 预标REJ?
+   t=3915 DISPATCH/yield_opt_dispatch pct=208 → noah88 myBal=938931 名义到账191637 费58683 | EXEC~ 执行拍∈[3951,3959] 延迟∈[36,44] | 预标REJ?
+   t=3940 DISPATCH/offense_dispatch pct=220 → kaito9 myBal=961931 名义到账207604 费60120 | NOT-EXEC
+   t=4165 DISPATCH/yield_opt_dispatch pct=182 → zero_7 myBal=909500 名义到账162537 费56843 | NOT-EXEC | 预标REJ?
+   t=4190 DISPATCH/yield_opt_dispatch pct=204 → zero_7 myBal=934092 名义到账187000 费58380 | NOT-EXEC | 预标REJ?
+   t=4215 DISPATCH/defense_dispatch pct=240 → zero_7 myBal=957757 名义到账225409 费59859 | NOT-EXEC | 预标REJ?
+   t=4240 DISPATCH/defense_dispatch pct=240 → zero_7 myBal=979565 名义到账230542 费61222 | EXEC 执行拍∈[4290,4299] 延迟∈[50,59] | 预标REJ?
+   t=4265 DISPATCH/offense_dispatch pct=220 → noah88 myBal=993325 名义到账214379 费62082 | NOT-EXEC | 预标REJ?
+   t=4290 DISPATCH/defense_dispatch pct=240 → noah88 myBal=1012819 名义到账238368 费63301 | NOT-EXEC
+   t=4865 DISPATCH/defense_dispatch pct=230 → noah88 myBal=1002888 名义到账226237 费62680 | EXEC 执行拍∈[4870,4879] 延迟∈[5,14]
+   t=5140 DISPATCH/defense_dispatch pct=187 → noah88 myBal=960203 名义到账176287 费60012 | UNDETERMINED
+   判定汇总: {'UNDETERMINED': 2, 'EXEC~': 1, 'NOT-EXEC': 6, 'EXEC': 2}
+== kaito9: 捐款 10 笔；观测区间 88 个，整数吻合 31 个，不吻合 57 个
+   MISMATCH 90→180: 观测余额 430，最近假设差 +244（领土恒定=False）
+   MISMATCH 180→270: 观测余额 1054，最近假设差 -115（领土恒定=False）
+   MISMATCH 270→360: 观测余额 1483，最近假设差 +614（领土恒定=False）
+   MISMATCH 360→450: 观测余额 2316，最近假设差 +700（领土恒定=False）
+   MISMATCH 450→540: 观测余额 3007，最近假设差 +1623（领土恒定=False）
+   MISMATCH 540→630: 观测余额 2425，最近假设差 +3979（领土恒定=False）
+   MISMATCH 630→720: 观测余额 7827，最近假设差 -1659（领土恒定=False）
+   MISMATCH 720→810: 观测余额 7413，最近假设差 +7001（领土恒定=False）
+   MISMATCH 810→900: 观测余额 18557，最近假设差 -4564（领土恒定=False）
+   MISMATCH 900→990: 观测余额 23967，最近假设差 +2507（领土恒定=False）
+   MISMATCH 990→1080: 观测余额 40307，最近假设差 -2541（领土恒定=True）
+   MISMATCH 1080→1170: 观测余额 23807，最近假设差 +35130（领土恒定=True）
+   MISMATCH 1260→1350: 观测余额 4041，最近假设差 +45704（领土恒定=False）
+   MISMATCH 1350→1440: 观测余额 9442，最近假设差 +198（领土恒定=False）
+   MISMATCH 1440→1530: 观测余额 15973，最近假设差 +336（领土恒定=True）
+   MISMATCH 2070→2160: 观测余额 66240，最近假设差 +11528（领土恒定=False）
+   MISMATCH 2160→2250: 观测余额 275065，最近假设差 -197149（领土恒定=False）
+   MISMATCH 2250→2340: 观测余额 309366，最近假设差 -109（领土恒定=False）
+   MISMATCH 2340→2430: 观测余额 354176，最近假设差 -6843（领土恒定=True）
+   MISMATCH 2700→2790: 观测余额 354886，最近假设差 +180793（领土恒定=False）
+   MISMATCH 2790→2880: 观测余额 335102，最近假设差 +63316（领土恒定=False）
+   MISMATCH 2880→2925: 观测余额 357286，最近假设差 -406（领土恒定=False）
+   MISMATCH 2925→2950: 观测余额 474271，最近假设差 -104518（领土恒定=False）
+   MISMATCH 2950→2970: 观测余额 485432，最近假设差 -191（领土恒定=True）
+   MISMATCH 3150→3240: 观测余额 612975，最近假设差 +70012（领土恒定=False）
+   MISMATCH 3240→3330: 观测余额 536021，最近假设差 +147261（领土恒定=False）
+   MISMATCH 3330→3420: 观测余额 590755，最近假设差 +9573（领土恒定=False）
+   MISMATCH 3420→3510: 观测余额 471578，最近假设差 +185404（领土恒定=True）
+   MISMATCH 3600→3690: 观测余额 885337，最近假设差 -296717（领土恒定=False）
+   MISMATCH 3690→3750: 观测余额 812528，最近假设差 +94552（领土恒定=False）
+   MISMATCH 3750→3775: 观测余额 824270，最近假设差 -2291（领土恒定=False）
+   MISMATCH 3775→3780: 观测余额 829957，最近假设差 -1154（领土恒定=False）
+   MISMATCH 3800→3850: 观测余额 846274，最近假设差 +26200（领土恒定=False）
+   MISMATCH 3875→3960: 观测余额 408359，最近假设差 +78787（领土恒定=False）
+   MISMATCH 3960→4050: 观测余额 563279，最近假设差 -101640（领土恒定=False）
+   MISMATCH 4050→4140: 观测余额 634085，最近假设差 -101（领土恒定=False）
+   MISMATCH 4140→4230: 观测余额 592833，最近假设差 +119908（领土恒定=False）
+   MISMATCH 4230→4320: 观测余额 728629，最近假设差 -60242（领土恒定=False）
+   MISMATCH 4320→4410: 观测余额 707361，最近假设差 +112932（领土恒定=False）
+   MISMATCH 4410→4500: 观测余额 748201，最近假设差 +47530（领土恒定=False）
+   t=2925 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=357286 名义到账132935 费22330 | UNDETERMINED | 预标REJ?
+   t=2950 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=474271 名义到账176462 费29641 | NOT-EXEC
+   t=3750 DISPATCH/yield_opt_dispatch pct=220 → noah88 myBal=812528 名义到账175360 费50783 | UNDETERMINED | 预标REJ?
+   t=3775 DISPATCH/defense_dispatch pct=240 → noah88 myBal=824270 名义到账193993 费51516 | UNDETERMINED | 预标REJ?
+   t=3800 DISPATCH/yield_opt_dispatch pct=220 → noah88 myBal=847777 名义到账182967 费52986 | NOT-EXEC
+   t=3850 DISPATCH/offense_dispatch pct=220 → noah88 myBal=846274 名义到账182643 费52892 | UNDETERMINED | 预标REJ?
+   t=3875 DISPATCH/yield_opt_dispatch pct=220 → noah88 myBal=856629 名义到账184877 费53539 | UNDETERMINED
+   t=4750 DISPATCH/defense_dispatch pct=210 → noah88 myBal=908752 名义到账187252 费56797 | EXEC~ 执行拍∈[4760,4769] 延迟∈[10,19]
+   t=5150 DISPATCH/defense_dispatch pct=204 → noah88 myBal=828300 名义到账165821 费51768 | EXEC 执行拍∈[5151,5159] 延迟∈[1,9]
+   t=5375 DISPATCH/defense_dispatch pct=180 → zero_7 myBal=804869 名义到账142266 费50304 | EXEC 执行拍∈[5380,5389] 延迟∈[5,14]
+   判定汇总: {'UNDETERMINED': 5, 'NOT-EXEC': 2, 'EXEC~': 1, 'EXEC': 2}
+== leo_tx: 捐款 27 笔；观测区间 96 个，整数吻合 77 个，不吻合 19 个
+   MISMATCH 90→180: 观测余额 1159，最近假设差 -128（领土恒定=False）
+   MISMATCH 180→270: 观测余额 1450，最近假设差 +771（领土恒定=False）
+   MISMATCH 270→360: 观测余额 1904，最近假设差 +1055（领土恒定=False）
+   MISMATCH 360→450: 观测余额 2784，最近假设差 +1273（领土恒定=False）
+   MISMATCH 450→540: 观测余额 2822，最近假设差 +2997（领土恒定=False）
+   MISMATCH 540→630: 观测余额 7529，最近假设差 -1083（领土恒定=False）
+   MISMATCH 630→720: 观测余额 1459，最近假设差 +12008（领土恒定=False）
+   MISMATCH 720→810: 观测余额 4843，最近假设差 -246（领土恒定=False）
+   MISMATCH 810→900: 观测余额 18688，最近假设差 -8638（领土恒定=True）
+   MISMATCH 1350→1440: 观测余额 134355，最近假设差 +7328（领土恒定=False）
+   MISMATCH 1440→1530: 观测余额 41326，最近假设差 +127148（领土恒定=False）
+   MISMATCH 1530→1620: 观测余额 66771，最近假设差 -14177（领土恒定=False）
+   MISMATCH 1620→1710: 观测余额 81601，最近假设差 +553（领土恒定=False）
+   MISMATCH 1710→1800: 观测余额 85540，最近假设差 +12102（领土恒定=True）
+   MISMATCH 2700→2790: 观测余额 86190，最近假设差 +239188（领土恒定=False）
+   MISMATCH 2790→2835: 观测余额 409250，最近假设差 -314773（领土恒定=False）
+   MISMATCH 2835→2860: 观测余额 423405，最近假设差 -84（领土恒定=False）
+   MISMATCH 2860→2880: 观测余额 433027，最近假设差 -385（领土恒定=True）
+   MISMATCH 6300→6390: 观测余额 75133，最近假设差 +51421（领土恒定=True）
+   t=2835 DISPATCH/offense_dispatch pct=320 → zero_7 myBal=409250 名义到账128290 费25578 | EXEC 执行拍∈[2890,2895] 延迟∈[55,60] | 预标REJ?
+   t=2860 DISPATCH/offense_dispatch pct=320 → zero_7 myBal=423405 名义到账132727 费26462 | NOT-EXEC | 预标REJ?
+   t=2885 DISPATCH/yield_opt_dispatch pct=320 → noah88 myBal=433027 名义到账135743 费27064 | NOT-EXEC
+   t=2910 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=283749 名义到账105574 费17734 | NOT-EXEC | 预标REJ?
+   t=2935 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=290254 名义到账107994 费18140 | NOT-EXEC | 预标REJ?
+   t=2960 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=300292 名义到账111729 费18768 | NOT-EXEC | 预标REJ?
+   t=2985 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=307177 名义到账114291 费19198 | NOT-EXEC | 预标REJ?
+   t=3010 DISPATCH/offense_dispatch pct=320 → zero_7 myBal=322093 名义到账100968 费20130 | NOT-EXEC | 预标REJ?
+   t=3035 DISPATCH/offense_dispatch pct=320 → zero_7 myBal=329477 名义到账103283 费20592 | NOT-EXEC | 预标REJ?
+   t=3060 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=340873 名义到账126828 费21304 | NOT-EXEC | 预标REJ?
+   t=3085 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=348688 名义到账129736 费21793 | NOT-EXEC | 预标REJ?
+   t=3110 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=365041 名义到账135820 费22815 | NOT-EXEC | 预标REJ?
+   t=3135 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=373410 名义到账138934 费23338 | NOT-EXEC | 预标REJ?
+   t=3160 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=386325 名义到账143740 费24145 | EXEC 执行拍∈[3210,3220] 延迟∈[50,60] | 预标REJ?
+   t=3185 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=395183 名义到账147035 费24698 | NOT-EXEC | 预标REJ?
+   t=3210 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=413144 名义到账153718 费25821 | EXEC 执行拍∈[3270,3270] 延迟∈[60,60]
+   t=3260 DISPATCH/defense_dispatch pct=380 → noah88 myBal=247226 名义到账91985 费15451 | EXEC 执行拍∈[3320,3320] 延迟∈[60,60]
+   t=3310 DISPATCH/defense_dispatch pct=380 → kaito9 myBal=152232 名义到账56641 费9514 | NOT-EXEC
+   t=3785 DISPATCH/defense_dispatch pct=380 → noah88 myBal=168827 名义到账62815 费10551 | EXEC 执行拍∈[3800,3809] 延迟∈[15,24]
+   t=3985 DISPATCH/defense_dispatch pct=273 → zero_7 myBal=127331 名义到账34070 费7958 | EXEC 执行拍∈[4000,4039] 延迟∈[15,54]
+   t=4285 DISPATCH/defense_dispatch pct=308 → noah88 myBal=133593 名义到账40312 费8349 | EXEC 执行拍∈[4300,4309] 延迟∈[15,24]
+   t=4610 DISPATCH/defense_dispatch pct=349 → noah88 myBal=141760 名义到账48453 费8860 | EXEC 执行拍∈[4620,4629] 延迟∈[10,19]
+   t=4910 DISPATCH/defense_dispatch pct=305 → noah88 myBal=133120 名义到账39780 费8320 | EXEC 执行拍∈[4920,4949] 延迟∈[10,39]
+   t=5210 DISPATCH/defense_dispatch pct=310 → zero_7 myBal=133927 名义到账40675 费8370 | EXEC 执行拍∈[5220,5270] 延迟∈[10,60]
+   t=5510 DISPATCH/defense_dispatch pct=309 → zero_7 myBal=133731 名义到账40484 费8358 | EXEC 执行拍∈[5530,5570] 延迟∈[20,60]
+   t=5810 DISPATCH/defense_dispatch pct=309 → alex_k myBal=133739 名义到账40487 费8358 | EXEC 执行拍∈[5820,5849] 延迟∈[10,39]
+   t=6110 DISPATCH/defense_dispatch pct=309 → zero_7 myBal=133744 名义到账40488 费8359 | EXEC 执行拍∈[6120,6129] 延迟∈[10,19]
+   判定汇总: {'EXEC': 13, 'NOT-EXEC': 14}
+== ryan_m: 捐款 24 笔；观测区间 108 个，整数吻合 75 个，不吻合 33 个
+   MISMATCH 90→180: 观测余额 1159，最近假设差 -128（领土恒定=False）
+   MISMATCH 180→270: 观测余额 1466，最近假设差 +755（领土恒定=False）
+   MISMATCH 270→360: 观测余额 2124，最近假设差 +861（领土恒定=False）
+   MISMATCH 360→450: 观测余额 3199，最近假设差 +1201（领土恒定=False）
+   MISMATCH 450→540: 观测余额 4929，最近假设差 +1627（领土恒定=False）
+   MISMATCH 540→630: 观测余额 6847，最近假设差 +3108（领土恒定=False）
+   MISMATCH 630→720: 观测余额 9734，最近假设差 +4433（领土恒定=False）
+   MISMATCH 720→810: 观测余额 16474，最近假设差 +2048（领土恒定=False）
+   MISMATCH 810→900: 观测余额 20861，最近假设差 +7386（领土恒定=False）
+   MISMATCH 900→990: 观测余额 9641，最近假设差 +20120（领土恒定=False）
+   MISMATCH 990→1080: 观测余额 35013，最近假设差 -13355（领土恒定=False）
+   MISMATCH 1080→1170: 观测余额 48958，最近假设差 +6978（领土恒定=False）
+   MISMATCH 1170→1260: 观测余额 72511，最近假设差 +928（领土恒定=False）
+   MISMATCH 1260→1350: 观测余额 100640，最近假设差 +1261（领土恒定=False）
+   MISMATCH 1350→1440: 观测余额 132998，最近假设差 +1756（领土恒定=False）
+   MISMATCH 1440→1530: 观测余额 93435，最近假设差 +77758（领土恒定=False）
+   MISMATCH 1530→1620: 观测余额 158027，最近假设差 -38090（领土恒定=True）
+   MISMATCH 2520→2610: 观测余额 728193，最近假设差 -32415（领土恒定=True）
+   MISMATCH 2700→2790: 观测余额 600798，最近假设差 +294508（领土恒定=True）
+   MISMATCH 3060→3150: 观测余额 692354，最近假设差 +266379（领土恒定=True）
+   MISMATCH 3240→3330: 观测余额 710832，最近假设差 +169507（领土恒定=False）
+   MISMATCH 3330→3420: 观测余额 530943，最近假设差 +272275（领土恒定=False）
+   MISMATCH 3420→3510: 观测余额 609582，最近假设差 -3541（领土恒定=False）
+   MISMATCH 3510→3600: 观测余额 921148，最近假设差 -222806（领土恒定=True）
+   MISMATCH 3675→3690: 观测余额 663103，最近假设差 +19147（领土恒定=True）
+   MISMATCH 4100→4140: 观测余额 749697，最近假设差 -25359（领土恒定=True）
+   MISMATCH 6400→6480: 观测余额 542482，最近假设差 -19009（领土恒定=True）
+   MISMATCH 7200→7290: 观测余额 1407034，最近假设差 +327398（领土恒定=False）
+   MISMATCH 7290→7380: 观测余额 1436618，最近假设差 +159726（领土恒定=False）
+   MISMATCH 7380→7470: 观测余额 1377284，最近假设差 +248989（领土恒定=False）
+   MISMATCH 7470→7560: 观测余额 1020943，最近假设差 +527316（领土恒定=False）
+   MISMATCH 7560→7650: 观测余额 847770，最近假设差 +310689（领土恒定=False）
+   MISMATCH 7650→7740: 观测余额 261615，最近假设差 +698502（领土恒定=True）
+   t=3625 DISPATCH/offense_dispatch pct=254 → noah88 myBal=944693 名义到账235250 费59043 | UNDETERMINED | 预标REJ?
+   t=3650 DISPATCH/offense_dispatch pct=282 → noah88 myBal=981143 名义到账271155 费61321 | EXEC~ 执行拍∈[3686,3689] 延迟∈[36,39] | 预标REJ?
+   t=3675 DISPATCH/offense_dispatch pct=301 → kaito9 myBal=1006221 名义到账296756 费62888 | NOT-EXEC
+   t=3775 DISPATCH/defense_dispatch pct=320 → noah88 myBal=751172 名义到账235474 费46948 | NOT-EXEC
+   t=3925 DISPATCH/yield_opt_dispatch pct=252 → noah88 myBal=943039 名义到账232996 费58939 | NOT-EXEC | 预标REJ?
+   t=3950 DISPATCH/offense_dispatch pct=281 → kaito9 myBal=979425 名义到账269724 费61214 | NOT-EXEC | 预标REJ?
+   t=3975 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=1004459 名义到账373729 费62778 | NOT-EXEC | 预标REJ?
+   t=4000 DISPATCH/offense_dispatch pct=320 → kaito9 myBal=1059353 名义到账332082 费66209 | NOT-EXEC | 预标REJ?
+   t=4025 DISPATCH/offense_dispatch pct=320 → kaito9 myBal=1086430 名义到账340570 费67901 | NOT-EXEC | 预标REJ?
+   t=4050 DISPATCH/offense_dispatch pct=320 → kaito9 myBal=1128349 名义到账353710 费70521 | UNDETERMINED | 预标REJ?
+   t=4075 DISPATCH/offense_dispatch pct=320 → kaito9 myBal=1157191 名义到账362752 费72324 | UNDETERMINED | 预标REJ?
+   t=4100 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=1217978 名义到账453173 费76123 | EXEC~ 执行拍∈[4136,4139] 延迟∈[36,39]
+   t=4200 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=824805 名义到账306885 费51550 | NOT-EXEC | 预标REJ?
+   t=4225 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=845888 名义到账314729 费52868 | NOT-EXEC
+   t=4300 DISPATCH/offense_dispatch pct=260 → zero_7 myBal=951882 名义到账242618 费59492 | EXEC 执行拍∈[4310,4319] 延迟∈[10,19]
+   t=4350 DISPATCH/defense_dispatch pct=259 → noah88 myBal=692091 名义到账175726 费43255 | EXEC 执行拍∈[4351,4399] 延迟∈[1,49]
+   t=4625 DISPATCH/defense_dispatch pct=291 → noah88 myBal=721800 名义到账205825 费45112 | EXEC 执行拍∈[4626,4639] 延迟∈[1,14]
+   t=4875 DISPATCH/defense_dispatch pct=249 → noah88 myBal=683141 名义到账166782 费42696 | EXEC 执行拍∈[4876,4889] 延迟∈[1,14]
+   t=5100 DISPATCH/defense_dispatch pct=255 → noah88 myBal=688384 名义到账172096 费43024 | EXEC 执行拍∈[5110,5119] 延迟∈[10,19]
+   t=5375 DISPATCH/defense_dispatch pct=271 → zero_7 myBal=703017 名义到账186738 费43938 | EXEC 执行拍∈[5376,5389] 延迟∈[1,14]
+   t=5600 DISPATCH/defense_dispatch pct=253 → noah88 myBal=686619 名义到账170313 费42913 | EXEC 执行拍∈[5601,5639] 延迟∈[1,39]
+   t=5925 DISPATCH/defense_dispatch pct=333 → zero_7 myBal=765548 名义到账249700 费47846 | EXEC 执行拍∈[5926,5939] 延迟∈[1,14]
+   t=6175 DISPATCH/defense_dispatch pct=245 → alex_k myBal=679220 名义到账163171 费42451 | EXEC 执行拍∈[6176,6199] 延迟∈[1,24]
+   t=6400 DISPATCH/defense_dispatch pct=255 → noah88 myBal=688298 名义到账172074 费43018 | EXEC~ 执行拍∈[6410,6419] 延迟∈[10,19]
+   判定汇总: {'UNDETERMINED': 3, 'EXEC~': 3, 'NOT-EXEC': 9, 'EXEC': 9}
+== sora_w: 捐款 37 笔；观测区间 113 个，整数吻合 89 个，不吻合 24 个
+   MISMATCH 90→180: 观测余额 947，最近假设差 -110（领土恒定=False）
+   MISMATCH 180→270: 观测余额 1287，最近假设差 +564（领土恒定=False）
+   MISMATCH 270→360: 观测余额 1884，最近假设差 +747（领土恒定=False）
+   MISMATCH 360→450: 观测余额 2933，最近假设差 +970（领土恒定=False）
+   MISMATCH 450→540: 观测余额 2160，最近假设差 +3819（领土恒定=False）
+   MISMATCH 540→630: 观测余额 5278，最近假设差 +264（领土恒定=False）
+   MISMATCH 630→720: 观测余额 7770，最近假设差 +2917（领土恒定=False）
+   MISMATCH 720→810: 观测余额 17184，最近假设差 -2246（领土恒定=False）
+   MISMATCH 810→900: 观测余额 14382，最近假设差 +13855（领土恒定=False）
+   MISMATCH 900→990: 观测余额 33284，最近假设差 -12768（领土恒定=True）
+   MISMATCH 990→1080: 观测余额 43496，最近假设差 +7523（领土恒定=False）
+   MISMATCH 1080→1170: 观测余额 51544，最近假设差 +11979（领土恒定=False）
+   MISMATCH 1170→1260: 观测余额 73141，最近假设差 -284（领土恒定=False）
+   MISMATCH 1260→1350: 观测余额 43928，最近假设差 +55612（领土恒定=False）
+   MISMATCH 1350→1440: 观测余额 48693，最近假设差 +11625（领土恒定=False）
+   MISMATCH 1440→1530: 观测余额 101230，最近假设差 -36531（领土恒定=True）
+   MISMATCH 1530→1620: 观测余额 137851，最近假设差 -11531（领土恒定=True）
+   MISMATCH 1710→1800: 观测余额 194442，最近假设差 -11（领土恒定=False）
+   MISMATCH 1800→1890: 观测余额 211984，最近假设差 +4961（领土恒定=True）
+   MISMATCH 2135→2160: 观测余额 189810，最近假设差 +1188（领土恒定=True）
+   MISMATCH 2700→2790: 观测余额 209089，最近假设差 +1（领土恒定=True）
+   MISMATCH 3240→3260: 观测余额 241418，最近假设差 -22669（领土恒定=True）
+   MISMATCH 7020→7110: 观测余额 96944，最近假设差 +193662（领土恒定=False）
+   MISMATCH 7110→7200: 观测余额 34041，最近假设差 +75216（领土恒定=True）
+   t=2060 DISPATCH/offense_dispatch pct=263 → zero_7 myBal=267266 名义到账68904 费16704 | NOT-EXEC | 预标REJ?
+   t=2085 DISPATCH/offense_dispatch pct=280 → zero_7 myBal=273393 名义到账75022 费17087 | UNDETERMINED | 预标REJ?
+   t=2110 DISPATCH/offense_dispatch pct=316 → zero_7 myBal=287413 名义到账88974 费17963 | EXEC~ 执行拍∈[2146,2159] 延迟∈[36,49] | 预标REJ?
+   t=2135 DISPATCH/offense_dispatch pct=320 → zero_7 myBal=294002 名义到账92162 费18375 | NOT-EXEC
+   t=2160 DISPATCH/defense_dispatch pct=244 → kaito9 myBal=189810 名义到账45413 费11863 | EXEC 执行拍∈[2196,2199] 延迟∈[36,39]
+   t=2660 DISPATCH/yield_opt_dispatch pct=254 → zero_7 myBal=264258 名义到账65806 费16516 | UNDETERMINED | 预标REJ?
+   t=2685 DISPATCH/yield_opt_dispatch pct=271 → zero_7 myBal=270316 名义到账71802 费16894 | EXEC~ 执行拍∈[2721,2739] 延迟∈[36,54]
+   t=2910 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=249226 名义到账92729 费15576 | NOT-EXEC | 预标REJ?
+   t=2935 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=254940 名义到账94855 费15933 | NOT-EXEC | 预标REJ?
+   t=2960 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=263757 名义到账98136 费16484 | NOT-EXEC | 预标REJ?
+   t=2985 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=269804 名义到账100386 费16862 | NOT-EXEC | 预标REJ?
+   t=3010 DISPATCH/offense_dispatch pct=307 → zero_7 myBal=283699 名义到账85331 费17731 | NOT-EXEC | 预标REJ?
+   t=3035 DISPATCH/offense_dispatch pct=320 → zero_7 myBal=290204 名义到账90972 费18137 | NOT-EXEC | 预标REJ?
+   t=3060 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=300242 名义到账111711 费18765 | NOT-EXEC | 预标REJ?
+   t=3085 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=307125 名义到账114272 费19195 | NOT-EXEC | 预标REJ?
+   t=3110 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=322312 名义到账119922 费20144 | NOT-EXEC | 预标REJ?
+   t=3135 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=329702 名义到账122672 费20606 | NOT-EXEC | 预标REJ?
+   t=3160 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=341105 名义到账126915 费21319 | NOT-EXEC | 预标REJ?
+   t=3185 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=348925 名义到账129824 费21807 | UNDETERMINED | 预标REJ?
+   t=3210 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=365558 名义到账136013 费22847 | UNDETERMINED | 预标REJ?
+   t=3235 DISPATCH/yield_opt_dispatch pct=320 → ryan_m myBal=373939 名义到账117221 费23371 | UNDETERMINED
+   t=3260 DISPATCH/defense_dispatch pct=380 → noah88 myBal=241418 名义到账89824 费15088 | EXEC 执行拍∈[3261,3279] 延迟∈[1,19]
+   t=3535 DISPATCH/defense_dispatch pct=288 → noah88 myBal=201122 名义到账56761 费12570 | NOT-EXEC
+   t=3735 DISPATCH/yield_opt_dispatch pct=248 → noah88 myBal=262189 名义到账63754 费16386 | EXEC 执行拍∈[3740,3759] 延迟∈[5,24]
+   t=3785 DISPATCH/defense_dispatch pct=256 → noah88 myBal=192662 名义到账48353 费12041 | EXEC 执行拍∈[3800,3819] 延迟∈[15,34]
+   t=4110 DISPATCH/defense_dispatch pct=326 → zero_7 myBal=212057 名义到账67717 费13253 | NOT-EXEC
+   t=4210 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=242070 名义到账90067 费15129 | NOT-EXEC | 预标REJ?
+   t=4235 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=247620 名义到账92132 费15476 | EXEC 执行拍∈[4290,4295] 延迟∈[55,60]
+   t=4285 DISPATCH/defense_dispatch pct=380 → noah88 myBal=262057 名义到账97503 费16378 | NOT-EXEC
+   t=4460 DISPATCH/defense_dispatch pct=253 → noah88 myBal=191947 名义到账47611 费11996 | EXEC 执行拍∈[4461,4479] 延迟∈[1,19]
+   t=4760 DISPATCH/defense_dispatch pct=292 → noah88 myBal=202228 名义到账57864 费12639 | EXEC 执行拍∈[4770,4799] 延迟∈[10,39]
+   t=5085 DISPATCH/defense_dispatch pct=306 → noah88 myBal=205976 名义到账61752 费12873 | EXEC 执行拍∈[5086,5099] 延迟∈[1,14]
+   t=5335 DISPATCH/defense_dispatch pct=246 → noah88 myBal=190124 名义到账45859 费11882 | EXEC 执行拍∈[5340,5359] 延迟∈[5,24]
+   t=5610 DISPATCH/defense_dispatch pct=274 → noah88 myBal=197219 名义到账52964 费12326 | EXEC 执行拍∈[5620,5669] 延迟∈[10,59]
+   t=5910 DISPATCH/defense_dispatch pct=287 → zero_7 myBal=200751 名义到账56461 费12546 | EXEC 执行拍∈[5920,5929] 延迟∈[10,19]
+   t=6210 DISPATCH/defense_dispatch pct=286 → zero_7 myBal=200490 名义到账56192 费12530 | EXEC 执行拍∈[6211,6270] 延迟∈[1,60]
+   t=6535 DISPATCH/defense_dispatch pct=303 → alex_k myBal=205122 名义到账60895 费12820 | EXEC 执行拍∈[6536,6559] 延迟∈[1,24]
+   判定汇总: {'NOT-EXEC': 17, 'UNDETERMINED': 5, 'EXEC~': 2, 'EXEC': 13}
+== talon5: 捐款 17 笔；观测区间 88 个，整数吻合 74 个，不吻合 14 个
+   MISMATCH 90→180: 观测余额 1212，最近假设差 -133（领土恒定=False）
+   MISMATCH 180→270: 观测余额 1332，最近假设差 +975（领土恒定=False）
+   MISMATCH 270→360: 观测余额 1165，最近假设差 +1556（领土恒定=False）
+   MISMATCH 360→450: 观测余额 1439，最近假设差 +1084（领土恒定=False）
+   MISMATCH 450→540: 观测余额 1053，最近假设差 +1965（领土恒定=False）
+   MISMATCH 540→630: 观测余额 2683，最近假设差 +39（领土恒定=False）
+   MISMATCH 630→720: 观测余额 2024，最近假设差 +2935（领土恒定=False）
+   MISMATCH 720→810: 观测余额 4624，最近假设差 -691（领土恒定=False）
+   MISMATCH 810→900: 观测余额 6961，最近假设差 +663（领土恒定=False）
+   MISMATCH 900→990: 观测余额 5128，最近假设差 +4799（领土恒定=False）
+   MISMATCH 990→1080: 观测余额 11594，最近假设差 -2947（领土恒定=True）
+   MISMATCH 6210→6300: 观测余额 35378，最近假设差 +6486（领土恒定=False）
+   MISMATCH 6300→6390: 观测余额 17392，最近假设差 +21537（领土恒定=False）
+   MISMATCH 6390→6480: 观测余额 8468，最近假设差 +11588（领土恒定=True）
+   t=1570 DISPATCH/defense_dispatch pct=380 → noah88 myBal=60183 名义到账22392 费3761 | EXEC 执行拍∈[1571,1599] 延迟∈[1,29]
+   t=1720 DISPATCH/defense_dispatch pct=380 → alex_k myBal=47758 名义到账17769 费2984 | EXEC 执行拍∈[1721,1780] 延迟∈[1,60]
+   t=2170 DISPATCH/defense_dispatch pct=380 → kaito9 myBal=52398 名义到账19495 费3274 | NOT-EXEC | 预标REJ?
+   t=2195 DISPATCH/defense_dispatch pct=380 → kaito9 myBal=53524 名义到账19914 费3345 | NOT-EXEC
+   t=2495 DISPATCH/yield_opt_dispatch pct=320 → zero_7 myBal=78538 名义到账24619 费4908 | EXEC 执行拍∈[2500,2519] 延迟∈[5,24]
+   t=2870 DISPATCH/yield_opt_dispatch pct=320 → noah88 myBal=79447 名义到账24904 费4965 | EXEC 执行拍∈[2871,2879] 延迟∈[1,9]
+   t=2920 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=53642 名义到账19958 费3352 | EXEC 执行拍∈[2921,2969] 延迟∈[1,49]
+   t=3120 DISPATCH/defense_dispatch pct=282 → zero_7 myBal=40384 名义到账11160 费2524 | EXEC 执行拍∈[3121,3139] 延迟∈[1,19]
+   t=3770 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=64674 名义到账24063 费4042 | EXEC 执行拍∈[3780,3799] 延迟∈[10,29]
+   t=3845 DISPATCH/defense_dispatch pct=289 → zero_7 myBal=40782 名义到账11549 费2548 | EXEC 执行拍∈[3850,3859] 延迟∈[5,14]
+   t=4220 DISPATCH/defense_dispatch pct=378 → zero_7 myBal=46374 名义到账17163 费2898 | EXEC 执行拍∈[4221,4229] 延迟∈[1,9]
+   t=4520 DISPATCH/defense_dispatch pct=289 → zero_7 myBal=40739 名义到账11537 费2546 | EXEC 执行拍∈[4521,4579] 延迟∈[1,59]
+   t=4820 DISPATCH/defense_dispatch pct=297 → noah88 myBal=41213 名义到账11993 费2575 | EXEC 执行拍∈[4830,4839] 延迟∈[10,19]
+   t=5120 DISPATCH/defense_dispatch pct=297 → noah88 myBal=41198 名义到账11989 费2574 | EXEC 执行拍∈[5130,5180] 延迟∈[10,60]
+   t=5470 DISPATCH/defense_dispatch pct=334 → zero_7 myBal=43435 名义到账14209 费2714 | EXEC 执行拍∈[5471,5489] 延迟∈[1,19]
+   t=5745 DISPATCH/defense_dispatch pct=274 → alex_k myBal=39969 名义到账10733 费2498 | EXEC 执行拍∈[5770,5789] 延迟∈[25,44] | 预标REJ?
+   t=5770 DISPATCH/defense_dispatch pct=298 → noah88 myBal=41264 名义到账12048 费2579 | EXEC 执行拍∈[5780,5799] 延迟∈[10,29]
+   判定汇总: {'EXEC': 15, 'NOT-EXEC': 2}
+== zero_7: 捐款 4 笔；观测区间 72 个，整数吻合 13 个，不吻合 59 个
+   MISMATCH 90→180: 观测余额 1087，最近假设差 -200（领土恒定=False）
+   MISMATCH 180→270: 观测余额 1448，最近假设差 +681（领土恒定=False）
+   MISMATCH 270→360: 观测余额 2102，最近假设差 +854（领土恒定=False）
+   MISMATCH 360→450: 观测余额 3185，最近假设差 +1173（领土恒定=False）
+   MISMATCH 450→540: 观测余额 3148，最近假设差 +3365（领土恒定=False）
+   MISMATCH 540→630: 观测余额 8413，最近假设差 -1332（领土恒定=False）
+   MISMATCH 630→720: 观测余额 9338，最近假设差 +5614（领土恒定=False）
+   MISMATCH 720→810: 观测余额 10568，最近假设差 +5603（领土恒定=False）
+   MISMATCH 810→900: 观测余额 23092，最近假设差 -4331（领土恒定=True）
+   MISMATCH 1260→1350: 观测余额 101693，最近假设差 +33909（领土恒定=False）
+   MISMATCH 1350→1440: 观测余额 113778，最近假设差 +19179（领土恒定=False）
+   MISMATCH 1440→1530: 观测余额 149642，最近假设差 -4027（领土恒定=False）
+   MISMATCH 1530→1620: 观测余额 107625，最近假设差 +77594（领土恒定=False）
+   MISMATCH 1620→1710: 观测余额 132474，最近假设差 -589（领土恒定=False）
+   MISMATCH 1710→1800: 观测余额 157782，最近假设差 -152（领土恒定=False）
+   MISMATCH 1800→1890: 观测余额 72397，最近假设差 +103782（领土恒定=False）
+   MISMATCH 1890→1980: 观测余额 157214，最近假设差 -69738（领土恒定=True）
+   MISMATCH 1980→2070: 观测余额 130204，最近假设差 +51385（领土恒定=False）
+   MISMATCH 2070→2160: 观测余额 258499，最近假设差 -106982（领土恒定=False）
+   MISMATCH 2160→2250: 观测余额 294092，最近假设差 -58（领土恒定=False）
+   MISMATCH 2250→2340: 观测余额 334167，最近假设差 -470（领土恒定=False）
+   MISMATCH 2340→2430: 观测余额 465356，最近假设差 -86254（领土恒定=False）
+   MISMATCH 2430→2520: 观测余额 552828，最近假设差 -26220（领土恒定=False）
+   MISMATCH 2520→2610: 观测余额 625693，最近假设差 -1446（领土恒定=True）
+   MISMATCH 2700→2790: 观测余额 615455，最近假设差 +169874（领土恒定=False）
+   MISMATCH 2790→2880: 观测余额 381148，最近假设差 +315265（领土恒定=False）
+   MISMATCH 2880→2970: 观测余额 396637，最近假设差 +41262（领土恒定=False）
+   MISMATCH 2970→3060: 观测余额 501238，最近假设差 -47288（领土恒定=False）
+   MISMATCH 3060→3150: 观测余额 569029，最近假设差 -76（领土恒定=False）
+   MISMATCH 3150→3240: 观测余额 713782，最近假设差 -69540（领土恒定=True）
+   MISMATCH 3600→3690: 观测余额 617835，最近假设差 +310329（领土恒定=False）
+   MISMATCH 3690→3780: 观测余额 917788，最近假设差 -220240（领土恒定=False）
+   MISMATCH 3780→3870: 观测余额 779633，最近假设差 +232283（领土恒定=False）
+   MISMATCH 3870→3960: 观测余额 915140，最近假设差 -37645（领土恒定=True）
+   MISMATCH 3960→4050: 观测余额 839568，最近假设差 +171078（领土恒定=False）
+   MISMATCH 4050→4140: 观测余额 806192，最近假设差 +135017（领土恒定=False）
+   MISMATCH 4140→4145: 观测余额 1020516，最近假设差 -214324（领土恒定=False）
+   MISMATCH 4145→4230: 观测余额 854599，最近假设差 +535（领土恒定=False）
+   MISMATCH 4230→4320: 观测余额 967560，最近假设差 -10687（领土恒定=False）
+   MISMATCH 4320→4410: 观测余额 628556，最近假设差 +423745（领土恒定=False）
+   t=3520 DISPATCH/offense_dispatch pct=198 → noah88 myBal=1010384 名义到账196353 费63149 | EXEC 执行拍∈[3521,3529] 延迟∈[1,9]
+   t=4145 DISPATCH/offense_dispatch pct=184 → kaito9 myBal=1020516 名义到账184370 费63782 | EXEC~ 执行拍∈[4190,4199] 延迟∈[45,54]
+   t=4870 DISPATCH/defense_dispatch pct=204 → noah88 myBal=772426 名义到账154636 费48276 | EXEC 执行拍∈[4871,4879] 延迟∈[1,9]
+   t=5395 DISPATCH/offense_dispatch pct=220 → noah88 myBal=821210 名义到账177233 费51325 | EXEC~ 执行拍∈[5400,5409] 延迟∈[5,14]
+   判定汇总: {'EXEC': 2, 'EXEC~': 2}
+== zexos1: 捐款 35 笔；观测区间 108 个，整数吻合 91 个，不吻合 17 个
+   MISMATCH 90→180: 观测余额 1159，最近假设差 -128（领土恒定=False）
+   MISMATCH 180→270: 观测余额 1523，最近假设差 +698（领土恒定=False）
+   MISMATCH 270→360: 观测余额 2190，最近假设差 +865（领土恒定=False）
+   MISMATCH 360→450: 观测余额 3402，最近假设差 +1077（领土恒定=False）
+   MISMATCH 450→540: 观测余额 2327，最近假设差 +4542（领土恒定=False）
+   MISMATCH 540→630: 观测余额 6089，最近假设差 -211（领土恒定=False）
+   MISMATCH 630→720: 观测余额 6869，最近假设差 +5337（领土恒定=False）
+   MISMATCH 720→810: 观测余额 11981，最近假设差 +2195（领土恒定=False）
+   MISMATCH 810→900: 观测余额 25382，最近假设差 -3812（领土恒定=False）
+   MISMATCH 900→990: 观测余额 34518，最近假设差 +1695（领土恒定=True）
+   MISMATCH 990→1080: 观测余额 51992，最近假设差 +2051（领土恒定=True）
+   MISMATCH 1170→1260: 观测余额 36449，最近假设差 +70096（领土恒定=False）
+   MISMATCH 1260→1350: 观测余额 85104，最近假设差 -31770（领土恒定=True）
+   MISMATCH 2165→2190: 观测余额 237274，最近假设差 +24588（领土恒定=True）
+   MISMATCH 2790→2865: 观测余额 247235，最近假设差 +1（领土恒定=True）
+   MISMATCH 6570→6660: 观测余额 136588，最近假设差 +132354（领土恒定=False）
+   MISMATCH 6660→6750: 观测余额 72045，最近假设差 +82768（领土恒定=True）
+   t=1815 DISPATCH/defense_dispatch pct=327 → zero_7 myBal=257230 名义到账82393 费16076 | NOT-EXEC | 预标REJ?
+   t=1840 DISPATCH/defense_dispatch pct=353 → zero_7 myBal=267233 名义到账92383 费16702 | NOT-EXEC
+   t=1990 DISPATCH/offense_dispatch pct=262 → zero_7 myBal=323631 名义到账83120 费20226 | NOT-EXEC | 预标REJ?
+   t=2015 DISPATCH/offense_dispatch pct=292 → zero_7 myBal=336648 名义到账96326 费21040 | NOT-EXEC | 预标REJ?
+   t=2040 DISPATCH/offense_dispatch pct=316 → zero_7 myBal=348394 名义到账107852 费21774 | NOT-EXEC | 预标REJ?
+   t=2065 DISPATCH/offense_dispatch pct=320 → zero_7 myBal=356452 名义到账111739 费22278 | NOT-EXEC | 预标REJ?
+   t=2090 DISPATCH/offense_dispatch pct=320 → zero_7 myBal=368891 名义到账115638 费23055 | NOT-EXEC | 预标REJ?
+   t=2115 DISPATCH/offense_dispatch pct=320 → zero_7 myBal=382955 名义到账120047 费23934 | UNDETERMINED | 预标REJ?
+   t=2140 DISPATCH/offense_dispatch pct=320 → zero_7 myBal=396317 名义到账124236 费24769 | UNDETERMINED | 预标REJ?
+   t=2165 DISPATCH/defense_dispatch pct=380 → kaito9 myBal=405484 名义到账150868 费25342 | UNDETERMINED
+   t=2190 DISPATCH/defense_dispatch pct=268 → kaito9 myBal=237274 名义到账62330 费14829 | NOT-EXEC | 预标REJ?
+   t=2215 DISPATCH/defense_dispatch pct=302 → kaito9 myBal=248293 名义到账73469 费15518 | NOT-EXEC
+   t=2415 DISPATCH/yield_opt_dispatch pct=263 → zero_7 myBal=323814 名义到账83483 费20238 | EXEC 执行拍∈[2420,2429] 延迟∈[5,14]
+   t=2715 DISPATCH/offense_dispatch pct=274 → zero_7 myBal=328825 名义到账88307 费20551 | NOT-EXEC | 预标REJ?
+   t=2740 DISPATCH/offense_dispatch pct=299 → zero_7 myBal=340298 名义到账99696 费21268 | UNDETERMINED | 预标REJ?
+   t=2765 DISPATCH/offense_dispatch pct=316 → zero_7 myBal=348169 名义到账107782 费21760 | UNDETERMINED | 预标REJ?
+   t=2790 DISPATCH/offense_dispatch pct=320 → leo_tx myBal=360317 名义到账112950 费22519 | EXEC~ 执行拍∈[2826,2849] 延迟∈[36,59]
+   t=2865 DISPATCH/defense_dispatch pct=299 → kaito9 myBal=247235 名义到账72432 费15452 | EXEC 执行拍∈[2870,2879] 延迟∈[5,14]
+   t=3115 DISPATCH/defense_dispatch pct=247 → zero_7 myBal=230752 名义到账55885 费14422 | NOT-EXEC | 预标REJ?
+   t=3140 DISPATCH/defense_dispatch pct=273 → zero_7 myBal=238804 名义到账63898 费14925 | NOT-EXEC | 预标REJ?
+   t=3165 DISPATCH/defense_dispatch pct=290 → zero_7 myBal=244327 名义到账69432 费15270 | NOT-EXEC | 预标REJ?
+   t=3190 DISPATCH/defense_dispatch pct=315 → zero_7 myBal=252852 名义到账78028 费15803 | NOT-EXEC
+   t=3265 DISPATCH/defense_dispatch pct=380 → noah88 myBal=279775 名义到账104095 费17485 | EXEC 执行拍∈[3270,3289] 延迟∈[5,24]
+   t=3540 DISPATCH/defense_dispatch pct=268 → noah88 myBal=237210 名义到账62313 费14825 | NOT-EXEC
+   t=3765 DISPATCH/defense_dispatch pct=380 → zero_7 myBal=317471 名义到账118121 费19841 | EXEC 执行拍∈[3770,3779] 延迟∈[5,14]
+   t=4190 DISPATCH/yield_opt_dispatch pct=259 → noah88 myBal=322499 名义到账81884 费20156 | EXEC 执行拍∈[4200,4229] 延迟∈[10,39]
+   t=4240 DISPATCH/defense_dispatch pct=268 → zero_7 myBal=237342 名义到账62348 费14833 | NOT-EXEC
+   t=4290 DISPATCH/defense_dispatch pct=310 → noah88 myBal=251304 名义到账76323 费15706 | EXEC 执行拍∈[4301,4319] 延迟∈[11,29]
+   t=4615 DISPATCH/defense_dispatch pct=316 → noah88 myBal=253251 名义到账78398 费15828 | EXEC 执行拍∈[4616,4675] 延迟∈[1,60]
+   t=4890 DISPATCH/defense_dispatch pct=251 → noah88 myBal=231873 名义到账57062 费14492 | EXEC 执行拍∈[4900,4949] 延迟∈[10,59]
+   t=5140 DISPATCH/defense_dispatch pct=246 → noah88 myBal=230475 名义到账55593 费14404 | EXEC 执行拍∈[5141,5199] 延迟∈[1,59]
+   t=5465 DISPATCH/defense_dispatch pct=310 → zero_7 myBal=251147 名义到账76276 费15696 | EXEC 执行拍∈[5480,5489] 延迟∈[15,24]
+   t=5715 DISPATCH/defense_dispatch pct=246 → alex_k myBal=230519 名义到账55603 费14407 | EXEC 执行拍∈[5716,5759] 延迟∈[1,44]
+   t=5990 DISPATCH/defense_dispatch pct=257 → noah88 myBal=233919 名义到账58936 费14619 | EXEC 执行拍∈[6000,6029] 延迟∈[10,39]
+   t=6290 DISPATCH/defense_dispatch pct=289 → kaito9 myBal=244051 名义到账69116 费15253 | EXEC 执行拍∈[6300,6350] 延迟∈[10,60]
+   判定汇总: {'NOT-EXEC': 16, 'UNDETERMINED': 5, 'EXEC': 13, 'EXEC~': 1}
+
+全局判定: {'UNDETERMINED': 20, 'EXEC~': 10, 'NOT-EXEC': 66, 'EXEC': 69}
+预标 likelyRejected 共 70 笔，其中账本判定: {"UNDETERMINED": 16, "EXEC~": 3, "EXEC": 4, "NOT-EXEC": 47}
+指令延迟（决策拍→执行拍）: n=79 下界 min/中位/max = 1/10/60；上界 min/中位/max = 9/29/60

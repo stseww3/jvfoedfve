@@ -1,0 +1,1066 @@
+# 复刻校验：1064 行一致 / 0 行不一致
+t	donor	bal	terr	dMe	boxedIn	coast	reason	target	pct	kind	cands
+1500	ryan_m	228284	4899	46.6	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1500	kaito9	87908	8624	10.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1505	noah88	167186	3602	46.4	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1505	riku_x	176755	5749	30.7			D:nocall-atkH				
+1510	sora_w	185678	5547	33.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1515	zexos1	221936	4360	50.9	0	0	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1515	alex_k	116560	3933	29.6			D:meAttacking				
+1520	zero_7	98992	7168	13.8	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1520	talon5	207376	5184	40.0			D:nocall-atkH				
+1525	ryan_m	238741	4899	48.7	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1525	kaito9	91935	8677	10.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1530	noah88	140853	3602	39.1			D:meAttacking				
+1530	riku_x	70329	6098	11.5			D:meAttacking				
+1535	sora_w	194069	5547	35.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1540	zexos1	237046	4360	54.4	0	0	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1540	alex_k	83281	4639	18.0			D:meAttacking				
+1545	zero_7	103405	7168	14.4	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1545	talon5	106031	5292	20.0			D:meAttacking				
+1550	ryan_m	254746	4899	52.0	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1550	kaito9	98321	8737	11.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1555	noah88	91320	3819	23.9			D:meAttacking				
+1555	riku_x	73414	7490	9.8			D:meAttacking				
+1560	sora_w	206876	5547	37.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1565	zexos1	247275	4360	56.7	0	0	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1565	alex_k	86874	5506	15.8			D:meAttacking				
+1570	zero_7	110121	7168	15.4	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1570	talon5	112917	5462	20.7			D:meAttacking				
+1575	ryan_m	265583	4899	54.2	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1575	kaito9	102503	8785	11.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1580	noah88	97557	3961	24.6			D:meAttacking				
+1580	riku_x	78422	7833	10.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1585	sora_w	215549	5547	38.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1590	zexos1	262873	4360	60.3	0	0	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1590	alex_k	92389	5916	15.6			D:meUnderFire				
+1595	zero_7	114670	7168	16.0	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1595	talon5	117582	5567	21.1			D:meAttacking				
+1600	ryan_m	286986	4899	58.6	1	0	SENT:defense_dispatch	alex_k	260	defense_dispatch	noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:7364;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1600	kaito9	117710	8839	13.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1605	noah88	105550	4047	26.1			D:meAttacking				
+1605	riku_x	89446	7833	11.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1610	sora_w	234397	5547	42.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1615	zexos1	277858	4360	63.7	0	0	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1615	alex_k	84744	5286	16.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1620	zero_7	129031	7168	18.0	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1620	talon5	132788	5653	23.5			D:meAttacking				
+1625	ryan_m	298534	4899	60.9	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1625	kaito9	122356	8920	13.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1630	noah88	111801	4162	26.9			D:meAttacking				
+1630	riku_x	94743	7833	12.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1635	sora_w	243483	5547	43.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1640	zexos1	294026	4360	67.4			D:nocall-atkH				
+1640	alex_k	89675	5286	17.0			D:meUnderFire				
+1645	zero_7	133940	7168	18.7	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1645	talon5	137840	5712	24.1			D:meAttacking				
+1650	ryan_m	315596	4899	64.4	1	0	SENT:defense_dispatch	alex_k	260	defense_dispatch	noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:7310;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1650	kaito9	129982	8973	14.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1655	noah88	115986	4265	27.2			D:meAttacking				
+1655	riku_x	98289	7833	12.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1660	sora_w	257171	5547	46.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1665	zexos1	97357	4419	22.0			D:meAttacking				
+1665	alex_k	76739	4757	16.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1670	zero_7	141716	7168	19.8	1	1	no-cand				ryan_m=C:rear;noah88=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1670	talon5	145459	5742	25.3	0	1	no-cand				ryan_m=C:rear;noah88=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+1675	ryan_m	327027	4899	66.8	1	0	no-cand				noah88=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1675	kaito9	135090	9004	15.0	0	1	no-cand				ryan_m=C:rear;noah88=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1680	noah88	122289	4352	28.1	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1680	riku_x	103631	7833	13.2	0	1	no-cand				ryan_m=C:rear;noah88=C:rear;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1685	sora_w	266328	5547	48.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1690	zexos1	102557	4647	22.1			D:meAttacking				
+1690	alex_k	80836	4757	17.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1695	zero_7	147634	7168	20.6	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1695	talon5	217098	5753	37.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+1700	ryan_m	349414	4899	71.3	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1700	kaito9	218515	9022	24.2	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1705	noah88	130903	4417	29.6	0	1	no-cand				ryan_m=C:rear;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1705	riku_x	115027	7833	14.7			D:meUnderFire				
+1710	sora_w	285670	5547	51.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=A:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1715	zexos1	110794	4799	23.1			D:meAttacking				
+1715	alex_k	89420	4757	18.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1720	zero_7	162482	7171	22.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1720	talon5	233986	5753	40.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+1725	ryan_m	360932	4899	73.7	1	0	SENT:defense_dispatch	riku_x	260	defense_dispatch	noah88=B:dMe;riku_x=ok:A:7427;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1725	kaito9	225718	9022	25.0	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1730	noah88	179693	4424	40.6	0	1	no-cand				ryan_m=C:rear;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1730	riku_x	119210	7772	15.3			D:meUnderFire				
+1735	sora_w	294912	5547	53.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1740	zexos1	116162	4936	23.5			D:meAttacking				
+1740	alex_k	93752	4757	19.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1745	zero_7	167640	7214	23.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1745	talon5	203693	5753	35.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+1750	ryan_m	378087	4899	77.2	1	0	SENT:defense_dispatch	riku_x	260	defense_dispatch	noah88=B:dMe;riku_x=ok:A:7331;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1750	kaito9	236446	9022	26.2	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1755	noah88	156961	4424	35.5	0	1	no-cand				ryan_m=C:rear;riku_x=A:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1755	riku_x	118325	7589	15.6			D:meUnderFire				
+1760	sora_w	308655	5547	55.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=A:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1765	zexos1	111033	4860	22.8			D:meUnderFire				
+1765	alex_k	96613	4757	20.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1770	zero_7	175296	7273	24.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1770	talon5	213388	5753	37.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+1775	ryan_m	389399	4899	79.5	1	0	SENT:defense_dispatch	zexos1	260	defense_dispatch	noah88=B:dMe;riku_x=B:dMe;zexos1=ok:A:7036;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1775	kaito9	243519	9022	27.0	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1780	noah88	163983	4424	37.1	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1780	riku_x	119099	7434	16.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1785	sora_w	317701	5547	57.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1790	zexos1	102258	4824	21.2			D:meAttacking				
+1790	alex_k	100836	4757	21.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1795	zero_7	180309	7393	24.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1795	talon5	185514	5753	32.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+1800	ryan_m	410922	4899	83.9	1	0	SENT:offense_dispatch	zexos1	218	offense_dispatch	noah88=ok:B:4599;riku_x=ok:B:5177;zexos1=ok:B:5361;sora_w=ok:B:4359;alex_k=ok:B:4895;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:B:4685
+1800	kaito9	262936	9022	29.1	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1805	noah88	146644	4424	33.1	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1805	riku_x	129854	7434	17.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1810	sora_w	336558	5547	60.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1815	zexos1	110033	5106	21.5			D:meUnderFire				
+1815	alex_k	108407	4757	22.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1820	zero_7	195586	7532	26.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1820	talon5	198977	5753	34.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+1825	ryan_m	421883	4899	86.1	1	0	SENT:defense_dispatch	zexos1	260	defense_dispatch	noah88=ok:B:4583;riku_x=ok:B:5168;zexos1=ok:A:6951;sora_w=ok:B:4330;alex_k=ok:B:4884;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:B:4668
+1825	kaito9	269949	9022	29.9	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1830	noah88	152482	4424	34.5	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1830	riku_x	135023	7434	18.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1835	sora_w	345330	5547	62.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1840	zexos1	111461	5029	22.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1840	alex_k	112622	4757	23.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1845	zero_7	201531	7633	26.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1845	talon5	204042	5753	35.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+1850	ryan_m	437902	4899	89.4	1	0	SENT:offense_dispatch	riku_x	225	offense_dispatch	noah88=ok:B:4559;riku_x=ok:B:5156;zexos1=ok:B:4995;sora_w=ok:B:4288;alex_k=ok:B:4868;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:B:4645
+1850	kaito9	280198	9022	31.1	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1855	noah88	156484	4424	35.4	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1855	riku_x	138377	7434	18.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1860	sora_w	358122	5547	64.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1865	zexos1	114162	5029	22.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1865	alex_k	115351	4757	24.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1870	zero_7	213072	7668	27.8	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1870	talon5	211391	5753	36.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+1875	ryan_m	449216	4899	91.7	1	0	SENT:offense_dispatch	riku_x	225	offense_dispatch	noah88=ok:B:4544;riku_x=ok:B:5148;zexos1=ok:B:4986;sora_w=ok:B:4261;alex_k=ok:B:4858;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:B:4630
+1875	kaito9	286962	9022	31.8	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1880	noah88	161991	4424	36.6	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1880	riku_x	143346	7434	19.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1885	sora_w	366405	5547	66.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1890	zexos1	118121	5029	23.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1890	alex_k	119352	4757	25.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1895	zero_7	218129	7668	28.4	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1895	talon5	216279	5753	37.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+1900	ryan_m	470023	4899	95.9	1	0	SENT:offense_dispatch	riku_x	225	offense_dispatch	noah88=ok:B:4504;riku_x=ok:B:5118;zexos1=ok:B:4954;sora_w=ok:B:4202;alex_k=ok:B:4825;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:B:4588
+1900	kaito9	306437	9022	34.0	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1905	noah88	170128	4424	38.5	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1905	riku_x	154182	7434	20.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1910	sora_w	384801	5547	69.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1915	zexos1	125915	5029	25.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1915	alex_k	126899	4757	26.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1920	zero_7	234381	7668	30.6	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1920	talon5	229711	5753	39.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+1925	ryan_m	480800	4899	98.1	1	0	SENT:offense_dispatch	riku_x	225	offense_dispatch	noah88=ok:B:4488;riku_x=ok:B:5109;zexos1=ok:B:4943;sora_w=ok:B:4173;alex_k=ok:B:4814;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:B:4572
+1925	kaito9	313835	9022	34.8	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1930	noah88	176224	4424	39.8	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1930	riku_x	159703	7434	21.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1935	sora_w	393702	5547	71.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1940	zexos1	130269	5029	25.9			D:meUnderFire				
+1940	alex_k	131287	4757	27.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1945	zero_7	239944	7668	31.3	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1945	talon5	235024	5753	40.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+1950	ryan_m	497430	4899	101.5	1	0	SENT:defense_dispatch	zexos1	260	defense_dispatch	noah88=ok:B:4463;riku_x=ok:B:5095;zexos1=ok:A:7192;sora_w=ok:B:4129;alex_k=ok:B:4797;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:B:4547
+1950	kaito9	325268	9022	36.1	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1955	noah88	180263	4424	40.7	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1955	riku_x	163493	7434	22.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1960	sora_w	298021	5547	53.7			D:meAttacking				
+1965	zexos1	112539	4527	24.9			D:meUnderFire				
+1965	alex_k	134296	4757	28.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1970	zero_7	248910	7668	32.5	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1970	talon5	243224	5753	42.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+1975	ryan_m	508382	4899	103.8	1	0	SENT:offense_dispatch	riku_x	225	offense_dispatch	noah88=ok:B:4446;riku_x=ok:B:5086;zexos1=ok:B:4911;sora_w=ok:B:4827;alex_k=ok:B:4866;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:B:4530
+1975	kaito9	333121	9022	36.9	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+1980	noah88	186497	4424	42.2	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1980	riku_x	169348	7434	22.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1985	sora_w	131706	6110	21.6			D:meAttacking				
+1990	zexos1	111898	4421	25.3			D:meUnderFire				
+1990	alex_k	139298	4757	29.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+1995	zero_7	254818	7668	33.2	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+1995	talon5	248850	5753	43.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2000	ryan_m	529202	4899	108.0	1	0	SENT:defense_dispatch	zexos1	260	defense_dispatch	noah88=ok:B:4402;riku_x=ok:B:5052;zexos1=ok:A:7158;sora_w=ok:B:6451;alex_k=ok:B:4829;leo_tx=C:small;zero_7=ok:B:2724;kaito9=ok:B:2738;talon5=ok:B:4485
+2000	kaito9	354278	9022	39.3	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2005	noah88	195197	4424	44.1	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2005	riku_x	181367	7434	24.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2010	sora_w	143046	6653	21.5			D:meAttacking				
+2015	zexos1	98798	3936	25.1			D:meUnderFire				
+2015	alex_k	147302	4757	31.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2020	zero_7	272085	7668	35.5	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2020	talon5	268289	5753	46.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2025	ryan_m	539304	4899	110.1	1	0	SENT:offense_dispatch	sora_w	225	offense_dispatch	noah88=ok:B:4384;riku_x=ok:B:5041;zexos1=ok:B:4866;sora_w=ok:B:6140;alex_k=ok:B:4816;leo_tx=C:small;zero_7=ok:B:2709;kaito9=ok:B:2721;talon5=ok:B:4452
+2025	kaito9	362831	9022	40.2	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2030	noah88	201948	4424	45.6	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2030	riku_x	187862	7434	25.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2035	sora_w	146426	7272	20.1			D:meAttacking				
+2040	zexos1	97563	3834	25.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2040	alex_k	152396	4757	32.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2045	zero_7	278543	7668	36.3	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2045	talon5	274494	5753	47.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2050	ryan_m	553885	4899	113.1	1	0	SENT:defense_dispatch	zexos1	260	defense_dispatch	noah88=ok:B:4356;riku_x=ok:B:5025;zexos1=ok:A:6800;sora_w=ok:B:5700;alex_k=ok:B:4797;leo_tx=C:small;zero_7=ok:B:2686;kaito9=ok:B:2694;talon5=ok:B:4422
+2050	kaito9	376049	9022	41.7	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2055	noah88	206578	4428	46.7	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=A:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2055	riku_x	192320	7434	25.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=A:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2060	sora_w	148977	7706	19.3			D:meUnderFire				
+2065	zexos1	98595	3806	25.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2065	alex_k	155890	4757	32.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2070	zero_7	288518	7668	37.6	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2070	talon5	284071	5753	49.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2075	ryan_m	563229	4899	115.0	1	0	SENT:offense_dispatch	sora_w	225	offense_dispatch	noah88=ok:B:4308;riku_x=ok:B:5014;zexos1=ok:B:4836;sora_w=ok:B:5241;alex_k=ok:B:4783;leo_tx=C:small;zero_7=ok:B:2670;kaito9=ok:B:2676;talon5=ok:B:4402
+2075	kaito9	385127	9022	42.7	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2080	noah88	223981	4479	50.0	0	1	no-cand				ryan_m=C:dense;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2080	riku_x	199208	7434	26.8	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2085	sora_w	147011	7618	19.3	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2090	zexos1	102956	3806	27.1			D:meUnderFire				
+2090	alex_k	161638	4757	34.0	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2095	zero_7	295366	7668	38.5	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=A:dMe;sora_w=A:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2095	talon5	245230	5753	42.6	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=A:dMe;zexos1=A:dMe;sora_w=A:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2100	ryan_m	581409	4899	118.7	1	0	SENT:defense_dispatch	riku_x	260	defense_dispatch	noah88=ok:B:4235;riku_x=ok:A:7285;zexos1=ok:A:6781;sora_w=ok:B:5206;alex_k=ok:B:4743;leo_tx=C:small;zero_7=ok:B:2628;kaito9=ok:B:2630;talon5=ok:B:4497
+2100	kaito9	408179	9022	45.2	1	1	SENT:defense_dispatch	riku_x	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=ok:A:7285;zexos1=ok:A:6781;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2105	noah88	246740	4608	53.5	0	1	no-cand				ryan_m=C:dense;riku_x=A:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2105	riku_x	204388	7280	28.1			D:meUnderFire				
+2110	sora_w	158038	7533	21.0	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2115	zexos1	104163	3706	28.1	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2115	alex_k	170154	4757	35.8	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2120	zero_7	313794	7668	40.9	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2120	talon5	259673	5753	45.1	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2125	ryan_m	589694	4899	120.4	1	0	SENT:offense_dispatch	sora_w	225	offense_dispatch	noah88=ok:B:4250;riku_x=ok:B:4957;zexos1=ok:B:4793;sora_w=ok:B:5196;alex_k=ok:B:4729;leo_tx=C:small;zero_7=ok:B:2611;kaito9=ok:B:2610;talon5=ok:B:4478
+2125	kaito9	418033	9022	46.3	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2130	noah88	255273	4736	53.9	0	1	no-cand				ryan_m=C:dense;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2130	riku_x	188832	6837	27.6	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2135	sora_w	161788	7533	21.5	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2140	zexos1	107700	3706	29.1	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2140	alex_k	176038	4757	37.0	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2145	zero_7	321242	7668	41.9	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2145	talon5	224168	5753	39.0	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2150	ryan_m	601445	4899	122.8	1	0	SENT:offense_dispatch	sora_w	225	offense_dispatch	noah88=ok:B:4206;riku_x=ok:B:4940;zexos1=ok:B:4696;sora_w=ok:B:5182;alex_k=ok:B:4706;leo_tx=C:small;zero_7=ok:B:2585;kaito9=ok:B:2580;talon5=ok:B:4581
+2150	kaito9	433262	9022	48.0	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2155	noah88	277290	4904	56.5	0	1	no-cand				ryan_m=C:dense;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2155	riku_x	193276	6837	28.3	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2160	sora_w	167582	7533	22.2	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2165	zexos1	110125	3706	29.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2165	alex_k	180073	4757	37.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2170	zero_7	332747	7668	43.4	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2170	talon5	231989	5753	40.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2175	ryan_m	438775	4899	89.6	1	0	SENT:offense_dispatch	riku_x	225	offense_dispatch	noah88=ok:B:2239;riku_x=ok:B:4928;zexos1=ok:B:4684;sora_w=ok:B:4850;alex_k=ok:B:4689;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:B:2565
+2175	kaito9	443943	9022	49.2	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2180	noah88	286909	5143	55.8	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2180	riku_x	200138	6837	29.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2185	sora_w	257229	7551	34.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2190	zexos1	113866	3706	30.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2190	alex_k	186681	4757	39.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2195	zero_7	340645	7668	44.4	1	1	SENT:defense_dispatch	riku_x	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=ok:A:6835;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=ok:A:6821
+2195	talon5	237156	5750	41.2			D:meUnderFire				
+2200	ryan_m	330291	4899	67.4	1	0	SENT:defense_dispatch	talon5	260	defense_dispatch	noah88=B:dMe;riku_x=ok:A:6763;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:A:6777
+2200	kaito9	469138	9022	52.0	1	1	SENT:defense_dispatch	talon5	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=ok:A:6763;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=ok:A:6777
+2205	noah88	299217	5367	55.8	0	1	no-cand				ryan_m=C:rear;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2205	riku_x	297462	6637	44.8			D:meUnderFire				
+2210	sora_w	315668	7588	41.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2215	zexos1	120178	3706	32.4			D:meUnderFire				
+2215	alex_k	195772	4757	41.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2220	zero_7	246218	7668	32.1	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=A:dMe
+2220	talon5	449580	5642	79.7			D:nocall-atkH				
+2225	ryan_m	230632	4899	47.1	1	0	SENT:defense_dispatch	riku_x	260	defense_dispatch	noah88=B:dMe;riku_x=ok:A:6410;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:A:5872
+2225	kaito9	327975	9022	36.4	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=A:dMe
+2230	noah88	309657	5586	55.4	0	1	no-cand				ryan_m=C:rear;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2230	riku_x	384766	6463	59.5			D:nocall-atkH				
+2235	sora_w	323160	7588	42.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2240	zexos1	122511	3684	33.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2240	alex_k	202542	4757	42.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2245	zero_7	252062	7668	32.9	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2245	talon5	301140	5679	53.0			D:meAttacking				
+2250	ryan_m	238609	4899	48.7	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2250	kaito9	339922	9022	37.7	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2255	noah88	316820	5844	54.2	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2255	riku_x	192525	7283	26.4			D:meAttacking				
+2260	sora_w	334949	7588	44.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2265	zexos1	125270	3684	34.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2265	alex_k	207185	4757	43.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2270	zero_7	261089	7668	34.0	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2270	talon5	369748	5753	64.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2275	ryan_m	244080	4899	49.8	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2275	kaito9	348129	9022	38.6	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2280	noah88	327940	6113	53.6	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2280	riku_x	199495	8038	24.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2285	sora_w	342900	7588	45.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2290	zexos1	129525	3684	35.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2290	alex_k	214350	4757	45.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2295	zero_7	268985	7668	35.1	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2295	talon5	378301	5753	65.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2300	ryan_m	257421	4899	52.5	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2300	kaito9	369833	9022	41.0	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2305	noah88	341972	6367	53.7	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2305	riku_x	212268	8038	26.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2310	sora_w	362858	7588	47.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2315	zexos1	136167	3684	37.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2315	alex_k	224075	4757	47.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2320	zero_7	286468	7668	37.4	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2320	talon5	397388	5753	69.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2325	ryan_m	263323	4899	53.8	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2325	kaito9	378761	9022	42.0	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2330	noah88	362637	6518	55.6	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2330	riku_x	219870	8038	27.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2335	sora_w	371471	7588	49.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2340	zexos1	140793	3684	38.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2340	alex_k	231825	4757	48.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2345	zero_7	293268	7668	38.2	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2345	talon5	406579	5753	70.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2350	ryan_m	272430	4899	55.6	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2350	kaito9	392559	9022	43.5	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2355	noah88	376745	6544	57.6	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2355	riku_x	225089	8038	28.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2360	sora_w	384776	7588	50.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2365	zexos1	143963	3684	39.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2365	alex_k	237139	4757	49.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2370	zero_7	303771	7668	39.6	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2370	talon5	420766	5753	73.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2375	ryan_m	278676	4899	56.9	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2375	kaito9	402036	9022	44.6	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2380	noah88	329788	6544	50.4	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2380	riku_x	233151	8038	29.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2385	sora_w	393909	7588	51.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2390	zexos1	148853	3684	40.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2390	alex_k	245341	4757	51.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2395	zero_7	310981	7668	40.6	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2395	talon5	430498	5753	74.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2400	ryan_m	293213	4899	59.9	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2400	kaito9	425704	9022	47.2	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2405	noah88	344476	6544	52.6	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2405	riku_x	246723	8038	30.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2410	sora_w	415694	7588	54.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2415	zexos1	155931	3684	42.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2415	alex_k	257071	4757	54.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2420	zero_7	329969	7668	43.0	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2420	talon5	451406	5753	78.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2425	ryan_m	299935	4899	61.2	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2425	kaito9	435981	9022	48.3	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2430	noah88	301157	6544	46.0	0	1	no-cand				ryan_m=C:rear;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2430	riku_x	255559	8038	31.8			D:meUnderFire				
+2435	sora_w	425562	7588	56.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2440	zexos1	161227	3684	43.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2440	alex_k	265962	4757	55.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2445	zero_7	338097	7668	44.1	1	1	SENT:defense_dispatch	riku_x	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=ok:A:7170;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2445	talon5	461847	5753	80.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2450	ryan_m	310309	4899	63.3	1	0	SENT:defense_dispatch	riku_x	260	defense_dispatch	noah88=B:dMe;riku_x=ok:A:7115;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2450	kaito9	451864	9022	50.1	1	1	SENT:defense_dispatch	riku_x	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=ok:A:7115;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2455	noah88	328696	6544	50.2	0	1	no-cand				ryan_m=C:rear;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2455	riku_x	244474	7705	31.7			D:meUnderFire				
+2460	sora_w	440803	7588	58.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2465	zexos1	164857	3684	44.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2465	alex_k	272059	4757	57.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2470	zero_7	350206	7668	45.7	1	1	SENT:defense_dispatch	riku_x	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=ok:A:6935;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2470	talon5	403283	5753	70.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2475	ryan_m	317423	4899	64.8	1	0	SENT:defense_dispatch	riku_x	260	defense_dispatch	noah88=B:dMe;riku_x=ok:A:6910;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2475	kaito9	462773	9022	51.3	1	1	SENT:defense_dispatch	riku_x	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=ok:A:6910;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2480	noah88	340367	6565	51.8	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2480	riku_x	235240	7372	31.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2485	sora_w	451266	7588	59.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2490	zexos1	170457	3684	46.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2490	alex_k	281468	4757	59.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2495	zero_7	358519	7668	46.8	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2495	talon5	412988	5795	71.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2500	ryan_m	333300	4899	68.0	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2500	kaito9	488654	9022	54.2	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2505	noah88	355604	6599	53.9	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2505	riku_x	248881	7372	33.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2510	sora_w	475105	7588	62.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2515	zexos1	178021	3684	48.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2515	alex_k	292732	4757	61.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2520	zero_7	379209	7668	49.5	1	1	SENT:defense_dispatch	talon5	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=ok:A:6050
+2520	talon5	429333	5862	73.2			D:meUnderFire				
+2525	ryan_m	340941	4899	69.6	1	0	SENT:defense_dispatch	talon5	260	defense_dispatch	noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:A:6048
+2525	kaito9	500451	9022	55.5	1	1	SENT:defense_dispatch	talon5	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=ok:A:6048
+2530	noah88	406081	6617	61.4	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2530	riku_x	257794	7372	35.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2535	sora_w	486383	7588	64.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2540	zexos1	184068	3684	50.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2540	alex_k	302857	4757	63.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2545	zero_7	388210	7668	50.6	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2545	talon5	423210	5868	72.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2550	ryan_m	352733	4899	72.0	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2550	kaito9	518683	9022	57.5	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2555	noah88	453421	6623	68.5	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2555	riku_x	263912	7372	35.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2560	sora_w	503804	7588	66.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2565	zexos1	188213	3684	51.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2565	alex_k	309800	4757	65.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2570	zero_7	402113	7668	52.4	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2570	talon5	385968	5884	65.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2575	ryan_m	360820	4899	73.7	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2575	kaito9	531205	9022	58.9	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2580	noah88	396160	6623	59.8	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2580	riku_x	273364	7372	37.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2585	sora_w	515763	7588	68.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2590	zexos1	194606	3684	52.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2590	alex_k	320514	4757	67.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2595	zero_7	412035	7668	53.7	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2595	talon5	394895	5884	67.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2600	ryan_m	378199	4899	77.2	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2600	kaito9	559579	9022	62.0	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2605	noah88	412107	6623	62.2	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2605	riku_x	287858	7372	39.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2610	sora_w	541914	7588	71.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2615	zexos1	202714	3684	55.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2615	alex_k	332673	4757	69.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2620	zero_7	434642	7668	56.7	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2620	talon5	414695	5884	70.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2625	ryan_m	386870	4899	79.0	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2625	kaito9	573088	9022	63.5	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2630	noah88	360062	6626	54.3	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2630	riku_x	298167	7372	40.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2635	sora_w	554778	7588	73.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2640	zexos1	209600	3684	56.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2640	alex_k	344725	4757	72.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2645	zero_7	444959	7668	58.0	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2645	talon5	424286	5884	72.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2650	ryan_m	400251	4899	81.7	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2650	kaito9	593967	9022	65.8	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2655	noah88	368536	6652	55.4	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2655	riku_x	305244	7372	41.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2660	sora_w	575086	7588	75.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2665	zexos1	214320	3684	58.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2665	alex_k	352628	4757	74.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2670	zero_7	460896	7668	60.1	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2670	talon5	439092	5884	74.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2675	ryan_m	409427	4899	83.6	1	0	SENT:defense_dispatch	riku_x	260	defense_dispatch	noah88=ok:B:2338;riku_x=ok:A:6797;zexos1=ok:B:4164;sora_w=ok:B:2202;alex_k=ok:B:4030;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:B:3537
+2675	kaito9	608307	9022	67.4	1	1	SENT:defense_dispatch	riku_x	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=ok:A:6797;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2680	noah88	429244	6671	64.3	0	1	no-cand				ryan_m=C:rear;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2680	riku_x	316176	7372	42.9			D:meUnderFire				
+2685	sora_w	588738	7588	77.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2690	zexos1	221601	3684	60.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2690	alex_k	364824	4757	76.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2695	zero_7	471836	7668	61.5	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2695	talon5	449248	5884	76.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2700	ryan_m	428487	4899	87.5	1	0	SENT:offense_dispatch	riku_x	225	offense_dispatch	noah88=ok:B:2114;riku_x=ok:B:4697;zexos1=ok:B:4110;sora_w=ok:B:2134;alex_k=ok:B:3966;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:B:1972
+2700	kaito9	639490	9022	70.9	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2705	noah88	460824	6674	69.0	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2705	riku_x	313158	7234	43.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2710	sora_w	617503	7588	81.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2715	zexos1	230316	3684	62.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2715	alex_k	377999	4757	79.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2720	zero_7	496585	7668	64.8	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2720	talon5	397360	5884	67.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2725	ryan_m	314181	4899	64.1	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2725	kaito9	654928	9022	72.6	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2730	noah88	477187	6698	71.2	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2730	riku_x	422329	7234	58.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2735	sora_w	632161	7588	83.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2740	zexos1	238355	3684	64.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2740	alex_k	391073	4757	82.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2745	zero_7	508372	7668	66.3	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2745	talon5	406551	5884	69.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2750	ryan_m	325047	4899	66.3	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2750	kaito9	679403	9022	75.3	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2755	noah88	488418	6749	72.4	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2755	riku_x	434711	7234	60.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2760	sora_w	654803	7588	86.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2765	zexos1	243723	3684	66.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2765	alex_k	400040	4757	84.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2770	zero_7	526580	7668	68.7	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2770	talon5	420738	5884	71.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2775	ryan_m	332499	4899	67.9	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2775	kaito9	695805	9022	77.1	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2780	noah88	505761	6813	74.2	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2780	riku_x	450281	7234	62.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2785	sora_w	670346	7588	88.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2790	zexos1	252003	3684	68.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2790	alex_k	413877	4757	87.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2795	zero_7	539079	7668	70.3	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2795	talon5	393162	5884	66.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2800	ryan_m	348898	4899	71.2	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2800	kaito9	730176	9022	80.9	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+2805	noah88	525235	6978	75.3	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2805	riku_x	468204	7234	64.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2810	sora_w	702034	7588	92.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2815	zexos1	261404	3684	71.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2815	alex_k	428178	4757	90.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2820	zero_7	566237	7668	73.8	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2820	talon5	413504	5890	70.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2825	ryan_m	356897	4899	72.9	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2825	kaito9	747805	9022	82.9	1	1	SENT:offense_dispatch	riku_x	134	offense_dispatch	ryan_m=C:rear;noah88=ok:B:2026;riku_x=ok:B:4284;zexos1=ok:B:3432;sora_w=ok:B:1897;alex_k=ok:B:3241;leo_tx=C:small;zero_7=C:rear;talon5=ok:B:2118
+2830	noah88	544827	7152	76.2	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2830	riku_x	484972	7234	67.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2835	sora_w	718699	7588	94.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2840	zexos1	270284	3684	73.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2840	alex_k	442988	4757	93.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2845	zero_7	579678	7668	75.6	1	1	SENT:defense_dispatch	talon5	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=ok:A:5973
+2845	talon5	472014	5888	80.2			D:meUnderFire				
+2850	ryan_m	369241	4899	75.4	1	0	SENT:defense_dispatch	talon5	260	defense_dispatch	noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:A:5947
+2850	kaito9	775049	9022	85.9	1	1	SENT:defense_dispatch	talon5	260	defense_dispatch	ryan_m=C:rear;noah88=ok:B:2026;riku_x=ok:B:4241;zexos1=ok:B:3388;sora_w=ok:B:1837;alex_k=ok:B:3184;leo_tx=C:small;zero_7=C:rear;talon5=ok:A:5947
+2855	noah88	558055	7329	76.1	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2855	riku_x	496484	7234	68.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2860	sora_w	744440	7588	98.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2865	zexos1	276372	3684	75.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2865	alex_k	453145	4757	95.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2870	zero_7	600440	7668	78.3	1	1	SENT:defense_dispatch	talon5	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=ok:A:6150
+2870	talon5	402682	5803	69.4			D:meUnderFire				
+2875	ryan_m	377707	4899	77.1	1	0	SENT:defense_dispatch	talon5	260	defense_dispatch	noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:A:6141
+2875	kaito9	793761	9022	88.0	1	1	SENT:defense_dispatch	talon5	260	defense_dispatch	ryan_m=C:rear;noah88=ok:B:2043;riku_x=ok:B:4212;zexos1=ok:B:3358;sora_w=ok:B:1795;alex_k=ok:B:1646;leo_tx=C:small;zero_7=C:rear;talon5=ok:A:6141
+2880	noah88	578043	7545	76.6	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2880	riku_x	514266	7234	71.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2885	sora_w	762112	7588	100.4			D:nocall-atkH				
+2890	zexos1	285762	3684	77.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2890	alex_k	468818	4757	98.6			D:meUnderFire				
+2895	zero_7	614693	7668	80.2	1	1	SENT:defense_dispatch	alex_k	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:5693;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2895	talon5	442416	5651	78.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2900	ryan_m	395669	4899	80.8	1	0	SENT:defense_dispatch	alex_k	260	defense_dispatch	noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:5583;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2900	kaito9	831702	9022	92.2	1	1	SENT:defense_dispatch	alex_k	260	defense_dispatch	ryan_m=C:rear;noah88=ok:B:2028;riku_x=ok:B:4147;zexos1=ok:B:1793;sora_w=ok:B:1714;alex_k=ok:A:5583;leo_tx=C:small;zero_7=C:rear;talon5=ok:B:1920
+2905	noah88	599462	7747	77.4	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2905	riku_x	534339	7234	73.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2910	sora_w	796144	7588	104.9			D:nocall-atkH				
+2915	zexos1	295923	3684	80.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=C:dense;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2915	alex_k	650334	4343	149.7			D:nocall-atkH				
+2920	zero_7	439988	7668	57.4	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=C:dense;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2920	talon5	391194	5651	69.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=C:dense;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2925	ryan_m	308907	4899	63.1	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=C:dense;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2925	kaito9	851782	9022	94.4	1	1	SENT:offense_dispatch	sora_w	225	offense_dispatch	ryan_m=C:rear;noah88=ok:B:2060;riku_x=ok:B:3615;zexos1=ok:B:1761;sora_w=ok:B:4096;alex_k=C:dense;leo_tx=C:small;zero_7=C:rear;talon5=ok:B:2118
+2930	noah88	620933	7987	77.7	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=C:dense;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2930	riku_x	553825	7234	76.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=C:dense;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2935	sora_w	329915	8066	40.9			D:meAttacking				
+2940	zexos1	305976	3684	83.1			D:nocall-atkH				
+2940	alex_k	324328	4722	68.7			D:meAttacking				
+2945	zero_7	450432	7668	58.7	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2945	talon5	400242	5651	70.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2950	ryan_m	319591	4899	65.2	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2950	kaito9	882815	9022	97.9	1	1	SENT:offense_dispatch	sora_w	225	offense_dispatch	ryan_m=C:rear;noah88=ok:B:1951;riku_x=ok:B:3566;zexos1=ok:B:3211;sora_w=ok:B:5137;alex_k=ok:B:4401;leo_tx=C:small;zero_7=C:rear;talon5=ok:B:2074
+2955	noah88	689999	8254	83.6	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2955	riku_x	566972	7234	78.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+2960	sora_w	341933	8649	39.5			D:meAttacking				
+2965	zexos1	255913	3729	68.6			D:meAttacking				
+2965	alex_k	331829	5672	58.5			D:meAttacking				
+2970	zero_7	466565	7668	60.8	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+2970	talon5	414208	5651	73.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+2975	ryan_m	326918	4899	66.7	1	0	SENT:defense_dispatch	talon5	260	defense_dispatch	noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:A:6125
+2975	kaito9	904128	9022	100.2	1	1	SENT:defense_dispatch	talon5	260	defense_dispatch	ryan_m=C:rear;noah88=ok:B:1971;riku_x=ok:B:3532;zexos1=ok:B:4143;sora_w=ok:B:4669;alex_k=ok:B:4535;leo_tx=C:small;zero_7=C:rear;talon5=ok:A:6125
+2980	noah88	715136	8475	84.4	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2980	riku_x	587280	7234	81.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2985	sora_w	350472	9237	37.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2990	zexos1	264607	3964	66.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+2990	alex_k	343557	6110	56.2			D:meUnderFire				
+2995	zero_7	477640	7668	62.3	1	1	SENT:defense_dispatch	alex_k	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:6358;leo_tx=C:small;kaito9=C:rear;talon5=ok:A:5725
+2995	talon5	500654	5586	89.6			D:meUnderFire				
+3000	ryan_m	235778	4899	48.1	1	0	SENT:defense_dispatch	talon5	260	defense_dispatch	noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:A:5678
+3000	kaito9	945256	9022	104.8	1	1	SENT:defense_dispatch	talon5	260	defense_dispatch	ryan_m=C:rear;noah88=ok:B:1950;riku_x=ok:B:3463;zexos1=ok:B:4024;sora_w=ok:B:2982;alex_k=ok:B:4438;leo_tx=C:small;zero_7=C:rear;talon5=ok:A:5678
+3005	noah88	741011	8644	85.7	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+3005	riku_x	608454	7234	84.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+3010	sora_w	372696	9237	40.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3015	zexos1	274613	4002	68.6			D:meUnderFire				
+3015	alex_k	347914	6005	57.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3020	zero_7	502598	7668	65.5	1	1	SENT:defense_dispatch	zexos1	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=ok:A:5949;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3020	talon5	508031	5472	92.8			D:meUnderFire				
+3025	ryan_m	241183	4899	49.2	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3025	kaito9	965687	9022	107.0	1	1	SENT:offense_dispatch	alex_k	225	offense_dispatch	ryan_m=C:rear;noah88=ok:B:1839;riku_x=ok:B:3426;zexos1=ok:B:4006;sora_w=ok:B:2965;alex_k=ok:B:4413;leo_tx=C:small;zero_7=ok:B:2168;talon5=ok:B:3190
+3030	noah88	816812	8752	93.3	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3030	riku_x	630617	7234	87.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3035	sora_w	381769	9237	41.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3040	zexos1	403631	3928	102.8			D:meUnderFire				
+3040	alex_k	355702	5956	59.7			D:meUnderFire				
+3045	zero_7	351226	7668	45.8	1	1	SENT:defense_dispatch	alex_k	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:6601;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3045	talon5	514150	5451	94.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+3050	ryan_m	249524	4899	50.9	1	0	SENT:defense_dispatch	alex_k	260	defense_dispatch	noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:6533;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3050	kaito9	996381	9022	110.4	1	1	SENT:defense_dispatch	alex_k	260	defense_dispatch	ryan_m=C:rear;noah88=ok:B:1796;riku_x=ok:B:3370;zexos1=ok:B:4037;sora_w=ok:B:2938;alex_k=ok:A:6533;leo_tx=C:small;zero_7=ok:B:2514;talon5=ok:B:3132
+3055	noah88	837038	8810	95.0	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3055	riku_x	645587	7234	89.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3060	sora_w	395794	9237	42.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3065	zexos1	316806	4043	78.4			D:meAttacking				
+3065	alex_k	398373	5374	74.1			D:meUnderFire				
+3070	zero_7	248341	7668	32.4	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3070	talon5	532091	5451	97.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+3075	ryan_m	255244	4899	52.1	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3075	kaito9	1015200	9022	112.5	1	1	SENT:offense_dispatch	alex_k	225	offense_dispatch	ryan_m=C:rear;noah88=ok:B:1771;riku_x=ok:B:3832;zexos1=ok:B:4076;sora_w=ok:B:2919;alex_k=ok:B:4085;leo_tx=C:small;zero_7=ok:B:2765;talon5=ok:B:1592
+3080	noah88	867532	8865	97.9	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3080	riku_x	668709	7234	92.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3085	sora_w	405430	9237	43.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3090	zexos1	327763	4474	73.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3090	alex_k	405502	5339	76.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3095	zero_7	254235	7668	33.2	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3095	talon5	544399	5451	99.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+3100	ryan_m	268970	4899	54.9	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3100	kaito9	1051258	9022	116.5	1	1	SENT:offense_dispatch	zexos1	225	offense_dispatch	ryan_m=C:rear;noah88=ok:B:1703;riku_x=ok:B:3755;zexos1=ok:B:4058;sora_w=ok:B:2872;alex_k=ok:B:4021;leo_tx=C:small;zero_7=ok:B:2726;talon5=ok:B:1513
+3105	noah88	897385	8920	100.6	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:dense;talon5=B:dMe
+3105	riku_x	691816	7234	95.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:dense;talon5=B:dMe
+3110	sora_w	430036	9237	46.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:dense;talon5=B:dMe
+3115	zexos1	340008	5019	67.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:dense;talon5=B:dMe
+3115	alex_k	409369	5252	77.9			D:meUnderFire				
+3120	zero_7	271189	7668	35.4	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3120	talon5	442456	5578	79.3			D:meAttacking				
+3125	ryan_m	275137	4899	56.2	1	0	SENT:defense_dispatch	alex_k	260	defense_dispatch	noah88=B:dMe;riku_x=B:dMe;zexos1=ok:A:6016;sora_w=B:dMe;alex_k=ok:A:6390;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3125	kaito9	1068145	9022	118.4	1	1	SENT:defense_dispatch	alex_k	260	defense_dispatch	ryan_m=C:rear;noah88=ok:B:1670;riku_x=ok:B:1714;zexos1=ok:A:6016;sora_w=ok:B:2852;alex_k=ok:A:6390;leo_tx=C:small;zero_7=ok:B:2711;talon5=ok:B:3626
+3130	noah88	929762	8958	103.8	0	1	SENT:defense_dispatch	alex_k	155	defense_dispatch	ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:6340;leo_tx=C:small;zero_7=C:rear;kaito9=C:dense;talon5=B:dMe
+3130	riku_x	716941	7234	99.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:dense;talon5=B:dMe
+3135	sora_w	440717	9237	47.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:dense;talon5=B:dMe
+3140	zexos1	344152	4951	69.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:dense;talon5=B:dMe
+3140	alex_k	379010	4900	77.3			D:meUnderFire				
+3145	zero_7	277626	7668	36.2	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=A:dMe;alex_k=A:dMe;leo_tx=C:small;kaito9=C:rear;talon5=A:dMe
+3145	talon5	452694	5951	76.1			D:meUnderFire				
+3150	ryan_m	284653	4899	58.1	1	0	SENT:defense_dispatch	sora_w	260	defense_dispatch	noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=ok:A:6819;alex_k=ok:A:6135;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:A:6063
+3150	kaito9	1092032	9022	121.0	1	1	SENT:defense_dispatch	sora_w	260	defense_dispatch	ryan_m=C:rear;noah88=ok:B:1614;riku_x=ok:B:1649;zexos1=ok:B:2048;sora_w=ok:A:6819;alex_k=ok:A:6135;leo_tx=C:small;zero_7=ok:B:2688;talon5=ok:A:6063
+3155	noah88	950422	8975	105.9	0	1	SENT:defense_dispatch	sora_w	173	defense_dispatch	ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=ok:A:6752;alex_k=ok:A:6068;leo_tx=C:small;zero_7=C:rear;kaito9=C:dense;talon5=ok:A:6017
+3155	riku_x	734509	7234	101.5			D:nocall-atkH				
+3160	sora_w	430421	8900	48.4			D:meUnderFire				
+3165	zexos1	352043	4951	71.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=A:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:dense;talon5=A:dMe
+3165	alex_k	326515	4400	74.2			D:meUnderFire				
+3170	zero_7	287568	7668	37.5	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=A:dMe;alex_k=A:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3170	talon5	435623	5704	76.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=A:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:dense
+3175	ryan_m	291180	4899	59.4	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3175	kaito9	1107153	9022	122.7	1	1	SENT:offense_dispatch	riku_x	225	offense_dispatch	ryan_m=C:rear;noah88=ok:B:3989;riku_x=ok:B:4344;zexos1=ok:B:2019;sora_w=ok:B:2455;alex_k=ok:B:1946;leo_tx=C:small;zero_7=ok:B:2673;talon5=ok:B:1993
+3180	noah88	648977	9013	72.0			D:meAttacking				
+3180	riku_x	475535	8055	59.0			D:meAttacking				
+3185	sora_w	578056	8582	67.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:dense;talon5=B:dMe
+3190	zexos1	364220	4951	73.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:dense;talon5=B:dMe
+3190	alex_k	324052	4314	75.1	0	0	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:dense;talon5=B:dMe
+3195	zero_7	294394	7668	38.4	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3195	talon5	445699	5704	78.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+3200	ryan_m	306150	4899	62.5	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3200	kaito9	962454	9022	106.7	1	1	SENT:yield_opt_dispatch	zero_7	225	yield_opt_dispatch	ryan_m=C:rear;noah88=ok:B:2299;riku_x=ok:B:2554;zexos1=ok:B:1956;sora_w=ok:B:2393;alex_k=ok:B:1883;leo_tx=C:small;zero_7=ok:B:2630;talon5=ok:B:1927
+3205	noah88	674073	9416	71.6	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3205	riku_x	495803	8693	57.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3210	sora_w	607800	8582	70.8	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3215	zexos1	377578	4951	76.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3215	alex_k	336205	4314	77.9	0	0	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3220	zero_7	529945	7668	69.1	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3220	talon5	467088	5704	81.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+3225	ryan_m	313169	4899	63.9	1	0	SENT:defense_dispatch	alex_k	260	defense_dispatch	noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:6619;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=ok:A:5945
+3225	kaito9	705424	9022	78.2	1	1	SENT:defense_dispatch	alex_k	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:6619;leo_tx=C:small;zero_7=C:rear;talon5=ok:A:5945
+3230	noah88	699446	9416	74.3	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+3230	riku_x	514083	8693	59.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+3235	sora_w	622474	8582	72.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=B:dMe;talon5=A:dMe
+3240	zexos1	390638	4951	78.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=B:dMe;talon5=B:dMe
+3240	alex_k	319535	4089	78.1			D:meUnderFire				
+3245	zero_7	542525	7668	70.8	1	1	SENT:defense_dispatch	alex_k	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:6423;leo_tx=C:small;kaito9=B:dMe;talon5=B:dMe
+3245	talon5	445413	5462	81.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=B:dMe
+3250	ryan_m	324000	4899	66.1	1	0	SENT:defense_dispatch	alex_k	260	defense_dispatch	noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:6336;leo_tx=C:small;zero_7=C:rear;kaito9=B:dMe;talon5=B:dMe
+3250	kaito9	731124	9034	80.9			D:meAttacking				
+3255	noah88	716474	9416	76.1	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=B:dMe;talon5=B:dMe
+3255	riku_x	527040	8693	60.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=B:dMe;talon5=B:dMe
+3260	sora_w	645448	8582	75.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=B:dMe;talon5=B:dMe
+3265	zexos1	399595	4951	80.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=B:dMe;talon5=B:dMe
+3265	alex_k	272078	3648	74.6			D:meUnderFire				
+3270	zero_7	561956	7668	73.3	1	1	SENT:defense_dispatch	riku_x	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=ok:A:6649;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:6043;leo_tx=C:small;kaito9=B:dMe;talon5=B:dMe
+3270	talon5	460956	5462	84.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=B:dMe
+3275	ryan_m	331428	4899	67.7	1	0	SENT:defense_dispatch	riku_x	260	defense_dispatch	noah88=B:dMe;riku_x=ok:A:6649;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:5981;leo_tx=C:small;zero_7=C:rear;kaito9=B:dMe;talon5=B:dMe
+3275	kaito9	748775	9055	82.7			D:meAttacking				
+3280	noah88	742797	9416	78.9	0	1	no-cand				ryan_m=C:rear;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3280	riku_x	535405	8585	62.4			D:meUnderFire				
+3285	sora_w	661782	8582	77.1	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3290	zexos1	413416	4951	83.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+3290	alex_k	242498	3355	72.3	0	0	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=A:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+3295	zero_7	392707	7668	51.2	1	1	SENT:defense_dispatch	alex_k	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:6614;leo_tx=C:small;kaito9=C:rear;talon5=ok:A:5830
+3295	talon5	470927	5457	86.3			D:nocall-atkH				
+3300	ryan_m	238963	4899	48.8	1	0	SENT:defense_dispatch	alex_k	260	defense_dispatch	noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:6463;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3300	kaito9	917809	9055	101.4	1	1	SENT:defense_dispatch	alex_k	260	defense_dispatch	ryan_m=C:rear;noah88=ok:B:2080;riku_x=ok:B:3421;zexos1=ok:B:1775;sora_w=ok:B:2213;alex_k=ok:A:6463;leo_tx=C:small;zero_7=C:rear;talon5=ok:B:2014
+3305	noah88	770296	9416	81.8	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3305	riku_x	733726	8205	89.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3310	sora_w	694577	8582	80.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3315	zexos1	427902	4951	86.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3315	alex_k	235322	2722	86.5	0	0	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3320	zero_7	414622	7668	54.1	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3320	talon5	376716	5645	66.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+3325	ryan_m	166861	4899	34.1	1	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3325	kaito9	939132	9055	103.7	1	1	SENT:offense_dispatch	riku_x	225	offense_dispatch	ryan_m=C:rear;noah88=ok:B:2043;riku_x=ok:B:3398;zexos1=ok:B:1740;sora_w=ok:B:2179;alex_k=ok:B:1581;leo_tx=C:small;zero_7=C:rear;talon5=ok:B:2162
+3330	noah88	798964	9416	84.9	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+3330	riku_x	760457	8205	92.7	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+3335	sora_w	711345	8582	82.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+3340	zexos1	442702	4951	89.4	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+3340	alex_k	243172	2722	89.3	0	0	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+3345	zero_7	424464	7668	55.4	1	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3345	talon5	357922	5397	66.3	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+3350	ryan_m	172631	4899	35.2	1	0	SENT:defense_dispatch	alex_k	260	defense_dispatch	noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:6643;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3350	kaito9	970528	9055	107.2	1	1	SENT:defense_dispatch	alex_k	260	defense_dispatch	ryan_m=C:rear;noah88=ok:B:1988;riku_x=ok:B:3336;zexos1=ok:B:1686;sora_w=ok:B:2125;alex_k=ok:A:6643;leo_tx=C:small;zero_7=ok:B:2340;talon5=ok:B:2138
+3355	noah88	818415	9416	86.9	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3355	riku_x	779363	8205	95.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3360	sora_w	737261	8582	85.9	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3365	zexos1	452852	4951	91.5	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3365	alex_k	222565	2541	87.6			D:meUnderFire				
+3370	zero_7	439666	7668	57.3	1	1	SENT:defense_dispatch	alex_k	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:7304;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3370	talon5	370412	5397	68.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+3375	ryan_m	176588	4899	36.0	1	0	SENT:defense_dispatch	alex_k	260	defense_dispatch	noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:7280;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3375	kaito9	990427	9055	109.4	1	1	SENT:defense_dispatch	alex_k	260	defense_dispatch	ryan_m=C:rear;noah88=ok:B:1949;riku_x=ok:B:2294;zexos1=ok:B:1648;sora_w=ok:B:2088;alex_k=ok:A:7280;leo_tx=C:small;zero_7=ok:B:2316;talon5=ok:B:2110
+3380	noah88	849199	9416	90.2	0	1	no-cand				ryan_m=C:rear;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3380	riku_x	808058	8205	98.5			D:nocall-atkH				
+3385	sora_w	755061	8582	88.0	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3390	zexos1	468515	4951	94.6	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3390	alex_k	102242	1536	66.6			D:meUnderFire				
+3395	zero_7	450103	7668	58.7	1	1	SENT:defense_dispatch	alex_k	260	defense_dispatch	ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=ok:A:6821;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3395	talon5	378979	5397	70.2	0	1	no-cand				ryan_m=C:rear;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;alex_k=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+3400	ryan_m	187595	4899	38.3			D:nocall-neutral				
+3400	kaito9	1028078	9055	113.5	1	1	SENT:offense_dispatch	riku_x	225	offense_dispatch	ryan_m=C:rear;noah88=ok:B:1872;riku_x=ok:B:4290;zexos1=ok:B:1573;sora_w=ok:B:2013;leo_tx=C:small;zero_7=ok:B:2261;talon5=ok:B:2049
+3405	noah88	879289	9416	93.4			D:nocall-neutral				
+3405	riku_x	670956	8205	81.8			D:meAttacking				
+3410	sora_w	791254	8582	92.2	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3415	zexos1	455890	4951	92.1	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3420	zero_7	474074	7668	61.8	1	1	SENT:defense_dispatch	talon5	260	defense_dispatch	ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=ok:A:6094
+3420	talon5	397725	5397	73.7			D:meUnderFire				
+3425	ryan_m	180653	4993	36.2	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:dense;talon5=A:dMe
+3425	kaito9	1046044	9055	115.5	1	1	SENT:defense_dispatch	talon5	260	defense_dispatch	ryan_m=ok:B:2585;noah88=ok:B:2141;riku_x=ok:B:4345;zexos1=ok:B:1573;sora_w=ok:B:1973;leo_tx=C:small;zero_7=ok:B:2235;talon5=ok:A:6056
+3430	noah88	808498	9642	83.9	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:dense;talon5=A:dMe
+3430	riku_x	695400	8769	79.3	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:dense;talon5=A:dMe
+3435	sora_w	810357	8582	94.4	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:dense;talon5=B:dMe
+3440	zexos1	489722	4951	98.9	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=C:dense
+3445	zero_7	485328	7668	63.3	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3445	talon5	646866	5191	124.6			D:nocall-atkH				
+3450	ryan_m	195464	5081	38.5	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=C:dense
+3450	kaito9	737357	9055	81.4	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+3455	noah88	908550	9748	93.2	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3455	riku_x	712541	8974	79.4	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3460	sora_w	839880	8582	97.9	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3465	zexos1	500950	4951	101.2			D:nocall-atkH				
+3470	zero_7	502710	7668	65.6	1	1	SENT:defense_dispatch	talon5	260	defense_dispatch	ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=ok:A:6836
+3470	talon5	320290	5411	59.2			D:meUnderFire				
+3475	ryan_m	199984	5081	39.4	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+3475	kaito9	755159	9055	83.4	1	1	SENT:defense_dispatch	talon5	260	defense_dispatch	ryan_m=ok:B:2534;noah88=ok:B:1938;riku_x=ok:B:2163;zexos1=ok:B:3857;sora_w=ok:B:1870;leo_tx=C:small;zero_7=C:rear;talon5=ok:A:6849
+3480	noah88	941930	9748	96.6	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+3480	riku_x	738500	9096	81.2	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+3485	sora_w	860157	8582	100.2			D:nocall-atkH				
+3490	zexos1	316558	5019	63.1			D:meUnderFire				
+3495	zero_7	514642	7668	67.1	1	1	SENT:defense_dispatch	talon5	260	defense_dispatch	ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=ok:A:6821
+3495	talon5	308653	5687	54.3			D:meUnderFire				
+3500	ryan_m	212043	5081	41.7	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=A:dMe
+3500	kaito9	791725	9055	87.4	1	1	SENT:defense_dispatch	talon5	260	defense_dispatch	ryan_m=ok:B:2492;noah88=ok:B:1857;riku_x=ok:B:2118;zexos1=ok:B:2173;sora_w=ok:B:3897;leo_tx=C:small;zero_7=C:rear;talon5=ok:A:6778
+3505	noah88	974610	9748	100.0	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3505	riku_x	765675	9223	83.0	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3510	sora_w	644405	8895	72.4			D:meAttacking				
+3515	zexos1	317385	4951	64.1	0	1	no-cand				ryan_m=A:dMe;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3520	zero_7	540924	7668	70.5	1	1	SENT:defense_dispatch	ryan_m	260	defense_dispatch	ryan_m=ok:A:7995;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3520	talon5	323384	5853	55.3			D:meAttacking				
+3525	ryan_m	200399	4836	41.4			D:meUnderFire				
+3525	kaito9	810839	9055	89.5	1	1	SENT:defense_dispatch	ryan_m	260	defense_dispatch	ryan_m=ok:A:7958;noah88=ok:B:3652;riku_x=ok:B:2102;zexos1=ok:A:6606;sora_w=ok:B:2458;leo_tx=C:small;zero_7=C:rear;talon5=ok:B:1826
+3530	noah88	701667	9775	71.8			D:meAttacking				
+3530	riku_x	794017	9303	85.4	0	1	no-cand				ryan_m=A:dMe;noah88=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3535	sora_w	660160	9323	70.8	0	1	no-cand				ryan_m=A:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3540	zexos1	288429	4567	63.2			D:meUnderFire				
+3545	zero_7	378010	7668	49.3	1	1	SENT:defense_dispatch	zexos1	260	defense_dispatch	ryan_m=ok:A:5292;noah88=B:dMe;riku_x=B:dMe;zexos1=ok:A:6227;sora_w=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3545	talon5	489744	5853	83.7	0	1	no-cand				ryan_m=A:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear
+3550	ryan_m	461301	4130	111.7			D:meUnderFire				
+3550	kaito9	573659	9055	63.4	1	1	SENT:defense_dispatch	zexos1	260	defense_dispatch	ryan_m=ok:A:5197;noah88=B:dMe;riku_x=B:dMe;zexos1=ok:A:6128;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;talon5=B:dMe
+3555	noah88	718749	9978	72.0			D:meAttacking				
+3555	riku_x	847378	9314	91.0	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3560	sora_w	684413	9323	73.4	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;leo_tx=C:small;zero_7=C:rear;kaito9=C:rear;talon5=B:dMe
+3565	zexos1	511047	4281	119.4			D:nocall-atkH				
+3570	zero_7	266778	7659	34.8			D:meUnderFire				
+3570	talon5	506834	5853	86.6	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=C:dense;sora_w=B:dMe;leo_tx=C:small;zero_7=A:dMe;kaito9=C:rear
+3575	ryan_m	356273	4311	82.6	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=C:dense;sora_w=B:dMe;leo_tx=C:small;zero_7=A:dMe;kaito9=C:rear;talon5=B:dMe
+3575	kaito9	401044	9055	44.3	1	1	SENT:defense_dispatch	zero_7	260	defense_dispatch	ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=ok:A:6874;talon5=B:dMe
+3580	noah88	745229	10185	73.2			D:meAttacking				
+3580	riku_x	878510	9314	94.3	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=A:dMe;kaito9=C:rear;talon5=B:dMe
+3585	sora_w	701075	9323	75.2	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3590	zexos1	257668	4622	55.7			D:meAttacking				
+3595	zero_7	371925	7572	49.1	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3595	talon5	518557	5853	88.6	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear
+3600	ryan_m	372924	4311	86.5	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3600	kaito9	292788	9055	32.3	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;talon5=B:dMe
+3605	noah88	773895	10450	74.1			D:meAttacking				
+3605	riku_x	909211	9314	97.6	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3610	sora_w	736480	9323	79.0	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3615	zexos1	230079	4521	50.9			D:meUnderFire				
+3620	zero_7	392997	7572	51.9	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3620	talon5	542641	5853	92.7	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear
+3625	ryan_m	381474	4311	88.5	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3625	kaito9	299856	9055	33.1	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;talon5=B:dMe
+3630	noah88	802582	10655	75.3	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3630	riku_x	942615	9314	101.2			D:nocall-atkH				
+3635	sora_w	754410	9323	80.9	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3640	zexos1	210970	4193	50.3			D:meUnderFire				
+3645	zero_7	402326	7572	53.1	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=A:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3645	talon5	555193	5853	94.9	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=A:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear
+3650	ryan_m	395280	4311	91.7	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=A:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3650	kaito9	310780	9055	34.3	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=A:dMe;leo_tx=C:small;zero_7=B:dMe;talon5=B:dMe
+3655	noah88	822283	10655	77.2	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=C:doomedA;sora_w=A:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3655	riku_x	669571	9343	71.7			D:meAttacking				
+3660	sora_w	736676	8983	82.0	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=C:doomedA;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3665	zexos1	186413	3829	48.7			D:meUnderFire				
+3670	zero_7	414447	7546	54.9			D:meUnderFire				
+3670	talon5	574567	5853	98.2	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=A:dMe;kaito9=C:rear
+3675	ryan_m	404343	4311	93.8	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=A:dMe;kaito9=C:rear;talon5=B:dMe
+3675	kaito9	318283	9055	35.1	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=A:dMe;talon5=B:dMe
+3680	noah88	852746	10655	80.0	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=A:dMe;kaito9=C:rear;talon5=B:dMe
+3680	riku_x	609928	9564	63.8			D:meAttacking				
+3685	sora_w	754462	8983	84.0	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;leo_tx=C:small;zero_7=A:dMe;kaito9=C:rear;talon5=B:dMe
+3690	zexos1	92827	2436	38.1			D:meUnderFire				
+3695	zero_7	379888	7043	53.9			D:meUnderFire				
+3695	talon5	587857	5853	100.4	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=A:dMe;kaito9=C:rear
+3700	ryan_m	422640	4311	98.0	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=A:dMe;kaito9=C:rear;talon5=B:dMe
+3700	kaito9	338933	9055	37.4	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=A:dMe;talon5=B:dMe
+3705	noah88	884334	10655	83.0	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=A:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=A:dMe;kaito9=C:rear;talon5=B:dMe
+3705	riku_x	634487	9754	65.0			D:meAttacking				
+3710	sora_w	791039	8983	88.1	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=A:dMe;leo_tx=C:small;zero_7=A:dMe;kaito9=C:rear;talon5=A:dMe
+3715	zexos1	90929	2390	38.0	0	0	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=A:dMe;kaito9=C:rear;talon5=A:dMe
+3720	zero_7	336495	6317	53.3			D:meUnderFire				
+3720	talon5	610997	5838	104.7			D:nocall-atkH				
+3725	ryan_m	432331	4311	100.3	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=A:dMe
+3725	kaito9	347116	9055	38.3	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;talon5=A:dMe
+3730	noah88	917095	10655	86.1	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3730	riku_x	657798	9920	66.3			D:meAttacking				
+3735	sora_w	810137	8983	90.2	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3740	zexos1	93962	2390	39.3	0	0	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;sora_w=A:dMe;leo_tx=C:small;zero_7=A:dMe;kaito9=C:rear;talon5=B:dMe
+3745	zero_7	309970	5963	52.0			D:meUnderFire				
+3745	talon5	463973	5853	79.3			D:meAttacking				
+3750	ryan_m	447258	4311	103.7	0	0	SENT:defense_dispatch	zero_7	155	defense_dispatch	noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=ok:A:6570;kaito9=C:rear;talon5=B:dMe
+3750	kaito9	359761	9055	39.7	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=A:dMe;talon5=B:dMe
+3755	noah88	939608	10655	88.2	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=A:dMe;kaito9=C:rear;talon5=B:dMe
+3755	riku_x	803015	9994	80.3	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=A:dMe;kaito9=C:rear;talon5=B:dMe
+3760	sora_w	776931	8582	90.5	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3765	zexos1	96039	2390	40.2	0	0	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3770	zero_7	354928	5577	63.6	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3770	talon5	567638	5853	97.0	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear
+3775	ryan_m	359220	4311	83.3	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3775	kaito9	368446	9055	40.7	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;talon5=B:dMe
+3780	noah88	974418	10655	91.5	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3780	riku_x	832518	9994	83.3	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3785	sora_w	795689	8582	92.7	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3790	zexos1	99242	2390	41.5	0	0	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=A:dMe
+3795	zero_7	363137	5577	65.1	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=A:dMe
+3795	talon5	578866	5841	99.1			D:meUnderFire				
+3800	ryan_m	375955	4311	87.2	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=A:dMe
+3800	kaito9	390924	9055	43.2	1	1	SENT:defense_dispatch	talon5	260	defense_dispatch	ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;talon5=ok:A:5508
+3805	noah88	1008992	10655	94.7	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=A:dMe
+3805	riku_x	862780	9994	86.3	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=A:dMe
+3810	sora_w	833362	8582	97.1	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=C:dense
+3815	zexos1	103852	2390	43.5	0	0	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=C:dense
+3820	zero_7	381515	5577	68.4	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3820	talon5	547875	5765	95.0	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear
+3825	ryan_m	384574	4311	89.2	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=A:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3825	kaito9	273295	9055	30.2	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=A:dMe;leo_tx=C:small;zero_7=B:dMe;talon5=B:dMe
+3830	noah88	1046371	10655	98.2	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=A:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3830	riku_x	894477	9994	89.5	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zexos1=B:dMe;sora_w=A:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3835	sora_w	830313	8436	98.4			D:meUnderFire				
+3840	zexos1	107682	2390	45.1	0	0	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;sora_w=A:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3845	zero_7	390339	5577	70.0	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=A:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3845	talon5	348147	5851	59.5			D:meAttacking				
+3850	ryan_m	397876	4311	92.3	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=A:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3850	kaito9	283250	9055	31.3	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=A:dMe;leo_tx=C:small;zero_7=B:dMe;talon5=B:dMe
+3855	noah88	1072057	10655	100.6			D:nocall-atkH				
+3855	riku_x	916254	9994	91.7	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zexos1=B:dMe;sora_w=A:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3860	sora_w	480296	7862	61.1			D:meUnderFire				
+3865	zexos1	110415	2390	46.2	0	0	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;sora_w=A:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3870	zero_7	403959	5577	72.4	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=A:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3870	talon5	589348	5853	100.7	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=A:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear
+3875	ryan_m	406998	4311	94.4	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3875	kaito9	290088	9055	32.0	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;talon5=B:dMe
+3880	noah88	784450	10845	72.3			D:meAttacking				
+3880	riku_x	949916	9994	95.0	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3885	sora_w	468944	7670	61.1	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3890	zexos1	114097	2390	47.7	0	0	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3895	zero_7	413302	5577	74.1	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;kaito9=C:rear;talon5=B:dMe
+3895	talon5	602682	5853	103.0	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear
+3900	ryan_m	425386	4311	98.7	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3900	kaito9	309711	9055	34.2	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;talon5=B:dMe
+3905	noah88	815072	11465	71.1	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3905	riku_x	983036	9994	98.4	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3910	sora_w	493500	7670	64.3	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3915	zexos1	119037	2390	49.8	0	0	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;leo_tx=C:small;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3920	zero_7	433429	5577	77.7	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;kaito9=C:rear;talon5=B:dMe
+3920	talon5	627778	5853	107.3	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear
+3925	ryan_m	435139	4311	100.9	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3925	kaito9	317188	9055	35.0	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;talon5=B:dMe
+3930	noah88	845519	11658	72.5	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3930	riku_x	1019051	9994	102.0	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3935	sora_w	505215	7670	65.9	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3940	zexos1	123007	2390	51.5	0	0	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3945	zero_7	444057	5577	79.6	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=A:dMe;kaito9=C:rear;talon5=B:dMe
+3945	talon5	640079	5853	109.4	0	1	SENT:defense_dispatch	sora_w	190	defense_dispatch	ryan_m=B:allyDense;noah88=ok:B:2551;riku_x=B:allyDense;zexos1=ok:B:2124;sora_w=ok:A:6197;zero_7=ok:B:1845;kaito9=C:rear
+3950	ryan_m	449611	4311	104.3	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3950	kaito9	328743	9055	36.3	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;talon5=B:dMe
+3955	noah88	866445	11658	74.3	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3955	riku_x	1042726	9994	104.3	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3960	sora_w	645243	7670	84.1			D:nocall-neutral				
+3965	zexos1	125727	2390	52.6	0	0	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3970	zero_7	459907	5577	82.5	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;kaito9=C:rear;talon5=B:dMe
+3970	talon5	496427	5853	84.8	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear
+3975	ryan_m	459517	4311	106.6	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3975	kaito9	336679	9055	37.2	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;talon5=B:dMe
+3980	noah88	898811	11658	77.1	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3980	riku_x	1076875	9994	107.8	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3985	sora_w	585420	7720	75.8	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3990	zexos1	129920	2390	54.4	0	0	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+3995	zero_7	470544	5577	84.4	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;kaito9=C:rear;talon5=B:dMe
+3995	talon5	507909	5853	86.8	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear
+4000	ryan_m	477329	4311	110.7	0	0	SENT:yield_opt_dispatch	noah88	154	yield_opt_dispatch	noah88=ok:B:2433;riku_x=B:allyDense;zexos1=ok:B:2043;sora_w=ok:B:2189;zero_7=ok:B:1724;kaito9=C:rear;talon5=ok:B:1700
+4000	kaito9	357999	9055	39.5	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;talon5=B:dMe
+4005	noah88	932715	11658	80.0	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+4005	riku_x	1108839	9994	111.0	0	1	SENT:yield_opt_dispatch	noah88	156	yield_opt_dispatch	ryan_m=B:allyDense;noah88=ok:B:2433;zexos1=ok:B:2043;sora_w=ok:B:2190;zero_7=ok:B:1724;kaito9=C:rear;talon5=ok:B:1700
+4010	sora_w	673785	7776	86.6	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+4015	zexos1	135210	2390	56.6	0	0	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+4020	zero_7	492670	5577	88.3	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;kaito9=C:rear;talon5=B:dMe
+4020	talon5	531621	5853	90.8	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear
+4025	ryan_m	382937	4311	88.8	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=A:dMe
+4025	kaito9	366641	9055	40.5	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;talon5=A:dMe
+4030	noah88	1042263	11658	89.4	0	1	no-cand				ryan_m=B:dMe;riku_x=B:dMe;zexos1=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=A:dMe
+4030	riku_x	1139837	9994	114.1			D:nocall-atkH				
+4035	sora_w	689779	7776	88.7	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=C:doomedA;zero_7=B:dMe;kaito9=C:rear;talon5=A:dMe
+4040	zexos1	133829	2327	57.5			D:meUnderFire				
+4045	zero_7	504065	5577	90.4	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=C:doomedA;sora_w=B:dMe;kaito9=C:rear;talon5=A:dMe
+4045	talon5	535763	5798	92.4			D:meUnderFire				
+4050	ryan_m	396182	4311	91.9	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=C:doomedA;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=A:dMe
+4050	kaito9	380606	9055	42.0	1	1	SENT:defense_dispatch	talon5	244	defense_dispatch	ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=C:doomedA;sora_w=B:dMe;zero_7=B:dMe;talon5=ok:A:5772
+4055	noah88	1244313	11658	106.7			D:nocall-atkH				
+4055	riku_x	329665	10083	32.7			D:meAttacking				
+4060	sora_w	714485	7776	91.9	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=C:doomedA;zero_7=B:dMe;kaito9=C:rear;talon5=A:dMe
+4065	zexos1	70621	1546	45.7			D:meUnderFire				
+4070	zero_7	522441	5577	93.7	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=C:doomedA;sora_w=B:dMe;kaito9=C:rear;talon5=A:dMe
+4070	talon5	528957	5630	94.0			D:nocall-atkH				
+4075	ryan_m	405265	4311	94.0	0	0	no-cand				noah88=B:dMe;riku_x=B:dMe;zexos1=C:doomedA;sora_w=B:dMe;zero_7=B:dMe;kaito9=C:rear;talon5=B:dMe
+4075	kaito9	272172	9055	30.1	1	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zexos1=C:doomedA;sora_w=B:dMe;zero_7=B:dMe;talon5=B:dMe
+4080	noah88	945270	12159	77.7			D:meAttacking				
+4080	riku_x	342235	11135	30.7			D:meAttacking				
+4085	sora_w	731445	7776	94.1			D:nocall-neutral				
+4095	zero_7	534526	5577	95.8	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=A:dMe;sora_w=B:dMe;kaito9=C:rear;talon5=B:dMe
+4095	talon5	607936	5507	110.4	0	1	SENT:defense_dispatch	riku_x	190	defense_dispatch	ryan_m=B:allyDense;noah88=ok:B:2585;riku_x=ok:A:7770;sora_w=B:gap;zero_7=B:gap;kaito9=C:rear
+4100	ryan_m	423593	4311	98.3			D:nocall-neutral				
+4100	kaito9	291142	9055	32.2			D:nocall-neutral				
+4105	noah88	495123	12649	39.1			D:meAttacking				
+4105	riku_x	335824	10705	31.4			D:meUnderFire				
+4110	sora_w	765511	7776	98.4			D:meUnderFire				
+4120	zero_7	558885	5577	100.2	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=A:dMe;sora_w=A:dMe;kaito9=C:rear;talon5=A:dMe
+4120	talon5	559466	5113	109.4			D:meUnderFire				
+4125	ryan_m	433304	4311	100.5			D:nocall-neutral				
+4125	kaito9	280700	9080	30.9	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=A:dMe;sora_w=A:dMe;zero_7=B:dMe;talon5=A:dMe
+4130	noah88	513820	13412	38.3			D:meAttacking				
+4130	riku_x	287561	9501	30.3			D:meUnderFire				
+4135	sora_w	762984	7647	99.8			D:meUnderFire				
+4145	zero_7	571643	5577	102.5	0	1	SENT:defense_dispatch	riku_x	144	defense_dispatch	ryan_m=B:dMe;noah88=B:dMe;riku_x=ok:A:7785;sora_w=A:gap;kaito9=B:dMe;talon5=B:dMe
+4145	talon5	376886	4920	76.6			D:meAttacking				
+4150	ryan_m	448455	4311	104.0	0	0	SENT:defense_dispatch	riku_x	157	defense_dispatch	noah88=B:dMe;riku_x=ok:A:7750;sora_w=A:gap;zero_7=B:dMe;kaito9=B:dMe;talon5=B:dMe
+4150	kaito9	291786	9168	31.8	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=A:dMe;sora_w=A:dMe;zero_7=B:dMe;talon5=B:dMe
+4155	noah88	526775	14106	37.3	0	1	no-cand				ryan_m=B:dMe;riku_x=A:dMe;sora_w=B:dMe;zero_7=A:dMe;kaito9=B:dMe;talon5=B:dMe
+4155	riku_x	254937	8704	29.3			D:meUnderFire				
+4160	sora_w	668445	7369	90.7			D:nocall-neutral				
+4170	zero_7	484079	4927	98.3			D:meUnderFire				
+4170	talon5	389960	5093	76.6			D:meAttacking				
+4175	ryan_m	457830	4311	106.2	0	0	SENT:defense_dispatch	riku_x	175	defense_dispatch	noah88=B:dMe;riku_x=ok:A:7572;sora_w=B:dMe;zero_7=A:gap;kaito9=B:dMe;talon5=B:dMe
+4175	kaito9	298889	9168	32.6	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=A:dMe;sora_w=B:dMe;zero_7=A:dMe;talon5=B:dMe
+4180	noah88	546775	14106	38.8	0	1	no-cand				ryan_m=B:dMe;riku_x=A:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=B:dMe;talon5=A:dMe
+4180	riku_x	245999	8324	29.6			D:meUnderFire				
+4185	sora_w	614181	7767	79.1	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=A:dMe;zero_7=B:dMe;kaito9=B:dMe;talon5=A:dMe
+4195	zero_7	427891	4604	92.9	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=A:dMe;sora_w=B:dMe;kaito9=B:dMe;talon5=A:dMe
+4195	talon5	387795	5068	76.5			D:meUnderFire				
+4200	ryan_m	475732	4311	110.4	0	0	SENT:defense_dispatch	riku_x	190	defense_dispatch	noah88=ok:B:3314;riku_x=ok:A:7932;sora_w=ok:B:2120;zero_7=B:gap;kaito9=ok:B:2908;talon5=ok:A:6323
+4200	kaito9	319037	9168	34.8	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=A:dMe;sora_w=B:dMe;zero_7=B:dMe;talon5=A:dMe
+4205	noah88	574635	14106	40.7	0	1	no-cand				ryan_m=B:dMe;riku_x=A:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=B:dMe;talon5=A:dMe
+4205	riku_x	268622	7293	36.8			D:meUnderFire				
+4210	sora_w	560123	7977	70.2	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=A:dMe;zero_7=B:dMe;kaito9=B:dMe;talon5=A:dMe
+4220	zero_7	356086	4604	77.3	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=A:dMe;sora_w=B:dMe;kaito9=B:dMe;talon5=A:dMe
+4220	talon5	308355	4267	72.3			D:meUnderFire				
+4225	ryan_m	484333	4311	112.3			D:nocall-atkH				
+4225	kaito9	326804	9168	35.6	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=A:dMe;sora_w=B:dMe;zero_7=B:dMe;talon5=A:dMe
+4230	noah88	596452	14106	42.3	0	1	no-cand				ryan_m=B:dMe;riku_x=A:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=B:dMe;talon5=A:dMe
+4230	riku_x	207910	6109	34.0			D:meUnderFire				
+4235	sora_w	573607	7977	71.9	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;riku_x=B:dMe;zero_7=B:dMe;kaito9=B:dMe;talon5=A:dMe
+4245	zero_7	316230	4604	68.7			D:meAttacking				
+4245	talon5	297817	4146	71.8			D:meUnderFire				
+4250	ryan_m	496640	4311	115.2			D:nocall-atkH				
+4250	kaito9	338810	9168	37.0	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=A:dMe;sora_w=B:dMe;zero_7=B:dMe;talon5=A:dMe
+4255	noah88	611455	14106	43.3	0	1	no-cand				ryan_m=C:dense;riku_x=A:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=B:dMe;talon5=A:dMe
+4255	riku_x	199869	5914	33.8			D:meUnderFire				
+4260	sora_w	594766	7977	74.6	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=A:dMe;zero_7=B:dMe;kaito9=B:dMe;talon5=A:dMe
+4270	zero_7	327244	4711	69.5	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=A:dMe;sora_w=B:dMe;kaito9=B:dMe;talon5=A:dMe
+4270	talon5	288074	3976	72.5			D:meUnderFire				
+4275	ryan_m	504517	4311	117.0			D:nocall-atkH				
+4275	kaito9	347411	9168	37.9	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=A:dMe;sora_w=B:dMe;zero_7=B:dMe;talon5=A:dMe
+4280	noah88	634671	14106	45.0	0	1	no-cand				ryan_m=C:dense;riku_x=A:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=B:dMe;talon5=A:dMe
+4280	riku_x	162312	5085	31.9			D:meUnderFire				
+4285	sora_w	608885	7977	76.3	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=C:doomedA;zero_7=B:dMe;kaito9=B:dMe;talon5=A:dMe
+4295	zero_7	334747	4711	71.1	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=C:doomedA;sora_w=B:dMe;kaito9=B:dMe;talon5=A:dMe
+4295	talon5	268419	3752	71.5			D:meUnderFire				
+4300	ryan_m	520110	4311	120.6			D:nocall-atkH				
+4300	kaito9	369342	9168	40.3	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=C:doomedA;sora_w=B:dMe;zero_7=B:dMe;talon5=A:dMe
+4305	noah88	664742	14106	47.1	0	1	no-cand				ryan_m=C:dense;riku_x=C:doomedA;sora_w=B:dMe;zero_7=B:dMe;kaito9=B:dMe;talon5=A:dMe
+4305	riku_x	110180	3858	28.6			D:meUnderFire				
+4310	sora_w	638764	7977	80.1	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=C:doomedA;zero_7=B:dMe;kaito9=B:dMe;talon5=A:dMe
+4320	zero_7	351144	4711	74.5	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;riku_x=C:doomedA;sora_w=B:dMe;kaito9=B:dMe;talon5=C:doomedA
+4320	talon5	97887	3500	28.0			D:meUnderFire				
+4325	ryan_m	527049	4311	122.3			D:nocall-atkH				
+4325	kaito9	378334	9168	41.3	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;sora_w=B:dMe;zero_7=B:dMe;talon5=A:dMe
+4330	noah88	689982	14106	48.9	0	1	no-cand				ryan_m=C:dense;sora_w=B:dMe;zero_7=B:dMe;kaito9=B:dMe;talon5=A:dMe
+4335	sora_w	653927	7977	82.0			D:nocall-neutral				
+4345	zero_7	359195	4711	76.2	0	1	no-cand				ryan_m=C:dense;noah88=B:dMe;sora_w=B:dMe;kaito9=B:dMe;talon5=C:doomedA
+4345	talon5	76855	3081	24.9			D:meUnderFire				
+4350	ryan_m	395037	4311	91.6			D:meAttacking				
+4350	kaito9	392233	9168	42.8	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;sora_w=B:dMe;zero_7=B:dMe;talon5=C:doomedA
+4355	noah88	707944	14106	50.2	0	1	no-cand				ryan_m=B:dMe;sora_w=B:dMe;zero_7=A:dMe;kaito9=B:dMe;talon5=C:doomedA
+4360	sora_w	677349	7977	84.9	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zero_7=A:dMe;kaito9=B:dMe;talon5=C:doomedA
+4370	zero_7	307318	4187	73.4			D:meUnderFire				
+4370	talon5	47453	2237	21.2			D:meUnderFire				
+4375	ryan_m	404094	4702	85.9	0	0	no-cand				noah88=B:dMe;sora_w=B:dMe;zero_7=A:dMe;kaito9=B:dMe;talon5=C:doomedA
+4375	kaito9	401782	9168	43.8	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;sora_w=B:dMe;zero_7=A:dMe;talon5=C:doomedA
+4380	noah88	734823	14106	52.1	0	1	no-cand				ryan_m=B:dMe;sora_w=B:dMe;zero_7=A:dMe;kaito9=B:dMe;talon5=C:doomedA
+4385	sora_w	693428	7977	86.9	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zero_7=A:dMe;kaito9=B:dMe;talon5=C:doomedA
+4395	zero_7	197685	3213	61.5	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;sora_w=B:dMe;kaito9=A:dMe;talon5=C:doomedA
+4395	talon5	22172	1378	16.1			D:bal<min				
+4400	ryan_m	422790	4702	89.9	0	0	no-cand				noah88=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=A:dMe
+4400	kaito9	422617	9126	46.3			D:meUnderFire				
+4405	noah88	767414	14106	54.4	0	1	no-cand				ryan_m=B:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=A:dMe
+4410	sora_w	726335	7977	91.1	0	1	no-cand				ryan_m=B:dMe;noah88=B:dMe;zero_7=B:dMe;kaito9=A:dMe
+4420	zero_7	207686	3213	64.6	0	1	no-cand				ryan_m=B:dMe;noah88=A:dMe;sora_w=B:dMe;kaito9=A:dMe
+4425	ryan_m	432483	4702	92.0	0	0	no-cand				noah88=A:dMe;sora_w=B:dMe;zero_7=B:dMe;kaito9=A:dMe
+4425	kaito9	354623	8960	39.6			D:meUnderFire				
+4430	noah88	747812	13561	55.1			D:meUnderFire				
+4435	sora_w	743576	7977	93.2	0	1	no-cand				ryan_m=B:dMe;noah88=A:dMe;zero_7=B:dMe;kaito9=A:dMe
+4445	zero_7	212364	3213	66.1	0	1	no-cand				ryan_m=B:dMe;noah88=A:dMe;sora_w=B:dMe;kaito9=A:dMe
+4450	ryan_m	81348	4702	17.3			D:meAttacking				
+4450	kaito9	354762	8764	40.5			D:meUnderFire				
+4455	noah88	691374	12715	54.4			D:meUnderFire				
+4460	sora_w	770209	7977	96.6	0	1	no-cand				ryan_m=B:dMe;noah88=A:dMe;zero_7=A:dMe;kaito9=A:dMe
+4470	zero_7	159148	2633	60.4			D:meUnderFire				
+4475	ryan_m	83221	5354	15.5			D:meAttacking				
+4475	kaito9	344477	8468	40.7			D:meUnderFire				
+4480	noah88	680627	12327	55.2	0	1	no-cand				ryan_m=B:dMe;sora_w=B:dMe;zero_7=C:doomedA;kaito9=A:dMe
+4485	sora_w	788492	7977	98.8	0	1	no-cand				ryan_m=B:dMe;noah88=A:dMe;zero_7=C:doomedA;kaito9=A:dMe
+4495	zero_7	79613	1693	47.0			D:meUnderFire				
+4500	ryan_m	91984	5837	15.8	0	0	no-cand				noah88=A:dMe;sora_w=B:dMe;kaito9=A:dMe
+4500	kaito9	327970	7911	41.5			D:meUnderFire				
+4505	noah88	465611	9475	49.1			D:meUnderFire				
+4510	sora_w	667356	8232	81.1			D:meAttacking				
+4525	ryan_m	94110	5837	16.1	0	0	no-cand				noah88=A:dMe;sora_w=B:dMe;kaito9=A:dMe
+4525	kaito9	282786	7108	39.8			D:meUnderFire				
+4530	noah88	354870	7837	45.3			D:meUnderFire				
+4535	sora_w	595716	8489	70.2	0	1	no-cand				ryan_m=B:dMe;noah88=A:dMe;kaito9=A:dMe
+4550	ryan_m	97393	5837	16.7	0	0	no-cand				noah88=A:dMe;sora_w=B:dMe;kaito9=A:dMe
+4550	kaito9	231442	6139	37.7			D:meUnderFire				
+4555	noah88	324233	7300	44.4			D:meUnderFire				
+4560	sora_w	617419	8489	72.7	0	1	no-cand				ryan_m=C:doomedA;noah88=C:doomedA;kaito9=A:dMe
+4575	ryan_m	59719	4245	14.1			D:meUnderFire				
+4575	kaito9	198234	5495	36.1			D:meUnderFire				
+4580	noah88	240409	5928	40.6			D:meUnderFire				
+4585	sora_w	632325	8489	74.5	0	1	no-cand				ryan_m=C:doomedA;noah88=C:doomedA;kaito9=B:dMe
+4600	ryan_m	23086	2175	10.6			D:bal<min				
+4600	kaito9	203828	5394	37.8	0	1	no-cand				ryan_m=C:doomedA;noah88=C:doomedA;sora_w=B:dMe
+4605	noah88	190755	4978	38.3			D:meUnderFire				
+4610	sora_w	663951	8489	78.2	0	1	no-cand				noah88=C:doomedA;kaito9=B:dMe
+4625	kaito9	204469	5328	38.4			D:meUnderFire				
+4630	noah88	170940	4551	37.6			D:nocall-neutral				
+4635	sora_w	679981	8489	80.1	0	1	no-cand				noah88=C:rear;kaito9=C:doomedA
+4650	kaito9	137582	4077	33.7			D:meUnderFire				
+4655	noah88	145889	4557	32.0	0	1	no-cand				sora_w=B:dMe;kaito9=C:doomedA
+4660	sora_w	704753	8489	83.0	0	1	no-cand				noah88=C:rear;kaito9=C:doomedA
+4675	kaito9	84688	2974	28.5			D:meUnderFire				
+4680	noah88	174355	4561	38.2	1	1	no-cand				sora_w=B:dMe;kaito9=A:dMe
+4685	sora_w	721768	8489	85.0	0	1	no-cand				noah88=C:rear;kaito9=C:doomedA
+4700	kaito9	65367	2423	27.0			D:meUnderFire				
+4705	noah88	182913	4561	40.1	1	1	no-cand				sora_w=B:dMe;kaito9=A:dMe
+4710	sora_w	756655	8489	89.1	0	1	no-cand				noah88=C:rear;kaito9=C:doomedA
+4725	kaito9	60698	2282	26.6			D:meUnderFire				
+4730	noah88	189239	4561	41.5	1	1	no-cand				sora_w=B:dMe;kaito9=A:dMe
+4735	sora_w	774922	8489	91.3	0	1	no-cand				noah88=C:rear;kaito9=C:doomedA
+4750	kaito9	59504	2208	26.9			D:meUnderFire				
+4755	noah88	193577	4561	42.4	1	1	SENT:defense_dispatch	kaito9	251	defense_dispatch	sora_w=B:dMe;kaito9=ok:A:8898
+4760	sora_w	803154	8489	94.6	0	1	no-cand				noah88=C:rear;kaito9=C:doomedA
+4775	kaito9	107048	2161	49.5			D:meUnderFire				
+4780	noah88	138470	4561	30.4	1	1	no-cand				sora_w=B:dMe;kaito9=A:dMe
+4785	sora_w	822544	8489	96.9	0	1	no-cand				noah88=C:rear;kaito9=A:dMe
+4800	kaito9	106951	2090	51.2			D:meUnderFire				
+4805	noah88	146205	4561	32.1	1	1	no-cand				sora_w=B:dMe;kaito9=A:dMe
+4810	sora_w	772805	8489	91.0			D:meAttacking				
+4825	kaito9	99656	1973	50.5			D:meUnderFire				
+4830	noah88	149620	4530	33.0			D:meUnderFire				
+4835	sora_w	710485	8746	81.2	0	1	no-cand				noah88=A:dMe
+4855	noah88	135009	4189	32.2			D:meUnderFire				
+4860	sora_w	696725	8449	82.5			D:meUnderFire				
+4880	noah88	105486	3518	30.0			D:meUnderFire				
+4885	sora_w	633974	7849	80.8			D:meUnderFire				
+4905	noah88	91333	3105	29.4			D:meUnderFire				
+4910	sora_w	425329	5950	71.5			D:meUnderFire				
+4930	noah88	81086	2824	28.7			D:meUnderFire				
+4935	sora_w	333916	5134	65.0	0	0	no-cand				noah88=A:dMe
+4960	sora_w	289883	4603	63.0			D:meUnderFire				

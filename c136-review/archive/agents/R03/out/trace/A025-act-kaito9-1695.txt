@@ -1,0 +1,350 @@
+    [t=1695 决策前局面，邻居取自上一决策拍] AI379：最弱的别的邻居 AI228 兵+在途 94，减去我压它的 12k
+    [t=1695 决策前局面，邻居取自上一决策拍] AI451：挨着中立地（不算）
+    [t=1695 决策前局面，邻居取自上一决策拍] AI62：最弱的别的邻居 AI451 兵+在途 307，减去我压它的 0
+t=1695 B=16k L=35797 密=0.4 在途中立=12k 槽=2 nfs=1 sq=1.4k | 决策后 nb=4 neut=4
+    tryEmergencyBossRescue→false
+    safeFinite→307
+    dpKeep→0
+    expandNeutral(spend=15k)
+    buyLand→true
+    offers→3
+        报价 AI451：c=2.18 need=7.6k inAtk=0 tD=0.03 
+        报价 AI62：c=3.17 need=7.6k inAtk=0 tD=0.22 
+        报价 Player 845#9：c=9.29 need=74k inAtk=0 tD=1.05 person/isCrowdedHard
+    safeFinite→307
+    dpKeep→0
+      send(AI451, 9.8k)→true
+    safeFinite→307
+    dpKeep→0
+      · （不针对目标）：safeAt=307×2
+      · AI379 地 2356 兵 4.3k 我压它 12k 它压我 0 接壤 51：elimCost=7.7k
+      · AI451 地 4716 兵 307 我压它 0 它压我 0 接壤 84：elimCost=7.6k safeAt=307
+      · AI62 地 3617 兵 1.6k 我压它 0 它压我 0 接壤 27：elimCost=7.6k
+      · Player 845#9 地 14020 兵 30k 我压它 0 它压我 0 接壤 204：elimCost=74k
+    [t=1700 决策前局面，邻居取自上一决策拍] AI379：最弱的别的邻居 AI437 兵+在途 2.0k，减去我压它的 10k
+    [t=1700 决策前局面，邻居取自上一决策拍] AI451：挨着中立地（不算）
+    [t=1700 决策前局面，邻居取自上一决策拍] AI62：最弱的别的邻居 AI451 兵+在途 5.0k，减去我压它的 0
+t=1700 B=52k L=35961 密=1.4 在途中立=11k 槽=2 nfs=1 sq=1.8k | 决策后 nb=4 neut=2
+    tryEmergencyBossRescue→false
+    safeFinite→5.0k
+    dpKeep→0
+    expandNeutral(spend=47k)
+    buyLand→false
+    offers→3
+        报价 AI451：c=4.65 need=16k inAtk=0 tD=0.35 
+        报价 AI62：c=5.79 need=12k inAtk=0 tD=0.46 
+        报价 Player 845#9：c=12.45 need=101k inAtk=0 tD=1.02 person/isCrowdedHard
+    safeFinite→5.0k
+    dpKeep→0
+      send(AI451, 20k)→false
+    tryDonateToTeammate→false
+    safeFinite→5.0k
+    dpKeep→0
+    safeFinite→5.0k
+    dpKeep→0
+    idleBoats→undef
+    boatFood→false
+    safeFinite→5.0k
+    dpKeep→0
+      · （不针对目标）：safeAt=5.0k×4
+      · AI379 地 2147 兵 5.9k 我压它 10k 它压我 0 接壤 53：elimCost=8.6k
+      · AI62 地 3388 兵 4.8k 我压它 0 它压我 0 接壤 30：elimCost=12k
+      · AI451 地 4716 兵 5.0k 我压它 0 它压我 0 接壤 86：elimCost=16k safeAt=5.0k
+      · Player 845#9 地 14266 兵 44k 我压它 0 它压我 0 接壤 205：elimCost=101k
+    [t=1705 决策前局面，邻居取自上一决策拍] AI379：最弱的别的邻居 AI437 兵+在途 1.8k，减去我压它的 9.3k
+    [t=1705 决策前局面，邻居取自上一决策拍] AI62：最弱的别的邻居 AI451 兵+在途 5.0k，减去我压它的 31k
+    [t=1705 决策前局面，邻居取自上一决策拍] AI451：挨着中立地（不算）
+t=1705 B=20k L=36125 密=0.6 在途中立=11k 槽=3 nfs=1 sq=2.5k | 决策后 nb=4 neut=1
+    tryEmergencyBossRescue→false
+    safeFinite→0
+    dpKeep→0
+    expandNeutral(spend=20k)
+    buyLand→true
+    offers→2
+        报价 AI451：c=4.5 need=16k inAtk=0 tD=0.34 
+        报价 Player 845#9：c=12.29 need=101k inAtk=0 tD=1.01 person/isCrowdedHard
+    safeFinite→0
+    dpKeep→0
+      send(AI451, 20k)→true
+    safeFinite→0
+    dpKeep→0
+      · （不针对目标）：safeAt=0×2
+      · AI62 地 3181 兵 4.3k 我压它 31k 它压我 0 接壤 28：elimCost=11k
+      · AI451 地 4794 兵 5.0k 我压它 0 它压我 0 接壤 91：elimCost=16k safeAt=0
+      · AI379 地 2012 兵 5.3k 我压它 9.3k 它压我 0 接壤 52：elimCost=7.1k
+      · Player 845#9 地 14435 兵 44k 我压它 0 它压我 0 接壤 207：elimCost=101k
+    [t=1710 决策前局面，邻居取自上一决策拍] AI62：最弱的别的邻居 AI78 兵+在途 192，减去我压它的 30k
+    [t=1710 决策前局面，邻居取自上一决策拍] AI451：最弱的别的邻居 AI78 兵+在途 192，减去我压它的 19k
+    [t=1710 决策前局面，邻居取自上一决策拍] AI379：最弱的别的邻居 AI437 兵+在途 1.6k，减去我压它的 7.7k
+t=1710 B=12k L=36458 密=0.3 在途中立=0 槽=3 nfs=1 sq=0 | 决策后 nb=4 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→false
+    offers→1
+        报价 Player 845#9：c=13.35 need=111k inAtk=0 tD=1.08 person/isCrowdedHard
+    tryDonateToTeammate→false
+    idleBoats→undef
+    boatFood→false
+    safeFinite→0
+    dpKeep→0
+      · AI451 地 4772 兵 5.0k 我压它 19k 它压我 0 接壤 93：elimCost=16k price=5.32
+      · AI379 地 1824 兵 4.6k 我压它 7.7k 它压我 0 接壤 54：elimCost=5.3k
+      · AI62 地 2860 兵 5.4k 我压它 30k 它压我 0 接壤 27：elimCost=12k
+      · Player 845#9 地 14679 兵 50k 我压它 0 它压我 0 接壤 210：elimCost=111k
+      · （不针对目标）：safeAt=0
+    [t=1715 决策前局面，邻居取自上一决策拍] AI451：最弱的别的邻居 AI379 兵+在途 83，减去我压它的 18k
+    [t=1715 决策前局面，邻居取自上一决策拍] AI379：最弱的别的邻居 AI437 兵+在途 1.4k，减去我压它的 6.7k
+    [t=1715 决策前局面，邻居取自上一决策拍] AI62：最弱的别的邻居 AI78 兵+在途 192，减去我压它的 30k
+t=1715 B=12k L=36802 密=0.3 在途中立=0 槽=3 nfs=1 sq=239 | 决策后 nb=5 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→false
+    offers→2
+        报价 AI250：c=4.33 need=12k inAtk=0 tD=0.29 
+        报价 Player 845#9：c=13.24 need=112k inAtk=0 tD=1.06 person/isCrowdedHard
+    safeFinite→1.4k
+    dpKeep→0
+      send(AI250, 10k)→false
+    tryDonateToTeammate→false
+    idleBoats→undef
+    boatFood→false
+    safeFinite→1.4k
+    dpKeep→0
+      · AI379 地 1702 兵 83 我压它 6.7k 它压我 0 接壤 52：elimCost=975.08 price=2.16
+      · AI250 地 4037 兵 3.8k 我压它 0 它压我 0 接壤 3：elimCost=12k safeAt=1.4k
+      · AI62 地 2648 兵 4.8k 我压它 30k 它压我 0 接壤 29：elimCost=10.0k
+      · Player 845#9 地 14836 兵 50k 我压它 0 它压我 0 接壤 212：elimCost=112k
+      · AI451 地 4625 兵 4.7k 我压它 18k 它压我 0 接壤 85：elimCost=15k
+      · （不针对目标）：safeAt=1.4k
+    [t=1720 决策前局面，邻居取自上一决策拍] AI379：最弱的别的邻居 AI437 兵+在途 1.2k，减去我压它的 6.3k
+    [t=1720 决策前局面，邻居取自上一决策拍] AI250：最弱的别的邻居 AI437 兵+在途 1.2k，减去我压它的 0
+    [t=1720 决策前局面，邻居取自上一决策拍] AI62：最弱的别的邻居 AI78 兵+在途 195，减去我压它的 29k
+    [t=1720 决策前局面，邻居取自上一决策拍] AI451：最弱的别的邻居 AI379 兵+在途 75，减去我压它的 28k
+t=1720 B=1 L=37284 密=0.0 在途中立=0 槽=3 nfs=1 sq=418 | 决策后 nb=5 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→false
+    offers→2
+        报价 AI250：c=4.24 need=11k inAtk=0 tD=0.28 
+        报价 Player 845#9：c=13.24 need=113k inAtk=0 tD=1.05 person/isCrowdedHard
+    safeFinite→1.2k
+    dpKeep→0
+    tryDonateToTeammate→false
+    idleBoats→undef
+    boatFood→false
+    safeFinite→1.2k
+    dpKeep→0
+      · AI451 地 4442 兵 4.3k 我压它 28k 它压我 0 接壤 83：elimCost=14k price=5.12
+      · AI379 地 1535 兵 75 我压它 6.3k 它压我 0 接壤 48：elimCost=626.98
+      · AI250 地 3757 兵 3.4k 我压它 0 它压我 0 接壤 9：elimCost=11k safeAt=1.2k
+      · Player 845#9 地 15059 兵 51k 我压它 0 它压我 0 接壤 215：elimCost=113k
+      · AI62 地 2339 兵 4.0k 我压它 29k 它压我 0 接壤 27：elimCost=7.8k
+      · （不针对目标）：safeAt=1.2k
+    [t=1725 决策前局面，邻居取自上一决策拍] AI451：最弱的别的邻居 AI379 兵+在途 69，减去我压它的 28k
+    [t=1725 决策前局面，邻居取自上一决策拍] AI379：最弱的别的邻居 AI437 兵+在途 23，减去我压它的 6.1k
+    [t=1725 决策前局面，邻居取自上一决策拍] AI250：最弱的别的邻居 AI437 兵+在途 23，减去我压它的 0
+    [t=1725 决策前局面，邻居取自上一决策拍] AI62：最弱的别的邻居 AI78 兵+在途 195，减去我压它的 29k
+t=1725 B=1 L=37600 密=0.0 在途中立=0 槽=3 nfs=1 sq=582 | 决策后 nb=5 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→false
+    offers→2
+        报价 AI250：c=4.17 need=9.5k inAtk=0 tD=0.27 
+        报价 Player 845#9：c=13.25 need=113k inAtk=0 tD=1.05 person/isCrowdedHard
+    safeFinite→23
+    dpKeep→0
+    tryDonateToTeammate→false
+    idleBoats→undef
+    boatFood→false
+    safeFinite→23
+    dpKeep→0
+      · AI451 地 4328 兵 4.1k 我压它 28k 它压我 0 接壤 83：elimCost=13k price=5.01
+      · AI379 地 1571 兵 69 我压它 6.1k 它压我 0 接壤 51：elimCost=707.61
+      · AI250 地 3523 兵 3.1k 我压它 0 它压我 0 接壤 9：elimCost=9.5k safeAt=23
+      · AI62 地 2285 兵 3.7k 我压它 29k 它压我 0 接壤 24：elimCost=7.2k
+      · Player 845#9 地 15059 兵 51k 我压它 0 它压我 0 接壤 216：elimCost=113k
+      · （不针对目标）：safeAt=23
+    [t=1730 决策前局面，邻居取自上一决策拍] AI451：最弱的别的邻居 AI379 兵+在途 61，减去我压它的 26k
+    [t=1730 决策前局面，邻居取自上一决策拍] AI379：最弱的别的邻居 AI437 兵+在途 22，减去我压它的 5.8k
+    [t=1730 决策前局面，邻居取自上一决策拍] AI250：最弱的别的邻居 AI437 兵+在途 22，减去我压它的 0
+    [t=1730 决策前局面，邻居取自上一决策拍] AI62：最弱的别的邻居 AI78 兵+在途 198，减去我压它的 28k
+t=1730 B=2 L=38073 密=0.0 在途中立=0 槽=3 nfs=1 sq=742 | 决策后 nb=5 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→false
+    offers→2
+        报价 AI250：c=2.04 need=4.5k inAtk=0 tD=0.01 
+        报价 Player 845#9：c=13.42 need=115k inAtk=0 tD=1.1 person/isCrowdedHard
+    safeFinite→22
+    dpKeep→0
+    tryDonateToTeammate→false
+    idleBoats→undef
+    boatFood→false
+    safeFinite→22
+    dpKeep→0
+      · AI451 地 4102 兵 3.8k 我压它 26k 它压我 0 接壤 82：elimCost=12k price=4.94
+      · AI379 地 1479 兵 61 我压它 5.8k 它压我 0 接壤 53：elimCost=516.45
+      · AI250 地 3446 兵 61 我压它 0 它压我 0 接壤 14：elimCost=4.5k safeAt=22
+      · Player 845#9 地 15059 兵 52k 我压它 0 它压我 0 接壤 217：elimCost=115k
+      · AI62 地 2115 兵 3.3k 我压它 28k 它压我 0 接壤 22：elimCost=6.1k
+      · （不针对目标）：safeAt=22
+    [t=1735 决策前局面，邻居取自上一决策拍] AI451：最弱的别的邻居 AI78 兵+在途 198，减去我压它的 26k
+    [t=1735 决策前局面，邻居取自上一决策拍] AI379：最弱的别的邻居 AI437 兵+在途 20，减去我压它的 5.5k
+    [t=1735 决策前局面，邻居取自上一决策拍] AI250：最弱的别的邻居 AI437 兵+在途 20，减去我压它的 0
+    [t=1735 决策前局面，邻居取自上一决策拍] AI62：最弱的别的邻居 AI78 兵+在途 198，减去我压它的 28k
+t=1735 B=2 L=38382 密=0.0 在途中立=0 槽=3 nfs=1 sq=902 | 决策后 nb=5 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→false
+    offers→2
+        报价 AI250：c=2.04 need=4.5k inAtk=0 tD=0.01 
+        报价 Player 845#9：c=13.41 need=115k inAtk=0 tD=1.11 person/isCrowdedHard
+    safeFinite→20
+    dpKeep→0
+    tryDonateToTeammate→false
+    idleBoats→undef
+    boatFood→false
+    safeFinite→20
+    dpKeep→0
+      · AI451 地 3977 兵 3.5k 我压它 26k 它压我 0 接壤 81：elimCost=12k price=4.84
+      · AI379 地 1367 兵 200 我压它 5.5k 它压我 0 接壤 53：elimCost=331.31
+      · AI250 地 3446 兵 61 我压它 0 它压我 0 接壤 17：elimCost=4.5k safeAt=20
+      · Player 845#9 地 15059 兵 52k 我压它 0 它压我 0 接壤 218：elimCost=115k
+      · AI62 地 2029 兵 64 我压它 28k 它压我 0 接壤 20：elimCost=1.9k
+      · （不针对目标）：safeAt=20
+    [t=1740 决策前局面，邻居取自上一决策拍] AI451：挨着中立地（不算）
+    [t=1740 决策前局面，邻居取自上一决策拍] AI250：挨着中立地（不算）
+    [t=1740 决策前局面，邻居取自上一决策拍] AI62：最弱的别的邻居 AI78 兵+在途 201，减去我压它的 28k
+t=1740 B=3 L=38825 密=0.0 在途中立=5.2k 槽=3 nfs=1 sq=1.1k | 决策后 nb=4 neut=55
+    tryEmergencyBossRescue→false
+    safeFinite→0
+    dpKeep→0
+    expandNeutral(spend=3)
+    buyLand→true
+    offers→2
+        报价 AI250：c=2.04 need=4.5k inAtk=0 tD=0.01 
+        报价 Player 845#9：c=13.58 need=116k inAtk=0 tD=1.11 person/isCrowdedHard
+    safeFinite→0
+    dpKeep→0
+      send(AI250, 3)→true
+    safeFinite→0
+    dpKeep→0
+      · （不针对目标）：safeAt=0×2
+      · AI451 地 3727 兵 3.2k 我压它 24k 它压我 0 接壤 72：elimCost=10k
+      · AI250 地 3446 兵 62 我压它 0 它压我 0 接壤 19：elimCost=4.5k safeAt=0
+      · Player 845#9 地 15059 兵 53k 我压它 0 它压我 0 接壤 220：elimCost=116k
+      · AI62 地 1951 兵 61 我压它 28k 它压我 0 接壤 20：elimCost=1.7k
+    [t=1745 决策前局面，邻居取自上一决策拍] AI451：挨着中立地（不算）
+    [t=1745 决策前局面，邻居取自上一决策拍] AI250：挨着中立地（不算）
+    [t=1745 决策前局面，邻居取自上一决策拍] AI62：最弱的别的邻居 AI78 兵+在途 201，减去我压它的 28k
+t=1745 B=3 L=39117 密=0.0 在途中立=4.9k 槽=3 nfs=1 sq=1.2k | 决策后 nb=4 neut=55
+    tryEmergencyBossRescue→false
+    safeFinite→0
+    dpKeep→0
+    expandNeutral(spend=3)
+    buyLand→true
+    offers→2
+        报价 AI250：c=2.03 need=4.5k inAtk=0 tD=0.01 
+        报价 Player 845#9：c=13.58 need=116k inAtk=0 tD=1.12 person/isCrowdedHard
+    safeFinite→0
+    dpKeep→0
+      send(AI250, 3)→true
+    safeFinite→0
+    dpKeep→0
+      · （不针对目标）：safeAt=0×2
+      · AI451 地 3486 兵 2.8k 我压它 24k 它压我 0 接壤 71：elimCost=9.2k
+      · AI62 地 1966 兵 58 我压它 28k 它压我 0 接壤 21：elimCost=1.7k
+      · AI250 地 3446 兵 62 我压它 0 它压我 0 接壤 22：elimCost=4.5k safeAt=0
+      · Player 845#9 地 15059 兵 53k 我压它 0 它压我 0 接壤 221：elimCost=116k
+    [t=1750 决策前局面，邻居取自上一决策拍] AI451：挨着中立地（不算）
+    [t=1750 决策前局面，邻居取自上一决策拍] AI62：最弱的别的邻居 AI78 兵+在途 204，减去我压它的 28k
+    [t=1750 决策前局面，邻居取自上一决策拍] AI250：挨着中立地（不算）
+t=1750 B=4 L=39535 密=0.0 在途中立=4.7k 槽=3 nfs=1 sq=1.4k | 决策后 nb=4 neut=42
+    tryEmergencyBossRescue→false
+    safeFinite→0
+    dpKeep→0
+    expandNeutral(spend=4)
+    buyLand→true
+    offers→2
+        报价 AI250：c=2.03 need=4.5k inAtk=0 tD=0.01 
+        报价 Player 845#9：c=13.74 need=118k inAtk=0 tD=1.13 person/isCrowdedHard
+    safeFinite→0
+    dpKeep→0
+      send(AI250, 4)→true
+    safeFinite→0
+    dpKeep→0
+      · （不针对目标）：safeAt=0×2
+      · AI250 地 3446 兵 63 我压它 0 它压我 0 接壤 40：elimCost=4.5k safeAt=0
+      · AI62 地 1984 兵 58 我压它 28k 它压我 0 接壤 22：elimCost=1.8k
+      · AI451 地 3197 兵 2.5k 我压它 23k 它压我 0 接壤 70：elimCost=7.9k
+      · Player 845#9 地 15059 兵 53k 我压它 0 它压我 0 接壤 222：elimCost=118k
+    [t=1755 决策前局面，邻居取自上一决策拍] AI250：挨着中立地（不算）
+    [t=1755 决策前局面，邻居取自上一决策拍] AI62：最弱的别的邻居 AI78 兵+在途 204，减去我压它的 28k
+    [t=1755 决策前局面，邻居取自上一决策拍] AI451：挨着中立地（不算）
+t=1755 B=0 L=39838 密=0.0 在途中立=4.5k 槽=3 nfs=1 sq=1.5k | 决策后 nb=4 neut=38
+    tryEmergencyBossRescue→false
+    safeFinite→0
+    dpKeep→0
+    expandNeutral(spend=0)
+    buyLand→false
+    offers→2
+        报价 AI250：c=2.02 need=4.4k inAtk=0 tD=0.01 
+        报价 Player 845#9：c=6.65 need=103k inAtk=18k tD=0.86 person/onMe
+    safeFinite→0
+    dpKeep→0
+    tryDonateToTeammate→false
+    idleBoats→undef
+    boatFood→false
+    safeFinite→0
+    dpKeep→0
+      · （不针对目标）：safeAt=0×2
+      · AI62 地 1945 兵 55 我压它 28k 它压我 0 接壤 20：elimCost=1.7k
+      · Player 845#9 地 15059 兵 35k 我压它 0 它压我 18k 接壤 223：elimCost=85k
+      · AI451 地 3037 兵 2.2k 我压它 22k 它压我 0 接壤 64：elimCost=7.2k
+      · AI250 地 3406 兵 62 我压它 0 它压我 0 接壤 45：elimCost=4.4k safeAt=0
+    [t=1760 决策前局面，邻居取自上一决策拍] AI62：最弱的别的邻居 AI78 兵+在途 207，减去我压它的 28k
+    [t=1760 决策前局面，邻居取自上一决策拍] AI451：挨着中立地（不算）
+    [t=1760 决策前局面，邻居取自上一决策拍] AI250：挨着中立地（不算）
+t=1760 B=0 L=39797 密=0.0 在途中立=4.3k 槽=3 nfs=1 sq=1.7k | 决策后 nb=4 neut=35
+    tryEmergencyBossRescue→false
+    safeFinite→0
+    dpKeep→0
+    expandNeutral(spend=0)
+    buyLand→false
+    offers→2
+        报价 AI250：c=2.02 need=4.4k inAtk=0 tD=0.01 
+        报价 Player 845#9：c=6.5 need=103k inAtk=17k tD=0.84 person/onMe
+    safeFinite→0
+    dpKeep→0
+    safeFinite→0
+    dpKeep→0
+    tryDonateToTeammate→false
+    idleBoats→undef
+    boatFood→false
+    safeFinite→0
+    dpKeep→0
+      · （不针对目标）：safeAt=0×2
+      · AI451 地 2764 兵 1.9k 我压它 21k 它压我 0 接壤 64：elimCost=6.0k
+      · Player 845#9 地 15511 兵 35k 我压它 0 它压我 17k 接壤 230：elimCost=86k safeAt=0
+      · AI250 地 3360 兵 62 我压它 0 它压我 0 接壤 53：elimCost=4.4k safeAt=0
+      · AI62 地 1937 兵 56 我压它 28k 它压我 0 接壤 20：elimCost=1.7k
+    [t=1765 决策前局面，邻居取自上一决策拍] AI451：挨着中立地（不算）
+    [t=1765 决策前局面，邻居取自上一决策拍] AI250：挨着中立地（不算）
+    [t=1765 决策前局面，邻居取自上一决策拍] AI62：最弱的别的邻居 AI78 兵+在途 207，减去我压它的 28k
+t=1765 B=0 L=39572 密=0.0 在途中立=4.1k 槽=4 nfs=1 sq=1.8k | 决策后 nb=4 neut=33
+    tryEmergencyBossRescue→false
+    safeFinite→0
+    dpKeep→0
+    expandNeutral(spend=0)
+    buyLand→false
+    offers→2
+        报价 AI250：c=2.02 need=4.4k inAtk=0 tD=0.01 
+        报价 Player 845#9：c=6.3 need=103k inAtk=16k tD=0.83 person/onMe
+    safeFinite→0
+    dpKeep→0
+    safeFinite→0
+    dpKeep→0
+    tryDonateToTeammate→false
+    idleBoats→undef
+    boatFood→false
+    safeFinite→0
+    dpKeep→0
+      · （不针对目标）：safeAt=0×2
+      · Player 845#9 地 15974 兵 35k 我压它 0 它压我 16k 接壤 231：elimCost=87k safeAt=0
+      · AI250 地 3360 兵 62 我压它 0 它压我 0 接壤 58：elimCost=4.4k safeAt=0
+      · AI62 地 1967 兵 56 我压它 28k 它压我 0 接壤 20：elimCost=1.7k
+      · AI451 地 2570 兵 1.7k 我压它 21k 它压我 0 接壤 59：elimCost=5.2k

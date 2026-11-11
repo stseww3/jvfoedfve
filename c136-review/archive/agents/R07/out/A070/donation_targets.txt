@@ -1,0 +1,10 @@
+# A070 捐款去向：t 捐方(dMe,myBal) → 收方(快照拍/过期拍数, terr, bal, dens, nb) 之后90拍 dCmds/dTerr | 到账/费
+
+## 汇总（笔数 / 名义到账 / 手续费）
+  all: 0 笔 / 0 / 0
+  recvSnapshotFresh: 0 笔 / 0 / 0
+  recvDenserThanDonor: 0 笔 / 0 / 0
+  recvDens>=60: 0 笔 / 0 / 0
+  recvStale(>90拍无快照=停摆): 0 笔 / 0 / 0
+  recvZeroCmdsNext90: 0 笔 / 0 / 0
+  recvNonSquadOrUnknown: 0 笔 / 0 / 0

@@ -1,0 +1,2334 @@
+# A053 ryan_m 影子决策明细 t=3700~7300（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没有可打的邻居: 548 拍（t=3700~6540）
+#   捐兵: 21 拍（t=3775~6400）
+#   首选目标价高（c>=worth）: 150 拍（t=6545~7300）
+#   出手打人/bot: 2 拍（t=7230~7235）；可用兵 143771~143771，一条指令下限(20%余额) 323024~323024，比值 45%~45%
+#   └ 「出手打人/bot」里：2 条对人/bot 的出兵共约 290216 兵；其中超过软上限（over=1）时发的 2 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 2 条约 290216 兵，c/worth = 2.73~2.73
+t=3700 ryan_m B=687662 L=16138 d=42.6 nb=0 neut=0 cmds=73 noFull=1 shQ=167958 | m=0.900 worth=71.8 cheap=7.8 over=0 dMedOther=93.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3705 ryan_m B=687662 L=16138 d=42.6 nb=0 neut=0 cmds=73 noFull=1 shQ=171915 | m=0.900 worth=71.8 cheap=7.8 over=0 dMedOther=93.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3710 ryan_m B=696395 L=16138 d=43.2 nb=0 neut=0 cmds=73 noFull=1 shQ=174098 | m=0.900 worth=72.7 cheap=7.8 over=0 dMedOther=95.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3715 ryan_m B=696395 L=16138 d=43.2 nb=0 neut=0 cmds=73 noFull=1 shQ=174098 | m=0.900 worth=65.4 cheap=7.8 over=0 dMedOther=85.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3720 ryan_m B=705239 L=16138 d=43.7 nb=0 neut=0 cmds=73 noFull=1 shQ=176309 | m=0.900 worth=64.5 cheap=7.8 over=0 dMedOther=84.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3725 ryan_m B=705239 L=16138 d=43.7 nb=0 neut=0 cmds=73 noFull=1 shQ=176309 | m=0.900 worth=63.7 cheap=7.8 over=0 dMedOther=83.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3730 ryan_m B=714195 L=16138 d=44.3 nb=0 neut=0 cmds=73 noFull=1 shQ=178548 | m=0.900 worth=64.5 cheap=7.8 over=0 dMedOther=84.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3735 ryan_m B=714195 L=16138 d=44.3 nb=0 neut=0 cmds=73 noFull=1 shQ=178548 | m=0.900 worth=64.5 cheap=7.8 over=0 dMedOther=84.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3740 ryan_m B=723265 L=16138 d=44.8 nb=0 neut=0 cmds=73 noFull=1 shQ=180816 | m=0.900 worth=65.3 cheap=7.8 over=0 dMedOther=85.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3745 ryan_m B=723265 L=16138 d=44.8 nb=0 neut=0 cmds=73 noFull=1 shQ=180816 | m=0.900 worth=65.3 cheap=7.8 over=0 dMedOther=85.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3750 ryan_m B=732450 L=16138 d=45.4 nb=0 neut=0 cmds=73 noFull=1 shQ=183112 | m=0.900 worth=66.2 cheap=7.8 over=0 dMedOther=86.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3755 ryan_m B=732450 L=16138 d=45.4 nb=0 neut=0 cmds=73 noFull=1 shQ=183112 | m=0.900 worth=66.2 cheap=7.8 over=0 dMedOther=86.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3760 ryan_m B=741752 L=16138 d=46.0 nb=0 neut=0 cmds=73 noFull=1 shQ=185438 | m=0.900 worth=67.0 cheap=7.8 over=0 dMedOther=87.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3765 ryan_m B=741752 L=16138 d=46.0 nb=0 neut=0 cmds=73 noFull=1 shQ=185438 | m=0.900 worth=67.0 cheap=7.8 over=0 dMedOther=87.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3770 ryan_m B=751172 L=16138 d=46.5 nb=0 neut=0 cmds=73 noFull=1 shQ=187793 | m=0.900 worth=67.9 cheap=7.8 over=0 dMedOther=88.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3775 ryan_m B=751172 L=16138 d=46.5 nb=0 neut=0 cmds=74 noFull=1 shQ=187793 | m=0.900 worth=67.9 cheap=7.8 over=0 dMedOther=88.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] noah88#44[T3]（约 235474 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3780 ryan_m B=760711 L=16138 d=47.1 nb=0 neut=0 cmds=74 noFull=1 shQ=190177 | m=0.900 worth=68.8 cheap=7.8 over=0 dMedOther=89.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3785 ryan_m B=760711 L=16138 d=47.1 nb=0 neut=0 cmds=74 noFull=1 shQ=190177 | m=0.900 worth=68.8 cheap=7.8 over=0 dMedOther=89.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3790 ryan_m B=770372 L=16138 d=47.7 nb=0 neut=0 cmds=74 noFull=1 shQ=192593 | m=0.900 worth=69.7 cheap=7.8 over=0 dMedOther=91.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3795 ryan_m B=770372 L=16138 d=47.7 nb=0 neut=0 cmds=74 noFull=1 shQ=192593 | m=0.900 worth=76.2 cheap=7.8 over=0 dMedOther=99.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3800 ryan_m B=796293 L=16138 d=49.3 nb=0 neut=0 cmds=74 noFull=1 shQ=195121 | m=0.900 worth=77.1 cheap=7.8 over=0 dMedOther=100.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3805 ryan_m B=796293 L=16138 d=49.3 nb=0 neut=0 cmds=74 noFull=1 shQ=199073 | m=0.900 worth=76.4 cheap=7.8 over=0 dMedOther=99.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3810 ryan_m B=806405 L=16138 d=50.0 nb=0 neut=0 cmds=74 noFull=1 shQ=201601 | m=0.900 worth=77.0 cheap=7.8 over=0 dMedOther=100.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3815 ryan_m B=806405 L=16138 d=50.0 nb=0 neut=0 cmds=74 noFull=1 shQ=201601 | m=0.900 worth=76.7 cheap=7.8 over=0 dMedOther=100.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3820 ryan_m B=816646 L=16138 d=50.6 nb=0 neut=0 cmds=74 noFull=1 shQ=204161 | m=0.900 worth=73.2 cheap=7.8 over=0 dMedOther=95.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3825 ryan_m B=816646 L=16138 d=50.6 nb=0 neut=0 cmds=74 noFull=1 shQ=204161 | m=0.900 worth=73.2 cheap=7.8 over=0 dMedOther=95.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3830 ryan_m B=827017 L=16138 d=51.2 nb=0 neut=0 cmds=74 noFull=1 shQ=206754 | m=0.900 worth=74.1 cheap=7.8 over=0 dMedOther=96.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3835 ryan_m B=827017 L=16138 d=51.2 nb=0 neut=0 cmds=74 noFull=1 shQ=206754 | m=0.900 worth=74.1 cheap=7.8 over=0 dMedOther=96.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3840 ryan_m B=837520 L=16138 d=51.9 nb=0 neut=0 cmds=74 noFull=1 shQ=209380 | m=0.900 worth=72.1 cheap=7.8 over=0 dMedOther=94.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3845 ryan_m B=837520 L=16138 d=51.9 nb=0 neut=0 cmds=74 noFull=1 shQ=209380 | m=0.900 worth=70.4 cheap=7.8 over=0 dMedOther=92.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3850 ryan_m B=848156 L=16138 d=52.6 nb=0 neut=0 cmds=74 noFull=1 shQ=212039 | m=0.900 worth=71.1 cheap=7.8 over=0 dMedOther=93.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3855 ryan_m B=848156 L=16138 d=52.6 nb=0 neut=0 cmds=74 noFull=1 shQ=212039 | m=0.900 worth=71.0 cheap=7.8 over=0 dMedOther=92.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3860 ryan_m B=858927 L=16138 d=53.2 nb=0 neut=0 cmds=74 noFull=1 shQ=214731 | m=0.900 worth=71.8 cheap=7.8 over=0 dMedOther=93.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3865 ryan_m B=858927 L=16138 d=53.2 nb=0 neut=0 cmds=74 noFull=1 shQ=214731 | m=0.900 worth=71.8 cheap=7.8 over=0 dMedOther=93.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3870 ryan_m B=869835 L=16138 d=53.9 nb=0 neut=0 cmds=74 noFull=1 shQ=217458 | m=0.900 worth=72.5 cheap=7.8 over=0 dMedOther=94.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3875 ryan_m B=869835 L=16138 d=53.9 nb=0 neut=0 cmds=74 noFull=1 shQ=217458 | m=0.900 worth=72.5 cheap=7.8 over=0 dMedOther=94.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3880 ryan_m B=880881 L=16138 d=54.6 nb=0 neut=0 cmds=74 noFull=1 shQ=220220 | m=0.900 worth=73.4 cheap=7.8 over=0 dMedOther=96.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3885 ryan_m B=880881 L=16138 d=54.6 nb=0 neut=0 cmds=74 noFull=1 shQ=220220 | m=0.900 worth=73.4 cheap=7.8 over=0 dMedOther=96.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3890 ryan_m B=892068 L=16138 d=55.3 nb=0 neut=0 cmds=74 noFull=1 shQ=223017 | m=0.900 worth=70.5 cheap=7.8 over=0 dMedOther=92.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3895 ryan_m B=892068 L=16138 d=55.3 nb=0 neut=0 cmds=74 noFull=1 shQ=223017 | m=0.900 worth=68.8 cheap=7.8 over=0 dMedOther=89.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3900 ryan_m B=919535 L=16138 d=57.0 nb=0 neut=0 cmds=74 noFull=1 shQ=225936 | m=0.900 worth=70.4 cheap=7.8 over=0 dMedOther=92.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3905 ryan_m B=919535 L=16138 d=57.0 nb=0 neut=0 cmds=74 noFull=1 shQ=229883 | m=0.900 worth=70.4 cheap=7.8 over=0 dMedOther=92.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3910 ryan_m B=931213 L=16138 d=57.7 nb=0 neut=0 cmds=74 noFull=1 shQ=232803 | m=0.900 worth=71.3 cheap=7.8 over=0 dMedOther=93.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3915 ryan_m B=931213 L=16138 d=57.7 nb=0 neut=0 cmds=74 noFull=1 shQ=232803 | m=0.900 worth=71.3 cheap=7.8 over=0 dMedOther=93.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3920 ryan_m B=943039 L=16138 d=58.4 nb=0 neut=0 cmds=74 noFull=1 shQ=235759 | m=0.900 worth=72.3 cheap=7.8 over=0 dMedOther=94.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3925 ryan_m B=943039 L=16138 d=58.4 nb=0 neut=0 cmds=75 noFull=1 shQ=235759 | m=0.900 worth=72.3 cheap=7.8 over=0 dMedOther=94.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=252 → [APEX] noah88#44[T3]（约 232996 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3930 ryan_m B=955015 L=16138 d=59.2 nb=0 neut=0 cmds=75 noFull=1 shQ=238753 | m=0.900 worth=73.2 cheap=7.8 over=0 dMedOther=95.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3935 ryan_m B=955015 L=16138 d=59.2 nb=0 neut=0 cmds=75 noFull=1 shQ=238753 | m=0.900 worth=73.2 cheap=7.8 over=0 dMedOther=95.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3940 ryan_m B=967143 L=16138 d=59.9 nb=0 neut=0 cmds=75 noFull=1 shQ=241785 | m=0.900 worth=74.2 cheap=7.8 over=0 dMedOther=97.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3945 ryan_m B=967143 L=16138 d=59.9 nb=0 neut=0 cmds=75 noFull=1 shQ=241785 | m=0.900 worth=74.2 cheap=7.8 over=0 dMedOther=97.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3950 ryan_m B=979425 L=16138 d=60.7 nb=0 neut=0 cmds=76 noFull=1 shQ=244856 | m=0.900 worth=75.1 cheap=7.8 over=0 dMedOther=98.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=281 → [APEX] kaito9#51[T3]（约 269724 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3955 ryan_m B=979425 L=16138 d=60.7 nb=0 neut=0 cmds=76 noFull=1 shQ=244856 | m=0.900 worth=75.1 cheap=7.8 over=0 dMedOther=98.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3960 ryan_m B=991863 L=16138 d=61.5 nb=0 neut=0 cmds=76 noFull=1 shQ=247965 | m=0.900 worth=69.7 cheap=7.8 over=0 dMedOther=91.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3965 ryan_m B=991863 L=16138 d=61.5 nb=0 neut=0 cmds=76 noFull=1 shQ=247965 | m=0.900 worth=69.7 cheap=7.8 over=0 dMedOther=91.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3970 ryan_m B=1004459 L=16138 d=62.2 nb=0 neut=0 cmds=76 noFull=1 shQ=251114 | m=0.900 worth=70.6 cheap=7.8 over=0 dMedOther=92.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3975 ryan_m B=1004459 L=16138 d=62.2 nb=0 neut=0 cmds=77 noFull=1 shQ=251114 | m=0.900 worth=70.6 cheap=7.8 over=0 dMedOther=92.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] zero_7#49[T3]（约 373729 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3980 ryan_m B=1017215 L=16138 d=63.0 nb=0 neut=0 cmds=77 noFull=1 shQ=254303 | m=0.900 worth=71.4 cheap=7.8 over=0 dMedOther=93.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3985 ryan_m B=1017215 L=16138 d=63.0 nb=0 neut=0 cmds=77 noFull=1 shQ=254303 | m=0.900 worth=71.3 cheap=7.8 over=0 dMedOther=93.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3990 ryan_m B=1030133 L=16138 d=63.8 nb=0 neut=0 cmds=77 noFull=1 shQ=257533 | m=0.900 worth=71.9 cheap=7.8 over=0 dMedOther=94.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3995 ryan_m B=1030133 L=16138 d=63.8 nb=0 neut=0 cmds=77 noFull=1 shQ=257533 | m=0.900 worth=71.8 cheap=7.8 over=0 dMedOther=93.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4000 ryan_m B=1059353 L=16138 d=65.6 nb=0 neut=0 cmds=78 noFull=1 shQ=260896 | m=0.900 worth=73.4 cheap=7.8 over=0 dMedOther=96.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] kaito9#51[T3]（约 332082 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4005 ryan_m B=1059353 L=16138 d=65.6 nb=0 neut=0 cmds=78 noFull=1 shQ=264838 | m=0.900 worth=73.4 cheap=7.8 over=0 dMedOther=95.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4010 ryan_m B=1072806 L=16138 d=66.5 nb=0 neut=0 cmds=78 noFull=1 shQ=268201 | m=0.900 worth=74.2 cheap=7.8 over=0 dMedOther=97.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4015 ryan_m B=1072806 L=16138 d=66.5 nb=0 neut=0 cmds=78 noFull=1 shQ=268201 | m=0.900 worth=73.9 cheap=7.8 over=0 dMedOther=96.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4020 ryan_m B=1086430 L=16138 d=67.3 nb=0 neut=0 cmds=78 noFull=1 shQ=271607 | m=0.900 worth=74.8 cheap=7.8 over=0 dMedOther=97.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4025 ryan_m B=1086430 L=16138 d=67.3 nb=0 neut=0 cmds=79 noFull=1 shQ=271607 | m=0.900 worth=74.8 cheap=7.8 over=0 dMedOther=97.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] kaito9#51[T3]（约 340570 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4030 ryan_m B=1100227 L=16138 d=68.2 nb=0 neut=0 cmds=79 noFull=1 shQ=275056 | m=0.900 worth=75.8 cheap=7.8 over=0 dMedOther=99.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4035 ryan_m B=1100227 L=16138 d=68.2 nb=0 neut=0 cmds=79 noFull=1 shQ=275056 | m=0.900 worth=75.8 cheap=7.8 over=0 dMedOther=99.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4040 ryan_m B=1114199 L=16138 d=69.0 nb=0 neut=0 cmds=79 noFull=1 shQ=278549 | m=0.900 worth=76.6 cheap=7.8 over=0 dMedOther=100.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4045 ryan_m B=1114199 L=16138 d=69.0 nb=0 neut=0 cmds=79 noFull=1 shQ=278549 | m=0.900 worth=76.6 cheap=7.8 over=0 dMedOther=100.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4050 ryan_m B=1128349 L=16138 d=69.9 nb=0 neut=0 cmds=80 noFull=1 shQ=282087 | m=0.900 worth=77.0 cheap=7.8 over=0 dMedOther=100.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] kaito9#51[T3]（约 353710 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4055 ryan_m B=1128349 L=16138 d=69.9 nb=0 neut=0 cmds=80 noFull=1 shQ=282087 | m=0.900 worth=76.0 cheap=7.8 over=0 dMedOther=99.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4060 ryan_m B=1142679 L=16138 d=70.8 nb=0 neut=0 cmds=80 noFull=1 shQ=285669 | m=0.900 worth=76.8 cheap=7.8 over=0 dMedOther=100.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4065 ryan_m B=1142679 L=16138 d=70.8 nb=0 neut=0 cmds=80 noFull=1 shQ=285669 | m=0.900 worth=76.8 cheap=7.8 over=0 dMedOther=100.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4070 ryan_m B=1157191 L=16138 d=71.7 nb=0 neut=0 cmds=80 noFull=1 shQ=289297 | m=0.900 worth=77.8 cheap=7.8 over=0 dMedOther=101.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4075 ryan_m B=1157191 L=16138 d=71.7 nb=0 neut=0 cmds=81 noFull=1 shQ=289297 | m=0.900 worth=75.9 cheap=7.8 over=0 dMedOther=99.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] kaito9#51[T3]（约 362752 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4080 ryan_m B=1171887 L=16138 d=72.6 nb=0 neut=0 cmds=81 noFull=1 shQ=292971 | m=0.900 worth=76.8 cheap=7.8 over=0 dMedOther=100.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4085 ryan_m B=1171887 L=16138 d=72.6 nb=0 neut=0 cmds=81 noFull=1 shQ=292971 | m=0.900 worth=76.8 cheap=7.8 over=0 dMedOther=100.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4090 ryan_m B=1186769 L=16138 d=73.5 nb=0 neut=0 cmds=81 noFull=1 shQ=296692 | m=0.900 worth=77.7 cheap=7.8 over=0 dMedOther=101.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4095 ryan_m B=1186769 L=16138 d=73.5 nb=0 neut=0 cmds=81 noFull=1 shQ=296692 | m=0.900 worth=77.6 cheap=7.8 over=0 dMedOther=101.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4100 ryan_m B=1217978 L=16138 d=75.5 nb=0 neut=0 cmds=82 noFull=1 shQ=300559 | m=0.900 worth=79.1 cheap=7.8 over=0 dMedOther=103.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] zero_7#49[T3]（约 453173 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4105 ryan_m B=1217978 L=16138 d=75.5 nb=0 neut=0 cmds=82 noFull=1 shQ=304494 | m=0.900 worth=79.0 cheap=7.8 over=0 dMedOther=103.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4110 ryan_m B=721846 L=16138 d=44.7 nb=0 neut=0 cmds=82 noFull=1 shQ=180461 | m=0.900 worth=79.8 cheap=7.8 over=0 dMedOther=104.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4115 ryan_m B=721846 L=16138 d=44.7 nb=0 neut=0 cmds=82 noFull=1 shQ=180461 | m=0.900 worth=79.7 cheap=7.8 over=0 dMedOther=104.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4120 ryan_m B=731013 L=16138 d=45.3 nb=0 neut=0 cmds=82 noFull=1 shQ=182753 | m=0.900 worth=73.1 cheap=7.8 over=0 dMedOther=95.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4125 ryan_m B=731013 L=16138 d=45.3 nb=0 neut=0 cmds=82 noFull=1 shQ=182753 | m=0.900 worth=72.9 cheap=7.8 over=0 dMedOther=95.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4130 ryan_m B=740296 L=16138 d=45.9 nb=0 neut=0 cmds=82 noFull=1 shQ=185074 | m=0.900 worth=73.4 cheap=7.8 over=0 dMedOther=95.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4135 ryan_m B=740296 L=16138 d=45.9 nb=0 neut=0 cmds=82 noFull=1 shQ=185074 | m=0.900 worth=72.0 cheap=7.8 over=0 dMedOther=94.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4140 ryan_m B=749697 L=16138 d=46.5 nb=0 neut=0 cmds=82 noFull=1 shQ=187424 | m=0.900 worth=72.9 cheap=7.8 over=0 dMedOther=95.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4145 ryan_m B=749697 L=16138 d=46.5 nb=0 neut=0 cmds=82 noFull=1 shQ=187424 | m=0.900 worth=72.9 cheap=7.8 over=0 dMedOther=95.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4150 ryan_m B=759218 L=16138 d=47.0 nb=0 neut=0 cmds=82 noFull=1 shQ=189804 | m=0.900 worth=73.8 cheap=7.8 over=0 dMedOther=96.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4155 ryan_m B=759218 L=16138 d=47.0 nb=0 neut=0 cmds=82 noFull=1 shQ=189804 | m=0.900 worth=73.8 cheap=7.8 over=0 dMedOther=96.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4160 ryan_m B=768860 L=16138 d=47.6 nb=0 neut=0 cmds=82 noFull=1 shQ=192215 | m=0.900 worth=73.1 cheap=7.8 over=0 dMedOther=95.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4165 ryan_m B=768860 L=16138 d=47.6 nb=0 neut=0 cmds=82 noFull=1 shQ=192215 | m=0.900 worth=72.9 cheap=7.8 over=0 dMedOther=95.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4170 ryan_m B=778624 L=16138 d=48.2 nb=0 neut=0 cmds=82 noFull=1 shQ=194656 | m=0.900 worth=73.6 cheap=7.8 over=0 dMedOther=96.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4175 ryan_m B=778624 L=16138 d=48.2 nb=0 neut=0 cmds=82 noFull=1 shQ=194656 | m=0.900 worth=73.5 cheap=7.8 over=0 dMedOther=96.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4180 ryan_m B=788512 L=16138 d=48.9 nb=0 neut=0 cmds=82 noFull=1 shQ=197128 | m=0.900 worth=69.2 cheap=7.8 over=0 dMedOther=90.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4185 ryan_m B=788512 L=16138 d=48.9 nb=0 neut=0 cmds=82 noFull=1 shQ=197128 | m=0.900 worth=68.2 cheap=7.8 over=0 dMedOther=89.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4190 ryan_m B=798526 L=16138 d=49.5 nb=0 neut=0 cmds=82 noFull=1 shQ=199631 | m=0.900 worth=69.1 cheap=7.8 over=0 dMedOther=90.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4195 ryan_m B=798526 L=16138 d=49.5 nb=0 neut=0 cmds=82 noFull=1 shQ=199631 | m=0.900 worth=69.1 cheap=7.8 over=0 dMedOther=90.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4200 ryan_m B=824805 L=16138 d=51.1 nb=0 neut=0 cmds=83 noFull=1 shQ=202249 | m=0.900 worth=70.8 cheap=7.8 over=0 dMedOther=92.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] zero_7#49[T3]（约 306885 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4205 ryan_m B=824805 L=16138 d=51.1 nb=0 neut=0 cmds=83 noFull=1 shQ=206201 | m=0.900 worth=70.6 cheap=7.8 over=0 dMedOther=92.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4210 ryan_m B=835280 L=16138 d=51.8 nb=0 neut=0 cmds=83 noFull=1 shQ=208820 | m=0.900 worth=71.1 cheap=7.8 over=0 dMedOther=93.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4215 ryan_m B=835280 L=16138 d=51.8 nb=0 neut=0 cmds=83 noFull=1 shQ=208820 | m=0.900 worth=71.1 cheap=7.8 over=0 dMedOther=93.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4220 ryan_m B=845888 L=16138 d=52.4 nb=0 neut=0 cmds=83 noFull=1 shQ=211472 | m=0.900 worth=72.0 cheap=7.8 over=0 dMedOther=94.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4225 ryan_m B=845888 L=16138 d=52.4 nb=0 neut=0 cmds=84 noFull=1 shQ=211472 | m=0.900 worth=72.0 cheap=7.8 over=0 dMedOther=94.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] zero_7#49[T3]（约 314729 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4230 ryan_m B=856630 L=16138 d=53.1 nb=0 neut=0 cmds=84 noFull=1 shQ=214157 | m=0.900 worth=72.9 cheap=7.8 over=0 dMedOther=95.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4235 ryan_m B=856630 L=16138 d=53.1 nb=0 neut=0 cmds=84 noFull=1 shQ=214157 | m=0.900 worth=72.9 cheap=7.8 over=0 dMedOther=95.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4240 ryan_m B=867509 L=16138 d=53.8 nb=0 neut=0 cmds=84 noFull=1 shQ=216877 | m=0.900 worth=73.9 cheap=7.8 over=0 dMedOther=96.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4245 ryan_m B=867509 L=16138 d=53.8 nb=0 neut=0 cmds=84 noFull=1 shQ=216877 | m=0.900 worth=74.5 cheap=7.8 over=0 dMedOther=97.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4250 ryan_m B=878526 L=16138 d=54.4 nb=0 neut=0 cmds=84 noFull=1 shQ=219631 | m=0.900 worth=75.5 cheap=7.8 over=0 dMedOther=98.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4255 ryan_m B=878526 L=16138 d=54.4 nb=0 neut=0 cmds=84 noFull=1 shQ=219631 | m=0.900 worth=74.8 cheap=7.8 over=0 dMedOther=97.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4260 ryan_m B=889683 L=16138 d=55.1 nb=0 neut=0 cmds=84 noFull=1 shQ=222420 | m=0.900 worth=74.7 cheap=7.8 over=0 dMedOther=97.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4265 ryan_m B=889683 L=16138 d=55.1 nb=0 neut=0 cmds=84 noFull=1 shQ=222420 | m=0.900 worth=73.4 cheap=7.8 over=0 dMedOther=96.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4270 ryan_m B=900981 L=16138 d=55.8 nb=0 neut=0 cmds=84 noFull=1 shQ=225245 | m=0.900 worth=73.5 cheap=7.8 over=0 dMedOther=96.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4275 ryan_m B=900981 L=16138 d=55.8 nb=0 neut=0 cmds=84 noFull=1 shQ=225245 | m=0.900 worth=73.1 cheap=7.8 over=0 dMedOther=95.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4280 ryan_m B=912423 L=16138 d=56.5 nb=0 neut=0 cmds=84 noFull=1 shQ=228105 | m=0.900 worth=72.5 cheap=7.8 over=0 dMedOther=94.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4285 ryan_m B=912423 L=16138 d=56.5 nb=0 neut=0 cmds=84 noFull=1 shQ=228105 | m=0.900 worth=71.6 cheap=7.8 over=0 dMedOther=93.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4290 ryan_m B=924010 L=16138 d=57.3 nb=0 neut=0 cmds=84 noFull=1 shQ=231002 | m=0.900 worth=72.3 cheap=7.8 over=0 dMedOther=94.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4295 ryan_m B=924010 L=16138 d=57.3 nb=0 neut=0 cmds=84 noFull=1 shQ=231002 | m=0.900 worth=71.5 cheap=7.8 over=0 dMedOther=93.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4300 ryan_m B=951882 L=16138 d=59.0 nb=0 neut=0 cmds=85 noFull=1 shQ=234024 | m=0.900 worth=72.8 cheap=7.8 over=0 dMedOther=95.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=260 → [APEX] zero_7#49[T3]（约 242618 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4305 ryan_m B=951882 L=16138 d=59.0 nb=0 neut=0 cmds=85 noFull=1 shQ=237970 | m=0.900 worth=72.8 cheap=7.8 over=0 dMedOther=95.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4310 ryan_m B=963970 L=16138 d=59.7 nb=0 neut=0 cmds=85 noFull=1 shQ=240992 | m=0.900 worth=73.6 cheap=7.8 over=0 dMedOther=96.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4315 ryan_m B=658023 L=16138 d=40.8 nb=0 neut=0 cmds=85 noFull=1 shQ=164505 | m=0.900 worth=75.2 cheap=7.8 over=0 dMedOther=98.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4320 ryan_m B=666379 L=16138 d=41.3 nb=0 neut=0 cmds=85 noFull=1 shQ=166594 | m=0.900 worth=76.3 cheap=7.8 over=0 dMedOther=99.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4325 ryan_m B=666379 L=16138 d=41.3 nb=0 neut=0 cmds=85 noFull=1 shQ=166594 | m=0.900 worth=76.3 cheap=7.8 over=0 dMedOther=99.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4330 ryan_m B=674842 L=16138 d=41.8 nb=0 neut=0 cmds=85 noFull=1 shQ=168710 | m=0.900 worth=77.4 cheap=7.8 over=0 dMedOther=101.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4335 ryan_m B=674842 L=16138 d=41.8 nb=0 neut=0 cmds=85 noFull=1 shQ=168710 | m=0.900 worth=77.4 cheap=7.8 over=0 dMedOther=101.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4340 ryan_m B=683412 L=16138 d=42.3 nb=0 neut=0 cmds=85 noFull=1 shQ=170853 | m=0.900 worth=78.0 cheap=7.8 over=0 dMedOther=102.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4345 ryan_m B=683412 L=16138 d=42.3 nb=0 neut=0 cmds=85 noFull=1 shQ=170853 | m=0.900 worth=77.7 cheap=7.8 over=0 dMedOther=101.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4350 ryan_m B=692091 L=16138 d=42.9 nb=0 neut=0 cmds=86 noFull=1 shQ=173022 | m=0.900 worth=77.3 cheap=7.8 over=0 dMedOther=101.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=259 → [APEX] noah88#44[T3]（约 175726 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4355 ryan_m B=692091 L=16138 d=42.9 nb=0 neut=0 cmds=86 noFull=1 shQ=173022 | m=0.900 worth=76.9 cheap=7.8 over=0 dMedOther=100.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4360 ryan_m B=700880 L=16138 d=43.4 nb=0 neut=0 cmds=86 noFull=1 shQ=175220 | m=0.900 worth=77.4 cheap=7.8 over=0 dMedOther=101.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4365 ryan_m B=479118 L=16138 d=29.7 nb=0 neut=0 cmds=86 noFull=1 shQ=119779 | m=0.900 worth=77.0 cheap=7.8 over=0 dMedOther=100.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4370 ryan_m B=485202 L=16138 d=30.1 nb=0 neut=0 cmds=86 noFull=1 shQ=121300 | m=0.900 worth=77.3 cheap=7.8 over=0 dMedOther=101.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4375 ryan_m B=485202 L=16138 d=30.1 nb=0 neut=0 cmds=86 noFull=1 shQ=121300 | m=0.900 worth=77.8 cheap=7.8 over=0 dMedOther=101.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4380 ryan_m B=491364 L=16138 d=30.4 nb=0 neut=0 cmds=86 noFull=1 shQ=122841 | m=0.900 worth=78.2 cheap=7.8 over=0 dMedOther=102.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4385 ryan_m B=491364 L=16138 d=30.4 nb=0 neut=0 cmds=86 noFull=1 shQ=122841 | m=0.900 worth=78.2 cheap=7.8 over=0 dMedOther=102.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4390 ryan_m B=497604 L=16138 d=30.8 nb=0 neut=0 cmds=86 noFull=1 shQ=124401 | m=0.900 worth=79.2 cheap=7.8 over=0 dMedOther=103.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4395 ryan_m B=497604 L=16138 d=30.8 nb=0 neut=0 cmds=86 noFull=1 shQ=124401 | m=0.900 worth=79.2 cheap=7.8 over=0 dMedOther=103.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4400 ryan_m B=520061 L=16138 d=32.2 nb=0 neut=0 cmds=86 noFull=1 shQ=126052 | m=0.900 worth=80.9 cheap=7.8 over=0 dMedOther=105.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4405 ryan_m B=520061 L=16138 d=32.2 nb=0 neut=0 cmds=86 noFull=1 shQ=130015 | m=0.900 worth=80.7 cheap=7.8 over=0 dMedOther=105.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4410 ryan_m B=526665 L=16138 d=32.6 nb=0 neut=0 cmds=86 noFull=1 shQ=131666 | m=0.900 worth=81.6 cheap=7.8 over=0 dMedOther=106.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4415 ryan_m B=526665 L=16138 d=32.6 nb=0 neut=0 cmds=86 noFull=1 shQ=131666 | m=0.900 worth=81.6 cheap=7.8 over=0 dMedOther=106.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4420 ryan_m B=533353 L=16138 d=33.0 nb=0 neut=0 cmds=86 noFull=1 shQ=133338 | m=0.900 worth=78.1 cheap=7.8 over=0 dMedOther=102.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4425 ryan_m B=533353 L=16138 d=33.0 nb=0 neut=0 cmds=86 noFull=1 shQ=133338 | m=0.900 worth=77.3 cheap=7.8 over=0 dMedOther=101.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4430 ryan_m B=540126 L=16138 d=33.5 nb=0 neut=0 cmds=86 noFull=1 shQ=135031 | m=0.900 worth=78.2 cheap=7.8 over=0 dMedOther=102.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4435 ryan_m B=540126 L=16138 d=33.5 nb=0 neut=0 cmds=86 noFull=1 shQ=135031 | m=0.900 worth=78.2 cheap=7.8 over=0 dMedOther=102.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4440 ryan_m B=546985 L=16138 d=33.9 nb=0 neut=0 cmds=86 noFull=1 shQ=136746 | m=0.900 worth=79.2 cheap=7.8 over=0 dMedOther=103.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4445 ryan_m B=546985 L=16138 d=33.9 nb=0 neut=0 cmds=86 noFull=1 shQ=136746 | m=0.900 worth=79.2 cheap=7.8 over=0 dMedOther=103.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4450 ryan_m B=553931 L=16138 d=34.3 nb=0 neut=0 cmds=86 noFull=1 shQ=138482 | m=0.900 worth=75.8 cheap=7.8 over=0 dMedOther=99.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4455 ryan_m B=553931 L=16138 d=34.3 nb=0 neut=0 cmds=86 noFull=1 shQ=138482 | m=0.900 worth=73.6 cheap=7.8 over=0 dMedOther=96.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4460 ryan_m B=560965 L=16138 d=34.8 nb=0 neut=0 cmds=86 noFull=1 shQ=140241 | m=0.900 worth=74.6 cheap=7.8 over=0 dMedOther=97.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4465 ryan_m B=560965 L=16138 d=34.8 nb=0 neut=0 cmds=86 noFull=1 shQ=140241 | m=0.900 worth=74.6 cheap=7.8 over=0 dMedOther=97.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4470 ryan_m B=568089 L=16138 d=35.2 nb=0 neut=0 cmds=86 noFull=1 shQ=142022 | m=0.900 worth=75.5 cheap=7.8 over=0 dMedOther=98.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4475 ryan_m B=568089 L=16138 d=35.2 nb=0 neut=0 cmds=86 noFull=1 shQ=142022 | m=0.900 worth=75.5 cheap=7.8 over=0 dMedOther=98.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4480 ryan_m B=575303 L=16138 d=35.6 nb=0 neut=0 cmds=86 noFull=1 shQ=143825 | m=0.900 worth=76.2 cheap=7.8 over=0 dMedOther=99.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4485 ryan_m B=575303 L=16138 d=35.6 nb=0 neut=0 cmds=86 noFull=1 shQ=143825 | m=0.900 worth=76.2 cheap=7.8 over=0 dMedOther=99.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4490 ryan_m B=582609 L=16138 d=36.1 nb=0 neut=0 cmds=86 noFull=1 shQ=145652 | m=0.900 worth=77.1 cheap=7.8 over=0 dMedOther=100.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4495 ryan_m B=582609 L=16138 d=36.1 nb=0 neut=0 cmds=86 noFull=1 shQ=145652 | m=0.900 worth=77.1 cheap=7.8 over=0 dMedOther=100.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4500 ryan_m B=606146 L=16138 d=37.6 nb=0 neut=0 cmds=86 noFull=1 shQ=147576 | m=0.900 worth=78.8 cheap=7.8 over=0 dMedOther=103.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4505 ryan_m B=606146 L=16138 d=37.6 nb=0 neut=0 cmds=86 noFull=1 shQ=151536 | m=0.900 worth=78.8 cheap=7.8 over=0 dMedOther=103.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4510 ryan_m B=613844 L=16138 d=38.0 nb=0 neut=0 cmds=86 noFull=1 shQ=153461 | m=0.900 worth=79.8 cheap=7.8 over=0 dMedOther=104.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4515 ryan_m B=613844 L=16138 d=38.0 nb=0 neut=0 cmds=86 noFull=1 shQ=153461 | m=0.900 worth=79.8 cheap=7.8 over=0 dMedOther=104.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4520 ryan_m B=621639 L=16138 d=38.5 nb=0 neut=0 cmds=86 noFull=1 shQ=155409 | m=0.900 worth=80.7 cheap=7.8 over=0 dMedOther=105.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4525 ryan_m B=621639 L=16138 d=38.5 nb=0 neut=0 cmds=86 noFull=1 shQ=155409 | m=0.900 worth=80.7 cheap=7.8 over=0 dMedOther=105.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4530 ryan_m B=629533 L=16138 d=39.0 nb=0 neut=0 cmds=86 noFull=1 shQ=157383 | m=0.900 worth=81.6 cheap=7.8 over=0 dMedOther=106.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4535 ryan_m B=629533 L=16138 d=39.0 nb=0 neut=0 cmds=86 noFull=1 shQ=157383 | m=0.900 worth=81.6 cheap=7.8 over=0 dMedOther=106.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4540 ryan_m B=637528 L=16138 d=39.5 nb=0 neut=0 cmds=86 noFull=1 shQ=159382 | m=0.900 worth=80.1 cheap=7.8 over=0 dMedOther=104.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4545 ryan_m B=637528 L=16138 d=39.5 nb=0 neut=0 cmds=86 noFull=1 shQ=159382 | m=0.900 worth=80.1 cheap=7.8 over=0 dMedOther=104.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4550 ryan_m B=645624 L=16138 d=40.0 nb=0 neut=0 cmds=86 noFull=1 shQ=161406 | m=0.900 worth=81.0 cheap=7.8 over=0 dMedOther=105.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4555 ryan_m B=645624 L=16138 d=40.0 nb=0 neut=0 cmds=86 noFull=1 shQ=161406 | m=0.900 worth=73.4 cheap=7.8 over=0 dMedOther=96.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4560 ryan_m B=653823 L=16138 d=40.5 nb=0 neut=0 cmds=86 noFull=1 shQ=163455 | m=0.900 worth=73.4 cheap=7.8 over=0 dMedOther=96.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4565 ryan_m B=653823 L=16138 d=40.5 nb=0 neut=0 cmds=86 noFull=1 shQ=163455 | m=0.900 worth=71.6 cheap=7.8 over=0 dMedOther=93.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4570 ryan_m B=662126 L=16138 d=41.0 nb=0 neut=0 cmds=86 noFull=1 shQ=165531 | m=0.900 worth=72.5 cheap=7.8 over=0 dMedOther=94.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4575 ryan_m B=662126 L=16138 d=41.0 nb=0 neut=0 cmds=86 noFull=1 shQ=165531 | m=0.900 worth=72.5 cheap=7.8 over=0 dMedOther=94.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4580 ryan_m B=670535 L=16138 d=41.6 nb=0 neut=0 cmds=86 noFull=1 shQ=167633 | m=0.900 worth=74.1 cheap=7.8 over=0 dMedOther=96.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4585 ryan_m B=670535 L=16138 d=41.6 nb=0 neut=0 cmds=86 noFull=1 shQ=167633 | m=0.900 worth=82.5 cheap=7.8 over=0 dMedOther=107.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4590 ryan_m B=679050 L=16138 d=42.1 nb=0 neut=0 cmds=86 noFull=1 shQ=169762 | m=0.900 worth=87.3 cheap=7.8 over=0 dMedOther=114.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4595 ryan_m B=679050 L=16138 d=42.1 nb=0 neut=0 cmds=86 noFull=1 shQ=169762 | m=0.900 worth=87.3 cheap=7.8 over=0 dMedOther=114.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4600 ryan_m B=703811 L=16138 d=43.6 nb=0 neut=0 cmds=86 noFull=1 shQ=171996 | m=0.900 worth=86.9 cheap=7.8 over=0 dMedOther=113.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4605 ryan_m B=703811 L=16138 d=43.6 nb=0 neut=0 cmds=86 noFull=1 shQ=175952 | m=0.900 worth=86.9 cheap=7.8 over=0 dMedOther=113.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4610 ryan_m B=712749 L=16138 d=44.2 nb=0 neut=0 cmds=86 noFull=1 shQ=178187 | m=0.900 worth=85.2 cheap=7.8 over=0 dMedOther=111.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4615 ryan_m B=712749 L=16138 d=44.2 nb=0 neut=0 cmds=86 noFull=1 shQ=178187 | m=0.900 worth=85.2 cheap=7.8 over=0 dMedOther=111.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4620 ryan_m B=721800 L=16138 d=44.7 nb=0 neut=0 cmds=86 noFull=1 shQ=180450 | m=0.900 worth=86.0 cheap=7.8 over=0 dMedOther=112.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4625 ryan_m B=721800 L=16138 d=44.7 nb=0 neut=0 cmds=87 noFull=1 shQ=180450 | m=0.900 worth=86.0 cheap=7.8 over=0 dMedOther=112.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=291 → [APEX] noah88#44[T3]（约 205825 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4630 ryan_m B=730966 L=16138 d=45.3 nb=0 neut=0 cmds=87 noFull=1 shQ=182741 | m=0.900 worth=86.8 cheap=7.8 over=0 dMedOther=113.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4635 ryan_m B=476842 L=16138 d=29.5 nb=0 neut=0 cmds=87 noFull=1 shQ=119210 | m=0.900 worth=86.8 cheap=7.8 over=0 dMedOther=113.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4640 ryan_m B=482897 L=16138 d=29.9 nb=0 neut=0 cmds=87 noFull=1 shQ=120724 | m=0.900 worth=87.6 cheap=7.8 over=0 dMedOther=114.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4645 ryan_m B=482897 L=16138 d=29.9 nb=0 neut=0 cmds=87 noFull=1 shQ=120724 | m=0.900 worth=87.6 cheap=7.8 over=0 dMedOther=114.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4650 ryan_m B=489029 L=16138 d=30.3 nb=0 neut=0 cmds=87 noFull=1 shQ=122257 | m=0.900 worth=88.3 cheap=7.8 over=0 dMedOther=115.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4655 ryan_m B=489029 L=16138 d=30.3 nb=0 neut=0 cmds=87 noFull=1 shQ=122257 | m=0.900 worth=88.1 cheap=7.8 over=0 dMedOther=115.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4660 ryan_m B=495239 L=16138 d=30.7 nb=0 neut=0 cmds=87 noFull=1 shQ=123809 | m=0.900 worth=88.6 cheap=7.8 over=0 dMedOther=115.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4665 ryan_m B=495239 L=16138 d=30.7 nb=0 neut=0 cmds=87 noFull=1 shQ=123809 | m=0.900 worth=88.3 cheap=7.8 over=0 dMedOther=115.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4670 ryan_m B=501528 L=16138 d=31.1 nb=0 neut=0 cmds=87 noFull=1 shQ=125382 | m=0.900 worth=88.7 cheap=7.8 over=0 dMedOther=116.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4675 ryan_m B=501528 L=16138 d=31.1 nb=0 neut=0 cmds=87 noFull=1 shQ=125382 | m=0.900 worth=88.2 cheap=7.8 over=0 dMedOther=115.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4680 ryan_m B=507897 L=16138 d=31.5 nb=0 neut=0 cmds=87 noFull=1 shQ=126974 | m=0.900 worth=88.9 cheap=7.8 over=0 dMedOther=116.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4685 ryan_m B=507897 L=16138 d=31.5 nb=0 neut=0 cmds=87 noFull=1 shQ=126974 | m=0.900 worth=87.9 cheap=7.8 over=0 dMedOther=114.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4690 ryan_m B=514347 L=16138 d=31.9 nb=0 neut=0 cmds=87 noFull=1 shQ=128586 | m=0.900 worth=86.6 cheap=7.8 over=0 dMedOther=113.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4695 ryan_m B=514347 L=16138 d=31.9 nb=0 neut=0 cmds=87 noFull=1 shQ=128586 | m=0.900 worth=86.6 cheap=7.8 over=0 dMedOther=113.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4700 ryan_m B=537017 L=16138 d=33.3 nb=0 neut=0 cmds=87 noFull=1 shQ=130291 | m=0.900 worth=88.2 cheap=7.8 over=0 dMedOther=115.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4705 ryan_m B=537017 L=16138 d=33.3 nb=0 neut=0 cmds=87 noFull=1 shQ=134254 | m=0.900 worth=88.2 cheap=7.8 over=0 dMedOther=115.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4710 ryan_m B=543837 L=16138 d=33.7 nb=0 neut=0 cmds=87 noFull=1 shQ=135959 | m=0.900 worth=88.9 cheap=7.8 over=0 dMedOther=116.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4715 ryan_m B=543837 L=16138 d=33.7 nb=0 neut=0 cmds=87 noFull=1 shQ=135959 | m=0.900 worth=88.9 cheap=7.8 over=0 dMedOther=116.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4720 ryan_m B=550743 L=16138 d=34.1 nb=0 neut=0 cmds=87 noFull=1 shQ=137685 | m=0.900 worth=89.7 cheap=7.8 over=0 dMedOther=117.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4725 ryan_m B=550743 L=16138 d=34.1 nb=0 neut=0 cmds=87 noFull=1 shQ=137685 | m=0.900 worth=89.7 cheap=7.8 over=0 dMedOther=117.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4730 ryan_m B=557737 L=16138 d=34.6 nb=0 neut=0 cmds=87 noFull=1 shQ=139434 | m=0.900 worth=90.4 cheap=7.8 over=0 dMedOther=118.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4735 ryan_m B=557737 L=16138 d=34.6 nb=0 neut=0 cmds=87 noFull=1 shQ=139434 | m=0.900 worth=90.4 cheap=7.8 over=0 dMedOther=118.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4740 ryan_m B=564820 L=16138 d=35.0 nb=0 neut=0 cmds=87 noFull=1 shQ=141205 | m=0.900 worth=88.5 cheap=7.8 over=0 dMedOther=115.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4745 ryan_m B=564820 L=16138 d=35.0 nb=0 neut=0 cmds=87 noFull=1 shQ=141205 | m=0.900 worth=88.5 cheap=7.8 over=0 dMedOther=115.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4750 ryan_m B=571993 L=16138 d=35.4 nb=0 neut=0 cmds=87 noFull=1 shQ=142998 | m=0.900 worth=89.2 cheap=7.8 over=0 dMedOther=116.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4755 ryan_m B=571993 L=16138 d=35.4 nb=0 neut=0 cmds=87 noFull=1 shQ=142998 | m=0.900 worth=89.2 cheap=7.8 over=0 dMedOther=116.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4760 ryan_m B=579257 L=16138 d=35.9 nb=0 neut=0 cmds=87 noFull=1 shQ=144814 | m=0.900 worth=89.9 cheap=7.8 over=0 dMedOther=117.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4765 ryan_m B=579257 L=16138 d=35.9 nb=0 neut=0 cmds=87 noFull=1 shQ=144814 | m=0.900 worth=81.4 cheap=7.8 over=0 dMedOther=106.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4770 ryan_m B=586613 L=16138 d=36.3 nb=0 neut=0 cmds=87 noFull=1 shQ=146653 | m=0.900 worth=80.6 cheap=7.8 over=0 dMedOther=105.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4775 ryan_m B=586613 L=16138 d=36.3 nb=0 neut=0 cmds=87 noFull=1 shQ=146653 | m=0.900 worth=80.3 cheap=7.8 over=0 dMedOther=105.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4780 ryan_m B=594062 L=16138 d=36.8 nb=0 neut=0 cmds=87 noFull=1 shQ=148515 | m=0.900 worth=81.4 cheap=7.8 over=0 dMedOther=106.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4785 ryan_m B=594062 L=16138 d=36.8 nb=0 neut=0 cmds=87 noFull=1 shQ=148515 | m=0.900 worth=80.8 cheap=7.8 over=0 dMedOther=105.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4790 ryan_m B=601606 L=16138 d=37.3 nb=0 neut=0 cmds=87 noFull=1 shQ=150401 | m=0.900 worth=79.9 cheap=7.8 over=0 dMedOther=104.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4795 ryan_m B=601606 L=16138 d=37.3 nb=0 neut=0 cmds=87 noFull=1 shQ=150401 | m=0.900 worth=79.6 cheap=7.8 over=0 dMedOther=104.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4800 ryan_m B=625384 L=16138 d=38.8 nb=0 neut=0 cmds=87 noFull=1 shQ=152386 | m=0.900 worth=80.6 cheap=7.8 over=0 dMedOther=105.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4805 ryan_m B=625384 L=16138 d=38.8 nb=0 neut=0 cmds=87 noFull=1 shQ=156346 | m=0.900 worth=80.6 cheap=7.8 over=0 dMedOther=105.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4810 ryan_m B=633326 L=16138 d=39.2 nb=0 neut=0 cmds=87 noFull=1 shQ=158331 | m=0.900 worth=81.5 cheap=7.8 over=0 dMedOther=106.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4815 ryan_m B=633326 L=16138 d=39.2 nb=0 neut=0 cmds=87 noFull=1 shQ=158331 | m=0.900 worth=81.5 cheap=7.8 over=0 dMedOther=106.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4820 ryan_m B=641369 L=16138 d=39.7 nb=0 neut=0 cmds=87 noFull=1 shQ=160342 | m=0.900 worth=82.4 cheap=7.8 over=0 dMedOther=107.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4825 ryan_m B=641369 L=16138 d=39.7 nb=0 neut=0 cmds=87 noFull=1 shQ=160342 | m=0.900 worth=82.4 cheap=7.8 over=0 dMedOther=107.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4830 ryan_m B=649514 L=16138 d=40.2 nb=0 neut=0 cmds=87 noFull=1 shQ=162378 | m=0.900 worth=81.4 cheap=7.8 over=0 dMedOther=106.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4835 ryan_m B=649514 L=16138 d=40.2 nb=0 neut=0 cmds=87 noFull=1 shQ=162378 | m=0.900 worth=80.2 cheap=7.8 over=0 dMedOther=104.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4840 ryan_m B=657762 L=16138 d=40.8 nb=0 neut=0 cmds=87 noFull=1 shQ=164440 | m=0.900 worth=81.1 cheap=7.8 over=0 dMedOther=106.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4845 ryan_m B=657762 L=16138 d=40.8 nb=0 neut=0 cmds=87 noFull=1 shQ=164440 | m=0.900 worth=81.1 cheap=7.8 over=0 dMedOther=106.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4850 ryan_m B=666115 L=16138 d=41.3 nb=0 neut=0 cmds=87 noFull=1 shQ=166528 | m=0.900 worth=82.0 cheap=7.8 over=0 dMedOther=107.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4855 ryan_m B=666115 L=16138 d=41.3 nb=0 neut=0 cmds=87 noFull=1 shQ=166528 | m=0.900 worth=82.0 cheap=7.8 over=0 dMedOther=107.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4860 ryan_m B=674574 L=16138 d=41.8 nb=0 neut=0 cmds=87 noFull=1 shQ=168643 | m=0.900 worth=77.8 cheap=7.8 over=0 dMedOther=101.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4865 ryan_m B=674574 L=16138 d=41.8 nb=0 neut=0 cmds=87 noFull=1 shQ=168643 | m=0.900 worth=77.8 cheap=7.8 over=0 dMedOther=101.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4870 ryan_m B=683141 L=16138 d=42.3 nb=0 neut=0 cmds=87 noFull=1 shQ=170785 | m=0.900 worth=78.8 cheap=7.8 over=0 dMedOther=103.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4875 ryan_m B=683141 L=16138 d=42.3 nb=0 neut=0 cmds=88 noFull=1 shQ=170785 | m=0.900 worth=78.8 cheap=7.8 over=0 dMedOther=103.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=249 → [APEX] noah88#44[T3]（约 166782 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=4880 ryan_m B=691816 L=16138 d=42.9 nb=0 neut=0 cmds=88 noFull=1 shQ=172954 | m=0.900 worth=79.7 cheap=7.8 over=0 dMedOther=104.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4885 ryan_m B=691816 L=16138 d=42.9 nb=0 neut=0 cmds=88 noFull=1 shQ=172954 | m=0.900 worth=79.7 cheap=7.8 over=0 dMedOther=104.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4890 ryan_m B=485769 L=16138 d=30.1 nb=0 neut=0 cmds=88 noFull=1 shQ=121442 | m=0.900 worth=75.6 cheap=7.8 over=0 dMedOther=98.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4895 ryan_m B=485769 L=16138 d=30.1 nb=0 neut=0 cmds=88 noFull=1 shQ=121442 | m=0.900 worth=75.6 cheap=7.8 over=0 dMedOther=98.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4900 ryan_m B=508076 L=16138 d=31.5 nb=0 neut=0 cmds=88 noFull=1 shQ=123055 | m=0.900 worth=77.4 cheap=7.8 over=0 dMedOther=101.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4905 ryan_m B=508076 L=16138 d=31.5 nb=0 neut=0 cmds=88 noFull=1 shQ=127019 | m=0.900 worth=78.7 cheap=7.8 over=0 dMedOther=102.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4910 ryan_m B=514528 L=16138 d=31.9 nb=0 neut=0 cmds=88 noFull=1 shQ=128632 | m=0.900 worth=79.2 cheap=7.8 over=0 dMedOther=103.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4915 ryan_m B=514528 L=16138 d=31.9 nb=0 neut=0 cmds=88 noFull=1 shQ=128632 | m=0.900 worth=78.7 cheap=7.8 over=0 dMedOther=102.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4920 ryan_m B=521062 L=16138 d=32.3 nb=0 neut=0 cmds=88 noFull=1 shQ=130265 | m=0.900 worth=79.5 cheap=7.8 over=0 dMedOther=103.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4925 ryan_m B=521062 L=16138 d=32.3 nb=0 neut=0 cmds=88 noFull=1 shQ=130265 | m=0.900 worth=79.5 cheap=7.8 over=0 dMedOther=103.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4930 ryan_m B=527679 L=16138 d=32.7 nb=0 neut=0 cmds=88 noFull=1 shQ=131919 | m=0.900 worth=77.7 cheap=7.8 over=0 dMedOther=101.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4935 ryan_m B=527679 L=16138 d=32.7 nb=0 neut=0 cmds=88 noFull=1 shQ=131919 | m=0.900 worth=77.7 cheap=7.8 over=0 dMedOther=101.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4940 ryan_m B=534380 L=16138 d=33.1 nb=0 neut=0 cmds=88 noFull=1 shQ=133595 | m=0.900 worth=78.7 cheap=7.8 over=0 dMedOther=102.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4945 ryan_m B=534380 L=16138 d=33.1 nb=0 neut=0 cmds=88 noFull=1 shQ=133595 | m=0.900 worth=78.7 cheap=7.8 over=0 dMedOther=102.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4950 ryan_m B=541166 L=16138 d=33.5 nb=0 neut=0 cmds=88 noFull=1 shQ=135291 | m=0.900 worth=76.9 cheap=7.8 over=0 dMedOther=100.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4955 ryan_m B=541166 L=16138 d=33.5 nb=0 neut=0 cmds=88 noFull=1 shQ=135291 | m=0.900 worth=76.9 cheap=7.8 over=0 dMedOther=100.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4960 ryan_m B=548038 L=16138 d=34.0 nb=0 neut=0 cmds=88 noFull=1 shQ=137009 | m=0.900 worth=75.2 cheap=7.8 over=0 dMedOther=98.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4965 ryan_m B=548038 L=16138 d=34.0 nb=0 neut=0 cmds=88 noFull=1 shQ=137009 | m=0.900 worth=74.2 cheap=7.8 over=0 dMedOther=97.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4970 ryan_m B=554998 L=16138 d=34.4 nb=0 neut=0 cmds=88 noFull=1 shQ=138749 | m=0.900 worth=75.1 cheap=7.8 over=0 dMedOther=98.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4975 ryan_m B=554998 L=16138 d=34.4 nb=0 neut=0 cmds=88 noFull=1 shQ=138749 | m=0.900 worth=75.1 cheap=7.8 over=0 dMedOther=98.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4980 ryan_m B=562046 L=16138 d=34.8 nb=0 neut=0 cmds=88 noFull=1 shQ=140511 | m=0.900 worth=75.9 cheap=7.8 over=0 dMedOther=99.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4985 ryan_m B=562046 L=16138 d=34.8 nb=0 neut=0 cmds=88 noFull=1 shQ=140511 | m=0.900 worth=75.9 cheap=7.8 over=0 dMedOther=99.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4990 ryan_m B=569183 L=16138 d=35.3 nb=0 neut=0 cmds=88 noFull=1 shQ=142295 | m=0.900 worth=76.8 cheap=7.8 over=0 dMedOther=100.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=4995 ryan_m B=569183 L=16138 d=35.3 nb=0 neut=0 cmds=88 noFull=1 shQ=142295 | m=0.900 worth=76.6 cheap=7.8 over=0 dMedOther=100.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5000 ryan_m B=592549 L=16138 d=36.7 nb=0 neut=0 cmds=88 noFull=1 shQ=144176 | m=0.900 worth=76.6 cheap=7.8 over=0 dMedOther=100.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5005 ryan_m B=592549 L=16138 d=36.7 nb=0 neut=0 cmds=88 noFull=1 shQ=148137 | m=0.900 worth=76.6 cheap=7.8 over=0 dMedOther=100.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5010 ryan_m B=600074 L=16138 d=37.2 nb=0 neut=0 cmds=88 noFull=1 shQ=150018 | m=0.900 worth=77.5 cheap=7.8 over=0 dMedOther=101.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5015 ryan_m B=600074 L=16138 d=37.2 nb=0 neut=0 cmds=88 noFull=1 shQ=150018 | m=0.900 worth=77.5 cheap=7.8 over=0 dMedOther=101.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5020 ryan_m B=607694 L=16138 d=37.7 nb=0 neut=0 cmds=88 noFull=1 shQ=151923 | m=0.900 worth=77.5 cheap=7.8 over=0 dMedOther=101.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5025 ryan_m B=607694 L=16138 d=37.7 nb=0 neut=0 cmds=88 noFull=1 shQ=151923 | m=0.900 worth=77.5 cheap=7.8 over=0 dMedOther=101.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5030 ryan_m B=615411 L=16138 d=38.1 nb=0 neut=0 cmds=88 noFull=1 shQ=153852 | m=0.900 worth=77.8 cheap=7.8 over=0 dMedOther=101.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5035 ryan_m B=615411 L=16138 d=38.1 nb=0 neut=0 cmds=88 noFull=1 shQ=153852 | m=0.900 worth=72.5 cheap=7.8 over=0 dMedOther=94.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5040 ryan_m B=623226 L=16138 d=38.6 nb=0 neut=0 cmds=88 noFull=1 shQ=155806 | m=0.900 worth=73.4 cheap=7.8 over=0 dMedOther=95.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5045 ryan_m B=623226 L=16138 d=38.6 nb=0 neut=0 cmds=88 noFull=1 shQ=155806 | m=0.900 worth=73.1 cheap=7.8 over=0 dMedOther=95.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5050 ryan_m B=631140 L=16138 d=39.1 nb=0 neut=0 cmds=88 noFull=1 shQ=157785 | m=0.900 worth=74.1 cheap=7.8 over=0 dMedOther=96.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5055 ryan_m B=631140 L=16138 d=39.1 nb=0 neut=0 cmds=88 noFull=1 shQ=157785 | m=0.900 worth=75.5 cheap=7.8 over=0 dMedOther=98.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5060 ryan_m B=639155 L=16138 d=39.6 nb=0 neut=0 cmds=88 noFull=1 shQ=159788 | m=0.900 worth=76.6 cheap=7.8 over=0 dMedOther=100.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5065 ryan_m B=639155 L=16138 d=39.6 nb=0 neut=0 cmds=88 noFull=1 shQ=159788 | m=0.900 worth=75.1 cheap=7.8 over=0 dMedOther=98.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5070 ryan_m B=647272 L=16138 d=40.1 nb=0 neut=0 cmds=88 noFull=1 shQ=161818 | m=0.900 worth=76.0 cheap=7.8 over=0 dMedOther=99.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5075 ryan_m B=647272 L=16138 d=40.1 nb=0 neut=0 cmds=88 noFull=1 shQ=161818 | m=0.900 worth=76.0 cheap=7.8 over=0 dMedOther=99.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5080 ryan_m B=655492 L=16138 d=40.6 nb=0 neut=0 cmds=88 noFull=1 shQ=163873 | m=0.900 worth=76.9 cheap=7.8 over=0 dMedOther=100.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5085 ryan_m B=655492 L=16138 d=40.6 nb=0 neut=0 cmds=88 noFull=1 shQ=163873 | m=0.900 worth=76.9 cheap=7.8 over=0 dMedOther=100.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5090 ryan_m B=663816 L=16138 d=41.1 nb=0 neut=0 cmds=88 noFull=1 shQ=165954 | m=0.900 worth=77.9 cheap=7.8 over=0 dMedOther=101.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5095 ryan_m B=663816 L=16138 d=41.1 nb=0 neut=0 cmds=88 noFull=1 shQ=165954 | m=0.900 worth=77.9 cheap=7.8 over=0 dMedOther=101.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5100 ryan_m B=688384 L=16138 d=42.7 nb=0 neut=0 cmds=89 noFull=1 shQ=168139 | m=0.900 worth=79.7 cheap=7.8 over=0 dMedOther=104.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=255 → [APEX] noah88#44[T3]（约 172096 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=5105 ryan_m B=688384 L=16138 d=42.7 nb=0 neut=0 cmds=89 noFull=1 shQ=172096 | m=0.900 worth=79.4 cheap=7.8 over=0 dMedOther=103.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5110 ryan_m B=697126 L=16138 d=43.2 nb=0 neut=0 cmds=89 noFull=1 shQ=174281 | m=0.900 worth=80.3 cheap=7.8 over=0 dMedOther=105.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5115 ryan_m B=479275 L=16138 d=29.7 nb=0 neut=0 cmds=89 noFull=1 shQ=119818 | m=0.900 worth=80.3 cheap=7.8 over=0 dMedOther=105.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5120 ryan_m B=485361 L=16138 d=30.1 nb=0 neut=0 cmds=89 noFull=1 shQ=121340 | m=0.900 worth=81.2 cheap=7.8 over=0 dMedOther=106.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5125 ryan_m B=485361 L=16138 d=30.1 nb=0 neut=0 cmds=89 noFull=1 shQ=121340 | m=0.900 worth=81.2 cheap=7.8 over=0 dMedOther=106.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5130 ryan_m B=491525 L=16138 d=30.5 nb=0 neut=0 cmds=89 noFull=1 shQ=122881 | m=0.900 worth=82.1 cheap=7.8 over=0 dMedOther=107.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5135 ryan_m B=491525 L=16138 d=30.5 nb=0 neut=0 cmds=89 noFull=1 shQ=122881 | m=0.900 worth=79.7 cheap=7.8 over=0 dMedOther=104.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5140 ryan_m B=497767 L=16138 d=30.8 nb=0 neut=0 cmds=89 noFull=1 shQ=124441 | m=0.900 worth=80.4 cheap=7.8 over=0 dMedOther=105.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5145 ryan_m B=497767 L=16138 d=30.8 nb=0 neut=0 cmds=89 noFull=1 shQ=124441 | m=0.900 worth=80.5 cheap=7.8 over=0 dMedOther=105.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5150 ryan_m B=504088 L=16138 d=31.2 nb=0 neut=0 cmds=89 noFull=1 shQ=126022 | m=0.900 worth=80.1 cheap=7.8 over=0 dMedOther=104.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5155 ryan_m B=504088 L=16138 d=31.2 nb=0 neut=0 cmds=89 noFull=1 shQ=126022 | m=0.900 worth=76.8 cheap=7.8 over=0 dMedOther=100.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5160 ryan_m B=510489 L=16138 d=31.6 nb=0 neut=0 cmds=89 noFull=1 shQ=127622 | m=0.900 worth=77.7 cheap=7.8 over=0 dMedOther=101.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5165 ryan_m B=510489 L=16138 d=31.6 nb=0 neut=0 cmds=89 noFull=1 shQ=127622 | m=0.900 worth=77.7 cheap=7.8 over=0 dMedOther=101.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5170 ryan_m B=516972 L=16138 d=32.0 nb=0 neut=0 cmds=89 noFull=1 shQ=129243 | m=0.900 worth=75.6 cheap=7.8 over=0 dMedOther=98.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5175 ryan_m B=516972 L=16138 d=32.0 nb=0 neut=0 cmds=89 noFull=1 shQ=129243 | m=0.900 worth=75.2 cheap=7.8 over=0 dMedOther=98.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5180 ryan_m B=523537 L=16138 d=32.4 nb=0 neut=0 cmds=89 noFull=1 shQ=130884 | m=0.900 worth=76.1 cheap=7.8 over=0 dMedOther=99.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5185 ryan_m B=523537 L=16138 d=32.4 nb=0 neut=0 cmds=89 noFull=1 shQ=130884 | m=0.900 worth=76.1 cheap=7.8 over=0 dMedOther=99.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5190 ryan_m B=530185 L=16138 d=32.9 nb=0 neut=0 cmds=89 noFull=1 shQ=132546 | m=0.900 worth=76.2 cheap=7.8 over=0 dMedOther=99.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5195 ryan_m B=530185 L=16138 d=32.9 nb=0 neut=0 cmds=89 noFull=1 shQ=132546 | m=0.900 worth=76.2 cheap=7.8 over=0 dMedOther=99.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5200 ryan_m B=553056 L=16138 d=34.3 nb=0 neut=0 cmds=89 noFull=1 shQ=134301 | m=0.900 worth=77.9 cheap=7.8 over=0 dMedOther=101.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5205 ryan_m B=553056 L=16138 d=34.3 nb=0 neut=0 cmds=89 noFull=1 shQ=138264 | m=0.900 worth=77.9 cheap=7.8 over=0 dMedOther=101.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5210 ryan_m B=560079 L=16138 d=34.7 nb=0 neut=0 cmds=89 noFull=1 shQ=140019 | m=0.900 worth=78.9 cheap=7.8 over=0 dMedOther=103.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5215 ryan_m B=560079 L=16138 d=34.7 nb=0 neut=0 cmds=89 noFull=1 shQ=140019 | m=0.900 worth=78.9 cheap=7.8 over=0 dMedOther=103.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5220 ryan_m B=567192 L=16138 d=35.1 nb=0 neut=0 cmds=89 noFull=1 shQ=141798 | m=0.900 worth=78.7 cheap=7.8 over=0 dMedOther=102.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5225 ryan_m B=567192 L=16138 d=35.1 nb=0 neut=0 cmds=89 noFull=1 shQ=141798 | m=0.900 worth=78.5 cheap=7.8 over=0 dMedOther=102.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5230 ryan_m B=574395 L=16138 d=35.6 nb=0 neut=0 cmds=89 noFull=1 shQ=143598 | m=0.900 worth=79.4 cheap=7.8 over=0 dMedOther=103.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5235 ryan_m B=574395 L=16138 d=35.6 nb=0 neut=0 cmds=89 noFull=1 shQ=143598 | m=0.900 worth=79.4 cheap=7.8 over=0 dMedOther=103.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5240 ryan_m B=581689 L=16138 d=36.0 nb=0 neut=0 cmds=89 noFull=1 shQ=145422 | m=0.900 worth=80.3 cheap=7.8 over=0 dMedOther=105.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5245 ryan_m B=581689 L=16138 d=36.0 nb=0 neut=0 cmds=89 noFull=1 shQ=145422 | m=0.900 worth=80.3 cheap=7.8 over=0 dMedOther=105.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5250 ryan_m B=589076 L=16138 d=36.5 nb=0 neut=0 cmds=89 noFull=1 shQ=147269 | m=0.900 worth=81.2 cheap=7.8 over=0 dMedOther=106.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5255 ryan_m B=589076 L=16138 d=36.5 nb=0 neut=0 cmds=89 noFull=1 shQ=147269 | m=0.900 worth=79.7 cheap=7.8 over=0 dMedOther=104.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5260 ryan_m B=596557 L=16138 d=37.0 nb=0 neut=0 cmds=89 noFull=1 shQ=149139 | m=0.900 worth=80.6 cheap=7.8 over=0 dMedOther=105.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5265 ryan_m B=596557 L=16138 d=37.0 nb=0 neut=0 cmds=89 noFull=1 shQ=149139 | m=0.900 worth=80.4 cheap=7.8 over=0 dMedOther=105.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5270 ryan_m B=604133 L=16138 d=37.4 nb=0 neut=0 cmds=89 noFull=1 shQ=151033 | m=0.900 worth=81.3 cheap=7.8 over=0 dMedOther=106.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5275 ryan_m B=604133 L=16138 d=37.4 nb=0 neut=0 cmds=89 noFull=1 shQ=151033 | m=0.900 worth=76.6 cheap=7.8 over=0 dMedOther=100.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5280 ryan_m B=611805 L=16138 d=37.9 nb=0 neut=0 cmds=89 noFull=1 shQ=152951 | m=0.900 worth=76.4 cheap=7.8 over=0 dMedOther=99.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5285 ryan_m B=611805 L=16138 d=37.9 nb=0 neut=0 cmds=89 noFull=1 shQ=152951 | m=0.900 worth=76.1 cheap=7.8 over=0 dMedOther=99.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5290 ryan_m B=619574 L=16138 d=38.4 nb=0 neut=0 cmds=89 noFull=1 shQ=154893 | m=0.900 worth=76.8 cheap=7.8 over=0 dMedOther=100.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5295 ryan_m B=619574 L=16138 d=38.4 nb=0 neut=0 cmds=89 noFull=1 shQ=154893 | m=0.900 worth=76.8 cheap=7.8 over=0 dMedOther=100.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5300 ryan_m B=643580 L=16138 d=39.9 nb=0 neut=0 cmds=89 noFull=1 shQ=156936 | m=0.900 worth=77.0 cheap=7.8 over=0 dMedOther=100.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5305 ryan_m B=643580 L=16138 d=39.9 nb=0 neut=0 cmds=89 noFull=1 shQ=160895 | m=0.900 worth=77.0 cheap=7.8 over=0 dMedOther=100.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5310 ryan_m B=651753 L=16138 d=40.4 nb=0 neut=0 cmds=89 noFull=1 shQ=162938 | m=0.900 worth=77.5 cheap=7.8 over=0 dMedOther=101.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5315 ryan_m B=651753 L=16138 d=40.4 nb=0 neut=0 cmds=89 noFull=1 shQ=162938 | m=0.900 worth=77.5 cheap=7.8 over=0 dMedOther=101.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5320 ryan_m B=660030 L=16138 d=40.9 nb=0 neut=0 cmds=89 noFull=1 shQ=165007 | m=0.900 worth=78.5 cheap=7.8 over=0 dMedOther=102.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5325 ryan_m B=660030 L=16138 d=40.9 nb=0 neut=0 cmds=89 noFull=1 shQ=165007 | m=0.900 worth=78.5 cheap=7.8 over=0 dMedOther=102.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5330 ryan_m B=668412 L=16138 d=41.4 nb=0 neut=0 cmds=89 noFull=1 shQ=167103 | m=0.900 worth=79.5 cheap=7.8 over=0 dMedOther=103.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5335 ryan_m B=668412 L=16138 d=41.4 nb=0 neut=0 cmds=89 noFull=1 shQ=167103 | m=0.900 worth=79.5 cheap=7.8 over=0 dMedOther=103.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5340 ryan_m B=676900 L=16138 d=41.9 nb=0 neut=0 cmds=89 noFull=1 shQ=169225 | m=0.900 worth=80.4 cheap=7.8 over=0 dMedOther=105.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5345 ryan_m B=676900 L=16138 d=41.9 nb=0 neut=0 cmds=89 noFull=1 shQ=169225 | m=0.900 worth=77.4 cheap=7.8 over=0 dMedOther=101.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5350 ryan_m B=685496 L=16138 d=42.5 nb=0 neut=0 cmds=89 noFull=1 shQ=171374 | m=0.900 worth=78.4 cheap=7.8 over=0 dMedOther=102.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5355 ryan_m B=685496 L=16138 d=42.5 nb=0 neut=0 cmds=89 noFull=1 shQ=171374 | m=0.900 worth=78.4 cheap=7.8 over=0 dMedOther=102.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5360 ryan_m B=694201 L=16138 d=43.0 nb=0 neut=0 cmds=89 noFull=1 shQ=173550 | m=0.900 worth=79.3 cheap=7.8 over=0 dMedOther=103.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5365 ryan_m B=694201 L=16138 d=43.0 nb=0 neut=0 cmds=89 noFull=1 shQ=173550 | m=0.900 worth=79.2 cheap=7.8 over=0 dMedOther=103.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5370 ryan_m B=703017 L=16138 d=43.6 nb=0 neut=0 cmds=89 noFull=1 shQ=175754 | m=0.900 worth=80.1 cheap=7.8 over=0 dMedOther=104.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5375 ryan_m B=703017 L=16138 d=43.6 nb=0 neut=0 cmds=90 noFull=1 shQ=175754 | m=0.900 worth=79.9 cheap=7.8 over=0 dMedOther=104.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=271 → [APEX] zero_7#49[T3]（约 186738 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=5380 ryan_m B=711945 L=16138 d=44.1 nb=0 neut=0 cmds=90 noFull=1 shQ=177986 | m=0.900 worth=80.7 cheap=7.8 over=0 dMedOther=105.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5385 ryan_m B=478339 L=16138 d=29.6 nb=0 neut=0 cmds=90 noFull=1 shQ=119584 | m=0.900 worth=80.6 cheap=7.8 over=0 dMedOther=105.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5390 ryan_m B=484413 L=16138 d=30.0 nb=0 neut=0 cmds=90 noFull=1 shQ=121103 | m=0.900 worth=81.4 cheap=7.8 over=0 dMedOther=106.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5395 ryan_m B=484413 L=16138 d=30.0 nb=0 neut=0 cmds=90 noFull=1 shQ=121103 | m=0.900 worth=77.9 cheap=7.8 over=0 dMedOther=101.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5400 ryan_m B=506703 L=16138 d=31.4 nb=0 neut=0 cmds=90 noFull=1 shQ=122711 | m=0.900 worth=79.6 cheap=7.8 over=0 dMedOther=104.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5405 ryan_m B=506703 L=16138 d=31.4 nb=0 neut=0 cmds=90 noFull=1 shQ=126675 | m=0.900 worth=79.6 cheap=7.8 over=0 dMedOther=104.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5410 ryan_m B=513138 L=16138 d=31.8 nb=0 neut=0 cmds=90 noFull=1 shQ=128284 | m=0.900 worth=80.5 cheap=7.8 over=0 dMedOther=105.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5415 ryan_m B=513138 L=16138 d=31.8 nb=0 neut=0 cmds=90 noFull=1 shQ=128284 | m=0.900 worth=80.5 cheap=7.8 over=0 dMedOther=105.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5420 ryan_m B=519654 L=16138 d=32.2 nb=0 neut=0 cmds=90 noFull=1 shQ=129913 | m=0.900 worth=81.4 cheap=7.8 over=0 dMedOther=106.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5425 ryan_m B=519654 L=16138 d=32.2 nb=0 neut=0 cmds=90 noFull=1 shQ=129913 | m=0.900 worth=81.4 cheap=7.8 over=0 dMedOther=106.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5430 ryan_m B=526253 L=16138 d=32.6 nb=0 neut=0 cmds=90 noFull=1 shQ=131563 | m=0.900 worth=82.3 cheap=7.8 over=0 dMedOther=107.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5435 ryan_m B=526253 L=16138 d=32.6 nb=0 neut=0 cmds=90 noFull=1 shQ=131563 | m=0.900 worth=82.3 cheap=7.8 over=0 dMedOther=107.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5440 ryan_m B=532936 L=16138 d=33.0 nb=0 neut=0 cmds=90 noFull=1 shQ=133234 | m=0.900 worth=80.3 cheap=7.8 over=0 dMedOther=105.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5445 ryan_m B=532936 L=16138 d=33.0 nb=0 neut=0 cmds=90 noFull=1 shQ=133234 | m=0.900 worth=80.3 cheap=7.8 over=0 dMedOther=105.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5450 ryan_m B=539704 L=16138 d=33.4 nb=0 neut=0 cmds=90 noFull=1 shQ=134926 | m=0.900 worth=79.1 cheap=7.8 over=0 dMedOther=103.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5455 ryan_m B=539704 L=16138 d=33.4 nb=0 neut=0 cmds=90 noFull=1 shQ=134926 | m=0.900 worth=79.1 cheap=7.8 over=0 dMedOther=103.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5460 ryan_m B=546558 L=16138 d=33.9 nb=0 neut=0 cmds=90 noFull=1 shQ=136639 | m=0.900 worth=80.1 cheap=7.8 over=0 dMedOther=104.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5465 ryan_m B=546558 L=16138 d=33.9 nb=0 neut=0 cmds=90 noFull=1 shQ=136639 | m=0.900 worth=76.6 cheap=7.8 over=0 dMedOther=100.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5470 ryan_m B=553499 L=16138 d=34.3 nb=0 neut=0 cmds=90 noFull=1 shQ=138374 | m=0.900 worth=77.5 cheap=7.8 over=0 dMedOther=101.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5475 ryan_m B=553499 L=16138 d=34.3 nb=0 neut=0 cmds=90 noFull=1 shQ=138374 | m=0.900 worth=77.4 cheap=7.8 over=0 dMedOther=101.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5480 ryan_m B=560528 L=16138 d=34.7 nb=0 neut=0 cmds=90 noFull=1 shQ=140132 | m=0.900 worth=78.2 cheap=7.8 over=0 dMedOther=102.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5485 ryan_m B=560528 L=16138 d=34.7 nb=0 neut=0 cmds=90 noFull=1 shQ=140132 | m=0.900 worth=77.1 cheap=7.8 over=0 dMedOther=100.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5490 ryan_m B=567646 L=16138 d=35.2 nb=0 neut=0 cmds=90 noFull=1 shQ=141911 | m=0.900 worth=75.8 cheap=7.8 over=0 dMedOther=99.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5495 ryan_m B=567646 L=16138 d=35.2 nb=0 neut=0 cmds=90 noFull=1 shQ=141911 | m=0.900 worth=75.8 cheap=7.8 over=0 dMedOther=99.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5500 ryan_m B=590993 L=16138 d=36.6 nb=0 neut=0 cmds=90 noFull=1 shQ=143787 | m=0.900 worth=77.2 cheap=7.8 over=0 dMedOther=100.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5505 ryan_m B=590993 L=16138 d=36.6 nb=0 neut=0 cmds=90 noFull=1 shQ=147748 | m=0.900 worth=76.7 cheap=7.8 over=0 dMedOther=100.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5510 ryan_m B=598498 L=16138 d=37.1 nb=0 neut=0 cmds=90 noFull=1 shQ=149624 | m=0.900 worth=76.5 cheap=7.8 over=0 dMedOther=100.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5515 ryan_m B=598498 L=16138 d=37.1 nb=0 neut=0 cmds=90 noFull=1 shQ=149624 | m=0.900 worth=76.5 cheap=7.8 over=0 dMedOther=100.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5520 ryan_m B=606098 L=16138 d=37.6 nb=0 neut=0 cmds=90 noFull=1 shQ=151524 | m=0.900 worth=77.1 cheap=7.8 over=0 dMedOther=100.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5525 ryan_m B=606098 L=16138 d=37.6 nb=0 neut=0 cmds=90 noFull=1 shQ=151524 | m=0.900 worth=76.6 cheap=7.8 over=0 dMedOther=100.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5530 ryan_m B=613795 L=16138 d=38.0 nb=0 neut=0 cmds=90 noFull=1 shQ=153448 | m=0.900 worth=77.1 cheap=7.8 over=0 dMedOther=100.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5535 ryan_m B=613795 L=16138 d=38.0 nb=0 neut=0 cmds=90 noFull=1 shQ=153448 | m=0.900 worth=77.1 cheap=7.8 over=0 dMedOther=100.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5540 ryan_m B=621590 L=16138 d=38.5 nb=0 neut=0 cmds=90 noFull=1 shQ=155397 | m=0.900 worth=78.1 cheap=7.8 over=0 dMedOther=102.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5545 ryan_m B=621590 L=16138 d=38.5 nb=0 neut=0 cmds=90 noFull=1 shQ=155397 | m=0.900 worth=78.1 cheap=7.8 over=0 dMedOther=102.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5550 ryan_m B=629484 L=16138 d=39.0 nb=0 neut=0 cmds=90 noFull=1 shQ=157371 | m=0.900 worth=79.2 cheap=7.8 over=0 dMedOther=103.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5555 ryan_m B=629484 L=16138 d=39.0 nb=0 neut=0 cmds=90 noFull=1 shQ=157371 | m=0.900 worth=78.8 cheap=7.8 over=0 dMedOther=103.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5560 ryan_m B=637478 L=16138 d=39.5 nb=0 neut=0 cmds=90 noFull=1 shQ=159369 | m=0.900 worth=79.7 cheap=7.8 over=0 dMedOther=104.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5565 ryan_m B=637478 L=16138 d=39.5 nb=0 neut=0 cmds=90 noFull=1 shQ=159369 | m=0.900 worth=79.7 cheap=7.8 over=0 dMedOther=104.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5570 ryan_m B=645573 L=16138 d=40.0 nb=0 neut=0 cmds=90 noFull=1 shQ=161393 | m=0.900 worth=80.6 cheap=7.8 over=0 dMedOther=105.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5575 ryan_m B=645573 L=16138 d=40.0 nb=0 neut=0 cmds=90 noFull=1 shQ=161393 | m=0.900 worth=79.4 cheap=7.8 over=0 dMedOther=103.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5580 ryan_m B=653771 L=16138 d=40.5 nb=0 neut=0 cmds=90 noFull=1 shQ=163442 | m=0.900 worth=80.3 cheap=7.8 over=0 dMedOther=105.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5585 ryan_m B=653771 L=16138 d=40.5 nb=0 neut=0 cmds=90 noFull=1 shQ=163442 | m=0.900 worth=80.3 cheap=7.8 over=0 dMedOther=105.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5590 ryan_m B=662073 L=16138 d=41.0 nb=0 neut=0 cmds=90 noFull=1 shQ=165518 | m=0.900 worth=81.2 cheap=7.8 over=0 dMedOther=106.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5595 ryan_m B=662073 L=16138 d=41.0 nb=0 neut=0 cmds=90 noFull=1 shQ=165518 | m=0.900 worth=81.5 cheap=7.8 over=0 dMedOther=106.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5600 ryan_m B=686619 L=16138 d=42.5 nb=0 neut=0 cmds=91 noFull=1 shQ=167698 | m=0.900 worth=82.9 cheap=7.8 over=0 dMedOther=108.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=253 → [APEX] noah88#44[T3]（约 170313 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=5605 ryan_m B=686619 L=16138 d=42.5 nb=0 neut=0 cmds=91 noFull=1 shQ=171654 | m=0.900 worth=75.6 cheap=7.8 over=0 dMedOther=98.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5610 ryan_m B=695339 L=16138 d=43.1 nb=0 neut=0 cmds=91 noFull=1 shQ=173834 | m=0.900 worth=75.2 cheap=7.8 over=0 dMedOther=98.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5615 ryan_m B=479405 L=16138 d=29.7 nb=0 neut=0 cmds=91 noFull=1 shQ=119851 | m=0.900 worth=75.2 cheap=7.8 over=0 dMedOther=98.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5620 ryan_m B=485493 L=16138 d=30.1 nb=0 neut=0 cmds=91 noFull=1 shQ=121373 | m=0.900 worth=76.2 cheap=7.8 over=0 dMedOther=99.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5625 ryan_m B=485493 L=16138 d=30.1 nb=0 neut=0 cmds=91 noFull=1 shQ=121373 | m=0.900 worth=76.1 cheap=7.8 over=0 dMedOther=99.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5630 ryan_m B=491658 L=16138 d=30.5 nb=0 neut=0 cmds=91 noFull=1 shQ=122914 | m=0.900 worth=77.0 cheap=7.8 over=0 dMedOther=100.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5635 ryan_m B=491658 L=16138 d=30.5 nb=0 neut=0 cmds=91 noFull=1 shQ=122914 | m=0.900 worth=76.2 cheap=7.8 over=0 dMedOther=99.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5640 ryan_m B=497902 L=16138 d=30.9 nb=0 neut=0 cmds=91 noFull=1 shQ=124475 | m=0.900 worth=75.5 cheap=7.8 over=0 dMedOther=98.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5645 ryan_m B=497902 L=16138 d=30.9 nb=0 neut=0 cmds=91 noFull=1 shQ=124475 | m=0.900 worth=75.0 cheap=7.8 over=0 dMedOther=98.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5650 ryan_m B=504225 L=16138 d=31.2 nb=0 neut=0 cmds=91 noFull=1 shQ=126056 | m=0.900 worth=76.0 cheap=7.8 over=0 dMedOther=99.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5655 ryan_m B=504225 L=16138 d=31.2 nb=0 neut=0 cmds=91 noFull=1 shQ=126056 | m=0.900 worth=76.0 cheap=7.8 over=0 dMedOther=99.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5660 ryan_m B=510628 L=16138 d=31.6 nb=0 neut=0 cmds=91 noFull=1 shQ=127657 | m=0.900 worth=76.9 cheap=7.8 over=0 dMedOther=100.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5665 ryan_m B=510628 L=16138 d=31.6 nb=0 neut=0 cmds=91 noFull=1 shQ=127657 | m=0.900 worth=76.9 cheap=7.8 over=0 dMedOther=100.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5670 ryan_m B=517112 L=16138 d=32.0 nb=0 neut=0 cmds=91 noFull=1 shQ=129278 | m=0.900 worth=77.8 cheap=7.8 over=0 dMedOther=101.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5675 ryan_m B=517112 L=16138 d=32.0 nb=0 neut=0 cmds=91 noFull=1 shQ=129278 | m=0.900 worth=77.8 cheap=7.8 over=0 dMedOther=101.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5680 ryan_m B=523679 L=16138 d=32.5 nb=0 neut=0 cmds=91 noFull=1 shQ=130919 | m=0.900 worth=78.7 cheap=7.8 over=0 dMedOther=102.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5685 ryan_m B=523679 L=16138 d=32.5 nb=0 neut=0 cmds=91 noFull=1 shQ=130919 | m=0.900 worth=78.3 cheap=7.8 over=0 dMedOther=102.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5690 ryan_m B=530329 L=16138 d=32.9 nb=0 neut=0 cmds=91 noFull=1 shQ=132582 | m=0.900 worth=79.4 cheap=7.8 over=0 dMedOther=103.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5695 ryan_m B=530329 L=16138 d=32.9 nb=0 neut=0 cmds=91 noFull=1 shQ=132582 | m=0.900 worth=79.4 cheap=7.8 over=0 dMedOther=103.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5700 ryan_m B=553202 L=16138 d=34.3 nb=0 neut=0 cmds=91 noFull=1 shQ=134338 | m=0.900 worth=78.7 cheap=7.8 over=0 dMedOther=102.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5705 ryan_m B=553202 L=16138 d=34.3 nb=0 neut=0 cmds=91 noFull=1 shQ=138300 | m=0.900 worth=78.6 cheap=7.8 over=0 dMedOther=102.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5710 ryan_m B=560227 L=16138 d=34.7 nb=0 neut=0 cmds=91 noFull=1 shQ=140056 | m=0.900 worth=79.5 cheap=7.8 over=0 dMedOther=103.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5715 ryan_m B=560227 L=16138 d=34.7 nb=0 neut=0 cmds=91 noFull=1 shQ=140056 | m=0.900 worth=77.7 cheap=7.8 over=0 dMedOther=101.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5720 ryan_m B=567341 L=16138 d=35.2 nb=0 neut=0 cmds=91 noFull=1 shQ=141835 | m=0.900 worth=77.0 cheap=7.8 over=0 dMedOther=100.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5725 ryan_m B=567341 L=16138 d=35.2 nb=0 neut=0 cmds=91 noFull=1 shQ=141835 | m=0.900 worth=76.1 cheap=7.8 over=0 dMedOther=99.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5730 ryan_m B=574546 L=16138 d=35.6 nb=0 neut=0 cmds=91 noFull=1 shQ=143636 | m=0.900 worth=77.1 cheap=7.8 over=0 dMedOther=100.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5735 ryan_m B=574546 L=16138 d=35.6 nb=0 neut=0 cmds=91 noFull=1 shQ=143636 | m=0.900 worth=77.1 cheap=7.8 over=0 dMedOther=100.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5740 ryan_m B=581842 L=16138 d=36.1 nb=0 neut=0 cmds=91 noFull=1 shQ=145460 | m=0.900 worth=78.1 cheap=7.8 over=0 dMedOther=102.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5745 ryan_m B=581842 L=16138 d=36.1 nb=0 neut=0 cmds=91 noFull=1 shQ=145460 | m=0.900 worth=77.0 cheap=7.8 over=0 dMedOther=100.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5750 ryan_m B=589231 L=16138 d=36.5 nb=0 neut=0 cmds=91 noFull=1 shQ=147307 | m=0.900 worth=77.9 cheap=7.8 over=0 dMedOther=101.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5755 ryan_m B=589231 L=16138 d=36.5 nb=0 neut=0 cmds=91 noFull=1 shQ=147307 | m=0.900 worth=76.4 cheap=7.8 over=0 dMedOther=99.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5760 ryan_m B=596714 L=16138 d=37.0 nb=0 neut=0 cmds=91 noFull=1 shQ=149178 | m=0.900 worth=77.4 cheap=7.8 over=0 dMedOther=101.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5765 ryan_m B=596714 L=16138 d=37.0 nb=0 neut=0 cmds=91 noFull=1 shQ=149178 | m=0.900 worth=77.4 cheap=7.8 over=0 dMedOther=101.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5770 ryan_m B=604292 L=16138 d=37.4 nb=0 neut=0 cmds=91 noFull=1 shQ=151073 | m=0.900 worth=78.4 cheap=7.8 over=0 dMedOther=102.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5775 ryan_m B=604292 L=16138 d=37.4 nb=0 neut=0 cmds=91 noFull=1 shQ=151073 | m=0.900 worth=78.4 cheap=7.8 over=0 dMedOther=102.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5780 ryan_m B=611966 L=16138 d=37.9 nb=0 neut=0 cmds=91 noFull=1 shQ=152991 | m=0.900 worth=78.6 cheap=7.8 over=0 dMedOther=102.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5785 ryan_m B=611966 L=16138 d=37.9 nb=0 neut=0 cmds=91 noFull=1 shQ=152991 | m=0.900 worth=75.9 cheap=7.8 over=0 dMedOther=99.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5790 ryan_m B=619737 L=16138 d=38.4 nb=0 neut=0 cmds=91 noFull=1 shQ=154934 | m=0.900 worth=76.4 cheap=7.8 over=0 dMedOther=99.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5795 ryan_m B=619737 L=16138 d=38.4 nb=0 neut=0 cmds=91 noFull=1 shQ=154934 | m=0.900 worth=76.4 cheap=7.8 over=0 dMedOther=99.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5800 ryan_m B=643745 L=16138 d=39.9 nb=0 neut=0 cmds=91 noFull=1 shQ=156977 | m=0.900 worth=78.1 cheap=7.8 over=0 dMedOther=102.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5805 ryan_m B=643745 L=16138 d=39.9 nb=0 neut=0 cmds=91 noFull=1 shQ=160936 | m=0.900 worth=78.1 cheap=7.8 over=0 dMedOther=102.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5810 ryan_m B=651920 L=16138 d=40.4 nb=0 neut=0 cmds=91 noFull=1 shQ=162980 | m=0.900 worth=79.0 cheap=7.8 over=0 dMedOther=103.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5815 ryan_m B=651920 L=16138 d=40.4 nb=0 neut=0 cmds=91 noFull=1 shQ=162980 | m=0.900 worth=76.1 cheap=7.8 over=0 dMedOther=99.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5820 ryan_m B=660199 L=16138 d=40.9 nb=0 neut=0 cmds=91 noFull=1 shQ=165049 | m=0.900 worth=77.1 cheap=7.8 over=0 dMedOther=100.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5825 ryan_m B=660199 L=16138 d=40.9 nb=0 neut=0 cmds=91 noFull=1 shQ=165049 | m=0.900 worth=77.0 cheap=7.8 over=0 dMedOther=100.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5830 ryan_m B=668583 L=16138 d=41.4 nb=0 neut=0 cmds=91 noFull=1 shQ=167145 | m=0.900 worth=78.0 cheap=7.8 over=0 dMedOther=101.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5835 ryan_m B=668583 L=16138 d=41.4 nb=0 neut=0 cmds=91 noFull=1 shQ=167145 | m=0.900 worth=73.1 cheap=7.8 over=0 dMedOther=95.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5840 ryan_m B=677074 L=16138 d=42.0 nb=0 neut=0 cmds=91 noFull=1 shQ=169268 | m=0.900 worth=73.9 cheap=7.8 over=0 dMedOther=96.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5845 ryan_m B=677074 L=16138 d=42.0 nb=0 neut=0 cmds=91 noFull=1 shQ=169268 | m=0.900 worth=73.8 cheap=7.8 over=0 dMedOther=96.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5850 ryan_m B=685672 L=16138 d=42.5 nb=0 neut=0 cmds=91 noFull=1 shQ=171418 | m=0.900 worth=73.1 cheap=7.8 over=0 dMedOther=95.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5855 ryan_m B=685672 L=16138 d=42.5 nb=0 neut=0 cmds=91 noFull=1 shQ=171418 | m=0.900 worth=73.1 cheap=7.8 over=0 dMedOther=95.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5860 ryan_m B=694380 L=16138 d=43.0 nb=0 neut=0 cmds=91 noFull=1 shQ=173595 | m=0.900 worth=73.4 cheap=7.8 over=0 dMedOther=95.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5865 ryan_m B=694380 L=16138 d=43.0 nb=0 neut=0 cmds=91 noFull=1 shQ=173595 | m=0.900 worth=73.4 cheap=7.8 over=0 dMedOther=95.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5870 ryan_m B=703198 L=16138 d=43.6 nb=0 neut=0 cmds=91 noFull=1 shQ=175799 | m=0.900 worth=74.3 cheap=7.8 over=0 dMedOther=97.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5875 ryan_m B=703198 L=16138 d=43.6 nb=0 neut=0 cmds=91 noFull=1 shQ=175799 | m=0.900 worth=74.3 cheap=7.8 over=0 dMedOther=97.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5880 ryan_m B=712128 L=16138 d=44.1 nb=0 neut=0 cmds=91 noFull=1 shQ=178032 | m=0.900 worth=75.3 cheap=7.8 over=0 dMedOther=98.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5885 ryan_m B=712128 L=16138 d=44.1 nb=0 neut=0 cmds=91 noFull=1 shQ=178032 | m=0.900 worth=75.3 cheap=7.8 over=0 dMedOther=98.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5890 ryan_m B=721172 L=16138 d=44.7 nb=0 neut=0 cmds=91 noFull=1 shQ=180293 | m=0.900 worth=76.2 cheap=7.8 over=0 dMedOther=99.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5895 ryan_m B=721172 L=16138 d=44.7 nb=0 neut=0 cmds=91 noFull=1 shQ=180293 | m=0.900 worth=76.1 cheap=7.8 over=0 dMedOther=99.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5900 ryan_m B=746468 L=16138 d=46.3 nb=0 neut=0 cmds=91 noFull=1 shQ=182663 | m=0.900 worth=78.0 cheap=7.8 over=0 dMedOther=101.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5905 ryan_m B=746468 L=16138 d=46.3 nb=0 neut=0 cmds=91 noFull=1 shQ=186617 | m=0.900 worth=78.0 cheap=7.8 over=0 dMedOther=101.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5910 ryan_m B=755948 L=16138 d=46.8 nb=0 neut=0 cmds=91 noFull=1 shQ=188987 | m=0.900 worth=79.1 cheap=7.8 over=0 dMedOther=103.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5915 ryan_m B=755948 L=16138 d=46.8 nb=0 neut=0 cmds=91 noFull=1 shQ=188987 | m=0.900 worth=79.1 cheap=7.8 over=0 dMedOther=103.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5920 ryan_m B=765548 L=16138 d=47.4 nb=0 neut=0 cmds=91 noFull=1 shQ=191387 | m=0.900 worth=80.1 cheap=7.8 over=0 dMedOther=104.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5925 ryan_m B=765548 L=16138 d=47.4 nb=0 neut=0 cmds=92 noFull=1 shQ=191387 | m=0.900 worth=80.1 cheap=7.8 over=0 dMedOther=104.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=333 → [APEX] zero_7#49[T3]（约 249700 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=5930 ryan_m B=775270 L=16138 d=48.0 nb=0 neut=0 cmds=92 noFull=1 shQ=193817 | m=0.900 worth=79.5 cheap=7.8 over=0 dMedOther=103.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5935 ryan_m B=775270 L=16138 d=48.0 nb=0 neut=0 cmds=92 noFull=1 shQ=193817 | m=0.900 worth=79.5 cheap=7.8 over=0 dMedOther=103.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5940 ryan_m B=479964 L=16138 d=29.7 nb=0 neut=0 cmds=92 noFull=1 shQ=119991 | m=0.900 worth=80.5 cheap=7.8 over=0 dMedOther=105.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5945 ryan_m B=479964 L=16138 d=29.7 nb=0 neut=0 cmds=92 noFull=1 shQ=119991 | m=0.900 worth=80.5 cheap=7.8 over=0 dMedOther=105.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5950 ryan_m B=486059 L=16138 d=30.1 nb=0 neut=0 cmds=92 noFull=1 shQ=121514 | m=0.900 worth=81.5 cheap=7.8 over=0 dMedOther=106.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5955 ryan_m B=486059 L=16138 d=30.1 nb=0 neut=0 cmds=92 noFull=1 shQ=121514 | m=0.900 worth=81.5 cheap=7.8 over=0 dMedOther=106.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5960 ryan_m B=492231 L=16138 d=30.5 nb=0 neut=0 cmds=92 noFull=1 shQ=123057 | m=0.900 worth=80.0 cheap=7.8 over=0 dMedOther=104.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5965 ryan_m B=492231 L=16138 d=30.5 nb=0 neut=0 cmds=92 noFull=1 shQ=123057 | m=0.900 worth=79.8 cheap=7.8 over=0 dMedOther=104.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5970 ryan_m B=498482 L=16138 d=30.9 nb=0 neut=0 cmds=92 noFull=1 shQ=124620 | m=0.900 worth=80.6 cheap=7.8 over=0 dMedOther=105.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5975 ryan_m B=498482 L=16138 d=30.9 nb=0 neut=0 cmds=92 noFull=1 shQ=124620 | m=0.900 worth=77.2 cheap=7.8 over=0 dMedOther=101.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5980 ryan_m B=504812 L=16138 d=31.3 nb=0 neut=0 cmds=92 noFull=1 shQ=126203 | m=0.900 worth=74.6 cheap=7.8 over=0 dMedOther=97.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5985 ryan_m B=504812 L=16138 d=31.3 nb=0 neut=0 cmds=92 noFull=1 shQ=126203 | m=0.900 worth=73.4 cheap=7.8 over=0 dMedOther=95.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5990 ryan_m B=511223 L=16138 d=31.7 nb=0 neut=0 cmds=92 noFull=1 shQ=127805 | m=0.900 worth=74.3 cheap=7.8 over=0 dMedOther=97.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5995 ryan_m B=511223 L=16138 d=31.7 nb=0 neut=0 cmds=92 noFull=1 shQ=127805 | m=0.900 worth=74.3 cheap=7.8 over=0 dMedOther=97.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6000 ryan_m B=533853 L=16138 d=33.1 nb=0 neut=0 cmds=92 noFull=1 shQ=129499 | m=0.900 worth=76.1 cheap=7.8 over=0 dMedOther=99.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6005 ryan_m B=533853 L=16138 d=33.1 nb=0 neut=0 cmds=92 noFull=1 shQ=133463 | m=0.900 worth=76.1 cheap=7.8 over=0 dMedOther=99.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6010 ryan_m B=540632 L=16138 d=33.5 nb=0 neut=0 cmds=92 noFull=1 shQ=135158 | m=0.900 worth=76.6 cheap=7.8 over=0 dMedOther=100.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6015 ryan_m B=540632 L=16138 d=33.5 nb=0 neut=0 cmds=92 noFull=1 shQ=135158 | m=0.900 worth=74.9 cheap=7.8 over=0 dMedOther=97.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6020 ryan_m B=547498 L=16138 d=33.9 nb=0 neut=0 cmds=92 noFull=1 shQ=136874 | m=0.900 worth=74.8 cheap=7.8 over=0 dMedOther=97.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6025 ryan_m B=547498 L=16138 d=33.9 nb=0 neut=0 cmds=92 noFull=1 shQ=136874 | m=0.900 worth=74.3 cheap=7.8 over=0 dMedOther=97.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6030 ryan_m B=554451 L=16138 d=34.4 nb=0 neut=0 cmds=92 noFull=1 shQ=138612 | m=0.900 worth=75.3 cheap=7.8 over=0 dMedOther=98.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6035 ryan_m B=554451 L=16138 d=34.4 nb=0 neut=0 cmds=92 noFull=1 shQ=138612 | m=0.900 worth=75.3 cheap=7.8 over=0 dMedOther=98.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6040 ryan_m B=561492 L=16138 d=34.8 nb=0 neut=0 cmds=92 noFull=1 shQ=140373 | m=0.900 worth=76.3 cheap=7.8 over=0 dMedOther=99.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6045 ryan_m B=561492 L=16138 d=34.8 nb=0 neut=0 cmds=92 noFull=1 shQ=140373 | m=0.900 worth=76.3 cheap=7.8 over=0 dMedOther=99.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6050 ryan_m B=568622 L=16138 d=35.2 nb=0 neut=0 cmds=92 noFull=1 shQ=142155 | m=0.900 worth=77.3 cheap=7.8 over=0 dMedOther=101.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6055 ryan_m B=568622 L=16138 d=35.2 nb=0 neut=0 cmds=92 noFull=1 shQ=142155 | m=0.900 worth=77.3 cheap=7.8 over=0 dMedOther=101.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6060 ryan_m B=575843 L=16138 d=35.7 nb=0 neut=0 cmds=92 noFull=1 shQ=143960 | m=0.900 worth=78.3 cheap=7.8 over=0 dMedOther=102.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6065 ryan_m B=575843 L=16138 d=35.7 nb=0 neut=0 cmds=92 noFull=1 shQ=143960 | m=0.900 worth=75.5 cheap=7.8 over=0 dMedOther=98.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6070 ryan_m B=583156 L=16138 d=36.1 nb=0 neut=0 cmds=92 noFull=1 shQ=145789 | m=0.900 worth=76.6 cheap=7.8 over=0 dMedOther=100.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6075 ryan_m B=583156 L=16138 d=36.1 nb=0 neut=0 cmds=92 noFull=1 shQ=145789 | m=0.900 worth=76.6 cheap=7.8 over=0 dMedOther=100.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6080 ryan_m B=590562 L=16138 d=36.6 nb=0 neut=0 cmds=92 noFull=1 shQ=147640 | m=0.900 worth=77.6 cheap=7.8 over=0 dMedOther=101.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6085 ryan_m B=590562 L=16138 d=36.6 nb=0 neut=0 cmds=92 noFull=1 shQ=147640 | m=0.900 worth=77.6 cheap=7.8 over=0 dMedOther=101.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6090 ryan_m B=598062 L=16138 d=37.1 nb=0 neut=0 cmds=92 noFull=1 shQ=149515 | m=0.900 worth=78.6 cheap=7.8 over=0 dMedOther=102.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6095 ryan_m B=598062 L=16138 d=37.1 nb=0 neut=0 cmds=92 noFull=1 shQ=149515 | m=0.900 worth=78.6 cheap=7.8 over=0 dMedOther=102.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6100 ryan_m B=621795 L=16138 d=38.5 nb=0 neut=0 cmds=92 noFull=1 shQ=151489 | m=0.900 worth=77.3 cheap=7.8 over=0 dMedOther=101.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6105 ryan_m B=621795 L=16138 d=38.5 nb=0 neut=0 cmds=92 noFull=1 shQ=155448 | m=0.900 worth=77.3 cheap=7.8 over=0 dMedOther=101.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6110 ryan_m B=629691 L=16138 d=39.0 nb=0 neut=0 cmds=92 noFull=1 shQ=157422 | m=0.900 worth=78.3 cheap=7.8 over=0 dMedOther=102.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6115 ryan_m B=629691 L=16138 d=39.0 nb=0 neut=0 cmds=92 noFull=1 shQ=157422 | m=0.900 worth=76.9 cheap=7.8 over=0 dMedOther=100.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6120 ryan_m B=637688 L=16138 d=39.5 nb=0 neut=0 cmds=92 noFull=1 shQ=159422 | m=0.900 worth=77.9 cheap=7.8 over=0 dMedOther=101.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6125 ryan_m B=637688 L=16138 d=39.5 nb=0 neut=0 cmds=92 noFull=1 shQ=159422 | m=0.900 worth=77.9 cheap=7.8 over=0 dMedOther=101.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6130 ryan_m B=645786 L=16138 d=40.0 nb=0 neut=0 cmds=92 noFull=1 shQ=161446 | m=0.900 worth=78.9 cheap=7.8 over=0 dMedOther=103.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6135 ryan_m B=645786 L=16138 d=40.0 nb=0 neut=0 cmds=92 noFull=1 shQ=161446 | m=0.900 worth=78.9 cheap=7.8 over=0 dMedOther=103.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6140 ryan_m B=653987 L=16138 d=40.5 nb=0 neut=0 cmds=92 noFull=1 shQ=163496 | m=0.900 worth=79.7 cheap=7.8 over=0 dMedOther=104.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6145 ryan_m B=653987 L=16138 d=40.5 nb=0 neut=0 cmds=92 noFull=1 shQ=163496 | m=0.900 worth=79.4 cheap=7.8 over=0 dMedOther=103.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6150 ryan_m B=662292 L=16138 d=41.0 nb=0 neut=0 cmds=92 noFull=1 shQ=165573 | m=0.900 worth=80.2 cheap=7.8 over=0 dMedOther=104.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6155 ryan_m B=662292 L=16138 d=41.0 nb=0 neut=0 cmds=92 noFull=1 shQ=165573 | m=0.900 worth=79.5 cheap=7.8 over=0 dMedOther=103.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6160 ryan_m B=670703 L=16138 d=41.6 nb=0 neut=0 cmds=92 noFull=1 shQ=167675 | m=0.900 worth=79.9 cheap=7.8 over=0 dMedOther=104.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6165 ryan_m B=670703 L=16138 d=41.6 nb=0 neut=0 cmds=92 noFull=1 shQ=167675 | m=0.900 worth=75.9 cheap=7.8 over=0 dMedOther=99.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6170 ryan_m B=679220 L=16138 d=42.1 nb=0 neut=0 cmds=92 noFull=1 shQ=169805 | m=0.900 worth=76.9 cheap=7.8 over=0 dMedOther=100.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6175 ryan_m B=679220 L=16138 d=42.1 nb=0 neut=0 cmds=93 noFull=1 shQ=169805 | m=0.900 worth=76.9 cheap=7.8 over=0 dMedOther=100.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=245 → [APEX] alex_k#50[T3]（约 163171 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=6180 ryan_m B=687846 L=16138 d=42.6 nb=0 neut=0 cmds=93 noFull=1 shQ=171961 | m=0.900 worth=77.9 cheap=7.8 over=0 dMedOther=101.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6185 ryan_m B=687846 L=16138 d=42.6 nb=0 neut=0 cmds=93 noFull=1 shQ=171961 | m=0.900 worth=77.9 cheap=7.8 over=0 dMedOther=101.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6190 ryan_m B=485703 L=16138 d=30.1 nb=0 neut=0 cmds=93 noFull=1 shQ=121425 | m=0.900 worth=78.9 cheap=7.8 over=0 dMedOther=103.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6195 ryan_m B=485703 L=16138 d=30.1 nb=0 neut=0 cmds=93 noFull=1 shQ=121425 | m=0.900 worth=78.9 cheap=7.8 over=0 dMedOther=103.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6200 ryan_m B=508009 L=16138 d=31.5 nb=0 neut=0 cmds=93 noFull=1 shQ=123037 | m=0.900 worth=73.8 cheap=7.8 over=0 dMedOther=96.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6205 ryan_m B=508009 L=16138 d=31.5 nb=0 neut=0 cmds=93 noFull=1 shQ=127002 | m=0.900 worth=73.6 cheap=7.8 over=0 dMedOther=96.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6210 ryan_m B=514460 L=16138 d=31.9 nb=0 neut=0 cmds=93 noFull=1 shQ=128615 | m=0.900 worth=74.6 cheap=7.8 over=0 dMedOther=97.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6215 ryan_m B=514460 L=16138 d=31.9 nb=0 neut=0 cmds=93 noFull=1 shQ=128615 | m=0.900 worth=74.4 cheap=7.8 over=0 dMedOther=97.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6220 ryan_m B=520993 L=16138 d=32.3 nb=0 neut=0 cmds=93 noFull=1 shQ=130248 | m=0.900 worth=75.4 cheap=7.8 over=0 dMedOther=98.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6225 ryan_m B=520993 L=16138 d=32.3 nb=0 neut=0 cmds=93 noFull=1 shQ=130248 | m=0.900 worth=75.4 cheap=7.8 over=0 dMedOther=98.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6230 ryan_m B=527609 L=16138 d=32.7 nb=0 neut=0 cmds=93 noFull=1 shQ=131902 | m=0.900 worth=76.0 cheap=7.8 over=0 dMedOther=99.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6235 ryan_m B=527609 L=16138 d=32.7 nb=0 neut=0 cmds=93 noFull=1 shQ=131902 | m=0.900 worth=76.0 cheap=7.8 over=0 dMedOther=99.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6240 ryan_m B=534309 L=16138 d=33.1 nb=0 neut=0 cmds=93 noFull=1 shQ=133577 | m=0.900 worth=77.0 cheap=7.8 over=0 dMedOther=100.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6245 ryan_m B=534309 L=16138 d=33.1 nb=0 neut=0 cmds=93 noFull=1 shQ=133577 | m=0.900 worth=70.0 cheap=7.8 over=0 dMedOther=91.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6250 ryan_m B=541094 L=16138 d=33.5 nb=0 neut=0 cmds=93 noFull=1 shQ=135273 | m=0.900 worth=70.9 cheap=7.8 over=0 dMedOther=92.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6255 ryan_m B=541094 L=16138 d=33.5 nb=0 neut=0 cmds=93 noFull=1 shQ=135273 | m=0.900 worth=70.2 cheap=7.8 over=0 dMedOther=91.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6260 ryan_m B=547965 L=16138 d=34.0 nb=0 neut=0 cmds=93 noFull=1 shQ=136991 | m=0.900 worth=71.1 cheap=7.8 over=0 dMedOther=93.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6265 ryan_m B=547965 L=16138 d=34.0 nb=0 neut=0 cmds=93 noFull=1 shQ=136991 | m=0.900 worth=69.8 cheap=7.8 over=0 dMedOther=91.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6270 ryan_m B=554924 L=16138 d=34.4 nb=0 neut=0 cmds=93 noFull=1 shQ=138731 | m=0.900 worth=70.6 cheap=7.8 over=0 dMedOther=92.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6275 ryan_m B=554924 L=16138 d=34.4 nb=0 neut=0 cmds=93 noFull=1 shQ=138731 | m=0.900 worth=70.6 cheap=7.8 over=0 dMedOther=92.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6280 ryan_m B=561971 L=16138 d=34.8 nb=0 neut=0 cmds=93 noFull=1 shQ=140492 | m=0.900 worth=71.6 cheap=7.8 over=0 dMedOther=93.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6285 ryan_m B=561971 L=16138 d=34.8 nb=0 neut=0 cmds=93 noFull=1 shQ=140492 | m=0.900 worth=71.6 cheap=7.8 over=0 dMedOther=93.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6290 ryan_m B=569108 L=16138 d=35.3 nb=0 neut=0 cmds=93 noFull=1 shQ=142277 | m=0.900 worth=72.6 cheap=7.8 over=0 dMedOther=94.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6295 ryan_m B=569108 L=16138 d=35.3 nb=0 neut=0 cmds=93 noFull=1 shQ=142277 | m=0.900 worth=72.6 cheap=7.8 over=0 dMedOther=94.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6300 ryan_m B=592473 L=16138 d=36.7 nb=0 neut=0 cmds=93 noFull=1 shQ=144158 | m=0.900 worth=74.4 cheap=7.8 over=0 dMedOther=97.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6305 ryan_m B=592473 L=16138 d=36.7 nb=0 neut=0 cmds=93 noFull=1 shQ=148118 | m=0.900 worth=73.5 cheap=7.8 over=0 dMedOther=96.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6310 ryan_m B=599997 L=16138 d=37.2 nb=0 neut=0 cmds=93 noFull=1 shQ=149999 | m=0.900 worth=74.4 cheap=7.8 over=0 dMedOther=97.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6315 ryan_m B=599997 L=16138 d=37.2 nb=0 neut=0 cmds=93 noFull=1 shQ=149999 | m=0.900 worth=74.4 cheap=7.8 over=0 dMedOther=97.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6320 ryan_m B=607616 L=16138 d=37.7 nb=0 neut=0 cmds=93 noFull=1 shQ=151904 | m=0.900 worth=75.3 cheap=7.8 over=0 dMedOther=98.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6325 ryan_m B=607616 L=16138 d=37.7 nb=0 neut=0 cmds=93 noFull=1 shQ=151904 | m=0.900 worth=75.1 cheap=7.8 over=0 dMedOther=98.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6330 ryan_m B=615332 L=16138 d=38.1 nb=0 neut=0 cmds=93 noFull=1 shQ=153833 | m=0.900 worth=76.0 cheap=7.8 over=0 dMedOther=99.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6335 ryan_m B=615332 L=16138 d=38.1 nb=0 neut=0 cmds=93 noFull=1 shQ=153833 | m=0.900 worth=76.0 cheap=7.8 over=0 dMedOther=99.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6340 ryan_m B=623146 L=16138 d=38.6 nb=0 neut=0 cmds=93 noFull=1 shQ=155786 | m=0.900 worth=76.9 cheap=7.8 over=0 dMedOther=100.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6345 ryan_m B=623146 L=16138 d=38.6 nb=0 neut=0 cmds=93 noFull=1 shQ=155786 | m=0.900 worth=76.8 cheap=7.8 over=0 dMedOther=100.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6350 ryan_m B=631059 L=16138 d=39.1 nb=0 neut=0 cmds=93 noFull=1 shQ=157764 | m=0.900 worth=77.7 cheap=7.8 over=0 dMedOther=101.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6355 ryan_m B=631059 L=16138 d=39.1 nb=0 neut=0 cmds=93 noFull=1 shQ=157764 | m=0.900 worth=77.6 cheap=7.8 over=0 dMedOther=101.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6360 ryan_m B=639073 L=16138 d=39.6 nb=0 neut=0 cmds=93 noFull=1 shQ=159768 | m=0.900 worth=78.4 cheap=7.8 over=0 dMedOther=102.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6365 ryan_m B=639073 L=16138 d=39.6 nb=0 neut=0 cmds=93 noFull=1 shQ=159768 | m=0.900 worth=69.8 cheap=7.8 over=0 dMedOther=91.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6370 ryan_m B=647189 L=16138 d=40.1 nb=0 neut=0 cmds=93 noFull=1 shQ=161797 | m=0.900 worth=70.4 cheap=7.8 over=0 dMedOther=92.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6375 ryan_m B=647189 L=16138 d=40.1 nb=0 neut=0 cmds=93 noFull=1 shQ=161797 | m=0.900 worth=70.1 cheap=7.8 over=0 dMedOther=91.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6380 ryan_m B=655408 L=16138 d=40.6 nb=0 neut=0 cmds=93 noFull=1 shQ=163852 | m=0.900 worth=70.8 cheap=7.8 over=0 dMedOther=92.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6385 ryan_m B=655408 L=16138 d=40.6 nb=0 neut=0 cmds=93 noFull=1 shQ=163852 | m=0.900 worth=66.7 cheap=7.8 over=0 dMedOther=87.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6390 ryan_m B=663731 L=16138 d=41.1 nb=0 neut=0 cmds=93 noFull=1 shQ=165932 | m=0.900 worth=67.1 cheap=7.8 over=0 dMedOther=87.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6395 ryan_m B=663731 L=16138 d=41.1 nb=0 neut=0 cmds=93 noFull=1 shQ=165932 | m=0.900 worth=66.3 cheap=7.8 over=0 dMedOther=86.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6400 ryan_m B=688298 L=16138 d=42.7 nb=0 neut=0 cmds=94 noFull=1 shQ=168117 | m=0.900 worth=67.4 cheap=7.8 over=0 dMedOther=88.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=255 → [APEX] noah88#44[T3]（约 172074 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=6405 ryan_m B=688298 L=16138 d=42.7 nb=0 neut=0 cmds=94 noFull=1 shQ=172074 | m=0.900 worth=66.7 cheap=7.8 over=0 dMedOther=87.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6410 ryan_m B=697039 L=16138 d=43.2 nb=0 neut=0 cmds=94 noFull=1 shQ=174259 | m=0.900 worth=64.7 cheap=7.8 over=0 dMedOther=84.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6415 ryan_m B=496617 L=16138 d=30.8 nb=0 neut=0 cmds=94 noFull=1 shQ=124154 | m=0.900 worth=64.7 cheap=7.8 over=0 dMedOther=84.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6420 ryan_m B=502924 L=16138 d=31.2 nb=0 neut=0 cmds=94 noFull=1 shQ=125731 | m=0.900 worth=65.0 cheap=7.8 over=0 dMedOther=84.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6425 ryan_m B=502924 L=16138 d=31.2 nb=0 neut=0 cmds=94 noFull=1 shQ=125731 | m=0.900 worth=62.6 cheap=7.8 over=0 dMedOther=81.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6430 ryan_m B=509311 L=16138 d=31.6 nb=0 neut=0 cmds=94 noFull=1 shQ=127327 | m=0.900 worth=62.3 cheap=7.8 over=0 dMedOther=81.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6435 ryan_m B=509311 L=16138 d=31.6 nb=0 neut=0 cmds=94 noFull=1 shQ=127327 | m=0.900 worth=63.3 cheap=7.8 over=0 dMedOther=82.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6440 ryan_m B=515779 L=16138 d=32.0 nb=0 neut=0 cmds=94 noFull=1 shQ=128944 | m=0.900 worth=64.1 cheap=7.8 over=0 dMedOther=83.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6445 ryan_m B=515779 L=16138 d=32.0 nb=0 neut=0 cmds=94 noFull=1 shQ=128944 | m=0.900 worth=64.0 cheap=7.8 over=0 dMedOther=83.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6450 ryan_m B=522329 L=16138 d=32.4 nb=0 neut=0 cmds=94 noFull=1 shQ=130582 | m=0.900 worth=64.9 cheap=7.8 over=0 dMedOther=84.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6455 ryan_m B=522329 L=16138 d=32.4 nb=0 neut=0 cmds=94 noFull=1 shQ=130582 | m=0.900 worth=64.7 cheap=7.8 over=0 dMedOther=84.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6460 ryan_m B=528962 L=16138 d=32.8 nb=0 neut=0 cmds=94 noFull=1 shQ=132240 | m=0.900 worth=65.6 cheap=7.8 over=0 dMedOther=85.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6465 ryan_m B=528962 L=16138 d=32.8 nb=0 neut=0 cmds=94 noFull=1 shQ=132240 | m=0.900 worth=65.5 cheap=7.8 over=0 dMedOther=85.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6470 ryan_m B=535679 L=16138 d=33.2 nb=0 neut=0 cmds=94 noFull=1 shQ=133919 | m=0.900 worth=66.3 cheap=7.8 over=0 dMedOther=86.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6475 ryan_m B=535679 L=16138 d=33.2 nb=0 neut=0 cmds=94 noFull=1 shQ=133919 | m=0.900 worth=66.2 cheap=7.8 over=0 dMedOther=86.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6480 ryan_m B=542482 L=16138 d=33.6 nb=0 neut=0 cmds=94 noFull=1 shQ=135620 | m=0.900 worth=67.1 cheap=7.8 over=0 dMedOther=87.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6485 ryan_m B=542482 L=16138 d=33.6 nb=0 neut=0 cmds=94 noFull=1 shQ=135620 | m=0.900 worth=67.6 cheap=7.8 over=0 dMedOther=88.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6490 ryan_m B=549371 L=16138 d=34.0 nb=0 neut=0 cmds=94 noFull=1 shQ=137342 | m=0.900 worth=68.5 cheap=7.8 over=0 dMedOther=89.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6495 ryan_m B=549371 L=16138 d=34.0 nb=0 neut=0 cmds=94 noFull=1 shQ=137342 | m=0.900 worth=68.5 cheap=7.8 over=0 dMedOther=89.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6500 ryan_m B=572486 L=16138 d=35.5 nb=0 neut=0 cmds=94 noFull=1 shQ=139159 | m=0.900 worth=70.2 cheap=7.8 over=0 dMedOther=91.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6505 ryan_m B=572486 L=16138 d=35.5 nb=0 neut=0 cmds=94 noFull=1 shQ=143121 | m=0.900 worth=70.2 cheap=7.8 over=0 dMedOther=91.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6510 ryan_m B=579756 L=16138 d=35.9 nb=0 neut=0 cmds=94 noFull=1 shQ=144939 | m=0.900 worth=71.1 cheap=7.8 over=0 dMedOther=93.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6515 ryan_m B=579756 L=16138 d=35.9 nb=0 neut=0 cmds=94 noFull=1 shQ=144939 | m=0.900 worth=71.1 cheap=7.8 over=0 dMedOther=93.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6520 ryan_m B=587118 L=16138 d=36.4 nb=0 neut=0 cmds=94 noFull=1 shQ=146779 | m=0.900 worth=72.1 cheap=7.8 over=0 dMedOther=94.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6525 ryan_m B=587118 L=16138 d=36.4 nb=0 neut=0 cmds=94 noFull=1 shQ=146779 | m=0.900 worth=72.1 cheap=7.8 over=0 dMedOther=94.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6530 ryan_m B=594574 L=16138 d=36.8 nb=0 neut=0 cmds=94 noFull=1 shQ=148643 | m=0.900 worth=73.0 cheap=7.8 over=0 dMedOther=95.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6535 ryan_m B=594574 L=16138 d=36.8 nb=0 neut=0 cmds=94 noFull=1 shQ=148643 | m=0.900 worth=73.0 cheap=7.8 over=0 dMedOther=95.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6540 ryan_m B=602125 L=16138 d=37.3 nb=0 neut=0 cmds=94 noFull=1 shQ=150531 | m=0.900 worth=72.9 cheap=7.8 over=0 dMedOther=95.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6545 ryan_m B=602125 L=16138 d=37.3 nb=1 neut=34 cmds=94 noFull=1 shQ=150531 | m=0.900 worth=72.9 cheap=7.8 over=0 dMedOther=95.2 safe(-1)=1053743
+    → brocstrailia#36[T2] terr=22934 bal=1899870 dq=82.8 cnt=13 | c=774.2 rankC=774.2 need=3420716 tD=0.87 人 pulse crowdedHard | safe=1053743 keep=Inf avail=-Inf chunkB=120425 pulseB=72255 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6550 ryan_m B=609771 L=16138 d=37.8 nb=1 neut=29 cmds=94 noFull=1 shQ=152442 | m=0.900 worth=73.8 cheap=7.8 over=0 dMedOther=96.5 safe(-1)=1067939
+    → brocstrailia#36[T2] terr=23019 bal=1925138 dq=83.6 cnt=18 | c=781.4 rankC=781.4 need=3465911 tD=0.87 人 pulse crowdedHard | safe=1067939 keep=Inf avail=-Inf chunkB=121954 pulseB=73173 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6555 ryan_m B=609771 L=16138 d=37.8 nb=1 neut=23 cmds=94 noFull=1 shQ=152442 | m=0.900 worth=68.9 cheap=7.8 over=0 dMedOther=90.1 safe(-1)=1067939
+    → brocstrailia#36[T2] terr=23131 bal=1925138 dq=83.2 cnt=24 | c=753.9 rankC=753.9 need=3466078 tD=0.92 人 pulse crowdedHard | safe=1067939 keep=Inf avail=-Inf chunkB=121954 pulseB=73173 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6560 ryan_m B=617515 L=16138 d=38.3 nb=1 neut=13 cmds=94 noFull=1 shQ=154378 | m=0.900 worth=69.7 cheap=7.8 over=0 dMedOther=91.1 safe(-1)=1082323
+    → brocstrailia#36[T2] terr=23187 bal=1950742 dq=84.1 cnt=33 | c=436.3 rankC=436.3 need=3511799 tD=0.92 人 pulse crowdedHard | safe=1082323 keep=Inf avail=-Inf chunkB=123503 pulseB=74102 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6565 ryan_m B=617515 L=16138 d=38.3 nb=1 neut=1 cmds=94 noFull=1 shQ=154378 | m=0.900 worth=69.7 cheap=7.8 over=0 dMedOther=91.1 safe(-1)=1082323
+    → brocstrailia#36[T2] terr=23243 bal=1950742 dq=83.9 cnt=45 | c=435.0 rankC=435.0 need=3511883 tD=0.92 人 pulse crowdedHard | safe=1082323 keep=Inf avail=-Inf chunkB=123503 pulseB=74102 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6570 ryan_m B=625357 L=16138 d=38.8 nb=1 neut=0 cmds=94 noFull=1 shQ=156339 | m=0.900 worth=68.8 cheap=7.8 over=0 dMedOther=89.9 safe(-1)=1096898
+    → brocstrailia#36[T2] terr=23258 bal=1976686 dq=85.0 cnt=45 | c=440.5 rankC=440.5 need=3558118 tD=0.95 人 pulse crowdedHard | safe=1096898 keep=Inf avail=-Inf chunkB=125071 pulseB=75043 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6575 ryan_m B=625357 L=16138 d=38.8 nb=1 neut=0 cmds=94 noFull=1 shQ=156339 | m=0.900 worth=67.8 cheap=7.8 over=0 dMedOther=88.6 safe(-1)=1083283
+    → brocstrailia#36[T2] terr=23258 bal=1952450 dq=83.9 cnt=45 | c=326.3 rankC=228.4 need=3514920 tD=0.95 人 pulse crowdedHard | safe=1083283 keep=Inf avail=-Inf chunkB=125071 pulseB=75043 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6580 ryan_m B=633299 L=16138 d=39.2 nb=1 neut=0 cmds=94 noFull=1 shQ=158324 | m=0.900 worth=66.7 cheap=7.8 over=0 dMedOther=87.2 safe(-1)=1097871
+    → brocstrailia#36[T2] terr=23258 bal=1978417 dq=85.1 cnt=45 | c=330.6 rankC=231.4 need=3561203 tD=0.98 人 pulse crowdedHard | safe=1097871 keep=Inf avail=-Inf chunkB=126660 pulseB=75996 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6585 ryan_m B=633299 L=16138 d=39.2 nb=1 neut=0 cmds=94 noFull=1 shQ=158324 | m=0.900 worth=66.7 cheap=7.8 over=0 dMedOther=87.2 safe(-1)=1097871
+    → brocstrailia#36[T2] terr=23413 bal=1978417 dq=84.5 cnt=46 | c=328.5 rankC=229.9 need=3561405 tD=0.97 人 pulse crowdedHard | safe=1097871 keep=Inf avail=-Inf chunkB=126660 pulseB=75996 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6590 ryan_m B=641341 L=16138 d=39.7 nb=1 neut=0 cmds=94 noFull=1 shQ=160335 | m=0.900 worth=67.5 cheap=7.8 over=0 dMedOther=88.3 safe(-1)=1112764
+    → brocstrailia#36[T2] terr=23514 bal=2004927 dq=85.3 cnt=48 | c=331.4 rankC=232.0 need=3608838 tD=0.97 人 pulse crowdedHard | safe=1112764 keep=Inf avail=-Inf chunkB=128268 pulseB=76961 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6595 ryan_m B=641341 L=16138 d=39.7 nb=1 neut=0 cmds=94 noFull=1 shQ=160335 | m=0.900 worth=67.5 cheap=7.8 over=0 dMedOther=88.3 safe(-1)=1112764
+    → brocstrailia#36[T2] terr=23669 bal=2004927 dq=84.7 cnt=50 | c=329.2 rankC=230.4 need=3609040 tD=0.96 人 pulse crowdedHard | safe=1112764 keep=Inf avail=-Inf chunkB=128268 pulseB=76961 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6600 ryan_m B=665624 L=16138 d=41.2 nb=1 neut=0 cmds=94 noFull=1 shQ=162448 | m=0.900 worth=69.1 cheap=7.8 over=0 dMedOther=90.4 safe(-1)=1141215
+    → brocstrailia#36[T2] terr=23777 bal=2055570 dq=86.5 cnt=51 | c=335.9 rankC=235.1 need=3699467 tD=0.96 人 pulse crowdedHard | safe=1141215 keep=Inf avail=-Inf chunkB=133125 pulseB=79875 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6605 ryan_m B=665624 L=16138 d=41.2 nb=1 neut=0 cmds=94 noFull=1 shQ=166406 | m=0.900 worth=69.1 cheap=7.8 over=0 dMedOther=90.4 safe(-1)=1141215
+    → brocstrailia#36[T2] terr=23946 bal=2055570 dq=85.8 cnt=52 | c=333.6 rankC=233.5 need=3699750 tD=0.95 人 pulse crowdedHard | safe=1141215 keep=Inf avail=-Inf chunkB=133125 pulseB=79875 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6610 ryan_m B=674077 L=16138 d=41.8 nb=1 neut=0 cmds=94 noFull=1 shQ=168519 | m=0.900 worth=70.0 cheap=7.8 over=0 dMedOther=91.5 safe(-1)=1156689
+    → brocstrailia#36[T2] terr=24049 bal=2083114 dq=86.6 cnt=53 | c=336.5 rankC=235.6 need=3748968 tD=0.95 人 pulse crowdedHard | safe=1156689 keep=Inf avail=-Inf chunkB=134815 pulseB=80889 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6615 ryan_m B=674077 L=16138 d=41.8 nb=1 neut=0 cmds=94 noFull=1 shQ=168519 | m=0.900 worth=70.0 cheap=7.8 over=0 dMedOther=91.5 safe(-1)=1156689
+    → brocstrailia#36[T2] terr=24197 bal=2083114 dq=86.1 cnt=58 | c=445.9 rankC=445.9 need=3749190 tD=0.94 人 pulse crowdedHard | safe=1156689 keep=Inf avail=-Inf chunkB=134815 pulseB=80889 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6620 ryan_m B=682637 L=16138 d=42.3 nb=1 neut=0 cmds=94 noFull=1 shQ=170659 | m=0.900 worth=70.9 cheap=7.8 over=0 dMedOther=92.7 safe(-1)=1172371
+    → brocstrailia#36[T2] terr=24294 bal=2111027 dq=86.9 cnt=59 | c=450.0 rankC=450.0 need=3799118 tD=0.94 人 pulse crowdedHard | safe=1172371 keep=Inf avail=-Inf chunkB=136527 pulseB=81916 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6625 ryan_m B=682637 L=16138 d=42.3 nb=1 neut=0 cmds=94 noFull=1 shQ=170659 | m=0.900 worth=70.9 cheap=7.8 over=0 dMedOther=92.7 safe(-1)=1172371
+    → brocstrailia#36[T2] terr=24436 bal=2111027 dq=86.4 cnt=66 | c=447.3 rankC=447.3 need=3799269 tD=0.93 人 pulse crowdedHard | safe=1172371 keep=Inf avail=-Inf chunkB=136527 pulseB=81916 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6630 ryan_m B=691306 L=16138 d=42.8 nb=1 neut=0 cmds=94 noFull=1 shQ=172826 | m=0.900 worth=71.8 cheap=7.8 over=0 dMedOther=93.9 safe(-1)=1188262
+    → brocstrailia#36[T2] terr=24525 bal=2139314 dq=87.2 cnt=67 | c=451.5 rankC=451.5 need=3849851 tD=0.93 人 pulse crowdedHard | safe=1188262 keep=Inf avail=-Inf chunkB=138261 pulseB=82957 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6635 ryan_m B=691306 L=16138 d=42.8 nb=1 neut=0 cmds=94 noFull=1 shQ=172826 | m=0.900 worth=71.8 cheap=7.8 over=0 dMedOther=93.9 safe(-1)=1188262
+    → brocstrailia#36[T2] terr=24652 bal=2139314 dq=86.8 cnt=69 | c=449.2 rankC=449.2 need=3850011 tD=0.92 人 pulse crowdedHard | safe=1188262 keep=Inf avail=-Inf chunkB=138261 pulseB=82957 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6640 ryan_m B=700085 L=16138 d=43.4 nb=1 neut=0 cmds=94 noFull=1 shQ=175021 | m=0.900 worth=74.7 cheap=7.8 over=0 dMedOther=97.6 safe(-1)=1204367
+    → brocstrailia#36[T2] terr=24738 bal=2167980 dq=87.6 cnt=74 | c=453.5 rankC=453.5 need=3901295 tD=0.90 人 pulse crowdedHard | safe=1204367 keep=Inf avail=-Inf chunkB=140017 pulseB=84010 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6645 ryan_m B=700085 L=16138 d=43.4 nb=1 neut=0 cmds=94 noFull=1 shQ=175021 | m=0.900 worth=72.7 cheap=7.8 over=0 dMedOther=95.0 safe(-1)=1204367
+    → brocstrailia#36[T2] terr=24858 bal=2167980 dq=87.2 cnt=76 | c=451.3 rankC=451.3 need=3901475 tD=0.92 人 pulse crowdedHard | safe=1204367 keep=Inf avail=-Inf chunkB=140017 pulseB=84010 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6650 ryan_m B=708976 L=16138 d=43.9 nb=1 neut=0 cmds=94 noFull=1 shQ=177244 | m=0.900 worth=73.6 cheap=7.8 over=0 dMedOther=96.2 safe(-1)=1220687
+    → brocstrailia#36[T2] terr=24939 bal=2197030 dq=88.1 cnt=78 | c=455.8 rankC=455.8 need=3953406 tD=0.92 人 pulse crowdedHard | safe=1220687 keep=Inf avail=-Inf chunkB=141795 pulseB=85077 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6655 ryan_m B=708976 L=16138 d=43.9 nb=1 neut=0 cmds=94 noFull=1 shQ=177244 | m=0.900 worth=72.3 cheap=7.8 over=0 dMedOther=94.5 safe(-1)=1220687
+    → brocstrailia#36[T2] terr=25063 bal=2197030 dq=87.7 cnt=81 | c=453.5 rankC=453.5 need=3953591 tD=0.93 人 pulse crowdedHard | safe=1220687 keep=Inf avail=-Inf chunkB=141795 pulseB=85077 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6660 ryan_m B=717979 L=16138 d=44.5 nb=1 neut=0 cmds=94 noFull=1 shQ=179494 | m=0.900 worth=72.4 cheap=7.8 over=0 dMedOther=94.7 safe(-1)=1237235
+    → brocstrailia#36[T2] terr=25105 bal=2226486 dq=88.7 cnt=82 | c=458.7 rankC=458.7 need=4006094 tD=0.94 人 pulse crowdedHard | safe=1237235 keep=Inf avail=-Inf chunkB=143596 pulseB=86157 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6665 ryan_m B=717979 L=16138 d=44.5 nb=1 neut=0 cmds=94 noFull=1 shQ=179494 | m=0.900 worth=72.3 cheap=7.8 over=0 dMedOther=94.6 safe(-1)=1237235
+    → brocstrailia#36[T2] terr=25105 bal=2226486 dq=88.7 cnt=82 | c=458.7 rankC=458.7 need=4006094 tD=0.94 人 pulse crowdedHard | safe=1237235 keep=Inf avail=-Inf chunkB=143596 pulseB=86157 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6670 ryan_m B=727097 L=16138 d=45.1 nb=1 neut=0 cmds=94 noFull=1 shQ=181774 | m=0.900 worth=73.3 cheap=7.8 over=0 dMedOther=95.8 safe(-1)=1253996
+    → brocstrailia#36[T2] terr=25105 bal=2256320 dq=89.9 cnt=82 | c=464.8 rankC=464.8 need=4059269 tD=0.94 人 pulse crowdedHard | safe=1253996 keep=Inf avail=-Inf chunkB=145419 pulseB=87252 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6675 ryan_m B=727097 L=16138 d=45.1 nb=1 neut=0 cmds=94 noFull=1 shQ=181774 | m=0.900 worth=73.2 cheap=7.8 over=0 dMedOther=95.7 safe(-1)=1253996
+    → brocstrailia#36[T2] terr=25105 bal=2256320 dq=89.9 cnt=82 | c=464.8 rankC=464.8 need=4059269 tD=0.94 人 pulse crowdedHard | safe=1253996 keep=Inf avail=-Inf chunkB=145419 pulseB=87252 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6680 ryan_m B=736331 L=16138 d=45.6 nb=1 neut=0 cmds=94 noFull=1 shQ=184082 | m=0.900 worth=74.2 cheap=7.8 over=0 dMedOther=97.0 safe(-1)=1110410
+    → brocstrailia#36[T2] terr=25105 bal=2000736 dq=79.7 cnt=82 | c=309.6 rankC=216.7 need=3603722 tD=0.82 人 pulse crowdedHard | safe=1110410 keep=Inf avail=-Inf chunkB=147266 pulseB=88360 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6685 ryan_m B=736331 L=16138 d=45.6 nb=1 neut=0 cmds=94 noFull=1 shQ=184082 | m=0.900 worth=74.2 cheap=7.8 over=0 dMedOther=97.0 safe(-1)=1110410
+    → brocstrailia#36[T2] terr=25105 bal=2000736 dq=79.7 cnt=82 | c=309.6 rankC=216.7 need=3603722 tD=0.82 人 pulse crowdedHard | safe=1110410 keep=Inf avail=-Inf chunkB=147266 pulseB=88360 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6690 ryan_m B=745682 L=16138 d=46.2 nb=1 neut=0 cmds=94 noFull=1 shQ=186420 | m=0.900 worth=75.2 cheap=7.8 over=0 dMedOther=98.3 safe(-1)=1125471
+    → brocstrailia#36[T2] terr=25233 bal=2027545 dq=80.4 cnt=84 | c=312.1 rankC=218.5 need=3651698 tD=0.82 人 pulse crowdedHard | safe=1125471 keep=Inf avail=-Inf chunkB=149136 pulseB=89482 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6695 ryan_m B=745682 L=16138 d=46.2 nb=1 neut=0 cmds=94 noFull=1 shQ=186420 | m=0.900 worth=76.1 cheap=7.8 over=0 dMedOther=99.5 safe(-1)=1125471
+    → brocstrailia#36[T2] terr=25315 bal=2027545 dq=80.1 cnt=86 | c=311.1 rankC=217.7 need=3651878 tD=0.81 人 pulse crowdedHard | safe=1125471 keep=Inf avail=-Inf chunkB=149136 pulseB=89482 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6700 ryan_m B=771290 L=16138 d=47.8 nb=1 neut=0 cmds=94 noFull=1 shQ=188868 | m=0.900 worth=69.4 cheap=7.8 over=0 dMedOther=90.8 safe(-1)=1155116
+    → brocstrailia#36[T2] terr=25439 bal=2080313 dq=81.8 cnt=88 | c=243.1 rankC=121.6 need=3746117 tD=0.90 人 pulse crowdedHard | safe=1155116 keep=Inf avail=-Inf chunkB=154258 pulseB=92555 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6705 ryan_m B=771290 L=16138 d=47.8 nb=1 neut=0 cmds=94 noFull=1 shQ=192822 | m=0.900 worth=69.4 cheap=7.8 over=0 dMedOther=90.8 safe(-1)=1155116
+    → brocstrailia#36[T2] terr=25526 bal=2080313 dq=81.5 cnt=89 | c=242.3 rankC=121.2 need=3746218 tD=0.90 人 pulse crowdedHard | safe=1155116 keep=Inf avail=-Inf chunkB=154258 pulseB=92555 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6710 ryan_m B=781085 L=16138 d=48.4 nb=1 neut=0 cmds=94 noFull=1 shQ=195271 | m=0.900 worth=70.4 cheap=7.8 over=0 dMedOther=92.0 safe(-1)=1158765
+    → brocstrailia#36[T2] terr=25524 bal=2086808 dq=81.8 cnt=90 | c=317.5 rankC=222.3 need=3756575 tD=0.89 人 pulse crowdedHard | safe=1158765 keep=Inf avail=-Inf chunkB=156217 pulseB=93730 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6715 ryan_m B=781085 L=16138 d=48.4 nb=1 neut=0 cmds=94 noFull=1 shQ=195271 | m=0.900 worth=70.4 cheap=7.8 over=0 dMedOther=92.0 safe(-1)=1158765
+    → brocstrailia#36[T2] terr=25612 bal=2086808 dq=81.5 cnt=91 | c=316.4 rankC=221.5 need=3757866 tD=0.89 人 pulse crowdedHard | safe=1158765 keep=Inf avail=-Inf chunkB=156217 pulseB=93730 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6720 ryan_m B=791004 L=16138 d=49.0 nb=1 neut=0 cmds=94 noFull=1 shQ=197751 | m=0.900 worth=71.3 cheap=7.8 over=0 dMedOther=93.2 safe(-1)=1174591
+    → brocstrailia#36[T2] terr=25745 bal=2114979 dq=82.2 cnt=96 | c=318.9 rankC=223.2 need=3808306 tD=0.88 人 pulse crowdedHard | safe=1174591 keep=Inf avail=-Inf chunkB=158201 pulseB=94920 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6725 ryan_m B=791004 L=16138 d=49.0 nb=1 neut=0 cmds=94 noFull=1 shQ=197751 | m=0.900 worth=71.3 cheap=7.8 over=0 dMedOther=93.2 safe(-1)=1174591
+    → brocstrailia#36[T2] terr=25832 bal=2114979 dq=81.9 cnt=99 | c=317.8 rankC=222.5 need=3808407 tD=0.88 人 pulse crowdedHard | safe=1174591 keep=Inf avail=-Inf chunkB=158201 pulseB=94920 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6730 ryan_m B=801049 L=16138 d=49.6 nb=1 neut=0 cmds=94 noFull=1 shQ=200262 | m=0.900 worth=72.3 cheap=7.8 over=0 dMedOther=94.5 safe(-1)=1190631
+    → brocstrailia#36[T2] terr=25961 bal=2143531 dq=82.6 cnt=104 | c=320.4 rankC=224.3 need=3859520 tD=0.87 人 pulse crowdedHard | safe=1190631 keep=Inf avail=-Inf chunkB=160210 pulseB=96126 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6735 ryan_m B=801049 L=16138 d=49.6 nb=1 neut=0 cmds=94 noFull=1 shQ=200262 | m=0.900 worth=72.3 cheap=7.8 over=0 dMedOther=94.5 safe(-1)=1190631
+    → brocstrailia#36[T2] terr=26045 bal=2143531 dq=82.3 cnt=107 | c=425.8 rankC=425.8 need=3859646 tD=0.87 人 pulse crowdedHard | safe=1190631 keep=Inf avail=-Inf chunkB=160210 pulseB=96126 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6740 ryan_m B=811222 L=16138 d=50.3 nb=1 neut=0 cmds=94 noFull=1 shQ=202805 | m=0.900 worth=73.2 cheap=7.8 over=0 dMedOther=95.7 safe(-1)=1206888
+    → brocstrailia#36[T2] terr=26162 bal=2172468 dq=83.0 cnt=112 | c=429.5 rankC=429.5 need=3911427 tD=0.87 人 pulse crowdedHard | safe=1206888 keep=Inf avail=-Inf chunkB=162244 pulseB=97347 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6745 ryan_m B=811222 L=16138 d=50.3 nb=1 neut=0 cmds=94 noFull=1 shQ=202805 | m=0.900 worth=73.2 cheap=7.8 over=0 dMedOther=95.7 safe(-1)=1206888
+    → brocstrailia#36[T2] terr=26235 bal=2172468 dq=82.8 cnt=116 | c=428.2 rankC=428.2 need=3911566 tD=0.87 人 pulse crowdedHard | safe=1206888 keep=Inf avail=-Inf chunkB=162244 pulseB=97347 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6750 ryan_m B=821524 L=16138 d=50.9 nb=1 neut=0 cmds=94 noFull=1 shQ=205381 | m=0.900 worth=68.6 cheap=7.8 over=0 dMedOther=89.7 safe(-1)=1223365
+    → brocstrailia#36[T2] terr=26340 bal=2201796 dq=83.6 cnt=122 | c=432.2 rankC=432.2 need=3963908 tD=0.93 人 pulse crowdedHard | safe=1223365 keep=Inf avail=-Inf chunkB=164305 pulseB=98583 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6755 ryan_m B=821524 L=16138 d=50.9 nb=1 neut=0 cmds=94 noFull=1 shQ=205381 | m=0.900 worth=68.2 cheap=7.8 over=0 dMedOther=89.2 safe(-1)=1223365
+    → brocstrailia#36[T2] terr=26405 bal=2201796 dq=83.4 cnt=125 | c=431.1 rankC=431.1 need=3964035 tD=0.93 人 pulse crowdedHard | safe=1223365 keep=Inf avail=-Inf chunkB=164305 pulseB=98583 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6760 ryan_m B=831957 L=16138 d=51.6 nb=1 neut=0 cmds=94 noFull=1 shQ=207989 | m=0.900 worth=68.9 cheap=7.8 over=0 dMedOther=90.0 safe(-1)=1240187
+    → brocstrailia#36[T2] terr=26500 bal=2231740 dq=84.2 cnt=127 | c=435.3 rankC=435.3 need=4017519 tD=0.94 人 pulse crowdedHard | safe=1240187 keep=Inf avail=-Inf chunkB=166391 pulseB=99835 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6765 ryan_m B=831957 L=16138 d=51.6 nb=1 neut=0 cmds=94 noFull=1 shQ=207989 | m=0.900 worth=68.5 cheap=7.8 over=0 dMedOther=89.6 safe(-1)=1240187
+    → brocstrailia#36[T2] terr=26563 bal=2231740 dq=84.0 cnt=128 | c=434.2 rankC=434.2 need=4017703 tD=0.94 人 pulse crowdedHard | safe=1240187 keep=Inf avail=-Inf chunkB=166391 pulseB=99835 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6770 ryan_m B=842522 L=16138 d=52.2 nb=1 neut=0 cmds=94 noFull=1 shQ=210630 | m=0.900 worth=69.2 cheap=7.8 over=0 dMedOther=90.5 safe(-1)=1257238
+    → brocstrailia#36[T2] terr=26657 bal=2262091 dq=84.9 cnt=129 | c=438.5 rankC=438.5 need=4071881 tD=0.94 人 pulse crowdedHard | safe=1257238 keep=Inf avail=-Inf chunkB=168504 pulseB=101103 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6775 ryan_m B=842522 L=16138 d=52.2 nb=1 neut=0 cmds=94 noFull=1 shQ=210630 | m=0.900 worth=69.2 cheap=7.8 over=0 dMedOther=90.4 safe(-1)=1257238
+    → brocstrailia#36[T2] terr=26720 bal=2262091 dq=84.7 cnt=130 | c=437.5 rankC=437.5 need=4071946 tD=0.94 人 pulse crowdedHard | safe=1257238 keep=Inf avail=-Inf chunkB=168504 pulseB=101103 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6780 ryan_m B=853222 L=16138 d=52.9 nb=1 neut=0 cmds=94 noFull=1 shQ=213305 | m=0.900 worth=69.6 cheap=7.8 over=0 dMedOther=91.0 safe(-1)=1274521
+    → brocstrailia#36[T2] terr=26815 bal=2292855 dq=85.5 cnt=132 | c=441.8 rankC=441.8 need=4127012 tD=0.94 人 pulse crowdedHard | safe=1274521 keep=Inf avail=-Inf chunkB=170644 pulseB=102387 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6785 ryan_m B=853222 L=16138 d=52.9 nb=1 neut=0 cmds=94 noFull=1 shQ=213305 | m=0.900 worth=69.3 cheap=7.8 over=0 dMedOther=90.6 safe(-1)=1274521
+    → brocstrailia#36[T2] terr=26880 bal=2292855 dq=85.3 cnt=133 | c=440.7 rankC=440.7 need=4127018 tD=0.94 人 pulse crowdedHard | safe=1274521 keep=Inf avail=-Inf chunkB=170644 pulseB=102387 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6790 ryan_m B=864057 L=16138 d=53.5 nb=1 neut=0 cmds=94 noFull=1 shQ=216014 | m=0.900 worth=70.1 cheap=7.8 over=0 dMedOther=91.6 safe(-1)=1292039
+    → brocstrailia#36[T2] terr=26977 bal=2324037 dq=86.1 cnt=134 | c=445.1 rankC=445.1 need=4182772 tD=0.94 人 pulse crowdedHard | safe=1292039 keep=Inf avail=-Inf chunkB=172811 pulseB=103687 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6795 ryan_m B=864057 L=16138 d=53.5 nb=1 neut=0 cmds=94 noFull=1 shQ=216014 | m=0.900 worth=69.9 cheap=7.8 over=0 dMedOther=91.3 safe(-1)=1292039
+    → brocstrailia#36[T2] terr=27043 bal=2324037 dq=85.9 cnt=136 | c=444.0 rankC=444.0 need=4182932 tD=0.94 人 pulse crowdedHard | safe=1292039 keep=Inf avail=-Inf chunkB=172811 pulseB=103687 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6800 ryan_m B=891168 L=16138 d=55.2 nb=1 neut=0 cmds=94 noFull=1 shQ=218843 | m=0.900 worth=71.4 cheap=7.8 over=0 dMedOther=93.3 safe(-1)=1325026
+    → brocstrailia#36[T2] terr=27143 bal=2382753 dq=87.8 cnt=138 | c=453.4 rankC=453.4 need=4287737 tD=0.94 人 pulse crowdedHard | safe=1325026 keep=Inf avail=-Inf chunkB=178234 pulseB=106940 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6805 ryan_m B=891168 L=16138 d=55.2 nb=1 neut=0 cmds=94 noFull=1 shQ=222792 | m=0.900 worth=71.2 cheap=7.8 over=0 dMedOther=93.1 safe(-1)=1325026
+    → brocstrailia#36[T2] terr=27208 bal=2382753 dq=87.6 cnt=139 | c=452.3 rankC=452.3 need=4287741 tD=0.94 人 pulse crowdedHard | safe=1325026 keep=Inf avail=-Inf chunkB=178234 pulseB=106940 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6810 ryan_m B=902485 L=16138 d=55.9 nb=1 neut=0 cmds=94 noFull=1 shQ=225621 | m=0.900 worth=72.0 cheap=7.8 over=0 dMedOther=94.2 safe(-1)=1343231
+    → brocstrailia#36[T2] terr=27305 bal=2415158 dq=88.5 cnt=141 | c=456.8 rankC=456.8 need=4345676 tD=0.94 人 pulse crowdedHard | safe=1343231 keep=Inf avail=-Inf chunkB=180497 pulseB=108298 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6815 ryan_m B=902485 L=16138 d=55.9 nb=1 neut=42 cmds=94 noFull=1 shQ=225621 | m=0.900 worth=70.1 cheap=7.8 over=0 dMedOther=91.6 safe(-1)=1343231
+    → brocstrailia#36[T2] terr=27369 bal=2415158 dq=88.2 cnt=142 | c=261.8 rankC=130.9 need=4345771 tD=0.96 人 pulse crowdedHard | safe=1343231 keep=Inf avail=-Inf chunkB=180497 pulseB=108298 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6820 ryan_m B=913946 L=16138 d=56.6 nb=1 neut=41 cmds=94 noFull=1 shQ=228486 | m=0.900 worth=71.0 cheap=7.8 over=0 dMedOther=92.8 safe(-1)=1350374
+    → brocstrailia#36[T2] terr=27322 bal=2427873 dq=88.9 cnt=143 | c=263.6 rankC=131.8 need=4364996 tD=0.96 人 pulse crowdedHard | safe=1350374 keep=Inf avail=-Inf chunkB=182789 pulseB=109674 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6825 ryan_m B=913946 L=16138 d=56.6 nb=2 neut=40 cmds=94 noFull=1 shQ=228486 | m=0.900 worth=71.0 cheap=7.8 over=0 dMedOther=92.8 safe(-1)=1336039
+    → [OG] Gallo#55[T4] terr=35399 bal=2356896 dq=66.6 cnt=15 | c=292.6 rankC=204.8 need=4254012 tD=0.72 人 pulse crowdedHard | safe=1336039 keep=Inf avail=-Inf chunkB=182789 pulseB=109674 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27238 bal=2402357 dq=88.2 cnt=144 | c=284.9 rankC=284.9 need=4316910 tD=0.95 人 pulse crowdedHard | safe=1336039 keep=Inf avail=-Inf chunkB=182789 pulseB=109674 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6830 ryan_m B=925553 L=16138 d=57.4 nb=2 neut=38 cmds=94 noFull=1 shQ=231388 | m=0.900 worth=71.9 cheap=7.8 over=0 dMedOther=94.0 safe(-1)=1354394
+    → brocstrailia#36[T2] terr=27320 bal=2435029 dq=89.1 cnt=146 | c=165.5 rankC=82.8 need=4377927 tD=0.95 人 pulse crowdedHard | safe=1354394 keep=Inf avail=-Inf chunkB=185111 pulseB=111066 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=35422 bal=2390128 dq=67.5 cnt=19 | c=296.4 rankC=207.5 need=4313255 tD=0.72 人 pulse crowdedHard | safe=1354394 keep=Inf avail=-Inf chunkB=185111 pulseB=111066 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6835 ryan_m B=925553 L=16138 d=57.4 nb=2 neut=37 cmds=94 noFull=1 shQ=231388 | m=0.900 worth=71.9 cheap=7.8 over=0 dMedOther=94.0 safe(-1)=1342869
+    → brocstrailia#36[T2] terr=27221 bal=2414513 dq=88.7 cnt=147 | c=166.1 rankC=83.1 need=4338361 tD=0.94 人 pulse crowdedHard | safe=1342869 keep=Inf avail=-Inf chunkB=185111 pulseB=111066 价高(c>=worth)→break hNb=2
+    → [OG] Gallo#55[T4] terr=35434 bal=2390128 dq=67.5 cnt=20 | c=296.3 rankC=207.4 need=4313273 tD=0.72 人 pulse crowdedHard | safe=1342869 keep=Inf avail=-Inf chunkB=185111 pulseB=111066 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6840 ryan_m B=937307 L=16138 d=58.1 nb=2 neut=36 cmds=94 noFull=1 shQ=234326 | m=0.900 worth=72.8 cheap=7.8 over=0 dMedOther=95.1 safe(-1)=1360950
+    → [OG] Gallo#55[T4] terr=35452 bal=2423828 dq=68.4 cnt=22 | c=300.3 rankC=210.2 need=4373318 tD=0.72 人 pulse crowdedHard | safe=1360950 keep=Inf avail=-Inf chunkB=187461 pulseB=112477 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27276 bal=2446698 dq=89.7 cnt=148 | c=289.6 rankC=289.6 need=4397621 tD=0.94 人 pulse crowdedHard | safe=1360950 keep=Inf avail=-Inf chunkB=187461 pulseB=112477 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6845 ryan_m B=937307 L=16138 d=58.1 nb=2 neut=35 cmds=94 noFull=1 shQ=234326 | m=0.900 worth=72.8 cheap=7.8 over=0 dMedOther=95.1 safe(-1)=1360950
+    → [OG] Gallo#55[T4] terr=35466 bal=2423828 dq=68.3 cnt=24 | c=300.1 rankC=210.1 need=4373387 tD=0.72 人 pulse crowdedHard | safe=1360950 keep=Inf avail=-Inf chunkB=187461 pulseB=112477 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27308 bal=2446698 dq=89.6 cnt=149 | c=289.2 rankC=289.2 need=4398818 tD=0.94 人 pulse crowdedHard | safe=1360950 keep=Inf avail=-Inf chunkB=187461 pulseB=112477 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6850 ryan_m B=949210 L=16138 d=58.8 nb=2 neut=33 cmds=94 noFull=1 shQ=237302 | m=0.900 worth=73.7 cheap=7.8 over=0 dMedOther=96.3 safe(-1)=1379644
+    → [OG] Gallo#55[T4] terr=35493 bal=2458003 dq=69.3 cnt=25 | c=168.9 rankC=118.3 need=4434316 tD=0.72 人 pulse crowdedHard | safe=1379644 keep=Inf avail=-Inf chunkB=189842 pulseB=113905 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27354 bal=2479973 dq=90.7 cnt=151 | c=292.5 rankC=292.5 need=4459766 tD=0.94 人 pulse crowdedHard | safe=1379644 keep=Inf avail=-Inf chunkB=189842 pulseB=113905 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6855 ryan_m B=949210 L=16138 d=58.8 nb=2 neut=32 cmds=94 noFull=1 shQ=237302 | m=0.900 worth=73.7 cheap=7.8 over=0 dMedOther=96.3 safe(-1)=1379644
+    → [OG] Gallo#55[T4] terr=35516 bal=2458003 dq=69.2 cnt=26 | c=168.8 rankC=118.2 need=4434326 tD=0.72 人 pulse crowdedHard | safe=1379644 keep=Inf avail=-Inf chunkB=189842 pulseB=113905 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27383 bal=2479973 dq=90.6 cnt=152 | c=292.2 rankC=292.2 need=4460997 tD=0.94 人 pulse crowdedHard | safe=1379644 keep=Inf avail=-Inf chunkB=189842 pulseB=113905 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6860 ryan_m B=961264 L=16138 d=59.6 nb=2 neut=30 cmds=94 noFull=1 shQ=240316 | m=0.900 worth=74.6 cheap=7.8 over=0 dMedOther=97.6 safe(-1)=1398592
+    → [OG] Gallo#55[T4] terr=35557 bal=2492660 dq=70.1 cnt=29 | c=171.0 rankC=119.7 need=4496184 tD=0.72 人 pulse crowdedHard | safe=1398592 keep=Inf avail=-Inf chunkB=192253 pulseB=115352 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27424 bal=2513700 dq=91.7 cnt=154 | c=295.6 rankC=295.6 need=4521460 tD=0.94 人 pulse crowdedHard | safe=1398592 keep=Inf avail=-Inf chunkB=192253 pulseB=115352 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6865 ryan_m B=961264 L=16138 d=59.6 nb=2 neut=28 cmds=94 noFull=1 shQ=240316 | m=0.900 worth=73.8 cheap=7.8 over=0 dMedOther=96.5 safe(-1)=1398592
+    → [OG] Gallo#55[T4] terr=35585 bal=2492660 dq=70.0 cnt=30 | c=170.8 rankC=119.6 need=4496226 tD=0.73 人 pulse crowdedHard | safe=1398592 keep=Inf avail=-Inf chunkB=192253 pulseB=115352 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27444 bal=2513700 dq=91.6 cnt=156 | c=295.4 rankC=295.4 need=4521490 tD=0.95 人 pulse crowdedHard | safe=1398592 keep=Inf avail=-Inf chunkB=192253 pulseB=115352 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6870 ryan_m B=973472 L=16138 d=60.3 nb=2 neut=26 cmds=94 noFull=1 shQ=243368 | m=0.900 worth=74.9 cheap=7.8 over=0 dMedOther=97.9 safe(-1)=1417797
+    → [OG] Gallo#55[T4] terr=35631 bal=2527806 dq=70.9 cnt=32 | c=230.6 rankC=230.6 need=4558988 tD=0.72 人 pulse crowdedHard | safe=1417797 keep=Inf avail=-Inf chunkB=194694 pulseB=116817 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27458 bal=2547886 dq=92.8 cnt=158 | c=299.2 rankC=299.2 need=4582509 tD=0.95 人 pulse crowdedHard | safe=1417797 keep=Inf avail=-Inf chunkB=194694 pulseB=116817 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6875 ryan_m B=973472 L=16138 d=60.3 nb=2 neut=25 cmds=94 noFull=1 shQ=243368 | m=0.900 worth=74.9 cheap=7.8 over=0 dMedOther=97.9 safe(-1)=1417797
+    → [OG] Gallo#55[T4] terr=35664 bal=2527806 dq=70.9 cnt=33 | c=230.4 rankC=230.4 need=4558962 tD=0.72 人 pulse crowdedHard | safe=1417797 keep=Inf avail=-Inf chunkB=194694 pulseB=116817 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27466 bal=2547886 dq=92.8 cnt=159 | c=299.1 rankC=299.1 need=4582521 tD=0.95 人 pulse crowdedHard | safe=1417797 keep=Inf avail=-Inf chunkB=194694 pulseB=116817 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6880 ryan_m B=985835 L=16138 d=61.1 nb=2 neut=134 cmds=94 noFull=1 shQ=246458 | m=0.900 worth=76.0 cheap=7.8 over=0 dMedOther=99.4 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=35717 bal=2563448 dq=71.8 cnt=35 | c=233.3 rankC=233.3 need=4622594 tD=0.72 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=197167 pulseB=118300 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27475 bal=2582537 dq=94.0 cnt=161 | c=303.0 rankC=303.0 need=4644329 tD=0.95 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=197167 pulseB=118300 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6885 ryan_m B=985835 L=16138 d=61.1 nb=2 neut=131 cmds=94 noFull=1 shQ=246458 | m=0.900 worth=76.0 cheap=7.8 over=0 dMedOther=99.4 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=35753 bal=2563448 dq=71.7 cnt=37 | c=233.0 rankC=233.0 need=4622648 tD=0.72 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=197167 pulseB=118300 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27486 bal=2582537 dq=94.0 cnt=162 | c=302.9 rankC=302.9 need=4644312 tD=0.95 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=197167 pulseB=118300 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6890 ryan_m B=998355 L=16138 d=61.9 nb=2 neut=126 cmds=94 noFull=1 shQ=249588 | m=0.900 worth=72.2 cheap=7.8 over=0 dMedOther=94.3 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=35807 bal=2599592 dq=72.6 cnt=40 | c=235.9 rankC=235.9 need=4687203 tD=0.77 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=199671 pulseB=119803 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27508 bal=2617659 dq=95.2 cnt=164 | c=306.7 rankC=306.7 need=4706879 tD=1.01 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=199671 pulseB=119803 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6895 ryan_m B=998355 L=16138 d=61.9 nb=2 neut=124 cmds=94 noFull=1 shQ=249588 | m=0.900 worth=72.2 cheap=7.8 over=0 dMedOther=94.3 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=35844 bal=2599592 dq=72.5 cnt=41 | c=235.6 rankC=235.6 need=4687181 tD=0.77 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=199671 pulseB=119803 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27526 bal=2617659 dq=95.1 cnt=165 | c=306.5 rankC=306.5 need=4706973 tD=1.01 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=199671 pulseB=119803 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6900 ryan_m B=1027172 L=16138 d=63.6 nb=2 neut=122 cmds=94 noFull=1 shQ=252849 | m=0.900 worth=73.9 cheap=7.8 over=0 dMedOther=96.6 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=35903 bal=2672129 dq=74.4 cnt=42 | c=241.7 rankC=241.7 need=4816636 tD=0.77 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=205434 pulseB=123261 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27562 bal=2680808 dq=97.3 cnt=166 | c=313.4 rankC=313.4 need=4819583 tD=1.01 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=205434 pulseB=123261 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6905 ryan_m B=1027172 L=16138 d=63.6 nb=2 neut=116 cmds=94 noFull=1 shQ=256793 | m=0.900 worth=73.9 cheap=7.8 over=0 dMedOther=96.6 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=35942 bal=2672129 dq=74.3 cnt=47 | c=241.4 rankC=241.4 need=4816668 tD=0.77 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=205434 pulseB=123261 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27593 bal=2680808 dq=97.2 cnt=167 | c=313.1 rankC=313.1 need=4819595 tD=1.01 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=205434 pulseB=123261 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6910 ryan_m B=1040217 L=16138 d=64.5 nb=2 neut=110 cmds=94 noFull=1 shQ=260054 | m=0.900 worth=73.1 cheap=7.8 over=0 dMedOther=95.6 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=35996 bal=2709806 dq=75.3 cnt=50 | c=244.4 rankC=244.4 need=4883850 tD=0.79 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=208043 pulseB=124826 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27650 bal=2642968 dq=95.6 cnt=170 | c=308.1 rankC=308.1 need=4752269 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=208043 pulseB=124826 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6915 ryan_m B=1040217 L=16138 d=64.5 nb=2 neut=103 cmds=94 noFull=1 shQ=260054 | m=0.900 worth=73.0 cheap=7.8 over=0 dMedOther=95.4 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36029 bal=2709806 dq=75.2 cnt=55 | c=244.2 rankC=244.2 need=4883926 tD=0.79 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=208043 pulseB=124826 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27693 bal=2642968 dq=95.4 cnt=172 | c=307.6 rankC=307.6 need=4752300 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=208043 pulseB=124826 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6920 ryan_m B=1053427 L=16138 d=65.3 nb=2 neut=90 cmds=94 noFull=1 shQ=263356 | m=0.900 worth=73.8 cheap=7.8 over=0 dMedOther=96.5 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36065 bal=2748014 dq=76.2 cnt=63 | c=247.3 rankC=247.3 need=4952081 tD=0.79 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=210685 pulseB=126411 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27765 bal=2678912 dq=96.5 cnt=175 | c=310.9 rankC=310.9 need=4816474 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=210685 pulseB=126411 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6925 ryan_m B=1053427 L=16138 d=65.3 nb=2 neut=79 cmds=94 noFull=1 shQ=263356 | m=0.900 worth=73.7 cheap=7.8 over=0 dMedOther=96.3 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36086 bal=2748014 dq=76.2 cnt=70 | c=247.1 rankC=247.1 need=4952140 tD=0.79 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=210685 pulseB=126411 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27818 bal=2678912 dq=96.3 cnt=177 | c=310.3 rankC=310.3 need=4816587 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=210685 pulseB=126411 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6930 ryan_m B=1066805 L=16138 d=66.1 nb=2 neut=72 cmds=94 noFull=1 shQ=266701 | m=0.900 worth=74.4 cheap=7.8 over=0 dMedOther=97.3 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36099 bal=2786760 dq=77.2 cnt=72 | c=250.4 rankC=250.4 need=5021247 tD=0.79 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=213361 pulseB=128017 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27906 bal=2715345 dq=97.3 cnt=180 | c=313.5 rankC=313.5 need=4881656 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=213361 pulseB=128017 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6935 ryan_m B=1066805 L=16138 d=66.1 nb=2 neut=67 cmds=94 noFull=1 shQ=266701 | m=0.900 worth=74.3 cheap=7.8 over=0 dMedOther=97.2 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36106 bal=2786760 dq=77.2 cnt=73 | c=250.4 rankC=250.4 need=5021230 tD=0.79 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=213361 pulseB=128017 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=27969 bal=2715345 dq=97.1 cnt=182 | c=312.7 rankC=312.7 need=4881717 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=213361 pulseB=128017 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6940 ryan_m B=1080353 L=16138 d=66.9 nb=2 neut=61 cmds=94 noFull=1 shQ=270088 | m=0.900 worth=75.3 cheap=7.8 over=0 dMedOther=98.5 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36115 bal=2826053 dq=78.3 cnt=75 | c=253.8 rankC=253.8 need=5091306 tD=0.79 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=216071 pulseB=129642 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=28063 bal=2752273 dq=98.1 cnt=184 | c=315.9 rankC=315.9 need=4947746 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=216071 pulseB=129642 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6945 ryan_m B=1080353 L=16138 d=66.9 nb=2 neut=58 cmds=94 noFull=1 shQ=270088 | m=0.900 worth=75.3 cheap=7.8 over=0 dMedOther=98.5 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36123 bal=2826053 dq=78.2 cnt=76 | c=253.7 rankC=253.7 need=5091318 tD=0.79 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=216071 pulseB=129642 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=28117 bal=2752273 dq=97.9 cnt=184 | c=315.3 rankC=315.3 need=4947758 tD=0.99 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=216071 pulseB=129642 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6950 ryan_m B=1094073 L=16138 d=67.8 nb=2 neut=53 cmds=94 noFull=1 shQ=273518 | m=0.900 worth=76.4 cheap=7.8 over=0 dMedOther=99.8 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36138 bal=2865900 dq=79.3 cnt=79 | c=257.1 rankC=257.1 need=5162336 tD=0.79 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=218815 pulseB=131289 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=28154 bal=2789703 dq=99.1 cnt=184 | c=319.1 rankC=319.1 need=5014563 tD=0.99 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=218815 pulseB=131289 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6955 ryan_m B=1094073 L=16138 d=67.8 nb=2 neut=40 cmds=94 noFull=1 shQ=273518 | m=0.900 worth=76.4 cheap=7.8 over=0 dMedOther=99.8 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36149 bal=2865900 dq=79.3 cnt=82 | c=257.0 rankC=257.0 need=5162324 tD=0.79 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=218815 pulseB=131289 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=28159 bal=2789703 dq=99.1 cnt=184 | c=319.1 rankC=319.1 need=5014605 tD=0.99 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=218815 pulseB=131289 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6960 ryan_m B=1107967 L=16138 d=68.7 nb=2 neut=31 cmds=94 noFull=1 shQ=276991 | m=0.900 worth=77.9 cheap=7.8 over=0 dMedOther=101.9 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36164 bal=2906309 dq=80.4 cnt=85 | c=260.5 rankC=260.5 need=5234342 tD=0.79 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=221593 pulseB=132956 价高(c>=worth)→break hNb=2
+    → brocstrailia#36[T2] terr=28162 bal=2868797 dq=101.9 cnt=184 | c=328.0 rankC=328.0 need=5155551 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=221593 pulseB=132956 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6965 ryan_m B=1107967 L=16138 d=68.7 nb=3 neut=17 cmds=94 noFull=1 shQ=276991 | m=0.900 worth=77.9 cheap=7.8 over=0 dMedOther=101.9 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36171 bal=2906309 dq=80.3 cnt=87 | c=260.4 rankC=260.4 need=5234438 tD=0.79 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=221593 pulseB=132956 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=28162 bal=2868797 dq=101.9 cnt=184 | c=328.0 rankC=328.0 need=5155551 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=221593 pulseB=132956 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=2534873 dq=93.7 cnt=3 | c=547.6 rankC=547.6 need=4558732 tD=0.92 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=221593 pulseB=132956 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6970 ryan_m B=1122038 L=16138 d=69.5 nb=3 neut=12 cmds=94 noFull=1 shQ=280509 | m=0.900 worth=78.9 cheap=7.8 over=0 dMedOther=103.2 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3081330 dq=85.2 cnt=89 | c=275.9 rankC=275.9 need=5546368 tD=0.83 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=224408 pulseB=134645 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=28162 bal=2906378 dq=103.2 cnt=184 | c=332.3 rankC=332.3 need=5222535 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=224408 pulseB=134645 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=2765524 dq=102.2 cnt=3 | c=596.8 rankC=596.8 need=4969845 tD=0.99 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=224408 pulseB=134645 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6975 ryan_m B=1122038 L=16138 d=69.5 nb=3 neut=0 cmds=94 noFull=1 shQ=280509 | m=0.900 worth=78.2 cheap=7.8 over=0 dMedOther=102.2 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3081330 dq=85.2 cnt=89 | c=275.9 rankC=275.9 need=5546368 tD=0.83 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=224408 pulseB=134645 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=28162 bal=2906378 dq=103.2 cnt=184 | c=332.3 rankC=332.3 need=5222535 tD=1.01 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=224408 pulseB=134645 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=2765524 dq=102.2 cnt=3 | c=596.8 rankC=596.8 need=4969845 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=224408 pulseB=134645 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6980 ryan_m B=1136287 L=16138 d=70.4 nb=3 neut=0 cmds=94 noFull=1 shQ=284071 | m=0.900 worth=79.2 cheap=7.8 over=0 dMedOther=103.6 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3124776 dq=86.4 cnt=89 | c=279.7 rankC=279.7 need=5623805 tD=0.83 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=227257 pulseB=136354 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=28162 bal=2943579 dq=104.5 cnt=184 | c=336.5 rankC=336.5 need=5288841 tD=1.01 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=227257 pulseB=136354 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=2801475 dq=103.6 cnt=3 | c=604.5 rankC=604.5 need=5033924 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=227257 pulseB=136354 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6985 ryan_m B=1136287 L=16138 d=70.4 nb=3 neut=0 cmds=94 noFull=1 shQ=284071 | m=0.900 worth=79.2 cheap=7.8 over=0 dMedOther=103.6 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3124776 dq=86.4 cnt=89 | c=279.7 rankC=279.7 need=5623805 tD=0.83 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=227257 pulseB=136354 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=28162 bal=2943579 dq=104.5 cnt=184 | c=336.5 rankC=336.5 need=5288841 tD=1.01 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=227257 pulseB=136354 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=2801475 dq=103.6 cnt=3 | c=604.5 rankC=604.5 need=5033924 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=227257 pulseB=136354 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6990 ryan_m B=1150717 L=16138 d=71.3 nb=3 neut=0 cmds=94 noFull=1 shQ=287679 | m=0.900 worth=80.2 cheap=7.8 over=0 dMedOther=104.9 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3168835 dq=87.6 cnt=89 | c=283.6 rankC=283.6 need=5702335 tD=0.84 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=230143 pulseB=138086 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=28162 bal=2980079 dq=105.8 cnt=184 | c=340.6 rankC=340.6 need=5353898 tD=1.01 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=230143 pulseB=138086 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=2837053 dq=104.9 cnt=3 | c=612.1 rankC=612.1 need=5097338 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=230143 pulseB=138086 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6995 ryan_m B=1150717 L=16138 d=71.3 nb=3 neut=0 cmds=94 noFull=1 shQ=287679 | m=0.900 worth=80.2 cheap=7.8 over=0 dMedOther=104.9 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3168835 dq=87.6 cnt=89 | c=283.6 rankC=283.6 need=5702335 tD=0.84 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=230143 pulseB=138086 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=28162 bal=2980079 dq=105.8 cnt=184 | c=340.6 rankC=340.6 need=5353898 tD=1.01 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=230143 pulseB=138086 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=2837053 dq=104.9 cnt=3 | c=612.1 rankC=612.1 need=5097338 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=230143 pulseB=138086 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7000 ryan_m B=1181469 L=16138 d=73.2 nb=3 neut=0 cmds=94 noFull=1 shQ=291430 | m=0.900 worth=82.0 cheap=7.8 over=0 dMedOther=107.2 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3249689 dq=89.8 cnt=89 | c=290.8 rankC=290.8 need=5846448 tD=0.84 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=236294 pulseB=141776 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=28162 bal=3044299 dq=108.1 cnt=184 | c=347.9 rankC=347.9 need=5468363 tD=1.01 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=236294 pulseB=141776 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=2898995 dq=107.2 cnt=3 | c=625.4 rankC=625.4 need=5207744 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=236294 pulseB=141776 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7005 ryan_m B=1181469 L=16138 d=73.2 nb=3 neut=0 cmds=94 noFull=1 shQ=295367 | m=0.900 worth=82.0 cheap=7.8 over=0 dMedOther=107.2 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3249689 dq=89.8 cnt=89 | c=290.8 rankC=290.8 need=5846448 tD=0.84 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=236294 pulseB=141776 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=28162 bal=3044299 dq=108.1 cnt=184 | c=347.9 rankC=347.9 need=5468363 tD=1.01 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=236294 pulseB=141776 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=2898995 dq=107.2 cnt=3 | c=625.4 rankC=625.4 need=5207744 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=236294 pulseB=141776 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7010 ryan_m B=1196473 L=16138 d=74.1 nb=3 neut=0 cmds=94 noFull=1 shQ=299118 | m=0.900 worth=83.0 cheap=7.8 over=0 dMedOther=108.4 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3295509 dq=91.1 cnt=89 | c=294.8 rankC=294.8 need=5928117 tD=0.84 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=239295 pulseB=143577 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=28162 bal=3079004 dq=109.3 cnt=184 | c=351.9 rankC=351.9 need=5530221 tD=1.01 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=239295 pulseB=143577 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=2932913 dq=108.4 cnt=3 | c=632.7 rankC=632.7 need=5268199 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=239295 pulseB=143577 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7015 ryan_m B=1196473 L=16138 d=74.1 nb=3 neut=0 cmds=94 noFull=1 shQ=299118 | m=0.900 worth=76.0 cheap=7.8 over=0 dMedOther=99.3 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=28162 bal=2787341 dq=99.0 cnt=184 | c=239.2 rankC=167.4 need=5010365 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=239295 pulseB=143577 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36174 bal=3295509 dq=91.1 cnt=89 | c=294.8 rankC=294.8 need=5928117 tD=0.92 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=239295 pulseB=143577 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=2932913 dq=108.4 cnt=3 | c=632.7 rankC=632.7 need=5268199 tD=1.09 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=239295 pulseB=143577 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7020 ryan_m B=1211668 L=16138 d=75.1 nb=3 neut=0 cmds=94 noFull=1 shQ=302917 | m=0.900 worth=76.9 cheap=7.8 over=0 dMedOther=100.5 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=28162 bal=2825248 dq=100.3 cnt=184 | c=242.4 rankC=169.7 need=5077930 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=242334 pulseB=145400 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36174 bal=3341975 dq=92.4 cnt=89 | c=299.0 rankC=299.0 need=6010937 tD=0.92 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=242334 pulseB=145400 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=2966348 dq=109.7 cnt=3 | c=639.8 rankC=639.8 need=5327794 tD=1.09 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=242334 pulseB=145400 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7025 ryan_m B=1211668 L=16138 d=75.1 nb=3 neut=0 cmds=94 noFull=1 shQ=302917 | m=0.900 worth=76.9 cheap=7.8 over=0 dMedOther=100.5 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=28338 bal=2825248 dq=99.7 cnt=184 | c=240.9 rankC=168.6 need=5078193 tD=0.99 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=242334 pulseB=145400 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36174 bal=3341975 dq=92.4 cnt=89 | c=299.0 rankC=299.0 need=6010937 tD=0.92 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=242334 pulseB=145400 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=2966348 dq=109.7 cnt=3 | c=639.8 rankC=639.8 need=5327794 tD=1.09 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=242334 pulseB=145400 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7030 ryan_m B=1227056 L=16138 d=76.0 nb=3 neut=0 cmds=94 noFull=1 shQ=306764 | m=0.900 worth=77.9 cheap=7.8 over=0 dMedOther=101.8 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=28603 bal=2863953 dq=100.1 cnt=184 | c=241.9 rankC=169.3 need=5147613 tD=0.98 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=245411 pulseB=147247 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36174 bal=3389096 dq=93.7 cnt=89 | c=303.1 rankC=303.1 need=6094924 tD=0.92 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=245411 pulseB=147247 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=2998977 dq=110.9 cnt=3 | c=646.8 rankC=646.8 need=5385952 tD=1.09 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=245411 pulseB=147247 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7035 ryan_m B=1227056 L=16138 d=76.0 nb=3 neut=0 cmds=94 noFull=1 shQ=306764 | m=0.900 worth=77.9 cheap=7.8 over=0 dMedOther=101.8 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3389096 dq=93.7 cnt=89 | c=303.1 rankC=303.1 need=6094924 tD=0.92 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=245411 pulseB=147247 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=28783 bal=2863953 dq=99.5 cnt=184 | c=320.6 rankC=320.6 need=5147882 tD=0.98 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=245411 pulseB=147247 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=2998977 dq=110.9 cnt=3 | c=646.8 rankC=646.8 need=5385952 tD=1.09 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=245411 pulseB=147247 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7040 ryan_m B=1242639 L=16138 d=77.0 nb=3 neut=0 cmds=94 noFull=1 shQ=310659 | m=0.900 worth=78.8 cheap=7.8 over=0 dMedOther=103.0 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3436882 dq=95.0 cnt=89 | c=307.4 rankC=307.4 need=6180097 tD=0.92 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=248528 pulseB=149117 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=29056 bal=2903189 dq=99.9 cnt=184 | c=321.9 rankC=321.9 need=5218119 tD=0.97 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=248528 pulseB=149117 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=3031066 dq=112.1 cnt=3 | c=653.7 rankC=653.7 need=5443147 tD=1.09 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=248528 pulseB=149117 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7045 ryan_m B=1242639 L=16138 d=77.0 nb=3 neut=0 cmds=94 noFull=1 shQ=310659 | m=0.900 worth=78.8 cheap=7.8 over=0 dMedOther=103.0 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3436882 dq=95.0 cnt=89 | c=307.4 rankC=307.4 need=6180097 tD=0.92 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=248528 pulseB=149117 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=29238 bal=2903189 dq=99.3 cnt=184 | c=319.9 rankC=319.9 need=5218462 tD=0.96 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=248528 pulseB=149117 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=3031066 dq=112.1 cnt=3 | c=653.7 rankC=653.7 need=5443147 tD=1.09 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=248528 pulseB=149117 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7050 ryan_m B=1258420 L=16138 d=78.0 nb=3 neut=0 cmds=94 noFull=1 shQ=314605 | m=0.900 worth=79.8 cheap=7.8 over=0 dMedOther=104.3 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3485342 dq=96.3 cnt=89 | c=311.7 rankC=311.7 need=6266471 tD=0.92 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=251684 pulseB=151010 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=29504 bal=2943253 dq=99.8 cnt=184 | c=321.4 rankC=321.4 need=5290199 tD=0.96 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=251684 pulseB=151010 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=3062589 dq=113.2 cnt=3 | c=660.4 rankC=660.4 need=5499334 tD=1.09 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=251684 pulseB=151010 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7055 ryan_m B=1258420 L=16138 d=78.0 nb=3 neut=0 cmds=94 noFull=1 shQ=314605 | m=0.900 worth=79.8 cheap=7.8 over=0 dMedOther=104.3 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3485342 dq=96.3 cnt=89 | c=311.7 rankC=311.7 need=6266471 tD=0.92 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=251684 pulseB=151010 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=29662 bal=2943253 dq=99.2 cnt=184 | c=319.7 rankC=319.7 need=5290506 tD=0.95 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=251684 pulseB=151010 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=3062589 dq=113.2 cnt=3 | c=660.4 rankC=660.4 need=5499334 tD=1.09 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=251684 pulseB=151010 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7060 ryan_m B=1274401 L=16138 d=79.0 nb=3 neut=0 cmds=94 noFull=1 shQ=318600 | m=0.900 worth=77.3 cheap=7.8 over=0 dMedOther=101.1 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3534485 dq=97.7 cnt=89 | c=316.0 rankC=316.0 need=6354063 tD=0.97 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=254880 pulseB=152928 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=29662 bal=2983890 dq=100.6 cnt=184 | c=324.0 rankC=324.0 need=5362937 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=254880 pulseB=152928 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27047 bal=2734399 dq=101.1 cnt=3 | c=590.4 rankC=590.4 need=4914367 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=254880 pulseB=152928 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7065 ryan_m B=1274401 L=16138 d=79.0 nb=3 neut=0 cmds=94 noFull=1 shQ=318600 | m=0.900 worth=77.0 cheap=7.8 over=0 dMedOther=100.6 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3534485 dq=97.7 cnt=89 | c=316.0 rankC=316.0 need=6354063 tD=0.97 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=254880 pulseB=152928 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=29662 bal=2983890 dq=100.6 cnt=184 | c=324.0 rankC=324.0 need=5362937 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=254880 pulseB=152928 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27183 bal=2734399 dq=100.6 cnt=3 | c=587.5 rankC=587.5 need=4914571 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=254880 pulseB=152928 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7070 ryan_m B=1290585 L=16138 d=80.0 nb=3 neut=0 cmds=94 noFull=1 shQ=322646 | m=0.900 worth=78.0 cheap=7.8 over=0 dMedOther=102.0 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3584321 dq=99.1 cnt=89 | c=320.4 rankC=320.4 need=6442890 tD=0.97 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=258117 pulseB=154870 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=29662 bal=3024769 dq=102.0 cnt=184 | c=328.4 rankC=328.4 need=5435799 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=258117 pulseB=154870 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=2771586 dq=100.4 cnt=3 | c=586.5 rankC=586.5 need=4981408 tD=0.98 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=258117 pulseB=154870 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7075 ryan_m B=1290585 L=16138 d=80.0 nb=3 neut=0 cmds=94 noFull=1 shQ=322646 | m=0.900 worth=78.0 cheap=7.8 over=0 dMedOther=102.0 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3584321 dq=99.1 cnt=89 | c=320.4 rankC=320.4 need=6442890 tD=0.97 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=258117 pulseB=154870 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=29662 bal=3024769 dq=102.0 cnt=184 | c=328.4 rankC=328.4 need=5435799 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=258117 pulseB=154870 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=2771723 dq=100.4 cnt=3 | c=586.5 rankC=586.5 need=4981652 tD=0.98 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=258117 pulseB=154870 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7080 ryan_m B=1306975 L=16138 d=81.0 nb=3 neut=0 cmds=94 noFull=1 shQ=326743 | m=0.900 worth=79.0 cheap=7.8 over=0 dMedOther=103.3 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3634859 dq=100.5 cnt=89 | c=324.9 rankC=324.9 need=6532968 tD=0.97 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=261395 pulseB=156837 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=29662 bal=3064998 dq=103.3 cnt=184 | c=332.8 rankC=332.8 need=5507503 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=261395 pulseB=156837 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=2809141 dq=101.8 cnt=3 | c=594.3 rankC=594.3 need=5048345 tD=0.98 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=261395 pulseB=156837 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7085 ryan_m B=1306975 L=16138 d=81.0 nb=3 neut=0 cmds=94 noFull=1 shQ=326743 | m=0.900 worth=77.9 cheap=7.8 over=0 dMedOther=101.8 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=29662 bal=2774663 dq=93.5 cnt=184 | c=226.2 rankC=158.3 need=4990014 tD=0.92 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=261395 pulseB=156837 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36174 bal=3634859 dq=100.5 cnt=89 | c=324.9 rankC=324.9 need=6532968 tD=0.99 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=261395 pulseB=156837 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=2809141 dq=101.8 cnt=3 | c=594.3 rankC=594.3 need=5048345 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=261395 pulseB=156837 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7090 ryan_m B=1323573 L=16138 d=82.0 nb=3 neut=0 cmds=94 noFull=1 shQ=330893 | m=0.900 worth=78.9 cheap=7.8 over=0 dMedOther=103.1 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=29662 bal=2812953 dq=94.8 cnt=184 | c=229.3 rankC=160.5 need=5058262 tD=0.92 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=264715 pulseB=158829 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36174 bal=3685747 dq=101.9 cnt=89 | c=329.4 rankC=329.4 need=6623670 tD=0.99 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=264715 pulseB=158829 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=2846221 dq=103.1 cnt=3 | c=602.1 rankC=602.1 need=5114435 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=264715 pulseB=158829 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7095 ryan_m B=1323573 L=16138 d=82.0 nb=3 neut=0 cmds=94 noFull=1 shQ=330893 | m=0.900 worth=78.9 cheap=7.8 over=0 dMedOther=103.1 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=29819 bal=2812953 dq=94.3 cnt=184 | c=228.1 rankC=159.7 need=5058530 tD=0.91 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=264715 pulseB=158829 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36174 bal=3685747 dq=101.9 cnt=89 | c=329.4 rankC=329.4 need=6623670 tD=0.99 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=264715 pulseB=158829 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=2846221 dq=103.1 cnt=3 | c=602.1 rankC=602.1 need=5114435 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=264715 pulseB=158829 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7100 ryan_m B=1356520 L=16138 d=84.1 nb=3 neut=0 cmds=94 noFull=1 shQ=335199 | m=0.900 worth=80.7 cheap=7.8 over=0 dMedOther=105.4 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=30053 bal=2881747 dq=95.9 cnt=184 | c=231.8 rankC=162.3 need=5181431 tD=0.91 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=271304 pulseB=162782 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36174 bal=3772047 dq=104.3 cnt=89 | c=337.1 rankC=337.1 need=6777489 tD=0.99 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=271304 pulseB=162782 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=2910253 dq=105.4 cnt=3 | c=615.6 rankC=615.6 need=5228564 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=271304 pulseB=162782 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7105 ryan_m B=1356520 L=16138 d=84.1 nb=3 neut=0 cmds=94 noFull=1 shQ=339130 | m=0.900 worth=80.7 cheap=7.8 over=0 dMedOther=105.4 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=30195 bal=2881747 dq=95.4 cnt=184 | c=230.7 rankC=161.5 need=5181711 tD=0.91 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=271304 pulseB=162782 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36174 bal=3772047 dq=104.3 cnt=89 | c=337.1 rankC=337.1 need=6777489 tD=0.99 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=271304 pulseB=162782 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=2910253 dq=105.4 cnt=3 | c=615.6 rankC=615.6 need=5228564 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=271304 pulseB=162782 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7110 ryan_m B=1373747 L=16138 d=85.1 nb=3 neut=0 cmds=94 noFull=1 shQ=343436 | m=0.900 worth=81.6 cheap=7.8 over=0 dMedOther=106.7 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=30388 bal=2921515 dq=96.1 cnt=184 | c=309.8 rankC=309.8 need=5252780 tD=0.90 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=274749 pulseB=164850 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36174 bal=3820706 dq=105.6 cnt=89 | c=341.4 rankC=341.4 need=6864218 tD=0.99 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=274749 pulseB=164850 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=2945758 dq=106.7 cnt=3 | c=623.0 rankC=623.0 need=5291847 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=274749 pulseB=164850 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7115 ryan_m B=1373747 L=16138 d=85.1 nb=3 neut=0 cmds=94 noFull=1 shQ=343436 | m=0.900 worth=80.8 cheap=7.8 over=0 dMedOther=105.6 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=30510 bal=2921515 dq=95.8 cnt=184 | c=308.6 rankC=308.6 need=5253031 tD=0.91 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=274749 pulseB=164850 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36174 bal=3820706 dq=105.6 cnt=89 | c=341.4 rankC=341.4 need=6864218 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=274749 pulseB=164850 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=2945758 dq=106.7 cnt=3 | c=623.0 rankC=623.0 need=5291847 tD=1.01 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=274749 pulseB=164850 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7120 ryan_m B=1391193 L=16138 d=86.2 nb=3 neut=0 cmds=94 noFull=1 shQ=347798 | m=0.900 worth=81.8 cheap=7.8 over=0 dMedOther=107.0 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=30692 bal=2961831 dq=96.5 cnt=184 | c=311.0 rankC=311.0 need=5325094 tD=0.90 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=278239 pulseB=166943 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36174 bal=3868846 dq=107.0 cnt=89 | c=345.7 rankC=345.7 need=6950022 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=278239 pulseB=166943 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=2980517 dq=108.0 cnt=3 | c=630.3 rankC=630.3 need=5353801 tD=1.01 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=278239 pulseB=166943 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7125 ryan_m B=1391193 L=16138 d=86.2 nb=3 neut=0 cmds=94 noFull=1 shQ=347798 | m=0.900 worth=81.8 cheap=7.8 over=0 dMedOther=107.0 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=30808 bal=2961831 dq=96.1 cnt=184 | c=309.8 rankC=309.8 need=5325268 tD=0.90 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=278239 pulseB=166943 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36174 bal=3868846 dq=107.0 cnt=89 | c=345.7 rankC=345.7 need=6950022 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=278239 pulseB=166943 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=2980517 dq=108.0 cnt=3 | c=630.3 rankC=630.3 need=5353801 tD=1.01 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=278239 pulseB=166943 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7130 ryan_m B=1408861 L=16138 d=87.3 nb=3 neut=0 cmds=94 noFull=1 shQ=352215 | m=0.900 worth=82.6 cheap=7.8 over=0 dMedOther=108.0 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36174 bal=3191591 dq=88.2 cnt=89 | c=211.7 rankC=211.7 need=5742895 tD=0.82 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=281772 pulseB=169063 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=30963 bal=3002704 dq=97.0 cnt=184 | c=312.5 rankC=312.5 need=5398454 tD=0.90 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=281772 pulseB=169063 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3014792 dq=109.2 cnt=3 | c=637.5 rankC=637.5 need=5414892 tD=1.01 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=281772 pulseB=169063 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7135 ryan_m B=1408861 L=16138 d=87.3 nb=3 neut=0 cmds=94 noFull=1 shQ=352215 | m=0.900 worth=82.6 cheap=7.8 over=0 dMedOther=108.0 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36273 bal=3191591 dq=88.0 cnt=89 | c=211.1 rankC=211.1 need=5743012 tD=0.81 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=281772 pulseB=169063 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=31063 bal=3002704 dq=96.7 cnt=184 | c=311.5 rankC=311.5 need=5398604 tD=0.90 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=281772 pulseB=169063 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3014792 dq=109.2 cnt=3 | c=637.5 rankC=637.5 need=5414892 tD=1.01 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=281772 pulseB=169063 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7140 ryan_m B=1426753 L=16138 d=88.4 nb=3 neut=0 cmds=94 noFull=1 shQ=356688 | m=0.900 worth=83.6 cheap=7.8 over=0 dMedOther=109.2 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36478 bal=3236592 dq=88.7 cnt=89 | c=212.8 rankC=212.8 need=5823560 tD=0.81 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=285351 pulseB=171210 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=31204 bal=3044141 dq=97.6 cnt=184 | c=314.3 rankC=314.3 need=5472568 tD=0.89 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=285351 pulseB=171210 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3048256 dq=110.4 cnt=3 | c=644.5 rankC=644.5 need=5474537 tD=1.01 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=285351 pulseB=171210 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7145 ryan_m B=1426753 L=16138 d=88.4 nb=3 neut=0 cmds=94 noFull=1 shQ=356688 | m=0.900 worth=82.0 cheap=7.8 over=0 dMedOther=107.2 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36561 bal=3236592 dq=88.5 cnt=89 | c=212.3 rankC=212.3 need=5823653 tD=0.83 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=285351 pulseB=171210 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=31274 bal=3044141 dq=97.3 cnt=184 | c=313.6 rankC=313.6 need=5472742 tD=0.91 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=285351 pulseB=171210 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3048256 dq=110.4 cnt=3 | c=644.5 rankC=644.5 need=5474537 tD=1.03 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=285351 pulseB=171210 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7150 ryan_m B=1444872 L=16138 d=89.5 nb=3 neut=0 cmds=94 noFull=1 shQ=361218 | m=0.900 worth=83.0 cheap=7.8 over=0 dMedOther=108.5 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36622 bal=3282551 dq=89.6 cnt=89 | c=215.0 rankC=215.0 need=5905692 tD=0.83 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=288974 pulseB=173385 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=31349 bal=3086150 dq=98.4 cnt=184 | c=317.1 rankC=317.1 need=5547696 tD=0.91 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=288974 pulseB=173385 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3081177 dq=111.6 cnt=3 | c=651.4 rankC=651.4 need=5533215 tD=1.03 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=288974 pulseB=173385 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7155 ryan_m B=1444872 L=16138 d=89.5 nb=3 neut=0 cmds=94 noFull=1 shQ=361218 | m=0.900 worth=80.6 cheap=7.8 over=0 dMedOther=104.9 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36647 bal=3282551 dq=89.6 cnt=89 | c=214.8 rankC=214.8 need=5905761 tD=0.85 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=288974 pulseB=173385 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=31366 bal=3086150 dq=98.4 cnt=184 | c=316.9 rankC=316.9 need=5547756 tD=0.94 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=288974 pulseB=173385 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3081177 dq=111.6 cnt=3 | c=651.4 rankC=651.4 need=5533215 tD=1.06 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=288974 pulseB=173385 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7160 ryan_m B=1463221 L=16138 d=90.7 nb=3 neut=0 cmds=94 noFull=1 shQ=365805 | m=0.900 worth=81.6 cheap=7.8 over=0 dMedOther=106.2 safe(-1)=1420144
+    → [OG] Gallo#55[T4] terr=36687 bal=3329163 dq=90.7 cnt=89 | c=217.6 rankC=217.6 need=5988902 tD=0.85 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=292644 pulseB=175587 价高(c>=worth)→break hNb=3
+    → brocstrailia#36[T2] terr=31386 bal=3128738 dq=99.7 cnt=184 | c=321.0 rankC=321.0 need=5623694 tD=0.94 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=292644 pulseB=175587 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3113529 dq=112.8 cnt=3 | c=658.2 rankC=658.2 need=5590878 tD=1.06 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=292644 pulseB=175587 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7165 ryan_m B=1463221 L=16138 d=90.7 nb=3 neut=0 cmds=94 noFull=1 shQ=365805 | m=0.900 worth=81.6 cheap=7.8 over=0 dMedOther=106.2 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=31628 bal=2832365 dq=89.6 cnt=184 | c=160.4 rankC=112.3 need=5095743 tD=0.84 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=292644 pulseB=175587 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36720 bal=3329163 dq=90.7 cnt=89 | c=217.4 rankC=217.4 need=5988855 tD=0.85 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=292644 pulseB=175587 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3113529 dq=112.8 cnt=3 | c=658.2 rankC=658.2 need=5590878 tD=1.06 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=292644 pulseB=175587 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7170 ryan_m B=1481803 L=16138 d=91.8 nb=3 neut=0 cmds=94 noFull=1 shQ=370450 | m=0.900 worth=82.6 cheap=7.8 over=0 dMedOther=107.4 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=31971 bal=2871734 dq=89.8 cnt=184 | c=214.5 rankC=214.5 need=5166522 tD=0.84 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=296361 pulseB=177816 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=3376437 dq=91.9 cnt=89 | c=220.3 rankC=220.3 need=6073258 tD=0.86 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=296361 pulseB=177816 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3145286 dq=114.0 cnt=3 | c=664.9 rankC=664.9 need=5647481 tD=1.06 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=296361 pulseB=177816 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7175 ryan_m B=1481803 L=16138 d=91.8 nb=3 neut=0 cmds=94 noFull=1 shQ=370450 | m=0.900 worth=84.3 cheap=7.8 over=0 dMedOther=110.2 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=32171 bal=2871734 dq=89.3 cnt=184 | c=213.2 rankC=213.2 need=5166822 tD=0.81 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=296361 pulseB=177816 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4051575 dq=110.2 cnt=89 | c=356.1 rankC=356.1 need=7276618 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=296361 pulseB=177816 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3145286 dq=114.0 cnt=3 | c=664.9 rankC=664.9 need=5647481 tD=1.03 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=296361 pulseB=177816 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7180 ryan_m B=1500621 L=16138 d=93.0 nb=3 neut=0 cmds=94 noFull=1 shQ=375155 | m=0.900 worth=85.3 cheap=7.8 over=0 dMedOther=111.5 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=32389 bal=2911651 dq=89.9 cnt=184 | c=214.7 rankC=214.7 need=5238232 tD=0.81 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=300124 pulseB=180075 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4097357 dq=111.5 cnt=89 | c=360.1 rankC=360.1 need=7358219 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=300124 pulseB=180075 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3176424 dq=115.1 cnt=3 | c=671.4 rankC=671.4 need=5702981 tD=1.03 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=300124 pulseB=180075 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7185 ryan_m B=1500621 L=16138 d=93.0 nb=3 neut=0 cmds=94 noFull=1 shQ=375155 | m=0.900 worth=85.3 cheap=7.8 over=0 dMedOther=111.5 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=32475 bal=2911651 dq=89.7 cnt=184 | c=214.1 rankC=214.1 need=5238425 tD=0.80 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=300124 pulseB=180075 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4097357 dq=111.5 cnt=89 | c=360.1 rankC=360.1 need=7358219 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=300124 pulseB=180075 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3176424 dq=115.1 cnt=3 | c=671.4 rankC=671.4 need=5702981 tD=1.03 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=300124 pulseB=180075 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7190 ryan_m B=1519678 L=16138 d=94.2 nb=3 neut=0 cmds=94 noFull=1 shQ=379919 | m=0.900 worth=86.2 cheap=7.8 over=0 dMedOther=112.7 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=32555 bal=2952414 dq=90.7 cnt=184 | c=216.5 rankC=216.5 need=5311200 tD=0.80 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=303936 pulseB=182361 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4142427 dq=112.7 cnt=89 | c=364.0 rankC=364.0 need=7438552 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=303936 pulseB=182361 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3206600 dq=116.2 cnt=3 | c=677.8 rankC=677.8 need=5756766 tD=1.03 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=303936 pulseB=182361 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7195 ryan_m B=1519678 L=16138 d=94.2 nb=3 neut=0 cmds=94 noFull=1 shQ=379919 | m=0.900 worth=86.2 cheap=7.8 over=0 dMedOther=112.7 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=32582 bal=3155165 dq=96.8 cnt=184 | c=231.0 rankC=231.0 need=5672589 tD=0.86 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=303936 pulseB=182361 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4142427 dq=112.7 cnt=89 | c=364.0 rankC=364.0 need=7438552 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=303936 pulseB=182361 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3206600 dq=116.2 cnt=3 | c=677.8 rankC=677.8 need=5756766 tD=1.03 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=303936 pulseB=182361 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7200 ryan_m B=1555115 L=16138 d=96.4 nb=3 neut=0 cmds=94 noFull=1 shQ=384856 | m=0.900 worth=87.9 cheap=7.8 over=0 dMedOther=114.9 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=32617 bal=3231943 dq=99.1 cnt=184 | c=236.3 rankC=236.3 need=5809454 tD=0.86 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=311023 pulseB=186614 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4223087 dq=114.9 cnt=89 | c=371.1 rankC=371.1 need=7582319 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=311023 pulseB=186614 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3263701 dq=118.2 cnt=3 | c=689.8 rankC=689.8 need=5858541 tD=1.03 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=311023 pulseB=186614 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7205 ryan_m B=1555115 L=16138 d=96.4 nb=3 neut=0 cmds=94 noFull=1 shQ=388778 | m=0.900 worth=87.9 cheap=7.8 over=0 dMedOther=114.9 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=32638 bal=3231943 dq=99.0 cnt=184 | c=236.2 rankC=236.2 need=5809521 tD=0.86 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=311023 pulseB=186614 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4223087 dq=114.9 cnt=89 | c=371.1 rankC=371.1 need=7582319 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=311023 pulseB=186614 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3263701 dq=118.2 cnt=3 | c=689.8 rankC=689.8 need=5858541 tD=1.03 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=311023 pulseB=186614 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7210 ryan_m B=1574864 L=16138 d=97.6 nb=3 neut=0 cmds=94 noFull=1 shQ=393716 | m=0.900 worth=88.8 cheap=7.8 over=0 dMedOther=116.1 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=32670 bal=3277190 dq=100.3 cnt=184 | c=239.2 rankC=239.2 need=5890216 tD=0.86 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=314973 pulseB=188984 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4265317 dq=116.1 cnt=89 | c=374.8 rankC=374.8 need=7657590 tD=1.00 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=314973 pulseB=188984 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3292095 dq=119.3 cnt=3 | c=695.7 rankC=695.7 need=5909150 tD=1.03 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=314973 pulseB=188984 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7215 ryan_m B=1574864 L=16138 d=97.6 nb=3 neut=0 cmds=94 noFull=1 shQ=393716 | m=0.900 worth=87.8 cheap=7.8 over=0 dMedOther=114.0 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=32682 bal=3277190 dq=100.3 cnt=184 | c=239.1 rankC=239.1 need=5890234 tD=0.88 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=314973 pulseB=188984 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4265317 dq=116.1 cnt=89 | c=374.8 rankC=374.8 need=7657590 tD=1.02 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=314973 pulseB=188984 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3292095 dq=119.3 cnt=3 | c=695.7 rankC=695.7 need=5909150 tD=1.05 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=314973 pulseB=188984 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7220 ryan_m B=1594864 L=16138 d=98.8 nb=3 neut=0 cmds=94 noFull=1 shQ=398716 | m=0.900 worth=88.9 cheap=7.8 over=0 dMedOther=114.4 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=32692 bal=3323070 dq=101.6 cnt=184 | c=242.4 rankC=242.4 need=5971953 tD=0.89 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=318973 pulseB=191384 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4306690 dq=117.2 cnt=89 | c=378.4 rankC=378.4 need=7731333 tD=1.02 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=318973 pulseB=191384 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3319748 dq=120.3 cnt=3 | c=701.6 rankC=701.6 need=5958438 tD=1.05 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=318973 pulseB=191384 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7225 ryan_m B=1594864 L=16138 d=98.8 nb=3 neut=0 cmds=94 noFull=1 shQ=398716 | m=0.900 worth=88.9 cheap=7.8 over=0 dMedOther=114.4 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=32693 bal=3324106 dq=101.7 cnt=184 | c=242.4 rankC=242.4 need=5973837 tD=0.89 人 pulse | safe=1420144 keep=Inf avail=-Inf chunkB=318973 pulseB=191384 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4306690 dq=117.2 cnt=89 | c=378.4 rankC=378.4 need=7731333 tD=1.02 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=318973 pulseB=191384 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3319748 dq=120.3 cnt=3 | c=701.6 rankC=701.6 need=5958438 tD=1.05 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=318973 pulseB=191384 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7230 ryan_m B=1615118 L=16138 d=100.1 nb=3 neut=0 cmds=95 noFull=1 shQ=403779 | m=0.900 worth=90.1 cheap=7.8 over=1 dMedOther=115.6 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=32693 bal=3369313 dq=103.1 cnt=184 | c=245.7 rankC=245.7 need=6054413 tD=0.89 人 pulse | safe=1420144 keep=1452420 avail=143771 chunkB=323024 pulseB=193814  x=143771 hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4347172 dq=118.3 cnt=89 | c=381.9 rankC=381.9 need=7803487 tD=1.02 人 pulse crowdedHard | safe=1420144 keep=1452420 avail=143771 chunkB=323024 pulseB=193814 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=3346637 dq=121.3 cnt=3 | c=707.2 rankC=707.2 need=6006364 tD=1.05 人 pulse crowdedHard | safe=1420144 keep=1452420 avail=143771 chunkB=323024 pulseB=193814 crowdedHard(B<1.26×100×L)→continue hNb=3
+    ⇒ 影子指令 attack pct=91 → brocstrailia#36[T2]（约 145108 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=7235 ryan_m B=1615118 L=16138 d=100.1 nb=3 neut=0 cmds=96 noFull=1 shQ=403779 | m=0.900 worth=90.1 cheap=7.8 over=1 dMedOther=114.2 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=32693 bal=3369313 dq=103.1 cnt=184 | c=245.7 rankC=245.7 need=6054413 tD=0.90 人 pulse | safe=1420144 keep=1452420 avail=143771 chunkB=323024 pulseB=193814  x=143771 hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4347172 dq=118.3 cnt=89 | c=381.9 rankC=381.9 need=7803487 tD=1.04 人 pulse crowdedHard | safe=1420144 keep=1452420 avail=143771 chunkB=323024 pulseB=193814 crowdedHard(B<1.26×100×L)→continue hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27601 bal=2947917 dq=106.8 cnt=3 | c=462.1 rankC=462.1 need=5295695 tD=0.94 人 pulse | safe=1420144 keep=1452420 avail=143771 chunkB=323024 pulseB=193814  x=143771 hNb=3
+    ⇒ 影子指令 attack pct=91 → brocstrailia#36[T2]（约 145108 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=7240 ryan_m B=1469511 L=16138 d=91.1 nb=3 neut=0 cmds=96 noFull=1 shQ=222327 | m=0.900 worth=88.2 cheap=7.8 over=0 dMedOther=115.2 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=32693 bal=3413787 dq=104.4 cnt=184 | c=328.0 rankC=328.0 need=5988574 tD=0.91 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=293902 pulseB=176341 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4386731 dq=119.4 cnt=89 | c=558.7 rankC=810.0 need=7873997 tD=1.04 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=293902 pulseB=176341 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=27745 bal=2982997 dq=107.5 cnt=3 | c=910.1 rankC=1319.7 need=5358437 tD=0.93 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=293902 pulseB=176341 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7245 ryan_m B=1469511 L=16138 d=91.1 nb=3 neut=0 cmds=96 noFull=1 shQ=245652 | m=0.900 worth=88.2 cheap=7.8 over=0 dMedOther=115.2 safe(-1)=1420144
+    → brocstrailia#36[T2] terr=32693 bal=3413787 dq=104.4 cnt=184 | c=328.0 rankC=328.0 need=5988574 tD=0.91 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=293902 pulseB=176341 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4386731 dq=119.4 cnt=89 | c=558.7 rankC=810.0 need=7873997 tD=1.04 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=293902 pulseB=176341 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28175 bal=2982997 dq=105.9 cnt=3 | c=896.3 rankC=1299.7 need=5359156 tD=0.92 人 pulse crowdedHard | safe=1420144 keep=Inf avail=-Inf chunkB=293902 pulseB=176341 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7250 ryan_m B=1337164 L=16685 d=80.1 nb=3 neut=0 cmds=96 noFull=1 shQ=266826 | m=0.900 worth=89.0 cheap=7.8 over=0 dMedOther=116.3 safe(-1)=1468280
+    → brocstrailia#36[T2] terr=32146 bal=3365575 dq=104.7 cnt=181 | c=332.3 rankC=332.3 need=5933647 tD=0.90 人 pulse crowdedHard | safe=1468280 keep=Inf avail=-Inf chunkB=267433 pulseB=160460 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4425334 dq=120.4 cnt=90 | c=563.4 rankC=816.9 need=7942803 tD=1.04 人 pulse crowdedHard | safe=1468280 keep=Inf avail=-Inf chunkB=267433 pulseB=160460 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3019419 dq=106.6 cnt=3 | c=902.2 rankC=1308.3 need=5424257 tD=0.92 人 pulse crowdedHard | safe=1468280 keep=Inf avail=-Inf chunkB=267433 pulseB=160460 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7255 ryan_m B=1337244 L=16866 d=79.3 nb=3 neut=0 cmds=96 noFull=1 shQ=288218 | m=0.900 worth=89.0 cheap=7.8 over=0 dMedOther=116.3 safe(-1)=1484208
+    → brocstrailia#36[T2] terr=31965 bal=3319404 dq=103.8 cnt=166 | c=335.2 rankC=335.2 need=5937943 tD=0.89 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=267449 pulseB=160469 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4425334 dq=120.4 cnt=91 | c=388.5 rankC=388.5 need=7942803 tD=1.04 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=267449 pulseB=160469 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3019419 dq=106.6 cnt=3 | c=622.2 rankC=622.2 need=5424257 tD=0.92 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=267449 pulseB=160469 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7260 ryan_m B=1354360 L=16866 d=80.3 nb=3 neut=0 cmds=96 noFull=1 shQ=309667 | m=0.900 worth=89.1 cheap=7.8 over=0 dMedOther=116.4 safe(-1)=1484208
+    → brocstrailia#36[T2] terr=31965 bal=3362224 dq=105.2 cnt=166 | c=339.4 rankC=339.4 need=6014078 tD=0.90 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=270872 pulseB=162523 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4462949 dq=121.4 cnt=91 | c=391.8 rankC=391.8 need=8009847 tD=1.04 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=270872 pulseB=162523 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3055350 dq=107.9 cnt=3 | c=629.6 rankC=629.6 need=5488300 tD=0.93 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=270872 pulseB=162523 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7265 ryan_m B=1354360 L=16866 d=80.3 nb=3 neut=0 cmds=96 noFull=1 shQ=331332 | m=0.900 worth=89.1 cheap=7.8 over=0 dMedOther=116.4 safe(-1)=1484208
+    → brocstrailia#36[T2] terr=31965 bal=3362224 dq=105.2 cnt=166 | c=339.4 rankC=339.4 need=6014229 tD=0.90 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=270872 pulseB=162523 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4462949 dq=121.4 cnt=91 | c=391.8 rankC=391.8 need=8009847 tD=1.04 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=270872 pulseB=162523 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3055350 dq=107.9 cnt=3 | c=629.6 rankC=629.6 need=5488300 tD=0.93 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=270872 pulseB=162523 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7270 ryan_m B=1371695 L=16866 d=81.3 nb=3 neut=0 cmds=96 noFull=1 shQ=342923 | m=0.900 worth=89.8 cheap=7.8 over=0 dMedOther=117.4 safe(-1)=1484208
+    → brocstrailia#36[T2] terr=31965 bal=3404251 dq=106.5 cnt=166 | c=343.6 rankC=343.6 need=6088962 tD=0.91 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=274339 pulseB=164603 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4499545 dq=122.4 cnt=91 | c=395.0 rankC=395.0 need=8075076 tD=1.04 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=274339 pulseB=164603 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3090486 dq=109.1 cnt=3 | c=636.8 rankC=636.8 need=5550926 tD=0.93 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=274339 pulseB=164603 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7275 ryan_m B=1371695 L=16866 d=81.3 nb=3 neut=0 cmds=96 noFull=1 shQ=342923 | m=0.900 worth=89.8 cheap=7.8 over=0 dMedOther=117.4 safe(-1)=1484208
+    → brocstrailia#36[T2] terr=31965 bal=3404251 dq=106.5 cnt=166 | c=343.6 rankC=343.6 need=6089267 tD=0.91 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=274339 pulseB=164603 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4499545 dq=122.4 cnt=91 | c=395.0 rankC=395.0 need=8075076 tD=1.04 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=274339 pulseB=164603 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3090486 dq=109.1 cnt=3 | c=636.8 rankC=636.8 need=5550926 tD=0.93 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=274339 pulseB=164603 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7280 ryan_m B=1389252 L=16866 d=82.4 nb=3 neut=0 cmds=96 noFull=1 shQ=347313 | m=0.900 worth=90.6 cheap=7.8 over=0 dMedOther=118.4 safe(-1)=1484208
+    → brocstrailia#36[T2] terr=31965 bal=3445442 dq=107.8 cnt=166 | c=347.8 rankC=347.8 need=6162524 tD=0.91 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=277850 pulseB=166710 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4535091 dq=123.4 cnt=91 | c=398.1 rankC=398.1 need=8138432 tD=1.04 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=277850 pulseB=166710 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3125099 dq=110.3 cnt=3 | c=643.9 rankC=643.9 need=5612620 tD=0.93 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=277850 pulseB=166710 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7285 ryan_m B=1389252 L=16866 d=82.4 nb=3 neut=0 cmds=96 noFull=1 shQ=347313 | m=0.900 worth=90.6 cheap=7.8 over=0 dMedOther=118.4 safe(-1)=1484208
+    → brocstrailia#36[T2] terr=31965 bal=3445442 dq=107.8 cnt=166 | c=347.8 rankC=347.8 need=6162679 tD=0.91 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=277850 pulseB=166710 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4535091 dq=123.4 cnt=91 | c=398.1 rankC=398.1 need=8138432 tD=1.04 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=277850 pulseB=166710 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3125099 dq=110.3 cnt=3 | c=643.9 rankC=643.9 need=5612620 tD=0.93 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=277850 pulseB=166710 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7290 ryan_m B=1407034 L=16866 d=83.4 nb=3 neut=0 cmds=96 noFull=1 shQ=351758 | m=0.900 worth=91.3 cheap=7.8 over=0 dMedOther=119.4 safe(-1)=1484208
+    → brocstrailia#36[T2] terr=31965 bal=3486098 dq=109.1 cnt=166 | c=351.8 rankC=351.8 need=6234992 tD=0.91 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=281407 pulseB=168844 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4569557 dq=124.3 cnt=91 | c=401.1 rankC=401.1 need=8199864 tD=1.04 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=281407 pulseB=168844 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3158850 dq=111.5 cnt=3 | c=650.8 rankC=650.8 need=5672777 tD=0.93 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=281407 pulseB=168844 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7295 ryan_m B=1407034 L=16866 d=83.4 nb=3 neut=0 cmds=96 noFull=1 shQ=351758 | m=0.900 worth=91.7 cheap=7.8 over=0 dMedOther=119.8 safe(-1)=1484208
+    → brocstrailia#36[T2] terr=31965 bal=3486098 dq=109.1 cnt=166 | c=351.8 rankC=351.8 need=6235304 tD=0.91 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=281407 pulseB=168844 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4569557 dq=124.3 cnt=91 | c=401.1 rankC=401.1 need=8199864 tD=1.04 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=281407 pulseB=168844 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3158850 dq=111.5 cnt=3 | c=650.8 rankC=650.8 need=5672777 tD=0.93 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=281407 pulseB=168844 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=7300 ryan_m B=1441910 L=16866 d=85.5 nb=3 neut=0 cmds=96 noFull=1 shQ=356372 | m=0.900 worth=93.2 cheap=7.8 over=0 dMedOther=121.8 safe(-1)=1484208
+    → brocstrailia#36[T2] terr=31965 bal=3557804 dq=111.3 cnt=166 | c=359.0 rankC=359.0 need=6362738 tD=0.91 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=288382 pulseB=173029 价高(c>=worth)→break hNb=3
+    → [OG] Gallo#55[T4] terr=36751 bal=4639665 dq=126.2 cnt=91 | c=407.2 rankC=407.2 need=8324824 tD=1.04 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=288382 pulseB=173029 价高(c>=worth)→break hNb=3
+    → 💫🇰🇬[KGZ]🇰🇬🎀#40[T5] terr=28322 bal=3220339 dq=113.7 cnt=3 | c=663.3 rankC=663.3 need=5782374 tD=0.93 人 pulse crowdedHard | safe=1484208 keep=Inf avail=-Inf chunkB=288382 pulseB=173029 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令

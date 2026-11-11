@@ -1,0 +1,460 @@
+# A007 noah88 影子决策明细 t=4050~4500（策略 v27-team-c116-va.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   出手打人/bot: 3 拍（t=4050~4060）；可用兵 180512~193670，一条指令下限(20%余额) 248863~251525，比值 73%~77%
+#   首选目标价高（c>=worth）: 88 拍（t=4065~4500）
+#   └ 「出手打人/bot」里：3 条对人/bot 的出兵共约 556161 兵；其中超过软上限（over=1）时发的 3 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 3 条约 556161 兵，c/worth = 1.41~1.43
+t=4050 noah88 B=1244313 L=11658 d=106.7 nb=3 neut=0 cmds=51 noFull=1 shQ=311021 | m=0.900 worth=96.1 cheap=8.1 over=1 dMedOther=113.4 safe(-1)=909324
+    → [Off] Skull#2[T5] terr=21668 bal=2125580 dq=98.1 cnt=66 | c=137.6 rankC=96.3 need=3821056 tD=0.86 人 pulse | safe=909324 keep=1049220 avail=180512 chunkB=248863 pulseB=248863  x=180512 hNb=3
+    → Poleno#41[T3] terr=16482 bal=1942583 dq=117.9 cnt=154 | c=439.5 rankC=637.3 need=3487193 tD=1.04 人 pulse crowdedHard | safe=909324 keep=1049220 avail=180512 chunkB=248863 pulseB=248863 crowdedHard(B<1.1×100×L)→continue hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3413905 dq=121.3 cnt=27 | c=452.5 rankC=656.2 need=6127158 tD=1.07 人 pulse crowdedHard | safe=909324 keep=1049220 avail=180512 chunkB=248863 pulseB=248863 crowdedHard(B<1.1×100×L)→continue hNb=3
+    ⇒ 影子指令 attack pct=148 → [Off] Skull#2[T5]（约 181057 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4055 noah88 B=1244313 L=11658 d=106.7 nb=3 neut=0 cmds=52 noFull=1 shQ=311078 | m=0.900 worth=96.1 cheap=8.1 over=1 dMedOther=113.4 safe(-1)=909324
+    → [Off] Skull#2[T5] terr=21801 bal=2125580 dq=97.5 cnt=66 | c=136.8 rankC=95.8 need=3821290 tD=0.86 人 pulse | safe=909324 keep=1049220 avail=180512 chunkB=248863 pulseB=248863  x=180512 hNb=3
+    → Poleno#41[T3] terr=16482 bal=1942583 dq=117.9 cnt=154 | c=439.5 rankC=637.3 need=3487193 tD=1.04 人 pulse crowdedHard | safe=909324 keep=1049220 avail=180512 chunkB=248863 pulseB=248863 crowdedHard(B<1.1×100×L)→continue hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3413905 dq=121.3 cnt=27 | c=452.5 rankC=656.2 need=6127158 tD=1.07 人 pulse crowdedHard | safe=909324 keep=1049220 avail=180512 chunkB=248863 pulseB=248863 crowdedHard(B<1.1×100×L)→continue hNb=3
+    ⇒ 影子指令 attack pct=148 → [Off] Skull#2[T5]（约 181057 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4060 noah88 B=1257627 L=11658 d=107.9 nb=3 neut=0 cmds=53 noFull=1 shQ=314347 | m=0.900 worth=97.1 cheap=8.1 over=1 dMedOther=114.5 safe(-1)=909324
+    → [Off] Skull#2[T5] terr=22002 bal=2153637 dq=97.9 cnt=66 | c=137.3 rankC=96.1 need=3871634 tD=0.86 人 pulse | safe=909324 keep=1049220 avail=193670 chunkB=251525 pulseB=251525  x=193670 hNb=3
+    → Poleno#41[T3] terr=16482 bal=1958706 dq=118.8 cnt=154 | c=443.2 rankC=642.6 need=3515931 tD=1.04 人 pulse crowdedHard | safe=909324 keep=1049220 avail=193670 chunkB=251525 pulseB=251525 crowdedHard(B<1.1×100×L)→continue hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3440874 dq=122.3 cnt=27 | c=456.1 rankC=661.3 need=6175228 tD=1.07 人 pulse crowdedHard | safe=909324 keep=1049220 avail=193670 chunkB=251525 pulseB=251525 crowdedHard(B<1.1×100×L)→continue hNb=3
+    ⇒ 影子指令 attack pct=157 → [Off] Skull#2[T5]（约 194047 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=4065 noah88 B=1083231 L=11658 d=92.9 nb=3 neut=0 cmds=53 noFull=1 shQ=13432 | m=0.900 worth=87.6 cheap=8.1 over=0 dMedOther=114.5 safe(-1)=909324
+    → [Off] Skull#2[T5] terr=22130 bal=2153637 dq=97.3 cnt=66 | c=130.9 rankC=91.6 need=3712166 tD=0.85 人 pulse | safe=909324 keep=Inf avail=-Inf chunkB=216646 pulseB=216646 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=16482 bal=1958706 dq=118.8 cnt=154 | c=442.9 rankC=642.2 need=3515931 tD=1.04 人 pulse crowdedHard | safe=909324 keep=Inf avail=-Inf chunkB=216646 pulseB=216646 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3440874 dq=122.3 cnt=27 | c=455.9 rankC=661.1 need=6175228 tD=1.07 人 pulse crowdedHard | safe=909324 keep=Inf avail=-Inf chunkB=216646 pulseB=216646 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4070 noah88 B=1096554 L=11792 d=93.0 nb=3 neut=0 cmds=53 noFull=1 shQ=30263 | m=0.900 worth=87.5 cheap=8.1 over=0 dMedOther=114.4 safe(-1)=919776
+    → [Off] Skull#2[T5] terr=22188 bal=2161037 dq=97.4 cnt=70 | c=132.5 rankC=92.7 need=3767426 tD=0.85 人 pulse | safe=919776 keep=Inf avail=-Inf chunkB=219311 pulseB=219311 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=16482 bal=1974375 dq=119.8 cnt=156 | c=446.4 rankC=647.3 need=3543859 tD=1.05 人 pulse crowdedHard | safe=919776 keep=Inf avail=-Inf chunkB=219311 pulseB=219311 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3467024 dq=123.2 cnt=27 | c=459.4 rankC=666.1 need=6221838 tD=1.08 人 pulse crowdedHard | safe=919776 keep=Inf avail=-Inf chunkB=219311 pulseB=219311 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4075 noah88 B=933785 L=11934 d=78.2 nb=3 neut=0 cmds=53 noFull=1 shQ=46753 | m=0.900 worth=86.5 cheap=8.1 over=0 dMedOther=113.1 safe(-1)=930852
+    → [Off] Skull#2[T5] terr=22174 bal=2138963 dq=96.5 cnt=74 | c=169.8 rankC=169.8 need=3622233 tD=0.85 人 pulse | safe=930852 keep=Inf avail=-Inf chunkB=186757 pulseB=186757 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=16482 bal=1974375 dq=119.8 cnt=158 | c=446.1 rankC=646.8 need=3543859 tD=1.06 人 pulse crowdedHard | safe=930852 keep=Inf avail=-Inf chunkB=186757 pulseB=186757 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3467024 dq=123.2 cnt=27 | c=459.2 rankC=665.9 need=6221838 tD=1.09 人 pulse crowdedHard | safe=930852 keep=Inf avail=-Inf chunkB=186757 pulseB=186757 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4080 noah88 B=945270 L=12159 d=77.7 nb=3 neut=0 cmds=53 noFull=1 shQ=61282 | m=0.900 worth=86.3 cheap=8.0 over=0 dMedOther=112.8 safe(-1)=948402
+    → [Off] Skull#2[T5] terr=22140 bal=2132188 dq=96.3 cnt=75 | c=172.8 rankC=172.8 need=3678947 tD=0.85 人 pulse | safe=948402 keep=Inf avail=-Inf chunkB=189054 pulseB=189054 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=16482 bal=1989775 dq=120.7 cnt=159 | c=449.5 rankC=651.8 need=3571308 tD=1.07 人 pulse crowdedHard | safe=948402 keep=Inf avail=-Inf chunkB=189054 pulseB=189054 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3492333 dq=124.1 cnt=27 | c=462.6 rankC=670.7 need=6266949 tD=1.10 人 pulse crowdedHard | safe=948402 keep=Inf avail=-Inf chunkB=189054 pulseB=189054 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4085 noah88 B=945270 L=12308 d=76.8 nb=3 neut=0 cmds=53 noFull=1 shQ=76047 | m=0.900 worth=80.6 cheap=8.0 over=0 dMedOther=105.3 safe(-1)=960024
+    → [Off] Skull#2[T5] terr=22116 bal=2109286 dq=95.4 cnt=77 | c=173.2 rankC=173.2 need=3683532 tD=0.91 人 pulse | safe=960024 keep=Inf avail=-Inf chunkB=189054 pulseB=189054 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=16482 bal=1989775 dq=120.7 cnt=160 | c=449.5 rankC=651.8 need=3571308 tD=1.15 人 pulse crowdedHard | safe=960024 keep=Inf avail=-Inf chunkB=189054 pulseB=189054 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3492333 dq=124.1 cnt=27 | c=462.6 rankC=670.7 need=6266949 tD=1.18 人 pulse crowdedHard | safe=960024 keep=Inf avail=-Inf chunkB=189054 pulseB=189054 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4090 noah88 B=956991 L=12518 d=76.4 nb=3 neut=0 cmds=53 noFull=1 shQ=90849 | m=0.900 worth=81.5 cheap=8.0 over=0 dMedOther=106.6 safe(-1)=976404
+    → [Off] Skull#2[T5] terr=22028 bal=2104784 dq=95.6 cnt=65 | c=176.8 rankC=176.8 need=3737189 tD=0.90 人 pulse | safe=976404 keep=Inf avail=-Inf chunkB=191398 pulseB=191398 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=16482 bal=2004698 dq=121.6 cnt=167 | c=452.7 rankC=656.4 need=3597907 tD=1.14 人 pulse crowdedHard | safe=976404 keep=Inf avail=-Inf chunkB=191398 pulseB=191398 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3517128 dq=125.0 cnt=27 | c=465.9 rankC=675.5 need=6311143 tD=1.17 人 pulse crowdedHard | safe=976404 keep=Inf avail=-Inf chunkB=191398 pulseB=191398 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4095 noah88 B=956991 L=12649 d=75.7 nb=3 neut=0 cmds=53 noFull=1 shQ=105799 | m=0.900 worth=81.5 cheap=8.0 over=0 dMedOther=106.6 safe(-1)=986622
+    → [Off] Skull#2[T5] terr=21964 bal=2084792 dq=94.9 cnt=66 | c=177.6 rankC=177.6 need=3739714 tD=0.89 人 pulse | safe=986622 keep=Inf avail=-Inf chunkB=191398 pulseB=191398 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=16482 bal=2004698 dq=121.6 cnt=169 | c=452.6 rankC=656.3 need=3597907 tD=1.14 人 pulse crowdedHard | safe=986622 keep=Inf avail=-Inf chunkB=191398 pulseB=191398 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3517128 dq=125.0 cnt=27 | c=465.9 rankC=675.5 need=6311143 tD=1.17 人 pulse crowdedHard | safe=986622 keep=Inf avail=-Inf chunkB=191398 pulseB=191398 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4100 noah88 B=981555 L=12649 d=77.6 nb=3 neut=0 cmds=53 noFull=1 shQ=120826 | m=0.900 worth=83.2 cheap=8.0 over=0 dMedOther=108.8 safe(-1)=986622
+    → [Off] Skull#2[T5] terr=22052 bal=2133229 dq=96.7 cnt=66 | c=180.9 rankC=180.9 need=3831568 tD=0.89 人 pulse | safe=986622 keep=Inf avail=-Inf chunkB=196311 pulseB=196311 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=16482 bal=2035814 dq=123.5 cnt=169 | c=317.0 rankC=317.0 need=3653368 tD=1.14 人 pulse crowdedHard | safe=986622 keep=Inf avail=-Inf chunkB=196311 pulseB=196311 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3569539 dq=126.8 cnt=27 | c=326.0 rankC=326.0 need=6404560 tD=1.17 人 pulse crowdedHard | safe=986622 keep=Inf avail=-Inf chunkB=196311 pulseB=196311 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4105 noah88 B=495123 L=12649 d=39.1 nb=3 neut=0 cmds=53 noFull=1 shQ=123780 | m=0.900 worth=83.1 cheap=8.0 over=0 dMedOther=108.7 safe(-1)=986622
+    → Poleno#41[T3] terr=16482 bal=1791278 dq=108.7 cnt=169 | c=209.1 rankC=146.4 need=3217506 tD=1.00 人 pulse crowdedHard | safe=986622 keep=Inf avail=-Inf chunkB=99025 pulseB=99025 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=22116 bal=2133229 dq=96.5 cnt=66 | c=159.0 rankC=159.0 need=3383557 tD=0.89 人 pulse | safe=986622 keep=Inf avail=-Inf chunkB=99025 pulseB=99025 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3569539 dq=126.8 cnt=27 | c=472.3 rankC=684.9 need=6404560 tD=1.17 人 pulse crowdedHard | safe=986622 keep=Inf avail=-Inf chunkB=99025 pulseB=99025 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4110 noah88 B=501262 L=12715 d=39.4 nb=3 neut=0 cmds=53 noFull=1 shQ=125315 | m=0.900 worth=83.7 cheap=8.0 over=0 dMedOther=109.4 safe(-1)=991770
+    → Poleno#41[T3] terr=16547 bal=1810265 dq=109.4 cnt=171 | c=210.4 rankC=147.3 need=3251484 tD=1.00 人 pulse crowdedHard | safe=991770 keep=Inf avail=-Inf chunkB=100252 pulseB=100252 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=22127 bal=2151093 dq=97.2 cnt=66 | c=161.4 rankC=161.4 need=3436088 tD=0.89 人 pulse | safe=991770 keep=Inf avail=-Inf chunkB=100252 pulseB=100252 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3592384 dq=127.6 cnt=27 | c=475.3 rankC=689.2 need=6445279 tD=1.17 人 pulse crowdedHard | safe=991770 keep=Inf avail=-Inf chunkB=100252 pulseB=100252 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4115 noah88 B=501262 L=12848 d=39.0 nb=3 neut=0 cmds=53 noFull=1 shQ=125315 | m=0.900 worth=83.0 cheap=8.0 over=0 dMedOther=108.5 safe(-1)=1002144
+    → Poleno#41[T3] terr=16682 bal=1810265 dq=108.5 cnt=175 | c=208.7 rankC=146.1 need=3251648 tD=1.00 人 pulse crowdedHard | safe=1002144 keep=Inf avail=-Inf chunkB=100252 pulseB=100252 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=22044 bal=2130438 dq=96.6 cnt=68 | c=162.2 rankC=162.2 need=3438029 tD=0.89 人 pulse | safe=1002144 keep=Inf avail=-Inf chunkB=100252 pulseB=100252 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3592384 dq=127.6 cnt=27 | c=475.3 rankC=689.2 need=6445279 tD=1.18 人 pulse crowdedHard | safe=1002144 keep=Inf avail=-Inf chunkB=100252 pulseB=100252 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4120 noah88 B=507477 L=13055 d=38.9 nb=3 neut=0 cmds=53 noFull=1 shQ=126869 | m=0.900 worth=83.0 cheap=8.0 over=0 dMedOther=108.4 safe(-1)=1018290
+    → [Off] Skull#2[T5] terr=21906 bal=2126228 dq=97.1 cnt=70 | c=166.1 rankC=166.1 need=3490200 tD=0.90 人 pulse | safe=1018290 keep=Inf avail=-Inf chunkB=101495 pulseB=101495 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=16876 bal=1829996 dq=108.4 cnt=189 | c=403.0 rankC=584.3 need=3287030 tD=1.00 人 pulse crowdedHard | safe=1018290 keep=Inf avail=-Inf chunkB=101495 pulseB=101495 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3614297 dq=128.4 cnt=27 | c=478.2 rankC=693.4 need=6484337 tD=1.18 人 pulse crowdedHard | safe=1018290 keep=Inf avail=-Inf chunkB=101495 pulseB=101495 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4125 noah88 B=507477 L=13196 d=38.5 nb=3 neut=0 cmds=53 noFull=1 shQ=126869 | m=0.900 worth=82.8 cheap=8.0 over=0 dMedOther=108.2 safe(-1)=1029288
+    → [Off] Skull#2[T5] terr=21811 bal=2104365 dq=96.5 cnt=71 | c=167.1 rankC=167.1 need=3492159 tD=0.89 人 pulse | safe=1029288 keep=Inf avail=-Inf chunkB=101495 pulseB=101495 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=16989 bal=1829996 dq=107.7 cnt=194 | c=400.2 rankC=580.3 need=3287237 tD=1.00 人 pulse crowdedHard | safe=1029288 keep=Inf avail=-Inf chunkB=101495 pulseB=101495 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3614297 dq=128.4 cnt=27 | c=478.2 rankC=693.4 need=6484337 tD=1.19 人 pulse crowdedHard | safe=1029288 keep=Inf avail=-Inf chunkB=101495 pulseB=101495 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4130 noah88 B=513820 L=13412 d=38.3 nb=3 neut=0 cmds=53 noFull=1 shQ=128455 | m=0.900 worth=83.6 cheap=8.0 over=0 dMedOther=109.3 safe(-1)=1046136
+    → [Off] Skull#2[T5] terr=21668 bal=2098466 dq=96.8 cnt=73 | c=171.0 rankC=171.0 need=3543778 tD=0.89 人 pulse | safe=1046136 keep=Inf avail=-Inf chunkB=102764 pulseB=102764 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17094 bal=1850133 dq=108.2 cnt=198 | c=402.0 rankC=583.0 need=3323325 tD=0.99 人 pulse crowdedHard | safe=1046136 keep=Inf avail=-Inf chunkB=102764 pulseB=102764 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3635621 dq=129.2 cnt=27 | c=481.0 rankC=697.5 need=6522345 tD=1.18 人 pulse crowdedHard | safe=1046136 keep=Inf avail=-Inf chunkB=102764 pulseB=102764 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4135 noah88 B=513820 L=13559 d=37.9 nb=3 neut=0 cmds=53 noFull=1 shQ=128455 | m=0.900 worth=83.6 cheap=8.0 over=0 dMedOther=109.3 safe(-1)=1057602
+    → [Off] Skull#2[T5] terr=21560 bal=2075724 dq=96.3 cnt=75 | c=172.2 rankC=172.2 need=3545365 tD=0.88 人 pulse | safe=1057602 keep=Inf avail=-Inf chunkB=102764 pulseB=102764 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17094 bal=1850133 dq=108.2 cnt=198 | c=402.0 rankC=583.0 need=3323325 tD=0.99 人 pulse crowdedHard | safe=1057602 keep=Inf avail=-Inf chunkB=102764 pulseB=102764 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3635621 dq=129.2 cnt=27 | c=481.0 rankC=697.5 need=6522345 tD=1.18 人 pulse crowdedHard | safe=1057602 keep=Inf avail=-Inf chunkB=102764 pulseB=102764 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4140 noah88 B=520242 L=13787 d=37.7 nb=3 neut=0 cmds=53 noFull=1 shQ=130060 | m=0.900 worth=84.5 cheap=8.0 over=0 dMedOther=110.4 safe(-1)=1075386
+    → [Off] Skull#2[T5] terr=21518 bal=1853646 dq=86.1 cnt=79 | c=117.5 rankC=82.2 need=3216219 tD=0.78 人 pulse | safe=1075386 keep=Inf avail=-Inf chunkB=104048 pulseB=104048 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17094 bal=1869929 dq=109.4 cnt=200 | c=280.2 rankC=280.2 need=3358609 tD=0.99 人 pulse crowdedHard | safe=1075386 keep=Inf avail=-Inf chunkB=104048 pulseB=104048 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3656344 dq=129.9 cnt=27 | c=483.8 rankC=701.4 need=6559282 tD=1.18 人 pulse crowdedHard | safe=1075386 keep=Inf avail=-Inf chunkB=104048 pulseB=104048 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4145 noah88 B=520242 L=13945 d=37.3 nb=3 neut=0 cmds=53 noFull=1 shQ=130060 | m=0.900 worth=84.5 cheap=8.0 over=0 dMedOther=110.4 safe(-1)=1087710
+    → [Off] Skull#2[T5] terr=21514 bal=1831933 dq=85.2 cnt=80 | c=117.7 rankC=82.4 need=3221595 tD=0.77 人 pulse | safe=1087710 keep=Inf avail=-Inf chunkB=104048 pulseB=104048 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17094 bal=1869929 dq=109.4 cnt=203 | c=280.1 rankC=280.1 need=3358609 tD=0.99 人 pulse crowdedHard | safe=1087710 keep=Inf avail=-Inf chunkB=104048 pulseB=104048 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3656344 dq=129.9 cnt=27 | c=483.8 rankC=701.4 need=6559282 tD=1.18 人 pulse crowdedHard | safe=1087710 keep=Inf avail=-Inf chunkB=104048 pulseB=104048 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4150 noah88 B=526775 L=14106 d=37.3 nb=3 neut=0 cmds=53 noFull=1 shQ=131693 | m=0.900 worth=85.3 cheap=8.0 over=0 dMedOther=111.5 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21526 bal=1827556 dq=84.9 cnt=82 | c=119.4 rankC=83.6 need=3271409 tD=0.76 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=105355 pulseB=105355 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17094 bal=1889376 dq=110.5 cnt=204 | c=283.0 rankC=283.0 need=3393272 tD=0.99 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=105355 pulseB=105355 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3676453 dq=130.6 cnt=27 | c=486.4 rankC=705.3 need=6595124 tD=1.17 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=105355 pulseB=105355 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4155 noah88 B=526775 L=14106 d=37.3 nb=3 neut=0 cmds=53 noFull=1 shQ=131693 | m=0.900 worth=85.3 cheap=8.0 over=0 dMedOther=111.5 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21620 bal=1736107 dq=80.3 cnt=82 | c=112.9 rankC=79.1 need=3112358 tD=0.72 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=105355 pulseB=105355 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28143 bal=3288703 dq=116.9 cnt=27 | c=225.2 rankC=157.7 need=5903999 tD=1.05 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=105355 pulseB=105355 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17094 bal=1889376 dq=110.5 cnt=204 | c=283.0 rankC=283.0 need=3393272 tD=0.99 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=105355 pulseB=105355 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4160 noah88 B=533359 L=14106 d=37.8 nb=3 neut=0 cmds=53 noFull=1 shQ=133339 | m=0.900 worth=86.1 cheap=8.0 over=0 dMedOther=112.5 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21731 bal=1759023 dq=80.9 cnt=82 | c=86.4 rankC=43.2 need=3156595 tD=0.72 人 pulse bleeding | safe=1100268 keep=Inf avail=-Inf chunkB=106672 pulseB=106672 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28253 bal=3318959 dq=117.5 cnt=29 | c=226.3 rankC=158.4 need=5958008 tD=1.04 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=106672 pulseB=106672 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17094 bal=1908647 dq=111.7 cnt=204 | c=285.9 rankC=285.9 need=3427620 tD=0.99 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=106672 pulseB=106672 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4165 noah88 B=533359 L=14106 d=37.8 nb=3 neut=0 cmds=53 noFull=1 shQ=133339 | m=0.900 worth=86.1 cheap=8.0 over=0 dMedOther=112.5 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21789 bal=1759023 dq=80.7 cnt=82 | c=86.1 rankC=43.1 need=3158618 tD=0.72 人 pulse bleeding | safe=1100268 keep=Inf avail=-Inf chunkB=106672 pulseB=106672 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28579 bal=3318959 dq=116.1 cnt=32 | c=223.6 rankC=156.5 need=5958579 tD=1.03 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=106672 pulseB=106672 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17094 bal=1908647 dq=111.7 cnt=204 | c=285.9 rankC=285.9 need=3427620 tD=0.99 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=106672 pulseB=106672 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4170 noah88 B=540025 L=14106 d=38.3 nb=3 neut=0 cmds=53 noFull=1 shQ=135006 | m=0.900 worth=86.3 cheap=8.0 over=0 dMedOther=112.8 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21669 bal=1748699 dq=80.7 cnt=82 | c=113.5 rankC=79.4 need=3136688 tD=0.72 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=108005 pulseB=108005 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17094 bal=1927542 dq=112.8 cnt=204 | c=288.7 rankC=288.7 need=3461299 tD=1.00 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=108005 pulseB=108005 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=28793 bal=3350821 dq=116.4 cnt=35 | c=433.0 rankC=627.8 need=6015608 tD=1.03 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=108005 pulseB=108005 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4175 noah88 B=540025 L=14106 d=38.3 nb=3 neut=0 cmds=53 noFull=1 shQ=135006 | m=0.900 worth=86.3 cheap=8.0 over=0 dMedOther=112.8 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21709 bal=1936011 dq=89.2 cnt=82 | c=96.8 rankC=48.4 need=3470706 tD=0.79 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=108005 pulseB=108005 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17094 bal=1927542 dq=112.8 cnt=204 | c=288.7 rankC=288.7 need=3461299 tD=1.00 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=108005 pulseB=108005 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29116 bal=3350821 dq=115.1 cnt=40 | c=427.8 rankC=620.3 need=6016051 tD=1.02 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=108005 pulseB=108005 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4180 noah88 B=546775 L=14106 d=38.8 nb=3 neut=0 cmds=53 noFull=1 shQ=136693 | m=0.900 worth=87.1 cheap=8.0 over=0 dMedOther=113.8 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21564 bal=1932272 dq=89.6 cnt=82 | c=97.4 rankC=48.7 need=3459238 tD=0.79 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=109355 pulseB=109355 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17094 bal=1946046 dq=113.8 cnt=204 | c=291.4 rankC=291.4 need=3494280 tD=1.00 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=109355 pulseB=109355 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29116 bal=3383008 dq=116.2 cnt=40 | c=431.9 rankC=626.3 need=6073420 tD=1.02 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=109355 pulseB=109355 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4185 noah88 B=546775 L=14106 d=38.8 nb=3 neut=0 cmds=53 noFull=1 shQ=136693 | m=0.900 worth=87.1 cheap=8.0 over=0 dMedOther=113.8 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21603 bal=1932272 dq=89.4 cnt=82 | c=167.5 rankC=167.5 need=3460835 tD=0.79 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=109355 pulseB=109355 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17094 bal=1946046 dq=113.8 cnt=204 | c=291.4 rankC=291.4 need=3494280 tD=1.00 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=109355 pulseB=109355 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29116 bal=3383008 dq=116.2 cnt=40 | c=297.9 rankC=297.9 need=6073420 tD=1.02 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=109355 pulseB=109355 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4190 noah88 B=553609 L=14106 d=39.2 nb=3 neut=0 cmds=53 noFull=1 shQ=138402 | m=0.900 worth=86.7 cheap=8.0 over=0 dMedOther=113.3 safe(-1)=1100268
+    → Poleno#41[T3] terr=17094 bal=1734210 dq=101.5 cnt=204 | c=195.0 rankC=136.5 need=3116703 tD=0.90 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=110722 pulseB=110722 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21627 bal=1957777 dq=90.5 cnt=82 | c=169.5 rankC=169.5 need=3507053 tD=0.80 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=110722 pulseB=110722 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29116 bal=3414469 dq=117.3 cnt=40 | c=300.6 rankC=300.6 need=6129495 tD=1.03 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=110722 pulseB=110722 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4195 noah88 B=553609 L=14106 d=39.2 nb=3 neut=0 cmds=53 noFull=1 shQ=138402 | m=0.900 worth=86.7 cheap=8.0 over=0 dMedOther=113.3 safe(-1)=1100268
+    → Poleno#41[T3] terr=17154 bal=1734210 dq=101.1 cnt=205 | c=194.3 rankC=136.0 need=3116793 tD=0.89 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=110722 pulseB=110722 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21634 bal=1957777 dq=90.5 cnt=82 | c=169.4 rankC=169.4 need=3507425 tD=0.80 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=110722 pulseB=110722 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29116 bal=3414469 dq=117.3 cnt=40 | c=300.6 rankC=300.6 need=6129495 tD=1.03 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=110722 pulseB=110722 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4200 noah88 B=574635 L=14106 d=40.7 nb=3 neut=0 cmds=53 noFull=1 shQ=140212 | m=0.900 worth=88.2 cheap=8.0 over=0 dMedOther=115.3 safe(-1)=1100268
+    → Poleno#41[T3] terr=17333 bal=1773682 dq=102.3 cnt=211 | c=196.6 rankC=137.7 need=3187380 tD=0.89 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=114927 pulseB=114927 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21637 bal=2173758 dq=100.5 cnt=82 | c=187.9 rankC=187.9 need=3891066 tD=0.87 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=114927 pulseB=114927 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29116 bal=3474315 dq=119.3 cnt=40 | c=305.9 rankC=305.9 need=6236162 tD=1.04 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=114927 pulseB=114927 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4205 noah88 B=574635 L=14106 d=40.7 nb=3 neut=0 cmds=53 noFull=1 shQ=143658 | m=0.900 worth=88.2 cheap=8.0 over=0 dMedOther=115.3 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21637 bal=2173758 dq=100.5 cnt=82 | c=109.0 rankC=54.5 need=3891353 tD=0.87 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=114927 pulseB=114927 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17451 bal=1773682 dq=101.6 cnt=213 | c=195.3 rankC=136.7 need=3187628 tD=0.88 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=114927 pulseB=114927 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29116 bal=3474315 dq=119.3 cnt=40 | c=443.5 rankC=643.0 need=6236162 tD=1.04 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=114927 pulseB=114927 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4210 noah88 B=581817 L=14106 d=41.2 nb=3 neut=0 cmds=53 noFull=1 shQ=145454 | m=0.900 worth=88.9 cheap=8.0 over=0 dMedOther=116.2 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21427 bal=2168252 dq=101.2 cnt=82 | c=109.9 rankC=55.0 need=3873642 tD=0.87 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=116363 pulseB=116363 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17632 bal=1796207 dq=101.9 cnt=216 | c=378.5 rankC=548.8 need=3227940 tD=0.88 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=116363 pulseB=116363 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29116 bal=3503846 dq=120.3 cnt=40 | c=447.2 rankC=648.5 need=6288797 tD=1.04 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=116363 pulseB=116363 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4215 noah88 B=581817 L=14106 d=41.2 nb=3 neut=0 cmds=53 noFull=1 shQ=145454 | m=0.900 worth=88.7 cheap=8.0 over=0 dMedOther=116.0 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21427 bal=2168252 dq=101.2 cnt=82 | c=189.5 rankC=189.5 need=3873787 tD=0.87 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=116363 pulseB=116363 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17755 bal=1796207 dq=101.2 cnt=218 | c=259.2 rankC=259.2 need=3228231 tD=0.87 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=116363 pulseB=116363 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29116 bal=3503846 dq=120.3 cnt=40 | c=308.4 rankC=308.4 need=6288797 tD=1.04 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=116363 pulseB=116363 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4220 noah88 B=589089 L=14106 d=41.8 nb=3 neut=0 cmds=53 noFull=1 shQ=147272 | m=0.900 worth=89.0 cheap=8.0 over=0 dMedOther=116.3 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21427 bal=2196222 dq=102.5 cnt=82 | c=191.9 rankC=191.9 need=3923495 tD=0.88 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=117818 pulseB=117818 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17934 bal=1819198 dq=101.4 cnt=226 | c=259.8 rankC=259.8 need=3269443 tD=0.87 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=117818 pulseB=117818 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29116 bal=3532577 dq=121.3 cnt=40 | c=310.9 rankC=310.9 need=6340006 tD=1.04 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=117818 pulseB=117818 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4225 noah88 B=589089 L=14106 d=41.8 nb=3 neut=0 cmds=53 noFull=1 shQ=147272 | m=0.900 worth=88.7 cheap=8.0 over=0 dMedOther=115.9 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21427 bal=2196222 dq=102.5 cnt=82 | c=191.9 rankC=191.9 need=3923790 tD=0.88 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=117818 pulseB=117818 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17934 bal=1819234 dq=101.4 cnt=226 | c=259.8 rankC=259.8 need=3269507 tD=0.87 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=117818 pulseB=117818 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29116 bal=3532577 dq=121.3 cnt=40 | c=310.9 rankC=310.9 need=6340006 tD=1.05 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=117818 pulseB=117818 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4230 noah88 B=596452 L=14106 d=42.3 nb=3 neut=0 cmds=53 noFull=1 shQ=149113 | m=0.900 worth=89.0 cheap=8.0 over=0 dMedOther=116.4 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21427 bal=2223894 dq=103.8 cnt=82 | c=194.3 rankC=194.3 need=3972977 tD=0.89 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=119290 pulseB=119290 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17934 bal=1842156 dq=102.7 cnt=226 | c=263.1 rankC=263.1 need=3310363 tD=0.88 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=119290 pulseB=119290 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29116 bal=3560484 dq=122.3 cnt=40 | c=313.4 rankC=313.4 need=6389747 tD=1.05 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=119290 pulseB=119290 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4235 noah88 B=596452 L=14106 d=42.3 nb=3 neut=0 cmds=53 noFull=1 shQ=149113 | m=0.900 worth=89.0 cheap=8.0 over=0 dMedOther=116.4 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21427 bal=2223894 dq=103.8 cnt=82 | c=194.3 rankC=194.3 need=3973126 tD=0.89 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=119290 pulseB=119290 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17934 bal=1842156 dq=102.7 cnt=226 | c=263.1 rankC=263.1 need=3310363 tD=0.88 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=119290 pulseB=119290 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29116 bal=3560484 dq=122.3 cnt=40 | c=313.4 rankC=313.4 need=6389747 tD=1.05 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=119290 pulseB=119290 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4240 noah88 B=603907 L=14106 d=42.8 nb=3 neut=0 cmds=53 noFull=1 shQ=150976 | m=0.900 worth=89.8 cheap=8.0 over=0 dMedOther=117.3 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21427 bal=2251025 dq=105.1 cnt=82 | c=196.6 rankC=196.6 need=4021359 tD=0.90 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=120781 pulseB=120781 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17934 bal=1864630 dq=104.0 cnt=226 | c=266.3 rankC=266.3 need=3350421 tD=0.89 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=120781 pulseB=120781 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29116 bal=3587543 dq=123.2 cnt=40 | c=315.8 rankC=315.8 need=6437976 tD=1.05 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=120781 pulseB=120781 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4245 noah88 B=603907 L=14106 d=42.8 nb=3 neut=0 cmds=53 noFull=1 shQ=150976 | m=0.900 worth=88.5 cheap=8.0 over=0 dMedOther=115.7 safe(-1)=1100268
+    → Pilof empire#1[T6] terr=29116 bal=3587543 dq=123.2 cnt=40 | c=182.1 rankC=91.0 need=6437976 tD=1.06 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=120781 pulseB=120781 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21427 bal=2018009 dq=94.2 cnt=82 | c=132.4 rankC=92.6 need=3608652 tD=0.81 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=120781 pulseB=120781 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17934 bal=1864630 dq=104.0 cnt=226 | c=386.1 rankC=559.8 need=3350421 tD=0.90 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=120781 pulseB=120781 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4250 noah88 B=611455 L=14106 d=43.3 nb=3 neut=0 cmds=53 noFull=1 shQ=152863 | m=0.900 worth=89.3 cheap=8.0 over=0 dMedOther=116.7 safe(-1)=1100268
+    → Pilof empire#1[T6] terr=29009 bal=3592840 dq=123.9 cnt=39 | c=184.2 rankC=92.1 need=6442758 tD=1.06 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=122291 pulseB=122291 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21474 bal=2044646 dq=95.2 cnt=82 | c=133.8 rankC=93.6 need=3657724 tD=0.82 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=122291 pulseB=122291 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17934 bal=1886819 dq=105.2 cnt=226 | c=390.6 rankC=566.4 need=3389970 tD=0.90 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=122291 pulseB=122291 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4255 noah88 B=611455 L=14106 d=43.3 nb=3 neut=0 cmds=53 noFull=1 shQ=152863 | m=0.900 worth=89.3 cheap=8.0 over=0 dMedOther=116.7 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21572 bal=2044646 dq=94.8 cnt=82 | c=133.1 rankC=93.2 need=3661420 tD=0.81 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=122291 pulseB=122291 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17934 bal=1886819 dq=105.2 cnt=226 | c=269.4 rankC=269.4 need=3389970 tD=0.90 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=122291 pulseB=122291 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3592466 dq=123.8 cnt=39 | c=317.5 rankC=317.5 need=6442267 tD=1.06 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=122291 pulseB=122291 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4260 noah88 B=619098 L=14106 d=43.9 nb=3 neut=0 cmds=53 noFull=1 shQ=154774 | m=0.900 worth=90.0 cheap=8.0 over=0 dMedOther=117.6 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21729 bal=2071635 dq=95.3 cnt=82 | c=133.7 rankC=93.6 need=3715153 tD=0.81 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=123820 pulseB=123820 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17934 bal=1908706 dq=106.4 cnt=226 | c=272.5 rankC=272.5 need=3428982 tD=0.90 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=123820 pulseB=123820 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3618331 dq=124.7 cnt=39 | c=319.8 rankC=319.8 need=6488513 tD=1.06 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=123820 pulseB=123820 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4265 noah88 B=619098 L=14106 d=43.9 nb=3 neut=0 cmds=53 noFull=1 shQ=154774 | m=0.900 worth=90.0 cheap=8.0 over=0 dMedOther=117.6 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=21846 bal=2071635 dq=94.8 cnt=82 | c=132.9 rankC=93.0 need=3719596 tD=0.81 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=123820 pulseB=123820 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17934 bal=1908706 dq=106.4 cnt=226 | c=272.5 rankC=272.5 need=3428982 tD=0.90 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=123820 pulseB=123820 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3618331 dq=124.7 cnt=39 | c=319.8 rankC=319.8 need=6488689 tD=1.06 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=123820 pulseB=123820 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4270 noah88 B=626836 L=14106 d=44.4 nb=3 neut=0 cmds=53 noFull=1 shQ=156709 | m=0.900 worth=90.7 cheap=8.0 over=0 dMedOther=118.6 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=22040 bal=2098980 dq=95.2 cnt=82 | c=133.4 rankC=93.3 need=3774203 tD=0.80 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=125367 pulseB=125367 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17934 bal=1930274 dq=107.6 cnt=226 | c=275.6 rankC=275.6 need=3467425 tD=0.91 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=125367 pulseB=125367 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3643659 dq=125.6 cnt=39 | c=322.0 rankC=322.0 need=6534159 tD=1.06 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=125367 pulseB=125367 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4275 noah88 B=626836 L=14106 d=44.4 nb=3 neut=0 cmds=53 noFull=1 shQ=156709 | m=0.900 worth=90.2 cheap=8.0 over=0 dMedOther=118.0 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=22182 bal=2098980 dq=94.6 cnt=82 | c=176.7 rankC=176.7 need=3774483 tD=0.80 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=125367 pulseB=125367 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17934 bal=1930274 dq=107.6 cnt=226 | c=275.6 rankC=275.6 need=3467425 tD=0.91 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=125367 pulseB=125367 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3643659 dq=125.6 cnt=39 | c=322.0 rankC=322.0 need=6534337 tD=1.06 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=125367 pulseB=125367 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4280 noah88 B=634671 L=14106 d=45.0 nb=3 neut=0 cmds=53 noFull=1 shQ=158667 | m=0.900 worth=91.0 cheap=8.0 over=0 dMedOther=118.9 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=22401 bal=2126896 dq=94.9 cnt=82 | c=177.3 rankC=177.3 need=3824534 tD=0.80 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=126934 pulseB=126934 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17934 bal=1951507 dq=108.8 cnt=226 | c=278.6 rankC=278.6 need=3505270 tD=0.92 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=126934 pulseB=126934 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3668071 dq=126.4 cnt=39 | c=324.1 rankC=324.1 need=6578003 tD=1.06 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=126934 pulseB=126934 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4285 noah88 B=634671 L=14106 d=45.0 nb=3 neut=0 cmds=53 noFull=1 shQ=158667 | m=0.900 worth=91.0 cheap=8.0 over=0 dMedOther=118.9 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=22545 bal=2126896 dq=94.3 cnt=82 | c=176.2 rankC=176.2 need=3824750 tD=0.79 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=126934 pulseB=126934 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17934 bal=1951507 dq=108.8 cnt=226 | c=278.6 rankC=278.6 need=3505270 tD=0.92 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=126934 pulseB=126934 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3668071 dq=126.4 cnt=39 | c=324.1 rankC=324.1 need=6578181 tD=1.06 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=126934 pulseB=126934 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4290 noah88 B=642604 L=14106 d=45.6 nb=3 neut=0 cmds=53 noFull=1 shQ=160651 | m=0.900 worth=91.7 cheap=8.0 over=0 dMedOther=119.8 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=22753 bal=2155183 dq=94.7 cnt=82 | c=176.9 rankC=176.9 need=3875480 tD=0.79 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=128521 pulseB=128521 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17934 bal=1972388 dq=110.0 cnt=226 | c=281.5 rankC=281.5 need=3542489 tD=0.92 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=128521 pulseB=128521 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3691913 dq=127.3 cnt=39 | c=326.2 rankC=326.2 need=6621015 tD=1.06 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=128521 pulseB=128521 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4295 noah88 B=642604 L=14106 d=45.6 nb=3 neut=0 cmds=53 noFull=1 shQ=160651 | m=0.900 worth=91.7 cheap=8.0 over=0 dMedOther=119.8 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=22894 bal=2155183 dq=94.1 cnt=82 | c=175.8 rankC=175.8 need=3875725 tD=0.79 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=128521 pulseB=128521 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=17934 bal=1972388 dq=110.0 cnt=226 | c=281.5 rankC=281.5 need=3542489 tD=0.92 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=128521 pulseB=128521 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3691913 dq=127.3 cnt=39 | c=326.2 rankC=326.2 need=6621194 tD=1.06 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=128521 pulseB=128521 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4300 noah88 B=664742 L=14106 d=47.1 nb=3 neut=0 cmds=53 noFull=1 shQ=162744 | m=0.900 worth=93.1 cheap=8.0 over=0 dMedOther=121.7 safe(-1)=1100268
+    → Poleno#41[T3] terr=17934 bal=1775793 dq=99.0 cnt=226 | c=190.3 rankC=133.2 need=3192078 tD=0.81 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=132948 pulseB=132948 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23111 bal=2206884 dq=95.5 cnt=82 | c=178.3 rankC=178.3 need=3968235 tD=0.78 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=132948 pulseB=132948 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3744181 dq=129.1 cnt=39 | c=330.8 rankC=330.8 need=6714500 tD=1.06 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=132948 pulseB=132948 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4305 noah88 B=664742 L=14106 d=47.1 nb=3 neut=0 cmds=53 noFull=1 shQ=166185 | m=0.900 worth=93.0 cheap=8.0 over=0 dMedOther=121.6 safe(-1)=1100268
+    → Poleno#41[T3] terr=17934 bal=1775793 dq=99.0 cnt=226 | c=190.3 rankC=133.2 need=3192078 tD=0.81 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=132948 pulseB=132948 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23258 bal=2206884 dq=94.9 cnt=82 | c=177.2 rankC=177.2 need=3968421 tD=0.78 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=132948 pulseB=132948 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3744181 dq=129.1 cnt=39 | c=330.8 rankC=330.8 need=6714682 tD=1.06 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=132948 pulseB=132948 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4310 noah88 B=673051 L=14106 d=47.7 nb=3 neut=0 cmds=53 noFull=1 shQ=168262 | m=0.900 worth=93.6 cheap=8.0 over=0 dMedOther=122.4 safe(-1)=1100268
+    → Poleno#41[T3] terr=18067 bal=1798700 dq=99.6 cnt=238 | c=147.9 rankC=73.9 need=3233141 tD=0.81 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=134610 pulseB=134610 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23333 bal=2236461 dq=95.8 cnt=82 | c=259.5 rankC=376.3 need=4021217 tD=0.78 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=134610 pulseB=134610 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3765897 dq=129.8 cnt=39 | c=482.4 rankC=699.5 need=6753740 tD=1.06 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=134610 pulseB=134610 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4315 noah88 B=673051 L=14106 d=47.7 nb=3 neut=0 cmds=53 noFull=1 shQ=168262 | m=0.900 worth=93.6 cheap=8.0 over=0 dMedOther=122.3 safe(-1)=1100268
+    → Poleno#41[T3] terr=18149 bal=1798700 dq=99.1 cnt=245 | c=190.3 rankC=133.2 need=3233194 tD=0.81 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=134610 pulseB=134610 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23333 bal=2236461 dq=95.8 cnt=82 | c=259.5 rankC=376.3 need=4021217 tD=0.78 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=134610 pulseB=134610 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3765897 dq=129.8 cnt=39 | c=482.4 rankC=699.4 need=6753923 tD=1.06 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=134610 pulseB=134610 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4320 noah88 B=681464 L=14106 d=48.3 nb=3 neut=0 cmds=53 noFull=1 shQ=170366 | m=0.900 worth=88.2 cheap=8.0 over=0 dMedOther=115.2 safe(-1)=1100268
+    → Poleno#41[T3] terr=18271 bal=1822083 dq=99.7 cnt=250 | c=191.5 rankC=134.1 need=3275124 tD=0.87 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=136293 pulseB=136293 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23333 bal=2266429 dq=97.1 cnt=82 | c=263.0 rankC=381.3 need=4074632 tD=0.84 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=136293 pulseB=136293 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3786986 dq=130.5 cnt=39 | c=485.1 rankC=703.3 need=6791686 tD=1.13 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=136293 pulseB=136293 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4325 noah88 B=681464 L=14106 d=48.3 nb=3 neut=0 cmds=53 noFull=1 shQ=170366 | m=0.900 worth=88.2 cheap=8.0 over=0 dMedOther=115.2 safe(-1)=1100268
+    → Poleno#41[T3] terr=18353 bal=1822083 dq=99.3 cnt=252 | c=190.7 rankC=133.5 need=3275177 tD=0.86 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=136293 pulseB=136293 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23333 bal=2266429 dq=97.1 cnt=82 | c=263.0 rankC=381.3 need=4074632 tD=0.84 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=136293 pulseB=136293 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3786986 dq=130.5 cnt=39 | c=485.0 rankC=703.3 need=6791870 tD=1.13 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=136293 pulseB=136293 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4330 noah88 B=689982 L=14106 d=48.9 nb=3 neut=0 cmds=53 noFull=1 shQ=172495 | m=0.900 worth=88.9 cheap=8.0 over=0 dMedOther=116.2 safe(-1)=1100268
+    → Poleno#41[T3] terr=18485 bal=1845770 dq=99.9 cnt=255 | c=191.8 rankC=134.2 need=3317594 tD=0.86 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=137996 pulseB=137996 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23333 bal=2296799 dq=98.4 cnt=82 | c=266.5 rankC=386.4 need=4128762 tD=0.85 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=137996 pulseB=137996 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3807435 dq=131.3 cnt=39 | c=487.6 rankC=707.1 need=6828679 tD=1.13 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=137996 pulseB=137996 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4335 noah88 B=689982 L=14106 d=48.9 nb=3 neut=0 cmds=53 noFull=1 shQ=172495 | m=0.900 worth=88.9 cheap=8.0 over=0 dMedOther=116.2 safe(-1)=1100268
+    → Poleno#41[T3] terr=18576 bal=1845770 dq=99.4 cnt=257 | c=190.8 rankC=133.6 need=3317695 tD=0.85 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=137996 pulseB=137996 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23333 bal=2059046 dq=88.2 cnt=82 | c=239.2 rankC=346.8 need=3704997 tD=0.76 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=137996 pulseB=137996 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3807435 dq=131.3 cnt=39 | c=487.6 rankC=707.1 need=6828864 tD=1.13 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=137996 pulseB=137996 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4340 noah88 B=698606 L=14106 d=49.5 nb=3 neut=0 cmds=53 noFull=1 shQ=174651 | m=0.900 worth=89.6 cheap=8.0 over=0 dMedOther=117.1 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=23333 bal=2086637 dq=89.4 cnt=82 | c=167.1 rankC=167.1 need=3754174 tD=0.76 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=139721 pulseB=139721 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=18718 bal=1869765 dq=99.9 cnt=260 | c=255.8 rankC=255.8 need=3360746 tD=0.85 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=139721 pulseB=139721 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3827233 dq=131.9 cnt=39 | c=338.0 rankC=338.0 need=6864333 tD=1.13 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=139721 pulseB=139721 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4345 noah88 B=698606 L=14106 d=49.5 nb=3 neut=0 cmds=53 noFull=1 shQ=174651 | m=0.900 worth=89.6 cheap=8.0 over=0 dMedOther=117.1 safe(-1)=1100268
+    → Poleno#41[T3] terr=18816 bal=1645175 dq=87.4 cnt=261 | c=168.2 rankC=117.7 need=2960522 tD=0.75 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=139721 pulseB=139721 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23470 bal=2086637 dq=88.9 cnt=82 | c=166.2 rankC=166.2 need=3754411 tD=0.76 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=139721 pulseB=139721 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3827233 dq=131.9 cnt=39 | c=338.0 rankC=338.0 need=6864519 tD=1.13 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=139721 pulseB=139721 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4350 noah88 B=707338 L=14106 d=50.1 nb=3 neut=0 cmds=53 noFull=1 shQ=176834 | m=0.900 worth=91.2 cheap=8.0 over=0 dMedOther=119.2 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=23506 bal=2114597 dq=90.0 cnt=82 | c=94.6 rankC=47.3 need=3804301 tD=0.75 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=141468 pulseB=141468 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=18969 bal=1666562 dq=87.9 cnt=262 | c=169.0 rankC=118.3 need=2998902 tD=0.74 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=141468 pulseB=141468 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3846369 dq=132.6 cnt=39 | c=492.6 rankC=714.2 need=6898997 tD=1.11 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=141468 pulseB=141468 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4355 noah88 B=707944 L=14106 d=50.2 nb=3 neut=0 cmds=53 noFull=1 shQ=176986 | m=0.900 worth=90.2 cheap=8.0 over=0 dMedOther=118.0 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=23468 bal=2106973 dq=89.8 cnt=82 | c=94.8 rankC=47.4 need=3789066 tD=0.76 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=141589 pulseB=141589 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=19075 bal=1666562 dq=87.4 cnt=263 | c=168.1 rankC=117.6 need=2999123 tD=0.74 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=141589 pulseB=141589 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3440698 dq=118.6 cnt=39 | c=228.1 rankC=159.7 need=6176126 tD=1.01 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=141589 pulseB=141589 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4360 noah88 B=716793 L=14106 d=50.8 nb=3 neut=0 cmds=53 noFull=1 shQ=179198 | m=0.900 worth=90.9 cheap=8.0 over=0 dMedOther=118.8 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=23419 bal=2127201 dq=90.8 cnt=81 | c=96.3 rankC=48.2 need=3823709 tD=0.76 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=143359 pulseB=143359 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=19240 bal=1688227 dq=87.7 cnt=265 | c=168.8 rankC=118.1 need=3037892 tD=0.74 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=143359 pulseB=143359 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29009 bal=3470632 dq=119.6 cnt=39 | c=230.1 rankC=161.0 need=6229479 tD=1.01 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=143359 pulseB=143359 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4365 noah88 B=716793 L=14106 d=50.8 nb=3 neut=0 cmds=53 noFull=1 shQ=179198 | m=0.900 worth=90.8 cheap=8.0 over=0 dMedOther=118.8 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=23310 bal=2320721 dq=99.6 cnt=80 | c=106.5 rankC=53.2 need=4164491 tD=0.84 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=143359 pulseB=143359 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=19359 bal=1688227 dq=87.2 cnt=266 | c=167.8 rankC=117.4 need=3038163 tD=0.73 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=143359 pulseB=143359 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29225 bal=3470632 dq=118.8 cnt=42 | c=228.3 rankC=159.8 need=6229803 tD=1.00 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=143359 pulseB=143359 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4370 noah88 B=725752 L=14106 d=51.4 nb=3 neut=0 cmds=53 noFull=1 shQ=181438 | m=0.900 worth=90.7 cheap=8.0 over=0 dMedOther=118.6 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=23196 bal=2333199 dq=100.6 cnt=79 | c=108.5 rankC=54.2 need=4182558 tD=0.85 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=145150 pulseB=145150 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=19549 bal=1710173 dq=87.5 cnt=268 | c=168.3 rankC=117.8 need=3077502 tD=0.74 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=145150 pulseB=145150 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29533 bal=3501520 dq=118.6 cnt=43 | c=227.7 rankC=159.4 need=6285319 tD=1.00 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=145150 pulseB=145150 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4375 noah88 B=725752 L=14106 d=51.4 nb=3 neut=0 cmds=53 noFull=1 shQ=181438 | m=0.900 worth=90.1 cheap=8.0 over=0 dMedOther=117.8 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=23138 bal=2323865 dq=100.4 cnt=79 | c=108.7 rankC=54.4 need=4163919 tD=0.85 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=145150 pulseB=145150 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=19684 bal=1710173 dq=86.9 cnt=269 | c=167.2 rankC=117.0 need=3077674 tD=0.74 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=145150 pulseB=145150 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=29725 bal=3501520 dq=117.8 cnt=44 | c=437.4 rankC=634.2 need=6285606 tD=1.00 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=145150 pulseB=145150 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4380 noah88 B=734823 L=14106 d=52.1 nb=3 neut=0 cmds=53 noFull=1 shQ=183705 | m=0.900 worth=89.0 cheap=8.0 over=0 dMedOther=116.4 safe(-1)=1100268
+    → Poleno#41[T3] terr=19899 bal=1732405 dq=87.1 cnt=276 | c=167.5 rankC=117.2 need=3117714 tD=0.75 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=146965 pulseB=146965 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23138 bal=2349452 dq=101.5 cnt=79 | c=189.9 rankC=189.9 need=4209675 tD=0.87 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=146965 pulseB=146965 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=30019 bal=3533733 dq=117.7 cnt=46 | c=301.3 rankC=301.3 need=6343546 tD=1.01 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=146965 pulseB=146965 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4385 noah88 B=734823 L=14106 d=52.1 nb=3 neut=0 cmds=53 noFull=1 shQ=183705 | m=0.900 worth=87.0 cheap=8.0 over=0 dMedOther=113.8 safe(-1)=1100268
+    → Poleno#41[T3] terr=20030 bal=1732405 dq=86.5 cnt=290 | c=166.3 rankC=116.4 need=3117880 tD=0.76 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=146965 pulseB=146965 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23138 bal=2349452 dq=101.5 cnt=79 | c=189.9 rankC=189.9 need=4209820 tD=0.89 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=146965 pulseB=146965 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=30216 bal=3533733 dq=116.9 cnt=47 | c=299.4 rankC=299.4 need=6343717 tD=1.03 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=146965 pulseB=146965 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4390 noah88 B=744008 L=14106 d=52.7 nb=3 neut=0 cmds=53 noFull=1 shQ=186002 | m=0.900 worth=87.9 cheap=8.0 over=0 dMedOther=115.0 safe(-1)=1100268
+    → Poleno#41[T3] terr=20204 bal=1754926 dq=86.9 cnt=304 | c=166.9 rankC=116.8 need=3158220 tD=0.76 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=148802 pulseB=148802 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23138 bal=2379759 dq=102.9 cnt=79 | c=192.3 rankC=192.3 need=4263826 tD=0.89 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=148802 pulseB=148802 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=30507 bal=3566950 dq=116.9 cnt=48 | c=299.2 rankC=299.2 need=6403482 tD=1.02 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=148802 pulseB=148802 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4395 noah88 B=744008 L=14106 d=52.7 nb=3 neut=0 cmds=53 noFull=1 shQ=186002 | m=0.900 worth=87.1 cheap=8.0 over=0 dMedOther=113.8 safe(-1)=1100268
+    → Poleno#41[T3] terr=20302 bal=1754926 dq=86.4 cnt=306 | c=166.1 rankC=116.3 need=3158428 tD=0.76 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=148802 pulseB=148802 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23138 bal=2379759 dq=102.9 cnt=79 | c=192.3 rankC=192.3 need=4263973 tD=0.90 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=148802 pulseB=148802 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=30507 bal=3567037 dq=116.9 cnt=48 | c=299.2 rankC=299.2 need=6403637 tD=1.03 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=148802 pulseB=148802 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4400 noah88 B=767414 L=14106 d=54.4 nb=3 neut=18 cmds=53 noFull=1 shQ=188419 | m=0.900 worth=88.0 cheap=8.0 over=0 dMedOther=115.1 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=23138 bal=2432881 dq=105.1 cnt=79 | c=196.6 rankC=196.6 need=4358683 tD=0.91 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=153483 pulseB=153483 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=20447 bal=1798313 dq=87.9 cnt=308 | c=225.3 rankC=225.3 need=3236009 tD=0.76 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=153483 pulseB=153483 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=30507 bal=3630360 dq=119.0 cnt=48 | c=304.5 rankC=304.5 need=6516503 tD=1.03 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=153483 pulseB=153483 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4405 noah88 B=767414 L=14106 d=54.4 nb=3 neut=17 cmds=53 noFull=1 shQ=191853 | m=0.900 worth=87.0 cheap=8.0 over=0 dMedOther=113.7 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=23138 bal=2432881 dq=105.1 cnt=79 | c=196.6 rankC=196.6 need=4358833 tD=0.92 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=153483 pulseB=153483 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=20546 bal=1798313 dq=87.5 cnt=309 | c=224.2 rankC=224.2 need=3236126 tD=0.77 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=153483 pulseB=153483 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=30507 bal=3630360 dq=119.0 cnt=48 | c=304.5 rankC=304.5 need=6516503 tD=1.05 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=153483 pulseB=153483 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4410 noah88 B=777006 L=14106 d=55.1 nb=3 neut=15 cmds=53 noFull=1 shQ=194251 | m=0.900 worth=88.8 cheap=8.0 over=0 dMedOther=116.1 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=23138 bal=2462075 dq=106.4 cnt=79 | c=198.9 rankC=198.9 need=4410875 tD=0.92 人 pulse | safe=1100268 keep=Inf avail=-Inf chunkB=155401 pulseB=155401 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=20694 bal=1821870 dq=88.0 cnt=311 | c=225.5 rankC=225.5 need=3278336 tD=0.76 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=155401 pulseB=155401 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=30507 bal=3661581 dq=120.0 cnt=48 | c=307.1 rankC=307.1 need=6572152 tD=1.03 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=155401 pulseB=155401 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4415 noah88 B=777006 L=14106 d=55.1 nb=3 neut=13 cmds=53 noFull=1 shQ=194251 | m=0.900 worth=88.8 cheap=8.0 over=0 dMedOther=116.1 safe(-1)=1100268
+    → [Off] Skull#2[T5] terr=23138 bal=2113442 dq=91.3 cnt=79 | c=139.1 rankC=97.3 need=4111092 tD=0.79 人 pulse onMe | safe=1100268 keep=Inf avail=-Inf chunkB=155401 pulseB=155401 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=20786 bal=1821870 dq=87.6 cnt=313 | c=224.5 rankC=224.5 need=3278474 tD=0.76 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=155401 pulseB=155401 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=30507 bal=3661581 dq=120.0 cnt=48 | c=307.1 rankC=307.1 need=6572152 tD=1.03 人 pulse crowdedHard | safe=1100268 keep=Inf avail=-Inf chunkB=155401 pulseB=155401 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4420 noah88 B=772823 L=13950 d=55.4 nb=3 neut=10 cmds=53 noFull=1 shQ=193205 | m=0.900 worth=89.6 cheap=8.0 over=0 dMedOther=117.1 safe(-1)=1088100
+    → [Off] Skull#2[T5] terr=23294 bal=2141550 dq=91.9 cnt=78 | c=138.7 rankC=97.1 need=4138793 tD=0.79 人 pulse onMe | safe=1088100 keep=Inf avail=-Inf chunkB=154565 pulseB=154565 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=20925 bal=1845736 dq=88.2 cnt=315 | c=225.9 rankC=225.9 need=3321189 tD=0.75 人 pulse crowdedHard | safe=1088100 keep=Inf avail=-Inf chunkB=154565 pulseB=154565 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=30507 bal=3691972 dq=121.0 cnt=48 | c=309.6 rankC=309.6 need=6626320 tD=1.03 人 pulse crowdedHard | safe=1088100 keep=Inf avail=-Inf chunkB=154565 pulseB=154565 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4425 noah88 B=759021 L=13794 d=55.0 nb=3 neut=8 cmds=53 noFull=1 shQ=189755 | m=0.900 worth=89.6 cheap=8.0 over=0 dMedOther=117.1 safe(-1)=1075932
+    → [Off] Skull#2[T5] terr=23450 bal=2141550 dq=91.3 cnt=78 | c=136.8 rankC=95.7 need=4116193 tD=0.78 人 pulse onMe | safe=1075932 keep=Inf avail=-Inf chunkB=151804 pulseB=151804 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=21013 bal=1845736 dq=87.8 cnt=316 | c=225.0 rankC=225.0 need=3321321 tD=0.75 人 pulse crowdedHard | safe=1075932 keep=Inf avail=-Inf chunkB=151804 pulseB=151804 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=30507 bal=3691972 dq=121.0 cnt=48 | c=309.6 rankC=309.6 need=6626320 tD=1.03 人 pulse crowdedHard | safe=1075932 keep=Inf avail=-Inf chunkB=151804 pulseB=151804 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4430 noah88 B=747812 L=13561 d=55.1 nb=3 neut=7 cmds=53 noFull=1 shQ=186953 | m=0.900 worth=90.3 cheap=8.0 over=0 dMedOther=118.1 safe(-1)=1057758
+    → [Off] Skull#2[T5] terr=23683 bal=2170246 dq=91.6 cnt=75 | c=135.8 rankC=95.0 need=4126206 tD=0.78 人 pulse onMe | safe=1057758 keep=Inf avail=-Inf chunkB=149562 pulseB=149562 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=21117 bal=1869915 dq=88.6 cnt=313 | c=226.7 rankC=226.7 need=3364573 tD=0.75 人 pulse crowdedHard | safe=1057758 keep=Inf avail=-Inf chunkB=149562 pulseB=149562 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=30507 bal=3721507 dq=122.0 cnt=48 | c=312.1 rankC=312.1 need=6678963 tD=1.03 人 pulse crowdedHard | safe=1057758 keep=Inf avail=-Inf chunkB=149562 pulseB=149562 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4435 noah88 B=734865 L=13414 d=54.8 nb=3 neut=6 cmds=53 noFull=1 shQ=183716 | m=0.900 worth=89.6 cheap=8.0 over=0 dMedOther=117.1 safe(-1)=1046292
+    → [Off] Skull#2[T5] terr=23830 bal=2170246 dq=91.1 cnt=73 | c=134.1 rankC=93.9 need=4100205 tD=0.78 人 pulse onMe | safe=1046292 keep=Inf avail=-Inf chunkB=146973 pulseB=146973 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=21162 bal=1869915 dq=88.4 cnt=314 | c=226.2 rankC=226.2 need=3364672 tD=0.75 人 pulse crowdedHard | safe=1046292 keep=Inf avail=-Inf chunkB=146973 pulseB=146973 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=30507 bal=3721507 dq=122.0 cnt=48 | c=312.1 rankC=312.1 need=6678963 tD=1.04 人 pulse crowdedHard | safe=1046292 keep=Inf avail=-Inf chunkB=146973 pulseB=146973 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4440 noah88 B=724946 L=13198 d=54.9 nb=3 neut=4 cmds=53 noFull=1 shQ=181236 | m=0.900 worth=90.4 cheap=8.0 over=0 dMedOther=118.1 safe(-1)=1029444
+    → [Off] Skull#2[T5] terr=24046 bal=2199327 dq=91.5 cnt=71 | c=133.3 rankC=93.3 need=4114038 tD=0.77 人 pulse onMe | safe=1029444 keep=Inf avail=-Inf chunkB=144989 pulseB=144989 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=21209 bal=1894410 dq=89.3 cnt=314 | c=228.6 rankC=228.6 need=3408370 tD=0.76 人 pulse crowdedHard | safe=1029444 keep=Inf avail=-Inf chunkB=144989 pulseB=144989 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=30507 bal=3750534 dq=122.9 cnt=48 | c=314.5 rankC=314.5 need=6730701 tD=1.04 人 pulse crowdedHard | safe=1029444 keep=Inf avail=-Inf chunkB=144989 pulseB=144989 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4445 noah88 B=712576 L=13057 d=54.6 nb=3 neut=4 cmds=53 noFull=1 shQ=178144 | m=0.900 worth=90.4 cheap=8.0 over=0 dMedOther=118.1 safe(-1)=1018446
+    → [Off] Skull#2[T5] terr=24187 bal=2199327 dq=90.9 cnt=70 | c=131.8 rankC=92.2 need=4089260 tD=0.77 人 pulse onMe | safe=1018446 keep=Inf avail=-Inf chunkB=142515 pulseB=142515 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=21234 bal=1894410 dq=89.2 cnt=312 | c=228.4 rankC=228.4 need=3408439 tD=0.76 人 pulse crowdedHard | safe=1018446 keep=Inf avail=-Inf chunkB=142515 pulseB=142515 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=30507 bal=3750534 dq=122.9 cnt=48 | c=314.5 rankC=314.5 need=6730701 tD=1.04 人 pulse crowdedHard | safe=1018446 keep=Inf avail=-Inf chunkB=142515 pulseB=142515 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4450 noah88 B=703261 L=12851 d=54.7 nb=3 neut=4 cmds=53 noFull=1 shQ=175815 | m=0.900 worth=90.6 cheap=8.0 over=0 dMedOther=118.4 safe(-1)=1002378
+    → [Off] Skull#2[T5] terr=24393 bal=2228797 dq=91.4 cnt=68 | c=94.3 rankC=47.2 need=4105617 tD=0.77 人 pulse bleeding onMe | safe=1002378 keep=Inf avail=-Inf chunkB=140652 pulseB=140652 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=21268 bal=1919226 dq=90.2 cnt=311 | c=334.9 rankC=485.6 need=3452658 tD=0.76 人 pulse crowdedHard | safe=1002378 keep=Inf avail=-Inf chunkB=140652 pulseB=140652 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=30507 bal=3778663 dq=123.9 cnt=48 | c=459.3 rankC=666.0 need=6780838 tD=1.05 人 pulse crowdedHard | safe=1002378 keep=Inf avail=-Inf chunkB=140652 pulseB=140652 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4455 noah88 B=691374 L=12715 d=54.4 nb=3 neut=4 cmds=53 noFull=1 shQ=172843 | m=0.900 worth=86.5 cheap=8.0 over=0 dMedOther=113.0 safe(-1)=991770
+    → [Off] Skull#2[T5] terr=24456 bal=2218156 dq=90.7 cnt=66 | c=93.5 rankC=46.7 need=4062667 tD=0.80 人 pulse onMe | safe=991770 keep=Inf avail=-Inf chunkB=138275 pulseB=138275 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=30507 bal=3380133 dq=110.8 cnt=48 | c=212.7 rankC=148.9 need=6070500 tD=0.98 人 pulse crowdedHard | safe=991770 keep=Inf avail=-Inf chunkB=138275 pulseB=138275 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=21290 bal=1919226 dq=90.1 cnt=310 | c=334.5 rankC=485.1 need=3452755 tD=0.80 人 pulse crowdedHard | safe=991770 keep=Inf avail=-Inf chunkB=138275 pulseB=138275 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4460 noah88 B=682827 L=12520 d=54.5 nb=3 neut=4 cmds=53 noFull=1 shQ=170706 | m=0.900 worth=85.4 cheap=8.0 over=0 dMedOther=111.6 safe(-1)=976560
+    → [Off] Skull#2[T5] terr=24499 bal=2225608 dq=90.8 cnt=65 | c=93.7 rankC=46.9 need=4041374 tD=0.81 人 pulse onMe | safe=976560 keep=Inf avail=-Inf chunkB=136565 pulseB=136565 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=30605 bal=3416976 dq=111.6 cnt=49 | c=214.3 rankC=150.0 need=6136236 tD=1.00 人 pulse crowdedHard | safe=976560 keep=Inf avail=-Inf chunkB=136565 pulseB=136565 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=21313 bal=1944559 dq=91.2 cnt=308 | c=338.5 rankC=490.9 need=3497911 tD=0.82 人 pulse crowdedHard | safe=976560 keep=Inf avail=-Inf chunkB=136565 pulseB=136565 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4465 noah88 B=671590 L=12391 d=54.2 nb=3 neut=4 cmds=53 noFull=1 shQ=167897 | m=0.900 worth=84.9 cheap=8.0 over=0 dMedOther=110.9 safe(-1)=966498
+    → [Off] Skull#2[T5] terr=24465 bal=2202004 dq=90.0 cnt=64 | c=93.3 rankC=46.6 need=3974292 tD=0.81 人 pulse onMe | safe=966498 keep=Inf avail=-Inf chunkB=134318 pulseB=134318 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=30799 bal=3416976 dq=110.9 cnt=50 | c=212.9 rankC=149.1 need=6136605 tD=1.00 人 pulse crowdedHard | safe=966498 keep=Inf avail=-Inf chunkB=134318 pulseB=134318 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=21327 bal=1944559 dq=91.2 cnt=306 | c=338.3 rankC=490.6 need=3497996 tD=0.82 人 pulse crowdedHard | safe=966498 keep=Inf avail=-Inf chunkB=134318 pulseB=134318 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4470 noah88 B=672291 L=12327 d=54.5 nb=3 neut=4 cmds=53 noFull=1 shQ=168072 | m=0.900 worth=85.4 cheap=8.0 over=0 dMedOther=111.7 safe(-1)=961506
+    → [Off] Skull#2[T5] terr=24442 bal=2218870 dq=90.8 cnt=64 | c=94.3 rankC=47.1 need=3988343 tD=0.81 人 pulse | safe=961506 keep=Inf avail=-Inf chunkB=134458 pulseB=134458 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=31087 bal=3098773 dq=99.7 cnt=54 | c=191.4 rankC=134.0 need=5569872 tD=0.89 人 pulse crowdedHard | safe=961506 keep=Inf avail=-Inf chunkB=134458 pulseB=134458 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=21346 bal=1970227 dq=92.3 cnt=305 | c=342.4 rankC=496.5 need=3543743 tD=0.83 人 pulse crowdedHard | safe=961506 keep=Inf avail=-Inf chunkB=134458 pulseB=134458 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4475 noah88 B=672291 L=12327 d=54.5 nb=3 neut=4 cmds=53 noFull=1 shQ=168072 | m=0.900 worth=85.4 cheap=8.0 over=0 dMedOther=111.7 safe(-1)=961506
+    → [Off] Skull#2[T5] terr=24265 bal=2193190 dq=90.4 cnt=64 | c=95.0 rankC=47.5 need=3936763 tD=0.81 人 pulse | safe=961506 keep=Inf avail=-Inf chunkB=134458 pulseB=134458 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=31270 bal=3098773 dq=99.1 cnt=54 | c=190.3 rankC=133.2 need=5570111 tD=0.89 人 pulse crowdedHard | safe=961506 keep=Inf avail=-Inf chunkB=134458 pulseB=134458 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=21359 bal=1970227 dq=92.2 cnt=305 | c=342.2 rankC=496.2 need=3543795 tD=0.83 人 pulse crowdedHard | safe=961506 keep=Inf avail=-Inf chunkB=134458 pulseB=134458 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4480 noah88 B=680627 L=12327 d=55.2 nb=3 neut=4 cmds=53 noFull=1 shQ=170156 | m=0.900 worth=86.2 cheap=8.0 over=0 dMedOther=112.7 safe(-1)=961506
+    → [Off] Skull#2[T5] terr=24078 bal=2195206 dq=91.2 cnt=64 | c=97.1 rankC=48.5 need=3934048 tD=0.81 人 pulse | safe=961506 keep=Inf avail=-Inf chunkB=136125 pulseB=136125 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=31528 bal=3141845 dq=99.7 cnt=54 | c=191.5 rankC=134.1 need=5647198 tD=0.88 人 pulse crowdedHard | safe=961506 keep=Inf avail=-Inf chunkB=136125 pulseB=136125 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=21382 bal=1996233 dq=93.4 cnt=305 | c=346.4 rankC=502.2 need=3590150 tD=0.83 人 pulse crowdedHard | safe=961506 keep=Inf avail=-Inf chunkB=136125 pulseB=136125 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4485 noah88 B=628025 L=11727 d=53.6 nb=3 neut=4 cmds=53 noFull=1 shQ=157006 | m=0.900 worth=85.8 cheap=8.1 over=0 dMedOther=112.1 safe(-1)=914706
+    → [Off] Skull#2[T5] terr=23982 bal=2181203 dq=91.0 cnt=63 | c=97.5 rankC=48.7 need=3906114 tD=0.81 人 pulse | safe=914706 keep=Inf avail=-Inf chunkB=125605 pulseB=125605 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=22003 bal=1292484 dq=58.7 cnt=295 | c=130.8 rankC=91.5 need=2910694 tD=0.52 人 pulse onMe | safe=914706 keep=Inf avail=-Inf chunkB=125605 pulseB=125605 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=31676 bal=3141845 dq=99.2 cnt=54 | c=190.7 rankC=133.5 need=5647420 tD=0.88 人 pulse crowdedHard | safe=914706 keep=Inf avail=-Inf chunkB=125605 pulseB=125605 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4490 noah88 B=562372 L=10868 d=51.7 nb=3 neut=4 cmds=53 noFull=1 shQ=140593 | m=0.900 worth=86.3 cheap=8.2 over=0 dMedOther=112.8 safe(-1)=847704
+    → [Off] Skull#2[T5] terr=23782 bal=2180974 dq=91.7 cnt=62 | c=99.6 rankC=49.8 need=3898804 tD=0.81 人 pulse | safe=847704 keep=Inf avail=-Inf chunkB=112474 pulseB=112474 价高(c>=worth)→break hNb=3
+    → Poleno#41[T3] terr=22890 bal=1309674 dq=57.2 cnt=272 | c=120.8 rankC=84.6 need=2795377 tD=0.51 人 pulse onMe | safe=847704 keep=Inf avail=-Inf chunkB=112474 pulseB=112474 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=31929 bal=2849545 dq=89.2 cnt=54 | c=171.8 rankC=120.3 need=5126847 tD=0.79 人 pulse crowdedHard | safe=847704 keep=Inf avail=-Inf chunkB=112474 pulseB=112474 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4495 noah88 B=521026 L=10365 d=50.3 nb=3 neut=4 cmds=53 noFull=1 shQ=130256 | m=0.900 worth=87.0 cheap=8.2 over=0 dMedOther=113.7 safe(-1)=808470
+    → Poleno#41[T3] terr=23412 bal=1309674 dq=55.9 cnt=220 | c=114.8 rankC=80.3 need=2712422 tD=0.49 人 pulse onMe | safe=808470 keep=Inf avail=-Inf chunkB=104205 pulseB=104205 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=32111 bal=2849545 dq=88.7 cnt=54 | c=170.9 rankC=119.6 need=5127182 tD=0.78 人 pulse crowdedHard | safe=808470 keep=Inf avail=-Inf chunkB=104205 pulseB=104205 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23782 bal=2176751 dq=91.5 cnt=61 | c=237.8 rankC=237.8 need=3891455 tD=0.80 人 pulse crowdedHard | safe=808470 keep=Inf avail=-Inf chunkB=104205 pulseB=104205 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4500 noah88 B=489858 L=9779 d=50.1 nb=3 neut=4 cmds=53 noFull=1 shQ=122464 | m=0.900 worth=88.5 cheap=8.2 over=0 dMedOther=115.7 safe(-1)=762762
+    → Poleno#41[T3] terr=24029 bal=1351066 dq=56.2 cnt=162 | c=111.2 rankC=77.9 need=2691915 tD=0.49 人 pulse onMe | safe=762762 keep=Inf avail=-Inf chunkB=97972 pulseB=97972 价高(c>=worth)→break hNb=3
+    → Pilof empire#1[T6] terr=32382 bal=2921445 dq=90.2 cnt=54 | c=173.7 rankC=121.6 need=5255710 tD=0.78 人 pulse crowdedHard | safe=762762 keep=Inf avail=-Inf chunkB=97972 pulseB=97972 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23782 bal=2229701 dq=93.8 cnt=60 | c=243.6 rankC=243.6 need=3985392 tD=0.81 人 pulse crowdedHard | safe=762762 keep=Inf avail=-Inf chunkB=97972 pulseB=97972 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令

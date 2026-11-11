@@ -1,0 +1,273 @@
+{
+ "matchId": "A089",
+ "bots": {
+  "riku_x": {
+   "n": 2,
+   "segments": 53,
+   "segOk": 27,
+   "segMismatch": 26,
+   "verdicts": {
+    "EXEC": 2
+   }
+  },
+  "sora_w": {
+   "n": 1,
+   "segments": 71,
+   "segOk": 19,
+   "segMismatch": 52,
+   "verdicts": {
+    "EXEC": 1
+   }
+  },
+  "talon5": {
+   "n": 1,
+   "segments": 56,
+   "segOk": 24,
+   "segMismatch": 32,
+   "verdicts": {
+    "EXEC~": 1
+   }
+  },
+  "zero_7": {
+   "n": 8,
+   "segments": 59,
+   "segOk": 36,
+   "segMismatch": 23,
+   "verdicts": {
+    "EXEC": 8
+   }
+  },
+  "zexos1": {
+   "n": 1,
+   "segments": 53,
+   "segOk": 21,
+   "segMismatch": 32,
+   "verdicts": {
+    "EXEC": 1
+   }
+  }
+ },
+ "rows": [
+  {
+   "bot": "riku_x",
+   "t": 3630,
+   "type": "DISPATCH",
+   "kind": "yield_opt_dispatch",
+   "pct": 199,
+   "to": "sora_w",
+   "myBal": 600591,
+   "amt": 117302,
+   "fee": 37536,
+   "verdict": "EXEC",
+   "execLo": 3640,
+   "execHi": 3649,
+   "rejFlag": false,
+   "line": 7172992
+  },
+  {
+   "bot": "riku_x",
+   "t": 3880,
+   "type": "DISPATCH",
+   "kind": "offense_dispatch",
+   "pct": 188,
+   "to": "kaito9",
+   "myBal": 592997,
+   "amt": 109449,
+   "fee": 37062,
+   "verdict": "EXEC",
+   "execLo": 3890,
+   "execHi": 3899,
+   "rejFlag": false,
+   "line": 7173012
+  },
+  {
+   "bot": "sora_w",
+   "t": 3710,
+   "type": "DISPATCH",
+   "kind": "offense_dispatch",
+   "pct": 195,
+   "to": "kaito9",
+   "myBal": 2622371,
+   "amt": 501938,
+   "fee": 163898,
+   "verdict": "EXEC",
+   "execLo": 3711,
+   "execHi": 3719,
+   "rejFlag": false,
+   "line": 7172999
+  },
+  {
+   "bot": "talon5",
+   "t": 4045,
+   "type": "DISPATCH",
+   "kind": "defense_dispatch",
+   "pct": 224,
+   "to": "zexos1",
+   "myBal": 1051782,
+   "amt": 231104,
+   "fee": 65736,
+   "verdict": "EXEC~",
+   "execLo": 4100,
+   "execHi": 4105,
+   "rejFlag": false,
+   "line": 7173022
+  },
+  {
+   "bot": "zero_7",
+   "t": 2320,
+   "type": "DISPATCH",
+   "kind": "offense_dispatch",
+   "pct": 247,
+   "to": "sora_w",
+   "myBal": 484557,
+   "amt": 117353,
+   "fee": 30284,
+   "verdict": "EXEC",
+   "execLo": 2321,
+   "execHi": 2339,
+   "rejFlag": false,
+   "line": 7172893
+  },
+  {
+   "bot": "zero_7",
+   "t": 2620,
+   "type": "DISPATCH",
+   "kind": "offense_dispatch",
+   "pct": 281,
+   "to": "sora_w",
+   "myBal": 506532,
+   "amt": 139494,
+   "fee": 31658,
+   "verdict": "EXEC",
+   "execLo": 2630,
+   "execHi": 2669,
+   "rejFlag": false,
+   "line": 7172918
+  },
+  {
+   "bot": "zero_7",
+   "t": 2820,
+   "type": "DISPATCH",
+   "kind": "defense_dispatch",
+   "pct": 380,
+   "to": "kaito9",
+   "myBal": 441363,
+   "amt": 164218,
+   "fee": 27585,
+   "verdict": "EXEC",
+   "execLo": 2830,
+   "execHi": 2859,
+   "rejFlag": false,
+   "line": 7172932
+  },
+  {
+   "bot": "zero_7",
+   "t": 3320,
+   "type": "DISPATCH",
+   "kind": "yield_opt_dispatch",
+   "pct": 273,
+   "to": "sora_w",
+   "myBal": 501066,
+   "amt": 134074,
+   "fee": 31316,
+   "verdict": "EXEC",
+   "execLo": 3330,
+   "execHi": 3339,
+   "rejFlag": false,
+   "line": 7172963
+  },
+  {
+   "bot": "zero_7",
+   "t": 3620,
+   "type": "DISPATCH",
+   "kind": "yield_opt_dispatch",
+   "pct": 278,
+   "to": "sora_w",
+   "myBal": 504768,
+   "amt": 137529,
+   "fee": 31548,
+   "verdict": "EXEC",
+   "execLo": 3621,
+   "execHi": 3680,
+   "rejFlag": false,
+   "line": 7172991
+  },
+  {
+   "bot": "zero_7",
+   "t": 3920,
+   "type": "DISPATCH",
+   "kind": "yield_opt_dispatch",
+   "pct": 278,
+   "to": "sora_w",
+   "myBal": 504794,
+   "amt": 137536,
+   "fee": 31549,
+   "verdict": "EXEC",
+   "execLo": 3921,
+   "execHi": 3929,
+   "rejFlag": false,
+   "line": 7173013
+  },
+  {
+   "bot": "zero_7",
+   "t": 4045,
+   "type": "DISPATCH",
+   "kind": "defense_dispatch",
+   "pct": 330,
+   "to": "zexos1",
+   "myBal": 394739,
+   "amt": 127596,
+   "fee": 24671,
+   "verdict": "EXEC",
+   "execLo": 4050,
+   "execHi": 4079,
+   "rejFlag": false,
+   "line": 7173021
+  },
+  {
+   "bot": "zero_7",
+   "t": 4320,
+   "type": "DISPATCH",
+   "kind": "defense_dispatch",
+   "pct": 273,
+   "to": "zexos1",
+   "myBal": 364745,
+   "amt": 97597,
+   "fee": 22796,
+   "verdict": "EXEC",
+   "execLo": 4321,
+   "execHi": 4380,
+   "rejFlag": false,
+   "line": 7173045
+  },
+  {
+   "bot": "zexos1",
+   "t": 3515,
+   "type": "DISPATCH",
+   "kind": "yield_opt_dispatch",
+   "pct": 191,
+   "to": "sora_w",
+   "myBal": 1047832,
+   "amt": 196468,
+   "fee": 65489,
+   "verdict": "EXEC",
+   "execLo": 3520,
+   "execHi": 3529,
+   "rejFlag": false,
+   "line": 7172983
+  }
+ ],
+ "latency": {
+  "n": 13,
+  "loMin": 1,
+  "loMed": 5,
+  "loMax": 55,
+  "hiMin": 9,
+  "hiMed": 19,
+  "hiMax": 60
+ },
+ "total": {
+  "EXEC": 12,
+  "EXEC~": 1
+ }
+}

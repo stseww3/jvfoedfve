@@ -1,0 +1,60 @@
+t=3590 B=2.17M L=107230 密=20.3 在途中立=0 槽=0 nfs=1 sq=533k | 决策后 nb=2 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→false
+    offers→2
+        报价 Player 691#5：c=26.86 need=2.04M inAtk=0 tD=1 person
+        报价 Player 804#11：c=278.01 need=628k inAtk=0 tD=9.6 person
+    tryDonateToTeammate→false
+    safeFinite→0
+    dpKeep→551k
+    safeFinite→0
+    dpKeep→551k
+    idleBoats→undef
+    boatFood→false
+    safeFinite→0
+    dpKeep→551k
+      · Player 691#5 地 94908 兵 1.14M 我压它 0 它压我 0 接壤 366：elimCost=2.04M
+      · Player 804#11 地 3028 兵 350k 我压它 0 它压我 0 接壤 18：elimCost=628k
+      · （不针对目标）：safeAt=551k×3
+t=3595 B=2.17M L=107230 密=20.3 在途中立=0 槽=0 nfs=1 sq=543k | 决策后 nb=2 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→true
+    offers→2
+        报价 Player 691#5：c=14.84 need=2.04M inAtk=0 tD=1 person
+        报价 Player 804#11：c=278.01 need=628k inAtk=0 tD=9.6 person
+    safeFinite→0
+    dpKeep→551k
+      send(Player 691#5, 180k)→true
+    safeFinite→0
+    dpKeep→551k
+      · Player 691#5 地 94908 兵 1.14M 我压它 0 它压我 0 接壤 366：elimCost=2.04M safeAt=551k
+      · Player 804#11 地 3028 兵 350k 我压它 0 它压我 0 接壤 18：elimCost=628k
+      · （不针对目标）：safeAt=551k
+t=3600 B=2.32M L=107230 密=21.6 在途中立=0 槽=0 nfs=1 sq=543k | 决策后 nb=2 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→true
+    offers→2
+        报价 Player 691#5：c=16.33 need=2.23M inAtk=0 tD=1 person
+        报价 Player 804#11：c=283.13 need=638k inAtk=0 tD=8.87 person
+    safeFinite→0
+    dpKeep→614k
+      send(Player 691#5, 165k)→true
+    safeFinite→0
+    dpKeep→614k
+      · Player 691#5 地 94756 兵 1.25M 我压它 0 它压我 0 接壤 366：elimCost=2.23M safeAt=614k
+      · Player 804#11 地 3028 兵 356k 我压它 0 它压我 0 接壤 18：elimCost=638k
+      · （不针对目标）：safeAt=614k
+t=3605 B=2.32M L=107230 密=21.6 在途中立=0 槽=0 nfs=1 sq=580k | 决策后 nb=2 neut=0
+    tryEmergencyBossRescue→false
+    buyLand→true
+    offers→2
+        报价 Player 691#5：c=16.43 need=2.21M inAtk=0 tD=1 person
+        报价 Player 804#11：c=283.13 need=638k inAtk=0 tD=8.9 person
+    safeFinite→0
+    dpKeep→609k
+      send(Player 691#5, 159k)→true
+    safeFinite→0
+    dpKeep→609k
+      · Player 691#5 地 94285 兵 1.24M 我压它 0 它压我 0 接壤 364：elimCost=2.21M safeAt=609k
+      · Player 804#11 地 3028 兵 356k 我压它 0 它压我 0 接壤 18：elimCost=638k
+      · （不针对目标）：safeAt=609k

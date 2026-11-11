@@ -1,0 +1,551 @@
+# A053 ryan_m 影子决策明细 t=2800~3700（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 102 拍（t=2800~3335）
+#   出手打人/bot: 9 拍（t=3070~3365）；可用兵 79834~728528，一条指令下限(20%余额) 145656~191092，比值 46%~494%
+#   首选目标要发的兵低于最小指令（x < max(minCmd, pulseMinShare×B)）: 3 拍（t=3340~3350）；可用兵 711073~719747，一条指令下限(20%余额) 143901~145656，比值 494%~494%
+#   没有可打的邻居: 64 拍（t=3370~3700）
+#   捐兵: 3 拍（t=3625~3675）
+#   └ 「出手打人/bot」里：9 条对人/bot 的出兵共约 800091 兵；其中超过软上限（over=1）时发的 6 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 6 条约 535520 兵，c/worth = 2.65~3.35
+t=2800 ryan_m B=616685 L=8678 d=71.1 nb=1 neut=0 cmds=61 noFull=1 shQ=152049 | m=0.900 worth=64.0 cheap=8.3 over=0 dMedOther=67.6 safe(-1)=666072
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1198625 dq=105.6 cnt=118 | c=494.8 rankC=717.4 need=2129501 tD=1.56 人 pulse crowdedHard | safe=666072 keep=Inf avail=-Inf chunkB=123337 pulseB=74002 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2805 ryan_m B=616685 L=8678 d=71.1 nb=1 neut=0 cmds=61 noFull=1 shQ=154171 | m=0.900 worth=64.0 cheap=8.3 over=0 dMedOther=67.6 safe(-1)=666072
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1198625 dq=105.6 cnt=118 | c=494.7 rankC=717.4 need=2129655 tD=1.56 人 pulse crowdedHard | safe=666072 keep=Inf avail=-Inf chunkB=123337 pulseB=74002 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2810 ryan_m B=624085 L=8678 d=71.9 nb=1 neut=0 cmds=61 noFull=1 shQ=156021 | m=0.900 worth=64.7 cheap=8.3 over=0 dMedOther=68.4 safe(-1)=557858
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1006005 dq=88.6 cnt=118 | c=416.1 rankC=603.4 need=1790233 tD=1.30 人 pulse crowdedHard | safe=557858 keep=Inf avail=-Inf chunkB=124817 pulseB=74890 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2815 ryan_m B=624085 L=8678 d=71.9 nb=1 neut=0 cmds=61 noFull=1 shQ=156021 | m=0.900 worth=64.7 cheap=8.3 over=0 dMedOther=68.4 safe(-1)=557858
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1006005 dq=88.6 cnt=118 | c=416.1 rankC=603.4 need=1790362 tD=1.30 人 pulse crowdedHard | safe=557858 keep=Inf avail=-Inf chunkB=124817 pulseB=74890 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2820 ryan_m B=631574 L=8678 d=72.8 nb=1 neut=0 cmds=61 noFull=1 shQ=157893 | m=0.900 worth=65.5 cheap=8.3 over=0 dMedOther=69.2 safe(-1)=564810
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1018378 dq=89.7 cnt=118 | c=421.1 rankC=610.7 need=1812439 tD=1.30 人 pulse crowdedHard | safe=564810 keep=Inf avail=-Inf chunkB=126315 pulseB=75789 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2825 ryan_m B=631574 L=8678 d=72.8 nb=1 neut=0 cmds=61 noFull=1 shQ=157893 | m=0.900 worth=65.5 cheap=8.3 over=0 dMedOther=69.2 safe(-1)=564810
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1018378 dq=89.7 cnt=118 | c=421.1 rankC=610.6 need=1812570 tD=1.30 人 pulse crowdedHard | safe=564810 keep=Inf avail=-Inf chunkB=126315 pulseB=75789 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2830 ryan_m B=639152 L=8678 d=73.7 nb=1 neut=0 cmds=61 noFull=1 shQ=159788 | m=0.900 worth=66.3 cheap=8.3 over=0 dMedOther=70.0 safe(-1)=571847
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1030904 dq=90.8 cnt=118 | c=426.2 rankC=618.0 need=1834791 tD=1.30 人 pulse crowdedHard | safe=571847 keep=Inf avail=-Inf chunkB=127830 pulseB=76698 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2835 ryan_m B=639152 L=8678 d=73.7 nb=1 neut=0 cmds=61 noFull=1 shQ=159788 | m=0.900 worth=66.3 cheap=8.3 over=0 dMedOther=70.0 safe(-1)=571847
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1030904 dq=90.8 cnt=118 | c=426.2 rankC=618.0 need=1834924 tD=1.30 人 pulse crowdedHard | safe=571847 keep=Inf avail=-Inf chunkB=127830 pulseB=76698 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2840 ryan_m B=646821 L=8678 d=74.5 nb=1 neut=0 cmds=61 noFull=1 shQ=161705 | m=0.900 worth=67.1 cheap=8.3 over=0 dMedOther=70.9 safe(-1)=578970
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1043584 dq=92.0 cnt=118 | c=431.4 rankC=625.5 need=1857555 tD=1.30 人 pulse crowdedHard | safe=578970 keep=Inf avail=-Inf chunkB=129364 pulseB=77619 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2845 ryan_m B=646821 L=8678 d=74.5 nb=1 neut=0 cmds=61 noFull=1 shQ=161705 | m=0.900 worth=67.1 cheap=8.3 over=0 dMedOther=70.9 safe(-1)=578970
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1043584 dq=92.0 cnt=118 | c=431.4 rankC=625.5 need=1857689 tD=1.30 人 pulse crowdedHard | safe=578970 keep=Inf avail=-Inf chunkB=129364 pulseB=77619 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2850 ryan_m B=654582 L=8678 d=75.4 nb=1 neut=0 cmds=61 noFull=1 shQ=163645 | m=0.900 worth=67.9 cheap=8.3 over=0 dMedOther=71.2 safe(-1)=586181
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1056420 dq=93.1 cnt=118 | c=436.6 rankC=633.1 need=1880469 tD=1.31 人 pulse crowdedHard | safe=586181 keep=Inf avail=-Inf chunkB=130916 pulseB=78550 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2855 ryan_m B=654582 L=8678 d=75.4 nb=1 neut=0 cmds=61 noFull=1 shQ=163645 | m=0.900 worth=67.9 cheap=8.3 over=0 dMedOther=70.1 safe(-1)=586181
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1056420 dq=93.1 cnt=118 | c=436.6 rankC=633.0 need=1880604 tD=1.33 人 pulse crowdedHard | safe=586181 keep=Inf avail=-Inf chunkB=130916 pulseB=78550 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2860 ryan_m B=662436 L=8678 d=76.3 nb=1 neut=0 cmds=61 noFull=1 shQ=165609 | m=0.900 worth=68.7 cheap=8.3 over=0 dMedOther=69.4 safe(-1)=593481
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1069413 dq=94.2 cnt=118 | c=441.9 rankC=640.7 need=1903802 tD=1.36 人 pulse crowdedHard | safe=593481 keep=Inf avail=-Inf chunkB=132487 pulseB=79492 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2865 ryan_m B=662436 L=8678 d=76.3 nb=1 neut=0 cmds=61 noFull=1 shQ=165609 | m=0.900 worth=68.7 cheap=8.3 over=0 dMedOther=68.4 safe(-1)=593481
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1069413 dq=94.2 cnt=118 | c=441.8 rankC=640.7 need=1903940 tD=1.38 人 pulse crowdedHard | safe=593481 keep=Inf avail=-Inf chunkB=132487 pulseB=79492 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2870 ryan_m B=670385 L=8678 d=77.3 nb=1 neut=0 cmds=61 noFull=1 shQ=167596 | m=0.900 worth=69.5 cheap=8.3 over=0 dMedOther=76.4 safe(-1)=600870
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1082566 dq=95.4 cnt=118 | c=447.2 rankC=648.5 need=1927290 tD=1.25 人 pulse crowdedHard | safe=600870 keep=Inf avail=-Inf chunkB=134077 pulseB=80446 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2875 ryan_m B=670385 L=8678 d=77.3 nb=1 neut=0 cmds=61 noFull=1 shQ=167596 | m=0.900 worth=69.5 cheap=8.3 over=0 dMedOther=76.4 safe(-1)=600870
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1082566 dq=95.4 cnt=118 | c=447.2 rankC=648.4 need=1927428 tD=1.25 人 pulse crowdedHard | safe=600870 keep=Inf avail=-Inf chunkB=134077 pulseB=80446 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2880 ryan_m B=678429 L=8678 d=78.2 nb=1 neut=0 cmds=61 noFull=1 shQ=169607 | m=0.900 worth=70.4 cheap=8.3 over=0 dMedOther=77.4 safe(-1)=608351
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1095881 dq=96.6 cnt=118 | c=452.6 rankC=656.3 need=1951210 tD=1.25 人 pulse crowdedHard | safe=608351 keep=Inf avail=-Inf chunkB=135686 pulseB=81411 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2885 ryan_m B=678429 L=8678 d=78.2 nb=1 neut=0 cmds=61 noFull=1 shQ=169607 | m=0.900 worth=70.4 cheap=8.3 over=0 dMedOther=77.4 safe(-1)=608351
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1095881 dq=96.6 cnt=118 | c=452.6 rankC=656.2 need=1951350 tD=1.25 人 pulse crowdedHard | safe=608351 keep=Inf avail=-Inf chunkB=135686 pulseB=81411 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2890 ryan_m B=686570 L=8678 d=79.1 nb=1 neut=0 cmds=61 noFull=1 shQ=171642 | m=0.900 worth=71.2 cheap=8.3 over=0 dMedOther=78.4 safe(-1)=615923
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1109360 dq=97.7 cnt=118 | c=458.1 rankC=664.2 need=1975287 tD=1.25 人 pulse crowdedHard | safe=615923 keep=Inf avail=-Inf chunkB=137314 pulseB=82388 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2895 ryan_m B=686570 L=8678 d=79.1 nb=1 neut=0 cmds=61 noFull=1 shQ=171642 | m=0.900 worth=71.2 cheap=8.3 over=0 dMedOther=78.4 safe(-1)=615923
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1109360 dq=97.7 cnt=118 | c=458.1 rankC=664.2 need=1975429 tD=1.25 人 pulse crowdedHard | safe=615923 keep=Inf avail=-Inf chunkB=137314 pulseB=82388 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2900 ryan_m B=703486 L=8678 d=81.1 nb=1 neut=0 cmds=61 noFull=1 shQ=173752 | m=0.900 worth=73.0 cheap=8.3 over=0 dMedOther=70.9 safe(-1)=629965
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1134354 dq=100.0 cnt=118 | c=468.3 rankC=679.0 need=2019848 tD=1.41 人 pulse crowdedHard | safe=629965 keep=Inf avail=-Inf chunkB=140697 pulseB=84418 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2905 ryan_m B=703486 L=8678 d=81.1 nb=1 neut=0 cmds=61 noFull=1 shQ=175871 | m=0.900 worth=73.0 cheap=8.3 over=0 dMedOther=70.9 safe(-1)=629965
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1134354 dq=100.0 cnt=118 | c=468.2 rankC=679.0 need=2019994 tD=1.41 人 pulse crowdedHard | safe=629965 keep=Inf avail=-Inf chunkB=140697 pulseB=84418 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2910 ryan_m B=711927 L=8678 d=82.0 nb=1 neut=0 cmds=61 noFull=1 shQ=177981 | m=0.900 worth=73.8 cheap=8.3 over=0 dMedOther=70.4 safe(-1)=637803
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1148306 dq=101.2 cnt=118 | c=326.9 rankC=326.9 need=2044779 tD=1.44 人 pulse crowdedHard | safe=637803 keep=Inf avail=-Inf chunkB=142385 pulseB=85431 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2915 ryan_m B=711927 L=8678 d=82.0 nb=1 neut=0 cmds=61 noFull=1 shQ=177981 | m=0.900 worth=73.8 cheap=8.3 over=0 dMedOther=60.2 safe(-1)=637803
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1148306 dq=101.2 cnt=118 | c=326.8 rankC=326.8 need=2044926 tD=1.68 人 pulse crowdedHard | safe=637803 keep=Inf avail=-Inf chunkB=142385 pulseB=85431 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2920 ryan_m B=720470 L=8678 d=83.0 nb=1 neut=0 cmds=61 noFull=1 shQ=180117 | m=0.900 worth=74.7 cheap=8.3 over=0 dMedOther=60.9 safe(-1)=645608
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1162200 dq=102.4 cnt=118 | c=330.7 rankC=330.7 need=2069763 tD=1.68 人 pulse crowdedHard | safe=645608 keep=Inf avail=-Inf chunkB=144094 pulseB=86456 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2925 ryan_m B=720470 L=8678 d=83.0 nb=1 neut=0 cmds=61 noFull=1 shQ=180117 | m=0.900 worth=74.7 cheap=8.3 over=0 dMedOther=60.9 safe(-1)=645608
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1162200 dq=102.4 cnt=118 | c=330.7 rankC=330.7 need=2069911 tD=1.68 人 pulse crowdedHard | safe=645608 keep=Inf avail=-Inf chunkB=144094 pulseB=86456 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2930 ryan_m B=729115 L=8678 d=84.0 nb=1 neut=0 cmds=61 noFull=1 shQ=182278 | m=0.900 worth=75.6 cheap=8.3 over=0 dMedOther=60.0 safe(-1)=653312
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1175913 dq=103.6 cnt=118 | c=485.1 rankC=703.4 need=2094287 tD=1.73 人 pulse crowdedHard | safe=653312 keep=Inf avail=-Inf chunkB=145823 pulseB=87494 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2935 ryan_m B=729115 L=8678 d=84.0 nb=1 neut=0 cmds=61 noFull=1 shQ=182278 | m=0.900 worth=75.6 cheap=8.3 over=0 dMedOther=60.0 safe(-1)=653312
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1175913 dq=103.6 cnt=118 | c=485.1 rankC=703.4 need=2094437 tD=1.73 人 pulse crowdedHard | safe=653312 keep=Inf avail=-Inf chunkB=145823 pulseB=87494 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2940 ryan_m B=737864 L=8678 d=85.0 nb=1 neut=0 cmds=61 noFull=1 shQ=184466 | m=0.900 worth=76.5 cheap=8.3 over=0 dMedOther=60.8 safe(-1)=660909
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1189435 dq=104.8 cnt=118 | c=490.6 rankC=711.4 need=2118632 tD=1.72 人 pulse crowdedHard | safe=660909 keep=Inf avail=-Inf chunkB=147573 pulseB=88544 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2945 ryan_m B=737864 L=8678 d=85.0 nb=1 neut=0 cmds=61 noFull=1 shQ=184466 | m=0.900 worth=76.5 cheap=8.3 over=0 dMedOther=60.8 safe(-1)=660909
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1189435 dq=104.8 cnt=118 | c=490.6 rankC=711.3 need=2118783 tD=1.72 人 pulse crowdedHard | safe=660909 keep=Inf avail=-Inf chunkB=147573 pulseB=88544 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2950 ryan_m B=746718 L=8678 d=86.0 nb=1 neut=0 cmds=61 noFull=1 shQ=186679 | m=0.900 worth=77.4 cheap=8.3 over=0 dMedOther=61.5 safe(-1)=668393
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1202756 dq=106.0 cnt=118 | c=496.0 rankC=719.2 need=2142478 tD=1.72 人 pulse crowdedHard | safe=668393 keep=Inf avail=-Inf chunkB=149344 pulseB=89606 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2955 ryan_m B=746718 L=8678 d=86.0 nb=1 neut=0 cmds=61 noFull=1 shQ=186679 | m=0.900 worth=77.4 cheap=8.3 over=0 dMedOther=61.5 safe(-1)=668393
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1202756 dq=106.0 cnt=118 | c=496.0 rankC=719.2 need=2142631 tD=1.72 人 pulse crowdedHard | safe=668393 keep=Inf avail=-Inf chunkB=149344 pulseB=89606 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2960 ryan_m B=755678 L=8678 d=87.1 nb=1 neut=0 cmds=61 noFull=1 shQ=188919 | m=0.900 worth=78.4 cheap=8.3 over=0 dMedOther=62.3 safe(-1)=675758
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1215866 dq=107.1 cnt=118 | c=501.3 rankC=726.9 need=2166113 tD=1.72 人 pulse crowdedHard | safe=675758 keep=Inf avail=-Inf chunkB=151136 pulseB=90681 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2965 ryan_m B=755678 L=8678 d=87.1 nb=1 neut=0 cmds=61 noFull=1 shQ=188919 | m=0.900 worth=78.4 cheap=8.3 over=0 dMedOther=62.3 safe(-1)=675758
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1215866 dq=107.1 cnt=118 | c=196.4 rankC=98.2 need=2166268 tD=1.72 人 pulse crowdedHard | safe=675758 keep=Inf avail=-Inf chunkB=151136 pulseB=90681 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2970 ryan_m B=764746 L=8678 d=88.1 nb=1 neut=0 cmds=61 noFull=1 shQ=191186 | m=0.900 worth=79.3 cheap=8.3 over=0 dMedOther=63.1 safe(-1)=677422
+    → F[eu]dal Empire#17[T2] terr=11291 bal=1218829 dq=107.9 cnt=117 | c=192.3 rankC=96.1 need=2169217 tD=1.71 人 pulse crowdedHard | safe=677422 keep=Inf avail=-Inf chunkB=152949 pulseB=91770 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2975 ryan_m B=764746 L=8678 d=88.1 nb=1 neut=0 cmds=61 noFull=1 shQ=191186 | m=0.900 worth=79.3 cheap=8.3 over=0 dMedOther=63.1 safe(-1)=665799
+    → F[eu]dal Empire#17[T2] terr=11171 bal=1198139 dq=107.3 cnt=116 | c=194.4 rankC=97.2 need=2127761 tD=1.70 人 pulse crowdedHard | safe=665799 keep=Inf avail=-Inf chunkB=152949 pulseB=91770 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2980 ryan_m B=773922 L=8678 d=89.2 nb=1 neut=0 cmds=61 noFull=1 shQ=193480 | m=0.900 worth=80.3 cheap=8.3 over=0 dMedOther=63.9 safe(-1)=666991
+    → F[eu]dal Empire#17[T2] terr=11110 bal=1200261 dq=108.0 cnt=116 | c=197.7 rankC=98.8 need=2129183 tD=1.69 人 pulse crowdedHard | safe=666991 keep=Inf avail=-Inf chunkB=154784 pulseB=92871 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2985 ryan_m B=773922 L=8678 d=89.2 nb=1 neut=0 cmds=61 noFull=1 shQ=193480 | m=0.900 worth=80.3 cheap=8.3 over=0 dMedOther=62.1 safe(-1)=542029
+    → F[eu]dal Empire#17[T2] terr=10989 bal=977829 dq=89.0 cnt=115 | c=122.7 rankC=61.3 need=1733375 tD=1.43 人 pulse | safe=542029 keep=Inf avail=-Inf chunkB=154784 pulseB=92871 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2990 ryan_m B=783209 L=8678 d=90.3 nb=1 neut=0 cmds=61 noFull=1 shQ=195802 | m=0.900 worth=81.2 cheap=8.3 over=0 dMedOther=62.8 safe(-1)=541806
+    → F[eu]dal Empire#17[T2] terr=10928 bal=977431 dq=89.4 cnt=114 | c=215.4 rankC=215.4 need=1730555 tD=1.42 人 pulse | safe=541806 keep=Inf avail=-Inf chunkB=156642 pulseB=93985 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2995 ryan_m B=783209 L=8678 d=90.3 nb=1 neut=0 cmds=61 noFull=1 shQ=195802 | m=0.900 worth=81.2 cheap=8.3 over=0 dMedOther=62.8 safe(-1)=541806
+    → F[eu]dal Empire#17[T2] terr=10928 bal=977431 dq=89.4 cnt=114 | c=215.4 rankC=215.4 need=1730687 tD=1.42 人 pulse | safe=541806 keep=Inf avail=-Inf chunkB=156642 pulseB=93985 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3000 ryan_m B=801285 L=8678 d=92.3 nb=1 neut=0 cmds=61 noFull=1 shQ=198205 | m=0.900 worth=83.1 cheap=8.3 over=0 dMedOther=64.6 safe(-1)=554644
+    → F[eu]dal Empire#17[T2] terr=10928 bal=1000283 dq=91.5 cnt=114 | c=220.4 rankC=220.4 need=1771047 tD=1.42 人 pulse | safe=554644 keep=Inf avail=-Inf chunkB=160257 pulseB=96154 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3005 ryan_m B=801285 L=8678 d=92.3 nb=1 neut=0 cmds=61 noFull=1 shQ=200321 | m=0.900 worth=83.1 cheap=8.3 over=0 dMedOther=64.6 safe(-1)=554644
+    → F[eu]dal Empire#17[T2] terr=10928 bal=1000283 dq=91.5 cnt=114 | c=220.4 rankC=220.4 need=1771183 tD=1.42 人 pulse | safe=554644 keep=Inf avail=-Inf chunkB=160257 pulseB=96154 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3010 ryan_m B=810900 L=8678 d=93.4 nb=1 neut=0 cmds=61 noFull=1 shQ=202725 | m=0.900 worth=84.1 cheap=8.3 over=0 dMedOther=65.3 safe(-1)=561499
+    → F[eu]dal Empire#17[T2] terr=10928 bal=1012486 dq=92.7 cnt=114 | c=223.0 rankC=223.0 need=1792733 tD=1.42 人 pulse | safe=561499 keep=Inf avail=-Inf chunkB=162180 pulseB=97308 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3015 ryan_m B=810900 L=8678 d=93.4 nb=1 neut=0 cmds=61 noFull=1 shQ=202725 | m=0.900 worth=84.1 cheap=8.3 over=0 dMedOther=64.8 safe(-1)=561499
+    → F[eu]dal Empire#17[T2] terr=10928 bal=1012486 dq=92.7 cnt=114 | c=323.3 rankC=468.9 need=1792869 tD=1.43 人 pulse | safe=561499 keep=Inf avail=-Inf chunkB=162180 pulseB=97308 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3020 ryan_m B=820630 L=8678 d=94.6 nb=1 neut=0 cmds=61 noFull=1 shQ=205157 | m=0.900 worth=85.1 cheap=8.3 over=0 dMedOther=65.6 safe(-1)=568439
+    → F[eu]dal Empire#17[T2] terr=10928 bal=1024838 dq=93.8 cnt=114 | c=225.7 rankC=225.7 need=1814824 tD=1.43 人 pulse | safe=568439 keep=Inf avail=-Inf chunkB=164126 pulseB=98476 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3025 ryan_m B=820630 L=8678 d=94.6 nb=1 neut=0 cmds=61 noFull=1 shQ=205157 | m=0.900 worth=85.1 cheap=8.3 over=0 dMedOther=65.6 safe(-1)=568439
+    → F[eu]dal Empire#17[T2] terr=10928 bal=1024838 dq=93.8 cnt=114 | c=225.7 rankC=225.7 need=1814963 tD=1.43 人 pulse | safe=568439 keep=Inf avail=-Inf chunkB=164126 pulseB=98476 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3030 ryan_m B=830477 L=8678 d=95.7 nb=1 neut=0 cmds=61 noFull=1 shQ=207619 | m=0.900 worth=86.1 cheap=8.3 over=0 dMedOther=66.5 safe(-1)=575463
+    → F[eu]dal Empire#17[T2] terr=10928 bal=1037341 dq=94.9 cnt=114 | c=228.4 rankC=228.4 need=1837050 tD=1.43 人 pulse | safe=575463 keep=Inf avail=-Inf chunkB=166095 pulseB=99657 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3035 ryan_m B=830477 L=8678 d=95.7 nb=1 neut=0 cmds=61 noFull=1 shQ=207619 | m=0.900 worth=86.1 cheap=8.3 over=0 dMedOther=62.3 safe(-1)=575463
+    → F[eu]dal Empire#17[T2] terr=10928 bal=1037341 dq=94.9 cnt=114 | c=228.4 rankC=228.4 need=1837190 tD=1.52 人 pulse | safe=575463 keep=Inf avail=-Inf chunkB=166095 pulseB=99657 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3040 ryan_m B=840442 L=8678 d=96.8 nb=1 neut=0 cmds=61 noFull=1 shQ=210110 | m=0.900 worth=87.2 cheap=8.3 over=0 dMedOther=62.8 safe(-1)=582572
+    → F[eu]dal Empire#17[T2] terr=10928 bal=1049996 dq=96.1 cnt=114 | c=231.1 rankC=231.1 need=1859692 tD=1.53 人 pulse | safe=582572 keep=Inf avail=-Inf chunkB=168088 pulseB=100853 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3045 ryan_m B=840442 L=8678 d=96.8 nb=1 neut=0 cmds=61 noFull=1 shQ=210110 | m=0.900 worth=87.2 cheap=8.3 over=0 dMedOther=62.8 safe(-1)=582572
+    → F[eu]dal Empire#17[T2] terr=10928 bal=1049996 dq=96.1 cnt=114 | c=231.1 rankC=231.1 need=1859833 tD=1.53 人 pulse | safe=582572 keep=Inf avail=-Inf chunkB=168088 pulseB=100853 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3050 ryan_m B=850527 L=8678 d=98.0 nb=1 neut=0 cmds=61 noFull=1 shQ=212631 | m=0.900 worth=88.2 cheap=8.3 over=0 dMedOther=63.6 safe(-1)=589769
+    → F[eu]dal Empire#17[T2] terr=10928 bal=1062805 dq=97.3 cnt=114 | c=233.9 rankC=233.9 need=1882470 tD=1.53 人 pulse | safe=589769 keep=Inf avail=-Inf chunkB=170105 pulseB=102063 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3055 ryan_m B=850527 L=8678 d=98.0 nb=1 neut=0 cmds=61 noFull=1 shQ=212631 | m=0.900 worth=88.2 cheap=8.3 over=0 dMedOther=63.6 safe(-1)=589769
+    → F[eu]dal Empire#17[T2] terr=10928 bal=1062805 dq=97.3 cnt=114 | c=233.9 rankC=233.9 need=1882613 tD=1.53 人 pulse | safe=589769 keep=Inf avail=-Inf chunkB=170105 pulseB=102063 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3060 ryan_m B=860733 L=8678 d=99.2 nb=1 neut=0 cmds=61 noFull=1 shQ=215183 | m=0.900 worth=89.3 cheap=8.3 over=0 dMedOther=68.8 safe(-1)=597053
+    → F[eu]dal Empire#17[T2] terr=10928 bal=1075771 dq=98.4 cnt=114 | c=236.7 rankC=236.7 need=1905676 tD=1.43 人 pulse | safe=597053 keep=Inf avail=-Inf chunkB=172147 pulseB=103288 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3065 ryan_m B=860733 L=8678 d=99.2 nb=1 neut=0 cmds=61 noFull=1 shQ=215183 | m=0.900 worth=89.3 cheap=8.3 over=0 dMedOther=68.7 safe(-1)=597053
+    → F[eu]dal Empire#17[T2] terr=10928 bal=1075771 dq=98.4 cnt=114 | c=236.7 rankC=236.7 need=1905821 tD=1.43 人 pulse | safe=597053 keep=Inf avail=-Inf chunkB=172147 pulseB=103288 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3070 ryan_m B=871061 L=8678 d=100.4 nb=1 neut=0 cmds=62 noFull=1 shQ=217765 | m=0.900 worth=90.3 cheap=8.3 over=1 dMedOther=69.4 safe(-1)=604426
+    → F[eu]dal Empire#17[T2] terr=10928 bal=1088895 dq=99.6 cnt=114 | c=239.5 rankC=239.5 need=1929023 tD=1.44 人 pulse | safe=604426 keep=781020 avail=79834 chunkB=174212 pulseB=104527  x=79834 hNb=1
+    ⇒ 影子指令 attack pct=93 → F[eu]dal Empire#17[T2]（约 79960 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3075 ryan_m B=871061 L=8678 d=100.4 nb=1 neut=0 cmds=63 noFull=1 shQ=217765 | m=0.900 worth=90.3 cheap=8.3 over=1 dMedOther=70.2 safe(-1)=604426
+    → F[eu]dal Empire#17[T2] terr=10928 bal=1088895 dq=99.6 cnt=114 | c=239.5 rankC=239.5 need=1929169 tD=1.42 人 pulse | safe=604426 keep=781020 avail=79834 chunkB=174212 pulseB=104527  x=79834 hNb=1
+    ⇒ 影子指令 attack pct=93 → F[eu]dal Empire#17[T2]（约 79960 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3080 ryan_m B=881513 L=8678 d=101.6 nb=1 neut=0 cmds=64 noFull=1 shQ=220321 | m=0.900 worth=91.4 cheap=8.3 over=1 dMedOther=71.0 safe(-1)=611889
+    → F[eu]dal Empire#17[T2] terr=10928 bal=1102179 dq=100.9 cnt=114 | c=242.4 rankC=242.4 need=1952806 tD=1.42 人 pulse | safe=611889 keep=781020 avail=90163 chunkB=176303 pulseB=105782  x=90163 hNb=1
+    ⇒ 影子指令 attack pct=104 → F[eu]dal Empire#17[T2]（约 90389 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3085 ryan_m B=790263 L=8678 d=91.1 nb=1 neut=0 cmds=64 noFull=1 shQ=126125 | m=0.900 worth=82.0 cheap=8.3 over=0 dMedOther=71.0 safe(-1)=611889
+    → F[eu]dal Empire#17[T2] terr=10928 bal=1102179 dq=100.9 cnt=114 | c=313.6 rankC=313.6 need=1872034 tD=1.42 人 pulse crowdedHard | safe=611889 keep=Inf avail=-Inf chunkB=158053 pulseB=94832 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3090 ryan_m B=716961 L=8792 d=81.5 nb=1 neut=0 cmds=64 noFull=1 shQ=137265 | m=0.900 worth=73.4 cheap=8.3 over=0 dMedOther=70.4 safe(-1)=608888
+    → F[eu]dal Empire#17[T2] terr=10814 bal=1097008 dq=101.4 cnt=115 | c=309.5 rankC=309.5 need=1822836 tD=1.44 人 pulse crowdedHard | safe=608888 keep=Inf avail=-Inf chunkB=143392 pulseB=86035 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3095 ryan_m B=635044 L=9023 d=70.4 nb=1 neut=0 cmds=64 noFull=1 shQ=147770 | m=0.900 worth=63.3 cheap=8.3 over=0 dMedOther=70.3 safe(-1)=587699
+    → F[eu]dal Empire#17[T2] terr=10583 bal=1059638 dq=100.1 cnt=111 | c=305.8 rankC=305.8 need=1749500 tD=1.42 人 pulse crowdedHard | safe=587699 keep=Inf avail=-Inf chunkB=127009 pulseB=76205 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3100 ryan_m B=651862 L=9246 d=70.5 nb=1 neut=0 cmds=64 noFull=1 shQ=157409 | m=0.900 worth=63.5 cheap=8.2 over=0 dMedOther=72.1 safe(-1)=580308
+    → F[eu]dal Empire#17[T2] terr=10360 bal=1046818 dq=101.0 cnt=113 | c=322.0 rankC=322.0 need=1790185 tD=1.40 人 pulse crowdedHard | safe=580308 keep=Inf avail=-Inf chunkB=130372 pulseB=78223 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3105 ryan_m B=651862 L=9359 d=69.7 nb=1 neut=0 cmds=64 noFull=1 shQ=162965 | m=0.900 worth=62.7 cheap=8.2 over=0 dMedOther=72.0 safe(-1)=569952
+    → F[eu]dal Empire#17[T2] terr=10247 bal=1028553 dq=100.4 cnt=114 | c=326.9 rankC=326.9 need=1790353 tD=1.39 人 pulse crowdedHard | safe=569952 keep=Inf avail=-Inf chunkB=130372 pulseB=78223 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3110 ryan_m B=659835 L=9359 d=70.5 nb=1 neut=0 cmds=64 noFull=1 shQ=164958 | m=0.900 worth=63.5 cheap=8.2 over=0 dMedOther=72.7 safe(-1)=575510
+    → F[eu]dal Empire#17[T2] terr=10247 bal=1038447 dq=101.3 cnt=114 | c=331.0 rankC=331.0 need=1813199 tD=1.39 人 pulse crowdedHard | safe=575510 keep=Inf avail=-Inf chunkB=131967 pulseB=79180 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3115 ryan_m B=659835 L=9359 d=70.5 nb=1 neut=0 cmds=64 noFull=1 shQ=164958 | m=0.900 worth=63.5 cheap=8.2 over=0 dMedOther=72.6 safe(-1)=575510
+    → F[eu]dal Empire#17[T2] terr=10247 bal=1038447 dq=101.3 cnt=114 | c=331.0 rankC=331.0 need=1813354 tD=1.40 人 pulse crowdedHard | safe=575510 keep=Inf avail=-Inf chunkB=131967 pulseB=79180 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3120 ryan_m B=667819 L=9359 d=71.4 nb=1 neut=0 cmds=64 noFull=1 shQ=166954 | m=0.900 worth=64.2 cheap=8.2 over=0 dMedOther=73.4 safe(-1)=582453
+    → F[eu]dal Empire#17[T2] terr=10247 bal=1050804 dq=102.5 cnt=114 | c=485.6 rankC=704.1 need=1835070 tD=1.40 人 pulse crowdedHard | safe=582453 keep=Inf avail=-Inf chunkB=133564 pulseB=80138 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3125 ryan_m B=667819 L=9359 d=71.4 nb=1 neut=0 cmds=64 noFull=1 shQ=166954 | m=0.900 worth=64.2 cheap=8.2 over=0 dMedOther=73.3 safe(-1)=481565
+    → F[eu]dal Empire#17[T2] terr=10247 bal=871224 dq=85.0 cnt=114 | c=403.6 rankC=585.2 need=1524097 tD=1.16 人 pulse crowdedHard | safe=481565 keep=Inf avail=-Inf chunkB=133564 pulseB=80138 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3130 ryan_m B=675899 L=9359 d=72.2 nb=1 neut=0 cmds=64 noFull=1 shQ=168974 | m=0.900 worth=65.0 cheap=8.2 over=0 dMedOther=74.1 safe(-1)=487536
+    → F[eu]dal Empire#17[T2] terr=10247 bal=881852 dq=86.1 cnt=114 | c=408.4 rankC=592.2 need=1542642 tD=1.16 人 pulse crowdedHard | safe=487536 keep=Inf avail=-Inf chunkB=135180 pulseB=81108 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3135 ryan_m B=675899 L=9359 d=72.2 nb=1 neut=0 cmds=64 noFull=1 shQ=168974 | m=0.900 worth=65.0 cheap=8.2 over=0 dMedOther=74.0 safe(-1)=487536
+    → F[eu]dal Empire#17[T2] terr=10247 bal=881852 dq=86.1 cnt=114 | c=408.4 rankC=592.2 need=1542773 tD=1.16 人 pulse crowdedHard | safe=487536 keep=Inf avail=-Inf chunkB=135180 pulseB=81108 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3140 ryan_m B=684077 L=9359 d=73.1 nb=1 neut=0 cmds=64 noFull=1 shQ=171019 | m=0.900 worth=65.8 cheap=8.2 over=0 dMedOther=76.2 safe(-1)=493579
+    → F[eu]dal Empire#17[T2] terr=10247 bal=892610 dq=87.1 cnt=114 | c=413.3 rankC=599.3 need=1561681 tD=1.14 人 pulse crowdedHard | safe=493579 keep=Inf avail=-Inf chunkB=136815 pulseB=82089 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3145 ryan_m B=684077 L=9359 d=73.1 nb=1 neut=0 cmds=64 noFull=1 shQ=171019 | m=0.900 worth=65.8 cheap=8.2 over=0 dMedOther=75.1 safe(-1)=493579
+    → F[eu]dal Empire#17[T2] terr=10247 bal=892610 dq=87.1 cnt=114 | c=413.3 rankC=599.3 need=1561814 tD=1.16 人 pulse crowdedHard | safe=493579 keep=Inf avail=-Inf chunkB=136815 pulseB=82089 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3150 ryan_m B=692354 L=9359 d=74.0 nb=1 neut=0 cmds=64 noFull=1 shQ=173088 | m=0.900 worth=66.6 cheap=8.2 over=0 dMedOther=74.9 safe(-1)=499697
+    → F[eu]dal Empire#17[T2] terr=10247 bal=903499 dq=88.2 cnt=114 | c=418.3 rankC=606.5 need=1580822 tD=1.18 人 pulse crowdedHard | safe=499697 keep=Inf avail=-Inf chunkB=138471 pulseB=83082 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3155 ryan_m B=692354 L=9359 d=74.0 nb=1 neut=0 cmds=64 noFull=1 shQ=173088 | m=0.900 worth=66.6 cheap=8.2 over=0 dMedOther=74.8 safe(-1)=499697
+    → F[eu]dal Empire#17[T2] terr=10247 bal=903499 dq=88.2 cnt=114 | c=418.3 rankC=606.5 need=1580956 tD=1.18 人 pulse crowdedHard | safe=499697 keep=Inf avail=-Inf chunkB=138471 pulseB=83082 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3160 ryan_m B=700731 L=9359 d=74.9 nb=1 neut=0 cmds=64 noFull=1 shQ=175182 | m=0.900 worth=67.4 cheap=8.2 over=0 dMedOther=75.6 safe(-1)=505889
+    → F[eu]dal Empire#17[T2] terr=10247 bal=914521 dq=89.2 cnt=114 | c=423.3 rankC=613.7 need=1600336 tD=1.18 人 pulse crowdedHard | safe=505889 keep=Inf avail=-Inf chunkB=140146 pulseB=84088 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3165 ryan_m B=700731 L=9359 d=74.9 nb=1 neut=0 cmds=64 noFull=1 shQ=175182 | m=0.900 worth=67.4 cheap=8.2 over=0 dMedOther=75.4 safe(-1)=505889
+    → F[eu]dal Empire#17[T2] terr=10247 bal=914521 dq=89.2 cnt=114 | c=423.3 rankC=613.7 need=1600472 tD=1.18 人 pulse crowdedHard | safe=505889 keep=Inf avail=-Inf chunkB=140146 pulseB=84088 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3170 ryan_m B=709209 L=9359 d=75.8 nb=1 neut=0 cmds=64 noFull=1 shQ=177302 | m=0.900 worth=68.2 cheap=8.2 over=0 dMedOther=76.3 safe(-1)=512157
+    → F[eu]dal Empire#17[T2] terr=10247 bal=925678 dq=90.3 cnt=114 | c=428.3 rankC=621.1 need=1619956 tD=1.18 人 pulse crowdedHard | safe=512157 keep=Inf avail=-Inf chunkB=141842 pulseB=85105 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3175 ryan_m B=709209 L=9359 d=75.8 nb=1 neut=0 cmds=64 noFull=1 shQ=177302 | m=0.900 worth=68.2 cheap=8.2 over=0 dMedOther=73.5 safe(-1)=512157
+    → F[eu]dal Empire#17[T2] terr=10247 bal=925678 dq=90.3 cnt=114 | c=428.3 rankC=621.1 need=1620094 tD=1.23 人 pulse crowdedHard | safe=512157 keep=Inf avail=-Inf chunkB=141842 pulseB=85105 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3180 ryan_m B=717790 L=9359 d=76.7 nb=1 neut=0 cmds=64 noFull=1 shQ=179447 | m=0.900 worth=69.0 cheap=8.2 over=0 dMedOther=68.6 safe(-1)=518501
+    → F[eu]dal Empire#17[T2] terr=10247 bal=936971 dq=91.4 cnt=114 | c=433.5 rankC=628.5 need=1639958 tD=1.33 人 pulse crowdedHard | safe=518501 keep=Inf avail=-Inf chunkB=143558 pulseB=86135 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3185 ryan_m B=717790 L=9359 d=76.7 nb=1 neut=0 cmds=64 noFull=1 shQ=179447 | m=0.900 worth=69.0 cheap=8.2 over=0 dMedOther=68.6 safe(-1)=518501
+    → F[eu]dal Empire#17[T2] terr=10247 bal=936971 dq=91.4 cnt=114 | c=433.4 rankC=628.5 need=1640097 tD=1.33 人 pulse crowdedHard | safe=518501 keep=Inf avail=-Inf chunkB=143558 pulseB=86135 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3190 ryan_m B=726475 L=9359 d=77.6 nb=1 neut=0 cmds=64 noFull=1 shQ=181618 | m=0.900 worth=69.9 cheap=8.2 over=0 dMedOther=69.4 safe(-1)=524923
+    → F[eu]dal Empire#17[T2] terr=10247 bal=948402 dq=92.6 cnt=114 | c=438.7 rankC=636.1 need=1660067 tD=1.33 人 pulse crowdedHard | safe=524923 keep=Inf avail=-Inf chunkB=145295 pulseB=87177 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3195 ryan_m B=726475 L=9359 d=77.6 nb=1 neut=0 cmds=64 noFull=1 shQ=181618 | m=0.900 worth=69.9 cheap=8.2 over=0 dMedOther=68.4 safe(-1)=524923
+    → F[eu]dal Empire#17[T2] terr=10247 bal=948402 dq=92.6 cnt=114 | c=302.5 rankC=302.5 need=1660208 tD=1.35 人 pulse crowdedHard | safe=524923 keep=Inf avail=-Inf chunkB=145295 pulseB=87177 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3200 ryan_m B=744624 L=9359 d=79.6 nb=1 neut=0 cmds=64 noFull=1 shQ=183870 | m=0.900 worth=71.6 cheap=8.2 over=0 dMedOther=70.1 safe(-1)=537180
+    → F[eu]dal Empire#17[T2] terr=10247 bal=970219 dq=94.7 cnt=114 | c=448.6 rankC=650.5 need=1698349 tD=1.35 人 pulse crowdedHard | safe=537180 keep=Inf avail=-Inf chunkB=148925 pulseB=89355 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3205 ryan_m B=744624 L=9359 d=79.6 nb=1 neut=0 cmds=64 noFull=1 shQ=186156 | m=0.900 worth=71.6 cheap=8.2 over=0 dMedOther=69.7 safe(-1)=537180
+    → F[eu]dal Empire#17[T2] terr=10247 bal=970219 dq=94.7 cnt=114 | c=448.6 rankC=650.5 need=1698493 tD=1.36 人 pulse crowdedHard | safe=537180 keep=Inf avail=-Inf chunkB=148925 pulseB=89355 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3210 ryan_m B=753633 L=9359 d=80.5 nb=1 neut=0 cmds=64 noFull=1 shQ=188408 | m=0.900 worth=72.5 cheap=8.2 over=0 dMedOther=68.8 safe(-1)=543829
+    → F[eu]dal Empire#17[T2] terr=10247 bal=982055 dq=95.8 cnt=114 | c=454.0 rankC=658.3 need=1719180 tD=1.39 人 pulse crowdedHard | safe=543829 keep=Inf avail=-Inf chunkB=150727 pulseB=90436 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3215 ryan_m B=753633 L=9359 d=80.5 nb=1 neut=0 cmds=64 noFull=1 shQ=188408 | m=0.900 worth=72.5 cheap=8.2 over=0 dMedOther=68.1 safe(-1)=543829
+    → F[eu]dal Empire#17[T2] terr=10247 bal=982055 dq=95.8 cnt=114 | c=454.0 rankC=658.3 need=1719325 tD=1.41 人 pulse crowdedHard | safe=543829 keep=Inf avail=-Inf chunkB=150727 pulseB=90436 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3220 ryan_m B=762751 L=9359 d=81.5 nb=1 neut=0 cmds=64 noFull=1 shQ=190687 | m=0.900 worth=73.3 cheap=8.2 over=0 dMedOther=69.0 safe(-1)=550560
+    → F[eu]dal Empire#17[T2] terr=10247 bal=994036 dq=97.0 cnt=114 | c=459.4 rankC=666.2 need=1740416 tD=1.41 人 pulse crowdedHard | safe=550560 keep=Inf avail=-Inf chunkB=152550 pulseB=91530 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3225 ryan_m B=762751 L=9359 d=81.5 nb=1 neut=0 cmds=64 noFull=1 shQ=190687 | m=0.900 worth=73.3 cheap=8.2 over=0 dMedOther=62.2 safe(-1)=550560
+    → F[eu]dal Empire#17[T2] terr=10247 bal=994036 dq=97.0 cnt=114 | c=316.8 rankC=316.8 need=1740563 tD=1.56 人 pulse crowdedHard | safe=550560 keep=Inf avail=-Inf chunkB=152550 pulseB=91530 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3230 ryan_m B=771980 L=9359 d=82.5 nb=1 neut=0 cmds=64 noFull=1 shQ=192995 | m=0.900 worth=74.2 cheap=8.2 over=0 dMedOther=63.0 safe(-1)=557373
+    → F[eu]dal Empire#17[T2] terr=10247 bal=1006163 dq=98.2 cnt=114 | c=464.9 rankC=674.2 need=1761767 tD=1.56 人 pulse crowdedHard | safe=557373 keep=Inf avail=-Inf chunkB=154396 pulseB=92638 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3235 ryan_m B=771980 L=9359 d=82.5 nb=1 neut=0 cmds=64 noFull=1 shQ=192995 | m=0.900 worth=74.2 cheap=8.2 over=0 dMedOther=62.9 safe(-1)=557373
+    → F[eu]dal Empire#17[T2] terr=10247 bal=1006163 dq=98.2 cnt=114 | c=464.9 rankC=674.1 need=1761916 tD=1.56 人 pulse crowdedHard | safe=557373 keep=Inf avail=-Inf chunkB=154396 pulseB=92638 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3240 ryan_m B=781320 L=9359 d=83.5 nb=1 neut=0 cmds=64 noFull=1 shQ=195330 | m=0.900 worth=75.1 cheap=8.2 over=0 dMedOther=63.6 safe(-1)=564269
+    → F[eu]dal Empire#17[T2] terr=10247 bal=1018438 dq=99.4 cnt=114 | c=470.5 rankC=682.2 need=1783533 tD=1.56 人 pulse crowdedHard | safe=564269 keep=Inf avail=-Inf chunkB=156264 pulseB=93758 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3245 ryan_m B=781320 L=9359 d=83.5 nb=1 neut=0 cmds=64 noFull=1 shQ=195330 | m=0.900 worth=75.1 cheap=8.2 over=0 dMedOther=63.4 safe(-1)=564269
+    → F[eu]dal Empire#17[T2] terr=10247 bal=1018438 dq=99.4 cnt=114 | c=470.5 rankC=682.2 need=1783684 tD=1.57 人 pulse crowdedHard | safe=564269 keep=Inf avail=-Inf chunkB=156264 pulseB=93758 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3250 ryan_m B=910765 L=9359 d=97.3 nb=1 neut=0 cmds=64 noFull=1 shQ=200807 | m=0.900 worth=87.6 cheap=8.2 over=0 dMedOther=64.0 safe(-1)=571249
+    → F[eu]dal Empire#17[T2] terr=10247 bal=1030862 dq=100.6 cnt=114 | c=353.0 rankC=511.8 need=1805416 tD=1.57 人 pulse | safe=571249 keep=Inf avail=-Inf chunkB=182153 pulseB=109292 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3255 ryan_m B=910765 L=9359 d=97.3 nb=1 neut=0 cmds=64 noFull=1 shQ=214582 | m=0.900 worth=87.6 cheap=8.2 over=0 dMedOther=63.9 safe(-1)=571249
+    → F[eu]dal Empire#17[T2] terr=10247 bal=1030862 dq=100.6 cnt=114 | c=353.0 rankC=511.8 need=1805568 tD=1.57 人 pulse | safe=571249 keep=Inf avail=-Inf chunkB=182153 pulseB=109292 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3260 ryan_m B=921785 L=9359 d=98.5 nb=1 neut=0 cmds=64 noFull=1 shQ=228390 | m=0.900 worth=88.6 cheap=8.2 over=0 dMedOther=64.3 safe(-1)=578256
+    → F[eu]dal Empire#17[T2] terr=10247 bal=1043335 dq=101.8 cnt=114 | c=357.2 rankC=517.9 need=1827545 tD=1.58 人 pulse | safe=578256 keep=Inf avail=-Inf chunkB=184357 pulseB=110614 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3265 ryan_m B=921785 L=9359 d=98.5 nb=1 neut=0 cmds=64 noFull=1 shQ=230446 | m=0.900 worth=88.6 cheap=8.2 over=0 dMedOther=64.3 safe(-1)=578256
+    → F[eu]dal Empire#17[T2] terr=10247 bal=1043335 dq=101.8 cnt=114 | c=357.1 rankC=517.9 need=1827699 tD=1.58 人 pulse | safe=578256 keep=Inf avail=-Inf chunkB=184357 pulseB=110614 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3270 ryan_m B=932938 L=9359 d=99.7 nb=1 neut=0 cmds=64 noFull=1 shQ=233234 | m=0.900 worth=89.7 cheap=8.2 over=0 dMedOther=67.6 safe(-1)=484015
+    → F[eu]dal Empire#17[T2] terr=10247 bal=875585 dq=85.4 cnt=114 | c=300.5 rankC=435.8 need=1536336 tD=1.26 人 pulse | safe=484015 keep=Inf avail=-Inf chunkB=186588 pulseB=111953 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3275 ryan_m B=932938 L=9359 d=99.7 nb=1 neut=0 cmds=64 noFull=1 shQ=233234 | m=0.900 worth=89.7 cheap=8.2 over=0 dMedOther=67.3 safe(-1)=484015
+    → F[eu]dal Empire#17[T2] terr=10247 bal=875585 dq=85.4 cnt=114 | c=300.5 rankC=435.8 need=1536466 tD=1.27 人 pulse | safe=484015 keep=Inf avail=-Inf chunkB=186588 pulseB=111953 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3280 ryan_m B=944226 L=9359 d=100.9 nb=1 neut=0 cmds=65 noFull=1 shQ=236043 | m=0.900 worth=90.8 cheap=8.2 over=1 dMedOther=67.6 safe(-1)=490016
+    → F[eu]dal Empire#17[T2] terr=10247 bal=886267 dq=86.5 cnt=114 | c=304.1 rankC=441.0 need=1555293 tD=1.28 人 pulse | safe=490016 keep=842310 avail=90851 chunkB=188845 pulseB=113307  x=90851 hNb=1
+    ⇒ 影子指令 attack pct=98 → F[eu]dal Empire#17[T2]（约 91287 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3285 ryan_m B=944226 L=9359 d=100.9 nb=1 neut=0 cmds=66 noFull=1 shQ=236056 | m=0.900 worth=90.8 cheap=8.2 over=1 dMedOther=67.2 safe(-1)=490016
+    → F[eu]dal Empire#17[T2] terr=10247 bal=886267 dq=86.5 cnt=114 | c=304.1 rankC=441.0 need=1555424 tD=1.29 人 pulse | safe=490016 keep=842310 avail=90851 chunkB=188845 pulseB=113307  x=90851 hNb=1
+    ⇒ 影子指令 attack pct=98 → F[eu]dal Empire#17[T2]（约 91287 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3290 ryan_m B=955462 L=9359 d=102.1 nb=1 neut=0 cmds=67 noFull=1 shQ=238826 | m=0.900 worth=91.9 cheap=8.2 over=1 dMedOther=67.4 safe(-1)=496090
+    → F[eu]dal Empire#17[T2] terr=10247 bal=897079 dq=87.5 cnt=114 | c=307.8 rankC=446.3 need=1574352 tD=1.30 人 pulse | safe=496090 keep=842310 avail=101956 chunkB=191092 pulseB=114655  x=101956 hNb=1
+    ⇒ 影子指令 attack pct=109 → F[eu]dal Empire#17[T2]（约 102637 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3295 ryan_m B=851893 L=9359 d=91.0 nb=1 neut=0 cmds=67 noFull=1 shQ=130904 | m=0.900 worth=81.9 cheap=8.2 over=0 dMedOther=66.9 safe(-1)=496090
+    → F[eu]dal Empire#17[T2] terr=10247 bal=897079 dq=87.5 cnt=114 | c=199.7 rankC=199.7 need=1482112 tD=1.31 人 pulse | safe=496090 keep=Inf avail=-Inf chunkB=170379 pulseB=102227 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3300 ryan_m B=778213 L=9473 d=82.2 nb=1 neut=0 cmds=67 noFull=1 shQ=143004 | m=0.900 worth=73.9 cheap=8.2 over=0 dMedOther=68.1 safe(-1)=498756
+    → F[eu]dal Empire#17[T2] terr=10133 bal=901995 dq=89.0 cnt=115 | c=265.1 rankC=265.1 need=1436245 tD=1.31 人 pulse crowdedHard | safe=498756 keep=Inf avail=-Inf chunkB=155643 pulseB=93386 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3305 ryan_m B=685497 L=9704 d=70.6 nb=1 neut=0 cmds=67 noFull=1 shQ=154493 | m=0.900 worth=63.6 cheap=8.2 over=0 dMedOther=77.8 safe(-1)=480145
+    → F[eu]dal Empire#17[T2] terr=9902 bal=869214 dq=87.8 cnt=117 | c=257.6 rankC=257.6 need=1352813 tD=1.13 人 pulse crowdedHard | safe=480145 keep=Inf avail=-Inf chunkB=137099 pulseB=82260 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3310 ryan_m B=693791 L=9940 d=69.8 nb=1 neut=0 cmds=67 noFull=1 shQ=164883 | m=0.900 worth=62.8 cheap=8.2 over=0 dMedOther=78.8 safe(-1)=467077
+    → F[eu]dal Empire#17[T2] terr=9666 bal=846307 dq=87.6 cnt=119 | c=269.8 rankC=269.8 need=1370722 tD=1.11 人 pulse crowdedHard | safe=467077 keep=Inf avail=-Inf chunkB=138758 pulseB=83255 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3315 ryan_m B=693791 L=10059 d=69.0 nb=1 neut=0 cmds=67 noFull=1 shQ=173447 | m=0.900 worth=62.1 cheap=8.2 over=0 dMedOther=77.3 safe(-1)=457613
+    → F[eu]dal Empire#17[T2] terr=9547 bal=829639 dq=86.9 cnt=112 | c=274.7 rankC=274.7 need=1370876 tD=1.12 人 pulse crowdedHard | safe=457613 keep=Inf avail=-Inf chunkB=138758 pulseB=83255 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3320 ryan_m B=702265 L=10171 d=69.0 nb=1 neut=0 cmds=67 noFull=1 shQ=175566 | m=0.900 worth=62.1 cheap=8.2 over=0 dMedOther=78.0 safe(-1)=446331
+    → F[eu]dal Empire#17[T2] terr=9435 bal=809725 dq=85.8 cnt=114 | c=411.0 rankC=596.0 need=1392190 tD=1.10 人 pulse crowdedHard | safe=446331 keep=Inf avail=-Inf chunkB=140453 pulseB=84272 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3325 ryan_m B=702265 L=10171 d=69.0 nb=1 neut=0 cmds=67 noFull=1 shQ=175566 | m=0.900 worth=62.1 cheap=8.2 over=0 dMedOther=77.1 safe(-1)=446331
+    → F[eu]dal Empire#17[T2] terr=9435 bal=809725 dq=85.8 cnt=114 | c=411.0 rankC=595.9 need=1392463 tD=1.11 人 pulse crowdedHard | safe=446331 keep=Inf avail=-Inf chunkB=140453 pulseB=84272 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3330 ryan_m B=710832 L=10171 d=69.9 nb=1 neut=0 cmds=67 noFull=1 shQ=177708 | m=0.900 worth=62.9 cheap=8.2 over=0 dMedOther=78.0 safe(-1)=451835
+    → F[eu]dal Empire#17[T2] terr=9435 bal=819522 dq=86.9 cnt=114 | c=415.8 rankC=603.0 need=1409565 tD=1.11 人 pulse crowdedHard | safe=451835 keep=Inf avail=-Inf chunkB=142166 pulseB=85300 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3335 ryan_m B=710832 L=10171 d=69.9 nb=1 neut=0 cmds=67 noFull=1 shQ=177708 | m=0.900 worth=62.9 cheap=8.2 over=0 dMedOther=80.9 safe(-1)=451835
+    → F[eu]dal Empire#17[T2] terr=9435 bal=819522 dq=86.9 cnt=114 | c=286.8 rankC=286.8 need=1409841 tD=1.07 人 pulse crowdedHard | safe=451835 keep=Inf avail=-Inf chunkB=142166 pulseB=85300 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3340 ryan_m B=719504 L=10171 d=70.7 nb=1 neut=0 cmds=67 noFull=1 shQ=179876 | m=0.900 worth=63.7 cheap=8.2 over=0 dMedOther=78.5 safe(-1)=0
+    → F[eu]dal Empire#17[T2] terr=9435 bal=3240 dq=0.3 cnt=114 | c=4.1 rankC=4.1 need=18680 tD=0.00 人 pulse | safe=0 keep=0 avail=711073 chunkB=143901 pulseB=86340 低于最小指令(x=22758<33724)→continue hNb=1
+    ⇒ 本拍没有指令
+t=3345 ryan_m B=719504 L=10171 d=70.7 nb=1 neut=0 cmds=67 noFull=1 shQ=179876 | m=0.900 worth=63.7 cheap=8.2 over=0 dMedOther=78.2 safe(-1)=0
+    → F[eu]dal Empire#17[T2] terr=9435 bal=3240 dq=0.3 cnt=114 | c=4.1 rankC=4.1 need=18683 tD=0.00 人 pulse | safe=0 keep=0 avail=711073 chunkB=143901 pulseB=86340 低于最小指令(x=22761<33724)→continue hNb=1
+    ⇒ 本拍没有指令
+t=3350 ryan_m B=728281 L=10171 d=71.6 nb=1 neut=0 cmds=67 noFull=1 shQ=182070 | m=0.900 worth=64.4 cheap=8.2 over=0 dMedOther=79.0 safe(-1)=0
+    → F[eu]dal Empire#17[T2] terr=9435 bal=3279 dq=0.3 cnt=114 | c=4.1 rankC=4.1 need=18752 tD=0.00 人 pulse | safe=0 keep=0 avail=719747 chunkB=145656 pulseB=87394 低于最小指令(x=22844<34136)→continue hNb=1
+    ⇒ 本拍没有指令
+t=3355 ryan_m B=728281 L=10171 d=71.6 nb=1 neut=0 cmds=68 noFull=1 shQ=182070 | m=0.900 worth=64.4 cheap=8.2 over=0 dMedOther=73.2 safe(-1)=0
+    → F[eu]dal Empire#17[T2] terr=9435 bal=3279 dq=0.3 cnt=114 | c=0.7 rankC=0.4 need=18757 tD=0.00 人 pulse nearCollapse bleeding | safe=0 keep=0 avail=719747 chunkB=145656 pulseB=87394  x=87393 hNb=1
+    ⇒ 影子指令 attack pct=122 → F[eu]dal Empire#17[T2]（约 87479 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=3360 ryan_m B=737166 L=10171 d=72.5 nb=1 neut=0 cmds=69 noFull=1 shQ=184291 | m=0.900 worth=65.2 cheap=8.2 over=0 dMedOther=73.7 safe(-1)=0
+    → F[eu]dal Empire#17[T2] terr=9435 bal=3318 dq=0.4 cnt=114 | c=0.7 rankC=0.4 need=18826 tD=0.00 人 pulse nearCollapse bleeding | safe=0 keep=0 avail=728528 chunkB=147433 pulseB=88460  x=88459 hNb=1
+    ⇒ 影子指令 attack pct=122 → F[eu]dal Empire#17[T2]（约 88546 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=3365 ryan_m B=737166 L=10171 d=72.5 nb=1 neut=0 cmds=70 noFull=1 shQ=184291 | m=0.900 worth=65.2 cheap=8.2 over=0 dMedOther=72.5 safe(-1)=0
+    → F[eu]dal Empire#17[T2] terr=9333 bal=3262 dq=0.3 cnt=113 | c=0.8 rankC=0.4 need=18515 tD=0.00 人 pulse nearCollapse bleeding | safe=0 keep=0 avail=728528 chunkB=147433 pulseB=88460  x=88459 hNb=1
+    ⇒ 影子指令 attack pct=122 → F[eu]dal Empire#17[T2]（约 88546 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=3370 ryan_m B=647789 L=10171 d=63.7 nb=1 neut=0 cmds=70 noFull=1 shQ=75375 | m=0.900 worth=57.3 cheap=8.2 over=0 dMedOther=68.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3375 ryan_m B=488246 L=10283 d=47.5 nb=1 neut=0 cmds=70 noFull=1 shQ=84764 | m=0.900 worth=51.4 cheap=8.2 over=0 dMedOther=67.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3380 ryan_m B=494202 L=10507 d=47.0 nb=1 neut=0 cmds=70 noFull=1 shQ=92227 | m=0.900 worth=51.9 cheap=8.2 over=0 dMedOther=67.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3385 ryan_m B=494202 L=10847 d=45.6 nb=1 neut=0 cmds=70 noFull=1 shQ=99762 | m=0.900 worth=51.8 cheap=8.2 over=0 dMedOther=67.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3390 ryan_m B=500231 L=11076 d=45.2 nb=1 neut=0 cmds=70 noFull=1 shQ=107315 | m=0.900 worth=52.3 cheap=8.2 over=0 dMedOther=68.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3395 ryan_m B=500231 L=11412 d=43.8 nb=1 neut=0 cmds=70 noFull=1 shQ=115065 | m=0.900 worth=52.2 cheap=8.1 over=0 dMedOther=68.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3400 ryan_m B=518017 L=11634 d=44.5 nb=1 neut=0 cmds=70 noFull=1 shQ=122870 | m=0.900 worth=53.4 cheap=8.1 over=0 dMedOther=69.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3405 ryan_m B=518017 L=11968 d=43.3 nb=1 neut=0 cmds=70 noFull=1 shQ=129504 | m=0.900 worth=53.3 cheap=8.1 over=0 dMedOther=69.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3410 ryan_m B=524440 L=12174 d=43.1 nb=1 neut=0 cmds=70 noFull=1 shQ=131110 | m=0.900 worth=53.8 cheap=8.0 over=0 dMedOther=70.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3415 ryan_m B=524440 L=12472 d=42.0 nb=1 neut=0 cmds=70 noFull=1 shQ=131110 | m=0.900 worth=53.5 cheap=8.0 over=0 dMedOther=69.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3420 ryan_m B=530943 L=12668 d=41.9 nb=1 neut=0 cmds=70 noFull=1 shQ=132735 | m=0.900 worth=53.9 cheap=8.0 over=0 dMedOther=70.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3425 ryan_m B=530943 L=12957 d=41.0 nb=1 neut=0 cmds=70 noFull=1 shQ=132735 | m=0.900 worth=53.8 cheap=8.0 over=0 dMedOther=70.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3430 ryan_m B=537526 L=13140 d=40.9 nb=1 neut=0 cmds=70 noFull=1 shQ=134381 | m=0.900 worth=54.2 cheap=8.0 over=0 dMedOther=70.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3435 ryan_m B=537526 L=13398 d=40.1 nb=1 neut=0 cmds=70 noFull=1 shQ=134381 | m=0.900 worth=54.1 cheap=8.0 over=0 dMedOther=70.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3440 ryan_m B=544245 L=13549 d=40.2 nb=1 neut=0 cmds=70 noFull=1 shQ=136061 | m=0.900 worth=54.5 cheap=8.0 over=0 dMedOther=71.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3445 ryan_m B=544245 L=13771 d=39.5 nb=1 neut=0 cmds=70 noFull=1 shQ=136061 | m=0.900 worth=54.4 cheap=8.0 over=0 dMedOther=71.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3450 ryan_m B=551048 L=13914 d=39.6 nb=1 neut=0 cmds=70 noFull=1 shQ=137762 | m=0.900 worth=55.0 cheap=8.0 over=0 dMedOther=71.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3455 ryan_m B=551048 L=14120 d=39.0 nb=1 neut=0 cmds=70 noFull=1 shQ=137762 | m=0.900 worth=55.0 cheap=8.0 over=0 dMedOther=71.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3460 ryan_m B=557991 L=14250 d=39.2 nb=1 neut=0 cmds=70 noFull=1 shQ=139497 | m=0.900 worth=55.7 cheap=7.9 over=0 dMedOther=72.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3465 ryan_m B=557991 L=14432 d=38.7 nb=1 neut=0 cmds=70 noFull=1 shQ=139497 | m=0.900 worth=55.7 cheap=7.9 over=0 dMedOther=72.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3470 ryan_m B=565021 L=14544 d=38.8 nb=1 neut=0 cmds=70 noFull=1 shQ=141255 | m=0.900 worth=58.1 cheap=7.9 over=0 dMedOther=76.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3475 ryan_m B=565021 L=14698 d=38.4 nb=1 neut=0 cmds=70 noFull=1 shQ=141255 | m=0.900 worth=56.4 cheap=7.9 over=0 dMedOther=73.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3480 ryan_m B=572140 L=14795 d=38.7 nb=1 neut=0 cmds=70 noFull=1 shQ=143035 | m=0.900 worth=57.1 cheap=7.9 over=0 dMedOther=74.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3485 ryan_m B=572140 L=14935 d=38.3 nb=1 neut=0 cmds=70 noFull=1 shQ=143035 | m=0.900 worth=57.1 cheap=7.9 over=0 dMedOther=74.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3490 ryan_m B=579348 L=15022 d=38.6 nb=0 neut=42 cmds=70 noFull=1 shQ=144837 | m=0.900 worth=57.8 cheap=7.9 over=0 dMedOther=75.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3495 ryan_m B=579348 L=15148 d=38.2 nb=0 neut=42 cmds=70 noFull=1 shQ=144837 | m=0.900 worth=57.8 cheap=7.9 over=0 dMedOther=75.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3500 ryan_m B=601938 L=15233 d=39.5 nb=0 neut=42 cmds=70 noFull=1 shQ=146748 | m=0.900 worth=59.3 cheap=7.8 over=0 dMedOther=77.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3505 ryan_m B=601938 L=15358 d=39.2 nb=0 neut=42 cmds=70 noFull=1 shQ=150484 | m=0.900 worth=63.0 cheap=7.8 over=0 dMedOther=82.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3510 ryan_m B=609582 L=15443 d=39.5 nb=0 neut=42 cmds=70 noFull=1 shQ=152395 | m=0.900 worth=63.8 cheap=7.8 over=0 dMedOther=83.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3515 ryan_m B=609582 L=15568 d=39.2 nb=0 neut=43 cmds=70 noFull=1 shQ=152395 | m=0.900 worth=60.1 cheap=7.8 over=0 dMedOther=78.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3520 ryan_m B=617323 L=15654 d=39.4 nb=0 neut=43 cmds=70 noFull=1 shQ=154330 | m=0.900 worth=60.8 cheap=7.8 over=0 dMedOther=79.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3525 ryan_m B=617323 L=15783 d=39.1 nb=0 neut=45 cmds=70 noFull=1 shQ=154330 | m=0.900 worth=60.8 cheap=7.8 over=0 dMedOther=79.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3530 ryan_m B=625163 L=15872 d=39.4 nb=0 neut=45 cmds=70 noFull=1 shQ=156290 | m=0.900 worth=61.6 cheap=7.8 over=0 dMedOther=80.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3535 ryan_m B=625163 L=16000 d=39.1 nb=0 neut=40 cmds=70 noFull=1 shQ=156290 | m=0.900 worth=61.6 cheap=7.8 over=0 dMedOther=80.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3540 ryan_m B=633102 L=16080 d=39.4 nb=0 neut=39 cmds=70 noFull=1 shQ=158275 | m=0.900 worth=62.4 cheap=7.8 over=0 dMedOther=81.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3545 ryan_m B=633102 L=16132 d=39.2 nb=0 neut=5 cmds=70 noFull=1 shQ=158275 | m=0.900 worth=62.4 cheap=7.8 over=0 dMedOther=81.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3550 ryan_m B=641142 L=16138 d=39.7 nb=0 neut=0 cmds=70 noFull=1 shQ=160285 | m=0.900 worth=63.1 cheap=7.8 over=0 dMedOther=82.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3555 ryan_m B=849671 L=16138 d=52.7 nb=0 neut=0 cmds=70 noFull=1 shQ=173770 | m=0.900 worth=63.1 cheap=7.8 over=0 dMedOther=82.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3560 ryan_m B=860461 L=16138 d=53.3 nb=0 neut=0 cmds=70 noFull=1 shQ=187289 | m=0.900 worth=63.9 cheap=7.8 over=0 dMedOther=83.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3565 ryan_m B=860461 L=16138 d=53.3 nb=0 neut=0 cmds=70 noFull=1 shQ=200944 | m=0.900 worth=63.9 cheap=7.8 over=0 dMedOther=83.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3570 ryan_m B=871388 L=16138 d=54.0 nb=0 neut=0 cmds=70 noFull=1 shQ=214634 | m=0.900 worth=64.8 cheap=7.8 over=0 dMedOther=84.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3575 ryan_m B=871388 L=16138 d=54.0 nb=0 neut=0 cmds=70 noFull=1 shQ=217847 | m=0.900 worth=64.8 cheap=7.8 over=0 dMedOther=84.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3580 ryan_m B=882454 L=16138 d=54.7 nb=0 neut=0 cmds=70 noFull=1 shQ=220613 | m=0.900 worth=65.6 cheap=7.8 over=0 dMedOther=85.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3585 ryan_m B=882454 L=16138 d=54.7 nb=0 neut=0 cmds=70 noFull=1 shQ=220613 | m=0.900 worth=65.6 cheap=7.8 over=0 dMedOther=85.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3590 ryan_m B=893661 L=16138 d=55.4 nb=0 neut=0 cmds=70 noFull=1 shQ=223415 | m=0.900 worth=66.4 cheap=7.8 over=0 dMedOther=86.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3595 ryan_m B=893661 L=16138 d=55.4 nb=0 neut=0 cmds=70 noFull=1 shQ=223415 | m=0.900 worth=66.4 cheap=7.8 over=0 dMedOther=86.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3600 ryan_m B=921148 L=16138 d=57.1 nb=0 neut=0 cmds=70 noFull=1 shQ=226339 | m=0.900 worth=68.0 cheap=7.8 over=0 dMedOther=88.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3605 ryan_m B=921148 L=16138 d=57.1 nb=0 neut=0 cmds=70 noFull=1 shQ=230287 | m=0.900 worth=68.0 cheap=7.8 over=0 dMedOther=88.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3610 ryan_m B=932846 L=16138 d=57.8 nb=0 neut=0 cmds=70 noFull=1 shQ=233211 | m=0.900 worth=68.9 cheap=7.8 over=0 dMedOther=90.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3615 ryan_m B=932846 L=16138 d=57.8 nb=0 neut=0 cmds=70 noFull=1 shQ=233211 | m=0.900 worth=68.9 cheap=7.8 over=0 dMedOther=90.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3620 ryan_m B=944693 L=16138 d=58.5 nb=0 neut=0 cmds=70 noFull=1 shQ=236173 | m=0.900 worth=69.7 cheap=7.8 over=0 dMedOther=91.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3625 ryan_m B=944693 L=16138 d=58.5 nb=0 neut=0 cmds=71 noFull=1 shQ=236173 | m=0.900 worth=69.7 cheap=7.8 over=0 dMedOther=91.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=254 → [APEX] noah88#44[T3]（约 235250 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3630 ryan_m B=956690 L=16138 d=59.3 nb=0 neut=0 cmds=71 noFull=1 shQ=239172 | m=0.900 worth=70.4 cheap=7.8 over=0 dMedOther=92.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3635 ryan_m B=956690 L=16138 d=59.3 nb=0 neut=0 cmds=71 noFull=1 shQ=239172 | m=0.900 worth=70.2 cheap=7.8 over=0 dMedOther=91.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3640 ryan_m B=968839 L=16138 d=60.0 nb=0 neut=0 cmds=71 noFull=1 shQ=242209 | m=0.900 worth=70.9 cheap=7.8 over=0 dMedOther=92.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3645 ryan_m B=968839 L=16138 d=60.0 nb=0 neut=0 cmds=71 noFull=1 shQ=242209 | m=0.900 worth=70.5 cheap=7.8 over=0 dMedOther=92.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3650 ryan_m B=981143 L=16138 d=60.8 nb=0 neut=0 cmds=72 noFull=1 shQ=245285 | m=0.900 worth=71.1 cheap=7.8 over=0 dMedOther=92.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=282 → [APEX] noah88#44[T3]（约 271155 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3655 ryan_m B=981143 L=16138 d=60.8 nb=0 neut=0 cmds=72 noFull=1 shQ=245285 | m=0.900 worth=68.3 cheap=7.8 over=0 dMedOther=89.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3660 ryan_m B=993603 L=16138 d=61.6 nb=0 neut=0 cmds=72 noFull=1 shQ=248400 | m=0.900 worth=69.2 cheap=7.8 over=0 dMedOther=90.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3665 ryan_m B=993603 L=16138 d=61.6 nb=0 neut=0 cmds=72 noFull=1 shQ=248400 | m=0.900 worth=69.2 cheap=7.8 over=0 dMedOther=90.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3670 ryan_m B=1006221 L=16138 d=62.4 nb=0 neut=0 cmds=72 noFull=1 shQ=251555 | m=0.900 worth=70.0 cheap=7.8 over=0 dMedOther=91.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3675 ryan_m B=1006221 L=16138 d=62.4 nb=0 neut=0 cmds=73 noFull=1 shQ=251555 | m=0.900 worth=70.0 cheap=7.8 over=0 dMedOther=91.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=301 → [APEX] kaito9#51[T3]（约 296756 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3680 ryan_m B=1019000 L=16138 d=63.1 nb=0 neut=0 cmds=73 noFull=1 shQ=254750 | m=0.900 worth=70.7 cheap=7.8 over=0 dMedOther=92.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3685 ryan_m B=654788 L=16138 d=40.6 nb=0 neut=0 cmds=73 noFull=1 shQ=163697 | m=0.900 worth=69.8 cheap=7.8 over=0 dMedOther=91.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3690 ryan_m B=663103 L=16138 d=41.1 nb=0 neut=0 cmds=73 noFull=1 shQ=165775 | m=0.900 worth=70.5 cheap=7.8 over=0 dMedOther=92.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3695 ryan_m B=663103 L=16138 d=41.1 nb=0 neut=0 cmds=73 noFull=1 shQ=165775 | m=0.900 worth=70.3 cheap=7.8 over=0 dMedOther=91.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3700 ryan_m B=687662 L=16138 d=42.6 nb=0 neut=0 cmds=73 noFull=1 shQ=167958 | m=0.900 worth=71.8 cheap=7.8 over=0 dMedOther=93.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令

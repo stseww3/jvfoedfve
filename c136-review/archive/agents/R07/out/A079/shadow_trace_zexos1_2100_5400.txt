@@ -1,0 +1,415 @@
+# A079 zexos1 影子决策明细 t=2100~5400（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 360 拍（t=2100~4925）
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 16 拍（t=2280~2390）；可用兵 53581~105763，一条指令下限(20%余额) 121217~131777，比值 44%~80%
+#   有可用兵但没发（脉冲下限/冷却/其他）: 159 拍（t=2355~5185）；可用兵 15737~776584，一条指令下限(20%余额) 88490~450666，比值 15%~458%
+#   捐兵: 5 拍（t=2365~5315）；可用兵 163172~218947，一条指令下限(20%余额) 143395~198358，比值 94%~114%
+#   出手打人/bot: 49 拍（t=2375~5180）；可用兵 92695~790221，一条指令下限(20%余额) 99564~474374，比值 44%~461%
+#   首选目标无可用兵（avail<=0）: 11 拍（t=2440~4515）；可用兵 -289361~-5042，一条指令下限(20%余额) 103215~176694，比值 -170%~-5%
+#   没有可打的邻居: 56 拍（t=2765~5400）
+#   只打无主地: 1 拍（t=4610~4610）；可用兵 185314~185314，一条指令下限(20%余额) 273858~273858，比值 68%~68%
+#   其他指令: 4 拍（t=5300~5365）
+#   └ 「出手打人/bot」里：49 条对人/bot 的出兵共约 7689521 兵；其中超过软上限（over=1）时发的 43 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 39 条约 6241047 兵，c/worth = 1.09~4.49
+t=2100 zexos1 B=362213 L=6289 d=57.6 nb=1 neut=0 cmds=36 noFull=0 shQ=89019 | m=1.320 worth=76.0 cheap=8.6 over=0 dMedOther=41.7 safe(-1)=283795
+    → B-team [ZIM]#57[T1] terr=4859 bal=514589 dq=105.9 cnt=78 | c=341.8 rankC=341.8 need=924585 tD=2.54 人 crowdedHard | safe=283795 keep=Inf avail=-Inf chunkB=72443 pulseB=43466 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2150 zexos1 B=383522 L=6289 d=61.0 nb=1 neut=0 cmds=36 noFull=0 shQ=95880 | m=1.268 worth=77.3 cheap=8.6 over=0 dMedOther=40.9 safe(-1)=297969
+    → B-team [ZIM]#57[T1] terr=4859 bal=539819 dq=111.1 cnt=78 | c=358.4 rankC=358.4 need=969559 tD=2.72 人 crowdedHard | safe=297969 keep=Inf avail=-Inf chunkB=76704 pulseB=46023 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2200 zexos1 B=412374 L=6289 d=65.6 nb=1 neut=0 cmds=36 noFull=0 shQ=101562 | m=1.215 worth=79.7 cheap=8.6 over=0 dMedOther=43.2 safe(-1)=313777
+    → B-team [ZIM]#57[T1] terr=4859 bal=567956 dq=116.9 cnt=78 | c=377.0 rankC=377.0 need=1019715 tD=2.70 人 crowdedHard | safe=313777 keep=Inf avail=-Inf chunkB=82475 pulseB=49485 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2250 zexos1 B=585647 L=6060 d=96.6 nb=1 neut=0 cmds=36 noFull=0 shQ=128008 | m=1.163 worth=112.3 cheap=8.6 over=0 dMedOther=43.0 safe(-1)=293208
+    → B-team [ZIM]#57[T1] terr=5088 bal=531001 dq=104.4 cnt=70 | c=220.3 rankC=220.3 need=954068 tD=2.43 人 agg | safe=293208 keep=Inf avail=-Inf chunkB=117129 pulseB=70278 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2300 zexos1 B=626039 L=6060 d=103.3 nb=1 neut=0 cmds=36 noFull=0 shQ=154953 | m=1.110 worth=114.7 cheap=8.6 over=1 dMedOther=46.5 safe(-1)=294305
+    → B-team [ZIM]#57[T1] terr=4985 bal=532953 dq=106.9 cnt=69 | c=218.6 rankC=218.6 need=953636 tD=2.30 人 agg | safe=294305 keep=545400 avail=73303 chunkB=125208 pulseB=75125 不够一条
+    ⇒ 本拍没有指令
+t=2350 zexos1 B=658884 L=6060 d=108.7 nb=1 neut=0 cmds=36 noFull=0 shQ=164721 | m=1.058 worth=115.0 cheap=8.6 over=1 dMedOther=49.4 safe(-1)=308643
+    → B-team [ZIM]#57[T1] terr=4985 bal=558474 dq=112.0 cnt=69 | c=228.7 rankC=228.7 need=1001018 tD=2.27 人 agg | safe=308643 keep=545400 avail=105763 chunkB=131777 pulseB=79066 不够一条
+    ⇒ 本拍没有指令
+t=2365 zexos1 B=716974 L=6060 d=118.3 nb=1 neut=0 cmds=37 noFull=0 shQ=179243 | m=1.042 worth=123.3 cheap=8.6 over=1 dMedOther=50.0 safe(-1)=311372
+    → B-team [ZIM]#57[T1] terr=4985 bal=563332 dq=113.0 cnt=69 | c=230.7 rankC=230.7 need=1010302 tD=2.26 人 agg | safe=311372 keep=545400 avail=163172 chunkB=143395 pulseB=86037 
+    ⇒ 影子指令 donate pct=220 → [APEX] zero_7#69[T2]（约 154737 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=2375 zexos1 B=722207 L=6060 d=119.2 nb=1 neut=0 cmds=38 noFull=0 shQ=180551 | m=1.031 worth=122.9 cheap=8.6 over=1 dMedOther=50.6 safe(-1)=314062
+    → B-team [ZIM]#57[T1] terr=4985 bal=568120 dq=114.0 cnt=69 | c=133.9 rankC=67.0 need=1019148 tD=2.25 人 pulse bleeding | safe=314062 keep=545400 avail=168344 chunkB=144441 pulseB=86665 
+    ⇒ 影子指令 attack pct=122 → B-team [ZIM]#57[T1]（约 86749 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2380 zexos1 B=727334 L=6060 d=120.0 nb=1 neut=0 cmds=39 noFull=0 shQ=181833 | m=1.026 worth=123.1 cheap=8.6 over=1 dMedOther=51.2 safe(-1)=316711
+    → B-team [ZIM]#57[T1] terr=4985 bal=572835 dq=114.9 cnt=69 | c=135.2 rankC=67.6 need=1027706 tD=2.24 人 pulse bleeding | safe=316711 keep=545400 avail=173411 chunkB=145467 pulseB=87280 
+    ⇒ 影子指令 attack pct=122 → B-team [ZIM]#57[T1]（约 87365 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2385 zexos1 B=727334 L=6060 d=120.0 nb=1 neut=0 cmds=40 noFull=0 shQ=181833 | m=1.021 worth=122.5 cheap=8.6 over=1 dMedOther=51.2 safe(-1)=290177
+    → B-team [ZIM]#57[T1] terr=4726 bal=525605 dq=111.2 cnt=68 | c=133.3 rankC=66.6 need=933138 tD=2.17 人 pulse bleeding | safe=290177 keep=545400 avail=173411 chunkB=145467 pulseB=87280 
+    ⇒ 影子指令 attack pct=122 → B-team [ZIM]#57[T1]（约 87365 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2400 zexos1 B=492692 L=6189 d=79.6 nb=1 neut=0 cmds=40 noFull=0 shQ=88862 | m=1.005 worth=80.0 cheap=8.6 over=0 dMedOther=53.5 safe(-1)=240313
+    → B-team [ZIM]#57[T1] terr=4221 bal=437040 dq=103.5 cnt=64 | c=258.8 rankC=258.8 need=568780 tD=1.94 人 pulse crowdedHard | safe=240313 keep=Inf avail=-Inf chunkB=98538 pulseB=59123 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2450 zexos1 B=522113 L=6769 d=77.1 nb=1 neut=0 cmds=40 noFull=0 shQ=130528 | m=0.953 worth=73.5 cheap=8.5 over=0 dMedOther=56.8 safe(-1)=147028
+    → B-team [ZIM]#57[T1] terr=3447 bal=271864 dq=78.9 cnt=55 | c=201.0 rankC=201.0 need=443198 tD=1.39 人 pulse | safe=147028 keep=Inf avail=-Inf chunkB=104423 pulseB=62654 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2500 zexos1 B=560146 L=6769 d=82.8 nb=1 neut=0 cmds=40 noFull=0 shQ=138382 | m=0.900 worth=74.5 cheap=8.5 over=0 dMedOther=64.2 safe(-1)=157710
+    → B-team [ZIM]#57[T1] terr=3447 bal=290877 dq=84.4 cnt=55 | c=343.3 rankC=343.3 need=475651 tD=1.31 人 pulse | safe=157710 keep=Inf avail=-Inf chunkB=112029 pulseB=67218 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2550 zexos1 B=593687 L=6769 d=87.7 nb=1 neut=0 cmds=40 noFull=0 shQ=148421 | m=0.900 worth=78.9 cheap=8.5 over=0 dMedOther=62.4 safe(-1)=135853
+    → B-team [ZIM]#57[T1] terr=3447 bal=251972 dq=73.1 cnt=55 | c=298.2 rankC=298.2 need=414280 tD=1.17 人 pulse | safe=135853 keep=Inf avail=-Inf chunkB=118737 pulseB=71242 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2600 zexos1 B=636006 L=6769 d=94.0 nb=1 neut=0 cmds=40 noFull=0 shQ=157350 | m=0.900 worth=84.6 cheap=8.5 over=0 dMedOther=67.5 safe(-1)=145895
+    → B-team [ZIM]#57[T1] terr=3447 bal=269846 dq=78.3 cnt=55 | c=318.6 rankC=318.6 need=444972 tD=1.16 人 pulse | safe=145895 keep=Inf avail=-Inf chunkB=127201 pulseB=76321 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2630 zexos1 B=658591 L=6769 d=97.3 nb=1 neut=0 cmds=41 noFull=0 shQ=164647 | m=0.900 worth=87.6 cheap=8.5 over=0 dMedOther=70.1 safe(-1)=130227
+    → B-team [ZIM]#57[T1] terr=3447 bal=241958 dq=70.2 cnt=55 | c=54.0 rankC=16.2 need=400416 tD=1.00 人 pulse bleeding | safe=130227 keep=534856 avail=116018 chunkB=131718 pulseB=79031 
+    ⇒ 影子指令 attack pct=122 → B-team [ZIM]#57[T1]（约 79108 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2635 zexos1 B=658591 L=6769 d=97.3 nb=1 neut=0 cmds=42 noFull=0 shQ=164647 | m=0.900 worth=87.6 cheap=8.5 over=0 dMedOther=69.0 safe(-1)=124362
+    → B-team [ZIM]#57[T1] terr=3354 bal=231517 dq=69.0 cnt=50 | c=55.7 rankC=16.7 need=379500 tD=1.00 人 pulse bleeding | safe=124362 keep=541140 avail=109734 chunkB=131718 pulseB=79031 
+    ⇒ 影子指令 attack pct=122 → B-team [ZIM]#57[T1]（约 79108 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2640 zexos1 B=666296 L=6769 d=98.4 nb=1 neut=0 cmds=43 noFull=0 shQ=166574 | m=0.900 worth=88.6 cheap=8.5 over=0 dMedOther=68.7 safe(-1)=115771
+    → B-team [ZIM]#57[T1] terr=3193 bal=216225 dq=67.7 cnt=48 | c=59.9 rankC=18.0 need=347799 tD=0.99 人 pulse bleeding | safe=115771 keep=559878 avail=98610 chunkB=133259 pulseB=79956 
+    ⇒ 影子指令 attack pct=122 → B-team [ZIM]#57[T1]（约 80033 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2650 zexos1 B=508070 L=6769 d=75.1 nb=1 neut=0 cmds=43 noFull=0 shQ=4422 | m=0.900 worth=67.6 cheap=8.5 over=0 dMedOther=72.0 safe(-1)=104182
+    → B-team [ZIM]#57[T1] terr=2980 bal=195597 dq=65.6 cnt=47 | c=62.3 rankC=23.2 need=156061 tD=0.91 人 pulse | safe=104182 keep=486380 avail=15737 chunkB=101614 pulseB=60968 
+    ⇒ 本拍没有指令
+t=2700 zexos1 B=474963 L=7460 d=63.7 nb=1 neut=0 cmds=43 noFull=0 shQ=71119 | m=0.900 worth=57.3 cheap=8.5 over=0 dMedOther=73.0 safe(-1)=68951
+    → B-team [ZIM]#57[T1] terr=2289 bal=133922 dq=58.5 cnt=41 | c=154.5 rankC=154.5 need=104938 tD=0.80 人 | safe=68951 keep=Inf avail=-Inf chunkB=94993 pulseB=56996 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2745 zexos1 B=497819 L=7870 d=63.3 nb=1 neut=0 cmds=44 noFull=0 shQ=124454 | m=0.900 worth=58.5 cheap=8.4 over=0 dMedOther=76.4 safe(-1)=37139
+    → B-team [ZIM]#57[T1] terr=1879 bal=77913 dq=41.5 cnt=41 | c=3.0 rankC=0.9 need=87255 tD=0.54 人 pulse nearCollapse bleeding | safe=37139 keep=37139 avail=454847 chunkB=99564 pulseB=59738 
+    ⇒ 影子指令 attack pct=122 → B-team [ZIM]#57[T1]（约 59796 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2750 zexos1 B=503693 L=7870 d=64.0 nb=1 neut=0 cmds=45 noFull=0 shQ=125923 | m=0.900 worth=59.2 cheap=8.4 over=0 dMedOther=77.3 safe(-1)=37607
+    → B-team [ZIM]#57[T1] terr=1879 bal=78746 dq=41.9 cnt=41 | c=3.1 rankC=0.9 need=88374 tD=0.54 人 pulse nearCollapse bleeding | safe=37607 keep=37607 avail=460184 chunkB=100739 pulseB=60443 
+    ⇒ 影子指令 attack pct=122 → B-team [ZIM]#57[T1]（约 60502 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2755 zexos1 B=503693 L=7870 d=64.0 nb=1 neut=0 cmds=46 noFull=0 shQ=125923 | m=0.900 worth=58.1 cheap=8.4 over=0 dMedOther=75.9 safe(-1)=33615
+    → B-team [ZIM]#57[T1] terr=1772 bal=71639 dq=40.4 cnt=40 | c=3.6 rankC=1.1 need=74304 tD=0.53 人 pulse nearCollapse bleeding | safe=33615 keep=33615 avail=464176 chunkB=100739 pulseB=60443 
+    ⇒ 影子指令 attack pct=122 → B-team [ZIM]#57[T1]（约 60502 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2800 zexos1 B=357667 L=8167 d=43.8 nb=0 neut=22 cmds=46 noFull=0 shQ=87420 | m=0.900 worth=62.5 cheap=8.4 over=0 dMedOther=81.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2850 zexos1 B=379271 L=8419 d=45.0 nb=0 neut=15 cmds=46 noFull=0 shQ=94817 | m=0.900 worth=64.4 cheap=8.4 over=0 dMedOther=84.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2900 zexos1 B=549666 L=8458 d=65.0 nb=1 neut=0 cmds=46 noFull=0 shQ=134995 | m=0.900 worth=64.2 cheap=8.4 over=0 dMedOther=84.0 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=11208 bal=1484412 dq=132.4 cnt=20 | c=784.5 rankC=784.5 need=2646390 tD=1.58 人 pulse crowdedHard | safe=744304 keep=Inf avail=-Inf chunkB=109933 pulseB=65960 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2950 zexos1 B=582869 L=8458 d=68.9 nb=1 neut=0 cmds=46 noFull=0 shQ=145717 | m=0.900 worth=68.0 cheap=8.4 over=0 dMedOther=88.9 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=11208 bal=1514788 dq=135.2 cnt=20 | c=1160.0 rankC=1682.1 need=2702525 tD=1.52 人 pulse crowdedHard | safe=744304 keep=Inf avail=-Inf chunkB=116574 pulseB=69944 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3000 zexos1 B=626536 L=8458 d=74.1 nb=1 neut=0 cmds=46 noFull=0 shQ=154580 | m=0.900 worth=71.6 cheap=8.4 over=0 dMedOther=93.6 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=11208 bal=1552227 dq=138.5 cnt=20 | c=819.3 rankC=819.3 need=2771477 tD=1.48 人 pulse crowdedHard | safe=744304 keep=Inf avail=-Inf chunkB=125307 pulseB=75184 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3050 zexos1 B=664382 L=8458 d=78.6 nb=1 neut=0 cmds=46 noFull=0 shQ=166095 | m=0.900 worth=73.9 cheap=8.4 over=0 dMedOther=96.5 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=11208 bal=1573292 dq=140.4 cnt=20 | c=829.9 rankC=829.9 need=2811260 tD=1.45 人 pulse crowdedHard | safe=744304 keep=Inf avail=-Inf chunkB=132876 pulseB=79726 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3100 zexos1 B=712972 L=8458 d=84.3 nb=1 neut=0 cmds=46 noFull=0 shQ=176195 | m=0.900 worth=75.9 cheap=8.4 over=0 dMedOther=97.9 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1519624 dq=139.6 cnt=20 | c=810.9 rankC=810.9 need=2701513 tD=1.43 人 pulse crowdedHard | safe=744304 keep=Inf avail=-Inf chunkB=142594 pulseB=85557 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3150 zexos1 B=756040 L=8458 d=89.4 nb=1 neut=0 cmds=46 noFull=0 shQ=189010 | m=0.900 worth=80.4 cheap=8.4 over=0 dMedOther=95.0 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1537945 dq=141.3 cnt=20 | c=820.3 rankC=820.3 need=2736333 tD=1.49 人 pulse crowdedHard | safe=744304 keep=Inf avail=-Inf chunkB=151208 pulseB=90725 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3200 zexos1 B=810167 L=8458 d=95.8 nb=1 neut=0 cmds=46 noFull=0 shQ=200500 | m=0.900 worth=86.2 cheap=8.4 over=0 dMedOther=97.5 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1564577 dq=143.8 cnt=20 | c=834.0 rankC=834.0 need=2786123 tD=1.47 人 pulse crowdedHard | safe=744304 keep=Inf avail=-Inf chunkB=162033 pulseB=97220 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3250 zexos1 B=859105 L=8458 d=101.6 nb=1 neut=0 cmds=46 noFull=0 shQ=214740 | m=0.900 worth=91.4 cheap=8.4 over=1 dMedOther=100.5 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1576187 dq=144.8 cnt=20 | c=839.8 rankC=839.8 need=2809169 tD=1.44 人 pulse crowdedHard | safe=744304 keep=761220 avail=87818 chunkB=171821 pulseB=103093 
+    ⇒ 本拍没有指令
+t=3300 zexos1 B=915593 L=8458 d=108.3 nb=1 neut=0 cmds=46 noFull=0 shQ=226737 | m=0.900 worth=97.4 cheap=8.4 over=1 dMedOther=96.6 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1596706 dq=146.7 cnt=20 | c=1232.9 rankC=1787.8 need=2848254 tD=1.52 人 pulse crowdedHard | safe=744304 keep=761220 avail=143644 chunkB=183119 pulseB=109871 
+    ⇒ 本拍没有指令
+t=3340 zexos1 B=950977 L=8458 d=112.4 nb=1 neut=0 cmds=47 noFull=0 shQ=237744 | m=0.900 worth=101.2 cheap=8.4 over=1 dMedOther=97.0 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1601980 dq=147.2 cnt=20 | c=852.8 rankC=852.8 need=2859707 tD=1.52 人 pulse crowdedHard | safe=744304 keep=761220 avail=178613 chunkB=190195 pulseB=114117 
+    ⇒ 影子指令 donate pct=186 → [APEX] zero_7#69[T2]（约 173664 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3350 zexos1 B=959440 L=8458 d=113.4 nb=1 neut=0 cmds=47 noFull=0 shQ=239860 | m=0.900 worth=102.1 cheap=8.4 over=1 dMedOther=97.7 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1603101 dq=147.3 cnt=20 | c=1237.3 rankC=1794.1 need=2862116 tD=1.51 人 pulse crowdedHard | safe=744304 keep=761220 avail=186977 chunkB=191888 pulseB=115133 
+    ⇒ 本拍没有指令
+t=3365 zexos1 B=967787 L=8458 d=114.4 nb=1 neut=0 cmds=48 noFull=0 shQ=241946 | m=0.900 worth=103.0 cheap=8.4 over=1 dMedOther=98.9 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1604223 dq=147.4 cnt=20 | c=1238.0 rankC=1795.0 need=2864947 tD=1.49 人 pulse crowdedHard | safe=744304 keep=761220 avail=195226 chunkB=193557 pulseB=116134 
+    ⇒ 影子指令 donate pct=200 → [APEX] zero_7#69[T2]（约 189966 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3390 zexos1 B=991789 L=8458 d=117.3 nb=1 neut=0 cmds=49 noFull=0 shQ=247947 | m=0.900 worth=105.5 cheap=8.4 over=1 dMedOther=100.5 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1607431 dq=147.7 cnt=20 | c=1240.2 rankC=1798.2 need=2871903 tD=1.47 人 pulse crowdedHard | safe=744304 keep=761220 avail=218947 chunkB=198358 pulseB=119015 
+    ⇒ 影子指令 donate pct=220 → [APEX] noah88#63[T2]（约 214048 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3400 zexos1 B=1007982 L=8458 d=119.2 nb=1 neut=0 cmds=49 noFull=0 shQ=250466 | m=0.900 worth=107.3 cheap=8.4 over=1 dMedOther=97.6 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1619278 dq=148.8 cnt=20 | c=1249.1 rankC=1811.2 need=2893583 tD=1.53 人 pulse crowdedHard | safe=744304 keep=761220 avail=234950 chunkB=201596 pulseB=120958 
+    ⇒ 本拍没有指令
+t=3450 zexos1 B=771384 L=8458 d=91.2 nb=1 neut=0 cmds=49 noFull=0 shQ=192846 | m=0.900 worth=82.1 cheap=8.4 over=0 dMedOther=96.7 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1621706 dq=149.0 cnt=20 | c=1249.0 rankC=1811.1 need=2900432 tD=1.54 人 pulse crowdedHard | safe=744304 keep=Inf avail=-Inf chunkB=154277 pulseB=92566 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3500 zexos1 B=826438 L=8458 d=97.7 nb=1 neut=0 cmds=49 noFull=0 shQ=204568 | m=0.900 worth=87.9 cheap=8.4 over=0 dMedOther=91.7 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1632450 dq=150.0 cnt=20 | c=866.7 rankC=866.7 need=2922297 tD=1.64 人 pulse crowdedHard | safe=744304 keep=Inf avail=-Inf chunkB=165288 pulseB=99173 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3550 zexos1 B=875754 L=8458 d=103.5 nb=1 neut=0 cmds=49 noFull=0 shQ=218900 | m=0.900 worth=93.2 cheap=8.4 over=1 dMedOther=96.4 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1632450 dq=150.0 cnt=20 | c=866.3 rankC=866.3 need=2924834 tD=1.56 人 pulse crowdedHard | safe=744304 keep=761220 avail=104272 chunkB=175151 pulseB=105090 
+    ⇒ 本拍没有指令
+t=3565 zexos1 B=1123447 L=8458 d=132.8 nb=1 neut=0 cmds=50 noFull=0 shQ=226962 | m=0.900 worth=119.5 cheap=8.4 over=1 dMedOther=96.9 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1632450 dq=150.0 cnt=20 | c=430.0 rankC=215.0 need=2925678 tD=1.55 人 pulse crowdedHard | safe=744304 keep=744304 avail=365978 chunkB=224689 pulseB=134814 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 134945 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3570 zexos1 B=1128053 L=8458 d=133.4 nb=1 neut=0 cmds=51 noFull=0 shQ=241014 | m=0.900 worth=120.0 cheap=8.4 over=1 dMedOther=98.1 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=10883 bal=1632450 dq=150.0 cnt=20 | c=430.0 rankC=215.0 need=2925889 tD=1.53 人 pulse crowdedHard | safe=744304 keep=744304 avail=370530 chunkB=225611 pulseB=135366 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 135498 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3575 zexos1 B=1128053 L=8458 d=133.4 nb=1 neut=0 cmds=52 noFull=0 shQ=255114 | m=0.900 worth=120.0 cheap=8.4 over=1 dMedOther=98.0 safe(-1)=744304
+    → Yellow Beast 2137#46[T3] terr=10728 bal=1595334 dq=148.7 cnt=19 | c=428.0 rankC=214.0 need=2851786 tD=1.52 人 pulse crowdedHard | safe=744304 keep=744304 avail=370530 chunkB=225611 pulseB=135366 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 135498 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3600 zexos1 B=770483 L=8573 d=89.9 nb=1 neut=0 cmds=52 noFull=0 shQ=159947 | m=0.900 worth=80.9 cheap=8.3 over=0 dMedOther=96.3 safe(-1)=754424
+    → Yellow Beast 2137#46[T3] terr=10316 bal=1509876 dq=146.4 cnt=19 | c=166.4 rankC=83.2 need=2375551 tD=1.52 人 pulse bleeding | safe=754424 keep=Inf avail=-Inf chunkB=154097 pulseB=92458 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3650 zexos1 B=1153324 L=8857 d=130.2 nb=1 neut=0 cmds=52 noFull=0 shQ=288331 | m=0.900 worth=117.2 cheap=8.3 over=1 dMedOther=87.6 safe(-1)=694353
+    → Yellow Beast 2137#46[T3] terr=9101 bal=1249234 dq=137.3 cnt=20 | c=496.8 rankC=496.8 need=1977797 tD=1.57 人 pulse | safe=694353 keep=726274 avail=413535 chunkB=230665 pulseB=138399 
+    ⇒ 本拍没有指令
+t=3670 zexos1 B=1165117 L=9012 d=129.3 nb=2 neut=0 cmds=53 noFull=0 shQ=291279 | m=0.900 worth=116.4 cheap=8.3 over=1 dMedOther=87.8 safe(-1)=793056
+    → Yellow Beast 2137#46[T3] terr=8946 bal=1223261 dq=136.7 cnt=26 | c=320.1 rankC=320.1 need=1992504 tD=1.56 人 pulse | safe=793056 keep=793056 avail=358408 chunkB=233023 pulseB=139814 
+    → [💲] 19.99 🇹🇷#22[T1] terr=26676 bal=2831050 dq=106.1 cnt=1 | c=458.8 rankC=458.8 need=5085971 tD=1.21 人 pulse | safe=793056 keep=793056 avail=358408 chunkB=233023 pulseB=139814 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 139950 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3675 zexos1 B=1165117 L=9060 d=128.6 nb=2 neut=0 cmds=54 noFull=0 shQ=291279 | m=0.900 worth=115.7 cheap=8.3 over=1 dMedOther=87.2 safe(-1)=797280
+    → Yellow Beast 2137#46[T3] terr=8898 bal=1212771 dq=136.3 cnt=23 | c=322.6 rankC=322.6 need=1992935 tD=1.56 人 pulse | safe=797280 keep=797280 avail=354184 chunkB=233023 pulseB=139814 
+    → [💲] 19.99 🇹🇷#22[T1] terr=26848 bal=2831050 dq=105.4 cnt=7 | c=455.8 rankC=455.8 need=5086229 tD=1.21 人 pulse | safe=797280 keep=797280 avail=354184 chunkB=233023 pulseB=139814 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 139950 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3680 zexos1 B=1171292 L=9083 d=129.0 nb=2 neut=0 cmds=55 noFull=0 shQ=292823 | m=0.900 worth=116.1 cheap=8.3 over=1 dMedOther=88.0 safe(-1)=799304
+    → Yellow Beast 2137#46[T3] terr=8875 bal=1211862 dq=136.5 cnt=23 | c=324.9 rankC=324.9 need=2000145 tD=1.55 人 pulse | safe=799304 keep=799304 avail=358262 chunkB=234258 pulseB=140555 
+    → [💲] 19.99 🇹🇷#22[T1] terr=26974 bal=2865588 dq=106.2 cnt=8 | c=459.1 rankC=459.1 need=5148052 tD=1.21 人 pulse | safe=799304 keep=799304 avail=358262 chunkB=234258 pulseB=140555 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 140692 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3700 zexos1 B=794263 L=9331 d=85.1 nb=2 neut=0 cmds=55 noFull=0 shQ=154420 | m=0.900 worth=76.6 cheap=8.3 over=0 dMedOther=90.6 safe(-1)=821128
+    → [💲] 19.99 🇹🇷#22[T1] terr=27151 bal=2797105 dq=103.0 cnt=17 | c=138.8 rankC=51.6 need=4682145 tD=1.14 人 pulse crowdedHard | safe=821128 keep=Inf avail=-Inf chunkB=158853 pulseB=95312 价高(c>=worth)→break
+    → Yellow Beast 2137#46[T3] terr=8702 bal=1191198 dq=136.9 cnt=28 | c=456.3 rankC=456.3 need=2030517 tD=1.51 人 pulse crowdedHard | safe=821128 keep=Inf avail=-Inf chunkB=158853 pulseB=95312 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3750 zexos1 B=1092408 L=9715 d=112.4 nb=2 neut=0 cmds=55 noFull=0 shQ=257029 | m=0.900 worth=101.2 cheap=8.2 over=1 dMedOther=93.9 safe(-1)=854920
+    → [💲] 19.99 🇹🇷#22[T1] terr=26872 bal=2818599 dq=104.9 cnt=35 | c=241.2 rankC=241.2 need=4832899 tD=1.12 人 pulse | safe=854920 keep=874350 avail=205257 chunkB=218482 pulseB=131089 
+    → Yellow Beast 2137#46[T3] terr=8702 bal=1208858 dq=138.9 cnt=39 | c=462.8 rankC=462.8 need=2065104 tD=1.48 人 pulse crowdedHard | safe=854920 keep=874350 avail=205257 chunkB=218482 pulseB=131089 
+    ⇒ 本拍没有指令
+t=3785 zexos1 B=1124059 L=10292 d=109.2 nb=2 neut=0 cmds=56 noFull=0 shQ=281014 | m=0.900 worth=98.3 cheap=8.2 over=1 dMedOther=94.1 safe(-1)=905696
+    → [💲] 19.99 🇹🇷#22[T1] terr=26452 bal=2822736 dq=106.7 cnt=56 | c=255.6 rankC=255.6 need=5021666 tD=1.13 人 pulse | safe=905696 keep=926280 avail=184607 chunkB=224812 pulseB=134887 
+    → Yellow Beast 2137#46[T3] terr=8702 bal=1218310 dq=140.0 cnt=46 | c=465.9 rankC=465.9 need=2083156 tD=1.49 人 pulse crowdedHard | safe=905696 keep=926280 avail=184607 chunkB=224812 pulseB=134887 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 135018 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3790 zexos1 B=1135415 L=10348 d=109.7 nb=2 neut=0 cmds=57 noFull=0 shQ=283853 | m=0.900 worth=98.8 cheap=8.2 over=1 dMedOther=95.3 safe(-1)=910624
+    → [💲] 19.99 🇹🇷#22[T1] terr=26427 bal=2845617 dq=107.7 cnt=59 | c=116.4 rankC=43.3 need=5081628 tD=1.13 人 pulse | safe=910624 keep=931320 avail=190790 chunkB=227083 pulseB=136250 
+    → Yellow Beast 2137#46[T3] terr=8702 bal=1221233 dq=140.3 cnt=46 | c=467.0 rankC=467.0 need=2088348 tD=1.47 人 pulse crowdedHard | safe=910624 keep=931320 avail=190790 chunkB=227083 pulseB=136250 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 136382 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3800 zexos1 B=1008003 L=10348 d=97.4 nb=2 neut=0 cmds=57 noFull=0 shQ=125023 | m=0.900 worth=87.7 cheap=8.2 over=0 dMedOther=99.2 safe(-1)=910624
+    → [💲] 19.99 🇹🇷#22[T1] terr=26152 bal=2839919 dq=108.6 cnt=58 | c=232.0 rankC=139.2 need=4924140 tD=1.09 人 pulse crowdedHard | safe=910624 keep=Inf avail=-Inf chunkB=201601 pulseB=120960 价高(c>=worth)→break
+    → Yellow Beast 2137#46[T3] terr=8702 bal=1232865 dq=141.7 cnt=46 | c=471.0 rankC=471.0 need=2108797 tD=1.43 人 pulse crowdedHard | safe=910624 keep=Inf avail=-Inf chunkB=201601 pulseB=120960 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3850 zexos1 B=1102046 L=11016 d=100.0 nb=2 neut=0 cmds=57 noFull=0 shQ=275511 | m=0.900 worth=90.0 cheap=8.2 over=1 dMedOther=89.4 safe(-1)=969408
+    → Yellow Beast 2137#46[T3] terr=8702 bal=1244619 dq=143.0 cnt=52 | c=475.0 rankC=475.0 need=2131501 tD=1.60 人 pulse crowdedHard | safe=969408 keep=991440 avail=97692 chunkB=220409 pulseB=132246 
+    → [💲] 19.99 🇹🇷#22[T1] terr=26105 bal=2853376 dq=109.3 cnt=78 | c=514.7 rankC=746.3 need=5084214 tD=1.22 人 pulse crowdedHard | safe=969408 keep=991440 avail=97692 chunkB=220409 pulseB=132246 
+    ⇒ 本拍没有指令
+t=3880 zexos1 B=1129478 L=10940 d=103.2 nb=2 neut=0 cmds=58 noFull=0 shQ=282323 | m=0.900 worth=92.9 cheap=8.2 over=1 dMedOther=91.2 safe(-1)=962720
+    → [💲] 19.99 🇹🇷#22[T1] terr=26379 bal=2435800 dq=92.3 cnt=76 | c=183.9 rankC=128.8 need=4810155 tD=1.01 人 pulse onMe | safe=962720 keep=984600 avail=131642 chunkB=225896 pulseB=135537 
+    → Yellow Beast 2137#46[T3] terr=8702 bal=1250851 dq=143.7 cnt=51 | c=477.3 rankC=477.3 need=2143928 tD=1.58 人 pulse crowdedHard | safe=962720 keep=984600 avail=131642 chunkB=225896 pulseB=135537 
+    ⇒ 影子指令 attack pct=119 → [💲] 19.99 🇹🇷#22[T1]（约 132360 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3900 zexos1 B=923992 L=10292 d=89.8 nb=2 neut=0 cmds=58 noFull=1 shQ=50733 | m=0.900 worth=80.8 cheap=8.2 over=0 dMedOther=91.3 safe(-1)=905696
+    → Yellow Beast 2137#46[T3] terr=8634 bal=1247638 dq=144.5 cnt=46 | c=186.6 rankC=93.3 need=2134799 tD=1.58 人 pulse bleeding | safe=905696 keep=Inf avail=-Inf chunkB=184798 pulseB=110879 价高(c>=worth)→break
+    → [💲] 19.99 🇹🇷#22[T1] terr=27062 bal=2649969 dq=97.9 cnt=56 | c=240.8 rankC=240.8 need=4886886 tD=1.07 人 pulse onMe | safe=905696 keep=Inf avail=-Inf chunkB=184798 pulseB=110879 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3950 zexos1 B=983819 L=9904 d=99.3 nb=2 neut=0 cmds=58 noFull=1 shQ=194641 | m=0.900 worth=89.4 cheap=8.2 over=0 dMedOther=94.1 safe(-1)=871552
+    → [💲] 19.99 🇹🇷#22[T1] terr=27450 bal=2832359 dq=103.2 cnt=42 | c=247.3 rankC=247.3 need=5089538 tD=1.10 人 pulse | safe=871552 keep=Inf avail=-Inf chunkB=196764 pulseB=118058 价高(c>=worth)→break
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1141765 dq=140.1 cnt=42 | c=469.5 rankC=469.5 need=1925995 tD=1.49 人 pulse crowdedHard | safe=871552 keep=Inf avail=-Inf chunkB=196764 pulseB=118058 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3960 zexos1 B=995723 L=9904 d=100.5 nb=2 neut=0 cmds=59 noFull=1 shQ=224412 | m=0.900 worth=90.5 cheap=8.2 over=1 dMedOther=95.3 safe(-1)=871552
+    → [💲] 19.99 🇹🇷#22[T1] terr=27450 bal=2868329 dq=104.5 cnt=42 | c=250.4 rankC=250.4 need=5153650 tD=1.10 人 pulse | safe=871552 keep=891360 avail=92695 chunkB=199145 pulseB=119487 
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1144505 dq=140.4 cnt=42 | c=470.5 rankC=470.5 need=1931734 tD=1.47 人 pulse crowdedHard | safe=871552 keep=891360 avail=92695 chunkB=199145 pulseB=119487 
+    ⇒ 影子指令 attack pct=95 → [💲] 19.99 🇹🇷#22[T1]（约 93349 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3965 zexos1 B=995723 L=9904 d=100.5 nb=2 neut=0 cmds=60 noFull=1 shQ=239347 | m=0.900 worth=90.5 cheap=8.2 over=1 dMedOther=94.8 safe(-1)=871552
+    → [💲] 19.99 🇹🇷#22[T1] terr=27450 bal=2868329 dq=104.5 cnt=42 | c=250.4 rankC=250.4 need=5153650 tD=1.10 人 pulse | safe=871552 keep=891360 avail=92695 chunkB=199145 pulseB=119487 
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1144505 dq=140.4 cnt=42 | c=470.4 rankC=470.4 need=1932419 tD=1.48 人 pulse crowdedHard | safe=871552 keep=891360 avail=92695 chunkB=199145 pulseB=119487 
+    ⇒ 影子指令 attack pct=95 → [💲] 19.99 🇹🇷#22[T1]（约 93349 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3970 zexos1 B=1007671 L=9904 d=101.7 nb=2 neut=0 cmds=61 noFull=1 shQ=251877 | m=0.900 worth=91.6 cheap=8.2 over=1 dMedOther=96.0 safe(-1)=871552
+    → [💲] 19.99 🇹🇷#22[T1] terr=27450 bal=2903609 dq=105.8 cnt=42 | c=253.5 rankC=253.5 need=5216533 tD=1.10 人 pulse | safe=871552 keep=891360 avail=104503 chunkB=201534 pulseB=120921 
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1147137 dq=140.8 cnt=42 | c=683.6 rankC=991.2 need=1937295 tD=1.47 人 pulse crowdedHard | safe=871552 keep=891360 avail=104503 chunkB=201534 pulseB=120921 
+    ⇒ 影子指令 attack pct=106 → [💲] 19.99 🇹🇷#22[T1]（约 105293 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=3975 zexos1 B=1007671 L=9904 d=101.7 nb=2 neut=0 cmds=62 noFull=1 shQ=251917 | m=0.900 worth=91.6 cheap=8.2 over=1 dMedOther=96.0 safe(-1)=871552
+    → [💲] 19.99 🇹🇷#22[T1] terr=27450 bal=2903609 dq=105.8 cnt=42 | c=253.5 rankC=253.5 need=5216533 tD=1.10 人 pulse | safe=871552 keep=891360 avail=104503 chunkB=201534 pulseB=120921 
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1147137 dq=140.8 cnt=42 | c=471.3 rankC=471.3 need=1937981 tD=1.47 人 pulse crowdedHard | safe=871552 keep=891360 avail=104503 chunkB=201534 pulseB=120921 
+    ⇒ 影子指令 attack pct=106 → [💲] 19.99 🇹🇷#22[T1]（约 105293 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4000 zexos1 B=663184 L=10237 d=64.8 nb=2 neut=0 cmds=62 noFull=1 shQ=59878 | m=0.900 worth=77.0 cheap=8.2 over=0 dMedOther=100.7 safe(-1)=900856
+    → [💲] 19.99 🇹🇷#22[T1] terr=27117 bal=2975959 dq=109.7 cnt=55 | c=152.7 rankC=56.8 need=5108412 tD=1.09 人 pulse crowdedHard | safe=900856 keep=Inf avail=-Inf chunkB=132637 pulseB=79582 价高(c>=worth)→break
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1162758 dq=142.7 cnt=45 | c=690.5 rankC=1001.2 need=1966997 tD=1.42 人 pulse crowdedHard | safe=900856 keep=Inf avail=-Inf chunkB=132637 pulseB=79582 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4050 zexos1 B=772937 L=10859 d=71.2 nb=2 neut=0 cmds=62 noFull=1 shQ=171275 | m=0.900 worth=73.4 cheap=8.2 over=0 dMedOther=95.9 safe(-1)=955592
+    → [💲] 19.99 🇹🇷#22[T1] terr=26132 bal=2934580 dq=112.3 cnt=73 | c=364.7 rankC=364.7 need=5219562 tD=1.17 人 pulse crowdedHard | safe=955592 keep=Inf avail=-Inf chunkB=154587 pulseB=92752 价高(c>=worth)→break
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1172556 dq=143.9 cnt=51 | c=479.4 rankC=479.4 need=1989286 tD=1.50 人 pulse crowdedHard | safe=955592 keep=Inf avail=-Inf chunkB=154587 pulseB=92752 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4100 zexos1 B=745094 L=9786 d=76.1 nb=2 neut=0 cmds=62 noFull=1 shQ=183882 | m=0.900 worth=75.6 cheap=8.2 over=0 dMedOther=98.8 safe(-1)=861168
+    → [💲] 19.99 🇹🇷#22[T1] terr=27205 bal=2613162 dq=96.1 cnt=38 | c=181.3 rankC=126.9 need=4924118 tD=0.97 人 pulse onMe | safe=861168 keep=Inf avail=-Inf chunkB=149019 pulseB=89411 价高(c>=worth)→break
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1188935 dq=145.9 cnt=40 | c=704.6 rankC=1021.7 need=2022304 tD=1.48 人 pulse crowdedHard | safe=861168 keep=Inf avail=-Inf chunkB=149019 pulseB=89411 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4150 zexos1 B=775051 L=9235 d=83.9 nb=2 neut=0 cmds=62 noFull=1 shQ=193762 | m=0.900 worth=76.6 cheap=8.3 over=0 dMedOther=100.1 safe(-1)=812680
+    → [💲] 19.99 🇹🇷#22[T1] terr=27756 bal=2794374 dq=100.7 cnt=16 | c=245.7 rankC=245.7 need=5109431 tD=1.01 人 pulse onMe | safe=812680 keep=Inf avail=-Inf chunkB=155010 pulseB=93006 价高(c>=worth)→break
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1194651 dq=146.6 cnt=26 | c=488.8 rankC=488.8 need=2034786 tD=1.46 人 pulse crowdedHard | safe=812680 keep=Inf avail=-Inf chunkB=155010 pulseB=93006 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4200 zexos1 B=786271 L=8920 d=88.1 nb=2 neut=0 cmds=62 noFull=1 shQ=194391 | m=0.900 worth=79.3 cheap=8.3 over=0 dMedOther=100.6 safe(-1)=784960
+    → [💲] 19.99 🇹🇷#22[T1] terr=28071 bal=3008585 dq=107.2 cnt=28 | c=346.7 rankC=346.7 need=5404609 tD=1.07 人 pulse crowdedHard | safe=784960 keep=Inf avail=-Inf chunkB=157254 pulseB=94353 价高(c>=worth)→break
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1207586 dq=148.2 cnt=19 | c=494.1 rankC=494.1 need=2059766 tD=1.47 人 pulse crowdedHard | safe=784960 keep=Inf avail=-Inf chunkB=157254 pulseB=94353 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4250 zexos1 B=834592 L=8920 d=93.6 nb=2 neut=0 cmds=62 noFull=1 shQ=208648 | m=0.900 worth=84.2 cheap=8.3 over=0 dMedOther=99.5 safe(-1)=784960
+    → [💲] 19.99 🇹🇷#22[T1] terr=27639 bal=3086051 dq=111.7 cnt=27 | c=361.8 rankC=361.8 need=5526378 tD=1.12 人 pulse crowdedHard | safe=784960 keep=Inf avail=-Inf chunkB=166918 pulseB=100151 价高(c>=worth)→break
+    → Yellow Beast 2137#46[T3] terr=8150 bal=1210242 dq=148.5 cnt=19 | c=717.6 rankC=1040.5 need=2067103 tD=1.49 人 pulse crowdedHard | safe=784960 keep=Inf avail=-Inf chunkB=166918 pulseB=100151 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4285 zexos1 B=1338000 L=8920 d=150.0 nb=2 neut=0 cmds=63 noFull=1 shQ=219594 | m=0.900 worth=135.0 cheap=8.3 over=1 dMedOther=103.2 safe(-1)=784960
+    → Yellow Beast 2137#46[T3] terr=8052 bal=1188426 dq=147.6 cnt=18 | c=184.1 rankC=92.1 need=2024972 tD=1.43 人 pulse bleeding | safe=784960 keep=784960 avail=537361 chunkB=267600 pulseB=160560 
+    → [💲] 19.99 🇹🇷#22[T1] terr=27639 bal=3576671 dq=129.4 cnt=27 | c=450.2 rankC=652.8 need=6399871 tD=1.25 人 pulse | safe=784960 keep=784960 avail=537361 chunkB=267600 pulseB=160560 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 160716 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4290 zexos1 B=1338000 L=8920 d=150.0 nb=2 neut=0 cmds=64 noFull=1 shQ=236319 | m=0.900 worth=135.0 cheap=8.3 over=1 dMedOther=104.4 safe(-1)=784960
+    → Yellow Beast 2137#46[T3] terr=7955 bal=1166611 dq=146.7 cnt=18 | c=186.8 rankC=93.4 need=1981069 tD=1.40 人 pulse bleeding | safe=784960 keep=784960 avail=537361 chunkB=267600 pulseB=160560 
+    → [💲] 19.99 🇹🇷#22[T1] terr=27639 bal=3596700 dq=130.1 cnt=27 | c=452.7 rankC=656.4 need=6435848 tD=1.25 人 pulse | safe=784960 keep=784960 avail=537361 chunkB=267600 pulseB=160560 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 160716 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4295 zexos1 B=1338000 L=8920 d=150.0 nb=2 neut=0 cmds=65 noFull=1 shQ=253044 | m=0.900 worth=135.0 cheap=8.3 over=1 dMedOther=104.4 safe(-1)=784960
+    → Yellow Beast 2137#46[T3] terr=7764 bal=1122040 dq=144.5 cnt=17 | c=184.9 rankC=92.5 need=1892277 tD=1.38 人 pulse bleeding | safe=784960 keep=784960 avail=537361 chunkB=267600 pulseB=160560 
+    → [💲] 19.99 🇹🇷#22[T1] terr=27639 bal=3596700 dq=130.1 cnt=27 | c=452.7 rankC=656.4 need=6436032 tD=1.25 人 pulse | safe=784960 keep=784960 avail=537361 chunkB=267600 pulseB=160560 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 160716 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4300 zexos1 B=1176100 L=8920 d=131.8 nb=2 neut=0 cmds=66 noFull=1 shQ=108207 | m=0.900 worth=118.7 cheap=8.3 over=1 dMedOther=103.0 safe(-1)=784960
+    → Yellow Beast 2137#46[T3] terr=7509 bal=1072916 dq=142.9 cnt=16 | c=236.8 rankC=118.4 need=1630124 tD=1.39 人 pulse crowdedHard | safe=784960 keep=784960 avail=377358 chunkB=235220 pulseB=141132 
+    → [💲] 19.99 🇹🇷#22[T1] terr=27639 bal=2846787 dq=103.0 cnt=27 | c=185.7 rankC=130.0 need=5102872 tD=1.00 人 pulse | safe=784960 keep=784960 avail=377358 chunkB=235220 pulseB=141132 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 141269 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4305 zexos1 B=1176100 L=8920 d=131.8 nb=2 neut=0 cmds=67 noFull=1 shQ=122907 | m=0.900 worth=118.7 cheap=8.3 over=1 dMedOther=103.0 safe(-1)=784960
+    → Yellow Beast 2137#46[T3] terr=7414 bal=1029688 dq=138.9 cnt=15 | c=178.1 rankC=89.1 need=1551673 tD=1.35 人 pulse | safe=784960 keep=784960 avail=377358 chunkB=235220 pulseB=141132 
+    → [💲] 19.99 🇹🇷#22[T1] terr=27639 bal=2846787 dq=103.0 cnt=27 | c=185.7 rankC=130.0 need=5103018 tD=1.00 人 pulse | safe=784960 keep=784960 avail=377358 chunkB=235220 pulseB=141132 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 141269 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4350 zexos1 B=1252214 L=9610 d=130.3 nb=2 neut=0 cmds=67 noFull=1 shQ=115039 | m=0.900 worth=117.3 cheap=8.3 over=1 dMedOther=104.6 safe(-1)=845680
+    → [💲] 19.99 🇹🇷#22[T1] terr=29849 bal=2944823 dq=98.7 cnt=14 | c=101.0 rankC=37.6 need=5180850 tD=0.94 人 pulse | safe=845680 keep=845680 avail=391860 chunkB=250443 pulseB=150266 
+    → Yellow Beast 2137#46[T3] terr=6042 bal=742955 dq=123.0 cnt=44 | c=121.4 rankC=60.7 need=892891 tD=1.18 人 pulse bleeding | safe=845680 keep=845680 avail=391860 chunkB=250443 pulseB=150266 
+    ⇒ 本拍没有指令
+t=4375 zexos1 B=1266528 L=10197 d=124.2 nb=2 neut=0 cmds=68 noFull=1 shQ=193675 | m=0.900 worth=111.8 cheap=8.2 over=1 dMedOther=106.6 safe(-1)=897336
+    → Yellow Beast 2137#46[T3] terr=5124 bal=579055 dq=113.0 cnt=60 | c=129.2 rankC=64.6 need=739958 tD=1.06 人 pulse bleeding | safe=897336 keep=897336 avail=354350 chunkB=253306 pulseB=151983 
+    → [💲] 19.99 🇹🇷#22[T1] terr=28616 bal=2822488 dq=98.6 cnt=15 | c=422.9 rankC=422.9 need=4957107 tD=0.93 人 pulse | safe=897336 keep=897336 avail=354350 chunkB=253306 pulseB=151983 
+    ⇒ 影子指令 attack pct=81 → Yellow Beast 2137#46[T3]（约 101421 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4380 zexos1 B=1275013 L=10425 d=122.3 nb=2 neut=0 cmds=69 noFull=1 shQ=209526 | m=0.900 worth=110.1 cheap=8.2 over=1 dMedOther=100.5 safe(-1)=917400
+    → Yellow Beast 2137#46[T3] terr=4958 bal=550032 dq=110.9 cnt=53 | c=139.7 rankC=69.8 need=741054 tD=1.10 人 pulse bleeding | safe=917400 keep=917400 avail=342672 chunkB=255003 pulseB=153002 
+    → [💲] 19.99 🇹🇷#22[T1] terr=28551 bal=2850482 dq=99.8 cnt=27 | c=238.7 rankC=238.7 need=5024904 tD=0.99 人 pulse | safe=917400 keep=917400 avail=342672 chunkB=255003 pulseB=153002 
+    ⇒ 影子指令 attack pct=111 → Yellow Beast 2137#46[T3]（约 139454 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4385 zexos1 B=1275013 L=10479 d=121.7 nb=2 neut=0 cmds=70 noFull=1 shQ=225461 | m=0.900 worth=109.5 cheap=8.2 over=1 dMedOther=100.5 safe(-1)=922152
+    → Yellow Beast 2137#46[T3] terr=4954 bal=542386 dq=109.5 cnt=53 | c=140.8 rankC=70.4 need=745313 tD=1.09 人 pulse bleeding | safe=922152 keep=943110 avail=316962 chunkB=255003 pulseB=153002 
+    → [💲] 19.99 🇹🇷#22[T1] terr=28497 bal=2841860 dq=99.7 cnt=29 | c=239.3 rankC=239.3 need=5025049 tD=0.99 人 pulse | safe=922152 keep=943110 avail=316962 chunkB=255003 pulseB=153002 
+    ⇒ 影子指令 attack pct=122 → Yellow Beast 2137#46[T3]（约 153150 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4400 zexos1 B=916009 L=10881 d=84.2 nb=2 neut=0 cmds=70 noFull=1 shQ=41058 | m=0.900 worth=78.2 cheap=8.2 over=0 dMedOther=102.2 safe(-1)=957528
+    → Yellow Beast 2137#46[T3] terr=4635 bal=501444 dq=108.2 cnt=48 | c=186.9 rankC=186.9 need=413383 tD=1.06 人 pulse | safe=957528 keep=Inf avail=-Inf chunkB=183202 pulseB=109921 价高(c>=worth)→break
+    → [💲] 19.99 🇹🇷#22[T1] terr=28408 bal=3236228 dq=113.9 cnt=34 | c=537.7 rankC=779.7 need=5752037 tD=1.11 人 pulse crowdedHard | safe=957528 keep=Inf avail=-Inf chunkB=183202 pulseB=109921 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4435 zexos1 B=1155714 L=11557 d=100.0 nb=2 neut=0 cmds=71 noFull=1 shQ=151597 | m=0.900 worth=90.0 cheap=8.2 over=1 dMedOther=101.1 safe(-1)=1017016
+    → Yellow Beast 2137#46[T3] terr=3959 bal=394438 dq=99.6 cnt=47 | c=281.1 rankC=281.1 need=447303 tD=0.99 人 pulse | safe=1017016 keep=1040130 avail=102041 chunkB=231143 pulseB=138686 
+    → [💲] 19.99 🇹🇷#22[T1] terr=27378 bal=3116198 dq=113.8 cnt=42 | c=372.4 rankC=372.4 need=5495873 tD=1.13 人 pulse crowdedHard | safe=1017016 keep=1040130 avail=102041 chunkB=231143 pulseB=138686 
+    ⇒ 影子指令 attack pct=90 → Yellow Beast 2137#46[T3]（约 102705 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4440 zexos1 B=1169813 L=11557 d=101.2 nb=2 neut=0 cmds=72 noFull=1 shQ=169173 | m=0.900 worth=91.1 cheap=8.2 over=1 dMedOther=102.3 safe(-1)=1017016
+    → Yellow Beast 2137#46[T3] terr=3959 bal=398855 dq=100.7 cnt=47 | c=284.1 rankC=284.1 need=453705 tD=0.98 人 pulse | safe=1017016 keep=1040130 avail=115975 chunkB=233963 pulseB=140378 
+    → [💲] 19.99 🇹🇷#22[T1] terr=27378 bal=3146736 dq=114.9 cnt=42 | c=376.0 rankC=376.0 need=5549682 tD=1.12 人 pulse crowdedHard | safe=1017016 keep=1040130 avail=115975 chunkB=233963 pulseB=140378 
+    ⇒ 影子指令 attack pct=101 → Yellow Beast 2137#46[T3]（约 116524 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4445 zexos1 B=1169813 L=11557 d=101.2 nb=2 neut=0 cmds=73 noFull=1 shQ=186573 | m=0.900 worth=91.1 cheap=8.2 over=1 dMedOther=102.3 safe(-1)=1017016
+    → Yellow Beast 2137#46[T3] terr=3959 bal=398855 dq=100.7 cnt=47 | c=283.9 rankC=283.9 need=455132 tD=0.98 人 pulse | safe=1017016 keep=1040130 avail=115975 chunkB=233963 pulseB=140378 
+    → [💲] 19.99 🇹🇷#22[T1] terr=27378 bal=3146736 dq=114.9 cnt=42 | c=376.0 rankC=376.0 need=5550193 tD=1.12 人 pulse crowdedHard | safe=1017016 keep=1040130 avail=115975 chunkB=233963 pulseB=140378 
+    ⇒ 影子指令 attack pct=101 → Yellow Beast 2137#46[T3]（约 116524 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4450 zexos1 B=1311441 L=11557 d=113.5 nb=2 neut=0 cmds=74 noFull=1 shQ=202843 | m=0.900 worth=102.1 cheap=8.2 over=1 dMedOther=103.5 safe(-1)=1017016
+    → [💲] 19.99 🇹🇷#22[T1] terr=27378 bal=3176629 dq=116.0 cnt=42 | c=281.2 rankC=281.2 need=5602883 tD=1.12 人 pulse | safe=1017016 keep=1040130 avail=255943 chunkB=262288 pulseB=157373 
+    → Yellow Beast 2137#46[T3] terr=3959 bal=403282 dq=101.9 cnt=47 | c=287.8 rankC=287.8 need=461588 tD=0.98 人 pulse | safe=1017016 keep=1040130 avail=255943 chunkB=262288 pulseB=157373 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 157526 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4500 zexos1 B=872645 L=12977 d=67.2 nb=2 neut=0 cmds=74 noFull=1 shQ=125199 | m=0.900 worth=80.2 cheap=8.0 over=0 dMedOther=104.8 safe(-1)=1141976
+    → Yellow Beast 2137#46[T3] terr=2385 bal=191036 dq=80.1 cnt=51 | c=37.1 rankC=18.5 need=19091 tD=0.76 人 pulse nearCollapse bleeding | safe=1141976 keep=1141976 avail=-279557 chunkB=174529 pulseB=104717 无可用(avail<=0)
+    → [💲] 19.99 🇹🇷#22[T1] terr=28061 bal=2743095 dq=97.8 cnt=60 | c=140.4 rankC=52.2 need=4874414 tD=0.93 人 pulse crowdedHard | safe=1141976 keep=Inf avail=-Inf chunkB=174529 pulseB=104717 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4550 zexos1 B=928111 L=12977 d=71.5 nb=1 neut=43 cmds=74 noFull=1 shQ=232027 | m=0.900 worth=78.4 cheap=8.0 over=0 dMedOther=102.4 safe(-1)=1141976
+    → [💲] 19.99 🇹🇷#22[T1] terr=26810 bal=2822357 dq=105.3 cnt=59 | c=552.0 rankC=552.0 need=4964487 tD=1.03 人 pulse crowdedHard | safe=1141976 keep=Inf avail=-Inf chunkB=185622 pulseB=111373 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4600 zexos1 B=1186003 L=12977 d=91.4 nb=1 neut=19 cmds=74 noFull=1 shQ=293370 | m=0.900 worth=82.3 cheap=8.0 over=0 dMedOther=100.2 safe(-1)=1141976
+    → [💲] 19.99 🇹🇷#22[T1] terr=26097 bal=2888410 dq=110.7 cnt=57 | c=263.8 rankC=98.1 need=5050277 tD=1.11 人 pulse crowdedHard | safe=1141976 keep=Inf avail=-Inf chunkB=237201 pulseB=142320 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4610 zexos1 B=1369290 L=12977 d=105.5 nb=1 neut=10 cmds=75 noFull=1 shQ=311873 | m=0.900 worth=95.0 cheap=8.0 over=1 dMedOther=99.7 safe(-1)=1141976
+    → [💲] 19.99 🇹🇷#22[T1] terr=25919 bal=2858232 dq=110.3 cnt=56 | c=430.5 rankC=430.5 need=4990566 tD=1.11 人 pulse | safe=1141976 keep=1167930 avail=185314 chunkB=273858 pulseB=164315 
+    ⇒ 影子指令 attack pct=47 → 无主地（约 64185 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=4630 zexos1 B=1828244 L=12977 d=140.9 nb=1 neut=0 cmds=76 noFull=1 shQ=359810 | m=0.900 worth=126.8 cheap=8.0 over=1 dMedOther=96.7 safe(-1)=1141976
+    → [💲] 19.99 🇹🇷#22[T1] terr=25919 bal=2918858 dq=112.6 cnt=56 | c=439.8 rankC=439.8 need=5098202 tD=1.16 人 pulse | safe=1141976 keep=1141976 avail=664844 chunkB=365649 pulseB=219389 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 219603 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4635 zexos1 B=1828244 L=12977 d=140.9 nb=1 neut=0 cmds=77 noFull=1 shQ=382660 | m=0.900 worth=126.8 cheap=8.0 over=1 dMedOther=95.0 safe(-1)=1141976
+    → [💲] 19.99 🇹🇷#22[T1] terr=25919 bal=2918858 dq=112.6 cnt=56 | c=439.8 rankC=439.8 need=5098886 tD=1.19 人 pulse | safe=1141976 keep=1141976 avail=664844 chunkB=365649 pulseB=219389 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 219603 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4640 zexos1 B=1832448 L=12977 d=141.2 nb=1 neut=0 cmds=78 noFull=1 shQ=405521 | m=0.900 worth=127.1 cheap=8.0 over=1 dMedOther=94.1 safe(-1)=1141976
+    → [💲] 19.99 🇹🇷#22[T1] terr=25919 bal=2948338 dq=113.8 cnt=56 | c=444.2 rankC=444.2 need=5150527 tD=1.21 人 pulse | safe=1141976 keep=1141976 avail=668998 chunkB=366490 pulseB=219894 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 220108 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4650 zexos1 B=1213920 L=13033 d=93.1 nb=1 neut=0 cmds=78 noFull=1 shQ=209010 | m=0.900 worth=83.8 cheap=8.0 over=0 dMedOther=93.3 safe(-1)=1146904
+    → [💲] 19.99 🇹🇷#22[T1] terr=25863 bal=3212973 dq=124.2 cnt=55 | c=589.0 rankC=589.0 need=5053075 tD=1.33 人 pulse crowdedHard | safe=1146904 keep=Inf avail=-Inf chunkB=242784 pulseB=145670 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4700 zexos1 B=1642936 L=14390 d=114.2 nb=1 neut=0 cmds=78 noFull=1 shQ=407412 | m=0.900 worth=102.8 cheap=8.0 over=1 dMedOther=103.6 safe(-1)=1266320
+    → [💲] 19.99 🇹🇷#22[T1] terr=24506 bal=3203908 dq=130.7 cnt=71 | c=692.4 rankC=692.4 need=5521906 tD=1.26 人 pulse crowdedHard | safe=1266320 keep=1295100 avail=328583 chunkB=328587 pulseB=197152 
+    ⇒ 本拍没有指令
+t=4720 zexos1 B=1844487 L=14390 d=128.2 nb=1 neut=0 cmds=79 noFull=1 shQ=438483 | m=0.900 worth=115.4 cheap=8.0 over=1 dMedOther=105.4 safe(-1)=1266320
+    → [💲] 19.99 🇹🇷#22[T1] terr=24506 bal=3236670 dq=132.1 cnt=71 | c=518.1 rankC=518.1 need=5582138 tD=1.25 人 pulse | safe=1266320 keep=1266320 avail=556552 chunkB=368897 pulseB=221338 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 221554 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4725 zexos1 B=1844487 L=14390 d=128.2 nb=1 neut=0 cmds=80 noFull=1 shQ=461121 | m=0.900 worth=115.4 cheap=8.0 over=1 dMedOther=105.4 safe(-1)=1266320
+    → [💲] 19.99 🇹🇷#22[T1] terr=24506 bal=3236670 dq=132.1 cnt=71 | c=518.0 rankC=518.0 need=5583167 tD=1.25 人 pulse | safe=1266320 keep=1266320 avail=556552 chunkB=368897 pulseB=221338 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 221554 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4730 zexos1 B=1854631 L=14390 d=128.9 nb=1 neut=0 cmds=81 noFull=1 shQ=463657 | m=0.900 worth=116.0 cheap=8.0 over=1 dMedOther=100.2 safe(-1)=1266320
+    → [💲] 19.99 🇹🇷#22[T1] terr=24506 bal=2622450 dq=107.0 cnt=71 | c=315.5 rankC=220.8 need=4531034 tD=1.07 人 pulse | safe=1266320 keep=1266320 avail=566578 chunkB=370926 pulseB=222556 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 222773 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=4750 zexos1 B=1244095 L=14828 d=83.9 nb=1 neut=0 cmds=81 noFull=1 shQ=246526 | m=0.900 worth=78.5 cheap=8.0 over=0 dMedOther=102.6 safe(-1)=1304864
+    → [💲] 19.99 🇹🇷#22[T1] terr=25418 bal=2615305 dq=102.9 cnt=77 | c=367.8 rankC=257.4 need=4128172 tD=1.00 人 pulse crowdedHard | safe=1304864 keep=Inf avail=-Inf chunkB=248819 pulseB=149291 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4800 zexos1 B=1340868 L=16127 d=83.1 nb=1 neut=0 cmds=81 noFull=1 shQ=331289 | m=0.900 worth=82.4 cheap=7.8 over=0 dMedOther=107.7 safe(-1)=1376203
+    → [💲] 19.99 🇹🇷#22[T1] terr=24002 bal=2473831 dq=103.1 cnt=67 | c=547.6 rankC=547.6 need=4261569 tD=0.96 人 pulse crowdedHard | safe=1376203 keep=Inf avail=-Inf chunkB=268174 pulseB=160904 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4850 zexos1 B=1662214 L=16127 d=103.1 nb=1 neut=0 cmds=81 noFull=1 shQ=415490 | m=0.900 worth=92.8 cheap=7.8 over=1 dMedOther=93.5 safe(-1)=1325136
+    → [💲] 19.99 🇹🇷#22[T1] terr=22637 bal=2382933 dq=105.3 cnt=50 | c=418.2 rankC=418.2 need=4045656 tD=1.13 人 pulse | safe=1325136 keep=1451430 avail=191305 chunkB=332443 pulseB=199466 
+    ⇒ 本拍没有指令
+t=4890 zexos1 B=1916865 L=16127 d=118.9 nb=1 neut=0 cmds=82 noFull=1 shQ=477782 | m=0.900 worth=107.0 cheap=7.8 over=1 dMedOther=96.7 safe(-1)=1330326
+    → [💲] 19.99 🇹🇷#22[T1] terr=22056 bal=2392170 dq=108.5 cnt=48 | c=96.3 rankC=28.9 need=4038339 tD=1.12 人 pulse bleeding | safe=1330326 keep=1451430 avail=442972 chunkB=383373 pulseB=230024 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 230248 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4895 zexos1 B=1916865 L=16127 d=118.9 nb=1 neut=0 cmds=83 noFull=1 shQ=479216 | m=0.900 worth=107.0 cheap=7.8 over=1 dMedOther=96.2 safe(-1)=1319018
+    → [💲] 19.99 🇹🇷#22[T1] terr=21940 bal=2372042 dq=108.1 cnt=46 | c=96.8 rankC=29.1 need=3999280 tD=1.12 人 pulse bleeding | safe=1319018 keep=1451430 avail=442972 chunkB=383373 pulseB=230024 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 230248 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4900 zexos1 B=1948326 L=16127 d=120.8 nb=1 neut=0 cmds=83 noFull=1 shQ=484086 | m=0.900 worth=108.7 cheap=7.8 over=1 dMedOther=98.2 safe(-1)=1312045
+    → [💲] 19.99 🇹🇷#22[T1] terr=21593 bal=2359631 dq=109.3 cnt=41 | c=189.2 rankC=70.4 need=3959177 tD=1.11 人 pulse | safe=1312045 keep=1451430 avail=474065 chunkB=389665 pulseB=233799 
+    ⇒ 本拍没有指令
+t=4950 zexos1 B=1893923 L=16931 d=111.9 nb=1 neut=0 cmds=83 noFull=1 shQ=231345 | m=0.900 worth=100.7 cheap=7.8 over=1 dMedOther=96.6 safe(-1)=979146
+    → [💲] 19.99 🇹🇷#22[T1] terr=21101 bal=1768277 dq=83.8 cnt=36 | c=314.9 rankC=314.9 need=2764990 tD=0.87 人 pulse | safe=979146 keep=1523790 avail=347939 chunkB=378785 pulseB=227271 
+    ⇒ 本拍没有指令
+t=5000 zexos1 B=2008617 L=17665 d=113.7 nb=1 neut=0 cmds=83 noFull=1 shQ=473162 | m=0.900 worth=102.3 cheap=7.8 over=1 dMedOther=103.4 safe(-1)=944864
+    → [💲] 19.99 🇹🇷#22[T1] terr=19801 bal=1708355 dq=86.3 cnt=35 | c=350.4 rankC=350.4 need=2810894 tD=0.83 人 pulse | safe=944864 keep=1589850 avail=395229 chunkB=401723 pulseB=241034 
+    ⇒ 本拍没有指令
+t=5050 zexos1 B=2251498 L=17665 d=127.5 nb=1 neut=0 cmds=83 noFull=1 shQ=562874 | m=0.900 worth=114.7 cheap=7.8 over=1 dMedOther=106.2 safe(-1)=1008890
+    → [💲] 19.99 🇹🇷#22[T1] terr=19801 bal=1822321 dq=92.0 cnt=35 | c=372.9 rankC=372.9 need=3010573 tD=0.87 人 pulse | safe=1008890 keep=1448530 avail=776584 chunkB=450300 pulseB=270180 
+    ⇒ 本拍没有指令
+t=5060 zexos1 B=2264556 L=17665 d=128.2 nb=1 neut=0 cmds=84 noFull=1 shQ=566139 | m=0.900 worth=115.4 cheap=7.8 over=1 dMedOther=106.4 safe(-1)=1022199
+    → [💲] 19.99 🇹🇷#22[T1] terr=19801 bal=1846011 dq=93.2 cnt=35 | c=377.5 rankC=377.5 need=3052077 tD=0.88 人 pulse | safe=1022199 keep=1448530 avail=789489 chunkB=452911 pulseB=271747 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 272012 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=5065 zexos1 B=2264556 L=17665 d=128.2 nb=1 neut=0 cmds=85 noFull=1 shQ=566139 | m=0.900 worth=115.4 cheap=7.8 over=1 dMedOther=105.5 safe(-1)=1022199
+    → [💲] 19.99 🇹🇷#22[T1] terr=19801 bal=1846011 dq=93.2 cnt=35 | c=377.4 rankC=377.4 need=3053507 tD=0.88 人 pulse | safe=1022199 keep=1448530 avail=789489 chunkB=452911 pulseB=271747 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 272012 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=5100 zexos1 B=1965190 L=18114 d=108.5 nb=1 neut=0 cmds=85 noFull=1 shQ=167364 | m=0.900 worth=97.6 cheap=7.8 over=1 dMedOther=110.5 safe(-1)=1048303
+    → [💲] 19.99 🇹🇷#22[T1] terr=19352 bal=1893151 dq=97.8 cnt=34 | c=347.6 rankC=347.6 need=2728813 tD=0.89 人 pulse | safe=1048303 keep=1630260 avail=311901 chunkB=393038 pulseB=235823 
+    ⇒ 本拍没有指令
+t=5150 zexos1 B=2074857 L=19021 d=109.1 nb=1 neut=0 cmds=85 noFull=1 shQ=437836 | m=0.900 worth=98.2 cheap=7.7 over=1 dMedOther=108.0 safe(-1)=1034060
+    → [💲] 19.99 🇹🇷#22[T1] terr=18445 bal=1869159 dq=101.3 cnt=38 | c=174.9 rankC=65.1 need=2938832 tD=0.94 人 pulse | safe=1034060 keep=1711890 avail=338653 chunkB=414971 pulseB=248983 
+    ⇒ 本拍没有指令
+t=5160 zexos1 B=2272287 L=19175 d=118.5 nb=1 neut=0 cmds=86 noFull=1 shQ=493943 | m=0.900 worth=106.7 cheap=7.7 over=1 dMedOther=108.4 safe(-1)=936609
+    → [💲] 19.99 🇹🇷#22[T1] terr=17806 bal=904037 dq=50.8 cnt=40 | c=152.1 rankC=106.4 need=2251989 tD=0.47 人 pulse onMe | safe=936609 keep=1725750 avail=519909 chunkB=454457 pulseB=272674 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 272940 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=5165 zexos1 B=2272287 L=19175 d=118.5 nb=1 neut=0 cmds=87 noFull=1 shQ=522343 | m=0.900 worth=106.7 cheap=7.7 over=1 dMedOther=107.9 safe(-1)=936609
+    → [💲] 19.99 🇹🇷#22[T1] terr=17806 bal=904037 dq=50.8 cnt=40 | c=152.0 rankC=106.4 need=2252905 tD=0.47 人 pulse onMe | safe=936609 keep=1725750 avail=519909 chunkB=454457 pulseB=272674 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 272940 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=5170 zexos1 B=2371870 L=19097 d=124.2 nb=1 neut=0 cmds=88 noFull=1 shQ=551657 | m=0.900 worth=111.8 cheap=7.7 over=1 dMedOther=108.5 safe(-1)=925762
+    → [💲] 19.99 🇹🇷#22[T1] terr=17884 bal=915608 dq=51.2 cnt=39 | c=150.3 rankC=105.2 need=2244006 tD=0.47 人 pulse onMe | safe=925762 keep=1565954 avail=778121 chunkB=474374 pulseB=284624 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 284902 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=5175 zexos1 B=2367943 L=18984 d=124.7 nb=1 neut=0 cmds=89 noFull=1 shQ=581225 | m=0.900 worth=112.3 cheap=7.7 over=1 dMedOther=108.0 safe(-1)=715743
+    → [💲] 19.99 🇹🇷#22[T1] terr=17995 bal=915445 dq=50.9 cnt=37 | c=72.7 rankC=27.0 need=1874689 tD=0.47 人 pulse bleeding onMe | safe=715743 keep=1556688 avail=783506 chunkB=473589 pulseB=284153 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 284430 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=5180 zexos1 B=2368515 L=18909 d=125.3 nb=1 neut=0 cmds=90 noFull=1 shQ=592128 | m=0.900 worth=112.7 cheap=7.7 over=1 dMedOther=108.5 safe(-1)=705083
+    → [💲] 19.99 🇹🇷#22[T1] terr=18061 bal=926422 dq=51.3 cnt=37 | c=71.9 rankC=26.7 need=1865400 tD=0.47 人 pulse bleeding onMe | safe=705083 keep=1550538 avail=790221 chunkB=473703 pulseB=284222 
+    ⇒ 影子指令 attack pct=122 → [💲] 19.99 🇹🇷#22[T1]（约 284499 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=5200 zexos1 B=1789818 L=19292 d=92.8 nb=1 neut=0 cmds=90 noFull=1 shQ=110855 | m=0.900 worth=84.5 cheap=7.7 over=0 dMedOther=110.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5250 zexos1 B=1909218 L=20172 d=94.6 nb=1 neut=0 cmds=90 noFull=1 shQ=409723 | m=0.900 worth=88.5 cheap=7.7 over=0 dMedOther=115.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5300 zexos1 B=2682089 L=20472 d=131.0 nb=0 neut=0 cmds=91 noFull=1 shQ=515935 | m=0.900 worth=117.9 cheap=7.6 over=1 dMedOther=121.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 boatTo pct=0 → 水/岸#237196（约 2619 兵） 〔boatOut:1011<boatOut:2327<idleBoats:5040<act:4963〕
+t=5315 zexos1 B=2608633 L=20472 d=127.4 nb=0 neut=0 cmds=92 noFull=1 shQ=616274 | m=0.900 worth=114.7 cheap=7.6 over=1 dMedOther=117.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zero_7#69[T2]（约 817745 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=5320 zexos1 B=2626633 L=20473 d=128.3 nb=0 neut=0 cmds=93 noFull=1 shQ=648924 | m=0.900 worth=115.5 cheap=7.6 over=1 dMedOther=117.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 boatTo pct=0 → 水/岸#176634（约 2565 兵） 〔boatOut:1011<boatOut:2327<idleBoats:5040<act:4963〕
+t=5340 zexos1 B=1627771 L=20473 d=79.5 nb=0 neut=0 cmds=94 noFull=1 shQ=406942 | m=0.900 worth=94.0 cheap=7.6 over=0 dMedOther=122.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 boatTo pct=0 → 水/岸#176634（约 1589 兵） 〔boatOut:1011<boatOut:2327<idleBoats:5040<act:4963〕
+t=5350 zexos1 B=1595794 L=20473 d=77.9 nb=0 neut=0 cmds=94 noFull=1 shQ=398948 | m=0.900 worth=93.9 cheap=7.6 over=0 dMedOther=122.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5365 zexos1 B=2116751 L=20473 d=103.4 nb=0 neut=0 cmds=95 noFull=1 shQ=463816 | m=0.900 worth=93.1 cheap=7.6 over=1 dMedOther=115.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 boatTo pct=0 → 水/岸#176634（约 2067 兵） 〔boatOut:1011<boatOut:2327<idleBoats:5040<act:4963〕
+t=5400 zexos1 B=2176788 L=20474 d=106.3 nb=0 neut=0 cmds=95 noFull=1 shQ=538889 | m=0.900 worth=95.7 cheap=7.6 over=1 dMedOther=118.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令

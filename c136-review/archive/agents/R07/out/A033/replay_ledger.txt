@@ -1,0 +1,438 @@
+=== A033 执行层账本（录像命令流 + 真引擎余额）===
+A. 引擎接受的指令（每号）：种类×条数 | 首拍~末拍 | 离开拍 | 最后一条 HL-TICK 日志拍
+  alex_k#54: attack×23 donate×22 spawn×22 | 局内 45 条 84~7952 | 离开 - | 末条日志 8100
+  kaito9#53: attack×40 donate×17 spawn×16 | 局内 57 条 84~7714 | 离开 - | 末条日志 8280
+  noah88#47: attack×29 donate×19 spawn×17 | 局内 48 条 84~7868 | 离开 - | 末条日志 8280
+  riku_x#55: attack×20 donate×20 spawn×12 | 局内 40 条 77~8190 | 离开 - | 末条日志 8370
+  ryan_m#48: attack×41 donate×3 spawn×21 | 局内 44 条 77~3808 | 离开 4606 | 末条日志 4050
+  sora_w#49: attack×121 donate×10 spawn×12 | 局内 131 条 84~7945 | 离开 8519 | 末条日志 8460
+  talon5#51: attack×66 donate×11 spawn×15 | 局内 77 条 77~7784 | 离开 - | 末条日志 7740
+  zero_7#52: attack×89 boat×1 donate×12 spawn×17 | 局内 102 条 77~7966 | 离开 - | 末条日志 8010
+  zexos1#50: attack×75 boat×2 donate×13 spawn×19 | 局内 90 条 77~8316 | 离开 8519 | 末条日志 8460
+
+B. 捐款/调度：日志 390 条，引擎执行 127 条（32.6%）；另有非我方号捐给我方号 6 条
+   我方执行合计：到账 25398634，手续费 5822265（费/到账 = 0.229）
+     受捐方顶到硬上限、到账被截断的 4 笔：名义 3901913，实际到账 1816825，手续费 761316（费/到账 = 0.419）
+     其中有配额期（t<4284）：32 笔，pct 247~380，到账 4954217，手续费 1006634（费/到账 = 0.203）；单笔到账 45235~515857，单笔费 7598~102850
+     其中免检期（t>=4284）：95 笔，pct 180~380，到账 20444417，手续费 4815631（费/到账 = 0.236）；单笔到账 28400~1091042，单笔费 6403~252006
+   逐笔：执行拍 捐出方→受捐方 pct | 执行前余额→后 | 到账 费 | 受捐方领土 余额前→后 | 配额 需点/累计前/上限 | 对应日志 t(延迟) L行 种类
+   1918 Chansey→zero_7 pct=191 | 170334→127752 | 31937 10645 | 8169 160607→192544 | 60/0/109 | (无日志)
+   2093 Chansey→talon5 pct=191 | 176215→132162 | 33040 11013 | 6887 286128→319168 | 62/0/115 | (无日志)
+   2149 Chansey→talon5 pct=191 | 156099→118538 | 29268 9756 | 6736 333453→365134 | 18/62/121 | (无日志)
+   2177 alex_k→ryan_m pct=320 | 537537→335436 | 168505 33596 | 8396 45676→214181 | 94/0/121 | t=2165(+12) L559 offense_dispatch
+   2268 riku_x→kaito9 pct=320 | 475840→296936 | 149164 29740 | 8732 192723→341887 | 83/0/129 | t=2255(+13) L579 offense_dispatch
+   2331 Chansey→talon5 pct=191 | 180808→135607 | 33901 11300 | 6558 345084→378985 | 20/80/137 | (无日志)
+   2415 noah88→zexos1 pct=380 | 606699→343047 | 225734 37918 | 6840 202304→428038 | 125/0/145 | t=2405(+10) L605 defense_dispatch
+   2548 riku_x→kaito9 pct=320 | 400175→249720 | 125445 25010 | 11283 237956→363401 | 70/83/153 | t=2530(+18) L644 offense_dispatch
+   2569 riku_x→ryan_m pct=320 | 255344→159341 | 80044 15959 | 9841 220974→304660 | 45/94/153 | t=2555(+14) L647 offense_dispatch
+   2870 riku_x→zexos1 pct=320 | 237124→147972 | 74332 14820 | 9966 287274→365082 | 42/125/177 | t=2855(+15) L718 offense_dispatch
+   3220 riku_x→zexos1 pct=320 | 234676→146444 | 73565 14667 | 10761 289463→595268 | 10/167/209 | t=3205(+15) L813 offense_dispatch
+   3220 noah88→zexos1 pct=320 | 729590→455282 | 228709 45599 | 10761 289463→595268 | 25/177/209 | t=3205(+15) L812 offense_dispatch
+   3234 ryan_m→talon5 pct=255 | 624584→429402 | 156146 39036 | 6711 517662→673808 | 27/100/209 | t=3225(+9) L816 offense_dispatch
+   3241 noah88→talon5 pct=320 | 465721→290622 | 145992 29107 | 6711 681691→827683 | 25/127/209 | t=3230(+11) L817 offense_dispatch
+   3318 noah88→talon5 pct=320 | 319895→199623 | 100279 19993 | 7628 624857→725136 | 17/152/219 | t=3305(+13) L834 offense_dispatch
+   3325 alex_k→talon5 pct=320 | 654450→408393 | 205154 40903 | 7628 733692→938846 | 30/169/219 | t=3315(+10) L836 offense_dispatch
+   3346 sora_w→zero_7 pct=320 | 1645600→1026893 | 515857 102850 | 11129 612796→1128653 | 50/60/219 | t=3335(+11) L846 yield_opt_dispatch
+   3353 alex_k→zero_7 pct=320 | 422518→263662 | 132449 26407 | 11129 1142083→1274532 | 15/110/219 | t=3340(+13) L847 yield_opt_dispatch
+   3374 alex_k→talon5 pct=320 | 269707→168305 | 84546 16856 | 8179 559425→643971 | 14/199/219 | t=3365(+9) L850 offense_dispatch
+   3388 kaito9→zero_7 pct=290 | 795359→519626 | 226024 49709 | 12026 772671→998695 | 22/125/219 | t=3375(+13) L851 offense_dispatch
+   3395 sora_w→zero_7 pct=320 | 1091078→680859 | 342027 68192 | 12429 1011011→1353038 | 31/147/219 | t=3385(+10) L852 offense_dispatch
+   3423 sora_w→zero_7 pct=320 | 717914→447996 | 225049 44869 | 13563 1065814→1290863 | 20/178/229 | t=3410(+13) L853 offense_dispatch
+   3472 riku_x→zero_7 pct=320 | 201054→125464 | 63025 12565 | 15807 1373928→1436953 | 7/198/229 | t=3455(+17) L863 offense_dispatch
+   3507 ryan_m→zero_7 pct=271 | 629921→423229 | 167322 39370 | 16488 863914→1031236 | 14/205/239 | t=3500(+7) L864 yield_opt_dispatch
+   3640 noah88→zero_7 pct=320 | 308582→192563 | 96733 19286 | 19423 1350577→1464901 | 8/219/249 | t=3630(+10) L883 offense_dispatch
+   3661 kaito9→zero_7 pct=274 | 778612→520850 | 209099 48663 | 19423 1305056→1314535 | 14/227/249 | t=3650(+11) L884 yield_opt_dispatch
+   3703 alex_k→zero_7 pct=320 | 265487→165672 | 83223 16592 | 21201 1405402→1488625 | 7/241/259 | t=3690(+13) L891 offense_dispatch
+   3808 ryan_m→zero_7 pct=286 | 642893→422528 | 180185 40180 | 24001 1083294→1167229 | 11/248/269 | t=3800(+8) L905 yield_opt_dispatch
+   3822 riku_x→zero_7 pct=320 | 201434→125701 | 63144 12589 | 24255 1198483→1051694 | 6/259/269 | t=3805(+17) L906 yield_opt_dispatch
+   3913 kaito9→zero_7 pct=247 | 751143→522280 | 181917 46946 | 27543 782117→964034 | 10/265/279 | t=3900(+13) L919 offense_dispatch
+   4011 kaito9→zero_7 pct=320 | 603140→376374 | 189070 37696 | 30926 1111343→1296783 | 10/275/289 | t=4000(+11) L933 defense_dispatch
+   4102 alex_k→zero_7 pct=380 | 281542→159193 | 104753 17596 | 28642 1496748→1597739 | 7/285/299 | t=4090(+12) L958 defense_dispatch
+   4123 Player 329→zexos1 pct=98 | 3976706→3343696 | 384466 248544 | 10567 913655→1290260 | 40/202/299 | (无日志)
+   4123 riku_x→zero_7 pct=380 | 186990→105731 | 69573 11686 | 28120 1597887→1662243 | 6/292/299 | t=4105(+18) L960 defense_dispatch
+   4214 noah88→zexos1 pct=380 | 410220→231952 | 152630 25638 | 10790 884838→1031930 | 18/242/309 | t=4205(+9) L974 defense_dispatch
+   4221 riku_x→zexos1 pct=380 | 121579→68746 | 45235 7598 | 10684 1033551→1073524 | 8/260/309 | t=4205(+16) L975 defense_dispatch
+   4242 noah88→zero_7 pct=380 | 239974→135689 | 89287 14998 | 27563 1923395→2005789 | 7/298/309 | t=4230(+12) L982 defense_dispatch
+   4284 kaito9→zexos1 pct=257 | 553593→379515 | 139479 34599 | 10754 769948→909427 | 免检 | t=4275(+9) L988 defense_dispatch
+   4298 sora_w→zero_7 pct=180 | 1382752→1051918 | 244412 86422 | 26598 2026077→2270489 | 免检 | t=4285(+13) L989 yield_opt_dispatch
+   4354 alex_k→zexos1 pct=380 | 221122→125030 | 82272 13820 | 10444 955409→1034023 | 免检 | t=4340(+14) L998 defense_dispatch
+   4368 noah88→zexos1 pct=285 | 161039→105998 | 44977 10064 | 10258 1020764→958916 | 免检 | t=4355(+13) L999 defense_dispatch
+   4424 alex_k→zexos1 pct=312 | 139815→88341 | 42736 8738 | 10286 1028948→1067203 | 免检 | t=4415(+9) L1008 defense_dispatch
+   4473 sora_w→talon5 pct=184 | 1330977→1007332 | 240459 83186 | 12155 736162→895206 | 免检 | t=4460(+13) L1009 defense_dispatch
+   4529 talon5→zero_7 pct=320 | 976816→609557 | 306208 61051 | 28265 2222691→2563292 | 免检 | t=4520(+9) L1019 yield_opt_dispatch
+   4683 talon5→zero_7 pct=268 | 755035→509502 | 198344 47189 | 30023 2232346→2430690 | 免检 | t=4670(+13) L1028 offense_dispatch
+   4753 alex_k→zero_7 pct=320 | 654450→408393 | 205154 40903 | 30872 2706109→2911263 | 免检 | t=4740(+13) L1037 yield_opt_dispatch
+   4760 kaito9→zero_7 pct=267 | 771634→521456 | 201951 48227 | 30872 2911263→3153098 | 免检 | t=4750(+10) L1038 yield_opt_dispatch
+   4781 alex_k→zero_7 pct=320 | 422518→263662 | 132449 26407 | 30935 2498009→2630458 | 免检 | t=4765(+16) L1039 yield_opt_dispatch
+   4802 alex_k→zero_7 pct=320 | 274070→171027 | 85914 17129 | 31212 2734742→2820656 | 免检 | t=4790(+12) L1048 offense_dispatch
+   4893 sora_w→zexos1 pct=195 | 1590846→1186922 | 304497 99427 | 12918 525591→830088 | 免检 | t=4885(+8) L1057 offense_dispatch
+   4928 talon5→zexos1 pct=248 | 726895→504711 | 176754 45430 | 13627 659340→1504730 | 免检 | t=4920(+8) L1059 offense_dispatch
+   4928 zero_7→zexos1 pct=187 | 3641933→2745677 | 668636 227620 | 13627 659340→1504730 | 免检 | t=4920(+8) L1058 offense_dispatch
+   4998 riku_x→zero_7 pct=320 | 198813→124065 | 62323 12425 | 32345 3022142→3084465 | 免检 | t=4980(+18) L1068 yield_opt_dispatch
+   5012 kaito9→zero_7 pct=248 | 751967→522119 | 182851 46997 | 32345 3202974→3385825 | 免检 | t=5000(+12) L1069 yield_opt_dispatch
+   5054 zexos1→zero_7 pct=320 | 1770577→1104882 | 555034 110661 | 32345 3551641→4106675 | 免检 | t=5040(+14) L1072 yield_opt_dispatch
+   5075 zexos1→zero_7 pct=320 | 1132899→706956 | 355137 70806 | 32345 2384571→2155209 | 免检 | t=5065(+10) L1079 yield_opt_dispatch
+   5117 noah88→zero_7 pct=320 | 312888→195250 | 98083 19555 | 32774 2309703→2407786 | 免检 | t=5105(+12) L1080 offense_dispatch
+   5124 alex_k→zero_7 pct=320 | 260851→162778 | 81770 16303 | 32852 2441013→2829252 | 免检 | t=5115(+9) L1082 offense_dispatch
+   5124 sora_w→zero_7 pct=196 | 1593019→1186987 | 306469 99563 | 32852 2441013→2829252 | 免检 | t=5110(+14) L1081 offense_dispatch
+   5138 kaito9→zero_7 pct=337 | 617880→375315 | 203948 38617 | 33069 2868295→3072243 | 免检 | t=5125(+13) L1083 defense_dispatch
+   5208 talon5→sora_w pct=265 | 765198→518602 | 198772 47824 | 13865 1334601→1533373 | 免检 | t=5195(+13) L1092 yield_opt_dispatch
+   5250 zexos1→sora_w pct=249 | 921193→638719 | 224900 57574 | 13865 1592002→1830911 | 免检 | t=5240(+10) L1102 yield_opt_dispatch
+   5257 zero_7→sora_w pct=320 | 4032098→3531253 | 248839 252006 〔顶格截断：名义 1263968，受捐方硬上限 2079750〕 | 13865 1830911→2079750 | 免检 | t=5245(+12) L1103 yield_opt_dispatch
+   5278 zero_7→sora_w pct=320 | 3624377→2859569 | 538285 226523 〔顶格截断：名义 1136157，受捐方硬上限 2105100〕 | 14034 1575365→2113650 | 免检 | t=5270(+8) L1104 yield_opt_dispatch
+   5327 zero_7→sora_w pct=320 | 3100728→2232016 | 674917 193795 〔顶格截断：名义 972005，受捐方硬上限 2286150〕 | 15241 1622183→2297100 | 免检 | t=5320(+7) L1113 yield_opt_dispatch
+   5383 zero_7→sora_w pct=320 | 2426189→1514000 | 760553 151636 | 17103 1557456→2318009 | 免检 | t=5370(+13) L1114 offense_dispatch
+   5397 riku_x→sora_w pct=320 | 211172→131777 | 66197 13198 | 17724 2328440→2394637 | 免检 | t=5380(+17) L1115 offense_dispatch
+   5467 noah88→sora_w pct=320 | 309153→192919 | 96912 19322 | 19545 1933674→2030586 | 免检 | t=5455(+12) L1124 yield_opt_dispatch
+   5481 talon5→zero_7 pct=380 | 759659→429535 | 282646 47478 | 34313 1786168→2067898 | 免检 | t=5470(+11) L1126 defense_dispatch
+   5481 alex_k→sora_w pct=320 | 260903→162811 | 81786 16306 | 19545 2078995→2148930 | 免检 | t=5465(+16) L1125 yield_opt_dispatch
+   5488 kaito9→zero_7 pct=343 | 623768→375236 | 209547 38985 | 34251 2062981→2270087 | 免检 | t=5475(+13) L1127 defense_dispatch
+   5495 riku_x→zero_7 pct=380 | 150970→85364 | 56171 9435 | 34172 2295845→2422515 | 免检 | t=5480(+15) L1129 defense_dispatch
+   5495 noah88→zero_7 pct=380 | 199591→112856 | 74261 12474 | 34172 2295845→2422515 | 免检 | t=5480(+15) L1128 defense_dispatch
+   5502 alex_k→zero_7 pct=380 | 170907→96637 | 63589 10681 | 34006 2475097→2876519 | 免检 | t=5490(+12) L1132 defense_dispatch
+   5502 zexos1→zero_7 pct=380 | 926943→524123 | 344887 57933 | 34006 2475097→2876519 | 免检 | t=5490(+12) L1138 defense_dispatch
+   5621 riku_x→zero_7 pct=301 | 105851→68019 | 31217 6615 | 33066 2540420→2567089 | 免检 | t=5605(+16) L1148 defense_dispatch
+   5635 talon5→zero_7 pct=260 | 543620→371085 | 138559 33976 | 32802 2573950→2707613 | 免检 | t=5620(+15) L1149 defense_dispatch
+   5796 noah88→zero_7 pct=356 | 178042→104844 | 62071 11127 | 32362 2939433→2651299 | 免检 | t=5780(+16) L1166 defense_dispatch
+   5803 alex_k→zero_7 pct=343 | 150484→90526 | 50553 9405 | 32453 2720310→3070682 | 免检 | t=5790(+13) L1167 defense_dispatch
+   5803 zexos1→zero_7 pct=375 | 816530→465678 | 299819 51033 | 32453 2720310→3070682 | 免检 | t=5790(+13) L1168 defense_dispatch
+   5929 talon5→zero_7 pct=308 | 572646→364056 | 172800 35790 | 32988 2720393→2546429 | 免检 | t=5920(+9) L1177 defense_dispatch
+   5964 kaito9→zero_7 pct=260 | 763938→521478 | 194714 47746 | 33546 2653834→2848548 | 免检 | t=5950(+14) L1186 offense_dispatch
+   6055 zero_7→sora_w pct=320 | 3480458→2171888 | 1091042 217528 | 17848 1428723→2519765 | 免检 | t=6045(+10) L1195 yield_opt_dispatch
+   6083 zero_7→sora_w pct=320 | 2264389→1413033 | 709832 141524 | 17910 1937948→2647780 | 免检 | t=6070(+13) L1196 yield_opt_dispatch
+   6209 kaito9→sora_w pct=248 | 742859→515795 | 180636 46428 | 20100 1897579→2103569 | 免检 | t=6200(+9) L1205 yield_opt_dispatch
+   6244 riku_x→sora_w pct=380 | 163669→92544 | 60896 10229 | 19700 1833370→1712132 | 免检 | t=6230(+14) L1215 defense_dispatch
+   6244 noah88→sora_w pct=380 | 209268→118327 | 77862 13079 | 19700 1833370→1712132 | 免检 | t=6230(+14) L1214 defense_dispatch
+   6272 zexos1→sora_w pct=259 | 933214→637941 | 236948 58325 | 20321 1779792→2016740 | 免检 | t=6265(+7) L1216 yield_opt_dispatch
+   6300 alex_k→sora_w pct=380 | 187242→105873 | 69667 11702 | 19945 1796707→1513083 | 免检 | t=6290(+10) L1217 defense_dispatch
+   6321 zexos1→sora_w pct=277 | 695194→463011 | 188734 43449 | 20321 1552697→1734165 | 免检 | t=6315(+6) L1226 defense_dispatch
+   6328 zero_7→sora_w pct=380 | 2095211→1184696 | 779565 130950 | 20162 1719667→2491864 | 免检 | t=6320(+8) L1227 defense_dispatch
+   6335 kaito9→sora_w pct=349 | 628796→374577 | 214920 39299 | 19945 2476324→2937497 | 免检 | t=6325(+10) L1229 defense_dispatch
+   6335 talon5→sora_w pct=380 | 679983→384484 | 253001 42498 | 19945 2476324→2937497 | 免检 | t=6320(+15) L1228 defense_dispatch
+   6342 riku_x→zero_7 pct=316 | 106916→67136 | 33098 6682 | 34278 1214528→1246287 | 免检 | t=6330(+12) L1230 defense_dispatch
+   6391 [AUS] Toe→sora_w pct=103 | 545660→456139 | 55418 34103 | 21012 2051998→2107416 | 免检 | (无日志)
+   6440 noah88→zero_7 pct=281 | 160000→105938 | 44062 10000 | 32527 1332001→1392181 | 免检 | t=6430(+10) L1239 defense_dispatch
+   6475 alex_k→zero_7 pct=277 | 133086→88639 | 36130 8317 | 32010 1416198→1449709 | 免检 | t=6465(+10) L1240 defense_dispatch
+   6573 zexos1→zero_7 pct=248 | 679498→471801 | 165229 42468 | 29000 1451292→1609876 | 免检 | t=6565(+8) L1249 defense_dispatch
+   6580 talon5→zero_7 pct=271 | 551299→370405 | 146438 34456 | 28665 1587471→1747170 | 免检 | t=6570(+10) L1255 defense_dispatch
+   6615 kaito9→zero_7 pct=281 | 571574→378445 | 157406 35723 | 27299 1717783→1868041 | 免检 | t=6600(+15) L1259 defense_dispatch
+   6622 riku_x→zero_7 pct=281 | 103128→68283 | 28400 6445 | 27228 1893259→1921659 | 免检 | t=6605(+17) L1260 defense_dispatch
+   6839 noah88→sora_w pct=380 | 190606→107776 | 70918 11912 | 22381 2407725→2178545 | 免检 | t=6830(+9) L1277 defense_dispatch
+   6853 alex_k→sora_w pct=380 | 170795→96574 | 63547 10674 | 22371 1910496→2194077 | 免检 | t=6840(+13) L1284 defense_dispatch
+   6853 zexos1→sora_w pct=309 | 726823→461363 | 220034 45426 | 22371 1910496→2194077 | 免检 | t=6840(+13) L1279 defense_dispatch
+   6881 talon5→sora_w pct=310 | 581494→368545 | 176606 36343 | 22162 2243081→2155361 | 免检 | t=6870(+11) L1288 defense_dispatch
+   6888 kaito9→sora_w pct=277 | 568341→378525 | 154295 35521 | 21936 2129816→1827502 | 免检 | t=6875(+13) L1289 defense_dispatch
+   6923 riku_x→sora_w pct=307 | 106791→67997 | 32120 6674 | 21183 2129169→2153410 | 免检 | t=6905(+18) L1290 defense_dispatch
+   6979 zero_7→sora_w pct=236 | 3114646→2199111 | 720870 194665 | 21084 1511393→2256583 | 免检 | t=6970(+9) L1299 defense_dispatch
+   7070 noah88→sora_w pct=288 | 163535→107162 | 46153 10220 | 20008 1502082→1558133 | 免检 | t=7055(+15) L1308 defense_dispatch
+   7077 alex_k→sora_w pct=281 | 133928→88676 | 36882 8370 | 19747 1535295→1563373 | 免检 | t=7065(+12) L1309 defense_dispatch
+   7098 zexos1→sora_w pct=247 | 660432→459207 | 159948 41277 | 19050 1523250→1675062 | 免检 | t=7090(+8) L1310 defense_dispatch
+   7105 zero_7→sora_w pct=380 | 2333999→1319714 | 868411 145874 | 18834 1693299→2550713 | 免检 | t=7095(+10) L1311 defense_dispatch
+   7112 kaito9→sora_w pct=262 | 557262→379310 | 143124 34828 | 18644 2531655→2662831 | 免检 | t=7100(+12) L1312 defense_dispatch
+   7126 zero_7→sora_w pct=351 | 1355854→805040 | 466074 84740 | 18391 2287749→2387865 | 免检 | t=7120(+6) L1321 defense_dispatch
+   7133 talon5→sora_w pct=261 | 544494→371151 | 139313 34030 | 18448 2394935→1923845 | 免检 | t=7120(+13) L1322 defense_dispatch
+   7224 riku_x→sora_w pct=304 | 116385→74446 | 34665 7274 | 18098 1718552→1749059 | 免检 | t=7205(+19) L1331 defense_dispatch
+   7294 noah88→sora_w pct=288 | 161588→105885 | 45604 10099 | 18379 1224589→1268381 | 免检 | t=7280(+14) L1332 defense_dispatch
+   7308 zero_7→sora_w pct=380 | 1600810→905147 | 595613 100050 | 18288 1286878→1879114 | 免检 | t=7295(+13) L1340 defense_dispatch
+   7329 zexos1→sora_w pct=246 | 667276→464618 | 160954 41704 | 18260 1640508→1904109 | 免检 | t=7315(+14) L1343 defense_dispatch
+   7329 alex_k→sora_w pct=275 | 132774→88690 | 35786 8298 | 18260 1640508→1904109 | 免检 | t=7315(+14) L1342 defense_dispatch
+   7434 kaito9→sora_w pct=323 | 606095→376443 | 191772 37880 | 20917 1580595→1769527 | 免检 | t=7425(+9) L1352 defense_dispatch
+   7448 riku_x→sora_w pct=285 | 102460→67441 | 28616 6403 | 20790 1771245→1796537 | 免检 | t=7430(+18) L1353 defense_dispatch
+   7546 noah88→sora_w pct=325 | 170182→105367 | 54179 10636 | 18995 1789257→1840331 | 免检 | t=7530(+16) L1362 defense_dispatch
+   7623 zexos1→talon5 pct=323 | 741253→460388 | 234537 46328 | 7064 275091→501806 | 免检 | t=7615(+8) L1371 defense_dispatch
+   7630 alex_k→talon5 pct=312 | 141249→89247 | 43174 8828 | 6755 476573→515357 | 免检 | t=7615(+15) L1372 defense_dispatch
+   7714 kaito9→sora_w pct=285 | 574205→377945 | 160373 35887 | 18554 1228612→1388147 | 免检 | t=7700(+14) L1381 defense_dispatch
+   7721 riku_x→sora_w pct=284 | 103544→68255 | 28818 6471 | 18533 1404356→1432326 | 免检 | t=7705(+16) L1382 defense_dispatch
+   7770 sora_w→talon5 pct=380 | 1423879→980103 | 354784 88992 〔顶格截断：名义 529783，受捐方硬上限 686400〕 | 4576 325742→662224 | 免检 | t=7760(+10) L1391 defense_dispatch
+   7847 sora_w→zero_7 pct=248 | 1091632→757960 | 265445 68227 | 18995 986996→1194694 | 免检 | t=7835(+12) L1401 yield_opt_dispatch
+   7868 noah88→zero_7 pct=325 | 170264→105418 | 54205 10641 | 13135 700366→754571 | 免检 | t=7855(+13) L1402 defense_dispatch
+   7945 sora_w→zero_7 pct=325 | 881135→545548 | 280517 55070 | 11217 656226→873418 | 免检 | t=7935(+10) L1410 defense_dispatch
+   7952 alex_k→zero_7 pct=360 | 149766→87608 | 52798 9360 | 9304 710004→941614 | 免检 | t=7940(+12) L1412 defense_dispatch
+   7952 zexos1→zero_7 pct=345 | 765230→458840 | 258564 47826 | 9304 710004→941614 | 免检 | t=7940(+12) L1411 defense_dispatch
+   每号：alex_k 日志 95 执行 22 到账 1942837 费 377191；kaito9 日志 19 执行 17 到账 3141126 费 703751；noah88 日志 83 执行 19 到账 1808651 费 341668；riku_x 日志 80 执行 20 到账 1206048 费 236485；ryan_m 日志 13 执行 3 到账 503653 费 118586；sora_w 日志 57 执行 10 到账 3079516 费 796798；talon5 日志 11 执行 11 到账 2189441 费 466065；zero_7 日志 12 执行 12 到账 8122637 费 2066911；zexos1 日志 20 执行 13 到账 3404725 费 714810
+
+C. 没被执行的日志捐款（落地拍未知：对「发令拍 + 6~19 拍」里的每一拍都算一遍需点 / 上限 / 累计——这个范围取自本局已执行捐款的实测延迟；表里的需点、上限取 +12 拍那一档）
+   需点 > 剩余额度（累计已用）: 162 条，t=2130~4265，名义到账合计 29323941；需点 6~164，上限 121~309
+      L543 t=2130 noah88→[APEX] talon5 defense_dispatch pct=380 myBal=439159 到账 163398 需点 91 累计 62 上限 121 dMe=84 dAlly=49
+      L544 t=2130 riku_x→[APEX] talon5 defense_dispatch pct=380 myBal=459686 到账 171035 需点 95 累计 62 上限 121 dMe=138 dAlly=49
+      L545 t=2135 sora_w→[APEX] talon5 defense_dispatch pct=380 myBal=442886 到账 164784 需点 92 累计 62 上限 121 dMe=38 dAlly=49
+      L546 t=2140 alex_k→[APEX] talon5 defense_dispatch pct=380 myBal=527191 到账 196152 需点 109 累计 80 上限 121 dMe=121 dAlly=50
+      L547 t=2155 noah88→[APEX] talon5 defense_dispatch pct=380 myBal=449228 到账 167144 需点 93 累计 80 上限 121 dMe=86 dAlly=54
+      L548 t=2155 riku_x→[APEX] talon5 defense_dispatch pct=380 myBal=462125 到账 171942 需点 96 累计 80 上限 121 dMe=139 dAlly=54
+      L553 t=2160 sora_w→[APEX] talon5 defense_dispatch pct=380 myBal=459293 到账 170889 需点 95 累计 80 上限 121 dMe=40 dAlly=54
+      L560 t=2180 noah88→[APEX] ryan_m offense_dispatch pct=320 myBal=464766 到账 145693 需点 82 累计 94 上限 121 dMe=89 dAlly=26
+      L561 t=2180 riku_x→[APEX] ryan_m offense_dispatch pct=320 myBal=465459 到账 145910 需点 82 累计 94 上限 121 dMe=140 dAlly=26
+      L562 t=2190 alex_k→[APEX] ryan_m offense_dispatch pct=320 myBal=343126 到账 107561 需点 61 累计 94 上限 129 dMe=79 dAlly=26
+      L563 t=2205 riku_x→[APEX] ryan_m offense_dispatch pct=320 myBal=470877 到账 147608 需点 83 累计 94 上限 129 dMe=142 dAlly=27
+      L564 t=2205 noah88→[APEX] ryan_m offense_dispatch pct=320 myBal=480639 到账 150669 需点 84 累计 94 上限 129 dMe=92 dAlly=27
+      L565 t=2215 alex_k→[APEX] ryan_m offense_dispatch pct=320 myBal=355405 到账 111411 需点 63 累计 94 上限 129 dMe=81 dAlly=28
+      L566 t=2230 noah88→[APEX] ryan_m offense_dispatch pct=320 myBal=497263 到账 155880 需点 87 累计 94 上限 129 dMe=95 dAlly=28
+      L567 t=2230 riku_x→[APEX] ryan_m offense_dispatch pct=320 myBal=473470 到账 148421 需点 83 累计 94 上限 129 dMe=143 dAlly=28
+      L568 t=2240 alex_k→[APEX] ryan_m offense_dispatch pct=320 myBal=367697 到账 115264 需点 65 累计 94 上限 129 dMe=84 dAlly=29
+      L580 t=2265 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=376127 到账 117906 需点 66 累计 83 上限 129 dMe=86 dAlly=22
+      L581 t=2280 noah88→[APEX] ryan_m offense_dispatch pct=320 myBal=526257 到账 164969 需点 92 累计 94 上限 129 dMe=101 dAlly=25
+      L582 t=2280 riku_x→[APEX] ryan_m offense_dispatch pct=320 myBal=303623 到账 95178 需点 54 累计 94 上限 129 dMe=91 dAlly=25
+      L583 t=2290 alex_k→[APEX] talon5 defense_dispatch pct=380 myBal=389136 到账 144785 需点 81 累计 80 上限 137 dMe=89 dAlly=50
+      L584 t=2305 riku_x→[APEX] talon5 defense_dispatch pct=380 myBal=313783 到账 116749 需点 66 累计 80 上限 137 dMe=94 dAlly=51
+      L585 t=2305 noah88→[APEX] talon5 defense_dispatch pct=380 myBal=543274 到账 202136 需点 113 累计 80 上限 137 dMe=104 dAlly=51
+      L586 t=2315 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=402471 到账 126165 需点 71 累计 83 上限 137 dMe=92 dAlly=26
+      L587 t=2330 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=560178 到账 175602 需点 98 累计 83 上限 137 dMe=107 dAlly=26
+      L588 t=2330 riku_x→[APEX] kaito9 offense_dispatch pct=320 myBal=324443 到账 101705 需点 57 累计 83 上限 137 dMe=98 dAlly=26
+      L592 t=2340 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=416392 到账 130529 需点 73 累计 83 上限 137 dMe=95 dAlly=26
+      L599 t=2355 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=571040 到账 179007 需点 100 累计 83 上限 137 dMe=109 dAlly=25
+      L600 t=2355 riku_x→[APEX] kaito9 offense_dispatch pct=320 myBal=331750 到账 103995 需点 59 累计 83 上限 137 dMe=100 dAlly=25
+      L601 t=2365 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=425938 到账 133521 需点 75 累计 83 上限 137 dMe=98 dAlly=26
+      L602 t=2380 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=586712 到账 183920 需点 102 累计 83 上限 137 dMe=112 dAlly=26
+      L604 t=2390 alex_k→[APEX] talon5 defense_dispatch pct=380 myBal=440671 到账 163960 需点 92 累计 100 上限 145 dMe=101 dAlly=62
+      L607 t=2410 sora_w→[APEX] zexos1 defense_dispatch pct=380 myBal=661710 到账 246202 需点 137 累计 125 上限 145 dMe=57 dAlly=30
+      L608 t=2415 alex_k→[APEX] zexos1 defense_dispatch pct=380 myBal=454783 到账 169211 需点 94 累计 125 上限 145 dMe=104 dAlly=30
+      L619 t=2430 riku_x→[APEX] kaito9 offense_dispatch pct=320 myBal=363577 到账 113972 需点 64 累计 83 上限 145 dMe=109 dAlly=29
+      L620 t=2435 sora_w→[APEX] kaito9 offense_dispatch pct=320 myBal=677953 到账 212522 需点 118 累计 83 上限 145 dMe=59 dAlly=29
+      L621 t=2440 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=468887 到账 146985 需点 82 累计 83 上限 145 dMe=107 dAlly=29
+      L622 t=2455 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=358957 到账 112524 需点 63 累计 83 上限 145 dMe=69 dAlly=30
+      L623 t=2455 riku_x→[APEX] kaito9 offense_dispatch pct=320 myBal=370150 到账 116033 需点 65 累计 83 上限 145 dMe=111 dAlly=30
+      L624 t=2460 sora_w→[APEX] kaito9 offense_dispatch pct=320 myBal=703069 到账 220395 需点 123 累计 83 上限 145 dMe=61 dAlly=30
+      L625 t=2465 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=477932 到账 149820 需点 84 累计 83 上限 145 dMe=110 dAlly=30
+      L628 t=2485 sora_w→[APEX] kaito9 offense_dispatch pct=320 myBal=720328 到账 225805 需点 126 累计 83 上限 145 dMe=62 dAlly=31
+      L629 t=2490 alex_k→[APEX] talon5 defense_dispatch pct=380 myBal=491000 到账 182686 需点 102 累计 100 上限 153 dMe=113 dAlly=69
+      L630 t=2505 noah88→[APEX] zexos1 offense_dispatch pct=320 myBal=385103 到账 120720 需点 68 累计 125 上限 153 dMe=74 dAlly=45
+      L631 t=2505 riku_x→[APEX] zexos1 offense_dispatch pct=320 myBal=389012 到账 121946 需点 68 累计 125 上限 153 dMe=117 dAlly=45
+      L632 t=2510 sora_w→[APEX] ryan_m offense_dispatch pct=320 myBal=758704 到账 237835 需点 132 累计 94 上限 153 dMe=66 dAlly=27
+      L633 t=2515 alex_k→[APEX] talon5 defense_dispatch pct=380 myBal=503631 到账 187386 需点 104 累计 100 上限 153 dMe=115 dAlly=70
+      L645 t=2535 sora_w→[APEX] kaito9 offense_dispatch pct=320 myBal=777329 到账 243674 需点 135 累计 83 上限 153 dMe=67 dAlly=21
+      L646 t=2540 alex_k→[APEX] ryan_m offense_dispatch pct=320 myBal=515353 到账 161551 需点 90 累计 94 上限 153 dMe=118 dAlly=23
+      L648 t=2555 noah88→[APEX] ryan_m offense_dispatch pct=320 myBal=407558 到账 127759 需点 72 累计 94 上限 153 dMe=78 dAlly=22
+      L649 t=2560 sora_w→[APEX] ryan_m offense_dispatch pct=320 myBal=806127 到账 252701 需点 140 累计 139 上限 153 dMe=70 dAlly=22
+      L650 t=2565 alex_k→[APEX] ryan_m offense_dispatch pct=320 myBal=522800 到账 163885 需点 91 累计 139 上限 153 dMe=120 dAlly=22
+      L651 t=2580 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=421655 到账 132178 需点 74 累计 153 上限 153 dMe=81 dAlly=34
+      L652 t=2585 sora_w→[APEX] kaito9 offense_dispatch pct=320 myBal=825915 到账 258904 需点 144 累计 153 上限 153 dMe=72 dAlly=34
+      L653 t=2590 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=533430 到账 167217 需点 93 累计 153 上限 161 dMe=122 dAlly=34
+      L654 t=2605 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=436539 到账 136844 需点 77 累计 153 上限 161 dMe=84 dAlly=36
+      L658 t=2610 sora_w→[APEX] kaito9 offense_dispatch pct=320 myBal=868203 到账 272161 需点 151 累计 153 上限 161 dMe=75 dAlly=36
+      L665 t=2615 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=544453 到账 170673 需点 95 累计 153 上限 161 dMe=125 dAlly=36
+      L666 t=2630 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=451638 到账 141577 需点 79 累计 153 上限 161 dMe=87 dAlly=37
+      L667 t=2635 sora_w→[APEX] kaito9 offense_dispatch pct=320 myBal=889516 到账 278842 需点 155 累计 153 上限 161 dMe=77 dAlly=37
+      L668 t=2640 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=553704 到账 173573 需点 97 累计 153 上限 161 dMe=127 dAlly=37
+      L669 t=2655 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=461993 到账 144823 需点 81 累计 153 上限 161 dMe=89 dAlly=38
+      L670 t=2660 sora_w→[APEX] kaito9 offense_dispatch pct=320 myBal=922470 到账 289172 需点 160 累计 153 上限 161 dMe=80 dAlly=38
+      L671 t=2665 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=559532 到账 175400 需点 98 累计 153 上限 161 dMe=128 dAlly=38
+      L672 t=2680 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=477972 到账 149833 需点 84 累计 153 上限 161 dMe=92 dAlly=39
+      L673 t=2685 sora_w→[APEX] kaito9 offense_dispatch pct=320 myBal=945115 到账 296271 需点 164 累计 153 上限 161 dMe=82 dAlly=39
+      L674 t=2690 alex_k→[APEX] talon5 defense_dispatch pct=380 myBal=567739 到账 211238 需点 118 累计 100 上限 169 dMe=130 dAlly=81
+      L684 t=2705 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=494147 到账 154903 需点 87 累计 153 上限 169 dMe=95 dAlly=41
+      L685 t=2705 riku_x→[APEX] kaito9 offense_dispatch pct=320 myBal=193256 到账 60581 需点 35 累计 153 上限 169 dMe=58 dAlly=41
+      L687 t=2715 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=577126 到账 180915 需点 101 累计 153 上限 169 dMe=132 dAlly=42
+      L688 t=2730 riku_x→[APEX] kaito9 offense_dispatch pct=320 myBal=199821 到账 62639 需点 36 累计 153 上限 169 dMe=60 dAlly=31
+      L689 t=2730 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=511239 到账 160261 需点 90 累计 153 上限 169 dMe=98 dAlly=31
+      L691 t=2740 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=584019 到账 183076 需点 102 累计 153 上限 169 dMe=134 dAlly=27
+      L692 t=2755 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=522961 到账 163936 需点 92 累计 153 上限 169 dMe=100 dAlly=26
+      L693 t=2755 riku_x→[APEX] kaito9 offense_dispatch pct=320 myBal=204321 到账 64049 需点 37 累计 153 上限 169 dMe=62 dAlly=26
+      L695 t=2765 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=588289 到账 184414 需点 103 累计 153 上限 169 dMe=135 dAlly=26
+      L696 t=2780 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=540622 到账 169472 需点 95 累计 153 上限 169 dMe=104 dAlly=27
+      L697 t=2780 riku_x→[APEX] kaito9 offense_dispatch pct=320 myBal=211262 到账 66225 需点 38 累计 153 上限 169 dMe=64 dAlly=27
+      L700 t=2790 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=594309 到账 186301 需点 104 累计 153 上限 177 dMe=136 dAlly=27
+      L709 t=2805 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=557251 到账 174685 需点 97 累计 153 上限 177 dMe=107 dAlly=28
+      L710 t=2805 riku_x→[APEX] kaito9 offense_dispatch pct=320 myBal=219342 到账 68758 需点 39 累计 153 上限 177 dMe=66 dAlly=28
+      L712 t=2815 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=602314 到账 188811 需点 105 累计 153 上限 177 dMe=138 dAlly=28
+      L713 t=2830 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=573566 到账 179799 需点 100 累计 153 上限 177 dMe=110 dAlly=27
+      L714 t=2830 riku_x→[APEX] kaito9 offense_dispatch pct=320 myBal=226793 到账 71094 需点 41 累计 153 上限 177 dMe=68 dAlly=27
+      L716 t=2840 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=607204 到账 190344 需点 106 累计 153 上限 177 dMe=139 dAlly=28
+      L717 t=2855 noah88→[APEX] zexos1 offense_dispatch pct=320 myBal=584051 到账 183086 需点 102 累计 125 上限 177 dMe=112 dAlly=29
+      L720 t=2865 alex_k→[APEX] zexos1 offense_dispatch pct=320 myBal=610182 到账 191277 需点 107 累计 167 上限 177 dMe=140 dAlly=29
+      L728 t=2880 noah88→[APEX] zexos1 offense_dispatch pct=320 myBal=599070 到账 187794 需点 105 累计 167 上限 177 dMe=115 dAlly=36
+      L732 t=2890 alex_k→[APEX] zexos1 offense_dispatch pct=320 myBal=614400 到账 192600 需点 107 累计 167 上限 185 dMe=141 dAlly=32
+      L733 t=2905 noah88→[APEX] zexos1 defense_dispatch pct=380 myBal=613909 到账 228417 需点 127 累计 167 上限 185 dMe=118 dAlly=27
+      L734 t=2905 riku_x→[APEX] zexos1 defense_dispatch pct=380 myBal=156320 到账 58162 需点 33 累计 167 上限 185 dMe=47 dAlly=27
+      L736 t=2915 alex_k→[APEX] zexos1 offense_dispatch pct=320 myBal=621169 到账 194721 需点 108 累计 167 上限 185 dMe=142 dAlly=26
+      L737 t=2930 noah88→[APEX] zexos1 offense_dispatch pct=320 myBal=627263 到账 196632 需点 109 累计 167 上限 185 dMe=120 dAlly=26
+      L739 t=2940 alex_k→[APEX] zexos1 offense_dispatch pct=320 myBal=624403 到账 195735 需点 109 累计 167 上限 185 dMe=143 dAlly=26
+      L740 t=2955 noah88→[APEX] zexos1 offense_dispatch pct=320 myBal=635759 到账 199295 需点 111 累计 167 上限 185 dMe=122 dAlly=26
+      L742 t=2965 alex_k→[APEX] zexos1 defense_dispatch pct=380 myBal=626402 到账 233065 需点 129 累计 167 上限 185 dMe=144 dAlly=26
+      L752 t=2980 riku_x→[APEX] zexos1 defense_dispatch pct=380 myBal=170884 到账 63580 需点 36 累计 167 上限 185 dMe=51 dAlly=27
+      L753 t=2980 noah88→[APEX] zexos1 defense_dispatch pct=380 myBal=647849 到账 241045 需点 134 累计 167 上限 185 dMe=124 dAlly=27
+      L755 t=2990 alex_k→[APEX] zexos1 defense_dispatch pct=380 myBal=629161 到账 234092 需点 130 累计 167 上限 193 dMe=144 dAlly=17
+      L756 t=3000 ryan_m→[APEX] zexos1 defense_dispatch pct=267 myBal=456045 到账 119355 需点 67 累计 167 上限 193 dMe=43 dAlly=18
+      L757 t=3005 noah88→[APEX] zexos1 defense_dispatch pct=380 myBal=660667 到账 245814 需点 136 累计 167 上限 193 dMe=127 dAlly=18
+      L759 t=3005 riku_x→[APEX] zexos1 defense_dispatch pct=380 myBal=178054 到账 66248 需点 38 累计 167 上限 193 dMe=54 dAlly=18
+      L760 t=3015 alex_k→[APEX] zexos1 defense_dispatch pct=380 myBal=635101 到账 236302 需点 131 累计 167 上限 193 dMe=146 dAlly=18
+      L761 t=3025 ryan_m→[APEX] zexos1 defense_dispatch pct=285 myBal=467147 到账 130472 需点 73 累计 167 上限 193 dMe=44 dAlly=18
+      L762 t=3030 noah88→[APEX] zexos1 defense_dispatch pct=380 myBal=671093 到账 249693 需点 139 累计 167 上限 193 dMe=129 dAlly=18
+      L763 t=3030 riku_x→[APEX] zexos1 defense_dispatch pct=380 myBal=184103 到账 68499 需点 39 累计 167 上限 193 dMe=55 dAlly=18
+      L765 t=3040 alex_k→[APEX] zexos1 defense_dispatch pct=380 myBal=637070 到账 237034 需点 132 累计 167 上限 193 dMe=146 dAlly=17
+      L766 t=3050 ryan_m→[APEX] zexos1 defense_dispatch pct=311 myBal=484309 到账 147562 需点 83 累计 167 上限 193 dMe=46 dAlly=17
+      L767 t=3055 noah88→[APEX] zexos1 defense_dispatch pct=380 myBal=677618 到账 252121 需点 140 累计 167 上限 193 dMe=130 dAlly=17
+      L768 t=3055 riku_x→[APEX] zexos1 defense_dispatch pct=380 myBal=188249 到账 70041 需点 40 累计 167 上限 193 dMe=57 dAlly=17
+      L779 t=3065 alex_k→[APEX] zexos1 defense_dispatch pct=380 myBal=638280 到账 237485 需点 132 累计 167 上限 193 dMe=146 dAlly=17
+      L780 t=3075 ryan_m→[APEX] zexos1 defense_dispatch pct=328 myBal=496100 到账 159391 需点 89 累计 167 上限 193 dMe=47 dAlly=17
+      L781 t=3080 riku_x→[APEX] zexos1 defense_dispatch pct=380 myBal=194643 到账 72420 需点 41 累计 167 上限 193 dMe=59 dAlly=17
+      L782 t=3080 noah88→[APEX] zexos1 defense_dispatch pct=380 myBal=686806 到账 255540 需点 142 累计 167 上限 193 dMe=132 dAlly=17
+      L784 t=3090 alex_k→[APEX] zexos1 defense_dispatch pct=380 myBal=639939 到账 238102 需点 132 累计 167 上限 201 dMe=147 dAlly=17
+      L785 t=3100 ryan_m→[APEX] zexos1 defense_dispatch pct=366 myBal=524851 到账 188105 需点 105 累计 167 上限 201 dMe=50 dAlly=17
+      L786 t=3100 kaito9→[APEX] zexos1 defense_dispatch pct=252 myBal=543486 到账 134279 需点 75 累计 167 上限 201 dMe=42 dAlly=17
+      L787 t=3105 noah88→[APEX] zexos1 defense_dispatch pct=380 myBal=697734 到账 259606 需点 144 累计 167 上限 201 dMe=134 dAlly=17
+      L789 t=3105 riku_x→[APEX] zexos1 defense_dispatch pct=380 myBal=202349 到账 75288 需点 43 累计 167 上限 201 dMe=61 dAlly=17
+      L790 t=3115 alex_k→[APEX] zexos1 offense_dispatch pct=320 myBal=645199 到账 202254 需点 113 累计 167 上限 201 dMe=148 dAlly=17
+      L791 t=3130 riku_x→[APEX] zexos1 offense_dispatch pct=320 myBal=209223 到账 65586 需点 38 累计 167 上限 201 dMe=63 dAlly=18
+      L792 t=3130 noah88→[APEX] zexos1 offense_dispatch pct=320 myBal=705366 到账 221115 需点 123 累计 167 上限 201 dMe=135 dAlly=18
+      L794 t=3140 alex_k→[APEX] zexos1 offense_dispatch pct=320 myBal=646165 到账 202557 需点 113 累计 167 上限 201 dMe=148 dAlly=24
+      L804 t=3155 noah88→[APEX] zexos1 offense_dispatch pct=320 myBal=710099 到账 222599 需点 124 累计 167 上限 201 dMe=136 dAlly=24
+      L805 t=3155 riku_x→[APEX] zexos1 offense_dispatch pct=320 myBal=213935 到账 67063 需点 38 累计 167 上限 201 dMe=64 dAlly=24
+      L807 t=3165 alex_k→[APEX] zexos1 offense_dispatch pct=320 myBal=646811 到账 202760 需点 113 累计 167 上限 201 dMe=148 dAlly=24
+      L808 t=3180 noah88→[APEX] zexos1 offense_dispatch pct=320 myBal=716722 到账 224675 需点 125 累计 167 上限 201 dMe=137 dAlly=25
+      L811 t=3190 alex_k→[APEX] zexos1 offense_dispatch pct=320 myBal=647585 到账 203002 需点 113 累计 167 上限 209 dMe=148 dAlly=25
+      L814 t=3210 sora_w→[APEX] zexos1 offense_dispatch pct=320 myBal=1578783 到账 494911 需点 49 累计 202 上限 209 dMe=137 dAlly=27
+      L815 t=3215 alex_k→[APEX] zexos1 offense_dispatch pct=320 myBal=652337 到账 204492 需点 23 累计 202 上限 209 dMe=150 dAlly=27
+      L818 t=3235 sora_w→[APEX] zexos1 offense_dispatch pct=320 myBal=1589060 到账 498133 需点 50 累计 202 上限 209 dMe=138 dAlly=56
+      L825 t=3240 alex_k→[APEX] zexos1 offense_dispatch pct=320 myBal=652662 到账 204594 需点 23 累计 202 上限 209 dMe=150 dAlly=57
+      L829 t=3260 sora_w→[APEX] zexos1 offense_dispatch pct=320 myBal=1603403 到账 502629 需点 50 累计 202 上限 209 dMe=139 dAlly=58
+      L830 t=3265 alex_k→[APEX] zexos1 offense_dispatch pct=320 myBal=652792 到账 204634 需点 23 累计 202 上限 209 dMe=150 dAlly=58
+      L832 t=3285 sora_w→[APEX] zexos1 offense_dispatch pct=320 myBal=1612233 到账 505397 需点 50 累计 202 上限 209 dMe=140 dAlly=59
+      L833 t=3290 alex_k→[APEX] zexos1 offense_dispatch pct=320 myBal=652987 到账 204696 需点 23 累计 202 上限 219 dMe=150 dAlly=60
+      L835 t=3310 sora_w→[APEX] talon5 offense_dispatch pct=320 myBal=1635604 到账 512723 需点 71 累计 169 上限 219 dMe=142 dAlly=82
+      L848 t=3350 kaito9→[APEX] talon5 offense_dispatch pct=272 myBal=766719 到账 204408 需点 29 累计 199 上限 219 dMe=60 dAlly=95
+      L849 t=3360 sora_w→[APEX] talon5 offense_dispatch pct=320 myBal=1052101 到账 329809 需点 44 累计 199 上限 219 dMe=91 dAlly=70
+      L895 t=3710 sora_w→[APEX] zero_7 yield_opt_dispatch pct=320 myBal=676564 到账 212086 需点 13 累计 248 上限 259 dMe=59 dAlly=71
+      L907 t=3840 zexos1→[APEX] zero_7 offense_dispatch pct=202 myBal=1278611 到账 253474 需点 13 累计 265 上限 269 dMe=115 dAlly=39
+      L908 t=3865 zexos1→[APEX] zero_7 offense_dispatch pct=215 myBal=1300567 到账 274338 需点 14 累计 265 上限 269 dMe=117 dAlly=38
+      L920 t=3915 zexos1→[APEX] zero_7 yield_opt_dispatch pct=220 myBal=1362647 到账 294086 需点 14 累计 275 上限 279 dMe=122 dAlly=35
+      L921 t=3940 zexos1→[APEX] zero_7 yield_opt_dispatch pct=220 myBal=1389804 到账 299947 需点 14 累计 275 上限 279 dMe=125 dAlly=35
+      L931 t=3965 zexos1→[APEX] zero_7 yield_opt_dispatch pct=220 myBal=1361610 到账 293863 需点 13 累计 275 上限 279 dMe=122 dAlly=34
+      L936 t=4015 zexos1→[APEX] zero_7 defense_dispatch pct=199 myBal=1258713 到账 245842 需点 12 累计 285 上限 289 dMe=109 dAlly=42
+      L937 t=4015 alex_k→[APEX] zero_7 defense_dispatch pct=380 myBal=250300 到账 93129 需点 7 累计 285 上限 289 dMe=57 dAlly=42
+      L938 t=4025 ryan_m→[APEX] zero_7 defense_dispatch pct=380 myBal=573446 到账 213362 需点 11 累计 285 上限 289 dMe=54 dAlly=42
+      L939 t=4030 noah88→[APEX] zero_7 defense_dispatch pct=380 myBal=325393 到账 121069 需点 8 累计 285 上限 289 dMe=62 dAlly=43
+      L940 t=4030 riku_x→[APEX] zero_7 defense_dispatch pct=380 myBal=166086 到账 61795 需点 6 累计 285 上限 289 dMe=50 dAlly=43
+      L941 t=4040 alex_k→[APEX] zero_7 defense_dispatch pct=380 myBal=258956 到账 96349 需点 7 累计 285 上限 289 dMe=59 dAlly=49
+      L951 t=4050 ryan_m→[APEX] zero_7 defense_dispatch pct=380 myBal=594513 到账 221200 需点 11 累计 285 上限 289 dMe=56 dAlly=49
+      L952 t=4055 riku_x→[APEX] zero_7 defense_dispatch pct=380 myBal=169826 到账 63187 需点 6 累计 285 上限 289 dMe=51 dAlly=49
+      L953 t=4055 noah88→[APEX] zero_7 defense_dispatch pct=380 myBal=332853 到账 123844 需点 8 累计 285 上限 289 dMe=64 dAlly=49
+      L954 t=4065 alex_k→[APEX] zero_7 defense_dispatch pct=380 myBal=264893 到账 98558 需点 7 累计 285 上限 289 dMe=61 dAlly=50
+      L955 t=4075 ryan_m→[APEX] zero_7 defense_dispatch pct=380 myBal=608986 到账 226585 需点 11 累计 285 上限 289 dMe=58 dAlly=50
+      L959 t=4100 ryan_m→[APEX] zero_7 defense_dispatch pct=380 myBal=641885 到账 238826 需点 12 累计 292 上限 299 dMe=61 dAlly=52
+      L961 t=4105 noah88→[APEX] zero_7 defense_dispatch pct=380 myBal=357477 到账 133006 需点 8 累计 292 上限 299 dMe=69 dAlly=56
+      L963 t=4130 noah88→[APEX] zero_7 yield_opt_dispatch pct=320 myBal=369841 到账 115936 需点 8 累计 298 上限 299 dMe=71 dAlly=60
+      L972 t=4155 noah88→[APEX] zero_7 yield_opt_dispatch pct=320 myBal=378321 到账 118594 需点 8 累计 298 上限 299 dMe=73 dAlly=61
+      L985 t=4240 alex_k→[APEX] zero_7 defense_dispatch pct=380 myBal=191130 到账 71113 需点 6 累计 305 上限 309 dMe=44 dAlly=70
+      L986 t=4260 sora_w→[APEX] zero_7 defense_dispatch pct=200 myBal=1343151 到账 263645 需点 13 累计 305 上限 309 dMe=109 dAlly=74
+      L987 t=4265 alex_k→[APEX] zero_7 defense_dispatch pct=380 myBal=195511 到账 72743 需点 6 累计 305 上限 309 dMe=45 dAlly=74
+   单笔需点 > 全场上限（受捐方即使从没收过也过不了）: 83 条，t=1505~3185，名义到账合计 16787535；需点 125~353，上限 85~201
+      L417 t=1505 riku_x→[APEX] zexos1 offense_dispatch pct=320 myBal=215079 到账 67422 需点 125 累计 0 上限 85 dMe=65 dAlly=17
+      L426 t=1530 riku_x→[APEX] kaito9 offense_dispatch pct=320 myBal=229924 到账 72075 需点 133 累计 0 上限 85 dMe=69 dAlly=11
+      L428 t=1555 riku_x→[APEX] kaito9 offense_dispatch pct=320 myBal=240010 到账 75237 需点 139 累计 0 上限 85 dMe=72 dAlly=10
+      L429 t=1580 riku_x→[APEX] kaito9 offense_dispatch pct=320 myBal=255374 到账 80053 需点 148 累计 0 上限 85 dMe=77 dAlly=10
+      L430 t=1605 riku_x→[APEX] kaito9 offense_dispatch pct=320 myBal=269091 到账 84353 需点 156 累计 0 上限 91 dMe=81 dAlly=12
+      L431 t=1615 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=257649 到账 80766 需点 149 累计 0 上限 91 dMe=59 dAlly=12
+      L441 t=1630 riku_x→[APEX] kaito9 offense_dispatch pct=320 myBal=285029 到账 89349 需点 165 累计 0 上限 91 dMe=86 dAlly=12
+      L442 t=1640 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=272641 到账 85466 需点 158 累计 0 上限 91 dMe=62 dAlly=12
+      L443 t=1655 riku_x→[APEX] ryan_m offense_dispatch pct=320 myBal=295701 到账 92695 需点 171 累计 0 上限 91 dMe=89 dAlly=2
+      L444 t=1655 noah88→[APEX] zexos1 defense_dispatch pct=380 myBal=217905 到账 81075 需点 150 累计 0 上限 91 dMe=42 dAlly=23
+      L445 t=1665 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=282682 到账 88614 需点 164 累计 0 上限 91 dMe=65 dAlly=12
+      L446 t=1680 riku_x→[APEX] kaito9 offense_dispatch pct=320 myBal=311773 到账 97733 需点 180 累计 0 上限 91 dMe=94 dAlly=12
+      L447 t=1690 alex_k→[APEX] kaito9 offense_dispatch pct=320 myBal=297782 到账 93347 需点 172 累计 0 上限 97 dMe=68 dAlly=12
+      L448 t=1705 riku_x→[APEX] ryan_m offense_dispatch pct=320 myBal=325816 到账 102135 需点 188 累计 0 上限 97 dMe=98 dAlly=2
+      L458 t=1715 alex_k→[APEX] ryan_m offense_dispatch pct=320 myBal=312245 到账 97881 需点 181 累计 0 上限 97 dMe=72 dAlly=2
+      L459 t=1730 riku_x→[APEX] ryan_m offense_dispatch pct=320 myBal=341772 到账 107137 需点 198 累计 0 上限 97 dMe=103 dAlly=2
+      L460 t=1740 alex_k→[APEX] ryan_m offense_dispatch pct=320 myBal=327376 到账 102624 需点 189 累计 0 上限 97 dMe=75 dAlly=2
+      L461 t=1755 riku_x→[APEX] zero_7 offense_dispatch pct=320 myBal=351685 到账 110245 需点 203 累计 0 上限 97 dMe=106 dAlly=16
+      L462 t=1765 alex_k→[APEX] zero_7 offense_dispatch pct=320 myBal=337369 到账 105757 需点 195 累计 0 上限 97 dMe=77 dAlly=16
+      L463 t=1780 riku_x→[APEX] zero_7 offense_dispatch pct=320 myBal=365182 到账 114475 需点 211 累计 0 上限 97 dMe=110 dAlly=16
+      L464 t=1790 alex_k→[APEX] zero_7 offense_dispatch pct=320 myBal=352118 到账 110380 需点 204 累计 0 上限 103 dMe=81 dAlly=16
+      L474 t=1805 riku_x→[APEX] ryan_m offense_dispatch pct=320 myBal=376581 到账 118049 需点 218 累计 0 上限 103 dMe=113 dAlly=2
+      L475 t=1815 alex_k→[APEX] ryan_m defense_dispatch pct=380 myBal=366146 到账 136232 需点 251 累计 0 上限 103 dMe=84 dAlly=2
+      L476 t=1830 noah88→[APEX] ryan_m defense_dispatch pct=380 myBal=298870 到账 111200 需点 205 累计 0 上限 103 dMe=57 dAlly=2
+      L477 t=1830 riku_x→[APEX] ryan_m defense_dispatch pct=380 myBal=387299 到账 144102 需点 265 累计 0 上限 103 dMe=117 dAlly=2
+      L478 t=1840 alex_k→[APEX] ryan_m defense_dispatch pct=380 myBal=380386 到账 141530 需点 261 累计 0 上限 103 dMe=87 dAlly=2
+      L479 t=1855 noah88→[APEX] ryan_m defense_dispatch pct=380 myBal=306296 到账 113963 需点 210 累计 0 上限 103 dMe=59 dAlly=2
+      L480 t=1855 riku_x→[APEX] ryan_m defense_dispatch pct=380 myBal=393676 到账 146475 需点 270 累计 0 上限 103 dMe=119 dAlly=2
+      L481 t=1865 alex_k→[APEX] ryan_m defense_dispatch pct=380 myBal=389607 到账 144961 需点 267 累计 0 上限 103 dMe=89 dAlly=2
+      L482 t=1880 noah88→[APEX] ryan_m defense_dispatch pct=380 myBal=317077 到账 117974 需点 217 累计 0 上限 103 dMe=61 dAlly=2
+      L483 t=1880 riku_x→[APEX] ryan_m defense_dispatch pct=380 myBal=402120 到账 149616 需点 275 累计 0 上限 103 dMe=121 dAlly=2
+      L488 t=1890 alex_k→[APEX] ryan_m defense_dispatch pct=380 myBal=403122 到账 149989 需点 276 累计 0 上限 109 dMe=92 dAlly=2
+      L494 t=1905 riku_x→[APEX] ryan_m defense_dispatch pct=380 myBal=410645 到账 152788 需点 281 累计 0 上限 109 dMe=124 dAlly=3
+      L495 t=1905 noah88→[APEX] ryan_m defense_dispatch pct=380 myBal=329563 到账 122620 需点 226 累计 0 上限 109 dMe=63 dAlly=3
+      L496 t=1915 alex_k→[APEX] ryan_m defense_dispatch pct=380 myBal=416777 到账 155070 需点 285 累计 0 上限 109 dMe=96 dAlly=3
+      L497 t=1930 noah88→[APEX] ryan_m defense_dispatch pct=380 myBal=340962 到账 126861 需点 234 累计 0 上限 109 dMe=65 dAlly=3
+      L498 t=1930 riku_x→[APEX] ryan_m defense_dispatch pct=380 myBal=417830 到账 155462 需点 286 累计 0 上限 109 dMe=126 dAlly=3
+      L499 t=1940 alex_k→[APEX] ryan_m defense_dispatch pct=380 myBal=431193 到账 160434 需点 295 累计 0 上限 109 dMe=99 dAlly=3
+      L500 t=1955 noah88→[APEX] ryan_m defense_dispatch pct=380 myBal=348779 到账 129770 需点 239 累计 0 上限 109 dMe=67 dAlly=3
+      L501 t=1955 riku_x→[APEX] ryan_m defense_dispatch pct=380 myBal=422354 到账 157145 需点 289 累计 0 上限 109 dMe=127 dAlly=3
+      L502 t=1965 alex_k→[APEX] ryan_m defense_dispatch pct=380 myBal=441079 到账 164112 需点 302 累计 0 上限 109 dMe=101 dAlly=3
+      L510 t=1980 noah88→[APEX] ryan_m offense_dispatch pct=320 myBal=360843 到账 113115 需点 209 累计 0 上限 109 dMe=69 dAlly=3
+      L513 t=1980 riku_x→[APEX] ryan_m offense_dispatch pct=320 myBal=428762 到账 134406 需点 248 累计 0 上限 109 dMe=129 dAlly=3
+      L514 t=1990 alex_k→[APEX] ryan_m offense_dispatch pct=320 myBal=455704 到账 142852 需点 263 累计 0 上限 115 dMe=104 dAlly=3
+      L515 t=2005 noah88→[APEX] ryan_m offense_dispatch pct=320 myBal=374333 到账 117344 需点 216 累计 0 上限 115 dMe=72 dAlly=4
+      L516 t=2005 riku_x→[APEX] ryan_m offense_dispatch pct=320 myBal=436080 到账 136700 需点 252 累计 0 上限 115 dMe=131 dAlly=4
+      L517 t=2015 alex_k→[APEX] ryan_m offense_dispatch pct=320 myBal=469454 到账 147162 需点 271 累计 0 上限 115 dMe=108 dAlly=5
+      L518 t=2030 noah88→[APEX] ryan_m offense_dispatch pct=320 myBal=387281 到账 121403 需点 224 累计 0 上限 115 dMe=74 dAlly=5
+      L519 t=2030 riku_x→[APEX] ryan_m offense_dispatch pct=320 myBal=441464 到账 138388 需点 255 累计 0 上限 115 dMe=133 dAlly=5
+      L520 t=2035 sora_w→[APEX] ryan_m defense_dispatch pct=342 myBal=381704 到账 127855 需点 236 累计 0 上限 115 dMe=33 dAlly=5
+      L521 t=2040 alex_k→[APEX] ryan_m defense_dispatch pct=380 myBal=482912 到账 179677 需点 330 累计 0 上限 115 dMe=111 dAlly=5
+      L522 t=2055 riku_x→[APEX] ryan_m defense_dispatch pct=380 myBal=444869 到账 165522 需点 304 累计 0 上限 115 dMe=134 dAlly=5
+      L523 t=2055 noah88→[APEX] ryan_m defense_dispatch pct=380 myBal=396161 到账 147399 需点 271 累计 0 上限 115 dMe=76 dAlly=5
+      L524 t=2060 sora_w→[APEX] ryan_m defense_dispatch pct=366 myBal=395844 到账 141869 需点 261 累计 0 上限 115 dMe=34 dAlly=5
+      L525 t=2065 alex_k→[APEX] ryan_m defense_dispatch pct=380 myBal=491545 到账 182889 需点 336 累计 0 上限 115 dMe=113 dAlly=4
+      L535 t=2080 noah88→[APEX] ryan_m defense_dispatch pct=380 myBal=409863 到账 152497 需点 281 累计 0 上限 115 dMe=79 dAlly=4
+      L536 t=2080 riku_x→[APEX] ryan_m defense_dispatch pct=380 myBal=449600 到账 167282 需点 308 累计 0 上限 115 dMe=135 dAlly=4
+      L537 t=2085 sora_w→[APEX] ryan_m defense_dispatch pct=380 myBal=405561 到账 150897 需点 278 累计 0 上限 115 dMe=35 dAlly=4
+      L538 t=2090 alex_k→[APEX] ryan_m defense_dispatch pct=380 myBal=503935 到账 187499 需点 345 累计 0 上限 121 dMe=116 dAlly=4
+      L539 t=2105 riku_x→[APEX] ryan_m defense_dispatch pct=380 myBal=455848 到账 169607 需点 312 累计 0 上限 121 dMe=137 dAlly=5
+      L540 t=2105 noah88→[APEX] ryan_m defense_dispatch pct=380 myBal=424477 到账 157935 需点 291 累计 0 上限 121 dMe=81 dAlly=5
+      L541 t=2110 sora_w→[APEX] ryan_m defense_dispatch pct=380 myBal=432275 到账 160836 需点 296 累计 0 上限 121 dMe=37 dAlly=5
+      L542 t=2115 alex_k→[APEX] talon5 defense_dispatch pct=380 myBal=516121 到账 192033 需点 353 累计 62 上限 121 dMe=118 dAlly=48
+      L686 t=2710 sora_w→[APEX] zexos1 offense_dispatch pct=320 myBal=991819 到账 310912 需点 172 累计 125 上限 169 dMe=86 dAlly=43
+      L690 t=2735 sora_w→[APEX] kaito9 offense_dispatch pct=320 myBal=1016166 到账 318544 需点 176 累计 153 上限 169 dMe=88 dAlly=27
+      L694 t=2760 sora_w→[APEX] kaito9 offense_dispatch pct=320 myBal=1053812 到账 330345 需点 183 累计 153 上限 169 dMe=91 dAlly=27
+      L698 t=2785 sora_w→[APEX] kaito9 offense_dispatch pct=320 myBal=1079681 到账 338454 需点 187 累计 153 上限 169 dMe=93 dAlly=27
+      L711 t=2810 sora_w→[APEX] kaito9 offense_dispatch pct=320 myBal=1131370 到账 354657 需点 196 累计 153 上限 177 dMe=98 dAlly=28
+      L715 t=2835 sora_w→[APEX] kaito9 offense_dispatch pct=320 myBal=1159143 到账 363364 需点 201 累计 153 上限 177 dMe=100 dAlly=27
+      L719 t=2860 sora_w→[APEX] zexos1 offense_dispatch pct=320 myBal=1201018 到账 376490 需点 208 累计 167 上限 177 dMe=104 dAlly=29
+      L731 t=2885 sora_w→[APEX] zexos1 offense_dispatch pct=320 myBal=1227949 到账 384933 需点 213 累计 167 上限 177 dMe=106 dAlly=32
+      L735 t=2910 sora_w→[APEX] zexos1 defense_dispatch pct=380 myBal=1278072 到账 475532 需点 263 累计 167 上限 185 dMe=111 dAlly=27
+      L738 t=2935 sora_w→[APEX] zexos1 offense_dispatch pct=320 myBal=1302470 到账 408293 需点 226 累计 167 上限 185 dMe=113 dAlly=25
+      L741 t=2960 sora_w→[APEX] zexos1 defense_dispatch pct=380 myBal=1337422 到账 497615 需点 275 累计 167 上限 185 dMe=116 dAlly=26
+      L754 t=2985 sora_w→[APEX] zexos1 defense_dispatch pct=380 myBal=1359714 到账 505909 需点 279 累计 167 上限 185 dMe=118 dAlly=20
+      L758 t=3010 sora_w→[APEX] zexos1 defense_dispatch pct=380 myBal=1402582 到账 521859 需点 288 累计 167 上限 193 dMe=121 dAlly=18
+      L764 t=3035 sora_w→[APEX] zexos1 defense_dispatch pct=380 myBal=1422004 到账 529085 需点 292 累计 167 上限 193 dMe=123 dAlly=17
+      L773 t=3060 sora_w→[APEX] zexos1 defense_dispatch pct=380 myBal=1449480 到账 539308 需点 298 累计 167 上限 193 dMe=126 dAlly=17
+      L783 t=3085 sora_w→[APEX] zexos1 defense_dispatch pct=380 myBal=1466633 到账 545690 需点 301 累计 167 上限 193 dMe=127 dAlly=17
+      L788 t=3110 sora_w→[APEX] zexos1 offense_dispatch pct=320 myBal=1502275 到账 470928 需点 260 累计 167 上限 201 dMe=130 dAlly=17
+      L793 t=3135 sora_w→[APEX] zexos1 offense_dispatch pct=320 myBal=1516882 到账 475506 需点 263 累计 167 上限 201 dMe=131 dAlly=18
+      L806 t=3160 sora_w→[APEX] zexos1 offense_dispatch pct=320 myBal=1537298 到账 481906 需点 266 累计 167 上限 201 dMe=133 dAlly=24
+      L810 t=3185 sora_w→[APEX] zexos1 offense_dispatch pct=320 myBal=1549929 到账 485866 需点 268 累计 167 上限 201 dMe=134 dAlly=25
+   按下限账算得过却没执行（延迟/余额变化/友军登陆占额/其他）: 15 条，t=2255~4180，名义到账合计 1905175；需点 6~89，上限 129~299
+      L578 t=2255 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=508664 到账 159454 需点 89 累计 0 上限 129 dMe=98 dAlly=23
+      L603 t=2380 riku_x→[APEX] kaito9 offense_dispatch pct=320 myBal=342817 到账 107465 需点 61 累计 83 上限 137 dMe=103 dAlly=26
+      L606 t=2405 riku_x→[APEX] zexos1 defense_dispatch pct=380 myBal=353306 到账 131454 需点 74 累计 125 上限 145 dMe=106 dAlly=30
+      L617 t=2430 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=350912 到账 110002 需点 62 累计 83 上限 145 dMe=67 dAlly=29
+      L626 t=2480 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=371372 到账 116416 需点 65 累计 83 上限 145 dMe=71 dAlly=31
+      L627 t=2480 riku_x→[APEX] kaito9 offense_dispatch pct=320 myBal=379668 到账 119017 需点 67 累计 83 上限 145 dMe=114 dAlly=31
+      L643 t=2530 noah88→[APEX] kaito9 offense_dispatch pct=320 myBal=398423 到账 124896 需点 70 累计 83 上限 153 dMe=76 dAlly=22
+      L809 t=3180 riku_x→[APEX] zexos1 offense_dispatch pct=320 myBal=221203 到账 69341 需点 40 累计 167 上限 201 dMe=67 dAlly=25
+      L831 t=3280 noah88→[APEX] zexos1 offense_dispatch pct=320 myBal=304101 到账 95328 需点 12 累计 202 上限 209 dMe=58 dAlly=59
+      L918 t=3890 zexos1→[APEX] zero_7 offense_dispatch pct=220 myBal=1331897 到账 287450 需点 14 累计 265 上限 279 dMe=119 dAlly=28
+      L932 t=4000 ryan_m→[APEX] zero_7 defense_dispatch pct=380 myBal=559818 到账 208291 需点 10 累计 285 上限 289 dMe=53 dAlly=36
+      L956 t=4080 noah88→[APEX] zero_7 defense_dispatch pct=380 myBal=344365 到账 128127 需点 8 累计 285 上限 289 dMe=66 dAlly=50
+      L957 t=4080 riku_x→[APEX] zero_7 defense_dispatch pct=380 myBal=175595 到账 65333 需点 6 累计 285 上限 289 dMe=53 dAlly=50
+      L962 t=4115 alex_k→[APEX] zero_7 defense_dispatch pct=380 myBal=161007 到账 59905 需点 6 累计 298 上限 299 dMe=37 dAlly=56
+      L973 t=4180 noah88→[APEX] zero_7 yield_opt_dispatch pct=320 myBal=391406 到账 122696 需点 8 累计 298 上限 299 dMe=75 dAlly=64
+   需点 > 剩余额度（要么撞上换档前的贵价，要么额度被同拍先到的另一笔用掉）: 2 条，t=4005~4005，名义到账合计 176786；需点 5~7，上限 289~289
+      L934 t=4005 noah88→[APEX] zero_7 defense_dispatch pct=380 myBal=314515 到账 117021 需点 7 累计 285 上限 289 dMe=60 dAlly=36
+      L935 t=4005 riku_x→[APEX] zero_7 defense_dispatch pct=380 myBal=160629 到账 59765 需点 5 累计 285 上限 289 dMe=48 dAlly=36
+   免检期仍未执行: 1 条，t=7785~7785，名义到账合计 369371；需点 115~115，上限 659~659
+      L1392 t=7785 sora_w→[APEX] talon5 defense_dispatch pct=380 myBal=992746 到账 369371 需点 115 累计 213 上限 659 dMe=54 dAlly=114
+
+D. 顶格时长（10 拍采样；在场且没离开的拍）：硬上限 = 余额 >= 150×领土-1；软上限以上 = 余额 >= 100×领土
+  alex_k: 硬上限 50 拍（3300~4750）；软上限以上 1180 拍（1960~4750）
+  noah88: 硬上限 0 拍；软上限以上 620 拍（2280~3220）
+  riku_x: 硬上限 0 拍；软上限以上 740 拍（1720~2540）
+  ryan_m: 硬上限 0 拍；软上限以上 130 拍（4480~4600）
+  sora_w: 硬上限 20 拍（4660~5260）；软上限以上 1750 拍（2830~7580）
+  talon5: 硬上限 0 拍；软上限以上 100 拍（3240~7790）
+  zero_7: 硬上限 20 拍（5230~5240）；软上限以上 450 拍（3350~6970）
+  zexos1: 硬上限 0 拍；软上限以上 540 拍（3720~5050）
+
+E. 同一号同一拍被接受 >=3 条指令（清仓批）：拍 号 条数 | 指令(种类 pct→目标) | 批前余额 → 批后余额
+  952 sora_w ×3 | attack 70→bot#99 attack 73→bot#99 attack 73→bot#99 | 30996 → 23903 | 整数对账：3 条扣了款（正序），手续费合计 1001，发出的兵合计 6092
+  1057 noah88 ×4 | attack 56→NEUTRAL attack 70→NEUTRAL attack 82→NEUTRAL attack 95→NEUTRAL | 36457 → 25359 | 整数对账：4 条扣了款（正序），手续费合计 1523，发出的兵合计 9575
+  1085 noah88 ×5 | attack 47→bot#401 attack 77→bot#430 attack 89→bot#430 attack 94→bot#430 attack 47→NEUTRAL | 40307 → 27909 | 整数对账：4 条扣了款（正序），手续费合计 1686，发出的兵合计 10712
+  3479 zero_7 ×3 | attack 122→[AZE] Azerbaijan288 attack 122→[AZE] Azerbaijan288 attack 122→[AZE] Azerbaijan288 | 1436953 → 952110 | 整数对账：无精确解（批内另有利息/挨打）

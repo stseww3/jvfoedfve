@@ -1,0 +1,1083 @@
+# A061 alex_k 影子决策明细 t=1400~2700（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没走到 buyLand: 20 拍（t=1400~1495）
+#   出手打人/bot: 8 拍（t=1500~2555）；可用兵 45986~103157，一条指令下限(20%余额) 45494~90262，比值 63%~222%
+#   首选目标无可用兵（avail<=0）: 8 拍（t=1515~2450）；可用兵 -50468~-29924，一条指令下限(20%余额) 13792~72170，比值 -366%~-43%
+#   首选目标价高（c>=worth）: 167 拍（t=1520~2700）
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 35 拍（t=1915~2395）；可用兵 22746~78283，一条指令下限(20%余额) 47225~87757，比值 45%~91%
+#   只打无主地: 8 拍（t=1980~2635）；可用兵 4159~4159，一条指令下限(20%余额) 80276~80276，比值 5%~5%
+#   有可用兵但没发（脉冲下限/冷却/其他）: 15 拍（t=2410~2515）；可用兵 5682~30282，一条指令下限(20%余额) 72170~79316，比值 7%~41%
+#   └ 「出手打人/bot」里：8 条对人/bot 的出兵共约 545713 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1400 alex_k B=175332 L=4105 d=42.7 nb=2 neut=0 cmds=21 noFull=1 shQ=42866 | m=1.400 worth=59.8 cheap=3.8 over=0 dMedOther=11.6 safe(-1)=86903
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1405 alex_k B=175332 L=4105 d=42.7 nb=2 neut=0 cmds=21 noFull=1 shQ=43833 | m=1.405 worth=60.0 cheap=3.8 over=0 dMedOther=11.6 safe(-1)=86903
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1410 alex_k B=179873 L=4105 d=43.8 nb=2 neut=0 cmds=21 noFull=1 shQ=44968 | m=1.410 worth=61.8 cheap=3.9 over=0 dMedOther=11.9 safe(-1)=89242
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1415 alex_k B=179873 L=4105 d=43.8 nb=2 neut=0 cmds=21 noFull=1 shQ=44968 | m=1.415 worth=62.0 cheap=3.9 over=0 dMedOther=11.8 safe(-1)=89242
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1420 alex_k B=184477 L=4105 d=44.9 nb=2 neut=0 cmds=21 noFull=1 shQ=46119 | m=1.420 worth=63.8 cheap=3.9 over=0 dMedOther=12.0 safe(-1)=91615
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1425 alex_k B=184477 L=4105 d=44.9 nb=2 neut=0 cmds=21 noFull=1 shQ=46119 | m=1.425 worth=64.0 cheap=3.9 over=0 dMedOther=12.0 safe(-1)=91615
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1430 alex_k B=189144 L=4105 d=46.1 nb=2 neut=0 cmds=21 noFull=1 shQ=47286 | m=1.430 worth=65.9 cheap=4.0 over=0 dMedOther=12.5 safe(-1)=94021
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1435 alex_k B=189144 L=4105 d=46.1 nb=2 neut=0 cmds=21 noFull=1 shQ=47286 | m=1.435 worth=66.1 cheap=4.0 over=0 dMedOther=12.5 safe(-1)=94021
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1440 alex_k B=193872 L=4105 d=47.2 nb=2 neut=0 cmds=21 noFull=1 shQ=48468 | m=1.440 worth=68.0 cheap=4.0 over=0 dMedOther=12.8 safe(-1)=96457
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1445 alex_k B=193872 L=4105 d=47.2 nb=2 neut=0 cmds=21 noFull=1 shQ=48468 | m=1.445 worth=68.2 cheap=4.0 over=0 dMedOther=12.8 safe(-1)=96457
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1450 alex_k B=198660 L=4105 d=48.4 nb=2 neut=0 cmds=21 noFull=1 shQ=49665 | m=1.450 worth=70.2 cheap=4.1 over=0 dMedOther=13.1 safe(-1)=98924
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1455 alex_k B=198660 L=4105 d=48.4 nb=2 neut=0 cmds=21 noFull=1 shQ=49665 | m=1.455 worth=70.4 cheap=4.1 over=0 dMedOther=13.1 safe(-1)=98924
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1460 alex_k B=203507 L=4105 d=49.6 nb=2 neut=0 cmds=21 noFull=1 shQ=50876 | m=1.460 worth=72.4 cheap=4.1 over=0 dMedOther=13.4 safe(-1)=101422
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1465 alex_k B=203507 L=4105 d=49.6 nb=2 neut=0 cmds=21 noFull=1 shQ=50876 | m=1.465 worth=72.6 cheap=4.1 over=0 dMedOther=13.4 safe(-1)=101422
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1470 alex_k B=208391 L=4105 d=50.8 nb=2 neut=0 cmds=21 noFull=1 shQ=52097 | m=1.470 worth=74.6 cheap=4.2 over=0 dMedOther=13.7 safe(-1)=103939
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1475 alex_k B=208391 L=4105 d=50.8 nb=2 neut=0 cmds=21 noFull=1 shQ=52097 | m=1.475 worth=74.9 cheap=4.2 over=0 dMedOther=12.8 safe(-1)=103939
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1480 alex_k B=213329 L=4105 d=52.0 nb=2 neut=0 cmds=21 noFull=1 shQ=53332 | m=1.480 worth=76.9 cheap=4.2 over=0 dMedOther=14.1 safe(-1)=106484
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1485 alex_k B=213329 L=4105 d=52.0 nb=2 neut=0 cmds=21 noFull=1 shQ=53332 | m=1.485 worth=77.2 cheap=4.2 over=0 dMedOther=14.1 safe(-1)=106484
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1490 alex_k B=218320 L=4105 d=53.2 nb=2 neut=0 cmds=21 noFull=1 shQ=54580 | m=1.490 worth=79.2 cheap=4.3 over=0 dMedOther=14.4 safe(-1)=109056
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1495 alex_k B=218320 L=4105 d=53.2 nb=2 neut=0 cmds=21 noFull=1 shQ=54580 | m=1.495 worth=79.5 cheap=4.3 over=0 dMedOther=14.4 safe(-1)=109056
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1500 alex_k B=227468 L=4105 d=55.4 nb=2 neut=0 cmds=22 noFull=1 shQ=55893 | m=1.500 worth=83.1 cheap=4.3 over=0 dMedOther=15.7 safe(-1)=115900
+    → [UNSC] Big Boss#49[T1] terr=10972 bal=85390 dq=7.8 cnt=54 | c=20.7 rankC=20.7 need=168654 tD=0.49 人 | safe=115900 keep=123944 avail=100859 chunkB=45494 pulseB=27296  hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=7556 bal=212460 dq=28.1 cnt=25 | c=69.1 rankC=69.1 need=390015 tD=1.79 人 | safe=115900 keep=203400 avail=21403 chunkB=45494 pulseB=27296 不够一条 hNb=2
+    ⇒ 影子指令 attack pct=454 → [UNSC] Big Boss#49[T1]（约 101072 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1505 alex_k B=227468 L=4105 d=55.4 nb=2 neut=0 cmds=23 noFull=1 shQ=56867 | m=1.499 worth=83.1 cheap=4.4 over=0 dMedOther=15.7 safe(-1)=115900
+    → [UNSC] Big Boss#49[T1] terr=10972 bal=85390 dq=7.8 cnt=54 | c=20.7 rankC=20.7 need=168654 tD=0.49 人 | safe=115900 keep=123981 avail=100822 chunkB=45494 pulseB=27296  hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=7556 bal=212460 dq=28.1 cnt=25 | c=69.1 rankC=69.1 need=390015 tD=1.79 人 | safe=115900 keep=203461 avail=21342 chunkB=45494 pulseB=27296 不够一条 hNb=2
+    ⇒ 影子指令 attack pct=453 → [UNSC] Big Boss#49[T1]（约 100850 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1510 alex_k B=232654 L=4105 d=56.7 nb=2 neut=0 cmds=24 noFull=1 shQ=58163 | m=1.498 worth=84.9 cheap=4.4 over=0 dMedOther=16.1 safe(-1)=118622
+    → [UNSC] Big Boss#49[T1] terr=10972 bal=87336 dq=8.0 cnt=54 | c=21.1 rankC=21.1 need=172122 tD=0.49 人 | safe=118622 keep=126771 avail=103157 chunkB=46531 pulseB=27918  hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=7556 bal=217304 dq=28.8 cnt=25 | c=70.6 rankC=70.6 need=398648 tD=1.79 人 | safe=118622 keep=208087 avail=21841 chunkB=46531 pulseB=27918 不够一条 hNb=2
+    ⇒ 影子指令 attack pct=454 → [UNSC] Big Boss#49[T1]（约 103376 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1515 alex_k B=68962 L=4105 d=16.8 nb=2 neut=0 cmds=24 noFull=1 shQ=782 | m=1.498 worth=25.2 cheap=4.4 over=0 dMedOther=16.1 safe(-1)=118622
+    → [UNSC] Big Boss#49[T1] terr=10972 bal=87336 dq=8.0 cnt=54 | c=0.1 rankC=0.0 need=12641 tD=0.49 人 pulse nearCollapse bleeding | safe=118622 keep=118622 avail=-50468 chunkB=13792 pulseB=8275 无可用(avail<=0) hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=7556 bal=217304 dq=28.8 cnt=25 | c=137.6 rankC=199.5 need=398648 tD=1.79 人 crowdedHard | safe=118622 keep=Inf avail=-Inf chunkB=13792 pulseB=8275 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1520 alex_k B=38356 L=4159 d=9.2 nb=2 neut=0 cmds=24 noFull=1 shQ=2551 | m=1.497 worth=13.8 cheap=4.4 over=0 dMedOther=15.0 safe(-1)=121323
+    → Yolo🙋‍♂️#1[T3] terr=7556 bal=222193 dq=29.4 cnt=25 | c=140.5 rankC=203.7 need=407362 tD=1.96 人 crowdedHard | safe=121323 keep=Inf avail=-Inf chunkB=7671 pulseB=4603 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1525 alex_k B=38356 L=4213 d=9.1 nb=2 neut=0 cmds=24 noFull=1 shQ=3621 | m=1.496 worth=13.6 cheap=4.5 over=0 dMedOther=15.0 safe(-1)=121277
+    → Yolo🙋‍♂️#1[T3] terr=7556 bal=222193 dq=29.4 cnt=25 | c=140.5 rankC=203.7 need=407362 tD=1.96 人 crowdedHard | safe=121277 keep=Inf avail=-Inf chunkB=7671 pulseB=4603 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1530 alex_k B=39207 L=4324 d=9.1 nb=2 neut=0 cmds=24 noFull=1 shQ=4689 | m=1.496 worth=13.6 cheap=4.5 over=0 dMedOther=15.3 safe(-1)=123954
+    → Yolo🙋‍♂️#1[T3] terr=7556 bal=227125 dq=30.1 cnt=25 | c=143.5 rankC=208.1 need=416153 tD=1.96 人 crowdedHard | safe=123954 keep=Inf avail=-Inf chunkB=7841 pulseB=4705 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1535 alex_k B=39207 L=4431 d=8.8 nb=2 neut=0 cmds=24 noFull=1 shQ=5769 | m=1.495 worth=13.2 cheap=4.5 over=0 dMedOther=15.3 safe(-1)=123864
+    → Yolo🙋‍♂️#1[T3] terr=7556 bal=227125 dq=30.1 cnt=25 | c=143.5 rankC=208.1 need=416153 tD=1.97 人 crowdedHard | safe=123864 keep=Inf avail=-Inf chunkB=7841 pulseB=4705 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1540 alex_k B=40065 L=4480 d=8.9 nb=2 neut=0 cmds=24 noFull=1 shQ=6846 | m=1.494 worth=13.4 cheap=4.6 over=0 dMedOther=15.6 safe(-1)=126617
+    → Yolo🙋‍♂️#1[T3] terr=7556 bal=232099 dq=30.7 cnt=25 | c=146.6 rankC=212.5 need=425019 tD=1.97 人 crowdedHard | safe=126617 keep=Inf avail=-Inf chunkB=8013 pulseB=4808 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1545 alex_k B=40065 L=4578 d=8.8 nb=2 neut=0 cmds=24 noFull=1 shQ=7934 | m=1.493 worth=13.1 cheap=4.6 over=0 dMedOther=16.8 safe(-1)=126535
+    → Yolo🙋‍♂️#1[T3] terr=7556 bal=232099 dq=30.7 cnt=25 | c=146.6 rankC=212.5 need=425019 tD=1.83 人 crowdedHard | safe=126535 keep=Inf avail=-Inf chunkB=8013 pulseB=4808 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1550 alex_k B=40926 L=4676 d=8.8 nb=2 neut=0 cmds=24 noFull=1 shQ=9020 | m=1.492 worth=13.1 cheap=4.6 over=0 dMedOther=17.2 safe(-1)=106233
+    → Yolo🙋‍♂️#1[T3] terr=7556 bal=196108 dq=26.0 cnt=25 | c=124.5 rankC=180.5 need=360870 tD=1.51 人 crowdedHard | safe=106233 keep=Inf avail=-Inf chunkB=8185 pulseB=4911 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1555 alex_k B=40926 L=4725 d=8.7 nb=2 neut=0 cmds=24 noFull=1 shQ=10113 | m=1.492 worth=12.9 cheap=4.7 over=0 dMedOther=17.2 safe(-1)=106191
+    → Yolo🙋‍♂️#1[T3] terr=7556 bal=196108 dq=26.0 cnt=25 | c=124.5 rankC=180.5 need=360870 tD=1.51 人 crowdedHard | safe=106191 keep=Inf avail=-Inf chunkB=8185 pulseB=4911 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1560 alex_k B=41793 L=4823 d=8.7 nb=2 neut=0 cmds=24 noFull=1 shQ=10448 | m=1.491 worth=12.9 cheap=4.7 over=0 dMedOther=17.5 safe(-1)=108444
+    → Yolo🙋‍♂️#1[T3] terr=7556 bal=200265 dq=26.5 cnt=25 | c=65.7 rankC=46.0 need=368279 tD=1.51 人 crowdedHard | safe=108444 keep=Inf avail=-Inf chunkB=8359 pulseB=5015 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1565 alex_k B=41793 L=4921 d=8.5 nb=2 neut=0 cmds=24 noFull=1 shQ=10448 | m=1.490 worth=12.7 cheap=4.7 over=0 dMedOther=17.5 safe(-1)=108362
+    → Yolo🙋‍♂️#1[T3] terr=7560 bal=200265 dq=26.5 cnt=25 | c=65.7 rankC=46.0 need=368285 tD=1.51 人 crowdedHard | safe=108362 keep=Inf avail=-Inf chunkB=8359 pulseB=5015 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1570 alex_k B=42666 L=4971 d=8.6 nb=2 neut=0 cmds=24 noFull=1 shQ=10666 | m=1.490 worth=12.8 cheap=4.8 over=0 dMedOther=17.9 safe(-1)=110671
+    → Yolo🙋‍♂️#1[T3] terr=7565 bal=204450 dq=27.0 cnt=25 | c=67.0 rankC=46.9 need=375761 tD=1.51 人 crowdedHard | safe=110671 keep=Inf avail=-Inf chunkB=8533 pulseB=5120 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1575 alex_k B=42666 L=5072 d=8.4 nb=2 neut=0 cmds=24 noFull=1 shQ=10666 | m=1.489 worth=12.5 cheap=4.8 over=0 dMedOther=17.9 safe(-1)=110585
+    → Yolo🙋‍♂️#1[T3] terr=7581 bal=204450 dq=27.0 cnt=25 | c=66.8 rankC=46.8 need=375785 tD=1.51 人 crowdedHard | safe=110585 keep=Inf avail=-Inf chunkB=8533 pulseB=5120 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1580 alex_k B=43544 L=5179 d=8.4 nb=2 neut=0 cmds=24 noFull=1 shQ=10886 | m=1.488 worth=12.5 cheap=4.8 over=0 dMedOther=18.3 safe(-1)=112861
+    → Yolo🙋‍♂️#1[T3] terr=7605 bal=208661 dq=27.4 cnt=25 | c=68.0 rankC=47.6 need=383327 tD=1.50 人 crowdedHard | safe=112861 keep=Inf avail=-Inf chunkB=8709 pulseB=5225 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1585 alex_k B=43544 L=5235 d=8.3 nb=2 neut=0 cmds=24 noFull=1 shQ=10886 | m=1.487 worth=12.4 cheap=4.9 over=0 dMedOther=18.3 safe(-1)=112814
+    → Yolo🙋‍♂️#1[T3] terr=7615 bal=208661 dq=27.4 cnt=25 | c=67.9 rankC=47.5 need=383362 tD=1.50 人 crowdedHard | safe=112814 keep=Inf avail=-Inf chunkB=8709 pulseB=5225 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1590 alex_k B=44427 L=5344 d=8.3 nb=2 neut=0 cmds=24 noFull=1 shQ=11106 | m=1.486 worth=12.4 cheap=4.9 over=0 dMedOther=18.6 safe(-1)=96764
+    → Yolo🙋‍♂️#1[T3] terr=7641 bal=180256 dq=23.6 cnt=25 | c=58.7 rankC=41.1 need=332752 tD=1.27 人 crowdedHard | safe=96764 keep=Inf avail=-Inf chunkB=8885 pulseB=5331 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1595 alex_k B=44427 L=5436 d=8.2 nb=2 neut=0 cmds=24 noFull=1 shQ=11106 | m=1.486 worth=12.1 cheap=5.0 over=0 dMedOther=18.6 safe(-1)=96687
+    → Yolo🙋‍♂️#1[T3] terr=7798 bal=180256 dq=23.1 cnt=26 | c=57.6 rankC=40.3 need=332996 tD=1.24 人 crowdedHard | safe=96687 keep=Inf avail=-Inf chunkB=8885 pulseB=5331 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1600 alex_k B=50787 L=5472 d=9.3 nb=2 neut=0 cmds=24 noFull=1 shQ=11359 | m=1.485 worth=13.8 cheap=5.0 over=0 dMedOther=20.0 safe(-1)=103103
+    → Yolo🙋‍♂️#1[T3] terr=7871 bal=191732 dq=24.4 cnt=27 | c=60.6 rankC=42.4 need=353569 tD=1.22 人 crowdedHard | safe=103103 keep=Inf avail=-Inf chunkB=10157 pulseB=6094 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1605 alex_k B=50787 L=5541 d=9.2 nb=2 neut=0 cmds=24 noFull=1 shQ=12619 | m=1.484 worth=13.6 cheap=5.0 over=0 dMedOther=19.7 safe(-1)=103065
+    → Yolo🙋‍♂️#1[T3] terr=7941 bal=191767 dq=24.1 cnt=27 | c=116.1 rankC=168.4 need=353719 tD=1.22 人 crowdedHard | safe=103065 keep=Inf avail=-Inf chunkB=10157 pulseB=6094 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1610 alex_k B=51787 L=5611 d=9.2 nb=2 neut=0 cmds=24 noFull=1 shQ=12946 | m=1.484 worth=13.7 cheap=5.1 over=0 dMedOther=19.8 safe(-1)=105128
+    → Yolo🙋‍♂️#1[T3] terr=7941 bal=195544 dq=24.6 cnt=27 | c=118.3 rankC=171.6 need=360451 tD=1.24 人 crowdedHard | safe=105128 keep=Inf avail=-Inf chunkB=10357 pulseB=6214 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1615 alex_k B=51787 L=5644 d=9.2 nb=2 neut=0 cmds=24 noFull=1 shQ=12946 | m=1.483 worth=13.6 cheap=5.1 over=0 dMedOther=19.8 safe(-1)=105100
+    → Yolo🙋‍♂️#1[T3] terr=7941 bal=195544 dq=24.6 cnt=27 | c=118.3 rankC=171.6 need=360451 tD=1.24 人 crowdedHard | safe=105100 keep=Inf avail=-Inf chunkB=10357 pulseB=6214 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1620 alex_k B=52791 L=5710 d=9.2 nb=2 neut=0 cmds=24 noFull=1 shQ=13197 | m=1.482 worth=13.7 cheap=5.2 over=0 dMedOther=20.2 safe(-1)=90006
+    → Yolo🙋‍♂️#1[T3] terr=7941 bal=168775 dq=21.3 cnt=27 | c=53.1 rankC=37.2 need=312738 tD=1.05 人 crowdedHard | safe=90006 keep=Inf avail=-Inf chunkB=10558 pulseB=6335 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1625 alex_k B=52791 L=5775 d=9.1 nb=2 neut=0 cmds=24 noFull=1 shQ=13197 | m=1.481 worth=13.5 cheap=5.2 over=0 dMedOther=20.2 safe(-1)=89951
+    → Yolo🙋‍♂️#1[T3] terr=7952 bal=168775 dq=21.2 cnt=27 | c=53.0 rankC=37.1 need=312746 tD=1.05 人 crowdedHard | safe=89951 keep=Inf avail=-Inf chunkB=10558 pulseB=6335 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1630 alex_k B=53794 L=5807 d=9.3 nb=2 neut=0 cmds=24 noFull=1 shQ=13448 | m=1.480 worth=13.7 cheap=5.2 over=0 dMedOther=20.6 safe(-1)=91725
+    → Yolo🙋‍♂️#1[T3] terr=7963 bal=171981 dq=21.6 cnt=27 | c=53.9 rankC=37.8 need=318501 tD=1.05 人 crowdedHard | safe=91725 keep=Inf avail=-Inf chunkB=10759 pulseB=6455 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1635 alex_k B=53794 L=5868 d=9.2 nb=2 neut=0 cmds=24 noFull=1 shQ=13448 | m=1.480 worth=13.6 cheap=5.3 over=0 dMedOther=19.8 safe(-1)=91674
+    → Yolo🙋‍♂️#1[T3] terr=7989 bal=171981 dq=21.5 cnt=27 | c=53.8 rankC=37.6 need=318524 tD=1.09 人 crowdedHard | safe=91674 keep=Inf avail=-Inf chunkB=10759 pulseB=6455 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1640 alex_k B=54799 L=5926 d=9.2 nb=2 neut=0 cmds=24 noFull=1 shQ=13699 | m=1.479 worth=13.7 cheap=5.3 over=0 dMedOther=19.2 safe(-1)=93431
+    → Yolo🙋‍♂️#1[T3] terr=8017 bal=175197 dq=21.9 cnt=27 | c=54.6 rankC=38.2 need=324298 tD=1.14 人 crowdedHard | safe=93431 keep=Inf avail=-Inf chunkB=10960 pulseB=6576 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1645 alex_k B=54799 L=5954 d=9.2 nb=2 neut=0 cmds=24 noFull=1 shQ=13699 | m=1.478 worth=13.6 cheap=5.4 over=0 dMedOther=19.0 safe(-1)=93408
+    → Yolo🙋‍♂️#1[T3] terr=8031 bal=175197 dq=21.8 cnt=27 | c=54.5 rankC=38.1 need=324335 tD=1.15 人 crowdedHard | safe=93408 keep=Inf avail=-Inf chunkB=10960 pulseB=6576 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1650 alex_k B=55807 L=6006 d=9.3 nb=2 neut=0 cmds=24 noFull=1 shQ=13951 | m=1.478 worth=13.7 cheap=5.4 over=0 dMedOther=17.9 safe(-1)=95175
+    → Yolo🙋‍♂️#1[T3] terr=8061 bal=178420 dq=22.1 cnt=27 | c=55.2 rankC=38.7 need=330109 tD=1.24 人 crowdedHard | safe=95175 keep=Inf avail=-Inf chunkB=11161 pulseB=6697 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1655 alex_k B=55807 L=6054 d=9.2 nb=2 neut=0 cmds=24 noFull=1 shQ=13951 | m=1.477 worth=13.6 cheap=5.5 over=0 dMedOther=17.9 safe(-1)=95134
+    → Yolo🙋‍♂️#1[T3] terr=8095 bal=178420 dq=22.0 cnt=27 | c=55.0 rankC=38.5 need=330176 tD=1.23 人 crowdedHard | safe=95134 keep=Inf avail=-Inf chunkB=11161 pulseB=6697 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1660 alex_k B=56817 L=6075 d=9.4 nb=2 neut=0 cmds=24 noFull=1 shQ=14204 | m=1.476 worth=13.8 cheap=5.5 over=0 dMedOther=18.2 safe(-1)=96931
+    → Yolo🙋‍♂️#1[T3] terr=8113 bal=181649 dq=22.4 cnt=27 | c=55.9 rankC=39.1 need=335942 tD=1.23 人 crowdedHard | safe=96931 keep=Inf avail=-Inf chunkB=11363 pulseB=6818 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1665 alex_k B=56817 L=6112 d=9.3 nb=2 neut=0 cmds=24 noFull=1 shQ=14204 | m=1.475 worth=13.7 cheap=5.6 over=0 dMedOther=18.1 safe(-1)=96899
+    → Yolo🙋‍♂️#1[T3] terr=8152 bal=181649 dq=22.3 cnt=27 | c=55.6 rankC=38.9 need=335992 tD=1.23 人 crowdedHard | safe=96899 keep=Inf avail=-Inf chunkB=11363 pulseB=6818 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1670 alex_k B=57828 L=6145 d=9.4 nb=2 neut=0 cmds=24 noFull=1 shQ=14457 | m=1.474 worth=13.9 cheap=5.6 over=0 dMedOther=18.4 safe(-1)=98688
+    → Yolo🙋‍♂️#1[T3] terr=8199 bal=184882 dq=22.5 cnt=27 | c=56.2 rankC=39.4 need=341850 tD=1.23 人 crowdedHard | safe=98688 keep=Inf avail=-Inf chunkB=11566 pulseB=6939 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1675 alex_k B=57828 L=6160 d=9.4 nb=2 neut=0 cmds=24 noFull=1 shQ=14457 | m=1.474 worth=13.8 cheap=5.7 over=0 dMedOther=18.3 safe(-1)=98675
+    → Yolo🙋‍♂️#1[T3] terr=8226 bal=184882 dq=22.5 cnt=27 | c=56.1 rankC=39.3 need=341882 tD=1.23 人 crowdedHard | safe=98675 keep=Inf avail=-Inf chunkB=11566 pulseB=6939 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1680 alex_k B=58839 L=6187 d=9.5 nb=2 neut=0 cmds=24 noFull=1 shQ=14709 | m=1.473 worth=14.0 cheap=5.7 over=0 dMedOther=18.5 safe(-1)=100470
+    → Yolo🙋‍♂️#1[T3] terr=8285 bal=188117 dq=22.7 cnt=27 | c=56.6 rankC=39.6 need=347729 tD=1.23 人 crowdedHard | safe=100470 keep=Inf avail=-Inf chunkB=11768 pulseB=7061 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1685 alex_k B=58839 L=6210 d=9.5 nb=2 neut=0 cmds=24 noFull=1 shQ=14709 | m=1.472 worth=13.9 cheap=5.8 over=0 dMedOther=18.4 safe(-1)=100451
+    → Yolo🙋‍♂️#1[T3] terr=8346 bal=188117 dq=22.5 cnt=27 | c=56.2 rankC=39.4 need=347828 tD=1.23 人 crowdedHard | safe=100451 keep=Inf avail=-Inf chunkB=11768 pulseB=7061 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1690 alex_k B=59851 L=6221 d=9.6 nb=2 neut=0 cmds=24 noFull=1 shQ=14962 | m=1.472 worth=14.2 cheap=5.8 over=0 dMedOther=18.0 safe(-1)=102259
+    → Yolo🙋‍♂️#1[T3] terr=8376 bal=191352 dq=22.8 cnt=27 | c=76.0 rankC=76.0 need=353623 tD=1.27 人 crowdedHard | safe=102259 keep=Inf avail=-Inf chunkB=11970 pulseB=7182 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1695 alex_k B=59851 L=6241 d=9.6 nb=2 neut=0 cmds=24 noFull=1 shQ=14962 | m=1.471 worth=14.1 cheap=5.9 over=0 dMedOther=17.9 safe(-1)=102242
+    → Yolo🙋‍♂️#1[T3] terr=8432 bal=191352 dq=22.7 cnt=27 | c=75.5 rankC=75.5 need=353707 tD=1.27 人 crowdedHard | safe=102242 keep=Inf avail=-Inf chunkB=11970 pulseB=7182 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1700 alex_k B=67112 L=6259 d=10.7 nb=2 neut=0 cmds=24 noFull=1 shQ=15245 | m=1.470 worth=15.8 cheap=5.9 over=0 dMedOther=19.1 safe(-1)=108796
+    → Yolo🙋‍♂️#1[T3] terr=8485 bal=203046 dq=23.9 cnt=27 | c=79.4 rankC=79.4 need=374638 tD=1.25 人 crowdedHard | safe=108796 keep=Inf avail=-Inf chunkB=13422 pulseB=8053 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1705 alex_k B=67112 L=6268 d=10.7 nb=2 neut=0 cmds=24 noFull=1 shQ=16649 | m=1.469 worth=15.7 cheap=6.0 over=0 dMedOther=19.0 safe(-1)=108789
+    → Yolo🙋‍♂️#1[T3] terr=8509 bal=203046 dq=23.9 cnt=27 | c=79.2 rankC=79.2 need=374674 tD=1.25 人 crowdedHard | safe=108789 keep=Inf avail=-Inf chunkB=13422 pulseB=8053 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1710 alex_k B=68219 L=6284 d=10.9 nb=2 neut=0 cmds=24 noFull=1 shQ=17054 | m=1.468 worth=15.9 cheap=6.0 over=0 dMedOther=19.1 safe(-1)=92880
+    → Yolo🙋‍♂️#1[T3] terr=8557 bal=174752 dq=20.4 cnt=27 | c=51.2 rankC=35.8 need=324314 tD=1.07 人 crowdedHard | safe=92880 keep=Inf avail=-Inf chunkB=13644 pulseB=8186 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1715 alex_k B=68219 L=6298 d=10.8 nb=2 neut=0 cmds=24 noFull=1 shQ=17054 | m=1.468 worth=15.9 cheap=6.1 over=0 dMedOther=18.9 safe(-1)=92868
+    → Yolo🙋‍♂️#1[T3] terr=8601 bal=174752 dq=20.3 cnt=27 | c=50.9 rankC=35.6 need=324380 tD=1.08 人 crowdedHard | safe=92868 keep=Inf avail=-Inf chunkB=13644 pulseB=8186 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1720 alex_k B=69324 L=6304 d=11.0 nb=2 neut=0 cmds=24 noFull=1 shQ=17331 | m=1.467 worth=16.1 cheap=6.2 over=0 dMedOther=18.9 safe(-1)=94453
+    → Yolo🙋‍♂️#1[T3] terr=8621 bal=177582 dq=20.6 cnt=27 | c=51.6 rankC=36.1 need=329455 tD=1.09 人 crowdedHard | safe=94453 keep=Inf avail=-Inf chunkB=13865 pulseB=8319 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1725 alex_k B=69324 L=6315 d=11.0 nb=2 neut=0 cmds=24 noFull=1 shQ=17331 | m=1.466 worth=16.1 cheap=6.2 over=0 dMedOther=18.6 safe(-1)=94444
+    → Yolo🙋‍♂️#1[T3] terr=8656 bal=177582 dq=20.5 cnt=27 | c=51.4 rankC=36.0 need=329499 tD=1.10 人 crowdedHard | safe=94444 keep=Inf avail=-Inf chunkB=13865 pulseB=8319 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1730 alex_k B=70426 L=6324 d=11.1 nb=2 neut=0 cmds=24 noFull=1 shQ=17606 | m=1.466 worth=16.3 cheap=6.3 over=0 dMedOther=18.7 safe(-1)=96022
+    → Yolo🙋‍♂️#1[T3] terr=8693 bal=180405 dq=20.8 cnt=27 | c=52.0 rankC=36.4 need=334594 tD=1.11 人 crowdedHard | safe=96022 keep=Inf avail=-Inf chunkB=14085 pulseB=8451 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1735 alex_k B=70426 L=6328 d=11.1 nb=2 neut=0 cmds=24 noFull=1 shQ=17606 | m=1.465 worth=16.3 cheap=6.3 over=0 dMedOther=18.0 safe(-1)=96019
+    → Yolo🙋‍♂️#1[T3] terr=8711 bal=180405 dq=20.7 cnt=27 | c=51.9 rankC=36.3 need=334637 tD=1.15 人 crowdedHard | safe=96019 keep=Inf avail=-Inf chunkB=14085 pulseB=8451 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1740 alex_k B=71524 L=6337 d=11.3 nb=2 neut=0 cmds=24 noFull=1 shQ=17881 | m=1.464 worth=16.5 cheap=6.4 over=0 dMedOther=17.8 safe(-1)=97592
+    → Yolo🙋‍♂️#1[T3] terr=8749 bal=183219 dq=20.9 cnt=27 | c=52.4 rankC=36.7 need=339694 tD=1.18 人 crowdedHard | safe=97592 keep=Inf avail=-Inf chunkB=14305 pulseB=8583 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1745 alex_k B=71524 L=6348 d=11.3 nb=2 neut=0 cmds=24 noFull=1 shQ=17881 | m=1.463 worth=16.5 cheap=6.5 over=0 dMedOther=17.2 safe(-1)=97583
+    → Yolo🙋‍♂️#1[T3] terr=8788 bal=183219 dq=20.8 cnt=27 | c=52.2 rankC=36.5 need=339745 tD=1.21 人 crowdedHard | safe=97583 keep=Inf avail=-Inf chunkB=14305 pulseB=8583 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1750 alex_k B=72618 L=6354 d=11.4 nb=2 neut=0 cmds=24 noFull=1 shQ=18154 | m=1.462 worth=16.7 cheap=6.5 over=0 dMedOther=17.3 safe(-1)=99152
+    → Yolo🙋‍♂️#1[T3] terr=8807 bal=186022 dq=21.1 cnt=27 | c=52.9 rankC=37.0 need=344793 tD=1.22 人 crowdedHard | safe=99152 keep=Inf avail=-Inf chunkB=14524 pulseB=8714 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1755 alex_k B=72618 L=6368 d=11.4 nb=2 neut=0 cmds=24 noFull=1 shQ=18154 | m=1.462 worth=16.7 cheap=6.6 over=0 dMedOther=17.2 safe(-1)=99140
+    → Yolo🙋‍♂️#1[T3] terr=8843 bal=186022 dq=21.0 cnt=27 | c=52.7 rankC=36.9 need=344847 tD=1.22 人 crowdedHard | safe=99140 keep=Inf avail=-Inf chunkB=14524 pulseB=8714 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1760 alex_k B=73707 L=6384 d=11.5 nb=2 neut=0 cmds=24 noFull=1 shQ=18426 | m=1.461 worth=16.9 cheap=6.7 over=0 dMedOther=17.5 safe(-1)=100694
+    → Yolo🙋‍♂️#1[T3] terr=8881 bal=188812 dq=21.3 cnt=27 | c=53.2 rankC=37.2 need=349861 tD=1.21 人 crowdedHard | safe=100694 keep=Inf avail=-Inf chunkB=14741 pulseB=8845 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1765 alex_k B=73707 L=6393 d=11.5 nb=2 neut=0 cmds=24 noFull=1 shQ=18426 | m=1.460 worth=16.8 cheap=6.7 over=0 dMedOther=17.5 safe(-1)=100687
+    → Yolo🙋‍♂️#1[T3] terr=8901 bal=188812 dq=21.2 cnt=27 | c=53.1 rankC=37.2 need=349891 tD=1.21 人 crowdedHard | safe=100687 keep=Inf avail=-Inf chunkB=14741 pulseB=8845 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1770 alex_k B=74790 L=6412 d=11.7 nb=2 neut=0 cmds=24 noFull=1 shQ=18697 | m=1.460 worth=17.0 cheap=6.8 over=0 dMedOther=17.5 safe(-1)=102230
+    → Yolo🙋‍♂️#1[T3] terr=8940 bal=191587 dq=21.4 cnt=27 | c=53.6 rankC=37.5 need=354887 tD=1.22 人 crowdedHard | safe=102230 keep=Inf avail=-Inf chunkB=14958 pulseB=8975 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1775 alex_k B=74790 L=6433 d=11.6 nb=2 neut=0 cmds=24 noFull=1 shQ=18697 | m=1.459 worth=17.0 cheap=6.9 over=0 dMedOther=17.4 safe(-1)=102212
+    → Yolo🙋‍♂️#1[T3] terr=8984 bal=191587 dq=21.3 cnt=27 | c=53.4 rankC=37.3 need=354953 tD=1.23 人 crowdedHard | safe=102212 keep=Inf avail=-Inf chunkB=14958 pulseB=8975 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1780 alex_k B=75866 L=6444 d=11.8 nb=2 neut=0 cmds=24 noFull=1 shQ=18966 | m=1.458 worth=17.2 cheap=7.0 over=0 dMedOther=17.3 safe(-1)=103752
+    → Yolo🙋‍♂️#1[T3] terr=9002 bal=194345 dq=21.6 cnt=27 | c=54.0 rankC=37.8 need=359912 tD=1.25 人 crowdedHard | safe=103752 keep=Inf avail=-Inf chunkB=15173 pulseB=9104 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1785 alex_k B=75866 L=6468 d=11.7 nb=2 neut=0 cmds=24 noFull=1 shQ=18966 | m=1.457 worth=17.1 cheap=7.0 over=0 dMedOther=17.3 safe(-1)=103732
+    → Yolo🙋‍♂️#1[T3] terr=9038 bal=194345 dq=21.5 cnt=27 | c=53.8 rankC=37.6 need=359966 tD=1.24 人 crowdedHard | safe=103732 keep=Inf avail=-Inf chunkB=15173 pulseB=9104 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1790 alex_k B=76928 L=6494 d=11.8 nb=2 neut=0 cmds=24 noFull=1 shQ=19232 | m=1.457 worth=17.3 cheap=7.1 over=0 dMedOther=17.6 safe(-1)=105238
+    → Yolo🙋‍♂️#1[T3] terr=9073 bal=197065 dq=21.7 cnt=27 | c=54.3 rankC=38.0 need=364859 tD=1.24 人 crowdedHard | safe=105238 keep=Inf avail=-Inf chunkB=15386 pulseB=9231 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1795 alex_k B=76928 L=6508 d=11.8 nb=2 neut=0 cmds=24 noFull=1 shQ=19232 | m=1.456 worth=17.2 cheap=7.2 over=0 dMedOther=18.2 safe(-1)=105226
+    → Yolo🙋‍♂️#1[T3] terr=9089 bal=197065 dq=21.7 cnt=27 | c=54.2 rankC=37.9 need=364883 tD=1.19 人 crowdedHard | safe=105226 keep=Inf avail=-Inf chunkB=15386 pulseB=9231 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1800 alex_k B=84517 L=6536 d=12.9 nb=1 neut=15 cmds=24 noFull=1 shQ=19523 | m=1.455 worth=18.8 cheap=7.3 over=0 dMedOther=19.5 safe(-1)=111844
+    → Yolo🙋‍♂️#1[T3] terr=9122 bal=208886 dq=22.9 cnt=27 | c=57.1 rankC=40.0 need=386010 tD=1.17 人 crowdedHard | safe=111844 keep=Inf avail=-Inf chunkB=16903 pulseB=10142 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1805 alex_k B=84517 L=6566 d=12.9 nb=1 neut=16 cmds=24 noFull=1 shQ=20964 | m=1.454 worth=18.7 cheap=7.4 over=0 dMedOther=19.5 safe(-1)=111819
+    → Yolo🙋‍♂️#1[T3] terr=9154 bal=208886 dq=22.8 cnt=27 | c=57.0 rankC=39.9 need=386058 tD=1.17 人 crowdedHard | safe=111819 keep=Inf avail=-Inf chunkB=16903 pulseB=10142 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1810 alex_k B=85649 L=6582 d=13.0 nb=1 neut=16 cmds=24 noFull=1 shQ=21412 | m=1.454 worth=18.9 cheap=7.4 over=0 dMedOther=19.8 safe(-1)=113378
+    → Yolo🙋‍♂️#1[T3] terr=9170 bal=211685 dq=23.1 cnt=27 | c=57.6 rankC=40.3 need=391071 tD=1.17 人 crowdedHard | safe=113378 keep=Inf avail=-Inf chunkB=17130 pulseB=10278 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1815 alex_k B=85649 L=6615 d=12.9 nb=1 neut=17 cmds=24 noFull=1 shQ=21412 | m=1.453 worth=18.8 cheap=7.5 over=0 dMedOther=19.8 safe(-1)=113350
+    → Yolo🙋‍♂️#1[T3] terr=9197 bal=211685 dq=23.0 cnt=27 | c=57.4 rankC=40.2 need=391103 tD=1.16 人 crowdedHard | safe=113350 keep=Inf avail=-Inf chunkB=17130 pulseB=10278 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1820 alex_k B=86771 L=6650 d=13.0 nb=1 neut=14 cmds=24 noFull=1 shQ=21692 | m=1.452 worth=18.9 cheap=7.6 over=0 dMedOther=20.0 safe(-1)=114878
+    → Yolo🙋‍♂️#1[T3] terr=9220 bal=214458 dq=23.3 cnt=27 | c=58.0 rankC=40.6 need=396072 tD=1.16 人 crowdedHard | safe=114878 keep=Inf avail=-Inf chunkB=17354 pulseB=10413 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1825 alex_k B=86771 L=6664 d=13.0 nb=2 neut=11 cmds=24 noFull=1 shQ=21692 | m=1.451 worth=18.9 cheap=7.7 over=0 dMedOther=20.0 safe(-1)=124306
+    → Yolo🙋‍♂️#1[T3] terr=9230 bal=214458 dq=23.2 cnt=27 | c=58.0 rankC=40.6 need=396104 tD=1.16 人 crowdedHard | safe=124306 keep=Inf avail=-Inf chunkB=17354 pulseB=10413 价高(c>=worth)→break hNb=2
+    → Eyup#43[T1] terr=10035 bal=231260 dq=23.0 cnt=2 | c=138.2 rankC=138.2 need=427267 tD=1.15 人 crowdedHard | safe=124306 keep=Inf avail=-Inf chunkB=17354 pulseB=10413 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1830 alex_k B=87881 L=6686 d=13.1 nb=2 neut=10 cmds=24 noFull=1 shQ=21970 | m=1.451 worth=19.1 cheap=7.8 over=0 dMedOther=19.3 safe(-1)=125950
+    → Yolo🙋‍♂️#1[T3] terr=9247 bal=217203 dq=23.5 cnt=27 | c=58.6 rankC=41.0 need=401031 tD=1.22 人 crowdedHard | safe=125950 keep=Inf avail=-Inf chunkB=17576 pulseB=10546 价高(c>=worth)→break hNb=2
+    → Eyup#43[T1] terr=10231 bal=234220 dq=22.9 cnt=12 | c=120.2 rankC=120.2 need=432837 tD=1.19 人 crowdedHard | safe=125950 keep=Inf avail=-Inf chunkB=17576 pulseB=10546 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1835 alex_k B=87881 L=6704 d=13.1 nb=2 neut=5 cmds=24 noFull=1 shQ=21970 | m=1.450 worth=19.0 cheap=7.9 over=0 dMedOther=19.3 safe(-1)=125935
+    → Yolo🙋‍♂️#1[T3] terr=9261 bal=217203 dq=23.5 cnt=27 | c=58.5 rankC=40.9 need=401035 tD=1.21 人 crowdedHard | safe=125935 keep=Inf avail=-Inf chunkB=17576 pulseB=10546 价高(c>=worth)→break hNb=2
+    → Eyup#43[T1] terr=10343 bal=234220 dq=22.6 cnt=15 | c=100.5 rankC=100.5 need=433005 tD=1.17 人 crowdedHard | safe=125935 keep=Inf avail=-Inf chunkB=17576 pulseB=10546 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1840 alex_k B=88979 L=6709 d=13.3 nb=2 neut=5 cmds=24 noFull=1 shQ=22244 | m=1.449 worth=19.2 cheap=8.0 over=0 dMedOther=19.6 safe(-1)=127575
+    → Yolo🙋‍♂️#1[T3] terr=9266 bal=219918 dq=23.7 cnt=27 | c=59.2 rankC=41.4 need=405890 tD=1.21 人 crowdedHard | safe=127575 keep=Inf avail=-Inf chunkB=17796 pulseB=10677 价高(c>=worth)→break hNb=2
+    → Eyup#43[T1] terr=10488 bal=237147 dq=22.6 cnt=21 | c=78.8 rankC=78.8 need=438414 tD=1.16 人 crowdedHard | safe=127575 keep=Inf avail=-Inf chunkB=17796 pulseB=10677 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1845 alex_k B=88979 L=6718 d=13.2 nb=2 neut=3 cmds=24 noFull=1 shQ=22244 | m=1.448 worth=19.2 cheap=8.1 over=0 dMedOther=19.6 safe(-1)=127576
+    → Yolo🙋‍♂️#1[T3] terr=9276 bal=219918 dq=23.7 cnt=27 | c=59.1 rankC=41.4 need=405888 tD=1.21 人 crowdedHard | safe=127576 keep=Inf avail=-Inf chunkB=17796 pulseB=10677 价高(c>=worth)→break hNb=2
+    → Eyup#43[T1] terr=10488 bal=237163 dq=22.6 cnt=21 | c=78.8 rankC=78.8 need=438442 tD=1.16 人 crowdedHard | safe=127576 keep=Inf avail=-Inf chunkB=17796 pulseB=10677 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1850 alex_k B=90064 L=6723 d=13.4 nb=2 neut=3 cmds=24 noFull=1 shQ=22516 | m=1.448 worth=19.4 cheap=8.2 over=0 dMedOther=19.8 safe(-1)=129211
+    → Yolo🙋‍♂️#1[T3] terr=9288 bal=222600 dq=24.0 cnt=27 | c=59.7 rankC=41.8 need=410686 tD=1.21 人 crowdedHard | safe=129211 keep=Inf avail=-Inf chunkB=18013 pulseB=10808 价高(c>=worth)→break hNb=2
+    → Eyup#43[T1] terr=10488 bal=240080 dq=22.9 cnt=21 | c=79.7 rankC=79.7 need=443642 tD=1.16 人 crowdedHard | safe=129211 keep=Inf avail=-Inf chunkB=18013 pulseB=10808 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1855 alex_k B=90064 L=6726 d=13.4 nb=2 neut=3 cmds=24 noFull=1 shQ=22516 | m=1.447 worth=19.4 cheap=8.3 over=0 dMedOther=19.8 safe(-1)=129208
+    → Yolo🙋‍♂️#1[T3] terr=9295 bal=222600 dq=23.9 cnt=27 | c=59.7 rankC=41.8 need=410723 tD=1.21 人 crowdedHard | safe=129208 keep=Inf avail=-Inf chunkB=18013 pulseB=10808 价高(c>=worth)→break hNb=2
+    → Eyup#43[T1] terr=10488 bal=240080 dq=22.9 cnt=21 | c=79.7 rankC=79.7 need=443642 tD=1.16 人 crowdedHard | safe=129208 keep=Inf avail=-Inf chunkB=18013 pulseB=10808 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1860 alex_k B=91135 L=6733 d=13.5 nb=2 neut=4 cmds=24 noFull=1 shQ=22783 | m=1.446 worth=19.6 cheap=8.4 over=0 dMedOther=20.1 safe(-1)=130861
+    → Eyup#43[T1] terr=10488 bal=243032 dq=23.2 cnt=21 | c=80.7 rankC=80.7 need=448903 tD=1.16 人 crowdedHard | safe=130861 keep=Inf avail=-Inf chunkB=18227 pulseB=10936 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9310 bal=225293 dq=24.2 cnt=27 | c=116.6 rankC=169.0 need=415537 tD=1.21 人 crowdedHard | safe=130861 keep=Inf avail=-Inf chunkB=18227 pulseB=10936 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1865 alex_k B=91135 L=6741 d=13.5 nb=2 neut=4 cmds=24 noFull=1 shQ=22783 | m=1.445 worth=19.5 cheap=8.4 over=0 dMedOther=20.1 safe(-1)=120888
+    → Eyup#43[T1] terr=10488 bal=222147 dq=21.2 cnt=21 | c=55.5 rankC=38.9 need=411678 tD=1.06 人 crowdedHard | safe=120888 keep=Inf avail=-Inf chunkB=18227 pulseB=10936 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9327 bal=225293 dq=24.2 cnt=27 | c=116.4 rankC=168.7 need=415571 tD=1.20 人 crowdedHard | safe=120888 keep=Inf avail=-Inf chunkB=18227 pulseB=10936 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1870 alex_k B=92210 L=6745 d=13.7 nb=2 neut=4 cmds=24 noFull=1 shQ=23052 | m=1.445 worth=19.7 cheap=8.4 over=0 dMedOther=20.3 safe(-1)=122417
+    → Eyup#43[T1] terr=10525 bal=224879 dq=21.4 cnt=23 | c=71.1 rankC=71.1 need=416611 tD=1.05 人 crowdedHard | safe=122417 keep=Inf avail=-Inf chunkB=18442 pulseB=11065 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9336 bal=228019 dq=24.4 cnt=27 | c=81.1 rankC=81.1 need=420416 tD=1.20 人 crowdedHard | safe=122417 keep=Inf avail=-Inf chunkB=18442 pulseB=11065 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1875 alex_k B=92210 L=6752 d=13.7 nb=2 neut=3 cmds=24 noFull=1 shQ=23052 | m=1.444 worth=19.7 cheap=8.4 over=0 dMedOther=20.3 safe(-1)=122411
+    → Eyup#43[T1] terr=10595 bal=224879 dq=21.2 cnt=27 | c=70.6 rankC=70.6 need=416732 tD=1.04 人 crowdedHard | safe=122411 keep=Inf avail=-Inf chunkB=18442 pulseB=11065 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9356 bal=228019 dq=24.4 cnt=27 | c=80.9 rankC=80.9 need=420446 tD=1.20 人 crowdedHard | safe=122411 keep=Inf avail=-Inf chunkB=18442 pulseB=11065 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1880 alex_k B=93298 L=6757 d=13.8 nb=2 neut=2 cmds=24 noFull=1 shQ=23324 | m=1.443 worth=19.9 cheap=8.4 over=0 dMedOther=20.6 safe(-1)=123956
+    → Eyup#43[T1] terr=10595 bal=227646 dq=21.5 cnt=27 | c=71.4 rankC=71.4 need=421664 tD=1.04 人 crowdedHard | safe=123956 keep=Inf avail=-Inf chunkB=18660 pulseB=11196 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9379 bal=230778 dq=24.6 cnt=27 | c=81.7 rankC=81.7 need=425426 tD=1.20 人 crowdedHard | safe=123956 keep=Inf avail=-Inf chunkB=18660 pulseB=11196 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1885 alex_k B=93298 L=6759 d=13.8 nb=2 neut=1 cmds=24 noFull=1 shQ=23324 | m=1.442 worth=19.9 cheap=8.4 over=0 dMedOther=20.6 safe(-1)=123955
+    → Eyup#43[T1] terr=10595 bal=227646 dq=21.5 cnt=27 | c=71.4 rankC=71.4 need=421664 tD=1.04 人 crowdedHard | safe=123955 keep=Inf avail=-Inf chunkB=18660 pulseB=11196 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9392 bal=230778 dq=24.6 cnt=27 | c=81.6 rankC=81.6 need=425418 tD=1.19 人 crowdedHard | safe=123955 keep=Inf avail=-Inf chunkB=18660 pulseB=11196 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1890 alex_k B=223969 L=6760 d=33.1 nb=2 neut=0 cmds=24 noFull=1 shQ=24648 | m=1.442 worth=47.8 cheap=8.4 over=0 dMedOther=20.8 safe(-1)=125522
+    → Eyup#43[T1] terr=10595 bal=230446 dq=21.8 cnt=27 | c=53.7 rankC=53.7 need=426655 tD=1.04 人 | safe=125522 keep=Inf avail=-Inf chunkB=44794 pulseB=26876 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9392 bal=233570 dq=24.9 cnt=27 | c=61.4 rankC=61.4 need=430394 tD=1.19 人 | safe=125522 keep=Inf avail=-Inf chunkB=44794 pulseB=26876 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1895 alex_k B=223969 L=6760 d=33.1 nb=2 neut=0 cmds=24 noFull=1 shQ=27978 | m=1.441 worth=47.7 cheap=8.4 over=0 dMedOther=20.8 safe(-1)=125522
+    → Eyup#43[T1] terr=10595 bal=230446 dq=21.8 cnt=27 | c=53.7 rankC=53.7 need=426655 tD=1.04 人 | safe=125522 keep=Inf avail=-Inf chunkB=44794 pulseB=26876 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9392 bal=233570 dq=24.9 cnt=27 | c=61.4 rankC=61.4 need=430394 tD=1.19 人 | safe=125522 keep=Inf avail=-Inf chunkB=44794 pulseB=26876 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1900 alex_k B=233371 L=6760 d=34.5 nb=2 neut=0 cmds=24 noFull=1 shQ=31336 | m=1.440 worth=49.7 cheap=8.4 over=0 dMedOther=22.1 safe(-1)=132387
+    → Eyup#43[T1] terr=10595 bal=243875 dq=23.0 cnt=27 | c=56.7 rankC=56.7 need=450592 tD=1.04 人 | safe=132387 keep=Inf avail=-Inf chunkB=46674 pulseB=28005 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9392 bal=245788 dq=26.2 cnt=27 | c=64.5 rankC=64.5 need=452171 tD=1.18 人 | safe=132387 keep=Inf avail=-Inf chunkB=46674 pulseB=28005 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1905 alex_k B=233371 L=6760 d=34.5 nb=2 neut=0 cmds=24 noFull=1 shQ=34806 | m=1.439 worth=49.7 cheap=8.4 over=0 dMedOther=22.1 safe(-1)=132387
+    → Eyup#43[T1] terr=10595 bal=243875 dq=23.0 cnt=27 | c=56.7 rankC=56.7 need=450592 tD=1.04 人 | safe=132387 keep=Inf avail=-Inf chunkB=46674 pulseB=28005 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9392 bal=245788 dq=26.2 cnt=27 | c=64.5 rankC=64.5 need=452171 tD=1.18 人 | safe=132387 keep=Inf avail=-Inf chunkB=46674 pulseB=28005 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1910 alex_k B=236124 L=6760 d=34.9 nb=2 neut=0 cmds=24 noFull=1 shQ=38284 | m=1.439 worth=50.2 cheap=8.4 over=0 dMedOther=22.4 safe(-1)=134057
+    → Eyup#43[T1] terr=10595 bal=246874 dq=23.3 cnt=27 | c=57.4 rankC=57.4 need=455937 tD=1.04 人 | safe=134057 keep=Inf avail=-Inf chunkB=47225 pulseB=28335 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9392 bal=248762 dq=26.5 cnt=27 | c=65.2 rankC=65.2 need=457472 tD=1.18 人 | safe=134057 keep=Inf avail=-Inf chunkB=47225 pulseB=28335 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1915 alex_k B=236124 L=6760 d=34.9 nb=2 neut=0 cmds=24 noFull=1 shQ=41794 | m=1.438 worth=50.2 cheap=8.4 over=0 dMedOther=21.6 safe(-1)=134057
+    → Eyup#43[T1] terr=10595 bal=225659 dq=21.3 cnt=27 | c=39.5 rankC=27.7 need=418122 tD=0.99 人 | safe=134057 keep=205295 avail=28062 chunkB=47225 pulseB=28335 不够一条 hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9392 bal=248762 dq=26.5 cnt=27 | c=65.2 rankC=65.2 need=457472 tD=1.23 人 | safe=134057 keep=Inf avail=-Inf chunkB=47225 pulseB=28335 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1920 alex_k B=238910 L=6760 d=35.3 nb=2 neut=0 cmds=24 noFull=1 shQ=45312 | m=1.437 worth=50.8 cheap=8.4 over=0 dMedOther=21.9 safe(-1)=135748
+    → Eyup#43[T1] terr=10626 bal=228434 dq=21.5 cnt=29 | c=39.9 rankC=27.9 need=423107 tD=0.98 人 | safe=135748 keep=207435 avail=28676 chunkB=47782 pulseB=28669 不够一条 hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9392 bal=251772 dq=26.8 cnt=27 | c=66.0 rankC=66.0 need=462837 tD=1.22 人 | safe=135748 keep=Inf avail=-Inf chunkB=47782 pulseB=28669 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1925 alex_k B=238910 L=6760 d=35.3 nb=2 neut=0 cmds=24 noFull=1 shQ=48862 | m=1.436 worth=50.8 cheap=8.4 over=0 dMedOther=21.9 safe(-1)=135748
+    → Eyup#43[T1] terr=10709 bal=228434 dq=21.3 cnt=35 | c=52.7 rankC=52.7 need=423224 tD=0.97 人 | safe=135748 keep=Inf avail=-Inf chunkB=47782 pulseB=28669 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9392 bal=251772 dq=26.8 cnt=27 | c=66.0 rankC=66.0 need=462837 tD=1.22 人 | safe=135748 keep=Inf avail=-Inf chunkB=47782 pulseB=28669 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1930 alex_k B=241729 L=6760 d=35.8 nb=2 neut=0 cmds=24 noFull=1 shQ=52421 | m=1.435 worth=51.3 cheap=8.4 over=0 dMedOther=22.1 safe(-1)=137460
+    → Eyup#43[T1] terr=10709 bal=231255 dq=21.6 cnt=35 | c=53.3 rankC=53.3 need=428252 tD=0.98 人 | safe=137460 keep=Inf avail=-Inf chunkB=48346 pulseB=29007 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9392 bal=254818 dq=27.1 cnt=27 | c=66.8 rankC=66.8 need=468266 tD=1.23 人 | safe=137460 keep=Inf avail=-Inf chunkB=48346 pulseB=29007 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1935 alex_k B=241729 L=6760 d=35.8 nb=2 neut=0 cmds=24 noFull=1 shQ=56016 | m=1.435 worth=51.3 cheap=8.4 over=0 dMedOther=22.0 safe(-1)=137460
+    → Eyup#43[T1] terr=10709 bal=231255 dq=21.6 cnt=35 | c=53.3 rankC=53.3 need=428252 tD=0.98 人 | safe=137460 keep=Inf avail=-Inf chunkB=48346 pulseB=29007 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9392 bal=254818 dq=27.1 cnt=27 | c=66.8 rankC=66.8 need=468266 tD=1.23 人 | safe=137460 keep=Inf avail=-Inf chunkB=48346 pulseB=29007 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1940 alex_k B=244581 L=6760 d=36.2 nb=2 neut=0 cmds=24 noFull=1 shQ=59619 | m=1.434 worth=51.9 cheap=8.4 over=0 dMedOther=22.3 safe(-1)=139192
+    → Eyup#43[T1] terr=10709 bal=234099 dq=21.9 cnt=35 | c=53.9 rankC=53.9 need=433321 tD=0.98 人 | safe=139192 keep=Inf avail=-Inf chunkB=48916 pulseB=29350 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9392 bal=257901 dq=27.5 cnt=27 | c=97.9 rankC=142.0 need=473761 tD=1.23 人 | safe=139192 keep=Inf avail=-Inf chunkB=48916 pulseB=29350 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1945 alex_k B=244581 L=6760 d=36.2 nb=2 neut=0 cmds=24 noFull=1 shQ=61145 | m=1.433 worth=51.9 cheap=8.4 over=0 dMedOther=22.3 safe(-1)=139192
+    → Eyup#43[T1] terr=10709 bal=234099 dq=21.9 cnt=35 | c=53.9 rankC=53.9 need=433321 tD=0.98 人 | safe=139192 keep=Inf avail=-Inf chunkB=48916 pulseB=29350 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9392 bal=257901 dq=27.5 cnt=27 | c=97.9 rankC=142.0 need=473761 tD=1.23 人 | safe=139192 keep=Inf avail=-Inf chunkB=48916 pulseB=29350 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1950 alex_k B=247467 L=6760 d=36.6 nb=2 neut=0 cmds=24 noFull=1 shQ=61866 | m=1.433 worth=52.4 cheap=8.4 over=0 dMedOther=22.6 safe(-1)=140944
+    → Eyup#43[T1] terr=10709 bal=236978 dq=22.1 cnt=35 | c=54.6 rankC=54.6 need=438452 tD=0.98 人 | safe=140944 keep=Inf avail=-Inf chunkB=49493 pulseB=29696 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9392 bal=261021 dq=27.8 cnt=27 | c=68.3 rankC=68.3 need=479322 tD=1.23 人 | safe=140944 keep=Inf avail=-Inf chunkB=49493 pulseB=29696 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1955 alex_k B=247467 L=6760 d=36.6 nb=2 neut=0 cmds=24 noFull=1 shQ=61866 | m=1.432 worth=52.4 cheap=8.4 over=0 dMedOther=22.6 safe(-1)=140944
+    → Eyup#43[T1] terr=10709 bal=236978 dq=22.1 cnt=35 | c=54.6 rankC=54.6 need=438452 tD=0.98 人 | safe=140944 keep=Inf avail=-Inf chunkB=49493 pulseB=29696 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9392 bal=261021 dq=27.8 cnt=27 | c=68.3 rankC=68.3 need=479322 tD=1.23 人 | safe=140944 keep=Inf avail=-Inf chunkB=49493 pulseB=29696 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1960 alex_k B=250387 L=6760 d=37.0 nb=2 neut=0 cmds=24 noFull=1 shQ=62596 | m=1.431 worth=53.0 cheap=8.4 over=0 dMedOther=22.8 safe(-1)=142719
+    → Eyup#43[T1] terr=10709 bal=239892 dq=22.4 cnt=35 | c=55.2 rankC=55.2 need=443646 tD=0.98 人 | safe=142719 keep=Inf avail=-Inf chunkB=50077 pulseB=30046 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9392 bal=264179 dq=28.1 cnt=27 | c=69.1 rankC=69.1 need=484951 tD=1.23 人 | safe=142719 keep=Inf avail=-Inf chunkB=50077 pulseB=30046 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1965 alex_k B=250387 L=6760 d=37.0 nb=2 neut=0 cmds=24 noFull=1 shQ=62596 | m=1.430 worth=53.0 cheap=8.4 over=0 dMedOther=22.8 safe(-1)=129074
+    → Yolo🙋‍♂️#1[T3] terr=9392 bal=223676 dq=23.8 cnt=27 | c=44.2 rankC=30.9 need=412760 tD=1.04 人 | safe=129074 keep=224707 avail=22746 chunkB=50077 pulseB=30046 不够一条 hNb=2
+    → Eyup#43[T1] terr=10709 bal=239892 dq=22.4 cnt=35 | c=55.2 rankC=55.2 need=443646 tD=0.98 人 | safe=129074 keep=Inf avail=-Inf chunkB=50077 pulseB=30046 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1970 alex_k B=253341 L=6760 d=37.5 nb=2 neut=0 cmds=24 noFull=1 shQ=63335 | m=1.429 worth=53.6 cheap=8.4 over=0 dMedOther=22.8 safe(-1)=130731
+    → Yolo🙋‍♂️#1[T3] terr=9405 bal=226382 dq=24.1 cnt=27 | c=44.6 rankC=31.2 need=417611 tD=1.06 人 | safe=130731 keep=227248 avail=23125 chunkB=50668 pulseB=30401 不够一条 hNb=2
+    → Eyup#43[T1] terr=10709 bal=242842 dq=22.7 cnt=35 | c=55.9 rankC=55.9 need=448904 tD=0.99 人 | safe=130731 keep=Inf avail=-Inf chunkB=50668 pulseB=30401 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1975 alex_k B=253341 L=6760 d=37.5 nb=2 neut=0 cmds=24 noFull=1 shQ=63335 | m=1.429 worth=53.5 cheap=8.4 over=0 dMedOther=22.8 safe(-1)=130731
+    → Yolo🙋‍♂️#1[T3] terr=9433 bal=226382 dq=24.0 cnt=28 | c=44.5 rankC=31.2 need=417653 tD=1.05 人 | safe=130731 keep=226955 avail=23418 chunkB=50668 pulseB=30401 不够一条 hNb=2
+    → Eyup#43[T1] terr=10709 bal=242842 dq=22.7 cnt=35 | c=55.9 rankC=55.9 need=448904 tD=0.99 人 | safe=130731 keep=Inf avail=-Inf chunkB=50668 pulseB=30401 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1980 alex_k B=256330 L=6760 d=37.9 nb=2 neut=59 cmds=25 noFull=1 shQ=64082 | m=1.428 worth=54.1 cheap=8.4 over=0 dMedOther=23.0 safe(-1)=132409
+    → Eyup#43[T1] terr=10709 bal=245828 dq=23.0 cnt=35 | c=56.5 rankC=56.5 need=454227 tD=1.00 人 | safe=132409 keep=Inf avail=-Inf chunkB=51266 pulseB=30760 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9460 bal=229121 dq=24.2 cnt=36 | c=59.8 rankC=59.8 need=422567 tD=1.06 人 | safe=132409 keep=Inf avail=-Inf chunkB=51266 pulseB=30760 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 12015 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=1985 alex_k B=256330 L=6760 d=37.9 nb=2 neut=57 cmds=26 noFull=1 shQ=64082 | m=1.427 worth=54.1 cheap=8.4 over=0 dMedOther=23.0 safe(-1)=132409
+    → Eyup#43[T1] terr=10709 bal=245828 dq=23.0 cnt=35 | c=56.5 rankC=56.5 need=454227 tD=1.00 人 | safe=132409 keep=Inf avail=-Inf chunkB=51266 pulseB=30760 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9468 bal=229121 dq=24.2 cnt=38 | c=59.8 rankC=59.8 need=422579 tD=1.05 人 | safe=132409 keep=Inf avail=-Inf chunkB=51266 pulseB=30760 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 12015 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=1990 alex_k B=244159 L=6760 d=36.1 nb=2 neut=51 cmds=26 noFull=1 shQ=49039 | m=1.427 worth=51.5 cheap=8.4 over=0 dMedOther=23.2 safe(-1)=134107
+    → Eyup#43[T1] terr=10709 bal=248851 dq=23.2 cnt=35 | c=57.2 rankC=57.2 need=459615 tD=1.00 人 | safe=134107 keep=Inf avail=-Inf chunkB=48832 pulseB=29299 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9480 bal=231916 dq=24.5 cnt=44 | c=60.4 rankC=60.4 need=427578 tD=1.05 人 | safe=134107 keep=Inf avail=-Inf chunkB=48832 pulseB=29299 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1995 alex_k B=244159 L=6760 d=36.1 nb=2 neut=49 cmds=26 noFull=1 shQ=52669 | m=1.426 worth=51.5 cheap=8.4 over=0 dMedOther=23.2 safe(-1)=134107
+    → Eyup#43[T1] terr=10709 bal=248851 dq=23.2 cnt=35 | c=57.2 rankC=57.2 need=459615 tD=1.00 人 | safe=134107 keep=Inf avail=-Inf chunkB=48832 pulseB=29299 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9485 bal=231916 dq=24.5 cnt=46 | c=60.3 rankC=60.3 need=427595 tD=1.05 人 | safe=134107 keep=Inf avail=-Inf chunkB=48832 pulseB=29299 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2000 alex_k B=239420 L=6854 d=34.9 nb=2 neut=45 cmds=26 noFull=1 shQ=56113 | m=1.425 worth=49.8 cheap=8.4 over=0 dMedOther=25.0 safe(-1)=141763
+    → Eyup#43[T1] terr=10709 bal=262620 dq=24.5 cnt=38 | c=60.2 rankC=60.2 need=484157 tD=0.98 人 | safe=141763 keep=Inf avail=-Inf chunkB=47884 pulseB=28730 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=244231 dq=25.7 cnt=48 | c=63.4 rankC=63.4 need=449556 tD=1.03 人 | safe=141763 keep=Inf avail=-Inf chunkB=47884 pulseB=28730 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2005 alex_k B=239420 L=6943 d=34.5 nb=2 neut=43 cmds=26 noFull=1 shQ=59673 | m=1.420 worth=49.0 cheap=8.4 over=0 dMedOther=25.0 safe(-1)=147964
+    → Eyup#43[T1] terr=10709 bal=240052 dq=22.4 cnt=40 | c=55.2 rankC=55.2 need=443931 tD=0.90 人 | safe=147964 keep=Inf avail=-Inf chunkB=47884 pulseB=28730 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=273791 dq=28.9 cnt=48 | c=70.8 rankC=70.8 need=502245 tD=1.15 人 | safe=147964 keep=Inf avail=-Inf chunkB=47884 pulseB=28730 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2010 alex_k B=242245 L=6986 d=34.7 nb=2 neut=41 cmds=26 noFull=1 shQ=60561 | m=1.415 worth=49.0 cheap=8.4 over=0 dMedOther=25.3 safe(-1)=149804
+    → Eyup#43[T1] terr=10725 bal=243004 dq=22.7 cnt=42 | c=55.7 rankC=55.7 need=449217 tD=0.89 人 | safe=149804 keep=Inf avail=-Inf chunkB=48449 pulseB=29069 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=277131 dq=29.2 cnt=48 | c=71.6 rankC=71.6 need=508198 tD=1.15 人 | safe=149804 keep=Inf avail=-Inf chunkB=48449 pulseB=29069 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2015 alex_k B=242245 L=7064 d=34.3 nb=2 neut=34 cmds=26 noFull=1 shQ=60561 | m=1.409 worth=48.3 cheap=8.4 over=0 dMedOther=25.3 safe(-1)=149739
+    → Eyup#43[T1] terr=10747 bal=243004 dq=22.6 cnt=46 | c=55.6 rankC=55.6 need=449267 tD=0.89 人 | safe=149739 keep=Inf avail=-Inf chunkB=48449 pulseB=29069 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=277131 dq=29.2 cnt=48 | c=71.6 rankC=71.6 need=508198 tD=1.15 人 | safe=149739 keep=Inf avail=-Inf chunkB=48449 pulseB=29069 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2020 alex_k B=245103 L=7127 d=34.4 nb=2 neut=29 cmds=26 noFull=1 shQ=61275 | m=1.404 worth=48.3 cheap=8.4 over=0 dMedOther=25.7 safe(-1)=151585
+    → Eyup#43[T1] terr=10772 bal=220049 dq=20.4 cnt=51 | c=50.4 rankC=50.4 need=408365 tD=0.80 人 | safe=151585 keep=Inf avail=-Inf chunkB=49021 pulseB=29412 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=280511 dq=29.6 cnt=48 | c=105.0 rankC=152.3 need=514223 tD=1.15 人 | safe=151585 keep=Inf avail=-Inf chunkB=49021 pulseB=29412 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2025 alex_k B=245103 L=7155 d=34.3 nb=2 neut=26 cmds=26 noFull=1 shQ=61275 | m=1.399 worth=47.9 cheap=8.4 over=0 dMedOther=25.7 safe(-1)=151561
+    → Eyup#43[T1] terr=10788 bal=220049 dq=20.4 cnt=54 | c=50.3 rankC=50.3 need=408389 tD=0.79 人 | safe=151561 keep=Inf avail=-Inf chunkB=49021 pulseB=29412 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=280511 dq=29.6 cnt=48 | c=105.0 rankC=152.3 need=514223 tD=1.15 人 | safe=151561 keep=Inf avail=-Inf chunkB=49021 pulseB=29412 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2030 alex_k B=247995 L=7203 d=34.4 nb=2 neut=21 cmds=26 noFull=1 shQ=61998 | m=1.393 worth=48.0 cheap=8.4 over=0 dMedOther=26.0 safe(-1)=153443
+    → Eyup#43[T1] terr=10831 bal=222755 dq=20.6 cnt=59 | c=50.7 rankC=50.7 need=413300 tD=0.79 人 | safe=153443 keep=Inf avail=-Inf chunkB=49599 pulseB=29759 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=283933 dq=29.9 cnt=48 | c=106.3 rankC=154.1 need=520322 tD=1.15 人 | safe=153443 keep=Inf avail=-Inf chunkB=49599 pulseB=29759 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2035 alex_k B=247995 L=7241 d=34.2 nb=2 neut=17 cmds=26 noFull=1 shQ=61998 | m=1.388 worth=47.5 cheap=8.4 over=0 dMedOther=26.0 safe(-1)=153411
+    → Eyup#43[T1] terr=10871 bal=222755 dq=20.5 cnt=63 | c=50.5 rankC=50.5 need=413360 tD=0.79 人 | safe=153411 keep=Inf avail=-Inf chunkB=49599 pulseB=29759 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=283933 dq=29.9 cnt=48 | c=106.3 rankC=154.1 need=520322 tD=1.15 人 | safe=153411 keep=Inf avail=-Inf chunkB=49599 pulseB=29759 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2040 alex_k B=250921 L=7256 d=34.6 nb=2 neut=13 cmds=26 noFull=1 shQ=62730 | m=1.383 worth=47.8 cheap=8.4 over=0 dMedOther=26.3 safe(-1)=155344
+    → Eyup#43[T1] terr=10927 bal=225494 dq=20.6 cnt=67 | c=50.8 rankC=50.8 need=418326 tD=0.78 人 | safe=155344 keep=Inf avail=-Inf chunkB=50184 pulseB=30111 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=287396 dq=30.3 cnt=48 | c=107.6 rankC=155.9 need=526495 tD=1.15 人 | safe=155344 keep=Inf avail=-Inf chunkB=50184 pulseB=30111 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2045 alex_k B=250921 L=7281 d=34.5 nb=2 neut=13 cmds=26 noFull=1 shQ=62730 | m=1.378 worth=47.5 cheap=8.4 over=0 dMedOther=26.3 safe(-1)=155323
+    → Eyup#43[T1] terr=10960 bal=225494 dq=20.6 cnt=68 | c=50.7 rankC=50.7 need=418352 tD=0.78 人 | safe=155323 keep=Inf avail=-Inf chunkB=50184 pulseB=30111 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=287396 dq=30.3 cnt=48 | c=107.6 rankC=155.9 need=526495 tD=1.15 人 | safe=155323 keep=Inf avail=-Inf chunkB=50184 pulseB=30111 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2050 alex_k B=253881 L=7306 d=34.7 nb=2 neut=11 cmds=26 noFull=1 shQ=63470 | m=1.373 worth=47.7 cheap=8.4 over=0 dMedOther=26.7 safe(-1)=157271
+    → Eyup#43[T1] terr=11004 bal=228267 dq=20.7 cnt=70 | c=51.0 rankC=51.0 need=423361 tD=0.78 人 | safe=157271 keep=Inf avail=-Inf chunkB=50776 pulseB=30466 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=290902 dq=30.7 cnt=48 | c=108.8 rankC=157.8 need=532744 tD=1.15 人 | safe=157271 keep=Inf avail=-Inf chunkB=50776 pulseB=30466 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2055 alex_k B=253881 L=7317 d=34.7 nb=2 neut=12 cmds=26 noFull=1 shQ=63470 | m=1.367 worth=47.4 cheap=8.4 over=0 dMedOther=26.7 safe(-1)=157262
+    → Eyup#43[T1] terr=11026 bal=228267 dq=20.7 cnt=71 | c=50.9 rankC=50.9 need=423409 tD=0.78 人 | safe=157262 keep=Inf avail=-Inf chunkB=50776 pulseB=30466 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=290902 dq=30.7 cnt=48 | c=108.8 rankC=157.8 need=532744 tD=1.15 人 | safe=157262 keep=Inf avail=-Inf chunkB=50776 pulseB=30466 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2060 alex_k B=256876 L=7338 d=35.0 nb=2 neut=8 cmds=26 noFull=1 shQ=64219 | m=1.362 worth=47.7 cheap=8.4 over=0 dMedOther=27.0 safe(-1)=159238
+    → Eyup#43[T1] terr=11055 bal=231074 dq=20.9 cnt=75 | c=51.4 rankC=51.4 need=428463 tD=0.77 人 | safe=159238 keep=Inf avail=-Inf chunkB=51375 pulseB=30825 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=294451 dq=31.0 cnt=48 | c=110.1 rankC=159.7 need=539070 tD=1.15 人 | safe=159238 keep=Inf avail=-Inf chunkB=51375 pulseB=30825 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2065 alex_k B=256876 L=7349 d=35.0 nb=2 neut=2 cmds=26 noFull=1 shQ=64219 | m=1.357 worth=47.4 cheap=8.4 over=0 dMedOther=27.0 safe(-1)=159229
+    → Eyup#43[T1] terr=11075 bal=231074 dq=20.9 cnt=79 | c=51.3 rankC=51.3 need=428493 tD=0.77 人 | safe=159229 keep=Inf avail=-Inf chunkB=51375 pulseB=30825 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=294451 dq=31.0 cnt=48 | c=110.1 rankC=159.7 need=539070 tD=1.15 人 | safe=159229 keep=Inf avail=-Inf chunkB=51375 pulseB=30825 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2070 alex_k B=282451 L=7349 d=38.4 nb=2 neut=0 cmds=26 noFull=1 shQ=66719 | m=1.352 worth=51.9 cheap=8.4 over=0 dMedOther=27.3 safe(-1)=161247
+    → Eyup#43[T1] terr=11087 bal=270546 dq=24.4 cnt=81 | c=59.5 rankC=59.5 need=498868 tD=0.89 人 | safe=161247 keep=Inf avail=-Inf chunkB=56490 pulseB=33894 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=298043 dq=31.4 cnt=48 | c=111.5 rankC=161.6 need=545473 tD=1.15 人 | safe=161247 keep=Inf avail=-Inf chunkB=56490 pulseB=33894 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2075 alex_k B=282451 L=7349 d=38.4 nb=2 neut=0 cmds=26 noFull=1 shQ=70612 | m=1.346 worth=51.7 cheap=8.4 over=0 dMedOther=27.3 safe(-1)=161247
+    → Eyup#43[T1] terr=11087 bal=270546 dq=24.4 cnt=81 | c=59.5 rankC=59.5 need=498868 tD=0.89 人 | safe=161247 keep=Inf avail=-Inf chunkB=56490 pulseB=33894 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=298043 dq=31.4 cnt=48 | c=111.5 rankC=161.6 need=545473 tD=1.15 人 | safe=161247 keep=Inf avail=-Inf chunkB=56490 pulseB=33894 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2080 alex_k B=285783 L=7349 d=38.9 nb=2 neut=0 cmds=26 noFull=1 shQ=71445 | m=1.341 worth=52.1 cheap=8.4 over=0 dMedOther=27.7 safe(-1)=163290
+    → Eyup#43[T1] terr=11087 bal=273873 dq=24.7 cnt=81 | c=60.3 rankC=60.3 need=504799 tD=0.89 人 | safe=163290 keep=Inf avail=-Inf chunkB=57157 pulseB=34294 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=301679 dq=31.8 cnt=48 | c=112.8 rankC=163.6 need=551953 tD=1.15 人 | safe=163290 keep=Inf avail=-Inf chunkB=57157 pulseB=34294 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2085 alex_k B=285783 L=7349 d=38.9 nb=2 neut=0 cmds=26 noFull=1 shQ=71445 | m=1.336 worth=51.9 cheap=8.4 over=0 dMedOther=27.7 safe(-1)=163290
+    → Eyup#43[T1] terr=11087 bal=273873 dq=24.7 cnt=81 | c=60.3 rankC=60.3 need=504799 tD=0.89 人 | safe=163290 keep=Inf avail=-Inf chunkB=57157 pulseB=34294 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=301679 dq=31.8 cnt=48 | c=112.8 rankC=163.6 need=551953 tD=1.15 人 | safe=163290 keep=Inf avail=-Inf chunkB=57157 pulseB=34294 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2090 alex_k B=289155 L=7349 d=39.3 nb=2 neut=0 cmds=26 noFull=1 shQ=72288 | m=1.331 worth=52.4 cheap=8.4 over=0 dMedOther=28.0 safe(-1)=165357
+    → Eyup#43[T1] terr=11087 bal=277241 dq=25.0 cnt=81 | c=61.0 rankC=61.0 need=510802 tD=0.89 人 | safe=165357 keep=Inf avail=-Inf chunkB=57831 pulseB=34699 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=305359 dq=32.2 cnt=48 | c=114.1 rankC=165.5 need=558513 tD=1.15 人 | safe=165357 keep=Inf avail=-Inf chunkB=57831 pulseB=34699 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2095 alex_k B=289155 L=7349 d=39.3 nb=2 neut=0 cmds=26 noFull=1 shQ=72288 | m=1.325 worth=52.1 cheap=8.4 over=0 dMedOther=28.0 safe(-1)=165357
+    → Eyup#43[T1] terr=11087 bal=277241 dq=25.0 cnt=81 | c=61.0 rankC=61.0 need=510802 tD=0.89 人 | safe=165357 keep=Inf avail=-Inf chunkB=57831 pulseB=34699 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=305359 dq=32.2 cnt=48 | c=114.1 rankC=165.5 need=558513 tD=1.15 人 | safe=165357 keep=Inf avail=-Inf chunkB=57831 pulseB=34699 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2100 alex_k B=299916 L=7349 d=40.8 nb=2 neut=0 cmds=26 noFull=1 shQ=73180 | m=1.320 worth=53.9 cheap=8.4 over=0 dMedOther=29.4 safe(-1)=172779
+    → Eyup#43[T1] terr=11087 bal=291738 dq=26.3 cnt=81 | c=64.0 rankC=64.0 need=536642 tD=0.90 人 | safe=172779 keep=Inf avail=-Inf chunkB=59983 pulseB=35990 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=318570 dq=33.6 cnt=48 | c=119.0 rankC=172.5 need=582061 tD=1.14 人 | safe=172779 keep=Inf avail=-Inf chunkB=59983 pulseB=35990 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2105 alex_k B=299916 L=7349 d=40.8 nb=2 neut=0 cmds=26 noFull=1 shQ=74979 | m=1.315 worth=53.7 cheap=8.4 over=0 dMedOther=29.4 safe(-1)=172779
+    → Eyup#43[T1] terr=11087 bal=291738 dq=26.3 cnt=81 | c=64.0 rankC=64.0 need=536642 tD=0.90 人 | safe=172779 keep=Inf avail=-Inf chunkB=59983 pulseB=35990 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=318570 dq=33.6 cnt=48 | c=119.0 rankC=172.5 need=582061 tD=1.14 人 | safe=172779 keep=Inf avail=-Inf chunkB=59983 pulseB=35990 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2110 alex_k B=303455 L=7349 d=41.3 nb=2 neut=0 cmds=26 noFull=1 shQ=75863 | m=1.310 worth=54.1 cheap=8.4 over=0 dMedOther=29.8 safe(-1)=174962
+    → Eyup#43[T1] terr=11087 bal=295326 dq=26.6 cnt=81 | c=64.8 rankC=64.8 need=543038 tD=0.89 人 | safe=174962 keep=Inf avail=-Inf chunkB=60691 pulseB=36415 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=322456 dq=34.0 cnt=48 | c=120.4 rankC=174.5 need=588987 tD=1.14 人 | safe=174962 keep=Inf avail=-Inf chunkB=60691 pulseB=36415 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2115 alex_k B=303455 L=7349 d=41.3 nb=2 neut=0 cmds=26 noFull=1 shQ=75863 | m=1.304 worth=53.9 cheap=8.4 over=0 dMedOther=29.8 safe(-1)=174962
+    → Eyup#43[T1] terr=11087 bal=295326 dq=26.6 cnt=81 | c=64.8 rankC=64.8 need=543038 tD=0.89 人 | safe=174962 keep=Inf avail=-Inf chunkB=60691 pulseB=36415 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=322456 dq=34.0 cnt=48 | c=120.4 rankC=174.5 need=588987 tD=1.14 人 | safe=174962 keep=Inf avail=-Inf chunkB=60691 pulseB=36415 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2120 alex_k B=307035 L=7349 d=41.8 nb=2 neut=0 cmds=26 noFull=1 shQ=76758 | m=1.299 worth=54.3 cheap=8.4 over=0 dMedOther=30.1 safe(-1)=177172
+    → Eyup#43[T1] terr=11087 bal=298958 dq=27.0 cnt=81 | c=65.6 rankC=65.6 need=549512 tD=0.89 人 | safe=177172 keep=Inf avail=-Inf chunkB=61407 pulseB=36844 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=326389 dq=34.4 cnt=48 | c=121.8 rankC=176.6 need=595997 tD=1.14 人 | safe=177172 keep=Inf avail=-Inf chunkB=61407 pulseB=36844 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2125 alex_k B=307035 L=7349 d=41.8 nb=2 neut=0 cmds=26 noFull=1 shQ=76758 | m=1.294 worth=54.1 cheap=8.4 over=0 dMedOther=30.1 safe(-1)=177172
+    → Eyup#43[T1] terr=11087 bal=298958 dq=27.0 cnt=81 | c=65.6 rankC=65.6 need=549512 tD=0.89 人 | safe=177172 keep=Inf avail=-Inf chunkB=61407 pulseB=36844 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=326389 dq=34.4 cnt=48 | c=121.8 rankC=176.6 need=595997 tD=1.14 人 | safe=177172 keep=Inf avail=-Inf chunkB=61407 pulseB=36844 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2130 alex_k B=310658 L=7349 d=42.3 nb=2 neut=0 cmds=26 noFull=1 shQ=77664 | m=1.288 worth=54.5 cheap=8.4 over=0 dMedOther=30.5 safe(-1)=179408
+    → Eyup#43[T1] terr=11087 bal=302635 dq=27.3 cnt=81 | c=66.4 rankC=66.4 need=556066 tD=0.89 人 | safe=179408 keep=Inf avail=-Inf chunkB=62132 pulseB=37279 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=330370 dq=34.8 cnt=48 | c=123.3 rankC=178.7 need=603093 tD=1.14 人 | safe=179408 keep=Inf avail=-Inf chunkB=62132 pulseB=37279 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2135 alex_k B=310658 L=7349 d=42.3 nb=2 neut=0 cmds=26 noFull=1 shQ=77664 | m=1.283 worth=54.2 cheap=8.4 over=0 dMedOther=30.5 safe(-1)=179408
+    → Eyup#43[T1] terr=11087 bal=302635 dq=27.3 cnt=81 | c=66.4 rankC=66.4 need=556066 tD=0.89 人 | safe=179408 keep=Inf avail=-Inf chunkB=62132 pulseB=37279 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=330370 dq=34.8 cnt=48 | c=123.3 rankC=178.7 need=603093 tD=1.14 人 | safe=179408 keep=Inf avail=-Inf chunkB=62132 pulseB=37279 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2140 alex_k B=314323 L=7349 d=42.8 nb=2 neut=0 cmds=26 noFull=1 shQ=78580 | m=1.278 worth=54.7 cheap=8.4 over=0 dMedOther=29.3 safe(-1)=181672
+    → Eyup#43[T1] terr=11087 bal=306357 dq=27.6 cnt=81 | c=67.2 rankC=67.2 need=562700 tD=0.94 人 | safe=181672 keep=Inf avail=-Inf chunkB=62865 pulseB=37719 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=334400 dq=35.3 cnt=48 | c=124.7 rankC=180.8 need=610277 tD=1.20 人 | safe=181672 keep=Inf avail=-Inf chunkB=62865 pulseB=37719 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2145 alex_k B=314323 L=7349 d=42.8 nb=2 neut=0 cmds=26 noFull=1 shQ=78580 | m=1.273 worth=54.4 cheap=8.4 over=0 dMedOther=29.3 safe(-1)=181672
+    → Eyup#43[T1] terr=11087 bal=306357 dq=27.6 cnt=81 | c=67.2 rankC=67.2 need=562700 tD=0.94 人 | safe=181672 keep=Inf avail=-Inf chunkB=62865 pulseB=37719 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=334400 dq=35.3 cnt=48 | c=124.7 rankC=180.8 need=610277 tD=1.20 人 | safe=181672 keep=Inf avail=-Inf chunkB=62865 pulseB=37719 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2150 alex_k B=318032 L=7349 d=43.3 nb=2 neut=0 cmds=26 noFull=1 shQ=79508 | m=1.268 worth=54.9 cheap=8.4 over=0 dMedOther=29.6 safe(-1)=183964
+    → Eyup#43[T1] terr=11087 bal=310125 dq=28.0 cnt=81 | c=68.0 rankC=68.0 need=569416 tD=0.94 人 | safe=183964 keep=Inf avail=-Inf chunkB=63606 pulseB=38164 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=338479 dq=35.7 cnt=48 | c=126.2 rankC=183.0 need=617547 tD=1.20 人 | safe=183964 keep=Inf avail=-Inf chunkB=63606 pulseB=38164 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2155 alex_k B=318032 L=7349 d=43.3 nb=2 neut=0 cmds=26 noFull=1 shQ=79508 | m=1.262 worth=54.6 cheap=8.4 over=0 dMedOther=29.6 safe(-1)=183964
+    → Eyup#43[T1] terr=11087 bal=310125 dq=28.0 cnt=81 | c=68.0 rankC=68.0 need=569416 tD=0.94 人 | safe=183964 keep=Inf avail=-Inf chunkB=63606 pulseB=38164 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=338479 dq=35.7 cnt=48 | c=87.0 rankC=87.0 need=617547 tD=1.20 人 | safe=183964 keep=Inf avail=-Inf chunkB=63606 pulseB=38164 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2160 alex_k B=321784 L=7349 d=43.8 nb=2 neut=0 cmds=26 noFull=1 shQ=80446 | m=1.257 worth=55.0 cheap=8.4 over=0 dMedOther=30.0 safe(-1)=186283
+    → Eyup#43[T1] terr=11087 bal=313939 dq=28.3 cnt=81 | c=68.8 rankC=68.8 need=576215 tD=0.94 人 | safe=186283 keep=Inf avail=-Inf chunkB=64357 pulseB=38614 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=342608 dq=36.1 cnt=48 | c=88.1 rankC=88.1 need=624907 tD=1.21 人 | safe=186283 keep=Inf avail=-Inf chunkB=64357 pulseB=38614 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2165 alex_k B=321784 L=7349 d=43.8 nb=2 neut=0 cmds=26 noFull=1 shQ=80446 | m=1.252 worth=54.8 cheap=8.4 over=0 dMedOther=30.0 safe(-1)=186283
+    → Eyup#43[T1] terr=11087 bal=313939 dq=28.3 cnt=81 | c=68.8 rankC=68.8 need=576215 tD=0.94 人 | safe=186283 keep=Inf avail=-Inf chunkB=64357 pulseB=38614 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=342608 dq=36.1 cnt=48 | c=88.1 rankC=88.1 need=624907 tD=1.21 人 | safe=186283 keep=Inf avail=-Inf chunkB=64357 pulseB=38614 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2170 alex_k B=325581 L=7349 d=44.3 nb=2 neut=0 cmds=26 noFull=1 shQ=81395 | m=1.247 worth=55.2 cheap=8.4 over=0 dMedOther=30.3 safe(-1)=188631
+    → Eyup#43[T1] terr=11087 bal=317800 dq=28.7 cnt=81 | c=69.6 rankC=69.6 need=583097 tD=0.95 人 | safe=188631 keep=Inf avail=-Inf chunkB=65116 pulseB=39070 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=346787 dq=36.6 cnt=48 | c=89.1 rankC=89.1 need=632356 tD=1.21 人 | safe=188631 keep=Inf avail=-Inf chunkB=65116 pulseB=39070 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2175 alex_k B=325581 L=7349 d=44.3 nb=2 neut=0 cmds=26 noFull=1 shQ=81395 | m=1.241 worth=55.0 cheap=8.4 over=0 dMedOther=30.3 safe(-1)=188631
+    → Eyup#43[T1] terr=11087 bal=317800 dq=28.7 cnt=81 | c=69.6 rankC=69.6 need=583097 tD=0.95 人 | safe=188631 keep=Inf avail=-Inf chunkB=65116 pulseB=39070 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=346787 dq=36.6 cnt=48 | c=89.1 rankC=89.1 need=632356 tD=1.21 人 | safe=188631 keep=Inf avail=-Inf chunkB=65116 pulseB=39070 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2180 alex_k B=329422 L=7349 d=44.8 nb=2 neut=0 cmds=26 noFull=1 shQ=82355 | m=1.236 worth=55.4 cheap=8.4 over=0 dMedOther=30.7 safe(-1)=191008
+    → Eyup#43[T1] terr=11087 bal=321708 dq=29.0 cnt=81 | c=70.4 rankC=70.4 need=590063 tD=0.95 人 | safe=191008 keep=Inf avail=-Inf chunkB=65884 pulseB=39531 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=351017 dq=37.0 cnt=48 | c=90.2 rankC=90.2 need=639895 tD=1.21 人 | safe=191008 keep=Inf avail=-Inf chunkB=65884 pulseB=39531 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2185 alex_k B=329422 L=7349 d=44.8 nb=2 neut=0 cmds=26 noFull=1 shQ=82355 | m=1.231 worth=55.2 cheap=8.4 over=0 dMedOther=30.7 safe(-1)=191008
+    → Eyup#43[T1] terr=11087 bal=321708 dq=29.0 cnt=81 | c=70.4 rankC=70.4 need=590063 tD=0.95 人 | safe=191008 keep=Inf avail=-Inf chunkB=65884 pulseB=39531 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=351017 dq=37.0 cnt=48 | c=90.2 rankC=90.2 need=639895 tD=1.21 人 | safe=191008 keep=Inf avail=-Inf chunkB=65884 pulseB=39531 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2190 alex_k B=333309 L=7349 d=45.4 nb=2 neut=0 cmds=26 noFull=1 shQ=83327 | m=1.226 worth=55.6 cheap=8.4 over=0 dMedOther=31.0 safe(-1)=193413
+    → Eyup#43[T1] terr=11087 bal=325665 dq=29.4 cnt=81 | c=71.3 rankC=71.3 need=597116 tD=0.95 人 | safe=193413 keep=Inf avail=-Inf chunkB=66662 pulseB=39997 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=355299 dq=37.5 cnt=48 | c=91.3 rankC=91.3 need=647528 tD=1.21 人 | safe=193413 keep=Inf avail=-Inf chunkB=66662 pulseB=39997 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2195 alex_k B=333309 L=7349 d=45.4 nb=2 neut=0 cmds=26 noFull=1 shQ=83327 | m=1.220 worth=55.3 cheap=8.4 over=0 dMedOther=31.0 safe(-1)=193413
+    → Eyup#43[T1] terr=11087 bal=325665 dq=29.4 cnt=81 | c=71.3 rankC=71.3 need=597116 tD=0.95 人 | safe=193413 keep=Inf avail=-Inf chunkB=66662 pulseB=39997 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=355299 dq=37.5 cnt=48 | c=91.3 rankC=91.3 need=647528 tD=1.21 人 | safe=193413 keep=Inf avail=-Inf chunkB=66662 pulseB=39997 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2200 alex_k B=344591 L=7349 d=46.9 nb=2 neut=0 cmds=26 noFull=1 shQ=84352 | m=1.215 worth=57.0 cheap=8.4 over=0 dMedOther=32.4 safe(-1)=201177
+    → Eyup#43[T1] terr=11087 bal=340757 dq=30.7 cnt=81 | c=74.5 rankC=74.5 need=624017 tD=0.95 人 | safe=201177 keep=Inf avail=-Inf chunkB=68918 pulseB=41351 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=369119 dq=38.9 cnt=48 | c=94.7 rankC=94.7 need=672161 tD=1.20 人 | safe=201177 keep=Inf avail=-Inf chunkB=68918 pulseB=41351 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2205 alex_k B=344591 L=7349 d=46.9 nb=2 neut=0 cmds=26 noFull=1 shQ=86147 | m=1.210 worth=56.7 cheap=8.4 over=0 dMedOther=32.4 safe(-1)=201177
+    → Eyup#43[T1] terr=11087 bal=340757 dq=30.7 cnt=81 | c=74.5 rankC=74.5 need=624017 tD=0.95 人 | safe=201177 keep=Inf avail=-Inf chunkB=68918 pulseB=41351 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=369119 dq=38.9 cnt=48 | c=94.7 rankC=94.7 need=672161 tD=1.20 人 | safe=201177 keep=Inf avail=-Inf chunkB=68918 pulseB=41351 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2210 alex_k B=348657 L=7349 d=47.4 nb=2 neut=0 cmds=26 noFull=1 shQ=87164 | m=1.205 worth=57.1 cheap=8.4 over=0 dMedOther=32.7 safe(-1)=203707
+    → Eyup#43[T1] terr=11087 bal=344948 dq=31.1 cnt=81 | c=75.4 rankC=75.4 need=631487 tD=0.95 人 | safe=203707 keep=Inf avail=-Inf chunkB=69731 pulseB=41839 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=373622 dq=39.4 cnt=48 | c=95.9 rankC=95.9 need=680187 tD=1.20 人 | safe=203707 keep=Inf avail=-Inf chunkB=69731 pulseB=41839 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2215 alex_k B=348657 L=7349 d=47.4 nb=2 neut=0 cmds=26 noFull=1 shQ=87164 | m=1.199 worth=56.9 cheap=8.4 over=0 dMedOther=34.8 safe(-1)=203707
+    → Eyup#43[T1] terr=11087 bal=344948 dq=31.1 cnt=81 | c=75.4 rankC=75.4 need=631487 tD=0.89 人 | safe=203707 keep=Inf avail=-Inf chunkB=69731 pulseB=41839 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=373622 dq=39.4 cnt=48 | c=95.9 rankC=95.9 need=680187 tD=1.13 人 | safe=203707 keep=Inf avail=-Inf chunkB=69731 pulseB=41839 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2220 alex_k B=352771 L=7349 d=48.0 nb=2 neut=0 cmds=26 noFull=1 shQ=88192 | m=1.194 worth=57.3 cheap=8.4 over=0 dMedOther=35.2 safe(-1)=206268
+    → Eyup#43[T1] terr=11087 bal=349190 dq=31.5 cnt=81 | c=76.3 rankC=76.3 need=639048 tD=0.89 人 | safe=206268 keep=Inf avail=-Inf chunkB=70554 pulseB=42333 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=378180 dq=39.9 cnt=48 | c=97.0 rankC=97.0 need=688312 tD=1.13 人 | safe=206268 keep=Inf avail=-Inf chunkB=70554 pulseB=42333 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2225 alex_k B=352771 L=7349 d=48.0 nb=2 neut=0 cmds=26 noFull=1 shQ=88192 | m=1.189 worth=57.1 cheap=8.4 over=0 dMedOther=35.2 safe(-1)=206268
+    → Eyup#43[T1] terr=11087 bal=349190 dq=31.5 cnt=81 | c=76.3 rankC=76.3 need=639048 tD=0.89 人 | safe=206268 keep=Inf avail=-Inf chunkB=70554 pulseB=42333 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=378180 dq=39.9 cnt=48 | c=97.0 rankC=97.0 need=688312 tD=1.13 人 | safe=206268 keep=Inf avail=-Inf chunkB=70554 pulseB=42333 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2230 alex_k B=356933 L=7349 d=48.6 nb=2 neut=0 cmds=26 noFull=1 shQ=89233 | m=1.183 worth=57.5 cheap=8.4 over=0 dMedOther=35.7 safe(-1)=208859
+    → Eyup#43[T1] terr=11087 bal=353485 dq=31.9 cnt=81 | c=77.2 rankC=77.2 need=646704 tD=0.89 人 | safe=208859 keep=Inf avail=-Inf chunkB=71387 pulseB=42832 价高(c>=worth)→break hNb=2
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=382793 dq=40.4 cnt=48 | c=98.2 rankC=98.2 need=696534 tD=1.13 人 | safe=208859 keep=Inf avail=-Inf chunkB=71387 pulseB=42832 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2235 alex_k B=356933 L=7349 d=48.6 nb=3 neut=0 cmds=26 noFull=1 shQ=89233 | m=1.178 worth=57.2 cheap=8.4 over=0 dMedOther=35.7 safe(-1)=286705
+    → Player 915#24[T5] terr=24076 bal=298331 dq=12.4 cnt=1 | c=42.7 rankC=29.9 need=567848 tD=0.35 人 | safe=286705 keep=306169 avail=46582 chunkB=71387 pulseB=42832 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=353485 dq=31.9 cnt=81 | c=77.2 rankC=77.2 need=646704 tD=0.89 人 | safe=286705 keep=Inf avail=-Inf chunkB=71387 pulseB=42832 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=521359 dq=55.0 cnt=48 | c=179.2 rankC=179.2 need=943519 tD=1.54 人 crowdedHard | safe=286705 keep=Inf avail=-Inf chunkB=71387 pulseB=42832 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2240 alex_k B=361144 L=7349 d=49.1 nb=3 neut=0 cmds=26 noFull=1 shQ=90286 | m=1.173 worth=57.6 cheap=8.4 over=0 dMedOther=36.1 safe(-1)=290278
+    → Player 915#24[T5] terr=24090 bal=302358 dq=12.6 cnt=2 | c=43.2 rankC=30.3 need=575056 tD=0.35 人 | safe=290278 keep=310516 avail=46396 chunkB=72229 pulseB=43337 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=357832 dq=32.3 cnt=81 | c=78.1 rankC=78.1 need=654452 tD=0.89 人 | safe=290278 keep=Inf avail=-Inf chunkB=72229 pulseB=43337 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=527719 dq=55.6 cnt=48 | c=181.4 rankC=181.4 need=954855 tD=1.54 人 crowdedHard | safe=290278 keep=Inf avail=-Inf chunkB=72229 pulseB=43337 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2245 alex_k B=361144 L=7349 d=49.1 nb=3 neut=0 cmds=26 noFull=1 shQ=90286 | m=1.168 worth=57.4 cheap=8.4 over=0 dMedOther=36.1 safe(-1)=290278
+    → Player 915#24[T5] terr=24107 bal=302358 dq=12.5 cnt=3 | c=43.2 rankC=30.2 need=575087 tD=0.35 人 | safe=290278 keep=311120 avail=45792 chunkB=72229 pulseB=43337 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=357832 dq=32.3 cnt=81 | c=78.1 rankC=78.1 need=654452 tD=0.89 人 | safe=290278 keep=Inf avail=-Inf chunkB=72229 pulseB=43337 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=527719 dq=55.6 cnt=48 | c=181.4 rankC=181.4 need=954855 tD=1.54 人 crowdedHard | safe=290278 keep=Inf avail=-Inf chunkB=72229 pulseB=43337 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2250 alex_k B=365405 L=7349 d=49.7 nb=3 neut=0 cmds=26 noFull=1 shQ=91351 | m=1.163 worth=57.8 cheap=8.4 over=0 dMedOther=36.4 safe(-1)=293895
+    → Player 915#24[T5] terr=24140 bal=306439 dq=12.7 cnt=5 | c=43.7 rankC=30.6 need=582395 tD=0.35 人 | safe=293895 keep=315391 avail=45732 chunkB=73081 pulseB=43849 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=362233 dq=32.7 cnt=81 | c=79.0 rankC=79.0 need=662297 tD=0.90 人 | safe=293895 keep=Inf avail=-Inf chunkB=73081 pulseB=43849 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=534157 dq=56.3 cnt=48 | c=183.6 rankC=183.6 need=966331 tD=1.55 人 crowdedHard | safe=293895 keep=Inf avail=-Inf chunkB=73081 pulseB=43849 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2255 alex_k B=365405 L=7349 d=49.7 nb=3 neut=0 cmds=26 noFull=1 shQ=91351 | m=1.157 worth=57.5 cheap=8.4 over=0 dMedOther=36.0 safe(-1)=293895
+    → Player 915#24[T5] terr=24168 bal=306439 dq=12.7 cnt=6 | c=43.6 rankC=30.5 need=582437 tD=0.35 人 | safe=293895 keep=315956 avail=45167 chunkB=73081 pulseB=43849 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=362233 dq=32.7 cnt=81 | c=79.0 rankC=79.0 need=662297 tD=0.91 人 | safe=293895 keep=Inf avail=-Inf chunkB=73081 pulseB=43849 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=534157 dq=56.3 cnt=48 | c=183.6 rankC=183.6 need=966331 tD=1.57 人 crowdedHard | safe=293895 keep=Inf avail=-Inf chunkB=73081 pulseB=43849 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2260 alex_k B=369716 L=7349 d=50.3 nb=3 neut=0 cmds=26 noFull=1 shQ=92429 | m=1.152 worth=58.0 cheap=8.4 over=0 dMedOther=36.0 safe(-1)=297556
+    → Player 915#24[T5] terr=24218 bal=310575 dq=12.8 cnt=9 | c=44.0 rankC=30.8 need=589894 tD=0.36 人 | safe=297556 keep=320164 avail=45220 chunkB=73943 pulseB=44366 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=366688 dq=33.1 cnt=81 | c=80.0 rankC=80.0 need=670237 tD=0.92 人 | safe=297556 keep=Inf avail=-Inf chunkB=73943 pulseB=44366 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=540673 dq=57.0 cnt=48 | c=185.8 rankC=185.8 need=977945 tD=1.58 人 crowdedHard | safe=297556 keep=Inf avail=-Inf chunkB=73943 pulseB=44366 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2265 alex_k B=369716 L=7349 d=50.3 nb=3 neut=0 cmds=26 noFull=1 shQ=92429 | m=1.147 worth=57.7 cheap=8.4 over=0 dMedOther=35.8 safe(-1)=297556
+    → Player 915#24[T5] terr=24252 bal=310575 dq=12.8 cnt=11 | c=44.0 rankC=30.8 need=589935 tD=0.36 人 | safe=297556 keep=320661 avail=44723 chunkB=73943 pulseB=44366 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=366688 dq=33.1 cnt=81 | c=80.0 rankC=80.0 need=670237 tD=0.92 人 | safe=297556 keep=Inf avail=-Inf chunkB=73943 pulseB=44366 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=540673 dq=57.0 cnt=48 | c=185.8 rankC=185.8 need=977945 tD=1.59 人 crowdedHard | safe=297556 keep=Inf avail=-Inf chunkB=73943 pulseB=44366 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2270 alex_k B=374078 L=7349 d=50.9 nb=3 neut=0 cmds=26 noFull=1 shQ=93519 | m=1.142 worth=58.1 cheap=8.4 over=0 dMedOther=35.8 safe(-1)=301262
+    → Player 915#24[T5] terr=24309 bal=314767 dq=12.9 cnt=14 | c=59.2 rankC=59.2 need=597497 tD=0.36 人 | safe=301262 keep=Inf avail=-Inf chunkB=74816 pulseB=44889 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=371198 dq=33.5 cnt=81 | c=80.9 rankC=80.9 need=678276 tD=0.93 人 | safe=301262 keep=Inf avail=-Inf chunkB=74816 pulseB=44889 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=547269 dq=57.7 cnt=48 | c=188.0 rankC=188.0 need=989702 tD=1.61 人 crowdedHard | safe=301262 keep=Inf avail=-Inf chunkB=74816 pulseB=44889 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2275 alex_k B=374078 L=7349 d=50.9 nb=3 neut=0 cmds=26 noFull=1 shQ=93519 | m=1.136 worth=57.8 cheap=8.4 over=0 dMedOther=35.5 safe(-1)=301262
+    → Player 915#24[T5] terr=24352 bal=314767 dq=12.9 cnt=19 | c=59.0 rankC=59.0 need=597557 tD=0.36 人 | safe=301262 keep=Inf avail=-Inf chunkB=74816 pulseB=44889 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=371198 dq=33.5 cnt=81 | c=80.9 rankC=80.9 need=678276 tD=0.94 人 | safe=301262 keep=Inf avail=-Inf chunkB=74816 pulseB=44889 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=547269 dq=57.7 cnt=48 | c=188.0 rankC=188.0 need=989702 tD=1.63 人 crowdedHard | safe=301262 keep=Inf avail=-Inf chunkB=74816 pulseB=44889 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2280 alex_k B=378492 L=7349 d=51.5 nb=3 neut=0 cmds=26 noFull=1 shQ=94623 | m=1.131 worth=58.2 cheap=8.4 over=0 dMedOther=35.8 safe(-1)=305012
+    → Player 915#24[T5] terr=24407 bal=319016 dq=13.1 cnt=24 | c=59.5 rankC=59.5 need=605228 tD=0.37 人 | safe=305012 keep=Inf avail=-Inf chunkB=75698 pulseB=45419 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=375763 dq=33.9 cnt=81 | c=81.9 rankC=81.9 need=686413 tD=0.95 人 | safe=305012 keep=Inf avail=-Inf chunkB=75698 pulseB=45419 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=553945 dq=58.4 cnt=48 | c=190.3 rankC=190.3 need=1001601 tD=1.63 人 crowdedHard | safe=305012 keep=Inf avail=-Inf chunkB=75698 pulseB=45419 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2285 alex_k B=378492 L=7349 d=51.5 nb=3 neut=0 cmds=26 noFull=1 shQ=94623 | m=1.126 worth=58.0 cheap=8.4 over=0 dMedOther=35.5 safe(-1)=305012
+    → Player 915#24[T5] terr=24448 bal=281009 dq=11.5 cnt=25 | c=22.0 rankC=15.4 need=537532 tD=0.32 人 | safe=305012 keep=305012 avail=69045 chunkB=75698 pulseB=45419 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=375763 dq=33.9 cnt=81 | c=81.9 rankC=81.9 need=686413 tD=0.96 人 | safe=305012 keep=Inf avail=-Inf chunkB=75698 pulseB=45419 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=553945 dq=58.4 cnt=48 | c=190.3 rankC=190.3 need=1001601 tD=1.65 人 crowdedHard | safe=305012 keep=Inf avail=-Inf chunkB=75698 pulseB=45419 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2290 alex_k B=382958 L=7349 d=52.1 nb=3 neut=0 cmds=26 noFull=1 shQ=95739 | m=1.121 worth=58.4 cheap=8.4 over=0 dMedOther=35.8 safe(-1)=308809
+    → Player 915#24[T5] terr=24524 bal=284802 dq=11.6 cnt=26 | c=22.2 rankC=15.6 need=544406 tD=0.32 人 | safe=308809 keep=308809 avail=69662 chunkB=76592 pulseB=45955 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=380384 dq=34.3 cnt=81 | c=82.9 rankC=82.9 need=694650 tD=0.96 人 | safe=308809 keep=Inf avail=-Inf chunkB=76592 pulseB=45955 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=560703 dq=59.1 cnt=48 | c=192.6 rankC=192.6 need=1013647 tD=1.65 人 crowdedHard | safe=308809 keep=Inf avail=-Inf chunkB=76592 pulseB=45955 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2295 alex_k B=382958 L=7349 d=52.1 nb=3 neut=0 cmds=26 noFull=1 shQ=95739 | m=1.115 worth=58.1 cheap=8.4 over=0 dMedOther=35.8 safe(-1)=308809
+    → Player 915#24[T5] terr=24583 bal=284802 dq=11.6 cnt=27 | c=22.2 rankC=15.5 need=544508 tD=0.32 人 | safe=308809 keep=308809 avail=69662 chunkB=76592 pulseB=45955 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=380384 dq=34.3 cnt=81 | c=82.9 rankC=82.9 need=694650 tD=0.96 人 | safe=308809 keep=Inf avail=-Inf chunkB=76592 pulseB=45955 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=560703 dq=59.1 cnt=48 | c=192.6 rankC=192.6 need=1013647 tD=1.65 人 crowdedHard | safe=308809 keep=Inf avail=-Inf chunkB=76592 pulseB=45955 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2300 alex_k B=394825 L=7349 d=53.7 nb=3 neut=0 cmds=26 noFull=1 shQ=96913 | m=1.110 worth=59.6 cheap=8.4 over=0 dMedOther=37.2 safe(-1)=317981
+    → Player 915#24[T5] terr=24680 bal=313323 dq=12.7 cnt=29 | c=24.1 rankC=16.9 need=595475 tD=0.34 人 | safe=317981 keep=317981 avail=72218 chunkB=78965 pulseB=47379 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=396149 dq=35.7 cnt=81 | c=86.2 rankC=86.2 need=722750 tD=0.96 人 | safe=317981 keep=Inf avail=-Inf chunkB=78965 pulseB=47379 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=577029 dq=60.8 cnt=48 | c=198.1 rankC=198.1 need=1042747 tD=1.63 人 crowdedHard | safe=317981 keep=Inf avail=-Inf chunkB=78965 pulseB=47379 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2305 alex_k B=394825 L=7349 d=53.7 nb=3 neut=0 cmds=26 noFull=1 shQ=98706 | m=1.105 worth=59.4 cheap=8.4 over=0 dMedOther=37.2 safe(-1)=317981
+    → Player 915#24[T5] terr=24746 bal=313323 dq=12.7 cnt=30 | c=24.1 rankC=16.9 need=595584 tD=0.34 人 | safe=317981 keep=317981 avail=72218 chunkB=78965 pulseB=47379 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=396149 dq=35.7 cnt=81 | c=86.2 rankC=86.2 need=722750 tD=0.96 人 | safe=317981 keep=Inf avail=-Inf chunkB=78965 pulseB=47379 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=577029 dq=60.8 cnt=48 | c=198.1 rankC=198.1 need=1042747 tD=1.63 人 crowdedHard | safe=317981 keep=Inf avail=-Inf chunkB=78965 pulseB=47379 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2310 alex_k B=399483 L=7349 d=54.4 nb=3 neut=0 cmds=26 noFull=1 shQ=99870 | m=1.099 worth=59.8 cheap=8.4 over=0 dMedOther=37.7 safe(-1)=321935
+    → Player 915#24[T5] terr=24849 bal=317584 dq=12.8 cnt=32 | c=24.3 rankC=17.0 need=603328 tD=0.34 人 | safe=321935 keep=321935 avail=72867 chunkB=79897 pulseB=47938 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=401021 dq=36.2 cnt=81 | c=87.3 rankC=87.3 need=731435 tD=0.96 人 | safe=321935 keep=Inf avail=-Inf chunkB=79897 pulseB=47938 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=584068 dq=61.6 cnt=48 | c=200.5 rankC=200.5 need=1055294 tD=1.63 人 crowdedHard | safe=321935 keep=Inf avail=-Inf chunkB=79897 pulseB=47938 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2315 alex_k B=399483 L=7349 d=54.4 nb=3 neut=0 cmds=26 noFull=1 shQ=99870 | m=1.094 worth=59.5 cheap=8.4 over=0 dMedOther=37.7 safe(-1)=321935
+    → Player 915#24[T5] terr=24921 bal=317584 dq=12.7 cnt=33 | c=32.3 rankC=32.3 need=603436 tD=0.34 人 | safe=321935 keep=321935 avail=72867 chunkB=79897 pulseB=47938 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=401021 dq=36.2 cnt=81 | c=87.3 rankC=87.3 need=731435 tD=0.96 人 | safe=321935 keep=Inf avail=-Inf chunkB=79897 pulseB=47938 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=584068 dq=61.6 cnt=48 | c=200.5 rankC=200.5 need=1055294 tD=1.63 人 crowdedHard | safe=321935 keep=Inf avail=-Inf chunkB=79897 pulseB=47938 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2320 alex_k B=404196 L=7349 d=55.0 nb=3 neut=0 cmds=26 noFull=1 shQ=101049 | m=1.089 worth=59.9 cheap=8.4 over=0 dMedOther=38.1 safe(-1)=325938
+    → Player 915#24[T5] terr=25036 bal=321903 dq=12.9 cnt=34 | c=32.6 rankC=32.6 need=611302 tD=0.34 人 | safe=325938 keep=325938 avail=73522 chunkB=80839 pulseB=48504 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=405953 dq=36.6 cnt=81 | c=88.3 rankC=88.3 need=740226 tD=0.96 人 | safe=325938 keep=Inf avail=-Inf chunkB=80839 pulseB=48504 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=591193 dq=62.3 cnt=48 | c=202.9 rankC=202.9 need=1067994 tD=1.64 人 crowdedHard | safe=325938 keep=Inf avail=-Inf chunkB=80839 pulseB=48504 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2325 alex_k B=404196 L=7349 d=55.0 nb=3 neut=0 cmds=26 noFull=1 shQ=101049 | m=1.084 worth=59.6 cheap=8.4 over=0 dMedOther=36.6 safe(-1)=325938
+    → Player 915#24[T5] terr=25118 bal=321903 dq=12.8 cnt=35 | c=32.5 rankC=32.5 need=611435 tD=0.35 人 | safe=325938 keep=325938 avail=73522 chunkB=80839 pulseB=48504 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=405953 dq=36.6 cnt=81 | c=88.3 rankC=88.3 need=740226 tD=1.00 人 | safe=325938 keep=Inf avail=-Inf chunkB=80839 pulseB=48504 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=591193 dq=62.3 cnt=48 | c=202.9 rankC=202.9 need=1067994 tD=1.70 人 crowdedHard | safe=325938 keep=Inf avail=-Inf chunkB=80839 pulseB=48504 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2330 alex_k B=408965 L=7349 d=55.6 nb=3 neut=0 cmds=26 noFull=1 shQ=102241 | m=1.079 worth=60.0 cheap=8.4 over=0 dMedOther=37.1 safe(-1)=329990
+    → Player 915#24[T5] terr=25201 bal=326300 dq=12.9 cnt=39 | c=32.8 rankC=32.8 need=619391 tD=0.35 人 | safe=329990 keep=329990 avail=74183 chunkB=81793 pulseB=49076 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=410946 dq=37.1 cnt=81 | c=89.4 rankC=89.4 need=749125 tD=1.00 人 | safe=329990 keep=Inf avail=-Inf chunkB=81793 pulseB=49076 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=598405 dq=63.1 cnt=48 | c=205.3 rankC=205.3 need=1080848 tD=1.70 人 crowdedHard | safe=329990 keep=Inf avail=-Inf chunkB=81793 pulseB=49076 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2335 alex_k B=408965 L=7349 d=55.6 nb=3 neut=0 cmds=26 noFull=1 shQ=102241 | m=1.073 worth=59.7 cheap=8.4 over=0 dMedOther=37.1 safe(-1)=329990
+    → Player 915#24[T5] terr=25201 bal=326300 dq=12.9 cnt=39 | c=32.8 rankC=32.8 need=619391 tD=0.35 人 | safe=329990 keep=329990 avail=74183 chunkB=81793 pulseB=49076 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=410946 dq=37.1 cnt=81 | c=89.4 rankC=89.4 need=749125 tD=1.00 人 | safe=329990 keep=Inf avail=-Inf chunkB=81793 pulseB=49076 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=598405 dq=63.1 cnt=48 | c=205.3 rankC=205.3 need=1080848 tD=1.70 人 crowdedHard | safe=329990 keep=Inf avail=-Inf chunkB=81793 pulseB=49076 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2340 alex_k B=413790 L=7349 d=56.3 nb=3 neut=0 cmds=26 noFull=1 shQ=103447 | m=1.068 worth=60.1 cheap=8.4 over=0 dMedOther=37.5 safe(-1)=334091
+    → Player 915#24[T5] terr=25201 bal=330737 dq=13.1 cnt=39 | c=33.2 rankC=33.2 need=627300 tD=0.35 人 | safe=334091 keep=334091 avail=74850 chunkB=82758 pulseB=49655 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=416000 dq=37.5 cnt=81 | c=90.5 rankC=90.5 need=758134 tD=1.00 人 | safe=334091 keep=Inf avail=-Inf chunkB=82758 pulseB=49655 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=605705 dq=63.9 cnt=48 | c=207.8 rankC=207.8 need=1093860 tD=1.70 人 crowdedHard | safe=334091 keep=Inf avail=-Inf chunkB=82758 pulseB=49655 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2345 alex_k B=413790 L=7349 d=56.3 nb=3 neut=0 cmds=26 noFull=1 shQ=103447 | m=1.063 worth=59.8 cheap=8.4 over=0 dMedOther=37.5 safe(-1)=334091
+    → Player 915#24[T5] terr=25201 bal=330737 dq=13.1 cnt=39 | c=33.2 rankC=33.2 need=627300 tD=0.35 人 | safe=334091 keep=334091 avail=74850 chunkB=82758 pulseB=49655 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=416000 dq=37.5 cnt=81 | c=90.5 rankC=90.5 need=758134 tD=1.00 人 | safe=334091 keep=Inf avail=-Inf chunkB=82758 pulseB=49655 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=605705 dq=63.9 cnt=48 | c=207.8 rankC=207.8 need=1093860 tD=1.70 人 crowdedHard | safe=334091 keep=Inf avail=-Inf chunkB=82758 pulseB=49655 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2350 alex_k B=418672 L=7349 d=57.0 nb=3 neut=0 cmds=26 noFull=1 shQ=104668 | m=1.058 worth=60.2 cheap=8.4 over=0 dMedOther=38.0 safe(-1)=338242
+    → Player 915#24[T5] terr=25201 bal=335235 dq=13.3 cnt=39 | c=33.6 rankC=33.6 need=635317 tD=0.35 人 | safe=338242 keep=338242 avail=75524 chunkB=83734 pulseB=50241 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=421116 dq=38.0 cnt=81 | c=91.6 rankC=91.6 need=767253 tD=1.00 人 | safe=338242 keep=Inf avail=-Inf chunkB=83734 pulseB=50241 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=613094 dq=64.6 cnt=48 | c=210.3 rankC=210.3 need=1107031 tD=1.70 人 crowdedHard | safe=338242 keep=Inf avail=-Inf chunkB=83734 pulseB=50241 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2355 alex_k B=418672 L=7349 d=57.0 nb=3 neut=0 cmds=26 noFull=1 shQ=104668 | m=1.052 worth=59.9 cheap=8.4 over=0 dMedOther=38.0 safe(-1)=338242
+    → Player 915#24[T5] terr=25201 bal=335235 dq=13.3 cnt=39 | c=33.6 rankC=33.6 need=635317 tD=0.35 人 | safe=338242 keep=338242 avail=75524 chunkB=83734 pulseB=50241 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=421116 dq=38.0 cnt=81 | c=91.6 rankC=91.6 need=767253 tD=1.00 人 | safe=338242 keep=Inf avail=-Inf chunkB=83734 pulseB=50241 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=613094 dq=64.6 cnt=48 | c=210.3 rankC=210.3 need=1107031 tD=1.70 人 crowdedHard | safe=338242 keep=Inf avail=-Inf chunkB=83734 pulseB=50241 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2360 alex_k B=423612 L=7349 d=57.6 nb=3 neut=0 cmds=26 noFull=1 shQ=105903 | m=1.047 worth=60.4 cheap=8.4 over=0 dMedOther=38.4 safe(-1)=342444
+    → Player 915#24[T5] terr=25201 bal=339794 dq=13.5 cnt=39 | c=34.0 rankC=34.0 need=643443 tD=0.35 人 | safe=342444 keep=342444 avail=76204 chunkB=84722 pulseB=50833 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=426295 dq=38.4 cnt=81 | c=92.7 rankC=92.7 need=776484 tD=1.00 人 | safe=342444 keep=Inf avail=-Inf chunkB=84722 pulseB=50833 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=620573 dq=65.4 cnt=48 | c=212.8 rankC=212.8 need=1120362 tD=1.70 人 crowdedHard | safe=342444 keep=Inf avail=-Inf chunkB=84722 pulseB=50833 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2365 alex_k B=423612 L=7349 d=57.6 nb=3 neut=0 cmds=26 noFull=1 shQ=105903 | m=1.042 worth=60.0 cheap=8.4 over=0 dMedOther=38.4 safe(-1)=342444
+    → Player 915#24[T5] terr=25201 bal=339794 dq=13.5 cnt=39 | c=34.0 rankC=34.0 need=643443 tD=0.35 人 | safe=342444 keep=342444 avail=76204 chunkB=84722 pulseB=50833 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=426295 dq=38.4 cnt=81 | c=92.7 rankC=92.7 need=776484 tD=1.00 人 | safe=342444 keep=Inf avail=-Inf chunkB=84722 pulseB=50833 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=620573 dq=65.4 cnt=48 | c=212.8 rankC=212.8 need=1120362 tD=1.70 人 crowdedHard | safe=342444 keep=Inf avail=-Inf chunkB=84722 pulseB=50833 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2370 alex_k B=428610 L=7349 d=58.3 nb=3 neut=0 cmds=26 noFull=1 shQ=107152 | m=1.036 worth=60.5 cheap=8.4 over=0 dMedOther=38.9 safe(-1)=346696
+    → Player 915#24[T5] terr=25201 bal=344415 dq=13.7 cnt=39 | c=34.5 rankC=34.5 need=651679 tD=0.35 人 | safe=346696 keep=346696 avail=76892 chunkB=85722 pulseB=51433 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=431538 dq=38.9 cnt=81 | c=93.8 rankC=93.8 need=785830 tD=1.00 人 | safe=346696 keep=Inf avail=-Inf chunkB=85722 pulseB=51433 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=628143 dq=66.2 cnt=48 | c=215.4 rankC=215.4 need=1133855 tD=1.70 人 crowdedHard | safe=346696 keep=Inf avail=-Inf chunkB=85722 pulseB=51433 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2375 alex_k B=428610 L=7349 d=58.3 nb=3 neut=0 cmds=26 noFull=1 shQ=107152 | m=1.031 worth=60.1 cheap=8.4 over=0 dMedOther=38.9 safe(-1)=346696
+    → Player 915#24[T5] terr=25201 bal=344415 dq=13.7 cnt=39 | c=34.5 rankC=34.5 need=651679 tD=0.35 人 | safe=346696 keep=346696 avail=76892 chunkB=85722 pulseB=51433 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=431538 dq=38.9 cnt=81 | c=93.8 rankC=93.8 need=785830 tD=1.00 人 | safe=346696 keep=Inf avail=-Inf chunkB=85722 pulseB=51433 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=628143 dq=66.2 cnt=48 | c=215.4 rankC=215.4 need=1133855 tD=1.70 人 crowdedHard | safe=346696 keep=Inf avail=-Inf chunkB=85722 pulseB=51433 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2380 alex_k B=433667 L=7349 d=59.0 nb=3 neut=0 cmds=26 noFull=1 shQ=108416 | m=1.026 worth=60.5 cheap=8.4 over=0 dMedOther=39.4 safe(-1)=351001
+    → Player 915#24[T5] terr=25201 bal=349099 dq=13.9 cnt=39 | c=34.9 rankC=34.9 need=660028 tD=0.35 人 | safe=351001 keep=351001 avail=77584 chunkB=86733 pulseB=52040 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=436845 dq=39.4 cnt=81 | c=94.9 rankC=94.9 need=795289 tD=1.00 人 | safe=351001 keep=Inf avail=-Inf chunkB=86733 pulseB=52040 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=635806 dq=67.0 cnt=48 | c=218.0 rankC=218.0 need=1147513 tD=1.70 人 crowdedHard | safe=351001 keep=Inf avail=-Inf chunkB=86733 pulseB=52040 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2385 alex_k B=433667 L=7349 d=59.0 nb=3 neut=0 cmds=26 noFull=1 shQ=108416 | m=1.021 worth=60.2 cheap=8.4 over=0 dMedOther=39.4 safe(-1)=351001
+    → Player 915#24[T5] terr=25201 bal=349099 dq=13.9 cnt=39 | c=34.9 rankC=34.9 need=660028 tD=0.35 人 | safe=351001 keep=351001 avail=77584 chunkB=86733 pulseB=52040 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=436845 dq=39.4 cnt=81 | c=94.9 rankC=94.9 need=795289 tD=1.00 人 | safe=351001 keep=Inf avail=-Inf chunkB=86733 pulseB=52040 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=635806 dq=67.0 cnt=48 | c=218.0 rankC=218.0 need=1147513 tD=1.70 人 crowdedHard | safe=351001 keep=Inf avail=-Inf chunkB=86733 pulseB=52040 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2390 alex_k B=438784 L=7349 d=59.7 nb=3 neut=0 cmds=26 noFull=1 shQ=109696 | m=1.016 worth=60.6 cheap=8.4 over=0 dMedOther=39.9 safe(-1)=355359
+    → Player 915#24[T5] terr=25201 bal=353846 dq=14.0 cnt=39 | c=35.4 rankC=35.4 need=668489 tD=0.35 人 | safe=355359 keep=355359 avail=78283 chunkB=87757 pulseB=52654 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=442218 dq=39.9 cnt=81 | c=96.0 rankC=96.0 need=804866 tD=1.00 人 | safe=355359 keep=Inf avail=-Inf chunkB=87757 pulseB=52654 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=643562 dq=67.8 cnt=48 | c=220.6 rankC=220.6 need=1161338 tD=1.70 人 crowdedHard | safe=355359 keep=Inf avail=-Inf chunkB=87757 pulseB=52654 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2395 alex_k B=438784 L=7349 d=59.7 nb=3 neut=0 cmds=26 noFull=1 shQ=109696 | m=1.010 worth=60.3 cheap=8.4 over=0 dMedOther=39.9 safe(-1)=355359
+    → Player 915#24[T5] terr=25201 bal=353846 dq=14.0 cnt=39 | c=35.4 rankC=35.4 need=668489 tD=0.35 人 | safe=355359 keep=355359 avail=78283 chunkB=87757 pulseB=52654 不够一条 hNb=3
+    → Eyup#43[T1] terr=11087 bal=442218 dq=39.9 cnt=81 | c=96.0 rankC=96.0 need=804866 tD=1.00 人 | safe=355359 keep=Inf avail=-Inf chunkB=87757 pulseB=52654 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=643562 dq=67.8 cnt=48 | c=220.6 rankC=220.6 need=1161338 tD=1.70 人 crowdedHard | safe=355359 keep=Inf avail=-Inf chunkB=87757 pulseB=52654 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2400 alex_k B=451310 L=7349 d=61.4 nb=3 neut=0 cmds=27 noFull=1 shQ=111038 | m=1.005 worth=61.7 cheap=8.4 over=0 dMedOther=41.4 safe(-1)=365099
+    → Player 915#24[T5] terr=25201 bal=383859 dq=15.2 cnt=39 | c=38.2 rankC=38.2 need=721983 tD=0.37 人 pulse | safe=365099 keep=365099 avail=80923 chunkB=90262 pulseB=54157  hNb=3
+    → Eyup#43[T1] terr=11087 bal=458744 dq=41.4 cnt=81 | c=99.6 rankC=99.6 need=834323 tD=1.00 人 pulse | safe=365099 keep=Inf avail=-Inf chunkB=90262 pulseB=54157 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=660899 dq=69.7 cnt=48 | c=226.5 rankC=226.5 need=1192240 tD=1.68 人 pulse crowdedHard | safe=365099 keep=Inf avail=-Inf chunkB=90262 pulseB=54157 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=122 → Player 915#24[T5]（约 54210 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2405 alex_k B=451310 L=7349 d=61.4 nb=3 neut=0 cmds=28 noFull=1 shQ=112827 | m=1.000 worth=61.4 cheap=8.4 over=0 dMedOther=41.4 safe(-1)=365099
+    → Player 915#24[T5] terr=25201 bal=383859 dq=15.2 cnt=39 | c=38.2 rankC=38.2 need=721983 tD=0.37 人 pulse | safe=365099 keep=365099 avail=80923 chunkB=90262 pulseB=54157  hNb=3
+    → Eyup#43[T1] terr=11087 bal=458744 dq=41.4 cnt=81 | c=99.6 rankC=99.6 need=834323 tD=1.00 人 pulse | safe=365099 keep=Inf avail=-Inf chunkB=90262 pulseB=54157 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=660899 dq=69.7 cnt=48 | c=226.5 rankC=226.5 need=1192240 tD=1.68 人 pulse crowdedHard | safe=365099 keep=Inf avail=-Inf chunkB=90262 pulseB=54157 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=122 → Player 915#24[T5]（约 54210 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2410 alex_k B=396435 L=7349 d=53.9 nb=3 neut=0 cmds=28 noFull=1 shQ=44922 | m=0.995 worth=53.6 cheap=8.4 over=0 dMedOther=42.2 safe(-1)=369628
+    → Player 915#24[T5] terr=25201 bal=389079 dq=15.4 cnt=39 | c=35.8 rankC=35.8 need=677077 tD=0.37 人 pulse | safe=369628 keep=369628 avail=22162 chunkB=79287 pulseB=47572  hNb=3
+    → Eyup#43[T1] terr=11087 bal=464386 dq=41.9 cnt=81 | c=146.0 rankC=211.7 need=844380 tD=0.99 人 pulse | safe=369628 keep=Inf avail=-Inf chunkB=79287 pulseB=47572 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=668961 dq=70.5 cnt=48 | c=332.2 rankC=481.7 need=1206610 tD=1.67 人 pulse crowdedHard | safe=369628 keep=Inf avail=-Inf chunkB=79287 pulseB=47572 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2415 alex_k B=396435 L=7349 d=53.9 nb=3 neut=0 cmds=28 noFull=1 shQ=50817 | m=0.989 worth=53.4 cheap=8.4 over=0 dMedOther=42.2 safe(-1)=369628
+    → Player 915#24[T5] terr=25201 bal=389079 dq=15.4 cnt=39 | c=35.8 rankC=35.8 need=677077 tD=0.37 人 pulse | safe=369628 keep=369628 avail=22162 chunkB=79287 pulseB=47572  hNb=3
+    → Eyup#43[T1] terr=11087 bal=464386 dq=41.9 cnt=81 | c=146.0 rankC=211.7 need=844380 tD=0.99 人 pulse | safe=369628 keep=Inf avail=-Inf chunkB=79287 pulseB=47572 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=668961 dq=70.5 cnt=48 | c=332.2 rankC=481.7 need=1206610 tD=1.67 人 pulse crowdedHard | safe=369628 keep=Inf avail=-Inf chunkB=79287 pulseB=47572 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2420 alex_k B=348233 L=7427 d=46.9 nb=3 neut=0 cmds=28 noFull=1 shQ=55944 | m=0.984 worth=46.1 cheap=8.4 over=0 dMedOther=42.4 safe(-1)=374147
+    → Player 915#24[T5] terr=25123 bal=392419 dq=15.6 cnt=41 | c=33.9 rankC=33.9 need=638861 tD=0.37 人 pulse | safe=374147 keep=374147 avail=-29994 chunkB=69647 pulseB=41788 无可用(avail<=0) hNb=3
+    → Eyup#43[T1] terr=11087 bal=470097 dq=42.4 cnt=81 | c=147.6 rankC=214.1 need=854559 tD=1.00 人 pulse | safe=374147 keep=Inf avail=-Inf chunkB=69647 pulseB=41788 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=677122 dq=71.4 cnt=48 | c=336.0 rankC=487.2 need=1221156 tD=1.68 人 pulse crowdedHard | safe=374147 keep=Inf avail=-Inf chunkB=69647 pulseB=41788 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2425 alex_k B=348233 L=7510 d=46.4 nb=3 neut=0 cmds=28 noFull=1 shQ=61119 | m=0.979 worth=45.4 cheap=8.4 over=0 dMedOther=41.8 safe(-1)=374077
+    → Player 915#24[T5] terr=25040 bal=390347 dq=15.6 cnt=44 | c=34.0 rankC=34.0 need=638909 tD=0.37 人 pulse | safe=374077 keep=374077 avail=-29924 chunkB=69647 pulseB=41788 无可用(avail<=0) hNb=3
+    → Eyup#43[T1] terr=11087 bal=470097 dq=42.4 cnt=81 | c=147.6 rankC=214.1 need=854559 tD=1.02 人 pulse | safe=374077 keep=Inf avail=-Inf chunkB=69647 pulseB=41788 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=677122 dq=71.4 cnt=48 | c=336.0 rankC=487.2 need=1221156 tD=1.71 人 pulse crowdedHard | safe=374077 keep=Inf avail=-Inf chunkB=69647 pulseB=41788 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2430 alex_k B=352342 L=7554 d=46.6 nb=3 neut=0 cmds=28 noFull=1 shQ=66307 | m=0.974 worth=45.4 cheap=8.4 over=0 dMedOther=36.7 safe(-1)=378680
+    → Player 915#24[T5] terr=24996 bal=347539 dq=13.9 cnt=45 | c=22.6 rankC=15.8 need=564698 tD=0.38 人 pulse | safe=378680 keep=378680 avail=-30467 chunkB=70468 pulseB=42281 无可用(avail<=0) hNb=3
+    → Eyup#43[T1] terr=11087 bal=475879 dq=42.9 cnt=81 | c=149.4 rankC=216.6 need=864866 tD=1.17 人 pulse | safe=378680 keep=Inf avail=-Inf chunkB=70468 pulseB=42281 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=685382 dq=72.3 cnt=48 | c=340.1 rankC=493.1 need=1235879 tD=1.97 人 pulse crowdedHard | safe=378680 keep=Inf avail=-Inf chunkB=70468 pulseB=42281 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2435 alex_k B=352342 L=7646 d=46.1 nb=3 neut=0 cmds=28 noFull=1 shQ=71592 | m=0.968 worth=44.6 cheap=8.3 over=0 dMedOther=36.6 safe(-1)=378603
+    → Player 915#24[T5] terr=24904 bal=345494 dq=13.9 cnt=48 | c=22.7 rankC=15.9 need=564720 tD=0.38 人 pulse | safe=378603 keep=378603 avail=-30390 chunkB=70468 pulseB=42281 无可用(avail<=0) hNb=3
+    → Eyup#43[T1] terr=11087 bal=475879 dq=42.9 cnt=81 | c=149.4 rankC=216.6 need=864866 tD=1.17 人 pulse | safe=378603 keep=Inf avail=-Inf chunkB=70468 pulseB=42281 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=685382 dq=72.3 cnt=48 | c=340.1 rankC=493.1 need=1235879 tD=1.97 人 pulse crowdedHard | safe=378603 keep=Inf avail=-Inf chunkB=70468 pulseB=42281 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2440 alex_k B=356570 L=7749 d=46.0 nb=3 neut=0 cmds=28 noFull=1 shQ=76889 | m=0.963 worth=44.3 cheap=8.3 over=0 dMedOther=36.3 safe(-1)=383213
+    → Player 915#24[T5] terr=24853 bal=347881 dq=14.0 cnt=55 | c=23.1 rankC=16.2 need=573429 tD=0.39 人 pulse | safe=383213 keep=383213 avail=-30821 chunkB=71314 pulseB=42788 无可用(avail<=0) hNb=3
+    → Eyup#43[T1] terr=11087 bal=481732 dq=43.5 cnt=81 | c=151.2 rankC=219.2 need=875298 tD=1.20 人 pulse | safe=383213 keep=Inf avail=-Inf chunkB=71314 pulseB=42788 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=693743 dq=73.1 cnt=48 | c=344.2 rankC=499.0 need=1250782 tD=2.01 人 pulse crowdedHard | safe=383213 keep=Inf avail=-Inf chunkB=71314 pulseB=42788 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2445 alex_k B=356570 L=7806 d=45.7 nb=3 neut=0 cmds=28 noFull=1 shQ=82234 | m=0.958 worth=43.7 cheap=8.3 over=0 dMedOther=35.8 safe(-1)=383165
+    → Player 915#24[T5] terr=24882 bal=346608 dq=13.9 cnt=71 | c=23.0 rankC=16.1 need=574071 tD=0.39 人 pulse | safe=383165 keep=383165 avail=-30773 chunkB=71314 pulseB=42788 无可用(avail<=0) hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=693743 dq=73.1 cnt=48 | c=134.6 rankC=67.3 need=1250782 tD=2.04 人 pulse crowdedHard | safe=383165 keep=Inf avail=-Inf chunkB=71314 pulseB=42788 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=481732 dq=43.5 cnt=81 | c=151.2 rankC=219.2 need=875298 tD=1.21 人 pulse | safe=383165 keep=Inf avail=-Inf chunkB=71314 pulseB=42788 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2450 alex_k B=360848 L=7923 d=45.5 nb=3 neut=0 cmds=28 noFull=1 shQ=87592 | m=0.953 worth=43.4 cheap=8.3 over=0 dMedOther=35.9 safe(-1)=387821
+    → Player 915#24[T5] terr=24827 bal=348684 dq=14.0 cnt=63 | c=23.5 rankC=16.4 need=582838 tD=0.39 人 pulse | safe=387821 keep=387821 avail=-31201 chunkB=72170 pulseB=43302 无可用(avail<=0) hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=702206 dq=74.0 cnt=48 | c=136.3 rankC=68.1 need=1265867 tD=2.06 人 pulse crowdedHard | safe=387821 keep=Inf avail=-Inf chunkB=72170 pulseB=43302 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=487657 dq=44.0 cnt=81 | c=153.0 rankC=221.9 need=885859 tD=1.22 人 pulse | safe=387821 keep=Inf avail=-Inf chunkB=72170 pulseB=43302 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2455 alex_k B=360848 L=8032 d=44.9 nb=3 neut=0 cmds=28 noFull=1 shQ=90212 | m=0.947 worth=42.6 cheap=8.3 over=0 dMedOther=35.4 safe(-1)=327246
+    → Player 915#24[T5] terr=24804 bal=346243 dq=14.0 cnt=57 | c=23.6 rankC=16.5 need=583461 tD=0.39 人 pulse | safe=327246 keep=327246 avail=29374 chunkB=72170 pulseB=43302  hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9486 bal=594545 dq=62.7 cnt=48 | c=152.9 rankC=107.1 need=1073968 tD=1.77 人 pulse crowdedHard | safe=327246 keep=Inf avail=-Inf chunkB=72170 pulseB=43302 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=487657 dq=44.0 cnt=81 | c=153.0 rankC=221.9 need=885859 tD=1.24 人 pulse | safe=327246 keep=Inf avail=-Inf chunkB=72170 pulseB=43302 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2460 alex_k B=365178 L=8085 d=45.2 nb=3 neut=0 cmds=28 noFull=1 shQ=91294 | m=0.942 worth=42.5 cheap=8.3 over=0 dMedOther=35.4 safe(-1)=331276
+    → Player 915#24[T5] terr=24811 bal=349753 dq=14.1 cnt=61 | c=23.9 rankC=16.7 need=592240 tD=0.40 人 pulse | safe=331276 keep=331276 avail=29623 chunkB=73036 pulseB=43821  hNb=3
+    → Eyup#43[T1] terr=11087 bal=493655 dq=44.5 cnt=81 | c=154.9 rankC=224.6 need=896551 tD=1.26 人 pulse | safe=331276 keep=Inf avail=-Inf chunkB=73036 pulseB=43821 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9645 bal=601798 dq=62.4 cnt=50 | c=294.3 rankC=426.8 need=1087112 tD=1.76 人 pulse crowdedHard | safe=331276 keep=Inf avail=-Inf chunkB=73036 pulseB=43821 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2465 alex_k B=365178 L=8188 d=44.6 nb=3 neut=0 cmds=28 noFull=1 shQ=91294 | m=0.937 worth=41.8 cheap=8.3 over=0 dMedOther=35.2 safe(-1)=331238
+    → Player 915#24[T5] terr=24782 bal=347436 dq=14.0 cnt=60 | c=31.9 rankC=31.9 need=592802 tD=0.40 人 pulse | safe=331238 keep=331238 avail=29661 chunkB=73036 pulseB=43821  hNb=3
+    → Eyup#43[T1] terr=11087 bal=493655 dq=44.5 cnt=81 | c=154.9 rankC=224.6 need=896551 tD=1.26 人 pulse | safe=331238 keep=Inf avail=-Inf chunkB=73036 pulseB=43821 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9645 bal=601886 dq=62.4 cnt=50 | c=294.4 rankC=426.8 need=1087269 tD=1.77 人 pulse crowdedHard | safe=331238 keep=Inf avail=-Inf chunkB=73036 pulseB=43821 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2470 alex_k B=369560 L=8292 d=44.6 nb=3 neut=0 cmds=28 noFull=1 shQ=92390 | m=0.931 worth=41.5 cheap=8.3 over=0 dMedOther=35.4 safe(-1)=335276
+    → Player 915#24[T5] terr=24729 bal=349802 dq=14.1 cnt=50 | c=32.5 rankC=32.5 need=601549 tD=0.40 人 pulse | safe=335276 keep=335276 avail=29954 chunkB=73912 pulseB=44347  hNb=3
+    → Eyup#43[T1] terr=11087 bal=499726 dq=45.1 cnt=81 | c=156.7 rankC=227.3 need=907372 tD=1.27 人 pulse | safe=335276 keep=Inf avail=-Inf chunkB=73912 pulseB=44347 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9645 bal=609229 dq=63.2 cnt=50 | c=297.9 rankC=432.0 need=1100357 tD=1.79 人 pulse crowdedHard | safe=335276 keep=Inf avail=-Inf chunkB=73912 pulseB=44347 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2475 alex_k B=369560 L=8339 d=44.3 nb=3 neut=0 cmds=28 noFull=1 shQ=92390 | m=0.926 worth=41.0 cheap=8.3 over=0 dMedOther=35.3 safe(-1)=335236
+    → Player 915#24[T5] terr=24758 bal=348741 dq=14.1 cnt=52 | c=32.5 rankC=32.5 need=602106 tD=0.40 人 pulse | safe=335236 keep=335236 avail=29994 chunkB=73912 pulseB=44347  hNb=3
+    → Eyup#43[T1] terr=11087 bal=499726 dq=45.1 cnt=81 | c=156.7 rankC=227.3 need=907372 tD=1.28 人 pulse | safe=335236 keep=Inf avail=-Inf chunkB=73912 pulseB=44347 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9645 bal=609229 dq=63.2 cnt=50 | c=297.9 rankC=432.0 need=1100357 tD=1.79 人 pulse crowdedHard | safe=335236 keep=Inf avail=-Inf chunkB=73912 pulseB=44347 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2480 alex_k B=373994 L=8436 d=44.3 nb=3 neut=0 cmds=28 noFull=1 shQ=93498 | m=0.921 worth=40.8 cheap=8.3 over=0 dMedOther=35.7 safe(-1)=339330
+    → Player 915#24[T5] terr=24711 bal=351273 dq=14.2 cnt=53 | c=33.1 rankC=33.1 need=610851 tD=0.40 人 pulse | safe=339330 keep=339330 avail=30282 chunkB=74799 pulseB=44879  hNb=3
+    → Eyup#43[T1] terr=11087 bal=505872 dq=45.6 cnt=81 | c=158.6 rankC=230.0 need=918327 tD=1.28 人 pulse | safe=339330 keep=Inf avail=-Inf chunkB=74799 pulseB=44879 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9645 bal=616661 dq=63.9 cnt=50 | c=301.5 rankC=437.2 need=1113604 tD=1.79 人 pulse crowdedHard | safe=339330 keep=Inf avail=-Inf chunkB=74799 pulseB=44879 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2485 alex_k B=373994 L=8536 d=43.8 nb=3 neut=0 cmds=28 noFull=1 shQ=93498 | m=0.916 worth=40.1 cheap=8.2 over=0 dMedOther=40.1 safe(-1)=339246
+    → Player 915#24[T5] terr=24685 bal=349006 dq=14.1 cnt=56 | c=33.1 rankC=33.1 need=611418 tD=0.35 人 pulse | safe=339246 keep=340488 avail=29124 chunkB=74799 pulseB=44879  hNb=3
+    → Eyup#43[T1] terr=11087 bal=505872 dq=45.6 cnt=81 | c=158.6 rankC=230.0 need=918327 tD=1.14 人 pulse | safe=339246 keep=Inf avail=-Inf chunkB=74799 pulseB=44879 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9645 bal=616661 dq=63.9 cnt=50 | c=301.5 rankC=437.2 need=1113604 tD=1.59 人 pulse crowdedHard | safe=339246 keep=Inf avail=-Inf chunkB=74799 pulseB=44879 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2490 alex_k B=378519 L=8587 d=44.1 nb=3 neut=0 cmds=28 noFull=1 shQ=94629 | m=0.911 worth=40.1 cheap=8.2 over=0 dMedOther=40.6 safe(-1)=343429
+    → Player 915#24[T5] terr=24681 bal=352584 dq=14.3 cnt=57 | c=33.6 rankC=33.6 need=620173 tD=0.35 人 pulse | safe=343429 keep=346790 avail=27294 chunkB=75704 pulseB=45422  hNb=3
+    → Eyup#43[T1] terr=11087 bal=512094 dq=46.2 cnt=81 | c=160.6 rankC=232.8 need=929417 tD=1.14 人 pulse | safe=343429 keep=Inf avail=-Inf chunkB=75704 pulseB=45422 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=9645 bal=624184 dq=64.7 cnt=50 | c=305.1 rankC=442.4 need=1127013 tD=1.59 人 pulse crowdedHard | safe=343429 keep=Inf avail=-Inf chunkB=75704 pulseB=45422 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2495 alex_k B=378519 L=8690 d=43.6 nb=4 neut=0 cmds=28 noFull=1 shQ=94629 | m=0.905 worth=39.4 cheap=8.2 over=0 dMedOther=40.6 safe(-1)=343342
+    → Player 915#24[T5] terr=24628 bal=350239 dq=14.2 cnt=57 | c=33.7 rankC=33.7 need=620556 tD=0.35 人 pulse | safe=343342 keep=350094 avail=23990 chunkB=75704 pulseB=45422  hNb=4
+    → Player 625#31[T1] terr=11810 bal=225856 dq=19.1 cnt=2 | c=126.7 rankC=183.7 need=412029 tD=0.47 人 pulse | safe=343342 keep=Inf avail=-Inf chunkB=75704 pulseB=45422 价高(c>=worth)→break hNb=4
+    → Eyup#43[T1] terr=11087 bal=512094 dq=46.2 cnt=81 | c=160.6 rankC=232.8 need=929417 tD=1.14 人 pulse | safe=343342 keep=Inf avail=-Inf chunkB=75704 pulseB=45422 价高(c>=worth)→break hNb=4
+    → Yolo🙋‍♂️#1[T3] terr=9645 bal=624184 dq=64.7 cnt=50 | c=305.1 rankC=442.4 need=1127013 tD=1.59 人 pulse crowdedHard | safe=343342 keep=Inf avail=-Inf chunkB=75704 pulseB=45422 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2500 alex_k B=391841 L=8795 d=44.6 nb=4 neut=0 cmds=28 noFull=1 shQ=95814 | m=0.900 worth=40.1 cheap=8.2 over=0 dMedOther=42.1 safe(-1)=352950
+    → Player 915#24[T5] terr=24523 bal=377039 dq=15.4 cnt=57 | c=36.7 rankC=36.7 need=672554 tD=0.37 人 pulse | safe=352950 keep=373811 avail=13439 chunkB=78368 pulseB=47021  hNb=4
+    → Player 625#31[T1] terr=11939 bal=225730 dq=18.9 cnt=4 | c=64.7 rankC=45.3 need=413075 tD=0.45 人 pulse | safe=352950 keep=Inf avail=-Inf chunkB=78368 pulseB=47021 价高(c>=worth)→break hNb=4
+    → Eyup#43[T1] terr=11087 bal=529479 dq=47.8 cnt=81 | c=165.9 rankC=240.6 need=960405 tD=1.14 人 pulse | safe=352950 keep=Inf avail=-Inf chunkB=78368 pulseB=47021 价高(c>=worth)→break hNb=4
+    → Yolo🙋‍♂️#1[T3] terr=9645 bal=641444 dq=66.5 cnt=50 | c=313.5 rankC=454.5 need=1157777 tD=1.58 人 pulse crowdedHard | safe=352950 keep=Inf avail=-Inf chunkB=78368 pulseB=47021 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2505 alex_k B=391841 L=8849 d=44.3 nb=4 neut=0 cmds=28 noFull=1 shQ=97960 | m=0.900 worth=39.9 cheap=8.2 over=0 dMedOther=42.1 safe(-1)=352905
+    → Player 915#24[T5] terr=24469 bal=375711 dq=15.4 cnt=56 | c=36.8 rankC=36.8 need=672602 tD=0.37 人 pulse | safe=352905 keep=375354 avail=11896 chunkB=78368 pulseB=47021  hNb=4
+    → Player 625#31[T1] terr=12192 bal=225730 dq=18.5 cnt=4 | c=122.3 rankC=177.3 need=415451 tD=0.44 人 pulse | safe=352905 keep=Inf avail=-Inf chunkB=78368 pulseB=47021 价高(c>=worth)→break hNb=4
+    → Eyup#43[T1] terr=11087 bal=529479 dq=47.8 cnt=81 | c=165.9 rankC=240.6 need=960405 tD=1.14 人 pulse | safe=352905 keep=Inf avail=-Inf chunkB=78368 pulseB=47021 价高(c>=worth)→break hNb=4
+    → Yolo🙋‍♂️#1[T3] terr=9645 bal=641444 dq=66.5 cnt=50 | c=313.5 rankC=454.5 need=1157777 tD=1.58 人 pulse crowdedHard | safe=352905 keep=Inf avail=-Inf chunkB=78368 pulseB=47021 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2510 alex_k B=396582 L=8954 d=44.3 nb=4 neut=0 cmds=28 noFull=1 shQ=99145 | m=0.900 worth=39.9 cheap=8.2 over=0 dMedOther=42.6 safe(-1)=357212
+    → Player 915#24[T5] terr=24364 bal=378172 dq=15.5 cnt=54 | c=37.5 rankC=37.5 need=681550 tD=0.36 人 pulse | safe=357212 keep=383193 avail=8742 chunkB=79316 pulseB=47590  hNb=4
+    → Player 625#31[T1] terr=12277 bal=228619 dq=18.6 cnt=6 | c=122.8 rankC=178.1 need=421370 tD=0.44 人 pulse | safe=357212 keep=Inf avail=-Inf chunkB=79316 pulseB=47590 价高(c>=worth)→break hNb=4
+    → Eyup#43[T1] terr=11087 bal=535991 dq=48.3 cnt=81 | c=226.7 rankC=328.7 need=972013 tD=1.14 人 pulse crowdedHard | safe=357212 keep=Inf avail=-Inf chunkB=79316 pulseB=47590 价高(c>=worth)→break hNb=4
+    → Yolo🙋‍♂️#1[T3] terr=9645 bal=649269 dq=67.3 cnt=50 | c=317.2 rankC=460.0 need=1171724 tD=1.58 人 pulse crowdedHard | safe=357212 keep=Inf avail=-Inf chunkB=79316 pulseB=47590 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2515 alex_k B=396582 L=9057 d=43.8 nb=4 neut=0 cmds=28 noFull=1 shQ=99145 | m=0.900 worth=39.4 cheap=8.2 over=0 dMedOther=42.6 safe(-1)=301201
+    → Player 915#24[T5] terr=24261 bal=375617 dq=15.5 cnt=51 | c=37.8 rankC=37.8 need=681574 tD=0.36 人 pulse | safe=301201 keep=386253 avail=5682 chunkB=79316 pulseB=47590  hNb=4
+    → Yolo🙋‍♂️#1[T3] terr=9645 bal=549724 dq=57.0 cnt=50 | c=139.3 rankC=97.5 need=994295 tD=1.34 人 pulse crowdedHard | safe=301201 keep=Inf avail=-Inf chunkB=79316 pulseB=47590 价高(c>=worth)→break hNb=4
+    → Player 625#31[T1] terr=12334 bal=228619 dq=18.5 cnt=9 | c=122.2 rankC=177.1 need=421911 tD=0.44 人 pulse | safe=301201 keep=Inf avail=-Inf chunkB=79316 pulseB=47590 价高(c>=worth)→break hNb=4
+    → Eyup#43[T1] terr=11087 bal=535991 dq=48.3 cnt=81 | c=226.7 rankC=328.7 need=972013 tD=1.14 人 pulse crowdedHard | safe=301201 keep=Inf avail=-Inf chunkB=79316 pulseB=47590 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2520 alex_k B=401380 L=9107 d=44.1 nb=4 neut=70 cmds=29 noFull=1 shQ=100345 | m=0.900 worth=39.7 cheap=8.2 over=0 dMedOther=43.1 safe(-1)=304927
+    → Player 915#24[T5] terr=24211 bal=379433 dq=15.7 cnt=44 | c=38.3 rankC=38.3 need=690541 tD=0.36 人 pulse | safe=304927 keep=392518 avail=4159 chunkB=80276 pulseB=48166  hNb=4
+    → Yolo🙋‍♂️#1[T3] terr=9645 bal=556430 dq=57.7 cnt=50 | c=141.0 rankC=98.7 need=1006248 tD=1.34 人 pulse crowdedHard | safe=304927 keep=Inf avail=-Inf chunkB=80276 pulseB=48166 价高(c>=worth)→break hNb=4
+    → Player 625#31[T1] terr=12423 bal=231476 dq=18.6 cnt=14 | c=111.1 rankC=161.1 need=427783 tD=0.43 人 pulse | safe=304927 keep=Inf avail=-Inf chunkB=80276 pulseB=48166 价高(c>=worth)→break hNb=4
+    → Eyup#43[T1] terr=11087 bal=542583 dq=48.9 cnt=81 | c=229.4 rankC=332.7 need=983763 tD=1.14 人 pulse crowdedHard | safe=304927 keep=Inf avail=-Inf chunkB=80276 pulseB=48166 价高(c>=worth)→break hNb=4
+    ⇒ 影子指令 attack pct=47 → 无主地（约 18814 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2525 alex_k B=401380 L=9169 d=43.8 nb=4 neut=90 cmds=30 noFull=1 shQ=100345 | m=0.900 worth=39.4 cheap=8.2 over=0 dMedOther=38.0 safe(-1)=304874
+    → Player 915#24[T5] terr=24149 bal=377880 dq=15.6 cnt=16 | c=69.6 rankC=69.6 need=690589 tD=0.41 人 pulse | safe=304874 keep=Inf avail=-Inf chunkB=80276 pulseB=48166 价高(c>=worth)→break hNb=4
+    → Player 625#31[T1] terr=12423 bal=231566 dq=18.6 cnt=21 | c=80.8 rankC=117.2 need=427970 tD=0.49 人 pulse | safe=304874 keep=Inf avail=-Inf chunkB=80276 pulseB=48166 价高(c>=worth)→break hNb=4
+    → Eyup#43[T1] terr=11087 bal=542583 dq=48.9 cnt=81 | c=229.4 rankC=332.7 need=983763 tD=1.29 人 pulse crowdedHard | safe=304874 keep=Inf avail=-Inf chunkB=80276 pulseB=48166 价高(c>=worth)→break hNb=4
+    → Yolo🙋‍♂️#1[T3] terr=9923 bal=556430 dq=56.1 cnt=52 | c=265.0 rankC=384.3 need=1006704 tD=1.47 人 pulse crowdedHard | safe=304874 keep=Inf avail=-Inf chunkB=80276 pulseB=48166 价高(c>=worth)→break hNb=4
+    ⇒ 影子指令 attack pct=47 → 无主地（约 18814 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2530 alex_k B=382435 L=9287 d=41.2 nb=4 neut=82 cmds=30 noFull=1 shQ=77950 | m=0.900 worth=37.1 cheap=8.2 over=0 dMedOther=38.5 safe(-1)=308614
+    → Player 915#24[T5] terr=24121 bal=382271 dq=15.8 cnt=12 | c=70.7 rankC=70.7 need=699624 tD=0.41 人 pulse | safe=308614 keep=Inf avail=-Inf chunkB=76487 pulseB=45892 价高(c>=worth)→break hNb=4
+    → Player 625#31[T1] terr=12423 bal=219350 dq=17.7 cnt=26 | c=64.6 rankC=93.7 need=406418 tD=0.46 人 pulse | safe=308614 keep=Inf avail=-Inf chunkB=76487 pulseB=45892 价高(c>=worth)→break hNb=4
+    → Eyup#43[T1] terr=11087 bal=549256 dq=49.5 cnt=81 | c=232.1 rankC=336.6 need=995657 tD=1.29 人 pulse crowdedHard | safe=308614 keep=Inf avail=-Inf chunkB=76487 pulseB=45892 价高(c>=worth)→break hNb=4
+    → Yolo🙋‍♂️#1[T3] terr=10043 bal=563263 dq=56.1 cnt=52 | c=265.0 rankC=384.2 need=1019063 tD=1.46 人 pulse crowdedHard | safe=308614 keep=Inf avail=-Inf chunkB=76487 pulseB=45892 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2535 alex_k B=360028 L=9381 d=38.4 nb=4 neut=75 cmds=30 noFull=1 shQ=83663 | m=0.900 worth=34.5 cheap=8.2 over=0 dMedOther=38.5 safe(-1)=308535
+    → Player 915#24[T5] terr=24109 bal=381967 dq=15.8 cnt=10 | c=70.8 rankC=70.8 need=699648 tD=0.41 人 pulse | safe=308535 keep=Inf avail=-Inf chunkB=72006 pulseB=43203 价高(c>=worth)→break hNb=4
+    → Player 625#31[T1] terr=12503 bal=219350 dq=17.5 cnt=28 | c=64.1 rankC=93.0 need=407123 tD=0.46 人 pulse | safe=308535 keep=Inf avail=-Inf chunkB=72006 pulseB=43203 价高(c>=worth)→break hNb=4
+    → Eyup#43[T1] terr=11087 bal=549256 dq=49.5 cnt=81 | c=232.1 rankC=336.5 need=995657 tD=1.29 人 pulse crowdedHard | safe=308535 keep=Inf avail=-Inf chunkB=72006 pulseB=43203 价高(c>=worth)→break hNb=4
+    → Yolo🙋‍♂️#1[T3] terr=10043 bal=563263 dq=56.1 cnt=52 | c=264.9 rankC=384.1 need=1019063 tD=1.46 人 pulse crowdedHard | safe=308535 keep=Inf avail=-Inf chunkB=72006 pulseB=43203 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2540 alex_k B=364420 L=9547 d=38.2 nb=4 neut=69 cmds=30 noFull=1 shQ=89166 | m=0.900 worth=34.4 cheap=8.2 over=0 dMedOther=39.0 safe(-1)=312255
+    → Player 915#24[T5] terr=24089 bal=386610 dq=16.0 cnt=7 | c=71.8 rankC=71.8 need=708776 tD=0.41 人 pulse | safe=312255 keep=Inf avail=-Inf chunkB=72884 pulseB=43730 价高(c>=worth)→break hNb=4
+    → Player 625#31[T1] terr=12659 bal=222091 dq=17.5 cnt=32 | c=64.0 rankC=92.8 need=413314 tD=0.45 人 pulse | safe=312255 keep=Inf avail=-Inf chunkB=72884 pulseB=43730 价高(c>=worth)→break hNb=4
+    → Eyup#43[T1] terr=11087 bal=556011 dq=50.1 cnt=81 | c=234.9 rankC=340.6 need=1007697 tD=1.28 人 pulse crowdedHard | safe=312255 keep=Inf avail=-Inf chunkB=72884 pulseB=43730 价高(c>=worth)→break hNb=4
+    → Yolo🙋‍♂️#1[T3] terr=10043 bal=570134 dq=56.8 cnt=52 | c=268.1 rankC=388.7 need=1031311 tD=1.45 人 pulse crowdedHard | safe=312255 keep=Inf avail=-Inf chunkB=72884 pulseB=43730 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2545 alex_k B=364420 L=9681 d=37.6 nb=4 neut=61 cmds=31 noFull=1 shQ=91105 | m=0.900 worth=33.9 cheap=8.2 over=0 dMedOther=39.0 safe(-1)=312142
+    → Player 915#24[T5] terr=24089 bal=340550 dq=14.1 cnt=7 | c=23.7 rankC=16.6 need=668934 tD=0.36 人 pulse onMe agg | safe=312142 keep=312142 avail=48008 chunkB=72884 pulseB=43730  hNb=4
+    → Player 625#31[T1] terr=12879 bal=222091 dq=17.2 cnt=33 | c=43.3 rankC=43.3 need=415133 tD=0.44 人 pulse | safe=312142 keep=Inf avail=-Inf chunkB=72884 pulseB=43730 价高(c>=worth)→break hNb=4
+    → Eyup#43[T1] terr=11087 bal=556011 dq=50.1 cnt=81 | c=162.0 rankC=162.0 need=1007697 tD=1.28 人 pulse crowdedHard | safe=312142 keep=Inf avail=-Inf chunkB=72884 pulseB=43730 价高(c>=worth)→break hNb=4
+    → Yolo🙋‍♂️#1[T3] terr=10043 bal=570134 dq=56.8 cnt=52 | c=184.9 rankC=184.9 need=1031311 tD=1.45 人 pulse crowdedHard | safe=312142 keep=Inf avail=-Inf chunkB=72884 pulseB=43730 价高(c>=worth)→break hNb=4
+    ⇒ 影子指令 attack pct=122 → Player 915#24[T5]（约 43773 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2550 alex_k B=368260 L=9732 d=37.8 nb=4 neut=57 cmds=32 noFull=1 shQ=92065 | m=0.900 worth=34.1 cheap=8.2 over=0 dMedOther=39.6 safe(-1)=316006
+    → Player 915#24[T5] terr=24099 bal=345147 dq=14.3 cnt=10 | c=24.0 rankC=16.8 need=675941 tD=0.36 人 pulse onMe agg | safe=316006 keep=316006 avail=47939 chunkB=73652 pulseB=44191  hNb=4
+    → Player 625#31[T1] terr=12879 bal=196822 dq=15.3 cnt=31 | c=38.7 rankC=38.7 need=370144 tD=0.39 人 pulse | safe=316006 keep=Inf avail=-Inf chunkB=73652 pulseB=44191 价高(c>=worth)→break hNb=4
+    → Eyup#43[T1] terr=11087 bal=562849 dq=50.8 cnt=81 | c=163.9 rankC=163.9 need=1019886 tD=1.28 人 pulse crowdedHard | safe=316006 keep=Inf avail=-Inf chunkB=73652 pulseB=44191 价高(c>=worth)→break hNb=4
+    → Yolo🙋‍♂️#1[T3] terr=10043 bal=577089 dq=57.5 cnt=52 | c=187.1 rankC=187.1 need=1043708 tD=1.45 人 pulse crowdedHard | safe=316006 keep=Inf avail=-Inf chunkB=73652 pulseB=44191 价高(c>=worth)→break hNb=4
+    ⇒ 影子指令 attack pct=122 → Player 915#24[T5]（约 44234 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2555 alex_k B=366217 L=9811 d=37.3 nb=4 neut=55 cmds=33 noFull=1 shQ=91554 | m=0.900 worth=33.6 cheap=8.2 over=0 dMedOther=39.6 safe(-1)=315940
+    → Player 915#24[T5] terr=24133 bal=345147 dq=14.3 cnt=12 | c=23.9 rankC=16.8 need=672057 tD=0.36 人 pulse onMe agg | safe=315940 keep=315940 avail=45986 chunkB=73243 pulseB=43946  hNb=4
+    → Player 625#31[T1] terr=12879 bal=196822 dq=15.3 cnt=29 | c=38.7 rankC=38.7 need=370144 tD=0.39 人 pulse | safe=315940 keep=Inf avail=-Inf chunkB=73243 pulseB=43946 价高(c>=worth)→break hNb=4
+    → Eyup#43[T1] terr=11087 bal=562849 dq=50.8 cnt=81 | c=163.9 rankC=163.9 need=1019886 tD=1.28 人 pulse crowdedHard | safe=315940 keep=Inf avail=-Inf chunkB=73243 pulseB=43946 价高(c>=worth)→break hNb=4
+    → Yolo🙋‍♂️#1[T3] terr=10043 bal=577089 dq=57.5 cnt=52 | c=187.1 rankC=187.1 need=1043708 tD=1.45 人 pulse crowdedHard | safe=315940 keep=Inf avail=-Inf chunkB=73243 pulseB=43946 价高(c>=worth)→break hNb=4
+    ⇒ 影子指令 attack pct=122 → Player 915#24[T5]（约 43988 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2560 alex_k B=321816 L=9941 d=32.4 nb=4 neut=48 cmds=33 noFull=1 shQ=39384 | m=0.900 worth=30.7 cheap=8.2 over=0 dMedOther=40.1 safe(-1)=319785
+    → Player 915#24[T5] terr=24109 bal=349262 dq=14.5 cnt=10 | c=64.3 rankC=64.3 need=636306 tD=0.36 人 pulse | safe=319785 keep=Inf avail=-Inf chunkB=64363 pulseB=38618 价高(c>=worth)→break hNb=4
+    → Player 625#31[T1] terr=13142 bal=199282 dq=15.2 cnt=33 | c=55.6 rankC=80.6 need=374917 tD=0.38 人 pulse | safe=319785 keep=Inf avail=-Inf chunkB=64363 pulseB=38618 价高(c>=worth)→break hNb=4
+    → Eyup#43[T1] terr=11087 bal=569772 dq=51.4 cnt=81 | c=240.5 rankC=348.7 need=1032226 tD=1.28 人 pulse crowdedHard | safe=319785 keep=Inf avail=-Inf chunkB=64363 pulseB=38618 价高(c>=worth)→break hNb=4
+    → Yolo🙋‍♂️#1[T3] terr=10043 bal=584129 dq=58.2 cnt=52 | c=274.4 rankC=397.9 need=1056256 tD=1.45 人 pulse crowdedHard | safe=319785 keep=Inf avail=-Inf chunkB=64363 pulseB=38618 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2565 alex_k B=242557 L=9998 d=24.3 nb=4 neut=43 cmds=33 noFull=1 shQ=43563 | m=0.900 worth=30.4 cheap=8.2 over=0 dMedOther=39.7 safe(-1)=319737
+    → Player 915#24[T5] terr=24099 bal=349031 dq=14.5 cnt=10 | c=57.0 rankC=57.0 need=564137 tD=0.36 人 pulse | safe=319737 keep=Inf avail=-Inf chunkB=48511 pulseB=29107 价高(c>=worth)→break hNb=4
+    → Player 625#31[T1] terr=13310 bal=199282 dq=15.0 cnt=35 | c=54.7 rankC=79.4 need=375169 tD=0.38 人 pulse | safe=319737 keep=Inf avail=-Inf chunkB=48511 pulseB=29107 价高(c>=worth)→break hNb=4
+    → Eyup#43[T1] terr=11087 bal=569772 dq=51.4 cnt=81 | c=240.2 rankC=348.3 need=1032226 tD=1.29 人 pulse crowdedHard | safe=319737 keep=Inf avail=-Inf chunkB=48511 pulseB=29107 价高(c>=worth)→break hNb=4
+    → Yolo🙋‍♂️#1[T3] terr=10043 bal=584129 dq=58.2 cnt=52 | c=274.2 rankC=397.6 need=1056256 tD=1.46 人 pulse crowdedHard | safe=319737 keep=Inf avail=-Inf chunkB=48511 pulseB=29107 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2570 alex_k B=245516 L=10099 d=24.3 nb=4 neut=31 cmds=33 noFull=1 shQ=47267 | m=0.900 worth=30.8 cheap=8.2 over=0 dMedOther=40.2 safe(-1)=323655
+    → Player 915#24[T5] terr=24082 bal=353344 dq=14.7 cnt=6 | c=58.0 rankC=58.0 need=572481 tD=0.36 人 pulse | safe=323655 keep=Inf avail=-Inf chunkB=49103 pulseB=29462 价高(c>=worth)→break hNb=4
+    → Player 625#31[T1] terr=13546 bal=201792 dq=14.9 cnt=44 | c=54.4 rankC=78.9 need=379997 tD=0.37 人 pulse | safe=323655 keep=Inf avail=-Inf chunkB=49103 pulseB=29462 价高(c>=worth)→break hNb=4
+    → Eyup#43[T1] terr=11087 bal=576780 dq=52.0 cnt=81 | c=243.1 rankC=352.6 need=1044717 tD=1.29 人 pulse crowdedHard | safe=323655 keep=Inf avail=-Inf chunkB=49103 pulseB=29462 价高(c>=worth)→break hNb=4
+    → Yolo🙋‍♂️#1[T3] terr=10043 bal=591255 dq=58.9 cnt=52 | c=277.5 rankC=402.4 need=1068958 tD=1.46 人 pulse crowdedHard | safe=323655 keep=Inf avail=-Inf chunkB=49103 pulseB=29462 价高(c>=worth)→break hNb=4
+    ⇒ 本拍没有指令
+t=2575 alex_k B=333102 L=10189 d=32.7 nb=3 neut=21 cmds=33 noFull=1 shQ=51274 | m=0.900 worth=30.8 cheap=8.2 over=0 dMedOther=40.2 safe(-1)=323579
+    → Player 625#31[T1] terr=13683 bal=201792 dq=14.7 cnt=53 | c=37.3 rankC=37.3 need=380208 tD=0.37 人 pulse | safe=323579 keep=Inf avail=-Inf chunkB=66620 pulseB=39972 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=576780 dq=52.0 cnt=81 | c=167.9 rankC=167.9 need=1044717 tD=1.29 人 pulse crowdedHard | safe=323579 keep=Inf avail=-Inf chunkB=66620 pulseB=39972 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=10043 bal=591255 dq=58.9 cnt=52 | c=191.6 rankC=191.6 need=1068958 tD=1.46 人 pulse crowdedHard | safe=323579 keep=Inf avail=-Inf chunkB=66620 pulseB=39972 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2580 alex_k B=337165 L=10225 d=33.0 nb=3 neut=14 cmds=33 noFull=1 shQ=56362 | m=0.900 worth=31.1 cheap=8.2 over=0 dMedOther=40.7 safe(-1)=327601
+    → Player 625#31[T1] terr=13858 bal=204334 dq=14.7 cnt=56 | c=37.3 rankC=37.3 need=384995 tD=0.36 人 pulse | safe=327601 keep=Inf avail=-Inf chunkB=67433 pulseB=40460 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=583874 dq=52.7 cnt=81 | c=169.9 rankC=169.9 need=1057362 tD=1.29 人 pulse crowdedHard | safe=327601 keep=Inf avail=-Inf chunkB=67433 pulseB=40460 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=10043 bal=598468 dq=59.6 cnt=52 | c=193.9 rankC=193.9 need=1081815 tD=1.46 人 pulse crowdedHard | safe=327601 keep=Inf avail=-Inf chunkB=67433 pulseB=40460 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2585 alex_k B=371891 L=10251 d=36.3 nb=3 neut=0 cmds=33 noFull=1 shQ=61608 | m=0.900 worth=32.7 cheap=8.2 over=0 dMedOther=38.2 safe(-1)=327579
+    → Player 625#31[T1] terr=13953 bal=204334 dq=14.6 cnt=69 | c=37.0 rankC=37.0 need=385132 tD=0.38 人 pulse | safe=327579 keep=Inf avail=-Inf chunkB=74378 pulseB=44627 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=583874 dq=52.7 cnt=81 | c=169.9 rankC=169.9 need=1057362 tD=1.38 人 pulse crowdedHard | safe=327579 keep=Inf avail=-Inf chunkB=74378 pulseB=44627 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=10043 bal=598468 dq=59.6 cnt=52 | c=193.9 rankC=193.9 need=1081815 tD=1.56 人 pulse crowdedHard | safe=327579 keep=Inf avail=-Inf chunkB=74378 pulseB=44627 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2590 alex_k B=376428 L=10251 d=36.7 nb=3 neut=0 cmds=33 noFull=1 shQ=67292 | m=0.900 worth=33.0 cheap=8.2 over=0 dMedOther=37.9 safe(-1)=331681
+    → Player 625#31[T1] terr=14041 bal=206908 dq=14.7 cnt=69 | c=37.2 rankC=37.2 need=389852 tD=0.39 人 pulse | safe=331681 keep=Inf avail=-Inf chunkB=75286 pulseB=45171 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=591055 dq=53.3 cnt=81 | c=172.0 rankC=172.0 need=1070162 tD=1.41 人 pulse crowdedHard | safe=331681 keep=Inf avail=-Inf chunkB=75286 pulseB=45171 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=10043 bal=605769 dq=60.3 cnt=52 | c=196.3 rankC=196.3 need=1094829 tD=1.59 人 pulse crowdedHard | safe=331681 keep=Inf avail=-Inf chunkB=75286 pulseB=45171 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2595 alex_k B=376428 L=10251 d=36.7 nb=3 neut=0 cmds=33 noFull=1 shQ=73032 | m=0.900 worth=33.0 cheap=8.2 over=0 dMedOther=37.4 safe(-1)=323415
+    → Player 625#31[T1] terr=14083 bal=206908 dq=14.7 cnt=69 | c=37.1 rankC=37.1 need=389926 tD=0.39 人 pulse | safe=323415 keep=Inf avail=-Inf chunkB=75286 pulseB=45171 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=10043 bal=408186 dq=40.6 cnt=52 | c=100.0 rankC=70.0 need=742644 tD=1.09 人 pulse crowdedHard | safe=323415 keep=Inf avail=-Inf chunkB=75286 pulseB=45171 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=591055 dq=53.3 cnt=81 | c=172.0 rankC=172.0 need=1070162 tD=1.42 人 pulse crowdedHard | safe=323415 keep=Inf avail=-Inf chunkB=75286 pulseB=45171 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2600 alex_k B=391271 L=10251 d=38.2 nb=3 neut=0 cmds=33 noFull=1 shQ=78817 | m=0.900 worth=34.4 cheap=8.2 over=0 dMedOther=28.6 safe(-1)=333727
+    → Player 625#31[T1] terr=14122 bal=223626 dq=15.8 cnt=69 | c=39.8 rankC=39.8 need=419778 tD=0.55 人 pulse | safe=333727 keep=Inf avail=-Inf chunkB=78254 pulseB=46953 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=10271 bal=423324 dq=41.2 cnt=54 | c=75.1 rankC=52.6 need=769968 tD=1.44 人 pulse | safe=333727 keep=Inf avail=-Inf chunkB=78254 pulseB=46953 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=609411 dq=55.0 cnt=81 | c=177.3 rankC=177.3 need=1102881 tD=1.92 人 pulse crowdedHard | safe=333727 keep=Inf avail=-Inf chunkB=78254 pulseB=46953 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2605 alex_k B=391271 L=10251 d=38.2 nb=3 neut=0 cmds=33 noFull=1 shQ=84782 | m=0.900 worth=34.4 cheap=8.2 over=0 dMedOther=40.4 safe(-1)=333727
+    → Player 625#31[T1] terr=14139 bal=223626 dq=15.8 cnt=69 | c=39.8 rankC=39.8 need=419809 tD=0.39 人 pulse | safe=333727 keep=Inf avail=-Inf chunkB=78254 pulseB=46953 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=10479 bal=423324 dq=40.4 cnt=56 | c=73.6 rankC=51.5 need=770279 tD=1.00 人 pulse | safe=333727 keep=Inf avail=-Inf chunkB=78254 pulseB=46953 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=609411 dq=55.0 cnt=81 | c=177.3 rankC=177.3 need=1102881 tD=1.36 人 pulse crowdedHard | safe=333727 keep=Inf avail=-Inf chunkB=78254 pulseB=46953 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2610 alex_k B=396044 L=10251 d=38.6 nb=3 neut=0 cmds=33 noFull=1 shQ=90761 | m=0.900 worth=34.8 cheap=8.2 over=0 dMedOther=39.9 safe(-1)=337938
+    → Player 625#31[T1] terr=14139 bal=245655 dq=17.4 cnt=69 | c=43.5 rankC=43.5 need=459074 tD=0.44 人 pulse | safe=337938 keep=Inf avail=-Inf chunkB=79209 pulseB=47525 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=10750 bal=428530 dq=39.9 cnt=60 | c=72.6 rankC=50.9 need=779950 tD=1.00 人 pulse | safe=337938 keep=Inf avail=-Inf chunkB=79209 pulseB=47525 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=616906 dq=55.6 cnt=81 | c=179.4 rankC=179.4 need=1116240 tD=1.40 人 pulse crowdedHard | safe=337938 keep=Inf avail=-Inf chunkB=79209 pulseB=47525 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2615 alex_k B=396044 L=10251 d=38.6 nb=3 neut=0 cmds=33 noFull=1 shQ=96796 | m=0.900 worth=34.8 cheap=8.2 over=0 dMedOther=39.3 safe(-1)=337938
+    → Player 625#31[T1] terr=14139 bal=245655 dq=17.4 cnt=69 | c=43.5 rankC=43.5 need=459074 tD=0.44 人 pulse | safe=337938 keep=Inf avail=-Inf chunkB=79209 pulseB=47525 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=10909 bal=428530 dq=39.3 cnt=62 | c=71.6 rankC=50.1 need=780173 tD=1.00 人 pulse | safe=337938 keep=Inf avail=-Inf chunkB=79209 pulseB=47525 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=616906 dq=55.6 cnt=81 | c=179.4 rankC=179.4 need=1116240 tD=1.42 人 pulse crowdedHard | safe=337938 keep=Inf avail=-Inf chunkB=79209 pulseB=47525 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2620 alex_k B=400875 L=10251 d=39.1 nb=3 neut=29 cmds=34 noFull=1 shQ=100218 | m=0.900 worth=35.2 cheap=8.2 over=0 dMedOther=39.2 safe(-1)=342200
+    → Player 625#31[T1] terr=14139 bal=248750 dq=17.6 cnt=69 | c=44.0 rankC=44.0 need=464591 tD=0.45 人 pulse | safe=342200 keep=Inf avail=-Inf chunkB=80175 pulseB=48105 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=11064 bal=433800 dq=39.2 cnt=64 | c=95.2 rankC=95.2 need=789785 tD=1.00 人 pulse | safe=342200 keep=Inf avail=-Inf chunkB=80175 pulseB=48105 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=624493 dq=56.3 cnt=81 | c=181.6 rankC=181.6 need=1129764 tD=1.44 人 pulse crowdedHard | safe=342200 keep=Inf avail=-Inf chunkB=80175 pulseB=48105 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=47 → 无主地（约 18791 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2625 alex_k B=400875 L=10251 d=39.1 nb=3 neut=27 cmds=35 noFull=1 shQ=100218 | m=0.900 worth=35.2 cheap=8.2 over=0 dMedOther=39.0 safe(-1)=342200
+    → Player 625#31[T1] terr=14139 bal=248750 dq=17.6 cnt=69 | c=44.0 rankC=44.0 need=464591 tD=0.45 人 pulse | safe=342200 keep=Inf avail=-Inf chunkB=80175 pulseB=48105 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=11121 bal=433800 dq=39.0 cnt=66 | c=94.7 rankC=94.7 need=789884 tD=1.00 人 pulse | safe=342200 keep=Inf avail=-Inf chunkB=80175 pulseB=48105 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=624493 dq=56.3 cnt=81 | c=181.6 rankC=181.6 need=1129764 tD=1.44 人 pulse crowdedHard | safe=342200 keep=Inf avail=-Inf chunkB=80175 pulseB=48105 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=47 → 无主地（约 18791 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2630 alex_k B=405765 L=10251 d=39.6 nb=3 neut=23 cmds=36 noFull=1 shQ=101441 | m=0.900 worth=35.6 cheap=8.2 over=0 dMedOther=39.3 safe(-1)=346515
+    → Player 625#31[T1] terr=14139 bal=251884 dq=17.8 cnt=69 | c=44.5 rankC=44.5 need=470177 tD=0.45 人 pulse | safe=346515 keep=Inf avail=-Inf chunkB=81153 pulseB=48692 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=11188 bal=439135 dq=39.3 cnt=70 | c=95.3 rankC=95.3 need=799480 tD=1.00 人 pulse | safe=346515 keep=Inf avail=-Inf chunkB=81153 pulseB=48692 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=632174 dq=57.0 cnt=81 | c=183.8 rankC=183.8 need=1143455 tD=1.45 人 pulse crowdedHard | safe=346515 keep=Inf avail=-Inf chunkB=81153 pulseB=48692 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=47 → 无主地（约 19020 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2635 alex_k B=405765 L=10251 d=39.6 nb=3 neut=20 cmds=37 noFull=1 shQ=101441 | m=0.900 worth=35.6 cheap=8.2 over=0 dMedOther=39.1 safe(-1)=346515
+    → Player 625#31[T1] terr=14139 bal=251884 dq=17.8 cnt=69 | c=44.5 rankC=44.5 need=470177 tD=0.46 人 pulse | safe=346515 keep=Inf avail=-Inf chunkB=81153 pulseB=48692 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=11227 bal=439135 dq=39.1 cnt=73 | c=94.9 rankC=94.9 need=799581 tD=1.00 人 pulse | safe=346515 keep=Inf avail=-Inf chunkB=81153 pulseB=48692 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=632174 dq=57.0 cnt=81 | c=183.8 rankC=183.8 need=1143455 tD=1.46 人 pulse crowdedHard | safe=346515 keep=Inf avail=-Inf chunkB=81153 pulseB=48692 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=47 → 无主地（约 19020 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=2640 alex_k B=386650 L=10251 d=37.7 nb=3 neut=15 cmds=37 noFull=1 shQ=0 | m=0.900 worth=33.9 cheap=8.2 over=0 dMedOther=43.7 safe(-1)=350883
+    → Player 625#31[T1] terr=14139 bal=255057 dq=18.0 cnt=69 | c=45.0 rankC=45.0 need=475833 tD=0.41 人 pulse | safe=350883 keep=Inf avail=-Inf chunkB=77330 pulseB=46398 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=11275 bal=444536 dq=39.4 cnt=78 | c=95.6 rankC=95.6 need=809279 tD=0.90 人 pulse | safe=350883 keep=Inf avail=-Inf chunkB=77330 pulseB=46398 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=639949 dq=57.7 cnt=81 | c=186.0 rankC=186.0 need=1157313 tD=1.32 人 pulse crowdedHard | safe=350883 keep=Inf avail=-Inf chunkB=77330 pulseB=46398 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2645 alex_k B=386650 L=10251 d=37.7 nb=3 neut=13 cmds=37 noFull=1 shQ=5895 | m=0.900 worth=34.3 cheap=8.2 over=0 dMedOther=44.8 safe(-1)=350883
+    → Player 625#31[T1] terr=14139 bal=255057 dq=18.0 cnt=69 | c=45.0 rankC=45.0 need=475833 tD=0.40 人 pulse | safe=350883 keep=Inf avail=-Inf chunkB=77330 pulseB=46398 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=11295 bal=444536 dq=39.4 cnt=80 | c=95.4 rankC=95.4 need=809309 tD=0.88 人 pulse | safe=350883 keep=Inf avail=-Inf chunkB=77330 pulseB=46398 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=639949 dq=57.7 cnt=81 | c=186.0 rankC=186.0 need=1157313 tD=1.29 人 pulse crowdedHard | safe=350883 keep=Inf avail=-Inf chunkB=77330 pulseB=46398 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2650 alex_k B=346848 L=10270 d=33.8 nb=3 neut=3 cmds=37 noFull=1 shQ=11266 | m=0.900 worth=34.7 cheap=8.2 over=0 dMedOther=45.4 safe(-1)=355289
+    → Player 625#31[T1] terr=14139 bal=258270 dq=18.3 cnt=69 | c=45.5 rankC=45.5 need=481560 tD=0.40 人 pulse | safe=355289 keep=Inf avail=-Inf chunkB=69370 pulseB=41622 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=11315 bal=450003 dq=39.8 cnt=87 | c=130.0 rankC=130.0 need=819084 tD=0.88 人 pulse crowdedHard | safe=355289 keep=Inf avail=-Inf chunkB=69370 pulseB=41622 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=647820 dq=58.4 cnt=81 | c=188.1 rankC=188.1 need=1171343 tD=1.29 人 pulse crowdedHard | safe=355289 keep=Inf avail=-Inf chunkB=69370 pulseB=41622 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2655 alex_k B=401010 L=10273 d=39.0 nb=3 neut=0 cmds=37 noFull=1 shQ=17049 | m=0.900 worth=35.1 cheap=8.2 over=0 dMedOther=45.4 safe(-1)=355287
+    → Player 625#31[T1] terr=14139 bal=258270 dq=18.3 cnt=69 | c=45.6 rankC=45.6 need=481560 tD=0.40 人 pulse | safe=355287 keep=Inf avail=-Inf chunkB=80202 pulseB=48121 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=11316 bal=492566 dq=43.5 cnt=90 | c=142.0 rankC=142.0 need=894905 tD=0.96 人 pulse crowdedHard | safe=355287 keep=Inf avail=-Inf chunkB=80202 pulseB=48121 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=647820 dq=58.4 cnt=81 | c=188.2 rankC=188.2 need=1171343 tD=1.29 人 pulse crowdedHard | safe=355287 keep=Inf avail=-Inf chunkB=80202 pulseB=48121 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2660 alex_k B=405902 L=10273 d=39.5 nb=3 neut=0 cmds=37 noFull=1 shQ=23178 | m=0.900 worth=35.6 cheap=8.2 over=0 dMedOther=45.9 safe(-1)=359763
+    → Player 625#31[T1] terr=14139 bal=261524 dq=18.5 cnt=69 | c=46.1 rankC=46.1 need=487360 tD=0.40 人 pulse | safe=359763 keep=Inf avail=-Inf chunkB=81180 pulseB=48708 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=11316 bal=498624 dq=44.1 cnt=90 | c=143.7 rankC=143.7 need=905703 tD=0.96 人 pulse crowdedHard | safe=359763 keep=Inf avail=-Inf chunkB=81180 pulseB=48708 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=655788 dq=59.1 cnt=81 | c=190.5 rankC=190.5 need=1185546 tD=1.29 人 pulse crowdedHard | safe=359763 keep=Inf avail=-Inf chunkB=81180 pulseB=48708 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2665 alex_k B=405902 L=10273 d=39.5 nb=3 neut=0 cmds=37 noFull=1 shQ=29363 | m=0.900 worth=35.6 cheap=8.2 over=0 dMedOther=45.9 safe(-1)=359763
+    → Player 625#31[T1] terr=14139 bal=261524 dq=18.5 cnt=69 | c=46.1 rankC=46.1 need=487360 tD=0.40 人 pulse | safe=359763 keep=Inf avail=-Inf chunkB=81180 pulseB=48708 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=11316 bal=498624 dq=44.1 cnt=90 | c=143.7 rankC=143.7 need=905703 tD=0.96 人 pulse crowdedHard | safe=359763 keep=Inf avail=-Inf chunkB=81180 pulseB=48708 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=655788 dq=59.1 cnt=81 | c=190.5 rankC=190.5 need=1185546 tD=1.29 人 pulse crowdedHard | safe=359763 keep=Inf avail=-Inf chunkB=81180 pulseB=48708 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2670 alex_k B=410854 L=10273 d=40.0 nb=3 neut=0 cmds=37 noFull=1 shQ=35564 | m=0.900 worth=36.0 cheap=8.2 over=0 dMedOther=46.5 safe(-1)=364295
+    → Player 625#31[T1] terr=14139 bal=264819 dq=18.7 cnt=69 | c=46.7 rankC=46.7 need=493233 tD=0.40 人 pulse | safe=364295 keep=Inf avail=-Inf chunkB=82171 pulseB=49302 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=11316 bal=504757 dq=44.6 cnt=90 | c=145.4 rankC=145.4 need=916634 tD=0.96 人 pulse crowdedHard | safe=364295 keep=Inf avail=-Inf chunkB=82171 pulseB=49302 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=663854 dq=59.9 cnt=81 | c=192.8 rankC=192.8 need=1199923 tD=1.29 人 pulse crowdedHard | safe=364295 keep=Inf avail=-Inf chunkB=82171 pulseB=49302 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2675 alex_k B=410854 L=10273 d=40.0 nb=3 neut=0 cmds=37 noFull=1 shQ=41829 | m=0.900 worth=36.0 cheap=8.2 over=0 dMedOther=45.8 safe(-1)=364295
+    → Player 625#31[T1] terr=14139 bal=264819 dq=18.7 cnt=69 | c=46.7 rankC=46.7 need=493233 tD=0.41 人 pulse | safe=364295 keep=Inf avail=-Inf chunkB=82171 pulseB=49302 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=11316 bal=504757 dq=44.6 cnt=90 | c=145.4 rankC=145.4 need=916634 tD=0.97 人 pulse crowdedHard | safe=364295 keep=Inf avail=-Inf chunkB=82171 pulseB=49302 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=663854 dq=59.9 cnt=81 | c=192.8 rankC=192.8 need=1199923 tD=1.31 人 pulse crowdedHard | safe=364295 keep=Inf avail=-Inf chunkB=82171 pulseB=49302 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2680 alex_k B=415866 L=10273 d=40.5 nb=3 neut=0 cmds=37 noFull=1 shQ=48109 | m=0.900 worth=36.4 cheap=8.2 over=0 dMedOther=45.2 safe(-1)=368882
+    → Player 625#31[T1] terr=14139 bal=268155 dq=19.0 cnt=69 | c=47.3 rankC=47.3 need=499179 tD=0.42 人 pulse | safe=368882 keep=Inf avail=-Inf chunkB=83173 pulseB=49904 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=11316 bal=510965 dq=45.2 cnt=90 | c=147.2 rankC=147.2 need=927699 tD=1.00 人 pulse crowdedHard | safe=368882 keep=Inf avail=-Inf chunkB=83173 pulseB=49904 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=672019 dq=60.6 cnt=81 | c=195.2 rankC=195.2 need=1214477 tD=1.34 人 pulse crowdedHard | safe=368882 keep=Inf avail=-Inf chunkB=83173 pulseB=49904 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2685 alex_k B=415866 L=10273 d=40.5 nb=3 neut=0 cmds=37 noFull=1 shQ=54449 | m=0.900 worth=36.4 cheap=8.2 over=0 dMedOther=45.2 safe(-1)=368882
+    → Player 625#31[T1] terr=14139 bal=268155 dq=19.0 cnt=69 | c=47.3 rankC=47.3 need=499179 tD=0.42 人 pulse | safe=368882 keep=Inf avail=-Inf chunkB=83173 pulseB=49904 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=11316 bal=510965 dq=45.2 cnt=90 | c=147.2 rankC=147.2 need=927699 tD=1.00 人 pulse crowdedHard | safe=368882 keep=Inf avail=-Inf chunkB=83173 pulseB=49904 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=672019 dq=60.6 cnt=81 | c=195.2 rankC=195.2 need=1214477 tD=1.34 人 pulse crowdedHard | safe=368882 keep=Inf avail=-Inf chunkB=83173 pulseB=49904 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2690 alex_k B=420939 L=10273 d=41.0 nb=3 neut=0 cmds=37 noFull=1 shQ=60804 | m=0.900 worth=36.9 cheap=8.2 over=0 dMedOther=45.7 safe(-1)=373525
+    → Player 625#31[T1] terr=14139 bal=271533 dq=19.2 cnt=69 | c=47.8 rankC=47.8 need=505200 tD=0.42 人 pulse | safe=373525 keep=Inf avail=-Inf chunkB=84188 pulseB=50513 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=11316 bal=517249 dq=45.7 cnt=90 | c=149.0 rankC=149.0 need=938899 tD=1.00 人 pulse crowdedHard | safe=373525 keep=Inf avail=-Inf chunkB=84188 pulseB=50513 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=680284 dq=61.4 cnt=81 | c=197.5 rankC=197.5 need=1229209 tD=1.34 人 pulse crowdedHard | safe=373525 keep=Inf avail=-Inf chunkB=84188 pulseB=50513 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2695 alex_k B=420939 L=10273 d=41.0 nb=3 neut=0 cmds=37 noFull=1 shQ=67219 | m=0.900 worth=36.9 cheap=8.2 over=0 dMedOther=45.7 safe(-1)=373525
+    → Player 625#31[T1] terr=14139 bal=271533 dq=19.2 cnt=69 | c=47.8 rankC=47.8 need=505200 tD=0.42 人 pulse | safe=373525 keep=Inf avail=-Inf chunkB=84188 pulseB=50513 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=11316 bal=517249 dq=45.7 cnt=90 | c=149.0 rankC=149.0 need=938899 tD=1.00 人 pulse crowdedHard | safe=373525 keep=Inf avail=-Inf chunkB=84188 pulseB=50513 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=680284 dq=61.4 cnt=81 | c=197.5 rankC=197.5 need=1229209 tD=1.34 人 pulse crowdedHard | safe=373525 keep=Inf avail=-Inf chunkB=84188 pulseB=50513 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2700 alex_k B=436347 L=10273 d=42.5 nb=3 neut=0 cmds=37 noFull=1 shQ=73681 | m=0.900 worth=38.2 cheap=8.2 over=0 dMedOther=47.3 safe(-1)=384454
+    → Player 625#31[T1] terr=14139 bal=289093 dq=20.4 cnt=69 | c=50.8 rankC=50.8 need=536500 tD=0.43 人 pulse | safe=384454 keep=Inf avail=-Inf chunkB=87269 pulseB=52362 价高(c>=worth)→break hNb=3
+    → Yolo🙋‍♂️#1[T3] terr=11316 bal=534927 dq=47.3 cnt=90 | c=154.0 rankC=154.0 need=970408 tD=1.00 人 pulse crowdedHard | safe=384454 keep=Inf avail=-Inf chunkB=87269 pulseB=52362 价高(c>=worth)→break hNb=3
+    → Eyup#43[T1] terr=11087 bal=699738 dq=63.1 cnt=81 | c=203.1 rankC=203.1 need=1263885 tD=1.34 人 pulse crowdedHard | safe=384454 keep=Inf avail=-Inf chunkB=87269 pulseB=52362 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令

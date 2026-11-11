@@ -1,0 +1,42 @@
+# A083 拍段 [1200,1500)：核心期前贴着真人、这一拍没出手的决策拍 415 个（只算「只贴真人」的）（该拍段全部决策拍 600 个）
+对底线最低的那个真人，底线是被哪一项顶住的：defenseNeed·参照外队真人 167（40%）；reserve 项 85（20%）；defenseNeed·参照我方编队的号 52（13%）；底线没卡住 38（9%）；封顶·defenseNeed 参照外队真人 38（9%）；封顶·defenseNeed 参照我方编队的号 15（4%）；defenseNeed·密度项 12（3%）；封顶 keepCap×100×地 8（2%）
+被底线卡住的 377 个里：参照对象是我方编队的号 67（18%）、同队其他真人/同队AI 0、外队真人 205
+  noah88     60 拍：defenseNeed·参照外队真人 22，底线没卡住 20，封顶·defenseNeed 参照外队真人 3，封顶·defenseNeed 参照我方编队的号 15
+  zexos1     60 拍：defenseNeed·参照外队真人 26，reserve 项 2，defenseNeed·参照我方编队的号 32
+  alex_k     60 拍：defenseNeed·参照外队真人 38，底线没卡住 18，封顶·defenseNeed 参照外队真人 4
+  zero_7     60 拍：reserve 项 44，封顶·defenseNeed 参照外队真人 8，封顶 keepCap×100×地 8
+  kaito9     56 拍：defenseNeed·参照外队真人 19，reserve 项 14，封顶·defenseNeed 参照外队真人 23
+  talon5     54 拍：defenseNeed·参照外队真人 54
+  leo_tx     53 拍：defenseNeed·参照外队真人 8，reserve 项 25，defenseNeed·参照我方编队的号 20
+  ryan_m     12 拍：defenseNeed·密度项 12
+两道门（底线 / 一次吃到出局）：两道门都过不了 377（91%）；底线过了但一次吃不到出局 38（9%）
+按「同一拍、同一个真人目标」归组 233 组，其中 ≥2 个我方号贴着同一个目标的 136 组；这些组里余额合计的 74.6% ≥ 出局价的 69 组（51%）；任何一个号单独的 74.6% 余额就够出局价的 0 组
+  合起来够的组：拍 1230~1495；目标 [Corgi] Moose 🇨🇦#10(队2) 42 组；PERU#34(队1) 27 组
+  样例：拍 1345 目标 [Corgi] Moose 🇨🇦#10(队2) 出局价 189.6k；noah88 141.9k、zero_7 113.9k、kaito9 117.8k
+参照对象（次数）：water#38(队2) 108；talon5 52；PERU#34(队1) 41；AAAAAAAAH#9(队1) 35；kaan#33(队1) 21；ryan_m 15；[Corgi] Moose 🇨🇦#10(队2) 12
+底线最低的真人目标（次数）：[Corgi] Moose 🇨🇦#10(队2) 162；QYRGYZ#36(队2) 107；PERU#34(队1) 83；[FIN] gaijin🐌#11(队1) 33；water#38(队2) 30
+样例（拍 号 余额 / 余额−底线 / 出手至少要的可用兵 / 目标 / 顶住的项 / 参照）：
+  拍  1200 zexos1   余额 72.9k，余额−底线 -15.4k（要 > 15.6k），目标 [FIN] gaijin🐌#11(队1)，defenseNeed·参照外队真人：PERU#34(队1)
+  拍  1275 kaito9   余额 93.6k，余额−底线 -3202（要 > 20.0k），目标 [Corgi] Moose 🇨🇦#10(队2)，reserve 项
+  拍  1325 talon5   余额 76.4k，余额−底线 -79.1k（要 > 16.4k），目标 QYRGYZ#36(队2)，defenseNeed·参照外队真人：kaan#33(队1)
+  拍  1370 zexos1   余额 127.2k，余额−底线 -47.9k（要 > 27.2k），目标 [FIN] gaijin🐌#11(队1)，defenseNeed·参照我方编队的号：talon5
+  拍  1415 noah88   余额 174.1k，余额−底线 9599（要 > 37.3k），目标 [Corgi] Moose 🇨🇦#10(队2)，封顶·defenseNeed 参照我方编队的号：ryan_m
+  拍  1455 talon5   余额 114.9k，余额−底线 -134.3k（要 > 24.6k），目标 QYRGYZ#36(队2)，defenseNeed·参照外队真人：AAAAAAAAH#9(队1)
+
+# A083 拍段 [630,1500)：核心期前贴着真人、这一拍没出手的决策拍 917 个（含同时还贴着内置 AI / 无主地的）（该拍段全部决策拍 1740 个）
+对底线最低的那个真人，底线是被哪一项顶住的：reserve 项 530（58%）；defenseNeed·参照外队真人 194（21%）；底线没卡住 61（7%）；defenseNeed·参照我方编队的号 52（6%）；封顶·defenseNeed 参照外队真人 38（4%）；defenseNeed·密度项 19（2%）；封顶·defenseNeed 参照我方编队的号 15（2%）；封顶 keepCap×100×地 8（1%）
+被底线卡住的 856 个里：参照对象是我方编队的号 67（8%）、同队其他真人/同队AI 0、外队真人 232
+  noah88    161 拍：reserve 项 93，defenseNeed·参照外队真人 22，底线没卡住 28，封顶·defenseNeed 参照外队真人 3，封顶·defenseNeed 参照我方编队的号 15
+  zexos1    124 拍：reserve 项 56，defenseNeed·参照外队真人 36，defenseNeed·参照我方编队的号 32
+  alex_k    114 拍：reserve 项 39，defenseNeed·参照外队真人 38，底线没卡住 33，封顶·defenseNeed 参照外队真人 4
+  zero_7    145 拍：reserve 项 129，封顶·defenseNeed 参照外队真人 8，封顶 keepCap×100×地 8
+  kaito9    126 拍：reserve 项 84，defenseNeed·参照外队真人 19，封顶·defenseNeed 参照外队真人 23
+  ryan_m     78 拍：reserve 项 61，defenseNeed·密度项 17
+  leo_tx     84 拍：reserve 项 50，defenseNeed·参照外队真人 12，defenseNeed·参照我方编队的号 20，defenseNeed·密度项 2
+  talon5     85 拍：reserve 项 18，defenseNeed·参照外队真人 67
+两道门（底线 / 一次吃到出局）：两道门都过不了 856（93%）；底线过了但一次吃不到出局 61（7%）
+按「同一拍、同一个真人目标」归组 560 组，其中 ≥2 个我方号贴着同一个目标的 277 组；这些组里余额合计的 74.6% ≥ 出局价的 95 组（34%）；任何一个号单独的 74.6% 余额就够出局价的 0 组
+  合起来够的组：拍 630~1495；目标 [Corgi] Moose 🇨🇦#10(队2) 61 组；PERU#34(队1) 33 组；water#38(队2) 1 组
+  样例：拍 1310 目标 PERU#34(队1) 出局价 154.8k；zexos1 107.9k、alex_k 131.9k
+参照对象（次数）：water#38(队2) 108；PERU#34(队1) 61；talon5 52；AAAAAAAAH#9(队1) 42；kaan#33(队1) 21；[Corgi] Moose 🇨🇦#10(队2) 17；ryan_m 15；AI#421 2
+底线最低的真人目标（次数）：[Corgi] Moose 🇨🇦#10(队2) 377；water#38(队2) 171；QYRGYZ#36(队2) 166；PERU#34(队1) 164；[FIN] gaijin🐌#11(队1) 36；kaan#33(队1) 3

@@ -1,0 +1,2647 @@
+{
+ "matchId": "B006",
+ "reviewer": "R08",
+ "protocol": "v2.0",
+ "context": {
+  "cohort": "squad20",
+  "strategyFile": "v27-team-c110.js",
+  "mapId": 19,
+  "mapSeed": 2920,
+  "mapLand": 402147,
+  "mode": 0,
+  "seededPlayers": 57,
+  "nominalTeams": 2,
+  "actualTeams": 2,
+  "baseWinExpectation": 0.5,
+  "squadBots": 20,
+  "ourPrimaryTeam": 1,
+  "teamSplitCounts": {
+   "1": 10,
+   "2": 10
+  },
+  "teamSplit": true,
+  "sameMatchPeer": null,
+  "dataCompleteness": {
+   "results": true,
+   "inGameLog": true,
+   "replay": false,
+   "tickSnapshots": 69
+  },
+  "anomaliesSummary": {
+   "drop30Count": 71,
+   "totalTransfers": 525,
+   "likelyRejectedTransfers": 338,
+   "boxedHighDensSnapshots": 40,
+   "strategyErrors": 0,
+   "teamSplit": true
+  },
+  "squad": [
+   {
+    "me": 2,
+    "name": "Kokand",
+    "labels": [
+     "Kokand"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     862,
+     386
+    ],
+    "spawnResolves": 5,
+    "spawnInfo": null
+   },
+   {
+    "me": 5,
+    "name": "Amogus",
+    "labels": [
+     "Amogus"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     294,
+     250
+    ],
+    "spawnResolves": 5,
+    "spawnInfo": null
+   },
+   {
+    "me": 6,
+    "name": "KiraYoshikage",
+    "labels": [
+     "KiraYoshikage"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     722,
+     50
+    ],
+    "spawnResolves": 9,
+    "spawnInfo": null
+   },
+   {
+    "me": 7,
+    "name": "Kalmar Union",
+    "labels": [
+     "Kalmar Union"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     482,
+     110
+    ],
+    "spawnResolves": 3,
+    "spawnInfo": null
+   },
+   {
+    "me": 10,
+    "name": "Red Army",
+    "labels": [
+     "Red Army"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     290,
+     626
+    ],
+    "spawnResolves": 7,
+    "spawnInfo": null
+   },
+   {
+    "me": 12,
+    "name": "Maratha",
+    "labels": [
+     "Maratha"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     402,
+     466
+    ],
+    "spawnResolves": 9,
+    "spawnInfo": null
+   },
+   {
+    "me": 14,
+    "name": "Musketeer",
+    "labels": [
+     "Musketeer"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     722,
+     50
+    ],
+    "spawnResolves": 7,
+    "spawnInfo": null
+   },
+   {
+    "me": 15,
+    "name": "Georgia",
+    "labels": [
+     "Georgia"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     128,
+     459
+    ],
+    "spawnResolves": 4,
+    "spawnInfo": null
+   },
+   {
+    "me": 16,
+    "name": "Saladin",
+    "labels": [
+     "Saladin"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     166,
+     554
+    ],
+    "spawnResolves": 9,
+    "spawnInfo": null
+   },
+   {
+    "me": 17,
+    "name": "Konev",
+    "labels": [
+     "Konev"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     834,
+     722
+    ],
+    "spawnResolves": 8,
+    "spawnInfo": null
+   },
+   {
+    "me": 18,
+    "name": "Savoy",
+    "labels": [
+     "Savoy"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     658,
+     722
+    ],
+    "spawnResolves": 15,
+    "spawnInfo": null
+   },
+   {
+    "me": 19,
+    "name": "Cyrus",
+    "labels": [
+     "Cyrus"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     674,
+     498
+    ],
+    "spawnResolves": 11,
+    "spawnInfo": null
+   },
+   {
+    "me": 20,
+    "name": "Malacca",
+    "labels": [
+     "Malacca"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     610,
+     194
+    ],
+    "spawnResolves": 10,
+    "spawnInfo": null
+   },
+   {
+    "me": 21,
+    "name": "Morphy",
+    "labels": [
+     "Morphy"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     626,
+     530
+    ],
+    "spawnResolves": 8,
+    "spawnInfo": null
+   },
+   {
+    "me": 22,
+    "name": "Cossack",
+    "labels": [
+     "Cossack"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     946,
+     450
+    ],
+    "spawnResolves": 15,
+    "spawnInfo": null
+   },
+   {
+    "me": 23,
+    "name": "Sokoto",
+    "labels": [
+     "Sokoto"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     818,
+     258
+    ],
+    "spawnResolves": 9,
+    "spawnInfo": null
+   },
+   {
+    "me": 24,
+    "name": "Kaido",
+    "labels": [
+     "Kaido"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     610,
+     194
+    ],
+    "spawnResolves": 10,
+    "spawnInfo": null
+   },
+   {
+    "me": 26,
+    "name": "Norway",
+    "labels": [
+     "Norway"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     102,
+     410
+    ],
+    "spawnResolves": 5,
+    "spawnInfo": null
+   },
+   {
+    "me": 27,
+    "name": "Lannes",
+    "labels": [
+     "Lannes"
+    ],
+    "team": 2,
+    "teamInferred": false,
+    "spawn": [
+     722,
+     50
+    ],
+    "spawnResolves": 7,
+    "spawnInfo": null
+   },
+   {
+    "me": 29,
+    "name": "Patton",
+    "labels": [
+     "Patton"
+    ],
+    "team": 1,
+    "teamInferred": false,
+    "spawn": [
+     242,
+     626
+    ],
+    "spawnResolves": 7,
+    "spawnInfo": null
+   }
+  ],
+  "strategyVersion": "对局卡写 squad20 = c110，但日志的指令节奏和归档的 c110 对不上：t=700~2100 的 317 个 90 拍快照窗里 77 个窗非船指令 ≥16 条、最多 18 条（每 5 拍一条）；归档 c110 有在途保护（文件头 L19-31，450 ms / 8 拍）和同目标 15 拍冷却（Strategy.send L529-533），一个窗最多 9~11 条。11-08 08:19~09:13 UTC 的 6 局（B001、B002、B003、B005、B006、B007，都没有录像）都有 ≥16 条的窗，11-09 以后的 32 局单窗最多 11 条（scripts/cadence.py）。所以这一局跑的版本至少缺这两道节流里的一道；其余决策路径按归档 c110 引用，行号是归档文件的。日志里没有版本横幅。",
+  "noReplay": "没有 replay.txt：谁打谁、船去哪、非编队玩家的地和兵都看不到。全队份额只有 20 条结果行自带的 team.totals（t=1903、3828、4204、4588、5256、5291、5469、5507、5977、6217）。",
+  "truthTeamSplit": "结果行的 teamMine：T1×10（Amogus、KiraYoshikage、Red Army、Musketeer、Georgia、Saladin、Cyrus、Morphy、Norway、Patton），T2×10（Kokand、Kalmar Union、Maratha、Konev、Savoy、Malacca、Cossack、Sokoto、Kaido、Lannes）。对局卡把 T1 记作主队。",
+  "clock": "HL-TICK 的 t 是各号客户端的本地拍。日志行没有墙上时间，结果行有：t=1903（09:08:31.215Z）到 t=6217（09:12:33.431Z）每拍 56.1 毫秒。t<1903 各号之间最多相差 360 拍（lagorder [LA]），比服务器落后多少量不出来。",
+  "fairSharePerCapita": "57 个真人里编队 20 个（35.1%）。",
+  "notes": "读数口径：捐款成交与否 = donfit.py 按捐出方余额序列拟合（成交 / 没成交 / 定不了）；『没生效的指令』= noeffect.py（cmds 涨了、余额只按利息涨、地没涨）；『被围』= HL-TICK 的 nb=0 且 neut=0（nb 不算队友，有野人在场时也不算别的队里的编队号，c110 L440）。"
+ },
+ "outcome": {
+  "result": "lost",
+  "resultLabel": "split_straggler_won",
+  "primaryTeamWon": false,
+  "anyBotWon": true,
+  "winnerTeam": 2,
+  "endTick": 6217,
+  "peakSquadLandShare": 0.2447,
+  "peakPrimaryTeamShareSeen": 0.5177,
+  "ourFinalTeamShare": 0.0101,
+  "placements": [
+   {
+    "bot": "Kokand",
+    "me": 2,
+    "team": 2,
+    "event": "end",
+    "result": "won",
+    "tick": 6217,
+    "place": 13
+   },
+   {
+    "bot": "Amogus",
+    "me": 5,
+    "team": 1,
+    "event": "died",
+    "result": "lost",
+    "tick": 5507,
+    "place": 22
+   },
+   {
+    "bot": "KiraYoshikage",
+    "me": 6,
+    "team": 1,
+    "event": "end",
+    "result": "over",
+    "tick": 6217,
+    "place": 19
+   },
+   {
+    "bot": "Kalmar Union",
+    "me": 7,
+    "team": 2,
+    "event": "end",
+    "result": "won",
+    "tick": 6217,
+    "place": 14
+   },
+   {
+    "bot": "Red Army",
+    "me": 10,
+    "team": 1,
+    "event": "died",
+    "result": "lost",
+    "tick": 4204,
+    "place": 35
+   },
+   {
+    "bot": "Maratha",
+    "me": 12,
+    "team": 2,
+    "event": "died",
+    "result": "lost",
+    "tick": 4588,
+    "place": 32
+   },
+   {
+    "bot": "Musketeer",
+    "me": 14,
+    "team": 1,
+    "event": "died",
+    "result": "lost",
+    "tick": 5469,
+    "place": 24
+   },
+   {
+    "bot": "Georgia",
+    "me": 15,
+    "team": 1,
+    "event": "died",
+    "result": "lost",
+    "tick": 5291,
+    "place": 26
+   },
+   {
+    "bot": "Saladin",
+    "me": 16,
+    "team": 1,
+    "event": "end",
+    "result": "over",
+    "tick": 6217,
+    "place": 18
+   },
+   {
+    "bot": "Konev",
+    "me": 17,
+    "team": 2,
+    "event": "end",
+    "result": "won",
+    "tick": 6217,
+    "place": 6
+   },
+   {
+    "bot": "Savoy",
+    "me": 18,
+    "team": 2,
+    "event": "end",
+    "result": "won",
+    "tick": 6217,
+    "place": 15
+   },
+   {
+    "bot": "Cyrus",
+    "me": 19,
+    "team": 1,
+    "event": "died",
+    "result": "lost",
+    "tick": 5977,
+    "place": 21
+   },
+   {
+    "bot": "Malacca",
+    "me": 20,
+    "team": 2,
+    "event": "end",
+    "result": "won",
+    "tick": 6217,
+    "place": 16
+   },
+   {
+    "bot": "Morphy",
+    "me": 21,
+    "team": 1,
+    "event": "died",
+    "result": "lost",
+    "tick": 1903,
+    "place": 47
+   },
+   {
+    "bot": "Cossack",
+    "me": 22,
+    "team": 2,
+    "event": "end",
+    "result": "won",
+    "tick": 6217,
+    "place": 17
+   },
+   {
+    "bot": "Sokoto",
+    "me": 23,
+    "team": 2,
+    "event": "end",
+    "result": "won",
+    "tick": 6217,
+    "place": 12
+   },
+   {
+    "bot": "Kaido",
+    "me": 24,
+    "team": 2,
+    "event": "end",
+    "result": "won",
+    "tick": 6217,
+    "place": 11
+   },
+   {
+    "bot": "Norway",
+    "me": 26,
+    "team": 1,
+    "event": "died",
+    "result": "lost",
+    "tick": 5256,
+    "place": 27
+   },
+   {
+    "bot": "Lannes",
+    "me": 27,
+    "team": 2,
+    "event": "end",
+    "result": "won",
+    "tick": 6217,
+    "place": 9
+   },
+   {
+    "bot": "Patton",
+    "me": 29,
+    "team": 1,
+    "event": "died",
+    "result": "lost",
+    "tick": 3828,
+    "place": 38
+   }
+  ],
+  "winnerHow": "T2 获胜：最后一条结果行 t=6217 T1 4072 格（1.0%）/ T2 397906 格（98.9%）。T2 的 9 个编队号记 won，T1 的 KiraYoshikage、Saladin 记 over（活到终局）。",
+  "squadOnWinningTeam": "T2 的 10 个编队号里 9 个活到终局（Maratha t=4588 阵亡），合计 60961 格，占 T2 的 15.3%；Konev 26922 格，第 6 名。",
+  "primaryTeam": "T1（主队）全队占陆地：t=1903 51.8%，t=3828 46.1%，t=4204 38.6%，t=4588 38.9%，t=5256 24.0%，t=5977 6.1%，终局 1.0%——终局 T1 剩下的 4072 格正好是 KiraYoshikage 1789 + Saladin 2283。"
+ },
+ "timeline": [
+  {
+   "t": 90,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 20,
+   "sqTerr": 937,
+   "sqSharePct": 0.23,
+   "sqBal": 10192,
+   "sqDens": 10.9,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 464,
+   "primaryTeamBotsSharePct": 0.12
+  },
+  {
+   "t": 180,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 20,
+   "sqTerr": 3333,
+   "sqSharePct": 0.83,
+   "sqBal": 20148,
+   "sqDens": 6.0,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 1645,
+   "primaryTeamBotsSharePct": 0.41
+  },
+  {
+   "t": 199,
+   "src": "OPENING-CHECK L10266",
+   "botsWithSnapshot": 20,
+   "sqTerr": 4086,
+   "sqSharePct": 1.016,
+   "allOk": true
+  },
+  {
+   "t": 270,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 20,
+   "sqTerr": 7332,
+   "sqSharePct": 1.82,
+   "sqBal": 28301,
+   "sqDens": 3.9,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 3650,
+   "primaryTeamBotsSharePct": 0.91
+  },
+  {
+   "t": 450,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 20,
+   "sqTerr": 22446,
+   "sqSharePct": 5.58,
+   "sqBal": 56196,
+   "sqDens": 2.5,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 11542,
+   "primaryTeamBotsSharePct": 2.87
+  },
+  {
+   "t": 630,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 20,
+   "sqTerr": 49813,
+   "sqSharePct": 12.39,
+   "sqBal": 102394,
+   "sqDens": 2.1,
+   "boxedIn": 0,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 26273,
+   "primaryTeamBotsSharePct": 6.53
+  },
+  {
+   "t": 900,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 20,
+   "sqTerr": 67521,
+   "sqSharePct": 16.79,
+   "sqBal": 497727,
+   "sqDens": 7.4,
+   "boxedIn": 1,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 34802,
+   "primaryTeamBotsSharePct": 8.65
+  },
+  {
+   "t": 1260,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 20,
+   "sqTerr": 79122,
+   "sqSharePct": 19.67,
+   "sqBal": 1646594,
+   "sqDens": 20.8,
+   "boxedIn": 2,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 40409,
+   "primaryTeamBotsSharePct": 10.05
+  },
+  {
+   "t": 1530,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 20,
+   "sqTerr": 80473,
+   "sqSharePct": 20.01,
+   "sqBal": 3183910,
+   "sqDens": 39.6,
+   "boxedIn": 3,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 39886,
+   "primaryTeamBotsSharePct": 9.92
+  },
+  {
+   "t": 1800,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 20,
+   "sqTerr": 81841,
+   "sqSharePct": 20.35,
+   "sqBal": 4195953,
+   "sqDens": 51.3,
+   "boxedIn": 8,
+   "overSoftCap": 5,
+   "primaryTeamBotsTerr": 41901,
+   "primaryTeamBotsSharePct": 10.42
+  },
+  {
+   "t": 1903,
+   "src": "RESULT L10811 + 最近快照 t=1890",
+   "botsWithSnapshot": 20,
+   "sqTerr": 81790,
+   "sqSharePct": 20.34,
+   "sqBal": 4110707,
+   "sqDens": 50.3,
+   "boxedIn": 8,
+   "overSoftCap": 6,
+   "primaryTeamBotsTerr": 42706,
+   "primaryTeamBotsSharePct": 10.62,
+   "event": "Morphy died",
+   "teamTotals": {
+    "mineTeam": 1,
+    "mineSharePct": 51.77,
+    "topEnemyTeam": 2,
+    "topEnemySharePct": 46.7,
+    "allPct": {
+     "T0": 0.4,
+     "T1": 51.8,
+     "T2": 46.7
+    }
+   }
+  },
+  {
+   "t": 2070,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 19,
+   "sqTerr": 89750,
+   "sqSharePct": 22.32,
+   "sqBal": 3127806,
+   "sqDens": 34.9,
+   "boxedIn": 8,
+   "overSoftCap": 2,
+   "primaryTeamBotsTerr": 44150,
+   "primaryTeamBotsSharePct": 10.98
+  },
+  {
+   "t": 2520,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 19,
+   "sqTerr": 96321,
+   "sqSharePct": 23.95,
+   "sqBal": 5146695,
+   "sqDens": 53.4,
+   "boxedIn": 8,
+   "overSoftCap": 0,
+   "primaryTeamBotsTerr": 48327,
+   "primaryTeamBotsSharePct": 12.02
+  },
+  {
+   "t": 3060,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 19,
+   "sqTerr": 95033,
+   "sqSharePct": 23.63,
+   "sqBal": 8309627,
+   "sqDens": 87.4,
+   "boxedIn": 7,
+   "overSoftCap": 9,
+   "primaryTeamBotsTerr": 44116,
+   "primaryTeamBotsSharePct": 10.97
+  },
+  {
+   "t": 3510,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 19,
+   "sqTerr": 96675,
+   "sqSharePct": 24.04,
+   "sqBal": 9904995,
+   "sqDens": 102.5,
+   "boxedIn": 7,
+   "overSoftCap": 10,
+   "primaryTeamBotsTerr": 45329,
+   "primaryTeamBotsSharePct": 11.27
+  },
+  {
+   "t": 3600,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 19,
+   "sqTerr": 98389,
+   "sqSharePct": 24.47,
+   "sqBal": 9153783,
+   "sqDens": 93.0,
+   "boxedIn": 7,
+   "overSoftCap": 9,
+   "primaryTeamBotsTerr": 46152,
+   "primaryTeamBotsSharePct": 11.48,
+   "note": "编队领土份额峰值"
+  },
+  {
+   "t": 3828,
+   "src": "RESULT L11574 + 最近快照 t=3780",
+   "botsWithSnapshot": 19,
+   "sqTerr": 94996,
+   "sqSharePct": 23.62,
+   "sqBal": 8799708,
+   "sqDens": 92.6,
+   "boxedIn": 8,
+   "overSoftCap": 7,
+   "primaryTeamBotsTerr": 41940,
+   "primaryTeamBotsSharePct": 10.43,
+   "event": "Patton died",
+   "teamTotals": {
+    "mineTeam": 1,
+    "mineSharePct": 46.11,
+    "topEnemyTeam": 2,
+    "topEnemySharePct": 53.67,
+    "allPct": {
+     "T1": 46.1,
+     "T2": 53.7
+    }
+   }
+  },
+  {
+   "t": 4050,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 18,
+   "sqTerr": 92038,
+   "sqSharePct": 22.89,
+   "sqBal": 9022119,
+   "sqDens": 98.0,
+   "boxedIn": 8,
+   "overSoftCap": 9,
+   "primaryTeamBotsTerr": 38161,
+   "primaryTeamBotsSharePct": 9.49
+  },
+  {
+   "t": 4204,
+   "src": "RESULT L11704 + 最近快照 t=4140",
+   "botsWithSnapshot": 18,
+   "sqTerr": 94140,
+   "sqSharePct": 23.41,
+   "sqBal": 9247156,
+   "sqDens": 98.2,
+   "boxedIn": 8,
+   "overSoftCap": 9,
+   "primaryTeamBotsTerr": 39671,
+   "primaryTeamBotsSharePct": 9.86,
+   "event": "Red Army died",
+   "teamTotals": {
+    "mineTeam": 1,
+    "mineSharePct": 38.64,
+    "topEnemyTeam": 2,
+    "topEnemySharePct": 61.01,
+    "allPct": {
+     "T1": 38.6,
+     "T2": 61.0
+    }
+   }
+  },
+  {
+   "t": 4500,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 17,
+   "sqTerr": 94857,
+   "sqSharePct": 23.59,
+   "sqBal": 9035454,
+   "sqDens": 95.3,
+   "boxedIn": 9,
+   "overSoftCap": 7,
+   "primaryTeamBotsTerr": 42594,
+   "primaryTeamBotsSharePct": 10.59
+  },
+  {
+   "t": 4588,
+   "src": "RESULT L11819 + 最近快照 t=4500",
+   "botsWithSnapshot": 17,
+   "sqTerr": 94857,
+   "sqSharePct": 23.59,
+   "sqBal": 9035454,
+   "sqDens": 95.3,
+   "boxedIn": 9,
+   "overSoftCap": 7,
+   "primaryTeamBotsTerr": 42594,
+   "primaryTeamBotsSharePct": 10.59,
+   "event": "Maratha died",
+   "teamTotals": {
+    "mineTeam": 2,
+    "mineSharePct": 60.85,
+    "topEnemyTeam": 1,
+    "topEnemySharePct": 38.87,
+    "allPct": {
+     "T1": 38.9,
+     "T2": 60.9
+    }
+   }
+  },
+  {
+   "t": 5040,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 16,
+   "sqTerr": 88652,
+   "sqSharePct": 22.04,
+   "sqBal": 9415413,
+   "sqDens": 106.2,
+   "boxedIn": 7,
+   "overSoftCap": 8,
+   "primaryTeamBotsTerr": 39408,
+   "primaryTeamBotsSharePct": 9.8
+  },
+  {
+   "t": 5256,
+   "src": "RESULT L12030 + 最近快照 t=5220",
+   "botsWithSnapshot": 16,
+   "sqTerr": 80054,
+   "sqSharePct": 19.91,
+   "sqBal": 8308310,
+   "sqDens": 103.8,
+   "boxedIn": 5,
+   "overSoftCap": 8,
+   "primaryTeamBotsTerr": 30526,
+   "primaryTeamBotsSharePct": 7.59,
+   "event": "Norway died",
+   "teamTotals": {
+    "mineTeam": 1,
+    "mineSharePct": 23.98,
+    "topEnemyTeam": 2,
+    "topEnemySharePct": 75.88,
+    "allPct": {
+     "T1": 24.0,
+     "T2": 75.9
+    }
+   }
+  },
+  {
+   "t": 5291,
+   "src": "RESULT L12031 + 最近快照 t=5220",
+   "botsWithSnapshot": 16,
+   "sqTerr": 80054,
+   "sqSharePct": 19.91,
+   "sqBal": 8308310,
+   "sqDens": 103.8,
+   "boxedIn": 5,
+   "overSoftCap": 8,
+   "primaryTeamBotsTerr": 30526,
+   "primaryTeamBotsSharePct": 7.59,
+   "event": "Georgia died",
+   "teamTotals": {
+    "mineTeam": 1,
+    "mineSharePct": 21.99,
+    "topEnemyTeam": 2,
+    "topEnemySharePct": 77.35,
+    "allPct": {
+     "T1": 22.0,
+     "T2": 77.3
+    }
+   }
+  },
+  {
+   "t": 5469,
+   "src": "RESULT L12069 + 最近快照 t=5400",
+   "botsWithSnapshot": 14,
+   "sqTerr": 70451,
+   "sqSharePct": 17.52,
+   "sqBal": 7595055,
+   "sqDens": 107.8,
+   "boxedIn": 5,
+   "overSoftCap": 7,
+   "primaryTeamBotsTerr": 19169,
+   "primaryTeamBotsSharePct": 4.77,
+   "event": "Musketeer died",
+   "teamTotals": {
+    "mineTeam": 1,
+    "mineSharePct": 12.32,
+    "topEnemyTeam": 2,
+    "topEnemySharePct": 87.25,
+    "allPct": {
+     "T1": 12.3,
+     "T2": 87.2
+    }
+   }
+  },
+  {
+   "t": 5507,
+   "src": "RESULT L12085 + 最近快照 t=5490",
+   "botsWithSnapshot": 13,
+   "sqTerr": 66406,
+   "sqSharePct": 16.51,
+   "sqBal": 6943585,
+   "sqDens": 104.6,
+   "boxedIn": 5,
+   "overSoftCap": 6,
+   "primaryTeamBotsTerr": 14428,
+   "primaryTeamBotsSharePct": 3.59,
+   "event": "Amogus died",
+   "teamTotals": {
+    "mineTeam": 1,
+    "mineSharePct": 10.51,
+    "topEnemyTeam": 2,
+    "topEnemySharePct": 88.46,
+    "allPct": {
+     "T1": 10.5,
+     "T2": 88.5
+    }
+   }
+  },
+  {
+   "t": 5977,
+   "src": "RESULT L12181 + 最近快照 t=5940",
+   "botsWithSnapshot": 12,
+   "sqTerr": 61375,
+   "sqSharePct": 15.26,
+   "sqBal": 5873353,
+   "sqDens": 95.7,
+   "boxedIn": 7,
+   "overSoftCap": 5,
+   "primaryTeamBotsTerr": 6092,
+   "primaryTeamBotsSharePct": 1.51,
+   "event": "Cyrus died",
+   "teamTotals": {
+    "mineTeam": 1,
+    "mineSharePct": 6.06,
+    "topEnemyTeam": 2,
+    "topEnemySharePct": 93.45,
+    "allPct": {
+     "T1": 6.1,
+     "T2": 93.5
+    }
+   }
+  },
+  {
+   "t": 6030,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 11,
+   "sqTerr": 61022,
+   "sqSharePct": 15.17,
+   "sqBal": 6088736,
+   "sqDens": 99.8,
+   "boxedIn": 8,
+   "overSoftCap": 4,
+   "primaryTeamBotsTerr": 4072,
+   "primaryTeamBotsSharePct": 1.01
+  },
+  {
+   "t": 6210,
+   "src": "HL-TICK",
+   "botsWithSnapshot": 11,
+   "sqTerr": 65033,
+   "sqSharePct": 16.17,
+   "sqBal": 6332846,
+   "sqDens": 97.4,
+   "boxedIn": 11,
+   "overSoftCap": 3,
+   "primaryTeamBotsTerr": 4072,
+   "primaryTeamBotsSharePct": 1.01
+  },
+  {
+   "t": 6217,
+   "src": "RESULT L12247 + 最近快照 t=6210",
+   "botsWithSnapshot": 11,
+   "sqTerr": 65033,
+   "sqSharePct": 16.17,
+   "sqBal": 6332846,
+   "sqDens": 97.4,
+   "boxedIn": 11,
+   "overSoftCap": 3,
+   "primaryTeamBotsTerr": 4072,
+   "primaryTeamBotsSharePct": 1.01,
+   "event": "Kokand end",
+   "teamTotals": {
+    "mineTeam": 2,
+    "mineSharePct": 98.95,
+    "topEnemyTeam": 1,
+    "topEnemySharePct": 1.01,
+    "allPct": {
+     "T1": 1.0,
+     "T2": 98.9
+    }
+   },
+   "events": [
+    "KiraYoshikage end",
+    "Kalmar Union end",
+    "Saladin end",
+    "Konev end",
+    "Savoy end",
+    "Malacca end",
+    "Cossack end",
+    "Sokoto end",
+    "Kaido end",
+    "Lannes end"
+   ]
+  }
+ ],
+ "phases": {
+  "spawn": {
+   "window": "t=0~90",
+   "facts": [
+    "出生点走各号自己算的分支（[HL-SPAWN]，不是后端协调器）：163 条指派，人均 8.2 条；20 个号的 slot 是 0~19、互不相同（spawnlog [SA]，L9983-10186）。",
+    "最后一条指派落在同一个点上的号 5 个：(722,50) = KiraYoshikage（slot 9，T1）、Musketeer（slot 7，T1）、Lannes（slot 6，T2）；(610,194) = Malacca（slot 12，T2）、Kaido（slot 11，T2）（L10177、L10178、L10171、L10170、L10167）。",
+    "最后一条指派相距不到 minSep（145 像素）的号对 12 对：Red Army–Patton 48 像素、Georgia–Norway 55.5、Cyrus–Morphy 57.7、Georgia–Saladin 102.3、Saladin–Patton 104.7、Kokand–Cossack 105.6（spawnlog [SB]）。",
+    "撞点的两组里各有一个号开局最小：t≈900 KiraYoshikage 1979 格（全队最小，当拍已经被围）、Malacca 1983 格（第二小）；全队中位 3206 格，最大 5346（Kaido）（spawnlog [SC]）。",
+    "没有录像，引擎实际落点看不到（B049 房间 1 有录像的那次，引擎用的是倒数第二条指派）。"
+   ],
+   "problems": [
+    "每个号在自己的进程里排 20 个槽位：先把视图里的其它编队号抹掉（L4067-4072），候选点不足 slot+1 个时在 16 像素网格上取『离自己已选的点最远』的点（L4117-4144）。各号的已选列表互相看不见，补出来的点会重合；早期的 35 条指派发出时候选只有 8 个。"
+   ]
+  },
+  "opening": {
+   "window": "t=90~630",
+   "facts": [
+    "20 个号都按 DP 周期出手（HL-OPENING 第 0~6 周期，t≈55~645）；[OPENING-CHECK 20 bots @ tick 199] 全部 OK（L10266）。",
+    "t=450 各号 898~1326 格，编队合计 22446 格（5.58%）；t=630 49813 格（12.39%），余额合计 102394（digest [C][K]）。",
+    "20 个号里 15 个在 t≤720 就第一次没有贴身的中立地（neut=0），最早 Malacca t=540，最晚 Patton t=1170（spawnlog [SA]）。"
+   ],
+   "problems": []
+  },
+  "midgame": {
+   "window": "t=630~4284",
+   "facts": [
+    "t=630~1890 领土停住、余额翻 40 倍：49813 格 → 67521（t=900）→ 79122（t=1260）→ 81790（t=1890）；余额 10.2 万 → 164.7 万（t=1260）→ 411.1 万（digest [C]）。",
+    "同期发了很多指令，一半没生效：t=810~1890 的 2066 条指令里 1027 条所在的快照窗余额只按利息涨、地没涨（noeffect [NA]）。9 段『整段零花费』共 612 条指令、涉及 8 个号：Konev t=990~1620 118 条、Maratha t=1350~1980 126 条、Red Army t=1440~1980 108 条，余额和利息公式逐兵相等（noeffect [ND]）。",
+    "指令节奏：t=700~2100 的 317 个快照窗共 2310 条指令，77 个窗 ≥16 条、最多 18 条（cadence）。",
+    "各号本地拍不齐：本地拍 1350~1530 时 20 个号里 11 个比最快的号落后 ≥180 拍（最多 360），本地拍 2250 起全部对齐（lagorder [LB]）。",
+    "t=1800 已有 8 个号被围过：KiraYoshikage t=900，Kalmar Union 1260，Cossack 1350，Savoy、Sokoto 1620，Kokand、Musketeer、Norway 1800（spawnlog [SC]）。Savoy、Sokoto 从 t=1620、Kokand 从 t=1710 起到终局一直 nb=0；Norway、Musketeer、Georgia 各有 2880~3330 拍 nb=0。",
+    "追平的那一段（本地拍 1890~2070）四个号在一个快照窗里把余额打空：Patton 308668→7203、Red Army 370215→5300、KiraYoshikage 194066→4513、Maratha 453020→97627；更早 Kaido（t=1440~1530 114386→8986）、Morphy（t=1530~1620 35343→4122）、Musketeer（t=1530~1620 248160→33079）（logstats [QA]，noeffect [NB]）。",
+    "编队领土 t=1890 81790 格（20.34%）→ t=2250 97193 格（24.17%）：+15403 格里 Konev 一个号 +10944（两条船，3725→14669 格）。清仓换来的地随后吐回去：Red Army 7003→3842、Patton 5346→3945、Saladin 7415→3906、Kaido 8488→3745、Lannes 7164→4329。",
+    "t=2250~3600 编队停在 9.4~9.8 万格（23.4%~24.5%，峰值 t=3600 98389 格），余额从 370 万涨到 915 万（密度 38→93）；t=3150 20 个号里 13 个余额超过 100×领土（digest [C]）。",
+    "捐款撞墙：t<4284 日志 423 笔，成交 77 笔（18%），没成交 285 笔——48 笔单笔就超过受捐额度、149 笔是受捐方累计点数已经顶满、88 笔其它；另 61 笔定不了（donwall [WA]）。",
+    "只有 1 个敌邻、没有中立地、密度 ≥128 的快照窗 125 个，其中 109 个没有任何非捐款指令，这些窗里丢了 14595 格（logstats [QF]）。",
+    "t≥2250 的指令构成（logstats [QG]）：19 个号 65250 号·拍里共 577 条指令 = 陆攻 112 + 船 38 + 捐款 425 + 戳刺 2，平均每个号 583 拍才有一条陆攻；Amogus、KiraYoshikage、Red Army、Sokoto 一条陆攻、一条船都没发。"
+   ],
+   "problems": [
+    "编队 35% 的人头在 t=1903 只占 20.0% 的地：人均 4233 格，其它在场真人人均 11688 格（0.36 倍）（teamshare [TA]）。",
+    "t<4284 引擎按受捐方的累计点数限额：t=1500~2141 一个受捐方开局以来累计最多收 3.3~4.8 万兵，t=2142~3212 累计 16~28 万兵（donwall [WE]）。捐款函数不读额度，被拒后 20 拍原样重试。",
+    "被围的号（银行）兵出不去；前线的小号只贴着 1 个真人，密度过了 128 也不出手。"
+   ]
+  },
+  "endgame": {
+   "window": "t=4284~6217",
+   "facts": [
+    "t≥4284 引擎不再查额度：102 笔里成交 81 笔（79%），到账 572.5 万（donwall [WA]）。T2 这边 56 笔 416.0 万（Konev 32 笔 227.5 万、Malacca 15 笔 122.0 万），T1 这边 25 笔 156.4 万（Cyrus 19 笔 141.1 万）（donwall [WH]，donfit [FQ]）。",
+    "Konev 收款时自己已经超软上限：整局成交的 54 笔里 36 笔（257.8 万）到账时它的密度 ≥100；t=3690~5760 它在 1.7~2.0 万格上、密度 68→148.6，2070 拍只发了 12 条指令（其中 4 条是它自己的捐款、2 条是协防戳刺）（donwall [WG]，digest [E]）。",
+    "T1 在 t=4588~5977 从 38.9% 掉到 6.1%（156305→24367 格）：T1 的编队号 42594→4072 格，T1 其它真人 113711→20295 格（teamshare [TA]，结果行 team.totals）。",
+    "T1 的三个银行一接壤就没了：Norway t=5130 第一次有敌邻、t=5256 阵亡；Georgia t=4950 → t=5291；Musketeer t=5220 → t=5469。Georgia t=5040~5220 丢 5536 格、0 条指令，身上 73.3 万兵。",
+    "Amogus t=5130~5490 4053→1092 格、0 条指令（密度 130→77），t=5507 阵亡；Cyrus t=4680~5940 11580→2020 格，期间只有 1 条指令（给 KiraYoshikage 的一笔盈余捐），余额最高 1194189（t=4860，密度 125.3），t=5977 阵亡。",
+    "Konev t=5760~6120 5 条指令 19561→26589 格，终局 26922 格（第 6 名）；T2 其余 8 个编队号终局 2375~8562 格，t=6210 9 个号全部 nb=0。",
+    "T2 的份额 60.9%（t=4588，244708 格）→ 98.9%（t=6217，397906 格）：+153198 格里编队号只占 +11483 格（49478→60961）。"
+   ],
+   "problems": [
+    "T1 的编队号在 t=4950 还有 377 万兵（7 个号，密度 93），之后 900 拍里随地一起被打掉，没有形成一次反击（teamshare [TC]）。",
+    "额度放开后的捐款大头喂给了已经超软上限、又不出手的 Konev。"
+   ]
+  }
+ },
+ "turningPoints": [
+  {
+   "t0": 630,
+   "t1": 1890,
+   "shareBefore": 12.39,
+   "shareAfter": 20.34,
+   "shareUnit": "编队 20 个号合计占陆地 %（digest [C]，各号本地拍）",
+   "what": "中立地吃完后停住：1260 拍里领土从 49813 涨到 81790 格，后 630 拍只涨 2668 格，余额从 10 万涨到 411 万；同期 2066 条指令里一半没生效。到第一条结果行（t=1903）编队人均只有其它在场真人的 0.36 倍。",
+   "evidence": [
+    "digest [C]：t=630 49813 格 / 102394 兵；t=900 67521 / 497727；t=1260 79122 / 1646594；t=1530 80473 / 3183910；t=1800 81841 / 4195953（被围 8 个、密度 ≥95 的 5 个）；t=1890 81790 / 4110707。",
+    "noeffect [NA]：270 拍桶 810 / 1080 / 1350 / 1620 的指令数 638 / 543 / 463 / 422，没生效 206 / 241 / 273 / 307；领土净变化 +11004 / +2655 / +6223 / −2629（之前两个桶是 +28986 / +28219）。",
+    "noeffect [ND]：起点在 t<2100 的整段零花费 9 段、612 条指令（其中捐款日志 38 条）、8 个号。Konev t=990~1620 118 条：余额 21535→198233 逐兵等于利息公式，3576 格不变，敌邻 3→2。",
+    "cadence：317 个快照窗 / 2310 条指令 / 一个窗最多 18 条 / ≥16 条的窗 77 个 / ≥10 条的窗 124 个；B009 以后的局没有超过 11 条的窗。",
+    "lagorder [LB]：本地拍 1350 / 1440 / 1530 时比最快的号落后 0 / 90 / 180~360 拍的号数都是 9 / 0 / 11；本地拍 1800 是 14 / 6 / 0，2250 起 19 / 0 / 0。[LC]：11 个号在落后 ≥180 拍的那几段里本地发了 495 条指令，余额实际只少了 244764 兵。",
+    "spawnlog [SC]：t≈900 各号领土最小 1979、中位 3206、最大 5346；t≤1800 被围过的号 8 个。",
+    "teamshare [TA]：t=1903 在场真人 46 个、其中编队 19 个；编队 80419 格（20.00%），人均 4233 格，其它 27 个真人人均 11688 格。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "0~90",
+     "bot": "20 个号",
+     "decision": "出生点各算各的：5 个号的最后一条指派落在 2 个点上，12 对号相距不到 145 像素。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.chooseSpawn L4007-4153（自治分支 L4065-4151：L4067-4072 抹掉其它编队号；L4117-4144 候选不够时取离自己已选点最远的网格点）",
+     "judgement": "error",
+     "why": "KiraYoshikage t=900 就被围在 1979 格上；t=1800 8 个号被围过"
+    },
+    {
+     "t": "700~2100",
+     "bot": "20 个号",
+     "decision": "同一条陆攻每 5 拍重发一次（一个 90 拍窗最多 18 条），发出去的单子没有『生效了没有』的回读。",
+     "codePath": "src/strategy/v27-team-c110.js: Strategy.send L526-540（L529-533 在线时同目标 15 拍冷却）；文件头 L19-31（在途保护 8 拍）——归档文件里两道都有，这一局的节奏对不上",
+     "judgement": "error",
+     "why": "t=810~1890 的 2066 条指令里 1027 条没生效"
+    },
+    {
+     "t": "1260~1890",
+     "bot": "20 个号",
+     "decision": "中立地吃完后领土 +2668 格、余额 164.7 万→411.1 万。",
+     "codePath": "src/strategy/v27-team-c110.js: General.act L804-847 → Style.pickTarget L1180-1213（L1197 minShare 跳过）→ floorFor0 L2270-2276 / winFloor L4542-4550",
+     "judgement": "unclear",
+     "why": "一半指令没生效，分不清是门槛挡住还是单子没落地"
+    }
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "t0": 1890,
+   "t1": 2250,
+   "shareBefore": 20.34,
+   "shareAfter": 24.17,
+   "shareUnit": "编队 20 个号合计占陆地 %（digest [C]）",
+   "what": "客户端追平的那一段：积压的指令落地，四个号一窗清仓；Konev 两条船换来 1.1 万格。编队 +15403 格里 Konev 一个号 +10944；清仓的号随后把地吐回去。这是编队整局唯一一次长地。",
+   "evidence": [
+    "logstats [QA]：清仓事件 7 起，最密的 360 拍窗 t=1980~2340 里 4 个号（KiraYoshikage、Patton、Red Army、Saladin）。Patton t=1890~2070 308668→7203（密度 90.4→1.3），Red Army t=1980~2070 370215→5300（138.3→1.3），KiraYoshikage 194066→4513（135.9→2.5）。",
+    "noeffect [NB]：清仓之前没生效的指令 Maratha 162 条、Red Army 108、Patton 58、KiraYoshikage 35；Maratha t=1980~2070 花掉 85%（453020→97627，3750→6236 格）。",
+    "Konev 的 HL-TICK：t=1800 3577 格 / 250063 兵 / boats 0；t=1890 3725 / 242222 / boats 1；t=1980 5840 / 169467 / boats 2；t=2070 9411；t=2160 13320（nb=0、neut=65）；t=2250 14669 / 353029；t=1980 之后 cmds 231 不变。",
+    "吐回去的地（digest [E]）：Red Army t=2250~2430 7003→3842；Patton t=2070~2250 5346→3945；Saladin t=1800~1980 7415→3906；Kaido t=1620~1890 8488→3745；Lannes t=1800~2340 7164→4329；这些段的 Δcmds 都是 0。",
+    "digest [C]：编队余额 t=1800 4195953 → t=2070 3127806 → t=2250 3703976；领土 t=2070 89750 格（22.32%）、t=2250 97193 格（24.17%）。",
+    "lagorder [LB]：本地拍 1800 还有 6 个号落后 90 拍，2250 起全部对齐。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "1350~1980",
+     "bot": "Maratha / Red Army / Patton / KiraYoshikage",
+     "decision": "之前 35~162 条指令没生效，单子带的是『占余额的比例』，落地时按当时（已经囤了几百拍）的余额扣。",
+     "codePath": "src/strategy/v27-team-c110.js: Strategy.send L526-540（pct = ceil(troops×1024/bal)−1）",
+     "judgement": "error",
+     "why": "四个号密度掉到 1.3~15.7，Red Army、Patton 随后把多出来的地吐回去"
+    },
+    {
+     "t": "1800~1980",
+     "bot": "Konev",
+     "decision": "两条船去拿没人占的地。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.act L4862-4935 → Policy.idleBoats L4979-5006 → boatOut L1035-1050",
+     "judgement": "good",
+     "why": "3577→14669 格，之后一直留着"
+    }
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "t0": 3600,
+   "t1": 4204,
+   "shareBefore": 46.1,
+   "shareAfter": 38.6,
+   "shareUnit": "T1（主队）全队占陆地 %（结果行 team.totals：t=3828 → t=4204）",
+   "what": "T1 在 376 拍里掉 7.5 个点（185425→155403 格）。丢的 30022 格里编队号只有 1997 格，但前线的两个编队号 Patton、Red Army 顶着 130 以上的密度被吃掉；同队四个被围的编队号身上有 170 万兵，救不到。",
+   "evidence": [
+    "结果行：t=3828（Patton 阵亡，L11574）T1 185425 / T2 215826；t=4204（Red Army 阵亡，L11704）155403 / 245348。T1 的编队号 40383→38386 格（teamshare [TA]）。",
+    "Patton（digest [E]）：t=2250~3240 3945 格不动、0 条指令、2 个敌邻，余额 140716→483371（密度 122.5）；t=3600 4047 格 / 545627 兵（134.8）；t=3600~3780 丢 2490 格，5 条指令（2 条船），余额剩 122499；t=3828 阵亡。",
+    "Red Army 的 HL-TICK：t=2250~4140 cmds=145 不变（1954 拍 0 条指令）；t=3600 3842 格 / 542251 兵（密度 141.1），1 个敌邻；t=3690 3002 格 → t=3870 2143 → t=4050 1285；t=4204 阵亡时余额 133811。",
+    "donwall [WF]：Patton 阵亡前 600 拍日志 18 笔 → 成交 5 笔 498075（3 笔累计超额度、5 笔其它、5 笔定不了）；Red Army 整局 35 笔 → 成交 6 笔 337459，没成交的 29 笔里 28 笔是累计超额度（donwall [WC]）。",
+    "teamshare [TC]：t=3600 T1 的 9 个编队号 46152 格 / 4617872 兵（密度 100.1），其中 4 个被围、合计 1701935 兵，4 个超软上限。",
+    "logstats [QF]：Red Army 只有 1 个敌邻、密度 ≥128 的 9 个窗里 7 个没指令（t=3420~4140，丢 2557 格）。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "2250~3600",
+     "bot": "Patton / Red Army",
+     "decision": "清仓吐地之后停在 3842~3945 格上囤兵 990~1170 拍，密度 122~141，贴着 1~2 个敌邻，0 条指令。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534（L5269-5273 唯一健康缓冲 overHumanCap=1.28；L5322-5327、L5358-5361 keep = max(keep, safeAt)）→ Policy.safeAt L4524-4541 → dpKeep L2491-2496",
+     "judgement": "error",
+     "why": "过了 128 的线仍不出手；阵亡时两个号身上还有 198854 兵（哪道门槛在挡是推断）"
+    },
+    {
+     "t": "2142~4283",
+     "bot": "Georgia / Norway / Musketeer / Amogus（T1 的捐出方）",
+     "decision": "每 20 拍对同一个受捐方原样重捐，不看受捐额度。",
+     "codePath": "src/strategy/v27-team-c110.js: tryDonateToTeammate L4369-4498（L4372 冷却 18 拍；L4438 / L4490 直接 g.donate）",
+     "judgement": "error",
+     "why": "T1 这边 t<4284 发了 234 笔，成交 35 笔（donwall [WH]）"
+    }
+   ],
+   "statementType": "observed"
+  },
+  {
+   "t0": 4588,
+   "t1": 5977,
+   "shareBefore": 38.9,
+   "shareAfter": 6.1,
+   "shareUnit": "T1（主队）全队占陆地 %（结果行 team.totals：t=4588 → t=5977）",
+   "what": "T1 崩盘：156305→24367 格。丢的 131938 格里编队号 38522 格、T1 其它真人 93416 格。被围在后方的三个银行（Norway、Georgia、Musketeer）一接壤，126~341 拍内阵亡；Amogus、Cyrus 在密度 110 以上、0 条指令的状态下被吃完。",
+   "evidence": [
+    "结果行：t=4588 T1 156305 / T2 244708；t=5256（Norway，L12030）96452 / 305140；t=5291（Georgia，L12031）88419；t=5469（Musketeer，L12069）49531；t=5507（Amogus，L12085）42246；t=5977（Cyrus，L12181）24367 / 375814。",
+    "teamshare [TC]：T1 的编队号 t=4950 7 个号 40553 格 / 3773034 兵（密度 93.0，3 个被围）→ t=5400 5 个号 19169 格 / 2232535 兵 → t=5850 3 个号 7679 格 / 785809 兵。",
+    "Norway：t=1800~5040 一直 nb=0（3828 格），t=5130 第一次有敌邻（233981 兵，密度 61.1），t=5220 1856 格 / 82280 兵，Δcmds 0，t=5256 阵亡。",
+    "Georgia：t=1980~4860 nb=0（10390 格，余额 35.7 万~123.3 万）；t=4950 敌邻 1，t=5040 11053 格 / 732914 兵 → t=5130 8842 → t=5220 5517 / 379148，cmds 206 不变，t=5291 阵亡。",
+    "Musketeer：t=1800~5130 nb=0（4900~4928 格）；t=5220 敌邻 2、5025 格 / 418198 兵 → t=5310 2530 格 / 152610 兵（0 条指令）→ t=5469 阵亡。",
+    "Cyrus（digest [E]）：t=4590 11580 格 / 785435 兵；t=4680~5040 丢 4255 格、1 条指令；t=5130 7325 格 / 924720 兵（密度 126.2）→ t=5940 2020 格 / 225621 兵，Δcmds 0。Amogus t=5130~5490 4053→1092 格，Δcmds 0。",
+    "donwall [WF]：阵亡前 600 拍收到的捐款——Norway 0 笔、Musketeer 0 笔、Georgia 4 笔 166658、Amogus 1 笔 33246、Cyrus 4 笔 114842。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "4680~5940",
+     "bot": "Cyrus / Amogus / Georgia",
+     "decision": "丢地的过程里 0~1 条指令；Cyrus 唯一的一条是 t=4730 给 KiraYoshikage 的盈余捐（到账 84474、税 80063）。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.peerAggressor L4586-4625（L4613 压上来的兵 > 12%×B + 我压在他身上的兵 → 不算反击对象；L4614 bal[q]+inc ≤ 1.6×B）；tryDonateToTeammate L4385（自己挨真人打时不捐）",
+     "judgement": "error",
+     "why": "三个号阵亡时身上还有 442186 兵；谁打的、对方多少兵看不到"
+    },
+    {
+     "t": "1800~5130",
+     "bot": "Norway / Georgia / Musketeer",
+     "decision": "被围 2880~3330 拍，兵只有捐款和船两条出路：173 笔捐款成交 40 笔，17 条船没换来地。捐到密度 58~60 就停，接壤时密度只有 61~83。",
+     "codePath": "src/strategy/v27-team-c110.js: tryDonateToTeammate L4462-4490（boxedIn && dMe ≥ 55 → 盈余捐 185/1024）；V17.idleBoats L2874-2881",
+     "judgement": "unclear",
+     "why": "被围是出生点和队友位置决定的；船去了哪看不到"
+    }
+   ],
+   "statementType": "observed"
+  }
+ ],
+ "deaths": [
+  {
+   "bot": "Morphy",
+   "me": 21,
+   "labels": [
+    "Morphy"
+   ],
+   "team": 1,
+   "event": "died",
+   "tick": 1903,
+   "place": 47,
+   "resultPeak": 4864,
+   "logPeakTerr": 4735,
+   "logPeakTick": 1260,
+   "lastSnapshots": [
+    {
+     "t": 1620,
+     "terr": 4730,
+     "bal": 4122,
+     "dens": 0.9,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 111
+    },
+    {
+     "t": 1710,
+     "terr": 1583,
+     "bal": 35712,
+     "dens": 22.6,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 111
+    },
+    {
+     "t": 1800,
+     "terr": 1371,
+     "bal": 32131,
+     "dens": 23.4,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 111
+    },
+    {
+     "t": 1890,
+     "terr": 1371,
+     "bal": 35821,
+     "dens": 26.1,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 111
+    }
+   ],
+   "donationsReceivedLogged": 10,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 10811,
+   "cause": "丢地时连发的单子晚落地把自己打空。t=1260 峰值 4735 格；t=1260~1440 丢 963 格、发了 20 条指令；t=1440~1620 这两个窗 cmds 停在 111，余额却 37776→4122（密度 0.9）、领土 3772→4730——之前发的单子这时才落地。贴着 4 个敌邻，t=1620~1800 丢 3359 格，最后 460 拍 0 条指令，t=1903 阵亡（第 47 名，余额 32017）。KiraYoshikage 在自己的本地拍 1500~1780 给它发了 10 笔救援捐，没有一笔确认成交。",
+   "chain": [
+    "t=1260 4735 格 / 66371 兵",
+    "t=1440 3772 格 / 37776 兵 / cmds 111",
+    "t=1620 4730 格 / 4122 兵（密度 0.9）/ cmds 111 / 敌邻 4",
+    "t=1710 1583 格",
+    "t=1800 1371 格 / 32131 兵",
+    "t=1903 阵亡"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "Patton",
+   "me": 29,
+   "labels": [
+    "Patton"
+   ],
+   "team": 1,
+   "event": "died",
+   "tick": 3828,
+   "place": 38,
+   "resultPeak": 5810,
+   "logPeakTerr": 5346,
+   "logPeakTick": 2070,
+   "lastSnapshots": [
+    {
+     "t": 3510,
+     "terr": 4092,
+     "bal": 532967,
+     "dens": 130.2,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 114
+    },
+    {
+     "t": 3600,
+     "terr": 4047,
+     "bal": 545627,
+     "dens": 134.8,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 114
+    },
+    {
+     "t": 3690,
+     "terr": 3083,
+     "bal": 347964,
+     "dens": 112.9,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 119
+    },
+    {
+     "t": 3780,
+     "terr": 1557,
+     "bal": 122499,
+     "dens": 78.7,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 119
+    }
+   ],
+   "donationsReceivedLogged": 25,
+   "donationsReceivedAccepted": 3,
+   "donationsGivenLast500": 0,
+   "resultLine": 11574,
+   "cause": "积压清仓后吐地，再囤到上限被吃。t=1530~1890 58 条指令零花费；t=1890~2070 一窗清仓（308668→7203，3415→5346 格），t=2070~2250 吐回 1401 格。t=2250~3240 在 3945 格上 990 拍 0 条指令（2 个敌邻，密度 36→122）；t=3280 收到 Georgia 一笔 348713；t=3600 4047 格 / 545627 兵（密度 134.8）。t=3600~3780 丢 2490 格，这时才发 5 条指令（2 条船），余额剩 122499；t=3828 阵亡（第 38 名）。阵亡前 600 拍队友对它发了 18 笔捐款，成交 5 笔。",
+   "chain": [
+    "t=1890 3415 格 / 308668 兵",
+    "t=2070 5346 格 / 7203 兵（密度 1.3）",
+    "t=2250 3945 格",
+    "t=3240 3945 格 / 483371 兵（密度 122.5）",
+    "t=3600 4047 格 / 545627 兵",
+    "t=3780 1557 格 / 122499 兵",
+    "t=3828 阵亡"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "Red Army",
+   "me": 10,
+   "labels": [
+    "Red Army"
+   ],
+   "team": 1,
+   "event": "died",
+   "tick": 4204,
+   "place": 35,
+   "resultPeak": 8030,
+   "logPeakTerr": 7003,
+   "logPeakTick": 2250,
+   "lastSnapshots": [
+    {
+     "t": 3870,
+     "terr": 2143,
+     "bal": 281776,
+     "dens": 131.5,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 145
+    },
+    {
+     "t": 3960,
+     "terr": 2143,
+     "bal": 293044,
+     "dens": 136.7,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 145
+    },
+    {
+     "t": 4050,
+     "terr": 1285,
+     "bal": 168578,
+     "dens": 131.2,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 145
+    },
+    {
+     "t": 4140,
+     "terr": 1285,
+     "bal": 175313,
+     "dens": 136.4,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 145
+    }
+   ],
+   "donationsReceivedLogged": 35,
+   "donationsReceivedAccepted": 6,
+   "donationsGivenLast500": 0,
+   "resultLine": 11704,
+   "cause": "t=1440~1980 108 条指令零花费（余额 180642→370215 逐兵等于利息公式）；t=1980~2070 一窗清仓到 5300 兵，领土 2677→7003（t=2250），随后 180 拍吐回 3161 格。t=2250 之后到阵亡的 1954 拍 cmds=145 没变过：在 3842 格上贴着 1 个敌邻囤到 542251 兵（密度 141.1，t=3600），t=3600~4050 分三步丢 2557 格，t=4204 阵亡（第 35 名，余额 133811）。整局队友对它发了 35 笔捐款，成交 6 笔 337459，28 笔被累计额度挡掉。",
+   "chain": [
+    "t=1980 2677 格 / 370215 兵",
+    "t=2070 3953 格 / 5300 兵",
+    "t=2250 7003 格 / 16788 兵（最后一条指令）",
+    "t=2430 3842 格",
+    "t=3600 3842 格 / 542251 兵（密度 141.1）",
+    "t=3690 3002 格",
+    "t=3870 2143 格",
+    "t=4050 1285 格 / 168578 兵",
+    "t=4204 阵亡"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "Maratha",
+   "me": 12,
+   "labels": [
+    "Maratha"
+   ],
+   "team": 2,
+   "event": "died",
+   "tick": 4588,
+   "place": 32,
+   "resultPeak": 6805,
+   "logPeakTerr": 6349,
+   "logPeakTick": 2160,
+   "lastSnapshots": [
+    {
+     "t": 4230,
+     "terr": 3483,
+     "bal": 522450,
+     "dens": 150.0,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 259
+    },
+    {
+     "t": 4320,
+     "terr": 2785,
+     "bal": 351282,
+     "dens": 126.1,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 259
+    },
+    {
+     "t": 4410,
+     "terr": 2785,
+     "bal": 369508,
+     "dens": 132.7,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 259
+    },
+    {
+     "t": 4500,
+     "terr": 2785,
+     "bal": 384092,
+     "dens": 137.9,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 259
+    }
+   ],
+   "donationsReceivedLogged": 37,
+   "donationsReceivedAccepted": 8,
+   "donationsGivenLast500": 0,
+   "resultLine": 11819,
+   "cause": "T2 的号。t=1350~1980 126 条指令零花费；t=1980~2070 花掉 85%（453020→97627）换来 3750→6236 格，t=2250~2340 吐回 1242 格。t=2340~4140 在 5107 格上 1800 拍只贴 1 个敌邻，9 条指令里 8 条是它自己的捐款，余额 146956→676470（密度 132.5）；t=4140~4320 丢 2322 格、0 条指令，t=4230 余额 = 150.0×领土。t=4530 Konev 给它一笔救援捐（到账 85581、税 155592），58 拍后 t=4588 阵亡（第 32 名，余额 172413）。",
+   "chain": [
+    "t=1980 3750 格 / 453020 兵",
+    "t=2070 6236 格 / 97627 兵",
+    "t=2340 5107 格 / 146956 兵",
+    "t=4140 5107 格 / 676470 兵（密度 132.5）",
+    "t=4230 3483 格 / 522450 兵（硬上限）",
+    "t=4320 2785 格",
+    "t=4588 阵亡"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "Norway",
+   "me": 26,
+   "labels": [
+    "Norway"
+   ],
+   "team": 1,
+   "event": "died",
+   "tick": 5256,
+   "place": 27,
+   "resultPeak": 4063,
+   "logPeakTerr": 4104,
+   "logPeakTick": 990,
+   "lastSnapshots": [
+    {
+     "t": 4950,
+     "terr": 3828,
+     "bal": 245584,
+     "dens": 64.2,
+     "nb": 0,
+     "neut": 0,
+     "cmds": 154
+    },
+    {
+     "t": 5040,
+     "terr": 3828,
+     "bal": 275961,
+     "dens": 72.1,
+     "nb": 0,
+     "neut": 0,
+     "cmds": 154
+    },
+    {
+     "t": 5130,
+     "terr": 3828,
+     "bal": 233981,
+     "dens": 61.1,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 155
+    },
+    {
+     "t": 5220,
+     "terr": 1856,
+     "bal": 82280,
+     "dens": 44.3,
+     "nb": 2,
+     "neut": 11,
+     "cmds": 155
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 1,
+   "resultLine": 12030,
+   "cause": "T1 的银行。t=990 4104 格之后没有再长，t=1800~5040 一直 nb=0（3828 格）。整局发了 63 笔捐款，成交 19 笔（到账 904039、税 384684）；7 条船没换来地。捐到密度 59 左右就停，t=5130 第一次有敌邻时 233981 兵（密度 61.1）；90 拍后 1856 格 / 82280 兵，0 条指令，t=5256 阵亡（第 27 名）。",
+   "chain": [
+    "t=990 4104 格",
+    "t=1800 3828 格，开始被围",
+    "t=5040 3828 格 / 275961 兵 / nb=0",
+    "t=5130 敌邻 1 / 233981 兵",
+    "t=5220 1856 格 / 82280 兵",
+    "t=5256 阵亡"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "Georgia",
+   "me": 15,
+   "labels": [
+    "Georgia"
+   ],
+   "team": 1,
+   "event": "died",
+   "tick": 5291,
+   "place": 26,
+   "resultPeak": 12375,
+   "logPeakTerr": 11053,
+   "logPeakTick": 4950,
+   "lastSnapshots": [
+    {
+     "t": 4950,
+     "terr": 11053,
+     "bal": 644427,
+     "dens": 58.3,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 206
+    },
+    {
+     "t": 5040,
+     "terr": 11053,
+     "bal": 732914,
+     "dens": 66.3,
+     "nb": 1,
+     "neut": 32,
+     "cmds": 206
+    },
+    {
+     "t": 5130,
+     "terr": 8842,
+     "bal": 687337,
+     "dens": 77.7,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 206
+    },
+    {
+     "t": 5220,
+     "terr": 5517,
+     "bal": 379148,
+     "dens": 68.7,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 206
+    }
+   ],
+   "donationsReceivedLogged": 4,
+   "donationsReceivedAccepted": 4,
+   "donationsGivenLast500": 0,
+   "resultLine": 12031,
+   "cause": "T1 最大的银行。t=1980~4860 nb=0，10390 格，余额在 35.7 万~123.3 万之间来回：70 笔捐款成交 7 笔（到账 1429688、税 434920），t=3510~3780 3 条船、领土不变。t=4950 接壤（敌邻 1），t=5040 11053 格 / 732914 兵（密度 66.3）；t=5040~5220 丢 5536 格，cmds 206 没变；t=5291 阵亡（第 26 名，余额 146749）。",
+   "chain": [
+    "t=1980 10390 格 / 356770 兵，开始被围",
+    "t=3240 10390 格 / 1233218 兵（密度 118.7）",
+    "t=4860 10901 格 / nb=0",
+    "t=5040 11053 格 / 732914 兵 / 敌邻 1",
+    "t=5130 8842 格",
+    "t=5220 5517 格 / 379148 兵",
+    "t=5291 阵亡"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "Musketeer",
+   "me": 14,
+   "labels": [
+    "Musketeer"
+   ],
+   "team": 1,
+   "event": "died",
+   "tick": 5469,
+   "place": 24,
+   "resultPeak": 5025,
+   "logPeakTerr": 5025,
+   "logPeakTick": 5220,
+   "lastSnapshots": [
+    {
+     "t": 5130,
+     "terr": 4928,
+     "bal": 371999,
+     "dens": 75.5,
+     "nb": 0,
+     "neut": 0,
+     "cmds": 183
+    },
+    {
+     "t": 5220,
+     "terr": 5025,
+     "bal": 418198,
+     "dens": 83.2,
+     "nb": 2,
+     "neut": 129,
+     "cmds": 183
+    },
+    {
+     "t": 5310,
+     "terr": 2530,
+     "bal": 152610,
+     "dens": 60.3,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 183
+    },
+    {
+     "t": 5400,
+     "terr": 2467,
+     "bal": 133410,
+     "dens": 54.1,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 185
+    }
+   ],
+   "donationsReceivedLogged": 0,
+   "donationsReceivedAccepted": 0,
+   "donationsGivenLast500": 0,
+   "resultLine": 12069,
+   "cause": "t=1170~1620 69 条指令、领土不变，t=1530~1620 一窗花掉 248160→33079；t=1620~1800 0 条指令多出 1227 格。t=1800~5130 nb=0（4900~4928 格）：40 笔捐款成交 14 笔，5 条船没换来地。t=5220 两个敌邻、5025 格 / 418198 兵；90 拍后 2530 格 / 152610 兵（0 条指令），t=5400 再发 2 条船，t=5469 阵亡（第 24 名）。",
+   "chain": [
+    "t=1620 3673 格 / 33079 兵",
+    "t=1800 4900 格，开始被围",
+    "t=5130 4928 格 / 371999 兵 / nb=0",
+    "t=5220 5025 格 / 418198 兵 / 敌邻 2",
+    "t=5310 2530 格 / 152610 兵",
+    "t=5400 2467 格",
+    "t=5469 阵亡"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "Amogus",
+   "me": 5,
+   "labels": [
+    "Amogus"
+   ],
+   "team": 1,
+   "event": "died",
+   "tick": 5507,
+   "place": 22,
+   "resultPeak": 4923,
+   "logPeakTerr": 4923,
+   "logPeakTick": 1890,
+   "lastSnapshots": [
+    {
+     "t": 5220,
+     "terr": 3714,
+     "bal": 476544,
+     "dens": 128.3,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 211
+    },
+    {
+     "t": 5310,
+     "terr": 2954,
+     "bal": 335950,
+     "dens": 113.7,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 211
+    },
+    {
+     "t": 5400,
+     "terr": 2288,
+     "bal": 254669,
+     "dens": 111.3,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 211
+    },
+    {
+     "t": 5490,
+     "terr": 1092,
+     "bal": 83829,
+     "dens": 76.8,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 211
+    }
+   ],
+   "donationsReceivedLogged": 2,
+   "donationsReceivedAccepted": 2,
+   "donationsGivenLast500": 1,
+   "resultLine": 12085,
+   "cause": "t=1710 起只贴 1 个敌邻。t=2635~2955 17 笔捐款（15 笔给 Saladin）全部没成交；t=2700~3510 4768 格、密度 100→143.1；t=3510~5130 慢慢丢到 4053 格，只发了 3 条指令，密度 130~145。t=2250 之后它的 22 条指令全部是捐款（cmds 189→211 = 日志里它的 22 条 HL-DONATE），没有一条陆攻或船。t=5130~5490 4053→1092 格、0 条指令，余额 528191→83829；t=5507 阵亡（第 22 名）。密度 ≥100 不出手的最长一段 2700 拍（t=2790~5490）。",
+   "chain": [
+    "t=1800 4922 格 / 115772 兵",
+    "t=2700 4768 格 / 476672 兵（密度 100.0）",
+    "t=3510 4768 格 / 682416 兵（密度 143.1）",
+    "t=5130 4053 格 / 528191 兵",
+    "t=5310 2954 格",
+    "t=5490 1092 格 / 83829 兵",
+    "t=5507 阵亡"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "Cyrus",
+   "me": 19,
+   "labels": [
+    "Cyrus"
+   ],
+   "team": 1,
+   "event": "died",
+   "tick": 5977,
+   "place": 21,
+   "resultPeak": 11580,
+   "logPeakTerr": 11580,
+   "logPeakTick": 4590,
+   "lastSnapshots": [
+    {
+     "t": 5670,
+     "terr": 5115,
+     "bal": 720927,
+     "dens": 140.9,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 195
+    },
+    {
+     "t": 5760,
+     "terr": 3607,
+     "bal": 426708,
+     "dens": 118.3,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 195
+    },
+    {
+     "t": 5850,
+     "terr": 3607,
+     "bal": 486130,
+     "dens": 134.8,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 195
+    },
+    {
+     "t": 5940,
+     "terr": 2020,
+     "bal": 225621,
+     "dens": 111.7,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 195
+    }
+   ],
+   "donationsReceivedLogged": 85,
+   "donationsReceivedAccepted": 32,
+   "donationsGivenLast500": 0,
+   "resultLine": 12181,
+   "cause": "T1 收款最多的号：整局 31 笔 2198018（t≥4284 的 19 笔 1410890）。t=1890 起只贴 1 个敌邻，t=2790~4140 四次出手共多出 4584 格、两次被打回 2251 格；t=4320~4590 7067→11580 格（0 条新指令）。t=4730 余额 128 万时给 KiraYoshikage 捐了一笔（到账 84474、税 80063），这是它最后 1300 拍里唯一的指令；t=4680~5040 丢 4255 格，t=5130 7325 格 / 924720 兵（密度 126.2），之后四步丢到 2020 格，t=5977 阵亡（第 21 名，余额 229426）。",
+   "chain": [
+    "t=4140 6966 格 / 295402 兵",
+    "t=4590 11580 格 / 785435 兵",
+    "t=4730 捐给 KiraYoshikage（余额 1281011）",
+    "t=5040 7325 格 / 861790 兵",
+    "t=5130 7325 格 / 924720 兵（密度 126.2）",
+    "t=5400 6193 格",
+    "t=5760 3607 格",
+    "t=5940 2020 格 / 225621 兵",
+    "t=5977 阵亡"
+   ],
+   "statementType": "observed"
+  }
+ ],
+ "ledger": {
+  "drop30Count": 71,
+  "drop30ByClass": {
+   "ATTACK-GAIN": 29,
+   "BOAT": 4,
+   "DONATE": 9,
+   "LOST-LAND": 20,
+   "PASSIVE-LOSS": 3,
+   "SPEND-NO-LAND": 6
+  },
+  "donationsLogged": 525,
+  "donationsObservedAccepted": 134,
+  "donationsObservedRejected": 359,
+  "donationsUndetermined": 32,
+  "donationsModelRejected": 277,
+  "note": "观测判定=拿捐出方下一次已知余额和「被拒/成交」两个预期比；Undetermined=判不了。下面两项按「未判拒即成交」计，是上限。",
+  "donatedArrivedUpperBound": 10001871,
+  "donationTaxUpperBound": 4822891,
+  "cardLikelyRejected": 338,
+  "donfit": {
+   "method": "donfit.py：拿捐出方的余额观测序列（HL-TICK + 每条 HL-DONATE 的 myBal）逐段拟合，在途的单子允许晚落地；成交几笔由余额拟合定，同样大小的候选里先挑不违反引擎受捐额度的、再挑最新发的；同一个快照窗里还有攻击/船时只收『整单、额度内』的拟合，其余记判不了",
+   "quotaConflicts": 2,
+   "logged": 525,
+   "executed": 158,
+   "notExecuted": 296,
+   "undetermined": 71,
+   "delivered": 10859650,
+   "tax": 4393158,
+   "clippedByReceiverCap": 8,
+   "lagAtLeast20": 9,
+   "refires": 7,
+   "old20TickRuleRejectedButExecuted": 11
+  },
+  "donationWall": {
+   "before4284": {
+    "logged": 423,
+    "executed": 77,
+    "notExecuted": 285,
+    "soloOverQuota": 48,
+    "cumulativeOverQuota": 149,
+    "other": 88,
+    "undetermined": 61
+   },
+   "after4284": {
+    "logged": 102,
+    "executed": 81,
+    "notExecuted": 11,
+    "undetermined": 10
+   },
+   "byEra": [
+    "0~2142：93 笔，成交 4 / 没成交 56 / 定不了 33，到账 189114",
+    "2142~3213：205 笔，27 / 167 / 11，到账 1719760",
+    "3213~4284：125 笔，46 / 62 / 17，到账 3225977",
+    "4284~末：102 笔，81 / 11 / 10，到账 5724799"
+   ],
+   "wantedByRefused": "t<4284 没成交的 284 笔合计想捐 23665544 兵（每 20 拍重试一次，重复计）",
+   "src": "scripts/donwall.py [WA][WD]"
+  },
+  "donationsByTeam": {
+   "T1": {
+    "logged": 261,
+    "executed": 60,
+    "notExecuted": 159,
+    "undetermined": 42,
+    "delivered": 4195385,
+    "tax": 1778757,
+    "before4284": "234 笔 → 成交 35 / 2630992",
+    "after4284": "27 笔 → 成交 25 / 1564393",
+    "topReceiver": "Cyrus 31 笔 2198018"
+   },
+   "T2": {
+    "logged": 264,
+    "executed": 98,
+    "notExecuted": 137,
+    "undetermined": 29,
+    "delivered": 6664265,
+    "tax": 2614401,
+    "before4284": "189 笔 → 成交 42 / 2503859",
+    "after4284": "75 笔 → 成交 56 / 4160406",
+    "topReceiver": "Konev 54 笔 3594621"
+   },
+   "src": "scripts/donwall.py [WH]"
+  },
+  "concentratedSupply": [
+   {
+    "receiver": "Cyrus",
+    "window": "4200~4560",
+    "donors": 5,
+    "count": 7,
+    "delivered": 805043,
+    "tax": 255641,
+    "terr": "6966→11174"
+   },
+   {
+    "receiver": "Konev",
+    "window": "5785~6145",
+    "donors": 8,
+    "count": 20,
+    "delivered": 1528441,
+    "tax": 518604,
+    "terr": "19561→26589"
+   }
+  ],
+  "donationsToReceiversOverSoftCap": {
+   "count": 76,
+   "delivered": 5510337,
+   "tax": 2273153,
+   "konev": {
+    "count": 36,
+    "delivered": 2578470,
+    "tax": 895925
+   },
+   "src": "scripts/donwall.py [WG]"
+  },
+  "donationsClippedByReceiverCap": {
+   "count": 8,
+   "delivered": 531799,
+   "tax": 554861,
+   "src": "scripts/donfit.py [FA]"
+  },
+  "surplusBelowOwnFloor": {
+   "executedSurplus": 133,
+   "below68": 82,
+   "src": "scripts/donfit.py [FE]"
+  },
+  "refires": {
+   "count": 7,
+   "extraDelivered": 466240,
+   "extraTax": 160423,
+   "src": "scripts/donfit.py [FA]"
+  },
+  "quotaCeilings": "一个受捐方开局以来累计最多收：t=1500 33390 兵、t=1900 43046、t=2141 47873、t=2142 159579、t=3000 256131、t=3212 277587；t=3213~4283 每 100 拍额度只涨 10 点、一笔的点数 = 4 + 到账÷受捐方领土；t≥4284 不查（scripts/donwall.py [WE]）",
+  "cardLikelyRejectedNote": "对局卡的『疑似被拒 338/525』这一局大体是真的：facts.py 旧口径判拒的 359 笔里 295 笔确实没成交、11 笔晚落地成交、53 笔定不了。被拒的原因是引擎的受捐额度，不是时延假象（和 B049 相反）。",
+  "boats": {
+   "total": 103,
+   "boxedBots": {
+    "bots": 7,
+    "boats": 78,
+    "launchedWhileBoxed": 56,
+    "pureWindowBoats": 50,
+    "pureWindowTroopsGone": 730099,
+    "pureWindowTerrDelta": -476
+   },
+   "konev": {
+    "boats": 3,
+    "note": "t=1800~1980 的两条船之后 3577→14669 格"
+   },
+   "src": "scripts/logstats.py [QE]",
+   "caveat": "『少掉的兵』= 按利息公式应有的余额 − 实际余额，窗内有捐款入账时偏小；没有录像，船的去向看不到"
+  },
+  "noEffectCommands": {
+   "window": "810~1890",
+   "commands": 2066,
+   "noEffect": 1027,
+   "zeroCostRuns": {
+    "runs": 9,
+    "commands": 612,
+    "donationLogs": 38,
+    "bots": 8
+   },
+   "src": "scripts/noeffect.py [NA][ND]"
+  },
+  "cadence": {
+   "window": "700~2100",
+   "snapshotWindows": 317,
+   "commands": 2310,
+   "maxPer90Ticks": 18,
+   "windowsAtLeast16": 77,
+   "windowsAtLeast10": 124,
+   "src": "scripts/cadence.py"
+  },
+  "commandMixAfter2250": {
+   "bots": 19,
+   "botTicks": 65250,
+   "commands": 577,
+   "landAttacks": 112,
+   "boats": 38,
+   "donations": 425,
+   "pokes": 2,
+   "T1": {
+    "bots": 9,
+    "commands": 265,
+    "landAttacks": 38,
+    "boats": 11,
+    "donations": 216
+   },
+   "T2": {
+    "bots": 10,
+    "commands": 312,
+    "landAttacks": 74,
+    "boats": 27,
+    "donations": 209,
+    "pokes": 2
+   },
+   "zeroLandAndBoat": [
+    "Amogus（3240 拍）",
+    "KiraYoshikage（3960 拍）",
+    "Red Army（1890 拍）",
+    "Sokoto（3960 拍）"
+   ],
+   "note": "陆攻 = Δcmds − Δboats − HL-DONATE 条数 − HL-ASSIST 条数（求和票不计入 cmds）",
+   "src": "scripts/logstats.py [QG]"
+  },
+  "singleNeighbourWindows": {
+   "densityBelow100": {
+    "windows": 140,
+    "noCommand": 97
+   },
+   "density100to128": {
+    "windows": 73,
+    "noCommand": 62
+   },
+   "densityAtLeast128": {
+    "windows": 125,
+    "noCommand": 109,
+    "cellsLost": 14595
+   },
+   "src": "scripts/logstats.py [QF]"
+  },
+  "teamTotals": [
+   "t=1903 T1 208204 / T2 187788",
+   "t=3828 185425 / 215826",
+   "t=4204 155403 / 245348",
+   "t=4588 156305 / 244708",
+   "t=5256 96452 / 305140",
+   "t=5977 24367 / 375814",
+   "t=6217 4072 / 397906"
+  ],
+  "squadVsOthersPerCapita": [
+   "t=1903 4233 / 11688（0.36）",
+   "t=3828 5191 / 16201（0.32）",
+   "t=4588 5754 / 20596（0.28）",
+   "t=5256 5213 / 29399（0.18）",
+   "t=5977 5396 / 37870（0.14）",
+   "t=6217 5912 / 37438（0.16）"
+  ],
+  "drop30ByClassNote": "DROP30 71 段：ATTACK-GAIN 29、LOST-LAND 20、DONATE 9、SPEND-NO-LAND 6、BOAT 4、PASSIVE-LOSS 3（digest [F]，捐款按旧判定归类）。",
+  "deadBotsBalanceAtDeath": {
+   "total": 967759,
+   "note": "9 个阵亡号结果行里的余额合计",
+   "src": "bundles/B006/results.json"
+  }
+ },
+ "decisions": [
+  {
+   "id": "D01",
+   "t": "0~90",
+   "bot": "20 个号（撞点的是 KiraYoshikage / Musketeer / Lannes 和 Malacca / Kaido）",
+   "decision": "每个号各自在本进程里排 20 个槽位、取第 slot 个：先把视图里的其它编队号抹掉，候选不够时在 16 像素网格上取『离自己已选的点最远』的点。5 个号的最后一条指派落在 2 个点上，12 对号相距不到 minSep（145 像素）。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.chooseSpawn L4007-4153（自治分支 L4065-4151：L4067-4072 抹掉其它编队号；L4090-4102 按 minSep 贪心取 slot+1 个；L4117-4144 候选不够时取离已选点最远的网格点）",
+   "verdict": "error",
+   "patternId": "NEW-SP-07",
+   "evidence": [
+    "spawnlog [SB][SC]：同一个点 2 组 5 个号；相距 <145 像素 12 对",
+    "L10177 / L10178 / L10171：KiraYoshikage、Musketeer、Lannes 都是 (722,50)；L10170 / L10167：Malacca、Kaido 都是 (610,194)",
+    "spawnlog [SA]：KiraYoshikage t≈900 1979 格、当拍被围；Malacca 1983 格；全队中位 3206"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D02",
+   "t": "55~645",
+   "bot": "20 个号",
+   "decision": "开局按 DP 周期出手：第 0~6 周期全员按期完成，t=450 各号 898~1326 格，t=630 合计 49813 格（12.39%）。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.act L4862-4935 → expandNeutral L2408-2417 → dpNeutral L2418-2490",
+   "verdict": "good",
+   "patternId": "NEW-OP-G1",
+   "evidence": [
+    "L10266 [OPENING-CHECK 20 bots @ tick 199] 全部 OK",
+    "digest [K]：HL-OPENING 第 0~6 周期",
+    "digest [C]：t=450 22446 格、t=630 49813 格"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D03",
+   "t": "700~2100",
+   "bot": "20 个号",
+   "decision": "每 5 拍发一条非船指令：一个 90 拍快照窗里最多记 18 条，77 个窗 ≥16 条。归档的 c110 有在途保护（8 拍）和同目标 15 拍冷却，一个窗最多 9~11 条；这一局的节奏说明当天的版本至少缺一道。t=810~1890 的 2066 条指令里 1027 条没生效；指令生效的窗里，连发的单子把余额一路打到底（Red Army t=1980~2070 6 条指令花掉 99%）。",
+   "codePath": "src/strategy/v27-team-c110.js: 文件头 L19-31（在途保护 450 ms / 8 拍）；Strategy.send L526-540（L529-533 在线时同目标 15 拍冷却）——归档文件里两道都有，日志节奏对不上",
+   "verdict": "error",
+   "patternId": "NEW-EX-06",
+   "evidence": [
+    "cadence（out/_cross/cadence_B.txt）：B006 317 窗 / 2310 条 / 最多 18 / ≥16 条的窗 77 个 / ≥10 条的窗 124 个；11-09 以后的 32 局单窗最多 11 条、没有 ≥16 条的窗",
+    "noeffect [NA]：桶 810 / 1080 / 1350 / 1620 指令 638 / 543 / 463 / 422，没生效 206 / 241 / 273 / 307"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D04",
+   "t": "990~1980",
+   "bot": "Konev / Maratha / Red Army / Kokand / Patton / Kalmar Union / Cossack / Norway",
+   "decision": "连续 270~630 拍每个快照窗都在发指令，余额却和『只滚利息』的公式逐兵相等、领土不涨：9 段共 612 条指令（其中捐款日志 38 条）。这些指令没有被服务器扣过一兵。",
+   "codePath": "src/strategy/v27-team-c110.js: Strategy.send L526-540（g.attack 返回 ok 就 cmds++，没有『上一条生效了没有』的回读）；General.act L804-847",
+   "verdict": "unclear",
+   "patternId": "NEW-IO-11",
+   "evidence": [
+    "noeffect [ND]：Konev t=990~1620 118 条，余额 21535→198233，3576 格不变，敌邻 3→2",
+    "noeffect [ND]：Maratha t=1350~1980 126 条，140798→453020，3750 格；Red Army t=1440~1980 108 条，180642→370215，2677 格",
+    "lagorder [LA]：Maratha、Red Army、Patton、Kalmar Union、Norway 在本地拍 1080~1710 比最快的号落后 180~360 拍，Konev 在 1350~1530 落后 180 拍"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D05",
+   "t": "1890~2070",
+   "bot": "Patton / Red Army / KiraYoshikage / Maratha",
+   "decision": "积压之后一窗清仓：四个号在同一个 180 拍里把密度打到 1.3~15.7（Patton 308668→7203、Red Army 370215→5300、KiraYoshikage 194066→4513、Maratha 453020→97627），之前各有 58 / 108 / 35 / 162 条指令没生效。这四个号正是本地拍落后最多（360 拍）、在本地拍 1890 才追平的六个号里有敌邻的那四个。结局不一样：Red Army 2677→7003→3842、Patton 3415→5346→3945，多出来的地大半吐回去（每格 87 / 180 兵）；Maratha 3750→6236→5107（每格 154 兵）；KiraYoshikage 1428→5938 留住了（被围 990 拍后第一次有敌邻，19.6 万兵换 4510 格）。",
+   "codePath": "src/strategy/v27-team-c110.js: Strategy.send L526-540（pct = ceil(troops×1024/bal)−1：单子带的是占余额的比例，落地时按当时的余额折算）",
+   "verdict": "error",
+   "patternId": "NEW-IO-12",
+   "evidence": [
+    "logstats [QA]：7 起清仓，t=1980~2340 这 360 拍里 4 个号",
+    "noeffect [NB]：各号『其后第一次单窗花掉 ≥40%』一栏",
+    "lagorder [LA]：落后到 360 拍的 6 个号 = KiraYoshikage、Kalmar Union、Red Army、Maratha、Norway、Patton，都在本地拍 1890 追平（另两个当时被围，没有可打的邻居）",
+    "digest [F]：Red Army t=1980~2070 少掉 375022 兵，到 t=2250 每格 87.1；Patton t=1890~1980 少掉 318695，每格 179.5；Maratha 383585，每格 154.0；KiraYoshikage 195551",
+    "digest [E]：Red Army t=2250~2430 7003→3842、Patton t=2070~2250 5346→3945，Δcmds 都是 0；KiraYoshikage t=2520~5490 5938 格不变"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D06",
+   "t": "1260~1903",
+   "bot": "Morphy",
+   "decision": "丢地时连发 20 条指令（t=1260~1440），这些单子在 t=1440~1620 才落地（这两个窗 cmds 停在 111）：余额 37776→4122、密度 0.9，贴着 4 个敌邻。之后 180 拍丢 3359 格，最后 460 拍 0 条指令，t=1903 阵亡。",
+   "codePath": "src/strategy/v27-team-c110.js: Strategy.send L526-540；Policy.send L3848-3885（影子额度只在 noFullSend=1 时拦，PARAMS 里是 0）；Policy.safeAt L4524-4541",
+   "verdict": "error",
+   "patternId": "NEW-AT-02",
+   "evidence": [
+    "Morphy 的 HL-TICK（L10582~L10796）：t=1440 3772 格 / 37776 兵 / cmds 111；t=1530 4587 / 35343 / 111；t=1620 4730 / 4122 / 111；t=1710 1583 格；t=1800 1371 格",
+    "logstats [QA]：Morphy t=1530~1620 余额 35343→4122，指令 0 条，清仓后敌邻 4 个，600 拍内阵亡",
+    "结果行 L10811：t=1903 阵亡，第 47 名"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D07",
+   "t": "本地拍 1500~1780",
+   "bot": "KiraYoshikage → Morphy",
+   "decision": "看到 Morphy 密度 9→0，按救援分支每 20 拍捐一笔（pct 240，每笔 2.7~4.1 万兵）：10 笔没有一笔确认成交（6 笔没成交、4 笔定不了）。按看得见的额度账前 9 笔都过得去（68~91 点，额度 85~91）；它自己的本地拍当时比最快的号落后 ≥180 拍，同期它另有 35 条指令没生效。Morphy t=1903 阵亡。",
+   "codePath": "src/strategy/v27-team-c110.js: tryDonateToTeammate L4420-4446（救援分支；L4437 isPureInlandSafe → pct 240）",
+   "verdict": "unclear",
+   "patternId": "NEW-IO-10",
+   "evidence": [
+    "L10732~L10818：10 条 HL-DONATE，dMe 76→121，dAlly 9→0→25",
+    "donfit [FD]：6 笔没成交、4 笔定不了",
+    "digest [G] 的额度栏：t=1500 这一笔 26734 兵 = 68 点（额度 85），t=1680 91 点（额度 91），只有 t=1780 那一笔 103 点压线（发令拍额度 97，20 拍后 103）",
+    "lagorder [LA]：KiraYoshikage 本地拍 1080~1710 落后 ≥180 拍，最多 360"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D08",
+   "t": "1800~2250",
+   "bot": "Konev",
+   "decision": "两条船换来 1.1 万格：t=1800~1890 发第 1 条（同窗另有 16 条指令，共少掉 36781 兵），t=1890~1980 只发了第 2 条（少掉 102845 兵，占窗前余额 42%）；领土 3577→5840→9411→13320→14669，t=1980 之后没有再发一条指令。t=2160 它只贴着中立地（nb=0、neut=65）。编队整局最大的一块地是这两条船拿的。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.act L4862-4935 → Policy.idleBoats L4979-5006 → boatOut L1035-1050",
+   "verdict": "good",
+   "patternId": "NEW-SE-G2",
+   "evidence": [
+    "Konev 的 HL-TICK（L10744~L10968）：t=1800 3577 格 / 250063 兵 / boats 0；t=1890 3725 / 242222 / boats 1；t=1980 5840 / 169467 / boats 2；t=2250 14669 / 353029，cmds 231 不变",
+    "logstats [QE] 明细：Konev t=1890~1980 1 条船，余额 242222→169467（少掉 102845，42%），领土 3725→5840，之后 180 拍最高 13320",
+    "digest [F]：这一段按续攻口径到 t=2340 净流出 28389 兵、净增 10951 格（每格 2.6 兵）",
+    "digest [C]：t=1890~2250 编队 +15403 格"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D09",
+   "t": "1500~4283",
+   "bot": "15 个捐出方（Kokand 70 笔没成交、Georgia 51、Savoy 38、Norway 36、Musketeer 26、KiraYoshikage 24…）",
+   "decision": "捐款函数不读引擎的受捐额度：t<4284 发了 423 笔，成交 77 笔（18%）；没成交的 285 笔里 149 笔是受捐方的累计点数已经顶满、48 笔单笔就超。被拒不收税，18 拍冷却一过原样重发——Kokand 连续 22 笔（t=1720~2140）、Savoy 22 笔（t=2780~3200，全是给 Lannes）、Georgia 20 笔（t=3300~4260）。",
+   "codePath": "src/strategy/v27-team-c110.js: tryDonateToTeammate L4369-4498（L4372 只看 18 拍冷却；L4438 / L4490 直接 g.donate；全文件没有 donateQuote / canReceive）；src/sim/sim/game.js donationCost L348-357、bookDonation L370-376、donationCapTick L379-383（= src/engine/live_game_js.js @371851~374100）",
+   "verdict": "error",
+   "patternId": "NEW-DN-13",
+   "evidence": [
+    "donwall [WA]：0~2142 93 笔成交 4；2142~3213 205 笔成交 27（累计超 100）；3213~4284 125 笔成交 46（累计超 48）；≥4284 102 笔成交 81",
+    "donwall [WC]：Cyrus 85 笔成交 31（没成交 46，其中累计超 38）；Lannes 77 笔成交 10（累计超 55）；Red Army 35 笔成交 6（累计超 28）；t=4283 已用点数 Cyrus 303、Konev 264、Patton 262、Lannes 252（额度 309）",
+    "donwall [WE]：一个受捐方开局以来累计最多收 t=1500 33390 兵、t=2100 47873 兵、t=2142 159579 兵、t=3212 277587 兵",
+    "L11154~L11361：Savoy→Lannes 22 条 HL-DONATE（pct 185 / 280 / 155），Savoy 的余额 211968→335726 一路只涨"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D10",
+   "t": "1500~2141",
+   "bot": "Kokand / Kalmar Union / Norway / KiraYoshikage → Kaido / Saladin / Malacca / Patton",
+   "decision": "救援捐的比例固定 155/1024（内陆安全时 240）：t<2142 引擎给一个受捐方的累计上限只有 3.3~4.8 万兵，余额 20~50 万的号一笔 155/1024 就是 3~7.6 万兵。93 笔里 48 笔单笔超额、成交 4 笔；对 Kaido 的 16 笔没成交全部是单笔超额。",
+   "codePath": "src/strategy/v27-team-c110.js: tryDonateToTeammate L4437（pct = min(maxSafePct, isPureInlandSafe ? 240 : 155)）；src/sim/sim/game.js donationCost L352-355（t<2142 每 40230 兵 100 点）",
+   "verdict": "error",
+   "patternId": "NEW-DN-08",
+   "evidence": [
+    "donwall [WA]：0~2142 93 笔，成交 4 / 没成交 56 / 定不了 33；单笔超 48",
+    "donwall [WB]：Kokand 单笔超 21 笔（点数中位 180，额度 109）、Kalmar Union 13 笔（128 对 91）、Norway 8 笔（163 对 115）",
+    "donwall [WC]：Kaido 23 笔里成交 4、没成交 16（单笔超 16）",
+    "L10670 Kokand→Kaido t=1700 pct 155、myBal 361125：55015 兵 = 138 点，额度 97"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D11",
+   "t": "1960~6120",
+   "bot": "被围的捐出方（Kokand / Sokoto / Savoy / Norway / Musketeer / Lannes / Saladin / Georgia）",
+   "decision": "被围的号密度一到 77.6 就按固定比例 185/1024 捐（连税 24.3% 的余额），捐完掉到 58~60：成交的 133 笔盈余捐里 82 笔捐完低于同一函数自己用的留底 68×领土；Sokoto 15 笔全部低于 68，最低 45.7。",
+   "codePath": "src/strategy/v27-team-c110.js: tryDonateToTeammate L4382-4389（coastGuardFloor 68×领土、maxSafePct ≥ 55 才放行 → 密度 ≥77.6）对 L4489（pct = boxedIn ? (dMe>110 ? 280 : 185) : 153，不受 maxSafePct 约束）",
+   "verdict": "error",
+   "patternId": "NEW-DN-11",
+   "evidence": [
+    "donfit [FE]：Kokand 18 笔 78.9→59.4（<68 的 13 笔）、Sokoto 15 笔 78.5→58.8（15 笔）、Savoy 14 笔 79.7→60.2（10 笔）、Norway 13 笔 78.8→59.2（10 笔）、Lannes 10 笔 80.1→59.5（9 笔）",
+    "donwall [WD]：带 boxedIn 标记的 341 笔；种类×pct 里 surplus 185 ×258",
+    "Norway t=5130 第一次有敌邻时密度 61.1，126 拍后阵亡；Musketeer 接壤时 83.2"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D12",
+   "t": "3340~6110",
+   "bot": "T2 的捐出方 → Konev",
+   "decision": "盈余捐的受捐方只排除密度 ≥132 的：Konev 成交的 54 笔里 36 笔（257.8 万兵，税 89.6 万）到账时它自己的余额已经超过 100×领土。t=3690~5760 它在 1.7~2.0 万格上只发了 12 条指令（4 条捐款、2 条戳刺），密度 68→148.6，t=3960~5760 余额一直在 207 万以上。T2 编队 t=4950 的 553 万兵里它一个号占 252 万；它不出手，银行也没有别的候选，Kaido、Cossack、Kalmar Union 顶在硬上限上等。",
+   "codePath": "src/strategy/v27-team-c110.js: tryDonateToTeammate L4466-4486（候选：同队编队号、领土 ≥600、dAlly < 132、t>2200 时要有敌邻或在打仗；打分 (135−dAlly)×3 + min(150, 领土/500) + 在途兵/500）",
+   "verdict": "error",
+   "patternId": "NEW-DN-14",
+   "evidence": [
+    "donwall [WG]：受捐方密度 ≥100 的成交 76 笔，到账 5510337、税 2273153；其中 Konev 36 笔 2578470 / 895925（t=3340~6110）",
+    "Konev 的 HL-TICK：t=3690 18384 格 / 1259537 兵 / cmds 242 → t=5760 19561 格 / 2906024 兵（密度 148.6）/ cmds 254；t=4950 2522966 兵（密度 140.3）、敌邻 3",
+    "logstats [QB]：Konev 27 条快照超软上限，t=5310 顶硬上限；Cossack t=4680~5130 4 条快照顶硬上限，Kaido t=5130、Kalmar Union t=6210 各 1 条",
+    "teamshare [TC]：t=4950 T2 的 9 个号 49523 格 / 5529843 兵（密度 111.7）"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D13",
+   "t": "3295~5350",
+   "bot": "Konev / Cyrus / Patton（捐出方）",
+   "decision": "往快满的队友身上捐：到账被受捐方 150×领土的上限夹小，6.25% 的税按捐出方自己的余额全收。夹小的 8 笔到账 531799、税 554861（51%）：Konev→Kaido t=5350 到账 186308 / 税 172912，Konev→Maratha t=4530 85581 / 155592（Maratha 58 拍后阵亡），Cyrus→KiraYoshikage t=4730 84474 / 80063，Patton→Cyrus t=3295 20035 / 34594。",
+   "codePath": "src/strategy/v27-team-c110.js: tryDonateToTeammate L4466-4490（dAlly < 132 就可以收；pct 固定，不看受捐方还能收多少）；src/sim/sim/game.js receiverRoom L340-345、transfer L388-400",
+   "verdict": "error",
+   "patternId": "NEW-DN-12",
+   "evidence": [
+    "donfit [FA]：夹小的 8 笔到账 531799、税 554861（51%）",
+    "donfit [FD]：L12047（Konev→Kaido，myBal 2766600）、L11817（Konev→Maratha，2489484）、L11867（Cyrus→KiraYoshikage，1281011）、L11399（Patton→Cyrus，587700）",
+    "logstats [QB]：Kaido t=5130 顶硬上限；digest [I]：Maratha t=4230 522450 兵 = 150.0×3483 格"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D14",
+   "t": "2250~5760",
+   "bot": "Red Army / Amogus / KiraYoshikage / Maratha / Patton / Cyrus / Cossack / Kalmar Union",
+   "decision": "只贴着 1 个敌邻、没有中立地、密度 ≥128 的 125 个快照窗里 109 个没有任何非捐款指令（100~128 的 73 个窗里 62 个）。Red Army t=2250 之后到阵亡 1954 拍 0 条指令（密度 2→141）；Amogus、KiraYoshikage 各有 2700 拍密度 ≥100 不出手，t≥2250 它们的 22 / 19 条指令全是捐款。128 是『唯一缓冲』门槛的线，过了线仍然不出手。全队 t≥2250 的 577 条指令里陆攻只有 112 条（T1 的 9 个号 38 条）。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5534（L5269-5273 唯一健康缓冲：B < overHumanCap(1.28)×100×领土 就跳过；L5322-5327、L5358-5361 keep = max(keep, safeAt)，avail ≤ 0 就跳过） → Policy.safeAt L4524-4541（L4527 只给非真人目标封顶 88×领土）→ safeAt L2744-2754 → dpKeep L2491-2496（(最富真人邻居余额 + 他压在我身上的兵 − 1.5×领土) ÷ 1.78）",
+   "verdict": "error",
+   "patternId": "NEW-EC-02",
+   "evidence": [
+    "logstats [QF]：合计 <100 140 窗 / 没指令 97；100~128 73 / 62；≥128 125 / 109，≥128 没指令的窗里共丢 14595 格",
+    "Red Army 的 HL-TICK：t=2250~4140 cmds=145 不变；t=3600 3842 格 / 542251 兵（密度 141.1），敌邻 1",
+    "logstats [QF]：KiraYoshikage t=3060~5760（2700 拍，5938→2016 格）、Amogus t=2790~5490（2700 拍，4768→1092 格）",
+    "logstats [QG]：t≥2250 指令 = 陆攻 + 船 + 捐款 + 戳刺：Amogus 22 = 0+0+22+0，KiraYoshikage 19 = 0+0+19+0，Red Army 0，Maratha 9 = 1+0+8+0，Patton 9 = 5+3+1+0；T1 合计 265 = 38+11+216+0，T2 合计 312 = 74+27+209+2",
+    "同一条留底在 B049 房间 1 的影子追踪里核实过（Dahomey：safe 高过全部余额）；本局没有录像，哪道门槛在挡是推断"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D15",
+   "t": "3600~5940",
+   "bot": "Red Army / Maratha / Georgia / Amogus / Cyrus",
+   "decision": "被吃的过程里不还手：Red Army t=3600~4050 丢 2557 格、Maratha t=4140~4320 丢 2322 格、Georgia t=5040~5220 丢 5536 格、Amogus t=5130~5490 丢 2961 格、Cyrus t=5130~5940 丢 5305 格——期间都是 0 条指令，密度 66~141。五个号阵亡时身上还有 748410 兵。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.peerAggressor L4586-4625（L4613 压上来的兵 > pulseFrac(12%)×B + 我压在他身上的兵 → 不算反击对象；L4614 bal[q]+inc ≤ 1.6×B）；counterAttack L871-979；tryDonateToTeammate L4385（自己挨真人打时不捐）",
+   "verdict": "error",
+   "patternId": "NEW-DF-01",
+   "evidence": [
+    "logstats [QD]：Red Army 2250→4204 期间指令 0 / 船 0；Georgia 4950→5291 0 / 0；Cyrus 4590→5977 1 / 0（那 1 条是 t=4730 的捐款，L11867）",
+    "digest [I]：阵亡前最后一条快照 Red Army 175313 兵（密度 136.4）、Maratha 384092（137.9）、Georgia 379148（68.7）、Amogus 83829（76.8）、Cyrus 225621（111.7）",
+    "结果行 L11704 / L11819 / L12031 / L12085 / L12181：阵亡时余额 133811 / 172413 / 146749 / 66011 / 229426"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D16",
+   "t": "1260~5400",
+   "bot": "Kalmar Union / Cossack / Musketeer / Savoy / Sokoto / Norway / Georgia",
+   "decision": "被围时的闲置船换不来地：这 7 个号共 78 条船，其中被围时发的 56 条；纯船窗里的 50 条船少掉约 73 万兵，领土合计 −476 格。Cossack 19 条少掉 222606 兵 / −422 格，Musketeer 7 条 310752 兵 / −55 格，Savoy 4 条 167113 兵 / 0 格。另有一批船连兵都没扣（本地拍落后的那一段）：Kalmar Union t=1350~1440 的 4 条、Cossack t=1440~1530 和 t=1620~1710 各 4 条、Norway t=1800~1890 的 4 条。",
+   "codePath": "src/strategy/v27-team-c110.js: V17.idleBoats L2874-2881（没有邻居时价格上限是 Infinity）→ boatFood L2038-2058；Policy.idleBoats L4979-5006 → boatOut L1035-1050",
+   "verdict": "error",
+   "patternId": "NEW-SE-05",
+   "evidence": [
+    "logstats [QE]：Kalmar Union 28 条（被围时 18）、Cossack 21（14）、Musketeer 7（5）、Sokoto 7（5）、Norway 7（7）、Savoy 5（4）、Georgia 3（3）",
+    "logstats [QE] 明细：Musketeer t=1800~1890 2 条船 231046 兵（64%）地不变；Savoy t=1620~1710 2 条船 132373 兵（70%）；Cossack t=4500~4590 1 条船 113813 兵（31%），−544 格",
+    "logstats [QE] 明细：Kalmar Union t=1350~1440 4 条船，余额 159083→203981（少掉 0）；Cossack t=1440~1530 4 条，94377→119414（0）；Norway t=1800~1890 4 条，351697→392285（0）",
+    "『少掉的兵』按利息公式反推，窗内有捐款入账时偏小；没有录像，船靠没靠岸、靠在谁的地上看不到"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D17",
+   "t": "1440~2340",
+   "bot": "Kaido / Saladin / Lannes",
+   "decision": "出手后变薄、随后被吃且不还手：Kaido t=1440~1530 114386→8986（密度 1.3），到 t=1620 涨到 8488 格，随后 270 拍丢 4743 格、0 条指令；Saladin t=1530~1800 4687→7415 格（余额 9.7 万→2.1 万），随后 180 拍丢 3509 格；Lannes t=1800~2340 丢 2835 格（密度 14~22，0 条指令）。",
+   "codePath": "src/strategy/v27-team-c110.js: Strategy.send L526-540；Policy.safeAt L4524-4541（留底只看当拍的邻居）；Policy.peerAggressor L4586-4625",
+   "verdict": "error",
+   "patternId": "NEW-AT-02",
+   "evidence": [
+    "logstats [QA]：Kaido 1440~1530 余额 114386→8986（密度 20.2→1.3），之后 600 拍最低 3745 格",
+    "digest [E]：Kaido t=1620~1890 8488→3745 格；Saladin t=1800~1980 7415→3906 格（密度 2.8）；Lannes t=1800~2340 7164→4329 格；Δcmds 都是 0",
+    "logstats [QD]：Kaido 1620→1890 8488→3745 格，期间指令 0 / 船 0（密度 1.1→6.4）；spawnlog [SA]：8488 和 7415 就是 Kaido、Saladin 的整局峰值"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D18",
+   "t": "4085 / 4680",
+   "bot": "Konev",
+   "decision": "协防戳刺两次（各约 10% 余额）：t=4680 为 Cossack 打 Foden（约 24 万兵），Cossack 当窗再丢 470 格，之后停在 1958 格直到 t=6030，Konev 自己这一窗 +489 格；t=4085 为 Malacca 打 [DNC]Benda（约 22 万兵），Malacca 之后 235 拍又丢 410 格才止住。两次出手时队友的余额都顶在 150 倍硬上限上（Malacca t=4050、Cossack t=4680）；戳刺后的第一个窗队友都还在丢地，按 NEW-DF-G1 的口径不算命中，戳刺起没起作用看不出来。",
+   "codePath": "src/strategy/v27-team-c110.js: tryDonateToTeammate L4447-4458（接壤主攻者、没在打他、有空槽、dMe ≥ 65、25 拍冷却 → g.attack(102, mainAttacker)）",
+   "verdict": "unclear",
+   "patternId": "NEW-DF-G1",
+   "evidence": [
+    "L11851 [HL-ASSIST] t=4680；L11666 t=4085",
+    "logstats [QC]：估计出兵 243452 / 218521",
+    "HL-TICK：Cossack t=4680 2428 格 → t=4770 1958 → t=6030 1958；Konev t=4680 17681 → t=4770 18170 格；Malacca t=4050 1986 → t=4320 1576 → t=4410 1894"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D19",
+   "t": "1260~1890",
+   "bot": "20 个号",
+   "decision": "中立地吃完后全队囤兵：t=1260~1890 领土 79122→81790 格（+2668），余额 164.7 万→411.1 万。t=1800 8 个号被围过、5 个号密度 ≥95。",
+   "codePath": "src/strategy/v27-team-c110.js: General.act L804-847 → Style.pickTarget L1180-1213（L1197 minShare 跳过）→ floorFor0 L2270-2276 / winFloor L4542-4550；botOk L2499-2505",
+   "verdict": "unclear",
+   "patternId": "NEW-EC-04",
+   "evidence": [
+    "digest [C]：t=1260 79122 格 / 1646594 兵；t=1530 80473 / 3183910；t=1800 81841 / 4195953；t=1890 81790 / 4110707",
+    "noeffect [NA]：同期一半指令没生效，分不清是门槛挡住还是单子没落地",
+    "teamshare [TA]：t=1903 编队人均 4233 格，其它在场真人 11688 格"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "id": "D20",
+   "t": "1903~6217",
+   "bot": "T1 和 T2 的编队号之间",
+   "decision": "有野人在场时跨队的编队号互不攻击，两边的 nb 都不算对方。终局 T1 只剩 KiraYoshikage（1789 格）和 Saladin（2283 格），分别从 t=5850 / 2970 起 nb=0；T2 的 9 个编队号 t=6210 也全部 nb=0——这 4072 格到终局没有人去吃。",
+   "codePath": "src/strategy/v27-team-c110.js: isProtectedSquadMate L3993-3996（hasWildOutsidersAlive 时保护所有名字池里的号）；analyze L420-448（L440 nb 不收受保护的号）",
+   "verdict": "unclear",
+   "patternId": "NEW-MT-01",
+   "evidence": [
+    "结果行 L12241 / L12242：KiraYoshikage、Saladin event=end result=over；t=6217 T1 4072 格 = 1789 + 2283",
+    "HL-TICK：Saladin t=2970~6210 nb=0（2283 格）；KiraYoshikage t=5850~6210 nb=0；T2 的 9 个号 t=6210 nb=0（teamshare [TC]）",
+    "digest [H]：整局 2 次协防戳刺都是同队的"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "id": "D21",
+   "t": "4200~4560 / 5785~6145",
+   "bot": "T1 的银行 → Cyrus；T2 的银行 → Konev",
+   "decision": "前线号一出手，银行集中补给。盈余捐的候选在 t>2200 时要有敌邻或在打仗，在途兵越多分越高：Cyrus t=4230 起出手，360 拍内 5 个捐出方 7 笔到账 805043（是它窗前余额的 2.7 倍），领土 6966→11174；Konev t=5760 起出手（密度从 148.6 掉到 132 以下，重新成为候选），t=5785 一拍 6 笔，360 拍内 8 个捐出方 20 笔到账 1528441，领土 19561→26589；t=5170 也是它刚出手就一拍 4 笔。两个窗都在额度墙放开（t=4284）前后及之后。",
+   "codePath": "src/strategy/v27-team-c110.js: tryDonateToTeammate L4466-4486（候选：t>2200 时要有敌邻或在途兵；打分含 (outAtk+inAtk)/500；dAlly ≥ 132 的不收）→ L4489-4490",
+   "verdict": "good",
+   "patternId": "NEW-DN-G3",
+   "evidence": [
+    "donwall [WI]：Cyrus 4200~4560 | 5 / 7 | 到账 805043 | 税 255641 | 272.5% | 6966→11174 | 自己 4 条指令 | 3 笔同在 t=4280",
+    "donwall [WI]：Konev 5785~6145 | 8 / 20 | 到账 1528441 | 税 518604 | 52.6% | 19561→26589 | 自己 5 条指令 | 6 笔同在 t=5785",
+    "Konev 的 HL-TICK：t=5760 19561 格 / 2906024 兵（密度 148.6）/ cmds 254；t=5850 20711 / 1954261 / 257；t=6030 23370；t=6120 26589 / 2513735 / 259",
+    "digest [G]：t=5170 的 4 笔（L11989~L11992）和 t=5785 的 6 笔（L12142~L12147）里，Kaido、Cossack、Kalmar Union 发令时密度 146~150——顶着硬上限等到 Konev 出手才有候选",
+    "代价：两个窗的税合计 774245 兵；Cyrus 的 11580 格在其后 1350 拍里丢光（见 D15）"
+   ],
+   "statementType": "observed"
+  }
+ ],
+ "newPatterns": [
+  {
+   "id": "NEW-SP-07",
+   "prefix": "SP",
+   "name": "各算各的槽位：每个号在自己的视图里排 20 个槽位，候选不够时按『离已选点最远』补位，几个号补到同一个点",
+   "definition": "最后一条 [HL-SPAWN]（不是 HL-SPAWN-BACKEND）的坐标完全相同的编队号 ≥2 个；记撞点的点数、号数，以及这些号 t≈900 的领土",
+   "detect": "scripts/spawnlog.py [SB][SC]"
+  },
+  {
+   "id": "NEW-OP-G1",
+   "prefix": "OP",
+   "name": "（正面）开局 DP 扩张按期完成",
+   "definition": "第一条 HL-TICK（t≤630）人均领土 ≥2500；日志里有 OPENING-CHECK 行的局还要求全部 OK（G08 这类没有该行的局只看前一条）",
+   "detect": "scripts/patterns.py: op_on_schedule"
+  },
+  {
+   "id": "NEW-EX-06",
+   "prefix": "EX",
+   "name": "每 5 拍重发一条：一个 90 拍快照窗里非船指令 ≥16 条（归档 c110 的在途保护 + 同目标冷却下最多 9~11 条）",
+   "definition": "t=700~2100 的任一 90 拍快照窗 Δcmds − Δboats ≥16；记窗数。跨局统计里只有 B001~B007（2026-11-08 08:19~09:13 UTC）出现",
+   "detect": "scripts/cadence.py（out/_cross/cadence_B.txt）"
+  },
+  {
+   "id": "NEW-IO-11",
+   "prefix": "IO",
+   "name": "整段零花费：连续 ≥270 拍每个快照窗都有新指令，余额却和『只滚利息』的公式逐兵相等，领土不涨",
+   "definition": "连续 ≥3 个 90 拍快照窗，每窗 cmds 增加、余额与利息公式相差 <0.1%、领土不涨；记段数、指令数（扣掉日志里的捐款条数）、涉及的号数。这些指令没有被服务器扣过一兵：没送到，或送到时目标已经不在（免费失败）",
+   "detect": "scripts/noeffect.py [ND]"
+  },
+  {
+   "id": "NEW-IO-12",
+   "prefix": "IO",
+   "name": "（只看日志）积压后清仓：之前累计 ≥30 条指令没生效，随后一个快照窗里花掉 ≥40% 余额",
+   "definition": "noeffect [NB] 的『其后第一次单窗花掉 ≥40%』一栏有值且『之前没生效』≥30 条；记号数。有录像的局里对应 NEW-IO-02 / NEW-IO-03",
+   "detect": "scripts/noeffect.py [NB]；scripts/logstats.py [QA]"
+  },
+  {
+   "id": "NEW-AT-02",
+   "prefix": "AT",
+   "name": "出手后变薄，随后被吃",
+   "definition": "一段进攻性掉款（相邻快照 bal 跌 ≥30% 且领土增加）结束时 dens ≤ 起点的一半，且下一段没有回流把 dens 拉回一半以上；兑现：其后 450 拍内领土较出手后跌 ≥30% 或阵亡",
+   "detect": "scripts/patterns.py: at_drained"
+  },
+  {
+   "id": "NEW-IO-10",
+   "prefix": "IO",
+   "name": "只看日志的『指令没生效』：cmds 涨了，余额没少、地没涨（客户端落后服务器时的日志侧影子）",
+   "definition": "相邻两条 HL-TICK（间隔 90 拍）cmds 增加，但余额比只吃利息的预期少的部分 < 期初余额 2%、领土增幅 ≤0.5%；按 270 拍桶记没生效的指令数 / 指令数。同包有另一个带录像的房间时，用日志行号的先后给两个房间的本地拍对表，量出多落后的拍数",
+   "detect": "scripts/noeffect.py [NA][NB]；scripts/clockskew.py [KA][KB]"
+  },
+  {
+   "id": "NEW-SE-G2",
+   "prefix": "SE",
+   "name": "（正面）一两条船换出成倍的地：发船后 450 拍内领土 ≥ 发船前的 2 倍，船上的兵 ≤ 发船前余额的 60%",
+   "definition": "一个号在 ≤180 拍内发 1~2 条船，按利息公式少掉的兵 ≤ 发船前余额的 60%，发船后 450 拍内的最高领土 ≥ 发船前的 2 倍",
+   "detect": "scripts/logstats.py [QE]（Konev 一行）；scripts/facts.py [E]"
+  },
+  {
+   "id": "NEW-DN-13",
+   "prefix": "DN",
+   "name": "累计额度墙：t<4284 受捐方的累计点数顶到全场额度，之后对它的捐款整单被拒；捐出方每 20 拍按固定比例原样重试",
+   "definition": "donwall [WA] 里 t<4284 的『累计超』笔数 ≥10；记笔数、t<4284 的成交率、t≥4284 的成交率。引擎口径：t<2142 每 402 兵 1 点（陆地 40 万格时），t<3213 每 1341 兵 1 点，之后 4 + 到账÷受捐方领土；额度每 100 拍只涨 4/6/8/10 点",
+   "detect": "scripts/donwall.py [WA][WC][WE]"
+  },
+  {
+   "id": "NEW-DN-08",
+   "prefix": "DN",
+   "name": "救援捐款单笔超过受捐额度：整单被拒，冷却后原样重发",
+   "definition": "日志里同一对（捐出→受捐）连续 ≥3 笔相同 pct 的捐款都没进录像，且按引擎口径（game.js donationCost / donCap）那一笔的额度成本 > 当时额度上限 − 已用；记笔数与受捐方结局",
+   "detect": "scripts/donrej.py + digest [G] 的额度栏"
+  },
+  {
+   "id": "NEW-DN-11",
+   "prefix": "DN",
+   "name": "盈余捐款不受自己的留底约束：pct 固定 153/185/280，捐完密度掉到同一函数刚算出的留底以下",
+   "definition": "surplus donate 成交后（含 6.25% 税）捐出方余额 ÷ 领土 < 68（tryDonateToTeammate 对有海岸的号用的留底密度）；记笔数、发令时密度与捐后密度的中位数",
+   "detect": "scripts/donfit.py [FE]"
+  },
+  {
+   "id": "NEW-DN-14",
+   "prefix": "DN",
+   "name": "喂给已经超软上限的号：受捐方自己的余额 ≥100×领土，照样收盈余捐（策略只排除密度 ≥132 的受捐方）",
+   "definition": "donfit 判成交的捐款里，受捐方当拍之前最近一条快照的密度 ≥100 的笔数 ≥5；记笔数、到账、税，以及受捐方在收款期间的领土变化",
+   "detect": "scripts/donwall.py [WG]"
+  },
+  {
+   "id": "NEW-DN-12",
+   "prefix": "DN",
+   "name": "往正在崩的队友身上捐：到账被受捐方 150 倍上限夹小，6.25% 的税按捐出方余额全额收",
+   "definition": "余额序列拟合判『成交（夹小）』的捐款，且收款方在其后 300 拍内阵亡或失地 ≥30%；记到账、税、收款方阵亡拍",
+   "detect": "scripts/donfit.py [FA][FD]（夹小）"
+  },
+  {
+   "id": "NEW-EC-02",
+   "prefix": "EC",
+   "name": "少邻囤兵：只有 1~2 个敌邻、无中立地，长期不出手",
+   "definition": "连续 ≥8 条快照（≥630 拍）1≤nb≤2 且 neut=0、领土变化 <2%、Δcmds≤2，期间 dens 至少翻倍；同窗内同队有编队友阵亡或领土腰斩记为『有代价』",
+   "detect": "scripts/patterns.py: ec_hoard_1nb"
+  },
+  {
+   "id": "NEW-DF-01",
+   "prefix": "DF",
+   "name": "挨打不还手：失地 ≥30% 的过程中指令数为 0",
+   "definition": "从某条快照起连续若干段合计失地 ≥30%（相对起点领土）且全程 Δcmds=0、Δboats=0",
+   "detect": "scripts/patterns.py: df_passive"
+  },
+  {
+   "id": "NEW-SE-05",
+   "prefix": "SE",
+   "name": "被围时的闲置船不设价格上限：没有陆上邻居时每 60 拍一条船去拿几格小岛，每条先付余额的 32/1024",
+   "definition": "快照窗开头 nb=0 且 neut=0、窗内新增指令全是船（Δcmds == Δboats ≥ 1）的『纯船窗』：一个号累计 ≥10 条这样的船，且纯船窗里少掉的兵（公式余额 − 实际）÷ 窗内净增领土 ≥ 1000 兵/格（净增 ≤0 也算）；记船数、少掉的兵、净增领土",
+   "detect": "scripts/logstats.py [QE]（只看日志；有录像的局用 NEW-SE-03 的口径）"
+  },
+  {
+   "id": "NEW-DF-G1",
+   "prefix": "DF",
+   "name": "（正面）协防戳刺后队友不再丢地",
+   "definition": "HL-ASSIST 之后 270 拍内受益的队友领土不再下降（此前 180 拍内掉过 ≥10%）",
+   "detect": "scripts/logstats.py [QC]；scripts/facts.py [E]"
+  },
+  {
+   "id": "NEW-DN-G3",
+   "prefix": "DN",
+   "name": "（正面）前线号一出手，银行集中补给：一个受捐方 360 拍内从 ≥5 个捐出方收到的成交捐款 ≥ 窗前余额的 40%，同期领土 +≥25%",
+   "definition": "donwall [WI] 的窗：捐出方 ≥5 个、到账 ÷ 受捐方窗前余额 ≥40%、受捐方窗内自己发过指令、窗后领土 ≥ 窗前的 1.25 倍；记到账、税、领土前后",
+   "detect": "scripts/donwall.py [WI]"
+  },
+  {
+   "id": "NEW-EC-04",
+   "prefix": "EC",
+   "name": "全队停手囤兵：中立地吃完后领土不涨、余额成倍涨",
+   "definition": "连续 ≥10 条快照（≥900 拍）里，窗口首尾都存活的编队号合计领土增幅 ≤5%，合计本土余额 ≥3 倍，合计指令数 ≤ 号数×10；记窗口长度、余额倍数，以及窗口内阵亡或领土腰斩的编队号数",
+   "detect": "scripts/patterns.py: ec_team_standoff"
+  },
+  {
+   "id": "NEW-MT-01",
+   "prefix": "MT",
+   "name": "编队被分到多个队",
+   "definition": "真值里本编队的号分属 ≥2 个队；记各队号数、各分支峰值份额、哪个分支所在队获胜",
+   "detect": "scripts/truth.py [TA]"
+  },
+  {
+   "id": "NEW-DF-04",
+   "prefix": "DF",
+   "name": "被更富的真人邻居压住：对真人的留底 safe =（最富真人邻居余额 − 1.5×领土）÷1.78 高过自己全部余额，对谁都出不了手；挨打时也不能捐，余额随地一起被打掉",
+   "definition": "影子追踪里 safeNone > 余额 的点 ≥5 个、跨度 ≥300 拍，且该号最后阵亡；记阵亡前余额被打掉多少（真值交战账）",
+   "detect": "scripts/shadow.mjs --trace + scripts/trshow.py；scripts/truth.py [TE]"
+  },
+  {
+   "id": "NEW-EC-09",
+   "prefix": "EC",
+   "name": "顶硬上限空转：余额 = 150×领土（引擎硬上限，利息截掉），有敌邻、指令数不变",
+   "definition": "HL-TICK 里 bal ≥ 149.5×terr 的快照 ≥2 条，且期间 nb≥1、cmds 不变；记首末拍，以及『有敌邻、密度 ≥95、不发指令』的最长连续拍数",
+   "detect": "scripts/logstats.py [QB]"
+  }
+ ],
+ "lossArchetype": "never-grew",
+ "archetypeNote": "主队 T1 输。编队 20 个号占 57 个真人的 35%，领土峰值只有 24.5%（t=3600），人均领土从第一条结果行（t=1903）起就只有其它在场真人的 0.36 倍，之后一路掉到 0.14 倍：中立地吃完（t≈720）以后除了 Konev 的两条船，没有一个号长过 1.2 万格。T1 的崩盘（t=4588~5977）里编队号是被带走的一方：丢的 131938 格里 93416 格是 T1 非编队真人的。T2 那 10 个号是搭车赢：T2 增长的 210118 格里它们只占 21877 格。次要成分：t=630~1890 一半指令没生效（客户端落后 + 没有节流的版本，推断）是早期没长起来的一部分原因；但本地拍对齐（t=2250）之后的 3960 拍里编队同样没长——577 条指令里陆攻只有 112 条。10/10 分队让一半的号注定输（协议里的 team-split 不在汇总脚本的取值表里，记在 teamSplitNotes）。",
+ "winnerNotes": "T2 获胜，靠的是 T2 的非编队真人：t=1903 148704 格 → 终局 336945 格（+188241），终局还活着的 9 个人均 37438 格，终局前 10 名里他们占 8 个（第 1~5、7、8、10 名）。T2 的 10 个编队号 39084→60961 格（+21877，其中 Konev 一个号 +23197），占 T2 的比例从 20.8% 掉到 15.3%。T1 那边非编队真人 166869 格 → 0。没有录像，T2 的头部是谁、怎么长的看不到；能看到的只有：其它在场真人的人均领土从 t=1903 的 11688 格涨到终局的 37438 格，编队号的人均一直在 4233~5912 格。T2 领先是从 t=1903~3828 之间开始的（46.7%→53.7%），t=4588 之后 1400 拍吃完 T1。",
+ "wentWell": [
+  "开局 20 个号全部按 DP 周期完成，t=630 合计 12.39%。",
+  "Konev 的两条船（t=1800~1980）换来 1.1 万格，是编队整局最大的一块地；它终局 26922 格、第 6 名。",
+  "t≥4284 额度放开后捐款 79% 成交，T2 的银行（Kokand、Sokoto、Savoy、Kaido、Lannes）把 416 万兵送到了前线的 Konev、Malacca。",
+  "前线号出手时银行集中补给：Cyrus t=4200~4560 收 7 笔 80.5 万（6966→11174 格），Konev t=5785~6145 收 20 笔 152.8 万（19561→26589 格）。",
+  "T2 的 10 个号里 9 个活到终局；T1 的 KiraYoshikage、Saladin 也活到终局。"
+ ],
+ "unknowns": [
+  "t<1903 客户端比服务器落后多少：日志行没有墙上时间，只量得出各号之间最多相差 360 拍。",
+  "11-08 这一版到底缺哪道节流（在途保护、同目标冷却，还是两道都缺）：只有指令节奏这一条证据，包里没有当天的策略文件。",
+  "612 条零花费指令是没送到服务器，还是送到时已经无效（免费失败）：没有录像分不清。",
+  "谁打的 Red Army / Patton / Maratha / Cyrus / Amogus，它们唯一的敌邻有多少兵（留底 dpKeep 的输入）：日志里没有邻居的余额。",
+  "只贴 1 个敌邻、密度 ≥128 仍不出手的 109 个窗，是留底（对真人不封顶）在挡还是报价门槛在挡：没有录像跑不了影子。",
+  "t<4284 没成交的捐款里 88 笔用看得见的额度账解释不了（Saladin 一个号 55 笔）：编队外队友给它的捐款、或定不了的那几笔可能已经占了额度。",
+  "被围的 7 个号发的 78 条船去了哪；其中一部分余额一兵没少，是没发出去还是免费失败分不清。",
+  "Konev t=3690~5760 有 3 个敌邻、密度 68→148.6，为什么几乎不花：同上，没有影子。",
+  "T2 的非编队真人是谁、怎么长的；T1 的非编队真人 t=4588~5977 是被谁吃掉的。",
+  "对局怎么结束的（t=6217 T1 还有 4072 格）：Konev、Kaido、Lannes 在 t=6160 发过求和票（teamLand 98.8%），结果行只写 won / over。",
+  "捐款的到账额是捐出方余额序列的拟合：71 笔定不了；捐出方同一个快照窗里有陆攻、发船或戳刺的（例如 Konev→Cossack t=4690）一律归入定不了。"
+ ],
+ "mechanicsQuestions": [
+  "受捐额度（引擎 live_game_js.js @371851~374100，sim/game.js L348-383 同）：每个受捐方记累计点数，全场额度从 15 点起、每 100 拍（t%100==99）涨 4 点（t<1071）/ 6（<2142）/ 8（<3213）/ 10。一笔的点数：t<357 是 2 + 100×到账÷uv（uv = 1 + 陆地÷300，本局 1341），<714 除以 4uv，<1071 除以 10uv，<2142 除以 30uv，<3213 除以 100uv，之后是 4 + 到账÷受捐方领土。累计 + 本笔 > 额度就整单拒绝、不收税。t≥4284、受捐方是内置 AI 或已离开时不查。",
+  "点数按落地那一拍的档位算：同一笔 5 万兵，t=2141 是 126 点（额度 121，拒），t=2142 是 39 点。",
+  "t≥3213 的档位里点数和受捐方领土成反比：同样 10 万兵，给 1.5 万格的号是 10 点，给 2000 格的号是 54 点——额度墙对小号最紧。",
+  "捐款的税 = 捐出方余额的 64/1024，和 pct 无关；到账先按 pct 算，再按受捐方 150×领土 − 余额 夹小，夹到不足 1 兵时整单拒绝（sim/game.js L388-416）。",
+  "余额硬上限 150×领土（到顶后利息截掉）；软上限 100×领土之上利息递减。",
+  "陆攻指令带的是占余额的比例，落地时按当时的余额折算；守方丢地时余额按比例一起被打掉（阵亡的 9 个号结果行里只剩 967759 兵）。"
+ ],
+ "scripts": [
+  "c136-review/agents/R08/scripts/facts.py B006（digest [A]~[N]）",
+  "c136-review/agents/R08/scripts/donfit.py B006（本局改：成交几笔由余额拟合定，归属先取过得了引擎受捐额度的、再取发令最晚的；同窗有陆攻 / 发船 / 戳刺时只收对到 1.5% 以内的足额拟合；[FQ] 额度对账）",
+  "c136-review/agents/R08/scripts/donwall.py B006（本局新写：[WA] 按引擎分段的成交率与拒因、[WB][WC] 按捐出方 / 受捐方、[WE] 额度上限、[WF] 阵亡号收到的捐款、[WG] 受捐方密度、[WH] 按队、[WI] 集中补给窗）",
+  "c136-review/agents/R08/scripts/teamshare.py B006（本局新写：[TA] 结果行当拍各队占地、编队分量、人均对比；[TB] 首末对比；[TC] 每 450 拍各队编队号的地、兵、被围数）",
+  "c136-review/agents/R08/scripts/logstats.py B006（[QA] 清仓、[QB] 顶上限、[QC] 戳刺、[QD] 挨打不还手（本局修：活到终局的号不再记成阵亡）、[QE] 船；本局新增 [QF] 单邻门槛、[QG] t≥2250 的指令构成）",
+  "c136-review/agents/R08/scripts/noeffect.py B006（[NA][NB]；本局新增 [ND] 整段零花费）",
+  "c136-review/agents/R08/scripts/spawnlog.py B006（[SA]~[SC] 只看日志的出生指派）",
+  "c136-review/agents/R08/scripts/lagorder.py B006（[LA]~[LC] 用 HL-TICK 的行序量各号之间的相对落后）",
+  "c136-review/agents/R08/scripts/cadence.py（out/_cross/cadence_B.txt：各局 t=700~2100 每个 90 拍快照窗的非船指令数）",
+  "c136-review/agents/R08/scripts/build_review.py B006"
+ ],
+ "confidenceOverall": "medium",
+ "peerComparison": "本包没有同房的另一支受控编队（sameMatchPeer 为空）。",
+ "teamSplitNotes": "20 个号 10/10 分在两个队，注定有一半输。互相之间：有野人在场时跨队的编队号互不攻击（isProtectedSquadMate L3993-3996，nb 里不算它们），不能跨队捐款（引擎只许捐给队友），日志里的 2 次协防戳刺都是同队的。两边各自的表现几乎一样：t=3150 T1 的 9 个号 44116 格 / 密度 102.0，T2 的 10 个号 50134 格 / 密度 92.9；差别只有 Konev 的那两条船。T2 的编队号对 T2 获胜的贡献是领土占 T2 的 14.6%~24.6%。终局 T1 只剩 KiraYoshikage、Saladin 两个号、4072 格，四周没有它们算作敌人的地（nb=0）。"
+}

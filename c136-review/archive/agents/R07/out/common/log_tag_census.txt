@@ -1,0 +1,17 @@
+# total lines=46752 file=/tmp/c136-r07/raw/G01-G09-squad.log
+who	tag	count	firstLine	lastLine	sample
+BOT	(out-of-scope: connection/verification)	39220	1	46752	
+BOT	[HL-TICK]	3186	307	7989	[[Nope] kevin_k] [HL-TICK] t=630 terr=2970(0.5%) bal=7336 dens=2.5 nb=1 neut=18 cmds=6 boats=0 avgMs=1.23 maxMs=4.6 skip=0
+BOT	[HL-SPAWN-BACKEND]	1394	93	7334	[[Nope] ryan_m] [HL-SPAWN-BACKEND] me=21 slot=7 role=ECO_BANK -> (586,280) bossDist=-1 minAllyDist=158 voronoi=14353
+BOT	[HL-OPENING]	656	253	7445	[[Nope] noah88] [HL-OPENING] t=18 cyc=0 DP expand rings=19 spend=258/547 terr=7
+BOT	(untagged) ERROR: Strategy	499	399	1592	[[Nope] kevin_k] ERROR: Strategy bot stopped: TypeError: rnd is not a function
+BOT	[HL-SLOW-TICK]	447	328	7988	[[Nope] kevin_k] [HL-SLOW-TICK] t=750 took 38.6ms (max=38.6ms)
+BOT	[HL-DONATE]	382	496	7753	[[Nope] ryan_m] [HL-DONATE] t=2240 squad rescue donate pct=51/1024 (~5%) -> ally=28([Nope] dave_w) myBal=530279 dMe=107 dAlly=5
+ORCH	[BACKEND-SPAWN-COORD]	303	86	7332	[BACKEND-SPAWN-COORD] Solved 8 bots in 218.18ms (map=931x959, minSep=158px, boss=none): [Nope] mark07(BANK)->(850,76) | [Nope] kevin_k(BANK)->(594,92) | [Nope] ethan21(BANK)->(742,202) | [Nope] lucas94(BANK)->(452,196) | [Nope] dave_w(BANK)->(886,268) | [Nope]
+BOT	[HL-INTERCEPT]	277	550	7839	[[Nope] kevin_k] [HL-INTERCEPT] t=2785 unified sea intercept pct=37/1024 -> boatId=185 owner=12(Mensheviky) boatTroops=16199
+BOT	[HL-ASSIST]	125	1753	7136	[[Nope] kevin_k] [HL-ASSIST] t=5280 10% squad-rescue poke -> enemy=8(dsc.gg/cold1 [COLD]) for ally=19([Nope] ryan_m)
+ORCH	(out-of-scope: connection/verification)	93	2	7159	
+BOT	[HL-GAME-INIT]	77	85	7168	[[Nope] ryan_m] [HL-GAME-INIT] mode=1 map=10 mapSeed=7652 players=62 me=21
+ORCH	[RESULT]	77	464	7992	[RESULT [Nope] noah88] result=lost event=died place=52 peak=9116 team={"mine":3,"best":2,"totals":{"0":3717,"1":183610,"2":197936,"3":156687}}
+ORCH	[OPENING-CHECK]	8	269	6035	[OPENING-CHECK 8 bots @ tick 184] [Nope] mark07:tick=181,terr=144,sent=27(OK) | [Nope] kevin_k:tick=184,terr=164,sent=21(OK) | [Nope] ethan21:tick=183,terr=179,sent=24(OK) | [Nope] lucas94:tick=180,terr=178,sent=13(OK) | [Nope] dave_w:tick=182,terr=144,sent=26
+ORCH	[HOT-IMPORT]	8	1595	1602	[HOT-IMPORT] Injected updated v27team.js (249271 bytes) into [Nope] mark07 live!

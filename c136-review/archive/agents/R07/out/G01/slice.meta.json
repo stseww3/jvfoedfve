@@ -1,0 +1,79 @@
+{
+ "game": "G01",
+ "source": "jvfoedfve cursor/c116-winrate-liaison-b3bc:c116-winrate/data/G01-G09-squad.log",
+ "groupsFound": 10,
+ "initsPerGroup": [
+  8,
+  8,
+  8,
+  8,
+  8,
+  8,
+  8,
+  8,
+  7,
+  6
+ ],
+ "sliceFirstLine": 755,
+ "sliceLastLine": 1816,
+ "lastResultLine": 1798,
+ "inits": [
+  {
+   "line": 755,
+   "bot": "ryan_m",
+   "text": "[HL-GAME-INIT] mode=5 map=10 mapSeed=9645 players=50 me=19"
+  },
+  {
+   "line": 757,
+   "bot": "kevin_k",
+   "text": "[HL-GAME-INIT] mode=5 map=10 mapSeed=9645 players=50 me=18"
+  },
+  {
+   "line": 758,
+   "bot": "ethan21",
+   "text": "[HL-GAME-INIT] mode=5 map=10 mapSeed=9645 players=50 me=15"
+  },
+  {
+   "line": 759,
+   "bot": "lucas94",
+   "text": "[HL-GAME-INIT] mode=5 map=10 mapSeed=9645 players=50 me=21"
+  },
+  {
+   "line": 760,
+   "bot": "leo_tx",
+   "text": "[HL-GAME-INIT] mode=5 map=10 mapSeed=9645 players=50 me=17"
+  },
+  {
+   "line": 761,
+   "bot": "dave_w",
+   "text": "[HL-GAME-INIT] mode=5 map=10 mapSeed=9645 players=50 me=16"
+  },
+  {
+   "line": 762,
+   "bot": "noah88",
+   "text": "[HL-GAME-INIT] mode=5 map=10 mapSeed=9645 players=50 me=20"
+  },
+  {
+   "line": 765,
+   "bot": "mark07",
+   "text": "[HL-GAME-INIT] mode=5 map=10 mapSeed=9645 players=50 me=9"
+  }
+ ],
+ "keptLines": 1036,
+ "droppedOutOfScopeLines": 26,
+ "keptByTag": {
+  "BACKEND-SPAWN-COORD": 33,
+  "ERROR": 276,
+  "HL-ASSIST": 13,
+  "HL-DONATE": 67,
+  "HL-GAME-INIT": 8,
+  "HL-INTERCEPT": 26,
+  "HL-OPENING": 76,
+  "HL-SLOW-TICK": 10,
+  "HL-SPAWN-BACKEND": 207,
+  "HL-TICK": 303,
+  "HOT-IMPORT": 8,
+  "OPENING-CHECK": 1,
+  "RESULT": 8
+ }
+}

@@ -1,0 +1,59 @@
+# A061 t=300~1499 身边既没有内置 AI、也没有无主地的决策拍：开局逻辑为什么不打贴着的敌方真人（策略 v27-team-c116-vb.js；Policy.act → super.act（V13 Style.act）→ pickTarget → allow / floorFor）
+# floorAt 复刻核对：392 次里不一致 0 次
+# 生效参数：preyKill=1 preyFloor=0.5 personMax=0 idleCap=1.25 minSend=0.2141 sendFrac=0.746 feeK=4 reserve=1 cRef=60 keepCap=1 kDef=4 capMin=0.1 denW=1 defCap=1 ref=0 earlyEnd=513 coreFrom=1500 dpEnd=1500
+talon5: 这样的决策拍 11（t=850~900）；其中有指令 2；余额 21864→15629，领土 2771→2771
+    四周只有队友（没有任何可打的邻居）: 9 拍
+sora_w: 这样的决策拍 57（t=930~1495）；其中有指令 2；余额 35293→108024，领土 3512→6376
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）: 44 拍
+    让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发）: 9 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是我方队友: 2 拍
+    最便宜的敌方真人邻居 [UNSC] Big Boss#49：55 拍，每格 9.4~23.2 兵；它 4980 格 / 18784 兵 → 10972 格 / 72738 兵
+alex_k: 这样的决策拍 113（t=935~1495）；其中有指令 0；余额 28540→218320，领土 4105→4105
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是我方队友: 84 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）: 26 拍
+    让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发）: 3 拍
+    最便宜的敌方真人邻居 [UNSC] Big Boss#49：110 拍，每格 9.4~23.4 兵；它 5201 格 / 15945 兵 → 10972 格 / 72738 兵
+    最便宜的敌方真人邻居 Yolo🙋‍♂️#1：3 拍，每格 13.9~14.2 兵；它 6216 格 / 23035 兵 → 6265 格 / 23645 兵
+zexos1: 这样的决策拍 101（t=935~1495）；其中有指令 0；余额 34948→231882，领土 2231→2231
+    让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发）: 51 拍
+    四周只有队友（没有任何可打的邻居）: 50 拍
+    最便宜的敌方真人邻居 Player 625#31：51 拍，每格 24.5~40.8 兵；它 9495 格 / 66912 兵 → 14506 格 / 162602 兵
+zero_7: 这样的决策拍 70（t=1060~1495）；其中有指令 0；余额 49605→189398，领土 3394→3545
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是我方队友: 55 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）: 12 拍
+    让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发）: 3 拍
+    最便宜的敌方真人邻居 [UNSC] Big Boss#49：70 拍，每格 9.4~23.4 兵；它 6244 格 / 19596 兵 → 10972 格 / 72738 兵
+ryan_m: 这样的决策拍 88（t=1060~1495）；其中有指令 1；余额 41263→90529，领土 2237→2309
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）: 69 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是敌方真人: 14 拍
+    让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发）: 3 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是我方队友: 1 拍
+    最便宜的敌方真人邻居 [UNSC] Big Boss#49：87 拍，每格 9.4~23.4 兵；它 6292 格 / 15368 兵 → 10972 格 / 72738 兵
+kaito9: 这样的决策拍 85（t=1075~1495）；其中有指令 0；余额 29531→193612，领土 7727→7727
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed：按邻居的另一个邻居里最低的单价: 53 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）: 31 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是敌方真人: 1 拍
+    最便宜的敌方真人邻居 JM LEPEN#15：85 拍，每格 6.6~42.9 兵；它 8975 格 / 13020 兵 → 7978 格 / 102011 兵
+# 合计：决策拍 525，有指令 5；零指令按原因：让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是我方队友 142；让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)） 101；让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高） 81；让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发） 69；四周只有队友（没有任何可打的邻居） 59；让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed：按邻居的另一个邻居里最低的单价 53；让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是敌方真人 15
+# 例子（每 100 拍取一条）
+  t=1000 alex_k B=41575 L=4105（密度 10.1）| 最便宜的敌方真人 [UNSC] Big Boss#49[T1]（5642 格 / 20533 兵）每格 13.6 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 46672（floorFor0 46672、safeP×peopleSafe 0、dpKeep 14674、peopleFloor 0、floorAt 93343〔价格留底 93343、ref×邻居均值 0、defenseNeed 0、keepCap 封顶 410500〕）、可用 -5097、吃光要 45064
+  t=1000 sora_w B=32880 L=3512（密度 9.4）| 最便宜的敌方真人 [UNSC] Big Boss#49[T1]（5642 格 / 20533 兵）每格 13.6 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 39929（floorFor0 39929、safeP×peopleSafe 0、dpKeep 8576、peopleFloor 0、floorAt 79859〔价格留底 79859、ref×邻居均值 0、defenseNeed 0、keepCap 封顶 351200〕）、可用 -7049、吃光要 45064
+  t=1100 zero_7 B=59671 L=3368（密度 17.7）| 最便宜的敌方真人 [UNSC] Big Boss#49[T1]（7228 格 / 27106 兵）每格 14.0 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是我方队友；底线 57586（floorFor0 57586、safeP×peopleSafe 0、dpKeep 30155、peopleFloor 0、floorAt 115172〔价格留底 78582、ref×邻居均值 0、defenseNeed 115172、keepCap 封顶 336800〕，参照 [APEX] ryan_m#8[T2] 的 28793 兵（经由 Yolo🙋‍♂️#1[T3]））、可用 2085、吃光要 59155
+  t=1100 alex_k B=63895 L=4105（密度 15.6）| 最便宜的敌方真人 [UNSC] Big Boss#49[T1]（7228 格 / 27106 兵）每格 14.0 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是我方队友；底线 57586（floorFor0 57586、safeP×peopleSafe 0、dpKeep 23878、peopleFloor 0、floorAt 115172〔价格留底 95777、ref×邻居均值 0、defenseNeed 115172、keepCap 封顶 410500〕，参照 [APEX] ryan_m#8[T2] 的 28793 兵（经由 Yolo🙋‍♂️#1[T3]））、可用 6309、吃光要 59155
+  t=1100 ryan_m B=28793 L=2237（密度 12.9）| 最便宜的敌方真人 [UNSC] Big Boss#49[T1]（7228 格 / 27106 兵）每格 14.0 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是敌方真人；底线 97534（floorFor0 97534、safeP×peopleSafe 0、dpKeep 25453、peopleFloor 0、floorAt 195068〔价格留底 52193、ref×邻居均值 0、defenseNeed 195068、keepCap 封顶 223700〕，参照 [VN]HD.MAX🇻🇳#37[T3] 的 48767 兵（经由 Yolo🙋‍♂️#1[T3]））、可用 -68741、吃光要 59155
+  t=1100 sora_w B=35418 L=3512（密度 10.1）| 最便宜的敌方真人 [UNSC] Big Boss#49[T1]（7228 格 / 27106 兵）每格 14.0 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 40971（floorFor0 40971、safeP×peopleSafe 0、dpKeep 12269、peopleFloor 0、floorAt 81941〔价格留底 81941、ref×邻居均值 0、defenseNeed 14291、keepCap 封顶 351200〕）、可用 -5553、吃光要 59155
+  t=1100 kaito9 B=49926 L=7727（密度 6.5）| 最便宜的敌方真人 JM LEPEN#15[T4]（8789 格 / 22737 兵）每格 10.3 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed：按邻居的另一个邻居里最低的单价；底线 84789（floorFor0 84789、safeP×peopleSafe 0、dpKeep 20886、peopleFloor 0、floorAt 169579〔价格留底 132351、ref×邻居均值 0、defenseNeed 169579、keepCap 封顶 772700〕，参照 [APEX] ryan_m#8[T2] 的 28793 兵（经由 Yolo🙋‍♂️#1[T3]））、可用 -34863、吃光要 52778
+  t=1200 alex_k B=93266 L=4105（密度 22.7）| 最便宜的敌方真人 [UNSC] Big Boss#49[T1]（8266 格 / 30288 兵）每格 13.7 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是我方队友；底线 84826（floorFor0 84826、safeP×peopleSafe 0、dpKeep 38896、peopleFloor 0、floorAt 169652〔价格留底 93893、ref×邻居均值 0、defenseNeed 169652、keepCap 封顶 410500〕，参照 [APEX] ryan_m#8[T2] 的 42413 兵（经由 Yolo🙋‍♂️#1[T3]））、可用 8440、吃光要 66387
+  t=1200 ryan_m B=42413 L=2237（密度 19.0）| 最便宜的敌方真人 [UNSC] Big Boss#49[T1]（8266 格 / 30288 兵）每格 13.7 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）；底线 111850（floorFor0 111850、safeP×peopleSafe 0、dpKeep 40471、peopleFloor 0、floorAt 223700〔价格留底 51166、ref×邻居均值 0、defenseNeed 223700、keepCap 封顶 223700〕）、可用 -69437、吃光要 66387
+  t=1200 sora_w B=52932 L=3512（密度 15.1）| 最便宜的敌方真人 [UNSC] Big Boss#49[T1]（8266 格 / 30288 兵）每格 13.7 | 让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发）；底线 40164（floorFor0 40164、safeP×peopleSafe 0）、可用 12768、吃光要 66387、amount=0、minCmd=2480
+  t=1200 kaito9 B=77397 L=7727（密度 10.0）| 最便宜的敌方真人 JM LEPEN#15[T4]（8891 格 / 37628 兵）每格 15.5 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed：按邻居的另一个邻居里最低的单价；底线 106136（floorFor0 106136、safeP×peopleSafe 0、dpKeep 35844、peopleFloor 0、floorAt 212271〔价格留底 200162、ref×邻居均值 0、defenseNeed 212271、keepCap 封顶 772700〕，参照 [APEX] ryan_m#8[T2] 的 42413 兵（经由 Yolo🙋‍♂️#1[T3]））、可用 -28739、吃光要 79499
+  t=1200 zexos1 B=101903 L=2231（密度 45.7）| 最便宜的敌方真人 Player 625#31[T1]（9557 格 / 75222 兵）每格 27.2 | 让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发）；底线 50538（floorFor0 50538、safeP×peopleSafe 0）、可用 51365、吃光要 148412、amount=0、minCmd=4776
+  t=1300 zero_7 B=113124 L=3545（密度 31.9）| 最便宜的敌方真人 [UNSC] Big Boss#49[T1]（9290 格 / 37906 兵）每格 15.1 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是我方队友；底线 119310（floorFor0 119310、safeP×peopleSafe 0、dpKeep 67499、peopleFloor 0、floorAt 238620〔价格留底 88952、ref×邻居均值 0、defenseNeed 238620、keepCap 封顶 354500〕，参照 [APEX] ryan_m#8[T2] 的 59655 兵（经由 Yolo🙋‍♂️#1[T3]））、可用 -6186、吃光要 81501
+  t=1300 alex_k B=130382 L=4105（密度 31.8）| 最便宜的敌方真人 [UNSC] Big Boss#49[T1]（9290 格 / 37906 兵）每格 15.1 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是我方队友；底线 119310（floorFor0 119310、safeP×peopleSafe 0、dpKeep 62116、peopleFloor 0、floorAt 238620〔价格留底 103003、ref×邻居均值 0、defenseNeed 238620、keepCap 封顶 410500〕，参照 [APEX] ryan_m#8[T2] 的 59655 兵（经由 Yolo🙋‍♂️#1[T3]））、可用 11072、吃光要 81501
+  t=1300 ryan_m B=59655 L=2237（密度 26.7）| 最便宜的敌方真人 [UNSC] Big Boss#49[T1]（9290 格 / 37906 兵）每格 15.1 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）；底线 111850（floorFor0 111850、safeP×peopleSafe 0、dpKeep 63690、peopleFloor 0、floorAt 223700〔价格留底 56131、ref×邻居均值 0、defenseNeed 223700、keepCap 封顶 223700〕）、可用 -52195、吃光要 81501
+  t=1300 kaito9 B=112517 L=7727（密度 14.6）| 最便宜的敌方真人 JM LEPEN#15[T4]（8481 格 / 62515 兵）每格 25.6 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 164753（floorFor0 164753、safeP×peopleSafe 0、dpKeep 59064、peopleFloor 0、floorAt 329507〔价格留底 329507、ref×邻居均值 0、defenseNeed 325816、keepCap 封顶 772700〕）、可用 -52236、吃光要 121754
+  t=1400 zero_7 B=152105 L=3545（密度 42.9）| 最便宜的敌方真人 [UNSC] Big Boss#49[T1]（10134 格 / 54440 兵）每格 19.2 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是我方队友；底线 161294（floorFor0 161294、safeP×peopleSafe 0、dpKeep 93042、peopleFloor 0、floorAt 322588〔价格留底 113380、ref×邻居均值 0、defenseNeed 322588、keepCap 封顶 354500〕，参照 [APEX] ryan_m#8[T2] 的 80647 兵（经由 Yolo🙋‍♂️#1[T3]））、可用 -9189、吃光要 112238
+  t=1400 alex_k B=175332 L=4105（密度 42.7）| 最便宜的敌方真人 [UNSC] Big Boss#49[T1]（10134 格 / 54440 兵）每格 19.2 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×defenseNeed = kDef(4)×「某个邻居的另一个最弱邻居」的余额，参照的是我方队友；底线 161294（floorFor0 161294、safeP×peopleSafe 0、dpKeep 86903、peopleFloor 0、floorAt 322588〔价格留底 131290、ref×邻居均值 0、defenseNeed 322588、keepCap 封顶 410500〕，参照 [APEX] ryan_m#8[T2] 的 80647 兵（经由 Yolo🙋‍♂️#1[T3]））、可用 14038、吃光要 112238
+  t=1400 ryan_m B=80647 L=2309（密度 34.9）| 最便宜的敌方真人 [UNSC] Big Boss#49[T1]（10134 格 / 54440 兵）每格 19.2 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×keepCap(1)×100×领土 封顶（邻居的参照余额更高）；底线 115450（floorFor0 115450、safeP×peopleSafe 0、dpKeep 88416、peopleFloor 0、floorAt 230900〔价格留底 189760、ref×邻居均值 0、defenseNeed 230900、keepCap 封顶 230900〕）、可用 -34803、吃光要 278272
+  t=1400 kaito9 B=155490 L=7727（密度 20.1）| 最便宜的敌方真人 JM LEPEN#15[T4]（8370 格 / 88754 兵）每格 35.9 | 让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）；底线 231342（floorFor0 231342、safeP×peopleSafe 0、dpKeep 83850、peopleFloor 0、floorAt 462685〔价格留底 462685、ref×邻居均值 0、defenseNeed 457013、keepCap 封顶 772700〕）、可用 -75852、吃光要 167423
+  t=1400 zexos1 B=186351 L=2231（密度 83.5）| 最便宜的敌方真人 Player 625#31[T1]（11231 格 / 129898 兵）每格 39.0 | 让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发）；底线 72522（floorFor0 72522、safeP×peopleSafe 0）、可用 113829、吃光要 248385、amount=0、minCmd=8732

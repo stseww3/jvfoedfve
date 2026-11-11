@@ -1,0 +1,303 @@
+# A033 sora_w 影子决策明细 t=2700~4670（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没有可打的邻居: 180 拍（t=2700~3760）
+#   捐兵: 33 拍（t=2710~4460）；可用兵 197592~249569，一条指令下限(20%余额) 263429~273948，比值 75%~91%
+#   只打无主地: 3 拍（t=3720~3730）
+#   首选目标价高（c>=worth）: 134 拍（t=3765~4615）
+#   有可用兵但没发（脉冲下限/冷却/其他）: 42 拍（t=4190~4670）；可用兵 110924~279078，一条指令下限(20%余额) 245890~279920，比值 45%~100%
+#   出手打人/bot: 3 拍（t=4655~4665）；可用兵 739052~739052，一条指令下限(20%余额) 368040~368040，比值 201%~201%
+#   └ 「出手打人/bot」里：3 条对人/bot 的出兵共约 663117 兵；其中超过软上限（over=1）时发的 3 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 3 条约 663117 兵，c/worth = 3.01~3.02
+t=2700 sora_w B=979865 L=11549 d=84.8 nb=0 neut=0 cmds=63 noFull=1 shQ=242149 | m=0.900 worth=76.4 cheap=8.2 over=0 dMedOther=55.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2710 sora_w B=991819 L=11549 d=85.9 nb=0 neut=0 cmds=64 noFull=1 shQ=247954 | m=0.900 worth=77.3 cheap=8.2 over=0 dMedOther=56.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zexos1#50[T2]（约 310912 兵）
+t=2730 sora_w B=1016166 L=11549 d=88.0 nb=0 neut=0 cmds=64 noFull=1 shQ=254041 | m=0.900 worth=79.2 cheap=8.2 over=0 dMedOther=58.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2735 sora_w B=1016166 L=11549 d=88.0 nb=0 neut=0 cmds=65 noFull=1 shQ=254041 | m=0.900 worth=79.2 cheap=8.2 over=0 dMedOther=56.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] kaito9#53[T2]（约 318544 兵）
+t=2760 sora_w B=1053812 L=11549 d=91.2 nb=0 neut=0 cmds=66 noFull=1 shQ=263453 | m=0.900 worth=82.1 cheap=8.2 over=0 dMedOther=58.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] kaito9#53[T2]（约 330345 兵）
+t=2785 sora_w B=1079681 L=11549 d=93.5 nb=0 neut=0 cmds=67 noFull=1 shQ=269920 | m=0.900 worth=84.1 cheap=8.2 over=0 dMedOther=60.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] kaito9#53[T2]（约 338454 兵）
+t=2790 sora_w B=1092853 L=11549 d=94.6 nb=0 neut=0 cmds=67 noFull=1 shQ=273213 | m=0.900 worth=85.2 cheap=8.2 over=0 dMedOther=60.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2810 sora_w B=1131370 L=11549 d=98.0 nb=0 neut=0 cmds=68 noFull=1 shQ=282842 | m=0.900 worth=88.2 cheap=8.2 over=0 dMedOther=59.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] kaito9#53[T2]（约 354657 兵）
+t=2820 sora_w B=1145172 L=11549 d=99.2 nb=0 neut=0 cmds=68 noFull=1 shQ=286293 | m=0.900 worth=89.2 cheap=8.2 over=0 dMedOther=58.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2835 sora_w B=1159143 L=11549 d=100.4 nb=0 neut=0 cmds=69 noFull=1 shQ=289785 | m=0.900 worth=90.3 cheap=8.2 over=1 dMedOther=62.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] kaito9#53[T2]（约 363364 兵）
+t=2850 sora_w B=1187246 L=11549 d=102.8 nb=0 neut=0 cmds=69 noFull=1 shQ=296764 | m=0.900 worth=92.5 cheap=8.2 over=1 dMedOther=63.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2860 sora_w B=1201018 L=11549 d=104.0 nb=0 neut=0 cmds=70 noFull=1 shQ=300203 | m=0.900 worth=93.6 cheap=8.2 over=1 dMedOther=64.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zexos1#50[T2]（约 376490 兵）
+t=2880 sora_w B=1227949 L=11549 d=106.3 nb=0 neut=0 cmds=70 noFull=1 shQ=306931 | m=0.900 worth=95.7 cheap=8.2 over=1 dMedOther=66.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2885 sora_w B=1227949 L=11549 d=106.3 nb=0 neut=0 cmds=71 noFull=1 shQ=306987 | m=0.900 worth=95.7 cheap=8.2 over=1 dMedOther=66.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zexos1#50[T2]（约 384933 兵）
+t=2910 sora_w B=1278072 L=11549 d=110.7 nb=0 neut=0 cmds=72 noFull=1 shQ=319518 | m=0.900 worth=99.6 cheap=8.2 over=1 dMedOther=65.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] zexos1#50[T2]（约 475532 兵）
+t=2935 sora_w B=1302470 L=11549 d=112.8 nb=0 neut=0 cmds=73 noFull=1 shQ=325617 | m=0.900 worth=101.5 cheap=8.2 over=1 dMedOther=63.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zexos1#50[T2]（约 408293 兵）
+t=2940 sora_w B=1314322 L=11549 d=113.8 nb=0 neut=0 cmds=73 noFull=1 shQ=328580 | m=0.900 worth=102.4 cheap=8.2 over=1 dMedOther=62.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2960 sora_w B=1337422 L=11549 d=115.8 nb=0 neut=0 cmds=74 noFull=1 shQ=334355 | m=0.900 worth=104.2 cheap=8.2 over=1 dMedOther=56.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] zexos1#50[T2]（约 497615 兵）
+t=2970 sora_w B=1348656 L=11549 d=116.8 nb=0 neut=0 cmds=74 noFull=1 shQ=337164 | m=0.900 worth=105.1 cheap=8.2 over=1 dMedOther=57.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2985 sora_w B=1359714 L=11549 d=117.7 nb=0 neut=0 cmds=75 noFull=1 shQ=339928 | m=0.900 worth=106.0 cheap=8.2 over=1 dMedOther=57.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] zexos1#50[T2]（约 505909 兵）
+t=3000 sora_w B=1392556 L=11549 d=120.6 nb=0 neut=0 cmds=75 noFull=1 shQ=346094 | m=0.900 worth=108.5 cheap=8.2 over=1 dMedOther=59.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3010 sora_w B=1402582 L=11549 d=121.4 nb=0 neut=0 cmds=76 noFull=1 shQ=350645 | m=0.900 worth=109.3 cheap=8.2 over=1 dMedOther=59.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] zexos1#50[T2]（约 521859 兵）
+t=3030 sora_w B=1422004 L=11549 d=123.1 nb=0 neut=0 cmds=76 noFull=1 shQ=355501 | m=0.900 worth=110.8 cheap=8.2 over=1 dMedOther=60.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3035 sora_w B=1422004 L=11549 d=123.1 nb=0 neut=0 cmds=77 noFull=1 shQ=355501 | m=0.900 worth=110.8 cheap=8.2 over=1 dMedOther=60.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] zexos1#50[T2]（约 529085 兵）
+t=3060 sora_w B=1449480 L=11549 d=125.5 nb=0 neut=0 cmds=78 noFull=1 shQ=362370 | m=0.900 worth=113.0 cheap=8.2 over=1 dMedOther=61.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] zexos1#50[T2]（约 539308 兵）
+t=3085 sora_w B=1466633 L=11549 d=127.0 nb=0 neut=0 cmds=79 noFull=1 shQ=366658 | m=0.900 worth=114.3 cheap=8.2 over=1 dMedOther=61.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=380 → [APEX] zexos1#50[T2]（约 545690 兵）
+t=3090 sora_w B=1474992 L=11549 d=127.7 nb=0 neut=0 cmds=79 noFull=1 shQ=368748 | m=0.900 worth=114.9 cheap=8.2 over=1 dMedOther=62.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3110 sora_w B=1502275 L=11549 d=130.1 nb=0 neut=0 cmds=80 noFull=1 shQ=375568 | m=0.900 worth=117.1 cheap=8.2 over=1 dMedOther=68.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zexos1#50[T2]（约 470928 兵）
+t=3120 sora_w B=1509636 L=11549 d=130.7 nb=0 neut=0 cmds=80 noFull=1 shQ=377409 | m=0.900 worth=117.6 cheap=8.2 over=1 dMedOther=69.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3135 sora_w B=1516882 L=11549 d=131.3 nb=0 neut=0 cmds=81 noFull=1 shQ=379220 | m=0.900 worth=118.2 cheap=8.2 over=1 dMedOther=69.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zexos1#50[T2]（约 475506 兵）
+t=3150 sora_w B=1530716 L=11549 d=132.5 nb=0 neut=0 cmds=81 noFull=1 shQ=382679 | m=0.900 worth=119.3 cheap=8.2 over=1 dMedOther=71.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3160 sora_w B=1537298 L=11549 d=133.1 nb=0 neut=0 cmds=82 noFull=1 shQ=384324 | m=0.900 worth=119.8 cheap=8.2 over=1 dMedOther=72.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zexos1#50[T2]（约 481906 兵）
+t=3180 sora_w B=1549929 L=11549 d=134.2 nb=0 neut=0 cmds=82 noFull=1 shQ=387482 | m=0.900 worth=120.8 cheap=8.2 over=1 dMedOther=74.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3185 sora_w B=1549929 L=11549 d=134.2 nb=0 neut=0 cmds=83 noFull=1 shQ=387482 | m=0.900 worth=120.8 cheap=8.2 over=1 dMedOther=74.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zexos1#50[T2]（约 485866 兵）
+t=3210 sora_w B=1578783 L=11549 d=136.7 nb=0 neut=0 cmds=84 noFull=1 shQ=394695 | m=0.900 worth=123.0 cheap=8.2 over=1 dMedOther=78.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zexos1#50[T2]（约 494911 兵）
+t=3235 sora_w B=1589060 L=11549 d=137.6 nb=0 neut=0 cmds=85 noFull=1 shQ=397265 | m=0.900 worth=123.8 cheap=8.2 over=1 dMedOther=77.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zexos1#50[T2]（约 498133 兵）
+t=3240 sora_w B=1593986 L=11549 d=138.0 nb=0 neut=0 cmds=85 noFull=1 shQ=398496 | m=0.900 worth=124.2 cheap=8.2 over=1 dMedOther=76.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3260 sora_w B=1603403 L=11549 d=138.8 nb=0 neut=0 cmds=86 noFull=1 shQ=400850 | m=0.900 worth=125.0 cheap=8.2 over=1 dMedOther=76.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zexos1#50[T2]（约 502629 兵）
+t=3270 sora_w B=1607892 L=11549 d=139.2 nb=0 neut=0 cmds=86 noFull=1 shQ=401973 | m=0.900 worth=125.3 cheap=8.2 over=1 dMedOther=77.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3285 sora_w B=1612233 L=11549 d=139.6 nb=0 neut=0 cmds=87 noFull=1 shQ=403058 | m=0.900 worth=125.6 cheap=8.2 over=1 dMedOther=77.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zexos1#50[T2]（约 505397 兵）
+t=3300 sora_w B=1632014 L=11549 d=141.3 nb=0 neut=0 cmds=87 noFull=1 shQ=408003 | m=0.900 worth=127.2 cheap=8.2 over=1 dMedOther=80.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3310 sora_w B=1635604 L=11549 d=141.6 nb=0 neut=0 cmds=88 noFull=1 shQ=408901 | m=0.900 worth=127.5 cheap=8.2 over=1 dMedOther=81.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] talon5#51[T2]（约 512723 兵）
+t=3330 sora_w B=1642316 L=11549 d=142.2 nb=0 neut=0 cmds=88 noFull=1 shQ=410579 | m=0.900 worth=128.0 cheap=8.2 over=1 dMedOther=80.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3335 sora_w B=1642316 L=11549 d=142.2 nb=0 neut=0 cmds=89 noFull=1 shQ=410579 | m=0.900 worth=128.0 cheap=8.2 over=1 dMedOther=80.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zero_7#52[T2]（约 514827 兵）
+t=3360 sora_w B=1052101 L=11549 d=91.1 nb=0 neut=0 cmds=90 noFull=1 shQ=263025 | m=0.900 worth=82.0 cheap=8.2 over=0 dMedOther=84.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] talon5#51[T2]（约 329809 兵）
+t=3385 sora_w B=1077928 L=11549 d=93.3 nb=0 neut=0 cmds=91 noFull=1 shQ=269482 | m=0.900 worth=84.0 cheap=8.2 over=0 dMedOther=82.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zero_7#52[T2]（约 337905 兵）
+t=3390 sora_w B=1091078 L=11549 d=94.5 nb=0 neut=0 cmds=91 noFull=1 shQ=272769 | m=0.900 worth=85.0 cheap=8.2 over=0 dMedOther=83.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3410 sora_w B=709262 L=11549 d=61.4 nb=0 neut=0 cmds=92 noFull=1 shQ=177315 | m=0.900 worth=66.3 cheap=8.2 over=0 dMedOther=86.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zero_7#52[T2]（约 222337 兵）
+t=3420 sora_w B=717914 L=11549 d=62.2 nb=0 neut=0 cmds=92 noFull=1 shQ=179478 | m=0.900 worth=67.0 cheap=8.2 over=0 dMedOther=87.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3450 sora_w B=464592 L=11549 d=40.2 nb=0 neut=0 cmds=92 noFull=1 shQ=116148 | m=0.900 worth=68.8 cheap=8.2 over=0 dMedOther=90.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3480 sora_w B=481804 L=11549 d=41.7 nb=0 neut=0 cmds=92 noFull=1 shQ=120451 | m=0.900 worth=70.8 cheap=8.2 over=0 dMedOther=92.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3510 sora_w B=511343 L=11549 d=44.3 nb=0 neut=0 cmds=92 noFull=1 shQ=127835 | m=0.900 worth=74.9 cheap=8.2 over=0 dMedOther=97.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3540 sora_w B=530286 L=11549 d=45.9 nb=0 neut=0 cmds=92 noFull=1 shQ=132571 | m=0.900 worth=73.3 cheap=8.2 over=0 dMedOther=95.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3570 sora_w B=549931 L=11549 d=47.6 nb=0 neut=0 cmds=92 noFull=1 shQ=137482 | m=0.900 worth=78.6 cheap=8.2 over=0 dMedOther=102.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3600 sora_w B=581853 L=11549 d=50.4 nb=0 neut=0 cmds=92 noFull=1 shQ=142631 | m=0.900 worth=82.2 cheap=8.2 over=0 dMedOther=107.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3630 sora_w B=603408 L=11549 d=52.2 nb=0 neut=0 cmds=92 noFull=1 shQ=150852 | m=0.900 worth=77.5 cheap=8.2 over=0 dMedOther=101.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3660 sora_w B=625762 L=11549 d=54.2 nb=0 neut=0 cmds=92 noFull=1 shQ=156440 | m=0.900 worth=73.3 cheap=8.2 over=0 dMedOther=95.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3690 sora_w B=648944 L=11549 d=56.2 nb=0 neut=0 cmds=92 noFull=1 shQ=162236 | m=0.900 worth=75.1 cheap=8.2 over=0 dMedOther=98.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3710 sora_w B=676564 L=11549 d=58.6 nb=0 neut=0 cmds=93 noFull=1 shQ=169141 | m=0.900 worth=75.7 cheap=8.2 over=0 dMedOther=99.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=320 → [APEX] zero_7#52[T2]（约 212086 兵）
+t=3720 sora_w B=684818 L=11549 d=59.3 nb=0 neut=40 cmds=94 noFull=1 shQ=171204 | m=0.900 worth=73.3 cheap=8.2 over=0 dMedOther=95.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → 无主地（约 32100 兵）
+t=3725 sora_w B=684818 L=11549 d=59.3 nb=0 neut=40 cmds=95 noFull=1 shQ=171204 | m=0.900 worth=72.7 cheap=8.2 over=0 dMedOther=95.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → 无主地（约 32100 兵）
+t=3730 sora_w B=693172 L=11549 d=60.0 nb=0 neut=40 cmds=96 noFull=1 shQ=173293 | m=0.900 worth=73.0 cheap=8.2 over=0 dMedOther=95.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → 无主地（约 32492 兵）
+t=3750 sora_w B=592582 L=11792 d=50.3 nb=0 neut=42 cmds=96 noFull=1 shQ=148145 | m=0.900 worth=67.6 cheap=8.1 over=0 dMedOther=88.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3780 sora_w B=614717 L=12267 d=50.1 nb=1 neut=1 cmds=96 noFull=1 shQ=153679 | m=0.900 worth=69.0 cheap=8.1 over=0 dMedOther=90.2 safe(-1)=715900
+    → REVOLUTION#28[T1] terr=22569 bal=1292702 dq=57.3 cnt=41 | c=432.0 rankC=626.4 need=2337937 tD=0.63 人 pulse crowdedHard | safe=715900 keep=Inf avail=-Inf chunkB=122943 pulseB=73766 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3810 sora_w B=743914 L=12268 d=60.6 nb=1 neut=0 cmds=96 noFull=1 shQ=185978 | m=0.900 worth=70.3 cheap=8.1 over=0 dMedOther=91.9 safe(-1)=886095
+    → REVOLUTION#28[T1] terr=22569 bal=1595651 dq=70.7 cnt=42 | c=366.7 rankC=366.7 need=2877907 tD=0.77 人 pulse crowdedHard | safe=886095 keep=Inf avail=-Inf chunkB=148783 pulseB=89270 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3840 sora_w B=771702 L=12268 d=62.9 nb=1 neut=0 cmds=96 noFull=1 shQ=192925 | m=0.900 worth=72.3 cheap=8.1 over=0 dMedOther=94.6 safe(-1)=922063
+    → REVOLUTION#28[T1] terr=22569 bal=1659675 dq=73.5 cnt=42 | c=381.2 rankC=381.2 need=2992022 tD=0.78 人 pulse crowdedHard | safe=922063 keep=Inf avail=-Inf chunkB=154340 pulseB=92604 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3870 sora_w B=800527 L=12268 d=65.3 nb=1 neut=0 cmds=96 noFull=1 shQ=200131 | m=0.900 worth=72.8 cheap=8.1 over=0 dMedOther=95.1 safe(-1)=959475
+    → REVOLUTION#28[T1] terr=22569 bal=1726267 dq=76.5 cnt=42 | c=396.3 rankC=396.3 need=3110714 tD=0.80 人 pulse crowdedHard | safe=959475 keep=Inf avail=-Inf chunkB=160105 pulseB=96063 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3900 sora_w B=842698 L=12268 d=68.7 nb=1 neut=0 cmds=96 noFull=1 shQ=207697 | m=0.900 worth=76.1 cheap=8.1 over=0 dMedOther=99.5 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=22569 bal=2060752 dq=91.3 cnt=42 | c=472.1 rankC=472.1 need=3706893 tD=0.92 人 pulse crowdedHard | safe=1079584 keep=Inf avail=-Inf chunkB=168540 pulseB=101124 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3930 sora_w B=874176 L=12268 d=71.3 nb=1 neut=0 cmds=96 noFull=1 shQ=218544 | m=0.900 worth=78.4 cheap=8.1 over=0 dMedOther=102.5 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=22569 bal=2143437 dq=95.0 cnt=42 | c=490.9 rankC=490.9 need=3854268 tD=0.93 人 pulse crowdedHard | safe=1079584 keep=Inf avail=-Inf chunkB=174835 pulseB=104901 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3960 sora_w B=906830 L=12268 d=73.9 nb=1 neut=0 cmds=96 noFull=1 shQ=226707 | m=0.900 worth=75.6 cheap=8.1 over=0 dMedOther=98.8 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=22569 bal=2229441 dq=98.8 cnt=42 | c=510.4 rankC=510.4 need=4007560 tD=1.00 人 pulse crowdedHard | safe=1079584 keep=Inf avail=-Inf chunkB=181366 pulseB=108820 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3990 sora_w B=940705 L=12268 d=76.7 nb=1 neut=0 cmds=96 noFull=1 shQ=235176 | m=0.900 worth=77.3 cheap=8.1 over=0 dMedOther=101.1 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=22569 bal=2318210 dq=102.7 cnt=42 | c=530.5 rankC=530.5 need=4165780 tD=1.02 人 pulse crowdedHard | safe=1079584 keep=Inf avail=-Inf chunkB=188141 pulseB=112885 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4020 sora_w B=988415 L=12268 d=80.6 nb=1 neut=0 cmds=96 noFull=1 shQ=247103 | m=0.900 worth=79.2 cheap=8.1 over=0 dMedOther=103.6 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=22569 bal=2425772 dq=107.5 cnt=42 | c=804.7 rankC=1166.8 need=4357496 tD=1.04 人 pulse crowdedHard | safe=1079584 keep=Inf avail=-Inf chunkB=197683 pulseB=118610 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4050 sora_w B=1025337 L=12268 d=83.6 nb=1 neut=0 cmds=96 noFull=1 shQ=256334 | m=0.900 worth=81.5 cheap=8.1 over=0 dMedOther=106.6 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=22569 bal=2506457 dq=111.1 cnt=42 | c=573.3 rankC=573.3 need=4501307 tD=1.04 人 pulse crowdedHard | safe=1079584 keep=Inf avail=-Inf chunkB=205067 pulseB=123040 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4080 sora_w B=1063637 L=12268 d=86.7 nb=1 neut=0 cmds=96 noFull=1 shQ=265909 | m=0.900 worth=79.6 cheap=8.1 over=0 dMedOther=104.0 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=22569 bal=2582403 dq=114.4 cnt=42 | c=590.5 rankC=590.5 need=4636672 tD=1.10 人 pulse crowdedHard | safe=1079584 keep=Inf avail=-Inf chunkB=212727 pulseB=127636 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4110 sora_w B=1115787 L=12268 d=91.0 nb=1 neut=0 cmds=96 noFull=1 shQ=278946 | m=0.900 worth=81.9 cheap=8.1 over=0 dMedOther=106.6 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=22569 bal=2676044 dq=118.6 cnt=42 | c=611.8 rankC=611.8 need=4803575 tD=1.11 人 pulse crowdedHard | safe=1079584 keep=Inf avail=-Inf chunkB=223157 pulseB=133894 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4140 sora_w B=1157466 L=12268 d=94.3 nb=1 neut=0 cmds=96 noFull=1 shQ=289366 | m=0.900 worth=84.9 cheap=8.1 over=0 dMedOther=104.1 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=22569 bal=2741326 dq=121.5 cnt=42 | c=626.7 rankC=626.7 need=4919933 tD=1.17 人 pulse crowdedHard | safe=1079584 keep=Inf avail=-Inf chunkB=231493 pulseB=138896 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4170 sora_w B=1200702 L=12268 d=97.9 nb=1 neut=0 cmds=96 noFull=1 shQ=300175 | m=0.900 worth=88.1 cheap=8.1 over=0 dMedOther=107.0 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=22569 bal=2802077 dq=124.2 cnt=42 | c=640.5 rankC=640.5 need=5028214 tD=1.16 人 pulse crowdedHard | safe=1079584 keep=Inf avail=-Inf chunkB=240140 pulseB=144084 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4200 sora_w B=1257822 L=12268 d=102.5 nb=1 neut=0 cmds=96 noFull=1 shQ=311284 | m=0.900 worth=92.3 cheap=8.1 over=1 dMedOther=106.5 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=22569 bal=2880777 dq=127.6 cnt=42 | c=658.4 rankC=658.4 need=5168487 tD=1.20 人 pulse crowdedHard | safe=1079584 keep=1104120 avail=138962 chunkB=251564 pulseB=150939 
+    ⇒ 本拍没有指令
+t=4230 sora_w B=1301330 L=12268 d=106.1 nb=1 neut=0 cmds=96 noFull=1 shQ=325307 | m=0.900 worth=95.5 cheap=8.1 over=1 dMedOther=101.2 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=22569 bal=2931192 dq=129.9 cnt=42 | c=971.3 rankC=1408.4 need=5258346 tD=1.28 人 pulse crowdedHard | safe=1079584 keep=1104120 avail=181961 chunkB=260266 pulseB=156160 
+    ⇒ 本拍没有指令
+t=4260 sora_w B=1343151 L=12268 d=109.5 nb=1 neut=0 cmds=97 noFull=1 shQ=335721 | m=0.900 worth=98.5 cheap=8.1 over=1 dMedOther=100.2 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=22569 bal=2977155 dq=131.9 cnt=42 | c=680.3 rankC=680.3 need=5340269 tD=1.32 人 pulse crowdedHard | safe=1079584 keep=1104120 avail=223291 chunkB=268630 pulseB=161178 
+    ⇒ 影子指令 donate pct=200 → [APEX] zero_7#52[T2]（约 263645 兵）
+t=4285 sora_w B=1369740 L=12268 d=111.7 nb=1 neut=0 cmds=98 noFull=1 shQ=342435 | m=0.900 worth=100.5 cheap=8.1 over=1 dMedOther=98.3 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=22569 bal=3005504 dq=133.2 cnt=42 | c=686.8 rankC=686.8 need=5390798 tD=1.36 人 pulse crowdedHard | safe=1079584 keep=1104120 avail=249569 chunkB=273948 pulseB=164369 
+    ⇒ 影子指令 donate pct=180 → [APEX] zero_7#52[T2]（约 242112 兵）
+t=4290 sora_w B=1382752 L=12268 d=112.7 nb=1 neut=0 cmds=98 noFull=1 shQ=345688 | m=0.900 worth=101.4 cheap=8.1 over=1 dMedOther=99.4 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=22569 bal=3019028 dq=133.8 cnt=42 | c=689.9 rankC=689.9 need=5414902 tD=1.35 人 pulse crowdedHard | safe=1079584 keep=1104120 avail=262428 chunkB=276550 pulseB=165930 
+    ⇒ 本拍没有指令
+t=4320 sora_w B=1103783 L=12268 d=90.0 nb=1 neut=0 cmds=98 noFull=1 shQ=275945 | m=0.900 worth=81.0 cheap=8.1 over=0 dMedOther=104.3 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=22569 bal=3078142 dq=136.4 cnt=42 | c=702.8 rankC=702.8 need=5520266 tD=1.31 人 pulse crowdedHard | safe=1079584 keep=Inf avail=-Inf chunkB=220757 pulseB=132454 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4350 sora_w B=1145014 L=12268 d=93.3 nb=1 neut=0 cmds=98 noFull=1 shQ=286253 | m=0.900 worth=84.0 cheap=8.1 over=0 dMedOther=97.3 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=22569 bal=3110575 dq=137.8 cnt=42 | c=710.2 rankC=710.2 need=5578074 tD=1.42 人 pulse crowdedHard | safe=1079584 keep=Inf avail=-Inf chunkB=229003 pulseB=137402 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4380 sora_w B=1187785 L=12268 d=96.8 nb=1 neut=0 cmds=98 noFull=1 shQ=296946 | m=0.900 worth=87.1 cheap=8.1 over=0 dMedOther=100.2 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=23265 bal=2597261 dq=111.6 cnt=42 | c=576.5 rankC=576.5 need=4664197 tD=1.11 人 pulse crowdedHard | safe=1079584 keep=Inf avail=-Inf chunkB=237557 pulseB=142534 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4410 sora_w B=1244573 L=12268 d=101.4 nb=1 neut=0 cmds=98 noFull=1 shQ=311095 | m=0.900 worth=91.3 cheap=8.1 over=1 dMedOther=101.6 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=24323 bal=2707974 dq=111.3 cnt=42 | c=833.5 rankC=1208.6 need=4863193 tD=1.10 人 pulse crowdedHard | safe=1079584 keep=1104120 avail=125869 chunkB=248915 pulseB=149349 
+    ⇒ 本拍没有指令
+t=4440 sora_w B=1288769 L=12268 d=105.1 nb=1 neut=0 cmds=98 noFull=1 shQ=322136 | m=0.900 worth=94.5 cheap=8.1 over=1 dMedOther=105.1 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=24323 bal=2790027 dq=114.7 cnt=42 | c=592.1 rankC=592.1 need=5009445 tD=1.09 人 pulse crowdedHard | safe=1079584 keep=1104120 avail=169547 chunkB=257754 pulseB=154652 
+    ⇒ 本拍没有指令
+t=4460 sora_w B=1317147 L=12268 d=107.4 nb=1 neut=0 cmds=99 noFull=1 shQ=329225 | m=0.900 worth=96.6 cheap=8.1 over=1 dMedOther=105.7 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=24323 bal=2842162 dq=116.9 cnt=42 | c=603.1 rankC=603.1 need=5102371 tD=1.11 人 pulse crowdedHard | safe=1079584 keep=1104120 avail=197592 chunkB=263429 pulseB=158058 
+    ⇒ 影子指令 donate pct=184 → [APEX] talon5#51[T2]（约 237961 兵）
+t=4470 sora_w B=1330977 L=12268 d=108.5 nb=1 neut=0 cmds=99 noFull=1 shQ=332713 | m=0.900 worth=97.6 cheap=8.1 over=1 dMedOther=108.1 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=24323 bal=2867457 dq=117.9 cnt=42 | c=608.5 rankC=608.5 need=5147457 tD=1.09 人 pulse crowdedHard | safe=1079584 keep=1104120 avail=211260 chunkB=266195 pulseB=159717 
+    ⇒ 本拍没有指令
+t=4500 sora_w B=1057228 L=12268 d=86.2 nb=1 neut=0 cmds=99 noFull=1 shQ=261343 | m=0.900 worth=81.4 cheap=8.1 over=0 dMedOther=106.4 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=24323 bal=2964064 dq=121.9 cnt=42 | c=911.2 rankC=1321.2 need=5319649 tD=1.15 人 pulse crowdedHard | safe=1079584 keep=Inf avail=-Inf chunkB=211446 pulseB=126867 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4530 sora_w B=1096719 L=12268 d=89.4 nb=1 neut=0 cmds=99 noFull=1 shQ=274179 | m=0.900 worth=80.7 cheap=8.1 over=0 dMedOther=105.4 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=24323 bal=3029450 dq=124.6 cnt=42 | c=642.2 rankC=642.2 need=5436194 tD=1.18 人 pulse crowdedHard | safe=1079584 keep=Inf avail=-Inf chunkB=219344 pulseB=131606 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4560 sora_w B=1137686 L=12268 d=92.7 nb=1 neut=0 cmds=99 noFull=1 shQ=284421 | m=0.900 worth=83.5 cheap=8.1 over=0 dMedOther=104.4 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=24323 bal=3089829 dq=127.0 cnt=42 | c=654.9 rankC=654.9 need=5543814 tD=1.22 人 pulse crowdedHard | safe=1079584 keep=Inf avail=-Inf chunkB=227537 pulseB=136522 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4590 sora_w B=1180183 L=12268 d=96.2 nb=1 neut=0 cmds=99 noFull=1 shQ=295045 | m=0.900 worth=86.6 cheap=8.1 over=0 dMedOther=101.9 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=24323 bal=3145153 dq=129.3 cnt=42 | c=666.6 rankC=666.6 need=5642423 tD=1.27 人 pulse crowdedHard | safe=1079584 keep=Inf avail=-Inf chunkB=236037 pulseB=141622 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4620 sora_w B=1236840 L=12268 d=100.8 nb=1 neut=0 cmds=99 noFull=1 shQ=309210 | m=0.900 worth=90.7 cheap=8.1 over=1 dMedOther=106.6 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=24323 bal=3219038 dq=132.3 cnt=42 | c=682.2 rankC=682.2 need=5774116 tD=1.24 人 pulse crowdedHard | safe=1079584 keep=1104120 avail=118226 chunkB=247368 pulseB=148421 
+    ⇒ 本拍没有指令
+t=4650 sora_w B=1281268 L=12268 d=104.4 nb=1 neut=0 cmds=99 noFull=1 shQ=320263 | m=0.900 worth=94.0 cheap=8.1 over=1 dMedOther=106.7 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=25217 bal=2715965 dq=107.7 cnt=42 | c=412.1 rankC=412.1 need=4878697 tD=1.01 人 pulse | safe=1079584 keep=1104120 avail=162134 chunkB=256254 pulseB=153752 
+    ⇒ 本拍没有指令
+t=4655 sora_w B=1840200 L=12268 d=150.0 nb=1 neut=0 cmds=100 noFull=1 shQ=334117 | m=0.900 worth=135.0 cheap=8.1 over=1 dMedOther=106.2 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=25565 bal=2715965 dq=106.2 cnt=42 | c=407.1 rankC=407.1 need=4879219 tD=1.00 人 pulse | safe=1079584 keep=1079584 avail=739052 chunkB=368040 pulseB=220824 
+    ⇒ 影子指令 attack pct=122 → REVOLUTION#28[T1]（约 221039 兵）
+t=4660 sora_w B=1840200 L=12268 d=150.0 nb=1 neut=0 cmds=101 noFull=1 shQ=357117 | m=0.900 worth=135.0 cheap=8.1 over=1 dMedOther=101.8 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=25802 bal=2748556 dq=106.5 cnt=42 | c=408.2 rankC=408.2 need=4937701 tD=1.05 人 pulse | safe=1079584 keep=1079584 avail=739052 chunkB=368040 pulseB=220824 
+    ⇒ 影子指令 attack pct=122 → REVOLUTION#28[T1]（约 221039 兵）
+t=4665 sora_w B=1840200 L=12268 d=150.0 nb=1 neut=0 cmds=102 noFull=1 shQ=380117 | m=0.900 worth=135.0 cheap=8.1 over=1 dMedOther=101.7 safe(-1)=1079584
+    → REVOLUTION#28[T1] terr=25921 bal=2748565 dq=106.0 cnt=42 | c=406.3 rankC=406.3 need=4937858 tD=1.04 人 pulse | safe=1079584 keep=1079584 avail=739052 chunkB=368040 pulseB=220824 
+    ⇒ 影子指令 attack pct=122 → REVOLUTION#28[T1]（约 221039 兵）
