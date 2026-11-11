@@ -210,6 +210,25 @@ def one(mid):
                      'recipDensBefore': round(st.median(rdens_b), 1) if rdens_b else None, 'recipDensAfter': round(st.median(rdens_a), 1) if rdens_a else None})
     R['donations'] = wins
 
+    # ---- F. 人均地：编队 对 其余真人（HS 每 300 拍、全部真人席位；已阵亡/离场的按当时的地算，阵亡 = 0）----
+    hs = J['HS']
+    pcap = {}
+    for i, t in enumerate(hs['t']):
+        if t not in (300, 600, 900, 1200, 1500, 2100, 3000, 4200):
+            continue
+        terr, bal = hs['terr'][i], hs['bal'][i]
+        s_l = [terr[p] for p in sq]
+        o_l = [terr[p['id']] for p in J['players'] if p['id'] not in sq]
+        s_b = [bal[p] for p in sq]
+        o_b = [bal[p['id']] for p in J['players'] if p['id'] not in sq]
+        if not o_l or not sum(o_l):
+            continue
+        pcap[t] = {'squadMean': sum(s_l) / len(s_l), 'othersMean': sum(o_l) / len(o_l), 'ratio': (sum(s_l) / len(s_l)) / (sum(o_l) / len(o_l)),
+                   'squadShareOfHumanLand': sum(s_l) / (sum(s_l) + sum(o_l)), 'headShare': len(s_l) / (len(s_l) + len(o_l)),
+                   'balRatio': ((sum(s_b) / len(s_b)) / (sum(o_b) / len(o_b))) if sum(o_b) else None,
+                   'humanLandOfMap': (sum(s_l) + sum(o_l)) / J['map']['land']}
+    R['perCapita'] = pcap
+
     # ---- E. 阵亡 / 离场 ----
     dth = []
     for p, b in sq.items():
@@ -362,6 +381,50 @@ def render(RS):
         t = tot[i]
         if t['n']:
             w(f"| 13 局合计 | | {nm} | {t['n']:.0f} | {k(t['arrived'])} | {k(t['tax'])} | {pc(t['pingpongArrived'], t['arrived'])} | {pc(t['recipLost20'], t['recipKnownArrived'])} | {pc(t['recipGrew20'], t['recipKnownArrived'])} | | |")
+    # ---- 7（放在 6 前面）----
+    w('')
+    w('## 7. 人均地与人均兵：编队 对 同一盘的其余真人（按席位平均）')
+    w('')
+    w('每格 = 编队每个席位的平均地 ÷ 其余真人每个席位的平均地（括号里是人均存兵的比值）。分母是全部真人席位（已阵亡的按 0、已离场的按当时的地），')
+    w('所以 1.00 = 编队拿到了与人数相称的那一份「真人手里的地」；与 REVIEW-ROLLUP 第 2 节（在场真人的中位数之比）口径不同、互为补充。')
+    w('')
+    TS = (300, 600, 900, 1200, 1500, 2100, 3000, 4200)
+    w('| 局 | 结果 | ' + ' | '.join(f'{t} 拍' for t in TS) + ' | 1500 拍真人手里的地占全图 |')
+    w('| --: | --: | ' + ' | '.join('--:' for _ in TS) + ' | --: |')
+    cols = defaultdict(list)
+    for R in RS:
+        cells = []
+        for t in TS:
+            x = R['perCapita'].get(t)
+            if not x or not x['squadMean']:
+                cells.append('–')
+                continue
+            cols[t].append(x['ratio'])
+            cells.append(f"{x['ratio']:.2f}" + (f"（{x['balRatio']:.2f}）" if x.get('balRatio') is not None else ''))
+        h = R['perCapita'].get(1500)
+        w(f"| {R['mid']} | {R['result']} | " + ' | '.join(cells) + f" | {pc(h['humanLandOfMap'], 1) if h else '–'} |")
+    w('| 中位（<1 的局数/有数的局数） | | ' + ' | '.join((f"{st.median(cols[t]):.2f}（{sum(1 for x in cols[t] if x < 1)}/{len(cols[t])}）" if cols[t] else '–') for t in TS) + ' | |')
+    balm = {t: [R['perCapita'][t]['balRatio'] for R in RS if R['perCapita'].get(t) and R['perCapita'][t]['squadMean'] and R['perCapita'][t].get('balRatio') is not None] for t in TS}
+    w('| 人均存兵比值的中位（>1 的局数） | | ' + ' | '.join((f"{st.median(balm[t]):.2f}（{sum(1 for x in balm[t] if x > 1)}/{len(balm[t])}）" if balm[t] else '–') for t in TS) + ' | |')
+    # 延迟波局（决策级延迟账：600–1500 拍落地指令延迟 P50 ≥ 60 拍；reviews/<局>.json 的 delayAccount）对 其余局
+    lag = set()
+    for R in RS:
+        try:
+            D = json.load(open(os.path.join(HERE, '..', 'reviews', f"{R['mid']}.json")))['delayAccount']
+            bp = {r['period']: r for r in D.get('delayByPeriod') or []}
+            if ((bp.get('600–1500') or {}).get('p50') or 0) >= 60:
+                lag.add(R['mid'])
+        except (OSError, KeyError):
+            pass
+    w('')
+    for lab, sel in ((f'延迟波局（{len(lag)} 局：' + '、'.join(sorted(lag)) + '）', lambda R: R['mid'] in lag), ('其余局', lambda R: R['mid'] not in lag)):
+        parts = []
+        for t in (600, 1200, 1500, 2100):
+            v = [R['perCapita'][t]['ratio'] for R in RS if sel(R) and R['perCapita'].get(t) and R['perCapita'][t]['squadMean']]
+            b = [R['perCapita'][t]['balRatio'] for R in RS if sel(R) and R['perCapita'].get(t) and R['perCapita'][t]['squadMean'] and R['perCapita'][t].get('balRatio') is not None]
+            if v:
+                parts.append(f'{t} 拍 地 {st.median(v):.2f}（兵 {st.median(b):.2f}）')
+        w(f'- {lab}人均地比值的中位：' + '；'.join(parts) + '。')
     # ---- 6 ----
     w('')
     w('## 6. 我方号的结局（录像这一盘）')

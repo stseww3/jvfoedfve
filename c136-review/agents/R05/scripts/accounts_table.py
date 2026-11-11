@@ -225,6 +225,47 @@ for name, G in (('延迟波局', LAG), ('其余局', OK)):
             o1500.append(cap[1500].get('othersMedianRatio', 0))
     if r630:
         P(f"- {name}：编队 实际÷名下 630 拍中位 {med(r630):.2f} → 1500 拍中位 {med(r1500):.2f}；同局其余真人 1500 拍中位的中位 {med(o1500):.2f}；1500 拍编队低于其余真人中位的局 {sum(1 for x, y in zip(r1500, o1500) if x < y)}/{len(r1500)}。")
+bs = []
+for m in ids:
+    L = J[m].get('landAccount') or {}
+    bl = L.get('botLand') or {}
+    rr = ((bl.get('fate') or {}).get('C') or [None])[-1]
+    tot = (bl.get('C') or {}).get('tiles')
+    hs = (L.get('voronoi') or {}).get('headShare')
+    if rr and tot and hs:
+        bs.append((m, rr.get('我方号', 0) / tot / hs))
+if bs:
+    P(f"- 全图机器人地（600 拍时机器人占着的地，到 1800 拍的去向）我方拿到的份额 ÷ 人数占比：中位 {med([x for _, x in bs]):.2f}（{min(x for _, x in bs):.2f}–{max(x for _, x in bs):.2f}），<1 的 {sum(1 for _, x in bs if x < 1)}/{len(bs)} 局；"
+      + '、'.join(f'{m} {x:.2f}' for m, x in bs) + '。')
+P('')
+P('把 1500 拍的落后拆成两个因子：**出生份额** = 名下÷人数（出生点分到的陆地是不是与人数相称）；**相对拿地** = 编队的 实际÷名下 ÷ 同局其余真人的中位（分到的地拿到手的程度，与别人比）。两者的乘积近似等于编队人均地 ÷ 其余真人人均地（`cross_ledger.py` 第 7 节按席位平均的实测值列在最后一列对照）。')
+P('')
+rows = []
+fac = {'延迟波局': [], '其余局': []}
+try:
+    CL = {r['mid']: r for r in json.load(open(os.path.join(HERE, '..', 'out', 'cross-ledger.json'), encoding='utf-8'))}
+except OSError:
+    CL = {}
+for m in ids:
+    L = J[m].get('landAccount') or {}
+    V = L.get('voronoi') or {}
+    cap = {c['t']: c for c in L.get('capture') or []}
+    c = cap.get(1500) or {}
+    g = (c.get('groups') or {}).get('我方号') or {}
+    if not V.get('ratio') or not g.get('ratio') or not c.get('othersMedianRatio'):
+        continue
+    rel = g['ratio'] / c['othersMedianRatio']
+    pcap = ((CL.get(m) or {}).get('perCapita') or {}).get('1500') or {}
+    fac['延迟波局' if m in LAG else '其余局'].append((V['ratio'], rel))
+    rows.append([m + ('＊' if m in LAG else ''), f"{V['ratio']:.2f}", f"{rel:.2f}", f"{V['ratio'] * rel:.2f}", f"{pcap['ratio']:.2f}" if pcap.get('ratio') else '–'])
+table(['局', '出生份额（名下÷人数）', '相对拿地（1500 拍）', '乘积', '实测：编队人均地÷其余真人人均地（1500 拍）'], rows)
+for name in ('延迟波局', '其余局'):
+    v = fac[name]
+    if v:
+        P(f"- {name}（{len(v)} 局）：出生份额中位 {med([x for x, _ in v]):.2f}（<1 的 {sum(1 for x, _ in v if x < 1)}/{len(v)}）；相对拿地中位 {med([y for _, y in v]):.2f}（<1 的 {sum(1 for _, y in v if y < 1)}/{len(v)}）。")
+allv = fac['延迟波局'] + fac['其余局']
+if allv:
+    P(f"- 13 局合并：出生份额中位 {med([x for x, _ in allv]):.2f}（{min(x for x, _ in allv):.2f}–{max(x for x, _ in allv):.2f}，<1 的 {sum(1 for x, _ in allv if x < 1)}/{len(allv)}）。")
 P('')
 
 # ---------- 表 6 三层归因 ----------
