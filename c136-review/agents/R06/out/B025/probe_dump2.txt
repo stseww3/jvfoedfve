@@ -1,0 +1,125 @@
+[探针·开局段] t=715 Deadpool(17·队3) 地 3530 兵 9567 密 2.7 ｜策略眼里 nb=11 neut=10 ｜dpKeep=0 safeFinite=11k（经由 Wadai Empire(363·AI)；它的另一个邻居 Vatican City(30·队4)·我方号·异队）
+        邻居 Husainid Dynasty(213·AI) 非真人 接16 地156 兵135 price=4.8 → L1197 可用兵 -1443 <= minSend(0.2141)×兵=2048：底线 11k = max(winR 项 8740, dpKeep 0, safeFinite 11k〔经由 Wadai Empire(363·AI) 的另一个邻居 Vatican City(30·队4)·我方号·异队〕)；去掉 safeFinite 项仍不够
+        邻居 United Arab Republic(428·AI) 非真人 接42 地225 兵246 price=5.5 → L2147 botOk=false：botPx=3.9 > winWorth=3.9（=winR×t×自己密度）
+        邻居 Kingdom of Poland(389·AI) 非真人 接13 地494 兵458 price=5.0 → L1197 可用兵 -1443 <= minSend(0.2141)×兵=2048：底线 11k = max(winR 项 9011, dpKeep 0, safeFinite 11k〔经由 Wadai Empire(363·AI) 的另一个邻居 Vatican City(30·队4)·我方号·异队〕)；去掉 safeFinite 项仍不够
+        邻居 Tu'i Tonga Empire(339·AI) 非真人 接11 地710 兵30 price=2.1 → L1197 可用兵 -1443 <= minSend(0.2141)×兵=2048：底线 11k = max(winR 项 5123, dpKeep 0, safeFinite 11k〔经由 Wadai Empire(363·AI) 的另一个邻居 Vatican City(30·队4)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Byzantine Empire(160·AI) 非真人 接27 地281 兵322 price=5.7 → L2147 botOk=false：botPx=4.0 > winWorth=3.9（=winR×t×自己密度）
+        邻居 Chauhan Dynasty(167·AI) 非真人 接23 地179 兵141 price=4.5 → L1197 可用兵 -1443 <= minSend(0.2141)×兵=2048：底线 11k = max(winR 项 8398, dpKeep 0, safeFinite 11k〔经由 Wadai Empire(363·AI) 的另一个邻居 Vatican City(30·队4)·我方号·异队〕)；去掉 safeFinite 项仍不够
+        邻居 Idrisid Dynasty(404·AI) 非真人 接29 地826 兵828 price=5.2 → L1197 可用兵 -1443 <= minSend(0.2141)×兵=2048：底线 11k = max(winR 项 9342, dpKeep 0, safeFinite 11k〔经由 Wadai Empire(363·AI) 的另一个邻居 Vatican City(30·队4)·我方号·异队〕)；去掉 safeFinite 项仍不够
+        邻居 Wadai Empire(363·AI) 非真人 接43 地283 兵348 price=5.9 → L2147 botOk=false：botPx=4.2 > winWorth=3.9（=winR×t×自己密度）
+        邻居 Shilluk Kingdom(368·AI) 非真人 接17 地283 兵379 price=6.3 → L2147 botOk=false：botPx=4.4 > winWorth=3.9（=winR×t×自己密度）
+        邻居 Kingdom of Nauru(88·AI) 非真人 接2 地689 兵1309 price=8.1 → L2147 botOk=false：botPx=5.4 > winWorth=3.9（=winR×t×自己密度）
+        邻居 Jolof Empire(223·AI) 非真人 接59 地437 兵443 price=5.2 → L1197 可用兵 -1443 <= minSend(0.2141)×兵=2048：底线 11k = max(winR 项 9391, dpKeep 0, safeFinite 11k〔经由 Wadai Empire(363·AI) 的另一个邻居 Vatican City(30·队4)·我方号·异队〕)；去掉 safeFinite 项仍不够
+        影子 act() 这一拍发出：无
+[探针·开局段] t=715 Vatican City(30·队4) 地 2573 兵 11k 密 4.3 ｜策略眼里 nb=5 neut=0 ｜dpKeep=0 safeFinite=9567（经由 Wadai Empire(363·AI)；它的另一个邻居 Deadpool(17·队3)·我方号·异队）
+        邻居 Wadai Empire(363·AI) 非真人 接20 地283 兵348 price=5.9 → L1197 可用兵 1443 <= minSend(0.2141)×兵=2357：底线 9567 = max(winR 项 7537, dpKeep 0, safeFinite 9567〔经由 Wadai Empire(363·AI) 的另一个邻居 Deadpool(17·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Caliphate of Córdoba(161·AI) 非真人 接36 地302 兵336 price=5.6 → L1197 可用兵 1443 <= minSend(0.2141)×兵=2357：底线 9567 = max(winR 项 7162, dpKeep 0, safeFinite 9567〔经由 Wadai Empire(363·AI) 的另一个邻居 Deadpool(17·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Kingdom of Prussia(281·AI) 非真人 接57 地680 兵675 price=5.2 → L1197 可用兵 1443 <= minSend(0.2141)×兵=2357：底线 9567 = max(winR 项 6778, dpKeep 0, safeFinite 9567〔经由 Wadai Empire(363·AI) 的另一个邻居 Deadpool(17·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Tu'i Tonga Empire(339·AI) 非真人 接17 地710 兵30 price=2.1 → L1197 可用兵 1443 <= minSend(0.2141)×兵=2357：底线 9567 = max(winR 项 3734, dpKeep 0, safeFinite 9567〔经由 Wadai Empire(363·AI) 的另一个邻居 Deadpool(17·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Wattasid Dynasty(408·AI) 非真人 接36 地625 兵638 price=5.3 → L1197 可用兵 1443 <= minSend(0.2141)×兵=2357：底线 9567 = max(winR 项 6868, dpKeep 0, safeFinite 9567〔经由 Wadai Empire(363·AI) 的另一个邻居 Deadpool(17·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=745 Deadpool(17·队3) 地 3683 兵 9831 密 2.7 ｜策略眼里 nb=11 neut=2 ｜dpKeep=0 safeFinite=12k（经由 Wadai Empire(363·AI)；它的另一个邻居 Vatican City(30·队4)·我方号·异队）
+        邻居 Tu'i Tonga Empire(339·AI) 非真人 接19 地565 兵24 price=2.1 → L1197 可用兵 -2164 <= minSend(0.2141)×兵=2105：底线 12k = max(winR 项 5131, dpKeep 0, safeFinite 12k〔经由 Wadai Empire(363·AI) 的另一个邻居 Vatican City(30·队4)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Husainid Dynasty(213·AI) 非真人 接16 地176 兵4 price=2.1 → L1197 可用兵 -2164 <= minSend(0.2141)×兵=2105：底线 12k = max(winR 项 5044, dpKeep 0, safeFinite 12k〔经由 Wadai Empire(363·AI) 的另一个邻居 Vatican City(30·队4)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 United Arab Republic(428·AI) 非真人 接43 地241 兵32 price=2.4 → L1197 可用兵 -2164 <= minSend(0.2141)×兵=2105：底线 12k = max(winR 项 5528, dpKeep 0, safeFinite 12k〔经由 Wadai Empire(363·AI) 的另一个邻居 Vatican City(30·队4)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Kingdom of Poland(389·AI) 非真人 接12 地458 兵449 price=5.1 → L1197 可用兵 -2164 <= minSend(0.2141)×兵=2105：底线 12k = max(winR 项 9257, dpKeep 0, safeFinite 12k〔经由 Wadai Empire(363·AI) 的另一个邻居 Vatican City(30·队4)·我方号·异队〕)；去掉 safeFinite 项仍不够
+        邻居 Byzantine Empire(160·AI) 非真人 接27 地281 兵368 price=6.2 → L2147 botOk=false：botPx=4.3 > winWorth=4.0（=winR×t×自己密度）
+        邻居 Chauhan Dynasty(167·AI) 非真人 接22 地156 兵128 price=4.6 → L1197 可用兵 -2164 <= minSend(0.2141)×兵=2105：底线 12k = max(winR 项 8554, dpKeep 0, safeFinite 12k〔经由 Wadai Empire(363·AI) 的另一个邻居 Vatican City(30·队4)·我方号·异队〕)；去掉 safeFinite 项仍不够
+        邻居 Idrisid Dynasty(404·AI) 非真人 接30 地826 兵949 price=5.7 → L2147 botOk=false：botPx=4.0 > winWorth=4.0（=winR×t×自己密度）
+        邻居 Shilluk Kingdom(368·AI) 非真人 接18 地283 兵434 price=6.9 → L2147 botOk=false：botPx=4.7 > winWorth=4.0（=winR×t×自己密度）
+        邻居 Wadai Empire(363·AI) 非真人 接42 地263 兵354 price=6.3 → L2147 botOk=false：botPx=4.4 > winWorth=4.0（=winR×t×自己密度）
+        邻居 Kingdom of Nauru(88·AI) 非真人 接2 地689 兵1502 price=9.0 → L2147 botOk=false：botPx=5.9 > winWorth=4.0（=winR×t×自己密度）
+        邻居 Jolof Empire(223·AI) 非真人 接59 地437 兵507 price=5.7 → L2147 botOk=false：botPx=4.1 > winWorth=4.0（=winR×t×自己密度）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=745 Vatican City(30·队4) 地 2556 兵 10k 密 4.0 ｜策略眼里 nb=5 neut=0 ｜dpKeep=0 safeFinite=8162（经由 Wadai Empire(363·AI)；它的另一个邻居 Deadpool(17·队3)·我方号·异队）
+        邻居 Caliphate of Córdoba(161·AI) 非真人 接37 地339 兵0 price=2.0 → L1197 可用兵 2164 <= minSend(0.2141)×兵=2211：底线 8162 = max(winR 项 3431, dpKeep 0, safeFinite 8162〔经由 Wadai Empire(363·AI) 的另一个邻居 Deadpool(17·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Kingdom of Prussia(281·AI) 非真人 接57 地680 兵17 price=2.1 → L1197 可用兵 2164 <= minSend(0.2141)×兵=2211：底线 8162 = max(winR 项 3507, dpKeep 0, safeFinite 8162〔经由 Wadai Empire(363·AI) 的另一个邻居 Deadpool(17·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Tu'i Tonga Empire(339·AI) 非真人 接12 地565 兵24 price=2.1 → L1197 可用兵 2164 <= minSend(0.2141)×兵=2211：底线 8162 = max(winR 项 3561, dpKeep 0, safeFinite 8162〔经由 Wadai Empire(363·AI) 的另一个邻居 Deadpool(17·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Wattasid Dynasty(408·AI) 非真人 接36 地668 兵731 price=5.5 → L1197 可用兵 2164 <= minSend(0.2141)×兵=2211：底线 8162 = max(winR 项 6772, dpKeep 0, safeFinite 8162〔经由 Wadai Empire(363·AI) 的另一个邻居 Deadpool(17·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Wadai Empire(363·AI) 非真人 接19 地263 兵354 price=6.3 → L1197 可用兵 2164 <= minSend(0.2141)×兵=2211：底线 8162 = max(winR 项 7541, dpKeep 0, safeFinite 8162〔经由 Wadai Empire(363·AI) 的另一个邻居 Deadpool(17·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=765 Mithridates(13·队3) 地 3704 兵 14k 密 3.7 ｜策略眼里 nb=3 neut=0 ｜dpKeep=0 safeFinite=11k（经由 Cebu Rajahnate(164·AI)；它的另一个邻居 FedReserve(21·队2)·我方号·异队）
+        邻居 Toucouleur Empire(338·AI) 非真人 接63 地578 兵31 price=2.2 → L1197 可用兵 2471 <= minSend(0.2141)×兵=2946：底线 11k = max(winR 项 5073, dpKeep 0, safeFinite 11k〔经由 Cebu Rajahnate(164·AI) 的另一个邻居 FedReserve(21·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 British Raj(155·AI) 非真人 接39 地474 兵333 price=4.2 → L1197 可用兵 2471 <= minSend(0.2141)×兵=2946：底线 11k = max(winR 项 7869, dpKeep 0, safeFinite 11k〔经由 Cebu Rajahnate(164·AI) 的另一个邻居 FedReserve(21·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Cebu Rajahnate(164·AI) 非真人 接18 地566 兵855 price=6.8 → L1197 可用兵 2409 <= minSend(0.2141)×兵=2946：底线 11k = max(winR 项 11k, dpKeep 0, safeFinite 11k〔经由 Cebu Rajahnate(164·AI) 的另一个邻居 FedReserve(21·队2)·我方号·异队〕)
+        影子 act() 这一拍发出：无
+[探针·开局段] t=770 FedReserve(21·队2) 地 2789 兵 12k 密 4.2 ｜策略眼里 nb=2 neut=0 ｜dpKeep=0 safeFinite=14k（经由 Cebu Rajahnate(164·AI)；它的另一个邻居 Mithridates(13·队3)·我方号·异队）
+        邻居 Cebu Rajahnate(164·AI) 非真人 接62 地566 兵894 price=7.1 → L1197 可用兵 -2380 <= minSend(0.2141)×兵=2528：底线 14k = max(winR 项 8714, dpKeep 0, safeFinite 14k〔经由 Cebu Rajahnate(164·AI) 的另一个邻居 Mithridates(13·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Almohad Caliphate(131·AI) 非真人 接48 地357 兵12 price=2.1 → L1197 可用兵 -2380 <= minSend(0.2141)×兵=2528：底线 14k = max(winR 项 3730, dpKeep 0, safeFinite 14k〔经由 Cebu Rajahnate(164·AI) 的另一个邻居 Mithridates(13·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=775 Deadpool(17·队3) 地 3845 兵 11k 密 2.9 ｜策略眼里 nb=11 neut=2 ｜dpKeep=0 safeFinite=13k（经由 Wadai Empire(363·AI)；它的另一个邻居 Vatican City(30·队4)·我方号·异队）
+        邻居 Tu'i Tonga Empire(339·AI) 非真人 接16 地308 兵697 price=9.2 → L2147 botOk=false：botPx=6.0 > winWorth=4.6（=winR×t×自己密度）
+        邻居 Husainid Dynasty(213·AI) 非真人 接16 地176 兵48 price=2.9 → L1197 可用兵 -1294 <= minSend(0.2141)×兵=2418：底线 13k = max(winR 项 6166, dpKeep 0, safeFinite 13k〔经由 Wadai Empire(363·AI) 的另一个邻居 Vatican City(30·队4)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 United Arab Republic(428·AI) 非真人 接43 地241 兵35 price=2.5 → L1197 可用兵 -1294 <= minSend(0.2141)×兵=2418：底线 13k = max(winR 项 5603, dpKeep 0, safeFinite 13k〔经由 Wadai Empire(363·AI) 的另一个邻居 Vatican City(30·队4)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Kingdom of Poland(389·AI) 非真人 接12 地458 兵512 price=5.6 → L1197 可用兵 -1294 <= minSend(0.2141)×兵=2418：底线 13k = max(winR 项 9897, dpKeep 0, safeFinite 13k〔经由 Wadai Empire(363·AI) 的另一个邻居 Vatican City(30·队4)·我方号·异队〕)；去掉 safeFinite 项仍不够
+        邻居 Byzantine Empire(160·AI) 非真人 接27 地281 兵420 price=6.8 → L2147 botOk=false：botPx=4.7 > winWorth=4.6（=winR×t×自己密度）
+        邻居 Chauhan Dynasty(167·AI) 非真人 接22 地156 兵4 price=2.1 → L1197 可用兵 -1294 <= minSend(0.2141)×兵=2418：底线 13k = max(winR 项 5075, dpKeep 0, safeFinite 13k〔经由 Wadai Empire(363·AI) 的另一个邻居 Vatican City(30·队4)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Idrisid Dynasty(404·AI) 非真人 接30 地748 兵927 price=6.0 → L1197 可用兵 -1294 <= minSend(0.2141)×兵=2418：底线 13k = max(winR 项 10k, dpKeep 0, safeFinite 13k〔经由 Wadai Empire(363·AI) 的另一个邻居 Vatican City(30·队4)·我方号·异队〕)；去掉 safeFinite 项仍不够
+        邻居 Shilluk Kingdom(368·AI) 非真人 接18 地283 兵495 price=7.6 → L2147 botOk=false：botPx=5.1 > winWorth=4.6（=winR×t×自己密度）
+        邻居 Wadai Empire(363·AI) 非真人 接26 地103 兵89 price=4.7 → L1197 可用兵 -1294 <= minSend(0.2141)×兵=2418：底线 13k = max(winR 项 8777, dpKeep 0, safeFinite 13k〔经由 Wadai Empire(363·AI) 的另一个邻居 Vatican City(30·队4)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Kingdom of Nauru(88·AI) 非真人 接2 地689 兵1718 price=10.0 → L2147 botOk=false：botPx=6.4 > winWorth=4.6（=winR×t×自己密度）
+        邻居 Jolof Empire(223·AI) 非真人 接59 地437 兵579 price=6.2 → L1197 可用兵 -1294 <= minSend(0.2141)×兵=2418：底线 13k = max(winR 项 11k, dpKeep 0, safeFinite 13k〔经由 Wadai Empire(363·AI) 的另一个邻居 Vatican City(30·队4)·我方号·异队〕)；去掉 safeFinite 项仍不够
+        影子 act() 这一拍发出：无
+[探针·开局段] t=775 Vatican City(30·队4) 地 2716 兵 12k 密 4.4 ｜策略眼里 nb=5 neut=0 ｜dpKeep=0 safeFinite=11k（经由 Wadai Empire(363·AI)；它的另一个邻居 Deadpool(17·队3)·我方号·异队）
+        邻居 Wadai Empire(363·AI) 非真人 接15 地103 兵89 price=4.7 → L1197 可用兵 1294 <= minSend(0.2141)×兵=2531：底线 11k = max(winR 项 6200, dpKeep 0, safeFinite 11k〔经由 Wadai Empire(363·AI) 的另一个邻居 Deadpool(17·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Caliphate of Córdoba(161·AI) 非真人 接37 地339 兵0 price=2.0 → L1197 可用兵 1294 <= minSend(0.2141)×兵=2531：底线 11k = max(winR 项 3505, dpKeep 0, safeFinite 11k〔经由 Wadai Empire(363·AI) 的另一个邻居 Deadpool(17·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Kingdom of Prussia(281·AI) 非真人 接60 地796 兵33 price=2.1 → L1197 可用兵 1294 <= minSend(0.2141)×兵=2531：底线 11k = max(winR 项 3634, dpKeep 0, safeFinite 11k〔经由 Wadai Empire(363·AI) 的另一个邻居 Deadpool(17·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Wattasid Dynasty(408·AI) 非真人 接33 地557 兵1018 price=7.8 → L1197 可用兵 1294 <= minSend(0.2141)×兵=2531：底线 11k = max(winR 项 9205, dpKeep 0, safeFinite 11k〔经由 Wadai Empire(363·AI) 的另一个邻居 Deadpool(17·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Tu'i Tonga Empire(339·AI) 非真人 接5 地308 兵697 price=9.2 → L1197 可用兵 1260 <= minSend(0.2141)×兵=2531：底线 11k = max(winR 项 11k, dpKeep 0, safeFinite 11k〔经由 Wadai Empire(363·AI) 的另一个邻居 Deadpool(17·队3)·我方号·异队〕)
+        影子 act() 这一拍发出：无
+[探针·开局段] t=860 Mithridates(13·队3) 地 3674 兵 25k 密 6.8 ｜策略眼里 nb=2 neut=0 ｜dpKeep=0 safeFinite=20k（经由 Cebu Rajahnate(164·AI)；它的另一个邻居 FedReserve(21·队2)·我方号·异队）
+        邻居 Toucouleur Empire(338·AI) 非真人 接63 地578 兵817 price=6.5 → L1197 可用兵 5337 <= minSend(0.2141)×兵=5373：底线 20k = max(winR 项 9646, dpKeep 0, safeFinite 20k〔经由 Cebu Rajahnate(164·AI) 的另一个邻居 FedReserve(21·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Cebu Rajahnate(164·AI) 非真人 接19 地630 兵586 price=5.0 → L1197 可用兵 5337 <= minSend(0.2141)×兵=5373：底线 20k = max(winR 项 7809, dpKeep 0, safeFinite 20k〔经由 Cebu Rajahnate(164·AI) 的另一个邻居 FedReserve(21·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=865 FedReserve(21·队2) 地 2674 兵 18k 密 6.8 ｜策略眼里 nb=2 neut=0 ｜dpKeep=0 safeFinite=25k（经由 Cebu Rajahnate(164·AI)；它的另一个邻居 Mithridates(13·队3)·我方号·异队）
+        邻居 Cebu Rajahnate(164·AI) 非真人 接64 地630 兵586 price=5.0 → L1197 可用兵 -7015 <= minSend(0.2141)×兵=3872：底线 25k = max(winR 项 5650, dpKeep 0, safeFinite 25k〔经由 Cebu Rajahnate(164·AI) 的另一个邻居 Mithridates(13·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Almohad Caliphate(131·AI) 非真人 接50 地408 兵101 price=2.8 → L1197 可用兵 -7015 <= minSend(0.2141)×兵=3872：底线 25k = max(winR 项 3772, dpKeep 0, safeFinite 25k〔经由 Cebu Rajahnate(164·AI) 的另一个邻居 Mithridates(13·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=955 Mithridates(13·队3) 地 4103 兵 31k 密 7.7 ｜策略眼里 nb=2 neut=0 ｜dpKeep=0 safeFinite=25k（经由 Cebu Rajahnate(164·AI)；它的另一个邻居 FedReserve(21·队2)·我方号·异队）
+        邻居 Cebu Rajahnate(164·AI) 非真人 接22 地203 兵0 price=2.0 → L1197 可用兵 6587 <= minSend(0.2141)×兵=6728：底线 25k = max(winR 项 4296, dpKeep 0, safeFinite 25k〔经由 Cebu Rajahnate(164·AI) 的另一个邻居 FedReserve(21·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Toucouleur Empire(338·AI) 非真人 接65 地643 兵0 price=2.0 → L1197 可用兵 6587 <= minSend(0.2141)×兵=6728：底线 25k = max(winR 项 4296, dpKeep 0, safeFinite 25k〔经由 Cebu Rajahnate(164·AI) 的另一个邻居 FedReserve(21·队2)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=960 FedReserve(21·队2) 地 3015 兵 31k 密 10.2 ｜策略眼里 nb=1 neut=0 ｜dpKeep=0 safeFinite=37k（经由 Cebu Rajahnate(164·AI)；它的另一个邻居 Mithridates(13·队3)·我方号·异队）
+        邻居 Cebu Rajahnate(164·AI) 非真人 接31 地159 兵0 price=2.0 → L1197 可用兵 -6578 <= minSend(0.2141)×兵=6553：底线 37k = max(winR 项 3141, dpKeep 0, safeFinite 37k〔经由 Cebu Rajahnate(164·AI) 的另一个邻居 Mithridates(13·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1100 Mali(14·队5) 地 3125 兵 58k 密 18.6 ｜策略眼里 nb=4 neut=35 ｜dpKeep=26k safeFinite=57k（经由 Aztec Empire(141·AI)；它的另一个邻居 Cuirassier(18·队3)·我方号·异队）
+        邻居 Ashikaga Shogunate(492·AI) 非真人 接60 地916 兵0 price=2.0 → L1197 可用兵 715 <= minSend(0.2141)×兵=12k：底线 57k = max(winR 项 2841, dpKeep 26k, safeFinite 57k〔经由 Aztec Empire(141·AI) 的另一个邻居 Cuirassier(18·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 [OG]0r@nge(54·队3) 真人 接152 地4977 兵43k price=29.8 → L1197 可用兵 -33k 不足（底线 91k）
+        邻居 Aztec Empire(141·AI) 非真人 接42 地439 兵966 price=9.0 → L1197 可用兵 715 <= minSend(0.2141)×兵=12k：底线 57k = max(winR 项 8405, dpKeep 26k, safeFinite 57k〔经由 Aztec Empire(141·AI) 的另一个邻居 Cuirassier(18·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Imperatorius(5·队2) 真人 接53 地8859 兵51k price=20.5 → L1197 可用兵 -33k 不足（底线 91k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1100 Cuirassier(18·队3) 地 6974 兵 57k 密 8.2 ｜策略眼里 nb=4 neut=26 ｜dpKeep=23k safeFinite=58k（经由 Aztec Empire(141·AI)；它的另一个邻居 Mali(14·队5)·我方号·异队）
+        邻居 Aztec Empire(141·AI) 非真人 接45 地439 兵966 price=9.0 → L1197 可用兵 -715 <= minSend(0.2141)×兵=12k：底线 58k = max(winR 项 19k, dpKeep 23k, safeFinite 58k〔经由 Aztec Empire(141·AI) 的另一个邻居 Mali(14·队5)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Imperatorius(5·队2) 真人 接38 地8859 兵51k price=20.5 → L1197 可用兵 -62k 不足（底线 119k）
+        邻居 */1/*(57·队2) 真人 接38 地7626 兵46k price=21.4 → L1197 可用兵 -67k 不足（底线 124k）
+        邻居 Gaza Empire(189·AI) 非真人 接24 地1573 兵1586 price=5.2 → L1197 可用兵 -715 <= minSend(0.2141)×兵=12k：底线 58k = max(winR 项 12k, dpKeep 23k, safeFinite 58k〔经由 Aztec Empire(141·AI) 的另一个邻居 Mali(14·队5)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1150 Mali(14·队5) 地 3125 兵 69k 密 22.0 ｜策略眼里 nb=4 neut=0 ｜dpKeep=32k safeFinite=78k（经由 Aztec Empire(141·AI)；它的另一个邻居 Cuirassier(18·队3)·我方号·异队）
+        邻居 Ashikaga Shogunate(492·AI) 非真人 接60 地916 兵0 price=2.0 → L1197 可用兵 -8806 <= minSend(0.2141)×兵=15k：底线 78k = max(winR 项 2717, dpKeep 32k, safeFinite 78k〔经由 Aztec Empire(141·AI) 的另一个邻居 Cuirassier(18·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 [OG]0r@nge(54·队3) 真人 接152 地5011 兵57k price=38.4 → L1197 可用兵 -31k 不足（底线 100k）
+        邻居 Aztec Empire(141·AI) 非真人 接42 地439 兵1143 price=10.3 → L1197 可用兵 -8806 <= minSend(0.2141)×兵=15k：底线 78k = max(winR 项 9014, dpKeep 32k, safeFinite 78k〔经由 Aztec Empire(141·AI) 的另一个邻居 Cuirassier(18·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Imperatorius(5·队2) 真人 接53 地9828 兵61k price=21.8 → L1197 可用兵 -22k 不足（底线 91k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1150 Cuirassier(18·队3) 地 7121 兵 78k 密 10.9 ｜策略眼里 nb=4 neut=0 ｜dpKeep=28k safeFinite=69k（经由 Aztec Empire(141·AI)；它的另一个邻居 Mali(14·队5)·我方号·异队）
+        邻居 Aztec Empire(141·AI) 非真人 接45 地439 兵1143 price=10.3 → L1197 可用兵 8806 <= minSend(0.2141)×兵=17k：底线 69k = max(winR 项 21k, dpKeep 28k, safeFinite 69k〔经由 Aztec Empire(141·AI) 的另一个邻居 Mali(14·队5)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Imperatorius(5·队2) 真人 接38 地9828 兵61k price=21.8 → L1197 可用兵 -52k 不足（底线 129k）
+        邻居 */1/*(57·队2) 真人 接38 地8417 兵45k price=19.3 → L1197 可用兵 -37k 不足（底线 114k）
+        邻居 Gaza Empire(189·AI) 非真人 接24 地1573 兵1905 price=5.9 → L1197 可用兵 8806 <= minSend(0.2141)×兵=17k：底线 69k = max(winR 项 13k, dpKeep 28k, safeFinite 69k〔经由 Aztec Empire(141·AI) 的另一个邻居 Mali(14·队5)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1200 Mali(14·队5) 地 3019 兵 80k 密 26.4 ｜策略眼里 nb=4 neut=0 ｜dpKeep=38k safeFinite=98k（经由 Aztec Empire(141·AI)；它的另一个邻居 Cuirassier(18·队3)·我方号·异队）
+        邻居 Aztec Empire(141·AI) 非真人 接44 地483 兵0 price=2.0 → L1197 可用兵 -18k <= minSend(0.2141)×兵=17k：底线 98k = max(winR 项 2516, dpKeep 38k, safeFinite 98k〔经由 Aztec Empire(141·AI) 的另一个邻居 Cuirassier(18·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Ashikaga Shogunate(492·AI) 非真人 接62 地978 兵0 price=2.0 → L1197 可用兵 -18k <= minSend(0.2141)×兵=17k：底线 98k = max(winR 项 2516, dpKeep 38k, safeFinite 98k〔经由 Aztec Empire(141·AI) 的另一个邻居 Cuirassier(18·队3)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 [OG]0r@nge(54·队3) 真人 接152 地5011 兵72k price=48.0 → L1197 可用兵 -41k 不足（底线 121k）
+        邻居 Imperatorius(5·队2) 真人 接53 地10958 兵72k price=23.1 → L1197 可用兵 -20k 不足（底线 99k）
+        影子 act() 这一拍发出：无
+[探针·开局段] t=1200 Cuirassier(18·队3) 地 7097 兵 98k 密 13.8 ｜策略眼里 nb=4 neut=0 ｜dpKeep=35k safeFinite=80k（经由 Aztec Empire(141·AI)；它的另一个邻居 Mali(14·队5)·我方号·异队）
+        邻居 Gaza Empire(189·AI) 非真人 接24 地1132 兵1165 price=5.3 → L1197 可用兵 18k <= minSend(0.2141)×兵=21k：底线 80k = max(winR 项 11k, dpKeep 35k, safeFinite 80k〔经由 Aztec Empire(141·AI) 的另一个邻居 Mali(14·队5)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Aztec Empire(141·AI) 非真人 接46 地483 兵0 price=2.0 → L1197 可用兵 18k <= minSend(0.2141)×兵=21k：底线 80k = max(winR 项 5914, dpKeep 35k, safeFinite 80k〔经由 Aztec Empire(141·AI) 的另一个邻居 Mali(14·队5)·我方号·异队〕)；去掉 safeFinite 项就能出兵
+        邻居 Imperatorius(5·队2) 真人 接38 地10958 兵72k price=23.1 → L1197 可用兵 -39k 不足（底线 136k）
+        邻居 */1/*(57·队2) 真人 接38 地9476 兵50k price=18.8 → L1197 可用兵 -13k 不足（底线 111k）
+        影子 act() 这一拍发出：无
+B025: 干净模拟器 vs 真引擎重放：全体真人在采样拍一致到 t=1435，没有不同
+        我方号分叉后的最大偏差（兵力相对值@拍，领土格数@拍）：没有
+        我方号逐拍第一处不同：没有
+B025: 影子重演到 t=1435，耗时 3.6s；日志快照核对 260/260；策略 c110，g.online=true
+影子的 isNoFullSend 置真拍（按代码 L3831-3843 的条件在真实余额轨迹上演化；影子的指令不执行，余额下跌只来自录像里真实执行的指令和挨打）：FedReserve@795，Mithridates@532，Mali@539，Deadpool@637，Vatican City@605｜始终为假：Cuirassier
