@@ -101,7 +101,7 @@ def one(mid, cards, replays):
     S = set(seats.values())
     r = {'mid': mid, 'cohort': card['cohort'], 'result': card['outcome']['resultLabel'], 'won': int(bool(card['outcome']['primaryTeamWon'])),
          'replay': meta.get('replayOf') or best, 'endTick': card['outcome']['endTick'], 'lastTick': L, 'humans': H, 'squad': len(S), 'multi': int(multi)}
-    r['teams'] = card.get('actualTeams')
+    r['teams'] = 0 if card.get('mode') in (7, 8) else card.get('nominalTeams')   # 引擎的队数（含没有真人的队）；有真人的队数见 joined.csv 的 teams
 
     by_seat = defaultdict(list)
     leave = {}
@@ -200,7 +200,7 @@ def one(mid, cards, replays):
     r['batches'], r['batchRows'], r['maxPerTick'], r['repeats'] = burst_stats(S)
     others = set(range(H)) - S
     ob, orows, omx, orep = burst_stats(others)
-    r['oBatches'], r['oMaxPerTick'] = ob, omx
+    r['oBatches'], r['oBatchRows'], r['oMaxPerTick'] = ob, orows, omx
     r['atkLanded'] = sum(1 for p in S for t, k, _, _ in by_seat.get(p, []) if k == 'attack' and t >= 0)
     r['oAtkLanded'] = sum(1 for p in others for t, k, _, _ in by_seat.get(p, []) if k == 'attack' and t >= 0)
 
@@ -281,7 +281,7 @@ def main():
               f"600–1500 拍这一段的比值 < 0.7 的 {len(low)}/{len(full)} 局（其中主队赢 {sum(r['won'] for r in low)} 局；≥ 0.7 的 {len(full) - len(low)} 局里赢 {sum(r['won'] for r in full if r not in low)} 局）")
         print(f"#      捐兵 日志 {sum(r['logDon'] for r in L)} 行 → 录像落地 {sum(r['landDon'] for r in L)} 条；给已离场席位的 {sum(r['donToLeft'] for r in L)} 条（{sum(1 for r in L if r['donToLeft'])} 局）")
         print(f"#      同拍 ≥3 条陆攻的批次：本队 {sum(r['batches'] for r in L)} 个 {sum(r['batchRows'] for r in L)} 条（占本队落地陆攻 {100 * sum(r['batchRows'] for r in L) / max(1, sum(r['atkLanded'] for r in L)):.1f}%），有批次的 {sum(1 for r in L if r['batches'])} 局；"
-              f"单席位单拍最多 {max(r['maxPerTick'] for r in L)} 条；其他真人 {sum(r['oBatches'] for r in L)} 个批次 / {sum(r['oAtkLanded'] for r in L)} 条陆攻，单拍最多 {max(r['oMaxPerTick'] for r in L)} 条")
+              f"单席位单拍最多 {max(r['maxPerTick'] for r in L)} 条；其他真人 {sum(r['oBatches'] for r in L)} 个批次 {sum(r['oBatchRows'] for r in L)} 条 / {sum(r['oAtkLanded'] for r in L)} 条陆攻（{100 * sum(r['oBatchRows'] for r in L) / max(1, sum(r['oAtkLanded'] for r in L)):.1f}%；同局另一支编队的号也算在“其他真人”里），单拍最多 {max(r['oMaxPerTick'] for r in L)} 条")
         print(f"#      21 拍内对同一目标同一 pct 重复落地 {sum(r['repeats'] for r in L)} 条（占本队落地陆攻 {100 * sum(r['repeats'] for r in L) / max(1, sum(r['atkLanded'] for r in L)):.1f}%）")
         l15 = [r for r in L if r['left1500'] is not None]
         l25 = [r for r in L if r['left2500'] is not None]

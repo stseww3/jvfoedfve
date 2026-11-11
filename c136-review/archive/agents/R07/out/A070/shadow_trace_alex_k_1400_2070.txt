@@ -1,0 +1,475 @@
+# A070 alex_k 影子决策明细 t=1400~2070（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   出手打人/bot: 135 拍（t=1400~2070）；可用兵 77967~322769，一条指令下限(20%余额) 34440~97248，比值 204%~444%
+#   └ 「出手打人/bot」里：135 条对人/bot 的出兵共约 15860341 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1400 alex_k B=118074 L=10111 d=11.7 nb=4 neut=6 cmds=92 noFull=1 shQ=27077 | m=1.400 worth=16.3 cheap=3.8 over=0 dMedOther=3.8 safe(-1)=26985
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=118 → AI#280（约 13721 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1405 alex_k B=127230 L=10118 d=12.6 nb=4 neut=0 cmds=93 noFull=1 shQ=30348 | m=1.405 worth=17.7 cheap=3.8 over=0 dMedOther=3.8 safe(-1)=19802
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=106 → AI#280（约 13294 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1410 alex_k B=130525 L=10118 d=12.9 nb=4 neut=0 cmds=94 noFull=1 shQ=32631 | m=1.410 worth=18.2 cheap=3.9 over=0 dMedOther=3.4 safe(-1)=24255
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=216 → AI#280（约 27660 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1415 alex_k B=130525 L=10118 d=12.9 nb=4 neut=0 cmds=95 noFull=1 shQ=32631 | m=1.415 worth=18.3 cheap=3.9 over=0 dMedOther=3.4 safe(-1)=24255
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=206 → AI#280（约 26385 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1420 alex_k B=133866 L=10118 d=13.2 nb=4 neut=0 cmds=96 noFull=1 shQ=33466 | m=1.420 worth=18.8 cheap=3.9 over=0 dMedOther=3.5 safe(-1)=25094
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=191 → AI#280（约 25099 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1425 alex_k B=133866 L=10118 d=13.2 nb=3 neut=0 cmds=97 noFull=1 shQ=33466 | m=1.425 worth=18.9 cheap=3.9 over=0 dMedOther=3.5 safe(-1)=25094
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=526 → Israel Defense Force#15[T1]（约 68893 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1430 alex_k B=137252 L=10118 d=13.6 nb=3 neut=0 cmds=98 noFull=1 shQ=34313 | m=1.430 worth=19.4 cheap=4.0 over=0 dMedOther=3.5 safe(-1)=25944
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=529 → Israel Defense Force#15[T1]（约 71038 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1435 alex_k B=137252 L=10118 d=13.6 nb=3 neut=0 cmds=99 noFull=1 shQ=34313 | m=1.435 worth=19.5 cheap=4.0 over=0 dMedOther=3.5 safe(-1)=25944
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=529 → Israel Defense Force#15[T1]（约 71038 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1440 alex_k B=140683 L=10118 d=13.9 nb=3 neut=0 cmds=100 noFull=1 shQ=35170 | m=1.440 worth=20.0 cheap=4.0 over=0 dMedOther=3.6 safe(-1)=26806
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=531 → Israel Defense Force#15[T1]（约 73089 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1445 alex_k B=140683 L=10118 d=13.9 nb=3 neut=0 cmds=101 noFull=1 shQ=35170 | m=1.445 worth=20.1 cheap=4.0 over=0 dMedOther=3.5 safe(-1)=26806
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=531 → Israel Defense Force#15[T1]（约 73089 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1450 alex_k B=144157 L=10118 d=14.2 nb=3 neut=0 cmds=102 noFull=1 shQ=36039 | m=1.450 worth=20.7 cheap=4.1 over=0 dMedOther=3.6 safe(-1)=27679
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=533 → Israel Defense Force#15[T1]（约 75175 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1455 alex_k B=144157 L=10118 d=14.2 nb=3 neut=0 cmds=103 noFull=1 shQ=36039 | m=1.455 worth=20.7 cheap=4.1 over=0 dMedOther=3.6 safe(-1)=27679
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=533 → Israel Defense Force#15[T1]（约 75175 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1460 alex_k B=147674 L=10118 d=14.6 nb=3 neut=0 cmds=104 noFull=1 shQ=36918 | m=1.460 worth=21.3 cheap=4.1 over=0 dMedOther=3.7 safe(-1)=28562
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=535 → Israel Defense Force#15[T1]（约 77298 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1465 alex_k B=147674 L=10118 d=14.6 nb=3 neut=0 cmds=105 noFull=1 shQ=36918 | m=1.465 worth=21.4 cheap=4.1 over=0 dMedOther=3.7 safe(-1)=28562
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=535 → Israel Defense Force#15[T1]（约 77298 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1470 alex_k B=151218 L=10118 d=14.9 nb=3 neut=0 cmds=106 noFull=1 shQ=37804 | m=1.470 worth=22.0 cheap=4.2 over=0 dMedOther=3.7 safe(-1)=29452
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=537 → Israel Defense Force#15[T1]（约 79448 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1475 alex_k B=151218 L=10118 d=14.9 nb=3 neut=0 cmds=107 noFull=1 shQ=37804 | m=1.475 worth=22.0 cheap=4.2 over=0 dMedOther=3.7 safe(-1)=29452
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=537 → Israel Defense Force#15[T1]（约 79448 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1480 alex_k B=154801 L=10118 d=15.3 nb=3 neut=0 cmds=108 noFull=1 shQ=38700 | m=1.480 worth=22.6 cheap=4.2 over=0 dMedOther=3.8 safe(-1)=30352
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=453 → Israel Defense Force#15[T1]（约 68632 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1485 alex_k B=154801 L=10118 d=15.3 nb=3 neut=0 cmds=109 noFull=1 shQ=38700 | m=1.485 worth=22.7 cheap=4.2 over=0 dMedOther=3.7 safe(-1)=30352
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=453 → Israel Defense Force#15[T1]（约 68632 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1490 alex_k B=158423 L=10118 d=15.7 nb=3 neut=0 cmds=110 noFull=1 shQ=39605 | m=1.490 worth=23.3 cheap=4.3 over=0 dMedOther=3.8 safe(-1)=31262
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=448 → Israel Defense Force#15[T1]（约 69464 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1495 alex_k B=158423 L=10118 d=15.7 nb=3 neut=0 cmds=111 noFull=1 shQ=39605 | m=1.495 worth=23.4 cheap=4.3 over=0 dMedOther=3.3 safe(-1)=23220
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=449 → Israel Defense Force#15[T1]（约 69619 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1500 alex_k B=172200 L=10118 d=17.0 nb=3 neut=0 cmds=112 noFull=1 shQ=40599 | m=1.500 worth=25.5 cheap=4.3 over=0 dMedOther=4.3 safe(-1)=34017
+    → Israel Defense Force#15[T1] terr=21555 bal=34959 dq=1.6 cnt=29 | c=6.0 rankC=6.0 need=94645 tD=0.37 人 | safe=34017 keep=92216 avail=77967 chunkB=34440 pulseB=20664  x=77967 hNb=3
+    → Player 191#18[T1] terr=19814 bal=35151 dq=1.8 cnt=70 | c=6.3 rankC=6.3 need=92375 tD=0.41 人 | safe=34017 keep=93678 avail=76505 chunkB=34440 pulseB=20664  x=76505 hNb=3
+    → 🌞#1[T1] terr=17915 bal=75728 dq=4.2 cnt=131 | c=12.1 rankC=12.1 need=161853 tD=0.98 人 | safe=34017 keep=117142 avail=53041 chunkB=34440 pulseB=20664  x=53041 hNb=3
+    ⇒ 影子指令 attack pct=463 → Israel Defense Force#15[T1]（约 78028 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1505 alex_k B=172200 L=10118 d=17.0 nb=3 neut=0 cmds=113 noFull=1 shQ=43050 | m=1.499 worth=25.5 cheap=4.4 over=0 dMedOther=4.3 safe(-1)=34017
+    → Israel Defense Force#15[T1] terr=21678 bal=34959 dq=1.6 cnt=29 | c=5.9 rankC=5.9 need=94829 tD=0.37 人 | safe=34017 keep=92153 avail=78030 chunkB=34440 pulseB=20664  x=78030 hNb=3
+    → Player 191#18[T1] terr=19858 bal=35151 dq=1.8 cnt=70 | c=6.3 rankC=6.3 need=92441 tD=0.41 人 | safe=34017 keep=93667 avail=76516 chunkB=34440 pulseB=20664  x=76516 hNb=3
+    → 🌞#1[T1] terr=18078 bal=75728 dq=4.2 cnt=131 | c=12.0 rankC=12.0 need=162096 tD=0.97 人 | safe=34017 keep=116809 avail=53374 chunkB=34440 pulseB=20664  x=53374 hNb=3
+    ⇒ 影子指令 attack pct=464 → Israel Defense Force#15[T1]（约 78196 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1510 alex_k B=176126 L=10118 d=17.4 nb=3 neut=0 cmds=114 noFull=1 shQ=44031 | m=1.498 worth=26.1 cheap=4.4 over=0 dMedOther=4.4 safe(-1)=34987
+    → Israel Defense Force#15[T1] terr=21759 bal=35756 dq=1.6 cnt=29 | c=6.0 rankC=6.0 need=96372 tD=0.37 人 | safe=34987 keep=94038 avail=80025 chunkB=35225 pulseB=21135  x=80025 hNb=3
+    → Player 191#18[T1] terr=19917 bal=35952 dq=1.8 cnt=70 | c=6.4 rankC=6.4 need=93956 tD=0.41 人 | safe=34987 keep=95596 avail=78467 chunkB=35225 pulseB=21135  x=78467 hNb=3
+    → 🌞#1[T1] terr=18191 bal=77454 dq=4.3 cnt=131 | c=12.2 rankC=12.2 need=165344 tD=0.97 人 | safe=34987 keep=119067 avail=54996 chunkB=35225 pulseB=21135  x=54996 hNb=3
+    ⇒ 影子指令 attack pct=465 → Israel Defense Force#15[T1]（约 80151 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1515 alex_k B=176126 L=10118 d=17.4 nb=3 neut=0 cmds=115 noFull=1 shQ=44031 | m=1.498 worth=26.1 cheap=4.4 over=0 dMedOther=4.4 safe(-1)=34987
+    → Israel Defense Force#15[T1] terr=21966 bal=20358 dq=0.9 cnt=29 | c=0.1 rankC=0.0 need=69236 tD=0.21 人 pulse nearCollapse bleeding | safe=34987 keep=34987 avail=139076 chunkB=35225 pulseB=21135  x=21135 hNb=3
+    → Player 191#18[T1] terr=19942 bal=35952 dq=1.8 cnt=70 | c=6.4 rankC=6.4 need=93995 tD=0.41 人 | safe=34987 keep=95603 avail=78460 chunkB=35225 pulseB=21135  x=78460 hNb=3
+    → 🌞#1[T1] terr=18368 bal=77454 dq=4.2 cnt=131 | c=12.1 rankC=12.1 need=165603 tD=0.96 人 | safe=34987 keep=118707 avail=55356 chunkB=35225 pulseB=21135  x=55356 hNb=3
+    ⇒ 影子指令 attack pct=122 → Israel Defense Force#15[T1]（约 21155 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1520 alex_k B=180088 L=10118 d=17.8 nb=3 neut=0 cmds=116 noFull=1 shQ=45022 | m=1.497 worth=26.6 cheap=4.4 over=0 dMedOther=4.5 safe(-1)=26972
+    → Israel Defense Force#15[T1] terr=21950 bal=20586 dq=0.9 cnt=28 | c=0.1 rankC=0.0 need=69493 tD=0.21 人 pulse nearCollapse bleeding | safe=26972 keep=26972 avail=151006 chunkB=36018 pulseB=21611  x=21610 hNb=3
+    → Player 191#18[T1] terr=19969 bal=54038 dq=2.7 cnt=70 | c=8.5 rankC=8.5 need=126270 tD=0.60 人 | safe=26972 keep=105877 avail=72101 chunkB=36018 pulseB=21611  x=72101 hNb=3
+    → 🌞#1[T1] terr=18494 bal=63188 dq=3.4 cnt=131 | c=10.2 rankC=10.2 need=140368 tD=0.76 人 | safe=26972 keep=112660 avail=65318 chunkB=36018 pulseB=21611  x=65318 hNb=3
+    ⇒ 影子指令 attack pct=122 → Israel Defense Force#15[T1]（约 21631 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1525 alex_k B=180088 L=10118 d=17.8 nb=3 neut=0 cmds=117 noFull=1 shQ=45022 | m=1.496 worth=26.6 cheap=4.5 over=0 dMedOther=4.6 safe(-1)=26972
+    → Israel Defense Force#15[T1] terr=21821 bal=34598 dq=1.6 cnt=27 | c=0.1 rankC=0.0 need=94108 tD=0.34 人 pulse nearCollapse bleeding | safe=26972 keep=26972 avail=151006 chunkB=36018 pulseB=21611  x=28232 hNb=3
+    → Player 191#18[T1] terr=19989 bal=54038 dq=2.7 cnt=70 | c=8.5 rankC=8.5 need=126300 tD=0.58 人 | safe=26972 keep=105882 avail=72096 chunkB=36018 pulseB=21611  x=72096 hNb=3
+    → 🌞#1[T1] terr=18897 bal=63188 dq=3.3 cnt=131 | c=10.0 rankC=10.0 need=140971 tD=0.72 人 | safe=26972 keep=111984 avail=65994 chunkB=36018 pulseB=21611  x=65994 hNb=3
+    ⇒ 影子指令 attack pct=160 → Israel Defense Force#15[T1]（约 28314 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1530 alex_k B=184085 L=10118 d=18.2 nb=3 neut=0 cmds=118 noFull=1 shQ=46021 | m=1.496 worth=27.2 cheap=4.5 over=0 dMedOther=4.7 safe(-1)=27760
+    → Israel Defense Force#15[T1] terr=21636 bal=34568 dq=1.6 cnt=26 | c=0.1 rankC=0.0 need=93583 tD=0.34 人 pulse nearCollapse bleeding | safe=27760 keep=27760 avail=154168 chunkB=36817 pulseB=22090  x=28075 hNb=3
+    → Player 191#18[T1] terr=20026 bal=55237 dq=2.8 cnt=70 | c=2.2 rankC=1.1 need=128494 tD=0.59 人 pulse nearCollapse bleeding | safe=27760 keep=27760 avail=154168 chunkB=36817 pulseB=22090  x=38548 hNb=3
+    → 🌞#1[T1] terr=19158 bal=64590 dq=3.4 cnt=131 | c=10.1 rankC=10.1 need=143863 tD=0.72 人 | safe=27760 keep=113869 avail=68059 chunkB=36817 pulseB=22090  x=68059 hNb=3
+    ⇒ 影子指令 attack pct=156 → Israel Defense Force#15[T1]（约 28223 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1535 alex_k B=184085 L=10118 d=18.2 nb=3 neut=0 cmds=119 noFull=1 shQ=46021 | m=1.495 worth=27.2 cheap=4.5 over=0 dMedOther=4.6 safe(-1)=27760
+    → Israel Defense Force#15[T1] terr=21353 bal=33414 dq=1.6 cnt=25 | c=0.1 rankC=0.0 need=90817 tD=0.34 人 pulse nearCollapse bleeding | safe=27760 keep=27760 avail=154168 chunkB=36817 pulseB=22090  x=27245 hNb=3
+    → Player 191#18[T1] terr=19859 bal=54386 dq=2.7 cnt=69 | c=2.2 rankC=1.1 need=126466 tD=0.60 人 pulse nearCollapse bleeding | safe=27760 keep=27760 avail=154168 chunkB=36817 pulseB=22090  x=37939 hNb=3
+    → 🌞#1[T1] terr=19477 bal=64590 dq=3.3 cnt=131 | c=10.0 rankC=10.0 need=144340 tD=0.72 人 | safe=27760 keep=113366 avail=68562 chunkB=36817 pulseB=22090  x=68562 hNb=3
+    ⇒ 影子指令 attack pct=151 → Israel Defense Force#15[T1]（约 27325 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1540 alex_k B=188116 L=10118 d=18.6 nb=3 neut=0 cmds=120 noFull=1 shQ=47029 | m=1.494 worth=27.8 cheap=4.6 over=0 dMedOther=4.6 safe(-1)=28554
+    → Israel Defense Force#15[T1] terr=21176 bal=33389 dq=1.6 cnt=21 | c=0.1 rankC=0.0 need=90321 tD=0.34 人 pulse nearCollapse bleeding | safe=28554 keep=28554 avail=157358 chunkB=37623 pulseB=22574  x=27096 hNb=3
+    → Player 191#18[T1] terr=19503 bal=53842 dq=2.8 cnt=67 | c=2.3 rankC=1.2 need=124443 tD=0.59 人 pulse bleeding | safe=28554 keep=28554 avail=157358 chunkB=37623 pulseB=22574  x=22573 hNb=3
+    → 🌞#1[T1] terr=19644 bal=66004 dq=3.4 cnt=131 | c=10.1 rankC=10.1 need=147109 tD=0.72 人 | safe=28554 keep=115427 avail=70485 chunkB=37623 pulseB=22574  x=70485 hNb=3
+    ⇒ 影子指令 attack pct=147 → Israel Defense Force#15[T1]（约 27188 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1545 alex_k B=188116 L=10118 d=18.6 nb=3 neut=0 cmds=121 noFull=1 shQ=47029 | m=1.493 worth=27.8 cheap=4.6 over=0 dMedOther=4.6 safe(-1)=28554
+    → Israel Defense Force#15[T1] terr=20930 bal=32283 dq=1.5 cnt=19 | c=0.1 rankC=0.0 need=87736 tD=0.33 人 pulse nearCollapse bleeding | safe=28554 keep=28554 avail=157358 chunkB=37623 pulseB=22574  x=26320 hNb=3
+    → Player 191#18[T1] terr=19337 bal=25979 dq=1.3 cnt=66 | c=0.4 rankC=0.2 need=74641 tD=0.29 人 pulse nearCollapse bleeding | safe=28554 keep=28554 avail=157358 chunkB=37623 pulseB=22574  x=22573 hNb=3
+    → 🌞#1[T1] terr=19839 bal=66004 dq=3.3 cnt=131 | c=10.0 rankC=10.0 need=147407 tD=0.72 人 | safe=28554 keep=115139 avail=70773 chunkB=37623 pulseB=22574  x=70773 hNb=3
+    ⇒ 影子指令 attack pct=143 → Israel Defense Force#15[T1]（约 26453 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1550 alex_k B=192160 L=10118 d=19.0 nb=3 neut=0 cmds=122 noFull=1 shQ=48040 | m=1.492 worth=28.3 cheap=4.6 over=0 dMedOther=4.5 safe(-1)=36861
+    → Israel Defense Force#15[T1] terr=20795 bal=32259 dq=1.6 cnt=18 | c=0.1 rankC=0.0 need=87349 tD=0.35 人 pulse nearCollapse bleeding | safe=36861 keep=36861 avail=153048 chunkB=38432 pulseB=23059  x=26204 hNb=3
+    → Player 191#18[T1] terr=19014 bal=25692 dq=1.4 cnt=64 | c=0.5 rankC=0.2 need=73330 tD=0.30 人 pulse nearCollapse bleeding | safe=36861 keep=36861 avail=153048 chunkB=38432 pulseB=23059  x=23059 hNb=3
+    → 🌞#1[T1] terr=19958 bal=80789 dq=4.0 cnt=131 | c=11.7 rankC=11.7 need=173936 tD=0.90 人 | safe=36861 keep=123704 avail=66205 chunkB=38432 pulseB=23059  x=66205 hNb=3
+    ⇒ 影子指令 attack pct=139 → Israel Defense Force#15[T1]（约 26271 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1555 alex_k B=192160 L=10118 d=19.0 nb=3 neut=0 cmds=123 noFull=1 shQ=48040 | m=1.492 worth=28.3 cheap=4.7 over=0 dMedOther=4.4 safe(-1)=27687
+    → Israel Defense Force#15[T1] terr=20643 bal=31253 dq=1.5 cnt=17 | c=0.1 rankC=0.0 need=85194 tD=0.34 人 pulse nearCollapse bleeding | safe=27687 keep=27687 avail=162222 chunkB=38432 pulseB=23059  x=25558 hNb=3
+    → Player 191#18[T1] terr=18679 bal=24856 dq=1.3 cnt=62 | c=0.5 rankC=0.2 need=71020 tD=0.30 人 pulse nearCollapse bleeding | safe=27687 keep=27687 avail=162222 chunkB=38432 pulseB=23059  x=23059 hNb=3
+    → 🌞#1[T1] terr=20279 bal=64459 dq=3.2 cnt=131 | c=9.6 rankC=9.6 need=145313 tD=0.72 人 | safe=27687 keep=115389 avail=74520 chunkB=38432 pulseB=23059  x=74520 hNb=3
+    ⇒ 影子指令 attack pct=136 → Israel Defense Force#15[T1]（约 25708 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1560 alex_k B=196233 L=10118 d=19.4 nb=3 neut=0 cmds=124 noFull=1 shQ=49058 | m=1.491 worth=28.9 cheap=4.7 over=0 dMedOther=4.5 safe(-1)=28454
+    → Israel Defense Force#15[T1] terr=20576 bal=31287 dq=1.5 cnt=16 | c=0.1 rankC=0.0 need=85084 tD=0.34 人 pulse nearCollapse bleeding | safe=28454 keep=28454 avail=165480 chunkB=39247 pulseB=23548  x=25525 hNb=3
+    → Player 191#18[T1] terr=18583 bal=24968 dq=1.3 cnt=61 | c=0.5 rankC=0.3 need=70978 tD=0.30 人 pulse nearCollapse bleeding | safe=28454 keep=28454 avail=165480 chunkB=39247 pulseB=23548  x=23547 hNb=3
+    → 🌞#1[T1] terr=20679 bal=65825 dq=3.2 cnt=131 | c=9.7 rankC=9.7 need=148347 tD=0.71 人 | safe=28454 keep=117085 avail=76849 chunkB=39247 pulseB=23548  x=76849 hNb=3
+    ⇒ 影子指令 attack pct=133 → Israel Defense Force#15[T1]（约 25678 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1565 alex_k B=196233 L=10118 d=19.4 nb=3 neut=0 cmds=125 noFull=1 shQ=49058 | m=1.490 worth=28.9 cheap=4.7 over=0 dMedOther=4.4 safe(-1)=28454
+    → Israel Defense Force#15[T1] terr=20397 bal=30403 dq=1.5 cnt=14 | c=0.1 rankC=0.0 need=83073 tD=0.34 人 pulse nearCollapse bleeding | safe=28454 keep=28454 avail=165480 chunkB=39247 pulseB=23548  x=24921 hNb=3
+    → Player 191#18[T1] terr=18281 bal=12371 dq=0.7 cnt=59 | c=0.1 rankC=0.1 need=48192 tD=0.15 人 pulse nearCollapse bleeding | safe=28454 keep=28454 avail=165480 chunkB=39247 pulseB=23548  x=23547 hNb=3
+    → 🌞#1[T1] terr=21255 bal=65825 dq=3.1 cnt=131 | c=9.4 rankC=9.4 need=149211 tD=0.70 人 | safe=28454 keep=116270 avail=77664 chunkB=39247 pulseB=23548  x=77664 hNb=3
+    ⇒ 影子指令 attack pct=130 → Israel Defense Force#15[T1]（约 25104 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1570 alex_k B=200334 L=10118 d=19.8 nb=3 neut=0 cmds=126 noFull=1 shQ=50083 | m=1.490 worth=29.5 cheap=4.8 over=0 dMedOther=4.5 safe(-1)=29226
+    → Israel Defense Force#15[T1] terr=20161 bal=30465 dq=1.5 cnt=13 | c=0.1 rankC=0.0 need=82573 tD=0.33 人 pulse nearCollapse bleeding | safe=29226 keep=29226 avail=168761 chunkB=40067 pulseB=24040  x=24771 hNb=3
+    → Player 191#18[T1] terr=18021 bal=12242 dq=0.7 cnt=57 | c=0.1 rankC=0.1 need=47378 tD=0.15 人 pulse nearCollapse bleeding | safe=29226 keep=29226 avail=168761 chunkB=40067 pulseB=24040  x=24040 hNb=3
+    → 🌞#1[T1] terr=21592 bal=67200 dq=3.1 cnt=131 | c=9.5 rankC=9.5 need=152163 tD=0.69 人 | safe=29226 keep=118082 avail=79905 chunkB=40067 pulseB=24040  x=79905 hNb=3
+    ⇒ 影子指令 attack pct=126 → Israel Defense Force#15[T1]（约 24846 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1575 alex_k B=200334 L=10118 d=19.8 nb=3 neut=0 cmds=127 noFull=1 shQ=50083 | m=1.489 worth=29.5 cheap=4.8 over=0 dMedOther=4.5 safe(-1)=29226
+    → Israel Defense Force#15[T1] terr=19773 bal=29533 dq=1.5 cnt=12 | c=0.1 rankC=0.0 need=79945 tD=0.33 人 pulse nearCollapse bleeding | safe=29226 keep=29226 avail=168761 chunkB=40067 pulseB=24040  x=24040 hNb=3
+    → Player 191#18[T1] terr=17917 bal=12062 dq=0.7 cnt=56 | c=0.1 rankC=0.1 need=46834 tD=0.15 人 pulse nearCollapse bleeding | safe=29226 keep=29226 avail=168761 chunkB=40067 pulseB=24040  x=24040 hNb=3
+    → 🌞#1[T1] terr=22069 bal=67200 dq=3.0 cnt=131 | c=9.3 rankC=9.3 need=152880 tD=0.68 人 | safe=29226 keep=117458 avail=80529 chunkB=40067 pulseB=24040  x=80529 hNb=3
+    ⇒ 影子指令 attack pct=122 → Israel Defense Force#15[T1]（约 24063 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1580 alex_k B=204460 L=10118 d=20.2 nb=3 neut=0 cmds=128 noFull=1 shQ=51115 | m=1.488 worth=30.1 cheap=4.8 over=0 dMedOther=4.3 safe(-1)=30004
+    → Israel Defense Force#15[T1] terr=19507 bal=29497 dq=1.5 cnt=11 | c=0.1 rankC=0.0 need=79192 tD=0.35 人 pulse nearCollapse bleeding | safe=30004 keep=30004 avail=172060 chunkB=40892 pulseB=24535  x=24535 hNb=3
+    → Player 191#18[T1] terr=17714 bal=11979 dq=0.7 cnt=54 | c=0.1 rankC=0.1 need=46232 tD=0.16 人 pulse nearCollapse bleeding | safe=30004 keep=30004 avail=172060 chunkB=40892 pulseB=24535  x=24535 hNb=3
+    → 🌞#1[T1] terr=22373 bal=68584 dq=3.1 cnt=131 | c=9.4 rankC=9.4 need=155803 tD=0.71 人 | safe=30004 keep=119333 avail=82731 chunkB=40892 pulseB=24535  x=82731 hNb=3
+    ⇒ 影子指令 attack pct=122 → Israel Defense Force#15[T1]（约 24559 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1585 alex_k B=204460 L=10118 d=20.2 nb=3 neut=0 cmds=129 noFull=1 shQ=51115 | m=1.487 worth=30.1 cheap=4.9 over=0 dMedOther=4.3 safe(-1)=30004
+    → Israel Defense Force#15[T1] terr=19135 bal=28603 dq=1.5 cnt=9 | c=0.1 rankC=0.1 need=76673 tD=0.35 人 pulse nearCollapse bleeding | safe=30004 keep=30004 avail=172060 chunkB=40892 pulseB=24535  x=24535 hNb=3
+    → Player 191#18[T1] terr=17512 bal=11686 dq=0.7 cnt=52 | c=0.1 rankC=0.1 need=45271 tD=0.16 人 pulse nearCollapse bleeding | safe=30004 keep=30004 avail=172060 chunkB=40892 pulseB=24535  x=24535 hNb=3
+    → 🌞#1[T1] terr=22805 bal=68584 dq=3.0 cnt=131 | c=9.2 rankC=9.2 need=156451 tD=0.70 人 | safe=30004 keep=118803 avail=83261 chunkB=40892 pulseB=24535  x=83261 hNb=3
+    ⇒ 影子指令 attack pct=122 → Israel Defense Force#15[T1]（约 24559 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1590 alex_k B=208610 L=10118 d=20.6 nb=3 neut=0 cmds=130 noFull=1 shQ=52152 | m=1.486 worth=30.6 cheap=4.9 over=0 dMedOther=4.0 safe(-1)=30786
+    → Israel Defense Force#15[T1] terr=18874 bal=8059 dq=0.4 cnt=8 | c=0.1 rankC=0.1 need=40619 tD=0.11 人 pulse nearCollapse bleeding | safe=30786 keep=30786 avail=175380 chunkB=41722 pulseB=25033  x=25033 hNb=3
+    → Player 191#18[T1] terr=17508 bal=11784 dq=0.7 cnt=51 | c=0.1 rankC=0.1 need=45438 tD=0.17 人 pulse nearCollapse bleeding | safe=30786 keep=30786 avail=175380 chunkB=41722 pulseB=25033  x=25033 hNb=3
+    → 🌞#1[T1] terr=23090 bal=69976 dq=3.0 cnt=131 | c=9.3 rankC=9.3 need=159361 tD=0.76 人 | safe=30786 keep=120716 avail=85450 chunkB=41722 pulseB=25033  x=85450 hNb=3
+    ⇒ 影子指令 attack pct=122 → Israel Defense Force#15[T1]（约 25057 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1595 alex_k B=208610 L=10118 d=20.6 nb=3 neut=0 cmds=131 noFull=1 shQ=52152 | m=1.486 worth=30.6 cheap=5.0 over=0 dMedOther=3.9 safe(-1)=30786
+    → Israel Defense Force#15[T1] terr=18494 bal=7802 dq=0.4 cnt=7 | c=0.1 rankC=0.1 need=39356 tD=0.11 人 pulse nearCollapse bleeding | safe=30786 keep=30786 avail=175380 chunkB=41722 pulseB=25033  x=25033 hNb=3
+    → Player 191#18[T1] terr=17351 bal=11513 dq=0.7 cnt=49 | c=0.1 rankC=0.1 need=44619 tD=0.17 人 pulse nearCollapse bleeding | safe=30786 keep=30786 avail=175380 chunkB=41722 pulseB=25033  x=25033 hNb=3
+    → 🌞#1[T1] terr=23465 bal=69976 dq=3.0 cnt=131 | c=9.2 rankC=9.2 need=159922 tD=0.76 人 | safe=30786 keep=120274 avail=85892 chunkB=41722 pulseB=25033  x=85892 hNb=3
+    ⇒ 影子指令 attack pct=122 → Israel Defense Force#15[T1]（约 25057 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1600 alex_k B=222900 L=10118 d=22.0 nb=3 neut=0 cmds=132 noFull=1 shQ=53266 | m=1.485 worth=32.7 cheap=5.0 over=0 dMedOther=4.9 safe(-1)=44880
+    → Israel Defense Force#15[T1] terr=18240 bal=26024 dq=1.4 cnt=6 | c=0.1 rankC=0.1 need=69909 tD=0.29 人 pulse nearCollapse bleeding | safe=44880 keep=44880 avail=175408 chunkB=44580 pulseB=26748  x=26748 hNb=3
+    → Player 191#18[T1] terr=17268 bal=22986 dq=1.3 cnt=47 | c=1.3 rankC=0.6 need=64236 tD=0.27 人 pulse nearCollapse bleeding | safe=44880 keep=44880 avail=175408 chunkB=44580 pulseB=26748  x=26748 hNb=3
+    → 🌞#1[T1] terr=23688 bal=95063 dq=4.0 cnt=131 | c=11.6 rankC=11.6 need=204969 tD=0.81 人 | safe=44880 keep=135944 avail=84344 chunkB=44580 pulseB=26748  x=84344 hNb=3
+    ⇒ 影子指令 attack pct=122 → Israel Defense Force#15[T1]（约 26774 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1605 alex_k B=222900 L=10118 d=22.0 nb=3 neut=0 cmds=133 noFull=1 shQ=55725 | m=1.484 worth=32.7 cheap=5.0 over=0 dMedOther=4.9 safe(-1)=34084
+    → Israel Defense Force#15[T1] terr=17861 bal=25164 dq=1.4 cnt=4 | c=0.1 rankC=0.1 need=67448 tD=0.29 人 pulse nearCollapse bleeding | safe=34084 keep=34084 avail=186204 chunkB=44580 pulseB=26748  x=26748 hNb=3
+    → Player 191#18[T1] terr=17269 bal=22721 dq=1.3 cnt=46 | c=1.3 rankC=0.7 need=63794 tD=0.27 人 pulse nearCollapse bleeding | safe=34084 keep=34084 avail=186204 chunkB=44580 pulseB=26748  x=26748 hNb=3
+    → 🌞#1[T1] terr=24009 bal=75847 dq=3.2 cnt=131 | c=9.6 rankC=9.6 need=171202 tD=0.65 人 | safe=34084 keep=127760 avail=92528 chunkB=44580 pulseB=26748  x=92528 hNb=3
+    ⇒ 影子指令 attack pct=122 → Israel Defense Force#15[T1]（约 26774 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1610 alex_k B=227291 L=10118 d=22.5 nb=3 neut=0 cmds=134 noFull=1 shQ=56822 | m=1.484 worth=33.3 cheap=5.1 over=0 dMedOther=4.9 safe(-1)=34924
+    → Israel Defense Force#15[T1] terr=17608 bal=25079 dq=1.4 cnt=3 | c=0.1 rankC=0.1 need=66644 tD=0.29 人 pulse nearCollapse bleeding | safe=34924 keep=34924 avail=189704 chunkB=45458 pulseB=27275  x=27274 hNb=3
+    → Player 191#18[T1] terr=17220 bal=22632 dq=1.3 cnt=42 | c=1.4 rankC=0.7 need=63522 tD=0.27 人 pulse nearCollapse bleeding | safe=34924 keep=34924 avail=189704 chunkB=45458 pulseB=27275  x=27274 hNb=3
+    → 🌞#1[T1] terr=24246 bal=77341 dq=3.2 cnt=131 | c=9.7 rankC=9.7 need=174222 tD=0.65 人 | safe=34924 keep=129849 avail=94779 chunkB=45458 pulseB=27275  x=94779 hNb=3
+    ⇒ 影子指令 attack pct=122 → Israel Defense Force#15[T1]（约 27301 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1615 alex_k B=227291 L=10118 d=22.5 nb=3 neut=0 cmds=135 noFull=1 shQ=56822 | m=1.483 worth=33.3 cheap=5.1 over=0 dMedOther=4.9 safe(-1)=34924
+    → Israel Defense Force#15[T1] terr=17224 bal=24209 dq=1.4 cnt=2 | c=0.1 rankC=0.1 need=64157 tD=0.29 人 pulse nearCollapse bleeding | safe=34924 keep=34924 avail=189704 chunkB=45458 pulseB=27275  x=27274 hNb=3
+    → Player 191#18[T1] terr=17116 bal=22111 dq=1.3 cnt=41 | c=1.4 rankC=0.7 need=62368 tD=0.26 人 pulse nearCollapse bleeding | safe=34924 keep=34924 avail=189704 chunkB=45458 pulseB=27275  x=27274 hNb=3
+    → 🌞#1[T1] terr=24568 bal=77341 dq=3.1 cnt=131 | c=9.6 rankC=9.6 need=174702 tD=0.65 人 | safe=34924 keep=129478 avail=95150 chunkB=45458 pulseB=27275  x=95150 hNb=3
+    ⇒ 影子指令 attack pct=122 → Israel Defense Force#15[T1]（约 27301 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1620 alex_k B=231700 L=10118 d=22.9 nb=3 neut=0 cmds=136 noFull=1 shQ=57925 | m=1.482 worth=33.9 cheap=5.2 over=0 dMedOther=4.9 safe(-1)=35766
+    → Israel Defense Force#15[T1] terr=16960 bal=24076 dq=1.4 cnt=1 | c=0.1 rankC=0.1 need=63234 tD=0.29 人 pulse nearCollapse bleeding | safe=35766 keep=35766 avail=193219 chunkB=46340 pulseB=27804  x=27804 hNb=3
+    → Player 191#18[T1] terr=17213 bal=22277 dq=1.3 cnt=41 | c=1.4 rankC=0.7 need=62911 tD=0.26 人 pulse nearCollapse bleeding | safe=35766 keep=35766 avail=193219 chunkB=46340 pulseB=27804  x=27804 hNb=3
+    → 🌞#1[T1] terr=24760 bal=78841 dq=3.2 cnt=131 | c=9.7 rankC=9.7 need=177663 tD=0.65 人 | safe=35766 keep=131629 avail=97356 chunkB=46340 pulseB=27804  x=97356 hNb=3
+    ⇒ 影子指令 attack pct=122 → Israel Defense Force#15[T1]（约 27831 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1625 alex_k B=231700 L=10118 d=22.9 nb=2 neut=0 cmds=137 noFull=1 shQ=57925 | m=1.481 worth=33.9 cheap=5.2 over=0 dMedOther=4.9 safe(-1)=35766
+    → Player 191#18[T1] terr=16989 bal=21497 dq=1.3 cnt=39 | c=1.5 rankC=0.7 need=61004 tD=0.26 人 pulse bleeding | safe=35766 keep=35766 avail=193219 chunkB=46340 pulseB=27804  x=27804 hNb=2
+    → 🌞#1[T1] terr=25020 bal=78841 dq=3.2 cnt=131 | c=9.6 rankC=9.6 need=178053 tD=0.65 人 | safe=35766 keep=131342 avail=97643 chunkB=46340 pulseB=27804  x=97643 hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 191#18[T1]（约 27831 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1630 alex_k B=236102 L=10118 d=23.3 nb=2 neut=0 cmds=138 noFull=1 shQ=59025 | m=1.480 worth=34.5 cheap=5.2 over=0 dMedOther=4.9 safe(-1)=36607
+    → Player 191#18[T1] terr=16969 bal=21377 dq=1.3 cnt=38 | c=1.5 rankC=0.8 need=60754 tD=0.26 人 pulse bleeding | safe=36607 keep=36607 avail=196729 chunkB=47220 pulseB=28332  x=28332 hNb=2
+    → 🌞#1[T1] terr=25168 bal=80338 dq=3.2 cnt=131 | c=9.7 rankC=9.7 need=180943 tD=0.65 人 | safe=36607 keep=133539 avail=99797 chunkB=47220 pulseB=28332  x=99797 hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 191#18[T1]（约 28359 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1635 alex_k B=236102 L=10118 d=23.3 nb=2 neut=0 cmds=139 noFull=1 shQ=59025 | m=1.480 worth=34.5 cheap=5.3 over=0 dMedOther=4.9 safe(-1)=36607
+    → Player 191#18[T1] terr=16731 bal=20582 dq=1.2 cnt=35 | c=1.5 rankC=0.8 need=58795 tD=0.25 人 pulse bleeding | safe=36607 keep=36607 avail=196729 chunkB=47220 pulseB=28332  x=28332 hNb=2
+    → 🌞#1[T1] terr=25356 bal=80338 dq=3.2 cnt=131 | c=9.6 rankC=9.6 need=181225 tD=0.65 人 | safe=36607 keep=133348 avail=99988 chunkB=47220 pulseB=28332  x=99988 hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 191#18[T1]（约 28359 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1640 alex_k B=240517 L=10118 d=23.8 nb=2 neut=0 cmds=140 noFull=1 shQ=60129 | m=1.479 worth=35.2 cheap=5.3 over=0 dMedOther=5.1 safe(-1)=37451
+    → Player 191#18[T1] terr=16689 bal=20430 dq=1.2 cnt=33 | c=1.6 rankC=0.8 need=58443 tD=0.24 人 pulse bleeding | safe=37451 keep=37451 avail=200248 chunkB=48103 pulseB=28862  x=28862 hNb=2
+    → 🌞#1[T1] terr=25472 bal=81840 dq=3.2 cnt=131 | c=5.6 rankC=2.8 need=184077 tD=0.63 人 pulse bleeding | safe=37451 keep=118553 avail=119146 chunkB=48103 pulseB=28862  x=28862 hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 191#18[T1]（约 28890 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1645 alex_k B=240517 L=10118 d=23.8 nb=2 neut=0 cmds=141 noFull=1 shQ=60129 | m=1.478 worth=35.1 cheap=5.4 over=0 dMedOther=5.1 safe(-1)=43008
+    → Player 191#18[T1] terr=16415 bal=19622 dq=1.2 cnt=30 | c=1.6 rankC=0.8 need=56371 tD=0.24 人 pulse bleeding | safe=43008 keep=43008 avail=194691 chunkB=48103 pulseB=28862  x=28862 hNb=2
+    → 🌞#1[T1] terr=25630 bal=91732 dq=3.6 cnt=130 | c=6.1 rankC=3.0 need=201948 tD=0.71 人 pulse bleeding | safe=43008 keep=120646 avail=117053 chunkB=48103 pulseB=28862  x=28862 hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 191#18[T1]（约 28890 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1650 alex_k B=244942 L=10118 d=24.2 nb=2 neut=0 cmds=142 noFull=1 shQ=61235 | m=1.478 worth=35.8 cheap=5.4 over=0 dMedOther=5.0 safe(-1)=33335
+    → Player 191#18[T1] terr=16324 bal=19437 dq=1.2 cnt=28 | c=1.7 rankC=0.9 need=55838 tD=0.24 人 pulse bleeding | safe=33335 keep=33335 avail=208737 chunkB=48988 pulseB=29393  x=29393 hNb=2
+    → 🌞#1[T1] terr=26054 bal=74514 dq=2.9 cnt=129 | c=5.1 rankC=2.5 need=171895 tD=0.57 人 pulse bleeding | safe=33335 keep=33335 avail=208737 chunkB=48988 pulseB=29393  x=29393 hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 191#18[T1]（约 29421 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1655 alex_k B=244942 L=10118 d=24.2 nb=2 neut=0 cmds=143 noFull=1 shQ=61235 | m=1.477 worth=35.7 cheap=5.5 over=0 dMedOther=4.9 safe(-1)=33288
+    → Player 191#18[T1] terr=16008 bal=18615 dq=1.2 cnt=25 | c=1.7 rankC=0.9 need=53646 tD=0.24 人 pulse bleeding | safe=33288 keep=33288 avail=208784 chunkB=48988 pulseB=29393  x=29393 hNb=2
+    → 🌞#1[T1] terr=26660 bal=74429 dq=2.8 cnt=127 | c=5.0 rankC=2.5 need=172649 tD=0.57 人 pulse bleeding | safe=33288 keep=33288 avail=208784 chunkB=48988 pulseB=29393  x=29393 hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 191#18[T1]（约 29421 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1660 alex_k B=249375 L=10118 d=24.6 nb=2 neut=0 cmds=144 noFull=1 shQ=62343 | m=1.476 worth=36.4 cheap=5.5 over=0 dMedOther=4.9 safe(-1)=33992
+    → Player 191#18[T1] terr=15890 bal=18395 dq=1.2 cnt=22 | c=1.8 rankC=0.9 need=52985 tD=0.24 人 pulse bleeding | safe=33992 keep=33992 avail=212461 chunkB=49875 pulseB=29925  x=29925 hNb=2
+    → 🌞#1[T1] terr=27047 bal=75682 dq=2.8 cnt=125 | c=5.0 rankC=2.5 need=175468 tD=0.57 人 pulse bleeding | safe=33992 keep=33992 avail=212461 chunkB=49875 pulseB=29925  x=29925 hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 191#18[T1]（约 29954 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1665 alex_k B=249375 L=10118 d=24.6 nb=2 neut=0 cmds=145 noFull=1 shQ=62343 | m=1.475 worth=36.4 cheap=5.6 over=0 dMedOther=4.8 safe(-1)=33880
+    → Player 191#18[T1] terr=15563 bal=17576 dq=1.1 cnt=20 | c=1.9 rankC=0.9 need=50778 tD=0.23 人 pulse bleeding | safe=33880 keep=33880 avail=212573 chunkB=49875 pulseB=29925  x=29925 hNb=2
+    → 🌞#1[T1] terr=27599 bal=75484 dq=2.7 cnt=123 | c=4.9 rankC=2.5 need=175943 tD=0.57 人 pulse bleeding | safe=33880 keep=33880 avail=212573 chunkB=49875 pulseB=29925  x=29925 hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 191#18[T1]（约 29954 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1670 alex_k B=256484 L=10118 d=25.3 nb=2 neut=0 cmds=146 noFull=1 shQ=63484 | m=1.474 worth=37.4 cheap=5.6 over=0 dMedOther=4.8 safe(-1)=34541
+    → Player 191#18[T1] terr=15439 bal=17334 dq=1.1 cnt=18 | c=1.9 rankC=1.0 need=50071 tD=0.23 人 pulse bleeding | safe=34541 keep=34541 avail=218938 chunkB=51297 pulseB=30778  x=30778 hNb=2
+    → 🌞#1[T1] terr=27947 bal=76660 dq=2.7 cnt=121 | c=5.0 rankC=2.5 need=178561 tD=0.57 人 pulse bleeding | safe=34541 keep=34541 avail=218938 chunkB=51297 pulseB=30778  x=30778 hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 191#18[T1]（约 30808 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1675 alex_k B=256484 L=10118 d=25.3 nb=2 neut=0 cmds=147 noFull=1 shQ=64121 | m=1.474 worth=37.4 cheap=5.7 over=0 dMedOther=4.6 safe(-1)=34379
+    → Player 191#18[T1] terr=15085 bal=16509 dq=1.1 cnt=15 | c=2.0 rankC=1.0 need=47797 tD=0.24 人 pulse bleeding | safe=34379 keep=34379 avail=219100 chunkB=51297 pulseB=30778  x=30778 hNb=2
+    → 🌞#1[T1] terr=28192 bal=76371 dq=2.7 cnt=119 | c=4.9 rankC=2.5 need=178409 tD=0.59 人 pulse bleeding | safe=34379 keep=34379 avail=219100 chunkB=51297 pulseB=30778  x=30778 hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 191#18[T1]（约 30808 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1680 alex_k B=260972 L=10118 d=25.8 nb=2 neut=0 cmds=148 noFull=1 shQ=65243 | m=1.473 worth=38.0 cheap=5.7 over=0 dMedOther=4.7 safe(-1)=35003
+    → Player 191#18[T1] terr=14949 bal=16270 dq=1.1 cnt=13 | c=2.1 rankC=1.0 need=47066 tD=0.23 人 pulse bleeding | safe=35003 keep=35003 avail=222911 chunkB=52194 pulseB=31317  x=31316 hNb=2
+    → 🌞#1[T1] terr=28266 bal=77483 dq=2.7 cnt=118 | c=5.0 rankC=2.5 need=180505 tD=0.59 人 pulse bleeding | safe=35003 keep=35003 avail=222911 chunkB=52194 pulseB=31317  x=31316 hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 191#18[T1]（约 31347 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1685 alex_k B=260972 L=10118 d=25.8 nb=2 neut=0 cmds=149 noFull=1 shQ=65243 | m=1.472 worth=38.0 cheap=5.8 over=0 dMedOther=4.6 safe(-1)=34856
+    → Player 191#18[T1] terr=14624 bal=15530 dq=1.1 cnt=10 | c=2.1 rankC=1.1 need=45021 tD=0.23 人 pulse bleeding | safe=34856 keep=34856 avail=223058 chunkB=52194 pulseB=31317  x=31316 hNb=2
+    → 🌞#1[T1] terr=28403 bal=77220 dq=2.7 cnt=117 | c=8.6 rankC=8.6 need=180243 tD=0.59 人 | safe=34856 keep=139367 avail=118547 chunkB=52194 pulseB=31317  x=118547 hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 191#18[T1]（约 31347 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1690 alex_k B=265460 L=10118 d=26.2 nb=2 neut=0 cmds=150 noFull=1 shQ=66365 | m=1.472 worth=38.6 cheap=5.8 over=0 dMedOther=4.7 safe(-1)=26682
+    → Player 191#18[T1] terr=14496 bal=15309 dq=1.1 cnt=8 | c=2.2 rankC=1.1 need=44347 tD=0.22 人 pulse bleeding | safe=26682 keep=26682 avail=235668 chunkB=53092 pulseB=31855  x=31855 hNb=2
+    → 🌞#1[T1] terr=28564 bal=62671 dq=2.2 cnt=117 | c=5.5 rankC=3.8 need=154548 tD=0.47 人 | safe=26682 keep=26682 avail=235668 chunkB=53092 pulseB=31855  x=193537 hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 191#18[T1]（约 31886 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1695 alex_k B=265460 L=10118 d=26.2 nb=2 neut=0 cmds=151 noFull=1 shQ=66365 | m=1.471 worth=38.6 cheap=5.9 over=0 dMedOther=4.5 safe(-1)=26682
+    → Player 191#18[T1] terr=14175 bal=14602 dq=1.0 cnt=5 | c=1.4 rankC=0.7 need=42376 tD=0.23 人 pulse nearCollapse bleeding | safe=26682 keep=26682 avail=235668 chunkB=53092 pulseB=31855  x=31855 hNb=2
+    → 🌞#1[T1] terr=28828 bal=62671 dq=2.2 cnt=119 | c=5.5 rankC=3.8 need=154944 tD=0.48 人 | safe=26682 keep=26682 avail=235668 chunkB=53092 pulseB=31855  x=194038 hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 191#18[T1]（约 31886 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=1700 alex_k B=280064 L=10118 d=27.7 nb=2 neut=0 cmds=152 noFull=1 shQ=67548 | m=1.470 worth=40.7 cheap=5.9 over=0 dMedOther=5.6 safe(-1)=43560
+    → Player 191#18[T1] terr=14055 bal=28401 dq=2.0 cnt=3 | c=2.9 rankC=1.4 need=64562 tD=0.36 人 pulse bleeding | safe=43560 keep=43560 avail=233222 chunkB=56013 pulseB=33608  x=33607 hNb=2
+    → 🌞#1[T1] terr=28984 bal=92714 dq=3.2 cnt=121 | c=7.3 rankC=5.1 need=208726 tD=0.57 人 | safe=43560 keep=141870 avail=134912 chunkB=56013 pulseB=33608  x=134912 hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 191#18[T1]（约 33640 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1705 alex_k B=280064 L=10118 d=27.7 nb=1 neut=0 cmds=153 noFull=1 shQ=70016 | m=1.469 worth=40.7 cheap=6.0 over=0 dMedOther=5.6 safe(-1)=43560
+    → 🌞#1[T1] terr=29202 bal=92714 dq=3.2 cnt=122 | c=7.2 rankC=5.1 need=209056 tD=0.57 人 | safe=43560 keep=141735 avail=135047 chunkB=56013 pulseB=33608  x=135047 sole hNb=1
+    ⇒ 影子指令 attack pct=493 → 🌞#1[T1]（约 135109 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1710 alex_k B=284685 L=10118 d=28.1 nb=1 neut=0 cmds=154 noFull=1 shQ=71171 | m=1.468 worth=41.3 cheap=6.0 over=0 dMedOther=5.7 safe(-1)=44419
+    → 🌞#1[T1] terr=29332 bal=94243 dq=3.2 cnt=125 | c=7.3 rankC=5.1 need=211973 tD=0.57 人 | safe=44419 keep=143907 avail=137442 chunkB=56937 pulseB=34162  x=137442 sole hNb=1
+    ⇒ 影子指令 attack pct=494 → 🌞#1[T1]（约 137616 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1715 alex_k B=284685 L=10118 d=28.1 nb=1 neut=0 cmds=155 noFull=1 shQ=71171 | m=1.468 worth=41.3 cheap=6.1 over=0 dMedOther=5.7 safe(-1)=44419
+    → 🌞#1[T1] terr=29488 bal=94243 dq=3.2 cnt=127 | c=7.3 rankC=5.1 need=212207 tD=0.57 人 | safe=44419 keep=143822 avail=137527 chunkB=56937 pulseB=34162  x=137527 sole hNb=1
+    ⇒ 影子指令 attack pct=494 → 🌞#1[T1]（约 137616 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1720 alex_k B=289296 L=10118 d=28.6 nb=1 neut=0 cmds=156 noFull=1 shQ=72324 | m=1.467 worth=41.9 cheap=6.2 over=0 dMedOther=5.7 safe(-1)=45276
+    → 🌞#1[T1] terr=29581 bal=95769 dq=3.2 cnt=128 | c=7.3 rankC=5.1 need=215068 tD=0.57 人 | safe=45276 keep=146019 avail=139887 chunkB=57859 pulseB=34716  x=139887 sole hNb=1
+    ⇒ 影子指令 attack pct=495 → 🌞#1[T1]（约 140127 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1725 alex_k B=289296 L=10118 d=28.6 nb=1 neut=0 cmds=157 noFull=1 shQ=72324 | m=1.466 worth=41.9 cheap=6.2 over=0 dMedOther=5.1 safe(-1)=45276
+    → 🌞#1[T1] terr=29708 bal=95769 dq=3.2 cnt=130 | c=7.3 rankC=5.1 need=215257 tD=0.63 人 | safe=45276 keep=145958 avail=139948 chunkB=57859 pulseB=34716  x=139948 sole hNb=1
+    ⇒ 影子指令 attack pct=495 → 🌞#1[T1]（约 140127 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1730 alex_k B=293895 L=10118 d=29.0 nb=1 neut=0 cmds=158 noFull=1 shQ=73473 | m=1.466 worth=42.6 cheap=6.3 over=0 dMedOther=5.2 safe(-1)=46131
+    → 🌞#1[T1] terr=29786 bal=97291 dq=3.3 cnt=131 | c=7.4 rankC=5.2 need=218090 tD=0.63 人 | safe=46131 keep=148162 avail=142289 chunkB=58779 pulseB=35267  x=142289 sole hNb=1
+    ⇒ 影子指令 attack pct=495 → 🌞#1[T1]（约 142355 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1735 alex_k B=293895 L=10118 d=29.0 nb=1 neut=0 cmds=159 noFull=1 shQ=73473 | m=1.465 worth=42.5 cheap=6.3 over=0 dMedOther=5.1 safe(-1)=53620
+    → 🌞#1[T1] terr=29888 bal=110621 dq=3.7 cnt=131 | c=10.9 rankC=10.9 need=241999 tD=0.72 人 | safe=53620 keep=162547 avail=127904 chunkB=58779 pulseB=35267  x=127904 sole hNb=1
+    ⇒ 影子指令 attack pct=445 → 🌞#1[T1]（约 128005 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1740 alex_k B=298479 L=10118 d=29.5 nb=1 neut=0 cmds=160 noFull=1 shQ=74619 | m=1.464 worth=43.2 cheap=6.4 over=0 dMedOther=5.2 safe(-1)=54589
+    → 🌞#1[T1] terr=29939 bal=112346 dq=3.8 cnt=131 | c=11.0 rankC=11.0 need=245155 tD=0.72 人 | safe=54589 keep=164942 avail=130040 chunkB=59696 pulseB=35817  x=130040 sole hNb=1
+    ⇒ 影子指令 attack pct=446 → 🌞#1[T1]（约 130293 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1745 alex_k B=298479 L=10118 d=29.5 nb=1 neut=0 cmds=161 noFull=1 shQ=74619 | m=1.463 worth=43.2 cheap=6.5 over=0 dMedOther=5.1 safe(-1)=54589
+    → 🌞#1[T1] terr=30013 bal=112346 dq=3.7 cnt=131 | c=11.0 rankC=11.0 need=245263 tD=0.73 人 | safe=54589 keep=164902 avail=130080 chunkB=59696 pulseB=35817  x=130080 sole hNb=1
+    ⇒ 影子指令 attack pct=446 → 🌞#1[T1]（约 130293 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1750 alex_k B=303045 L=10118 d=30.0 nb=1 neut=0 cmds=162 noFull=1 shQ=75761 | m=1.462 worth=43.8 cheap=6.5 over=0 dMedOther=5.2 safe(-1)=55554
+    → 🌞#1[T1] terr=30060 bal=114064 dq=3.8 cnt=131 | c=11.1 rankC=11.1 need=248393 tD=0.73 人 | safe=55554 keep=167292 avail=132202 chunkB=60609 pulseB=36365  x=132202 sole hNb=1
+    ⇒ 影子指令 attack pct=446 → 🌞#1[T1]（约 132286 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1755 alex_k B=303045 L=10118 d=30.0 nb=1 neut=0 cmds=163 noFull=1 shQ=75761 | m=1.462 worth=43.8 cheap=6.6 over=0 dMedOther=5.1 safe(-1)=42601
+    → 🌞#1[T1] terr=30383 bal=91007 dq=3.0 cnt=131 | c=9.2 rankC=9.2 need=207787 tD=0.58 人 | safe=42601 keep=159571 avail=139923 chunkB=60609 pulseB=36365  x=139923 sole hNb=1
+    ⇒ 影子指令 attack pct=472 → 🌞#1[T1]（约 139980 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1760 alex_k B=307590 L=10118 d=30.4 nb=1 neut=0 cmds=164 noFull=1 shQ=76897 | m=1.461 worth=44.4 cheap=6.7 over=0 dMedOther=5.2 safe(-1)=43368
+    → 🌞#1[T1] terr=30561 bal=92372 dq=3.0 cnt=131 | c=9.3 rankC=9.3 need=210483 tD=0.58 人 | safe=43368 keep=161715 avail=142271 chunkB=61518 pulseB=36911  x=142271 sole hNb=1
+    ⇒ 影子指令 attack pct=473 → 🌞#1[T1]（约 142380 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1765 alex_k B=307590 L=10118 d=30.4 nb=1 neut=0 cmds=165 noFull=1 shQ=76897 | m=1.460 worth=44.4 cheap=6.7 over=0 dMedOther=5.1 safe(-1)=43368
+    → 🌞#1[T1] terr=30791 bal=92372 dq=3.0 cnt=131 | c=9.2 rankC=9.2 need=210832 tD=0.58 人 | safe=43368 keep=161540 avail=142446 chunkB=61518 pulseB=36911  x=142446 sole hNb=1
+    ⇒ 影子指令 attack pct=474 → 🌞#1[T1]（约 142680 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1770 alex_k B=312111 L=10118 d=30.8 nb=1 neut=0 cmds=166 noFull=1 shQ=78027 | m=1.460 worth=45.0 cheap=6.8 over=0 dMedOther=5.2 safe(-1)=47477
+    → 🌞#1[T1] terr=30921 bal=99686 dq=3.2 cnt=131 | c=9.8 rankC=9.8 need=224060 tD=0.62 人 | safe=47477 keep=165590 avail=142864 chunkB=62422 pulseB=37453  x=142864 sole hNb=1
+    ⇒ 影子指令 attack pct=468 → 🌞#1[T1]（约 142949 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1775 alex_k B=312111 L=10118 d=30.8 nb=1 neut=0 cmds=167 noFull=1 shQ=78027 | m=1.459 worth=45.0 cheap=6.9 over=0 dMedOther=5.1 safe(-1)=47477
+    → 🌞#1[T1] terr=31106 bal=99686 dq=3.2 cnt=131 | c=9.7 rankC=9.7 need=224339 tD=0.62 人 | safe=47477 keep=165450 avail=143004 chunkB=62422 pulseB=37453  x=143004 sole hNb=1
+    ⇒ 影子指令 attack pct=469 → 🌞#1[T1]（约 143254 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1780 alex_k B=316605 L=10118 d=31.3 nb=1 neut=0 cmds=168 noFull=1 shQ=79151 | m=1.458 worth=45.6 cheap=7.0 over=0 dMedOther=5.2 safe(-1)=35690
+    → 🌞#1[T1] terr=31226 bal=78705 dq=2.5 cnt=131 | c=8.1 rankC=8.1 need=187123 tD=0.49 人 | safe=35690 keep=160658 avail=152237 chunkB=63321 pulseB=37993  x=152237 sole hNb=1
+    ⇒ 影子指令 attack pct=492 → 🌞#1[T1]（约 152427 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1785 alex_k B=316605 L=10118 d=31.3 nb=1 neut=0 cmds=169 noFull=1 shQ=79151 | m=1.457 worth=45.6 cheap=7.0 over=0 dMedOther=5.1 safe(-1)=35690
+    → 🌞#1[T1] terr=31402 bal=78705 dq=2.5 cnt=131 | c=8.1 rankC=8.1 need=187387 tD=0.49 人 | safe=35690 keep=160566 avail=152329 chunkB=63321 pulseB=37993  x=152329 sole hNb=1
+    ⇒ 影子指令 attack pct=492 → 🌞#1[T1]（约 152427 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1790 alex_k B=321037 L=10118 d=31.7 nb=1 neut=0 cmds=170 noFull=1 shQ=80259 | m=1.457 worth=46.2 cheap=7.1 over=0 dMedOther=4.5 safe(-1)=36308
+    → 🌞#1[T1] terr=31517 bal=79806 dq=2.5 cnt=131 | c=8.1 rankC=8.1 need=189520 tD=0.56 人 | safe=36308 keep=162656 avail=154619 chunkB=64207 pulseB=38524  x=154619 sole hNb=1
+    ⇒ 影子指令 attack pct=493 → 🌞#1[T1]（约 154875 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1795 alex_k B=321037 L=10118 d=31.7 nb=1 neut=0 cmds=171 noFull=1 shQ=80259 | m=1.456 worth=46.2 cheap=7.2 over=0 dMedOther=4.5 safe(-1)=36308
+    → 🌞#1[T1] terr=31683 bal=79806 dq=2.5 cnt=131 | c=8.1 rankC=8.1 need=189772 tD=0.56 人 | safe=36308 keep=162574 avail=154701 chunkB=64207 pulseB=38524  x=154701 sole hNb=1
+    ⇒ 影子指令 attack pct=493 → 🌞#1[T1]（约 154875 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1800 alex_k B=335553 L=10118 d=33.2 nb=1 neut=0 cmds=172 noFull=1 shQ=81416 | m=1.455 worth=48.3 cheap=7.3 over=0 dMedOther=5.5 safe(-1)=54774
+    → 🌞#1[T1] terr=31776 bal=112675 dq=3.5 cnt=131 | c=10.5 rankC=10.5 need=248492 tD=0.64 人 | safe=54774 keep=178501 avail=153120 chunkB=67111 pulseB=40266  x=153120 sole hNb=1
+    ⇒ 影子指令 attack pct=467 → 🌞#1[T1]（约 153358 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1805 alex_k B=335553 L=10118 d=33.2 nb=1 neut=0 cmds=173 noFull=1 shQ=83888 | m=1.454 worth=48.2 cheap=7.4 over=0 dMedOther=5.5 safe(-1)=54774
+    → 🌞#1[T1] terr=31898 bal=112675 dq=3.5 cnt=131 | c=10.5 rankC=10.5 need=248678 tD=0.65 人 | safe=54774 keep=178421 avail=153200 chunkB=67111 pulseB=40266  x=153200 sole hNb=1
+    ⇒ 影子指令 attack pct=467 → 🌞#1[T1]（约 153358 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1810 alex_k B=340049 L=10118 d=33.6 nb=1 neut=0 cmds=174 noFull=1 shQ=85012 | m=1.454 worth=48.8 cheap=7.4 over=0 dMedOther=6.2 safe(-1)=55622
+    → 🌞#1[T1] terr=31965 bal=114184 dq=3.6 cnt=131 | c=10.6 rankC=10.6 need=251467 tD=0.57 人 | safe=55622 keep=180683 avail=155382 chunkB=68010 pulseB=40806  x=155382 sole hNb=1
+    ⇒ 影子指令 attack pct=467 → 🌞#1[T1]（约 155413 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1815 alex_k B=340049 L=10118 d=33.6 nb=1 neut=0 cmds=175 noFull=1 shQ=85012 | m=1.453 worth=48.8 cheap=7.5 over=0 dMedOther=6.2 safe(-1)=42654
+    → 🌞#1[T1] terr=32163 bal=91102 dq=2.8 cnt=131 | c=8.8 rankC=8.8 need=210626 tD=0.46 人 | safe=42654 keep=173521 avail=162544 chunkB=68010 pulseB=40806  x=162544 sole hNb=1
+    ⇒ 影子指令 attack pct=489 → 🌞#1[T1]（约 162718 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1820 alex_k B=344503 L=10118 d=34.0 nb=1 neut=0 cmds=176 noFull=1 shQ=86125 | m=1.452 worth=49.4 cheap=7.6 over=0 dMedOther=6.3 safe(-1)=43340
+    → 🌞#1[T1] terr=32446 bal=92322 dq=2.8 cnt=131 | c=8.9 rankC=8.9 need=213223 tD=0.46 人 | safe=43340 keep=175495 avail=164971 chunkB=68901 pulseB=41340  x=164971 sole hNb=1
+    ⇒ 影子指令 attack pct=490 → 🌞#1[T1]（约 165186 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1825 alex_k B=344503 L=10118 d=34.0 nb=1 neut=0 cmds=177 noFull=1 shQ=86125 | m=1.451 worth=49.4 cheap=7.7 over=0 dMedOther=6.2 safe(-1)=43340
+    → 🌞#1[T1] terr=32832 bal=92322 dq=2.8 cnt=131 | c=8.8 rankC=8.8 need=213799 tD=0.45 人 | safe=43340 keep=175213 avail=165253 chunkB=68901 pulseB=41340  x=165253 sole hNb=1
+    ⇒ 影子指令 attack pct=491 → 🌞#1[T1]（约 165522 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1830 alex_k B=348912 L=10118 d=34.5 nb=1 neut=0 cmds=178 noFull=1 shQ=87228 | m=1.451 worth=50.0 cheap=7.8 over=0 dMedOther=6.0 safe(-1)=44035
+    → 🌞#1[T1] terr=33067 bal=93559 dq=2.8 cnt=131 | c=8.8 rankC=8.8 need=216361 tD=0.47 人 | safe=44035 keep=177218 avail=167606 chunkB=69782 pulseB=41869  x=167606 sole hNb=1
+    ⇒ 影子指令 attack pct=491 → 🌞#1[T1]（约 167641 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1835 alex_k B=348912 L=10118 d=34.5 nb=1 neut=0 cmds=179 noFull=1 shQ=87228 | m=1.450 worth=50.0 cheap=7.9 over=0 dMedOther=5.9 safe(-1)=44035
+    → 🌞#1[T1] terr=33381 bal=93559 dq=2.8 cnt=131 | c=8.8 rankC=8.8 need=216829 tD=0.47 人 | safe=44035 keep=177004 avail=167820 chunkB=69782 pulseB=41869  x=167820 sole hNb=1
+    ⇒ 影子指令 attack pct=492 → 🌞#1[T1]（约 167982 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1840 alex_k B=353273 L=10118 d=34.9 nb=1 neut=0 cmds=180 noFull=1 shQ=88318 | m=1.449 worth=50.6 cheap=8.0 over=0 dMedOther=6.0 safe(-1)=44739
+    → 🌞#1[T1] terr=33561 bal=94812 dq=2.8 cnt=131 | c=8.8 rankC=8.8 need=219332 tD=0.47 人 | safe=44739 keep=179040 avail=170094 chunkB=70655 pulseB=42393  x=170094 sole hNb=1
+    ⇒ 影子指令 attack pct=493 → 🌞#1[T1]（约 170426 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1845 alex_k B=353273 L=10118 d=34.9 nb=1 neut=0 cmds=181 noFull=1 shQ=88318 | m=1.448 worth=50.6 cheap=8.1 over=0 dMedOther=5.8 safe(-1)=53065
+    → 🌞#1[T1] terr=33804 bal=109633 dq=3.2 cnt=131 | c=9.8 rankC=9.8 need=246112 tD=0.56 人 | safe=53065 keep=183174 avail=165960 chunkB=70655 pulseB=42393  x=165960 sole hNb=1
+    ⇒ 影子指令 attack pct=481 → 🌞#1[T1]（约 166286 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1850 alex_k B=357582 L=10118 d=35.3 nb=1 neut=0 cmds=182 noFull=1 shQ=89395 | m=1.448 worth=51.2 cheap=8.2 over=0 dMedOther=5.9 safe(-1)=53890
+    → 🌞#1[T1] terr=33953 bal=111102 dq=3.3 cnt=131 | c=9.9 rankC=9.9 need=248955 tD=0.56 人 | safe=53890 keep=185258 avail=168134 chunkB=71516 pulseB=42910  x=168134 sole hNb=1
+    ⇒ 影子指令 attack pct=481 → 🌞#1[T1]（约 168314 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1855 alex_k B=357582 L=10118 d=35.3 nb=1 neut=0 cmds=183 noFull=1 shQ=89395 | m=1.447 worth=51.1 cheap=8.3 over=0 dMedOther=5.8 safe(-1)=53890
+    → 🌞#1[T1] terr=34162 bal=111102 dq=3.3 cnt=131 | c=9.8 rankC=9.8 need=249270 tD=0.56 人 | safe=53890 keep=185115 avail=168277 chunkB=71516 pulseB=42910  x=168277 sole hNb=1
+    ⇒ 影子指令 attack pct=481 → 🌞#1[T1]（约 168314 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1860 alex_k B=361837 L=10118 d=35.8 nb=1 neut=0 cmds=184 noFull=1 shQ=90459 | m=1.446 worth=51.7 cheap=8.4 over=0 dMedOther=5.8 safe(-1)=41946
+    → 🌞#1[T1] terr=34354 bal=89840 dq=2.6 cnt=131 | c=8.3 rankC=8.3 need=211661 tD=0.45 人 | safe=41946 keep=41946 avail=315651 chunkB=72367 pulseB=43420  x=264970 sole hNb=1
+    ⇒ 影子指令 attack pct=749 → 🌞#1[T1]（约 265017 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1865 alex_k B=361837 L=10118 d=35.8 nb=1 neut=0 cmds=185 noFull=1 shQ=90459 | m=1.445 worth=51.7 cheap=8.4 over=0 dMedOther=5.7 safe(-1)=41946
+    → 🌞#1[T1] terr=34610 bal=89840 dq=2.6 cnt=131 | c=8.3 rankC=8.3 need=212045 tD=0.45 人 | safe=41946 keep=41946 avail=315651 chunkB=72367 pulseB=43420  x=265450 sole hNb=1
+    ⇒ 影子指令 attack pct=751 → 🌞#1[T1]（约 265724 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1870 alex_k B=366106 L=10118 d=36.2 nb=1 neut=0 cmds=186 noFull=1 shQ=91526 | m=1.445 worth=52.3 cheap=8.4 over=0 dMedOther=5.8 safe(-1)=42626
+    → 🌞#1[T1] terr=34763 bal=91052 dq=2.6 cnt=131 | c=8.3 rankC=8.3 need=214436 tD=0.45 人 | safe=42626 keep=42626 avail=319190 chunkB=73221 pulseB=43933  x=268438 sole hNb=1
+    ⇒ 影子指令 attack pct=750 → 🌞#1[T1]（约 268501 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1875 alex_k B=366106 L=10118 d=36.2 nb=1 neut=0 cmds=187 noFull=1 shQ=91526 | m=1.444 worth=52.2 cheap=8.4 over=0 dMedOther=5.7 safe(-1)=42626
+    → 🌞#1[T1] terr=34979 bal=91052 dq=2.6 cnt=131 | c=8.3 rankC=8.3 need=214760 tD=0.46 人 | safe=42626 keep=42626 avail=319190 chunkB=73221 pulseB=43933  x=268843 sole hNb=1
+    ⇒ 影子指令 attack pct=751 → 🌞#1[T1]（约 268859 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1880 alex_k B=370426 L=10118 d=36.6 nb=1 neut=0 cmds=188 noFull=1 shQ=92606 | m=1.443 worth=52.8 cheap=8.4 over=0 dMedOther=5.7 safe(-1)=43317
+    → 🌞#1[T1] terr=35109 bal=92281 dq=2.6 cnt=131 | c=8.4 rankC=8.4 need=217143 tD=0.46 人 | safe=43317 keep=43317 avail=322769 chunkB=74085 pulseB=44451  x=271822 sole hNb=1
+    ⇒ 影子指令 attack pct=751 → 🌞#1[T1]（约 272031 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1885 alex_k B=370426 L=10118 d=36.6 nb=1 neut=0 cmds=189 noFull=1 shQ=92606 | m=1.442 worth=52.8 cheap=8.4 over=0 dMedOther=5.6 safe(-1)=43317
+    → 🌞#1[T1] terr=35276 bal=92281 dq=2.6 cnt=131 | c=8.3 rankC=8.3 need=217392 tD=0.46 人 | safe=43317 keep=43317 avail=322769 chunkB=74085 pulseB=44451  x=272133 sole hNb=1
+    ⇒ 影子指令 attack pct=752 → 🌞#1[T1]（约 272393 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1890 alex_k B=374797 L=10118 d=37.0 nb=1 neut=0 cmds=190 noFull=1 shQ=93699 | m=1.442 worth=53.4 cheap=8.4 over=0 dMedOther=5.7 safe(-1)=53117
+    → 🌞#1[T1] terr=35376 bal=109726 dq=3.1 cnt=131 | c=9.5 rankC=9.5 need=248635 tD=0.54 人 | safe=53117 keep=191016 avail=179389 chunkB=74959 pulseB=44976  x=179389 sole hNb=1
+    ⇒ 影子指令 attack pct=490 → 🌞#1[T1]（约 179712 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1895 alex_k B=374797 L=10118 d=37.0 nb=1 neut=0 cmds=191 noFull=1 shQ=93699 | m=1.441 worth=53.4 cheap=8.4 over=0 dMedOther=5.6 safe(-1)=53117
+    → 🌞#1[T1] terr=35508 bal=109726 dq=3.1 cnt=131 | c=9.5 rankC=9.5 need=248833 tD=0.56 人 | safe=53117 keep=190962 avail=179443 chunkB=74959 pulseB=44976  x=179443 sole hNb=1
+    ⇒ 影子指令 attack pct=490 → 🌞#1[T1]（约 179712 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1900 alex_k B=389337 L=10118 d=38.5 nb=1 neut=0 cmds=192 noFull=1 shQ=94857 | m=1.440 worth=55.4 cheap=8.4 over=0 dMedOther=6.5 safe(-1)=73954
+    → 🌞#1[T1] terr=35598 bal=146816 dq=4.1 cnt=131 | c=11.9 rankC=11.9 need=315080 tD=0.63 人 | safe=73954 keep=207072 avail=177703 chunkB=77867 pulseB=46720  x=177703 sole hNb=1
+    ⇒ 影子指令 attack pct=467 → 🌞#1[T1]（约 177939 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1905 alex_k B=389337 L=10118 d=38.5 nb=1 neut=0 cmds=193 noFull=1 shQ=97334 | m=1.439 worth=55.4 cheap=8.4 over=0 dMedOther=6.5 safe(-1)=73954
+    → 🌞#1[T1] terr=35751 bal=146816 dq=4.1 cnt=131 | c=11.9 rankC=11.9 need=315312 tD=0.63 人 | safe=73954 keep=206964 avail=177811 chunkB=77867 pulseB=46720  x=177811 sole hNb=1
+    ⇒ 影子指令 attack pct=467 → 🌞#1[T1]（约 177939 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1910 alex_k B=393931 L=10118 d=38.9 nb=1 neut=0 cmds=194 noFull=1 shQ=98482 | m=1.439 worth=56.0 cheap=8.4 over=0 dMedOther=6.6 safe(-1)=75076
+    → 🌞#1[T1] terr=35863 bal=148812 dq=4.1 cnt=131 | c=12.0 rankC=12.0 need=319037 tD=0.63 人 | safe=75076 keep=209319 avail=179996 chunkB=78786 pulseB=47272  x=179996 sole hNb=1
+    ⇒ 影子指令 attack pct=467 → 🌞#1[T1]（约 180038 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1915 alex_k B=393931 L=10118 d=38.9 nb=1 neut=0 cmds=195 noFull=1 shQ=98482 | m=1.438 worth=56.0 cheap=8.4 over=0 dMedOther=6.3 safe(-1)=75076
+    → 🌞#1[T1] terr=36022 bal=148812 dq=4.1 cnt=131 | c=11.9 rankC=11.9 need=319274 tD=0.66 人 | safe=75076 keep=209204 avail=180111 chunkB=78786 pulseB=47272  x=180111 sole hNb=1
+    ⇒ 影子指令 attack pct=468 → 🌞#1[T1]（约 180423 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1920 alex_k B=398579 L=10118 d=39.4 nb=1 neut=0 cmds=196 noFull=1 shQ=99644 | m=1.437 worth=56.6 cheap=8.4 over=0 dMedOther=6.3 safe(-1)=76212
+    → 🌞#1[T1] terr=36119 bal=150835 dq=4.2 cnt=131 | c=12.0 rankC=12.0 need=323027 tD=0.66 人 | safe=76212 keep=211602 avail=182307 chunkB=79716 pulseB=47829  x=182307 sole hNb=1
+    ⇒ 影子指令 attack pct=468 → 🌞#1[T1]（约 182552 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1925 alex_k B=398579 L=10118 d=39.4 nb=1 neut=0 cmds=197 noFull=1 shQ=99644 | m=1.436 worth=56.6 cheap=8.4 over=0 dMedOther=6.3 safe(-1)=76212
+    → 🌞#1[T1] terr=36240 bal=150835 dq=4.2 cnt=131 | c=12.0 rankC=12.0 need=323203 tD=0.66 人 | safe=76212 keep=211531 avail=182378 chunkB=79716 pulseB=47829  x=182378 sole hNb=1
+    ⇒ 影子指令 attack pct=468 → 🌞#1[T1]（约 182552 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1930 alex_k B=403282 L=10118 d=39.9 nb=1 neut=0 cmds=198 noFull=1 shQ=100820 | m=1.435 worth=57.2 cheap=8.4 over=0 dMedOther=6.2 safe(-1)=60002
+    → 🌞#1[T1] terr=36307 bal=121981 dq=3.4 cnt=131 | c=10.1 rankC=10.1 need=271880 tD=0.55 人 | safe=60002 keep=205630 avail=192927 chunkB=80656 pulseB=48394  x=192927 sole hNb=1
+    ⇒ 影子指令 attack pct=489 → 🌞#1[T1]（约 192976 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1935 alex_k B=403282 L=10118 d=39.9 nb=1 neut=0 cmds=199 noFull=1 shQ=100820 | m=1.435 worth=57.2 cheap=8.4 over=0 dMedOther=5.7 safe(-1)=60002
+    → 🌞#1[T1] terr=36401 bal=121981 dq=3.4 cnt=131 | c=10.1 rankC=10.1 need=272018 tD=0.58 人 | safe=60002 keep=205608 avail=192949 chunkB=80656 pulseB=48394  x=192949 sole hNb=1
+    ⇒ 影子指令 attack pct=489 → 🌞#1[T1]（约 192976 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1940 alex_k B=408040 L=10118 d=40.3 nb=1 neut=0 cmds=200 noFull=1 shQ=102010 | m=1.434 worth=57.8 cheap=8.4 over=0 dMedOther=5.7 safe(-1)=60934
+    → 🌞#1[T1] terr=36463 bal=123639 dq=3.4 cnt=131 | c=10.2 rankC=10.2 need=275069 tD=0.59 人 | safe=60934 keep=208002 avail=195257 chunkB=81608 pulseB=48965  x=195257 sole hNb=1
+    ⇒ 影子指令 attack pct=490 → 🌞#1[T1]（约 195651 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1945 alex_k B=408040 L=10118 d=40.3 nb=1 neut=0 cmds=201 noFull=1 shQ=102010 | m=1.433 worth=57.8 cheap=8.4 over=0 dMedOther=5.7 safe(-1)=60934
+    → 🌞#1[T1] terr=36555 bal=123639 dq=3.4 cnt=131 | c=10.2 rankC=10.2 need=275207 tD=0.59 人 | safe=60934 keep=207982 avail=195277 chunkB=81608 pulseB=48965  x=195277 sole hNb=1
+    ⇒ 影子指令 attack pct=490 → 🌞#1[T1]（约 195651 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1950 alex_k B=412854 L=10118 d=40.8 nb=1 neut=0 cmds=202 noFull=1 shQ=103213 | m=1.433 worth=58.5 cheap=8.4 over=0 dMedOther=6.1 safe(-1)=61878
+    → 🌞#1[T1] terr=36599 bal=125320 dq=3.4 cnt=131 | c=10.3 rankC=10.3 need=278269 tD=0.56 人 | safe=61878 keep=210422 avail=197594 chunkB=82571 pulseB=49542  x=197594 sole hNb=1
+    ⇒ 影子指令 attack pct=490 → 🌞#1[T1]（约 197960 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1955 alex_k B=412854 L=10118 d=40.8 nb=1 neut=0 cmds=203 noFull=1 shQ=103213 | m=1.432 worth=58.4 cheap=8.4 over=0 dMedOther=6.1 safe(-1)=61878
+    → 🌞#1[T1] terr=36645 bal=125320 dq=3.4 cnt=131 | c=10.3 rankC=10.3 need=278335 tD=0.57 人 | safe=61878 keep=210445 avail=197571 chunkB=82571 pulseB=49542  x=197571 sole hNb=1
+    ⇒ 影子指令 attack pct=490 → 🌞#1[T1]（约 197960 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1960 alex_k B=417725 L=10118 d=41.3 nb=1 neut=0 cmds=204 noFull=1 shQ=104431 | m=1.431 worth=59.1 cheap=8.4 over=0 dMedOther=6.2 safe(-1)=62835
+    → 🌞#1[T1] terr=36662 bal=127024 dq=3.5 cnt=131 | c=10.4 rankC=10.4 need=281399 tD=0.56 人 | safe=62835 keep=212941 avail=199889 chunkB=83545 pulseB=50127  x=199889 sole hNb=1
+    ⇒ 影子指令 attack pct=490 → 🌞#1[T1]（约 200295 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1965 alex_k B=417725 L=10118 d=41.3 nb=1 neut=0 cmds=205 noFull=1 shQ=104431 | m=1.430 worth=59.0 cheap=8.4 over=0 dMedOther=6.1 safe(-1)=62835
+    → 🌞#1[T1] terr=36687 bal=127024 dq=3.5 cnt=131 | c=10.4 rankC=10.4 need=281438 tD=0.57 人 | safe=62835 keep=212983 avail=199847 chunkB=83545 pulseB=50127  x=199847 sole hNb=1
+    ⇒ 影子指令 attack pct=489 → 🌞#1[T1]（约 199887 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1970 alex_k B=422654 L=10118 d=41.8 nb=1 neut=0 cmds=206 noFull=1 shQ=105663 | m=1.429 worth=59.7 cheap=8.4 over=0 dMedOther=6.0 safe(-1)=63806
+    → 🌞#1[T1] terr=36701 bal=128751 dq=3.5 cnt=131 | c=10.5 rankC=10.5 need=284534 tD=0.58 人 | safe=63806 keep=215514 avail=202188 chunkB=84531 pulseB=50718  x=202188 sole hNb=1
+    ⇒ 影子指令 attack pct=489 → 🌞#1[T1]（约 202246 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1975 alex_k B=422654 L=10118 d=41.8 nb=1 neut=0 cmds=207 noFull=1 shQ=105663 | m=1.429 worth=59.7 cheap=8.4 over=0 dMedOther=6.0 safe(-1)=94303
+    → 🌞#1[T1] terr=36703 bal=183037 dq=5.0 cnt=131 | c=14.0 rankC=14.0 need=381299 tD=0.83 人 | safe=94303 keep=230150 avail=187552 chunkB=84531 pulseB=50718  x=187552 sole hNb=1
+    ⇒ 影子指令 attack pct=454 → 🌞#1[T1]（约 187800 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1980 alex_k B=427641 L=10118 d=42.3 nb=1 neut=0 cmds=208 noFull=1 shQ=106910 | m=1.428 worth=60.4 cheap=8.4 over=0 dMedOther=6.1 safe(-1)=95702
+    → 🌞#1[T1] terr=36703 bal=185526 dq=5.1 cnt=131 | c=14.1 rankC=14.1 need=385736 tD=0.83 人 | safe=95702 keep=232928 avail=189702 chunkB=85528 pulseB=51317  x=189702 sole hNb=1
+    ⇒ 影子指令 attack pct=454 → 🌞#1[T1]（约 190016 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1985 alex_k B=427641 L=10118 d=42.3 nb=1 neut=0 cmds=209 noFull=1 shQ=106910 | m=1.427 worth=60.3 cheap=8.4 over=0 dMedOther=6.1 safe(-1)=74633
+    → 🌞#1[T1] terr=36703 bal=148023 dq=4.0 cnt=131 | c=11.7 rankC=11.7 need=318891 tD=0.66 人 | safe=74633 keep=222927 avail=199703 chunkB=85528 pulseB=51317  x=199703 sole hNb=1
+    ⇒ 影子指令 attack pct=478 → 🌞#1[T1]（约 200039 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1990 alex_k B=432687 L=10118 d=42.8 nb=1 neut=0 cmds=210 noFull=1 shQ=108171 | m=1.427 worth=61.0 cheap=8.4 over=0 dMedOther=6.1 safe(-1)=75763
+    → 🌞#1[T1] terr=36724 bal=150036 dq=4.1 cnt=131 | c=11.8 rankC=11.8 need=322505 tD=0.67 人 | safe=75763 keep=225578 avail=202039 chunkB=86537 pulseB=51922  x=202039 sole hNb=1
+    ⇒ 影子指令 attack pct=478 → 🌞#1[T1]（约 202399 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1995 alex_k B=432687 L=10118 d=42.8 nb=1 neut=0 cmds=211 noFull=1 shQ=108171 | m=1.426 worth=61.0 cheap=8.4 over=0 dMedOther=6.1 safe(-1)=75763
+    → 🌞#1[T1] terr=36750 bal=150036 dq=4.1 cnt=131 | c=11.8 rankC=11.8 need=322547 tD=0.67 人 | safe=75763 keep=225619 avail=201998 chunkB=86537 pulseB=51922  x=201998 sole hNb=1
+    ⇒ 影子指令 attack pct=478 → 🌞#1[T1]（约 202399 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2000 alex_k B=447910 L=10118 d=44.3 nb=1 neut=0 cmds=212 noFull=1 shQ=109503 | m=1.425 worth=63.1 cheap=8.4 over=0 dMedOther=7.2 safe(-1)=117620
+    → 🌞#1[T1] terr=36750 bal=224540 dq=6.1 cnt=131 | c=16.6 rankC=16.6 need=455342 tD=0.85 人 | safe=117620 keep=251923 avail=190739 chunkB=89582 pulseB=53749  x=190739 sole hNb=1
+    ⇒ 影子指令 attack pct=436 → 🌞#1[T1]（约 191149 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2005 alex_k B=447910 L=10118 d=44.3 nb=1 neut=0 cmds=213 noFull=1 shQ=111977 | m=1.420 worth=62.9 cheap=8.4 over=0 dMedOther=7.1 safe(-1)=117620
+    → 🌞#1[T1] terr=36750 bal=224540 dq=6.1 cnt=131 | c=16.6 rankC=16.6 need=455342 tD=0.85 人 | safe=117620 keep=252470 avail=190192 chunkB=89582 pulseB=53749  x=190192 sole hNb=1
+    ⇒ 影子指令 attack pct=434 → 🌞#1[T1]（约 190274 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2010 alex_k B=453195 L=10118 d=44.8 nb=1 neut=0 cmds=214 noFull=1 shQ=113298 | m=1.415 worth=63.4 cheap=8.4 over=0 dMedOther=7.0 safe(-1)=119335
+    → 🌞#1[T1] terr=36750 bal=227593 dq=6.2 cnt=131 | c=16.8 rankC=16.8 need=460784 tD=0.88 人 | safe=119335 keep=256015 avail=191870 chunkB=90639 pulseB=54383  x=191870 sole hNb=1
+    ⇒ 影子指令 attack pct=433 → 🌞#1[T1]（约 192076 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2015 alex_k B=453195 L=10118 d=44.8 nb=1 neut=0 cmds=215 noFull=1 shQ=113298 | m=1.409 worth=63.1 cheap=8.4 over=0 dMedOther=7.0 safe(-1)=119335
+    → 🌞#1[T1] terr=36750 bal=227593 dq=6.2 cnt=131 | c=16.8 rankC=16.8 need=460784 tD=0.89 人 | safe=119335 keep=256572 avail=191313 chunkB=90639 pulseB=54383  x=191313 sole hNb=1
+    ⇒ 影子指令 attack pct=432 → 🌞#1[T1]（约 191634 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2020 alex_k B=458542 L=10118 d=45.3 nb=1 neut=0 cmds=216 noFull=1 shQ=114635 | m=1.404 worth=63.6 cheap=8.4 over=0 dMedOther=6.6 safe(-1)=121074
+    → 🌞#1[T1] terr=36750 bal=230688 dq=6.3 cnt=131 | c=17.0 rankC=17.0 need=466300 tD=0.95 人 | safe=121074 keep=260179 avail=192990 chunkB=91708 pulseB=55025  x=192990 sole hNb=1
+    ⇒ 影子指令 attack pct=430 → 🌞#1[T1]（约 192999 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2025 alex_k B=458542 L=10118 d=45.3 nb=1 neut=0 cmds=217 noFull=1 shQ=114635 | m=1.399 worth=63.4 cheap=8.4 over=0 dMedOther=6.6 safe(-1)=121074
+    → 🌞#1[T1] terr=36750 bal=230688 dq=6.3 cnt=131 | c=17.0 rankC=17.0 need=466300 tD=0.95 人 | safe=121074 keep=260748 avail=192421 chunkB=91708 pulseB=55025  x=192421 sole hNb=1
+    ⇒ 影子指令 attack pct=429 → 🌞#1[T1]（约 192551 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2030 alex_k B=463952 L=10118 d=45.9 nb=1 neut=0 cmds=218 noFull=1 shQ=115988 | m=1.393 worth=63.9 cheap=8.4 over=0 dMedOther=6.6 safe(-1)=122836
+    → 🌞#1[T1] terr=36750 bal=233825 dq=6.4 cnt=131 | c=17.2 rankC=17.2 need=471891 tD=0.96 人 | safe=122836 keep=264417 avail=194099 chunkB=92790 pulseB=55674  x=194099 sole hNb=1
+    ⇒ 影子指令 attack pct=428 → 🌞#1[T1]（约 194370 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2035 alex_k B=463952 L=10118 d=45.9 nb=1 neut=0 cmds=219 noFull=1 shQ=115988 | m=1.388 worth=63.7 cheap=8.4 over=0 dMedOther=6.6 safe(-1)=122836
+    → 🌞#1[T1] terr=36750 bal=233825 dq=6.4 cnt=131 | c=17.2 rankC=17.2 need=471891 tD=0.96 人 | safe=122836 keep=264998 avail=193518 chunkB=92790 pulseB=55674  x=193518 sole hNb=1
+    ⇒ 影子指令 attack pct=427 → 🌞#1[T1]（约 193917 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2040 alex_k B=469426 L=10118 d=46.4 nb=1 neut=0 cmds=220 noFull=1 shQ=117356 | m=1.383 worth=64.2 cheap=8.4 over=0 dMedOther=6.7 safe(-1)=124622
+    → 🌞#1[T1] terr=36750 bal=237005 dq=6.4 cnt=131 | c=17.4 rankC=17.4 need=477559 tD=0.97 人 | safe=124622 keep=268731 avail=195194 chunkB=93885 pulseB=56331  x=195194 sole hNb=1
+    ⇒ 影子指令 attack pct=425 → 🌞#1[T1]（约 195288 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2045 alex_k B=469426 L=10118 d=46.4 nb=1 neut=0 cmds=221 noFull=1 shQ=117356 | m=1.378 worth=63.9 cheap=8.4 over=0 dMedOther=6.6 safe(-1)=124622
+    → 🌞#1[T1] terr=36750 bal=237005 dq=6.4 cnt=131 | c=17.4 rankC=17.4 need=477559 tD=0.97 人 | safe=124622 keep=269324 avail=194601 chunkB=93885 pulseB=56331  x=194601 sole hNb=1
+    ⇒ 影子指令 attack pct=424 → 🌞#1[T1]（约 194830 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2050 alex_k B=474965 L=10118 d=46.9 nb=1 neut=0 cmds=222 noFull=1 shQ=118741 | m=1.373 worth=64.4 cheap=8.4 over=0 dMedOther=6.7 safe(-1)=126433
+    → 🌞#1[T1] terr=36750 bal=240228 dq=6.5 cnt=131 | c=17.6 rankC=17.6 need=483304 tD=0.98 人 | safe=126433 keep=273122 avail=196278 chunkB=94993 pulseB=56996  x=196278 sole hNb=1
+    ⇒ 影子指令 attack pct=423 → 🌞#1[T1]（约 196665 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2055 alex_k B=474965 L=10118 d=46.9 nb=1 neut=0 cmds=223 noFull=1 shQ=118741 | m=1.367 worth=64.2 cheap=8.4 over=0 dMedOther=6.6 safe(-1)=126433
+    → 🌞#1[T1] terr=36750 bal=240228 dq=6.5 cnt=131 | c=17.6 rankC=17.6 need=483304 tD=0.99 人 | safe=126433 keep=273728 avail=195672 chunkB=94993 pulseB=56996  x=195672 sole hNb=1
+    ⇒ 影子指令 attack pct=421 → 🌞#1[T1]（约 195737 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2060 alex_k B=480569 L=10118 d=47.5 nb=1 neut=0 cmds=224 noFull=1 shQ=120142 | m=1.362 worth=64.7 cheap=8.4 over=0 dMedOther=6.6 safe(-1)=128269
+    → 🌞#1[T1] terr=36750 bal=243495 dq=6.6 cnt=131 | c=17.9 rankC=17.9 need=489127 tD=1.00 人 | safe=128269 keep=277592 avail=197346 chunkB=96114 pulseB=57668  x=197346 sole hNb=1
+    ⇒ 影子指令 attack pct=420 → 🌞#1[T1]（约 197577 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2065 alex_k B=480569 L=10118 d=47.5 nb=1 neut=0 cmds=225 noFull=1 shQ=120142 | m=1.357 worth=64.4 cheap=8.4 over=0 dMedOther=6.6 safe(-1)=128269
+    → 🌞#1[T1] terr=36750 bal=243495 dq=6.6 cnt=131 | c=17.9 rankC=17.9 need=489127 tD=1.01 人 | safe=128269 keep=278210 avail=196728 chunkB=96114 pulseB=57668  x=196728 sole hNb=1
+    ⇒ 影子指令 attack pct=419 → 🌞#1[T1]（约 197108 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2070 alex_k B=486239 L=10118 d=48.1 nb=1 neut=0 cmds=226 noFull=1 shQ=121559 | m=1.352 worth=64.9 cheap=8.4 over=0 dMedOther=6.3 safe(-1)=130129
+    → 🌞#1[T1] terr=36750 bal=246806 dq=6.7 cnt=131 | c=18.1 rankC=18.1 need=495028 tD=1.07 人 | safe=130129 keep=282141 avail=198400 chunkB=97248 pulseB=58349  x=198400 sole hNb=1
+    ⇒ 影子指令 attack pct=417 → 🌞#1[T1]（约 198484 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕

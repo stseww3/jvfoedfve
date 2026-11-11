@@ -11,11 +11,12 @@ import path from 'node:path';
 import { loadReplay, timeline } from './replay_cmds.mjs';
 
 const DATA = process.env.C136_DATA || '/agent/repos/c136-data';
+const BUN = process.env.C136_BUNDLES || 'bundles'; // 验证集：C136_BUNDLES=validation_bundles
 const KIND = { 0: 'spawn', 1: 'attack', 2: 'donate', 3: 'boat', 4: 'chase', 5: 'retreat', 6: 'c6', 7: 'c7', 8: 'leave8', 9: 'leave9', 10: 'c10' };
 const args = process.argv.slice(2);
-const outDir = args.includes('--out') ? args[args.indexOf('--out') + 1] : '/tmp/c136-r05/cmds';
+const outDir = args.includes('--out') ? args[args.indexOf('--out') + 1] : (process.env.C136_CMDS || '/tmp/c136-r05/cmds');
 let ids = args.filter((a, i) => !a.startsWith('--') && args[i - 1] !== '--out');
-if (!ids.length) ids = fs.readdirSync(path.join(DATA, 'bundles')).filter((d) => fs.existsSync(path.join(DATA, 'bundles', d, 'replay.txt'))).sort();
+if (!ids.length) ids = fs.readdirSync(path.join(DATA, BUN)).filter((d) => fs.existsSync(path.join(DATA, BUN, d, 'replay.txt'))).sort();
 fs.mkdirSync(outDir, { recursive: true });
 const hp = path.join(outDir, 'headers.json');
 const headers = fs.existsSync(hp) ? JSON.parse(fs.readFileSync(hp, 'utf8')) : {};

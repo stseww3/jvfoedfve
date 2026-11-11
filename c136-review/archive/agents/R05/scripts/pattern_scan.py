@@ -52,14 +52,15 @@ import re
 import statistics
 import sys
 
-SRC = '/agent/repos/c136-data'
-CMDS = '/tmp/c136-r05/cmds'
+SRC = os.environ.get('C136_DATA', '/agent/repos/c136-data')
+BUN = os.environ.get('C136_BUNDLES', 'bundles')   # 验证集：C136_BUNDLES=validation_bundles
+CMDS = os.environ.get('C136_CMDS', '/tmp/c136-r05/cmds')
 a = sys.argv[1:]
 opt = lambda k: a[a.index(k) + 1] if k in a else None
 ids = [x for i, x in enumerate(a) if not x.startswith('--') and (i == 0 or a[i - 1] not in ('--tsv', '--json', '--only'))]
 detail, dosum, doclasses, doagg = '--detail' in a, '--sum' in a, '--classes' in a, '--agg' in a
 if not ids:
-    ids = sorted(d for d in os.listdir(f'{SRC}/bundles') if os.path.exists(f'{SRC}/bundles/{d}/replay.txt'))
+    ids = sorted(d for d in os.listdir(f'{SRC}/{BUN}') if os.path.exists(f'{SRC}/{BUN}/{d}/replay.txt'))
 if opt('--only'):
     ids = [x for x in ids if x[0] in opt('--only')]
 HEAD = json.load(open(f'{CMDS}/headers.json'))
@@ -91,7 +92,7 @@ def ver_of(mid):
 
 
 def scan(mid):
-    B = f'{SRC}/bundles/{mid}'
+    B = f'{SRC}/{BUN}/{mid}'
     card = json.load(open(f'{B}/card.json'))
     hd = HEAD.get(mid) or {}
     if 'error' in hd or not os.path.exists(f'{CMDS}/{mid}.tsv'):

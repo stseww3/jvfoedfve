@@ -1,0 +1,169 @@
+# A070 zero_7 影子决策明细 t=2430~2700（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 21 拍（t=2430~2530）
+#   没有可打的邻居: 34 拍（t=2535~2700）
+t=2430 zero_7 B=15178 L=17384 d=0.9 nb=2 neut=0 cmds=252 noFull=1 shQ=3794 | m=0.974 worth=0.8 cheap=8.0 over=0 dMedOther=8.1 safe(-1)=427438
+    → Qart-ḥadašt#16[T1] terr=92789 bal=736161 dq=7.9 cnt=176 | c=16.0 rankC=11.2 need=1502047 tD=0.98 人 pulse onMe | safe=427438 keep=Inf avail=-Inf chunkB=3036 pulseB=1821 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2435 zero_7 B=13959 L=16654 d=0.8 nb=2 neut=0 cmds=252 noFull=1 shQ=3489 | m=0.968 worth=0.8 cheap=8.0 over=0 dMedOther=8.1 safe(-1)=425685
+    → Qart-ḥadašt#16[T1] terr=93678 bal=736161 dq=7.9 cnt=176 | c=15.8 rankC=11.1 need=1499168 tD=0.97 人 pulse onMe | safe=425685 keep=Inf avail=-Inf chunkB=2792 pulseB=1675 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2440 zero_7 B=12941 L=15938 d=0.8 nb=1 neut=59 cmds=252 noFull=1 shQ=3235 | m=0.963 worth=0.8 cheap=8.1 over=0 dMedOther=10.8 safe(-1)=430494
+    → Qart-ḥadašt#16[T1] terr=94572 bal=747792 dq=7.9 cnt=181 | c=21.2 rankC=21.2 need=1517089 tD=0.73 人 pulse onMe | safe=430494 keep=Inf avail=-Inf chunkB=2588 pulseB=1553 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2445 zero_7 B=11778 L=15135 d=0.8 nb=1 neut=51 cmds=252 noFull=1 shQ=2944 | m=0.958 worth=0.7 cheap=8.1 over=0 dMedOther=10.7 safe(-1)=428838
+    → Qart-ḥadašt#16[T1] terr=95485 bal=747792 dq=7.8 cnt=184 | c=20.9 rankC=20.9 need=1514310 tD=0.73 人 pulse onMe | safe=428838 keep=Inf avail=-Inf chunkB=2356 pulseB=1413 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2450 zero_7 B=10759 L=14337 d=0.8 nb=1 neut=44 cmds=252 noFull=1 shQ=2689 | m=0.953 worth=0.7 cheap=8.2 over=0 dMedOther=11.2 safe(-1)=433838
+    → Qart-ḥadašt#16[T1] terr=96427 bal=759681 dq=7.9 cnt=190 | c=21.0 rankC=21.0 need=1532734 tD=0.71 人 pulse onMe | safe=433838 keep=Inf avail=-Inf chunkB=2152 pulseB=1291 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2455 zero_7 B=9626 L=13453 d=0.7 nb=1 neut=36 cmds=252 noFull=1 shQ=2406 | m=0.947 worth=0.7 cheap=8.2 over=0 dMedOther=11.1 safe(-1)=432228
+    → Qart-ḥadašt#16[T1] terr=97390 bal=759681 dq=7.8 cnt=193 | c=20.7 rankC=20.7 need=1529983 tD=0.70 人 pulse onMe | safe=432228 keep=Inf avail=-Inf chunkB=1925 pulseB=1155 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2460 zero_7 B=8641 L=12577 d=0.7 nb=1 neut=30 cmds=252 noFull=1 shQ=2160 | m=0.942 worth=0.6 cheap=8.2 over=0 dMedOther=11.2 safe(-1)=437478
+    → Qart-ḥadašt#16[T1] terr=98362 bal=771835 dq=7.8 cnt=195 | c=20.8 rankC=20.8 need=1548980 tD=0.70 人 pulse onMe | safe=437478 keep=Inf avail=-Inf chunkB=1728 pulseB=1037 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2465 zero_7 B=7648 L=11707 d=0.7 nb=1 neut=25 cmds=252 noFull=1 shQ=2048 | m=0.937 worth=0.6 cheap=8.3 over=0 dMedOther=11.1 safe(-1)=436057
+    → Qart-ḥadašt#16[T1] terr=99286 bal=771835 dq=7.8 cnt=172 | c=20.6 rankC=20.6 need=1546532 tD=0.70 人 pulse onMe | safe=436057 keep=Inf avail=-Inf chunkB=1530 pulseB=918 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2470 zero_7 B=6877 L=10943 d=0.6 nb=1 neut=22 cmds=252 noFull=1 shQ=2048 | m=0.931 worth=0.6 cheap=8.3 over=0 dMedOther=11.2 safe(-1)=441742
+    → Qart-ḥadašt#16[T1] terr=100120 bal=784184 dq=7.8 cnt=165 | c=20.7 rankC=20.7 need=1566411 tD=0.70 人 pulse onMe | safe=441742 keep=Inf avail=-Inf chunkB=1375 pulseB=825 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2475 zero_7 B=6070 L=10161 d=0.6 nb=1 neut=19 cmds=252 noFull=1 shQ=2048 | m=0.926 worth=0.6 cheap=8.4 over=0 dMedOther=11.1 safe(-1)=440572
+    → Qart-ḥadašt#16[T1] terr=100941 bal=784184 dq=7.8 cnt=163 | c=20.5 rankC=20.5 need=1564390 tD=0.70 人 pulse onMe | safe=440572 keep=Inf avail=-Inf chunkB=1214 pulseB=728 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2480 zero_7 B=5368 L=9371 d=0.6 nb=1 neut=13 cmds=252 noFull=1 shQ=2048 | m=0.921 worth=0.5 cheap=8.5 over=0 dMedOther=11.2 safe(-1)=446548
+    → Qart-ḥadašt#16[T1] terr=101761 bal=796809 dq=7.8 cnt=166 | c=20.6 rankC=20.6 need=1584950 tD=0.70 人 pulse onMe | safe=446548 keep=Inf avail=-Inf chunkB=1074 pulseB=644 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2485 zero_7 B=4611 L=8544 d=0.5 nb=1 neut=10 cmds=252 noFull=1 shQ=2048 | m=0.916 worth=0.5 cheap=8.5 over=0 dMedOther=11.1 safe(-1)=445442
+    → Qart-ḥadašt#16[T1] terr=102609 bal=796809 dq=7.8 cnt=171 | c=20.4 rankC=20.4 need=1583012 tD=0.70 人 pulse onMe | safe=445442 keep=Inf avail=-Inf chunkB=922 pulseB=553 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2490 zero_7 B=3916 L=7670 d=0.5 nb=1 neut=6 cmds=252 noFull=1 shQ=2048 | m=0.911 worth=0.5 cheap=8.6 over=0 dMedOther=10.5 safe(-1)=451562
+    → Qart-ḥadašt#16[T1] terr=103490 bal=809637 dq=7.8 cnt=179 | c=20.5 rankC=20.5 need=1603957 tD=0.75 人 pulse onMe | safe=451562 keep=Inf avail=-Inf chunkB=783 pulseB=470 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2495 zero_7 B=3197 L=6768 d=0.5 nb=1 neut=2 cmds=252 noFull=1 shQ=2048 | m=0.905 worth=0.4 cheap=8.8 over=0 dMedOther=10.4 safe(-1)=450492
+    → Qart-ḥadašt#16[T1] terr=104400 bal=809637 dq=7.8 cnt=182 | c=20.3 rankC=20.3 need=1602058 tD=0.74 人 pulse onMe | safe=450492 keep=Inf avail=-Inf chunkB=639 pulseB=384 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2500 zero_7 B=72874 L=6402 d=11.4 nb=1 neut=0 cmds=252 noFull=1 shQ=2817 | m=0.900 worth=10.2 cheap=8.8 over=0 dMedOther=10.8 safe(-1)=515676
+    → Qart-ḥadašt#16[T1] terr=104766 bal=927506 dq=8.9 cnt=175 | c=36.5 rankC=36.5 need=1810308 tD=0.82 人 pulse | safe=515676 keep=Inf avail=-Inf chunkB=14575 pulseB=8745 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2505 zero_7 B=72874 L=6402 d=11.4 nb=1 neut=0 cmds=252 noFull=1 shQ=3852 | m=0.900 worth=10.2 cheap=8.8 over=0 dMedOther=10.7 safe(-1)=515676
+    → Qart-ḥadašt#16[T1] terr=104766 bal=927506 dq=8.9 cnt=175 | c=36.5 rankC=36.5 need=1810308 tD=0.83 人 pulse | safe=515676 keep=Inf avail=-Inf chunkB=14575 pulseB=8745 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2510 zero_7 B=73704 L=6402 d=11.5 nb=1 neut=0 cmds=252 noFull=1 shQ=4890 | m=0.900 worth=10.4 cheap=8.8 over=0 dMedOther=10.8 safe(-1)=524065
+    → Qart-ḥadašt#16[T1] terr=104766 bal=942438 dq=9.0 cnt=175 | c=37.1 rankC=37.1 need=1836922 tD=0.83 人 pulse | safe=524065 keep=Inf avail=-Inf chunkB=14741 pulseB=8844 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2515 zero_7 B=73704 L=6402 d=11.5 nb=1 neut=0 cmds=252 noFull=1 shQ=5940 | m=0.900 worth=10.4 cheap=8.8 over=0 dMedOther=10.7 safe(-1)=524065
+    → Qart-ḥadašt#16[T1] terr=104766 bal=942438 dq=9.0 cnt=175 | c=37.1 rankC=37.1 need=1836922 tD=0.84 人 pulse | safe=524065 keep=Inf avail=-Inf chunkB=14741 pulseB=8844 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2520 zero_7 B=74544 L=6402 d=11.6 nb=1 neut=0 cmds=252 noFull=1 shQ=6992 | m=0.900 worth=10.5 cheap=8.8 over=0 dMedOther=10.8 safe(-1)=532589
+    → Qart-ḥadašt#16[T1] terr=104766 bal=957611 dq=9.1 cnt=175 | c=37.6 rankC=37.6 need=1863966 tD=0.85 人 pulse | safe=532589 keep=Inf avail=-Inf chunkB=14909 pulseB=8945 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2525 zero_7 B=62897 L=6402 d=9.8 nb=1 neut=0 cmds=252 noFull=1 shQ=7887 | m=0.900 worth=8.8 cheap=8.8 over=0 dMedOther=10.8 safe(-1)=526284
+    → Qart-ḥadašt#16[T1] terr=104766 bal=832299 dq=7.9 cnt=175 | c=16.6 rankC=11.6 need=1754704 tD=0.74 人 pulse onMe | safe=526284 keep=Inf avail=-Inf chunkB=12579 pulseB=7548 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2530 zero_7 B=55503 L=5883 d=9.4 nb=1 neut=0 cmds=252 noFull=1 shQ=8737 | m=0.900 worth=8.5 cheap=8.8 over=0 dMedOther=10.8 safe(-1)=517704
+    → Qart-ḥadašt#16[T1] terr=105285 bal=845782 dq=8.0 cnt=171 | c=16.6 rankC=11.6 need=1762375 tD=0.74 人 pulse onMe | safe=517704 keep=Inf avail=-Inf chunkB=11101 pulseB=6660 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2535 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=8.2 cheap=10.0 over=0 dMedOther=10.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2540 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=8.3 cheap=10.0 over=0 dMedOther=10.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2545 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=8.3 cheap=10.0 over=0 dMedOther=10.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2550 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=8.4 cheap=10.0 over=0 dMedOther=10.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2555 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=8.3 cheap=10.0 over=0 dMedOther=10.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2560 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=8.5 cheap=10.0 over=0 dMedOther=11.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2565 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=8.5 cheap=10.0 over=0 dMedOther=11.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2570 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=8.5 cheap=10.0 over=0 dMedOther=11.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2575 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=8.5 cheap=10.0 over=0 dMedOther=11.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2580 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=8.6 cheap=10.0 over=0 dMedOther=11.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2585 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=8.5 cheap=10.0 over=0 dMedOther=11.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2590 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=8.6 cheap=10.0 over=0 dMedOther=11.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2595 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=8.5 cheap=10.0 over=0 dMedOther=11.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2600 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.3 cheap=10.0 over=0 dMedOther=12.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2605 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.2 cheap=10.0 over=0 dMedOther=12.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2610 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.3 cheap=10.0 over=0 dMedOther=12.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2615 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.2 cheap=10.0 over=0 dMedOther=12.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2620 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.3 cheap=10.0 over=0 dMedOther=12.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2625 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.2 cheap=10.0 over=0 dMedOther=12.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2630 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.3 cheap=10.0 over=0 dMedOther=12.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2635 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.2 cheap=10.0 over=0 dMedOther=12.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2640 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.3 cheap=10.0 over=0 dMedOther=12.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2645 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.3 cheap=10.0 over=0 dMedOther=12.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2650 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.4 cheap=10.0 over=0 dMedOther=12.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2655 zero_7 B=0 L=1 d=0.0 nb=0 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.4 cheap=10.0 over=0 dMedOther=12.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2660 zero_7 B=1 L=1 d=1.0 nb=1 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.5 cheap=10.0 over=0 dMedOther=12.4 safe(-1)=88
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2665 zero_7 B=1 L=6 d=0.2 nb=1 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.5 cheap=10.0 over=0 dMedOther=12.4 safe(-1)=528
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2670 zero_7 B=2 L=10 d=0.2 nb=1 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.6 cheap=10.0 over=0 dMedOther=12.5 safe(-1)=880
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2675 zero_7 B=2 L=13 d=0.2 nb=1 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.5 cheap=10.0 over=0 dMedOther=12.5 safe(-1)=1144
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2680 zero_7 B=3 L=15 d=0.2 nb=1 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.7 cheap=10.0 over=0 dMedOther=12.7 safe(-1)=1320
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2685 zero_7 B=3 L=21 d=0.1 nb=1 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.7 cheap=10.0 over=0 dMedOther=12.7 safe(-1)=1848
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2690 zero_7 B=4 L=24 d=0.2 nb=1 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.8 cheap=10.0 over=0 dMedOther=12.8 safe(-1)=2112
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2695 zero_7 B=4 L=27 d=0.1 nb=1 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=9.8 cheap=10.0 over=0 dMedOther=12.8 safe(-1)=2376
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2700 zero_7 B=35 L=30 d=1.2 nb=1 neut=0 cmds=252 noFull=1 shQ=2048 | m=0.900 worth=10.7 cheap=10.0 over=0 dMedOther=14.0 safe(-1)=2640
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令

@@ -81,6 +81,9 @@ P('> 本文件由 `python3 scripts/accounts_table.py --out reports/DELAY-AND-LAN
 P('> 账本字段由 `delay_account.py`、`land_account.mjs`、`tick_attrib.py`、`quota_guard.py` 的输出原样裁剪而来（重跑方法见各局复盘第 7 节末尾）。')
 P('> 「延迟波局」= 600–1500 拍落地指令的延迟中位 ≥ 60 拍：' + '、'.join(LAG) + f'（{len(LAG)} 局）；其余 {len(OK)} 局：' + '、'.join(OK) + '。')
 P('> A017、A043 是拆盘局，账本只覆盖有录像那一盘的 1 个、2 个号。B010 是 squad20（c110）。')
+_exp = lambda G: sum(J[m]['context']['baseWinExpectation'] for m in G)
+_won = lambda G: sum(1 for m in G if J[m]['outcome']['result'] == 'won')
+P(f'> 按队数的期望赢局数 / 实际赢：延迟波局 {_exp(LAG):.2f} / {_won(LAG)}；其余局 {_exp(OK):.2f} / {_won(OK)}。')
 P('')
 
 # ---------- 表 1 出生执行 ----------
@@ -225,6 +228,65 @@ for name, G in (('延迟波局', LAG), ('其余局', OK)):
             o1500.append(cap[1500].get('othersMedianRatio', 0))
     if r630:
         P(f"- {name}：编队 实际÷名下 630 拍中位 {med(r630):.2f} → 1500 拍中位 {med(r1500):.2f}；同局其余真人 1500 拍中位的中位 {med(o1500):.2f}；1500 拍编队低于其余真人中位的局 {sum(1 for x, y in zip(r1500, o1500) if x < y)}/{len(r1500)}。")
+for key, nm in (('A', '名下的机器人地'), ('B', '贴着我方、可打的机器人地')):
+    parts = []
+    for name, G in (('延迟波局', LAG), ('其余局', OK), ('13 局', ids)):
+        xs = []
+        for m in G:
+            bl = (J[m].get('landAccount') or {}).get('botLand') or {}
+            rr = ((bl.get('fate') or {}).get(key) or [None])[-1]
+            tot = (bl.get(key) or {}).get('tiles')
+            if rr and tot:
+                xs.append(100 * rr.get('我方号', 0) / tot)
+        if xs:
+            parts.append(f"{name} 中位 {med(xs):.0f}%（{min(xs):.0f}–{max(xs):.0f}%）")
+    P(f"- {nm}到 1800 拍我方拿到：" + '；'.join(parts) + '。')
+bs = []
+for m in ids:
+    L = J[m].get('landAccount') or {}
+    bl = L.get('botLand') or {}
+    rr = ((bl.get('fate') or {}).get('C') or [None])[-1]
+    tot = (bl.get('C') or {}).get('tiles')
+    hs = (L.get('voronoi') or {}).get('headShare')
+    if rr and tot and hs:
+        bs.append((m, rr.get('我方号', 0) / tot / hs))
+if bs:
+    P(f"- 全图机器人地（600 拍时机器人占着的地，到 1800 拍的去向）我方拿到的份额 ÷ 人数占比：中位 {med([x for _, x in bs]):.2f}（{min(x for _, x in bs):.2f}–{max(x for _, x in bs):.2f}），<1 的 {sum(1 for _, x in bs if x < 1)}/{len(bs)} 局；"
+      + '、'.join(f'{m} {x:.2f}' for m, x in bs) + '。')
+P('')
+P('把 1500 拍的落后拆成两个因子：**出生份额** = 名下÷人数（出生点分到的陆地是不是与人数相称）；**相对拿地** = 编队的 实际÷名下 ÷ 同局其余真人的中位（分到的地拿到手的程度，与别人比）。两者的乘积近似等于编队人均地 ÷ 其余真人人均地（`cross_ledger.py` 第 7 节按席位平均的实测值列在最后一列对照）。')
+P('')
+rows = []
+fac = {'延迟波局': [], '其余局': []}
+try:
+    CL = {r['mid']: r for r in json.load(open(os.path.join(HERE, '..', 'out', 'cross-ledger.json'), encoding='utf-8'))}
+except OSError:
+    CL = {}
+gaps = []
+for m in ids:
+    L = J[m].get('landAccount') or {}
+    V = L.get('voronoi') or {}
+    cap = {c['t']: c for c in L.get('capture') or []}
+    c = cap.get(1500) or {}
+    g = (c.get('groups') or {}).get('我方号') or {}
+    if not V.get('ratio') or not g.get('ratio') or not c.get('othersMedianRatio'):
+        continue
+    rel = g['ratio'] / c['othersMedianRatio']
+    pcap = ((CL.get(m) or {}).get('perCapita') or {}).get('1500') or {}
+    fac['延迟波局' if m in LAG else '其余局'].append((V['ratio'], rel))
+    if pcap.get('ratio'):
+        gaps.append(abs(V['ratio'] * rel - pcap['ratio']))
+    rows.append([m + ('＊' if m in LAG else ''), f"{V['ratio']:.2f}", f"{rel:.2f}", f"{V['ratio'] * rel:.2f}", f"{pcap['ratio']:.2f}" if pcap.get('ratio') else '–'])
+table(['局', '出生份额（名下÷人数）', '相对拿地（1500 拍）', '乘积', '实测：编队人均地÷其余真人人均地（1500 拍）'], rows)
+for name in ('延迟波局', '其余局'):
+    v = fac[name]
+    if v:
+        P(f"- {name}（{len(v)} 局）：出生份额中位 {med([x for x, _ in v]):.2f}（<1 的 {sum(1 for x, _ in v if x < 1)}/{len(v)}）；相对拿地中位 {med([y for _, y in v]):.2f}（<1 的 {sum(1 for _, y in v if y < 1)}/{len(v)}）。")
+if gaps:
+    P(f"- 乘积与实测之差（绝对值）：中位 {med(gaps):.2f}，最大 {max(gaps):.2f}（{len(gaps)} 局）。两种口径的分母不同（相对拿地用其余真人的中位数，实测用人均），所以只是近似。")
+allv = fac['延迟波局'] + fac['其余局']
+if allv:
+    P(f"- 13 局合并：出生份额中位 {med([x for x, _ in allv]):.2f}（{min(x for x, _ in allv):.2f}–{max(x for x, _ in allv):.2f}，<1 的 {sum(1 for x, _ in allv if x < 1)}/{len(allv)}）。")
 P('')
 
 # ---------- 表 6 三层归因 ----------

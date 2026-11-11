@@ -1,0 +1,328 @@
+# A070 sora_w 影子决策明细 t=2070~2430（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   出手打人/bot: 14 拍（t=2070~2420）；可用兵 3313~224846，一条指令下限(20%余额) 11230~65543，比值 28%~358%
+#   首选目标价高（c>=worth）: 7 拍（t=2105~2135）
+#   首选目标无可用兵（avail<=0）: 46 拍（t=2140~2395）；可用兵 -697200~-1310，一条指令下限(20%余额) 3010~11956，比值 -6206%~-11%
+#   首选目标要发的兵低于最小指令（x < max(minCmd, pulseMinShare×B)）: 3 拍（t=2275~2315）；可用兵 209~1996，一条指令下限(20%余额) 11158~11732，比值 2%~17%
+#   有可用兵但没发（其他）: 2 拍（t=2300~2430）；可用兵 4951~204061，一条指令下限(20%余额) 11890~58605，比值 42%~348%
+#   首选目标已有在途进攻（curAtk 过门槛）: 1 拍（t=2425~2425）；可用兵 200314~200314，一条指令下限(20%余额) 57801~57801，比值 347%~347%
+#   └ 「出手打人/bot」里：14 条对人/bot 的出兵共约 365262 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=2070 sora_w B=277595 L=38859 d=7.1 nb=3 neut=0 cmds=153 noFull=1 shQ=69398 | m=1.352 worth=9.7 cheap=7.3 over=0 dMedOther=6.3 safe(-1)=105909
+    → AI#111 terr=9986 bal=191 dq=0.0 cnt=148 | c=2.4 rankC=2.4 need=15320 tD=0.00 机 | safe=105909 keep=105909 avail=168433 chunkB=55519 pulseB=33311  x=19595 hNb=1
+    → Player 191#18[T1离] terr=10707 bal=24176 dq=2.3 cnt=57 | c=8.3 rankC=8.3 need=48786 tD=0.36 机 | safe=105909 keep=253383 avail=20959 chunkB=55519 pulseB=33311 不够一条(x=20959)→continue hNb=1
+    → 🌞#1[T1] terr=36750 bal=246806 dq=6.7 cnt=132 | c=18.0 rankC=18.0 need=495028 tD=1.07 人 | safe=105909 keep=Inf avail=-Inf chunkB=55519 pulseB=33311 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=72 → AI#111（约 19789 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2075 sora_w B=277595 L=38859 d=7.1 nb=3 neut=0 cmds=154 noFull=1 shQ=69398 | m=1.346 worth=9.6 cheap=7.3 over=0 dMedOther=6.2 safe(-1)=105909
+    → AI#111 terr=10093 bal=191 dq=0.0 cnt=148 | c=2.4 rankC=2.4 need=15480 tD=0.00 机 | safe=105909 keep=105909 avail=168433 chunkB=55519 pulseB=33311  x=19795 hNb=1
+    → Player 191#18[T1离] terr=10707 bal=23531 dq=2.2 cnt=57 | c=8.1 rankC=8.1 need=47872 tD=0.35 机 | safe=105909 keep=251354 avail=22988 chunkB=55519 pulseB=33311 不够一条(x=22988)→continue hNb=1
+    → 🌞#1[T1] terr=36750 bal=246806 dq=6.7 cnt=132 | c=18.0 rankC=18.0 need=495028 tD=1.08 人 | safe=105909 keep=Inf avail=-Inf chunkB=55519 pulseB=33311 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=73 → AI#111（约 20060 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2080 sora_w B=281398 L=38859 d=7.2 nb=3 neut=0 cmds=155 noFull=1 shQ=70349 | m=1.341 worth=9.7 cheap=7.3 over=0 dMedOther=6.0 safe(-1)=107794
+    → AI#111 terr=10415 bal=193 dq=0.0 cnt=148 | c=2.4 rankC=2.4 need=15968 tD=0.00 机 | safe=107794 keep=107794 avail=170307 chunkB=56280 pulseB=33768  x=20404 hNb=1
+    → Player 191#18[T1离] terr=10751 bal=23532 dq=2.2 cnt=57 | c=8.1 rankC=8.1 need=48093 tD=0.36 机 | safe=107794 keep=253098 avail=25003 chunkB=56280 pulseB=33768 不够一条(x=25003)→continue hNb=1
+    → 🌞#1[T1] terr=36750 bal=250162 dq=6.8 cnt=132 | c=18.2 rankC=18.2 need=501010 tD=1.13 人 | safe=107794 keep=Inf avail=-Inf chunkB=56280 pulseB=33768 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=74 → AI#111（约 20610 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2085 sora_w B=281387 L=38858 d=7.2 nb=4 neut=0 cmds=156 noFull=1 shQ=70346 | m=1.336 worth=9.7 cheap=7.3 over=0 dMedOther=5.9 safe(-1)=107795
+    → AI#111 terr=10633 bal=193 dq=0.0 cnt=148 | c=2.4 rankC=2.4 need=16294 tD=0.00 机 | safe=107795 keep=107795 avail=170295 chunkB=56277 pulseB=33766  x=20812 hNb=1
+    → Player 191#18[T1离] terr=10829 bal=23532 dq=2.2 cnt=57 | c=8.0 rankC=8.0 need=48437 tD=0.37 机 | safe=107795 keep=252734 avail=25356 chunkB=56277 pulseB=33766 不够一条(x=25356)→continue hNb=1
+    → 🌞#1[T1] terr=36750 bal=250162 dq=6.8 cnt=132 | c=18.2 rankC=18.2 need=501010 tD=1.15 人 | safe=107795 keep=Inf avail=-Inf chunkB=56277 pulseB=33766 价高(c>=worth)→break sole hNb=1
+    → AI#392 terr=1894 bal=10430 dq=5.5 cnt=1 | c=21.2 rankC=21.2 need=27917 tD=0.93 机 | safe=107795 keep=Inf avail=-Inf chunkB=56277 pulseB=33766 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=75 → AI#111（约 20884 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2090 sora_w B=285196 L=38854 d=7.3 nb=4 neut=0 cmds=157 noFull=1 shQ=71299 | m=1.331 worth=9.8 cheap=7.3 over=0 dMedOther=5.9 safe(-1)=109710
+    → AI#111 terr=10950 bal=195 dq=0.0 cnt=148 | c=2.4 rankC=2.4 need=16774 tD=0.00 机 | safe=109710 keep=109710 avail=172144 chunkB=57039 pulseB=34224  x=21411 hNb=1
+    → Player 191#18[T1离] terr=10866 bal=23577 dq=2.2 cnt=57 | c=8.0 rankC=8.0 need=48683 tD=0.37 机 | safe=109710 keep=254748 avail=27106 chunkB=57039 pulseB=34224 不够一条(x=27106)→continue hNb=1
+    → 🌞#1[T1] terr=36750 bal=253564 dq=6.9 cnt=132 | c=18.4 rankC=18.4 need=507074 tD=1.16 人 | safe=109710 keep=Inf avail=-Inf chunkB=57039 pulseB=34224 价高(c>=worth)→break sole hNb=1
+    → AI#392 terr=1898 bal=10541 dq=5.6 cnt=3 | c=21.3 rankC=21.3 need=28023 tD=0.93 机 | safe=109710 keep=Inf avail=-Inf chunkB=57039 pulseB=34224 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=76 → AI#111（约 21445 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2095 sora_w B=285068 L=38843 d=7.3 nb=4 neut=0 cmds=158 noFull=1 shQ=71267 | m=1.325 worth=9.7 cheap=7.3 over=0 dMedOther=5.9 safe(-1)=109719
+    → AI#111 terr=11150 bal=195 dq=0.0 cnt=148 | c=2.4 rankC=2.4 need=17074 tD=0.00 机 | safe=109719 keep=109719 avail=172009 chunkB=57014 pulseB=34208  x=21786 hNb=1
+    → Player 191#18[T1离] terr=10866 bal=23577 dq=2.2 cnt=57 | c=8.0 rankC=8.0 need=48732 tD=0.37 机 | safe=109719 keep=255187 avail=26541 chunkB=57014 pulseB=34208 不够一条(x=26541)→continue hNb=1
+    → 🌞#1[T1] terr=36750 bal=253564 dq=6.9 cnt=132 | c=18.4 rankC=18.4 need=507074 tD=1.17 人 | safe=109719 keep=Inf avail=-Inf chunkB=57014 pulseB=34208 价高(c>=worth)→break sole hNb=1
+    → AI#392 terr=1909 bal=10541 dq=5.5 cnt=6 | c=21.0 rankC=21.0 need=27759 tD=0.94 机 | safe=109719 keep=Inf avail=-Inf chunkB=57014 pulseB=34208 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=78 → AI#111（约 21992 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2100 sora_w B=327714 L=38835 d=8.4 nb=4 neut=0 cmds=159 noFull=1 shQ=72373 | m=1.320 worth=11.1 cheap=7.3 over=0 dMedOther=6.9 safe(-1)=132309
+    → AI#111 terr=11441 bal=11542 dq=1.0 cnt=148 | c=4.8 rankC=4.8 need=37734 tD=0.15 机 | safe=132309 keep=132309 avail=191565 chunkB=65543 pulseB=39326  x=47612 hNb=1
+    → Player 191#18[T1离] terr=10866 bal=34444 dq=3.2 cnt=57 | c=10.6 rankC=10.6 need=65327 tD=0.46 机 | safe=132309 keep=317805 avail=6069 chunkB=65543 pulseB=39326 不够一条(x=6069)→continue hNb=1
+    → 🌞#1[T1] terr=36750 bal=293762 dq=8.0 cnt=132 | c=21.0 rankC=21.0 need=578722 tD=1.16 人 | safe=132309 keep=Inf avail=-Inf chunkB=65543 pulseB=39326 价高(c>=worth)→break sole hNb=1
+    → AI#392 terr=1917 bal=12570 dq=6.6 cnt=8 | c=23.5 rankC=23.5 need=31186 tD=0.95 机 | safe=132309 keep=Inf avail=-Inf chunkB=65543 pulseB=39326 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=148 → AI#111（约 47684 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2105 sora_w B=21891 L=38813 d=0.6 nb=4 neut=0 cmds=159 noFull=1 shQ=300 | m=1.315 worth=0.7 cheap=7.3 over=0 dMedOther=6.8 safe(-1)=132327
+    → AI#392 terr=1939 bal=12570 dq=6.5 cnt=12 | c=20.8 rankC=20.8 need=31142 tD=0.95 机 | safe=132327 keep=Inf avail=-Inf chunkB=4378 pulseB=2627 价高(c>=worth)→break hNb=1
+    → 🌞#1[T1] terr=36750 bal=293762 dq=8.0 cnt=132 | c=28.2 rankC=28.2 need=578722 tD=1.17 人 crowdedHard | safe=132327 keep=Inf avail=-Inf chunkB=4378 pulseB=2627 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2110 sora_w B=22161 L=39191 d=0.6 nb=4 neut=0 cmds=159 noFull=1 shQ=676 | m=1.310 worth=0.7 cheap=7.3 over=0 dMedOther=6.9 safe(-1)=134253
+    → AI#392 terr=1972 bal=12704 dq=6.4 cnt=18 | c=20.6 rankC=20.6 need=31298 tD=0.94 机 | safe=134253 keep=Inf avail=-Inf chunkB=4432 pulseB=2659 价高(c>=worth)→break hNb=1
+    → 🌞#1[T1] terr=36750 bal=297757 dq=8.1 cnt=132 | c=28.6 rankC=28.6 need=585843 tD=1.18 人 crowdedHard | safe=134253 keep=Inf avail=-Inf chunkB=4432 pulseB=2659 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2115 sora_w B=18058 L=39582 d=0.5 nb=4 neut=0 cmds=159 noFull=1 shQ=1042 | m=1.304 worth=0.6 cheap=7.2 over=0 dMedOther=6.8 safe(-1)=133924
+    → 🌞#1[T1] terr=36750 bal=297757 dq=8.1 cnt=132 | c=8.3 rankC=4.1 need=585843 tD=1.18 人 pulse bleeding | safe=133924 keep=Inf avail=-Inf chunkB=3612 pulseB=2167 价高(c>=worth)→break hNb=1
+    → AI#392 terr=1992 bal=12704 dq=6.4 cnt=20 | c=20.3 rankC=20.3 need=31254 tD=0.93 机 | safe=133924 keep=Inf avail=-Inf chunkB=3612 pulseB=2167 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2120 sora_w B=18273 L=40148 d=0.5 nb=4 neut=0 cmds=159 noFull=1 shQ=1353 | m=1.299 worth=0.6 cheap=7.2 over=0 dMedOther=6.9 safe(-1)=135721
+    → 🌞#1[T1] terr=36750 bal=301806 dq=8.2 cnt=132 | c=8.4 rankC=4.2 need=593059 tD=1.19 人 pulse bleeding | safe=135721 keep=Inf avail=-Inf chunkB=3655 pulseB=2193 价高(c>=worth)→break hNb=1
+    → AI#392 terr=2039 bal=12839 dq=6.3 cnt=25 | c=20.0 rankC=20.0 need=31413 tD=0.91 机 | safe=135721 keep=Inf avail=-Inf chunkB=3655 pulseB=2193 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2125 sora_w B=18234 L=40495 d=0.5 nb=4 neut=0 cmds=159 noFull=1 shQ=1664 | m=1.294 worth=0.6 cheap=7.2 over=0 dMedOther=6.9 safe(-1)=133615
+    → 🌞#1[T1] terr=36504 bal=298578 dq=8.2 cnt=130 | c=8.5 rankC=4.2 need=586125 tD=1.18 人 pulse bleeding | safe=133615 keep=Inf avail=-Inf chunkB=3647 pulseB=2188 价高(c>=worth)→break hNb=1
+    → AI#392 terr=2094 bal=12839 dq=6.1 cnt=28 | c=19.4 rankC=19.4 need=31305 tD=0.89 机 | safe=133615 keep=Inf avail=-Inf chunkB=3647 pulseB=2188 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2130 sora_w B=18463 L=41065 d=0.4 nb=4 neut=0 cmds=159 noFull=1 shQ=1978 | m=1.288 worth=0.6 cheap=7.2 over=0 dMedOther=6.5 safe(-1)=134500
+    → 🌞#1[T1] terr=36381 bal=301007 dq=8.3 cnt=130 | c=8.6 rankC=4.3 need=589858 tD=1.27 人 pulse bleeding | safe=134500 keep=Inf avail=-Inf chunkB=3693 pulseB=2216 价高(c>=worth)→break hNb=1
+    → AI#392 terr=2125 bal=12976 dq=6.1 cnt=30 | c=19.2 rankC=19.2 need=31487 tD=0.94 机 | safe=134500 keep=Inf avail=-Inf chunkB=3693 pulseB=2216 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2135 sora_w B=18416 L=41398 d=0.4 nb=4 neut=0 cmds=159 noFull=1 shQ=2296 | m=1.283 worth=0.6 cheap=7.2 over=0 dMedOther=6.6 safe(-1)=132392
+    → 🌞#1[T1] terr=36135 bal=297755 dq=8.2 cnt=123 | c=8.7 rankC=4.3 need=582876 tD=1.25 人 pulse bleeding | safe=132392 keep=Inf avail=-Inf chunkB=3683 pulseB=2210 价高(c>=worth)→break hNb=1
+    → AI#392 terr=2191 bal=12976 dq=5.9 cnt=33 | c=18.6 rankC=18.6 need=31365 tD=0.90 机 | safe=132392 keep=Inf avail=-Inf chunkB=3683 pulseB=2210 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2140 sora_w B=18621 L=41915 d=0.4 nb=4 neut=0 cmds=159 noFull=1 shQ=2612 | m=1.278 worth=0.6 cheap=7.2 over=0 dMedOther=6.6 safe(-1)=129683
+    → 🌞#1[T1] terr=35779 bal=237008 dq=6.6 cnt=116 | c=6.7 rankC=3.3 need=530123 tD=1.00 人 pulse bleeding onMe | safe=129683 keep=129683 avail=-111280 chunkB=3724 pulseB=2235 无可用(avail<=0) hNb=1
+    → AI#392 terr=2261 bal=13114 dq=5.8 cnt=35 | c=18.1 rankC=18.1 need=31475 tD=0.88 机 | safe=129683 keep=Inf avail=-Inf chunkB=3724 pulseB=2235 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2145 sora_w B=18432 L=42035 d=0.4 nb=4 neut=0 cmds=159 noFull=1 shQ=2932 | m=1.273 worth=0.6 cheap=7.2 over=0 dMedOther=6.6 safe(-1)=127766
+    → 🌞#1[T1] terr=35781 bal=234567 dq=6.6 cnt=115 | c=6.7 rankC=3.3 need=525023 tD=1.00 人 pulse bleeding onMe | safe=127766 keep=127766 avail=-109550 chunkB=3686 pulseB=2212 无可用(avail<=0) hNb=1
+    → AI#392 terr=2298 bal=13114 dq=5.7 cnt=37 | c=17.7 rankC=17.7 need=31407 tD=0.87 机 | safe=127766 keep=Inf avail=-Inf chunkB=3686 pulseB=2212 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2150 sora_w B=18466 L=42314 d=0.4 nb=4 neut=0 cmds=159 noFull=1 shQ=3249 | m=1.268 worth=0.6 cheap=7.2 over=0 dMedOther=6.6 safe(-1)=126687
+    → 🌞#1[T1] terr=35646 bal=233856 dq=6.6 cnt=117 | c=6.8 rankC=3.4 need=522389 tD=1.00 人 pulse bleeding onMe | safe=126687 keep=126687 avail=-108437 chunkB=3693 pulseB=2216 无可用(avail<=0) hNb=1
+    → AI#392 terr=2378 bal=13254 dq=5.6 cnt=40 | c=17.2 rankC=17.2 need=31506 tD=0.85 机 | safe=126687 keep=Inf avail=-Inf chunkB=3693 pulseB=2216 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2155 sora_w B=18164 L=42260 d=0.4 nb=4 neut=0 cmds=159 noFull=1 shQ=3565 | m=1.262 worth=0.5 cheap=7.2 over=0 dMedOther=6.5 safe(-1)=124521
+    → 🌞#1[T1] terr=35740 bal=231123 dq=6.5 cnt=120 | c=6.8 rankC=3.4 need=516766 tD=1.00 人 pulse bleeding onMe | safe=124521 keep=124521 avail=-106569 chunkB=3633 pulseB=2180 无可用(avail<=0) hNb=1
+    → AI#392 terr=2461 bal=13254 dq=5.4 cnt=41 | c=16.5 rankC=16.5 need=31348 tD=0.83 机 | safe=124521 keep=Inf avail=-Inf chunkB=3633 pulseB=2180 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2160 sora_w B=18221 L=42554 d=0.4 nb=4 neut=0 cmds=159 noFull=1 shQ=3879 | m=1.257 worth=0.5 cheap=7.2 over=0 dMedOther=6.6 safe(-1)=123187
+    → 🌞#1[T1] terr=35574 bal=230002 dq=6.5 cnt=122 | c=6.9 rankC=3.5 need=513265 tD=0.98 人 pulse bleeding onMe | safe=123187 keep=123187 avail=-105179 chunkB=3644 pulseB=2187 无可用(avail<=0) hNb=1
+    → AI#392 terr=2503 bal=13395 dq=5.4 cnt=42 | c=16.3 rankC=16.3 need=31527 tD=0.81 机 | safe=123187 keep=Inf avail=-Inf chunkB=3644 pulseB=2187 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2165 sora_w B=17908 L=42480 d=0.4 nb=4 neut=0 cmds=159 noFull=1 shQ=4192 | m=1.252 worth=0.5 cheap=7.2 over=0 dMedOther=6.6 safe(-1)=120885
+    → 🌞#1[T1] terr=35658 bal=227043 dq=6.4 cnt=124 | c=6.9 rankC=3.4 need=507150 tD=0.97 人 pulse bleeding onMe | safe=120885 keep=120885 avail=-103186 chunkB=3582 pulseB=2149 无可用(avail<=0) hNb=1
+    → AI#392 terr=2593 bal=13395 dq=5.2 cnt=46 | c=15.7 rankC=15.7 need=31356 tD=0.79 机 | safe=120885 keep=Inf avail=-Inf chunkB=3582 pulseB=2149 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2170 sora_w B=17922 L=42701 d=0.4 nb=4 neut=0 cmds=159 noFull=1 shQ=4480 | m=1.247 worth=0.5 cheap=7.2 over=0 dMedOther=6.6 safe(-1)=119309
+    → 🌞#1[T1] terr=35451 bal=225411 dq=6.4 cnt=128 | c=7.0 rankC=3.5 need=502533 tD=0.96 人 pulse bleeding onMe | safe=119309 keep=119309 avail=-101597 chunkB=3584 pulseB=2151 无可用(avail<=0) hNb=1
+    → AI#392 terr=2690 bal=13538 dq=5.0 cnt=49 | c=15.1 rankC=15.1 need=31436 tD=0.76 机 | safe=119309 keep=Inf avail=-Inf chunkB=3584 pulseB=2151 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2175 sora_w B=17632 L=42640 d=0.4 nb=4 neut=0 cmds=159 noFull=1 shQ=4408 | m=1.241 worth=0.5 cheap=7.2 over=0 dMedOther=6.6 safe(-1)=116780
+    → 🌞#1[T1] terr=35512 bal=222108 dq=6.3 cnt=128 | c=7.0 rankC=3.5 need=495670 tD=0.95 人 pulse bleeding onMe | safe=116780 keep=116780 avail=-99354 chunkB=3526 pulseB=2116 无可用(avail<=0) hNb=1
+    → AI#392 terr=2741 bal=13538 dq=4.9 cnt=51 | c=14.8 rankC=14.8 need=31342 tD=0.75 机 | safe=116780 keep=Inf avail=-Inf chunkB=3526 pulseB=2116 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2180 sora_w B=17638 L=42835 d=0.4 nb=4 neut=0 cmds=159 noFull=1 shQ=4409 | m=1.236 worth=0.5 cheap=7.2 over=0 dMedOther=6.7 safe(-1)=115036
+    → 🌞#1[T1] terr=35272 bal=220139 dq=6.2 cnt=125 | c=7.1 rankC=3.6 need=490330 tD=0.93 人 pulse bleeding onMe | safe=115036 keep=115036 avail=-97604 chunkB=3528 pulseB=2117 无可用(avail<=0) hNb=1
+    → AI#392 terr=2846 bal=13686 dq=4.8 cnt=53 | c=14.3 rankC=14.3 need=31420 tD=0.72 机 | safe=115036 keep=Inf avail=-Inf chunkB=3528 pulseB=2117 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2185 sora_w B=17324 L=42713 d=0.4 nb=4 neut=0 cmds=159 noFull=1 shQ=4331 | m=1.231 worth=0.5 cheap=7.2 over=0 dMedOther=6.7 safe(-1)=88104
+    → 🌞#1[T1] terr=35335 bal=173250 dq=4.9 cnt=124 | c=6.2 rankC=3.1 need=406438 tD=0.74 人 pulse bleeding onMe | safe=88104 keep=88104 avail=-70983 chunkB=3465 pulseB=2079 无可用(avail<=0) hNb=1
+    → AI#392 terr=2956 bal=13686 dq=4.6 cnt=56 | c=13.7 rankC=13.7 need=31218 tD=0.70 机 | safe=88104 keep=Inf avail=-Inf chunkB=3465 pulseB=2079 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2190 sora_w B=17368 L=42925 d=0.4 nb=4 neut=0 cmds=159 noFull=1 shQ=4342 | m=1.226 worth=0.5 cheap=7.2 over=0 dMedOther=6.7 safe(-1)=86727
+    → 🌞#1[T1] terr=35120 bal=171931 dq=4.9 cnt=122 | c=6.3 rankC=3.1 need=402480 tD=0.73 人 pulse bleeding onMe | safe=86727 keep=86727 avail=-69562 chunkB=3474 pulseB=2084 无可用(avail<=0) hNb=1
+    → AI#392 terr=3012 bal=13836 dq=4.6 cnt=56 | c=13.5 rankC=13.5 need=31388 tD=0.68 机 | safe=86727 keep=Inf avail=-Inf chunkB=3474 pulseB=2084 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2195 sora_w B=17066 L=42768 d=0.4 nb=4 neut=0 cmds=159 noFull=1 shQ=4266 | m=1.220 worth=0.5 cheap=7.2 over=0 dMedOther=6.7 safe(-1)=84840
+    → 🌞#1[T1] terr=35168 bal=169512 dq=4.8 cnt=115 | c=6.3 rankC=3.1 need=397221 tD=0.72 人 pulse bleeding onMe | safe=84840 keep=84840 avail=-67973 chunkB=3413 pulseB=2048 无可用(avail<=0) hNb=1
+    → AI#392 terr=3127 bal=13836 dq=4.4 cnt=58 | c=12.9 rankC=12.9 need=31190 tD=0.66 机 | safe=84840 keep=Inf avail=-Inf chunkB=3413 pulseB=2048 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2200 sora_w B=59780 L=42895 d=1.4 nb=4 neut=0 cmds=159 noFull=1 shQ=4429 | m=1.215 worth=1.7 cheap=7.2 over=0 dMedOther=7.8 safe(-1)=103212
+    → Player 191#18[T1离] terr=8518 bal=28170 dq=3.3 cnt=40 | c=2.0 rankC=2.0 need=7841 tD=0.42 机 | safe=103212 keep=103212 avail=-44132 chunkB=11956 pulseB=7174 无可用(avail<=0) hNb=1
+    → 🌞#1[T1] terr=34947 bal=203155 dq=5.8 cnt=115 | c=7.8 rankC=3.9 need=455026 tD=0.75 人 pulse bleeding onMe | safe=103212 keep=Inf avail=-Inf chunkB=11956 pulseB=7174 价高(c>=worth)→break hNb=1
+    → AI#392 terr=3247 bal=17175 dq=5.3 cnt=60 | c=14.8 rankC=14.8 need=36741 tD=0.68 机 | safe=103212 keep=Inf avail=-Inf chunkB=11956 pulseB=7174 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2205 sora_w B=58877 L=42805 d=1.4 nb=4 neut=0 cmds=159 noFull=1 shQ=5463 | m=1.210 worth=1.7 cheap=7.2 over=0 dMedOther=7.8 safe(-1)=100483
+    → Player 191#18[T1离] terr=8411 bal=27644 dq=3.3 cnt=32 | c=1.9 rankC=1.9 need=7529 tD=0.42 机 | safe=100483 keep=100483 avail=-42295 chunkB=11775 pulseB=7065 无可用(avail<=0) hNb=1
+    → 🌞#1[T1] terr=34995 bal=200393 dq=5.7 cnt=116 | c=7.7 rankC=3.9 need=448131 tD=0.74 人 pulse bleeding onMe | safe=100483 keep=Inf avail=-Inf chunkB=11775 pulseB=7065 价高(c>=worth)→break hNb=1
+    → AI#392 terr=3308 bal=17175 dq=5.2 cnt=61 | c=14.5 rankC=14.5 need=36433 tD=0.67 机 | safe=100483 keep=Inf avail=-Inf chunkB=11775 pulseB=7065 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2210 sora_w B=58904 L=42924 d=1.4 nb=4 neut=0 cmds=159 noFull=1 shQ=6485 | m=1.205 worth=1.7 cheap=7.2 over=0 dMedOther=7.8 safe(-1)=98693
+    → Player 191#18[T1离] terr=8288 bal=27003 dq=3.3 cnt=31 | c=1.9 rankC=1.9 need=7246 tD=0.42 机 | safe=98693 keep=98693 avail=-40479 chunkB=11781 pulseB=7068 无可用(avail<=0) hNb=1
+    → 🌞#1[T1] terr=34766 bal=198853 dq=5.7 cnt=115 | c=7.9 rankC=3.9 need=443004 tD=0.73 人 pulse bleeding onMe | safe=98693 keep=Inf avail=-Inf chunkB=11781 pulseB=7068 价高(c>=worth)→break hNb=1
+    → AI#392 terr=3435 bal=17363 dq=5.1 cnt=64 | c=13.8 rankC=13.8 need=36157 tD=0.65 机 | safe=98693 keep=Inf avail=-Inf chunkB=11781 pulseB=7068 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2215 sora_w B=58156 L=42896 d=1.4 nb=4 neut=0 cmds=159 noFull=1 shQ=7506 | m=1.199 worth=1.6 cheap=7.2 over=0 dMedOther=7.3 safe(-1)=95877
+    → Player 191#18[T1离] terr=8178 bal=26433 dq=3.2 cnt=29 | c=1.8 rankC=1.8 need=6705 tD=0.44 机 | safe=95877 keep=95877 avail=-38402 chunkB=11631 pulseB=6979 无可用(avail<=0) hNb=1
+    → 🌞#1[T1] terr=34793 bal=195980 dq=5.6 cnt=114 | c=7.8 rankC=3.9 need=435878 tD=0.77 人 pulse bleeding onMe | safe=95877 keep=Inf avail=-Inf chunkB=11631 pulseB=6979 价高(c>=worth)→break hNb=1
+    → AI#392 terr=3435 bal=17414 dq=5.1 cnt=64 | c=13.8 rankC=13.8 need=36197 tD=0.69 机 | safe=95877 keep=Inf avail=-Inf chunkB=11631 pulseB=6979 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2220 sora_w B=58464 L=43137 d=1.4 nb=4 neut=0 cmds=159 noFull=1 shQ=8518 | m=1.194 worth=1.6 cheap=7.2 over=0 dMedOther=7.4 safe(-1)=93876
+    → Player 191#18[T1离] terr=8063 bal=25844 dq=3.2 cnt=28 | c=1.8 rankC=1.8 need=6427 tD=0.43 机 | safe=93876 keep=93876 avail=-36097 chunkB=11693 pulseB=7016 无可用(avail<=0) hNb=1
+    → 🌞#1[T1] terr=34537 bal=194224 dq=5.6 cnt=114 | c=8.0 rankC=4.0 need=430299 tD=0.76 人 pulse bleeding onMe | safe=93876 keep=Inf avail=-Inf chunkB=11693 pulseB=7016 价高(c>=worth)→break hNb=1
+    → AI#392 terr=3435 bal=17605 dq=5.1 cnt=64 | c=14.0 rankC=14.0 need=36538 tD=0.69 机 | safe=93876 keep=Inf avail=-Inf chunkB=11693 pulseB=7016 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2225 sora_w B=57724 L=43103 d=1.3 nb=4 neut=0 cmds=159 noFull=1 shQ=9530 | m=1.189 worth=1.6 cheap=7.2 over=0 dMedOther=7.3 safe(-1)=91035
+    → Player 191#18[T1离] terr=7975 bal=25397 dq=3.2 cnt=26 | c=1.8 rankC=1.8 need=6102 tD=0.43 机 | safe=91035 keep=91035 avail=-33987 chunkB=11545 pulseB=6927 无可用(avail<=0) hNb=1
+    → 🌞#1[T1] terr=34552 bal=191284 dq=5.5 cnt=115 | c=7.9 rankC=4.0 need=423047 tD=0.76 人 pulse bleeding onMe | safe=91035 keep=Inf avail=-Inf chunkB=11545 pulseB=6927 价高(c>=worth)→break hNb=1
+    → AI#392 terr=3435 bal=17605 dq=5.1 cnt=64 | c=14.0 rankC=14.0 need=36538 tD=0.70 机 | safe=91035 keep=Inf avail=-Inf chunkB=11545 pulseB=6927 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2230 sora_w B=58032 L=43341 d=1.3 nb=4 neut=0 cmds=159 noFull=1 shQ=10537 | m=1.183 worth=1.6 cheap=7.2 over=0 dMedOther=7.4 safe(-1)=88915
+    → Player 191#18[T1离] terr=7880 bal=24918 dq=3.2 cnt=26 | c=1.8 rankC=1.8 need=5975 tD=0.43 机 | safe=88915 keep=88915 avail=-31563 chunkB=11606 pulseB=6964 无可用(avail<=0) hNb=1
+    → 🌞#1[T1] terr=34269 bal=189300 dq=5.5 cnt=115 | c=8.1 rankC=4.0 need=416976 tD=0.75 人 pulse bleeding onMe | safe=88915 keep=Inf avail=-Inf chunkB=11606 pulseB=6964 价高(c>=worth)→break hNb=1
+    → AI#392 terr=3435 bal=17798 dq=5.2 cnt=64 | c=14.1 rankC=14.1 need=36882 tD=0.70 机 | safe=88915 keep=Inf avail=-Inf chunkB=11606 pulseB=6964 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2235 sora_w B=57300 L=43306 d=1.3 nb=4 neut=0 cmds=159 noFull=1 shQ=11543 | m=1.178 worth=1.6 cheap=7.2 over=0 dMedOther=7.4 safe(-1)=85966
+    → Player 191#18[T1离] terr=7819 bal=24611 dq=3.1 cnt=24 | c=1.8 rankC=1.8 need=5919 tD=0.43 机 | safe=85966 keep=85966 avail=-29337 chunkB=11460 pulseB=6876 无可用(avail<=0) hNb=1
+    → 🌞#1[T1] terr=34254 bal=186149 dq=5.4 cnt=115 | c=8.0 rankC=4.0 need=409253 tD=0.74 人 pulse bleeding onMe | safe=85966 keep=Inf avail=-Inf chunkB=11460 pulseB=6876 价高(c>=worth)→break hNb=1
+    → AI#392 terr=3435 bal=17798 dq=5.2 cnt=64 | c=14.1 rankC=14.1 need=36882 tD=0.70 机 | safe=85966 keep=Inf avail=-Inf chunkB=11460 pulseB=6876 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2240 sora_w B=57600 L=43526 d=1.3 nb=4 neut=0 cmds=159 noFull=1 shQ=12540 | m=1.173 worth=1.6 cheap=7.2 over=0 dMedOther=7.5 safe(-1)=83642
+    → Player 191#18[T1离] terr=7744 bal=24237 dq=3.1 cnt=21 | c=1.8 rankC=1.8 need=5913 tD=0.42 机 | safe=83642 keep=83642 avail=-26717 chunkB=11520 pulseB=6912 无可用(avail<=0) hNb=1
+    → 🌞#1[T1] terr=33930 bal=183787 dq=5.4 cnt=116 | c=8.2 rankC=4.1 need=402346 tD=0.73 人 pulse bleeding onMe | safe=83642 keep=Inf avail=-Inf chunkB=11520 pulseB=6912 价高(c>=worth)→break hNb=1
+    → AI#392 terr=3435 bal=17993 dq=5.2 cnt=64 | c=14.2 rankC=14.2 need=37230 tD=0.70 机 | safe=83642 keep=Inf avail=-Inf chunkB=11520 pulseB=6912 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2245 sora_w B=56866 L=43481 d=1.3 nb=4 neut=0 cmds=159 noFull=1 shQ=13537 | m=1.168 worth=1.5 cheap=7.2 over=0 dMedOther=7.5 safe(-1)=80602
+    → 🌞#1[T1] terr=33894 bal=180474 dq=5.3 cnt=116 | c=0.0 rankC=0.0 need=394251 tD=0.71 人 pulse nearCollapse bleeding onMe | safe=80602 keep=80602 avail=-24402 chunkB=11373 pulseB=6824 无可用(avail<=0) hNb=1
+    → Player 191#18[T1离] terr=7693 bal=23985 dq=3.1 cnt=16 | c=1.8 rankC=1.8 need=5859 tD=0.42 机 | safe=80602 keep=80602 avail=-24402 chunkB=11373 pulseB=6824 无可用(avail<=0) hNb=1
+    → AI#392 terr=3435 bal=17993 dq=5.2 cnt=64 | c=14.2 rankC=14.2 need=37230 tD=0.70 机 | safe=80602 keep=Inf avail=-Inf chunkB=11373 pulseB=6824 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2250 sora_w B=57170 L=43707 d=1.3 nb=4 neut=0 cmds=159 noFull=1 shQ=14292 | m=1.163 worth=1.5 cheap=7.1 over=0 dMedOther=6.9 safe(-1)=76554
+    → 🌞#1[T1] terr=33204 bal=175028 dq=5.3 cnt=115 | c=0.0 rankC=0.0 need=380487 tD=0.76 人 pulse nearCollapse bleeding onMe | safe=76554 keep=76554 avail=-20053 chunkB=11434 pulseB=6860 无可用(avail<=0) hNb=1
+    → Player 191#18[T1离] terr=7635 bal=23701 dq=3.1 cnt=17 | c=1.8 rankC=1.8 need=5831 tD=0.45 机 | safe=76554 keep=76554 avail=-20053 chunkB=11434 pulseB=6860 无可用(avail<=0) hNb=1
+    → AI#392 terr=3435 bal=18190 dq=5.3 cnt=64 | c=14.3 rankC=14.3 need=37581 tD=0.76 机 | safe=76554 keep=Inf avail=-Inf chunkB=11434 pulseB=6860 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2255 sora_w B=56449 L=43659 d=1.3 nb=4 neut=0 cmds=159 noFull=1 shQ=14112 | m=1.157 worth=1.5 cheap=7.1 over=0 dMedOther=6.9 safe(-1)=71940
+    → 🌞#1[T1] terr=32814 bal=168878 dq=5.1 cnt=115 | c=0.0 rankC=0.0 need=366054 tD=0.74 人 pulse nearCollapse bleeding onMe | safe=71940 keep=71940 avail=-16152 chunkB=11290 pulseB=6774 无可用(avail<=0) hNb=1
+    → Player 191#18[T1离] terr=7597 bal=22536 dq=3.0 cnt=5 | c=1.5 rankC=1.5 need=4499 tD=0.43 机 | safe=71940 keep=71940 avail=-16152 chunkB=11290 pulseB=6774 无可用(avail<=0) hNb=1
+    → AI#392 terr=3435 bal=18190 dq=5.3 cnt=64 | c=14.3 rankC=14.3 need=37581 tD=0.77 机 | safe=71940 keep=Inf avail=-Inf chunkB=11290 pulseB=6774 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2260 sora_w B=56764 L=43876 d=1.3 nb=4 neut=0 cmds=159 noFull=1 shQ=14191 | m=1.152 worth=1.5 cheap=7.1 over=0 dMedOther=7.0 safe(-1)=67051
+    → 🌞#1[T1] terr=31920 bal=161894 dq=5.1 cnt=113 | c=0.0 rankC=0.0 need=348868 tD=0.72 人 pulse nearCollapse bleeding onMe | safe=67051 keep=67051 avail=-10952 chunkB=11353 pulseB=6812 无可用(avail<=0) hNb=1
+    → Player 191#18[T1离] terr=7610 bal=22422 dq=2.9 cnt=5 | c=1.5 rankC=1.5 need=4660 tD=0.42 机 | safe=67051 keep=67051 avail=-10952 chunkB=11353 pulseB=6812 无可用(avail<=0) hNb=1
+    → AI#392 terr=3435 bal=18390 dq=5.4 cnt=64 | c=14.5 rankC=14.5 need=37937 tD=0.76 机 | safe=67051 keep=Inf avail=-Inf chunkB=11353 pulseB=6812 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2265 sora_w B=56082 L=43842 d=1.3 nb=4 neut=0 cmds=159 noFull=1 shQ=14020 | m=1.147 worth=1.5 cheap=7.1 over=0 dMedOther=7.0 safe(-1)=62527
+    → 🌞#1[T1] terr=31495 bal=155818 dq=4.9 cnt=107 | c=0.0 rankC=0.0 need=334615 tD=0.70 人 pulse nearCollapse bleeding onMe | safe=62527 keep=62527 avail=-7102 chunkB=11216 pulseB=6730 无可用(avail<=0) hNb=1
+    → Player 191#18[T1离] terr=7494 bal=21719 dq=2.9 cnt=3 | c=1.2 rankC=1.2 need=3305 tD=0.41 机 | safe=62527 keep=62527 avail=-7102 chunkB=11216 pulseB=6730 无可用(avail<=0) hNb=1
+    → AI#392 terr=3435 bal=18390 dq=5.4 cnt=64 | c=14.5 rankC=14.5 need=37937 tD=0.76 机 | safe=62527 keep=Inf avail=-Inf chunkB=11216 pulseB=6730 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2270 sora_w B=56424 L=44080 d=1.3 nb=4 neut=0 cmds=159 noFull=1 shQ=14106 | m=1.142 worth=1.5 cheap=7.1 over=0 dMedOther=7.1 safe(-1)=57590
+    → 🌞#1[T1] terr=30548 bal=148691 dq=4.9 cnt=105 | c=0.0 rankC=0.0 need=317133 tD=0.68 人 pulse nearCollapse bleeding onMe | safe=57590 keep=57590 avail=-1827 chunkB=11285 pulseB=6771 无可用(avail<=0) hNb=1
+    → Player 191#18[T1离] terr=7531 bal=21349 dq=2.8 cnt=8 | c=1.1 rankC=1.1 need=3265 tD=0.40 机 | safe=57590 keep=57590 avail=-1827 chunkB=11285 pulseB=6771 无可用(avail<=0) hNb=1
+    → AI#392 terr=3435 bal=18592 dq=5.4 cnt=64 | c=14.6 rankC=14.6 need=38297 tD=0.76 机 | safe=57590 keep=Inf avail=-Inf chunkB=11285 pulseB=6771 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2275 sora_w B=55792 L=44071 d=1.3 nb=4 neut=0 cmds=159 noFull=1 shQ=13948 | m=1.136 worth=1.4 cheap=7.1 over=0 dMedOther=7.1 safe(-1)=53873
+    → 🌞#1[T1] terr=30287 bal=143947 dq=4.8 cnt=103 | c=0.0 rankC=0.0 need=306109 tD=0.67 人 pulse nearCollapse bleeding onMe | safe=53873 keep=53873 avail=1266 chunkB=11158 pulseB=6695 低于最小指令(x=1266<2612)→continue hNb=1
+    → Player 191#18[T1离] terr=7597 bal=20212 dq=2.7 cnt=11 | c=0.9 rankC=0.9 need=2438 tD=0.37 机 | safe=53873 keep=53873 avail=1266 chunkB=11158 pulseB=6695 不够一条(x=1266)→continue hNb=1
+    → AI#392 terr=3435 bal=18592 dq=5.4 cnt=64 | c=14.6 rankC=14.6 need=38297 tD=0.76 机 | safe=53873 keep=Inf avail=-Inf chunkB=11158 pulseB=6695 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2280 sora_w B=56150 L=44300 d=1.3 nb=3 neut=126 cmds=160 noFull=1 shQ=14037 | m=1.131 worth=1.4 cheap=7.1 over=0 dMedOther=6.6 safe(-1)=51689
+    → 🌞#1[T1] terr=29945 bal=141654 dq=4.7 cnt=104 | c=0.0 rankC=0.0 need=299566 tD=0.71 人 pulse nearCollapse bleeding onMe | safe=51689 keep=51689 avail=3803 chunkB=11230 pulseB=6738  x=3803 hNb=1
+    → Player 191#18[T1离] terr=7620 bal=20012 dq=2.6 cnt=16 | c=1.0 rankC=1.0 need=2777 tD=0.40 机 | safe=51689 keep=51689 avail=3803 chunkB=11230 pulseB=6738  x=3519 hNb=1
+    → AI#392 terr=3435 bal=18796 dq=5.5 cnt=64 | c=14.7 rankC=14.7 need=38661 tD=0.83 机 | safe=51689 keep=Inf avail=-Inf chunkB=11230 pulseB=6738 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=69 → 🌞#1[T1]（约 3838 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2285 sora_w B=15132 L=44262 d=0.3 nb=3 neut=113 cmds=160 noFull=1 shQ=105 | m=1.126 worth=0.4 cheap=7.1 over=0 dMedOther=6.9 safe(-1)=49392
+    → 🌞#1[T1] terr=29884 bal=138800 dq=4.6 cnt=107 | c=0.0 rankC=0.0 need=293234 tD=0.67 人 pulse nearCollapse bleeding onMe | safe=49392 keep=49392 avail=-34437 chunkB=3026 pulseB=1816 无可用(avail<=0) hNb=1
+    → AI#392 terr=3435 bal=18796 dq=5.5 cnt=64 | c=14.6 rankC=14.6 need=38661 tD=0.79 机 | safe=49392 keep=Inf avail=-Inf chunkB=3026 pulseB=1816 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2290 sora_w B=15224 L=44450 d=0.3 nb=3 neut=103 cmds=160 noFull=1 shQ=366 | m=1.121 worth=0.4 cheap=7.1 over=0 dMedOther=7.0 safe(-1)=34111
+    → 🌞#1[T1] terr=29514 bal=108700 dq=3.7 cnt=107 | c=0.0 rankC=0.0 need=240009 tD=0.52 人 pulse nearCollapse bleeding onMe | safe=34111 keep=34111 avail=-19065 chunkB=3045 pulseB=1827 无可用(avail<=0) hNb=1
+    → AI#392 terr=3435 bal=19002 dq=5.5 cnt=64 | c=14.7 rankC=14.7 need=39028 tD=0.78 机 | safe=34111 keep=Inf avail=-Inf chunkB=3045 pulseB=1827 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2295 sora_w B=15049 L=44382 d=0.3 nb=3 neut=94 cmds=160 noFull=1 shQ=628 | m=1.115 worth=0.4 cheap=7.1 over=0 dMedOther=7.0 safe(-1)=34423
+    → 🌞#1[T1] terr=29436 bal=106356 dq=3.6 cnt=107 | c=0.0 rankC=0.0 need=234809 tD=0.51 人 pulse nearCollapse bleeding onMe | safe=34423 keep=34423 avail=-19550 chunkB=3010 pulseB=1806 无可用(avail<=0) hNb=1
+    → AI#392 terr=3435 bal=381 dq=0.1 cnt=64 | c=9.2 rankC=9.2 need=24232 tD=0.02 机 | safe=34423 keep=Inf avail=-Inf chunkB=3010 pulseB=1806 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2300 sora_w B=59452 L=44462 d=1.3 nb=3 neut=80 cmds=160 noFull=1 shQ=1044 | m=1.110 worth=1.5 cheap=7.1 over=0 dMedOther=8.2 safe(-1)=53805
+    → 🌞#1[T1] terr=29036 bal=133111 dq=4.6 cnt=105 | c=0.0 rankC=0.0 need=277888 tD=0.56 人 pulse nearCollapse bleeding onMe | safe=53805 keep=53805 avail=4951 chunkB=11890 pulseB=7134  x=4951 hNb=1
+    → AI#392 terr=3501 bal=3886 dq=1.1 cnt=66 | c=11.4 rankC=11.4 need=30376 tD=0.14 机 | safe=53805 keep=Inf avail=-Inf chunkB=11890 pulseB=7134 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2305 sora_w B=58469 L=44236 d=1.3 nb=3 neut=74 cmds=161 noFull=1 shQ=2071 | m=1.105 worth=1.5 cheap=7.1 over=0 dMedOther=8.2 safe(-1)=54471
+    → 🌞#1[T1] terr=28936 bal=130019 dq=4.5 cnt=109 | c=0.0 rankC=0.0 need=270286 tD=0.55 人 pulse nearCollapse bleeding onMe | safe=54471 keep=54471 avail=3313 chunkB=11694 pulseB=7016  x=3313 hNb=1
+    → AI#392 terr=3639 bal=3886 dq=1.1 cnt=70 | c=10.8 rankC=10.8 need=29722 tD=0.13 机 | safe=54471 keep=Inf avail=-Inf chunkB=11694 pulseB=7016 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 attack pct=58 → 🌞#1[T1]（约 3368 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2310 sora_w B=58660 L=44262 d=1.3 nb=3 neut=61 cmds=161 noFull=1 shQ=3088 | m=1.099 worth=1.5 cheap=7.1 over=0 dMedOther=8.3 safe(-1)=55977
+    → 🌞#1[T1] terr=28504 bal=127005 dq=4.5 cnt=112 | c=0.0 rankC=0.0 need=262068 tD=0.54 人 pulse nearCollapse bleeding onMe | safe=55977 keep=55977 avail=1996 chunkB=11732 pulseB=7039 低于最小指令(x=1996<2748)→continue hNb=1
+    → AI#392 terr=3710 bal=3928 dq=1.1 cnt=69 | c=10.5 rankC=10.5 need=29463 tD=0.13 机 | safe=55977 keep=Inf avail=-Inf chunkB=11732 pulseB=7039 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2315 sora_w B=57653 L=43976 d=1.3 nb=3 neut=46 cmds=161 noFull=1 shQ=4100 | m=1.094 worth=1.4 cheap=7.1 over=0 dMedOther=8.3 safe(-1)=56769
+    → 🌞#1[T1] terr=28386 bal=123789 dq=4.4 cnt=113 | c=0.0 rankC=0.0 need=254152 tD=0.53 人 pulse nearCollapse bleeding onMe | safe=56769 keep=56769 avail=209 chunkB=11531 pulseB=6918 低于最小指令(x=209<2700)→continue hNb=1
+    → AI#392 terr=3851 bal=3928 dq=1.0 cnt=71 | c=9.9 rankC=9.9 need=28799 tD=0.12 机 | safe=56769 keep=Inf avail=-Inf chunkB=11531 pulseB=6918 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2320 sora_w B=57667 L=43850 d=1.3 nb=3 neut=41 cmds=161 noFull=1 shQ=5101 | m=1.089 worth=1.4 cheap=7.1 over=0 dMedOther=8.4 safe(-1)=58302
+    → 🌞#1[T1] terr=27917 bal=120502 dq=4.3 cnt=117 | c=0.0 rankC=0.0 need=245310 tD=0.51 人 pulse nearCollapse bleeding onMe | safe=58302 keep=58302 avail=-1310 chunkB=11533 pulseB=6920 无可用(avail<=0) hNb=1
+    → AI#392 terr=3995 bal=3971 dq=1.0 cnt=72 | c=9.3 rankC=9.3 need=28202 tD=0.12 机 | safe=58302 keep=Inf avail=-Inf chunkB=11533 pulseB=6920 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2325 sora_w B=56755 L=43570 d=1.3 nb=3 neut=35 cmds=161 noFull=1 shQ=6097 | m=1.084 worth=1.4 cheap=7.2 over=0 dMedOther=7.3 safe(-1)=58980
+    → 🌞#1[T1] terr=27803 bal=117239 dq=4.2 cnt=120 | c=0.0 rankC=0.0 need=237222 tD=0.58 人 pulse nearCollapse bleeding onMe | safe=58980 keep=58980 avail=-2890 chunkB=11351 pulseB=6811 无可用(avail<=0) hNb=1
+    → AI#392 terr=4068 bal=3971 dq=1.0 cnt=73 | c=9.0 rankC=9.0 need=27857 tD=0.13 机 | safe=58980 keep=Inf avail=-Inf chunkB=11351 pulseB=6811 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2330 sora_w B=56720 L=43395 d=1.3 nb=3 neut=28 cmds=161 noFull=1 shQ=7082 | m=1.079 worth=1.4 cheap=7.2 over=0 dMedOther=7.2 safe(-1)=60416
+    → 🌞#1[T1] terr=27322 bal=113875 dq=4.2 cnt=122 | c=0.0 rankC=0.0 need=228175 tD=0.58 人 pulse nearCollapse bleeding onMe | safe=60416 keep=60416 avail=-4360 chunkB=11344 pulseB=6806 无可用(avail<=0) hNb=1
+    → AI#392 terr=4217 bal=4015 dq=1.0 cnt=75 | c=8.5 rankC=8.5 need=27244 tD=0.13 机 | safe=60416 keep=Inf avail=-Inf chunkB=11344 pulseB=6806 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2335 sora_w B=55631 L=43002 d=1.3 nb=3 neut=24 cmds=161 noFull=1 shQ=8062 | m=1.073 worth=1.4 cheap=7.2 over=0 dMedOther=7.1 safe(-1)=60908
+    → 🌞#1[T1] terr=27203 bal=110633 dq=4.1 cnt=124 | c=0.0 rankC=0.0 need=220086 tD=0.57 人 pulse nearCollapse bleeding onMe | safe=60908 keep=60908 avail=-5928 chunkB=11126 pulseB=6676 无可用(avail<=0) hNb=1
+    → AI#392 terr=4369 bal=4015 dq=0.9 cnt=76 | c=8.0 rankC=8.0 need=26538 tD=0.13 机 | safe=60908 keep=Inf avail=-Inf chunkB=11126 pulseB=6676 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2340 sora_w B=56241 L=43108 d=1.3 nb=3 neut=22 cmds=161 noFull=1 shQ=9034 | m=1.068 worth=1.4 cheap=7.2 over=0 dMedOther=7.1 safe(-1)=62167
+    → 🌞#1[T1] terr=26445 bal=107325 dq=4.1 cnt=124 | c=0.0 rankC=0.0 need=211260 tD=0.57 人 pulse nearCollapse bleeding | safe=62167 keep=62167 avail=-6585 chunkB=11248 pulseB=6749 无可用(avail<=0) hNb=1
+    → AI#392 terr=4447 bal=4059 dq=0.9 cnt=78 | c=7.8 rankC=7.8 need=26257 tD=0.13 机 | safe=62167 keep=Inf avail=-Inf chunkB=11248 pulseB=6749 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2345 sora_w B=55911 L=43065 d=1.3 nb=3 neut=21 cmds=161 noFull=1 shQ=10012 | m=1.063 worth=1.4 cheap=7.2 over=0 dMedOther=7.0 safe(-1)=62577
+    → 🌞#1[T1] terr=25952 bal=104134 dq=4.0 cnt=98 | c=0.0 rankC=0.0 need=204001 tD=0.57 人 pulse nearCollapse bleeding | safe=62577 keep=62577 avail=-7321 chunkB=11182 pulseB=6709 无可用(avail<=0) hNb=1
+    → AI#392 terr=4606 bal=4059 dq=0.9 cnt=80 | c=7.3 rankC=7.3 need=25516 tD=0.13 机 | safe=62577 keep=Inf avail=-Inf chunkB=11182 pulseB=6709 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2350 sora_w B=56348 L=43059 d=1.3 nb=3 neut=20 cmds=161 noFull=1 shQ=10989 | m=1.058 worth=1.4 cheap=7.2 over=0 dMedOther=7.1 safe(-1)=63715
+    → 🌞#1[T1] terr=25242 bal=100897 dq=4.0 cnt=97 | c=0.0 rankC=0.0 need=195721 tD=0.56 人 pulse nearCollapse bleeding | safe=63715 keep=63715 avail=-8027 chunkB=11270 pulseB=6762 无可用(avail<=0) hNb=1
+    → AI#392 terr=4768 bal=4104 dq=0.9 cnt=81 | c=6.9 rankC=6.9 need=24840 tD=0.12 机 | safe=63715 keep=63715 avail=-8027 chunkB=11270 pulseB=6762 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2355 sora_w B=56175 L=43062 d=1.3 nb=3 neut=18 cmds=161 noFull=1 shQ=11971 | m=1.052 worth=1.4 cheap=7.2 over=0 dMedOther=7.1 safe(-1)=752717
+    → 🌞#1[T1] terr=24761 bal=97831 dq=4.0 cnt=96 | c=0.0 rankC=0.0 need=188745 tD=0.56 人 pulse nearCollapse bleeding | safe=752717 keep=752717 avail=-697200 chunkB=11235 pulseB=6741 无可用(avail<=0) hNb=1
+    → AI#392 terr=4851 bal=4104 dq=0.8 cnt=83 | c=6.7 rankC=6.7 need=24455 tD=0.12 机 | safe=752717 keep=752717 avail=-697200 chunkB=11235 pulseB=6741 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2360 sora_w B=56599 L=43006 d=1.3 nb=3 neut=13 cmds=161 noFull=1 shQ=12952 | m=1.047 worth=1.4 cheap=7.2 over=0 dMedOther=7.1 safe(-1)=63875
+    → 🌞#1[T1] terr=23810 bal=93058 dq=3.9 cnt=94 | c=0.0 rankC=0.0 need=176933 tD=0.55 人 pulse nearCollapse bleeding | safe=63875 keep=63875 avail=-7939 chunkB=11320 pulseB=6792 无可用(avail<=0) hNb=1
+    → AI#392 terr=5020 bal=4149 dq=0.8 cnt=85 | c=6.3 rankC=6.3 need=23746 tD=0.12 机 | safe=63875 keep=63875 avail=-7939 chunkB=11320 pulseB=6792 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2365 sora_w B=56236 L=42903 d=1.3 nb=3 neut=15 cmds=161 noFull=1 shQ=13937 | m=1.042 worth=1.4 cheap=7.2 over=0 dMedOther=7.1 safe(-1)=64001
+    → 🌞#1[T1] terr=22880 bal=87296 dq=3.8 cnt=93 | c=0.0 rankC=0.0 need=163690 tD=0.54 人 pulse nearCollapse bleeding | safe=64001 keep=64001 avail=-8424 chunkB=11247 pulseB=6748 无可用(avail<=0) hNb=1
+    → AI#392 terr=5193 bal=4149 dq=0.8 cnt=87 | c=5.9 rankC=5.9 need=22934 tD=0.11 机 | safe=64001 keep=64001 avail=-8424 chunkB=11247 pulseB=6748 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2370 sora_w B=56831 L=42926 d=1.3 nb=3 neut=16 cmds=161 noFull=1 shQ=14207 | m=1.036 worth=1.4 cheap=7.2 over=0 dMedOther=7.2 safe(-1)=64717
+    → 🌞#1[T1] terr=21548 bal=80308 dq=3.7 cnt=91 | c=0.0 rankC=0.0 need=146705 tD=0.52 人 pulse nearCollapse bleeding agg | safe=64717 keep=64717 avail=-8551 chunkB=11366 pulseB=6820 无可用(avail<=0) hNb=1
+    → AI#392 terr=5281 bal=4195 dq=0.8 cnt=88 | c=5.7 rankC=5.7 need=22604 tD=0.11 机 | safe=64717 keep=64717 avail=-8551 chunkB=11366 pulseB=6820 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2375 sora_w B=56451 L=42821 d=1.3 nb=3 neut=10 cmds=161 noFull=1 shQ=14112 | m=1.031 worth=1.4 cheap=7.2 over=0 dMedOther=7.2 safe(-1)=64761
+    → 🌞#1[T1] terr=20627 bal=74878 dq=3.6 cnt=88 | c=0.0 rankC=0.0 need=134170 tD=0.50 人 pulse nearCollapse bleeding agg | safe=64761 keep=64761 avail=-8971 chunkB=11290 pulseB=6774 无可用(avail<=0) hNb=1
+    → AI#392 terr=5461 bal=4195 dq=0.8 cnt=91 | c=5.3 rankC=5.3 need=21754 tD=0.11 机 | safe=64761 keep=64761 avail=-8971 chunkB=11290 pulseB=6774 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2380 sora_w B=56838 L=42721 d=1.3 nb=3 neut=5 cmds=161 noFull=1 shQ=14209 | m=1.026 worth=1.4 cheap=7.2 over=0 dMedOther=7.3 safe(-1)=65396
+    → 🌞#1[T1] terr=19399 bal=68715 dq=3.5 cnt=81 | c=0.0 rankC=0.0 need=119077 tD=0.48 人 pulse nearCollapse bleeding agg | safe=65396 keep=65396 avail=-9224 chunkB=11368 pulseB=6821 无可用(avail<=0) hNb=1
+    → AI#392 terr=5647 bal=4242 dq=0.8 cnt=93 | c=4.9 rankC=4.9 need=20959 tD=0.10 机 | safe=65396 keep=65396 avail=-9224 chunkB=11368 pulseB=6821 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2385 sora_w B=56639 L=42681 d=1.3 nb=3 neut=5 cmds=161 noFull=1 shQ=14159 | m=1.021 worth=1.4 cheap=7.2 over=0 dMedOther=7.3 safe(-1)=65332
+    → 🌞#1[T1] terr=18461 bal=63468 dq=3.4 cnt=80 | c=0.0 rankC=0.0 need=106894 tD=0.47 人 pulse nearCollapse bleeding agg | safe=65332 keep=65332 avail=-9356 chunkB=11328 pulseB=6797 无可用(avail<=0) hNb=1
+    → AI#392 terr=5741 bal=4242 dq=0.7 cnt=94 | c=4.8 rankC=4.8 need=20512 tD=0.10 机 | safe=65332 keep=65332 avail=-9356 chunkB=11328 pulseB=6797 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2390 sora_w B=57012 L=42568 d=1.3 nb=3 neut=3 cmds=161 noFull=1 shQ=14253 | m=1.016 worth=1.4 cheap=7.2 over=0 dMedOther=7.0 safe(-1)=65941
+    → 🌞#1[T1] terr=17239 bal=57572 dq=3.3 cnt=79 | c=0.0 rankC=0.0 need=92383 tD=0.48 人 pulse nearCollapse bleeding agg | safe=65941 keep=65941 avail=-9597 chunkB=11402 pulseB=6841 无可用(avail<=0) hNb=1
+    → AI#392 terr=5934 bal=4290 dq=0.7 cnt=97 | c=4.4 rankC=4.4 need=19686 tD=0.10 机 | safe=65941 keep=65941 avail=-9597 chunkB=11402 pulseB=6841 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2395 sora_w B=56587 L=42419 d=1.3 nb=3 neut=0 cmds=161 noFull=1 shQ=14146 | m=1.010 worth=1.3 cheap=7.2 over=0 dMedOther=7.0 safe(-1)=65889
+    → 🌞#1[T1] terr=16345 bal=52862 dq=3.2 cnt=78 | c=0.1 rankC=0.0 need=81382 tD=0.46 人 pulse nearCollapse bleeding agg | safe=65889 keep=65889 avail=-9965 chunkB=11317 pulseB=6790 无可用(avail<=0) hNb=1
+    → AI#392 terr=6133 bal=4290 dq=0.7 cnt=100 | c=4.1 rankC=4.1 need=18736 tD=0.10 机 | safe=65889 keep=65889 avail=-9965 chunkB=11317 pulseB=6790 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2400 sora_w B=305610 L=42488 d=7.2 nb=3 neut=0 cmds=162 noFull=1 shQ=18853 | m=1.005 worth=7.2 cheap=7.2 over=0 dMedOther=8.0 safe(-1)=85699
+    → 🌞#1[T1] terr=15198 bal=62624 dq=4.1 cnt=75 | c=0.3 rankC=0.2 need=85852 tD=0.51 人 pulse nearCollapse bleeding agg | safe=85699 keep=85699 avail=216330 chunkB=61122 pulseB=36673  x=36673 hNb=1
+    → AI#392 terr=6133 bal=10543 dq=1.7 cnt=100 | c=6.6 rankC=6.6 need=27992 tD=0.21 机 | safe=85699 keep=85699 avail=216330 chunkB=61122 pulseB=36673  x=35290 hNb=1
+    ⇒ 影子指令 attack pct=122 → 🌞#1[T1]（约 36709 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2405 sora_w B=305610 L=42534 d=7.2 nb=3 neut=0 cmds=163 noFull=1 shQ=24198 | m=1.000 worth=7.2 cheap=7.2 over=0 dMedOther=8.0 safe(-1)=85673
+    → 🌞#1[T1] terr=14315 bal=56893 dq=4.0 cnt=73 | c=0.4 rankC=0.2 need=72922 tD=0.50 人 pulse nearCollapse bleeding agg | safe=85673 keep=85673 avail=216356 chunkB=61122 pulseB=36673  x=36673 hNb=1
+    → AI#392 terr=6133 bal=10543 dq=1.7 cnt=100 | c=6.6 rankC=6.6 need=27992 tD=0.22 机 | safe=85673 keep=85673 avail=216356 chunkB=61122 pulseB=36673  x=35290 hNb=1
+    ⇒ 影子指令 attack pct=122 → 🌞#1[T1]（约 36709 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2410 sora_w B=309857 L=42603 d=7.3 nb=3 neut=0 cmds=164 noFull=1 shQ=29558 | m=0.995 worth=7.2 cheap=7.2 over=0 dMedOther=8.0 safe(-1)=85490
+    → 🌞#1[T1] terr=13301 bal=51181 dq=3.8 cnt=70 | c=0.5 rankC=0.2 need=59157 tD=0.48 人 pulse nearCollapse bleeding agg | safe=85490 keep=85490 avail=220736 chunkB=61971 pulseB=37183  x=37182 hNb=1
+    → AI#392 terr=6133 bal=10663 dq=1.7 cnt=100 | c=6.7 rankC=6.7 need=28206 tD=0.22 机 | safe=85490 keep=85490 avail=220736 chunkB=61971 pulseB=37183  x=35557 hNb=1
+    ⇒ 影子指令 attack pct=122 → 🌞#1[T1]（约 37219 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2415 sora_w B=309857 L=42648 d=7.3 nb=3 neut=0 cmds=165 noFull=1 shQ=34978 | m=0.989 worth=7.2 cheap=7.2 over=0 dMedOther=7.9 safe(-1)=85370
+    → 🌞#1[T1] terr=12486 bal=46246 dq=3.7 cnt=68 | c=0.5 rankC=0.3 need=47992 tD=0.47 人 pulse nearCollapse bleeding agg | safe=85370 keep=85370 avail=220856 chunkB=61971 pulseB=37183  x=37182 hNb=1
+    → AI#392 terr=6133 bal=10663 dq=1.7 cnt=100 | c=6.7 rankC=6.7 need=28206 tD=0.22 机 | safe=85370 keep=85370 avail=220856 chunkB=61971 pulseB=37183  x=35557 hNb=1
+    ⇒ 影子指令 attack pct=122 → 🌞#1[T1]（约 37219 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2420 sora_w B=314164 L=42704 d=7.4 nb=3 neut=0 cmds=166 noFull=1 shQ=40413 | m=0.984 worth=7.2 cheap=7.2 over=0 dMedOther=8.0 safe(-1)=85637
+    → 🌞#1[T1] terr=11513 bal=41090 dq=3.6 cnt=48 | c=0.7 rankC=0.4 need=35454 tD=0.45 人 pulse nearCollapse bleeding agg | safe=85637 keep=85637 avail=224846 chunkB=62833 pulseB=37700  x=37699 hNb=1
+    → AI#392 terr=6133 bal=10784 dq=1.8 cnt=100 | c=6.7 rankC=6.7 need=28422 tD=0.22 机 | safe=85637 keep=85637 avail=224846 chunkB=62833 pulseB=37700  x=35827 hNb=1
+    ⇒ 影子指令 attack pct=122 → 🌞#1[T1]（约 37736 兵） 〔send:484<send:1827<send:3865<buyLand:5592〕
+t=2425 sora_w B=289007 L=42775 d=6.8 nb=3 neut=0 cmds=166 noFull=1 shQ=2022 | m=0.979 worth=6.6 cheap=7.2 over=0 dMedOther=8.0 safe(-1)=85307
+    → 🌞#1[T1] terr=10746 bal=36791 dq=3.4 cnt=45 | c=0.9 rankC=0.5 need=4780 tD=0.43 人 pulse nearCollapse bleeding agg | safe=85307 keep=85307 avail=200314 chunkB=57801 pulseB=34681 在途(curAtk=20878)→continue hNb=1
+    → AI#392 terr=6133 bal=10784 dq=1.8 cnt=100 | c=6.7 rankC=6.7 need=28422 tD=0.22 机 | safe=85307 keep=85307 avail=200314 chunkB=57801 pulseB=34681  x=35827 hNb=1
+    ⇒ 本拍没有指令
+t=2430 sora_w B=293024 L=42928 d=6.8 nb=3 neut=0 cmds=166 noFull=1 shQ=7091 | m=0.974 worth=6.6 cheap=7.2 over=0 dMedOther=8.1 safe(-1)=85530
+    → AI#392 terr=6133 bal=10906 dq=1.8 cnt=100 | c=6.7 rankC=6.7 need=28639 tD=0.22 机 | safe=85530 keep=85530 avail=204061 chunkB=58605 pulseB=35163  x=36099 hNb=1
+    ⇒ 本拍没有指令

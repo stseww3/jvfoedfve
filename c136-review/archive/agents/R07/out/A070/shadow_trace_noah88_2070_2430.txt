@@ -1,0 +1,297 @@
+# A070 noah88 影子决策明细 t=2070~2430（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   出手打人/bot: 35 拍（t=2070~2430）；可用兵 89085~175596，一条指令下限(20%余额) 61383~100699，比值 92%~281%
+#   首选目标无可用兵（avail<=0）: 35 拍（t=2105~2365）；可用兵 -78576~-514，一条指令下限(20%余额) 59815~91436，比值 -93%~-1%
+#   其他指令: 1 拍（t=2370~2370）；可用兵 122018~122018，一条指令下限(20%余额) 90492~90492，比值 135%~135%
+#   有可用兵但没发（其他）: 2 拍（t=2375~2380）；可用兵 122261~122631，一条指令下限(20%余额) 90492~91605，比值 134%~135%
+#   └ 「出手打人/bot」里：35 条对人/bot 的出兵共约 2374514 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=2070 noah88 B=306916 L=16095 d=19.1 nb=3 neut=0 cmds=236 noFull=1 shQ=46383 | m=1.352 worth=25.8 cheap=8.1 over=0 dMedOther=6.3 safe(-1)=130709
+    → AI#423 terr=4599 bal=3367 dq=0.7 cnt=17 | c=5.5 rankC=5.5 need=8964 tD=0.12 机 | safe=130709 keep=130709 avail=172611 chunkB=61383 pulseB=36830  x=11256 hNb=1
+    → AI#343 terr=5905 bal=10355 dq=1.8 cnt=87 | c=6.9 rankC=6.9 need=26559 tD=0.28 机 | safe=130709 keep=130709 avail=172611 chunkB=61383 pulseB=36830  x=33460 hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=63824 bal=256805 dq=4.0 cnt=341 | c=11.4 rankC=11.4 need=553456 tD=0.64 人 | safe=130709 keep=207149 avail=96171 chunkB=61383 pulseB=36830  x=96171 hNb=1
+    ⇒ 影子指令 attack pct=37 → AI#423（约 11389 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2075 noah88 B=306916 L=16095 d=19.1 nb=3 neut=0 cmds=237 noFull=1 shQ=51138 | m=1.346 worth=25.7 cheap=8.1 over=0 dMedOther=6.2 safe(-1)=130865
+    → AI#423 terr=4289 bal=3010 dq=0.7 cnt=16 | c=5.7 rankC=5.7 need=7652 tD=0.11 机 | safe=130865 keep=130865 avail=172455 chunkB=61383 pulseB=36830  x=9614 hNb=1
+    → AI#343 terr=5905 bal=10355 dq=1.8 cnt=87 | c=6.9 rankC=6.9 need=26564 tD=0.28 机 | safe=130865 keep=130865 avail=172455 chunkB=61383 pulseB=36830  x=33466 hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=64877 bal=257083 dq=4.0 cnt=342 | c=11.3 rankC=11.3 need=555532 tD=0.63 人 | safe=130865 keep=206622 avail=96698 chunkB=61383 pulseB=36830  x=96698 hNb=1
+    ⇒ 影子指令 attack pct=32 → AI#423（约 9890 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2080 noah88 B=310691 L=16095 d=19.3 nb=3 neut=0 cmds=238 noFull=1 shQ=55905 | m=1.341 worth=25.9 cheap=8.1 over=0 dMedOther=6.0 safe(-1)=133046
+    → AI#423 terr=4289 bal=3043 dq=0.7 cnt=16 | c=5.7 rankC=5.7 need=7715 tD=0.12 机 | safe=133046 keep=133046 avail=174005 chunkB=62138 pulseB=37283  x=9692 hNb=1
+    → AI#343 terr=5905 bal=10473 dq=1.8 cnt=87 | c=7.0 rankC=7.0 need=26774 tD=0.29 机 | safe=133046 keep=133046 avail=174005 chunkB=62138 pulseB=37283  x=33729 hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=65478 bal=260965 dq=4.0 cnt=342 | c=11.3 rankC=11.3 need=563355 tD=0.66 人 | safe=133046 keep=209064 avail=97987 chunkB=62138 pulseB=37283  x=97987 hNb=1
+    ⇒ 影子指令 attack pct=31 → AI#423（约 9709 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2085 noah88 B=310691 L=16095 d=19.3 nb=3 neut=0 cmds=239 noFull=1 shQ=60720 | m=1.336 worth=25.8 cheap=8.1 over=0 dMedOther=5.9 safe(-1)=133046
+    → AI#423 terr=4289 bal=3043 dq=0.7 cnt=16 | c=5.7 rankC=5.7 need=7736 tD=0.12 机 | safe=133046 keep=133046 avail=174005 chunkB=62138 pulseB=37283  x=9718 hNb=1
+    → AI#343 terr=5905 bal=10473 dq=1.8 cnt=87 | c=7.0 rankC=7.0 need=26784 tD=0.30 机 | safe=133046 keep=133046 avail=174005 chunkB=62138 pulseB=37283  x=33740 hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=66005 bal=260965 dq=4.0 cnt=342 | c=11.3 rankC=11.3 need=564144 tD=0.67 人 | safe=133046 keep=209050 avail=98001 chunkB=62138 pulseB=37283  x=98001 hNb=1
+    ⇒ 影子指令 attack pct=32 → AI#423（约 10012 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2090 noah88 B=314512 L=16095 d=19.5 nb=3 neut=0 cmds=240 noFull=1 shQ=65546 | m=1.331 worth=26.0 cheap=8.1 over=0 dMedOther=5.9 safe(-1)=135231
+    → AI#423 terr=4289 bal=3077 dq=0.7 cnt=16 | c=5.8 rankC=5.8 need=7800 tD=0.12 机 | safe=135231 keep=135231 avail=175596 chunkB=62902 pulseB=37741  x=9799 hNb=1
+    → AI#343 terr=5905 bal=10592 dq=1.8 cnt=87 | c=7.0 rankC=7.0 need=26996 tD=0.30 机 | safe=135231 keep=135231 avail=175596 chunkB=62902 pulseB=37741  x=34005 hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=66518 bal=264853 dq=4.0 cnt=342 | c=11.3 rankC=11.3 need=571845 tD=0.67 人 | safe=135231 keep=211600 avail=99227 chunkB=62902 pulseB=37741  x=99227 hNb=1
+    ⇒ 影子指令 attack pct=31 → AI#423（约 9828 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2095 noah88 B=314512 L=16095 d=19.5 nb=3 neut=0 cmds=241 noFull=1 shQ=70416 | m=1.325 worth=25.9 cheap=8.1 over=0 dMedOther=5.9 safe(-1)=135231
+    → AI#343 terr=5905 bal=212 dq=0.0 cnt=87 | c=2.9 rankC=2.9 need=8906 tD=0.01 机 | safe=135231 keep=135231 avail=175596 chunkB=62902 pulseB=37741  x=11393 hNb=1
+    → AI#423 terr=4289 bal=3077 dq=0.7 cnt=16 | c=5.8 rankC=5.8 need=7818 tD=0.12 机 | safe=135231 keep=135231 avail=175596 chunkB=62902 pulseB=37741  x=9821 hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=67009 bal=264853 dq=4.0 cnt=342 | c=11.3 rankC=11.3 need=572579 tD=0.67 人 | safe=135231 keep=211616 avail=99211 chunkB=62902 pulseB=37741  x=99211 hNb=1
+    ⇒ 影子指令 attack pct=37 → AI#343（约 11671 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2100 noah88 B=334475 L=16095 d=20.8 nb=3 neut=0 cmds=242 noFull=1 shQ=75348 | m=1.320 worth=27.4 cheap=8.1 over=0 dMedOther=6.9 safe(-1)=206636
+    → AI#343 terr=5905 bal=6119 dq=1.0 cnt=87 | c=5.3 rankC=5.3 need=19206 tD=0.15 机 | safe=206636 keep=206636 avail=123920 chunkB=66895 pulseB=40137  x=24269 hNb=1
+    → AI#423 terr=4289 bal=7400 dq=1.7 cnt=16 | c=8.6 rankC=8.6 need=13277 tD=0.25 机 | safe=206636 keep=206636 avail=123920 chunkB=66895 pulseB=40137  x=16644 hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=67485 bal=391955 dq=5.8 cnt=342 | c=15.6 rankC=15.6 need=799836 tD=0.84 人 | safe=206636 keep=250683 avail=79873 chunkB=66895 pulseB=40137  x=79873 hNb=1
+    ⇒ 影子指令 attack pct=74 → AI#343（约 24497 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2105 noah88 B=334475 L=16095 d=20.8 nb=3 neut=0 cmds=242 noFull=1 shQ=80528 | m=1.315 worth=27.3 cheap=8.1 over=0 dMedOther=6.8 safe(-1)=358999
+    → AI#423 terr=4165 bal=142 dq=0.0 cnt=15 | c=4.2 rankC=4.2 need=3900 tD=0.00 机 | safe=358999 keep=358999 avail=-28443 chunkB=66895 pulseB=40137 无可用(avail<=0) hNb=1
+    → AI#343 terr=6029 bal=6119 dq=1.0 cnt=88 | c=5.2 rankC=5.2 need=19513 tD=0.15 机 | safe=358999 keep=358999 avail=-28443 chunkB=66895 pulseB=40137 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=67953 bal=391955 dq=5.8 cnt=342 | c=15.5 rankC=15.5 need=800538 tD=0.84 人 | safe=358999 keep=358999 avail=-28443 chunkB=66895 pulseB=40137 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2110 noah88 B=338589 L=16095 d=21.0 nb=3 neut=0 cmds=243 noFull=1 shQ=84647 | m=1.310 worth=27.5 cheap=8.1 over=0 dMedOther=6.9 safe(-1)=209939
+    → AI#423 terr=4104 bal=140 dq=0.0 cnt=15 | c=4.2 rankC=4.2 need=3785 tD=0.00 机 | safe=209939 keep=209939 avail=124683 chunkB=67718 pulseB=40631  x=4777 hNb=1
+    → AI#343 terr=6090 bal=6188 dq=1.0 cnt=88 | c=5.2 rankC=5.2 need=19783 tD=0.15 机 | safe=209939 keep=209939 avail=124683 chunkB=67718 pulseB=40631  x=24993 hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=68422 bal=397834 dq=5.8 cnt=342 | c=15.6 rankC=15.6 need=811722 tD=0.85 人 | safe=209939 keep=253715 avail=80907 chunkB=67718 pulseB=40631  x=80907 hNb=1
+    ⇒ 影子指令 attack pct=14 → AI#423（约 4959 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2115 noah88 B=338589 L=16095 d=21.0 nb=3 neut=0 cmds=244 noFull=1 shQ=84647 | m=1.304 worth=27.4 cheap=8.1 over=0 dMedOther=6.8 safe(-1)=182438
+    → AI#423 terr=3881 bal=129 dq=0.0 cnt=13 | c=4.5 rankC=4.5 need=3331 tD=0.00 机 | safe=182438 keep=182438 avail=152184 chunkB=67718 pulseB=40631  x=4203 hNb=1
+    → AI#343 terr=6211 bal=6188 dq=1.0 cnt=89 | c=5.1 rankC=5.1 need=20076 tD=0.15 机 | safe=182438 keep=182438 avail=152184 chunkB=67718 pulseB=40631  x=25362 hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=69005 bal=348882 dq=5.1 cnt=343 | c=13.8 rankC=13.8 need=725344 tD=0.74 人 | safe=182438 keep=241927 avail=92695 chunkB=67718 pulseB=40631  x=92695 hNb=1
+    ⇒ 影子指令 attack pct=12 → AI#423（约 4298 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2120 noah88 B=342753 L=16095 d=21.3 nb=3 neut=0 cmds=245 noFull=1 shQ=85688 | m=1.299 worth=27.7 cheap=8.1 over=0 dMedOther=6.9 safe(-1)=185414
+    → AI#343 terr=6330 bal=6258 dq=1.0 cnt=90 | c=5.1 rankC=5.1 need=20485 tD=0.14 机 | safe=185414 keep=185414 avail=153323 chunkB=68551 pulseB=41130  x=25876 hNb=1
+    → AI#423 terr=3262 bal=101 dq=0.0 cnt=10 | c=6.1 rankC=6.1 need=2046 tD=0.00 机 | safe=185414 keep=185414 avail=153323 chunkB=68551 pulseB=41130  x=2587 hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=69602 bal=354179 dq=5.1 cnt=345 | c=13.9 rankC=13.9 need=735683 tD=0.74 人 | safe=185414 keep=244809 avail=93928 chunkB=68551 pulseB=41130  x=93928 hNb=1
+    ⇒ 影子指令 attack pct=77 → AI#343（约 26108 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2125 noah88 B=342753 L=16095 d=21.3 nb=3 neut=0 cmds=246 noFull=1 shQ=85688 | m=1.294 worth=27.6 cheap=8.1 over=0 dMedOther=6.9 safe(-1)=185414
+    → AI#343 terr=6389 bal=6258 dq=1.0 cnt=91 | c=5.1 rankC=5.1 need=20630 tD=0.14 机 | safe=185414 keep=185414 avail=153323 chunkB=68551 pulseB=41130  x=26061 hNb=1
+    → AI#423 terr=2762 bal=81 dq=0.0 cnt=6 | c=10.2 rankC=10.2 need=1015 tD=0.00 机 | safe=185414 keep=219066 avail=119671 chunkB=68551 pulseB=41130  x=1287 hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=70043 bal=354179 dq=5.1 cnt=348 | c=13.8 rankC=13.8 need=736347 tD=0.73 人 | safe=185414 keep=244829 avail=93908 chunkB=68551 pulseB=41130  x=93908 hNb=1
+    ⇒ 影子指令 attack pct=77 → AI#343（约 26108 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2130 noah88 B=346968 L=16095 d=21.6 nb=2 neut=1 cmds=248 noFull=1 shQ=86742 | m=1.288 worth=27.8 cheap=8.1 over=0 dMedOther=6.5 safe(-1)=188398
+    → AI#343 terr=6505 bal=6329 dq=1.0 cnt=92 | c=5.0 rankC=5.0 need=21032 tD=0.15 机 | safe=188398 keep=188398 avail=154504 chunkB=69394 pulseB=41636  x=26566 hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=70444 bal=359491 dq=5.1 cnt=352 | c=14.0 rankC=14.0 need=746409 tD=0.78 人 | safe=188398 keep=247973 avail=94929 chunkB=69394 pulseB=41636  x=94929 hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 16264 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=78 → AI#343（约 26768 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2135 noah88 B=346968 L=16095 d=21.6 nb=2 neut=0 cmds=248 noFull=1 shQ=86742 | m=1.283 worth=27.7 cheap=8.1 over=0 dMedOther=6.6 safe(-1)=359491
+    → AI#343 terr=6614 bal=6329 dq=1.0 cnt=92 | c=5.0 rankC=5.0 need=21203 tD=0.14 机 | safe=359491 keep=359491 avail=-16589 chunkB=69394 pulseB=41636 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=70819 bal=359491 dq=5.1 cnt=353 | c=13.9 rankC=13.9 need=746979 tD=0.77 人 | safe=359491 keep=359491 avail=-16589 chunkB=69394 pulseB=41636 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2140 noah88 B=351235 L=16095 d=21.8 nb=2 neut=0 cmds=248 noFull=1 shQ=87808 | m=1.278 worth=27.9 cheap=8.1 over=0 dMedOther=6.6 safe(-1)=364919
+    → AI#343 terr=6664 bal=6401 dq=1.0 cnt=92 | c=5.0 rankC=5.0 need=21405 tD=0.15 机 | safe=364919 keep=364919 avail=-17800 chunkB=70247 pulseB=42148 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=71101 bal=364919 dq=5.1 cnt=353 | c=14.0 rankC=14.0 need=757072 tD=0.77 人 | safe=364919 keep=364919 avail=-17800 chunkB=70247 pulseB=42148 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2145 noah88 B=351235 L=16095 d=21.8 nb=2 neut=0 cmds=248 noFull=1 shQ=87808 | m=1.273 worth=27.8 cheap=8.1 over=0 dMedOther=6.6 safe(-1)=364919
+    → AI#343 terr=6757 bal=6401 dq=0.9 cnt=92 | c=5.0 rankC=5.0 need=21545 tD=0.14 机 | safe=364919 keep=364919 avail=-17800 chunkB=70247 pulseB=42148 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=71328 bal=364919 dq=5.1 cnt=353 | c=14.0 rankC=14.0 need=757410 tD=0.78 人 | safe=364919 keep=364919 avail=-17800 chunkB=70247 pulseB=42148 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2150 noah88 B=355555 L=16095 d=22.1 nb=2 neut=0 cmds=248 noFull=1 shQ=88888 | m=1.268 worth=28.0 cheap=8.1 over=0 dMedOther=6.6 safe(-1)=370429
+    → AI#343 terr=6837 bal=6473 dq=0.9 cnt=92 | c=5.0 rankC=5.0 need=21794 tD=0.14 机 | safe=370429 keep=370429 avail=-19040 chunkB=71111 pulseB=42667 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=71527 bal=370429 dq=5.2 cnt=353 | c=14.1 rankC=14.1 need=767536 tD=0.79 人 | safe=370429 keep=370429 avail=-19040 chunkB=71111 pulseB=42667 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2155 noah88 B=355555 L=16095 d=22.1 nb=2 neut=0 cmds=248 noFull=1 shQ=88888 | m=1.262 worth=27.9 cheap=8.1 over=0 dMedOther=6.5 safe(-1)=370429
+    → AI#343 terr=6874 bal=6473 dq=0.9 cnt=92 | c=4.9 rankC=4.9 need=21850 tD=0.15 机 | safe=370429 keep=370429 avail=-19040 chunkB=71111 pulseB=42667 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=71709 bal=370429 dq=5.2 cnt=353 | c=14.1 rankC=14.1 need=767805 tD=0.80 人 | safe=370429 keep=370429 avail=-19040 chunkB=71111 pulseB=42667 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2160 noah88 B=359928 L=16095 d=22.4 nb=2 neut=0 cmds=248 noFull=1 shQ=89982 | m=1.257 worth=28.1 cheap=8.1 over=0 dMedOther=6.6 safe(-1)=376022
+    → AI#343 terr=6942 bal=6547 dq=0.9 cnt=92 | c=4.9 rankC=4.9 need=22084 tD=0.14 机 | safe=376022 keep=376022 avail=-20311 chunkB=71986 pulseB=43191 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=71874 bal=376022 dq=5.2 cnt=353 | c=14.3 rankC=14.3 need=778023 tD=0.79 人 | safe=376022 keep=376022 avail=-20311 chunkB=71986 pulseB=43191 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2165 noah88 B=359928 L=16095 d=22.4 nb=2 neut=0 cmds=248 noFull=1 shQ=89982 | m=1.252 worth=28.0 cheap=8.1 over=0 dMedOther=6.6 safe(-1)=376022
+    → AI#343 terr=6996 bal=6547 dq=0.9 cnt=92 | c=4.9 rankC=4.9 need=22163 tD=0.14 机 | safe=376022 keep=376022 avail=-20311 chunkB=71986 pulseB=43191 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=72010 bal=376022 dq=5.2 cnt=353 | c=14.2 rankC=14.2 need=778227 tD=0.79 人 | safe=376022 keep=376022 avail=-20311 chunkB=71986 pulseB=43191 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2170 noah88 B=364355 L=16095 d=22.6 nb=2 neut=0 cmds=248 noFull=1 shQ=91088 | m=1.247 worth=28.2 cheap=8.1 over=0 dMedOther=6.6 safe(-1)=381699
+    → AI#343 terr=7017 bal=6622 dq=0.9 cnt=92 | c=4.9 rankC=4.9 need=22329 tD=0.14 机 | safe=381699 keep=381699 avail=-21613 chunkB=72871 pulseB=43723 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=72112 bal=381699 dq=5.3 cnt=353 | c=14.4 rankC=14.4 need=788494 tD=0.80 人 | safe=381699 keep=381699 avail=-21613 chunkB=72871 pulseB=43723 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2175 noah88 B=364355 L=16095 d=22.6 nb=2 neut=0 cmds=248 noFull=1 shQ=91088 | m=1.241 worth=28.1 cheap=8.1 over=0 dMedOther=6.6 safe(-1)=381699
+    → AI#343 terr=7042 bal=6622 dq=0.9 cnt=92 | c=4.9 rankC=4.9 need=22367 tD=0.14 机 | safe=381699 keep=381699 avail=-21613 chunkB=72871 pulseB=43723 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=72145 bal=381699 dq=5.3 cnt=353 | c=14.4 rankC=14.4 need=788546 tD=0.80 人 | safe=381699 keep=381699 avail=-21613 chunkB=72871 pulseB=43723 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2180 noah88 B=368836 L=16095 d=22.9 nb=2 neut=0 cmds=248 noFull=1 shQ=92209 | m=1.236 worth=28.3 cheap=8.1 over=0 dMedOther=6.7 safe(-1)=425900
+    → AI#343 terr=7044 bal=7288 dq=1.0 cnt=92 | c=5.2 rankC=5.2 need=23556 tD=0.15 机 | safe=425900 keep=425900 avail=-61386 chunkB=73767 pulseB=44260 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=72150 bal=425900 dq=5.9 cnt=353 | c=15.8 rankC=15.8 need=867338 tD=0.88 人 | safe=425900 keep=425900 avail=-61386 chunkB=73767 pulseB=44260 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2185 noah88 B=368836 L=16095 d=22.9 nb=2 neut=0 cmds=248 noFull=1 shQ=92209 | m=1.231 worth=28.2 cheap=8.1 over=0 dMedOther=6.7 safe(-1)=425900
+    → AI#343 terr=7044 bal=7288 dq=1.0 cnt=92 | c=5.2 rankC=5.2 need=23556 tD=0.16 机 | safe=425900 keep=425900 avail=-61386 chunkB=73767 pulseB=44260 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=72150 bal=425900 dq=5.9 cnt=353 | c=15.8 rankC=15.8 need=867338 tD=0.89 人 | safe=425900 keep=425900 avail=-61386 chunkB=73767 pulseB=44260 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2190 noah88 B=373372 L=16095 d=23.2 nb=2 neut=0 cmds=248 noFull=1 shQ=93343 | m=1.226 worth=28.4 cheap=8.1 over=0 dMedOther=6.7 safe(-1)=432331
+    → AI#343 terr=7044 bal=7371 dq=1.0 cnt=92 | c=5.2 rankC=5.2 need=23704 tD=0.16 机 | safe=432331 keep=432331 avail=-63334 chunkB=74674 pulseB=44805 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=72150 bal=432331 dq=6.0 cnt=353 | c=16.0 rankC=16.0 need=878801 tD=0.89 人 | safe=432331 keep=432331 avail=-63334 chunkB=74674 pulseB=44805 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2195 noah88 B=373372 L=16095 d=23.2 nb=2 neut=0 cmds=248 noFull=1 shQ=93343 | m=1.220 worth=28.3 cheap=8.1 over=0 dMedOther=6.7 safe(-1)=432331
+    → AI#343 terr=7044 bal=7371 dq=1.0 cnt=92 | c=5.2 rankC=5.2 need=23704 tD=0.16 机 | safe=432331 keep=432331 avail=-63334 chunkB=74674 pulseB=44805 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=72150 bal=432331 dq=6.0 cnt=353 | c=16.0 rankC=16.0 need=878801 tD=0.89 人 | safe=432331 keep=432331 avail=-63334 chunkB=74674 pulseB=44805 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2200 noah88 B=394059 L=16095 d=24.5 nb=2 neut=0 cmds=249 noFull=1 shQ=94564 | m=1.215 worth=29.7 cheap=8.1 over=0 dMedOther=7.8 safe(-1)=243183
+    → AI#343 terr=7044 bal=7193 dq=1.0 cnt=92 | c=6.5 rankC=6.5 need=30524 tD=0.13 机 | safe=243183 keep=243183 avail=146259 chunkB=78812 pulseB=47287  x=38430 hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=72150 bal=457009 dq=6.3 cnt=353 | c=16.8 rankC=16.8 need=922786 tD=0.81 人 | safe=243183 keep=298152 avail=91290 chunkB=78812 pulseB=47287  x=91290 hNb=1
+    ⇒ 影子指令 attack pct=99 → AI#343（约 38482 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2205 noah88 B=394059 L=16095 d=24.5 nb=2 neut=0 cmds=250 noFull=1 shQ=98514 | m=1.210 worth=29.6 cheap=8.1 over=0 dMedOther=7.8 safe(-1)=243183
+    → AI#343 terr=7044 bal=7193 dq=1.0 cnt=92 | c=6.5 rankC=6.5 need=30524 tD=0.13 机 | safe=243183 keep=243183 avail=146259 chunkB=78812 pulseB=47287  x=38430 hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=72150 bal=457009 dq=6.3 cnt=353 | c=16.8 rankC=16.8 need=922786 tD=0.82 人 | safe=243183 keep=298861 avail=90581 chunkB=78812 pulseB=47287  x=90581 hNb=1
+    ⇒ 影子指令 attack pct=99 → AI#343（约 38482 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2210 noah88 B=395219 L=16002 d=24.7 nb=2 neut=0 cmds=250 noFull=1 shQ=98804 | m=1.205 worth=29.7 cheap=8.1 over=0 dMedOther=7.8 safe(-1)=463909
+    → AI#343 terr=7137 bal=6937 dq=1.0 cnt=93 | c=5.1 rankC=5.1 need=23071 tD=0.12 机 | safe=463909 keep=463909 avail=-73321 chunkB=79044 pulseB=47426 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=72479 bal=463909 dq=6.4 cnt=353 | c=17.0 rankC=17.0 need=935581 tD=0.82 人 | safe=463909 keep=463909 avail=-73321 chunkB=79044 pulseB=47426 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2215 noah88 B=395219 L=16002 d=24.7 nb=2 neut=0 cmds=250 noFull=1 shQ=98804 | m=1.199 worth=29.6 cheap=8.1 over=0 dMedOther=7.3 safe(-1)=406827
+    → AI#343 terr=7137 bal=6937 dq=1.0 cnt=93 | c=5.1 rankC=5.1 need=23071 tD=0.13 机 | safe=406827 keep=406827 avail=-16239 chunkB=79044 pulseB=47426 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=73146 bal=406827 dq=5.6 cnt=353 | c=15.0 rankC=15.0 need=834837 tD=0.76 人 | safe=406827 keep=406827 avail=-16239 chunkB=79044 pulseB=47426 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2220 noah88 B=400080 L=16002 d=25.0 nb=2 neut=0 cmds=250 noFull=1 shQ=100020 | m=1.194 worth=29.9 cheap=8.1 over=0 dMedOther=7.4 safe(-1)=413010
+    → AI#343 terr=7137 bal=7016 dq=1.0 cnt=93 | c=5.1 rankC=5.1 need=23211 tD=0.13 机 | safe=413010 keep=413010 avail=-17618 chunkB=80016 pulseB=48010 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=74072 bal=413010 dq=5.6 cnt=353 | c=15.1 rankC=15.1 need=847241 tD=0.76 人 | safe=413010 keep=413010 avail=-17618 chunkB=80016 pulseB=48010 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2225 noah88 B=400080 L=16002 d=25.0 nb=2 neut=0 cmds=250 noFull=1 shQ=100020 | m=1.189 worth=29.7 cheap=8.1 over=0 dMedOther=7.3 safe(-1)=413010
+    → AI#343 terr=7137 bal=7016 dq=1.0 cnt=93 | c=5.1 rankC=5.1 need=23211 tD=0.13 机 | safe=413010 keep=413010 avail=-17618 chunkB=80016 pulseB=48010 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=74997 bal=413010 dq=5.5 cnt=353 | c=14.9 rankC=14.9 need=848631 tD=0.75 人 | safe=413010 keep=413010 avail=-17618 chunkB=80016 pulseB=48010 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2230 noah88 B=405000 L=16002 d=25.3 nb=2 neut=0 cmds=250 noFull=1 shQ=101250 | m=1.183 worth=30.0 cheap=8.1 over=0 dMedOther=7.4 safe(-1)=419287
+    → AI#343 terr=7137 bal=7096 dq=1.0 cnt=93 | c=5.1 rankC=5.1 need=23354 tD=0.13 机 | safe=419287 keep=419287 avail=-19033 chunkB=81000 pulseB=48600 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=75921 bal=419287 dq=5.5 cnt=353 | c=14.9 rankC=14.9 need=861205 tD=0.75 人 | safe=419287 keep=419287 avail=-19033 chunkB=81000 pulseB=48600 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2235 noah88 B=405000 L=16002 d=25.3 nb=2 neut=0 cmds=250 noFull=1 shQ=101250 | m=1.178 worth=29.8 cheap=8.1 over=0 dMedOther=7.4 safe(-1)=459103
+    → AI#343 terr=7021 bal=6913 dq=1.0 cnt=92 | c=5.1 rankC=5.1 need=22759 tD=0.13 机 | safe=459103 keep=459103 avail=-58849 chunkB=81000 pulseB=48600 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=76964 bal=407917 dq=5.3 cnt=354 | c=14.4 rankC=14.4 need=842502 tD=0.72 人 | safe=459103 keep=459103 avail=-58849 chunkB=81000 pulseB=48600 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2240 noah88 B=409981 L=16002 d=25.6 nb=2 neut=0 cmds=250 noFull=1 shQ=102495 | m=1.173 worth=30.1 cheap=8.1 over=0 dMedOther=7.5 safe(-1)=463816
+    → AI#343 terr=6722 bal=6522 dq=1.0 cnt=89 | c=5.2 rankC=5.2 need=21365 tD=0.13 机 | safe=463816 keep=463816 avail=-58639 chunkB=81996 pulseB=49198 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=78197 bal=414158 dq=5.3 cnt=357 | c=14.4 rankC=14.4 need=855477 tD=0.71 人 | safe=463816 keep=463816 avail=-58639 chunkB=81996 pulseB=49198 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=2245 noah88 B=409981 L=16002 d=25.6 nb=2 neut=0 cmds=250 noFull=1 shQ=102495 | m=1.168 worth=29.9 cheap=8.1 over=0 dMedOther=7.5 safe(-1)=462244
+    → AI#343 terr=6411 bal=6047 dq=0.9 cnt=87 | c=5.2 rankC=5.2 need=19796 tD=0.13 机 | safe=462244 keep=462244 avail=-57067 chunkB=81996 pulseB=49198 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=79390 bal=414158 dq=5.2 cnt=359 | c=14.2 rankC=14.2 need=857269 tD=0.70 人 | safe=462244 keep=462244 avail=-57067 chunkB=81996 pulseB=49198 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=2250 noah88 B=415023 L=16002 d=25.9 nb=2 neut=0 cmds=250 noFull=1 shQ=103755 | m=1.163 worth=30.2 cheap=8.1 over=0 dMedOther=6.9 safe(-1)=467010
+    → AI#343 terr=6087 bal=5629 dq=0.9 cnt=84 | c=5.2 rankC=5.2 need=18298 tD=0.13 机 | safe=467010 keep=467010 avail=-56850 chunkB=83005 pulseB=49803 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=80488 bal=420536 dq=5.2 cnt=362 | c=14.2 rankC=14.2 need=870280 tD=0.75 人 | safe=467010 keep=467010 avail=-56850 chunkB=83005 pulseB=49803 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=2255 noah88 B=415023 L=16002 d=25.9 nb=2 neut=0 cmds=250 noFull=1 shQ=103755 | m=1.157 worth=30.0 cheap=8.1 over=0 dMedOther=6.9 safe(-1)=465364
+    → AI#343 terr=5751 bal=5142 dq=0.9 cnt=82 | c=5.3 rankC=5.3 need=16658 tD=0.13 机 | safe=465364 keep=465364 avail=-55204 chunkB=83005 pulseB=49803 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=81370 bal=420536 dq=5.2 cnt=364 | c=14.1 rankC=14.1 need=871607 tD=0.75 人 | safe=465364 keep=465364 avail=-55204 chunkB=83005 pulseB=49803 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=2260 noah88 B=420127 L=16002 d=26.3 nb=2 neut=0 cmds=250 noFull=1 shQ=105031 | m=1.152 worth=30.2 cheap=8.1 over=0 dMedOther=7.0 safe(-1)=470164
+    → AI#343 terr=5402 bal=4707 dq=0.9 cnt=79 | c=5.4 rankC=5.4 need=15075 tD=0.12 机 | safe=470164 keep=470164 avail=-54960 chunkB=84025 pulseB=50415 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=82154 bal=427012 dq=5.2 cnt=367 | c=14.2 rankC=14.2 need=884326 tD=0.74 人 | safe=470164 keep=470164 avail=-54960 chunkB=84025 pulseB=50415 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=2265 noah88 B=420127 L=16002 d=26.3 nb=2 neut=0 cmds=250 noFull=1 shQ=105031 | m=1.147 worth=30.1 cheap=8.1 over=0 dMedOther=7.0 safe(-1)=468438
+    → AI#343 terr=5037 bal=4209 dq=0.8 cnt=75 | c=5.4 rankC=5.4 need=13352 tD=0.12 机 | safe=468438 keep=468438 avail=-53234 chunkB=84025 pulseB=50415 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=82886 bal=427012 dq=5.2 cnt=371 | c=14.1 rankC=14.1 need=885424 tD=0.73 人 | safe=468438 keep=468438 avail=-53234 chunkB=84025 pulseB=50415 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=2270 noah88 B=425294 L=16002 d=26.6 nb=2 neut=0 cmds=250 noFull=1 shQ=106323 | m=1.142 worth=30.3 cheap=8.1 over=0 dMedOther=7.1 safe(-1)=473260
+    → AI#343 terr=4648 bal=3742 dq=0.8 cnt=71 | c=5.6 rankC=5.6 need=11633 tD=0.11 机 | safe=473260 keep=473260 avail=-52949 chunkB=85059 pulseB=51035 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=83618 bal=433630 dq=5.2 cnt=375 | c=14.1 rankC=14.1 need=898317 tD=0.73 人 | safe=473260 keep=473260 avail=-52949 chunkB=85059 pulseB=51035 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=2275 noah88 B=425294 L=16002 d=26.6 nb=2 neut=0 cmds=250 noFull=1 shQ=106323 | m=1.136 worth=30.2 cheap=8.1 over=0 dMedOther=7.1 safe(-1)=471436
+    → AI#343 terr=4244 bal=3234 dq=0.8 cnt=68 | c=5.8 rankC=5.8 need=9816 tD=0.11 机 | safe=471436 keep=471436 avail=-51125 chunkB=85059 pulseB=51035 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=84372 bal=433630 dq=5.1 cnt=378 | c=14.0 rankC=14.0 need=899444 tD=0.72 人 | safe=471436 keep=471436 avail=-51125 chunkB=85059 pulseB=51035 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=2280 noah88 B=430525 L=16002 d=26.9 nb=2 neut=0 cmds=250 noFull=1 shQ=107631 | m=1.131 worth=30.4 cheap=8.1 over=0 dMedOther=6.6 safe(-1)=476335
+    → AI#343 terr=3827 bal=2771 dq=0.7 cnt=65 | c=6.1 rankC=6.1 need=8053 tD=0.11 机 | safe=476335 keep=476335 avail=-50855 chunkB=86105 pulseB=51663 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=85113 bal=440351 dq=5.2 cnt=381 | c=14.1 rankC=14.1 need=912537 tD=0.78 人 | safe=476335 keep=476335 avail=-50855 chunkB=86105 pulseB=51663 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=2285 noah88 B=430525 L=16002 d=26.9 nb=2 neut=0 cmds=250 noFull=1 shQ=107631 | m=1.126 worth=30.3 cheap=8.1 over=0 dMedOther=6.9 safe(-1)=436194
+    → AI#343 terr=3386 bal=2277 dq=0.7 cnt=60 | c=6.6 rankC=6.6 need=6197 tD=0.10 机 | safe=436194 keep=436194 avail=-10714 chunkB=86105 pulseB=51663 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=85719 bal=402080 dq=4.7 cnt=386 | c=13.0 rankC=13.0 need=845237 tD=0.68 人 | safe=436194 keep=436194 avail=-10714 chunkB=86105 pulseB=51663 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=2290 noah88 B=435820 L=16002 d=27.2 nb=2 neut=0 cmds=250 noFull=1 shQ=108955 | m=1.121 worth=30.5 cheap=8.1 over=0 dMedOther=7.0 safe(-1)=440596
+    → AI#343 terr=2927 bal=1821 dq=0.6 cnt=57 | c=7.6 rankC=7.6 need=4366 tD=0.09 机 | safe=440596 keep=440596 avail=-9883 chunkB=87164 pulseB=52298 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=86303 bal=408352 dq=4.7 cnt=389 | c=13.1 rankC=13.1 need=857292 tD=0.67 人 | safe=440596 keep=440596 avail=-9883 chunkB=87164 pulseB=52298 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=2295 noah88 B=435820 L=16002 d=27.2 nb=2 neut=0 cmds=250 noFull=1 shQ=108955 | m=1.115 worth=30.4 cheap=8.1 over=0 dMedOther=7.0 safe(-1)=438742
+    → AI#343 terr=2451 bal=1370 dq=0.6 cnt=54 | c=10.0 rankC=10.0 need=2530 tD=0.08 机 | safe=438742 keep=438742 avail=-8029 chunkB=87164 pulseB=52298 无可用(avail<=0) hNb=1
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=86874 bal=408352 dq=4.7 cnt=392 | c=13.0 rankC=13.0 need=858147 tD=0.67 人 | safe=438742 keep=438742 avail=-8029 chunkB=87164 pulseB=52298 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=2300 noah88 B=457182 L=16002 d=28.6 nb=2 neut=0 cmds=250 noFull=1 shQ=110372 | m=1.110 worth=31.7 cheap=8.1 over=0 dMedOther=8.2 safe(-1)=530401
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=87421 bal=502039 dq=5.7 cnt=396 | c=15.4 rankC=15.4 need=1025949 tD=0.70 人 | safe=530401 keep=530401 avail=-78576 chunkB=91436 pulseB=54862 无可用(avail<=0) sole hNb=1
+    → AI#343 terr=1980 bal=2908 dq=1.5 cnt=50 | c=22.9 rankC=22.9 need=1509 tD=0.18 机 | safe=530401 keep=530401 avail=-78576 chunkB=91436 pulseB=54862 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=2305 noah88 B=457182 L=16002 d=28.6 nb=1 neut=47 cmds=252 noFull=1 shQ=114295 | m=1.105 worth=31.6 cheap=8.1 over=0 dMedOther=8.2 safe(-1)=268560
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=87820 bal=502039 dq=5.7 cnt=399 | c=15.4 rankC=15.4 need=1026545 tD=0.70 人 | safe=268560 keep=331381 avail=120444 chunkB=91436 pulseB=54862  x=120444 sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 21430 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=269 → *Cr-nA* :3 [AuS] ?#3[T1]（约 120546 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2310 noah88 B=462805 L=16002 d=28.9 nb=1 neut=44 cmds=254 noFull=1 shQ=115701 | m=1.099 worth=31.8 cheap=8.1 over=0 dMedOther=8.3 safe(-1)=272959
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=88135 bal=509870 dq=5.8 cnt=402 | c=15.5 rankC=15.5 need=1040983 tD=0.70 人 | safe=272959 keep=336022 avail=121360 chunkB=92561 pulseB=55537  x=121360 sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 21693 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=268 → *Cr-nA* :3 [AuS] ?#3[T1]（约 121576 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2315 noah88 B=462805 L=16002 d=28.9 nb=1 neut=40 cmds=256 noFull=1 shQ=115701 | m=1.094 worth=31.6 cheap=8.1 over=0 dMedOther=8.3 safe(-1)=272959
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=88357 bal=509870 dq=5.8 cnt=406 | c=15.5 rankC=15.5 need=1041311 tD=0.70 人 | safe=272959 keep=336569 avail=120813 chunkB=92561 pulseB=55537  x=120813 sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 21693 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=267 → *Cr-nA* :3 [AuS] ?#3[T1]（约 121124 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2320 noah88 B=468497 L=16002 d=29.3 nb=1 neut=37 cmds=258 noFull=1 shQ=117124 | m=1.089 worth=31.9 cheap=8.1 over=0 dMedOther=8.4 safe(-1)=277427
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=88551 bal=517823 dq=5.8 cnt=409 | c=15.6 rankC=15.6 need=1055782 tD=0.70 人 | safe=277427 keep=341474 avail=121533 chunkB=93699 pulseB=56220  x=121533 sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 21960 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=265 → *Cr-nA* :3 [AuS] ?#3[T1]（约 121699 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2325 noah88 B=468497 L=16002 d=29.3 nb=1 neut=35 cmds=260 noFull=1 shQ=117124 | m=1.084 worth=31.7 cheap=8.1 over=0 dMedOther=7.3 safe(-1)=277427
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=88732 bal=517823 dq=5.8 cnt=411 | c=15.6 rankC=15.6 need=1056046 tD=0.80 人 | safe=277427 keep=342108 avail=120899 chunkB=93699 pulseB=56220  x=120899 sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 21960 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=264 → *Cr-nA* :3 [AuS] ?#3[T1]（约 121241 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2330 noah88 B=474259 L=16002 d=29.6 nb=1 neut=32 cmds=262 noFull=1 shQ=118564 | m=1.079 worth=32.0 cheap=8.1 over=0 dMedOther=7.2 safe(-1)=281994
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=88901 bal=525952 dq=5.9 cnt=414 | c=15.8 rankC=15.8 need=1070791 tD=0.82 人 | safe=281994 keep=347139 avail=121563 chunkB=94852 pulseB=56911  x=121563 sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 22230 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=262 → *Cr-nA* :3 [AuS] ?#3[T1]（约 121806 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2335 noah88 B=474259 L=16002 d=29.6 nb=1 neut=28 cmds=264 noFull=1 shQ=118564 | m=1.073 worth=31.8 cheap=8.1 over=0 dMedOther=7.1 safe(-1)=281994
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=89089 bal=525952 dq=5.9 cnt=418 | c=15.8 rankC=15.8 need=1071073 tD=0.83 人 | safe=281994 keep=347813 avail=120889 chunkB=94852 pulseB=56911  x=120889 sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 22230 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=261 → *Cr-nA* :3 [AuS] ?#3[T1]（约 121343 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2340 noah88 B=480092 L=16002 d=30.0 nb=1 neut=23 cmds=266 noFull=1 shQ=120023 | m=1.068 worth=32.0 cheap=8.1 over=0 dMedOther=7.1 safe(-1)=286633
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=89311 bal=534209 dq=6.0 cnt=423 | c=16.0 rankC=16.0 need=1086128 tD=0.85 人 | safe=286633 keep=352900 avail=121566 chunkB=96018 pulseB=57611  x=121566 sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 22504 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=259 → *Cr-nA* :3 [AuS] ?#3[T1]（约 121898 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2345 noah88 B=480092 L=16002 d=30.0 nb=1 neut=19 cmds=268 noFull=1 shQ=120023 | m=1.063 worth=31.9 cheap=8.1 over=0 dMedOther=7.0 safe(-1)=286633
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=89574 bal=534209 dq=6.0 cnt=427 | c=15.9 rankC=15.9 need=1086520 tD=0.85 人 | safe=286633 keep=353503 avail=120963 chunkB=96018 pulseB=57611  x=120963 sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 22504 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=258 → *Cr-nA* :3 [AuS] ?#3[T1]（约 121429 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2350 noah88 B=485997 L=16002 d=30.4 nb=1 neut=15 cmds=270 noFull=1 shQ=121499 | m=1.058 worth=32.1 cheap=8.1 over=0 dMedOther=7.1 safe(-1)=291344
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=89877 bal=542596 dq=6.0 cnt=431 | c=16.1 rankC=16.1 need=1101921 tD=0.85 人 | safe=291344 keep=358581 avail=121721 chunkB=97199 pulseB=58320  x=121721 sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 22781 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=256 → *Cr-nA* :3 [AuS] ?#3[T1]（约 121973 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2355 noah88 B=485997 L=16002 d=30.4 nb=1 neut=11 cmds=272 noFull=1 shQ=121499 | m=1.052 worth=32.0 cheap=8.1 over=0 dMedOther=7.1 safe(-1)=291344
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=90169 bal=542596 dq=6.0 cnt=435 | c=16.0 rankC=16.0 need=1102359 tD=0.85 人 | safe=291344 keep=359107 avail=121195 chunkB=97199 pulseB=58320  x=121195 sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 22781 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=255 → *Cr-nA* :3 [AuS] ?#3[T1]（约 121499 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2360 noah88 B=299077 L=16002 d=18.7 nb=1 neut=6 cmds=272 noFull=1 shQ=0 | m=1.047 worth=19.6 cheap=8.1 over=0 dMedOther=7.1 safe(-1)=296130
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=90436 bal=551114 dq=6.1 cnt=440 | c=9.0 rankC=4.5 need=1117939 tD=0.85 人 | safe=296130 keep=296130 avail=-557 chunkB=59815 pulseB=35889 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=2365 noah88 B=299077 L=16002 d=18.7 nb=1 neut=1 cmds=272 noFull=1 shQ=4635 | m=1.042 worth=19.5 cheap=8.1 over=0 dMedOther=7.1 safe(-1)=296087
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=90684 bal=551038 dq=6.1 cnt=445 | c=9.0 rankC=4.5 need=1118175 tD=0.85 人 | safe=296087 keep=296087 avail=-514 chunkB=59815 pulseB=35889 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=2370 noah88 B=452461 L=16002 d=28.3 nb=1 neut=0 cmds=273 noFull=1 shQ=11119 | m=1.036 worth=29.3 cheap=8.1 over=0 dMedOther=7.2 safe(-1)=325141
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=90910 bal=602754 dq=6.6 cnt=446 | c=9.7 rankC=4.9 need=1210697 tD=0.92 人 | safe=325141 keep=325141 avail=122018 chunkB=90492 pulseB=54295  x=122018 sole hNb=1
+    ⇒ 影子指令 boatTo pct=127 → 水/岸#272836（约 56557 兵） 〔boatFood:2017<boatFood:5623<idleBoats:5058<act:4963〕
+t=2375 noah88 B=452461 L=16002 d=28.3 nb=1 neut=0 cmds=273 noFull=1 shQ=18129 | m=1.031 worth=29.2 cheap=8.1 over=0 dMedOther=7.2 safe(-1)=324898
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91108 bal=602321 dq=6.6 cnt=446 | c=9.7 rankC=4.9 need=1210216 tD=0.92 人 | safe=324898 keep=324898 avail=122261 chunkB=90492 pulseB=54295  x=122261 sole hNb=1
+    ⇒ 本拍没有指令
+t=2380 noah88 B=458026 L=16002 d=28.6 nb=1 neut=0 cmds=273 noFull=1 shQ=25156 | m=1.026 worth=29.4 cheap=8.1 over=0 dMedOther=7.3 safe(-1)=330028
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91320 bal=611452 dq=6.7 cnt=446 | c=9.8 rankC=4.9 need=1226809 tD=0.92 人 | safe=330028 keep=330028 avail=122631 chunkB=91605 pulseB=54963  x=122631 sole hNb=1
+    ⇒ 本拍没有指令
+t=2385 noah88 B=458026 L=16002 d=28.6 nb=1 neut=0 cmds=274 noFull=1 shQ=32251 | m=1.021 worth=29.2 cheap=8.1 over=0 dMedOther=7.3 safe(-1)=329602
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91485 bal=610695 dq=6.7 cnt=446 | c=9.8 rankC=4.9 need=1225710 tD=0.91 人 | safe=329602 keep=329602 avail=123057 chunkB=91605 pulseB=54963  x=123057 sole hNb=1
+    ⇒ 影子指令 attack pct=275 → *Cr-nA* :3 [AuS] ?#3[T1]（约 123452 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2390 noah88 B=463659 L=16002 d=29.0 nb=1 neut=0 cmds=275 noFull=1 shQ=39364 | m=1.016 worth=29.4 cheap=8.1 over=0 dMedOther=7.0 safe(-1)=334665
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91647 bal=619706 dq=6.8 cnt=446 | c=10.0 rankC=5.0 need=1242020 tD=0.96 人 | safe=334665 keep=334665 avail=123561 chunkB=92732 pulseB=55639  x=123561 sole hNb=1
+    ⇒ 影子指令 attack pct=272 → *Cr-nA* :3 [AuS] ?#3[T1]（约 123612 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2395 noah88 B=463659 L=16002 d=29.0 nb=1 neut=0 cmds=276 noFull=1 shQ=46549 | m=1.010 worth=29.3 cheap=8.1 over=0 dMedOther=7.0 safe(-1)=334015
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91753 bal=618550 dq=6.7 cnt=446 | c=10.0 rankC=5.0 need=1240113 tD=0.96 人 | safe=334015 keep=334015 avail=124211 chunkB=92732 pulseB=55639  x=124211 sole hNb=1
+    ⇒ 影子指令 attack pct=274 → *Cr-nA* :3 [AuS] ?#3[T1]（约 124517 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2400 noah88 B=485364 L=16002 d=30.3 nb=1 neut=0 cmds=277 noFull=1 shQ=53801 | m=1.005 worth=30.5 cheap=8.1 over=0 dMedOther=8.0 safe(-1)=390592
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91868 bal=719256 dq=7.8 cnt=446 | c=11.4 rankC=5.7 need=1419777 tD=0.97 人 pulse | safe=390592 keep=390592 avail=89085 chunkB=97073 pulseB=58244  x=58243 sole hNb=1
+    ⇒ 影子指令 attack pct=122 → *Cr-nA* :3 [AuS] ?#3[T1]（约 58300 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2405 noah88 B=485364 L=16002 d=30.3 nb=1 neut=0 cmds=278 noFull=1 shQ=61321 | m=1.000 worth=30.3 cheap=8.1 over=0 dMedOther=8.0 safe(-1)=389630
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91909 bal=717544 dq=7.8 cnt=446 | c=11.4 rankC=5.7 need=1416752 tD=0.98 人 pulse | safe=389630 keep=389630 avail=90047 chunkB=97073 pulseB=58244  x=58243 sole hNb=1
+    ⇒ 影子指令 attack pct=122 → *Cr-nA* :3 [AuS] ?#3[T1]（约 58300 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2410 noah88 B=491333 L=16002 d=30.7 nb=1 neut=0 cmds=279 noFull=1 shQ=68860 | m=0.995 worth=30.5 cheap=8.1 over=0 dMedOther=8.0 safe(-1)=395273
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91981 bal=727589 dq=7.9 cnt=446 | c=11.6 rankC=5.8 need=1434802 tD=0.99 人 pulse | safe=395273 keep=395273 avail=90303 chunkB=98267 pulseB=58960  x=58959 sole hNb=1
+    ⇒ 影子指令 attack pct=122 → *Cr-nA* :3 [AuS] ?#3[T1]（约 59017 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2415 noah88 B=491333 L=16002 d=30.7 nb=1 neut=0 cmds=280 noFull=1 shQ=76475 | m=0.989 worth=30.4 cheap=8.1 over=0 dMedOther=7.9 safe(-1)=394066
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91959 bal=725441 dq=7.9 cnt=446 | c=11.6 rankC=5.8 need=1430843 tD=1.00 人 pulse | safe=394066 keep=394066 avail=91510 chunkB=98267 pulseB=58960  x=58959 sole hNb=1
+    ⇒ 影子指令 attack pct=122 → *Cr-nA* :3 [AuS] ?#3[T1]（约 59017 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2420 noah88 B=497376 L=16002 d=31.1 nb=1 neut=0 cmds=281 noFull=1 shQ=84108 | m=0.984 worth=30.6 cheap=8.1 over=0 dMedOther=8.0 safe(-1)=399613
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91921 bal=735315 dq=8.0 cnt=446 | c=11.8 rankC=5.9 need=1448272 tD=1.00 人 pulse | safe=399613 keep=399613 avail=91935 chunkB=99475 pulseB=59685  x=59685 sole hNb=1
+    ⇒ 影子指令 attack pct=122 → *Cr-nA* :3 [AuS] ?#3[T1]（约 59743 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2425 noah88 B=497376 L=16002 d=31.1 nb=1 neut=0 cmds=282 noFull=1 shQ=91813 | m=0.979 worth=30.4 cheap=8.1 over=0 dMedOther=8.0 safe(-1)=398142
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91795 bal=732695 dq=8.0 cnt=446 | c=11.8 rankC=5.9 need=1443013 tD=1.00 人 pulse | safe=398142 keep=398142 avail=93406 chunkB=99475 pulseB=59685  x=59685 sole hNb=1
+    ⇒ 影子指令 attack pct=122 → *Cr-nA* :3 [AuS] ?#3[T1]（约 59743 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2430 noah88 B=503493 L=16002 d=31.5 nb=1 neut=0 cmds=283 noFull=1 shQ=99537 | m=0.974 worth=30.6 cheap=8.1 over=0 dMedOther=8.1 safe(-1)=403567
+    → *Cr-nA* :3 [AuS] ?#3[T1] terr=91719 bal=742353 dq=8.1 cnt=446 | c=12.0 rankC=6.0 need=1459880 tD=1.00 人 pulse | safe=403567 keep=403567 avail=94026 chunkB=100699 pulseB=60419  x=60419 sole hNb=1
+    ⇒ 影子指令 attack pct=122 → *Cr-nA* :3 [AuS] ?#3[T1]（约 60478 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕

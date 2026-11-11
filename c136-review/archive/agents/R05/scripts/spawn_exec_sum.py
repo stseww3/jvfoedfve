@@ -21,7 +21,7 @@ for r in csv.DictReader(open(tsv, encoding='utf-8'), delimiter='\t'):
     m = r['matchId']
     try:
         n = int(r['inReplay'])
-        card = json.load(open(f'{SRC}/bundles/{m}/card.json'))
+        card = json.load(open(f"{SRC}/{os.environ.get('C136_BUNDLES', 'bundles')}/{m}/card.json"))
     except (ValueError, TypeError, OSError):
         continue
     res = card['outcome']['resultLabel']
