@@ -17,7 +17,10 @@
          「先到先收、多的丢掉」预言：波头的孤立批 前 = 0；波尾的孤立批 后 > 0。「只留最新的」预言反过来。
          注意：批是按「连续 9 条决策的 (类型, pct) 序列」配出来的，同样的序列在决策流里出现多处时取最晚的一处（延迟取下界），
          所以这张表偏向「前」多「后」少；只能当旁证。
-用法：python3 scripts/lag_trace.py [--out reports/LAG-TRACE.md] [--json out/lag-trace.json]
+另外可导出逐号的「到达阶梯」（给模拟器当通道轨迹用）：--traces FILE
+      {局: {号: {"landed": [[决策拍, 落地拍], …按决策拍升序], "lost": [决策拍, …], "lastLocalTick": 该号日志里最后的本地拍}}}
+      只含陆攻和出船；决策拍是影子决策的拍号（= 客户端本地拍）。
+用法：python3 scripts/lag_trace.py [--out reports/LAG-TRACE.md] [--json out/lag-trace.json] [--traces out/lag-staircase.json]
 """
 import glob
 import json
@@ -30,7 +33,7 @@ W = os.environ.get('C136_WORK', '/tmp/c136-r05/work')
 MATCHES = ['A014', 'A017', 'A021', 'A026', 'A030', 'A034', 'A037', 'A043', 'A058', 'A065', 'A093', 'A095', 'B010']
 a = sys.argv[1:]
 val = lambda k, d=None: (a[a.index(k) + 1] if k in a else d)
-out, jout = val('--out'), val('--json')
+out, jout, tout = val('--out'), val('--json'), val('--traces')
 med = lambda v: (st.median(v) if v else None)
 f0 = lambda v: '–' if v is None else f'{v:.0f}'
 f2 = lambda v: '–' if v is None else f'{v:.2f}'
@@ -258,6 +261,33 @@ w('读法：两种简单规则都对不上——波头的孤立批前面多数�
 w('')
 J['dropRule'] = {k: [list(r) for r in v] for k, v in rows.items()}
 
+if tout:
+    TR = {}
+    for m, D in DATA.items():
+        per = {}
+        for r in D['decisions']:
+            if r[2] not in ('attack', 'boat'):
+                continue
+            b = per.setdefault(r[0], {'landed': [], 'lost': []})
+            if r[5] is None:
+                b['lost'].append(r[1])
+            else:
+                b['landed'].append([r[1], r[5]])
+        for bot, b in per.items():
+            b['landed'].sort()
+            b['lost'].sort()
+            b['lastLocalTick'] = (D.get('lastLocalTick') or {}).get(bot)
+        TR[m] = per
+    json.dump(TR, open(tout, 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
+    print('→', tout)
+    nb = sum(len(v) for v in TR.values())
+    nl = sum(len(b['landed']) for v in TR.values() for b in v.values())
+    nx = sum(len(b['lost']) for v in TR.values() for b in v.values())
+    w('## 5. 逐号的到达阶梯（数据文件）')
+    w('')
+    w(f'`{os.path.relpath(tout, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))}`：{len(TR)} 局 {nb} 个号，落地的决策 {nl:,} 条（决策拍 → 落地拍），没落地的决策 {nx:,} 条（只有决策拍）。')
+    w('用法：新策略在本地第 τ 拍下的指令，到达拍取这个号 τ 之后第一条落地决策的落地拍（τ 落在两条之间时取后一条）；没落地的决策拍标出通道在哪些本地拍是堵的。')
+    w('')
 text = '\n'.join(L) + '\n'
 if out:
     open(out, 'w', encoding='utf-8').write(text)

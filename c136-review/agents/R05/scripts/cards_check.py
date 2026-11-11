@@ -12,6 +12,8 @@
   [PH …]      reports/PREY-HAZARD.md
   [HA …]      reports/HUB-AUDIT-RECONCILE.md
   [LT …]      reports/LAG-TRACE.md
+  [BF …]      reports/BOT-FLOOR.md
+  [PC …]      reports/PROPOSAL-CALC.md（提案里的算例：按引擎公式代入的算术）
   [HUB]       hub 的 c136-review/reports/LATENCY-AND-LAND-CAPTURE-AUDIT.md（引用 hub 的原数时用）
   [提议]      设计值（门槛、系数、样本量这类提议，不是量出来的数）：这一段不核对
   [tsv]       out/pattern-scan.tsv、out/pattern-scan2.tsv：数字必须出现在同一句里提到的那一局的那一行
@@ -44,10 +46,10 @@ SRC = os.environ.get('C136_DATA', '/agent/repos/c136-data')
 MATCHES = ['A014', 'A017', 'A021', 'A026', 'A030', 'A034', 'A037', 'A043', 'A058', 'A065', 'A093', 'A095', 'B010']
 
 NUM = re.compile(r'(?<![A-Za-z_\d.])(\d[\d,]*(?:\.\d+)?)(%|M|k)?(?![\d])')
-TAG = re.compile(r'\[(PS|DL|CL|RO|PH|HA|LT|HUB|提议|tsv|复盘)([^\]]*)\]')
+TAG = re.compile(r'\[(PS|DL|CL|RO|PH|HA|LT|BF|PC|HUB|提议|tsv|复盘)([^\]]*)\]')
 TABLES = {'PS': 'reports/PATTERN-SCAN.md', 'DL': 'reports/DELAY-AND-LAND-ACCOUNT.md', 'CL': 'reports/CROSS-LEDGER.md',
           'RO': 'reports/REVIEW-ROLLUP.md', 'PH': 'reports/PREY-HAZARD.md', 'HA': 'reports/HUB-AUDIT-RECONCILE.md',
-          'LT': 'reports/LAG-TRACE.md'}
+          'LT': 'reports/LAG-TRACE.md', 'BF': 'reports/BOT-FLOOR.md', 'PC': 'reports/PROPOSAL-CALC.md'}
 MID = re.compile(r'\b([AB]\d{3})\b')
 
 
@@ -218,12 +220,12 @@ def check_file(path, allow):
                         for m in mids:
                             have |= corpus('REV:' + m)
                         names.append('复盘 ' + '、'.join(mids))
-                        for extra in re.findall(r'\b(PS|DL|CL|RO|PH|HA|LT)\b', arg):
+                        for extra in re.findall(r'\b(PS|DL|CL|RO|PH|HA|LT|BF|PC)\b', arg):
                             have |= corpus(extra)
                     else:
                         have |= corpus(k)
                         names.append(k)
-                        for extra in re.findall(r'\b(PS|DL|CL|RO|PH|HA|LT)\b', arg):
+                        for extra in re.findall(r'\b(PS|DL|CL|RO|PH|HA|LT|BF|PC)\b', arg):
                             have |= corpus(extra)
                         if '复盘' in arg:
                             mids = MID.findall(arg) or MID.findall(text) or para_mids or MATCHES
