@@ -136,6 +136,17 @@ def main():
             bad = next((r for r in rows if r['ok'] != '1'), None)
             print(f'  {b:14s} {n_ok}/{len(rows)}' + (f'  首个不同 t={bad["t"]} 日志 nb/neut/cmds/boats={bad["logNb"]}/{bad["logNeut"]}/{bad["logCmds"]}/{bad["logBoats"]} 影子 {bad["shNb"]}/{bad["shNeut"]}/{bad["shCmds"]}/{bad["shBoats"]}' if bad else ''))
         print(f'  合计 {ok}/{tot}')
+        bad_all = [r for r in ck if r['ok'] != '1']
+        if bad_all:
+            only_boat = sum(1 for r in bad_all
+                            if r['logNb'] == r['shNb'] and r['logNeut'] == r['shNeut']
+                            and int(r['shCmds']) - int(r['logCmds']) == int(r['shBoats']) - int(r['logBoats']))
+            print(f'  不同的 {len(bad_all)} 个快照里，nb / neut 相同且 cmds 的差正好等于 boats 的差（即只差在船指令的受理上）：{only_boat} 个')
+            for b, rows in by.items():
+                r = rows[-1]
+                if r['logBoats'] != r['shBoats']:
+                    print(f'    {b:14s} 最后一个快照 t={r["t"]}：日志 cmds/boats={r["logCmds"]}/{r["logBoats"]}，影子 {r["shCmds"]}/{r["shBoats"]}；'
+                          f'除船以外的指令 日志 {int(r["logCmds"]) - int(r["logBoats"])} 影子 {int(r["shCmds"]) - int(r["shBoats"])}')
 
     if 'idle' in secs:
         idle = load(mid, 'shadow_idle', a.tag)

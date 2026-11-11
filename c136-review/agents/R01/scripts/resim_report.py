@@ -358,9 +358,16 @@ def main():
         out_ext = sum(int(r['received']) + 64 * int(r['fromBal']) // 1024 for r in tr if r['kind'] == 'cmd' and int(r['from']) in sq_ids and int(r['to']) not in sq_ids)
         in_ext = sum(int(r['received']) for r in tr if int(r['to']) in sq_ids and int(r['from']) not in sq_ids)
         clip = sum(max(0, min(int(r['fromBal']) * (int(r['pct']) + 1) // 1024, int(r['fromBal']) - 64 * int(r['fromBal']) // 1024) - int(r['received'])) for r in tr if r['kind'] == 'cmd' and int(r['from']) in sq_ids and int(r['to']) in sq_ids)
-        bt = [r for r in load(mid, 'boat_trace.csv') if a0 <= int(r['launch']) < z0]
+        # 离场壳（state=2，由 AI 接管）出的船不是指令触发的，boat_trace.csv 对它们的 balBefore / fee 不可靠，流水账里不计
+        husk_from = {}
+        for r in sqrows:
+            if r['state'] == '2': husk_from[r['bot']] = min(husk_from.get(r['bot'], 10 ** 9), int(r['t']))
+        bt_all = load(mid, 'boat_trace.csv')
+        is_husk_boat = lambda r: int(r['launch']) >= husk_from.get(r['bot'], 10 ** 9) - step
+        bt = [r for r in bt_all if a0 <= int(r['launch']) < z0 and not is_husk_boat(r)]
+        n_husk_boats = sum(1 for r in bt_all if a0 <= int(r['launch']) < z0 and is_husk_boat(r))
         b_load = sum(int(r['troops0']) for r in bt); b_fee = sum(int(r['fee']) for r in bt if r.get('fee'))
-        b_back = sum(int(r['troopsArr']) for r in load(mid, 'boat_trace.csv') if r['landedOn'] == 'self' and r['arrive'] and a0 <= int(r['arrive']) < z0)
+        b_back = sum(int(r['troopsArr']) for r in bt_all if r['landedOn'] == 'self' and r['arrive'] and a0 <= int(r['arrive']) < z0 and not is_husk_boat(r))
         b0, b1 = bal_at(a0), bal_at(z0)
         known = intr + terr_inc + in_ext - sum(atk.values()) - fee_in - out_ext - b_load - b_fee + b_back
         print(f"== ledger 本队兵力流水账 [{a0},{z0}]")
@@ -368,6 +375,8 @@ def main():
         print(f"  收入：利息（估算）{intr}，领土收入 {terr_inc}，队外转入（队友捐款/船/自动）{in_ext}，船回自己岸 {b_back}")
         print(f"  支出：进攻落地实扣 {sum(atk.values())}（" + '、'.join(f"{k} {v}" for k, v in sorted(atk.items(), key=lambda kv: -kv[1])) + f"），本队内部捐款手续费 {fee_in}，捐给队外 {out_ext}，出海装兵 {b_load}，出海手续费 {b_fee}")
         print(f"  （另：被受赠者 150 倍上限截掉、没送出去的 {clip}——这部分留在捐出方手里，不算支出，但手续费照付）")
+        if n_husk_boats:
+            print(f"  （另：离场壳出的 {n_husk_boats} 条船不计入出海两项）")
         print(f"  未归类（进攻线上回流的兵、被打掉的兵、利息估算误差等）{b1 - b0 - known:+d}")
 
     if 'events' in sections:
