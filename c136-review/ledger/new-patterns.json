@@ -1,5 +1,21 @@
 [
  {
+  "matchId": "A019",
+  "reviewer": "R01",
+  "proposedId": "NEW-R01-AT11",
+  "prefix": "AT",
+  "name": "单价过了价格线，预算不到余额 20%：对真人不出手",
+  "definition": "1500 拍后相邻真人的单价 c < worth，但 buyLand 预算分支（L5611–5616）连续 ≥50 个决策拍因为 x < want 且 x < chunk×余额 而 continue，期间本号密度 ≥ 对方的 2 倍。",
+  "detect": "shadow.mjs --probe + probe_view.py --gate <席位>（列：单价 c、worth、预算、20% 线、buyLand 返回值）；shadow_idle.csv 的 oGate 列。",
+  "instances": [
+   {
+    "matchId": "A019",
+    "t": 1500,
+    "note": "riku_x 对 H*****：1500–2070 拍 115 个决策拍不出手（其中 90 个 c < worth、预算 29270–76395 对 20% 线 35170–81232），密度 38.9→85.4 对 17.2→35.0"
+   }
+  ]
+ },
+ {
   "matchId": "A031",
   "reviewer": "R01",
   "proposedId": "NEW-R01-IO01",
