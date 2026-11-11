@@ -479,7 +479,11 @@ def wallms_rows(M):
     if len(fit) < 2:
         return None
     A = min(_at_s(r) - TICK_S * r['tick'] for r in fit)
-    rl = {x['name']: x['line'] for x in M.results_log}
+    rl = {}
+    for x in M.results_log:      # 别的编队的结算行名字前带战队标签（「[APEX] noah88」），results.csv 里不带：两种写法都认，原名优先
+        rl.setdefault(re.sub(r'^\[[^\]]*\] ', '', x['name']), x['line'])
+    for x in M.results_log:
+        rl[x['name']] = x['line']
     out = []
     for r in rs:
         line = rl.get(r['bot'])

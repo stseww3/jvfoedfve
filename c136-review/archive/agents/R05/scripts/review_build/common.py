@@ -47,9 +47,9 @@ def dump(mid, doc):
 
 
 def _rd(o):
-    """把账本里的浮点数收一下：≥100 的取整，其余留 3 位。"""
+    """把账本里的浮点数收一下：≥100 的取整，其余留 4 位。"""
     if isinstance(o, float):
-        return int(round(o)) if abs(o) >= 100 else round(o, 3)
+        return int(round(o)) if abs(o) >= 100 else round(o, 4)
     if isinstance(o, dict):
         return {k: _rd(v) for k, v in o.items()}
     if isinstance(o, list):

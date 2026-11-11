@@ -1059,6 +1059,23 @@ class Dossier:
                 row["teamSharePct"] = {f"T{i}": round(100 * tland[i] / self.land, 1) for i in range(1, R["nTeams"] + 1)}
                 row["aiSharePct"] = round(100 * bl / self.land, 1)
                 row["neutralSharePct"] = round(100 * neu / self.land, 1)
+            else:
+                # 自由混战（没有队伍）：全体真人的地、在线真人数、编队之外最大的真人、编队里最大的号在真人里排第几
+                i = self.ix(t)
+                terr, bal = R["snapTerr"][i], R["snapBal"][i]
+                row["humanSharePct"] = round(100 * tland[0] / self.land, 1)
+                row["aiSharePct"] = round(100 * bl / self.land, 1)
+                row["neutralSharePct"] = round(100 * neu / self.land, 1)
+                row["onlineHumans"] = ta[0]
+                others = [q for q in range(self.H) if q not in self.bot_of and terr[q] > 0 and not (0 <= self.left[q] <= t)]
+                if others:
+                    q = max(others, key=lambda x: terr[x])
+                    row["topOther"] = {"who": self.nm(q, t), "terr": terr[q], "sharePct": round(100 * terr[q] / self.land, 2), "bal": bal[q]}
+                ctl = [q for q in self.sqids if terr[q] > 0 and not (0 <= self.left[q] <= t)]
+                if ctl:
+                    q = max(ctl, key=lambda x: terr[x])
+                    row["topSquad"] = {"bot": self.bot_of[q], "terr": terr[q], "sharePct": round(100 * terr[q] / self.land, 2), "bal": bal[q],
+                                       "rankAmongHumans": 1 + sum(1 for x in range(self.H) if terr[x] > terr[q])}
             tl.append(row)
         f["timeline"] = tl
         deaths = []

@@ -10,8 +10,10 @@
   [X2] 分时间窗（--step，默认 300 拍）：编队打编队、编队打其他真人、其他真人打编队 的 烧/得地
   [X3] 每个号：吃编队友/吃其他真人 的 得地、烧；被编队友/被其他真人 吃掉的格、掉的余额；出局前 300 拍被谁吃掉多少格
   [X4] 编队内每一对（攻→守）：第一条落地的陆攻指令拍、条数、送出、手续费；烧、得地、对方掉余额
+  [X5] DROP30 分类：出手打编队友 / 出手打其他真人 / 被编队友打 / 被其他真人打 / 开局打 AI、无主地（读 out/dossier/<mid>-facts.json 的 drops）
 用法：python3 scripts/intrasquad.py <mid> [--step 300]
 """
+import json
 import os
 import sys
 from collections import defaultdict
@@ -158,6 +160,28 @@ def main():
         gone = "（守方已是空壳）" if left[d] >= 0 and c[0] is not None and c[0] >= left[d] else ""
         first = c[0] if c[0] is not None else "—"
         print(f"  {D.bot_of[a]:<7} → {D.bot_of[d]:<7} 首条 {first:>5} 拍 {c[1]:>2} 条 送出 {k(c[2]):>6} 手续费 {k(c[3]):>6} | 烧 {k(o[0]):>6} 得地 {o[1]:>6} 对方掉余额 {k(o[2]):>6}{gone}")
+
+    # ---- [X5] DROP30 分类 ----
+    fp = os.path.join(os.path.dirname(HERE), "out", "dossier", f"{mid}-facts.json")
+    if os.path.exists(fp):
+        drops = json.load(open(fp)).get("drops") or []
+        names = set(D.sq)
+        cat = defaultdict(list)
+        for d in drops:
+            tg = d.get("target") or ""
+            who = [x.strip() for x in tg.replace("对 ", "").replace("被 ", "").split(",") if x.strip()]
+            mates = [x for x in who if x in names]
+            if d["main"] == "攻真人":
+                key = "出手打编队友" if mates and len(mates) == len(who) else ("出手打编队友和其他真人" if mates else "出手打其他真人")
+            elif d["main"] == "挨打":
+                key = "被编队友打" if mates and len(mates) == len(who) else ("被编队友和其他真人一起打" if mates else "被其他真人打")
+            else:
+                key = "开局" + d["main"] if d["t1"] <= 1500 else d["main"]
+            cat[key].append(d)
+        print(f"[X5] DROP30 分类（out/dossier/{mid}-facts.json 的 drops，共 {len(drops)} 个；按卷宗 [I] 的主因和对象分）")
+        for key in sorted(cat, key=lambda x: -len(cat[x])):
+            rows = cat[key]
+            print(f"  {key}：{len(rows)} 个 — " + "；".join(f"{d['bot']} {d['t0']}-{d['t1']}（−{d['dropPct']:.0f}%" + (f"，{d['target']}" if d.get("target") else "") + "）" for d in rows))
 
 
 if __name__ == "__main__":

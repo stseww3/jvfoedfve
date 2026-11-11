@@ -18,6 +18,7 @@
   [XS-G] 编队合计领土占全图陆地的份额，t=630 / 1530 / 3060 / 4500 / 6030（日志口径）
   [XS-H] 离开的号：离开拍的分位、分段占比、离开时留下的地和兵
   [XS-I] 捐款日志行按引擎受捐额度的分段：成交 / 被拒 / 定不了、到账上限、手续费
+  [XS-J] 扩张事件之后邻居变多 vs 没变多：450 拍内被吃的比例（NEW-AT-04 的对照）
 """
 import json
 import os
@@ -102,6 +103,33 @@ def basics(m):
                 quarterRatios=ratios, cadence=cad, donations=len(dons), donationsAccepted=sum(1 for d in dons if d.get("accepted")))
 
 
+def growth_events(m):
+    """扩张事件（对照 NEW-AT-04 用）：一个号的快照序列里，从基准快照起 180 拍内领土 ≥ 1.05×基准的第一条快照算一次事件，然后从那条接着找（不重叠）。
+    每次事件记 [基准拍, 基准时的邻居数 nb, 事件时 nb − 基准 nb, 之后 450 拍内领土是否从事件后的峰值跌 ≥30% 或阵亡, 基准领土, 事件时密度 ÷ 基准密度, 事件时领土 ÷ 基准领土]。
+    HL-TICK 的 nb = 策略眼里的邻居数（内置 AI + 真人；c110 不含受保护的编队友）。"""
+    ev = []
+    for b in m.bots.values():
+        tk = [x for x in b["ticks"] if x["terr"] > 0]
+        d = m.death(b)
+        i = 0
+        while i < len(tk):
+            base = tk[i]
+            j = next((k for k in range(i + 1, len(tk)) if tk[k]["t"] - base["t"] <= 180 and tk[k]["terr"] >= 1.05 * base["terr"]), None)
+            if j is None or base["terr"] < 300:
+                i += 1
+                continue
+            hit = tk[j]
+            later = [x for x in tk if hit["t"] <= x["t"] <= hit["t"] + 450]
+            peak = max(x["terr"] for x in later)
+            real = any(x["terr"] <= 0.7 * peak for x in later) or (d is not None and hit["t"] < d <= hit["t"] + 450)
+            full = (m.end is None) or (hit["t"] + 450 <= m.end) or real      # 窗没看全又没兑现的不算
+            if full:
+                ev.append([base["t"], base["nb"], hit["nb"] - base["nb"], int(real), base["terr"],
+                           round(hit["dens"] / base["dens"], 3) if base["dens"] > 0 else None, round(hit["terr"] / base["terr"], 3)])
+            i = j
+    return ev
+
+
 def scan(mid, card0):
     F = facts.full(mid)
     m = P.M(mid, F=F)
@@ -118,6 +146,7 @@ def scan(mid, card0):
     return dict(matchId=mid, cohort=card0.get("cohort"), mode=card0.get("mode"), nominalTeams=card0.get("nominalTeams"), squadTeams=len(card0.get("teamSplitCounts") or {}),
                 land=m.land, endTick=m.end, primaryTeamWon=bool(oc.get("primaryTeamWon")), anyBotWon=bool(oc.get("anyBotWon")), resultLabel=oc.get("resultLabel"),
                 factsLabel=oc2.get("resultLabel"),
+                growth=growth_events(m),
                 peakSquadShare=oc.get("peakSquadLandShare"), replay=bool((card0.get("dataCompleteness") or {}).get("replay")),
                 rooms=len(F["rooms"]) if F.get("rooms") else 1, unresolved=len(F.get("unresolved") or []), notes=len(F.get("notes") or []),
                 cardSquadBots=card0.get("squadBots"), basics=basics(m), patterns=res)
@@ -246,7 +275,7 @@ def main():
         left_agg[nm] = dict(n=n, matches=sum(1 for r in rs if r["basics"]["left"] > 0), halfMatches=half, q50=q[9], le1500=sum(1 for t in ts if t <= 1500), gt8500=sum(1 for t in ts if t > 8500),
                             withLand=len(withland), land=sum(x[1] for x in withland), balance=sum(x[2] for x, _ in lr), big=big)
     # [XS-I] 捐款日志行按引擎的受捐额度分段
-    DB = [("0~2142", 0, 2142), ("2142~3213", 2142, 3213), ("3213~4284", 3213, 4284), ("4284+", 4284, 10 ** 9)]
+    DB = [("0~2142", 0, 2142), ("2142~3213", 2142, 3213), ("3213~4284", 3213, 4284), ("4284+", 4284, 10 ** 9), ("其中 t<4284 合计", 0, 4284), ("全程合计", 0, 10 ** 9)]
     out.append("[XS-I] 捐款日志行按引擎受捐额度的分段（donationCost L348-357 的换算在 t=2142 / 3213 换档；t≥4284 不限额）。判定 = 捐出方下一条余额观测对『成交 / 被拒』两个预期的比对（facts.py）：")
     out.append("    组 | 时段 | 有捐款的局 | 日志行 | 看得到成交 | 看得到被拒 | 定不了 | 成交 ÷（成交 + 被拒）| 成交的那些：到账上限 | 手续费 | 手续费 ÷ 到账 | pct < 63 的行（其中看得到成交的；这种捐款到账比手续费还少）")
     don_agg = {}
@@ -270,22 +299,59 @@ def main():
             k[1] += x[2] == "ACC"
             k[2] += x[2] == "REJ"
     out.append("    按种类（全部）：" + "；".join(f"{k} {v[0]} 行（成交 {v[1]} / 被拒 {v[2]}）" for k, v in sorted(kinds.items(), key=lambda kv: -kv[1][0])))
+    # [XS-J] 扩张之后邻居变多 vs 没变多（NEW-AT-04 的对照）
+    out.append("[XS-J] 扩张事件（180 拍内领土 +≥5%，基准 ≥300 格，不重叠）之后 450 拍内『从峰值跌 ≥30% 或阵亡』的比例，按邻居数的变化分：")
+    out.append("    时段（基准拍）| 基准时邻居数 | 邻居没变多（Δnb ≤ 0）：事件 / 兑现（%）| 多 1 个：事件 / 兑现（%）| 多 2 个以上：事件 / 兑现（%）")
+    grow_agg = {}
+    allev = [e for r in rows for e in r.get("growth", [])]
+    for pn, a, z in (("600~1500", 600, 1500), ("1500~3000", 1500, 3000), ("3000+", 3000, 10 ** 9), ("全部（≥600）", 600, 10 ** 9)):
+        for kn, kf in (("0", lambda k: k == 0), ("1", lambda k: k == 1), ("2 个以上", lambda k: k >= 2), ("不分", lambda k: True)):
+            ev = [e for e in allev if a <= e[0] < z and kf(e[1])]
+            cells = []
+            for dn, df in (("le0", lambda d: d <= 0), ("p1", lambda d: d == 1), ("p2", lambda d: d >= 2)):
+                sel = [e for e in ev if df(e[2])]
+                cells.append(f"{len(sel)} / {sum(e[3] for e in sel)}（{rate(sum(e[3] for e in sel), len(sel))}）")
+                grow_agg[f"{pn}|{kn}|{dn}"] = dict(n=len(sel), realized=sum(e[3] for e in sel))
+            out.append(f"    {pn} | {kn} | " + " | ".join(cells))
+    out.append("    再按『扩张后变没变薄』『扩张了多少』分层（基准拍 ≥600）：层 | 邻居没变多：事件 / 兑现（%）| 多 1 个 | 多 2 个以上")
+    ev6 = [e for e in allev if e[0] >= 600]
+    strata = [("密度掉到一半以下", lambda e: e[5] is not None and e[5] <= 0.5), ("密度没掉到一半", lambda e: e[5] is not None and e[5] > 0.5),
+              ("领土 +5%~20%", lambda e: e[6] < 1.2), ("领土 +20%~50%", lambda e: 1.2 <= e[6] < 1.5), ("领土 +50% 以上", lambda e: e[6] >= 1.5)]
+    for sn, sf in strata:
+        cells = []
+        for dn, df in (("le0", lambda d: d <= 0), ("p1", lambda d: d == 1), ("p2", lambda d: d >= 2)):
+            sel = [e for e in ev6 if sf(e) and df(e[2])]
+            cells.append(f"{len(sel)} / {sum(e[3] for e in sel)}（{rate(sum(e[3] for e in sel), len(sel))}）")
+            grow_agg[f"strata|{sn}|{dn}"] = dict(n=len(sel), realized=sum(e[3] for e in sel))
+        out.append(f"    {sn} | " + " | ".join(cells))
+    for cn in cohorts:
+        ev = [e for r in rows if r["cohort"] == cn for e in r.get("growth", []) if e[0] >= 600]
+        a_ = [e for e in ev if e[2] <= 0]
+        b_ = [e for e in ev if e[2] >= 1]
+        out.append(f"    {cn}（≥600 拍）| 邻居没变多 {len(a_)} / {sum(e[3] for e in a_)}（{rate(sum(e[3] for e in a_), len(a_))}）| 变多 {len(b_)} / {sum(e[3] for e in b_)}（{rate(sum(e[3] for e in b_), len(b_))}）")
+    for nm, rs in (("主队赢的局", won), ("没赢的局", lost)):
+        ev = [e for r in rs for e in r.get("growth", []) if e[0] >= 600]
+        a_ = [e for e in ev if e[2] <= 0]
+        b_ = [e for e in ev if e[2] >= 1]
+        out.append(f"    {nm}（≥600 拍）| 邻居没变多 {len(a_)} / {sum(e[3] for e in a_)}（{rate(sum(e[3] for e in a_), len(a_))}）| 变多 {len(b_)} / {sum(e[3] for e in b_)}（{rate(sum(e[3] for e in b_), len(b_))}）")
     # [XS-E]
     mine = [r for r in rows if r["matchId"] in MINE]
     mine.sort(key=lambda r: MINE.index(r["matchId"]))
     if mine:
-        out.append("[XS-E] R08 的 16 局逐局（格子 = 次数，带 * = 兑现的次数，- = 没命中）：模式 | " + " | ".join(r["matchId"] for r in mine) + " | 命中局数")
+        out.append("[XS-E] R08 的 16 局逐局（格子 = 次数，带 * = 兑现的次数，- = 没命中）：模式 | " + " | ".join(r["matchId"] for r in mine) + " | 命中局数 | 16 局合计")
         for pid, fn, _ in P.DETECTORS:
             cells = []
             for r in mine:
                 x = r["patterns"][pid]
                 cells.append("-" if not x.get("hit") else (f"{x['n']}" + (f"*{x['realized']}" if x.get("realized") else "")))
-            out.append(f"  {pid:<11} | " + " | ".join(f"{c:>5}" for c in cells) + f" | {sum(1 for r in mine if r['patterns'][pid].get('hit'))}")
+            tn = sum(r["patterns"][pid].get("n") or 0 for r in mine if r["patterns"][pid].get("hit"))
+            tr_ = sum(r["patterns"][pid].get("realized") or 0 for r in mine if r["patterns"][pid].get("hit"))
+            out.append(f"  {pid:<11} | " + " | ".join(f"{c:>5}" for c in cells) + f" | {sum(1 for r in mine if r['patterns'][pid].get('hit'))} | {tn}" + (f"*{tr_}" if tr_ else ""))
     od = os.path.join(OUT, "_cross")
     os.makedirs(od, exist_ok=True)
     name = "xscan_mine" if mine_only else "xscan"
     open(os.path.join(od, f"{name}.txt"), "w", encoding="utf-8").write("\n".join(out) + "\n")
-    json.dump(dict(matches=len(rows), cohorts=cohorts, won=len(won), lost=len(lost), failed=failed, agg=agg, base=base, cadence=cadence, deathTiming=death_agg, shareTrajectory=share_agg, leaves=left_agg, donationBands=don_agg, donationKinds=kinds,
+    json.dump(dict(matches=len(rows), cohorts=cohorts, won=len(won), lost=len(lost), failed=failed, agg=agg, base=base, cadence=cadence, deathTiming=death_agg, shareTrajectory=share_agg, leaves=left_agg, donationBands=don_agg, donationKinds=kinds, growth=grow_agg,
                    quarter=dict(n=len(ratios), le026=sum(1 for x in ratios if x <= 0.26), le030=sum(1 for x in ratios if x <= 0.30), gt035=sum(1 for x in ratios if x > 0.35)),
                    rows=[{k: v for k, v in r.items()} for r in rows]),
               open(os.path.join(od, f"{name}.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=1, default=str)

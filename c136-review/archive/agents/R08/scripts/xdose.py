@@ -14,6 +14,7 @@
   [XD-A] 样本   [XD-B] 秩相关（Spearman）   [XD-C] 按剂量三分位看结果   [XD-D] 几乎没有卡顿的局   [XD-E] 赢的局和没赢的局
   [XD-F] 贴边 / 房间大小 和结果的秩相关（混杂项）   [XD-G] 不靠卡顿的两个量（挨着白给的 AI 出不出手、每条派多少）
   [XD-H] 留底门槛的剂量（被留底挡住的样本占比）和结果、和卡顿剂量的关系；门槛 × 卡顿 两层交叉
+  [XD-K] 离开的号（日志口径）和卡顿剂量：秩相关、按 B 三分位、没有剂量数据的局
   [XD-I] 别的解释量（门槛、贴边、扎堆、续兵、对数、每条派多少）和结果的秩相关：原始 / 扣掉卡顿剂量 B 之后的偏相关 / 只看几乎不卡的局
          偏相关 = 两个量各自对 B 取秩回归后的残差之间的相关（秩口径）；AIRATIO = own 人均从内置 AI 吃到的格 ÷ 同局野人人均
 """
@@ -337,10 +338,42 @@ def main():
         neut[f"{k}|R1500|B"] = dict(n=len(tr), partial=par)
         P(f"  {k} | {len(xs)} | {f2(med(xs))} | {f2(med([d[k] for d in lowlag if d.get(k) is not None]))} / {f2(med([d[k] for d in rest_ if d.get(k) is not None]))} | " + " | ".join(cells) + f" | {f2(par)}")
 
+    # [XD-K] 离开的号 × 卡顿剂量（xscan.json 的日志口径基础量；没有就跳过）
+    leave = {}
+    xs_path = os.path.join(OUT, "xscan.json")
+    if os.path.exists(xs_path):
+        XS = json.load(open(xs_path, encoding="utf-8"))
+        dose = {d["matchId"]: d for d in rows}
+        lv = []
+        for r in XS.get("rows", []):
+            b = r["basics"]
+            lr = [x for x in b.get("leftRows", []) if x[0] is not None]
+            lv.append(dict(matchId=r["matchId"], bots=b["bots"], left=len(lr), early=sum(1 for x in lr if x[0] <= 3000), d=dose.get(r["matchId"])))
+        P("")
+        P("[XD-K] 离开的号（日志口径，xscan [XS-H]）和卡顿剂量：EARLY = 一局里 3000 拍前离开的号 ÷ 号数")
+        cells = []
+        for k in ("A", "B", "C"):
+            pr = [(x["d"][k], x["early"] / x["bots"]) for x in lv if x["d"] and x["d"].get(k) is not None and x["bots"]]
+            rho = spearman(*zip(*pr)) if len(pr) >= 8 else None
+            cells.append(f"{k} × EARLY {f2(rho)}（{len(pr)} 局）")
+            leave[f"{k}|EARLY"] = dict(n=len(pr), rho=rho)
+        P("  秩相关（没有做置换检验，只作线索）：" + "；".join(cells))
+        hv = sorted([x for x in lv if x["d"] and x["d"].get("B") is not None], key=lambda x: x["d"]["B"])
+        n = len(hv)
+        P("  按没生效占比 B 三分位：档 | 局数 | B 的范围 | 有 3000 拍前离开的局 | 3000 拍前离开的号 / 号数")
+        for nm, seg in (("低", hv[:n // 3]), ("中", hv[n // 3:2 * n // 3]), ("高", hv[2 * n // 3:])):
+            if seg:
+                P(f"    {nm} | {len(seg)} | {seg[0]['d']['B']:.2f}~{seg[-1]['d']['B']:.2f} | {sum(1 for x in seg if x['early'])} | {sum(x['early'] for x in seg)} / {sum(x['bots'] for x in seg)}")
+                leave[f"tercile|{nm}"] = dict(matches=len(seg), withEarly=sum(1 for x in seg if x["early"]), early=sum(x["early"] for x in seg), bots=sum(x["bots"] for x in seg))
+        nd = [x for x in lv if not (x["d"] and x["d"].get("B") is not None)]
+        P(f"  没有剂量数据的 {len(nd)} 局（没有录像、录像对不上、或者录像没到 1500 拍）：有 3000 拍前离开的 {sum(1 for x in nd if x['early'])} 局，"
+          f"3000 拍前离开的号 {sum(x['early'] for x in nd)} / {sum(x['bots'] for x in nd)}")
+        leave["noDose"] = dict(matches=len(nd), withEarly=sum(1 for x in nd if x["early"]), early=sum(x["early"] for x in nd), bots=sum(x["bots"] for x in nd))
+
     with open(os.path.join(OUT, "xdose.txt"), "w", encoding="utf-8") as f:
         f.write("\n".join(out) + "\n")
     with open(os.path.join(OUT, "xdose.json"), "w", encoding="utf-8") as f:
-        json.dump(dict(rows=rows, corr=corr, terciles=terc, calm=[d["matchId"] for d in calm], gate=gate, other=other, neutral=neut), f, ensure_ascii=False, separators=(",", ":"))
+        json.dump(dict(rows=rows, corr=corr, terciles=terc, calm=[d["matchId"] for d in calm], gate=gate, other=other, neutral=neut, leave=leave), f, ensure_ascii=False, separators=(",", ":"))
     if not quiet:
         print("\n".join(out))
 

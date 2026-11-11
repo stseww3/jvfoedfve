@@ -216,6 +216,21 @@ def main():
     sign_row("600~1500 人均吃到的「开局就是无主地」的格：own 低于 野人（NORIG < 1）", [(d.get("NORIG"), 1.0) for d in rows])
     sign_row("600~1500 人均吃到的「垮掉的内置 AI 留下的地」：own 低于 野人（NLEFT < 1）", [(d.get("NLEFT"), 1.0) for d in rows])
     sign_row("600~900 挨着无主地的样本占比：own 低于 野人（NADJ < 1）", [(d.get("NADJ"), 1.0) for d in rows])
+    # 日志口径（xscan.json 的逐局行）
+    gw, dn = [], []
+    for r in XS.get("rows", []):
+        ev = [e for e in r.get("growth", []) if e[0] >= 600]
+        a_ = [e for e in ev if e[2] <= 0]
+        b_ = [e for e in ev if e[2] >= 1]
+        if len(a_) >= 5 and len(b_) >= 5:
+            gw.append((sum(e[3] for e in a_) / len(a_), sum(e[3] for e in b_) / len(b_)))
+        dr = r["basics"].get("donRows", [])
+        pre = [x for x in dr if x[0] < 4284 and x[2] in ("ACC", "REJ")]
+        post = [x for x in dr if x[0] >= 4284 and x[2] in ("ACC", "REJ")]
+        if len(pre) >= 5 and len(post) >= 5:
+            dn.append((sum(1 for x in pre if x[2] == "ACC") / len(pre), sum(1 for x in post if x[2] == "ACC") / len(post)))
+    sign_row("扩张之后 450 拍内被吃（跌 ≥30% 或阵亡）的比例：邻居没变多 低于 邻居变多（日志；每局两组各 ≥5 个事件）", gw)
+    sign_row("捐款日志行的成交占比：t<4284 低于 t≥4284（日志；每局两段各 ≥5 条有判定的）", dn)
 
     # ---- [XG-B] ----
     P("")

@@ -20,7 +20,7 @@ from collections import defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.normpath(os.path.join(HERE, '..', 'out'))
-DATA = '/agent/repos/c136-data/bundles'
+DATA = os.environ.get('R06_DATA', '/agent/repos/c136-data/bundles')   # 换数据根目录（同样的对局包结构）时用环境变量 R06_DATA
 
 import sys
 sys.path.insert(0, HERE)
@@ -30,12 +30,15 @@ from team_assign import assign_teams, clan_tag  # noqa: E402
 PEER_REPLAY = {'B039': 'A058', 'B038': 'A057'}
 
 RE_LINE = re.compile(r'^(\d+)\t\[(.+?)\] \[(HL-[A-Z-]+)\] (.*)$')
-RE_RESULT = re.compile(r'^(\d+)\t\[RESULT (.+?)\] result=(\S+) event=(\S+) place=(\S+) peak=(\S+) team=(.*)$')
+# 结算行：c116 的在 place 和 peak 之间多了 seeded= aiBots= alivePlayers= 三项
+RE_RESULT = re.compile(r'^(\d+)\t\[RESULT (.+?)\] result=(\S+) event=(\S+) place=(\S+)(?: seeded=\S+ aiBots=\S+ alivePlayers=\S+)? peak=(\S+) team=(.*)$')
 RE_TICK = re.compile(r't=(\d+) terr=(\d+)\(([\d.]+)%\) bal=(\d+) dens=([\d.]+) nb=(\d+) neut=(\d+) cmds=(\d+) boats=(\d+)(?: avgMs=([\d.]+) maxMs=([\d.]+) skip=(\d+))?')
 RE_INIT = re.compile(r'mode=(\d+) map=(\d+) mapSeed=(\d+) seeded=(\d+) me=(\d+)')
 RE_SPAWN = re.compile(r'me=(\d+) slot=(\d+) \(squad=(\d+),rankIdx=(-?\d+)\) -> \((\d+),(\d+)\)(?: chosenSlots=(\d+)/(\d+))?(?: minSep=(\d+))?')
 RE_OPEN = re.compile(r't=(\d+) cyc=(\d+) DP expand rings=(\d+) spend=(\d+)/(\d+) terr=(\d+)')
-RE_DON = re.compile(r't=(\d+) (squad rescue donate|surplus donate|boss donate) pct=(\d+)/1024 -> (?:ally|boss)=(\d+)\((.*?)\)(?: boxedIn=(true|false))? myBal=(\d+) dMe=(\d+)(?: dAlly=(\d+))?')
+# 捐款行：c110 打 [HL-DONATE]「… donate pct=N/1024 -> ally=…」；g09 在 pct 后多一个「(~N%)」；c116 打 [HL-DISPATCH]「offense_dispatch / defense_dispatch / yield_opt_dispatch」
+RE_DON = re.compile(r't=(\d+) (squad rescue donate|surplus donate|boss donate|[a-z_]+_dispatch) pct=(\d+)/1024(?: \(~\d+%\))? -> (?:ally|boss)=(\d+)\((.*?)\)(?: boxedIn=(true|false))? myBal=(\d+) dMe=(\d+)(?: dAlly=(\d+))?')
+DON_KIND = {'squad rescue donate': 'rescue', 'surplus donate': 'surplus', 'boss donate': 'boss'}
 RE_AST = re.compile(r't=(\d+) 10% squad-rescue poke -> enemy=(\d+)\((.*?)\) for ally=(\d+)\((.*?)\)$')
 RE_SLOW = re.compile(r't=(\d+) took ([\d.]+)ms')
 
@@ -316,10 +319,10 @@ def load_match(mid, with_replay=True, use_sim=True):
                 M.bots[int(mm.group(1))].spawns.append(dict(slot=int(mm.group(2)), squad=int(mm.group(3)), rankIdx=int(mm.group(4)),
                                                             x=int(mm.group(5)), y=int(mm.group(6)), chosen=_num(mm.group(7)), cand=_num(mm.group(8)),
                                                             minSep=_num(mm.group(9)), line=line))
-        elif tag == 'HL-DONATE':
+        elif tag in ('HL-DONATE', 'HL-DISPATCH'):
             mm = RE_DON.search(rest)
             if mm:
-                e = dict(t=int(mm.group(1)), kind={'squad rescue donate': 'rescue', 'surplus donate': 'surplus', 'boss donate': 'boss'}[mm.group(2)],
+                e = dict(t=int(mm.group(1)), kind=DON_KIND.get(mm.group(2), mm.group(2).replace('_dispatch', '')),
                          pct=int(mm.group(3)), to=int(mm.group(4)), toName=mm.group(5), boxedIn=mm.group(6), myBal=int(mm.group(7)),
                          dMe=int(mm.group(8)), dAlly=_num(mm.group(9)), line=line, name=name)
                 if me is None:
