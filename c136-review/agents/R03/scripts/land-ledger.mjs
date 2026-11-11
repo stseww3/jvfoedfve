@@ -58,7 +58,9 @@ const clsOf = (g, o) => {
 };
 const nm = (p) => (p >= H ? `AI${p}` : `${Array.from(String(names[p] || '').replace('[APEX] ', '')).slice(0, 14).join('')}#${p}`);
 
+let CTX = null;
 function init(g, ctx) {
+  CTX = ctx;
   H = ctx.H; W = g.W; N = g.px.length; names = ctx.names; squad = ctx.squad; teamGame = ctx.teamGame;
   sqIds = Object.values(squad).map((s) => s.id).filter((x) => x >= 0);
   sqSet = new Set(sqIds);
@@ -120,7 +122,7 @@ function init(g, ctx) {
   w();
   facts.voronoi = {
     land: total, humans: pts.length, squadBots: ours.length, squadCells: sumO, squadCellsPct: +(100 * sumO / total).toFixed(2),
-    headPct: +(100 * ours.length / pts.length).toFixed(2), shareOverHead: +ratio.toFixed(3),
+    headPct: +(100 * ours.length / pts.length).toFixed(2), shareOverHead: +ratio.toFixed(5),
     perBot: Object.fromEntries(ours.map((p) => [botName.get(p.id), { x: Math.round(p.x), y: Math.round(p.y), cells: vcnt[p.id], nearestHuman: nn(p, pts), nearestNonSquad: nn(p, others.concat([p])) }])),
     squadMedian: med(ov), squadMin: Math.min(...ov), squadMax: Math.max(...ov), othersMedian: med(tv), othersQ1: qt(tv, 0.25),
     othersSmallerThanSquadMedian: others.filter((p) => vcnt[p.id] < med(ov)).length, others: others.length,
@@ -178,14 +180,19 @@ function sample(g) {
   // 人头口径：编队地 ÷ (全图陆地 × 编队在场号数 / 在场真人数)
   const fair = total * ours.length / Math.max(1, live.length);
   const row2 = {
-    t, squadAlive: ours.length, humansAlive: live.length, squadTerr: sumT(ours), squadCells: sumC(ours), squadRatio: +(sumT(ours) / Math.max(1, sumC(ours))).toFixed(3),
-    squadMedianRatio: +med(rt(ours)).toFixed(3), squadMinRatio: ours.length ? +Math.min(...rt(ours)).toFixed(3) : null, squadMaxRatio: ours.length ? +Math.max(...rt(ours)).toFixed(3) : null,
-    othersTerr: sumT(others), othersCells: sumC(others), othersRatio: +(sumT(others) / Math.max(1, sumC(others))).toFixed(3),
-    othersMedianRatio: +med(rt(others)).toFixed(3), othersQ1: +qt(rt(others), 0.25).toFixed(3), othersQ3: +qt(rt(others), 0.75).toFixed(3),
+    t, squadAlive: ours.length, humansAlive: live.length, squadTerr: sumT(ours), squadCells: sumC(ours), squadRatio: +(sumT(ours) / Math.max(1, sumC(ours))).toFixed(5),
+    squadMedianRatio: +med(rt(ours)).toFixed(5), squadMinRatio: ours.length ? +Math.min(...rt(ours)).toFixed(5) : null, squadMaxRatio: ours.length ? +Math.max(...rt(ours)).toFixed(5) : null,
+    othersTerr: sumT(others), othersCells: sumC(others), othersRatio: +(sumT(others) / Math.max(1, sumC(others))).toFixed(5),
+    othersMedianRatio: +med(rt(others)).toFixed(5), othersQ1: +qt(rt(others), 0.25).toFixed(5), othersQ3: +qt(rt(others), 0.75).toFixed(5),
     squadMedianTerr: med(ours.map((p) => g.terr[p.id])), othersMedianTerr: med(others.map((p) => g.terr[p.id])),
-    vsFair: +(sumT(ours) / Math.max(1, fair)).toFixed(3), squadSharePct: +(100 * sumT(ours) / total).toFixed(2),
-    teams: Object.fromEntries([...teams.entries()].map(([key, e]) => [key, { n: e.n, terr: e.terr, cells: e.cells, ratio: +(e.terr / Math.max(1, e.cells)).toFixed(3) }])),
+    vsFair: +(sumT(ours) / Math.max(1, fair)).toFixed(5), squadSharePct: +(100 * sumT(ours) / total).toFixed(2),
+    teams: Object.fromEntries([...teams.entries()].map(([key, e]) => [key, { n: e.n, terr: e.terr, cells: e.cells, ratio: +(e.terr / Math.max(1, e.cells)).toFixed(5) }])),
   };
+  // 在控的号：还没离线（离线后由内置 AI 托管的空壳不算）
+  const ctl = ours.filter((p) => !(CTX.leftT[p.id] >= 0 && CTX.leftT[p.id] <= t));
+  row2.squadCtl = ctl.length; row2.squadCtlTerr = sumT(ctl); row2.squadCtlCells = sumC(ctl);
+  row2.squadCtlRatio = +(sumT(ctl) / Math.max(1, sumC(ctl))).toFixed(5);
+  row2.husks = ours.filter((p) => !ctl.includes(p)).map((p) => botNameOf.get(p.id));
   row2.perBot = Object.fromEntries(pts.filter((p) => sqSet.has(p.id)).map((p) => [botNameOf.get(p.id), { terr: g.terr[p.id], cells: vcnt[p.id], ratio: +(g.terr[p.id] / Math.max(1, vcnt[p.id])).toFixed(2) }]));
   rowsG2.push(row2);
   // G3：我方名下范围
@@ -236,9 +243,10 @@ lines.splice(1, 0, '');
 
 w('[G2] 实际拿到 ÷ 出生份额（在场且有地的真人；「人头口径」= 编队地 ÷ (全图陆地 × 编队在场号数 ÷ 在场真人数)）');
 for (const r of rowsG2) {
-  w(`  t=${r.t}: 编队 ${r.squadAlive} 个号 地 ${r.squadTerr}（全图 ${r.squadSharePct}%）÷ 名下 ${r.squadCells} = ${r.squadRatio.toFixed(2)}（每号中位 ${r.squadMedianRatio.toFixed(2)}，最小 ${r.squadMinRatio} 最大 ${r.squadMaxRatio}；单号地中位 ${r.squadMedianTerr}）`
+  w(`  t=${r.t}: 编队 ${r.squadAlive} 个号 地 ${r.squadTerr}（全图 ${r.squadSharePct}%）÷ 名下 ${r.squadCells} = ${r.squadRatio.toFixed(2)}（每号中位 ${r.squadMedianRatio.toFixed(2)}，最小 ${r.squadMinRatio.toFixed(2)} 最大 ${r.squadMaxRatio.toFixed(2)}；单号地中位 ${r.squadMedianTerr}）`
     + `｜其他真人 ${r.humansAlive - r.squadAlive} 个 合计 ${r.othersRatio.toFixed(2)}（中位 ${r.othersMedianRatio.toFixed(2)}，四分位 ${r.othersQ1.toFixed(2)}~${r.othersQ3.toFixed(2)}；单人地中位 ${r.othersMedianTerr}）｜人头口径 ${r.vsFair.toFixed(2)}`);
   w('         各队 地÷名下：' + Object.entries(r.teams).map(([key, e]) => `${key} ${e.n} 人 ${e.terr}/${e.cells}=${e.ratio.toFixed(2)}`).join('；'));
+  if (r.squadCtl < r.squadAlive) w(`         其中离线成空壳的 ${r.husks.join('、')} 不算：在控 ${r.squadCtl} 个号 地 ${r.squadCtlTerr} ÷ 名下 ${r.squadCtlCells} = ${r.squadCtlRatio.toFixed(2)}`);
   w('         逐号 地/名下：' + Object.entries(r.perBot).map(([b, e]) => `${b} ${e.terr}/${e.cells}=${e.ratio.toFixed(2)}`).join('；'));
 }
 w();

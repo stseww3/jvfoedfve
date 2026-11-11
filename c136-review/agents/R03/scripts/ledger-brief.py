@@ -84,7 +84,9 @@ def brief(mid):
         fn = d["funnel"]
         w("[B3] 漏斗（策略想发 → 页面受理 → 录像落地 → 生效）：全局 "
           + " → ".join(str(fn["total"][k]) for k in ("want", "acc", "land", "eff")) + "；"
-          + "｜".join(f"{r['period']} " + "→".join(str(r[k]["total"]) for k in ("want", "acc", "land", "eff")) for r in fn["byPeriod"]))
+          + "｜".join(f"{r['period']} " + "→".join(str(r[k]["total"]) for k in ("want", "acc", "land", "eff")) for r in fn["byPeriod"])
+          + "；其中陆攻+船 " + "→".join(str(sum(r[k]["attack"] + r[k]["boat"] for r in fn["byPeriod"])) for k in ("want", "acc", "land", "eff"))
+          + "，捐款 受理 " + str(sum(r["acc"]["donate"] for r in fn["byPeriod"])) + " → 落地 " + str(sum(r["land"]["donate"] for r in fn["byPeriod"])) + "（没落地的主要是撞额度）")
         lt = {r["period"]: r for r in d["late"]["byPeriod"]}
         seg = []
         for per in ("0~600", "600~1500", "1500~3000", "3000+"):
@@ -106,7 +108,7 @@ def brief(mid):
         tb = sum(r["batches"] for r in sb["byPeriod"])
         w("     同一拍落地：两条的 " + str(sum(r["pairs"] for r in sb["byPeriod"])) + f" 次，≥3 条的批 {tb} 批"
           + (f"（最多 {max(r['maxN'] for r in sb['byPeriod'])} 条；一批花掉余额 ≥50% 的 {sum(r['drain50'] for r in sb['byPeriod'])} 批 {_wan(sum(r['drain50Spent'] for r in sb['byPeriod']))}兵，≥80% 的 {sum(r['drain80'] for r in sb['byPeriod'])} 批）" if tb else "")
-          + ("；最重的：" + "、".join(f"{x['bot']} {x['t']} 拍 {x['n']} 条花掉余额 {100 * x['frac']:.0f}%（{_wan(x['spent'])}/{_wan(x['B0'])}）" for x in sb["worst"][:3]) if sb.get("worst") else ""))
+          + ("；最重的：" + "、".join(f"{x['bot']} {x['t']} 拍 {x['n']} 条花掉余额 {100 * x['frac']:.0f}%（{_wan(x['spent'])}/{_wan(x['B0'])}）" for x in sb["worst"][:6]) if sb.get("worst") else ""))
         doc["delay"] = d
     else:
         w("[B1]~[B5] 没有延迟账（缺 delay-facts.json）")
@@ -154,6 +156,25 @@ def brief(mid):
             w(f"[B9] 600~1500 三层对账（{r['t']} 拍，在场的号）：人均地 编队 {sq_land:,.0f} 对其他真人 {ot_land:,.0f} = {sq_land / ot_land:.2f} 倍"
               f" = 出生份额（人均名下 {sq_cell:,.0f} 对 {ot_cell:,.0f} = {sq_cell / ot_cell:.2f} 倍）× 转化（地÷名下 {r['squadRatio']:.2f} 对 {r['othersRatio']:.2f} = {three['layer23ConversionFactor']:.2f} 倍）"
               + (f"；把已出局的号也算上，编队地 ÷ 全部 {v['squadBots']} 个号的名下 = {three['squadTerrOverAllCells']:.2f}" if r["squadAlive"] < v["squadBots"] else ""))
+            if r.get("squadCtl") is None and r.get("perBot"):
+                # 旧版 land-facts 没有「在控」字段：用卷宗里的离线拍补算
+                df = _load(os.path.join(ROOT, "out", "dossier", f"{mid}-facts.json")) or {}
+                left = {x["bot"]: x.get("leftServerTick") for x in df.get("deaths", []) if x.get("leftServerTick")}
+                live = {b: e for b, e in r["perBot"].items() if e["terr"] > 0}
+                hk = [b for b in live if left.get(b) is not None and left[b] <= r["t"]]
+                ctl = {b: e for b, e in live.items() if b not in hk}
+                r = dict(r, squadCtl=len(ctl), squadCtlTerr=sum(e["terr"] for e in ctl.values()), squadCtlCells=sum(e["cells"] for e in ctl.values()), husks=hk)
+                r["squadCtlRatio"] = r["squadCtlTerr"] / max(1, r["squadCtlCells"])
+            if r.get("squadCtl") is not None and r["squadCtl"] < r["squadAlive"]:
+                three["squadCtl"] = {"bots": r["squadCtl"], "terr": r["squadCtlTerr"], "cells": r["squadCtlCells"], "ratio": r["squadCtlRatio"], "husks": r.get("husks")}
+                w(f"     去掉已离线的空壳（{'、'.join(r.get('husks') or [])}）：在控 {r['squadCtl']} 个号 地 {r['squadCtlTerr']:,} ÷ 名下 {r['squadCtlCells']:,} = {r['squadCtlRatio']:.2f}"
+                  f"（人均地 {r['squadCtlTerr'] / r['squadCtl']:,.0f}，人均名下 {r['squadCtlCells'] / r['squadCtl']:,.0f}）")
+            conv_o = r["othersTerr"] / max(1, r["othersCells"])
+            exp = r["squadCells"] * conv_o
+            three["squadTerr"] = r["squadTerr"]
+            three["expectedAtOthersConversion"] = round(exp)
+            three["gapAtOthersConversion"] = round(exp - r["squadTerr"])
+            w(f"     按其他真人的 地÷名下（{conv_o:.4f}）算，编队这些号该有 {exp:,.0f} 格，实际 {r['squadTerr']:,} 格，" + (f"少 {exp - r['squadTerr']:,.0f} 格" if exp >= r["squadTerr"] else f"多 {r['squadTerr'] - exp:,.0f} 格") + "（算术，不是反事实重放）")
         doc["land"] = g
     else:
         w("[B6]~[B8] 没有抢地账（缺 land-facts.json）")
