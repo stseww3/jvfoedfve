@@ -45,6 +45,40 @@ pc = lambda x, y: f'{100 * x / y:.1f}%' if y else '-'
 k = lambda v: (f'{v / 1e6:.2f}M' if abs(v) >= 1e6 else f'{v / 1e3:.0f}k' if abs(v) >= 1e4 else f'{v:.0f}')
 CATS = ['有效', '迟到·目标已死', '迟到·不接壤', '没落地', '留底锁·无在途', '留底·有在途', '有目标没发', '只剩中立边', '只贴敌方真人', '围在里面']
 LAYER = {'有效': '有效', '迟到·目标已死': '③执行', '迟到·不接壤': '③执行', '没落地': '③执行', '留底锁·无在途': '②留底', '留底·有在途': '②留底', '有目标没发': '其余', '只剩中立边': '其余', '只贴敌方真人': '①结构', '围在里面': '①结构'}
+# 「有目标没发」再分四类要用的源码行号：按版本从策略源码里按特征找（不写死）
+SRC_OF = {'c110': 'v27-team-c110.js', 'va': 'v27-team-c116-va.js', 'vb': 'v27-team-c116-vb.js', 'vc': 'v27-team-c116.js', 'g09': 'v27-team-g09.js'}
+
+
+def gate_lines(ver):
+    base = os.environ.get('C136_SRC', '/agent/repos/c136-data/src')
+    fp = os.path.join(base, 'strategy', SRC_OF.get(ver, ''))
+    out = {'cooldown': set(), 'guard': set(), 'enough': set()}
+    if not os.path.isfile(fp):
+        return out
+    L = open(fp, encoding='utf-8').read().split('\n')
+    in_guard = False
+    in_pick = False
+    for i, ln in enumerate(L, 1):
+        if '_lastTargetSendTick.get(target)' in ln and 'return false' in ln:
+            out['cooldown'].add(i)          # 同一目标的发送冷却（c110 才有）
+        if 'quotaGuardMode > 0 && this.isNoFullSend' in ln:
+            in_guard = True
+        elif in_guard and 'super.send(g, target, troops)' in ln:
+            in_guard = False
+        elif in_guard and 'return false' in ln:
+            out['guard'].add(i)             # 配额闸拒发
+        if ln.strip().startswith('pickTarget(g, floorAt, maxCost)'):
+            in_pick = True
+        elif in_pick and ln.rstrip() == '  }':
+            in_pick = False
+        elif in_pick and ('if (need <= 0) continue' in ln or ('g.hasAttack(me, q)' in ln and 'attackTroopsOn(me, q) >=' in ln and 'continue' in ln)):
+            out['enough'].add(i)            # 在途的兵已够吃下 / 这个机器人已经在打
+    return out
+
+
+GL = gate_lines(S.get('ver') or '')
+split = Counter()
+split_bot = defaultdict(Counter)
 half = Counter()
 cnt = Counter()
 by_bot = defaultdict(Counter)
@@ -100,6 +134,22 @@ for r in tc:
             key = 'Policy.send ' + ','.join(str(x) for x in r['ps']) + (' → Strategy.send ' + ','.join(str(x) for x in r['ss']) if r.get('ss') else ' → 没到 Strategy.send') + ('｜isNoFullSend=1' if r.get('nfs') else '｜isNoFullSend=0')
             psx[cat][key] += 1
             psbot[b][key] += 1
+    if cat == '有目标没发' and (r.get('pt') is not None or r.get('ps') is not None):
+        ssx = set(x for x in (r.get('ss') or []) if isinstance(x, int))
+        psl = set(x for x in (r.get('ps') or []) if isinstance(x, int))
+        ptl = set(int(x) for x in (r.get('pt') or []))
+        if ssx & GL['cooldown']:
+            sk = '冷却空过'
+        elif psl & GL['guard']:
+            sk = '配额闸拒发'
+        elif r.get('ps'):
+            sk = 'send 返回 false（其他）'
+        elif ptl & GL['enough']:
+            sk = '在途已够'
+        else:
+            sk = '其他'
+        split[sk] += 1
+        split_bot[b][sk] += 1
     if r.get('nfs') is not None:
         nfs_rows['all'] += 1
         if r.get('nfs'): nfs_rows['nfs1'] += 1
@@ -165,6 +215,11 @@ if '--exits' in a:
                 print(f'      {c}（{sum(psx[c].values())}）: ' + '；'.join(f'[{x}] ×{v}' for x, v in psx[c].most_common(6)))
         print('      逐号：' + '；'.join(f'{b} {sum(v.values())}' for b, v in sorted(psbot.items(), key=lambda kv: -sum(kv[1].values()))))
         OUT['sendRefused'] = {'rows': tot, 'share': tot / max(1, rows), 'byCat': {c: dict(v) for c, v in psx.items()}, 'byBot': {b: sum(v.values()) for b, v in psbot.items()}}
+    if split:
+        tot2 = sum(split.values())
+        print(f'   -- 「有目标没发」{tot2} 拍再分（行号按版本从源码找：冷却 {sorted(GL["cooldown"])}、配额闸 {sorted(GL["guard"])}、在途已够 {sorted(GL["enough"])}）：' + '；'.join(f'{x} {v}（占全部决策拍 {pc(v, rows)}）' for x, v in split.most_common()))
+        print('      逐号 冷却空过/配额闸拒发/在途已够/其他：' + '；'.join(f"{b} {v['冷却空过']}/{v['配额闸拒发']}/{v['在途已够']}/{v['其他'] + v['send 返回 false（其他）']}" for b, v in split_bot.items()))
+        OUT['notSentSplit'] = {'rows': tot2, 'split': dict(split), 'lines': {x: sorted(v) for x, v in GL.items()}, 'byBot': {b: dict(v) for b, v in split_bot.items()}}
     if nfs_rows['all']:
         print(f"   -- isNoFullSend=1 的决策拍 {nfs_rows['nfs1']}/{nfs_rows['all']}（{100 * nfs_rows['nfs1'] / nfs_rows['all']:.1f}%）；其中没发指令的 {nfs_rows['nfs1_nocmd']}")
         OUT['noFullSendRows'] = dict(nfs_rows)

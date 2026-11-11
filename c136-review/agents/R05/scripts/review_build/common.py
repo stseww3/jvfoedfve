@@ -83,6 +83,6 @@ def accounts(mid, work='/tmp/c136-r05/work'):
         out['tickAttribution'] = _rd({
             'source': f'scripts/shadow.mjs {mid} --quiet --tc 600:1500 → scripts/tick_attrib.py {mid}（每个决策拍归一类，类别互斥）',
             **{k: A.get(k) for k in ('window', 'rows', 'cats', 'layers', 'floorSetter', 'safeFiniteHalf', 'issuedByClass', 'byBot')},
-            **{k: A[k] for k in ('exits', 'ptGates', 'gaExit') if k in A},
+            **{k: A[k] for k in ('exits', 'ptGates', 'gaExit', 'notSentSplit', 'sendRefused', 'noFullSendRows') if k in A},
         })
     return out
