@@ -1,0 +1,46 @@
+# A062 ryan_m 影子决策明细 t=2370~2420（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 2 拍（t=2370~2375）；可用兵 149650~149650，一条指令下限(20%余额) 154227~154227，比值 97%~97%
+#   出手打人/bot: 5 拍（t=2380~2400）；可用兵 59927~162659，一条指令下限(20%余额) 107189~156860，比值 55%~104%
+#   首选目标价高（c>=worth）: 3 拍（t=2405~2415）
+#   有可用兵但没发（脉冲下限/冷却/其他）: 1 拍（t=2420~2420）；可用兵 473~473，一条指令下限(20%余额) 107699~107699，比值 0%~0%
+t=2370 ryan_m B=771136 L=6805 d=113.3 nb=2 neut=0 cmds=69 noFull=0 shQ=192784 | m=1.036 worth=117.5 cheap=8.5 over=1 dMedOther=47.1 safe(-1)=456919
+    → [FLR] さっしー#43[T3] terr=19431 bal=823523 dq=42.4 cnt=55 | c=103.8 rankC=103.8 need=1476920 tD=0.90 人 | safe=456919 keep=612450 avail=149650 chunkB=154227 pulseB=92536 不够一条
+    → Jordan#24[T1] terr=1870 bal=167635 dq=89.6 cnt=27 | c=165.4 rankC=115.8 need=301655 tD=1.90 人 | safe=456919 keep=612450 avail=149650 chunkB=154227 pulseB=92536 不够一条
+    ⇒ 本拍没有指令
+t=2375 ryan_m B=771136 L=6805 d=113.3 nb=2 neut=0 cmds=69 noFull=0 shQ=192784 | m=1.031 worth=116.9 cheap=8.5 over=1 dMedOther=47.1 safe(-1)=453643
+    → [FLR] さっしー#43[T3] terr=19345 bal=817692 dq=42.3 cnt=55 | c=103.5 rankC=103.5 need=1465151 tD=0.90 人 | safe=453643 keep=612450 avail=149650 chunkB=154227 pulseB=92536 不够一条
+    → Jordan#24[T1] terr=2058 bal=167635 dq=81.5 cnt=28 | c=150.4 rankC=105.3 need=301931 tD=1.73 人 | safe=453643 keep=612450 avail=149650 chunkB=154227 pulseB=92536 不够一条
+    ⇒ 本拍没有指令
+t=2380 ryan_m B=777767 L=6805 d=114.3 nb=2 neut=0 cmds=70 noFull=0 shQ=194441 | m=1.026 worth=117.3 cheap=8.5 over=1 dMedOther=47.7 safe(-1)=459614
+    → Jordan#24[T1] terr=2432 bal=169478 dq=69.7 cnt=30 | c=128.9 rankC=90.2 need=305719 tD=1.46 人 | safe=459614 keep=612450 avail=156203 chunkB=155553 pulseB=93332 
+    → [FLR] さっしー#43[T3] terr=19345 bal=828321 dq=42.8 cnt=55 | c=104.9 rankC=104.9 need=1483892 tD=0.90 人 | safe=459614 keep=612450 avail=156203 chunkB=155553 pulseB=93332 
+    ⇒ 影子指令 attack pct=205 → Jordan#24[T1]（约 156464 兵）
+t=2385 ryan_m B=777767 L=6805 d=114.3 nb=2 neut=0 cmds=71 noFull=0 shQ=194441 | m=1.021 worth=116.7 cheap=8.5 over=1 dMedOther=47.7 safe(-1)=459614
+    → Jordan#24[T1] terr=2617 bal=131743 dq=50.3 cnt=31 | c=94.3 rankC=66.0 need=238757 tD=1.06 人 pulse | safe=459614 keep=612450 avail=156203 chunkB=155553 pulseB=93332 
+    → [FLR] さっしー#43[T3] terr=19345 bal=828321 dq=42.8 cnt=55 | c=104.9 rankC=104.9 need=1484020 tD=0.90 人 | safe=459614 keep=612450 avail=156203 chunkB=155553 pulseB=93332 
+    ⇒ 影子指令 attack pct=122 → Jordan#24[T1]（约 93423 兵）
+t=2390 ryan_m B=784300 L=6805 d=115.3 nb=2 neut=0 cmds=72 noFull=0 shQ=196075 | m=1.016 worth=117.0 cheap=8.5 over=1 dMedOther=47.9 safe(-1)=465664
+    → Jordan#24[T1] terr=2972 bal=133192 dq=44.8 cnt=34 | c=84.1 rankC=58.8 need=241854 tD=0.93 人 pulse | safe=465664 keep=612450 avail=162659 chunkB=156860 pulseB=94116 
+    → [FLR] さっしー#43[T3] terr=19345 bal=839089 dq=43.4 cnt=55 | c=106.2 rankC=106.2 need=1503009 tD=0.90 人 | safe=465664 keep=612450 avail=162659 chunkB=156860 pulseB=94116 
+    ⇒ 影子指令 attack pct=122 → Jordan#24[T1]（约 94207 兵）
+t=2395 ryan_m B=535945 L=6805 d=78.8 nb=2 neut=0 cmds=73 noFull=0 shQ=0 | m=1.010 worth=79.6 cheap=8.5 over=0 dMedOther=47.9 safe(-1)=465664
+    → Jordan#24[T1] terr=3325 bal=133192 dq=40.1 cnt=35 | c=7.0 rankC=7.0 need=11213 tD=0.84 人 | safe=465664 keep=465664 avail=64001 chunkB=107189 pulseB=64313 
+    → [FLR] さっしー#43[T3] terr=19345 bal=839089 dq=43.4 cnt=55 | c=106.0 rankC=106.0 need=1503073 tD=0.90 人 | safe=465664 keep=Inf avail=-Inf chunkB=107189 pulseB=64313 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=26 → Jordan#24[T1]（约 14131 兵）
+t=2400 ryan_m B=549020 L=6805 d=80.7 nb=2 neut=0 cmds=74 noFull=0 shQ=7873 | m=1.005 worth=81.1 cheap=8.5 over=0 dMedOther=49.5 safe(-1)=482660
+    → Jordan#24[T1] terr=3325 bal=138106 dq=41.5 cnt=35 | c=10.5 rankC=10.5 need=19972 tD=0.84 人 | safe=482660 keep=482660 avail=59927 chunkB=109804 pulseB=65882 
+    → [FLR] さっしー#43[T3] terr=19345 bal=869342 dq=44.9 cnt=55 | c=159.1 rankC=230.7 need=1556311 tD=0.91 人 pulse | safe=482660 keep=Inf avail=-Inf chunkB=109804 pulseB=65882 价高(c>=worth)→break
+    ⇒ 影子指令 attack pct=46 → Jordan#24[T1]（约 25199 兵）
+t=2405 ryan_m B=476641 L=6877 d=69.3 nb=2 neut=0 cmds=74 noFull=0 shQ=4182 | m=1.000 worth=69.3 cheap=8.5 over=0 dMedOther=49.5 safe(-1)=434905
+    → [FLR] さっしー#43[T3] terr=19345 bal=784446 dq=40.6 cnt=57 | c=74.4 rankC=52.1 need=1407219 tD=0.82 人 pulse | safe=434905 keep=Inf avail=-Inf chunkB=95328 pulseB=57197 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2410 ryan_m B=463853 L=6915 d=67.1 nb=2 neut=0 cmds=74 noFull=0 shQ=11061 | m=0.995 worth=66.7 cheap=8.5 over=0 dMedOther=50.0 safe(-1)=437315
+    → [FLR] さっしー#43[T3] terr=19342 bal=788794 dq=40.8 cnt=58 | c=74.8 rankC=52.3 need=1414869 tD=0.81 人 pulse | safe=437315 keep=Inf avail=-Inf chunkB=92771 pulseB=55662 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2415 ryan_m B=463853 L=6993 d=66.3 nb=2 neut=0 cmds=74 noFull=0 shQ=17841 | m=0.989 worth=65.6 cheap=8.5 over=0 dMedOther=50.0 safe(-1)=437250
+    → [FLR] さっしー#43[T3] terr=19601 bal=788794 dq=40.2 cnt=60 | c=73.7 rankC=51.6 need=1419470 tD=0.80 人 pulse | safe=437250 keep=Inf avail=-Inf chunkB=92771 pulseB=55662 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=2420 ryan_m B=538494 L=7074 d=76.1 nb=2 neut=0 cmds=74 noFull=0 shQ=25640 | m=0.984 worth=74.9 cheap=8.5 over=0 dMedOther=50.6 safe(-1)=442942
+    → [FLR] さっしー#43[T3] terr=19776 bal=799048 dq=40.4 cnt=61 | c=73.9 rankC=51.7 need=1440632 tD=0.80 人 pulse | safe=442942 keep=531711 avail=473 chunkB=107699 pulseB=64619 
+    ⇒ 本拍没有指令

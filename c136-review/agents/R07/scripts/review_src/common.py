@@ -7,6 +7,10 @@ dAtk = dCmds − 捐款条数 − 协防条数 − 拦截条数）。review_src/
 
 G09 = "v27-team-g09.js"
 C116 = "v27-team-c116.js"
+VA = "v27-team-c116-va.js"
+VB = "v27-team-c116-vb.js"
+SPVA = "spawn-coordinator-c116-va.mjs"
+SPVB = "spawn-coordinator-c116-vb.mjs"
 
 PATTERN_DEFS = {
     "R07-IO-CRASH": {
@@ -144,6 +148,52 @@ PATTERN_DEFS = {
         "category": "SE",
         "definition": "（正例）拦截敌方登陆船：[HL-INTERCEPT] 用很小的 pct 把敌船打掉，停摆期间海岸线仍守住。",
         "detectionSketch": "events.csv type=INTERCEPT 的条数与 boatTroops；对应号的领土在该段没有明显下降。",
+    },
+    # ---- A 组（有回放的局）新增：检测依赖 60_truth.cjs / 63_replay_ledger.py / 64_cmd_loss.py / 65_shadow.mjs ----
+    "R07-IO-LAG-BATCH": {
+        "category": "IO",
+        "definition": "客户端本地进度落后于服务器（几十到几百拍），发出的指令晚到、挤在同一拍成批落地；每条都按落地那一拍的余额重新按比例计价，"
+                      "而策略每个决策拍（5 拍）看不到在途指令、照旧再发一条，于是 N 条同比例指令一起落地时一拍花掉 1−(1−p−1.17%)^N 的余额。晚到太久的进攻落地时目标已死，录像里记成打无主地。",
+        "detectionSketch": "64_cmd_loss.py：影子想发 vs 录像收下逐条配对（延迟、没被收下的条数、同一拍 ≥3 条的批数）＋按 in_game.log 落盘先后量本地落后拍数；63_replay_ledger.py E 节列出每一批的批前/批后余额。",
+    },
+    "R07-IO-SEAT-LOST": {
+        "category": "IO",
+        "definition": "客户端掉线：席位先空转（不发指令、照常吃利息），几百拍后被引擎判为离开（state=2：利息归零、内置 AI 接管）。AI 接管的地密度趋近 0，之后被邻居低价吃掉。"
+                      "结算表里记 event=left，不是阵亡。",
+        "detectionSketch": "60_truth.cjs 的 truth_bots.tsv：state 第一次变 2 的拍；truth_cmd.tsv：该号最后一条被接受的指令；61_truth_view.py C/D 节：出局拍与进攻方。",
+    },
+    "R07-DN-QUOTA-OVERSIZE": {
+        "category": "DN",
+        "definition": "调度捐款按捐方余额的固定比例定额（围死号 pct=320≈31.3%，最低 180），不看收方的防喂兵配额。单笔所需点数超过收方剩余额度（t<2142 时甚至超过全场上限）就被引擎在扣款前拒绝："
+                      "录像里没有这条指令，捐方余额不变；策略不检查是否成功，只按 12 拍冷却 + 25 拍相位重发。结果是围死的储备号顶着上限反复发、几乎都被拒。",
+        "detectionSketch": "63_replay_ledger.py：[HL-DISPATCH] 日志条数 vs 录像 donate 条数；未执行的日志按「单笔需点 > 全场上限」「需点 > 剩余额度」分类（需点/上限按 engine-evidence [B2]~[B5] 的整数公式算）。",
+    },
+    "R07-EC-HARDCAP": {
+        "category": "EC",
+        "definition": "余额顶在 150×领土（硬上限，利息为 0）。常见于围死的储备号：没有敌邻、没有中立地、没有海岸，捐款又被配额拒绝。",
+        "detectionSketch": "42_patterns.py 的快照计数（90 拍粒度）；63_replay_ledger.py D 节按 10 拍采样给出硬上限/软上限以上的持续拍数。",
+    },
+    "R07-DN-INVERTED": {
+        "category": "DN",
+        "definition": "调度时捐方密度低于收方密度（低密向高密输血）。围死号的余粮分支只要求捐方密度 ≥58、收方密度 ≤128（有推进/有猎物时 ≤140），不比较两边谁更密。",
+        "detectionSketch": "in_game.log 的 [HL-DISPATCH] 行里 dMe < dAlly 的条数；是否真的执行看 63_replay_ledger.py 的逐笔表。",
+    },
+    "R07-MT-NOFULL-LOCK": {
+        "category": "MT",
+        "definition": "`isNoFullSend` 被误锁：出兵后的 1~6 拍内余额因为别的原因下降（挨打掉兵、更早的指令晚到），updateShadowQuota 把它当成「引擎没让我发全额」，把标记永久置真。"
+                      "之后对真人的出兵要先等影子额度回满，不够就整条不发（或改成 1 兵试探）。",
+        "detectionSketch": "65_shadow.mjs 的 shadow_nofull.tsv：影子策略里标记第一次置真的拍与当时的待核对出兵、之后被挡掉/改成试探的出兵（前提：影子日志与真日志逐条对得上，见 shadow_check.txt）。",
+    },
+    "R07-SP-SWAP-CHURN": {
+        "category": "SP",
+        "definition": "出生阶段协调器反复重算，在最后几拍把两个号在两个点位之间来回对调，每个号发出 20 条以上出生指令；最后一条如果丢了或晚到，两个号会落在同一个点。",
+        "detectionSketch": "录像命令流 cmds.tsv 里 kind=spawn 的条数/号与最后 10 拍的目标格序列；in_game.log 的 [HL-SPAWN-BACKEND] 行。",
+    },
+    "R07-SP-OVERLAP": {
+        "category": "SP",
+        "definition": "两个号实际出生在同一个点（真实落点相距 < 15 像素）：两个号生效的最后一条出生指令指向同一格，引擎把后到的挪开几格；"
+                      "协调器最后指派给其中一个号的点位空着。",
+        "detectionSketch": "66_spawn_truth.mjs：按录像重演到出生阶段结束，各号领土包围盒中心两两求距离；对照日志里最后一条 [HL-SPAWN-BACKEND] 指派与录像里最后一条出生指令。",
     },
 }
 

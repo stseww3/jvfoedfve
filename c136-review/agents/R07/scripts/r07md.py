@@ -84,7 +84,9 @@ def render(doc, src):
     L.append("")
     L.append("## 7. 六项机制核实")
     names = {"1_quotaRejections": "防喂兵配额拒绝", "2_donationTax": "6.25% 捐款税", "3_inlandStagnation": "内陆后排囤兵",
-             "4_spawnOpening": "出生阵型与开局", "5_frontlineFloors": "前线消耗与保底", "6_teamSplit": "分队"}
+             "4_spawnOpening": "出生阵型与开局", "5_frontlineFloors": "前线消耗与保底", "6_teamSplit": "分队",
+             "7_lagBatches": "卡顿与清仓批（广播 0003-③）", "8_noFullSendLock": "isNoFullSend 误锁（广播 0003-④）",
+             "9_invertedFeeding": "低密向高密输血（广播 0003-⑤）", "10_spawnRecompute": "出生点重算（广播 0003-⑥）"}
     for k, v in (doc.get("mechanismChecks") or {}).items():
         L.append(f"- **{names.get(k, k)}**：{v}")
     L.append("")

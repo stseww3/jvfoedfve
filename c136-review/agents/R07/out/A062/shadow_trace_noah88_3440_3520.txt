@@ -1,0 +1,58 @@
+# A062 noah88 影子决策明细 t=3440~3520（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没有可打的邻居: 3 拍（t=3440~3450）
+#   只打无主地: 3 拍（t=3455~3465）
+#   出手打人/bot: 3 拍（t=3470~3510）；可用兵 36321~77980，一条指令下限(20%余额) 50971~54016，比值 71%~144%
+#   有可用兵但没发（脉冲下限/冷却/其他）: 3 拍（t=3475~3500）；可用兵 2582~41525，一条指令下限(20%余额) 42480~47872，比值 6%~87%
+#   首选目标价高（c>=worth）: 5 拍（t=3480~3520）
+t=3440 noah88 B=283081 L=2147 d=131.8 nb=0 neut=0 cmds=99 noFull=1 shQ=70770 | m=0.900 worth=118.7 cheap=9.1 over=1 dMedOther=89.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3445 noah88 B=283081 L=2147 d=131.8 nb=0 neut=0 cmds=99 noFull=1 shQ=70770 | m=0.900 worth=118.7 cheap=9.1 over=1 dMedOther=85.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3450 noah88 B=284213 L=2147 d=132.4 nb=0 neut=0 cmds=99 noFull=1 shQ=71053 | m=0.900 worth=119.1 cheap=9.1 over=1 dMedOther=92.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3455 noah88 B=284213 L=2147 d=132.4 nb=0 neut=25 cmds=100 noFull=1 shQ=71053 | m=0.900 worth=119.1 cheap=9.1 over=1 dMedOther=89.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → 无主地（约 13322 兵）
+t=3460 noah88 B=285321 L=2147 d=132.9 nb=0 neut=25 cmds=101 noFull=1 shQ=71330 | m=0.900 worth=119.6 cheap=9.1 over=1 dMedOther=90.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → 无主地（约 13374 兵）
+t=3465 noah88 B=285321 L=2147 d=132.9 nb=0 neut=25 cmds=102 noFull=1 shQ=71330 | m=0.900 worth=119.6 cheap=9.1 over=1 dMedOther=90.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → 无主地（约 13374 兵）
+t=3470 noah88 B=270081 L=2147 d=125.8 nb=1 neut=22 cmds=103 noFull=1 shQ=56465 | m=0.900 worth=113.2 cheap=9.1 over=1 dMedOther=90.8 safe(-1)=188936
+    → [FLR] さっしー#43[T3] terr=25356 bal=1643576 dq=64.8 cnt=3 | c=105.0 rankC=63.0 need=2961372 tD=0.71 人 pulse bleeding | safe=188936 keep=188936 avail=77980 chunkB=54016 pulseB=32410 
+    ⇒ 影子指令 attack pct=122 → [FLR] さっしー#43[T3]（约 32441 兵）
+t=3475 noah88 B=239359 L=2167 d=110.5 nb=1 neut=19 cmds=103 noFull=1 shQ=1196 | m=0.900 worth=99.4 cheap=9.1 over=1 dMedOther=88.0 safe(-1)=190696
+    → [FLR] さっしー#43[T3] terr=25511 bal=1640575 dq=64.3 cnt=8 | c=104.2 rankC=62.5 need=2960051 tD=0.73 人 pulse bleeding | safe=190696 keep=195030 avail=41525 chunkB=47872 pulseB=28723 
+    ⇒ 本拍没有指令
+t=3480 noah88 B=210089 L=2201 d=95.5 nb=1 neut=14 cmds=103 noFull=1 shQ=4165 | m=0.900 worth=85.9 cheap=9.1 over=0 dMedOther=87.3 safe(-1)=193688
+    → [FLR] さっしー#43[T3] terr=25733 bal=1659235 dq=64.5 cnt=15 | c=103.5 rankC=62.1 need=2967229 tD=0.74 人 pulse bleeding | safe=193688 keep=Inf avail=-Inf chunkB=42018 pulseB=25211 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3485 noah88 B=210089 L=2259 d=93.0 nb=1 neut=12 cmds=103 noFull=1 shQ=7050 | m=0.900 worth=83.7 cheap=9.1 over=0 dMedOther=87.1 safe(-1)=198792
+    → [FLR] さっしー#43[T3] terr=25840 bal=1653889 dq=64.0 cnt=19 | c=103.0 rankC=61.8 need=2964322 tD=0.74 人 pulse bleeding | safe=198792 keep=Inf avail=-Inf chunkB=42018 pulseB=25211 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3490 noah88 B=212399 L=2290 d=92.8 nb=1 neut=9 cmds=103 noFull=1 shQ=9942 | m=0.900 worth=83.5 cheap=9.1 over=0 dMedOther=87.9 safe(-1)=201520
+    → [FLR] さっしー#43[T3] terr=26012 bal=1670468 dq=64.2 cnt=23 | c=103.7 rankC=62.2 need=2998616 tD=0.73 人 pulse bleeding | safe=201520 keep=Inf avail=-Inf chunkB=42480 pulseB=25488 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3495 noah88 B=212399 L=2356 d=90.2 nb=1 neut=8 cmds=103 noFull=1 shQ=12862 | m=0.900 worth=81.1 cheap=9.1 over=0 dMedOther=87.7 safe(-1)=207328
+    → [FLR] さっしー#43[T3] terr=26078 bal=1662677 dq=63.8 cnt=27 | c=57.1 rankC=17.1 need=2994814 tD=0.73 人 pulse bleeding | safe=207328 keep=207328 avail=2582 chunkB=42480 pulseB=25488 
+    ⇒ 本拍没有指令
+t=3500 noah88 B=217143 L=2395 d=90.7 nb=1 neut=0 cmds=103 noFull=1 shQ=15795 | m=0.900 worth=81.6 cheap=9.1 over=0 dMedOther=89.7 safe(-1)=210760
+    → [FLR] さっしー#43[T3] terr=26208 bal=1702463 dq=65.0 cnt=40 | c=58.4 rankC=17.5 need=3073718 tD=0.72 人 pulse bleeding | safe=210760 keep=210760 avail=3839 chunkB=43429 pulseB=26057 
+    ⇒ 本拍没有指令
+t=3505 noah88 B=254857 L=2395 d=106.4 nb=1 neut=0 cmds=104 noFull=1 shQ=18900 | m=0.900 worth=95.8 cheap=9.1 over=1 dMedOther=89.6 safe(-1)=210760
+    → [FLR] さっしー#43[T3] terr=26085 bal=1721085 dq=66.0 cnt=41 | c=86.7 rankC=43.4 need=3104021 tD=0.74 人 pulse bleeding | safe=210760 keep=215550 avail=36321 chunkB=50971 pulseB=30583 
+    ⇒ 影子指令 attack pct=122 → [FLR] さっしー#43[T3]（约 30612 兵）
+t=3510 noah88 B=257303 L=2395 d=107.4 nb=1 neut=0 cmds=105 noFull=1 shQ=22091 | m=0.900 worth=96.7 cheap=9.1 over=1 dMedOther=89.5 safe(-1)=210760
+    → [FLR] さっしー#43[T3] terr=26112 bal=1726153 dq=66.1 cnt=43 | c=87.8 rankC=43.9 need=3113821 tD=0.74 人 pulse bleeding | safe=210760 keep=215550 avail=38738 chunkB=51461 pulseB=30876 
+    ⇒ 影子指令 attack pct=122 → [FLR] さっしー#43[T3]（约 30906 兵）
+t=3515 noah88 B=223382 L=2395 d=93.3 nb=1 neut=0 cmds=105 noFull=1 shQ=0 | m=0.900 worth=83.9 cheap=9.1 over=0 dMedOther=89.5 safe(-1)=210760
+    → [FLR] さっしー#43[T3] terr=25973 bal=1697521 dq=65.4 cnt=44 | c=87.3 rankC=43.7 need=3028545 tD=0.73 人 pulse bleeding | safe=210760 keep=Inf avail=-Inf chunkB=44676 pulseB=26806 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=3520 noah88 B=229469 L=2395 d=95.8 nb=1 neut=0 cmds=105 noFull=1 shQ=3117 | m=0.900 worth=86.2 cheap=9.1 over=0 dMedOther=90.7 safe(-1)=210760
+    → [FLR] さっしー#43[T3] terr=25982 bal=1699814 dq=65.4 cnt=45 | c=88.5 rankC=44.2 need=3032944 tD=0.72 人 pulse bleeding | safe=210760 keep=Inf avail=-Inf chunkB=45894 pulseB=27536 价高(c>=worth)→break
+    ⇒ 本拍没有指令

@@ -125,7 +125,25 @@ def main():
     tts = dg.get("teamTotals") or []
     mine = card.get("ourPrimaryTeam")
 
+    # 有回放的局（A 组）：队伍份额取真引擎重放的真值（60_truth.cjs 的 truth_teams.tsv，每 30 拍一行），不再只靠结算快照
+    truth_teams = {}
+    tt_path = os.path.join(ROOT, "out", mid, "truth_teams.tsv")
+    if os.path.exists(tt_path):
+        import csv
+        for r in csv.DictReader(open(tt_path, encoding="utf-8"), delimiter="\t"):
+            truth_teams.setdefault(int(r["t"]), {})[int(r["team"])] = (int(r["terr"]), int(r["bal"]))
+
     def team_at(t, tol=60):
+        if truth_teams:
+            tt = min(truth_teams, key=lambda x: abs(x - t))
+            if abs(tt - t) <= 30:
+                row = {k: v for k, v in truth_teams[tt].items() if k >= 1}
+                if mine in row:
+                    order = sorted(row, key=lambda k: -row[k][0])
+                    enemies = [k for k in order if k != mine]
+                    return {"at": tt, "teamLandShare": round(row[mine][0] / land, 4), "teamRank": order.index(mine) + 1, "nTeams": len(row),
+                            "teamTroops": row[mine][1], "topEnemyTeam": enemies[0] if enemies else None,
+                            "topEnemyShare": round(row[enemies[0]][0] / land, 4) if enemies else None}
         best = None
         for x in tts:
             if abs(x["t"] - t) <= tol and (best is None or abs(x["t"] - t) < abs(best["t"] - t)):
@@ -137,6 +155,19 @@ def main():
         enemies = sorted(((k, v) for k, v in sh.items() if str(k) != me_team), key=lambda kv: -kv[1])
         return {"at": best["t"], "teamLandShare": sh.get(me_team, sh.get(best["mine"])), "teamRank": best["rank"], "nTeams": best["nTeams"],
                 "topEnemyTeam": int(enemies[0][0]) if enemies else None, "topEnemyShare": enemies[0][1] if enemies else None}
+
+    # 有回放的局：我方号数与队伍分布以录像头为准（对局卡只统计了有结算行的号）
+    squad_n = card.get("squadBots")
+    split = card.get("teamSplitCounts")
+    tp_path = os.path.join(ROOT, "out", mid, "truth_players.tsv")
+    if os.path.exists(tp_path):
+        import csv as _csv
+        rows = [r for r in _csv.DictReader(open(tp_path, encoding="utf-8"), delimiter="\t") if r.get("squad")]
+        if rows:
+            squad_n = len(rows)
+            split = {}
+            for r in rows:
+                split[r["team"]] = split.get(r["team"], 0) + 1
 
     by_t = {x["t"]: x for x in dg["timeline"]}
     timeline = []
@@ -157,7 +188,7 @@ def main():
         timeline.append({"t": t, "alive": x["alive"], "logging": x["logging"], "squadLandShare": x["sqShare"], "squadTroops": x["sqBal"],
                          "squadDensity": x["sqDens"], "boxedBots": x["boxed"],
                          "teamLandShare": tm["teamLandShare"] if tm else None, "teamRank": tm["teamRank"] if tm else None,
-                         "teamTroops": None, "topEnemyTeam": tm["topEnemyTeam"] if tm else None, "topEnemyShare": tm["topEnemyShare"] if tm else None,
+                         "teamTroops": tm.get("teamTroops") if tm else None, "topEnemyTeam": tm["topEnemyTeam"] if tm else None, "topEnemyShare": tm["topEnemyShare"] if tm else None,
                          "teamSnapshotAt": tm["at"] if tm else None, "note": notes.get(t, "")})
     timeline.sort(key=lambda p: p["t"])
 
@@ -178,14 +209,14 @@ def main():
         "protocol": "v2.0",
         "summary": src.get("oneLine", ""),
         "context": {
-            "time": card.get("timeUtc"), "squad": card.get("cohort"), "bots": card.get("squadBots"),
+            "time": card.get("timeUtc"), "squad": card.get("cohort"), "bots": squad_n,
             "strategyVersion": src.get("contextExtra", {}).get("strategyVersion", "unknown"),
             "gameVersion": src.get("contextExtra", {}).get("gameVersion", "unknown"),
             "map": f"map{card.get('mapId')} seed{card.get('mapSeed')}", "mapLand": land,
             "teams": card.get("actualTeams"), "nominalTeams": card.get("nominalTeams"), "humans": card.get("seededPlayers"),
-            "ourTeam": mine, "teamSplitCounts": card.get("teamSplitCounts"), "baseWinExpectation": card.get("baseWinExpectation"),
+            "ourTeam": mine, "teamSplitCounts": split, "baseWinExpectation": card.get("baseWinExpectation"),
             "dataCompleteness": {"results": card["dataCompleteness"].get("results"), "squadLog": card["dataCompleteness"].get("inGameLog"),
-                                 "truth": False, "replayCommands": bool(card["dataCompleteness"].get("replay")),
+                                 "truth": bool(truth_teams), "replayCommands": bool(card["dataCompleteness"].get("replay")),
                                  "tickSnapshots": card["dataCompleteness"].get("tickSnapshots")},
             "contamination": src.get("contextExtra", {}).get("contamination", []),
             "anomaliesSummary": card.get("anomaliesSummary"),
