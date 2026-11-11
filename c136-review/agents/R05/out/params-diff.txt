@@ -1,33 +1,20 @@
-# params-diff  版本：c110 g09 c116  键总数=226  三版取值全相同=195  有差异=31
+# params-diff  版本：c110 g09 c116  键总数=226  三版取值全相同=208  有差异=18
 # 各版本键数：c110=226 g09=226 c116=226
 a06AggMemGate          c110=1   g09=1   c116=0   定值层：PARAMS / PARAMS / PARAMS
 a06AloneSafe           c110=1   g09=1   c116=0   定值层：PARAMS / PARAMS / PARAMS
 atkFreshBoats          c110=0   g09=1   c116=0   定值层：PARAMS / PARAMS / PARAMS
-bleedDiscount          c110=1   g09=0.65   c116=0.72   定值层：PARAMS / PARAMS / PARAMS
-bleedSafeCap           c110=1   g09=1   c116=0   定值层：PARAMS / PARAMS / PARAMS
+bleedDiscount          c110=1   g09=0.65   c116=1   定值层：PARAMS / PARAMS / PARAMS
 collapseFloorCap       c110=85   g09=16   c116=85   定值层：PARAMS / PARAMS / PARAMS
 collapseRatio          c110=1.4   g09=1.45   c116=1.4   定值层：PARAMS / PARAMS / PARAMS
-crowdedHardCap         c110=1.26   g09=1.26   c116=1.1   定值层：PARAMS / PARAMS / PARAMS
-crowdedHardPenalty     c110=1.35   g09=1.35   c116=1.08   定值层：PARAMS / PARAMS / PARAMS
 flashLoanMode          c110=0   g09=3   c116=0   定值层：PARAMS / PARAMS / PARAMS
-focusBonus             c110=1   g09=1   c116=0.78   定值层：PARAMS / PARAMS / PARAMS
 frogHopOverMode        c110=0   g09=1   c116=0   定值层：PARAMS / PARAMS / PARAMS
-leaderHardFrom         c110=5000   g09=5000   c116=0   定值层：PARAMS / PARAMS / PARAMS
 maxTargets             c110=4   g09=6   c116=4   定值层：BASE / PARAMS / BASE
 narrowBoatFirstMode    c110=0   g09=1   c116=0   定值层：PARAMS / PARAMS / PARAMS
-oppFloorCap            c110=88   g09=38   c116=78   定值层：PARAMS / PARAMS / PARAMS
-overHumanCap           c110=1.28   g09=1.28   c116=1.12   定值层：PARAMS / PARAMS / PARAMS
-overHumanKeep          c110=1.12   g09=1.12   c116=0.92   定值层：PARAMS / PARAMS / PARAMS
-overPulseMode          c110=0   g09=0   c116=1   定值层：PARAMS / PARAMS / PARAMS
+oppFloorCap            c110=88   g09=38   c116=88   定值层：PARAMS / PARAMS / PARAMS
 period                 c110=5   g09=2   c116=5   定值层：BASE / PARAMS / BASE
-pocket0Mult            c110=1   g09=1   c116=0.76   定值层：PARAMS / PARAMS / PARAMS
-pocket1Rank            c110=1   g09=1   c116=0.88   定值层：PARAMS / PARAMS / PARAMS
-pulseFrac              c110=0.12   g09=0.12   c116=0.2   定值层：PARAMS / PARAMS / PARAMS
 pulseMinShare          c110=0.04   g09=0.03   c116=0.04   定值层：PARAMS / PARAMS / PARAMS
 reigniteBorders        c110=0   g09=1   c116=0   定值层：PARAMS / PARAMS / PARAMS
 seaCore                c110=0   g09=1   c116=0   定值层：PARAMS / PARAMS / PARAMS
-siegeShrinkRatio       c110=0.72   g09=0.72   c116=0   定值层：PARAMS / PARAMS / PARAMS
-soleBufferPenalty      c110=1.6   g09=1.6   c116=1.15   定值层：PARAMS / PARAMS / PARAMS
-thinDiscount           c110=1   g09=0.72   c116=0.78   定值层：PARAMS / PARAMS / PARAMS
+thinDiscount           c110=1   g09=0.72   c116=1   定值层：PARAMS / PARAMS / PARAMS
 thinMaxTD              c110=0.48   g09=0.62   c116=0.48   定值层：PARAMS / PARAMS / PARAMS
 zeroPulseMode          c110=0   g09=1   c116=0   定值层：PARAMS / PARAMS / PARAMS

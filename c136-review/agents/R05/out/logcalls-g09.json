@@ -1,6 +1,6 @@
 [
  {
-  "file": "g09.js",
+  "file": "v27-team-g09.js",
   "line": 2385,
   "owner": "V13.dpNeutral",
   "tag": "HL-OPENING",
@@ -80,7 +80,7 @@
   ]
  },
  {
-  "file": "g09.js",
+  "file": "v27-team-g09.js",
   "line": 4273,
   "owner": "Policy.chooseSpawn",
   "tag": "HL-SPAWN-BACKEND",
@@ -138,8 +138,8 @@
   ]
  },
  {
-  "file": "g09.js",
-  "line": 4382,
+  "file": "v27-team-g09.js",
+  "line": 4381,
   "owner": "Policy.tryPeaceVote",
   "tag": "HL-PEACE",
   "template": "[HL-PEACE] t=${g.t} voted YES on our squad's mop-up peace call by p=${caller}(${g.names?.[caller] || \"\"})",
@@ -160,53 +160,53 @@
   "guards": [
    {
     "kind": "fn",
-    "line": 4355,
+    "line": 4354,
     "test": "tryPeaceVote"
    },
    {
     "kind": "prior-exit",
-    "line": 4356,
+    "line": 4355,
     "test": "typeof window === \"undefined\" || !window.ax || !window.dictionary || g.t < 1610",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4359,
+    "line": 4358,
     "test": "!hz",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4360,
+    "line": 4359,
     "test": "!this.isMopUp(g)",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4369,
+    "line": 4368,
     "test": "g.t < this._peaceReadyTick",
     "exit": "return"
    },
    {
     "kind": "if",
-    "line": 4376,
+    "line": 4375,
     "test": "window.ax.iL && typeof window.ax.iM === \"function\" && window.ax.iM(me)"
    },
    {
     "kind": "if",
-    "line": 4377,
+    "line": 4376,
     "test": "callerIsOurs && typeof hz.iN === \"function\""
    },
    {
     "kind": "if",
-    "line": 4380,
+    "line": 4379,
     "test": "window.__hlLog && g.t - (this._lastPeaceVoteLog ?? -999) >= 100"
    }
   ]
  },
  {
-  "file": "g09.js",
-  "line": 4390,
+  "file": "v27-team-g09.js",
+  "line": 4389,
   "owner": "Policy.tryPeaceVote",
   "tag": "HL-PEACE",
   "template": "[HL-PEACE] t=${g.t} initiated mop-up peace vote (all enemies eliminated!)",
@@ -219,58 +219,58 @@
   "guards": [
    {
     "kind": "fn",
-    "line": 4355,
+    "line": 4354,
     "test": "tryPeaceVote"
    },
    {
     "kind": "prior-exit",
-    "line": 4356,
+    "line": 4355,
     "test": "typeof window === \"undefined\" || !window.ax || !window.dictionary || g.t < 1610",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4359,
+    "line": 4358,
     "test": "!hz",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4360,
+    "line": 4359,
     "test": "!this.isMopUp(g)",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4369,
+    "line": 4368,
     "test": "g.t < this._peaceReadyTick",
     "exit": "return"
    },
    {
     "kind": "else-of",
-    "line": 4376,
+    "line": 4375,
     "test": "window.ax.iL && typeof window.ax.iM === \"function\" && window.ax.iM(me)"
    },
    {
     "kind": "if",
-    "line": 4385,
+    "line": 4384,
     "test": "!window.ax.iL && g.t - (this.lastPeaceKeyTick ?? -999) >= 115 + (me % 7) * 5 && typeof window.ax.iO === \"function\" && window.ax.iO(me)"
    },
    {
     "kind": "if",
-    "line": 4388,
+    "line": 4387,
     "test": "typeof hz.iK === \"function\""
    },
    {
     "kind": "if",
-    "line": 4390,
+    "line": 4389,
     "test": "window.__hlLog"
    }
   ]
  },
  {
-  "file": "g09.js",
-  "line": 4462,
+  "file": "v27-team-g09.js",
+  "line": 4461,
   "owner": "Policy.tryEmergencyBossRescue",
   "tag": "HL-DONATE",
   "template": "[HL-DONATE] t=${g.t} emergency boss donate pct=${pct}/1024 (~5%) -> boss=${bossId}(${g.names?.[bossId] || \"npl\"}) myBal=${B} dMe=${Math.round(dMe)} dBoss=${Math.round(dBoss)}",
@@ -307,46 +307,46 @@
   "guards": [
    {
     "kind": "fn",
-    "line": 4397,
+    "line": 4396,
     "test": "tryEmergencyBossRescue"
    },
    {
     "kind": "prior-exit",
-    "line": 4399,
+    "line": 4398,
     "test": "!g.teams || !(g.teams[me] > 0) || !g.canAct(me)",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4401,
+    "line": 4400,
     "test": "bossId < 0 || !g.alive[bossId] || g.terr[bossId] < 30",
     "exit": "return"
    },
    {
     "kind": "if",
-    "line": 4427,
+    "line": 4426,
     "test": "typeof g.donate === \"function\" && g.t >= 600 && (g.t >= 900 || (this.neutral === 0 && bossInAtk >= 0.12 * B_boss))"
    },
    {
     "kind": "if",
-    "line": 4452,
+    "line": 4451,
     "test": "(underEmergencyFire || bossFightingHuman || bossNeedsCash || boxedIn) && canAfford && g.t - (this.lastBossDonateTick ?? -999) >= cooldown"
    },
    {
     "kind": "if",
-    "line": 4457,
+    "line": 4456,
     "test": "pct >= 40 && g.donate(pct, bossId, me)"
    },
    {
     "kind": "if",
-    "line": 4461,
+    "line": 4460,
     "test": "typeof window !== \"undefined\" && window.__hlLog"
    }
   ]
  },
  {
-  "file": "g09.js",
-  "line": 4479,
+  "file": "v27-team-g09.js",
+  "line": 4478,
   "owner": "Policy.tryEmergencyBossRescue",
   "tag": "HL-ASSIST",
   "template": "[HL-ASSIST] t=${g.t} 10% boss-assist poke -> target=${q}(${g.names?.[q] || \"\"}) myBal=${B} dMe=${Math.round(dMe)}",
@@ -375,62 +375,62 @@
   "guards": [
    {
     "kind": "fn",
-    "line": 4397,
+    "line": 4396,
     "test": "tryEmergencyBossRescue"
    },
    {
     "kind": "prior-exit",
-    "line": 4399,
+    "line": 4398,
     "test": "!g.teams || !(g.teams[me] > 0) || !g.canAct(me)",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4401,
+    "line": 4400,
     "test": "bossId < 0 || !g.alive[bossId] || g.terr[bossId] < 30",
     "exit": "return"
    },
    {
     "kind": "prior-may-exit",
-    "line": 4427,
+    "line": 4426,
     "test": "typeof g.donate === \"function\" && g.t >= 600 && (g.t >= 900 || (this.neutral === 0 && bossInAtk >= 0.12 * B_boss))"
    },
    {
     "kind": "if",
-    "line": 4470,
+    "line": 4469,
     "test": "bossAttackers.length > 0 && B >= 8000 && dMe >= 55"
    },
    {
     "kind": "for",
-    "line": 4472,
+    "line": 4471,
     "test": "const { q } of bossAttackers"
    },
    {
     "kind": "prior-exit",
-    "line": 4473,
+    "line": 4472,
     "test": "!g.alive[q] || g.terr[q] < 100",
     "exit": "continue"
    },
    {
     "kind": "if",
-    "line": 4474,
+    "line": 4473,
     "test": "(this.cnt[q] ?? 0) > 0 && !g.hasAttack(me, q) && g.hasFreeSlot(me)"
    },
    {
     "kind": "if",
-    "line": 4475,
+    "line": 4474,
     "test": "g.attack(102, q, me)"
    },
    {
     "kind": "if",
-    "line": 4478,
+    "line": 4477,
     "test": "typeof window !== \"undefined\" && window.__hlLog"
    }
   ]
  },
  {
-  "file": "g09.js",
-  "line": 4665,
+  "file": "v27-team-g09.js",
+  "line": 4664,
   "owner": "Policy.tryInterceptEnemyBoats",
   "tag": "HL-INTERCEPT",
   "template": "[HL-INTERCEPT] t=${g.t} unified sea intercept pct=${bestPct}/1024 -> boatId=${bestBoatId} owner=${bestOwner}(${g.names?.[bestOwner] || \"\"}) boatTroops=${bestTroops}",
@@ -463,59 +463,59 @@
   "guards": [
    {
     "kind": "fn",
-    "line": 4496,
+    "line": 4495,
     "test": "tryInterceptEnemyBoats"
    },
    {
     "kind": "prior-exit",
-    "line": 4498,
+    "line": 4497,
     "test": "!g.canAct(me) || typeof g.chase !== \"function\"",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4500,
+    "line": 4499,
     "test": "!myCoast || myCoast.length === 0",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4501,
+    "line": 4500,
     "test": "(g.boatCount?.[me] ?? 0) >= 4",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4503,
+    "line": 4502,
     "test": "boatN <= 0 || !g.bSlot || !g.bId || !g.bTroops || !g.bPos",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4506,
+    "line": 4505,
     "test": "B < 2500 || dMe < 22",
     "exit": "return"
    },
    {
     "kind": "if",
-    "line": 4659,
+    "line": 4658,
     "test": "bestBoatId >= 0"
    },
    {
     "kind": "if",
-    "line": 4660,
+    "line": 4659,
     "test": "g.chase(bestPct, bestBoatId, me)"
    },
    {
     "kind": "if",
-    "line": 4664,
+    "line": 4663,
     "test": "typeof window !== \"undefined\" && window.__hlLog"
    }
   ]
  },
  {
-  "file": "g09.js",
-  "line": 4778,
+  "file": "v27-team-g09.js",
+  "line": 4777,
   "owner": "Policy.tryClaimNearTeamIslands",
   "tag": "HL-ISLAND-GUARD",
   "template": "[HL-ISLAND-GUARD] t=${g.t} preemptively claimed near-shore island (${bestHit.sz}px, dist=${bestHit.d}) pct=${pct}/1024",
@@ -540,59 +540,59 @@
   "guards": [
    {
     "kind": "fn",
-    "line": 4676,
+    "line": 4675,
     "test": "tryClaimNearTeamIslands"
    },
    {
     "kind": "prior-exit",
-    "line": 4678,
+    "line": 4677,
     "test": "g.t < 420 || !g.canAct(me)",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4680,
+    "line": 4679,
     "test": "!myCoast || myCoast.length === 0",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4681,
+    "line": 4680,
     "test": "(g.boatCount?.[me] ?? 0) >= 3",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4682,
+    "line": 4681,
     "test": "g.t - (this._lastNearIsleTick ?? -999) < 28",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4685,
+    "line": 4684,
     "test": "B < 2500 || dMe < 22",
     "exit": "return"
    },
    {
     "kind": "if",
-    "line": 4769,
+    "line": 4768,
     "test": "bestHit"
    },
    {
     "kind": "if",
-    "line": 4772,
+    "line": 4771,
     "test": "ok"
    },
    {
     "kind": "if",
-    "line": 4777,
+    "line": 4776,
     "test": "typeof window !== \"undefined\" && window.__hlLog"
    }
   ]
  },
  {
-  "file": "g09.js",
-  "line": 4831,
+  "file": "v27-team-g09.js",
+  "line": 4830,
   "owner": "Policy.tryDonateToTeammate",
   "tag": "HL-DONATE",
   "template": "[HL-DONATE] t=${g.t} boss donate pct=${pct}/1024 (~5%) -> boss=${bossId}(${g.names?.[bossId] || \"npl\"}) myBal=${B} dMe=${Math.round(dMe)}",
@@ -625,58 +625,58 @@
   "guards": [
    {
     "kind": "fn",
-    "line": 4787,
+    "line": 4786,
     "test": "tryDonateToTeammate"
    },
    {
     "kind": "prior-exit",
-    "line": 4789,
+    "line": 4788,
     "test": "!g.teams || !(g.teams[me] > 0) || typeof g.donate !== \"function\"",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4790,
+    "line": 4789,
     "test": "g.t < 400 || g.t - (this.lastDonateTick ?? -999) < 18",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4803,
+    "line": 4802,
     "test": "myHumanInAtk > 0 || B <= 1.10 * safeFloor",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4807,
+    "line": 4806,
     "test": "maxSafePct < 45",
     "exit": "return"
    },
    {
     "kind": "if",
-    "line": 4811,
+    "line": 4810,
     "test": "bossId >= 0 && g.alive[bossId] && g.terr[bossId] >= 100"
    },
    {
     "kind": "if",
-    "line": 4824,
+    "line": 4823,
     "test": "bossNeedsHelp && g.t - (this.lastBossDonateTick ?? -999) >= (isPureInlandSafe ? 22 : 45)"
    },
    {
     "kind": "if",
-    "line": 4826,
+    "line": 4825,
     "test": "pct >= 40 && g.donate(pct, bossId, me)"
    },
    {
     "kind": "if",
-    "line": 4830,
+    "line": 4829,
     "test": "typeof window !== \"undefined\" && window.__hlLog"
    }
   ]
  },
  {
-  "file": "g09.js",
-  "line": 4859,
+  "file": "v27-team-g09.js",
+  "line": 4858,
   "owner": "Policy.tryDonateToTeammate",
   "tag": "HL-DONATE",
   "template": "[HL-DONATE] t=${g.t} squad rescue donate pct=${pct}/1024 (~5%) -> ally=${p}(${g.names?.[p] || \"\"}) myBal=${B} dMe=${Math.round(dMe)} dAlly=${Math.round(dAlly)}",
@@ -713,74 +713,74 @@
   "guards": [
    {
     "kind": "fn",
-    "line": 4787,
+    "line": 4786,
     "test": "tryDonateToTeammate"
    },
    {
     "kind": "prior-exit",
-    "line": 4789,
+    "line": 4788,
     "test": "!g.teams || !(g.teams[me] > 0) || typeof g.donate !== \"function\"",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4790,
+    "line": 4789,
     "test": "g.t < 400 || g.t - (this.lastDonateTick ?? -999) < 18",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4803,
+    "line": 4802,
     "test": "myHumanInAtk > 0 || B <= 1.10 * safeFloor",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4807,
+    "line": 4806,
     "test": "maxSafePct < 45",
     "exit": "return"
    },
    {
     "kind": "prior-may-exit",
-    "line": 4811,
+    "line": 4810,
     "test": "bossId >= 0 && g.alive[bossId] && g.terr[bossId] >= 100"
    },
    {
     "kind": "for",
-    "line": 4840,
+    "line": 4839,
     "test": "let p = 0; p < g.humans; p++"
    },
    {
     "kind": "prior-exit",
-    "line": 4841,
+    "line": 4840,
     "test": "p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 1000",
     "exit": "continue"
    },
    {
     "kind": "if",
-    "line": 4851,
+    "line": 4850,
     "test": "inHumanAtk > 0 && (inHumanAtk >= 0.12 * g.bal[p] || dAlly < 55)"
    },
    {
     "kind": "if",
-    "line": 4853,
+    "line": 4852,
     "test": "dMe >= (isPureInlandSafe ? 40 : 106) && dMe >= dAlly + 25"
    },
    {
     "kind": "if",
-    "line": 4855,
+    "line": 4854,
     "test": "pct >= 40 && g.donate(pct, p, me)"
    },
    {
     "kind": "if",
-    "line": 4858,
+    "line": 4857,
     "test": "typeof window !== \"undefined\" && window.__hlLog"
    }
   ]
  },
  {
-  "file": "g09.js",
-  "line": 4870,
+  "file": "v27-team-g09.js",
+  "line": 4869,
   "owner": "Policy.tryDonateToTeammate",
   "tag": "HL-ASSIST",
   "template": "[HL-ASSIST] t=${g.t} 10% squad-rescue poke -> enemy=${mainAttacker}(${g.names?.[mainAttacker] || \"\"}) for ally=${p}(${g.names?.[p] || \"\"})",
@@ -809,79 +809,79 @@
   "guards": [
    {
     "kind": "fn",
-    "line": 4787,
+    "line": 4786,
     "test": "tryDonateToTeammate"
    },
    {
     "kind": "prior-exit",
-    "line": 4789,
+    "line": 4788,
     "test": "!g.teams || !(g.teams[me] > 0) || typeof g.donate !== \"function\"",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4790,
+    "line": 4789,
     "test": "g.t < 400 || g.t - (this.lastDonateTick ?? -999) < 18",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4803,
+    "line": 4802,
     "test": "myHumanInAtk > 0 || B <= 1.10 * safeFloor",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4807,
+    "line": 4806,
     "test": "maxSafePct < 45",
     "exit": "return"
    },
    {
     "kind": "prior-may-exit",
-    "line": 4811,
+    "line": 4810,
     "test": "bossId >= 0 && g.alive[bossId] && g.terr[bossId] >= 100"
    },
    {
     "kind": "for",
-    "line": 4840,
+    "line": 4839,
     "test": "let p = 0; p < g.humans; p++"
    },
    {
     "kind": "prior-exit",
-    "line": 4841,
+    "line": 4840,
     "test": "p === me || !g.alive[p] || !this.isTeammate(g, p) || !this.isOurSquadBot(g, p) || g.terr[p] < 1000",
     "exit": "continue"
    },
    {
     "kind": "if",
-    "line": 4851,
+    "line": 4850,
     "test": "inHumanAtk > 0 && (inHumanAtk >= 0.12 * g.bal[p] || dAlly < 55)"
    },
    {
     "kind": "prior-may-exit",
-    "line": 4853,
+    "line": 4852,
     "test": "dMe >= (isPureInlandSafe ? 40 : 106) && dMe >= dAlly + 25"
    },
    {
     "kind": "if",
-    "line": 4865,
+    "line": 4864,
     "test": "mainAttacker >= 0 && (this.cnt[mainAttacker] ?? 0) > 0 && !g.hasAttack(me, mainAttacker) && g.hasFreeSlot(me) && dMe >= 65"
    },
    {
     "kind": "if",
-    "line": 4866,
+    "line": 4865,
     "test": "g.attack(102, mainAttacker, me)"
    },
    {
     "kind": "if",
-    "line": 4869,
+    "line": 4868,
     "test": "typeof window !== \"undefined\" && window.__hlLog"
    }
   ]
  },
  {
-  "file": "g09.js",
-  "line": 4910,
+  "file": "v27-team-g09.js",
+  "line": 4909,
   "owner": "Policy.tryDonateToTeammate",
   "tag": "HL-DONATE",
   "template": "[HL-DONATE] t=${g.t} surplus donate pct=${pct}/1024 (~5%) -> ally=${bestAlly}(${g.names?.[bestAlly] || \"\"}) boxedIn=${boxedIn} myBal=${B} dMe=${Math.round(dMe)}",
@@ -918,71 +918,71 @@
   "guards": [
    {
     "kind": "fn",
-    "line": 4787,
+    "line": 4786,
     "test": "tryDonateToTeammate"
    },
    {
     "kind": "prior-exit",
-    "line": 4789,
+    "line": 4788,
     "test": "!g.teams || !(g.teams[me] > 0) || typeof g.donate !== \"function\"",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4790,
+    "line": 4789,
     "test": "g.t < 400 || g.t - (this.lastDonateTick ?? -999) < 18",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4803,
+    "line": 4802,
     "test": "myHumanInAtk > 0 || B <= 1.10 * safeFloor",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4807,
+    "line": 4806,
     "test": "maxSafePct < 45",
     "exit": "return"
    },
    {
     "kind": "prior-may-exit",
-    "line": 4811,
+    "line": 4810,
     "test": "bossId >= 0 && g.alive[bossId] && g.terr[bossId] >= 100"
    },
    {
     "kind": "prior-exit",
-    "line": 4878,
+    "line": 4877,
     "test": "!boxedIn && dMe < 132",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4879,
+    "line": 4878,
     "test": "boxedIn && dMe < 72",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 4903,
+    "line": 4902,
     "test": "bestAlly < 0",
     "exit": "return"
    },
    {
     "kind": "if",
-    "line": 4906,
+    "line": 4905,
     "test": "g.donate(pct, bestAlly, me)"
    },
    {
     "kind": "if",
-    "line": 4909,
+    "line": 4908,
     "test": "typeof window !== \"undefined\" && window.__hlLog"
    }
   ]
  },
  {
-  "file": "g09.js",
-  "line": 5285,
+  "file": "v27-team-g09.js",
+  "line": 5284,
   "owner": "Policy.act",
   "tag": "HL-TICK",
   "template": "[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}",
@@ -1031,62 +1031,62 @@
   "guards": [
    {
     "kind": "fn",
-    "line": 5237,
+    "line": 5236,
     "test": "act"
    },
    {
     "kind": "prior-exit",
-    "line": 5239,
+    "line": 5238,
     "test": "!g.canAct(me)",
     "exit": "return"
    },
    {
     "kind": "prior-may-exit",
-    "line": 5245,
+    "line": 5244,
     "test": "P.flashLoanMode > 0 && this.flState"
    },
    {
     "kind": "prior-may-exit",
-    "line": 5251,
+    "line": 5250,
     "test": "P.seaCore > 0 && this.seaState.pendingHandoffs.size > 0"
    },
    {
     "kind": "prior-may-exit",
-    "line": 5258,
+    "line": 5257,
     "test": "P.seaCore > 0 && g.online && g.t - this.lastLandSpendTick === 1 && g.t >= 750 && this.neutral === 0 && g.t - this.seaState.lastFrogHop >= 35 && g.canAct(me)"
    },
    {
     "kind": "prior-exit",
-    "line": 5276,
+    "line": 5275,
     "test": "g.t >= 350 && this.tryInterceptEnemyBoats(g) && g.online",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 5277,
+    "line": 5276,
     "test": "g.t >= 420 && g.t % 4 === 0 && this.neutral === 0 && this.tryClaimNearTeamIslands(g) && g.online",
     "exit": "return"
    },
    {
     "kind": "if",
-    "line": 5278,
+    "line": 5277,
     "test": "g.t < P.coreFrom"
    },
    {
     "kind": "if",
-    "line": 5279,
+    "line": 5278,
     "test": "g.t >= 600 && g.t % P.period === 0"
    },
    {
     "kind": "if",
-    "line": 5281,
+    "line": 5280,
     "test": "typeof window !== \"undefined\" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t"
    }
   ]
  },
  {
-  "file": "g09.js",
-  "line": 5329,
+  "file": "v27-team-g09.js",
+  "line": 5328,
   "owner": "Policy.act",
   "tag": "HL-TICK",
   "template": "[HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}",
@@ -1135,57 +1135,57 @@
   "guards": [
    {
     "kind": "fn",
-    "line": 5237,
+    "line": 5236,
     "test": "act"
    },
    {
     "kind": "prior-exit",
-    "line": 5239,
+    "line": 5238,
     "test": "!g.canAct(me)",
     "exit": "return"
    },
    {
     "kind": "prior-may-exit",
-    "line": 5245,
+    "line": 5244,
     "test": "P.flashLoanMode > 0 && this.flState"
    },
    {
     "kind": "prior-may-exit",
-    "line": 5251,
+    "line": 5250,
     "test": "P.seaCore > 0 && this.seaState.pendingHandoffs.size > 0"
    },
    {
     "kind": "prior-may-exit",
-    "line": 5258,
+    "line": 5257,
     "test": "P.seaCore > 0 && g.online && g.t - this.lastLandSpendTick === 1 && g.t >= 750 && this.neutral === 0 && g.t - this.seaState.lastFrogHop >= 35 && g.canAct(me)"
    },
    {
     "kind": "prior-exit",
-    "line": 5276,
+    "line": 5275,
     "test": "g.t >= 350 && this.tryInterceptEnemyBoats(g) && g.online",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 5277,
+    "line": 5276,
     "test": "g.t >= 420 && g.t % 4 === 0 && this.neutral === 0 && this.tryClaimNearTeamIslands(g) && g.online",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 5278,
+    "line": 5277,
     "test": "g.t < P.coreFrom",
     "exit": "return"
    },
    {
     "kind": "prior-exit",
-    "line": 5321,
+    "line": 5320,
     "test": "g.t % P.period !== 0",
     "exit": "return"
    },
    {
     "kind": "if",
-    "line": 5325,
+    "line": 5324,
     "test": "typeof window !== \"undefined\" && window.__hlLog && g.t > 0 && g.t % 90 === 0 && this._lastTickLog !== g.t"
    }
   ]

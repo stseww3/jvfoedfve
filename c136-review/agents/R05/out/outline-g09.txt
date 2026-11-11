@@ -1,4 +1,4 @@
-# outline g09.js  lines=6125  bytes=249507
+# outline v27-team-g09.js  lines=6124  bytes=249440
 import [4-4] import { NEUTRAL, P_INNER, P_BORDER, MAX_PLAYERS, iV } from "../../sim/index.js";
 import [5-5] import { T_LAND, T_WATER } from "../../sim/map.js";
 const spawnByRollout  [88-88] 1L = () => null
@@ -180,7 +180,7 @@ function guardAndRecall()  [3859-3862] 4L
 function futureInterestRebate(g, me, sendTroops, ticks, baseRatePer10)  [3865-3881] 17L
   fn stepGrow(b)  [3871-3874] 4L
 export const PARAMS  [3900-3975] 76L = { ...P17, coreFrom: 1500, contestW: 0.68, sharedBotMult: 1.0, marketFloor: 0.85, marketFrom: 2500, period: 2,…
-export class Policy extends V17  [3977-6124] 2148L
+export class Policy extends V17  [3977-6123] 2147L
   constructor(params = {}, me = 0)  [3978-4007] 30L
   updateShadowQuota(g)  [4009-4045] 37L
   send(g, target, troops, budgetHint = troops)  [4047-4134] 88L
@@ -193,31 +193,31 @@ export class Policy extends V17  [3977-6124] 2148L
   otherHumanMedDens(g)  [4319-4330] 12L
   livingHumanCount(g)  [4332-4338] 7L
   topOtherHuman(g)  [4340-4350] 11L
-  tryPeaceVote(g)  [4355-4393] 39L
-  tryEmergencyBossRescue(g)  [4397-4487] 91L
-  tryInterceptEnemyBoats(g)  [4496-4671] 176L
-    fn minCoastDistOf(p, tx, ty)  [4514-4525] 12L
-  tryClaimNearTeamIslands(g)  [4676-4784] 109L
-  tryDonateToTeammate(g)  [4787-4915] 129L
-  isMopUp(g)  [4917-4930] 14L
-  spawnWeight(g, s)  [4932-4938] 7L
-  safeAt(g, q)  [4940-4956] 17L
-  winFloor(g, q)  [4958-4966] 9L
-  hasBorderFood(g)  [4968-4974] 7L
-  newHumansExposed(g, q)  [4976-4985] 10L
-  activeFocus(g)  [4987-5000] 14L
-  peerAggressor(g)  [5002-5049] 48L
-  stepFlashLoan(g)  [5051-5115] 65L
-  tryStartFlashLoan(g)  [5117-5195] 79L
-  tryPeaceVoteWin(g)  [5197-5235] 39L
-  act(g)  [5237-5396] 160L
-  compSize(g)  [5398-5429] 32L
-  idleBoats(g)  [5431-5458] 28L
-  offers(g)  [5460-5714] 255L
-  buyLand(g)  [5716-6035] 320L
-    fn blockUndersized(amt)  [5874-5880] 7L
-    fn tryNarrowBoatFirst(wantLandTroops)  [5884-5944] 61L
-    fn canZeroPulse(amt)  [5955-5967] 13L
-    fn alignMultiRing(amt)  [5971-5988] 18L
-  boatFood(g)  [6037-6100] 64L
-  searchFood(g)  [6102-6123] 22L
+  tryPeaceVote(g)  [4354-4392] 39L
+  tryEmergencyBossRescue(g)  [4396-4486] 91L
+  tryInterceptEnemyBoats(g)  [4495-4670] 176L
+    fn minCoastDistOf(p, tx, ty)  [4513-4524] 12L
+  tryClaimNearTeamIslands(g)  [4675-4783] 109L
+  tryDonateToTeammate(g)  [4786-4914] 129L
+  isMopUp(g)  [4916-4929] 14L
+  spawnWeight(g, s)  [4931-4937] 7L
+  safeAt(g, q)  [4939-4955] 17L
+  winFloor(g, q)  [4957-4965] 9L
+  hasBorderFood(g)  [4967-4973] 7L
+  newHumansExposed(g, q)  [4975-4984] 10L
+  activeFocus(g)  [4986-4999] 14L
+  peerAggressor(g)  [5001-5048] 48L
+  stepFlashLoan(g)  [5050-5114] 65L
+  tryStartFlashLoan(g)  [5116-5194] 79L
+  tryPeaceVoteWin(g)  [5196-5234] 39L
+  act(g)  [5236-5395] 160L
+  compSize(g)  [5397-5428] 32L
+  idleBoats(g)  [5430-5457] 28L
+  offers(g)  [5459-5713] 255L
+  buyLand(g)  [5715-6034] 320L
+    fn blockUndersized(amt)  [5873-5879] 7L
+    fn tryNarrowBoatFirst(wantLandTroops)  [5883-5943] 61L
+    fn canZeroPulse(amt)  [5954-5966] 13L
+    fn alignMultiRing(amt)  [5970-5987] 18L
+  boatFood(g)  [6036-6099] 64L
+  searchFood(g)  [6101-6122] 22L

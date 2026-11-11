@@ -1,6 +1,7 @@
 // jslib.cjs — R05 的公共解析库。
 // 用 Node 自带的 acorn（node --expose-internals）把策略文件解析成语法树，不需要联网安装任何包。
-// 被截断的文件（c116 线的 v27-apex-live.js 在 200 KB 处被截断）用 repairTruncated() 补齐括号后再解析。
+// 被截断的文件用 repairTruncated() 补齐括号后再解析（v2.0 的三份源码都完整，不会触发）。
+// v2.0：默认从 /agent/repos/c136-data/src/strategy 读源码（只读）；可用环境变量 R05_SRC 改。
 'use strict';
 const fs = require('fs');
 const path = require('path');
@@ -14,7 +15,10 @@ try {
   process.exit(2);
 }
 
-const SRC_DIR = process.env.R05_SRC || '/tmp/c136-r05/src';
+const SRC_DIR = process.env.R05_SRC || '/agent/repos/c136-data/src/strategy';
+// 需要落盘的中间文件（params.cjs 真正加载模块）一律写到 WORK_DIR，绝不写 c136-data。
+const WORK_DIR = process.env.R05_WORK || '/tmp/c136-r05/work';
+const SIM_DIR = process.env.R05_SIM || '/agent/repos/c136-data/src/sim/sim';
 
 function readSrc(name) {
   const p = path.isAbsolute(name) ? name : path.join(SRC_DIR, name);
@@ -139,4 +143,4 @@ function oneLine(s, max) {
   return max && t.length > max ? t.slice(0, max - 1) + '…' : t;
 }
 
-module.exports = { acorn, walk, SRC_DIR, readSrc, repairTruncated, parse, load, annotate, fnName, ownerChain, text, oneLine };
+module.exports = { acorn, walk, SRC_DIR, WORK_DIR, SIM_DIR, readSrc, repairTruncated, parse, load, annotate, fnName, ownerChain, text, oneLine };

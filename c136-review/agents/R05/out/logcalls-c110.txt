@@ -1,4 +1,4 @@
-# logcalls c110.js  共 17 处 __hlLog 调用
+# logcalls v27-team-c110.js  共 17 处 __hlLog 调用
 
 ## L818  General.act  [HL-TICK]
 template: [HL-TICK] t=${g.t} terr=${g.terr[me]}(${(100 * g.terr[me] / Math.max(1, g.land)).toFixed(1)}%) bal=${g.bal[me]} dens=${(g.bal[me] / Math.max(1, g.terr[me])).toFixed(1)} nb=${this.nb.length} neut=${this.neutral} cmds=${this.cmds} boats=${this.boats}${pfStr}

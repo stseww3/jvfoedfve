@@ -34,7 +34,7 @@ function toRegex(template) {
 }
 const pats = calls.map((c, idx) => ({ idx, line: c.line, owner: c.owner, tag: c.tag, template: c.template, re: toRegex(c.template), n: 0, firstLine: null }));
 
-const text = fs.readFileSync(path.join(L.SRC_DIR, logName), 'utf8');
+const text = fs.readFileSync(path.isAbsolute(logName) ? logName : path.join(L.SRC_DIR, logName), 'utf8');
 const lines = text.split('\n');
 const tagCount = new Map();
 const unmatched = new Map(); // tag -> { n, samples }

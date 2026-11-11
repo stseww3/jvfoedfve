@@ -20,10 +20,14 @@ const LAYERS = ['DEFAULT_PARAMS', 'BASE', 'GENERAL_PARAMS', 'STYLE_PARAMS', 'PAR
   try { L.parse(raw); } catch (e) { repaired = L.repairTruncated(raw); srcText = repaired.text; }
 
   // ---- 1) 真正加载，取生效值 ----
-  const runDir = path.join(L.SRC_DIR, 'run', 'a');
+  // 模块里写的是 import "../../sim/index.js"：把模块放在 WORK/run/a/ 下，把 c136-data 的 sim 拷到 WORK/sim/。
+  const runDir = path.join(L.WORK_DIR, 'run', 'a');
   fs.mkdirSync(runDir, { recursive: true });
-  fs.writeFileSync(path.join(L.SRC_DIR, 'package.json'), '{"type":"module"}\n');
-  const modPath = path.join(runDir, name.replace(/\.js$/, '') + '.mjs');
+  const simDst = path.join(L.WORK_DIR, 'sim');
+  fs.mkdirSync(simDst, { recursive: true });
+  for (const f of fs.readdirSync(L.SIM_DIR)) if (f.endsWith('.js')) fs.copyFileSync(path.join(L.SIM_DIR, f), path.join(simDst, f));
+  fs.writeFileSync(path.join(L.WORK_DIR, 'package.json'), '{"type":"module"}\n');
+  const modPath = path.join(runDir, path.basename(name).replace(/\.js$/, '') + '.mjs');
   fs.writeFileSync(modPath, srcText);
   const mod = await import(pathToFileURL(modPath).href);
   // 实盘里扩展（page.js）是这样建实例的：new Policy({ spawnRoll: 0, planEvery: 0 }, me)
