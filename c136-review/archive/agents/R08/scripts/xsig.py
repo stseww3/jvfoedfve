@@ -5,9 +5,9 @@
 
 节：
   [XG-A] 逐局符号检验：同一局里 own 对 野人（或 own 的 1500 拍对 630 拍），双侧二项
-  [XG-B] 秩相关的置换检验（Spearman；5000 次置换，固定种子 136）
+  [XG-B] 秩相关的置换检验（Spearman；20000 次置换；每个检验自己的随机数流，种子 = 136 加检验名）
   [XG-C] 赢的局 vs 没赢的局：xscan 每个模式命中率的 Fisher 精确检验（双侧）
-  [XG-D] 赢的局 vs 没赢的局：剂量 / 结果的中位数之差，置换检验（5000 次，固定种子 136）
+  [XG-D] 赢的局 vs 没赢的局：剂量 / 结果的中位数之差，置换检验（20000 次，种子同上）
   [XG-E] 多重比较：本表一共做了多少个检验，Bonferroni 门槛是多少，过门槛的有哪些
 口径提醒：这里的显著只说明「发现集里这个差别不像是抽样噪声」，不等于因果；因果要靠验证集复现（E3）和模拟器配对消融（E4）。
 """
@@ -20,7 +20,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(os.path.dirname(HERE), "out", "_cross")
-NPERM = 5000
+NPERM = 20000
 SEED = 136
 
 
@@ -143,7 +143,8 @@ def main():
     XS = json.load(open(os.path.join(OUT, "xscan.json"), encoding="utf-8"))
     XT = json.load(open(os.path.join(OUT, "xtruth.json"), encoding="utf-8"))
     XD = json.load(open(os.path.join(OUT, "xdose.json"), encoding="utf-8"))
-    rng = random.Random(SEED)
+    # 每个检验用自己的随机数流（种子 = SEED 加检验名），增删别的检验不会改动它的 p
+    rng_for = lambda name: random.Random(f"{SEED}|{name}")
     rows = XD["rows"]
     full = [r for r in XT["matches"] if r.get("valid") and not r.get("spawnOnly")]
     out = []
@@ -212,14 +213,17 @@ def main():
     sign_row("挨着的内置 AI 的平均地：own 低于 野人", adj)
     sign_row("600~1500 人均从内置 AI 吃到的格：own 低于 野人（AIRATIO < 1）", [(d.get("AIRATIO"), 1.0) for d in rows])
     sign_row("600~1500 人均从无主地吃到的格：own 低于 野人（NEUTRATIO < 1）", [(d.get("NEUTRATIO"), 1.0) for d in rows])
+    sign_row("600~1500 人均吃到的「开局就是无主地」的格：own 低于 野人（NORIG < 1）", [(d.get("NORIG"), 1.0) for d in rows])
+    sign_row("600~1500 人均吃到的「垮掉的内置 AI 留下的地」：own 低于 野人（NLEFT < 1）", [(d.get("NLEFT"), 1.0) for d in rows])
+    sign_row("600~900 挨着无主地的样本占比：own 低于 野人（NADJ < 1）", [(d.get("NADJ"), 1.0) for d in rows])
 
     # ---- [XG-B] ----
     P("")
-    P(f"[XG-B] 秩相关的置换检验（Spearman；{NPERM} 次置换，种子 {SEED}）：两个量 | 局数 | rho | p")
+    P(f"[XG-B] 秩相关的置换检验（Spearman；{NPERM} 次置换，每个检验的种子 = {SEED} 加检验名）：两个量 | 局数 | rho | p")
 
     def corr_row(name, sel, a, b):
         pr = [(d[a], d[b]) for d in sel if d.get(a) is not None and d.get(b) is not None]
-        rho, p = spearman_perm([x for x, _ in pr], [y for _, y in pr], rng) if len(pr) >= 8 else (None, None)
+        rho, p = spearman_perm([x for x, _ in pr], [y for _, y in pr], rng_for(f"B|{name}")) if len(pr) >= 8 else (None, None)
         P(f"  {name} | {len(pr)} | {'—' if rho is None else f'{rho:.2f}'} | {fp(p)}")
         tests.append((f"B|{name}", p))
 
@@ -256,12 +260,22 @@ def main():
     corr_row("PAIRS × 卡顿剂量 B", rows, "PAIRS", "B")
     corr_row("几乎不卡的局里 R630 × R1500", calm, "R630", "R1500")
     corr_row("几乎不卡的局里 PAIRS × AISHARE", calm, "PAIRS", "AISHARE")
+    corr_row("NORIG（开局就是无主地的那部分，own ÷ 野人）× NADJ（挨着无主地的占比，own ÷ 野人）", rows, "NORIG", "NADJ")
+    corr_row("NORIG × 卡顿剂量 B", rows, "NORIG", "B")
+    corr_row("NORIG × CLUSTER", rows, "NORIG", "CLUSTER")
+    corr_row("NORIG × EDGE", rows, "NORIG", "EDGE")
+    corr_row("NORIG × R630", rows, "NORIG", "R630")
+    corr_row("NORIG × R1500", rows, "NORIG", "R1500")
+    corr_row("NLEFT（AI 留下的地，own ÷ 野人）× PAIRS", rows, "NLEFT", "PAIRS")
+    corr_row("NLEFT × 卡顿剂量 B", rows, "NLEFT", "B")
+    corr_row("NADJ × R1500", rows, "NADJ", "R1500")
+    corr_row("NADJ × CLUSTER", rows, "NADJ", "CLUSTER")
 
     P("  偏相关（扣掉卡顿剂量 B；秩口径，置换检验）：两个量 | 局数 | 偏 rho | p")
 
     def pcorr_row(name, sel, a, b, z="B"):
         tr = [(d[a], d[b], d[z]) for d in sel if d.get(a) is not None and d.get(b) is not None and d.get(z) is not None]
-        rho, p = partial_perm([x for x, _, _ in tr], [y for _, y, _ in tr], [c for _, _, c in tr], rng) if len(tr) >= 10 else (None, None)
+        rho, p = partial_perm([x for x, _, _ in tr], [y for _, y, _ in tr], [c for _, _, c in tr], rng_for(f"P|{name}")) if len(tr) >= 10 else (None, None)
         P(f"  {name} | {len(tr)} | {'—' if rho is None else f'{rho:.2f}'} | {fp(p)}")
         tests.append((f"B|偏相关 {name}", p))
 
@@ -287,12 +301,12 @@ def main():
 
     # ---- [XG-D] ----
     P("")
-    P(f"[XG-D] 赢的局 vs 没赢的局：中位数之差的置换检验（双侧；{NPERM} 次，种子 {SEED}）：量 | 赢的局 中位（局数） | 没赢的局 中位（局数） | 差 | p")
+    P(f"[XG-D] 赢的局 vs 没赢的局：中位数之差的置换检验（双侧；{NPERM} 次，每个检验的种子 = {SEED} 加检验名）：量 | 赢的局 中位（局数） | 没赢的局 中位（局数） | 差 | p")
     for k, nm in (("A", "成批占比"), ("B", "没生效占比"), ("C", "没落地占比"), ("R630", "t=630 人均对照"), ("R1500", "t=1500 人均对照"), ("AISHARE", "AI 地份额对照"),
                   ("ACT", "挨着白给的 AI 出手率"), ("ALLOWHIT", "规则放行后出手率"), ("GATE", "被留底挡住的占比"), ("EDGE", "贴边比例"), ("DENS1500", "兵密度对照"), ("H", "房间真人数")):
         u = [d[k] for d in rows if d["won"] and d.get(k) is not None]
         v = [d[k] for d in rows if not d["won"] and d.get(k) is not None]
-        obs, p = median_perm(u, v, rng)
+        obs, p = median_perm(u, v, rng_for(f"D|{k}"))
         P(f"  {k}（{nm}） | {statistics.median(u):.2f}（{len(u)}） | {statistics.median(v):.2f}（{len(v)}） | {'—' if obs is None else f'{obs:+.2f}'} | {fp(p)}")
         tests.append((f"D|{k}", p))
 

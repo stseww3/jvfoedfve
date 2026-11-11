@@ -42,6 +42,7 @@
    "Oda Nobunaga": 2082
   },
   "neverPlayed": [],
+  "neverPlayedSource": "log: 整局没有 HL-TICK 快照、也没有 HL-OPENING 行",
   "sameMatchPeer": null,
   "dataCompleteness": {
    "results": true,
@@ -69,6 +70,9 @@
   "ourFinalShare": 0.9999,
   "peakSquadLandShare": 0.2263,
   "peakPrimaryTeamShareSeen": 0.9999,
+  "endRowSeen": true,
+  "lastSnapshotTick": 6660,
+  "lastTeamTotalsTick": 6721,
   "note": "卡片记赢：按人数主队是队2（13 个号），t=6721 队2 100%。我方的 13 个队2 号里 6 个被摘掉（Alpha、Stockfish、Geralt、Oda Nobunaga、Justinian、Cnut）、4 个阵亡（Barbary 2286、LLXRScorpio 2503、Ulan 2663、Algiers 5607），活到终局 3 个：Hittite 48,296 格（8 个存活玩家里第 3）、Oyo 9,630（第 6）、Creeper 2,348（第 7），合计 60,274 格（14.99%）。队1 的 Clausewitz t=6003 阵亡。"
  },
  "timeline": [
@@ -1206,6 +1210,20 @@
    "statementType": "inferred"
   }
  ],
+ "latencyLedger": {
+  "matchId": "B003",
+  "replayLast": 0,
+  "edges": [
+   0,
+   600,
+   1500,
+   3000
+  ],
+  "spawn": {
+   "logged": 67,
+   "backendLines": 0
+  }
+ },
  "decisions": [
   {
    "t": 70,

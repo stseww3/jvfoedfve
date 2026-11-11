@@ -30,9 +30,16 @@ def cells(mid):
     c['到场真人 / 我方号'] = '%d / %d' % (land['humansPresent'], land['ours'])
     c['天然地盘占全图 ÷ 人头占比 = 倍数（欧氏）'] = '%.1f%% ÷ %.1f%% = %.2f' % (ve['ourSharePct'], ve['headSharePct'], ve['ourSharePct'] / ve['headSharePct'])
     c['同上，只走陆路的口径'] = '%.2f' % (vl['ourSharePct'] / vl['headSharePct'])
-    c['单号天然地盘中位：我方 / 其他真人'] = '%s / %s（%.2f 倍）' % (format(int(ve['ourMedian']), ','), format(int(ve['otherMedian']), ','), ve['ourMedian'] / max(1, ve['otherMedian']))
+    if ve['otherMedian']:
+        c['单号天然地盘中位：我方 / 其他真人'] = '%s / %s（%.2f 倍）' % (format(int(ve['ourMedian']), ','), format(int(ve['otherMedian']), ','), ve['ourMedian'] / max(1, ve['otherMedian']))
+    else:
+        c['单号天然地盘中位：我方 / 其他真人'] = '%s / 无' % format(int(ve['ourMedian']), ',')
     for t in ('630', '1500', '1800', '3000'):
         g = land['capture'].get(t, {}).get('groups')
+        if g and '全部其他真人' not in g:
+            # 到场的真人全是我方（A073）
+            c['实际 ÷ 天然，%s 拍：我方 / 其他真人' % t] = '%.2f / 无' % g['我方']['ratioE']
+            continue
         c['实际 ÷ 天然，%s 拍：我方 / 其他真人' % t] = ('%.2f / %.2f' % (g['我方']['ratioE'], g['全部其他真人']['ratioE'])) if g else '—'
     a0 = land['aiFate'].get('t0', {})
     px = a0.get('px', 0)

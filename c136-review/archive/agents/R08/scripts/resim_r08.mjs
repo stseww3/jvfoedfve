@@ -426,7 +426,36 @@ export function resim(mid, opts = {}) {
     let r = pairAcc.get(key);
     if (!r) { r = [0, 0, 0, 0, 0]; pairAcc.set(key, r); }
     r[0] += tiles; r[1] += burnt; r[2] += dB; r[3] += dS; r[4] += 1;
+    // 无主地的来历（opts.neutralFrom = [t0, t1]）：刚吃下的格就是 this.cand[0..tiles)（expandAttack 赢的那条路把 cand 原样留着）
+    if (nFrom && target === NEUTRAL && tiles > 0 && p < H && this.t > nfT0 && this.t <= nfT1) {
+      const cand = this.cand;
+      for (let i = 0; i < tiles; i++) {
+        const c = cand[i];
+        if (this.own[c] !== p) { nfBad++; continue; }
+        const key2 = p * 1024 + nFrom[c];
+        nfAcc.set(key2, (nfAcc.get(key2) || 0) + 1);
+      }
+    }
   };
+  // 每一格变成无主地之前是谁的（0 = 开局就是无主地；否则 1 + 那个号）。只读引擎状态，不改任何东西。
+  const nFrom = opts.neutralFrom ? new Uint16Array(g.W * g.H) : null;
+  const nfT0 = opts.neutralFrom ? opts.neutralFrom[0] : 0, nfT1 = opts.neutralFrom ? opts.neutralFrom[1] : 0;
+  const nfAcc = new Map();
+  let nfBad = 0;
+  if (nFrom) {
+    g.clearTerritory = function (p) {
+      if (this.terr[p]) {
+        const W = this.W;
+        for (let x = this.x1[p]; x >= this.x0[p]; x--) {
+          for (let y = this.y1[p]; y >= this.y0[p]; y--) {
+            const c = y * W + x;
+            if (this.ownedBy(p, c)) nFrom[c] = p + 1;
+          }
+        }
+      }
+      proto.clearTerritory.call(this, p);
+    };
+  }
   const flushPairs = (t) => {
     for (const [key, r] of pairAcc) pairLog.push([t, key >> 10, key & 1023, r[0], r[1], r[2], r[3], r[4]]);
     pairAcc = new Map();
@@ -774,6 +803,7 @@ export function resim(mid, opts = {}) {
     validate: val,
     snapT, snapTerr, snapBal, snapInc, snapRet, snapOut, snapAi, teamLand, botLand, aliveH,
     sq, pairLog, cmdLog, deaths, landings, maps, engineEvents, huskGifts,
+    neutralFrom: nFrom ? { rows: [...nfAcc].map(([k, v]) => [k >> 10, (k & 1023) - 1, v]), bad: nfBad } : null,
   };
   return out;
 }

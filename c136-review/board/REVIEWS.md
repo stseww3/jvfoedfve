@@ -1,8 +1,8 @@
-# 逐局复盘汇总（机械检查，2026-11-11 22:38 UTC）
+# 逐局复盘汇总（机械检查，2026-11-11 23:07 UTC）
 
 只查字段、数量和取值；内容对不对由 R10 抽查和 c136 复核。
 
-共 95 份复盘，来自 7 名复盘员。
+共 96 份复盘，来自 7 名复盘员。
 
 | 对局 | 复盘员 | 结果 | 分型 | 时间线 | 转折点 | 阵亡 | 决策（错/对/不清） | 新模式 | 未解 | 清单未过 |
 | :-- | :-: | :-: | :-- | --: | --: | --: | :-- | --: | --: | :-- |
@@ -22,13 +22,14 @@
 | B039 | R01 | lost | external | 13 | 4 | 15 | 18（12/4/2） | 4 | 3 | 全过 |
 | B043 | R01 | lost | external | 13 | 4 | 15 | 19（10/5/4） | 2 | 3 | 全过 |
 | A025 | R03 | won | win | 19 | 4 | 6 | 20（10/4/6） | 10 | 9 | 全过 |
+| A042 | R03 | lost | outscaled | 25 | 6 | 10 | 21（12/5/4） | 8 | 7 | 全过 |
 | A045 | R03 | lost | lead-thrown | 24 | 7 | 8 | 24（12/3/9） | 9 | 8 | 全过 |
 | A051 | R03 | lost | never-grew | 12 | 3 | 10 | 23（15/3/5） | 6 | 7 | 全过 |
 | A066 | R03 | lost | outscaled | 15 | 6 | 10 | 26（16/5/5） | 9 | 9 | 全过 |
 | A067 | R03 | lost | never-grew | 22 | 7 | 10 | 24（12/6/6） | 11 | 8 | 全过 |
 | A071 | R03 | lost | outscaled | 19 | 6 | 9 | 22（13/5/4） | 11 | 6 | 全过 |
 | A087 | R03 | lost | lead-thrown | 17 | 4 | 10 | 21（10/4/7） | 6 | 8 | 全过 |
-| A090 | R03 | lost | outscaled | 26 | 6 | 10 | 22（14/4/4） | 10 | 7 | 全过 |
+| A090 | R03 | lost | outscaled | 26 | 6 | 10 | 22（14/4/4） | 10 | 6 | 全过 |
 | A013 | R04 | lost | outscaled | 20 | 5 | 10 | 23（20/3/0） | 23 | 6 | 全过 |
 | A015 | R04 | lost | lead-thrown | 17 | 4 | 10 | 23（18/3/2） | 22 | 6 | 全过 |
 | A022 | R04 | won | win | 17 | 3 | 0 | 17（10/3/4） | 15 | 4 | 全过 |
@@ -128,6 +129,7 @@
 | NEW-AT-ALLYFLOOR | 2 | 0 | 0 |
 | NEW-AT-BEACHDUMP | 2 | 0 | 0 |
 | NEW-AT-CAPDUMP | 5 | 0 | 7 |
+| NEW-AT-CAPDUMP / NEW-R03-IO01 / NEW-R03-AT06 | 0 | 0 | 1 |
 | NEW-AT-CHEAPKILL | 0 | 11 | 0 |
 | NEW-AT-DENSEDGE | 0 | 9 | 0 |
 | NEW-AT-ENCLAVE | 3 | 0 | 0 |
@@ -157,7 +159,7 @@
 | NEW-DF-HOLDFED | 0 | 2 | 0 |
 | NEW-DF-NEXTNB | 2 | 0 | 0 |
 | NEW-DF-NORESCUE | 6 | 0 | 2 |
-| NEW-DF-NORESCUE / R08:挨打的小号被判弃子 | 0 | 0 | 4 |
+| NEW-DF-NORESCUE / R08:挨打的小号被判弃子 | 0 | 0 | 5 |
 | NEW-DF-SEAFLANK | 2 | 0 | 0 |
 | NEW-DF-THIN | 2 | 0 | 0 |
 | NEW-DN-01 | 4 | 0 | 0 |
@@ -180,6 +182,7 @@
 | NEW-DN-BIGFIRST | 2 | 0 | 1 |
 | NEW-DN-CAPLOOP | 7 | 0 | 0 |
 | NEW-DN-CARRIER | 0 | 3 | 4 |
+| NEW-DN-CARRIER / NEW:DN-pingpong | 1 | 0 | 0 |
 | NEW-DN-G1 | 0 | 2 | 0 |
 | NEW-DN-G2 | 0 | 3 | 0 |
 | NEW-DN-G3 | 0 | 1 | 0 |
@@ -246,7 +249,7 @@
 | NEW-MT-09 | 1 | 0 | 1 |
 | NEW-MT-10 | 0 | 0 | 2 |
 | NEW-MT-11 | 1 | 0 | 0 |
-| NEW-MT-OUTNUMBERED | 0 | 0 | 5 |
+| NEW-MT-OUTNUMBERED | 0 | 0 | 6 |
 | NEW-MT-WRONGFRONT | 0 | 0 | 1 |
 | NEW-OP-01 | 2 | 0 | 0 |
 | NEW-OP-02 | 1 | 0 | 0 |
@@ -313,34 +316,41 @@
 | NEW-R01-SP04 | 0 | 0 | 2 |
 | NEW-R01-SP05 | 0 | 0 | 1 |
 | NEW-R01-SP06 | 2 | 0 | 0 |
-| NEW-R03-AT01 | 0 | 12 | 0 |
+| NEW-R03-AT01 | 0 | 14 | 0 |
 | NEW-R03-AT01 / NEW:IO-lag-burst | 0 | 1 | 0 |
 | NEW-R03-AT02 | 2 | 0 | 0 |
 | NEW-R03-AT03 | 1 | 0 | 1 |
+| NEW-R03-AT03 / NEW:AT-worth-gate | 1 | 0 | 0 |
 | NEW-R03-AT04 | 0 | 0 | 1 |
 | NEW-R03-AT05 | 1 | 0 | 0 |
 | NEW-R03-AT06 / NEW-R03-IO01 | 1 | 0 | 0 |
+| NEW-R03-AT07 / NEW-R03-DN01 | 1 | 0 | 0 |
 | NEW-R03-DN01 | 9 | 0 | 0 |
 | NEW-R03-DN01 / R07-EC-BOXED-RICH | 1 | 0 | 0 |
 | NEW-R03-DN02 | 3 | 0 | 0 |
 | NEW-R03-DN02 / NEW-R03-IO01 | 0 | 0 | 1 |
 | NEW-R03-DN02 / NEW:DN-small-pct | 1 | 0 | 0 |
 | NEW-R03-DN03 | 1 | 0 | 0 |
-| NEW-R03-DN03 / NEW-R03-EC01 | 1 | 0 | 1 |
+| NEW-R03-DN03 / NEW-R03-EC01 | 2 | 0 | 1 |
+| NEW-R03-DN04 / NEW-DN-CARRIER / NEW-R03-SE02 | 1 | 0 | 0 |
+| NEW-R03-DN04 / NEW-R03-DN03 | 1 | 0 | 0 |
 | NEW-R03-EC01 | 2 | 0 | 0 |
 | NEW-R03-EC01 / R07-GOOD-FED-PUSH | 0 | 0 | 1 |
+| NEW-R03-EC02 / NEW-R03-AT06 / NEW-R03-IO01 | 1 | 0 | 0 |
 | NEW-R03-EX01 | 0 | 1 | 1 |
 | NEW-R03-IO01 | 10 | 0 | 4 |
 | NEW-R03-IO01 / NEW-AT-02 | 0 | 0 | 2 |
+| NEW-R03-IO01 / NEW-R03-AT06 | 1 | 0 | 0 |
 | NEW-R03-IO01 / NEW-R03-IO02 | 0 | 0 | 1 |
 | NEW-R03-IO01 / NEW:AT-redirect-parked | 1 | 0 | 0 |
 | NEW-R03-IO02 | 9 | 0 | 0 |
 | NEW-R03-IO03 | 2 | 0 | 0 |
-| NEW-R03-OP01 | 11 | 0 | 0 |
+| NEW-R03-OP01 | 11 | 0 | 1 |
 | NEW-R03-SE01 | 2 | 0 | 0 |
 | NEW-R03-SE02 | 3 | 0 | 0 |
-| NEW-R03-SE02 / NEW:FE-tiny-cmd-fee | 1 | 0 | 0 |
+| NEW-R03-SE02 / NEW:FE-tiny-cmd-fee | 2 | 0 | 0 |
 | NEW-R03-SE03 | 2 | 0 | 0 |
+| NEW-R03-SE03 / NEW-R03-SE04 / NEW-R03-EC02 | 1 | 0 | 0 |
 | NEW-R03-SE04 / NEW:IO-lag-burst | 1 | 0 | 0 |
 | NEW-SE-01 | 2 | 0 | 2 |
 | NEW-SE-02 | 2 | 0 | 0 |
@@ -427,12 +437,12 @@
 | NEW:HK-husk-eats-us | 1 | 0 | 0 |
 | NEW:IO-cmd-blackout | 0 | 0 | 3 |
 | NEW:IO-disconnect-husk | 0 | 0 | 2 |
-| NEW:IO-disconnect-husk（对方的空壳）/ NEW-R03-AT01 | 0 | 1 | 0 |
+| NEW:IO-disconnect-husk（对方的空壳）/ NEW-R03-AT01 | 0 | 2 | 0 |
 | NEW:IO-lag-burst | 8 | 0 | 5 |
 | NEW:IO-lag-burst / NEW-R03-IO01 | 5 | 0 | 0 |
 | NEW:IO-stale-pulse-dump | 9 | 0 | 3 |
 | NEW:MT-no-mountain-cmd | 0 | 0 | 1 |
-| NEW:OP-cycle-open | 0 | 14 | 6 |
+| NEW:OP-cycle-open | 0 | 15 | 6 |
 | NEW:OP-dead-cycle | 1 | 0 | 1 |
 | NEW:OP-dpkeep-freeze-ai | 3 | 0 | 0 |
 | NEW:OP-neutral-crumb-lock | 2 | 0 | 0 |
@@ -512,14 +522,15 @@
 | NEW:TS-truce-no-target | 2 | 0 | 0 |
 | R07-DF-PASSIVE-BLEED | 0 | 0 | 1 |
 | R07-DF-RICH-BLEED | 0 | 0 | 2 |
-| R07-EC-BOXED-RICH | 1 | 0 | 1 |
+| R07-EC-BOXED-RICH | 2 | 0 | 1 |
 | R07-EC-IDLE-RICH | 0 | 0 | 1 |
 | R07-EC-NEUT-LOCK / NEW-OP-02 | 1 | 0 | 0 |
 | R07-EC-NO-OUTLET | 0 | 0 | 1 |
 | R07-GOOD-FED-PUSH | 0 | 3 | 0 |
 | R07-GOOD-FED-PUSH / NEW-DN-CARRIER | 0 | 1 | 0 |
+| R07-GOOD-FED-PUSH / NEW-R03-DN02 | 0 | 1 | 0 |
 | R07-GOOD-SAVED-PUSH | 0 | 1 | 0 |
-| R07-SP-CLUSTER | 2 | 0 | 1 |
+| R07-SP-CLUSTER | 3 | 0 | 1 |
 | R07-SP-CLUSTER / R07-SP-OVERLAP | 2 | 0 | 0 |
 | R07-SP-OVERLAP | 1 | 0 | 0 |
 | R08:出手后变薄，随后被吃 | 3 | 0 | 1 |

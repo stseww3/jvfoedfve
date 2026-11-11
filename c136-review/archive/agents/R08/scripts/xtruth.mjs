@@ -118,7 +118,7 @@ for (const mid of argv) {
     }
   };
   try {
-    R = resim(mid, { until, onTick });
+    R = resim(mid, { until, onTick, neutralFrom: [600, 1500] });
   } catch (e) {
     fs.writeFileSync(path.join(outDir, `${mid}.json`), JSON.stringify({ matchId: mid, error: String(e && e.message || e) }));
     console.log(`${mid}: 失败 ${String(e && e.message || e).slice(0, 120)}`);
@@ -242,7 +242,9 @@ for (const mid of argv) {
     names: R.names, teams: R.teams, spawnXY: R.spawnXY, nPicks: (R.spawnSeq || []).map((s) => s.length), lastPick: (R.spawnSeq || []).map((s) => (s.length ? s[s.length - 1].slice(1) : null)),
     startBox: R.startBox, leftT: R.leftT, deathT: R.deathT,
     squad: R.squad, validate: { rows: v.rows, terrExact: v.terrExact, balExact: v.balExact, bothExact: v.bothExact },
-    cp, aiAt, win: WIN, gain, per: PER, cmds, size, reachWin: RW, reach, locks, pairs, 
+    cp, aiAt, win: WIN, gain, per: PER, cmds, size, reachWin: RW, reach, locks, pairs,
+    // (600,1500] 真人吃下的无主地按来历：[真人, 这块地变成无主地之前的主人（-1 = 开局就是无主地）, 格数]；bad = 对不上的格（应为 0）
+    neutralFrom: R.neutralFrom,
   };
   fs.writeFileSync(path.join(outDir, `${mid}.json`), JSON.stringify(out));
   console.log(`${mid}: H=${H} 到 t=${R.endTick} 核对 ${v.bothExact}/${v.rows} 行 ${((Date.now() - t0) / 1000).toFixed(1)}s`);
