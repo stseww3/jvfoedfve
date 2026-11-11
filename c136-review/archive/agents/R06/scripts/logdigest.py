@@ -452,11 +452,20 @@ def sec_wall(M):
 
 # ------------------------------------------------------------------ wallms（结算行的毫秒时间戳 at → 服务器拍；对照那一刻各号日志打到哪一拍）
 def _at_s(r):
-    """results.csv 的 at（ISO，毫秒）→ 当天秒数。跨零点的局不处理（本批 15 局没有）。"""
-    m = re.search(r'T(\d\d):(\d\d):(\d\d)(?:\.(\d+))?Z', r.get('at') or '')
+    """results.csv 的 at（ISO，毫秒）→ 秒数。带日期时按「日序数×86400 + 当天秒数」算，跨零点的局（B017：23:56 → 00:03）不会差出一整天。"""
+    at = r.get('at') or ''
+    m = re.search(r'T(\d\d):(\d\d):(\d\d)(?:\.(\d+))?Z', at)
     if not m:
         return None
-    return int(m.group(1)) * 3600 + int(m.group(2)) * 60 + int(m.group(3)) + (float('0.' + m.group(4)) if m.group(4) else 0.0)
+    sec = int(m.group(1)) * 3600 + int(m.group(2)) * 60 + int(m.group(3)) + (float('0.' + m.group(4)) if m.group(4) else 0.0)
+    d = re.match(r'(\d{4})-(\d\d)-(\d\d)T', at)
+    if d:
+        import datetime
+        sec += 86400 * (datetime.date(int(d.group(1)), int(d.group(2)), int(d.group(3))).toordinal() - _AT_DAY0)
+    return sec
+
+
+_AT_DAY0 = 739000    # 只为让秒数保持在双精度的毫秒精度内（2024-04 附近的日序数）
 
 
 def wallms_rows(M):
@@ -485,7 +494,7 @@ def wallms_rows(M):
         both = [me for me in before if me in after and after[me] - before[me] <= 180]
         out.append(dict(bot=r['bot'], me=r['meId'], event=r['event'], tick=r['tick'], serverTick=srv, resid=_at_s(r) - A - TICK_S * r['tick'], line=line,
                         before=sorted(before[me] for me in both), after=sorted(after[me] for me in both), n=len(both)))
-    return dict(A=A, rows=out)
+    return dict(A=round(A % 86400, 3), rows=out)
 
 
 def sec_wallms(M):

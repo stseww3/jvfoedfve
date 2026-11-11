@@ -1,0 +1,165 @@
+[探针] t=1800 Matthias(26·队4) 地 5744 兵 18k 密 3.2 ｜策略眼里 nb=3 neut=0 ｜worth=4.6（m=1.455）cheap=7.3 超软上限=否 其余真人密度中位=25 ｜NFS 锁=是 影子配额=3170
+        不在 nb 里的真实邻居（保护名单）：Yoshi(22·队7) 接126 地6125 密4
+        报价 Nanda Empire(88·AI) 非真人 接4 地677 兵687 密1 tD=0.04 c=4.8 need=2241 safe=162k(封顶 88×地；原 162k) keep=162k avail=-144k → L5361 avail<=0：保底线 keep=162k（safe=162k，来自 dpKeep=162k）不低于余额
+        报价 S.H.A.D.O.W.(12·队1) 真人 接126 地13049 兵297k 密23 tD=0.91 c=61.2 need=434k [crowdedHard] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [OG]THE VILTRUM EMPI(56·队2) 真人 接62 地9895 兵277k 密28 tD=1.12 c=92.2 need=509k [crowdedHard] → （排在后面：前一个报价已 break）
+        发船检查：岸格 79，mopUp=否；前置条件挡住：在海上的船 4 >= maxBoats 2；有可打的邻居且兵 < idleCap×100×地 = 718k（L4996 return）；searchWater 命中 无主地（price=2.0 eff=6.6）；可发 max=boatFrac×(兵−floor 94k)=-38k，下限 min=60 → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 574k, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 19k, refFloor 94k))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=2100 Matthias(26·队4) 地 3067 兵 56k 密 18.2 ｜策略眼里 nb=2 neut=0 ｜worth=24.1（m=1.320）cheap=8.9 超软上限=否 其余真人密度中位=30 ｜NFS 锁=是 影子配额=13k
+        不在 nb 里的真实邻居（保护名单）：🇮🇹RINF Union🇮🇹(8·队4) 接126 地25484 密15；Legionnaire(32·队7) 接17 地4447 密72
+        报价 S.H.A.D.O.W.(12·队1) 真人 接83 地15448 兵312k 密20 tD=0.68 c=41.0 need=578k [被别人打,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [OG]THE VILTRUM EMPI(56·队2) 真人 接10 地14124 兵310k 密22 tD=0.73 c=131.7 need=573k [crowdedHard] → （排在后面：前一个报价已 break）
+        发船检查：岸格 70，mopUp=否；前置条件挡住：在海上的船 2 >= maxBoats 2；有可打的邻居且兵 < idleCap×100×地 = 383k（L4996 return）；searchWater 命中 Lippe(437·AI)（price=2.0 eff=5.0）；可发 max=boatFrac×(兵−floor 10k)=23k，下限 min=6984 → 够发；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 307k, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 10k, refFloor 0))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=2400 Matthias(26·队4) 地 3071 兵 93k 密 30.1 ｜策略眼里 nb=2 neut=0 ｜worth=30.3（m=1.005）cheap=8.9 超软上限=否 其余真人密度中位=31 ｜NFS 锁=是 影子配额=22k
+        不在 nb 里的真实邻居（保护名单）：🇮🇹RINF Union🇮🇹(8·队4) 接126 地25498 密26；Legionnaire(32·队7) 接17 地4465 密73
+        报价 S.H.A.D.O.W.(12·队1) 真人 接83 地13276 兵205k 密15 tD=0.50 c=39.4 need=373k [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [OG]THE VILTRUM EMPI(56·队2) 真人 接10 地19298 兵417k 密22 tD=0.70 c=96.1 need=772k [pulse] → （排在后面：前一个报价已 break）
+        发船检查：岸格 72，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 384k（L4996 return）；searchWater 命中 Lippe(437·AI)（price=2.0 eff=6.1）；可发 max=boatFrac×(兵−floor 307k)=-107k，下限 min=12k → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 307k, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 10k, refFloor 307k))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=2500 Blucher(21·队3) 地 25619 兵 604k 密 23.6 ｜策略眼里 nb=4 neut=0 ｜worth=25.0（m=0.900）cheap=7.3 超软上限=否 其余真人密度中位=33 ｜NFS 锁=是 影子配额=145k
+        不在 nb 里的真实邻居（保护名单）：Alucard(23·队2) 接144 地27845 密8；Mori(33·队7) 接115 地12668 密16；Dahomey(35·队2) 接97 地4745 密40
+        报价 Mauretania(80·AI) 非真人 接60 地1236 兵0 密0 tD=0.00 c=9.5 need=1854 safe=296k(封顶 88×地；原 296k) keep=391k avail=206k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=2498 < minCmd=feeK×手续费=28k（余额的 4.7%）→ 跳过
+        报价 [OG]THE VILTRUM EMPI(56·队2) 真人 接46 地19060 兵432k 密23 tD=0.69 c=47.8 need=797k [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 S.H.A.D.O.W.(12·队1) 真人 接245 地13276 兵246k 密19 tD=0.57 c=47.1 need=445k [pulse] → （排在后面：前一个报价已 break）
+        报价 Jimmy2x8(36·队6) 真人 接33 地10923 兵566k 密52 tD=1.58 c=169.2 need=1.02M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        发船检查：岸格 306，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 3.20M（L4996 return）；searchWater 命中 [corgi] Rikku(37·队8)（price=29.9 eff=39.0）；可发 max=boatFrac×(兵−floor 1.90M)=-647k，下限 min=76k → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 2.56M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 1.28M, refFloor 1.90M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=2700 Blucher(21·队3) 地 25498 兵 841k 密 33.0 ｜策略眼里 nb=4 neut=0 ｜worth=29.7（m=0.900）cheap=7.3 超软上限=否 其余真人密度中位=36 ｜NFS 锁=是 影子配额=204k
+        不在 nb 里的真实邻居（保护名单）：Alucard(23·队2) 接144 地24661 密15；Mori(33·队7) 接115 地12668 密23；Dahomey(35·队2) 接97 地4670 密52
+        报价 Mauretania(80·AI) 非真人 接59 地1357 兵0 密0 tD=0.00 c=11.5 need=2036 safe=340k(封顶 88×地；原 340k) keep=592k avail=239k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=2722 < minCmd=feeK×手续费=39k（余额的 4.7%）→ 跳过
+        报价 S.H.A.D.O.W.(12·队1) 真人 接241 地13276 兵345k 密26 tD=0.71 c=65.0 need=618k [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [OG]THE VILTRUM EMPI(56·队2) 真人 接46 地21435 兵608k 密28 tD=0.78 c=69.9 need=1.12M [pulse] → （排在后面：前一个报价已 break）
+        报价 Jimmy2x8(36·队6) 真人 接33 地11016 兵644k 密58 tD=1.60 c=191.1 need=1.16M [pulse,crowdedHard] → （排在后面：前一个报价已 break）
+        发船检查：岸格 303，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 3.19M（L4996 return）；searchWater 命中 [corgi] Rikku(37·队8)（price=34.8 eff=46.0）；可发 max=boatFrac×(兵−floor 1.76M)=-462k，下限 min=105k → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 2.55M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 1.48M, refFloor 1.76M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=2700 Matthias(26·队4) 地 3071 兵 140k 密 45.4 ｜策略眼里 nb=2 neut=0 ｜worth=40.9（m=0.900）cheap=8.9 超软上限=否 其余真人密度中位=44 ｜NFS 锁=是 影子配额=34k
+        不在 nb 里的真实邻居（保护名单）：🇮🇹RINF Union🇮🇹(8·队4) 接126 地26047 密34；Legionnaire(32·队7) 接17 地4051 密87
+        报价 S.H.A.D.O.W.(12·队1) 真人 接83 地13276 兵345k 密26 tD=0.59 c=64.6 need=618k [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [OG]THE VILTRUM EMPI(56·队2) 真人 接10 地21435 兵608k 密28 tD=0.65 c=125.0 need=1.12M [pulse] → （排在后面：前一个报价已 break）
+        发船检查：岸格 72，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 384k（L4996 return）；searchWater 命中 Lippe(437·AI)（price=2.0 eff=7.2）；可发 max=boatFrac×(兵−floor 307k)=-84k，下限 min=17k → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 307k, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 10k, refFloor 307k))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=2900 Blucher(21·队3) 地 25380 兵 1.15M 密 45.2 ｜策略眼里 nb=4 neut=0 ｜worth=40.7（m=0.900）cheap=7.3 超软上限=否 其余真人密度中位=42 ｜NFS 锁=是 影子配额=281k
+        不在 nb 里的真实邻居（保护名单）：Alucard(23·队2) 接144 地23782 密22；Mori(33·队7) 接115 地12668 密32；Dahomey(35·队2) 接97 地4630 密67
+        报价 Mauretania(80·AI) 非真人 接57 地1475 兵0 密0 tD=0.00 c=14.0 need=2214 safe=449k(封顶 88×地；原 449k) keep=783k avail=351k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=2939 < minCmd=feeK×手续费=54k（余额的 4.7%）→ 跳过
+        报价 S.H.A.D.O.W.(12·队1) 真人 接237 地13276 兵472k 密36 tD=0.85 c=88.1 need=841k [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [OG]THE VILTRUM EMPI(56·队2) 真人 接46 地21435 兵838k 密39 tD=0.94 c=95.5 need=1.53M [pulse] → （排在后面：前一个报价已 break）
+        报价 Jimmy2x8(36·队6) 真人 接33 地11635 兵619k 密53 tD=1.28 c=129.3 need=1.12M [pulse] → （排在后面：前一个报价已 break）
+        发船检查：岸格 301，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 3.17M（L4996 return）；searchWater 命中 [corgi] Rikku(37·队8)（price=44.9 eff=59.6）；可发 max=boatFrac×(兵−floor 2.49M)=-670k，下限 min=143k → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 2.54M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 1.90M, refFloor 2.49M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=3000 Matthias(26·队4) 地 3071 兵 205k 密 66.8 ｜策略眼里 nb=2 neut=0 ｜worth=60.1（m=0.900）cheap=8.9 超软上限=否 其余真人密度中位=54 ｜NFS 锁=是 影子配额=51k
+        不在 nb 里的真实邻居（保护名单）：🇮🇹RINF Union🇮🇹(8·队4) 接126 地27996 密48；Legionnaire(32·队7) 接17 地4051 密97
+        报价 S.H.A.D.O.W.(12·队1) 真人 接83 地13276 兵548k 密41 tD=0.77 c=101.3 need=976k [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [OG]THE VILTRUM EMPI(56·队2) 真人 接10 地21435 兵977k 密46 tD=0.85 c=198.8 need=1.77M [pulse] → （排在后面：前一个报价已 break）
+        发船检查：岸格 72，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 384k（L4996 return）；searchWater 命中 无主地（price=2.0 eff=171.6）；可发 max=boatFrac×(兵−floor 307k)=-51k，下限 min=60 → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 307k, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 10k, refFloor 307k))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=3050 Khmer(27·队3) 地 3508 兵 420k 密 119.8 ｜策略眼里 nb=3 neut=0 ｜worth=107.8（m=0.900）cheap=8.9 超软上限=是 其余真人密度中位=50 ｜NFS 锁=是 影子配额=105k
+        报价 [Corgi] Grrarl510(0·队8) 真人 接44 地24953 兵1.05M 密42 tD=0.84 c=101.6 need=1.90M [pulse] safe=585k keep=585k avail=-169k → L5361 avail<=0：保底线 keep=585k（safe=585k，来自 dpKeep=585k）不低于余额
+        报价 ☪️🇷🇺الشيشان(11·队8) 真人 接42 地15381 兵767k 密50 tD=1.00 c=120.7 need=1.39M [pulse] safe=585k keep=585k avail=-169k → L5361 avail<=0：保底线 keep=585k（safe=585k，来自 dpKeep=585k）不低于余额
+        报价 [TR] Severus(43·队2) 真人 接59 地14011 兵740k 密53 tD=1.06 c=130.9 need=1.28M [pulse] safe=585k keep=585k avail=-169k → L5361 avail<=0：保底线 keep=585k（safe=585k，来自 dpKeep=585k）不低于余额
+        发船检查：岸格 0，mopUp=否；前置条件挡住：引擎不许发船；有可打的邻居且兵 < idleCap×100×地 = 439k（L4996 return）；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：无
+[探针] t=3100 Blucher(21·队3) 地 25259 兵 1.61M 密 63.9 ｜策略眼里 nb=4 neut=0 ｜worth=57.5（m=0.900）cheap=7.3 超软上限=否 其余真人密度中位=53 ｜NFS 锁=是 影子配额=397k
+        不在 nb 里的真实邻居（保护名单）：Alucard(23·队2) 接144 地23782 密30；Mori(33·队7) 接115 地12668 密43；Dahomey(35·队2) 接97 地4630 密86
+        报价 Mauretania(80·AI) 非真人 接61 地1596 兵0 密0 tD=0.00 c=17.5 need=2394 safe=617k(封顶 88×地；原 617k) keep=1.07M avail=522k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=3176 < minCmd=feeK×手续费=76k（余额的 4.7%）→ 跳过
+        报价 Jimmy2x8(36·队6) 真人 接33 地16521 兵572k 密35 tD=0.66 c=85.5 need=1.04M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 S.H.A.D.O.W.(12·队1) 真人 接236 地13276 兵634k 密48 tD=0.90 c=117.6 need=1.13M [pulse] → （排在后面：前一个报价已 break）
+        报价 [OG]THE VILTRUM EMPI(56·队2) 真人 接46 地21435 兵1.14M 密53 tD=1.01 c=129.0 need=2.06M [pulse] → （排在后面：前一个报价已 break）
+        发船检查：岸格 298，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 3.16M（L4996 return）；searchWater 命中 [corgi] Rikku(37·队8)（price=63.6 eff=84.4）；可发 max=boatFrac×(兵−floor 2.53M)=-457k，下限 min=202k → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 2.53M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 2.53M, refFloor 2.53M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=3150 Legionnaire(32·队7) 地 3581 兵 355k 密 99.3 ｜策略眼里 nb=2 neut=0 ｜worth=89.3（m=0.900）cheap=8.9 超软上限=否 其余真人密度中位=57 ｜NFS 锁=是 影子配额=89k
+        不在 nb 里的真实邻居（保护名单）：Dahomey(35·队2) 接124 地4630 密91；Matthias(26·队4) 接17 地3071 密80
+        报价 Jimmy2x8(36·队6) 真人 接49 地17368 兵610k 密35 tD=0.62 c=85.3 need=1.11M [pulse] safe=851k keep=851k avail=-500k → L5361 avail<=0：保底线 keep=851k（safe=851k，来自 dpKeep=851k）不低于余额
+        报价 🇮🇹RINF Union🇮🇹(8·队4) 真人 接58 地28028 兵1.52M 密54 tD=0.96 c=130.8 need=2.75M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        发船检查：岸格 142，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 448k（L4996 return）；searchWater 命中 无主地（price=2.0 eff=30.5）；可发 max=boatFrac×(兵−floor 358k)=-1336，下限 min=60 → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 358k, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 12k, refFloor 358k))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=3220 Khmer(27·队3) 地 3130 兵 335k 密 107.0 ｜策略眼里 nb=3 neut=0 ｜worth=96.3（m=0.900）cheap=8.9 超软上限=是 其余真人密度中位=63 ｜NFS 锁=是 影子配额=84k
+        报价 [Corgi] Grrarl510(0·队8) 真人 接43 地25331 兵1.07M 密42 tD=0.67 c=92.6 need=2.07M [在打我,pulse] safe=670k keep=670k avail=-339k → L5361 avail<=0：保底线 keep=670k（safe=670k，来自 dpKeep=670k）不低于余额
+        报价 ☪️🇷🇺الشيشان(11·队8) 真人 接38 地16056 兵794k 密49 tD=0.78 c=119.5 need=1.44M [pulse] safe=670k keep=670k avail=-339k → L5361 avail<=0：保底线 keep=670k（safe=670k，来自 dpKeep=670k）不低于余额
+        报价 [TR] Severus(43·队2) 真人 接57 地12034 兵713k 密59 tD=0.94 c=149.1 need=1.18M [pulse] safe=670k keep=670k avail=-339k → L5361 avail<=0：保底线 keep=670k（safe=670k，来自 dpKeep=670k）不低于余额
+        发船检查：岸格 0，mopUp=否；前置条件挡住：引擎不许发船；有可打的邻居且兵 < idleCap×100×地 = 391k（L4996 return）；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：无
+[探针] t=3300 Blucher(21·队3) 地 25128 兵 2.15M 密 85.5 ｜策略眼里 nb=4 neut=0 ｜worth=77.0（m=0.900）cheap=7.3 超软上限=否 其余真人密度中位=65 ｜NFS 锁=是 影子配额=531k
+        不在 nb 里的真实邻居（保护名单）：Alucard(23·队2) 接144 地23782 密42；Mori(33·队7) 接115 地12668 密57；Dahomey(35·队2) 接97 地4702 密104
+        报价 Mauretania(80·AI) 非真人 接67 地1727 兵0 密0 tD=0.00 c=21.1 need=2592 safe=836k(封顶 88×地；原 836k) keep=1.40M avail=727k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=3441 < minCmd=feeK×手续费=101k（余额的 4.7%）→ 跳过
+        报价 Jimmy2x8(36·队6) 真人 接33 地17982 兵885k 密49 tD=0.76 c=120.4 need=1.60M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 S.H.A.D.O.W.(12·队1) 真人 接233 地13276 兵841k 密63 tD=0.98 c=155.1 need=1.49M [pulse] → （排在后面：前一个报价已 break）
+        报价 [OG]THE VILTRUM EMPI(56·队2) 真人 接46 地21435 兵1.53M 密71 tD=1.10 c=172.5 need=2.75M [pulse] → （排在后面：前一个报价已 break）
+        发船检查：岸格 295，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 3.14M（L4996 return）；searchWater 命中 [corgi] Rikku(37·队8)（price=87.4 eff=115.5）；可发 max=boatFrac×(兵−floor 2.51M)=-182k，下限 min=269k → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 2.51M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 2.51M, refFloor 2.51M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=3300 Matthias(26·队4) 地 3071 兵 299k 密 97.5 ｜策略眼里 nb=2 neut=0 ｜worth=87.8（m=0.900）cheap=8.9 超软上限=否 其余真人密度中位=65 ｜NFS 锁=是 影子配额=74k
+        不在 nb 里的真实邻居（保护名单）：🇮🇹RINF Union🇮🇹(8·队4) 接126 地28332 密65；Legionnaire(32·队7) 接17 地3581 密117
+        报价 S.H.A.D.O.W.(12·队1) 真人 接83 地13276 兵841k 密63 tD=0.98 c=153.9 need=1.49M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 [OG]THE VILTRUM EMPI(56·队2) 真人 接10 地21435 兵1.53M 密71 tD=1.10 c=308.5 need=2.75M [pulse] → （排在后面：前一个报价已 break）
+        发船检查：岸格 72，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 384k（L4996 return）；searchWater 命中 Jimmy2x8(36·队6)（price=159.5 eff=168.7）；可发 max=boatFrac×(兵−floor 307k)=-3827，下限 min=37k → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 307k, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 307k, refFloor 307k))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=3320 Legionnaire(32·队7) 地 3581 兵 424k 密 118.4 ｜策略眼里 nb=2 neut=0 ｜worth=106.5（m=0.900）cheap=8.9 超软上限=是 其余真人密度中位=67 ｜NFS 锁=是 影子配额=106k
+        不在 nb 里的真实邻居（保护名单）：Dahomey(35·队2) 接124 地4702 密106；Matthias(26·队4) 接17 地3071 密100
+        报价 Jimmy2x8(36·队6) 真人 接49 地17982 兵908k 密51 tD=0.76 c=121.8 need=1.65M [pulse] safe=1.06M keep=1.06M avail=-637k → L5361 avail<=0：保底线 keep=1.06M（safe=1.06M，来自 dpKeep=1.06M）不低于余额
+        报价 🇮🇹RINF Union🇮🇹(8·队4) 真人 接58 地28332 兵1.89M 密67 tD=1.00 c=159.9 need=3.40M [pulse] safe=1.06M keep=1.06M avail=-637k → L5361 avail<=0：保底线 keep=1.06M（safe=1.06M，来自 dpKeep=1.06M）不低于余额
+        发船检查：岸格 142，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 448k（L4996 return）；searchWater 命中 S.H.A.D.O.W.(12·队1)（price=209.8 eff=261.7）；可发 max=boatFrac×(兵−floor 358k)=33k，下限 min=53k → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 358k, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 358k, refFloor 358k))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=3390 Khmer(27·队3) 地 2034 兵 194k 密 95.6 ｜策略眼里 nb=3 neut=0 ｜worth=86.0（m=0.900）cheap=9.1 超软上限=否 其余真人密度中位=71 ｜NFS 锁=是 影子配额=49k
+        报价 [Corgi] Grrarl510(0·队8) 真人 接55 地26427 兵1.07M 密40 tD=0.57 c=97.7 need=1.94M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 ☪️🇷🇺الشيشان(11·队8) 真人 接29 地16769 兵898k 密54 tD=0.76 c=129.2 need=1.63M [pulse] → （排在后面：前一个报价已 break）
+        报价 [TR] Severus(43·队2) 真人 接54 地10682 兵719k 密67 tD=0.95 c=171.0 need=1.16M [被别人打,pulse] → （排在后面：前一个报价已 break）
+        发船检查：岸格 0，mopUp=否；前置条件挡住：引擎不许发船；有可打的邻居且兵 < idleCap×100×地 = 254k（L4996 return）；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：无
+[探针] t=3490 Legionnaire(32·队7) 地 3581 兵 399k 密 111.4 ｜策略眼里 nb=2 neut=0 ｜worth=100.3（m=0.900）cheap=8.9 超软上限=是 其余真人密度中位=72 ｜NFS 锁=是 影子配额=100k
+        不在 nb 里的真实邻居（保护名单）：Dahomey(35·队2) 接124 地4702 密100；Matthias(26·队4) 接17 地3071 密119
+        报价 Jimmy2x8(36·队6) 真人 接49 地17786 兵1.13M 密64 tD=0.89 c=153.0 need=2.04M [pulse] safe=1.35M keep=1.35M avail=-959k → L5361 avail<=0：保底线 keep=1.35M（safe=1.35M，来自 dpKeep=1.35M）不低于余额
+        报价 🇮🇹RINF Union🇮🇹(8·队4) 真人 接58 地28528 兵2.41M 密85 tD=1.18 c=202.8 need=4.35M [pulse] safe=1.35M keep=1.35M avail=-959k → L5361 avail<=0：保底线 keep=1.35M（safe=1.35M，来自 dpKeep=1.35M）不低于余额
+        发船检查：岸格 142，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 448k（L4996 return）；searchWater 命中 S.H.A.D.O.W.(12·队1)（price=262.2 eff=326.7）；可发 max=boatFrac×(兵−floor 358k)=20k，下限 min=50k → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 358k, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 358k, refFloor 358k))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=3500 Blucher(21·队3) 地 24986 兵 2.81M 密 112.3 ｜策略眼里 nb=4 neut=0 ｜worth=101.1（m=0.900）cheap=7.4 超软上限=是 其余真人密度中位=70 ｜NFS 锁=是 影子配额=695k
+        不在 nb 里的真实邻居（保护名单）：Alucard(23·队2) 接144 地23782 密57；Mori(33·队7) 接115 地12668 密81；Dahomey(35·队2) 接97 地4702 密103
+        报价 Mauretania(80·AI) 非真人 接69 地1869 兵0 密0 tD=0.00 c=25.1 need=2804 safe=1.12M(封顶 88×地；原 1.12M) keep=1.79M avail=984k → L5367a 这笔单太小：x=min(avail, want=1.25×need+3×接壤)=3712 < minCmd=feeK×手续费=132k（余额的 4.7%）→ 跳过
+        报价 Jimmy2x8(36·队6) 真人 接33 地17739 兵1.16M 密65 tD=0.93 c=159.5 need=2.09M [pulse] safe=1.12M keep=2.25M avail=525k → L5528 买不起整笔（want=2.61M）且 avail=525k 不足 chunk×兵=561k → 跳过
+        报价 S.H.A.D.O.W.(12·队1) 真人 接223 地13276 兵1.11M 密83 tD=1.19 c=203.1 need=1.97M [pulse] safe=1.12M keep=2.25M avail=525k → L5528 买不起整笔（want=2.46M）且 avail=525k 不足 chunk×兵=561k → 跳过
+        报价 [OG]THE VILTRUM EMPI(56·队2) 真人 接46 地21435 兵2.03M 密95 tD=1.35 c=229.2 need=3.66M [pulse] safe=1.12M keep=2.25M avail=525k → L5528 买不起整笔（want=4.57M）且 avail=525k 不足 chunk×兵=561k → 跳过
+        发船检查：岸格 293，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 3.12M（L4996 return）；searchWater 命中 [corgi] Rikku(37·队8)（price=117.2 eff=154.6）；可发 max=boatFrac×(兵−floor 2.50M)=154k，下限 min=351k → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 2.50M, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 2.50M, refFloor 2.50M))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=3560 Khmer(27·队3) 地 1692 兵 137k 密 81.3 ｜策略眼里 nb=3 neut=0 ｜worth=73.1（m=0.900）cheap=9.3 超软上限=否 其余真人密度中位=69 ｜NFS 锁=是 影子配额=34k
+        报价 [Corgi] Grrarl510(0·队8) 真人 接58 地26769 兵1.23M 密46 tD=0.67 c=113.9 need=2.29M [在打我,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 ☪️🇷🇺الشيشان(11·队8) 真人 接29 地17476 兵933k 密53 tD=0.77 c=128.8 need=1.69M [pulse] → （排在后面：前一个报价已 break）
+        报价 [TR] Severus(43·队2) 真人 接51 地9517 兵743k 密78 tD=1.13 c=199.6 need=1.16M [pulse] → （排在后面：前一个报价已 break）
+        发船检查：岸格 0，mopUp=否；前置条件挡住：引擎不许发船；有可打的邻居且兵 < idleCap×100×地 = 212k（L4996 return）；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：无
+[探针] t=3600 Matthias(26·队4) 地 3071 兵 396k 密 128.8 ｜策略眼里 nb=2 neut=0 ｜worth=116.0（m=0.900）cheap=8.9 超软上限=是 其余真人密度中位=82 ｜NFS 锁=是 影子配额=99k
+        不在 nb 里的真实邻居（保护名单）：🇮🇹RINF Union🇮🇹(8·队4) 接126 地28594 密92；Legionnaire(32·队7) 接17 地3953 密89
+        报价 S.H.A.D.O.W.(12·队1) 真人 接83 地13276 兵1.27M 密95 tD=1.16 c=230.0 need=2.25M [pulse] safe=1.31M keep=1.31M avail=-916k → L5361 avail<=0：保底线 keep=1.31M（safe=1.31M，来自 dpKeep=1.31M）不低于余额
+        报价 [OG]THE VILTRUM EMPI(56·队2) 真人 接10 地21435 兵2.33M 密109 tD=1.32 c=469.1 need=4.19M [pulse] safe=1.31M keep=1.31M avail=-916k → L5361 avail<=0：保底线 keep=1.31M（safe=1.31M，来自 dpKeep=1.31M）不低于余额
+        发船检查：岸格 72，mopUp=否；前置条件挡住：距上次发船检查 40 拍 < boatEvery 60；searchWater 命中 Jimmy2x8(36·队6)（price=226.8 eff=240.0）；可发 max=boatFrac×(兵−floor 307k)=44k，下限 min=49k → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 307k, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 307k, refFloor 307k))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=3660 Legionnaire(32·队7) 地 3581 兵 316k 密 88.3 ｜策略眼里 nb=2 neut=0 ｜worth=79.4（m=0.900）cheap=8.9 超软上限=否 其余真人密度中位=78 ｜NFS 锁=是 影子配额=79k
+        不在 nb 里的真实邻居（保护名单）：Dahomey(35·队2) 接129 地5438 密56；Matthias(26·队4) 接17 地3071 密132
+        报价 Jimmy2x8(36·队6) 真人 接46 地12315 兵673k 密55 tD=0.70 c=114.0 need=1.10M [被别人打,pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        报价 🇮🇹RINF Union🇮🇹(8·队4) 真人 接58 地29721 兵2.33M 密78 tD=1.00 c=187.7 need=4.19M [pulse] → （排在后面：前一个报价已 break）
+        发船检查：岸格 142，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 448k（L4996 return）；searchWater 命中 S.H.A.D.O.W.(12·队1)（price=251.5 eff=299.6）；可发 max=boatFrac×(兵−floor 358k)=-21k，下限 min=40k → max < min，不发（L1044）；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 358k, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 358k, refFloor 358k))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=3730 Khmer(27·队3) 地 1523 兵 165k 密 108.4 ｜策略眼里 nb=3 neut=0 ｜worth=97.5（m=0.900）cheap=9.3 超软上限=是 其余真人密度中位=70 ｜NFS 锁=是 影子配额=41k
+        报价 ☪️🇷🇺الشيشان(11·队8) 真人 接33 地18245 兵865k 密47 tD=0.68 c=114.6 need=1.57M [pulse] safe=905k keep=905k avail=-741k → L5361 avail<=0：保底线 keep=905k（safe=905k，来自 dpKeep=905k）不低于余额
+        报价 [Corgi] Grrarl510(0·队8) 真人 接56 地26938 兵1.61M 密60 tD=0.86 c=144.0 need=2.91M [pulse] safe=905k keep=905k avail=-741k → L5361 avail<=0：保底线 keep=905k（safe=905k，来自 dpKeep=905k）不低于余额
+        报价 [TR] Severus(43·队2) 真人 接46 地8192 兵704k 密86 tD=1.24 c=223.1 need=1.05M [pulse] safe=905k keep=905k avail=-741k → L5361 avail<=0：保底线 keep=905k（safe=905k，来自 dpKeep=905k）不低于余额
+        发船检查：岸格 0，mopUp=否；前置条件挡住：引擎不许发船；有可打的邻居且兵 < idleCap×100×地 = 190k（L4996 return）；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：无
+[探针] t=3830 Legionnaire(32·队7) 地 1632 兵 106k 密 65.1 ｜策略眼里 nb=1 neut=0 ｜worth=58.6（m=0.900）cheap=9.3 超软上限=否 其余真人密度中位=70 ｜NFS 锁=是 影子配额=27k
+        不在 nb 里的真实邻居（保护名单）：Dahomey(35·队2) 接121 地8776 密64；Matthias(26·队4) 接17 地3108 密130
+        报价 🇮🇹RINF Union🇮🇹(8·队4) 真人 接99 地36550 兵2.20M 密60 tD=0.86 c=189.6 need=3.98M [pulse] → L5267 报价 c >= worth 且没超软上限 → break
+        发船检查：岸格 61，mopUp=否；前置条件挡住：有可打的邻居且兵 < idleCap×100×地 = 204k（L4996 return）；searchWater 命中 无主地（price=2.0 eff=17.7）；可发 max=boatFrac×(兵−floor 8536)=49k，下限 min=60 → 够发；floor 的来历（L865/L2869）：floorK 1 × min(keepCap 1 × 100×地 163k, max(reserve 1 × 100×地 × min(1, price/cRef 60) = 5440, refFloor 8536))，再与 safeAt(-1)=0、idleKeep=0 取大
+        影子 act() 这一拍发出：无
+[探针] t=3900 Khmer(27·队3) 地 822 兵 95k 密 116.0 ｜策略眼里 nb=3 neut=0 ｜worth=104.4（m=0.900）cheap=10.0 超软上限=是 其余真人密度中位=69 ｜NFS 锁=是 影子配额=24k
+        报价 ☪️🇷🇺الشيشان(11·队8) 真人 接27 地18529 兵1.00M 密54 tD=0.78 c=130.7 need=1.82M [pulse] safe=1.03M keep=1.03M avail=-939k → L5361 avail<=0：保底线 keep=1.03M（safe=1.03M，来自 dpKeep=1.03M）不低于余额
+        报价 [Corgi] Grrarl510(0·队8) 真人 接39 地27639 兵1.84M 密67 tD=0.96 c=160.1 need=3.32M [pulse] safe=1.03M keep=1.03M avail=-939k → L5361 avail<=0：保底线 keep=1.03M（safe=1.03M，来自 dpKeep=1.03M）不低于余额
+        报价 [TR] Severus(43·队2) 真人 接45 地6939 兵668k 密96 tD=1.39 c=252.9 need=942k [pulse] safe=1.03M keep=1.03M avail=-939k → L5361 avail<=0：保底线 keep=1.03M（safe=1.03M，来自 dpKeep=1.03M）不低于余额
+        发船检查：岸格 0，mopUp=否；前置条件挡住：引擎不许发船；有可打的邻居且兵 < idleCap×100×地 = 103k（L4996 return）；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：捐→Blucher(21·队3) 153‰ 14k
+[探针] t=4000 Legionnaire(32·队7) 地 1 兵 0 密 0.0 ｜策略眼里 nb=0 neut=0 ｜worth=55.0（m=0.900）cheap=10.0 超软上限=否 其余真人密度中位=72 ｜NFS 锁=是 影子配额=2048
+        offers 为空（nb 里没有可报价的邻居）
+        发船检查：岸格 0，mopUp=否；前置条件挡住：引擎不许发船；searchWater 在 200 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）
+        影子 act() 这一拍发出：无
+B017: 干净模拟器 vs 真引擎重放：全体真人在采样拍一致到 t=4020，没有不同
+        我方号分叉后的最大偏差（兵力相对值@拍，领土格数@拍）：没有
+        我方号逐拍第一处不同：没有
+B017: 影子重演到 t=4050，耗时 3.7s；日志快照核对 583/583；策略 c110，g.online=true
+影子的 isNoFullSend 置真拍（按代码 L3831-3843 的条件在真实余额轨迹上演化；影子的指令不执行，余额下跌只来自录像里真实执行的指令和挨打）：Blucher@462，Khmer@775，Legionnaire@705，Matthias@755｜始终为假：无

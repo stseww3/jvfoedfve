@@ -1,0 +1,17 @@
+# A070 t=300~1499 身边既没有内置 AI、也没有无主地的决策拍：开局逻辑为什么不打贴着的敌方真人（策略 v27-team-c116-vb.js；Policy.act → super.act（V13 Style.act）→ pickTarget → allow / floorFor）
+# floorAt 复刻核对：14 次里不一致 0 次
+# 生效参数：preyKill=1 preyFloor=0.5 personMax=0 idleCap=1.25 minSend=0.2141 sendFrac=0.746 feeK=4 reserve=1 cRef=60 keepCap=1 kDef=4 capMin=0.1 denW=1 defCap=1 ref=0 earlyEnd=513 coreFrom=1500 dpEnd=1500
+sora_w: 这样的决策拍 63（t=1185~1495）；其中有指令 43；余额 72287→221024，领土 9885→9885
+    让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发）: 20 拍
+    最便宜的敌方真人邻居 Israel Defense Force#15：20 拍，每格 3.8~7.3 兵；它 13745 格 / 7938 兵 → 21273 格 / 35371 兵
+riku_x: 这样的决策拍 58（t=1210~1495）；其中有指令 9；余额 45088→95956，领土 5471→5471
+    让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发）: 35 拍
+    让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)）: 14 拍
+    最便宜的敌方真人邻居 Player 191#18：49 拍，每格 4.1~12.2 兵；它 10728 格 / 26965 兵 → 19516 格 / 14678 兵
+alex_k: 这样的决策拍 15（t=1425~1495）；其中有指令 15；余额 133866→158423，领土 10118→10118
+# 合计：决策拍 136，有指令 67；零指令按原因：让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发） 55；让打，但可用兵（余额 − 留底）不到 minSend×余额 或不到一条指令；留底由这一项定：preyFloor(0.5)×价格留底（reserve×100×领土×min(1, 单价/cRef)） 14
+# 例子（每 100 拍取一条）
+  t=1200 sora_w B=86969 L=9885（密度 8.8）| 最便宜的敌方真人 Israel Defense Force#15[T1]（14104 格 / 22238 兵）每格 7.0 | 让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发）；底线 58033（floorFor0 58033、safeP×peopleSafe 0）、可用 28936、吃光要 60792、amount=0、minCmd=4076
+  t=1300 sora_w B=127634 L=9885（密度 12.9）| 最便宜的敌方真人 Israel Defense Force#15[T1]（17535 格 / 23164 兵）每格 6.2 | 让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发）；底线 51295（floorFor0 51295、safeP×peopleSafe 0）、可用 76339、吃光要 67592、amount=0、minCmd=5980
+  t=1300 riku_x B=64613 L=5471（密度 11.8）| 最便宜的敌方真人 Player 191#18[T1]（12353 格 / 33347 兵）每格 10.6 | 让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发）；底线 48500（floorFor0 48500、safeP×peopleSafe 0）、可用 16113、吃光要 77967、amount=0、minCmd=3028
+  t=1400 riku_x B=77065 L=5471（密度 14.1）| 最便宜的敌方真人 Player 191#18[T1]（17263 格 / 36743 兵）每格 8.8 | 让打、也过了留底，但 sendFrac×可用兵 < preyKill×吃光它要的兵（amount0 L2349：一次吃不光就一个兵都不发）；底线 40169（floorFor0 40169、safeP×peopleSafe 0）、可用 36896、吃光要 91388、amount=0、minCmd=3612

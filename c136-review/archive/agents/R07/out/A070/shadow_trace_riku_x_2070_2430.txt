@@ -1,0 +1,226 @@
+# A070 riku_x 影子决策明细 t=2070~2430（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   出手打人/bot: 13 拍（t=2070~2195）；可用兵 37635~55100，一条指令下限(20%余额) 7633~11151，比值 493%~494%
+#   首选目标价高（c>=worth）: 29 拍（t=2100~2430）
+#   没有可打的邻居: 30 拍（t=2265~2415）
+#   首选目标无可用兵（avail<=0）: 1 拍（t=2275~2275）；可用兵 -20850~-20850，一条指令下限(20%余额) 0~0，比值 -10425000%~-10425000%
+#   └ 「出手打人/bot」里：13 条对人/bot 的出兵共约 517796 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 13 条约 517796 兵，c/worth = 1.90~2.71
+t=2070 riku_x B=38163 L=17819 d=2.1 nb=1 neut=0 cmds=110 noFull=1 shQ=9540 | m=1.352 worth=2.9 cheap=8.0 over=0 dMedOther=6.3 safe(-1)=0
+    → Player 191#18[T1离] terr=10707 bal=24176 dq=2.3 cnt=42 | c=7.8 rankC=7.8 need=48786 tD=0.36 机 | safe=0 keep=0 avail=37716 chunkB=7633 pulseB=4580  x=37716 hNb=0
+    ⇒ 影子指令 attack pct=1012 → Player 191#18[T1离]（约 37753 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2075 riku_x B=38163 L=17819 d=2.1 nb=1 neut=0 cmds=111 noFull=1 shQ=9540 | m=1.346 worth=2.9 cheap=8.0 over=0 dMedOther=6.2 safe(-1)=81
+    → Player 191#18[T1离] terr=10707 bal=23531 dq=2.2 cnt=42 | c=7.7 rankC=7.7 need=47872 tD=0.35 机 | safe=81 keep=81 avail=37635 chunkB=7633 pulseB=4580  x=37635 hNb=0
+    ⇒ 影子指令 attack pct=1009 → Player 191#18[T1离]（约 37641 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2080 riku_x B=38640 L=17819 d=2.2 nb=1 neut=0 cmds=112 noFull=1 shQ=9660 | m=1.341 worth=2.9 cheap=8.0 over=0 dMedOther=6.0 safe(-1)=69
+    → Player 191#18[T1离] terr=10751 bal=23532 dq=2.2 cnt=42 | c=7.7 rankC=7.7 need=48093 tD=0.36 机 | safe=69 keep=69 avail=38119 chunkB=7728 pulseB=4637  x=38119 hNb=0
+    ⇒ 影子指令 attack pct=1010 → Player 191#18[T1离]（约 38149 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2085 riku_x B=38640 L=17819 d=2.2 nb=1 neut=0 cmds=113 noFull=1 shQ=9660 | m=1.336 worth=2.9 cheap=8.0 over=0 dMedOther=5.9 safe(-1)=55
+    → Player 191#18[T1离] terr=10829 bal=23532 dq=2.2 cnt=42 | c=7.6 rankC=7.6 need=48437 tD=0.37 机 | safe=55 keep=55 avail=38133 chunkB=7728 pulseB=4637  x=38133 hNb=0
+    ⇒ 影子指令 attack pct=1010 → Player 191#18[T1离]（约 38149 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2090 riku_x B=39123 L=17819 d=2.2 nb=1 neut=0 cmds=114 noFull=1 shQ=9780 | m=1.331 worth=2.9 cheap=8.0 over=0 dMedOther=5.9 safe(-1)=0
+    → Player 191#18[T1离] terr=10866 bal=23577 dq=2.2 cnt=42 | c=7.6 rankC=7.6 need=48683 tD=0.37 机 | safe=0 keep=0 avail=38665 chunkB=7825 pulseB=4695  x=38665 hNb=0
+    ⇒ 影子指令 attack pct=1012 → Player 191#18[T1离]（约 38702 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2095 riku_x B=39123 L=17819 d=2.2 nb=1 neut=0 cmds=115 noFull=1 shQ=9780 | m=1.325 worth=2.9 cheap=8.0 over=0 dMedOther=5.9 safe(-1)=0
+    → Player 191#18[T1离] terr=10866 bal=23577 dq=2.2 cnt=42 | c=7.6 rankC=7.6 need=48732 tD=0.37 机 | safe=0 keep=0 avail=38665 chunkB=7825 pulseB=4695  x=38665 hNb=0
+    ⇒ 影子指令 attack pct=1012 → Player 191#18[T1离]（约 38702 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2100 riku_x B=57431 L=17819 d=3.2 nb=1 neut=0 cmds=115 noFull=1 shQ=9960 | m=1.320 worth=4.3 cheap=8.0 over=0 dMedOther=6.9 safe(-1)=0
+    → Player 191#18[T1离] terr=10866 bal=34444 dq=3.2 cnt=42 | c=10.2 rankC=10.2 need=65327 tD=0.46 机 | safe=0 keep=Inf avail=-Inf chunkB=11486 pulseB=6892 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2105 riku_x B=57431 L=17819 d=3.2 nb=1 neut=0 cmds=115 noFull=1 shQ=10860 | m=1.315 worth=4.2 cheap=8.0 over=0 dMedOther=6.8 safe(-1)=0
+    → Player 191#18[T1离] terr=10866 bal=34444 dq=3.2 cnt=42 | c=10.2 rankC=10.2 need=65390 tD=0.46 机 | safe=0 keep=Inf avail=-Inf chunkB=11486 pulseB=6892 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2110 riku_x B=58148 L=17819 d=3.3 nb=1 neut=0 cmds=115 noFull=1 shQ=11763 | m=1.310 worth=4.3 cheap=8.0 over=0 dMedOther=6.9 safe(-1)=0
+    → Player 191#18[T1离] terr=10752 bal=33868 dq=3.1 cnt=41 | c=10.1 rankC=10.1 need=64065 tD=0.46 机 | safe=0 keep=Inf avail=-Inf chunkB=11630 pulseB=6978 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2115 riku_x B=58148 L=17819 d=3.3 nb=1 neut=0 cmds=115 noFull=1 shQ=12678 | m=1.304 worth=4.3 cheap=8.0 over=0 dMedOther=6.8 safe(-1)=0
+    → Player 191#18[T1离] terr=10636 bal=33285 dq=3.1 cnt=40 | c=10.1 rankC=10.1 need=62731 tD=0.46 机 | safe=0 keep=Inf avail=-Inf chunkB=11630 pulseB=6978 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2120 riku_x B=58874 L=17819 d=3.3 nb=1 neut=0 cmds=115 noFull=1 shQ=13595 | m=1.299 worth=4.3 cheap=8.0 over=0 dMedOther=6.9 safe(-1)=0
+    → Player 191#18[T1离] terr=10458 bal=32399 dq=3.1 cnt=38 | c=10.1 rankC=10.1 need=60673 tD=0.45 机 | safe=0 keep=Inf avail=-Inf chunkB=11775 pulseB=7065 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2125 riku_x B=58874 L=17819 d=3.3 nb=1 neut=0 cmds=115 noFull=1 shQ=14520 | m=1.294 worth=4.3 cheap=8.0 over=0 dMedOther=6.9 safe(-1)=0
+    → Player 191#18[T1离] terr=10337 bal=31801 dq=3.1 cnt=37 | c=10.0 rankC=10.0 need=59307 tD=0.45 机 | safe=0 keep=Inf avail=-Inf chunkB=11775 pulseB=7065 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2130 riku_x B=59609 L=17819 d=3.3 nb=1 neut=0 cmds=115 noFull=1 shQ=14902 | m=1.288 worth=4.3 cheap=8.0 over=0 dMedOther=6.5 safe(-1)=0
+    → Player 191#18[T1离] terr=10152 bal=30896 dq=3.0 cnt=36 | c=10.0 rankC=10.0 need=57189 tD=0.47 机 | safe=0 keep=Inf avail=-Inf chunkB=11922 pulseB=7153 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2135 riku_x B=59609 L=17819 d=3.3 nb=1 neut=0 cmds=115 noFull=1 shQ=14902 | m=1.283 worth=4.3 cheap=8.0 over=0 dMedOther=6.6 safe(-1)=0
+    → Player 191#18[T1离] terr=9931 bal=29581 dq=3.0 cnt=35 | c=9.8 rankC=9.8 need=54321 tD=0.45 机 | safe=0 keep=Inf avail=-Inf chunkB=11922 pulseB=7153 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2140 riku_x B=60354 L=17819 d=3.4 nb=1 neut=0 cmds=115 noFull=1 shQ=15088 | m=1.278 worth=4.3 cheap=8.0 over=0 dMedOther=6.6 safe(-1)=0
+    → Player 191#18[T1离] terr=9738 bal=28667 dq=2.9 cnt=33 | c=9.8 rankC=9.8 need=52177 tD=0.44 机 | safe=0 keep=Inf avail=-Inf chunkB=12071 pulseB=7242 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2145 riku_x B=60354 L=17819 d=3.4 nb=1 neut=0 cmds=115 noFull=1 shQ=15088 | m=1.273 worth=4.3 cheap=8.0 over=0 dMedOther=6.6 safe(-1)=0
+    → Player 191#18[T1离] terr=9607 bal=28052 dq=2.9 cnt=32 | c=9.7 rankC=9.7 need=50756 tD=0.45 机 | safe=0 keep=Inf avail=-Inf chunkB=12071 pulseB=7242 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2150 riku_x B=61108 L=17819 d=3.4 nb=1 neut=0 cmds=115 noFull=1 shQ=15277 | m=1.268 worth=4.3 cheap=8.0 over=0 dMedOther=6.6 safe(-1)=0
+    → Player 191#18[T1离] terr=9415 bal=27162 dq=2.9 cnt=31 | c=9.7 rankC=9.7 need=48653 tD=0.44 机 | safe=0 keep=Inf avail=-Inf chunkB=12222 pulseB=7333 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2155 riku_x B=61108 L=17819 d=3.4 nb=1 neut=0 cmds=115 noFull=1 shQ=15277 | m=1.262 worth=4.3 cheap=8.0 over=0 dMedOther=6.5 safe(-1)=111
+    → Player 191#18[T1离] terr=9291 bal=25749 dq=2.8 cnt=30 | c=9.4 rankC=9.4 need=46156 tD=0.43 机 | safe=111 keep=Inf avail=-Inf chunkB=12222 pulseB=7333 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2160 riku_x B=61871 L=17819 d=3.5 nb=1 neut=0 cmds=115 noFull=1 shQ=15467 | m=1.257 worth=4.4 cheap=8.0 over=0 dMedOther=6.6 safe(-1)=112
+    → Player 191#18[T1离] terr=9153 bal=24992 dq=2.7 cnt=28 | c=9.3 rankC=9.3 need=44532 tD=0.41 机 | safe=112 keep=Inf avail=-Inf chunkB=12374 pulseB=7425 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2165 riku_x B=53715 L=17819 d=3.0 nb=1 neut=0 cmds=116 noFull=1 shQ=13428 | m=1.252 worth=3.8 cheap=8.0 over=0 dMedOther=6.6 safe(-1)=0
+    → Player 191#18[T1离] terr=9080 bal=24532 dq=2.7 cnt=27 | c=7.7 rankC=7.7 need=36197 tD=0.41 机 | safe=0 keep=0 avail=53086 chunkB=10743 pulseB=6446  x=45327 hNb=0
+    ⇒ 影子指令 attack pct=864 → Player 191#18[T1离]（约 45374 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2170 riku_x B=54386 L=17819 d=3.1 nb=1 neut=0 cmds=117 noFull=1 shQ=13596 | m=1.247 worth=3.8 cheap=8.0 over=0 dMedOther=6.6 safe(-1)=0
+    → Player 191#18[T1离] terr=8983 bal=23891 dq=2.7 cnt=26 | c=7.6 rankC=7.6 need=34934 tD=0.40 机 | safe=0 keep=0 avail=53749 chunkB=10877 pulseB=6526  x=43746 hNb=0
+    ⇒ 影子指令 attack pct=823 → Player 191#18[T1离]（约 43763 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2175 riku_x B=54386 L=17893 d=3.0 nb=1 neut=0 cmds=118 noFull=1 shQ=13596 | m=1.241 worth=3.8 cheap=8.0 over=0 dMedOther=6.6 safe(-1)=0
+    → Player 191#18[T1离] terr=8892 bal=22337 dq=2.5 cnt=22 | c=7.3 rankC=7.3 need=33206 tD=0.38 机 | safe=0 keep=0 avail=53749 chunkB=10877 pulseB=6526  x=41573 hNb=0
+    ⇒ 影子指令 attack pct=782 → Player 191#18[T1离]（约 41586 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2180 riku_x B=55065 L=17937 d=3.1 nb=1 neut=0 cmds=119 noFull=1 shQ=13766 | m=1.236 worth=3.8 cheap=8.0 over=0 dMedOther=6.7 safe(-1)=0
+    → Player 191#18[T1离] terr=8773 bal=21650 dq=2.5 cnt=20 | c=7.3 rankC=7.3 need=32238 tD=0.37 机 | safe=0 keep=0 avail=54420 chunkB=11013 pulseB=6608  x=40357 hNb=0
+    ⇒ 影子指令 attack pct=750 → Player 191#18[T1离]（约 40384 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2185 riku_x B=55065 L=17989 d=3.1 nb=1 neut=0 cmds=120 noFull=1 shQ=13766 | m=1.231 worth=3.8 cheap=8.0 over=0 dMedOther=6.7 safe(-1)=0
+    → Player 191#18[T1离] terr=8740 bal=21129 dq=2.4 cnt=13 | c=7.3 rankC=7.3 need=31959 tD=0.36 机 | safe=0 keep=0 avail=54420 chunkB=11013 pulseB=6608  x=39987 hNb=0
+    ⇒ 影子指令 attack pct=743 → Player 191#18[T1离]（约 40008 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2190 riku_x B=55753 L=18014 d=3.1 nb=1 neut=0 cmds=121 noFull=1 shQ=13938 | m=1.226 worth=3.8 cheap=8.0 over=0 dMedOther=6.7 safe(-1)=0
+    → Player 191#18[T1离] terr=8674 bal=20609 dq=2.4 cnt=11 | c=7.2 rankC=7.2 need=31268 tD=0.35 机 | safe=0 keep=0 avail=55100 chunkB=11151 pulseB=6690  x=39118 hNb=0
+    ⇒ 影子指令 attack pct=718 → Player 191#18[T1离]（约 39146 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2195 riku_x B=55753 L=18046 d=3.1 nb=1 neut=0 cmds=122 noFull=1 shQ=13938 | m=1.220 worth=3.8 cheap=8.0 over=0 dMedOther=6.7 safe(-1)=0
+    → Player 191#18[T1离] terr=8593 bal=20189 dq=2.3 cnt=10 | c=7.2 rankC=7.2 need=30711 tD=0.35 机 | safe=0 keep=0 avail=55100 chunkB=11151 pulseB=6690  x=38419 hNb=0
+    ⇒ 影子指令 attack pct=705 → Player 191#18[T1离]（约 38439 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=2200 riku_x B=74516 L=18067 d=4.1 nb=1 neut=0 cmds=122 noFull=1 shQ=14172 | m=1.215 worth=5.0 cheap=8.0 over=0 dMedOther=7.8 safe(-1)=0
+    → Player 191#18[T1离] terr=8518 bal=28170 dq=3.3 cnt=11 | c=9.9 rankC=9.9 need=41354 tD=0.42 机 | safe=0 keep=Inf avail=-Inf chunkB=14903 pulseB=8942 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2205 riku_x B=74516 L=18103 d=4.1 nb=1 neut=0 cmds=122 noFull=1 shQ=15342 | m=1.210 worth=5.0 cheap=8.0 over=0 dMedOther=7.8 safe(-1)=0
+    → Player 191#18[T1离] terr=8411 bal=27644 dq=3.3 cnt=15 | c=9.9 rankC=9.9 need=40602 tD=0.42 机 | safe=0 keep=Inf avail=-Inf chunkB=14903 pulseB=8942 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2210 riku_x B=75447 L=18133 d=4.2 nb=1 neut=0 cmds=122 noFull=1 shQ=16515 | m=1.205 worth=5.0 cheap=8.0 over=0 dMedOther=7.8 safe(-1)=0
+    → Player 191#18[T1离] terr=8288 bal=27003 dq=3.3 cnt=17 | c=9.9 rankC=9.9 need=39533 tD=0.42 机 | safe=0 keep=Inf avail=-Inf chunkB=15089 pulseB=9054 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2215 riku_x B=75447 L=18184 d=4.1 nb=1 neut=0 cmds=122 noFull=1 shQ=17700 | m=1.199 worth=5.0 cheap=8.0 over=0 dMedOther=7.3 safe(-1)=0
+    → Player 191#18[T1离] terr=8178 bal=26433 dq=3.2 cnt=15 | c=10.0 rankC=10.0 need=38892 tD=0.44 机 | safe=0 keep=Inf avail=-Inf chunkB=15089 pulseB=9054 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2220 riku_x B=76390 L=18214 d=4.2 nb=1 neut=0 cmds=122 noFull=1 shQ=18888 | m=1.194 worth=5.0 cheap=8.0 over=0 dMedOther=7.4 safe(-1)=0
+    → Player 191#18[T1离] terr=8063 bal=25844 dq=3.2 cnt=13 | c=10.0 rankC=10.0 need=37940 tD=0.43 机 | safe=0 keep=Inf avail=-Inf chunkB=15278 pulseB=9167 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2225 riku_x B=76390 L=18248 d=4.2 nb=1 neut=0 cmds=122 noFull=1 shQ=19097 | m=1.189 worth=5.0 cheap=8.0 over=0 dMedOther=7.3 safe(-1)=0
+    → Player 191#18[T1离] terr=7975 bal=25397 dq=3.2 cnt=10 | c=10.1 rankC=10.1 need=37369 tD=0.43 机 | safe=0 keep=Inf avail=-Inf chunkB=15278 pulseB=9167 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2230 riku_x B=77344 L=18266 d=4.2 nb=1 neut=0 cmds=122 noFull=1 shQ=19336 | m=1.183 worth=5.0 cheap=8.0 over=0 dMedOther=7.4 safe(-1)=0
+    → Player 191#18[T1离] terr=7880 bal=24918 dq=3.2 cnt=4 | c=10.1 rankC=10.1 need=36524 tD=0.43 机 | safe=0 keep=Inf avail=-Inf chunkB=15469 pulseB=9281 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2235 riku_x B=77344 L=18278 d=4.2 nb=1 neut=0 cmds=122 noFull=1 shQ=19336 | m=1.178 worth=5.0 cheap=8.0 over=0 dMedOther=7.4 safe(-1)=0
+    → Player 191#18[T1离] terr=7819 bal=24611 dq=3.1 cnt=4 | c=10.1 rankC=10.1 need=36020 tD=0.43 机 | safe=0 keep=Inf avail=-Inf chunkB=15469 pulseB=9281 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2240 riku_x B=78310 L=18286 d=4.3 nb=1 neut=0 cmds=122 noFull=1 shQ=19577 | m=1.173 worth=5.0 cheap=8.0 over=0 dMedOther=7.5 safe(-1)=0
+    → Player 191#18[T1离] terr=7744 bal=24237 dq=3.1 cnt=4 | c=10.1 rankC=10.1 need=35306 tD=0.42 机 | safe=0 keep=Inf avail=-Inf chunkB=15662 pulseB=9397 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2245 riku_x B=78310 L=18298 d=4.3 nb=1 neut=0 cmds=122 noFull=1 shQ=19577 | m=1.168 worth=5.0 cheap=8.0 over=0 dMedOther=7.5 safe(-1)=0
+    → Player 191#18[T1离] terr=7693 bal=23985 dq=3.1 cnt=5 | c=10.1 rankC=10.1 need=34926 tD=0.42 机 | safe=0 keep=Inf avail=-Inf chunkB=15662 pulseB=9397 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2250 riku_x B=79288 L=18308 d=4.3 nb=1 neut=0 cmds=122 noFull=1 shQ=19822 | m=1.163 worth=5.0 cheap=8.0 over=0 dMedOther=6.9 safe(-1)=0
+    → Player 191#18[T1离] terr=7635 bal=23701 dq=3.1 cnt=5 | c=10.1 rankC=10.1 need=34444 tD=0.45 机 | safe=0 keep=Inf avail=-Inf chunkB=15858 pulseB=9515 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2255 riku_x B=79288 L=18325 d=4.3 nb=1 neut=0 cmds=122 noFull=1 shQ=19822 | m=1.157 worth=5.0 cheap=8.0 over=0 dMedOther=6.9 safe(-1)=623
+    → Player 191#18[T1离] terr=7597 bal=22536 dq=3.0 cnt=6 | c=9.8 rankC=9.8 need=33060 tD=0.43 机 | safe=623 keep=Inf avail=-Inf chunkB=15858 pulseB=9515 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2260 riku_x B=80279 L=18337 d=4.4 nb=1 neut=0 cmds=122 noFull=1 shQ=20069 | m=1.152 worth=5.0 cheap=8.0 over=0 dMedOther=7.0 safe(-1)=463
+    → Player 191#18[T1离] terr=7610 bal=22422 dq=2.9 cnt=5 | c=9.8 rankC=9.8 need=33213 tD=0.42 机 | safe=463 keep=Inf avail=-Inf chunkB=16056 pulseB=9633 价高(c>=worth)→break hNb=0
+    ⇒ 本拍没有指令
+t=2265 riku_x B=0 L=18353 d=0.0 nb=1 neut=0 cmds=122 noFull=1 shQ=2048 | m=1.147 worth=0.0 cheap=8.0 over=0 dMedOther=7.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2270 riku_x B=1 L=18365 d=0.0 nb=1 neut=0 cmds=122 noFull=1 shQ=2048 | m=1.142 worth=0.0 cheap=8.0 over=0 dMedOther=7.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2275 riku_x B=1 L=18383 d=0.0 nb=2 neut=0 cmds=122 noFull=1 shQ=2048 | m=1.136 worth=0.0 cheap=8.0 over=0 dMedOther=7.1 safe(-1)=20851
+    → AI#111 terr=2919 bal=47 dq=0.0 cnt=3 | c=2.0 rankC=2.0 need=306 tD=0.00 机 | safe=20851 keep=20851 avail=-20850 chunkB=0 pulseB=0 无可用(avail<=0) hNb=0
+    ⇒ 本拍没有指令
+t=2280 riku_x B=2 L=18393 d=0.0 nb=1 neut=2 cmds=122 noFull=1 shQ=2048 | m=1.131 worth=0.0 cheap=8.0 over=0 dMedOther=6.6 safe(-1)=5210
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2285 riku_x B=2 L=18416 d=0.0 nb=1 neut=0 cmds=122 noFull=1 shQ=2048 | m=1.126 worth=0.0 cheap=8.0 over=0 dMedOther=6.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2290 riku_x B=3 L=18432 d=0.0 nb=1 neut=0 cmds=122 noFull=1 shQ=2048 | m=1.121 worth=0.0 cheap=8.0 over=0 dMedOther=7.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2295 riku_x B=3 L=18456 d=0.0 nb=1 neut=0 cmds=122 noFull=1 shQ=2048 | m=1.115 worth=0.0 cheap=8.0 over=0 dMedOther=7.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2300 riku_x B=18477 L=18473 d=1.0 nb=1 neut=0 cmds=122 noFull=1 shQ=2106 | m=1.110 worth=1.1 cheap=8.0 over=0 dMedOther=8.2 safe(-1)=24124
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2305 riku_x B=18477 L=18500 d=1.0 nb=1 neut=0 cmds=122 noFull=1 shQ=2396 | m=1.105 worth=1.1 cheap=8.0 over=0 dMedOther=8.2 safe(-1)=22475
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2310 riku_x B=18707 L=18516 d=1.0 nb=1 neut=0 cmds=122 noFull=1 shQ=2686 | m=1.099 worth=1.1 cheap=8.0 over=0 dMedOther=8.3 safe(-1)=21390
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2315 riku_x B=18707 L=18533 d=1.0 nb=1 neut=0 cmds=122 noFull=1 shQ=2976 | m=1.094 worth=1.1 cheap=8.0 over=0 dMedOther=8.3 safe(-1)=19591
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2320 riku_x B=18940 L=18547 d=1.0 nb=1 neut=0 cmds=122 noFull=1 shQ=3267 | m=1.089 worth=1.1 cheap=8.0 over=0 dMedOther=8.4 safe(-1)=18305
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2325 riku_x B=18940 L=18572 d=1.0 nb=1 neut=0 cmds=122 noFull=1 shQ=3562 | m=1.084 worth=1.1 cheap=8.0 over=0 dMedOther=7.3 safe(-1)=16715
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2330 riku_x B=19176 L=18593 d=1.0 nb=1 neut=0 cmds=122 noFull=1 shQ=3858 | m=1.079 worth=1.1 cheap=8.0 over=0 dMedOther=7.2 safe(-1)=15480
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2335 riku_x B=19176 L=18631 d=1.0 nb=1 neut=0 cmds=122 noFull=1 shQ=4158 | m=1.073 worth=1.1 cheap=8.0 over=0 dMedOther=7.1 safe(-1)=13899
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2340 riku_x B=19415 L=18662 d=1.0 nb=1 neut=0 cmds=122 noFull=1 shQ=4459 | m=1.068 worth=1.1 cheap=8.0 over=0 dMedOther=7.1 safe(-1)=13489
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2345 riku_x B=19415 L=18701 d=1.0 nb=1 neut=0 cmds=122 noFull=1 shQ=4764 | m=1.063 worth=1.1 cheap=8.0 over=0 dMedOther=7.0 safe(-1)=12749
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2350 riku_x B=19657 L=18722 d=1.0 nb=1 neut=0 cmds=122 noFull=1 shQ=4914 | m=1.058 worth=1.1 cheap=8.0 over=0 dMedOther=7.1 safe(-1)=12290
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2355 riku_x B=19657 L=18751 d=1.0 nb=1 neut=0 cmds=122 noFull=1 shQ=4914 | m=1.052 worth=1.1 cheap=8.0 over=0 dMedOther=7.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2360 riku_x B=19902 L=18771 d=1.1 nb=1 neut=0 cmds=122 noFull=1 shQ=4975 | m=1.047 worth=1.1 cheap=8.0 over=0 dMedOther=7.1 safe(-1)=12626
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2365 riku_x B=19902 L=18804 d=1.1 nb=1 neut=0 cmds=122 noFull=1 shQ=4975 | m=1.042 worth=1.1 cheap=8.0 over=0 dMedOther=7.1 safe(-1)=12137
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2370 riku_x B=20150 L=18828 d=1.1 nb=1 neut=0 cmds=122 noFull=1 shQ=5037 | m=1.036 worth=1.1 cheap=8.0 over=0 dMedOther=7.2 safe(-1)=12264
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2375 riku_x B=20150 L=18868 d=1.1 nb=1 neut=0 cmds=122 noFull=1 shQ=5037 | m=1.031 worth=1.1 cheap=8.0 over=0 dMedOther=7.2 safe(-1)=11840
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2380 riku_x B=20401 L=18899 d=1.1 nb=1 neut=0 cmds=122 noFull=1 shQ=5100 | m=1.026 worth=1.1 cheap=8.0 over=0 dMedOther=7.3 safe(-1)=11843
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2385 riku_x B=20401 L=18949 d=1.1 nb=1 neut=0 cmds=122 noFull=1 shQ=5100 | m=1.021 worth=1.1 cheap=8.0 over=0 dMedOther=7.3 safe(-1)=11708
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2390 riku_x B=20656 L=18983 d=1.1 nb=1 neut=0 cmds=122 noFull=1 shQ=5164 | m=1.016 worth=1.1 cheap=8.0 over=0 dMedOther=7.0 safe(-1)=11727
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2395 riku_x B=20656 L=19034 d=1.1 nb=1 neut=0 cmds=122 noFull=1 shQ=5164 | m=1.010 worth=1.1 cheap=8.0 over=0 dMedOther=7.0 safe(-1)=11354
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2400 riku_x B=39978 L=19064 d=2.1 nb=1 neut=0 cmds=122 noFull=1 shQ=5289 | m=1.005 worth=2.1 cheap=8.0 over=0 dMedOther=8.0 safe(-1)=259889
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2405 riku_x B=39978 L=19112 d=2.1 nb=1 neut=0 cmds=122 noFull=1 shQ=5919 | m=1.000 worth=2.1 cheap=7.9 over=0 dMedOther=8.0 safe(-1)=259915
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2410 riku_x B=2 L=19146 d=0.0 nb=1 neut=0 cmds=122 noFull=1 shQ=2048 | m=0.995 worth=0.0 cheap=7.9 over=0 dMedOther=8.0 safe(-1)=224369
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2415 riku_x B=2 L=19200 d=0.0 nb=1 neut=0 cmds=122 noFull=1 shQ=2048 | m=0.989 worth=0.0 cheap=7.9 over=0 dMedOther=7.9 safe(-1)=224489
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2420 riku_x B=3 L=19216 d=0.0 nb=2 neut=0 cmds=122 noFull=1 shQ=2048 | m=0.984 worth=0.0 cheap=7.9 over=0 dMedOther=8.0 safe(-1)=532480
+    → Player 436#14[T1] terr=88232 bal=949292 dq=10.8 cnt=8 | c=13.1 rankC=6.6 need=1846391 tD=1.34 人 pulse bleeding onMe | safe=532480 keep=Inf avail=-Inf chunkB=1 pulseB=0 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2425 riku_x B=3 L=19204 d=0.0 nb=2 neut=0 cmds=122 noFull=1 shQ=2048 | m=0.979 worth=0.0 cheap=7.9 over=0 dMedOther=8.0 safe(-1)=526745
+    → Player 436#14[T1] terr=87780 bal=939190 dq=10.7 cnt=13 | c=13.2 rankC=6.6 need=1825717 tD=1.34 人 pulse bleeding onMe | safe=526745 keep=Inf avail=-Inf chunkB=1 pulseB=0 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2430 riku_x B=4 L=19146 d=0.0 nb=2 neut=0 cmds=122 noFull=1 shQ=2048 | m=0.974 worth=0.0 cheap=7.9 over=0 dMedOther=8.1 safe(-1)=526384
+    → Player 436#14[T1] terr=87007 bal=938602 dq=10.8 cnt=14 | c=13.5 rankC=6.8 need=1820018 tD=1.33 人 pulse bleeding onMe | safe=526384 keep=Inf avail=-Inf chunkB=1 pulseB=0 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令

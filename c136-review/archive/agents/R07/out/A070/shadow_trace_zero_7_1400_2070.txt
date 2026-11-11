@@ -1,0 +1,605 @@
+# A070 zero_7 影子决策明细 t=1400~2070（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   出手打人/bot: 128 拍（t=1400~2070）；可用兵 56672~183539，一条指令下限(20%余额) 32470~74807，比值 117%~281%
+#   没走到 buyLand: 1 拍（t=1490~1490）
+#   有可用兵但没发（其他）: 6 拍（t=1695~1910）；可用兵 85488~141778，一条指令下限(20%余额) 46435~58867，比值 176%~271%
+#   └ 「出手打人/bot」里：128 条对人/bot 的出兵共约 3858795 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1400 zero_7 B=123020 L=7918 d=15.5 nb=3 neut=0 cmds=116 noFull=1 shQ=13316 | m=1.400 worth=21.8 cheap=3.8 over=0 dMedOther=3.8 safe(-1)=71971
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 5766 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1405 zero_7 B=123020 L=7918 d=15.5 nb=3 neut=0 cmds=117 noFull=1 shQ=17335 | m=1.405 worth=21.8 cheap=3.8 over=0 dMedOther=3.8 safe(-1)=74935
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 5766 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1410 zero_7 B=126206 L=7918 d=15.9 nb=3 neut=0 cmds=118 noFull=1 shQ=21351 | m=1.410 worth=22.5 cheap=3.9 over=0 dMedOther=3.4 safe(-1)=74525
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 5915 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1415 zero_7 B=126206 L=7918 d=15.9 nb=3 neut=0 cmds=119 noFull=1 shQ=25427 | m=1.415 worth=22.6 cheap=3.9 over=0 dMedOther=3.4 safe(-1)=74525
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 5915 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1420 zero_7 B=129436 L=7918 d=16.3 nb=3 neut=0 cmds=120 noFull=1 shQ=29499 | m=1.420 worth=23.2 cheap=3.9 over=0 dMedOther=3.5 safe(-1)=76603
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 6067 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1425 zero_7 B=129436 L=7918 d=16.3 nb=3 neut=0 cmds=121 noFull=1 shQ=32359 | m=1.425 worth=23.3 cheap=3.9 over=0 dMedOther=3.5 safe(-1)=75786
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 6067 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1430 zero_7 B=132710 L=7918 d=16.8 nb=3 neut=0 cmds=122 noFull=1 shQ=33177 | m=1.430 worth=24.0 cheap=4.0 over=0 dMedOther=3.5 safe(-1)=77872
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 6220 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1435 zero_7 B=132710 L=7918 d=16.8 nb=3 neut=0 cmds=123 noFull=1 shQ=33177 | m=1.435 worth=24.1 cheap=4.0 over=0 dMedOther=3.5 safe(-1)=77872
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 6220 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1440 zero_7 B=136027 L=7918 d=17.2 nb=3 neut=0 cmds=124 noFull=1 shQ=34006 | m=1.440 worth=24.7 cheap=4.0 over=0 dMedOther=3.6 safe(-1)=79985
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 6376 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1445 zero_7 B=136027 L=7918 d=17.2 nb=3 neut=0 cmds=125 noFull=1 shQ=34006 | m=1.445 worth=24.8 cheap=4.0 over=0 dMedOther=3.5 safe(-1)=79985
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 6376 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1450 zero_7 B=139386 L=7918 d=17.6 nb=3 neut=0 cmds=126 noFull=1 shQ=34846 | m=1.450 worth=25.5 cheap=4.1 over=0 dMedOther=3.6 safe(-1)=82125
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 6533 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1455 zero_7 B=139386 L=7918 d=17.6 nb=3 neut=0 cmds=127 noFull=1 shQ=34846 | m=1.455 worth=25.6 cheap=4.1 over=0 dMedOther=3.6 safe(-1)=82125
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 6533 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1460 zero_7 B=142787 L=7918 d=18.0 nb=3 neut=0 cmds=128 noFull=1 shQ=35696 | m=1.460 worth=26.3 cheap=4.1 over=0 dMedOther=3.7 safe(-1)=84292
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 6693 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1465 zero_7 B=142787 L=7918 d=18.0 nb=3 neut=0 cmds=129 noFull=1 shQ=35696 | m=1.465 worth=26.4 cheap=4.1 over=0 dMedOther=3.7 safe(-1)=84292
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 6693 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1470 zero_7 B=146213 L=7918 d=18.5 nb=3 neut=0 cmds=130 noFull=1 shQ=36553 | m=1.470 worth=27.1 cheap=4.2 over=0 dMedOther=3.7 safe(-1)=86474
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 6853 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1475 zero_7 B=146213 L=7918 d=18.5 nb=3 neut=0 cmds=131 noFull=1 shQ=36553 | m=1.475 worth=27.2 cheap=4.2 over=0 dMedOther=3.7 safe(-1)=86474
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 6853 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1480 zero_7 B=149678 L=7918 d=18.9 nb=3 neut=0 cmds=132 noFull=1 shQ=37419 | m=1.480 worth=28.0 cheap=4.2 over=0 dMedOther=3.8 safe(-1)=88681
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 7016 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1485 zero_7 B=149678 L=7918 d=18.9 nb=3 neut=0 cmds=133 noFull=1 shQ=37419 | m=1.485 worth=28.1 cheap=4.2 over=0 dMedOther=3.7 safe(-1)=88681
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 7016 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1490 zero_7 B=151013 L=7848 d=19.2 nb=3 neut=0 cmds=133 noFull=1 shQ=3481 | m=1.490 worth=28.7 cheap=4.3 over=0 dMedOther=3.8 safe(-1)=90971
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1495 zero_7 B=151013 L=7848 d=19.2 nb=3 neut=0 cmds=134 noFull=1 shQ=7884 | m=1.495 worth=28.8 cheap=4.3 over=0 dMedOther=3.3 safe(-1)=90971
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 attack pct=47 → AI#311（约 7078 兵） 〔send:484<send:1827<send:3865<act:796〕
+t=1500 zero_7 B=162349 L=7848 d=20.7 nb=3 neut=0 cmds=135 noFull=1 shQ=12325 | m=1.500 worth=31.0 cheap=4.3 over=0 dMedOther=4.3 safe(-1)=103775
+    → AI#311 terr=1679 bal=0 dq=0.0 cnt=69 | c=3.4 rankC=3.4 need=2520 tD=0.00 机 | safe=103775 keep=103775 avail=56672 chunkB=32470 pulseB=19482  x=3357 hNb=2
+    → 🌞#1[T1] terr=17915 bal=75728 dq=4.2 cnt=123 | c=12.1 rankC=12.1 need=161853 tD=0.98 人 | safe=103775 keep=103775 avail=56672 chunkB=32470 pulseB=19482  x=56672 hNb=2
+    → Qart-ḥadašt#16[T1] terr=18801 bal=196491 dq=10.5 cnt=70 | c=26.9 rankC=26.9 need=378424 tD=2.42 人 | safe=103775 keep=148601 avail=11846 chunkB=32470 pulseB=19482 不够一条(x=11846)→continue hNb=2
+    ⇒ 影子指令 attack pct=21 → AI#311（约 3487 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1505 zero_7 B=162349 L=7848 d=20.7 nb=3 neut=0 cmds=136 noFull=1 shQ=16998 | m=1.499 worth=31.0 cheap=4.4 over=0 dMedOther=4.3 safe(-1)=103775
+    → AI#311 terr=1679 bal=0 dq=0.0 cnt=69 | c=3.4 rankC=3.4 need=2520 tD=0.00 机 | safe=103775 keep=103775 avail=56672 chunkB=32470 pulseB=19482  x=3357 hNb=2
+    → 🌞#1[T1] terr=18078 bal=75728 dq=4.2 cnt=123 | c=12.0 rankC=12.0 need=162096 tD=0.97 人 | safe=103775 keep=103775 avail=56672 chunkB=32470 pulseB=19482  x=56672 hNb=2
+    → Qart-ḥadašt#16[T1] terr=18845 bal=196491 dq=10.4 cnt=70 | c=26.8 rankC=26.8 need=378490 tD=2.42 人 | safe=103775 keep=148464 avail=11983 chunkB=32470 pulseB=19482 不够一条(x=11983)→continue hNb=2
+    ⇒ 影子指令 attack pct=21 → AI#311（约 3487 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1510 zero_7 B=166050 L=7848 d=21.2 nb=3 neut=0 cmds=137 noFull=1 shQ=21656 | m=1.498 worth=31.7 cheap=4.4 over=0 dMedOther=4.4 safe(-1)=106291
+    → AI#311 terr=1679 bal=0 dq=0.0 cnt=69 | c=3.4 rankC=3.4 need=2520 tD=0.00 机 | safe=106291 keep=106291 avail=57814 chunkB=33210 pulseB=19926  x=3357 hNb=2
+    → 🌞#1[T1] terr=18191 bal=77454 dq=4.3 cnt=123 | c=12.2 rankC=12.2 need=165344 tD=0.97 人 | safe=106291 keep=106291 avail=57814 chunkB=33210 pulseB=19926  x=57814 hNb=2
+    → Qart-ḥadašt#16[T1] terr=18896 bal=200970 dq=10.6 cnt=70 | c=27.3 rankC=27.3 need=386545 tD=2.41 人 | safe=106291 keep=151537 avail=12568 chunkB=33210 pulseB=19926 不够一条(x=12568)→continue hNb=2
+    ⇒ 影子指令 attack pct=20 → AI#311（约 3405 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1515 zero_7 B=166050 L=7848 d=21.2 nb=3 neut=0 cmds=138 noFull=1 shQ=26374 | m=1.498 worth=31.7 cheap=4.4 over=0 dMedOther=4.4 safe(-1)=106291
+    → AI#311 terr=1679 bal=0 dq=0.0 cnt=69 | c=3.4 rankC=3.4 need=2520 tD=0.00 机 | safe=106291 keep=106291 avail=57814 chunkB=33210 pulseB=19926  x=3357 hNb=2
+    → 🌞#1[T1] terr=18368 bal=77454 dq=4.2 cnt=123 | c=12.1 rankC=12.1 need=165603 tD=0.96 人 | safe=106291 keep=106291 avail=57814 chunkB=33210 pulseB=19926  x=57814 hNb=2
+    → Qart-ḥadašt#16[T1] terr=18922 bal=200970 dq=10.6 cnt=70 | c=27.3 rankC=27.3 need=386593 tD=2.42 人 | safe=106291 keep=151473 avail=12632 chunkB=33210 pulseB=19926 不够一条(x=12632)→continue hNb=2
+    ⇒ 影子指令 attack pct=20 → AI#311（约 3405 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1520 zero_7 B=169786 L=7848 d=21.6 nb=3 neut=0 cmds=139 noFull=1 shQ=31077 | m=1.497 worth=32.4 cheap=4.4 over=0 dMedOther=4.5 safe(-1)=98572
+    → AI#311 terr=1679 bal=0 dq=0.0 cnt=69 | c=3.5 rankC=3.5 need=2520 tD=0.00 机 | safe=98572 keep=98572 avail=69225 chunkB=33957 pulseB=20374  x=3357 hNb=2
+    → 🌞#1[T1] terr=18494 bal=63188 dq=3.4 cnt=123 | c=10.2 rankC=10.2 need=140368 tD=0.76 人 | safe=98572 keep=99282 avail=68515 chunkB=33957 pulseB=20374  x=68515 hNb=2
+    → Qart-ḥadašt#16[T1] terr=19063 bal=187230 dq=9.8 cnt=70 | c=25.4 rankC=25.4 need=362318 tD=2.19 人 | safe=98572 keep=147050 avail=20747 chunkB=33957 pulseB=20374 不够一条(x=20747)→continue hNb=2
+    ⇒ 影子指令 attack pct=20 → AI#311（约 3481 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1525 zero_7 B=169786 L=7848 d=21.6 nb=3 neut=0 cmds=140 noFull=1 shQ=35828 | m=1.496 worth=32.4 cheap=4.5 over=0 dMedOther=4.6 safe(-1)=98572
+    → AI#311 terr=1679 bal=0 dq=0.0 cnt=69 | c=3.5 rankC=3.5 need=2520 tD=0.00 机 | safe=98572 keep=98572 avail=69225 chunkB=33957 pulseB=20374  x=3357 hNb=2
+    → 🌞#1[T1] terr=18897 bal=63188 dq=3.3 cnt=123 | c=10.0 rankC=10.0 need=140971 tD=0.72 人 | safe=98572 keep=98762 avail=69035 chunkB=33957 pulseB=20374  x=69035 hNb=2
+    → Qart-ḥadašt#16[T1] terr=19272 bal=187230 dq=9.7 cnt=70 | c=25.2 rankC=25.2 need=362620 tD=2.09 人 | safe=98572 keep=146297 avail=21500 chunkB=33957 pulseB=20374 不够一条(x=21500)→continue hNb=2
+    ⇒ 影子指令 attack pct=20 → AI#311（约 3481 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1530 zero_7 B=173555 L=7848 d=22.1 nb=3 neut=0 cmds=141 noFull=1 shQ=40571 | m=1.496 worth=33.1 cheap=4.5 over=0 dMedOther=4.7 safe(-1)=107642
+    → AI#311 terr=1679 bal=0 dq=0.0 cnt=69 | c=3.5 rankC=3.5 need=2520 tD=0.00 机 | safe=107642 keep=107642 avail=63880 chunkB=34711 pulseB=20827  x=3357 hNb=2
+    → 🌞#1[T1] terr=19158 bal=64590 dq=3.4 cnt=123 | c=10.1 rankC=10.1 need=143863 tD=0.72 人 | safe=107642 keep=107642 avail=63880 chunkB=34711 pulseB=20827  x=63880 hNb=2
+    → Qart-ḥadašt#16[T1] terr=19563 bal=203374 dq=10.4 cnt=70 | c=26.8 rankC=26.8 need=391843 tD=2.23 人 | safe=107642 keep=152906 avail=18616 chunkB=34711 pulseB=20827 不够一条(x=18616)→continue hNb=2
+    ⇒ 影子指令 attack pct=19 → AI#311（约 3389 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1535 zero_7 B=173555 L=7848 d=22.1 nb=3 neut=0 cmds=142 noFull=1 shQ=43388 | m=1.495 worth=33.1 cheap=4.5 over=0 dMedOther=4.6 safe(-1)=97489
+    → AI#311 terr=1679 bal=0 dq=0.0 cnt=69 | c=3.5 rankC=3.5 need=2520 tD=0.00 机 | safe=97489 keep=97489 avail=74033 chunkB=34711 pulseB=20827  x=3357 hNb=2
+    → 🌞#1[T1] terr=19477 bal=64590 dq=3.3 cnt=123 | c=10.0 rankC=10.0 need=144340 tD=0.72 人 | safe=97489 keep=100106 avail=71416 chunkB=34711 pulseB=20827  x=71416 hNb=2
+    → Qart-ḥadašt#16[T1] terr=19819 bal=185302 dq=9.3 cnt=70 | c=24.3 rankC=24.3 need=360015 tD=2.03 人 | safe=97489 keep=145148 avail=26374 chunkB=34711 pulseB=20827 不够一条(x=26374)→continue hNb=2
+    ⇒ 影子指令 attack pct=19 → AI#311（约 3389 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1540 zero_7 B=177355 L=7848 d=22.6 nb=3 neut=0 cmds=143 noFull=1 shQ=44338 | m=1.494 worth=33.8 cheap=4.6 over=0 dMedOther=4.6 safe(-1)=99769
+    → AI#311 terr=1679 bal=0 dq=0.0 cnt=69 | c=3.5 rankC=3.5 need=2520 tD=0.00 机 | safe=99769 keep=99769 avail=75508 chunkB=35471 pulseB=21283  x=3357 hNb=2
+    → 🌞#1[T1] terr=19644 bal=66004 dq=3.4 cnt=123 | c=10.1 rankC=10.1 need=147109 tD=0.72 人 | safe=99769 keep=101975 avail=73302 chunkB=35471 pulseB=21283  x=73302 hNb=2
+    → Qart-ḥadašt#16[T1] terr=20282 bal=189360 dq=9.3 cnt=70 | c=24.3 rankC=24.3 need=367939 tD=2.01 人 | safe=99769 keep=146592 avail=28685 chunkB=35471 pulseB=21283 不够一条(x=28685)→continue hNb=2
+    ⇒ 影子指令 attack pct=19 → AI#311（约 3463 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1545 zero_7 B=177355 L=7848 d=22.6 nb=3 neut=0 cmds=144 noFull=1 shQ=44338 | m=1.493 worth=33.7 cheap=4.6 over=0 dMedOther=4.6 safe(-1)=99769
+    → AI#311 terr=1679 bal=0 dq=0.0 cnt=69 | c=3.5 rankC=3.5 need=2520 tD=0.00 机 | safe=99769 keep=99769 avail=75508 chunkB=35471 pulseB=21283  x=3357 hNb=2
+    → 🌞#1[T1] terr=19839 bal=66004 dq=3.3 cnt=123 | c=10.0 rankC=10.0 need=147407 tD=0.72 人 | safe=99769 keep=101755 avail=73522 chunkB=35471 pulseB=21283  x=73522 hNb=2
+    → Qart-ḥadašt#16[T1] terr=20554 bal=189360 dq=9.2 cnt=70 | c=24.0 rankC=24.0 need=368347 tD=1.99 人 | safe=99769 keep=145705 avail=29572 chunkB=35471 pulseB=21283 不够一条(x=29572)→continue hNb=2
+    ⇒ 影子指令 attack pct=19 → AI#311（约 3463 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1550 zero_7 B=181168 L=7848 d=23.1 nb=3 neut=0 cmds=145 noFull=1 shQ=45292 | m=1.492 worth=34.5 cheap=4.6 over=0 dMedOther=4.5 safe(-1)=102056
+    → AI#311 terr=1679 bal=0 dq=0.0 cnt=69 | c=3.6 rankC=3.6 need=2520 tD=0.00 机 | safe=102056 keep=102056 avail=76989 chunkB=36234 pulseB=21740  x=3357 hNb=2
+    → 🌞#1[T1] terr=19958 bal=80789 dq=4.0 cnt=123 | c=11.7 rankC=11.7 need=173936 tD=0.90 人 | safe=102056 keep=108672 avail=70373 chunkB=36234 pulseB=21740  x=70373 hNb=2
+    → Qart-ḥadašt#16[T1] terr=20879 bal=193431 dq=9.3 cnt=70 | c=24.1 rankC=24.1 need=376094 tD=2.07 人 | safe=102056 keep=147640 avail=31405 chunkB=36234 pulseB=21740 不够一条(x=31405)→continue hNb=2
+    ⇒ 影子指令 attack pct=18 → AI#311（约 3361 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1555 zero_7 B=181168 L=7848 d=23.1 nb=3 neut=0 cmds=146 noFull=1 shQ=45292 | m=1.492 worth=34.4 cheap=4.7 over=0 dMedOther=4.4 safe(-1)=102056
+    → AI#311 terr=1679 bal=0 dq=0.0 cnt=69 | c=3.6 rankC=3.6 need=2520 tD=0.00 机 | safe=102056 keep=102056 avail=76989 chunkB=36234 pulseB=21740  x=3357 hNb=2
+    → 🌞#1[T1] terr=20279 bal=64459 dq=3.2 cnt=123 | c=9.6 rankC=9.6 need=145313 tD=0.72 人 | safe=102056 keep=102225 avail=76820 chunkB=36234 pulseB=21740  x=76820 hNb=2
+    → Qart-ḥadašt#16[T1] terr=21067 bal=193431 dq=9.2 cnt=70 | c=23.9 rankC=23.9 need=376376 tD=2.07 人 | safe=102056 keep=147062 avail=31983 chunkB=36234 pulseB=21740 不够一条(x=31983)→continue hNb=2
+    ⇒ 影子指令 attack pct=18 → AI#311（约 3361 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1560 zero_7 B=185008 L=7848 d=23.6 nb=3 neut=0 cmds=147 noFull=1 shQ=46252 | m=1.491 worth=35.1 cheap=4.7 over=0 dMedOther=4.5 safe(-1)=104359
+    → AI#311 terr=1679 bal=0 dq=0.0 cnt=69 | c=3.6 rankC=3.6 need=2520 tD=0.00 机 | safe=104359 keep=104359 avail=78481 chunkB=37002 pulseB=22201  x=3357 hNb=2
+    → 🌞#1[T1] terr=20679 bal=65825 dq=3.2 cnt=123 | c=9.7 rankC=9.7 need=148347 tD=0.71 人 | safe=104359 keep=104359 avail=78481 chunkB=37002 pulseB=22201  x=78481 hNb=2
+    → Qart-ḥadašt#16[T1] terr=21319 bal=197531 dq=9.3 cnt=70 | c=24.1 rankC=24.1 need=384061 tD=2.07 人 | safe=104359 keep=149256 avail=33584 chunkB=37002 pulseB=22201 不够一条(x=33584)→continue hNb=2
+    ⇒ 影子指令 attack pct=18 → AI#311（约 3432 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1565 zero_7 B=185008 L=7848 d=23.6 nb=3 neut=0 cmds=148 noFull=1 shQ=46252 | m=1.490 worth=35.1 cheap=4.7 over=0 dMedOther=4.4 safe(-1)=104359
+    → AI#311 terr=1679 bal=0 dq=0.0 cnt=69 | c=3.6 rankC=3.6 need=2520 tD=0.00 机 | safe=104359 keep=104359 avail=78481 chunkB=37002 pulseB=22201  x=3357 hNb=2
+    → 🌞#1[T1] terr=21255 bal=65825 dq=3.1 cnt=123 | c=9.4 rankC=9.4 need=149211 tD=0.70 人 | safe=104359 keep=104359 avail=78481 chunkB=37002 pulseB=22201  x=78481 hNb=2
+    → Qart-ḥadašt#16[T1] terr=21455 bal=197531 dq=9.2 cnt=70 | c=23.9 rankC=23.9 need=384265 tD=2.07 人 | safe=104359 keep=148855 avail=33985 chunkB=37002 pulseB=22201 不够一条(x=33985)→continue hNb=2
+    ⇒ 影子指令 attack pct=18 → AI#311（约 3432 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1570 zero_7 B=188874 L=7848 d=24.1 nb=3 neut=0 cmds=149 noFull=1 shQ=47218 | m=1.490 worth=35.8 cheap=4.8 over=0 dMedOther=4.5 safe(-1)=103551
+    → AI#311 terr=1679 bal=0 dq=0.0 cnt=69 | c=3.6 rankC=3.6 need=2520 tD=0.00 机 | safe=103551 keep=103551 avail=83110 chunkB=37775 pulseB=22665  x=3357 hNb=2
+    → 🌞#1[T1] terr=21592 bal=67200 dq=3.1 cnt=123 | c=9.5 rankC=9.5 need=152163 tD=0.69 人 | safe=103551 keep=104868 avail=81793 chunkB=37775 pulseB=22665  x=81793 hNb=2
+    → Qart-ḥadašt#16[T1] terr=21644 bal=196093 dq=9.1 cnt=70 | c=23.6 rankC=23.6 need=381975 tD=2.01 人 | safe=103551 keep=149341 avail=37320 chunkB=37775 pulseB=22665 不够一条(x=37320)→continue hNb=2
+    ⇒ 影子指令 attack pct=18 → AI#311（约 3504 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1575 zero_7 B=188874 L=7848 d=24.1 nb=3 neut=0 cmds=150 noFull=1 shQ=47218 | m=1.489 worth=35.8 cheap=4.8 over=0 dMedOther=4.5 safe(-1)=103551
+    → AI#311 terr=1679 bal=0 dq=0.0 cnt=69 | c=3.6 rankC=3.6 need=2520 tD=0.00 机 | safe=103551 keep=103551 avail=83110 chunkB=37775 pulseB=22665  x=3357 hNb=2
+    → 🌞#1[T1] terr=22069 bal=67200 dq=3.0 cnt=123 | c=9.3 rankC=9.3 need=152880 tD=0.68 人 | safe=103551 keep=104388 avail=82273 chunkB=37775 pulseB=22665  x=82273 hNb=2
+    → Qart-ḥadašt#16[T1] terr=21791 bal=196093 dq=9.0 cnt=70 | c=23.4 rankC=23.4 need=382206 tD=2.00 人 | safe=103551 keep=148926 avail=37735 chunkB=37775 pulseB=22665 不够一条(x=37735)→continue hNb=2
+    ⇒ 影子指令 attack pct=18 → AI#311（约 3504 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1580 zero_7 B=192764 L=7848 d=24.6 nb=3 neut=0 cmds=151 noFull=1 shQ=48191 | m=1.488 worth=36.5 cheap=4.8 over=0 dMedOther=4.3 safe(-1)=105820
+    → AI#311 terr=1679 bal=0 dq=0.0 cnt=69 | c=3.7 rankC=3.7 need=2520 tD=0.00 机 | safe=105820 keep=105820 avail=84686 chunkB=38553 pulseB=23132  x=3357 hNb=2
+    → 🌞#1[T1] terr=22373 bal=68584 dq=3.1 cnt=123 | c=9.4 rankC=9.4 need=155803 tD=0.71 人 | safe=105820 keep=106120 avail=84386 chunkB=38553 pulseB=23132  x=84386 hNb=2
+    → Qart-ḥadašt#16[T1] terr=22015 bal=200132 dq=9.1 cnt=70 | c=23.7 rankC=23.7 need=389741 tD=2.12 人 | safe=105820 keep=151211 avail=39295 chunkB=38553 pulseB=23132  x=39295 hNb=2
+    ⇒ 影子指令 attack pct=17 → AI#311（约 3388 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1585 zero_7 B=192764 L=7848 d=24.6 nb=3 neut=0 cmds=152 noFull=1 shQ=48191 | m=1.487 worth=36.5 cheap=4.9 over=0 dMedOther=4.3 safe(-1)=105820
+    → AI#311 terr=1679 bal=0 dq=0.0 cnt=69 | c=3.7 rankC=3.7 need=2520 tD=0.00 机 | safe=105820 keep=105820 avail=84686 chunkB=38553 pulseB=23132  x=3357 hNb=2
+    → 🌞#1[T1] terr=22805 bal=68584 dq=3.0 cnt=123 | c=9.2 rankC=9.2 need=156451 tD=0.70 人 | safe=105820 keep=105820 avail=84686 chunkB=38553 pulseB=23132  x=84686 hNb=2
+    → Qart-ḥadašt#16[T1] terr=22168 bal=200132 dq=9.0 cnt=70 | c=23.5 rankC=23.5 need=389960 tD=2.11 人 | safe=105820 keep=150787 avail=39719 chunkB=38553 pulseB=23132  x=39719 hNb=2
+    ⇒ 影子指令 attack pct=17 → AI#311（约 3388 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1590 zero_7 B=193871 L=7778 d=24.9 nb=3 neut=0 cmds=153 noFull=1 shQ=48467 | m=1.486 worth=37.1 cheap=4.9 over=0 dMedOther=4.0 safe(-1)=97967
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=3.6 rankC=3.6 need=2624 tD=0.00 机 | safe=97967 keep=97967 avail=93633 chunkB=38774 pulseB=23265  x=3487 hNb=2
+    → 🌞#1[T1] terr=23090 bal=69976 dq=3.0 cnt=123 | c=9.3 rankC=9.3 need=159361 tD=0.76 人 | safe=97967 keep=106094 avail=85506 chunkB=38774 pulseB=23265  x=85506 hNb=2
+    → Qart-ḥadašt#16[T1] terr=22487 bal=186049 dq=8.3 cnt=70 | c=21.7 rankC=21.7 need=365347 tD=2.07 人 | safe=97967 keep=145015 avail=46585 chunkB=38774 pulseB=23265  x=46585 hNb=2
+    ⇒ 影子指令 attack pct=18 → AI#311（约 3597 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1595 zero_7 B=193871 L=7778 d=24.9 nb=3 neut=0 cmds=154 noFull=1 shQ=48467 | m=1.486 worth=37.0 cheap=5.0 over=0 dMedOther=3.9 safe(-1)=97967
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=3.6 rankC=3.6 need=2624 tD=0.00 机 | safe=97967 keep=97967 avail=93633 chunkB=38774 pulseB=23265  x=3487 hNb=2
+    → 🌞#1[T1] terr=23465 bal=69976 dq=3.0 cnt=123 | c=9.2 rankC=9.2 need=159922 tD=0.76 人 | safe=97967 keep=105759 avail=85841 chunkB=38774 pulseB=23265  x=85841 hNb=2
+    → Qart-ḥadašt#16[T1] terr=22796 bal=186049 dq=8.2 cnt=70 | c=21.5 rankC=21.5 need=365801 tD=2.07 人 | safe=97967 keep=144225 avail=47375 chunkB=38774 pulseB=23265  x=47375 hNb=2
+    ⇒ 影子指令 attack pct=18 → AI#311（约 3597 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1600 zero_7 B=205526 L=7778 d=26.4 nb=3 neut=0 cmds=155 noFull=1 shQ=49494 | m=1.485 worth=39.2 cheap=5.0 over=0 dMedOther=4.9 safe(-1)=113019
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=3.7 rankC=3.7 need=2624 tD=0.00 机 | safe=113019 keep=113019 avail=90099 chunkB=41105 pulseB=24663  x=3487 hNb=2
+    → 🌞#1[T1] terr=23688 bal=95063 dq=4.0 cnt=123 | c=11.6 rankC=11.6 need=204969 tD=0.81 人 | safe=113019 keep=118074 avail=85044 chunkB=41105 pulseB=24663  x=85044 hNb=2
+    → Qart-ḥadašt#16[T1] terr=23199 bal=212841 dq=9.2 cnt=70 | c=23.9 rankC=23.9 need=414169 tD=1.86 人 | safe=113019 keep=156434 avail=46684 chunkB=41105 pulseB=24663  x=46684 hNb=2
+    ⇒ 影子指令 attack pct=17 → AI#311（约 3612 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1605 zero_7 B=205526 L=7778 d=26.4 nb=3 neut=0 cmds=156 noFull=1 shQ=51381 | m=1.484 worth=39.2 cheap=5.0 over=0 dMedOther=4.9 safe(-1)=111821
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=3.7 rankC=3.7 need=2624 tD=0.00 机 | safe=111821 keep=111821 avail=91297 chunkB=41105 pulseB=24663  x=3487 hNb=2
+    → 🌞#1[T1] terr=24009 bal=75847 dq=3.2 cnt=123 | c=9.6 rankC=9.6 need=171202 tD=0.65 人 | safe=111821 keep=111821 avail=91297 chunkB=41105 pulseB=24663  x=91297 hNb=2
+    → Qart-ḥadašt#16[T1] terr=23290 bal=210709 dq=9.0 cnt=70 | c=23.6 rankC=23.6 need=410400 tD=1.85 人 | safe=111821 keep=155548 avail=47570 chunkB=41105 pulseB=24663  x=47570 hNb=2
+    ⇒ 影子指令 attack pct=17 → AI#311（约 3612 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1610 zero_7 B=209574 L=7778 d=26.9 nb=3 neut=0 cmds=157 noFull=1 shQ=52393 | m=1.484 worth=40.0 cheap=5.1 over=0 dMedOther=4.9 safe(-1)=113687
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=3.7 rankC=3.7 need=2624 tD=0.00 机 | safe=113687 keep=113687 avail=93432 chunkB=41915 pulseB=25149  x=3487 hNb=2
+    → 🌞#1[T1] terr=24246 bal=77341 dq=3.2 cnt=123 | c=9.7 rankC=9.7 need=174222 tD=0.65 人 | safe=113687 keep=113687 avail=93432 chunkB=41915 pulseB=25149  x=93432 hNb=2
+    → Qart-ḥadašt#16[T1] terr=23608 bal=214029 dq=9.1 cnt=70 | c=23.6 rankC=23.6 need=416889 tD=1.84 人 | safe=113687 keep=157338 avail=49781 chunkB=41915 pulseB=25149  x=49781 hNb=2
+    ⇒ 影子指令 attack pct=17 → AI#311（约 3683 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1615 zero_7 B=209574 L=7778 d=26.9 nb=3 neut=0 cmds=158 noFull=1 shQ=52393 | m=1.483 worth=40.0 cheap=5.1 over=0 dMedOther=4.9 safe(-1)=113687
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=3.7 rankC=3.7 need=2624 tD=0.00 机 | safe=113687 keep=113687 avail=93432 chunkB=41915 pulseB=25149  x=3487 hNb=2
+    → 🌞#1[T1] terr=24568 bal=77341 dq=3.1 cnt=123 | c=9.6 rankC=9.6 need=174702 tD=0.65 人 | safe=113687 keep=113687 avail=93432 chunkB=41915 pulseB=25149  x=93432 hNb=2
+    → Qart-ḥadašt#16[T1] terr=23794 bal=214029 dq=9.0 cnt=70 | c=23.4 rankC=23.4 need=417175 tD=1.84 人 | safe=113687 keep=156856 avail=50263 chunkB=41915 pulseB=25149  x=50263 hNb=2
+    ⇒ 影子指令 attack pct=17 → AI#311（约 3683 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1620 zero_7 B=213639 L=7778 d=27.5 nb=3 neut=0 cmds=159 noFull=1 shQ=53409 | m=1.482 worth=40.7 cheap=5.2 over=0 dMedOther=4.9 safe(-1)=116019
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=3.8 rankC=3.8 need=2624 tD=0.00 机 | safe=116019 keep=116019 avail=95117 chunkB=42728 pulseB=25637  x=3487 hNb=2
+    → 🌞#1[T1] terr=24760 bal=78841 dq=3.2 cnt=123 | c=9.6 rankC=9.6 need=177663 tD=0.65 人 | safe=116019 keep=116019 avail=95117 chunkB=42728 pulseB=25637  x=95117 hNb=2
+    → Qart-ḥadašt#16[T1] terr=24034 bal=218181 dq=9.1 cnt=70 | c=23.6 rankC=23.6 need=424936 tD=1.85 人 | safe=116019 keep=159142 avail=51994 chunkB=42728 pulseB=25637  x=51994 hNb=2
+    ⇒ 影子指令 attack pct=16 → AI#311（约 3546 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1625 zero_7 B=213639 L=7778 d=27.5 nb=3 neut=0 cmds=160 noFull=1 shQ=53409 | m=1.481 worth=40.7 cheap=5.2 over=0 dMedOther=4.9 safe(-1)=116019
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=3.8 rankC=3.8 need=2624 tD=0.00 机 | safe=116019 keep=116019 avail=95117 chunkB=42728 pulseB=25637  x=3487 hNb=2
+    → 🌞#1[T1] terr=25020 bal=78841 dq=3.2 cnt=123 | c=9.6 rankC=9.6 need=178053 tD=0.65 人 | safe=116019 keep=116019 avail=95117 chunkB=42728 pulseB=25637  x=95117 hNb=2
+    → Qart-ḥadašt#16[T1] terr=24182 bal=218181 dq=9.0 cnt=70 | c=23.5 rankC=23.5 need=425158 tD=1.86 人 | safe=116019 keep=158776 avail=52360 chunkB=42728 pulseB=25637  x=52360 hNb=2
+    ⇒ 影子指令 attack pct=16 → AI#311（约 3546 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1630 zero_7 B=217698 L=7778 d=28.0 nb=3 neut=0 cmds=161 noFull=1 shQ=54424 | m=1.480 worth=41.4 cheap=5.2 over=0 dMedOther=4.9 safe(-1)=118348
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=3.8 rankC=3.8 need=2624 tD=0.00 机 | safe=118348 keep=118348 avail=96799 chunkB=43540 pulseB=26124  x=3487 hNb=2
+    → 🌞#1[T1] terr=25168 bal=80338 dq=3.2 cnt=123 | c=9.7 rankC=9.7 need=180943 tD=0.65 人 | safe=118348 keep=118348 avail=96799 chunkB=43540 pulseB=26124  x=96799 hNb=2
+    → Qart-ḥadašt#16[T1] terr=24381 bal=222326 dq=9.1 cnt=70 | c=23.7 rankC=23.7 need=432841 tD=1.87 人 | safe=118348 keep=161164 avail=53983 chunkB=43540 pulseB=26124  x=53983 hNb=2
+    ⇒ 影子指令 attack pct=16 → AI#311（约 3614 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1635 zero_7 B=217698 L=7778 d=28.0 nb=3 neut=0 cmds=162 noFull=1 shQ=54424 | m=1.480 worth=41.4 cheap=5.3 over=0 dMedOther=4.9 safe(-1)=118348
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=3.8 rankC=3.8 need=2624 tD=0.00 机 | safe=118348 keep=118348 avail=96799 chunkB=43540 pulseB=26124  x=3487 hNb=2
+    → 🌞#1[T1] terr=25356 bal=80338 dq=3.2 cnt=123 | c=9.6 rankC=9.6 need=181225 tD=0.65 人 | safe=118348 keep=118348 avail=96799 chunkB=43540 pulseB=26124  x=96799 hNb=2
+    → Qart-ḥadašt#16[T1] terr=24486 bal=222326 dq=9.1 cnt=70 | c=23.6 rankC=23.6 need=433002 tD=1.87 人 | safe=118348 keep=160921 avail=54226 chunkB=43540 pulseB=26124  x=54226 hNb=2
+    ⇒ 影子指令 attack pct=16 → AI#311（约 3614 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1640 zero_7 B=221768 L=7778 d=28.5 nb=3 neut=0 cmds=163 noFull=1 shQ=55442 | m=1.479 worth=42.2 cheap=5.3 over=0 dMedOther=5.1 safe(-1)=120683
+    → 🌞#1[T1] terr=25472 bal=81840 dq=3.2 cnt=123 | c=5.5 rankC=2.8 need=184077 tD=0.63 人 pulse bleeding | safe=120683 keep=120683 avail=98487 chunkB=44354 pulseB=26612  x=26612 hNb=2
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=3.8 rankC=3.8 need=2624 tD=0.00 机 | safe=120683 keep=120683 avail=98487 chunkB=44354 pulseB=26612  x=3487 hNb=2
+    → Qart-ḥadašt#16[T1] terr=24620 bal=226483 dq=9.2 cnt=70 | c=23.9 rankC=23.9 need=440605 tD=1.80 人 | safe=120683 keep=163489 avail=55681 chunkB=44354 pulseB=26612  x=55681 hNb=2
+    ⇒ 影子指令 attack pct=122 → 🌞#1[T1]（约 26638 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1645 zero_7 B=221768 L=7778 d=28.5 nb=3 neut=0 cmds=164 noFull=1 shQ=55442 | m=1.478 worth=42.1 cheap=5.4 over=0 dMedOther=5.1 safe(-1)=120683
+    → 🌞#1[T1] terr=25630 bal=91732 dq=3.6 cnt=123 | c=6.1 rankC=3.0 need=201948 tD=0.71 人 pulse bleeding | safe=120683 keep=120683 avail=98487 chunkB=44354 pulseB=26612  x=26612 hNb=2
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=3.8 rankC=3.8 need=2624 tD=0.00 机 | safe=120683 keep=120683 avail=98487 chunkB=44354 pulseB=26612  x=3487 hNb=2
+    → Qart-ḥadašt#16[T1] terr=24706 bal=226483 dq=9.2 cnt=70 | c=23.9 rankC=23.9 need=440741 tD=1.81 人 | safe=120683 keep=163299 avail=55871 chunkB=44354 pulseB=26612  x=55871 hNb=2
+    ⇒ 影子指令 attack pct=122 → 🌞#1[T1]（约 26638 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1650 zero_7 B=225848 L=7778 d=29.0 nb=3 neut=0 cmds=165 noFull=1 shQ=56462 | m=1.478 worth=42.9 cheap=5.4 over=0 dMedOther=5.0 safe(-1)=132690
+    → 🌞#1[T1] terr=26054 bal=74514 dq=2.9 cnt=123 | c=5.1 rankC=2.5 need=171895 tD=0.57 人 pulse bleeding | safe=132690 keep=132690 avail=90512 chunkB=45170 pulseB=27102  x=27101 hNb=2
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=3.9 rankC=3.9 need=2624 tD=0.00 机 | safe=132690 keep=132690 avail=90512 chunkB=45170 pulseB=27102  x=3487 hNb=2
+    → Qart-ḥadašt#16[T1] terr=24828 bal=247855 dq=10.0 cnt=70 | c=25.8 rankC=25.8 need=479009 tD=2.00 人 | safe=132690 keep=171051 avail=52151 chunkB=45170 pulseB=27102  x=52151 hNb=2
+    ⇒ 影子指令 attack pct=122 → 🌞#1[T1]（约 27128 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1655 zero_7 B=225848 L=7778 d=29.0 nb=3 neut=0 cmds=166 noFull=1 shQ=56462 | m=1.477 worth=42.9 cheap=5.5 over=0 dMedOther=4.9 safe(-1)=132690
+    → 🌞#1[T1] terr=26660 bal=74429 dq=2.8 cnt=123 | c=5.0 rankC=2.5 need=172649 tD=0.57 人 pulse bleeding | safe=132690 keep=132690 avail=90512 chunkB=45170 pulseB=27102  x=27101 hNb=2
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=3.9 rankC=3.9 need=2624 tD=0.00 机 | safe=132690 keep=132690 avail=90512 chunkB=45170 pulseB=27102  x=3487 hNb=2
+    → Qart-ḥadašt#16[T1] terr=24907 bal=247855 dq=10.0 cnt=70 | c=25.7 rankC=25.7 need=479140 tD=2.03 人 | safe=132690 keep=170865 avail=52337 chunkB=45170 pulseB=27102  x=52337 hNb=2
+    ⇒ 影子指令 attack pct=122 → 🌞#1[T1]（约 27128 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1660 zero_7 B=229935 L=7778 d=29.6 nb=3 neut=0 cmds=167 noFull=1 shQ=57483 | m=1.476 worth=43.6 cheap=5.5 over=0 dMedOther=4.9 safe(-1)=122612
+    → 🌞#1[T1] terr=27047 bal=75682 dq=2.8 cnt=123 | c=5.0 rankC=2.5 need=175468 tD=0.57 人 pulse bleeding | safe=122612 keep=122612 avail=104629 chunkB=45987 pulseB=27592  x=27592 hNb=2
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=3.9 rankC=3.9 need=2624 tD=0.00 机 | safe=122612 keep=122612 avail=104629 chunkB=45987 pulseB=27592  x=3487 hNb=2
+    → Qart-ḥadašt#16[T1] terr=25051 bal=229917 dq=9.2 cnt=70 | c=23.9 rankC=23.9 need=447383 tD=1.87 人 | safe=122612 keep=166800 avail=60441 chunkB=45987 pulseB=27592  x=60441 hNb=2
+    ⇒ 影子指令 attack pct=122 → 🌞#1[T1]（约 27619 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1665 zero_7 B=229935 L=7778 d=29.6 nb=3 neut=0 cmds=168 noFull=1 shQ=57483 | m=1.475 worth=43.6 cheap=5.6 over=0 dMedOther=4.8 safe(-1)=122612
+    → 🌞#1[T1] terr=27599 bal=75484 dq=2.7 cnt=123 | c=4.9 rankC=2.5 need=175943 tD=0.57 人 pulse bleeding | safe=122612 keep=122612 avail=104629 chunkB=45987 pulseB=27592  x=27592 hNb=2
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=3.9 rankC=3.9 need=2624 tD=0.00 机 | safe=122612 keep=122612 avail=104629 chunkB=45987 pulseB=27592  x=3487 hNb=2
+    → Qart-ḥadašt#16[T1] terr=25185 bal=229917 dq=9.1 cnt=70 | c=23.8 rankC=23.8 need=447577 tD=1.89 人 | safe=122612 keep=166487 avail=60754 chunkB=45987 pulseB=27592  x=60754 hNb=2
+    ⇒ 影子指令 attack pct=122 → 🌞#1[T1]（约 27619 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1670 zero_7 B=234027 L=7778 d=30.1 nb=3 neut=0 cmds=169 noFull=1 shQ=58506 | m=1.474 worth=44.4 cheap=5.6 over=0 dMedOther=4.8 safe(-1)=124911
+    → 🌞#1[T1] terr=27947 bal=76660 dq=2.7 cnt=123 | c=4.9 rankC=2.5 need=178561 tD=0.57 人 pulse bleeding | safe=124911 keep=124911 avail=106374 chunkB=46805 pulseB=28083  x=28083 hNb=2
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=4.0 rankC=4.0 need=2624 tD=0.00 机 | safe=124911 keep=124911 avail=106374 chunkB=46805 pulseB=28083  x=3487 hNb=2
+    → Qart-ḥadašt#16[T1] terr=25393 bal=234009 dq=9.2 cnt=70 | c=24.0 rankC=24.0 need=455182 tD=1.93 人 | safe=124911 keep=168821 avail=62464 chunkB=46805 pulseB=28083  x=62464 hNb=2
+    ⇒ 影子指令 attack pct=122 → 🌞#1[T1]（约 28110 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1675 zero_7 B=234027 L=7778 d=30.1 nb=3 neut=0 cmds=170 noFull=1 shQ=58506 | m=1.474 worth=44.3 cheap=5.7 over=0 dMedOther=4.6 safe(-1)=113229
+    → 🌞#1[T1] terr=28192 bal=76371 dq=2.7 cnt=123 | c=4.9 rankC=2.5 need=178409 tD=0.59 人 pulse bleeding | safe=113229 keep=113229 avail=118056 chunkB=46805 pulseB=28083  x=28083 hNb=2
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=4.0 rankC=4.0 need=2624 tD=0.00 机 | safe=113229 keep=113229 avail=118056 chunkB=46805 pulseB=28083  x=3487 hNb=2
+    → Qart-ḥadašt#16[T1] terr=25638 bal=213214 dq=8.3 cnt=70 | c=21.8 rankC=21.8 need=418488 tD=1.81 人 | safe=113229 keep=162166 avail=69119 chunkB=46805 pulseB=28083  x=69119 hNb=2
+    ⇒ 影子指令 attack pct=122 → 🌞#1[T1]（约 28110 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1680 zero_7 B=238122 L=7778 d=30.6 nb=3 neut=0 cmds=171 noFull=1 shQ=59530 | m=1.473 worth=45.1 cheap=5.7 over=0 dMedOther=4.7 safe(-1)=115325
+    → 🌞#1[T1] terr=28266 bal=77483 dq=2.7 cnt=123 | c=5.0 rankC=2.5 need=180505 tD=0.59 人 pulse bleeding | safe=115325 keep=115325 avail=120007 chunkB=47624 pulseB=28575  x=28574 hNb=2
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=4.0 rankC=4.0 need=2624 tD=0.00 机 | safe=115325 keep=115325 avail=120007 chunkB=47624 pulseB=28575  x=3487 hNb=2
+    → Qart-ḥadašt#16[T1] terr=26113 bal=216945 dq=8.3 cnt=70 | c=21.8 rankC=21.8 need=425847 tD=1.78 人 | safe=115325 keep=163788 avail=71544 chunkB=47624 pulseB=28575  x=71544 hNb=2
+    ⇒ 影子指令 attack pct=122 → 🌞#1[T1]（约 28602 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1685 zero_7 B=238122 L=7778 d=30.6 nb=3 neut=0 cmds=172 noFull=1 shQ=59530 | m=1.472 worth=45.1 cheap=5.8 over=0 dMedOther=4.6 safe(-1)=115325
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=4.0 rankC=4.0 need=2624 tD=0.00 机 | safe=115325 keep=115325 avail=120007 chunkB=47624 pulseB=28575  x=3487 hNb=2
+    → 🌞#1[T1] terr=28403 bal=77220 dq=2.7 cnt=123 | c=8.5 rankC=8.5 need=180243 tD=0.59 人 | safe=115325 keep=122082 avail=113250 chunkB=47624 pulseB=28575  x=113250 hNb=2
+    → Qart-ḥadašt#16[T1] terr=26414 bal=216945 dq=8.2 cnt=70 | c=21.6 rankC=21.6 need=426302 tD=1.78 人 | safe=115325 keep=163127 avail=72205 chunkB=47624 pulseB=28575  x=72205 hNb=2
+    ⇒ 影子指令 attack pct=14 → AI#311（约 3488 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1690 zero_7 B=242217 L=7778 d=31.1 nb=3 neut=0 cmds=173 noFull=1 shQ=60554 | m=1.472 worth=45.8 cheap=5.8 over=0 dMedOther=4.7 safe(-1)=117421
+    → 🌞#1[T1] terr=28564 bal=62671 dq=2.2 cnt=123 | c=5.5 rankC=3.8 need=154548 tD=0.47 人 | safe=117421 keep=117421 avail=121958 chunkB=48443 pulseB=29066  x=121958 hNb=2
+    → AI#311 terr=1749 bal=0 dq=0.0 cnt=69 | c=4.0 rankC=4.0 need=2624 tD=0.00 机 | safe=117421 keep=117421 avail=121958 chunkB=48443 pulseB=29066  x=3487 hNb=2
+    → Qart-ḥadašt#16[T1] terr=26856 bal=220676 dq=8.2 cnt=70 | c=21.6 rankC=21.6 need=433609 tD=1.75 人 | safe=117421 keep=164843 avail=74536 chunkB=48443 pulseB=29066  x=74536 hNb=2
+    ⇒ 影子指令 attack pct=515 → 🌞#1[T1]（约 122054 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1695 zero_7 B=238730 L=7708 d=31.0 nb=3 neut=0 cmds=173 noFull=1 shQ=1014 | m=1.471 worth=45.6 cheap=5.9 over=0 dMedOther=4.5 safe(-1)=106463
+    → 🌞#1[T1] terr=28828 bal=62671 dq=2.2 cnt=123 | c=5.4 rankC=3.8 need=154944 tD=0.48 人 | safe=106463 keep=106463 avail=129470 chunkB=47746 pulseB=28648  x=129470 hNb=2
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=3.9 rankC=3.9 need=2730 tD=0.00 机 | safe=106463 keep=106463 avail=129470 chunkB=47746 pulseB=28648  x=3623 hNb=2
+    → Qart-ḥadašt#16[T1] terr=27139 bal=201066 dq=7.4 cnt=70 | c=19.7 rankC=19.7 need=399090 tD=1.63 人 | safe=106463 keep=156901 avail=79032 chunkB=47746 pulseB=28648  x=79032 hNb=2
+    ⇒ 本拍没有指令
+t=1700 zero_7 B=250472 L=7708 d=32.5 nb=3 neut=0 cmds=174 noFull=1 shQ=6116 | m=1.470 worth=47.8 cheap=5.9 over=0 dMedOther=5.6 safe(-1)=123863
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.0 rankC=4.0 need=2730 tD=0.00 机 | safe=123863 keep=123863 avail=123674 chunkB=50094 pulseB=30057  x=3623 hNb=2
+    → 🌞#1[T1] terr=28984 bal=92714 dq=3.2 cnt=123 | c=7.3 rankC=5.1 need=208726 tD=0.57 人 | safe=123863 keep=123863 avail=123674 chunkB=50094 pulseB=30057  x=123674 hNb=2
+    → Qart-ḥadašt#16[T1] terr=27787 bal=232038 dq=8.4 cnt=70 | c=21.9 rankC=21.9 need=455267 tD=1.49 人 | safe=123863 keep=168620 avail=78917 chunkB=50094 pulseB=30057  x=78917 hNb=2
+    ⇒ 影子指令 attack pct=14 → AI#311（约 3669 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1705 zero_7 B=250472 L=7708 d=32.5 nb=3 neut=0 cmds=175 noFull=1 shQ=11365 | m=1.469 worth=47.7 cheap=6.0 over=0 dMedOther=5.6 safe(-1)=126881
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.0 rankC=4.0 need=2730 tD=0.00 机 | safe=126881 keep=126881 avail=120656 chunkB=50094 pulseB=30057  x=3623 hNb=2
+    → 🌞#1[T1] terr=29202 bal=92714 dq=3.2 cnt=123 | c=7.2 rankC=5.1 need=209056 tD=0.57 人 | safe=126881 keep=126881 avail=120656 chunkB=50094 pulseB=30057  x=120656 hNb=2
+    → Qart-ḥadašt#16[T1] terr=28204 bal=237411 dq=8.4 cnt=70 | c=22.1 rankC=22.1 need=465458 tD=1.50 人 | safe=126881 keep=169162 avail=78375 chunkB=50094 pulseB=30057  x=78375 hNb=2
+    ⇒ 影子指令 attack pct=14 → AI#311（约 3669 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1710 zero_7 B=254604 L=7708 d=33.0 nb=3 neut=0 cmds=176 noFull=1 shQ=16589 | m=1.468 worth=48.5 cheap=6.0 over=0 dMedOther=5.7 safe(-1)=129082
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.0 rankC=4.0 need=2730 tD=0.00 机 | safe=129082 keep=129082 avail=122539 chunkB=50921 pulseB=30552  x=3623 hNb=2
+    → 🌞#1[T1] terr=29332 bal=94243 dq=3.2 cnt=123 | c=7.3 rankC=5.1 need=211973 tD=0.57 人 | safe=129082 keep=129082 avail=122539 chunkB=50921 pulseB=30552  x=122539 hNb=2
+    → Qart-ḥadašt#16[T1] terr=28818 bal=241328 dq=8.4 cnt=70 | c=22.0 rankC=22.0 need=473368 tD=1.48 人 | safe=129082 keep=170544 avail=81077 chunkB=50921 pulseB=30552  x=81077 hNb=2
+    ⇒ 影子指令 attack pct=14 → AI#311（约 3729 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1715 zero_7 B=254604 L=7708 d=33.0 nb=3 neut=0 cmds=177 noFull=1 shQ=21825 | m=1.468 worth=48.5 cheap=6.1 over=0 dMedOther=5.7 safe(-1)=127782
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.0 rankC=4.0 need=2730 tD=0.00 机 | safe=127782 keep=127782 avail=123839 chunkB=50921 pulseB=30552  x=3623 hNb=2
+    → 🌞#1[T1] terr=29488 bal=94243 dq=3.2 cnt=123 | c=7.3 rankC=5.1 need=212207 tD=0.57 人 | safe=127782 keep=127782 avail=123839 chunkB=50921 pulseB=30552  x=123839 hNb=2
+    → Qart-ḥadašt#16[T1] terr=29046 bal=239014 dq=8.2 cnt=70 | c=21.6 rankC=21.6 need=469585 tD=1.46 人 | safe=127782 keep=169518 avail=82103 chunkB=50921 pulseB=30552  x=82103 hNb=2
+    ⇒ 影子指令 attack pct=14 → AI#311（约 3729 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1720 zero_7 B=258728 L=7708 d=33.6 nb=3 neut=0 cmds=178 noFull=1 shQ=27033 | m=1.467 worth=49.2 cheap=6.2 over=0 dMedOther=5.7 safe(-1)=129957
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.1 rankC=4.1 need=2730 tD=0.00 机 | safe=129957 keep=129957 avail=125740 chunkB=51746 pulseB=31047  x=3623 hNb=2
+    → 🌞#1[T1] terr=29581 bal=95769 dq=3.2 cnt=123 | c=7.3 rankC=5.1 need=215068 tD=0.57 人 | safe=129957 keep=129957 avail=125740 chunkB=51746 pulseB=31047  x=125740 hNb=2
+    → Qart-ḥadašt#16[T1] terr=29616 bal=242886 dq=8.2 cnt=70 | c=21.6 rankC=21.6 need=477335 tD=1.43 人 | safe=129957 keep=171018 avail=84679 chunkB=51746 pulseB=31047  x=84679 hNb=2
+    ⇒ 影子指令 attack pct=14 → AI#311（约 3789 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1725 zero_7 B=258728 L=7708 d=33.6 nb=3 neut=0 cmds=179 noFull=1 shQ=32256 | m=1.466 worth=49.2 cheap=6.2 over=0 dMedOther=5.1 safe(-1)=129957
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.1 rankC=4.1 need=2730 tD=0.00 机 | safe=129957 keep=129957 avail=125740 chunkB=51746 pulseB=31047  x=3623 hNb=2
+    → 🌞#1[T1] terr=29708 bal=95769 dq=3.2 cnt=123 | c=7.3 rankC=5.1 need=215257 tD=0.63 人 | safe=129957 keep=129957 avail=125740 chunkB=51746 pulseB=31047  x=125740 hNb=2
+    → Qart-ḥadašt#16[T1] terr=29989 bal=242886 dq=8.1 cnt=70 | c=21.3 rankC=21.3 need=477898 tD=1.58 人 | safe=129957 keep=170310 avail=85387 chunkB=51746 pulseB=31047  x=85387 hNb=2
+    ⇒ 影子指令 attack pct=14 → AI#311（约 3789 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1730 zero_7 B=262841 L=7708 d=34.1 nb=3 neut=0 cmds=180 noFull=1 shQ=37443 | m=1.466 worth=50.0 cheap=6.3 over=0 dMedOther=5.2 safe(-1)=132126
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.1 rankC=4.1 need=2730 tD=0.00 机 | safe=132126 keep=132126 avail=127635 chunkB=52568 pulseB=31541  x=3623 hNb=2
+    → 🌞#1[T1] terr=29786 bal=97291 dq=3.3 cnt=123 | c=7.4 rankC=5.2 need=218090 tD=0.63 人 | safe=132126 keep=132126 avail=127635 chunkB=52568 pulseB=31541  x=127635 hNb=2
+    → Qart-ḥadašt#16[T1] terr=30531 bal=246747 dq=8.1 cnt=70 | c=21.3 rankC=21.3 need=485599 tD=1.56 人 | safe=132126 keep=171882 avail=87879 chunkB=52568 pulseB=31541  x=87879 hNb=2
+    ⇒ 影子指令 attack pct=14 → AI#311（约 3850 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1735 zero_7 B=262841 L=7708 d=34.1 nb=3 neut=0 cmds=181 noFull=1 shQ=42645 | m=1.465 worth=49.9 cheap=6.3 over=0 dMedOther=5.1 safe(-1)=139796
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.1 rankC=4.1 need=2730 tD=0.00 机 | safe=139796 keep=139796 avail=119965 chunkB=52568 pulseB=31541  x=3623 hNb=2
+    → 🌞#1[T1] terr=29888 bal=110621 dq=3.7 cnt=123 | c=10.9 rankC=10.9 need=241999 tD=0.72 人 | safe=139796 keep=139796 avail=119965 chunkB=52568 pulseB=31541  x=119965 hNb=2
+    → Qart-ḥadašt#16[T1] terr=30869 bal=260398 dq=8.4 cnt=70 | c=22.1 rankC=22.1 need=510431 tD=1.64 人 | safe=139796 keep=174552 avail=85209 chunkB=52568 pulseB=31541  x=85209 hNb=2
+    ⇒ 影子指令 attack pct=14 → AI#311（约 3850 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1740 zero_7 B=266941 L=7708 d=34.6 nb=3 neut=0 cmds=182 noFull=1 shQ=47817 | m=1.464 worth=50.7 cheap=6.4 over=0 dMedOther=5.2 safe(-1)=142078
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.1 rankC=4.1 need=2730 tD=0.00 机 | safe=142078 keep=142078 avail=121735 chunkB=53388 pulseB=32033  x=3623 hNb=2
+    → 🌞#1[T1] terr=29939 bal=112346 dq=3.8 cnt=123 | c=11.0 rankC=11.0 need=245155 tD=0.72 人 | safe=142078 keep=142078 avail=121735 chunkB=53388 pulseB=32033  x=121735 hNb=2
+    → Qart-ḥadašt#16[T1] terr=31375 bal=264460 dq=8.4 cnt=70 | c=22.1 rankC=22.1 need=518436 tD=1.62 人 | safe=142078 keep=176203 avail=87610 chunkB=53388 pulseB=32033  x=87610 hNb=2
+    ⇒ 影子指令 attack pct=13 → AI#311（约 3649 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1745 zero_7 B=266941 L=7708 d=34.6 nb=3 neut=0 cmds=183 noFull=1 shQ=53001 | m=1.463 worth=50.7 cheap=6.5 over=0 dMedOther=5.1 safe(-1)=142078
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.1 rankC=4.1 need=2730 tD=0.00 机 | safe=142078 keep=142078 avail=121735 chunkB=53388 pulseB=32033  x=3623 hNb=2
+    → 🌞#1[T1] terr=30013 bal=112346 dq=3.7 cnt=123 | c=11.0 rankC=11.0 need=245263 tD=0.73 人 | safe=142078 keep=142078 avail=121735 chunkB=53388 pulseB=32033  x=121735 hNb=2
+    → Qart-ḥadašt#16[T1] terr=31705 bal=264460 dq=8.3 cnt=70 | c=21.9 rankC=21.9 need=518924 tD=1.62 人 | safe=142078 keep=175603 avail=88210 chunkB=53388 pulseB=32033  x=88210 hNb=2
+    ⇒ 影子指令 attack pct=13 → AI#311（约 3649 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1750 zero_7 B=271025 L=7708 d=35.2 nb=3 neut=0 cmds=184 noFull=1 shQ=58139 | m=1.462 worth=51.4 cheap=6.5 over=0 dMedOther=5.2 safe(-1)=144351
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.2 rankC=4.2 need=2730 tD=0.00 机 | safe=144351 keep=144351 avail=123498 chunkB=54205 pulseB=32523  x=3623 hNb=2
+    → 🌞#1[T1] terr=30060 bal=114064 dq=3.8 cnt=123 | c=11.1 rankC=11.1 need=248393 tD=0.73 人 | safe=144351 keep=144351 avail=123498 chunkB=54205 pulseB=32523  x=123498 hNb=2
+    → Qart-ḥadašt#16[T1] terr=32193 bal=268506 dq=8.3 cnt=70 | c=21.9 rankC=21.9 need=526868 tD=1.61 人 | safe=144351 keep=177292 avail=90557 chunkB=54205 pulseB=32523  x=90557 hNb=2
+    ⇒ 影子指令 attack pct=13 → AI#311（约 3705 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1755 zero_7 B=271025 L=7708 d=35.2 nb=3 neut=0 cmds=185 noFull=1 shQ=63298 | m=1.462 worth=51.4 cheap=6.6 over=0 dMedOther=5.1 safe(-1)=144351
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.2 rankC=4.2 need=2730 tD=0.00 机 | safe=144351 keep=144351 avail=123498 chunkB=54205 pulseB=32523  x=3623 hNb=2
+    → 🌞#1[T1] terr=30383 bal=91007 dq=3.0 cnt=123 | c=9.2 rankC=9.2 need=207787 tD=0.58 人 | safe=144351 keep=144351 avail=123498 chunkB=54205 pulseB=32523  x=123498 hNb=2
+    → Qart-ḥadašt#16[T1] terr=32518 bal=268506 dq=8.3 cnt=70 | c=21.7 rankC=21.7 need=527359 tD=1.61 人 | safe=144351 keep=176724 avail=91125 chunkB=54205 pulseB=32523  x=91125 hNb=2
+    ⇒ 影子指令 attack pct=13 → AI#311（约 3705 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1760 zero_7 B=275090 L=7708 d=35.7 nb=3 neut=0 cmds=186 noFull=1 shQ=68414 | m=1.461 worth=52.1 cheap=6.7 over=0 dMedOther=5.2 safe(-1)=133007
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.2 rankC=4.2 need=2730 tD=0.00 机 | safe=133007 keep=133007 avail=138860 chunkB=55018 pulseB=33011  x=3623 hNb=2
+    → 🌞#1[T1] terr=30561 bal=92372 dq=3.0 cnt=123 | c=9.3 rankC=9.3 need=210483 tD=0.58 人 | safe=133007 keep=139524 avail=132343 chunkB=55018 pulseB=33011  x=132343 hNb=2
+    → Qart-ḥadašt#16[T1] terr=33322 bal=248315 dq=7.5 cnt=70 | c=19.8 rankC=19.8 need=492576 tD=1.44 人 | safe=133007 keep=172431 avail=99436 chunkB=55018 pulseB=33011  x=99436 hNb=2
+    ⇒ 影子指令 attack pct=13 → AI#311（约 3760 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1765 zero_7 B=275090 L=7708 d=35.7 nb=3 neut=0 cmds=187 noFull=1 shQ=68772 | m=1.460 worth=52.1 cheap=6.7 over=0 dMedOther=5.1 safe(-1)=133028
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.2 rankC=4.2 need=2730 tD=0.00 机 | safe=133028 keep=133028 avail=138839 chunkB=55018 pulseB=33011  x=3623 hNb=2
+    → 🌞#1[T1] terr=30791 bal=92372 dq=3.0 cnt=123 | c=9.2 rankC=9.2 need=210832 tD=0.58 人 | safe=133028 keep=139396 avail=132471 chunkB=55018 pulseB=33011  x=132471 hNb=2
+    → Qart-ḥadašt#16[T1] terr=33898 bal=248352 dq=7.3 cnt=70 | c=19.5 rankC=19.5 need=493506 tD=1.43 人 | safe=133028 keep=171544 avail=100323 chunkB=55018 pulseB=33011  x=100323 hNb=2
+    ⇒ 影子指令 attack pct=13 → AI#311（约 3760 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1770 zero_7 B=279133 L=7708 d=36.2 nb=3 neut=0 cmds=188 noFull=1 shQ=69783 | m=1.460 worth=52.9 cheap=6.8 over=0 dMedOther=5.2 safe(-1)=135079
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.2 rankC=4.2 need=2730 tD=0.00 机 | safe=135079 keep=135079 avail=140783 chunkB=55827 pulseB=33496  x=3623 hNb=2
+    → 🌞#1[T1] terr=30921 bal=99686 dq=3.2 cnt=123 | c=9.8 rankC=9.8 need=224060 tD=0.62 人 | safe=135079 keep=142727 avail=133135 chunkB=55827 pulseB=33496  x=133135 hNb=2
+    → Qart-ḥadašt#16[T1] terr=34641 bal=252002 dq=7.3 cnt=70 | c=19.4 rankC=19.4 need=501123 tD=1.41 人 | safe=135079 keep=172834 avail=103028 chunkB=55827 pulseB=33496  x=103028 hNb=2
+    ⇒ 影子指令 attack pct=13 → AI#311（约 3816 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1775 zero_7 B=279133 L=7708 d=36.2 nb=3 neut=0 cmds=189 noFull=1 shQ=69783 | m=1.459 worth=52.8 cheap=6.9 over=0 dMedOther=5.1 safe(-1)=122534
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.2 rankC=4.2 need=2730 tD=0.00 机 | safe=122534 keep=122534 avail=153328 chunkB=55827 pulseB=33496  x=3623 hNb=2
+    → 🌞#1[T1] terr=31106 bal=99686 dq=3.2 cnt=123 | c=9.7 rankC=9.7 need=224339 tD=0.62 人 | safe=122534 keep=142626 avail=133236 chunkB=55827 pulseB=33496  x=133236 hNb=2
+    → Qart-ḥadašt#16[T1] terr=35180 bal=229673 dq=6.5 cnt=70 | c=17.6 rankC=17.6 need=462131 tD=1.27 人 | safe=122534 keep=167336 avail=108526 chunkB=55827 pulseB=33496  x=108526 hNb=2
+    ⇒ 影子指令 attack pct=13 → AI#311（约 3816 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1780 zero_7 B=283152 L=7708 d=36.7 nb=3 neut=0 cmds=190 noFull=1 shQ=70788 | m=1.458 worth=53.6 cheap=7.0 over=0 dMedOther=5.2 safe(-1)=124392
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.3 rankC=4.3 need=2730 tD=0.00 机 | safe=124392 keep=124392 avail=155442 chunkB=56630 pulseB=33978  x=3623 hNb=2
+    → 🌞#1[T1] terr=31226 bal=78705 dq=2.5 cnt=123 | c=8.1 rankC=8.1 need=187123 tD=0.49 人 | safe=124392 keep=139217 avail=140617 chunkB=56630 pulseB=33978  x=140617 hNb=2
+    → Qart-ḥadašt#16[T1] terr=35832 bal=232980 dq=6.5 cnt=70 | c=17.5 rankC=17.5 need=469003 tD=1.26 人 | safe=124392 keep=168803 avail=111031 chunkB=56630 pulseB=33978  x=111031 hNb=2
+    ⇒ 影子指令 attack pct=13 → AI#311（约 3871 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1785 zero_7 B=283152 L=7708 d=36.7 nb=3 neut=0 cmds=191 noFull=1 shQ=70788 | m=1.457 worth=53.5 cheap=7.0 over=0 dMedOther=5.1 safe(-1)=124392
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.3 rankC=4.3 need=2730 tD=0.00 机 | safe=124392 keep=124392 avail=155442 chunkB=56630 pulseB=33978  x=3623 hNb=2
+    → 🌞#1[T1] terr=31402 bal=78705 dq=2.5 cnt=123 | c=8.1 rankC=8.1 need=187387 tD=0.49 人 | safe=124392 keep=139153 avail=140681 chunkB=56630 pulseB=33978  x=140681 hNb=2
+    → Qart-ḥadašt#16[T1] terr=36236 bal=232980 dq=6.4 cnt=70 | c=17.4 rankC=17.4 need=469609 tD=1.25 人 | safe=124392 keep=168310 avail=111524 chunkB=56630 pulseB=33978  x=111524 hNb=2
+    ⇒ 影子指令 attack pct=13 → AI#311（约 3871 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1790 zero_7 B=287116 L=7708 d=37.2 nb=3 neut=0 cmds=192 noFull=1 shQ=71779 | m=1.457 worth=54.3 cheap=7.1 over=0 dMedOther=4.5 safe(-1)=126224
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.3 rankC=4.3 need=2730 tD=0.00 机 | safe=126224 keep=126224 avail=157528 chunkB=57423 pulseB=34454  x=3623 hNb=2
+    → 🌞#1[T1] terr=31517 bal=79806 dq=2.5 cnt=123 | c=8.1 rankC=8.1 need=189520 tD=0.56 人 | safe=126224 keep=140986 avail=142766 chunkB=57423 pulseB=34454  x=142766 hNb=2
+    → Qart-ḥadašt#16[T1] terr=36784 bal=236241 dq=6.4 cnt=70 | c=17.3 rankC=17.3 need=476243 tD=1.42 人 | safe=126224 keep=169900 avail=113852 chunkB=57423 pulseB=34454  x=113852 hNb=2
+    ⇒ 影子指令 attack pct=12 → AI#311（约 3645 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1795 zero_7 B=287116 L=7708 d=37.2 nb=3 neut=0 cmds=193 noFull=1 shQ=71779 | m=1.456 worth=54.2 cheap=7.2 over=0 dMedOther=4.5 safe(-1)=126224
+    → AI#311 terr=1819 bal=0 dq=0.0 cnt=70 | c=4.3 rankC=4.3 need=2730 tD=0.00 机 | safe=126224 keep=126224 avail=157528 chunkB=57423 pulseB=34454  x=3623 hNb=2
+    → 🌞#1[T1] terr=31683 bal=79806 dq=2.5 cnt=123 | c=8.1 rankC=8.1 need=189772 tD=0.56 人 | safe=126224 keep=140929 avail=142823 chunkB=57423 pulseB=34454  x=142823 hNb=2
+    → Qart-ḥadašt#16[T1] terr=37112 bal=236241 dq=6.4 cnt=70 | c=17.2 rankC=17.2 need=476735 tD=1.42 人 | safe=126224 keep=169522 avail=114230 chunkB=57423 pulseB=34454  x=114230 hNb=2
+    ⇒ 影子指令 attack pct=12 → AI#311（约 3645 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1800 zero_7 B=294336 L=7636 d=38.5 nb=3 neut=0 cmds=193 noFull=1 shQ=1990 | m=1.455 worth=56.1 cheap=7.3 over=0 dMedOther=5.5 safe(-1)=149109
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.3 rankC=4.3 need=2838 tD=0.00 机 | safe=149109 keep=149109 avail=141778 chunkB=58867 pulseB=35320  x=3763 hNb=2
+    → 🌞#1[T1] terr=31776 bal=112675 dq=3.5 cnt=123 | c=10.5 rankC=10.5 need=248492 tD=0.64 人 | safe=149109 keep=151205 avail=139682 chunkB=58867 pulseB=35320  x=139682 hNb=2
+    → Qart-ḥadašt#16[T1] terr=37521 bal=276868 dq=7.4 cnt=70 | c=19.6 rankC=19.6 need=549764 tD=1.34 人 | safe=149109 keep=179446 avail=111441 chunkB=58867 pulseB=35320  x=111441 hNb=2
+    ⇒ 本拍没有指令
+t=1805 zero_7 B=294336 L=7636 d=38.5 nb=3 neut=0 cmds=194 noFull=1 shQ=7014 | m=1.454 worth=56.1 cheap=7.4 over=0 dMedOther=5.5 safe(-1)=149109
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.3 rankC=4.3 need=2838 tD=0.00 机 | safe=149109 keep=149109 avail=141778 chunkB=58867 pulseB=35320  x=3763 hNb=2
+    → 🌞#1[T1] terr=31898 bal=112675 dq=3.5 cnt=123 | c=10.5 rankC=10.5 need=248678 tD=0.65 人 | safe=149109 keep=151150 avail=139737 chunkB=58867 pulseB=35320  x=139737 hNb=2
+    → Qart-ḥadašt#16[T1] terr=37746 bal=276868 dq=7.3 cnt=70 | c=19.5 rankC=19.5 need=550104 tD=1.34 人 | safe=149109 keep=179170 avail=111717 chunkB=58867 pulseB=35320  x=111717 hNb=2
+    ⇒ 影子指令 attack pct=13 → AI#311（约 4024 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1810 zero_7 B=298280 L=7636 d=39.1 nb=3 neut=0 cmds=195 noFull=1 shQ=11992 | m=1.454 worth=56.8 cheap=7.4 over=0 dMedOther=6.2 safe(-1)=151224
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.3 rankC=4.3 need=2838 tD=0.00 机 | safe=151224 keep=151224 avail=143561 chunkB=59656 pulseB=35794  x=3763 hNb=2
+    → 🌞#1[T1] terr=31965 bal=114184 dq=3.6 cnt=123 | c=10.6 rankC=10.6 need=251467 tD=0.57 人 | safe=151224 keep=153084 avail=141701 chunkB=59656 pulseB=35794  x=141701 hNb=2
+    → Qart-ḥadašt#16[T1] terr=37996 bal=280633 dq=7.4 cnt=70 | c=19.6 rankC=19.6 need=557184 tD=1.19 人 | safe=151224 keep=181184 avail=113601 chunkB=59656 pulseB=35794  x=113601 hNb=2
+    ⇒ 影子指令 attack pct=12 → AI#311（约 3786 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1815 zero_7 B=298280 L=7636 d=39.1 nb=3 neut=0 cmds=196 noFull=1 shQ=16963 | m=1.453 worth=56.7 cheap=7.5 over=0 dMedOther=6.2 safe(-1)=151224
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.3 rankC=4.3 need=2838 tD=0.00 机 | safe=151224 keep=151224 avail=143561 chunkB=59656 pulseB=35794  x=3763 hNb=2
+    → 🌞#1[T1] terr=32163 bal=91102 dq=2.8 cnt=123 | c=8.8 rankC=8.8 need=210626 tD=0.46 人 | safe=151224 keep=151224 avail=143561 chunkB=59656 pulseB=35794  x=143561 hNb=2
+    → Qart-ḥadašt#16[T1] terr=38110 bal=280633 dq=7.4 cnt=70 | c=19.6 rankC=19.6 need=557361 tD=1.19 人 | safe=151224 keep=181073 avail=113712 chunkB=59656 pulseB=35794  x=113712 hNb=2
+    ⇒ 影子指令 attack pct=12 → AI#311（约 3786 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1820 zero_7 B=302187 L=7636 d=39.6 nb=3 neut=0 cmds=197 noFull=1 shQ=21895 | m=1.452 worth=57.5 cheap=7.6 over=0 dMedOther=6.3 safe(-1)=153384
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.3 rankC=4.3 need=2838 tD=0.00 机 | safe=153384 keep=153384 avail=145262 chunkB=60437 pulseB=36262  x=3763 hNb=2
+    → 🌞#1[T1] terr=32446 bal=92322 dq=2.8 cnt=123 | c=8.9 rankC=8.9 need=213223 tD=0.46 人 | safe=153384 keep=153384 avail=145262 chunkB=60437 pulseB=36262  x=145262 hNb=2
+    → Qart-ḥadašt#16[T1] terr=38236 bal=284477 dq=7.4 cnt=70 | c=19.7 rankC=19.7 need=564395 tD=1.19 人 | safe=153384 keep=183269 avail=115377 chunkB=60437 pulseB=36262  x=115377 hNb=2
+    ⇒ 影子指令 attack pct=12 → AI#311（约 3836 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1825 zero_7 B=302187 L=7636 d=39.6 nb=3 neut=0 cmds=198 noFull=1 shQ=26819 | m=1.451 worth=57.4 cheap=7.7 over=0 dMedOther=6.2 safe(-1)=153384
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.3 rankC=4.3 need=2838 tD=0.00 机 | safe=153384 keep=153384 avail=145262 chunkB=60437 pulseB=36262  x=3763 hNb=2
+    → 🌞#1[T1] terr=32832 bal=92322 dq=2.8 cnt=123 | c=8.8 rankC=8.8 need=213799 tD=0.45 人 | safe=153384 keep=153384 avail=145262 chunkB=60437 pulseB=36262  x=145262 hNb=2
+    → Qart-ḥadašt#16[T1] terr=38301 bal=284477 dq=7.4 cnt=70 | c=19.7 rankC=19.7 need=564496 tD=1.20 人 | safe=153384 keep=183230 avail=115416 chunkB=60437 pulseB=36262  x=115416 hNb=2
+    ⇒ 影子指令 attack pct=12 → AI#311（约 3836 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1830 zero_7 B=306054 L=7636 d=40.1 nb=3 neut=0 cmds=199 noFull=1 shQ=31686 | m=1.451 worth=58.1 cheap=7.8 over=0 dMedOther=6.0 safe(-1)=141177
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.4 rankC=4.4 need=2838 tD=0.00 机 | safe=141177 keep=141177 avail=161291 chunkB=61211 pulseB=36726  x=3763 hNb=2
+    → 🌞#1[T1] terr=33067 bal=93559 dq=2.8 cnt=123 | c=8.8 rankC=8.8 need=216361 tD=0.47 人 | safe=141177 keep=150925 avail=151543 chunkB=61211 pulseB=36726  x=151543 hNb=2
+    → Qart-ḥadašt#16[T1] terr=38415 bal=262749 dq=6.8 cnt=70 | c=18.3 rankC=18.3 need=525945 tD=1.14 人 | safe=141177 keep=180510 avail=121958 chunkB=61211 pulseB=36726  x=121958 hNb=2
+    ⇒ 影子指令 attack pct=12 → AI#311（约 3885 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1835 zero_7 B=306054 L=7636 d=40.1 nb=3 neut=0 cmds=200 noFull=1 shQ=36549 | m=1.450 worth=58.1 cheap=7.9 over=0 dMedOther=5.9 safe(-1)=141177
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.4 rankC=4.4 need=2838 tD=0.00 机 | safe=141177 keep=141177 avail=161291 chunkB=61211 pulseB=36726  x=3763 hNb=2
+    → 🌞#1[T1] terr=33381 bal=93559 dq=2.8 cnt=123 | c=8.8 rankC=8.8 need=216829 tD=0.47 人 | safe=141177 keep=150770 avail=151698 chunkB=61211 pulseB=36726  x=151698 hNb=2
+    → Qart-ḥadašt#16[T1] terr=38481 bal=262749 dq=6.8 cnt=70 | c=18.3 rankC=18.3 need=526038 tD=1.15 人 | safe=141177 keep=180478 avail=121990 chunkB=61211 pulseB=36726  x=121990 hNb=2
+    ⇒ 影子指令 attack pct=12 → AI#311（约 3885 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1840 zero_7 B=309879 L=7636 d=40.6 nb=3 neut=0 cmds=201 noFull=1 shQ=41365 | m=1.449 worth=58.8 cheap=8.0 over=0 dMedOther=6.0 safe(-1)=143199
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.4 rankC=4.4 need=2838 tD=0.00 机 | safe=143199 keep=143199 avail=163049 chunkB=61976 pulseB=37185  x=3763 hNb=2
+    → 🌞#1[T1] terr=33561 bal=94812 dq=2.8 cnt=123 | c=8.8 rankC=8.8 need=219332 tD=0.47 人 | safe=143199 keep=152527 avail=153721 chunkB=61976 pulseB=37185  x=153721 hNb=2
+    → Qart-ḥadašt#16[T1] terr=38547 bal=266348 dq=6.9 cnt=70 | c=18.5 rankC=18.5 need=532558 tD=1.16 人 | safe=143199 keep=182682 avail=123566 chunkB=61976 pulseB=37185  x=123566 hNb=2
+    ⇒ 影子指令 attack pct=12 → AI#311（约 3934 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1845 zero_7 B=309879 L=7636 d=40.6 nb=3 neut=0 cmds=202 noFull=1 shQ=46165 | m=1.448 worth=58.8 cheap=8.1 over=0 dMedOther=5.8 safe(-1)=159487
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.4 rankC=4.4 need=2838 tD=0.00 机 | safe=159487 keep=159487 avail=146761 chunkB=61976 pulseB=37185  x=3763 hNb=2
+    → 🌞#1[T1] terr=33804 bal=109633 dq=3.2 cnt=123 | c=9.8 rankC=9.8 need=246112 tD=0.56 人 | safe=159487 keep=159487 avail=146761 chunkB=61976 pulseB=37185  x=146761 hNb=2
+    → Qart-ḥadašt#16[T1] terr=38574 bal=295341 dq=7.7 cnt=70 | c=20.3 rankC=20.3 need=584272 tD=1.31 人 | safe=159487 keep=188255 avail=117993 chunkB=61976 pulseB=37185  x=117993 hNb=2
+    ⇒ 影子指令 attack pct=12 → AI#311（约 3934 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1850 zero_7 B=313659 L=7636 d=41.1 nb=3 neut=0 cmds=203 noFull=1 shQ=50922 | m=1.448 worth=59.5 cheap=8.2 over=0 dMedOther=5.9 safe(-1)=146813
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.4 rankC=4.4 need=2838 tD=0.00 机 | safe=146813 keep=146813 avail=163171 chunkB=62732 pulseB=37639  x=3763 hNb=2
+    → 🌞#1[T1] terr=33953 bal=111102 dq=3.3 cnt=123 | c=9.9 rankC=9.9 need=248955 tD=0.56 人 | safe=146813 keep=157445 avail=152539 chunkB=62732 pulseB=37639  x=152539 hNb=2
+    → Qart-ḥadašt#16[T1] terr=38806 bal=272781 dq=7.0 cnt=70 | c=18.8 rankC=18.8 need=544409 tD=1.20 人 | safe=146813 keep=185208 avail=124776 chunkB=62732 pulseB=37639  x=124776 hNb=2
+    ⇒ 影子指令 attack pct=12 → AI#311（约 3981 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1855 zero_7 B=313659 L=7636 d=41.1 nb=3 neut=0 cmds=204 noFull=1 shQ=55662 | m=1.447 worth=59.4 cheap=8.3 over=0 dMedOther=5.8 safe(-1)=146813
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.4 rankC=4.4 need=2838 tD=0.00 机 | safe=146813 keep=146813 avail=163171 chunkB=62732 pulseB=37639  x=3763 hNb=2
+    → 🌞#1[T1] terr=34162 bal=111102 dq=3.3 cnt=123 | c=9.8 rankC=9.8 need=249270 tD=0.56 人 | safe=146813 keep=157342 avail=152642 chunkB=62732 pulseB=37639  x=152642 hNb=2
+    → Qart-ḥadašt#16[T1] terr=39205 bal=272781 dq=7.0 cnt=70 | c=18.6 rankC=18.6 need=545005 tD=1.20 人 | safe=146813 keep=184730 avail=125254 chunkB=62732 pulseB=37639  x=125254 hNb=2
+    ⇒ 影子指令 attack pct=12 → AI#311（约 3981 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1860 zero_7 B=317391 L=7636 d=41.6 nb=3 neut=0 cmds=205 noFull=1 shQ=60352 | m=1.446 worth=60.1 cheap=8.4 over=0 dMedOther=5.8 safe(-1)=148928
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.5 rankC=4.5 need=2838 tD=0.00 机 | safe=148928 keep=148928 avail=164744 chunkB=63478 pulseB=38087  x=3763 hNb=2
+    → 🌞#1[T1] terr=34354 bal=89840 dq=2.6 cnt=123 | c=8.3 rankC=8.3 need=211661 tD=0.45 人 | safe=148928 keep=148928 avail=164744 chunkB=63478 pulseB=38087  x=164744 hNb=2
+    → Qart-ḥadašt#16[T1] terr=39779 bal=276545 dq=7.0 cnt=70 | c=18.6 rankC=18.6 need=552581 tD=1.20 人 | safe=148928 keep=186249 avail=127423 chunkB=63478 pulseB=38087  x=127423 hNb=2
+    ⇒ 影子指令 attack pct=12 → AI#311（约 4029 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1865 zero_7 B=317391 L=7636 d=41.6 nb=3 neut=0 cmds=206 noFull=1 shQ=65024 | m=1.445 worth=60.1 cheap=8.5 over=0 dMedOther=5.7 safe(-1)=148928
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.5 rankC=4.5 need=2838 tD=0.00 机 | safe=148928 keep=148928 avail=164744 chunkB=63478 pulseB=38087  x=3763 hNb=2
+    → 🌞#1[T1] terr=34610 bal=89840 dq=2.6 cnt=123 | c=8.3 rankC=8.3 need=212045 tD=0.45 人 | safe=148928 keep=148928 avail=164744 chunkB=63478 pulseB=38087  x=164744 hNb=2
+    → Qart-ḥadašt#16[T1] terr=40137 bal=276545 dq=6.9 cnt=70 | c=18.4 rankC=18.4 need=553112 tD=1.20 人 | safe=148928 keep=185842 avail=127830 chunkB=63478 pulseB=38087  x=127830 hNb=2
+    ⇒ 影子指令 attack pct=12 → AI#311（约 4029 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1870 zero_7 B=321040 L=7636 d=42.0 nb=3 neut=0 cmds=207 noFull=1 shQ=69651 | m=1.445 worth=60.7 cheap=8.6 over=0 dMedOther=5.8 safe(-1)=137075
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.5 rankC=4.5 need=2838 tD=0.00 机 | safe=137075 keep=137075 avail=180203 chunkB=64208 pulseB=38525  x=3763 hNb=2
+    → 🌞#1[T1] terr=34763 bal=91052 dq=2.6 cnt=123 | c=8.3 rankC=8.3 need=214436 tD=0.45 人 | safe=137075 keep=137075 avail=180203 chunkB=64208 pulseB=38525  x=180203 hNb=2
+    → Qart-ḥadašt#16[T1] terr=40696 bal=255447 dq=6.3 cnt=70 | c=17.0 rankC=17.0 need=516343 tD=1.09 人 | safe=137075 keep=182837 avail=134441 chunkB=64208 pulseB=38525  x=134441 hNb=2
+    ⇒ 影子指令 attack pct=12 → AI#311（约 4075 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1875 zero_7 B=321040 L=7636 d=42.0 nb=3 neut=0 cmds=208 noFull=1 shQ=74306 | m=1.444 worth=60.7 cheap=8.6 over=0 dMedOther=5.7 safe(-1)=137075
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.5 rankC=4.5 need=2838 tD=0.00 机 | safe=137075 keep=137075 avail=180203 chunkB=64208 pulseB=38525  x=3763 hNb=2
+    → 🌞#1[T1] terr=34979 bal=91052 dq=2.6 cnt=123 | c=8.3 rankC=8.3 need=214760 tD=0.46 人 | safe=137075 keep=137075 avail=180203 chunkB=64208 pulseB=38525  x=180203 hNb=2
+    → Qart-ḥadašt#16[T1] terr=41130 bal=255447 dq=6.2 cnt=70 | c=16.8 rankC=16.8 need=516999 tD=1.09 人 | safe=137075 keep=182401 avail=134877 chunkB=64208 pulseB=38525  x=134877 hNb=2
+    ⇒ 影子指令 attack pct=12 → AI#311（约 4075 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1880 zero_7 B=324731 L=7636 d=42.5 nb=3 neut=0 cmds=209 noFull=1 shQ=78971 | m=1.443 worth=61.4 cheap=8.6 over=0 dMedOther=5.7 safe(-1)=139055
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.5 rankC=4.5 need=2838 tD=0.00 机 | safe=139055 keep=139055 avail=181871 chunkB=64946 pulseB=38968  x=3763 hNb=2
+    → 🌞#1[T1] terr=35109 bal=92281 dq=2.6 cnt=123 | c=8.3 rankC=8.3 need=217143 tD=0.46 人 | safe=139055 keep=139055 avail=181871 chunkB=64946 pulseB=38968  x=181871 hNb=2
+    → Qart-ḥadašt#16[T1] terr=41752 bal=258972 dq=6.2 cnt=70 | c=16.8 rankC=16.8 need=524210 tD=1.09 人 | safe=139055 keep=183888 avail=137038 chunkB=64946 pulseB=38968  x=137038 hNb=2
+    ⇒ 影子指令 attack pct=11 → AI#311（约 3805 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1885 zero_7 B=324731 L=7636 d=42.5 nb=3 neut=0 cmds=210 noFull=1 shQ=81182 | m=1.442 worth=61.3 cheap=8.6 over=0 dMedOther=5.6 safe(-1)=139055
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.5 rankC=4.5 need=2838 tD=0.00 机 | safe=139055 keep=139055 avail=181871 chunkB=64946 pulseB=38968  x=3763 hNb=2
+    → 🌞#1[T1] terr=35276 bal=92281 dq=2.6 cnt=123 | c=8.3 rankC=8.3 need=217392 tD=0.46 人 | safe=139055 keep=139055 avail=181871 chunkB=64946 pulseB=38968  x=181871 hNb=2
+    → Qart-ḥadašt#16[T1] terr=42107 bal=258972 dq=6.2 cnt=70 | c=16.7 rankC=16.7 need=524750 tD=1.09 人 | safe=139055 keep=183554 avail=137372 chunkB=64946 pulseB=38968  x=137372 hNb=2
+    ⇒ 影子指令 attack pct=11 → AI#311（约 3805 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1890 zero_7 B=328465 L=7636 d=43.0 nb=3 neut=0 cmds=211 noFull=1 shQ=82116 | m=1.442 worth=62.0 cheap=8.6 over=0 dMedOther=5.7 safe(-1)=141077
+    → AI#311 terr=1891 bal=0 dq=0.0 cnt=72 | c=4.6 rankC=4.6 need=2838 tD=0.00 机 | safe=141077 keep=141077 avail=183539 chunkB=65693 pulseB=39416  x=3763 hNb=2
+    → 🌞#1[T1] terr=35376 bal=109726 dq=3.1 cnt=123 | c=9.5 rankC=9.5 need=248635 tD=0.54 人 | safe=141077 keep=162566 avail=162050 chunkB=65693 pulseB=39416  x=162050 hNb=2
+    → Qart-ḥadašt#16[T1] terr=42567 bal=262571 dq=6.2 cnt=70 | c=16.7 rankC=16.7 need=531855 tD=1.08 人 | safe=141077 keep=185258 avail=139358 chunkB=65693 pulseB=39416  x=139358 hNb=2
+    ⇒ 影子指令 attack pct=11 → AI#311（约 3849 兵） 〔send:484<send:1827<send:3865<buyLand:5453〕
+t=1895 zero_7 B=232177 L=7636 d=30.4 nb=3 neut=0 cmds=211 noFull=1 shQ=2692 | m=1.441 worth=43.8 cheap=8.6 over=0 dMedOther=5.6 safe(-1)=127969
+    → 🌞#1[T1] terr=35508 bal=109726 dq=3.1 cnt=123 | c=9.4 rankC=9.4 need=248833 tD=0.56 人 | safe=127969 keep=127969 avail=101488 chunkB=46435 pulseB=27861  x=101488 hNb=2
+    → Qart-ḥadašt#16[T1] terr=43065 bal=239238 dq=5.6 cnt=70 | c=15.2 rankC=15.2 need=491009 tD=1.00 人 | safe=127969 keep=141666 avail=87791 chunkB=46435 pulseB=27861  x=87791 hNb=2
+    ⇒ 本拍没有指令
+t=1900 zero_7 B=242555 L=7708 d=31.5 nb=3 neut=0 cmds=211 noFull=1 shQ=6087 | m=1.440 worth=45.3 cheap=8.6 over=0 dMedOther=6.5 safe(-1)=154225
+    → 🌞#1[T1] terr=35598 bal=146816 dq=4.1 cnt=123 | c=11.8 rankC=11.8 need=315080 tD=0.63 人 | safe=154225 keep=154225 avail=85488 chunkB=48511 pulseB=29107  x=85488 hNb=2
+    → Qart-ḥadašt#16[T1] terr=43744 bal=286082 dq=6.5 cnt=70 | c=17.6 rankC=17.6 need=575518 tD=1.00 人 | safe=154225 keep=154225 avail=85488 chunkB=48511 pulseB=29107  x=85488 hNb=2
+    ⇒ 本拍没有指令
+t=1905 zero_7 B=242555 L=7847 d=30.9 nb=3 neut=0 cmds=211 noFull=1 shQ=9602 | m=1.439 worth=44.5 cheap=8.6 over=0 dMedOther=6.5 safe(-1)=154108
+    → 🌞#1[T1] terr=35751 bal=146816 dq=4.1 cnt=123 | c=11.8 rankC=11.8 need=315312 tD=0.63 人 | safe=154108 keep=154108 avail=85605 chunkB=48511 pulseB=29107  x=85605 hNb=2
+    → Qart-ḥadašt#16[T1] terr=44189 bal=286082 dq=6.5 cnt=70 | c=17.4 rankC=17.4 need=576188 tD=0.99 人 | safe=154108 keep=154281 avail=85432 chunkB=48511 pulseB=29107  x=85432 hNb=2
+    ⇒ 本拍没有指令
+t=1910 zero_7 B=245344 L=7982 d=30.7 nb=3 neut=0 cmds=211 noFull=1 shQ=13125 | m=1.439 worth=44.2 cheap=8.6 over=0 dMedOther=6.6 safe(-1)=156244
+    → 🌞#1[T1] terr=35863 bal=148812 dq=4.1 cnt=123 | c=11.9 rankC=11.9 need=319037 tD=0.63 人 | safe=156244 keep=156244 avail=86225 chunkB=49069 pulseB=29441  x=86225 hNb=2
+    → Qart-ḥadašt#16[T1] terr=44845 bal=290087 dq=6.5 cnt=70 | c=17.4 rankC=17.4 need=584310 tD=0.98 人 | safe=156244 keep=156381 avail=86088 chunkB=49069 pulseB=29441  x=86088 hNb=2
+    ⇒ 本拍没有指令
+t=1915 zero_7 B=245344 L=8048 d=30.5 nb=3 neut=0 cmds=212 noFull=1 shQ=16680 | m=1.438 worth=43.8 cheap=8.6 over=0 dMedOther=6.3 safe(-1)=156188
+    → 🌞#1[T1] terr=36022 bal=148812 dq=4.1 cnt=123 | c=11.9 rankC=11.9 need=319274 tD=0.66 人 | safe=156188 keep=156188 avail=86281 chunkB=49069 pulseB=29441  x=86281 hNb=2
+    → Qart-ḥadašt#16[T1] terr=45277 bal=290087 dq=6.4 cnt=70 | c=17.3 rankC=17.3 need=584958 tD=1.02 人 | safe=156188 keep=156416 avail=86053 chunkB=49069 pulseB=29441  x=86053 hNb=2
+    ⇒ 影子指令 attack pct=360 → 🌞#1[T1]（约 86493 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1920 zero_7 B=248214 L=8177 d=30.4 nb=3 neut=0 cmds=213 noFull=1 shQ=20256 | m=1.437 worth=43.6 cheap=8.5 over=0 dMedOther=6.3 safe(-1)=158361
+    → 🌞#1[T1] terr=36119 bal=150835 dq=4.2 cnt=123 | c=12.0 rankC=12.0 need=323027 tD=0.66 人 | safe=158361 keep=158361 avail=86945 chunkB=49643 pulseB=29786  x=86945 hNb=2
+    → Qart-ḥadašt#16[T1] terr=45909 bal=294148 dq=6.4 cnt=70 | c=17.3 rankC=17.3 need=593145 tD=1.02 人 | safe=158361 keep=158545 avail=86761 chunkB=49643 pulseB=29786  x=86761 hNb=2
+    ⇒ 影子指令 attack pct=358 → 🌞#1[T1]（约 87020 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1925 zero_7 B=248214 L=8303 d=29.9 nb=3 neut=0 cmds=214 noFull=1 shQ=23886 | m=1.436 worth=42.9 cheap=8.5 over=0 dMedOther=6.3 safe(-1)=158255
+    → 🌞#1[T1] terr=36240 bal=150835 dq=4.2 cnt=123 | c=11.9 rankC=11.9 need=323203 tD=0.66 人 | safe=158255 keep=158255 avail=87051 chunkB=49643 pulseB=29786  x=87051 hNb=2
+    → Qart-ḥadašt#16[T1] terr=46325 bal=294148 dq=6.3 cnt=70 | c=17.1 rankC=17.1 need=593769 tD=1.01 人 | safe=158255 keep=159021 avail=86285 chunkB=49643 pulseB=29786  x=86285 hNb=2
+    ⇒ 影子指令 attack pct=359 → 🌞#1[T1]（约 87262 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1930 zero_7 B=251118 L=8363 d=30.0 nb=3 neut=0 cmds=215 noFull=1 shQ=27524 | m=1.435 worth=43.1 cheap=8.5 over=0 dMedOther=6.2 safe(-1)=160534
+    → 🌞#1[T1] terr=36307 bal=121981 dq=3.4 cnt=123 | c=10.0 rankC=10.0 need=271880 tD=0.55 人 | safe=160534 keep=160534 avail=87642 chunkB=50224 pulseB=30134  x=87642 hNb=2
+    → Qart-ḥadašt#16[T1] terr=46913 bal=298295 dq=6.4 cnt=70 | c=17.1 rankC=17.1 need=602042 tD=1.03 人 | safe=160534 keep=160743 avail=87433 chunkB=50224 pulseB=30134  x=87433 hNb=2
+    ⇒ 影子指令 attack pct=357 → 🌞#1[T1]（约 87793 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1935 zero_7 B=251118 L=8482 d=29.6 nb=3 neut=0 cmds=216 noFull=1 shQ=31194 | m=1.435 worth=42.5 cheap=8.5 over=0 dMedOther=5.7 safe(-1)=145542
+    → 🌞#1[T1] terr=36401 bal=121981 dq=3.4 cnt=123 | c=10.0 rankC=10.0 need=272018 tD=0.58 人 | safe=145542 keep=145542 avail=102634 chunkB=50224 pulseB=30134  x=102634 hNb=2
+    → Qart-ḥadašt#16[T1] terr=47346 bal=271788 dq=5.7 cnt=70 | c=15.7 rankC=15.7 need=555449 tD=1.00 人 | safe=145542 keep=156528 avail=91648 chunkB=50224 pulseB=30134  x=91648 hNb=2
+    ⇒ 影子指令 attack pct=418 → 🌞#1[T1]（约 102752 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1940 zero_7 B=254056 L=8598 d=29.5 nb=3 neut=0 cmds=217 noFull=1 shQ=34873 | m=1.434 worth=42.4 cheap=8.5 over=0 dMedOther=5.7 safe(-1)=147597
+    → 🌞#1[T1] terr=36463 bal=123639 dq=3.4 cnt=123 | c=10.1 rankC=10.1 need=275069 tD=0.59 人 | safe=147597 keep=147597 avail=103482 chunkB=50811 pulseB=30487  x=103482 hNb=2
+    → Qart-ḥadašt#16[T1] terr=48025 bal=275620 dq=5.7 cnt=70 | c=15.7 rankC=15.7 need=563295 tD=1.00 人 | safe=147597 keep=158504 avail=92575 chunkB=50811 pulseB=30487  x=92575 hNb=2
+    ⇒ 影子指令 attack pct=417 → 🌞#1[T1]（约 103706 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1945 zero_7 B=254056 L=8656 d=29.4 nb=3 neut=0 cmds=218 noFull=1 shQ=38588 | m=1.433 worth=42.1 cheap=8.5 over=0 dMedOther=5.7 safe(-1)=147548
+    → 🌞#1[T1] terr=36555 bal=123639 dq=3.4 cnt=123 | c=10.1 rankC=10.1 need=275207 tD=0.59 人 | safe=147548 keep=147548 avail=103531 chunkB=50811 pulseB=30487  x=103531 hNb=2
+    → Qart-ḥadašt#16[T1] terr=48438 bal=275620 dq=5.7 cnt=70 | c=15.6 rankC=15.6 need=563917 tD=1.00 人 | safe=147548 keep=158509 avail=92570 chunkB=50811 pulseB=30487  x=92570 hNb=2
+    ⇒ 影子指令 attack pct=417 → 🌞#1[T1]（约 103706 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1950 zero_7 B=257028 L=8770 d=29.3 nb=3 neut=0 cmds=219 noFull=1 shQ=42311 | m=1.433 worth=42.0 cheap=8.5 over=0 dMedOther=6.1 safe(-1)=170992
+    → 🌞#1[T1] terr=36599 bal=125320 dq=3.4 cnt=123 | c=10.2 rankC=10.2 need=278269 tD=0.56 人 | safe=170992 keep=170992 avail=83024 chunkB=51406 pulseB=30843  x=83024 hNb=2
+    → Qart-ḥadašt#16[T1] terr=49011 bal=317520 dq=6.5 cnt=70 | c=17.4 rankC=17.4 need=639460 tD=1.06 人 | safe=170992 keep=170992 avail=83024 chunkB=51406 pulseB=30843  x=83024 hNb=2
+    ⇒ 影子指令 attack pct=330 → 🌞#1[T1]（约 83082 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1955 zero_7 B=257028 L=8881 d=28.9 nb=3 neut=0 cmds=220 noFull=1 shQ=46066 | m=1.432 worth=41.4 cheap=8.5 over=0 dMedOther=6.1 safe(-1)=170898
+    → 🌞#1[T1] terr=36645 bal=125320 dq=3.4 cnt=123 | c=10.2 rankC=10.2 need=278335 tD=0.57 人 | safe=170898 keep=170898 avail=83118 chunkB=51406 pulseB=30843  x=83118 hNb=2
+    → Qart-ḥadašt#16[T1] terr=49386 bal=317520 dq=6.4 cnt=70 | c=17.3 rankC=17.3 need=640020 tD=1.06 人 | safe=170898 keep=170898 avail=83118 chunkB=51406 pulseB=30843  x=83118 hNb=2
+    ⇒ 影子指令 attack pct=331 → 🌞#1[T1]（约 83333 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1960 zero_7 B=260035 L=8933 d=29.1 nb=3 neut=0 cmds=221 noFull=1 shQ=49830 | m=1.431 worth=41.7 cheap=8.5 over=0 dMedOther=6.2 safe(-1)=173387
+    → 🌞#1[T1] terr=36662 bal=127024 dq=3.5 cnt=123 | c=10.3 rankC=10.3 need=281399 tD=0.56 人 | safe=173387 keep=173387 avail=83601 chunkB=52007 pulseB=31204  x=83601 hNb=2
+    → Qart-ḥadašt#16[T1] terr=49936 bal=322028 dq=6.4 cnt=70 | c=17.3 rankC=17.3 need=648875 tD=1.04 人 | safe=173387 keep=173387 avail=83601 chunkB=52007 pulseB=31204  x=83601 hNb=2
+    ⇒ 影子指令 attack pct=329 → 🌞#1[T1]（约 83800 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1965 zero_7 B=260035 L=9027 d=28.8 nb=3 neut=0 cmds=222 noFull=1 shQ=53630 | m=1.430 worth=41.2 cheap=8.5 over=0 dMedOther=6.1 safe(-1)=173308
+    → 🌞#1[T1] terr=36687 bal=127024 dq=3.5 cnt=123 | c=10.3 rankC=10.3 need=281438 tD=0.57 人 | safe=173308 keep=173308 avail=83680 chunkB=52007 pulseB=31204  x=83680 hNb=2
+    → Qart-ḥadašt#16[T1] terr=50308 bal=322028 dq=6.4 cnt=70 | c=17.2 rankC=17.2 need=649433 tD=1.05 人 | safe=173308 keep=173308 avail=83680 chunkB=52007 pulseB=31204  x=83680 hNb=2
+    ⇒ 影子指令 attack pct=329 → 🌞#1[T1]（约 83800 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1970 zero_7 B=263077 L=9105 d=28.9 nb=2 neut=36 cmds=223 noFull=1 shQ=57439 | m=1.429 worth=41.3 cheap=8.5 over=0 dMedOther=6.0 safe(-1)=175829
+    → 🌞#1[T1] terr=36701 bal=128751 dq=3.5 cnt=123 | c=10.4 rankC=10.4 need=284534 tD=0.58 人 | safe=175829 keep=175829 avail=84166 chunkB=52615 pulseB=31569  x=84166 hNb=2
+    → Qart-ḥadašt#16[T1] terr=50827 bal=326633 dq=6.4 cnt=70 | c=17.3 rankC=17.3 need=658427 tD=1.06 人 | safe=175829 keep=175829 avail=84166 chunkB=52615 pulseB=31569  x=84166 hNb=2
+    ⇒ 影子指令 attack pct=327 → 🌞#1[T1]（约 84266 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1975 zero_7 B=263077 L=9141 d=28.8 nb=2 neut=34 cmds=224 noFull=1 shQ=61284 | m=1.429 worth=41.1 cheap=8.5 over=0 dMedOther=6.0 safe(-1)=175799
+    → 🌞#1[T1] terr=36703 bal=183037 dq=5.0 cnt=123 | c=13.9 rankC=13.9 need=381299 tD=0.83 人 | safe=175799 keep=175799 avail=84196 chunkB=52615 pulseB=31569  x=84196 hNb=2
+    → Qart-ḥadašt#16[T1] terr=51169 bal=326633 dq=6.4 cnt=70 | c=17.2 rankC=17.2 need=658935 tD=1.06 人 | safe=175799 keep=175799 avail=84196 chunkB=52615 pulseB=31569  x=84196 hNb=2
+    ⇒ 影子指令 attack pct=327 → 🌞#1[T1]（约 84266 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1980 zero_7 B=266155 L=9208 d=28.9 nb=2 neut=31 cmds=225 noFull=1 shQ=65138 | m=1.428 worth=41.3 cheap=8.5 over=0 dMedOther=6.1 safe(-1)=178502
+    → 🌞#1[T1] terr=36703 bal=185526 dq=5.1 cnt=123 | c=14.1 rankC=14.1 need=385736 tD=0.83 人 | safe=178502 keep=178502 avail=84534 chunkB=53231 pulseB=31939  x=84534 hNb=2
+    → Qart-ḥadašt#16[T1] terr=51521 bal=331545 dq=6.4 cnt=70 | c=17.3 rankC=17.3 need=668218 tD=1.06 人 | safe=178502 keep=178502 avail=84534 chunkB=53231 pulseB=31939  x=84534 hNb=2
+    ⇒ 影子指令 attack pct=325 → 🌞#1[T1]（约 84732 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1985 zero_7 B=266155 L=9269 d=28.7 nb=2 neut=28 cmds=226 noFull=1 shQ=66538 | m=1.427 worth=41.0 cheap=8.5 over=0 dMedOther=6.1 safe(-1)=178450
+    → 🌞#1[T1] terr=36703 bal=148023 dq=4.0 cnt=123 | c=11.6 rankC=11.6 need=318891 tD=0.66 人 | safe=178450 keep=178450 avail=84586 chunkB=53231 pulseB=31939  x=84586 hNb=2
+    → Qart-ḥadašt#16[T1] terr=51534 bal=331545 dq=6.4 cnt=70 | c=17.3 rankC=17.3 need=668240 tD=1.06 人 | safe=178450 keep=178450 avail=84586 chunkB=53231 pulseB=31939  x=84586 hNb=2
+    ⇒ 影子指令 attack pct=325 → 🌞#1[T1]（约 84732 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1990 zero_7 B=269269 L=9297 d=29.0 nb=2 neut=25 cmds=227 noFull=1 shQ=67317 | m=1.427 worth=41.3 cheap=8.5 over=0 dMedOther=6.1 safe(-1)=181090
+    → 🌞#1[T1] terr=36724 bal=150036 dq=4.1 cnt=123 | c=11.8 rankC=11.8 need=322505 tD=0.67 人 | safe=181090 keep=181090 avail=85024 chunkB=53854 pulseB=32312  x=85024 hNb=2
+    → Qart-ḥadašt#16[T1] terr=51552 bal=336286 dq=6.5 cnt=70 | c=17.5 rankC=17.5 need=676712 tD=1.06 人 | safe=181090 keep=181090 avail=85024 chunkB=53854 pulseB=32312  x=85024 hNb=2
+    ⇒ 影子指令 attack pct=323 → 🌞#1[T1]（约 85198 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1995 zero_7 B=269269 L=9345 d=28.8 nb=2 neut=20 cmds=228 noFull=1 shQ=67317 | m=1.426 worth=41.1 cheap=8.5 over=0 dMedOther=6.1 safe(-1)=181050
+    → 🌞#1[T1] terr=36750 bal=150036 dq=4.1 cnt=123 | c=11.8 rankC=11.8 need=322547 tD=0.67 人 | safe=181050 keep=181050 avail=85064 chunkB=53854 pulseB=32312  x=85064 hNb=2
+    → Qart-ḥadašt#16[T1] terr=51566 bal=336286 dq=6.5 cnt=70 | c=17.5 rankC=17.5 need=676738 tD=1.06 人 | safe=181050 keep=181050 avail=85064 chunkB=53854 pulseB=32312  x=85064 hNb=2
+    ⇒ 影子指令 attack pct=323 → 🌞#1[T1]（约 85198 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2000 zero_7 B=281784 L=9384 d=30.0 nb=2 neut=18 cmds=229 noFull=1 shQ=68141 | m=1.425 worth=42.8 cheap=8.5 over=0 dMedOther=7.2 safe(-1)=212696
+    → 🌞#1[T1] terr=36750 bal=224540 dq=6.1 cnt=123 | c=16.6 rankC=16.6 need=455342 tD=0.85 人 | safe=212696 keep=212696 avail=65786 chunkB=56357 pulseB=33814  x=65786 hNb=2
+    → Qart-ḥadašt#16[T1] terr=51587 bal=392674 dq=7.6 cnt=70 | c=20.1 rankC=20.1 need=777277 tD=1.06 人 | safe=212696 keep=212696 avail=65786 chunkB=56357 pulseB=33814  x=65786 hNb=2
+    ⇒ 影子指令 attack pct=239 → 🌞#1[T1]（约 66043 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2005 zero_7 B=281784 L=9402 d=30.0 nb=2 neut=17 cmds=230 noFull=1 shQ=70446 | m=1.420 worth=42.6 cheap=8.5 over=0 dMedOther=7.1 safe(-1)=212680
+    → 🌞#1[T1] terr=36750 bal=224540 dq=6.1 cnt=123 | c=16.6 rankC=16.6 need=455342 tD=0.85 人 | safe=212680 keep=212680 avail=65802 chunkB=56357 pulseB=33814  x=65802 hNb=2
+    → Qart-ḥadašt#16[T1] terr=51602 bal=392674 dq=7.6 cnt=70 | c=20.1 rankC=20.1 need=777297 tD=1.06 人 | safe=212680 keep=212680 avail=65802 chunkB=56357 pulseB=33814  x=65802 hNb=2
+    ⇒ 影子指令 attack pct=239 → 🌞#1[T1]（约 66043 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2010 zero_7 B=285080 L=9435 d=30.2 nb=2 neut=15 cmds=231 noFull=1 shQ=71270 | m=1.415 worth=42.7 cheap=8.5 over=0 dMedOther=7.0 safe(-1)=195923
+    → 🌞#1[T1] terr=36750 bal=227593 dq=6.2 cnt=123 | c=16.8 rankC=16.8 need=460784 tD=0.88 人 | safe=195923 keep=195923 avail=85817 chunkB=57016 pulseB=34210  x=85817 hNb=2
+    → Qart-ḥadašt#16[T1] terr=51805 bal=362895 dq=7.0 cnt=70 | c=18.7 rankC=18.7 need=724521 tD=1.00 人 | safe=195923 keep=195923 avail=85817 chunkB=57016 pulseB=34210  x=85817 hNb=2
+    ⇒ 影子指令 attack pct=308 → 🌞#1[T1]（约 86025 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2015 zero_7 B=285080 L=9464 d=30.1 nb=2 neut=13 cmds=232 noFull=1 shQ=71270 | m=1.409 worth=42.5 cheap=8.5 over=0 dMedOther=7.0 safe(-1)=195898
+    → 🌞#1[T1] terr=36750 bal=227593 dq=6.2 cnt=123 | c=16.8 rankC=16.8 need=460784 tD=0.89 人 | safe=195898 keep=195898 avail=85842 chunkB=57016 pulseB=34210  x=85842 hNb=2
+    → Qart-ḥadašt#16[T1] terr=52167 bal=362895 dq=7.0 cnt=70 | c=18.6 rankC=18.6 need=725070 tD=1.00 人 | safe=195898 keep=195898 avail=85842 chunkB=57016 pulseB=34210  x=85842 hNb=2
+    ⇒ 影子指令 attack pct=308 → 🌞#1[T1]（约 86025 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2020 zero_7 B=288415 L=9477 d=30.4 nb=2 neut=12 cmds=233 noFull=1 shQ=72103 | m=1.404 worth=42.7 cheap=8.5 over=0 dMedOther=6.6 safe(-1)=198803
+    → 🌞#1[T1] terr=36750 bal=230688 dq=6.3 cnt=123 | c=17.0 rankC=17.0 need=466300 tD=0.95 人 | safe=198803 keep=198803 avail=86233 chunkB=57683 pulseB=34610  x=86233 hNb=2
+    → Qart-ḥadašt#16[T1] terr=52692 bal=368084 dq=7.0 cnt=70 | c=18.6 rankC=18.6 need=735097 tD=1.05 人 | safe=198803 keep=198803 avail=86233 chunkB=57683 pulseB=34610  x=86233 hNb=2
+    ⇒ 影子指令 attack pct=306 → 🌞#1[T1]（约 86468 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2025 zero_7 B=288415 L=9500 d=30.4 nb=2 neut=10 cmds=234 noFull=1 shQ=72103 | m=1.399 worth=42.5 cheap=8.5 over=0 dMedOther=6.6 safe(-1)=198783
+    → 🌞#1[T1] terr=36750 bal=230688 dq=6.3 cnt=123 | c=17.0 rankC=17.0 need=466300 tD=0.95 人 | safe=198783 keep=198783 avail=86253 chunkB=57683 pulseB=34610  x=86253 hNb=2
+    → Qart-ḥadašt#16[T1] terr=53030 bal=368084 dq=6.9 cnt=70 | c=18.5 rankC=18.5 need=735610 tD=1.06 人 | safe=198783 keep=198783 avail=86253 chunkB=57683 pulseB=34610  x=86253 hNb=2
+    ⇒ 影子指令 attack pct=306 → 🌞#1[T1]（约 86468 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2030 zero_7 B=291789 L=9518 d=30.7 nb=2 neut=6 cmds=235 noFull=1 shQ=72947 | m=1.393 worth=42.7 cheap=8.5 over=0 dMedOther=6.6 safe(-1)=201746
+    → 🌞#1[T1] terr=36750 bal=233825 dq=6.4 cnt=123 | c=17.2 rankC=17.2 need=471891 tD=0.96 人 | safe=201746 keep=201746 avail=86624 chunkB=58358 pulseB=35015  x=86624 hNb=2
+    → Qart-ḥadašt#16[T1] terr=53531 bal=373384 dq=7.0 cnt=70 | c=18.6 rankC=18.6 need=745811 tD=1.05 人 | safe=201746 keep=201746 avail=86624 chunkB=58358 pulseB=35015  x=86624 hNb=2
+    ⇒ 影子指令 attack pct=303 → 🌞#1[T1]（约 86624 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2035 zero_7 B=291789 L=9524 d=30.6 nb=2 neut=3 cmds=236 noFull=1 shQ=72947 | m=1.388 worth=42.5 cheap=8.5 over=0 dMedOther=6.6 safe(-1)=201740
+    → 🌞#1[T1] terr=36750 bal=233825 dq=6.4 cnt=123 | c=17.2 rankC=17.2 need=471891 tD=0.96 人 | safe=201740 keep=201740 avail=86630 chunkB=58358 pulseB=35015  x=86630 hNb=2
+    → Qart-ḥadašt#16[T1] terr=53856 bal=373384 dq=6.9 cnt=70 | c=18.5 rankC=18.5 need=746290 tD=1.05 人 | safe=201740 keep=201740 avail=86630 chunkB=58358 pulseB=35015  x=86630 hNb=2
+    ⇒ 影子指令 attack pct=304 → 🌞#1[T1]（约 86909 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2040 zero_7 B=361211 L=9527 d=37.9 nb=2 neut=0 cmds=237 noFull=1 shQ=75047 | m=1.383 worth=52.4 cheap=8.5 over=0 dMedOther=6.7 safe(-1)=216514
+    → 🌞#1[T1] terr=36750 bal=237005 dq=6.4 cnt=123 | c=17.4 rankC=17.4 need=477559 tD=0.97 人 | safe=216514 keep=219364 avail=137615 chunkB=72242 pulseB=43345  x=137615 hNb=2
+    → Qart-ḥadašt#16[T1] terr=54310 bal=399685 dq=7.4 cnt=70 | c=19.5 rankC=19.5 need=793855 tD=1.10 人 | safe=216514 keep=227863 avail=129116 chunkB=72242 pulseB=43345  x=129116 hNb=2
+    ⇒ 影子指令 attack pct=390 → 🌞#1[T1]（约 137923 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2045 zero_7 B=361211 L=9527 d=37.9 nb=2 neut=0 cmds=238 noFull=1 shQ=80327 | m=1.378 worth=52.2 cheap=8.5 over=0 dMedOther=6.6 safe(-1)=216514
+    → 🌞#1[T1] terr=36750 bal=237005 dq=6.4 cnt=123 | c=17.4 rankC=17.4 need=477559 tD=0.97 人 | safe=216514 keep=219849 avail=137130 chunkB=72242 pulseB=43345  x=137130 hNb=2
+    → Qart-ḥadašt#16[T1] terr=54594 bal=399685 dq=7.3 cnt=70 | c=19.4 rankC=19.4 need=794281 tD=1.10 人 | safe=216514 keep=227998 avail=128981 chunkB=72242 pulseB=43345  x=128981 hNb=2
+    ⇒ 影子指令 attack pct=388 → 🌞#1[T1]（约 137217 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2050 zero_7 B=365437 L=9527 d=38.4 nb=2 neut=0 cmds=239 noFull=1 shQ=85619 | m=1.373 worth=52.6 cheap=8.5 over=0 dMedOther=6.7 safe(-1)=219747
+    → 🌞#1[T1] terr=36750 bal=240228 dq=6.5 cnt=123 | c=17.6 rankC=17.6 need=483304 tD=0.98 人 | safe=219747 keep=222936 avail=138219 chunkB=73087 pulseB=43852  x=138219 hNb=2
+    → Qart-ḥadašt#16[T1] terr=55010 bal=405440 dq=7.4 cnt=70 | c=19.6 rankC=19.6 need=805162 tD=1.10 人 | safe=219747 keep=230733 avail=130422 chunkB=73087 pulseB=43852  x=130422 hNb=2
+    ⇒ 影子指令 attack pct=387 → 🌞#1[T1]（约 138466 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2055 zero_7 B=365437 L=9527 d=38.4 nb=2 neut=0 cmds=240 noFull=1 shQ=90959 | m=1.367 worth=52.4 cheap=8.5 over=0 dMedOther=6.6 safe(-1)=219747
+    → 🌞#1[T1] terr=36750 bal=240228 dq=6.5 cnt=123 | c=17.6 rankC=17.6 need=483304 tD=0.99 人 | safe=219747 keep=223430 avail=137725 chunkB=73087 pulseB=43852  x=137725 hNb=2
+    → Qart-ḥadašt#16[T1] terr=55287 bal=405440 dq=7.3 cnt=70 | c=19.5 rankC=19.5 need=805581 tD=1.11 人 | safe=219747 keep=230892 avail=130263 chunkB=73087 pulseB=43852  x=130263 hNb=2
+    ⇒ 影子指令 attack pct=385 → 🌞#1[T1]（约 137752 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2060 zero_7 B=369712 L=9527 d=38.8 nb=2 neut=0 cmds=241 noFull=1 shQ=92428 | m=1.362 worth=52.9 cheap=8.5 over=0 dMedOther=6.6 safe(-1)=223027
+    → 🌞#1[T1] terr=36750 bal=243495 dq=6.6 cnt=123 | c=17.8 rankC=17.8 need=489127 tD=1.00 人 | safe=223027 keep=226571 avail=138809 chunkB=73942 pulseB=44365  x=138809 hNb=2
+    → Qart-ḥadašt#16[T1] terr=55693 bal=411278 dq=7.4 cnt=70 | c=19.6 rankC=19.6 need=816589 tD=1.11 人 | safe=223027 keep=233686 avail=131694 chunkB=73942 pulseB=44365  x=131694 hNb=2
+    ⇒ 影子指令 attack pct=384 → 🌞#1[T1]（约 139003 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2065 zero_7 B=369712 L=9527 d=38.8 nb=2 neut=0 cmds=242 noFull=1 shQ=92428 | m=1.357 worth=52.7 cheap=8.5 over=0 dMedOther=6.6 safe(-1)=223027
+    → 🌞#1[T1] terr=36750 bal=243495 dq=6.6 cnt=123 | c=17.8 rankC=17.8 need=489127 tD=1.01 人 | safe=223027 keep=227075 avail=138305 chunkB=73942 pulseB=44365  x=138305 hNb=2
+    → Qart-ḥadašt#16[T1] terr=55945 bal=411278 dq=7.4 cnt=70 | c=19.5 rankC=19.5 need=816967 tD=1.12 人 | safe=223027 keep=233888 avail=131492 chunkB=73942 pulseB=44365  x=131492 hNb=2
+    ⇒ 影子指令 attack pct=383 → 🌞#1[T1]（约 138642 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=2070 zero_7 B=374037 L=9527 d=39.3 nb=2 neut=0 cmds=243 noFull=1 shQ=93509 | m=1.352 worth=53.1 cheap=8.5 over=0 dMedOther=6.3 safe(-1)=226377
+    → 🌞#1[T1] terr=36750 bal=246806 dq=6.7 cnt=123 | c=18.0 rankC=18.0 need=495028 tD=1.07 人 | safe=226377 keep=230271 avail=139383 chunkB=74807 pulseB=44884  x=139383 hNb=2
+    → Qart-ḥadašt#16[T1] terr=56284 bal=417241 dq=7.4 cnt=70 | c=19.7 rankC=19.7 need=828101 tD=1.18 人 | safe=226377 keep=236823 avail=132831 chunkB=74807 pulseB=44884  x=132831 hNb=2
+    ⇒ 影子指令 attack pct=381 → 🌞#1[T1]（约 139533 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕

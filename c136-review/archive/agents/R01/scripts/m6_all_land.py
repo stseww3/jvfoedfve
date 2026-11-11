@@ -35,7 +35,7 @@ def main():
         if j.get('multi') == '1' and mid != 'A094':
             continue
         card = json.load(open(os.path.join(DATA, mid, 'card.json')))
-        r = {'mid': mid, 'cohort': card['cohort'], 'won': int(bool(card['outcome']['primaryTeamWon'])), 'teams': card.get('actualTeams'),
+        r = {'mid': mid, 'cohort': card['cohort'], 'won': int(bool(card['outcome']['primaryTeamWon'])), 'teams': joined.get(mid, {}).get('teams') or card.get('nominalTeams'),
              'humans': v['humans'], 'squadN': v['squadN'], 'headPct': round(v['headPct'], 2), 'natPct': round(v['squadNatPct'], 2),
              'natRatio': round(v['squadNatPct'] / v['headPct'], 3) if v['headPct'] else None,
              'natMed': round(v['natMedSquad'] / v['natMedOther'], 3) if v.get('natMedOther') else None}
@@ -91,6 +91,24 @@ def main():
               f"1500 拍 本队 {med(L, 'cap1500s')} / 其他 {med(L, 'cap1500o')}（本队 ≥ 其他的 {sum(1 for r in b15 if r['cap1500s'] >= r['cap1500o'])}/{len(b15)} 局）| "
               f"自家多边形 1500 拍归本队 {med(L, 'self1500')}、敌方 {med(L, 'enemy1500')}、壳 {med(L, 'husk1500')} | AI 地份额/人头 {med(L, 'aiShare')}（≥ 1 的 {sum(1 for r in ai if r['aiShare'] >= 1)}/{len(ai)} 局）| 1530 拍人均相对值 {med(L, 'rel1530')}")
 
+    if '--md' in sys.argv:
+        print('| 组 | 局数（主队赢） | 天然份额 ÷ 人头占比 | 每号天然地盘：本队 ÷ 其他真人 | 630 拍吃到率：本队 / 其他真人 | 1500 拍吃到率：本队 / 其他真人（本队不低于其他的局数） | 1500 拍本队多边形里归本队的 | 本队拿到的 AI 地份额 ÷ 人头占比 | 1530 拍人均相对值 |')
+        print('|---|---|---|---|---|---|---|---|---|')
+        for co in ('squad10', 'squad20'):
+            L = [r for r in rows if r['cohort'] == co]
+            for name, G in ((f'{co} 全部', L),
+                            ('　通道干净（600–1500 落地/放行 ≥ 0.9）', [r for r in L if r['nd600_1500'] is not None and r['nd600_1500'] >= 0.9]),
+                            ('　中间（0.7–0.9）', [r for r in L if r['nd600_1500'] is not None and 0.7 <= r['nd600_1500'] < 0.9]),
+                            ('　通道差（< 0.7）', [r for r in L if r['nd600_1500'] is not None and r['nd600_1500'] < 0.7]),
+                            ('　主队赢', [r for r in L if r['won']]),
+                            ('　主队没赢', [r for r in L if not r['won']])):
+                if not G:
+                    continue
+                b15 = [r for r in G if r['cap1500s'] is not None and r['cap1500o'] is not None]
+                print(f"| {name} | {len(G)}（{sum(r['won'] for r in G)}） | {med(G, 'natRatio')} | {med(G, 'natMed')} | {med(G, 'cap630s')} / {med(G, 'cap630o')} | "
+                      f"{med(G, 'cap1500s')} / {med(G, 'cap1500o')}（{sum(1 for r in b15 if r['cap1500s'] >= r['cap1500o'])}/{len(b15)}） | {med(G, 'self1500')} | {med(G, 'aiShare')} | {med(G, 'rel1530')} |")
+        return
+
     for co in ('squad10', 'squad20'):
         L = [r for r in rows if r['cohort'] == co]
         print(f'#### {co}：{len(L)} 局有好地账')
@@ -110,6 +128,38 @@ def main():
             h = len(C) // 2
             print(f"   通道干净的 {len(C)} 局按天然份额/人头排：低的一半 中位 {statistics.median(r['natRatio'] for r in C[:h]):.2f} → 1530 拍人均相对值中位 {statistics.median(r['rel1530'] for r in C[:h]):.2f}；"
                   f"高的一半 {statistics.median(r['natRatio'] for r in C[h:]):.2f} → {statistics.median(r['rel1530'] for r in C[h:]):.2f}")
+
+        def spearman(P):
+            def rank(v):
+                order = sorted(range(len(v)), key=lambda i: v[i])
+                out = [0.0] * len(v)
+                i = 0
+                while i < len(order):
+                    j = i
+                    while j + 1 < len(order) and v[order[j + 1]] == v[order[i]]:
+                        j += 1
+                    for k in range(i, j + 1):
+                        out[order[k]] = (i + j) / 2
+                    i = j + 1
+                return out
+            if len(P) < 6:
+                return None
+            rx, ry = rank([p[0] for p in P]), rank([p[1] for p in P])
+            mx, my = statistics.mean(rx), statistics.mean(ry)
+            den = (sum((a - mx) ** 2 for a in rx) * sum((b - my) ** 2 for b in ry)) ** 0.5
+            return sum((a - mx) * (b - my) for a, b in zip(rx, ry)) / den if den else None
+
+        def corr(name, L2, kx, ky):
+            P = [(r[kx], r[ky]) for r in L2 if r[kx] is not None and r[ky] is not None]
+            s = spearman(P)
+            if s is not None:
+                print(f'   秩相关 {name}：{len(P)} 局，ρ = {s:.2f}')
+
+        corr('通道干净的局里 天然份额/人头 × 1530 拍人均相对值', C, 'natRatio', 'rel1530')
+        corr('全部局 600–1500 落地/放行 × 1530 拍人均相对值', L, 'nd600_1500', 'rel1530')
+        corr('全部局 600–1500 落地/放行 × 1500 拍本队拿到率', L, 'nd600_1500', 'cap1500s')
+        corr('全部局 600–1500 落地/放行 × AI 地份额/人头', L, 'nd600_1500', 'aiShare')
+        corr('全部局 天然份额/人头 × 1530 拍人均相对值', L, 'natRatio', 'rel1530')
 
 
 if __name__ == '__main__':

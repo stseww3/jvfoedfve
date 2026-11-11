@@ -25,6 +25,14 @@ def num(s):
     return int(s.replace(",", ""))
 
 
+SQUAD_RE = re.compile(r"^\*(sora_w|ryan_m|noah88|zexos1|talon5|alex_k|leo_tx|zero_7|kaito9|riku_x)#\d+\[T\d+\]$")
+
+
+def is_squad(name):
+    """conquest.txt 里我方号写成「*alex_k#11[T2]」。只看开头的 * 不够：A070 对面有个真人的名字本身以 * 开头（*Cr-nA* …）。"""
+    return bool(SQUAD_RE.match(name.strip()))
+
+
 def split_items(body):
     """把「甲 1,234 + 56、乙 78」拆成 [(甲, 1234, 56), (乙, 78, 0)]；名字里可能带空格和 #。"""
     items = []
@@ -46,9 +54,9 @@ def focus_totals(path):
     def flush():
         if cur is None:
             return
-        ours = sum(a + b for k, (a, b) in taken.items() if k.startswith("*"))
-        others = sum(a + b for k, (a, b) in taken.items() if not k.startswith("*"))
-        from_ours = sum(a + b for k, (a, b) in got.items() if k.startswith("*"))
+        ours = sum(a + b for k, (a, b) in taken.items() if is_squad(k))
+        others = sum(a + b for k, (a, b) in taken.items() if not is_squad(k))
+        from_ours = sum(a + b for k, (a, b) in got.items() if is_squad(k))
         order = sorted(taken.items(), key=lambda kv: -(kv[1][0] + kv[1][1]))
         txt = "、".join(f"{k} {a:,}" + (f" + {b:,}" if b else "") for k, (a, b) in order) or "-"
         res.append(f"  {cur}\t{txt}\t我方 {ours:,}\t别人 {others:,}\t清场放掉 {cleared:,}\t从我方号拿走 {from_ours:,}")
