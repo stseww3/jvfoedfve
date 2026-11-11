@@ -21,6 +21,7 @@
   decisions  决策审计：按种类 × 判定；判为错的决策落在哪些函数
   deaths     阵亡：按时段；死前 900 拍的地被谁拿走；清地前手里还有多少兵
   relate     并排看：各局的延迟、站位、闸、实抢率，以及与延迟的秩相关
+  spawnfx    单号口径：天然份额（按真实出生点）与 t≈1500 的领土、与早亡；出生时最近的玩家是不是我方号
   json       全部段的行写进 out/_cross/crossmatch.json
   all        依次打印全部段
 """
@@ -698,8 +699,86 @@ def sec_relate(ms):
     return out
 
 
+def sign_p(a, b):
+    n = a + b
+    if not n:
+        return None
+    k = min(a, b)
+    from math import comb
+    return min(1.0, 2 * sum(comb(n, i) for i in range(k + 1)) / 2 ** n)
+
+
+def pfmt(p):
+    return 'p 算不了' if p is None else ('p<0.001' if p < 0.001 else f"p={p:.3f}")
+
+
+def sec_spawnfx(ms):
+    print('### 单号口径：天然份额（陆路 Voronoi，按真实出生点）→ t≈1500 的领土 / 早亡（landcap.json 的 voronoi.bots + flow.rows 或 logCapture.bots；reviews 的 deaths）')
+    print('   挤 = 天然份额不到全场人均（可达陆地 ÷ 真人数）的一半。t≈1500 的领土：有对局网格的局取录像 t=1500（不够长的取末拍），只有选点录像的局取日志 t=1530 的快照（没有快照的号不计）。')
+    rows, out = [], []
+    for m in ms:
+        v = m.C.get('voronoi')
+        if not v:
+            continue
+        par = v['reach'] / v['humans']
+        land, tcut = {}, None
+        if m.C.get('flow'):
+            tcut = m.C['flow']['t1']
+            land = {r['me']: r['t1'] for r in m.C['flow']['rows']}
+        elif m.C.get('logCapture'):
+            tcut = 1530
+            land = {b['me']: b.get('t1530') for b in m.C['logCapture'].get('bots', [])}
+        died = {d['me']: d['t'] for d in m.R.get('deaths', []) if d.get('me') is not None and d.get('t') is not None}
+        bots = []
+        for b in v['bots']:
+            bots.append(dict(me=b['me'], vor=b['vor'], rel=b['vor'] / par, small=b['vor'] < par / 2, kind=b['nearestKind'], near=b['nearest'], own=b['nearestKind'].startswith('我方'),
+                             land=land.get(b['me']), early=(died.get(b['me'], 10 ** 9) < 3000)))
+        have = [b for b in bots if b['land'] is not None]
+        rho, n = spearman([b['vor'] for b in have], [b['land'] for b in have])
+        sm, bg = [b for b in have if b['small']], [b for b in have if not b['small']]
+        ow, ot = [b for b in bots if b['own']], [b for b in bots if not b['own']]
+        o = dict(id=m.id, t=tcut, n=len(bots), have=len(have), rho=rho, small=len([b for b in bots if b['small']]), smallLand=med([b['land'] for b in sm]), bigLand=med([b['land'] for b in bg]),
+                 smallEarly=sum(1 for b in bots if b['small'] and b['early']), bigEarly=sum(1 for b in bots if not b['small'] and b['early']), big=len([b for b in bots if not b['small']]),
+                 own=len(ow), ownRel=med([b['rel'] for b in ow]), otherRel=med([b['rel'] for b in ot]), ownLand=med([b['land'] for b in ow if b['land'] is not None]), otherLand=med([b['land'] for b in ot if b['land'] is not None]),
+                 ownDiffTeam=sum(1 for b in ow if b['kind'] == '我方异队'), ownNear=med([b['near'] for b in ow]), otherNear=med([b['near'] for b in ot]), bots=bots)
+        f = lambda x: f"{x:,.0f}" if x is not None else '—'
+        rows.append([m.id, f"t={tcut}", f"{len(have)}/{len(bots)}", f"{rho:+.2f}" if rho is not None else None, f"{o['small']}：{f(o['smallLand'])}", f"{o['big']}：{f(o['bigLand'])}",
+                     f"{o['smallEarly']}/{o['small']}", f"{o['bigEarly']}/{o['big']}", f"{o['own']}（异队 {o['ownDiffTeam']}）", f"{o['ownRel']:.2f} / {o['otherRel']:.2f}" if o['ownRel'] is not None and o['otherRel'] is not None else None,
+                     f"{f(o['ownLand'])} / {f(o['otherLand'])}"])
+        out.append(o)
+    table(['局', '领土断面', '有读数的号', '天然份额 与 断面领土 的秩相关', '挤的号：个数：断面领土中位', '不挤的号：个数：中位', '挤的号 t<3000 阵亡', '不挤的号 t<3000 阵亡',
+           '出生时最近的玩家是我方号的', '天然份额 ÷ 全场人均（中位）：最近是我方号 / 最近是别人', '断面领土中位：最近是我方号 / 最近是别人'], rows)
+    pos = sum(1 for o in out if o['rho'] is not None and round(o['rho'], 2) > 0)
+    neg = sum(1 for o in out if o['rho'] is not None and round(o['rho'], 2) < 0)
+    zero = sum(1 for o in out if o['rho'] is not None and round(o['rho'], 2) == 0)
+    lo = sum(1 for o in out if o['smallLand'] is not None and o['bigLand'] is not None and o['smallLand'] < o['bigLand'])
+    hi = sum(1 for o in out if o['smallLand'] is not None and o['bigLand'] is not None and o['smallLand'] > o['bigLand'])
+    allb = [b for o in out for b in o['bots']]
+    sm, bg = [b for b in allb if b['small']], [b for b in allb if not b['small']]
+    ow, ot = [b for b in allb if b['own']], [b for b in allb if not b['own']]
+    e_hi = sum(1 for o in out if o['small'] and o['big'] and o['smallEarly'] / o['small'] > o['bigEarly'] / o['big'])
+    e_lo = sum(1 for o in out if o['small'] and o['big'] and o['smallEarly'] / o['small'] < o['bigEarly'] / o['big'])
+    r_lo = sum(1 for o in out if o['ownRel'] is not None and o['otherRel'] is not None and o['ownRel'] < o['otherRel'])
+    r_hi = sum(1 for o in out if o['ownRel'] is not None and o['otherRel'] is not None and o['ownRel'] > o['otherRel'])
+    l_lo = sum(1 for o in out if o['ownLand'] is not None and o['otherLand'] is not None and o['ownLand'] < o['otherLand'])
+    l_hi = sum(1 for o in out if o['ownLand'] is not None and o['otherLand'] is not None and o['ownLand'] > o['otherLand'])
+    print(f"   {len(out)} 局、{len(allb)} 个席位。局内秩相关为正的 {pos} 局、为负的 {neg} 局、为零的 {zero} 局（符号检验双侧 {pfmt(sign_p(pos, neg))}）；各局 ρ 的中位 {med([o['rho'] for o in out if o['rho'] is not None]):+.2f}。")
+    print(f"   挤的号 {len(sm)} 个、不挤的 {len(bg)} 个：断面领土中位 挤的低于不挤的 {lo} 局、高于 {hi} 局（{pfmt(sign_p(lo, hi))}）；"
+          f"t<3000 阵亡 挤的 {sum(1 for b in sm if b['early'])}/{len(sm)}（{pc(sum(1 for b in sm if b['early']), len(sm))}）对 不挤的 {sum(1 for b in bg if b['early'])}/{len(bg)}（{pc(sum(1 for b in bg if b['early']), len(bg))}），"
+          f"按局 挤的比例更高 {e_hi} 局、更低 {e_lo} 局（{pfmt(sign_p(e_hi, e_lo))}）。")
+    kc = Counter(b['kind'] for b in allb)
+    print(f"   出生时最近的玩家：" + '、'.join(f"{k} {n}" for k, n in kc.most_common()) + f"；最近是我方号的 {len(ow)} 个（{pc(len(ow), len(allb))}），距离中位 {med([b['near'] for b in ow]):.0f} 格，最近是别人的距离中位 {med([b['near'] for b in ot]):.0f} 格。")
+    print(f"   天然份额 ÷ 全场人均：最近是我方号的中位 {med([b['rel'] for b in ow]):.2f}、最近是别人的 {med([b['rel'] for b in ot]):.2f}；按局前者更低 {r_lo} 局、更高 {r_hi} 局（{pfmt(sign_p(r_lo, r_hi))}）。"
+          f"断面领土中位：按局前者更低 {l_lo} 局、更高 {l_hi} 局（{pfmt(sign_p(l_lo, l_hi))}）。")
+    print('   同一局的号互相关联，合计的比例只作描述；推断看按局的符号检验。早亡与站位的关系没有扣掉「分在哪个队、挨着谁」。')
+    print()
+    for o in out:
+        o.pop('bots')
+    return out
+
+
 SECS = dict(relate=sec_relate, struct=sec_struct, spawn=sec_spawn, delay=sec_delay, course=sec_course, funnel=sec_funnel, void=sec_void, dups=sec_dups, land=sec_land, ai=sec_ai, layers=sec_layers,
-            money=sec_money, logside=sec_logside, patterns=sec_patterns, decisions=sec_decisions, deaths=sec_deaths)
+            money=sec_money, logside=sec_logside, patterns=sec_patterns, decisions=sec_decisions, deaths=sec_deaths, spawnfx=sec_spawnfx)
 
 
 def main():
