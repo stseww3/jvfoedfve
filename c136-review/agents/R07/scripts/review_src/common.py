@@ -152,9 +152,18 @@ PATTERN_DEFS = {
     # ---- A 组（有回放的局）新增：检测依赖 60_truth.cjs / 63_replay_ledger.py / 64_cmd_loss.py / 65_shadow.mjs ----
     "R07-IO-LAG-BATCH": {
         "category": "IO",
-        "definition": "客户端本地进度落后于服务器（几十到几百拍），发出的指令晚到、挤在同一拍成批落地；每条都按落地那一拍的余额重新按比例计价，"
-                      "而策略每个决策拍（5 拍）看不到在途指令、照旧再发一条，于是 N 条同比例指令一起落地时一拍花掉 1−(1−p−1.17%)^N 的余额。晚到太久的进攻落地时目标已死，录像里记成打无主地。",
-        "detectionSketch": "64_cmd_loss.py：影子想发 vs 录像收下逐条配对（延迟、没被收下的条数、同一拍 ≥3 条的批数）＋按 in_game.log 落盘先后量本地落后拍数；63_replay_ledger.py E 节列出每一批的批前/批后余额。",
+        "definition": "策略发出的指令比发令拍晚几十到几百拍才在录像里落地，并且挤在同一拍成批到（一批最多 9 条）；每条都按落地那一拍的余额重新按比例计价，"
+                      "而策略每个决策拍（5 拍）看不到在途指令、照旧再发一条，于是 N 条同比例指令一起落地时一拍花掉 1−(1−p−1.17%)^N 的余额。晚到太久的进攻落地时目标已死，录像里记成打无主地；"
+                      "真号自己数的指令里有一部分始终没有进录像。是我方各客户端的本地进度一起落后，还是指令在上行的路上排队，包里分不出：按日志落盘先后各号彼此不落后（64_cmd_loss.py D 节），出局上报的时刻只比按拍数折算的时间晚 0~2 秒（52_result_clock.py）。",
+        "detectionSketch": "64_cmd_loss.py / 47_delay_periods.py：影子想发 vs 录像收下逐条配对（延迟、没被收下的条数、同一拍 ≥3 条的批数）＋按 in_game.log 落盘先后量本地落后拍数；63_replay_ledger.py E 节列出每一批的批前/批后余额；"
+                           "53_issue_vs_land.py：真号日志的 cmds 计数 vs 录像落地条数（不靠影子的下限）；52_result_clock.py：出局上报时刻比按拍数折算的时间晚多少。",
+    },
+    "R07-IO-SPAWN-LOST": {
+        "category": "IO",
+        "definition": "出生阶段策略算出了点位（日志里有协调器求解和 [HL-SPAWN-BACKEND] 指派），录像里我方却没有一条选点指令：出生阶段结束时引擎给还没有地的真人席位各发一个默认格点"
+                      "（game.js endSpawnPhase L657-667 → findSpawnCell，落点在格心上），全队按随机位置散在全图，协调器排的阵形和角色标签全部落空。对局包里的 spawn.csv 记的是协调器的指派，不是实际落点。",
+        "detectionSketch": "66_spawn_truth.mjs：录像出生阶段的选点指令按席位计数（我方 0 条）、出生阶段结束时各号领土外接框中心和日志里最后一次指派的距离、落点是不是都在同一套格心上、最近队友距离；"
+                           "46_voronoi.mjs：按真实落点分的天然地盘。只有日志时看不出来（指派日志照常打印）。",
     },
     "R07-IO-SEAT-LOST": {
         "category": "IO",
@@ -436,6 +445,15 @@ PATTERN_DEFS = {
         "detectionSketch": "48_neutral_floor.py（输入 65_shadow.mjs --trace 的逐拍明细）：t≥1500、neut>0 的决策拍里没有指令且 `B − safe(-1) < 4×(12×B // 1024)` 的拍数，"
                            "按号、按连续段列出贴着的无主地格数、余额、留底和差额；94_conquest.mjs：同一时间段「清场放掉」的格数和它们归了谁。"
                            "只有日志时：HL-TICK 的 neut>0、nb≥1、cmds 不变、领土不变，持续 ≥2 个快照。",
+    },
+    "R07-EC-AI-FLOOR": {
+        "category": "EC",
+        "definition": "t≥1500 吃内置 AI 也要先过对真人的留底。buyLand 对非真人目标一样取 `safe = safeAt(g, q)`（只封顶 oppFloorCap×领土，Vb L5414-5418），再 `keep = max(keep, safe)`（L5444），可用兵 = 余额 − 手续费 − keep。"
+                      "safeAt 取 safeFinite 和 killW×dpKeep 里大的那个（V17.safeAt L2728-2738）：safeFinite 是「贴着我的每个内置 AI 的其他邻居里余额最小的那个」的余额（V13.safeFinite L2501-2511），"
+                      "dpKeep 按最强的真人邻居折算（L2459-2464）。和一个攒着兵的真人共同贴着一个 AI 的号，自己的余额不超过那个真人就一个兵也不发——哪怕这个 AI 一个兵都没有、吃光只要两千兵。"
+                      "手边的 AI 地几百拍不动，余额越攒越高，对面的真人照常吃。和 R07-EC-NEUT-FLOOR（挡住捡无主地）、R07-AT-CARCASS-FLOOR（挡住吃空壳真人）是同一条留底的第三个出口；t<1500 的同类是 R07-OP-WINFLOOR-MATE。",
+        "detectionSketch": "65_shadow.mjs 的 shadow_late_ai.txt：t≥1500 身边有内置 AI 的决策拍按 buyLand 走到的第一个非真人报价归类，「留底占满：safeFinite（参照敌方真人 / 队友）」的拍数，当拍余额、留底、那个 AI 的领土 / 余额 / need；"
+                           "truth_all.tsv：同段该号领土不变、余额上涨，参照的那个真人的领土在涨。只有日志时：HL-TICK 的 nb≥1、领土不变、cmds 不变、余额连续上涨 ≥3 个快照（和比价停住分不开）。",
     },
 }
 
