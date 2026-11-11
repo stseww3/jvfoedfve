@@ -313,6 +313,18 @@ P('');
 P(`G. 我方号的船：发船 ${eff.filter((e) => (e.kind === 'boat' || e.kind === 'boatTo') && e.spent > 0).length} 条，靠岸 ${landings.length} 次`);
 for (const e of eff.filter((e) => (e.kind === 'boat' || e.kind === 'boatTo') && e.spent > 0)) P(`  发船 t=${e.t} ${e.bot} pct=${e.pct}：带兵 ${fmt(e.troops)}，手续费 ${fmt(e.fee)}（发船前余额 ${fmt(e.b0)}，领土 ${fmt(e.terr)}，密度 ${(e.b0 / Math.max(1, e.terr)).toFixed(0)}）`);
 for (const x of landings) P(`  靠岸 t=${x.t} ${x.bot}：带 ${fmt(x.troops)} 兵到 (${x.x},${x.y}) → ${x.kind}${x.tname ? ' ' + x.tname : ''}${x.kind === '队友的岸' ? `（到账 ${fmt(x.delivered)}）` : ''}`);
+{
+  // 合计：发船带走的兵、船费、靠岸时还剩的兵（海上每 5 拍掉 1/128）、靠到队友岸上被额度拒收的兵
+  const bs = eff.filter((e) => (e.kind === 'boat' || e.kind === 'boatTo') && e.spent > 0);
+  const carried = bs.reduce((a2, e) => a2 + e.troops, 0), bfee = bs.reduce((a2, e) => a2 + e.fee, 0);
+  const arrived = landings.reduce((a2, x) => a2 + x.troops, 0);
+  const mate = landings.filter((x) => x.kind === '队友的岸');
+  const mateGot = mate.reduce((a2, x) => a2 + (x.delivered || 0), 0), mateAll = mate.reduce((a2, x) => a2 + x.troops, 0);
+  const small = bs.filter((e) => e.fee > e.troops);
+  P(`  合计：发船 ${bs.length} 条带兵 ${fmt(carried)}、船费 ${fmt(bfee)}（船费 ÷ 带兵 = ${(100 * bfee / Math.max(1, carried)).toFixed(1)}%）；靠岸 ${landings.length} 次、靠岸时还剩 ${fmt(arrived)}（已靠岸的船在海上掉的兵不超过 ${fmt(Math.max(0, carried - arrived))}，未靠岸的也算在内）；` +
+    `靠在队友岸上 ${mate.length} 次：带 ${fmt(mateAll)}，到账 ${fmt(mateGot)}，被额度拒收丢掉 ${fmt(mateAll - mateGot)}；船费比带的兵还多的船 ${small.length} 条（带兵 ${fmt(small.reduce((a2, e) => a2 + e.troops, 0))}，船费 ${fmt(small.reduce((a2, e) => a2 + e.fee, 0))}）`);
+  J.boatTotals = { n: bs.length, carried, fee: bfee, landings: landings.length, arrived, mateN: mate.length, mateAll, mateGot, feeOverTroopsN: small.length };
+}
 P('');
 P(`H. 顶到 150×领土硬上限、没加进余额的兵（退兵 / AI 送兵 / 船；利息不计）：${lostAtCap.length} 次，合计 ${fmt(lostAtCap.reduce((a, x) => a + x.want - x.got, 0))}`);
 for (const x of lostAtCap.sort((a, b) => (b.want - b.got) - (a.want - a.got)).slice(0, 8)) P(`  t=${x.t} ${x.bot}（${x.ctx === 'refund' ? '退兵' : x.ctx === 'giftIn' ? 'AI 送兵' : x.ctx === 'boatIn' ? '船' : x.ctx}）：应加 ${fmt(x.want)}，实加 ${fmt(x.got)}，丢 ${fmt(x.want - x.got)}`);

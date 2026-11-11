@@ -103,9 +103,15 @@ for (const b of bots) {
       const guard = p.p.quotaGuardMode > 0 && p.isNoFullSend && troops > 2 && p.shadowQuota < Math.min(0.55 * troops, 0.06 * B0);
       const sq = Math.round(p.shadowQuota);
       const ok = budgetHint === undefined ? origSend(g, target, troops) : origSend(g, target, troops, budgetHint);
+      if (!p.__sendTry || p.__sendTry.t !== g.t) p.__sendTry = { t: g.t, list: [] };
+      p.__sendTry.list.push({ target, troops, ok, guard: !!guard });
       if (guard && target !== NEUTRAL) nfEvents.push([g.t, b, ok ? '改成1兵试探' : '挡掉', pname(g, target), Math.round(troops), sq, B0].join('\t'));
       return ok;
     };
+  }
+  if (typeof p.tryDonateToTeammate === 'function') {
+    const origDon = p.tryDonateToTeammate.bind(p);
+    p.tryDonateToTeammate = (g, em = false) => { const ret = origDon(g, em); p.__donTry = { t: g.t, ret, em }; return ret; };
   }
   pol.set(b, p);
 }
@@ -115,7 +121,7 @@ const nfEvents = [];
 const pname = (g, q) => (q === NEUTRAL ? '无主地' : q < H ? `${names[q]}#${q}[T${g.teams[q]}${g.state[q] === 2 ? '离' : ''}]` : `AI#${q}`);
 
 // 按 buyLand 的源码公式重算每个报价的 安全底 / 留底 / 可用兵（Vb：L5350-5446；Va/Vc 行号略有出入，公式相同）
-function evalOffers(g, p) {
+function evalOffers(g, p, lim = 6) {
   const me = p.me, P = p.p;
   const B = g.bal[me], L = Math.max(1, g.terr[me]), fee = iV(12 * B, 1024), dMe = B / L;
   const dMedOther = typeof p.otherHumanMedDens === 'function' ? p.otherHumanMedDens(g) : null;
@@ -123,7 +129,7 @@ function evalOffers(g, p) {
   const refDens = dMedOther !== null && g.t >= P.marketFrom ? Math.max(dMe, P.marketFloor * dMedOther) : dMe;
   const worth = m * refDens, over = P.surplus > 0 && B > 100 * L, cheap = P.growth > 0 ? 0.1 / p.baseRate(g) : 0;
   const rows = [];
-  for (const o of (p.__offers || []).slice(0, 6)) {
+  for (const o of (p.__offers || []).slice(0, lim)) {
     const q = o.q;
     let safe = p.safeAt(g, q);
     if (!o.person || o.nearCollapse || (P.bleedSafeCap > 0 && (o.bleeding || o.tD < 0.45))) safe = Math.min(safe, P.oppFloorCap * L);
@@ -252,6 +258,218 @@ function earlyDiag(g, b, p, cmdsNow) {
   }
   st.cls.set(cls, (st.cls.get(cls) || 0) + 1);
 }
+// ---- t>=dpEnd（1500）吃内置 AI 的诊断（统筹广播 0005-①②）：身边有内置 AI 的决策拍里，为什么没对它出手
+// 按 buyLand 的循环顺序走到第一个非真人报价，用 evalOffers 重算的 worth / safe / keep / avail 归类；
+// 留底由 safeFinite 定的那些，再用 threatOwner 找出参照的是谁（我方队友 / 同队真人 / 敌方真人 / 另一个内置 AI）。
+const late = new Map();
+const lateEx = [];
+function lateDiag(g, b, p, cmdsNow) {
+  const P = p.p, me = p.me;
+  if (g.t < (P.dpEnd ?? 1500) || g.t % P.period !== 0) return;
+  const nbBots = p.nb.filter((q) => q >= H && g.alive[q] && g.terr[q] > 0);
+  if (!nbBots.length) return;
+  if (!late.has(b)) late.set(b, { dec: 0, cls: new Map(), t0: g.t, t1: g.t });
+  const st = late.get(b);
+  st.dec++; st.t1 = g.t;
+  const B = g.bal[me], L = Math.max(1, g.terr[me]);
+  const add = (cls, r, extra) => {
+    const c = st.cls.get(cls) || { n: 0, terr: 0, bal: 0, cSum: 0, wSum: 0, k: 0 };
+    c.n++; c.bal += B;
+    if (r) { c.terr += g.terr[r.q]; c.cSum += r.o.c; c.wSum += extra && extra.worth !== undefined ? extra.worth : 0; c.k++; }
+    st.cls.set(cls, c);
+    if (r && lateEx.length < 600 && g.t % 100 === 0 && !/出手|捐兵/.test(cls)) lateEx.push(`  t=${g.t} ${b} B=${B} L=${L} d=${(B / L).toFixed(1)} | ${pname(g, r.q)}（${g.terr[r.q]} 格 / ${g.bal[r.q]} 兵）每格 ${r.o.c.toFixed(1)}，出价 ${extra ? extra.worth.toFixed(1) : '?'}，need ${Math.round(r.o.need)} | safe ${Math.round(r.safe)} keep ${Number.isFinite(r.keep) ? Math.round(r.keep) : 'Inf'} avail ${Number.isFinite(r.avail) ? Math.round(r.avail) : '-Inf'} → ${cls}${extra && extra.note ? '：' + extra.note : ''}`);
+  };
+  if (cmdsNow.some((c) => c.kind === 'attack' && c.target >= H && c.target < NEUTRAL)) return add('出手打内置 AI');
+  if (cmdsNow.some((c) => c.kind === 'attack' && c.target < H)) return add('本拍出手打了真人');
+  if (cmdsNow.some((c) => c.kind === 'donate')) return add('本拍在捐兵');
+  if (p.__offers === null) return add(cmdsNow.length ? '本拍只发了别的指令（无主地 / 船），没走到 buyLand' : '没走到 buyLand');
+  const ev = evalOffers(g, p, 99);
+  const tries = p.__sendTry && p.__sendTry.t === g.t ? p.__sendTry.list.filter((x) => x.target !== NEUTRAL) : [];
+  for (const r of ev.rows) {
+    const o = r.o;
+    if (o.c >= ev.worth && o.c >= ev.cheap && !ev.over) {
+      return add(o.person ? '排在前面的真人报价价高，循环到此结束' : '价高：AI 每格成本 ≥ 自己的出价（worth = m×自己的密度）', r, { worth: ev.worth });
+    }
+    const tried = tries.find((x) => x.target === r.q);
+    if (tried && !tried.ok) return add(o.person ? (tried.guard ? '排在前面的真人报价被 isNoFullSend 挡掉，循环到此结束' : '排在前面的真人报价出兵没被接受，循环到此结束') : (tried.guard ? '对 AI 的出兵被 isNoFullSend 挡掉' : '对 AI 的出兵没被接受（没有空槽等）'), r, { worth: ev.worth });
+    if (o.person) continue;
+    if (r.avail <= 0) {
+      let note = '', cls;
+      if (r.keep > r.safe + 0.5) cls = '留底占满：价格留底（minKeep / budget）';
+      else {
+        let sf = 0;
+        try { sf = p.safeFinite(g, P.botSkip > 0 ? r.q : -1); } catch (e) { sf = 0; }
+        const capped = Math.min(sf, P.oppFloorCap * L);
+        if (sf > 0 && capped >= r.safe - 0.5) {
+          let who = -1, sb = -1;
+          for (const q of p.nb) {
+            if (g.alive[q] === 0 || !g.isBot(q) || !g.hasFreeSlot(q) || g.hasAttack(q, me)) continue;
+            const th = threatOwner(g, q, me);
+            if (th.neutral || !Number.isFinite(th.minOther)) continue;
+            const v = th.minOther - g.attackTroopsOn(me, q);
+            if (v > sb) { sb = v; who = th.owner; }
+          }
+          const kind = who < 0 ? '未知' : idOfRev.has(who) ? '我方队友' : who >= H ? '另一个内置 AI' : g.isTeammate(me, who) ? '同队真人' : '敌方真人';
+          cls = `留底占满：safeFinite（参照的最弱邻居是${kind}）`;
+          note = who >= 0 ? `参照 ${pname(g, who)}（${g.bal[who]} 兵）` : '';
+        } else cls = '留底占满：真人邻居的兵（killKeep / peopleSafe）';
+      }
+      return add(cls, r, { worth: ev.worth, note });
+    }
+    const want = 1.25 * o.need + 3 * p.cnt[r.q];
+    const x = Math.min(r.avail, want);
+    if (x <= 0 || (x < want && x < P.chunk * ev.B)) return add('可用兵吃不下它、又不到一条指令的下限（x<want 且 x<chunk×余额）', r, { worth: ev.worth });
+    return add('按公式该发却没有影子指令（已有别的指令 / 其他）', r, { worth: ev.worth });
+  }
+  const aiOff = (p.__offers || []).filter((o) => !o.person).length;
+  if (!aiOff) {
+    const q = nbBots.slice().sort((a, c) => g.terr[c] - g.terr[a])[0];
+    if (lateEx.length < 600 && g.t % 100 === 0) lateEx.push(`  t=${g.t} ${b} B=${B} L=${L} d=${(B / L).toFixed(1)} | 邻居 ${pname(g, q)}（${g.terr[q]} 格 / ${g.bal[q]} 兵，接壤 ${p.cnt[q]} 格）不在 offers 里（offers ${p.__offers.length} 个）`);
+    if (nbBots.every((x) => g.hasAttack(me, x))) return add('已经在打身边的内置 AI（在途的兵够吃，报价单不再列它）');
+    return add('报价单里没有内置 AI（目标数已满 / 没有空槽 / 其他筛选）');
+  }
+  return add('报价单里有内置 AI，但前面的报价都没走到它');
+}
+// ---- 调度（Policy.tryDonateToTeammate）没发的原因：按源码的判定顺序逐行复刻（Vb L4325-4518；Va / Vc 只是常数不同），
+// 只在每个号自己的相位拍（每 25 拍一次）记一行；复刻出的「捐给谁 / pct」与影子实际发出的捐款逐条比对（见 shadow_donor_gate.txt 抬头）。
+const DK = {
+  vb: { minBal: 30000, cool: 12, prodBox: [44, 34], prodFront: 92, emBox: [32, 22], emFront: 88, aReq: [42, 30, 102], aAllyMax: Infinity, gap: 16, gapBoxed: false, bReq: [58, 108], bMaxAlly: [140, 128, 96], ideal: [380, 240, 320, 220], minPct: 180 },
+  va: { minBal: 30000, cool: 12, prodBox: [72, 66], prodFront: 94, emBox: [32, 22], emFront: 88, aReq: [42, 30, 102], aAllyMax: Infinity, gap: 16, gapBoxed: false, bReq: [82, 108], bMaxAlly: [140, 128, 96], ideal: [260, 190, 225, 170], minPct: 128 },
+  vc: { minBal: 35000, cool: 24, prodBox: [76, 70], prodFront: 94, emBox: [58, 48], emFront: 88, aReq: [68, 58, 102], aAllyMax: 85, gap: 15, gapBoxed: true, bReq: [96, 108], bMaxAlly: [94, 88, 88], ideal: [260, 190, 220, 170], minPct: 150 },
+}[ver];
+const donRows = [];
+const fireRows = [];
+const donChk = { ok: 0, bad: 0, ex: [] };
+function donDiag(g, b, p, cmdsNow, ld0) {
+  if (!DK || g.t < 1500 || g.t % 5 !== 0 || typeof p.findBossId !== 'function') return;
+  const me = p.me;
+  const mySlot = Number.isInteger(window.__tsbSquadSlot) ? window.__tsbSquadSlot : me % 10;
+  const phase = ((g.t / 5) | 0) % 5 === mySlot % 5;
+  const called = p.__donTry && p.__donTry.t === g.t;
+  const sent = cmdsNow.find((c) => c.kind === 'donate');
+  if (!phase && !sent) return;
+  const B = g.bal[me], L = Math.max(1, g.terr[me]), dMe = B / L;
+  const row = { t: g.t, donor: b, B, L, dMe, boxedIn: '', coast: '', reason: '', target: '', pct: '', kind: '', cands: [] };
+  const fin = (reason) => {
+    row.reason = reason;
+    donRows.push(row);
+    const want = reason.startsWith('SENT') ? `${row.target}/${row.pct}` : '';
+    const got = sent ? `${idOfRev.get(sent.target) ?? sent.target}/${sent.pct}` : '';
+    if (want === got) donChk.ok++; else { donChk.bad++; if (donChk.ex.length < 12) donChk.ex.push(`t=${g.t} ${b} 复刻=${reason}${want ? ' ' + want : ''} 影子=${got || '没捐'}`); }
+  };
+  if (!called) return fin(cmdsNow.some((c) => c.kind === 'attack' && c.target < H) ? 'D:nocall-atkH' : cmdsNow.some((c) => c.kind === 'attack' && c.target < NEUTRAL) ? 'D:nocall-atkAI' : cmdsNow.some((c) => c.kind === 'attack') ? 'D:nocall-neutral' : cmdsNow.length ? 'D:nocall-boat' : 'D:nocall-early');
+  if (g.terr[me] < 1200) return fin('D:terr<1200');
+  if (g.bal[me] < DK.minBal) return fin('D:bal<min');
+  if (g.t - (ld0 ?? -999) < DK.cool) return fin('D:cooldown');
+  let myIn = 0, myOut = 0;
+  for (const a of g.attackersOf(me)) if (!g.isBot(a) && !p.isTeammate(g, a)) myIn += g.attackTroopsOn(a, me);
+  const sbMe = g.slotBase(me);
+  for (let i = 0; i < g.atkCount[me]; i++) { const tgt = g.atkTarget[sbMe + i]; if (tgt >= 0 && tgt < g.humans && !g.isBot(tgt) && !p.isTeammate(g, tgt)) myOut += g.atkTroops[sbMe + i]; }
+  if (myIn > 0) return fin('D:meUnderFire');
+  if (myOut > 0.08 * B) return fin('D:meAttacking');
+  const enemyHumanNbs = p.nb.filter((q) => g.alive[q] && p.person(g, q));
+  let anyEnemyNb = enemyHumanNbs.length > 0;
+  if (!anyEnemyNb && p.cnt) for (let q = 0; q < g.humans; q++) if (q !== me && g.alive[q] && !p.isTeammate(g, q) && (p.cnt[q] ?? 0) > 0) { anyEnemyNb = true; break; }
+  const boxedIn = !anyEnemyNb && p.nb.length === 0 && p.neutral === 0;
+  const coast = (g.coast?.[me]?.length ?? 0) > 0;
+  row.boxedIn = boxedIn ? 1 : 0; row.coast = coast ? 1 : 0;
+  const bossId = p.findBossId(g);
+  if (bossId >= 0 && g.alive[bossId] && g.terr[bossId] >= 100 && sent && sent.target === bossId) { row.target = String(bossId); row.pct = sent.pct; row.kind = 'boss'; row.reason = 'SENT:boss'; donRows.push(row); donChk.ok++; return; }
+  const safeM1 = p.safeAt(g, -1);
+  const prodOptFloor = boxedIn ? (coast ? DK.prodBox[0] * L : DK.prodBox[1] * L) : Math.max(DK.prodFront * L, safeM1);
+  const emergDefFloor = boxedIn ? (coast ? DK.emBox[0] * L : DK.emBox[1] * L) : Math.max(DK.emFront * L, safeM1);
+  const quit = typeof window !== 'undefined' && window.__quitPlayers ? window.__quitPlayers : null;
+  let maxSquadTerr = 0, topSquadId = -1, maxRandomTeamTerr = 0;
+  for (let q = 0; q < g.humans; q++) {
+    if (!g.alive[q] || !p.isTeammate(g, q)) continue;
+    if (quit && quit.has(q)) continue;
+    if (p.isOurSquadBot(g, q) || p.isBossNpl(g, q)) { if (g.terr[q] > maxSquadTerr) { maxSquadTerr = g.terr[q]; topSquadId = q; } }
+    else if (!g.isBot(q) && g.terr[q] > maxRandomTeamTerr) maxRandomTeamTerr = g.terr[q];
+  }
+  let fronts = 0;
+  for (let q = 0; q < g.humans; q++) {
+    if (g.alive[q] && p.isTeammate(g, q) && (p.isOurSquadBot(g, q) || p.isBossNpl(g, q)) && g.terr[q] >= 150) {
+      const nbs = p.peopleOf(g, q);
+      if (nbs.some((o) => g.alive[o] && !p.isTeammate(g, o) && g.terr[o] > 0)) fronts++;
+    }
+  }
+  let bestTarget = -1, bestScore = -Infinity, bestKind = 'prod_opt', bestFloor = prodOptFloor;
+  const cand = new Map();
+  for (let q = 0; q < g.humans; q++) {
+    if (q === me || !g.alive[q] || !p.isTeammate(g, q) || (!p.isOurSquadBot(g, q) && !p.isBossNpl(g, q))) continue;
+    const nm = idOfRev.get(q) ?? `#${q}`;
+    if (g.terr[q] < (fronts <= 2 ? 150 : 1200)) { cand.set(nm, 'C:small'); continue; }
+    if (quit && quit.has(q)) { cand.set(nm, 'C:quit'); continue; }
+    const Lp = Math.max(1, g.terr[q]), Bp = g.bal[q], dAlly = Bp / Lp;
+    if (dAlly >= (boxedIn ? 142 : 115)) { cand.set(nm, 'C:dense'); continue; }
+    let inH = 0, outH = 0;
+    for (const a of g.attackersOf(q)) if (!g.isBot(a) && !p.isTeammate(g, a)) inH += g.attackTroopsOn(a, q);
+    const sbP = g.slotBase(q);
+    for (let i = 0; i < g.atkCount[q]; i++) { const tgt = g.atkTarget[sbP + i]; if (tgt >= 0 && tgt < g.humans && !g.isBot(tgt) && !p.isTeammate(g, tgt)) outH += g.atkTroops[sbP + i]; }
+    const allyNbs = p.peopleOf(g, q);
+    let enemyNbs = 0, botNbs = 0, minEnemyDens = Infinity, hasBleedingPrey = false;
+    for (const o of allyNbs) {
+      if (o !== me && g.alive[o] && !p.isTeammate(g, o) && g.terr[o] > 0) {
+        const doDens = g.bal[o] / Math.max(1, g.terr[o]);
+        if (!g.isBot(o)) { enemyNbs++; if (doDens < minEnemyDens) minEnemyDens = doDens; if (doDens < 45 || g.terr[o] <= 0.35 * (g.peak?.[o] ?? g.terr[o])) hasBleedingPrey = true; }
+        else { botNbs++; if (doDens < minEnemyDens) minEnemyDens = doDens; if (doDens < 35) hasBleedingPrey = true; }
+      }
+    }
+    if (enemyNbs === 0 && botNbs > 0) enemyNbs = botNbs;
+    const allyHasCoast = (g.coast?.[q]?.length ?? 0) > 0;
+    const isBeachhead = enemyNbs > 0 && fronts <= 2 && boxedIn;
+    const isCrown = (q === topSquadId && enemyNbs > 0 && maxRandomTeamTerr >= 0.70 * maxSquadTerr) || isBeachhead;
+    if (enemyNbs === 0 && inH === 0 && outH === 0 && (!boxedIn || !allyHasCoast || dMe < 105 || dAlly > 112)) { cand.set(nm, 'C:rear'); continue; }
+    if (!isBeachhead && inH > 1.65 * Bp) { cand.set(nm, 'C:doomedA'); continue; }
+    if (!isBeachhead && g.t >= 4500 && Lp < 0.22 * maxSquadTerr && inH > 0.45 * Bp) { cand.set(nm, 'C:doomedB'); continue; }
+    const underFire = inH > 0 && (inH >= 0.06 * Bp || dAlly < 88);
+    const activePush = outH >= 0.06 * Bp && dAlly < 96;
+    const hasPrey = enemyNbs > 0 && (hasBleedingPrey || minEnemyDens < 0.70 * dAlly) && dAlly < 96;
+    if (underFire) {
+      const reqD = boxedIn ? (coast ? DK.aReq[0] : DK.aReq[1]) : DK.aReq[2];
+      if (dMe < reqD) { cand.set(nm, 'A:dMe'); continue; }
+      if (dAlly >= DK.aAllyMax) { cand.set(nm, 'A:allyDense'); continue; }
+      if (B <= 1.12 * emergDefFloor) { cand.set(nm, 'A:floor'); continue; }
+      if ((DK.gapBoxed || !boxedIn) && dMe < dAlly + DK.gap) { cand.set(nm, 'A:gap'); continue; }
+      const score = 5000 + (inH / Math.max(1, Bp)) * 1200 + (105 - dAlly) * 20 + Math.min(2200, Lp / 18);
+      cand.set(nm, `ok:A:${Math.round(score)}`);
+      if (score > bestScore) { bestScore = score; bestTarget = q; bestKind = 'defense_dispatch'; bestFloor = emergDefFloor; }
+    } else {
+      const reqD = boxedIn ? DK.bReq[0] : DK.bReq[1];
+      const maxAllyD = boxedIn ? (activePush || hasPrey || enemyNbs > 0 ? DK.bMaxAlly[0] : DK.bMaxAlly[1]) : DK.bMaxAlly[2];
+      if (dMe < reqD) { cand.set(nm, 'B:dMe'); continue; }
+      if (dAlly > maxAllyD) { cand.set(nm, 'B:allyDense'); continue; }
+      if (B <= 1.14 * prodOptFloor) { cand.set(nm, 'B:floor'); continue; }
+      if ((DK.gapBoxed || !boxedIn) && dMe < dAlly + DK.gap) { cand.set(nm, 'B:gap'); continue; }
+      const score = (activePush || hasPrey ? 2500 : 1000) + (isCrown ? 1800 : 0) + (outH / Math.max(1, Bp)) * 1200 + (hasBleedingPrey ? 500 : 0) + (100 - dAlly) * 18 + enemyNbs * 80 + Math.min(3500, Lp / 14);
+      cand.set(nm, `ok:B:${Math.round(score)}`);
+      if (score > bestScore) { bestScore = score; bestTarget = q; bestKind = activePush || hasPrey ? 'offense_dispatch' : 'yield_opt_dispatch'; bestFloor = prodOptFloor; }
+    }
+  }
+  row.cands = [...cand].map(([k, v]) => `${k}=${v}`);
+  if (bestTarget < 0) return fin('no-cand');
+  const maxSurplus = Math.max(0, B - bestFloor);
+  const maxSafePct = Math.floor((maxSurplus * 1024) / Math.max(1, B));
+  const idealPct = bestKind === 'defense_dispatch' ? (boxedIn ? DK.ideal[0] : DK.ideal[1]) : (boxedIn ? DK.ideal[2] : DK.ideal[3]);
+  const pct = Math.min(maxSafePct, idealPct);
+  row.target = idOfRev.get(bestTarget) ?? String(bestTarget); row.pct = pct; row.kind = bestKind;
+  if (pct < DK.minPct) return fin('PCT<min');
+  return fin(`SENT:${bestKind}`);
+}
+// 每个决策拍：我方哪些号身上有敌方真人的进攻（协防打分里的 inHumanAtk），以及按 isDoomedPocket 的两个分支会不会被当成弃子
+function fireScan(g) {
+  if (g.t < 1500 || g.t % 5 !== 0) return;
+  let maxSquadTerr = 0;
+  for (const [b, q] of idOf) if (g.alive[q] && g.state[q] !== 2 && g.terr[q] > maxSquadTerr) maxSquadTerr = g.terr[q];
+  for (const [b, q] of idOf) {
+    if (!g.alive[q] || g.state[q] === 2) continue;
+    let inH = 0;
+    for (const a of g.attackersOf(q)) if (a < H && !g.isBot(a) && g.isEnemy(q, a)) inH += g.attackTroopsOn(a, q);
+    if (inH <= 0) continue;
+    const Lp = Math.max(1, g.terr[q]), Bp = g.bal[q];
+    fireRows.push([g.t, b, Lp, Bp, inH, (inH / Math.max(1, Bp)).toFixed(3), inH >= 0.06 * Bp || Bp / Lp < 88 ? 1 : 0, inH > 1.65 * Bp ? 1 : 0, g.t >= 4500 && Lp < 0.22 * maxSquadTerr && inH > 0.45 * Bp ? 1 : 0, maxSquadTerr].join('\t'));
+  }
+}
 const quitMode = opt('--quit', 'engine');
 const quitSet = new Set();
 // ---- 钩子：每拍结算后跑影子
@@ -302,6 +520,7 @@ proto.tick = function () {
     g.recall = (id, pl = me) => { rec('recall', 0, NEUTRAL, id); return true; };
     g.retreat = (target, pl = me) => { rec('retreat', 0, Math.min(target, NEUTRAL)); return true; };
     p.__offers = null;
+    const ld0 = p.lastDonateTick;
     const nf0 = p.isNoFullSend, pc0 = p.pendingQuotaCheck ? { ...p.pendingQuotaCheck } : null;
     try { p.act(g); } catch (e) { shadowLog.push({ bot: b, t: g.t, text: `[SHADOW-ERROR] ${e && e.message}` }); }
     if (nf0 === false && p.isNoFullSend) {
@@ -310,6 +529,8 @@ proto.tick = function () {
     }
     delete g.attack; delete g.donate; delete g.boat; delete g.boatTo; delete g.chase; delete g.recall; delete g.retreat;
     try { earlyDiag(g, b, p, cmdsNow); } catch (e) { if (!earlyDiag.err) { earlyDiag.err = String(e && e.message); } }
+    try { lateDiag(g, b, p, cmdsNow); } catch (e) { if (!lateDiag.err) { lateDiag.err = String(e && e.message); } }
+    try { donDiag(g, b, p, cmdsNow, ld0); } catch (e) { if (!donDiag.err) { donDiag.err = String(e && e.stack); } }
     for (const tr of traces) {
       if (tr.bot !== b || g.t < tr.t0 || g.t > tr.t1) continue;
       const P = p.p;
@@ -346,6 +567,7 @@ proto.tick = function () {
     }
   }
   if (onlineHad) g.online = online0; else delete g.online;
+  try { fireScan(g); } catch (e) { if (!fireScan.err) fireScan.err = String(e && e.message); }
 };
 
 const t0 = Date.now();
@@ -475,6 +697,28 @@ fs.writeFileSync(path.join(OUT, 'shadow_nofull.tsv'), 't\tbot\tevent\tdetail_or_
   if (earlyEx.length) { E.push('# 例子（每 50 拍取一条）'); E.push(...earlyEx.slice(0, 60)); }
   fs.writeFileSync(path.join(OUT, 'shadow_early.txt'), E.join('\n') + '\n');
   console.log(E.filter((x) => x.startsWith('# 合计') || x.startsWith('#       ')).join('\n'));
+}
+{
+  const E = [`# ${mid} t>=1500 吃内置 AI 的诊断（影子运行；只统计身边有内置 AI 的决策拍；归类按 buyLand 循环走到的第一个非真人报价）`];
+  if (lateDiag.err) E.push(`# 诊断出错：${lateDiag.err}`);
+  const tot = new Map(); let dec = 0;
+  for (const [b, st] of late) { dec += st.dec; for (const [k, c] of st.cls) { const t = tot.get(k) || { n: 0, terr: 0, bal: 0, cSum: 0, wSum: 0, k: 0 }; t.n += c.n; t.terr += c.terr; t.bal += c.bal; t.cSum += c.cSum; t.wSum += c.wSum; t.k += c.k; tot.set(k, t); } }
+  const fmtC = (c) => `${c.n} 拍${c.k ? `（目标平均 ${Math.round(c.terr / c.k)} 格，每格成本平均 ${(c.cSum / c.k).toFixed(1)}，出价平均 ${(c.wSum / c.k).toFixed(1)}；当拍自己余额平均 ${Math.round(c.bal / c.n).toLocaleString('en-US')}）` : `（当拍自己余额平均 ${Math.round(c.bal / Math.max(1, c.n)).toLocaleString('en-US')}）`}`;
+  E.push(`全队：身边有内置 AI 的决策拍 ${dec} 个`);
+  for (const [k, c] of [...tot].sort((a, c2) => c2[1].n - a[1].n)) E.push(`    ${k}: ${fmtC(c)}`);
+  for (const [b, st] of late) {
+    E.push(`${b}: 决策拍 ${st.dec}（t=${st.t0}~${st.t1}）`);
+    for (const [k, c] of [...st.cls].sort((a, c2) => c2[1].n - a[1].n)) E.push(`    ${k}: ${fmtC(c)}`);
+  }
+  if (lateEx.length) { E.push('# 例子（每 100 拍取一条）'); E.push(...lateEx.slice(0, 80)); }
+  fs.writeFileSync(path.join(OUT, 'shadow_late_ai.txt'), E.join('\n') + '\n');
+}
+if (DK) {
+  fs.writeFileSync(path.join(OUT, 'shadow_donor_gate.tsv'), `# 复刻校验：${donChk.ok} 行一致 / ${donChk.bad} 行不一致${donDiag.err ? ' | 出错：' + donDiag.err.split('\n')[0] : ''}${donChk.ex.length ? ' | ' + donChk.ex.join(' ; ') : ''}\n` +
+    't\tdonor\tbal\tterr\tdMe\tboxedIn\tcoast\treason\ttarget\tpct\tkind\tcands\n' + donRows.map((r) => [r.t, r.donor, r.B, r.L, r.dMe.toFixed(1), r.boxedIn, r.coast, r.reason, r.target, r.pct, r.kind, r.cands.join(';')].join('\t')).join('\n') + '\n');
+  fs.writeFileSync(path.join(OUT, 'shadow_underfire.tsv'), (fireScan.err ? `# 出错：${fireScan.err}\n` : '') + 't\tbot\tterr\tbal\tinHumanAtk\tratio\tunderFire\tdoomedA\tdoomedB\tmaxSquadTerr\n' + fireRows.join('\n') + '\n');
+  console.log(`# 调度门槛复刻：${donRows.length} 行（相位拍），与影子实际捐款比对 ${donChk.ok} 一致 / ${donChk.bad} 不一致${donDiag.err ? '；出错 ' + donDiag.err.split('\n').slice(0, 2).join(' | ') : ''}`);
+  for (const e of donChk.ex) console.log('#   ' + e);
 }
 fs.writeFileSync(path.join(OUT, 'shadow_coast.tsv'), 't\tbot\tterr\tcoastPx\tboatsAllowed\tleft\n' + coastRows.join('\n') + '\n');
 for (const tr of traces) {

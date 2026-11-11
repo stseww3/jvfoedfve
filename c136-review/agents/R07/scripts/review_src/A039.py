@@ -48,6 +48,8 @@ SRC = {
         "python3 70_team_density.py A039 --at 990,1530,1800,2340,2790,3240,3690,4140,4590,5130,5220,5580,5850,6120", "python3 71_death_chain.py A039", "python3 72_repeat_sends.py A039", "python3 73_front_width.py A039",
         "python3 75_interest.py A039 --at 990,1530,1800,2340,2790,3240,3690,4140,4590,5130,5220,5580,5850,6120", "python3 77_drop30_classify.py A039",
         "python3 78_bot_share.py A039 --bots noah88,alex_k,kaito9,leo_tx,riku_x --at 990,1080,1260,1530,1620,1800,1980,2340,2700,3240,3690,4140 --tag inner5",
+        "python3 79_help_table.py A039 --who talon5:3600:4134 --who ryan_m:3700:4284 --who zero_7:5480:5882 --who ryan_m:5200:6240 --who leo_tx:4430:5872 --who alex_k:4020:4390 --span 1500:2140 --span 5381:6421",
+        "python3 80_donation_yield.py A039",
         "68_watch.mjs（都带 --cmds 1）：--ids ryan_m,17,16 --t0 3300 --t1 4200 --step 30 --tag p49_strike；--ids zero_7,talon5,16,4 --t0 2700 --t1 3700 --step 60 --tag mid_2700_3700；"
         "--ids ryan_m,zero_7,17,4,15 --t0 5130 --t1 5900 --step 60 --tag tp3_5130_5900；--ids 17 --t0 2300 --t1 3700 --step 100 --tag p49_boats",
     ],
@@ -202,7 +204,7 @@ SRC = {
                  "codePath": f"{VB}:Policy.buyLand:L5444 `keep = Math.max(keep, safe)`、L5446 `avail = B - fee - keep`、L5595-5608（`if (curAtk >= 0.04 * B) continue`；`capFrac = floor(pulseFrac*B)`；`x = min(avail, want)`）→ Policy.send:L3838-3925"},
                 {"t": 3685, "bot": "ryan_m", "action": "对真人的留底只按当拍接壤的真人算：3560~3675 只贴着 Nikko，留底 29~35 万；贴上 Player 49 的那一拍才跳到 195 万，这时前面打 Nikko 的兵已经花出去", "logRef": "shadow_trace_ryan_m_3560_3720.txt t=3675~3690",
                  "codePath": f"{VB}:Policy.buyLand:L5414 `safe = this.safeAt(g, q)` → Policy.safeAt:L4543-4560 → safeAt:L2728-2738 → killKeep:L2745-2751（只遍历 `this.nb` 里的真人：(f×它的余额 + 它压在我身上的兵 − 1.5×我的领土) / 1.78）"},
-                {"t": 3840, "bot": "noah88 / leo_tx / alex_k / kaito9 / riku_x", "action": "协防每次只挑一个收方，打分偏向地大、密度低的号：3805~3930 的五条都给了 ryan_m；talon5（11,512 格，密度 45~65）同时挨着三家的进攻，没有分到一条", "logRef": "in_game.log L773~L775、L786~L787、L808~L809",
+                {"t": 3840, "bot": "noah88 / leo_tx / alex_k / kaito9 / riku_x", "action": "协防靠内圈号，而内圈号这时已被前面的调度抽到密度 21~46：3600~4134 其他九个号的 193 个相位拍里 138 个卡在捐方密度不到门槛（围死号协防要 30、有海岸 42，给余粮要 58），39 个捐方自己在打或挨打，8 个出了手；捐出的 8 笔给了 ryan_m 5、alex_k 2、zexos1 1（协防每次只取分最高的一个收方），talon5 一笔没有", "logRef": "help_table.txt C（talon5 3600~4134）；in_game.log L773~L775、L786~L787、L808~L809",
                  "codePath": f"{VB}:Policy.tryDonateToTeammate:L4330-4331（每号 25 拍一个相位拍）、L4455-4456 isDoomedPocket、L4463-4473 Case A `score = 5000 + (inHumanAtk/Bp)*1200 + (105 − dAlly)*20 + min(2200, Lp/18)`（只取分最高的一个）"},
                 {"t": 2700, "bot": "talon5", "action": "44~70 万兵几乎全被留底占住：Sejong、Simmy 的余额各在 69~138 万，按公式留底 39.6 万起，剩下的不够一条指令；两个邻居又都「价高」。五条 pct=213 的进攻打过来时它没有还手", "logRef": "shadow_trace_talon5_2700_3840.txt；watch_mid_2700_3700.txt",
                  "codePath": f"{VB}:Policy.buyLand:L5359 `c >= worth && c >= cheap && !over → break`、L5444-5447（`avail <= 0 → continue`）"},
@@ -237,7 +239,7 @@ SRC = {
                  "codePath": f"{VB}:Policy.tryDonateToTeammate:L4355 `boxedIn = !anyEnemyNb && this.nb.length === 0 && this.neutral === 0`、L4386 emergDefFloor、L4457 underFire、L4463-4473 Case A（围死号 `reqD = hasExposedCoast ? 42 : 30`；`dMe < dAlly + 16` 只约束非围死号）、L4500-4506"},
                 {"t": 5490, "bot": "zero_7", "action": "贴上 Player 49 之后既不能打也不能给：打，对方每格成本高于自己的出价、留底又高过余额；给，自己身上有真人的进攻时调度直接返回", "logRef": "shadow_trace_zero_7_5480_5880.txt；in_game.log L957 / L974",
                  "codePath": f"{VB}:Policy.buyLand:L5359、L5444-5447；Policy.tryDonateToTeammate:L4343 `if (myHumanInAtk > 0 || myHumanOutAtk > 0.08*B) return false`"},
-                {"t": 5380, "bot": "ryan_m / zexos1 / sora_w / noah88 / kaito9", "action": "不是围死号的捐方要密度 ≥102（且比收方高 16）才协防、≥108 才给余粮，自己挨打时不给。5490 起 noah88、kaito9 的 nb=1、不再算围死；ryan_m、zexos1、sora_w 有 172~455 万兵、密度 57~100，没有一个满足", "logRef": "in_game.log L937（最后一条 HL-DISPATCH）",
+                {"t": 5380, "bot": "ryan_m / zexos1 / sora_w / noah88 / kaito9", "action": "不是围死号的捐方要密度 ≥102（且比收方高 16）才协防、≥108 才给余粮，自己挨打时不给。5490 起 noah88、kaito9 的 nb=1、不再算围死；ryan_m、zexos1、sora_w 有 172~455 万兵、密度 57~100，没有一个满足。5381 之后全队 207 个相位拍：143 个没有合格的收方（755 对「捐方 / 候选」里 700 对卡在捐方密度不到门槛），47 个捐方自己正挨真人打，10 个自己的兵压在真人身上", "logRef": "help_table.txt D（5381~6421）；in_game.log L937（最后一条 HL-DISPATCH）",
                  "codePath": f"{VB}:Policy.tryDonateToTeammate:L4343、L4463-4466 `reqD = boxedIn ? (…) : 102`、`(!boxedIn && dMe < dAlly + 16) → continue`、L4479-4481 `reqD = boxedIn ? 58 : 108`"},
             ],
             "alternatives": "ryan_m 那九条花掉的 420 万兵换来 11,692 格，到 5460 丢回 18,562 格（比批前还少 6,870 格）；它如果留着这些兵，5215 时是密度 100 以上而不是 34（推断）。"
@@ -250,7 +252,7 @@ SRC = {
         {"bot": "talon5", "killers": ["Sejong [IND]#4（T1）：全程 9 条 1,848,786 兵，3900~4130 进攻槽峰值 529,644", "[OG] Simmy#15（T1）：5 条 1,219,557 兵，峰值 361,424（3970）", "Player 49#17（T1）：4081 一条 315,664 兵"],
          "lastDecisions": ["2737~3339：4 条打 Nikko（225,278 兵）", "2700~3840：169 个决策拍可用兵 ≤0、31 个嫌贵（影子）", "3840~4134：13 拍嫌贵、46 拍可用兵 −25.1~−17.6 万，零指令"],
          "cause": "外圈号，夹在 Sejong、Simmy、Nikko 之间。2779 起 Sejong 每隔两三百拍一条 pct=213（每条花 18~26 万），它有 44~70 万兵却几乎全被留底占住，24,686 格（2790）→11,512 格（3600）。"
-                  "3900 起三家一起上，全队的协防这时都给了 ryan_m，它最后 500 拍没有收到一个兵，带着 72 万兵（密度 63）被打到出局（4134）。",
+                  "3900 起三家一起上；内圈号这时密度 21~46、够不着协防门槛（其他号 3600~4134 的 193 个相位拍里 138 个卡在这里），捐出的 8 笔给了 ryan_m 等，它最后 500 拍没有收到一个兵，带着 72 万兵（密度 63）被打到出局（4134）。",
          "patternIds": ["NEW:R07-DF-PASSIVE-BLEED", "NEW:R07-DN-NO-DONOR"]},
         {"bot": "alex_k", "killers": ["[OG] Simmy#15（T1）：4025 / 4221 / 4347 三条 pct=184 共 996,494 兵，进攻槽峰值 362,938"],
          "lastDecisions": ["2520~3600：7 笔调度捐出 1,029,444（手续费 189,335）", "3815：协防调度给 ryan_m", "最后 500 拍 0 条进攻"],
@@ -366,8 +368,8 @@ SRC = {
         {"t": 5490, "bot": "zero_7", "kind": "idle", "verdict": "error",
          "state": "60,443 格 / 274 万兵（密度 45）。Player 49（142,255 格 / 997 万兵）5488 压上 192 万。影子：对 Player 49 每格 116.5、自己出价 59.6，safe 5,318,984",
          "codePath": f"{VB}:Policy.buyLand:L5359、L5444-5447；Policy.tryDonateToTeammate:L4343（自己挨真人打时不捐）、L4463-4466（非围死的捐方要密度 ≥102）",
-         "why": "390 拍里它的兵只被当成守军一格一格磨掉（挨打掉 4,033,255，含期间的利息），没有一条指令。队友也没有动：ryan_m（密度 57~94）、zexos1（82~92）、sora_w（83~87）都不到 102；noah88、kaito9 从 5490 起 nb=1（in_game.log L949 / L946），不再算围死号",
-         "estCost": "60,443 格", "patternId": "NEW:R07-DF-RICH-BLEED", "evidenceRef": "out/A039/shadow_trace_zero_7_5480_5880.txt；death_chain.txt；watch_tp3_5130_5900.txt"},
+         "why": "390 拍里它的兵只被当成守军一格一格磨掉（挨打掉 4,033,255，含期间的利息），没有一条指令。队友也没有动：5480~5882 其他号的 97 个相位拍里 72 个卡在「协防：捐方密度不到门槛」——ryan_m（密度 57~94）、zexos1（82~92）、sora_w（83~87）都不到 102；noah88、kaito9 从 5490 起 nb=1（in_game.log L949 / L946），不再算围死号",
+         "estCost": "60,443 格", "patternId": "NEW:R07-DF-RICH-BLEED", "evidenceRef": "out/A039/shadow_trace_zero_7_5480_5880.txt；help_table.txt C；death_chain.txt；watch_tp3_5130_5900.txt"},
         {"t": 6270, "bot": "zexos1", "kind": "attack", "verdict": "error",
          "state": "40,183 格 / 354 万兵（密度 88），ryan_m 刚出局留下一片无主地。影子：同一拍先发打无主地（pct=47，178,900 兵），再发打 Player 49（pct=63，238,533 兵）",
          "codePath": f"{VB}:Policy.act:L4941 expandNeutral → L4942 buyLand（第二条没发出去）；V13.expandNeutral:L2373（pct=47）",
@@ -472,15 +474,26 @@ SRC = {
         "13_inflightRepeat": "证实。662 条生效的进攻里 470 条在「同一目标、落地间隔 ≤12 拍」的连发组里（184 组）。对真人 60 组 154 条：发兵 25,148,310，其中第 2 条起 14,806,044（手续费 1,620,743）；超过吃掉整块所需的只有 3 组 110,771 兵。"
                              "本局的害处不在多发，而在把余额打到留底以下（ryan_m 3690~3700）和卡顿时成批落地（5145~5152）。",
         "14_capTruncPingPong": "没有出现：硬上限截断 0 笔（顶到上限丢掉的兵全场只有 8 个），300 拍内来回倒手 0 笔，转手 0 笔。",
+        "15_lateAiFloors": "队友互锁在 1500 之后没有出现（0 拍）。t≥1500 身边有内置 AI 的决策拍 482 个（zero_7 320）：出手 36、已经在打（在途的兵够）125、被真人邻居的兵占满留底 108、"
+                           "排在前面的真人报价价高而循环结束 65、safeFinite 参照敌方真人 38、价格留底 28、被 isNoFullSend 挡掉 23、可用兵吃不下又不到两成余额 10、AI 价高 10。"
+                           "Vb 对内置 AI 的门槛是 `x < want && x < chunk×余额`（buyLand L5452），不是广播里那版的 minCmd。",
+        "16_overSkipsPrice": "证实。ryan_m 5020~5145 过软上限后影子里连发 26 条，目标每格成本是自己出价的 1.12~1.51 倍；落地的九条花掉 420 万、换来 11,692 格（每格 325 兵）。"
+                             "5580 之后 ryan_m / zexos1 / sora_w 的 19 次出手里 18 次也是过软上限、不比价发的。",
+        "17_yieldDispatch": "本局没有生息余粮日志（206 条 = 协防 147 + 进攻余粮 59）。到账的 50 笔按引擎利率逐笔算：落地当拍捐收两边每 10 拍利息合计 −24,094"
+                            "（协防 38 笔 −28,379，进攻余粮 10 笔 +4,279）；4830 zero_7→ryan_m 一笔把收方推过软上限（利率 154→134），单笔 −14,076。181 万手续费从利息上生不回来。",
+        "18_doomedPocket": "有，但不是本局没人协防的主因。分支 A（挨的兵 >1.65×余额）：riku_x 挨打的 32 个决策拍全中，zero_7 25、alex_k 11、kaito9 6、noah88 3、ryan_m 2；"
+                           "分支 B（t≥4500、领土不到最大号的 22%、挨的兵 >0.45×余额）：kaito9 15、leo_tx 13、noah88 4。leo_tx 4430~5872 队友的 357 个相位拍里 9 个卡在分支 B，267 个卡在捐方密度不到门槛。",
+        "19_boatVoyage": "本局船少：11 条带兵 353,862、船费 63,035（17.8%），靠岸时剩 315,262。损失不在航程，在落点：8 条靠在队友岸上，带到 117,563、到账 36,269、被额度拒收 81,294。"
+                         "没有船费高过带兵的探路船。真值用的是真引擎重放，不受单点航线那个模拟器差异影响。",
     },
     "extraScripts": ["60_truth.cjs", "61_truth_view.py", "62_rank.py", "63_replay_ledger.py", "64_cmd_loss.py", "65_shadow.mjs", "66_spawn_truth.mjs", "67_troop_flow.mjs", "68_watch.mjs",
                      "69_quota_truth.mjs", "70_team_density.py", "71_death_chain.py", "72_repeat_sends.py", "73_front_width.py", "74_side_flow.mjs", "75_interest.py", "76_boat_targets.mjs",
-                     "77_drop30_classify.py", "78_bot_share.py", "review_src/A039.py", "review_src/common.py"],
+                     "77_drop30_classify.py", "78_bot_share.py", "79_help_table.py", "80_donation_yield.py", "review_src/A039.py", "review_src/common.py"],
     "extraOutputs": [f"c136-review/agents/R07/out/A039/{f}" for f in
                      ("truth_view.txt", "truth_check.txt", "truth_all.tsv", "truth_bots.tsv", "rank.txt", "team_density.txt", "side_flow.txt", "side_flow_tp1.txt", "humans_cmd.tsv", "troop_flow.txt",
                       "troop_flow_tp1.txt", "cmd_effect.tsv", "drop30_recon.txt", "drop30_class.txt", "interest.txt", "bot_share_inner5.txt", "boat_targets.txt", "replay_ledger.txt", "quota_truth.txt",
                       "quota_logs.tsv", "repeat_sends.txt", "front_width.txt", "death_chain.txt", "spawn_truth.txt", "cmd_loss.txt", "patterns.json", "shadow_check.txt", "shadow_early.txt",
-                      "shadow_cmds.tsv", "shadow_nofull.tsv", "shadow_trace_zexos1_1500_1700.txt", "shadow_trace_ryan_m_3560_3720.txt", "shadow_trace_talon5_2700_3840.txt",
+                      "shadow_late_ai.txt", "shadow_donor_gate.tsv", "shadow_underfire.tsv", "help_table.txt", "donation_yield.txt", "shadow_cmds.tsv", "shadow_nofull.tsv", "shadow_trace_zexos1_1500_1700.txt", "shadow_trace_ryan_m_3560_3720.txt", "shadow_trace_talon5_2700_3840.txt",
                       "shadow_trace_talon5_3840_4134.txt", "shadow_trace_ryan_m_4284_5020.txt", "shadow_trace_ryan_m_5000_5160.txt", "shadow_trace_zero_7_5480_5880.txt",
                       "shadow_trace_ryan_m_5580_6240.txt", "shadow_trace_zexos1_5580_6420.txt", "shadow_trace_sora_w_5580_6370.txt", "shadow_trace_zero_7_1500_3100.txt",
                       "watch_p49_strike.txt", "watch_mid_2700_3700.txt", "watch_tp3_5130_5900.txt", "watch_p49_boats.txt")],
