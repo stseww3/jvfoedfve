@@ -157,6 +157,31 @@ function collector(cfg) {
     squadCmds.push({ t: bi.kr(), k: 'atk', p: player, to: to, raw: tgt, pct: jC, ok: ok, B0: B0, sent: sent, fee: cost - sent, toTerr: toTerr, toBal: toBal, myTerr: myTerr });
     if (isSquad[player] && ok) { add(player, 'atkOut', to, sent); add(player, 'fee', -1, cost - sent); }
   };
+  // 翻山陆攻（录像指令号 10，只有山地图有）：bB.qi.i2(player, pct, 点的格子, 目标)。出兵 = (pct+1)/1024×余额，另扣 max(余额/10, 1000)。
+  // 记成 k='atk' 且 mtn=1（之后的进攻线与普通陆攻相同）；引擎没有这个入口的版本直接跳过
+  var o_i2 = Q.i2;
+  if (typeof o_i2 === 'function') Q.i2 = function (player, jC, fL, k3) {
+    var tgt = k3 > NP ? NP : k3;
+    if (!isSquad[player] && !(tgt < NP && isSquad[tgt])) {
+      var b = ah.hb[player];
+      o_i2.call(this, player, jC, fL, k3);
+      if (ah.hb[player] === b) noEffect++;
+      return;
+    }
+    var B0 = ah.hb[player], before = slotMap(player);
+    var toTerr = tgt < NP ? ah.hN[tgt] : 0, toBal = tgt < NP ? ah.hb[tgt] : 0, myTerr = ah.hN[player];
+    o_i2.call(this, player, jC, fL, k3);
+    var after = slotMap(player), sent = 0, to = tgt;
+    for (var key in after) {
+      var d = after[key] - (before[key] || 0);
+      if (d > 0 || !(key in before)) { sent += d; to = +key; }
+    }
+    var cost = B0 - ah.hb[player];
+    var ok = cost > 0 ? 1 : 0;
+    if (!ok) noEffect++;
+    squadCmds.push({ t: bi.kr(), k: 'atk', mtn: 1, cell: fL, p: player, to: to, raw: tgt, pct: jC, ok: ok, B0: B0, sent: sent, fee: cost - sent, toTerr: toTerr, toBal: toBal, myTerr: myTerr });
+    if (isSquad[player] && ok) { add(player, 'atkOut', to, sent); add(player, 'fee', -1, cost - sent); }
+  };
   var o_qv = Q.qv;
   Q.qv = function (player, jC, qu) {
     var B0 = ah.hb[player], R0 = ah.hb[qu], toTerr = ah.hN[qu], fromTerr = ah.hN[player], toLeft = ah.a6S[qu] === 2 ? 1 : 0;

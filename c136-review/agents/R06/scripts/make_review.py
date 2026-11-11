@@ -224,6 +224,11 @@ def facts(M, X=None):
                 # 峰值领土用重放逐拍真值（日志快照 90 拍一条，会漏掉两条快照之间的峰）
                 d['peakLandLog'] = d['peakLand']
                 d['peakLand'] = max(pt['terr'][str(me)])
+                # 清地前一拍的领土/余额（重放逐拍真值；balanceAtDeath 是日志最后一条快照里的余额，会早几拍到几十拍）
+                i = d['t'] - 1 - pt.get('t0', 0)
+                if 0 <= i < len(pt['terr'][str(me)]):
+                    d['landBeforeClear'] = pt['terr'][str(me)][i]
+                    d['balanceBeforeClear'] = pt['bal'][str(me)][i]
     out = dict(context=ctx, outcome=outcome, timeline=tl, deaths=deaths)
     if X:
         S = X.S

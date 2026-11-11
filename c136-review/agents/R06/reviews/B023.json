@@ -1,0 +1,4369 @@
+{
+ "matchId": "B023",
+ "reviewer": "R06",
+ "protocol": "v2.0",
+ "context": {
+  "time": "2026-11-10T00:58:01Z",
+  "squad": "squad20",
+  "bots": 17,
+  "strategyVersion": "v27-team-c110",
+  "gameVersion": "2.17.1",
+  "map": 9,
+  "mapSeed": 11956,
+  "mapLand": 456567,
+  "teams": 2,
+  "humans": 42,
+  "ourTeam": 2,
+  "teamSplitTrue": {
+   "1": 7,
+   "2": 10
+  },
+  "teamSplitSource": "engine-replay(bj.fX)",
+  "teamSplitCard": {
+   "1": 7,
+   "2": 9
+  },
+  "presence": {
+   "end": 7,
+   "died": 9,
+   "left": 1
+  },
+  "leftTicks": {
+   "Red Army": 1652
+  },
+  "neverPlayed": [],
+  "sameMatchPeer": null,
+  "dataCompleteness": {
+   "results": true,
+   "squadLog": true,
+   "truth": "真引擎重放（录像 B023）到 t=9857；日志快照指纹 1382/1382 逐兵一致"
+  },
+  "contamination": [
+   "卡片 squadBots=16、teamSplitCounts={1:7,2:9} 只数了有结算行的号；重放的队伍表里编队号是 17 个：队1=7、队2=10（Red Army 在队2，t=1652 离开，没有结算行）",
+   "卡片 resultLabel=split_straggler_won、anyBotWon=true、primaryTeamWon=false、ourFinalTeamShare=0：赢的是队1，活到终局的 7 个号都在队1；队2 的 10 个号全部出局",
+   "卡片 peakSquadLandShare=0.6731 与重放一致（t=4980 在场号合计 67.27%：队1 7 个 136,562 格 + 队2 9 个 170,567 格）；peakPrimaryTeamShareSeen=0.3999 是队2 全队（含外人）的份额",
+   "阵亡拍用重放真值（清地拍）：结算行晚 0~22 拍（Banana 7154 对 7132）",
+   "名字在编队名字池里的内置 AI 21 个（Spanish Empire 峰值 4,709 格@1350；Assyria 挨着 KaiCenat 156 格、Rayquaza 113 格，t=2970 之后不见）：我方号整局不打它们"
+  ],
+  "huskDeaths": [
+   {
+    "bot": "Red Army",
+    "me": 41,
+    "team": 2,
+    "leftT": 1652,
+    "diedT": 6864,
+    "landTakenLast900": [
+     {
+      "by": "g",
+      "cls": "敌方真人",
+      "cells": 15774
+     }
+    ]
+   }
+  ],
+  "truthEnd": 9857
+ },
+ "outcome": {
+  "result": "lost",
+  "resultLabel": "split_straggler_won",
+  "anyBotWon": true,
+  "ourTeamRank": null,
+  "winnerTeam": 1,
+  "endTick": 9857,
+  "ourFinalShare": 0.0,
+  "peakSquadLandShare": 0.6731,
+  "peakPrimaryTeamShareSeen": 0.3999,
+  "note": "卡片记为 lost（split_straggler_won）。赢家队1：终局 Player 666（t=8729 离开，空壳）223,403 格 48.9%、g 73,488 格 16.1%，我方队1 的 7 个号 132,969 格 29.1%、1,995 万兵（密度 150.0）。我方队2 的 10 个号：Red Army t=1652 离开成空壳（t=6864 被清地），其余 9 个在 t=5008~8119 被清地。编队在场号合计份额最高 67.3%（t=4980）"
+ },
+ "timeline": [
+  {
+   "t": 90,
+   "alive": 17,
+   "seen": 17,
+   "husks": 0,
+   "squadLand": 281,
+   "squadLandShare": 0.0006,
+   "teamTroops": 12760,
+   "squadDens": 45.4,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 140,
+     "troops": 5245
+    },
+    "2": {
+     "bots": 10,
+     "land": 141,
+     "troops": 7515
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0042,
+     "troops": 10783,
+     "activeHumans": 19,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.0024,
+     "troops": 12650,
+     "activeHumans": 21,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0283,
+   "src": "engine-replay",
+   "teamLandShare": 0.0024,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.0042
+  },
+  {
+   "t": 180,
+   "alive": 17,
+   "seen": 17,
+   "husks": 0,
+   "squadLand": 2950,
+   "squadLandShare": 0.0065,
+   "teamTroops": 17871,
+   "squadDens": 6.1,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 1312,
+     "troops": 7366
+    },
+    "2": {
+     "bots": 10,
+     "land": 1638,
+     "troops": 10505
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0107,
+     "troops": 12526,
+     "activeHumans": 19,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.0081,
+     "troops": 19063,
+     "activeHumans": 20,
+     "huskLandShare": 0.0001
+    }
+   },
+   "aiLandShare": 0.0527,
+   "src": "engine-replay",
+   "teamLandShare": 0.0081,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.0107
+  },
+  {
+   "t": 270,
+   "alive": 17,
+   "seen": 17,
+   "husks": 0,
+   "squadLand": 6546,
+   "squadLandShare": 0.0143,
+   "teamTroops": 24546,
+   "squadDens": 3.7,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 2683,
+     "troops": 10544
+    },
+    "2": {
+     "bots": 10,
+     "land": 3863,
+     "troops": 14002
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.0183,
+     "troops": 22013,
+     "activeHumans": 19,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.0166,
+     "troops": 25189,
+     "activeHumans": 20,
+     "huskLandShare": 0.0001
+    }
+   },
+   "aiLandShare": 0.0861,
+   "src": "engine-replay",
+   "teamLandShare": 0.0166,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.0183
+  },
+  {
+   "t": 630,
+   "alive": 17,
+   "seen": 17,
+   "husks": 0,
+   "squadLand": 47812,
+   "squadLandShare": 0.1047,
+   "teamTroops": 78529,
+   "squadDens": 1.6,
+   "boxed": 0,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 21022,
+     "troops": 33752
+    },
+    "2": {
+     "bots": 10,
+     "land": 26790,
+     "troops": 44777
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.1078,
+     "troops": 86273,
+     "activeHumans": 18,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.0946,
+     "troops": 122630,
+     "activeHumans": 20,
+     "huskLandShare": 0.0004
+    }
+   },
+   "aiLandShare": 0.4933,
+   "src": "engine-replay",
+   "teamLandShare": 0.0946,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.1078
+  },
+  {
+   "t": 1170,
+   "alive": 17,
+   "seen": 17,
+   "husks": 0,
+   "squadLand": 94892,
+   "squadLandShare": 0.2078,
+   "teamTroops": 1058912,
+   "squadDens": 11.2,
+   "boxed": 4,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 35077,
+     "troops": 514122
+    },
+    "2": {
+     "bots": 10,
+     "land": 59815,
+     "troops": 544790
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.2665,
+     "troops": 848239,
+     "activeHumans": 18,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.2639,
+     "troops": 880066,
+     "activeHumans": 20,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.4578,
+   "src": "engine-replay",
+   "teamLandShare": 0.2639,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.2665
+  },
+  {
+   "t": 1530,
+   "alive": 17,
+   "seen": 17,
+   "husks": 0,
+   "squadLand": 125829,
+   "squadLandShare": 0.2756,
+   "teamTroops": 2631407,
+   "squadDens": 20.9,
+   "boxed": 3,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 39627,
+     "troops": 1191394
+    },
+    "2": {
+     "bots": 10,
+     "land": 86202,
+     "troops": 1440013
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.431,
+     "troops": 2161205,
+     "activeHumans": 18,
+     "huskLandShare": 0.0
+    },
+    "2": {
+     "landShare": 0.4142,
+     "troops": 2282357,
+     "activeHumans": 20,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.1479,
+   "src": "engine-replay",
+   "teamLandShare": 0.4142,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.431
+  },
+  {
+   "t": 2070,
+   "alive": 16,
+   "seen": 16,
+   "husks": 1,
+   "squadLand": 164190,
+   "squadLandShare": 0.3596,
+   "teamTroops": 2481044,
+   "squadDens": 15.1,
+   "boxed": 0,
+   "squadHuskLand": 7105,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 53529,
+     "troops": 946901
+    },
+    "2": {
+     "bots": 9,
+     "land": 110661,
+     "troops": 1534143
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.4809,
+     "troops": 2956102,
+     "activeHumans": 16,
+     "huskLandShare": 0.013
+    },
+    "2": {
+     "landShare": 0.5044,
+     "troops": 2971887,
+     "activeHumans": 18,
+     "huskLandShare": 0.0156
+    }
+   },
+   "aiLandShare": 0.0095,
+   "src": "engine-replay",
+   "teamLandShare": 0.5044,
+   "teamRank": 1,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.4809
+  },
+  {
+   "t": 3060,
+   "alive": 16,
+   "seen": 16,
+   "husks": 1,
+   "squadLand": 250839,
+   "squadLandShare": 0.5494,
+   "teamTroops": 9900094,
+   "squadDens": 39.5,
+   "boxed": 1,
+   "squadHuskLand": 6871,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 108126,
+     "troops": 3054062
+    },
+    "2": {
+     "bots": 9,
+     "land": 142713,
+     "troops": 6846032
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.551,
+     "troops": 7332733,
+     "activeHumans": 13,
+     "huskLandShare": 0.0137
+    },
+    "2": {
+     "landShare": 0.4473,
+     "troops": 8055676,
+     "activeHumans": 13,
+     "huskLandShare": 0.015
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.4473,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.551
+  },
+  {
+   "t": 4050,
+   "alive": 16,
+   "seen": 16,
+   "husks": 1,
+   "squadLand": 260349,
+   "squadLandShare": 0.5702,
+   "teamTroops": 22868797,
+   "squadDens": 87.8,
+   "boxed": 1,
+   "squadHuskLand": 9017,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 111063,
+     "troops": 8425683
+    },
+    "2": {
+     "bots": 9,
+     "land": 149286,
+     "troops": 14443114
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.5714,
+     "troops": 16561619,
+     "activeHumans": 13,
+     "huskLandShare": 0.0136
+    },
+    "2": {
+     "landShare": 0.4279,
+     "troops": 16349712,
+     "activeHumans": 11,
+     "huskLandShare": 0.0202
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.4279,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.5714
+  },
+  {
+   "t": 4500,
+   "alive": 16,
+   "seen": 16,
+   "husks": 1,
+   "squadLand": 302442,
+   "squadLandShare": 0.6624,
+   "teamTroops": 25262234,
+   "squadDens": 83.5,
+   "boxed": 1,
+   "squadHuskLand": 8126,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 135396,
+     "troops": 9854561
+    },
+    "2": {
+     "bots": 9,
+     "land": 167046,
+     "troops": 15407673
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.5856,
+     "troops": 19819309,
+     "activeHumans": 13,
+     "huskLandShare": 0.0136
+    },
+    "2": {
+     "landShare": 0.4106,
+     "troops": 16424253,
+     "activeHumans": 10,
+     "huskLandShare": 0.0187
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.4106,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.5856
+  },
+  {
+   "t": 4980,
+   "alive": 16,
+   "seen": 16,
+   "husks": 1,
+   "squadLand": 307129,
+   "squadLandShare": 0.6727,
+   "teamTroops": 27248953,
+   "squadDens": 88.7,
+   "boxed": 0,
+   "squadHuskLand": 8710,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 136562,
+     "troops": 12507953
+    },
+    "2": {
+     "bots": 9,
+     "land": 170567,
+     "troops": 14741000
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.588,
+     "troops": 23239144,
+     "activeHumans": 12,
+     "huskLandShare": 0.0136
+    },
+    "2": {
+     "landShare": 0.4114,
+     "troops": 15776519,
+     "activeHumans": 10,
+     "huskLandShare": 0.0191
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.4114,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.588
+  },
+  {
+   "t": 5040,
+   "alive": 15,
+   "seen": 15,
+   "husks": 1,
+   "squadLand": 304346,
+   "squadLandShare": 0.6666,
+   "teamTroops": 27049546,
+   "squadDens": 88.9,
+   "boxed": 0,
+   "squadHuskLand": 9304,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 136201,
+     "troops": 12362026
+    },
+    "2": {
+     "bots": 8,
+     "land": 168145,
+     "troops": 14687520
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.6034,
+     "troops": 23378845,
+     "activeHumans": 12,
+     "huskLandShare": 0.0136
+    },
+    "2": {
+     "landShare": 0.3957,
+     "troops": 15654722,
+     "activeHumans": 9,
+     "huskLandShare": 0.0204
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.3957,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.6034
+  },
+  {
+   "t": 5910,
+   "alive": 15,
+   "seen": 15,
+   "husks": 1,
+   "squadLand": 280392,
+   "squadLandShare": 0.6141,
+   "teamTroops": 29952723,
+   "squadDens": 106.8,
+   "boxed": 0,
+   "squadHuskLand": 12358,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 130370,
+     "troops": 18718576
+    },
+    "2": {
+     "bots": 8,
+     "land": 150022,
+     "troops": 11234147
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.6437,
+     "troops": 31876556,
+     "activeHumans": 11,
+     "huskLandShare": 0.0137
+    },
+    "2": {
+     "landShare": 0.3557,
+     "troops": 12991567,
+     "activeHumans": 8,
+     "huskLandShare": 0.0271
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.3557,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.6437
+  },
+  {
+   "t": 6030,
+   "alive": 14,
+   "seen": 14,
+   "husks": 1,
+   "squadLand": 275943,
+   "squadLandShare": 0.6044,
+   "teamTroops": 31147275,
+   "squadDens": 112.9,
+   "boxed": 0,
+   "squadHuskLand": 11976,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 129640,
+     "troops": 18894213
+    },
+    "2": {
+     "bots": 7,
+     "land": 146303,
+     "troops": 12253062
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.6527,
+     "troops": 33491896,
+     "activeHumans": 11,
+     "huskLandShare": 0.0137
+    },
+    "2": {
+     "landShare": 0.3467,
+     "troops": 13076421,
+     "activeHumans": 7,
+     "huskLandShare": 0.0262
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.3467,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.6527
+  },
+  {
+   "t": 6750,
+   "alive": 13,
+   "seen": 13,
+   "husks": 1,
+   "squadLand": 249633,
+   "squadLandShare": 0.5468,
+   "teamTroops": 28121979,
+   "squadDens": 112.7,
+   "boxed": 0,
+   "squadHuskLand": 5018,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 127386,
+     "troops": 19100659
+    },
+    "2": {
+     "bots": 6,
+     "land": 122247,
+     "troops": 9021320
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.7155,
+     "troops": 35678482,
+     "activeHumans": 11,
+     "huskLandShare": 0.0137
+    },
+    "2": {
+     "landShare": 0.2787,
+     "troops": 9551371,
+     "activeHumans": 6,
+     "huskLandShare": 0.011
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.2787,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.7155
+  },
+  {
+   "t": 6900,
+   "alive": 13,
+   "seen": 13,
+   "husks": 0,
+   "squadLand": 245261,
+   "squadLandShare": 0.5372,
+   "teamTroops": 27395208,
+   "squadDens": 111.7,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 127386,
+     "troops": 18796278
+    },
+    "2": {
+     "bots": 6,
+     "land": 117875,
+     "troops": 8598930
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.7401,
+     "troops": 37119085,
+     "activeHumans": 11,
+     "huskLandShare": 0.0137
+    },
+    "2": {
+     "landShare": 0.2582,
+     "troops": 8598930,
+     "activeHumans": 6,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.2582,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.7401
+  },
+  {
+   "t": 7020,
+   "alive": 12,
+   "seen": 12,
+   "husks": 0,
+   "squadLand": 234758,
+   "squadLandShare": 0.5142,
+   "teamTroops": 27474488,
+   "squadDens": 117.0,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 128600,
+     "troops": 18902962
+    },
+    "2": {
+     "bots": 5,
+     "land": 106158,
+     "troops": 8571526
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.7656,
+     "troops": 40540130,
+     "activeHumans": 11,
+     "huskLandShare": 0.0137
+    },
+    "2": {
+     "landShare": 0.2325,
+     "troops": 8571526,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.2325,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.7656
+  },
+  {
+   "t": 7080,
+   "alive": 12,
+   "seen": 12,
+   "husks": 0,
+   "squadLand": 232365,
+   "squadLandShare": 0.5089,
+   "teamTroops": 27129945,
+   "squadDens": 116.8,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 128600,
+     "troops": 18981450
+    },
+    "2": {
+     "bots": 5,
+     "land": 103765,
+     "troops": 8148495
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.7721,
+     "troops": 38945078,
+     "activeHumans": 11,
+     "huskLandShare": 0.0137
+    },
+    "2": {
+     "landShare": 0.2273,
+     "troops": 8148495,
+     "activeHumans": 5,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.2273,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.7721
+  },
+  {
+   "t": 7110,
+   "alive": 11,
+   "seen": 11,
+   "husks": 0,
+   "squadLand": 229772,
+   "squadLandShare": 0.5033,
+   "teamTroops": 27210487,
+   "squadDens": 118.4,
+   "boxed": 1,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 128600,
+     "troops": 19090929
+    },
+    "2": {
+     "bots": 4,
+     "land": 101172,
+     "troops": 8119558
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.7756,
+     "troops": 38983158,
+     "activeHumans": 11,
+     "huskLandShare": 0.0137
+    },
+    "2": {
+     "landShare": 0.2216,
+     "troops": 8119558,
+     "activeHumans": 4,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.2216,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.7756
+  },
+  {
+   "t": 7530,
+   "alive": 10,
+   "seen": 10,
+   "husks": 0,
+   "squadLand": 195168,
+   "squadLandShare": 0.4275,
+   "teamTroops": 25067374,
+   "squadDens": 128.4,
+   "boxed": 3,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 130562,
+     "troops": 19496061
+    },
+    "2": {
+     "bots": 3,
+     "land": 64606,
+     "troops": 5571313
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.8578,
+     "troops": 39865859,
+     "activeHumans": 11,
+     "huskLandShare": 0.0137
+    },
+    "2": {
+     "landShare": 0.1415,
+     "troops": 5571313,
+     "activeHumans": 3,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.1415,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.8578
+  },
+  {
+   "t": 7950,
+   "alive": 9,
+   "seen": 9,
+   "husks": 0,
+   "squadLand": 178164,
+   "squadLandShare": 0.3902,
+   "teamTroops": 23897712,
+   "squadDens": 134.1,
+   "boxed": 4,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 131073,
+     "troops": 19660950
+    },
+    "2": {
+     "bots": 2,
+     "land": 47091,
+     "troops": 4236762
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.8962,
+     "troops": 51067883,
+     "activeHumans": 11,
+     "huskLandShare": 0.0137
+    },
+    "2": {
+     "landShare": 0.1031,
+     "troops": 4236762,
+     "activeHumans": 2,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.1031,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.8962
+  },
+  {
+   "t": 8010,
+   "alive": 8,
+   "seen": 8,
+   "husks": 0,
+   "squadLand": 163592,
+   "squadLandShare": 0.3583,
+   "teamTroops": 21490495,
+   "squadDens": 131.4,
+   "boxed": 5,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 131264,
+     "troops": 19550176
+    },
+    "2": {
+     "bots": 1,
+     "land": 32328,
+     "troops": 1940319
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.9266,
+     "troops": 49552686,
+     "activeHumans": 11,
+     "huskLandShare": 0.0137
+    },
+    "2": {
+     "landShare": 0.0708,
+     "troops": 1940319,
+     "activeHumans": 1,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.0708,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.9266
+  },
+  {
+   "t": 8100,
+   "alive": 8,
+   "seen": 8,
+   "husks": 0,
+   "squadLand": 151318,
+   "squadLandShare": 0.3314,
+   "teamTroops": 20732124,
+   "squadDens": 137.0,
+   "boxed": 5,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 131264,
+     "troops": 19659351
+    },
+    "2": {
+     "bots": 1,
+     "land": 20054,
+     "troops": 1072773
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.9554,
+     "troops": 50923503,
+     "activeHumans": 11,
+     "huskLandShare": 0.0137
+    },
+    "2": {
+     "landShare": 0.0439,
+     "troops": 1072773,
+     "activeHumans": 1,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.0439,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.9554
+  },
+  {
+   "t": 9000,
+   "alive": 7,
+   "seen": 7,
+   "husks": 0,
+   "squadLand": 132969,
+   "squadLandShare": 0.2912,
+   "teamTroops": 19945350,
+   "squadDens": 150.0,
+   "boxed": 7,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 132969,
+     "troops": 19945350
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 0.9996,
+     "troops": 56790492,
+     "activeHumans": 10,
+     "huskLandShare": 0.5028
+    },
+    "2": {
+     "landShare": 0.0,
+     "troops": 0,
+     "activeHumans": 0,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.0,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 0.9996
+  },
+  {
+   "t": 9857,
+   "alive": 7,
+   "seen": 7,
+   "husks": 0,
+   "squadLand": 132969,
+   "squadLandShare": 0.2912,
+   "teamTroops": 19945350,
+   "squadDens": 150.0,
+   "boxed": 7,
+   "squadHuskLand": 0,
+   "perTeam": {
+    "1": {
+     "bots": 7,
+     "land": 132969,
+     "troops": 19945350
+    }
+   },
+   "allTeams": {
+    "1": {
+     "landShare": 1.0,
+     "troops": 47693166,
+     "activeHumans": 8,
+     "huskLandShare": 0.6929
+    },
+    "2": {
+     "landShare": 0.0,
+     "troops": 0,
+     "activeHumans": 0,
+     "huskLandShare": 0.0
+    }
+   },
+   "aiLandShare": 0.0,
+   "src": "engine-replay",
+   "teamLandShare": 0.0,
+   "teamRank": 2,
+   "topEnemyTeam": 1,
+   "topEnemyShare": 1.0
+  }
+ ],
+ "phases": {
+  "opening": {
+   "facts": [
+    "选点 41 步，各号本机各算候选表（0 行 HL-SPAWN-BACKEND）：我方生效选点 60 条（每号 1~6 条、中位 4），选过 45 个坐标，10 个被 >=2 个号先后选过；最后两步还有 4 个号改点（IronMan、Gengar 步 39，Dusan、Rayquaza 步 40）",
+    "最终落点直线距离 <145 格的 12 对（同队 3、异队 9）；<80 格两对：Rashidun–IronMan 48 格（都在队1）、KaiCenat（队1）–Rayquaza（队2）66 格。8 个号（Rayquaza、KaiCenat、Rashidun、IronMan、guest_104、Lusitania、Gran Colombia、Red Army，两队各 4 个）落在 x=530~750、y=74~310 的一块里：按「陆上离谁最近」划分，这 8 个号各分到主陆块（381,755 格）的 1.2%~5.3%，而 Dusan 21.2%、EnPassant 15.8%、Ainz 11.7%、Cyrus 11.5%",
+    "开局周期出兵 126 行 HL-OPENING（每号 7~8 条，间隔中位 90 拍）；进录像的延迟：第一条 7~112 拍（中位 33），之后按下令拍分段的中位 10~16 拍（Ainz 单号 24~42）",
+    "t=630 我方 17 个号 47,812 格（10.5%），单号领土 2,181~3,578、中位 2,858；其余 21 个真人中位 2,077"
+   ],
+   "issues": [
+    "8 个号挤在一块、其中 4 对异队：这块地上后来长出的是全队最小的几个号（t=1530 全场 38 个真人里排第 30、33~38 的 7 个都在这 8 个里）"
+   ]
+  },
+  "expansion": {
+   "facts": [
+    "t=630~1530 全场瓜分内置 AI（内置 AI 占地 49.3%→63.7%（t=900）→45.8%（t=1170）→14.8%（t=1530））。我方单号中位 2,858→4,397（t=900）→5,462（t=1170）→6,148（t=1530）；其余真人 2,077→4,220→6,634→11,012。在场号合计 10.5%→20.8%→27.6%",
+    "闸：t=600~1499 有内置 AI 邻居的 3,037 个决策拍里影子能出兵 1,822 个（60.0%）；底线取到 safeFinite、取的是另一个我方在场号的兵、去掉就能出兵的 767 个（25.3%，同队 300 个）：Rayquaza 139/180 拍（77.2%）、IronMan 123（68.3%）、Rashidun 83（46.1%）、guest_104 77、Red Army 60、Vlad Tepes 59、KaiCenat 58——挤在一块出生的那几个号",
+    "送达：10 个号 t≈1090~1940 各有 1~2 段 301~385 拍的指令断档（本机拍落后服务器 270~360 拍）；连同 Rashidun t=700~1253、Red Army t=644~1260 两段，t<2000 开始的断档共 17 段，策略在这些段里发令 371 条。断档组（含 Red Army 11 个号）领土 54,156（t=1080）→65,102（t=1530，×1.20），兵 53.4 万→208 万；没断档的 6 个号 32,526→60,727（×1.87）；其余真人 121,414→260,062（×2.14）",
+    "t=1530 全场 38 个真人里：Gengar 第 5（18,508 格）、Vlad Tepes 第 11、Ainz 第 13；断档的号垫底——Rashidun 3,261 格（密度 72.6）、Red Army 3,956（46.7）、KaiCenat 4,206、Lusitania 4,338、Cyrus 5,257、Gran Colombia 5,360；Rayquaza 1,831 格最小（没断档，被 safeFinite 锁住）。同一拍排在前面的外人密度只有 1.6~7（g 22,438 格/12.4 万兵、AlexSASHA 18,547 格/3.9 万兵、يحيى 18,204 格/3.0 万兵）"
+   ],
+   "issues": [
+    "瓜分内置 AI 的 900 拍里我方单号中位从领先 38% 变成落后 44%：四分之一的决策拍被另一个我方号的余额锁住，10 个号 301~385 拍发不出指令",
+    "Red Army 的客户端 t≈990 停摆，t=1652 被登记离开：3,956 格、23.9 万兵交给内置 AI 托管，仍算队2 的人"
+   ]
+  },
+  "midgame": {
+   "facts": [
+    "断档里攒下的指令成批执行：同拍 >=3 条且 >=70% 余额的 12 组（t=1197~2009，226 万兵，9 个号），之后 900 拍内没有一个阵亡。最大的几组在 t=1981~2009：Gran Colombia t=1981 八条打 Player 34（38.0 万的 94.7%，领土 6,067→13,468）；Rashidun t=1995 六条打 Come on（43.1 万的 98.4%，3,261→7,496）；Jin t=1988/2009 七条打 AlexSASHA；Lusitania t=2002 八条船（42.9 万的 97.0%）。断档组领土 67,710（t=1980）→159,457（t=2520）；没断档的 81,276→84,299；其余真人 285,507→193,712",
+    "t=1500~3000：队1 的 7 个号 39,622→106,189 格，从队2 外人手里拿走 56,032 格（耗 146 万兵，每格 26）；队2 的号 83,507→142,394 格，从队1 外人手里拿走 49,767 格（耗 67.9 万，每格 14）、被拿走 23,855 格。编队合计 27.6%→54.9%（t=3060）",
+    "t=3000~5000 两半继续吃对方的外人：队2 外人 13.8%→3.8%（🎭 t=3358、sigma[athiest] t=4378、Player 771 t=4721 先后出局，t=5045 最后一个 fan de Player Ian 出局）；队1 外人 31.3%→28.9%，但兵 399 万→1,073 万——剩下的是 Player 666（t=5040 66,372 格、581 万兵）和 g（46,286 格、401 万兵）。编队合计 t=4980 到顶 67.3%",
+    "捐款从 t=3000 起量：t=3000~4000 我方捐款手续费占收入 队1 11.4%、队2 15.6%；t=4000~5000 队1 36.6%、队2 38.5%（队2 收入 1,976 万、手续费 761 万）。t=3950~4210 队2 五个号给 Ainz 的 24 条捐款被配额拒掉（Ainz 的受捐点数已用 278/279）；引擎从 t=4284 起不查配额，t=4000~5000 两半合计捐出到账 2,655 万、手续费 1,256 万",
+    "g 打 guest_104 是从翻山开始的：t=3514 之前两者陆上不接壤（guest_104 挨着的是队1 的 Dusan、IronMan、Rashidun、队友 Lusitania 和空壳 Player 192），g 一条 167‰ 翻山指令（出兵 32.1 万，另扣余额的 10% = 19.6 万）开出战线；guest_104 t=3535 还手一条 27.8 万，之后 t=3850~4998 g 六条 167‰ 陆攻 402 万兵把它吃掉，这段 guest_104 对 g 0 条陆攻；t=3214~5098 它收到捐款 236 万、又捐出 223 万（手续费 93.5 万）",
+    "挨着 g 的 Ainz（t=4700 54,048 格、493 万兵，g 395 万）只发 10% 戳：t=4291~5124 七条 354 万兵，从 g 手里拿到 9,412 格（每格 376 兵）"
+   ],
+   "issues": [
+    "队1 的号把队2 的外人吃光之后自己没有目标了：t=5040 起 7 个号（1,236 万兵）没有一个挨着敌方真人",
+    "队2 的号没有在 Player 666、g 还小的时候打它们：t=1500~5000 我方对 Player 666 0 条陆攻，对 g 6 条（260 万，其中 5 条是 10% 戳）",
+    "前线号在挨打的间隙往外捐：guest_104 死前 900 拍收到 176 万、捐出 126 万另付手续费 56.0 万"
+   ]
+  },
+  "endgame": {
+   "facts": [
+    "t=5040 的对阵：队2 我方 8 个号 168,145 格（36.8%）、1,469 万兵；它们真正的对手 Player 666 + g + [OMEN] Axolote 合计 1,091 万兵。队1 我方 7 个号 136,201 格（29.8%）、1,236 万兵，不参战",
+    "接敌：t=5040 队2 8 个号里挨着敌方真人的 4 个（Ainz 578 万、Vlad Tepes 168 万、EnPassant 68.7 万、Lusitania 40.5 万），3 个落在 dpKeep 冻结线上；t=5400 只剩 Vlad Tepes、EnPassant 两个（合计 234 万，对面 901 万），Ainz 657 万、Gengar、Jin、Banana 没有敌邻；t=6300~6840 接敌的 2 个号合计 191 万~347 万，对面 1,194 万~1,790 万",
+    "闸：t=5000~8125 有真人报价的 1,245 个决策拍里影子对真人出兵 9 个（0.7%）；停在 L5267 701（56.3%）、dpKeep L5361 260（20.9%）、唯一真人缓冲 L5271 256（20.6%）。正被真人打的 368 个决策拍里 359 个（97.6%）没有出兵；其中 44 个决策拍同拍发出了捐款",
+    "对账 t=5000~8100：Player 666 对我方在场号 25 条陆攻 4,351 万兵 + 3 次登陆 681 万，我方对它 7 条 64.2 万（全是 10% 戳）；g 对我方在场号 7 条 632 万（其中 1 条翻山）+ 2 次登陆 172 万（另打空壳 Red Army 9 条 776 万，其中 1 条翻山），我方对它 6 条 440 万",
+    "队2 在场号 t=5000~8100（空壳 Red Army 的账另算）：收入 4,305 万；捐款手续费 1,542 万（35.8%），捐出到账 2,904 万（其中 868 万进了空壳）；对敌方真人耗兵 457 万得 8,661 格；被敌方真人拿走 134,255 格、打掉 2,310 万兵。阵亡顺序：guest_104 5008、EnPassant 5912、Vlad Tepes 6750、（空壳 Red Army 6864）、Jin 6915、Rayquaza 7107、Banana 7132、Lusitania 7550、Ainz 7977、Gengar 8119；10 次清地当拍合计 40,364 格变成无主地",
+    "被围：Ainz（59,660 格）t=6210~7200 四面是保护名单（Cyrus 599 格、Dusan 529、IronMan 69，全是队1 的编队号）和队友 Gengar，密度 60~94；Gengar（31,408 格）t=4590~7920 同样没有敌邻，密度 49~78。t=5000~8125 队2 的号这类决策拍 2,239 个：影子捐款 80 次、发船 5 次；密度 >=133.3（往敌方岸发船所需）的只有 23 拍。录像同期这些号捐款 95 笔（到账 2,632 万、手续费 1,422 万），发船 6 条",
+    "翻山：探针 --mtncheck 在 Ainz t=5450~7200 的 8 个采样拍、Gengar t=4700~7900 的 8 个采样拍上，它们贴着的山体另一侧都有 Player 666 的地（很窄：Ainz 5 条边、Gengar 3 条边，t=7900 Gengar 97 条边），t=6500 起还有 g 的（53 条边，t=7200 233 条边，t=7900 442 条边）——按引擎的翻山规则够得着；c110 没有翻山指令，这些拍策略眼里 nb=0（Ainz t=5600、5900 只挨着 g 登陆的一小块）。Jin t=5500 翻山够得着 Player 666 104 条边。g 则用翻山打开了 guest_104、空壳 Red Army、Lusitania 三条线",
+    "队1 我方：t=5040 起 0 个号挨着敌方真人，密度 t=6030 起 135~150、t=9000 全部 150.0。t=5000 之后因超上限少拿利息 1.158 亿（同期实得 1,759 万）；Cyrus 一个号整局少拿 5,471 万。t=5000~8125 这类决策拍 4,273 个（3,528 个密度 >=133.3），影子发船 17 次、捐款 52 次",
+    "空壳 Red Army（队2）：收到我方 44 笔捐款 1,136 万（手续费 540 万），用 618 万兵打队1 的 Rashidun、KaiCenat、Gran Colombia，拿走 16,327 格、打掉 307 万兵；这三个号不能陆攻它（保护名单），只用船拿回 5,498 格（boatFood 把空壳当成可以坐船去吃的非真人）"
+   ],
+   "issues": [
+    "队2 的兵多数时候不在前线：有敌邻的是小号，大号被队1 的编队号隔在后面",
+    "有敌邻的号对真人报价的三道闸几乎全关（出兵 0.7%），挨打的间隙还在往外捐",
+    "被围的大号发不出船（floor = 100×地），余额过了 55 兵/格就捐，每捐一次交余额的 6.25%",
+    "队1 的 7 个号 4,800 拍没有任何出口：对面全是保护名单，自己队里的外人不是捐款对象",
+    "被编队号隔在后面的大号按引擎规则翻山够得着 Player 666（3~5 条边）和 g（t=6500 起 53~442 条边），策略没有这条指令；对面的 g 用它开了三条线"
+   ]
+  }
+ },
+ "turningPoints": [
+  {
+   "t0": 4501,
+   "t1": 5045,
+   "what": "g 吃掉 guest_104，队2 最后一个外人出局：从这里起队2 只剩编队号，队1 的编队号没有目标，编队份额到顶",
+   "shareBefore": 0.6624,
+   "shareAfter": 0.6666,
+   "ourBots": [
+    "guest_104",
+    "Ainz",
+    "Cyrus",
+    "IronMan",
+    "Dusan"
+   ],
+   "enemies": [
+    "g/T1",
+    "Player 666/T1"
+   ],
+   "evidence": [
+    "make_review --facts 时间线：在场号合计 66.24%（t=4500）→67.27%（t=4980，峰值）→66.66%（t=5040）→61.41%（t=5910）；队2 我方 9 个号 170,567 格→8 个 168,145 格",
+    "simdigest halves：t=4000~5000 队2 外人 4→2 个、48,755→17,247 格（剩下的是空壳 Red Army 和 t=5045 出局的 fan de Player Ian）；队1 外人 7→5 个，兵 755 万→1,073 万",
+    "simdigest mountain / sieges / cmdlist 28：g t=3514 一条翻山指令（出兵 32.1 万）对陆上不接壤的 guest_104 开出战线，随后六条 167‰ 陆攻 402 万兵（t=3850~4998）；guest_104 只在 t=3535 还手一条 27.8 万，t=3214~5098 收到捐款 236 万、捐出 223 万（手续费 93.5 万）；t=5008 被清地（剩 2,295 格）",
+    "simdigest contact T1：队1 我方挨着敌方真人的号 4（t=2070）→2（t=3060、4050）→1（t=4500）→0（t=5040 起一直到终局）",
+    "simdigest exchange：t=1500~5000 我方对 Player 666 0 条陆攻；Player 666 领土 19,341→61,124、兵 6.9 万→523 万"
+   ],
+   "priorDecisions": [
+    {
+     "t": "4291~4851",
+     "bot": "Ainz",
+     "what": "挨着 g（接壤 24~148 格）、兵比 g 多（t=4700 493 万对 395 万），整段只发 10% 戳：五条 232 万兵",
+     "codePath": "src/strategy/v27-team-c110.js buyLand L5250-5285：worth = maxW×winRatio(t)×max(自己密度, marketFloor 0.85×其余真人密度中位)（探针里 m=0.900）；L5267 `if (c >= worth && c >= cheap && !over) break`；10% 戳走 tryDonateToTeammate L4448-4457（g.attack(102, mainAttacker, me)，冷却 25 拍）",
+     "why": "探针 t=4700：对 g 的报价 c=338.3、worth=82.1 → L5267 break；这一拍影子发出的只有「攻→g 102‰ 49.6 万」"
+    },
+    {
+     "t": "4256~5005",
+     "bot": "guest_104",
+     "what": "被 g 连打的 750 拍里 0 条还手，13 笔捐款捐出 126 万（手续费 56.0 万）",
+     "codePath": "src/strategy/v27-team-c110.js buyLand L5250-5285：worth = maxW×winRatio(t)×max(自己密度, marketFloor 0.85×其余真人密度中位)（探针里 m=0.900）；L5267 `if (c >= worth && c >= cheap && !over) break`；src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4383-4385 safeFloor=max(68×地〔有岸且 t>=1100〕, 有敌方真人邻居时的 safeAt(g,-1))，而 Policy.safeAt L4527-4528 对 q<0 把它封顶在 oppFloorCap 88×地；L4385 只有「此刻有真人的兵压在我身上」或 兵<=1.10×safeFloor 才不捐；L4462-4463 密度门槛：不被围 112、被围 55；L4466-4486 收款人 = 同队、名字在池里、>=600 格、密度 <132、有敌邻或有攻击线；L4489 pct = 被围 280/185、否则 153",
+     "why": "探针 t=4600 / 4800：对 g 的报价 c=298.8 / 380.0，worth=84.8 / 89.9 → L5267；捐款的保底线封顶 88×地（t=4592 余额 82.8 万 > 1.10×62.3 万），两波进攻之间照捐"
+    },
+    {
+     "t": "4050~5040",
+     "bot": "Cyrus、IronMan、Dusan 等队1 的号",
+     "what": "继续吃队2 的外人：20,559 格（耗 216 万）；sigma[athiest]（t=4378）、Player 771（t=4721）出局",
+     "codePath": "src/strategy/v27-team-c110.js isProtectedSquadMate L3993-3996：同队、boss 直接保护；另外「hasWildOutsidersAlive(g) && isOurSquadBot(g,p)」——hasWildOutsidersAlive L3978-3989 只要场上还有一个 >=80 格、名字不在池里的真人（不分哪一队，空壳也算）就为真；isOurSquadBot L3973-3976 只比名字（空壳照样算）",
+     "why": "队2 的外人是队1 这 7 个号仅有的合法目标；吃完之后保护名单并不解除（Player 666、g 是它们的队友，也算「野生外人」）"
+    }
+   ],
+   "alternatives": [
+    "同一段里 Ainz 的 10% 戳是我方对 g 仅有的进攻：t=4200~5200 七条 354 万兵拿到 9,412 格（每格 376 兵），g 在 t=5166 之前没有对 Ainz 出过兵",
+    "Player 666、g 在这段把兵攒了起来：t=4000→5000 Player 666 203 万→523 万、g 263 万→440 万，同期我方两半的捐款手续费合计 1,256 万"
+   ],
+   "statementType": "observed",
+   "confidence": "high"
+  },
+  {
+   "t0": 5215,
+   "t1": 6920,
+   "what": "Player 666 逐个打穿 Vlad Tepes、EnPassant、Jin，g 吃掉空壳 Red Army；队2 的大号没有敌邻。队2 我方 36.8%→25.8%",
+   "shareBefore": 0.6666,
+   "shareAfter": 0.5372,
+   "ourBots": [
+    "Vlad Tepes",
+    "EnPassant",
+    "Jin",
+    "Ainz",
+    "Gengar",
+    "Red Army(空壳)"
+   ],
+   "enemies": [
+    "Player 666/T1",
+    "g/T1",
+    "[OMEN] Axolote/T1"
+   ],
+   "evidence": [
+    "simdigest sieges：Player 666→Vlad Tepes 8 条 820 万（t=5215~6734），Vlad 还手 4 条 20.9 万；→EnPassant 2 条 236 万（t=5782、5873），还手只有 t=5467、5558 两条 10% 戳 21.2 万；→Jin 6 条 930 万（t=5985~6846），还手 1 条 22.0 万；g→空壳 Red Army 9 条 776 万（t=5488 一条翻山 58.3 万开线，此前陆上不接壤；之后 t=5873~6839 八条 718 万）",
+    "simdigest halves（含空壳的账）：t=5000~6000 队2 收入 1,931 万、捐款手续费 731 万（37.9%）、对敌方真人耗兵 357 万得 6,703 格、被拿走 31,040 格（其中空壳 3,906）；t=6000~7000 收入 1,530 万、手续费 603 万（39.4%）、耗兵 158 万得 4,375 格（其中空壳 90.5 万 / 2,538 格）、被拿走 48,401 格（其中空壳 14,277）",
+    "simdigest contact T2：t=5400 接敌的只有 Vlad Tepes（136 万，对 Player 666 823 万）和 EnPassant（98.2 万），都在冻结线上；Ainz 657 万没有敌邻。t=6300~6840 接敌的只有 Jin、Vlad Tepes（后来加上 Rayquaza），全部在冻结线上",
+    "simdigest gates 5000 8125：Vlad Tepes 350 个决策拍（L5267 209、dpKeep 91、L5271 48、出兵 2）；Jin 225（L5271 90、L5267 68、dpKeep 55、出兵 0）；EnPassant 183（L5267 147、L5271 32、出兵 0）",
+    "simdigest cmdlist 32 5650 6920：Jin 死前 950 拍收到捐款 528 万，自己捐出 11 笔 260 万（手续费 149 万），其中 8 笔给空壳 Red Army；对 Player 666 只有 t=6510 一条 10% 戳 22.0 万；t=6223 发给 Axolote 的 79.0 万兵的船在海上被 Player 666 的船打掉 59.1 万",
+    "simdigest protbox：Ainz t=6210~7200 被队1 的 Cyrus（599 格）、Dusan（529）、IronMan（69）和队友 Gengar 围住；Gengar t=4590~7920 没有敌邻",
+    "探针 --mtncheck：Ainz t=5450~6900、Gengar t=5200~6800 的每个采样拍，贴着的山体另一侧都有 Player 666 的地（Ainz 5 条边、Gengar 3 条边），t=6500 起还有 g 的（53~126 条边）——引擎的翻山规则够得着，策略眼里 nb=0"
+   ],
+   "priorDecisions": [
+    {
+     "t": "5292~5313",
+     "bot": "Vlad Tepes",
+     "what": "Player 666 的五条 127‰（每条约 102 万~110 万）之间，把刚收到的 89.1 万又捐回给 Ainz：40.8 万 + 32.5 万（手续费 16.8 万 + 13.5 万）",
+     "codePath": "src/strategy/v27-team-c110.js buyLand L5322 safe=safeAt(g,q) → Policy.safeAt L4524-4540 → super.safeAt L2744-2754 → dpKeep L2491-2496 =（最强真人邻居的兵 + 它压在我身上的兵 − 1.5×我的地）/1.78；L5360-5361 avail=余额−手续费−keep<=0 → continue；src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4383-4385 safeFloor=max(68×地〔有岸且 t>=1100〕, 有敌方真人邻居时的 safeAt(g,-1))，而 Policy.safeAt L4527-4528 对 q<0 把它封顶在 oppFloorCap 88×地；L4385 只有「此刻有真人的兵压在我身上」或 兵<=1.10×safeFloor 才不捐；L4462-4463 密度门槛：不被围 112、被围 55；L4466-4486 收款人 = 同队、名字在池里、>=600 格、密度 <132、有敌邻或有攻击线；L4489 pct = 被围 280/185、否则 153",
+     "why": "探针 t=5300（17,874 格、214 万兵、超软上限）：对 Player 666（823 万）和 Axolote 的报价都停在 L5361，保底线 dpKeep=461 万 > 余额；同一拍影子发出「捐→Ainz 153‰ 32.2 万」——出兵的保底线说一个兵都不能动，捐款的保底线（封顶 88×地 = 157 万）说有富余"
+    },
+    {
+     "t": "5400~7200",
+     "bot": "Ainz",
+     "what": "t=5400~5490、6210~7200 没有敌邻（中间 t=5580~6120 只挨着 g 登陆的一小块）；靠捐款出兵：t=5000~8125 捐 24 笔，到账 1,073 万、手续费 788 万；发船 2 条 40.7 万",
+     "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4383-4385 safeFloor=max(68×地〔有岸且 t>=1100〕, 有敌方真人邻居时的 safeAt(g,-1))，而 Policy.safeAt L4527-4528 对 q<0 把它封顶在 oppFloorCap 88×地；L4385 只有「此刻有真人的兵压在我身上」或 兵<=1.10×safeFloor 才不捐；L4462-4463 密度门槛：不被围 112、被围 55；L4466-4486 收款人 = 同队、名字在池里、>=600 格、密度 <132、有敌邻或有攻击线；L4489 pct = 被围 280/185、否则 153；src/strategy/v27-team-c110.js Policy.act L4922-4923：这一拍没发别的指令才捐款，捐了就不再 idleBoats；idleBoats L4979-5006 → boatOut L1035-1050：max = boatFrac 0.5×(兵 − floorAt(价))，min = max(60, feeK 4×发船费)（目标是无主地时 min=60），L1044 `if (max < min) return false`；floors L855-867：floorAt = floorK×min(keepCap×100×地, max(reserve×100×地×min(1, 价/cRef), refFloor))，探针读到 floorK=1、keepCap=1、reserve=1、cRef=60；searchWater L1056-1113 只在 boatRange 200 格水程内找无主地或「不是自己、不在保护名单、不是陆上邻居」的玩家的地",
+     "why": "探针 t=6500 / 6900：searchWater 命中 g 的岸（价 280.7 / 257.6），floor=597 万（=100×59,660 格）> 余额 460 万 / 453 万 → max<0 < min → L1044 不发。被围捐款门槛是 55 兵/格，余额到不了发船要的 133.3 兵/格"
+    },
+    {
+     "t": "6230~6853",
+     "bot": "Jin",
+     "what": "被 Player 666 连打的 620 拍里 8 笔捐给空壳 Red Army：到账 190 万、手续费 104 万",
+     "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4423-4441 救援分支：候选只要求 alive、isOurSquadBot（只比名字）、同队、>=300 格、正被真人打，没有「是否已离开」的判断；src/engine/live_game_js.js 捐款校验对已离开的收款人不查配额",
+     "why": "空壳没有利息，由内置 AI 出兵：Red Army 把收到的兵用在打队1 的 Rashidun 身上（死前 900 拍 132 万兵、2,771 格）"
+    }
+   ],
+   "alternatives": [
+    "Player 666 的陆攻多是 115~142‰（余额的 11.2%~13.9%，102 万~187 万一条），盯着一个号连打到清地再换下一个；它自己的密度 t=5040 87.6、t=6030 101",
+    "队2 的兵并不少：t=5400 8 个号 1,418 万，但挨着敌方真人的两个号只有 234 万"
+   ],
+   "statementType": "observed",
+   "confidence": "high"
+  },
+  {
+   "t0": 7215,
+   "t1": 8119,
+   "what": "Player 666 从海上登陆后 6 条陆攻 1,740 万吃掉 Ainz，再一条 416 万吃掉 Gengar：队2 我方 22.2%→0",
+   "shareBefore": 0.5033,
+   "shareAfter": 0.2912,
+   "ourBots": [
+    "Ainz",
+    "Gengar",
+    "Lusitania"
+   ],
+   "enemies": [
+    "Player 666/T1",
+    "g/T1"
+   ],
+   "evidence": [
+    "simdigest sieges / cmdlist 30：Player 666→Ainz 登陆 3 次 681 万（t=7215 88.7 万、7836 218 万、7907 374 万）+ 陆攻 6 条 1,740 万（t=7245 125 万、之后五条 194‰ 278 万~393 万）；Ainz 对 Player 666 0 条陆攻，只在 t=7784 发了一条 39.8 万的船",
+    "simdigest deaths 30：死前 900 拍失地 48,944 格（Player 666 46,943、g 2,001）、被打掉 876 万兵；t=7977 清地时还剩 11,106 格（清地线 10,911）、129 万兵",
+    "探针 t=7300 Ainz（54,233 格、603 万兵、超软上限）：对 Player 666（1,684 万、正在打我）的报价停在 L5361，保底线 dpKeep=955 万 > 余额；影子这一拍什么都不发",
+    "simdigest deaths 31 / 探针 t=8060：Gengar（32,616 格、217 万兵、密度 66.7）对 Player 666（1,778 万）的报价 c=212.5、worth=100.1 → L5267；t=8057 Player 666 一条 416 万，t=8119 清地（剩 8,242 格）",
+    "simdigest halves：t=7000~8000 队2 我方 5→1 个号，被敌方真人拿走 60,435 格、打掉 1,072 万兵；对敌方真人耗兵 32.3 万得 121 格",
+    "simdigest mountain / cmdlist 35：g t=7448 一条 167‰ 翻山指令（出兵 123 万，另扣 75.0 万）打陆上不接壤的 Lusitania（5,467 格、39.5 万兵），102 拍后清地"
+   ],
+   "priorDecisions": [
+    {
+     "t": "6839~7035",
+     "bot": "Ainz",
+     "what": "登陆前 400 拍：4 笔捐款到账 80.5 万、手续费 120.9 万（给空壳 Red Army 到账 2.6 万、费 28.2 万；给 Banana 到账 7.0 万、费 28.6 万），外加一条 8,971 兵的船（费 14.4 万）",
+     "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4383-4385 safeFloor=max(68×地〔有岸且 t>=1100〕, 有敌方真人邻居时的 safeAt(g,-1))，而 Policy.safeAt L4527-4528 对 q<0 把它封顶在 oppFloorCap 88×地；L4385 只有「此刻有真人的兵压在我身上」或 兵<=1.10×safeFloor 才不捐；L4462-4463 密度门槛：不被围 112、被围 55；L4466-4486 收款人 = 同队、名字在池里、>=600 格、密度 <132、有敌邻或有攻击线；L4489 pct = 被围 280/185、否则 153；src/engine/live_game_js.js 捐款手续费 = 捐款人余额×64/1024，到账被收款人离 150×地 的余量截断",
+     "why": "收款人都是快被清地的小号（余量很小）：手续费按 Ainz 自己 440 万~520 万的余额收"
+    },
+    {
+     "t": "7231~7959",
+     "bot": "Gengar",
+     "what": "Ainz 被打的 750 拍里 5 笔捐款给 Ainz：到账 217 万、手续费 74.8 万；自己 0 条陆攻、0 条船",
+     "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4383-4385 safeFloor=max(68×地〔有岸且 t>=1100〕, 有敌方真人邻居时的 safeAt(g,-1))，而 Policy.safeAt L4527-4528 对 q<0 把它封顶在 oppFloorCap 88×地；L4385 只有「此刻有真人的兵压在我身上」或 兵<=1.10×safeFloor 才不捐；L4462-4463 密度门槛：不被围 112、被围 55；L4466-4486 收款人 = 同队、名字在池里、>=600 格、密度 <132、有敌邻或有攻击线；L4489 pct = 被围 280/185、否则 153；src/strategy/v27-team-c110.js Policy.act L4922-4923：这一拍没发别的指令才捐款，捐了就不再 idleBoats；idleBoats L4979-5006 → boatOut L1035-1050：max = boatFrac 0.5×(兵 − floorAt(价))，min = max(60, feeK 4×发船费)（目标是无主地时 min=60），L1044 `if (max < min) return false`；floors L855-867：floorAt = floorK×min(keepCap×100×地, max(reserve×100×地×min(1, 价/cRef), refFloor))，探针读到 floorK=1、keepCap=1、reserve=1、cRef=60；searchWater L1056-1113 只在 boatRange 200 格水程内找无主地或「不是自己、不在保护名单、不是陆上邻居」的玩家的地",
+     "why": "Gengar 策略眼里 nb=0（挨着的是 Teutonic Order、Cyrus 和队友）；探针 t=5200 / 6500：searchWater 在 200 格水程内找不到可登陆的地；--mtncheck t=7400 / 7900：翻山够得着 g（233 / 442 条边）和 Player 666（3 / 97 条边）"
+    }
+   ],
+   "alternatives": [
+    "Player 666 这一段的 194‰（余额的 18.9%）一条 278 万~416 万，7 条陆攻加 3 次登陆全压在两个号上；它的兵 t=7000 1,365 万→t=8100 1,949 万，一边打一边涨",
+    "同一时刻队1 我方 7 个号 1,890 万~1,955 万兵、密度 135~150，没有一个兵能用"
+   ],
+   "statementType": "observed",
+   "confidence": "high"
+  }
+ ],
+ "deaths": [
+  {
+   "bot": "EnPassant",
+   "me": 26,
+   "team": 2,
+   "t": 5912,
+   "peakLand": 33350,
+   "killers": [
+    "Player 666[敌方真人] 拿走 7674 格"
+   ],
+   "densityLast500": [
+    [
+     5310,
+     9304,
+     872429,
+     94
+    ],
+    [
+     5400,
+     9473,
+     982210,
+     104
+    ],
+    [
+     5490,
+     9858,
+     925894,
+     94
+    ],
+    [
+     5580,
+     10235,
+     786420,
+     77
+    ],
+    [
+     5670,
+     10235,
+     889029,
+     87
+    ],
+    [
+     5760,
+     10235,
+     1003438,
+     98
+    ]
+   ],
+   "lastDecisions": [
+    "t5467 攻Player 666/T1 10%",
+    "t5481 捐→*Red Army pct=153",
+    "t5558 攻Player 666/T1 10%",
+    "t5572 捐→*Ainz pct=70",
+    "t5838 捐→*Jin pct=153",
+    "t5859 捐→*Jin pct=153"
+   ],
+   "donationsReceivedReplay": [
+    "*Banana@5488p185",
+    "*Lusitania@5803p185",
+    "*Ainz@5824p155"
+   ],
+   "rescueLogsForMe": [
+    "Ainz@5800r155",
+    "Ainz@5895r155",
+    "Lusitania@5790s185",
+    "Banana@5480s185"
+   ],
+   "assistsForMe": [
+    "Vlad Tepes@5875→Player 666"
+   ],
+   "stillDonating": [
+    "s153→*Red Army@5465",
+    "r70→*Ainz@5555",
+    "s153→*Jin@5825",
+    "s153→*Jin@5845"
+   ],
+   "balanceAtDeath": 166110,
+   "cause": "队2。峰值 33,350 格（t=2464，吃 يحيى 得来），t=2331 起被 Player 666 打（整局 10 条陆攻 496 万 + 3 次登陆 139 万），t=5040 只剩 7,312 格。t=5467、5558 对 Player 666 两条 10% 戳（21.2 万）；t=5782、5873 Player 666 两条 127‰（236 万），丢 7,674 格。死前 900 拍捐出 57.5 万（手续费 27.6 万），最后两笔是 t=5838、5859 把刚收到的救援款转给 Jin。t=5000 之后 183 个有真人报价的决策拍：L5267 147、L5271 32、出兵 0。t=5912 清地",
+   "patternIds": [
+    "NEW:AT-worth-gate",
+    "NEW:EG-giant-neighbor-freeze",
+    "NEW:DN-dying-donor",
+    "NEW:DF-passive-death"
+   ],
+   "tLog": 5919,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "Player 666",
+      "cls": "敌方真人",
+      "cells": 7674
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "Player 666",
+      "troops": 1071552
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 940511,
+     "顶格少拿": 37214,
+     "陆攻出兵": 276211,
+     "出兵手续费": 40730,
+     "捐出到账": 575378,
+     "捐款手续费": 275608,
+     "收到捐款": 608679,
+     "战斗耗兵": 250582,
+     "得地": 2923,
+     "失地": 7674,
+     "被打掉兵": 1071552
+    },
+    "ownCmdsLast600": [
+     "t5467:atk→Player 666 102‰ 出110899",
+     "t5558:atk→Player 666 102‰ 出101253"
+    ],
+    "ownCmdCountLast600": 2,
+    "attackCmdsOnMeLast600": [
+     "Player 666[敌方真人]×2 共2363440兵 t5782~5873"
+    ],
+    "donationsInLast900": [
+     "*Banana@5488 +136575(费46993)",
+     "*Lusitania@5803 +79496(费27353)",
+     "*Ainz@5824 +392608(费366714)"
+    ],
+    "donationsOutLast900": [
+     "→*Banana@5012 108519(费51446)",
+     "→*Red Army@5481 148663(费61782)",
+     "→*Ainz@5572 62044(费55927)",
+     "→*Jin@5838 142389(费59175)",
+     "→*Jin@5859 113763(费47278)"
+    ],
+    "neighborsBeforeDeath": [
+     "t= 5760 地 10235 兵 1.00M 密 98.0 边401 岸66 无主邻格0 船0 | 邻居2: Player 666[敌方真人] 接713 地81490 密114；*Jin[我方号·同队] 接47 地30978 密46",
+     "t= 5850 地  6312 兵  756k 密119.8 边237 岸55 无主邻格0 船0 | 邻居2: Player 666[敌方真人] 接409 地84825 密108；*Jin[我方号·同队] 接47 地31566 密59"
+    ]
+   },
+   "peakLandLog": 32490,
+   "landBeforeClear": 2638,
+   "balanceBeforeClear": 158289,
+   "statementType": "observed"
+  },
+  {
+   "bot": "guest_104",
+   "me": 28,
+   "team": 2,
+   "t": 5008,
+   "peakLand": 11930,
+   "killers": [
+    "g[敌方真人] 拿走 8605 格",
+    "Player 192[敌方真人(空壳)] 拿走 38 格"
+   ],
+   "densityLast500": [
+    [
+     4410,
+     9200,
+     865294,
+     94
+    ],
+    [
+     4500,
+     9224,
+     961103,
+     104
+    ],
+    [
+     4590,
+     7076,
+     827879,
+     117
+    ],
+    [
+     4680,
+     6525,
+     564018,
+     86
+    ],
+    [
+     4770,
+     4786,
+     463505,
+     97
+    ],
+    [
+     4860,
+     2463,
+     354842,
+     144
+    ],
+    [
+     4950,
+     2465,
+     196511,
+     80
+    ]
+   ],
+   "lastDecisions": [
+    "t4732 捐→*Ainz pct=153",
+    "t4746 捐→*Ainz pct=153",
+    "t4781 攻Player 192/T1 6%",
+    "t4872 攻Player 192/T1 10%",
+    "t4879 捐→*Ainz pct=153",
+    "t4900 捐→*Ainz pct=153",
+    "t4921 捐→*Red Army pct=153",
+    "t4942 攻Player 192/T1 15%",
+    "t4949 捐→*Red Army pct=153",
+    "t5005 捐→*Banana pct=68"
+   ],
+   "donationsReceivedReplay": [
+    "*Ainz@4550p155",
+    "*Ainz@4704p155",
+    "*Rayquaza@4718p185",
+    "*Vlad Tepes@4858p155",
+    "*EnPassant@4865p82",
+    "*Ainz@4886p155",
+    "*Ainz@4907p153"
+   ],
+   "rescueLogsForMe": [
+    "EnPassant@4850r82",
+    "Ainz@4525r155",
+    "Ainz@4680r155",
+    "Ainz@4835r155",
+    "Ainz@4855r155",
+    "Ainz@4880s153",
+    "Jin@5000s185",
+    "Vlad Tepes@4840r155",
+    "Rayquaza@4700s185"
+   ],
+   "assistsForMe": [
+    "Ainz@4545→g",
+    "Ainz@4700→g",
+    "Ainz@4825→g"
+   ],
+   "stillDonating": [
+    "r155→*EnPassant@4560",
+    "s153→*Ainz@4580",
+    "r60→*Vlad Tepes@4660",
+    "s153→*Ainz@4720",
+    "s153→*Ainz@4740",
+    "s153→*Ainz@4870",
+    "s153→*Ainz@4890",
+    "s153→*Red Army@4910",
+    "s153→*Red Army@4940",
+    "r68→*Banana@4995"
+   ],
+   "balanceAtDeath": 256327,
+   "cause": "队2。t=3514 之前不挨着任何敌方真人（四周是队1 的 Dusan、IronMan、Rashidun、队友 Lusitania 和空壳 Player 192）。g 一条翻山指令（167‰，出兵 32.1 万）越过山体开出战线，guest_104 t=3535 还手一条 27.8 万；之后 g 六条 167‰ 陆攻 402 万兵（t=3850~4998），死前 900 拍丢 8,605 格给 g（t=4770 接壤 g 267 格、三个异队编队号 284 格）。这段自己对 g 0 条陆攻（探针 t=4600 / 4800：报价 c=298.8 / 380.0、worth=84.8 / 89.9 → L5267），死前 600 拍的 5 条指令都在打空壳 Player 192（合计 19.0 万）。死前 900 拍收到捐款 176 万、又捐出 126 万（手续费 56.0 万）；Ainz 替它戳了 g 五次。t=5008 清地（剩 2,295 格、19.8 万兵）",
+   "patternIds": [
+    "NEW:DF-mountain-front",
+    "NEW:AT-worth-gate",
+    "NEW:DN-dying-donor",
+    "NEW:DF-passive-death",
+    "NEW:DN-pingpong"
+   ],
+   "tLog": 5013,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "g",
+      "cls": "敌方真人",
+      "cells": 8605
+     },
+     {
+      "by": "Player 192",
+      "cls": "敌方真人(空壳)",
+      "cells": 38
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "g",
+      "troops": 1472637
+     },
+     {
+      "by": "Player 192",
+      "troops": 7672
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 709974,
+     "顶格少拿": 174503,
+     "陆攻出兵": 189588,
+     "出兵手续费": 31247,
+     "捐出到账": 1262703,
+     "捐款手续费": 559730,
+     "收到捐款": 1763113,
+     "战斗耗兵": 8065,
+     "得地": 37,
+     "失地": 8643,
+     "被打掉兵": 1480309,
+     "回兵溢出": 7757
+    },
+    "ownCmdsLast600": [
+     "t4417:atk→Player 192 51‰ 出43940",
+     "t4718:atk→Player 192 50‰ 出33300",
+     "t4781:atk→Player 192 64‰ 出29760",
+     "t4872:atk→Player 192 106‰ 出38604",
+     "t4942:atk→Player 192 152‰ 出43984"
+    ],
+    "ownCmdCountLast600": 5,
+    "attackCmdsOnMeLast600": [
+     "g[敌方真人]×4 共2948729兵 t4501~4998"
+    ],
+    "donationsInLast900": [
+     "*Gengar@4263 +545028(费223601)",
+     "*Ainz@4550 +394590(费324355)",
+     "*Ainz@4704 +373922(费308086)",
+     "*Rayquaza@4718 +63541(费21863)",
+     "*Vlad Tepes@4858 +203281(费148169)",
+     "*EnPassant@4865 +32288(费47750)",
+     "*Ainz@4886 +71716(费407544)",
+     "*Ainz@4907 +78747(费400010)"
+    ],
+    "donationsOutLast900": [
+     "→*Gengar@4256 186085(费77334)",
+     "→*Gengar@4305 185335(费77022)",
+     "→*Red Army@4382 157707(费65540)",
+     "→*EnPassant@4571 158030(费64833)",
+     "→*Ainz@4592 124505(费51742)",
+     "→*Vlad Tepes@4669 42572(费44666)",
+     "→*Ainz@4732 108033(费44896)",
+     "→*Ainz@4746 85663(费35600)",
+     "→*Ainz@4879 49105(费20407)",
+     "→*Ainz@4900 55629(费23118)",
+     "→*Red Army@4921 55629(费23118)",
+     "→*Red Army@4949 37138(费15434)",
+     "→*Banana@5005 17272(费16020)"
+    ],
+    "neighborsBeforeDeath": [
+     "t= 4860 地  2463 兵  355k 密144.1 边341 岸26 无主邻格0 船0 | 邻居6: g[敌方真人] 接334 地46496 密85；*Dusan[我方号·异队] 接130 地24616 密145；*IronMan[我方号·异队] 接100 地16566 密88；*Lusitania[我方号·同队] 接41 地5856 密76；*Rashidun[我方号·异队] 接11 地11052 密109 | 被攻: g:36k",
+     "t= 4950 地  2465 兵  197k 密 79.7 边342 岸26 无主邻格0 船0 | 邻居6: g[敌方真人] 接334 地44249 密95；*Dusan[我方号·异队] 接131 地24616 密99；*IronMan[我方号·异队] 接100 地16566 密73；*Lusitania[我方号·同队] 接41 地5856 密65；*Rashidun[我方号·异队] 接11 地11052 密85 | 在攻: Player 192:44k"
+    ]
+   },
+   "peakLandLog": 11930,
+   "landBeforeClear": 2295,
+   "balanceBeforeClear": 198303,
+   "statementType": "observed"
+  },
+  {
+   "bot": "Ainz",
+   "me": 30,
+   "team": 2,
+   "t": 7977,
+   "peakLand": 59660,
+   "killers": [
+    "Player 666[敌方真人] 拿走 46943 格",
+    "g[敌方真人] 拿走 2001 格"
+   ],
+   "densityLast500": [
+    [
+     7380,
+     47577,
+     5417604,
+     114
+    ],
+    [
+     7470,
+     39546,
+     4783076,
+     121
+    ],
+    [
+     7560,
+     25571,
+     2318507,
+     91
+    ],
+    [
+     7650,
+     21554,
+     2787695,
+     129
+    ],
+    [
+     7740,
+     21554,
+     2930921,
+     136
+    ],
+    [
+     7830,
+     21554,
+     2614098,
+     121
+    ],
+    [
+     7920,
+     15580,
+     1718955,
+     110
+    ]
+   ],
+   "lastDecisions": [
+    "t7518 捐→*Lusitania pct=155",
+    "t7784 船 13%"
+   ],
+   "donationsReceivedReplay": [
+    "*Gengar@7413p185",
+    "*Gengar@7616p185",
+    "*Gengar@7630p185",
+    "*Gengar@7959p185"
+   ],
+   "rescueLogsForMe": [
+    "Gengar@7400s185",
+    "Gengar@7590s185",
+    "Gengar@7610s185",
+    "Gengar@7950s185"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [
+    "r155→*Lusitania@7490"
+   ],
+   "balanceAtDeath": 1488732,
+   "cause": "队2 最大的号（峰值 59,660 格，全图 13.1%）。t=5285、5299 两条共 224 万把 g 推回去，t=5400 起不再与 g 接壤（t=5551 g 登陆 56.6 万后又挨着一小块到 t=6120）；t=6210~7200 四面是队1 的 Cyrus、Dusan、IronMan 和队友 Gengar——翻山够得着 Player 666（5 条边）和 g（t=6500 起 53~233 条边），策略没有这条指令。这段靠捐款出兵：t=5000~8125 捐 24 笔，到账 1,073 万、手续费 788 万（整局 33 笔里 11 笔手续费高于到账：到账 82.9 万、费 356 万）；船发不出（floor=597 万 > 余额）。t=7215 Player 666 登陆 88.7 万，随后 6 条陆攻 1,740 万、再登陆 592 万；Ainz 0 条陆攻（探针 t=7300：dpKeep=955 万 > 余额 603 万）。死前 900 拍丢 48,944 格。t=7977 清地时还剩 11,106 格、129 万兵",
+   "patternIds": [
+    "NEW:TS-squad-wall",
+    "NEW:MT-no-mountain-cmd",
+    "NEW:BT-boxed-floor-cap",
+    "NEW:DN-fee-exceeds-delivery",
+    "NEW:DN-husk-donate",
+    "NEW:EG-giant-neighbor-freeze",
+    "NEW:DF-sea-landing",
+    "NEW:DF-passive-death"
+   ],
+   "tLog": 7981,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "Player 666",
+      "cls": "敌方真人",
+      "cells": 46943
+     },
+     {
+      "by": "g",
+      "cls": "敌方真人",
+      "cells": 2001
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "Player 666",
+      "troops": 8429335
+     },
+     {
+      "by": "g",
+      "troops": 330822
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 4753672,
+     "顶格少拿": 1222578,
+     "发船出兵": 406773,
+     "出兵手续费": 236463,
+     "捐出到账": 842314,
+     "捐款手续费": 884069,
+     "收到捐款": 2254217,
+     "战斗耗兵": 322655,
+     "得地": 121,
+     "失地": 48944,
+     "被打掉兵": 8760157
+    },
+    "ownCmdsLast600": [
+     "t7784:boat 136‰ 出397802"
+    ],
+    "ownCmdCountLast600": 1,
+    "attackCmdsOnMeLast600": [
+     "Player 666[敌方真人]×4 共12869674兵 t7427~7952"
+    ],
+    "donationsInLast900": [
+     "*Gengar@7231 +451257(费155271)",
+     "*Lusitania@7301 +79583(费27383)",
+     "*Gengar@7413 +451293(费155283)",
+     "*Gengar@7616 +463790(费159583)",
+     "*Gengar@7630 +360515(费124048)",
+     "*Gengar@7959 +447779(费154074)"
+    ],
+    "donationsOutLast900": [
+     "→*Lusitania@7518 266487(费257758)"
+    ],
+    "neighborsBeforeDeath": [
+     "t= 7830 地 21554 兵 2.61M 密121.3 边240 岸179 无主邻格0 船1 | 邻居3: *Gengar[我方号·同队] 接192 地31408 密65；*Cyrus[我方号·异队] 接128 地57639 密150；*IronMan[我方号·异队] 接69 地17163 密150",
+     "t= 7920 地 15580 兵 1.72M 密110.3 边369 岸70 无主邻格0 船1 | 邻居4: Player 666[敌方真人] 接263 地178092 密111；*Gengar[我方号·同队] 接192 地31408 密75；*Cyrus[我方号·异队] 接126 地57639 密150；*IronMan[我方号·异队] 接67 地17163 密150"
+    ]
+   },
+   "peakLandLog": 59660,
+   "landBeforeClear": 11106,
+   "balanceBeforeClear": 1288274,
+   "statementType": "observed"
+  },
+  {
+   "bot": "Gengar",
+   "me": 31,
+   "team": 2,
+   "t": 8119,
+   "peakLand": 32616,
+   "killers": [
+    "Player 666[敌方真人] 拿走 24700 格"
+   ],
+   "densityLast500": [
+    [
+     7560,
+     31408,
+     2351005,
+     75
+    ],
+    [
+     7650,
+     31408,
+     1542815,
+     49
+    ],
+    [
+     7740,
+     31408,
+     1783223,
+     57
+    ],
+    [
+     7830,
+     31408,
+     2055455,
+     65
+    ],
+    [
+     7920,
+     31408,
+     2363793,
+     75
+    ],
+    [
+     8010,
+     32328,
+     1940319,
+     60
+    ],
+    [
+     8100,
+     20054,
+     1072773,
+     54
+    ]
+   ],
+   "lastDecisions": [
+    "t7616 捐→*Ainz pct=185",
+    "t7630 捐→*Ainz pct=185",
+    "t7959 捐→*Ainz pct=185",
+    "t7987 攻无主地 5%"
+   ],
+   "donationsReceivedReplay": [],
+   "rescueLogsForMe": [],
+   "assistsForMe": [],
+   "stillDonating": [
+    "s185→*Ainz@7590",
+    "s185→*Ainz@7610",
+    "s185→*Ainz@7950"
+   ],
+   "balanceAtDeath": 544876,
+   "cause": "队2。t=1530 全场第 5（18,508 格）。t=4590~7920 没有敌邻（挨着 Teutonic Order 59 格、Cyrus 41 格和队友 Ainz 192 格），31,408 格 3,300 拍不变，密度 49~78；整局 0 条船（探针 t=5200 / 6500：200 格水程内没有可登陆的地；翻山够得着 Player 666（3 条边）、t=6500 起够得着 g（53~442 条边），策略没有这条指令），29 笔捐款到账 1,180 万、手续费 460 万（13 笔给 Ainz）。Ainz 倒下后与 Player 666 接壤：探针 t=8060 报价 c=212.5、worth=100.1 → L5267；t=8057 Player 666 一条 416 万，丢 24,700 格。t=8119 清地（剩 8,242 格、25.9 万兵）",
+   "patternIds": [
+    "NEW:TS-squad-wall",
+    "NEW:MT-no-mountain-cmd",
+    "NEW:PL-protect-box",
+    "NEW:DN-rear-to-front",
+    "NEW:AT-worth-gate",
+    "NEW:DF-passive-death"
+   ],
+   "tLog": 8121,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "Player 666",
+      "cls": "敌方真人",
+      "cells": 24700
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "Player 666",
+      "troops": 2054102
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 2857583,
+     "陆攻出兵": 91091,
+     "出兵手续费": 22772,
+     "捐出到账": 2174634,
+     "捐款手续费": 748259,
+     "战斗耗兵": 2416,
+     "得地": 1208,
+     "失地": 24700,
+     "被打掉兵": 2054102
+    },
+    "ownCmdsLast600": [
+     "t7987:atk→无主地 47‰ 出91091"
+    ],
+    "ownCmdCountLast600": 1,
+    "attackCmdsOnMeLast600": [
+     "Player 666[敌方真人]×1 共4158357兵 t8057~8057"
+    ],
+    "donationsInLast900": [],
+    "donationsOutLast900": [
+     "→*Ainz@7231 451257(费155271)",
+     "→*Ainz@7413 451293(费155283)",
+     "→*Ainz@7616 463790(费159583)",
+     "→*Ainz@7630 360515(费124048)",
+     "→*Ainz@7959 447779(费154074)"
+    ],
+    "neighborsBeforeDeath": [
+     "t= 8010 地 32328 兵 1.94M 密 60.0 边174 岸611 无主邻格113 船0 | 邻居3: *Teutonic Order[我方号·异队] 接59 地12488 密150；Player 666[敌方真人] 接57 地191685 密98；*Cyrus[我方号·异队] 接41 地57830 密148 | 在攻: 无主地:89k",
+     "t= 8100 地 20054 兵 1.07M 密 53.5 边336 岸602 无主邻格0 船0 | 邻居3: Player 666[敌方真人] 接504 地204835 密95；*Teutonic Order[我方号·异队] 接59 地12488 密150；*Cyrus[我方号·异队] 接41 地57830 密149 | 被攻: Player 666:1.71M"
+    ]
+   },
+   "peakLandLog": 32328,
+   "landBeforeClear": 8242,
+   "balanceBeforeClear": 258878,
+   "statementType": "observed"
+  },
+  {
+   "bot": "Jin",
+   "me": 32,
+   "team": 2,
+   "t": 6915,
+   "peakLand": 32410,
+   "killers": [
+    "Player 666[敌方真人] 拿走 26163 格"
+   ],
+   "densityLast500": [
+    [
+     6300,
+     24925,
+     2684131,
+     108
+    ],
+    [
+     6390,
+     21263,
+     2215949,
+     104
+    ],
+    [
+     6480,
+     21263,
+     2463274,
+     116
+    ],
+    [
+     6570,
+     21791,
+     2353403,
+     108
+    ],
+    [
+     6660,
+     16191,
+     2367203,
+     146
+    ],
+    [
+     6750,
+     11678,
+     1470281,
+     126
+    ],
+    [
+     6840,
+     11678,
+     1249677,
+     107
+    ]
+   ],
+   "lastDecisions": [
+    "t6510 攻Player 666/T1 10%",
+    "t6517 捐→*Red Army pct=78",
+    "t6608 捐→*Red Army pct=153",
+    "t6671 捐→*Red Army pct=155",
+    "t6741 捐→*Vlad Tepes pct=155",
+    "t6762 攻无主地 5%",
+    "t6769 攻无主地 5%",
+    "t6776 捐→*Red Army pct=155",
+    "t6797 捐→*Red Army pct=153",
+    "t6853 捐→*Red Army pct=114"
+   ],
+   "donationsReceivedReplay": [
+    "*Vlad Tepes@6342p153",
+    "*Gengar@6342p185",
+    "*Gengar@6538p185",
+    "*Vlad Tepes@6538p153",
+    "*Lusitania@6650p185",
+    "*Ainz@6650p185",
+    "*Ainz@6664p185",
+    "*Rayquaza@6699p185",
+    "*Gengar@6734p185",
+    "*Gengar@6755p185",
+    "*Lusitania@6867p185",
+    "*Rayquaza@6874p155"
+   ],
+   "rescueLogsForMe": [
+    "Ainz@6620s185",
+    "Ainz@6640s185",
+    "Gengar@6330s185",
+    "Gengar@6530s185",
+    "Gengar@6700s185",
+    "Gengar@6720s185",
+    "Vlad Tepes@6325s153",
+    "Vlad Tepes@6520s153",
+    "Lusitania@6640s185",
+    "Lusitania@6860s185",
+    "Rayquaza@6680s185",
+    "Rayquaza@6860r155"
+   ],
+   "assistsForMe": [
+    "Vlad Tepes@6315→Player 666",
+    "Vlad Tepes@6680→Player 666"
+   ],
+   "stillDonating": [
+    "r155→*Red Army@6350",
+    "r155→*Vlad Tepes@6470",
+    "r78→*Red Army@6510",
+    "s153→*Red Army@6600",
+    "r155→*Red Army@6660",
+    "r155→*Vlad Tepes@6735",
+    "r155→*Red Army@6765",
+    "s153→*Red Army@6790",
+    "r114→*Red Army@6840"
+   ],
+   "balanceAtDeath": 554333,
+   "cause": "队2。t=2610~5760 没有敌邻（密度 15~104），t=5910 峰值 32,410 格。Player 666 六条陆攻 930 万（t=5985~6846：123 万、124 万、137 万、185 万、173 万、187 万），死前 900 拍丢 26,163 格、被打掉 441 万兵。自己对 Player 666 只有一条 10% 戳（t=6510，22.0 万）；225 个决策拍：L5271 90、L5267 68、dpKeep 55、出兵 0。t=6223 发给 Axolote 的 79.0 万兵的船被 Player 666 的船打掉 59.1 万。死前 900 拍收到捐款 528 万，捐出 260 万（手续费 149 万），8 笔给空壳 Red Army。t=6915 清地（剩 6,246 格、51.5 万兵）",
+   "patternIds": [
+    "NEW:AT-worth-gate",
+    "NEW:EG-giant-neighbor-freeze",
+    "NEW:DN-husk-donate",
+    "NEW:DN-dying-donor",
+    "NEW:BT-sunk",
+    "NEW:DF-passive-death"
+   ],
+   "tLog": 6920,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "Player 666",
+      "cls": "敌方真人",
+      "cells": 26163
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "Player 666",
+      "troops": 4405360
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 2331940,
+     "顶格少拿": 534996,
+     "陆攻出兵": 379655,
+     "发船出兵": 789645,
+     "出兵手续费": 179847,
+     "捐出到账": 2595147,
+     "捐款手续费": 1493597,
+     "收到捐款": 5279428,
+     "战斗耗兵": 220110,
+     "得地": 528,
+     "失地": 26163,
+     "被打掉兵": 4405360
+    },
+    "ownCmdsLast600": [
+     "t6510:atk→Player 666 102‰ 出220246",
+     "t6762:atk→无主地 47‰ 出82110",
+     "t6769:atk→无主地 47‰ 出77299"
+    ],
+    "ownCmdCountLast600": 3,
+    "attackCmdsOnMeLast600": [
+     "Player 666[敌方真人]×3 共5452619兵 t6608~6846"
+    ],
+    "donationsInLast900": [
+     "*Rayquaza@6027 +63155(费21730)",
+     "*Banana@6209 +138755(费47743)",
+     "*Ainz@6209 +949779(费327026)",
+     "*Ainz@6230 +752875(费259054)",
+     "*Vlad Tepes@6342 +84991(费35321)",
+     "*Gengar@6342 +450723(费155087)",
+     "*Gengar@6538 +457306(费157352)",
+     "*Vlad Tepes@6538 +67572(费28082)",
+     "*Lusitania@6650 +78075(费26864)",
+     "*Ainz@6650 +920281(费316655)",
+     "*Ainz@6664 +61447(费243105)",
+     "*Rayquaza@6699 +63645(费21899)",
+     "*Gengar@6734 +468640(费161774)",
+     "*Gengar@6755 +281419(费125848)",
+     "*Lusitania@6867 +77601(费26701)",
+     "*Rayquaza@6874 +80447(费33004)"
+    ],
+    "donationsOutLast900": [
+     "→*Red Army@6230 424213(费174036)",
+     "→*Vlad Tepes@6272 287304(费189932)",
+     "→*Red Army@6356 408109(费167429)",
+     "→*Vlad Tepes@6482 225275(费153954)",
+     "→*Red Army@6517 149955(费121483)",
+     "→*Red Army@6608 139551(费153357)",
+     "→*Red Army@6671 291612(费151790)",
+     "→*Vlad Tepes@6741 181142(费109481)",
+     "→*Red Army@6776 261806(费107407)",
+     "→*Red Army@6797 119398(费85780)",
+     "→*Red Army@6853 106782(费78948)"
+    ],
+    "neighborsBeforeDeath": [
+     "t= 6750 地 11678 兵 1.47M 密125.9 边417 岸206 无主邻格65 船0 | 邻居3: *Banana[我方号·同队] 接251 地9615 密72；Player 666[敌方真人] 接247 地114799 密90；*Cyrus[我方号·异队] 接121 地55235 密150",
+     "t= 6840 地 11678 兵 1.25M 密107.0 边417 岸206 无主邻格0 船0 | 邻居3: Player 666[敌方真人] 接312 地117142 密115；*Banana[我方号·同队] 接251 地9615 密61；*Cyrus[我方号·异队] 接121 地55235 密150"
+    ]
+   },
+   "peakLandLog": 32410,
+   "landBeforeClear": 6246,
+   "balanceBeforeClear": 515387,
+   "statementType": "observed"
+  },
+  {
+   "bot": "Vlad Tepes",
+   "me": 33,
+   "team": 2,
+   "t": 6750,
+   "peakLand": 22009,
+   "killers": [
+    "Player 666[敌方真人] 拿走 4284 格"
+   ],
+   "densityLast500": [
+    [
+     6210,
+     5068,
+     519133,
+     102
+    ],
+    [
+     6300,
+     5206,
+     780900,
+     150
+    ],
+    [
+     6390,
+     5356,
+     470997,
+     88
+    ],
+    [
+     6480,
+     4902,
+     512972,
+     105
+    ],
+    [
+     6570,
+     3231,
+     366272,
+     113
+    ],
+    [
+     6660,
+     3231,
+     318423,
+     99
+    ]
+   ],
+   "lastDecisions": [
+    "t6216 攻Player 666/T1 10%",
+    "t6307 捐→*Red Army pct=153",
+    "t6328 攻Player 666/T1 10%",
+    "t6342 捐→*Jin pct=153",
+    "t6440 捐→*Red Army pct=153",
+    "t6538 捐→*Jin pct=153",
+    "t6601 捐→*Red Army pct=153",
+    "t6699 攻Player 666/T1 10%"
+   ],
+   "donationsReceivedReplay": [
+    "*Jin@6272p153",
+    "*Banana@6412p185",
+    "*Rayquaza@6475p185",
+    "*Jin@6482p155",
+    "*Ainz@6496p185",
+    "*Jin@6741p155"
+   ],
+   "rescueLogsForMe": [
+    "Ainz@6470s185",
+    "Jin@6260s153",
+    "Jin@6470r155",
+    "Jin@6735r155",
+    "Rayquaza@6460s185",
+    "Banana@6400s185"
+   ],
+   "assistsForMe": [
+    "Jin@6500→Player 666"
+   ],
+   "stillDonating": [
+    "s153→*Red Army@6290",
+    "s153→*Jin@6325",
+    "s153→*Red Army@6425",
+    "s153→*Jin@6520",
+    "s153→*Red Army@6585"
+   ],
+   "balanceAtDeath": 378323,
+   "cause": "队2。t=5040 20,956 格、168 万兵，邻居 Player 666（581 万）和 Axolote。Player 666 八条陆攻 820 万（t=5215~6734），Axolote 十三条 67.1 万。自己对 Player 666 四条 10% 戳 20.9 万，对 Axolote 两条 67.5 万加一条 33.0 万的船；350 个决策拍里 dpKeep 冻结 91、L5267 209、出兵 2。挨打间隙照捐：t=5292、5313 把刚收到的 89.1 万捐回 Ainz 73.3 万（费 30.3 万），死前 900 拍 9 笔捐出 75.2 万（费 34.8 万，4 笔给空壳 Red Army）。t=6750 清地（剩 2,461 格）",
+   "patternIds": [
+    "NEW:EG-giant-neighbor-freeze",
+    "NEW:DN-floor-mismatch",
+    "NEW:DN-pingpong",
+    "NEW:DN-husk-donate",
+    "NEW:DF-passive-death"
+   ],
+   "tLog": 6754,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "Player 666",
+      "cls": "敌方真人",
+      "cells": 4284
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "Player 666",
+      "troops": 840708
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 488484,
+     "顶格少拿": 95013,
+     "陆攻出兵": 209463,
+     "出兵手续费": 24401,
+     "捐出到账": 751734,
+     "捐款手续费": 348212,
+     "收到捐款": 972005,
+     "战斗耗兵": 218931,
+     "得地": 930,
+     "失地": 4284,
+     "被打掉兵": 840708,
+     "收到船兵": 282668
+    },
+    "ownCmdsLast600": [
+     "t6216:atk→Player 666 102‰ 出52217",
+     "t6328:atk→Player 666 102‰ 出62731",
+     "t6699:atk→Player 666 102‰ 出33113"
+    ],
+    "ownCmdCountLast600": 3,
+    "attackCmdsOnMeLast600": [
+     "Player 666[敌方真人]×2 共2552101兵 t6468~6734"
+    ],
+    "donationsInLast900": [
+     "*Jin@6272 +287304(费189932)",
+     "*Banana@6412 +139056(费47847)",
+     "*Rayquaza@6475 +63677(费21910)",
+     "*Jin@6482 +225275(费153954)",
+     "*Ainz@6496 +75551(费302886)",
+     "*Jin@6741 +181142(费109481)"
+    ],
+    "donationsOutLast900": [
+     "→*Jin@5873 113977(费47367)",
+     "→*Red Army@5901 34649(费34649)",
+     "→*Ainz@5929 116191(费48287)",
+     "→*Jin@6006 63692(费42023)",
+     "→*Red Army@6307 117440(费48806)",
+     "→*Jin@6342 84991(费35321)",
+     "→*Red Army@6440 96315(费40027)",
+     "→*Jin@6538 67572(费28082)",
+     "→*Red Army@6601 56907(费23650)"
+    ],
+    "neighborsBeforeDeath": [
+     "t= 6570 地  3231 兵  366k 密113.4 边177 岸23 无主邻格0 船0 | 邻居2: *Jin[我方号·同队] 接214 地21791 密108；Player 666[敌方真人] 接44 地103799 密123",
+     "t= 6660 地  3231 兵  318k 密 98.6 边177 岸23 无主邻格0 船0 | 邻居2: *Jin[我方号·同队] 接172 地16191 密146；Player 666[敌方真人] 接86 地109399 密112"
+    ]
+   },
+   "peakLandLog": 22009,
+   "landBeforeClear": 2461,
+   "balanceBeforeClear": 308546,
+   "statementType": "observed"
+  },
+  {
+   "bot": "Lusitania",
+   "me": 35,
+   "team": 2,
+   "t": 7550,
+   "peakLand": 5924,
+   "killers": [
+    "g[敌方真人] 拿走 4151 格"
+   ],
+   "densityLast500": [
+    [
+     7020,
+     5467,
+     400856,
+     73
+    ],
+    [
+     7110,
+     5467,
+     341959,
+     62
+    ],
+    [
+     7200,
+     5467,
+     385162,
+     70
+    ],
+    [
+     7290,
+     5467,
+     427667,
+     78
+    ],
+    [
+     7380,
+     5467,
+     363464,
+     66
+    ],
+    [
+     7470,
+     5160,
+     373238,
+     72
+    ]
+   ],
+   "lastDecisions": [
+    "t7077 捐→*Banana pct=185",
+    "t7301 捐→*Ainz pct=185"
+   ],
+   "donationsReceivedReplay": [
+    "*Ainz@7518p155"
+   ],
+   "rescueLogsForMe": [
+    "Ainz@7490r155"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [
+    "s185→*Banana@7070",
+    "s185→*Ainz@7290"
+   ],
+   "balanceAtDeath": 165320,
+   "cause": "队2。t=2002 八条船同拍发出（42.9 万的 97.0%），整局 13 条船里 9 条瞄的是异队编队号的岸（4 条 21.8 万兵登上 IronMan）。t=5047 被 g 打了一条 65.8 万，之后 t=5130~7380 没有敌邻（挨着 IronMan 424 格），密度 59~102，只做捐款。t=7400 探针：searchWater 命中 g 的岸，floor=54.7 万 > 余额 37.7 万 → 不发船；同一拍它贴着的山体另一侧有 g 的地。t=7448 g 一条 167‰ 翻山指令（出兵 123 万，是它余额 39.5 万的 3 倍）越过山体打过来，丢 4,151 格；死前 600 拍 0 条陆攻/发船。t=7550 清地（剩 1,354 格）",
+   "patternIds": [
+    "NEW:IO-lag-burst",
+    "NEW:BT-hit-squadmate",
+    "NEW:PL-protect-box",
+    "NEW:BT-boxed-floor-cap",
+    "NEW:DF-mountain-front",
+    "NEW:DF-passive-death"
+   ],
+   "tLog": 7556,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "g",
+      "cls": "敌方真人",
+      "cells": 4151
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "g",
+      "troops": 566687
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 444145,
+     "顶格少拿": 6762,
+     "捐出到账": 312430,
+     "捐款手续费": 107501,
+     "收到捐款": 266487,
+     "失地": 4151,
+     "被打掉兵": 566687
+    },
+    "ownCmdsLast600": [],
+    "ownCmdCountLast600": 0,
+    "attackCmdsOnMeLast600": [
+     "g[敌方真人]×1 共1230969兵 t7448~7448"
+    ],
+    "donationsInLast900": [
+     "*Ainz@7518 +266487(费257758)"
+    ],
+    "donationsOutLast900": [
+     "→*Jin@6650 78075(费26864)",
+     "→*Jin@6867 77601(费26701)",
+     "→*Banana@7077 77171(费26553)",
+     "→*Ainz@7301 79583(费27383)"
+    ],
+    "neighborsBeforeDeath": [
+     "t= 7380 地  5467 兵  363k 密 66.5 边271 岸50 无主邻格0 船0 | 邻居2: *IronMan[我方号·异队] 接424 地16683 密150；*Dusan[我方号·异队] 接5 地24745 密150",
+     "t= 7470 地  5160 兵  373k 密 72.3 边286 岸50 无主邻格0 船0 | 邻居3: *IronMan[我方号·异队] 接408 地16683 密150；g[敌方真人] 接52 地66836 密87；*Dusan[我方号·异队] 接5 地24745 密150 | 被攻: g:1.16M"
+    ]
+   },
+   "peakLandLog": 5916,
+   "landBeforeClear": 1354,
+   "balanceBeforeClear": 134215,
+   "statementType": "observed"
+  },
+  {
+   "bot": "Rayquaza",
+   "me": 37,
+   "team": 2,
+   "t": 7107,
+   "peakLand": 4595,
+   "killers": [
+    "g[敌方真人] 拿走 3490 格",
+    "*KaiCenat[我方号·异队] 拿走 44 格"
+   ],
+   "densityLast500": [
+    [
+     6570,
+     4419,
+     301565,
+     68
+    ],
+    [
+     6660,
+     4419,
+     338680,
+     77
+    ],
+    [
+     6750,
+     4419,
+     288164,
+     65
+    ],
+    [
+     6840,
+     4419,
+     662850,
+     150
+    ],
+    [
+     6930,
+     4593,
+     372552,
+     81
+    ],
+    [
+     7020,
+     4564,
+     473962,
+     104
+    ]
+   ],
+   "lastDecisions": [
+    "t6699 捐→*Jin pct=185",
+    "t6853 捐→*Red Army pct=155",
+    "t6874 捐→*Jin pct=155",
+    "t6888 攻无主地 5%",
+    "t6888 攻无主地 5%",
+    "t6902 攻无主地 5%"
+   ],
+   "donationsReceivedReplay": [
+    "*Banana@6818p185",
+    "*Ainz@6839p185",
+    "*Gengar@7028p185",
+    "*Banana@7049p155",
+    "*Banana@7091p153"
+   ],
+   "rescueLogsForMe": [
+    "Ainz@6810s185",
+    "Ainz@7090s185",
+    "Gengar@7020s185",
+    "Banana@6810s185",
+    "Banana@7040r155",
+    "Banana@7080s153"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [
+    "s185→*Jin@6680",
+    "r155→*Red Army@6840",
+    "r155→*Jin@6860",
+    "r66→*Banana@7000"
+   ],
+   "balanceAtDeath": 183384,
+   "cause": "队2。出生点离 KaiCenat（队1）66 格，t=600~1499 的 180 个决策拍 139 个被异队编队号的余额锁住，t=1530 只有 1,831 格（全场最小）。t=2250~6750 被 KaiCenat、Gran Colombia、Teutonic Order（队1）和撞名内置 AI 围住，密度 44~80，只做捐款（整局捐出 128 万、手续费 45.4 万）。空壳 Red Army 被 g 吃掉（g t=5488 用翻山指令对它开的线）后与 g 接壤：g 两条 167‰ 陆攻 207 万（t=7021、7077），丢 3,490 格；探针 t=7030 保底线 dpKeep=368 万 > 余额 62.5 万。t=7107 清地（剩 1,106 格）",
+   "patternIds": [
+    "NEW:SP-squad-stack",
+    "NEW:OP-safefinite-squad-lock",
+    "NEW:PL-protect-box",
+    "NEW:EG-giant-neighbor-freeze",
+    "NEW:DF-passive-death"
+   ],
+   "tLog": 7107,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "g",
+      "cls": "敌方真人",
+      "cells": 3490
+     },
+     {
+      "by": "*KaiCenat",
+      "cls": "我方号·异队",
+      "cells": 44
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "g",
+      "troops": 740458
+     },
+     {
+      "by": "*KaiCenat",
+      "troops": 6789
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 345631,
+     "顶格少拿": 40155,
+     "陆攻出兵": 56191,
+     "出兵手续费": 14047,
+     "捐出到账": 371785,
+     "捐款手续费": 139930,
+     "收到捐款": 721539,
+     "战斗耗兵": 378,
+     "得地": 189,
+     "失地": 3534,
+     "被打掉兵": 747247
+    },
+    "ownCmdsLast600": [
+     "t6888:atk→无主地 47‰ 出19656",
+     "t6888:atk→无主地 47‰ 出18504",
+     "t6902:atk→无主地 47‰ 出18031"
+    ],
+    "ownCmdCountLast600": 3,
+    "attackCmdsOnMeLast600": [
+     "g[敌方真人]×2 共2071310兵 t7021~7077"
+    ],
+    "donationsInLast900": [
+     "*Banana@6818 +136426(费46942)",
+     "*Ainz@6839 +203620(费300482)",
+     "*Gengar@7028 +210638(费153529)",
+     "*Banana@7049 +109104(费44760)",
+     "*Banana@7091 +61751(费45393)"
+    ],
+    "donationsOutLast900": [
+     "→*Red Army@6244 63035(费21689)",
+     "→*Vlad Tepes@6475 63677(费21910)",
+     "→*Jin@6699 63645(费21899)",
+     "→*Red Army@6853 100981(费41428)",
+     "→*Jin@6874 80447(费33004)"
+    ],
+    "neighborsBeforeDeath": [
+     "t= 6930 地  4593 兵  373k 密 81.1 边350 岸43 无主邻格0 船0 | 邻居4: g[敌方真人] 接221 地62693 密83；*Gran Colombia[我方号·异队] 接189 地13468 密147；*KaiCenat[我方号·异队] 接123 地636 密149；*Teutonic Order[我方号·异队] 接50 地12317 密118 | 被攻: *KaiCenat:9312 | 在攻: 无主地:56k",
+     "t= 7020 地  4564 兵  474k 密103.8 边354 岸40 无主邻格0 船0 | 邻居4: g[敌方真人] 接221 地62693 密106；*Gran Colombia[我方号·异队] 接189 地13468 密149；*KaiCenat[我方号·异队] 接131 地665 密150；*Teutonic Order[我方号·异队] 接50 地12317 密127"
+    ]
+   },
+   "peakLandLog": 4593,
+   "landBeforeClear": 1106,
+   "balanceBeforeClear": 131516,
+   "statementType": "observed"
+  },
+  {
+   "bot": "Banana",
+   "me": 40,
+   "team": 2,
+   "t": 7132,
+   "peakLand": 9615,
+   "killers": [
+    "Player 666[敌方真人] 拿走 7527 格"
+   ],
+   "densityLast500": [
+    [
+     6570,
+     9615,
+     713016,
+     74
+    ],
+    [
+     6660,
+     9615,
+     608899,
+     63
+    ],
+    [
+     6750,
+     9615,
+     689325,
+     72
+    ],
+    [
+     6840,
+     9615,
+     588741,
+     61
+    ],
+    [
+     6930,
+     9615,
+     666596,
+     69
+    ],
+    [
+     7110,
+     4637,
+     525680,
+     113
+    ]
+   ],
+   "lastDecisions": [
+    "t6608 捐→*Red Army pct=185",
+    "t6818 捐→*Rayquaza pct=185",
+    "t7028 攻无主地 5%",
+    "t7035 攻无主地 5%",
+    "t7049 捐→*Rayquaza pct=155",
+    "t7091 捐→*Rayquaza pct=153"
+   ],
+   "donationsReceivedReplay": [
+    "*Ainz@7014p149",
+    "*Ainz@7035p155",
+    "*Lusitania@7077p185",
+    "*Gengar@7126p185"
+   ],
+   "rescueLogsForMe": [
+    "Ainz@6920s185",
+    "Ainz@6940s185",
+    "Ainz@6960r122",
+    "Ainz@6980r149",
+    "Ainz@7000r155",
+    "Ainz@7110s185",
+    "Gengar@7120s185",
+    "Lusitania@7070s185",
+    "Rayquaza@7000r66"
+   ],
+   "assistsForMe": [],
+   "stillDonating": [
+    "s185→*Red Army@6600",
+    "s185→*Rayquaza@6810",
+    "r155→*Rayquaza@7040",
+    "s153→*Rayquaza@7080"
+   ],
+   "balanceAtDeath": 311179,
+   "cause": "队2。t=2610~6840 没有敌邻（挨着 Cyrus 142 格和队友），9,615 格不变，密度 49~150，靠捐款出兵（整局捐出 337 万、手续费 118 万）。Jin 被清地后与 Player 666 接壤：两条陆攻 208 万（t=6930、7098），丢 7,527 格；探针 t=7000 报价 c=259.6、worth=79.1 → L5267。死前 600 拍自己只有两条无主地小单。t=7132 清地（剩 2,331 格）",
+   "patternIds": [
+    "NEW:PL-protect-box",
+    "NEW:AT-worth-gate",
+    "NEW:DF-passive-death"
+   ],
+   "tLog": 7154,
+   "truth": {
+    "landTakenLast900": [
+     {
+      "by": "Player 666",
+      "cls": "敌方真人",
+      "cells": 7527
+     }
+    ],
+    "troopsKilledLast900": [
+     {
+      "by": "Player 666",
+      "troops": 1025193
+     }
+    ],
+    "ledgerLast900": {
+     "利息+地租": 733041,
+     "顶格少拿": 47358,
+     "陆攻出兵": 69769,
+     "出兵手续费": 17441,
+     "捐出到账": 721149,
+     "捐款手续费": 279500,
+     "收到捐款": 837960,
+     "战斗耗兵": 300,
+     "得地": 150,
+     "失地": 7527,
+     "被打掉兵": 1025193
+    },
+    "ownCmdsLast600": [
+     "t7028:atk→无主地 47‰ 出34198",
+     "t7035:atk→无主地 47‰ 出35571"
+    ],
+    "ownCmdCountLast600": 2,
+    "attackCmdsOnMeLast600": [
+     "Player 666[敌方真人]×2 共2083996兵 t6930~7098"
+    ],
+    "donationsInLast900": [
+     "*Ainz@7014 +506057(费339968)",
+     "*Ainz@7035 +69770(费286343)",
+     "*Lusitania@7077 +77171(费26553)",
+     "*Gengar@7126 +184962(费152440)"
+    ],
+    "donationsOutLast900": [
+     "→*Vlad Tepes@6412 139056(费47847)",
+     "→*Red Army@6608 136057(费46815)",
+     "→*Rayquaza@6818 136426(费46942)",
+     "→*Rayquaza@7049 109104(费44760)",
+     "→*Rayquaza@7091 61751(费45393)"
+    ],
+    "neighborsBeforeDeath": [
+     "t= 7020 地  5059 兵  730k 密144.2 边163 岸335 无主邻格100 船0 | 邻居2: Player 666[敌方真人] 接92 地131644 密110；*Cyrus[我方号·异队] 接58 地56405 密148",
+     "t= 7110 地  4637 兵  526k 密113.4 边168 岸334 无主邻格0 船0 | 邻居2: Player 666[敌方真人] 接202 地132628 密106；*Cyrus[我方号·异队] 接58 地56405 密150 | 被攻: Player 666:871k"
+    ]
+   },
+   "peakLandLog": 9615,
+   "landBeforeClear": 2331,
+   "balanceBeforeClear": 311179,
+   "statementType": "observed"
+  }
+ ],
+ "truthSummary": {
+  "source": "真引擎重放（录像 B023）到 t=9857；日志快照指纹 1382/1382 逐兵一致",
+  "donationsExecuted": {
+   "n": 300,
+   "delivered": 69226608,
+   "fee": 35454880,
+   "smallPctN": 18,
+   "smallPctDelivered": 2127023,
+   "smallPctFee": 1594160,
+   "toHuskN": 44,
+   "toHuskDelivered": 11355431,
+   "toHuskFee": 5404057
+  },
+  "donationLogVerdicts": {
+   "配额不够": 45,
+   "校验能过却没执行": 53,
+   "已执行": 300,
+   "收款人顶格": 4,
+   "配额临界": 4
+  },
+  "boatGiftsOut": {
+   "n": 44,
+   "troops": 2008147,
+   "delivered": 1449957
+  },
+  "ledgerTotals": {
+   "Rashidun": {
+    "利息+地租": 2756756,
+    "顶格少拿": 4876831,
+    "陆攻出兵": 592437,
+    "发船出兵": 716558,
+    "出兵手续费": 223001,
+    "捐出到账": 2508744,
+    "捐款手续费": 1154668,
+    "收到捐款": 4729144,
+    "战斗耗兵": 461653,
+    "得地": 13712,
+    "失地": 9407,
+    "被打掉兵": 1917054,
+    "回兵溢出": 8,
+    "船兵交友军": 129757,
+    "船兵交接蒸发": 364195,
+    "收到船兵": 14508
+   },
+   "Teutonic Order": {
+    "利息+地租": 5707297,
+    "顶格少拿": 8400640,
+    "陆攻出兵": 331390,
+    "发船出兵": 415298,
+    "出兵手续费": 621675,
+    "捐出到账": 1731594,
+    "捐款手续费": 1027356,
+    "收到捐款": 54459,
+    "战斗耗兵": 116456,
+    "得地": 14039,
+    "失地": 1261,
+    "被打掉兵": 21449,
+    "船兵交友军": 72517,
+    "船兵交接蒸发": 193995,
+    "收到船兵": 323,
+    "其它白损": 1127
+   },
+   "Cyrus": {
+    "利息+地租": 19490387,
+    "顶格少拿": 54709818,
+    "陆攻出兵": 6979000,
+    "发船出兵": 604095,
+    "出兵手续费": 3277829,
+    "捐出到账": 5090540,
+    "捐款手续费": 4185070,
+    "收到捐款": 5045115,
+    "战斗耗兵": 2493910,
+    "得地": 59621,
+    "失地": 400,
+    "被打掉兵": 156368,
+    "回兵溢出": 24052,
+    "船兵交友军": 340392
+   },
+   "KaiCenat": {
+    "利息+地租": 1246914,
+    "顶格少拿": 636226,
+    "陆攻出兵": 135835,
+    "发船出兵": 429732,
+    "出兵手续费": 102311,
+    "捐出到账": 944767,
+    "捐款手续费": 278303,
+    "收到捐款": 1259566,
+    "战斗耗兵": 225535,
+    "得地": 8439,
+    "失地": 7784,
+    "被打掉兵": 992784,
+    "船兵交友军": 16009,
+    "收到船兵": 191229
+   },
+   "Gran Colombia": {
+    "利息+地租": 4620554,
+    "顶格少拿": 12379346,
+    "陆攻出兵": 688655,
+    "发船出兵": 320186,
+    "出兵手续费": 396706,
+    "捐出到账": 2667657,
+    "捐款手续费": 1093372,
+    "收到捐款": 2493259,
+    "战斗耗兵": 474612,
+    "得地": 16562,
+    "失地": 2551,
+    "被打掉兵": 345374,
+    "船兵交友军": 7402
+   },
+   "EnPassant": {
+    "利息+地租": 4023677,
+    "顶格少拿": 273557,
+    "陆攻出兵": 639655,
+    "发船出兵": 145076,
+    "出兵手续费": 123595,
+    "捐出到账": 2258863,
+    "捐款手续费": 1085080,
+    "收到捐款": 3073071,
+    "战斗耗兵": 475388,
+    "得地": 43692,
+    "失地": 41138,
+    "被打掉兵": 2858360,
+    "船兵交友军": 112347
+   },
+   "IronMan": {
+    "利息+地租": 4070111,
+    "顶格少拿": 14439905,
+    "陆攻出兵": 1797426,
+    "发船出兵": 344893,
+    "出兵手续费": 295797,
+    "捐出到账": 1680033,
+    "捐款手续费": 820487,
+    "收到捐款": 2216928,
+    "战斗耗兵": 881522,
+    "得地": 27065,
+    "失地": 9914,
+    "被打掉兵": 495786,
+    "船兵交友军": 20050,
+    "收到船兵": 510619,
+    "海上损失": 122065
+   },
+   "guest_104": {
+    "利息+地租": 3781930,
+    "顶格少拿": 261687,
+    "陆攻出兵": 686765,
+    "出兵手续费": 91941,
+    "捐出到账": 2675457,
+    "捐款手续费": 1139585,
+    "收到捐款": 2360659,
+    "战斗耗兵": 44453,
+    "得地": 12611,
+    "失地": 10498,
+    "被打掉兵": 2017130,
+    "回兵溢出": 7757
+   },
+   "Dusan": {
+    "利息+地租": 7697274,
+    "顶格少拿": 22264727,
+    "陆攻出兵": 1038727,
+    "发船出兵": 1530461,
+    "出兵手续费": 847578,
+    "捐出到账": 3630496,
+    "捐款手续费": 1445743,
+    "收到捐款": 2949694,
+    "战斗耗兵": 475774,
+    "得地": 25397,
+    "失地": 633,
+    "被打掉兵": 33686,
+    "船兵交友军": 186781,
+    "收到船兵": 19090
+   },
+   "Ainz": {
+    "利息+地租": 30803263,
+    "顶格少拿": 2221415,
+    "陆攻出兵": 11475892,
+    "发船出兵": 527437,
+    "出兵手续费": 1851300,
+    "捐出到账": 15120183,
+    "捐款手续费": 10926437,
+    "收到捐款": 16519486,
+    "战斗耗兵": 8567938,
+    "得地": 63504,
+    "失地": 52679,
+    "被打掉兵": 9860943,
+    "收到船兵": 350841
+   },
+   "Gengar": {
+    "利息+地租": 18191958,
+    "顶格少拿": 431817,
+    "陆攻出兵": 3181574,
+    "出兵手续费": 362346,
+    "捐出到账": 11802999,
+    "捐款手续费": 4600806,
+    "收到捐款": 3853308,
+    "战斗耗兵": 2984759,
+    "得地": 32947,
+    "失地": 25043,
+    "被打掉兵": 2057314
+   },
+   "Jin": {
+    "利息+地租": 13093005,
+    "顶格少拿": 547588,
+    "陆攻出兵": 953983,
+    "发船出兵": 1978943,
+    "出兵手续费": 458878,
+    "捐出到账": 7699885,
+    "捐款手续费": 3250063,
+    "收到捐款": 5713599,
+    "战斗耗兵": 977962,
+    "得地": 33103,
+    "失地": 26943,
+    "被打掉兵": 4546675,
+    "船兵交友军": 485626,
+    "收到船兵": 115066
+   },
+   "Vlad Tepes": {
+    "利息+地租": 6884868,
+    "顶格少拿": 575664,
+    "陆攻出兵": 1218095,
+    "发船出兵": 398773,
+    "出兵手续费": 140358,
+    "捐出到账": 4868225,
+    "捐款手续费": 2173025,
+    "收到捐款": 4969535,
+    "战斗耗兵": 385351,
+    "得地": 23763,
+    "失地": 21431,
+    "被打掉兵": 4171978,
+    "船兵交友军": 43540,
+    "收到船兵": 282668
+   },
+   "Lusitania": {
+    "利息+地租": 2968384,
+    "顶格少拿": 53640,
+    "陆攻出兵": 53885,
+    "发船出兵": 620675,
+    "出兵手续费": 94599,
+    "捐出到账": 1893673,
+    "捐款手续费": 644213,
+    "收到捐款": 773045,
+    "战斗耗兵": 44011,
+    "得地": 6530,
+    "失地": 5226,
+    "被打掉兵": 661316,
+    "船兵交友军": 35536
+   },
+   "Rayquaza": {
+    "利息+地租": 2056587,
+    "顶格少拿": 40155,
+    "陆攻出兵": 100280,
+    "发船出兵": 48588,
+    "出兵手续费": 39238,
+    "捐出到账": 1284788,
+    "捐款手续费": 454077,
+    "收到捐款": 721539,
+    "战斗耗兵": 29558,
+    "得地": 6480,
+    "失地": 5418,
+    "被打掉兵": 835764
+   },
+   "Banana": {
+    "利息+地租": 4512162,
+    "顶格少拿": 100056,
+    "陆攻出兵": 241589,
+    "发船出兵": 205096,
+    "出兵手续费": 176720,
+    "捐出到账": 3368704,
+    "捐款手续费": 1176595,
+    "收到捐款": 1645803,
+    "战斗耗兵": 36938,
+    "得地": 12148,
+    "失地": 9922,
+    "被打掉兵": 1098360
+   },
+   "Red Army": {
+    "利息+地租": 704667,
+    "空壳少拿": 3258900,
+    "陆攻出兵": 44145,
+    "出兵手续费": 8625,
+    "收到捐款": 11355431,
+    "战斗耗兵": 7099235,
+    "得地": 26812,
+    "失地": 24333,
+    "被打掉兵": 4187437
+   }
+  }
+ },
+ "decisions": [
+  {
+   "t": 40,
+   "bot": "Rashidun/IronMan、KaiCenat/Rayquaza 等 8 个号",
+   "kind": "spawn",
+   "verdict": "error",
+   "state": "选点 41 步、生效选点 60 条；8 个号落在 x=530~750、y=74~310 一块里（两队各 4 个）；Rashidun–IronMan 48 格、KaiCenat–Rayquaza 66 格（异队）",
+   "codePath": "src/strategy/v27-team-c110.js chooseSpawn L4007-4154：L4062-4068 把名字在池里的号从局面里抹掉再算（编队号之间互不排斥）；L4070-4081 候选表在本机重算（本局 0 行 HL-SPAWN-BACKEND）",
+   "why": "各客户端各算各的表：最后两步还有 4 个号改点，Rayquaza 第 40 步才落到离 KaiCenat 66 格的地方",
+   "estCost": "t=1530 全场 38 个真人里排第 30、33~38 的 7 个号都在这 8 个里（1,831~5,360 格；当时我方中位 6,148）；这 8 个号终局前 4 个出局或成空壳（Rayquaza、guest_104、Lusitania、Red Army）",
+   "patternId": "NEW:SP-squad-stack",
+   "evidenceRef": "spawn_geo.py B023；digest.py B023 picks；simdigest.py B023 top 1530 40"
+  },
+  {
+   "t": 630,
+   "bot": "全队 17 个号",
+   "kind": "expand",
+   "verdict": "good",
+   "state": "开局周期指令第 2 条起按下令拍分段的延迟中位 10~16 拍；t=630 单号 2,181~3,578 格、中位 2,858（其余真人 2,077）",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4781-4925 开局周期出兵（HL-OPENING：126 行，每号 7~8 条，间隔中位 90 拍）",
+   "why": "17 个号全部按时出兵，没有一个落在其余真人的中位以下",
+   "estCost": "无",
+   "patternId": "NEW:OP-cycle-open",
+   "evidenceRef": "logdigest.py B023 opening / oplag；simdigest.py B023 medians"
+  },
+  {
+   "t": "600~1499",
+   "bot": "Rayquaza、IronMan、Rashidun",
+   "kind": "hold",
+   "verdict": "error",
+   "state": "t=1200 Rayquaza 2,410 格、5.6 万兵，4 个内置 AI 邻居（0~742 兵、地价 2.0~5.5）；底线 8.8 万 = 异队的 Gran Colombia 的兵。t=900 IronMan 3.0 万兵，底线 3.0 万 = 同队 Rashidun 的兵；t=1000 Rashidun 反过来被 IronMan 的兵锁住",
+   "codePath": "src/strategy/v27-team-c110.js winFloor L4542-4550：max(botPx×地/(winR×t), dpKeep, this.sb)，this.sb=safeFinite(g)（L4545，不带 skip）；Style.pickTarget L1197 可用兵 <= minSend×兵 → 不出手",
+   "why": "safeFinite 取的是「某个内置 AI 邻居的另一个邻居」的兵，不分那个邻居是不是我方号：两个贴着出生的号互相把对方的余额当成威胁",
+   "estCost": "三个号 180 个决策拍里分别 139、123、83 个不能出兵；t=1530 Rayquaza 1,831 格、Rashidun 3,261、IronMan 4,122（我方中位 6,148、其余真人 11,012）",
+   "patternId": "NEW:OP-safefinite-squad-lock",
+   "evidenceRef": "simdigest.py B023 gates；out/B023/probe.txt 一"
+  },
+  {
+   "t": "1090~1940",
+   "bot": "Rashidun、Cyrus、KaiCenat、Gran Colombia、EnPassant、guest_104、Dusan、Jin、Lusitania、Banana",
+   "kind": "io",
+   "verdict": "unclear",
+   "state": "本机拍落后服务器 270~360 拍；每号 1~2 段 301~385 拍录像里没有指令；t<2000 开始的 17 段（含 Rashidun t=700~1253、Red Army t=644~1260）策略共发令 371 条（影子同期每 15 拍想对真人/内置 AI 出兵）",
+   "codePath": "src/strategy/VERSION-TIMELINE.md §4.3 外层运行环境；src/strategy/v27-team-c110.js 里没有能感知「本机落后」的分支（HL-SLOW-TICK 586 行、25.0~81.6 毫秒，快照 avgMs 最大 1.5）",
+   "why": "10 个客户端同时落后的原因局内数据看不到；结果是这 10 个号在瓜分内置 AI 的阶段只涨了 20%，却把兵攒到了 208 万",
+   "estCost": "t=1530 断档组 11 个号 65,102 格（×1.20），没断档的 6 个号 ×1.87，其余真人 ×2.14",
+   "patternId": "NEW:IO-cmd-blackout",
+   "evidenceRef": "simdigest.py B023 gaps / gapgrow；digest.py B023 lag"
+  },
+  {
+   "t": 1981,
+   "bot": "Gran Colombia",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "6,067 格、38.0 万兵（密度 63）；邻居 Player 34 9,593 格、10.1 万兵（密度 10.6）。断档里攒下的 8 条陆攻同拍执行（317~279‰），合计 94.7% 余额",
+   "codePath": "src/strategy/v27-team-c110.js buyLand：探针 t=1975 对 Player 34 报价 c=23.1 < worth=88.5（L5267 不成立）→ L5322 safe=15.1 万 → L5531 真人、非 pulse 出口 min(avail, 1.25×need)=16.1 万（余额的 42.8%）",
+   "why": "对一个兵只有自己四分之一的真人整笔买地：领土 6,067→13,468，Player 34 t=2099 出局。8 条同拍执行是断档造成的（每条按当时余额连乘），方向是策略每个决策拍都想做的（t>=1500 它有真人报价的 97 个决策拍里影子 88 个出兵）",
+   "estCost": "无（36.0 万兵换 7,401 格，每格 49 兵）",
+   "patternId": "NEW:AT-thin-human-pulse",
+   "evidenceRef": "simdigest.py B023 bursts / gapgrow / gates；out/B023/probe.txt 七"
+  },
+  {
+   "t": 1995,
+   "bot": "Rashidun",
+   "kind": "attack",
+   "verdict": "good",
+   "state": "3,261 格、43.1 万兵（密度 132，超软上限；t=1530 全场 38 个真人里第 37）；邻居 Come on 17,280 格、23.4 万兵（密度 13.4）。6 条陆攻同拍执行（516/361/517/517/517/530‰），98.4% 余额",
+   "codePath": "src/strategy/v27-team-c110.js buyLand：探针 t=1990 对 Come on 报价 c=34.3 < worth=188.6（L5267 不成立）→ L5531 真人、非 pulse 出口 min(avail, 1.25×need)=20.4 万（余额的 47.4%）",
+   "why": "断档（t=1540~1862）里攒到软上限以上的兵，在客户端还落后、指令成批进录像的时候压给了一个低密度真人：领土 3,261→7,496（t=2070），Come on t=2399 出局",
+   "estCost": "无；此前 t=1695~1970 七条捐款被配额拒掉",
+   "patternId": "NEW:AT-over-cap-dump",
+   "evidenceRef": "simdigest.py B023 bursts；simdigest.py B023 probe；out/B023/probe.txt 七"
+  },
+  {
+   "t": "1695~1970",
+   "bot": "Rashidun",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "32.7 万~42.8 万兵、密度 100~131；想捐 5.1 万~6.5 万给 IronMan / Teutonic Order，每笔要 113~144 点，受捐上限只有 97~109 点（已用 0）",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4423-4441 / L4489（pct 153/155）；src/engine/live_game_js.js 捐款配额：全场共用上限随时间涨，单笔点数超过上限即拒",
+   "why": "即使对方配额一点没用，这一笔也过不了；7 次重试各占一个 18 拍的捐款冷却",
+   "estCost": "7 条指令全部被拒；同一段它自己 3,261 格没有涨",
+   "patternId": "NEW:DN-over-quota",
+   "evidenceRef": "simdigest.py B023 probe"
+  },
+  {
+   "t": 2002,
+   "bot": "Lusitania",
+   "kind": "boat",
+   "verdict": "error",
+   "state": "4,338 格、42.9 万兵（密度 99），t=1440~2070 没有可打的邻居（挨着异队编队号 IronMan 119 格和同队外人 Player 771、Player 34）；8 条船同拍发出，97.0% 余额，执行那一拍 8 条瞄的都是 IronMan 的岸",
+   "codePath": "src/strategy/v27-team-c110.js idleBoats L4979-5006 → boatOut L1035-1050；searchWater L1056-1113 跳过保护名单——探针 t=1995 / 2000：200 格水程内没有可登陆的地；t=1700（客户端当时落后 300 拍左右）命中的是内置 AI 的岸",
+   "why": "指令是按旧局面下的，执行时那段岸已经是 IronMan 的（推断：下令拍的局面看不到）：4 条 21.8 万兵 t=2225~2226 登上 IronMan，引擎按进攻结算；t=2171~2287 它的船和 Dusan 的船在海上互打（4.7 万 + 4.2 万）。整局 13 条船里 9 条瞄的是异队编队号的岸",
+   "estCost": "42.9 万兵出去，领土 4,338→5,650（300 拍内峰值）；IronMan 丢地",
+   "patternId": "NEW:BT-hit-squadmate",
+   "evidenceRef": "simdigest.py B023 boats 35 / landings / boatwar；simdigest.py B023 bursts；out/B023/probe.txt 七"
+  },
+  {
+   "t": 3815,
+   "bot": "Cyrus",
+   "kind": "assist",
+   "verdict": "good",
+   "state": "36,188 格、314 万兵（密度 87）；sigma[athiest]（队2 外人，29,724 格、116 万兵）在打同队的 IronMan。探针 t=3810：对 sigma 的报价 c=82.3 >= worth=78.1 → L5267 不买；10% 戳 31.6 万（手续费 3.7 万）照发",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4448-4457（主攻手不是队友、与我接壤、我还没在打它、密度 >=65 → g.attack(102, mainAttacker, me)）；sigma 还手之后 buyLand L5500（t>=3800 对「在打我 / 被别人打」的真人 pulse，上限 12% 兵）和 L5531 放行",
+   "why": "戳把 sigma 引过来还手（t=3962、4060 两条 33.1 万），buyLand 对正在交战的真人不再卡价：t=3815~4158 七条 244 万兵；t=3800~4400 耗兵 197 万从 sigma 手里拿到 17,736 格（每格 111 兵），自己只丢 309 格；sigma t=4378 出局",
+   "estCost": "无",
+   "patternId": "NEW:AS-poke-then-hit",
+   "evidenceRef": "simdigest.py B023 pokes；simdigest.py B023 pair 23 3800 4400；out/B023/probe.txt 五"
+  },
+  {
+   "t": "3950~4210",
+   "bot": "Jin、Lusitania、Vlad Tepes、Gengar、Rayquaza → Ainz",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "Jin 30,978 格、242 万~298 万兵，没有敌邻；每 20 拍想捐 44 万~54 万给 Ainz，每笔要 17~18 点，Ainz 的受捐点数已用 278/279（后来 287/289）",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4466-4489（策略不知道对方配额）；Policy.act L4922-4923（这一拍发了捐款就不再 idleBoats）",
+   "why": "同一个收款人被五个号轮流试：24 条被拒（Jin 11、Vlad Tepes 7、Gengar 3、Lusitania 2、Rayquaza 1）。被拒的捐款不扣兵，但每条占掉一次捐款冷却，也占掉当拍的发船机会",
+   "estCost": "Jin 一个号 11 条；余额从 242 万涨到 298 万（密度 78→96）没有出口",
+   "patternId": "NEW:DN-quota-retry-loop",
+   "evidenceRef": "simdigest.py B023 probe"
+  },
+  {
+   "t": "4291~5124",
+   "bot": "Ainz",
+   "kind": "assist",
+   "verdict": "unclear",
+   "state": "t=4291：42,243 格、345 万兵；g（45,526 格、352 万兵）在打 guest_104（后来是 Lusitania）。七条 10% 戳：34.7 万、32.1 万、55.4 万、44.0 万、65.6 万、61.9 万、60.4 万",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4448-4457（HL-ASSIST；冷却 25 拍，日志里相隔 25 拍的两条各自执行）",
+   "why": "这是我方对 g 仅有的进攻：t=4200~5200 耗兵 354 万拿到 9,412 格（每格 376 兵，与探针的报价 c=338 相符），自己丢 72 格；g 到 t=5166 才对 Ainz 出兵。同一段 g 吃掉 guest_104 8,605 格",
+   "estCost": "354 万兵、手续费 41.3 万；没法从这一局分出「多打」或「不打」的净效果",
+   "patternId": "NEW:AS-poke-then-hit",
+   "evidenceRef": "simdigest.py B023 pokes；simdigest.py B023 exchange；simdigest.py B023 cmdlist 30 4250 5350"
+  },
+  {
+   "t": 4592,
+   "bot": "Ainz ↔ EnPassant、guest_104、Vlad Tepes",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "同一拍：Ainz 捐给 EnPassant 42.9 万（手续费 35.0 万）；EnPassant 捐给 Ainz 13.4 万、guest_104 捐给 Ainz 12.5 万、Vlad Tepes 捐给 Ainz 30.0 万",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4383-4385 safeFloor=max(68×地〔有岸且 t>=1100〕, 有敌方真人邻居时的 safeAt(g,-1))，而 Policy.safeAt L4527-4528 对 q<0 把它封顶在 oppFloorCap 88×地；L4385 只有「此刻有真人的兵压在我身上」或 兵<=1.10×safeFloor 才不捐；L4462-4463 密度门槛：不被围 112、被围 55；L4466-4486 收款人 = 同队、名字在池里、>=600 格、密度 <132、有敌邻或有攻击线；L4489 pct = 被围 280/185、否则 153",
+   "why": "前线号和后排号各按自己的密度门槛选收款人，互相选中了对方；每一笔都按捐款人自己的余额收 6.25%",
+   "estCost": "整局对倒（A→B 后 150 拍内 B→A）45 组：回流 1,232 万，两头手续费 1,376 万",
+   "patternId": "NEW:DN-pingpong",
+   "evidenceRef": "simdigest.py B023 don；simdigest.py B023 cmdlist 30 4250 5350"
+  },
+  {
+   "t": 4700,
+   "bot": "Ainz",
+   "kind": "hold",
+   "verdict": "unclear",
+   "state": "54,048 格、493 万兵（密度 91.2，没超软上限）；唯一可打的邻居 g 45,033 格、395 万兵（密度 88），接壤 84 格，g 正在打 guest_104",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5250-5285：worth = maxW×winRatio(t)×max(自己密度, marketFloor 0.85×其余真人密度中位)（探针里 m=0.900）；L5267 `if (c >= worth && c >= cheap && !over) break`",
+   "why": "对同密度真人的报价 c=338.3 是 worth=82.1 的 4 倍：不超软上限这道闸不开（10% 戳的实际成交价也是每格 376 兵）。这一拍只发了 10% 戳 49.6 万；同一段 Ainz 六条 47‰ 无主地单出兵 127 万、手续费 31.8 万，捐款手续费 t=4550~5082 九笔 332 万",
+   "estCost": "t=4000~5000 Ainz 对 g 只有 5 条戳 232 万；g 同期 5 条 360 万吃掉 guest_104（8,605 格），兵从 263 万涨到 440 万",
+   "patternId": "NEW:AT-worth-gate",
+   "evidenceRef": "out/B023/probe.txt 二；simdigest.py B023 exchange"
+  },
+  {
+   "t": "4256~5005",
+   "bot": "guest_104",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "被 g 连打，领土 10,726（t=4198）→2,466（t=4918）。13 笔捐款捐出 126 万（手续费 56.0 万），同期收到 176 万",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4383-4385 safeFloor=max(68×地〔有岸且 t>=1100〕, 有敌方真人邻居时的 safeAt(g,-1))，而 Policy.safeAt L4527-4528 对 q<0 把它封顶在 oppFloorCap 88×地；L4385 只有「此刻有真人的兵压在我身上」或 兵<=1.10×safeFloor 才不捐；L4462-4463 密度门槛：不被围 112、被围 55；L4466-4486 收款人 = 同队、名字在池里、>=600 格、密度 <132、有敌邻或有攻击线；L4489 pct = 被围 280/185、否则 153",
+   "why": "捐款只看「此刻有没有真人的兵压在我身上」和封顶 88×地 的保底线：g 两波进攻之间它照样满足",
+   "estCost": "死前 900 拍：收到 176 万，捐出 126 万、手续费 56.0 万，对 g 0 条陆攻",
+   "patternId": "NEW:DN-dying-donor",
+   "evidenceRef": "simdigest.py B023 deaths 28；simdigest.py B023 cmdlist 28 3800 5010"
+  },
+  {
+   "t": 5082,
+   "bot": "Ainz",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "616 万兵；收款人 Lusitania 5,653 格、密度 147（离 150×地 的硬上限只差 1.6 万）",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4383-4385 safeFloor=max(68×地〔有岸且 t>=1100〕, 有敌方真人邻居时的 safeAt(g,-1))，而 Policy.safeAt L4527-4528 对 q<0 把它封顶在 oppFloorCap 88×地；L4385 只有「此刻有真人的兵压在我身上」或 兵<=1.10×safeFloor 才不捐；L4462-4463 密度门槛：不被围 112、被围 55；L4466-4486 收款人 = 同队、名字在池里、>=600 格、密度 <132、有敌邻或有攻击线；L4489 pct = 被围 280/185、否则 153；src/engine/live_game_js.js 到账 = min(捐款额, 150×收款人领土 − 余额)，手续费 = 捐款人余额×64/1024",
+   "why": "函数里没有收款人余量这一项：到账 1.6 万，手续费 40.6 万",
+   "estCost": "整局手续费高于到账的 38 笔：到账 227 万、手续费 766 万（Ainz 11 笔 82.9 万/356 万，Cyrus 6 笔 54.3 万/211 万）",
+   "patternId": "NEW:DN-fee-exceeds-delivery",
+   "evidenceRef": "simdigest.py B023 don"
+  },
+  {
+   "t": "5285~5299",
+   "bot": "Ainz",
+   "kind": "attack",
+   "verdict": "unclear",
+   "state": "g t=5166、5250 两条 167‰（81.8 万、77.9 万）打过来；Ainz 58,771 格、650 万兵（超软上限）。两条 207‰/222‰ 共 224 万打 g",
+   "codePath": "src/strategy/v27-team-c110.js buyLand：探针 t=5200（g 没在打它）停在 L5271 唯一真人缓冲；t=5275 g 在打我 → L5271 不成立，超软上限不比价（c=153.8、worth=105.0）→ L5531 真人、非 pulse 出口 148 万（21.7% 兵）",
+   "why": "g 伸进来的那一块被推回去，Ainz 领土到 59,660（峰值）；但 t=5400 起 Ainz 与 g 不再接壤",
+   "estCost": "两条出兵 224 万；t=5200~5500 实际耗兵 119 万从 g 手里拿到 1,411 格（每格 845 兵），同期被 g 拿走 522 格、打掉 68.4 万兵；g 的兵 440 万（t=5000）→494 万（t=6000）",
+   "patternId": "NEW:AT-overcap-price-skip",
+   "evidenceRef": "simdigest.py B023 cmdlist 30 4250 5350；simdigest.py B023 pair 30 5200 5500；out/B023/probe.txt 八"
+  },
+  {
+   "t": 5300,
+   "bot": "Vlad Tepes",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "17,874 格、214 万兵（密度 119.8）；邻居 Player 666 823 万兵，五条 127‰（各约 102 万~110 万）正分批打过来；t=5278 刚收到 Ainz 的 89.1 万",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5322 safe=safeAt(g,q) → Policy.safeAt L4524-4540 → super.safeAt L2744-2754 → dpKeep L2491-2496 =（最强真人邻居的兵 + 它压在我身上的兵 − 1.5×我的地）/1.78；L5360-5361 avail=余额−手续费−keep<=0 → continue；src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4383-4385 safeFloor=max(68×地〔有岸且 t>=1100〕, 有敌方真人邻居时的 safeAt(g,-1))，而 Policy.safeAt L4527-4528 对 q<0 把它封顶在 oppFloorCap 88×地；L4385 只有「此刻有真人的兵压在我身上」或 兵<=1.10×safeFloor 才不捐；L4462-4463 密度门槛：不被围 112、被围 55；L4466-4486 收款人 = 同队、名字在池里、>=600 格、密度 <132、有敌邻或有攻击线；L4489 pct = 被围 280/185、否则 153",
+   "why": "同一拍两个保底线：buyLand 的 dpKeep=461 万（不许出兵），捐款的 safeAt(-1) 被封顶在 88×地=157 万（许捐）→ 影子发出「捐→Ainz 153‰」",
+   "estCost": "t=5292、5313 两笔捐回 Ainz 73.3 万、手续费 30.3 万；t=5000 之后这类「有真人报价、不出兵、同拍捐款」的决策拍 44 个（Vlad 14、Jin 11、Ainz 10）",
+   "patternId": "NEW:DN-floor-mismatch",
+   "evidenceRef": "out/B023/probe.txt 二；simdigest.py B023 gates 5000 8125；simdigest.py B023 cmdlist 33 5150 6100"
+  },
+  {
+   "t": "5733",
+   "bot": "Cyrus（队1）",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "55,235 格、776 万兵（密度 140.5），四面是队2 的编队号；同队的 KaiCenat（863 格、密度 142~150）正被空壳 Red Army 啃",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4369-4499：L4372 冷却 18 拍；L4383-4385 safeFloor=max(68×地〔有岸且 t>=1100〕, 有敌方真人邻居时的 safeAt(g,-1))，而 Policy.safeAt L4527-4528 对 q<0 把它封顶在 oppFloorCap 88×地；L4385 只有「此刻有真人的兵压在我身上」或 兵<=1.10×safeFloor 才不捐；L4462-4463 密度门槛：不被围 112、被围 55；L4466-4486 收款人 = 同队、名字在池里、>=600 格、密度 <132、有敌邻或有攻击线；L4489 pct = 被围 280/185、否则 153；src/strategy/v27-team-c110.js isProtectedSquadMate L3993-3996：同队、boss 直接保护；另外「hasWildOutsidersAlive(g) && isOurSquadBot(g,p)」——hasWildOutsidersAlive L3978-3989 只要场上还有一个 >=80 格、名字不在池里的真人（不分哪一队，空壳也算）就为真；isOurSquadBot L3973-3976 只比名字（空壳照样算）",
+   "why": "KaiCenat 不能还手（Red Army 的名字在池里），队友只能给它捐；它已经顶格，到账 7,010，手续费 48.6 万",
+   "estCost": "Cyrus 整局捐款手续费 419 万（到账 509 万）；t=5225~6910 六次同拍 5~6 个队1 的号捐给 KaiCenat / Rashidun，每次只执行 1~2 笔（整局同拍多号捐给 KaiCenat 9 组 42 条日志，30 条没执行）",
+   "patternId": "NEW:DN-to-overcap",
+   "evidenceRef": "simdigest.py B023 don / probe；out/B023/probe.txt 四"
+  },
+  {
+   "t": "5040~9857",
+   "bot": "队1 的 7 个号（Cyrus、Dusan、IronMan、Teutonic Order、Gran Colombia、Rashidun、KaiCenat）",
+   "kind": "hold",
+   "verdict": "error",
+   "state": "t=5040 136,201 格、1,236 万兵；0 个号挨着敌方真人。策略眼里 nb=0、neut=0；真实邻居是队2 的编队号（Cyrus 挨着 Ainz 599 格、Banana 142、Jin 121、Gengar 41）和自己的队友",
+   "codePath": "src/strategy/v27-team-c110.js isProtectedSquadMate L3993-3996：同队、boss 直接保护；另外「hasWildOutsidersAlive(g) && isOurSquadBot(g,p)」——hasWildOutsidersAlive L3978-3989 只要场上还有一个 >=80 格、名字不在池里的真人（不分哪一队，空壳也算）就为真；isOurSquadBot L3973-3976 只比名字（空壳照样算）；src/strategy/v27-team-c110.js Policy.act L4922-4923：这一拍没发别的指令才捐款，捐了就不再 idleBoats；idleBoats L4979-5006 → boatOut L1035-1050：max = boatFrac 0.5×(兵 − floorAt(价))，min = max(60, feeK 4×发船费)（目标是无主地时 min=60），L1044 `if (max < min) return false`；floors L855-867：floorAt = floorK×min(keepCap×100×地, max(reserve×100×地×min(1, 价/cRef), refFloor))，探针读到 floorK=1、keepCap=1、reserve=1、cRef=60；searchWater L1056-1113 只在 boatRange 200 格水程内找无主地或「不是自己、不在保护名单、不是陆上邻居」的玩家的地",
+   "why": "对面只剩名字在池里的号；保护名单要等所有「野生外人」死光才解除，而剩下的野生外人正是它们打不了的队友 Player 666、g。捐款对象又只收池内名字（L4466-4486）。能动的只有船：t=2681~4928 boatFood 把空壳 Red Army 当成非真人目标发过 7 条船（当时空壳密度 4~20；t=5000 起它被捐到密度 93~150，此后没有再发），t=5040 之后的船都是去捡清地后的无主地",
+   "estCost": "t=5000 之后因超上限少拿利息 1.158 亿（同期实得 1,759 万）；t=5000~8125 4,273 个这类决策拍里影子只发出 17 条船、52 笔捐款",
+   "patternId": "NEW:TS-truce-no-target",
+   "evidenceRef": "simdigest.py B023 contact T1；simdigest.py B023 halves；simdigest.py B023 boxedout 5000 8125；out/B023/probe.txt 三"
+  },
+  {
+   "t": "6230~6853",
+   "bot": "Jin",
+   "kind": "donate",
+   "verdict": "error",
+   "state": "被 Player 666 六条陆攻连打（领土 31,807→11,678）；空壳 Red Army 同时被 g 打。8 笔捐给 Red Army：到账 190 万、手续费 104 万",
+   "codePath": "src/strategy/v27-team-c110.js tryDonateToTeammate L4423-4441：救援候选只看 isOurSquadBot（名字）、同队、>=300 格、正被真人打；没有「对方是否已离开」",
+   "why": "空壳没有利息、由内置 AI 出兵：Red Army 整局收到 1,136 万，618 万用在打队1 的编队号身上",
+   "estCost": "整局给空壳 44 笔：到账 1,136 万、手续费 540 万（Ainz 7 笔 480 万/244 万，Jin 9 笔 234 万/119 万）",
+   "patternId": "NEW:DN-husk-donate",
+   "evidenceRef": "simdigest.py B023 don / husks；simdigest.py B023 cmdlist 32 5650 6920"
+  },
+  {
+   "t": "6500~6900",
+   "bot": "Ainz",
+   "kind": "boat",
+   "verdict": "error",
+   "state": "59,660 格、460 万兵（密度 77），四面保护名单 + 队友；岸格 576，searchWater 命中 g 的岸（价 280.7）",
+   "codePath": "src/strategy/v27-team-c110.js Policy.act L4922-4923：这一拍没发别的指令才捐款，捐了就不再 idleBoats；idleBoats L4979-5006 → boatOut L1035-1050：max = boatFrac 0.5×(兵 − floorAt(价))，min = max(60, feeK 4×发船费)（目标是无主地时 min=60），L1044 `if (max < min) return false`；floors L855-867：floorAt = floorK×min(keepCap×100×地, max(reserve×100×地×min(1, 价/cRef), refFloor))，探针读到 floorK=1、keepCap=1、reserve=1、cRef=60；searchWater L1056-1113 只在 boatRange 200 格水程内找无主地或「不是自己、不在保护名单、不是陆上邻居」的玩家的地",
+   "why": "目标价 >= cRef 60 时 floor = 100×地 = 597 万 > 余额：max=−68.4 万 < min=57.5 万 → 不发。要发得出，密度得 >=133.3；而被围捐款从 55 兵/格就开始",
+   "estCost": "Ainz t=5000~8125 捐 24 笔：到账 1,073 万、手续费 788 万；发船 2 条 40.7 万",
+   "patternId": "NEW:BT-boxed-floor-cap",
+   "evidenceRef": "out/B023/probe.txt 三；simdigest.py B023 boxedout 5000 8125"
+  },
+  {
+   "t": "6500~7200",
+   "bot": "Ainz、Gengar",
+   "kind": "hold",
+   "verdict": "unclear",
+   "state": "t=6500：Ainz 59,660 格、460 万兵，Gengar 31,408 格、241 万兵；策略眼里 nb=0、neut=0。--mtncheck：两个号贴着的山体另一侧有 g 的地（53 条边，t=7200 233 条边；g t=6500 55,481 格、483 万兵，正在吃空壳 Red Army，之后是 Rayquaza）和 Player 666 的地（Ainz 5 条边、Gengar 3 条边）",
+   "codePath": "src/engine/live_game_js.js bB.qi.i2(player, pct, 点的格子, 目标)（录像指令号 10，只有山地图有）：点的那一格是目标的地或无主陆地、它挨着的山体也被自己贴山的格子挨着 → 出兵 (pct+1)/1024×余额，另扣 max(余额/10, 1000)；之后按普通进攻线推进。src/strategy/v27-team-c110.js 全文（5,621 行）没有 mountain / cliff，策略只有 g.attack / g.boat(To) / g.donate 三类指令；src/strategy/v27-team-c110.js 全文没有翻山指令（只发 g.attack / g.boat / g.boatTo / g.donate），也不读贴山边界格 g.cliff",
+   "why": "引擎允许越过山体对陆上不接壤的玩家出兵，g 用它对 guest_104、空壳 Red Army、Lusitania 开了三条线；我方两个被围的大号在同一张图上够得着 g，这条路不在策略的动作表里。翻山另扣余额的 10%，对 Player 666 的口子只有 3~5 条边；我方 0 条样本，换回多少地没法从这一局算",
+   "estCost": "够得着而没有动作的 700 拍里：Ainz 捐 7 笔到账 214 万、手续费 206 万（其中给空壳 38.2 万）；g 同期吃掉空壳 Red Army（t=6839 最后一条）和 Rayquaza（t=7107 清地）",
+   "patternId": "NEW:MT-no-mountain-cmd",
+   "evidenceRef": "out/B023/probe.txt 六；simdigest.py B023 mountain；simdigest.py B023 cmdlist 30 6500 7200"
+  },
+  {
+   "t": "4298~4928",
+   "bot": "Rashidun、Gran Colombia、KaiCenat（队1）",
+   "kind": "boat",
+   "verdict": "unclear",
+   "state": "空壳 Red Army（队2，8,785~9,402 格、密度 8~20）在啃队1 的三个号；它的名字在池里，陆攻被保护名单挡住。探针 t=4290 Rashidun：searchWater 无命中，影子 act() 发出「船→Red Army(空壳) 148‰ 9.6 万」；t=4835「247‰ 39.7 万」；t=4915 Gran Colombia「156‰ 18.3 万」",
+   "codePath": "src/strategy/v27-team-c110.js idleBoats L4994 `if (P.boatFood > 0 && this.boatFood(g)) return` → boatFood L5536-5597 → super.searchFood L2065-2118：目标 = 无主地，或「不是自己、cnt[o]=0（不在陆上邻居表里）、person(g,o) 为假、活着、botOk」的玩家的地；这里没有 isProtectedSquadMate——空壳不算真人，又被保护名单从邻居表里抹掉（cnt=0），于是成了可以坐船去吃的目标",
+   "why": "boatFood 的 searchFood 只排除邻居表里的和真人：空壳两样都不是，于是成了发船目标——这是队1 的号对空壳仅有的还手。整局 7 条船（t=2681~4928），对空壳耗兵 53.3 万拿回 5,498 格；Rashidun t=4851、4907 两条 60.7 万的船最后靠在同队 KaiCenat 的岸上（49.4 万兵移交）。t=5000 之后空壳被队2 的捐款喂到密度 93~150，这条路也停了",
+   "estCost": "空壳整局从这三个号手里拿走 16,327 格、打掉 307 万兵；船拿回 5,498 格",
+   "patternId": "NEW:BT-food-husk",
+   "evidenceRef": "out/B023/probe.txt 九；simdigest.py B023 boats 21 / husks"
+  },
+  {
+   "t": 7300,
+   "bot": "Ainz",
+   "kind": "hold",
+   "verdict": "error",
+   "state": "54,233 格、603 万兵（密度 111.3，超软上限）；Player 666 1,684 万兵正在打它（接壤 127 格）",
+   "codePath": "src/strategy/v27-team-c110.js buyLand L5322 safe=safeAt(g,q) → Policy.safeAt L4524-4540 → super.safeAt L2744-2754 → dpKeep L2491-2496 =（最强真人邻居的兵 + 它压在我身上的兵 − 1.5×我的地）/1.78；L5360-5361 avail=余额−手续费−keep<=0 → continue",
+   "why": "保底线 dpKeep=955 万 > 余额 → avail<=0：对正在打自己的人一个兵也不发。t=7245~7952 Player 666 六条 1,740 万，Ainz 0 条陆攻",
+   "estCost": "死前 900 拍丢 48,944 格、被打掉 876 万兵；清地时 11,106 格、129 万兵作废",
+   "patternId": "NEW:EG-giant-neighbor-freeze",
+   "evidenceRef": "out/B023/probe.txt 二；simdigest.py B023 deaths 30"
+  },
+  {
+   "t": "7238~8288",
+   "bot": "Cyrus（队1）",
+   "kind": "boat",
+   "verdict": "error",
+   "state": "57,615~59,233 格、805 万~888 万兵（密度 150）；6 条发往无主地/队友岸的船，每条 7,864~8,676 兵",
+   "codePath": "src/strategy/v27-team-c110.js idleBoats L4979-5006 → boatOut L1043-1045：目标是无主地时 min=60、amount=min(max, max(3×无主块格数+300, min))——只按那块无主地的大小装兵；src/engine/live_game_js.js 发船手续费 = 余额×32/1024，与船上装多少无关",
+   "why": "5 条瞄的是队2 的号被清地后留下的无主地，1 条瞄到队友 Player 666 的岸；每条船的手续费 25.2 万~27.8 万，是船上兵的 30 多倍",
+   "estCost": "6 条船出兵 5.0 万、手续费 159 万；Cyrus 整局出兵不到余额 5% 的 24 条指令：出兵 413 万、手续费 281 万",
+   "patternId": "NEW:FE-tiny-cmd-fee",
+   "evidenceRef": "simdigest.py B023 cmdlist 23 7000 9857；simdigest.py B023 fees"
+  }
+ ],
+ "newPatterns": [
+  {
+   "name": "NEW:TS-truce-no-target",
+   "definition": "两队局里，分在「敌方真人那一队」的编队号在对面只剩池内名字（在场号或空壳）之后没有任何合法目标：保护名单要等场上没有 >=80 格的野生外人才解除，而剩下的野生外人是它们自己的队友；捐款对象又只收池内名字 → 密度顶到 150、利息作废",
+   "detectionSketch": "重放：某队的我方在场号连续 >=900 拍 0 个挨着敌方真人（simdigest contact）且策略眼里 nb=0、neut=0（boxedout），同期该队还有非编队真人在场；按该段顶格少拿的利息计量（halves）",
+   "instances": [
+    {
+     "t": 5040,
+     "bot": "Cyrus"
+    },
+    {
+     "t": 5040,
+     "bot": "Dusan"
+    },
+    {
+     "t": 5040,
+     "bot": "IronMan"
+    },
+    {
+     "t": 5040,
+     "bot": "Teutonic Order"
+    },
+    {
+     "t": 5040,
+     "bot": "Gran Colombia"
+    },
+    {
+     "t": 5040,
+     "bot": "Rashidun"
+    },
+    {
+     "t": 5040,
+     "bot": "KaiCenat"
+    }
+   ]
+  },
+  {
+   "name": "NEW:TS-squad-wall",
+   "definition": "异队的编队号（互在保护名单里）把本队的大号和敌方真人隔开：大号连续 >=600 拍没有敌邻，而同队的小号正被敌方真人打",
+   "detectionSketch": "重放：我方在场号的 nb=0、neut=0 时段里挨着的异队池内号 >=300 接壤格（simdigest protbox），同期同队有号在 simdigest sieges 的被围名单里",
+   "instances": [
+    {
+     "t": 6210,
+     "bot": "Ainz"
+    },
+    {
+     "t": 4590,
+     "bot": "Gengar"
+    },
+    {
+     "t": 2610,
+     "bot": "Jin"
+    },
+    {
+     "t": 2610,
+     "bot": "Banana"
+    }
+   ]
+  },
+  {
+   "name": "NEW:BT-boxed-floor-cap",
+   "definition": "被围的号往敌方岸发船时 floorAt = 100×领土（目标价 >= cRef 60 时 reserve 项封到软上限）：max=boatFrac×(兵−100×地) 要 >= min=4×发船费，即密度 >=133.3；而被围捐款的门槛是 55 兵/格，余额攒不到发船线",
+   "detectionSketch": "影子探针 --boatcheck：searchWater 命中非无主地、floor=100×地、max<min（L1044）；simdigest boxedout：nb=0、neut=0 的决策拍里密度 >=133.3 的占比",
+   "instances": [
+    {
+     "t": 5000,
+     "bot": "Jin"
+    },
+    {
+     "t": 6500,
+     "bot": "Ainz"
+    },
+    {
+     "t": 6900,
+     "bot": "Ainz"
+    },
+    {
+     "t": 6000,
+     "bot": "Rayquaza"
+    },
+    {
+     "t": 7400,
+     "bot": "Lusitania"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-floor-mismatch",
+   "definition": "同一个决策拍里出兵和捐款用的保底线不一样：buyLand 对真人报价停在 L5361（dpKeep >= 余额）或 L5267/L5271，而 tryDonateToTeammate 的 safeAt(g,-1) 被封顶在 oppFloorCap 88×领土 → 不出兵却捐款",
+   "detectionSketch": "影子探针 tally：offers 里有真人报价、这一拍没有对真人出兵、同拍输出里有捐款（simdigest gates 的「同拍发出捐款」行）",
+   "instances": [
+    {
+     "t": 5300,
+     "bot": "Vlad Tepes"
+    },
+    {
+     "t": 5292,
+     "bot": "Vlad Tepes"
+    },
+    {
+     "t": 5313,
+     "bot": "Vlad Tepes"
+    },
+    {
+     "t": 6230,
+     "bot": "Jin"
+    },
+    {
+     "t": 4592,
+     "bot": "guest_104"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DF-mountain-front",
+   "definition": "山地图上，敌方真人用翻山指令（录像指令 10）越过山体，对陆上不接壤的我方号（或我方空壳）开出战线：出兵 = 余额×(pct+1)/1024，另扣 max(余额/10, 1000)",
+   "detectionSketch": "simdigest mountain：指令 10 的目标是编队名字且下令前双方陆上不接壤，300 拍内目标丢地 >=500 格",
+   "instances": [
+    {
+     "t": 3514,
+     "bot": "guest_104"
+    },
+    {
+     "t": 5488,
+     "bot": "Red Army"
+    },
+    {
+     "t": 7448,
+     "bot": "Lusitania"
+    }
+   ]
+  },
+  {
+   "name": "NEW:MT-no-mountain-cmd",
+   "definition": "我方在场号策略眼里 nb=0（陆上没有可打的邻居），但它贴着的山体另一侧有敌方真人的地——按引擎的翻山规则够得着；c110 全文没有翻山指令，也不读贴山边界格",
+   "detectionSketch": "影子探针 --mtncheck：「陆上不接壤、翻山够得着的敌方真人」>=1 个且 nb=0，记下够得着的边数；与同一拍的 --boatcheck（船发不出）对照",
+   "instances": [
+    {
+     "t": 5450,
+     "bot": "Ainz"
+    },
+    {
+     "t": 6500,
+     "bot": "Ainz"
+    },
+    {
+     "t": 7200,
+     "bot": "Ainz"
+    },
+    {
+     "t": 4700,
+     "bot": "Gengar"
+    },
+    {
+     "t": 6500,
+     "bot": "Gengar"
+    },
+    {
+     "t": 7900,
+     "bot": "Gengar"
+    },
+    {
+     "t": 5500,
+     "bot": "Jin"
+    }
+   ]
+  },
+  {
+   "name": "NEW:BT-food-husk",
+   "definition": "boatFood → searchFood 选隔海目标时只排除「邻居表里的」和「真人」；我方空壳已被移出邻居表、又不算真人，于是成了发船目标——陆攻被保护名单挡住的空壳，船照样打",
+   "detectionSketch": "重放：我方在场号的船在下令那一拍瞄的是编队名字的空壳（simdigest boats 的目标列）；影子探针同拍 searchWater 无命中而 act() 发出「船→空壳」",
+   "instances": [
+    {
+     "t": 4298,
+     "bot": "Rashidun"
+    },
+    {
+     "t": 4851,
+     "bot": "Rashidun"
+    },
+    {
+     "t": 4928,
+     "bot": "Gran Colombia"
+    },
+    {
+     "t": 4928,
+     "bot": "KaiCenat"
+    }
+   ]
+  },
+  {
+   "name": "NEW:SP-squad-stack",
+   "definition": "两个我方号最终出生点相距 <80 格（同队或异队）",
+   "detectionSketch": "录像里最后一条生效的选点指令（spawn_geo.py / digest.py picks）",
+   "instances": [
+    {
+     "t": 40,
+     "bot": "Rashidun"
+    },
+    {
+     "t": 40,
+     "bot": "IronMan"
+    },
+    {
+     "t": 40,
+     "bot": "KaiCenat"
+    },
+    {
+     "t": 40,
+     "bot": "Rayquaza"
+    }
+   ]
+  },
+  {
+   "name": "NEW:OP-cycle-open",
+   "definition": "开局周期出兵按时执行（指令延迟 <50 拍）且 t=630 单号领土中位不低于同局其余真人中位",
+   "detectionSketch": "logdigest oplag + simdigest medians",
+   "instances": [
+    {
+     "t": 630,
+     "bot": "全队"
+    }
+   ]
+  },
+  {
+   "name": "NEW:OP-safefinite-squad-lock",
+   "definition": "打内置 AI 的底线取到 safeFinite，而它的值是「某个内置 AI 邻居的另一个邻居」的兵，那个邻居是我方在场号（同队或异队）；去掉这一项当拍就能出兵",
+   "detectionSketch": "影子探针 tally：t<1500 gate=floor:sb 且 sbKind 为我方号 且 passNoSb=1（simdigest gates 第一部分）",
+   "instances": [
+    {
+     "t": 900,
+     "bot": "IronMan"
+    },
+    {
+     "t": 1000,
+     "bot": "Rashidun"
+    },
+    {
+     "t": 1200,
+     "bot": "Rayquaza"
+    },
+    {
+     "t": 1000,
+     "bot": "guest_104"
+    },
+    {
+     "t": 1000,
+     "bot": "Vlad Tepes"
+    },
+    {
+     "t": 1000,
+     "bot": "KaiCenat"
+    }
+   ]
+  },
+  {
+   "name": "NEW:IO-client-behind",
+   "definition": "本机拍落后服务器拍 >=90 拍",
+   "detectionSketch": "logdigest seqlag / digest lag",
+   "instances": [
+    {
+     "t": 1350,
+     "bot": "Rashidun"
+    },
+    {
+     "t": 1350,
+     "bot": "Cyrus"
+    },
+    {
+     "t": 1350,
+     "bot": "KaiCenat"
+    },
+    {
+     "t": 1350,
+     "bot": "Gran Colombia"
+    },
+    {
+     "t": 1350,
+     "bot": "EnPassant"
+    },
+    {
+     "t": 1350,
+     "bot": "guest_104"
+    },
+    {
+     "t": 1350,
+     "bot": "Dusan"
+    },
+    {
+     "t": 1350,
+     "bot": "Jin"
+    },
+    {
+     "t": 1350,
+     "bot": "Lusitania"
+    },
+    {
+     "t": 1350,
+     "bot": "Banana"
+    }
+   ]
+  },
+  {
+   "name": "NEW:IO-cmd-blackout",
+   "definition": "指令断档：某个号相邻两次有指令进录像的拍相隔 >=300，而这段时间它的日志 cmds 计数涨了 >=5",
+   "detectionSketch": "simdigest gaps",
+   "instances": [
+    {
+     "t": 1540,
+     "bot": "Rashidun"
+    },
+    {
+     "t": 1246,
+     "bot": "Cyrus"
+    },
+    {
+     "t": 1239,
+     "bot": "KaiCenat"
+    },
+    {
+     "t": 1148,
+     "bot": "Gran Colombia"
+    },
+    {
+     "t": 1092,
+     "bot": "EnPassant"
+    },
+    {
+     "t": 1113,
+     "bot": "guest_104"
+    },
+    {
+     "t": 1218,
+     "bot": "Dusan"
+    },
+    {
+     "t": 1190,
+     "bot": "Jin"
+    },
+    {
+     "t": 1162,
+     "bot": "Lusitania"
+    },
+    {
+     "t": 1239,
+     "bot": "Banana"
+    }
+   ]
+  },
+  {
+   "name": "NEW:IO-lag-burst",
+   "definition": "同号同拍 >=3 条生效指令且一拍内出兵+手续费 >= 拍前余额的 50%（攒下的指令成批执行，每条按执行时余额的百分比连乘）",
+   "detectionSketch": "simdigest bursts",
+   "instances": [
+    {
+     "t": 1995,
+     "bot": "Rashidun"
+    },
+    {
+     "t": 1981,
+     "bot": "Gran Colombia"
+    },
+    {
+     "t": 2002,
+     "bot": "Lusitania"
+    },
+    {
+     "t": 2009,
+     "bot": "Jin"
+    },
+    {
+     "t": 1512,
+     "bot": "IronMan"
+    }
+   ]
+  },
+  {
+   "name": "NEW:IO-disconnect-husk",
+   "definition": "我方号在存活状态下被登记离开，领土和兵留在场上由内置 AI 托管、利息为 0，仍算原队成员",
+   "detectionSketch": "录像离开指令 + 日志末拍（simdigest gaps 末段）",
+   "instances": [
+    {
+     "t": 1652,
+     "bot": "Red Army"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AT-thin-human-pulse",
+   "definition": "对密度 <15 的真人邻居出兵，每格花费 < worth 的一半且 600 拍内领土 +30% 以上",
+   "detectionSketch": "simdigest bursts + top（对方密度）",
+   "instances": [
+    {
+     "t": 1981,
+     "bot": "Gran Colombia"
+    },
+    {
+     "t": 1988,
+     "bot": "Jin"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AT-over-cap-dump",
+   "definition": "兵超过 100×领土后对真人邻居一次打出 >=20% 余额的陆攻并拿到地",
+   "detectionSketch": "simdigest bursts / cmdlist",
+   "instances": [
+    {
+     "t": 1995,
+     "bot": "Rashidun"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AT-overcap-price-skip",
+   "definition": "超软上限（兵 > 100×领土）时 buyLand 不比价：对报价 c >= worth 的真人出兵",
+   "detectionSketch": "影子 tally：对真人出兵的决策拍里 over=1 且报价 >= worth（simdigest gates 第二部分末行）",
+   "instances": [
+    {
+     "t": 5285,
+     "bot": "Ainz"
+    },
+    {
+     "t": 5299,
+     "bot": "Ainz"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AT-worth-gate",
+   "definition": "有真人在打我（或在打我的队友），而 buyLand 对每个真人邻居的报价都停在 L5267（c >= worth 且没超软上限）",
+   "detectionSketch": "影子 tally：hum>0、首个真人报价出口 L5267（simdigest gates）",
+   "instances": [
+    {
+     "t": 4600,
+     "bot": "guest_104"
+    },
+    {
+     "t": 4700,
+     "bot": "Ainz"
+    },
+    {
+     "t": 5700,
+     "bot": "EnPassant"
+    },
+    {
+     "t": 6100,
+     "bot": "Jin"
+    },
+    {
+     "t": 7000,
+     "bot": "Banana"
+    },
+    {
+     "t": 8060,
+     "bot": "Gengar"
+    }
+   ]
+  },
+  {
+   "name": "NEW:EG-giant-neighbor-freeze",
+   "definition": "邻居表里最强真人的兵让 dpKeep=(对方兵+压在我身上的兵−1.5×我的地)/1.78 >= 自己的全部兵 → 对所有目标 avail<=0（L5361）",
+   "detectionSketch": "影子 tally：出口 L5361 且 h5361=dpKeep；simdigest contact 的冻结线",
+   "instances": [
+    {
+     "t": 5300,
+     "bot": "Vlad Tepes"
+    },
+    {
+     "t": 7030,
+     "bot": "Rayquaza"
+    },
+    {
+     "t": 7300,
+     "bot": "Ainz"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DF-passive-death",
+   "definition": "阵亡/清地前 900 拍被真人拿走 >=1,000 格，而自己此前 600 拍对真人的陆攻不超过 10% 戳",
+   "detectionSketch": "simdigest deaths：死前 600 拍自己的指令",
+   "instances": [
+    {
+     "t": 5008,
+     "bot": "guest_104"
+    },
+    {
+     "t": 5912,
+     "bot": "EnPassant"
+    },
+    {
+     "t": 6750,
+     "bot": "Vlad Tepes"
+    },
+    {
+     "t": 6915,
+     "bot": "Jin"
+    },
+    {
+     "t": 7107,
+     "bot": "Rayquaza"
+    },
+    {
+     "t": 7132,
+     "bot": "Banana"
+    },
+    {
+     "t": 7550,
+     "bot": "Lusitania"
+    },
+    {
+     "t": 7977,
+     "bot": "Ainz"
+    },
+    {
+     "t": 8119,
+     "bot": "Gengar"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DF-sea-landing",
+   "definition": "外人的船在我方在场号的岸上登陆，船上兵 >= 我方号当时兵力的 50%（且 >=2 万）",
+   "detectionSketch": "simdigest landings",
+   "instances": [
+    {
+     "t": 7836,
+     "bot": "Ainz"
+    },
+    {
+     "t": 7907,
+     "bot": "Ainz"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-pingpong",
+   "definition": "A 捐给 B 之后 150 拍内 B 又捐回 A（两笔都执行）",
+   "detectionSketch": "simdigest don 的「对倒」段",
+   "instances": [
+    {
+     "t": 4592,
+     "bot": "Ainz"
+    },
+    {
+     "t": 5278,
+     "bot": "Ainz"
+    },
+    {
+     "t": 5292,
+     "bot": "Vlad Tepes"
+    },
+    {
+     "t": 6272,
+     "bot": "Jin"
+    },
+    {
+     "t": 5054,
+     "bot": "Rashidun"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-fee-exceeds-delivery",
+   "definition": "已执行的捐款到账 < 手续费：手续费按捐款人余额的 6.25% 收，到账被收款人离硬上限的空间（150×领土−余额）截断；或 pct<64 本来就到账不及手续费",
+   "detectionSketch": "simdigest don 的「手续费 > 到账」段",
+   "instances": [
+    {
+     "t": 5082,
+     "bot": "Ainz"
+    },
+    {
+     "t": 4886,
+     "bot": "Ainz"
+    },
+    {
+     "t": 5719,
+     "bot": "Ainz"
+    },
+    {
+     "t": 6860,
+     "bot": "Ainz"
+    },
+    {
+     "t": 5733,
+     "bot": "Cyrus"
+    },
+    {
+     "t": 4760,
+     "bot": "Cyrus"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-to-overcap",
+   "definition": "收款人离 150×领土的硬上限太近：到账被余量截断而手续费照收",
+   "detectionSketch": "simdigest don：收款人密度 >=140 的行",
+   "instances": [
+    {
+     "t": 5733,
+     "bot": "Cyrus"
+    },
+    {
+     "t": 5082,
+     "bot": "Ainz"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-husk-donate",
+   "definition": "捐款的收款人当时已经离开对局（内置 AI 托管的空壳）",
+   "detectionSketch": "simdigest don 的「捐给空壳」段",
+   "instances": [
+    {
+     "t": 4928,
+     "bot": "Ainz"
+    },
+    {
+     "t": 5418,
+     "bot": "Ainz"
+    },
+    {
+     "t": 6230,
+     "bot": "Jin"
+    },
+    {
+     "t": 6356,
+     "bot": "Jin"
+    },
+    {
+     "t": 5488,
+     "bot": "Vlad Tepes"
+    },
+    {
+     "t": 4382,
+     "bot": "guest_104"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-dying-donor",
+   "definition": "捐款人自己的领土在 300 拍内已跌 >=25%，仍然往外捐",
+   "detectionSketch": "simdigest deaths 的「死前 900 拍自己捐出」",
+   "instances": [
+    {
+     "t": 4732,
+     "bot": "guest_104"
+    },
+    {
+     "t": 5838,
+     "bot": "EnPassant"
+    },
+    {
+     "t": 6741,
+     "bot": "Jin"
+    },
+    {
+     "t": 6601,
+     "bot": "Vlad Tepes"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-over-quota",
+   "definition": "一笔捐款按引擎额度公式需要的点数超过当拍的受捐上限（即使对方额度一点没用也过不了）",
+   "detectionSketch": "simdigest probe：配额不够且已用 0",
+   "instances": [
+    {
+     "t": 1695,
+     "bot": "Rashidun"
+    },
+    {
+     "t": 1800,
+     "bot": "Rashidun"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-quota-retry-loop",
+   "definition": "同一个捐款人对同一个收款人连续 >=5 条捐款都没执行，按配额账「已用 + 需要 > 上限」；每条间隔就是捐款冷却（18~20 拍）",
+   "detectionSketch": "simdigest probe 的「配额不够按（捐款人→收款人）」行",
+   "instances": [
+    {
+     "t": 3950,
+     "bot": "Jin"
+    },
+    {
+     "t": 4000,
+     "bot": "Vlad Tepes"
+    },
+    {
+     "t": 1810,
+     "bot": "Lusitania"
+    },
+    {
+     "t": 1800,
+     "bot": "Rashidun"
+    }
+   ]
+  },
+  {
+   "name": "NEW:DN-rear-to-front",
+   "definition": "没有可打邻居的后排号把兵捐给有敌邻或正在挨打的同队编队号，且捐款被执行",
+   "detectionSketch": "simdigest boxedout：nb=0、neut=0 的号同期执行的捐款",
+   "instances": [
+    {
+     "t": 7231,
+     "bot": "Gengar"
+    },
+    {
+     "t": 6342,
+     "bot": "Gengar"
+    },
+    {
+     "t": 6209,
+     "bot": "Ainz"
+    }
+   ]
+  },
+  {
+   "name": "NEW:PL-protect-box",
+   "definition": "被保护名单围住：我方在场号连续 >=180 拍没有可打的邻居、也没有无主邻格（策略 nb=0 且 neut=0），而它实际挨着名字在池里的异队号/空壳或撞名内置 AI",
+   "detectionSketch": "simdigest protbox",
+   "instances": [
+    {
+     "t": 2250,
+     "bot": "Rayquaza"
+    },
+    {
+     "t": 2610,
+     "bot": "Banana"
+    },
+    {
+     "t": 5130,
+     "bot": "Lusitania"
+    },
+    {
+     "t": 4590,
+     "bot": "Gengar"
+    },
+    {
+     "t": 4680,
+     "bot": "Cyrus"
+    },
+    {
+     "t": 2520,
+     "bot": "Rashidun"
+    }
+   ]
+  },
+  {
+   "name": "NEW:HK-husk-eats-us",
+   "definition": "我方空壳（内置 AI 托管）对我方在场号出兵并拿走领土，而在场号因保护名单不能陆攻它",
+   "detectionSketch": "simdigest husks",
+   "instances": [
+    {
+     "t": 5500,
+     "bot": "Rashidun"
+    },
+    {
+     "t": 5700,
+     "bot": "KaiCenat"
+    },
+    {
+     "t": 5100,
+     "bot": "Gran Colombia"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AS-poke-then-hit",
+   "definition": "HL-ASSIST 的 10% 戳执行后 300 拍内从被戳的人手里拿到 >=3,000 格（相邻几条戳的窗口会重叠）",
+   "detectionSketch": "simdigest pokes 的「得地」列",
+   "instances": [
+    {
+     "t": 3815,
+     "bot": "Cyrus"
+    },
+    {
+     "t": 4291,
+     "bot": "Ainz"
+    },
+    {
+     "t": 4571,
+     "bot": "Ainz"
+    },
+    {
+     "t": 4725,
+     "bot": "Ainz"
+    },
+    {
+     "t": 4851,
+     "bot": "Ainz"
+    }
+   ]
+  },
+  {
+   "name": "NEW:AS-poke-for-husk",
+   "definition": "HL-ASSIST 的被救对象当时已经离开对局（空壳）",
+   "detectionSketch": "simdigest pokes 的「空壳」标记",
+   "instances": [
+    {
+     "t": 5943,
+     "bot": "Ainz"
+    },
+    {
+     "t": 6132,
+     "bot": "Ainz"
+    }
+   ]
+  },
+  {
+   "name": "NEW:BT-hit-squadmate",
+   "definition": "我方在场号的船靠上「异队的我方在场号」的岸：保护名单只管陆攻和选目标，引擎照样按进攻结算",
+   "detectionSketch": "simdigest landings / boats",
+   "instances": [
+    {
+     "t": 2225,
+     "bot": "Lusitania"
+    },
+    {
+     "t": 4785,
+     "bot": "Dusan"
+    },
+    {
+     "t": 2819,
+     "bot": "KaiCenat"
+    }
+   ]
+  },
+  {
+   "name": "NEW:BT-squad-boats-fight",
+   "definition": "两个异队我方号的船在 7.5 格内互相开火（引擎：不同队的船每 2 拍互打）",
+   "detectionSketch": "simdigest boatwar",
+   "instances": [
+    {
+     "t": 2171,
+     "bot": "Lusitania"
+    },
+    {
+     "t": 2171,
+     "bot": "Dusan"
+    }
+   ]
+  },
+  {
+   "name": "NEW:BT-sunk",
+   "definition": "船没靠岸就在海上被敌船打光或打掉大半",
+   "detectionSketch": "simdigest boatwar / boats",
+   "instances": [
+    {
+     "t": 6391,
+     "bot": "Jin"
+    }
+   ]
+  },
+  {
+   "name": "NEW:FE-tiny-cmd-fee",
+   "definition": "出兵不到余额 5% 的指令（陆攻手续费固定为余额的 1.17%、发船 3.125%）；余额 >=100 万时单条手续费上万",
+   "detectionSketch": "simdigest fees",
+   "instances": [
+    {
+     "t": 7238,
+     "bot": "Cyrus"
+    },
+    {
+     "t": 8281,
+     "bot": "Cyrus"
+    },
+    {
+     "t": 8232,
+     "bot": "Teutonic Order"
+    },
+    {
+     "t": 5964,
+     "bot": "Dusan"
+    },
+    {
+     "t": 7014,
+     "bot": "Ainz"
+    },
+    {
+     "t": 4410,
+     "bot": "Ainz"
+    }
+   ]
+  },
+  {
+   "name": "NEW:CMD-repeat-before-effect",
+   "definition": "同一个号对同一玩家目标的两条生效陆攻相隔 <=21 拍（3 个服务器回合）：第二条是在第一条落地前后下的，各自按当拍余额的百分比出兵",
+   "detectionSketch": "simdigest dups",
+   "instances": [
+    {
+     "t": 5285,
+     "bot": "Ainz"
+    },
+    {
+     "t": 4291,
+     "bot": "Ainz"
+    }
+   ]
+  },
+  {
+   "name": "NEW:PL-pool-ai",
+   "definition": "内置 AI 的名字在编队名字池里（isOurSquadBot 只比名字）：我方号与它接壤却整局不打它",
+   "detectionSketch": "simdigest poolai / protbox",
+   "instances": [
+    {
+     "t": 2250,
+     "bot": "KaiCenat"
+    },
+    {
+     "t": 2250,
+     "bot": "Rayquaza"
+    }
+   ]
+  }
+ ],
+ "lossArchetype": "lead-thrown",
+ "secondaryArchetype": "team-split",
+ "teamSplit": true,
+ "externalFactors": [
+  "两队局，引擎把 17 个号分成队1 7 个、队2 10 个。同编队的号互相在保护名单里：两半各自吃对方队里的外人，t=5045 队2 最后一个外人出局，此后队1 的 7 个号没有任何合法目标，队2 的号独自面对队1 的两个真人 Player 666 和 g",
+  "指令断档（t=1090~1940）：10 个号的本机拍落后服务器 270~360 拍，各有 1~2 段 >=300 拍「策略在发令、录像里没有指令」，随后 8~9 条同拍执行；另一个号 Red Army 日志停在本机拍 990，t=1652 被登记离开（当时 3,956 格、23.9 万兵），之后是内置 AI 托管的空壳",
+  "录像里我方 913 条陆攻有 217 条没有效果（210 条打无主地；t<1500 60 条、1500~2199 151 条、之后 6 条）",
+  "山地图（地图 9）：引擎有「翻山」指令（录像指令号 10），本局 7 个外人共用了 20 条，我方 0 条（c110 没有这条指令）。g 用它三次越过山体对陆上不接壤的编队名字的号开战线：t=3514 guest_104、t=5488 空壳 Red Army、t=7448 Lusitania"
+ ],
+ "winnerNotes": "赢家队1。终局 Player 666 223,403 格（48.9%，t=8729 离开后是空壳）、g 73,488 格（16.1%，t=9583 离开）、[OMEN] Axolote 7,230 格；我方队1 的 7 个号 132,969 格（29.1%）。Player 666 的轨迹：t=1530 19,943 格、13.8 万兵（密度 6.9）→t=5000 61,124 格、523 万→t=6000 90,733 格、890 万→t=7000 129,378 格、1,365 万→t=8100 204,835 格、1,949 万。t=5000 之后它的地几乎全部来自我方队2 的号。它的打法：一次只打一个号，连打到清地再换下一个（Vlad Tepes 8 条、Jin 6 条、Ainz 6 条 + 3 次登陆）；每条陆攻多是 115~194‰（余额的 11.2%~18.9%，102 万~393 万），t=5000~8100 对我方 25 条陆攻 4,351 万 + 3 次登陆 681 万，而我方对它只有 7 条 10% 戳 64.2 万。它用船开新战线：t=7215 在 Ainz 的岸上登陆 88.7 万，绕过了隔在中间的队1 编队号。清地规则站在进攻方一边：领土跌到衰减峰值的 1/4 就整个出局，Ainz 清地时还有 11,106 格、129 万兵，Gengar 8,242 格、25.9 万兵。g 一直用 167‰（余额的 16.3%）：guest_104 7 条、空壳 Red Army 9 条、Rayquaza 2 条、Lusitania 2 条、Ainz 3 条 + 2 次登陆。它有一件我方没有的工具——翻山指令：全场 20 条里 g 发了 5 条，其中 3 条打在编队名字上（t=3514 guest_104、t=5488 空壳 Red Army、t=7448 Lusitania），每一条都是对一个陆上不接壤、挤在山后的号开线，三个目标后来都被它吃掉。队1 我方 7 个号对这场胜利的贡献在 t=5000 之前：t=1500~5000 从队2 外人手里拿走 84,161 格；之后 4,800 拍对敌方 0 条陆攻。它们同时隔开了 Player 666 / g 与 Ainz、Gengar，前者只能先吃小号、走海路或翻山。",
+ "wentWell": [
+  "开局全员按时：t=630 17 个号都在 2,181 格以上，中位 2,858，比其余真人的中位高 38%。",
+  "t=1981~2010 把攒下的兵整笔压给低密度的真人（密度 9.5~13.4）：断档组领土 67,710→159,457（t=2520），同期其余真人 285,507→193,712。t=1500~3000 两半合计从敌方真人手里拿走 105,799 格，耗兵 214 万（每格 20）。",
+  "10% 戳引出了一段成功的交战：Cyrus t=3815 戳 sigma[athiest]，对方还手后 buyLand 放行，t=3800~4400 耗兵 197 万拿到 17,736 格（每格 111 兵），sigma 出局。Ainz 的 9 条戳（449 万）是我方对 g 仅有的进攻，t=4200~5200 七条 354 万拿到 9,412 格。",
+  "编队在场号合计占到全图 67.3%（t=4980），两半之间整局 0 条陆攻指令。",
+  "按 300 拍窗口×指令类比对，影子与录像一致 314/385（断档窗口之外 275/319）；17 个号里只有 1 个客户端掉线。"
+ ],
+ "unknowns": [
+  "10 个客户端为什么在 t≈1080~1710 同时落后服务器 270~360 拍：局内数据只看得到结果（策略自己的耗时不高）。",
+  "Red Army 的客户端为什么在本机拍 990 停摆。",
+  "空壳 Red Army 的内置 AI 为什么把兵用在打队1 的编队号上（618 万）而不是打正在吃它的 g（90.5 万）：引擎里托管 AI 的选目标规则没有逐行核对。",
+  "Ainz t=7014 那条 8,971 兵的船（1‰，手续费 14.4 万，瞄的是 Player 666 的岸）影子没有复现；推断走的是桥头堡 / 拓宽分支（L3626-3660：出兵 + 手续费 <= 余额的 7% 才发），没有逐拍复现。",
+  "g 的 5 条翻山指令为什么只在这几拍发、Player 666 为什么一条不发：对手的操作习惯，局内数据看不到。",
+  "翻山够得着的那几段边到底能换回多少地：本局我方 0 条翻山指令，没有可比的成交价（g 的三条：32.1 万→300 拍内 971 格，58.3 万→1,706 格，123 万→4,151 格并清地）。",
+  "t=8119 队2 最后一个号出局后对局又走到 t=9857 才结束（队1 100%）：引擎的结束条件没有查。",
+  "「队1 的编队号隔开了 Player 666 与 Ainz」对队2 是利是弊：它让 Ainz 晚死，也让 Ainz 的兵 1,800 拍用不上；没有办法从这一局分出净效果。"
+ ],
+ "mechanicsQuestions": [
+  {
+   "q": "额度拒单",
+   "a": "406 条 HL-DONATE：执行 300，配额不够 45（t<2200 16 条、2200~4283 29 条、t>=4284 0 条——引擎从 t=4284 起不查配额），收款人顶格 4，配额临界 4，引擎校验单独看能过却没执行 53。后者里 41 条是同一拍 >=2 个号捐给同一个收款人（60 组 174 条日志）：先到的一笔把余量用掉。两类拒单：（1）单笔点数超过整个上限（Rashidun t=1695~1970 七条：要 113~144 点，上限 97~109，已用 0）；（2）收款人的点数被前面的人用光（t=3950~4210 给 Ainz 的 24 条：Jin 11、Vlad Tepes 7、Gengar 3、Lusitania 2、Rayquaza 1；已用 278/279）。被拒不扣兵，但每条占一次 18 拍的捐款冷却，并且那一拍不再检查发船。"
+  },
+  {
+   "q": "小额捐款的 6.25% 全额税",
+   "a": "我方已执行捐款 300 笔：到账 6,923 万、手续费 3,545 万（损耗率 33.9%；队1 88 笔 35.4%、队2 212 笔 33.3%）。pct 分布：185‰ 171 笔、153‰ 51 笔、155‰ 36 笔、280‰ 24 笔、<150‰ 18 笔（到账 213 万、手续费 159 万，损耗率 42.8%）。手续费高于到账的 38 笔（到账 227 万、费 766 万）几乎都不是 pct 小，而是收款人余量小：t=5733 Cyrus→KaiCenat 到账 7,010、费 48.6 万；t=5082 Ainz→Lusitania 1.6 万/40.6 万。按窗口：捐款手续费占收入 t=3000~4000 队1 11.4%、队2 15.6%；4000~5000 36.6%、38.5%；5000~6000 31.3%、37.9%；6000~7000 28.3%、39.4%。"
+  },
+  {
+   "q": "内陆被围高密度",
+   "a": "策略眼里 nb=0、neut=0 的时段 30 段 72,900 拍，25 段（61,200 拍）挨着保护名单。两种形态：队2 的号被围时密度 49~104——余额一过 55 兵/格就捐（t=5000~8125 2,239 个这类决策拍，密度中位 68~76，>=133.3 的 23 拍）；队1 的号没有合格的收款人，密度顶到 150（4,273 个决策拍里 3,528 个 >=133.3），t=5000 之后少拿利息 1.158 亿。船：floor=100×地 让被围的号要到密度 133.3 才发得出往敌方岸的船；Gengar、Cyrus、Dusan、Banana 的岸 200 格水程内根本没有可登陆的地。"
+  },
+  {
+   "q": "出生与开局扩张",
+   "a": "选点各算各的：8 个号（两队各 4 个）落在一块，<145 格的 12 对里 9 对异队。开局周期出兵正常（t=630 中位 2,858 对 2,077）。t=600~1499 的问题是两件：safeFinite 被另一个我方号的余额锁住 767/3,037 个决策拍（25.3%），集中在挤着出生的号上；10 个号 301~385 拍的指令断档。t=1530 我方中位 6,148 对其余真人 11,012。断档攒下的兵在 t=1981~2010 成批打出去，对手是已经花光兵的真人，断档组到 t=2520 反而涨了 2.94 倍——这是本局特有的结果，不是策略安排的。"
+  },
+  {
+   "q": "前线消耗与底线",
+   "a": "t>=1500 有真人报价的 5,080 个决策拍：L5267 2,808（55.3%）、出兵 662（13.0%）、L5271 582（11.5%）、dpKeep L5361 384（7.6%）。正被真人打的 725 拍里 682 拍（94.1%）没有出兵。t=5000 之后更极端：1,245 拍里出兵 9 拍。三道闸的数：对同密度真人的报价 c≈3~4×对方密度（260~460），worth≈0.9×自己密度（70~130）→ 没超软上限时 L5267 永远 break；超了软上限，只有一个真人邻居时 L5271 挡到密度 128；对面的兵 >= 1.78×我的兵 + 1.5×我的地时 dpKeep 全挡。捐款的保底线却封顶在 88×地：t>=1500 有 95 个决策拍「有真人报价、不出兵、同拍捐款」。"
+  },
+  {
+   "q": "squad20 拆队",
+   "a": "真实分队 队1=7、队2=10（卡片 1:7、2:9）。保护名单让两半互不打（整局 0 条互攻陆攻指令），效果分三段：（1）t<5000 两半各吃对方的外人，合计到 67.3%；（2）t=5045 队2 外人清零后，队1 的 7 个号没有目标（少拿利息 1.158 亿），队2 的号独自对 Player 666 + g；（3）队1 的号还把队2 的大号围在里面（Ainz t=6210~7200、Gengar t=4590~7920）。副作用：船照样打——13 条船 42.4 万兵登上异队编队号的岸，Lusitania 和 Dusan 的船在海上互打 8.9 万；空壳 Red Army（队2）拿走队1 三个号 16,327 格，它们不能陆攻它。"
+  },
+  {
+   "q": "R06 专项：后排输血效率与前线节奏",
+   "a": "队2 的后排输血量很大而转化很差：t=5000~8100 在场号收入 4,305 万，捐出到账 2,904 万（其中 868 万给了空壳）、手续费 1,542 万（收入的 35.8%），最后变成对敌方真人的耗兵只有 457 万（得 8,661 格），同期被拿走 134,255 格、被打掉 2,310 万兵。原因分三层：（1）收款的前线号被闸冻住（见上），收到的兵要么顶在 150×地 的硬上限上（余量小 → 到账被截），要么被转捐（整局对倒 45 组、回流 1,232 万、两头手续费 1,376 万）；（2）收款人里有空壳（整局 44 笔 1,136 万）和 300 拍内阵亡的号（39 笔 701 万）；（3）前线号挨打间隙自己也在往后排捐。最大的后排号 Ainz 这一段捐 24 笔：到账 1,073 万、手续费 788 万，自己对 Player 666 0 条陆攻。协防 = 17 条 10% 戳（545 万、手续费 63.4 万）：戳 g 9 条 449 万、戳 Player 666 7 条 64.2 万、戳 sigma 1 条 31.6 万。HL-PEACE 0 行。"
+  },
+  {
+   "q": "山地图的翻山指令（本局特有）",
+   "a": "引擎有一条翻山进攻（录像指令 10；本项目 12 局带录像的对局里只有这一局出现）：点击的格必须是目标（或无主地）贴着某块山体的格，且出兵方的贴山边界格也挨着同一块山体；出兵 = 余额×(pct+1)/1024，另扣 max(余额/10, 1000)。本局 20 条：Osterreich 7、g 5、Player 971 2、cold1 2、fan de Player Ian 2、Cetlandria 1、Player 34 1；我方 17 个号 0 条——c110 里没有这条指令。g 的 3 条打在编队名字上，下令前都不接壤（重放核对）：t=3514 guest_104（余额 196 万→出兵 32.1 万、另扣 19.6 万）、t=5488 空壳 Red Army（58.3 万、35.5 万）、t=7448 Lusitania（123 万、75.0 万）。反过来，探针 --mtncheck 在 Ainz 的 8 个采样拍（t=5450~7200）、Gengar 的 8 个采样拍（t=4700~7900）都报「翻山够得着 Player 666」（Ainz 5 条边、Gengar 3 条边，口子很窄），t=6500 起还够得着 g（53 条边，t=7200 233 条边），Jin t=5500 够得着 Player 666 104 条边；这些拍策略眼里 nb=0，船又被 floor 卡住。我方没有样本，翻山的成交价只有 g 的三条可看（32.1 万→300 拍内 971 格；58.3 万→1,706 格；123 万→4,151 格）。"
+  },
+  {
+   "q": "HUB 广播 0003 / 0004 / 0005 的几项",
+   "a": "isNoFullSend：影子里 15 个号被置真（Jin、Rayquaza 没有），多数在 t<800。safeFinite 互锁：t<1500 25.3%；t>=1500 非真人报价的 1,535 拍里取到异队编队号的兵 203 拍（去掉也不够）。无主地小单挤掉 buyLand：影子同拍两条 43/2,320 拍，其后 25 拍内只执行无主地单 7 次。未生效重复下单：48 组（对玩家陆攻的 12.2%），第二条出兵 565 万、手续费 59.7 万（Ainz 11 组）。minCmd：非真人报价 1,535 拍里 923 拍（60.1%）停在 L5367。超软上限不比价：对真人出兵的 662 拍里 38 拍靠它放行（Ainz 19、Gengar 17）。yield_opt_dispatch、isDoomedPocket 不在 c110 里。船：44 次靠友军岸移交 201 万兵、蒸发 55.8 万；Jin 一条 79.0 万的船被打掉 59.1 万；队1 的 7 个号 t=5000 之后发了 33 条船，船上合计 40.0 万兵、手续费 276 万（Cyrus 6 条 5.0 万 / 159 万）。船落点退兵与长航线损耗：本局没有量。"
+  }
+ ],
+ "scripts": [
+  "node c136-review/agents/R06/scripts/map_export.mjs B023 --verify（套 run-heavy.sh；导出地图 9_11956，陆地格数与对局卡一致）",
+  "bash c136-review/agents/R06/scripts/run_truth.sh B023（sim_prep.py + eng_replay.cjs：真引擎重放，写 out/B023/sim_state.json；日志快照 1382/1382 一致；翻山指令 10 也记进指令表）",
+  "python3 c136-review/agents/R06/scripts/simdigest.py B023 check|teams|roster|medians|top <t> <n>|ledger [me]|deaths [me]|don|probe|gifts|boats [me]|landings|boatwar|fees|nfs|cmds|cmdlist <me> [t0 t1]|neigh <me>|protbox|gaps|gapgrow|husks|poolai|bursts|collapse|pokes|shadow|gates [t0 t1]|dups|crowd|halves|contact [T<队>] [t…]|sieges|exchange|boxedout [t0 t1]|mountain|pair <me> [t0 t1]|json",
+  "node c136-review/agents/R06/scripts/strat_probe.mjs B023 --me squad --json --tally（套 run-heavy.sh；影子策略逐拍流水，写 out/B023/probe.json）；--me <号> --to <t> [--boatcheck] [--mtncheck] --dump 号:起:止:步长（节选和各自的命令行存在 out/B023/probe.txt 一~十）",
+  "python3 c136-review/agents/R06/scripts/spawn_geo.py B023 [json]；python3 c136-review/agents/R06/scripts/digest.py B023 roster|teams|timeline|deaths|donations|drops|picks|lag|json",
+  "python3 c136-review/agents/R06/scripts/logdigest.py B023 seqlag|opening|oplag|issued|donval|drop30|json",
+  "python3 c136-review/agents/R06/scripts/make_review.py B023"
+ ],
+ "confidenceOverall": "high：全场状态来自真引擎重放（t=0~9857，日志快照 1382/1382 条逐兵一致），指令、捐款、船、登陆、清地都是引擎真值；代码分支来自影子探针逐拍输出（干净模拟器与重放一致到 t=8070）。翻山指令的出兵和扣费公式是用本局 20 条指令的重放结果对出来的。推断并已标明的三处：Lusitania t=2002 那批船下令时瞄的是谁、Ainz t=7014 那条小船的分支、托管 AI 的选目标规则。客户端为什么落后属于局外，没有查。"
+}

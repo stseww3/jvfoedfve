@@ -7,10 +7,12 @@
 //
 //   python3 c136-review/agents/R06/scripts/sim_prep.py <matchId>      # 先有 out/<matchId>/sim_in.json
 //   bash c136-review/tools/run-heavy.sh node c136-review/agents/R06/scripts/strat_probe.mjs <matchId> --me 45,47 \
-//        [--to T] [--dump 45:2070:2200:30,47:3400:3900:60] [--strategy c110] [--offline] [--nfs 0|1] [--win 90] [--json] [--tally]
+//        [--to T] [--dump 45:2070:2200:30,47:3400:3900:60] [--strategy c110] [--offline] [--nfs 0|1] [--win 90] [--json] [--tally] [--boatcheck] [--mtncheck]
 //
 //   --me      要挂影子策略的玩家号（逗号分隔；squad = 全部我方号）
 //   --dump    玩家:起拍:止拍:步长，在这些拍打印 buyLand 的逐报价账（可多段，逗号分隔）
+//   --boatcheck  配 --dump：每个 dump 拍多打一行「发船检查」（idleBoats/boatOut/searchWater 在这一拍的各项条件，只读）
+//   --mtncheck   配 --dump：每个 dump 拍多打一行「翻山检查」（自己贴着的山体另一侧是谁的地；c110 没有翻山指令，只读）
 //   --nfs     强制 isNoFullSend 的取值（缺省：让影子自己按代码演化）
 //   --offline 让策略以为自己在离线模拟器里（g.online=false）；缺省按线上（g.online=true）
 //   --win     汇总窗口（拍），打印每个窗口影子想发的指令数和录像里实际执行的指令数
@@ -566,6 +568,81 @@ const tallyTick = (sh) => {
   tally.push(rec);
 };
 
+// 发船检查（只读）：idleBoats（c110 L4979-5006）→ boatOut（L1035-1050）→ searchWater（L1056-1113）在这一拍的各项条件。
+// searchWater 只写它自己的草稿数组；这里不调 boatOut / boatFood（它们会改 lastBoat 并发令）。
+const explainBoat = (sh) => {
+  const pol = sh.pol, me = sh.me, P = pol.p;
+  const o = { allowed: !!g.boatsAllowed(me), boatCount: g.boatCount[me], maxBoats: P.maxBoats, sinceLast: g.t - (pol.lastBoat ?? -1e9), boatEvery: P.boatEvery,
+    coast: g.coast?.[me]?.length ?? 0, idleNeed: P.idleCap * 100 * g.terr[me], range: P.boatRange };
+  try { o.mop = !!pol.isMopUp(g); } catch { o.mop = null; }
+  let hit = null;
+  try { hit = pol.searchWater(g); } catch (e) { o.err = String(e).slice(0, 80); }
+  if (hit) {
+    const bal = g.bal[me];
+    o.hit = { owner: hit.neutral ? NEUTRAL : g.own[hit.land], neutral: !!hit.neutral, price: hit.price, eff: hit.eff, size: hit.size };
+    try {
+      const { floorAt, cap, avgNb } = pol.floors(g);
+      o.floor = floorAt(hit.price);
+      o.max = P.boatFrac * (bal - o.floor);
+      const early = g.t < P.earlyEnd;
+      const reserveK = early ? P.reserveEarly : P.reserve;
+      o.parts = { cap, keepCap: P.keepCap, floorK: pol.floorK, reserveK, cRef: P.cRef,
+        reserveTerm: reserveK * cap * Math.min(1, hit.price / P.cRef), refFloor: Math.max((early ? P.refEarly : P.ref) * avgNb, pol.defenseNeed(g)),
+        seaSafe: P.seaSafe > 0 && g.t >= P.coreFrom ? pol.safeAt(g, -1) : 0,
+        idleKeep: P.idleSafe > 0 && pol.idle(g) ? P.idleSafe * 100 * g.terr[me] + iV(32 * bal, 1024) : 0 };
+    } catch (e) { o.err = String(e).slice(0, 80); }
+    o.min = P.boatFee > 0 && hit.neutral ? 60 : Math.max(60, P.feeK * iV(32 * bal, 1024));
+  }
+  return o;
+};
+const boatLine = (sh) => {
+  const o = explainBoat(sh), pol = sh.pol;
+  const pre = [];
+  if (!o.allowed) pre.push('引擎不许发船');
+  if (o.boatCount >= o.maxBoats) pre.push(`在海上的船 ${o.boatCount} >= maxBoats ${o.maxBoats}`);
+  if (pol.neutral > 0) pre.push('有无主邻格（L4995 return）');
+  if (o.sinceLast < o.boatEvery) pre.push(`距上次发船检查 ${o.sinceLast} 拍 < boatEvery ${o.boatEvery}`);
+  if (pol.nb.length && g.bal[sh.me] < o.idleNeed) pre.push(`有可打的邻居且兵 < idleCap×100×地 = ${k(o.idleNeed)}（L4996 return）`);
+  let res;
+  if (!o.hit) res = `searchWater 在 ${o.range} 格水程内找不到可登陆的地（无主地，或不在保护名单里、也不是陆上邻居的玩家的地）${o.err ? '；' + o.err : ''}`;
+  else res = `searchWater 命中 ${o.hit.neutral ? '无主地' : nm(o.hit.owner)}（price=${o.hit.price.toFixed(1)} eff=${o.hit.eff.toFixed(1)}）；可发 max=boatFrac×(兵−floor ${k(o.floor ?? 0)})=${k(o.max ?? 0)}，下限 min=${k(o.min)} → ${(o.max ?? 0) < o.min ? 'max < min，不发（L1044）' : '够发'}${o.parts ? `；floor 的来历（L865/L2869）：floorK ${o.parts.floorK} × min(keepCap ${o.parts.keepCap} × 100×地 ${k(o.parts.cap)}, max(reserve ${o.parts.reserveK} × 100×地 × min(1, price/cRef ${o.parts.cRef}) = ${k(o.parts.reserveTerm)}, refFloor ${k(o.parts.refFloor)}))，再与 safeAt(-1)=${k(o.parts.seaSafe)}、idleKeep=${k(o.parts.idleKeep)} 取大` : ''}`;
+  return `        发船检查：岸格 ${o.coast}，mopUp=${o.mop ? '是' : '否'}；${pre.length ? '前置条件挡住：' + pre.join('；') + '；' : '前置条件都过；'}${res}`;
+};
+
+// 翻山检查（只读；只有山地图有意义）：自己的贴山边界格（g.cliff[me]）挨着哪些山体；这些山体四邻的陆地格是谁的。
+// 引擎 bB.qi.i2（录像指令号 10）的前置条件：点的格子是目标的地或无主陆地，且它四邻的某个山体也被自己的贴山边界格挨着。
+// c110 源码里没有任何翻山指令（全文没有 mountain / cliff），这一行只说明「规则上够得着谁」。
+const mtnLine = (sh) => {
+  const me = sh.me, pol = sh.pol, C = g.cliff?.[me] || [], d4 = g.dir4;
+  const ids = new Set();
+  for (let i = 0; i < C.length; i++) for (let q = 3; q >= 0; q--) { const c = C[i] + d4[q]; if (g.px[c] === T_MOUNTAIN) ids.add(g.wid[c]); }
+  if (!ids.size) return `        翻山检查：贴山边界格 ${C.length}，没有挨着山体`;
+  const cnt = new Map();
+  let neutral = 0;
+  const N = g.W * g.H;
+  for (let c = 0; c < N; c++) {
+    if (g.px[c] !== T_MOUNTAIN || !ids.has(g.wid[c])) continue;
+    for (let q = 0; q < 4; q++) {
+      const n = c + d4[q], v = g.px[n];
+      if (v === T_LAND) neutral++;
+      else if (v >= P_INNER && g.own[n] !== me) cnt.set(g.own[n], (cnt.get(g.own[n]) || 0) + 1);
+    }
+  }
+  const tag = (q) => {
+    let prot = false, mate = false;
+    try { prot = !!pol.isProtectedSquadMate(g, q); } catch {}
+    try { mate = !!pol.isTeammate(g, q); } catch {}
+    const land = pol.cnt?.[q] > 0 ? '·陆上已接壤' : '';
+    if (mate) return '队友' + land;
+    if (prot) return '保护名单' + land;
+    return (q < g.humans ? (g.state[q] === 2 ? '敌方空壳' : '敌方真人') : '内置AI') + land;
+  };
+  const rows = [...cnt.entries()].sort((a, b) => b[1] - a[1]).slice(0, 8).map(([q, n]) => `${nm(q)}[${tag(q)}] ${n} 条边 地${g.terr[q]} 兵${k(g.bal[q])}`);
+  const foes = [...cnt.keys()].filter((q) => { const t = tag(q); return t.startsWith('敌方真人') && !t.includes('陆上已接壤'); });
+  return `        翻山检查：贴山边界格 ${C.length}，挨着 ${ids.size} 个山体；山体另一侧：${rows.join('；') || '没有别人的地'}${neutral ? `；无主陆地 ${neutral} 条边` : ''}`
+    + `｜陆上不接壤、翻山够得着的敌方真人 ${foes.length} 个${foes.length ? '（' + foes.map((q) => `${nm(q)} ${cnt.get(q)} 条边 地${g.terr[q]} 兵${k(g.bal[q])}`).join('、') + '）' : ''}`;
+};
+
 const printDump = (sh, acted) => {
   const pol = sh.pol, me = sh.me;
   if (g.t < pol.p.coreFrom) {
@@ -595,6 +672,8 @@ const printDump = (sh, acted) => {
     console.log(`        报价 ${nm(r.q)} ${r.person ? '真人' : '非真人'} 接${r.cnt} 地${g.terr[r.q]} 兵${k(g.bal[r.q])} 密${(g.bal[r.q] / Math.max(1, g.terr[r.q])).toFixed(0)} tD=${r.tD.toFixed(2)} c=${r.c.toFixed(1)} need=${k(r.need)}${r.flags.length ? ' [' + r.flags.join(',') + ']' : ''}${s} → ${r.gate}${r.send ? `：${k(r.send)}（${(100 * r.send / e.B).toFixed(1)}% 兵）` : ''}`);
   }
   if (!e.rows.length) console.log('        offers 为空（nb 里没有可报价的邻居）');
+  if (has('boatcheck')) console.log(boatLine(sh));
+  if (has('mtncheck')) console.log(mtnLine(sh));
   if (acted !== null) {
     const mine = sh.cmds.filter((c) => c.t === g.t);
     console.log(`        影子 act() 这一拍发出：${mine.length ? mine.map((c) => `${{ atk: '攻', boat: '船', don: '捐' }[c.k]}→${c.to < 0 ? '?' : nm(c.to)} ${c.pct}‰ ${k(c.amt)}`).join('；') : '无'}`);
