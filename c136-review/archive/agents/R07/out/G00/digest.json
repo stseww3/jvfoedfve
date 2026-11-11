@@ -1,0 +1,2883 @@
+{
+ "matchId": "G00",
+ "card": {
+  "matchId": "G00",
+  "cohort": "squad8",
+  "split": "discovery",
+  "timeUtc": "2026-11-07T16:18:31Z",
+  "timestampMs": 1794068311053,
+  "squadBots": 8,
+  "mapId": 10,
+  "mapSeed": 7652,
+  "mapLand": 546152,
+  "mode": 1,
+  "nominalTeams": 3,
+  "actualTeams": 3,
+  "baseWinExpectation": 0.3333,
+  "seededPlayers": 62,
+  "ourPrimaryTeam": 3,
+  "distinctSquadTeams": 1,
+  "teamSplitCounts": {
+   "3": 7
+  },
+  "outcome": {
+   "primaryTeamWon": false,
+   "anyBotWon": false,
+   "resultLabel": "lost",
+   "winnerTeam": 1,
+   "endTick": 5506,
+   "peakSquadLandShare": 0.0947,
+   "peakPrimaryTeamShareSeen": 0.2869,
+   "ourFinalTeamShare": 0.0515
+  },
+  "dataCompleteness": {
+   "results": true,
+   "inGameLog": true,
+   "replay": false,
+   "tickSnapshots": 52
+  },
+  "anomaliesSummary": {
+   "drop30Count": 22,
+   "totalTransfers": 9,
+   "likelyRejectedTransfers": 1,
+   "boxedHighDensSnapshots": 0,
+   "strategyErrors": 223,
+   "teamSplit": false
+  }
+ },
+ "tags": {
+  "[HL-GAME-INIT]": 8,
+  "[BACKEND-SPAWN-COORD]": 30,
+  "[HL-SPAWN-BACKEND]": 122,
+  "[HL-OPENING]": 65,
+  "[OPENING-CHECK": 1,
+  "[HL-TICK]": 155,
+  "[HL-SLOW-TICK]": 11,
+  "ERROR: Strategy bot stopped": 223,
+  "[RESULT": 8,
+  "[HL-DONATE]": 9,
+  "[HL-INTERCEPT]": 12
+ },
+ "errors": {
+  "dave_w": {
+   "n": 43,
+   "firstLine": 537,
+   "firstT": [
+    2610,
+    2785
+   ],
+   "lastLine": 697,
+   "lastT": [
+    4410,
+    4500
+   ],
+   "msgs": [
+    [
+     "TypeError: rnd is not a function",
+     43
+    ]
+   ]
+  },
+  "kevin_k": {
+   "n": 40,
+   "firstLine": 399,
+   "firstT": [
+    1350,
+    1440
+   ],
+   "lastLine": 637,
+   "lastT": [
+    3600,
+    3690
+   ],
+   "msgs": [
+    [
+     "TypeError: rnd is not a function",
+     40
+    ]
+   ]
+  },
+  "leo_tx": {
+   "n": 56,
+   "firstLine": 410,
+   "firstT": [
+    1440,
+    1530
+   ],
+   "lastLine": 677,
+   "lastT": [
+    4050,
+    4230
+   ],
+   "msgs": [
+    [
+     "TypeError: rnd is not a function",
+     56
+    ]
+   ]
+  },
+  "mark07": {
+   "n": 84,
+   "firstLine": 444,
+   "firstT": [
+    1710,
+    1800
+   ],
+   "lastLine": 733,
+   "lastT": [
+    5400,
+    5490
+   ],
+   "msgs": [
+    [
+     "TypeError: rnd is not a function",
+     84
+    ]
+   ]
+  }
+ },
+ "slowTicks": 11,
+ "tickGaps": {
+  "dave_w": {
+   "gaps": [],
+   "tailGap": [
+    2610,
+    4514
+   ],
+   "first": 630,
+   "last": 2610
+  },
+  "ethan21": {
+   "gaps": [],
+   "tailGap": null,
+   "first": 630,
+   "last": 2070
+  },
+  "kevin_k": {
+   "gaps": [
+    [
+     1350,
+     1530
+    ],
+    [
+     1530,
+     2790
+    ],
+    [
+     3330,
+     3690
+    ]
+   ],
+   "tailGap": null,
+   "first": 630,
+   "last": 4050
+  },
+  "leo_tx": {
+   "gaps": [
+    [
+     1530,
+     3420
+    ],
+    [
+     3420,
+     3600
+    ],
+    [
+     3600,
+     4230
+    ]
+   ],
+   "tailGap": null,
+   "first": 630,
+   "last": 5490
+  },
+  "lucas94": {
+   "gaps": [],
+   "tailGap": null,
+   "first": 630,
+   "last": 1890
+  },
+  "mark07": {
+   "gaps": [],
+   "tailGap": [
+    1710,
+    5502
+   ],
+   "first": 630,
+   "last": 1710
+  },
+  "noah88": {
+   "gaps": [],
+   "tailGap": null,
+   "first": 630,
+   "last": 1890
+  },
+  "ryan_m": {
+   "gaps": [],
+   "tailGap": null,
+   "first": 630,
+   "last": 2520
+  }
+ },
+ "spawn": {
+  "dave_w": {
+   "me": 28,
+   "slot": 6,
+   "role": "ECO_BANK",
+   "x": 910,
+   "y": 466,
+   "bossDist": -1,
+   "minAllyDist": 474,
+   "voronoi": 500,
+   "resolves": 23,
+   "nearest": [
+    [
+     474,
+     "mark07"
+    ],
+    [
+     476,
+     "ethan21"
+    ]
+   ]
+  },
+  "ethan21": {
+   "me": 25,
+   "slot": 4,
+   "role": "ECO_BANK",
+   "x": 664,
+   "y": 58,
+   "bossDist": -1,
+   "minAllyDist": 349,
+   "voronoi": 7108,
+   "resolves": 21,
+   "nearest": [
+    [
+     186,
+     "noah88"
+    ],
+    [
+     476,
+     "dave_w"
+    ]
+   ]
+  },
+  "kevin_k": {
+   "me": 23,
+   "slot": 3,
+   "role": "ECO_BANK",
+   "x": 160,
+   "y": 304,
+   "bossDist": -1,
+   "minAllyDist": 235,
+   "voronoi": 3249,
+   "resolves": 18,
+   "nearest": [
+    [
+     238,
+     "leo_tx"
+    ],
+    [
+     406,
+     "noah88"
+    ]
+   ]
+  },
+  "leo_tx": {
+   "me": 34,
+   "slot": 9,
+   "role": "ECO_BANK",
+   "x": 172,
+   "y": 66,
+   "bossDist": -1,
+   "minAllyDist": 263,
+   "voronoi": 3511,
+   "resolves": 3,
+   "nearest": [
+    [
+     238,
+     "kevin_k"
+    ],
+    [
+     306,
+     "noah88"
+    ]
+   ]
+  },
+  "lucas94": {
+   "me": 22,
+   "slot": 5,
+   "role": "ECO_BANK",
+   "x": 460,
+   "y": 706,
+   "bossDist": -1,
+   "minAllyDist": 402,
+   "voronoi": 500,
+   "resolves": 10,
+   "nearest": [
+    [
+     502,
+     "kevin_k"
+    ],
+    [
+     502,
+     "ryan_m"
+    ]
+   ]
+  },
+  "mark07": {
+   "me": 26,
+   "slot": 2,
+   "role": "ECO_BANK",
+   "x": 910,
+   "y": 940,
+   "bossDist": -1,
+   "minAllyDist": 474,
+   "voronoi": 500,
+   "resolves": 24,
+   "nearest": [
+    [
+     474,
+     "dave_w"
+    ],
+    [
+     507,
+     "lucas94"
+    ]
+   ]
+  },
+  "noah88": {
+   "me": 27,
+   "slot": 8,
+   "role": "ECO_BANK",
+   "x": 478,
+   "y": 52,
+   "bossDist": -1,
+   "minAllyDist": 186,
+   "voronoi": 7649,
+   "resolves": 15,
+   "nearest": [
+    [
+     186,
+     "ethan21"
+    ],
+    [
+     306,
+     "leo_tx"
+    ]
+   ]
+  },
+  "ryan_m": {
+   "me": 21,
+   "slot": 7,
+   "role": "ECO_BANK",
+   "x": 16,
+   "y": 940,
+   "bossDist": -1,
+   "minAllyDist": 502,
+   "voronoi": 500,
+   "resolves": 8,
+   "nearest": [
+    [
+     502,
+     "lucas94"
+    ],
+    [
+     652,
+     "kevin_k"
+    ]
+   ]
+  }
+ },
+ "openingCheck": {
+  "t": 184,
+  "n": 8,
+  "terrSum": 1291,
+  "share": 0.00236,
+  "terrMin": 144,
+  "terrMax": 194
+ },
+ "opening": {
+  "dave_w": {
+   "n": 9,
+   "first": 70,
+   "terr630": 3065,
+   "terr990": 5056,
+   "terr1530": 6597,
+   "spendTotal": 8453
+  },
+  "ethan21": {
+   "n": 9,
+   "first": 66,
+   "terr630": 3191,
+   "terr990": 7317,
+   "terr1530": 9560,
+   "spendTotal": 8843
+  },
+  "kevin_k": {
+   "n": 8,
+   "first": 66,
+   "terr630": 2970,
+   "terr990": 4463,
+   "terr1530": 5760,
+   "spendTotal": 8380
+  },
+  "leo_tx": {
+   "n": 6,
+   "first": 70,
+   "terr630": 2623,
+   "terr990": 3509,
+   "terr1530": 3511,
+   "spendTotal": 6292
+  },
+  "lucas94": {
+   "n": 8,
+   "first": 62,
+   "terr630": 2195,
+   "terr990": 4629,
+   "terr1530": 5666,
+   "spendTotal": 7234
+  },
+  "mark07": {
+   "n": 9,
+   "first": 70,
+   "terr630": 2653,
+   "terr990": 6991,
+   "terr1530": 9027,
+   "spendTotal": 10248
+  },
+  "noah88": {
+   "n": 9,
+   "first": 18,
+   "terr630": 3238,
+   "terr990": 7208,
+   "terr1530": 6654,
+   "spendTotal": 11436
+  },
+  "ryan_m": {
+   "n": 7,
+   "first": 70,
+   "terr630": 2959,
+   "terr990": 3919,
+   "terr1530": 4958,
+   "spendTotal": 7263
+  }
+ },
+ "timeline": [
+  {
+   "t": 630,
+   "alive": 8,
+   "logging": 8,
+   "sqTerr": 22894,
+   "sqShare": 0.0419,
+   "sqBal": 38496,
+   "sqDens": 1.7,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 720,
+   "alive": 8,
+   "logging": 8,
+   "sqTerr": 27144,
+   "sqShare": 0.0497,
+   "sqBal": 48895,
+   "sqDens": 1.8,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 810,
+   "alive": 8,
+   "logging": 8,
+   "sqTerr": 31088,
+   "sqShare": 0.0569,
+   "sqBal": 102467,
+   "sqDens": 3.3,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 900,
+   "alive": 8,
+   "logging": 8,
+   "sqTerr": 36689,
+   "sqShare": 0.0672,
+   "sqBal": 132486,
+   "sqDens": 3.6,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 990,
+   "alive": 8,
+   "logging": 8,
+   "sqTerr": 43092,
+   "sqShare": 0.0789,
+   "sqBal": 127214,
+   "sqDens": 3.0,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 1080,
+   "alive": 8,
+   "logging": 8,
+   "sqTerr": 47256,
+   "sqShare": 0.0865,
+   "sqBal": 205043,
+   "sqDens": 4.3,
+   "boxed": 1,
+   "dens95": 0
+  },
+  {
+   "t": 1170,
+   "alive": 8,
+   "logging": 8,
+   "sqTerr": 49793,
+   "sqShare": 0.0912,
+   "sqBal": 242188,
+   "sqDens": 4.9,
+   "boxed": 1,
+   "dens95": 0
+  },
+  {
+   "t": 1260,
+   "alive": 8,
+   "logging": 8,
+   "sqTerr": 50874,
+   "sqShare": 0.0931,
+   "sqBal": 467393,
+   "sqDens": 9.2,
+   "boxed": 1,
+   "dens95": 0
+  },
+  {
+   "t": 1350,
+   "alive": 8,
+   "logging": 8,
+   "sqTerr": 50172,
+   "sqShare": 0.0919,
+   "sqBal": 637345,
+   "sqDens": 12.7,
+   "boxed": 1,
+   "dens95": 0
+  },
+  {
+   "t": 1440,
+   "alive": 8,
+   "logging": 7,
+   "sqTerr": 45558,
+   "sqShare": 0.0834,
+   "sqBal": 677430,
+   "sqDens": 14.9,
+   "boxed": 1,
+   "dens95": 0
+  },
+  {
+   "t": 1530,
+   "alive": 8,
+   "logging": 8,
+   "sqTerr": 51733,
+   "sqShare": 0.0947,
+   "sqBal": 1023781,
+   "sqDens": 19.8,
+   "boxed": 2,
+   "dens95": 0
+  },
+  {
+   "t": 1620,
+   "alive": 8,
+   "logging": 6,
+   "sqTerr": 42894,
+   "sqShare": 0.0785,
+   "sqBal": 683863,
+   "sqDens": 15.9,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 1710,
+   "alive": 8,
+   "logging": 6,
+   "sqTerr": 43488,
+   "sqShare": 0.0796,
+   "sqBal": 742297,
+   "sqDens": 17.1,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 1800,
+   "alive": 8,
+   "logging": 5,
+   "sqTerr": 31887,
+   "sqShare": 0.0584,
+   "sqBal": 594828,
+   "sqDens": 18.7,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 1890,
+   "alive": 8,
+   "logging": 5,
+   "sqTerr": 27701,
+   "sqShare": 0.0507,
+   "sqBal": 435474,
+   "sqDens": 15.7,
+   "boxed": 1,
+   "dens95": 0
+  },
+  {
+   "t": 1980,
+   "alive": 6,
+   "logging": 3,
+   "sqTerr": 25900,
+   "sqShare": 0.0474,
+   "sqBal": 474596,
+   "sqDens": 18.3,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 2070,
+   "alive": 6,
+   "logging": 3,
+   "sqTerr": 23819,
+   "sqShare": 0.0436,
+   "sqBal": 523542,
+   "sqDens": 22.0,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 2160,
+   "alive": 5,
+   "logging": 2,
+   "sqTerr": 14212,
+   "sqShare": 0.026,
+   "sqBal": 514717,
+   "sqDens": 36.2,
+   "boxed": 0,
+   "dens95": 1
+  },
+  {
+   "t": 2250,
+   "alive": 5,
+   "logging": 2,
+   "sqTerr": 13651,
+   "sqShare": 0.025,
+   "sqBal": 544947,
+   "sqDens": 39.9,
+   "boxed": 0,
+   "dens95": 1
+  },
+  {
+   "t": 2340,
+   "alive": 5,
+   "logging": 2,
+   "sqTerr": 13153,
+   "sqShare": 0.0241,
+   "sqBal": 608475,
+   "sqDens": 46.3,
+   "boxed": 0,
+   "dens95": 1
+  },
+  {
+   "t": 2430,
+   "alive": 5,
+   "logging": 2,
+   "sqTerr": 11843,
+   "sqShare": 0.0217,
+   "sqBal": 619568,
+   "sqDens": 52.3,
+   "boxed": 0,
+   "dens95": 1
+  },
+  {
+   "t": 2520,
+   "alive": 5,
+   "logging": 2,
+   "sqTerr": 10347,
+   "sqShare": 0.0189,
+   "sqBal": 116418,
+   "sqDens": 11.3,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 2610,
+   "alive": 4,
+   "logging": 1,
+   "sqTerr": 5726,
+   "sqShare": 0.0105,
+   "sqBal": 125131,
+   "sqDens": 21.9,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 2790,
+   "alive": 4,
+   "logging": 1,
+   "sqTerr": 5221,
+   "sqShare": 0.0096,
+   "sqBal": 560557,
+   "sqDens": 107.4,
+   "boxed": 0,
+   "dens95": 1
+  },
+  {
+   "t": 2880,
+   "alive": 4,
+   "logging": 1,
+   "sqTerr": 4937,
+   "sqShare": 0.009,
+   "sqBal": 399696,
+   "sqDens": 81.0,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 2970,
+   "alive": 4,
+   "logging": 1,
+   "sqTerr": 5039,
+   "sqShare": 0.0092,
+   "sqBal": 373736,
+   "sqDens": 74.2,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 3060,
+   "alive": 4,
+   "logging": 1,
+   "sqTerr": 5517,
+   "sqShare": 0.0101,
+   "sqBal": 152036,
+   "sqDens": 27.6,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 3150,
+   "alive": 4,
+   "logging": 1,
+   "sqTerr": 6492,
+   "sqShare": 0.0119,
+   "sqBal": 72833,
+   "sqDens": 11.2,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 3240,
+   "alive": 4,
+   "logging": 1,
+   "sqTerr": 6363,
+   "sqShare": 0.0117,
+   "sqBal": 79874,
+   "sqDens": 12.6,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 3330,
+   "alive": 4,
+   "logging": 1,
+   "sqTerr": 6082,
+   "sqShare": 0.0111,
+   "sqBal": 98862,
+   "sqDens": 16.3,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 3420,
+   "alive": 4,
+   "logging": 1,
+   "sqTerr": 3511,
+   "sqShare": 0.0064,
+   "sqBal": 271019,
+   "sqDens": 77.2,
+   "boxed": 1,
+   "dens95": 0
+  },
+  {
+   "t": 3600,
+   "alive": 4,
+   "logging": 1,
+   "sqTerr": 3511,
+   "sqShare": 0.0064,
+   "sqBal": 228127,
+   "sqDens": 65.0,
+   "boxed": 1,
+   "dens95": 0
+  },
+  {
+   "t": 3690,
+   "alive": 4,
+   "logging": 1,
+   "sqTerr": 0,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 1,
+   "dens95": 0
+  },
+  {
+   "t": 3780,
+   "alive": 4,
+   "logging": 1,
+   "sqTerr": 0,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 1,
+   "dens95": 0
+  },
+  {
+   "t": 3870,
+   "alive": 4,
+   "logging": 1,
+   "sqTerr": 0,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 1,
+   "dens95": 0
+  },
+  {
+   "t": 3960,
+   "alive": 4,
+   "logging": 1,
+   "sqTerr": 0,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 1,
+   "dens95": 0
+  },
+  {
+   "t": 4050,
+   "alive": 4,
+   "logging": 1,
+   "sqTerr": 2,
+   "sqShare": 0.0,
+   "sqBal": 1,
+   "sqDens": 0.5,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 4230,
+   "alive": 3,
+   "logging": 1,
+   "sqTerr": 0,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 1,
+   "dens95": 0
+  },
+  {
+   "t": 4320,
+   "alive": 3,
+   "logging": 1,
+   "sqTerr": 0,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 1,
+   "dens95": 0
+  },
+  {
+   "t": 4410,
+   "alive": 3,
+   "logging": 1,
+   "sqTerr": 0,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 1,
+   "dens95": 0
+  },
+  {
+   "t": 4500,
+   "alive": 3,
+   "logging": 1,
+   "sqTerr": 1,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 4590,
+   "alive": 2,
+   "logging": 1,
+   "sqTerr": 1,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 4680,
+   "alive": 2,
+   "logging": 1,
+   "sqTerr": 1,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 4770,
+   "alive": 2,
+   "logging": 1,
+   "sqTerr": 1,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 4860,
+   "alive": 2,
+   "logging": 1,
+   "sqTerr": 1,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 4950,
+   "alive": 2,
+   "logging": 1,
+   "sqTerr": 1,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 5040,
+   "alive": 2,
+   "logging": 1,
+   "sqTerr": 1,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 5130,
+   "alive": 2,
+   "logging": 1,
+   "sqTerr": 1,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 5220,
+   "alive": 2,
+   "logging": 1,
+   "sqTerr": 1,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 5310,
+   "alive": 2,
+   "logging": 1,
+   "sqTerr": 1,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 5400,
+   "alive": 2,
+   "logging": 1,
+   "sqTerr": 1,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 0,
+   "dens95": 0
+  },
+  {
+   "t": 5490,
+   "alive": 2,
+   "logging": 1,
+   "sqTerr": 1,
+   "sqShare": 0.0,
+   "sqBal": 0,
+   "sqDens": 0.0,
+   "boxed": 0,
+   "dens95": 0
+  }
+ ],
+ "teamTotals": [
+  {
+   "t": 1905,
+   "bot": "noah88",
+   "event": "died",
+   "mine": 3,
+   "rank": 3,
+   "nTeams": 4,
+   "shares": {
+    "0": 0.0068,
+    "1": 0.3362,
+    "2": 0.3624,
+    "3": 0.2869
+   },
+   "alivePlayers": 51,
+   "place": 52
+  },
+  {
+   "t": 1933,
+   "bot": "lucas94",
+   "event": "died",
+   "mine": 3,
+   "rank": 3,
+   "nTeams": 4,
+   "shares": {
+    "0": 0.0068,
+    "1": 0.3375,
+    "2": 0.3657,
+    "3": 0.2834
+   },
+   "alivePlayers": 50,
+   "place": 51
+  },
+  {
+   "t": 2160,
+   "bot": "ethan21",
+   "event": "died",
+   "mine": 3,
+   "rank": 3,
+   "nTeams": 4,
+   "shares": {
+    "0": 0.0068,
+    "1": 0.3376,
+    "2": 0.3879,
+    "3": 0.2616
+   },
+   "alivePlayers": 49,
+   "place": 50
+  },
+  {
+   "t": 2610,
+   "bot": "ryan_m",
+   "event": "died",
+   "mine": 3,
+   "rank": 3,
+   "nTeams": 3,
+   "shares": {
+    "1": 0.3422,
+    "2": 0.3985,
+    "3": 0.2528
+   },
+   "alivePlayers": 43,
+   "place": 44
+  },
+  {
+   "t": 4123,
+   "bot": "kevin_k",
+   "event": "died",
+   "mine": 3,
+   "rank": 3,
+   "nTeams": 3,
+   "shares": {
+    "1": 0.5232,
+    "2": 0.3581,
+    "3": 0.1183
+   },
+   "alivePlayers": 31,
+   "place": 32
+  },
+  {
+   "t": 4514,
+   "bot": "dave_w",
+   "event": "died",
+   "mine": 3,
+   "rank": 3,
+   "nTeams": 3,
+   "shares": {
+    "1": 0.5279,
+    "2": 0.3635,
+    "3": 0.1025
+   },
+   "alivePlayers": 27,
+   "place": 28
+  },
+  {
+   "t": 5502,
+   "bot": "mark07",
+   "event": "died",
+   "mine": 3,
+   "rank": 3,
+   "nTeams": 3,
+   "shares": {
+    "1": 0.5885,
+    "2": 0.353,
+    "3": 0.0515
+   },
+   "alivePlayers": 23,
+   "place": 24
+  }
+ ],
+ "bots": {
+  "dave_w": {
+   "snapshots": 23,
+   "peakTerr": 9832,
+   "peakT": 1980,
+   "maxDens": 21.9,
+   "maxDensT": 2610,
+   "boxedSnaps": 4,
+   "boxedFirst": 1260,
+   "boxedLast": 1530,
+   "boxed95": 0,
+   "dens95": 0,
+   "dens100": 0,
+   "end": {
+    "event": "died",
+    "result": "lost",
+    "tick": 4514,
+    "place": 28,
+    "peak": 9832,
+    "lastTerritory": 1700,
+    "balance": 115506,
+    "sent": 109,
+    "accepted": 109
+   }
+  },
+  "ethan21": {
+   "snapshots": 17,
+   "peakTerr": 11110,
+   "peakT": 1980,
+   "maxDens": 19.6,
+   "maxDensT": 1800,
+   "boxedSnaps": 0,
+   "boxedFirst": null,
+   "boxedLast": null,
+   "boxed95": 0,
+   "dens95": 0,
+   "dens100": 0,
+   "end": {
+    "event": "died",
+    "result": "lost",
+    "tick": 2160,
+    "place": 50,
+    "peak": 11917,
+    "lastTerritory": 4317,
+    "balance": 25739,
+    "sent": 104,
+    "accepted": 104
+   }
+  },
+  "kevin_k": {
+   "snapshots": 22,
+   "peakTerr": 6492,
+   "peakT": 3150,
+   "maxDens": 107.4,
+   "maxDensT": 2790,
+   "boxedSnaps": 4,
+   "boxedFirst": 3690,
+   "boxedLast": 3960,
+   "boxed95": 0,
+   "dens95": 1,
+   "dens100": 1,
+   "end": {
+    "event": "died",
+    "result": "lost",
+    "tick": 4123,
+    "place": 32,
+    "peak": 6757,
+    "lastTerritory": 2,
+    "balance": 10,
+    "sent": 70,
+    "accepted": 68
+   }
+  },
+  "leo_tx": {
+   "snapshots": 28,
+   "peakTerr": 3511,
+   "peakT": 1530,
+   "maxDens": 77.2,
+   "maxDensT": 3420,
+   "boxedSnaps": 6,
+   "boxedFirst": 1530,
+   "boxedLast": 4410,
+   "boxed95": 0,
+   "dens95": 0,
+   "dens100": 0,
+   "end": {
+    "event": "left",
+    "result": "left",
+    "tick": 5506,
+    "place": 23,
+    "peak": 3511,
+    "lastTerritory": 1,
+    "balance": 0,
+    "sent": 44,
+    "accepted": 44
+   }
+  },
+  "lucas94": {
+   "snapshots": 15,
+   "peakTerr": 5666,
+   "peakT": 1530,
+   "maxDens": 9.8,
+   "maxDensT": 1800,
+   "boxedSnaps": 2,
+   "boxedFirst": 1080,
+   "boxedLast": 1170,
+   "boxed95": 0,
+   "dens95": 0,
+   "dens100": 0,
+   "end": {
+    "event": "died",
+    "result": "lost",
+    "tick": 1933,
+    "place": 51,
+    "peak": 5821,
+    "lastTerritory": 1498,
+    "balance": 12173,
+    "sent": 48,
+    "accepted": 48
+   }
+  },
+  "mark07": {
+   "snapshots": 13,
+   "peakTerr": 9027,
+   "peakT": 1350,
+   "maxDens": 20.2,
+   "maxDensT": 1710,
+   "boxedSnaps": 0,
+   "boxedFirst": null,
+   "boxedLast": null,
+   "boxed95": 0,
+   "dens95": 0,
+   "dens100": 0,
+   "end": {
+    "event": "died",
+    "result": "lost",
+    "tick": 5502,
+    "place": 24,
+    "peak": 15980,
+    "lastTerritory": 4538,
+    "balance": 190398,
+    "sent": 113,
+    "accepted": 113
+   }
+  },
+  "noah88": {
+   "snapshots": 15,
+   "peakTerr": 8576,
+   "peakT": 1710,
+   "maxDens": 11.2,
+   "maxDensT": 1530,
+   "boxedSnaps": 1,
+   "boxedFirst": 1890,
+   "boxedLast": 1890,
+   "boxed95": 0,
+   "dens95": 0,
+   "dens100": 0,
+   "end": {
+    "event": "died",
+    "result": "lost",
+    "tick": 1905,
+    "place": 52,
+    "peak": 9116,
+    "lastTerritory": 0,
+    "balance": 0,
+    "sent": 77,
+    "accepted": 76
+   }
+  },
+  "ryan_m": {
+   "snapshots": 22,
+   "peakTerr": 4958,
+   "peakT": 1170,
+   "maxDens": 106.9,
+   "maxDensT": 2340,
+   "boxedSnaps": 0,
+   "boxedFirst": null,
+   "boxedLast": null,
+   "boxed95": 0,
+   "dens95": 4,
+   "dens100": 2,
+   "end": {
+    "event": "died",
+    "result": "lost",
+    "tick": 2610,
+    "place": 44,
+    "peak": 4958,
+    "lastTerritory": 1311,
+    "balance": 16,
+    "sent": 49,
+    "accepted": 49
+   }
+  }
+ },
+ "drop30": [
+  {
+   "bot": "dave_w",
+   "t0": 810,
+   "t1": 900,
+   "bal0": 14600,
+   "bal1": 6689,
+   "dropPct": 54.2,
+   "terr0": 3592,
+   "terr1": 4644,
+   "dCmds": 2,
+   "dBoats": 0,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 0,
+   "incomeEst": 10609,
+   "unexplained": 18520,
+   "spendLo": 7911,
+   "spendHi": 18520,
+   "labels": [
+    "陆攻扩张"
+   ]
+  },
+  {
+   "bot": "dave_w",
+   "t0": 1080,
+   "t1": 1170,
+   "bal0": 9800,
+   "bal1": 1228,
+   "dropPct": 87.5,
+   "terr0": 5687,
+   "terr1": 6424,
+   "dCmds": 9,
+   "dBoats": 0,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 1,
+   "incomeEst": 10984,
+   "unexplained": 19556,
+   "spendLo": 8572,
+   "spendHi": 19556,
+   "labels": [
+    "陆攻扩张"
+   ]
+  },
+  {
+   "bot": "dave_w",
+   "t0": 1620,
+   "t1": 1710,
+   "bal0": 118098,
+   "bal1": 64301,
+   "dropPct": 45.6,
+   "terr0": 6597,
+   "terr1": 7252,
+   "dCmds": 6,
+   "dBoats": 0,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 0,
+   "incomeEst": 28891,
+   "unexplained": 82688,
+   "spendLo": 53797,
+   "spendHi": 82688,
+   "labels": [
+    "陆攻扩张"
+   ]
+  },
+  {
+   "bot": "dave_w",
+   "t0": 1710,
+   "t1": 1800,
+   "bal0": 64301,
+   "bal1": 37289,
+   "dropPct": 42.0,
+   "terr0": 7252,
+   "terr1": 8608,
+   "dCmds": 11,
+   "dBoats": 0,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 0,
+   "incomeEst": 17451,
+   "unexplained": 44463,
+   "spendLo": 27012,
+   "spendHi": 44463,
+   "labels": [
+    "陆攻扩张"
+   ]
+  },
+  {
+   "bot": "dave_w",
+   "t0": 1800,
+   "t1": 1890,
+   "bal0": 37289,
+   "bal1": 1,
+   "dropPct": 100.0,
+   "terr0": 8608,
+   "terr1": 9520,
+   "dCmds": 6,
+   "dBoats": 0,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 0,
+   "incomeEst": 4852,
+   "unexplained": 42140,
+   "spendLo": 37288,
+   "spendHi": 42140,
+   "labels": [
+    "陆攻扩张"
+   ]
+  },
+  {
+   "bot": "ethan21",
+   "t0": 900,
+   "t1": 990,
+   "bal0": 15202,
+   "bal1": 5631,
+   "dropPct": 63.0,
+   "terr0": 6203,
+   "terr1": 7317,
+   "dCmds": 13,
+   "dBoats": 0,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 1,
+   "incomeEst": 6769,
+   "unexplained": 16340,
+   "spendLo": 9571,
+   "spendHi": 16340,
+   "labels": [
+    "陆攻扩张"
+   ]
+  },
+  {
+   "bot": "ethan21",
+   "t0": 1080,
+   "t1": 1170,
+   "bal0": 29413,
+   "bal1": 8302,
+   "dropPct": 71.8,
+   "terr0": 7812,
+   "terr1": 8584,
+   "dCmds": 10,
+   "dBoats": 0,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 0,
+   "incomeEst": 21109,
+   "unexplained": 42220,
+   "spendLo": 21111,
+   "spendHi": 42220,
+   "labels": [
+    "陆攻扩张"
+   ]
+  },
+  {
+   "bot": "ethan21",
+   "t0": 1800,
+   "t1": 1890,
+   "bal0": 179782,
+   "bal1": 74729,
+   "dropPct": 58.4,
+   "terr0": 9175,
+   "terr1": 11029,
+   "dCmds": 12,
+   "dBoats": 0,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 0,
+   "incomeEst": 23417,
+   "unexplained": 128470,
+   "spendLo": 105053,
+   "spendHi": 128470,
+   "labels": [
+    "陆攻扩张"
+   ]
+  },
+  {
+   "bot": "kevin_k",
+   "t0": 900,
+   "t1": 990,
+   "bal0": 31365,
+   "bal1": 18582,
+   "dropPct": 40.8,
+   "terr0": 3397,
+   "terr1": 4463,
+   "dCmds": 9,
+   "dBoats": 0,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 1,
+   "incomeEst": 13973,
+   "unexplained": 26756,
+   "spendLo": 12783,
+   "spendHi": 26756,
+   "labels": [
+    "陆攻扩张"
+   ]
+  },
+  {
+   "bot": "kevin_k",
+   "t0": 2970,
+   "t1": 3060,
+   "bal0": 373736,
+   "bal1": 152036,
+   "dropPct": 59.3,
+   "terr0": 5039,
+   "terr1": 5517,
+   "dCmds": 8,
+   "dBoats": 1,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 1,
+   "openN": 0,
+   "incomeEst": 45530,
+   "unexplained": 267230,
+   "spendLo": 221700,
+   "spendHi": 267230,
+   "labels": [
+    "发船",
+    "陆攻扩张"
+   ]
+  },
+  {
+   "bot": "kevin_k",
+   "t0": 3060,
+   "t1": 3150,
+   "bal0": 152036,
+   "bal1": 72833,
+   "dropPct": 52.1,
+   "terr0": 5517,
+   "terr1": 6492,
+   "dCmds": 7,
+   "dBoats": 0,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 0,
+   "incomeEst": 22316,
+   "unexplained": 101519,
+   "spendLo": 79203,
+   "spendHi": 101519,
+   "labels": [
+    "陆攻扩张"
+   ]
+  },
+  {
+   "bot": "leo_tx",
+   "t0": 630,
+   "t1": 720,
+   "bal0": 7293,
+   "bal1": 3280,
+   "dropPct": 55.0,
+   "terr0": 2623,
+   "terr1": 2611,
+   "dCmds": 11,
+   "dBoats": 0,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 0,
+   "incomeEst": 6937,
+   "unexplained": 10950,
+   "spendLo": 4013,
+   "spendHi": 10950,
+   "labels": [
+    "被打/失地+反击"
+   ]
+  },
+  {
+   "bot": "lucas94",
+   "t0": 1440,
+   "t1": 1530,
+   "bal0": 33756,
+   "bal1": 19583,
+   "dropPct": 42.0,
+   "terr0": 5603,
+   "terr1": 5666,
+   "dCmds": 5,
+   "dBoats": 0,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 0,
+   "incomeEst": 14428,
+   "unexplained": 28601,
+   "spendLo": 14173,
+   "spendHi": 28601,
+   "labels": [
+    "陆攻扩张"
+   ]
+  },
+  {
+   "bot": "lucas94",
+   "t0": 1800,
+   "t1": 1890,
+   "bal0": 29373,
+   "bal1": 19481,
+   "dropPct": 33.7,
+   "terr0": 3000,
+   "terr1": 2194,
+   "dCmds": 0,
+   "dBoats": 0,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 0,
+   "incomeEst": 3821,
+   "unexplained": 13713,
+   "spendLo": 9892,
+   "spendHi": 13713,
+   "labels": [
+    "被打/失地"
+   ]
+  },
+  {
+   "bot": "mark07",
+   "t0": 810,
+   "t1": 900,
+   "bal0": 14672,
+   "bal1": 9942,
+   "dropPct": 32.2,
+   "terr0": 4339,
+   "terr1": 5534,
+   "dCmds": 10,
+   "dBoats": 0,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 1,
+   "incomeEst": 11391,
+   "unexplained": 16121,
+   "spendLo": 4730,
+   "spendHi": 16121,
+   "labels": [
+    "陆攻扩张"
+   ]
+  },
+  {
+   "bot": "mark07",
+   "t0": 1080,
+   "t1": 1170,
+   "bal0": 25655,
+   "bal1": 7010,
+   "dropPct": 72.7,
+   "terr0": 7127,
+   "terr1": 8177,
+   "dCmds": 24,
+   "dBoats": 0,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 0,
+   "incomeEst": 18813,
+   "unexplained": 37458,
+   "spendLo": 18645,
+   "spendHi": 37458,
+   "labels": [
+    "陆攻扩张"
+   ]
+  },
+  {
+   "bot": "noah88",
+   "t0": 900,
+   "t1": 990,
+   "bal0": 11582,
+   "bal1": 5858,
+   "dropPct": 49.4,
+   "terr0": 6753,
+   "terr1": 7208,
+   "dCmds": 10,
+   "dBoats": 0,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 0,
+   "incomeEst": 5157,
+   "unexplained": 10881,
+   "spendLo": 5724,
+   "spendHi": 10881,
+   "labels": [
+    "陆攻扩张"
+   ]
+  },
+  {
+   "bot": "noah88",
+   "t0": 1530,
+   "t1": 1620,
+   "bal0": 74807,
+   "bal1": 45225,
+   "dropPct": 39.5,
+   "terr0": 6654,
+   "terr1": 8023,
+   "dCmds": 7,
+   "dBoats": 0,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 0,
+   "incomeEst": 23212,
+   "unexplained": 52794,
+   "spendLo": 29582,
+   "spendHi": 52794,
+   "labels": [
+    "陆攻扩张"
+   ]
+  },
+  {
+   "bot": "noah88",
+   "t0": 1800,
+   "t1": 1890,
+   "bal0": 42520,
+   "bal1": 0,
+   "dropPct": 100.0,
+   "terr0": 6146,
+   "terr1": 0,
+   "dCmds": 0,
+   "dBoats": 0,
+   "donOutN": 0,
+   "donOutAmt": 0,
+   "donOutFee": 0,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 0,
+   "incomeEst": 5535,
+   "unexplained": 48055,
+   "spendLo": 42520,
+   "spendHi": 48055,
+   "labels": [
+    "被打/失地"
+   ]
+  },
+  {
+   "bot": "ryan_m",
+   "t0": 2430,
+   "t1": 2520,
+   "bal0": 523593,
+   "bal1": 42,
+   "dropPct": 100.0,
+   "terr0": 4958,
+   "terr1": 4340,
+   "dCmds": 5,
+   "dBoats": 0,
+   "donOutN": 1,
+   "donOutAmt": 26859,
+   "donOutFee": 33058,
+   "donInN": 0,
+   "donInAmt": 0,
+   "assistN": 0,
+   "interceptN": 0,
+   "openN": 0,
+   "incomeEst": 61301,
+   "unexplained": 524935,
+   "spendLo": 463634,
+   "spendHi": 524935,
+   "labels": [
+    "被打/失地+反击"
+   ]
+  }
+ ],
+ "donations": {
+  "n": 9,
+  "amt": 172033,
+  "fee": 211734,
+  "rejFlag": 1,
+  "byKind": {
+   "DONATE/squad rescue donate": 3,
+   "DONATE/surplus donate": 6
+  },
+  "out": {
+   "ryan_m": [
+    3,
+    80698,
+    99321
+   ],
+   "leo_tx": [
+    6,
+    91335,
+    112413
+   ]
+  },
+  "in": {
+   "dave_w": [
+    3,
+    80698
+   ],
+   "kevin_k": [
+    5,
+    74791
+   ],
+   "mark07": [
+    1,
+    16544
+   ]
+  },
+  "pcts": {
+   "51": 9
+  }
+ },
+ "donationRows": [
+  {
+   "t": 2240,
+   "from": "ryan_m",
+   "to": "dave_w",
+   "kind": "squad rescue donate",
+   "pct": 51,
+   "boxedIn": null,
+   "myBal": 530279,
+   "dMe": 107,
+   "dAlly": 5,
+   "amt": 26928,
+   "fee": 33142,
+   "cap": 129,
+   "need": 16,
+   "exempt": false,
+   "recvTerr": 9254,
+   "rejFlag": false,
+   "line": 496
+  },
+  {
+   "t": 2340,
+   "from": "ryan_m",
+   "to": "dave_w",
+   "kind": "squad rescue donate",
+   "pct": 51,
+   "boxedIn": null,
+   "myBal": 529941,
+   "dMe": 107,
+   "dAlly": 10,
+   "amt": 26911,
+   "fee": 33121,
+   "cap": 137,
+   "need": 16,
+   "exempt": false,
+   "recvTerr": 8195,
+   "rejFlag": false,
+   "line": 509
+  },
+  {
+   "t": 2440,
+   "from": "ryan_m",
+   "to": "dave_w",
+   "kind": "squad rescue donate",
+   "pct": 51,
+   "boxedIn": null,
+   "myBal": 528933,
+   "dMe": 107,
+   "dAlly": 14,
+   "amt": 26859,
+   "fee": 33058,
+   "cap": 145,
+   "need": 16,
+   "exempt": false,
+   "recvTerr": 6885,
+   "rejFlag": false,
+   "line": 519
+  },
+  {
+   "t": 3364,
+   "from": "leo_tx",
+   "to": "kevin_k",
+   "kind": "surplus donate",
+   "pct": 51,
+   "boxedIn": true,
+   "myBal": 359505,
+   "dMe": 102,
+   "dAlly": null,
+   "amt": 18256,
+   "fee": 22469,
+   "cap": 219,
+   "need": 7,
+   "exempt": false,
+   "recvTerr": 6082,
+   "rejFlag": false,
+   "line": 608
+  },
+  {
+   "t": 3382,
+   "from": "leo_tx",
+   "to": "mark07",
+   "kind": "surplus donate",
+   "pct": 51,
+   "boxedIn": true,
+   "myBal": 325799,
+   "dMe": 93,
+   "dAlly": null,
+   "amt": 16544,
+   "fee": 20362,
+   "cap": 219,
+   "need": 5,
+   "exempt": false,
+   "recvTerr": 9027,
+   "rejFlag": false,
+   "line": 610
+  },
+  {
+   "t": 3400,
+   "from": "leo_tx",
+   "to": "kevin_k",
+   "kind": "surplus donate",
+   "pct": 51,
+   "boxedIn": true,
+   "myBal": 298910,
+   "dMe": 85,
+   "dAlly": null,
+   "amt": 15179,
+   "fee": 18681,
+   "cap": 229,
+   "need": 6,
+   "exempt": false,
+   "recvTerr": 6082,
+   "rejFlag": false,
+   "line": 611
+  },
+  {
+   "t": 3420,
+   "from": "leo_tx",
+   "to": "kevin_k",
+   "kind": "surplus donate",
+   "pct": 51,
+   "boxedIn": true,
+   "myBal": 271019,
+   "dMe": 77,
+   "dAlly": null,
+   "amt": 13762,
+   "fee": 16938,
+   "cap": 229,
+   "need": 6,
+   "exempt": false,
+   "recvTerr": 6082,
+   "rejFlag": false,
+   "line": 616
+  },
+  {
+   "t": 3550,
+   "from": "leo_tx",
+   "to": "kevin_k",
+   "kind": "surplus donate",
+   "pct": 51,
+   "boxedIn": true,
+   "myBal": 270197,
+   "dMe": 77,
+   "dAlly": null,
+   "amt": 13720,
+   "fee": 16887,
+   "cap": 239,
+   "need": 6,
+   "exempt": false,
+   "recvTerr": 6082,
+   "rejFlag": true,
+   "line": 630
+  },
+  {
+   "t": 3568,
+   "from": "leo_tx",
+   "to": "kevin_k",
+   "kind": "surplus donate",
+   "pct": 51,
+   "boxedIn": true,
+   "myBal": 273223,
+   "dMe": 78,
+   "dAlly": null,
+   "amt": 13874,
+   "fee": 17076,
+   "cap": 239,
+   "need": 6,
+   "exempt": false,
+   "recvTerr": 6082,
+   "rejFlag": false,
+   "line": 631
+  }
+ ],
+ "quota": {
+  "nonExemptN": 9,
+  "exemptN": 0,
+  "cumByRecipient": {
+   "dave_w": 48,
+   "kevin_k": 31,
+   "mark07": 5
+  },
+  "worst": {
+   "ratio": 0.331,
+   "to": "dave_w",
+   "t": 2440,
+   "cum": 48,
+   "cap": 145
+  },
+  "needMin": 5,
+  "needMax": 16,
+  "capMin": 129,
+  "capMax": 239
+ },
+ "assistN": 0,
+ "interceptN": 12,
+ "deaths": [
+  {
+   "bot": "noah88",
+   "event": "died",
+   "result": "lost",
+   "t": 1905,
+   "place": 52,
+   "peak": 9116,
+   "lastTerr": 0,
+   "bal": 0,
+   "last": [
+    {
+     "t": 1350,
+     "terr": 6400,
+     "bal": 51361,
+     "dens": 8.0,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 43,
+     "boats": 0
+    },
+    {
+     "t": 1440,
+     "terr": 6306,
+     "bal": 70224,
+     "dens": 11.1,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 43,
+     "boats": 0
+    },
+    {
+     "t": 1530,
+     "terr": 6654,
+     "bal": 74807,
+     "dens": 11.2,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 50,
+     "boats": 0
+    },
+    {
+     "t": 1620,
+     "terr": 8023,
+     "bal": 45225,
+     "dens": 5.6,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 57,
+     "boats": 0
+    },
+    {
+     "t": 1710,
+     "terr": 8576,
+     "bal": 54270,
+     "dens": 6.3,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 58,
+     "boats": 1
+    },
+    {
+     "t": 1800,
+     "terr": 6146,
+     "bal": 42520,
+     "dens": 6.9,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 58,
+     "boats": 1
+    },
+    {
+     "t": 1890,
+     "terr": 0,
+     "bal": 0,
+     "dens": 0.0,
+     "nb": 0,
+     "neut": 0,
+     "cmds": 58,
+     "boats": 1
+    }
+   ],
+   "peak500": 8576,
+   "donOut500": [
+    0,
+    0,
+    0
+   ],
+   "donIn500": [
+    0,
+    0,
+    0
+   ],
+   "assistFor500": 0,
+   "assistBy500": 0
+  },
+  {
+   "bot": "lucas94",
+   "event": "died",
+   "result": "lost",
+   "t": 1933,
+   "place": 51,
+   "peak": 5821,
+   "lastTerr": 1498,
+   "bal": 12173,
+   "last": [
+    {
+     "t": 1350,
+     "terr": 5266,
+     "bal": 33248,
+     "dens": 6.3,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 20,
+     "boats": 6
+    },
+    {
+     "t": 1440,
+     "terr": 5603,
+     "bal": 33756,
+     "dens": 6.0,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 23,
+     "boats": 7
+    },
+    {
+     "t": 1530,
+     "terr": 5666,
+     "bal": 19583,
+     "dens": 3.5,
+     "nb": 5,
+     "neut": 17,
+     "cmds": 28,
+     "boats": 7
+    },
+    {
+     "t": 1620,
+     "terr": 4729,
+     "bal": 36398,
+     "dens": 7.7,
+     "nb": 4,
+     "neut": 1,
+     "cmds": 28,
+     "boats": 7
+    },
+    {
+     "t": 1710,
+     "terr": 4002,
+     "bal": 36591,
+     "dens": 9.1,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 32,
+     "boats": 7
+    },
+    {
+     "t": 1800,
+     "terr": 3000,
+     "bal": 29373,
+     "dens": 9.8,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 32,
+     "boats": 7
+    },
+    {
+     "t": 1890,
+     "terr": 2194,
+     "bal": 19481,
+     "dens": 8.9,
+     "nb": 5,
+     "neut": 0,
+     "cmds": 32,
+     "boats": 7
+    }
+   ],
+   "peak500": 5666,
+   "donOut500": [
+    0,
+    0,
+    0
+   ],
+   "donIn500": [
+    0,
+    0,
+    0
+   ],
+   "assistFor500": 0,
+   "assistBy500": 0
+  },
+  {
+   "bot": "ethan21",
+   "event": "died",
+   "result": "lost",
+   "t": 2160,
+   "place": 50,
+   "peak": 11917,
+   "lastTerr": 4317,
+   "bal": 25739,
+   "last": [
+    {
+     "t": 1530,
+     "terr": 9560,
+     "bal": 124433,
+     "dens": 13.0,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 64,
+     "boats": 1
+    },
+    {
+     "t": 1620,
+     "terr": 9560,
+     "bal": 116374,
+     "dens": 12.2,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 65,
+     "boats": 2
+    },
+    {
+     "t": 1710,
+     "terr": 9673,
+     "bal": 141915,
+     "dens": 14.7,
+     "nb": 2,
+     "neut": 13,
+     "cmds": 66,
+     "boats": 3
+    },
+    {
+     "t": 1800,
+     "terr": 9175,
+     "bal": 179782,
+     "dens": 19.6,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 66,
+     "boats": 3
+    },
+    {
+     "t": 1890,
+     "terr": 11029,
+     "bal": 74729,
+     "dens": 6.8,
+     "nb": 2,
+     "neut": 48,
+     "cmds": 78,
+     "boats": 3
+    },
+    {
+     "t": 1980,
+     "terr": 11110,
+     "bal": 79743,
+     "dens": 7.2,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 79,
+     "boats": 3
+    },
+    {
+     "t": 2070,
+     "terr": 9029,
+     "bal": 70147,
+     "dens": 7.8,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 79,
+     "boats": 3
+    }
+   ],
+   "peak500": 11110,
+   "donOut500": [
+    0,
+    0,
+    0
+   ],
+   "donIn500": [
+    0,
+    0,
+    0
+   ],
+   "assistFor500": 0,
+   "assistBy500": 0
+  },
+  {
+   "bot": "ryan_m",
+   "event": "died",
+   "result": "lost",
+   "t": 2610,
+   "place": 44,
+   "peak": 4958,
+   "lastTerr": 1311,
+   "bal": 16,
+   "last": [
+    {
+     "t": 1980,
+     "terr": 4958,
+     "bal": 383340,
+     "dens": 77.3,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 33,
+     "boats": 0
+    },
+    {
+     "t": 2070,
+     "terr": 4958,
+     "bal": 429875,
+     "dens": 86.7,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 33,
+     "boats": 0
+    },
+    {
+     "t": 2160,
+     "terr": 4958,
+     "bal": 481348,
+     "dens": 97.1,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 33,
+     "boats": 0
+    },
+    {
+     "t": 2250,
+     "terr": 4958,
+     "bal": 475569,
+     "dens": 95.9,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 34,
+     "boats": 0
+    },
+    {
+     "t": 2340,
+     "terr": 4958,
+     "bal": 529941,
+     "dens": 106.9,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 34,
+     "boats": 0
+    },
+    {
+     "t": 2430,
+     "terr": 4958,
+     "bal": 523593,
+     "dens": 105.6,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 35,
+     "boats": 0
+    },
+    {
+     "t": 2520,
+     "terr": 4340,
+     "bal": 42,
+     "dens": 0.0,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 40,
+     "boats": 0
+    }
+   ],
+   "peak500": 4958,
+   "donOut500": [
+    3,
+    80698,
+    99321
+   ],
+   "donIn500": [
+    0,
+    0,
+    0
+   ],
+   "assistFor500": 0,
+   "assistBy500": 0
+  },
+  {
+   "bot": "kevin_k",
+   "event": "died",
+   "result": "lost",
+   "t": 4123,
+   "place": 32,
+   "peak": 6757,
+   "lastTerr": 2,
+   "bal": 10,
+   "last": [
+    {
+     "t": 3240,
+     "terr": 6363,
+     "bal": 79874,
+     "dens": 12.6,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 47,
+     "boats": 6
+    },
+    {
+     "t": 3330,
+     "terr": 6082,
+     "bal": 98862,
+     "dens": 16.3,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 47,
+     "boats": 6
+    },
+    {
+     "t": 3690,
+     "terr": 0,
+     "bal": 0,
+     "dens": 0.0,
+     "nb": 0,
+     "neut": 0,
+     "cmds": 48,
+     "boats": 7
+    },
+    {
+     "t": 3780,
+     "terr": 0,
+     "bal": 0,
+     "dens": 0.0,
+     "nb": 0,
+     "neut": 0,
+     "cmds": 48,
+     "boats": 7
+    },
+    {
+     "t": 3870,
+     "terr": 0,
+     "bal": 0,
+     "dens": 0.0,
+     "nb": 0,
+     "neut": 0,
+     "cmds": 48,
+     "boats": 7
+    },
+    {
+     "t": 3960,
+     "terr": 0,
+     "bal": 0,
+     "dens": 0.0,
+     "nb": 0,
+     "neut": 0,
+     "cmds": 48,
+     "boats": 7
+    },
+    {
+     "t": 4050,
+     "terr": 2,
+     "bal": 1,
+     "dens": 0.5,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 48,
+     "boats": 7
+    }
+   ],
+   "peak500": 2,
+   "donOut500": [
+    0,
+    0,
+    0
+   ],
+   "donIn500": [
+    0,
+    0,
+    0
+   ],
+   "assistFor500": 0,
+   "assistBy500": 0
+  },
+  {
+   "bot": "dave_w",
+   "event": "died",
+   "result": "lost",
+   "t": 4514,
+   "place": 28,
+   "peak": 9832,
+   "lastTerr": 1700,
+   "bal": 115506,
+   "last": [
+    {
+     "t": 2070,
+     "terr": 9832,
+     "bal": 23520,
+     "dens": 2.4,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 83,
+     "boats": 0
+    },
+    {
+     "t": 2160,
+     "terr": 9254,
+     "bal": 33369,
+     "dens": 3.6,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 83,
+     "boats": 0
+    },
+    {
+     "t": 2250,
+     "terr": 8693,
+     "bal": 69378,
+     "dens": 8.0,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 83,
+     "boats": 0
+    },
+    {
+     "t": 2340,
+     "terr": 8195,
+     "bal": 78534,
+     "dens": 9.6,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 83,
+     "boats": 0
+    },
+    {
+     "t": 2430,
+     "terr": 6885,
+     "bal": 95975,
+     "dens": 13.9,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 83,
+     "boats": 0
+    },
+    {
+     "t": 2520,
+     "terr": 6007,
+     "bal": 116376,
+     "dens": 19.4,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 83,
+     "boats": 0
+    },
+    {
+     "t": 2610,
+     "terr": 5726,
+     "bal": 125131,
+     "dens": 21.9,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 83,
+     "boats": 0
+    }
+   ],
+   "peak500": null,
+   "donOut500": [
+    0,
+    0,
+    0
+   ],
+   "donIn500": [
+    0,
+    0,
+    0
+   ],
+   "assistFor500": 0,
+   "assistBy500": 0
+  },
+  {
+   "bot": "mark07",
+   "event": "died",
+   "result": "lost",
+   "t": 5502,
+   "place": 24,
+   "peak": 15980,
+   "lastTerr": 4538,
+   "bal": 190398,
+   "last": [
+    {
+     "t": 1170,
+     "terr": 8177,
+     "bal": 7010,
+     "dens": 0.9,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 65,
+     "boats": 0
+    },
+    {
+     "t": 1260,
+     "terr": 8922,
+     "bal": 40497,
+     "dens": 4.5,
+     "nb": 4,
+     "neut": 0,
+     "cmds": 65,
+     "boats": 0
+    },
+    {
+     "t": 1350,
+     "terr": 9027,
+     "bal": 59803,
+     "dens": 6.6,
+     "nb": 3,
+     "neut": 52,
+     "cmds": 68,
+     "boats": 0
+    },
+    {
+     "t": 1440,
+     "terr": 9027,
+     "bal": 85475,
+     "dens": 9.5,
+     "nb": 3,
+     "neut": 0,
+     "cmds": 68,
+     "boats": 0
+    },
+    {
+     "t": 1530,
+     "terr": 9027,
+     "bal": 114922,
+     "dens": 12.7,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 68,
+     "boats": 0
+    },
+    {
+     "t": 1620,
+     "terr": 9027,
+     "bal": 147463,
+     "dens": 16.3,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 68,
+     "boats": 0
+    },
+    {
+     "t": 1710,
+     "terr": 9027,
+     "bal": 181994,
+     "dens": 20.2,
+     "nb": 2,
+     "neut": 0,
+     "cmds": 68,
+     "boats": 0
+    }
+   ],
+   "peak500": null,
+   "donOut500": [
+    0,
+    0,
+    0
+   ],
+   "donIn500": [
+    0,
+    0,
+    0
+   ],
+   "assistFor500": 0,
+   "assistBy500": 0
+  },
+  {
+   "bot": "leo_tx",
+   "event": "left",
+   "result": "left",
+   "t": 5506,
+   "place": 23,
+   "peak": 3511,
+   "lastTerr": 1,
+   "bal": 0,
+   "last": [
+    {
+     "t": 4950,
+     "terr": 1,
+     "bal": 0,
+     "dens": 0.0,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 40,
+     "boats": 4
+    },
+    {
+     "t": 5040,
+     "terr": 1,
+     "bal": 0,
+     "dens": 0.0,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 40,
+     "boats": 4
+    },
+    {
+     "t": 5130,
+     "terr": 1,
+     "bal": 0,
+     "dens": 0.0,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 40,
+     "boats": 4
+    },
+    {
+     "t": 5220,
+     "terr": 1,
+     "bal": 0,
+     "dens": 0.0,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 40,
+     "boats": 4
+    },
+    {
+     "t": 5310,
+     "terr": 1,
+     "bal": 0,
+     "dens": 0.0,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 40,
+     "boats": 4
+    },
+    {
+     "t": 5400,
+     "terr": 1,
+     "bal": 0,
+     "dens": 0.0,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 40,
+     "boats": 4
+    },
+    {
+     "t": 5490,
+     "terr": 1,
+     "bal": 0,
+     "dens": 0.0,
+     "nb": 1,
+     "neut": 0,
+     "cmds": 40,
+     "boats": 4
+    }
+   ],
+   "peak500": 1,
+   "donOut500": [
+    0,
+    0,
+    0
+   ],
+   "donIn500": [
+    0,
+    0,
+    0
+   ],
+   "assistFor500": 0,
+   "assistBy500": 0
+  }
+ ]
+}

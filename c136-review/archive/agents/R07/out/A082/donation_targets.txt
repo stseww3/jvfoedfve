@@ -1,0 +1,30 @@
+# A082 捐款去向：t 捐方(dMe,myBal) → 收方(快照拍/过期拍数, terr, bal, dens, nb) 之后90拍 dCmds/dTerr | 到账/费
+1810 leo_tx(d113,378812) defense_dispatch pct=226 → ryan_m(snap1800/age10, terr8317, bal19146, d2.3, nb2) 之后: dCmds=5 dTerr=+4264 | 83974/23675
+2705 riku_x(d114,657760) offense_dispatch pct=196 → ryan_m(snap2700/age5, terr18264, bal464541, d25.4, nb1) 之后: dCmds=0 dTerr=+0 | 126541/41110
+2930 riku_x(d111,638975) defense_dispatch pct=209 → zero_7(snap2880/age50, terr9148, bal684459, d74.8, nb2) 之后: dCmds=1 dTerr=-286 | 131039/39935
+3180 riku_x(d109,629006) defense_dispatch pct=196 → zero_7(snap3150/age30, terr9432, bal779232, d82.6, nb3) 之后: dCmds=0 dTerr=+1132 | 121009/39312
+3465 zexos1(d112,703720) yield_opt_dispatch pct=183 → ryan_m(snap3420/age45, terr18264, bal1650185, d90.4, nb1) 之后: dCmds=0 dTerr=+0 | 126449/43982
+3525 ryan_m(d110,2010317) defense_dispatch pct=205 → zero_7(snap3510/age15, terr13302, bal1073755, d80.7, nb4) 之后: dCmds=1 dTerr=-780 | 404419/125644
+3615 alex_k(d113,876652) offense_dispatch pct=190 → zero_7(snap3600/age15, terr12522, bal1256453, d100.3, nb4) 之后: dCmds=3 dTerr=-134 | 163516/54790
+3800 ryan_m(d116,2114027) yield_opt_dispatch pct=210 → zero_7(snap3780/age20, terr12388, bal1090126, d88.0, nb4) 之后: dCmds=3 dTerr=+1089 | 435605/132126
+3840 alex_k(d111,861983) defense_dispatch pct=213 → zero_7(snap3780/age60, terr12388, bal1090126, d88.0, nb4) 之后: dCmds=3 dTerr=+1089 | 180140/53873
+3860 leo_tx(d111,498064) defense_dispatch pct=214 → zero_7(snap3780/age80, terr12388, bal1090126, d88.0, nb4) 之后: dCmds=3 dTerr=+1089 | 104573/31129
+3880 noah88(d112,500372) defense_dispatch pct=217 → kaito9(snap3870/age10, terr6686, bal596899, d89.3, nb3) 之后: dCmds=2 dTerr=-190 | 106524/31273
+3880 riku_x(d109,709254) defense_dispatch pct=196 → kaito9(snap3870/age10, terr6686, bal596899, d89.3, nb3) 之后: dCmds=2 dTerr=-190 | 136448/44328
+3925 kaito9(d111,716002) defense_dispatch pct=209 → zero_7(snap3870/age55, terr13477, bal1201631, d89.2, nb5) 之后: dCmds=2 dTerr=-321 | 146836/44750
+4090 alex_k(d109,845702) defense_dispatch pct=197 → zero_7(snap4050/age40, terr10606, bal869336, d82.0, nb5) 之后: dCmds=1 dTerr=-1963 | 163524/52856
+4155 noah88(d111,498794) defense_dispatch pct=215 → zero_7(snap4140/age15, terr8643, bal762116, d88.2, nb4) 之后: dCmds=2 dTerr=-1551 | 105214/31174
+4155 riku_x(d112,731820) defense_dispatch pct=221 → zero_7(snap4140/age15, terr8643, bal762116, d88.2, nb4) 之后: dCmds=2 dTerr=-1551 | 158656/45738
+4180 riku_x(d115,750639) defense_dispatch pct=240 → zexos1(snap4140/age40, terr7613, bal703723, d92.4, nb2) 之后: dCmds=2 dTerr=-537 | 176664/46914
+4200 kaito9(d113,731274) yield_opt_dispatch pct=187 → ryan_m(snap4140/age60, terr20496, bal1733525, d84.6, nb1) 之后: dCmds=0 dTerr=+0 | 134257/45704
+4275 ryan_m(d107,2201815) defense_dispatch pct=185 → zero_7(snap4230/age45, terr7092, bal644156, d90.8, nb2) 之后: dCmds=4 dTerr=+56 | 399939/137613
+4400 kaito9(d108,702467) defense_dispatch pct=190 → zero_7(snap4320/age80, terr7148, bal558892, d78.2, nb3) 之后: dCmds=0 dTerr=-3578 | 131026/43904
+
+## 汇总（笔数 / 名义到账 / 手续费）
+  all: 20 笔 / 3536353 / 1109830
+  recvSnapshotFresh: 20 笔 / 3536353 / 1109830
+  recvDenserThanDonor: 0 笔 / 0 / 0
+  recvDens>=60: 18 笔 / 3325838 / 1045045
+  recvStale(>90拍无快照=停摆): 0 笔 / 0 / 0
+  recvZeroCmdsNext90: 5 笔 / 639282 / 214012
+  recvNonSquadOrUnknown: 0 笔 / 0 / 0

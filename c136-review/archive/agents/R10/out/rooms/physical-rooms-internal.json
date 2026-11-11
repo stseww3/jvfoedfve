@@ -1,0 +1,4391 @@
+{
+ "_notice": "含验证集包编号：仅 R10 与 c136 使用，R01~R09 不得读取。",
+ "physicalRooms": [
+  {
+   "physRoom": 0,
+   "land": 546152,
+   "seeded": 62,
+   "startUtc": "2026-11-07T16:18:31Z",
+   "members": [
+    {
+     "matchId": "G00",
+     "roomIdx": 0,
+     "cohort": "squad8",
+     "split": "discovery",
+     "nBots": 8,
+     "teams": {
+      "3": 8
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 8,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 1,
+   "land": 546152,
+   "seeded": 50,
+   "startUtc": "2026-11-07T16:24:31Z",
+   "members": [
+    {
+     "matchId": "G01",
+     "roomIdx": 0,
+     "cohort": "squad8",
+     "split": "discovery",
+     "nBots": 8,
+     "teams": {
+      "4": 8
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 8,
+   "modeConflict": false,
+   "tBest": 6,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 2,
+   "land": 664497,
+   "seeded": 61,
+   "startUtc": "2026-11-07T16:30:31Z",
+   "members": [
+    {
+     "matchId": "G02",
+     "roomIdx": 0,
+     "cohort": "squad8",
+     "split": "discovery",
+     "nBots": 8,
+     "teams": {
+      "2": 8
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 8,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 3,
+   "land": 292727,
+   "seeded": 58,
+   "startUtc": "2026-11-07T16:35:31Z",
+   "members": [
+    {
+     "matchId": "G03",
+     "roomIdx": 0,
+     "cohort": "squad8",
+     "split": "discovery",
+     "nBots": 8,
+     "teams": {
+      "3": 8
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 8,
+   "modeConflict": false,
+   "tBest": 4,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 4,
+   "land": 546152,
+   "seeded": 48,
+   "startUtc": "2026-11-07T16:41:31Z",
+   "members": [
+    {
+     "matchId": "G04",
+     "roomIdx": 0,
+     "cohort": "squad8",
+     "split": "discovery",
+     "nBots": 8,
+     "teams": {
+      "1": 8
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 8,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 5,
+   "land": 664497,
+   "seeded": 55,
+   "startUtc": "2026-11-07T16:50:31Z",
+   "members": [
+    {
+     "matchId": "G05",
+     "roomIdx": 0,
+     "cohort": "squad8",
+     "split": "discovery",
+     "nBots": 8,
+     "teams": {
+      "2": 8
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 8,
+   "modeConflict": false,
+   "tBest": 6,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 6,
+   "land": 762763,
+   "seeded": 44,
+   "startUtc": "2026-11-07T16:55:00Z",
+   "members": [
+    {
+     "matchId": "G06",
+     "roomIdx": 0,
+     "cohort": "squad8",
+     "split": "discovery",
+     "nBots": 8,
+     "teams": {
+      "1": 8
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 8,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": 4,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 7,
+   "land": 546152,
+   "seeded": 59,
+   "startUtc": "2026-11-07T17:02:01Z",
+   "members": [
+    {
+     "matchId": "G07",
+     "roomIdx": 0,
+     "cohort": "squad8",
+     "split": "discovery",
+     "nBots": 8,
+     "teams": {
+      "2": 8
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 8,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 8,
+   "land": 430654,
+   "seeded": 49,
+   "startUtc": "2026-11-07T17:08:01Z",
+   "members": [
+    {
+     "matchId": "G08",
+     "roomIdx": 0,
+     "cohort": "squad8",
+     "split": "discovery",
+     "nBots": 7,
+     "teams": {
+      "1": 7
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 7,
+   "modeConflict": false,
+   "tBest": 6,
+   "tHow": "totals",
+   "winner": 5,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 9,
+   "land": 423950,
+   "seeded": 41,
+   "startUtc": "2026-11-07T17:14:01Z",
+   "members": [
+    {
+     "matchId": "G09",
+     "roomIdx": 0,
+     "cohort": "squad8",
+     "split": "discovery",
+     "nBots": 6,
+     "teams": {
+      "2": 3,
+      "3": 2
+     },
+     "nTeamUnknown": 1
+    }
+   ],
+   "nOurBots": 6,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 10,
+   "land": 402147,
+   "seeded": 57,
+   "startUtc": "2026-11-08T08:19:40Z",
+   "members": [
+    {
+     "matchId": "B001",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 20,
+     "teams": {
+      "1": 14,
+      "2": 6
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 20,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 11,
+   "land": 492822,
+   "seeded": 65,
+   "startUtc": "2026-11-08T08:25:40Z",
+   "members": [
+    {
+     "matchId": "B002",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 20,
+     "teams": {
+      "1": 4,
+      "2": 3,
+      "3": 3,
+      "4": 4,
+      "5": 6
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 20,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 12,
+   "land": 402147,
+   "seeded": 43,
+   "startUtc": "2026-11-08T08:40:41Z",
+   "members": [
+    {
+     "matchId": "B003",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 19,
+     "teams": {
+      "1": 3,
+      "2": 13
+     },
+     "nTeamUnknown": 3
+    }
+   ],
+   "nOurBots": 19,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 13,
+   "land": 374820,
+   "seeded": 74,
+   "startUtc": "2026-11-08T08:47:39Z",
+   "members": [
+    {
+     "matchId": "B004",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "validation",
+     "nBots": 19,
+     "teams": {
+      "2": 3,
+      "3": 3,
+      "4": 2,
+      "5": 2,
+      "6": 2,
+      "7": 4,
+      "8": 3
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 19,
+   "modeConflict": false,
+   "tBest": 8,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 14,
+   "land": 517334,
+   "seeded": 73,
+   "startUtc": "2026-11-08T08:59:00Z",
+   "members": [
+    {
+     "matchId": "B005",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 20,
+     "teams": {
+      "1": 6,
+      "2": 6,
+      "3": 6
+     },
+     "nTeamUnknown": 2
+    }
+   ],
+   "nOurBots": 20,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 15,
+   "land": 402147,
+   "seeded": 57,
+   "startUtc": "2026-11-08T09:06:20Z",
+   "members": [
+    {
+     "matchId": "B006",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 20,
+     "teams": {
+      "1": 10,
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 20,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 16,
+   "land": 483274,
+   "seeded": 57,
+   "startUtc": "2026-11-08T09:13:20Z",
+   "members": [
+    {
+     "matchId": "B007",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 20,
+     "teams": {
+      "2": 3,
+      "3": 3,
+      "4": 5,
+      "5": 3,
+      "6": 2
+     },
+     "nTeamUnknown": 4
+    }
+   ],
+   "nOurBots": 20,
+   "modeConflict": false,
+   "tBest": 6,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 17,
+   "land": 402147,
+   "seeded": 72,
+   "startUtc": "2026-11-08T09:20:00Z",
+   "members": [
+    {
+     "matchId": "B008",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "validation",
+     "nBots": 19,
+     "teams": {
+      "1": 8,
+      "2": 11
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 19,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 18,
+   "land": 292727,
+   "seeded": 113,
+   "startUtc": "2026-11-08T18:12:00Z",
+   "members": [
+    {
+     "matchId": "A001",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "2": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 19,
+   "land": 492822,
+   "seeded": 89,
+   "startUtc": "2026-11-08T18:17:40Z",
+   "members": [
+    {
+     "matchId": "A002",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "3": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 6,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 20,
+   "land": 695915,
+   "seeded": 76,
+   "startUtc": "2026-11-08T18:21:00Z",
+   "members": [
+    {
+     "matchId": "A003",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 7,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 21,
+   "land": 762763,
+   "seeded": 84,
+   "startUtc": "2026-11-08T18:26:00Z",
+   "members": [
+    {
+     "matchId": "A004",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 10,
+     "teams": {},
+     "nTeamUnknown": 10
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "rule",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 22,
+   "land": 875239,
+   "seeded": 41,
+   "startUtc": "2026-11-08T18:29:00Z",
+   "members": [
+    {
+     "matchId": "A005",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {},
+     "nTeamUnknown": 10
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 4,
+   "tHow": "rule",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 23,
+   "land": 517334,
+   "seeded": 70,
+   "startUtc": "2026-11-08T18:33:00Z",
+   "members": [
+    {
+     "matchId": "A006",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {},
+     "nTeamUnknown": 10
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "rule",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 24,
+   "land": 517334,
+   "seeded": 97,
+   "startUtc": "2026-11-08T18:36:00Z",
+   "members": [
+    {
+     "matchId": "A007",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 8,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 25,
+   "land": 546152,
+   "seeded": 107,
+   "startUtc": "2026-11-08T18:42:01Z",
+   "members": [
+    {
+     "matchId": "A008",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 9,
+     "teams": {},
+     "nTeamUnknown": 9
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "rule",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 26,
+   "land": 546152,
+   "seeded": 48,
+   "startUtc": "2026-11-08T19:00:40Z",
+   "members": [
+    {
+     "matchId": "A009",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 8,
+     "teams": {
+      "1": 8
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 8,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 27,
+   "land": 423950,
+   "seeded": 20,
+   "startUtc": "2026-11-09T15:16:11Z",
+   "members": [
+    {
+     "matchId": "B009",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "1": 2
+     },
+     "nTeamUnknown": 7
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 4,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 28,
+   "land": 423950,
+   "seeded": 20,
+   "startUtc": "2026-11-09T15:16:28Z",
+   "members": [
+    {
+     "matchId": "A010",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    },
+    {
+     "matchId": "B009",
+     "roomIdx": 1,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 1,
+     "teams": {
+      "1": 1
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 11,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 29,
+   "land": 517334,
+   "seeded": 91,
+   "startUtc": "2026-11-09T15:21:20Z",
+   "members": [
+    {
+     "matchId": "A011",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {},
+     "nTeamUnknown": 10
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "rule",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 30,
+   "land": 664497,
+   "seeded": 95,
+   "startUtc": "2026-11-09T15:27:20Z",
+   "members": [
+    {
+     "matchId": "A012",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    },
+    {
+     "matchId": "B010",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 13,
+     "teams": {
+      "2": 1,
+      "5": 1,
+      "7": 2,
+      "8": 3
+     },
+     "nTeamUnknown": 6
+    }
+   ],
+   "nOurBots": 23,
+   "modeConflict": false,
+   "tBest": 8,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 31,
+   "land": 492822,
+   "seeded": 20,
+   "startUtc": "2026-11-09T15:34:15Z",
+   "members": [
+    {
+     "matchId": "B011",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 8,
+     "teams": {
+      "1": 1,
+      "2": 2,
+      "3": 3,
+      "4": 1,
+      "5": 1
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 8,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": 4,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 32,
+   "land": 492822,
+   "seeded": 20,
+   "startUtc": "2026-11-09T15:34:25Z",
+   "members": [
+    {
+     "matchId": "B011",
+     "roomIdx": 1,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 5,
+     "teams": {
+      "1": 1,
+      "3": 2,
+      "4": 1,
+      "5": 1
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 5,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": 5,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 33,
+   "land": 423950,
+   "seeded": 20,
+   "startUtc": "2026-11-09T15:34:57Z",
+   "members": [
+    {
+     "matchId": "A013",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 34,
+   "land": 546152,
+   "seeded": 106,
+   "startUtc": "2026-11-09T15:39:40Z",
+   "members": [
+    {
+     "matchId": "A014",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 35,
+   "land": 664497,
+   "seeded": 84,
+   "startUtc": "2026-11-09T15:43:21Z",
+   "members": [
+    {
+     "matchId": "B012",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "validation",
+     "nBots": 15,
+     "teams": {
+      "1": 2,
+      "2": 3,
+      "3": 2,
+      "4": 3,
+      "5": 1,
+      "8": 1
+     },
+     "nTeamUnknown": 3
+    }
+   ],
+   "nOurBots": 15,
+   "modeConflict": false,
+   "tBest": 8,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 36,
+   "land": 664497,
+   "seeded": 77,
+   "startUtc": "2026-11-09T15:44:21Z",
+   "members": [
+    {
+     "matchId": "B012",
+     "roomIdx": 1,
+     "cohort": "squad20",
+     "split": "validation",
+     "nBots": 1,
+     "teams": {
+      "6": 1
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 1,
+   "modeConflict": false,
+   "tBest": 7,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 37,
+   "land": 664497,
+   "seeded": 20,
+   "startUtc": "2026-11-09T15:46:34Z",
+   "members": [
+    {
+     "matchId": "A015",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 4,
+     "teams": {
+      "2": 4
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 4,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 38,
+   "land": 664497,
+   "seeded": 20,
+   "startUtc": "2026-11-09T15:46:50Z",
+   "members": [
+    {
+     "matchId": "A015",
+     "roomIdx": 1,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 6,
+     "teams": {
+      "2": 6
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 6,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 39,
+   "land": 517334,
+   "seeded": 108,
+   "startUtc": "2026-11-09T15:50:41Z",
+   "members": [
+    {
+     "matchId": "B013",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 17,
+     "teams": {
+      "1": 1,
+      "2": 2,
+      "3": 1,
+      "4": 5,
+      "5": 1
+     },
+     "nTeamUnknown": 7
+    }
+   ],
+   "nOurBots": 17,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 40,
+   "land": 492822,
+   "seeded": 102,
+   "startUtc": "2026-11-09T15:53:40Z",
+   "members": [
+    {
+     "matchId": "A016",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 10,
+     "teams": {
+      "4": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 8,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 41,
+   "land": 546152,
+   "seeded": 83,
+   "startUtc": "2026-11-09T15:58:20Z",
+   "members": [
+    {
+     "matchId": "B014",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 19,
+     "teams": {
+      "1": 3,
+      "2": 7,
+      "3": 7
+     },
+     "nTeamUnknown": 2
+    }
+   ],
+   "nOurBots": 19,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": 3,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 42,
+   "land": 664497,
+   "seeded": 20,
+   "startUtc": "2026-11-09T16:02:13Z",
+   "members": [
+    {
+     "matchId": "A017",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 1,
+     "teams": {
+      "2": 1
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 1,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 43,
+   "land": 664497,
+   "seeded": 20,
+   "startUtc": "2026-11-09T16:02:17Z",
+   "members": [
+    {
+     "matchId": "A017",
+     "roomIdx": 1,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "2": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 44,
+   "land": 664497,
+   "seeded": 55,
+   "startUtc": "2026-11-09T23:31:30Z",
+   "members": [
+    {
+     "matchId": "B015",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 11,
+     "teams": {
+      "2": 2,
+      "4": 1,
+      "5": 3,
+      "7": 2,
+      "8": 3
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 11,
+   "modeConflict": false,
+   "tBest": 8,
+   "tHow": "totals",
+   "winner": 5,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 45,
+   "land": 374820,
+   "seeded": 20,
+   "startUtc": "2026-11-09T23:33:06Z",
+   "members": [
+    {
+     "matchId": "A018",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "1": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 46,
+   "land": 664497,
+   "seeded": 88,
+   "startUtc": "2026-11-09T23:45:11Z",
+   "members": [
+    {
+     "matchId": "B016",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "validation",
+     "nBots": 11,
+     "teams": {
+      "1": 2,
+      "2": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 11,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 47,
+   "land": 492822,
+   "seeded": 59,
+   "startUtc": "2026-11-09T23:54:01Z",
+   "members": [
+    {
+     "matchId": "B017",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 19,
+     "teams": {
+      "1": 3,
+      "2": 3,
+      "3": 2,
+      "4": 1,
+      "5": 2,
+      "6": 1,
+      "7": 5,
+      "8": 1
+     },
+     "nTeamUnknown": 1
+    }
+   ],
+   "nOurBots": 19,
+   "modeConflict": false,
+   "tBest": 8,
+   "tHow": "totals",
+   "winner": 4,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 48,
+   "land": 517334,
+   "seeded": 43,
+   "startUtc": "2026-11-10T00:02:30Z",
+   "members": [
+    {
+     "matchId": "A019",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "3": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 4,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 49,
+   "land": 546152,
+   "seeded": 64,
+   "startUtc": "2026-11-10T00:04:00Z",
+   "members": [
+    {
+     "matchId": "B018",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 20,
+     "teams": {
+      "1": 4,
+      "2": 6,
+      "3": 6
+     },
+     "nTeamUnknown": 4
+    }
+   ],
+   "nOurBots": 20,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 50,
+   "land": 664497,
+   "seeded": 50,
+   "startUtc": "2026-11-10T00:12:30Z",
+   "members": [
+    {
+     "matchId": "A020",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "rule>totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 51,
+   "land": 762763,
+   "seeded": 51,
+   "startUtc": "2026-11-10T00:16:00Z",
+   "members": [
+    {
+     "matchId": "B019",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 20,
+     "teams": {
+      "1": 3,
+      "2": 9,
+      "3": 6
+     },
+     "nTeamUnknown": 2
+    }
+   ],
+   "nOurBots": 20,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 52,
+   "land": 517334,
+   "seeded": 49,
+   "startUtc": "2026-11-10T00:19:30Z",
+   "members": [
+    {
+     "matchId": "A021",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "3": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 53,
+   "land": 546152,
+   "seeded": 107,
+   "startUtc": "2026-11-10T00:30:11Z",
+   "members": [
+    {
+     "matchId": "A022",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    },
+    {
+     "matchId": "B020",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "validation",
+     "nBots": 20,
+     "teams": {
+      "1": 5,
+      "2": 1,
+      "3": 8
+     },
+     "nTeamUnknown": 6
+    }
+   ],
+   "nOurBots": 30,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 54,
+   "land": 480957,
+   "seeded": 42,
+   "startUtc": "2026-11-10T00:38:01Z",
+   "members": [
+    {
+     "matchId": "B021",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 13,
+     "teams": {
+      "2": 2,
+      "3": 3,
+      "4": 2,
+      "5": 3,
+      "6": 3
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 13,
+   "modeConflict": false,
+   "tBest": 6,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 55,
+   "land": 374820,
+   "seeded": 50,
+   "startUtc": "2026-11-10T00:39:00Z",
+   "members": [
+    {
+     "matchId": "A023",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 56,
+   "land": 695915,
+   "seeded": 20,
+   "startUtc": "2026-11-10T00:49:54Z",
+   "members": [
+    {
+     "matchId": "B022",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 11,
+     "teams": {
+      "1": 2,
+      "2": 3,
+      "3": 3,
+      "4": 3
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 11,
+   "modeConflict": false,
+   "tBest": 4,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 57,
+   "land": 517334,
+   "seeded": 54,
+   "startUtc": "2026-11-10T00:52:01Z",
+   "members": [
+    {
+     "matchId": "A024",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 58,
+   "land": 456567,
+   "seeded": 42,
+   "startUtc": "2026-11-10T00:58:01Z",
+   "members": [
+    {
+     "matchId": "B023",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 17,
+     "teams": {
+      "1": 7,
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 17,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 59,
+   "land": 374820,
+   "seeded": 20,
+   "startUtc": "2026-11-10T01:00:55Z",
+   "members": [
+    {
+     "matchId": "A025",
+     "roomIdx": 1,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 3,
+     "teams": {
+      "1": 3
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 3,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "rule>totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 60,
+   "land": 374820,
+   "seeded": 12,
+   "startUtc": "2026-11-10T01:01:01Z",
+   "members": [
+    {
+     "matchId": "A025",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 6,
+     "teams": {
+      "1": 6
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 6,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "rule>totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 61,
+   "land": 480957,
+   "seeded": 51,
+   "startUtc": "2026-11-10T01:09:00Z",
+   "members": [
+    {
+     "matchId": "B024",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "validation",
+     "nBots": 19,
+     "teams": {
+      "2": 1,
+      "3": 1,
+      "4": 5,
+      "5": 3,
+      "6": 6
+     },
+     "nTeamUnknown": 3
+    }
+   ],
+   "nOurBots": 19,
+   "modeConflict": false,
+   "tBest": 6,
+   "tHow": "totals",
+   "winner": 3,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 62,
+   "land": 762763,
+   "seeded": 22,
+   "startUtc": "2026-11-10T01:16:00Z",
+   "members": [
+    {
+     "matchId": "A026",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "1": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 63,
+   "land": 517334,
+   "seeded": 64,
+   "startUtc": "2026-11-10T01:20:00Z",
+   "members": [
+    {
+     "matchId": "B025",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 20,
+     "teams": {
+      "1": 3,
+      "2": 4,
+      "3": 4,
+      "4": 6,
+      "5": 3
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 20,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": 5,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 64,
+   "land": 492822,
+   "seeded": 20,
+   "startUtc": "2026-11-10T01:21:05Z",
+   "members": [
+    {
+     "matchId": "A027",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 65,
+   "land": 517334,
+   "seeded": 40,
+   "startUtc": "2026-11-10T01:25:30Z",
+   "members": [
+    {
+     "matchId": "A028",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 8,
+     "teams": {
+      "2": 8
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 8,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 66,
+   "land": 664497,
+   "seeded": 36,
+   "startUtc": "2026-11-10T01:33:00Z",
+   "members": [
+    {
+     "matchId": "A029",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "rule>totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 67,
+   "land": 664497,
+   "seeded": 43,
+   "startUtc": "2026-11-10T01:34:31Z",
+   "members": [
+    {
+     "matchId": "B026",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 17,
+     "teams": {
+      "4": 1
+     },
+     "nTeamUnknown": 16
+    }
+   ],
+   "nOurBots": 17,
+   "modeConflict": false,
+   "tBest": 7,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 68,
+   "land": 517334,
+   "seeded": 72,
+   "startUtc": "2026-11-10T01:40:11Z",
+   "members": [
+    {
+     "matchId": "B027",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 19,
+     "teams": {},
+     "nTeamUnknown": 19
+    }
+   ],
+   "nOurBots": 19,
+   "modeConflict": false,
+   "tBest": null,
+   "tHow": "unknown",
+   "winner": null,
+   "isTeamGame": false
+  },
+  {
+   "physRoom": 69,
+   "land": 374820,
+   "seeded": 45,
+   "startUtc": "2026-11-10T01:42:01Z",
+   "members": [
+    {
+     "matchId": "A030",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 70,
+   "land": 546152,
+   "seeded": 56,
+   "startUtc": "2026-11-10T01:48:30Z",
+   "members": [
+    {
+     "matchId": "A031",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "3": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 71,
+   "land": 492822,
+   "seeded": 20,
+   "startUtc": "2026-11-10T01:50:20Z",
+   "members": [
+    {
+     "matchId": "B028",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "validation",
+     "nBots": 18,
+     "teams": {
+      "1": 2,
+      "3": 1
+     },
+     "nTeamUnknown": 15
+    }
+   ],
+   "nOurBots": 18,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "rule>totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 72,
+   "land": 517334,
+   "seeded": 62,
+   "startUtc": "2026-11-10T01:57:01Z",
+   "members": [
+    {
+     "matchId": "A032",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": 3,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 73,
+   "land": 546152,
+   "seeded": 58,
+   "startUtc": "2026-11-10T02:05:31Z",
+   "members": [
+    {
+     "matchId": "A033",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "2": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 74,
+   "land": 517334,
+   "seeded": 64,
+   "startUtc": "2026-11-10T02:12:32Z",
+   "members": [
+    {
+     "matchId": "B029",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 18,
+     "teams": {
+      "2": 4,
+      "3": 7,
+      "4": 4,
+      "5": 3
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 18,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 75,
+   "land": 546152,
+   "seeded": 33,
+   "startUtc": "2026-11-10T02:14:00Z",
+   "members": [
+    {
+     "matchId": "A034",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "3": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 76,
+   "land": 517334,
+   "seeded": 41,
+   "startUtc": "2026-11-10T02:20:00Z",
+   "members": [
+    {
+     "matchId": "A035",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 77,
+   "land": 402147,
+   "seeded": 6,
+   "startUtc": "2026-11-10T02:24:12Z",
+   "members": [
+    {
+     "matchId": "B030",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 6,
+     "teams": {},
+     "nTeamUnknown": 6
+    }
+   ],
+   "nOurBots": 6,
+   "modeConflict": false,
+   "tBest": null,
+   "tHow": "unknown",
+   "winner": null,
+   "isTeamGame": false
+  },
+  {
+   "physRoom": 78,
+   "land": 374820,
+   "seeded": 20,
+   "startUtc": "2026-11-10T02:25:49Z",
+   "members": [
+    {
+     "matchId": "A036",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 9,
+     "teams": {
+      "1": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 79,
+   "land": 374820,
+   "seeded": 20,
+   "startUtc": "2026-11-10T02:26:20Z",
+   "members": [
+    {
+     "matchId": "A036",
+     "roomIdx": 1,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 1,
+     "teams": {
+      "1": 1
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 1,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 80,
+   "land": 546152,
+   "seeded": 41,
+   "startUtc": "2026-11-10T02:32:30Z",
+   "members": [
+    {
+     "matchId": "A037",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "3": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": 3,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 81,
+   "land": 480957,
+   "seeded": 42,
+   "startUtc": "2026-11-10T02:42:30Z",
+   "members": [
+    {
+     "matchId": "A038",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "4": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 4,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 82,
+   "land": 423950,
+   "seeded": 20,
+   "startUtc": "2026-11-10T02:51:25Z",
+   "members": [
+    {
+     "matchId": "A039",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 83,
+   "land": 546152,
+   "seeded": 39,
+   "startUtc": "2026-11-10T02:59:00Z",
+   "members": [
+    {
+     "matchId": "A040",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "rule>totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 84,
+   "land": 480957,
+   "seeded": 29,
+   "startUtc": "2026-11-10T03:12:01Z",
+   "members": [
+    {
+     "matchId": "A041",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 85,
+   "land": 517334,
+   "seeded": 33,
+   "startUtc": "2026-11-10T03:17:31Z",
+   "members": [
+    {
+     "matchId": "A042",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 86,
+   "land": 492822,
+   "seeded": 20,
+   "startUtc": "2026-11-10T03:24:17Z",
+   "members": [
+    {
+     "matchId": "A043",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 2,
+     "teams": {
+      "3": 2
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 2,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "rule>totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 87,
+   "land": 492822,
+   "seeded": 20,
+   "startUtc": "2026-11-10T03:24:26Z",
+   "members": [
+    {
+     "matchId": "A043",
+     "roomIdx": 1,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 8,
+     "teams": {
+      "2": 8
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 8,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 88,
+   "land": 664497,
+   "seeded": 28,
+   "startUtc": "2026-11-10T03:33:30Z",
+   "members": [
+    {
+     "matchId": "A044",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 9,
+     "teams": {
+      "1": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": 3,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 89,
+   "land": 480957,
+   "seeded": 47,
+   "startUtc": "2026-11-10T03:43:00Z",
+   "members": [
+    {
+     "matchId": "A045",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 8,
+     "teams": {
+      "2": 8
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 8,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 90,
+   "land": 664497,
+   "seeded": 48,
+   "startUtc": "2026-11-10T03:54:30Z",
+   "members": [
+    {
+     "matchId": "A046",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {},
+     "nTeamUnknown": 10
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": null,
+   "tHow": "unknown",
+   "winner": null,
+   "isTeamGame": false
+  },
+  {
+   "physRoom": 91,
+   "land": 664497,
+   "seeded": 52,
+   "startUtc": "2026-11-10T04:01:01Z",
+   "members": [
+    {
+     "matchId": "A047",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "3": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 92,
+   "land": 483274,
+   "seeded": 50,
+   "startUtc": "2026-11-10T04:11:31Z",
+   "members": [
+    {
+     "matchId": "A048",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 10,
+     "teams": {},
+     "nTeamUnknown": 10
+    },
+    {
+     "matchId": "B031",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 13,
+     "teams": {},
+     "nTeamUnknown": 13
+    }
+   ],
+   "nOurBots": 23,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "rule",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 93,
+   "land": 546152,
+   "seeded": 75,
+   "startUtc": "2026-11-10T04:15:10Z",
+   "members": [
+    {
+     "matchId": "A049",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    },
+    {
+     "matchId": "B032",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "validation",
+     "nBots": 10,
+     "teams": {
+      "1": 5,
+      "2": 4,
+      "3": 1
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 20,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 94,
+   "land": 546152,
+   "seeded": 50,
+   "startUtc": "2026-11-10T04:23:31Z",
+   "members": [
+    {
+     "matchId": "A050",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {},
+     "nTeamUnknown": 10
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "rule",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 95,
+   "land": 664497,
+   "seeded": 69,
+   "startUtc": "2026-11-10T04:30:11Z",
+   "members": [
+    {
+     "matchId": "A051",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    },
+    {
+     "matchId": "B033",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "1": 4,
+      "2": 6
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 20,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 96,
+   "land": 492822,
+   "seeded": 50,
+   "startUtc": "2026-11-10T04:36:30Z",
+   "members": [
+    {
+     "matchId": "B034",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 18,
+     "teams": {
+      "1": 1,
+      "2": 2,
+      "3": 4,
+      "4": 2
+     },
+     "nTeamUnknown": 9
+    },
+    {
+     "matchId": "A052",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 10,
+     "teams": {
+      "5": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 28,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 97,
+   "land": 517334,
+   "seeded": 81,
+   "startUtc": "2026-11-10T04:45:10Z",
+   "members": [
+    {
+     "matchId": "A053",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "3": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 98,
+   "land": 483274,
+   "seeded": 22,
+   "startUtc": "2026-11-10T04:46:00Z",
+   "members": [
+    {
+     "matchId": "B035",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 1,
+      "3": 1,
+      "4": 3,
+      "5": 1,
+      "6": 3
+     },
+     "nTeamUnknown": 1
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 6,
+   "tHow": "totals",
+   "winner": 3,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 99,
+   "land": 517334,
+   "seeded": 58,
+   "startUtc": "2026-11-10T04:54:30Z",
+   "members": [
+    {
+     "matchId": "A054",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 100,
+   "land": 492822,
+   "seeded": 20,
+   "startUtc": "2026-11-10T04:56:06Z",
+   "members": [
+    {
+     "matchId": "B036",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "validation",
+     "nBots": 14,
+     "teams": {
+      "1": 1,
+      "2": 2,
+      "3": 1
+     },
+     "nTeamUnknown": 10
+    }
+   ],
+   "nOurBots": 14,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 101,
+   "land": 517334,
+   "seeded": 50,
+   "startUtc": "2026-11-10T05:03:30Z",
+   "members": [
+    {
+     "matchId": "A055",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 102,
+   "land": 695915,
+   "seeded": 20,
+   "startUtc": "2026-11-10T05:06:46Z",
+   "members": [
+    {
+     "matchId": "B037",
+     "roomIdx": 1,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 3,
+     "teams": {
+      "3": 1
+     },
+     "nTeamUnknown": 2
+    }
+   ],
+   "nOurBots": 3,
+   "modeConflict": false,
+   "tBest": 4,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 103,
+   "land": 695915,
+   "seeded": 19,
+   "startUtc": "2026-11-10T05:07:00Z",
+   "members": [
+    {
+     "matchId": "B037",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "1": 2,
+      "2": 1,
+      "3": 3,
+      "4": 2
+     },
+     "nTeamUnknown": 1
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 4,
+   "tHow": "totals",
+   "winner": 4,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 104,
+   "land": 517334,
+   "seeded": 20,
+   "startUtc": "2026-11-10T05:09:09Z",
+   "members": [
+    {
+     "matchId": "A056",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 9,
+     "teams": {
+      "2": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 105,
+   "land": 517334,
+   "seeded": 20,
+   "startUtc": "2026-11-10T05:09:30Z",
+   "members": [
+    {
+     "matchId": "A056",
+     "roomIdx": 1,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 1,
+     "teams": {
+      "2": 1
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 1,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 106,
+   "land": 546152,
+   "seeded": 102,
+   "startUtc": "2026-11-10T05:15:11Z",
+   "members": [
+    {
+     "matchId": "A057",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    },
+    {
+     "matchId": "B038",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 20,
+     "teams": {
+      "1": 5,
+      "2": 6,
+      "3": 8
+     },
+     "nTeamUnknown": 1
+    }
+   ],
+   "nOurBots": 30,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 107,
+   "land": 762763,
+   "seeded": 74,
+   "startUtc": "2026-11-10T05:27:31Z",
+   "members": [
+    {
+     "matchId": "A058",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    },
+    {
+     "matchId": "B039",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 20,
+     "teams": {
+      "2": 4,
+      "3": 8
+     },
+     "nTeamUnknown": 8
+    }
+   ],
+   "nOurBots": 30,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 108,
+   "land": 546152,
+   "seeded": 70,
+   "startUtc": "2026-11-10T05:37:00Z",
+   "members": [
+    {
+     "matchId": "A059",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "1": 9
+     },
+     "nTeamUnknown": 0
+    },
+    {
+     "matchId": "B040",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "validation",
+     "nBots": 19,
+     "teams": {
+      "1": 3,
+      "2": 9,
+      "3": 2
+     },
+     "nTeamUnknown": 5
+    }
+   ],
+   "nOurBots": 28,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": 3,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 109,
+   "land": 480957,
+   "seeded": 62,
+   "startUtc": "2026-11-10T05:44:00Z",
+   "members": [
+    {
+     "matchId": "A060",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 10,
+     "teams": {
+      "4": 10
+     },
+     "nTeamUnknown": 0
+    },
+    {
+     "matchId": "B041",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 20,
+     "teams": {
+      "1": 2,
+      "3": 2,
+      "4": 1,
+      "5": 2,
+      "6": 2
+     },
+     "nTeamUnknown": 11
+    }
+   ],
+   "nOurBots": 30,
+   "modeConflict": false,
+   "tBest": 6,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 110,
+   "land": 483274,
+   "seeded": 54,
+   "startUtc": "2026-11-10T05:50:00Z",
+   "members": [
+    {
+     "matchId": "A061",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 111,
+   "land": 492822,
+   "seeded": 20,
+   "startUtc": "2026-11-10T05:51:21Z",
+   "members": [
+    {
+     "matchId": "B042",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 4,
+     "teams": {
+      "2": 1,
+      "3": 2,
+      "5": 1
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 4,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "rule>totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 112,
+   "land": 492822,
+   "seeded": 20,
+   "startUtc": "2026-11-10T05:51:56Z",
+   "members": [
+    {
+     "matchId": "B042",
+     "roomIdx": 1,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 1,
+     "teams": {
+      "3": 1
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 1,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "rule>totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 113,
+   "land": 546152,
+   "seeded": 88,
+   "startUtc": "2026-11-10T06:00:10Z",
+   "members": [
+    {
+     "matchId": "A062",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    },
+    {
+     "matchId": "B043",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 20,
+     "teams": {
+      "1": 5,
+      "2": 5,
+      "3": 7
+     },
+     "nTeamUnknown": 3
+    }
+   ],
+   "nOurBots": 30,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 114,
+   "land": 517334,
+   "seeded": 76,
+   "startUtc": "2026-11-10T06:08:01Z",
+   "members": [
+    {
+     "matchId": "A063",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "3": 10
+     },
+     "nTeamUnknown": 0
+    },
+    {
+     "matchId": "B044",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "validation",
+     "nBots": 19,
+     "teams": {
+      "1": 5,
+      "2": 3,
+      "3": 7
+     },
+     "nTeamUnknown": 4
+    }
+   ],
+   "nOurBots": 29,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 115,
+   "land": 423950,
+   "seeded": 20,
+   "startUtc": "2026-11-10T06:13:55Z",
+   "members": [
+    {
+     "matchId": "A064",
+     "roomIdx": 1,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 4,
+     "teams": {
+      "4": 4
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 4,
+   "modeConflict": false,
+   "tBest": 4,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 116,
+   "land": 423950,
+   "seeded": 9,
+   "startUtc": "2026-11-10T06:14:00Z",
+   "members": [
+    {
+     "matchId": "A064",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 5,
+     "teams": {
+      "2": 5
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 5,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 117,
+   "land": 517334,
+   "seeded": 91,
+   "startUtc": "2026-11-10T06:15:11Z",
+   "members": [
+    {
+     "matchId": "B045",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 19,
+     "teams": {
+      "1": 1,
+      "2": 3,
+      "3": 3,
+      "4": 5
+     },
+     "nTeamUnknown": 7
+    }
+   ],
+   "nOurBots": 19,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": 4,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 118,
+   "land": 664497,
+   "seeded": 41,
+   "startUtc": "2026-11-10T06:23:01Z",
+   "members": [
+    {
+     "matchId": "A065",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 4,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 119,
+   "land": 517334,
+   "seeded": 110,
+   "startUtc": "2026-11-10T06:30:11Z",
+   "members": [
+    {
+     "matchId": "B046",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 17,
+     "teams": {
+      "1": 8,
+      "2": 6
+     },
+     "nTeamUnknown": 3
+    }
+   ],
+   "nOurBots": 17,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": 3,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 120,
+   "land": 546152,
+   "seeded": 50,
+   "startUtc": "2026-11-10T06:33:31Z",
+   "members": [
+    {
+     "matchId": "A066",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 121,
+   "land": 762763,
+   "seeded": 57,
+   "startUtc": "2026-11-10T06:39:01Z",
+   "members": [
+    {
+     "matchId": "B047",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 15,
+     "teams": {},
+     "nTeamUnknown": 15
+    }
+   ],
+   "nOurBots": 15,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "rule",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 122,
+   "land": 664497,
+   "seeded": 58,
+   "startUtc": "2026-11-10T06:42:01Z",
+   "members": [
+    {
+     "matchId": "A067",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "5": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 123,
+   "land": 517334,
+   "seeded": 59,
+   "startUtc": "2026-11-10T06:51:30Z",
+   "members": [
+    {
+     "matchId": "A068",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 124,
+   "land": 517334,
+   "seeded": 82,
+   "startUtc": "2026-11-10T06:58:30Z",
+   "members": [
+    {
+     "matchId": "A069",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "3": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 125,
+   "land": 695915,
+   "seeded": 20,
+   "startUtc": "2026-11-10T07:06:56Z",
+   "members": [
+    {
+     "matchId": "A070",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 126,
+   "land": 664497,
+   "seeded": 44,
+   "startUtc": "2026-11-10T07:11:30Z",
+   "members": [
+    {
+     "matchId": "A071",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "4": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 4,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 127,
+   "land": 695915,
+   "seeded": 42,
+   "startUtc": "2026-11-10T07:12:30Z",
+   "members": [
+    {
+     "matchId": "A071",
+     "roomIdx": 1,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 1,
+     "teams": {},
+     "nTeamUnknown": 1
+    }
+   ],
+   "nOurBots": 1,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "rule",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 128,
+   "land": 664497,
+   "seeded": 20,
+   "startUtc": "2026-11-10T07:19:32Z",
+   "members": [
+    {
+     "matchId": "A072",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 9,
+     "teams": {
+      "2": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 129,
+   "land": 664497,
+   "seeded": 20,
+   "startUtc": "2026-11-10T07:19:53Z",
+   "members": [
+    {
+     "matchId": "A072",
+     "roomIdx": 1,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 1,
+     "teams": {
+      "2": 1
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 1,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 130,
+   "land": 664497,
+   "seeded": 2,
+   "startUtc": "2026-11-10T07:25:11Z",
+   "members": [
+    {
+     "matchId": "A073",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {},
+     "nTeamUnknown": 9
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": null,
+   "tHow": "unknown",
+   "winner": null,
+   "isTeamGame": false
+  },
+  {
+   "physRoom": 131,
+   "land": 762763,
+   "seeded": 66,
+   "startUtc": "2026-11-10T07:36:31Z",
+   "members": [
+    {
+     "matchId": "A074",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "1": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 132,
+   "land": 517334,
+   "seeded": 95,
+   "startUtc": "2026-11-10T07:45:11Z",
+   "members": [
+    {
+     "matchId": "A075",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 4,
+     "teams": {
+      "1": 4
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 4,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "rule>totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 133,
+   "land": 483274,
+   "seeded": 65,
+   "startUtc": "2026-11-10T07:52:00Z",
+   "members": [
+    {
+     "matchId": "A076",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 8,
+     "teams": {
+      "6": 8
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 8,
+   "modeConflict": false,
+   "tBest": 6,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 134,
+   "land": 517334,
+   "seeded": 133,
+   "startUtc": "2026-11-10T08:00:10Z",
+   "members": [
+    {
+     "matchId": "A077",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 135,
+   "land": 664497,
+   "seeded": 62,
+   "startUtc": "2026-11-10T08:07:40Z",
+   "members": [
+    {
+     "matchId": "A078",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 6,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 136,
+   "land": 546152,
+   "seeded": 78,
+   "startUtc": "2026-11-10T08:15:11Z",
+   "members": [
+    {
+     "matchId": "A079",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "2": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 137,
+   "land": 762763,
+   "seeded": 31,
+   "startUtc": "2026-11-10T08:23:00Z",
+   "members": [
+    {
+     "matchId": "A080",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 10,
+     "teams": {
+      "3": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 138,
+   "land": 492822,
+   "seeded": 20,
+   "startUtc": "2026-11-10T08:31:23Z",
+   "members": [
+    {
+     "matchId": "A081",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 139,
+   "land": 664497,
+   "seeded": 71,
+   "startUtc": "2026-11-10T08:37:21Z",
+   "members": [
+    {
+     "matchId": "A082",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "3": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 7,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 140,
+   "land": 546152,
+   "seeded": 55,
+   "startUtc": "2026-11-10T08:44:21Z",
+   "members": [
+    {
+     "matchId": "A083",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "3": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 141,
+   "land": 664497,
+   "seeded": 55,
+   "startUtc": "2026-11-10T08:53:41Z",
+   "members": [
+    {
+     "matchId": "A084",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 10,
+     "teams": {
+      "5": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 142,
+   "land": 546152,
+   "seeded": 61,
+   "startUtc": "2026-11-10T09:02:20Z",
+   "members": [
+    {
+     "matchId": "A085",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 143,
+   "land": 517334,
+   "seeded": 20,
+   "startUtc": "2026-11-10T09:09:30Z",
+   "members": [
+    {
+     "matchId": "A086",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 1,
+     "teams": {
+      "3": 1
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 1,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 144,
+   "land": 517334,
+   "seeded": 20,
+   "startUtc": "2026-11-10T09:09:33Z",
+   "members": [
+    {
+     "matchId": "A086",
+     "roomIdx": 1,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "2": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 145,
+   "land": 546152,
+   "seeded": 117,
+   "startUtc": "2026-11-10T09:15:10Z",
+   "members": [
+    {
+     "matchId": "A087",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 146,
+   "land": 762763,
+   "seeded": 86,
+   "startUtc": "2026-11-10T09:24:40Z",
+   "members": [
+    {
+     "matchId": "A088",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 147,
+   "land": 664497,
+   "seeded": 44,
+   "startUtc": "2026-11-10T09:30:41Z",
+   "members": [
+    {
+     "matchId": "A089",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "1": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 4,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 148,
+   "land": 517334,
+   "seeded": 45,
+   "startUtc": "2026-11-10T09:38:20Z",
+   "members": [
+    {
+     "matchId": "A090",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 149,
+   "land": 517334,
+   "seeded": 41,
+   "startUtc": "2026-11-10T09:45:41Z",
+   "members": [
+    {
+     "matchId": "A091",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "2": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 150,
+   "land": 546152,
+   "seeded": 84,
+   "startUtc": "2026-11-10T09:54:01Z",
+   "members": [
+    {
+     "matchId": "A092",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 10,
+     "teams": {
+      "3": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 151,
+   "land": 762763,
+   "seeded": 57,
+   "startUtc": "2026-11-10T10:01:41Z",
+   "members": [
+    {
+     "matchId": "A093",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 9,
+     "teams": {
+      "1": 9
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 152,
+   "land": 695915,
+   "seeded": 20,
+   "startUtc": "2026-11-10T10:08:39Z",
+   "members": [
+    {
+     "matchId": "A094",
+     "roomIdx": 1,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 3,
+     "teams": {
+      "3": 3
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 3,
+   "modeConflict": false,
+   "tBest": 4,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 153,
+   "land": 695915,
+   "seeded": 9,
+   "startUtc": "2026-11-10T10:08:40Z",
+   "members": [
+    {
+     "matchId": "A094",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 6,
+     "teams": {
+      "1": 6
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 6,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 154,
+   "land": 517334,
+   "seeded": 68,
+   "startUtc": "2026-11-10T10:17:20Z",
+   "members": [
+    {
+     "matchId": "A095",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 155,
+   "land": 664497,
+   "seeded": 49,
+   "startUtc": "2026-11-10T10:26:20Z",
+   "members": [
+    {
+     "matchId": "A096",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 10,
+     "teams": {
+      "3": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 4,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 156,
+   "land": 374820,
+   "seeded": 20,
+   "startUtc": "2026-11-10T14:20:21Z",
+   "members": [
+    {
+     "matchId": "B048",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "validation",
+     "nBots": 9,
+     "teams": {
+      "1": 5,
+      "2": 4
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 9,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 157,
+   "land": 374820,
+   "seeded": 20,
+   "startUtc": "2026-11-10T14:20:26Z",
+   "members": [
+    {
+     "matchId": "B048",
+     "roomIdx": 1,
+     "cohort": "squad20",
+     "split": "validation",
+     "nBots": 7,
+     "teams": {
+      "1": 5,
+      "2": 2
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 7,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 1,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 158,
+   "land": 374820,
+   "seeded": 60,
+   "startUtc": "2026-11-10T14:28:00Z",
+   "members": [
+    {
+     "matchId": "A097",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "2": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 159,
+   "land": 762763,
+   "seeded": 53,
+   "startUtc": "2026-11-10T14:30:40Z",
+   "members": [
+    {
+     "matchId": "B049",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 13,
+     "teams": {
+      "1": 1,
+      "2": 2,
+      "3": 5
+     },
+     "nTeamUnknown": 5
+    }
+   ],
+   "nOurBots": 13,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 160,
+   "land": 546152,
+   "seeded": 45,
+   "startUtc": "2026-11-10T14:31:20Z",
+   "members": [
+    {
+     "matchId": "B049",
+     "roomIdx": 1,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 2,
+     "teams": {
+      "2": 2
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 2,
+   "modeConflict": false,
+   "tBest": 3,
+   "tHow": "totals",
+   "winner": 3,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 161,
+   "land": 517334,
+   "seeded": 74,
+   "startUtc": "2026-11-10T14:37:00Z",
+   "members": [
+    {
+     "matchId": "A098",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "1": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 2,
+   "tHow": "totals",
+   "winner": 2,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 162,
+   "land": 664497,
+   "seeded": 88,
+   "startUtc": "2026-11-10T14:42:40Z",
+   "members": [
+    {
+     "matchId": "A099",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "discovery",
+     "nBots": 10,
+     "teams": {
+      "7": 10
+     },
+     "nTeamUnknown": 0
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 8,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 163,
+   "land": 492822,
+   "seeded": 20,
+   "startUtc": "2026-11-10T14:43:35Z",
+   "members": [
+    {
+     "matchId": "B050",
+     "roomIdx": 0,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 11,
+     "teams": {
+      "1": 1,
+      "3": 1,
+      "4": 2,
+      "5": 1
+     },
+     "nTeamUnknown": 6
+    }
+   ],
+   "nOurBots": 11,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "rule>totals",
+   "winner": 4,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 164,
+   "land": 492822,
+   "seeded": 20,
+   "startUtc": "2026-11-10T14:43:38Z",
+   "members": [
+    {
+     "matchId": "B050",
+     "roomIdx": 1,
+     "cohort": "squad20",
+     "split": "discovery",
+     "nBots": 5,
+     "teams": {
+      "1": 1,
+      "3": 2
+     },
+     "nTeamUnknown": 2
+    }
+   ],
+   "nOurBots": 5,
+   "modeConflict": false,
+   "tBest": 5,
+   "tHow": "totals",
+   "winner": null,
+   "isTeamGame": true
+  },
+  {
+   "physRoom": 165,
+   "land": 664497,
+   "seeded": 75,
+   "startUtc": "2026-11-10T15:04:19Z",
+   "members": [
+    {
+     "matchId": "A100",
+     "roomIdx": 0,
+     "cohort": "squad10",
+     "split": "validation",
+     "nBots": 10,
+     "teams": {},
+     "nTeamUnknown": 10
+    }
+   ],
+   "nOurBots": 10,
+   "modeConflict": false,
+   "tBest": 7,
+   "tHow": "rule",
+   "winner": null,
+   "isTeamGame": true
+  }
+ ],
+ "meClashes": []
+}

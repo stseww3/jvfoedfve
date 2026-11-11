@@ -1,0 +1,84 @@
+=== A082 执行层账本（录像命令流 + 真引擎余额）===
+A. 引擎接受的指令（每号）：种类×条数 | 首拍~末拍 | 离开拍 | 最后一条 HL-TICK 日志拍
+  alex_k#40: attack×58 donate×3 spawn×34 | 局内 61 条 77~4711 | 离开 - | 末条日志 4950
+  kaito9#41: attack×37 donate×3 spawn×25 | 局内 40 条 77~4424 | 离开 - | 末条日志 4680
+  leo_tx#35: attack×43 donate×1 spawn×35 | 局内 44 条 84~4137 | 离开 - | 末条日志 4500
+  noah88#36: attack×33 donate×2 spawn×36 | 局内 35 条 77~4914 | 离开 - | 末条日志 5130
+  riku_x#42: attack×39 boat×1 donate×5 spawn×24 | 局内 45 条 84~5194 | 离开 - | 末条日志 5220
+  ryan_m#32: attack×78 donate×3 spawn×37 | 局内 81 条 77~5180 | 离开 - | 末条日志 5760
+  sora_w#34: attack×34 spawn×28 | 局内 34 条 70~1568 | 离开 - | 末条日志 1980
+  talon5#38: attack×63 spawn×32 | 局内 63 条 84~1631 | 离开 - | 末条日志 1800
+  zero_7#39: attack×71 boat×1 spawn×32 | 局内 72 条 84~4312 | 离开 - | 末条日志 4410
+  zexos1#33: attack×57 donate×1 spawn×33 | 局内 58 条 77~4221 | 离开 - | 末条日志 4500
+
+B. 捐款/调度：日志 20 条，引擎执行 18 条（90.0%）；另有非我方号捐给我方号 0 条
+   我方执行合计：到账 3307276，手续费 1044286（费/到账 = 0.316）
+     其中有配额期（t<4284）：16 笔，pct 183~240，到账 2788134，手续费 866692（费/到账 = 0.311）；单笔到账 105483~435605，单笔费 31399~132126
+     其中免检期（t>=4284）：2 笔，pct 185~190，到账 519142，手续费 177594（费/到账 = 0.342）；单笔到账 114844~404298，单笔费 38481~139113
+   逐笔：执行拍 捐出方→受捐方 pct | 执行前余额→后 | 到账 费 | 受捐方领土 余额前→后 | 配额 需点/累计前/上限 | 对应日志 t(延迟) L行 种类
+   2723 riku_x→ryan_m pct=196 | 668591→498180 | 128625 41786 | 18264 476320→604945 | 60/0/169 | t=2705(+18) L758 offense_dispatch
+   2947 riku_x→zero_7 pct=209 | 644725→472212 | 132218 40295 | 8899 711668→841327 | 61/0/185 | t=2930(+17) L776 defense_dispatch
+   3192 riku_x→zero_7 pct=196 | 634918→473089 | 122147 39682 | 9702 689431→808395 | 57/61/201 | t=3180(+12) L801 defense_dispatch
+   3479 zexos1→ryan_m pct=183 | 709842→537928 | 127549 44365 | 18264 1756798→1906770 | 10/60/229 | t=3465(+14) L826 yield_opt_dispatch
+   3535 ryan_m→zero_7 pct=205 | 2030621→1495205 | 408503 126913 | 12530 964402→1372905 | 36/118/239 | t=3525(+10) L835 defense_dispatch
+   3626 alex_k→zero_7 pct=190 | 884103→663942 | 164905 55256 | 13683 916192→1081321 | 16/154/249 | t=3615(+11) L845 offense_dispatch
+   3808 ryan_m→zero_7 pct=210 | 2114027→1546296 | 435605 132126 | 12388 1129054→1564659 | 39/170/269 | t=3800(+8) L862 yield_opt_dispatch
+   3850 alex_k→zero_7 pct=213 | 869740→633620 | 181762 54358 | 13489 980779→1174506 | 17/209/269 | t=3840(+10) L863 defense_dispatch
+   3878 leo_tx→zero_7 pct=214 | 502397→365515 | 105483 31399 | 13464 1199780→1304643 | 11/226/269 | t=3860(+18) L864 defense_dispatch
+   3892 riku_x→kaito9 pct=196 | 715991→533498 | 137744 44749 | 6586 596138→837413 | 24/0/269 | t=3880(+12) L874 defense_dispatch
+   3892 noah88→kaito9 pct=217 | 504675→365693 | 107440 31542 | 6586 596138→837413 | 20/24/269 | t=3880(+12) L873 defense_dispatch
+   3934 kaito9→zero_7 pct=209 | 722528→529196 | 148174 45158 | 14131 1077448→1221182 | 14/237/279 | t=3925(+9) L875 defense_dispatch
+   4102 alex_k→zero_7 pct=197 | 861489→641070 | 166576 53843 | 9502 778272→940393 | 21/251/299 | t=4090(+12) L892 defense_dispatch
+   4165 noah88→zero_7 pct=215 | 503133→365559 | 106129 31445 | 7451 609391→709841 | 18/272/299 | t=4155(+10) L901 defense_dispatch
+   4200 riku_x→zexos1 pct=240 | 769138→540050 | 181017 48071 | 7247 688620→880116 | 28/0/309 | t=4180(+20) L903 defense_dispatch
+   4207 kaito9→ryan_m pct=187 | 731274→551313 | 134257 45704 | 20496 1890378→2024635 | 10/70/309 | t=4200(+7) L905 yield_opt_dispatch
+   4284 ryan_m→zero_7 pct=185 | 2225814→1682403 | 404298 139113 | 7066 546195→946042 | 免检 | t=4275(+9) L914 defense_dispatch
+   4417 kaito9→zero_7 pct=190 | 615711→462386 | 114844 38481 | 3415 182311→292971 | 免检 | t=4400(+17) L923 defense_dispatch
+   每号：alex_k 日志 3 执行 3 到账 513243 费 163457；kaito9 日志 3 执行 3 到账 397275 费 129343；leo_tx 日志 2 执行 1 到账 105483 费 31399；noah88 日志 2 执行 2 到账 213569 费 62987；riku_x 日志 6 执行 5 到账 701751 费 214583；ryan_m 日志 3 执行 3 到账 1248406 费 398152；zexos1 日志 1 执行 1 到账 127549 费 44365
+
+C. 没被执行的日志捐款（落地拍未知：对「发令拍 + 7~20 拍」里的每一拍都算一遍需点 / 上限 / 累计——这个范围取自本局已执行捐款的实测延迟；表里的需点、上限取 +12 拍那一档）
+   单笔需点 > 全场上限（受捐方即使从没收过也过不了）: 1 条，t=1810~1810，名义到账合计 83974；需点 128~128，上限 103~103
+   按下限账算得过却没执行（延迟/余额变化/友军登陆占额/其他）: 1 条，t=4155~4155，名义到账合计 158656；需点 25~25，上限 299~299
+
+D. 顶格时长（10 拍采样；在场且没离开的拍）：硬上限 = 余额 >= 150×领土-1；软上限以上 = 余额 >= 100×领土
+  alex_k: 硬上限 0 拍；软上限以上 500 拍（2520~4700）
+  kaito9: 硬上限 0 拍；软上限以上 300 拍（2420~4410）
+  leo_tx: 硬上限 0 拍；软上限以上 340 拍（1730~4120）
+  noah88: 硬上限 0 拍；软上限以上 370 拍（3180~4900）
+  riku_x: 硬上限 0 拍；软上限以上 730 拍（2590~4930）
+  ryan_m: 硬上限 0 拍；软上限以上 460 拍（3480~4660）
+  sora_w: 硬上限 0 拍；软上限以上 30 拍（50~70）
+  zero_7: 硬上限 0 拍；软上限以上 130 拍（3130~4300）
+  zexos1: 硬上限 0 拍；软上限以上 290 拍（2830~4220）
+
+E. 同一号同一拍被接受 >=3 条指令（清仓批）：拍 号 条数 | 指令(种类 pct→目标) | 批前余额 → 批后余额
+  826 riku_x ×3 | attack 85→bot#437 attack 89→bot#437 attack 89→bot#437 | 13998 → 10265 | 整数对账：3 条扣了款（正序），手续费合计 445，发出的兵合计 3288
+  840 ryan_m ×3 | attack 47→bot#303 attack 47→bot#303 attack 47→bot#303 | 24615 → 20540 | 整数对账：3 条扣了款（反序），手续费合计 814，发出的兵合计 3261
+  840 riku_x ×3 | attack 74→bot#437 attack 78→bot#437 attack 78→bot#437 | 10158 → 7719 | 整数对账：3 条扣了款（反序），手续费合计 325，发出的兵合计 2114
+  854 sora_w ×5 | attack 47→bot#228 attack 47→bot#228 attack 48→NEUTRAL attack 80→NEUTRAL attack 128→NEUTRAL | 21090 → 13784 | 整数对账：5 条扣了款（反序），手续费合计 1006，发出的兵合计 6300
+  868 zexos1 ×4 | attack 322→NEUTRAL attack 322→NEUTRAL attack 199→NEUTRAL attack 202→NEUTRAL | 17563 → 4984 | 整数对账：4 条扣了款（反序），手续费合计 581，发出的兵合计 11998
+  882 ryan_m ×4 | attack 47→bot#371 attack 47→bot#371 attack 47→NEUTRAL attack 47→NEUTRAL | 26645 → 23617 | 整数对账：2 条扣了款（反序），手续费合计 605，发出的兵合计 2423
+  882 kaito9 ×3 | attack 195→bot#474 attack 195→bot#474 attack 170→bot#474 | 19716 → 10285 | 整数对账：3 条扣了款（正序），手续费合计 561，发出的兵合计 8870
+  889 sora_w ×3 | attack 47→bot#121 attack 47→NEUTRAL attack 47→NEUTRAL | 19160 → 16661 | 整数对账：无精确解（批内另有利息/挨打）
+  910 zexos1 ×3 | attack 47→bot#178 attack 54→bot#178 attack 340→NEUTRAL | 26715 → 17506 | 整数对账：1 条扣了款（反序），手续费合计 313，发出的兵合计 8896
+  924 leo_tx ×4 | attack 53→bot#121 attack 55→bot#121 attack 47→NEUTRAL attack 47→NEUTRAL | 26819 → 26819 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  931 ryan_m ×8 | attack 47→bot#448 attack 47→bot#448 attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 35720 → 35720 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  987 zexos1 ×6 | attack 83→NEUTRAL attack 89→NEUTRAL attack 97→NEUTRAL attack 70→NEUTRAL attack 71→NEUTRAL attack 78→NEUTRAL | 30379 → 30379 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1015 ryan_m ×9 | attack 47→@cuthroat /test attack 47→@cuthroat /test attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 48→NEUTRAL attack 48→NEUTRAL attack 47→NEUTRAL | 51551 → 45689 | 整数对账：2 条扣了款（反序），手续费合计 1172，发出的兵合计 4690
+  1043 zero_7 ×4 | attack 66→NEUTRAL attack 65→NEUTRAL attack 67→NEUTRAL attack 255→bot#507 | 37812 → 21943 | 整数对账：4 条扣了款（正序），手续费合计 1576，发出的兵合计 14293
+  1050 talon5 ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 53→NEUTRAL attack 58→NEUTRAL attack 64→NEUTRAL | 46545 → 26095 | 整数对账：9 条扣了款（正序），手续费合计 3891，发出的兵合计 16559
+  1113 ryan_m ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 74634 → 74634 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1169 talon5 ×3 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 66126 → 68334 | 整数对账：无精确解（批内另有利息/挨打）
+  1267 alex_k ×9 | attack 63→bot#262 attack 47→bot#262 attack 47→bot#262 attack 47→bot#262 attack 47→bot#262 attack 47→bot#262 attack 47→bot#262 attack 47→NEUTRAL attack 47→NEUTRAL | 98166 → 63265 | 整数对账：7 条扣了款（正序），手续费合计 6671，发出的兵合计 28230
+  1309 talon5 ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 66→NEUTRAL attack 70→NEUTRAL attack 67→NEUTRAL attack 69→NEUTRAL attack 47→NEUTRAL | 111944 → 115190 | 整数对账：无精确解（批内另有利息/挨打）
+  1372 alex_k ×9 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 120096 → 120096 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1456 talon5 ×3 | attack 47→NEUTRAL attack 47→NEUTRAL attack 47→NEUTRAL | 172246 → 172246 | 整数对账：0 条扣了款（反序），手续费合计 0，发出的兵合计 0
+  1561 zexos1 ×8 | attack 500→bigdi attack 499→bigdi attack 499→bigdi attack 499→bigdi attack 498→bigdi attack 498→bigdi attack 496→bigdi attack 493→bigdi | 232527 → 928 | 整数对账：8 条扣了款（反序），手续费合计 5467，发出的兵合计 226132
+  1561 alex_k ×9 | attack 11→bot#255 attack 11→bot#255 attack 11→bot#255 attack 12→bot#255 attack 12→bot#255 attack 12→bot#255 attack 11→bot#255 attack 11→bot#255 attack 11→bot#255 | 203267 → 163714 | 整数对账：9 条扣了款（反序），手续费合计 19506，发出的兵合计 20047
+  1568 sora_w ×8 | attack 318→MSG attack 287→MSG attack 286→MSG attack 287→MSG attack 286→MSG attack 287→MSG attack 286→MSG attack 287→MSG | 267214 → 16042 | 整数对账：8 条扣了款（反序），手续费合计 10027，发出的兵合计 241145
+  1582 ryan_m ×9 | attack 527→bigdi attack 526→bigdi attack 526→bigdi attack 526→bigdi attack 526→bigdi attack 526→bigdi attack 525→bigdi attack 524→bigdi attack 522→bigdi | 297345 → 363 | 整数对账：9 条扣了款（正序），手续费合计 6601，发出的兵合计 290381
+  1596 zero_7 ×9 | attack 432→bigdi attack 433→bigdi attack 433→bigdi attack 433→bigdi attack 433→bigdi attack 434→bigdi attack 434→bigdi attack 435→bigdi attack 433→bigdi | 214850 → 1246 | 整数对账：9 条扣了款（反序），手续费合计 5733，发出的兵合计 207871
+  1603 talon5 ×9 | attack 293→öylesine attack 291→öylesine attack 307→öylesine attack 306→öylesine attack 305→öylesine attack 304→öylesine attack 324→öylesine attack 323→öylesine attack 323→öylesine | 250507 → 8430 | 整数对账：9 条扣了款（反序），手续费合计 8788，发出的兵合计 233289
+  1631 talon5 ×9 | attack 276→öylesine attack 289→öylesine attack 301→öylesine attack 301→öylesine attack 301→öylesine attack 300→öylesine attack 300→öylesine attack 299→öylesine attack 299→öylesine | 8928 → 355 | 整数对账：9 条扣了款（正序），手续费合计 334，发出的兵合计 8239
+  1631 zero_7 ×8 | attack 313→bigdi attack 321→bigdi attack 332→bigdi attack 334→bigdi attack 337→bigdi attack 339→bigdi attack 341→bigdi attack 431→bigdi | 6919 → 225 | 整数对账：8 条扣了款（正序），手续费合计 234，发出的兵合计 6460
+  3234 noah88 ×3 | attack 122→DV2 [Normal] attack 122→DV2 [Normal] attack 122→DV2 [Normal] | 455541 → 298083 | 整数对账：3 条扣了款（反序），手续费合计 13995，发出的兵合计 143463

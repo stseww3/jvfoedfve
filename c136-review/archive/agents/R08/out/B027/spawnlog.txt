@@ -1,0 +1,40 @@
+[SA] B027 出生指派（只看日志）：号 队 | 指派条数 / 不同点数 | 最后一条指派 | 领土 t≈450 / 630 / 900 | t≈630 nb / neut | 第一次被围的拍 | 第一次 neut=0 的拍 | 日志峰值领土
+     Phoenicia(20) TNone | 4 / 4 | (1304, 967) | 1114 / 3493 / None | 7 / 28 | 1260 | 720 | 11424
+     Ronin(21) TNone | 17 / 16 | (498, 226) | 1038 / 2214 / 2273 | 6 / 10 | 6750 | 990 | 6964
+     Liao(22) TNone | 8 / 8 | (462, 774) | 1114 / 2031 / 3772 | 5 / 2 | None | 720 | 6877
+     Hashashin(24) TNone | 13 / 12 | (1198, 986) | 1176 / 2252 / 2495 | 10 / 0 | 1350 | 630 | 8902
+     Habsburg(25) TNone | 9 / 9 | (1306, 98) | 1152 / 3025 / 5293 | 6 / 38 | None | 810 | 22838
+     Doge(26) TNone | 16 / 15 | (430, 198) | 1070 / 2604 / 3428 | 4 / 16 | None | 720 | 5127
+     Savoy(27) TNone | 13 / 10 | (1230, 374) | None / 2916 / 4660 | 3 / 10 | 3690 | 720 | 7191
+     Kuban(28) TNone | 17 / 15 | (322, 434) | 959 / 2637 / 3124 | 4 / 37 | 4050 | 810 | 3544
+     Davout(29) TNone | 9 / 9 | (862, 334) | 1130 / 2950 / 5265 | 4 / 42 | None | 1080 | 11544
+     Mewtwo(31) TNone | 18 / 16 | (1198, 986) | 1136 / 3145 / 5201 | 4 / 49 | None | 720 | 13887
+     player_007(32) TNone | 13 / 11 | (814, 986) | 1202 / 3511 / 7080 | 9 / 61 | None | 810 | 35981
+     King(33) TNone | 8 / 8 | (1198, 934) | 1081 / 2343 / 2400 | 3 / 0 | 720 | 630 | 4120
+     Cringe(34) TNone | 9 / 9 | (1306, 98) | 1077 / None / 4018 | None / None | None | 720 | 6235
+     Raeder(35) TNone | 17 / 13 | (1602, 594) | 1165 / None / 3186 | None / None | None | 810 | 8973
+     SyntaxError(36) TNone | 14 / 14 | (498, 226) | 1147 / 1663 / 1818 | 5 / 0 | 7290 | 630 | 10001
+     New England(39) TNone | 8 / 7 | (1462, 946) | 1191 / 2706 / 3740 | 5 / 39 | 1350 | 810 | 10746
+     Tripoli(40) TNone | 16 / 14 | (290, 418) | 1100 / 2533 / 4833 | 7 / 33 | 4770 | 720 | 38482
+     Vinland(42) TNone | 20 / 13 | (450, 834) | 1113 / 2303 / None | 4 / 28 | 4410 | 810 | 7821
+     Sparta(44) TNone | 16 / 14 | (82, 130) | 1062 / 2886 / 3693 | 2 / 50 | None | 720 | 6948
+[SB] 最后一条指派相距 < 145 像素的号对（12 对）：号 A(队) – 号 B(队) | 距离 | 同队? | 同一个点?
+     Ronin(TNone) – SyntaxError(TNone) | 0.0 | 同队 | 是
+     Hashashin(TNone) – Mewtwo(TNone) | 0.0 | 同队 | 是
+     Habsburg(TNone) – Cringe(TNone) | 0.0 | 同队 | 是
+     Kuban(TNone) – Tripoli(TNone) | 35.8 | 同队 | 否
+     Hashashin(TNone) – King(TNone) | 52.0 | 同队 | 否
+     Mewtwo(TNone) – King(TNone) | 52.0 | 同队 | 否
+     Liao(TNone) – Vinland(TNone) | 61.2 | 同队 | 否
+     Ronin(TNone) – Doge(TNone) | 73.5 | 同队 | 否
+     Doge(TNone) – SyntaxError(TNone) | 73.5 | 同队 | 否
+     Phoenicia(TNone) – Hashashin(TNone) | 107.7 | 同队 | 否
+     Phoenicia(TNone) – Mewtwo(TNone) | 107.7 | 同队 | 否
+     Phoenicia(TNone) – King(TNone) | 111.0 | 同队 | 否
+[SC] 汇总：指派 245 条，人均 12.9 条；最后一条指派落在同一个点上的号 6 个（3 个点）
+     点 (498, 226)：Ronin(TNone，t≈900 2273 格，第一次被围 6750)、SyntaxError(TNone，t≈900 1818 格，第一次被围 7290)
+     点 (1198, 986)：Hashashin(TNone，t≈900 2495 格，第一次被围 1350)、Mewtwo(TNone，t≈900 5201 格，第一次被围 None)
+     点 (1306, 98)：Habsburg(TNone，t≈900 5293 格，第一次被围 None)、Cringe(TNone，t≈900 4018 格，第一次被围 None)
+     t≈900 的领土：最小 1818、下四分位 3124、中位 3740、上四分位 4833、最大 7080；合计 66279（占陆地 12.81%）
+     t≤900 就被围（nb=0 且 neut=0）的号 1 个：King(TNone) t=720 当时 2400 格
+     t≤1800 被围过的号 4 个：Phoenicia(TNone) t=1260、Hashashin(TNone) t=1350、King(TNone) t=720、New England(TNone) t=1350

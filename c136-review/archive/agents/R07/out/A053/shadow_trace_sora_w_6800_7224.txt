@@ -1,0 +1,252 @@
+# A053 sora_w 影子决策明细 t=6800~7224（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 83 拍（t=6800~7210）
+t=6800 sora_w B=193673 L=4513 d=42.9 nb=1 neut=0 cmds=95 noFull=1 shQ=47308 | m=0.900 worth=71.4 cheap=8.8 over=0 dMedOther=93.3 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27143 bal=2382753 dq=87.8 cnt=68 | c=453.9 rankC=453.9 need=4287737 tD=0.94 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=38735 pulseB=23241 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6805 sora_w B=193673 L=4513 d=42.9 nb=1 neut=0 cmds=95 noFull=1 shQ=48418 | m=0.900 worth=71.2 cheap=8.8 over=0 dMedOther=93.1 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27208 bal=2382753 dq=87.6 cnt=69 | c=452.8 rankC=452.8 need=4287741 tD=0.94 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=38735 pulseB=23241 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6810 sora_w B=195880 L=4513 d=43.4 nb=1 neut=0 cmds=95 noFull=1 shQ=48970 | m=0.900 worth=72.0 cheap=8.8 over=0 dMedOther=94.2 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27305 bal=2415158 dq=88.5 cnt=71 | c=457.2 rankC=457.2 need=4345676 tD=0.94 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=39176 pulseB=23506 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6815 sora_w B=195880 L=4513 d=43.4 nb=1 neut=15 cmds=95 noFull=1 shQ=48970 | m=0.900 worth=70.1 cheap=8.8 over=0 dMedOther=91.6 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27369 bal=2415158 dq=88.2 cnt=73 | c=262.1 rankC=131.0 need=4345771 tD=0.96 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=39176 pulseB=23506 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6820 sora_w B=198113 L=4513 d=43.9 nb=1 neut=14 cmds=95 noFull=1 shQ=49528 | m=0.900 worth=71.0 cheap=8.8 over=0 dMedOther=92.8 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27322 bal=2427873 dq=88.9 cnt=74 | c=263.8 rankC=131.9 need=4364996 tD=0.96 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=39623 pulseB=23774 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6825 sora_w B=198113 L=4513 d=43.9 nb=1 neut=12 cmds=95 noFull=1 shQ=49528 | m=0.900 worth=71.0 cheap=8.8 over=0 dMedOther=92.8 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27238 bal=2402357 dq=88.2 cnt=76 | c=456.3 rankC=456.3 need=4316910 tD=0.95 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=39623 pulseB=23774 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6830 sora_w B=200371 L=4513 d=44.4 nb=1 neut=10 cmds=95 noFull=1 shQ=50092 | m=0.900 worth=71.9 cheap=8.8 over=0 dMedOther=94.0 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27320 bal=2435029 dq=89.1 cnt=78 | c=265.0 rankC=132.5 need=4377927 tD=0.95 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=40074 pulseB=24045 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6835 sora_w B=200371 L=4513 d=44.4 nb=1 neut=9 cmds=95 noFull=1 shQ=50092 | m=0.900 worth=71.9 cheap=8.8 over=0 dMedOther=94.0 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27221 bal=2414513 dq=88.7 cnt=79 | c=266.0 rankC=133.0 need=4338361 tD=0.94 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=40074 pulseB=24045 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6840 sora_w B=202655 L=4513 d=44.9 nb=1 neut=8 cmds=95 noFull=1 shQ=50663 | m=0.900 worth=72.8 cheap=8.8 over=0 dMedOther=95.1 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27276 bal=2446698 dq=89.7 cnt=80 | c=463.8 rankC=463.8 need=4397621 tD=0.94 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=40531 pulseB=24319 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6845 sora_w B=202655 L=4513 d=44.9 nb=1 neut=7 cmds=95 noFull=1 shQ=50663 | m=0.900 worth=72.8 cheap=8.8 over=0 dMedOther=95.1 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27308 bal=2446698 dq=89.6 cnt=81 | c=463.1 rankC=463.1 need=4398818 tD=0.94 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=40531 pulseB=24319 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6850 sora_w B=204965 L=4513 d=45.4 nb=1 neut=5 cmds=95 noFull=1 shQ=51241 | m=0.900 worth=73.7 cheap=8.8 over=0 dMedOther=96.3 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27354 bal=2479973 dq=90.7 cnt=83 | c=468.4 rankC=468.4 need=4459766 tD=0.94 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=40993 pulseB=24596 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6855 sora_w B=204965 L=4513 d=45.4 nb=1 neut=4 cmds=95 noFull=1 shQ=51241 | m=0.900 worth=73.7 cheap=8.8 over=0 dMedOther=96.3 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27383 bal=2479973 dq=90.6 cnt=84 | c=467.9 rankC=467.9 need=4460997 tD=0.94 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=40993 pulseB=24596 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6860 sora_w B=207301 L=4513 d=45.9 nb=1 neut=2 cmds=95 noFull=1 shQ=51825 | m=0.900 worth=74.6 cheap=8.8 over=0 dMedOther=97.6 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27424 bal=2513700 dq=91.7 cnt=86 | c=473.4 rankC=473.4 need=4521460 tD=0.94 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=41460 pulseB=24876 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6865 sora_w B=207301 L=4513 d=45.9 nb=1 neut=0 cmds=95 noFull=1 shQ=51825 | m=0.900 worth=73.8 cheap=8.8 over=0 dMedOther=96.5 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27444 bal=2513700 dq=91.6 cnt=88 | c=473.0 rankC=473.0 need=4521490 tD=0.95 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=41460 pulseB=24876 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6870 sora_w B=209664 L=4513 d=46.5 nb=1 neut=0 cmds=95 noFull=1 shQ=52416 | m=0.900 worth=74.9 cheap=8.8 over=0 dMedOther=97.9 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27458 bal=2547886 dq=92.8 cnt=88 | c=479.1 rankC=479.1 need=4582509 tD=0.95 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=41933 pulseB=25160 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6875 sora_w B=209664 L=4513 d=46.5 nb=1 neut=0 cmds=95 noFull=1 shQ=52416 | m=0.900 worth=74.9 cheap=8.8 over=0 dMedOther=97.9 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27466 bal=2547886 dq=92.8 cnt=88 | c=479.0 rankC=479.0 need=4582521 tD=0.95 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=41933 pulseB=25160 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6880 sora_w B=212054 L=4513 d=47.0 nb=1 neut=0 cmds=95 noFull=1 shQ=53013 | m=0.900 worth=76.0 cheap=8.8 over=0 dMedOther=99.4 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27475 bal=2582537 dq=94.0 cnt=88 | c=485.3 rankC=485.3 need=4644329 tD=0.95 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=42411 pulseB=25446 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6885 sora_w B=212054 L=4513 d=47.0 nb=1 neut=0 cmds=95 noFull=1 shQ=53013 | m=0.900 worth=76.0 cheap=8.8 over=0 dMedOther=99.4 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27486 bal=2582537 dq=94.0 cnt=88 | c=485.1 rankC=485.1 need=4644312 tD=0.95 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=42411 pulseB=25446 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6890 sora_w B=214471 L=4513 d=47.5 nb=1 neut=0 cmds=95 noFull=1 shQ=53617 | m=0.900 worth=72.2 cheap=8.8 over=0 dMedOther=94.3 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27508 bal=2617659 dq=95.2 cnt=88 | c=491.3 rankC=491.3 need=4706879 tD=1.01 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=42894 pulseB=25737 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6895 sora_w B=214471 L=4513 d=47.5 nb=1 neut=0 cmds=95 noFull=1 shQ=53617 | m=0.900 worth=72.2 cheap=8.8 over=0 dMedOther=94.3 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27526 bal=2617659 dq=95.1 cnt=88 | c=491.0 rankC=491.0 need=4706973 tD=1.01 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=42894 pulseB=25737 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6900 sora_w B=221428 L=4513 d=49.1 nb=1 neut=0 cmds=95 noFull=1 shQ=54248 | m=0.900 worth=73.9 cheap=8.8 over=0 dMedOther=96.6 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27562 bal=2680808 dq=97.3 cnt=88 | c=502.1 rankC=502.1 need=4819583 tD=1.01 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=44286 pulseB=26571 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6905 sora_w B=221428 L=4513 d=49.1 nb=1 neut=0 cmds=95 noFull=1 shQ=55357 | m=0.900 worth=73.9 cheap=8.8 over=0 dMedOther=96.6 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27593 bal=2680808 dq=97.2 cnt=88 | c=501.5 rankC=501.5 need=4819595 tD=1.01 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=44286 pulseB=26571 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6910 sora_w B=223952 L=4513 d=49.6 nb=1 neut=0 cmds=95 noFull=1 shQ=55988 | m=0.900 worth=73.1 cheap=8.8 over=0 dMedOther=95.6 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27650 bal=2642968 dq=95.6 cnt=88 | c=493.5 rankC=493.5 need=4752269 tD=1.00 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=44790 pulseB=26874 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6915 sora_w B=223952 L=4513 d=49.6 nb=1 neut=0 cmds=95 noFull=1 shQ=55988 | m=0.900 worth=73.0 cheap=8.8 over=0 dMedOther=95.4 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27693 bal=2642968 dq=95.4 cnt=88 | c=492.8 rankC=492.8 need=4752300 tD=1.00 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=44790 pulseB=26874 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6920 sora_w B=226505 L=4513 d=50.2 nb=1 neut=0 cmds=95 noFull=1 shQ=56626 | m=0.900 worth=73.8 cheap=8.8 over=0 dMedOther=96.5 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27765 bal=2678912 dq=96.5 cnt=88 | c=498.1 rankC=498.1 need=4816474 tD=1.00 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=45301 pulseB=27181 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6925 sora_w B=226505 L=4513 d=50.2 nb=1 neut=0 cmds=95 noFull=1 shQ=56626 | m=0.900 worth=73.7 cheap=8.8 over=0 dMedOther=96.3 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27818 bal=2678912 dq=96.3 cnt=88 | c=497.2 rankC=497.2 need=4816587 tD=1.00 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=45301 pulseB=27181 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6930 sora_w B=229087 L=4513 d=50.8 nb=1 neut=0 cmds=95 noFull=1 shQ=57271 | m=0.900 worth=74.4 cheap=8.8 over=0 dMedOther=97.3 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27906 bal=2715345 dq=97.3 cnt=88 | c=502.3 rankC=502.3 need=4881656 tD=1.00 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=45817 pulseB=27490 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6935 sora_w B=229087 L=4513 d=50.8 nb=1 neut=0 cmds=95 noFull=1 shQ=57271 | m=0.900 worth=74.3 cheap=8.8 over=0 dMedOther=97.2 safe(-1)=397144
+    → brocstrailia#36[T2] terr=27969 bal=2715345 dq=97.1 cnt=88 | c=501.2 rankC=501.2 need=4881717 tD=1.00 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=45817 pulseB=27490 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6940 sora_w B=231698 L=4513 d=51.3 nb=1 neut=0 cmds=95 noFull=1 shQ=57924 | m=0.900 worth=75.3 cheap=8.8 over=0 dMedOther=98.5 safe(-1)=397144
+    → brocstrailia#36[T2] terr=28063 bal=2752273 dq=98.1 cnt=88 | c=506.3 rankC=506.3 need=4947746 tD=1.00 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=46340 pulseB=27804 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6945 sora_w B=231698 L=4513 d=51.3 nb=1 neut=0 cmds=95 noFull=1 shQ=57924 | m=0.900 worth=75.3 cheap=8.8 over=0 dMedOther=98.5 safe(-1)=397144
+    → brocstrailia#36[T2] terr=28117 bal=2752273 dq=97.9 cnt=88 | c=505.3 rankC=505.3 need=4947758 tD=0.99 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=46340 pulseB=27804 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6950 sora_w B=234339 L=4513 d=51.9 nb=1 neut=0 cmds=95 noFull=1 shQ=58584 | m=0.900 worth=76.4 cheap=8.8 over=0 dMedOther=99.8 safe(-1)=397144
+    → brocstrailia#36[T2] terr=28154 bal=2789703 dq=99.1 cnt=88 | c=511.5 rankC=511.5 need=5014563 tD=0.99 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=46868 pulseB=28121 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6955 sora_w B=234339 L=4513 d=51.9 nb=1 neut=0 cmds=95 noFull=1 shQ=58584 | m=0.900 worth=76.4 cheap=8.8 over=0 dMedOther=99.8 safe(-1)=397144
+    → brocstrailia#36[T2] terr=28159 bal=2789703 dq=99.1 cnt=88 | c=511.4 rankC=511.4 need=5014605 tD=0.99 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=46868 pulseB=28121 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6960 sora_w B=237010 L=4513 d=52.5 nb=1 neut=0 cmds=95 noFull=1 shQ=59252 | m=0.900 worth=77.9 cheap=8.8 over=0 dMedOther=101.9 safe(-1)=397144
+    → brocstrailia#36[T2] terr=28162 bal=2868797 dq=101.9 cnt=88 | c=525.7 rankC=525.7 need=5155551 tD=1.00 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=47402 pulseB=28441 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6965 sora_w B=237010 L=4513 d=52.5 nb=1 neut=0 cmds=95 noFull=1 shQ=59252 | m=0.900 worth=77.9 cheap=8.8 over=0 dMedOther=101.9 safe(-1)=397144
+    → brocstrailia#36[T2] terr=28162 bal=2868797 dq=101.9 cnt=88 | c=525.7 rankC=525.7 need=5155551 tD=1.00 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=47402 pulseB=28441 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6970 sora_w B=239711 L=4513 d=53.1 nb=1 neut=0 cmds=95 noFull=1 shQ=59927 | m=0.900 worth=78.9 cheap=8.8 over=0 dMedOther=103.2 safe(-1)=397144
+    → brocstrailia#36[T2] terr=28162 bal=2906378 dq=103.2 cnt=88 | c=532.6 rankC=532.6 need=5222535 tD=1.00 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=47942 pulseB=28765 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6975 sora_w B=239711 L=4513 d=53.1 nb=1 neut=0 cmds=95 noFull=1 shQ=59927 | m=0.900 worth=78.2 cheap=8.8 over=0 dMedOther=102.2 safe(-1)=397144
+    → brocstrailia#36[T2] terr=28162 bal=2906378 dq=103.2 cnt=88 | c=532.6 rankC=532.6 need=5222535 tD=1.01 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=47942 pulseB=28765 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6980 sora_w B=242443 L=4513 d=53.7 nb=1 neut=0 cmds=95 noFull=1 shQ=60610 | m=0.900 worth=79.2 cheap=8.8 over=0 dMedOther=103.6 safe(-1)=397144
+    → brocstrailia#36[T2] terr=28162 bal=2943579 dq=104.5 cnt=88 | c=539.3 rankC=539.3 need=5288841 tD=1.01 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=48489 pulseB=29093 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6985 sora_w B=242443 L=4513 d=53.7 nb=1 neut=0 cmds=95 noFull=1 shQ=60610 | m=0.900 worth=79.2 cheap=8.8 over=0 dMedOther=103.6 safe(-1)=397144
+    → brocstrailia#36[T2] terr=28162 bal=2943579 dq=104.5 cnt=88 | c=539.3 rankC=539.3 need=5288841 tD=1.01 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=48489 pulseB=29093 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6990 sora_w B=245206 L=4513 d=54.3 nb=1 neut=0 cmds=95 noFull=1 shQ=61301 | m=0.900 worth=80.2 cheap=8.8 over=0 dMedOther=104.9 safe(-1)=397144
+    → brocstrailia#36[T2] terr=28162 bal=2980079 dq=105.8 cnt=88 | c=546.0 rankC=546.0 need=5353898 tD=1.01 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=49041 pulseB=29425 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6995 sora_w B=245206 L=4513 d=54.3 nb=1 neut=0 cmds=95 noFull=1 shQ=61301 | m=0.900 worth=80.2 cheap=8.8 over=0 dMedOther=104.9 safe(-1)=397144
+    → brocstrailia#36[T2] terr=28162 bal=2980079 dq=105.8 cnt=88 | c=546.0 rankC=546.0 need=5353898 tD=1.01 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=49041 pulseB=29425 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=7000 sora_w B=252514 L=4513 d=56.0 nb=1 neut=0 cmds=95 noFull=1 shQ=62020 | m=0.900 worth=82.0 cheap=8.8 over=0 dMedOther=107.2 safe(-1)=397144
+    → brocstrailia#36[T2] terr=28162 bal=3044299 dq=108.1 cnt=88 | c=557.6 rankC=557.6 need=5468363 tD=1.01 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=50503 pulseB=30302 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=7005 sora_w B=252514 L=4513 d=56.0 nb=1 neut=0 cmds=95 noFull=1 shQ=63128 | m=0.900 worth=82.0 cheap=8.8 over=0 dMedOther=107.2 safe(-1)=397144
+    → brocstrailia#36[T2] terr=28162 bal=3044299 dq=108.1 cnt=88 | c=557.6 rankC=557.6 need=5468363 tD=1.01 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=50503 pulseB=30302 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=7010 sora_w B=255392 L=4513 d=56.6 nb=1 neut=0 cmds=95 noFull=1 shQ=63848 | m=0.900 worth=83.0 cheap=8.8 over=0 dMedOther=108.4 safe(-1)=397144
+    → brocstrailia#36[T2] terr=28162 bal=3079004 dq=109.3 cnt=88 | c=563.9 rankC=563.9 need=5530221 tD=1.01 人 pulse crowdedHard | safe=397144 keep=Inf avail=-Inf chunkB=51078 pulseB=30647 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=7015 sora_w B=255392 L=4513 d=56.6 nb=1 neut=0 cmds=95 noFull=1 shQ=63848 | m=0.900 worth=76.0 cheap=8.8 over=0 dMedOther=99.3 safe(-1)=397144
+    → brocstrailia#36[T2] terr=28162 bal=2787341 dq=99.0 cnt=88 | c=186.5 rankC=130.5 need=5265946 tD=1.00 人 pulse onMe | safe=397144 keep=Inf avail=-Inf chunkB=51078 pulseB=30647 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7020 sora_w B=258303 L=4513 d=57.2 nb=1 neut=0 cmds=95 noFull=1 shQ=64575 | m=0.900 worth=76.9 cheap=8.8 over=0 dMedOther=100.5 safe(-1)=397144
+    → brocstrailia#36[T2] terr=28162 bal=2825248 dq=100.3 cnt=88 | c=188.9 rankC=132.2 need=5333511 tD=1.00 人 pulse onMe | safe=397144 keep=Inf avail=-Inf chunkB=51661 pulseB=30996 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7025 sora_w B=242285 L=4337 d=55.9 nb=1 neut=0 cmds=95 noFull=1 shQ=60571 | m=0.900 worth=76.9 cheap=8.8 over=0 dMedOther=100.5 safe(-1)=381656
+    → brocstrailia#36[T2] terr=28338 bal=2825248 dq=99.7 cnt=88 | c=186.5 rankC=130.6 need=5301386 tD=0.99 人 pulse onMe | safe=381656 keep=Inf avail=-Inf chunkB=48457 pulseB=29074 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7030 sora_w B=221395 L=4072 d=54.4 nb=1 neut=0 cmds=95 noFull=1 shQ=55348 | m=0.900 worth=77.9 cheap=8.8 over=0 dMedOther=101.8 safe(-1)=358336
+    → brocstrailia#36[T2] terr=28603 bal=2863953 dq=100.1 cnt=88 | c=185.6 rankC=129.9 need=5323330 tD=0.98 人 pulse onMe | safe=358336 keep=Inf avail=-Inf chunkB=44279 pulseB=26567 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7035 sora_w B=205848 L=3892 d=52.9 nb=1 neut=0 cmds=95 noFull=1 shQ=51462 | m=0.900 worth=77.9 cheap=8.9 over=0 dMedOther=101.8 safe(-1)=342496
+    → brocstrailia#36[T2] terr=28783 bal=2863953 dq=99.5 cnt=90 | c=244.4 rankC=244.4 need=5292145 tD=0.98 人 pulse onMe | safe=342496 keep=Inf avail=-Inf chunkB=41170 pulseB=24702 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7040 sora_w B=185135 L=3619 d=51.2 nb=1 neut=0 cmds=95 noFull=1 shQ=46283 | m=0.900 worth=78.8 cheap=8.9 over=0 dMedOther=103.0 safe(-1)=318472
+    → brocstrailia#36[T2] terr=29056 bal=2903189 dq=99.9 cnt=91 | c=243.2 rankC=243.2 need=5316140 tD=0.97 人 pulse onMe | safe=318472 keep=Inf avail=-Inf chunkB=37027 pulseB=22216 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7045 sora_w B=170359 L=3437 d=49.6 nb=1 neut=0 cmds=95 noFull=1 shQ=42589 | m=0.900 worth=78.8 cheap=8.9 over=0 dMedOther=103.0 safe(-1)=302456
+    → brocstrailia#36[T2] terr=29238 bal=2903189 dq=99.3 cnt=90 | c=240.3 rankC=240.3 need=5286567 tD=0.96 人 pulse onMe | safe=302456 keep=Inf avail=-Inf chunkB=34072 pulseB=20443 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7050 sora_w B=151284 L=3171 d=47.7 nb=1 neut=0 cmds=95 noFull=1 shQ=37821 | m=0.900 worth=79.8 cheap=8.9 over=0 dMedOther=104.3 safe(-1)=279048
+    → brocstrailia#36[T2] terr=29504 bal=2943253 dq=99.8 cnt=80 | c=239.6 rankC=239.6 need=5316124 tD=0.96 人 pulse onMe | safe=279048 keep=Inf avail=-Inf chunkB=30257 pulseB=18154 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7055 sora_w B=139319 L=3013 d=46.2 nb=1 neut=0 cmds=95 noFull=1 shQ=34829 | m=0.900 worth=79.8 cheap=9.1 over=0 dMedOther=104.3 safe(-1)=265144
+    → brocstrailia#36[T2] terr=29662 bal=2943253 dq=99.2 cnt=79 | c=237.2 rankC=237.2 need=5292185 tD=0.95 人 pulse onMe | safe=265144 keep=Inf avail=-Inf chunkB=27864 pulseB=16718 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7060 sora_w B=140093 L=3013 d=46.5 nb=1 neut=0 cmds=95 noFull=1 shQ=35023 | m=0.900 worth=77.3 cheap=9.1 over=0 dMedOther=101.1 safe(-1)=265144
+    → brocstrailia#36[T2] terr=29662 bal=2983890 dq=100.6 cnt=79 | c=519.3 rankC=519.3 need=5362937 tD=1.00 人 pulse crowdedHard | safe=265144 keep=Inf avail=-Inf chunkB=28019 pulseB=16811 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=7065 sora_w B=140093 L=3013 d=46.5 nb=1 neut=0 cmds=95 noFull=1 shQ=35023 | m=0.900 worth=77.0 cheap=9.1 over=0 dMedOther=100.6 safe(-1)=265144
+    → brocstrailia#36[T2] terr=29662 bal=2983890 dq=100.6 cnt=79 | c=519.3 rankC=519.3 need=5362937 tD=1.00 人 pulse crowdedHard | safe=265144 keep=Inf avail=-Inf chunkB=28019 pulseB=16811 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=7070 sora_w B=141634 L=3013 d=47.0 nb=1 neut=0 cmds=95 noFull=1 shQ=35408 | m=0.900 worth=78.0 cheap=9.1 over=0 dMedOther=102.0 safe(-1)=265144
+    → brocstrailia#36[T2] terr=29662 bal=3024769 dq=102.0 cnt=79 | c=526.3 rankC=526.3 need=5435799 tD=1.00 人 pulse crowdedHard | safe=265144 keep=Inf avail=-Inf chunkB=28327 pulseB=16996 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=7075 sora_w B=141634 L=3013 d=47.0 nb=1 neut=0 cmds=95 noFull=1 shQ=35408 | m=0.900 worth=78.0 cheap=9.1 over=0 dMedOther=102.0 safe(-1)=265144
+    → brocstrailia#36[T2] terr=29662 bal=3024769 dq=102.0 cnt=79 | c=526.3 rankC=526.3 need=5435799 tD=1.00 人 pulse crowdedHard | safe=265144 keep=Inf avail=-Inf chunkB=28327 pulseB=16996 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=7080 sora_w B=143191 L=3013 d=47.5 nb=1 neut=0 cmds=95 noFull=1 shQ=35797 | m=0.900 worth=79.0 cheap=9.1 over=0 dMedOther=103.3 safe(-1)=265144
+    → brocstrailia#36[T2] terr=29662 bal=3064998 dq=103.3 cnt=79 | c=533.3 rankC=533.3 need=5507503 tD=1.00 人 pulse crowdedHard | safe=265144 keep=Inf avail=-Inf chunkB=28638 pulseB=17183 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=7085 sora_w B=143191 L=3013 d=47.5 nb=1 neut=0 cmds=95 noFull=1 shQ=35797 | m=0.900 worth=77.9 cheap=9.1 over=0 dMedOther=101.8 safe(-1)=265144
+    → brocstrailia#36[T2] terr=29662 bal=2774663 dq=93.5 cnt=79 | c=176.3 rankC=123.4 need=5244432 tD=0.92 人 pulse onMe | safe=265144 keep=Inf avail=-Inf chunkB=28638 pulseB=17183 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7090 sora_w B=144766 L=3013 d=48.0 nb=1 neut=0 cmds=95 noFull=1 shQ=36191 | m=0.900 worth=78.9 cheap=9.1 over=0 dMedOther=103.1 safe(-1)=265144
+    → brocstrailia#36[T2] terr=29662 bal=2812953 dq=94.8 cnt=79 | c=178.6 rankC=125.0 need=5312680 tD=0.92 人 pulse onMe | safe=265144 keep=Inf avail=-Inf chunkB=28953 pulseB=17372 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7095 sora_w B=132798 L=2856 d=46.5 nb=1 neut=0 cmds=95 noFull=1 shQ=33199 | m=0.900 worth=78.9 cheap=9.1 over=0 dMedOther=103.1 safe(-1)=251328
+    → brocstrailia#36[T2] terr=29819 bal=2812953 dq=94.3 cnt=78 | c=176.9 rankC=123.8 need=5288698 tD=0.91 人 pulse onMe | safe=251328 keep=Inf avail=-Inf chunkB=26560 pulseB=15936 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7100 sora_w B=119538 L=2622 d=45.6 nb=1 neut=0 cmds=95 noFull=1 shQ=29884 | m=0.900 worth=80.7 cheap=9.1 over=0 dMedOther=105.4 safe(-1)=230736
+    → brocstrailia#36[T2] terr=30053 bal=2881747 dq=95.9 cnt=76 | c=178.4 rankC=124.9 need=5376547 tD=0.91 人 pulse onMe | safe=230736 keep=Inf avail=-Inf chunkB=23908 pulseB=14345 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7105 sora_w B=109269 L=2480 d=44.1 nb=1 neut=0 cmds=95 noFull=1 shQ=27317 | m=0.900 worth=80.7 cheap=9.1 over=0 dMedOther=105.4 safe(-1)=218240
+    → brocstrailia#36[T2] terr=30195 bal=2881747 dq=95.4 cnt=68 | c=176.9 rankC=123.9 need=5356005 tD=0.91 人 pulse onMe | safe=218240 keep=Inf avail=-Inf chunkB=21854 pulseB=13112 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7110 sora_w B=96944 L=2287 d=42.4 nb=1 neut=0 cmds=95 noFull=1 shQ=24236 | m=0.900 worth=81.6 cheap=9.1 over=0 dMedOther=106.7 safe(-1)=201256
+    → brocstrailia#36[T2] terr=30388 bal=2921515 dq=96.1 cnt=62 | c=236.4 rankC=236.4 need=5399834 tD=0.90 人 pulse onMe | safe=201256 keep=Inf avail=-Inf chunkB=19389 pulseB=11633 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7115 sora_w B=88742 L=2165 d=41.0 nb=1 neut=0 cmds=95 noFull=1 shQ=22185 | m=0.900 worth=80.8 cheap=9.1 over=0 dMedOther=105.6 safe(-1)=190520
+    → brocstrailia#36[T2] terr=30510 bal=2921515 dq=95.8 cnt=61 | c=234.7 rankC=234.7 need=5383437 tD=0.91 人 pulse onMe | safe=190520 keep=Inf avail=-Inf chunkB=17748 pulseB=10649 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7120 sora_w B=77866 L=1983 d=39.3 nb=1 neut=0 cmds=95 noFull=1 shQ=19466 | m=0.900 worth=81.8 cheap=9.3 over=0 dMedOther=107.0 safe(-1)=174504
+    → brocstrailia#36[T2] terr=30692 bal=2961831 dq=96.5 cnt=59 | c=235.5 rankC=235.5 need=5431608 tD=0.90 人 pulse onMe | safe=174504 keep=Inf avail=-Inf chunkB=15573 pulseB=9344 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7125 sora_w B=70647 L=1867 d=37.8 nb=1 neut=0 cmds=95 noFull=1 shQ=17661 | m=0.900 worth=81.8 cheap=9.3 over=0 dMedOther=107.0 safe(-1)=164296
+    → brocstrailia#36[T2] terr=30808 bal=2961831 dq=96.1 cnt=54 | c=234.0 rankC=234.0 need=5417112 tD=0.90 人 pulse onMe | safe=164296 keep=Inf avail=-Inf chunkB=14129 pulseB=8478 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7130 sora_w B=62085 L=1712 d=36.3 nb=1 neut=0 cmds=95 noFull=1 shQ=15521 | m=0.900 worth=82.6 cheap=9.3 over=0 dMedOther=108.0 safe(-1)=150656
+    → brocstrailia#36[T2] terr=30963 bal=3002704 dq=97.0 cnt=50 | c=235.2 rankC=235.2 need=5471488 tD=0.90 人 pulse onMe | safe=150656 keep=Inf avail=-Inf chunkB=12417 pulseB=7450 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7135 sora_w B=56339 L=1612 d=34.9 nb=1 neut=0 cmds=95 noFull=1 shQ=14084 | m=0.900 worth=82.6 cheap=9.3 over=0 dMedOther=108.0 safe(-1)=141856
+    → brocstrailia#36[T2] terr=31063 bal=3002704 dq=96.7 cnt=50 | c=233.9 rankC=233.9 need=5459946 tD=0.90 人 pulse onMe | safe=141856 keep=Inf avail=-Inf chunkB=11268 pulseB=6761 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7140 sora_w B=49121 L=1471 d=33.4 nb=1 neut=0 cmds=95 noFull=1 shQ=12280 | m=0.900 worth=83.6 cheap=9.3 over=0 dMedOther=109.2 safe(-1)=129448
+    → brocstrailia#36[T2] terr=31204 bal=3044141 dq=97.6 cnt=42 | c=235.4 rankC=235.4 need=5518102 tD=0.89 人 pulse onMe | safe=129448 keep=Inf avail=-Inf chunkB=9824 pulseB=5895 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7145 sora_w B=45412 L=1401 d=32.4 nb=1 neut=0 cmds=95 noFull=1 shQ=11353 | m=0.900 worth=82.0 cheap=9.3 over=0 dMedOther=107.2 safe(-1)=123288
+    → brocstrailia#36[T2] terr=31274 bal=3044141 dq=97.3 cnt=31 | c=234.7 rankC=234.7 need=5510718 tD=0.91 人 pulse onMe | safe=123288 keep=Inf avail=-Inf chunkB=9082 pulseB=5449 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7150 sora_w B=42012 L=1326 d=31.7 nb=1 neut=0 cmds=95 noFull=1 shQ=10503 | m=0.900 worth=83.0 cheap=9.3 over=0 dMedOther=108.5 safe(-1)=116688
+    → brocstrailia#36[T2] terr=31349 bal=3086150 dq=98.4 cnt=14 | c=237.1 rankC=237.1 need=5577812 tD=0.91 人 pulse onMe | safe=116688 keep=Inf avail=-Inf chunkB=8402 pulseB=5041 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7155 sora_w B=41153 L=1309 d=31.4 nb=1 neut=0 cmds=95 noFull=1 shQ=10288 | m=0.900 worth=80.3 cheap=9.3 over=0 dMedOther=104.9 safe(-1)=115192
+    → brocstrailia#36[T2] terr=31366 bal=3086150 dq=98.4 cnt=6 | c=237.0 rankC=237.0 need=5576120 tD=0.94 人 pulse onMe | safe=115192 keep=Inf avail=-Inf chunkB=8231 pulseB=4938 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7160 sora_w B=40582 L=1289 d=31.5 nb=1 neut=0 cmds=95 noFull=1 shQ=10145 | m=0.900 worth=81.2 cheap=9.3 over=0 dMedOther=106.2 safe(-1)=113432
+    → brocstrailia#36[T2] terr=31386 bal=3128738 dq=99.7 cnt=7 | c=240.0 rankC=240.0 need=5650010 tD=0.94 人 pulse onMe | safe=113432 keep=Inf avail=-Inf chunkB=8116 pulseB=4870 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7165 sora_w B=39929 L=1276 d=31.3 nb=1 neut=0 cmds=95 noFull=1 shQ=9982 | m=0.900 worth=81.2 cheap=9.3 over=0 dMedOther=106.2 safe(-1)=112288
+    → brocstrailia#36[T2] terr=31628 bal=2832365 dq=89.6 cnt=7 | c=161.9 rankC=113.3 need=5120727 tD=0.84 人 pulse onMe | safe=112288 keep=Inf avail=-Inf chunkB=7986 pulseB=4791 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7170 sora_w B=39349 L=1256 d=31.3 nb=1 neut=0 cmds=95 noFull=1 shQ=9837 | m=0.900 worth=82.1 cheap=9.3 over=0 dMedOther=107.4 safe(-1)=110528
+    → brocstrailia#36[T2] terr=31971 bal=2871734 dq=89.8 cnt=7 | c=216.4 rankC=216.4 need=5189466 tD=0.84 人 pulse onMe | safe=110528 keep=Inf avail=-Inf chunkB=7870 pulseB=4722 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7175 sora_w B=38401 L=1237 d=31.0 nb=1 neut=0 cmds=95 noFull=1 shQ=9600 | m=0.900 worth=84.3 cheap=9.3 over=0 dMedOther=110.2 safe(-1)=108856
+    → brocstrailia#36[T2] terr=32171 bal=2871734 dq=89.3 cnt=10 | c=214.9 rankC=214.9 need=5187832 tD=0.81 人 pulse onMe | safe=108856 keep=Inf avail=-Inf chunkB=7680 pulseB=4608 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7180 sora_w B=37365 L=1208 d=30.9 nb=1 neut=0 cmds=95 noFull=1 shQ=9341 | m=0.900 worth=85.3 cheap=9.3 over=0 dMedOther=111.5 safe(-1)=106304
+    → brocstrailia#36[T2] terr=32389 bal=2911651 dq=89.9 cnt=9 | c=216.3 rankC=216.3 need=5256312 tD=0.81 人 pulse onMe | safe=106304 keep=Inf avail=-Inf chunkB=7473 pulseB=4484 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7185 sora_w B=36428 L=1189 d=30.6 nb=1 neut=0 cmds=95 noFull=1 shQ=9107 | m=0.900 worth=85.3 cheap=9.3 over=0 dMedOther=111.5 safe(-1)=104632
+    → brocstrailia#36[T2] terr=32475 bal=2911651 dq=89.7 cnt=9 | c=215.7 rankC=215.7 need=5254593 tD=0.80 人 pulse onMe | safe=104632 keep=Inf avail=-Inf chunkB=7286 pulseB=4371 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7190 sora_w B=35341 L=1159 d=30.5 nb=1 neut=0 cmds=95 noFull=1 shQ=8835 | m=0.900 worth=86.2 cheap=9.3 over=0 dMedOther=112.7 safe(-1)=101992
+    → brocstrailia#36[T2] terr=32555 bal=2952414 dq=90.7 cnt=10 | c=218.0 rankC=218.0 need=5324376 tD=0.80 人 pulse onMe | safe=101992 keep=Inf avail=-Inf chunkB=7068 pulseB=4241 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7195 sora_w B=34272 L=1137 d=30.1 nb=1 neut=0 cmds=95 noFull=1 shQ=8568 | m=0.900 worth=86.2 cheap=9.3 over=0 dMedOther=112.7 safe(-1)=100056
+    → brocstrailia#36[T2] terr=32582 bal=3155165 dq=96.8 cnt=11 | c=232.5 rankC=232.5 need=5683583 tD=0.86 人 pulse onMe | safe=100056 keep=Inf avail=-Inf chunkB=6854 pulseB=4113 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7200 sora_w B=34041 L=1102 d=30.9 nb=1 neut=0 cmds=95 noFull=1 shQ=8371 | m=0.900 worth=87.9 cheap=9.3 over=0 dMedOther=114.9 safe(-1)=96976
+    → brocstrailia#36[T2] terr=32617 bal=3231943 dq=99.1 cnt=11 | c=237.7 rankC=237.7 need=5816982 tD=0.86 人 pulse onMe | safe=96976 keep=Inf avail=-Inf chunkB=6808 pulseB=4085 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7205 sora_w B=33007 L=1081 d=30.5 nb=1 neut=0 cmds=95 noFull=1 shQ=8251 | m=0.900 worth=87.9 cheap=9.3 over=0 dMedOther=114.9 safe(-1)=95128
+    → brocstrailia#36[T2] terr=32638 bal=3231943 dq=99.0 cnt=11 | c=237.4 rankC=237.4 need=5814939 tD=0.86 人 pulse onMe | safe=95128 keep=Inf avail=-Inf chunkB=6601 pulseB=3961 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=7210 sora_w B=31791 L=1049 d=30.3 nb=1 neut=0 cmds=95 noFull=1 shQ=7947 | m=0.900 worth=88.8 cheap=9.3 over=0 dMedOther=116.1 safe(-1)=92312
+    → brocstrailia#36[T2] terr=32670 bal=3277190 dq=100.3 cnt=7 | c=240.4 rankC=240.4 need=5892456 tD=0.86 人 pulse onMe | safe=92312 keep=Inf avail=-Inf chunkB=6358 pulseB=3815 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令

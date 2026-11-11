@@ -1,0 +1,977 @@
+# A061 riku_x 影子决策明细 t=1400~2560（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没走到 buyLand: 20 拍（t=1400~1495）
+#   只打无主地: 3 拍（t=1500~1510）；可用兵 30097~31357，一条指令下限(20%余额) 30874~31577，比值 97%~99%
+#   出手打人/bot: 26 拍（t=1515~2075）；可用兵 18579~61275，一条指令下限(20%余额) 23840~33120，比值 65%~186%
+#   有可用兵但没发（脉冲下限/冷却/其他）: 9 拍（t=1565~1630）；可用兵 7911~40213，一条指令下限(20%余额) 21514~28754，比值 37%~140%
+#   首选目标无可用兵（avail<=0）: 7 拍（t=1635~2085）；可用兵 -23943~-3200，一条指令下限(20%余额) 12920~19975，比值 -185%~-19%
+#   首选目标价高（c>=worth）: 167 拍（t=1660~2555）
+#   └ 「出手打人/bot」里：26 条对人/bot 的出兵共约 365015 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1400 riku_x B=117312 L=4923 d=23.8 nb=2 neut=10 cmds=27 noFull=1 shQ=28151 | m=1.400 worth=33.4 cheap=3.8 over=0 dMedOther=11.6 safe(-1)=68828
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1405 riku_x B=117312 L=4923 d=23.8 nb=2 neut=10 cmds=27 noFull=1 shQ=29328 | m=1.405 worth=33.5 cheap=3.8 over=0 dMedOther=11.6 safe(-1)=68828
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1410 riku_x B=120350 L=4923 d=24.4 nb=2 neut=10 cmds=27 noFull=1 shQ=30087 | m=1.410 worth=34.5 cheap=3.9 over=0 dMedOther=11.9 safe(-1)=70718
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1415 riku_x B=120350 L=4923 d=24.4 nb=2 neut=10 cmds=27 noFull=1 shQ=30087 | m=1.415 worth=34.6 cheap=3.9 over=0 dMedOther=11.8 safe(-1)=70718
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1420 riku_x B=123430 L=4923 d=25.1 nb=2 neut=10 cmds=27 noFull=1 shQ=30857 | m=1.420 worth=35.6 cheap=3.9 over=0 dMedOther=12.0 safe(-1)=72634
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1425 riku_x B=123430 L=4923 d=25.1 nb=2 neut=10 cmds=27 noFull=1 shQ=30857 | m=1.425 worth=35.7 cheap=3.9 over=0 dMedOther=12.0 safe(-1)=72634
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1430 riku_x B=126552 L=4923 d=25.7 nb=2 neut=10 cmds=27 noFull=1 shQ=31638 | m=1.430 worth=36.8 cheap=4.0 over=0 dMedOther=12.5 safe(-1)=74576
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1435 riku_x B=126552 L=4923 d=25.7 nb=2 neut=10 cmds=27 noFull=1 shQ=31638 | m=1.435 worth=36.9 cheap=4.0 over=0 dMedOther=12.5 safe(-1)=74576
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1440 riku_x B=129715 L=4923 d=26.3 nb=2 neut=10 cmds=27 noFull=1 shQ=32428 | m=1.440 worth=37.9 cheap=4.0 over=0 dMedOther=12.8 safe(-1)=76544
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1445 riku_x B=129715 L=4923 d=26.3 nb=2 neut=10 cmds=27 noFull=1 shQ=32428 | m=1.445 worth=38.1 cheap=4.0 over=0 dMedOther=12.8 safe(-1)=71344
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1450 riku_x B=132918 L=4923 d=27.0 nb=2 neut=10 cmds=27 noFull=1 shQ=33229 | m=1.450 worth=39.1 cheap=4.1 over=0 dMedOther=13.1 safe(-1)=73208
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1455 riku_x B=132918 L=4923 d=27.0 nb=2 neut=10 cmds=27 noFull=1 shQ=33229 | m=1.455 worth=39.3 cheap=4.1 over=0 dMedOther=13.1 safe(-1)=75923
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1460 riku_x B=136161 L=4923 d=27.7 nb=2 neut=10 cmds=27 noFull=1 shQ=34040 | m=1.460 worth=40.4 cheap=4.1 over=0 dMedOther=13.4 safe(-1)=77877
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1465 riku_x B=136161 L=4923 d=27.7 nb=2 neut=10 cmds=27 noFull=1 shQ=34040 | m=1.465 worth=40.5 cheap=4.1 over=0 dMedOther=13.4 safe(-1)=81003
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1470 riku_x B=139428 L=4923 d=28.3 nb=2 neut=10 cmds=27 noFull=1 shQ=34857 | m=1.470 worth=41.6 cheap=4.2 over=0 dMedOther=13.7 safe(-1)=83046
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1475 riku_x B=139428 L=4923 d=28.3 nb=2 neut=10 cmds=27 noFull=1 shQ=34857 | m=1.475 worth=41.8 cheap=4.2 over=0 dMedOther=12.8 safe(-1)=83046
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1480 riku_x B=142732 L=4923 d=29.0 nb=2 neut=10 cmds=27 noFull=1 shQ=35683 | m=1.480 worth=42.9 cheap=4.2 over=0 dMedOther=14.1 safe(-1)=85113
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1485 riku_x B=142732 L=4923 d=29.0 nb=2 neut=10 cmds=27 noFull=1 shQ=35683 | m=1.485 worth=43.1 cheap=4.2 over=0 dMedOther=14.1 safe(-1)=85113
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1490 riku_x B=146071 L=4923 d=29.7 nb=2 neut=10 cmds=27 noFull=1 shQ=36517 | m=1.490 worth=44.2 cheap=4.3 over=0 dMedOther=14.4 safe(-1)=87201
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1495 riku_x B=146071 L=4923 d=29.7 nb=2 neut=10 cmds=27 noFull=1 shQ=36517 | m=1.495 worth=44.4 cheap=4.3 over=0 dMedOther=14.4 safe(-1)=87201
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1500 riku_x B=154368 L=4923 d=31.4 nb=2 neut=10 cmds=28 noFull=1 shQ=37408 | m=1.500 worth=47.0 cheap=4.3 over=0 dMedOther=15.7 safe(-1)=97514
+    → Player 625#31[T1] terr=14644 bal=180960 dq=12.4 cnt=124 | c=31.2 rankC=31.2 need=344502 tD=0.79 人 | safe=97514 keep=122462 avail=30097 chunkB=30874 pulseB=18524 不够一条 hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9509 bal=130603 dq=13.7 cnt=97 | c=34.7 rankC=34.7 need=246670 tD=0.87 人 | safe=97514 keep=129341 avail=23218 chunkB=30874 pulseB=18524 不够一条 hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 7236 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=1505 riku_x B=154368 L=4923 d=31.4 nb=2 neut=10 cmds=29 noFull=1 shQ=38592 | m=1.499 worth=47.0 cheap=4.4 over=0 dMedOther=15.7 safe(-1)=97514
+    → Player 625#31[T1] terr=14711 bal=180960 dq=12.3 cnt=124 | c=31.1 rankC=31.1 need=344617 tD=0.78 人 | safe=97514 keep=122214 avail=30345 chunkB=30874 pulseB=18524 不够一条 hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9509 bal=130603 dq=13.7 cnt=97 | c=34.7 rankC=34.7 need=246691 tD=0.87 人 | safe=97514 keep=129376 avail=23183 chunkB=30874 pulseB=18524 不够一条 hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 7236 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=1510 riku_x B=157887 L=4923 d=32.1 nb=2 neut=10 cmds=30 noFull=1 shQ=39471 | m=1.498 worth=48.1 cheap=4.4 over=0 dMedOther=16.1 safe(-1)=99832
+    → Player 625#31[T1] terr=14776 bal=185085 dq=12.5 cnt=124 | c=31.6 rankC=31.6 need=352053 tD=0.78 人 | safe=99832 keep=124680 avail=31357 chunkB=31577 pulseB=18946 不够一条 hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9509 bal=133580 dq=14.0 cnt=97 | c=35.4 rankC=35.4 need=252011 tD=0.87 人 | safe=99832 keep=132272 avail=23765 chunkB=31577 pulseB=18946 不够一条 hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 7400 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=1515 riku_x B=157887 L=4923 d=32.1 nb=2 neut=10 cmds=32 noFull=1 shQ=39471 | m=1.498 worth=48.0 cheap=4.4 over=0 dMedOther=16.1 safe(-1)=99832
+    → Player 625#31[T1] terr=14804 bal=185085 dq=12.5 cnt=124 | c=13.2 rankC=6.6 need=352095 tD=0.78 人 pulse bleeding | safe=99832 keep=99832 avail=56205 chunkB=31577 pulseB=18946  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9509 bal=133580 dq=14.0 cnt=97 | c=35.4 rankC=35.4 need=252054 tD=0.87 人 | safe=99832 keep=132305 avail=23732 chunkB=31577 pulseB=18946 不够一条 hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 7400 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=122 → Player 625#31[T1]（约 18964 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1520 riku_x B=161439 L=4923 d=32.8 nb=2 neut=10 cmds=34 noFull=1 shQ=40359 | m=1.497 worth=49.1 cheap=4.4 over=0 dMedOther=15.0 safe(-1)=101460
+    → Player 625#31[T1] terr=14774 bal=187983 dq=12.7 cnt=124 | c=9.6 rankC=4.8 need=356968 tD=0.85 人 pulse bleeding | safe=101460 keep=101460 avail=58088 chunkB=32288 pulseB=19373  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9509 bal=136585 dq=14.4 cnt=97 | c=36.2 rankC=36.2 need=257426 tD=0.96 人 | safe=101460 keep=135230 avail=24318 chunkB=32288 pulseB=19373 不够一条 hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 7567 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=122 → Player 625#31[T1]（约 19391 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1525 riku_x B=161439 L=4923 d=32.8 nb=2 neut=10 cmds=36 noFull=1 shQ=40359 | m=1.496 worth=49.1 cheap=4.5 over=0 dMedOther=15.0 safe(-1)=100774
+    → Player 625#31[T1] terr=14735 bal=186763 dq=12.7 cnt=124 | c=9.7 rankC=4.8 need=354564 tD=0.84 人 pulse bleeding | safe=100774 keep=100774 avail=58774 chunkB=32288 pulseB=19373  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9509 bal=136585 dq=14.4 cnt=97 | c=36.2 rankC=36.2 need=257449 tD=0.96 人 | safe=100774 keep=135267 avail=24281 chunkB=32288 pulseB=19373 不够一条 hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 7567 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=122 → Player 625#31[T1]（约 19391 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1530 riku_x B=165022 L=4923 d=33.5 nb=2 neut=10 cmds=38 noFull=1 shQ=41255 | m=1.496 worth=50.1 cheap=4.5 over=0 dMedOther=15.3 safe(-1)=101814
+    → Player 625#31[T1] terr=14648 bal=188613 dq=12.9 cnt=124 | c=10.1 rankC=5.0 need=357329 tD=0.84 人 pulse bleeding | safe=101814 keep=101814 avail=61275 chunkB=33004 pulseB=19803  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9509 bal=141317 dq=14.9 cnt=97 | c=37.4 rankC=37.4 need=265897 tD=0.97 人 | safe=101814 keep=139053 avail=24036 chunkB=33004 pulseB=19803 不够一条 hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 7735 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=122 → Player 625#31[T1]（约 19821 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1535 riku_x B=146252 L=4923 d=29.7 nb=2 neut=10 cmds=39 noFull=1 shQ=804 | m=1.495 worth=44.4 cheap=4.5 over=0 dMedOther=15.3 safe(-1)=101340
+    → Player 625#31[T1] terr=14549 bal=187769 dq=12.9 cnt=124 | c=10.3 rankC=5.1 need=355196 tD=0.84 人 pulse bleeding | safe=101340 keep=101340 avail=43199 chunkB=29250 pulseB=17550  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9509 bal=141317 dq=14.9 cnt=97 | c=37.3 rankC=37.3 need=265943 tD=0.97 人 | safe=101340 keep=131591 avail=12948 chunkB=29250 pulseB=17550 不够一条 hNb=2
+    ⇒ 影子指令 attack pct=0 → Player 625#31[T1]（约 142 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1540 riku_x B=149454 L=4923 d=30.4 nb=2 neut=10 cmds=40 noFull=1 shQ=4830 | m=1.494 worth=45.4 cheap=4.6 over=0 dMedOther=15.6 safe(-1)=103057
+    → Player 625#31[T1] terr=14499 bal=190826 dq=13.2 cnt=124 | c=10.7 rankC=5.3 need=360310 tD=0.84 人 pulse bleeding | safe=103057 keep=103057 avail=44646 chunkB=29891 pulseB=17934  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9509 bal=144411 dq=15.2 cnt=97 | c=38.1 rankC=38.1 need=271477 tD=0.97 人 | safe=103057 keep=134423 avail=13280 chunkB=29891 pulseB=17934 不够一条 hNb=2
+    ⇒ 影子指令 attack pct=0 → Player 625#31[T1]（约 145 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1545 riku_x B=140698 L=4939 d=28.5 nb=2 neut=2 cmds=41 noFull=1 shQ=3058 | m=1.493 worth=42.5 cheap=4.6 over=0 dMedOther=16.8 safe(-1)=101839
+    → Player 625#31[T1] terr=14397 bal=188682 dq=13.1 cnt=124 | c=10.7 rankC=5.4 need=355839 tD=0.78 人 pulse bleeding | safe=101839 keep=101839 avail=37211 chunkB=28140 pulseB=16884  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9509 bal=144411 dq=15.2 cnt=99 | c=38.1 rankC=38.1 need=271500 tD=0.90 人 | safe=101839 keep=131194 avail=7856 chunkB=28140 pulseB=16884 不够一条 hNb=2
+    ⇒ 影子指令 attack pct=0 → Player 625#31[T1]（约 137 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1550 riku_x B=162164 L=4941 d=32.8 nb=2 neut=0 cmds=42 noFull=1 shQ=1548 | m=1.492 worth=49.0 cheap=4.6 over=0 dMedOther=17.2 safe(-1)=102891
+    → Player 625#31[T1] terr=14295 bal=190557 dq=13.3 cnt=124 | c=11.2 rankC=5.6 need=358505 tD=0.78 人 pulse bleeding | safe=102891 keep=102891 avail=57373 chunkB=32433 pulseB=19460  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9404 bal=144909 dq=15.4 cnt=99 | c=38.7 rankC=38.7 need=271633 tD=0.90 人 | safe=102891 keep=140989 avail=19275 chunkB=32433 pulseB=19460 不够一条 hNb=2
+    ⇒ 影子指令 attack pct=0 → Player 625#31[T1]（约 158 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1555 riku_x B=162164 L=4941 d=32.8 nb=2 neut=0 cmds=43 noFull=1 shQ=5895 | m=1.492 worth=49.0 cheap=4.7 over=0 dMedOther=17.2 safe(-1)=102256
+    → Player 625#31[T1] terr=14242 bal=189427 dq=13.3 cnt=124 | c=11.2 rankC=5.6 need=356160 tD=0.78 人 pulse bleeding | safe=102256 keep=102256 avail=58008 chunkB=32433 pulseB=19460  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9404 bal=151497 dq=16.1 cnt=99 | c=40.3 rankC=40.3 need=283393 tD=0.94 人 | safe=102256 keep=144307 avail=15957 chunkB=32433 pulseB=19460 不够一条 hNb=2
+    ⇒ 影子指令 attack pct=0 → Player 625#31[T1]（约 158 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1560 riku_x B=165601 L=4941 d=33.5 nb=2 neut=0 cmds=44 noFull=1 shQ=10232 | m=1.491 worth=50.0 cheap=4.7 over=0 dMedOther=17.5 safe(-1)=103208
+    → Player 625#31[T1] terr=14135 bal=191121 dq=13.5 cnt=124 | c=11.7 rankC=5.8 need=358427 tD=0.77 人 pulse bleeding | safe=103208 keep=103208 avail=60453 chunkB=33120 pulseB=19872  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9404 bal=154708 dq=16.5 cnt=99 | c=41.1 rankC=41.1 need=289127 tD=0.94 人 | safe=103208 keep=147322 avail=16339 chunkB=33120 pulseB=19872 不够一条 hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 625#31[T1]（约 19891 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1565 riku_x B=143770 L=4941 d=29.1 nb=2 neut=0 cmds=44 noFull=1 shQ=2277 | m=1.490 worth=43.4 cheap=4.7 over=0 dMedOther=17.5 safe(-1)=101873
+    → Player 625#31[T1] terr=14025 bal=188746 dq=13.5 cnt=124 | c=10.7 rankC=5.3 need=333588 tD=0.77 人 pulse bleeding | safe=101873 keep=101873 avail=40213 chunkB=28754 pulseB=17252  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9404 bal=154708 dq=16.5 cnt=99 | c=41.1 rankC=41.1 need=289152 tD=0.94 人 | safe=101873 keep=138627 avail=3459 chunkB=28754 pulseB=17252 不够一条 hNb=2
+    ⇒ 本拍没有指令
+t=1570 riku_x B=127425 L=5065 d=25.2 nb=2 neut=0 cmds=44 noFull=1 shQ=5863 | m=1.490 worth=37.5 cheap=4.8 over=0 dMedOther=17.9 safe(-1)=101778
+    → Player 625#31[T1] terr=13846 bal=188763 dq=13.6 cnt=121 | c=10.2 rankC=5.1 need=320681 tD=0.76 人 pulse bleeding | safe=101778 keep=101778 avail=24154 chunkB=25485 pulseB=15291  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9404 bal=157941 dq=16.8 cnt=99 | c=41.9 rankC=41.9 need=294926 tD=0.94 人 | safe=101778 keep=Inf avail=-Inf chunkB=25485 pulseB=15291 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1575 riku_x B=127425 L=5304 d=24.0 nb=2 neut=0 cmds=44 noFull=1 shQ=9179 | m=1.489 worth=35.8 cheap=4.8 over=0 dMedOther=17.9 safe(-1)=97506
+    → Player 625#31[T1] terr=13512 bal=181517 dq=13.4 cnt=119 | c=10.5 rankC=5.3 need=316388 tD=0.75 人 pulse bleeding | safe=97506 keep=97506 avail=28426 chunkB=25485 pulseB=15291  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9404 bal=157941 dq=16.8 cnt=99 | c=41.9 rankC=41.9 need=294977 tD=0.94 人 | safe=97506 keep=Inf avail=-Inf chunkB=25485 pulseB=15291 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1580 riku_x B=126770 L=5423 d=23.4 nb=2 neut=0 cmds=44 noFull=1 shQ=12402 | m=1.488 worth=34.8 cheap=4.8 over=0 dMedOther=18.3 safe(-1)=96902
+    → Player 625#31[T1] terr=13300 bal=180620 dq=13.6 cnt=116 | c=11.1 rankC=5.5 need=318352 tD=0.74 人 pulse bleeding | safe=96902 keep=96902 avail=28383 chunkB=25354 pulseB=15212  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9404 bal=161194 dq=17.1 cnt=99 | c=42.7 rankC=42.7 need=300789 tD=0.94 人 | safe=96902 keep=Inf avail=-Inf chunkB=25354 pulseB=15212 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1585 riku_x B=125162 L=5654 d=22.1 nb=2 neut=0 cmds=44 noFull=1 shQ=15629 | m=1.487 worth=32.9 cheap=4.9 over=0 dMedOther=18.3 safe(-1)=93304
+    → Player 625#31[T1] terr=13020 bal=174563 dq=13.4 cnt=115 | c=11.4 rankC=5.7 need=316040 tD=0.73 人 pulse bleeding | safe=93304 keep=93304 avail=30392 chunkB=25032 pulseB=15019  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9404 bal=161194 dq=17.1 cnt=99 | c=42.7 rankC=42.7 need=300815 tD=0.94 人 | safe=93304 keep=Inf avail=-Inf chunkB=25032 pulseB=15019 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1590 riku_x B=110867 L=5885 d=18.8 nb=2 neut=0 cmds=44 noFull=1 shQ=18740 | m=1.486 worth=28.0 cheap=4.9 over=0 dMedOther=18.6 safe(-1)=91029
+    → Player 625#31[T1] terr=12687 bal=170860 dq=13.5 cnt=117 | c=11.2 rankC=5.6 need=302450 tD=0.72 人 pulse bleeding | safe=91029 keep=91029 avail=18539 chunkB=22173 pulseB=13304  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9404 bal=164466 dq=17.5 cnt=99 | c=43.5 rankC=43.5 need=306663 tD=0.94 人 | safe=91029 keep=Inf avail=-Inf chunkB=22173 pulseB=13304 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1595 riku_x B=110867 L=6002 d=18.5 nb=2 neut=0 cmds=44 noFull=1 shQ=21541 | m=1.486 worth=27.4 cheap=5.0 over=0 dMedOther=18.6 safe(-1)=88217
+    → Player 625#31[T1] terr=12462 bal=166030 dq=13.3 cnt=117 | c=11.4 rankC=5.7 need=297650 tD=0.72 人 pulse bleeding | safe=88217 keep=88217 avail=21351 chunkB=22173 pulseB=13304  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9404 bal=164466 dq=17.5 cnt=99 | c=43.5 rankC=43.5 need=306716 tD=0.94 人 | safe=88217 keep=Inf avail=-Inf chunkB=22173 pulseB=13304 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1600 riku_x B=119198 L=6002 d=19.9 nb=2 neut=0 cmds=45 noFull=1 shQ=24361 | m=1.485 worth=29.5 cheap=5.0 over=0 dMedOther=20.0 safe(-1)=95175
+    → Player 625#31[T1] terr=12409 bal=178415 dq=14.4 cnt=117 | c=13.3 rankC=6.6 need=323184 tD=0.72 人 pulse bleeding | safe=95175 keep=95175 avail=22627 chunkB=23840 pulseB=14304  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9404 bal=177159 dq=18.8 cnt=99 | c=46.7 rankC=46.7 need=329330 tD=0.94 人 | safe=95175 keep=Inf avail=-Inf chunkB=23840 pulseB=14304 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 625#31[T1]（约 14317 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1605 riku_x B=119198 L=6002 d=19.9 nb=2 neut=0 cmds=46 noFull=1 shQ=27325 | m=1.484 worth=29.5 cheap=5.0 over=0 dMedOther=19.7 safe(-1)=94470
+    → Player 625#31[T1] terr=12300 bal=175912 dq=14.3 cnt=117 | c=13.4 rankC=6.7 need=318009 tD=0.72 人 pulse bleeding | safe=94470 keep=94470 avail=23332 chunkB=23840 pulseB=14304  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9404 bal=177159 dq=18.8 cnt=99 | c=46.7 rankC=46.7 need=329358 tD=0.95 人 | safe=94470 keep=Inf avail=-Inf chunkB=23840 pulseB=14304 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 625#31[T1]（约 14317 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1610 riku_x B=121546 L=6002 d=20.3 nb=2 neut=0 cmds=47 noFull=1 shQ=30280 | m=1.484 worth=30.0 cheap=5.1 over=0 dMedOther=19.8 safe(-1)=96430
+    → Player 625#31[T1] terr=12191 bal=176838 dq=14.5 cnt=117 | c=13.9 rankC=6.9 need=318712 tD=0.73 人 pulse bleeding | safe=96430 keep=96430 avail=23692 chunkB=24309 pulseB=14586  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9404 bal=180649 dq=19.2 cnt=99 | c=47.6 rankC=47.6 need=335598 tD=0.97 人 | safe=96430 keep=Inf avail=-Inf chunkB=24309 pulseB=14586 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 625#31[T1]（约 14599 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1615 riku_x B=121546 L=6002 d=20.3 nb=2 neut=0 cmds=48 noFull=1 shQ=30386 | m=1.483 worth=30.0 cheap=5.1 over=0 dMedOther=19.8 safe(-1)=96430
+    → Player 625#31[T1] terr=12138 bal=175609 dq=14.5 cnt=117 | c=13.9 rankC=7.0 need=316197 tD=0.73 人 pulse bleeding | safe=96430 keep=96430 avail=23692 chunkB=24309 pulseB=14586  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9404 bal=180649 dq=19.2 cnt=99 | c=47.6 rankC=47.6 need=335656 tD=0.97 人 | safe=96430 keep=Inf avail=-Inf chunkB=24309 pulseB=14586 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 625#31[T1]（约 14599 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1620 riku_x B=123903 L=6002 d=20.6 nb=2 neut=0 cmds=49 noFull=1 shQ=30975 | m=1.482 worth=30.6 cheap=5.2 over=0 dMedOther=20.2 safe(-1)=98399
+    → Player 625#31[T1] terr=12034 bal=176566 dq=14.7 cnt=117 | c=14.4 rankC=7.2 need=316971 tD=0.73 人 pulse bleeding | safe=98399 keep=98399 avail=24053 chunkB=24781 pulseB=14868  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9404 bal=184153 dq=19.6 cnt=99 | c=48.4 rankC=48.4 need=341923 tD=0.97 人 | safe=98399 keep=Inf avail=-Inf chunkB=24781 pulseB=14868 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 625#31[T1]（约 14882 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=1625 riku_x B=107570 L=6002 d=17.9 nb=2 neut=0 cmds=49 noFull=1 shQ=12010 | m=1.481 worth=26.5 cheap=5.2 over=0 dMedOther=20.2 safe(-1)=98399
+    → Player 625#31[T1] terr=11937 bal=174292 dq=14.6 cnt=117 | c=13.5 rankC=6.8 need=297398 tD=0.72 人 pulse bleeding | safe=98399 keep=98399 avail=7911 chunkB=21514 pulseB=12908  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9404 bal=184153 dq=19.6 cnt=99 | c=65.4 rankC=65.4 need=341952 tD=0.97 人 crowdedHard | safe=98399 keep=Inf avail=-Inf chunkB=21514 pulseB=12908 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1630 riku_x B=109613 L=6002 d=18.3 nb=2 neut=0 cmds=49 noFull=1 shQ=14591 | m=1.480 worth=27.0 cheap=5.2 over=0 dMedOther=20.6 safe(-1)=98535
+    → Player 625#31[T1] terr=11893 bal=176557 dq=14.8 cnt=117 | c=13.9 rankC=7.0 need=300913 tD=0.72 人 pulse bleeding | safe=98535 keep=98535 avail=9794 chunkB=21923 pulseB=13154  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9302 bal=184396 dq=19.8 cnt=98 | c=66.2 rankC=66.2 need=341498 tD=0.96 人 crowdedHard | safe=98535 keep=Inf avail=-Inf chunkB=21923 pulseB=13154 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1635 riku_x B=95163 L=6236 d=15.3 nb=2 neut=0 cmds=49 noFull=1 shQ=16913 | m=1.480 worth=22.6 cheap=5.3 over=0 dMedOther=19.8 safe(-1)=98338
+    → Player 625#31[T1] terr=11571 bal=168955 dq=14.6 cnt=117 | c=13.5 rankC=6.8 need=283490 tD=0.74 人 pulse bleeding | safe=98338 keep=98338 avail=-4290 chunkB=19033 pulseB=11420 无可用(avail<=0) hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9302 bal=184396 dq=19.8 cnt=98 | c=66.2 rankC=66.2 need=341558 tD=1.00 人 crowdedHard | safe=98338 keep=Inf avail=-Inf chunkB=19033 pulseB=11420 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1640 riku_x B=84162 L=6353 d=13.2 nb=2 neut=0 cmds=49 noFull=1 shQ=19039 | m=1.479 worth=19.6 cheap=5.3 over=0 dMedOther=19.2 safe(-1)=88608
+    → Player 625#31[T1] terr=11366 bal=167252 dq=14.7 cnt=118 | c=13.3 rankC=6.7 need=273007 tD=0.77 人 pulse bleeding | safe=88608 keep=88608 avail=-5432 chunkB=16832 pulseB=10099 无可用(avail<=0) hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9302 bal=163630 dq=17.6 cnt=98 | c=44.3 rankC=31.0 need=304683 tD=0.92 人 crowdedHard | safe=88608 keep=Inf avail=-Inf chunkB=16832 pulseB=10099 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1645 riku_x B=84162 L=6587 d=12.8 nb=2 neut=0 cmds=49 noFull=1 shQ=21000 | m=1.478 worth=18.9 cheap=5.4 over=0 dMedOther=19.0 safe(-1)=86376
+    → Player 625#31[T1] terr=11089 bal=160762 dq=14.5 cnt=114 | c=13.8 rankC=6.9 need=271020 tD=0.76 人 pulse bleeding | safe=86376 keep=86376 avail=-3200 chunkB=16832 pulseB=10099 无可用(avail<=0) hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9303 bal=163630 dq=17.6 cnt=98 | c=44.3 rankC=31.0 need=304718 tD=0.93 人 crowdedHard | safe=86376 keep=Inf avail=-Inf chunkB=16832 pulseB=10099 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1650 riku_x B=74411 L=6810 d=10.9 nb=2 neut=0 cmds=49 noFull=1 shQ=18602 | m=1.478 worth=16.1 cheap=5.4 over=0 dMedOther=17.9 safe(-1)=87879
+    → Player 625#31[T1] terr=10787 bal=156629 dq=14.5 cnt=109 | c=13.9 rankC=6.9 need=261964 tD=0.81 人 pulse bleeding | safe=87879 keep=87879 avail=-14340 chunkB=14882 pulseB=8929 无可用(avail<=0) hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9308 bal=166640 dq=17.9 cnt=98 | c=45.0 rankC=31.5 need=310137 tD=1.00 人 crowdedHard | safe=87879 keep=Inf avail=-Inf chunkB=14882 pulseB=8929 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1655 riku_x B=64601 L=6919 d=9.3 nb=2 neut=0 cmds=49 noFull=1 shQ=16150 | m=1.477 worth=13.8 cheap=5.5 over=0 dMedOther=17.9 safe(-1)=87787
+    → Player 625#31[T1] terr=10609 bal=152507 dq=14.4 cnt=110 | c=13.5 rankC=6.7 need=249804 tD=0.80 人 pulse bleeding | safe=87787 keep=87787 avail=-23943 chunkB=12920 pulseB=7752 无可用(avail<=0) hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9321 bal=166640 dq=17.9 cnt=98 | c=44.9 rankC=31.4 need=310300 tD=1.00 人 crowdedHard | safe=87787 keep=Inf avail=-Inf chunkB=12920 pulseB=7752 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1660 riku_x B=65770 L=7139 d=9.2 nb=2 neut=0 cmds=49 noFull=1 shQ=16442 | m=1.476 worth=13.6 cheap=5.5 over=0 dMedOther=18.2 safe(-1)=89296
+    → Player 625#31[T1] terr=10357 bal=149393 dq=14.4 cnt=110 | c=14.3 rankC=7.1 need=252725 tD=0.79 人 pulse bleeding | safe=89296 keep=Inf avail=-Inf chunkB=13154 pulseB=7892 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9331 bal=169656 dq=18.2 cnt=98 | c=45.6 rankC=31.9 need=315775 tD=1.00 人 crowdedHard | safe=89296 keep=Inf avail=-Inf chunkB=13154 pulseB=7892 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1665 riku_x B=65869 L=7139 d=9.2 nb=2 neut=0 cmds=49 noFull=1 shQ=16467 | m=1.475 worth=13.6 cheap=5.6 over=0 dMedOther=18.1 safe(-1)=89296
+    → Player 625#31[T1] terr=10293 bal=146441 dq=14.2 cnt=110 | c=14.5 rankC=7.2 need=250676 tD=0.78 人 pulse bleeding | safe=89296 keep=Inf avail=-Inf chunkB=13174 pulseB=7904 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9359 bal=169656 dq=18.1 cnt=98 | c=45.5 rankC=31.8 need=316038 tD=1.00 人 crowdedHard | safe=89296 keep=Inf avail=-Inf chunkB=13174 pulseB=7904 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1670 riku_x B=67041 L=7139 d=9.4 nb=2 neut=0 cmds=49 noFull=1 shQ=16760 | m=1.474 worth=13.8 cheap=5.6 over=0 dMedOther=18.4 safe(-1)=90992
+    → Player 625#31[T1] terr=10245 bal=147937 dq=14.4 cnt=110 | c=14.9 rankC=7.4 need=252718 tD=0.79 人 pulse bleeding | safe=90992 keep=Inf avail=-Inf chunkB=13408 pulseB=8045 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9399 bal=172675 dq=18.4 cnt=98 | c=46.0 rankC=32.2 need=321778 tD=1.00 人 crowdedHard | safe=90992 keep=Inf avail=-Inf chunkB=13408 pulseB=8045 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1675 riku_x B=67041 L=7139 d=9.4 nb=2 neut=0 cmds=49 noFull=1 shQ=16760 | m=1.474 worth=13.8 cheap=5.7 over=0 dMedOther=18.3 safe(-1)=90992
+    → Player 625#31[T1] terr=10227 bal=147522 dq=14.4 cnt=110 | c=14.9 rankC=7.4 need=251986 tD=0.79 人 pulse bleeding | safe=90992 keep=Inf avail=-Inf chunkB=13408 pulseB=8045 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9423 bal=172675 dq=18.3 cnt=98 | c=45.9 rankC=32.1 need=321925 tD=1.00 人 crowdedHard | safe=90992 keep=Inf avail=-Inf chunkB=13408 pulseB=8045 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1680 riku_x B=68214 L=7139 d=9.6 nb=2 neut=0 cmds=49 noFull=1 shQ=17053 | m=1.473 worth=14.1 cheap=5.7 over=0 dMedOther=18.5 safe(-1)=92690
+    → Player 625#31[T1] terr=10201 bal=149494 dq=14.7 cnt=110 | c=15.3 rankC=7.6 need=255029 tD=0.79 人 pulse bleeding | safe=92690 keep=Inf avail=-Inf chunkB=13643 pulseB=8186 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9482 bal=175696 dq=18.5 cnt=98 | c=46.4 rankC=32.5 need=327391 tD=1.00 人 crowdedHard | safe=92690 keep=Inf avail=-Inf chunkB=13643 pulseB=8186 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1685 riku_x B=68214 L=7139 d=9.6 nb=2 neut=0 cmds=49 noFull=1 shQ=17053 | m=1.472 worth=14.1 cheap=5.8 over=0 dMedOther=18.4 safe(-1)=92690
+    → Player 625#31[T1] terr=10178 bal=148956 dq=14.6 cnt=110 | c=15.3 rankC=7.7 need=254043 tD=0.80 人 pulse bleeding | safe=92690 keep=Inf avail=-Inf chunkB=13643 pulseB=8186 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9553 bal=175696 dq=18.4 cnt=98 | c=46.1 rankC=32.3 need=327490 tD=1.00 人 crowdedHard | safe=92690 keep=Inf avail=-Inf chunkB=13643 pulseB=8186 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1690 riku_x B=69387 L=7139 d=9.7 nb=2 neut=0 cmds=49 noFull=1 shQ=17346 | m=1.472 worth=14.3 cheap=5.8 over=0 dMedOther=18.0 safe(-1)=91250
+    → Player 625#31[T1] terr=10166 bal=151233 dq=14.9 cnt=110 | c=15.7 rankC=7.9 need=257730 tD=0.82 人 pulse bleeding | safe=91250 keep=Inf avail=-Inf chunkB=13877 pulseB=8326 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9592 bal=173133 dq=18.0 cnt=98 | c=60.4 rankC=60.4 need=322974 tD=1.00 人 crowdedHard | safe=91250 keep=Inf avail=-Inf chunkB=13877 pulseB=8326 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1695 riku_x B=69387 L=7139 d=9.7 nb=2 neut=0 cmds=49 noFull=1 shQ=17346 | m=1.471 worth=14.3 cheap=5.9 over=0 dMedOther=17.9 safe(-1)=91250
+    → Player 625#31[T1] terr=10140 bal=150615 dq=14.9 cnt=110 | c=15.7 rankC=7.9 need=256580 tD=0.83 人 pulse bleeding | safe=91250 keep=Inf avail=-Inf chunkB=13877 pulseB=8326 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9666 bal=173133 dq=17.9 cnt=98 | c=59.9 rankC=59.9 need=323098 tD=1.00 人 crowdedHard | safe=91250 keep=Inf avail=-Inf chunkB=13877 pulseB=8326 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1700 riku_x B=77698 L=7139 d=10.9 nb=2 neut=0 cmds=49 noFull=1 shQ=17674 | m=1.470 worth=16.0 cheap=5.9 over=0 dMedOther=19.1 safe(-1)=98341
+    → Player 625#31[T1] terr=10114 bal=162640 dq=16.1 cnt=110 | c=17.6 rankC=8.8 need=275863 tD=0.84 人 pulse bleeding | safe=98341 keep=Inf avail=-Inf chunkB=15540 pulseB=9324 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9733 bal=185756 dq=19.1 cnt=98 | c=63.7 rankC=63.7 need=345691 tD=1.00 人 crowdedHard | safe=98341 keep=Inf avail=-Inf chunkB=15540 pulseB=9324 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1705 riku_x B=77698 L=7139 d=10.9 nb=2 neut=0 cmds=49 noFull=1 shQ=19302 | m=1.469 worth=16.0 cheap=6.0 over=0 dMedOther=19.0 safe(-1)=98341
+    → Player 625#31[T1] terr=10101 bal=162306 dq=16.1 cnt=110 | c=17.6 rankC=8.8 need=275317 tD=0.85 人 pulse bleeding | safe=98341 keep=Inf avail=-Inf chunkB=15540 pulseB=9324 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9769 bal=185756 dq=19.0 cnt=98 | c=63.4 rankC=63.4 need=345745 tD=1.00 人 crowdedHard | safe=98341 keep=Inf avail=-Inf chunkB=15540 pulseB=9324 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1710 riku_x B=78980 L=7139 d=11.1 nb=2 neut=0 cmds=49 noFull=1 shQ=19745 | m=1.468 worth=16.2 cheap=6.0 over=0 dMedOther=19.1 safe(-1)=100063
+    → Player 625#31[T1] terr=10078 bal=164384 dq=16.3 cnt=110 | c=18.0 rankC=9.0 need=278550 tD=0.85 人 pulse bleeding | safe=100063 keep=Inf avail=-Inf chunkB=15796 pulseB=9478 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9842 bal=188820 dq=19.2 cnt=98 | c=64.0 rankC=64.0 need=351323 tD=1.00 人 crowdedHard | safe=100063 keep=Inf avail=-Inf chunkB=15796 pulseB=9478 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1715 riku_x B=78980 L=7139 d=11.1 nb=2 neut=0 cmds=49 noFull=1 shQ=19745 | m=1.468 worth=16.2 cheap=6.1 over=0 dMedOther=18.9 safe(-1)=100074
+    → Player 625#31[T1] terr=10058 bal=163864 dq=16.3 cnt=110 | c=18.0 rankC=9.0 need=277620 tD=0.86 人 pulse bleeding | safe=100074 keep=Inf avail=-Inf chunkB=15796 pulseB=9478 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9842 bal=188840 dq=19.2 cnt=98 | c=64.0 rankC=64.0 need=351359 tD=1.02 人 crowdedHard | safe=100074 keep=Inf avail=-Inf chunkB=15796 pulseB=9478 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1720 riku_x B=80259 L=7139 d=11.2 nb=2 neut=0 cmds=49 noFull=1 shQ=20064 | m=1.467 worth=16.5 cheap=6.2 over=0 dMedOther=18.9 safe(-1)=101792
+    → Player 625#31[T1] terr=10049 bal=166280 dq=16.5 cnt=110 | c=18.4 rankC=9.2 need=281565 tD=0.88 人 pulse bleeding | safe=101792 keep=Inf avail=-Inf chunkB=16052 pulseB=9631 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9842 bal=191899 dq=19.5 cnt=98 | c=65.0 rankC=65.0 need=356811 tD=1.03 人 crowdedHard | safe=101792 keep=Inf avail=-Inf chunkB=16052 pulseB=9631 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1725 riku_x B=80259 L=7139 d=11.2 nb=2 neut=0 cmds=49 noFull=1 shQ=20064 | m=1.466 worth=16.5 cheap=6.2 over=0 dMedOther=18.6 safe(-1)=101792
+    → Player 625#31[T1] terr=10033 bal=165858 dq=16.5 cnt=110 | c=18.5 rankC=9.2 need=280841 tD=0.89 人 pulse bleeding | safe=101792 keep=Inf avail=-Inf chunkB=16052 pulseB=9631 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9842 bal=191899 dq=19.5 cnt=98 | c=65.0 rankC=65.0 need=356811 tD=1.05 人 crowdedHard | safe=101792 keep=Inf avail=-Inf chunkB=16052 pulseB=9631 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1730 riku_x B=81535 L=7139 d=11.4 nb=2 neut=0 cmds=49 noFull=1 shQ=20383 | m=1.466 worth=16.7 cheap=6.3 over=0 dMedOther=18.7 safe(-1)=103506
+    → Player 625#31[T1] terr=10019 bal=168120 dq=16.8 cnt=110 | c=18.9 rankC=9.4 need=284477 tD=0.90 人 pulse bleeding | safe=103506 keep=Inf avail=-Inf chunkB=16307 pulseB=9784 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9842 bal=194950 dq=19.8 cnt=98 | c=66.0 rankC=66.0 need=362249 tD=1.06 人 crowdedHard | safe=103506 keep=Inf avail=-Inf chunkB=16307 pulseB=9784 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1735 riku_x B=81535 L=7139 d=11.4 nb=2 neut=0 cmds=49 noFull=1 shQ=20383 | m=1.465 worth=16.7 cheap=6.3 over=0 dMedOther=18.0 safe(-1)=103506
+    → Player 625#31[T1] terr=10012 bal=167933 dq=16.8 cnt=110 | c=18.9 rankC=9.4 need=284244 tD=0.93 人 pulse bleeding | safe=103506 keep=Inf avail=-Inf chunkB=16307 pulseB=9784 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9842 bal=194950 dq=19.8 cnt=98 | c=66.0 rankC=66.0 need=362249 tD=1.10 人 crowdedHard | safe=103506 keep=Inf avail=-Inf chunkB=16307 pulseB=9784 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1740 riku_x B=82806 L=7139 d=11.6 nb=2 neut=0 cmds=49 noFull=1 shQ=20701 | m=1.464 worth=17.0 cheap=6.4 over=0 dMedOther=17.8 safe(-1)=105215
+    → Player 625#31[T1] terr=9998 bal=170172 dq=17.0 cnt=110 | c=19.3 rankC=9.6 need=287844 tD=0.96 人 pulse bleeding | safe=105215 keep=Inf avail=-Inf chunkB=16561 pulseB=9937 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9842 bal=197991 dq=20.1 cnt=98 | c=66.9 rankC=66.9 need=367670 tD=1.13 人 crowdedHard | safe=105215 keep=Inf avail=-Inf chunkB=16561 pulseB=9937 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1745 riku_x B=82806 L=7139 d=11.6 nb=2 neut=0 cmds=49 noFull=1 shQ=20701 | m=1.463 worth=17.0 cheap=6.5 over=0 dMedOther=17.2 safe(-1)=105215
+    → Player 625#31[T1] terr=9985 bal=169819 dq=17.0 cnt=110 | c=19.3 rankC=9.6 need=287268 tD=0.99 人 pulse bleeding | safe=105215 keep=Inf avail=-Inf chunkB=16561 pulseB=9937 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9842 bal=197991 dq=20.1 cnt=98 | c=66.9 rankC=66.9 need=367670 tD=1.17 人 crowdedHard | safe=105215 keep=Inf avail=-Inf chunkB=16561 pulseB=9937 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1750 riku_x B=84072 L=7139 d=11.8 nb=2 neut=0 cmds=49 noFull=1 shQ=21018 | m=1.462 worth=17.2 cheap=6.5 over=0 dMedOther=17.3 safe(-1)=106917
+    → Player 625#31[T1] terr=9979 bal=172251 dq=17.3 cnt=110 | c=19.7 rankC=9.8 need=291281 tD=1.00 人 pulse bleeding | safe=106917 keep=Inf avail=-Inf chunkB=16814 pulseB=10089 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9842 bal=201020 dq=20.4 cnt=98 | c=67.9 rankC=67.9 need=373069 tD=1.18 人 crowdedHard | safe=106917 keep=Inf avail=-Inf chunkB=16814 pulseB=10089 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1755 riku_x B=84072 L=7139 d=11.8 nb=2 neut=0 cmds=49 noFull=1 shQ=21018 | m=1.462 worth=17.2 cheap=6.6 over=0 dMedOther=17.2 safe(-1)=106917
+    → Player 625#31[T1] terr=9967 bal=171921 dq=17.2 cnt=110 | c=19.7 rankC=9.8 need=290755 tD=1.00 人 pulse bleeding | safe=106917 keep=Inf avail=-Inf chunkB=16814 pulseB=10089 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9842 bal=201020 dq=20.4 cnt=98 | c=67.9 rankC=67.9 need=373069 tD=1.18 人 crowdedHard | safe=106917 keep=Inf avail=-Inf chunkB=16814 pulseB=10089 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1760 riku_x B=85333 L=7139 d=12.0 nb=2 neut=0 cmds=49 noFull=1 shQ=21333 | m=1.461 worth=17.5 cheap=6.7 over=0 dMedOther=17.5 safe(-1)=108610
+    → Player 625#31[T1] terr=9958 bal=174248 dq=17.5 cnt=110 | c=20.1 rankC=10.0 need=294563 tD=1.00 人 pulse bleeding | safe=108610 keep=Inf avail=-Inf chunkB=17067 pulseB=10240 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9842 bal=204035 dq=20.7 cnt=98 | c=68.9 rankC=68.9 need=378443 tD=1.18 人 crowdedHard | safe=108610 keep=Inf avail=-Inf chunkB=17067 pulseB=10240 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1765 riku_x B=85333 L=7139 d=12.0 nb=2 neut=0 cmds=49 noFull=1 shQ=21333 | m=1.460 worth=17.5 cheap=6.7 over=0 dMedOther=17.5 safe(-1)=108610
+    → Player 625#31[T1] terr=9955 bal=174165 dq=17.5 cnt=110 | c=20.1 rankC=10.0 need=294551 tD=1.00 人 pulse bleeding | safe=108610 keep=Inf avail=-Inf chunkB=17067 pulseB=10240 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9842 bal=204035 dq=20.7 cnt=98 | c=68.9 rankC=68.9 need=378443 tD=1.18 人 crowdedHard | safe=108610 keep=Inf avail=-Inf chunkB=17067 pulseB=10240 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1770 riku_x B=86587 L=7139 d=12.1 nb=2 neut=0 cmds=49 noFull=1 shQ=21646 | m=1.460 worth=17.7 cheap=6.8 over=0 dMedOther=17.5 safe(-1)=110295
+    → Player 625#31[T1] terr=9950 bal=176585 dq=17.7 cnt=110 | c=20.4 rankC=10.2 need=298564 tD=1.01 人 pulse bleeding | safe=110295 keep=Inf avail=-Inf chunkB=17317 pulseB=10390 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9842 bal=207034 dq=21.0 cnt=98 | c=69.9 rankC=69.9 need=383788 tD=1.20 人 crowdedHard | safe=110295 keep=Inf avail=-Inf chunkB=17317 pulseB=10390 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1775 riku_x B=86587 L=7139 d=12.1 nb=2 neut=0 cmds=49 noFull=1 shQ=21646 | m=1.459 worth=17.7 cheap=6.9 over=0 dMedOther=17.4 safe(-1)=110295
+    → Player 625#31[T1] terr=9946 bal=176473 dq=17.7 cnt=110 | c=20.4 rankC=10.2 need=298494 tD=1.02 人 pulse bleeding | safe=110295 keep=Inf avail=-Inf chunkB=17317 pulseB=10390 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9842 bal=207034 dq=21.0 cnt=98 | c=69.9 rankC=69.9 need=383788 tD=1.21 人 crowdedHard | safe=110295 keep=Inf avail=-Inf chunkB=17317 pulseB=10390 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1780 riku_x B=87833 L=7139 d=12.3 nb=2 neut=0 cmds=49 noFull=1 shQ=21958 | m=1.458 worth=17.9 cheap=7.0 over=0 dMedOther=17.3 safe(-1)=111970
+    → Player 625#31[T1] terr=9945 bal=178985 dq=18.0 cnt=110 | c=20.8 rankC=10.4 need=302712 tD=1.04 人 pulse bleeding | safe=111970 keep=Inf avail=-Inf chunkB=17567 pulseB=10540 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9842 bal=210015 dq=21.3 cnt=98 | c=70.8 rankC=70.8 need=389102 tD=1.23 人 crowdedHard | safe=111970 keep=Inf avail=-Inf chunkB=17567 pulseB=10540 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1785 riku_x B=87833 L=7139 d=12.3 nb=2 neut=0 cmds=49 noFull=1 shQ=21958 | m=1.457 worth=17.9 cheap=7.0 over=0 dMedOther=17.3 safe(-1)=111970
+    → Player 625#31[T1] terr=9944 bal=178957 dq=18.0 cnt=110 | c=61.8 rankC=61.8 need=302818 tD=1.04 人 crowdedHard | safe=111970 keep=Inf avail=-Inf chunkB=17567 pulseB=10540 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9842 bal=210015 dq=21.3 cnt=98 | c=70.8 rankC=70.8 need=389102 tD=1.23 人 crowdedHard | safe=111970 keep=Inf avail=-Inf chunkB=17567 pulseB=10540 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1790 riku_x B=89062 L=7139 d=12.5 nb=2 neut=0 cmds=49 noFull=1 shQ=22265 | m=1.457 worth=18.2 cheap=7.1 over=0 dMedOther=17.6 safe(-1)=111910
+    → Player 625#31[T1] terr=9944 bal=181462 dq=18.2 cnt=110 | c=62.6 rankC=62.6 need=307044 tD=1.04 人 crowdedHard | safe=111910 keep=Inf avail=-Inf chunkB=17812 pulseB=10687 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9754 bal=209909 dq=21.5 cnt=97 | c=71.5 rankC=71.5 need=388108 tD=1.23 人 crowdedHard | safe=111910 keep=Inf avail=-Inf chunkB=17812 pulseB=10687 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1795 riku_x B=89062 L=7139 d=12.5 nb=2 neut=0 cmds=49 noFull=1 shQ=22265 | m=1.456 worth=18.2 cheap=7.2 over=0 dMedOther=18.2 safe(-1)=111910
+    → Player 625#31[T1] terr=9944 bal=181462 dq=18.2 cnt=110 | c=62.6 rankC=62.6 need=307210 tD=1.00 人 crowdedHard | safe=111910 keep=Inf avail=-Inf chunkB=17812 pulseB=10687 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9754 bal=209909 dq=21.5 cnt=97 | c=71.5 rankC=71.5 need=388140 tD=1.18 人 crowdedHard | safe=111910 keep=Inf avail=-Inf chunkB=17812 pulseB=10687 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1800 riku_x B=97421 L=7139 d=13.6 nb=2 neut=0 cmds=49 noFull=1 shQ=22601 | m=1.455 worth=19.9 cheap=7.3 over=0 dMedOther=19.5 safe(-1)=119005
+    → Player 625#31[T1] terr=9944 bal=193892 dq=19.5 cnt=110 | c=66.7 rankC=66.7 need=327549 tD=1.00 人 crowdedHard | safe=119005 keep=Inf avail=-Inf chunkB=19484 pulseB=11691 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9754 bal=222538 dq=22.8 cnt=97 | c=75.6 rankC=75.6 need=410648 tD=1.17 人 crowdedHard | safe=119005 keep=Inf avail=-Inf chunkB=19484 pulseB=11691 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1805 riku_x B=97421 L=7139 d=13.6 nb=2 neut=0 cmds=49 noFull=1 shQ=24262 | m=1.454 worth=19.8 cheap=7.4 over=0 dMedOther=19.5 safe(-1)=119005
+    → Player 625#31[T1] terr=9944 bal=193892 dq=19.5 cnt=110 | c=66.7 rankC=66.7 need=327726 tD=1.00 人 crowdedHard | safe=119005 keep=Inf avail=-Inf chunkB=19484 pulseB=11691 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9754 bal=222538 dq=22.8 cnt=97 | c=75.6 rankC=75.6 need=410716 tD=1.17 人 crowdedHard | safe=119005 keep=Inf avail=-Inf chunkB=19484 pulseB=11691 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1810 riku_x B=98726 L=7139 d=13.8 nb=2 neut=0 cmds=49 noFull=1 shQ=24681 | m=1.454 worth=20.1 cheap=7.4 over=0 dMedOther=19.8 safe(-1)=120681
+    → Player 625#31[T1] terr=9944 bal=196490 dq=19.8 cnt=110 | c=67.6 rankC=67.6 need=332124 tD=1.00 人 crowdedHard | safe=120681 keep=Inf avail=-Inf chunkB=19745 pulseB=11847 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9754 bal=225520 dq=23.1 cnt=97 | c=76.6 rankC=76.6 need=416058 tD=1.17 人 crowdedHard | safe=120681 keep=Inf avail=-Inf chunkB=19745 pulseB=11847 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1815 riku_x B=98726 L=7139 d=13.8 nb=2 neut=0 cmds=49 noFull=1 shQ=24681 | m=1.453 worth=20.1 cheap=7.5 over=0 dMedOther=19.8 safe(-1)=120681
+    → Player 625#31[T1] terr=9944 bal=196490 dq=19.8 cnt=110 | c=67.6 rankC=67.6 need=332302 tD=1.00 人 crowdedHard | safe=120681 keep=Inf avail=-Inf chunkB=19745 pulseB=11847 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9754 bal=225520 dq=23.1 cnt=97 | c=76.6 rankC=76.6 need=416093 tD=1.17 人 crowdedHard | safe=120681 keep=Inf avail=-Inf chunkB=19745 pulseB=11847 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1820 riku_x B=100019 L=7139 d=14.0 nb=2 neut=0 cmds=49 noFull=1 shQ=25004 | m=1.452 worth=20.3 cheap=7.6 over=0 dMedOther=20.0 safe(-1)=122340
+    → Player 625#31[T1] terr=9944 bal=199064 dq=20.0 cnt=110 | c=68.4 rankC=68.4 need=336667 tD=1.00 人 crowdedHard | safe=122340 keep=Inf avail=-Inf chunkB=20004 pulseB=12002 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9754 bal=228474 dq=23.4 cnt=97 | c=77.6 rankC=77.6 need=421386 tD=1.17 人 crowdedHard | safe=122340 keep=Inf avail=-Inf chunkB=20004 pulseB=12002 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1825 riku_x B=100019 L=7139 d=14.0 nb=2 neut=0 cmds=49 noFull=1 shQ=25004 | m=1.451 worth=20.3 cheap=7.7 over=0 dMedOther=20.0 safe(-1)=122340
+    → Player 625#31[T1] terr=9944 bal=199064 dq=20.0 cnt=110 | c=68.4 rankC=68.4 need=336776 tD=1.00 人 crowdedHard | safe=122340 keep=Inf avail=-Inf chunkB=20004 pulseB=12002 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9754 bal=228474 dq=23.4 cnt=97 | c=77.6 rankC=77.6 need=421456 tD=1.17 人 crowdedHard | safe=122340 keep=Inf avail=-Inf chunkB=20004 pulseB=12002 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1830 riku_x B=101299 L=7139 d=14.2 nb=2 neut=0 cmds=49 noFull=1 shQ=25324 | m=1.451 worth=20.6 cheap=7.8 over=0 dMedOther=19.3 safe(-1)=123983
+    → Player 625#31[T1] terr=9944 bal=188618 dq=19.0 cnt=110 | c=64.9 rankC=64.9 need=319919 tD=0.98 人 crowdedHard | safe=123983 keep=Inf avail=-Inf chunkB=20260 pulseB=12156 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9754 bal=231398 dq=23.7 cnt=97 | c=78.5 rankC=78.5 need=426698 tD=1.23 人 crowdedHard | safe=123983 keep=Inf avail=-Inf chunkB=20260 pulseB=12156 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1835 riku_x B=101299 L=7139 d=14.2 nb=2 neut=0 cmds=49 noFull=1 shQ=25324 | m=1.450 worth=20.6 cheap=7.9 over=0 dMedOther=19.3 safe(-1)=123983
+    → Player 625#31[T1] terr=10028 bal=188618 dq=18.8 cnt=110 | c=64.3 rankC=64.3 need=321161 tD=0.97 人 crowdedHard | safe=123983 keep=Inf avail=-Inf chunkB=20260 pulseB=12156 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9754 bal=231398 dq=23.7 cnt=97 | c=78.5 rankC=78.5 need=426733 tD=1.23 人 crowdedHard | safe=123983 keep=Inf avail=-Inf chunkB=20260 pulseB=12156 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1840 riku_x B=102565 L=7139 d=14.4 nb=2 neut=0 cmds=49 noFull=1 shQ=25641 | m=1.449 worth=20.8 cheap=8.0 over=0 dMedOther=19.6 safe(-1)=125608
+    → Player 625#31[T1] terr=10191 bal=190975 dq=18.7 cnt=110 | c=64.0 rankC=64.0 need=327254 tD=0.96 人 crowdedHard | safe=125608 keep=Inf avail=-Inf chunkB=20513 pulseB=12308 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9754 bal=234290 dq=24.0 cnt=97 | c=79.5 rankC=79.5 need=431919 tD=1.23 人 crowdedHard | safe=125608 keep=Inf avail=-Inf chunkB=20513 pulseB=12308 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1845 riku_x B=102565 L=7139 d=14.4 nb=2 neut=0 cmds=49 noFull=1 shQ=25641 | m=1.448 worth=20.8 cheap=8.1 over=0 dMedOther=19.6 safe(-1)=125608
+    → Player 625#31[T1] terr=10354 bal=190975 dq=18.4 cnt=110 | c=62.9 rankC=62.9 need=329386 tD=0.94 人 crowdedHard | safe=125608 keep=Inf avail=-Inf chunkB=20513 pulseB=12308 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9754 bal=234290 dq=24.0 cnt=97 | c=79.5 rankC=79.5 need=431990 tD=1.23 人 crowdedHard | safe=125608 keep=Inf avail=-Inf chunkB=20513 pulseB=12308 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1850 riku_x B=103816 L=7139 d=14.5 nb=2 neut=0 cmds=49 noFull=1 shQ=25954 | m=1.448 worth=21.0 cheap=8.2 over=0 dMedOther=19.8 safe(-1)=127213
+    → Player 625#31[T1] terr=10599 bal=193323 dq=18.2 cnt=110 | c=62.0 rankC=62.0 need=336351 tD=0.92 人 crowdedHard | safe=127213 keep=Inf avail=-Inf chunkB=20763 pulseB=12458 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9754 bal=237148 dq=24.3 cnt=97 | c=80.4 rankC=80.4 need=437117 tD=1.23 人 crowdedHard | safe=127213 keep=Inf avail=-Inf chunkB=20763 pulseB=12458 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1855 riku_x B=103816 L=7139 d=14.5 nb=2 neut=0 cmds=49 noFull=1 shQ=25954 | m=1.447 worth=21.0 cheap=8.3 over=0 dMedOther=19.8 safe(-1)=127213
+    → Player 625#31[T1] terr=10741 bal=193323 dq=18.0 cnt=110 | c=61.2 rankC=61.2 need=338120 tD=0.91 人 crowdedHard | safe=127213 keep=Inf avail=-Inf chunkB=20763 pulseB=12458 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9754 bal=237148 dq=24.3 cnt=97 | c=80.4 rankC=80.4 need=437153 tD=1.23 人 crowdedHard | safe=127213 keep=Inf avail=-Inf chunkB=20763 pulseB=12458 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1860 riku_x B=105051 L=7139 d=14.7 nb=2 neut=0 cmds=49 noFull=1 shQ=26262 | m=1.446 worth=21.3 cheap=8.4 over=0 dMedOther=20.1 safe(-1)=128838
+    → Player 625#31[T1] terr=10906 bal=195700 dq=17.9 cnt=110 | c=60.9 rankC=60.9 need=344059 tD=0.89 人 crowdedHard | safe=128838 keep=Inf avail=-Inf chunkB=21010 pulseB=12606 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=9754 bal=240041 dq=24.6 cnt=97 | c=81.3 rankC=81.3 need=442344 tD=1.23 人 crowdedHard | safe=128838 keep=Inf avail=-Inf chunkB=21010 pulseB=12606 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1865 riku_x B=105051 L=7139 d=14.7 nb=2 neut=0 cmds=49 noFull=1 shQ=26262 | m=1.445 worth=21.3 cheap=8.4 over=0 dMedOther=20.1 safe(-1)=114090
+    → Micha [🇩🇪]#47[T1] terr=9754 bal=213788 dq=21.9 cnt=97 | c=54.6 rankC=38.2 need=395630 tD=1.09 人 crowdedHard | safe=114090 keep=Inf avail=-Inf chunkB=21010 pulseB=12606 价高(c>=worth)→break hNb=2
+    → Player 625#31[T1] terr=11008 bal=195700 dq=17.8 cnt=110 | c=60.3 rankC=60.3 need=345244 tD=0.89 人 crowdedHard | safe=114090 keep=Inf avail=-Inf chunkB=21010 pulseB=12606 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1870 riku_x B=106290 L=7139 d=14.9 nb=2 neut=0 cmds=49 noFull=1 shQ=26572 | m=1.445 worth=21.5 cheap=8.4 over=0 dMedOther=20.3 safe(-1)=115555
+    → Micha [🇩🇪]#47[T1] terr=9840 bal=216396 dq=22.0 cnt=98 | c=54.7 rankC=38.3 need=400456 tD=1.08 人 crowdedHard | safe=115555 keep=Inf avail=-Inf chunkB=21258 pulseB=12755 价高(c>=worth)→break hNb=2
+    → Player 625#31[T1] terr=11152 bal=198107 dq=17.8 cnt=110 | c=60.1 rankC=60.1 need=350960 tD=0.87 人 crowdedHard | safe=115555 keep=Inf avail=-Inf chunkB=21258 pulseB=12755 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1875 riku_x B=106290 L=7139 d=14.9 nb=2 neut=0 cmds=49 noFull=1 shQ=26572 | m=1.444 worth=21.5 cheap=8.4 over=0 dMedOther=20.3 safe(-1)=115555
+    → Micha [🇩🇪]#47[T1] terr=9925 bal=216396 dq=21.8 cnt=98 | c=54.3 rankC=38.0 need=400592 tD=1.07 人 crowdedHard | safe=115555 keep=Inf avail=-Inf chunkB=21258 pulseB=12755 价高(c>=worth)→break hNb=2
+    → Player 625#31[T1] terr=11237 bal=198107 dq=17.6 cnt=110 | c=59.6 rankC=59.6 need=351922 tD=0.87 人 crowdedHard | safe=115555 keep=Inf avail=-Inf chunkB=21258 pulseB=12755 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1880 riku_x B=107544 L=7139 d=15.1 nb=2 neut=0 cmds=49 noFull=1 shQ=26886 | m=1.443 worth=21.7 cheap=8.4 over=0 dMedOther=20.6 safe(-1)=117038
+    → Player 625#31[T1] terr=11341 bal=200543 dq=17.7 cnt=110 | c=59.7 rankC=59.7 need=357241 tD=0.86 人 crowdedHard | safe=117038 keep=Inf avail=-Inf chunkB=21509 pulseB=12905 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10094 bal=219036 dq=21.7 cnt=99 | c=72.0 rankC=72.0 need=405559 tD=1.05 人 crowdedHard | safe=117038 keep=Inf avail=-Inf chunkB=21509 pulseB=12905 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1885 riku_x B=107544 L=7139 d=15.1 nb=2 neut=0 cmds=49 noFull=1 shQ=26886 | m=1.442 worth=21.7 cheap=8.4 over=0 dMedOther=20.6 safe(-1)=117038
+    → Player 625#31[T1] terr=11401 bal=200543 dq=17.6 cnt=110 | c=59.4 rankC=59.4 need=357921 tD=0.86 人 crowdedHard | safe=117038 keep=Inf avail=-Inf chunkB=21509 pulseB=12905 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10347 bal=219036 dq=21.2 cnt=101 | c=70.3 rankC=70.3 need=405946 tD=1.03 人 crowdedHard | safe=117038 keep=Inf avail=-Inf chunkB=21509 pulseB=12905 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1890 riku_x B=108813 L=7139 d=15.2 nb=2 neut=0 cmds=49 noFull=1 shQ=27203 | m=1.442 worth=22.0 cheap=8.4 over=0 dMedOther=20.8 safe(-1)=118551
+    → Player 625#31[T1] terr=11468 bal=203029 dq=17.7 cnt=110 | c=59.7 rankC=59.7 need=362942 tD=0.85 人 crowdedHard | safe=118551 keep=Inf avail=-Inf chunkB=21763 pulseB=13058 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10513 bal=221730 dq=21.1 cnt=104 | c=70.1 rankC=70.1 need=410981 tD=1.01 人 crowdedHard | safe=118551 keep=Inf avail=-Inf chunkB=21763 pulseB=13058 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1895 riku_x B=108813 L=7139 d=15.2 nb=2 neut=0 cmds=49 noFull=1 shQ=27203 | m=1.441 worth=22.0 cheap=8.4 over=0 dMedOther=20.8 safe(-1)=118562
+    → Player 625#31[T1] terr=11507 bal=203029 dq=17.6 cnt=110 | c=59.5 rankC=59.5 need=363399 tD=0.85 人 crowdedHard | safe=118562 keep=Inf avail=-Inf chunkB=21763 pulseB=13058 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10595 bal=221749 dq=20.9 cnt=105 | c=69.5 rankC=69.5 need=411153 tD=1.00 人 crowdedHard | safe=118562 keep=Inf avail=-Inf chunkB=21763 pulseB=13058 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1900 riku_x B=117235 L=7139 d=16.4 nb=2 neut=0 cmds=49 noFull=1 shQ=27551 | m=1.440 worth=23.6 cheap=8.4 over=0 dMedOther=22.1 safe(-1)=126046
+    → Player 625#31[T1] terr=11558 bal=217089 dq=18.8 cnt=110 | c=63.1 rankC=63.1 need=388086 tD=0.85 人 crowdedHard | safe=126046 keep=Inf avail=-Inf chunkB=23447 pulseB=14068 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10595 bal=235071 dq=22.2 cnt=105 | c=73.6 rankC=73.6 need=434899 tD=1.00 人 crowdedHard | safe=126046 keep=Inf avail=-Inf chunkB=23447 pulseB=14068 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1905 riku_x B=117235 L=7139 d=16.4 nb=2 neut=0 cmds=49 noFull=1 shQ=29291 | m=1.439 worth=23.6 cheap=8.4 over=0 dMedOther=22.1 safe(-1)=126046
+    → Player 625#31[T1] terr=11585 bal=217089 dq=18.7 cnt=110 | c=62.9 rankC=62.9 need=388434 tD=0.85 人 crowdedHard | safe=126046 keep=Inf avail=-Inf chunkB=23447 pulseB=14068 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10595 bal=235071 dq=22.2 cnt=105 | c=73.6 rankC=73.6 need=434899 tD=1.00 人 crowdedHard | safe=126046 keep=Inf avail=-Inf chunkB=23447 pulseB=14068 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1910 riku_x B=118618 L=7139 d=16.6 nb=2 neut=0 cmds=49 noFull=1 shQ=29654 | m=1.439 worth=23.9 cheap=8.4 over=0 dMedOther=22.4 safe(-1)=127671
+    → Player 625#31[T1] terr=11617 bal=219780 dq=18.9 cnt=110 | c=63.5 rankC=63.5 need=393481 tD=0.85 人 crowdedHard | safe=127671 keep=Inf avail=-Inf chunkB=23724 pulseB=14234 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10595 bal=237962 dq=22.5 cnt=105 | c=74.4 rankC=74.4 need=440052 tD=1.00 人 crowdedHard | safe=127671 keep=Inf avail=-Inf chunkB=23724 pulseB=14234 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1915 riku_x B=118618 L=7139 d=16.6 nb=2 neut=0 cmds=49 noFull=1 shQ=29654 | m=1.438 worth=23.9 cheap=8.4 over=0 dMedOther=21.6 safe(-1)=127671
+    → Player 625#31[T1] terr=11636 bal=219780 dq=18.9 cnt=110 | c=63.4 rankC=63.4 need=393744 tD=0.87 人 crowdedHard | safe=127671 keep=Inf avail=-Inf chunkB=23724 pulseB=14234 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10595 bal=237962 dq=22.5 cnt=105 | c=74.4 rankC=74.4 need=440052 tD=1.04 人 crowdedHard | safe=127671 keep=Inf avail=-Inf chunkB=23724 pulseB=14234 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1920 riku_x B=120017 L=7139 d=16.8 nb=2 neut=0 cmds=49 noFull=1 shQ=30004 | m=1.437 worth=24.2 cheap=8.4 over=0 dMedOther=21.9 safe(-1)=129314
+    → Player 625#31[T1] terr=11658 bal=222505 dq=19.1 cnt=110 | c=64.0 rankC=64.0 need=398750 tD=0.87 人 crowdedHard | safe=129314 keep=Inf avail=-Inf chunkB=24003 pulseB=14402 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10595 bal=240888 dq=22.7 cnt=105 | c=75.3 rankC=75.3 need=445267 tD=1.04 人 crowdedHard | safe=129314 keep=Inf avail=-Inf chunkB=24003 pulseB=14402 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1925 riku_x B=120017 L=7139 d=16.8 nb=2 neut=0 cmds=49 noFull=1 shQ=30004 | m=1.436 worth=24.1 cheap=8.4 over=0 dMedOther=21.9 safe(-1)=129314
+    → Player 625#31[T1] terr=11670 bal=222505 dq=19.1 cnt=110 | c=63.9 rankC=63.9 need=398940 tD=0.87 人 crowdedHard | safe=129314 keep=Inf avail=-Inf chunkB=24003 pulseB=14402 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10595 bal=240888 dq=22.7 cnt=105 | c=75.3 rankC=75.3 need=445267 tD=1.04 人 crowdedHard | safe=129314 keep=Inf avail=-Inf chunkB=24003 pulseB=14402 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1930 riku_x B=121433 L=7139 d=17.0 nb=2 neut=0 cmds=49 noFull=1 shQ=30358 | m=1.435 worth=24.4 cheap=8.4 over=0 dMedOther=22.1 safe(-1)=130978
+    → Player 625#31[T1] terr=11684 bal=206346 dq=17.7 cnt=110 | c=44.0 rankC=44.0 need=371392 tD=0.80 人 | safe=130978 keep=Inf avail=-Inf chunkB=24287 pulseB=14572 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10595 bal=243850 dq=23.0 cnt=105 | c=76.2 rankC=76.2 need=450547 tD=1.04 人 crowdedHard | safe=130978 keep=Inf avail=-Inf chunkB=24287 pulseB=14572 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1935 riku_x B=121433 L=7139 d=17.0 nb=2 neut=0 cmds=49 noFull=1 shQ=30358 | m=1.435 worth=24.4 cheap=8.4 over=0 dMedOther=22.0 safe(-1)=130978
+    → Player 625#31[T1] terr=11693 bal=206346 dq=17.6 cnt=110 | c=44.0 rankC=44.0 need=371510 tD=0.80 人 | safe=130978 keep=Inf avail=-Inf chunkB=24287 pulseB=14572 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10595 bal=243850 dq=23.0 cnt=105 | c=76.2 rankC=76.2 need=450547 tD=1.05 人 crowdedHard | safe=130978 keep=Inf avail=-Inf chunkB=24287 pulseB=14572 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1940 riku_x B=122865 L=7139 d=17.2 nb=2 neut=0 cmds=49 noFull=1 shQ=30716 | m=1.434 worth=24.7 cheap=8.4 over=0 dMedOther=22.3 safe(-1)=132663
+    → Player 625#31[T1] terr=11720 bal=208904 dq=17.8 cnt=110 | c=44.4 rankC=44.4 need=376238 tD=0.80 人 | safe=132663 keep=Inf avail=-Inf chunkB=24573 pulseB=14744 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10595 bal=246849 dq=23.3 cnt=105 | c=77.1 rankC=77.1 need=455893 tD=1.05 人 crowdedHard | safe=132663 keep=Inf avail=-Inf chunkB=24573 pulseB=14744 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1945 riku_x B=122865 L=7139 d=17.2 nb=2 neut=0 cmds=49 noFull=1 shQ=30716 | m=1.433 worth=24.7 cheap=8.4 over=0 dMedOther=22.3 safe(-1)=132663
+    → Player 625#31[T1] terr=11749 bal=208904 dq=17.8 cnt=110 | c=44.3 rankC=44.3 need=376555 tD=0.80 人 | safe=132663 keep=Inf avail=-Inf chunkB=24573 pulseB=14744 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10595 bal=246849 dq=23.3 cnt=105 | c=77.1 rankC=77.1 need=455893 tD=1.05 人 crowdedHard | safe=132663 keep=Inf avail=-Inf chunkB=24573 pulseB=14744 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1950 riku_x B=124314 L=7139 d=17.4 nb=2 neut=0 cmds=49 noFull=1 shQ=31078 | m=1.433 worth=24.9 cheap=8.4 over=0 dMedOther=22.6 safe(-1)=134369
+    → Player 625#31[T1] terr=11803 bal=211494 dq=17.9 cnt=110 | c=44.7 rankC=44.7 need=381583 tD=0.79 人 | safe=134369 keep=Inf avail=-Inf chunkB=24863 pulseB=14918 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10595 bal=249885 dq=23.6 cnt=105 | c=78.0 rankC=78.0 need=461304 tD=1.05 人 crowdedHard | safe=134369 keep=Inf avail=-Inf chunkB=24863 pulseB=14918 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1955 riku_x B=124314 L=7139 d=17.4 nb=2 neut=0 cmds=49 noFull=1 shQ=31078 | m=1.432 worth=24.9 cheap=8.4 over=0 dMedOther=22.6 safe(-1)=134369
+    → Player 625#31[T1] terr=11847 bal=211494 dq=17.9 cnt=110 | c=44.5 rankC=44.5 need=382045 tD=0.79 人 | safe=134369 keep=Inf avail=-Inf chunkB=24863 pulseB=14918 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10595 bal=249885 dq=23.6 cnt=105 | c=78.0 rankC=78.0 need=461304 tD=1.05 人 crowdedHard | safe=134369 keep=Inf avail=-Inf chunkB=24863 pulseB=14918 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1960 riku_x B=125780 L=7139 d=17.6 nb=2 neut=0 cmds=49 noFull=1 shQ=31445 | m=1.431 worth=25.2 cheap=8.4 over=0 dMedOther=22.8 safe(-1)=136095
+    → Player 625#31[T1] terr=11920 bal=214116 dq=18.0 cnt=110 | c=44.7 rankC=44.7 need=387349 tD=0.79 人 | safe=136095 keep=Inf avail=-Inf chunkB=25156 pulseB=15094 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10595 bal=252958 dq=23.9 cnt=105 | c=79.0 rankC=79.0 need=466782 tD=1.05 人 crowdedHard | safe=136095 keep=Inf avail=-Inf chunkB=25156 pulseB=15094 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1965 riku_x B=125780 L=7139 d=17.6 nb=2 neut=0 cmds=49 noFull=1 shQ=31445 | m=1.430 worth=25.2 cheap=8.4 over=0 dMedOther=22.8 safe(-1)=136095
+    → Player 625#31[T1] terr=11970 bal=207217 dq=17.3 cnt=110 | c=32.4 rankC=22.7 need=375919 tD=0.76 人 | safe=136095 keep=Inf avail=-Inf chunkB=25156 pulseB=15094 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10595 bal=252958 dq=23.9 cnt=105 | c=79.0 rankC=79.0 need=466782 tD=1.05 人 crowdedHard | safe=136095 keep=Inf avail=-Inf chunkB=25156 pulseB=15094 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1970 riku_x B=127264 L=7139 d=17.8 nb=2 neut=0 cmds=49 noFull=1 shQ=31816 | m=1.429 worth=25.5 cheap=8.4 over=0 dMedOther=22.8 safe(-1)=122109
+    → Player 625#31[T1] terr=12056 bal=209786 dq=17.4 cnt=110 | c=32.5 rankC=22.8 need=381209 tD=0.76 人 | safe=122109 keep=Inf avail=-Inf chunkB=25453 pulseB=15272 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=10595 bal=228063 dq=21.5 cnt=105 | c=53.6 rankC=37.5 need=422407 tD=0.94 人 crowdedHard | safe=122109 keep=Inf avail=-Inf chunkB=25453 pulseB=15272 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1975 riku_x B=127264 L=7139 d=17.8 nb=2 neut=0 cmds=49 noFull=1 shQ=31816 | m=1.429 worth=25.5 cheap=8.4 over=0 dMedOther=22.8 safe(-1)=122109
+    → Micha [🇩🇪]#47[T1] terr=10676 bal=228063 dq=21.4 cnt=106 | c=53.2 rankC=37.3 need=422505 tD=0.94 人 crowdedHard | safe=122109 keep=Inf avail=-Inf chunkB=25453 pulseB=15272 价高(c>=worth)→break hNb=2
+    → Player 625#31[T1] terr=12119 bal=209786 dq=17.3 cnt=110 | c=43.1 rankC=43.1 need=381825 tD=0.76 人 | safe=122109 keep=Inf avail=-Inf chunkB=25453 pulseB=15272 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1980 riku_x B=128765 L=7139 d=18.0 nb=2 neut=0 cmds=49 noFull=1 shQ=32191 | m=1.428 worth=25.8 cheap=8.4 over=0 dMedOther=23.0 safe(-1)=123685
+    → Micha [🇩🇪]#47[T1] terr=10837 bal=230868 dq=21.3 cnt=108 | c=53.1 rankC=37.1 need=427754 tD=0.93 人 crowdedHard | safe=123685 keep=Inf avail=-Inf chunkB=25753 pulseB=15452 价高(c>=worth)→break hNb=2
+    → Player 625#31[T1] terr=12228 bal=212387 dq=17.4 cnt=110 | c=43.3 rankC=43.3 need=387411 tD=0.76 人 | safe=123685 keep=Inf avail=-Inf chunkB=25753 pulseB=15452 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1985 riku_x B=128765 L=7139 d=18.0 nb=2 neut=0 cmds=49 noFull=1 shQ=32191 | m=1.427 worth=25.7 cheap=8.4 over=0 dMedOther=23.0 safe(-1)=123685
+    → Micha [🇩🇪]#47[T1] terr=11076 bal=230868 dq=20.8 cnt=110 | c=52.0 rankC=36.4 need=428104 tD=0.91 人 crowdedHard | safe=123685 keep=Inf avail=-Inf chunkB=25753 pulseB=15452 价高(c>=worth)→break hNb=2
+    → Player 625#31[T1] terr=12309 bal=212387 dq=17.3 cnt=110 | c=43.0 rankC=43.0 need=388178 tD=0.75 人 | safe=123685 keep=Inf avail=-Inf chunkB=25753 pulseB=15452 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1990 riku_x B=130284 L=7139 d=18.2 nb=2 neut=0 cmds=49 noFull=1 shQ=32571 | m=1.427 worth=26.0 cheap=8.4 over=0 dMedOther=23.2 safe(-1)=125280
+    → Player 625#31[T1] terr=12439 bal=215041 dq=17.3 cnt=110 | c=43.0 rankC=43.0 need=394012 tD=0.74 人 | safe=125280 keep=Inf avail=-Inf chunkB=26057 pulseB=15634 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11233 bal=233707 dq=20.8 cnt=111 | c=69.2 rankC=69.2 need=433408 tD=0.90 人 crowdedHard | safe=125280 keep=Inf avail=-Inf chunkB=26057 pulseB=15634 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1995 riku_x B=130284 L=7139 d=18.2 nb=2 neut=0 cmds=49 noFull=1 shQ=32571 | m=1.426 worth=26.0 cheap=8.4 over=0 dMedOther=23.2 safe(-1)=125280
+    → Player 625#31[T1] terr=12523 bal=215041 dq=17.2 cnt=110 | c=42.7 rankC=42.7 need=394787 tD=0.74 人 | safe=125280 keep=Inf avail=-Inf chunkB=26057 pulseB=15634 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11463 bal=233707 dq=20.4 cnt=113 | c=67.8 rankC=67.8 need=433768 tD=0.88 人 crowdedHard | safe=125280 keep=Inf avail=-Inf chunkB=26057 pulseB=15634 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2000 riku_x B=138960 L=7139 d=19.5 nb=2 neut=0 cmds=49 noFull=1 shQ=32984 | m=1.425 worth=27.7 cheap=8.4 over=0 dMedOther=25.0 safe(-1)=118895
+    → Micha [🇩🇪]#47[T1] terr=11614 bal=222342 dq=19.1 cnt=114 | c=35.5 rankC=24.8 need=413729 tD=0.76 人 | safe=118895 keep=Inf avail=-Inf chunkB=27792 pulseB=16675 价高(c>=worth)→break hNb=2
+    → Player 625#31[T1] terr=12644 bal=216297 dq=17.1 cnt=110 | c=42.5 rankC=42.5 need=398104 tD=0.68 人 | safe=118895 keep=Inf avail=-Inf chunkB=27792 pulseB=16675 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2005 riku_x B=138960 L=7139 d=19.5 nb=2 neut=0 cmds=49 noFull=1 shQ=34740 | m=1.420 worth=27.6 cheap=8.4 over=0 dMedOther=25.0 safe(-1)=118895
+    → Micha [🇩🇪]#47[T1] terr=11830 bal=222342 dq=18.8 cnt=116 | c=34.9 rankC=24.4 need=414053 tD=0.75 人 | safe=118895 keep=Inf avail=-Inf chunkB=27792 pulseB=16675 价高(c>=worth)→break hNb=2
+    → Player 625#31[T1] terr=12732 bal=216297 dq=17.0 cnt=110 | c=42.2 rankC=42.2 need=398891 tD=0.68 人 | safe=118895 keep=Inf avail=-Inf chunkB=27792 pulseB=16675 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2010 riku_x B=140599 L=7139 d=19.7 nb=2 neut=0 cmds=49 noFull=1 shQ=35149 | m=1.415 worth=27.9 cheap=8.4 over=0 dMedOther=25.3 safe(-1)=120444
+    → Micha [🇩🇪]#47[T1] terr=11951 bal=225099 dq=18.8 cnt=117 | c=34.9 rankC=24.4 need=419156 tD=0.74 人 | safe=120444 keep=Inf avail=-Inf chunkB=28120 pulseB=16872 价高(c>=worth)→break hNb=2
+    → Player 625#31[T1] terr=12858 bal=219000 dq=17.0 cnt=110 | c=42.3 rankC=42.3 need=404750 tD=0.67 人 | safe=120444 keep=Inf avail=-Inf chunkB=28120 pulseB=16872 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2015 riku_x B=140599 L=7139 d=19.7 nb=2 neut=0 cmds=49 noFull=1 shQ=35149 | m=1.409 worth=27.8 cheap=8.4 over=0 dMedOther=25.3 safe(-1)=120444
+    → Micha [🇩🇪]#47[T1] terr=12112 bal=225099 dq=18.6 cnt=118 | c=34.5 rankC=24.1 need=419376 tD=0.73 人 | safe=120444 keep=Inf avail=-Inf chunkB=28120 pulseB=16872 价高(c>=worth)→break hNb=2
+    → Player 625#31[T1] terr=12938 bal=219000 dq=16.9 cnt=110 | c=42.0 rankC=42.0 need=405452 tD=0.67 人 | safe=120444 keep=Inf avail=-Inf chunkB=28120 pulseB=16872 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2020 riku_x B=142258 L=7139 d=19.9 nb=2 neut=0 cmds=49 noFull=1 shQ=35564 | m=1.404 worth=28.0 cheap=8.4 over=0 dMedOther=25.7 safe(-1)=122012
+    → Micha [🇩🇪]#47[T1] terr=12209 bal=227890 dq=18.7 cnt=119 | c=34.6 rankC=24.2 need=424503 tD=0.73 人 | safe=122012 keep=Inf avail=-Inf chunkB=28452 pulseB=17071 价高(c>=worth)→break hNb=2
+    → Player 625#31[T1] terr=13053 bal=221737 dq=17.0 cnt=110 | c=42.1 rankC=42.1 need=411298 tD=0.66 人 | safe=122012 keep=Inf avail=-Inf chunkB=28452 pulseB=17071 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2025 riku_x B=142258 L=7139 d=19.9 nb=2 neut=0 cmds=50 noFull=1 shQ=35564 | m=1.399 worth=27.9 cheap=8.4 over=0 dMedOther=25.7 safe(-1)=122012
+    → Micha [🇩🇪]#47[T1] terr=12341 bal=227890 dq=18.5 cnt=121 | c=16.7 rankC=5.0 need=424701 tD=0.72 人 pulse bleeding | safe=122012 keep=122012 avail=18579 chunkB=28452 pulseB=17071  hNb=2
+    → Player 625#31[T1] terr=13126 bal=207446 dq=15.8 cnt=110 | c=29.5 rankC=20.7 need=386633 tD=0.62 人 | safe=122012 keep=Inf avail=-Inf chunkB=28452 pulseB=17071 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → Micha [🇩🇪]#47[T1]（约 17087 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2030 riku_x B=143936 L=7139 d=20.2 nb=2 neut=0 cmds=51 noFull=1 shQ=35984 | m=1.393 worth=28.1 cheap=8.4 over=0 dMedOther=26.0 safe(-1)=123612
+    → Micha [🇩🇪]#47[T1] terr=12395 bal=230738 dq=18.6 cnt=122 | c=16.9 rankC=5.1 need=429872 tD=0.72 人 pulse bleeding | safe=123612 keep=123612 avail=18638 chunkB=28787 pulseB=17272  hNb=2
+    → Player 625#31[T1] terr=13231 bal=210039 dq=15.9 cnt=110 | c=29.6 rankC=20.7 need=392069 tD=0.61 人 | safe=123612 keep=Inf avail=-Inf chunkB=28787 pulseB=17272 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → Micha [🇩🇪]#47[T1]（约 17289 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2035 riku_x B=143936 L=7139 d=20.2 nb=2 neut=3 cmds=53 noFull=1 shQ=35984 | m=1.388 worth=28.0 cheap=8.4 over=0 dMedOther=26.0 safe(-1)=116994
+    → Micha [🇩🇪]#47[T1] terr=12069 bal=218957 dq=18.1 cnt=123 | c=20.3 rankC=7.6 need=406174 tD=0.70 人 pulse bleeding | safe=116994 keep=120334 avail=21916 chunkB=28787 pulseB=17272  hNb=2
+    → Player 625#31[T1] terr=13298 bal=210039 dq=15.8 cnt=110 | c=39.3 rankC=39.3 need=392611 tD=0.61 人 | safe=116994 keep=Inf avail=-Inf chunkB=28787 pulseB=17272 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 6747 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=122 → Micha [🇩🇪]#47[T1]（约 17289 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2040 riku_x B=145634 L=7139 d=20.4 nb=2 neut=1 cmds=55 noFull=1 shQ=36408 | m=1.383 worth=28.2 cheap=8.4 over=0 dMedOther=26.3 safe(-1)=114344
+    → Micha [🇩🇪]#47[T1] terr=11861 bal=214240 dq=18.1 cnt=125 | c=19.5 rankC=7.2 need=396051 tD=0.69 人 pulse bleeding | safe=114344 keep=118712 avail=25216 chunkB=29127 pulseB=17476  hNb=2
+    → Player 625#31[T1] terr=13392 bal=212685 dq=15.9 cnt=110 | c=39.5 rankC=39.5 need=398080 tD=0.60 人 | safe=114344 keep=Inf avail=-Inf chunkB=29127 pulseB=17476 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=47 → 无主地（约 6826 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+    ⇒ 影子指令 attack pct=122 → Micha [🇩🇪]#47[T1]（约 17493 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2045 riku_x B=145634 L=7139 d=20.4 nb=2 neut=0 cmds=56 noFull=1 shQ=36408 | m=1.378 worth=28.1 cheap=8.4 over=0 dMedOther=26.3 safe(-1)=113470
+    → Player 625#31[T1] terr=13452 bal=212685 dq=15.8 cnt=110 | c=20.0 rankC=10.0 need=398561 tD=0.60 人 pulse bleeding | safe=113470 keep=120496 avail=23432 chunkB=29127 pulseB=17476  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11550 bal=203550 dq=17.6 cnt=126 | c=29.4 rankC=17.7 need=374508 tD=0.67 人 pulse bleeding | safe=113470 keep=Inf avail=-Inf chunkB=29127 pulseB=17476 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 625#31[T1]（约 17493 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2050 riku_x B=147352 L=7139 d=20.6 nb=2 neut=0 cmds=57 noFull=1 shQ=36838 | m=1.373 worth=28.3 cheap=8.4 over=0 dMedOther=26.7 safe(-1)=114975
+    → Player 625#31[T1] terr=13538 bal=215364 dq=15.9 cnt=110 | c=20.1 rankC=10.1 need=404007 tD=0.60 人 pulse bleeding | safe=114975 keep=121906 avail=23720 chunkB=29470 pulseB=17682  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11464 bal=202409 dq=17.7 cnt=126 | c=44.2 rankC=44.2 need=371794 tD=0.66 人 | safe=114975 keep=Inf avail=-Inf chunkB=29470 pulseB=17682 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 625#31[T1]（约 17699 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2055 riku_x B=147352 L=7139 d=20.6 nb=2 neut=0 cmds=58 noFull=1 shQ=36838 | m=1.367 worth=28.2 cheap=8.4 over=0 dMedOther=26.7 safe(-1)=113750
+    → Player 625#31[T1] terr=13507 bal=213183 dq=15.8 cnt=110 | c=18.1 rankC=9.1 need=399912 tD=0.59 人 pulse bleeding | safe=113750 keep=116232 avail=29394 chunkB=29470 pulseB=17682  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11517 bal=202409 dq=17.6 cnt=126 | c=44.0 rankC=44.0 need=372294 tD=0.66 人 | safe=113750 keep=Inf avail=-Inf chunkB=29470 pulseB=17682 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 625#31[T1]（约 17699 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2060 riku_x B=149090 L=7139 d=20.9 nb=2 neut=0 cmds=59 noFull=1 shQ=37272 | m=1.362 worth=28.4 cheap=8.4 over=0 dMedOther=27.0 safe(-1)=114628
+    → Player 625#31[T1] terr=13542 bal=214747 dq=15.9 cnt=110 | c=18.4 rankC=9.2 need=403010 tD=0.59 人 pulse bleeding | safe=114628 keep=117893 avail=29450 chunkB=29818 pulseB=17891  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11550 bal=204918 dq=17.7 cnt=126 | c=44.4 rankC=44.4 need=377022 tD=0.66 人 | safe=114628 keep=Inf avail=-Inf chunkB=29818 pulseB=17891 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 625#31[T1]（约 17908 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2065 riku_x B=149090 L=7139 d=20.9 nb=2 neut=0 cmds=60 noFull=1 shQ=37272 | m=1.357 worth=28.3 cheap=8.4 over=0 dMedOther=27.0 safe(-1)=113363
+    → Player 625#31[T1] terr=13503 bal=212494 dq=15.7 cnt=110 | c=18.4 rankC=9.2 need=398726 tD=0.58 人 pulse bleeding | safe=113363 keep=118317 avail=29026 chunkB=29818 pulseB=17891  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11596 bal=204918 dq=17.7 cnt=126 | c=44.2 rankC=44.2 need=377457 tD=0.65 人 | safe=113363 keep=Inf avail=-Inf chunkB=29818 pulseB=17891 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 625#31[T1]（约 17908 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2070 riku_x B=150849 L=7139 d=21.1 nb=2 neut=0 cmds=61 noFull=1 shQ=37712 | m=1.352 worth=28.6 cheap=8.4 over=0 dMedOther=27.3 safe(-1)=113526
+    → Player 625#31[T1] terr=13480 bal=212784 dq=15.8 cnt=110 | c=18.7 rankC=9.4 need=399094 tD=0.58 人 pulse bleeding | safe=113526 keep=120242 avail=28840 chunkB=30170 pulseB=18102  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11624 bal=207458 dq=17.8 cnt=126 | c=44.6 rankC=44.6 need=382229 tD=0.65 人 | safe=113526 keep=Inf avail=-Inf chunkB=30170 pulseB=18102 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 625#31[T1]（约 18119 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2075 riku_x B=150849 L=7139 d=21.1 nb=2 neut=0 cmds=62 noFull=1 shQ=37712 | m=1.346 worth=28.4 cheap=8.4 over=0 dMedOther=27.3 safe(-1)=112832
+    → Player 625#31[T1] terr=13476 bal=211549 dq=15.7 cnt=110 | c=18.7 rankC=9.4 need=396889 tD=0.57 人 pulse bleeding | safe=112832 keep=120531 avail=28551 chunkB=30170 pulseB=18102  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11663 bal=207458 dq=17.8 cnt=126 | c=44.4 rankC=44.4 need=382600 tD=0.65 人 | safe=112832 keep=Inf avail=-Inf chunkB=30170 pulseB=18102 价高(c>=worth)→break hNb=2
+    ⇒ 影子指令 attack pct=122 → Player 625#31[T1]（约 18119 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=2080 riku_x B=99874 L=7139 d=14.0 nb=2 neut=0 cmds=62 noFull=1 shQ=0 | m=1.341 worth=18.8 cheap=8.4 over=0 dMedOther=27.7 safe(-1)=112863
+    → Player 625#31[T1] terr=13437 bal=211604 dq=15.7 cnt=110 | c=18.0 rankC=9.0 need=378622 tD=0.57 人 pulse bleeding | safe=112863 keep=112863 avail=-14159 chunkB=19975 pulseB=11985 无可用(avail<=0) hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11688 bal=210030 dq=18.0 cnt=126 | c=55.9 rankC=55.9 need=357993 tD=0.65 人 crowdedHard | safe=112863 keep=Inf avail=-Inf chunkB=19975 pulseB=11985 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2085 riku_x B=99874 L=7139 d=14.0 nb=2 neut=0 cmds=62 noFull=1 shQ=1485 | m=1.336 worth=18.7 cheap=8.4 over=0 dMedOther=27.7 safe(-1)=111978
+    → Player 625#31[T1] terr=13368 bal=208866 dq=15.6 cnt=110 | c=18.1 rankC=9.0 need=373254 tD=0.56 人 pulse bleeding | safe=111978 keep=111978 avail=-13274 chunkB=19975 pulseB=11985 无可用(avail<=0) hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11713 bal=210030 dq=17.9 cnt=126 | c=55.7 rankC=55.7 need=358241 tD=0.65 人 crowdedHard | safe=111978 keep=Inf avail=-Inf chunkB=19975 pulseB=11985 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2090 riku_x B=87731 L=7610 d=11.5 nb=2 neut=0 cmds=62 noFull=1 shQ=2816 | m=1.331 worth=15.3 cheap=8.3 over=0 dMedOther=28.0 safe(-1)=108965
+    → Player 625#31[T1] terr=13142 bal=204532 dq=15.6 cnt=110 | c=18.0 rankC=9.0 need=363313 tD=0.56 人 pulse bleeding | safe=108965 keep=Inf avail=-Inf chunkB=17546 pulseB=10528 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11475 bal=205373 dq=17.9 cnt=124 | c=58.0 rankC=58.0 need=362921 tD=0.64 人 crowdedHard | safe=108965 keep=Inf avail=-Inf chunkB=17546 pulseB=10528 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2095 riku_x B=66125 L=7844 d=8.4 nb=2 neut=0 cmds=62 noFull=1 shQ=4001 | m=1.325 worth=11.2 cheap=8.3 over=0 dMedOther=28.0 safe(-1)=106775
+    → Player 625#31[T1] terr=12950 bal=199004 dq=15.4 cnt=109 | c=17.2 rankC=8.6 need=338066 tD=0.55 人 pulse bleeding | safe=106775 keep=Inf avail=-Inf chunkB=13225 pulseB=7935 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11367 bal=201825 dq=17.8 cnt=124 | c=58.8 rankC=58.8 need=363096 tD=0.63 人 crowdedHard | safe=106775 keep=Inf avail=-Inf chunkB=13225 pulseB=7935 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2100 riku_x B=75022 L=8063 d=9.3 nb=2 neut=0 cmds=62 noFull=1 shQ=5018 | m=1.320 worth=12.3 cheap=8.3 over=0 dMedOther=29.4 safe(-1)=112447
+    → Player 625#31[T1] terr=12659 bal=205848 dq=16.3 cnt=110 | c=19.3 rankC=9.7 need=359000 tD=0.55 人 pulse bleeding | safe=112447 keep=Inf avail=-Inf chunkB=15004 pulseB=9003 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11375 bal=212250 dq=18.7 cnt=124 | c=62.8 rankC=62.8 need=388576 tD=0.63 人 crowdedHard | safe=112447 keep=Inf avail=-Inf chunkB=15004 pulseB=9003 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2105 riku_x B=56546 L=8284 d=6.8 nb=2 neut=0 cmds=62 noFull=1 shQ=5863 | m=1.315 worth=9.0 cheap=8.3 over=0 dMedOther=29.4 safe(-1)=112261
+    → Player 625#31[T1] terr=12406 bal=198630 dq=16.0 cnt=111 | c=18.8 rankC=9.4 need=339298 tD=0.54 人 pulse bleeding | safe=112261 keep=Inf avail=-Inf chunkB=11309 pulseB=6786 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11383 bal=212250 dq=18.6 cnt=124 | c=62.7 rankC=62.7 need=388680 tD=0.63 人 crowdedHard | safe=112261 keep=Inf avail=-Inf chunkB=11309 pulseB=6786 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2110 riku_x B=49681 L=8395 d=5.9 nb=2 neut=0 cmds=62 noFull=1 shQ=6644 | m=1.310 worth=7.7 cheap=8.3 over=0 dMedOther=29.8 safe(-1)=113645
+    → Player 625#31[T1] terr=12209 bal=195130 dq=16.0 cnt=112 | c=19.0 rankC=9.5 need=330634 tD=0.54 人 pulse bleeding | safe=113645 keep=Inf avail=-Inf chunkB=9936 pulseB=5962 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=214881 dq=18.9 cnt=124 | c=63.5 rankC=63.5 need=393379 tD=0.63 人 crowdedHard | safe=113645 keep=Inf avail=-Inf chunkB=9936 pulseB=5962 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2115 riku_x B=49681 L=8618 d=5.8 nb=2 neut=0 cmds=62 noFull=1 shQ=7391 | m=1.304 worth=7.5 cheap=8.2 over=0 dMedOther=29.8 safe(-1)=119521
+    → Player 625#31[T1] terr=11864 bal=197846 dq=16.7 cnt=111 | c=21.0 rankC=10.5 need=344480 tD=0.56 人 pulse bleeding | safe=119521 keep=Inf avail=-Inf chunkB=9936 pulseB=5962 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=225675 dq=19.8 cnt=124 | c=66.5 rankC=66.5 need=412336 tD=0.67 人 crowdedHard | safe=119521 keep=Inf avail=-Inf chunkB=9936 pulseB=5962 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2120 riku_x B=50282 L=8840 d=5.7 nb=2 neut=0 cmds=62 noFull=1 shQ=8143 | m=1.299 worth=7.4 cheap=8.2 over=0 dMedOther=30.1 safe(-1)=120906
+    → Player 625#31[T1] terr=11580 bal=192666 dq=16.6 cnt=113 | c=22.0 rankC=11.0 need=345263 tD=0.55 人 pulse bleeding | safe=120906 keep=Inf avail=-Inf chunkB=10056 pulseB=6034 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=228473 dq=20.1 cnt=124 | c=67.3 rankC=67.3 need=417274 tD=0.67 人 crowdedHard | safe=120906 keep=Inf avail=-Inf chunkB=10056 pulseB=6034 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2125 riku_x B=50394 L=8840 d=5.7 nb=2 neut=0 cmds=62 noFull=1 shQ=8903 | m=1.294 worth=7.4 cheap=8.2 over=0 dMedOther=30.1 safe(-1)=120906
+    → Player 625#31[T1] terr=11455 bal=188057 dq=16.4 cnt=113 | c=22.3 rankC=11.1 need=339125 tD=0.54 人 pulse bleeding | safe=120906 keep=Inf avail=-Inf chunkB=10079 pulseB=6047 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=228473 dq=20.1 cnt=124 | c=67.3 rankC=67.3 need=417305 tD=0.67 人 crowdedHard | safe=120906 keep=Inf avail=-Inf chunkB=10079 pulseB=6047 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2130 riku_x B=51003 L=8840 d=5.8 nb=2 neut=0 cmds=62 noFull=1 shQ=9665 | m=1.288 worth=7.4 cheap=8.2 over=0 dMedOther=30.5 safe(-1)=122498
+    → Player 625#31[T1] terr=11332 bal=187124 dq=16.5 cnt=113 | c=22.8 rankC=11.4 need=336437 tD=0.54 人 pulse bleeding | safe=122498 keep=Inf avail=-Inf chunkB=10201 pulseB=6120 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=231306 dq=20.3 cnt=124 | c=68.1 rankC=68.1 need=422337 tD=0.67 人 crowdedHard | safe=122498 keep=Inf avail=-Inf chunkB=10201 pulseB=6120 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2135 riku_x B=51003 L=8840 d=5.8 nb=2 neut=0 cmds=62 noFull=1 shQ=10435 | m=1.283 worth=7.4 cheap=8.2 over=0 dMedOther=30.5 safe(-1)=122498
+    → Player 625#31[T1] terr=11269 bal=185460 dq=16.5 cnt=113 | c=23.0 rankC=11.5 need=333039 tD=0.54 人 pulse bleeding | safe=122498 keep=Inf avail=-Inf chunkB=10201 pulseB=6120 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=231306 dq=20.3 cnt=124 | c=68.1 rankC=68.1 need=422368 tD=0.67 人 crowdedHard | safe=122498 keep=Inf avail=-Inf chunkB=10201 pulseB=6120 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2140 riku_x B=51620 L=8840 d=5.8 nb=2 neut=0 cmds=62 noFull=1 shQ=11207 | m=1.278 worth=7.5 cheap=8.2 over=0 dMedOther=29.3 safe(-1)=124109
+    → Player 625#31[T1] terr=11140 bal=184309 dq=16.5 cnt=113 | c=23.6 rankC=11.8 need=329904 tD=0.56 人 pulse bleeding | safe=124109 keep=Inf avail=-Inf chunkB=10324 pulseB=6194 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=234174 dq=20.6 cnt=124 | c=68.9 rankC=68.9 need=427431 tD=0.70 人 crowdedHard | safe=124109 keep=Inf avail=-Inf chunkB=10324 pulseB=6194 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2145 riku_x B=51620 L=8840 d=5.8 nb=2 neut=0 cmds=62 noFull=1 shQ=11987 | m=1.273 worth=7.4 cheap=8.2 over=0 dMedOther=29.3 safe(-1)=124109
+    → Player 625#31[T1] terr=11008 bal=180822 dq=16.4 cnt=113 | c=23.9 rankC=11.9 need=322723 tD=0.56 人 pulse bleeding | safe=124109 keep=Inf avail=-Inf chunkB=10324 pulseB=6194 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=234174 dq=20.6 cnt=124 | c=68.9 rankC=68.9 need=427463 tD=0.70 人 crowdedHard | safe=124109 keep=Inf avail=-Inf chunkB=10324 pulseB=6194 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2150 riku_x B=52244 L=8840 d=5.9 nb=2 neut=0 cmds=62 noFull=1 shQ=12769 | m=1.268 worth=7.5 cheap=8.2 over=0 dMedOther=29.6 safe(-1)=125740
+    → Player 625#31[T1] terr=10942 bal=181290 dq=16.6 cnt=113 | c=24.3 rankC=12.2 need=322945 tD=0.56 人 pulse bleeding | safe=125740 keep=Inf avail=-Inf chunkB=10449 pulseB=6269 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=237077 dq=20.8 cnt=124 | c=69.7 rankC=69.7 need=432621 tD=0.70 人 crowdedHard | safe=125740 keep=Inf avail=-Inf chunkB=10449 pulseB=6269 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2155 riku_x B=52244 L=8840 d=5.9 nb=2 neut=0 cmds=62 noFull=1 shQ=13061 | m=1.262 worth=7.5 cheap=8.2 over=0 dMedOther=29.6 safe(-1)=125740
+    → Player 625#31[T1] terr=10942 bal=181034 dq=16.5 cnt=113 | c=56.6 rankC=56.6 need=322567 tD=0.56 人 crowdedHard | safe=125740 keep=Inf avail=-Inf chunkB=10449 pulseB=6269 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=237077 dq=20.8 cnt=124 | c=69.7 rankC=69.7 need=432653 tD=0.70 人 crowdedHard | safe=125740 keep=Inf avail=-Inf chunkB=10449 pulseB=6269 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2160 riku_x B=52876 L=8840 d=6.0 nb=2 neut=0 cmds=62 noFull=1 shQ=13219 | m=1.257 worth=7.5 cheap=8.2 over=0 dMedOther=30.0 safe(-1)=127391
+    → Player 625#31[T1] terr=10942 bal=183260 dq=16.7 cnt=113 | c=57.3 rankC=57.3 need=326432 tD=0.56 人 crowdedHard | safe=127391 keep=Inf avail=-Inf chunkB=10575 pulseB=6345 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=240016 dq=21.1 cnt=124 | c=70.5 rankC=70.5 need=437843 tD=0.70 人 crowdedHard | safe=127391 keep=Inf avail=-Inf chunkB=10575 pulseB=6345 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2165 riku_x B=52876 L=8840 d=6.0 nb=2 neut=0 cmds=62 noFull=1 shQ=13219 | m=1.252 worth=7.5 cheap=8.2 over=0 dMedOther=30.0 safe(-1)=127391
+    → Player 625#31[T1] terr=10942 bal=183260 dq=16.7 cnt=113 | c=57.3 rankC=57.3 need=326489 tD=0.56 人 crowdedHard | safe=127391 keep=Inf avail=-Inf chunkB=10575 pulseB=6345 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=240016 dq=21.1 cnt=124 | c=70.5 rankC=70.5 need=437876 tD=0.70 人 crowdedHard | safe=127391 keep=Inf avail=-Inf chunkB=10575 pulseB=6345 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2170 riku_x B=53515 L=8840 d=6.1 nb=2 neut=0 cmds=62 noFull=1 shQ=13378 | m=1.247 worth=7.5 cheap=8.2 over=0 dMedOther=30.3 safe(-1)=129063
+    → Player 625#31[T1] terr=10942 bal=185514 dq=17.0 cnt=113 | c=57.9 rankC=57.9 need=330403 tD=0.56 人 crowdedHard | safe=129063 keep=Inf avail=-Inf chunkB=10703 pulseB=6422 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=242992 dq=21.3 cnt=124 | c=71.4 rankC=71.4 need=443165 tD=0.70 人 crowdedHard | safe=129063 keep=Inf avail=-Inf chunkB=10703 pulseB=6422 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2175 riku_x B=53515 L=8840 d=6.1 nb=2 neut=0 cmds=62 noFull=1 shQ=13378 | m=1.241 worth=7.5 cheap=8.2 over=0 dMedOther=30.3 safe(-1)=129063
+    → Player 625#31[T1] terr=10942 bal=185514 dq=17.0 cnt=113 | c=57.9 rankC=57.9 need=330461 tD=0.56 人 crowdedHard | safe=129063 keep=Inf avail=-Inf chunkB=10703 pulseB=6422 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=242992 dq=21.3 cnt=124 | c=71.4 rankC=71.4 need=443198 tD=0.70 人 crowdedHard | safe=129063 keep=Inf avail=-Inf chunkB=10703 pulseB=6422 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2180 riku_x B=54162 L=8840 d=6.1 nb=2 neut=0 cmds=62 noFull=1 shQ=13540 | m=1.236 worth=7.6 cheap=8.2 over=0 dMedOther=30.7 safe(-1)=130756
+    → Player 625#31[T1] terr=10942 bal=187795 dq=17.2 cnt=113 | c=58.6 rankC=58.6 need=334424 tD=0.56 人 crowdedHard | safe=130756 keep=Inf avail=-Inf chunkB=10832 pulseB=6499 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=246005 dq=21.6 cnt=124 | c=72.2 rankC=72.2 need=448520 tD=0.70 人 crowdedHard | safe=130756 keep=Inf avail=-Inf chunkB=10832 pulseB=6499 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2185 riku_x B=54162 L=8840 d=6.1 nb=2 neut=0 cmds=62 noFull=1 shQ=13540 | m=1.231 worth=7.5 cheap=8.2 over=0 dMedOther=30.7 safe(-1)=130756
+    → Player 625#31[T1] terr=10942 bal=187795 dq=17.2 cnt=113 | c=58.6 rankC=58.6 need=334482 tD=0.56 人 crowdedHard | safe=130756 keep=Inf avail=-Inf chunkB=10832 pulseB=6499 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=246005 dq=21.6 cnt=124 | c=72.2 rankC=72.2 need=448554 tD=0.70 人 crowdedHard | safe=130756 keep=Inf avail=-Inf chunkB=10832 pulseB=6499 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2190 riku_x B=54817 L=8840 d=6.2 nb=2 neut=0 cmds=62 noFull=1 shQ=13704 | m=1.226 worth=7.6 cheap=8.2 over=0 dMedOther=31.0 safe(-1)=132469
+    → Player 625#31[T1] terr=10942 bal=190104 dq=17.4 cnt=113 | c=59.3 rankC=59.3 need=338496 tD=0.56 人 crowdedHard | safe=132469 keep=Inf avail=-Inf chunkB=10963 pulseB=6578 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=249055 dq=21.9 cnt=124 | c=73.1 rankC=73.1 need=453976 tD=0.71 人 crowdedHard | safe=132469 keep=Inf avail=-Inf chunkB=10963 pulseB=6578 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2195 riku_x B=54817 L=8840 d=6.2 nb=2 neut=0 cmds=62 noFull=1 shQ=13704 | m=1.220 worth=7.6 cheap=8.2 over=0 dMedOther=31.0 safe(-1)=132469
+    → Player 625#31[T1] terr=10942 bal=190104 dq=17.4 cnt=113 | c=59.3 rankC=59.3 need=338554 tD=0.56 人 crowdedHard | safe=132469 keep=Inf avail=-Inf chunkB=10963 pulseB=6578 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=249055 dq=21.9 cnt=124 | c=73.1 rankC=73.1 need=454010 tD=0.71 人 crowdedHard | safe=132469 keep=Inf avail=-Inf chunkB=10963 pulseB=6578 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2200 riku_x B=64320 L=8840 d=7.3 nb=2 neut=0 cmds=62 noFull=1 shQ=13898 | m=1.215 worth=8.8 cheap=8.2 over=0 dMedOther=32.4 safe(-1)=140601
+    → Player 625#31[T1] terr=10942 bal=203384 dq=18.6 cnt=113 | c=63.2 rankC=63.2 need=361235 tD=0.57 人 crowdedHard | safe=140601 keep=Inf avail=-Inf chunkB=12864 pulseB=7718 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=263529 dq=23.1 cnt=124 | c=77.1 rankC=77.1 need=479463 tD=0.72 人 crowdedHard | safe=140601 keep=Inf avail=-Inf chunkB=12864 pulseB=7718 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2205 riku_x B=64320 L=8840 d=7.3 nb=2 neut=0 cmds=62 noFull=1 shQ=14868 | m=1.210 worth=8.8 cheap=8.2 over=0 dMedOther=32.4 safe(-1)=140601
+    → Player 625#31[T1] terr=10942 bal=203384 dq=18.6 cnt=113 | c=63.2 rankC=63.2 need=361298 tD=0.57 人 crowdedHard | safe=140601 keep=Inf avail=-Inf chunkB=12864 pulseB=7718 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=263529 dq=23.1 cnt=124 | c=77.1 rankC=77.1 need=479498 tD=0.72 人 crowdedHard | safe=140601 keep=Inf avail=-Inf chunkB=12864 pulseB=7718 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2210 riku_x B=65098 L=8840 d=7.4 nb=2 neut=0 cmds=62 noFull=1 shQ=15840 | m=1.205 worth=8.9 cheap=8.2 over=0 dMedOther=32.7 safe(-1)=148620
+    → Player 625#31[T1] terr=10942 bal=205885 dq=18.8 cnt=113 | c=64.0 rankC=64.0 need=365648 tD=0.57 人 crowdedHard | safe=148620 keep=Inf avail=-Inf chunkB=13020 pulseB=7812 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=277804 dq=24.4 cnt=124 | c=81.2 rankC=81.2 need=504644 tD=0.75 人 crowdedHard | safe=148620 keep=Inf avail=-Inf chunkB=13020 pulseB=7812 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2215 riku_x B=65098 L=8840 d=7.4 nb=2 neut=0 cmds=62 noFull=1 shQ=16274 | m=1.199 worth=8.8 cheap=8.2 over=0 dMedOther=34.8 safe(-1)=148620
+    → Player 625#31[T1] terr=10942 bal=205885 dq=18.8 cnt=113 | c=64.0 rankC=64.0 need=365711 tD=0.54 人 crowdedHard | safe=148620 keep=Inf avail=-Inf chunkB=13020 pulseB=7812 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=277804 dq=24.4 cnt=124 | c=81.2 rankC=81.2 need=504682 tD=0.70 人 crowdedHard | safe=148620 keep=Inf avail=-Inf chunkB=13020 pulseB=7812 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2220 riku_x B=65885 L=8840 d=7.5 nb=2 neut=0 cmds=62 noFull=1 shQ=16471 | m=1.194 worth=8.9 cheap=8.2 over=0 dMedOther=35.2 safe(-1)=150555
+    → Player 625#31[T1] terr=10942 bal=208417 dq=19.0 cnt=113 | c=64.7 rankC=64.7 need=370116 tD=0.54 人 crowdedHard | safe=150555 keep=Inf avail=-Inf chunkB=13177 pulseB=7906 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=281248 dq=24.7 cnt=124 | c=82.1 rankC=82.1 need=510770 tD=0.70 人 crowdedHard | safe=150555 keep=Inf avail=-Inf chunkB=13177 pulseB=7906 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2225 riku_x B=65885 L=8840 d=7.5 nb=2 neut=0 cmds=62 noFull=1 shQ=16471 | m=1.189 worth=8.9 cheap=8.2 over=0 dMedOther=35.2 safe(-1)=150555
+    → Player 625#31[T1] terr=10942 bal=208417 dq=19.0 cnt=113 | c=64.7 rankC=64.7 need=370180 tD=0.54 人 crowdedHard | safe=150555 keep=Inf avail=-Inf chunkB=13177 pulseB=7906 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=281248 dq=24.7 cnt=124 | c=82.1 rankC=82.1 need=510807 tD=0.70 人 crowdedHard | safe=150555 keep=Inf avail=-Inf chunkB=13177 pulseB=7906 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2230 riku_x B=66682 L=8840 d=7.5 nb=2 neut=0 cmds=62 noFull=1 shQ=16670 | m=1.183 worth=8.9 cheap=8.2 over=0 dMedOther=35.7 safe(-1)=152514
+    → Player 625#31[T1] terr=10942 bal=210980 dq=19.3 cnt=113 | c=65.4 rankC=65.4 need=374641 tD=0.54 人 crowdedHard | safe=152514 keep=Inf avail=-Inf chunkB=13336 pulseB=8002 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=284735 dq=25.0 cnt=124 | c=83.1 rankC=83.1 need=517011 tD=0.70 人 crowdedHard | safe=152514 keep=Inf avail=-Inf chunkB=13336 pulseB=8002 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2235 riku_x B=66682 L=8840 d=7.5 nb=2 neut=0 cmds=62 noFull=1 shQ=16670 | m=1.178 worth=8.9 cheap=8.2 over=0 dMedOther=35.7 safe(-1)=152514
+    → Player 625#31[T1] terr=10942 bal=210980 dq=19.3 cnt=113 | c=65.4 rankC=65.4 need=374706 tD=0.54 人 crowdedHard | safe=152514 keep=Inf avail=-Inf chunkB=13336 pulseB=8002 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=284735 dq=25.0 cnt=124 | c=83.1 rankC=83.1 need=517049 tD=0.70 人 crowdedHard | safe=152514 keep=Inf avail=-Inf chunkB=13336 pulseB=8002 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2240 riku_x B=67488 L=8840 d=7.6 nb=2 neut=0 cmds=62 noFull=1 shQ=16872 | m=1.173 worth=9.0 cheap=8.2 over=0 dMedOther=36.1 safe(-1)=154497
+    → Player 625#31[T1] terr=10942 bal=213575 dq=19.5 cnt=113 | c=66.2 rankC=66.2 need=379225 tD=0.54 人 crowdedHard | safe=154497 keep=Inf avail=-Inf chunkB=13498 pulseB=8099 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=288265 dq=25.3 cnt=124 | c=84.1 rankC=84.1 need=523291 tD=0.70 人 crowdedHard | safe=154497 keep=Inf avail=-Inf chunkB=13498 pulseB=8099 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2245 riku_x B=67488 L=8840 d=7.6 nb=2 neut=0 cmds=62 noFull=1 shQ=16872 | m=1.168 worth=8.9 cheap=8.2 over=0 dMedOther=36.1 safe(-1)=154497
+    → Player 625#31[T1] terr=10942 bal=213575 dq=19.5 cnt=113 | c=66.2 rankC=66.2 need=379290 tD=0.54 人 crowdedHard | safe=154497 keep=Inf avail=-Inf chunkB=13498 pulseB=8099 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=288265 dq=25.3 cnt=124 | c=84.1 rankC=84.1 need=523330 tD=0.70 人 crowdedHard | safe=154497 keep=Inf avail=-Inf chunkB=13498 pulseB=8099 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2250 riku_x B=68304 L=8840 d=7.7 nb=2 neut=0 cmds=62 noFull=1 shQ=17076 | m=1.163 worth=9.0 cheap=8.2 over=0 dMedOther=36.4 safe(-1)=156505
+    → Player 625#31[T1] terr=10942 bal=216201 dq=19.8 cnt=113 | c=67.0 rankC=67.0 need=383864 tD=0.54 人 crowdedHard | safe=156505 keep=Inf avail=-Inf chunkB=13661 pulseB=8196 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=291839 dq=25.6 cnt=124 | c=85.1 rankC=85.1 need=529690 tD=0.70 人 crowdedHard | safe=156505 keep=Inf avail=-Inf chunkB=13661 pulseB=8196 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2255 riku_x B=68304 L=8840 d=7.7 nb=2 neut=0 cmds=62 noFull=1 shQ=17076 | m=1.157 worth=8.9 cheap=8.2 over=0 dMedOther=36.0 safe(-1)=156505
+    → Player 625#31[T1] terr=10942 bal=216201 dq=19.8 cnt=113 | c=67.0 rankC=67.0 need=383930 tD=0.55 人 crowdedHard | safe=156505 keep=Inf avail=-Inf chunkB=13661 pulseB=8196 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=291839 dq=25.6 cnt=124 | c=85.1 rankC=85.1 need=529729 tD=0.71 人 crowdedHard | safe=156505 keep=Inf avail=-Inf chunkB=13661 pulseB=8196 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2260 riku_x B=69130 L=8840 d=7.8 nb=2 neut=0 cmds=62 noFull=1 shQ=17282 | m=1.152 worth=9.0 cheap=8.2 over=0 dMedOther=36.0 safe(-1)=158538
+    → Player 625#31[T1] terr=10942 bal=218860 dq=20.0 cnt=113 | c=67.8 rankC=67.8 need=388563 tD=0.56 人 crowdedHard | safe=158538 keep=Inf avail=-Inf chunkB=13826 pulseB=8296 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=295457 dq=25.9 cnt=124 | c=86.1 rankC=86.1 need=536129 tD=0.72 人 crowdedHard | safe=158538 keep=Inf avail=-Inf chunkB=13826 pulseB=8296 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2265 riku_x B=69130 L=8840 d=7.8 nb=2 neut=0 cmds=62 noFull=1 shQ=17282 | m=1.147 worth=9.0 cheap=8.2 over=0 dMedOther=35.8 safe(-1)=158538
+    → Player 625#31[T1] terr=10942 bal=218860 dq=20.0 cnt=113 | c=67.7 rankC=67.7 need=388630 tD=0.56 人 crowdedHard | safe=158538 keep=Inf avail=-Inf chunkB=13826 pulseB=8296 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=295457 dq=25.9 cnt=124 | c=86.1 rankC=86.1 need=536168 tD=0.73 人 crowdedHard | safe=158538 keep=Inf avail=-Inf chunkB=13826 pulseB=8296 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2270 riku_x B=69966 L=8840 d=7.9 nb=2 neut=0 cmds=62 noFull=1 shQ=17491 | m=1.142 worth=9.0 cheap=8.2 over=0 dMedOther=35.8 safe(-1)=160596
+    → Player 625#31[T1] terr=10942 bal=221551 dq=20.2 cnt=113 | c=68.5 rankC=68.5 need=393321 tD=0.57 人 crowdedHard | safe=160596 keep=Inf avail=-Inf chunkB=13993 pulseB=8396 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=299120 dq=26.3 cnt=124 | c=87.1 rankC=87.1 need=542689 tD=0.73 人 crowdedHard | safe=160596 keep=Inf avail=-Inf chunkB=13993 pulseB=8396 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2275 riku_x B=69966 L=8840 d=7.9 nb=2 neut=0 cmds=62 noFull=1 shQ=17491 | m=1.136 worth=9.0 cheap=8.2 over=0 dMedOther=35.5 safe(-1)=160596
+    → Player 625#31[T1] terr=10942 bal=221551 dq=20.2 cnt=113 | c=68.5 rankC=68.5 need=393388 tD=0.57 人 crowdedHard | safe=160596 keep=Inf avail=-Inf chunkB=13993 pulseB=8396 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=299120 dq=26.3 cnt=124 | c=87.1 rankC=87.1 need=542729 tD=0.74 人 crowdedHard | safe=160596 keep=Inf avail=-Inf chunkB=13993 pulseB=8396 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2280 riku_x B=70812 L=8840 d=8.0 nb=2 neut=0 cmds=62 noFull=1 shQ=17703 | m=1.131 worth=9.1 cheap=8.2 over=0 dMedOther=35.8 safe(-1)=162679
+    → Player 625#31[T1] terr=10942 bal=205441 dq=18.8 cnt=113 | c=63.7 rankC=63.7 need=365989 tD=0.52 人 crowdedHard | safe=162679 keep=Inf avail=-Inf chunkB=14162 pulseB=8497 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=302829 dq=26.6 cnt=124 | c=88.2 rankC=88.2 need=549292 tD=0.74 人 crowdedHard | safe=162679 keep=Inf avail=-Inf chunkB=14162 pulseB=8497 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2285 riku_x B=70812 L=8840 d=8.0 nb=2 neut=0 cmds=62 noFull=1 shQ=17703 | m=1.126 worth=9.0 cheap=8.2 over=0 dMedOther=35.5 safe(-1)=162679
+    → Player 625#31[T1] terr=10944 bal=205441 dq=18.8 cnt=113 | c=63.7 rankC=63.7 need=366073 tD=0.53 人 crowdedHard | safe=162679 keep=Inf avail=-Inf chunkB=14162 pulseB=8497 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=302829 dq=26.6 cnt=124 | c=88.2 rankC=88.2 need=549332 tD=0.75 人 crowdedHard | safe=162679 keep=Inf avail=-Inf chunkB=14162 pulseB=8497 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2290 riku_x B=71643 L=8838 d=8.1 nb=3 neut=0 cmds=62 noFull=1 shQ=17910 | m=1.121 worth=9.1 cheap=8.2 over=0 dMedOther=35.8 safe(-1)=164790
+    → Player 625#31[T1] terr=10961 bal=207967 dq=19.0 cnt=113 | c=64.4 rankC=64.4 need=370665 tD=0.53 人 crowdedHard | safe=164790 keep=Inf avail=-Inf chunkB=14329 pulseB=8597 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=3733 bal=223250 dq=59.8 cnt=2 | c=116.5 rankC=81.5 need=449369 tD=1.67 人 pulse onMe | safe=164790 keep=Inf avail=-Inf chunkB=14329 pulseB=8597 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=306584 dq=26.9 cnt=124 | c=89.2 rankC=89.2 need=556019 tD=0.75 人 crowdedHard | safe=164790 keep=Inf avail=-Inf chunkB=14329 pulseB=8597 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2295 riku_x B=71592 L=8834 d=8.1 nb=3 neut=0 cmds=62 noFull=1 shQ=17898 | m=1.115 worth=9.0 cheap=8.2 over=0 dMedOther=35.8 safe(-1)=164794
+    → Player 625#31[T1] terr=10985 bal=207967 dq=18.9 cnt=113 | c=64.2 rankC=64.2 need=370987 tD=0.53 人 crowdedHard | safe=164794 keep=Inf avail=-Inf chunkB=14318 pulseB=8591 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=3737 bal=223250 dq=59.7 cnt=4 | c=116.3 rankC=81.4 need=449265 tD=1.67 人 pulse onMe | safe=164794 keep=Inf avail=-Inf chunkB=14318 pulseB=8591 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=306584 dq=26.9 cnt=124 | c=89.2 rankC=89.2 need=556060 tD=0.75 人 crowdedHard | safe=164794 keep=Inf avail=-Inf chunkB=14318 pulseB=8591 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2300 riku_x B=81096 L=8820 d=9.2 nb=3 neut=0 cmds=62 noFull=1 shQ=18098 | m=1.110 worth=10.2 cheap=8.2 over=0 dMedOther=37.2 safe(-1)=173338
+    → Player 625#31[T1] terr=11038 bal=221543 dq=20.1 cnt=113 | c=67.9 rankC=67.9 need=394899 tD=0.54 人 crowdedHard | safe=173338 keep=Inf avail=-Inf chunkB=16219 pulseB=9732 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=3751 bal=229501 dq=61.2 cnt=8 | c=118.7 rankC=83.1 need=460084 tD=1.64 人 pulse onMe | safe=173338 keep=Inf avail=-Inf chunkB=16219 pulseB=9732 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=321771 dq=28.3 cnt=124 | c=93.5 rankC=93.5 need=582820 tD=0.76 人 crowdedHard | safe=173338 keep=Inf avail=-Inf chunkB=16219 pulseB=9732 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2305 riku_x B=80759 L=8797 d=9.2 nb=3 neut=0 cmds=62 noFull=1 shQ=19319 | m=1.105 worth=10.1 cheap=8.2 over=0 dMedOther=37.2 safe(-1)=173357
+    → Player 625#31[T1] terr=11077 bal=221543 dq=20.0 cnt=113 | c=67.7 rankC=67.7 need=395401 tD=0.54 人 crowdedHard | safe=173357 keep=Inf avail=-Inf chunkB=16152 pulseB=9691 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=3774 bal=229501 dq=60.8 cnt=12 | c=117.8 rankC=82.5 need=459376 tD=1.63 人 pulse onMe | safe=173357 keep=Inf avail=-Inf chunkB=16152 pulseB=9691 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=321771 dq=28.3 cnt=124 | c=93.5 rankC=93.5 need=582863 tD=0.76 人 crowdedHard | safe=173357 keep=Inf avail=-Inf chunkB=16152 pulseB=9691 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2310 riku_x B=81513 L=8782 d=9.3 nb=3 neut=0 cmds=62 noFull=1 shQ=20378 | m=1.099 worth=10.2 cheap=8.2 over=0 dMedOther=37.7 safe(-1)=175611
+    → Player 625#31[T1] terr=11145 bal=224267 dq=20.1 cnt=113 | c=68.0 rankC=68.0 need=400930 tD=0.53 人 crowdedHard | safe=175611 keep=Inf avail=-Inf chunkB=16303 pulseB=9782 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=3789 bal=232117 dq=61.3 cnt=15 | c=118.4 rankC=82.9 need=463570 tD=1.63 人 pulse onMe | safe=175611 keep=Inf avail=-Inf chunkB=16303 pulseB=9782 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=325760 dq=28.6 cnt=124 | c=94.6 rankC=94.6 need=589968 tD=0.76 人 crowdedHard | safe=175611 keep=Inf avail=-Inf chunkB=16303 pulseB=9782 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2315 riku_x B=80965 L=8745 d=9.3 nb=3 neut=0 cmds=62 noFull=1 shQ=20241 | m=1.094 worth=10.1 cheap=8.2 over=0 dMedOther=37.7 safe(-1)=175642
+    → Player 625#31[T1] terr=11145 bal=224289 dq=20.1 cnt=113 | c=68.0 rankC=68.0 need=401000 tD=0.53 人 crowdedHard | safe=175642 keep=Inf avail=-Inf chunkB=16193 pulseB=9716 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=3826 bal=232117 dq=60.7 cnt=20 | c=117.0 rankC=81.9 need=462477 tD=1.61 人 pulse onMe | safe=175642 keep=Inf avail=-Inf chunkB=16193 pulseB=9716 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=325760 dq=28.6 cnt=124 | c=94.6 rankC=94.6 need=590012 tD=0.76 人 crowdedHard | safe=175642 keep=Inf avail=-Inf chunkB=16193 pulseB=9716 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2320 riku_x B=81286 L=8701 d=9.3 nb=3 neut=0 cmds=62 noFull=1 shQ=20321 | m=1.089 worth=10.2 cheap=8.2 over=0 dMedOther=38.1 safe(-1)=177948
+    → Player 625#31[T1] terr=11145 bal=212414 dq=19.1 cnt=113 | c=64.6 rankC=64.6 need=380634 tD=0.50 人 crowdedHard | safe=177948 keep=Inf avail=-Inf chunkB=16257 pulseB=9754 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=3870 bal=234763 dq=60.7 cnt=21 | c=116.5 rankC=81.6 need=465863 tD=1.59 人 pulse onMe | safe=177948 keep=Inf avail=-Inf chunkB=16257 pulseB=9754 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=329799 dq=29.0 cnt=124 | c=95.8 rankC=95.8 need=597163 tD=0.76 人 crowdedHard | safe=177948 keep=Inf avail=-Inf chunkB=16257 pulseB=9754 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2325 riku_x B=80943 L=8678 d=9.3 nb=3 neut=0 cmds=62 noFull=1 shQ=20235 | m=1.084 worth=10.1 cheap=8.2 over=0 dMedOther=36.6 safe(-1)=177967
+    → Player 625#31[T1] terr=11166 bal=212414 dq=19.0 cnt=113 | c=64.4 rankC=64.4 need=380887 tD=0.52 人 crowdedHard | safe=177967 keep=Inf avail=-Inf chunkB=16189 pulseB=9713 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=3893 bal=234763 dq=60.3 cnt=22 | c=115.6 rankC=81.0 need=465144 tD=1.65 人 pulse onMe | safe=177967 keep=Inf avail=-Inf chunkB=16189 pulseB=9713 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=329799 dq=29.0 cnt=124 | c=95.8 rankC=95.8 need=597207 tD=0.79 人 crowdedHard | safe=177967 keep=Inf avail=-Inf chunkB=16189 pulseB=9713 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2330 riku_x B=81168 L=8628 d=9.4 nb=3 neut=0 cmds=62 noFull=1 shQ=20292 | m=1.079 worth=10.1 cheap=8.2 over=0 dMedOther=37.1 safe(-1)=180307
+    → Player 625#31[T1] terr=11212 bal=215026 dq=19.2 cnt=113 | c=64.9 rankC=64.9 need=385928 tD=0.52 人 crowdedHard | safe=180307 keep=Inf avail=-Inf chunkB=16234 pulseB=9740 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=3943 bal=237439 dq=60.2 cnt=26 | c=115.0 rankC=80.5 need=468441 tD=1.62 人 pulse onMe | safe=180307 keep=Inf avail=-Inf chunkB=16234 pulseB=9740 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=333888 dq=29.3 cnt=124 | c=96.9 rankC=96.9 need=604493 tD=0.79 人 crowdedHard | safe=180307 keep=Inf avail=-Inf chunkB=16234 pulseB=9740 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2335 riku_x B=80297 L=8570 d=9.4 nb=3 neut=0 cmds=62 noFull=1 shQ=20074 | m=1.073 worth=10.1 cheap=8.2 over=0 dMedOther=37.1 safe(-1)=180356
+    → Player 625#31[T1] terr=11295 bal=215026 dq=19.0 cnt=113 | c=64.4 rankC=64.4 need=386829 tD=0.51 人 crowdedHard | safe=180356 keep=Inf avail=-Inf chunkB=16059 pulseB=9636 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=4001 bal=237439 dq=59.3 cnt=30 | c=112.9 rankC=79.0 need=466627 tD=1.60 人 pulse onMe | safe=180356 keep=Inf avail=-Inf chunkB=16059 pulseB=9636 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=333888 dq=29.3 cnt=124 | c=96.9 rankC=96.9 need=604538 tD=0.79 人 crowdedHard | safe=180356 keep=Inf avail=-Inf chunkB=16059 pulseB=9636 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2340 riku_x B=80798 L=8539 d=9.5 nb=3 neut=0 cmds=62 noFull=1 shQ=20199 | m=1.068 worth=10.1 cheap=8.2 over=0 dMedOther=37.5 safe(-1)=182708
+    → Player 625#31[T1] terr=11363 bal=217692 dq=19.2 cnt=113 | c=64.8 rankC=64.8 need=392166 tD=0.51 人 crowdedHard | safe=182708 keep=Inf avail=-Inf chunkB=16160 pulseB=9696 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=4032 bal=240145 dq=59.6 cnt=31 | c=113.0 rankC=79.1 need=470485 tD=1.59 人 pulse onMe | safe=182708 keep=Inf avail=-Inf chunkB=16160 pulseB=9696 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=338028 dq=29.7 cnt=124 | c=98.1 rankC=98.1 need=611871 tD=0.79 人 crowdedHard | safe=182708 keep=Inf avail=-Inf chunkB=16160 pulseB=9696 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2345 riku_x B=79816 L=8474 d=9.4 nb=3 neut=0 cmds=62 noFull=1 shQ=19954 | m=1.063 worth=10.0 cheap=8.3 over=0 dMedOther=37.5 safe(-1)=182762
+    → Player 625#31[T1] terr=11363 bal=217715 dq=19.2 cnt=113 | c=64.8 rankC=64.8 need=392237 tD=0.51 人 crowdedHard | safe=182762 keep=Inf avail=-Inf chunkB=15963 pulseB=9578 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=4097 bal=240145 dq=58.6 cnt=33 | c=110.7 rankC=77.5 need=468510 tD=1.56 人 pulse onMe | safe=182762 keep=Inf avail=-Inf chunkB=15963 pulseB=9578 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=338028 dq=29.7 cnt=124 | c=98.0 rankC=98.0 need=611916 tD=0.79 人 crowdedHard | safe=182762 keep=Inf avail=-Inf chunkB=15963 pulseB=9578 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2350 riku_x B=79693 L=8403 d=9.5 nb=3 neut=0 cmds=62 noFull=1 shQ=19923 | m=1.058 worth=10.0 cheap=8.3 over=0 dMedOther=38.0 safe(-1)=185177
+    → Player 625#31[T1] terr=11363 bal=220414 dq=19.4 cnt=113 | c=65.5 rankC=65.5 need=396962 tD=0.51 人 crowdedHard | safe=185177 keep=Inf avail=-Inf chunkB=15939 pulseB=9563 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=4168 bal=242882 dq=58.3 cnt=37 | c=109.4 rankC=76.6 need=471184 tD=1.53 人 pulse onMe | safe=185177 keep=Inf avail=-Inf chunkB=15939 pulseB=9563 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=342219 dq=30.1 cnt=124 | c=99.2 rankC=99.2 need=619386 tD=0.79 人 crowdedHard | safe=185177 keep=Inf avail=-Inf chunkB=15939 pulseB=9563 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2355 riku_x B=79087 L=8363 d=9.5 nb=3 neut=0 cmds=62 noFull=1 shQ=19771 | m=1.052 worth=10.0 cheap=8.3 over=0 dMedOther=38.0 safe(-1)=185210
+    → Player 625#31[T1] terr=11363 bal=206209 dq=18.1 cnt=113 | c=61.5 rankC=61.5 need=372451 tD=0.48 人 crowdedHard | safe=185210 keep=Inf avail=-Inf chunkB=15817 pulseB=9490 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=4208 bal=242882 dq=57.7 cnt=40 | c=108.1 rankC=75.7 need=469952 tD=1.52 人 pulse onMe | safe=185210 keep=Inf avail=-Inf chunkB=15817 pulseB=9490 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=342219 dq=30.1 cnt=124 | c=99.2 rankC=99.2 need=619431 tD=0.79 人 crowdedHard | safe=185210 keep=Inf avail=-Inf chunkB=15817 pulseB=9490 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2360 riku_x B=78752 L=8279 d=9.5 nb=3 neut=0 cmds=62 noFull=1 shQ=19688 | m=1.047 worth=10.0 cheap=8.3 over=0 dMedOther=38.4 safe(-1)=187665
+    → Player 625#31[T1] terr=11401 bal=208765 dq=18.3 cnt=113 | c=62.0 rankC=62.0 need=377276 tD=0.48 人 crowdedHard | safe=187665 keep=Inf avail=-Inf chunkB=15750 pulseB=9450 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=4292 bal=245650 dq=57.2 cnt=36 | c=106.5 rankC=74.6 need=472307 tD=1.49 人 pulse onMe | safe=187665 keep=Inf avail=-Inf chunkB=15750 pulseB=9450 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=346462 dq=30.4 cnt=124 | c=100.4 rankC=100.4 need=626949 tD=0.79 人 crowdedHard | safe=187665 keep=Inf avail=-Inf chunkB=15750 pulseB=9450 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2365 riku_x B=77613 L=8204 d=9.5 nb=3 neut=0 cmds=62 noFull=1 shQ=19403 | m=1.042 worth=9.9 cheap=8.3 over=0 dMedOther=38.4 safe(-1)=187728
+    → Player 625#31[T1] terr=11484 bal=208765 dq=18.2 cnt=113 | c=61.5 rankC=61.5 need=378124 tD=0.47 人 crowdedHard | safe=187728 keep=Inf avail=-Inf chunkB=15523 pulseB=9314 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=4367 bal=245650 dq=56.3 cnt=38 | c=104.2 rankC=72.9 need=470052 tD=1.46 人 pulse onMe | safe=187728 keep=Inf avail=-Inf chunkB=15523 pulseB=9314 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=346462 dq=30.4 cnt=124 | c=100.4 rankC=100.4 need=626995 tD=0.79 人 crowdedHard | safe=187728 keep=Inf avail=-Inf chunkB=15523 pulseB=9314 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2370 riku_x B=77932 L=8164 d=9.5 nb=3 neut=0 cmds=62 noFull=1 shQ=19483 | m=1.036 worth=9.9 cheap=8.3 over=0 dMedOther=38.9 safe(-1)=187630
+    → Micha [🇩🇪]#47[T1] terr=11386 bal=312394 dq=27.4 cnt=124 | c=53.4 rankC=37.4 need=600906 tD=0.70 人 pulse onMe | safe=187630 keep=Inf avail=-Inf chunkB=15586 pulseB=9352 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=11576 bal=211397 dq=18.3 cnt=113 | c=61.7 rankC=61.7 need=383644 tD=0.47 人 crowdedHard | safe=187630 keep=Inf avail=-Inf chunkB=15586 pulseB=9352 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=4407 bal=248450 dq=56.4 cnt=40 | c=104.0 rankC=72.8 need=473813 tD=1.45 人 pulse onMe | safe=187630 keep=Inf avail=-Inf chunkB=15586 pulseB=9352 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2375 riku_x B=74756 L=7955 d=9.4 nb=3 neut=0 cmds=62 noFull=1 shQ=18689 | m=1.031 worth=9.7 cheap=8.3 over=0 dMedOther=38.9 safe(-1)=185565
+    → Micha [🇩🇪]#47[T1] terr=11509 bal=312394 dq=27.1 cnt=123 | c=52.5 rankC=36.7 need=598472 tD=0.70 人 pulse onMe | safe=185565 keep=Inf avail=-Inf chunkB=14951 pulseB=8971 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=11576 bal=211397 dq=18.3 cnt=113 | c=61.7 rankC=61.7 need=383673 tD=0.47 人 crowdedHard | safe=185565 keep=Inf avail=-Inf chunkB=14951 pulseB=8971 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=4493 bal=248450 dq=55.3 cnt=44 | c=101.5 rankC=71.0 need=471121 tD=1.42 人 pulse onMe | safe=185565 keep=Inf avail=-Inf chunkB=14951 pulseB=8971 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2380 riku_x B=68691 L=7491 d=9.2 nb=3 neut=0 cmds=62 noFull=1 shQ=17172 | m=1.026 worth=9.4 cheap=8.4 over=0 dMedOther=39.4 safe(-1)=181552
+    → Player 625#31[T1] terr=11576 bal=214018 dq=18.5 cnt=113 | c=62.4 rankC=62.4 need=388253 tD=0.47 人 crowdedHard | safe=181552 keep=Inf avail=-Inf chunkB=13738 pulseB=8243 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=11877 bal=316267 dq=26.6 cnt=117 | c=67.0 rankC=67.0 need=598011 tD=0.68 人 pulse onMe | safe=181552 keep=Inf avail=-Inf chunkB=13738 pulseB=8243 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=4589 bal=251282 dq=54.8 cnt=49 | c=99.8 rankC=69.9 need=473279 tD=1.39 人 pulse onMe | safe=181552 keep=Inf avail=-Inf chunkB=13738 pulseB=8243 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2385 riku_x B=64498 L=7203 d=9.0 nb=3 neut=0 cmds=62 noFull=1 shQ=16124 | m=1.021 worth=9.1 cheap=8.4 over=0 dMedOther=39.4 safe(-1)=177667
+    → Player 625#31[T1] terr=11576 bal=214018 dq=18.5 cnt=113 | c=62.4 rankC=62.4 need=388283 tD=0.47 人 crowdedHard | safe=177667 keep=Inf avail=-Inf chunkB=12900 pulseB=7740 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12113 bal=316267 dq=26.1 cnt=118 | c=64.8 rankC=64.8 need=592665 tD=0.66 人 pulse onMe | safe=177667 keep=Inf avail=-Inf chunkB=12900 pulseB=7740 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=4641 bal=251282 dq=54.1 cnt=52 | c=98.3 rankC=68.8 need=471742 tD=1.37 人 pulse onMe | safe=177667 keep=Inf avail=-Inf chunkB=12900 pulseB=7740 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2390 riku_x B=58622 L=6853 d=8.6 nb=3 neut=0 cmds=62 noFull=1 shQ=14655 | m=1.016 worth=8.7 cheap=8.4 over=0 dMedOther=39.9 safe(-1)=174176
+    → Player 625#31[T1] terr=11576 bal=216671 dq=18.7 cnt=113 | c=63.1 rankC=63.1 need=392950 tD=0.47 人 crowdedHard | safe=174176 keep=Inf avail=-Inf chunkB=11724 pulseB=7035 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=320312 dq=25.9 cnt=118 | c=85.4 rankC=85.4 need=589456 tD=0.65 人 crowdedHard | safe=174176 keep=Inf avail=-Inf chunkB=11724 pulseB=7035 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=4754 bal=254171 dq=53.5 cnt=58 | c=128.5 rankC=128.5 need=473676 tD=1.34 人 pulse onMe | safe=174176 keep=Inf avail=-Inf chunkB=11724 pulseB=7035 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2395 riku_x B=56944 L=6730 d=8.5 nb=3 neut=0 cmds=62 noFull=1 shQ=14236 | m=1.010 worth=8.5 cheap=8.4 over=0 dMedOther=39.9 safe(-1)=174279
+    → Player 625#31[T1] terr=11576 bal=216671 dq=18.7 cnt=113 | c=63.1 rankC=63.1 need=392980 tD=0.47 人 crowdedHard | safe=174279 keep=Inf avail=-Inf chunkB=11389 pulseB=6833 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=320312 dq=25.9 cnt=118 | c=85.4 rankC=85.4 need=589456 tD=0.65 人 crowdedHard | safe=174279 keep=Inf avail=-Inf chunkB=11389 pulseB=6833 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=4877 bal=254171 dq=52.1 cnt=63 | c=124.4 rankC=124.4 need=470239 tD=1.31 人 pulse onMe | safe=174279 keep=Inf avail=-Inf chunkB=11389 pulseB=6833 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2400 riku_x B=63391 L=6665 d=9.5 nb=3 neut=0 cmds=62 noFull=1 shQ=14204 | m=1.005 worth=9.6 cheap=8.4 over=0 dMedOther=41.4 safe(-1)=183521
+    → Player 625#31[T1] terr=11576 bal=230933 dq=19.9 cnt=113 | c=67.1 rankC=67.1 need=417784 tD=0.48 人 pulse crowdedHard | safe=183521 keep=Inf avail=-Inf chunkB=12678 pulseB=7607 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=336665 dq=27.3 cnt=114 | c=89.6 rankC=89.6 need=618604 tD=0.66 人 pulse crowdedHard | safe=183521 keep=Inf avail=-Inf chunkB=12678 pulseB=7607 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=4942 bal=262035 dq=53.0 cnt=62 | c=126.2 rankC=126.2 need=482484 tD=1.28 人 pulse onMe | safe=183521 keep=Inf avail=-Inf chunkB=12678 pulseB=7607 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2405 riku_x B=61465 L=6538 d=9.4 nb=3 neut=0 cmds=62 noFull=1 shQ=15108 | m=1.000 worth=9.4 cheap=8.5 over=0 dMedOther=41.4 safe(-1)=183628
+    → Player 625#31[T1] terr=11576 bal=230933 dq=19.9 cnt=113 | c=67.1 rankC=67.1 need=417816 tD=0.48 人 pulse crowdedHard | safe=183628 keep=Inf avail=-Inf chunkB=12293 pulseB=7376 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=336665 dq=27.3 cnt=109 | c=89.6 rankC=89.6 need=618604 tD=0.66 人 pulse crowdedHard | safe=183628 keep=Inf avail=-Inf chunkB=12293 pulseB=7376 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=5069 bal=262035 dq=51.7 cnt=64 | c=122.2 rankC=122.2 need=478549 tD=1.25 人 pulse onMe | safe=183628 keep=Inf avail=-Inf chunkB=12293 pulseB=7376 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2410 riku_x B=60365 L=6474 d=9.3 nb=3 neut=0 cmds=62 noFull=1 shQ=15091 | m=0.995 worth=9.3 cheap=8.5 over=0 dMedOther=42.2 safe(-1)=186046
+    → Player 625#31[T1] terr=11576 bal=233796 dq=20.2 cnt=113 | c=98.5 rankC=142.8 need=422854 tD=0.48 人 pulse crowdedHard | safe=186046 keep=Inf avail=-Inf chunkB=12073 pulseB=7244 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=340873 dq=27.6 cnt=108 | c=131.5 rankC=190.7 need=626104 tD=0.65 人 pulse crowdedHard | safe=186046 keep=Inf avail=-Inf chunkB=12073 pulseB=7244 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=5133 bal=265062 dq=51.6 cnt=63 | c=237.3 rankC=344.1 need=480155 tD=1.22 人 pulse crowdedHard | safe=186046 keep=Inf avail=-Inf chunkB=12073 pulseB=7244 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2415 riku_x B=60365 L=6474 d=9.3 nb=3 neut=0 cmds=62 noFull=1 shQ=15091 | m=0.989 worth=9.2 cheap=8.5 over=0 dMedOther=42.2 safe(-1)=186046
+    → Player 625#31[T1] terr=11576 bal=233796 dq=20.2 cnt=113 | c=98.4 rankC=142.8 need=422886 tD=0.48 人 pulse crowdedHard | safe=186046 keep=Inf avail=-Inf chunkB=12073 pulseB=7244 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=340873 dq=27.6 cnt=108 | c=131.5 rankC=190.7 need=626104 tD=0.65 人 pulse crowdedHard | safe=186046 keep=Inf avail=-Inf chunkB=12073 pulseB=7244 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=5133 bal=265062 dq=51.6 cnt=63 | c=237.3 rankC=344.1 need=480155 tD=1.22 人 pulse crowdedHard | safe=186046 keep=Inf avail=-Inf chunkB=12073 pulseB=7244 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2420 riku_x B=61071 L=6474 d=9.4 nb=3 neut=0 cmds=62 noFull=1 shQ=15267 | m=0.984 worth=9.3 cheap=8.5 over=0 dMedOther=42.4 safe(-1)=188439
+    → Player 625#31[T1] terr=11576 bal=236695 dq=20.4 cnt=113 | c=99.6 rankC=144.4 need=427956 tD=0.48 人 pulse crowdedHard | safe=188439 keep=Inf avail=-Inf chunkB=12214 pulseB=7329 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=345133 dq=27.9 cnt=108 | c=133.1 rankC=193.0 need=633698 tD=0.66 人 pulse crowdedHard | safe=188439 keep=Inf avail=-Inf chunkB=12214 pulseB=7329 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=5133 bal=268110 dq=52.2 cnt=63 | c=240.0 rankC=348.0 need=485587 tD=1.23 人 pulse crowdedHard | safe=188439 keep=Inf avail=-Inf chunkB=12214 pulseB=7329 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2425 riku_x B=61071 L=6474 d=9.4 nb=3 neut=0 cmds=62 noFull=1 shQ=15267 | m=0.979 worth=9.2 cheap=8.5 over=0 dMedOther=41.8 safe(-1)=188439
+    → Player 625#31[T1] terr=11576 bal=236695 dq=20.4 cnt=113 | c=99.6 rankC=144.4 need=427988 tD=0.49 人 pulse crowdedHard | safe=188439 keep=Inf avail=-Inf chunkB=12214 pulseB=7329 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=345133 dq=27.9 cnt=108 | c=133.1 rankC=193.0 need=633698 tD=0.67 人 pulse crowdedHard | safe=188439 keep=Inf avail=-Inf chunkB=12214 pulseB=7329 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=5133 bal=268110 dq=52.2 cnt=63 | c=240.0 rankC=348.0 need=485587 tD=1.25 人 pulse crowdedHard | safe=188439 keep=Inf avail=-Inf chunkB=12214 pulseB=7329 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2430 riku_x B=61785 L=6474 d=9.5 nb=3 neut=0 cmds=62 noFull=1 shQ=15446 | m=0.974 worth=9.3 cheap=8.5 over=0 dMedOther=36.7 safe(-1)=190863
+    → Player 775#41[T3] terr=5133 bal=188035 dq=36.6 cnt=63 | c=79.9 rankC=55.9 need=421930 tD=1.00 人 pulse onMe | safe=190863 keep=Inf avail=-Inf chunkB=12357 pulseB=7414 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=11576 bal=239630 dq=20.7 cnt=113 | c=100.8 rankC=146.2 need=433155 tD=0.56 人 pulse crowdedHard | safe=190863 keep=Inf avail=-Inf chunkB=12357 pulseB=7414 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=349447 dq=28.3 cnt=108 | c=134.7 rankC=195.4 need=641387 tD=0.77 人 pulse crowdedHard | safe=190863 keep=Inf avail=-Inf chunkB=12357 pulseB=7414 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2435 riku_x B=61785 L=6474 d=9.5 nb=3 neut=0 cmds=62 noFull=1 shQ=15446 | m=0.968 worth=9.2 cheap=8.5 over=0 dMedOther=36.6 safe(-1)=190863
+    → Player 775#41[T3] terr=5133 bal=188035 dq=36.6 cnt=63 | c=79.9 rankC=55.9 need=421930 tD=1.00 人 pulse onMe | safe=190863 keep=Inf avail=-Inf chunkB=12357 pulseB=7414 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=11576 bal=239630 dq=20.7 cnt=113 | c=100.8 rankC=146.1 need=433188 tD=0.57 人 pulse crowdedHard | safe=190863 keep=Inf avail=-Inf chunkB=12357 pulseB=7414 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=349447 dq=28.3 cnt=108 | c=134.7 rankC=195.4 need=641387 tD=0.77 人 pulse crowdedHard | safe=190863 keep=Inf avail=-Inf chunkB=12357 pulseB=7414 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2440 riku_x B=60491 L=6343 d=9.5 nb=3 neut=0 cmds=62 noFull=1 shQ=15122 | m=0.963 worth=9.2 cheap=8.5 over=0 dMedOther=36.3 safe(-1)=193427
+    → Player 775#41[T3] terr=5264 bal=190197 dq=36.1 cnt=66 | c=78.0 rankC=54.6 need=421695 tD=0.99 人 pulse onMe | safe=193427 keep=Inf avail=-Inf chunkB=12098 pulseB=7259 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=11576 bal=242601 dq=21.0 cnt=113 | c=102.0 rankC=147.9 need=438385 tD=0.58 人 pulse crowdedHard | safe=193427 keep=Inf avail=-Inf chunkB=12098 pulseB=7259 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=353815 dq=28.6 cnt=107 | c=136.4 rankC=197.8 need=649172 tD=0.79 人 pulse crowdedHard | safe=193427 keep=Inf avail=-Inf chunkB=12098 pulseB=7259 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2445 riku_x B=59454 L=6275 d=9.5 nb=3 neut=0 cmds=62 noFull=1 shQ=14863 | m=0.958 worth=9.1 cheap=8.5 over=0 dMedOther=35.8 safe(-1)=193485
+    → Player 775#41[T3] terr=5332 bal=190197 dq=35.7 cnt=68 | c=76.6 rankC=53.6 need=419587 tD=1.00 人 pulse onMe | safe=193485 keep=Inf avail=-Inf chunkB=11891 pulseB=7134 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=11576 bal=242601 dq=21.0 cnt=113 | c=102.0 rankC=147.9 need=438419 tD=0.59 人 pulse crowdedHard | safe=193485 keep=Inf avail=-Inf chunkB=11891 pulseB=7134 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=353815 dq=28.6 cnt=104 | c=136.4 rankC=197.8 need=649172 tD=0.80 人 pulse crowdedHard | safe=193485 keep=Inf avail=-Inf chunkB=11891 pulseB=7134 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2450 riku_x B=58026 L=6136 d=9.5 nb=3 neut=0 cmds=62 noFull=1 shQ=14506 | m=0.953 worth=9.0 cheap=8.5 over=0 dMedOther=35.9 safe(-1)=196086
+    → Player 775#41[T3] terr=5471 bal=192384 dq=35.2 cnt=69 | c=74.6 rankC=52.2 need=419256 tD=0.98 人 pulse onMe | safe=196086 keep=Inf avail=-Inf chunkB=11605 pulseB=6963 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=11576 bal=245609 dq=21.2 cnt=113 | c=103.2 rankC=149.6 need=443715 tD=0.59 人 pulse crowdedHard | safe=196086 keep=Inf avail=-Inf chunkB=11605 pulseB=6963 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=358237 dq=29.0 cnt=101 | c=138.1 rankC=200.2 need=657054 tD=0.81 人 pulse crowdedHard | safe=196086 keep=Inf avail=-Inf chunkB=11605 pulseB=6963 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2455 riku_x B=55902 L=5995 d=9.3 nb=3 neut=0 cmds=62 noFull=1 shQ=13975 | m=0.947 worth=8.8 cheap=8.5 over=0 dMedOther=35.4 safe(-1)=196205
+    → Player 775#41[T3] terr=5612 bal=192384 dq=34.3 cnt=71 | c=72.0 rankC=50.4 need=414899 tD=0.97 人 pulse onMe | safe=196205 keep=Inf avail=-Inf chunkB=11180 pulseB=6708 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=11576 bal=245609 dq=21.2 cnt=113 | c=103.2 rankC=149.6 need=443749 tD=0.60 人 pulse crowdedHard | safe=196205 keep=Inf avail=-Inf chunkB=11180 pulseB=6708 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=358237 dq=29.0 cnt=100 | c=138.1 rankC=200.2 need=657054 tD=0.82 人 pulse crowdedHard | safe=196205 keep=Inf avail=-Inf chunkB=11180 pulseB=6708 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2460 riku_x B=55454 L=5922 d=9.4 nb=3 neut=0 cmds=62 noFull=1 shQ=13863 | m=0.942 worth=8.8 cheap=8.5 over=0 dMedOther=35.4 safe(-1)=198781
+    → Player 775#41[T3] terr=5685 bal=194634 dq=34.2 cnt=73 | c=71.4 rankC=50.0 need=416707 tD=0.97 人 pulse onMe | safe=198781 keep=Inf avail=-Inf chunkB=11091 pulseB=6654 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=11576 bal=248654 dq=21.5 cnt=113 | c=104.4 rankC=151.4 need=449078 tD=0.61 人 pulse crowdedHard | safe=198781 keep=Inf avail=-Inf chunkB=11091 pulseB=6654 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=362714 dq=29.4 cnt=100 | c=139.8 rankC=202.7 need=665034 tD=0.83 人 pulse crowdedHard | safe=198781 keep=Inf avail=-Inf chunkB=11091 pulseB=6654 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2465 riku_x B=53187 L=5770 d=9.2 nb=3 neut=0 cmds=62 noFull=1 shQ=13296 | m=0.937 worth=8.6 cheap=8.5 over=0 dMedOther=35.2 safe(-1)=198910
+    → Player 775#41[T3] terr=5837 bal=194634 dq=33.3 cnt=77 | c=68.8 rankC=48.2 need=412097 tD=0.95 人 pulse onMe | safe=198910 keep=Inf avail=-Inf chunkB=10637 pulseB=6382 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=11576 bal=232629 dq=20.1 cnt=113 | c=97.9 rankC=142.0 need=421242 tD=0.57 人 pulse crowdedHard | safe=198910 keep=Inf avail=-Inf chunkB=10637 pulseB=6382 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=362714 dq=29.4 cnt=97 | c=139.8 rankC=202.7 need=665034 tD=0.83 人 pulse crowdedHard | safe=198910 keep=Inf avail=-Inf chunkB=10637 pulseB=6382 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2470 riku_x B=51462 L=5612 d=9.2 nb=3 neut=0 cmds=62 noFull=1 shQ=12865 | m=0.931 worth=8.5 cheap=8.6 over=0 dMedOther=35.4 safe(-1)=201589
+    → Player 775#41[T3] terr=5995 bal=196911 dq=32.8 cnt=80 | c=66.9 rankC=46.8 need=411434 tD=0.93 人 pulse onMe | safe=201589 keep=Inf avail=-Inf chunkB=10292 pulseB=6175 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=11576 bal=235513 dq=20.3 cnt=113 | c=99.1 rankC=143.6 need=426323 tD=0.58 人 pulse crowdedHard | safe=201589 keep=Inf avail=-Inf chunkB=10292 pulseB=6175 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=367247 dq=29.7 cnt=95 | c=141.5 rankC=205.2 need=673114 tD=0.84 人 pulse crowdedHard | safe=201589 keep=Inf avail=-Inf chunkB=10292 pulseB=6175 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2475 riku_x B=50289 L=5532 d=9.1 nb=3 neut=0 cmds=62 noFull=1 shQ=12572 | m=0.926 worth=8.4 cheap=8.6 over=0 dMedOther=35.3 safe(-1)=201657
+    → Player 775#41[T3] terr=6075 bal=196911 dq=32.4 cnt=80 | c=65.6 rankC=46.0 need=409048 tD=0.92 人 pulse onMe | safe=201657 keep=Inf avail=-Inf chunkB=10058 pulseB=6035 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=11647 bal=235513 dq=20.2 cnt=113 | c=98.4 rankC=142.7 need=427094 tD=0.57 人 pulse crowdedHard | safe=201657 keep=Inf avail=-Inf chunkB=10058 pulseB=6035 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=367247 dq=29.7 cnt=94 | c=141.5 rankC=205.2 need=673114 tD=0.84 人 pulse crowdedHard | safe=201657 keep=Inf avail=-Inf chunkB=10058 pulseB=6035 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2480 riku_x B=48481 L=5369 d=9.0 nb=3 neut=0 cmds=62 noFull=1 shQ=12120 | m=0.921 worth=8.3 cheap=8.6 over=0 dMedOther=35.7 safe(-1)=204373
+    → Player 775#41[T3] terr=6238 bal=199214 dq=31.9 cnt=81 | c=63.8 rankC=44.7 need=408341 tD=0.90 人 pulse onMe | safe=204373 keep=Inf avail=-Inf chunkB=9696 pulseB=5818 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=11746 bal=238433 dq=20.3 cnt=113 | c=98.7 rankC=143.1 need=433238 tD=0.57 人 pulse crowdedHard | safe=204373 keep=Inf avail=-Inf chunkB=9696 pulseB=5818 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=371837 dq=30.1 cnt=93 | c=143.2 rankC=207.7 need=681295 tD=0.84 人 pulse crowdedHard | safe=204373 keep=Inf avail=-Inf chunkB=9696 pulseB=5818 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2485 riku_x B=46095 L=5203 d=8.9 nb=3 neut=0 cmds=62 noFull=1 shQ=11523 | m=0.916 worth=8.1 cheap=8.6 over=0 dMedOther=40.1 safe(-1)=204513
+    → Player 775#41[T3] terr=6404 bal=199214 dq=31.1 cnt=75 | c=61.6 rankC=43.1 need=403463 tD=0.78 人 pulse onMe | safe=204513 keep=Inf avail=-Inf chunkB=9219 pulseB=5531 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=11810 bal=238433 dq=20.2 cnt=102 | c=98.2 rankC=142.4 need=433923 tD=0.50 人 pulse crowdedHard | safe=204513 keep=Inf avail=-Inf chunkB=9219 pulseB=5531 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=371837 dq=30.1 cnt=91 | c=143.2 rankC=207.7 need=681295 tD=0.75 人 pulse crowdedHard | safe=204513 keep=Inf avail=-Inf chunkB=9219 pulseB=5531 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2490 riku_x B=45549 L=5128 d=8.9 nb=3 neut=0 cmds=62 noFull=1 shQ=11387 | m=0.911 worth=8.1 cheap=8.6 over=0 dMedOther=40.6 safe(-1)=207187
+    → Player 775#41[T3] terr=6479 bal=201544 dq=31.1 cnt=75 | c=61.2 rankC=42.9 need=405486 tD=0.77 人 pulse onMe | safe=207187 keep=Inf avail=-Inf chunkB=9110 pulseB=5466 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=11810 bal=241415 dq=20.4 cnt=102 | c=99.4 rankC=144.1 need=439200 tD=0.50 人 pulse crowdedHard | safe=207187 keep=Inf avail=-Inf chunkB=9110 pulseB=5466 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=376484 dq=30.5 cnt=90 | c=145.0 rankC=210.2 need=689578 tD=0.75 人 pulse crowdedHard | safe=207187 keep=Inf avail=-Inf chunkB=9110 pulseB=5466 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2495 riku_x B=43400 L=4976 d=8.7 nb=3 neut=0 cmds=62 noFull=1 shQ=10850 | m=0.905 worth=7.9 cheap=8.6 over=0 dMedOther=40.6 safe(-1)=207315
+    → Player 775#41[T3] terr=6631 bal=201544 dq=30.4 cnt=76 | c=59.2 rankC=41.4 need=401111 tD=0.75 人 pulse onMe | safe=207315 keep=Inf avail=-Inf chunkB=8680 pulseB=5208 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=11810 bal=225856 dq=19.1 cnt=100 | c=93.2 rankC=135.2 need=412029 tD=0.47 人 pulse crowdedHard | safe=207315 keep=Inf avail=-Inf chunkB=8680 pulseB=5208 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=376484 dq=30.5 cnt=88 | c=145.0 rankC=210.3 need=689578 tD=0.75 人 pulse crowdedHard | safe=207315 keep=Inf avail=-Inf chunkB=8680 pulseB=5208 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2500 riku_x B=45015 L=4725 d=9.5 nb=3 neut=0 cmds=62 noFull=1 shQ=10713 | m=0.900 worth=32.2 cheap=8.8 over=0 dMedOther=42.1 safe(-1)=217108
+    → Player 625#31[T1] terr=11939 bal=225730 dq=18.9 cnt=99 | c=36.0 rankC=25.2 need=421703 tD=0.45 人 pulse onMe | safe=217108 keep=Inf avail=-Inf chunkB=9003 pulseB=5402 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=6783 bal=210629 dq=31.1 cnt=76 | c=59.6 rankC=41.7 need=412771 tD=0.74 人 pulse onMe | safe=217108 keep=Inf avail=-Inf chunkB=9003 pulseB=5402 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=393540 dq=31.9 cnt=87 | c=151.4 rankC=219.5 need=719979 tD=0.76 人 pulse crowdedHard | safe=217108 keep=Inf avail=-Inf chunkB=9003 pulseB=5402 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2505 riku_x B=40935 L=4454 d=9.2 nb=3 neut=0 cmds=62 noFull=1 shQ=10233 | m=0.900 worth=32.2 cheap=8.8 over=0 dMedOther=42.1 safe(-1)=217337
+    → Player 775#41[T3] terr=6859 bal=210629 dq=30.7 cnt=72 | c=58.7 rankC=41.1 need=410446 tD=0.73 人 pulse onMe | safe=217337 keep=Inf avail=-Inf chunkB=8187 pulseB=4912 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=12192 bal=225730 dq=18.5 cnt=92 | c=46.3 rankC=46.3 need=417815 tD=0.44 人 pulse onMe | safe=217337 keep=Inf avail=-Inf chunkB=8187 pulseB=4912 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=393540 dq=31.9 cnt=87 | c=151.4 rankC=219.5 need=719979 tD=0.76 人 pulse crowdedHard | safe=217337 keep=Inf avail=-Inf chunkB=8187 pulseB=4912 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2510 riku_x B=38240 L=4308 d=8.9 nb=3 neut=0 cmds=62 noFull=1 shQ=9560 | m=0.900 worth=32.6 cheap=8.8 over=0 dMedOther=42.6 safe(-1)=220223
+    → Player 775#41[T3] terr=7005 bal=213114 dq=30.4 cnt=68 | c=57.6 rankC=40.3 need=410620 tD=0.71 人 pulse onMe | safe=220223 keep=Inf avail=-Inf chunkB=7648 pulseB=4589 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=12277 bal=228619 dq=18.6 cnt=85 | c=90.6 rankC=131.3 need=421370 tD=0.44 人 pulse crowdedHard | safe=220223 keep=Inf avail=-Inf chunkB=7648 pulseB=4589 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=398459 dq=32.3 cnt=86 | c=153.2 rankC=222.2 need=728747 tD=0.76 人 pulse crowdedHard | safe=220223 keep=Inf avail=-Inf chunkB=7648 pulseB=4589 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2515 riku_x B=36291 L=4170 d=8.7 nb=3 neut=0 cmds=62 noFull=1 shQ=9072 | m=0.900 worth=32.6 cheap=8.8 over=0 dMedOther=42.6 safe(-1)=220339
+    → Player 775#41[T3] terr=7143 bal=213114 dq=29.8 cnt=69 | c=55.9 rankC=39.2 need=406675 tD=0.70 人 pulse onMe | safe=220339 keep=Inf avail=-Inf chunkB=7258 pulseB=4355 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=12334 bal=228619 dq=18.5 cnt=85 | c=90.1 rankC=130.6 need=421911 tD=0.44 人 pulse crowdedHard | safe=220339 keep=Inf avail=-Inf chunkB=7258 pulseB=4355 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=398459 dq=32.3 cnt=85 | c=153.2 rankC=222.2 need=728747 tD=0.76 人 pulse crowdedHard | safe=220339 keep=Inf avail=-Inf chunkB=7258 pulseB=4355 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2520 riku_x B=35705 L=4099 d=8.7 nb=3 neut=0 cmds=62 noFull=1 shQ=8926 | m=0.900 worth=33.0 cheap=8.8 over=0 dMedOther=43.1 safe(-1)=223197
+    → Player 775#41[T3] terr=7214 bal=215628 dq=29.9 cnt=71 | c=55.7 rankC=39.0 need=409133 tD=0.69 人 pulse onMe | safe=223197 keep=Inf avail=-Inf chunkB=7141 pulseB=4285 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=12423 bal=231476 dq=18.6 cnt=84 | c=90.5 rankC=131.2 need=427783 tD=0.43 人 pulse crowdedHard | safe=223197 keep=Inf avail=-Inf chunkB=7141 pulseB=4285 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=403439 dq=32.7 cnt=84 | c=155.1 rankC=224.9 need=737623 tD=0.76 人 pulse crowdedHard | safe=223197 keep=Inf avail=-Inf chunkB=7141 pulseB=4285 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2525 riku_x B=33710 L=3955 d=8.5 nb=3 neut=0 cmds=62 noFull=1 shQ=8427 | m=0.900 worth=29.1 cheap=8.8 over=0 dMedOther=38.0 safe(-1)=220663
+    → Micha [🇩🇪]#47[T1] terr=12350 bal=359314 dq=29.1 cnt=83 | c=56.3 rankC=39.4 need=698372 tD=0.77 人 pulse onMe | safe=220663 keep=Inf avail=-Inf chunkB=6742 pulseB=4045 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=7358 bal=215628 dq=29.3 cnt=73 | c=72.1 rankC=72.1 need=405071 tD=0.77 人 pulse onMe | safe=220663 keep=Inf avail=-Inf chunkB=6742 pulseB=4045 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=12423 bal=231566 dq=18.6 cnt=83 | c=90.5 rankC=131.2 need=427970 tD=0.49 人 pulse crowdedHard | safe=220663 keep=Inf avail=-Inf chunkB=6742 pulseB=4045 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2530 riku_x B=29872 L=3643 d=8.2 nb=3 neut=0 cmds=62 noFull=1 shQ=7468 | m=0.900 worth=29.5 cheap=8.9 over=0 dMedOther=38.5 safe(-1)=220768
+    → Micha [🇩🇪]#47[T1] terr=12515 bal=363805 dq=29.1 cnt=82 | c=55.8 rankC=39.1 need=701863 tD=0.75 人 pulse onMe | safe=220768 keep=Inf avail=-Inf chunkB=5974 pulseB=3585 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=12423 bal=219350 dq=17.7 cnt=82 | c=45.2 rankC=45.2 need=418629 tD=0.46 人 pulse onMe | safe=220768 keep=Inf avail=-Inf chunkB=5974 pulseB=3585 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=7505 bal=218172 dq=29.1 cnt=74 | c=70.8 rankC=70.8 need=405567 tD=0.75 人 pulse onMe | safe=220768 keep=Inf avail=-Inf chunkB=5974 pulseB=3585 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2535 riku_x B=25825 L=3328 d=7.8 nb=3 neut=0 cmds=62 noFull=1 shQ=6456 | m=0.900 worth=29.5 cheap=8.9 over=0 dMedOther=38.5 safe(-1)=218512
+    → Micha [🇩🇪]#47[T1] terr=12676 bal=363805 dq=28.7 cnt=80 | c=54.8 rankC=38.3 need=697584 tD=0.74 人 pulse onMe | safe=218512 keep=Inf avail=-Inf chunkB=5165 pulseB=3099 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=12503 bal=219350 dq=17.5 cnt=80 | c=44.7 rankC=44.7 need=417160 tD=0.46 人 pulse onMe | safe=218512 keep=Inf avail=-Inf chunkB=5165 pulseB=3099 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=7579 bal=218172 dq=28.8 cnt=74 | c=69.8 rankC=69.8 need=403637 tD=0.75 人 pulse onMe | safe=218512 keep=Inf avail=-Inf chunkB=5165 pulseB=3099 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2540 riku_x B=19846 L=2859 d=6.9 nb=3 neut=0 cmds=62 noFull=1 shQ=4961 | m=0.900 worth=29.9 cheap=8.9 over=0 dMedOther=39.0 safe(-1)=217995
+    → Micha [🇩🇪]#47[T1] terr=12916 bal=368352 dq=28.5 cnt=79 | c=53.9 rankC=37.8 need=699879 tD=0.73 人 pulse onMe | safe=217995 keep=Inf avail=-Inf chunkB=3969 pulseB=2382 价高(c>=worth)→break hNb=3
+    → Player 625#31[T1] terr=12659 bal=222091 dq=17.5 cnt=77 | c=44.2 rankC=44.2 need=419337 tD=0.45 人 pulse onMe | safe=217995 keep=Inf avail=-Inf chunkB=3969 pulseB=2382 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=7652 bal=220848 dq=28.9 cnt=73 | c=135.9 rankC=197.0 need=405109 tD=0.74 人 pulse crowdedHard | safe=217995 keep=Inf avail=-Inf chunkB=3969 pulseB=2382 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2545 riku_x B=15778 L=2480 d=6.4 nb=3 neut=0 cmds=62 noFull=1 shQ=3944 | m=0.900 worth=29.9 cheap=9.1 over=0 dMedOther=39.0 safe(-1)=216219
+    → Player 625#31[T1] terr=12879 bal=222091 dq=17.2 cnt=71 | c=42.8 rankC=42.8 need=415992 tD=0.44 人 pulse onMe | safe=216219 keep=Inf avail=-Inf chunkB=3156 pulseB=1893 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=13075 bal=368352 dq=28.2 cnt=78 | c=70.7 rankC=70.7 need=696418 tD=0.72 人 pulse onMe | safe=216219 keep=Inf avail=-Inf chunkB=3156 pulseB=1893 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=7652 bal=220848 dq=28.9 cnt=65 | c=93.9 rankC=93.9 need=405109 tD=0.74 人 pulse crowdedHard | safe=216219 keep=Inf avail=-Inf chunkB=3156 pulseB=1893 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2550 riku_x B=13289 L=2248 d=5.9 nb=3 neut=0 cmds=62 noFull=1 shQ=3322 | m=0.900 worth=30.3 cheap=9.1 over=0 dMedOther=39.6 safe(-1)=197824
+    → Player 625#31[T1] terr=12879 bal=196822 dq=15.3 cnt=71 | c=39.2 rankC=39.2 need=381101 tD=0.39 人 pulse onMe | safe=197824 keep=Inf avail=-Inf chunkB=2658 pulseB=1595 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=13307 bal=372956 dq=28.0 cnt=76 | c=69.8 rankC=69.8 need=699936 tD=0.71 人 pulse onMe | safe=197824 keep=Inf avail=-Inf chunkB=2658 pulseB=1595 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=7652 bal=223498 dq=29.2 cnt=63 | c=95.0 rankC=95.0 need=409832 tD=0.74 人 pulse crowdedHard | safe=197824 keep=Inf avail=-Inf chunkB=2658 pulseB=1595 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2555 riku_x B=11886 L=2098 d=5.7 nb=3 neut=0 cmds=62 noFull=1 shQ=2971 | m=0.900 worth=30.3 cheap=9.1 over=0 dMedOther=39.6 safe(-1)=184624
+    → Player 625#31[T1] terr=12879 bal=196822 dq=15.3 cnt=66 | c=39.2 rankC=39.2 need=381101 tD=0.39 人 pulse onMe | safe=184624 keep=Inf avail=-Inf chunkB=2377 pulseB=1426 价高(c>=worth)→break hNb=3
+    → Micha [🇩🇪]#47[T1] terr=13457 bal=372956 dq=27.7 cnt=68 | c=68.8 rankC=68.8 need=697034 tD=0.70 人 pulse onMe | safe=184624 keep=Inf avail=-Inf chunkB=2377 pulseB=1426 价高(c>=worth)→break hNb=3
+    → Player 775#41[T3] terr=7652 bal=223498 dq=29.2 cnt=60 | c=95.1 rankC=95.1 need=409832 tD=0.74 人 pulse crowdedHard | safe=184624 keep=Inf avail=-Inf chunkB=2377 pulseB=1426 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令

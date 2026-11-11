@@ -1,0 +1,262 @@
+# A007 noah88 影子决策明细 t=3240~3600（策略 v27-team-c116-va.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 68 拍（t=3240~3600）
+#   只打无主地: 2 拍（t=3400~3405）
+#   出手打人/bot: 3 拍（t=3510~3520）；可用兵 97523~109124，一条指令下限(20%余额) 197280~199628，比值 49%~55%
+#   └ 「出手打人/bot」里：3 条对人/bot 的出兵共约 305679 兵；其中超过软上限（over=1）时发的 3 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 3 条约 305679 兵，c/worth = 1.39~1.79
+t=3240 noah88 B=707909 L=9416 d=75.2 nb=1 neut=0 cmds=39 noFull=1 shQ=154011 | m=0.900 worth=83.9 cheap=8.2 over=0 dMedOther=109.7 safe(-1)=686812
+    → Poleno#41[T3] terr=13475 bal=1236650 dq=91.8 cnt=65 | c=286.2 rankC=415.0 need=2224468 tD=0.84 人 pulse | safe=686812 keep=Inf avail=-Inf chunkB=141582 pulseB=141582 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3245 noah88 B=707909 L=9416 d=75.2 nb=1 neut=0 cmds=39 noFull=1 shQ=164716 | m=0.900 worth=83.9 cheap=8.2 over=0 dMedOther=109.7 safe(-1)=686812
+    → Poleno#41[T3] terr=13491 bal=1236650 dq=91.7 cnt=65 | c=285.9 rankC=414.5 need=2224492 tD=0.84 人 pulse | safe=686812 keep=Inf avail=-Inf chunkB=141582 pulseB=141582 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3250 noah88 B=716474 L=9416 d=76.1 nb=1 neut=0 cmds=39 noFull=1 shQ=175447 | m=0.900 worth=84.8 cheap=8.2 over=0 dMedOther=110.8 safe(-1)=695497
+    → Poleno#41[T3] terr=13515 bal=1252108 dq=92.6 cnt=65 | c=288.9 rankC=418.9 need=2252081 tD=0.84 人 pulse | safe=695497 keep=Inf avail=-Inf chunkB=143295 pulseB=143295 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3255 noah88 B=716474 L=9416 d=76.1 nb=1 neut=0 cmds=39 noFull=1 shQ=179118 | m=0.900 worth=84.8 cheap=8.2 over=0 dMedOther=110.8 safe(-1)=695497
+    → Poleno#41[T3] terr=13531 bal=1252108 dq=92.5 cnt=65 | c=288.6 rankC=418.4 need=2252105 tD=0.84 人 pulse | safe=695497 keep=Inf avail=-Inf chunkB=143295 pulseB=143295 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3260 noah88 B=725143 L=9416 d=77.0 nb=1 neut=0 cmds=39 noFull=1 shQ=181285 | m=0.900 worth=85.6 cheap=8.2 over=0 dMedOther=111.9 safe(-1)=704289
+    → Poleno#41[T3] terr=13548 bal=1267759 dq=93.6 cnt=65 | c=291.8 rankC=423.1 need=2279928 tD=0.84 人 pulse | safe=704289 keep=Inf avail=-Inf chunkB=145029 pulseB=145029 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3265 noah88 B=725143 L=9416 d=77.0 nb=1 neut=0 cmds=39 noFull=1 shQ=181285 | m=0.900 worth=85.6 cheap=8.2 over=0 dMedOther=111.9 safe(-1)=734448
+    → Poleno#41[T3] terr=13551 bal=1392983 dq=102.8 cnt=65 | c=320.2 rankC=464.2 need=2503236 tD=0.92 人 pulse | safe=734448 keep=Inf avail=-Inf chunkB=145029 pulseB=145029 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3270 noah88 B=733917 L=9416 d=77.9 nb=1 neut=0 cmds=39 noFull=1 shQ=183479 | m=0.900 worth=86.4 cheap=8.2 over=0 dMedOther=112.9 safe(-1)=734448
+    → Poleno#41[T3] terr=13551 bal=1409559 dq=104.0 cnt=65 | c=323.9 rankC=469.7 need=2532782 tD=0.92 人 pulse | safe=734448 keep=Inf avail=-Inf chunkB=146783 pulseB=146783 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3275 noah88 B=733917 L=9416 d=77.9 nb=1 neut=0 cmds=39 noFull=1 shQ=183479 | m=0.900 worth=86.4 cheap=8.2 over=0 dMedOther=112.9 safe(-1)=734448
+    → Poleno#41[T3] terr=13551 bal=1409559 dq=104.0 cnt=65 | c=323.9 rankC=469.7 need=2532782 tD=0.92 人 pulse | safe=734448 keep=Inf avail=-Inf chunkB=146783 pulseB=146783 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3280 noah88 B=742797 L=9416 d=78.9 nb=1 neut=0 cmds=39 noFull=1 shQ=185699 | m=0.900 worth=87.2 cheap=8.2 over=0 dMedOther=114.0 safe(-1)=734448
+    → Poleno#41[T3] terr=13551 bal=1425768 dq=105.2 cnt=65 | c=226.0 rankC=226.0 need=2561673 tD=0.92 人 pulse | safe=734448 keep=Inf avail=-Inf chunkB=148559 pulseB=148559 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3285 noah88 B=742797 L=9416 d=78.9 nb=1 neut=0 cmds=39 noFull=1 shQ=185699 | m=0.900 worth=87.2 cheap=8.2 over=0 dMedOther=114.0 safe(-1)=734448
+    → Poleno#41[T3] terr=13551 bal=1425768 dq=105.2 cnt=65 | c=226.0 rankC=226.0 need=2561673 tD=0.92 人 pulse | safe=734448 keep=Inf avail=-Inf chunkB=148559 pulseB=148559 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3290 noah88 B=751784 L=9416 d=79.8 nb=1 neut=0 cmds=39 noFull=1 shQ=187946 | m=0.900 worth=86.9 cheap=8.2 over=0 dMedOther=113.6 safe(-1)=734448
+    → Poleno#41[T3] terr=13551 bal=1441736 dq=106.4 cnt=65 | c=228.5 rankC=228.5 need=2590135 tD=0.94 人 pulse | safe=734448 keep=Inf avail=-Inf chunkB=150357 pulseB=150357 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3295 noah88 B=751784 L=9416 d=79.8 nb=1 neut=0 cmds=39 noFull=1 shQ=187946 | m=0.900 worth=86.0 cheap=8.2 over=0 dMedOther=112.4 safe(-1)=704739
+    → Poleno#41[T3] terr=13551 bal=1268560 dq=93.6 cnt=65 | c=151.0 rankC=105.7 need=2281459 tD=0.83 人 pulse | safe=704739 keep=Inf avail=-Inf chunkB=150357 pulseB=150357 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3300 noah88 B=770296 L=9416 d=81.8 nb=1 neut=0 cmds=39 noFull=1 shQ=190276 | m=0.900 worth=87.1 cheap=8.2 over=0 dMedOther=113.8 safe(-1)=721304
+    → Poleno#41[T3] terr=13705 bal=1298045 dq=94.7 cnt=66 | c=152.8 rankC=106.9 need=2334178 tD=0.83 人 pulse | safe=721304 keep=Inf avail=-Inf chunkB=154059 pulseB=154059 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3305 noah88 B=770296 L=9416 d=81.8 nb=1 neut=0 cmds=39 noFull=1 shQ=192574 | m=0.900 worth=86.6 cheap=8.2 over=0 dMedOther=113.2 safe(-1)=721304
+    → Poleno#41[T3] terr=13864 bal=1298045 dq=93.6 cnt=67 | c=151.0 rankC=105.7 need=2334383 tD=0.83 人 pulse | safe=721304 keep=Inf avail=-Inf chunkB=154059 pulseB=154059 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3310 noah88 B=779616 L=9416 d=82.8 nb=1 neut=0 cmds=39 noFull=1 shQ=194904 | m=0.900 worth=87.4 cheap=8.2 over=0 dMedOther=114.2 safe(-1)=730419
+    → Poleno#41[T3] terr=14107 bal=1314270 dq=93.2 cnt=75 | c=200.3 rankC=200.3 need=2363765 tD=0.82 人 pulse | safe=730419 keep=Inf avail=-Inf chunkB=155923 pulseB=155923 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3315 noah88 B=779616 L=9416 d=82.8 nb=1 neut=0 cmds=39 noFull=1 shQ=194904 | m=0.900 worth=87.4 cheap=8.2 over=0 dMedOther=114.2 safe(-1)=730458
+    → Poleno#41[T3] terr=14184 bal=1314340 dq=92.7 cnt=77 | c=199.2 rankC=199.2 need=2363906 tD=0.81 人 pulse | safe=730458 keep=Inf avail=-Inf chunkB=155923 pulseB=155923 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3320 noah88 B=789413 L=9416 d=83.8 nb=1 neut=0 cmds=39 noFull=1 shQ=197353 | m=0.900 worth=88.1 cheap=8.2 over=0 dMedOther=115.2 safe(-1)=734448
+    → Poleno#41[T3] terr=14184 bal=1330900 dq=93.8 cnt=77 | c=201.7 rankC=201.7 need=2393422 tD=0.81 人 pulse | safe=734448 keep=Inf avail=-Inf chunkB=157883 pulseB=157883 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3325 noah88 B=789413 L=9416 d=83.8 nb=1 neut=0 cmds=39 noFull=1 shQ=197353 | m=0.900 worth=88.1 cheap=8.2 over=0 dMedOther=115.2 safe(-1)=734448
+    → Poleno#41[T3] terr=14184 bal=1330900 dq=93.8 cnt=77 | c=201.7 rankC=201.7 need=2393422 tD=0.81 人 pulse | safe=734448 keep=Inf avail=-Inf chunkB=157883 pulseB=157883 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3330 noah88 B=798964 L=9416 d=84.9 nb=1 neut=0 cmds=39 noFull=1 shQ=199741 | m=0.900 worth=88.9 cheap=8.2 over=0 dMedOther=116.2 safe(-1)=734448
+    → Poleno#41[T3] terr=14184 bal=1347669 dq=95.0 cnt=77 | c=204.2 rankC=204.2 need=2423310 tD=0.82 人 pulse | safe=734448 keep=Inf avail=-Inf chunkB=159793 pulseB=159793 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3335 noah88 B=798964 L=9416 d=84.9 nb=1 neut=0 cmds=39 noFull=1 shQ=199741 | m=0.900 worth=88.9 cheap=8.2 over=0 dMedOther=116.2 safe(-1)=734448
+    → Poleno#41[T3] terr=14184 bal=1347669 dq=95.0 cnt=77 | c=204.2 rankC=204.2 need=2423310 tD=0.82 人 pulse | safe=734448 keep=Inf avail=-Inf chunkB=159793 pulseB=159793 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3340 noah88 B=808631 L=9416 d=85.9 nb=1 neut=0 cmds=39 noFull=1 shQ=202157 | m=0.900 worth=89.6 cheap=8.2 over=0 dMedOther=117.1 safe(-1)=734448
+    → Poleno#41[T3] terr=14184 bal=1364649 dq=96.2 cnt=77 | c=206.8 rankC=206.8 need=2453575 tD=0.82 人 pulse | safe=734448 keep=Inf avail=-Inf chunkB=161726 pulseB=161726 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3345 noah88 B=808631 L=9416 d=85.9 nb=1 neut=0 cmds=39 noFull=1 shQ=202157 | m=0.900 worth=89.6 cheap=8.2 over=0 dMedOther=117.1 safe(-1)=734448
+    → Poleno#41[T3] terr=14184 bal=1364649 dq=96.2 cnt=77 | c=206.8 rankC=206.8 need=2453575 tD=0.82 人 pulse | safe=734448 keep=Inf avail=-Inf chunkB=161726 pulseB=161726 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3350 noah88 B=818415 L=9416 d=86.9 nb=1 neut=0 cmds=39 noFull=1 shQ=204603 | m=0.900 worth=90.3 cheap=8.2 over=0 dMedOther=118.1 safe(-1)=734448
+    → Poleno#41[T3] terr=14184 bal=1381843 dq=97.4 cnt=77 | c=209.3 rankC=209.3 need=2484221 tD=0.83 人 pulse | safe=734448 keep=Inf avail=-Inf chunkB=163683 pulseB=163683 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3355 noah88 B=818415 L=9416 d=86.9 nb=1 neut=0 cmds=39 noFull=1 shQ=204603 | m=0.900 worth=90.3 cheap=8.2 over=0 dMedOther=118.1 safe(-1)=734448
+    → Poleno#41[T3] terr=14184 bal=1381843 dq=97.4 cnt=77 | c=209.3 rankC=209.3 need=2484221 tD=0.83 人 pulse | safe=734448 keep=Inf avail=-Inf chunkB=163683 pulseB=163683 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3360 noah88 B=828317 L=9416 d=88.0 nb=1 neut=0 cmds=39 noFull=1 shQ=207079 | m=0.900 worth=91.0 cheap=8.2 over=0 dMedOther=119.0 safe(-1)=734448
+    → Poleno#41[T3] terr=14184 bal=1399254 dq=98.7 cnt=77 | c=212.0 rankC=212.0 need=2515254 tD=0.83 人 pulse | safe=734448 keep=Inf avail=-Inf chunkB=165663 pulseB=165663 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3365 noah88 B=828317 L=9416 d=88.0 nb=1 neut=0 cmds=39 noFull=1 shQ=207079 | m=0.900 worth=90.1 cheap=8.2 over=0 dMedOther=117.8 safe(-1)=683740
+    → Poleno#41[T3] terr=14184 bal=1231181 dq=86.8 cnt=77 | c=140.1 rankC=98.1 need=2215687 tD=0.74 人 pulse | safe=683740 keep=Inf avail=-Inf chunkB=165663 pulseB=165663 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3370 noah88 B=839047 L=9416 d=89.1 nb=1 neut=0 cmds=39 noFull=1 shQ=209761 | m=0.900 worth=90.8 cheap=8.2 over=0 dMedOther=118.7 safe(-1)=692454
+    → Poleno#41[T3] terr=14322 bal=1246693 dq=87.0 cnt=80 | c=140.5 rankC=98.3 need=2243603 tD=0.73 人 pulse | safe=692454 keep=Inf avail=-Inf chunkB=167809 pulseB=167809 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3375 noah88 B=839047 L=9416 d=89.1 nb=1 neut=0 cmds=39 noFull=1 shQ=209761 | m=0.900 worth=90.8 cheap=8.2 over=0 dMedOther=118.7 safe(-1)=692454
+    → Poleno#41[T3] terr=14440 bal=1246693 dq=86.3 cnt=81 | c=139.3 rankC=97.5 need=2243719 tD=0.73 人 pulse | safe=692454 keep=Inf avail=-Inf chunkB=167809 pulseB=167809 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3380 noah88 B=849199 L=9416 d=90.2 nb=1 neut=0 cmds=39 noFull=1 shQ=212299 | m=0.900 worth=91.5 cheap=8.2 over=0 dMedOther=119.6 safe(-1)=701279
+    → Poleno#41[T3] terr=14579 bal=1262401 dq=86.6 cnt=83 | c=186.3 rankC=186.3 need=2272016 tD=0.72 人 pulse | safe=701279 keep=Inf avail=-Inf chunkB=169840 pulseB=169840 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3385 noah88 B=849199 L=9416 d=90.2 nb=1 neut=0 cmds=39 noFull=1 shQ=212299 | m=0.900 worth=91.5 cheap=8.2 over=0 dMedOther=119.6 safe(-1)=701279
+    → Poleno#41[T3] terr=14651 bal=1262401 dq=86.2 cnt=84 | c=185.3 rankC=185.3 need=2272124 tD=0.72 人 pulse | safe=701279 keep=Inf avail=-Inf chunkB=169840 pulseB=169840 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3390 noah88 B=859474 L=9416 d=91.3 nb=1 neut=0 cmds=39 noFull=1 shQ=214868 | m=0.900 worth=92.2 cheap=8.2 over=0 dMedOther=120.5 safe(-1)=710215
+    → Poleno#41[T3] terr=14739 bal=1278307 dq=86.7 cnt=88 | c=186.5 rankC=186.5 need=2300607 tD=0.72 人 pulse | safe=710215 keep=Inf avail=-Inf chunkB=171895 pulseB=171895 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3395 noah88 B=859474 L=9416 d=91.3 nb=1 neut=0 cmds=39 noFull=1 shQ=214868 | m=0.900 worth=92.2 cheap=8.2 over=0 dMedOther=120.5 safe(-1)=710221
+    → Poleno#41[T3] terr=14764 bal=1278317 dq=86.6 cnt=89 | c=186.2 rankC=186.2 need=2300570 tD=0.72 人 pulse | safe=710221 keep=Inf avail=-Inf chunkB=171895 pulseB=171895 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3400 noah88 B=879289 L=9416 d=93.4 nb=1 neut=60 cmds=40 noFull=1 shQ=217527 | m=0.900 worth=93.6 cheap=8.2 over=0 dMedOther=122.3 safe(-1)=727563
+    → Poleno#41[T3] terr=14764 bal=1309187 dq=88.7 cnt=89 | c=190.6 rankC=190.6 need=2355592 tD=0.72 人 pulse | safe=727563 keep=Inf avail=-Inf chunkB=175858 pulseB=175858 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 41216 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=3405 noah88 B=879289 L=9416 d=93.4 nb=1 neut=60 cmds=41 noFull=1 shQ=219822 | m=0.900 worth=93.6 cheap=8.2 over=0 dMedOther=122.3 safe(-1)=727563
+    → Poleno#41[T3] terr=14764 bal=1309187 dq=88.7 cnt=89 | c=190.6 rankC=190.6 need=2355592 tD=0.72 人 pulse | safe=727563 keep=Inf avail=-Inf chunkB=175858 pulseB=175858 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 attack pct=47 → 无主地（约 41216 兵） 〔send:484<send:1827<send:3865<expandNeutral:952〕
+t=3410 noah88 B=837785 L=9416 d=89.0 nb=1 neut=60 cmds=41 noFull=1 shQ=0 | m=0.900 worth=94.2 cheap=8.2 over=0 dMedOther=123.2 safe(-1)=647372
+    → Poleno#41[T3] terr=14764 bal=1166446 dq=79.0 cnt=89 | c=170.1 rankC=170.1 need=2101175 tD=0.64 人 pulse | safe=647372 keep=Inf avail=-Inf chunkB=167557 pulseB=167557 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3415 noah88 B=837785 L=9416 d=89.0 nb=1 neut=60 cmds=41 noFull=1 shQ=12670 | m=0.900 worth=94.2 cheap=8.2 over=0 dMedOther=123.2 safe(-1)=647372
+    → Poleno#41[T3] terr=14764 bal=1166446 dq=79.0 cnt=89 | c=170.1 rankC=170.1 need=2101175 tD=0.64 人 pulse | safe=647372 keep=Inf avail=-Inf chunkB=167557 pulseB=167557 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3420 noah88 B=798833 L=9526 d=83.9 nb=2 neut=46 cmds=41 noFull=1 shQ=24779 | m=0.900 worth=94.8 cheap=8.2 over=0 dMedOther=124.0 safe(-1)=743028
+    → Poleno#41[T3] terr=14794 bal=1181143 dq=79.8 cnt=97 | c=149.3 rankC=149.3 need=2127472 tD=0.64 人 pulse | safe=743028 keep=Inf avail=-Inf chunkB=159767 pulseB=159767 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19742 bal=1818377 dq=92.1 cnt=3 | c=624.3 rankC=905.3 need=3270685 tD=0.74 人 pulse crowdedHard | safe=743028 keep=Inf avail=-Inf chunkB=159767 pulseB=159767 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3425 noah88 B=798833 L=9570 d=83.5 nb=2 neut=40 cmds=41 noFull=1 shQ=36859 | m=0.900 worth=94.8 cheap=8.2 over=0 dMedOther=124.0 safe(-1)=746460
+    → Poleno#41[T3] terr=14814 bal=1181143 dq=79.7 cnt=99 | c=149.1 rankC=149.1 need=2127502 tD=0.64 人 pulse | safe=746460 keep=Inf avail=-Inf chunkB=159767 pulseB=159767 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19811 bal=1818377 dq=91.8 cnt=6 | c=622.1 rankC=902.0 need=3270821 tD=0.74 人 pulse crowdedHard | safe=746460 keep=Inf avail=-Inf chunkB=159767 pulseB=159767 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3430 noah88 B=808498 L=9642 d=83.9 nb=2 neut=25 cmds=41 noFull=1 shQ=48968 | m=0.900 worth=95.2 cheap=8.2 over=0 dMedOther=124.4 safe(-1)=752076
+    → Poleno#41[T3] terr=14818 bal=1196025 dq=80.7 cnt=100 | c=150.9 rankC=150.9 need=2154034 tD=0.65 人 pulse | safe=752076 keep=Inf avail=-Inf chunkB=161700 pulseB=161700 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19888 bal=1842015 dq=92.6 cnt=11 | c=627.5 rankC=909.9 need=3312970 tD=0.74 人 pulse crowdedHard | safe=752076 keep=Inf avail=-Inf chunkB=161700 pulseB=161700 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3435 noah88 B=808498 L=9687 d=83.5 nb=2 neut=18 cmds=41 noFull=1 shQ=61193 | m=0.900 worth=90.7 cheap=8.2 over=0 dMedOther=118.6 safe(-1)=755586
+    → Poleno#41[T3] terr=14818 bal=1337830 dq=90.3 cnt=100 | c=168.6 rankC=168.6 need=2406789 tD=0.76 人 pulse | safe=755586 keep=Inf avail=-Inf chunkB=161700 pulseB=161700 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19920 bal=1842015 dq=92.5 cnt=13 | c=626.4 rankC=908.3 need=3313018 tD=0.78 人 pulse crowdedHard | safe=755586 keep=Inf avail=-Inf chunkB=161700 pulseB=161700 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3440 noah88 B=818280 L=9705 d=84.3 nb=2 neut=14 cmds=41 noFull=1 shQ=73448 | m=0.900 worth=91.4 cheap=8.2 over=0 dMedOther=119.5 safe(-1)=756990
+    → Poleno#41[T3] terr=14818 bal=1354686 dq=91.4 cnt=100 | c=170.7 rankC=170.7 need=2436833 tD=0.77 人 pulse | safe=756990 keep=Inf avail=-Inf chunkB=163656 pulseB=163656 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19958 bal=1865961 dq=93.5 cnt=15 | c=633.2 rankC=918.2 need=3355822 tD=0.78 人 pulse crowdedHard | safe=756990 keep=Inf avail=-Inf chunkB=163656 pulseB=163656 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3445 noah88 B=818280 L=9732 d=84.1 nb=2 neut=10 cmds=41 noFull=1 shQ=85823 | m=0.900 worth=90.9 cheap=8.2 over=0 dMedOther=118.9 safe(-1)=759096
+    → Poleno#41[T3] terr=14818 bal=1354686 dq=91.4 cnt=100 | c=170.7 rankC=170.7 need=2436833 tD=0.77 人 pulse | safe=759096 keep=Inf avail=-Inf chunkB=163656 pulseB=163656 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19977 bal=1865961 dq=93.4 cnt=18 | c=632.5 rankC=917.2 need=3355817 tD=0.79 人 pulse crowdedHard | safe=759096 keep=Inf avail=-Inf chunkB=163656 pulseB=163656 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3450 noah88 B=828727 L=9748 d=85.0 nb=2 neut=0 cmds=41 noFull=1 shQ=98229 | m=0.900 worth=89.8 cheap=8.2 over=0 dMedOther=117.4 safe(-1)=760344
+    → Poleno#41[T3] terr=14818 bal=1371755 dq=92.6 cnt=100 | c=172.8 rankC=172.8 need=2467257 tD=0.79 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=165745 pulseB=165745 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19997 bal=1890218 dq=94.5 cnt=27 | c=355.4 rankC=515.3 need=3399082 tD=0.81 人 pulse crowdedHard | safe=760344 keep=Inf avail=-Inf chunkB=165745 pulseB=165745 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3455 noah88 B=908550 L=9748 d=93.2 nb=2 neut=0 cmds=41 noFull=1 shQ=111485 | m=0.900 worth=89.8 cheap=8.2 over=0 dMedOther=117.4 safe(-1)=760344
+    → Poleno#41[T3] terr=14818 bal=1371755 dq=92.6 cnt=100 | c=172.9 rankC=172.9 need=2467257 tD=0.79 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=181710 pulseB=181710 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19997 bal=1936852 dq=96.9 cnt=27 | c=337.2 rankC=488.9 need=3482202 tD=0.83 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=181710 pulseB=181710 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3460 noah88 B=919543 L=9748 d=94.3 nb=2 neut=0 cmds=41 noFull=1 shQ=125258 | m=0.900 worth=90.5 cheap=8.2 over=0 dMedOther=118.3 safe(-1)=760344
+    → Poleno#41[T3] terr=14818 bal=1389039 dq=93.7 cnt=100 | c=175.0 rankC=175.0 need=2498064 tD=0.79 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=183909 pulseB=183909 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19997 bal=1962031 dq=98.1 cnt=27 | c=341.5 rankC=495.2 need=3527080 tD=0.83 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=183909 pulseB=183909 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3465 noah88 B=919543 L=9748 d=94.3 nb=2 neut=0 cmds=41 noFull=1 shQ=139163 | m=0.900 worth=90.5 cheap=8.2 over=0 dMedOther=118.3 safe(-1)=760344
+    → Poleno#41[T3] terr=14818 bal=1389039 dq=93.7 cnt=100 | c=175.0 rankC=175.0 need=2498064 tD=0.79 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=183909 pulseB=183909 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19997 bal=1962031 dq=98.1 cnt=27 | c=341.5 rankC=495.2 need=3527080 tD=0.83 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=183909 pulseB=183909 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3470 noah88 B=930669 L=9748 d=95.5 nb=2 neut=0 cmds=41 noFull=1 shQ=153102 | m=0.900 worth=86.6 cheap=8.2 over=0 dMedOther=113.2 safe(-1)=760344
+    → Poleno#41[T3] terr=14818 bal=1406540 dq=94.9 cnt=100 | c=99.9 rankC=49.9 need=2529258 tD=0.84 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=186134 pulseB=186134 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19969 bal=1983085 dq=99.3 cnt=27 | c=345.7 rankC=501.3 need=3563722 tD=0.88 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=186134 pulseB=186134 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3475 noah88 B=930669 L=9748 d=95.5 nb=2 neut=0 cmds=41 noFull=1 shQ=167177 | m=0.900 worth=86.4 cheap=8.2 over=0 dMedOther=113.0 safe(-1)=760344
+    → Poleno#41[T3] terr=14750 bal=1396214 dq=94.7 cnt=100 | c=98.9 rankC=49.5 need=2508607 tD=0.84 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=186134 pulseB=186134 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19969 bal=1983085 dq=99.3 cnt=27 | c=345.7 rankC=501.3 need=3563863 tD=0.88 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=186134 pulseB=186134 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3480 noah88 B=941930 L=9748 d=96.6 nb=2 neut=0 cmds=41 noFull=1 shQ=181286 | m=0.900 worth=87.0 cheap=8.2 over=0 dMedOther=113.6 safe(-1)=760344
+    → Poleno#41[T3] terr=14607 bal=1224718 dq=83.8 cnt=100 | c=87.7 rankC=43.9 need=2198809 tD=0.74 人 pulse bleeding | safe=760344 keep=Inf avail=-Inf chunkB=188386 pulseB=188386 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19969 bal=2008865 dq=100.6 cnt=27 | c=350.2 rankC=507.7 need=3609946 tD=0.89 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=188386 pulseB=188386 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3485 noah88 B=941930 L=9748 d=96.6 nb=2 neut=0 cmds=41 noFull=1 shQ=195531 | m=0.900 worth=87.0 cheap=8.2 over=0 dMedOther=112.9 safe(-1)=760344
+    → Poleno#41[T3] terr=14607 bal=1224718 dq=83.8 cnt=100 | c=157.1 rankC=157.1 need=2198928 tD=0.74 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=188386 pulseB=188386 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19969 bal=2008865 dq=100.6 cnt=27 | c=350.1 rankC=507.7 need=3610088 tD=0.89 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=188386 pulseB=188386 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3490 noah88 B=953327 L=9748 d=97.8 nb=2 neut=0 cmds=41 noFull=1 shQ=209810 | m=0.900 worth=88.0 cheap=8.2 over=0 dMedOther=113.5 safe(-1)=760344
+    → Poleno#41[T3] terr=14750 bal=1240149 dq=84.1 cnt=100 | c=157.3 rankC=157.3 need=2231030 tD=0.74 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=190665 pulseB=190665 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19969 bal=2034779 dq=101.9 cnt=27 | c=354.6 rankC=514.2 need=3656559 tD=0.90 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=190665 pulseB=190665 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3495 noah88 B=953327 L=9748 d=97.8 nb=2 neut=0 cmds=41 noFull=1 shQ=224225 | m=0.900 worth=88.0 cheap=8.2 over=0 dMedOther=113.5 safe(-1)=760344
+    → Poleno#41[T3] terr=14818 bal=1240173 dq=83.7 cnt=100 | c=156.5 rankC=156.5 need=2232724 tD=0.74 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=190665 pulseB=190665 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19969 bal=2034779 dq=101.9 cnt=27 | c=354.6 rankC=514.2 need=3656703 tD=0.90 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=190665 pulseB=190665 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3500 noah88 B=974610 L=9748 d=100.0 nb=2 neut=0 cmds=41 noFull=1 shQ=238705 | m=0.900 worth=90.0 cheap=8.2 over=0 dMedOther=115.5 safe(-1)=760344
+    → Poleno#41[T3] terr=14818 bal=1270617 dq=85.7 cnt=100 | c=160.3 rankC=160.3 need=2286988 tD=0.74 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=194922 pulseB=194922 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19969 bal=2080386 dq=104.2 cnt=27 | c=362.5 rankC=525.6 need=3737992 tD=0.90 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=194922 pulseB=194922 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3505 noah88 B=974610 L=9748 d=100.0 nb=2 neut=0 cmds=41 noFull=1 shQ=243652 | m=0.900 worth=90.0 cheap=8.2 over=0 dMedOther=115.5 safe(-1)=760344
+    → Poleno#41[T3] terr=14818 bal=1270617 dq=85.7 cnt=100 | c=160.3 rankC=160.3 need=2286988 tD=0.74 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=194922 pulseB=194922 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19969 bal=2080386 dq=104.2 cnt=27 | c=362.5 rankC=525.6 need=3737992 tD=0.90 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=194922 pulseB=194922 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3510 noah88 B=986402 L=9748 d=101.2 nb=2 neut=0 cmds=42 noFull=1 shQ=246561 | m=0.900 worth=91.1 cheap=8.2 over=1 dMedOther=116.5 safe(-1)=760344
+    → [Off] Skull#2[T5] terr=19969 bal=1809016 dq=90.6 cnt=27 | c=163.3 rankC=114.3 need=3254308 tD=0.78 人 pulse | safe=760344 keep=877320 avail=97523 chunkB=197280 pulseB=197280  x=97523 hNb=2
+    → Poleno#41[T3] terr=14818 bal=1286626 dq=86.8 cnt=100 | c=162.3 rankC=162.3 need=2315522 tD=0.75 人 pulse | safe=760344 keep=877320 avail=97523 chunkB=197280 pulseB=197280  x=97523 hNb=2
+    ⇒ 影子指令 attack pct=101 → [Off] Skull#2[T5]（约 98254 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=3515 noah88 B=986402 L=9748 d=101.2 nb=2 neut=0 cmds=43 noFull=1 shQ=246600 | m=0.900 worth=91.1 cheap=8.2 over=1 dMedOther=116.5 safe(-1)=760344
+    → [Off] Skull#2[T5] terr=20004 bal=1809016 dq=90.4 cnt=27 | c=127.2 rankC=89.0 need=3254328 tD=0.78 人 pulse | safe=760344 keep=877320 avail=97523 chunkB=197280 pulseB=197280  x=97523 hNb=2
+    → Poleno#41[T3] terr=14818 bal=1286626 dq=86.8 cnt=100 | c=208.1 rankC=208.1 need=2315522 tD=0.75 人 pulse | safe=760344 keep=877320 avail=97523 chunkB=197280 pulseB=197280  x=97523 hNb=2
+    ⇒ 影子指令 attack pct=101 → [Off] Skull#2[T5]（约 98254 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=3520 noah88 B=998140 L=9748 d=102.4 nb=2 neut=0 cmds=44 noFull=1 shQ=249469 | m=0.900 worth=92.2 cheap=8.2 over=1 dMedOther=117.4 safe(-1)=760344
+    → [Off] Skull#2[T5] terr=20081 bal=1832533 dq=91.3 cnt=27 | c=128.3 rankC=89.8 need=3296392 tD=0.78 人 pulse | safe=760344 keep=877320 avail=109124 chunkB=199628 pulseB=199628  x=109124 hNb=2
+    → Poleno#41[T3] terr=14818 bal=1302837 dq=87.9 cnt=100 | c=210.7 rankC=210.7 need=2344417 tD=0.75 人 pulse | safe=760344 keep=877320 avail=109124 chunkB=199628 pulseB=199628  x=109124 hNb=2
+    ⇒ 影子指令 attack pct=111 → [Off] Skull#2[T5]（约 109171 兵） 〔send:484<send:1827<send:3865<buyLand:5606〕
+t=3525 noah88 B=887612 L=9748 d=91.1 nb=2 neut=0 cmds=44 noFull=1 shQ=131126 | m=0.900 worth=89.8 cheap=8.2 over=0 dMedOther=117.4 safe(-1)=760344
+    → [Off] Skull#2[T5] terr=20214 bal=1832533 dq=90.7 cnt=27 | c=123.6 rankC=86.5 need=3197199 tD=0.77 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=177522 pulseB=177522 价高(c>=worth)→break hNb=2
+    → Poleno#41[T3] terr=14818 bal=1146345 dq=77.4 cnt=100 | c=139.2 rankC=97.5 need=2065484 tD=0.66 人 pulse | safe=760344 keep=Inf avail=-Inf chunkB=177522 pulseB=177522 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3530 noah88 B=701667 L=9775 d=71.8 nb=2 neut=0 cmds=44 noFull=1 shQ=143400 | m=0.900 worth=83.9 cheap=8.2 over=0 dMedOther=109.7 safe(-1)=762450
+    → [Off] Skull#2[T5] terr=20286 bal=1852582 dq=91.3 cnt=26 | c=118.0 rankC=82.6 need=3066118 tD=0.83 人 pulse | safe=762450 keep=Inf avail=-Inf chunkB=140333 pulseB=140333 价高(c>=worth)→break hNb=2
+    → Poleno#41[T3] terr=14885 bal=1160788 dq=78.0 cnt=101 | c=151.4 rankC=106.0 need=2091300 tD=0.71 人 pulse crowdedHard | safe=762450 keep=Inf avail=-Inf chunkB=140333 pulseB=140333 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3535 noah88 B=701667 L=9828 d=71.4 nb=2 neut=0 cmds=44 noFull=1 shQ=154010 | m=0.900 worth=84.7 cheap=8.2 over=0 dMedOther=110.7 safe(-1)=766584
+    → [Off] Skull#2[T5] terr=20399 bal=1844873 dq=90.4 cnt=26 | c=117.5 rankC=82.2 need=3068103 tD=0.82 人 pulse | safe=766584 keep=Inf avail=-Inf chunkB=140333 pulseB=140333 价高(c>=worth)→break hNb=2
+    → Poleno#41[T3] terr=15078 bal=1160788 dq=77.0 cnt=102 | c=138.4 rankC=96.9 need=2091616 tD=0.70 人 pulse | safe=766584 keep=Inf avail=-Inf chunkB=140333 pulseB=140333 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3540 noah88 B=710157 L=9854 d=72.1 nb=2 neut=0 cmds=44 noFull=1 shQ=164646 | m=0.900 worth=85.4 cheap=8.2 over=0 dMedOther=111.7 safe(-1)=768612
+    → [Off] Skull#2[T5] terr=20496 bal=1865240 dq=91.0 cnt=27 | c=118.6 rankC=83.0 need=3112008 tD=0.81 人 pulse | safe=768612 keep=Inf avail=-Inf chunkB=142031 pulseB=142031 价高(c>=worth)→break hNb=2
+    → Poleno#41[T3] terr=15202 bal=1175530 dq=77.3 cnt=103 | c=268.7 rankC=389.7 need=2118078 tD=0.69 人 pulse | safe=768612 keep=Inf avail=-Inf chunkB=142031 pulseB=142031 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3545 noah88 B=710157 L=9905 d=71.7 nb=2 neut=0 cmds=44 noFull=1 shQ=175386 | m=0.900 worth=85.3 cheap=8.2 over=0 dMedOther=111.5 safe(-1)=772590
+    → [Off] Skull#2[T5] terr=20638 bal=1857841 dq=90.0 cnt=28 | c=157.1 rankC=157.1 need=3113997 tD=0.81 人 pulse | safe=772590 keep=Inf avail=-Inf chunkB=142031 pulseB=142031 价高(c>=worth)→break hNb=2
+    → Poleno#41[T3] terr=15377 bal=1175530 dq=76.4 cnt=105 | c=265.7 rankC=385.2 need=2118313 tD=0.69 人 pulse | safe=772590 keep=Inf avail=-Inf chunkB=142031 pulseB=142031 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3550 noah88 B=718749 L=9954 d=72.2 nb=2 neut=0 cmds=44 noFull=1 shQ=179687 | m=0.900 worth=84.3 cheap=8.2 over=0 dMedOther=110.3 safe(-1)=776412
+    → [Off] Skull#2[T5] terr=20714 bal=1875053 dq=90.5 cnt=29 | c=158.8 rankC=158.8 need=3158274 tD=0.82 人 pulse | safe=776412 keep=Inf avail=-Inf chunkB=143750 pulseB=143750 价高(c>=worth)→break hNb=2
+    → Poleno#41[T3] terr=15488 bal=1190459 dq=76.9 cnt=107 | c=267.1 rankC=387.3 need=2145061 tD=0.70 人 pulse | safe=776412 keep=Inf avail=-Inf chunkB=143750 pulseB=143750 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3555 noah88 B=718749 L=9978 d=72.0 nb=2 neut=0 cmds=44 noFull=1 shQ=179687 | m=0.900 worth=84.1 cheap=8.2 over=0 dMedOther=109.9 safe(-1)=778284
+    → [Off] Skull#2[T5] terr=20751 bal=1871632 dq=90.2 cnt=27 | c=158.6 rankC=158.6 need=3159245 tD=0.82 人 pulse | safe=778284 keep=Inf avail=-Inf chunkB=143750 pulseB=143750 价高(c>=worth)→break hNb=2
+    → Poleno#41[T3] terr=15488 bal=1190478 dq=76.9 cnt=110 | c=267.0 rankC=387.2 need=2145095 tD=0.70 人 pulse | safe=778284 keep=Inf avail=-Inf chunkB=143750 pulseB=143750 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3560 noah88 B=727445 L=10018 d=72.6 nb=2 neut=0 cmds=44 noFull=1 shQ=181861 | m=0.900 worth=84.4 cheap=8.2 over=0 dMedOther=110.3 safe(-1)=781404
+    → [Off] Skull#2[T5] terr=20711 bal=1890304 dq=91.3 cnt=24 | c=126.4 rankC=63.2 need=3203043 tD=0.83 人 pulse crowdedHard | safe=781404 keep=Inf avail=-Inf chunkB=145489 pulseB=145489 价高(c>=worth)→break hNb=2
+    → Poleno#41[T3] terr=15488 bal=1205597 dq=77.8 cnt=112 | c=270.4 rankC=392.0 need=2172043 tD=0.71 人 pulse | safe=781404 keep=Inf avail=-Inf chunkB=145489 pulseB=145489 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3565 noah88 B=727445 L=10053 d=72.4 nb=2 neut=0 cmds=44 noFull=1 shQ=181861 | m=0.900 worth=84.1 cheap=8.2 over=0 dMedOther=110.0 safe(-1)=784134
+    → [Off] Skull#2[T5] terr=20615 bal=1876298 dq=91.0 cnt=21 | c=127.1 rankC=63.6 need=3185248 tD=0.83 人 pulse crowdedHard | safe=784134 keep=Inf avail=-Inf chunkB=145489 pulseB=145489 价高(c>=worth)→break hNb=2
+    → Poleno#41[T3] terr=15488 bal=1205597 dq=77.8 cnt=114 | c=270.3 rankC=392.0 need=2172043 tD=0.71 人 pulse | safe=784134 keep=Inf avail=-Inf chunkB=145489 pulseB=145489 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3570 noah88 B=736247 L=10103 d=72.9 nb=2 neut=0 cmds=44 noFull=1 shQ=184061 | m=0.900 worth=85.0 cheap=8.2 over=0 dMedOther=111.1 safe(-1)=788034
+    → [Off] Skull#2[T5] terr=20444 bal=1875699 dq=91.7 cnt=19 | c=130.1 rankC=65.1 need=3193120 tD=0.83 人 pulse crowdedHard | safe=788034 keep=Inf avail=-Inf chunkB=147249 pulseB=147249 价高(c>=worth)→break hNb=2
+    → Poleno#41[T3] terr=15488 bal=1220908 dq=78.8 cnt=116 | c=295.6 rankC=428.6 need=2199332 tD=0.71 人 pulse crowdedHard | safe=788034 keep=Inf avail=-Inf chunkB=147249 pulseB=147249 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3575 noah88 B=736247 L=10135 d=72.6 nb=2 neut=0 cmds=44 noFull=1 shQ=184061 | m=0.900 worth=85.0 cheap=8.2 over=0 dMedOther=111.1 safe(-1)=790530
+    → [Off] Skull#2[T5] terr=20324 bal=1858107 dq=91.4 cnt=18 | c=130.7 rankC=65.4 need=3167270 tD=0.82 人 pulse crowdedHard | safe=790530 keep=Inf avail=-Inf chunkB=147249 pulseB=147249 价高(c>=worth)→break hNb=2
+    → Poleno#41[T3] terr=15488 bal=1220908 dq=78.8 cnt=118 | c=295.5 rankC=428.5 need=2199332 tD=0.71 人 pulse crowdedHard | safe=790530 keep=Inf avail=-Inf chunkB=147249 pulseB=147249 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3580 noah88 B=745229 L=10185 d=73.2 nb=2 neut=0 cmds=44 noFull=1 shQ=186307 | m=0.900 worth=85.1 cheap=8.2 over=0 dMedOther=111.2 safe(-1)=794430
+    → [Off] Skull#2[T5] terr=20274 bal=1866440 dq=92.1 cnt=20 | c=129.2 rankC=64.6 need=3195283 tD=0.83 人 pulse crowdedHard | safe=794430 keep=Inf avail=-Inf chunkB=149046 pulseB=149046 价高(c>=worth)→break hNb=2
+    → Poleno#41[T3] terr=15488 bal=1236413 dq=79.8 cnt=121 | c=299.2 rankC=433.8 need=2226968 tD=0.72 人 pulse crowdedHard | safe=794430 keep=Inf avail=-Inf chunkB=149046 pulseB=149046 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3585 noah88 B=745229 L=10221 d=72.9 nb=2 neut=0 cmds=44 noFull=1 shQ=186307 | m=0.900 worth=85.1 cheap=8.2 over=0 dMedOther=111.2 safe(-1)=797238
+    → [Off] Skull#2[T5] terr=20070 bal=1836421 dq=91.5 cnt=21 | c=125.4 rankC=62.7 need=3145655 tD=0.82 人 pulse crowdedHard | safe=797238 keep=Inf avail=-Inf chunkB=149046 pulseB=149046 价高(c>=worth)→break hNb=2
+    → Poleno#41[T3] terr=15488 bal=1236413 dq=79.8 cnt=123 | c=299.2 rankC=433.8 need=2226968 tD=0.72 人 pulse crowdedHard | safe=797238 keep=Inf avail=-Inf chunkB=149046 pulseB=149046 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3590 noah88 B=754320 L=10281 d=73.4 nb=2 neut=0 cmds=44 noFull=1 shQ=188580 | m=0.900 worth=85.9 cheap=8.2 over=0 dMedOther=112.3 safe(-1)=801918
+    → [Off] Skull#2[T5] terr=19837 bal=1825793 dq=92.0 cnt=24 | c=128.9 rankC=64.4 need=3136298 tD=0.82 人 pulse crowdedHard | safe=801918 keep=Inf avail=-Inf chunkB=150864 pulseB=150864 价高(c>=worth)→break hNb=2
+    → Poleno#41[T3] terr=15488 bal=1252115 dq=80.8 cnt=124 | c=302.9 rankC=439.2 need=2254955 tD=0.72 人 pulse crowdedHard | safe=801918 keep=Inf avail=-Inf chunkB=150864 pulseB=150864 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3595 noah88 B=754320 L=10326 d=73.1 nb=2 neut=0 cmds=44 noFull=1 shQ=188580 | m=0.900 worth=85.9 cheap=8.2 over=0 dMedOther=112.3 safe(-1)=805428
+    → [Off] Skull#2[T5] terr=19434 bal=1766670 dq=90.9 cnt=25 | c=95.2 rankC=47.6 need=3030641 tD=0.81 人 pulse | safe=805428 keep=Inf avail=-Inf chunkB=150864 pulseB=150864 价高(c>=worth)→break hNb=2
+    → Poleno#41[T3] terr=15488 bal=1101715 dq=71.1 cnt=126 | c=127.9 rankC=89.5 need=1986887 tD=0.63 人 pulse | safe=805428 keep=Inf avail=-Inf chunkB=150864 pulseB=150864 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=3600 noah88 B=773895 L=10398 d=74.4 nb=2 neut=0 cmds=44 noFull=1 shQ=190940 | m=0.900 worth=86.9 cheap=8.2 over=0 dMedOther=113.6 safe(-1)=811044
+    → Poleno#41[T3] terr=15546 bal=1131252 dq=72.8 cnt=128 | c=130.8 rankC=91.5 need=2039672 tD=0.64 人 pulse | safe=811044 keep=Inf avail=-Inf chunkB=154779 pulseB=154779 价高(c>=worth)→break hNb=2
+    → [Off] Skull#2[T5] terr=19362 bal=1776761 dq=91.8 cnt=28 | c=168.9 rankC=168.9 need=3067030 tD=0.81 人 pulse | safe=811044 keep=Inf avail=-Inf chunkB=154779 pulseB=154779 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令

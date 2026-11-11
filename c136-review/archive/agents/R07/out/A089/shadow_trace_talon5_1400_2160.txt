@@ -1,0 +1,468 @@
+# A089 talon5 影子决策明细 t=1400~2160（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没走到 buyLand: 18 拍（t=1400~1490）
+#   其他指令: 7 拍（t=1435~2130）；可用兵 -7051~-7051，一条指令下限(20%余额) 20021~20021，比值 -35%~-35%
+#   出手打人/bot: 11 拍（t=1500~1550）；可用兵 61804~73757，一条指令下限(20%余额) 40337~45012，比值 153%~164%
+#   首选目标价高（c>=worth）: 113 拍（t=1555~2160）
+#   首选目标无可用兵（avail<=0）: 4 拍（t=1690~1725）；可用兵 -202943~-7051，一条指令下限(20%余额) 1348~21357，比值 -15055%~-35%
+#   └ 「出手打人/bot」里：11 条对人/bot 的出兵共约 742474 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1400 talon5 B=154400 L=4987 d=31.0 nb=1 neut=0 cmds=50 noFull=1 shQ=37414 | m=1.400 worth=43.3 cheap=3.8 over=0 dMedOther=6.3 safe(-1)=75920
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1405 talon5 B=154400 L=4987 d=31.0 nb=1 neut=0 cmds=50 noFull=1 shQ=38600 | m=1.405 worth=43.5 cheap=3.8 over=0 dMedOther=5.8 safe(-1)=75920
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1410 talon5 B=158398 L=4987 d=31.8 nb=1 neut=0 cmds=50 noFull=1 shQ=39599 | m=1.410 worth=44.8 cheap=3.9 over=0 dMedOther=5.9 safe(-1)=80139
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1415 talon5 B=158398 L=4987 d=31.8 nb=1 neut=0 cmds=50 noFull=1 shQ=39599 | m=1.415 worth=44.9 cheap=3.9 over=0 dMedOther=5.7 safe(-1)=73962
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1420 talon5 B=162452 L=4987 d=32.6 nb=1 neut=0 cmds=50 noFull=1 shQ=40613 | m=1.420 worth=46.3 cheap=3.9 over=0 dMedOther=5.8 safe(-1)=75963
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1425 talon5 B=162452 L=4987 d=32.6 nb=1 neut=0 cmds=50 noFull=1 shQ=40613 | m=1.425 worth=46.4 cheap=3.9 over=0 dMedOther=5.7 safe(-1)=75963
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1430 talon5 B=166562 L=4987 d=33.4 nb=1 neut=0 cmds=50 noFull=1 shQ=41640 | m=1.430 worth=47.8 cheap=4.0 over=0 dMedOther=5.8 safe(-1)=77991
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1435 talon5 B=166562 L=4987 d=33.4 nb=1 neut=0 cmds=51 noFull=1 shQ=41640 | m=1.435 worth=47.9 cheap=4.0 over=0 dMedOther=5.8 safe(-1)=77991
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 boatTo pct=127 → 水/岸#506748（约 20820 兵） 〔boatFood:2017<boatFood:5623<act:1822<act:2692〕
+t=1440 talon5 B=170726 L=4987 d=34.2 nb=1 neut=0 cmds=51 noFull=1 shQ=42681 | m=1.440 worth=49.3 cheap=4.0 over=0 dMedOther=5.9 safe(-1)=80045
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1445 talon5 B=170726 L=4987 d=34.2 nb=1 neut=0 cmds=51 noFull=1 shQ=42681 | m=1.445 worth=49.5 cheap=4.0 over=0 dMedOther=5.9 safe(-1)=79310
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1450 talon5 B=174942 L=4987 d=35.1 nb=1 neut=0 cmds=51 noFull=1 shQ=43735 | m=1.450 worth=50.9 cheap=4.1 over=0 dMedOther=5.4 safe(-1)=81372
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1455 talon5 B=174942 L=4987 d=35.1 nb=1 neut=0 cmds=51 noFull=1 shQ=43735 | m=1.455 worth=51.0 cheap=4.1 over=0 dMedOther=5.4 safe(-1)=81372
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1460 talon5 B=179210 L=4987 d=35.9 nb=1 neut=0 cmds=51 noFull=1 shQ=44802 | m=1.460 worth=52.5 cheap=4.1 over=0 dMedOther=5.6 safe(-1)=83460
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1465 talon5 B=179210 L=4987 d=35.9 nb=1 neut=0 cmds=51 noFull=1 shQ=44802 | m=1.465 worth=52.6 cheap=4.1 over=0 dMedOther=5.6 safe(-1)=83460
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1470 talon5 B=183511 L=4987 d=36.8 nb=1 neut=0 cmds=51 noFull=1 shQ=45877 | m=1.470 worth=54.1 cheap=4.2 over=0 dMedOther=5.9 safe(-1)=85563
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1475 talon5 B=183511 L=4987 d=36.8 nb=1 neut=0 cmds=51 noFull=1 shQ=45877 | m=1.475 worth=54.3 cheap=4.2 over=0 dMedOther=5.3 safe(-1)=85563
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1480 talon5 B=187860 L=4987 d=37.7 nb=1 neut=0 cmds=51 noFull=1 shQ=46965 | m=1.480 worth=55.8 cheap=4.2 over=0 dMedOther=5.4 safe(-1)=87690
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1485 talon5 B=187860 L=4987 d=37.7 nb=1 neut=0 cmds=51 noFull=1 shQ=46965 | m=1.485 worth=55.9 cheap=4.2 over=0 dMedOther=5.3 safe(-1)=80960
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1490 talon5 B=192255 L=4987 d=38.6 nb=1 neut=0 cmds=51 noFull=1 shQ=48063 | m=1.490 worth=57.4 cheap=4.3 over=0 dMedOther=5.4 safe(-1)=82953
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1495 talon5 B=192255 L=4987 d=38.6 nb=1 neut=0 cmds=52 noFull=1 shQ=48063 | m=1.495 worth=57.6 cheap=4.3 over=0 dMedOther=5.8 safe(-1)=82953
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 boatTo pct=127 → 水/岸#499067（约 24031 兵） 〔boatFood:2017<boatFood:5623<act:1822<act:2692〕
+t=1500 talon5 B=201683 L=4987 d=40.4 nb=1 neut=0 cmds=53 noFull=1 shQ=49227 | m=1.500 worth=60.7 cheap=4.3 over=0 dMedOther=6.8 safe(-1)=93565
+    → Lugunica Kingdom#25[T4] terr=15370 bal=174027 dq=11.3 cnt=93 | c=29.0 rankC=29.0 need=333243 tD=1.65 人 | safe=93565 keep=137516 avail=61804 chunkB=40337 pulseB=24202  x=61804 sole hNb=1
+    ⇒ 影子指令 attack pct=313 → Lugunica Kingdom#25[T4]（约 61844 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1505 talon5 B=201683 L=4987 d=40.4 nb=1 neut=0 cmds=54 noFull=1 shQ=50420 | m=1.499 worth=60.6 cheap=4.4 over=0 dMedOther=6.9 safe(-1)=91832
+    → Lugunica Kingdom#25[T4] terr=15316 bal=170942 dq=11.2 cnt=93 | c=28.6 rankC=28.6 need=327180 tD=1.62 人 | safe=91832 keep=136847 avail=62473 chunkB=40337 pulseB=24202  x=62473 sole hNb=1
+    ⇒ 影子指令 attack pct=317 → Lugunica Kingdom#25[T4]（约 62632 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1510 talon5 B=206281 L=4987 d=41.4 nb=1 neut=0 cmds=55 noFull=1 shQ=51570 | m=1.498 worth=62.0 cheap=4.4 over=0 dMedOther=7.0 safe(-1)=92737
+    → Lugunica Kingdom#25[T4] terr=15488 bal=172552 dq=11.1 cnt=93 | c=28.5 rankC=28.5 need=330782 tD=1.59 人 | safe=92737 keep=138568 avail=65296 chunkB=41256 pulseB=24754  x=65296 sole hNb=1
+    ⇒ 影子指令 attack pct=324 → Lugunica Kingdom#25[T4]（约 65470 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1515 talon5 B=206281 L=4987 d=41.4 nb=1 neut=0 cmds=56 noFull=1 shQ=51570 | m=1.498 worth=62.0 cheap=4.4 over=0 dMedOther=7.0 safe(-1)=92737
+    → Lugunica Kingdom#25[T4] terr=15605 bal=172552 dq=11.1 cnt=93 | c=28.3 rankC=28.3 need=330962 tD=1.58 人 | safe=92737 keep=138213 avail=65651 chunkB=41256 pulseB=24754  x=65651 sole hNb=1
+    ⇒ 影子指令 attack pct=325 → Lugunica Kingdom#25[T4]（约 65671 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1520 talon5 B=210922 L=4987 d=42.3 nb=1 neut=0 cmds=57 noFull=1 shQ=52730 | m=1.497 worth=63.3 cheap=4.4 over=0 dMedOther=6.2 safe(-1)=98477
+    → Lugunica Kingdom#25[T4] terr=15791 bal=182769 dq=11.6 cnt=93 | c=29.6 rankC=29.6 need=349461 tD=1.85 人 | safe=98477 keep=142537 avail=65914 chunkB=42184 pulseB=25311  x=65914 sole hNb=1
+    ⇒ 影子指令 attack pct=320 → Lugunica Kingdom#25[T4]（约 66119 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1525 talon5 B=210922 L=4987 d=42.3 nb=1 neut=0 cmds=58 noFull=1 shQ=52730 | m=1.496 worth=63.3 cheap=4.5 over=0 dMedOther=6.2 safe(-1)=98477
+    → Lugunica Kingdom#25[T4] terr=15918 bal=182769 dq=11.5 cnt=93 | c=29.4 rankC=29.4 need=349647 tD=1.84 人 | safe=98477 keep=142142 avail=66309 chunkB=42184 pulseB=25311  x=66309 sole hNb=1
+    ⇒ 影子指令 attack pct=321 → Lugunica Kingdom#25[T4]（约 66325 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1530 talon5 B=215604 L=4987 d=43.2 nb=1 neut=0 cmds=59 noFull=1 shQ=53901 | m=1.496 worth=64.7 cheap=4.5 over=0 dMedOther=6.4 safe(-1)=100756
+    → Lugunica Kingdom#25[T4] terr=16110 bal=186826 dq=11.6 cnt=93 | c=29.6 rankC=29.6 need=357166 tD=1.82 人 | safe=100756 keep=144588 avail=68490 chunkB=43121 pulseB=25872  x=68490 sole hNb=1
+    ⇒ 影子指令 attack pct=325 → Lugunica Kingdom#25[T4]（约 68639 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1535 talon5 B=215604 L=4987 d=43.2 nb=1 neut=0 cmds=60 noFull=1 shQ=53901 | m=1.495 worth=64.6 cheap=4.5 over=0 dMedOther=6.3 safe(-1)=100756
+    → Lugunica Kingdom#25[T4] terr=16237 bal=186826 dq=11.5 cnt=93 | c=29.4 rankC=29.4 need=357352 tD=1.81 人 | safe=100756 keep=144199 avail=68879 chunkB=43121 pulseB=25872  x=68879 sole hNb=1
+    ⇒ 影子指令 attack pct=327 → Lugunica Kingdom#25[T4]（约 69060 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1540 talon5 B=220325 L=4987 d=44.2 nb=1 neut=0 cmds=61 noFull=1 shQ=55081 | m=1.494 worth=66.0 cheap=4.6 over=0 dMedOther=6.5 safe(-1)=103054
+    → Lugunica Kingdom#25[T4] terr=16430 bal=190917 dq=11.6 cnt=93 | c=29.7 rankC=29.7 need=364937 tD=1.79 人 | safe=103054 keep=146656 avail=71088 chunkB=44065 pulseB=26439  x=71088 sole hNb=1
+    ⇒ 影子指令 attack pct=330 → Lugunica Kingdom#25[T4]（约 71218 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1545 talon5 B=220325 L=4987 d=44.2 nb=1 neut=0 cmds=62 noFull=1 shQ=55081 | m=1.493 worth=66.0 cheap=4.6 over=0 dMedOther=6.7 safe(-1)=103054
+    → Lugunica Kingdom#25[T4] terr=16557 bal=190917 dq=11.5 cnt=93 | c=29.5 rankC=29.5 need=365123 tD=1.73 人 | safe=103054 keep=146275 avail=71469 chunkB=44065 pulseB=26439  x=71469 sole hNb=1
+    ⇒ 影子指令 attack pct=332 → Lugunica Kingdom#25[T4]（约 71648 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1550 talon5 B=225061 L=4987 d=45.1 nb=1 neut=0 cmds=63 noFull=1 shQ=56265 | m=1.492 worth=67.4 cheap=4.6 over=0 dMedOther=6.8 safe(-1)=104687
+    → Lugunica Kingdom#25[T4] terr=16667 bal=193824 dq=11.6 cnt=93 | c=29.7 rankC=29.7 need=370442 tD=1.71 人 | safe=104687 keep=148667 avail=73757 chunkB=45012 pulseB=27007  x=73757 sole hNb=1
+    ⇒ 影子指令 attack pct=335 → Lugunica Kingdom#25[T4]（约 73848 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1555 talon5 B=85580 L=4987 d=17.2 nb=1 neut=0 cmds=63 noFull=1 shQ=0 | m=1.492 worth=25.6 cheap=4.7 over=0 dMedOther=6.8 safe(-1)=104687
+    → Lugunica Kingdom#25[T4] terr=16734 bal=193824 dq=11.6 cnt=93 | c=29.5 rankC=29.5 need=370575 tD=1.70 人 | safe=104687 keep=Inf avail=-Inf chunkB=17116 pulseB=10270 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1560 talon5 B=87394 L=4987 d=17.5 nb=1 neut=0 cmds=63 noFull=1 shQ=2287 | m=1.491 worth=26.1 cheap=4.7 over=0 dMedOther=7.0 safe(-1)=107047
+    → Lugunica Kingdom#25[T4] terr=16765 bal=198025 dq=11.8 cnt=93 | c=30.0 rankC=30.0 need=378104 tD=1.70 人 | safe=107047 keep=Inf avail=-Inf chunkB=17479 pulseB=10487 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1565 talon5 B=87394 L=4987 d=17.5 nb=1 neut=0 cmds=63 noFull=1 shQ=4596 | m=1.490 worth=26.1 cheap=4.7 over=0 dMedOther=7.0 safe(-1)=107047
+    → Lugunica Kingdom#25[T4] terr=16765 bal=198025 dq=11.8 cnt=93 | c=30.0 rankC=30.0 need=378104 tD=1.70 人 | safe=107047 keep=Inf avail=-Inf chunkB=17479 pulseB=10487 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1570 talon5 B=89220 L=4987 d=17.9 nb=1 neut=0 cmds=63 noFull=1 shQ=6896 | m=1.490 worth=26.6 cheap=4.8 over=0 dMedOther=7.1 safe(-1)=109372
+    → Lugunica Kingdom#25[T4] terr=16765 bal=202163 dq=12.1 cnt=93 | c=30.6 rankC=30.6 need=385480 tD=1.70 人 | safe=109372 keep=Inf avail=-Inf chunkB=17844 pulseB=10706 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1575 talon5 B=89220 L=4987 d=17.9 nb=1 neut=0 cmds=63 noFull=1 shQ=9217 | m=1.489 worth=26.6 cheap=4.8 over=0 dMedOther=7.0 safe(-1)=109372
+    → Lugunica Kingdom#25[T4] terr=16765 bal=202163 dq=12.1 cnt=93 | c=30.6 rankC=30.6 need=385480 tD=1.72 人 | safe=109372 keep=Inf avail=-Inf chunkB=17844 pulseB=10706 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1580 talon5 B=91057 L=4987 d=18.3 nb=1 neut=0 cmds=63 noFull=1 shQ=11531 | m=1.488 worth=27.2 cheap=4.8 over=0 dMedOther=7.1 safe(-1)=111712
+    → Lugunica Kingdom#25[T4] terr=16765 bal=206327 dq=12.3 cnt=93 | c=31.2 rankC=31.2 need=392902 tD=1.73 人 | safe=111712 keep=Inf avail=-Inf chunkB=18211 pulseB=10927 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1585 talon5 B=91057 L=4987 d=18.3 nb=1 neut=0 cmds=63 noFull=1 shQ=13865 | m=1.487 worth=27.2 cheap=4.9 over=0 dMedOther=7.0 safe(-1)=111712
+    → Lugunica Kingdom#25[T4] terr=16765 bal=206327 dq=12.3 cnt=93 | c=31.2 rankC=31.2 need=392902 tD=1.75 人 | safe=111712 keep=Inf avail=-Inf chunkB=18211 pulseB=10927 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1590 talon5 B=78389 L=4987 d=15.7 nb=1 neut=0 cmds=63 noFull=1 shQ=16116 | m=1.486 worth=23.4 cheap=4.9 over=0 dMedOther=7.0 safe(-1)=101476
+    → Lugunica Kingdom#25[T4] terr=16765 bal=188108 dq=11.2 cnt=93 | c=28.6 rankC=28.6 need=360429 tD=1.60 人 | safe=101476 keep=Inf avail=-Inf chunkB=15678 pulseB=9407 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1595 talon5 B=78389 L=4987 d=15.7 nb=1 neut=0 cmds=63 noFull=1 shQ=18095 | m=1.486 worth=23.4 cheap=5.0 over=0 dMedOther=7.0 safe(-1)=101476
+    → Lugunica Kingdom#25[T4] terr=16765 bal=188108 dq=11.2 cnt=93 | c=28.6 rankC=28.6 need=360429 tD=1.60 人 | safe=101476 keep=Inf avail=-Inf chunkB=15678 pulseB=9407 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1600 talon5 B=84943 L=4987 d=17.0 nb=1 neut=0 cmds=63 noFull=1 shQ=20021 | m=1.485 worth=25.3 cheap=5.0 over=0 dMedOther=8.1 safe(-1)=113008
+    → Lugunica Kingdom#25[T4] terr=16767 bal=208635 dq=12.4 cnt=93 | c=31.5 rankC=31.5 need=397028 tD=1.53 人 | safe=113008 keep=Inf avail=-Inf chunkB=16989 pulseB=10193 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1605 talon5 B=84943 L=4987 d=17.0 nb=1 neut=0 cmds=63 noFull=1 shQ=21235 | m=1.484 worth=25.3 cheap=5.0 over=0 dMedOther=8.0 safe(-1)=113008
+    → Lugunica Kingdom#25[T4] terr=16780 bal=208635 dq=12.4 cnt=93 | c=31.5 rankC=31.5 need=397033 tD=1.55 人 | safe=113008 keep=Inf avail=-Inf chunkB=16989 pulseB=10193 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1610 talon5 B=86616 L=4987 d=17.4 nb=1 neut=0 cmds=63 noFull=1 shQ=21654 | m=1.484 worth=25.8 cheap=5.1 over=0 dMedOther=8.1 safe(-1)=113358
+    → Lugunica Kingdom#25[T4] terr=16640 bal=209258 dq=12.6 cnt=93 | c=31.8 rankC=31.8 need=397229 tD=1.55 人 | safe=113358 keep=Inf avail=-Inf chunkB=17323 pulseB=10394 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1615 talon5 B=86616 L=4987 d=17.4 nb=1 neut=0 cmds=63 noFull=1 shQ=21654 | m=1.483 worth=25.8 cheap=5.1 over=0 dMedOther=7.2 safe(-1)=113358
+    → Lugunica Kingdom#25[T4] terr=16670 bal=209258 dq=12.6 cnt=93 | c=31.8 rankC=31.8 need=397442 tD=1.74 人 | safe=113358 keep=Inf avail=-Inf chunkB=17323 pulseB=10394 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1620 talon5 B=88296 L=4987 d=17.7 nb=1 neut=0 cmds=63 noFull=1 shQ=22074 | m=1.482 worth=26.2 cheap=5.2 over=0 dMedOther=7.2 safe(-1)=115638
+    → Lugunica Kingdom#25[T4] terr=16727 bal=213317 dq=12.8 cnt=93 | c=32.2 rankC=32.2 need=405056 tD=1.76 人 | safe=115638 keep=Inf avail=-Inf chunkB=17659 pulseB=10596 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1625 talon5 B=88296 L=4987 d=17.7 nb=1 neut=0 cmds=63 noFull=1 shQ=22074 | m=1.481 worth=26.2 cheap=5.2 over=0 dMedOther=7.1 safe(-1)=102882
+    → Lugunica Kingdom#25[T4] terr=16774 bal=190611 dq=11.4 cnt=93 | c=28.9 rankC=28.9 need=364908 tD=1.60 人 | safe=102882 keep=Inf avail=-Inf chunkB=17659 pulseB=10596 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1630 talon5 B=89973 L=4987 d=18.0 nb=1 neut=0 cmds=63 noFull=1 shQ=22493 | m=1.480 worth=26.7 cheap=5.2 over=0 dMedOther=7.8 safe(-1)=104917
+    → Lugunica Kingdom#25[T4] terr=16858 bal=194232 dq=11.5 cnt=93 | c=29.3 rankC=29.3 need=371488 tD=1.48 人 | safe=104917 keep=Inf avail=-Inf chunkB=17995 pulseB=10797 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1635 talon5 B=89973 L=4987 d=18.0 nb=1 neut=0 cmds=63 noFull=1 shQ=22493 | m=1.480 worth=26.7 cheap=5.3 over=0 dMedOther=7.8 safe(-1)=104917
+    → Lugunica Kingdom#25[T4] terr=16921 bal=194232 dq=11.5 cnt=93 | c=29.2 rankC=29.2 need=371578 tD=1.47 人 | safe=104917 keep=Inf avail=-Inf chunkB=17995 pulseB=10797 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1640 talon5 B=91655 L=4987 d=18.4 nb=1 neut=0 cmds=63 noFull=1 shQ=22913 | m=1.479 worth=27.2 cheap=5.3 over=0 dMedOther=7.2 safe(-1)=106957
+    → Lugunica Kingdom#25[T4] terr=17042 bal=197864 dq=11.6 cnt=93 | c=29.5 rankC=29.5 need=378237 tD=1.61 人 | safe=106957 keep=Inf avail=-Inf chunkB=18331 pulseB=10999 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1645 talon5 B=91655 L=4987 d=18.4 nb=1 neut=0 cmds=63 noFull=1 shQ=22913 | m=1.478 worth=27.2 cheap=5.4 over=0 dMedOther=7.2 safe(-1)=106957
+    → Lugunica Kingdom#25[T4] terr=17140 bal=197864 dq=11.5 cnt=93 | c=29.4 rankC=29.4 need=378375 tD=1.61 人 | safe=106957 keep=Inf avail=-Inf chunkB=18331 pulseB=10999 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1650 talon5 B=93341 L=4987 d=18.7 nb=1 neut=0 cmds=63 noFull=1 shQ=23335 | m=1.478 worth=27.7 cheap=5.4 over=0 dMedOther=7.3 safe(-1)=109002
+    → Lugunica Kingdom#25[T4] terr=17317 bal=201504 dq=11.6 cnt=93 | c=29.6 rankC=29.6 need=385133 tD=1.60 人 | safe=109002 keep=Inf avail=-Inf chunkB=18668 pulseB=11201 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1655 talon5 B=93341 L=4987 d=18.7 nb=1 neut=0 cmds=63 noFull=1 shQ=23335 | m=1.477 worth=27.6 cheap=5.5 over=0 dMedOther=7.2 safe(-1)=108315
+    → Lugunica Kingdom#25[T4] terr=17383 bal=200281 dq=11.5 cnt=93 | c=29.3 rankC=29.3 need=383061 tD=1.59 人 | safe=108315 keep=Inf avail=-Inf chunkB=18668 pulseB=11201 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1660 talon5 B=95030 L=4987 d=19.1 nb=1 neut=0 cmds=63 noFull=1 shQ=23757 | m=1.476 worth=28.1 cheap=5.5 over=0 dMedOther=7.4 safe(-1)=110351
+    → Lugunica Kingdom#25[T4] terr=17596 bal=203906 dq=11.6 cnt=93 | c=29.5 rankC=29.5 need=389828 tD=1.58 人 | safe=110351 keep=Inf avail=-Inf chunkB=19006 pulseB=11404 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1665 talon5 B=95030 L=4987 d=19.1 nb=1 neut=0 cmds=63 noFull=1 shQ=23757 | m=1.475 worth=28.1 cheap=5.6 over=0 dMedOther=7.3 safe(-1)=110351
+    → Lugunica Kingdom#25[T4] terr=17713 bal=203906 dq=11.5 cnt=93 | c=29.3 rankC=29.3 need=390008 tD=1.57 人 | safe=110351 keep=Inf avail=-Inf chunkB=19006 pulseB=11404 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1670 talon5 B=96721 L=4987 d=19.4 nb=1 neut=0 cmds=63 noFull=1 shQ=24180 | m=1.474 worth=28.6 cheap=5.6 over=0 dMedOther=8.1 safe(-1)=112390
+    → Lugunica Kingdom#25[T4] terr=17894 bal=207535 dq=11.6 cnt=93 | c=29.5 rankC=29.5 need=396753 tD=1.42 人 | safe=112390 keep=Inf avail=-Inf chunkB=19344 pulseB=11607 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1675 talon5 B=96721 L=4987 d=19.4 nb=1 neut=0 cmds=63 noFull=1 shQ=24180 | m=1.474 worth=28.6 cheap=5.7 over=0 dMedOther=8.0 safe(-1)=112390
+    → Lugunica Kingdom#25[T4] terr=18023 bal=207535 dq=11.5 cnt=93 | c=29.3 rankC=29.3 need=396951 tD=1.43 人 | safe=112390 keep=Inf avail=-Inf chunkB=19344 pulseB=11607 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1680 talon5 B=98413 L=4987 d=19.7 nb=1 neut=0 cmds=63 noFull=1 shQ=24603 | m=1.473 worth=29.1 cheap=5.7 over=0 dMedOther=8.2 safe(-1)=114430
+    → Lugunica Kingdom#25[T4] terr=18230 bal=211166 dq=11.6 cnt=93 | c=29.5 rankC=29.5 need=403728 tD=1.42 人 | safe=114430 keep=Inf avail=-Inf chunkB=19683 pulseB=11810 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1685 talon5 B=98413 L=4987 d=19.7 nb=1 neut=0 cmds=63 noFull=1 shQ=24603 | m=1.472 worth=29.1 cheap=5.8 over=0 dMedOther=8.2 safe(-1)=114430
+    → Lugunica Kingdom#25[T4] terr=18378 bal=211166 dq=11.5 cnt=93 | c=29.3 rankC=29.3 need=403950 tD=1.40 人 | safe=114430 keep=Inf avail=-Inf chunkB=19683 pulseB=11810 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1690 talon5 B=100105 L=4987 d=20.1 nb=1 neut=0 cmds=63 noFull=1 shQ=25026 | m=1.472 worth=29.5 cheap=5.8 over=0 dMedOther=7.9 safe(-1)=105983
+    → Lugunica Kingdom#25[T4] terr=18615 bal=196130 dq=10.5 cnt=93 | c=27.0 rankC=27.0 need=377510 tD=1.34 人 | safe=105983 keep=105983 avail=-7051 chunkB=20021 pulseB=12013 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=1695 talon5 B=100105 L=4987 d=20.1 nb=1 neut=0 cmds=64 noFull=1 shQ=25026 | m=1.471 worth=29.5 cheap=5.9 over=0 dMedOther=7.8 safe(-1)=105983
+    → Lugunica Kingdom#25[T4] terr=18784 bal=196130 dq=10.4 cnt=93 | c=26.8 rankC=26.8 need=377751 tD=1.33 人 | safe=105983 keep=105983 avail=-7051 chunkB=20021 pulseB=12013 无可用(avail<=0) sole hNb=1
+    ⇒ 影子指令 boatTo pct=127 → 水/岸#691476（约 12513 兵） 〔boatFood:2017<boatFood:5623<idleBoats:5058<act:4963〕
+t=1700 talon5 B=106785 L=4993 d=21.4 nb=2 neut=0 cmds=64 noFull=1 shQ=25477 | m=1.470 worth=31.4 cheap=5.9 over=0 dMedOther=8.9 safe(-1)=118491
+    → Lugunica Kingdom#25[T4] terr=19052 bal=218404 dq=11.5 cnt=93 | c=29.2 rankC=29.2 need=417853 tD=1.29 人 | safe=118491 keep=118491 avail=-12957 chunkB=21357 pulseB=12814 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=1705 talon5 B=106785 L=4999 d=21.4 nb=3 neut=0 cmds=64 noFull=1 shQ=26696 | m=1.469 worth=31.4 cheap=6.0 over=0 dMedOther=8.9 safe(-1)=118486
+    → Lugunica Kingdom#25[T4] terr=19243 bal=218404 dq=11.3 cnt=93 | c=28.9 rankC=28.9 need=418153 tD=1.28 人 | safe=118486 keep=118486 avail=-12952 chunkB=21357 pulseB=12814 无可用(avail<=0) sole hNb=1
+    ⇒ 本拍没有指令
+t=1710 talon5 B=6633 L=5112 d=1.3 nb=3 neut=0 cmds=64 noFull=1 shQ=2048 | m=1.468 worth=1.9 cheap=6.0 over=0 dMedOther=9.0 safe(-1)=119461
+    → Lugunica Kingdom#25[T4] terr=19445 bal=220309 dq=11.3 cnt=94 | c=30.3 rankC=30.3 need=328917 tD=1.26 人 crowdedHard | safe=119461 keep=Inf avail=-Inf chunkB=1327 pulseB=796 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1715 talon5 B=6633 L=5322 d=1.2 nb=2 neut=4 cmds=64 noFull=1 shQ=2048 | m=1.468 worth=1.8 cheap=6.1 over=0 dMedOther=9.1 safe(-1)=115693
+    → Lugunica Kingdom#25[T4] terr=19296 bal=213916 dq=11.1 cnt=95 | c=30.2 rankC=30.2 need=323736 tD=1.22 人 crowdedHard | safe=115693 keep=Inf avail=-Inf chunkB=1327 pulseB=796 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1720 talon5 B=6740 L=5427 d=1.2 nb=2 neut=3 cmds=64 noFull=1 shQ=2048 | m=1.467 worth=1.8 cheap=6.2 over=0 dMedOther=8.7 safe(-1)=116595
+    → Lugunica Kingdom#25[T4] terr=19528 bal=215679 dq=11.0 cnt=96 | c=30.4 rankC=30.4 need=331395 tD=1.26 人 crowdedHard | safe=116595 keep=Inf avail=-Inf chunkB=1348 pulseB=809 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1725 talon5 B=6740 L=5642 d=1.2 nb=3 neut=8 cmds=64 noFull=1 shQ=2048 | m=1.466 worth=1.8 cheap=6.2 over=0 dMedOther=8.7 safe(-1)=209605
+    → AI#441 terr=2833 bal=0 dq=0.0 cnt=1 | c=2.0 rankC=2.0 need=4172 tD=0.00 机 | safe=209605 keep=209605 avail=-202943 chunkB=1348 pulseB=809 无可用(avail<=0) hNb=1
+    → Lugunica Kingdom#25[T4] terr=19728 bal=193835 dq=9.8 cnt=97 | c=27.2 rankC=27.2 need=299641 tD=1.13 人 crowdedHard | safe=209605 keep=Inf avail=-Inf chunkB=1348 pulseB=809 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1730 talon5 B=6847 L=5866 d=1.2 nb=2 neut=10 cmds=64 noFull=1 shQ=2048 | m=1.466 worth=1.7 cheap=6.3 over=0 dMedOther=8.2 safe(-1)=103957
+    → Lugunica Kingdom#25[T4] terr=20375 bal=193842 dq=9.5 cnt=101 | c=27.0 rankC=27.0 need=307132 tD=1.17 人 crowdedHard | safe=103957 keep=Inf avail=-Inf chunkB=1369 pulseB=822 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1735 talon5 B=6847 L=5982 d=1.1 nb=2 neut=11 cmds=64 noFull=1 shQ=2048 | m=1.465 worth=1.7 cheap=6.3 over=0 dMedOther=8.2 safe(-1)=103007
+    → Lugunica Kingdom#25[T4] terr=20841 bal=192326 dq=9.2 cnt=102 | c=26.5 rankC=26.5 need=308355 tD=1.13 人 crowdedHard | safe=103007 keep=Inf avail=-Inf chunkB=1369 pulseB=822 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1740 talon5 B=6953 L=6220 d=1.1 nb=2 neut=14 cmds=64 noFull=1 shQ=2048 | m=1.464 worth=1.6 cheap=6.4 over=0 dMedOther=8.3 safe(-1)=102798
+    → Lugunica Kingdom#25[T4] terr=21461 bal=192311 dq=9.0 cnt=104 | c=26.4 rankC=26.4 need=315602 tD=1.08 人 crowdedHard | safe=102798 keep=Inf avail=-Inf chunkB=1391 pulseB=834 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1745 talon5 B=6953 L=6467 d=1.1 nb=2 neut=16 cmds=64 noFull=1 shQ=2048 | m=1.463 worth=1.6 cheap=6.5 over=0 dMedOther=7.6 safe(-1)=100929
+    → Lugunica Kingdom#25[T4] terr=21774 bal=189355 dq=8.7 cnt=107 | c=26.1 rankC=26.1 need=316769 tD=1.15 人 crowdedHard | safe=100929 keep=Inf avail=-Inf chunkB=1391 pulseB=834 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1750 talon5 B=7059 L=6595 d=1.1 nb=2 neut=4 cmds=64 noFull=1 shQ=2048 | m=1.462 worth=1.6 cheap=6.5 over=0 dMedOther=7.7 safe(-1)=101610
+    → Lugunica Kingdom#25[T4] terr=22407 bal=190758 dq=8.5 cnt=106 | c=25.9 rankC=25.9 need=323746 tD=1.11 人 crowdedHard | safe=101610 keep=Inf avail=-Inf chunkB=1412 pulseB=847 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1755 talon5 B=7059 L=6827 d=1.0 nb=2 neut=2 cmds=64 noFull=1 shQ=2048 | m=1.462 worth=1.5 cheap=6.6 over=0 dMedOther=7.1 safe(-1)=99796
+    → Lugunica Kingdom#25[T4] terr=22658 bal=187878 dq=8.3 cnt=107 | c=25.7 rankC=25.7 need=325171 tD=1.17 人 crowdedHard | safe=99796 keep=Inf avail=-Inf chunkB=1412 pulseB=847 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1760 talon5 B=30732 L=7057 d=4.4 nb=2 neut=0 cmds=64 noFull=1 shQ=2163 | m=1.461 worth=6.4 cheap=6.7 over=0 dMedOther=7.1 safe(-1)=99093
+    → Lugunica Kingdom#25[T4] terr=23009 bal=186971 dq=8.1 cnt=108 | c=25.7 rankC=25.7 need=330126 tD=1.14 人 crowdedHard | safe=99093 keep=Inf avail=-Inf chunkB=6146 pulseB=3688 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1765 talon5 B=30732 L=7173 d=4.3 nb=2 neut=0 cmds=64 noFull=1 shQ=2733 | m=1.460 worth=6.3 cheap=6.7 over=0 dMedOther=7.1 safe(-1)=98214
+    → Lugunica Kingdom#25[T4] terr=23302 bal=185580 dq=8.0 cnt=108 | c=25.5 rankC=25.5 need=331087 tD=1.12 人 crowdedHard | safe=98214 keep=Inf avail=-Inf chunkB=6146 pulseB=3688 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1770 talon5 B=31183 L=7404 d=4.2 nb=2 neut=0 cmds=64 noFull=1 shQ=3298 | m=1.460 worth=6.1 cheap=6.8 over=0 dMedOther=7.2 safe(-1)=97998
+    → Lugunica Kingdom#25[T4] terr=23657 bal=185542 dq=7.8 cnt=109 | c=25.6 rankC=25.6 need=337431 tD=1.09 人 crowdedHard | safe=97998 keep=Inf avail=-Inf chunkB=6237 pulseB=3742 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1775 talon5 B=31183 L=7638 d=4.1 nb=2 neut=0 cmds=64 noFull=1 shQ=3864 | m=1.459 worth=6.0 cheap=6.9 over=0 dMedOther=7.1 safe(-1)=96271
+    → Lugunica Kingdom#25[T4] terr=23797 bal=182820 dq=7.7 cnt=111 | c=25.5 rankC=25.5 need=338328 tD=1.08 人 crowdedHard | safe=96271 keep=Inf avail=-Inf chunkB=6237 pulseB=3742 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1780 talon5 B=31632 L=7756 d=4.1 nb=2 neut=0 cmds=64 noFull=1 shQ=4427 | m=1.458 worth=5.9 cheap=7.0 over=0 dMedOther=7.2 safe(-1)=96879
+    → Lugunica Kingdom#25[T4] terr=24187 bal=184079 dq=7.6 cnt=112 | c=25.5 rankC=25.5 need=344436 tD=1.06 人 crowdedHard | safe=96879 keep=Inf avail=-Inf chunkB=6326 pulseB=3796 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1785 talon5 B=31632 L=7997 d=4.0 nb=2 neut=0 cmds=64 noFull=1 shQ=4991 | m=1.457 worth=5.8 cheap=7.0 over=0 dMedOther=7.1 safe(-1)=94676
+    → Lugunica Kingdom#25[T4] terr=24145 bal=180518 dq=7.5 cnt=114 | c=25.5 rankC=25.5 need=343832 tD=1.05 人 crowdedHard | safe=94676 keep=Inf avail=-Inf chunkB=6326 pulseB=3796 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1790 talon5 B=32074 L=8243 d=3.9 nb=2 neut=0 cmds=64 noFull=1 shQ=5550 | m=1.457 worth=5.7 cheap=7.1 over=0 dMedOther=7.1 safe(-1)=94332
+    → Lugunica Kingdom#25[T4] terr=24171 bal=180276 dq=7.5 cnt=117 | c=25.9 rankC=25.9 need=349307 tD=1.05 人 crowdedHard | safe=94332 keep=Inf avail=-Inf chunkB=6415 pulseB=3849 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1795 talon5 B=32074 L=8368 d=3.8 nb=2 neut=0 cmds=64 noFull=1 shQ=6108 | m=1.456 worth=5.6 cheap=7.2 over=0 dMedOther=7.2 safe(-1)=103638
+    → Lugunica Kingdom#25[T4] terr=24193 bal=197027 dq=8.1 cnt=119 | c=28.3 rankC=28.3 need=382273 tD=1.14 人 crowdedHard | safe=103638 keep=Inf avail=-Inf chunkB=6415 pulseB=3849 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1800 talon5 B=41060 L=8503 d=4.8 nb=2 neut=0 cmds=64 noFull=1 shQ=6690 | m=1.455 worth=7.0 cheap=7.3 over=0 dMedOther=8.2 safe(-1)=117351
+    → Lugunica Kingdom#25[T4] terr=24268 bal=221639 dq=9.1 cnt=119 | c=46.2 rankC=67.0 need=431443 tD=1.11 人 crowdedHard | safe=117351 keep=Inf avail=-Inf chunkB=8212 pulseB=4927 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1805 talon5 B=41060 L=8520 d=4.8 nb=2 neut=0 cmds=64 noFull=1 shQ=7388 | m=1.454 worth=7.0 cheap=7.4 over=0 dMedOther=8.2 safe(-1)=117337
+    → Lugunica Kingdom#25[T4] terr=24386 bal=221639 dq=9.1 cnt=119 | c=46.0 rankC=66.7 need=431627 tD=1.11 人 crowdedHard | safe=117337 keep=Inf avail=-Inf chunkB=8212 pulseB=4927 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1810 talon5 B=41610 L=8530 d=4.9 nb=2 neut=0 cmds=64 noFull=1 shQ=8080 | m=1.454 worth=7.1 cheap=7.4 over=0 dMedOther=8.3 safe(-1)=118996
+    → Lugunica Kingdom#25[T4] terr=24552 bal=224608 dq=9.1 cnt=119 | c=46.2 rankC=67.1 need=437161 tD=1.11 人 crowdedHard | safe=118996 keep=Inf avail=-Inf chunkB=8322 pulseB=4993 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1815 talon5 B=41610 L=8557 d=4.9 nb=2 neut=0 cmds=64 noFull=1 shQ=8772 | m=1.453 worth=7.1 cheap=7.5 over=0 dMedOther=8.2 safe(-1)=118973
+    → Lugunica Kingdom#25[T4] terr=24665 bal=224608 dq=9.1 cnt=119 | c=46.1 rankC=66.8 need=437334 tD=1.11 人 crowdedHard | safe=118973 keep=Inf avail=-Inf chunkB=8322 pulseB=4993 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1820 talon5 B=42155 L=8592 d=4.9 nb=2 neut=0 cmds=64 noFull=1 shQ=9459 | m=1.452 worth=7.1 cheap=7.6 over=0 dMedOther=8.3 safe(-1)=120597
+    → Lugunica Kingdom#25[T4] terr=24848 bal=227550 dq=9.2 cnt=119 | c=46.3 rankC=67.1 need=442849 tD=1.11 人 crowdedHard | safe=120597 keep=Inf avail=-Inf chunkB=8431 pulseB=5059 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1825 talon5 B=42155 L=8613 d=4.9 nb=2 neut=0 cmds=64 noFull=1 shQ=10143 | m=1.451 worth=7.1 cheap=7.7 over=0 dMedOther=8.2 safe(-1)=120579
+    → Lugunica Kingdom#25[T4] terr=24965 bal=227550 dq=9.1 cnt=119 | c=46.1 rankC=66.8 need=443028 tD=1.11 人 crowdedHard | safe=120579 keep=Inf avail=-Inf chunkB=8431 pulseB=5059 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1830 talon5 B=42694 L=8660 d=4.9 nb=2 neut=0 cmds=64 noFull=1 shQ=10673 | m=1.451 worth=7.2 cheap=7.8 over=0 dMedOther=8.3 safe(-1)=122201
+    → Lugunica Kingdom#25[T4] terr=25126 bal=230508 dq=9.2 cnt=119 | c=46.4 rankC=67.2 need=448545 tD=1.10 人 crowdedHard | safe=122201 keep=Inf avail=-Inf chunkB=8539 pulseB=5123 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1835 talon5 B=42694 L=8712 d=4.9 nb=2 neut=0 cmds=64 noFull=1 shQ=10673 | m=1.450 worth=7.1 cheap=7.9 over=0 dMedOther=8.3 safe(-1)=122157
+    → Lugunica Kingdom#25[T4] terr=25230 bal=230508 dq=9.1 cnt=119 | c=17.5 rankC=8.8 need=448701 tD=1.11 人 crowdedHard | safe=122157 keep=Inf avail=-Inf chunkB=8539 pulseB=5123 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1840 talon5 B=43227 L=8739 d=4.9 nb=2 neut=0 cmds=64 noFull=1 shQ=10806 | m=1.449 worth=7.2 cheap=8.0 over=0 dMedOther=8.3 safe(-1)=122234
+    → Lugunica Kingdom#25[T4] terr=25175 bal=230685 dq=9.2 cnt=119 | c=17.8 rankC=8.9 need=448746 tD=1.10 人 crowdedHard | safe=122234 keep=Inf avail=-Inf chunkB=8645 pulseB=5187 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1845 talon5 B=36474 L=8797 d=4.1 nb=1 neut=32 cmds=64 noFull=1 shQ=9118 | m=1.448 worth=6.0 cheap=8.1 over=0 dMedOther=8.3 safe(-1)=120667
+    → Lugunica Kingdom#25[T4] terr=25084 bal=227982 dq=9.1 cnt=119 | c=10.6 rankC=5.3 need=443473 tD=1.10 人 pulse bleeding | safe=120667 keep=Inf avail=-Inf chunkB=7295 pulseB=4377 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1850 talon5 B=36918 L=8854 d=4.2 nb=1 neut=30 cmds=64 noFull=1 shQ=9229 | m=1.448 worth=6.0 cheap=8.2 over=0 dMedOther=9.1 safe(-1)=120734
+    → Lugunica Kingdom#25[T4] terr=25042 bal=228188 dq=9.1 cnt=119 | c=10.3 rankC=5.2 need=443651 tD=1.00 人 pulse bleeding | safe=120734 keep=Inf avail=-Inf chunkB=7384 pulseB=4430 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1855 talon5 B=36918 L=8883 d=4.2 nb=1 neut=31 cmds=64 noFull=1 shQ=9229 | m=1.447 worth=6.0 cheap=8.3 over=0 dMedOther=9.2 safe(-1)=117654
+    → Lugunica Kingdom#25[T4] terr=24767 bal=222749 dq=9.0 cnt=119 | c=10.4 rankC=5.2 need=432561 tD=0.98 人 pulse bleeding | safe=117654 keep=Inf avail=-Inf chunkB=7384 pulseB=4430 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1860 talon5 B=37357 L=8943 d=4.2 nb=1 neut=32 cmds=64 noFull=1 shQ=9339 | m=1.446 worth=6.0 cheap=8.4 over=0 dMedOther=9.2 safe(-1)=116990
+    → Lugunica Kingdom#25[T4] terr=24646 bal=221657 dq=9.0 cnt=119 | c=10.6 rankC=5.3 need=430004 tD=0.98 人 pulse bleeding | safe=116990 keep=Inf avail=-Inf chunkB=7471 pulseB=4483 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1865 talon5 B=37357 L=9005 d=4.1 nb=1 neut=32 cmds=64 noFull=1 shQ=9339 | m=1.445 worth=6.0 cheap=8.5 over=0 dMedOther=8.9 safe(-1)=114114
+    → Lugunica Kingdom#25[T4] terr=24400 bal=216630 dq=8.9 cnt=119 | c=10.7 rankC=5.4 need=419816 tD=1.00 人 pulse bleeding | safe=114114 keep=Inf avail=-Inf chunkB=7471 pulseB=4483 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1870 talon5 B=37794 L=9036 d=4.2 nb=1 neut=32 cmds=64 noFull=1 shQ=9448 | m=1.445 worth=6.0 cheap=8.5 over=0 dMedOther=8.9 safe(-1)=112882
+    → Lugunica Kingdom#25[T4] terr=24214 bal=214484 dq=8.9 cnt=119 | c=10.9 rankC=5.5 need=415067 tD=1.00 人 pulse bleeding | safe=112882 keep=Inf avail=-Inf chunkB=7559 pulseB=4535 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1875 talon5 B=37794 L=9097 d=4.2 nb=1 neut=29 cmds=64 noFull=1 shQ=9448 | m=1.444 worth=6.0 cheap=8.5 over=0 dMedOther=8.8 safe(-1)=110968
+    → Lugunica Kingdom#25[T4] terr=24084 bal=211168 dq=8.8 cnt=119 | c=11.0 rankC=5.5 need=408535 tD=1.00 人 pulse bleeding | safe=110968 keep=Inf avail=-Inf chunkB=7559 pulseB=4535 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1880 talon5 B=38239 L=9152 d=4.2 nb=1 neut=25 cmds=64 noFull=1 shQ=9559 | m=1.443 worth=6.0 cheap=8.4 over=0 dMedOther=8.7 safe(-1)=110501
+    → Lugunica Kingdom#25[T4] terr=23986 bal=210419 dq=8.8 cnt=119 | c=10.8 rankC=5.4 need=406709 tD=1.01 人 pulse bleeding | safe=110501 keep=Inf avail=-Inf chunkB=7648 pulseB=4589 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1885 talon5 B=38239 L=9176 d=4.2 nb=1 neut=24 cmds=64 noFull=1 shQ=9559 | m=1.442 worth=6.0 cheap=8.4 over=0 dMedOther=8.7 safe(-1)=107821
+    → Lugunica Kingdom#25[T4] terr=23743 bal=205686 dq=8.7 cnt=119 | c=10.9 rankC=5.5 need=397090 tD=1.00 人 pulse bleeding | safe=107821 keep=Inf avail=-Inf chunkB=7648 pulseB=4589 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1890 talon5 B=38690 L=9220 d=4.2 nb=1 neut=22 cmds=64 noFull=1 shQ=9672 | m=1.442 worth=6.0 cheap=8.4 over=0 dMedOther=8.6 safe(-1)=107292
+    → Lugunica Kingdom#25[T4] terr=23618 bal=204810 dq=8.7 cnt=119 | c=11.1 rankC=5.6 need=394911 tD=1.01 人 pulse bleeding | safe=107292 keep=Inf avail=-Inf chunkB=7738 pulseB=4643 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1895 talon5 B=38690 L=9259 d=4.2 nb=1 neut=18 cmds=64 noFull=1 shQ=9672 | m=1.441 worth=6.0 cheap=8.4 over=0 dMedOther=8.3 safe(-1)=97909
+    → Lugunica Kingdom#25[T4] terr=23539 bal=188166 dq=8.0 cnt=119 | c=10.5 rankC=5.2 need=365246 tD=0.96 人 pulse bleeding | safe=97909 keep=Inf avail=-Inf chunkB=7738 pulseB=4643 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1900 talon5 B=48422 L=9276 d=5.2 nb=1 neut=15 cmds=64 noFull=1 shQ=9816 | m=1.440 worth=7.5 cheap=8.4 over=0 dMedOther=9.4 safe(-1)=109279
+    → Lugunica Kingdom#25[T4] terr=23486 bal=208430 dq=8.9 cnt=119 | c=12.1 rankC=6.0 need=400592 tD=0.95 人 pulse bleeding | safe=109279 keep=Inf avail=-Inf chunkB=9684 pulseB=5811 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1905 talon5 B=48422 L=9301 d=5.2 nb=1 neut=3 cmds=64 noFull=1 shQ=10536 | m=1.439 worth=7.5 cheap=8.4 over=0 dMedOther=9.3 safe(-1)=107267
+    → Lugunica Kingdom#25[T4] terr=23455 bal=204887 dq=8.7 cnt=119 | c=12.1 rankC=6.0 need=394215 tD=0.94 人 pulse bleeding | safe=107267 keep=Inf avail=-Inf chunkB=9684 pulseB=5811 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1910 talon5 B=48993 L=9308 d=5.3 nb=1 neut=3 cmds=64 noFull=1 shQ=11257 | m=1.439 worth=7.6 cheap=8.4 over=0 dMedOther=9.4 safe(-1)=105231
+    → Lugunica Kingdom#25[T4] terr=23300 bal=201273 dq=8.6 cnt=119 | c=16.6 rankC=8.3 need=387063 tD=0.92 人 crowdedHard | safe=105231 keep=Inf avail=-Inf chunkB=9799 pulseB=5879 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1915 talon5 B=48993 L=9311 d=5.3 nb=1 neut=4 cmds=64 noFull=1 shQ=11982 | m=1.438 worth=7.6 cheap=8.4 over=0 dMedOther=8.5 safe(-1)=102176
+    → Lugunica Kingdom#25[T4] terr=23074 bal=195840 dq=8.5 cnt=119 | c=16.8 rankC=8.4 need=376353 tD=1.00 人 crowdedHard | safe=102176 keep=Inf avail=-Inf chunkB=9799 pulseB=5879 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1920 talon5 B=49571 L=9318 d=5.3 nb=1 neut=3 cmds=64 noFull=1 shQ=12392 | m=1.437 worth=7.6 cheap=8.4 over=0 dMedOther=8.5 safe(-1)=101653
+    → Lugunica Kingdom#25[T4] terr=22997 bal=194919 dq=8.5 cnt=119 | c=17.1 rankC=8.5 need=374355 tD=1.00 人 crowdedHard | safe=101653 keep=Inf avail=-Inf chunkB=9914 pulseB=5949 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1925 talon5 B=49571 L=9323 d=5.3 nb=1 neut=3 cmds=64 noFull=1 shQ=12392 | m=1.436 worth=7.6 cheap=8.4 over=0 dMedOther=8.4 safe(-1)=100364
+    → Lugunica Kingdom#25[T4] terr=22900 bal=192632 dq=8.4 cnt=119 | c=17.2 rankC=8.6 need=369876 tD=1.00 人 crowdedHard | safe=100364 keep=Inf avail=-Inf chunkB=9914 pulseB=5949 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=1930 talon5 B=50155 L=9326 d=5.4 nb=1 neut=2 cmds=64 noFull=1 shQ=12538 | m=1.435 worth=7.7 cheap=8.4 over=0 dMedOther=8.5 safe(-1)=100824
+    → Lugunica Kingdom#25[T4] terr=22882 bal=193455 dq=8.5 cnt=119 | c=11.6 rankC=5.8 need=371246 tD=1.00 人 pulse bleeding | safe=100824 keep=Inf avail=-Inf chunkB=10031 pulseB=6019 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1935 talon5 B=50155 L=9330 d=5.4 nb=1 neut=2 cmds=64 noFull=1 shQ=12538 | m=1.435 worth=7.7 cheap=8.4 over=0 dMedOther=8.1 safe(-1)=99093
+    → Lugunica Kingdom#25[T4] terr=22689 bal=190380 dq=8.4 cnt=119 | c=11.7 rankC=5.9 need=364874 tD=1.04 人 pulse bleeding | safe=99093 keep=Inf avail=-Inf chunkB=10031 pulseB=6019 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1940 talon5 B=50746 L=9334 d=5.4 nb=1 neut=1 cmds=64 noFull=1 shQ=12686 | m=1.434 worth=7.8 cheap=8.4 over=0 dMedOther=8.1 safe(-1)=98671
+    → Lugunica Kingdom#25[T4] terr=22495 bal=189635 dq=8.4 cnt=119 | c=9.0 rankC=4.5 need=362544 tD=1.04 人 pulse bleeding | safe=98671 keep=Inf avail=-Inf chunkB=10149 pulseB=6090 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1945 talon5 B=50746 L=9335 d=5.4 nb=1 neut=1 cmds=64 noFull=1 shQ=12686 | m=1.433 worth=7.8 cheap=8.4 over=0 dMedOther=8.1 safe(-1)=95968
+    → Lugunica Kingdom#25[T4] terr=22160 bal=184826 dq=8.3 cnt=119 | c=9.2 rankC=4.6 need=352382 tD=1.04 人 pulse bleeding | safe=95968 keep=Inf avail=-Inf chunkB=10149 pulseB=6090 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1950 talon5 B=51344 L=9337 d=5.5 nb=1 neut=0 cmds=65 noFull=1 shQ=12836 | m=1.433 worth=7.9 cheap=8.4 over=0 dMedOther=8.1 safe(-1)=94364
+    → Lugunica Kingdom#25[T4] terr=21802 bal=181973 dq=8.3 cnt=119 | c=9.5 rankC=4.7 need=345486 tD=1.03 人 pulse bleeding | safe=94364 keep=Inf avail=-Inf chunkB=10269 pulseB=6161 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 boatTo pct=171 → 水/岸#528446（约 8624 兵） 〔boatFood:2017<boatFood:5623<idleBoats:5058<act:4963〕
+t=1955 talon5 B=57085 L=9337 d=6.1 nb=1 neut=0 cmds=65 noFull=1 shQ=13512 | m=1.432 worth=8.8 cheap=8.4 over=0 dMedOther=8.1 safe(-1)=90223
+    → Lugunica Kingdom#25[T4] terr=21261 bal=174602 dq=8.2 cnt=96 | c=9.7 rankC=4.9 need=329777 tD=1.02 人 pulse bleeding | safe=90223 keep=Inf avail=-Inf chunkB=11417 pulseB=6850 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1960 talon5 B=57758 L=9337 d=6.2 nb=1 neut=0 cmds=65 noFull=1 shQ=14359 | m=1.431 worth=8.9 cheap=8.4 over=0 dMedOther=8.1 safe(-1)=97250
+    → Lugunica Kingdom#25[T4] terr=20936 bal=187110 dq=8.9 cnt=95 | c=10.5 rankC=5.3 need=349345 tD=1.10 人 pulse bleeding | safe=97250 keep=Inf avail=-Inf chunkB=11552 pulseB=6931 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1965 talon5 B=57758 L=9337 d=6.2 nb=1 neut=0 cmds=65 noFull=1 shQ=14439 | m=1.430 worth=8.8 cheap=8.4 over=0 dMedOther=8.1 safe(-1)=92728
+    → Lugunica Kingdom#25[T4] terr=20369 bal=179062 dq=8.8 cnt=94 | c=10.7 rankC=5.4 need=332196 tD=1.09 人 pulse bleeding | safe=92728 keep=Inf avail=-Inf chunkB=11552 pulseB=6931 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1970 talon5 B=58439 L=9337 d=6.3 nb=1 neut=0 cmds=65 noFull=1 shQ=14609 | m=1.429 worth=8.9 cheap=8.4 over=0 dMedOther=8.1 safe(-1)=91801
+    → Lugunica Kingdom#25[T4] terr=20132 bal=177412 dq=8.8 cnt=93 | c=11.0 rankC=5.5 need=327987 tD=1.08 人 pulse bleeding | safe=91801 keep=Inf avail=-Inf chunkB=11688 pulseB=7013 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1975 talon5 B=58439 L=9337 d=6.3 nb=1 neut=0 cmds=65 noFull=1 shQ=14609 | m=1.429 worth=8.9 cheap=8.4 over=0 dMedOther=8.8 safe(-1)=90198
+    → Lugunica Kingdom#25[T4] terr=19929 bal=174558 dq=8.8 cnt=93 | c=11.2 rankC=5.6 need=321953 tD=1.00 人 pulse bleeding | safe=90198 keep=Inf avail=-Inf chunkB=11688 pulseB=7013 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1980 talon5 B=59128 L=9337 d=6.3 nb=1 neut=0 cmds=65 noFull=1 shQ=14782 | m=1.428 worth=9.0 cheap=8.4 over=0 dMedOther=8.8 safe(-1)=90345
+    → Lugunica Kingdom#25[T4] terr=19791 bal=174820 dq=8.8 cnt=93 | c=11.4 rankC=5.7 need=321621 tD=1.00 人 pulse bleeding | safe=90345 keep=Inf avail=-Inf chunkB=11826 pulseB=7095 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1985 talon5 B=59128 L=9337 d=6.3 nb=1 neut=0 cmds=65 noFull=1 shQ=14782 | m=1.427 worth=9.0 cheap=8.4 over=0 dMedOther=8.8 safe(-1)=88674
+    → Lugunica Kingdom#25[T4] terr=19580 bal=171845 dq=8.8 cnt=93 | c=11.6 rankC=5.8 need=315347 tD=1.00 人 pulse bleeding | safe=88674 keep=Inf avail=-Inf chunkB=11826 pulseB=7095 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1990 talon5 B=59825 L=9337 d=6.4 nb=1 neut=0 cmds=65 noFull=1 shQ=14956 | m=1.427 worth=9.1 cheap=8.4 over=0 dMedOther=9.4 safe(-1)=95249
+    → Lugunica Kingdom#25[T4] terr=19437 bal=183548 dq=9.4 cnt=93 | c=12.7 rankC=6.3 need=334129 tD=1.00 人 pulse bleeding | safe=95249 keep=Inf avail=-Inf chunkB=11965 pulseB=7179 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=1995 talon5 B=59825 L=9337 d=6.4 nb=1 neut=0 cmds=65 noFull=1 shQ=14956 | m=1.426 worth=9.1 cheap=8.4 over=0 dMedOther=9.4 safe(-1)=93421
+    → Lugunica Kingdom#25[T4] terr=19221 bal=180294 dq=9.4 cnt=93 | c=12.8 rankC=6.4 need=327293 tD=1.00 人 pulse bleeding | safe=93421 keep=Inf avail=-Inf chunkB=11965 pulseB=7179 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2000 talon5 B=69867 L=9337 d=7.5 nb=1 neut=0 cmds=65 noFull=1 shQ=15163 | m=1.425 worth=10.7 cheap=8.4 over=0 dMedOther=10.5 safe(-1)=104250
+    → Lugunica Kingdom#25[T4] terr=19084 bal=199570 dq=10.5 cnt=93 | c=14.5 rankC=7.3 need=358609 tD=1.00 人 pulse bleeding | safe=104250 keep=Inf avail=-Inf chunkB=13973 pulseB=8384 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2005 talon5 B=69867 L=9337 d=7.5 nb=1 neut=0 cmds=65 noFull=1 shQ=16198 | m=1.420 worth=10.6 cheap=8.4 over=0 dMedOther=10.4 safe(-1)=102478
+    → Lugunica Kingdom#25[T4] terr=18895 bal=196416 dq=10.4 cnt=93 | c=14.7 rankC=7.3 need=352038 tD=1.00 人 pulse bleeding | safe=102478 keep=Inf avail=-Inf chunkB=13973 pulseB=8384 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=2010 talon5 B=70691 L=9337 d=7.6 nb=1 neut=0 cmds=66 noFull=1 shQ=17236 | m=1.415 worth=10.7 cheap=8.4 over=0 dMedOther=10.5 safe(-1)=102763
+    → Lugunica Kingdom#25[T4] terr=18778 bal=196923 dq=10.5 cnt=93 | c=15.0 rankC=7.5 need=352119 tD=1.00 人 pulse bleeding | safe=102763 keep=Inf avail=-Inf chunkB=14138 pulseB=8483 价高(c>=worth)→break hNb=1
+    ⇒ 影子指令 boatTo pct=127 → 水/岸#528446（约 8836 兵） 〔boatFood:2017<boatFood:5623<idleBoats:5058<act:4963〕
+t=2015 talon5 B=70691 L=9337 d=7.6 nb=1 neut=0 cmds=66 noFull=1 shQ=17672 | m=1.409 worth=10.7 cheap=8.4 over=0 dMedOther=10.4 safe(-1)=101249
+    → Lugunica Kingdom#25[T4] terr=18617 bal=194228 dq=10.4 cnt=93 | c=20.4 rankC=10.2 need=346542 tD=1.00 人 crowdedHard | safe=101249 keep=Inf avail=-Inf chunkB=14138 pulseB=8483 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2020 talon5 B=71525 L=9337 d=7.7 nb=1 neut=0 cmds=66 noFull=1 shQ=17881 | m=1.404 worth=10.8 cheap=8.4 over=0 dMedOther=10.5 safe(-1)=101637
+    → Lugunica Kingdom#25[T4] terr=18513 bal=194920 dq=10.5 cnt=93 | c=20.8 rankC=10.4 need=347033 tD=1.00 人 crowdedHard | safe=101637 keep=Inf avail=-Inf chunkB=14305 pulseB=8583 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2025 talon5 B=71525 L=9337 d=7.7 nb=1 neut=0 cmds=66 noFull=1 shQ=17881 | m=1.399 worth=10.7 cheap=8.4 over=0 dMedOther=10.5 safe(-1)=100183
+    → Lugunica Kingdom#25[T4] terr=18359 bal=192331 dq=10.5 cnt=93 | c=21.0 rankC=10.5 need=341683 tD=1.00 人 crowdedHard | safe=100183 keep=Inf avail=-Inf chunkB=14305 pulseB=8583 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2030 talon5 B=72368 L=9337 d=7.8 nb=1 neut=0 cmds=66 noFull=1 shQ=18092 | m=1.393 worth=10.8 cheap=8.4 over=0 dMedOther=10.6 safe(-1)=100563
+    → Lugunica Kingdom#25[T4] terr=18256 bal=193008 dq=10.6 cnt=93 | c=21.4 rankC=10.7 need=342140 tD=1.00 人 crowdedHard | safe=100563 keep=Inf avail=-Inf chunkB=14474 pulseB=8684 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2035 talon5 B=72368 L=9337 d=7.8 nb=1 neut=0 cmds=66 noFull=1 shQ=18092 | m=1.388 worth=10.8 cheap=8.4 over=0 dMedOther=10.5 safe(-1)=99113
+    → Lugunica Kingdom#25[T4] terr=18103 bal=190426 dq=10.5 cnt=93 | c=21.6 rankC=10.8 need=336808 tD=1.00 人 crowdedHard | safe=99113 keep=Inf avail=-Inf chunkB=14474 pulseB=8684 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2040 talon5 B=73221 L=9337 d=7.8 nb=1 neut=0 cmds=66 noFull=1 shQ=18305 | m=1.383 worth=10.8 cheap=8.4 over=0 dMedOther=10.6 safe(-1)=99494
+    → Lugunica Kingdom#25[T4] terr=18003 bal=191104 dq=10.6 cnt=93 | c=22.0 rankC=11.0 need=337274 tD=1.00 人 crowdedHard | safe=99494 keep=Inf avail=-Inf chunkB=14644 pulseB=8787 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2045 talon5 B=73221 L=9337 d=7.8 nb=1 neut=0 cmds=66 noFull=1 shQ=18305 | m=1.378 worth=10.8 cheap=8.4 over=0 dMedOther=10.6 safe(-1)=98922
+    → Lugunica Kingdom#25[T4] terr=17965 bal=190087 dq=10.6 cnt=93 | c=38.0 rankC=38.0 need=335437 tD=1.00 人 crowdedHard | safe=98922 keep=Inf avail=-Inf chunkB=14644 pulseB=8787 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2050 talon5 B=74085 L=9337 d=7.9 nb=1 neut=0 cmds=66 noFull=1 shQ=18521 | m=1.373 worth=10.9 cheap=8.4 over=0 dMedOther=10.7 safe(-1)=100257
+    → Lugunica Kingdom#25[T4] terr=17965 bal=192463 dq=10.7 cnt=93 | c=38.4 rankC=38.4 need=339494 tD=1.00 人 crowdedHard | safe=100257 keep=Inf avail=-Inf chunkB=14817 pulseB=8890 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2055 talon5 B=74085 L=9337 d=7.9 nb=1 neut=0 cmds=66 noFull=1 shQ=18521 | m=1.367 worth=10.8 cheap=8.4 over=0 dMedOther=10.7 safe(-1)=100257
+    → Lugunica Kingdom#25[T4] terr=17965 bal=192463 dq=10.7 cnt=93 | c=38.4 rankC=38.4 need=339634 tD=1.00 人 crowdedHard | safe=100257 keep=Inf avail=-Inf chunkB=14817 pulseB=8890 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2060 talon5 B=60027 L=9337 d=6.4 nb=1 neut=0 cmds=66 noFull=1 shQ=15006 | m=1.362 worth=8.8 cheap=8.4 over=0 dMedOther=10.8 safe(-1)=101608
+    → Lugunica Kingdom#25[T4] terr=17965 bal=194868 dq=10.8 cnt=93 | c=38.9 rankC=38.9 need=343744 tD=1.00 人 crowdedHard | safe=101608 keep=Inf avail=-Inf chunkB=12005 pulseB=7203 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2065 talon5 B=60027 L=9337 d=6.4 nb=1 neut=0 cmds=66 noFull=1 shQ=15006 | m=1.357 worth=8.7 cheap=8.4 over=0 dMedOther=10.8 safe(-1)=101608
+    → Lugunica Kingdom#25[T4] terr=17965 bal=194868 dq=10.8 cnt=93 | c=38.9 rankC=38.9 need=343886 tD=1.00 人 crowdedHard | safe=101608 keep=Inf avail=-Inf chunkB=12005 pulseB=7203 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2070 talon5 B=60735 L=9337 d=6.5 nb=1 neut=0 cmds=67 noFull=1 shQ=15183 | m=1.352 worth=8.8 cheap=8.4 over=0 dMedOther=11.0 safe(-1)=102286
+    → Lugunica Kingdom#25[T4] terr=17895 bal=196074 dq=11.0 cnt=93 | c=39.2 rankC=39.2 need=345452 tD=1.00 人 crowdedHard | safe=102286 keep=Inf avail=-Inf chunkB=12147 pulseB=7288 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 boatTo pct=145 → 水/岸#528446（约 8659 兵） 〔boatFood:2017<boatFood:5623<idleBoats:5058<act:4963〕
+t=2075 talon5 B=60735 L=9337 d=6.5 nb=1 neut=0 cmds=67 noFull=1 shQ=15183 | m=1.346 worth=8.8 cheap=8.4 over=0 dMedOther=11.0 safe(-1)=102286
+    → Lugunica Kingdom#25[T4] terr=17895 bal=196074 dq=11.0 cnt=93 | c=39.2 rankC=39.2 need=345595 tD=1.00 人 crowdedHard | safe=102286 keep=Inf avail=-Inf chunkB=12147 pulseB=7288 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2080 talon5 B=61451 L=9337 d=6.6 nb=1 neut=0 cmds=67 noFull=1 shQ=15362 | m=1.341 worth=8.8 cheap=8.4 over=0 dMedOther=11.1 safe(-1)=103662
+    → Lugunica Kingdom#25[T4] terr=17895 bal=198524 dq=11.1 cnt=93 | c=39.7 rankC=39.7 need=349783 tD=1.00 人 crowdedHard | safe=103662 keep=Inf avail=-Inf chunkB=12290 pulseB=7374 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2085 talon5 B=61451 L=9337 d=6.6 nb=1 neut=0 cmds=67 noFull=1 shQ=15362 | m=1.336 worth=8.8 cheap=8.4 over=0 dMedOther=11.1 safe(-1)=103662
+    → Lugunica Kingdom#25[T4] terr=17895 bal=198524 dq=11.1 cnt=93 | c=39.7 rankC=39.7 need=349927 tD=1.00 人 crowdedHard | safe=103662 keep=Inf avail=-Inf chunkB=12290 pulseB=7374 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2090 talon5 B=62176 L=9337 d=6.7 nb=1 neut=0 cmds=67 noFull=1 shQ=15544 | m=1.331 worth=8.9 cheap=8.4 over=0 dMedOther=11.2 safe(-1)=105056
+    → Lugunica Kingdom#25[T4] terr=17895 bal=201005 dq=11.2 cnt=93 | c=40.1 rankC=40.1 need=354172 tD=1.00 人 crowdedHard | safe=105056 keep=Inf avail=-Inf chunkB=12435 pulseB=7461 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2095 talon5 B=62176 L=9337 d=6.7 nb=1 neut=0 cmds=67 noFull=1 shQ=15544 | m=1.325 worth=8.8 cheap=8.4 over=0 dMedOther=11.2 safe(-1)=105056
+    → Lugunica Kingdom#25[T4] terr=17895 bal=201005 dq=11.2 cnt=93 | c=40.1 rankC=40.1 need=354318 tD=1.00 人 crowdedHard | safe=105056 keep=Inf avail=-Inf chunkB=12435 pulseB=7461 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2100 talon5 B=72246 L=9337 d=7.7 nb=1 neut=0 cmds=67 noFull=1 shQ=15758 | m=1.320 worth=10.2 cheap=8.4 over=0 dMedOther=12.4 safe(-1)=116521
+    → Lugunica Kingdom#25[T4] terr=17895 bal=221412 dq=12.4 cnt=93 | c=43.9 rankC=43.9 need=388071 tD=1.00 人 crowdedHard | safe=116521 keep=Inf avail=-Inf chunkB=14449 pulseB=8670 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2105 talon5 B=72246 L=9337 d=7.7 nb=1 neut=0 cmds=67 noFull=1 shQ=16828 | m=1.315 worth=10.2 cheap=8.4 over=0 dMedOther=12.4 safe(-1)=116521
+    → Lugunica Kingdom#25[T4] terr=17895 bal=221412 dq=12.4 cnt=93 | c=43.9 rankC=43.9 need=388229 tD=1.00 人 crowdedHard | safe=116521 keep=Inf avail=-Inf chunkB=14449 pulseB=8670 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2110 talon5 B=73098 L=9337 d=7.8 nb=1 neut=0 cmds=67 noFull=1 shQ=17901 | m=1.310 worth=10.3 cheap=8.4 over=0 dMedOther=11.0 safe(-1)=102333
+    → Lugunica Kingdom#25[T4] terr=17895 bal=196158 dq=11.0 cnt=93 | c=29.4 rankC=20.6 need=346811 tD=1.00 人 crowdedHard | safe=102333 keep=Inf avail=-Inf chunkB=14620 pulseB=8772 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2115 talon5 B=73098 L=9337 d=7.8 nb=1 neut=0 cmds=67 noFull=1 shQ=18274 | m=1.304 worth=10.2 cheap=8.4 over=0 dMedOther=10.9 safe(-1)=102333
+    → Lugunica Kingdom#25[T4] terr=17923 bal=196158 dq=10.9 cnt=93 | c=29.4 rankC=20.6 need=347182 tD=1.00 人 crowdedHard | safe=102333 keep=Inf avail=-Inf chunkB=14620 pulseB=8772 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2120 talon5 B=73960 L=9337 d=7.9 nb=1 neut=0 cmds=67 noFull=1 shQ=18490 | m=1.299 worth=10.3 cheap=8.4 over=0 dMedOther=11.0 safe(-1)=103710
+    → Lugunica Kingdom#25[T4] terr=17982 bal=198609 dq=11.0 cnt=93 | c=29.6 rankC=20.7 need=351870 tD=1.00 人 crowdedHard | safe=103710 keep=Inf avail=-Inf chunkB=14792 pulseB=8875 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2125 talon5 B=73960 L=9337 d=7.9 nb=1 neut=0 cmds=67 noFull=1 shQ=18490 | m=1.294 worth=10.2 cheap=8.4 over=0 dMedOther=11.0 safe(-1)=103710
+    → Lugunica Kingdom#25[T4] terr=18094 bal=198609 dq=11.0 cnt=93 | c=29.4 rankC=20.6 need=352919 tD=1.00 人 crowdedHard | safe=103710 keep=Inf avail=-Inf chunkB=14792 pulseB=8875 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2130 talon5 B=74832 L=9337 d=8.0 nb=1 neut=0 cmds=68 noFull=1 shQ=18708 | m=1.288 worth=10.3 cheap=8.4 over=0 dMedOther=11.1 safe(-1)=105104
+    → Lugunica Kingdom#25[T4] terr=18168 bal=201091 dq=11.1 cnt=93 | c=29.6 rankC=20.7 need=357769 tD=1.00 人 crowdedHard | safe=105104 keep=Inf avail=-Inf chunkB=14966 pulseB=8980 价高(c>=worth)→break sole hNb=1
+    ⇒ 影子指令 boatTo pct=127 → 水/岸#528446（约 9354 兵） 〔boatFood:2017<boatFood:5623<idleBoats:5058<act:4963〕
+t=2135 talon5 B=74832 L=9337 d=8.0 nb=1 neut=0 cmds=68 noFull=1 shQ=18708 | m=1.283 worth=10.3 cheap=8.4 over=0 dMedOther=11.0 safe(-1)=105104
+    → Lugunica Kingdom#25[T4] terr=18279 bal=201091 dq=11.0 cnt=93 | c=29.4 rankC=20.6 need=358778 tD=1.00 人 crowdedHard | safe=105104 keep=Inf avail=-Inf chunkB=14966 pulseB=8980 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2140 talon5 B=75715 L=9337 d=8.1 nb=1 neut=0 cmds=68 noFull=1 shQ=18928 | m=1.278 worth=10.4 cheap=8.4 over=0 dMedOther=11.2 safe(-1)=106527
+    → Lugunica Kingdom#25[T4] terr=18351 bal=203624 dq=11.1 cnt=93 | c=29.6 rankC=20.7 need=363684 tD=0.99 人 crowdedHard | safe=106527 keep=Inf avail=-Inf chunkB=15143 pulseB=9086 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2145 talon5 B=52781 L=9337 d=5.7 nb=1 neut=0 cmds=68 noFull=1 shQ=13195 | m=1.273 worth=7.2 cheap=8.4 over=0 dMedOther=11.2 safe(-1)=106527
+    → Lugunica Kingdom#25[T4] terr=18424 bal=203624 dq=11.1 cnt=93 | c=29.5 rankC=20.6 need=364383 tD=0.99 人 crowdedHard | safe=106527 keep=Inf avail=-Inf chunkB=10556 pulseB=6334 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2150 talon5 B=45060 L=9337 d=4.8 nb=1 neut=0 cmds=68 noFull=1 shQ=11265 | m=1.268 worth=6.1 cheap=8.4 over=0 dMedOther=11.3 safe(-1)=107968
+    → Lugunica Kingdom#25[T4] terr=18465 bal=206189 dq=11.2 cnt=93 | c=29.7 rankC=20.8 need=369127 tD=0.98 人 crowdedHard | safe=107968 keep=Inf avail=-Inf chunkB=9012 pulseB=5407 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2155 talon5 B=45060 L=9337 d=4.8 nb=1 neut=0 cmds=68 noFull=1 shQ=11265 | m=1.262 worth=6.1 cheap=8.4 over=0 dMedOther=11.3 safe(-1)=107968
+    → Lugunica Kingdom#25[T4] terr=18515 bal=206189 dq=11.1 cnt=93 | c=29.6 rankC=20.8 need=369642 tD=0.98 人 crowdedHard | safe=107968 keep=Inf avail=-Inf chunkB=9012 pulseB=5407 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=2160 talon5 B=45591 L=9337 d=4.9 nb=1 neut=0 cmds=68 noFull=1 shQ=11397 | m=1.257 worth=6.1 cheap=8.4 over=0 dMedOther=11.5 safe(-1)=109427
+    → Lugunica Kingdom#25[T4] terr=18541 bal=208786 dq=11.3 cnt=93 | c=39.9 rankC=39.9 need=374310 tD=0.98 人 crowdedHard | safe=109427 keep=Inf avail=-Inf chunkB=9118 pulseB=5471 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令

@@ -1,0 +1,245 @@
+# A007 riku_x 影子决策明细 t=4050~4326（策略 v27-team-c116-va.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 55 拍（t=4050~4320）
+t=4050 riku_x B=329665 L=9994 d=33.0 nb=1 neut=0 cmds=40 noFull=1 shQ=39322 | m=0.900 worth=86.8 cheap=8.2 over=0 dMedOther=113.4 safe(-1)=779532
+    → гейство#21[T7] terr=10814 bal=1475420 dq=136.4 cnt=89 | c=231.3 rankC=231.3 need=2103534 tD=1.20 人 pulse | safe=779532 keep=Inf avail=-Inf chunkB=65933 pulseB=65933 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4055 riku_x B=329665 L=10083 d=32.7 nb=1 neut=0 cmds=40 noFull=1 shQ=44307 | m=0.900 worth=86.8 cheap=8.2 over=0 dMedOther=113.4 safe(-1)=786474
+    → гейство#21[T7] terr=10725 bal=1455993 dq=135.8 cnt=89 | c=233.8 rankC=233.8 need=2103544 tD=1.20 人 pulse | safe=786474 keep=Inf avail=-Inf chunkB=65933 pulseB=65933 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4060 riku_x B=333686 L=10262 d=32.5 nb=1 neut=0 cmds=40 noFull=1 shQ=49336 | m=0.900 worth=87.6 cheap=8.2 over=0 dMedOther=114.5 safe(-1)=790646
+    → гейство#21[T7] terr=10546 bal=1422742 dq=134.9 cnt=89 | c=240.2 rankC=240.2 need=2113753 tD=1.18 人 pulse | safe=790646 keep=Inf avail=-Inf chunkB=66737 pulseB=66737 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4065 riku_x B=334036 L=10530 d=31.7 nb=1 neut=0 cmds=40 noFull=1 shQ=54426 | m=0.900 worth=87.6 cheap=8.2 over=0 dMedOther=114.5 safe(-1)=758091
+    → гейство#21[T7] terr=10278 bal=1365197 dq=132.8 cnt=88 | c=248.7 rankC=248.7 need=2113978 tD=1.16 人 pulse | safe=758091 keep=Inf avail=-Inf chunkB=66807 pulseB=66807 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4070 riku_x B=338111 L=10705 d=31.6 nb=1 neut=0 cmds=40 noFull=1 shQ=59529 | m=0.900 worth=87.5 cheap=8.2 over=0 dMedOther=114.4 safe(-1)=740462
+    → гейство#21[T7] terr=10103 bal=1334079 dq=132.0 cnt=86 | c=255.8 rankC=255.8 need=2124699 tD=1.15 人 pulse | safe=740462 keep=Inf avail=-Inf chunkB=67622 pulseB=67622 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4075 riku_x B=338111 L=10963 d=30.8 nb=1 neut=0 cmds=40 noFull=1 shQ=64684 | m=0.900 worth=86.5 cheap=8.2 over=0 dMedOther=113.1 safe(-1)=709782
+    → гейство#21[T7] terr=9845 bal=1279856 dq=130.0 cnt=86 | c=264.9 rankC=264.9 need=2124926 tD=1.15 人 pulse | safe=709782 keep=Inf avail=-Inf chunkB=67622 pulseB=67622 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4080 riku_x B=342235 L=11135 d=30.7 nb=1 neut=21 cmds=40 noFull=1 shQ=69851 | m=0.900 worth=86.3 cheap=8.2 over=0 dMedOther=112.8 safe(-1)=693228
+    → гейство#21[T7] terr=9673 bal=1250649 dq=129.3 cnt=85 | c=272.8 rankC=272.8 need=2136598 tD=1.15 人 pulse | safe=693228 keep=Inf avail=-Inf chunkB=68447 pulseB=68447 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4085 riku_x B=342269 L=11220 d=30.5 nb=1 neut=21 cmds=40 noFull=1 shQ=75154 | m=0.900 worth=80.6 cheap=8.1 over=0 dMedOther=105.3 safe(-1)=664369
+    → гейство#21[T7] terr=9588 bal=987417 dq=103.0 cnt=85 | c=163.7 rankC=114.6 need=1941395 tD=0.98 人 pulse onMe | safe=664369 keep=Inf avail=-Inf chunkB=68454 pulseB=68454 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4090 riku_x B=342246 L=11135 d=30.7 nb=1 neut=21 cmds=40 noFull=1 shQ=80411 | m=0.900 worth=81.5 cheap=8.2 over=0 dMedOther=106.6 safe(-1)=666119
+    → гейство#21[T7] terr=9673 bal=998871 dq=103.3 cnt=85 | c=162.9 rankC=114.1 need=1956833 tD=0.97 人 pulse onMe | safe=666119 keep=Inf avail=-Inf chunkB=68449 pulseB=68449 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4095 riku_x B=333809 L=10963 d=30.4 nb=1 neut=21 cmds=40 noFull=1 shQ=83452 | m=0.900 worth=81.5 cheap=8.2 over=0 dMedOther=106.6 safe(-1)=656591
+    → гейство#21[T7] terr=9845 bal=998871 dq=101.5 cnt=86 | c=158.3 rankC=110.8 need=1947295 tD=0.95 人 pulse onMe | safe=656591 keep=Inf avail=-Inf chunkB=66762 pulseB=66762 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4100 riku_x B=344518 L=10877 d=31.7 nb=1 neut=21 cmds=40 noFull=1 shQ=83455 | m=0.900 worth=83.2 cheap=8.2 over=0 dMedOther=108.8 safe(-1)=664173
+    → гейство#21[T7] terr=9931 bal=1020788 dq=102.8 cnt=86 | c=159.1 rankC=111.3 need=1981093 tD=0.94 人 pulse onMe | safe=664173 keep=Inf avail=-Inf chunkB=68904 pulseB=68904 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4105 riku_x B=335824 L=10705 d=31.4 nb=1 neut=21 cmds=40 noFull=1 shQ=83956 | m=0.900 worth=83.1 cheap=8.2 over=0 dMedOther=108.7 safe(-1)=654356
+    → гейство#21[T7] terr=10103 bal=1020788 dq=101.0 cnt=86 | c=154.6 rankC=108.2 need=1970701 tD=0.93 人 pulse onMe | safe=654356 keep=Inf avail=-Inf chunkB=67165 pulseB=67165 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4110 riku_x B=326828 L=10446 d=31.3 nb=1 neut=21 cmds=40 noFull=1 shQ=81707 | m=0.900 worth=83.7 cheap=8.2 over=0 dMedOther=109.4 safe(-1)=646688
+    → гейство#21[T7] terr=10362 bal=1033241 dq=99.7 cnt=86 | c=149.8 rankC=104.9 need=1976652 tD=0.91 人 pulse onMe | safe=646688 keep=Inf avail=-Inf chunkB=65366 pulseB=65366 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4115 riku_x B=317993 L=10269 d=31.0 nb=2 neut=21 cmds=40 noFull=1 shQ=79498 | m=0.900 worth=83.0 cheap=8.2 over=0 dMedOther=108.5 safe(-1)=800982
+    → гейство#21[T7] terr=10535 bal=1033241 dq=98.1 cnt=86 | c=145.7 rankC=102.0 need=1965757 tD=0.90 人 pulse onMe | safe=800982 keep=Inf avail=-Inf chunkB=63599 pulseB=63599 价高(c>=worth)→break hNb=2
+    → [Corgi] Mondá#19[T8] terr=21973 bal=1667902 dq=75.9 cnt=3 | c=145.7 rankC=102.0 need=3198884 tD=0.70 人 pulse onMe | safe=800982 keep=Inf avail=-Inf chunkB=63599 pulseB=63599 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4120 riku_x B=308281 L=9997 d=30.8 nb=2 neut=21 cmds=40 noFull=1 shQ=77070 | m=0.900 worth=83.0 cheap=8.2 over=0 dMedOther=108.4 safe(-1)=779766
+    → гейство#21[T7] terr=10795 bal=1045846 dq=96.9 cnt=87 | c=141.5 rankC=99.1 need=1970042 tD=0.89 人 pulse onMe | safe=779766 keep=Inf avail=-Inf chunkB=61656 pulseB=61656 价高(c>=worth)→break hNb=2
+    → [Corgi] Mondá#19[T8] terr=21985 bal=1689918 dq=76.9 cnt=7 | c=147.3 rankC=103.1 need=3236941 tD=0.71 人 pulse onMe | safe=779766 keep=Inf avail=-Inf chunkB=61656 pulseB=61656 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4125 riku_x B=298209 L=9792 d=30.5 nb=2 neut=21 cmds=40 noFull=1 shQ=74552 | m=0.900 worth=82.8 cheap=8.2 over=0 dMedOther=108.2 safe(-1)=763776
+    → гейство#21[T7] terr=10970 bal=1045846 dq=95.3 cnt=88 | c=138.0 rankC=96.6 need=1952713 tD=0.88 人 pulse onMe | safe=763776 keep=Inf avail=-Inf chunkB=59642 pulseB=59642 价高(c>=worth)→break hNb=2
+    → [Corgi] Mondá#19[T8] terr=22015 bal=1689918 dq=76.8 cnt=11 | c=146.9 rankC=102.9 need=3234042 tD=0.71 人 pulse onMe | safe=763776 keep=Inf avail=-Inf chunkB=59642 pulseB=59642 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4130 riku_x B=287561 L=9501 d=30.3 nb=2 neut=20 cmds=40 noFull=1 shQ=71890 | m=0.900 worth=83.6 cheap=8.2 over=0 dMedOther=109.3 safe(-1)=741078
+    → [Corgi] Mondá#19[T8] terr=22041 bal=1712224 dq=77.7 cnt=14 | c=148.4 rankC=103.9 need=3271223 tD=0.71 人 pulse onMe | safe=741078 keep=Inf avail=-Inf chunkB=57512 pulseB=57512 价高(c>=worth)→break hNb=2
+    → гейство#21[T7] terr=11235 bal=1058709 dq=94.2 cnt=89 | c=179.4 rankC=179.4 need=1949776 tD=0.86 人 pulse onMe | safe=741078 keep=Inf avail=-Inf chunkB=57512 pulseB=57512 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4135 riku_x B=276292 L=9267 d=29.8 nb=2 neut=19 cmds=40 noFull=1 shQ=69073 | m=0.900 worth=83.6 cheap=8.2 over=0 dMedOther=109.3 safe(-1)=722826
+    → [Corgi] Mondá#19[T8] terr=22096 bal=1712224 dq=77.5 cnt=20 | c=147.7 rankC=103.4 need=3265884 tD=0.71 人 pulse onMe | safe=722826 keep=Inf avail=-Inf chunkB=55258 pulseB=55258 价高(c>=worth)→break hNb=2
+    → гейство#21[T7] terr=11414 bal=1058709 dq=92.8 cnt=88 | c=175.1 rankC=175.1 need=1932398 tD=0.85 人 pulse onMe | safe=722826 keep=Inf avail=-Inf chunkB=55258 pulseB=55258 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4140 riku_x B=264568 L=8953 d=29.6 nb=2 neut=17 cmds=40 noFull=1 shQ=66142 | m=0.900 worth=84.5 cheap=8.3 over=0 dMedOther=110.4 safe(-1)=698334
+    → [Corgi] Mondá#19[T8] terr=22143 bal=1734825 dq=78.3 cnt=25 | c=149.0 rankC=104.3 need=3301789 tD=0.71 人 pulse onMe | safe=698334 keep=Inf avail=-Inf chunkB=52914 pulseB=52914 价高(c>=worth)→break hNb=2
+    → гейство#21[T7] terr=11681 bal=1071731 dq=91.7 cnt=90 | c=170.8 rankC=170.8 need=1930057 tD=0.83 人 pulse onMe | safe=698334 keep=Inf avail=-Inf chunkB=52914 pulseB=52914 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4145 riku_x B=259557 L=8868 d=29.3 nb=2 neut=16 cmds=40 noFull=1 shQ=64889 | m=0.900 worth=84.5 cheap=8.3 over=0 dMedOther=110.4 safe(-1)=691704
+    → [Corgi] Mondá#19[T8] terr=22228 bal=1734825 dq=78.0 cnt=30 | c=148.0 rankC=103.6 need=3293665 tD=0.71 人 pulse onMe | safe=691704 keep=Inf avail=-Inf chunkB=51911 pulseB=51911 价高(c>=worth)→break hNb=2
+    → гейство#21[T7] terr=11681 bal=1071813 dq=91.8 cnt=90 | c=247.4 rankC=358.7 need=1927913 tD=0.83 人 pulse | safe=691704 keep=Inf avail=-Inf chunkB=51911 pulseB=51911 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4150 riku_x B=259785 L=8807 d=29.5 nb=3 neut=0 cmds=40 noFull=1 shQ=64946 | m=0.900 worth=85.3 cheap=8.3 over=0 dMedOther=111.5 safe(-1)=686946
+    → [Corgi] Mondá#19[T8] terr=22289 bal=1757898 dq=78.9 cnt=30 | c=149.2 rankC=104.4 need=3329083 tD=0.71 人 pulse onMe | safe=686946 keep=Inf avail=-Inf chunkB=51957 pulseB=51957 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21526 bal=1827556 dq=84.9 cnt=16 | c=298.3 rankC=208.8 need=3271409 tD=0.76 人 pulse crowdedHard | safe=686946 keep=Inf avail=-Inf chunkB=51957 pulseB=51957 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=11681 bal=1084996 dq=92.9 cnt=90 | c=250.4 rankC=363.1 need=1951410 tD=0.83 人 pulse | safe=686946 keep=Inf avail=-Inf chunkB=51957 pulseB=51957 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4155 riku_x B=254937 L=8704 d=29.3 nb=3 neut=0 cmds=40 noFull=1 shQ=63734 | m=0.900 worth=85.3 cheap=8.3 over=0 dMedOther=111.5 safe(-1)=678912
+    → [Corgi] Mondá#19[T8] terr=22392 bal=1757898 dq=78.5 cnt=36 | c=148.0 rankC=103.6 need=3319307 tD=0.70 人 pulse onMe | safe=678912 keep=Inf avail=-Inf chunkB=50987 pulseB=50987 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21620 bal=1736107 dq=80.3 cnt=17 | c=282.1 rankC=197.5 need=3112358 tD=0.72 人 pulse crowdedHard | safe=678912 keep=Inf avail=-Inf chunkB=50987 pulseB=50987 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=11681 bal=1084996 dq=92.9 cnt=90 | c=250.4 rankC=363.1 need=1951410 tD=0.83 人 pulse | safe=678912 keep=Inf avail=-Inf chunkB=50987 pulseB=50987 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4160 riku_x B=254540 L=8631 d=29.5 nb=3 neut=0 cmds=40 noFull=1 shQ=63635 | m=0.900 worth=86.1 cheap=8.3 over=0 dMedOther=112.5 safe(-1)=673218
+    → [Off] Skull#2[T5] terr=21731 bal=1759023 dq=80.9 cnt=19 | c=111.0 rankC=55.5 need=3156595 tD=0.72 人 pulse bleeding | safe=673218 keep=Inf avail=-Inf chunkB=50908 pulseB=50908 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=22465 bal=1781278 dq=79.3 cnt=34 | c=149.1 rankC=104.4 need=3354140 tD=0.70 人 pulse onMe | safe=673218 keep=Inf avail=-Inf chunkB=50908 pulseB=50908 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=11681 bal=1098341 dq=94.0 cnt=90 | c=253.5 rankC=367.5 need=1975196 tD=0.84 人 pulse | safe=673218 keep=Inf avail=-Inf chunkB=50908 pulseB=50908 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4165 riku_x B=249834 L=8531 d=29.3 nb=3 neut=0 cmds=40 noFull=1 shQ=62458 | m=0.900 worth=86.1 cheap=8.3 over=0 dMedOther=112.5 safe(-1)=665418
+    → [Off] Skull#2[T5] terr=21789 bal=1759023 dq=80.7 cnt=20 | c=110.6 rankC=55.3 need=3158618 tD=0.72 人 pulse bleeding | safe=665418 keep=Inf avail=-Inf chunkB=49967 pulseB=49967 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=22565 bal=1781278 dq=78.9 cnt=32 | c=148.0 rankC=103.6 need=3344678 tD=0.70 人 pulse onMe | safe=665418 keep=Inf avail=-Inf chunkB=49967 pulseB=49967 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=11681 bal=1098341 dq=94.0 cnt=90 | c=253.5 rankC=367.5 need=1975196 tD=0.84 人 pulse | safe=665418 keep=Inf avail=-Inf chunkB=49967 pulseB=49967 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4170 riku_x B=249802 L=8467 d=29.5 nb=3 neut=0 cmds=40 noFull=1 shQ=62450 | m=0.900 worth=86.3 cheap=8.3 over=0 dMedOther=112.8 safe(-1)=660426
+    → [Corgi] Mondá#19[T8] terr=22629 bal=1804968 dq=79.8 cnt=31 | c=149.2 rankC=104.5 need=3380883 tD=0.71 人 pulse onMe | safe=660426 keep=Inf avail=-Inf chunkB=49960 pulseB=49960 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21669 bal=1748699 dq=80.7 cnt=24 | c=260.3 rankC=182.2 need=3136688 tD=0.72 人 pulse crowdedHard | safe=660426 keep=Inf avail=-Inf chunkB=49960 pulseB=49960 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=11681 bal=1111850 dq=95.2 cnt=90 | c=256.5 rankC=372.0 need=1999275 tD=0.84 人 pulse | safe=660426 keep=Inf avail=-Inf chunkB=49960 pulseB=49960 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4175 riku_x B=245659 L=8379 d=29.3 nb=3 neut=0 cmds=40 noFull=1 shQ=61414 | m=0.900 worth=86.3 cheap=8.3 over=0 dMedOther=112.8 safe(-1)=653562
+    → [Off] Skull#2[T5] terr=21709 bal=1936011 dq=89.2 cnt=25 | c=134.3 rankC=67.1 need=3470706 tD=0.79 人 pulse crowdedHard | safe=653562 keep=Inf avail=-Inf chunkB=49132 pulseB=49132 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=22717 bal=1737988 dq=76.5 cnt=26 | c=143.1 rankC=100.2 need=3253169 tD=0.68 人 pulse onMe | safe=653562 keep=Inf avail=-Inf chunkB=49132 pulseB=49132 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=11681 bal=1111850 dq=95.2 cnt=90 | c=256.5 rankC=372.0 need=1999275 tD=0.84 人 pulse | safe=653562 keep=Inf avail=-Inf chunkB=49132 pulseB=49132 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4180 riku_x B=245999 L=8324 d=29.6 nb=3 neut=20 cmds=40 noFull=1 shQ=61499 | m=0.900 worth=87.1 cheap=8.3 over=0 dMedOther=113.8 safe(-1)=649272
+    → [Off] Skull#2[T5] terr=21564 bal=1932272 dq=89.6 cnt=26 | c=135.0 rankC=67.5 need=3459238 tD=0.79 人 pulse crowdedHard | safe=649272 keep=Inf avail=-Inf chunkB=49200 pulseB=49200 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=22772 bal=1761103 dq=77.3 cnt=28 | c=144.3 rankC=101.0 need=3289162 tD=0.68 人 pulse onMe | safe=649272 keep=Inf avail=-Inf chunkB=49200 pulseB=49200 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=11681 bal=1125525 dq=96.4 cnt=90 | c=259.7 rankC=376.5 need=2023649 tD=0.85 人 pulse | safe=649272 keep=Inf avail=-Inf chunkB=49200 pulseB=49200 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4185 riku_x B=241754 L=8234 d=29.4 nb=3 neut=13 cmds=40 noFull=1 shQ=60438 | m=0.900 worth=87.1 cheap=8.3 over=0 dMedOther=113.8 safe(-1)=642252
+    → [Corgi] Mondá#19[T8] terr=22862 bal=1761103 dq=77.0 cnt=31 | c=143.3 rankC=100.3 need=3280681 tD=0.68 人 pulse onMe | safe=642252 keep=Inf avail=-Inf chunkB=48351 pulseB=48351 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=11681 bal=1125525 dq=96.4 cnt=90 | c=179.1 rankC=179.1 need=2023649 tD=0.85 人 pulse | safe=642252 keep=Inf avail=-Inf chunkB=48351 pulseB=48351 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21603 bal=1932272 dq=89.4 cnt=33 | c=232.3 rankC=232.3 need=3460835 tD=0.79 人 pulse crowdedHard | safe=642252 keep=Inf avail=-Inf chunkB=48351 pulseB=48351 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4190 riku_x B=241521 L=8168 d=29.6 nb=3 neut=6 cmds=40 noFull=1 shQ=60380 | m=0.900 worth=86.7 cheap=8.3 over=0 dMedOther=113.3 safe(-1)=637104
+    → гейство#21[T7] terr=11681 bal=983597 dq=84.2 cnt=90 | c=126.9 rankC=88.8 need=1911368 tD=0.74 人 pulse onMe | safe=637104 keep=Inf avail=-Inf chunkB=48304 pulseB=48304 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=22928 bal=1784525 dq=77.8 cnt=33 | c=192.6 rankC=192.6 need=3316148 tD=0.69 人 pulse onMe | safe=637104 keep=Inf avail=-Inf chunkB=48304 pulseB=48304 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21627 bal=1957777 dq=90.5 cnt=40 | c=234.9 rankC=234.9 need=3507053 tD=0.80 人 pulse crowdedHard | safe=637104 keep=Inf avail=-Inf chunkB=48304 pulseB=48304 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4195 riku_x B=232345 L=7973 d=29.1 nb=3 neut=3 cmds=40 noFull=1 shQ=58086 | m=0.900 worth=86.7 cheap=8.4 over=0 dMedOther=113.3 safe(-1)=621894
+    → гейство#21[T7] terr=11773 bal=983597 dq=83.5 cnt=92 | c=125.3 rankC=87.7 need=1902661 tD=0.74 人 pulse onMe | safe=621894 keep=Inf avail=-Inf chunkB=46469 pulseB=46469 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=23031 bal=1784525 dq=77.5 cnt=35 | c=191.1 rankC=191.1 need=3306487 tD=0.68 人 pulse onMe | safe=621894 keep=Inf avail=-Inf chunkB=46469 pulseB=46469 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21634 bal=1957777 dq=90.5 cnt=43 | c=234.8 rankC=234.8 need=3507425 tD=0.80 人 pulse crowdedHard | safe=621894 keep=Inf avail=-Inf chunkB=46469 pulseB=46469 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4200 riku_x B=225792 L=7612 d=29.7 nb=3 neut=0 cmds=40 noFull=1 shQ=55713 | m=0.900 worth=88.2 cheap=8.4 over=0 dMedOther=115.3 safe(-1)=593736
+    → гейство#21[T7] terr=12061 bal=1007658 dq=83.5 cnt=98 | c=123.2 rankC=86.3 need=1918403 tD=0.72 人 pulse onMe | safe=593736 keep=Inf avail=-Inf chunkB=45158 pulseB=45158 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=23104 bal=1831363 dq=79.3 cnt=37 | c=194.9 rankC=194.9 need=3383128 tD=0.69 人 pulse onMe | safe=593736 keep=Inf avail=-Inf chunkB=45158 pulseB=45158 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21637 bal=2173758 dq=100.5 cnt=46 | c=260.4 rankC=260.4 need=3891066 tD=0.87 人 pulse crowdedHard | safe=593736 keep=Inf avail=-Inf chunkB=45158 pulseB=45158 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4205 riku_x B=268622 L=7293 d=36.8 nb=3 neut=0 cmds=40 noFull=1 shQ=59822 | m=0.900 worth=88.2 cheap=8.4 over=0 dMedOther=115.3 safe(-1)=568854
+    → [Off] Skull#2[T5] terr=21637 bal=2173758 dq=100.5 cnt=46 | c=151.0 rankC=75.5 need=3891353 tD=0.87 人 pulse crowdedHard | safe=568854 keep=Inf avail=-Inf chunkB=53724 pulseB=53724 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=12262 bal=1007658 dq=82.2 cnt=100 | c=119.7 rankC=83.8 need=1894233 tD=0.71 人 pulse onMe | safe=568854 keep=Inf avail=-Inf chunkB=53724 pulseB=53724 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=23222 bal=1831363 dq=78.9 cnt=40 | c=193.1 rankC=193.1 need=3369019 tD=0.68 人 pulse onMe | safe=568854 keep=Inf avail=-Inf chunkB=53724 pulseB=53724 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4210 riku_x B=247996 L=6889 d=36.0 nb=3 neut=0 cmds=40 noFull=1 shQ=61999 | m=0.900 worth=88.9 cheap=8.5 over=0 dMedOther=116.2 safe(-1)=537342
+    → [Off] Skull#2[T5] terr=21427 bal=2168252 dq=101.2 cnt=45 | c=152.3 rankC=76.1 need=3873642 tD=0.87 人 pulse crowdedHard | safe=537342 keep=Inf avail=-Inf chunkB=49599 pulseB=49599 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=12584 bal=1020152 dq=81.1 cnt=109 | c=154.2 rankC=154.2 need=1878665 tD=0.70 人 pulse onMe | safe=537342 keep=Inf avail=-Inf chunkB=49599 pulseB=49599 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=23304 bal=1855903 dq=79.6 cnt=41 | c=194.3 rankC=194.3 need=3403144 tD=0.69 人 pulse onMe | safe=537342 keep=Inf avail=-Inf chunkB=49599 pulseB=49599 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4215 riku_x B=228189 L=6541 d=34.9 nb=3 neut=0 cmds=40 noFull=1 shQ=57047 | m=0.900 worth=88.7 cheap=8.5 over=0 dMedOther=116.0 safe(-1)=510198
+    → гейство#21[T7] terr=12806 bal=1020152 dq=79.7 cnt=108 | c=149.4 rankC=149.4 need=1853308 tD=0.69 人 pulse onMe | safe=510198 keep=Inf avail=-Inf chunkB=45638 pulseB=45638 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=23430 bal=1855903 dq=79.2 cnt=42 | c=192.5 rankC=192.5 need=3388825 tD=0.68 人 pulse onMe | safe=510198 keep=Inf avail=-Inf chunkB=45638 pulseB=45638 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21427 bal=2168252 dq=101.2 cnt=45 | c=262.6 rankC=262.6 need=3873787 tD=0.87 人 pulse crowdedHard | safe=510198 keep=Inf avail=-Inf chunkB=45638 pulseB=45638 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4220 riku_x B=218325 L=6344 d=34.4 nb=3 neut=0 cmds=40 noFull=1 shQ=54581 | m=0.900 worth=89.0 cheap=8.5 over=0 dMedOther=116.3 safe(-1)=494832
+    → гейство#21[T7] terr=12916 bal=1032908 dq=80.0 cnt=107 | c=148.7 rankC=148.7 need=1860390 tD=0.69 人 pulse | safe=494832 keep=Inf avail=-Inf chunkB=43665 pulseB=43665 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=23517 bal=1880772 dq=80.0 cnt=44 | c=193.7 rankC=193.7 need=3423521 tD=0.69 人 pulse onMe | safe=494832 keep=Inf avail=-Inf chunkB=43665 pulseB=43665 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21427 bal=2196222 dq=102.5 cnt=45 | c=265.9 rankC=265.9 need=3923495 tD=0.88 人 pulse crowdedHard | safe=494832 keep=Inf avail=-Inf chunkB=43665 pulseB=43665 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4225 riku_x B=210763 L=6206 d=34.0 nb=3 neut=0 cmds=40 noFull=1 shQ=52690 | m=0.900 worth=88.7 cheap=8.5 over=0 dMedOther=115.9 safe(-1)=484068
+    → гейство#21[T7] terr=12916 bal=1032908 dq=80.0 cnt=107 | c=148.7 rankC=148.7 need=1860390 tD=0.69 人 pulse | safe=484068 keep=Inf avail=-Inf chunkB=42153 pulseB=42153 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=23655 bal=1880772 dq=79.5 cnt=47 | c=191.7 rankC=191.7 need=3408384 tD=0.69 人 pulse onMe | safe=484068 keep=Inf avail=-Inf chunkB=42153 pulseB=42153 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21427 bal=2196222 dq=102.5 cnt=45 | c=265.9 rankC=265.9 need=3923790 tD=0.88 人 pulse crowdedHard | safe=484068 keep=Inf avail=-Inf chunkB=42153 pulseB=42153 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4230 riku_x B=207910 L=6109 d=34.0 nb=3 neut=0 cmds=40 noFull=1 shQ=51977 | m=0.900 worth=89.0 cheap=8.5 over=0 dMedOther=116.4 safe(-1)=476502
+    → гейство#21[T7] terr=12916 bal=1045716 dq=81.0 cnt=107 | c=150.6 rankC=150.6 need=1883219 tD=0.70 人 pulse | safe=476502 keep=Inf avail=-Inf chunkB=41582 pulseB=41582 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=23752 bal=1905974 dq=80.2 cnt=49 | c=192.8 rankC=192.8 need=3442656 tD=0.69 人 pulse onMe | safe=476502 keep=Inf avail=-Inf chunkB=41582 pulseB=41582 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21427 bal=2223894 dq=103.8 cnt=45 | c=269.2 rankC=269.2 need=3972977 tD=0.89 人 pulse crowdedHard | safe=476502 keep=Inf avail=-Inf chunkB=41582 pulseB=41582 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4235 riku_x B=203088 L=6059 d=33.5 nb=3 neut=0 cmds=40 noFull=1 shQ=50772 | m=0.900 worth=89.0 cheap=8.6 over=0 dMedOther=116.4 safe(-1)=472602
+    → гейство#21[T7] terr=12916 bal=1045716 dq=81.0 cnt=107 | c=150.6 rankC=150.6 need=1883219 tD=0.70 人 pulse | safe=472602 keep=Inf avail=-Inf chunkB=40618 pulseB=40618 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=23802 bal=1906022 dq=80.1 cnt=50 | c=207.2 rankC=207.2 need=3432982 tD=0.69 人 pulse crowdedHard | safe=472602 keep=Inf avail=-Inf chunkB=40618 pulseB=40618 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21427 bal=2223894 dq=103.8 cnt=45 | c=269.2 rankC=269.2 need=3973126 tD=0.89 人 pulse crowdedHard | safe=472602 keep=Inf avail=-Inf chunkB=40618 pulseB=40618 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4240 riku_x B=205423 L=6059 d=33.9 nb=3 neut=0 cmds=40 noFull=1 shQ=51355 | m=0.900 worth=89.8 cheap=8.6 over=0 dMedOther=117.3 safe(-1)=472602
+    → гейство#21[T7] terr=12916 bal=1058682 dq=82.0 cnt=107 | c=152.4 rankC=152.4 need=1906329 tD=0.70 人 pulse | safe=472602 keep=Inf avail=-Inf chunkB=41085 pulseB=41085 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=23802 bal=1931562 dq=81.2 cnt=50 | c=209.9 rankC=209.9 need=3478504 tD=0.69 人 pulse crowdedHard | safe=472602 keep=Inf avail=-Inf chunkB=41085 pulseB=41085 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=21427 bal=2251025 dq=105.1 cnt=45 | c=272.4 rankC=272.4 need=4021359 tD=0.90 人 pulse crowdedHard | safe=472602 keep=Inf avail=-Inf chunkB=41085 pulseB=41085 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4245 riku_x B=205423 L=6059 d=33.9 nb=3 neut=0 cmds=40 noFull=1 shQ=51355 | m=0.900 worth=88.5 cheap=8.6 over=0 dMedOther=115.7 safe(-1)=472602
+    → [Off] Skull#2[T5] terr=21427 bal=2018009 dq=94.2 cnt=45 | c=179.5 rankC=125.6 need=3815289 tD=0.81 人 pulse onMe | safe=472602 keep=Inf avail=-Inf chunkB=41085 pulseB=41085 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=12916 bal=1058682 dq=82.0 cnt=107 | c=221.0 rankC=320.4 need=1906329 tD=0.71 人 pulse | safe=472602 keep=Inf avail=-Inf chunkB=41085 pulseB=41085 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=23802 bal=1931562 dq=81.2 cnt=50 | c=304.4 rankC=441.3 need=3478504 tD=0.70 人 pulse crowdedHard | safe=472602 keep=Inf avail=-Inf chunkB=41085 pulseB=41085 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4250 riku_x B=205207 L=6012 d=34.1 nb=3 neut=0 cmds=40 noFull=1 shQ=51301 | m=0.900 worth=89.3 cheap=8.6 over=0 dMedOther=116.7 safe(-1)=468936
+    → [Off] Skull#2[T5] terr=21474 bal=2044646 dq=95.2 cnt=47 | c=181.0 rankC=126.7 need=3859111 tD=0.82 人 pulse onMe | safe=468936 keep=Inf avail=-Inf chunkB=41041 pulseB=41041 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=12916 bal=1071809 dq=83.0 cnt=107 | c=223.7 rankC=324.3 need=1929726 tD=0.71 人 pulse | safe=468936 keep=Inf avail=-Inf chunkB=41041 pulseB=41041 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=23802 bal=1957444 dq=82.2 cnt=50 | c=308.4 rankC=447.2 need=3524636 tD=0.70 人 pulse crowdedHard | safe=468936 keep=Inf avail=-Inf chunkB=41041 pulseB=41041 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4255 riku_x B=199869 L=5914 d=33.8 nb=3 neut=0 cmds=40 noFull=1 shQ=49967 | m=0.900 worth=89.3 cheap=8.6 over=0 dMedOther=116.7 safe(-1)=461292
+    → [Off] Skull#2[T5] terr=21572 bal=2044646 dq=94.8 cnt=49 | c=179.5 rankC=125.7 need=3851935 tD=0.81 人 pulse onMe | safe=461292 keep=Inf avail=-Inf chunkB=39974 pulseB=39974 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=12916 bal=1071809 dq=83.0 cnt=107 | c=154.3 rankC=154.3 need=1929726 tD=0.71 人 pulse | safe=461292 keep=Inf avail=-Inf chunkB=39974 pulseB=39974 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=23802 bal=1957444 dq=82.2 cnt=50 | c=212.7 rankC=212.7 need=3524636 tD=0.70 人 pulse crowdedHard | safe=461292 keep=Inf avail=-Inf chunkB=39974 pulseB=39974 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4260 riku_x B=193629 L=5757 d=33.6 nb=3 neut=0 cmds=40 noFull=1 shQ=48407 | m=0.900 worth=90.0 cheap=8.6 over=0 dMedOther=117.6 safe(-1)=449046
+    → [Off] Skull#2[T5] terr=21729 bal=2071635 dq=95.3 cnt=55 | c=179.4 rankC=125.6 need=3888404 tD=0.81 人 pulse onMe | safe=449046 keep=Inf avail=-Inf chunkB=38726 pulseB=38726 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=12916 bal=1085099 dq=84.0 cnt=107 | c=156.1 rankC=156.1 need=1953414 tD=0.71 人 pulse | safe=449046 keep=Inf avail=-Inf chunkB=38726 pulseB=38726 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=23802 bal=1983673 dq=83.3 cnt=50 | c=215.5 rankC=215.5 need=3571386 tD=0.71 人 pulse crowdedHard | safe=449046 keep=Inf avail=-Inf chunkB=38726 pulseB=38726 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4265 riku_x B=187354 L=5640 d=33.2 nb=3 neut=0 cmds=40 noFull=1 shQ=46838 | m=0.900 worth=90.0 cheap=8.6 over=0 dMedOther=117.6 safe(-1)=439920
+    → [Off] Skull#2[T5] terr=21846 bal=2071635 dq=94.8 cnt=60 | c=177.7 rankC=124.4 need=3880063 tD=0.81 人 pulse onMe | safe=439920 keep=Inf avail=-Inf chunkB=37471 pulseB=37471 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=12916 bal=1085099 dq=84.0 cnt=107 | c=156.1 rankC=156.1 need=1953414 tD=0.71 人 pulse | safe=439920 keep=Inf avail=-Inf chunkB=37471 pulseB=37471 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=23802 bal=1983673 dq=83.3 cnt=50 | c=215.5 rankC=215.5 need=3571386 tD=0.71 人 pulse crowdedHard | safe=439920 keep=Inf avail=-Inf chunkB=37471 pulseB=37471 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4270 riku_x B=179154 L=5446 d=32.9 nb=3 neut=0 cmds=40 noFull=1 shQ=44788 | m=0.900 worth=90.7 cheap=8.6 over=0 dMedOther=118.6 safe(-1)=424788
+    → [Off] Skull#2[T5] terr=22040 bal=2098980 dq=95.2 cnt=67 | c=177.2 rankC=124.0 need=3913728 tD=0.80 人 pulse onMe | safe=424788 keep=Inf avail=-Inf chunkB=35831 pulseB=35831 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=12916 bal=1098554 dq=85.1 cnt=107 | c=158.0 rankC=158.0 need=1977395 tD=0.72 人 pulse | safe=424788 keep=Inf avail=-Inf chunkB=35831 pulseB=35831 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=23802 bal=2010254 dq=84.5 cnt=50 | c=218.3 rankC=218.3 need=3618764 tD=0.71 人 pulse crowdedHard | safe=424788 keep=Inf avail=-Inf chunkB=35831 pulseB=35831 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4275 riku_x B=171712 L=5304 d=32.4 nb=3 neut=0 cmds=40 noFull=1 shQ=42928 | m=0.900 worth=90.2 cheap=8.6 over=0 dMedOther=118.0 safe(-1)=413712
+    → гейство#21[T7] terr=12916 bal=1098554 dq=85.1 cnt=107 | c=158.0 rankC=158.0 need=1977395 tD=0.72 人 pulse | safe=413712 keep=Inf avail=-Inf chunkB=34342 pulseB=34342 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=23802 bal=2010254 dq=84.5 cnt=50 | c=218.3 rankC=218.3 need=3618764 tD=0.72 人 pulse crowdedHard | safe=413712 keep=Inf avail=-Inf chunkB=34342 pulseB=34342 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=22182 bal=2098980 dq=94.6 cnt=71 | c=233.8 rankC=233.8 need=3898840 tD=0.80 人 pulse onMe | safe=413712 keep=Inf avail=-Inf chunkB=34342 pulseB=34342 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4280 riku_x B=162312 L=5085 d=31.9 nb=3 neut=0 cmds=40 noFull=1 shQ=40578 | m=0.900 worth=91.0 cheap=8.6 over=0 dMedOther=118.9 safe(-1)=396630
+    → гейство#21[T7] terr=12916 bal=1112176 dq=86.1 cnt=107 | c=160.0 rankC=160.0 need=2001675 tD=0.72 人 pulse | safe=396630 keep=Inf avail=-Inf chunkB=32462 pulseB=32462 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=23802 bal=2037191 dq=85.6 cnt=50 | c=221.2 rankC=221.2 need=3666776 tD=0.72 人 pulse crowdedHard | safe=396630 keep=Inf avail=-Inf chunkB=32462 pulseB=32462 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=22401 bal=2126896 dq=94.9 cnt=72 | c=233.1 rankC=233.1 need=3925877 tD=0.80 人 pulse onMe | safe=396630 keep=Inf avail=-Inf chunkB=32462 pulseB=32462 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4285 riku_x B=154991 L=4941 d=31.4 nb=3 neut=0 cmds=40 noFull=1 shQ=38747 | m=0.900 worth=91.0 cheap=8.8 over=0 dMedOther=118.9 safe(-1)=385398
+    → [Corgi] Mondá#19[T8] terr=23802 bal=1788511 dq=75.1 cnt=50 | c=144.5 rankC=101.1 need=3448338 tD=0.63 人 pulse onMe | safe=385398 keep=Inf avail=-Inf chunkB=30998 pulseB=30998 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=12916 bal=1112176 dq=86.1 cnt=107 | c=160.0 rankC=160.0 need=2001675 tD=0.72 人 pulse | safe=385398 keep=Inf avail=-Inf chunkB=30998 pulseB=30998 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=22545 bal=2126896 dq=94.3 cnt=68 | c=230.7 rankC=230.7 need=3911163 tD=0.79 人 pulse onMe | safe=385398 keep=Inf avail=-Inf chunkB=30998 pulseB=30998 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4290 riku_x B=146293 L=4733 d=30.9 nb=3 neut=0 cmds=40 noFull=1 shQ=36573 | m=0.900 worth=91.7 cheap=8.8 over=0 dMedOther=119.8 safe(-1)=369174
+    → [Corgi] Mondá#19[T8] terr=23802 bal=1812477 dq=76.1 cnt=50 | c=146.3 rankC=102.4 need=3491055 tD=0.64 人 pulse onMe | safe=369174 keep=Inf avail=-Inf chunkB=29259 pulseB=29259 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=12916 bal=1125966 dq=87.2 cnt=107 | c=161.9 rankC=161.9 need=2026253 tD=0.73 人 pulse | safe=369174 keep=Inf avail=-Inf chunkB=29259 pulseB=29259 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=22753 bal=2155183 dq=94.7 cnt=70 | c=230.3 rankC=230.3 need=3940705 tD=0.79 人 pulse onMe | safe=369174 keep=Inf avail=-Inf chunkB=29259 pulseB=29259 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4295 riku_x B=134419 L=4490 d=29.9 nb=3 neut=0 cmds=40 noFull=1 shQ=33604 | m=0.900 worth=91.7 cheap=8.8 over=0 dMedOther=119.8 safe(-1)=350220
+    → [Corgi] Mondá#19[T8] terr=23904 bal=1812477 dq=75.8 cnt=52 | c=145.2 rankC=101.6 need=3480944 tD=0.63 人 pulse onMe | safe=350220 keep=Inf avail=-Inf chunkB=26884 pulseB=26884 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=12916 bal=1125966 dq=87.2 cnt=107 | c=161.9 rankC=161.9 need=2026253 tD=0.73 人 pulse | safe=350220 keep=Inf avail=-Inf chunkB=26884 pulseB=26884 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=22894 bal=2155183 dq=94.1 cnt=70 | c=228.1 rankC=228.1 need=3926926 tD=0.79 人 pulse onMe | safe=350220 keep=Inf avail=-Inf chunkB=26884 pulseB=26884 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4300 riku_x B=122215 L=4115 d=29.7 nb=3 neut=0 cmds=40 noFull=1 shQ=30553 | m=0.900 worth=93.1 cheap=8.8 over=0 dMedOther=121.7 safe(-1)=320970
+    → [Corgi] Mondá#19[T8] terr=24062 bal=1860773 dq=77.3 cnt=53 | c=147.2 rankC=103.0 need=3551903 tD=0.64 人 pulse onMe | safe=320970 keep=Inf avail=-Inf chunkB=24443 pulseB=24443 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=12916 bal=1152843 dq=89.3 cnt=107 | c=165.7 rankC=165.7 need=2074158 tD=0.73 人 pulse | safe=320970 keep=Inf avail=-Inf chunkB=24443 pulseB=24443 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23111 bal=2206884 dq=95.5 cnt=73 | c=230.1 rankC=230.1 need=3998414 tD=0.78 人 pulse onMe | safe=320970 keep=Inf avail=-Inf chunkB=24443 pulseB=24443 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4305 riku_x B=110180 L=3858 d=28.6 nb=3 neut=0 cmds=40 noFull=1 shQ=27545 | m=0.900 worth=93.0 cheap=8.9 over=0 dMedOther=121.6 safe(-1)=300924
+    → [Corgi] Mondá#19[T8] terr=24172 bal=1860773 dq=77.0 cnt=55 | c=146.0 rankC=102.2 need=3541441 tD=0.63 人 pulse onMe | safe=300924 keep=Inf avail=-Inf chunkB=22036 pulseB=22036 价高(c>=worth)→break hNb=3
+    → гейство#21[T7] terr=12916 bal=1152843 dq=89.3 cnt=107 | c=165.7 rankC=165.7 need=2074158 tD=0.73 人 pulse | safe=300924 keep=Inf avail=-Inf chunkB=22036 pulseB=22036 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23258 bal=2206884 dq=94.9 cnt=74 | c=227.8 rankC=227.8 need=3984588 tD=0.78 人 pulse onMe | safe=300924 keep=Inf avail=-Inf chunkB=22036 pulseB=22036 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4310 riku_x B=127598 L=3611 d=35.3 nb=3 neut=0 cmds=40 noFull=1 shQ=29388 | m=0.900 worth=93.6 cheap=8.9 over=0 dMedOther=122.4 safe(-1)=281658
+    → гейство#21[T7] terr=12916 bal=1007569 dq=78.0 cnt=107 | c=117.4 rankC=82.2 need=1959332 tD=0.64 人 pulse onMe | safe=281658 keep=Inf avail=-Inf chunkB=25520 pulseB=25520 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=24344 bal=1885707 dq=77.5 cnt=58 | c=146.0 rankC=102.2 need=3565696 tD=0.63 人 pulse onMe | safe=281658 keep=Inf avail=-Inf chunkB=25520 pulseB=25520 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23333 bal=2236461 dq=95.8 cnt=71 | c=358.9 rankC=520.4 need=4021217 tD=0.78 人 pulse crowdedHard | safe=281658 keep=Inf avail=-Inf chunkB=25520 pulseB=25520 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4315 riku_x B=109169 L=3278 d=33.3 nb=3 neut=0 cmds=40 noFull=1 shQ=27292 | m=0.900 worth=93.6 cheap=8.9 over=0 dMedOther=122.3 safe(-1)=255684
+    → гейство#21[T7] terr=13130 bal=1007569 dq=76.7 cnt=104 | c=114.1 rankC=79.9 need=1935680 tD=0.63 人 pulse onMe | safe=255684 keep=Inf avail=-Inf chunkB=21834 pulseB=21834 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=24463 bal=1885707 dq=77.1 cnt=60 | c=144.7 rankC=101.3 need=3552461 tD=0.63 人 pulse onMe | safe=255684 keep=Inf avail=-Inf chunkB=21834 pulseB=21834 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23333 bal=2236461 dq=95.8 cnt=71 | c=358.9 rankC=520.4 need=4021217 tD=0.78 人 pulse crowdedHard | safe=255684 keep=Inf avail=-Inf chunkB=21834 pulseB=21834 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=4320 riku_x B=89620 L=2881 d=31.1 nb=3 neut=0 cmds=40 noFull=1 shQ=22405 | m=0.900 worth=88.2 cheap=9.1 over=0 dMedOther=115.2 safe(-1)=224718
+    → гейство#21[T7] terr=13345 bal=1020163 dq=76.4 cnt=108 | c=112.2 rankC=78.6 need=1935708 tD=0.66 人 pulse onMe | safe=224718 keep=Inf avail=-Inf chunkB=17924 pulseB=17924 价高(c>=worth)→break hNb=3
+    → [Corgi] Mondá#19[T8] terr=24645 bal=1910975 dq=77.5 cnt=62 | c=144.7 rankC=101.3 need=3578520 tD=0.67 人 pulse onMe | safe=224718 keep=Inf avail=-Inf chunkB=17924 pulseB=17924 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=23333 bal=2266429 dq=97.1 cnt=71 | c=363.6 rankC=527.3 need=4074632 tD=0.84 人 pulse crowdedHard | safe=224718 keep=Inf avail=-Inf chunkB=17924 pulseB=17924 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令

@@ -1,0 +1,540 @@
+# A091 sora_w 影子决策明细 t=5670~6251（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 108 拍（t=5670~6240）
+#   首选目标无可用兵（avail<=0）: 4 拍（t=5770~5785）；可用兵 -287185~-260511，一条指令下限(20%余额) 249615~284665，比值 -115%~-92%
+#   出手打人/bot: 3 拍（t=5940~5950）；可用兵 137620~154770，一条指令下限(20%余额) 282165~285635，比值 49%~54%
+#   └ 「出手打人/bot」里：3 条对人/bot 的出兵共约 430362 兵；其中超过软上限（over=1）时发的 3 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 3 条约 430362 兵，c/worth = 2.64~2.86
+t=5670 sora_w B=1511111 L=21222 d=71.2 nb=3 neut=0 cmds=101 noFull=1 shQ=279097 | m=0.900 worth=87.5 cheap=7.6 over=0 dMedOther=114.4 safe(-1)=1867536
+    → [CORGI] Kascko#39[T1] terr=82266 bal=8822821 dq=107.2 cnt=119 | c=256.3 rankC=256.3 need=15841213 tD=0.94 人 pulse | safe=1867536 keep=Inf avail=-Inf chunkB=302222 pulseB=181333 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5514 bal=825682 dq=149.7 cnt=159 | c=391.5 rankC=391.5 need=988762 tD=1.31 人 pulse | safe=1867536 keep=Inf avail=-Inf chunkB=302222 pulseB=181333 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=50998 bal=5836168 dq=114.4 cnt=22 | c=669.7 rankC=669.7 need=10396783 tD=1.00 人 pulse crowdedHard | safe=1867536 keep=Inf avail=-Inf chunkB=302222 pulseB=181333 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5675 sora_w B=1511111 L=21222 d=71.2 nb=3 neut=0 cmds=101 noFull=1 shQ=304027 | m=0.900 worth=87.5 cheap=7.6 over=0 dMedOther=114.4 safe(-1)=1867536
+    → [CORGI] Kascko#39[T1] terr=82401 bal=8822821 dq=107.1 cnt=119 | c=255.9 rankC=255.9 need=15846685 tD=0.94 人 pulse | safe=1867536 keep=Inf avail=-Inf chunkB=302222 pulseB=181333 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5522 bal=827100 dq=149.8 cnt=159 | c=391.5 rankC=391.5 need=994758 tD=1.31 人 pulse | safe=1867536 keep=Inf avail=-Inf chunkB=302222 pulseB=181333 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=50998 bal=5836168 dq=114.4 cnt=22 | c=669.7 rankC=669.7 need=10397113 tD=1.00 人 pulse crowdedHard | safe=1867536 keep=Inf avail=-Inf chunkB=302222 pulseB=181333 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5680 sora_w B=1530906 L=21222 d=72.1 nb=3 neut=0 cmds=101 noFull=1 shQ=329022 | m=0.900 worth=82.9 cheap=7.6 over=0 dMedOther=108.4 safe(-1)=1867536
+    → [CORGI] Kascko#39[T1] terr=82530 bal=8947222 dq=108.4 cnt=119 | c=259.0 rankC=259.0 need=16071063 tD=1.00 人 pulse | safe=1867536 keep=Inf avail=-Inf chunkB=306181 pulseB=183709 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=50998 bal=5177463 dq=101.5 cnt=22 | c=446.1 rankC=312.3 need=9232447 tD=0.94 人 pulse crowdedHard | safe=1867536 keep=Inf avail=-Inf chunkB=306181 pulseB=183709 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5526 bal=827182 dq=149.7 cnt=159 | c=567.3 rankC=822.5 need=998026 tD=1.38 人 pulse | safe=1867536 keep=Inf avail=-Inf chunkB=306181 pulseB=183709 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5685 sora_w B=1517056 L=21102 d=71.9 nb=3 neut=0 cmds=101 noFull=1 shQ=354232 | m=0.900 worth=77.5 cheap=7.6 over=0 dMedOther=101.3 safe(-1)=1856976
+    → [CORGI]Brawl#32[T1] terr=51124 bal=5177463 dq=101.3 cnt=22 | c=148.9 rankC=55.4 need=9237565 tD=1.00 人 pulse crowdedHard | safe=1856976 keep=Inf avail=-Inf chunkB=303411 pulseB=182047 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=82771 bal=8265696 dq=99.9 cnt=120 | c=185.7 rankC=130.0 need=15405464 tD=0.99 人 pulse onMe | safe=1856976 keep=Inf avail=-Inf chunkB=303411 pulseB=182047 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5534 bal=829500 dq=149.9 cnt=159 | c=567.6 rankC=823.0 need=1005090 tD=1.48 人 pulse | safe=1856976 keep=Inf avail=-Inf chunkB=303411 pulseB=182047 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5690 sora_w B=1462212 L=20456 d=71.5 nb=3 neut=0 cmds=101 noFull=1 shQ=365553 | m=0.900 worth=78.2 cheap=7.6 over=0 dMedOther=102.3 safe(-1)=1800128
+    → [CORGI]Brawl#32[T1] terr=51363 bal=5252287 dq=102.3 cnt=22 | c=150.4 rankC=55.9 need=9379594 tD=1.00 人 pulse crowdedHard | safe=1800128 keep=Inf avail=-Inf chunkB=292442 pulseB=175465 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=83532 bal=8401253 dq=100.6 cnt=136 | c=246.7 rankC=246.7 need=15498913 tD=0.98 人 pulse onMe | safe=1800128 keep=Inf avail=-Inf chunkB=292442 pulseB=175465 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5541 bal=829582 dq=149.7 cnt=159 | c=566.5 rankC=821.5 need=1008917 tD=1.46 人 pulse | safe=1800128 keep=Inf avail=-Inf chunkB=292442 pulseB=175465 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5695 sora_w B=1377652 L=19710 d=69.9 nb=3 neut=0 cmds=101 noFull=1 shQ=344413 | m=0.900 worth=77.6 cheap=7.6 over=0 dMedOther=101.5 safe(-1)=1734480
+    → [CORGI]Brawl#32[T1] terr=51722 bal=5249680 dq=101.5 cnt=22 | c=149.2 rankC=55.5 need=9389146 tD=1.00 人 pulse crowdedHard | safe=1734480 keep=Inf avail=-Inf chunkB=275530 pulseB=165318 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=84384 bal=8401253 dq=99.6 cnt=158 | c=241.4 rankC=241.4 need=15329579 tD=0.98 人 pulse onMe | safe=1734480 keep=Inf avail=-Inf chunkB=275530 pulseB=165318 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5546 bal=831150 dq=149.9 cnt=159 | c=566.5 rankC=821.4 need=1014491 tD=1.48 人 pulse | safe=1734480 keep=Inf avail=-Inf chunkB=275530 pulseB=165318 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5700 sora_w B=1319817 L=18867 d=70.0 nb=3 neut=0 cmds=101 noFull=1 shQ=329954 | m=0.900 worth=79.1 cheap=7.7 over=0 dMedOther=103.4 safe(-1)=1660296
+    → [CORGI]Brawl#32[T1] terr=51902 bal=5367931 dq=103.4 cnt=22 | c=152.1 rankC=56.6 need=9606291 tD=1.00 人 pulse crowdedHard | safe=1660296 keep=Inf avail=-Inf chunkB=263963 pulseB=158378 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=85323 bal=8625003 dq=101.1 cnt=175 | c=241.9 rankC=241.9 need=15540568 tD=0.98 人 pulse onMe | safe=1660296 keep=Inf avail=-Inf chunkB=263963 pulseB=158378 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5556 bal=833400 dq=150.0 cnt=159 | c=566.4 rankC=821.3 need=1021504 tD=1.45 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=263963 pulseB=158378 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5705 sora_w B=1300287 L=18867 d=68.9 nb=3 neut=0 cmds=101 noFull=1 shQ=325071 | m=0.900 worth=78.5 cheap=7.7 over=0 dMedOther=102.7 safe(-1)=1660296
+    → [CORGI]Brawl#32[T1] terr=52232 bal=5362491 dq=102.7 cnt=22 | c=222.1 rankC=133.3 need=9609605 tD=1.00 人 pulse crowdedHard | safe=1660296 keep=Inf avail=-Inf chunkB=260057 pulseB=156034 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=85403 bal=8625179 dq=101.0 cnt=175 | c=241.1 rankC=241.1 need=15501406 tD=0.98 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=260057 pulseB=156034 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5569 bal=833400 dq=149.6 cnt=159 | c=564.9 rankC=819.1 need=1026659 tD=1.46 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=260057 pulseB=156034 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5710 sora_w B=1317190 L=18867 d=69.8 nb=3 neut=0 cmds=101 noFull=1 shQ=329297 | m=0.900 worth=79.2 cheap=7.7 over=0 dMedOther=103.6 safe(-1)=1660296
+    → [CORGI]Brawl#32[T1] terr=52403 bal=5428577 dq=103.6 cnt=22 | c=224.5 rankC=134.7 need=9733861 tD=1.00 人 pulse crowdedHard | safe=1660296 keep=Inf avail=-Inf chunkB=263438 pulseB=158063 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=85472 bal=8764906 dq=102.5 cnt=175 | c=244.7 rankC=244.7 need=15750447 tD=0.99 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=263438 pulseB=158063 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5573 bal=833566 dq=149.6 cnt=159 | c=564.0 rankC=817.8 need=1029970 tD=1.44 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=263438 pulseB=158063 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5715 sora_w B=1317190 L=18867 d=69.8 nb=3 neut=0 cmds=101 noFull=1 shQ=329297 | m=0.900 worth=78.4 cheap=7.7 over=0 dMedOther=102.5 safe(-1)=1660296
+    → [CORGI] Kascko#39[T1] terr=85526 bal=8764906 dq=102.5 cnt=175 | c=244.6 rankC=244.6 need=15750600 tD=1.00 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=263438 pulseB=158063 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=52784 bal=4740947 dq=89.8 cnt=22 | c=393.2 rankC=275.2 need=8523791 tD=0.88 人 pulse crowdedHard | safe=1660296 keep=Inf avail=-Inf chunkB=263438 pulseB=158063 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5575 bal=836100 dq=150.0 cnt=159 | c=389.7 rankC=389.7 need=1036157 tD=1.46 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=263438 pulseB=158063 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5720 sora_w B=1334313 L=18867 d=70.7 nb=3 neut=0 cmds=101 noFull=1 shQ=333578 | m=0.900 worth=79.6 cheap=7.7 over=0 dMedOther=104.1 safe(-1)=1660296
+    → [CORGI] Kascko#39[T1] terr=85558 bal=8902515 dq=104.1 cnt=175 | c=248.3 rankC=248.3 need=15995918 tD=1.00 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=266863 pulseB=160118 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=53065 bal=4812535 dq=90.7 cnt=22 | c=396.8 rankC=277.7 need=8657311 tD=0.87 人 pulse crowdedHard | safe=1660296 keep=Inf avail=-Inf chunkB=266863 pulseB=160118 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5575 bal=836250 dq=150.0 cnt=159 | c=389.8 rankC=389.8 need=1038700 tD=1.44 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=266863 pulseB=160118 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5725 sora_w B=1334313 L=18867 d=70.7 nb=3 neut=0 cmds=101 noFull=1 shQ=333578 | m=0.900 worth=79.6 cheap=7.7 over=0 dMedOther=104.0 safe(-1)=1660296
+    → [CORGI] Kascko#39[T1] terr=85572 bal=8902515 dq=104.0 cnt=175 | c=248.3 rankC=248.3 need=15995866 tD=1.00 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=266863 pulseB=160118 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=53120 bal=4812580 dq=90.6 cnt=22 | c=396.4 rankC=277.5 need=8657441 tD=0.87 人 pulse crowdedHard | safe=1660296 keep=Inf avail=-Inf chunkB=266863 pulseB=160118 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5575 bal=836250 dq=150.0 cnt=159 | c=389.7 rankC=389.7 need=1041390 tD=1.44 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=266863 pulseB=160118 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5730 sora_w B=1351659 L=18867 d=71.6 nb=3 neut=0 cmds=101 noFull=1 shQ=337914 | m=0.900 worth=81.7 cheap=7.7 over=0 dMedOther=106.8 safe(-1)=1660296
+    → [CORGI] Kascko#39[T1] terr=85576 bal=9140843 dq=106.8 cnt=175 | c=254.8 rankC=254.8 need=16420658 tD=1.00 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=270332 pulseB=162199 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=53158 bal=4885249 dq=91.9 cnt=22 | c=402.0 rankC=281.4 need=8787086 tD=0.86 人 pulse crowdedHard | safe=1660296 keep=Inf avail=-Inf chunkB=270332 pulseB=162199 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5575 bal=836250 dq=150.0 cnt=159 | c=389.7 rankC=389.7 need=1043741 tD=1.40 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=270332 pulseB=162199 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5735 sora_w B=1351659 L=18867 d=71.6 nb=3 neut=0 cmds=101 noFull=1 shQ=337914 | m=0.900 worth=81.7 cheap=7.7 over=0 dMedOther=106.8 safe(-1)=1660296
+    → [CORGI] Kascko#39[T1] terr=85576 bal=9140843 dq=106.8 cnt=175 | c=254.8 rankC=254.8 need=16420658 tD=1.00 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=270332 pulseB=162199 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=53215 bal=4885249 dq=91.8 cnt=22 | c=401.6 rankC=281.1 need=8787204 tD=0.86 人 pulse crowdedHard | safe=1660296 keep=Inf avail=-Inf chunkB=270332 pulseB=162199 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5576 bal=836250 dq=150.0 cnt=159 | c=389.6 rankC=389.6 need=1046607 tD=1.40 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=270332 pulseB=162199 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5740 sora_w B=1369230 L=18867 d=72.6 nb=3 neut=0 cmds=101 noFull=1 shQ=342307 | m=0.900 worth=82.9 cheap=7.7 over=0 dMedOther=108.3 safe(-1)=1660296
+    → [CORGI] Kascko#39[T1] terr=85576 bal=9271557 dq=108.3 cnt=175 | c=258.5 rankC=258.5 need=16653638 tD=1.00 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=273846 pulseB=164308 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=53251 bal=4959016 dq=93.1 cnt=22 | c=407.3 rankC=285.1 need=8918739 tD=0.86 人 pulse crowdedHard | safe=1660296 keep=Inf avail=-Inf chunkB=273846 pulseB=164308 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5578 bal=836700 dq=150.0 cnt=159 | c=389.8 rankC=389.8 need=1049877 tD=1.38 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=273846 pulseB=164308 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5745 sora_w B=1369230 L=18867 d=72.6 nb=3 neut=0 cmds=101 noFull=1 shQ=342307 | m=0.900 worth=82.9 cheap=7.7 over=0 dMedOther=108.3 safe(-1)=1660296
+    → [CORGI] Kascko#39[T1] terr=85576 bal=9271557 dq=108.3 cnt=175 | c=258.5 rankC=258.5 need=16653638 tD=1.00 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=273846 pulseB=164308 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=53308 bal=4959016 dq=93.0 cnt=22 | c=406.9 rankC=284.8 need=8918725 tD=0.86 人 pulse crowdedHard | safe=1660296 keep=Inf avail=-Inf chunkB=273846 pulseB=164308 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5584 bal=837150 dq=149.9 cnt=159 | c=389.5 rankC=389.5 need=1054202 tD=1.38 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=273846 pulseB=164308 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5750 sora_w B=1387029 L=18867 d=73.5 nb=3 neut=0 cmds=101 noFull=1 shQ=346757 | m=0.900 worth=84.0 cheap=7.7 over=0 dMedOther=109.8 safe(-1)=1660296
+    → [CORGI]Brawl#32[T1] terr=53352 bal=5033897 dq=94.4 cnt=22 | c=168.2 rankC=84.1 need=9052257 tD=0.86 人 pulse crowdedHard | safe=1660296 keep=Inf avail=-Inf chunkB=277406 pulseB=166443 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=85576 bal=9399504 dq=109.8 cnt=175 | c=262.0 rankC=262.0 need=16881686 tD=1.00 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=277406 pulseB=166443 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5590 bal=837233 dq=149.8 cnt=159 | c=564.2 rankC=818.0 need=1057721 tD=1.36 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=277406 pulseB=166443 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5755 sora_w B=1387029 L=18867 d=73.5 nb=3 neut=0 cmds=101 noFull=1 shQ=346757 | m=0.900 worth=84.0 cheap=7.7 over=0 dMedOther=109.8 safe(-1)=1660296
+    → [CORGI]Brawl#32[T1] terr=53277 bal=5012629 dq=94.1 cnt=22 | c=113.7 rankC=56.9 need=9010409 tD=0.86 人 pulse bleeding | safe=1660296 keep=Inf avail=-Inf chunkB=277406 pulseB=166443 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=85576 bal=9399504 dq=109.8 cnt=175 | c=262.0 rankC=262.0 need=16881686 tD=1.00 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=277406 pulseB=166443 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5593 bal=838500 dq=149.9 cnt=159 | c=564.3 rankC=818.2 need=1062515 tD=1.36 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=277406 pulseB=166443 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5760 sora_w B=1405060 L=18867 d=74.5 nb=3 neut=0 cmds=101 noFull=1 shQ=351265 | m=0.900 worth=85.1 cheap=7.7 over=0 dMedOther=111.3 safe(-1)=1660296
+    → [CORGI]Brawl#32[T1] terr=53035 bal=5044508 dq=95.1 cnt=22 | c=116.2 rankC=58.1 need=9058802 tD=0.85 人 pulse bleeding | safe=1660296 keep=Inf avail=-Inf chunkB=281012 pulseB=168607 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=85576 bal=9524517 dq=111.3 cnt=175 | c=265.5 rankC=265.5 need=17104505 tD=1.00 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=281012 pulseB=168607 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5595 bal=838583 dq=149.9 cnt=159 | c=564.1 rankC=817.9 need=1065301 tD=1.35 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=281012 pulseB=168607 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5765 sora_w B=1405060 L=18867 d=74.5 nb=3 neut=0 cmds=101 noFull=1 shQ=351265 | m=0.900 worth=85.1 cheap=7.7 over=0 dMedOther=111.3 safe(-1)=1660296
+    → [CORGI]Brawl#32[T1] terr=52680 bal=4979660 dq=94.5 cnt=22 | c=117.0 rankC=58.5 need=8930961 tD=0.85 人 pulse bleeding | safe=1660296 keep=Inf avail=-Inf chunkB=281012 pulseB=168607 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=85576 bal=9524517 dq=111.3 cnt=175 | c=265.5 rankC=265.5 need=17104505 tD=1.00 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=281012 pulseB=168607 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5599 bal=839250 dq=149.9 cnt=159 | c=564.1 rankC=817.9 need=1069508 tD=1.35 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=281012 pulseB=168607 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5770 sora_w B=1423325 L=18867 d=75.4 nb=3 neut=0 cmds=101 noFull=1 shQ=355831 | m=0.900 worth=81.2 cheap=7.7 over=0 dMedOther=106.2 safe(-1)=1660296
+    → [CORGI]Brawl#32[T1] terr=52397 bal=5006830 dq=95.6 cnt=22 | c=79.5 rankC=23.9 need=8969334 tD=0.90 人 pulse bleeding | safe=1660296 keep=1667157 avail=-260511 chunkB=284665 pulseB=170799 无可用(avail<=0) hNb=3
+    → [CORGI] Kascko#39[T1] terr=85576 bal=8936282 dq=104.4 cnt=175 | c=194.0 rankC=135.8 need=16669941 tD=0.98 人 pulse onMe | safe=1660296 keep=Inf avail=-Inf chunkB=284665 pulseB=170799 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5600 bal=839333 dq=149.9 cnt=159 | c=563.9 rankC=817.6 need=1072106 tD=1.41 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=284665 pulseB=170799 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5775 sora_w B=1423325 L=18867 d=75.4 nb=3 neut=0 cmds=101 noFull=1 shQ=355831 | m=0.900 worth=81.2 cheap=7.7 over=0 dMedOther=106.2 safe(-1)=1660296
+    → [CORGI]Brawl#32[T1] terr=51921 bal=4934206 dq=95.0 cnt=22 | c=80.3 rankC=24.1 need=8823281 tD=0.89 人 pulse bleeding | safe=1660296 keep=1682973 avail=-276327 chunkB=284665 pulseB=170799 无可用(avail<=0) hNb=3
+    → [CORGI] Kascko#39[T1] terr=85576 bal=8936282 dq=104.4 cnt=175 | c=194.0 rankC=135.8 need=16669941 tD=0.98 人 pulse onMe | safe=1660296 keep=Inf avail=-Inf chunkB=284665 pulseB=170799 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5602 bal=840300 dq=150.0 cnt=159 | c=564.0 rankC=817.8 need=1076332 tD=1.41 人 pulse | safe=1660296 keep=Inf avail=-Inf chunkB=284665 pulseB=170799 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5780 sora_w B=1343573 L=18056 d=74.4 nb=3 neut=0 cmds=101 noFull=1 shQ=335893 | m=0.900 worth=80.4 cheap=7.7 over=0 dMedOther=105.0 safe(-1)=1588928
+    → [CORGI]Brawl#32[T1] terr=51629 bal=4963200 dq=96.1 cnt=22 | c=80.3 rankC=24.1 need=8863996 tD=0.92 人 pulse bleeding | safe=1588928 keep=1611778 avail=-283949 chunkB=268715 pulseB=161229 无可用(avail<=0) hNb=3
+    → [CORGI] Kascko#39[T1] terr=86387 bal=9073900 dq=105.0 cnt=157 | c=257.2 rankC=257.2 need=16720724 tD=1.00 人 pulse onMe | safe=1588928 keep=Inf avail=-Inf chunkB=268715 pulseB=161229 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5602 bal=840300 dq=150.0 cnt=159 | c=563.4 rankC=816.9 need=1078642 tD=1.43 人 pulse | safe=1588928 keep=Inf avail=-Inf chunkB=268715 pulseB=161229 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5785 sora_w B=1248077 L=17245 d=72.4 nb=3 neut=0 cmds=101 noFull=1 shQ=312019 | m=0.900 worth=79.6 cheap=7.7 over=0 dMedOther=104.1 safe(-1)=1517560
+    → [CORGI]Brawl#32[T1] terr=51227 bal=4901472 dq=95.7 cnt=22 | c=79.4 rankC=23.8 need=8740023 tD=0.92 人 pulse bleeding | safe=1517560 keep=1520637 avail=-287185 chunkB=249615 pulseB=149769 无可用(avail<=0) hNb=3
+    → [CORGI] Kascko#39[T1] terr=87198 bal=9073900 dq=104.1 cnt=162 | c=251.8 rankC=251.8 need=16529288 tD=1.00 人 pulse onMe | safe=1517560 keep=Inf avail=-Inf chunkB=249615 pulseB=149769 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5602 bal=840300 dq=150.0 cnt=159 | c=562.7 rankC=815.9 need=1081277 tD=1.44 人 pulse | safe=1517560 keep=Inf avail=-Inf chunkB=249615 pulseB=149769 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5790 sora_w B=1169346 L=16428 d=71.2 nb=3 neut=0 cmds=101 noFull=1 shQ=292336 | m=0.900 worth=80.1 cheap=7.8 over=0 dMedOther=104.7 safe(-1)=1445664
+    → [CORGI]Brawl#32[T1] terr=50967 bal=4934625 dq=96.8 cnt=22 | c=170.9 rankC=85.4 need=8789157 tD=0.92 人 pulse crowdedHard | safe=1445664 keep=Inf avail=-Inf chunkB=233869 pulseB=140322 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=88015 bal=9214545 dq=104.7 cnt=154 | c=250.5 rankC=250.5 need=16592120 tD=1.00 人 pulse onMe | safe=1445664 keep=Inf avail=-Inf chunkB=233869 pulseB=140322 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5602 bal=840300 dq=150.0 cnt=137 | c=765.5 rankC=1110.0 need=1083579 tD=1.43 人 pulse crowdedHard | safe=1445664 keep=Inf avail=-Inf chunkB=233869 pulseB=140322 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5795 sora_w B=1151541 L=16273 d=70.8 nb=3 neut=0 cmds=101 noFull=1 shQ=287885 | m=0.900 worth=80.0 cheap=7.8 over=0 dMedOther=104.5 safe(-1)=1432024
+    → [CORGI]Brawl#32[T1] terr=50585 bal=4875539 dq=96.4 cnt=22 | c=172.2 rankC=86.1 need=8670512 tD=0.92 人 pulse crowdedHard | safe=1432024 keep=Inf avail=-Inf chunkB=230308 pulseB=138185 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=88170 bal=9214645 dq=104.5 cnt=154 | c=249.5 rankC=249.5 need=16556165 tD=1.00 人 pulse | safe=1432024 keep=Inf avail=-Inf chunkB=230308 pulseB=138185 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5602 bal=840300 dq=150.0 cnt=133 | c=766.3 rankC=1111.2 need=1086207 tD=1.44 人 pulse crowdedHard | safe=1432024 keep=Inf avail=-Inf chunkB=230308 pulseB=138185 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5800 sora_w B=1182553 L=16273 d=72.7 nb=3 neut=0 cmds=101 noFull=1 shQ=291669 | m=0.900 worth=81.9 cheap=7.8 over=0 dMedOther=107.1 safe(-1)=1432024
+    → [CORGI]Brawl#32[T1] terr=50329 bal=4958478 dq=98.5 cnt=22 | c=177.7 rankC=88.9 need=8807087 tD=0.92 人 pulse crowdedHard | safe=1432024 keep=Inf avail=-Inf chunkB=236511 pulseB=141906 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=88170 bal=9442877 dq=107.1 cnt=154 | c=255.6 rankC=255.6 need=16962959 tD=1.00 人 pulse | safe=1432024 keep=Inf avail=-Inf chunkB=236511 pulseB=141906 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5602 bal=840300 dq=150.0 cnt=133 | c=766.4 rankC=1111.2 need=1088502 tD=1.40 人 pulse crowdedHard | safe=1432024 keep=Inf avail=-Inf chunkB=236511 pulseB=141906 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5805 sora_w B=1182553 L=16273 d=72.7 nb=3 neut=0 cmds=101 noFull=1 shQ=295638 | m=0.900 worth=81.9 cheap=7.8 over=0 dMedOther=107.1 safe(-1)=1432024
+    → [CORGI]Brawl#32[T1] terr=49915 bal=4893334 dq=98.0 cnt=22 | c=179.1 rankC=89.6 need=8676558 tD=0.92 人 pulse crowdedHard | safe=1432024 keep=Inf avail=-Inf chunkB=236511 pulseB=141906 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=88170 bal=9442877 dq=107.1 cnt=154 | c=255.6 rankC=255.6 need=16962959 tD=1.00 人 pulse | safe=1432024 keep=Inf avail=-Inf chunkB=236511 pulseB=141906 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5602 bal=840300 dq=150.0 cnt=133 | c=766.1 rankC=1110.9 need=1091122 tD=1.40 人 pulse crowdedHard | safe=1432024 keep=Inf avail=-Inf chunkB=236511 pulseB=141906 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5810 sora_w B=1197689 L=16273 d=73.6 nb=3 neut=0 cmds=101 noFull=1 shQ=299422 | m=0.900 worth=83.1 cheap=7.8 over=0 dMedOther=108.6 safe(-1)=1432024
+    → [CORGI]Brawl#32[T1] terr=49658 bal=4925365 dq=99.2 cnt=22 | c=182.9 rankC=91.4 need=8723067 tD=0.91 人 pulse crowdedHard | safe=1432024 keep=Inf avail=-Inf chunkB=239538 pulseB=143723 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=88170 bal=9577910 dq=108.6 cnt=154 | c=259.3 rankC=259.3 need=17203638 tD=1.00 人 pulse | safe=1432024 keep=Inf avail=-Inf chunkB=239538 pulseB=143723 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5602 bal=840300 dq=150.0 cnt=133 | c=766.0 rankC=1110.8 need=1093410 tD=1.38 人 pulse crowdedHard | safe=1432024 keep=Inf avail=-Inf chunkB=239538 pulseB=143723 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5815 sora_w B=1197689 L=16273 d=73.6 nb=3 neut=0 cmds=101 noFull=1 shQ=299422 | m=0.900 worth=83.1 cheap=7.8 over=0 dMedOther=108.6 safe(-1)=1432024
+    → [CORGI]Brawl#32[T1] terr=49272 bal=4864206 dq=98.7 cnt=22 | c=184.4 rankC=92.2 need=8600572 tD=0.91 人 pulse crowdedHard | safe=1432024 keep=Inf avail=-Inf chunkB=239538 pulseB=143723 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=88170 bal=9577910 dq=108.6 cnt=154 | c=259.3 rankC=259.3 need=17203638 tD=1.00 人 pulse | safe=1432024 keep=Inf avail=-Inf chunkB=239538 pulseB=143723 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5602 bal=840300 dq=150.0 cnt=133 | c=765.8 rankC=1110.4 need=1096021 tD=1.38 人 pulse crowdedHard | safe=1432024 keep=Inf avail=-Inf chunkB=239538 pulseB=143723 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5820 sora_w B=1401927 L=16273 d=86.2 nb=3 neut=0 cmds=101 noFull=1 shQ=312766 | m=0.900 worth=84.2 cheap=7.8 over=0 dMedOther=110.1 safe(-1)=1432024
+    → [CORGI]Brawl#32[T1] terr=49014 bal=4895357 dq=99.9 cnt=22 | c=188.3 rankC=94.1 need=8645231 tD=0.91 人 pulse crowdedHard | safe=1432024 keep=Inf avail=-Inf chunkB=280385 pulseB=168231 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=88170 bal=9710085 dq=110.1 cnt=154 | c=262.8 rankC=262.8 need=17439223 tD=1.00 人 pulse | safe=1432024 keep=Inf avail=-Inf chunkB=280385 pulseB=168231 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5602 bal=840300 dq=150.0 cnt=133 | c=568.3 rankC=824.0 need=1098303 tD=1.36 人 pulse | safe=1432024 keep=Inf avail=-Inf chunkB=280385 pulseB=168231 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5825 sora_w B=1401927 L=16273 d=86.2 nb=3 neut=0 cmds=101 noFull=1 shQ=335196 | m=0.900 worth=84.2 cheap=7.8 over=0 dMedOther=110.1 safe(-1)=1432024
+    → [CORGI] Kascko#39[T1] terr=88170 bal=9710085 dq=110.1 cnt=154 | c=262.8 rankC=262.8 need=17439223 tD=1.00 人 pulse | safe=1432024 keep=Inf avail=-Inf chunkB=280385 pulseB=168231 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5602 bal=840300 dq=150.0 cnt=133 | c=391.8 rankC=391.8 need=1100581 tD=1.36 人 pulse | safe=1432024 keep=Inf avail=-Inf chunkB=280385 pulseB=168231 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=48884 bal=4856253 dq=99.3 cnt=22 | c=586.0 rankC=586.0 need=8572081 tD=0.90 人 pulse crowdedHard | safe=1432024 keep=Inf avail=-Inf chunkB=280385 pulseB=168231 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5830 sora_w B=1419871 L=16273 d=87.3 nb=3 neut=0 cmds=101 noFull=1 shQ=354967 | m=0.900 worth=85.4 cheap=7.8 over=0 dMedOther=111.6 safe(-1)=1432024
+    → [CORGI] Kascko#39[T1] terr=88170 bal=9839229 dq=111.6 cnt=154 | c=266.3 rankC=266.3 need=17669405 tD=1.00 人 pulse | safe=1432024 keep=Inf avail=-Inf chunkB=283974 pulseB=170385 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5602 bal=840300 dq=150.0 cnt=133 | c=391.8 rankC=391.8 need=1102856 tD=1.34 人 pulse | safe=1432024 keep=Inf avail=-Inf chunkB=283974 pulseB=170385 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=48884 bal=4928611 dq=100.8 cnt=22 | c=594.6 rankC=594.6 need=8699494 tD=0.90 人 pulse crowdedHard | safe=1432024 keep=Inf avail=-Inf chunkB=283974 pulseB=170385 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5835 sora_w B=1419871 L=16273 d=87.3 nb=3 neut=0 cmds=101 noFull=1 shQ=354967 | m=0.900 worth=85.4 cheap=7.8 over=0 dMedOther=111.6 safe(-1)=1432024
+    → Italian empire#28[T3] terr=5602 bal=840300 dq=150.0 cnt=133 | c=249.7 rankC=143.3 need=1190145 tD=1.34 人 pulse onMe agg | safe=1432024 keep=Inf avail=-Inf chunkB=283974 pulseB=170385 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=88170 bal=9839229 dq=111.6 cnt=154 | c=266.3 rankC=266.3 need=17669405 tD=1.00 人 pulse | safe=1432024 keep=Inf avail=-Inf chunkB=283974 pulseB=170385 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=48884 bal=4928611 dq=100.8 cnt=22 | c=594.6 rankC=594.6 need=8700243 tD=0.90 人 pulse crowdedHard | safe=1432024 keep=Inf avail=-Inf chunkB=283974 pulseB=170385 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5840 sora_w B=1418959 L=16139 d=87.9 nb=3 neut=0 cmds=101 noFull=1 shQ=354739 | m=0.900 worth=86.5 cheap=7.8 over=0 dMedOther=113.0 safe(-1)=1420232
+    → Italian empire#28[T3] terr=5736 bal=841056 dq=146.6 cnt=128 | c=324.9 rankC=266.4 need=1177189 tD=1.30 人 pulse onMe agg | safe=1420232 keep=Inf avail=-Inf chunkB=283792 pulseB=170275 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=88170 bal=9965171 dq=113.0 cnt=152 | c=269.7 rankC=269.7 need=17893880 tD=1.00 人 pulse | safe=1420232 keep=Inf avail=-Inf chunkB=283792 pulseB=170275 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=48884 bal=5001061 dq=102.3 cnt=22 | c=603.2 rankC=603.2 need=8827849 tD=0.91 人 pulse crowdedHard | safe=1420232 keep=Inf avail=-Inf chunkB=283792 pulseB=170275 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5845 sora_w B=1395407 L=16009 d=87.2 nb=3 neut=0 cmds=101 noFull=1 shQ=348851 | m=0.900 worth=86.5 cheap=7.8 over=0 dMedOther=113.0 safe(-1)=1408792
+    → [CORGI] Kascko#39[T1] terr=88170 bal=9965171 dq=113.0 cnt=150 | c=269.7 rankC=269.7 need=17893880 tD=1.00 人 pulse | safe=1408792 keep=Inf avail=-Inf chunkB=279081 pulseB=167449 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5866 bal=860438 dq=146.7 cnt=128 | c=469.6 rankC=558.4 need=1177651 tD=1.30 人 pulse agg | safe=1408792 keep=Inf avail=-Inf chunkB=279081 pulseB=167449 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=48884 bal=5001061 dq=102.3 cnt=22 | c=603.2 rankC=603.2 need=8828608 tD=0.91 人 pulse crowdedHard | safe=1408792 keep=Inf avail=-Inf chunkB=279081 pulseB=167449 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5850 sora_w B=1413128 L=16009 d=88.3 nb=3 neut=0 cmds=101 noFull=1 shQ=353282 | m=0.900 worth=87.5 cheap=7.8 over=0 dMedOther=114.4 safe(-1)=1408792
+    → Italian empire#28[T3] terr=5866 bal=861126 dq=146.8 cnt=128 | c=324.1 rankC=265.8 need=1180743 tD=1.28 人 pulse agg | safe=1408792 keep=Inf avail=-Inf chunkB=282626 pulseB=169575 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=88170 bal=10087742 dq=114.4 cnt=150 | c=273.0 rankC=273.0 need=18112347 tD=1.00 人 pulse | safe=1408792 keep=Inf avail=-Inf chunkB=282626 pulseB=169575 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=48884 bal=5072576 dq=103.8 cnt=22 | c=611.7 rankC=611.7 need=8954609 tD=0.91 人 pulse crowdedHard | safe=1408792 keep=Inf avail=-Inf chunkB=282626 pulseB=169575 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5855 sora_w B=1562957 L=16009 d=97.6 nb=3 neut=0 cmds=101 noFull=1 shQ=368168 | m=0.900 worth=87.9 cheap=7.8 over=0 dMedOther=114.4 safe(-1)=1408792
+    → Italian empire#28[T3] terr=5866 bal=879900 dq=150.0 cnt=128 | c=331.4 rankC=271.8 need=1208239 tD=1.31 人 pulse agg | safe=1408792 keep=Inf avail=-Inf chunkB=312591 pulseB=187555 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=88170 bal=10087742 dq=114.4 cnt=150 | c=273.0 rankC=273.0 need=18112347 tD=1.00 人 pulse | safe=1408792 keep=Inf avail=-Inf chunkB=312591 pulseB=187555 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=48884 bal=5072576 dq=103.8 cnt=22 | c=453.2 rankC=453.2 need=8955379 tD=0.91 人 pulse | safe=1408792 keep=Inf avail=-Inf chunkB=312591 pulseB=187555 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5860 sora_w B=1582806 L=16009 d=98.9 nb=3 neut=0 cmds=101 noFull=1 shQ=393041 | m=0.900 worth=89.0 cheap=7.8 over=0 dMedOther=107.3 safe(-1)=1408792
+    → [CORGI] Kascko#39[T1] terr=88170 bal=9457267 dq=107.3 cnt=150 | c=199.4 rankC=139.6 need=17638793 tD=1.00 人 pulse onMe | safe=1408792 keep=Inf avail=-Inf chunkB=316561 pulseB=189937 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=48884 bal=4499610 dq=92.0 cnt=22 | c=301.9 rankC=211.3 need=7952563 tD=0.86 人 pulse | safe=1408792 keep=Inf avail=-Inf chunkB=316561 pulseB=189937 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5866 bal=879900 dq=150.0 cnt=128 | c=331.4 rankC=271.7 need=1210121 tD=1.40 人 pulse agg | safe=1408792 keep=Inf avail=-Inf chunkB=316561 pulseB=189937 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5865 sora_w B=1582806 L=16009 d=98.9 nb=3 neut=0 cmds=101 noFull=1 shQ=395701 | m=0.900 worth=89.0 cheap=7.8 over=0 dMedOther=107.3 safe(-1)=1408792
+    → [CORGI] Kascko#39[T1] terr=88170 bal=9457267 dq=107.3 cnt=150 | c=199.4 rankC=139.6 need=17638793 tD=1.00 人 pulse onMe | safe=1408792 keep=Inf avail=-Inf chunkB=316561 pulseB=189937 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=48884 bal=4499610 dq=92.0 cnt=22 | c=301.8 rankC=211.3 need=7953246 tD=0.86 人 pulse | safe=1408792 keep=Inf avail=-Inf chunkB=316561 pulseB=189937 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5866 bal=879900 dq=150.0 cnt=128 | c=331.3 rankC=271.7 need=1212002 tD=1.40 人 pulse agg | safe=1408792 keep=Inf avail=-Inf chunkB=316561 pulseB=189937 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5870 sora_w B=1509504 L=15421 d=97.9 nb=3 neut=0 cmds=101 noFull=1 shQ=377376 | m=0.900 worth=88.1 cheap=7.8 over=0 dMedOther=108.3 safe(-1)=1357048
+    → [CORGI]Brawl#32[T1] terr=49143 bal=4566654 dq=92.9 cnt=22 | c=304.4 rankC=213.1 need=8081302 tD=0.86 人 pulse | safe=1357048 keep=Inf avail=-Inf chunkB=301901 pulseB=181140 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=88758 bal=9593451 dq=108.1 cnt=138 | c=265.1 rankC=265.1 need=17696201 tD=1.00 人 pulse onMe | safe=1357048 keep=Inf avail=-Inf chunkB=301901 pulseB=181140 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5866 bal=879900 dq=150.0 cnt=122 | c=331.6 rankC=271.9 need=1214192 tD=1.39 人 pulse agg | safe=1357048 keep=Inf avail=-Inf chunkB=301901 pulseB=181140 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5875 sora_w B=1404615 L=14744 d=95.3 nb=3 neut=0 cmds=101 noFull=1 shQ=351153 | m=0.900 worth=85.7 cheap=7.9 over=0 dMedOther=108.3 safe(-1)=1297472
+    → [CORGI]Brawl#32[T1] terr=49529 bal=4566654 dq=92.2 cnt=22 | c=301.7 rankC=211.2 need=8096598 tD=0.85 人 pulse | safe=1297472 keep=Inf avail=-Inf chunkB=280923 pulseB=168554 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=89435 bal=9593451 dq=107.3 cnt=130 | c=260.0 rankC=260.0 need=17486122 tD=0.99 人 pulse onMe | safe=1297472 keep=Inf avail=-Inf chunkB=280923 pulseB=168554 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5866 bal=879900 dq=150.0 cnt=112 | c=332.3 rankC=272.5 need=1216067 tD=1.39 人 pulse agg | safe=1297472 keep=Inf avail=-Inf chunkB=280923 pulseB=168554 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5880 sora_w B=1322920 L=14093 d=93.9 nb=3 neut=0 cmds=101 noFull=1 shQ=330730 | m=0.900 worth=84.5 cheap=8.0 over=0 dMedOther=109.7 safe(-1)=1240184
+    → [CORGI]Brawl#32[T1] terr=49787 bal=4634697 dq=93.1 cnt=22 | c=304.3 rankC=213.0 need=8226538 tD=0.85 人 pulse | safe=1240184 keep=Inf avail=-Inf chunkB=264584 pulseB=158750 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=90086 bal=9731596 dq=108.0 cnt=130 | c=258.8 rankC=258.8 need=17535184 tD=0.98 人 pulse onMe | safe=1240184 keep=Inf avail=-Inf chunkB=264584 pulseB=158750 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5866 bal=879900 dq=150.0 cnt=107 | c=332.5 rankC=272.7 need=1217939 tD=1.37 人 pulse agg | safe=1240184 keep=Inf avail=-Inf chunkB=264584 pulseB=158750 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5885 sora_w B=1295873 L=13963 d=92.8 nb=3 neut=0 cmds=101 noFull=1 shQ=323968 | m=0.900 worth=83.9 cheap=8.0 over=0 dMedOther=109.7 safe(-1)=1228744
+    → [CORGI] Kascko#39[T1] terr=90216 bal=9731726 dq=107.9 cnt=130 | c=257.6 rankC=257.6 need=17480786 tD=0.98 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=259175 pulseB=155505 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5866 bal=879900 dq=150.0 cnt=107 | c=332.4 rankC=272.5 need=1219810 tD=1.37 人 pulse agg | safe=1228744 keep=Inf avail=-Inf chunkB=259175 pulseB=155505 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=50171 bal=4634697 dq=92.4 cnt=22 | c=402.1 rankC=402.1 need=8241345 tD=0.84 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=259175 pulseB=155505 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5890 sora_w B=1312071 L=13963 d=94.0 nb=3 neut=0 cmds=101 noFull=1 shQ=328017 | m=0.900 worth=84.9 cheap=8.0 over=0 dMedOther=111.0 safe(-1)=1228744
+    → [CORGI] Kascko#39[T1] terr=90216 bal=9139684 dq=101.3 cnt=130 | c=242.1 rankC=242.1 need=16425553 tD=0.91 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=262414 pulseB=157449 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5866 bal=879900 dq=150.0 cnt=107 | c=332.3 rankC=332.3 need=1221988 tD=1.35 人 pulse bleeding agg | safe=1228744 keep=Inf avail=-Inf chunkB=262414 pulseB=157449 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=50426 bal=4703753 dq=93.3 cnt=22 | c=405.7 rankC=405.7 need=8372856 tD=0.84 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=262414 pulseB=157449 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5895 sora_w B=1312071 L=13963 d=94.0 nb=3 neut=0 cmds=101 noFull=1 shQ=328017 | m=0.900 worth=84.9 cheap=8.0 over=0 dMedOther=111.0 safe(-1)=1228744
+    → [CORGI] Kascko#39[T1] terr=90268 bal=9139684 dq=101.3 cnt=132 | c=242.0 rankC=242.0 need=16425631 tD=0.91 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=262414 pulseB=157449 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5814 bal=867423 dq=149.2 cnt=105 | c=331.0 rankC=331.0 need=1198814 tD=1.34 人 pulse bleeding agg | safe=1228744 keep=Inf avail=-Inf chunkB=262414 pulseB=157449 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=50808 bal=4703753 dq=92.6 cnt=22 | c=402.3 rankC=402.3 need=8387333 tD=0.83 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=262414 pulseB=157449 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5900 sora_w B=1342434 L=13963 d=96.1 nb=3 neut=0 cmds=101 noFull=1 shQ=332245 | m=0.900 worth=86.7 cheap=8.0 over=0 dMedOther=113.4 safe(-1)=1228744
+    → [CORGI] Kascko#39[T1] terr=90534 bal=9379138 dq=103.6 cnt=138 | c=247.5 rankC=247.5 need=16852897 tD=0.91 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=268487 pulseB=161092 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5548 bal=810961 dq=146.2 cnt=99 | c=327.6 rankC=327.6 need=1083087 tD=1.29 人 pulse bleeding agg | safe=1228744 keep=Inf avail=-Inf chunkB=268487 pulseB=161092 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51060 bal=4825369 dq=94.5 cnt=22 | c=410.3 rankC=410.3 need=8611883 tD=0.83 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=268487 pulseB=161092 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5905 sora_w B=1342434 L=13963 d=96.1 nb=3 neut=0 cmds=101 noFull=1 shQ=335608 | m=0.900 worth=86.7 cheap=8.0 over=0 dMedOther=113.4 safe(-1)=1228744
+    → [CORGI] Kascko#39[T1] terr=90834 bal=9379138 dq=103.3 cnt=146 | c=246.6 rankC=246.6 need=16853346 tD=0.91 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=268487 pulseB=161092 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=5248 bal=766021 dq=146.0 cnt=91 | c=331.1 rankC=331.1 need=976879 tD=1.29 人 pulse bleeding agg | safe=1228744 keep=Inf avail=-Inf chunkB=268487 pulseB=161092 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51186 bal=4825482 dq=94.3 cnt=22 | c=409.1 rankC=409.1 need=8616858 tD=0.83 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=268487 pulseB=161092 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5910 sora_w B=1359214 L=13963 d=97.3 nb=3 neut=0 cmds=101 noFull=1 shQ=339803 | m=0.900 worth=87.7 cheap=8.0 over=0 dMedOther=114.7 safe(-1)=1228744
+    → [CORGI] Kascko#39[T1] terr=91155 bal=9526390 dq=104.5 cnt=153 | c=249.6 rankC=249.6 need=17116322 tD=0.91 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=271843 pulseB=163106 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=4927 bal=693576 dq=140.8 cnt=84 | c=323.7 rankC=323.7 need=833009 tD=1.23 人 pulse bleeding agg | safe=1228744 keep=Inf avail=-Inf chunkB=271843 pulseB=163106 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51160 bal=4893884 dq=95.7 cnt=22 | c=415.1 rankC=415.1 need=8737098 tD=0.83 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=271843 pulseB=163106 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5915 sora_w B=1359214 L=13963 d=97.3 nb=3 neut=0 cmds=101 noFull=1 shQ=339803 | m=0.900 worth=87.7 cheap=8.0 over=0 dMedOther=114.7 safe(-1)=1228744
+    → [CORGI] Kascko#39[T1] terr=91515 bal=9526390 dq=104.1 cnt=161 | c=248.5 rankC=248.5 need=17116862 tD=0.91 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=271843 pulseB=163106 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=4567 bal=659748 dq=144.5 cnt=76 | c=337.7 rankC=276.9 need=725727 tD=1.26 人 pulse agg | safe=1228744 keep=Inf avail=-Inf chunkB=271843 pulseB=163106 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51160 bal=4893884 dq=95.7 cnt=22 | c=415.1 rankC=415.1 need=8737236 tD=0.83 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=271843 pulseB=163106 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5920 sora_w B=1376204 L=13963 d=98.6 nb=3 neut=0 cmds=101 noFull=1 shQ=344051 | m=0.900 worth=88.7 cheap=8.0 over=0 dMedOther=115.9 safe(-1)=1228744
+    → [CORGI] Kascko#39[T1] terr=91515 bal=9673114 dq=105.7 cnt=161 | c=252.3 rankC=252.3 need=17378379 tD=0.91 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=275241 pulseB=165144 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=4567 bal=653294 dq=143.0 cnt=76 | c=334.4 rankC=274.2 need=721396 tD=1.23 人 pulse agg | safe=1228744 keep=Inf avail=-Inf chunkB=275241 pulseB=165144 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51160 bal=4967292 dq=97.1 cnt=22 | c=421.3 rankC=421.3 need=8867437 tD=0.84 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=275241 pulseB=165144 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5925 sora_w B=1376204 L=13963 d=98.6 nb=3 neut=0 cmds=101 noFull=1 shQ=344051 | m=0.900 worth=88.7 cheap=8.0 over=0 dMedOther=110.3 safe(-1)=1228744
+    → [CORGI] Kascko#39[T1] terr=91515 bal=9673114 dq=105.7 cnt=161 | c=252.3 rankC=252.3 need=17378379 tD=0.96 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=275241 pulseB=165144 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=4567 bal=685050 dq=150.0 cnt=76 | c=350.1 rankC=287.1 need=758792 tD=1.36 人 pulse agg | safe=1228744 keep=Inf avail=-Inf chunkB=275241 pulseB=165144 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51160 bal=4967292 dq=97.1 cnt=22 | c=421.3 rankC=421.3 need=8867577 tD=0.88 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=275241 pulseB=165144 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5930 sora_w B=1393406 L=13963 d=99.8 nb=3 neut=0 cmds=101 noFull=1 shQ=348351 | m=0.900 worth=89.8 cheap=8.0 over=0 dMedOther=107.3 safe(-1)=1228744
+    → [CORGI] Kascko#39[T1] terr=91515 bal=9816276 dq=107.3 cnt=161 | c=256.0 rankC=256.0 need=17633547 tD=1.00 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=278681 pulseB=167209 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=4567 bal=685050 dq=150.0 cnt=76 | c=350.1 rankC=287.1 need=761650 tD=1.40 人 pulse agg | safe=1228744 keep=Inf avail=-Inf chunkB=278681 pulseB=167209 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51160 bal=5041801 dq=98.5 cnt=22 | c=427.5 rankC=427.5 need=8999595 tD=0.92 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=278681 pulseB=167209 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5935 sora_w B=1393406 L=13963 d=99.8 nb=3 neut=0 cmds=101 noFull=1 shQ=348351 | m=0.900 worth=89.8 cheap=8.0 over=0 dMedOther=108.3 safe(-1)=1228744
+    → [CORGI] Kascko#39[T1] terr=91515 bal=9816276 dq=107.3 cnt=161 | c=256.0 rankC=256.0 need=17633547 tD=0.99 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=278681 pulseB=167209 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=4567 bal=685050 dq=150.0 cnt=76 | c=349.9 rankC=287.0 need=764145 tD=1.38 人 pulse agg | safe=1228744 keep=Inf avail=-Inf chunkB=278681 pulseB=167209 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51160 bal=5041801 dq=98.5 cnt=22 | c=427.5 rankC=427.5 need=8999737 tD=0.91 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=278681 pulseB=167209 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5940 sora_w B=1410823 L=13963 d=101.0 nb=3 neut=0 cmds=102 noFull=1 shQ=352689 | m=0.900 worth=90.9 cheap=8.0 over=1 dMedOther=109.2 safe(-1)=1228744
+    → [CORGI] Kascko#39[T1] terr=91515 bal=9956648 dq=108.8 cnt=161 | c=259.7 rankC=259.7 need=17883742 tD=1.00 人 pulse | safe=1228744 keep=1256670 avail=137620 chunkB=282165 pulseB=169299  x=137620 hNb=3
+    → Italian empire#28[T3] terr=4567 bal=685050 dq=150.0 cnt=76 | c=349.9 rankC=286.9 need=766993 tD=1.37 人 pulse agg | safe=1228744 keep=1256670 avail=137620 chunkB=282165 pulseB=169299  x=137620 hNb=3
+    → [CORGI]Brawl#32[T1] terr=51160 bal=5120427 dq=100.1 cnt=22 | c=434.1 rankC=434.1 need=9139192 tD=0.92 人 pulse | safe=1228744 keep=1256670 avail=137620 chunkB=282165 pulseB=169299  x=137620 hNb=3
+    ⇒ 影子指令 attack pct=99 → [CORGI] Kascko#39[T1]（约 137775 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=5945 sora_w B=1410823 L=13963 d=101.0 nb=3 neut=0 cmds=103 noFull=1 shQ=352705 | m=0.900 worth=90.9 cheap=8.0 over=1 dMedOther=109.1 safe(-1)=1228744
+    → [CORGI] Kascko#39[T1] terr=91515 bal=9198232 dq=100.5 cnt=161 | c=240.1 rankC=240.1 need=16531961 tD=0.92 人 pulse | safe=1228744 keep=1256670 avail=137620 chunkB=282165 pulseB=169299  x=137620 hNb=3
+    → Italian empire#28[T3] terr=4567 bal=685050 dq=150.0 cnt=76 | c=266.6 rankC=266.6 need=769481 tD=1.37 人 pulse nearCollapse bleeding agg | safe=1228744 keep=1256670 avail=137620 chunkB=282165 pulseB=169299  x=137620 hNb=3
+    → [CORGI]Brawl#32[T1] terr=51160 bal=5120427 dq=100.1 cnt=22 | c=434.1 rankC=434.1 need=9139336 tD=0.92 人 pulse | safe=1228744 keep=1256670 avail=137620 chunkB=282165 pulseB=169299  x=137620 hNb=3
+    ⇒ 影子指令 attack pct=99 → [CORGI] Kascko#39[T1]（约 137775 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=5950 sora_w B=1428176 L=13963 d=102.3 nb=3 neut=0 cmds=104 noFull=1 shQ=356989 | m=0.900 worth=92.1 cheap=8.0 over=1 dMedOther=118.5 safe(-1)=1228744
+    → [CORGI] Kascko#39[T1] terr=91515 bal=9350922 dq=102.2 cnt=161 | c=244.0 rankC=244.0 need=16804112 tD=0.86 人 pulse | safe=1228744 keep=1256670 avail=154770 chunkB=285635 pulseB=171381  x=154770 hNb=3
+    → Italian empire#28[T3] terr=4567 bal=685050 dq=150.0 cnt=76 | c=268.3 rankC=268.3 need=772319 tD=1.27 人 pulse nearCollapse bleeding agg | safe=1228744 keep=1256670 avail=154770 chunkB=285635 pulseB=171381  x=154770 hNb=3
+    → [CORGI]Brawl#32[T1] terr=51160 bal=5197233 dq=101.6 cnt=22 | c=440.6 rankC=440.6 need=9275434 tD=0.86 人 pulse | safe=1228744 keep=1256670 avail=154770 chunkB=285635 pulseB=171381  x=154770 hNb=3
+    ⇒ 影子指令 attack pct=110 → [CORGI] Kascko#39[T1]（约 154812 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=5955 sora_w B=1271970 L=13963 d=91.1 nb=3 neut=0 cmds=104 noFull=1 shQ=194546 | m=0.900 worth=90.7 cheap=8.0 over=0 dMedOther=118.5 safe(-1)=1228744
+    → [CORGI] Kascko#39[T1] terr=91899 bal=9350922 dq=101.8 cnt=166 | c=240.9 rankC=240.9 need=16665218 tD=0.86 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=254394 pulseB=152636 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=4183 bal=600915 dq=143.7 cnt=71 | c=266.4 rankC=266.4 need=600052 tD=1.21 人 pulse nearCollapse bleeding agg | safe=1228744 keep=Inf avail=-Inf chunkB=254394 pulseB=152636 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51160 bal=4542504 dq=88.8 cnt=22 | c=385.5 rankC=385.5 need=8116631 tD=0.75 人 pulse | safe=1228744 keep=Inf avail=-Inf chunkB=254394 pulseB=152636 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5960 sora_w B=1009235 L=14302 d=70.6 nb=3 neut=0 cmds=104 noFull=1 shQ=212040 | m=0.900 worth=89.7 cheap=7.9 over=0 dMedOther=117.3 safe(-1)=1258576
+    → Italian empire#28[T3] terr=3743 bal=438891 dq=117.3 cnt=65 | c=237.3 rankC=237.3 need=354708 tD=1.00 人 pulse nearCollapse bleeding agg | safe=1258576 keep=Inf avail=-Inf chunkB=201847 pulseB=121108 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=91955 bal=9447427 dq=102.7 cnt=179 | c=241.2 rankC=241.2 need=16698268 tD=0.88 人 pulse | safe=1258576 keep=Inf avail=-Inf chunkB=201847 pulseB=121108 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51205 bal=4610641 dq=90.0 cnt=22 | c=527.5 rankC=527.5 need=8239082 tD=0.77 人 pulse crowdedHard | safe=1258576 keep=Inf avail=-Inf chunkB=201847 pulseB=121108 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5965 sora_w B=1009235 L=14660 d=68.8 nb=3 neut=0 cmds=104 noFull=1 shQ=228060 | m=0.900 worth=91.3 cheap=7.9 over=0 dMedOther=119.4 safe(-1)=1290080
+    → [CORGI] Kascko#39[T1] terr=92023 bal=9388721 dq=102.0 cnt=202 | c=241.1 rankC=241.1 need=16714481 tD=0.85 人 pulse | safe=1290080 keep=Inf avail=-Inf chunkB=201847 pulseB=121108 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=3273 bal=458483 dq=140.1 cnt=50 | c=300.9 rankC=300.9 need=241762 tD=1.17 人 pulse nearCollapse bleeding agg | safe=1290080 keep=Inf avail=-Inf chunkB=201847 pulseB=121108 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51249 bal=4610641 dq=90.0 cnt=22 | c=526.9 rankC=526.9 need=8240753 tD=0.75 人 pulse crowdedHard | safe=1290080 keep=Inf avail=-Inf chunkB=201847 pulseB=121108 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5970 sora_w B=1022067 L=15039 d=68.0 nb=3 neut=0 cmds=104 noFull=1 shQ=244121 | m=0.900 worth=91.9 cheap=7.9 over=0 dMedOther=120.2 safe(-1)=1323432
+    → [CORGI] Kascko#39[T1] terr=91871 bal=9462043 dq=103.0 cnt=218 | c=245.6 rankC=245.6 need=16996447 tD=0.86 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=204413 pulseB=122648 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=2972 bal=392701 dq=132.1 cnt=43 | c=319.1 rankC=319.1 need=113559 tD=1.10 人 pulse nearCollapse bleeding agg | safe=1323432 keep=Inf avail=-Inf chunkB=204413 pulseB=122648 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51323 bal=4679800 dq=91.2 cnt=22 | c=533.9 rankC=533.9 need=8365975 tD=0.76 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=204413 pulseB=122648 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5975 sora_w B=1022067 L=15039 d=68.0 nb=3 neut=0 cmds=104 noFull=1 shQ=255516 | m=0.900 worth=91.9 cheap=7.9 over=0 dMedOther=120.2 safe(-1)=1323432
+    → [CORGI] Kascko#39[T1] terr=91871 bal=9462043 dq=103.0 cnt=218 | c=245.6 rankC=245.6 need=16996593 tD=0.86 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=204413 pulseB=122648 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=2924 bal=434312 dq=148.5 cnt=43 | c=327.3 rankC=327.3 need=109898 tD=1.24 人 pulse nearCollapse bleeding agg | safe=1323432 keep=Inf avail=-Inf chunkB=204413 pulseB=122648 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51371 bal=4679800 dq=91.1 cnt=22 | c=533.3 rankC=533.3 need=8367801 tD=0.76 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=204413 pulseB=122648 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5980 sora_w B=1034945 L=15039 d=68.8 nb=3 neut=0 cmds=104 noFull=1 shQ=258736 | m=0.900 worth=92.5 cheap=7.9 over=0 dMedOther=121.0 safe(-1)=1323432
+    → [CORGI] Kascko#39[T1] terr=91871 bal=9611543 dq=104.6 cnt=218 | c=249.5 rankC=249.5 need=17263258 tD=0.86 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=206989 pulseB=124193 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=2853 bal=417820 dq=146.4 cnt=43 | c=273.7 rankC=273.7 need=79933 tD=1.21 人 pulse nearCollapse bleeding agg | safe=1323432 keep=Inf avail=-Inf chunkB=206989 pulseB=124193 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51442 bal=4749997 dq=92.3 cnt=22 | c=540.4 rankC=540.4 need=8494974 tD=0.76 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=206989 pulseB=124193 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5985 sora_w B=1034945 L=15039 d=68.8 nb=3 neut=0 cmds=104 noFull=1 shQ=258736 | m=0.900 worth=92.5 cheap=7.9 over=0 dMedOther=121.0 safe(-1)=1323432
+    → [CORGI] Kascko#39[T1] terr=91871 bal=9611543 dq=104.6 cnt=218 | c=249.5 rankC=249.5 need=17263406 tD=0.86 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=206989 pulseB=124193 价高(c>=worth)→break hNb=3
+    → Italian empire#28[T3] terr=2808 bal=417181 dq=148.6 cnt=43 | c=249.6 rankC=249.6 need=64447 tD=1.23 人 pulse nearCollapse bleeding agg | safe=1323432 keep=Inf avail=-Inf chunkB=206989 pulseB=124193 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51487 bal=4749997 dq=92.3 cnt=22 | c=539.9 rankC=539.9 need=8496709 tD=0.76 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=206989 pulseB=124193 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5990 sora_w B=1047985 L=15039 d=69.7 nb=3 neut=0 cmds=104 noFull=1 shQ=261996 | m=0.900 worth=93.1 cheap=7.9 over=0 dMedOther=121.7 safe(-1)=1323432
+    → Italian empire#28[T3] terr=2745 bal=350599 dq=127.7 cnt=43 | c=206.7 rankC=206.7 need=33780 tD=1.05 人 pulse nearCollapse bleeding | safe=1323432 keep=Inf avail=-Inf chunkB=209597 pulseB=125758 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=91871 bal=9757638 dq=106.2 cnt=218 | c=253.2 rankC=253.2 need=17523865 tD=0.87 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=209597 pulseB=125758 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51550 bal=4821246 dq=93.5 cnt=22 | c=547.1 rankC=547.1 need=8625413 tD=0.77 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=209597 pulseB=125758 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=5995 sora_w B=1047985 L=15039 d=69.7 nb=3 neut=0 cmds=104 noFull=1 shQ=261996 | m=0.900 worth=93.1 cheap=7.9 over=0 dMedOther=121.7 safe(-1)=1323432
+    → Italian empire#28[T3] terr=2706 bal=402415 dq=148.7 cnt=43 | c=223.9 rankC=223.9 need=25179 tD=1.22 人 pulse nearCollapse bleeding | safe=1323432 keep=Inf avail=-Inf chunkB=209597 pulseB=125758 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=91871 bal=9014381 dq=98.1 cnt=218 | c=234.1 rankC=234.1 need=16199671 tD=0.81 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=209597 pulseB=125758 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51589 bal=4821246 dq=93.5 cnt=22 | c=546.7 rankC=546.7 need=8626947 tD=0.77 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=209597 pulseB=125758 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6000 sora_w B=1076228 L=15039 d=71.6 nb=2 neut=42 cmds=104 noFull=1 shQ=265413 | m=0.900 worth=77.0 cheap=7.9 over=0 dMedOther=100.7 safe(-1)=1323432
+    → [CORGI] Kascko#39[T1] terr=91946 bal=9256792 dq=100.7 cnt=219 | c=240.1 rankC=240.1 need=16634672 tD=1.00 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=215246 pulseB=129147 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=51646 bal=4945191 dq=95.8 cnt=22 | c=559.9 rankC=559.9 need=8849124 tD=0.95 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=215246 pulseB=129147 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6005 sora_w B=1076228 L=15039 d=71.6 nb=2 neut=36 cmds=104 noFull=1 shQ=269057 | m=0.900 worth=76.7 cheap=7.9 over=0 dMedOther=100.3 safe(-1)=1323432
+    → [CORGI] Kascko#39[T1] terr=92324 bal=9256792 dq=100.3 cnt=225 | c=239.1 rankC=239.1 need=16637444 tD=1.00 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=215246 pulseB=129147 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=51682 bal=4945191 dq=95.7 cnt=22 | c=559.4 rankC=559.4 need=8850579 tD=0.95 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=215246 pulseB=129147 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6010 sora_w B=1089788 L=15039 d=72.5 nb=2 neut=31 cmds=104 noFull=1 shQ=272447 | m=0.900 worth=77.7 cheap=7.9 over=0 dMedOther=101.6 safe(-1)=1323432
+    → [CORGI] Kascko#39[T1] terr=92623 bal=9411380 dq=101.6 cnt=230 | c=242.3 rankC=242.3 need=16913532 tD=1.00 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=217958 pulseB=130775 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=51732 bal=5019368 dq=97.0 cnt=22 | c=567.1 rankC=567.1 need=8984173 tD=0.95 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=217958 pulseB=130775 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6015 sora_w B=1089788 L=15039 d=72.5 nb=2 neut=26 cmds=104 noFull=1 shQ=272447 | m=0.900 worth=77.6 cheap=7.9 over=0 dMedOther=101.4 safe(-1)=1323432
+    → [CORGI] Kascko#39[T1] terr=92783 bal=9411380 dq=101.4 cnt=235 | c=241.8 rankC=241.8 need=16913771 tD=1.00 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=217958 pulseB=130775 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=51739 bal=5015643 dq=96.9 cnt=22 | c=566.6 rankC=566.6 need=8977961 tD=0.96 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=217958 pulseB=130775 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6020 sora_w B=1103519 L=15039 d=73.4 nb=2 neut=23 cmds=104 noFull=1 shQ=275879 | m=0.900 worth=78.8 cheap=7.9 over=0 dMedOther=103.0 safe(-1)=1323432
+    → [CORGI] Kascko#39[T1] terr=92932 bal=9567788 dq=103.0 cnt=238 | c=245.4 rankC=245.4 need=17192663 tD=1.00 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=220704 pulseB=132422 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=51782 bal=5090877 dq=98.3 cnt=22 | c=574.5 rankC=574.5 need=9113365 tD=0.95 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=220704 pulseB=132422 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6025 sora_w B=1103519 L=15039 d=73.4 nb=2 neut=21 cmds=104 noFull=1 shQ=275879 | m=0.900 worth=78.6 cheap=7.9 over=0 dMedOther=102.8 safe(-1)=1323432
+    → [CORGI] Kascko#39[T1] terr=93082 bal=9567788 dq=102.8 cnt=240 | c=245.0 rankC=245.0 need=17192961 tD=1.00 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=220704 pulseB=132422 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=51807 bal=5090877 dq=98.3 cnt=22 | c=574.2 rankC=574.2 need=9114439 tD=0.96 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=220704 pulseB=132422 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6030 sora_w B=1117423 L=15039 d=74.3 nb=2 neut=18 cmds=104 noFull=1 shQ=279355 | m=0.900 worth=79.8 cheap=7.9 over=0 dMedOther=104.3 safe(-1)=1323432
+    → [CORGI] Kascko#39[T1] terr=93232 bal=9720872 dq=104.3 cnt=243 | c=248.5 rankC=248.5 need=17465964 tD=1.00 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=223485 pulseB=134091 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=51839 bal=4516290 dq=87.1 cnt=22 | c=509.7 rankC=509.7 need=8095631 tD=0.84 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=223485 pulseB=134091 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6035 sora_w B=1117423 L=15039 d=74.3 nb=2 neut=16 cmds=104 noFull=1 shQ=279355 | m=0.900 worth=93.5 cheap=7.9 over=0 dMedOther=122.2 safe(-1)=1323432
+    → [CORGI] Kascko#39[T1] terr=93384 bal=9720872 dq=104.1 cnt=245 | c=248.1 rankC=248.1 need=17466192 tD=0.85 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=223485 pulseB=134091 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=51859 bal=4516290 dq=87.1 cnt=22 | c=509.4 rankC=509.4 need=8096422 tD=0.71 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=223485 pulseB=134091 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6040 sora_w B=1131502 L=15039 d=75.2 nb=2 neut=13 cmds=104 noFull=1 shQ=282875 | m=0.900 worth=80.7 cheap=7.9 over=0 dMedOther=105.5 safe(-1)=1323432
+    → [CORGI] Kascko#39[T1] terr=93525 bal=9871545 dq=105.5 cnt=248 | c=251.5 rankC=251.5 need=17734995 tD=1.00 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=226300 pulseB=135780 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=51885 bal=4584034 dq=88.3 cnt=22 | c=516.7 rankC=516.7 need=8217838 tD=0.84 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=226300 pulseB=135780 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6045 sora_w B=1131502 L=15039 d=75.2 nb=2 neut=11 cmds=104 noFull=1 shQ=282875 | m=0.900 worth=94.0 cheap=7.9 over=0 dMedOther=122.9 safe(-1)=1323432
+    → [CORGI] Kascko#39[T1] terr=93552 bal=9871545 dq=105.5 cnt=250 | c=251.4 rankC=251.4 need=17734998 tD=0.86 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=226300 pulseB=135780 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=51885 bal=5538174 dq=106.7 cnt=22 | c=623.1 rankC=623.1 need=9912386 tD=0.87 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=226300 pulseB=135780 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6050 sora_w B=1145758 L=15039 d=76.2 nb=2 neut=8 cmds=104 noFull=1 shQ=286439 | m=0.900 worth=91.6 cheap=7.9 over=0 dMedOther=119.7 safe(-1)=1323432
+    → [CORGI]Brawl#32[T1] terr=51885 bal=4803312 dq=92.6 cnt=22 | c=116.2 rankC=58.1 need=8607504 tD=0.77 人 pulse bleeding | safe=1323432 keep=Inf avail=-Inf chunkB=229152 pulseB=137491 价高(c>=worth)→break hNb=2
+    → [CORGI] Kascko#39[T1] terr=93573 bal=10019618 dq=107.1 cnt=253 | c=255.1 rankC=255.1 need=17998987 tD=0.89 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=229152 pulseB=137491 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6055 sora_w B=1145758 L=15039 d=76.2 nb=2 neut=6 cmds=104 noFull=1 shQ=286439 | m=0.900 worth=91.6 cheap=7.9 over=0 dMedOther=119.7 safe(-1)=1323432
+    → [CORGI]Brawl#32[T1] terr=51885 bal=4803312 dq=92.6 cnt=22 | c=116.2 rankC=58.1 need=8607637 tD=0.77 人 pulse bleeding | safe=1323432 keep=Inf avail=-Inf chunkB=229152 pulseB=137491 价高(c>=worth)→break hNb=2
+    → [CORGI] Kascko#39[T1] terr=93587 bal=10019618 dq=107.1 cnt=255 | c=255.0 rankC=255.0 need=17999084 tD=0.89 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=229152 pulseB=137491 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6060 sora_w B=1160194 L=15039 d=77.1 nb=2 neut=3 cmds=104 noFull=1 shQ=290048 | m=0.900 worth=84.2 cheap=7.9 over=0 dMedOther=110.1 safe(-1)=1323432
+    → [CORGI]Brawl#32[T1] terr=51417 bal=4805130 dq=93.5 cnt=22 | c=119.2 rankC=59.6 need=8594474 tD=0.85 人 pulse bleeding | safe=1323432 keep=Inf avail=-Inf chunkB=232039 pulseB=139223 价高(c>=worth)→break hNb=2
+    → [CORGI] Kascko#39[T1] terr=93391 bal=10129469 dq=108.5 cnt=256 | c=147.4 rankC=73.7 need=18187234 tD=0.99 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=232039 pulseB=139223 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6065 sora_w B=1160194 L=15039 d=77.1 nb=3 neut=0 cmds=104 noFull=1 shQ=290048 | m=0.900 worth=92.3 cheap=7.9 over=0 dMedOther=120.6 safe(-1)=1323432
+    → [CORGI]Brawl#32[T1] terr=51117 bal=4760313 dq=93.1 cnt=22 | c=119.9 rankC=60.0 need=8504383 tD=0.77 人 pulse bleeding | safe=1323432 keep=Inf avail=-Inf chunkB=232039 pulseB=139223 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=93258 bal=10695201 dq=114.7 cnt=256 | c=156.2 rankC=78.1 need=19189739 tD=0.95 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=232039 pulseB=139223 价高(c>=worth)→break hNb=3
+    → X#37[T1] terr=27711 bal=2882325 dq=104.0 cnt=2 | c=607.0 rankC=607.0 need=5179024 tD=0.86 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=232039 pulseB=139223 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6070 sora_w B=1174812 L=15039 d=78.1 nb=3 neut=0 cmds=104 noFull=1 shQ=293703 | m=0.900 worth=93.0 cheap=7.9 over=0 dMedOther=121.5 safe(-1)=1323432
+    → [CORGI] Kascko#39[T1] terr=93072 bal=10787952 dq=115.9 cnt=254 | c=158.4 rankC=79.2 need=19347184 tD=0.95 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=234962 pulseB=140977 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=50661 bal=4762880 dq=94.0 cnt=22 | c=166.1 rankC=83.0 need=8492510 tD=0.77 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=234962 pulseB=140977 价高(c>=worth)→break hNb=3
+    → X#37[T1] terr=27747 bal=3128599 dq=112.8 cnt=2 | c=657.4 rankC=657.4 need=5618037 tD=0.93 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=234962 pulseB=140977 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6075 sora_w B=1174812 L=15039 d=78.1 nb=3 neut=0 cmds=104 noFull=1 shQ=293703 | m=0.900 worth=93.0 cheap=7.9 over=0 dMedOther=121.5 safe(-1)=1323432
+    → [CORGI] Kascko#39[T1] terr=92957 bal=10766630 dq=115.8 cnt=253 | c=158.6 rankC=79.3 need=19304638 tD=0.95 人 pulse | safe=1323432 keep=Inf avail=-Inf chunkB=234962 pulseB=140977 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=50351 bal=4716293 dq=93.7 cnt=22 | c=167.1 rankC=83.6 need=8398999 tD=0.77 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=234962 pulseB=140977 价高(c>=worth)→break hNb=3
+    → X#37[T1] terr=27791 bal=3128599 dq=112.6 cnt=2 | c=656.4 rankC=656.4 need=5618103 tD=0.93 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=234962 pulseB=140977 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6080 sora_w B=1189614 L=15039 d=79.1 nb=3 neut=0 cmds=104 noFull=1 shQ=297403 | m=0.900 worth=93.6 cheap=7.9 over=0 dMedOther=122.4 safe(-1)=1323432
+    → [CORGI] Kascko#39[T1] terr=92770 bal=10057285 dq=108.4 cnt=251 | c=154.8 rankC=77.4 need=18727777 tD=0.89 人 pulse onMe | safe=1323432 keep=Inf avail=-Inf chunkB=237923 pulseB=142754 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=49896 bal=4717487 dq=94.5 cnt=22 | c=171.4 rankC=85.7 need=8384398 tD=0.77 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=237923 pulseB=142754 价高(c>=worth)→break hNb=3
+    → X#37[T1] terr=27866 bal=3160823 dq=113.4 cnt=2 | c=661.4 rankC=661.4 need=5675611 tD=0.93 人 pulse crowdedHard | safe=1323432 keep=Inf avail=-Inf chunkB=237923 pulseB=142754 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6085 sora_w B=1126660 L=14539 d=77.5 nb=3 neut=0 cmds=104 noFull=1 shQ=281665 | m=0.900 worth=93.6 cheap=7.9 over=0 dMedOther=122.4 safe(-1)=1279432
+    → [CORGI] Kascko#39[T1] terr=93144 bal=10035811 dq=107.7 cnt=248 | c=153.0 rankC=76.5 need=18578269 tD=0.88 人 pulse onMe | safe=1279432 keep=Inf avail=-Inf chunkB=225332 pulseB=135199 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=49593 bal=4671696 dq=94.2 cnt=22 | c=172.5 rankC=86.2 need=8292634 tD=0.77 人 pulse crowdedHard | safe=1279432 keep=Inf avail=-Inf chunkB=225332 pulseB=135199 价高(c>=worth)→break hNb=3
+    → X#37[T1] terr=27931 bal=2778068 dq=99.5 cnt=2 | c=191.6 rankC=134.1 need=5338737 tD=0.81 人 pulse onMe | safe=1279432 keep=Inf avail=-Inf chunkB=225332 pulseB=135199 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6090 sora_w B=988963 L=13304 d=74.3 nb=3 neut=0 cmds=104 noFull=1 shQ=247240 | m=0.900 worth=94.3 cheap=8.0 over=0 dMedOther=123.3 safe(-1)=1170752
+    → [CORGI] Kascko#39[T1] terr=94182 bal=10150033 dq=107.8 cnt=228 | c=150.9 rankC=75.5 need=18497394 tD=0.87 人 pulse onMe | safe=1170752 keep=Inf avail=-Inf chunkB=197793 pulseB=118676 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=49139 bal=4671987 dq=95.1 cnt=22 | c=176.8 rankC=88.4 need=8276143 tD=0.77 人 pulse crowdedHard | safe=1170752 keep=Inf avail=-Inf chunkB=197793 pulseB=118676 价高(c>=worth)→break hNb=3
+    → X#37[T1] terr=28010 bal=2815890 dq=100.5 cnt=1 | c=193.4 rankC=135.3 need=5405017 tD=0.82 人 pulse onMe | safe=1170752 keep=Inf avail=-Inf chunkB=197793 pulseB=118676 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6095 sora_w B=864112 L=12233 d=70.6 nb=2 neut=0 cmds=104 noFull=1 shQ=216028 | m=0.900 worth=94.3 cheap=8.0 over=0 dMedOther=123.3 safe(-1)=1076504
+    → [CORGI]Brawl#32[T1] terr=48838 bal=5076348 dq=103.9 cnt=22 | c=195.4 rankC=97.7 need=8974000 tD=0.84 人 pulse crowdedHard | safe=1076504 keep=Inf avail=-Inf chunkB=172822 pulseB=103693 价高(c>=worth)→break hNb=2
+    → [CORGI] Kascko#39[T1] terr=95184 bal=10137643 dq=106.5 cnt=203 | c=254.1 rankC=254.1 need=18225127 tD=0.86 人 pulse onMe | safe=1076504 keep=Inf avail=-Inf chunkB=172822 pulseB=103693 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6100 sora_w B=880483 L=12233 d=72.0 nb=2 neut=0 cmds=104 noFull=1 shQ=217155 | m=0.900 worth=95.7 cheap=8.0 over=0 dMedOther=125.1 safe(-1)=1076504
+    → [CORGI] Kascko#39[T1] terr=95184 bal=10381850 dq=109.1 cnt=203 | c=260.0 rankC=260.0 need=18646995 tD=0.87 人 pulse | safe=1076504 keep=Inf avail=-Inf chunkB=176097 pulseB=105658 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=48688 bal=5148827 dq=105.8 cnt=22 | c=622.5 rankC=622.5 need=9095339 tD=0.85 人 pulse crowdedHard | safe=1076504 keep=Inf avail=-Inf chunkB=176097 pulseB=105658 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6105 sora_w B=880483 L=12233 d=72.0 nb=2 neut=0 cmds=104 noFull=1 shQ=220120 | m=0.900 worth=95.7 cheap=8.0 over=0 dMedOther=125.1 safe(-1)=1076504
+    → [CORGI] Kascko#39[T1] terr=95184 bal=9591046 dq=100.8 cnt=203 | c=180.3 rankC=126.2 need=17237495 tD=0.81 人 pulse | safe=1076504 keep=Inf avail=-Inf chunkB=176097 pulseB=105658 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=48688 bal=5148827 dq=105.8 cnt=22 | c=622.5 rankC=622.5 need=9096121 tD=0.85 人 pulse crowdedHard | safe=1076504 keep=Inf avail=-Inf chunkB=176097 pulseB=105658 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6110 sora_w B=891400 L=12233 d=72.9 nb=2 neut=0 cmds=104 noFull=1 shQ=222850 | m=0.900 worth=96.3 cheap=8.0 over=0 dMedOther=125.9 safe(-1)=1076504
+    → [CORGI] Kascko#39[T1] terr=95184 bal=9750257 dq=102.4 cnt=203 | c=183.3 rankC=128.3 need=17521267 tD=0.81 人 pulse | safe=1076504 keep=Inf avail=-Inf chunkB=178280 pulseB=106968 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=48688 bal=5216791 dq=107.1 cnt=22 | c=630.6 rankC=630.6 need=9216044 tD=0.85 人 pulse crowdedHard | safe=1076504 keep=Inf avail=-Inf chunkB=178280 pulseB=106968 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6115 sora_w B=891400 L=12233 d=72.9 nb=2 neut=0 cmds=104 noFull=1 shQ=222850 | m=0.900 worth=96.2 cheap=8.0 over=0 dMedOther=125.8 safe(-1)=1076504
+    → [CORGI] Kascko#39[T1] terr=95476 bal=9750257 dq=102.1 cnt=206 | c=182.7 rankC=127.9 need=17521705 tD=0.81 人 pulse | safe=1076504 keep=Inf avail=-Inf chunkB=178280 pulseB=106968 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=48667 bal=4556452 dq=93.6 cnt=22 | c=413.8 rankC=289.7 need=8058347 tD=0.74 人 pulse crowdedHard | safe=1076504 keep=Inf avail=-Inf chunkB=178280 pulseB=106968 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6120 sora_w B=902453 L=12233 d=73.8 nb=2 neut=0 cmds=104 noFull=1 shQ=225613 | m=0.900 worth=96.7 cheap=8.0 over=0 dMedOther=126.4 safe(-1)=1076504
+    → [CORGI] Kascko#39[T1] terr=95837 bal=9908211 dq=103.4 cnt=209 | c=246.6 rankC=246.6 need=17803814 tD=0.82 人 pulse | safe=1076504 keep=Inf avail=-Inf chunkB=180491 pulseB=108294 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=48817 bal=4624343 dq=94.7 cnt=22 | c=418.4 rankC=292.9 need=8183830 tD=0.75 人 pulse crowdedHard | safe=1076504 keep=Inf avail=-Inf chunkB=180491 pulseB=108294 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6125 sora_w B=902453 L=12233 d=73.8 nb=2 neut=0 cmds=104 noFull=1 shQ=225613 | m=0.900 worth=96.7 cheap=8.0 over=0 dMedOther=126.3 safe(-1)=1076504
+    → [CORGI] Kascko#39[T1] terr=96215 bal=9908211 dq=103.0 cnt=211 | c=245.6 rankC=245.6 need=17804454 tD=0.82 人 pulse | safe=1076504 keep=Inf avail=-Inf chunkB=180491 pulseB=108294 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=49264 bal=4624343 dq=93.9 cnt=22 | c=414.1 rankC=289.9 need=8201725 tD=0.74 人 pulse crowdedHard | safe=1076504 keep=Inf avail=-Inf chunkB=180491 pulseB=108294 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6130 sora_w B=913643 L=12233 d=74.7 nb=2 neut=0 cmds=104 noFull=1 shQ=228410 | m=0.900 worth=99.4 cheap=8.0 over=0 dMedOther=129.9 safe(-1)=1076504
+    → [CORGI] Kascko#39[T1] terr=96602 bal=10067733 dq=104.2 cnt=214 | c=248.5 rankC=248.5 need=18089325 tD=0.80 人 pulse | safe=1076504 keep=Inf avail=-Inf chunkB=182729 pulseB=109637 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=49555 bal=4693245 dq=94.7 cnt=22 | c=417.4 rankC=292.2 need=8334644 tD=0.73 人 pulse crowdedHard | safe=1076504 keep=Inf avail=-Inf chunkB=182729 pulseB=109637 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6135 sora_w B=913643 L=12233 d=74.7 nb=2 neut=0 cmds=104 noFull=1 shQ=228410 | m=0.900 worth=99.4 cheap=8.0 over=0 dMedOther=129.9 safe(-1)=1076504
+    → [CORGI] Kascko#39[T1] terr=97022 bal=10067733 dq=103.8 cnt=216 | c=247.4 rankC=247.4 need=18089955 tD=0.80 人 pulse | safe=1076504 keep=Inf avail=-Inf chunkB=182729 pulseB=109637 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=49983 bal=4693245 dq=93.9 cnt=22 | c=551.1 rankC=551.1 need=8351143 tD=0.72 人 pulse crowdedHard | safe=1076504 keep=Inf avail=-Inf chunkB=182729 pulseB=109637 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6140 sora_w B=924972 L=12233 d=75.6 nb=2 neut=0 cmds=104 noFull=1 shQ=231243 | m=0.900 worth=99.8 cheap=8.0 over=0 dMedOther=130.5 safe(-1)=1076504
+    → [CORGI] Kascko#39[T1] terr=97489 bal=10226803 dq=104.9 cnt=220 | c=250.1 rankC=250.1 need=18374139 tD=0.80 人 pulse | safe=1076504 keep=Inf avail=-Inf chunkB=184994 pulseB=110997 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=50263 bal=4763174 dq=94.8 cnt=22 | c=555.7 rankC=555.7 need=8485465 tD=0.73 人 pulse crowdedHard | safe=1076504 keep=Inf avail=-Inf chunkB=184994 pulseB=110997 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6145 sora_w B=924972 L=12233 d=75.6 nb=2 neut=0 cmds=104 noFull=1 shQ=231243 | m=0.900 worth=99.8 cheap=8.0 over=0 dMedOther=130.5 safe(-1)=1076504
+    → [CORGI] Kascko#39[T1] terr=97908 bal=10226905 dq=104.5 cnt=222 | c=249.1 rankC=249.1 need=18374913 tD=0.80 人 pulse | safe=1076504 keep=Inf avail=-Inf chunkB=184994 pulseB=110997 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=50674 bal=4763174 dq=94.0 cnt=22 | c=550.6 rankC=550.6 need=8500994 tD=0.72 人 pulse crowdedHard | safe=1076504 keep=Inf avail=-Inf chunkB=184994 pulseB=110997 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6150 sora_w B=936441 L=12233 d=76.6 nb=2 neut=0 cmds=104 noFull=1 shQ=234110 | m=0.900 worth=100.3 cheap=8.0 over=0 dMedOther=131.1 safe(-1)=1076504
+    → [CORGI] Kascko#39[T1] terr=97908 bal=10384399 dq=106.1 cnt=222 | c=252.9 rankC=252.9 need=18655624 tD=0.81 人 pulse | safe=1076504 keep=Inf avail=-Inf chunkB=187288 pulseB=112373 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=50945 bal=4834621 dq=94.9 cnt=22 | c=555.5 rankC=555.5 need=8637552 tD=0.72 人 pulse crowdedHard | safe=1076504 keep=Inf avail=-Inf chunkB=187288 pulseB=112373 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6155 sora_w B=936441 L=12233 d=76.6 nb=2 neut=0 cmds=104 noFull=1 shQ=234110 | m=0.900 worth=100.3 cheap=8.0 over=0 dMedOther=131.1 safe(-1)=1076504
+    → [CORGI] Kascko#39[T1] terr=97908 bal=10384399 dq=106.1 cnt=222 | c=252.9 rankC=252.9 need=18655624 tD=0.81 人 pulse | safe=1076504 keep=Inf avail=-Inf chunkB=187288 pulseB=112373 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=51080 bal=4834692 dq=94.6 cnt=22 | c=553.8 rankC=553.8 need=8642762 tD=0.72 人 pulse crowdedHard | safe=1076504 keep=Inf avail=-Inf chunkB=187288 pulseB=112373 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6160 sora_w B=948052 L=12233 d=77.5 nb=2 neut=0 cmds=104 noFull=1 shQ=237013 | m=0.900 worth=100.7 cheap=8.0 over=0 dMedOther=131.6 safe(-1)=1076504
+    → [CORGI] Kascko#39[T1] terr=97908 bal=10539126 dq=107.6 cnt=222 | c=256.6 rankC=256.6 need=18931403 tD=0.82 人 pulse | safe=1076504 keep=Inf avail=-Inf chunkB=189610 pulseB=113766 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=51080 bal=4907212 dq=96.1 cnt=22 | c=562.0 rankC=562.0 need=8771542 tD=0.73 人 pulse crowdedHard | safe=1076504 keep=Inf avail=-Inf chunkB=189610 pulseB=113766 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6165 sora_w B=948052 L=12233 d=77.5 nb=2 neut=0 cmds=104 noFull=1 shQ=237013 | m=0.900 worth=92.3 cheap=8.0 over=0 dMedOther=120.6 safe(-1)=1076504
+    → [CORGI] Kascko#39[T1] terr=97908 bal=9736342 dq=99.4 cnt=222 | c=177.9 rankC=124.5 need=17500551 tD=0.82 人 pulse | safe=1076504 keep=Inf avail=-Inf chunkB=189610 pulseB=113766 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=51080 bal=4907212 dq=96.1 cnt=22 | c=562.0 rankC=562.0 need=8771680 tD=0.80 人 pulse crowdedHard | safe=1076504 keep=Inf avail=-Inf chunkB=189610 pulseB=113766 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6170 sora_w B=888473 L=11660 d=76.2 nb=2 neut=0 cmds=104 noFull=1 shQ=222118 | m=0.900 worth=93.1 cheap=8.1 over=0 dMedOther=121.7 safe(-1)=1026080
+    → [CORGI] Kascko#39[T1] terr=98815 bal=9146718 dq=92.6 cnt=145 | c=170.9 rankC=119.6 need=16936262 tD=0.76 人 pulse onMe | safe=1026080 keep=Inf avail=-Inf chunkB=177695 pulseB=106617 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=51080 bal=4980820 dq=97.5 cnt=22 | c=570.3 rankC=570.3 need=8902257 tD=0.80 人 pulse crowdedHard | safe=1026080 keep=Inf avail=-Inf chunkB=177695 pulseB=106617 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6175 sora_w B=808422 L=10994 d=73.5 nb=3 neut=0 cmds=104 noFull=1 shQ=202105 | m=0.900 worth=93.1 cheap=8.2 over=0 dMedOther=121.7 safe(-1)=967472
+    → [CORGI] Kascko#39[T1] terr=100043 bal=9146718 dq=91.4 cnt=123 | c=167.3 rankC=117.1 need=16778596 tD=0.75 人 pulse onMe | safe=967472 keep=Inf avail=-Inf chunkB=161684 pulseB=97011 价高(c>=worth)→break hNb=3
+    → X#37[T1] terr=28019 bal=2967486 dq=105.9 cnt=4 | c=202.8 rankC=141.9 need=5674323 tD=0.87 人 pulse onMe | safe=967472 keep=Inf avail=-Inf chunkB=161684 pulseB=97011 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51080 bal=4980820 dq=97.5 cnt=22 | c=570.2 rankC=570.2 need=8902397 tD=0.80 人 pulse crowdedHard | safe=967472 keep=Inf avail=-Inf chunkB=161684 pulseB=97011 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6180 sora_w B=748262 L=10398 d=72.0 nb=3 neut=0 cmds=104 noFull=1 shQ=187065 | m=0.900 worth=93.9 cheap=8.2 over=0 dMedOther=122.8 safe(-1)=915024
+    → X#37[T1] terr=28029 bal=3003392 dq=107.2 cnt=3 | c=204.9 rankC=143.4 need=5735919 tD=0.87 人 pulse onMe | safe=915024 keep=Inf avail=-Inf chunkB=149652 pulseB=89791 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=101253 bal=9302212 dq=91.9 cnt=111 | c=222.3 rankC=222.3 need=16919974 tD=0.75 人 pulse onMe | safe=915024 keep=Inf avail=-Inf chunkB=149652 pulseB=89791 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51080 bal=5055532 dq=99.0 cnt=22 | c=578.7 rankC=578.7 need=9035079 tD=0.81 人 pulse crowdedHard | safe=915024 keep=Inf avail=-Inf chunkB=149652 pulseB=89791 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6185 sora_w B=684981 L=9841 d=69.6 nb=3 neut=0 cmds=104 noFull=1 shQ=171245 | m=0.900 worth=93.9 cheap=8.2 over=0 dMedOther=122.8 safe(-1)=866008
+    → X#37[T1] terr=28037 bal=3003392 dq=107.1 cnt=2 | c=204.8 rankC=143.3 need=5734097 tD=0.87 人 pulse onMe | safe=866008 keep=Inf avail=-Inf chunkB=136996 pulseB=82198 价高(c>=worth)→break hNb=3
+    → [CORGI] Kascko#39[T1] terr=102480 bal=9302212 dq=90.8 cnt=108 | c=218.0 rankC=218.0 need=16795940 tD=0.74 人 pulse onMe | safe=866008 keep=Inf avail=-Inf chunkB=136996 pulseB=82198 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51080 bal=5055532 dq=99.0 cnt=22 | c=578.6 rankC=578.6 need=9035221 tD=0.81 人 pulse crowdedHard | safe=866008 keep=Inf avail=-Inf chunkB=136996 pulseB=82198 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6190 sora_w B=661628 L=9623 d=68.8 nb=3 neut=0 cmds=104 noFull=1 shQ=165407 | m=0.900 worth=91.6 cheap=8.2 over=0 dMedOther=119.7 safe(-1)=846824
+    → [CORGI] Kascko#39[T1] terr=102989 bal=8740639 dq=84.9 cnt=107 | c=158.2 rankC=110.8 need=16333059 tD=0.71 人 pulse onMe | safe=846824 keep=Inf avail=-Inf chunkB=132326 pulseB=79395 价高(c>=worth)→break hNb=3
+    → X#37[T1] terr=28041 bal=3038531 dq=108.4 cnt=2 | c=206.9 rankC=144.8 need=5795850 tD=0.90 人 pulse onMe | safe=846824 keep=Inf avail=-Inf chunkB=132326 pulseB=79395 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51080 bal=5131364 dq=100.5 cnt=22 | c=587.2 rankC=587.2 need=9169754 tD=0.84 人 pulse crowdedHard | safe=846824 keep=Inf avail=-Inf chunkB=132326 pulseB=79395 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6195 sora_w B=660751 L=9615 d=68.7 nb=3 neut=0 cmds=104 noFull=1 shQ=165187 | m=0.900 worth=91.6 cheap=8.2 over=0 dMedOther=119.7 safe(-1)=846120
+    → [CORGI] Kascko#39[T1] terr=102989 bal=8740639 dq=84.9 cnt=106 | c=158.3 rankC=110.8 need=16333059 tD=0.71 人 pulse onMe | safe=846120 keep=Inf avail=-Inf chunkB=132150 pulseB=79290 价高(c>=worth)→break hNb=3
+    → X#37[T1] terr=28049 bal=3038531 dq=108.3 cnt=3 | c=206.8 rankC=144.7 need=5794092 tD=0.90 人 pulse onMe | safe=846120 keep=Inf avail=-Inf chunkB=132150 pulseB=79290 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51080 bal=5131364 dq=100.5 cnt=22 | c=587.2 rankC=587.2 need=9169898 tD=0.84 人 pulse crowdedHard | safe=846120 keep=Inf avail=-Inf chunkB=132150 pulseB=79290 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6200 sora_w B=619811 L=9087 d=68.2 nb=3 neut=0 cmds=104 noFull=1 shQ=154952 | m=0.900 worth=93.1 cheap=8.3 over=0 dMedOther=121.6 safe(-1)=799656
+    → [CORGI] Kascko#39[T1] terr=103514 bal=8316337 dq=80.3 cnt=105 | c=154.5 rankC=108.1 need=16025430 tD=0.66 人 pulse onMe | safe=799656 keep=Inf avail=-Inf chunkB=123962 pulseB=74377 价高(c>=worth)→break hNb=3
+    → X#37[T1] terr=28052 bal=3101222 dq=110.6 cnt=1 | c=210.7 rankC=147.5 need=5905144 tD=0.91 人 pulse onMe | safe=799656 keep=Inf avail=-Inf chunkB=123962 pulseB=74377 价高(c>=worth)→break hNb=3
+    → [CORGI]Brawl#32[T1] terr=51080 bal=4603286 dq=90.1 cnt=20 | c=395.5 rankC=276.8 need=8234276 tD=0.74 人 pulse crowdedHard | safe=799656 keep=Inf avail=-Inf chunkB=123962 pulseB=74377 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=6205 sora_w B=563015 L=8559 d=65.8 nb=2 neut=0 cmds=104 noFull=1 shQ=140753 | m=0.900 worth=93.7 cheap=8.3 over=0 dMedOther=122.5 safe(-1)=753192
+    → [CORGI] Kascko#39[T1] terr=104041 bal=8316337 dq=79.9 cnt=104 | c=152.6 rankC=106.8 need=15911762 tD=0.65 人 pulse onMe | safe=753192 keep=Inf avail=-Inf chunkB=112603 pulseB=67562 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=51327 bal=4603286 dq=89.7 cnt=18 | c=393.3 rankC=275.3 need=8242958 tD=0.73 人 pulse crowdedHard | safe=753192 keep=Inf avail=-Inf chunkB=112603 pulseB=67562 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6210 sora_w B=514181 L=8029 d=64.0 nb=2 neut=0 cmds=104 noFull=1 shQ=128545 | m=0.900 worth=94.4 cheap=8.4 over=0 dMedOther=123.4 safe(-1)=706552
+    → [CORGI] Kascko#39[T1] terr=104571 bal=7815012 dq=74.7 cnt=106 | c=147.4 rankC=103.2 need=15443898 tD=0.61 人 pulse onMe | safe=706552 keep=Inf avail=-Inf chunkB=102836 pulseB=61702 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=51573 bal=4672335 dq=90.6 cnt=15 | c=397.1 rankC=277.9 need=8374122 tD=0.73 人 pulse crowdedHard | safe=706552 keep=Inf avail=-Inf chunkB=102836 pulseB=61702 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6215 sora_w B=461357 L=7505 d=61.5 nb=2 neut=0 cmds=104 noFull=1 shQ=115339 | m=0.900 worth=94.4 cheap=8.4 over=0 dMedOther=123.4 safe(-1)=660440
+    → [CORGI] Kascko#39[T1] terr=105095 bal=7815012 dq=74.4 cnt=103 | c=145.6 rankC=101.9 need=15337988 tD=0.60 人 pulse onMe | safe=660440 keep=Inf avail=-Inf chunkB=92271 pulseB=55363 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=51938 bal=4672335 dq=90.0 cnt=13 | c=393.9 rankC=275.7 need=8386733 tD=0.73 人 pulse crowdedHard | safe=660440 keep=Inf avail=-Inf chunkB=92271 pulseB=55363 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6220 sora_w B=415553 L=6981 d=59.5 nb=2 neut=0 cmds=104 noFull=1 shQ=103888 | m=0.900 worth=95.1 cheap=8.5 over=0 dMedOther=124.3 safe(-1)=614328
+    → [CORGI] Kascko#39[T1] terr=105619 bal=7343908 dq=69.5 cnt=106 | c=140.8 rankC=98.5 need=14900206 tD=0.56 人 pulse onMe | safe=614328 keep=Inf avail=-Inf chunkB=83111 pulseB=49866 价高(c>=worth)→break hNb=2
+    → [CORGI]Brawl#32[T1] terr=52160 bal=4739359 dq=90.9 cnt=10 | c=397.6 rankC=278.3 need=8513772 tD=0.73 人 pulse crowdedHard | safe=614328 keep=Inf avail=-Inf chunkB=83111 pulseB=49866 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6225 sora_w B=367122 L=6463 d=56.8 nb=1 neut=0 cmds=104 noFull=1 shQ=91780 | m=0.900 worth=95.1 cheap=8.5 over=0 dMedOther=124.3 safe(-1)=568744
+    → [CORGI] Kascko#39[T1] terr=106137 bal=7343908 dq=69.2 cnt=101 | c=139.2 rankC=97.4 need=14803035 tD=0.56 人 pulse onMe | safe=568744 keep=Inf avail=-Inf chunkB=73424 pulseB=44055 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6230 sora_w B=326523 L=5966 d=54.7 nb=1 neut=0 cmds=104 noFull=1 shQ=81630 | m=0.900 worth=95.8 cheap=8.6 over=0 dMedOther=125.2 safe(-1)=525008
+    → [CORGI] Kascko#39[T1] terr=106634 bal=7470223 dq=70.1 cnt=93 | c=139.8 rankC=97.9 need=14939139 tD=0.56 人 pulse onMe | safe=525008 keep=Inf avail=-Inf chunkB=65305 pulseB=39183 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6235 sora_w B=286171 L=5496 d=52.1 nb=1 neut=0 cmds=104 noFull=1 shQ=71542 | m=0.900 worth=95.8 cheap=8.6 over=0 dMedOther=125.2 safe(-1)=483648
+    → [CORGI] Kascko#39[T1] terr=107104 bal=6901203 dq=64.4 cnt=93 | c=133.5 rankC=93.4 need=14325429 tD=0.51 人 pulse onMe | safe=483648 keep=Inf avail=-Inf chunkB=57234 pulseB=34341 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6240 sora_w B=249408 L=5010 d=49.8 nb=1 neut=0 cmds=104 noFull=1 shQ=62352 | m=0.900 worth=96.4 cheap=8.8 over=0 dMedOther=126.0 safe(-1)=440880
+    → [CORGI] Kascko#39[T1] terr=107590 bal=7020593 dq=65.3 cnt=100 | c=134.1 rankC=93.9 need=14458649 tD=0.52 人 pulse onMe | safe=440880 keep=Inf avail=-Inf chunkB=49882 pulseB=29929 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令

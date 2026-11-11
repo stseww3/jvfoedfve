@@ -1,0 +1,66 @@
+[LA] B035 捐款对子账（日志口径，余额拟合定案为成交的）：日志 79 笔，成交 65 笔；到账 33640347，税 15933967（税 ÷ 付出 32.1%）
+     收款方是编队号：47 笔，到账 28259605，税 12487062（税 ÷ 付出 30.6%）
+     收款方不在编队日志里：18 笔，到账 5380742，税 3446905（税 ÷ 付出 39.0%）
+[LB] 对子（按两边到账合计排序）：A ↔ B | A→B 笔数 / 到账 / 税 | B→A 笔数 / 到账 / 税 | 净额（+ = A 净给 B）| 来回倒掉的（较小一边 ×2）
+     Panzergrenadier ↔ Lucario | 11 / 7827411 / 3157280 | 6 / 4398318 / 2432168 | +3429093 | 8796636
+     Lucario ↔ Alaska | 5 / 3994196 / 2121402 | 13 / 5927436 / 2163754 | -1933240 | 7988392
+     Panzergrenadier ↔ Alaska | 3 / 2301075 / 1090582 | 3 / 1919779 / 535443 | +381296 | 3839558
+     Lucario ↔ Zoro | 7 / 2935871 / 1623230 | 0 / 0 / 0 | +2935871 | 0
+     Afsharid ↔ Impostor | 4 / 1162979 / 677036 | 2 / 728411 / 309397 | +434568 | 1456822
+     Panzergrenadier ↔ Zoro | 6 / 1304044 / 1002972 | 0 / 0 / 0 | +1304044 | 0
+     Alaska ↔ Zoro | 5 / 1140827 / 820703 | 0 / 0 / 0 | +1140827 | 0
+[LC] 各队分支（按捐款对子连成的组）：成员 | 成交笔数 | 到账 | 税 | 净转移（各对子净额绝对值之和）| 来回倒掉的 | 倒掉的 ÷ 到账 | 税 ÷ 净转移
+     Panzergrenadier / Lucario / Alaska / Zoro（不在编队日志里） | 59 | 31748957 | 14947534 | 11124371 | 20624586 | 65% | 1.34
+     Afsharid / Impostor | 6 | 1891390 | 986433 | 434568 | 1456822 | 77% | 2.27
+[LD] 逐号：号 | 捐出 笔数 / 到账 / 税 | 收到 笔数 / 到账 | 净额（收到 − 捐出到账 − 税）
+     Afsharid | 4 / 1162979 / 677036 | 2 / 728411 | -1111604
+     Panzergrenadier | 20 / 11432530 / 5250834 | 9 / 6318097 | -10365267
+     Lucario | 18 / 11328385 / 6176800 | 24 / 13754847 | -3750338
+     Alaska | 21 / 8988042 / 3519900 | 8 / 6295271 | -6212671
+     Impostor | 2 / 728411 / 309397 | 4 / 1162979 | +125171
+     Zoro（不在编队日志里） | 0 / 0 / 0 | 18 / 5380742 | +5380742
+[LE] 收款方不在编队日志里的成交捐款：拍 | 捐出方 → 收款方 | 种类 pct | 到账 | 税 | 捐出方当时 余额 / 领土 / 密度 → 捐后密度
+     3700 | Panzergrenadier → Zoro | surplus donate 153 | 427721 | 177754 | 2844071 / 25081 / 113.4 → 89.3
+     4005 | Lucario → Zoro | squad rescue donate 155 | 727490 | 298457 | 4723363 / 41116 / None → None
+     4030 | Alaska → Zoro | squad rescue donate 63 | 158676 | 158676 | 2538817 / 25066 / None → None
+     4030 | Lucario → Zoro | squad rescue donate 155 | 588109 | 241275 | 3860412 / 41116 / None → None
+     4080 | Lucario → Zoro | squad rescue donate 58 | 187858 | 203778 | 3260454 / 41849 / None → None
+     4090 | Panzergrenadier → Zoro | squad rescue donate 67 | 173630 | 163417 | 2614676 / 25707 / None → None
+     4185 | Lucario → Zoro | squad rescue donate 89 | 300240 | 213504 | 3366578 / 41849 / None → None
+     4185 | Panzergrenadier → Zoro | squad rescue donate 60 | 156716 | 164423 | 2595996 / 25707 / None → None
+     4185 | Alaska → Zoro | squad rescue donate 130 | 353120 | 172516 | 2729695 / 25066 / None → None
+     4295 | Panzergrenadier → Zoro | squad rescue donate 87 | 234583 | 170606 | 2670344 / 25707 / None → None
+     4305 | Alaska → Zoro | squad rescue donate 101 | 266480 | 167203 | 2643009 / 25066 / None → None
+     4385 | Panzergrenadier → Zoro | squad rescue donate 57 | 148652 | 164030 | 2589783 / 25707 / None → None
+     4385 | Lucario → Zoro | squad rescue donate 155 | 607683 | 249306 | 3931109 / 41849 / None → None
+     4400 | Alaska → Zoro | squad rescue donate 69 | 177043 | 161868 | 2556409 / 25066 / None → None
+     4440 | Lucario → Zoro | squad rescue donate 101 | 339999 | 213333 | 3413332 / 41849 / None → None
+     4470 | Panzergrenadier → Zoro | squad rescue donate 63 | 162742 | 162742 | 2603883 / 25707 / None → None
+     4500 | Alaska → Zoro | squad rescue donate 73 | 185508 | 160440 | 2567042 / 25066 / None → None
+     4520 | Lucario → Zoro | squad rescue donate 57 | 184492 | 203577 | 3257244 / 41849 / None → None
+[LF] 收款的编队号在收款后多少拍阵亡：档 | 笔数 | 到账 | 税
+     ≤300 拍 | 8 | 5205716 | 3399131
+        t=6460 Afsharid → Impostor squad rescue donate 61：到账 156998，税 162062；收款方当时 30402 格 / 密度 104.3，113 拍后阵亡
+        t=6550 Afsharid → Impostor squad rescue donate 61：到账 157140，税 162209；收款方当时 23695 格 / 密度 79.2，23 拍后阵亡
+        t=8390 Panzergrenadier → Alaska surplus donate 153：到账 913588，税 379673；收款方当时 37090 格 / 密度 94.4，226 拍后阵亡
+        t=8500 Panzergrenadier → Alaska squad rescue donate 155：到账 525786，税 352800；收款方当时 26452 格 / 密度 108.5，116 拍后阵亡
+        t=8505 Lucario → Alaska squad rescue donate 155：到账 224871，税 562946；收款方当时 26452 格 / 密度 108.5，111 拍后阵亡
+        t=8610 Lucario → Alaska squad rescue donate 155：到账 1504341，税 617165；收款方当时 15064 格 / 密度 120.9，6 拍后阵亡
+        t=8740 Lucario → Panzergrenadier squad rescue donate 155：到账 881525，税 578032；收款方当时 34164 格 / 密度 99.0，127 拍后阵亡
+        t=8850 Lucario → Panzergrenadier squad rescue donate 155：到账 841467，税 584244；收款方当时 14404 格 / 密度 85.1，17 拍后阵亡
+     ≤600 拍 | 9 | 5647300 | 3582646
+     ≤1200 拍 | 10 | 6509001 | 3940755
+[LG] 600 拍内来回（A→B 成交后 600 拍内 B→A 也成交；每笔回程只配一次）：对子 | 次数 | 两笔里较小的到账合计 | 这些来回两边付的税
+     Panzergrenadier ↔ Lucario | 5 | 2812252 | 3280112
+     Lucario ↔ Alaska | 2 | 941308 | 1003036
+     Panzergrenadier ↔ Alaska | 1 | 480762 | 523532
+     Afsharid ↔ Impostor | 1 | 395621 | 349003
+     合计 9 次，来回的兵 4629943，付的税 5155683
+[LH] 每 900 拍：窗 | 成交笔数 | 到账 | 税 | 收款方当时密度 ≥100 的 笔数 / 到账 | 捐出方当时密度 中位
+     2700~3599 | 1 | 433808 | 180284 | 1 / 433808 | 112.9
+     3600~4499 | 20 | 6715216 | 3791241 | 3 / 1297217 | 0
+     4500~5399 | 9 | 4620342 | 2135998 | 3 / 2314802 | 113.3
+     5400~6299 | 10 | 5923828 | 2319566 | 8 / 4344422 | 112.2
+     6300~7199 | 10 | 4843609 | 1977451 | 5 / 2555335 | 77.9
+     7200~8099 | 8 | 5354591 | 2098255 | 4 / 2783056 | 112.0
+     8100~8999 | 7 | 5748953 | 3431172 | 4 / 3112373 | 0

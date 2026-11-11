@@ -1,0 +1,176 @@
+# A033 zexos1 影子决策明细 t=3960~4920（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   出手打人/bot: 24 拍（t=3960~4905）；可用兵 44693~454739，一条指令下限(20%余额) 134713~281390，比值 27%~266%
+#   捐兵: 2 拍（t=3965~4015）；可用兵 207613~364014，一条指令下限(20%余额) 251743~272322，比值 82%~134%
+#   有可用兵但没发（脉冲下限/冷却/其他）: 32 拍（t=3970~4920）；可用兵 1805~493416，一条指令下限(20%余额) 103841~256726，比值 1%~333%
+#   首选目标价高（c>=worth）: 128 拍（t=4055~4780）
+#   首选目标无可用兵（avail<=0）: 7 拍（t=4545~4855）；可用兵 -140876~-12527，一条指令下限(20%余额) 133064~172265，比值 -86%~-9%
+#   └ 「出手打人/bot」里：24 条对人/bot 的出兵共约 2578941 兵；其中超过软上限（over=1）时发的 16 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 15 条约 1913151 兵，c/worth = 1.01~3.90
+t=3960 zexos1 B=1406950 L=11155 d=126.1 nb=1 neut=0 cmds=58 noFull=1 shQ=351737 | m=0.900 worth=113.5 cheap=8.2 over=1 dMedOther=98.8 safe(-1)=981640
+    → tung sahur#25[T1] terr=25063 bal=3456059 dq=137.9 cnt=68 | c=442.9 rankC=442.9 need=6197690 tD=1.40 人 pulse crowdedHard | safe=981640 keep=981640 avail=408823 chunkB=281390 pulseB=168834 
+    ⇒ 影子指令 attack pct=122 → tung sahur#25[T1]（约 168998 兵）
+t=3965 zexos1 B=1361610 L=11155 d=122.1 nb=1 neut=0 cmds=59 noFull=1 shQ=6808 | m=0.900 worth=109.9 cheap=8.2 over=1 dMedOther=98.8 safe(-1)=981640
+    → tung sahur#25[T1] terr=25063 bal=3456059 dq=137.9 cnt=68 | c=442.9 rankC=442.9 need=6197690 tD=1.40 人 pulse crowdedHard | safe=981640 keep=981640 avail=364014 chunkB=272322 pulseB=163393 
+    ⇒ 影子指令 donate pct=220 → [APEX] zero_7#52[T2]（约 293863 兵）
+t=3990 zexos1 B=1221178 L=11515 d=106.1 nb=1 neut=0 cmds=59 noFull=1 shQ=88108 | m=0.900 worth=95.4 cheap=8.2 over=1 dMedOther=101.1 safe(-1)=1013320
+    → tung sahur#25[T1] terr=24703 bal=3409016 dq=138.0 cnt=77 | c=443.6 rankC=443.6 need=6096336 tD=1.37 人 pulse crowdedHard | safe=1013320 keep=1036350 avail=170518 chunkB=244236 pulseB=146541 
+    ⇒ 本拍没有指令
+t=4015 zexos1 B=1258713 L=11515 d=109.3 nb=1 neut=0 cmds=60 noFull=1 shQ=168417 | m=0.900 worth=98.4 cheap=8.2 over=1 dMedOther=104.1 safe(-1)=1013320
+    → tung sahur#25[T1] terr=24703 bal=3454958 dq=139.9 cnt=77 | c=651.7 rankC=945.0 need=6179187 tD=1.34 人 pulse crowdedHard | safe=1013320 keep=1036350 avail=207613 chunkB=251743 pulseB=151046 
+    ⇒ 影子指令 donate pct=199 → [APEX] zero_7#52[T2]（约 245842 兵）
+t=4020 zexos1 B=1271300 L=11515 d=110.4 nb=1 neut=0 cmds=60 noFull=1 shQ=184179 | m=0.900 worth=99.4 cheap=8.2 over=1 dMedOther=103.6 safe(-1)=1013320
+    → tung sahur#25[T1] terr=24703 bal=3464631 dq=140.3 cnt=77 | c=653.5 rankC=947.6 need=6196781 tD=1.35 人 pulse crowdedHard | safe=1013320 keep=1036350 avail=220052 chunkB=254260 pulseB=152556 
+    ⇒ 本拍没有指令
+t=4040 zexos1 B=1295825 L=11515 d=112.5 nb=1 neut=0 cmds=61 noFull=1 shQ=248110 | m=0.900 worth=101.3 cheap=8.2 over=1 dMedOther=105.5 safe(-1)=1013320
+    → tung sahur#25[T1] terr=24703 bal=3093622 dq=125.2 cnt=77 | c=236.8 rankC=165.7 need=5860608 tD=1.19 人 pulse onMe | safe=1013320 keep=1036350 avail=244290 chunkB=259165 pulseB=155499 
+    ⇒ 影子指令 attack pct=122 → tung sahur#25[T1]（约 155650 兵）
+t=4045 zexos1 B=1295825 L=11515 d=112.5 nb=1 neut=0 cmds=62 noFull=1 shQ=264305 | m=0.900 worth=101.3 cheap=8.2 over=1 dMedOther=105.4 safe(-1)=1013320
+    → tung sahur#25[T1] terr=24703 bal=3093622 dq=125.2 cnt=77 | c=236.8 rankC=165.7 need=5860785 tD=1.19 人 pulse onMe | safe=1013320 keep=1036350 avail=244290 chunkB=259165 pulseB=155499 
+    ⇒ 影子指令 attack pct=122 → tung sahur#25[T1]（约 155650 兵）
+t=4050 zexos1 B=1281524 L=11369 d=112.7 nb=1 neut=0 cmds=62 noFull=1 shQ=3203 | m=0.900 worth=101.4 cheap=8.2 over=1 dMedOther=106.6 safe(-1)=1000472
+    → tung sahur#25[T1] terr=24849 bal=3114967 dq=125.4 cnt=72 | c=234.7 rankC=164.3 need=5852931 tD=1.18 人 pulse onMe | safe=1000472 keep=1023210 avail=243297 chunkB=256305 pulseB=153783 
+    ⇒ 本拍没有指令
+t=4080 zexos1 B=957165 L=11293 d=84.8 nb=1 neut=0 cmds=62 noFull=1 shQ=93075 | m=0.900 worth=79.6 cheap=8.2 over=0 dMedOther=104.0 safe(-1)=993784
+    → tung sahur#25[T1] terr=24925 bal=3122437 dq=125.3 cnt=67 | c=402.9 rankC=402.9 need=5593014 tD=1.20 人 pulse crowdedHard | safe=993784 keep=Inf avail=-Inf chunkB=191433 pulseB=114860 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4110 zexos1 B=938711 L=10828 d=86.7 nb=1 neut=0 cmds=62 noFull=1 shQ=180573 | m=0.900 worth=81.6 cheap=8.2 over=0 dMedOther=106.6 safe(-1)=952864
+    → tung sahur#25[T1] terr=25390 bal=2868517 dq=113.0 cnt=52 | c=277.9 rankC=277.9 need=5312497 tD=1.06 人 pulse onMe | safe=952864 keep=Inf avail=-Inf chunkB=187742 pulseB=112645 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4125 zexos1 B=1290260 L=10527 d=122.6 nb=1 neut=0 cmds=63 noFull=1 shQ=223378 | m=0.900 worth=110.3 cheap=8.2 over=1 dMedOther=103.9 safe(-1)=926376
+    → tung sahur#25[T1] terr=25691 bal=2668557 dq=103.9 cnt=39 | c=252.3 rankC=252.3 need=4868034 tD=1.00 人 pulse onMe | safe=926376 keep=926376 avail=348764 chunkB=258052 pulseB=154831 
+    ⇒ 影子指令 attack pct=122 → tung sahur#25[T1]（约 154982 兵）
+t=4130 zexos1 B=1278741 L=10424 d=122.7 nb=1 neut=0 cmds=64 noFull=1 shQ=239366 | m=0.900 worth=110.4 cheap=8.2 over=1 dMedOther=109.0 safe(-1)=917312
+    → tung sahur#25[T1] terr=25794 bal=2837284 dq=110.0 cnt=28 | c=265.0 rankC=265.0 need=5128295 tD=1.01 人 pulse onMe | safe=917312 keep=917312 avail=346444 chunkB=255748 pulseB=153449 
+    ⇒ 影子指令 attack pct=122 → tung sahur#25[T1]（约 153598 兵）
+t=4135 zexos1 B=1268545 L=10372 d=122.3 nb=1 neut=0 cmds=65 noFull=1 shQ=255270 | m=0.900 worth=110.1 cheap=8.2 over=1 dMedOther=102.8 safe(-1)=912736
+    → tung sahur#25[T1] terr=25846 bal=2837284 dq=109.8 cnt=24 | c=263.5 rankC=263.5 need=5107877 tD=1.07 人 pulse onMe | safe=912736 keep=912736 avail=340944 chunkB=253709 pulseB=152225 
+    ⇒ 影子指令 attack pct=122 → tung sahur#25[T1]（约 152374 兵）
+t=4140 zexos1 B=963654 L=10345 d=93.2 nb=1 neut=0 cmds=65 noFull=1 shQ=5795 | m=0.900 worth=83.8 cheap=8.2 over=0 dMedOther=104.1 safe(-1)=910360
+    → tung sahur#25[T1] terr=25873 bal=2868218 dq=110.9 cnt=26 | c=338.5 rankC=338.5 need=4868855 tD=1.06 人 pulse crowdedHard | safe=910360 keep=Inf avail=-Inf chunkB=192731 pulseB=115638 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4170 zexos1 B=867433 L=10719 d=80.9 nb=1 neut=0 cmds=65 noFull=1 shQ=84301 | m=0.900 worth=81.8 cheap=8.2 over=0 dMedOther=107.0 safe(-1)=943272
+    → tung sahur#25[T1] terr=25499 bal=2727463 dq=107.0 cnt=35 | c=336.6 rankC=336.6 need=4756203 tD=1.00 人 pulse crowdedHard | safe=943272 keep=Inf avail=-Inf chunkB=173487 pulseB=104092 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4200 zexos1 B=910653 L=11069 d=82.3 nb=1 neut=0 cmds=65 noFull=1 shQ=164753 | m=0.900 worth=81.4 cheap=8.2 over=0 dMedOther=106.5 safe(-1)=974072
+    → tung sahur#25[T1] terr=25149 bal=2621116 dq=104.2 cnt=46 | c=90.5 rankC=27.1 need=4815176 tD=0.98 人 pulse bleeding onMe | safe=974072 keep=Inf avail=-Inf chunkB=182131 pulseB=109278 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4225 zexos1 B=1066939 L=10617 d=100.5 nb=1 neut=0 cmds=66 noFull=1 shQ=237552 | m=0.900 worth=90.4 cheap=8.2 over=1 dMedOther=99.9 safe(-1)=934296
+    → tung sahur#25[T1] terr=23863 bal=2384192 dq=99.9 cnt=33 | c=350.4 rankC=508.1 need=4215749 tD=1.00 人 pulse | safe=934296 keep=955530 avail=98906 chunkB=213388 pulseB=128033 
+    ⇒ 影子指令 attack pct=94 → tung sahur#25[T1]（约 98983 兵）
+t=4230 zexos1 B=1079742 L=10617 d=101.7 nb=1 neut=0 cmds=67 noFull=1 shQ=253510 | m=0.900 worth=91.5 cheap=8.2 over=1 dMedOther=101.2 safe(-1)=934296
+    → tung sahur#25[T1] terr=23863 bal=2415901 dq=101.2 cnt=33 | c=355.0 rankC=514.8 need=4271504 tD=1.00 人 pulse | safe=934296 keep=955530 avail=111559 chunkB=215948 pulseB=129569 
+    ⇒ 影子指令 attack pct=105 → tung sahur#25[T1]（约 111770 兵）
+t=4235 zexos1 B=1079742 L=10617 d=101.7 nb=1 neut=0 cmds=68 noFull=1 shQ=269300 | m=0.900 worth=91.5 cheap=8.2 over=1 dMedOther=101.2 safe(-1)=934296
+    → tung sahur#25[T1] terr=23863 bal=2415901 dq=101.2 cnt=33 | c=355.0 rankC=514.8 need=4271653 tD=1.00 人 pulse | safe=934296 keep=955530 avail=111559 chunkB=215948 pulseB=129569 
+    ⇒ 影子指令 attack pct=105 → tung sahur#25[T1]（约 111770 兵）
+t=4260 zexos1 B=784879 L=10941 d=71.7 nb=1 neut=0 cmds=68 noFull=1 shQ=196219 | m=0.900 worth=76.6 cheap=8.2 over=0 dMedOther=100.2 safe(-1)=962808
+    → tung sahur#25[T1] terr=23539 bal=2310862 dq=98.2 cnt=41 | c=315.1 rankC=315.1 need=4007058 tD=0.98 人 pulse crowdedHard | safe=962808 keep=Inf avail=-Inf chunkB=156976 pulseB=94185 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4290 zexos1 B=920522 L=10754 d=85.6 nb=1 neut=0 cmds=68 noFull=1 shQ=209159 | m=0.900 worth=77.0 cheap=8.2 over=0 dMedOther=99.4 safe(-1)=946352
+    → tung sahur#25[T1] terr=23726 bal=2248201 dq=94.8 cnt=36 | c=309.4 rankC=309.4 need=3975108 tD=0.95 人 pulse crowdedHard | safe=946352 keep=Inf avail=-Inf chunkB=184104 pulseB=110463 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4320 zexos1 B=965642 L=10754 d=89.8 nb=1 neut=0 cmds=68 noFull=1 shQ=241410 | m=0.900 worth=80.8 cheap=8.2 over=0 dMedOther=104.3 safe(-1)=946352
+    → tung sahur#25[T1] terr=23574 bal=2339238 dq=99.2 cnt=36 | c=84.2 rankC=25.3 need=4129570 tD=0.95 人 pulse bleeding | safe=946352 keep=Inf avail=-Inf chunkB=193128 pulseB=115877 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4350 zexos1 B=959072 L=10469 d=91.6 nb=1 neut=0 cmds=68 noFull=1 shQ=239768 | m=0.900 worth=82.4 cheap=8.2 over=0 dMedOther=97.3 safe(-1)=921272
+    → tung sahur#25[T1] terr=22099 bal=1901078 dq=86.0 cnt=26 | c=110.7 rankC=46.5 need=3436484 tD=0.88 人 pulse onMe | safe=921272 keep=Inf avail=-Inf chunkB=191814 pulseB=115089 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4360 zexos1 B=1034661 L=10345 d=100.0 nb=1 neut=0 cmds=69 noFull=1 shQ=256633 | m=0.900 worth=90.0 cheap=8.2 over=1 dMedOther=98.4 safe(-1)=910360
+    → tung sahur#25[T1] terr=22223 bal=1913082 dq=86.1 cnt=26 | c=216.0 rankC=216.0 need=3424736 tD=0.87 人 pulse onMe | safe=910360 keep=931050 avail=91487 chunkB=206932 pulseB=124159 
+    ⇒ 影子指令 attack pct=90 → tung sahur#25[T1]（约 91947 兵）
+t=4380 zexos1 B=982261 L=10311 d=95.3 nb=1 neut=0 cmds=69 noFull=1 shQ=41381 | m=0.900 worth=85.7 cheap=8.2 over=0 dMedOther=100.2 safe(-1)=907368
+    → tung sahur#25[T1] terr=22257 bal=1952010 dq=87.7 cnt=27 | c=213.2 rankC=213.2 need=3390767 tD=0.88 人 pulse | safe=907368 keep=Inf avail=-Inf chunkB=196452 pulseB=117871 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4410 zexos1 B=1028859 L=10363 d=99.3 nb=1 neut=0 cmds=69 noFull=1 shQ=132052 | m=0.900 worth=89.4 cheap=8.2 over=0 dMedOther=101.6 safe(-1)=911944
+    → tung sahur#25[T1] terr=22205 bal=2043533 dq=92.0 cnt=23 | c=569.9 rankC=826.3 need=3566875 tD=0.91 人 pulse | safe=911944 keep=Inf avail=-Inf chunkB=205772 pulseB=123463 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4420 zexos1 B=1033276 L=10313 d=100.2 nb=1 neut=0 cmds=70 noFull=1 shQ=163161 | m=0.900 worth=90.2 cheap=8.2 over=1 dMedOther=102.8 safe(-1)=907544
+    → tung sahur#25[T1] terr=22255 bal=1946975 dq=87.5 cnt=26 | c=218.8 rankC=218.8 need=3484610 tD=0.85 人 pulse onMe | safe=907544 keep=928170 avail=92998 chunkB=206655 pulseB=123993 
+    ⇒ 影子指令 attack pct=92 → tung sahur#25[T1]（约 93842 兵）
+t=4425 zexos1 B=1067203 L=10258 d=104.0 nb=1 neut=0 cmds=71 noFull=1 shQ=178597 | m=0.900 worth=93.6 cheap=8.2 over=1 dMedOther=102.7 safe(-1)=902704
+    → tung sahur#25[T1] terr=22310 bal=1830994 dq=82.1 cnt=27 | c=157.7 rankC=110.4 need=3361783 tD=0.80 人 pulse onMe | safe=902704 keep=923220 avail=131477 chunkB=213441 pulseB=128064 
+    ⇒ 影子指令 attack pct=122 → tung sahur#25[T1]（约 128189 兵）
+t=4430 zexos1 B=1064310 L=10169 d=104.7 nb=1 neut=0 cmds=72 noFull=1 shQ=193393 | m=0.900 worth=94.2 cheap=8.2 over=1 dMedOther=103.9 safe(-1)=894872
+    → tung sahur#25[T1] terr=22399 bal=1854980 dq=82.8 cnt=30 | c=157.5 rankC=110.2 need=3377186 tD=0.80 人 pulse onMe | safe=894872 keep=915210 avail=136628 chunkB=212862 pulseB=127717 
+    ⇒ 影子指令 attack pct=122 → tung sahur#25[T1]（约 127841 兵）
+t=4440 zexos1 B=717067 L=10107 d=70.9 nb=1 neut=0 cmds=72 noFull=1 shQ=21443 | m=0.900 worth=80.4 cheap=8.2 over=0 dMedOther=105.1 safe(-1)=889416
+    → tung sahur#25[T1] terr=22461 bal=1875221 dq=83.5 cnt=30 | c=257.7 rankC=257.7 need=3085537 tD=0.79 人 pulse crowdedHard | safe=889416 keep=Inf avail=-Inf chunkB=143413 pulseB=86048 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4470 zexos1 B=743411 L=10508 d=70.7 nb=1 neut=0 cmds=72 noFull=1 shQ=87372 | m=0.900 worth=82.7 cheap=8.2 over=0 dMedOther=108.1 safe(-1)=924704
+    → tung sahur#25[T1] terr=22060 bal=1894475 dq=85.9 cnt=30 | c=274.9 rankC=274.9 need=3214878 tD=0.79 人 pulse crowdedHard | safe=924704 keep=Inf avail=-Inf chunkB=148682 pulseB=89209 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4500 zexos1 B=781698 L=10816 d=72.3 nb=1 neut=0 cmds=72 noFull=1 shQ=156130 | m=0.900 worth=81.4 cheap=8.2 over=0 dMedOther=106.4 safe(-1)=951808
+    → tung sahur#25[T1] terr=21752 bal=1943606 dq=89.4 cnt=37 | c=426.7 rankC=618.7 need=3384211 tD=0.84 人 pulse crowdedHard | safe=951808 keep=Inf avail=-Inf chunkB=156340 pulseB=93804 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4530 zexos1 B=810657 L=10816 d=74.9 nb=1 neut=0 cmds=72 noFull=1 shQ=202664 | m=0.900 worth=80.7 cheap=8.2 over=0 dMedOther=105.4 safe(-1)=951808
+    → tung sahur#25[T1] terr=21720 bal=2016240 dq=92.8 cnt=37 | c=137.4 rankC=51.1 need=3511303 tD=0.88 人 pulse crowdedHard | safe=951808 keep=Inf avail=-Inf chunkB=162131 pulseB=97279 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4560 zexos1 B=840689 L=10816 d=77.7 nb=1 neut=0 cmds=72 noFull=1 shQ=210172 | m=0.900 worth=79.9 cheap=8.2 over=0 dMedOther=104.4 safe(-1)=951808
+    → tung sahur#25[T1] terr=21292 bal=2030592 dq=95.4 cnt=37 | c=82.0 rankC=24.6 need=3520643 tD=0.91 人 pulse bleeding | safe=951808 keep=Inf avail=-Inf chunkB=168138 pulseB=100883 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4590 zexos1 B=871834 L=10816 d=80.6 nb=1 neut=0 cmds=72 noFull=1 shQ=217958 | m=0.900 worth=78.0 cheap=8.2 over=0 dMedOther=101.9 safe(-1)=951808
+    → tung sahur#25[T1] terr=20263 bal=1949859 dq=96.2 cnt=37 | c=80.5 rankC=24.1 need=3338610 tD=0.94 人 pulse bleeding | safe=951808 keep=Inf avail=-Inf chunkB=174367 pulseB=104620 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4620 zexos1 B=915215 L=10816 d=84.6 nb=1 neut=0 cmds=72 noFull=1 shQ=228803 | m=0.900 worth=81.6 cheap=8.2 over=0 dMedOther=106.6 safe(-1)=951808
+    → tung sahur#25[T1] terr=18778 bal=1803825 dq=96.1 cnt=37 | c=214.9 rankC=128.9 need=3022876 tD=0.90 人 pulse crowdedHard | safe=951808 keep=Inf avail=-Inf chunkB=183043 pulseB=109826 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4650 zexos1 B=949120 L=10816 d=87.8 nb=1 neut=0 cmds=72 noFull=1 shQ=237280 | m=0.900 worth=81.6 cheap=8.2 over=0 dMedOther=106.7 safe(-1)=951808
+    → tung sahur#25[T1] terr=18549 bal=1837554 dq=99.1 cnt=37 | c=332.8 rankC=332.8 need=3073604 tD=0.93 人 pulse crowdedHard | safe=951808 keep=Inf avail=-Inf chunkB=189824 pulseB=113894 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4680 zexos1 B=984282 L=10816 d=91.0 nb=1 neut=0 cmds=72 noFull=1 shQ=246070 | m=0.900 worth=81.9 cheap=8.2 over=0 dMedOther=101.8 safe(-1)=951808
+    → tung sahur#25[T1] terr=18549 bal=1908833 dq=102.9 cnt=37 | c=345.3 rankC=345.3 need=3198376 tD=1.01 人 pulse crowdedHard | safe=951808 keep=Inf avail=-Inf chunkB=196856 pulseB=118114 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4710 zexos1 B=1031694 L=10816 d=95.4 nb=1 neut=0 cmds=72 noFull=1 shQ=257923 | m=0.900 worth=85.8 cheap=8.2 over=0 dMedOther=104.5 safe(-1)=951808
+    → tung sahur#25[T1] terr=18538 bal=1994071 dq=107.6 cnt=37 | c=88.0 rankC=26.4 need=3346024 tD=1.03 人 pulse bleeding | safe=951808 keep=Inf avail=-Inf chunkB=206339 pulseB=123803 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4740 zexos1 B=1069915 L=10816 d=98.9 nb=1 neut=0 cmds=72 noFull=1 shQ=267478 | m=0.900 worth=89.0 cheap=8.2 over=0 dMedOther=101.2 safe(-1)=951808
+    → tung sahur#25[T1] terr=17590 bal=1895283 dq=107.7 cnt=37 | c=85.1 rankC=25.5 need=3131760 tD=1.06 人 pulse bleeding | safe=951808 keep=1040692 avail=16685 chunkB=213983 pulseB=128390 
+    ⇒ 本拍没有指令
+t=4750 zexos1 B=1082967 L=10816 d=100.1 nb=1 neut=0 cmds=73 noFull=1 shQ=270741 | m=0.900 worth=90.1 cheap=8.2 over=1 dMedOther=102.5 safe(-1)=951808
+    → tung sahur#25[T1] terr=17030 bal=1819950 dq=106.9 cnt=37 | c=89.4 rankC=26.8 need=2975250 tD=1.04 人 pulse bleeding | safe=951808 keep=973440 avail=96836 chunkB=216593 pulseB=129956 
+    ⇒ 影子指令 attack pct=91 → tung sahur#25[T1]（约 97297 兵）
+t=4755 zexos1 B=1082967 L=10816 d=100.1 nb=1 neut=0 cmds=74 noFull=1 shQ=270741 | m=0.900 worth=90.1 cheap=8.2 over=1 dMedOther=102.5 safe(-1)=951808
+    → tung sahur#25[T1] terr=16826 bal=1785180 dq=106.1 cnt=37 | c=90.6 rankC=27.2 need=2906787 tD=1.04 人 pulse bleeding | safe=951808 keep=973440 avail=96836 chunkB=216593 pulseB=129956 
+    ⇒ 影子指令 attack pct=91 → tung sahur#25[T1]（约 97297 兵）
+t=4760 zexos1 B=1096179 L=10816 d=101.3 nb=1 neut=0 cmds=75 noFull=1 shQ=274002 | m=0.900 worth=91.2 cheap=8.2 over=1 dMedOther=103.8 safe(-1)=951808
+    → tung sahur#25[T1] terr=16574 bal=1762441 dq=106.3 cnt=37 | c=93.4 rankC=28.0 need=2854682 tD=1.02 人 pulse bleeding | safe=951808 keep=973440 avail=109894 chunkB=219236 pulseB=131541 
+    ⇒ 影子指令 attack pct=102 → tung sahur#25[T1]（约 110260 兵）
+t=4770 zexos1 B=895621 L=10891 d=82.2 nb=1 neut=0 cmds=75 noFull=1 shQ=173873 | m=0.900 worth=80.2 cheap=8.2 over=0 dMedOther=104.9 safe(-1)=943472
+    → tung sahur#25[T1] terr=16064 bal=1695717 dq=105.6 cnt=40 | c=144.0 rankC=53.6 need=2554203 tD=1.01 人 pulse crowdedHard | safe=943472 keep=Inf avail=-Inf chunkB=179124 pulseB=107475 价高(c>=worth)→break
+    ⇒ 本拍没有指令
+t=4800 zexos1 B=836078 L=11646 d=71.8 nb=1 neut=0 cmds=75 noFull=1 shQ=206189 | m=0.900 worth=78.4 cheap=8.2 over=0 dMedOther=102.5 safe(-1)=709481
+    → tung sahur#25[T1] terr=14238 bal=1280345 dq=89.9 cnt=63 | c=69.9 rankC=21.0 need=1926259 tD=0.88 人 pulse bleeding | safe=709481 keep=905014 avail=-78733 chunkB=167216 pulseB=100329 无可用(avail<=0)
+    ⇒ 本拍没有指令
+t=4810 zexos1 B=846302 L=11708 d=72.3 nb=1 neut=0 cmds=76 noFull=1 shQ=211575 | m=0.900 worth=79.3 cheap=8.2 over=0 dMedOther=103.7 safe(-1)=682756
+    → tung sahur#25[T1] terr=13863 bal=1232868 dq=88.9 cnt=62 | c=55.7 rankC=16.7 need=1855355 tD=0.86 人 pulse bleeding | safe=682756 keep=783185 avail=53200 chunkB=169260 pulseB=101556 
+    ⇒ 影子指令 attack pct=64 → tung sahur#25[T1]（约 53720 兵）
+t=4815 zexos1 B=846302 L=11708 d=72.3 nb=1 neut=0 cmds=77 noFull=1 shQ=211575 | m=0.900 worth=79.3 cheap=8.2 over=0 dMedOther=103.7 safe(-1)=664846
+    → tung sahur#25[T1] terr=13661 bal=1200988 dq=87.9 cnt=60 | c=56.8 rankC=17.0 need=1794948 tD=0.85 人 pulse bleeding | safe=664846 keep=789933 avail=46452 chunkB=169260 pulseB=101556 
+    ⇒ 影子指令 attack pct=56 → tung sahur#25[T1]（约 47108 兵）
+t=4820 zexos1 B=856626 L=11708 d=73.2 nb=1 neut=0 cmds=78 noFull=1 shQ=214156 | m=0.900 worth=84.6 cheap=8.2 over=0 dMedOther=110.5 safe(-1)=657287
+    → tung sahur#25[T1] terr=13506 bal=1187533 dq=87.9 cnt=59 | c=46.2 rankC=13.9 need=1765259 tD=0.80 人 pulse bleeding | safe=657287 keep=730173 avail=116415 chunkB=171325 pulseB=102795 
+    ⇒ 影子指令 attack pct=122 → tung sahur#25[T1]（约 102895 兵）
+t=4830 zexos1 B=801877 L=11708 d=68.5 nb=1 neut=0 cmds=78 noFull=1 shQ=14525 | m=0.900 worth=85.2 cheap=8.2 over=0 dMedOther=111.4 safe(-1)=623015
+    → tung sahur#25[T1] terr=13064 bal=1126528 dq=86.2 cnt=57 | c=46.4 rankC=13.9 need=1591988 tD=0.77 人 pulse bleeding | safe=623015 keep=703063 avail=89418 chunkB=160375 pulseB=96225 
+    ⇒ 本拍没有指令
+t=4860 zexos1 B=673567 L=12400 d=54.3 nb=1 neut=0 cmds=79 noFull=1 shQ=75711 | m=0.900 worth=74.6 cheap=8.1 over=0 dMedOther=97.6 safe(-1)=491150
+    → tung sahur#25[T1] terr=11619 bal=892847 dq=76.8 cnt=71 | c=39.0 rankC=11.7 need=1216526 tD=0.79 人 pulse bleeding | safe=491150 keep=604892 avail=60782 chunkB=134713 pulseB=80828 
+    ⇒ 影子指令 attack pct=92 → tung sahur#25[T1]（约 61173 兵）
+t=4865 zexos1 B=673567 L=12400 d=54.3 nb=1 neut=0 cmds=80 noFull=1 shQ=86151 | m=0.900 worth=74.2 cheap=8.1 over=0 dMedOther=97.0 safe(-1)=473154
+    → tung sahur#25[T1] terr=11357 bal=860814 dq=75.8 cnt=71 | c=40.2 rankC=12.1 need=1154248 tD=0.78 人 pulse bleeding | safe=473154 keep=612641 avail=53033 chunkB=134713 pulseB=80828 
+    ⇒ 影子指令 attack pct=80 → tung sahur#25[T1]（约 53280 兵）
+t=4870 zexos1 B=681851 L=12400 d=55.0 nb=1 neut=0 cmds=81 noFull=1 shQ=96616 | m=0.900 worth=75.0 cheap=8.1 over=0 dMedOther=98.1 safe(-1)=466410
+    → tung sahur#25[T1] terr=11173 bal=848809 dq=76.0 cnt=71 | c=42.1 rankC=12.6 need=1124977 tD=0.77 人 pulse bleeding | safe=466410 keep=629168 avail=44693 chunkB=136370 pulseB=81822 
+    ⇒ 影子指令 attack pct=67 → tung sahur#25[T1]（约 45279 兵）
+t=4890 zexos1 B=525591 L=12841 d=40.9 nb=1 neut=0 cmds=81 noFull=1 shQ=28076 | m=0.900 worth=85.8 cheap=8.0 over=0 dMedOther=112.2 safe(-1)=328495
+    → tung sahur#25[T1] terr=9250 bal=603983 dq=65.3 cnt=78 | c=0.7 rankC=0.2 need=615770 tD=0.58 人 pulse nearCollapse bleeding | safe=328495 keep=328495 avail=190937 chunkB=105118 pulseB=63071 
+    ⇒ 本拍没有指令
+t=4900 zexos1 B=853494 L=13075 d=65.3 nb=1 neut=0 cmds=82 noFull=1 shQ=51233 | m=0.900 worth=81.4 cheap=8.0 over=0 dMedOther=106.4 safe(-1)=270438
+    → tung sahur#25[T1] terr=8595 bal=500993 dq=58.3 cnt=81 | c=15.7 rankC=4.7 need=497403 tD=0.55 人 pulse nearCollapse bleeding | safe=270438 keep=396240 avail=447253 chunkB=170699 pulseB=102419 
+    ⇒ 影子指令 attack pct=122 → tung sahur#25[T1]（约 102519 兵）
+t=4905 zexos1 B=853494 L=13075 d=65.3 nb=1 neut=0 cmds=83 noFull=1 shQ=64568 | m=0.900 worth=81.4 cheap=8.0 over=0 dMedOther=106.4 safe(-1)=259062
+    → tung sahur#25[T1] terr=8376 bal=480742 dq=57.4 cnt=80 | c=14.6 rankC=4.4 need=458939 tD=0.54 人 pulse nearCollapse bleeding | safe=259062 keep=388754 avail=454739 chunkB=170699 pulseB=102419 
+    ⇒ 影子指令 attack pct=122 → tung sahur#25[T1]（约 102519 兵）
+t=4920 zexos1 B=659340 L=13310 d=49.5 nb=1 neut=0 cmds=83 noFull=1 shQ=26270 | m=0.900 worth=83.4 cheap=8.0 over=0 dMedOther=109.0 safe(-1)=212148
+    → tung sahur#25[T1] terr=7333 bal=397588 dq=54.2 cnt=81 | c=1.6 rankC=0.5 need=135931 tD=0.50 人 pulse nearCollapse bleeding | safe=212148 keep=212148 avail=439466 chunkB=131868 pulseB=79121 
+    ⇒ 本拍没有指令

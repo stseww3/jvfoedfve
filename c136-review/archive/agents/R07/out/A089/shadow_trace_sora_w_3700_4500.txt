@@ -1,0 +1,536 @@
+# A089 sora_w 影子决策明细 t=3700~4500（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   过了软上限，但首选目标是唯一的真人邻居（isSoleHealthyBuffer：余额 < overHumanCap×100×领土 不打）: 32 拍（t=3700~3990）；可用兵 -295249~148220，一条指令下限(20%余额) 467111~552823，比值 -59%~27%
+#   捐兵: 1 拍（t=3710~3710）；可用兵 8137~8137，一条指令下限(20%余额) 524474~524474，比值 2%~2%
+#   首选目标价高（c>=worth）: 67 拍（t=3720~4500）
+#   出手打人/bot: 12 拍（t=3935~4260）；可用兵 103204~633745，一条指令下限(20%余额) 386988~548381，比值 25%~116%
+#   首选目标要发的兵低于最小指令（x < max(minCmd, pulseMinShare×B)）: 7 拍（t=4020~4155）；可用兵 47417~111387，一条指令下限(20%余额) 391695~483297，比值 11%~23%
+#   首选目标已有在途进攻（curAtk 过门槛）: 6 拍（t=4070~4285）；可用兵 33265~320108，一条指令下限(20%余额) 296924~386988，比值 9%~106%
+#   首选目标无可用兵（avail<=0）: 36 拍（t=4290~4465）；可用兵 -1421917~-849996，一条指令下限(20%余额) 305025~401482，比值 -429%~-230%
+#   └ 「出手打人/bot」里：12 条对人/bot 的出兵共约 2027043 兵；其中超过软上限（over=1）时发的 2 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 1 条约 278128 兵，c/worth = 1.16~1.16
+t=3700 sora_w B=2597179 L=23067 d=112.6 nb=1 neut=0 cmds=93 noFull=1 shQ=643459 | m=0.900 worth=101.3 cheap=7.7 over=1 dMedOther=59.8 safe(-1)=955177
+    → OnlyDamage#0[T2] terr=20737 bal=1734816 dq=83.7 cnt=180 | c=241.1 rankC=168.8 need=3123206 tD=1.40 人 pulse | safe=955177 keep=2583504 avail=-16760 chunkB=519436 pulseB=311661 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3705 sora_w B=2597179 L=23067 d=112.6 nb=1 neut=0 cmds=93 noFull=1 shQ=649294 | m=0.900 worth=101.3 cheap=7.7 over=1 dMedOther=58.7 safe(-1)=955177
+    → OnlyDamage#0[T2] terr=20854 bal=1734816 dq=83.2 cnt=180 | c=179.5 rankC=89.7 need=3123411 tD=1.42 人 pulse | safe=955177 keep=2583504 avail=-16760 chunkB=519436 pulseB=311661 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3710 sora_w B=2622371 L=23067 d=113.7 nb=1 neut=0 cmds=94 noFull=1 shQ=655592 | m=0.900 worth=102.3 cheap=7.7 over=1 dMedOther=58.0 safe(-1)=967652
+    → OnlyDamage#0[T2] terr=21042 bal=1757021 dq=83.5 cnt=180 | c=180.2 rankC=90.1 need=3163270 tD=1.44 人 pulse | safe=967652 keep=2583504 avail=8137 chunkB=524474 pulseB=314685 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=195 → [APEX] kaito9#39[T1]（约 501938 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=3715 sora_w B=2622371 L=23067 d=113.7 nb=1 neut=0 cmds=94 noFull=1 shQ=655592 | m=0.900 worth=102.3 cheap=7.7 over=1 dMedOther=56.9 safe(-1)=961212
+    → OnlyDamage#0[T2] terr=21079 bal=1745558 dq=82.8 cnt=180 | c=174.7 rankC=87.3 need=3142923 tD=1.45 人 pulse | safe=961212 keep=2583504 avail=8137 chunkB=524474 pulseB=314685 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3720 sora_w B=1981774 L=23067 d=85.9 nb=1 neut=0 cmds=94 noFull=1 shQ=495443 | m=0.900 worth=77.3 cheap=7.7 over=0 dMedOther=57.7 safe(-1)=966864
+    → OnlyDamage#0[T2] terr=21169 bal=1755618 dq=82.9 cnt=180 | c=107.1 rankC=53.5 need=3160930 tD=1.44 人 pulse bleeding | safe=966864 keep=Inf avail=-Inf chunkB=396355 pulseB=237813 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3725 sora_w B=1981774 L=23067 d=85.9 nb=1 neut=0 cmds=94 noFull=1 shQ=495443 | m=0.900 worth=77.3 cheap=7.7 over=0 dMedOther=57.7 safe(-1)=963148
+    → OnlyDamage#0[T2] terr=21248 bal=1749004 dq=82.3 cnt=180 | c=170.7 rankC=85.3 need=3149231 tD=1.43 人 pulse | safe=963148 keep=Inf avail=-Inf chunkB=396355 pulseB=237813 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3730 sora_w B=2007338 L=23067 d=87.0 nb=1 neut=0 cmds=94 noFull=1 shQ=501834 | m=0.900 worth=78.3 cheap=7.7 over=0 dMedOther=58.5 safe(-1)=968038
+    → OnlyDamage#0[T2] terr=21348 bal=1757708 dq=82.3 cnt=180 | c=172.1 rankC=86.1 need=3164895 tD=1.41 人 pulse | safe=968038 keep=Inf avail=-Inf chunkB=401468 pulseB=240881 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3735 sora_w B=2007338 L=23067 d=87.0 nb=1 neut=0 cmds=94 noFull=1 shQ=501834 | m=0.900 worth=78.3 cheap=7.7 over=0 dMedOther=58.5 safe(-1)=959564
+    → OnlyDamage#0[T2] terr=21374 bal=1742624 dq=81.5 cnt=180 | c=171.9 rankC=86.0 need=3136371 tD=1.39 人 pulse | safe=959564 keep=Inf avail=-Inf chunkB=401468 pulseB=240881 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3740 sora_w B=2033232 L=23067 d=88.1 nb=1 neut=0 cmds=94 noFull=1 shQ=508308 | m=0.900 worth=79.3 cheap=7.7 over=0 dMedOther=59.3 safe(-1)=967583
+    → OnlyDamage#0[T2] terr=21537 bal=1756899 dq=81.6 cnt=180 | c=172.9 rankC=86.4 need=3163765 tD=1.38 人 pulse | safe=967583 keep=Inf avail=-Inf chunkB=406646 pulseB=243988 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3745 sora_w B=2033232 L=23067 d=88.1 nb=1 neut=0 cmds=94 noFull=1 shQ=508308 | m=0.900 worth=79.3 cheap=7.7 over=0 dMedOther=59.3 safe(-1)=957786
+    → OnlyDamage#0[T2] terr=21560 bal=1739459 dq=80.7 cnt=180 | c=172.6 rankC=86.3 need=3132686 tD=1.36 人 pulse | safe=957786 keep=Inf avail=-Inf chunkB=406646 pulseB=243988 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3750 sora_w B=2059460 L=23067 d=89.3 nb=1 neut=0 cmds=94 noFull=1 shQ=514865 | m=0.900 worth=80.4 cheap=7.7 over=0 dMedOther=60.1 safe(-1)=959788
+    → OnlyDamage#0[T2] terr=21660 bal=1743023 dq=80.5 cnt=180 | c=174.0 rankC=87.0 need=3139189 tD=1.34 人 pulse | safe=959788 keep=Inf avail=-Inf chunkB=411892 pulseB=247135 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3755 sora_w B=2059460 L=23067 d=89.3 nb=1 neut=0 cmds=94 noFull=1 shQ=514865 | m=0.900 worth=80.4 cheap=7.7 over=0 dMedOther=69.9 safe(-1)=834842
+    → OnlyDamage#0[T2] terr=21744 bal=1520620 dq=69.9 cnt=180 | c=152.6 rankC=76.3 need=2741121 tD=1.00 人 pulse | safe=834842 keep=Inf avail=-Inf chunkB=411892 pulseB=247135 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3760 sora_w B=2086027 L=23067 d=90.4 nb=1 neut=0 cmds=94 noFull=1 shQ=521506 | m=0.900 worth=81.4 cheap=7.7 over=0 dMedOther=69.2 safe(-1)=836835
+    → OnlyDamage#0[T2] terr=22025 bal=1524167 dq=69.2 cnt=180 | c=152.5 rankC=76.3 need=2749680 tD=1.00 人 pulse | safe=836835 keep=Inf avail=-Inf chunkB=417205 pulseB=250323 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3765 sora_w B=2086027 L=23067 d=90.4 nb=1 neut=0 cmds=94 noFull=1 shQ=521506 | m=0.900 worth=81.4 cheap=7.7 over=0 dMedOther=67.9 safe(-1)=825068
+    → OnlyDamage#0[T2] terr=22139 bal=1503222 dq=67.9 cnt=180 | c=196.1 rankC=137.3 need=2712567 tD=1.00 人 pulse | safe=825068 keep=Inf avail=-Inf chunkB=417205 pulseB=250323 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3770 sora_w B=2112936 L=23067 d=91.6 nb=1 neut=0 cmds=94 noFull=1 shQ=528234 | m=0.900 worth=82.4 cheap=7.7 over=0 dMedOther=67.7 safe(-1)=835962
+    → OnlyDamage#0[T2] terr=22480 bal=1522613 dq=67.7 cnt=180 | c=195.7 rankC=137.0 need=2747568 tD=1.00 人 pulse | safe=835962 keep=Inf avail=-Inf chunkB=422587 pulseB=253552 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3775 sora_w B=2112936 L=23067 d=91.6 nb=1 neut=0 cmds=94 noFull=1 shQ=528234 | m=0.900 worth=82.4 cheap=7.7 over=0 dMedOther=67.2 safe(-1)=835962
+    → OnlyDamage#0[T2] terr=22673 bal=1522613 dq=67.2 cnt=180 | c=194.0 rankC=135.8 need=2747881 tD=1.00 人 pulse | safe=835962 keep=Inf avail=-Inf chunkB=422587 pulseB=253552 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3780 sora_w B=2140192 L=23067 d=92.8 nb=1 neut=0 cmds=94 noFull=1 shQ=535048 | m=0.900 worth=83.5 cheap=7.7 over=0 dMedOther=67.3 safe(-1)=846996
+    → OnlyDamage#0[T2] terr=22907 bal=1542254 dq=67.3 cnt=180 | c=194.5 rankC=136.2 need=2783288 tD=1.00 人 pulse | safe=846996 keep=Inf avail=-Inf chunkB=428038 pulseB=256823 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3785 sora_w B=2140192 L=23067 d=92.8 nb=1 neut=0 cmds=94 noFull=1 shQ=535048 | m=0.900 worth=83.5 cheap=7.7 over=0 dMedOther=67.0 safe(-1)=846996
+    → OnlyDamage#0[T2] terr=23034 bal=1542254 dq=67.0 cnt=180 | c=193.5 rankC=135.4 need=2783454 tD=1.00 人 pulse | safe=846996 keep=Inf avail=-Inf chunkB=428038 pulseB=256823 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3790 sora_w B=2167800 L=23067 d=94.0 nb=1 neut=0 cmds=94 noFull=1 shQ=541950 | m=0.900 worth=84.6 cheap=7.7 over=0 dMedOther=67.3 safe(-1)=858173
+    → OnlyDamage#0[T2] terr=23200 bal=1562149 dq=67.3 cnt=180 | c=194.6 rankC=136.2 need=2819116 tD=1.00 人 pulse | safe=858173 keep=Inf avail=-Inf chunkB=433560 pulseB=260136 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3795 sora_w B=2167800 L=23067 d=94.0 nb=1 neut=0 cmds=94 noFull=1 shQ=541950 | m=0.900 worth=84.6 cheap=7.7 over=0 dMedOther=67.0 safe(-1)=858173
+    → OnlyDamage#0[T2] terr=23304 bal=1562149 dq=67.0 cnt=180 | c=117.0 rankC=43.5 need=2819272 tD=1.00 人 pulse | safe=858173 keep=Inf avail=-Inf chunkB=433560 pulseB=260136 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3800 sora_w B=2218831 L=23067 d=96.2 nb=1 neut=0 cmds=94 noFull=1 shQ=549105 | m=0.900 worth=86.6 cheap=7.7 over=0 dMedOther=68.5 safe(-1)=882644
+    → OnlyDamage#0[T2] terr=23456 bal=1605706 dq=68.5 cnt=180 | c=197.8 rankC=138.5 need=2897134 tD=1.00 人 pulse | safe=882644 keep=Inf avail=-Inf chunkB=443766 pulseB=266260 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3805 sora_w B=2218831 L=23067 d=96.2 nb=1 neut=0 cmds=94 noFull=1 shQ=554707 | m=0.900 worth=86.6 cheap=7.7 over=0 dMedOther=68.2 safe(-1)=882644
+    → OnlyDamage#0[T2] terr=23555 bal=1605706 dq=68.2 cnt=180 | c=197.0 rankC=137.9 need=2897355 tD=1.00 人 pulse | safe=882644 keep=Inf avail=-Inf chunkB=443766 pulseB=266260 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3810 sora_w B=2247453 L=23067 d=97.4 nb=1 neut=0 cmds=94 noFull=1 shQ=561863 | m=0.900 worth=87.7 cheap=7.7 over=0 dMedOther=76.5 safe(-1)=999150
+    → OnlyDamage#0[T2] terr=23695 bal=1813087 dq=76.5 cnt=180 | c=162.1 rankC=81.0 need=3267202 tD=1.00 人 pulse | safe=999150 keep=Inf avail=-Inf chunkB=449491 pulseB=269694 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3815 sora_w B=2247453 L=23067 d=97.4 nb=1 neut=0 cmds=94 noFull=1 shQ=561863 | m=0.900 worth=87.7 cheap=7.7 over=0 dMedOther=76.2 safe(-1)=999150
+    → OnlyDamage#0[T2] terr=23790 bal=1813087 dq=76.2 cnt=180 | c=161.5 rankC=80.7 need=3267317 tD=1.00 人 pulse | safe=999150 keep=Inf avail=-Inf chunkB=449491 pulseB=269694 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3820 sora_w B=2276445 L=23067 d=98.7 nb=1 neut=0 cmds=94 noFull=1 shQ=569111 | m=0.900 worth=88.8 cheap=7.7 over=0 dMedOther=75.8 safe(-1)=980865
+    → OnlyDamage#0[T2] terr=23477 bal=1780541 dq=75.8 cnt=179 | c=158.3 rankC=79.1 need=3200492 tD=1.00 人 pulse | safe=980865 keep=Inf avail=-Inf chunkB=455289 pulseB=273173 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3825 sora_w B=2276445 L=23067 d=98.7 nb=1 neut=0 cmds=94 noFull=1 shQ=569111 | m=0.900 worth=88.8 cheap=7.7 over=0 dMedOther=74.9 safe(-1)=960477
+    → OnlyDamage#0[T2] terr=23276 bal=1744249 dq=74.9 cnt=178 | c=159.6 rankC=79.8 need=3130309 tD=1.00 人 pulse | safe=960477 keep=Inf avail=-Inf chunkB=455289 pulseB=273173 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3830 sora_w B=2305811 L=23067 d=100.0 nb=1 neut=0 cmds=94 noFull=1 shQ=576452 | m=0.900 worth=90.0 cheap=7.7 over=0 dMedOther=74.6 safe(-1)=944078
+    → OnlyDamage#0[T2] terr=22976 bal=1715060 dq=74.6 cnt=176 | c=163.9 rankC=82.0 need=3070020 tD=1.00 人 pulse | safe=944078 keep=Inf avail=-Inf chunkB=461162 pulseB=276697 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3835 sora_w B=2305811 L=23067 d=100.0 nb=1 neut=0 cmds=94 noFull=1 shQ=576452 | m=0.900 worth=90.0 cheap=7.7 over=0 dMedOther=73.8 safe(-1)=926413
+    → OnlyDamage#0[T2] terr=22798 bal=1683615 dq=73.8 cnt=175 | c=165.3 rankC=82.6 need=3009263 tD=1.00 人 pulse | safe=926413 keep=Inf avail=-Inf chunkB=461162 pulseB=276697 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=3840 sora_w B=2335555 L=23067 d=101.3 nb=1 neut=0 cmds=94 noFull=1 shQ=583808 | m=0.900 worth=91.1 cheap=7.7 over=1 dMedOther=74.1 safe(-1)=935446
+    → OnlyDamage#0[T2] terr=22928 bal=1699694 dq=74.1 cnt=175 | c=215.0 rankC=150.5 need=3041629 tD=1.00 人 pulse | safe=935446 keep=2583504 avail=-275318 chunkB=467111 pulseB=280267 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3845 sora_w B=2335555 L=23067 d=101.3 nb=1 neut=0 cmds=94 noFull=1 shQ=583888 | m=0.900 worth=91.1 cheap=7.7 over=1 dMedOther=73.9 safe(-1)=935446
+    → OnlyDamage#0[T2] terr=23014 bal=1699694 dq=73.9 cnt=175 | c=214.1 rankC=149.9 need=3044247 tD=1.00 人 pulse | safe=935446 keep=2583504 avail=-275318 chunkB=467111 pulseB=280267 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3850 sora_w B=2364982 L=23067 d=102.5 nb=1 neut=0 cmds=94 noFull=1 shQ=591160 | m=0.900 worth=92.3 cheap=7.7 over=1 dMedOther=74.4 safe(-1)=947764
+    → OnlyDamage#0[T2] terr=23150 bal=1721620 dq=74.4 cnt=175 | c=215.5 rankC=150.8 need=3087264 tD=1.00 人 pulse | safe=947764 keep=2583504 avail=-246236 chunkB=472996 pulseB=283798 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3855 sora_w B=2364982 L=23067 d=102.5 nb=1 neut=0 cmds=94 noFull=1 shQ=591245 | m=0.900 worth=92.3 cheap=7.7 over=1 dMedOther=74.1 safe(-1)=947764
+    → OnlyDamage#0[T2] terr=23247 bal=1721620 dq=74.1 cnt=175 | c=214.5 rankC=150.1 need=3090167 tD=1.00 人 pulse | safe=947764 keep=2583504 avail=-246236 chunkB=472996 pulseB=283798 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3860 sora_w B=2394071 L=23067 d=103.8 nb=1 neut=0 cmds=94 noFull=1 shQ=598367 | m=0.900 worth=93.4 cheap=7.7 over=1 dMedOther=74.5 safe(-1)=960240
+    → OnlyDamage#0[T2] terr=23398 bal=1743828 dq=74.5 cnt=175 | c=215.6 rankC=150.9 need=3134038 tD=1.00 人 pulse | safe=960240 keep=2583504 avail=-217488 chunkB=478814 pulseB=287289 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3865 sora_w B=2394071 L=23067 d=103.8 nb=1 neut=0 cmds=94 noFull=1 shQ=598517 | m=0.900 worth=93.4 cheap=7.7 over=1 dMedOther=74.2 safe(-1)=960240
+    → OnlyDamage#0[T2] terr=23505 bal=1743828 dq=74.2 cnt=175 | c=144.7 rankC=60.8 need=3137184 tD=1.00 人 pulse | safe=960240 keep=2583504 avail=-217488 chunkB=478814 pulseB=287289 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3870 sora_w B=2422799 L=23067 d=105.0 nb=1 neut=0 cmds=94 noFull=1 shQ=605543 | m=0.900 worth=94.5 cheap=7.7 over=1 dMedOther=74.6 safe(-1)=972976
+    → OnlyDamage#0[T2] terr=23670 bal=1766497 dq=74.6 cnt=175 | c=215.6 rankC=150.9 need=3182399 tD=1.00 人 pulse | safe=972976 keep=2583504 avail=-189097 chunkB=484560 pulseB=290736 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3875 sora_w B=2422799 L=23067 d=105.0 nb=1 neut=0 cmds=94 noFull=1 shQ=605699 | m=0.900 worth=94.5 cheap=7.7 over=1 dMedOther=74.3 safe(-1)=972976
+    → OnlyDamage#0[T2] terr=23785 bal=1766497 dq=74.3 cnt=175 | c=214.5 rankC=150.1 need=3184242 tD=1.00 人 pulse | safe=972976 keep=2583504 avail=-189097 chunkB=484560 pulseB=290736 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3880 sora_w B=2451145 L=23067 d=106.3 nb=1 neut=0 cmds=94 noFull=1 shQ=612623 | m=0.900 worth=95.6 cheap=7.7 over=1 dMedOther=74.7 safe(-1)=985877
+    → OnlyDamage#0[T2] terr=23961 bal=1789461 dq=74.7 cnt=175 | c=215.7 rankC=151.0 need=3225436 tD=1.00 人 pulse | safe=985877 keep=2583504 avail=-161083 chunkB=490229 pulseB=294137 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3885 sora_w B=2451145 L=23067 d=106.3 nb=1 neut=0 cmds=94 noFull=1 shQ=612786 | m=0.900 worth=95.6 cheap=7.7 over=1 dMedOther=74.3 safe(-1)=985877
+    → OnlyDamage#0[T2] terr=24081 bal=1789461 dq=74.3 cnt=175 | c=214.6 rankC=150.2 need=3225616 tD=1.00 人 pulse | safe=985877 keep=2583504 avail=-161083 chunkB=490229 pulseB=294137 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3890 sora_w B=2478842 L=23067 d=107.5 nb=1 neut=0 cmds=94 noFull=1 shQ=619602 | m=0.900 worth=96.7 cheap=7.7 over=1 dMedOther=74.7 safe(-1)=998945
+    → OnlyDamage#0[T2] terr=24268 bal=1812723 dq=74.7 cnt=175 | c=215.7 rankC=151.0 need=3267331 tD=1.00 人 pulse | safe=998945 keep=2583504 avail=-133710 chunkB=495768 pulseB=297461 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3895 sora_w B=2478842 L=23067 d=107.5 nb=1 neut=0 cmds=94 noFull=1 shQ=619710 | m=0.900 worth=96.7 cheap=7.7 over=1 dMedOther=74.0 safe(-1)=878610
+    → OnlyDamage#0[T2] terr=24398 bal=1598526 dq=65.5 cnt=175 | c=189.7 rankC=132.8 need=2885796 tD=0.89 人 pulse | safe=878610 keep=2583504 avail=-133710 chunkB=495768 pulseB=297461 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3900 sora_w B=2529176 L=23067 d=109.6 nb=1 neut=0 cmds=94 noFull=1 shQ=626285 | m=0.900 worth=98.7 cheap=7.7 over=1 dMedOther=76.0 safe(-1)=904067
+    → OnlyDamage#0[T2] terr=24604 bal=1643840 dq=66.8 cnt=175 | c=193.4 rankC=135.4 need=2966825 tD=0.88 人 pulse | safe=904067 keep=2583504 avail=-83966 chunkB=505835 pulseB=303501 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3905 sora_w B=2529176 L=23067 d=109.6 nb=1 neut=0 cmds=94 noFull=1 shQ=632294 | m=0.900 worth=98.7 cheap=7.7 over=1 dMedOther=76.0 safe(-1)=904067
+    → OnlyDamage#0[T2] terr=24750 bal=1643840 dq=66.4 cnt=175 | c=192.3 rankC=134.6 need=2967091 tD=0.87 人 pulse | safe=904067 keep=2583504 avail=-83966 chunkB=505835 pulseB=303501 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3910 sora_w B=2555732 L=23067 d=110.8 nb=1 neut=0 cmds=94 noFull=1 shQ=638747 | m=0.900 worth=99.7 cheap=7.7 over=1 dMedOther=77.0 safe(-1)=916072
+    → OnlyDamage#0[T2] terr=24982 bal=1665209 dq=66.7 cnt=175 | c=193.0 rankC=135.1 need=3005526 tD=0.87 人 pulse | safe=916072 keep=2583504 avail=-57721 chunkB=511146 pulseB=306688 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3915 sora_w B=2555732 L=23067 d=110.8 nb=1 neut=0 cmds=94 noFull=1 shQ=638933 | m=0.900 worth=99.7 cheap=7.7 over=1 dMedOther=77.0 safe(-1)=916072
+    → OnlyDamage#0[T2] terr=25145 bal=1665209 dq=66.2 cnt=175 | c=191.8 rankC=134.2 need=3005747 tD=0.86 人 pulse | safe=916072 keep=2583504 avail=-57721 chunkB=511146 pulseB=306688 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3920 sora_w B=2581800 L=23067 d=111.9 nb=1 neut=0 cmds=94 noFull=1 shQ=645387 | m=0.900 worth=100.7 cheap=7.7 over=1 dMedOther=78.1 safe(-1)=928233
+    → OnlyDamage#0[T2] terr=25409 bal=1686856 dq=66.4 cnt=175 | c=192.3 rankC=134.6 need=3044726 tD=0.85 人 pulse | safe=928233 keep=2583504 avail=-31959 chunkB=516360 pulseB=309816 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3925 sora_w B=2581800 L=23067 d=111.9 nb=1 neut=0 cmds=94 noFull=1 shQ=645450 | m=0.900 worth=100.7 cheap=7.7 over=1 dMedOther=78.1 safe(-1)=928233
+    → OnlyDamage#0[T2] terr=25579 bal=1686856 dq=65.9 cnt=175 | c=142.1 rankC=71.0 need=3045028 tD=0.84 人 pulse | safe=928233 keep=2583504 avail=-31959 chunkB=516360 pulseB=309816 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3930 sora_w B=2741906 L=23067 d=118.9 nb=1 neut=0 cmds=94 noFull=1 shQ=665900 | m=0.900 worth=107.0 cheap=7.7 over=1 dMedOther=79.2 safe(-1)=924986
+    → OnlyDamage#0[T2] terr=25580 bal=1681076 dq=65.7 cnt=173 | c=138.9 rankC=69.5 need=3032690 tD=0.83 人 pulse | safe=924986 keep=2583504 avail=126271 chunkB=548381 pulseB=329029 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3935 sora_w B=2741906 L=23067 d=118.9 nb=1 neut=0 cmds=95 noFull=1 shQ=685476 | m=0.900 worth=107.0 cheap=7.7 over=1 dMedOther=79.2 safe(-1)=909913
+    → OnlyDamage#0[T2] terr=25498 bal=1654246 dq=64.9 cnt=171 | c=83.9 rankC=41.9 need=2983058 tD=0.82 人 pulse bleeding | safe=909913 keep=2076030 avail=633745 chunkB=548381 pulseB=329029  x=329028 hNb=1
+    ⇒ 影子指令 attack pct=122 → OnlyDamage#0[T2]（约 329350 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=3940 sora_w B=2764115 L=23067 d=119.8 nb=1 neut=0 cmds=95 noFull=1 shQ=691028 | m=0.900 worth=107.8 cheap=7.7 over=1 dMedOther=80.3 safe(-1)=900044
+    → OnlyDamage#0[T2] terr=25389 bal=1636678 dq=64.5 cnt=169 | c=136.5 rankC=68.3 need=2949183 tD=0.80 人 pulse | safe=900044 keep=2583504 avail=148220 chunkB=552823 pulseB=331694 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3945 sora_w B=2764115 L=23067 d=119.8 nb=1 neut=0 cmds=95 noFull=1 shQ=691028 | m=0.900 worth=107.8 cheap=7.7 over=1 dMedOther=80.3 safe(-1)=885605
+    → OnlyDamage#0[T2] terr=25314 bal=1610977 dq=63.6 cnt=168 | c=136.9 rankC=68.5 need=2901718 tD=0.79 人 pulse | safe=885605 keep=2583504 avail=148220 chunkB=552823 pulseB=331694 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3950 sora_w B=2428263 L=23067 d=105.3 nb=1 neut=0 cmds=95 noFull=1 shQ=606967 | m=0.900 worth=94.7 cheap=7.7 over=1 dMedOther=81.4 safe(-1)=875666
+    → OnlyDamage#0[T2] terr=25202 bal=1593286 dq=63.2 cnt=166 | c=122.8 rankC=61.4 need=2535596 tD=0.78 人 pulse | safe=875666 keep=2583504 avail=-183697 chunkB=485653 pulseB=291392 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3955 sora_w B=2428263 L=23067 d=105.3 nb=1 neut=0 cmds=95 noFull=1 shQ=607065 | m=0.900 worth=94.7 cheap=7.7 over=1 dMedOther=81.4 safe(-1)=861450
+    → OnlyDamage#0[T2] terr=25130 bal=1567982 dq=62.4 cnt=165 | c=123.1 rankC=61.6 need=2489077 tD=0.77 人 pulse | safe=861450 keep=2583504 avail=-183697 chunkB=485653 pulseB=291392 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3960 sora_w B=2457402 L=23567 d=104.3 nb=1 neut=0 cmds=95 noFull=1 shQ=614350 | m=0.900 worth=93.8 cheap=7.7 over=1 dMedOther=82.5 safe(-1)=838893
+    → OnlyDamage#0[T2] terr=24896 bal=1528580 dq=61.4 cnt=168 | c=163.9 rankC=114.7 need=2513656 tD=0.74 人 pulse | safe=838893 keep=2639504 avail=-210899 chunkB=491480 pulseB=294888 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3965 sora_w B=2457402 L=23902 d=102.8 nb=1 neut=0 cmds=95 noFull=1 shQ=614350 | m=0.900 worth=92.5 cheap=7.7 over=1 dMedOther=82.5 safe(-1)=820193
+    → OnlyDamage#0[T2] terr=24729 bal=1495797 dq=60.5 cnt=171 | c=165.6 rankC=115.9 need=2517862 tD=0.73 人 pulse | safe=820193 keep=2677024 avail=-248419 chunkB=491480 pulseB=294888 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3970 sora_w B=2488611 L=24421 d=101.9 nb=1 neut=0 cmds=95 noFull=1 shQ=622126 | m=0.900 worth=91.7 cheap=7.7 over=1 dMedOther=83.6 safe(-1)=802310
+    → OnlyDamage#0[T2] terr=24448 bal=1464744 dq=59.9 cnt=176 | c=170.7 rankC=119.5 need=2557381 tD=0.72 人 pulse | safe=802310 keep=2735152 avail=-275704 chunkB=497722 pulseB=298633 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3975 sora_w B=2488780 L=24597 d=101.2 nb=1 neut=0 cmds=95 noFull=1 shQ=622195 | m=0.900 worth=91.1 cheap=7.7 over=1 dMedOther=83.6 safe(-1)=784285
+    → OnlyDamage#0[T2] terr=24429 bal=1432922 dq=58.7 cnt=178 | c=171.4 rankC=120.0 need=2565440 tD=0.70 人 pulse | safe=784285 keep=2754864 avail=-295249 chunkB=497756 pulseB=298654 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3980 sora_w B=2520387 L=24597 d=102.5 nb=1 neut=0 cmds=96 noFull=1 shQ=630008 | m=0.900 worth=92.2 cheap=7.7 over=1 dMedOther=83.9 safe(-1)=794749
+    → OnlyDamage#0[T2] terr=24665 bal=1451549 dq=58.9 cnt=178 | c=107.3 rankC=75.1 need=2604081 tD=0.70 人 pulse bleeding | safe=794749 keep=2213730 avail=277122 chunkB=504077 pulseB=302446  x=277122 hNb=1
+    ⇒ 影子指令 attack pct=112 → OnlyDamage#0[T2]（约 278128 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=3985 sora_w B=2520387 L=24597 d=102.5 nb=1 neut=0 cmds=96 noFull=1 shQ=630096 | m=0.900 worth=92.2 cheap=7.7 over=1 dMedOther=82.0 safe(-1)=794749
+    → OnlyDamage#0[T2] terr=24824 bal=1451549 dq=58.5 cnt=178 | c=170.5 rankC=119.4 need=2607916 tD=0.71 人 pulse | safe=794749 keep=2754864 avail=-264012 chunkB=504077 pulseB=302446 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3990 sora_w B=2551639 L=24597 d=103.7 nb=1 neut=0 cmds=96 noFull=1 shQ=637750 | m=0.900 worth=93.4 cheap=7.7 over=1 dMedOther=80.3 safe(-1)=805350
+    → OnlyDamage#0[T2] terr=25064 bal=1470419 dq=58.7 cnt=178 | c=170.9 rankC=119.6 need=2647043 tD=0.73 人 pulse | safe=805350 keep=2754864 avail=-233127 chunkB=510328 pulseB=306197 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=3995 sora_w B=2240160 L=24597 d=91.1 nb=1 neut=0 cmds=96 noFull=1 shQ=560040 | m=0.900 worth=82.0 cheap=7.7 over=0 dMedOther=78.6 safe(-1)=805350
+    → OnlyDamage#0[T2] terr=25225 bal=1470419 dq=58.3 cnt=178 | c=94.7 rankC=66.3 need=2369331 tD=0.74 人 pulse bleeding | safe=805350 keep=Inf avail=-Inf chunkB=448032 pulseB=268819 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4000 sora_w B=2294057 L=24955 d=91.9 nb=1 neut=0 cmds=96 noFull=1 shQ=567553 | m=0.900 worth=82.7 cheap=7.6 over=0 dMedOther=77.9 safe(-1)=810920
+    → OnlyDamage#0[T2] terr=25112 bal=1480870 dq=59.0 cnt=181 | c=157.9 rankC=110.5 need=2453419 tD=0.76 人 pulse | safe=810920 keep=Inf avail=-Inf chunkB=458811 pulseB=275287 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4005 sora_w B=2294057 L=25318 d=90.6 nb=1 neut=0 cmds=96 noFull=1 shQ=573514 | m=0.900 worth=81.5 cheap=7.6 over=0 dMedOther=76.2 safe(-1)=791448
+    → OnlyDamage#0[T2] terr=24915 bal=1446754 dq=58.1 cnt=184 | c=107.9 rankC=45.3 need=2457373 tD=0.76 人 pulse | safe=791448 keep=Inf avail=-Inf chunkB=458811 pulseB=275287 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4010 sora_w B=2323879 L=25875 d=89.8 nb=1 neut=0 cmds=96 noFull=1 shQ=580969 | m=0.900 worth=80.8 cheap=7.6 over=0 dMedOther=76.3 safe(-1)=772329
+    → OnlyDamage#0[T2] terr=24617 bal=1413559 dq=57.4 cnt=182 | c=164.9 rankC=115.4 need=2495997 tD=0.75 人 pulse | safe=772329 keep=Inf avail=-Inf chunkB=464776 pulseB=278865 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4015 sora_w B=2323952 L=26057 d=89.2 nb=1 neut=0 cmds=96 noFull=1 shQ=580988 | m=0.900 worth=80.3 cheap=7.6 over=0 dMedOther=76.3 safe(-1)=761064
+    → OnlyDamage#0[T2] terr=24619 bal=1393779 dq=56.6 cnt=180 | c=165.3 rankC=115.7 need=2501584 tD=0.74 人 pulse | safe=761064 keep=Inf avail=-Inf chunkB=464790 pulseB=278874 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4020 sora_w B=2354395 L=26057 d=90.4 nb=1 neut=0 cmds=96 noFull=1 shQ=588598 | m=0.900 worth=81.3 cheap=7.6 over=0 dMedOther=77.3 safe(-1)=771243
+    → OnlyDamage#0[T2] terr=24912 bal=1411898 dq=56.7 cnt=180 | c=76.7 rankC=38.4 need=2540423 tD=0.73 人 pulse bleeding | safe=771243 keep=2277178 avail=49627 chunkB=470879 pulseB=282527 低于最小指令(x=49627<110360)→continue hNb=1
+    ⇒ 本拍没有指令
+t=4025 sora_w B=2354395 L=26057 d=90.4 nb=1 neut=0 cmds=96 noFull=1 shQ=588598 | m=0.900 worth=81.3 cheap=7.6 over=0 dMedOther=77.3 safe(-1)=771243
+    → OnlyDamage#0[T2] terr=25114 bal=1411898 dq=56.2 cnt=185 | c=76.1 rankC=38.0 need=2545022 tD=0.73 人 pulse bleeding | safe=771243 keep=2267622 avail=59183 chunkB=470879 pulseB=282527 低于最小指令(x=59183<110360)→continue hNb=1
+    ⇒ 本拍没有指令
+t=4030 sora_w B=2385237 L=26057 d=91.5 nb=1 neut=0 cmds=96 noFull=1 shQ=596309 | m=0.900 worth=82.4 cheap=7.6 over=0 dMedOther=78.3 safe(-1)=750153
+    → OnlyDamage#0[T2] terr=24800 bal=1374358 dq=55.4 cnt=187 | c=77.1 rankC=38.5 need=2471543 tD=0.71 人 pulse bleeding | safe=750153 keep=2297758 avail=59528 chunkB=477047 pulseB=286228 低于最小指令(x=59528<111804)→continue hNb=1
+    ⇒ 本拍没有指令
+t=4035 sora_w B=2385237 L=26057 d=91.5 nb=1 neut=0 cmds=96 noFull=1 shQ=596309 | m=0.900 worth=82.4 cheap=7.6 over=0 dMedOther=78.3 safe(-1)=744689
+    → OnlyDamage#0[T2] terr=24923 bal=1364632 dq=54.8 cnt=187 | c=76.6 rankC=38.3 need=2457176 tD=0.70 人 pulse bleeding | safe=744689 keep=2291828 avail=65458 chunkB=477047 pulseB=286228 低于最小指令(x=65458<111804)→continue hNb=1
+    ⇒ 本拍没有指令
+t=4040 sora_w B=2416483 L=26057 d=92.7 nb=1 neut=0 cmds=96 noFull=1 shQ=604120 | m=0.900 worth=83.5 cheap=7.6 over=0 dMedOther=79.4 safe(-1)=748992
+    → OnlyDamage#0[T2] terr=25145 bal=1372292 dq=54.6 cnt=187 | c=74.4 rankC=37.2 need=2475663 tD=0.69 人 pulse bleeding | safe=748992 keep=2276778 avail=111387 chunkB=483297 pulseB=289978 低于最小指令(x=111387<113272)→continue hNb=1
+    ⇒ 本拍没有指令
+t=4045 sora_w B=2416483 L=26057 d=92.7 nb=1 neut=0 cmds=97 noFull=1 shQ=604120 | m=0.900 worth=83.5 cheap=7.6 over=0 dMedOther=79.4 safe(-1)=748992
+    → OnlyDamage#0[T2] terr=25351 bal=1372292 dq=54.1 cnt=188 | c=73.7 rankC=36.8 need=2480128 tD=0.68 人 pulse bleeding | safe=748992 keep=2267564 avail=120601 chunkB=483297 pulseB=289978  x=120601 hNb=1
+    ⇒ 影子指令 attack pct=51 → OnlyDamage#0[T2]（约 122712 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4050 sora_w B=2448138 L=26057 d=94.0 nb=1 neut=0 cmds=98 noFull=1 shQ=612034 | m=0.900 worth=84.6 cheap=7.6 over=0 dMedOther=72.2 safe(-1)=750696
+    → OnlyDamage#0[T2] terr=25497 bal=1375324 dq=53.9 cnt=189 | c=74.2 rankC=37.1 need=2488664 tD=0.75 人 pulse bleeding | safe=750696 keep=2290433 avail=129016 chunkB=489628 pulseB=293777  x=129016 hNb=1
+    ⇒ 影子指令 attack pct=53 → OnlyDamage#0[T2]（约 129101 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4055 sora_w B=2295130 L=26057 d=88.1 nb=1 neut=0 cmds=99 noFull=1 shQ=457036 | m=0.900 worth=79.3 cheap=7.6 over=0 dMedOther=71.5 safe(-1)=746495
+    → OnlyDamage#0[T2] terr=25622 bal=1367847 dq=53.4 cnt=190 | c=70.0 rankC=35.0 need=2352151 tD=0.75 人 pulse bleeding | safe=746495 keep=2153682 avail=114552 chunkB=459026 pulseB=275416  x=114552 hNb=1
+    ⇒ 影子指令 attack pct=51 → OnlyDamage#0[T2]（约 116549 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4060 sora_w B=2325196 L=26057 d=89.2 nb=1 neut=0 cmds=100 noFull=1 shQ=495001 | m=0.900 worth=80.3 cheap=7.6 over=0 dMedOther=71.3 safe(-1)=748018
+    → OnlyDamage#0[T2] terr=25701 bal=1370557 dq=53.3 cnt=227 | c=70.6 rankC=35.3 need=2356852 tD=0.75 人 pulse bleeding | safe=748018 keep=2177688 avail=120260 chunkB=465039 pulseB=279024  x=120260 hNb=1
+    ⇒ 影子指令 attack pct=52 → OnlyDamage#0[T2]（约 120347 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4065 sora_w B=2175331 L=26747 d=81.3 nb=1 neut=0 cmds=100 noFull=1 shQ=408274 | m=0.900 worth=73.2 cheap=7.6 over=0 dMedOther=71.3 safe(-1)=709099
+    → OnlyDamage#0[T2] terr=25066 bal=1302317 dq=52.0 cnt=236 | c=190.7 rankC=190.7 need=2217829 tD=0.73 人 pulse | safe=709099 keep=Inf avail=-Inf chunkB=435066 pulseB=261040 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4070 sora_w B=1934940 L=27225 d=71.1 nb=1 neut=0 cmds=100 noFull=1 shQ=441619 | m=0.900 worth=64.0 cheap=7.6 over=0 dMedOther=72.2 safe(-1)=695753
+    → OnlyDamage#0[T2] terr=24795 bal=1279278 dq=51.6 cnt=246 | c=60.9 rankC=30.4 need=2035243 tD=0.71 人 pulse bleeding | safe=695753 keep=1879000 avail=33265 chunkB=386988 pulseB=232193 在途(curAtk=265122)→continue hNb=1
+    ⇒ 本拍没有指令
+t=4075 sora_w B=1934940 L=27970 d=69.2 nb=1 neut=0 cmds=101 noFull=1 shQ=473784 | m=0.900 worth=62.3 cheap=7.5 over=0 dMedOther=72.2 safe(-1)=652056
+    → OnlyDamage#0[T2] terr=23994 bal=1202614 dq=50.1 cnt=254 | c=43.1 rankC=12.9 need=2006299 tD=0.69 人 pulse bleeding | safe=652056 keep=1640463 avail=271802 chunkB=386988 pulseB=232193  x=154795 hNb=1
+    ⇒ 影子指令 attack pct=81 → OnlyDamage#0[T2]（约 154946 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4080 sora_w B=1960481 L=28486 d=68.8 nb=1 neut=0 cmds=101 noFull=1 shQ=490120 | m=0.900 worth=61.9 cheap=7.5 over=0 dMedOther=73.2 safe(-1)=619860
+    → OnlyDamage#0[T2] terr=23305 bal=1146079 dq=49.2 cnt=264 | c=66.8 rankC=33.4 need=1975400 tD=0.67 人 pulse bleeding | safe=619860 keep=Inf avail=-Inf chunkB=392096 pulseB=235258 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4085 sora_w B=1960521 L=28749 d=68.2 nb=1 neut=0 cmds=101 noFull=1 shQ=490130 | m=0.900 worth=61.4 cheap=7.5 over=0 dMedOther=73.2 safe(-1)=593100
+    → OnlyDamage#0[T2] terr=22985 bal=1098842 dq=47.8 cnt=267 | c=187.9 rankC=187.9 need=1945246 tD=0.65 人 pulse | safe=593100 keep=Inf avail=-Inf chunkB=392104 pulseB=235263 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4090 sora_w B=1804234 L=28749 d=62.8 nb=1 neut=0 cmds=101 noFull=1 shQ=451058 | m=0.900 worth=56.7 cheap=7.5 over=0 dMedOther=74.1 safe(-1)=527177
+    → OnlyDamage#0[T2] terr=23215 bal=981499 dq=42.3 cnt=274 | c=113.7 rankC=79.6 need=1588681 tD=0.57 人 pulse | safe=527177 keep=Inf avail=-Inf chunkB=360847 pulseB=216508 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4095 sora_w B=1804234 L=28749 d=62.8 nb=1 neut=0 cmds=101 noFull=1 shQ=451058 | m=0.900 worth=56.7 cheap=7.5 over=0 dMedOther=74.1 safe(-1)=527177
+    → OnlyDamage#0[T2] terr=23392 bal=981499 dq=42.0 cnt=281 | c=112.7 rankC=78.9 need=1592258 tD=0.57 人 pulse | safe=527177 keep=Inf avail=-Inf chunkB=360847 pulseB=216508 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4100 sora_w B=1857531 L=29588 d=62.8 nb=1 neut=0 cmds=101 noFull=1 shQ=457234 | m=0.900 worth=58.2 cheap=7.5 over=0 dMedOther=76.0 safe(-1)=514578
+    → OnlyDamage#0[T2] terr=22837 bal=960331 dq=42.1 cnt=313 | c=75.8 rankC=53.0 need=1659237 tD=0.55 人 pulse bleeding | safe=514578 keep=Inf avail=-Inf chunkB=371506 pulseB=222904 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4105 sora_w B=1857660 L=29883 d=62.2 nb=1 neut=0 cmds=101 noFull=1 shQ=464415 | m=0.900 worth=58.1 cheap=7.5 over=0 dMedOther=75.9 safe(-1)=502751
+    → OnlyDamage#0[T2] terr=22731 bal=939722 dq=41.3 cnt=329 | c=122.3 rankC=85.6 need=1664108 tD=0.54 人 pulse | safe=502751 keep=Inf avail=-Inf chunkB=371532 pulseB=222919 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4110 sora_w B=1882366 L=29883 d=63.0 nb=1 neut=0 cmds=101 noFull=1 shQ=470591 | m=0.900 worth=58.8 cheap=7.5 over=0 dMedOther=76.9 safe(-1)=509562
+    → OnlyDamage#0[T2] terr=23021 bal=951844 dq=41.3 cnt=335 | c=76.3 rankC=53.4 need=1690967 tD=0.54 人 pulse bleeding | safe=509562 keep=Inf avail=-Inf chunkB=376473 pulseB=225884 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4115 sora_w B=1882366 L=29883 d=63.0 nb=1 neut=0 cmds=101 noFull=1 shQ=470591 | m=0.900 worth=58.7 cheap=7.5 over=0 dMedOther=76.7 safe(-1)=509562
+    → OnlyDamage#0[T2] terr=23217 bal=951844 dq=41.0 cnt=340 | c=75.6 rankC=52.9 need=1694798 tD=0.53 人 pulse bleeding | safe=509562 keep=Inf avail=-Inf chunkB=376473 pulseB=225884 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4120 sora_w B=1907401 L=29883 d=63.8 nb=1 neut=0 cmds=101 noFull=1 shQ=476850 | m=0.900 worth=59.4 cheap=7.5 over=0 dMedOther=77.7 safe(-1)=516513
+    → OnlyDamage#0[T2] terr=23518 bal=964217 dq=41.0 cnt=346 | c=120.7 rankC=84.5 need=1722191 tD=0.53 人 pulse | safe=516513 keep=Inf avail=-Inf chunkB=381480 pulseB=228888 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4125 sora_w B=1907401 L=29883 d=63.8 nb=1 neut=0 cmds=101 noFull=1 shQ=476850 | m=0.900 worth=59.3 cheap=7.5 over=0 dMedOther=77.5 safe(-1)=516513
+    → OnlyDamage#0[T2] terr=23722 bal=964217 dq=40.6 cnt=350 | c=119.5 rankC=83.7 need=1725961 tD=0.52 人 pulse | safe=516513 keep=Inf avail=-Inf chunkB=381480 pulseB=228888 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4130 sora_w B=1932769 L=29883 d=64.7 nb=1 neut=0 cmds=101 noFull=1 shQ=483192 | m=0.900 worth=60.0 cheap=7.5 over=0 dMedOther=78.4 safe(-1)=523554
+    → OnlyDamage#0[T2] terr=24028 bal=976751 dq=40.7 cnt=356 | c=119.3 rankC=83.5 need=1753556 tD=0.52 人 pulse | safe=523554 keep=Inf avail=-Inf chunkB=386554 pulseB=231932 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4135 sora_w B=1932769 L=29883 d=64.7 nb=1 neut=0 cmds=101 noFull=1 shQ=483192 | m=0.900 worth=59.8 cheap=7.5 over=0 dMedOther=78.2 safe(-1)=523554
+    → OnlyDamage#0[T2] terr=24232 bal=976751 dq=40.3 cnt=361 | c=73.9 rankC=51.7 need=1757184 tD=0.52 人 pulse bleeding | safe=523554 keep=Inf avail=-Inf chunkB=386554 pulseB=231932 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4140 sora_w B=1958474 L=29883 d=65.5 nb=1 neut=0 cmds=101 noFull=1 shQ=489618 | m=0.900 worth=60.5 cheap=7.5 over=0 dMedOther=79.0 safe(-1)=530687
+    → OnlyDamage#0[T2] terr=24544 bal=989448 dq=40.3 cnt=368 | c=55.3 rankC=27.6 need=1785007 tD=0.51 人 pulse bleeding | safe=530687 keep=1888107 avail=47417 chunkB=391695 pulseB=235017 低于最小指令(x=47417<91800)→continue hNb=1
+    ⇒ 本拍没有指令
+t=4145 sora_w B=1958474 L=29883 d=65.5 nb=1 neut=0 cmds=102 noFull=1 shQ=489618 | m=0.900 worth=60.2 cheap=7.5 over=0 dMedOther=78.7 safe(-1)=523683
+    → OnlyDamage#0[T2] terr=24562 bal=976980 dq=39.8 cnt=373 | c=51.7 rankC=25.9 need=1763333 tD=0.51 人 pulse bleeding | safe=523683 keep=1831938 avail=103586 chunkB=391695 pulseB=235017  x=103586 hNb=1
+    ⇒ 影子指令 attack pct=54 → OnlyDamage#0[T2]（约 105191 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4150 sora_w B=1984521 L=29883 d=66.4 nb=1 neut=0 cmds=103 noFull=1 shQ=496130 | m=0.900 worth=60.9 cheap=7.5 over=0 dMedOther=79.6 safe(-1)=516892
+    → OnlyDamage#0[T2] terr=24502 bal=964892 dq=39.4 cnt=380 | c=52.5 rankC=26.3 need=1741083 tD=0.49 人 pulse bleeding | safe=516892 keep=1858061 avail=103204 chunkB=396904 pulseB=238143  x=103204 hNb=1
+    ⇒ 影子指令 attack pct=53 → OnlyDamage#0[T2]（约 104652 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4155 sora_w B=1984521 L=29883 d=66.4 nb=1 neut=0 cmds=103 noFull=1 shQ=496130 | m=0.900 worth=60.9 cheap=7.5 over=0 dMedOther=79.6 safe(-1)=496135
+    → OnlyDamage#0[T2] terr=24132 bal=927944 dq=38.5 cnt=384 | c=53.3 rankC=26.7 need=1669786 tD=0.48 人 pulse bleeding | safe=496135 keep=1871161 avail=90104 chunkB=396904 pulseB=238143 低于最小指令(x=90104<93024)→continue hNb=1
+    ⇒ 本拍没有指令
+t=4160 sora_w B=1758213 L=29883 d=58.8 nb=1 neut=0 cmds=103 noFull=1 shQ=439553 | m=0.900 worth=61.7 cheap=7.5 over=0 dMedOther=80.6 safe(-1)=490040
+    → OnlyDamage#0[T2] terr=24275 bal=917095 dq=37.8 cnt=392 | c=97.3 rankC=68.1 need=1448710 tD=0.47 人 pulse | safe=490040 keep=Inf avail=-Inf chunkB=351643 pulseB=210986 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4165 sora_w B=1758213 L=29883 d=58.8 nb=1 neut=0 cmds=103 noFull=1 shQ=439553 | m=0.900 worth=61.7 cheap=7.5 over=0 dMedOther=80.6 safe(-1)=490040
+    → OnlyDamage#0[T2] terr=24498 bal=917095 dq=37.4 cnt=397 | c=96.3 rankC=67.4 need=1452361 tD=0.46 人 pulse | safe=490040 keep=Inf avail=-Inf chunkB=351643 pulseB=210986 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4170 sora_w B=1781773 L=31019 d=57.4 nb=1 neut=0 cmds=103 noFull=1 shQ=445443 | m=0.900 worth=62.5 cheap=7.5 over=0 dMedOther=81.7 safe(-1)=457592
+    → OnlyDamage#0[T2] terr=23684 bal=861042 dq=36.4 cnt=372 | c=64.1 rankC=44.9 need=1477684 tD=0.44 人 pulse bleeding | safe=457592 keep=Inf avail=-Inf chunkB=356355 pulseB=213813 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4175 sora_w B=1782115 L=31384 d=56.8 nb=1 neut=0 cmds=103 noFull=1 shQ=445528 | m=0.900 worth=62.2 cheap=7.4 over=0 dMedOther=81.3 safe(-1)=438879
+    → OnlyDamage#0[T2] terr=23518 bal=828280 dq=35.2 cnt=381 | c=104.0 rankC=72.8 need=1485024 tD=0.43 人 pulse | safe=438879 keep=Inf avail=-Inf chunkB=356423 pulseB=213854 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4180 sora_w B=1805995 L=31384 d=57.5 nb=1 neut=0 cmds=103 noFull=1 shQ=451498 | m=0.900 worth=62.6 cheap=7.4 over=0 dMedOther=81.8 safe(-1)=444928
+    → OnlyDamage#0[T2] terr=23796 bal=839047 dq=35.3 cnt=388 | c=103.9 rankC=72.7 need=1508375 tD=0.43 人 pulse | safe=444928 keep=Inf avail=-Inf chunkB=361199 pulseB=216719 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4185 sora_w B=1805995 L=31384 d=57.5 nb=1 neut=0 cmds=103 noFull=1 shQ=451498 | m=0.900 worth=62.1 cheap=7.4 over=0 dMedOther=81.2 safe(-1)=444928
+    → OnlyDamage#0[T2] terr=23976 bal=839047 dq=35.0 cnt=400 | c=103.0 rankC=72.1 need=1511239 tD=0.43 人 pulse | safe=444928 keep=Inf avail=-Inf chunkB=361199 pulseB=216719 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4190 sora_w B=1830195 L=31384 d=58.3 nb=1 neut=0 cmds=103 noFull=1 shQ=457548 | m=0.900 worth=62.9 cheap=7.4 over=0 dMedOther=82.3 safe(-1)=451055
+    → OnlyDamage#0[T2] terr=24211 bal=849954 dq=35.1 cnt=403 | c=64.5 rankC=45.2 need=1534171 tD=0.43 人 pulse bleeding | safe=451055 keep=Inf avail=-Inf chunkB=366039 pulseB=219623 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4195 sora_w B=1830195 L=31384 d=58.3 nb=1 neut=0 cmds=103 noFull=1 shQ=457548 | m=0.900 worth=62.9 cheap=7.4 over=0 dMedOther=82.3 safe(-1)=451055
+    → OnlyDamage#0[T2] terr=24367 bal=849954 dq=34.9 cnt=408 | c=102.5 rankC=71.7 need=1536594 tD=0.42 人 pulse | safe=451055 keep=Inf avail=-Inf chunkB=366039 pulseB=219623 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4200 sora_w B=1886103 L=31384 d=60.1 nb=1 neut=0 cmds=103 noFull=1 shQ=463913 | m=0.900 worth=64.5 cheap=7.4 over=0 dMedOther=84.3 safe(-1)=471037
+    → OnlyDamage#0[T2] terr=24593 bal=885522 dq=36.0 cnt=416 | c=140.7 rankC=140.7 need=1602940 tD=0.43 人 pulse | safe=471037 keep=Inf avail=-Inf chunkB=377221 pulseB=226332 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4205 sora_w B=1886103 L=31384 d=60.1 nb=1 neut=0 cmds=103 noFull=1 shQ=471525 | m=0.900 worth=64.5 cheap=7.4 over=0 dMedOther=84.3 safe(-1)=471037
+    → OnlyDamage#0[T2] terr=24737 bal=885522 dq=35.8 cnt=421 | c=87.4 rankC=87.4 need=1605182 tD=0.42 人 pulse bleeding | safe=471037 keep=Inf avail=-Inf chunkB=377221 pulseB=226332 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4210 sora_w B=1911376 L=31384 d=60.9 nb=1 neut=0 cmds=103 noFull=1 shQ=477844 | m=0.900 worth=65.4 cheap=7.4 over=0 dMedOther=85.5 safe(-1)=477504
+    → OnlyDamage#0[T2] terr=24947 bal=897033 dq=36.0 cnt=427 | c=140.2 rankC=140.2 need=1628853 tD=0.42 人 pulse | safe=477504 keep=Inf avail=-Inf chunkB=382275 pulseB=229365 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4215 sora_w B=1911376 L=31384 d=60.9 nb=1 neut=0 cmds=103 noFull=1 shQ=477844 | m=0.900 worth=65.4 cheap=7.4 over=0 dMedOther=85.5 safe(-1)=477504
+    → OnlyDamage#0[T2] terr=25085 bal=897033 dq=35.8 cnt=431 | c=139.4 rankC=139.4 need=1630960 tD=0.42 人 pulse | safe=477504 keep=Inf avail=-Inf chunkB=382275 pulseB=229365 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4220 sora_w B=1936988 L=31384 d=61.7 nb=1 neut=0 cmds=103 noFull=1 shQ=484247 | m=0.900 worth=66.3 cheap=7.4 over=0 dMedOther=86.6 safe(-1)=484055
+    → OnlyDamage#0[T2] terr=25290 bal=908694 dq=35.9 cnt=439 | c=139.9 rankC=139.9 need=1654766 tD=0.41 人 pulse | safe=484055 keep=Inf avail=-Inf chunkB=387398 pulseB=232439 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4225 sora_w B=1936988 L=31384 d=61.7 nb=1 neut=0 cmds=103 noFull=1 shQ=484247 | m=0.900 worth=66.3 cheap=7.4 over=0 dMedOther=86.6 safe(-1)=484055
+    → OnlyDamage#0[T2] terr=25423 bal=908694 dq=35.7 cnt=443 | c=86.9 rankC=86.9 need=1656759 tD=0.41 人 pulse bleeding | safe=484055 keep=Inf avail=-Inf chunkB=387398 pulseB=232439 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4230 sora_w B=1962943 L=31384 d=62.5 nb=1 neut=0 cmds=103 noFull=1 shQ=490735 | m=0.900 worth=67.1 cheap=7.4 over=0 dMedOther=87.8 safe(-1)=490692
+    → OnlyDamage#0[T2] terr=25621 bal=920507 dq=35.9 cnt=463 | c=139.6 rankC=139.6 need=1679122 tD=0.41 人 pulse | safe=490692 keep=Inf avail=-Inf chunkB=392589 pulseB=235553 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4235 sora_w B=1962943 L=31384 d=62.5 nb=1 neut=0 cmds=103 noFull=1 shQ=490735 | m=0.900 worth=67.1 cheap=7.4 over=0 dMedOther=87.8 safe(-1)=490692
+    → OnlyDamage#0[T2] terr=25726 bal=920507 dq=35.8 cnt=470 | c=139.0 rankC=139.0 need=1679292 tD=0.41 人 pulse | safe=490692 keep=Inf avail=-Inf chunkB=392589 pulseB=235553 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4240 sora_w B=1989246 L=31384 d=63.4 nb=1 neut=0 cmds=103 noFull=1 shQ=497311 | m=0.900 worth=68.0 cheap=7.4 over=0 dMedOther=88.9 safe(-1)=497414
+    → OnlyDamage#0[T2] terr=25879 bal=932473 dq=36.0 cnt=476 | c=87.5 rankC=87.5 need=1700862 tD=0.41 人 pulse bleeding | safe=497414 keep=Inf avail=-Inf chunkB=397849 pulseB=238710 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4245 sora_w B=1989246 L=31384 d=63.4 nb=1 neut=0 cmds=103 noFull=1 shQ=497311 | m=0.900 worth=68.0 cheap=7.4 over=0 dMedOther=88.9 safe(-1)=497414
+    → OnlyDamage#0[T2] terr=25978 bal=932473 dq=35.9 cnt=478 | c=139.4 rankC=139.4 need=1700998 tD=0.40 人 pulse | safe=497414 keep=Inf avail=-Inf chunkB=397849 pulseB=238710 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=4250 sora_w B=2015901 L=31384 d=64.2 nb=1 neut=0 cmds=104 noFull=1 shQ=503975 | m=0.900 worth=68.9 cheap=7.4 over=0 dMedOther=90.1 safe(-1)=504276
+    → OnlyDamage#0[T2] terr=26124 bal=944688 dq=36.2 cnt=479 | c=47.1 rankC=23.5 need=1722962 tD=0.40 人 pulse bleeding | safe=504276 keep=1825821 avail=166457 chunkB=403180 pulseB=241908  x=166457 hNb=1
+    ⇒ 影子指令 attack pct=84 → OnlyDamage#0[T2]（约 167335 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4255 sora_w B=2015901 L=31384 d=64.2 nb=1 neut=0 cmds=105 noFull=1 shQ=503975 | m=0.900 worth=68.9 cheap=7.4 over=0 dMedOther=90.1 safe(-1)=504276
+    → OnlyDamage#0[T2] terr=26220 bal=944688 dq=36.0 cnt=480 | c=46.9 rankC=23.4 need=1723106 tD=0.40 人 pulse bleeding | safe=504276 keep=1823009 avail=169269 chunkB=403180 pulseB=241908  x=169269 hNb=1
+    ⇒ 影子指令 attack pct=85 → OnlyDamage#0[T2]（约 169304 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4260 sora_w B=2042914 L=31384 d=65.1 nb=1 neut=0 cmds=106 noFull=1 shQ=510728 | m=0.900 worth=69.8 cheap=7.4 over=0 dMedOther=91.3 safe(-1)=505475
+    → OnlyDamage#0[T2] terr=26180 bal=946822 dq=36.2 cnt=481 | c=44.1 rankC=22.0 need=1725801 tD=0.40 人 pulse bleeding | safe=505475 keep=1790970 avail=228004 chunkB=408583 pulseB=245150  x=228004 hNb=1
+    ⇒ 影子指令 attack pct=114 → OnlyDamage#0[T2]（约 229428 兵） 〔send:484<send:1827<send:3865<buyLand:5585〕
+t=4265 sora_w B=1672405 L=31384 d=53.3 nb=1 neut=0 cmds=106 noFull=1 shQ=77176 | m=0.900 worth=65.6 cheap=7.4 over=0 dMedOther=85.8 safe(-1)=497056
+    → OnlyDamage#0[T2] terr=26009 bal=931835 dq=35.8 cnt=480 | c=34.7 rankC=17.4 need=1371747 tD=0.42 人 pulse bleeding | safe=497056 keep=1443259 avail=209548 chunkB=334481 pulseB=200689 在途(curAtk=324920)→continue hNb=1
+    ⇒ 本拍没有指令
+t=4270 sora_w B=1694815 L=31384 d=54.0 nb=1 neut=0 cmds=106 noFull=1 shQ=105471 | m=0.900 worth=66.5 cheap=7.4 over=0 dMedOther=86.9 safe(-1)=498367
+    → OnlyDamage#0[T2] terr=25973 bal=934170 dq=36.0 cnt=481 | c=35.4 rankC=17.7 need=1375424 tD=0.41 人 pulse bleeding | safe=498367 keep=1465918 avail=209036 chunkB=338963 pulseB=203378 在途(curAtk=324920)→continue hNb=1
+    ⇒ 本拍没有指令
+t=4275 sora_w B=1484619 L=32794 d=45.3 nb=1 neut=0 cmds=106 noFull=1 shQ=130521 | m=0.900 worth=66.5 cheap=7.4 over=0 dMedOther=86.9 safe(-1)=395387
+    → OnlyDamage#0[T2] terr=24426 bal=752980 dq=30.8 cnt=442 | c=26.6 rankC=13.3 need=988471 tD=0.35 人 pulse bleeding | safe=395387 keep=1231044 avail=236178 chunkB=296924 pulseB=178154 在途(curAtk=369395)→continue hNb=1
+    ⇒ 本拍没有指令
+t=4280 sora_w B=1504661 L=33674 d=44.7 nb=1 neut=0 cmds=106 noFull=1 shQ=155639 | m=0.900 worth=67.3 cheap=7.4 over=0 dMedOther=88.0 safe(-1)=372660
+    → OnlyDamage#0[T2] terr=23563 bal=713845 dq=30.3 cnt=429 | c=28.5 rankC=14.2 need=995609 tD=0.34 人 pulse bleeding | safe=372660 keep=1287086 avail=199943 chunkB=300932 pulseB=180559 在途(curAtk=281585)→continue hNb=1
+    ⇒ 本拍没有指令
+t=4285 sora_w B=1504661 L=34942 d=43.1 nb=1 neut=0 cmds=106 noFull=1 shQ=181214 | m=0.900 worth=67.3 cheap=7.3 over=0 dMedOther=88.0 safe(-1)=334149
+    → OnlyDamage#0[T2] terr=22259 bal=647199 dq=29.1 cnt=411 | c=20.9 rankC=6.3 need=984897 tD=0.33 人 pulse bleeding | safe=334149 keep=1166921 avail=320108 chunkB=300932 pulseB=180559 在途(curAtk=157857)→continue hNb=1
+    ⇒ 本拍没有指令
+t=4290 sora_w B=1525124 L=35753 d=42.7 nb=2 neut=0 cmds=106 noFull=1 shQ=207011 | m=0.900 worth=68.2 cheap=7.3 over=0 dMedOther=89.2 safe(-1)=2815632
+    → OnlyDamage#0[T2] terr=21532 bal=614761 dq=28.6 cnt=370 | c=32.8 rankC=16.4 need=994822 tD=0.32 人 pulse bleeding | safe=2815632 keep=2815632 avail=-1308380 chunkB=305025 pulseB=183015 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=57580 bal=5065454 dq=88.0 cnt=3 | c=519.8 rankC=519.8 need=8957453 tD=0.99 人 pulse crowdedHard | safe=2815632 keep=Inf avail=-Inf chunkB=305025 pulseB=183015 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4295 sora_w B=1525447 L=36489 d=41.8 nb=2 neut=0 cmds=106 noFull=1 shQ=233241 | m=0.900 worth=68.2 cheap=7.3 over=0 dMedOther=89.2 safe(-1)=2804184
+    → OnlyDamage#0[T2] terr=20863 bal=573540 dq=27.5 cnt=357 | c=32.3 rankC=16.2 need=996223 tD=0.31 人 pulse bleeding | safe=2804184 keep=2804184 avail=-1296613 chunkB=305089 pulseB=183054 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=57443 bal=5046181 dq=87.8 cnt=8 | c=519.1 rankC=519.1 need=8919288 tD=0.98 人 pulse crowdedHard | safe=2804184 keep=Inf avail=-Inf chunkB=305089 pulseB=183054 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4300 sora_w B=1582834 L=36489 d=43.4 nb=2 neut=0 cmds=106 noFull=1 shQ=259749 | m=0.900 worth=69.7 cheap=7.3 over=0 dMedOther=91.1 safe(-1)=2869982
+    → OnlyDamage#0[T2] terr=20957 bal=598147 dq=28.5 cnt=358 | c=30.6 rankC=15.3 need=1039598 tD=0.31 人 pulse bleeding | safe=2869982 keep=2869982 avail=-1305696 chunkB=316567 pulseB=189940 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=57342 bal=5163302 dq=90.0 cnt=8 | c=532.1 rankC=532.1 need=9121472 tD=0.99 人 pulse crowdedHard | safe=2869982 keep=Inf avail=-Inf chunkB=316567 pulseB=189940 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4305 sora_w B=1582834 L=36489 d=43.4 nb=2 neut=0 cmds=106 noFull=1 shQ=287049 | m=0.900 worth=69.1 cheap=7.3 over=0 dMedOther=90.3 safe(-1)=2856636
+    → OnlyDamage#0[T2] terr=20933 bal=591060 dq=28.2 cnt=358 | c=30.6 rankC=15.3 need=1027520 tD=0.31 人 pulse bleeding | safe=2856636 keep=2856636 avail=-1292350 chunkB=316567 pulseB=189940 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=57177 bal=5139546 dq=89.9 cnt=8 | c=531.4 rankC=531.4 need=9074436 tD=1.00 人 pulse crowdedHard | safe=2856636 keep=Inf avail=-Inf chunkB=316567 pulseB=189940 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4310 sora_w B=1604518 L=36489 d=44.0 nb=2 neut=0 cmds=106 noFull=1 shQ=314424 | m=0.900 worth=69.7 cheap=7.3 over=0 dMedOther=91.1 safe(-1)=2889204
+    → OnlyDamage#0[T2] terr=21064 bal=594710 dq=28.2 cnt=359 | c=29.5 rankC=14.7 need=1036062 tD=0.31 人 pulse bleeding | safe=2889204 keep=2889204 avail=-1303488 chunkB=320904 pulseB=192542 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=57060 bal=5197516 dq=91.1 cnt=8 | c=538.6 rankC=538.6 need=9172156 tD=1.00 人 pulse crowdedHard | safe=2889204 keep=Inf avail=-Inf chunkB=320904 pulseB=192542 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4315 sora_w B=1604518 L=36489 d=44.0 nb=2 neut=0 cmds=106 noFull=1 shQ=342099 | m=0.900 worth=69.5 cheap=7.3 over=0 dMedOther=90.9 safe(-1)=2873659
+    → OnlyDamage#0[T2] terr=21069 bal=587694 dq=27.9 cnt=358 | c=29.5 rankC=14.7 need=1024538 tD=0.31 人 pulse bleeding | safe=2873659 keep=2873659 avail=-1287943 chunkB=320904 pulseB=192542 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56870 bal=5169846 dq=90.9 cnt=8 | c=537.7 rankC=537.7 need=9117253 tD=1.00 人 pulse crowdedHard | safe=2873659 keep=Inf avail=-Inf chunkB=320904 pulseB=192542 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4320 sora_w B=1626499 L=36489 d=44.6 nb=2 neut=0 cmds=106 noFull=1 shQ=369850 | m=0.900 worth=70.5 cheap=7.3 over=0 dMedOther=92.1 safe(-1)=2904792
+    → OnlyDamage#0[T2] terr=21203 bal=589027 dq=27.8 cnt=366 | c=29.8 rankC=14.9 need=1029113 tD=0.30 人 pulse bleeding | safe=2904792 keep=2904792 avail=-1297353 chunkB=325300 pulseB=195180 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56734 bal=5225264 dq=92.1 cnt=8 | c=544.9 rankC=544.9 need=9209731 tD=1.00 人 pulse crowdedHard | safe=2904792 keep=Inf avail=-Inf chunkB=325300 pulseB=195180 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4325 sora_w B=1626499 L=36489 d=44.6 nb=2 neut=0 cmds=106 noFull=1 shQ=397905 | m=0.900 worth=70.3 cheap=7.3 over=0 dMedOther=91.9 safe(-1)=2886594
+    → OnlyDamage#0[T2] terr=21288 bal=584784 dq=27.5 cnt=371 | c=29.7 rankC=14.9 need=1023437 tD=0.30 人 pulse bleeding | safe=2886594 keep=2886594 avail=-1279155 chunkB=325300 pulseB=195180 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56514 bal=5192871 dq=91.9 cnt=8 | c=543.9 rankC=543.9 need=9145334 tD=1.00 人 pulse crowdedHard | safe=2886594 keep=Inf avail=-Inf chunkB=325300 pulseB=195180 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4330 sora_w B=1648782 L=36489 d=45.2 nb=2 neut=0 cmds=106 noFull=1 shQ=412195 | m=0.900 worth=71.2 cheap=7.3 over=0 dMedOther=93.1 safe(-1)=2921727
+    → OnlyDamage#0[T2] terr=21440 bal=586298 dq=27.3 cnt=371 | c=30.0 rankC=15.0 need=1028532 tD=0.29 人 pulse bleeding | safe=2921727 keep=2921727 avail=-1292266 chunkB=329756 pulseB=197854 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56436 bal=5255408 dq=93.1 cnt=8 | c=551.3 rankC=551.3 need=9252206 tD=1.00 人 pulse crowdedHard | safe=2921727 keep=Inf avail=-Inf chunkB=329756 pulseB=197854 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4335 sora_w B=1648782 L=36489 d=45.2 nb=2 neut=0 cmds=106 noFull=1 shQ=412195 | m=0.900 worth=71.2 cheap=7.3 over=0 dMedOther=93.1 safe(-1)=2921727
+    → OnlyDamage#0[T2] terr=21501 bal=579823 dq=27.0 cnt=369 | c=29.9 rankC=15.0 need=1018626 tD=0.29 人 pulse bleeding | safe=2921727 keep=2921727 avail=-1292266 chunkB=329756 pulseB=197854 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56436 bal=5255408 dq=93.1 cnt=8 | c=551.2 rankC=551.2 need=9253044 tD=1.00 人 pulse crowdedHard | safe=2921727 keep=Inf avail=-Inf chunkB=329756 pulseB=197854 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4340 sora_w B=1671370 L=36489 d=45.8 nb=2 neut=0 cmds=106 noFull=1 shQ=417842 | m=0.900 worth=72.3 cheap=7.3 over=0 dMedOther=94.5 safe(-1)=2964833
+    → OnlyDamage#0[T2] terr=21758 bal=583644 dq=26.8 cnt=368 | c=30.1 rankC=15.0 need=1029114 tD=0.28 人 pulse bleeding | safe=2964833 keep=2964833 avail=-1313049 chunkB=334274 pulseB=200564 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56436 bal=5332136 dq=94.5 cnt=8 | c=559.2 rankC=559.2 need=9387935 tD=1.00 人 pulse crowdedHard | safe=2964833 keep=Inf avail=-Inf chunkB=334274 pulseB=200564 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4345 sora_w B=1671370 L=36489 d=45.8 nb=2 neut=0 cmds=106 noFull=1 shQ=417842 | m=0.900 worth=72.3 cheap=7.3 over=0 dMedOther=94.5 safe(-1)=2964833
+    → OnlyDamage#0[T2] terr=21849 bal=577114 dq=26.4 cnt=367 | c=29.9 rankC=15.0 need=1019448 tD=0.28 人 pulse bleeding | safe=2964833 keep=2964833 avail=-1313049 chunkB=334274 pulseB=200564 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56436 bal=5332136 dq=94.5 cnt=8 | c=559.1 rankC=559.1 need=9388784 tD=1.00 人 pulse crowdedHard | safe=2964833 keep=Inf avail=-Inf chunkB=334274 pulseB=200564 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4350 sora_w B=1694267 L=36489 d=46.4 nb=2 neut=0 cmds=106 noFull=1 shQ=423566 | m=0.900 worth=73.3 cheap=7.3 over=0 dMedOther=95.9 safe(-1)=3008568
+    → OnlyDamage#0[T2] terr=22079 bal=578484 dq=26.2 cnt=367 | c=27.2 rankC=13.6 need=1025180 tD=0.27 人 pulse bleeding | safe=3008568 keep=3008568 avail=-1334155 chunkB=338853 pulseB=203312 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56436 bal=5409985 dq=95.9 cnt=8 | c=567.2 rankC=567.2 need=9525528 tD=1.00 人 pulse crowdedHard | safe=3008568 keep=Inf avail=-Inf chunkB=338853 pulseB=203312 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4355 sora_w B=1694267 L=36489 d=46.4 nb=2 neut=0 cmds=106 noFull=1 shQ=423566 | m=0.900 worth=73.3 cheap=7.3 over=0 dMedOther=95.9 safe(-1)=3008568
+    → OnlyDamage#0[T2] terr=22052 bal=567210 dq=25.7 cnt=365 | c=16.5 rankC=4.9 need=1005607 tD=0.27 人 pulse bleeding | safe=3008568 keep=3008568 avail=-1334155 chunkB=338853 pulseB=203312 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56436 bal=5409985 dq=95.9 cnt=8 | c=567.2 rankC=567.2 need=9526389 tD=1.00 人 pulse crowdedHard | safe=3008568 keep=Inf avail=-Inf chunkB=338853 pulseB=203312 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4360 sora_w B=1717478 L=36489 d=47.1 nb=2 neut=0 cmds=106 noFull=1 shQ=429369 | m=0.900 worth=74.4 cheap=7.3 over=0 dMedOther=97.3 safe(-1)=3052942
+    → OnlyDamage#0[T2] terr=21951 bal=555001 dq=25.3 cnt=365 | c=24.8 rankC=12.4 need=983440 tD=0.26 人 pulse bleeding | safe=3052942 keep=3052942 avail=-1355590 chunkB=343496 pulseB=206097 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56436 bal=5488970 dq=97.3 cnt=8 | c=575.3 rankC=575.3 need=9665298 tD=1.00 人 pulse crowdedHard | safe=3052942 keep=Inf avail=-Inf chunkB=343496 pulseB=206097 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4365 sora_w B=1717478 L=36489 d=47.1 nb=2 neut=0 cmds=106 noFull=1 shQ=429369 | m=0.900 worth=74.4 cheap=7.3 over=0 dMedOther=97.3 safe(-1)=3052942
+    → OnlyDamage#0[T2] terr=21570 bal=530109 dq=24.6 cnt=365 | c=22.5 rankC=11.2 need=935885 tD=0.25 人 pulse bleeding | safe=3052942 keep=3052942 avail=-1355590 chunkB=343496 pulseB=206097 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56436 bal=5488970 dq=97.3 cnt=8 | c=575.3 rankC=575.3 need=9666172 tD=1.00 人 pulse crowdedHard | safe=3052942 keep=Inf avail=-Inf chunkB=343496 pulseB=206097 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4370 sora_w B=1741007 L=36489 d=47.7 nb=2 neut=0 cmds=106 noFull=1 shQ=435251 | m=0.900 worth=75.5 cheap=7.3 over=0 dMedOther=98.7 safe(-1)=3097963
+    → OnlyDamage#0[T2] terr=21537 bal=521383 dq=24.2 cnt=367 | c=22.9 rankC=11.5 need=920736 tD=0.25 人 pulse bleeding | safe=3097963 keep=3097963 avail=-1377358 chunkB=348201 pulseB=208921 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56436 bal=5569108 dq=98.7 cnt=8 | c=583.6 rankC=583.6 need=9806987 tD=1.00 人 pulse crowdedHard | safe=3097963 keep=Inf avail=-Inf chunkB=348201 pulseB=208921 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4375 sora_w B=1741007 L=36489 d=47.7 nb=2 neut=0 cmds=106 noFull=1 shQ=435251 | m=0.900 worth=75.5 cheap=7.3 over=0 dMedOther=98.7 safe(-1)=3097963
+    → OnlyDamage#0[T2] terr=21175 bal=498335 dq=23.5 cnt=368 | c=27.6 rankC=13.8 need=876839 tD=0.24 人 pulse bleeding | safe=3097963 keep=3097963 avail=-1377358 chunkB=348201 pulseB=208921 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56436 bal=5569108 dq=98.7 cnt=8 | c=583.6 rankC=583.6 need=9807873 tD=1.00 人 pulse crowdedHard | safe=3097963 keep=Inf avail=-Inf chunkB=348201 pulseB=208921 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4380 sora_w B=1764858 L=36489 d=48.4 nb=2 neut=0 cmds=106 noFull=1 shQ=441214 | m=0.900 worth=76.3 cheap=7.3 over=0 dMedOther=99.7 safe(-1)=3143642
+    → OnlyDamage#0[T2] terr=21100 bal=488703 dq=23.2 cnt=370 | c=28.2 rankC=14.1 need=859669 tD=0.23 人 pulse bleeding | safe=3143642 keep=3143642 avail=-1399465 chunkB=352972 pulseB=211783 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56436 bal=5650416 dq=100.1 cnt=8 | c=592.0 rankC=592.0 need=9950919 tD=1.00 人 pulse crowdedHard | safe=3143642 keep=Inf avail=-Inf chunkB=352972 pulseB=211783 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4385 sora_w B=1764858 L=36489 d=48.4 nb=2 neut=0 cmds=106 noFull=1 shQ=441214 | m=0.900 worth=75.8 cheap=7.3 over=0 dMedOther=99.1 safe(-1)=3143642
+    → OnlyDamage#0[T2] terr=20788 bal=468729 dq=22.5 cnt=370 | c=28.7 rankC=14.3 need=821893 tD=0.23 人 pulse bleeding | safe=3143642 keep=3143642 avail=-1399465 chunkB=352972 pulseB=211783 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56436 bal=5650416 dq=100.1 cnt=8 | c=591.9 rankC=591.9 need=9951817 tD=1.01 人 pulse crowdedHard | safe=3143642 keep=Inf avail=-Inf chunkB=352972 pulseB=211783 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4390 sora_w B=1789036 L=36489 d=49.0 nb=2 neut=0 cmds=106 noFull=1 shQ=447259 | m=0.900 worth=76.4 cheap=7.3 over=0 dMedOther=99.9 safe(-1)=3189988
+    → OnlyDamage#0[T2] terr=20736 bal=420623 dq=20.3 cnt=373 | c=26.5 rankC=13.2 need=740066 tD=0.20 人 pulse bleeding | safe=3189988 keep=3189988 avail=-1421917 chunkB=357807 pulseB=214684 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56436 bal=5732912 dq=101.6 cnt=8 | c=600.5 rankC=600.5 need=10096829 tD=1.02 人 pulse crowdedHard | safe=3189988 keep=Inf avail=-Inf chunkB=357807 pulseB=214684 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4395 sora_w B=1789036 L=36489 d=49.0 nb=2 neut=0 cmds=106 noFull=1 shQ=447259 | m=0.900 worth=76.4 cheap=7.3 over=0 dMedOther=99.9 safe(-1)=3189988
+    → OnlyDamage#0[T2] terr=20448 bal=404219 dq=19.8 cnt=373 | c=26.9 rankC=13.5 need=709122 tD=0.20 人 pulse bleeding | safe=3189988 keep=3189988 avail=-1421917 chunkB=357807 pulseB=214684 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56436 bal=5732912 dq=101.6 cnt=8 | c=600.4 rankC=600.4 need=10097739 tD=1.02 人 pulse crowdedHard | safe=3189988 keep=Inf avail=-Inf chunkB=357807 pulseB=214684 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4400 sora_w B=1850034 L=36489 d=50.7 nb=2 neut=0 cmds=106 noFull=1 shQ=453641 | m=0.900 worth=75.8 cheap=7.3 over=0 dMedOther=99.1 safe(-1)=2678350
+    → OnlyDamage#0[T2] terr=20756 bal=426105 dq=20.5 cnt=375 | c=28.3 rankC=14.1 need=749996 tD=0.21 人 pulse bleeding | safe=2678350 keep=2678350 avail=-849996 chunkB=370007 pulseB=222004 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56436 bal=4822196 dq=85.4 cnt=8 | c=506.0 rankC=506.0 need=8507539 tD=0.86 人 pulse crowdedHard | safe=2678350 keep=Inf avail=-Inf chunkB=370007 pulseB=222004 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4405 sora_w B=1850034 L=36489 d=50.7 nb=2 neut=0 cmds=106 noFull=1 shQ=462508 | m=0.900 worth=68.8 cheap=7.3 over=0 dMedOther=89.9 safe(-1)=2678350
+    → OnlyDamage#0[T2] terr=20925 bal=423847 dq=20.3 cnt=376 | c=28.0 rankC=14.0 need=748393 tD=0.23 人 pulse bleeding | safe=2678350 keep=2678350 avail=-849996 chunkB=370007 pulseB=222004 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=56617 bal=4822196 dq=85.2 cnt=8 | c=504.2 rankC=504.2 need=8514893 tD=0.95 人 pulse crowdedHard | safe=2678350 keep=Inf avail=-Inf chunkB=370007 pulseB=222004 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4410 sora_w B=1875379 L=36489 d=51.4 nb=2 neut=0 cmds=106 noFull=1 shQ=468844 | m=0.900 worth=69.8 cheap=7.3 over=0 dMedOther=91.2 safe(-1)=2717903
+    → OnlyDamage#0[T2] terr=21219 bal=426898 dq=20.1 cnt=378 | c=28.0 rankC=14.0 need=757179 tD=0.22 人 pulse bleeding | safe=2717903 keep=2717903 avail=-864501 chunkB=375076 pulseB=225045 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=57135 bal=4892600 dq=85.6 cnt=8 | c=506.2 rankC=506.2 need=8657467 tD=0.94 人 pulse crowdedHard | safe=2717903 keep=Inf avail=-Inf chunkB=375076 pulseB=225045 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4415 sora_w B=1875379 L=36489 d=51.4 nb=2 neut=0 cmds=106 noFull=1 shQ=468844 | m=0.900 worth=69.3 cheap=7.3 over=0 dMedOther=90.6 safe(-1)=2717903
+    → OnlyDamage#0[T2] terr=21439 bal=425683 dq=19.9 cnt=378 | c=27.7 rankC=13.8 need=757772 tD=0.22 人 pulse bleeding | safe=2717903 keep=2717903 avail=-864501 chunkB=375076 pulseB=225045 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=57459 bal=4892600 dq=85.1 cnt=8 | c=502.9 rankC=502.9 need=8669653 tD=0.94 人 pulse crowdedHard | safe=2717903 keep=Inf avail=-Inf chunkB=375076 pulseB=225045 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4420 sora_w B=1901071 L=36489 d=52.1 nb=2 neut=0 cmds=106 noFull=1 shQ=475267 | m=0.900 worth=70.0 cheap=7.3 over=0 dMedOther=91.5 safe(-1)=2758308
+    → OnlyDamage#0[T2] terr=21773 bal=428608 dq=19.7 cnt=378 | c=27.6 rankC=13.8 need=766611 tD=0.22 人 pulse bleeding | safe=2758308 keep=2758308 avail=-879515 chunkB=380214 pulseB=228129 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=57919 bal=4964521 dq=85.7 cnt=8 | c=505.6 rankC=505.6 need=8812843 tD=0.94 人 pulse crowdedHard | safe=2758308 keep=Inf avail=-Inf chunkB=380214 pulseB=228129 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4425 sora_w B=1901071 L=36489 d=52.1 nb=2 neut=0 cmds=106 noFull=1 shQ=475267 | m=0.900 worth=69.6 cheap=7.3 over=0 dMedOther=90.9 safe(-1)=2758308
+    → OnlyDamage#0[T2] terr=21977 bal=426014 dq=19.4 cnt=378 | c=18.5 rankC=5.6 need=764478 tD=0.21 人 pulse bleeding | safe=2758308 keep=2758308 avail=-879515 chunkB=380214 pulseB=228129 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=58203 bal=4964521 dq=85.3 cnt=8 | c=502.8 rankC=502.8 need=8823275 tD=0.94 人 pulse crowdedHard | safe=2758308 keep=Inf avail=-Inf chunkB=380214 pulseB=228129 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4430 sora_w B=1927115 L=36489 d=52.8 nb=2 neut=0 cmds=106 noFull=1 shQ=481778 | m=0.900 worth=70.2 cheap=7.3 over=0 dMedOther=91.8 safe(-1)=2799306
+    → OnlyDamage#0[T2] terr=22378 bal=430168 dq=19.2 cnt=380 | c=27.1 rankC=13.6 need=775972 tD=0.21 人 pulse bleeding | safe=2799306 keep=2799306 avail=-894774 chunkB=385423 pulseB=231254 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=58609 bal=5037499 dq=86.0 cnt=8 | c=506.1 rankC=506.1 need=8966404 tD=0.94 人 pulse crowdedHard | safe=2799306 keep=Inf avail=-Inf chunkB=385423 pulseB=231254 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4435 sora_w B=1927115 L=36489 d=52.8 nb=2 neut=0 cmds=106 noFull=1 shQ=481778 | m=0.900 worth=69.8 cheap=7.3 over=0 dMedOther=91.2 safe(-1)=2799306
+    → OnlyDamage#0[T2] terr=22588 bal=427381 dq=18.9 cnt=380 | c=26.9 rankC=13.4 need=773377 tD=0.21 人 pulse bleeding | safe=2799306 keep=2799306 avail=-894774 chunkB=385423 pulseB=231254 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=58870 bal=5037499 dq=85.6 cnt=8 | c=503.5 rankC=503.5 need=8975765 tD=0.94 人 pulse crowdedHard | safe=2799306 keep=Inf avail=-Inf chunkB=385423 pulseB=231254 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4440 sora_w B=1953516 L=36489 d=53.5 nb=2 neut=0 cmds=106 noFull=1 shQ=488379 | m=0.900 worth=70.5 cheap=7.3 over=0 dMedOther=92.1 safe(-1)=2840908
+    → OnlyDamage#0[T2] terr=22957 bal=429982 dq=18.7 cnt=380 | c=26.8 rankC=13.4 need=781643 tD=0.20 人 pulse bleeding | safe=2840908 keep=2840908 avail=-910284 chunkB=390703 pulseB=234422 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=59252 bal=5111550 dq=86.3 cnt=8 | c=507.1 rankC=507.1 need=9119837 tD=0.94 人 pulse crowdedHard | safe=2840908 keep=Inf avail=-Inf chunkB=390703 pulseB=234422 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4445 sora_w B=1953516 L=36489 d=53.5 nb=2 neut=0 cmds=106 noFull=1 shQ=488379 | m=0.900 worth=70.0 cheap=7.3 over=0 dMedOther=91.5 safe(-1)=2840969
+    → OnlyDamage#0[T2] terr=23225 bal=428465 dq=18.4 cnt=380 | c=26.4 rankC=13.2 need=781640 tD=0.20 人 pulse bleeding | safe=2840969 keep=2840969 avail=-910345 chunkB=390703 pulseB=234422 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=59252 bal=5111659 dq=86.3 cnt=8 | c=507.1 rankC=507.1 need=9120406 tD=0.94 人 pulse crowdedHard | safe=2840969 keep=Inf avail=-Inf chunkB=390703 pulseB=234422 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4450 sora_w B=1980279 L=36489 d=54.3 nb=2 neut=0 cmds=106 noFull=1 shQ=495069 | m=0.900 worth=70.7 cheap=7.3 over=0 dMedOther=92.5 safe(-1)=2883183
+    → OnlyDamage#0[T2] terr=23611 bal=430921 dq=18.3 cnt=381 | c=26.3 rankC=13.1 need=789637 tD=0.20 人 pulse bleeding | safe=2883183 keep=2883183 avail=-926110 chunkB=396056 pulseB=237633 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=59252 bal=5186800 dq=87.5 cnt=8 | c=514.5 rankC=514.5 need=9253441 tD=0.95 人 pulse crowdedHard | safe=2883183 keep=Inf avail=-Inf chunkB=396056 pulseB=237633 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4455 sora_w B=1980279 L=36489 d=54.3 nb=2 neut=0 cmds=106 noFull=1 shQ=495069 | m=0.900 worth=70.3 cheap=7.3 over=0 dMedOther=92.0 safe(-1)=2883183
+    → OnlyDamage#0[T2] terr=23836 bal=427677 dq=17.9 cnt=381 | c=26.0 rankC=13.0 need=786024 tD=0.20 人 pulse bleeding | safe=2883183 keep=2883183 avail=-926110 chunkB=396056 pulseB=237633 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=59252 bal=5186800 dq=87.5 cnt=8 | c=514.5 rankC=514.5 need=9253822 tD=0.95 人 pulse crowdedHard | safe=2883183 keep=Inf avail=-Inf chunkB=396056 pulseB=237633 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4460 sora_w B=2007408 L=36489 d=55.0 nb=2 neut=0 cmds=106 noFull=1 shQ=501852 | m=0.900 worth=71.1 cheap=7.3 over=0 dMedOther=93.0 safe(-1)=2926018
+    → OnlyDamage#0[T2] terr=24293 bal=431562 dq=17.8 cnt=382 | c=25.8 rankC=12.9 need=796936 tD=0.19 人 pulse bleeding | safe=2926018 keep=2926018 avail=-942134 chunkB=401482 pulseB=240889 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=59252 bal=5263045 dq=88.8 cnt=8 | c=522.0 rankC=522.0 need=9388822 tD=0.96 人 pulse crowdedHard | safe=2926018 keep=Inf avail=-Inf chunkB=401482 pulseB=240889 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4465 sora_w B=2007408 L=36489 d=55.0 nb=2 neut=0 cmds=106 noFull=1 shQ=501852 | m=0.900 worth=70.8 cheap=7.3 over=0 dMedOther=92.6 safe(-1)=2926018
+    → OnlyDamage#0[T2] terr=24511 bal=428082 dq=17.5 cnt=382 | c=25.6 rankC=12.8 need=792697 tD=0.19 人 pulse bleeding | safe=2926018 keep=2926018 avail=-942134 chunkB=401482 pulseB=240889 无可用(avail<=0) hNb=2
+    → wkWvD#11[T2] terr=59252 bal=5263045 dq=88.8 cnt=8 | c=522.0 rankC=522.0 need=9389208 tD=0.96 人 pulse crowdedHard | safe=2926018 keep=Inf avail=-Inf chunkB=401482 pulseB=240889 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4470 sora_w B=2034909 L=36489 d=55.8 nb=2 neut=0 cmds=106 noFull=1 shQ=508727 | m=0.900 worth=71.6 cheap=7.3 over=0 dMedOther=93.7 safe(-1)=2969482
+    → OnlyDamage#0[T2] terr=25031 bal=1035400 dq=41.4 cnt=384 | c=145.5 rankC=211.0 need=1875012 tD=0.44 人 pulse | safe=2969482 keep=Inf avail=-Inf chunkB=406982 pulseB=244189 价高(c>=worth)→break hNb=2
+    → wkWvD#11[T2] terr=59252 bal=5340411 dq=90.1 cnt=8 | c=767.9 rankC=1113.4 need=9526202 tD=0.96 人 pulse crowdedHard | safe=2969482 keep=Inf avail=-Inf chunkB=406982 pulseB=244189 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4475 sora_w B=2034909 L=36489 d=55.8 nb=2 neut=0 cmds=106 noFull=1 shQ=508727 | m=0.900 worth=71.3 cheap=7.3 over=0 dMedOther=93.3 safe(-1)=2969482
+    → OnlyDamage#0[T2] terr=25386 bal=1035400 dq=40.8 cnt=385 | c=143.3 rankC=207.8 need=1880974 tD=0.44 人 pulse | safe=2969482 keep=Inf avail=-Inf chunkB=406982 pulseB=244189 价高(c>=worth)→break hNb=2
+    → wkWvD#11[T2] terr=59252 bal=5340411 dq=90.1 cnt=8 | c=767.8 rankC=1113.4 need=9526594 tD=0.97 人 pulse crowdedHard | safe=2969482 keep=Inf avail=-Inf chunkB=406982 pulseB=244189 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4480 sora_w B=2062787 L=36489 d=56.5 nb=2 neut=0 cmds=106 noFull=1 shQ=515696 | m=0.900 worth=72.2 cheap=7.3 over=0 dMedOther=94.4 safe(-1)=3013585
+    → OnlyDamage#0[T2] terr=25933 bal=1048860 dq=40.4 cnt=388 | c=142.0 rankC=205.9 need=1908363 tD=0.43 人 pulse | safe=3013585 keep=Inf avail=-Inf chunkB=412557 pulseB=247534 价高(c>=worth)→break hNb=2
+    → wkWvD#11[T2] terr=59252 bal=5418915 dq=91.5 cnt=8 | c=779.0 rankC=1129.6 need=9665612 tD=0.97 人 pulse crowdedHard | safe=3013585 keep=Inf avail=-Inf chunkB=412557 pulseB=247534 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4485 sora_w B=2062787 L=36489 d=56.5 nb=2 neut=0 cmds=106 noFull=1 shQ=515696 | m=0.900 worth=70.0 cheap=7.3 over=0 dMedOther=91.5 safe(-1)=3013585
+    → OnlyDamage#0[T2] terr=26308 bal=1048860 dq=39.9 cnt=389 | c=96.6 rankC=96.6 need=1908911 tD=0.44 人 pulse bleeding | safe=3013585 keep=Inf avail=-Inf chunkB=412557 pulseB=247534 价高(c>=worth)→break hNb=2
+    → wkWvD#11[T2] terr=59252 bal=5418915 dq=91.5 cnt=8 | c=537.2 rankC=537.2 need=9666010 tD=1.00 人 pulse crowdedHard | safe=3013585 keep=Inf avail=-Inf chunkB=412557 pulseB=247534 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4490 sora_w B=2091047 L=36489 d=57.3 nb=2 neut=0 cmds=106 noFull=1 shQ=522761 | m=0.900 worth=71.0 cheap=7.3 over=0 dMedOther=92.8 safe(-1)=3058337
+    → OnlyDamage#0[T2] terr=26870 bal=1062600 dq=39.5 cnt=390 | c=138.9 rankC=201.4 need=1934272 tD=0.43 人 pulse | safe=3058337 keep=Inf avail=-Inf chunkB=418209 pulseB=250926 价高(c>=worth)→break hNb=2
+    → wkWvD#11[T2] terr=59252 bal=5498573 dq=92.8 cnt=8 | c=790.3 rankC=1146.0 need=9807081 tD=1.00 人 pulse crowdedHard | safe=3058337 keep=Inf avail=-Inf chunkB=418209 pulseB=250926 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4495 sora_w B=2091047 L=36489 d=57.3 nb=2 neut=0 cmds=106 noFull=1 shQ=522761 | m=0.900 worth=71.0 cheap=7.3 over=0 dMedOther=92.8 safe(-1)=3058337
+    → OnlyDamage#0[T2] terr=27233 bal=1062600 dq=39.0 cnt=392 | c=137.1 rankC=198.8 need=1934802 tD=0.42 人 pulse | safe=3058337 keep=Inf avail=-Inf chunkB=418209 pulseB=250926 价高(c>=worth)→break hNb=2
+    → wkWvD#11[T2] terr=59252 bal=5498573 dq=92.8 cnt=8 | c=790.3 rankC=1145.9 need=9807484 tD=1.00 人 pulse crowdedHard | safe=3058337 keep=Inf avail=-Inf chunkB=418209 pulseB=250926 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=4500 sora_w B=2156183 L=36489 d=59.1 nb=2 neut=0 cmds=106 noFull=1 shQ=530199 | m=0.900 worth=72.8 cheap=7.3 over=0 dMedOther=95.2 safe(-1)=3137034
+    → OnlyDamage#0[T2] terr=27773 bal=1104218 dq=39.8 cnt=393 | c=139.6 rankC=202.5 need=2009790 tD=0.42 人 pulse | safe=3137034 keep=Inf avail=-Inf chunkB=431237 pulseB=258742 价高(c>=worth)→break hNb=2
+    → wkWvD#11[T2] terr=59252 bal=5638654 dq=95.2 cnt=8 | c=810.2 rankC=1174.9 need=10055381 tD=1.00 人 pulse crowdedHard | safe=3137034 keep=Inf avail=-Inf chunkB=431237 pulseB=258742 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令

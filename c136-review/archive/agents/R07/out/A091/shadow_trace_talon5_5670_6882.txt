@@ -1,0 +1,732 @@
+# A091 talon5 影子决策明细 t=5670~6882（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没有可打的邻居: 208 拍（t=5670~6725）
+#   捐兵: 4 拍（t=5695~6545）
+#   首选目标价高（c>=worth）: 21 拍（t=6730~6830）
+#   首选目标无可用兵（avail<=0）: 9 拍（t=6835~6875）；可用兵 -673920~-354180，一条指令下限(20%余额) 25773~106404，比值 -1374%~-633%
+t=5670 talon5 B=863854 L=17797 d=48.5 nb=0 neut=0 cmds=81 noFull=1 shQ=215963 | m=0.900 worth=87.5 cheap=7.7 over=0 dMedOther=114.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5675 talon5 B=863854 L=17797 d=48.5 nb=0 neut=0 cmds=81 noFull=1 shQ=215963 | m=0.900 worth=87.5 cheap=7.7 over=0 dMedOther=114.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5680 talon5 B=874997 L=17797 d=49.2 nb=0 neut=0 cmds=81 noFull=1 shQ=218749 | m=0.900 worth=82.9 cheap=7.7 over=0 dMedOther=108.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5685 talon5 B=874997 L=17797 d=49.2 nb=0 neut=0 cmds=81 noFull=1 shQ=218749 | m=0.900 worth=77.5 cheap=7.7 over=0 dMedOther=101.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5690 talon5 B=886284 L=17797 d=49.8 nb=0 neut=0 cmds=81 noFull=1 shQ=221571 | m=0.900 worth=78.2 cheap=7.7 over=0 dMedOther=102.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5695 talon5 B=886284 L=17797 d=49.8 nb=0 neut=0 cmds=82 noFull=1 shQ=221571 | m=0.900 worth=77.6 cheap=7.7 over=0 dMedOther=101.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=366 → [APEX] noah88#12[T2]（约 317642 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=5700 talon5 B=915514 L=17797 d=51.4 nb=0 neut=0 cmds=82 noFull=1 shQ=224523 | m=0.900 worth=79.1 cheap=7.7 over=0 dMedOther=103.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5705 talon5 B=915514 L=17797 d=51.4 nb=0 neut=0 cmds=82 noFull=1 shQ=228878 | m=0.900 worth=78.5 cheap=7.7 over=0 dMedOther=102.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5710 talon5 B=537016 L=17797 d=30.2 nb=0 neut=0 cmds=82 noFull=1 shQ=134254 | m=0.900 worth=79.2 cheap=7.7 over=0 dMedOther=103.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5715 talon5 B=537016 L=17797 d=30.2 nb=0 neut=0 cmds=82 noFull=1 shQ=134254 | m=0.900 worth=78.4 cheap=7.7 over=0 dMedOther=102.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5720 talon5 B=543943 L=17797 d=30.6 nb=0 neut=0 cmds=82 noFull=1 shQ=135985 | m=0.900 worth=79.6 cheap=7.7 over=0 dMedOther=104.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5725 talon5 B=543943 L=17797 d=30.6 nb=0 neut=0 cmds=82 noFull=1 shQ=135985 | m=0.900 worth=79.6 cheap=7.7 over=0 dMedOther=104.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5730 talon5 B=550959 L=17797 d=31.0 nb=0 neut=0 cmds=82 noFull=1 shQ=137739 | m=0.900 worth=81.7 cheap=7.7 over=0 dMedOther=106.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5735 talon5 B=550959 L=17797 d=31.0 nb=0 neut=0 cmds=82 noFull=1 shQ=137739 | m=0.900 worth=81.7 cheap=7.7 over=0 dMedOther=106.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5740 talon5 B=558066 L=17797 d=31.4 nb=0 neut=0 cmds=82 noFull=1 shQ=139516 | m=0.900 worth=82.9 cheap=7.7 over=0 dMedOther=108.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5745 talon5 B=558066 L=17797 d=31.4 nb=0 neut=0 cmds=82 noFull=1 shQ=139516 | m=0.900 worth=82.9 cheap=7.7 over=0 dMedOther=108.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5750 talon5 B=565265 L=17797 d=31.8 nb=0 neut=0 cmds=82 noFull=1 shQ=141316 | m=0.900 worth=84.0 cheap=7.7 over=0 dMedOther=109.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5755 talon5 B=565265 L=17797 d=31.8 nb=0 neut=0 cmds=82 noFull=1 shQ=141316 | m=0.900 worth=84.0 cheap=7.7 over=0 dMedOther=109.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5760 talon5 B=572556 L=17797 d=32.2 nb=0 neut=0 cmds=82 noFull=1 shQ=143139 | m=0.900 worth=85.1 cheap=7.7 over=0 dMedOther=111.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5765 talon5 B=572556 L=17797 d=32.2 nb=0 neut=0 cmds=82 noFull=1 shQ=143139 | m=0.900 worth=85.1 cheap=7.7 over=0 dMedOther=111.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5770 talon5 B=579941 L=17797 d=32.6 nb=0 neut=0 cmds=82 noFull=1 shQ=144985 | m=0.900 worth=81.2 cheap=7.7 over=0 dMedOther=106.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5775 talon5 B=579941 L=17797 d=32.6 nb=0 neut=0 cmds=82 noFull=1 shQ=144985 | m=0.900 worth=81.2 cheap=7.7 over=0 dMedOther=106.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5780 talon5 B=587422 L=17797 d=33.0 nb=0 neut=0 cmds=82 noFull=1 shQ=146855 | m=0.900 worth=80.4 cheap=7.7 over=0 dMedOther=105.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5785 talon5 B=587422 L=17797 d=33.0 nb=0 neut=0 cmds=82 noFull=1 shQ=146855 | m=0.900 worth=79.6 cheap=7.7 over=0 dMedOther=104.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5790 talon5 B=594999 L=17797 d=33.4 nb=0 neut=0 cmds=82 noFull=1 shQ=148749 | m=0.900 worth=80.1 cheap=7.7 over=0 dMedOther=104.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5795 talon5 B=594999 L=17797 d=33.4 nb=0 neut=0 cmds=82 noFull=1 shQ=148749 | m=0.900 worth=80.0 cheap=7.7 over=0 dMedOther=104.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5800 talon5 B=620471 L=17797 d=34.9 nb=0 neut=0 cmds=82 noFull=1 shQ=150750 | m=0.900 worth=81.9 cheap=7.7 over=0 dMedOther=107.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5805 talon5 B=620471 L=17797 d=34.9 nb=0 neut=0 cmds=82 noFull=1 shQ=155117 | m=0.900 worth=81.9 cheap=7.7 over=0 dMedOther=107.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5810 talon5 B=628475 L=17797 d=35.3 nb=0 neut=0 cmds=82 noFull=1 shQ=157118 | m=0.900 worth=83.1 cheap=7.7 over=0 dMedOther=108.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5815 talon5 B=628475 L=17797 d=35.3 nb=0 neut=0 cmds=82 noFull=1 shQ=157118 | m=0.900 worth=83.1 cheap=7.7 over=0 dMedOther=108.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5820 talon5 B=636582 L=17797 d=35.8 nb=0 neut=0 cmds=82 noFull=1 shQ=159145 | m=0.900 worth=84.2 cheap=7.7 over=0 dMedOther=110.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5825 talon5 B=636582 L=17797 d=35.8 nb=0 neut=0 cmds=82 noFull=1 shQ=159145 | m=0.900 worth=84.2 cheap=7.7 over=0 dMedOther=110.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5830 talon5 B=644793 L=17797 d=36.2 nb=0 neut=0 cmds=82 noFull=1 shQ=161198 | m=0.900 worth=85.4 cheap=7.7 over=0 dMedOther=111.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5835 talon5 B=644793 L=17797 d=36.2 nb=0 neut=0 cmds=82 noFull=1 shQ=161198 | m=0.900 worth=85.4 cheap=7.7 over=0 dMedOther=111.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5840 talon5 B=653110 L=17797 d=36.7 nb=0 neut=0 cmds=82 noFull=1 shQ=163277 | m=0.900 worth=86.5 cheap=7.7 over=0 dMedOther=113.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5845 talon5 B=653110 L=17797 d=36.7 nb=0 neut=0 cmds=82 noFull=1 shQ=163277 | m=0.900 worth=86.5 cheap=7.7 over=0 dMedOther=113.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5850 talon5 B=661535 L=17797 d=37.2 nb=0 neut=0 cmds=82 noFull=1 shQ=165383 | m=0.900 worth=87.5 cheap=7.7 over=0 dMedOther=114.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5855 talon5 B=661535 L=17797 d=37.2 nb=0 neut=0 cmds=82 noFull=1 shQ=165383 | m=0.900 worth=87.5 cheap=7.7 over=0 dMedOther=114.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5860 talon5 B=670068 L=17797 d=37.7 nb=0 neut=0 cmds=82 noFull=1 shQ=167517 | m=0.900 worth=82.1 cheap=7.7 over=0 dMedOther=107.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5865 talon5 B=670068 L=17797 d=37.7 nb=0 neut=0 cmds=82 noFull=1 shQ=167517 | m=0.900 worth=82.1 cheap=7.7 over=0 dMedOther=107.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5870 talon5 B=678711 L=17797 d=38.1 nb=0 neut=0 cmds=82 noFull=1 shQ=169677 | m=0.900 worth=82.8 cheap=7.7 over=0 dMedOther=108.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5875 talon5 B=678711 L=17797 d=38.1 nb=0 neut=0 cmds=82 noFull=1 shQ=169677 | m=0.900 worth=82.8 cheap=7.7 over=0 dMedOther=108.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5880 talon5 B=687466 L=17797 d=38.6 nb=0 neut=0 cmds=82 noFull=1 shQ=171866 | m=0.900 worth=83.9 cheap=7.7 over=0 dMedOther=109.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5885 talon5 B=687466 L=17797 d=38.6 nb=0 neut=0 cmds=82 noFull=1 shQ=171866 | m=0.900 worth=83.9 cheap=7.7 over=0 dMedOther=109.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5890 talon5 B=696334 L=17797 d=39.1 nb=0 neut=0 cmds=82 noFull=1 shQ=174083 | m=0.900 worth=84.9 cheap=7.7 over=0 dMedOther=111.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5895 talon5 B=696334 L=17797 d=39.1 nb=0 neut=0 cmds=82 noFull=1 shQ=174083 | m=0.900 worth=84.9 cheap=7.7 over=0 dMedOther=111.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5900 talon5 B=723113 L=17797 d=40.6 nb=0 neut=0 cmds=82 noFull=1 shQ=176415 | m=0.900 worth=86.7 cheap=7.7 over=0 dMedOther=113.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5905 talon5 B=723113 L=17797 d=40.6 nb=0 neut=0 cmds=82 noFull=1 shQ=180778 | m=0.900 worth=86.7 cheap=7.7 over=0 dMedOther=113.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5910 talon5 B=732441 L=17797 d=41.2 nb=0 neut=0 cmds=82 noFull=1 shQ=183110 | m=0.900 worth=87.7 cheap=7.7 over=0 dMedOther=114.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5915 talon5 B=732441 L=17797 d=41.2 nb=0 neut=0 cmds=82 noFull=1 shQ=183110 | m=0.900 worth=87.7 cheap=7.7 over=0 dMedOther=114.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5920 talon5 B=741889 L=17797 d=41.7 nb=0 neut=0 cmds=82 noFull=1 shQ=185472 | m=0.900 worth=88.7 cheap=7.7 over=0 dMedOther=115.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5925 talon5 B=741889 L=17797 d=41.7 nb=0 neut=0 cmds=82 noFull=1 shQ=185472 | m=0.900 worth=84.4 cheap=7.7 over=0 dMedOther=110.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5930 talon5 B=751459 L=17797 d=42.2 nb=0 neut=0 cmds=82 noFull=1 shQ=187864 | m=0.900 worth=82.1 cheap=7.7 over=0 dMedOther=107.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5935 talon5 B=751459 L=17797 d=42.2 nb=0 neut=0 cmds=82 noFull=1 shQ=187864 | m=0.900 worth=82.9 cheap=7.7 over=0 dMedOther=108.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5940 talon5 B=761152 L=17797 d=42.8 nb=0 neut=0 cmds=82 noFull=1 shQ=190288 | m=0.900 worth=83.6 cheap=7.7 over=0 dMedOther=109.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5945 talon5 B=761152 L=17797 d=42.8 nb=0 neut=0 cmds=82 noFull=1 shQ=190288 | m=0.900 worth=83.5 cheap=7.7 over=0 dMedOther=109.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5950 talon5 B=770970 L=17797 d=43.3 nb=0 neut=0 cmds=82 noFull=1 shQ=192742 | m=0.900 worth=90.7 cheap=7.7 over=0 dMedOther=118.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5955 talon5 B=770970 L=17797 d=43.3 nb=0 neut=0 cmds=82 noFull=1 shQ=192742 | m=0.900 worth=90.7 cheap=7.7 over=0 dMedOther=118.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5960 talon5 B=780915 L=17797 d=43.9 nb=0 neut=0 cmds=82 noFull=1 shQ=195228 | m=0.900 worth=89.7 cheap=7.7 over=0 dMedOther=117.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5965 talon5 B=780915 L=17797 d=43.9 nb=0 neut=0 cmds=82 noFull=1 shQ=195228 | m=0.900 worth=91.3 cheap=7.7 over=0 dMedOther=119.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5970 talon5 B=790988 L=17797 d=44.4 nb=0 neut=0 cmds=82 noFull=1 shQ=197747 | m=0.900 worth=91.9 cheap=7.7 over=0 dMedOther=120.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5975 talon5 B=790988 L=17797 d=44.4 nb=0 neut=0 cmds=82 noFull=1 shQ=197747 | m=0.900 worth=91.9 cheap=7.7 over=0 dMedOther=120.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5980 talon5 B=801191 L=17797 d=45.0 nb=0 neut=0 cmds=82 noFull=1 shQ=200297 | m=0.900 worth=92.5 cheap=7.7 over=0 dMedOther=121.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5985 talon5 B=801191 L=17797 d=45.0 nb=0 neut=0 cmds=82 noFull=1 shQ=200297 | m=0.900 worth=92.5 cheap=7.7 over=0 dMedOther=121.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5990 talon5 B=811526 L=17797 d=45.6 nb=0 neut=0 cmds=82 noFull=1 shQ=202881 | m=0.900 worth=93.1 cheap=7.7 over=0 dMedOther=121.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=5995 talon5 B=811526 L=17797 d=45.6 nb=0 neut=0 cmds=82 noFull=1 shQ=202881 | m=0.900 worth=93.1 cheap=7.7 over=0 dMedOther=121.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6000 talon5 B=839791 L=17797 d=47.2 nb=0 neut=0 cmds=82 noFull=1 shQ=205589 | m=0.900 worth=77.0 cheap=7.7 over=0 dMedOther=100.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6005 talon5 B=839791 L=17797 d=47.2 nb=0 neut=0 cmds=82 noFull=1 shQ=209947 | m=0.900 worth=76.7 cheap=7.7 over=0 dMedOther=100.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6010 talon5 B=850624 L=17797 d=47.8 nb=0 neut=0 cmds=82 noFull=1 shQ=212656 | m=0.900 worth=77.7 cheap=7.7 over=0 dMedOther=101.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6015 talon5 B=850624 L=17797 d=47.8 nb=0 neut=0 cmds=82 noFull=1 shQ=212656 | m=0.900 worth=77.6 cheap=7.7 over=0 dMedOther=101.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6020 talon5 B=861597 L=17797 d=48.4 nb=0 neut=0 cmds=83 noFull=1 shQ=215399 | m=0.900 worth=78.8 cheap=7.7 over=0 dMedOther=103.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=347 → [APEX] noah88#12[T2]（约 292808 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=6025 talon5 B=861597 L=17797 d=48.4 nb=0 neut=0 cmds=83 noFull=1 shQ=215399 | m=0.900 worth=78.6 cheap=7.7 over=0 dMedOther=102.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6030 talon5 B=872711 L=17797 d=49.0 nb=0 neut=0 cmds=83 noFull=1 shQ=218177 | m=0.900 worth=79.8 cheap=7.7 over=0 dMedOther=104.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6035 talon5 B=521582 L=17797 d=29.3 nb=0 neut=0 cmds=83 noFull=1 shQ=130395 | m=0.900 worth=93.5 cheap=7.7 over=0 dMedOther=122.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6040 talon5 B=528310 L=17797 d=29.7 nb=0 neut=0 cmds=83 noFull=1 shQ=132077 | m=0.900 worth=80.7 cheap=7.7 over=0 dMedOther=105.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6045 talon5 B=528310 L=17797 d=29.7 nb=0 neut=0 cmds=83 noFull=1 shQ=132077 | m=0.900 worth=94.0 cheap=7.7 over=0 dMedOther=122.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6050 talon5 B=535125 L=17797 d=30.1 nb=0 neut=0 cmds=83 noFull=1 shQ=133781 | m=0.900 worth=91.6 cheap=7.7 over=0 dMedOther=119.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6055 talon5 B=535125 L=17797 d=30.1 nb=0 neut=0 cmds=83 noFull=1 shQ=133781 | m=0.900 worth=91.6 cheap=7.7 over=0 dMedOther=119.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6060 talon5 B=542028 L=17797 d=30.5 nb=0 neut=0 cmds=83 noFull=1 shQ=135507 | m=0.900 worth=84.2 cheap=7.7 over=0 dMedOther=110.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6065 talon5 B=542028 L=17797 d=30.5 nb=0 neut=0 cmds=83 noFull=1 shQ=135507 | m=0.900 worth=92.3 cheap=7.7 over=0 dMedOther=120.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6070 talon5 B=549020 L=17797 d=30.8 nb=0 neut=0 cmds=83 noFull=1 shQ=137255 | m=0.900 worth=93.0 cheap=7.7 over=0 dMedOther=121.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6075 talon5 B=549020 L=17797 d=30.8 nb=0 neut=0 cmds=83 noFull=1 shQ=137255 | m=0.900 worth=93.0 cheap=7.7 over=0 dMedOther=121.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6080 talon5 B=556102 L=17797 d=31.2 nb=0 neut=0 cmds=83 noFull=1 shQ=139025 | m=0.900 worth=93.6 cheap=7.7 over=0 dMedOther=122.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6085 talon5 B=556102 L=17797 d=31.2 nb=0 neut=0 cmds=83 noFull=1 shQ=139025 | m=0.900 worth=93.6 cheap=7.7 over=0 dMedOther=122.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6090 talon5 B=563275 L=17797 d=31.6 nb=0 neut=0 cmds=83 noFull=1 shQ=140818 | m=0.900 worth=94.3 cheap=7.7 over=0 dMedOther=123.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6095 talon5 B=563275 L=17797 d=31.6 nb=0 neut=0 cmds=83 noFull=1 shQ=140818 | m=0.900 worth=94.3 cheap=7.7 over=0 dMedOther=123.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6100 talon5 B=588338 L=17797 d=33.1 nb=0 neut=0 cmds=83 noFull=1 shQ=142715 | m=0.900 worth=95.7 cheap=7.7 over=0 dMedOther=125.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6105 talon5 B=588338 L=17797 d=33.1 nb=0 neut=0 cmds=83 noFull=1 shQ=147084 | m=0.900 worth=95.7 cheap=7.7 over=0 dMedOther=125.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6110 talon5 B=595927 L=17797 d=33.5 nb=0 neut=0 cmds=83 noFull=1 shQ=148981 | m=0.900 worth=96.3 cheap=7.7 over=0 dMedOther=125.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6115 talon5 B=595927 L=17797 d=33.5 nb=0 neut=0 cmds=83 noFull=1 shQ=148981 | m=0.900 worth=96.2 cheap=7.7 over=0 dMedOther=125.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6120 talon5 B=603614 L=17797 d=33.9 nb=0 neut=0 cmds=83 noFull=1 shQ=150903 | m=0.900 worth=96.7 cheap=7.7 over=0 dMedOther=126.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6125 talon5 B=603614 L=17797 d=33.9 nb=0 neut=0 cmds=83 noFull=1 shQ=150903 | m=0.900 worth=96.7 cheap=7.7 over=0 dMedOther=126.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6130 talon5 B=611400 L=17797 d=34.4 nb=0 neut=0 cmds=83 noFull=1 shQ=152850 | m=0.900 worth=99.4 cheap=7.7 over=0 dMedOther=129.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6135 talon5 B=611400 L=17797 d=34.4 nb=0 neut=0 cmds=83 noFull=1 shQ=152850 | m=0.900 worth=99.4 cheap=7.7 over=0 dMedOther=129.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6140 talon5 B=619287 L=17797 d=34.8 nb=0 neut=0 cmds=83 noFull=1 shQ=154821 | m=0.900 worth=99.8 cheap=7.7 over=0 dMedOther=130.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6145 talon5 B=619287 L=17797 d=34.8 nb=0 neut=0 cmds=83 noFull=1 shQ=154821 | m=0.900 worth=99.8 cheap=7.7 over=0 dMedOther=130.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6150 talon5 B=627275 L=17797 d=35.2 nb=0 neut=0 cmds=83 noFull=1 shQ=156818 | m=0.900 worth=100.3 cheap=7.7 over=0 dMedOther=131.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6155 talon5 B=627275 L=17797 d=35.2 nb=0 neut=0 cmds=83 noFull=1 shQ=156818 | m=0.900 worth=100.3 cheap=7.7 over=0 dMedOther=131.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6160 talon5 B=635366 L=17797 d=35.7 nb=0 neut=0 cmds=83 noFull=1 shQ=158841 | m=0.900 worth=100.7 cheap=7.7 over=0 dMedOther=131.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6165 talon5 B=635366 L=17797 d=35.7 nb=0 neut=0 cmds=83 noFull=1 shQ=158841 | m=0.900 worth=92.3 cheap=7.7 over=0 dMedOther=120.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6170 talon5 B=643562 L=17797 d=36.2 nb=0 neut=0 cmds=83 noFull=1 shQ=160890 | m=0.900 worth=93.1 cheap=7.7 over=0 dMedOther=121.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6175 talon5 B=643562 L=17797 d=36.2 nb=0 neut=0 cmds=83 noFull=1 shQ=160890 | m=0.900 worth=93.1 cheap=7.7 over=0 dMedOther=121.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6180 talon5 B=651863 L=17797 d=36.6 nb=0 neut=0 cmds=83 noFull=1 shQ=162965 | m=0.900 worth=93.9 cheap=7.7 over=0 dMedOther=122.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6185 talon5 B=651863 L=17797 d=36.6 nb=0 neut=0 cmds=83 noFull=1 shQ=162965 | m=0.900 worth=93.9 cheap=7.7 over=0 dMedOther=122.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6190 talon5 B=660272 L=17797 d=37.1 nb=0 neut=0 cmds=83 noFull=1 shQ=165068 | m=0.900 worth=91.6 cheap=7.7 over=0 dMedOther=119.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6195 talon5 B=660272 L=17797 d=37.1 nb=0 neut=0 cmds=83 noFull=1 shQ=165068 | m=0.900 worth=91.6 cheap=7.7 over=0 dMedOther=119.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6200 talon5 B=686586 L=17797 d=38.6 nb=0 neut=0 cmds=83 noFull=1 shQ=167282 | m=0.900 worth=93.1 cheap=7.7 over=0 dMedOther=121.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6205 talon5 B=686586 L=17797 d=38.6 nb=0 neut=0 cmds=83 noFull=1 shQ=171646 | m=0.900 worth=93.7 cheap=7.7 over=0 dMedOther=122.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6210 talon5 B=695442 L=17797 d=39.1 nb=0 neut=0 cmds=83 noFull=1 shQ=173860 | m=0.900 worth=94.4 cheap=7.7 over=0 dMedOther=123.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6215 talon5 B=695442 L=17797 d=39.1 nb=0 neut=0 cmds=83 noFull=1 shQ=173860 | m=0.900 worth=94.4 cheap=7.7 over=0 dMedOther=123.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6220 talon5 B=704413 L=17797 d=39.6 nb=0 neut=0 cmds=83 noFull=1 shQ=176103 | m=0.900 worth=95.1 cheap=7.7 over=0 dMedOther=124.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6225 talon5 B=704413 L=17797 d=39.6 nb=0 neut=0 cmds=83 noFull=1 shQ=176103 | m=0.900 worth=95.1 cheap=7.7 over=0 dMedOther=124.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6230 talon5 B=713499 L=17797 d=40.1 nb=0 neut=0 cmds=83 noFull=1 shQ=178374 | m=0.900 worth=95.8 cheap=7.7 over=0 dMedOther=125.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6235 talon5 B=713499 L=17797 d=40.1 nb=0 neut=0 cmds=83 noFull=1 shQ=178374 | m=0.900 worth=95.8 cheap=7.7 over=0 dMedOther=125.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6240 talon5 B=722703 L=17797 d=40.6 nb=0 neut=0 cmds=83 noFull=1 shQ=180675 | m=0.900 worth=96.4 cheap=7.7 over=0 dMedOther=126.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6245 talon5 B=722703 L=17797 d=40.6 nb=0 neut=0 cmds=83 noFull=1 shQ=180675 | m=0.900 worth=96.4 cheap=7.7 over=0 dMedOther=126.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6250 talon5 B=732025 L=17797 d=41.1 nb=0 neut=0 cmds=83 noFull=1 shQ=183006 | m=0.900 worth=97.1 cheap=7.7 over=0 dMedOther=126.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6255 talon5 B=732025 L=17797 d=41.1 nb=0 neut=0 cmds=83 noFull=1 shQ=183006 | m=0.900 worth=97.1 cheap=7.7 over=0 dMedOther=126.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6260 talon5 B=741468 L=17797 d=41.7 nb=0 neut=0 cmds=83 noFull=1 shQ=185367 | m=0.900 worth=97.8 cheap=7.7 over=0 dMedOther=127.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6265 talon5 B=741468 L=17797 d=41.7 nb=0 neut=0 cmds=83 noFull=1 shQ=185367 | m=0.900 worth=97.8 cheap=7.7 over=0 dMedOther=127.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6270 talon5 B=751032 L=17797 d=42.2 nb=0 neut=0 cmds=84 noFull=1 shQ=187758 | m=0.900 worth=98.4 cheap=7.7 over=0 dMedOther=128.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=247 → [APEX] noah88#12[T2]（约 181890 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=6275 talon5 B=751032 L=17797 d=42.2 nb=0 neut=0 cmds=84 noFull=1 shQ=187758 | m=0.900 worth=97.4 cheap=7.7 over=0 dMedOther=127.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6280 talon5 B=528939 L=17797 d=29.7 nb=0 neut=0 cmds=84 noFull=1 shQ=132234 | m=0.900 worth=97.9 cheap=7.7 over=0 dMedOther=128.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6285 talon5 B=528939 L=17797 d=29.7 nb=0 neut=0 cmds=84 noFull=1 shQ=132234 | m=0.900 worth=97.9 cheap=7.7 over=0 dMedOther=128.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6290 talon5 B=535762 L=17797 d=30.1 nb=0 neut=0 cmds=84 noFull=1 shQ=133940 | m=0.900 worth=98.5 cheap=7.7 over=0 dMedOther=128.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6295 talon5 B=535762 L=17797 d=30.1 nb=0 neut=0 cmds=84 noFull=1 shQ=133940 | m=0.900 worth=98.5 cheap=7.7 over=0 dMedOther=128.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6300 talon5 B=560470 L=17797 d=31.5 nb=0 neut=0 cmds=84 noFull=1 shQ=135747 | m=0.900 worth=99.8 cheap=7.7 over=0 dMedOther=130.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6305 talon5 B=560470 L=17797 d=31.5 nb=0 neut=0 cmds=84 noFull=1 shQ=140117 | m=0.900 worth=99.8 cheap=7.7 over=0 dMedOther=130.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6310 talon5 B=567700 L=17797 d=31.9 nb=0 neut=0 cmds=84 noFull=1 shQ=141925 | m=0.900 worth=100.3 cheap=7.7 over=0 dMedOther=131.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6315 talon5 B=567700 L=17797 d=31.9 nb=0 neut=0 cmds=84 noFull=1 shQ=141925 | m=0.900 worth=101.4 cheap=7.7 over=0 dMedOther=132.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6320 talon5 B=575023 L=17797 d=32.3 nb=0 neut=0 cmds=84 noFull=1 shQ=143755 | m=0.900 worth=101.9 cheap=7.7 over=0 dMedOther=133.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6325 talon5 B=575023 L=17797 d=32.3 nb=0 neut=0 cmds=84 noFull=1 shQ=143755 | m=0.900 worth=101.9 cheap=7.7 over=0 dMedOther=133.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6330 talon5 B=582440 L=17797 d=32.7 nb=0 neut=0 cmds=84 noFull=1 shQ=145610 | m=0.900 worth=102.3 cheap=7.7 over=0 dMedOther=133.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6335 talon5 B=582440 L=17797 d=32.7 nb=0 neut=0 cmds=84 noFull=1 shQ=145610 | m=0.900 worth=102.3 cheap=7.7 over=0 dMedOther=133.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6340 talon5 B=589953 L=17797 d=33.1 nb=0 neut=0 cmds=84 noFull=1 shQ=147488 | m=0.900 worth=91.6 cheap=7.7 over=0 dMedOther=119.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6345 talon5 B=589953 L=17797 d=33.1 nb=0 neut=0 cmds=84 noFull=1 shQ=147488 | m=0.900 worth=91.6 cheap=7.7 over=0 dMedOther=119.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6350 talon5 B=597563 L=17797 d=33.6 nb=0 neut=0 cmds=84 noFull=1 shQ=149390 | m=0.900 worth=92.3 cheap=7.7 over=0 dMedOther=120.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6355 talon5 B=597563 L=17797 d=33.6 nb=0 neut=0 cmds=84 noFull=1 shQ=149390 | m=0.900 worth=92.3 cheap=7.7 over=0 dMedOther=120.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6360 talon5 B=605271 L=17797 d=34.0 nb=0 neut=0 cmds=84 noFull=1 shQ=151317 | m=0.900 worth=93.0 cheap=7.7 over=0 dMedOther=121.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6365 talon5 B=605271 L=17797 d=34.0 nb=0 neut=0 cmds=84 noFull=1 shQ=151317 | m=0.900 worth=93.0 cheap=7.7 over=0 dMedOther=121.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6370 talon5 B=613078 L=17797 d=34.4 nb=0 neut=0 cmds=84 noFull=1 shQ=153269 | m=0.900 worth=93.6 cheap=7.7 over=0 dMedOther=122.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6375 talon5 B=613078 L=17797 d=34.4 nb=0 neut=0 cmds=84 noFull=1 shQ=153269 | m=0.900 worth=90.5 cheap=7.7 over=0 dMedOther=118.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6380 talon5 B=620986 L=17797 d=34.9 nb=0 neut=0 cmds=84 noFull=1 shQ=155246 | m=0.900 worth=91.1 cheap=7.7 over=0 dMedOther=119.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6385 talon5 B=620986 L=17797 d=34.9 nb=0 neut=0 cmds=84 noFull=1 shQ=155246 | m=0.900 worth=91.1 cheap=7.7 over=0 dMedOther=119.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6390 talon5 B=628996 L=17797 d=35.3 nb=0 neut=0 cmds=84 noFull=1 shQ=157249 | m=0.900 worth=91.7 cheap=7.7 over=0 dMedOther=119.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6395 talon5 B=628996 L=17797 d=35.3 nb=0 neut=0 cmds=84 noFull=1 shQ=157249 | m=0.900 worth=91.5 cheap=7.7 over=0 dMedOther=119.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6400 talon5 B=654907 L=17797 d=36.8 nb=0 neut=0 cmds=84 noFull=1 shQ=159361 | m=0.900 worth=92.2 cheap=7.7 over=0 dMedOther=120.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6405 talon5 B=654907 L=17797 d=36.8 nb=0 neut=0 cmds=84 noFull=1 shQ=163726 | m=0.900 worth=91.9 cheap=7.7 over=0 dMedOther=120.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6410 talon5 B=663355 L=17797 d=37.3 nb=0 neut=0 cmds=84 noFull=1 shQ=165838 | m=0.900 worth=92.0 cheap=7.7 over=0 dMedOther=120.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6415 talon5 B=663355 L=17797 d=37.3 nb=0 neut=0 cmds=84 noFull=1 shQ=165838 | m=0.900 worth=91.7 cheap=7.7 over=0 dMedOther=119.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6420 talon5 B=671912 L=17797 d=37.8 nb=0 neut=0 cmds=84 noFull=1 shQ=167978 | m=0.900 worth=92.1 cheap=7.7 over=0 dMedOther=120.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6425 talon5 B=671912 L=17797 d=37.8 nb=0 neut=0 cmds=84 noFull=1 shQ=167978 | m=0.900 worth=91.6 cheap=7.7 over=0 dMedOther=119.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6430 talon5 B=680579 L=17797 d=38.2 nb=0 neut=0 cmds=84 noFull=1 shQ=170144 | m=0.900 worth=92.2 cheap=7.7 over=0 dMedOther=120.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6435 talon5 B=680579 L=17797 d=38.2 nb=0 neut=0 cmds=84 noFull=1 shQ=170144 | m=0.900 worth=85.7 cheap=7.7 over=0 dMedOther=112.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6440 talon5 B=689358 L=17797 d=38.7 nb=0 neut=0 cmds=84 noFull=1 shQ=172339 | m=0.900 worth=86.3 cheap=7.7 over=0 dMedOther=112.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6445 talon5 B=689358 L=17797 d=38.7 nb=0 neut=0 cmds=84 noFull=1 shQ=172339 | m=0.900 worth=85.6 cheap=7.7 over=0 dMedOther=111.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6450 talon5 B=698250 L=17797 d=39.2 nb=0 neut=0 cmds=84 noFull=1 shQ=174562 | m=0.900 worth=85.8 cheap=7.7 over=0 dMedOther=112.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6455 talon5 B=698250 L=17797 d=39.2 nb=0 neut=0 cmds=84 noFull=1 shQ=174562 | m=0.900 worth=85.6 cheap=7.7 over=0 dMedOther=111.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6460 talon5 B=707257 L=17797 d=39.7 nb=0 neut=0 cmds=84 noFull=1 shQ=176814 | m=0.900 worth=86.1 cheap=7.7 over=0 dMedOther=112.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6465 talon5 B=707257 L=17797 d=39.7 nb=0 neut=0 cmds=84 noFull=1 shQ=176814 | m=0.900 worth=85.9 cheap=7.7 over=0 dMedOther=112.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6470 talon5 B=716380 L=17797 d=40.3 nb=0 neut=0 cmds=84 noFull=1 shQ=179095 | m=0.900 worth=86.5 cheap=7.7 over=0 dMedOther=113.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6475 talon5 B=716380 L=17797 d=40.3 nb=0 neut=0 cmds=84 noFull=1 shQ=179095 | m=0.900 worth=86.1 cheap=7.7 over=0 dMedOther=112.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6480 talon5 B=725621 L=17797 d=40.8 nb=0 neut=0 cmds=84 noFull=1 shQ=181405 | m=0.900 worth=86.5 cheap=7.7 over=0 dMedOther=113.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6485 talon5 B=725621 L=17797 d=40.8 nb=0 neut=0 cmds=84 noFull=1 shQ=181405 | m=0.900 worth=86.3 cheap=7.7 over=0 dMedOther=112.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6490 talon5 B=734981 L=17797 d=41.3 nb=0 neut=0 cmds=84 noFull=1 shQ=183745 | m=0.900 worth=86.7 cheap=7.7 over=0 dMedOther=113.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6495 talon5 B=734981 L=17797 d=41.3 nb=0 neut=0 cmds=84 noFull=1 shQ=183745 | m=0.900 worth=86.4 cheap=7.7 over=0 dMedOther=113.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6500 talon5 B=762259 L=17797 d=42.8 nb=0 neut=0 cmds=84 noFull=1 shQ=186203 | m=0.900 worth=87.7 cheap=7.7 over=0 dMedOther=114.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6505 talon5 B=762259 L=17797 d=42.8 nb=0 neut=0 cmds=84 noFull=1 shQ=190564 | m=0.900 worth=87.4 cheap=7.7 over=0 dMedOther=114.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6510 talon5 B=772092 L=17797 d=43.4 nb=0 neut=0 cmds=84 noFull=1 shQ=193023 | m=0.900 worth=88.0 cheap=7.7 over=0 dMedOther=115.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6515 talon5 B=772092 L=17797 d=43.4 nb=0 neut=0 cmds=84 noFull=1 shQ=193023 | m=0.900 worth=87.8 cheap=7.7 over=0 dMedOther=114.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6520 talon5 B=782051 L=17797 d=43.9 nb=0 neut=0 cmds=84 noFull=1 shQ=195512 | m=0.900 worth=88.3 cheap=7.7 over=0 dMedOther=115.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6525 talon5 B=782051 L=17797 d=43.9 nb=0 neut=0 cmds=84 noFull=1 shQ=195512 | m=0.900 worth=88.1 cheap=7.7 over=0 dMedOther=115.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6530 talon5 B=792139 L=17797 d=44.5 nb=0 neut=0 cmds=84 noFull=1 shQ=198034 | m=0.900 worth=88.7 cheap=7.7 over=0 dMedOther=115.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6535 talon5 B=792139 L=17797 d=44.5 nb=0 neut=0 cmds=84 noFull=1 shQ=198034 | m=0.900 worth=88.5 cheap=7.7 over=0 dMedOther=115.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6540 talon5 B=802357 L=17797 d=45.1 nb=0 neut=0 cmds=84 noFull=1 shQ=200589 | m=0.900 worth=89.0 cheap=7.7 over=0 dMedOther=116.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6545 talon5 B=802357 L=17797 d=45.1 nb=0 neut=0 cmds=85 noFull=1 shQ=200589 | m=0.900 worth=88.8 cheap=7.7 over=0 dMedOther=116.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=297 → [APEX] noah88#12[T2]（约 233498 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=6550 talon5 B=812707 L=17797 d=45.7 nb=0 neut=0 cmds=85 noFull=1 shQ=203176 | m=0.900 worth=83.4 cheap=7.7 over=0 dMedOther=109.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6555 talon5 B=525403 L=17797 d=29.5 nb=0 neut=0 cmds=85 noFull=1 shQ=131350 | m=0.900 worth=77.6 cheap=7.7 over=0 dMedOther=101.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6560 talon5 B=532180 L=17797 d=29.9 nb=0 neut=0 cmds=85 noFull=1 shQ=133045 | m=0.900 worth=78.4 cheap=7.7 over=0 dMedOther=102.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6565 talon5 B=532180 L=17797 d=29.9 nb=0 neut=0 cmds=85 noFull=1 shQ=133045 | m=0.900 worth=78.4 cheap=7.7 over=0 dMedOther=102.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6570 talon5 B=539045 L=17797 d=30.3 nb=0 neut=0 cmds=85 noFull=1 shQ=134761 | m=0.900 worth=79.4 cheap=7.7 over=0 dMedOther=103.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6575 talon5 B=539045 L=17797 d=30.3 nb=0 neut=0 cmds=85 noFull=1 shQ=134761 | m=0.900 worth=79.4 cheap=7.7 over=0 dMedOther=103.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6580 talon5 B=545998 L=17797 d=30.7 nb=0 neut=0 cmds=85 noFull=1 shQ=136499 | m=0.900 worth=80.7 cheap=7.7 over=0 dMedOther=105.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6585 talon5 B=545998 L=17797 d=30.7 nb=0 neut=0 cmds=85 noFull=1 shQ=136499 | m=0.900 worth=80.7 cheap=7.7 over=0 dMedOther=105.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6590 talon5 B=553041 L=17797 d=31.1 nb=0 neut=0 cmds=85 noFull=1 shQ=138260 | m=0.900 worth=80.9 cheap=7.7 over=0 dMedOther=105.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6595 talon5 B=553041 L=17797 d=31.1 nb=0 neut=0 cmds=85 noFull=1 shQ=138260 | m=0.900 worth=80.9 cheap=7.7 over=0 dMedOther=105.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6600 talon5 B=577972 L=17797 d=32.5 nb=0 neut=0 cmds=85 noFull=1 shQ=140123 | m=0.900 worth=82.2 cheap=7.7 over=0 dMedOther=107.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6605 talon5 B=577972 L=17797 d=32.5 nb=0 neut=0 cmds=85 noFull=1 shQ=144493 | m=0.900 worth=81.7 cheap=7.7 over=0 dMedOther=106.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6610 talon5 B=585427 L=17797 d=32.9 nb=0 neut=0 cmds=85 noFull=1 shQ=146356 | m=0.900 worth=82.1 cheap=7.7 over=0 dMedOther=107.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6615 talon5 B=585427 L=17797 d=32.9 nb=0 neut=0 cmds=85 noFull=1 shQ=146356 | m=0.900 worth=81.1 cheap=7.7 over=0 dMedOther=106.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6620 talon5 B=592979 L=17797 d=33.3 nb=0 neut=0 cmds=85 noFull=1 shQ=148244 | m=0.900 worth=80.7 cheap=7.7 over=0 dMedOther=105.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6625 talon5 B=592979 L=17797 d=33.3 nb=0 neut=0 cmds=85 noFull=1 shQ=148244 | m=0.900 worth=74.6 cheap=7.7 over=0 dMedOther=97.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6630 talon5 B=600628 L=17797 d=33.7 nb=0 neut=0 cmds=85 noFull=1 shQ=150157 | m=0.900 worth=74.6 cheap=7.7 over=0 dMedOther=97.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6635 talon5 B=600628 L=17797 d=33.7 nb=0 neut=0 cmds=85 noFull=1 shQ=150157 | m=0.900 worth=74.2 cheap=7.7 over=0 dMedOther=97.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6640 talon5 B=608376 L=17797 d=34.2 nb=0 neut=0 cmds=85 noFull=1 shQ=152094 | m=0.900 worth=74.8 cheap=7.7 over=0 dMedOther=97.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6645 talon5 B=608376 L=17797 d=34.2 nb=0 neut=0 cmds=85 noFull=1 shQ=152094 | m=0.900 worth=74.5 cheap=7.7 over=0 dMedOther=97.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6650 talon5 B=616224 L=17797 d=34.6 nb=0 neut=0 cmds=85 noFull=1 shQ=154056 | m=0.900 worth=75.0 cheap=7.7 over=0 dMedOther=98.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6655 talon5 B=616224 L=17797 d=34.6 nb=0 neut=0 cmds=85 noFull=1 shQ=154056 | m=0.900 worth=74.8 cheap=7.7 over=0 dMedOther=97.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6660 talon5 B=624173 L=17797 d=35.1 nb=0 neut=0 cmds=85 noFull=1 shQ=156043 | m=0.900 worth=70.0 cheap=7.7 over=0 dMedOther=91.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6665 talon5 B=624173 L=17797 d=35.1 nb=0 neut=0 cmds=85 noFull=1 shQ=156043 | m=0.900 worth=69.7 cheap=7.7 over=0 dMedOther=91.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6670 talon5 B=632224 L=17797 d=35.5 nb=0 neut=0 cmds=85 noFull=1 shQ=158056 | m=0.900 worth=70.3 cheap=7.7 over=0 dMedOther=91.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6675 talon5 B=632224 L=17797 d=35.5 nb=0 neut=0 cmds=85 noFull=1 shQ=158056 | m=0.900 worth=70.1 cheap=7.7 over=0 dMedOther=91.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6680 talon5 B=640379 L=17797 d=36.0 nb=0 neut=0 cmds=85 noFull=1 shQ=160094 | m=0.900 worth=70.6 cheap=7.7 over=0 dMedOther=92.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6685 talon5 B=640379 L=17797 d=36.0 nb=0 neut=0 cmds=85 noFull=1 shQ=160094 | m=0.900 worth=70.4 cheap=7.7 over=0 dMedOther=92.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6690 talon5 B=648639 L=17797 d=36.4 nb=0 neut=0 cmds=85 noFull=1 shQ=162159 | m=0.900 worth=70.9 cheap=7.7 over=0 dMedOther=92.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6695 talon5 B=648639 L=17797 d=36.4 nb=0 neut=0 cmds=85 noFull=1 shQ=162159 | m=0.900 worth=70.6 cheap=7.7 over=0 dMedOther=92.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6700 talon5 B=674803 L=17797 d=37.9 nb=0 neut=0 cmds=85 noFull=1 shQ=164335 | m=0.900 worth=72.0 cheap=7.7 over=0 dMedOther=94.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6705 talon5 B=674803 L=17797 d=37.9 nb=0 neut=0 cmds=85 noFull=1 shQ=168700 | m=0.900 worth=71.7 cheap=7.7 over=0 dMedOther=93.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6710 talon5 B=683507 L=17797 d=38.4 nb=0 neut=0 cmds=85 noFull=1 shQ=170876 | m=0.900 worth=72.2 cheap=7.7 over=0 dMedOther=94.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6715 talon5 B=683507 L=17797 d=38.4 nb=0 neut=0 cmds=85 noFull=1 shQ=170876 | m=0.900 worth=72.0 cheap=7.7 over=0 dMedOther=94.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6720 talon5 B=692324 L=17797 d=38.9 nb=0 neut=0 cmds=85 noFull=1 shQ=173081 | m=0.900 worth=72.4 cheap=7.7 over=0 dMedOther=94.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6725 talon5 B=692324 L=17797 d=38.9 nb=0 neut=0 cmds=85 noFull=1 shQ=173081 | m=0.900 worth=72.0 cheap=7.7 over=0 dMedOther=94.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=6730 talon5 B=701254 L=17797 d=39.4 nb=1 neut=0 cmds=85 noFull=1 shQ=175313 | m=0.900 worth=72.6 cheap=7.7 over=0 dMedOther=94.9 safe(-1)=1566136
+    → [CORGI] Kascko#39[T1] terr=136129 bal=9484263 dq=69.7 cnt=1 | c=362.1 rankC=253.5 need=17108612 tD=0.73 人 pulse | safe=1566136 keep=Inf avail=-Inf chunkB=140251 pulseB=84150 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6735 talon5 B=701254 L=17797 d=39.4 nb=1 neut=0 cmds=85 noFull=1 shQ=175313 | m=0.900 worth=72.3 cheap=7.7 over=0 dMedOther=94.4 safe(-1)=1566136
+    → [CORGI] Kascko#39[T1] terr=136768 bal=9484263 dq=69.3 cnt=10 | c=360.4 rankC=252.3 need=17109545 tD=0.73 人 pulse | safe=1566136 keep=Inf avail=-Inf chunkB=140251 pulseB=84150 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6740 talon5 B=710300 L=17797 d=39.9 nb=1 neut=0 cmds=85 noFull=1 shQ=177575 | m=0.900 worth=72.6 cheap=7.7 over=0 dMedOther=94.9 safe(-1)=1566136
+    → [CORGI] Kascko#39[T1] terr=137439 bal=9659885 dq=70.3 cnt=19 | c=365.1 rankC=255.6 need=17423649 tD=0.74 人 pulse | safe=1566136 keep=Inf avail=-Inf chunkB=142060 pulseB=85236 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6745 talon5 B=710300 L=17797 d=39.9 nb=1 neut=0 cmds=85 noFull=1 shQ=177575 | m=0.900 worth=72.4 cheap=7.7 over=0 dMedOther=94.7 safe(-1)=1566136
+    → [CORGI] Kascko#39[T1] terr=138097 bal=9659885 dq=69.9 cnt=21 | c=363.4 rankC=254.4 need=17424586 tD=0.74 人 pulse | safe=1566136 keep=Inf avail=-Inf chunkB=142060 pulseB=85236 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6750 talon5 B=719462 L=17797 d=40.4 nb=1 neut=0 cmds=85 noFull=1 shQ=179865 | m=0.900 worth=72.8 cheap=7.7 over=0 dMedOther=95.1 safe(-1)=1566136
+    → [CORGI] Kascko#39[T1] terr=139410 bal=8655110 dq=62.1 cnt=28 | c=179.4 rankC=125.6 need=15635702 tD=0.65 人 pulse | safe=1566136 keep=Inf avail=-Inf chunkB=143892 pulseB=86335 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6755 talon5 B=719462 L=17797 d=40.4 nb=1 neut=0 cmds=85 noFull=1 shQ=179865 | m=0.900 worth=72.4 cheap=7.7 over=0 dMedOther=94.6 safe(-1)=1566136
+    → [CORGI] Kascko#39[T1] terr=141536 bal=8655110 dq=61.2 cnt=63 | c=176.7 rankC=123.7 need=15638846 tD=0.65 人 pulse | safe=1566136 keep=Inf avail=-Inf chunkB=143892 pulseB=86335 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6760 talon5 B=728743 L=17797 d=40.9 nb=1 neut=76 cmds=85 noFull=1 shQ=182185 | m=0.900 worth=73.0 cheap=7.7 over=0 dMedOther=95.4 safe(-1)=1566136
+    → [CORGI] Kascko#39[T1] terr=143507 bal=8814364 dq=61.4 cnt=71 | c=177.4 rankC=124.2 need=15925717 tD=0.64 人 pulse | safe=1566136 keep=Inf avail=-Inf chunkB=145749 pulseB=87449 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6765 talon5 B=728743 L=17797 d=40.9 nb=1 neut=73 cmds=85 noFull=1 shQ=182185 | m=0.900 worth=72.6 cheap=7.7 over=0 dMedOther=94.8 safe(-1)=1566136
+    → [CORGI] Kascko#39[T1] terr=144335 bal=8814422 dq=61.1 cnt=74 | c=176.4 rankC=123.5 need=15927062 tD=0.64 人 pulse | safe=1566136 keep=Inf avail=-Inf chunkB=145749 pulseB=87449 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6770 talon5 B=738143 L=17797 d=41.5 nb=1 neut=71 cmds=85 noFull=1 shQ=184535 | m=0.900 worth=72.9 cheap=7.7 over=0 dMedOther=95.3 safe(-1)=1566136
+    → [CORGI] Kascko#39[T1] terr=144817 bal=8976607 dq=62.0 cnt=76 | c=179.0 rankC=125.3 need=16216814 tD=0.65 人 pulse | safe=1566136 keep=Inf avail=-Inf chunkB=147629 pulseB=88577 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6775 talon5 B=738143 L=17797 d=41.5 nb=1 neut=68 cmds=85 noFull=1 shQ=184535 | m=0.900 worth=72.7 cheap=7.7 over=0 dMedOther=95.0 safe(-1)=1566136
+    → [CORGI] Kascko#39[T1] terr=145214 bal=8976607 dq=61.8 cnt=79 | c=178.5 rankC=125.0 need=16217431 tD=0.65 人 pulse | safe=1566136 keep=Inf avail=-Inf chunkB=147629 pulseB=88577 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6780 talon5 B=747665 L=17797 d=42.0 nb=1 neut=65 cmds=85 noFull=1 shQ=186916 | m=0.900 worth=73.1 cheap=7.7 over=0 dMedOther=95.5 safe(-1)=1566136
+    → [CORGI] Kascko#39[T1] terr=146630 bal=8044482 dq=54.9 cnt=92 | c=158.7 rankC=111.1 need=14558166 tD=0.57 人 pulse | safe=1566136 keep=Inf avail=-Inf chunkB=149533 pulseB=89720 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6785 talon5 B=747665 L=17797 d=42.0 nb=1 neut=60 cmds=85 noFull=1 shQ=186916 | m=0.900 worth=72.6 cheap=7.7 over=0 dMedOther=94.9 safe(-1)=1566136
+    → [CORGI] Kascko#39[T1] terr=148269 bal=8044482 dq=54.3 cnt=100 | c=156.9 rankC=109.8 need=14560605 tD=0.57 人 pulse | safe=1566136 keep=Inf avail=-Inf chunkB=149533 pulseB=89720 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6790 talon5 B=757309 L=17797 d=42.6 nb=1 neut=57 cmds=85 noFull=1 shQ=189327 | m=0.900 worth=73.5 cheap=7.7 over=0 dMedOther=96.1 safe(-1)=1566136
+    → [CORGI] Kascko#39[T1] terr=149967 bal=8194109 dq=54.6 cnt=107 | c=158.0 rankC=110.6 need=14829881 tD=0.57 人 pulse | safe=1566136 keep=Inf avail=-Inf chunkB=151462 pulseB=90877 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6795 talon5 B=726054 L=17335 d=41.9 nb=1 neut=52 cmds=85 noFull=1 shQ=181513 | m=0.900 worth=73.5 cheap=7.7 over=0 dMedOther=96.1 safe(-1)=1525480
+    → [CORGI] Kascko#39[T1] terr=151073 bal=7209921 dq=47.7 cnt=82 | c=91.9 rankC=64.4 need=13902112 tD=0.50 人 pulse onMe | safe=1525480 keep=Inf avail=-Inf chunkB=145211 pulseB=87126 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6800 talon5 B=722370 L=16893 d=42.8 nb=1 neut=20 cmds=85 noFull=1 shQ=178071 | m=0.900 worth=75.5 cheap=7.8 over=0 dMedOther=98.7 safe(-1)=1486584
+    → [CORGI] Kascko#39[T1] terr=151844 bal=7495718 dq=49.4 cnt=98 | c=94.4 rankC=66.1 need=14352418 tD=0.50 人 pulse onMe | safe=1486584 keep=Inf avail=-Inf chunkB=144474 pulseB=86684 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6805 talon5 B=691311 L=16436 d=42.1 nb=1 neut=4 cmds=85 noFull=1 shQ=172827 | m=0.900 worth=75.5 cheap=7.8 over=0 dMedOther=98.7 safe(-1)=1446368
+    → [CORGI] Kascko#39[T1] terr=152648 bal=6595354 dq=43.2 cnt=88 | c=83.0 rankC=58.1 need=12685817 tD=0.44 人 pulse onMe | safe=1446368 keep=Inf avail=-Inf chunkB=138262 pulseB=82957 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6810 talon5 B=670100 L=15993 d=41.9 nb=1 neut=0 cmds=85 noFull=1 shQ=167525 | m=0.900 worth=76.8 cheap=7.8 over=0 dMedOther=100.3 safe(-1)=1407384
+    → [CORGI] Kascko#39[T1] terr=153854 bal=7495691 dq=48.7 cnt=89 | c=92.4 rankC=64.7 need=14232123 tD=0.49 人 pulse onMe | safe=1407384 keep=Inf avail=-Inf chunkB=134020 pulseB=80412 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6815 talon5 B=640804 L=15553 d=41.2 nb=1 neut=0 cmds=85 noFull=1 shQ=160201 | m=0.900 worth=76.8 cheap=7.8 over=0 dMedOther=100.3 safe(-1)=1368664
+    → [CORGI] Kascko#39[T1] terr=155017 bal=7495691 dq=48.4 cnt=86 | c=91.3 rankC=63.9 need=14174378 tD=0.48 人 pulse onMe | safe=1368664 keep=Inf avail=-Inf chunkB=128161 pulseB=76896 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6820 talon5 B=619772 L=15113 d=41.0 nb=1 neut=0 cmds=85 noFull=1 shQ=154943 | m=0.900 worth=78.0 cheap=7.9 over=0 dMedOther=102.0 safe(-1)=1329944
+    → [CORGI] Kascko#39[T1] terr=156151 bal=6719322 dq=43.0 cnt=89 | c=86.6 rankC=60.7 need=13546225 tD=0.42 人 pulse onMe | safe=1329944 keep=Inf avail=-Inf chunkB=123954 pulseB=74373 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6825 talon5 B=590591 L=14665 d=40.3 nb=1 neut=0 cmds=85 noFull=1 shQ=147647 | m=0.900 worth=78.0 cheap=7.9 over=0 dMedOther=102.0 safe(-1)=1290520
+    → [CORGI] Kascko#39[T1] terr=157278 bal=6719322 dq=42.7 cnt=91 | c=85.7 rankC=60.0 need=13488641 tD=0.42 人 pulse onMe | safe=1290520 keep=Inf avail=-Inf chunkB=118118 pulseB=70871 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6830 talon5 B=567929 L=14200 d=40.0 nb=1 neut=0 cmds=85 noFull=1 shQ=141982 | m=0.900 worth=79.3 cheap=7.9 over=0 dMedOther=103.6 safe(-1)=1249600
+    → [CORGI] Kascko#39[T1] terr=158397 bal=6845645 dq=43.2 cnt=93 | c=86.1 rankC=60.3 need=13654920 tD=0.42 人 pulse onMe | safe=1249600 keep=Inf avail=-Inf chunkB=113586 pulseB=68151 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6835 talon5 B=532018 L=13633 d=39.0 nb=1 neut=0 cmds=85 noFull=1 shQ=133004 | m=0.900 worth=79.3 cheap=8.0 over=0 dMedOther=103.6 safe(-1)=1199704
+    → [CORGI] Kascko#39[T1] terr=160924 bal=6023366 dq=37.4 cnt=96 | c=75.2 rankC=52.7 need=12120140 tD=0.36 人 pulse onMe | safe=1199704 keep=1199704 avail=-673920 chunkB=106404 pulseB=63842 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=6840 talon5 B=477107 L=12640 d=37.7 nb=1 neut=0 cmds=85 noFull=1 shQ=119276 | m=0.900 worth=80.5 cheap=8.0 over=0 dMedOther=105.2 safe(-1)=1112320
+    → [CORGI] Kascko#39[T1] terr=165558 bal=6138062 dq=37.1 cnt=101 | c=73.6 rankC=51.5 need=12207753 tD=0.35 人 pulse onMe | safe=1112320 keep=1112320 avail=-640804 chunkB=95421 pulseB=57253 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=6845 talon5 B=415784 L=11601 d=35.8 nb=1 neut=0 cmds=85 noFull=1 shQ=103946 | m=0.900 worth=80.5 cheap=8.1 over=0 dMedOther=105.2 safe(-1)=1020888
+    → [CORGI] Kascko#39[T1] terr=167908 bal=6138062 dq=36.6 cnt=106 | c=71.9 rankC=50.3 need=12086528 tD=0.35 人 pulse onMe | safe=1020888 keep=1020888 avail=-609976 chunkB=83157 pulseB=49894 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=6850 talon5 B=359070 L=10508 d=34.2 nb=1 neut=0 cmds=85 noFull=1 shQ=89767 | m=0.900 worth=81.7 cheap=8.2 over=0 dMedOther=106.8 safe(-1)=924704
+    → [CORGI] Kascko#39[T1] terr=170110 bal=6255298 dq=36.8 cnt=93 | c=71.5 rankC=50.0 need=12174284 tD=0.34 人 pulse onMe | safe=924704 keep=924704 avail=-569841 chunkB=71814 pulseB=43088 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=6855 talon5 B=315834 L=9700 d=32.6 nb=1 neut=0 cmds=85 noFull=1 shQ=78958 | m=0.900 worth=81.7 cheap=8.2 over=0 dMedOther=106.8 safe(-1)=853600
+    → [CORGI] Kascko#39[T1] terr=171829 bal=6255298 dq=36.4 cnt=83 | c=70.3 rankC=49.2 need=12088761 tD=0.34 人 pulse onMe | safe=853600 keep=853600 avail=-541467 chunkB=63167 pulseB=37900 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=6860 talon5 B=272945 L=8791 d=31.0 nb=1 neut=0 cmds=85 noFull=1 shQ=68236 | m=0.900 worth=82.8 cheap=8.3 over=0 dMedOther=108.3 safe(-1)=773608
+    → [CORGI] Kascko#39[T1] terr=173383 bal=6375399 dq=36.8 cnt=94 | c=70.3 rankC=49.2 need=12210889 tD=0.34 人 pulse onMe | safe=773608 keep=773608 avail=-503861 chunkB=54589 pulseB=32753 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=6865 talon5 B=223213 L=7756 d=28.8 nb=1 neut=0 cmds=85 noFull=1 shQ=55803 | m=0.900 worth=82.8 cheap=8.4 over=0 dMedOther=108.3 safe(-1)=682528
+    → [CORGI] Kascko#39[T1] terr=174851 bal=5609605 dq=32.1 cnt=113 | c=65.3 rankC=45.7 need=11437712 tD=0.30 人 pulse onMe | safe=682528 keep=682528 avail=-461930 chunkB=44643 pulseB=26786 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=6870 talon5 B=175243 L=6624 d=26.5 nb=1 neut=0 cmds=85 noFull=1 shQ=43810 | m=0.900 worth=84.0 cheap=8.5 over=0 dMedOther=109.8 safe(-1)=582912
+    → [CORGI] Kascko#39[T1] terr=176071 bal=5717870 dq=32.5 cnt=110 | c=65.4 rankC=45.8 need=11530038 tD=0.30 人 pulse onMe | safe=582912 keep=582912 avail=-409722 chunkB=35049 pulseB=21029 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令
+t=6875 talon5 B=128866 L=5472 d=23.6 nb=1 neut=0 cmds=85 noFull=1 shQ=32216 | m=0.900 worth=84.0 cheap=8.6 over=0 dMedOther=109.8 safe(-1)=481536
+    → [CORGI] Kascko#39[T1] terr=177245 bal=6708459 dq=37.8 cnt=121 | c=74.3 rankC=52.0 need=13202308 tD=0.34 人 pulse onMe | safe=481536 keep=481536 avail=-354180 chunkB=25773 pulseB=15464 无可用(avail<=0) hNb=1
+    ⇒ 本拍没有指令

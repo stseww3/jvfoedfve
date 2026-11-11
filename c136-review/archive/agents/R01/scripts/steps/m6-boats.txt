@@ -1,0 +1,31 @@
+# M6 第三批：15 局统一口径的船账（boat_trace）和敌方登陆账（sea_landings）。每行：输出文件 命令
+out/A075/batch/m6_boat_trace.txt node scripts/boat_trace.mjs A075
+out/A075/batch/m6_sea_landings.txt node scripts/sea_landings.mjs A075
+out/A057/batch/m6_boat_trace.txt node scripts/boat_trace.mjs A057
+out/A057/batch/m6_sea_landings.txt node scripts/sea_landings.mjs A057
+out/A059/batch/m6_boat_trace.txt node scripts/boat_trace.mjs A059
+out/A059/batch/m6_sea_landings.txt node scripts/sea_landings.mjs A059
+out/A094/batch/m6_boat_trace.txt node scripts/boat_trace.mjs A094 --bots ryan_m,zexos1,noah88
+out/A094/batch/m6_sea_landings.txt node scripts/sea_landings.mjs A094 --bots ryan_m,zexos1,noah88
+out/A055/batch/m6_boat_trace.txt node scripts/boat_trace.mjs A055
+out/A055/batch/m6_sea_landings.txt node scripts/sea_landings.mjs A055
+out/A054/batch/m6_boat_trace.txt node scripts/boat_trace.mjs A054
+out/A054/batch/m6_sea_landings.txt node scripts/sea_landings.mjs A054
+out/A031/batch/m6_boat_trace.txt node scripts/boat_trace.mjs A031
+out/A031/batch/m6_sea_landings.txt node scripts/sea_landings.mjs A031
+out/A019/batch/m6_boat_trace.txt node scripts/boat_trace.mjs A019
+out/A019/batch/m6_sea_landings.txt node scripts/sea_landings.mjs A019
+out/A009/batch/m6_boat_trace.txt node scripts/boat_trace.mjs A009
+out/A009/batch/m6_sea_landings.txt node scripts/sea_landings.mjs A009
+out/A023/batch/m6_boat_trace.txt node scripts/boat_trace.mjs A023
+out/A023/batch/m6_sea_landings.txt node scripts/sea_landings.mjs A023
+out/A050/batch/m6_boat_trace.txt node scripts/boat_trace.mjs A050
+out/A050/batch/m6_sea_landings.txt node scripts/sea_landings.mjs A050
+out/A003/batch/m6_boat_trace.txt node scripts/boat_trace.mjs A003
+out/A003/batch/m6_sea_landings.txt node scripts/sea_landings.mjs A003
+out/A005/batch/m6_boat_trace.txt node scripts/boat_trace.mjs A005
+out/A005/batch/m6_sea_landings.txt node scripts/sea_landings.mjs A005
+out/B039/batch/m6_boat_trace.txt node scripts/boat_trace.mjs B039 --replay A058 --log B039
+out/B039/batch/m6_sea_landings.txt node scripts/sea_landings.mjs B039 --replay A058 --log B039
+out/B043/batch/m6_boat_trace.txt node scripts/boat_trace.mjs B043 --replay A062 --log B043
+out/B043/batch/m6_sea_landings.txt node scripts/sea_landings.mjs B043 --replay A062 --log B043

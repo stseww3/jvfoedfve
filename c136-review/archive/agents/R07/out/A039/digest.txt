@@ -1,0 +1,443 @@
+=== A. 对局卡 A039 ===
+{"matchId": "A039", "cohort": "squad10", "split": "discovery", "timeUtc": "2026-11-10T02:51:25Z", "timestampMs": 1794279085581, "squadBots": 10, "mapId": 16, "mapSeed": 13804, "mapLand": 423950, "mode": 2, "nominalTeams": 4, "actualTeams": 2, "baseWinExpectation": 0.5, "seededPlayers": 20, "ourPrimaryTeam": 2, "distinctSquadTeams": 1, "teamSplitCounts": {"2": 10}, "outcome": {"primaryTeamWon": false, "anyBotWon": false, "resultLabel": "lost", "winnerTeam": 1, "endTick": 6421, "peakSquadLandShare": 0.4892, "peakPrimaryTeamShareSeen": 0.4236, "ourFinalTeamShare": 0.0}, "dataCompleteness": {"results": true, "inGameLog": true, "replay": true, "tickSnapshots": 71}}
+anomaliesSummary: {"drop30Count": 44, "totalTransfers": 206, "likelyRejectedTransfers": 142, "boxedHighDensSnapshots": 6, "strategyErrors": 0, "teamSplit": false}
+
+=== B. 日志普查 ===
+标签计数: [HL-TICK]×618, [HL-DISPATCH]×206, [HL-OPENING]×80, [HL-SPAWN-BACKEND]×56, [BACKEND-SPAWN-COORD]×16, [HL-GAME-INIT]×10, [RESULT×10, [HL-SPAWN]×5, [HL-SLOW-TICK]×2, [OPENING-CHECK×1
+策略报错: 无
+慢拍 HL-SLOW-TICK: 2 条；前 6 条: line7108788 kaito9 [HL-SLOW-TICK] t=2530 took 25.2ms (max=25.2ms) | line7108973 zero_7 [HL-SLOW-TICK] t=3305 took 29.7ms (max=29.7ms)
+HL-TICK 中断（相邻快照间隔>90 拍）:
+
+=== C. 出生点（每号最后一条 HL-SPAWN-BACKEND）===
+  alex_k: me=11 slot=3 role=INNER_ARC_BANK (528,660) bossDist=-1 minAllyDist=75 voronoi=5000 重算次数=8 最近队友=[(75, 'zexos1'), (85, 'ryan_m')]
+  kaito9: me=13 slot=5 role=OUTER_SHIELD_WALL (750,782) bossDist=-1 minAllyDist=69 voronoi=5000 重算次数=5 最近队友=[(69, 'zero_7'), (122, 'noah88')]
+  leo_tx: me=10 slot=2 role=INNER_ARC_BANK (611,704) bossDist=-1 minAllyDist=68 voronoi=5000 重算次数=8 最近队友=[(68, 'ryan_m'), (75, 'noah88')]
+  noah88: me=7 slot=1 role=INNER_ARC_BANK (682,681) bossDist=-1 minAllyDist=72 voronoi=5000 重算次数=9 最近队友=[(72, 'zero_7'), (75, 'leo_tx')]
+  riku_x: me=14 slot=6 role=OUTER_SHIELD_WALL (574,772) bossDist=-1 minAllyDist=77 voronoi=5000 重算次数=6 最近队友=[(77, 'leo_tx'), (85, 'sora_w')]
+  ryan_m: me=5 slot=0 role=CORNER_APEX_BANK (610,636) bossDist=-1 minAllyDist=68 voronoi=5000 重算次数=4 最近队友=[(68, 'leo_tx'), (85, 'alex_k')]
+  sora_w: me=6 slot=7 role=OUTER_SHIELD_WALL (495,742) bossDist=-1 minAllyDist=85 voronoi=5000 重算次数=5 最近队友=[(85, 'riku_x'), (88, 'alex_k')]
+  talon5: me=9 slot=9 role=OUTER_SHIELD_WALL (439,597) bossDist=-1 minAllyDist=68 voronoi=5000 重算次数=6 最近队友=[(68, 'zexos1'), (109, 'alex_k')]
+  zero_7: me=12 slot=4 role=OUTER_SHIELD_WALL (747,713) bossDist=-1 minAllyDist=69 voronoi=5000 重算次数=5 最近队友=[(69, 'kaito9'), (72, 'noah88')]
+  zexos1: me=8 slot=8 role=OUTER_SHIELD_WALL (453,664) bossDist=-1 minAllyDist=68 voronoi=5000 重算次数=5 最近队友=[(68, 'talon5'), (75, 'alex_k')]
+  [OPENING-CHECK 10 bots @ tick 192] [APEX] ryan_m:tick=192,terr=156,sent=6(OK) | [APEX] noah88:tick=192,terr=144,sent=11(OK) | [APEX] leo_tx:tick=189,terr=178,sent=10(OK) | [APEX] alex_k:tick=189,terr=144,sent=10(OK) | [APEX] zero_7:tick=189,terr=156,sent=7(OK) | [APEX] kaito9:tick=192,terr=198,sent=7(OK) | [APEX] riku_x:tick=188,terr=149,sent=8(OK) | [APEX] sora_w:tick=192,terr=144,sent=7(OK) | [APEX] zexos1:tick=190,terr=144,sent=7(OK) | [APEX] talon5:tick=192,terr=144,sent=8(OK)
+  OPENING-CHECK 合计: t=192 n=10 terrSum=1557 份额=0.37% min=144 max=198
+
+=== D. 开局扩张（HL-OPENING：t/cyc/rings/spend/bal/terr）===
+  alex_k: n=7 | 70:c0r6 296/810→12 175:c1r5 492/1133→144 275:c2r5 712/1671→364 365:c3r7 1089/2429→679 465:c4r9 1639/3376→1167 555:c5r12 2426/5147→2083 600:c6r30 2096/5938→2903
+      terr@630=3348 @990=3971 @1530=6839；首拍 t=70
+  kaito9: n=8 | 55:c0r10 303/698→6 165:c1r7 447/963→146 260:c2r8 625/1424→355 355:c3r10 1008/2220→622 410:c4r28 1111/2625→1025 500:c5r31 988/3799→1520 605:c6r5 145/4801→2099 785:c7r3 130/5507→3132
+      terr@630=2171 @990=4438 @1530=5065；首拍 t=55
+  leo_tx: n=7 | 65:c0r7 328/759→12 175:c1r5 424/965→178 270:c2r6 678/1399→364 365:c3r7 812/1815→697 455:c4r12 1430/2942→1071 540:c5r18 1230/2921→2056 600:c6r31 308/4521→2235
+      terr@630=2259 @990=3879 @1530=5868；首拍 t=65
+  noah88: n=7 | 70:c0r6 296/810→12 175:c1r5 492/1089→144 270:c2r6 647/1476→360 360:c3r9 1053/2195→655 455:c4r13 1464/3224→1168 520:c5r24 1824/3881→2014 870:c8r8 360/10875→4963
+      terr@630=2396 @990=5921 @1530=7335；首拍 t=70
+  riku_x: n=7 | 55:c0r10 309/648→5 170:c1r6 345/816→149 265:c2r7 532/1107→305 360:c3r8 661/1714→552 470:c4r7 660/1418→1047 540:c5r17 1295/2755→1450 600:c6r31 528/3577→1644
+      terr@630=1684 @990=2226 @1530=2083；首拍 t=55
+  ryan_m: n=8 | 65:c0r7 340/759→12 170:c1r6 505/1060→156 270:c2r6 692/1531→371 360:c3r8 962/2249→681 465:c4r9 1137/2542→1208 540:c5r18 1934/4351→2037 600:c6r31 1224/5743→2571 725:c7r22 361/7109→3337
+      terr@630=2851 @990=7248 @1530=16645；首拍 t=65
+  sora_w: n=8 | 70:c0r6 296/810→12 170:c1r6 529/1133→144 270:c2r6 677/1647→357 360:c3r9 1167/2415→674 450:c4r14 1627/3446→1239 540:c5r17 2392/5142→2035 600:c6r31 1917/5365→2672 755:c7r8 450/9169→4061
+      terr@630=3112 @990=4474 @1530=11736；首拍 t=70
+  talon5: n=9 | 70:c0r6 296/810→12 175:c1r5 492/1133→144 270:c2r6 747/1671→364 365:c3r8 1141/2408→705 460:c4r11 1581/3286→1287 550:c5r14 2109/5042→2033 600:c6r31 2213/5378→2701 700:c7r31 1635/8640→3607 885:c8r3 269/8827→6413
+      terr@630=2962 @990=8325 @1530=13229；首拍 t=70
+  zero_7: n=12 | 65:c0r7 315/759→12 170:c1r6 466/1071→156 265:c2r7 675/1480→368 360:c3r8 1016/2364→681 455:c4r12 1627/3369→1227 530:c5r20 2280/4796→2009 600:c6r31 1411/6016→2509 700:c7r31 624/8421→3265 870:c8r8 302/10026→4972 1045:c10r16 843/15940→8456 1250:c12r8 664/16385→14133 1380:c13r6 358/11029→18752
+      terr@630=2660 @990=7191 @1530=22537；首拍 t=65
+  zexos1: n=7 | 70:c0r6 296/810→12 170:c1r6 524/1089→144 275:c2r5 565/1370→392 360:c3r8 1068/2186→626 465:c4r9 1431/3336→1150 550:c5r14 2179/5100→1892 620:c6r24 2609/6009→3166
+      terr@630=3166 @990=5706 @1530=10132；首拍 t=70
+
+=== E. 全局时间线 ===
+t	alive	logging	sqTerr	sqShare%	sqBal	sqDens	boxed(nb=0&neut=0)	dens>=95
+90	10	10	326	0.08	5300	16.3	0	0
+180	10	10	1505	0.35	10666	7.1	0	0
+270	10	10	3600	0.85	14342	4.0	0	0
+360	10	10	6572	1.55	22125	3.4	0	0
+450	10	10	11589	2.73	28820	2.5	0	0
+540	10	10	19255	4.54	37916	2.0	0	0
+630	10	10	26609	6.28	52050	2.0	0	0
+720	10	10	32129	7.58	90502	2.8	0	0
+810	10	10	40288	9.50	127380	3.2	0	0
+900	10	10	45191	10.66	203878	4.5	0	0
+990	10	10	53379	12.59	218697	4.1	0	0
+1080	10	10	60185	14.20	313884	5.2	0	0
+1170	10	10	67683	15.96	455391	6.7	0	0
+1260	10	10	74560	17.59	614539	8.2	1	0
+1350	10	10	81635	19.26	764668	9.4	2	0
+1440	10	10	91663	21.62	958445	10.5	2	0
+1530	10	10	101469	23.93	934854	9.2	4	0
+1620	10	10	118369	27.92	1202804	10.2	5	0
+1710	10	10	123839	29.21	1354743	10.9	5	0
+1800	10	10	137293	32.38	1397146	10.2	5	0
+1890	10	10	134969	31.84	1486231	11.0	5	0
+1980	10	10	130908	30.88	1795675	13.7	5	0
+2070	10	10	133942	31.59	2174821	16.2	5	0
+2160	10	10	139164	32.83	2515600	18.1	5	0
+2250	10	10	147482	34.79	2685753	18.2	5	0
+2340	10	10	155525	36.68	3021942	19.4	5	0
+2430	10	10	148356	34.99	3313752	22.3	5	1
+2520	10	10	149580	35.28	3664909	24.5	5	1
+2610	10	10	151489	35.73	3806763	25.1	5	1
+2700	10	10	167501	39.51	3815891	22.8	4	1
+2790	10	10	183461	43.27	4026073	21.9	4	1
+2880	10	10	183367	43.25	4544889	24.8	4	1
+2970	10	10	177596	41.89	5306181	29.9	4	1
+3060	10	10	168880	39.83	5873123	34.8	5	1
+3150	10	10	168345	39.71	6538247	38.8	4	2
+3240	10	10	164137	38.72	6937914	42.3	4	0
+3330	10	10	172335	40.65	6422343	37.3	5	1
+3420	10	10	175723	41.45	6781925	38.6	5	0
+3510	10	10	180177	42.50	7870514	43.7	5	0
+3600	10	10	181243	42.75	7315409	40.4	5	1
+3690	10	10	207413	48.92	7704040	37.1	5	0
+3780	10	10	205986	48.59	6951698	33.7	5	1
+3870	10	10	197759	46.65	7054896	35.7	5	0
+3960	10	10	189233	44.64	7297450	38.6	5	0
+4050	10	10	187041	44.12	8348819	44.6	5	1
+4140	9	9	179637	42.37	8070565	44.9	5	1
+4230	9	9	179767	42.40	8115900	45.1	5	0
+4320	9	9	178122	42.01	8946188	50.2	4	0
+4410	8	8	174827	41.24	9172637	52.5	3	0
+4500	8	8	178126	42.02	9313836	52.3	3	1
+4590	8	8	180330	42.54	8455411	46.9	2	0
+4680	8	8	174622	41.19	9232930	52.9	2	0
+4770	7	7	174250	41.10	10668664	61.2	2	0
+4860	7	7	171661	40.49	10275503	59.9	2	0
+4950	7	7	174927	41.26	11896345	68.0	2	1
+5040	7	7	176770	41.70	12503762	70.7	2	1
+5130	7	7	177575	41.89	13786288	77.6	2	2
+5220	7	7	193727	45.70	9611914	49.6	3	1
+5310	7	7	186440	43.98	9894360	53.1	3	1
+5400	7	7	179820	42.42	10814168	60.1	3	1
+5490	7	7	176764	41.69	10539058	59.6	0	1
+5580	7	7	173251	40.87	11343305	65.5	0	0
+5670	7	7	158687	37.43	11720557	73.9	0	0
+5760	7	7	150515	35.50	11245406	74.7	0	0
+5850	7	7	137489	32.43	10181301	74.1	0	0
+5940	5	5	121120	28.57	9819001	81.1	0	0
+6030	4	4	111053	26.19	9753909	87.8	0	0
+6120	3	3	108963	25.70	9151163	84.0	0	0
+6210	3	3	85262	20.11	6264824	73.5	0	0
+6300	2	2	50051	11.81	4145355	82.8	0	0
+6390	1	1	18143	4.28	1174800	64.8	0	0
+
+结算时刻各队领土（results.teamTotals；份额=占全图陆地）:
+  t=4134 talon5(died/lost) place=17 alivePlayers=16 我队T2 排名2/2 | T1=56.4% T2=42.4%* | 合计98.7%
+  t=4390 alex_k(died/lost) place=15 alivePlayers=14 我队T2 排名2/2 | T1=58.6% T2=40.9%* | 合计99.5%
+  t=4692 riku_x(died/lost) place=14 alivePlayers=13 我队T2 排名2/2 | T1=58.7% T2=41.0%* | 合计99.7%
+  t=5872 leo_tx(died/lost) place=13 alivePlayers=12 我队T2 排名2/2 | T1=67.5% T2=32.2%* | 合计99.7%
+  t=5882 zero_7(died/lost) place=12 alivePlayers=11 我队T2 排名2/2 | T1=68.1% T2=28.8%* | 合计96.9%
+  t=6009 noah88(died/lost) place=11 alivePlayers=10 我队T2 排名2/2 | T1=73.0% T2=26.5%* | 合计99.5%
+  t=6076 kaito9(died/lost) place=10 alivePlayers=9 我队T2 排名2/2 | T1=74.0% T2=25.4%* | 合计99.4%
+  t=6240 ryan_m(died/lost) place=9 alivePlayers=8 我队T2 排名2/2 | T1=83.9% T2=14.5%* | 合计98.4%
+  t=6371 sora_w(died/lost) place=8 alivePlayers=7 我队T2 排名2/2 | T1=93.3% T2=5.5%* | 合计98.8%
+  t=6421 zexos1(died/lost) place=7 alivePlayers=6 我队T2 排名None/1 | T1=98.3% | 合计98.3%
+
+=== F. 逐号概况 ===
+  alex_k: 快照48 峰值terr=7015@1620 最高密度=95.9@3150 围死快照=27(1620~3960) 围死且dens>=95=1 dens>=95=1 dens>=100=0 | 结算 died@4390 place=15 peak=7015 lastTerr=1657 bal=59230 sent=94/93
+  kaito9: 快照67 峰值terr=8141@3330 最高密度=124.7@2610 围死快照=38(1530~5400) 围死且dens>=95=5 dens>=95=10 dens>=100=10 | 结算 died@6076 place=10 peak=8141 lastTerr=1966 bal=77542 sent=96/95
+  leo_tx: 快照65 峰值terr=5868@1260 最高密度=110.3@5310 围死快照=34(1260~4230) 围死且dens>=95=0 dens>=95=2 dens>=100=1 | 结算 died@5872 place=13 peak=5868 lastTerr=1070 bal=69790 sent=78/78
+  noah88: 快照66 峰值terr=7335@1530 最高密度=90.0@3150 围死快照=37(1530~5400) 围死且dens>=95=0 dens>=95=0 dens>=100=0 | 结算 died@6009 place=11 peak=7335 lastTerr=2821 bal=81226 sent=101/101
+  riku_x: 快照52 峰值terr=2442@810 最高密度=44.1@4230 围死快照=34(1350~4320) 围死且dens>=95=0 dens>=95=0 dens>=100=0 | 结算 died@4692 place=14 peak=2442 lastTerr=591 bal=5264 sent=47/47
+  ryan_m: 快照69 峰值terr=80448@3690 最高密度=117.0@5130 围死快照=0(-~-) 围死且dens>=95=0 dens>=95=2 dens>=100=2 | 结算 died@6240 place=9 peak=84359 lastTerr=14446 bal=435408 sent=145/142
+  sora_w: 快照70 峰值terr=21865@6210 最高密度=102.9@4140 围死快照=0(-~-) 围死且dens>=95=0 dens>=95=5 dens>=100=2 | 结算 died@6371 place=8 peak=22390 lastTerr=6662 bal=301784 sent=94/93
+  talon5: 快照45 峰值terr=24686@2790 最高密度=66.9@3960 围死快照=0(-~-) 围死且dens>=95=0 dens>=95=0 dens>=100=0 | 结算 died@4134 place=17 peak=24870 lastTerr=4467 bal=228253 sent=82/80
+  zero_7: 快照65 峰值terr=60443@4050 最高密度=51.6@5580 围死快照=16(4050~5400) 围死且dens>=95=0 dens>=95=0 dens>=100=0 | 结算 died@5882 place=12 peak=60443 lastTerr=14069 bal=502508 sent=160/160
+  zexos1: 快照71 峰值terr=40183@6210 最高密度=99.1@5130 围死快照=0(-~-) 围死且dens>=95=0 dens>=95=4 dens>=100=0 | 结算 died@6421 place=7 peak=41250 lastTerr=11789 bal=603383 sent=91/85
+
+=== G. DROP30 对账 ===
+号 t0→t1 | bal0→bal1(跌%) | terr0→terr1 | dCmds dBoats | 区间内: 捐出n(到账+费) 收到n(估) 协防n 拦截n 开局n | 利息+地租上限 | 净支出区间=bal0+收到−捐出−费−bal1 ~ 再加收入上限 | 判别
+（轨迹重算 44 条；对局卡 drop30Count=44；anomalies.drop30Events 列出 30 条）
+  alex_k 1440→1530 | 159321→58879(-63.0%) | 6755→6839(+84) | dCmds=5 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤46919 | 净支出 100442~147361 | 陆攻扩张 | nb 1→1 neut 0→0 dens 23.6→8.6
+  alex_k 2520→2610 | 509817→328031(-35.7%) | 7015→7015(+0) | dCmds=3 dBoats=0 | 捐出3(423357+71114) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤64872 | 净支出 -312685~-247813 | 捐款 | nb 0→0 neut 0→0 dens 72.7→46.8
+  alex_k 3240→3330 | 471123→174962(-62.9%) | 7015→7015(+0) | dCmds=2 dBoats=0 | 捐出2(280495+47117) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤60658 | 净支出 -31451~29207 | 捐款 | nb 0→0 neut 0→0 dens 67.2→24.9
+  alex_k 3510→3600 | 231955→156560(-32.5%) | 7015→7015(+0) | dCmds=1 dBoats=0 | 捐出1(86160+15025) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤33297 | 净支出 -25790~7507 | 捐款 | nb 0→0 neut 0→0 dens 33.1→22.3
+  alex_k 4230→4320 | 204582→105553(-48.4%) | 4365→2469(-1896) | dCmds=0 dBoats=0 | 捐出0(0+0) 收到1(27347) 协防0 拦截0 开局0(0) | 收入≤26635 | 净支出 126376~153011 | 被打/失地 | nb 1→1 neut 0→0 dens 46.9→42.8
+  kaito9 3330→3420 | 842986→261962(-68.9%) | 8141→8141(+0) | dCmds=2 dBoats=0 | 捐出2(253009+55205) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤104706 | 净支出 272810~377516 | 捐款 | nb 0→0 neut 0→0 dens 103.5→32.2
+  kaito9 4770→4860 | 372525→246700(-33.8%) | 8141→8141(+0) | dCmds=1 dBoats=0 | 捐出1(143592+25247) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤51333 | 净支出 -43014~8319 | 捐款 | nb 0→0 neut 0→0 dens 45.8→30.3
+  kaito9 5220→5310 | 420663→273283(-35.0%) | 8141→8141(+0) | dCmds=1 dBoats=0 | 捐出1(156516+26291) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤56326 | 净支出 -35427~20899 | 捐款 | nb 0→0 neut 0→0 dens 51.7→33.6
+  kaito9 5940→6030 | 653679→174475(-73.3%) | 8141→3326(-4815) | dCmds=0 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤83166 | 净支出 479204~562370 | 被打/失地 | nb 1→3 neut 93→0 dens 80.3→52.5
+  leo_tx 1440→1530 | 76784→39173(-49.0%) | 5868→5868(+0) | dCmds=2 dBoats=2 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤25422 | 净支出 37611~63033 | 发船 | nb 0→0 neut 0→0 dens 13.1→6.7
+  leo_tx 3240→3330 | 292995→187551(-36.0%) | 5868→5868(+0) | dCmds=1 dBoats=0 | 捐出1(114251+19191) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤38701 | 净支出 -27998~10703 | 捐款 | nb 0→0 neut 0→0 dens 49.9→32.0
+  leo_tx 4410→4500 | 279426→181944(-34.9%) | 5868→4149(-1719) | dCmds=0 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤36979 | 净支出 97482~134461 | 被打/失地 | nb 1→1 neut 9→0 dens 47.6→43.9
+  leo_tx 5400→5490 | 329751→124409(-62.3%) | 3570→1851(-1719) | dCmds=0 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤35413 | 净支出 205342~240755 | 被打/失地 | nb 1→1 neut 0→0 dens 92.4→67.2
+  leo_tx 5760→5850 | 173784→110572(-36.4%) | 1851→1312(-539) | dCmds=1 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤19931 | 净支出 63212~83143 | 被打/失地+反击 | nb 1→1 neut 0→0 dens 93.9→84.3
+  noah88 450→540 | 3224→2229(-30.9%) | 1168→2070(+902) | dCmds=4 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局2(3288) | 收入≤3483 | 净支出 995~4478 | 陆攻扩张 | nb 5→8 neut 41→54 dens 2.8→1.1
+  noah88 2520→2610 | 496872→320206(-35.6%) | 7335→7335(+0) | dCmds=4 dBoats=0 | 捐出4(525442+88261) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤63729 | 净支出 -437037~-373308 | 捐款 | nb 0→0 neut 0→0 dens 67.7→43.7
+  noah88 3240→3330 | 463245→172491(-62.8%) | 7335→7335(+0) | dCmds=1 dBoats=0 | 捐出1(102219+17170) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤60098 | 净支出 171365~231463 | 捐款 | nb 0→0 neut 0→0 dens 63.2→23.5
+  noah88 5220→5310 | 336730→219396(-34.8%) | 7335→7335(+0) | dCmds=1 dBoats=0 | 捐出1(126790+21298) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤45581 | 净支出 -30754~14827 | 捐款 | nb 0→0 neut 0→0 dens 45.9→29.9
+  riku_x 1350→1440 | 73782→27066(-63.3%) | 2083→2083(+0) | dCmds=2 dBoats=2 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤22972 | 净支出 46716~69688 | 发船 | nb 0→0 neut 0→0 dens 35.4→13.0
+  riku_x 1440→1530 | 27066→13747(-49.2%) | 2083→2083(+0) | dCmds=2 dBoats=2 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤8973 | 净支出 13319~22292 | 发船 | nb 0→0 neut 0→0 dens 13.0→6.6
+  riku_x 4230→4320 | 91940→31190(-66.1%) | 2083→2083(+0) | dCmds=2 dBoats=0 | 捐出2(52666+11619) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤11637 | 净支出 -3535~8102 | 捐款 | nb 0→0 neut 0→0 dens 44.1→15.0
+  riku_x 4500→4590 | 39293→19124(-51.3%) | 2421→1455(-966) | dCmds=0 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤4060 | 净支出 20169~24229 | 被打/失地 | nb 1→1 neut 0→0 dens 16.2→13.1
+  riku_x 4590→4680 | 19124→5316(-72.2%) | 1455→591(-864) | dCmds=0 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤3503 | 净支出 13808~17311 | 被打/失地 | nb 1→1 neut 0→0 dens 13.1→9.0
+  ryan_m 1350→1440 | 62346→34605(-44.5%) | 9923→14593(+4670) | dCmds=10 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤28519 | 净支出 27741~56260 | 陆攻扩张 | nb 4→3 neut 38→63 dens 6.3→2.4
+  ryan_m 1530→1620 | 81115→35732(-55.9%) | 16645→22608(+5963) | dCmds=0 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤35020 | 净支出 45383~80403 | 不明 | nb 1→1 neut 0→0 dens 4.9→1.6
+  ryan_m 3690→3780 | 2595639→1622703(-37.5%) | 80448→77155(-3293) | dCmds=3 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤514551 | 净支出 972936~1487487 | 被打/失地+反击 | nb 3→3 neut 0→0 dens 32.3→21.0
+  ryan_m 5130→5220 | 5908145→2290130(-61.2%) | 50508→62200(+11692) | dCmds=4 dBoats=0 | 捐出0(0+0) 收到1(165167) 协防0 拦截0 开局0(0) | 收入≤923237 | 净支出 3783182~4706419 | 陆攻扩张 | nb 3→3 neut 0→0 dens 117.0→36.8
+  ryan_m 6120→6210 | 3688967→975202(-73.6%) | 49405→23214(-26191) | dCmds=0 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤594106 | 净支出 2713765~3307871 | 被打/失地 | nb 4→4 neut 0→0 dens 74.7→42.0
+  sora_w 1710→1800 | 185184→99510(-46.3%) | 11934→12757(+823) | dCmds=3 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤41316 | 净支出 85674~126990 | 陆攻扩张 | nb 2→2 neut 0→0 dens 15.5→7.8
+  sora_w 6210→6300 | 1797173→1021360(-43.2%) | 21865→14842(-7023) | dCmds=0 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤254187 | 净支出 775813~1030000 | 被打/失地 | nb 3→3 neut 0→0 dens 82.2→68.8
+  talon5 1440→1530 | 124423→82317(-33.8%) | 9607→13229(+3622) | dCmds=13 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤41306 | 净支出 42106~83412 | 陆攻扩张 | nb 5→4 neut 11→25 dens 13.0→6.2
+  zero_7 900→990 | 18339→7772(-57.6%) | 5219→7191(+1972) | dCmds=12 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤8165 | 净支出 10567~18732 | 陆攻扩张 | nb 7→6 neut 0→13 dens 3.5→1.1
+  zero_7 1260→1350 | 19018→8830(-53.6%) | 14461→18191(+3730) | dCmds=9 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤22733 | 净支出 10188~32921 | 陆攻扩张 | nb 7→8 neut 75→34 dens 1.3→0.5
+  zero_7 1530→1620 | 39478→1904(-95.2%) | 22537→27192(+4655) | dCmds=9 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤32123 | 净支出 37574~69697 | 陆攻扩张 | nb 8→6 neut 24→8 dens 1.8→0.1
+  zero_7 1710→1800 | 71245→35466(-50.2%) | 26248→35465(+9217) | dCmds=5 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤37548 | 净支出 35779~73327 | 陆攻扩张 | nb 5→2 neut 0→50 dens 2.7→1.0
+  zero_7 1800→1890 | 35466→0(-100.0%) | 35465→33935(-1530) | dCmds=8 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤4937 | 净支出 35466~40403 | 被打/失地+反击 | nb 2→2 neut 50→0 dens 1.0→0.0
+  zero_7 1980→2070 | 27437→1968(-92.8%) | 30739→35427(+4688) | dCmds=2 dBoats=0 | 捐出0(0+0) 收到5(581328) 协防0 拦截0 开局0(0) | 收入≤37687 | 净支出 606797~644484 | 陆攻扩张 | nb 2→2 neut 0→0 dens 0.9→0.1
+  zero_7 2160→2250 | 170698→2689(-98.4%) | 40830→49306(+8476) | dCmds=5 dBoats=0 | 捐出0(0+0) 收到6(891887) 协防0 拦截0 开局0(0) | 收入≤68263 | 净支出 1059896~1128159 | 陆攻扩张 | nb 1→2 neut 0→0 dens 4.2→0.1
+  zero_7 2520→2610 | 111175→69414(-37.6%) | 41911→45438(+3527) | dCmds=3 dBoats=0 | 捐出0(0+0) 收到11(1606715) 协防0 拦截0 开局0(0) | 收入≤58476 | 净支出 1648476~1706952 | 陆攻扩张 | nb 3→3 neut 0→0 dens 2.7→1.5
+  zero_7 4770→4860 | 2699926→1860777(-31.1%) | 60443→60443(+0) | dCmds=1 dBoats=0 | 捐出1(1052446+186583) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤481101 | 净支出 -399880~81221 | 捐款 | nb 0→0 neut 0→0 dens 44.7→30.8
+  zero_7 5760→5850 | 1502576→501498(-66.6%) | 30957→14278(-16679) | dCmds=0 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤238050 | 净支出 1001078~1239128 | 被打/失地 | nb 2→2 neut 0→0 dens 48.5→35.1
+  zexos1 1620→1710 | 206984→131331(-36.6%) | 10270→14505(+4235) | dCmds=3 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤49321 | 净支出 75653~124974 | 陆攻扩张 | nb 2→2 neut 0→0 dens 20.2→9.1
+  zexos1 1710→1800 | 131331→77926(-40.7%) | 14505→17659(+3154) | dCmds=3 dBoats=0 | 捐出0(0+0) 收到1(110234) 协防0 拦截0 开局0(0) | 收入≤35339 | 净支出 163639~198978 | 陆攻扩张 | nb 2→2 neut 0→0 dens 9.1→4.4
+  zexos1 6300→6390 | 3123995→1174800(-62.4%) | 35209→18143(-17066) | dCmds=0 dBoats=0 | 捐出0(0+0) 收到0(0) 协防0 拦截0 开局0(0) | 收入≤435295 | 净支出 1949195~2384490 | 被打/失地 | nb 4→4 neut 0→230 dens 88.7→64.8
+
+=== H. 捐款 / 调度（到账=g0(B*(pct+1),1024)，费=g0(64B,1024)，按日志 myBal 算；是否真正到账另见 30_donation_ledger.py）===
+  种类计数: DISPATCH/defense_dispatch×147, DISPATCH/offense_dispatch×59
+  pct 分布: 380×95, 320×48, 281×3, 363×2, 287×2, 286×2, 366×2, 209×2, 258×2, 282×2
+  预标 likelyRejected: 142/206
+  捐出方: alex_k: 52 笔 到账8355007 费1498793（费/到账=0.18） | kaito9: 58 笔 到账8907801 费1921007（费/到账=0.22） | leo_tx: 30 笔 到账3104373 费607867（费/到账=0.20） | noah88: 51 笔 到账7716576 费1370682（费/到账=0.18） | riku_x: 10 笔 到账237804 费56495（费/到账=0.24） | zero_7: 5 笔 到账3657958 费832819（费/到账=0.23）
+  接收方: zero_7: 113 笔 ≈16824262 | ryan_m: 49 笔 ≈9358483 | talon5: 26 笔 ≈3315299 | zexos1: 12 笔 ≈2030185 | sora_w: 3 笔 ≈301422 | alex_k: 3 笔 ≈149868
+  合计: 206 笔，名义到账 31979519，手续费 6287663（若全部成交；费/到账=0.197）
+  逐笔: t 捐出方→接收方 kind pct boxedIn myBal dMe dAlly 到账 费 | 配额：上限(t) 需点数(按接收方最近快照领土) | 预标
+    1790 alex_k→zexos1 defense_dispatch pct=380 boxed=True myBal=296273 dMe=42 dAlly=3 到账110234 费18517 | cap=97 need=261 recvTerr=14505 | REJ? line7108628
+    1815 alex_k→talon5 defense_dispatch pct=380 boxed=True myBal=311464 dMe=44 dAlly=7 到账115886 费19466 | cap=103 need=275 recvTerr=21032 | REJ? line7108638
+    1825 kaito9→talon5 defense_dispatch pct=338 boxed=True myBal=242149 dMe=48 dAlly=7 到账80164 费15134 | cap=103 need=190 recvTerr=21032 | REJ? line7108640
+    1830 noah88→talon5 defense_dispatch pct=380 boxed=True myBal=305872 dMe=42 dAlly=7 到账113805 费19117 | cap=103 need=270 recvTerr=21032 | REJ? line7108641
+    1840 alex_k→talon5 defense_dispatch pct=380 boxed=True myBal=323576 dMe=46 dAlly=7 到账120393 费20223 | cap=103 need=285 recvTerr=21032 |  line7108642
+    1850 kaito9→talon5 defense_dispatch pct=363 boxed=True myBal=251342 dMe=50 dAlly=7 到账89344 费15708 | cap=103 need=212 recvTerr=21032 |  line7108643
+    1855 noah88→talon5 defense_dispatch pct=380 boxed=True myBal=313473 dMe=43 dAlly=7 到账116633 费19592 | cap=103 need=276 recvTerr=21032 |  line7108644
+    1900 kaito9→zero_7 defense_dispatch pct=380 boxed=True myBal=271508 dMe=54 dAlly=1 到账101020 费16969 | cap=109 need=240 recvTerr=33935 |  line7108655
+    1905 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=340070 dMe=46 dAlly=1 到账126529 费21254 | cap=109 need=300 recvTerr=33935 |  line7108656
+    1940 alex_k→zexos1 defense_dispatch pct=380 boxed=True myBal=371996 dMe=53 dAlly=6 到账138408 费23249 | cap=109 need=328 recvTerr=17340 | REJ? line7108657
+    1950 kaito9→zexos1 defense_dispatch pct=380 boxed=True myBal=287764 dMe=57 dAlly=6 到账107068 费17985 | cap=109 need=254 recvTerr=17340 | REJ? line7108658
+    1955 noah88→zexos1 defense_dispatch pct=380 boxed=True myBal=360967 dMe=49 dAlly=6 到账134305 费22560 | cap=109 need=318 recvTerr=17340 | REJ? line7108659
+    1965 alex_k→zexos1 defense_dispatch pct=380 boxed=True myBal=380976 dMe=54 dAlly=6 到账141749 费23811 | cap=109 need=336 recvTerr=17340 | REJ? line7108660
+    1975 kaito9→zexos1 defense_dispatch pct=380 boxed=True myBal=294536 dMe=58 dAlly=6 到账109588 费18408 | cap=109 need=260 recvTerr=17340 | REJ? line7108661
+    1980 noah88→zexos1 defense_dispatch pct=380 boxed=True myBal=374117 dMe=51 dAlly=6 到账139197 费23382 | cap=109 need=330 recvTerr=15793 |  line7108669
+    1990 alex_k→zexos1 defense_dispatch pct=380 boxed=True myBal=394855 dMe=56 dAlly=6 到账146913 费24678 | cap=109 need=348 recvTerr=15793 | REJ? line7108673
+    2000 kaito9→zero_7 offense_dispatch pct=287 boxed=True myBal=310060 dMe=61 dAlly=2 到账87204 费19378 | cap=115 need=207 recvTerr=30739 | REJ? line7108674
+    2015 alex_k→zero_7 offense_dispatch pct=320 boxed=True myBal=411487 dMe=59 dAlly=0 到账128991 费25717 | cap=115 need=306 recvTerr=30739 | REJ? line7108675
+    2025 kaito9→zero_7 offense_dispatch pct=304 boxed=True myBal=317357 dMe=63 dAlly=0 到账94525 费19834 | cap=115 need=224 recvTerr=30739 | REJ? line7108676
+    2040 alex_k→zero_7 offense_dispatch pct=320 boxed=True myBal=426478 dMe=61 dAlly=0 到账133690 费26654 | cap=115 need=317 recvTerr=30739 | REJ? line7108677
+    2050 kaito9→sora_w defense_dispatch pct=380 boxed=True myBal=328626 dMe=65 dAlly=21 到账122271 费20539 | cap=115 need=290 recvTerr=14525 | REJ? line7108678
+    2055 noah88→sora_w defense_dispatch pct=380 boxed=True myBal=414479 dMe=57 dAlly=20 到账154215 费25904 | cap=115 need=365 recvTerr=14525 | REJ? line7108679
+    2065 alex_k→zero_7 offense_dispatch pct=320 boxed=True myBal=436774 dMe=62 dAlly=0 到账136918 费27298 | cap=115 need=324 recvTerr=30739 | REJ? line7108680
+    2075 kaito9→zero_7 offense_dispatch pct=320 boxed=True myBal=336359 dMe=66 dAlly=0 到账105440 费21022 | cap=115 need=250 recvTerr=35427 | REJ? line7108690
+    2080 noah88→zero_7 offense_dispatch pct=320 boxed=True myBal=429578 dMe=59 dAlly=0 到账134662 费26848 | cap=115 need=319 recvTerr=35427 | REJ? line7108692
+    2090 alex_k→zero_7 offense_dispatch pct=320 boxed=True myBal=452686 dMe=65 dAlly=0 到账141906 费28292 | cap=115 need=336 recvTerr=35427 | REJ? line7108693
+    2100 kaito9→zero_7 offense_dispatch pct=320 boxed=True myBal=353368 dMe=70 dAlly=1 到账110772 费22085 | cap=121 need=263 recvTerr=35427 | REJ? line7108694
+    2105 noah88→zero_7 offense_dispatch pct=320 boxed=True myBal=447283 dMe=61 dAlly=1 到账140212 费27955 | cap=121 need=332 recvTerr=35427 | REJ? line7108695
+    2115 alex_k→zero_7 offense_dispatch pct=320 boxed=True myBal=470714 dMe=67 dAlly=0 到账147557 费29419 | cap=121 need=349 recvTerr=35427 | REJ? line7108696
+    2125 kaito9→zero_7 offense_dispatch pct=320 boxed=True myBal=361684 dMe=71 dAlly=0 到账113379 费22605 | cap=121 need=269 recvTerr=35427 | REJ? line7108697
+    2130 noah88→zero_7 offense_dispatch pct=320 boxed=True myBal=463577 dMe=63 dAlly=1 到账145320 费28973 | cap=121 need=344 recvTerr=35427 |  line7108698
+    2140 alex_k→zero_7 offense_dispatch pct=320 boxed=True myBal=487862 dMe=70 dAlly=1 到账152933 费30491 | cap=121 need=362 recvTerr=35427 | REJ? line7108699
+    2150 kaito9→zero_7 offense_dispatch pct=320 boxed=True myBal=374527 dMe=74 dAlly=4 到账117405 费23407 | cap=121 need=85 recvTerr=35427 | REJ? line7108700
+    2165 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=499640 dMe=71 dAlly=4 到账185901 费31227 | cap=121 need=133 recvTerr=40830 | REJ? line7108711
+    2175 kaito9→zero_7 offense_dispatch pct=320 boxed=True myBal=383341 dMe=76 dAlly=4 到账120168 费23958 | cap=121 need=86 recvTerr=40830 | REJ? line7108712
+    2190 alex_k→zero_7 offense_dispatch pct=320 boxed=True myBal=517842 dMe=74 dAlly=4 到账162331 费32365 | cap=121 need=116 recvTerr=40830 | REJ? line7108713
+    2200 kaito9→zero_7 offense_dispatch pct=320 boxed=True myBal=402018 dMe=79 dAlly=1 到账126023 费25126 | cap=129 need=91 recvTerr=40830 | REJ? line7108714
+    2215 alex_k→zero_7 offense_dispatch pct=320 boxed=True myBal=537443 dMe=77 dAlly=1 到账168475 费33590 | cap=129 need=121 recvTerr=40830 | REJ? line7108715
+    2225 kaito9→zero_7 offense_dispatch pct=320 boxed=True myBal=411479 dMe=81 dAlly=1 到账128989 费25717 | cap=129 need=93 recvTerr=40830 | REJ? line7108716
+    2240 alex_k→ryan_m offense_dispatch pct=320 boxed=True myBal=557023 dMe=79 dAlly=13 到账174613 费34813 | cap=129 need=125 recvTerr=23082 |  line7108717
+    2250 kaito9→ryan_m offense_dispatch pct=320 boxed=True myBal=426090 dMe=84 dAlly=20 到账133569 费26630 | cap=129 need=96 recvTerr=23082 | REJ? line7108724
+    2275 kaito9→ryan_m offense_dispatch pct=320 boxed=True myBal=436118 dMe=86 dAlly=21 到账136712 费27257 | cap=129 need=98 recvTerr=23082 | REJ? line7108729
+    2300 kaito9→zero_7 defense_dispatch pct=380 boxed=True myBal=456669 dMe=90 dAlly=1 到账169912 费28541 | cap=137 need=122 recvTerr=49306 | REJ? line7108730
+    2305 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=369907 dMe=50 dAlly=1 到账137631 费23119 | cap=137 need=99 recvTerr=49306 | REJ? line7108731
+    2315 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=384963 dMe=55 dAlly=1 到账143233 费24060 | cap=137 need=103 recvTerr=49306 | REJ? line7108732
+    2325 kaito9→zero_7 defense_dispatch pct=380 boxed=True myBal=467417 dMe=92 dAlly=1 到账173911 费29213 | cap=137 need=124 recvTerr=49306 | REJ? line7108733
+    2330 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=383383 dMe=52 dAlly=1 到账142645 费23961 | cap=137 need=102 recvTerr=49306 | REJ? line7108734
+    2340 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=398987 dMe=57 dAlly=1 到账148451 费24936 | cap=137 need=106 recvTerr=57016 | REJ? line7108741
+    2350 kaito9→zero_7 defense_dispatch pct=380 boxed=True myBal=484014 dMe=96 dAlly=1 到账180087 费30250 | cap=137 need=129 recvTerr=57016 | REJ? line7108746
+    2355 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=392638 dMe=54 dAlly=1 到账146088 费24539 | cap=137 need=105 recvTerr=57016 | REJ? line7108747
+    2365 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=408619 dMe=58 dAlly=1 到账152034 费25538 | cap=137 need=109 recvTerr=57016 | REJ? line7108748
+    2375 kaito9→zero_7 defense_dispatch pct=380 boxed=True myBal=495405 dMe=98 dAlly=1 到账184325 费30962 | cap=137 need=132 recvTerr=57016 | REJ? line7108749
+    2380 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=406942 dMe=55 dAlly=1 到账151411 费25433 | cap=137 need=109 recvTerr=57016 | REJ? line7108750
+    2390 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=423505 dMe=60 dAlly=1 到账157573 费26469 | cap=137 need=113 recvTerr=57016 | REJ? line7108751
+    2400 kaito9→zero_7 defense_dispatch pct=380 boxed=True myBal=518062 dMe=102 dAlly=2 到账192755 费32378 | cap=145 need=138 recvTerr=57016 | REJ? line7108752
+    2405 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=424101 dMe=58 dAlly=2 到账157795 费26506 | cap=145 need=113 recvTerr=57016 | REJ? line7108753
+    2415 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=440829 dMe=63 dAlly=2 到账164019 费27551 | cap=145 need=117 recvTerr=57016 | REJ? line7108754
+    2425 kaito9→zero_7 defense_dispatch pct=380 boxed=True myBal=529574 dMe=105 dAlly=2 到账197038 费33098 | cap=145 need=141 recvTerr=57016 | REJ? line7108755
+    2430 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=439552 dMe=60 dAlly=2 到账163544 费27472 | cap=145 need=117 recvTerr=48717 | REJ? line7108761
+    2440 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=456888 dMe=65 dAlly=2 到账169994 费28555 | cap=145 need=122 recvTerr=48717 | REJ? line7108767
+    2450 kaito9→zero_7 defense_dispatch pct=380 boxed=True myBal=546322 dMe=108 dAlly=2 到账203270 费34145 | cap=145 need=145 recvTerr=48717 | REJ? line7108768
+    2455 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=450163 dMe=61 dAlly=2 到账167492 费28135 | cap=145 need=120 recvTerr=48717 | REJ? line7108769
+    2465 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=467918 dMe=67 dAlly=2 到账174098 费29244 | cap=145 need=125 recvTerr=48717 | REJ? line7108770
+    2475 kaito9→zero_7 defense_dispatch pct=380 boxed=True myBal=557081 dMe=110 dAlly=2 到账207273 费34817 | cap=145 need=148 recvTerr=48717 | REJ? line7108771
+    2480 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=466562 dMe=64 dAlly=2 到账173593 费29160 | cap=145 need=124 recvTerr=48717 | REJ? line7108772
+    2490 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=484965 dMe=69 dAlly=2 到账180441 费30310 | cap=145 need=129 recvTerr=48717 | REJ? line7108773
+    2500 kaito9→zero_7 offense_dispatch pct=320 boxed=True myBal=577605 dMe=114 dAlly=3 到账181065 费36100 | cap=153 need=130 recvTerr=48717 | REJ? line7108774
+    2505 noah88→zero_7 offense_dispatch pct=320 boxed=True myBal=485160 dMe=66 dAlly=3 到账152086 费30322 | cap=153 need=109 recvTerr=48717 | REJ? line7108775
+    2515 alex_k→zero_7 offense_dispatch pct=320 boxed=True myBal=503772 dMe=72 dAlly=3 到账157920 费31485 | cap=153 need=113 recvTerr=48717 | REJ? line7108776
+    2525 kaito9→zero_7 offense_dispatch pct=320 boxed=True myBal=587290 dMe=116 dAlly=2 到账184101 费36705 | cap=153 need=132 recvTerr=41911 | REJ? line7108786
+    2530 noah88→zexos1 defense_dispatch pct=380 boxed=True myBal=502834 dMe=69 dAlly=21 到账187089 费31427 | cap=153 need=134 recvTerr=15159 |  line7108789
+    2530 riku_x→zexos1 defense_dispatch pct=245 boxed=True myBal=87663 dMe=42 dAlly=21 到账21059 费5478 | cap=153 need=16 recvTerr=15159 |  line7108790
+    2535 leo_tx→talon5 defense_dispatch pct=286 boxed=True myBal=260670 dMe=44 dAlly=15 到账73058 费16291 | cap=153 need=53 recvTerr=23852 | REJ? line7108791
+    2540 alex_k→talon5 defense_dispatch pct=380 boxed=True myBal=522125 dMe=74 dAlly=15 到账194267 费32632 | cap=153 need=139 recvTerr=23852 |  line7108792
+    2550 kaito9→zero_7 defense_dispatch pct=380 boxed=True myBal=601139 dMe=119 dAlly=1 到账223665 费37571 | cap=153 need=160 recvTerr=41911 | REJ? line7108793
+    2555 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=291182 dMe=40 dAlly=1 到账108340 费18198 | cap=153 need=78 recvTerr=41911 | REJ? line7108794
+    2560 leo_tx→zero_7 defense_dispatch pct=311 boxed=True myBal=270005 dMe=46 dAlly=1 到账82267 费16875 | cap=153 need=60 recvTerr=41911 | REJ? line7108795
+    2565 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=302353 dMe=43 dAlly=1 到账112496 费18897 | cap=153 need=81 recvTerr=41911 | REJ? line7108796
+    2575 kaito9→zero_7 defense_dispatch pct=380 boxed=True myBal=609947 dMe=120 dAlly=1 到账226943 费38121 | cap=153 need=162 recvTerr=41911 | REJ? line7108797
+    2580 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=301790 dMe=41 dAlly=1 到账112287 费18861 | cap=153 need=81 recvTerr=41911 | REJ? line7108798
+    2585 leo_tx→zero_7 defense_dispatch pct=328 boxed=True myBal=276414 dMe=47 dAlly=1 到账88808 费17275 | cap=153 need=64 recvTerr=41911 | REJ? line7108800
+    2590 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=313367 dMe=45 dAlly=1 到账116594 费19585 | cap=153 need=84 recvTerr=41911 | REJ? line7108799
+    2600 kaito9→zero_7 defense_dispatch pct=380 boxed=True myBal=627538 dMe=124 dAlly=2 到账233488 费39221 | cap=161 need=167 recvTerr=41911 |  line7108801
+    2605 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=316410 dMe=43 dAlly=2 到账117726 费19775 | cap=161 need=85 recvTerr=41911 |  line7108802
+    2610 leo_tx→zero_7 defense_dispatch pct=366 boxed=True myBal=292251 dMe=50 dAlly=2 到账104742 费18265 | cap=161 need=76 recvTerr=45438 |  line7108813
+    2615 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=328031 dMe=47 dAlly=2 到账122050 费20501 | cap=161 need=88 recvTerr=45438 |  line7108814
+    2625 kaito9→zero_7 offense_dispatch pct=320 boxed=True myBal=535975 dMe=106 dAlly=1 到账168015 费33498 | cap=161 need=120 recvTerr=45438 | REJ? line7108815
+    2650 kaito9→zero_7 offense_dispatch pct=320 boxed=True myBal=552433 dMe=109 dAlly=1 到账173174 费34527 | cap=161 need=124 recvTerr=45438 |  line7108816
+    2700 kaito9→zero_7 offense_dispatch pct=191 boxed=False myBal=583699 dMe=113 dAlly=1 到账109443 费36481 | cap=169 need=79 recvTerr=53365 |  line7108824
+    2705 noah88→talon5 defense_dispatch pct=380 boxed=True myBal=363827 dMe=50 dAlly=18 到账135369 费22739 | cap=169 need=97 recvTerr=24124 | REJ? line7108829
+    2710 leo_tx→talon5 defense_dispatch pct=380 boxed=True myBal=334559 dMe=57 dAlly=18 到账124479 费20909 | cap=169 need=90 recvTerr=24124 | REJ? line7108830
+    2715 alex_k→talon5 defense_dispatch pct=380 boxed=True myBal=376684 dMe=54 dAlly=18 到账140152 费23542 | cap=169 need=101 recvTerr=24124 |  line7108831
+    2730 noah88→talon5 defense_dispatch pct=380 boxed=True myBal=377081 dMe=51 dAlly=23 到账140300 费23567 | cap=169 need=101 recvTerr=24124 |  line7108832
+    2735 leo_tx→zero_7 offense_dispatch pct=252 boxed=True myBal=342500 dMe=58 dAlly=0 到账84621 费21406 | cap=169 need=61 recvTerr=53365 |  line7108833
+    2780 noah88→talon5 defense_dispatch pct=380 boxed=True myBal=400253 dMe=55 dAlly=18 到账148922 费25015 | cap=169 need=107 recvTerr=24124 | REJ? line7108834
+    2785 leo_tx→talon5 defense_dispatch pct=257 boxed=True myBal=250756 dMe=43 dAlly=18 到账63178 费15672 | cap=169 need=46 recvTerr=24124 | REJ? line7108835
+    2790 alex_k→talon5 defense_dispatch pct=380 boxed=True myBal=414397 dMe=59 dAlly=18 到账154184 费25899 | cap=169 need=111 recvTerr=24686 | REJ? line7108842
+    2800 kaito9→talon5 defense_dispatch pct=209 boxed=False myBal=647342 dMe=111 dAlly=19 到账132755 费40458 | cap=177 need=95 recvTerr=24686 | REJ? line7108847
+    2805 noah88→talon5 defense_dispatch pct=380 boxed=True myBal=417251 dMe=57 dAlly=19 到账155246 费26078 | cap=177 need=111 recvTerr=24686 | REJ? line7108848
+    2805 riku_x→talon5 defense_dispatch pct=258 boxed=True myBal=89113 dMe=43 dAlly=19 到账22539 费5569 | cap=177 need=17 recvTerr=24686 | REJ? line7108850
+    2810 leo_tx→zero_7 defense_dispatch pct=300 boxed=True myBal=265673 dMe=45 dAlly=3 到账78093 费16604 | cap=177 need=57 recvTerr=58805 | REJ? line7108849
+    2815 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=431500 dMe=62 dAlly=3 到账160548 费26968 | cap=177 need=115 recvTerr=58805 | REJ? line7108851
+    2825 kaito9→zero_7 defense_dispatch pct=203 boxed=False myBal=659830 dMe=110 dAlly=3 到账131450 费41239 | cap=177 need=94 recvTerr=58805 | REJ? line7108852
+    2830 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=432452 dMe=59 dAlly=3 到账160902 费27028 | cap=177 need=115 recvTerr=58805 | REJ? line7108853
+    2830 riku_x→zero_7 defense_dispatch pct=282 boxed=True myBal=92085 dMe=44 dAlly=3 到账25449 费5755 | cap=177 need=19 recvTerr=58805 |  line7108859
+    2835 leo_tx→zero_7 defense_dispatch pct=317 boxed=True myBal=271978 dMe=46 dAlly=3 到账84461 费16998 | cap=177 need=61 recvTerr=58805 | REJ? line7108854
+    2840 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=447221 dMe=64 dAlly=3 到账166397 费27951 | cap=177 need=119 recvTerr=58805 | REJ? line7108855
+    2850 kaito9→zero_7 defense_dispatch pct=205 boxed=False myBal=679149 dMe=110 dAlly=3 到账136625 费42446 | cap=177 need=98 recvTerr=58805 | REJ? line7108856
+    2855 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=442892 dMe=60 dAlly=3 到账164786 费27680 | cap=177 need=118 recvTerr=58805 | REJ? line7108857
+    2860 leo_tx→zero_7 defense_dispatch pct=341 boxed=True myBal=281719 dMe=48 dAlly=3 到账94089 费17607 | cap=177 need=68 recvTerr=58805 | REJ? line7108858
+    2865 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=458018 dMe=65 dAlly=3 到账170414 费28626 | cap=177 need=122 recvTerr=58805 | REJ? line7108860
+    2875 kaito9→zero_7 defense_dispatch pct=199 boxed=False myBal=692387 dMe=109 dAlly=3 到账135231 费43274 | cap=177 need=97 recvTerr=58805 | REJ? line7108861
+    2880 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=459027 dMe=63 dAlly=3 到账170790 费28689 | cap=177 need=122 recvTerr=58421 | REJ? line7108869
+    2885 leo_tx→zero_7 defense_dispatch pct=357 boxed=True myBal=288406 dMe=49 dAlly=3 到账100829 费18025 | cap=177 need=73 recvTerr=58421 | REJ? line7108872
+    2890 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=474704 dMe=68 dAlly=3 到账176623 费29669 | cap=177 need=126 recvTerr=58421 | REJ? line7108874
+    2900 kaito9→zero_7 defense_dispatch pct=211 boxed=False myBal=719286 dMe=111 dAlly=4 到账148914 费44955 | cap=185 need=107 recvTerr=58421 | REJ? line7108875
+    2905 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=477444 dMe=65 dAlly=4 到账177642 费29840 | cap=185 need=127 recvTerr=58421 | REJ? line7108876
+    2910 leo_tx→zero_7 defense_dispatch pct=380 boxed=True myBal=304673 dMe=52 dAlly=4 到账113359 费19042 | cap=185 need=82 recvTerr=58421 | REJ? line7108877
+    2915 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=493263 dMe=70 dAlly=4 到账183528 费30828 | cap=185 need=131 recvTerr=58421 | REJ? line7108878
+    2925 kaito9→zero_7 defense_dispatch pct=209 boxed=False myBal=732944 dMe=111 dAlly=4 到账150310 费45809 | cap=185 need=108 recvTerr=58421 | REJ? line7108879
+    2930 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=494838 dMe=67 dAlly=4 到账184114 费30927 | cap=185 need=132 recvTerr=58421 | REJ? line7108880
+    2935 leo_tx→zero_7 defense_dispatch pct=380 boxed=True myBal=311905 dMe=53 dAlly=4 到账116050 费19494 | cap=185 need=84 recvTerr=58421 | REJ? line7108882
+    2940 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=511234 dMe=73 dAlly=4 到账190214 费31952 | cap=185 need=136 recvTerr=58421 | REJ? line7108881
+    2950 kaito9→zero_7 defense_dispatch pct=208 boxed=False myBal=754479 dMe=111 dAlly=4 到账153990 费47154 | cap=185 need=110 recvTerr=58421 | REJ? line7108883
+    2955 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=506785 dMe=69 dAlly=4 到账188559 费31674 | cap=185 need=135 recvTerr=58421 | REJ? line7108884
+    2960 leo_tx→zero_7 defense_dispatch pct=380 boxed=True myBal=323075 dMe=55 dAlly=4 到账120206 费20192 | cap=185 need=87 recvTerr=58421 | REJ? line7108885
+    2965 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=523576 dMe=75 dAlly=4 到账194807 费32723 | cap=185 need=139 recvTerr=58421 | REJ? line7108886
+    2975 kaito9→zero_7 defense_dispatch pct=208 boxed=False myBal=769186 dMe=111 dAlly=4 到账156992 费48074 | cap=185 need=113 recvTerr=51902 | REJ? line7108896
+    2980 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=525248 dMe=72 dAlly=4 到账195429 费32828 | cap=185 need=140 recvTerr=51902 | REJ? line7108897
+    2985 leo_tx→zero_7 defense_dispatch pct=380 boxed=True myBal=330744 dMe=56 dAlly=4 到账123060 费20671 | cap=185 need=89 recvTerr=51902 | REJ? line7108898
+    2990 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=542650 dMe=77 dAlly=4 到账201903 费33915 | cap=185 need=144 recvTerr=51902 | REJ? line7108899
+    3000 kaito9→zero_7 defense_dispatch pct=380 boxed=True myBal=853685 dMe=122 dAlly=5 到账317630 费53355 | cap=193 need=226 recvTerr=51902 | REJ? line7108901
+    3005 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=545263 dMe=74 dAlly=5 到账202876 费34078 | cap=193 need=145 recvTerr=51902 | REJ? line7108902
+    3010 leo_tx→zero_7 defense_dispatch pct=380 boxed=True myBal=348526 dMe=59 dAlly=5 到账129676 费21782 | cap=193 need=93 recvTerr=51902 | REJ? line7108904
+    3015 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=562850 dMe=80 dAlly=5 到账209419 费35178 | cap=193 need=150 recvTerr=51902 | REJ? line7108903
+    3025 kaito9→talon5 defense_dispatch pct=380 boxed=True myBal=865334 dMe=123 dAlly=25 到账321965 费54083 | cap=193 need=229 recvTerr=21040 |  line7108905
+    3030 noah88→ryan_m offense_dispatch pct=320 boxed=True myBal=565128 dMe=77 dAlly=17 到账177154 费35320 | cap=193 need=127 recvTerr=49012 | REJ? line7108906
+    3035 leo_tx→ryan_m offense_dispatch pct=282 boxed=True myBal=356799 dMe=61 dAlly=17 到账98607 费22299 | cap=193 need=71 recvTerr=49012 | REJ? line7108908
+    3040 alex_k→ryan_m offense_dispatch pct=320 boxed=True myBal=583356 dMe=83 dAlly=17 到账182868 费36459 | cap=193 need=131 recvTerr=49012 | REJ? line7108907
+    3050 kaito9→ryan_m offense_dispatch pct=320 boxed=True myBal=743235 dMe=106 dAlly=17 到账232986 费46452 | cap=193 need=166 recvTerr=49012 |  line7108909
+    3055 noah88→ryan_m offense_dispatch pct=320 boxed=True myBal=578771 dMe=79 dAlly=17 到账181431 费36173 | cap=193 need=130 recvTerr=49012 | REJ? line7108910
+    3060 leo_tx→ryan_m offense_dispatch pct=308 boxed=True myBal=369578 dMe=63 dAlly=18 到账111523 费23098 | cap=193 need=80 recvTerr=49012 | REJ? line7108920
+    3065 alex_k→ryan_m offense_dispatch pct=320 boxed=True myBal=597440 dMe=85 dAlly=18 到账187283 费37340 | cap=193 need=134 recvTerr=49012 | REJ? line7108922
+    3080 noah88→ryan_m offense_dispatch pct=320 boxed=True myBal=599856 dMe=82 dAlly=18 到账188040 费37491 | cap=193 need=134 recvTerr=49012 | REJ? line7108923
+    3085 leo_tx→ryan_m offense_dispatch pct=320 boxed=True myBal=378351 dMe=64 dAlly=18 到账118604 费23646 | cap=193 need=85 recvTerr=49012 | REJ? line7108925
+    3090 alex_k→ryan_m offense_dispatch pct=320 boxed=True myBal=619206 dMe=88 dAlly=18 到账194106 费38700 | cap=193 need=139 recvTerr=49012 | REJ? line7108924
+    3100 kaito9→ryan_m offense_dispatch pct=180 boxed=False myBal=788749 dMe=112 dAlly=20 到账139417 费49296 | cap=201 need=100 recvTerr=49012 | REJ? line7108926
+    3105 noah88→talon5 defense_dispatch pct=380 boxed=True myBal=621673 dMe=85 dAlly=27 到账231306 费38854 | cap=201 need=165 recvTerr=18628 | REJ? line7108927
+    3105 riku_x→talon5 defense_dispatch pct=279 boxed=True myBal=91687 dMe=44 dAlly=27 到账25070 费5730 | cap=201 need=19 recvTerr=18628 |  line7108928
+    3110 leo_tx→talon5 defense_dispatch pct=380 boxed=True myBal=397839 dMe=68 dAlly=27 到账148024 费24864 | cap=201 need=106 recvTerr=18628 | REJ? line7108929
+    3115 alex_k→ryan_m offense_dispatch pct=320 boxed=True myBal=641254 dMe=91 dAlly=20 到账201018 费40078 | cap=201 need=144 recvTerr=49012 | REJ? line7108930
+    3125 kaito9→ryan_m offense_dispatch pct=186 boxed=False myBal=803407 dMe=112 dAlly=20 到账146715 费50212 | cap=201 need=105 recvTerr=49012 | REJ? line7108931
+    3130 noah88→ryan_m offense_dispatch pct=320 boxed=True myBal=644322 dMe=88 dAlly=21 到账201979 费40270 | cap=201 need=144 recvTerr=49012 | REJ? line7108932
+    3135 leo_tx→ryan_m offense_dispatch pct=320 boxed=True myBal=407282 dMe=69 dAlly=21 到账127673 费25455 | cap=201 need=92 recvTerr=49012 | REJ? line7108933
+    3140 alex_k→ryan_m offense_dispatch pct=320 boxed=True myBal=664616 dMe=95 dAlly=21 到账208341 费41538 | cap=201 need=149 recvTerr=49012 | REJ? line7108934
+    3150 kaito9→ryan_m offense_dispatch pct=195 boxed=False myBal=825376 dMe=114 dAlly=21 到账157982 费51586 | cap=201 need=113 recvTerr=49012 | REJ? line7108939
+    3155 noah88→ryan_m offense_dispatch pct=320 boxed=True myBal=659877 dMe=90 dAlly=21 到账206855 费41242 | cap=201 need=148 recvTerr=49012 | REJ? line7108946
+    3160 leo_tx→ryan_m offense_dispatch pct=320 boxed=True myBal=421868 dMe=72 dAlly=22 到账132245 费26366 | cap=201 need=95 recvTerr=49012 | REJ? line7108947
+    3165 alex_k→ryan_m offense_dispatch pct=320 boxed=True myBal=680662 dMe=97 dAlly=22 到账213371 费42541 | cap=201 need=152 recvTerr=49012 | REJ? line7108948
+    3175 kaito9→ryan_m offense_dispatch pct=188 boxed=False myBal=840299 dMe=113 dAlly=22 到账155094 费52518 | cap=201 need=111 recvTerr=49012 | REJ? line7108949
+    3180 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=683917 dMe=93 dAlly=8 到账254465 费42744 | cap=201 need=181 recvTerr=45454 | REJ? line7108950
+    3185 leo_tx→zero_7 defense_dispatch pct=380 boxed=True myBal=431882 dMe=74 dAlly=8 到账160690 费26992 | cap=201 need=115 recvTerr=45454 | REJ? line7108951
+    3190 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=705459 dMe=101 dAlly=8 到账262480 费44091 | cap=201 need=187 recvTerr=45454 | REJ? line7108952
+    3200 kaito9→zero_7 defense_dispatch pct=227 boxed=False myBal=871726 dMe=113 dAlly=9 到账194095 费54482 | cap=209 need=139 recvTerr=45454 |  line7108953
+    3205 noah88→ryan_m offense_dispatch pct=320 boxed=True myBal=707764 dMe=96 dAlly=24 到账221867 费44235 | cap=209 need=158 recvTerr=49012 |  line7108954
+    3210 leo_tx→ryan_m offense_dispatch pct=320 boxed=True myBal=453288 dMe=77 dAlly=24 到账142095 费28330 | cap=209 need=102 recvTerr=49012 |  line7108955
+    3215 alex_k→ryan_m offense_dispatch pct=320 boxed=True myBal=729085 dMe=104 dAlly=29 到账228551 费45567 | cap=209 need=8 recvTerr=49012 |  line7108956
+    3230 noah88→talon5 defense_dispatch pct=380 boxed=True myBal=457752 dMe=62 dAlly=32 到账170315 费28609 | cap=209 need=13 recvTerr=17064 |  line7108957
+    3235 leo_tx→talon5 defense_dispatch pct=359 boxed=True myBal=289578 dMe=49 dAlly=32 到账101804 费18098 | cap=209 need=9 recvTerr=17064 |  line7108968
+    3240 alex_k→talon5 defense_dispatch pct=380 boxed=True myBal=471123 dMe=67 dAlly=32 到账175290 费29445 | cap=209 need=14 recvTerr=15994 |  line7108962
+    3280 noah88→zero_7 defense_dispatch pct=380 boxed=True myBal=274733 dMe=37 dAlly=13 到账102219 费17170 | cap=209 need=6 recvTerr=42477 |  line7108970
+    3285 leo_tx→zero_7 defense_dispatch pct=380 boxed=True myBal=307070 dMe=52 dAlly=13 到账114251 费19191 | cap=209 need=6 recvTerr=42477 |  line7108972
+    3290 alex_k→zero_7 defense_dispatch pct=380 boxed=True myBal=282757 dMe=40 dAlly=13 到账105205 费17672 | cap=209 need=6 recvTerr=42477 |  line7108971
+    3325 kaito9→ryan_m offense_dispatch pct=320 boxed=True myBal=833320 dMe=102 dAlly=32 到账261226 费52082 | cap=219 need=9 recvTerr=49012 |  line7108974
+    3350 kaito9→ryan_m offense_dispatch pct=320 boxed=True myBal=538851 dMe=66 dAlly=38 到账168917 费33678 | cap=219 need=7 recvTerr=51799 |  line7108986
+    3375 kaito9→zero_7 defense_dispatch pct=249 boxed=True myBal=344442 dMe=42 dAlly=18 到账84092 费21527 | cap=219 need=5 recvTerr=42719 |  line7108987
+    3380 riku_x→talon5 defense_dispatch pct=243 boxed=True myBal=87506 dMe=42 dAlly=36 到账20851 费5469 | cap=219 need=5 recvTerr=17476 | REJ? line7108988
+    3405 riku_x→sora_w defense_dispatch pct=278 boxed=True myBal=91524 dMe=44 dAlly=54 到账24936 费5720 | cap=229 need=5 recvTerr=13764 |  line7108989
+    3530 noah88→zero_7 defense_dispatch pct=321 boxed=True myBal=235124 dMe=32 dAlly=20 到账73935 费14695 | cap=239 need=5 recvTerr=48937 |  line7109010
+    3535 leo_tx→zero_7 defense_dispatch pct=255 boxed=True myBal=250046 dMe=43 dAlly=20 到账62511 费15627 | cap=239 need=5 recvTerr=48937 |  line7109011
+    3540 alex_k→zero_7 defense_dispatch pct=366 boxed=True myBal=240404 dMe=34 dAlly=19 到账86160 费15025 | cap=239 need=5 recvTerr=48937 |  line7109012
+    3675 kaito9→zexos1 defense_dispatch pct=308 boxed=True myBal=372683 dMe=46 dAlly=79 到账112460 费23292 | cap=249 need=10 recvTerr=16250 |  line7109023
+    3805 noah88→ryan_m defense_dispatch pct=296 boxed=True myBal=227054 dMe=31 dAlly=21 到账65854 费14190 | cap=269 need=4 recvTerr=77155 |  line7109044
+    3810 leo_tx→ryan_m defense_dispatch pct=281 boxed=True myBal=258858 dMe=44 dAlly=30 到账71287 费16178 | cap=269 need=4 recvTerr=77155 |  line7109045
+    3815 alex_k→ryan_m defense_dispatch pct=293 boxed=True myBal=216216 dMe=31 dAlly=29 到账62077 费13513 | cap=269 need=4 recvTerr=77155 |  line7109046
+    3925 kaito9→ryan_m defense_dispatch pct=258 boxed=True myBal=348381 dMe=43 dAlly=36 到账88115 费21773 | cap=279 need=5 recvTerr=62982 |  line7109057
+    3930 riku_x→ryan_m defense_dispatch pct=261 boxed=True myBal=89520 dMe=43 dAlly=36 到账22904 费5595 | cap=279 need=4 recvTerr=62982 |  line7109058
+    4080 noah88→alex_k defense_dispatch pct=281 boxed=True myBal=222449 dMe=30 dAlly=29 到账61260 费13903 | cap=289 need=12 recvTerr=6956 |  line7109080
+    4085 leo_tx→alex_k defense_dispatch pct=251 boxed=True myBal=248936 dMe=42 dAlly=29 到账61261 费15558 | cap=289 need=12 recvTerr=6956 |  line7109081
+    4200 kaito9→ryan_m defense_dispatch pct=286 boxed=True myBal=361649 dMe=44 dAlly=44 到账101360 费22603 | cap=309 need=5 recvTerr=54239 |  line7109092
+    4205 riku_x→ryan_m defense_dispatch pct=256 boxed=True myBal=88973 dMe=43 dAlly=44 到账22330 费5560 | cap=309 need=4 recvTerr=54239 | REJ? line7109093
+    4230 riku_x→ryan_m defense_dispatch pct=281 boxed=True myBal=91940 dMe=44 dAlly=49 到账25319 费5746 | cap=309 need=4 recvTerr=52785 | REJ? line7109103
+    4255 riku_x→alex_k defense_dispatch pct=297 boxed=True myBal=93973 dMe=45 dAlly=42 到账27347 费5873 | cap=309 need=10 recvTerr=4365 |  line7109104
+    4330 noah88→ryan_m defense_dispatch pct=287 boxed=True myBal=224265 dMe=31 dAlly=53 到账63074 费14016 | cap=319 need=5 免检 recvTerr=52402 |  line7109113
+    4345 zero_7→ryan_m defense_dispatch pct=255 boxed=True myBal=2577704 dMe=43 dAlly=55 到账644426 费161106 | cap=319 need=16 免检 recvTerr=52402 |  line7109115
+    4475 kaito9→ryan_m defense_dispatch pct=256 boxed=True myBal=347709 dMe=43 dAlly=43 到账87266 费21731 | cap=329 need=5 免检 recvTerr=51374 |  line7109125
+    4545 zero_7→ryan_m defense_dispatch pct=254 boxed=True myBal=2574213 dMe=43 dAlly=44 到账641039 费160888 | cap=339 need=15 免检 recvTerr=55716 |  line7109134
+    4820 zero_7→ryan_m defense_dispatch pct=360 boxed=True myBal=2985333 dMe=49 dAlly=85 到账1052446 费186583 | cap=369 need=25 免检 recvTerr=49831 |  line7109160
+    4825 kaito9→ryan_m defense_dispatch pct=363 boxed=True myBal=403952 dMe=50 dAlly=84 到账143592 费25247 | cap=369 need=6 免检 recvTerr=49831 |  line7109161
+    5045 zero_7→zexos1 defense_dispatch pct=266 boxed=True myBal=2616053 dMe=43 dAlly=74 到账682115 费163503 | cap=389 need=27 免检 recvTerr=28809 |  line7109181
+    5205 noah88→ryan_m offense_dispatch pct=320 boxed=True myBal=526890 dMe=72 dAlly=34 到账165167 费32930 | cap=409 need=7 免检 recvTerr=50508 |  line7109191
+    5225 kaito9→ryan_m defense_dispatch pct=380 boxed=True myBal=420663 dMe=52 dAlly=36 到账156516 费26291 | cap=409 need=6 免检 recvTerr=62200 |  line7109200
+    5230 noah88→ryan_m defense_dispatch pct=380 boxed=True myBal=340770 dMe=46 dAlly=36 到账126790 费21298 | cap=409 need=6 免检 recvTerr=62200 |  line7109201
+    5245 zero_7→ryan_m defense_dispatch pct=253 boxed=True myBal=2571824 dMe=43 dAlly=39 到账637932 费160739 | cap=409 need=14 免检 recvTerr=62200 |  line7109202
+    5335 leo_tx→ryan_m offense_dispatch pct=185 boxed=False myBal=400916 dMe=112 dAlly=51 到账72822 费25057 | cap=419 need=5 免检 recvTerr=54913 |  line7109210
+    5380 noah88→ryan_m defense_dispatch pct=331 boxed=True myBal=238499 dMe=33 dAlly=56 到账77325 费14906 | cap=419 need=5 免检 recvTerr=54913 |  line7109211
+  配额累计（仅我方日志可见的捐款，下限）: 非免检 193 笔、免检 13 笔；单笔需点 4~365，上限 97~309；按收方累计 {'zexos1': 2595, 'talon5': 3136, 'zero_7': 14955, 'sora_w': 660, 'ryan_m': 3187, 'alex_k': 34}；最紧的一刻 {'ratio': 74.067, 'to': 'zero_7', 't': 3015, 'cum': 14295, 'cap': 193}
+
+=== I. 协防 / 拦截 ===
+  ASSIST: 0 条
+  INTERCEPT: 0 条
+
+=== J. 阵亡 / 结算表 ===
+  talon5 died/lost t=4134 place=17 alivePlayers=16 peak=24870 lastTerr=4467 bal=228253 sent/acc=82/80
+     末段快照: 3510:14948/691711/d46.3/nb3/ne0/c74/b0 | 3600:11512/517605/d45.0/nb3/ne0/c74/b0 | 3690:11512/578828/d50.3/nb3/ne0/c74/b0 | 3780:11512/660010/d57.3/nb2/ne0/c74/b0 | 3870:11512/750638/d65.2/nb3/ne0/c74/b0 | 3960:10030/671421/d66.9/nb3/ne0/c74/b0 | 4050:7819/507418/d64.9/nb3/ne0/c74/b0
+     死前500拍: 领土峰值=11512 捐出0笔(0+费0) 收到0笔(≈0, 其中REJ?0) 被协防0次 自己协防别人0次
+  alex_k died/lost t=4390 place=15 alivePlayers=14 peak=7015 lastTerr=1657 bal=59230 sent/acc=94/93
+     末段快照: 3780:7015/201767/d28.8/nb0/ne0/c84/b0 | 3870:7015/151056/d21.5/nb0/ne0/c85/b0 | 3960:7015/175706/d25.0/nb0/ne0/c85/b0 | 4050:6956/200338/d28.8/nb1/ne0/c85/b0 | 4140:5742/282623/d49.2/nb1/ne51/c85/b0 | 4230:4365/204582/d46.9/nb1/ne0/c85/b0 | 4320:2469/105553/d42.8/nb1/ne0/c85/b0
+     死前500拍: 领土峰值=7015 捐出0笔(0+费0) 收到3笔(≈149868, 其中REJ?0) 被协防0次 自己协防别人0次
+  riku_x died/lost t=4692 place=14 alivePlayers=13 peak=2442 lastTerr=591 bal=5264 sent/acc=47/47
+     末段快照: 4140:2083/81373/d39.1/nb0/ne0/c32/b4 | 4230:2083/91940/d44.1/nb0/ne0/c33/b4 | 4320:2083/31190/d15.0/nb0/ne0/c35/b4 | 4410:2083/36519/d17.5/nb0/ne82/c40/b4 | 4500:2421/39293/d16.2/nb1/ne0/c41/b4 | 4590:1455/19124/d13.1/nb1/ne0/c41/b4 | 4680:591/5316/d9.0/nb1/ne0/c41/b4
+     死前500拍: 领土峰值=2421 捐出3笔(74996+费17179) 收到0笔(≈0, 其中REJ?0) 被协防0次 自己协防别人0次
+  leo_tx died/lost t=5872 place=13 alivePlayers=12 peak=5868 lastTerr=1070 bal=69790 sent/acc=78/78
+     末段快照: 5310:3570/393797/d110.3/nb1/ne0/c68/b4 | 5400:3570/329751/d92.4/nb1/ne0/c69/b4 | 5490:1851/124409/d67.2/nb1/ne0/c69/b4 | 5580:1851/139296/d75.3/nb1/ne0/c69/b4 | 5670:1851/155703/d84.1/nb1/ne0/c69/b4 | 5760:1851/173784/d93.9/nb1/ne0/c69/b4 | 5850:1312/110572/d84.3/nb1/ne0/c70/b4
+     死前500拍: 领土峰值=3570 捐出0笔(0+费0) 收到0笔(≈0, 其中REJ?0) 被协防0次 自己协防别人0次
+  zero_7 died/lost t=5882 place=12 alivePlayers=11 peak=60443 lastTerr=14069 bal=502508 sent/acc=160/160
+     末段快照: 5310:60443/2042945/d33.8/nb0/ne0/c155/b0 | 5400:60443/2417116/d40.0/nb0/ne0/c155/b0 | 5490:60443/2788304/d46.1/nb1/ne0/c155/b0 | 5580:55547/2867444/d51.6/nb1/ne0/c155/b0 | 5670:42138/2142904/d50.9/nb2/ne0/c155/b0 | 5760:30957/1502576/d48.5/nb2/ne0/c155/b0 | 5850:14278/501498/d35.1/nb2/ne0/c155/b0
+     死前500拍: 领土峰值=60443 捐出0笔(0+费0) 收到0笔(≈0, 其中REJ?0) 被协防0次 自己协防别人0次
+  noah88 died/lost t=6009 place=11 alivePlayers=10 peak=7335 lastTerr=2821 bal=81226 sent/acc=101/101
+     末段快照: 5400:7335/157133/d21.4/nb0/ne0/c92/b0 | 5490:7335/174937/d23.8/nb1/ne0/c92/b0 | 5580:7335/202828/d27.7/nb1/ne0/c92/b0 | 5670:7335/233784/d31.9/nb1/ne0/c92/b0 | 5760:7335/268153/d36.6/nb1/ne0/c92/b0 | 5850:7335/306325/d41.8/nb1/ne0/c92/b0 | 5940:7335/348730/d47.5/nb2/ne51/c92/b0
+     死前500拍: 领土峰值=7335 捐出0笔(0+费0) 收到0笔(≈0, 其中REJ?0) 被协防0次 自己协防别人0次
+  kaito9 died/lost t=6076 place=10 alivePlayers=9 peak=8141 lastTerr=1966 bal=77542 sent/acc=96/95
+     末段快照: 5490:8141/348402/d42.8/nb1/ne0/c90/b2 | 5580:8141/397190/d48.8/nb1/ne0/c90/b2 | 5670:8141/451448/d55.5/nb1/ne0/c90/b2 | 5760:8141/511803/d62.9/nb1/ne0/c90/b2 | 5850:8141/578954/d71.1/nb1/ne0/c90/b2 | 5940:8141/653679/d80.3/nb1/ne93/c90/b2 | 6030:3326/174475/d52.5/nb3/ne0/c90/b2
+     死前500拍: 领土峰值=8141 捐出0笔(0+费0) 收到0笔(≈0, 其中REJ?0) 被协防0次 自己协防别人0次
+  ryan_m died/lost t=6240 place=9 alivePlayers=8 peak=84359 lastTerr=14446 bal=435408 sent/acc=145/142
+     末段快照: 5670:43638/3537473/d81.1/nb3/ne0/c130/b1 | 5760:43638/4096038/d93.9/nb3/ne0/c130/b1 | 5850:46992/3330958/d70.9/nb4/ne0/c133/b1 | 5940:48169/3860627/d80.1/nb4/ne0/c133/b1 | 6030:48169/4480306/d93.0/nb4/ne24/c133/b1 | 6120:49405/3688967/d74.7/nb4/ne0/c138/b1 | 6210:23214/975202/d42.0/nb4/ne0/c138/b1
+     死前500拍: 领土峰值=49405 捐出0笔(0+费0) 收到0笔(≈0, 其中REJ?0) 被协防0次 自己协防别人0次
+  sora_w died/lost t=6371 place=8 alivePlayers=7 peak=22390 lastTerr=6662 bal=301784 sent/acc=94/93
+     末段快照: 5760:20265/1635402/d80.7/nb2/ne0/c84/b0 | 5850:21415/1868077/d87.2/nb2/ne0/c84/b0 | 5940:20063/1897909/d94.6/nb2/ne0/c84/b0 | 6030:21124/1712330/d81.1/nb2/ne0/c86/b0 | 6120:21124/1953668/d92.5/nb2/ne0/c86/b0 | 6210:21865/1797173/d82.2/nb3/ne0/c88/b0 | 6300:14842/1021360/d68.8/nb3/ne0/c88/b0
+     死前500拍: 领土峰值=21865 捐出0笔(0+费0) 收到0笔(≈0, 其中REJ?0) 被协防0次 自己协防别人0次
+  zexos1 died/lost t=6421 place=7 alivePlayers=6 peak=41250 lastTerr=11789 bal=603383 sent/acc=91/85
+     末段快照: 5850:38016/3484917/d91.7/nb3/ne0/c73/b0 | 5940:37412/3058056/d81.7/nb3/ne0/c75/b0 | 6030:38434/3386798/d88.1/nb3/ne0/c75/b0 | 6120:38434/3508528/d91.3/nb3/ne0/c77/b0 | 6210:40183/3492449/d86.9/nb3/ne0/c77/b0 | 6300:35209/3123995/d88.7/nb4/ne0/c80/b0 | 6390:18143/1174800/d64.8/nb4/ne230/c80/b0
+     死前500拍: 领土峰值=40183 捐出0笔(0+费0) 收到0笔(≈0, 其中REJ?0) 被协防0次 自己协防别人0次

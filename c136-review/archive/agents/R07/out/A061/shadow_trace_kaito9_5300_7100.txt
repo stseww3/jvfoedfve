@@ -1,0 +1,1114 @@
+# A061 kaito9 影子决策明细 t=5300~7100（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 232 拍（t=5300~7100）
+#   过了软上限，但首选目标是唯一的真人邻居（isSoleHealthyBuffer：余额 < overHumanCap×100×领土 不打）: 118 拍（t=5470~6955）；可用兵 -601344~26841，一条指令下限(20%余额) 928154~1055280，比值 -65%~3%
+#   捐兵: 8 拍（t=5550~6950）；可用兵 -254907~13615，一条指令下限(20%余额) 998262~1052604，比值 -26%~1%
+#   出手打人/bot: 3 拍（t=7060~7070）；可用兵 453589~521536，一条指令下限(20%余额) 935422~949172，比值 48%~55%
+#   └ 「出手打人/bot」里：3 条对人/bot 的出兵共约 1437209 兵；其中超过软上限（over=1）时发的 3 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 3 条约 1437209 兵，c/worth = 1.71~1.71
+t=5300 kaito9 B=2692759 L=46183 d=58.3 nb=1 neut=17 cmds=62 noFull=1 shQ=661960 | m=0.900 worth=66.9 cheap=6.7 over=0 dMedOther=87.5 safe(-1)=1464572
+    → Norman Invasion#50[T5] terr=38435 bal=2676212 dq=69.6 cnt=164 | c=360.5 rankC=360.5 need=4827706 tD=0.80 人 pulse crowdedHard | safe=1464572 keep=Inf avail=-Inf chunkB=538552 pulseB=323131 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5305 kaito9 B=2692759 L=46228 d=58.2 nb=1 neut=14 cmds=62 noFull=1 shQ=673189 | m=0.900 worth=66.9 cheap=6.7 over=0 dMedOther=87.5 safe(-1)=1464534
+    → Norman Invasion#50[T5] terr=38574 bal=2676212 dq=69.4 cnt=168 | c=359.1 rankC=359.1 need=4827890 tD=0.79 人 pulse crowdedHard | safe=1464534 keep=Inf avail=-Inf chunkB=538552 pulseB=323131 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5310 kaito9 B=2732881 L=46253 d=59.1 nb=1 neut=11 cmds=62 noFull=1 shQ=683220 | m=0.900 worth=67.8 cheap=6.7 over=0 dMedOther=88.6 safe(-1)=1486163
+    → Norman Invasion#50[T5] terr=38666 bal=2714749 dq=70.2 cnt=170 | c=363.3 rankC=363.3 need=4896715 tD=0.79 人 pulse crowdedHard | safe=1486163 keep=Inf avail=-Inf chunkB=546576 pulseB=327946 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5315 kaito9 B=2732881 L=46283 d=59.0 nb=1 neut=9 cmds=62 noFull=1 shQ=683220 | m=0.900 worth=67.7 cheap=6.7 over=0 dMedOther=88.5 safe(-1)=1486137
+    → Norman Invasion#50[T5] terr=38802 bal=2714749 dq=70.0 cnt=173 | c=362.0 rankC=362.0 need=4896919 tD=0.79 人 pulse crowdedHard | safe=1486137 keep=Inf avail=-Inf chunkB=546576 pulseB=327946 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5320 kaito9 B=2773600 L=46298 d=59.9 nb=1 neut=6 cmds=62 noFull=1 shQ=693400 | m=0.900 worth=67.3 cheap=6.7 over=0 dMedOther=88.0 safe(-1)=1508239
+    → Norman Invasion#50[T5] terr=38882 bal=2754112 dq=70.8 cnt=175 | c=366.4 rankC=366.4 need=4967199 tD=0.80 人 pulse crowdedHard | safe=1508239 keep=Inf avail=-Inf chunkB=554720 pulseB=332832 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5325 kaito9 B=2773600 L=46313 d=59.9 nb=1 neut=4 cmds=62 noFull=1 shQ=693400 | m=0.900 worth=65.6 cheap=6.7 over=0 dMedOther=85.8 safe(-1)=1508226
+    → Norman Invasion#50[T5] terr=38977 bal=2754112 dq=70.7 cnt=178 | c=365.5 rankC=365.5 need=4967316 tD=0.82 人 pulse crowdedHard | safe=1508226 keep=Inf avail=-Inf chunkB=554720 pulseB=332832 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5330 kaito9 B=2814926 L=46318 d=60.8 nb=1 neut=1 cmds=62 noFull=1 shQ=703731 | m=0.900 worth=65.3 cheap=6.7 over=0 dMedOther=85.4 safe(-1)=1530657
+    → Norman Invasion#50[T5] terr=39020 bal=2794046 dq=71.6 cnt=180 | c=370.3 rankC=370.3 need=5038532 tD=0.84 人 pulse crowdedHard | safe=1530657 keep=Inf avail=-Inf chunkB=562985 pulseB=337791 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5335 kaito9 B=3403240 L=46319 d=73.5 nb=1 neut=0 cmds=62 noFull=1 shQ=741762 | m=0.900 worth=66.1 cheap=6.7 over=0 dMedOther=83.3 safe(-1)=1530656
+    → Norman Invasion#50[T5] terr=39049 bal=2794046 dq=71.6 cnt=181 | c=274.5 rankC=274.5 need=5038601 tD=0.86 人 pulse | safe=1530656 keep=Inf avail=-Inf chunkB=680648 pulseB=408389 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5340 kaito9 B=3453948 L=46319 d=74.6 nb=1 neut=0 cmds=62 noFull=1 shQ=805335 | m=0.900 worth=67.1 cheap=6.7 over=0 dMedOther=82.9 safe(-1)=1553416
+    → Norman Invasion#50[T5] terr=39064 bal=2834559 dq=72.6 cnt=181 | c=403.5 rankC=585.1 need=5110807 tD=0.88 人 pulse | safe=1553416 keep=Inf avail=-Inf chunkB=690790 pulseB=414474 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5345 kaito9 B=3453948 L=46319 d=74.6 nb=1 neut=0 cmds=62 noFull=1 shQ=863487 | m=0.900 worth=67.1 cheap=6.7 over=0 dMedOther=82.8 safe(-1)=1553416
+    → Norman Invasion#50[T5] terr=39093 bal=2834559 dq=72.5 cnt=181 | c=278.1 rankC=278.1 need=5110877 tD=0.88 人 pulse | safe=1553416 keep=Inf avail=-Inf chunkB=690790 pulseB=414474 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5350 kaito9 B=3505411 L=46319 d=75.7 nb=1 neut=0 cmds=62 noFull=1 shQ=876352 | m=0.900 worth=68.1 cheap=6.7 over=0 dMedOther=83.7 safe(-1)=1576506
+    → Norman Invasion#50[T5] terr=39109 bal=2875660 dq=73.5 cnt=181 | c=282.0 rankC=282.0 need=5184158 tD=0.88 人 pulse | safe=1576506 keep=Inf avail=-Inf chunkB=701082 pulseB=420649 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5355 kaito9 B=3505411 L=46319 d=75.7 nb=1 neut=0 cmds=62 noFull=1 shQ=876352 | m=0.900 worth=68.1 cheap=6.7 over=0 dMedOther=83.6 safe(-1)=1576506
+    → Norman Invasion#50[T5] terr=39117 bal=2875660 dq=73.5 cnt=181 | c=281.9 rankC=281.9 need=5184170 tD=0.88 人 pulse | safe=1576506 keep=Inf avail=-Inf chunkB=701082 pulseB=420649 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5360 kaito9 B=3557641 L=46319 d=76.8 nb=1 neut=0 cmds=62 noFull=1 shQ=889410 | m=0.900 worth=69.1 cheap=6.7 over=0 dMedOther=84.6 safe(-1)=1686713
+    → Norman Invasion#50[T5] terr=39117 bal=3071827 dq=78.5 cnt=181 | c=300.8 rankC=300.8 need=5533812 tD=0.93 人 pulse | safe=1686713 keep=Inf avail=-Inf chunkB=711528 pulseB=426917 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5365 kaito9 B=3557641 L=46319 d=76.8 nb=1 neut=0 cmds=62 noFull=1 shQ=889410 | m=0.900 worth=69.1 cheap=6.7 over=0 dMedOther=84.6 safe(-1)=2026365
+    → Norman Invasion#50[T5] terr=39117 bal=3676408 dq=94.0 cnt=181 | c=484.6 rankC=484.6 need=6611400 tD=1.11 人 pulse crowdedHard | safe=2026365 keep=Inf avail=-Inf chunkB=711528 pulseB=426917 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5370 kaito9 B=3610649 L=46319 d=78.0 nb=1 neut=0 cmds=62 noFull=1 shQ=902662 | m=0.900 worth=70.2 cheap=6.7 over=0 dMedOther=85.7 safe(-1)=2056313
+    → Norman Invasion#50[T5] terr=39117 bal=3729715 dq=95.3 cnt=181 | c=491.6 rankC=491.6 need=6706413 tD=1.11 人 pulse crowdedHard | safe=2056313 keep=Inf avail=-Inf chunkB=722130 pulseB=433278 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5375 kaito9 B=3610649 L=46319 d=78.0 nb=1 neut=0 cmds=62 noFull=1 shQ=902662 | m=0.900 worth=70.2 cheap=6.7 over=0 dMedOther=85.7 safe(-1)=2056313
+    → Norman Invasion#50[T5] terr=39117 bal=3729715 dq=95.3 cnt=181 | c=491.6 rankC=491.6 need=6706413 tD=1.11 人 pulse crowdedHard | safe=2056313 keep=Inf avail=-Inf chunkB=722130 pulseB=433278 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5380 kaito9 B=3664447 L=46319 d=79.1 nb=1 neut=0 cmds=62 noFull=1 shQ=916111 | m=0.900 worth=71.2 cheap=6.7 over=0 dMedOther=86.8 safe(-1)=2086695
+    → Norman Invasion#50[T5] terr=39117 bal=3783795 dq=96.7 cnt=181 | c=498.6 rankC=498.6 need=6802803 tD=1.11 人 pulse crowdedHard | safe=2086695 keep=Inf avail=-Inf chunkB=732889 pulseB=439734 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5385 kaito9 B=3664447 L=46319 d=79.1 nb=1 neut=0 cmds=62 noFull=1 shQ=916111 | m=0.900 worth=71.2 cheap=6.7 over=0 dMedOther=86.8 safe(-1)=2086695
+    → Norman Invasion#50[T5] terr=39117 bal=3783795 dq=96.7 cnt=181 | c=498.6 rankC=498.6 need=6802803 tD=1.11 人 pulse crowdedHard | safe=2086695 keep=Inf avail=-Inf chunkB=732889 pulseB=439734 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5390 kaito9 B=3719047 L=46319 d=80.3 nb=1 neut=0 cmds=62 noFull=1 shQ=929761 | m=0.900 worth=72.3 cheap=6.7 over=0 dMedOther=87.9 safe(-1)=2117518
+    → Norman Invasion#50[T5] terr=39117 bal=3838660 dq=98.1 cnt=181 | c=505.8 rankC=505.8 need=6900593 tD=1.12 人 pulse crowdedHard | safe=2117518 keep=Inf avail=-Inf chunkB=743809 pulseB=446286 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5395 kaito9 B=3719047 L=46319 d=80.3 nb=1 neut=0 cmds=62 noFull=1 shQ=929761 | m=0.900 worth=72.3 cheap=6.7 over=0 dMedOther=87.9 safe(-1)=2117518
+    → Norman Invasion#50[T5] terr=39117 bal=3838660 dq=98.1 cnt=181 | c=505.8 rankC=505.8 need=6900593 tD=1.12 人 pulse crowdedHard | safe=2117518 keep=Inf avail=-Inf chunkB=743809 pulseB=446286 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5400 kaito9 B=3820779 L=46319 d=82.5 nb=1 neut=0 cmds=62 noFull=1 shQ=943993 | m=0.900 worth=74.2 cheap=6.7 over=0 dMedOther=90.0 safe(-1)=2170763
+    → Norman Invasion#50[T5] terr=39117 bal=3933437 dq=100.6 cnt=181 | c=518.2 rankC=518.2 need=7069521 tD=1.12 人 pulse crowdedHard | safe=2170763 keep=Inf avail=-Inf chunkB=764156 pulseB=458493 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5405 kaito9 B=3820779 L=46319 d=82.5 nb=1 neut=0 cmds=62 noFull=1 shQ=955194 | m=0.900 worth=74.2 cheap=6.7 over=0 dMedOther=90.0 safe(-1)=2170763
+    → Norman Invasion#50[T5] terr=39117 bal=3933437 dq=100.6 cnt=181 | c=518.2 rankC=518.2 need=7069521 tD=1.12 人 pulse crowdedHard | safe=2170763 keep=Inf avail=-Inf chunkB=764156 pulseB=458493 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5410 kaito9 B=3877708 L=46319 d=83.7 nb=1 neut=0 cmds=62 noFull=1 shQ=969427 | m=0.900 worth=75.3 cheap=6.7 over=0 dMedOther=91.2 safe(-1)=2202584
+    → Norman Invasion#50[T5] terr=39117 bal=3990078 dq=102.0 cnt=181 | c=525.6 rankC=525.6 need=7170476 tD=1.12 人 pulse crowdedHard | safe=2202584 keep=Inf avail=-Inf chunkB=775542 pulseB=465325 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5415 kaito9 B=3877708 L=46319 d=83.7 nb=1 neut=0 cmds=62 noFull=1 shQ=969427 | m=0.900 worth=75.3 cheap=6.7 over=0 dMedOther=91.2 safe(-1)=2202584
+    → Norman Invasion#50[T5] terr=39117 bal=3990078 dq=102.0 cnt=181 | c=525.6 rankC=525.6 need=7170476 tD=1.12 人 pulse crowdedHard | safe=2202584 keep=Inf avail=-Inf chunkB=775542 pulseB=465325 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5420 kaito9 B=3935485 L=46319 d=85.0 nb=1 neut=0 cmds=62 noFull=1 shQ=983871 | m=0.900 worth=76.5 cheap=6.7 over=0 dMedOther=92.4 safe(-1)=2233967
+    → Norman Invasion#50[T5] terr=39117 bal=4045939 dq=103.4 cnt=181 | c=300.7 rankC=150.4 need=7270041 tD=1.12 人 pulse crowdedHard | safe=2233967 keep=Inf avail=-Inf chunkB=787097 pulseB=472258 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5425 kaito9 B=3935485 L=46319 d=85.0 nb=1 neut=0 cmds=62 noFull=1 shQ=983871 | m=0.900 worth=76.5 cheap=6.7 over=0 dMedOther=92.4 safe(-1)=2233967
+    → Norman Invasion#50[T5] terr=39117 bal=4045939 dq=103.4 cnt=181 | c=300.7 rankC=150.4 need=7270041 tD=1.12 人 pulse crowdedHard | safe=2233967 keep=Inf avail=-Inf chunkB=787097 pulseB=472258 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5430 kaito9 B=4386453 L=46319 d=94.7 nb=1 neut=0 cmds=62 noFull=1 shQ=1064606 | m=0.900 worth=85.2 cheap=6.7 over=0 dMedOther=93.6 safe(-1)=2252167
+    → Norman Invasion#50[T5] terr=38982 bal=4078336 dq=104.6 cnt=179 | c=298.8 rankC=149.4 need=7322740 tD=1.12 人 pulse crowdedHard | safe=2252167 keep=Inf avail=-Inf chunkB=877291 pulseB=526374 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5435 kaito9 B=4386453 L=46319 d=94.7 nb=1 neut=0 cmds=62 noFull=1 shQ=1096613 | m=0.900 worth=85.2 cheap=6.7 over=0 dMedOther=93.6 safe(-1)=2243237
+    → Norman Invasion#50[T5] terr=38887 bal=4062441 dq=104.5 cnt=177 | c=292.9 rankC=146.5 need=7291057 tD=1.12 人 pulse crowdedHard | safe=2243237 keep=Inf avail=-Inf chunkB=877291 pulseB=526374 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5440 kaito9 B=4451811 L=46319 d=96.1 nb=1 neut=0 cmds=62 noFull=1 shQ=1112952 | m=0.900 worth=86.5 cheap=6.7 over=0 dMedOther=82.8 safe(-1)=2259425
+    → Norman Invasion#50[T5] terr=38738 bal=4091255 dq=105.6 cnt=174 | c=298.2 rankC=149.1 need=7336674 tD=1.28 人 pulse crowdedHard | safe=2259425 keep=Inf avail=-Inf chunkB=890362 pulseB=534217 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5445 kaito9 B=4451811 L=46319 d=96.1 nb=1 neut=0 cmds=62 noFull=1 shQ=1112952 | m=0.900 worth=86.5 cheap=6.7 over=0 dMedOther=82.8 safe(-1)=2249746
+    → Norman Invasion#50[T5] terr=38636 bal=4074027 dq=105.4 cnt=172 | c=299.1 rankC=149.5 need=7302166 tD=1.27 人 pulse crowdedHard | safe=2249746 keep=Inf avail=-Inf chunkB=890362 pulseB=534217 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5450 kaito9 B=4518142 L=46319 d=97.5 nb=1 neut=0 cmds=62 noFull=1 shQ=1129535 | m=0.900 worth=87.8 cheap=6.7 over=0 dMedOther=82.6 safe(-1)=2264500
+    → Norman Invasion#50[T5] terr=38482 bal=4100288 dq=106.6 cnt=169 | c=304.4 rankC=152.2 need=7342877 tD=1.29 人 pulse crowdedHard | safe=2264500 keep=Inf avail=-Inf chunkB=903628 pulseB=542177 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5455 kaito9 B=4518142 L=46319 d=97.5 nb=1 neut=0 cmds=62 noFull=1 shQ=1129535 | m=0.900 worth=87.8 cheap=6.7 over=0 dMedOther=80.9 safe(-1)=2255596
+    → Norman Invasion#50[T5] terr=38389 bal=4084440 dq=106.4 cnt=167 | c=305.2 rankC=152.6 need=7311299 tD=1.32 人 pulse crowdedHard | safe=2255596 keep=Inf avail=-Inf chunkB=903628 pulseB=542177 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5460 kaito9 B=4585462 L=46319 d=99.0 nb=1 neut=0 cmds=62 noFull=1 shQ=1146365 | m=0.900 worth=89.1 cheap=6.7 over=0 dMedOther=80.9 safe(-1)=2271673
+    → Norman Invasion#50[T5] terr=38254 bal=4113057 dq=107.5 cnt=165 | c=310.4 rankC=155.2 need=7356800 tD=1.33 人 pulse crowdedHard | safe=2271673 keep=Inf avail=-Inf chunkB=917092 pulseB=550255 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5465 kaito9 B=4585462 L=46319 d=99.0 nb=1 neut=0 cmds=62 noFull=1 shQ=1146365 | m=0.900 worth=89.1 cheap=6.7 over=0 dMedOther=91.4 safe(-1)=2262206
+    → Norman Invasion#50[T5] terr=38156 bal=4096206 dq=107.4 cnt=163 | c=311.3 rankC=155.6 need=7323057 tD=1.17 人 pulse crowdedHard | safe=2262206 keep=Inf avail=-Inf chunkB=917092 pulseB=550255 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5470 kaito9 B=4653785 L=46319 d=100.5 nb=1 neut=0 cmds=62 noFull=1 shQ=1163446 | m=0.900 worth=90.4 cheap=6.7 over=1 dMedOther=92.7 safe(-1)=2275905
+    → Norman Invasion#50[T5] terr=38004 bal=4120589 dq=108.4 cnt=160 | c=234.5 rankC=117.3 need=7360193 tD=1.17 人 pulse | safe=2275905 keep=5187728 avail=-588479 chunkB=930757 pulseB=558454 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5475 kaito9 B=4653785 L=46319 d=100.5 nb=1 neut=0 cmds=62 noFull=1 shQ=1163446 | m=0.900 worth=90.4 cheap=6.7 over=1 dMedOther=82.0 safe(-1)=2265092
+    → Norman Invasion#50[T5] terr=37893 bal=4101343 dq=108.2 cnt=159 | c=235.3 rankC=117.6 need=7321791 tD=1.32 人 pulse | safe=2265092 keep=5187728 avail=-588479 chunkB=930757 pulseB=558454 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5480 kaito9 B=4722661 L=46319 d=102.0 nb=1 neut=0 cmds=62 noFull=1 shQ=1180329 | m=0.900 worth=91.8 cheap=6.7 over=1 dMedOther=83.1 safe(-1)=2275070
+    → Norman Invasion#50[T5] terr=37711 bal=4119103 dq=109.2 cnt=158 | c=239.4 rankC=119.7 need=7345768 tD=1.31 人 pulse | safe=2275070 keep=5187728 avail=-520410 chunkB=944532 pulseB=566719 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5485 kaito9 B=4722661 L=46319 d=102.0 nb=1 neut=0 cmds=62 noFull=1 shQ=1180665 | m=0.900 worth=91.8 cheap=6.7 over=1 dMedOther=83.1 safe(-1)=2262215
+    → Norman Invasion#50[T5] terr=37580 bal=4096222 dq=109.0 cnt=157 | c=240.3 rankC=120.2 need=7299904 tD=1.31 人 pulse | safe=2262215 keep=5187728 avail=-520410 chunkB=944532 pulseB=566719 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5490 kaito9 B=4790667 L=46319 d=103.4 nb=1 neut=0 cmds=62 noFull=1 shQ=1197312 | m=0.900 worth=93.1 cheap=6.7 over=1 dMedOther=80.0 safe(-1)=2269794
+    → Norman Invasion#50[T5] terr=37380 bal=4109712 dq=109.9 cnt=155 | c=244.6 rankC=122.3 need=7315364 tD=1.38 人 pulse | safe=2269794 keep=5187728 avail=-453201 chunkB=958133 pulseB=574880 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5495 kaito9 B=4790667 L=46319 d=103.4 nb=1 neut=0 cmds=62 noFull=1 shQ=1197666 | m=0.900 worth=93.1 cheap=6.7 over=1 dMedOther=80.0 safe(-1)=2262969
+    → Norman Invasion#50[T5] terr=37316 bal=4097563 dq=109.8 cnt=155 | c=422.4 rankC=422.4 need=7291466 tD=1.37 人 pulse | safe=2262969 keep=5187728 avail=-453201 chunkB=958133 pulseB=574880 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5500 kaito9 B=4903576 L=46319 d=105.9 nb=1 neut=0 cmds=62 noFull=1 shQ=1213847 | m=0.900 worth=95.3 cheap=6.7 over=1 dMedOther=81.9 safe(-1)=2310636
+    → Norman Invasion#50[T5] terr=37316 bal=4182410 dq=112.1 cnt=155 | c=431.1 rankC=431.1 need=7441470 tD=1.37 人 pulse | safe=2310636 keep=5187728 avail=-341615 chunkB=980715 pulseB=588429 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5505 kaito9 B=4903576 L=46319 d=105.9 nb=1 neut=0 cmds=62 noFull=1 shQ=1225894 | m=0.900 worth=95.3 cheap=6.7 over=1 dMedOther=81.9 safe(-1)=2310636
+    → Norman Invasion#50[T5] terr=37316 bal=4182410 dq=112.1 cnt=155 | c=431.1 rankC=431.1 need=7441632 tD=1.37 人 pulse | safe=2310636 keep=5187728 avail=-341615 chunkB=980715 pulseB=588429 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5510 kaito9 B=4968303 L=46319 d=107.3 nb=1 neut=0 cmds=62 noFull=1 shQ=1241792 | m=0.900 worth=96.5 cheap=6.7 over=1 dMedOther=82.9 safe(-1)=2336482
+    → Norman Invasion#50[T5] terr=37316 bal=4228416 dq=113.3 cnt=155 | c=435.8 rankC=435.8 need=7523047 tD=1.37 人 pulse | safe=2336482 keep=5187728 avail=-277647 chunkB=993661 pulseB=596196 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5515 kaito9 B=4968303 L=46319 d=107.3 nb=1 neut=0 cmds=62 noFull=1 shQ=1242075 | m=0.900 worth=96.5 cheap=6.7 over=1 dMedOther=82.9 safe(-1)=2336482
+    → Norman Invasion#50[T5] terr=37316 bal=4228416 dq=113.3 cnt=155 | c=435.8 rankC=435.8 need=7523375 tD=1.37 人 pulse | safe=2336482 keep=5187728 avail=-277647 chunkB=993661 pulseB=596196 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5520 kaito9 B=5031897 L=46319 d=108.6 nb=1 neut=0 cmds=62 noFull=1 shQ=1257548 | m=0.900 worth=97.8 cheap=6.7 over=1 dMedOther=83.9 safe(-1)=2361662
+    → Norman Invasion#50[T5] terr=37316 bal=4273237 dq=114.5 cnt=155 | c=440.4 rankC=440.4 need=7602704 tD=1.36 人 pulse | safe=2361662 keep=5187728 avail=-214798 chunkB=1006379 pulseB=603828 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5525 kaito9 B=5031897 L=46319 d=108.6 nb=1 neut=0 cmds=62 noFull=1 shQ=1257974 | m=0.900 worth=97.8 cheap=6.7 over=1 dMedOther=83.9 safe(-1)=2361662
+    → Norman Invasion#50[T5] terr=37316 bal=4273237 dq=114.5 cnt=155 | c=440.4 rankC=440.4 need=7602870 tD=1.36 人 pulse | safe=2361662 keep=5187728 avail=-214798 chunkB=1006379 pulseB=603828 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5530 kaito9 B=5094292 L=46319 d=110.0 nb=1 neut=0 cmds=62 noFull=1 shQ=1273129 | m=0.900 worth=99.0 cheap=6.7 over=1 dMedOther=84.9 safe(-1)=2386389
+    → Norman Invasion#50[T5] terr=37316 bal=4317251 dq=115.7 cnt=155 | c=444.9 rankC=444.9 need=7680779 tD=1.36 人 pulse | safe=2386389 keep=5187728 avail=-153134 chunkB=1018858 pulseB=611315 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5535 kaito9 B=5094292 L=46319 d=110.0 nb=1 neut=0 cmds=62 noFull=1 shQ=1273573 | m=0.900 worth=99.0 cheap=6.7 over=1 dMedOther=84.9 safe(-1)=2386389
+    → Norman Invasion#50[T5] terr=37316 bal=4317251 dq=115.7 cnt=155 | c=444.9 rankC=444.9 need=7681114 tD=1.36 人 pulse | safe=2386389 keep=5187728 avail=-153134 chunkB=1018858 pulseB=611315 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5540 kaito9 B=5155423 L=46319 d=111.3 nb=1 neut=0 cmds=62 noFull=1 shQ=1288394 | m=0.900 worth=100.2 cheap=6.7 over=1 dMedOther=86.0 safe(-1)=2410400
+    → Norman Invasion#50[T5] terr=37316 bal=4359991 dq=116.8 cnt=155 | c=449.3 rankC=449.3 need=7756779 tD=1.36 人 pulse | safe=2410400 keep=5187728 avail=-92720 chunkB=1031085 pulseB=618651 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5545 kaito9 B=5155423 L=46319 d=111.3 nb=1 neut=0 cmds=62 noFull=1 shQ=1288855 | m=0.900 worth=100.2 cheap=6.7 over=1 dMedOther=78.8 safe(-1)=2410400
+    → Norman Invasion#50[T5] terr=37316 bal=4359991 dq=116.8 cnt=155 | c=449.3 rankC=449.3 need=7756948 tD=1.48 人 pulse | safe=2410400 keep=5187728 avail=-92720 chunkB=1031085 pulseB=618651 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5550 kaito9 B=5215225 L=46319 d=112.6 nb=1 neut=0 cmds=63 noFull=1 shQ=1303457 | m=0.900 worth=101.3 cheap=6.7 over=1 dMedOther=79.9 safe(-1)=2433914
+    → Norman Invasion#50[T5] terr=37316 bal=4401846 dq=118.0 cnt=155 | c=453.5 rankC=453.5 need=7831054 tD=1.48 人 pulse | safe=2433914 keep=5187728 avail=-33618 chunkB=1043045 pulseB=625827 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=187 → [APEX] leo_tx#14[T2]（约 957482 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=5555 kaito9 B=5215225 L=46319 d=112.6 nb=1 neut=0 cmds=63 noFull=1 shQ=1303806 | m=0.900 worth=101.3 cheap=6.7 over=1 dMedOther=79.9 safe(-1)=2433914
+    → Norman Invasion#50[T5] terr=37316 bal=4401846 dq=118.0 cnt=155 | c=453.5 rankC=453.5 need=7831396 tD=1.48 人 pulse | safe=2433914 keep=5187728 avail=-33618 chunkB=1043045 pulseB=625827 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5560 kaito9 B=3990375 L=46319 d=86.1 nb=1 neut=0 cmds=63 noFull=1 shQ=997593 | m=0.900 worth=77.5 cheap=6.7 over=0 dMedOther=81.0 safe(-1)=2456913
+    → Norman Invasion#50[T5] terr=37316 bal=4442783 dq=119.1 cnt=155 | c=616.8 rankC=616.8 need=7903887 tD=1.47 人 pulse crowdedHard | safe=2456913 keep=Inf avail=-Inf chunkB=798075 pulseB=478845 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5565 kaito9 B=3990375 L=46319 d=86.1 nb=1 neut=0 cmds=63 noFull=1 shQ=997593 | m=0.900 worth=77.5 cheap=6.7 over=0 dMedOther=81.0 safe(-1)=2456913
+    → Norman Invasion#50[T5] terr=37316 bal=4442783 dq=119.1 cnt=155 | c=616.8 rankC=616.8 need=7904059 tD=1.47 人 pulse crowdedHard | safe=2456913 keep=Inf avail=-Inf chunkB=798075 pulseB=478845 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5570 kaito9 B=4049831 L=46319 d=87.4 nb=1 neut=0 cmds=63 noFull=1 shQ=1012457 | m=0.900 worth=78.7 cheap=6.7 over=0 dMedOther=82.1 safe(-1)=2185877
+    → Norman Invasion#50[T5] terr=37316 bal=3960339 dq=106.1 cnt=155 | c=413.0 rankC=289.1 need=7051895 tD=1.29 人 pulse crowdedHard | safe=2185877 keep=Inf avail=-Inf chunkB=809966 pulseB=485980 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5575 kaito9 B=4049831 L=46319 d=87.4 nb=1 neut=0 cmds=63 noFull=1 shQ=1012457 | m=0.900 worth=78.7 cheap=6.7 over=0 dMedOther=82.1 safe(-1)=2185877
+    → Norman Invasion#50[T5] terr=37443 bal=3960339 dq=105.8 cnt=156 | c=411.4 rankC=288.0 need=7057464 tD=1.29 人 pulse crowdedHard | safe=2185877 keep=Inf avail=-Inf chunkB=809966 pulseB=485980 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5580 kaito9 B=4110173 L=46319 d=88.7 nb=1 neut=0 cmds=63 noFull=1 shQ=1027543 | m=0.900 worth=79.9 cheap=6.7 over=0 dMedOther=83.1 safe(-1)=2214578
+    → Norman Invasion#50[T5] terr=37565 bal=4011427 dq=106.8 cnt=157 | c=415.1 rankC=290.6 need=7153018 tD=1.28 人 pulse crowdedHard | safe=2214578 keep=Inf avail=-Inf chunkB=822035 pulseB=493221 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5585 kaito9 B=4110173 L=46319 d=88.7 nb=1 neut=0 cmds=63 noFull=1 shQ=1027543 | m=0.900 worth=79.9 cheap=6.7 over=0 dMedOther=83.1 safe(-1)=2214578
+    → Norman Invasion#50[T5] terr=37741 bal=4011427 dq=106.3 cnt=158 | c=412.9 rankC=289.0 need=7160419 tD=1.28 人 pulse crowdedHard | safe=2214578 keep=Inf avail=-Inf chunkB=822035 pulseB=493221 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5590 kaito9 B=4171414 L=46319 d=90.1 nb=1 neut=0 cmds=63 noFull=1 shQ=1042853 | m=0.900 worth=81.1 cheap=6.7 over=0 dMedOther=84.1 safe(-1)=2243199
+    → Norman Invasion#50[T5] terr=37854 bal=4062372 dq=107.3 cnt=159 | c=805.6 rankC=1168.1 need=7255463 tD=1.28 人 pulse crowdedHard | safe=2243199 keep=Inf avail=-Inf chunkB=834283 pulseB=500570 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5595 kaito9 B=4171414 L=46319 d=90.1 nb=1 neut=0 cmds=63 noFull=1 shQ=1042853 | m=0.900 worth=81.1 cheap=6.7 over=0 dMedOther=84.0 safe(-1)=2238005
+    → Norman Invasion#50[T5] terr=37910 bal=4053127 dq=106.9 cnt=160 | c=315.1 rankC=157.5 need=7241680 tD=1.27 人 pulse crowdedHard | safe=2238005 keep=Inf avail=-Inf chunkB=834283 pulseB=500570 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5600 kaito9 B=4279887 L=46319 d=92.4 nb=1 neut=0 cmds=63 noFull=1 shQ=1058795 | m=0.900 worth=83.2 cheap=6.7 over=0 dMedOther=86.0 safe(-1)=2276810
+    → Norman Invasion#50[T5] terr=37798 bal=4122200 dq=109.1 cnt=159 | c=323.0 rankC=161.5 need=7359619 tD=1.27 人 pulse crowdedHard | safe=2276810 keep=Inf avail=-Inf chunkB=855977 pulseB=513586 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5605 kaito9 B=4279887 L=46319 d=92.4 nb=1 neut=0 cmds=63 noFull=1 shQ=1069971 | m=0.900 worth=83.2 cheap=6.7 over=0 dMedOther=85.9 safe(-1)=2259769
+    → Norman Invasion#50[T5] terr=37624 bal=4091867 dq=108.8 cnt=157 | c=324.7 rankC=162.3 need=7298765 tD=1.27 人 pulse crowdedHard | safe=2259769 keep=Inf avail=-Inf chunkB=855977 pulseB=513586 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5610 kaito9 B=4343657 L=46319 d=93.8 nb=1 neut=0 cmds=63 noFull=1 shQ=1085914 | m=0.900 worth=84.4 cheap=6.7 over=0 dMedOther=87.1 safe(-1)=2275488
+    → Norman Invasion#50[T5] terr=37504 bal=4119848 dq=109.9 cnt=156 | c=329.7 rankC=164.8 need=7343359 tD=1.26 人 pulse crowdedHard | safe=2275488 keep=Inf avail=-Inf chunkB=868731 pulseB=521239 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5615 kaito9 B=4343657 L=46319 d=93.8 nb=1 neut=0 cmds=63 noFull=1 shQ=1085914 | m=0.900 worth=84.4 cheap=6.7 over=0 dMedOther=87.0 safe(-1)=2271051
+    → Norman Invasion#50[T5] terr=37504 bal=4111949 dq=109.6 cnt=156 | c=824.1 rankC=1195.0 need=7329702 tD=1.26 人 pulse crowdedHard | safe=2271051 keep=Inf avail=-Inf chunkB=868731 pulseB=521239 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5620 kaito9 B=4408377 L=46319 d=95.2 nb=1 neut=0 cmds=63 noFull=1 shQ=1102094 | m=0.900 worth=85.7 cheap=6.7 over=0 dMedOther=88.2 safe(-1)=2298078
+    → Norman Invasion#50[T5] terr=37504 bal=4160058 dq=110.9 cnt=156 | c=833.7 rankC=1208.9 need=7414968 tD=1.26 人 pulse crowdedHard | safe=2298078 keep=Inf avail=-Inf chunkB=881675 pulseB=529005 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5625 kaito9 B=4408377 L=46319 d=95.2 nb=1 neut=0 cmds=63 noFull=1 shQ=1102094 | m=0.900 worth=85.7 cheap=6.7 over=0 dMedOther=92.2 safe(-1)=2298078
+    → Norman Invasion#50[T5] terr=37504 bal=4160058 dq=110.9 cnt=156 | c=575.0 rankC=575.0 need=7415128 tD=1.20 人 pulse crowdedHard | safe=2298078 keep=Inf avail=-Inf chunkB=881675 pulseB=529005 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5630 kaito9 B=4474061 L=46319 d=96.6 nb=1 neut=0 cmds=63 noFull=1 shQ=1118515 | m=0.900 worth=86.9 cheap=6.7 over=0 dMedOther=93.0 safe(-1)=2324487
+    → Norman Invasion#50[T5] terr=37504 bal=4207066 dq=112.2 cnt=156 | c=581.4 rankC=581.4 need=7498452 tD=1.21 人 pulse crowdedHard | safe=2324487 keep=Inf avail=-Inf chunkB=894812 pulseB=536887 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5635 kaito9 B=4474061 L=46319 d=96.6 nb=1 neut=0 cmds=63 noFull=1 shQ=1118515 | m=0.900 worth=86.9 cheap=6.7 over=0 dMedOther=92.5 safe(-1)=2324487
+    → Norman Invasion#50[T5] terr=37504 bal=4207066 dq=112.2 cnt=156 | c=581.4 rankC=581.4 need=7498776 tD=1.21 人 pulse crowdedHard | safe=2324487 keep=Inf avail=-Inf chunkB=894812 pulseB=536887 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5640 kaito9 B=4540724 L=46319 d=98.0 nb=1 neut=0 cmds=63 noFull=1 shQ=1135181 | m=0.900 worth=88.2 cheap=6.7 over=0 dMedOther=93.2 safe(-1)=2350250
+    → Norman Invasion#50[T5] terr=37504 bal=4252923 dq=113.4 cnt=156 | c=587.7 rankC=587.7 need=7580070 tD=1.22 人 pulse crowdedHard | safe=2350250 keep=Inf avail=-Inf chunkB=908145 pulseB=544887 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5645 kaito9 B=4540724 L=46319 d=98.0 nb=1 neut=0 cmds=63 noFull=1 shQ=1135181 | m=0.900 worth=88.2 cheap=6.7 over=0 dMedOther=92.4 safe(-1)=2350250
+    → Norman Invasion#50[T5] terr=37504 bal=4252923 dq=113.4 cnt=156 | c=852.2 rankC=1235.6 need=7580234 tD=1.23 人 pulse crowdedHard | safe=2350250 keep=Inf avail=-Inf chunkB=908145 pulseB=544887 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5650 kaito9 B=4608380 L=46319 d=99.5 nb=1 neut=0 cmds=63 noFull=1 shQ=1152095 | m=0.900 worth=89.5 cheap=6.7 over=0 dMedOther=92.9 safe(-1)=2375576
+    → Norman Invasion#50[T5] terr=37504 bal=4298003 dq=114.6 cnt=156 | c=861.1 rankC=1248.6 need=7660159 tD=1.23 人 pulse crowdedHard | safe=2375576 keep=Inf avail=-Inf chunkB=921676 pulseB=553006 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5655 kaito9 B=4608380 L=46319 d=99.5 nb=1 neut=0 cmds=63 noFull=1 shQ=1152095 | m=0.900 worth=89.5 cheap=6.7 over=0 dMedOther=91.9 safe(-1)=2375576
+    → Norman Invasion#50[T5] terr=37504 bal=4298003 dq=114.6 cnt=156 | c=861.1 rankC=1248.6 need=7660489 tD=1.25 人 pulse crowdedHard | safe=2375576 keep=Inf avail=-Inf chunkB=921676 pulseB=553006 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5660 kaito9 B=4677044 L=46319 d=101.0 nb=1 neut=0 cmds=63 noFull=1 shQ=1169166 | m=0.900 worth=90.9 cheap=6.7 over=1 dMedOther=92.2 safe(-1)=2400204
+    → Norman Invasion#50[T5] terr=37504 bal=4341842 dq=115.8 cnt=156 | c=869.8 rankC=1261.3 need=7738225 tD=1.26 人 pulse crowdedHard | safe=2400204 keep=5187728 avail=-565493 chunkB=935409 pulseB=561245 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5665 kaito9 B=4677044 L=46319 d=101.0 nb=1 neut=0 cmds=63 noFull=1 shQ=1169261 | m=0.900 worth=90.9 cheap=6.7 over=1 dMedOther=90.9 safe(-1)=2400204
+    → Norman Invasion#50[T5] terr=37504 bal=4341842 dq=115.8 cnt=156 | c=869.8 rankC=1261.3 need=7738392 tD=1.27 人 pulse crowdedHard | safe=2400204 keep=5187728 avail=-565493 chunkB=935409 pulseB=561245 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5670 kaito9 B=4745796 L=46319 d=102.5 nb=1 neut=0 cmds=63 noFull=1 shQ=1186108 | m=0.900 worth=92.2 cheap=6.7 over=1 dMedOther=91.0 safe(-1)=2424353
+    → Norman Invasion#50[T5] terr=37504 bal=4384826 dq=116.9 cnt=156 | c=878.4 rankC=1273.7 need=7814619 tD=1.29 人 pulse crowdedHard | safe=2424353 keep=5187728 avail=-497546 chunkB=949159 pulseB=569496 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5675 kaito9 B=4745796 L=46319 d=102.5 nb=1 neut=0 cmds=63 noFull=1 shQ=1186449 | m=0.900 worth=92.2 cheap=6.7 over=1 dMedOther=90.8 safe(-1)=2424353
+    → Norman Invasion#50[T5] terr=37504 bal=4384826 dq=116.9 cnt=156 | c=605.8 rankC=605.8 need=7814956 tD=1.29 人 pulse crowdedHard | safe=2424353 keep=5187728 avail=-497546 chunkB=949159 pulseB=569496 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5680 kaito9 B=4813186 L=46319 d=103.9 nb=1 neut=0 cmds=63 noFull=1 shQ=1203054 | m=0.900 worth=93.5 cheap=6.7 over=1 dMedOther=91.9 safe(-1)=2448001
+    → Norman Invasion#50[T5] terr=37504 bal=4426920 dq=118.0 cnt=156 | c=611.6 rankC=611.6 need=7889616 tD=1.29 人 pulse crowdedHard | safe=2448001 keep=5187728 avail=-430946 chunkB=962637 pulseB=577582 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5685 kaito9 B=4813186 L=46319 d=103.9 nb=1 neut=0 cmds=63 noFull=1 shQ=1203296 | m=0.900 worth=93.5 cheap=6.7 over=1 dMedOther=91.9 safe(-1)=2149266
+    → Norman Invasion#50[T5] terr=37504 bal=3895172 dq=103.9 cnt=156 | c=299.5 rankC=209.7 need=6948765 tD=1.13 人 pulse | safe=2149266 keep=5187728 avail=-430946 chunkB=962637 pulseB=577582 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5690 kaito9 B=4879607 L=46319 d=105.3 nb=1 neut=0 cmds=63 noFull=1 shQ=1219520 | m=0.900 worth=94.8 cheap=6.7 over=1 dMedOther=93.0 safe(-1)=2178370
+    → Norman Invasion#50[T5] terr=37504 bal=3946977 dq=105.2 cnt=156 | c=303.5 rankC=212.4 need=7040595 tD=1.13 人 pulse | safe=2178370 keep=5187728 avail=-365303 chunkB=975921 pulseB=585553 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5695 kaito9 B=4879607 L=46319 d=105.3 nb=1 neut=0 cmds=63 noFull=1 shQ=1219901 | m=0.900 worth=94.8 cheap=6.7 over=1 dMedOther=93.0 safe(-1)=2178370
+    → Norman Invasion#50[T5] terr=37624 bal=3946977 dq=104.9 cnt=157 | c=302.4 rankC=211.6 need=7045771 tD=1.13 人 pulse | safe=2178370 keep=5187728 avail=-365303 chunkB=975921 pulseB=585553 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5700 kaito9 B=4991312 L=46319 d=107.8 nb=1 neut=0 cmds=64 noFull=1 shQ=1235623 | m=0.900 worth=97.0 cheap=6.7 over=1 dMedOther=95.1 safe(-1)=2228621
+    → Norman Invasion#50[T5] terr=37798 bal=4036423 dq=106.8 cnt=159 | c=307.5 rankC=215.3 need=7211477 tD=1.12 人 pulse | safe=2228621 keep=5187728 avail=-254907 chunkB=998262 pulseB=598957 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=187 → [APEX] leo_tx#14[T2]（约 916373 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=5705 kaito9 B=4991312 L=46319 d=107.8 nb=1 neut=0 cmds=64 noFull=1 shQ=1247828 | m=0.900 worth=97.0 cheap=6.7 over=1 dMedOther=95.1 safe(-1)=2228621
+    → Norman Invasion#50[T5] terr=37910 bal=4036423 dq=106.5 cnt=160 | c=306.5 rankC=214.5 need=7216187 tD=1.12 人 pulse | safe=2228621 keep=5187728 avail=-254907 chunkB=998262 pulseB=598957 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5710 kaito9 B=5054202 L=46319 d=109.1 nb=1 neut=0 cmds=64 noFull=1 shQ=1263243 | m=0.900 worth=98.2 cheap=6.7 over=1 dMedOther=96.2 safe(-1)=2257419
+    → Norman Invasion#50[T5] terr=38071 bal=4087685 dq=107.4 cnt=162 | c=308.8 rankC=216.2 need=7313839 tD=1.12 人 pulse | safe=2257419 keep=5187728 avail=-192754 chunkB=1010840 pulseB=606504 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5715 kaito9 B=3810396 L=46319 d=82.3 nb=1 neut=0 cmds=64 noFull=1 shQ=952599 | m=0.900 worth=74.0 cheap=6.7 over=0 dMedOther=94.8 safe(-1)=2257419
+    → Norman Invasion#50[T5] terr=38176 bal=4087685 dq=107.1 cnt=164 | c=414.7 rankC=290.3 need=7318392 tD=1.13 人 pulse crowdedHard | safe=2257419 keep=Inf avail=-Inf chunkB=762079 pulseB=457248 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5720 kaito9 B=3867170 L=46319 d=83.5 nb=1 neut=0 cmds=64 noFull=1 shQ=966792 | m=0.900 worth=75.1 cheap=6.7 over=0 dMedOther=94.5 safe(-1)=2286125
+    → Norman Invasion#50[T5] terr=38323 bal=4138781 dq=108.0 cnt=166 | c=418.0 rankC=292.6 need=7415280 tD=1.14 人 pulse crowdedHard | safe=2286125 keep=Inf avail=-Inf chunkB=773434 pulseB=464060 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5725 kaito9 B=3867170 L=46319 d=83.5 nb=1 neut=0 cmds=64 noFull=1 shQ=966792 | m=0.900 worth=75.1 cheap=6.7 over=0 dMedOther=91.9 safe(-1)=2286125
+    → Norman Invasion#50[T5] terr=38417 bal=4138781 dq=107.7 cnt=168 | c=416.8 rankC=291.8 need=7419218 tD=1.17 人 pulse crowdedHard | safe=2286125 keep=Inf avail=-Inf chunkB=773434 pulseB=464060 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5730 kaito9 B=3924790 L=46319 d=84.7 nb=1 neut=0 cmds=64 noFull=1 shQ=981197 | m=0.900 worth=76.3 cheap=6.7 over=0 dMedOther=93.0 safe(-1)=2314724
+    → Norman Invasion#50[T5] terr=38542 bal=4189688 dq=108.7 cnt=171 | c=560.4 rankC=560.4 need=7514978 tD=1.17 人 pulse crowdedHard | safe=2314724 keep=Inf avail=-Inf chunkB=784958 pulseB=470975 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5735 kaito9 B=3924790 L=46319 d=84.7 nb=1 neut=0 cmds=64 noFull=1 shQ=981197 | m=0.900 worth=76.3 cheap=6.7 over=0 dMedOther=93.0 safe(-1)=2314724
+    → Norman Invasion#50[T5] terr=38619 bal=4189688 dq=108.5 cnt=173 | c=559.0 rankC=559.0 need=7518379 tD=1.17 人 pulse crowdedHard | safe=2314724 keep=Inf avail=-Inf chunkB=784958 pulseB=470975 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5740 kaito9 B=3983269 L=46319 d=86.0 nb=1 neut=0 cmds=64 noFull=1 shQ=995817 | m=0.900 worth=77.4 cheap=6.7 over=0 dMedOther=94.1 safe(-1)=2343205
+    → Norman Invasion#50[T5] terr=38731 bal=4240383 dq=109.5 cnt=176 | c=563.8 rankC=563.8 need=7613329 tD=1.16 人 pulse crowdedHard | safe=2343205 keep=Inf avail=-Inf chunkB=796654 pulseB=477992 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5745 kaito9 B=3983269 L=46319 d=86.0 nb=1 neut=0 cmds=64 noFull=1 shQ=995817 | m=0.900 worth=77.4 cheap=6.7 over=0 dMedOther=94.1 safe(-1)=2343205
+    → Norman Invasion#50[T5] terr=38805 bal=4240383 dq=109.3 cnt=178 | c=562.6 rankC=562.6 need=7616145 tD=1.16 人 pulse crowdedHard | safe=2343205 keep=Inf avail=-Inf chunkB=796654 pulseB=477992 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5750 kaito9 B=4042619 L=46319 d=87.3 nb=1 neut=0 cmds=64 noFull=1 shQ=1010654 | m=0.900 worth=78.5 cheap=6.7 over=0 dMedOther=92.9 safe(-1)=2371553
+    → Norman Invasion#50[T5] terr=38916 bal=4290843 dq=110.3 cnt=181 | c=567.6 rankC=567.6 need=7706211 tD=1.19 人 pulse crowdedHard | safe=2371553 keep=Inf avail=-Inf chunkB=808524 pulseB=485114 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5755 kaito9 B=4042619 L=46319 d=87.3 nb=1 neut=0 cmds=64 noFull=1 shQ=1010654 | m=0.900 worth=78.5 cheap=6.7 over=0 dMedOther=92.9 safe(-1)=2371553
+    → Norman Invasion#50[T5] terr=38989 bal=4290843 dq=110.1 cnt=182 | c=566.5 rankC=566.5 need=7706359 tD=1.18 人 pulse crowdedHard | safe=2371553 keep=Inf avail=-Inf chunkB=808524 pulseB=485114 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5760 kaito9 B=4102854 L=46319 d=88.6 nb=1 neut=0 cmds=64 noFull=1 shQ=1025713 | m=0.900 worth=79.7 cheap=6.7 over=0 dMedOther=94.2 safe(-1)=2399756
+    → Norman Invasion#50[T5] terr=39103 bal=4341045 dq=111.0 cnt=185 | c=571.4 rankC=571.4 need=7796087 tD=1.18 人 pulse crowdedHard | safe=2399756 keep=Inf avail=-Inf chunkB=820571 pulseB=492342 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5765 kaito9 B=4102854 L=46319 d=88.6 nb=1 neut=0 cmds=64 noFull=1 shQ=1025713 | m=0.900 worth=79.7 cheap=6.7 over=0 dMedOther=94.2 safe(-1)=2399756
+    → Norman Invasion#50[T5] terr=39179 bal=4341045 dq=110.8 cnt=187 | c=570.2 rankC=570.2 need=7796201 tD=1.18 人 pulse crowdedHard | safe=2399756 keep=Inf avail=-Inf chunkB=820571 pulseB=492342 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5770 kaito9 B=4163986 L=46319 d=89.9 nb=1 neut=0 cmds=64 noFull=1 shQ=1040996 | m=0.900 worth=80.9 cheap=6.7 over=0 dMedOther=95.5 safe(-1)=2427803
+    → Norman Invasion#50[T5] terr=39257 bal=4390967 dq=111.9 cnt=189 | c=575.6 rankC=575.6 need=7885219 tD=1.17 人 pulse crowdedHard | safe=2427803 keep=Inf avail=-Inf chunkB=832797 pulseB=499678 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5775 kaito9 B=4163986 L=46319 d=89.9 nb=1 neut=0 cmds=64 noFull=1 shQ=1040996 | m=0.900 worth=80.9 cheap=6.7 over=0 dMedOther=95.5 safe(-1)=2427803
+    → Norman Invasion#50[T5] terr=39257 bal=4390967 dq=111.9 cnt=189 | c=575.6 rankC=575.6 need=7885219 tD=1.17 人 pulse crowdedHard | safe=2427803 keep=Inf avail=-Inf chunkB=832797 pulseB=499678 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5780 kaito9 B=4226029 L=46319 d=91.2 nb=1 neut=0 cmds=64 noFull=1 shQ=1056507 | m=0.900 worth=82.1 cheap=6.7 over=0 dMedOther=91.5 safe(-1)=2593312
+    → Norman Invasion#50[T5] terr=39257 bal=4685573 dq=119.4 cnt=189 | c=613.7 rankC=613.7 need=8410317 tD=1.30 人 pulse crowdedHard | safe=2593312 keep=Inf avail=-Inf chunkB=845206 pulseB=507123 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5785 kaito9 B=4226029 L=46319 d=91.2 nb=1 neut=0 cmds=64 noFull=1 shQ=1056507 | m=0.900 worth=82.1 cheap=6.7 over=0 dMedOther=91.2 safe(-1)=2593312
+    → Norman Invasion#50[T5] terr=39257 bal=4685573 dq=119.4 cnt=189 | c=613.7 rankC=613.7 need=8410317 tD=1.31 人 pulse crowdedHard | safe=2593312 keep=Inf avail=-Inf chunkB=845206 pulseB=507123 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5790 kaito9 B=4288996 L=46319 d=92.6 nb=1 neut=0 cmds=64 noFull=1 shQ=1072249 | m=0.900 worth=83.3 cheap=6.7 over=0 dMedOther=92.2 safe(-1)=2616739
+    → Norman Invasion#50[T5] terr=39257 bal=4727274 dq=120.4 cnt=189 | c=619.2 rankC=619.2 need=8484643 tD=1.31 人 pulse crowdedHard | safe=2616739 keep=Inf avail=-Inf chunkB=857799 pulseB=514680 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5795 kaito9 B=4288996 L=46319 d=92.6 nb=1 neut=0 cmds=64 noFull=1 shQ=1072249 | m=0.900 worth=83.3 cheap=6.7 over=0 dMedOther=92.2 safe(-1)=2616739
+    → Norman Invasion#50[T5] terr=39257 bal=4727274 dq=120.4 cnt=189 | c=619.2 rankC=619.2 need=8484643 tD=1.31 人 pulse crowdedHard | safe=2616739 keep=Inf avail=-Inf chunkB=857799 pulseB=514680 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5800 kaito9 B=4399221 L=46319 d=95.0 nb=1 neut=0 cmds=64 noFull=1 shQ=1088636 | m=0.900 worth=85.5 cheap=6.7 over=0 dMedOther=93.1 safe(-1)=2661633
+    → Norman Invasion#50[T5] terr=39257 bal=4807185 dq=122.5 cnt=189 | c=629.6 rankC=629.6 need=8627074 tD=1.32 人 pulse crowdedHard | safe=2661633 keep=Inf avail=-Inf chunkB=879844 pulseB=527907 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5805 kaito9 B=4399221 L=46319 d=95.0 nb=1 neut=0 cmds=64 noFull=1 shQ=1099805 | m=0.900 worth=85.5 cheap=6.7 over=0 dMedOther=92.4 safe(-1)=2661633
+    → Norman Invasion#50[T5] terr=39257 bal=4807185 dq=122.5 cnt=189 | c=629.6 rankC=629.6 need=8627074 tD=1.33 人 pulse crowdedHard | safe=2661633 keep=Inf avail=-Inf chunkB=879844 pulseB=527907 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5810 kaito9 B=4464769 L=46319 d=96.4 nb=1 neut=0 cmds=64 noFull=1 shQ=1116192 | m=0.900 worth=86.8 cheap=6.7 over=0 dMedOther=93.6 safe(-1)=2683238
+    → Norman Invasion#50[T5] terr=39257 bal=4845642 dq=123.4 cnt=189 | c=634.6 rankC=634.6 need=8695619 tD=1.32 人 pulse crowdedHard | safe=2683238 keep=Inf avail=-Inf chunkB=892954 pulseB=535772 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5815 kaito9 B=4464769 L=46319 d=96.4 nb=1 neut=0 cmds=64 noFull=1 shQ=1116192 | m=0.900 worth=86.8 cheap=6.7 over=0 dMedOther=91.2 safe(-1)=2683238
+    → Norman Invasion#50[T5] terr=39257 bal=4845642 dq=123.4 cnt=189 | c=634.6 rankC=634.6 need=8695619 tD=1.35 人 pulse crowdedHard | safe=2683238 keep=Inf avail=-Inf chunkB=892954 pulseB=535772 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5820 kaito9 B=4531294 L=46319 d=97.8 nb=1 neut=0 cmds=64 noFull=1 shQ=1132823 | m=0.900 worth=88.0 cheap=6.7 over=0 dMedOther=92.4 safe(-1)=2704472
+    → Norman Invasion#50[T5] terr=39257 bal=4883438 dq=124.4 cnt=189 | c=639.6 rankC=639.6 need=8762985 tD=1.35 人 pulse crowdedHard | safe=2704472 keep=Inf avail=-Inf chunkB=906259 pulseB=543755 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5825 kaito9 B=4531294 L=46319 d=97.8 nb=1 neut=0 cmds=64 noFull=1 shQ=1132823 | m=0.900 worth=88.0 cheap=6.7 over=0 dMedOther=92.4 safe(-1)=2704472
+    → Norman Invasion#50[T5] terr=39257 bal=4883438 dq=124.4 cnt=189 | c=639.6 rankC=639.6 need=8762985 tD=1.35 人 pulse crowdedHard | safe=2704472 keep=Inf avail=-Inf chunkB=906259 pulseB=543755 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5830 kaito9 B=4598810 L=46319 d=99.3 nb=1 neut=0 cmds=64 noFull=1 shQ=1149702 | m=0.900 worth=89.4 cheap=6.7 over=0 dMedOther=93.6 safe(-1)=2725047
+    → Norman Invasion#50[T5] terr=39257 bal=4920063 dq=125.3 cnt=189 | c=644.4 rankC=644.4 need=8828265 tD=1.34 人 pulse crowdedHard | safe=2725047 keep=Inf avail=-Inf chunkB=919762 pulseB=551857 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5835 kaito9 B=4598810 L=46319 d=99.3 nb=1 neut=0 cmds=64 noFull=1 shQ=1149702 | m=0.900 worth=89.4 cheap=6.7 over=0 dMedOther=93.6 safe(-1)=2725047
+    → Norman Invasion#50[T5] terr=39257 bal=4920063 dq=125.3 cnt=189 | c=644.4 rankC=644.4 need=8828265 tD=1.34 人 pulse crowdedHard | safe=2725047 keep=Inf avail=-Inf chunkB=919762 pulseB=551857 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5840 kaito9 B=4667332 L=46319 d=100.8 nb=1 neut=0 cmds=64 noFull=1 shQ=1166833 | m=0.900 worth=90.7 cheap=6.7 over=1 dMedOther=94.8 safe(-1)=2744949
+    → Norman Invasion#50[T5] terr=39257 bal=4955487 dq=126.2 cnt=189 | c=649.0 rankC=649.0 need=8891403 tD=1.33 人 pulse crowdedHard | safe=2744949 keep=5187728 avail=-575091 chunkB=933466 pulseB=560080 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5845 kaito9 B=4667332 L=46319 d=100.8 nb=1 neut=0 cmds=64 noFull=1 shQ=1166833 | m=0.900 worth=90.7 cheap=6.7 over=1 dMedOther=94.8 safe(-1)=2744949
+    → Norman Invasion#50[T5] terr=39257 bal=4955487 dq=126.2 cnt=189 | c=649.0 rankC=649.0 need=8891403 tD=1.33 人 pulse crowdedHard | safe=2744949 keep=5187728 avail=-575091 chunkB=933466 pulseB=560080 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5850 kaito9 B=4735941 L=46319 d=102.2 nb=1 neut=0 cmds=64 noFull=1 shQ=1183645 | m=0.900 worth=92.0 cheap=6.7 over=1 dMedOther=96.1 safe(-1)=2764158
+    → Norman Invasion#50[T5] terr=39257 bal=4989679 dq=127.1 cnt=189 | c=653.5 rankC=653.5 need=8952346 tD=1.32 人 pulse crowdedHard | safe=2764158 keep=5187728 avail=-507286 chunkB=947188 pulseB=568313 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5855 kaito9 B=4735941 L=46319 d=102.2 nb=1 neut=0 cmds=64 noFull=1 shQ=1183985 | m=0.900 worth=92.0 cheap=6.7 over=1 dMedOther=96.1 safe(-1)=2764158
+    → Norman Invasion#50[T5] terr=39257 bal=4989679 dq=127.1 cnt=189 | c=653.5 rankC=653.5 need=8952346 tD=1.32 人 pulse crowdedHard | safe=2764158 keep=5187728 avail=-507286 chunkB=947188 pulseB=568313 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5860 kaito9 B=4803664 L=46319 d=103.7 nb=1 neut=0 cmds=64 noFull=1 shQ=1200557 | m=0.900 worth=93.3 cheap=6.7 over=1 dMedOther=97.4 safe(-1)=2782938
+    → Norman Invasion#50[T5] terr=39257 bal=5023109 dq=128.0 cnt=189 | c=657.9 rankC=657.9 need=9011931 tD=1.31 人 pulse crowdedHard | safe=2782938 keep=5187728 avail=-440356 chunkB=960733 pulseB=576440 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5865 kaito9 B=4803664 L=46319 d=103.7 nb=1 neut=0 cmds=64 noFull=1 shQ=1200916 | m=0.900 worth=93.3 cheap=6.7 over=1 dMedOther=97.4 safe(-1)=2782938
+    → Norman Invasion#50[T5] terr=39257 bal=5023109 dq=128.0 cnt=189 | c=657.9 rankC=657.9 need=9011931 tD=1.31 人 pulse crowdedHard | safe=2782938 keep=5187728 avail=-440356 chunkB=960733 pulseB=576440 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5870 kaito9 B=4869954 L=46319 d=105.1 nb=1 neut=0 cmds=64 noFull=1 shQ=1217230 | m=0.900 worth=94.6 cheap=6.7 over=1 dMedOther=98.7 safe(-1)=2800999
+    → Norman Invasion#50[T5] terr=39257 bal=5055256 dq=128.8 cnt=189 | c=662.1 rankC=662.1 need=9069229 tD=1.30 人 pulse crowdedHard | safe=2800999 keep=5187728 avail=-374843 chunkB=973991 pulseB=584394 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5875 kaito9 B=4869954 L=46319 d=105.1 nb=1 neut=0 cmds=64 noFull=1 shQ=1217488 | m=0.900 worth=94.6 cheap=6.7 over=1 dMedOther=98.7 safe(-1)=2800999
+    → Norman Invasion#50[T5] terr=39257 bal=5055256 dq=128.8 cnt=189 | c=662.1 rankC=662.1 need=9069229 tD=1.30 人 pulse crowdedHard | safe=2800999 keep=5187728 avail=-374843 chunkB=973991 pulseB=584394 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5880 kaito9 B=4935211 L=46319 d=106.5 nb=1 neut=0 cmds=64 noFull=1 shQ=1233527 | m=0.900 worth=95.9 cheap=6.7 over=1 dMedOther=100.0 safe(-1)=2818606
+    → Norman Invasion#50[T5] terr=39257 bal=5086598 dq=129.6 cnt=189 | c=666.2 rankC=666.2 need=9125092 tD=1.30 人 pulse crowdedHard | safe=2818606 keep=5187728 avail=-310351 chunkB=987042 pulseB=592225 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5885 kaito9 B=4935211 L=46319 d=106.5 nb=1 neut=0 cmds=64 noFull=1 shQ=1233802 | m=0.900 worth=95.9 cheap=6.7 over=1 dMedOther=100.0 safe(-1)=2475355
+    → Norman Invasion#50[T5] terr=39257 bal=4475611 dq=114.0 cnt=189 | c=326.2 rankC=228.3 need=8036086 tD=1.14 人 pulse | safe=2475355 keep=5187728 avail=-310351 chunkB=987042 pulseB=592225 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5890 kaito9 B=4999368 L=46319 d=107.9 nb=1 neut=0 cmds=64 noFull=1 shQ=1249550 | m=0.900 worth=97.1 cheap=6.7 over=1 dMedOther=100.4 safe(-1)=2501756
+    → Norman Invasion#50[T5] terr=39336 bal=4522604 dq=115.0 cnt=191 | c=328.9 rankC=230.3 need=8119923 tD=1.15 人 pulse | safe=2501756 keep=5187728 avail=-246946 chunkB=999874 pulseB=599924 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5895 kaito9 B=4999368 L=46319 d=107.9 nb=1 neut=0 cmds=64 noFull=1 shQ=1249842 | m=0.900 worth=97.1 cheap=6.7 over=1 dMedOther=100.4 safe(-1)=2501756
+    → Norman Invasion#50[T5] terr=39420 bal=4522604 dq=114.7 cnt=193 | c=328.2 rankC=229.8 need=8120049 tD=1.14 人 pulse | safe=2501756 keep=5187728 avail=-246946 chunkB=999874 pulseB=599924 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5900 kaito9 B=5108679 L=46319 d=110.3 nb=1 neut=0 cmds=65 noFull=1 shQ=1264912 | m=0.900 worth=99.3 cheap=6.7 over=1 dMedOther=102.6 safe(-1)=2550378
+    → Norman Invasion#50[T5] terr=39560 bal=4609151 dq=116.5 cnt=196 | c=333.3 rankC=233.3 need=8274517 tD=1.14 人 pulse | safe=2550378 keep=5187728 avail=-138916 chunkB=1021736 pulseB=613041 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=206 → [APEX] leo_tx#14[T2]（约 1032711 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=5905 kaito9 B=5108679 L=46319 d=110.3 nb=1 neut=0 cmds=65 noFull=1 shQ=1277169 | m=0.900 worth=99.3 cheap=6.7 over=1 dMedOther=102.6 safe(-1)=2550378
+    → Norman Invasion#50[T5] terr=39655 bal=4609151 dq=116.2 cnt=198 | c=332.5 rankC=232.7 need=8274783 tD=1.13 人 pulse | safe=2550378 keep=5187728 avail=-138916 chunkB=1021736 pulseB=613041 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=5910 kaito9 B=3812650 L=46319 d=82.3 nb=1 neut=0 cmds=65 noFull=1 shQ=953162 | m=0.900 worth=79.4 cheap=6.7 over=0 dMedOther=103.8 safe(-1)=2576272
+    → Norman Invasion#50[T5] terr=39789 bal=4655242 dq=117.0 cnt=201 | c=450.8 rankC=315.6 need=8357053 tD=1.13 人 pulse crowdedHard | safe=2576272 keep=Inf avail=-Inf chunkB=762530 pulseB=457518 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5915 kaito9 B=3812650 L=46319 d=82.3 nb=1 neut=0 cmds=65 noFull=1 shQ=953162 | m=0.900 worth=79.4 cheap=6.7 over=0 dMedOther=103.8 safe(-1)=2576272
+    → Norman Invasion#50[T5] terr=39877 bal=4655242 dq=116.7 cnt=203 | c=449.8 rankC=314.9 need=8357185 tD=1.12 人 pulse crowdedHard | safe=2576272 keep=Inf avail=-Inf chunkB=762530 pulseB=457518 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5920 kaito9 B=3869458 L=46319 d=83.5 nb=1 neut=0 cmds=65 noFull=1 shQ=967364 | m=0.900 worth=80.3 cheap=6.7 over=0 dMedOther=105.0 safe(-1)=2601901
+    → Norman Invasion#50[T5] terr=40009 bal=4700863 dq=117.5 cnt=206 | c=452.7 rankC=316.9 need=8438696 tD=1.12 人 pulse crowdedHard | safe=2601901 keep=Inf avail=-Inf chunkB=773892 pulseB=464335 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5925 kaito9 B=3869458 L=46319 d=83.5 nb=1 neut=0 cmds=65 noFull=1 shQ=967364 | m=0.900 worth=80.3 cheap=6.7 over=0 dMedOther=105.0 safe(-1)=2601901
+    → Norman Invasion#50[T5] terr=40093 bal=4700863 dq=117.2 cnt=208 | c=602.2 rankC=602.2 need=8438822 tD=1.12 人 pulse crowdedHard | safe=2601901 keep=Inf avail=-Inf chunkB=773892 pulseB=464335 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5930 kaito9 B=3927112 L=46319 d=84.8 nb=1 neut=0 cmds=65 noFull=1 shQ=981778 | m=0.900 worth=81.2 cheap=6.7 over=0 dMedOther=106.1 safe(-1)=2627518
+    → Norman Invasion#50[T5] terr=40214 bal=4746461 dq=118.0 cnt=211 | c=606.1 rankC=606.1 need=8520318 tD=1.11 人 pulse crowdedHard | safe=2627518 keep=Inf avail=-Inf chunkB=785422 pulseB=471253 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5935 kaito9 B=3927112 L=46319 d=84.8 nb=1 neut=0 cmds=65 noFull=1 shQ=981778 | m=0.900 worth=81.2 cheap=6.7 over=0 dMedOther=106.1 safe(-1)=2627518
+    → Norman Invasion#50[T5] terr=40288 bal=4746461 dq=117.8 cnt=213 | c=605.0 rankC=605.0 need=8520345 tD=1.11 人 pulse crowdedHard | safe=2627518 keep=Inf avail=-Inf chunkB=785422 pulseB=471253 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5940 kaito9 B=3985625 L=46319 d=86.0 nb=1 neut=0 cmds=65 noFull=1 shQ=996406 | m=0.900 worth=82.0 cheap=6.7 over=0 dMedOther=107.2 safe(-1)=2652850
+    → Norman Invasion#50[T5] terr=40398 bal=4791552 dq=118.6 cnt=216 | c=609.0 rankC=609.0 need=8600963 tD=1.11 人 pulse crowdedHard | safe=2652850 keep=Inf avail=-Inf chunkB=797125 pulseB=478275 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5945 kaito9 B=3985625 L=46319 d=86.0 nb=1 neut=0 cmds=65 noFull=1 shQ=996406 | m=0.900 worth=82.0 cheap=6.7 over=0 dMedOther=107.2 safe(-1)=2652850
+    → Norman Invasion#50[T5] terr=40474 bal=4791552 dq=118.4 cnt=218 | c=607.8 rankC=607.8 need=8601076 tD=1.10 人 pulse crowdedHard | safe=2652850 keep=Inf avail=-Inf chunkB=797125 pulseB=478275 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5950 kaito9 B=4045010 L=46319 d=87.3 nb=1 neut=0 cmds=65 noFull=1 shQ=1011252 | m=0.900 worth=82.9 cheap=6.7 over=0 dMedOther=108.4 safe(-1)=2677885
+    → Norman Invasion#50[T5] terr=40591 bal=4836113 dq=119.1 cnt=221 | c=611.6 rankC=611.6 need=8680718 tD=1.10 人 pulse crowdedHard | safe=2677885 keep=Inf avail=-Inf chunkB=809002 pulseB=485401 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5955 kaito9 B=4045010 L=46319 d=87.3 nb=1 neut=0 cmds=65 noFull=1 shQ=1011252 | m=0.900 worth=82.9 cheap=6.7 over=0 dMedOther=108.4 safe(-1)=2677885
+    → Norman Invasion#50[T5] terr=40670 bal=4836113 dq=118.9 cnt=223 | c=610.4 rankC=610.4 need=8680795 tD=1.10 人 pulse crowdedHard | safe=2677885 keep=Inf avail=-Inf chunkB=809002 pulseB=485401 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5960 kaito9 B=4105280 L=46319 d=88.6 nb=1 neut=0 cmds=65 noFull=1 shQ=1026320 | m=0.900 worth=83.7 cheap=6.7 over=0 dMedOther=109.5 safe(-1)=2702880
+    → Norman Invasion#50[T5] terr=40793 bal=4880605 dq=119.6 cnt=226 | c=614.1 rankC=614.1 need=8760238 tD=1.09 人 pulse crowdedHard | safe=2702880 keep=Inf avail=-Inf chunkB=821056 pulseB=492634 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5965 kaito9 B=4105280 L=46319 d=88.6 nb=1 neut=0 cmds=65 noFull=1 shQ=1026320 | m=0.900 worth=83.7 cheap=6.7 over=0 dMedOther=109.5 safe(-1)=2702880
+    → Norman Invasion#50[T5] terr=40878 bal=4880605 dq=119.4 cnt=228 | c=612.8 rankC=612.8 need=8760408 tD=1.09 人 pulse crowdedHard | safe=2702880 keep=Inf avail=-Inf chunkB=821056 pulseB=492634 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5970 kaito9 B=4166448 L=46319 d=90.0 nb=1 neut=0 cmds=65 noFull=1 shQ=1041612 | m=0.900 worth=84.6 cheap=6.7 over=0 dMedOther=110.5 safe(-1)=2727831
+    → Norman Invasion#50[T5] terr=41008 bal=4925018 dq=120.1 cnt=231 | c=616.4 rankC=616.4 need=8839679 tD=1.09 人 pulse crowdedHard | safe=2727831 keep=Inf avail=-Inf chunkB=833290 pulseB=499974 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5975 kaito9 B=4166448 L=46319 d=90.0 nb=1 neut=0 cmds=65 noFull=1 shQ=1041612 | m=0.900 worth=84.6 cheap=6.7 over=0 dMedOther=110.5 safe(-1)=2727831
+    → Norman Invasion#50[T5] terr=41096 bal=4925018 dq=119.8 cnt=233 | c=615.0 rankC=615.0 need=8839811 tD=1.08 人 pulse crowdedHard | safe=2727831 keep=Inf avail=-Inf chunkB=833290 pulseB=499974 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5980 kaito9 B=4228528 L=46319 d=91.3 nb=1 neut=0 cmds=65 noFull=1 shQ=1057132 | m=0.900 worth=85.4 cheap=6.7 over=0 dMedOther=111.6 safe(-1)=2752464
+    → Norman Invasion#50[T5] terr=41141 bal=4968865 dq=120.8 cnt=234 | c=619.8 rankC=619.8 need=8918072 tD=1.08 人 pulse crowdedHard | safe=2752464 keep=Inf avail=-Inf chunkB=845706 pulseB=507423 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5985 kaito9 B=4228528 L=46319 d=91.3 nb=1 neut=0 cmds=65 noFull=1 shQ=1057132 | m=0.900 worth=85.4 cheap=6.7 over=0 dMedOther=111.6 safe(-1)=2752464
+    → Norman Invasion#50[T5] terr=41141 bal=4968865 dq=120.8 cnt=234 | c=619.8 rankC=619.8 need=8918072 tD=1.08 人 pulse crowdedHard | safe=2752464 keep=Inf avail=-Inf chunkB=845706 pulseB=507423 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5990 kaito9 B=4291533 L=46319 d=92.7 nb=1 neut=0 cmds=65 noFull=1 shQ=1072883 | m=0.900 worth=86.2 cheap=6.7 over=0 dMedOther=112.6 safe(-1)=2776471
+    → Norman Invasion#50[T5] terr=41141 bal=5011597 dq=121.8 cnt=234 | c=625.1 rankC=625.1 need=8994236 tD=1.08 人 pulse crowdedHard | safe=2776471 keep=Inf avail=-Inf chunkB=858307 pulseB=514984 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=5995 kaito9 B=4291533 L=46319 d=92.7 nb=1 neut=0 cmds=65 noFull=1 shQ=1072883 | m=0.900 worth=86.2 cheap=6.7 over=0 dMedOther=112.6 safe(-1)=2776471
+    → Norman Invasion#50[T5] terr=41141 bal=5011597 dq=121.8 cnt=234 | c=625.1 rankC=625.1 need=8994236 tD=1.08 人 pulse crowdedHard | safe=2776471 keep=Inf avail=-Inf chunkB=858307 pulseB=514984 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6000 kaito9 B=4401795 L=46319 d=95.0 nb=1 neut=0 cmds=65 noFull=1 shQ=1089279 | m=0.900 worth=87.7 cheap=6.7 over=0 dMedOther=114.7 safe(-1)=2822953
+    → Norman Invasion#50[T5] terr=41141 bal=5094334 dq=123.8 cnt=234 | c=635.4 rankC=635.4 need=9141704 tD=1.08 人 pulse crowdedHard | safe=2822953 keep=Inf avail=-Inf chunkB=880359 pulseB=528215 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6005 kaito9 B=4401795 L=46319 d=95.0 nb=1 neut=0 cmds=65 noFull=1 shQ=1100448 | m=0.900 worth=87.7 cheap=6.7 over=0 dMedOther=114.7 safe(-1)=2822953
+    → Norman Invasion#50[T5] terr=41141 bal=5094334 dq=123.8 cnt=234 | c=635.4 rankC=635.4 need=9141704 tD=1.08 人 pulse crowdedHard | safe=2822953 keep=Inf avail=-Inf chunkB=880359 pulseB=528215 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6010 kaito9 B=4467381 L=46319 d=96.4 nb=1 neut=0 cmds=65 noFull=1 shQ=1116845 | m=0.900 worth=88.5 cheap=6.7 over=0 dMedOther=115.6 safe(-1)=2844990
+    → Norman Invasion#50[T5] terr=41141 bal=5133560 dq=124.8 cnt=234 | c=640.3 rankC=640.3 need=9211620 tD=1.08 人 pulse crowdedHard | safe=2844990 keep=Inf avail=-Inf chunkB=893476 pulseB=536086 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6015 kaito9 B=4467381 L=46319 d=96.4 nb=1 neut=0 cmds=65 noFull=1 shQ=1116845 | m=0.900 worth=88.5 cheap=6.7 over=0 dMedOther=115.6 safe(-1)=2844990
+    → Norman Invasion#50[T5] terr=41141 bal=5133560 dq=124.8 cnt=234 | c=640.3 rankC=640.3 need=9211620 tD=1.08 人 pulse crowdedHard | safe=2844990 keep=Inf avail=-Inf chunkB=893476 pulseB=536086 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6020 kaito9 B=4533944 L=46319 d=97.9 nb=1 neut=0 cmds=65 noFull=1 shQ=1133486 | m=0.900 worth=89.2 cheap=6.7 over=0 dMedOther=116.6 safe(-1)=2866331
+    → Norman Invasion#50[T5] terr=41141 bal=5171548 dq=125.7 cnt=234 | c=645.0 rankC=645.0 need=9279328 tD=1.08 人 pulse crowdedHard | safe=2866331 keep=Inf avail=-Inf chunkB=906789 pulseB=544073 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6025 kaito9 B=4533944 L=46319 d=97.9 nb=1 neut=0 cmds=65 noFull=1 shQ=1133486 | m=0.900 worth=89.0 cheap=6.7 over=0 dMedOther=116.3 safe(-1)=2866331
+    → Norman Invasion#50[T5] terr=41141 bal=5171548 dq=125.7 cnt=234 | c=645.0 rankC=645.0 need=9279328 tD=1.08 人 pulse crowdedHard | safe=2866331 keep=Inf avail=-Inf chunkB=906789 pulseB=544073 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6030 kaito9 B=4601499 L=46319 d=99.3 nb=1 neut=0 cmds=65 noFull=1 shQ=1150374 | m=0.900 worth=89.4 cheap=6.7 over=0 dMedOther=116.5 safe(-1)=2886959
+    → Norman Invasion#50[T5] terr=41141 bal=5208265 dq=126.6 cnt=234 | c=649.6 rankC=649.6 need=9344772 tD=1.09 人 pulse crowdedHard | safe=2886959 keep=Inf avail=-Inf chunkB=920300 pulseB=552180 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6035 kaito9 B=4601499 L=46319 d=99.3 nb=1 neut=0 cmds=65 noFull=1 shQ=1150374 | m=0.900 worth=89.4 cheap=6.7 over=0 dMedOther=116.0 safe(-1)=2886959
+    → Norman Invasion#50[T5] terr=41141 bal=5208265 dq=126.6 cnt=234 | c=649.6 rankC=649.6 need=9344772 tD=1.09 人 pulse crowdedHard | safe=2886959 keep=Inf avail=-Inf chunkB=920300 pulseB=552180 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6040 kaito9 B=4670061 L=46319 d=100.8 nb=1 neut=0 cmds=65 noFull=1 shQ=1167515 | m=0.900 worth=90.7 cheap=6.7 over=1 dMedOther=116.3 safe(-1)=2907148
+    → Norman Invasion#50[T5] terr=41141 bal=5244202 dq=127.5 cnt=234 | c=654.1 rankC=654.1 need=9408825 tD=1.10 人 pulse crowdedHard | safe=2907148 keep=5187728 avail=-572394 chunkB=934012 pulseB=560407 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6045 kaito9 B=4670061 L=46319 d=100.8 nb=1 neut=0 cmds=65 noFull=1 shQ=1167515 | m=0.900 worth=90.7 cheap=6.7 over=1 dMedOther=115.8 safe(-1)=2907148
+    → Norman Invasion#50[T5] terr=41141 bal=5244202 dq=127.5 cnt=234 | c=654.1 rankC=654.1 need=9408825 tD=1.10 人 pulse crowdedHard | safe=2907148 keep=5187728 avail=-572394 chunkB=934012 pulseB=560407 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6050 kaito9 B=4738710 L=46319 d=102.3 nb=1 neut=0 cmds=65 noFull=1 shQ=1184337 | m=0.900 worth=92.1 cheap=6.7 over=1 dMedOther=116.2 safe(-1)=2926592
+    → Norman Invasion#50[T5] terr=41141 bal=5278813 dq=128.3 cnt=234 | c=658.4 rankC=658.4 need=9470514 tD=1.10 人 pulse crowdedHard | safe=2926592 keep=5187728 avail=-504549 chunkB=947742 pulseB=568645 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6055 kaito9 B=4738710 L=46319 d=102.3 nb=1 neut=0 cmds=65 noFull=1 shQ=1184677 | m=0.900 worth=92.1 cheap=6.7 over=1 dMedOther=115.8 safe(-1)=2926592
+    → Norman Invasion#50[T5] terr=41141 bal=5278813 dq=128.3 cnt=234 | c=658.4 rankC=658.4 need=9470514 tD=1.11 人 pulse crowdedHard | safe=2926592 keep=5187728 avail=-504549 chunkB=947742 pulseB=568645 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6060 kaito9 B=4806473 L=46319 d=103.8 nb=1 neut=0 cmds=65 noFull=1 shQ=1201259 | m=0.900 worth=93.4 cheap=6.7 over=1 dMedOther=116.3 safe(-1)=2945572
+    → Norman Invasion#50[T5] terr=41141 bal=5312597 dq=129.1 cnt=234 | c=662.6 rankC=662.6 need=9530730 tD=1.11 人 pulse crowdedHard | safe=2945572 keep=5187728 avail=-437580 chunkB=961295 pulseB=576777 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6065 kaito9 B=4806473 L=46319 d=103.8 nb=1 neut=0 cmds=65 noFull=1 shQ=1201618 | m=0.900 worth=93.4 cheap=6.7 over=1 dMedOther=116.2 safe(-1)=2945572
+    → Norman Invasion#50[T5] terr=41141 bal=5312597 dq=129.1 cnt=234 | c=662.6 rankC=662.6 need=9530730 tD=1.11 人 pulse crowdedHard | safe=2945572 keep=5187728 avail=-437580 chunkB=961295 pulseB=576777 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6070 kaito9 B=4872802 L=46319 d=105.2 nb=1 neut=0 cmds=65 noFull=1 shQ=1217941 | m=0.900 worth=94.7 cheap=6.7 over=1 dMedOther=117.0 safe(-1)=2977713
+    → Norman Invasion#50[T5] terr=41141 bal=5369808 dq=130.5 cnt=234 | c=669.7 rankC=669.7 need=9632701 tD=1.12 人 pulse crowdedHard | safe=2977713 keep=5187728 avail=-372029 chunkB=974560 pulseB=584736 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6075 kaito9 B=4872802 L=46319 d=105.2 nb=1 neut=0 cmds=65 noFull=1 shQ=1218200 | m=0.900 worth=94.7 cheap=6.7 over=1 dMedOther=116.9 safe(-1)=2977713
+    → Norman Invasion#50[T5] terr=41141 bal=5369808 dq=130.5 cnt=234 | c=669.7 rankC=669.7 need=9632701 tD=1.12 人 pulse crowdedHard | safe=2977713 keep=5187728 avail=-372029 chunkB=974560 pulseB=584736 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6080 kaito9 B=4938097 L=46319 d=106.6 nb=1 neut=0 cmds=65 noFull=1 shQ=1234125 | m=0.900 worth=95.9 cheap=6.7 over=1 dMedOther=120.8 safe(-1)=2994908
+    → Norman Invasion#50[T5] terr=41141 bal=5400415 dq=131.3 cnt=234 | c=673.5 rankC=673.5 need=9687254 tD=1.09 人 pulse crowdedHard | safe=2994908 keep=5187728 avail=-307499 chunkB=987619 pulseB=592572 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6085 kaito9 B=4938097 L=46319 d=106.6 nb=1 neut=0 cmds=65 noFull=1 shQ=1234524 | m=0.900 worth=95.9 cheap=6.7 over=1 dMedOther=115.5 safe(-1)=2630480
+    → Norman Invasion#50[T5] terr=41141 bal=4751733 dq=115.5 cnt=234 | c=445.2 rankC=311.7 need=8531062 tD=1.00 人 pulse crowdedHard | safe=2630480 keep=5187728 avail=-307499 chunkB=987619 pulseB=592572 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6090 kaito9 B=5002292 L=46319 d=108.0 nb=1 neut=0 cmds=65 noFull=1 shQ=1250156 | m=0.900 worth=97.2 cheap=6.7 over=1 dMedOther=116.7 safe(-1)=2657442
+    → Norman Invasion#50[T5] terr=41141 bal=4799725 dq=116.7 cnt=234 | c=449.7 rankC=314.8 need=8616602 tD=1.00 人 pulse crowdedHard | safe=2657442 keep=5187728 avail=-244056 chunkB=1000458 pulseB=600275 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6095 kaito9 B=5002292 L=46319 d=108.0 nb=1 neut=0 cmds=65 noFull=1 shQ=1250573 | m=0.900 worth=97.2 cheap=6.7 over=1 dMedOther=116.3 safe(-1)=2657442
+    → Norman Invasion#50[T5] terr=41274 bal=4799725 dq=116.3 cnt=236 | c=332.0 rankC=232.4 need=8616842 tD=1.00 人 pulse | safe=2657442 keep=5187728 avail=-244056 chunkB=1000458 pulseB=600275 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6100 kaito9 B=5111639 L=46319 d=110.4 nb=1 neut=0 cmds=66 noFull=1 shQ=1265652 | m=0.900 worth=99.3 cheap=6.7 over=1 dMedOther=118.2 safe(-1)=2707644
+    → Norman Invasion#50[T5] terr=41362 bal=4889084 dq=118.2 cnt=237 | c=337.4 rankC=236.2 need=8776246 tD=1.00 人 pulse | safe=2707644 keep=5187728 avail=-135991 chunkB=1022328 pulseB=613397 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=207 → [APEX] leo_tx#14[T2]（约 1038301 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=6105 kaito9 B=5111639 L=46319 d=110.4 nb=1 neut=0 cmds=66 noFull=1 shQ=1277909 | m=0.900 worth=99.3 cheap=6.7 over=1 dMedOther=117.8 safe(-1)=2707644
+    → Norman Invasion#50[T5] terr=41494 bal=4889084 dq=117.8 cnt=239 | c=336.3 rankC=235.4 need=8776443 tD=1.00 人 pulse | safe=2707644 keep=5187728 avail=-135991 chunkB=1022328 pulseB=613397 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6110 kaito9 B=5172467 L=46319 d=111.7 nb=1 neut=0 cmds=66 noFull=1 shQ=1292650 | m=0.900 worth=100.5 cheap=6.7 over=1 dMedOther=118.7 safe(-1)=2733737
+    → Norman Invasion#50[T5] terr=41580 bal=4935530 dq=118.7 cnt=241 | c=338.8 rankC=237.1 need=8859273 tD=1.00 人 pulse | safe=2733737 keep=5187728 avail=-75875 chunkB=1034493 pulseB=620696 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6115 kaito9 B=3798531 L=46319 d=82.0 nb=1 neut=0 cmds=66 noFull=1 shQ=949632 | m=0.900 worth=90.6 cheap=6.7 over=0 dMedOther=118.4 safe(-1)=2733737
+    → Norman Invasion#50[T5] terr=41696 bal=4935530 dq=118.4 cnt=242 | c=455.2 rankC=318.7 need=8859447 tD=1.00 人 pulse crowdedHard | safe=2733737 keep=Inf avail=-Inf chunkB=759706 pulseB=455824 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6120 kaito9 B=3855129 L=46319 d=83.2 nb=1 neut=0 cmds=66 noFull=1 shQ=963782 | m=0.900 worth=91.2 cheap=6.7 over=0 dMedOther=119.3 safe(-1)=2759800
+    → Norman Invasion#50[T5] terr=41771 bal=4981923 dq=119.3 cnt=243 | c=458.6 rankC=321.0 need=8942375 tD=1.00 人 pulse crowdedHard | safe=2759800 keep=Inf avail=-Inf chunkB=771026 pulseB=462615 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6125 kaito9 B=3855129 L=46319 d=83.2 nb=1 neut=0 cmds=66 noFull=1 shQ=963782 | m=0.900 worth=91.0 cheap=6.7 over=0 dMedOther=119.0 safe(-1)=2759800
+    → Norman Invasion#50[T5] terr=41867 bal=4981923 dq=119.0 cnt=245 | c=457.5 rankC=320.2 need=8942518 tD=1.00 人 pulse crowdedHard | safe=2759800 keep=Inf avail=-Inf chunkB=771026 pulseB=462615 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6130 kaito9 B=3912570 L=46319 d=84.5 nb=1 neut=0 cmds=66 noFull=1 shQ=978142 | m=0.900 worth=91.8 cheap=6.7 over=0 dMedOther=119.9 safe(-1)=2785549
+    → Norman Invasion#50[T5] terr=41916 bal=5027756 dq=119.9 cnt=247 | c=461.1 rankC=322.7 need=9024157 tD=1.00 人 pulse crowdedHard | safe=2785549 keep=Inf avail=-Inf chunkB=782514 pulseB=469508 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6135 kaito9 B=3912570 L=46319 d=84.5 nb=1 neut=0 cmds=66 noFull=1 shQ=978142 | m=0.900 worth=91.7 cheap=6.7 over=0 dMedOther=119.9 safe(-1)=2785553
+    → Norman Invasion#50[T5] terr=41939 bal=5027763 dq=119.9 cnt=247 | c=352.5 rankC=176.2 need=9024331 tD=1.00 人 pulse crowdedHard | safe=2785553 keep=Inf avail=-Inf chunkB=782514 pulseB=469508 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6140 kaito9 B=3970867 L=46319 d=85.7 nb=1 neut=0 cmds=66 noFull=1 shQ=992716 | m=0.900 worth=92.5 cheap=6.7 over=0 dMedOther=120.9 safe(-1)=2808409
+    → Norman Invasion#50[T5] terr=41918 bal=5068447 dq=120.9 cnt=247 | c=154.0 rankC=77.0 need=9095919 tD=1.00 人 pulse bleeding | safe=2808409 keep=Inf avail=-Inf chunkB=794173 pulseB=476504 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6145 kaito9 B=3970867 L=46319 d=85.7 nb=1 neut=0 cmds=66 noFull=1 shQ=992716 | m=0.900 worth=92.4 cheap=6.7 over=0 dMedOther=120.8 safe(-1)=2803411
+    → Norman Invasion#50[T5] terr=41872 bal=5059550 dq=120.8 cnt=245 | c=154.2 rankC=77.1 need=9078204 tD=1.00 人 pulse bleeding | safe=2803411 keep=Inf avail=-Inf chunkB=794173 pulseB=476504 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6150 kaito9 B=4030032 L=46319 d=87.0 nb=1 neut=0 cmds=66 noFull=1 shQ=1007508 | m=0.900 worth=94.1 cheap=6.7 over=0 dMedOther=123.0 safe(-1)=2848309
+    → Norman Invasion#50[T5] terr=41786 bal=5139468 dq=123.0 cnt=244 | c=153.3 rankC=76.6 need=9216914 tD=1.00 人 pulse bleeding | safe=2848309 keep=Inf avail=-Inf chunkB=806006 pulseB=483604 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6155 kaito9 B=4030032 L=46319 d=87.0 nb=1 neut=0 cmds=66 noFull=1 shQ=1007508 | m=0.900 worth=94.0 cheap=6.7 over=0 dMedOther=122.9 safe(-1)=2840241
+    → Norman Invasion#50[T5] terr=41713 bal=5125107 dq=122.9 cnt=243 | c=153.5 rankC=76.8 need=9188394 tD=1.00 人 pulse bleeding | safe=2840241 keep=Inf avail=-Inf chunkB=806006 pulseB=483604 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6160 kaito9 B=4090079 L=46319 d=88.3 nb=1 neut=0 cmds=66 noFull=1 shQ=1022519 | m=0.900 worth=94.6 cheap=6.7 over=0 dMedOther=123.7 safe(-1)=2851212
+    → Norman Invasion#50[T5] terr=41602 bal=5144635 dq=123.7 cnt=241 | c=155.3 rankC=77.7 need=9218298 tD=1.00 人 pulse bleeding | safe=2851212 keep=Inf avail=-Inf chunkB=818016 pulseB=490809 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6165 kaito9 B=4090079 L=46319 d=88.3 nb=1 neut=0 cmds=66 noFull=1 shQ=1022519 | m=0.900 worth=94.5 cheap=6.7 over=0 dMedOther=123.5 safe(-1)=2842767
+    → Norman Invasion#50[T5] terr=41526 bal=5129603 dq=123.5 cnt=240 | c=155.6 rankC=77.8 need=9188257 tD=1.00 人 pulse bleeding | safe=2842767 keep=Inf avail=-Inf chunkB=818016 pulseB=490809 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6170 kaito9 B=4151021 L=46319 d=89.6 nb=1 neut=0 cmds=66 noFull=1 shQ=1037755 | m=0.900 worth=95.1 cheap=6.7 over=0 dMedOther=124.3 safe(-1)=2851824
+    → Norman Invasion#50[T5] terr=41406 bal=5145726 dq=124.3 cnt=238 | c=157.4 rankC=78.7 need=9211603 tD=1.00 人 pulse bleeding | safe=2851824 keep=Inf avail=-Inf chunkB=830204 pulseB=498123 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6175 kaito9 B=4151021 L=46319 d=89.6 nb=1 neut=0 cmds=66 noFull=1 shQ=1037755 | m=0.900 worth=80.7 cheap=6.7 over=0 dMedOther=92.3 safe(-1)=2996726
+    → Norman Invasion#50[T5] terr=41323 bal=5403651 dq=130.8 cnt=237 | c=166.8 rankC=83.4 need=9666576 tD=1.42 人 pulse bleeding | safe=2996726 keep=Inf avail=-Inf chunkB=830204 pulseB=498123 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6180 kaito9 B=4212871 L=46319 d=91.0 nb=1 neut=0 cmds=66 noFull=1 shQ=1053217 | m=0.900 worth=81.9 cheap=6.7 over=0 dMedOther=93.4 safe(-1)=2999027
+    → Norman Invasion#50[T5] terr=41196 bal=5407747 dq=131.3 cnt=235 | c=363.7 rankC=181.9 need=9667849 tD=1.41 人 pulse crowdedHard | safe=2999027 keep=Inf avail=-Inf chunkB=842574 pulseB=505545 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6185 kaito9 B=4212871 L=46319 d=91.0 nb=1 neut=0 cmds=66 noFull=1 shQ=1053217 | m=0.900 worth=81.9 cheap=6.7 over=0 dMedOther=93.4 safe(-1)=2988647
+    → Norman Invasion#50[T5] terr=41108 bal=5389271 dq=131.1 cnt=234 | c=364.6 rankC=182.3 need=9630909 tD=1.40 人 pulse crowdedHard | safe=2988647 keep=Inf avail=-Inf chunkB=842574 pulseB=505545 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6190 kaito9 B=4275642 L=46319 d=92.3 nb=1 neut=0 cmds=66 noFull=1 shQ=1068910 | m=0.900 worth=83.1 cheap=6.7 over=0 dMedOther=94.6 safe(-1)=2989142
+    → Norman Invasion#50[T5] terr=40969 bal=5390152 dq=131.6 cnt=231 | c=368.1 rankC=184.0 need=9625812 tD=1.39 人 pulse crowdedHard | safe=2989142 keep=Inf avail=-Inf chunkB=855128 pulseB=513077 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6195 kaito9 B=4275642 L=46319 d=92.3 nb=1 neut=0 cmds=66 noFull=1 shQ=1068910 | m=0.900 worth=83.1 cheap=6.7 over=0 dMedOther=94.6 safe(-1)=2978031
+    → Norman Invasion#50[T5] terr=40875 bal=5370373 dq=131.4 cnt=229 | c=369.0 rankC=184.5 need=9586443 tD=1.39 人 pulse crowdedHard | safe=2978031 keep=Inf avail=-Inf chunkB=855128 pulseB=513077 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6200 kaito9 B=4385668 L=46319 d=94.7 nb=1 neut=0 cmds=66 noFull=1 shQ=1085246 | m=0.900 worth=85.2 cheap=6.7 over=0 dMedOther=96.7 safe(-1)=3000881
+    → Norman Invasion#50[T5] terr=40735 bal=5411047 dq=132.8 cnt=226 | c=375.5 rankC=187.7 need=9651759 tD=1.37 人 pulse crowdedHard | safe=3000881 keep=Inf avail=-Inf chunkB=877134 pulseB=526280 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6205 kaito9 B=4385668 L=46319 d=94.7 nb=1 neut=0 cmds=66 noFull=1 shQ=1096417 | m=0.900 worth=85.2 cheap=6.7 over=0 dMedOther=96.7 safe(-1)=2567223
+    → Norman Invasion#50[T5] terr=40646 bal=4639136 dq=114.1 cnt=224 | c=321.6 rankC=160.8 need=8279812 tD=1.18 人 pulse crowdedHard | safe=2567223 keep=Inf avail=-Inf chunkB=877134 pulseB=526280 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6210 kaito9 B=4451014 L=46319 d=96.1 nb=1 neut=0 cmds=66 noFull=1 shQ=1112753 | m=0.900 worth=86.5 cheap=6.7 over=0 dMedOther=97.9 safe(-1)=2582520
+    → Norman Invasion#50[T5] terr=40527 bal=4666364 dq=115.1 cnt=221 | c=326.2 rankC=163.1 need=8322973 tD=1.18 人 pulse crowdedHard | safe=2582520 keep=Inf avail=-Inf chunkB=890203 pulseB=534122 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6215 kaito9 B=4451014 L=46319 d=96.1 nb=1 neut=0 cmds=66 noFull=1 shQ=1112753 | m=0.900 worth=86.5 cheap=6.7 over=0 dMedOther=97.9 safe(-1)=2574554
+    → Norman Invasion#50[T5] terr=40450 bal=4652184 dq=115.0 cnt=219 | c=326.8 rankC=163.4 need=8294791 tD=1.18 人 pulse crowdedHard | safe=2574554 keep=Inf avail=-Inf chunkB=890203 pulseB=534122 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6220 kaito9 B=4517334 L=46319 d=97.5 nb=1 neut=0 cmds=66 noFull=1 shQ=1129333 | m=0.900 worth=87.8 cheap=6.7 over=0 dMedOther=99.1 safe(-1)=2589783
+    → Norman Invasion#50[T5] terr=40338 bal=4679293 dq=116.0 cnt=216 | c=331.3 rankC=165.7 need=8337936 tD=1.17 人 pulse crowdedHard | safe=2589783 keep=Inf avail=-Inf chunkB=903467 pulseB=542080 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6225 kaito9 B=4517334 L=46319 d=97.5 nb=1 neut=0 cmds=66 noFull=1 shQ=1129333 | m=0.900 worth=87.8 cheap=6.7 over=0 dMedOther=99.1 safe(-1)=2582278
+    → Norman Invasion#50[T5] terr=40266 bal=4665934 dq=115.9 cnt=214 | c=332.0 rankC=166.0 need=8311242 tD=1.17 人 pulse crowdedHard | safe=2582278 keep=Inf avail=-Inf chunkB=903467 pulseB=542080 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6230 kaito9 B=4584642 L=46319 d=99.0 nb=1 neut=0 cmds=66 noFull=1 shQ=1146160 | m=0.900 worth=89.1 cheap=6.7 over=0 dMedOther=100.3 safe(-1)=2604939
+    → Norman Invasion#50[T5] terr=40161 bal=4706270 dq=117.2 cnt=211 | c=337.4 rankC=168.7 need=8377974 tD=1.17 人 pulse crowdedHard | safe=2604939 keep=Inf avail=-Inf chunkB=916928 pulseB=550157 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6235 kaito9 B=4584642 L=46319 d=99.0 nb=1 neut=0 cmds=66 noFull=1 shQ=1146160 | m=0.900 worth=89.1 cheap=6.7 over=0 dMedOther=100.3 safe(-1)=2597779
+    → Norman Invasion#50[T5] terr=40093 bal=4693525 dq=117.1 cnt=209 | c=338.0 rankC=169.0 need=8352687 tD=1.17 人 pulse crowdedHard | safe=2597779 keep=Inf avail=-Inf chunkB=916928 pulseB=550157 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6240 kaito9 B=4652953 L=46319 d=100.5 nb=1 neut=0 cmds=66 noFull=1 shQ=1163238 | m=0.900 worth=90.4 cheap=6.7 over=1 dMedOther=101.5 safe(-1)=2612844
+    → Norman Invasion#50[T5] terr=39994 bal=4720341 dq=118.0 cnt=206 | c=342.3 rankC=171.1 need=8395684 tD=1.16 人 pulse crowdedHard | safe=2612844 keep=5187728 avail=-589301 chunkB=930591 pulseB=558354 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6245 kaito9 B=4652953 L=46319 d=100.5 nb=1 neut=0 cmds=66 noFull=1 shQ=1163238 | m=0.900 worth=90.4 cheap=6.7 over=1 dMedOther=101.5 safe(-1)=2605632
+    → Norman Invasion#50[T5] terr=39926 bal=4707504 dq=117.9 cnt=204 | c=342.9 rankC=171.5 need=8370045 tD=1.16 人 pulse crowdedHard | safe=2605632 keep=5187728 avail=-589301 chunkB=930591 pulseB=558354 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6250 kaito9 B=4721816 L=46319 d=101.9 nb=1 neut=0 cmds=66 noFull=1 shQ=1180118 | m=0.900 worth=91.7 cheap=6.7 over=1 dMedOther=102.7 safe(-1)=2619209
+    → Norman Invasion#50[T5] terr=39818 bal=4731671 dq=118.8 cnt=201 | c=347.3 rankC=173.7 need=8408022 tD=1.16 人 pulse crowdedHard | safe=2619209 keep=5187728 avail=-521245 chunkB=944363 pulseB=566618 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6255 kaito9 B=4721816 L=46319 d=101.9 nb=1 neut=0 cmds=66 noFull=1 shQ=1180454 | m=0.900 worth=91.7 cheap=6.7 over=1 dMedOther=102.7 safe(-1)=2610988
+    → Norman Invasion#50[T5] terr=39741 bal=4717037 dq=118.7 cnt=199 | c=348.1 rankC=174.0 need=8378945 tD=1.16 人 pulse crowdedHard | safe=2610988 keep=5187728 avail=-521245 chunkB=944363 pulseB=566618 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6260 kaito9 B=4789810 L=46319 d=103.4 nb=1 neut=0 cmds=66 noFull=1 shQ=1197098 | m=0.900 worth=93.1 cheap=6.7 over=1 dMedOther=103.8 safe(-1)=2622241
+    → Norman Invasion#50[T5] terr=39619 bal=4737067 dq=119.6 cnt=196 | c=352.5 rankC=176.3 need=8409039 tD=1.15 人 pulse crowdedHard | safe=2622241 keep=5187728 avail=-454048 chunkB=957962 pulseB=574777 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6265 kaito9 B=4789810 L=46319 d=103.4 nb=1 neut=0 cmds=66 noFull=1 shQ=1197452 | m=0.900 worth=93.1 cheap=6.7 over=1 dMedOther=103.8 safe(-1)=2613217
+    → Norman Invasion#50[T5] terr=39535 bal=4721004 dq=119.4 cnt=194 | c=353.4 rankC=176.7 need=8377094 tD=1.15 人 pulse crowdedHard | safe=2613217 keep=5187728 avail=-454048 chunkB=957962 pulseB=574777 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6270 kaito9 B=4856388 L=46319 d=104.8 nb=1 neut=0 cmds=66 noFull=1 shQ=1213842 | m=0.900 worth=94.4 cheap=6.7 over=1 dMedOther=105.0 safe(-1)=2623126
+    → Norman Invasion#50[T5] terr=39406 bal=4738642 dq=120.3 cnt=191 | c=357.9 rankC=178.9 need=8402532 tD=1.15 人 pulse crowdedHard | safe=2623126 keep=5187728 avail=-388250 chunkB=971278 pulseB=582767 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6275 kaito9 B=4856388 L=46319 d=104.8 nb=1 neut=0 cmds=66 noFull=1 shQ=1214097 | m=0.900 worth=94.4 cheap=6.7 over=1 dMedOther=105.0 safe(-1)=2613725
+    → Norman Invasion#50[T5] terr=39319 bal=4721909 dq=120.1 cnt=189 | c=358.7 rankC=179.4 need=8369244 tD=1.14 人 pulse crowdedHard | safe=2613725 keep=5187728 avail=-388250 chunkB=971278 pulseB=582767 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6280 kaito9 B=4921949 L=46319 d=106.3 nb=1 neut=0 cmds=66 noFull=1 shQ=1230093 | m=0.900 worth=95.6 cheap=6.7 over=1 dMedOther=106.2 safe(-1)=2316731
+    → Norman Invasion#50[T5] terr=39231 bal=4193260 dq=106.9 cnt=187 | c=308.6 rankC=216.0 need=7435400 tD=1.01 人 pulse | safe=2316731 keep=5187728 avail=-323458 chunkB=984390 pulseB=590634 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6285 kaito9 B=4921949 L=46319 d=106.3 nb=1 neut=0 cmds=66 noFull=1 shQ=1230487 | m=0.900 worth=95.6 cheap=6.7 over=1 dMedOther=106.2 safe(-1)=2316731
+    → Norman Invasion#50[T5] terr=39231 bal=4193260 dq=106.9 cnt=187 | c=308.6 rankC=216.0 need=7435713 tD=1.01 人 pulse | safe=2316731 keep=5187728 avail=-323458 chunkB=984390 pulseB=590634 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6290 kaito9 B=4986426 L=46319 d=107.7 nb=1 neut=0 cmds=66 noFull=1 shQ=1246194 | m=0.900 worth=96.9 cheap=6.7 over=1 dMedOther=107.3 safe(-1)=2346414
+    → Norman Invasion#50[T5] terr=39319 bal=4246095 dq=108.0 cnt=189 | c=311.6 rankC=218.1 need=7532981 tD=1.01 人 pulse | safe=2346414 keep=5187728 avail=-259736 chunkB=997285 pulseB=598371 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6295 kaito9 B=4986426 L=46319 d=107.7 nb=1 neut=0 cmds=66 noFull=1 shQ=1246606 | m=0.900 worth=96.9 cheap=6.7 over=1 dMedOther=107.3 safe(-1)=2346414
+    → Norman Invasion#50[T5] terr=39449 bal=4246095 dq=107.6 cnt=192 | c=310.4 rankC=217.3 need=7538912 tD=1.00 人 pulse | safe=2346414 keep=5187728 avail=-259736 chunkB=997285 pulseB=598371 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6300 kaito9 B=5096072 L=46319 d=110.0 nb=1 neut=0 cmds=67 noFull=1 shQ=1261766 | m=0.900 worth=99.0 cheap=6.7 over=1 dMedOther=109.4 safe(-1)=2398204
+    → Norman Invasion#50[T5] terr=39535 bal=4338281 dq=109.7 cnt=194 | c=316.3 rankC=221.4 need=7705573 tD=1.00 人 pulse | safe=2398204 keep=5187728 avail=-151375 chunkB=1019214 pulseB=611529 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=204 → [APEX] leo_tx#14[T2]（约 1020209 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=6305 kaito9 B=5096072 L=46319 d=110.0 nb=1 neut=0 cmds=67 noFull=1 shQ=1274018 | m=0.900 worth=99.0 cheap=6.7 over=1 dMedOther=109.4 safe(-1)=2398204
+    → Norman Invasion#50[T5] terr=39660 bal=4338281 dq=109.4 cnt=197 | c=315.1 rankC=220.6 need=7711327 tD=1.00 人 pulse | safe=2398204 keep=5187728 avail=-151375 chunkB=1019214 pulseB=611529 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6310 kaito9 B=3813343 L=46319 d=82.3 nb=1 neut=0 cmds=67 noFull=1 shQ=953335 | m=0.900 worth=84.5 cheap=6.7 over=0 dMedOther=110.5 safe(-1)=2427450
+    → Norman Invasion#50[T5] terr=39741 bal=4390340 dq=110.5 cnt=199 | c=428.6 rankC=300.0 need=7807020 tD=1.00 人 pulse crowdedHard | safe=2427450 keep=Inf avail=-Inf chunkB=762669 pulseB=457601 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6315 kaito9 B=3813343 L=46319 d=82.3 nb=1 neut=0 cmds=67 noFull=1 shQ=953335 | m=0.900 worth=84.3 cheap=6.7 over=0 dMedOther=110.2 safe(-1)=2427450
+    → Norman Invasion#50[T5] terr=39855 bal=4390340 dq=110.2 cnt=202 | c=427.1 rankC=299.0 need=7812127 tD=1.00 人 pulse crowdedHard | safe=2427450 keep=Inf avail=-Inf chunkB=762669 pulseB=457601 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6320 kaito9 B=3870161 L=46319 d=83.6 nb=1 neut=0 cmds=67 noFull=1 shQ=967540 | m=0.900 worth=85.1 cheap=6.7 over=0 dMedOther=111.2 safe(-1)=2456308
+    → Norman Invasion#50[T5] terr=39926 bal=4441706 dq=111.2 cnt=204 | c=431.2 rankC=301.8 need=7906259 tD=1.00 人 pulse crowdedHard | safe=2456308 keep=Inf avail=-Inf chunkB=774032 pulseB=464419 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6325 kaito9 B=3870161 L=46319 d=83.6 nb=1 neut=0 cmds=67 noFull=1 shQ=967540 | m=0.900 worth=84.9 cheap=6.7 over=0 dMedOther=111.0 safe(-1)=2456308
+    → Norman Invasion#50[T5] terr=40027 bal=4441706 dq=111.0 cnt=207 | c=573.2 rankC=573.2 need=7910801 tD=1.00 人 pulse crowdedHard | safe=2456308 keep=Inf avail=-Inf chunkB=774032 pulseB=464419 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6330 kaito9 B=3927826 L=46319 d=84.8 nb=1 neut=0 cmds=67 noFull=1 shQ=981956 | m=0.900 worth=85.8 cheap=6.7 over=0 dMedOther=112.2 safe(-1)=2485005
+    → Norman Invasion#50[T5] terr=40060 bal=4492787 dq=112.2 cnt=208 | c=314.9 rankC=157.5 need=8002701 tD=1.00 人 pulse crowdedHard | safe=2485005 keep=Inf avail=-Inf chunkB=785565 pulseB=471339 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6335 kaito9 B=3927826 L=46319 d=84.8 nb=1 neut=0 cmds=67 noFull=1 shQ=981956 | m=0.900 worth=85.8 cheap=6.7 over=0 dMedOther=112.1 safe(-1)=2485005
+    → Norman Invasion#50[T5] terr=40067 bal=4492787 dq=112.1 cnt=208 | c=314.9 rankC=157.4 need=8003168 tD=1.00 人 pulse crowdedHard | safe=2485005 keep=Inf avail=-Inf chunkB=785565 pulseB=471339 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6340 kaito9 B=3986350 L=46319 d=86.1 nb=1 neut=0 cmds=67 noFull=1 shQ=996587 | m=0.900 worth=86.6 cheap=6.7 over=0 dMedOther=113.2 safe(-1)=2503090
+    → Norman Invasion#50[T5] terr=39985 bal=4524978 dq=113.2 cnt=205 | c=142.4 rankC=71.2 need=8056804 tD=1.00 人 pulse bleeding | safe=2503090 keep=Inf avail=-Inf chunkB=797270 pulseB=478362 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6345 kaito9 B=3986350 L=46319 d=86.1 nb=1 neut=0 cmds=67 noFull=1 shQ=996587 | m=0.900 worth=86.4 cheap=6.7 over=0 dMedOther=112.9 safe(-1)=2496077
+    → Norman Invasion#50[T5] terr=39959 bal=4512495 dq=112.9 cnt=203 | c=137.7 rankC=68.8 need=8033760 tD=1.00 人 pulse bleeding | safe=2496077 keep=Inf avail=-Inf chunkB=797270 pulseB=478362 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6350 kaito9 B=4045746 L=46319 d=87.3 nb=1 neut=0 cmds=67 noFull=1 shQ=1011436 | m=0.900 worth=87.1 cheap=6.7 over=0 dMedOther=113.9 safe(-1)=2512332
+    → Norman Invasion#50[T5] terr=39888 bal=4541429 dq=113.9 cnt=200 | c=139.7 rankC=69.8 need=8081904 tD=1.00 人 pulse bleeding | safe=2512332 keep=Inf avail=-Inf chunkB=809149 pulseB=485490 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6355 kaito9 B=4045746 L=46319 d=87.3 nb=1 neut=0 cmds=67 noFull=1 shQ=1011436 | m=0.900 worth=86.8 cheap=6.7 over=0 dMedOther=113.5 safe(-1)=2504257
+    → Norman Invasion#50[T5] terr=39880 bal=4527056 dq=113.5 cnt=198 | c=139.7 rankC=69.9 need=8056322 tD=1.00 人 pulse bleeding | safe=2504257 keep=Inf avail=-Inf chunkB=809149 pulseB=485490 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6360 kaito9 B=4106027 L=46319 d=88.6 nb=1 neut=0 cmds=67 noFull=1 shQ=1026506 | m=0.900 worth=87.5 cheap=6.7 over=0 dMedOther=114.4 safe(-1)=2518953
+    → Norman Invasion#50[T5] terr=39812 bal=4553215 dq=114.4 cnt=195 | c=141.7 rankC=70.8 need=8099823 tD=1.00 人 pulse bleeding | safe=2518953 keep=Inf avail=-Inf chunkB=821205 pulseB=492723 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6365 kaito9 B=4106027 L=46319 d=88.6 nb=1 neut=0 cmds=67 noFull=1 shQ=1026506 | m=0.900 worth=87.2 cheap=6.7 over=0 dMedOther=113.9 safe(-1)=2510229
+    → Norman Invasion#50[T5] terr=39825 bal=4537686 dq=113.9 cnt=193 | c=141.6 rankC=70.8 need=8073144 tD=1.00 人 pulse bleeding | safe=2510229 keep=Inf avail=-Inf chunkB=821205 pulseB=492723 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6370 kaito9 B=4167206 L=46319 d=90.0 nb=1 neut=0 cmds=67 noFull=1 shQ=1041801 | m=0.900 worth=87.8 cheap=6.7 over=0 dMedOther=114.7 safe(-1)=2524174
+    → Norman Invasion#50[T5] terr=39767 bal=4562508 dq=114.7 cnt=190 | c=143.5 rankC=71.8 need=8114544 tD=1.00 人 pulse bleeding | safe=2524174 keep=Inf avail=-Inf chunkB=833441 pulseB=500065 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6375 kaito9 B=4167206 L=46319 d=90.0 nb=1 neut=0 cmds=67 noFull=1 shQ=1041801 | m=0.900 worth=87.4 cheap=6.7 over=0 dMedOther=114.2 safe(-1)=2515115
+    → Norman Invasion#50[T5] terr=39799 bal=4546384 dq=114.2 cnt=188 | c=143.4 rankC=71.7 need=8087674 tD=1.00 人 pulse bleeding | safe=2515115 keep=Inf avail=-Inf chunkB=833441 pulseB=500065 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6380 kaito9 B=4229297 L=46319 d=91.3 nb=1 neut=0 cmds=67 noFull=1 shQ=1057324 | m=0.900 worth=87.9 cheap=6.7 over=0 dMedOther=115.0 safe(-1)=2528518
+    → Norman Invasion#50[T5] terr=39758 bal=4570240 dq=115.0 cnt=185 | c=145.2 rankC=72.6 need=8128290 tD=1.00 人 pulse bleeding | safe=2528518 keep=Inf avail=-Inf chunkB=845859 pulseB=507516 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6385 kaito9 B=4229297 L=46319 d=91.3 nb=1 neut=0 cmds=67 noFull=1 shQ=1057324 | m=0.900 worth=87.5 cheap=6.7 over=0 dMedOther=114.4 safe(-1)=2519446
+    → Norman Invasion#50[T5] terr=39822 bal=4554092 dq=114.4 cnt=183 | c=145.0 rankC=72.5 need=8102814 tD=1.00 人 pulse bleeding | safe=2519446 keep=Inf avail=-Inf chunkB=845859 pulseB=507516 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6390 kaito9 B=4292313 L=46319 d=92.7 nb=1 neut=0 cmds=67 noFull=1 shQ=1073078 | m=0.900 worth=88.0 cheap=6.7 over=0 dMedOther=115.0 safe(-1)=2532882
+    → Norman Invasion#50[T5] terr=39800 bal=4578008 dq=115.0 cnt=181 | c=146.7 rankC=73.4 need=8144233 tD=1.00 人 pulse bleeding | safe=2532882 keep=Inf avail=-Inf chunkB=858463 pulseB=515078 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6395 kaito9 B=4292313 L=46319 d=92.7 nb=1 neut=0 cmds=67 noFull=1 shQ=1073078 | m=0.900 worth=87.5 cheap=6.7 over=0 dMedOther=114.4 safe(-1)=2523498
+    → Norman Invasion#50[T5] terr=39888 bal=4561305 dq=114.4 cnt=179 | c=146.4 rankC=73.2 need=8118837 tD=1.00 人 pulse bleeding | safe=2523498 keep=Inf avail=-Inf chunkB=858463 pulseB=515078 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6400 kaito9 B=4402587 L=46319 d=95.0 nb=1 neut=0 cmds=67 noFull=1 shQ=1089477 | m=0.900 worth=88.7 cheap=6.7 over=0 dMedOther=116.0 safe(-1)=2559583
+    → Norman Invasion#50[T5] terr=39889 bal=4625536 dq=116.0 cnt=176 | c=149.4 rankC=74.7 need=8232715 tD=1.00 人 pulse bleeding | safe=2559583 keep=Inf avail=-Inf chunkB=880517 pulseB=528310 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=6405 kaito9 B=4402587 L=46319 d=95.0 nb=1 neut=0 cmds=67 noFull=1 shQ=1100646 | m=0.900 worth=88.1 cheap=6.7 over=0 dMedOther=115.2 safe(-1)=2551165
+    → Norman Invasion#50[T5] terr=40018 bal=4610552 dq=115.2 cnt=174 | c=321.7 rankC=160.8 need=8212194 tD=1.00 人 pulse crowdedHard | safe=2551165 keep=Inf avail=-Inf chunkB=880517 pulseB=528310 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6410 kaito9 B=4468185 L=46319 d=96.5 nb=1 neut=0 cmds=67 noFull=1 shQ=1117046 | m=0.900 worth=88.6 cheap=6.7 over=0 dMedOther=115.8 safe(-1)=2565266
+    → Norman Invasion#50[T5] terr=40047 bal=4635652 dq=115.8 cnt=171 | c=325.0 rankC=162.5 need=8258048 tD=1.00 人 pulse crowdedHard | safe=2565266 keep=Inf avail=-Inf chunkB=893637 pulseB=536182 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6415 kaito9 B=4468185 L=46319 d=96.5 nb=1 neut=0 cmds=67 noFull=1 shQ=1117046 | m=0.900 worth=86.8 cheap=6.7 over=0 dMedOther=101.1 safe(-1)=2244973
+    → Norman Invasion#50[T5] terr=40206 bal=4065530 dq=101.1 cnt=169 | c=222.5 rankC=111.2 need=7256121 tD=1.00 人 pulse | safe=2244973 keep=Inf avail=-Inf chunkB=893637 pulseB=536182 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6420 kaito9 B=4534760 L=46319 d=97.9 nb=1 neut=0 cmds=67 noFull=1 shQ=1133690 | m=0.900 worth=88.1 cheap=6.7 over=0 dMedOther=102.0 safe(-1)=2266228
+    → Norman Invasion#50[T5] terr=40240 bal=4103364 dq=102.0 cnt=166 | c=225.5 rankC=112.7 need=7324729 tD=1.00 人 pulse | safe=2266228 keep=Inf avail=-Inf chunkB=906952 pulseB=544171 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6425 kaito9 B=4534760 L=46319 d=97.9 nb=1 neut=0 cmds=67 noFull=1 shQ=1133690 | m=0.900 worth=88.1 cheap=6.7 over=0 dMedOther=101.2 safe(-1)=2257826
+    → Norman Invasion#50[T5] terr=40411 bal=4088408 dq=101.2 cnt=165 | c=224.4 rankC=112.2 need=7305081 tD=1.00 人 pulse | safe=2257826 keep=Inf avail=-Inf chunkB=906952 pulseB=544171 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6430 kaito9 B=4602327 L=46319 d=99.4 nb=1 neut=0 cmds=67 noFull=1 shQ=1150581 | m=0.900 worth=89.4 cheap=6.7 over=0 dMedOther=101.9 safe(-1)=2279871
+    → Norman Invasion#50[T5] terr=40498 bal=4127649 dq=101.9 cnt=163 | c=391.6 rankC=391.6 need=7378171 tD=1.00 人 pulse | safe=2279871 keep=Inf avail=-Inf chunkB=920465 pulseB=552279 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6435 kaito9 B=4602327 L=46319 d=99.4 nb=1 neut=0 cmds=67 noFull=1 shQ=1150581 | m=0.900 worth=89.4 cheap=6.7 over=0 dMedOther=101.2 safe(-1)=2279871
+    → Norman Invasion#50[T5] terr=40804 bal=4127649 dq=101.2 cnt=163 | c=388.4 rankC=388.4 need=7390149 tD=1.00 人 pulse | safe=2279871 keep=Inf avail=-Inf chunkB=920465 pulseB=552279 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6440 kaito9 B=4670901 L=46319 d=100.8 nb=1 neut=0 cmds=67 noFull=1 shQ=1167725 | m=0.900 worth=90.8 cheap=6.7 over=1 dMedOther=102.1 safe(-1)=2313495
+    → Norman Invasion#50[T5] terr=41015 bal=4187499 dq=102.1 cnt=163 | c=391.7 rankC=391.7 need=7504856 tD=1.00 人 pulse | safe=2313495 keep=5187728 avail=-571564 chunkB=934180 pulseB=560508 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6445 kaito9 B=4670901 L=46319 d=100.8 nb=1 neut=0 cmds=67 noFull=1 shQ=1167725 | m=0.900 worth=90.8 cheap=6.7 over=1 dMedOther=88.1 safe(-1)=2460610
+    → Norman Invasion#50[T5] terr=41282 bal=4449364 dq=107.8 cnt=163 | c=412.8 rankC=412.8 need=7981250 tD=1.22 人 pulse | safe=2460610 keep=5187728 avail=-571564 chunkB=934180 pulseB=560508 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6450 kaito9 B=4739563 L=46319 d=102.3 nb=1 neut=0 cmds=67 noFull=1 shQ=1184550 | m=0.900 worth=92.1 cheap=6.7 over=1 dMedOther=89.1 safe(-1)=2491855
+    → Norman Invasion#50[T5] terr=41470 bal=4504981 dq=108.6 cnt=163 | c=415.8 rankC=415.8 need=8087955 tD=1.22 人 pulse | safe=2491855 keep=5187728 avail=-503706 chunkB=947913 pulseB=568748 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6455 kaito9 B=4739563 L=46319 d=102.3 nb=1 neut=0 cmds=67 noFull=1 shQ=1184890 | m=0.900 worth=92.1 cheap=6.7 over=1 dMedOther=89.1 safe(-1)=2491855
+    → Norman Invasion#50[T5] terr=41765 bal=4504981 dq=107.9 cnt=163 | c=412.8 rankC=412.8 need=8092194 tD=1.21 人 pulse | safe=2491855 keep=5187728 avail=-503706 chunkB=947913 pulseB=568748 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6460 kaito9 B=4807338 L=46319 d=103.8 nb=1 neut=0 cmds=67 noFull=1 shQ=1201475 | m=0.900 worth=93.4 cheap=6.7 over=1 dMedOther=90.2 safe(-1)=2523744
+    → Norman Invasion#50[T5] terr=41972 bal=4561743 dq=108.7 cnt=163 | c=416.0 rankC=416.0 need=8193637 tD=1.20 人 pulse | safe=2523744 keep=5187728 avail=-436725 chunkB=961468 pulseB=576881 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6465 kaito9 B=4807338 L=46319 d=103.8 nb=1 neut=0 cmds=67 noFull=1 shQ=1201834 | m=0.900 worth=93.4 cheap=6.7 over=1 dMedOther=90.2 safe(-1)=2523744
+    → Norman Invasion#50[T5] terr=42295 bal=4561743 dq=107.9 cnt=163 | c=412.8 rankC=412.8 need=8194236 tD=1.20 人 pulse | safe=2523744 keep=5187728 avail=-436725 chunkB=961468 pulseB=576881 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6470 kaito9 B=4873679 L=46319 d=105.2 nb=1 neut=0 cmds=67 noFull=1 shQ=1218160 | m=0.900 worth=94.7 cheap=6.7 over=1 dMedOther=91.3 safe(-1)=2563572
+    → Norman Invasion#50[T5] terr=42517 bal=4632637 dq=109.0 cnt=163 | c=417.0 rankC=417.0 need=8320852 tD=1.19 人 pulse | safe=2563572 keep=5187728 avail=-371162 chunkB=974736 pulseB=584841 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6475 kaito9 B=4873679 L=46319 d=105.2 nb=1 neut=0 cmds=67 noFull=1 shQ=1218419 | m=0.900 worth=94.7 cheap=6.7 over=1 dMedOther=91.3 safe(-1)=2563572
+    → Norman Invasion#50[T5] terr=42861 bal=4632637 dq=108.1 cnt=163 | c=413.7 rankC=413.7 need=8321367 tD=1.18 人 pulse | safe=2563572 keep=5187728 avail=-371162 chunkB=974736 pulseB=584841 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6480 kaito9 B=4938986 L=46319 d=106.6 nb=1 neut=0 cmds=67 noFull=1 shQ=1234347 | m=0.900 worth=96.0 cheap=6.7 over=1 dMedOther=92.4 safe(-1)=2596104
+    → Norman Invasion#50[T5] terr=43089 bal=4690544 dq=108.9 cnt=163 | c=416.7 rankC=416.7 need=8424921 tD=1.18 人 pulse | safe=2596104 keep=5187728 avail=-306620 chunkB=987797 pulseB=592678 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6485 kaito9 B=4938986 L=46319 d=106.6 nb=1 neut=0 cmds=67 noFull=1 shQ=1234746 | m=0.900 worth=96.0 cheap=6.7 over=1 dMedOther=92.4 safe(-1)=2279579
+    → Norman Invasion#50[T5] terr=43581 bal=4127130 dq=94.7 cnt=165 | c=272.4 rankC=190.7 need=7421446 tD=1.02 人 pulse | safe=2279579 keep=5187728 avail=-306620 chunkB=987797 pulseB=592678 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6490 kaito9 B=5003192 L=46319 d=108.0 nb=1 neut=0 cmds=67 noFull=1 shQ=1250380 | m=0.900 worth=97.2 cheap=6.7 over=1 dMedOther=93.5 safe(-1)=2313895
+    → Norman Invasion#50[T5] terr=43951 bal=4188211 dq=95.3 cnt=166 | c=274.1 rankC=191.8 need=7530937 tD=1.02 人 pulse | safe=2313895 keep=5187728 avail=-243167 chunkB=1000638 pulseB=600383 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6495 kaito9 B=5003192 L=46319 d=108.0 nb=1 neut=0 cmds=67 noFull=1 shQ=1250798 | m=0.900 worth=97.2 cheap=6.7 over=1 dMedOther=93.5 safe(-1)=2313895
+    → Norman Invasion#50[T5] terr=44515 bal=4188211 dq=94.1 cnt=169 | c=270.6 rankC=189.4 need=7531782 tD=1.01 人 pulse | safe=2313895 keep=5187728 avail=-243167 chunkB=1000638 pulseB=600383 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6500 kaito9 B=5112551 L=46319 d=110.4 nb=1 neut=0 cmds=68 noFull=1 shQ=1265880 | m=0.900 worth=99.3 cheap=6.7 over=1 dMedOther=95.7 safe(-1)=2373939
+    → Norman Invasion#50[T5] terr=44894 bal=4295090 dq=95.7 cnt=171 | c=275.1 rankC=192.6 need=7722815 tD=1.00 人 pulse | safe=2373939 keep=5187728 avail=-135089 chunkB=1022510 pulseB=613506 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=207 → [APEX] leo_tx#14[T2]（约 1038486 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=6505 kaito9 B=5112551 L=46319 d=110.4 nb=1 neut=0 cmds=68 noFull=1 shQ=1278137 | m=0.900 worth=99.3 cheap=6.7 over=1 dMedOther=94.5 safe(-1)=2373939
+    → Norman Invasion#50[T5] terr=45459 bal=4295090 dq=94.5 cnt=174 | c=271.7 rankC=190.2 need=7723695 tD=1.00 人 pulse | safe=2373939 keep=5187728 avail=-135089 chunkB=1022510 pulseB=613506 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6510 kaito9 B=5173390 L=46319 d=111.7 nb=1 neut=0 cmds=68 noFull=1 shQ=1292881 | m=0.900 worth=100.5 cheap=6.7 over=1 dMedOther=95.1 safe(-1)=2409892
+    → Norman Invasion#50[T5] terr=45840 bal=4359086 dq=95.1 cnt=176 | c=273.4 rankC=191.4 need=7838231 tD=1.00 人 pulse | safe=2409892 keep=5187728 avail=-74963 chunkB=1034678 pulseB=620807 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6515 kaito9 B=3799210 L=46319 d=82.0 nb=1 neut=0 cmds=68 noFull=1 shQ=949802 | m=0.900 worth=73.8 cheap=6.7 over=0 dMedOther=93.9 safe(-1)=2409892
+    → Norman Invasion#50[T5] terr=46408 bal=4359086 dq=93.9 cnt=179 | c=485.1 rankC=485.1 need=7839083 tD=1.00 人 pulse crowdedHard | safe=2409892 keep=Inf avail=-Inf chunkB=759842 pulseB=455905 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6520 kaito9 B=3855818 L=46319 d=83.2 nb=1 neut=0 cmds=68 noFull=1 shQ=963954 | m=0.900 worth=74.9 cheap=6.7 over=0 dMedOther=94.6 safe(-1)=2446381
+    → Norman Invasion#50[T5] terr=46784 bal=4424036 dq=94.6 cnt=181 | c=488.3 rankC=488.3 need=7955411 tD=1.00 人 pulse crowdedHard | safe=2446381 keep=Inf avail=-Inf chunkB=771164 pulseB=462698 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6525 kaito9 B=3855818 L=46319 d=83.2 nb=1 neut=0 cmds=68 noFull=1 shQ=963954 | m=0.900 worth=74.9 cheap=6.7 over=0 dMedOther=93.4 safe(-1)=2446381
+    → Norman Invasion#50[T5] terr=47358 bal=4424036 dq=93.4 cnt=183 | c=482.4 rankC=482.4 need=7956338 tD=1.00 人 pulse crowdedHard | safe=2446381 keep=Inf avail=-Inf chunkB=771164 pulseB=462698 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6530 kaito9 B=3913269 L=46319 d=84.5 nb=1 neut=0 cmds=68 noFull=1 shQ=978317 | m=0.900 worth=76.0 cheap=6.7 over=0 dMedOther=94.4 safe(-1)=2483665
+    → Norman Invasion#50[T5] terr=47549 bal=4490403 dq=94.4 cnt=183 | c=487.6 rankC=487.6 need=8074882 tD=1.00 人 pulse crowdedHard | safe=2483665 keep=Inf avail=-Inf chunkB=782654 pulseB=469592 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6535 kaito9 B=3913269 L=46319 d=84.5 nb=1 neut=0 cmds=68 noFull=1 shQ=978317 | m=0.900 worth=76.0 cheap=6.7 over=0 dMedOther=93.9 safe(-1)=2483665
+    → Norman Invasion#50[T5] terr=47820 bal=4490403 dq=93.9 cnt=183 | c=484.8 rankC=484.8 need=8075255 tD=1.00 人 pulse crowdedHard | safe=2483665 keep=Inf avail=-Inf chunkB=782654 pulseB=469592 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6540 kaito9 B=3971576 L=46319 d=85.7 nb=1 neut=0 cmds=68 noFull=1 shQ=992894 | m=0.900 worth=77.2 cheap=6.7 over=0 dMedOther=95.0 safe(-1)=2521506
+    → Norman Invasion#50[T5] terr=47962 bal=4557759 dq=95.0 cnt=183 | c=490.6 rankC=490.6 need=8195588 tD=1.00 人 pulse crowdedHard | safe=2521506 keep=Inf avail=-Inf chunkB=794315 pulseB=476589 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6545 kaito9 B=3971576 L=46319 d=85.7 nb=1 neut=0 cmds=68 noFull=1 shQ=992894 | m=0.900 worth=77.2 cheap=6.7 over=0 dMedOther=94.7 safe(-1)=2521506
+    → Norman Invasion#50[T5] terr=48118 bal=4557759 dq=94.7 cnt=183 | c=709.2 rankC=1028.3 need=8195822 tD=1.00 人 pulse crowdedHard | safe=2521506 keep=Inf avail=-Inf chunkB=794315 pulseB=476589 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6550 kaito9 B=4030752 L=46319 d=87.0 nb=1 neut=0 cmds=68 noFull=1 shQ=1007688 | m=0.900 worth=78.3 cheap=6.7 over=0 dMedOther=96.0 safe(-1)=2559914
+    → Norman Invasion#50[T5] terr=48213 bal=4626125 dq=96.0 cnt=183 | c=718.3 rankC=1041.6 need=8317784 tD=1.00 人 pulse crowdedHard | safe=2559914 keep=Inf avail=-Inf chunkB=806150 pulseB=483690 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6555 kaito9 B=4030752 L=46319 d=87.0 nb=1 neut=0 cmds=68 noFull=1 shQ=1007688 | m=0.900 worth=78.3 cheap=6.7 over=0 dMedOther=95.7 safe(-1)=2559914
+    → Norman Invasion#50[T5] terr=48342 bal=4626125 dq=95.7 cnt=183 | c=494.1 rankC=494.1 need=8318012 tD=1.00 人 pulse crowdedHard | safe=2559914 keep=Inf avail=-Inf chunkB=806150 pulseB=483690 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6560 kaito9 B=4090810 L=46319 d=88.3 nb=1 neut=0 cmds=68 noFull=1 shQ=1022702 | m=0.900 worth=79.5 cheap=6.7 over=0 dMedOther=97.0 safe(-1)=2598897
+    → Norman Invasion#50[T5] terr=48431 bal=4695516 dq=97.0 cnt=183 | c=281.7 rankC=140.8 need=8441860 tD=1.00 人 pulse crowdedHard | safe=2598897 keep=Inf avail=-Inf chunkB=818162 pulseB=490897 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6565 kaito9 B=4090810 L=46319 d=88.3 nb=1 neut=0 cmds=68 noFull=1 shQ=1022702 | m=0.900 worth=79.5 cheap=6.7 over=0 dMedOther=96.1 safe(-1)=2557971
+    → Norman Invasion#50[T5] terr=48097 bal=4622666 dq=96.1 cnt=181 | c=283.7 rankC=141.8 need=8300282 tD=1.00 人 pulse crowdedHard | safe=2557971 keep=Inf avail=-Inf chunkB=818162 pulseB=490897 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6570 kaito9 B=4151763 L=46319 d=89.6 nb=1 neut=0 cmds=68 noFull=1 shQ=1037940 | m=0.900 worth=80.7 cheap=6.7 over=0 dMedOther=97.0 safe(-1)=2569782
+    → Norman Invasion#50[T5] terr=47880 bal=4643690 dq=97.0 cnt=179 | c=281.5 rankC=140.8 need=8329990 tD=1.00 人 pulse crowdedHard | safe=2569782 keep=Inf avail=-Inf chunkB=830353 pulseB=498212 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6575 kaito9 B=4151763 L=46319 d=89.6 nb=1 neut=0 cmds=68 noFull=1 shQ=1037940 | m=0.900 worth=80.7 cheap=6.7 over=0 dMedOther=96.1 safe(-1)=2529363
+    → Norman Invasion#50[T5] terr=47551 bal=4571745 dq=96.1 cnt=176 | c=205.1 rankC=102.5 need=8190283 tD=1.00 人 pulse | safe=2529363 keep=Inf avail=-Inf chunkB=830353 pulseB=498212 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6580 kaito9 B=4213624 L=46319 d=91.0 nb=1 neut=0 cmds=68 noFull=1 shQ=1053406 | m=0.900 worth=81.9 cheap=6.7 over=0 dMedOther=97.0 safe(-1)=2540736
+    → Norman Invasion#50[T5] terr=47328 bal=4591989 dq=97.0 cnt=174 | c=209.2 rankC=104.6 need=8218302 tD=1.00 人 pulse | safe=2540736 keep=Inf avail=-Inf chunkB=842725 pulseB=505635 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6585 kaito9 B=4213624 L=46319 d=91.0 nb=1 neut=0 cmds=68 noFull=1 shQ=1053406 | m=0.900 worth=81.9 cheap=6.7 over=0 dMedOther=96.2 safe(-1)=2499956
+    → Norman Invasion#50[T5] terr=46995 bal=4519400 dq=96.2 cnt=171 | c=210.8 rankC=105.4 need=8077390 tD=1.00 人 pulse | safe=2499956 keep=Inf avail=-Inf chunkB=842725 pulseB=505635 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6590 kaito9 B=4276406 L=46319 d=92.3 nb=1 neut=0 cmds=68 noFull=1 shQ=1069101 | m=0.900 worth=83.1 cheap=6.7 over=0 dMedOther=97.0 safe(-1)=2509931
+    → Norman Invasion#50[T5] terr=46770 bal=4537156 dq=97.0 cnt=169 | c=215.0 rankC=107.5 need=8100560 tD=1.00 人 pulse | safe=2509931 keep=Inf avail=-Inf chunkB=855281 pulseB=513169 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6595 kaito9 B=4276406 L=46319 d=92.3 nb=1 neut=0 cmds=68 noFull=1 shQ=1069101 | m=0.900 worth=83.1 cheap=6.7 over=0 dMedOther=96.5 safe(-1)=2493812
+    → Norman Invasion#50[T5] terr=46733 bal=4508464 dq=96.5 cnt=168 | c=538.0 rankC=780.0 need=8048524 tD=1.00 人 pulse | safe=2493812 keep=Inf avail=-Inf chunkB=855281 pulseB=513169 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6600 kaito9 B=4386443 L=46319 d=94.7 nb=1 neut=0 cmds=68 noFull=1 shQ=1085440 | m=0.900 worth=85.2 cheap=6.7 over=0 dMedOther=98.7 safe(-1)=2557849
+    → Norman Invasion#50[T5] terr=46810 bal=4622450 dq=98.7 cnt=168 | c=550.4 rankC=798.1 need=8253499 tD=1.00 人 pulse | safe=2557849 keep=Inf avail=-Inf chunkB=877289 pulseB=526373 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6605 kaito9 B=4386443 L=46319 d=94.7 nb=1 neut=0 cmds=68 noFull=1 shQ=1096610 | m=0.900 worth=85.2 cheap=6.7 over=0 dMedOther=98.5 safe(-1)=2557849
+    → Norman Invasion#50[T5] terr=46929 bal=4622450 dq=98.5 cnt=168 | c=548.9 rankC=795.9 need=8258179 tD=1.00 人 pulse | safe=2557849 keep=Inf avail=-Inf chunkB=877289 pulseB=526373 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6610 kaito9 B=4451801 L=46319 d=96.1 nb=1 neut=0 cmds=68 noFull=1 shQ=1112950 | m=0.900 worth=86.5 cheap=6.7 over=0 dMedOther=99.8 safe(-1)=2596542
+    → Norman Invasion#50[T5] terr=47006 bal=4691324 dq=99.8 cnt=168 | c=556.0 rankC=806.2 need=8383293 tD=1.00 人 pulse | safe=2596542 keep=Inf avail=-Inf chunkB=890360 pulseB=534216 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6615 kaito9 B=4451801 L=46319 d=96.1 nb=1 neut=0 cmds=68 noFull=1 shQ=1112950 | m=0.900 worth=86.5 cheap=6.7 over=0 dMedOther=99.6 safe(-1)=2596542
+    → Norman Invasion#50[T5] terr=47122 bal=4691324 dq=99.6 cnt=168 | c=554.5 rankC=804.0 need=8387876 tD=1.00 人 pulse | safe=2596542 keep=Inf avail=-Inf chunkB=890360 pulseB=534216 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6620 kaito9 B=4518132 L=46319 d=97.5 nb=1 neut=0 cmds=68 noFull=1 shQ=1129533 | m=0.900 worth=87.8 cheap=6.7 over=0 dMedOther=100.9 safe(-1)=2635812
+    → Norman Invasion#50[T5] terr=47197 bal=4761224 dq=100.9 cnt=168 | c=387.3 rankC=387.3 need=8514996 tD=1.00 人 pulse | safe=2635812 keep=Inf avail=-Inf chunkB=903626 pulseB=542176 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6625 kaito9 B=4518132 L=46319 d=97.5 nb=1 neut=0 cmds=68 noFull=1 shQ=1129533 | m=0.900 worth=87.8 cheap=6.7 over=0 dMedOther=65.6 safe(-1)=3182287
+    → Norman Invasion#50[T5] terr=47306 bal=5733950 dq=121.2 cnt=168 | c=626.6 rankC=626.6 need=10245452 tD=1.85 人 pulse crowdedHard | safe=3182287 keep=Inf avail=-Inf chunkB=903626 pulseB=542176 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6630 kaito9 B=4585452 L=46319 d=99.0 nb=1 neut=0 cmds=68 noFull=1 shQ=1146363 | m=0.900 worth=89.1 cheap=6.7 over=0 dMedOther=66.6 safe(-1)=2832482
+    → Norman Invasion#50[T5] terr=47378 bal=5111297 dq=107.9 cnt=168 | c=418.8 rankC=293.2 need=9143640 tD=1.62 人 pulse crowdedHard | safe=2832482 keep=Inf avail=-Inf chunkB=917090 pulseB=550254 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6635 kaito9 B=4585452 L=46319 d=99.0 nb=1 neut=0 cmds=68 noFull=1 shQ=1146363 | m=0.900 worth=89.1 cheap=6.7 over=0 dMedOther=66.6 safe(-1)=2832482
+    → Norman Invasion#50[T5] terr=48033 bal=5111297 dq=106.4 cnt=171 | c=305.5 rankC=213.8 need=9170079 tD=1.60 人 pulse | safe=2832482 keep=Inf avail=-Inf chunkB=917090 pulseB=550254 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6640 kaito9 B=4653775 L=46319 d=100.5 nb=1 neut=0 cmds=68 noFull=1 shQ=1163443 | m=0.900 worth=90.4 cheap=6.7 over=1 dMedOther=106.9 safe(-1)=2870960
+    → Norman Invasion#50[T5] terr=48475 bal=5179788 dq=106.9 cnt=173 | c=306.5 rankC=214.5 need=9305085 tD=1.00 人 pulse | safe=2870960 keep=5187728 avail=-588489 chunkB=930755 pulseB=558453 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6645 kaito9 B=4653775 L=46319 d=100.5 nb=1 neut=0 cmds=68 noFull=1 shQ=1163443 | m=0.900 worth=90.4 cheap=6.7 over=1 dMedOther=105.4 safe(-1)=2870960
+    → Norman Invasion#50[T5] terr=49151 bal=5179788 dq=105.4 cnt=176 | c=302.3 rankC=211.6 need=9306097 tD=1.00 人 pulse | safe=2870960 keep=5187728 avail=-588489 chunkB=930755 pulseB=558453 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6650 kaito9 B=4722650 L=46319 d=102.0 nb=1 neut=0 cmds=68 noFull=1 shQ=1180326 | m=0.900 worth=91.8 cheap=6.7 over=1 dMedOther=105.8 safe(-1)=2911118
+    → Norman Invasion#50[T5] terr=49613 bal=5251269 dq=105.8 cnt=178 | c=586.9 rankC=851.0 need=9434121 tD=1.00 人 pulse | safe=2911118 keep=5187728 avail=-520421 chunkB=944530 pulseB=566718 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6655 kaito9 B=4722650 L=46319 d=102.0 nb=1 neut=0 cmds=68 noFull=1 shQ=1180662 | m=0.900 worth=91.8 cheap=6.7 over=1 dMedOther=104.4 safe(-1)=2911118
+    → Norman Invasion#50[T5] terr=50323 bal=5251269 dq=104.4 cnt=181 | c=578.7 rankC=839.1 need=9435259 tD=1.00 人 pulse | safe=2911118 keep=5187728 avail=-520421 chunkB=944530 pulseB=566718 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6660 kaito9 B=4790656 L=46319 d=103.4 nb=1 neut=0 cmds=68 noFull=1 shQ=1197309 | m=0.900 worth=93.1 cheap=6.7 over=1 dMedOther=104.8 safe(-1)=2952715
+    → Norman Invasion#50[T5] terr=50811 bal=5325311 dq=104.8 cnt=182 | c=581.2 rankC=842.7 need=9567961 tD=1.00 人 pulse | safe=2952715 keep=5187728 avail=-453212 chunkB=958131 pulseB=574879 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6665 kaito9 B=4790656 L=46319 d=103.4 nb=1 neut=0 cmds=68 noFull=1 shQ=1197664 | m=0.900 worth=93.1 cheap=6.7 over=1 dMedOther=101.8 safe(-1)=2952730
+    → Norman Invasion#50[T5] terr=51136 bal=5325338 dq=104.1 cnt=183 | c=577.6 rankC=837.5 need=9568386 tD=1.02 人 pulse | safe=2952730 keep=5187728 avail=-453212 chunkB=958131 pulseB=574879 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6670 kaito9 B=4857246 L=46319 d=104.9 nb=1 neut=0 cmds=68 noFull=1 shQ=1214057 | m=0.900 worth=94.4 cheap=6.7 over=1 dMedOther=103.1 safe(-1)=2994614
+    → Norman Invasion#50[T5] terr=51204 bal=5399892 dq=105.5 cnt=183 | c=584.8 rankC=848.0 need=9701370 tD=1.02 人 pulse | safe=2994614 keep=5187728 avail=-387402 chunkB=971449 pulseB=582870 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6675 kaito9 B=4857246 L=46319 d=104.9 nb=1 neut=0 cmds=68 noFull=1 shQ=1214311 | m=0.900 worth=94.4 cheap=6.7 over=1 dMedOther=102.1 safe(-1)=2994614
+    → Norman Invasion#50[T5] terr=51301 bal=5399892 dq=105.3 cnt=183 | c=583.7 rankC=846.4 need=9701553 tD=1.03 人 pulse | safe=2994614 keep=5187728 avail=-387402 chunkB=971449 pulseB=582870 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6680 kaito9 B=4922818 L=46319 d=106.3 nb=1 neut=0 cmds=68 noFull=1 shQ=1230310 | m=0.900 worth=95.7 cheap=6.7 over=1 dMedOther=101.7 safe(-1)=3036175
+    → Norman Invasion#50[T5] terr=51364 bal=5473870 dq=106.6 cnt=183 | c=590.9 rankC=856.9 need=9833466 tD=1.05 人 pulse | safe=3036175 keep=5187728 avail=-322599 chunkB=984564 pulseB=590738 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6685 kaito9 B=4922818 L=46319 d=106.3 nb=1 neut=0 cmds=68 noFull=1 shQ=1230704 | m=0.900 worth=95.7 cheap=6.7 over=1 dMedOther=101.2 safe(-1)=3036175
+    → Norman Invasion#50[T5] terr=51455 bal=5473870 dq=106.4 cnt=183 | c=589.9 rankC=855.4 need=9833715 tD=1.05 人 pulse | safe=3036175 keep=5187728 avail=-322599 chunkB=984564 pulseB=590738 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6690 kaito9 B=4987306 L=46319 d=107.7 nb=1 neut=0 cmds=68 noFull=1 shQ=1246414 | m=0.900 worth=96.9 cheap=6.7 over=1 dMedOther=102.5 safe(-1)=3077075
+    → Norman Invasion#50[T5] terr=51513 bal=5546672 dq=107.7 cnt=183 | c=597.0 rankC=865.7 need=9963487 tD=1.05 人 pulse | safe=3077075 keep=5187728 avail=-258866 chunkB=997461 pulseB=598477 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6695 kaito9 B=4987306 L=46319 d=107.7 nb=1 neut=0 cmds=68 noFull=1 shQ=1246826 | m=0.900 worth=96.9 cheap=6.7 over=1 dMedOther=102.5 safe(-1)=3077075
+    → Norman Invasion#50[T5] terr=51598 bal=5546672 dq=107.5 cnt=183 | c=596.1 rankC=864.3 need=9963652 tD=1.05 人 pulse | safe=3077075 keep=5187728 avail=-258866 chunkB=997461 pulseB=598477 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6700 kaito9 B=5096963 L=46319 d=110.0 nb=1 neut=0 cmds=68 noFull=1 shQ=1261989 | m=0.900 worth=99.0 cheap=6.7 over=1 dMedOther=104.8 safe(-1)=3146602
+    → Norman Invasion#50[T5] terr=51652 bal=5670430 dq=109.8 cnt=183 | c=608.6 rankC=882.5 need=10184239 tD=1.05 人 pulse | safe=3146602 keep=5187728 avail=-150495 chunkB=1019393 pulseB=611636 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6705 kaito9 B=5096963 L=46319 d=110.0 nb=1 neut=0 cmds=68 noFull=1 shQ=1274240 | m=0.900 worth=99.0 cheap=6.7 over=1 dMedOther=104.8 safe(-1)=3146602
+    → Norman Invasion#50[T5] terr=51731 bal=5670430 dq=109.6 cnt=183 | c=607.7 rankC=881.2 need=10184473 tD=1.05 人 pulse | safe=3146602 keep=5187728 avail=-150495 chunkB=1019393 pulseB=611636 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6710 kaito9 B=5158126 L=46319 d=111.4 nb=1 neut=0 cmds=68 noFull=1 shQ=1289069 | m=0.900 worth=100.2 cheap=6.7 over=1 dMedOther=106.0 safe(-1)=3186104
+    → Norman Invasion#50[T5] terr=51781 bal=5740743 dq=110.9 cnt=183 | c=614.6 rankC=891.2 need=10309795 tD=1.05 人 pulse | safe=3186104 keep=5187728 avail=-90048 chunkB=1031625 pulseB=618975 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6715 kaito9 B=5158126 L=46319 d=111.4 nb=1 neut=0 cmds=68 noFull=1 shQ=1289531 | m=0.900 worth=100.2 cheap=6.7 over=1 dMedOther=97.0 safe(-1)=2798710
+    → Norman Invasion#50[T5] terr=52100 bal=5051182 dq=97.0 cnt=184 | c=278.5 rankC=195.0 need=9081187 tD=1.00 人 pulse | safe=2798710 keep=5187728 avail=-90048 chunkB=1031625 pulseB=618975 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6720 kaito9 B=5217960 L=46319 d=112.7 nb=1 neut=0 cmds=68 noFull=1 shQ=1304010 | m=0.900 worth=101.4 cheap=6.7 over=1 dMedOther=97.4 safe(-1)=2841843
+    → Norman Invasion#50[T5] terr=52649 bal=5127959 dq=97.4 cnt=186 | c=279.8 rankC=195.9 need=9218889 tD=1.00 人 pulse | safe=2841843 keep=5187728 avail=-30915 chunkB=1043592 pulseB=626155 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6725 kaito9 B=5217960 L=46319 d=112.7 nb=1 neut=0 cmds=69 noFull=1 shQ=1304490 | m=0.900 worth=101.4 cheap=6.7 over=1 dMedOther=95.9 safe(-1)=2841843
+    → Norman Invasion#50[T5] terr=53490 bal=5127959 dq=95.9 cnt=189 | c=275.4 rankC=192.8 need=9220184 tD=1.00 人 pulse | safe=2841843 keep=5187728 avail=-30915 chunkB=1043592 pulseB=626155 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=224 → [APEX] leo_tx#14[T2]（约 1146524 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=6730 kaito9 B=5276401 L=46319 d=113.9 nb=1 neut=0 cmds=69 noFull=1 shQ=1318736 | m=0.900 worth=102.5 cheap=6.7 over=1 dMedOther=96.3 safe(-1)=2885920
+    → Norman Invasion#50[T5] terr=54054 bal=5206416 dq=96.3 cnt=191 | c=368.9 rankC=368.9 need=9360869 tD=1.00 人 pulse | safe=2885920 keep=5187728 avail=26841 chunkB=1055280 pulseB=633168 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6735 kaito9 B=3787261 L=46319 d=81.8 nb=1 neut=0 cmds=69 noFull=1 shQ=946815 | m=0.900 worth=73.6 cheap=6.7 over=0 dMedOther=94.8 safe(-1)=2885920
+    → Norman Invasion#50[T5] terr=54896 bal=5206416 dq=94.8 cnt=194 | c=489.5 rankC=489.5 need=9362064 tD=1.00 人 pulse crowdedHard | safe=2885920 keep=Inf avail=-Inf chunkB=757452 pulseB=454471 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6740 kaito9 B=3843691 L=46319 d=83.0 nb=1 neut=0 cmds=69 noFull=1 shQ=960922 | m=0.900 worth=74.7 cheap=6.7 over=0 dMedOther=96.2 safe(-1)=2930970
+    → Norman Invasion#50[T5] terr=54935 bal=5286605 dq=96.2 cnt=194 | c=496.6 rankC=496.6 need=9505150 tD=1.00 人 pulse crowdedHard | safe=2930970 keep=Inf avail=-Inf chunkB=768738 pulseB=461243 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6745 kaito9 B=3843691 L=46319 d=83.0 nb=1 neut=0 cmds=69 noFull=1 shQ=960922 | m=0.900 worth=74.7 cheap=6.7 over=0 dMedOther=96.1 safe(-1)=2930970
+    → Norman Invasion#50[T5] terr=54990 bal=5286605 dq=96.1 cnt=194 | c=496.2 rankC=496.2 need=9505199 tD=1.00 人 pulse crowdedHard | safe=2930970 keep=Inf avail=-Inf chunkB=768738 pulseB=461243 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6750 kaito9 B=3900961 L=46319 d=84.2 nb=1 neut=0 cmds=69 noFull=1 shQ=975240 | m=0.900 worth=75.8 cheap=6.7 over=0 dMedOther=97.6 safe(-1)=2976708
+    → Norman Invasion#50[T5] terr=55025 bal=5368018 dq=97.6 cnt=194 | c=503.4 rankC=503.4 need=9650325 tD=1.00 人 pulse crowdedHard | safe=2976708 keep=Inf avail=-Inf chunkB=780192 pulseB=468115 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6755 kaito9 B=3900961 L=46319 d=84.2 nb=1 neut=0 cmds=69 noFull=1 shQ=975240 | m=0.900 worth=75.8 cheap=6.7 over=0 dMedOther=97.5 safe(-1)=2976708
+    → Norman Invasion#50[T5] terr=55073 bal=5368018 dq=97.5 cnt=194 | c=503.0 rankC=503.0 need=9650397 tD=1.00 人 pulse crowdedHard | safe=2976708 keep=Inf avail=-Inf chunkB=780192 pulseB=468115 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6760 kaito9 B=3959085 L=46319 d=85.5 nb=1 neut=0 cmds=69 noFull=1 shQ=989771 | m=0.900 worth=76.9 cheap=6.7 over=0 dMedOther=98.9 safe(-1)=3023150
+    → Norman Invasion#50[T5] terr=55103 bal=5450685 dq=98.9 cnt=194 | c=510.4 rankC=510.4 need=9797855 tD=1.00 人 pulse crowdedHard | safe=3023150 keep=Inf avail=-Inf chunkB=791817 pulseB=475090 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6765 kaito9 B=3959085 L=46319 d=85.5 nb=1 neut=0 cmds=69 noFull=1 shQ=989771 | m=0.900 worth=76.9 cheap=6.7 over=0 dMedOther=98.8 safe(-1)=3023150
+    → Norman Invasion#50[T5] terr=55148 bal=5450685 dq=98.8 cnt=194 | c=510.0 rankC=510.0 need=9797818 tD=1.00 人 pulse crowdedHard | safe=3023150 keep=Inf avail=-Inf chunkB=791817 pulseB=475090 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6770 kaito9 B=4018075 L=46319 d=86.7 nb=1 neut=0 cmds=69 noFull=1 shQ=1004518 | m=0.900 worth=78.1 cheap=6.7 over=0 dMedOther=100.3 safe(-1)=3070307
+    → Norman Invasion#50[T5] terr=55178 bal=5534625 dq=100.3 cnt=194 | c=517.5 rankC=517.5 need=9947545 tD=1.00 人 pulse crowdedHard | safe=3070307 keep=Inf avail=-Inf chunkB=803615 pulseB=482169 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6775 kaito9 B=4018075 L=46319 d=86.7 nb=1 neut=0 cmds=69 noFull=1 shQ=1004518 | m=0.900 worth=78.1 cheap=6.7 over=0 dMedOther=100.2 safe(-1)=3070307
+    → Norman Invasion#50[T5] terr=55223 bal=5534625 dq=100.2 cnt=194 | c=517.1 rankC=517.1 need=9947648 tD=1.00 人 pulse crowdedHard | safe=3070307 keep=Inf avail=-Inf chunkB=803615 pulseB=482169 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6780 kaito9 B=4077944 L=46319 d=88.0 nb=1 neut=0 cmds=69 noFull=1 shQ=1019486 | m=0.900 worth=79.2 cheap=6.7 over=0 dMedOther=101.3 safe(-1)=3118191
+    → Norman Invasion#50[T5] terr=55252 bal=5619858 dq=101.7 cnt=194 | c=524.7 rankC=524.7 need=10099501 tD=1.00 人 pulse crowdedHard | safe=3118191 keep=Inf avail=-Inf chunkB=815589 pulseB=489353 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6785 kaito9 B=4077944 L=46319 d=88.0 nb=1 neut=0 cmds=69 noFull=1 shQ=1019486 | m=0.900 worth=79.2 cheap=6.7 over=0 dMedOther=100.2 safe(-1)=3118191
+    → Norman Invasion#50[T5] terr=55294 bal=5619858 dq=101.6 cnt=194 | c=760.3 rankC=1102.5 need=10099636 tD=1.01 人 pulse crowdedHard | safe=3118191 keep=Inf avail=-Inf chunkB=815589 pulseB=489353 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6790 kaito9 B=4138705 L=46319 d=89.4 nb=1 neut=0 cmds=69 noFull=1 shQ=1034676 | m=0.900 worth=80.4 cheap=6.7 over=0 dMedOther=101.6 safe(-1)=3165549
+    → Norman Invasion#50[T5] terr=55320 bal=5704155 dq=103.1 cnt=194 | c=771.3 rankC=1118.4 need=10249851 tD=1.02 人 pulse crowdedHard | safe=3165549 keep=Inf avail=-Inf chunkB=827741 pulseB=496645 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6795 kaito9 B=4138705 L=46319 d=89.4 nb=1 neut=0 cmds=69 noFull=1 shQ=1034676 | m=0.900 worth=80.4 cheap=6.7 over=0 dMedOther=100.6 safe(-1)=3165549
+    → Norman Invasion#50[T5] terr=55354 bal=5704155 dq=103.0 cnt=194 | c=770.8 rankC=1117.7 need=10249975 tD=1.02 人 pulse crowdedHard | safe=3165549 keep=Inf avail=-Inf chunkB=827741 pulseB=496645 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6800 kaito9 B=4246690 L=46319 d=91.7 nb=1 neut=0 cmds=69 noFull=1 shQ=1050494 | m=0.900 worth=82.5 cheap=6.7 over=0 dMedOther=92.5 safe(-1)=2855322
+    → Norman Invasion#50[T5] terr=55671 bal=5151952 dq=92.5 cnt=195 | c=265.6 rankC=185.9 need=9266250 tD=1.00 人 pulse | safe=2855322 keep=Inf avail=-Inf chunkB=849338 pulseB=509603 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6805 kaito9 B=4246690 L=46319 d=91.7 nb=1 neut=0 cmds=69 noFull=1 shQ=1061672 | m=0.900 worth=82.5 cheap=6.7 over=0 dMedOther=91.0 safe(-1)=2855322
+    → Norman Invasion#50[T5] terr=56617 bal=5151952 dq=91.0 cnt=198 | c=505.1 rankC=732.4 need=9267603 tD=1.00 人 pulse | safe=2855322 keep=Inf avail=-Inf chunkB=849338 pulseB=509603 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6810 kaito9 B=4309965 L=46319 d=93.0 nb=1 neut=0 cmds=69 noFull=1 shQ=1077491 | m=0.900 worth=83.7 cheap=6.7 over=0 dMedOther=91.4 safe(-1)=2899895
+    → Norman Invasion#50[T5] terr=57262 bal=5231292 dq=91.4 cnt=200 | c=349.7 rankC=349.7 need=9410016 tD=1.00 人 pulse | safe=2899895 keep=Inf avail=-Inf chunkB=861993 pulseB=517196 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6815 kaito9 B=4309965 L=46319 d=93.0 nb=1 neut=0 cmds=69 noFull=1 shQ=1077491 | m=0.900 worth=83.7 cheap=6.7 over=0 dMedOther=91.3 safe(-1)=2900000
+    → Norman Invasion#50[T5] terr=57284 bal=5231479 dq=91.3 cnt=200 | c=349.6 rankC=349.6 need=9410317 tD=1.00 人 pulse | safe=2900000 keep=Inf avail=-Inf chunkB=861993 pulseB=517196 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6820 kaito9 B=4374183 L=46319 d=94.4 nb=1 neut=0 cmds=69 noFull=1 shQ=1093545 | m=0.900 worth=85.0 cheap=6.7 over=0 dMedOther=92.7 safe(-1)=2945261
+    → Norman Invasion#50[T5] terr=57296 bal=5312043 dq=92.7 cnt=200 | c=354.8 rankC=354.8 need=9553929 tD=1.00 人 pulse | safe=2945261 keep=Inf avail=-Inf chunkB=874837 pulseB=524902 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6825 kaito9 B=4374183 L=46319 d=94.4 nb=1 neut=0 cmds=69 noFull=1 shQ=1093545 | m=0.900 worth=85.0 cheap=6.7 over=0 dMedOther=92.7 safe(-1)=2945261
+    → Norman Invasion#50[T5] terr=57310 bal=5312043 dq=92.7 cnt=200 | c=354.8 rankC=354.8 need=9554016 tD=1.00 人 pulse | safe=2945261 keep=Inf avail=-Inf chunkB=874837 pulseB=524902 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6830 kaito9 B=4439358 L=46319 d=95.8 nb=1 neut=0 cmds=69 noFull=1 shQ=1109839 | m=0.900 worth=86.3 cheap=6.7 over=0 dMedOther=94.1 safe(-1)=2991219
+    → Norman Invasion#50[T5] terr=57318 bal=5393848 dq=94.1 cnt=200 | c=360.1 rankC=360.1 need=9699835 tD=1.00 人 pulse | safe=2991219 keep=Inf avail=-Inf chunkB=887872 pulseB=532723 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6835 kaito9 B=4439358 L=46319 d=95.8 nb=1 neut=0 cmds=69 noFull=1 shQ=1109839 | m=0.900 worth=86.3 cheap=6.7 over=0 dMedOther=94.1 safe(-1)=2991219
+    → Norman Invasion#50[T5] terr=57326 bal=5393848 dq=94.1 cnt=200 | c=360.1 rankC=360.1 need=9699847 tD=1.00 人 pulse | safe=2991219 keep=Inf avail=-Inf chunkB=887872 pulseB=532723 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6840 kaito9 B=4505504 L=46319 d=97.3 nb=1 neut=0 cmds=69 noFull=1 shQ=1126376 | m=0.900 worth=87.5 cheap=6.7 over=0 dMedOther=95.5 safe(-1)=3037885
+    → Norman Invasion#50[T5] terr=57328 bal=5476913 dq=95.5 cnt=200 | c=365.6 rankC=365.6 need=9847836 tD=1.00 人 pulse | safe=3037885 keep=Inf avail=-Inf chunkB=901101 pulseB=540660 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6845 kaito9 B=4505504 L=46319 d=97.3 nb=1 neut=0 cmds=69 noFull=1 shQ=1126376 | m=0.900 worth=87.5 cheap=6.7 over=0 dMedOther=100.8 safe(-1)=3207142
+    → Norman Invasion#50[T5] terr=57328 bal=5778192 dq=100.8 cnt=200 | c=385.4 rankC=385.4 need=10384824 tD=1.00 人 pulse | safe=3207142 keep=Inf avail=-Inf chunkB=901101 pulseB=540660 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6850 kaito9 B=4572636 L=46319 d=98.7 nb=1 neut=0 cmds=69 noFull=1 shQ=1143159 | m=0.900 worth=88.8 cheap=6.7 over=0 dMedOther=102.3 safe(-1)=3256484
+    → Norman Invasion#50[T5] terr=57328 bal=5866020 dq=102.3 cnt=200 | c=391.2 rankC=391.2 need=10541365 tD=1.00 人 pulse | safe=3256484 keep=Inf avail=-Inf chunkB=914527 pulseB=548716 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6855 kaito9 B=4572636 L=46319 d=98.7 nb=1 neut=0 cmds=69 noFull=1 shQ=1143159 | m=0.900 worth=88.8 cheap=6.7 over=0 dMedOther=102.3 safe(-1)=3256484
+    → Norman Invasion#50[T5] terr=57328 bal=5866020 dq=102.3 cnt=200 | c=391.2 rankC=391.2 need=10541365 tD=1.00 人 pulse | safe=3256484 keep=Inf avail=-Inf chunkB=914527 pulseB=548716 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6860 kaito9 B=4640768 L=46319 d=100.2 nb=1 neut=0 cmds=69 noFull=1 shQ=1160192 | m=0.900 worth=90.2 cheap=6.7 over=1 dMedOther=103.8 safe(-1)=3304928
+    → Norman Invasion#50[T5] terr=57328 bal=5952250 dq=103.8 cnt=200 | c=396.9 rankC=396.9 need=10695058 tD=1.00 人 pulse | safe=3304928 keep=5187728 avail=-601344 chunkB=928154 pulseB=556892 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6865 kaito9 B=4640768 L=46319 d=100.2 nb=1 neut=0 cmds=69 noFull=1 shQ=1160192 | m=0.900 worth=90.2 cheap=6.7 over=1 dMedOther=96.5 safe(-1)=3304928
+    → Norman Invasion#50[T5] terr=57328 bal=5952250 dq=103.8 cnt=200 | c=396.9 rankC=396.9 need=10695058 tD=1.08 人 pulse | safe=3304928 keep=5187728 avail=-601344 chunkB=928154 pulseB=556892 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6870 kaito9 B=4709915 L=46319 d=101.7 nb=1 neut=0 cmds=69 noFull=1 shQ=1177147 | m=0.900 worth=91.5 cheap=6.7 over=1 dMedOther=96.8 safe(-1)=3352746
+    → Norman Invasion#50[T5] terr=57328 bal=6037367 dq=105.3 cnt=200 | c=402.5 rankC=402.5 need=10846768 tD=1.09 人 pulse | safe=3352746 keep=5187728 avail=-533007 chunkB=941983 pulseB=565190 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6875 kaito9 B=4709915 L=46319 d=101.7 nb=1 neut=0 cmds=69 noFull=1 shQ=1177478 | m=0.900 worth=91.5 cheap=6.7 over=1 dMedOther=92.7 safe(-1)=2945336
+    → Norman Invasion#50[T5] terr=57328 bal=5312176 dq=92.7 cnt=200 | c=266.1 rankC=186.3 need=9554215 tD=1.00 人 pulse | safe=2945336 keep=5187728 avail=-533007 chunkB=941983 pulseB=565190 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6880 kaito9 B=4777737 L=46319 d=103.1 nb=1 neut=0 cmds=69 noFull=1 shQ=1194200 | m=0.900 worth=92.8 cheap=6.7 over=1 dMedOther=94.1 safe(-1)=2991295
+    → Norman Invasion#50[T5] terr=57328 bal=5393983 dq=94.1 cnt=200 | c=270.2 rankC=189.1 need=9700024 tD=1.00 人 pulse | safe=2991295 keep=5187728 avail=-465980 chunkB=955547 pulseB=573328 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6885 kaito9 B=4777737 L=46319 d=103.1 nb=1 neut=0 cmds=69 noFull=1 shQ=1194434 | m=0.900 worth=92.8 cheap=6.7 over=1 dMedOther=93.0 safe(-1)=2991295
+    → Norman Invasion#50[T5] terr=57998 bal=5393983 dq=93.0 cnt=202 | c=267.1 rankC=186.9 need=9701095 tD=1.00 人 pulse | safe=2991295 keep=5187728 avail=-465980 chunkB=955547 pulseB=573328 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6890 kaito9 B=4844625 L=46319 d=104.6 nb=1 neut=0 cmds=69 noFull=1 shQ=1210784 | m=0.900 worth=94.1 cheap=6.7 over=1 dMedOther=92.8 safe(-1)=3038264
+    → Norman Invasion#50[T5] terr=59034 bal=5477589 dq=92.8 cnt=208 | c=355.2 rankC=355.2 need=9851665 tD=1.00 人 pulse | safe=3038264 keep=5187728 avail=-399875 chunkB=968925 pulseB=581355 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6895 kaito9 B=4844625 L=46319 d=104.6 nb=1 neut=0 cmds=69 noFull=1 shQ=1211156 | m=0.900 worth=94.1 cheap=6.7 over=1 dMedOther=92.2 safe(-1)=3038435
+    → Norman Invasion#50[T5] terr=59388 bal=5477892 dq=92.2 cnt=210 | c=353.2 rankC=353.2 need=9852671 tD=1.00 人 pulse | safe=3038435 keep=5187728 avail=-399875 chunkB=968925 pulseB=581355 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6900 kaito9 B=4956830 L=46319 d=107.0 nb=1 neut=0 cmds=69 noFull=1 shQ=1227017 | m=0.900 worth=96.3 cheap=6.7 over=1 dMedOther=94.7 safe(-1)=3119499
+    → Norman Invasion#50[T5] terr=59388 bal=5622187 dq=94.7 cnt=210 | c=362.4 rankC=362.4 need=10109856 tD=1.00 人 pulse | safe=3119499 keep=5187728 avail=-288985 chunkB=991366 pulseB=594820 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6905 kaito9 B=4956830 L=46319 d=107.0 nb=1 neut=0 cmds=69 noFull=1 shQ=1239207 | m=0.900 worth=96.3 cheap=6.7 over=1 dMedOther=94.7 safe(-1)=3119499
+    → Norman Invasion#50[T5] terr=59388 bal=5622187 dq=94.7 cnt=210 | c=362.4 rankC=362.4 need=10109856 tD=1.00 人 pulse | safe=3119499 keep=5187728 avail=-288985 chunkB=991366 pulseB=594820 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6910 kaito9 B=5020773 L=46319 d=108.4 nb=1 neut=0 cmds=69 noFull=1 shQ=1254771 | m=0.900 worth=97.6 cheap=6.7 over=1 dMedOther=96.1 safe(-1)=3168456
+    → Norman Invasion#50[T5] terr=59388 bal=5709330 dq=96.1 cnt=210 | c=367.9 rankC=367.9 need=10265177 tD=1.00 人 pulse | safe=3168456 keep=5187728 avail=-225792 chunkB=1004155 pulseB=602493 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6915 kaito9 B=5020773 L=46319 d=108.4 nb=1 neut=0 cmds=69 noFull=1 shQ=1255193 | m=0.900 worth=97.6 cheap=6.7 over=1 dMedOther=96.1 safe(-1)=3168456
+    → Norman Invasion#50[T5] terr=59388 bal=5709330 dq=96.1 cnt=210 | c=367.9 rankC=367.9 need=10265177 tD=1.00 人 pulse | safe=3168456 keep=5187728 avail=-225792 chunkB=1004155 pulseB=602493 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6920 kaito9 B=5083030 L=46319 d=109.7 nb=1 neut=0 cmds=69 noFull=1 shQ=1270442 | m=0.900 worth=98.8 cheap=6.7 over=1 dMedOther=97.6 safe(-1)=3218172
+    → Norman Invasion#50[T5] terr=59388 bal=5797824 dq=97.6 cnt=210 | c=373.6 rankC=373.6 need=10422905 tD=1.00 人 pulse | safe=3218172 keep=5187728 avail=-164264 chunkB=1016606 pulseB=609964 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6925 kaito9 B=5083030 L=46319 d=109.7 nb=1 neut=0 cmds=69 noFull=1 shQ=1270757 | m=0.900 worth=98.8 cheap=6.7 over=1 dMedOther=97.6 safe(-1)=3218172
+    → Norman Invasion#50[T5] terr=59388 bal=5797824 dq=97.6 cnt=210 | c=373.6 rankC=373.6 need=10422905 tD=1.00 人 pulse | safe=3218172 keep=5187728 avail=-164264 chunkB=1016606 pulseB=609964 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6930 kaito9 B=5144026 L=46319 d=111.1 nb=1 neut=0 cmds=69 noFull=1 shQ=1285674 | m=0.900 worth=100.0 cheap=6.7 over=1 dMedOther=99.1 safe(-1)=3268658
+    → Norman Invasion#50[T5] terr=59388 bal=5887690 dq=99.1 cnt=210 | c=379.3 rankC=379.3 need=10583079 tD=1.00 人 pulse | safe=3268658 keep=5187728 avail=-103983 chunkB=1028805 pulseB=617283 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6935 kaito9 B=5144026 L=46319 d=111.1 nb=1 neut=0 cmds=69 noFull=1 shQ=1286006 | m=0.900 worth=100.0 cheap=6.7 over=1 dMedOther=98.6 safe(-1)=3268658
+    → Norman Invasion#50[T5] terr=59388 bal=5887690 dq=99.1 cnt=210 | c=379.3 rankC=379.3 need=10583079 tD=1.01 人 pulse | safe=3268658 keep=5187728 avail=-103983 chunkB=1028805 pulseB=617283 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6940 kaito9 B=5204211 L=46319 d=112.4 nb=1 neut=0 cmds=69 noFull=1 shQ=1300577 | m=0.900 worth=101.1 cheap=6.7 over=1 dMedOther=99.5 safe(-1)=3319927
+    → Norman Invasion#50[T5] terr=59388 bal=5978949 dq=100.7 cnt=210 | c=213.0 rankC=106.5 need=10745736 tD=1.01 人 pulse | safe=3319927 keep=5187728 avail=-44503 chunkB=1040842 pulseB=624505 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6945 kaito9 B=5204211 L=46319 d=112.4 nb=1 neut=0 cmds=69 noFull=1 shQ=1301052 | m=0.900 worth=101.1 cheap=6.7 over=1 dMedOther=98.7 safe(-1)=3287892
+    → Norman Invasion#50[T5] terr=59034 bal=5921927 dq=100.3 cnt=208 | c=209.4 rankC=104.7 need=10631148 tD=1.02 人 pulse | safe=3287892 keep=5187728 avail=-44503 chunkB=1040842 pulseB=624505 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6950 kaito9 B=5263018 L=46319 d=113.6 nb=1 neut=0 cmds=70 noFull=1 shQ=1315393 | m=0.900 worth=102.3 cheap=6.7 over=1 dMedOther=99.6 safe(-1)=3276026
+    → Norman Invasion#50[T5] terr=58340 bal=5900805 dq=101.1 cnt=203 | c=215.5 rankC=107.7 need=10567538 tD=1.02 人 pulse | safe=3276026 keep=5187728 avail=13615 chunkB=1052604 pulseB=631562 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 影子指令 donate pct=194 → [APEX] leo_tx#14[T2]（约 1002234 兵） 〔tryDonateToTeammate:4508<act:4962〕
+t=6955 kaito9 B=5263018 L=46319 d=113.6 nb=1 neut=0 cmds=70 noFull=1 shQ=1315754 | m=0.900 worth=102.3 cheap=6.7 over=1 dMedOther=99.4 safe(-1)=3184522
+    → Norman Invasion#50[T5] terr=57330 bal=5737928 dq=100.1 cnt=200 | c=215.0 rankC=107.5 need=10239972 tD=1.01 人 pulse | safe=3184522 keep=5187728 avail=13615 chunkB=1052604 pulseB=631562 唯一真人邻居(B<1.28×100×L)→continue sole hNb=1
+    ⇒ 本拍没有指令
+t=6960 kaito9 B=3990430 L=46319 d=86.2 nb=1 neut=0 cmds=70 noFull=1 shQ=997607 | m=0.900 worth=77.5 cheap=6.7 over=0 dMedOther=100.8 safe(-1)=3174617
+    → Norman Invasion#50[T5] terr=56677 bal=5720296 dq=100.9 cnt=198 | c=297.9 rankC=149.0 need=10183542 tD=1.00 人 pulse crowdedHard | safe=3174617 keep=Inf avail=-Inf chunkB=798086 pulseB=478852 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6965 kaito9 B=3990430 L=46319 d=86.2 nb=1 neut=0 cmds=70 noFull=1 shQ=997607 | m=0.900 worth=77.5 cheap=6.7 over=0 dMedOther=100.0 safe(-1)=3109446
+    → Norman Invasion#50[T5] terr=56037 bal=5604292 dq=100.0 cnt=196 | c=519.9 rankC=519.9 need=9953943 tD=1.00 人 pulse crowdedHard | safe=3109446 keep=Inf avail=-Inf chunkB=798086 pulseB=478852 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6970 kaito9 B=4049887 L=46319 d=87.4 nb=1 neut=0 cmds=70 noFull=1 shQ=1012471 | m=0.900 worth=78.7 cheap=6.7 over=0 dMedOther=96.4 safe(-1)=3157932
+    → Norman Invasion#50[T5] terr=56037 bal=5690598 dq=101.6 cnt=196 | c=527.8 rankC=527.8 need=10106410 tD=1.05 人 pulse crowdedHard | safe=3157932 keep=Inf avail=-Inf chunkB=809977 pulseB=485986 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6975 kaito9 B=4049887 L=46319 d=87.4 nb=1 neut=0 cmds=70 noFull=1 shQ=1012471 | m=0.900 worth=78.7 cheap=6.7 over=0 dMedOther=89.4 safe(-1)=2773923
+    → Norman Invasion#50[T5] terr=56037 bal=5007061 dq=89.4 cnt=196 | c=258.4 rankC=180.9 need=8902881 tD=1.00 人 pulse | safe=2773923 keep=Inf avail=-Inf chunkB=809977 pulseB=485986 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6980 kaito9 B=4110230 L=46319 d=88.7 nb=1 neut=0 cmds=70 noFull=1 shQ=1027557 | m=0.900 worth=79.9 cheap=6.7 over=0 dMedOther=90.2 safe(-1)=2817242
+    → Norman Invasion#50[T5] terr=56353 bal=5084169 dq=90.2 cnt=197 | c=260.7 rankC=182.5 need=9050729 tD=1.00 人 pulse | safe=2817242 keep=Inf avail=-Inf chunkB=822046 pulseB=493228 价高(c>=worth)→break sole hNb=1
+    ⇒ 本拍没有指令
+t=6985 kaito9 B=4110230 L=46319 d=88.7 nb=2 neut=0 cmds=70 noFull=1 shQ=1027557 | m=0.900 worth=79.9 cheap=6.7 over=0 dMedOther=89.2 safe(-1)=2817242
+    → Norman Invasion#50[T5] terr=56996 bal=5084169 dq=89.2 cnt=199 | c=160.9 rankC=112.6 need=9073873 tD=1.00 人 pulse | safe=2817242 keep=Inf avail=-Inf chunkB=822046 pulseB=493228 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2019321 dq=94.4 cnt=5 | c=412.8 rankC=412.8 need=3631273 tD=1.06 人 pulse | safe=2817242 keep=Inf avail=-Inf chunkB=822046 pulseB=493228 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6990 kaito9 B=4171472 L=46319 d=90.1 nb=2 neut=0 cmds=70 noFull=1 shQ=1042868 | m=0.900 worth=81.1 cheap=6.7 over=0 dMedOther=89.0 safe(-1)=2861228
+    → Norman Invasion#50[T5] terr=57988 bal=5162465 dq=89.0 cnt=202 | c=213.6 rankC=213.6 need=9247016 tD=1.00 人 pulse | safe=2861228 keep=Inf avail=-Inf chunkB=834294 pulseB=500577 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2046177 dq=95.7 cnt=5 | c=418.3 rankC=418.3 need=3679140 tD=1.07 人 pulse | safe=2861228 keep=Inf avail=-Inf chunkB=834294 pulseB=500577 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=6995 kaito9 B=4171472 L=46319 d=90.1 nb=2 neut=0 cmds=70 noFull=1 shQ=1042868 | m=0.900 worth=81.1 cheap=6.7 over=0 dMedOther=89.0 safe(-1)=2861294
+    → Norman Invasion#50[T5] terr=57988 bal=5162581 dq=89.0 cnt=202 | c=213.6 rankC=213.6 need=9247478 tD=1.00 人 pulse | safe=2861294 keep=Inf avail=-Inf chunkB=834294 pulseB=500577 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2046177 dq=95.7 cnt=5 | c=418.3 rankC=418.3 need=3679140 tD=1.07 人 pulse | safe=2861294 keep=Inf avail=-Inf chunkB=834294 pulseB=500577 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7000 kaito9 B=4279945 L=46319 d=92.4 nb=2 neut=0 cmds=70 noFull=1 shQ=1058810 | m=0.900 worth=83.2 cheap=6.7 over=0 dMedOther=91.4 safe(-1)=2938826
+    → Norman Invasion#50[T5] terr=57988 bal=5300589 dq=91.4 cnt=202 | c=219.3 rankC=219.3 need=9492508 tD=1.00 人 pulse | safe=2938826 keep=Inf avail=-Inf chunkB=855989 pulseB=513593 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2094776 dq=98.0 cnt=5 | c=428.1 rankC=428.1 need=3765762 tD=1.07 人 pulse | safe=2938826 keep=Inf avail=-Inf chunkB=855989 pulseB=513593 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7005 kaito9 B=4279945 L=46319 d=92.4 nb=2 neut=0 cmds=70 noFull=1 shQ=1069986 | m=0.900 worth=83.2 cheap=6.7 over=0 dMedOther=91.4 safe(-1)=2938826
+    → Norman Invasion#50[T5] terr=57988 bal=5300589 dq=91.4 cnt=202 | c=219.3 rankC=219.3 need=9492639 tD=1.00 人 pulse | safe=2938826 keep=Inf avail=-Inf chunkB=855989 pulseB=513593 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2094776 dq=98.0 cnt=5 | c=428.1 rankC=428.1 need=3765762 tD=1.07 人 pulse | safe=2938826 keep=Inf avail=-Inf chunkB=855989 pulseB=513593 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7010 kaito9 B=4343716 L=46319 d=93.8 nb=2 neut=0 cmds=70 noFull=1 shQ=1085929 | m=0.900 worth=84.4 cheap=6.7 over=0 dMedOther=92.5 safe(-1)=2984983
+    → Norman Invasion#50[T5] terr=57988 bal=5382748 dq=92.8 cnt=202 | c=222.6 rankC=222.6 need=9638569 tD=1.00 人 pulse | safe=2984983 keep=Inf avail=-Inf chunkB=868743 pulseB=521246 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2122636 dq=99.3 cnt=5 | c=629.0 rankC=912.0 need=3815419 tD=1.07 人 pulse | safe=2984983 keep=Inf avail=-Inf chunkB=868743 pulseB=521246 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7015 kaito9 B=4343716 L=46319 d=93.8 nb=2 neut=0 cmds=70 noFull=1 shQ=1085929 | m=0.900 worth=84.4 cheap=6.7 over=0 dMedOther=92.1 safe(-1)=2984983
+    → Norman Invasion#50[T5] terr=57988 bal=5382748 dq=92.8 cnt=202 | c=222.6 rankC=222.6 need=9638835 tD=1.01 人 pulse | safe=2984983 keep=Inf avail=-Inf chunkB=868743 pulseB=521246 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2122636 dq=99.3 cnt=5 | c=629.0 rankC=912.0 need=3815419 tD=1.08 人 pulse | safe=2984983 keep=Inf avail=-Inf chunkB=868743 pulseB=521246 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7020 kaito9 B=4408437 L=46319 d=95.2 nb=2 neut=0 cmds=70 noFull=1 shQ=1102109 | m=0.900 worth=85.7 cheap=6.7 over=0 dMedOther=92.7 safe(-1)=3031855
+    → Norman Invasion#50[T5] terr=57988 bal=5466180 dq=94.3 cnt=202 | c=226.1 rankC=226.1 need=9787033 tD=1.02 人 pulse | safe=3031855 keep=Inf avail=-Inf chunkB=881687 pulseB=529012 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2150867 dq=100.6 cnt=5 | c=637.3 rankC=924.1 need=3865737 tD=1.08 人 pulse | safe=3031855 keep=Inf avail=-Inf chunkB=881687 pulseB=529012 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7025 kaito9 B=4408437 L=46319 d=95.2 nb=2 neut=0 cmds=70 noFull=1 shQ=1102109 | m=0.900 worth=85.7 cheap=6.7 over=0 dMedOther=92.3 safe(-1)=3031855
+    → Norman Invasion#50[T5] terr=57988 bal=5466180 dq=94.3 cnt=202 | c=226.1 rankC=226.1 need=9787168 tD=1.02 人 pulse | safe=3031855 keep=Inf avail=-Inf chunkB=881687 pulseB=529012 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2150867 dq=100.6 cnt=5 | c=439.5 rankC=439.5 need=3865737 tD=1.09 人 pulse | safe=3031855 keep=Inf avail=-Inf chunkB=881687 pulseB=529012 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7030 kaito9 B=4474122 L=46319 d=96.6 nb=2 neut=0 cmds=70 noFull=1 shQ=1118530 | m=0.900 worth=86.9 cheap=6.7 over=0 dMedOther=82.4 safe(-1)=2643962
+    → Norman Invasion#50[T5] terr=57988 bal=4775730 dq=82.4 cnt=202 | c=197.9 rankC=197.9 need=8561945 tD=1.00 人 pulse | safe=2643962 keep=Inf avail=-Inf chunkB=894824 pulseB=536895 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2179258 dq=101.9 cnt=5 | c=645.7 rankC=936.2 need=3916341 tD=1.24 人 pulse | safe=2643962 keep=Inf avail=-Inf chunkB=894824 pulseB=536895 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7035 kaito9 B=4474122 L=46319 d=96.6 nb=2 neut=0 cmds=70 noFull=1 shQ=1118530 | m=0.900 worth=86.9 cheap=6.7 over=0 dMedOther=82.4 safe(-1)=2643962
+    → Norman Invasion#50[T5] terr=57988 bal=4775730 dq=82.4 cnt=202 | c=197.9 rankC=197.9 need=8562182 tD=1.00 人 pulse | safe=2643962 keep=Inf avail=-Inf chunkB=894824 pulseB=536895 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2179258 dq=101.9 cnt=5 | c=645.7 rankC=936.2 need=3916341 tD=1.24 人 pulse | safe=2643962 keep=Inf avail=-Inf chunkB=894824 pulseB=536895 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7040 kaito9 B=4540786 L=46319 d=98.0 nb=2 neut=0 cmds=70 noFull=1 shQ=1135196 | m=0.900 worth=88.2 cheap=6.7 over=0 dMedOther=83.6 safe(-1)=2685547
+    → Norman Invasion#50[T5] terr=57988 bal=4849753 dq=83.6 cnt=202 | c=200.9 rankC=200.9 need=8693676 tD=1.00 人 pulse | safe=2685547 keep=Inf avail=-Inf chunkB=908157 pulseB=544894 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2207152 dq=103.2 cnt=5 | c=450.9 rankC=450.9 need=3966059 tD=1.23 人 pulse | safe=2685547 keep=Inf avail=-Inf chunkB=908157 pulseB=544894 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7045 kaito9 B=4540786 L=46319 d=98.0 nb=2 neut=0 cmds=70 noFull=1 shQ=1135196 | m=0.900 worth=88.2 cheap=6.7 over=0 dMedOther=83.6 safe(-1)=2685547
+    → Norman Invasion#50[T5] terr=57988 bal=4849753 dq=83.6 cnt=202 | c=200.9 rankC=200.9 need=8693796 tD=1.00 人 pulse | safe=2685547 keep=Inf avail=-Inf chunkB=908157 pulseB=544894 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2207152 dq=103.2 cnt=5 | c=450.9 rankC=450.9 need=3966059 tD=1.23 人 pulse | safe=2685547 keep=Inf avail=-Inf chunkB=908157 pulseB=544894 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7050 kaito9 B=4608443 L=46319 d=99.5 nb=2 neut=0 cmds=70 noFull=1 shQ=1152110 | m=0.900 worth=89.5 cheap=6.7 over=0 dMedOther=84.9 safe(-1)=2727778
+    → Norman Invasion#50[T5] terr=57988 bal=4924924 dq=84.9 cnt=202 | c=153.0 rankC=107.1 need=8827333 tD=1.00 人 pulse | safe=2727778 keep=Inf avail=-Inf chunkB=921689 pulseB=553013 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2234741 dq=104.5 cnt=5 | c=456.6 rankC=456.6 need=4015233 tD=1.23 人 pulse | safe=2727778 keep=Inf avail=-Inf chunkB=921689 pulseB=553013 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7055 kaito9 B=4608443 L=46319 d=99.5 nb=2 neut=0 cmds=70 noFull=1 shQ=1152110 | m=0.900 worth=89.5 cheap=6.7 over=0 dMedOther=84.9 safe(-1)=2727778
+    → Norman Invasion#50[T5] terr=58001 bal=4924924 dq=84.9 cnt=202 | c=153.0 rankC=107.1 need=8828000 tD=1.00 人 pulse | safe=2727778 keep=Inf avail=-Inf chunkB=921689 pulseB=553013 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2234741 dq=104.5 cnt=5 | c=456.6 rankC=456.6 need=4015233 tD=1.23 人 pulse | safe=2727778 keep=Inf avail=-Inf chunkB=921689 pulseB=553013 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7060 kaito9 B=4677108 L=46319 d=101.0 nb=2 neut=0 cmds=71 noFull=1 shQ=1169181 | m=0.900 worth=90.9 cheap=6.7 over=1 dMedOther=86.2 safe(-1)=2770664
+    → Norman Invasion#50[T5] terr=58022 bal=5001260 dq=86.2 cnt=202 | c=155.3 rankC=108.7 need=8964311 tD=1.00 人 pulse | safe=2770664 keep=4168710 avail=453589 chunkB=935422 pulseB=561253  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2262004 dq=105.8 cnt=5 | c=462.1 rankC=462.1 need=4063826 tD=1.23 人 pulse | safe=2770664 keep=4168710 avail=453589 chunkB=935422 pulseB=561253  hNb=2
+    ⇒ 影子指令 attack pct=99 → Norman Invasion#50[T5]（约 456748 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=7065 kaito9 B=4677108 L=46319 d=101.0 nb=2 neut=0 cmds=72 noFull=1 shQ=1169277 | m=0.900 worth=90.9 cheap=6.7 over=1 dMedOther=86.1 safe(-1)=2770664
+    → Norman Invasion#50[T5] terr=58068 bal=5001260 dq=86.1 cnt=202 | c=155.1 rankC=108.6 need=8965952 tD=1.00 人 pulse | safe=2770664 keep=4168710 avail=453589 chunkB=935422 pulseB=561253  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2262004 dq=105.8 cnt=5 | c=462.1 rankC=462.1 need=4063826 tD=1.23 人 pulse | safe=2770664 keep=4168710 avail=453589 chunkB=935422 pulseB=561253  hNb=2
+    ⇒ 影子指令 attack pct=99 → Norman Invasion#50[T5]（约 456748 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=7070 kaito9 B=4745861 L=46319 d=102.5 nb=2 neut=0 cmds=73 noFull=1 shQ=1186124 | m=0.900 worth=92.2 cheap=6.7 over=1 dMedOther=87.4 safe(-1)=2814214
+    → Norman Invasion#50[T5] terr=58105 bal=5078779 dq=87.4 cnt=202 | c=157.4 rankC=110.2 need=9104943 tD=1.00 人 pulse | safe=2814214 keep=4168710 avail=521536 chunkB=949172 pulseB=569503  hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2288695 dq=107.0 cnt=5 | c=467.5 rankC=467.5 need=4111399 tD=1.22 人 pulse | safe=2814214 keep=4168710 avail=521536 chunkB=949172 pulseB=569503  hNb=2
+    ⇒ 影子指令 attack pct=112 → Norman Invasion#50[T5]（约 523713 兵） 〔send:484<send:1827<send:3865<buyLand:5607〕
+t=7075 kaito9 B=4226784 L=46319 d=91.3 nb=2 neut=0 cmds=73 noFull=1 shQ=62976 | m=0.900 worth=82.1 cheap=6.7 over=0 dMedOther=87.1 safe(-1)=2814214
+    → Norman Invasion#50[T5] terr=58169 bal=5078779 dq=87.3 cnt=202 | c=149.2 rankC=104.4 need=8643863 tD=1.00 人 pulse | safe=2814214 keep=Inf avail=-Inf chunkB=845357 pulseB=507214 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21385 bal=2038370 dq=95.3 cnt=5 | c=312.6 rankC=218.8 need=3665225 tD=1.09 人 pulse | safe=2814214 keep=Inf avail=-Inf chunkB=845357 pulseB=507214 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7080 kaito9 B=3354193 L=46724 d=71.8 nb=2 neut=0 cmds=73 noFull=1 shQ=131828 | m=0.900 worth=67.3 cheap=6.7 over=0 dMedOther=87.9 safe(-1)=2825873
+    → Norman Invasion#50[T5] terr=57809 bal=5100140 dq=88.2 cnt=203 | c=186.7 rankC=130.7 need=7955651 tD=1.00 人 pulse crowdedHard | safe=2825873 keep=Inf avail=-Inf chunkB=670839 pulseB=402503 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21631 bal=2065480 dq=95.5 cnt=9 | c=312.2 rankC=218.5 need=3713982 tD=1.09 人 pulse | safe=2825873 keep=Inf avail=-Inf chunkB=670839 pulseB=402503 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7085 kaito9 B=3354193 L=47131 d=71.2 nb=2 neut=0 cmds=73 noFull=1 shQ=194718 | m=0.900 worth=67.0 cheap=6.7 over=0 dMedOther=87.6 safe(-1)=2793310
+    → Micha [🇩🇪]#47[T1] terr=21880 bal=2065480 dq=94.4 cnt=13 | c=126.7 rankC=63.4 need=3714254 tD=1.08 人 pulse | safe=2793310 keep=Inf avail=-Inf chunkB=670839 pulseB=402503 价高(c>=worth)→break hNb=2
+    → Norman Invasion#50[T5] terr=57478 bal=5042789 dq=87.7 cnt=204 | c=145.5 rankC=72.8 need=7958372 tD=1.00 人 pulse crowdedHard | safe=2793310 keep=Inf avail=-Inf chunkB=670839 pulseB=402503 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7090 kaito9 B=3404505 L=47744 d=71.3 nb=2 neut=0 cmds=73 noFull=1 shQ=257796 | m=0.900 worth=67.6 cheap=6.7 over=0 dMedOther=88.4 safe(-1)=2787465
+    → Micha [🇩🇪]#47[T1] terr=21880 bal=2093162 dq=95.7 cnt=13 | c=130.1 rankC=65.1 need=3763593 tD=1.08 人 pulse | safe=2787465 keep=Inf avail=-Inf chunkB=680901 pulseB=408541 价高(c>=worth)→break hNb=2
+    → Norman Invasion#50[T5] terr=56921 bal=5033304 dq=88.4 cnt=205 | c=150.0 rankC=75.0 need=8096429 tD=1.00 人 pulse crowdedHard | safe=2787465 keep=Inf avail=-Inf chunkB=680901 pulseB=408541 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7095 kaito9 B=3404505 L=48154 d=70.7 nb=2 neut=0 cmds=73 noFull=1 shQ=321626 | m=0.900 worth=66.9 cheap=6.7 over=0 dMedOther=87.5 safe(-1)=2738847
+    → Micha [🇩🇪]#47[T1] terr=21633 bal=2055423 dq=95.0 cnt=10 | c=131.7 rankC=65.9 need=3687770 tD=1.09 人 pulse | safe=2738847 keep=Inf avail=-Inf chunkB=680901 pulseB=408541 价高(c>=worth)→break hNb=2
+    → Norman Invasion#50[T5] terr=56540 bal=4947378 dq=87.5 cnt=206 | c=259.4 rankC=259.4 need=8047717 tD=1.00 人 pulse crowdedHard | safe=2738847 keep=Inf avail=-Inf chunkB=680901 pulseB=408541 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=7100 kaito9 B=3504139 L=48775 d=71.8 nb=2 neut=0 cmds=73 noFull=1 shQ=386262 | m=0.900 worth=68.3 cheap=6.6 over=0 dMedOther=89.3 safe(-1)=2762986
+    → Norman Invasion#50[T5] terr=55919 bal=4991278 dq=89.3 cnt=209 | c=153.2 rankC=76.6 need=8279855 tD=1.00 人 pulse crowdedHard | safe=2762986 keep=Inf avail=-Inf chunkB=700828 pulseB=420497 价高(c>=worth)→break hNb=2
+    → Micha [🇩🇪]#47[T1] terr=21512 bal=2071901 dq=96.3 cnt=9 | c=610.4 rankC=885.0 need=3712970 tD=1.08 人 pulse | safe=2762986 keep=Inf avail=-Inf chunkB=700828 pulseB=420497 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令

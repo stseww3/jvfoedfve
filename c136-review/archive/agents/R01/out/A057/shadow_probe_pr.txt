@@ -1,0 +1,24 @@
+t=1200 baseRate() -> 0.03
+t=1200 dpNeutral() -> undefined
+t=1200 expandNeutral(66617.49070100143) -> undefined
+t=1200 winRatio() -> 2.4
+t=1200 allow(381) -> true
+t=1200 winFloor(381) -> 95659
+t=1200 peopleFloor() -> 0
+t=1200 allow(46) -> true
+t=1200 winRatio() -> 2.4
+t=1200 allow(488) -> true
+t=1200 winFloor(488) -> 95659
+t=1200 peopleFloor() -> 0
+t=1200 winRatio() -> 2.4
+t=1200 allow(397) -> true
+t=1200 winFloor(397) -> 95659
+t=1200 peopleFloor() -> 0
+t=1200 pickTarget(fn,338.1478) -> null
+t=1200   机器人邻居 AI#381（地609 兵0 空槽1 正打我0）的其他邻居按余额从小到大：[APEX] talon5#83[T1]=95659
+t=1200   机器人邻居 AI#488（地1118 兵1121 空槽1 正打我0）的其他邻居按余额从小到大：AI#495[T0 正被它打]=5956 , AZE#78[T1]=8572 , Yarik связь#3[T1]=25937
+t=1200   机器人邻居 AI#397（地526 兵0 空槽1 正打我0）的其他邻居按余额从小到大：[APEX] talon5#83[T1]=95659 , [APEX] kaito9#86[T1]=121591
+t=1200 状态 bal=76150 terr=2377 dens=32.0 neutral=4 coast=0 noFull=1 atkOut=0 邻居: AI#381[T0 地609 密0.0 机] Dai Viet#46[T2 地3678 密24.6 人] AI#488[T0 地1118 密1.0 机] AI#397[T0 地526 密0.0 机]
+t=1200 winFloor(381) -> 95659
+t=1200 winFloor(488) -> 95659
+t=1200 winFloor(397) -> 95659

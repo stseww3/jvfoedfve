@@ -1,0 +1,38 @@
+[QA] B029 出生点离地图边的距离（地图 1756×1000，短边的 12% = 120 像素）
+  编队 18 个号：中位 106、下四分位 54、上四分位 194；离边 ≤120 的 12 个（67%）
+  其他真人 43 个：中位 277、下四分位 195、上四分位 362；离边 ≤120 的 4 个（9%）
+  逐号（离边从近到远）：Lelouch(T4) 22（下）；Goku(T2) 22（下）；Marlborough(T3) 32（下）；Interpol(T5) 38（下）；SyntaxError(T2) 54（下）；Scorpion(T3) 94（上）；Angkor(T5) 102（上）；Two Sicilies(T2) 102（上）；Tomato(T3) 106（上）；Anya(T4) 106（上）；Erwin(T3) 106（上）；Senna(T4) 114（上）；Khazar(T4) 190（上）；Cumania(T3) 194（上）；Moldavia(T5) 262（左）；Iceland(T3) 278（下）；Conde(T3) 278（下）；DioBrando(T2) 386（左）
+
+[QB] 最近的真人（像素）
+  编队：最近的任意真人 中位 84｜最近的编队友 中位 98｜最近的非编队真人 中位 140｜最近的真人就是编队友的 15/18 个
+  其他真人：最近的任意真人 中位 68
+
+[QC] 编队号的团（相距 ≤260 像素连成一团）：3 团；≥3 个号的团 2 个，装了 16 个号
+  9 个号（中心 306,195）：Angkor(T5) Two Sicilies(T2) Senna(T4) Moldavia(T5) Erwin(T3) DioBrando(T2) Khazar(T4) Scorpion(T3) Cumania(T3)｜队的构成 T2×2 T3×3 T4×2 T5×2｜≤260 像素的号对：异队 12、同队 4
+  7 个号（中心 1230,897）：Lelouch(T4) SyntaxError(T2) Marlborough(T3) Goku(T2) Iceland(T3) Conde(T3) Interpol(T5)｜队的构成 T2×2 T3×3 T4×1 T5×1｜≤260 像素的号对：异队 6、同队 1
+  2 个号（中心 902,106）：Tomato(T3) Anya(T4)｜队的构成 T3×1 T4×1｜≤260 像素的号对：异队 1、同队 0
+
+[QD] 贴同一条边排成一排（离这条边 ≤120 像素；沿边相邻间距 ≤520）
+  上沿 7 个号：Angkor(T5)@122 Two Sicilies(T2)@122 Senna(T4)@222 Erwin(T3)@338 Scorpion(T3)@398 Tomato(T3)@902 Anya(T4)@902｜相邻间距 [0, 100, 116, 60, 504, 0]｜队 T2 T3 T4 T5
+  下沿 5 个号：Lelouch(T4)@770 SyntaxError(T2)@1010 Marlborough(T3)@1143 Goku(T2)@1314 Interpol(T5)@1490｜相邻间距 [240, 133, 171, 176]｜队 T2 T3 T4 T5
+
+[QE] 每个编队号最近的 3 个真人：号 | 最近 3 个（距离；* = 编队友；= 同队 / ≠ 异队）
+    Marlborough      | SyntaxError*T2 135≠；Goku*T2 171≠；Interpol*T5 347≠
+    Tomato           | Anya*T4 0≠；Player 847~T1 114≠；Player 707T2 135≠
+    Angkor           | Two Sicilies*T2 0≠；Senna*T4 101≠；[Omen] 👀~T2 159≠
+    Senna            | [Omen] 👀~T2 74≠；Angkor*T5 101≠；Two Sicilies*T2 101≠
+    Two Sicilies     | Angkor*T5 0≠；Senna*T4 101≠；[Omen] 👀~T2 159=
+    Interpol         | Goku*T2 177≠；Iceland*T3 245≠；Conde*T3 245≠
+    Moldavia         | [og]I~T2 123≠；USA EMPIRET2 127≠；Player 896T3 146≠
+    Lelouch          | SyntaxError*T2 242≠；Player 369T1 325≠；Player 615T2 349≠
+    Goku             | Marlborough*T3 171≠；Interpol*T5 177≠；Iceland*T3 286≠
+    Khazar           | Scorpion*T3 96≠；Erwin*T3 101≠；USA EMPIRET2 105≠
+    Cumania          | Khazar*T4 120≠；Scorpion*T3 153=；USA EMPIRET2 190≠
+    DioBrando        | [CORGI] Mr Bas~T1 94≠；Moldavia*T5 157≠；kakoscsigaT1 178≠
+    SyntaxError      | Marlborough*T3 135≠；Lelouch*T4 242≠；Goku*T2 306=
+    Scorpion         | Erwin*T3 61=；Khazar*T4 96≠；Cumania*T3 153=
+    Iceland          | Conde*T3 0=；black magicT4 109≠；Player 878T2 156≠
+    Anya             | Tomato*T3 0≠；Player 847~T1 114≠；Player 707T2 135≠
+    Erwin            | Scorpion*T3 61=；Khazar*T4 101≠；[Omen] 👀~T2 103≠
+    Conde            | Iceland*T3 0=；black magicT4 109≠；Player 878T2 156≠
+  最近 3 个真人里是异队编队友的：26 / 54

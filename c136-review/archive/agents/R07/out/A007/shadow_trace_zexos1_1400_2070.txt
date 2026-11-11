@@ -1,0 +1,644 @@
+# A007 zexos1 影子决策明细 t=1400~2070（策略 v27-team-c116-va.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没走到 buyLand: 20 拍（t=1400~1495）
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 28 拍（t=1500~1635）；可用兵 19805~44733，一条指令下限(20%余额) 43398~57726，比值 36%~82%
+#   出手打人/bot: 3 拍（t=1640~1650）；可用兵 73421~100481，一条指令下限(20%余额) 58805~59887，比值 125%~168%
+#   有可用兵但没发（其他）: 1 拍（t=1655~1655）；可用兵 55538~55538，一条指令下限(20%余额) 44214~44214，比值 126%~126%
+#   首选目标无可用兵（avail<=0）: 66 拍（t=1660~2070）；可用兵 -137827~-36392，一条指令下限(20%余额) 19083~26054，比值 -695%~-187%
+#   首选目标价高（c>=worth）: 17 拍（t=1690~1925）
+#   └ 「出手打人/bot」里：3 条对人/bot 的出兵共约 269712 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1400 zexos1 B=166907 L=4360 d=38.3 nb=3 neut=0 cmds=33 noFull=1 shQ=40696 | m=1.400 worth=53.6 cheap=3.8 over=0 dMedOther=17.7 safe(-1)=75974
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1405 zexos1 B=166907 L=4360 d=38.3 nb=3 neut=0 cmds=33 noFull=1 shQ=41726 | m=1.405 worth=53.8 cheap=3.8 over=0 dMedOther=17.7 safe(-1)=75974
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1410 zexos1 B=171229 L=4360 d=39.3 nb=3 neut=0 cmds=33 noFull=1 shQ=42807 | m=1.410 worth=55.4 cheap=3.9 over=0 dMedOther=18.1 safe(-1)=78037
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1415 zexos1 B=171229 L=4360 d=39.3 nb=3 neut=0 cmds=33 noFull=1 shQ=42807 | m=1.415 worth=55.6 cheap=3.9 over=0 dMedOther=18.1 safe(-1)=78037
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1420 zexos1 B=175612 L=4360 d=40.3 nb=3 neut=0 cmds=33 noFull=1 shQ=43903 | m=1.420 worth=57.2 cheap=3.9 over=0 dMedOther=19.2 safe(-1)=80128
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1425 zexos1 B=175612 L=4360 d=40.3 nb=3 neut=0 cmds=33 noFull=1 shQ=43903 | m=1.425 worth=57.4 cheap=3.9 over=0 dMedOther=19.2 safe(-1)=80128
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1430 zexos1 B=180054 L=4360 d=41.3 nb=3 neut=0 cmds=33 noFull=1 shQ=45013 | m=1.430 worth=59.1 cheap=4.0 over=0 dMedOther=19.7 safe(-1)=82248
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1435 zexos1 B=180054 L=4360 d=41.3 nb=3 neut=0 cmds=33 noFull=1 shQ=45013 | m=1.435 worth=59.3 cheap=4.0 over=0 dMedOther=19.8 safe(-1)=82248
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1440 zexos1 B=184555 L=4360 d=42.3 nb=3 neut=0 cmds=33 noFull=1 shQ=46138 | m=1.440 worth=61.0 cheap=4.0 over=0 dMedOther=20.3 safe(-1)=84396
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1445 zexos1 B=184555 L=4360 d=42.3 nb=3 neut=0 cmds=33 noFull=1 shQ=46138 | m=1.445 worth=61.2 cheap=4.0 over=0 dMedOther=20.2 safe(-1)=84396
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1450 zexos1 B=189113 L=4360 d=43.4 nb=3 neut=0 cmds=33 noFull=1 shQ=47278 | m=1.450 worth=62.9 cheap=4.1 over=0 dMedOther=20.0 safe(-1)=86571
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1455 zexos1 B=189113 L=4360 d=43.4 nb=3 neut=0 cmds=33 noFull=1 shQ=47278 | m=1.455 worth=63.1 cheap=4.1 over=0 dMedOther=20.0 safe(-1)=86571
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1460 zexos1 B=193727 L=4360 d=44.4 nb=3 neut=0 cmds=33 noFull=1 shQ=48431 | m=1.460 worth=64.9 cheap=4.1 over=0 dMedOther=20.5 safe(-1)=88772
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1465 zexos1 B=193727 L=4360 d=44.4 nb=3 neut=0 cmds=33 noFull=1 shQ=48431 | m=1.465 worth=65.1 cheap=4.1 over=0 dMedOther=20.5 safe(-1)=88772
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1470 zexos1 B=198376 L=4360 d=45.5 nb=3 neut=0 cmds=33 noFull=1 shQ=49594 | m=1.470 worth=66.9 cheap=4.2 over=0 dMedOther=21.0 safe(-1)=90991
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1475 zexos1 B=198376 L=4360 d=45.5 nb=3 neut=0 cmds=33 noFull=1 shQ=49594 | m=1.475 worth=67.1 cheap=4.2 over=0 dMedOther=21.7 safe(-1)=90991
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1480 zexos1 B=203077 L=4360 d=46.6 nb=3 neut=0 cmds=33 noFull=1 shQ=50769 | m=1.480 worth=68.9 cheap=4.2 over=0 dMedOther=22.2 safe(-1)=93234
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1485 zexos1 B=203077 L=4360 d=46.6 nb=3 neut=0 cmds=33 noFull=1 shQ=50769 | m=1.485 worth=69.2 cheap=4.2 over=0 dMedOther=22.2 safe(-1)=93234
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1490 zexos1 B=207829 L=4360 d=47.7 nb=3 neut=0 cmds=33 noFull=1 shQ=51957 | m=1.490 worth=71.0 cheap=4.3 over=0 dMedOther=22.5 safe(-1)=95502
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1495 zexos1 B=207829 L=4360 d=47.7 nb=3 neut=0 cmds=33 noFull=1 shQ=51957 | m=1.495 worth=71.3 cheap=4.3 over=0 dMedOther=22.3 safe(-1)=95502
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1500 zexos1 B=216989 L=4360 d=49.8 nb=3 neut=0 cmds=33 noFull=1 shQ=53210 | m=1.500 worth=74.7 cheap=4.3 over=0 dMedOther=23.7 safe(-1)=100620
+    → Player 811#53[T3] terr=6092 bal=138749 dq=22.8 cnt=77 | c=56.4 rankC=56.4 need=256439 tD=0.96 人 | safe=100620 keep=184064 avail=30383 chunkB=43398 pulseB=43398 不够一条(x=30383)→continue hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=165716 dq=13.7 cnt=10 | c=62.4 rankC=62.4 need=313590 tD=0.58 人 | safe=100620 keep=194675 avail=19772 chunkB=43398 pulseB=43398 不够一条(x=19772)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=185644 dq=36.9 cnt=21 | c=90.1 rankC=90.1 need=338463 tD=1.56 人 | safe=100620 keep=Inf avail=-Inf chunkB=43398 pulseB=43398 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1505 zexos1 B=216989 L=4360 d=49.8 nb=3 neut=0 cmds=33 noFull=1 shQ=54247 | m=1.499 worth=74.6 cheap=4.4 over=0 dMedOther=23.5 safe(-1)=100620
+    → Player 811#53[T3] terr=6092 bal=138749 dq=22.8 cnt=77 | c=56.4 rankC=56.4 need=256439 tD=0.97 人 | safe=100620 keep=184119 avail=30328 chunkB=43398 pulseB=43398 不够一条(x=30328)→continue hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=165716 dq=13.7 cnt=10 | c=62.4 rankC=62.4 need=313590 tD=0.58 人 | safe=100620 keep=194733 avail=19714 chunkB=43398 pulseB=43398 不够一条(x=19714)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=185644 dq=36.9 cnt=21 | c=90.1 rankC=90.1 need=338463 tD=1.57 人 | safe=100620 keep=Inf avail=-Inf chunkB=43398 pulseB=43398 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1510 zexos1 B=221936 L=4360 d=50.9 nb=3 neut=0 cmds=33 noFull=1 shQ=55484 | m=1.498 worth=76.3 cheap=4.4 over=0 dMedOther=23.9 safe(-1)=102998
+    → Player 811#53[T3] terr=6092 bal=141912 dq=23.3 cnt=77 | c=57.6 rankC=57.6 need=262077 tD=0.97 人 | safe=102998 keep=188294 avail=31042 chunkB=44387 pulseB=44387 不够一条(x=31042)→continue hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=169494 dq=14.0 cnt=10 | c=63.8 rankC=63.8 need=320324 tD=0.58 人 | safe=102998 keep=199089 avail=20247 chunkB=44387 pulseB=44387 不够一条(x=20247)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=189876 dq=37.7 cnt=21 | c=92.1 rankC=92.1 need=346006 tD=1.58 人 | safe=102998 keep=Inf avail=-Inf chunkB=44387 pulseB=44387 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1515 zexos1 B=221936 L=4360 d=50.9 nb=3 neut=0 cmds=33 noFull=1 shQ=55484 | m=1.498 worth=76.2 cheap=4.4 over=0 dMedOther=23.9 safe(-1)=102998
+    → [Off] Skull#2[T5] terr=12139 bal=169494 dq=14.0 cnt=10 | c=63.8 rankC=63.8 need=320324 tD=0.58 人 | safe=102998 keep=199149 avail=20187 chunkB=44387 pulseB=44387 不够一条(x=20187)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=189876 dq=37.7 cnt=21 | c=92.1 rankC=92.1 need=346006 tD=1.58 人 | safe=102998 keep=Inf avail=-Inf chunkB=44387 pulseB=44387 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=141912 dq=23.3 cnt=77 | c=83.5 rankC=121.1 need=262077 tD=0.97 人 | safe=102998 keep=Inf avail=-Inf chunkB=44387 pulseB=44387 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1520 zexos1 B=226929 L=4360 d=52.0 nb=3 neut=0 cmds=33 noFull=1 shQ=56732 | m=1.497 worth=77.9 cheap=4.4 over=0 dMedOther=24.4 safe(-1)=105398
+    → Player 811#53[T3] terr=6092 bal=145105 dq=23.8 cnt=77 | c=58.8 rankC=58.8 need=267768 tD=0.98 人 | safe=105398 keep=192568 avail=31702 chunkB=45386 pulseB=45386 不够一条(x=31702)→continue hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=173307 dq=14.3 cnt=10 | c=65.1 rankC=65.1 need=327121 tD=0.59 人 | safe=105398 keep=203549 avail=20721 chunkB=45386 pulseB=45386 不够一条(x=20721)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=194148 dq=38.6 cnt=21 | c=94.1 rankC=94.1 need=353621 tD=1.58 人 | safe=105398 keep=Inf avail=-Inf chunkB=45386 pulseB=45386 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1525 zexos1 B=226929 L=4360 d=52.0 nb=3 neut=0 cmds=33 noFull=1 shQ=56732 | m=1.496 worth=77.9 cheap=4.5 over=0 dMedOther=24.1 safe(-1)=105398
+    → Player 811#53[T3] terr=6092 bal=145105 dq=23.8 cnt=77 | c=58.8 rankC=58.8 need=267768 tD=0.99 人 | safe=105398 keep=192626 avail=31644 chunkB=45386 pulseB=45386 不够一条(x=31644)→continue hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=173307 dq=14.3 cnt=10 | c=65.1 rankC=65.1 need=327121 tD=0.59 人 | safe=105398 keep=203610 avail=20660 chunkB=45386 pulseB=45386 不够一条(x=20660)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=194148 dq=38.6 cnt=21 | c=94.1 rankC=94.1 need=353621 tD=1.60 人 | safe=105398 keep=Inf avail=-Inf chunkB=45386 pulseB=45386 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1530 zexos1 B=231966 L=4360 d=53.2 nb=3 neut=0 cmds=33 noFull=1 shQ=57991 | m=1.496 worth=79.6 cheap=4.5 over=0 dMedOther=24.5 safe(-1)=107819
+    → Player 811#53[T3] terr=6092 bal=148326 dq=24.3 cnt=77 | c=60.1 rankC=60.1 need=273509 tD=0.99 人 | safe=107819 keep=196884 avail=32364 chunkB=46393 pulseB=46393 不够一条(x=32364)→continue hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=177154 dq=14.6 cnt=10 | c=66.5 rankC=66.5 need=333978 tD=0.60 人 | safe=107819 keep=208053 avail=21195 chunkB=46393 pulseB=46393 不够一条(x=21195)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=198458 dq=39.4 cnt=21 | c=96.2 rankC=96.2 need=361304 tD=1.61 人 | safe=107819 keep=Inf avail=-Inf chunkB=46393 pulseB=46393 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1535 zexos1 B=231966 L=4360 d=53.2 nb=3 neut=0 cmds=33 noFull=1 shQ=57991 | m=1.495 worth=79.5 cheap=4.5 over=0 dMedOther=25.0 safe(-1)=107819
+    → Player 811#53[T3] terr=6092 bal=148326 dq=24.3 cnt=77 | c=60.1 rankC=60.1 need=273509 tD=0.97 人 | safe=107819 keep=196943 avail=32305 chunkB=46393 pulseB=46393 不够一条(x=32305)→continue hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=177154 dq=14.6 cnt=10 | c=66.5 rankC=66.5 need=333978 tD=0.58 人 | safe=107819 keep=208116 avail=21132 chunkB=46393 pulseB=46393 不够一条(x=21132)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=198458 dq=39.4 cnt=21 | c=96.2 rankC=96.2 need=361304 tD=1.58 人 | safe=107819 keep=Inf avail=-Inf chunkB=46393 pulseB=46393 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1540 zexos1 B=237046 L=4360 d=54.4 nb=3 neut=0 cmds=33 noFull=1 shQ=59261 | m=1.494 worth=81.2 cheap=4.6 over=0 dMedOther=25.6 safe(-1)=110261
+    → Player 811#53[T3] terr=6092 bal=151574 dq=24.9 cnt=77 | c=61.4 rankC=61.4 need=279298 tD=0.97 人 | safe=110261 keep=201240 avail=33029 chunkB=47409 pulseB=47409 不够一条(x=33029)→continue hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=181033 dq=14.9 cnt=10 | c=67.9 rankC=67.9 need=340892 tD=0.58 人 | safe=110261 keep=212599 avail=21670 chunkB=47409 pulseB=47409 不够一条(x=21670)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=202804 dq=40.3 cnt=21 | c=98.2 rankC=98.2 need=369050 tD=1.58 人 | safe=110261 keep=Inf avail=-Inf chunkB=47409 pulseB=47409 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1545 zexos1 B=237046 L=4360 d=54.4 nb=3 neut=0 cmds=33 noFull=1 shQ=59261 | m=1.493 worth=81.2 cheap=4.6 over=0 dMedOther=25.0 safe(-1)=110261
+    → Player 811#53[T3] terr=6092 bal=151574 dq=24.9 cnt=77 | c=61.4 rankC=61.4 need=279298 tD=0.99 人 | safe=110261 keep=201300 avail=32969 chunkB=47409 pulseB=47409 不够一条(x=32969)→continue hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=181033 dq=14.9 cnt=10 | c=67.9 rankC=67.9 need=340892 tD=0.60 人 | safe=110261 keep=212663 avail=21606 chunkB=47409 pulseB=47409 不够一条(x=21606)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=202804 dq=40.3 cnt=21 | c=98.2 rankC=98.2 need=369050 tD=1.61 人 | safe=110261 keep=Inf avail=-Inf chunkB=47409 pulseB=47409 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1550 zexos1 B=242142 L=4360 d=55.5 nb=3 neut=0 cmds=33 noFull=1 shQ=60535 | m=1.492 worth=82.9 cheap=4.6 over=0 dMedOther=25.5 safe(-1)=112710
+    → Player 811#53[T3] terr=6092 bal=154832 dq=25.4 cnt=77 | c=62.7 rankC=62.7 need=285105 tD=0.99 人 | safe=112710 keep=205615 avail=33690 chunkB=48428 pulseB=48428 不够一条(x=33690)→continue hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=184925 dq=15.2 cnt=10 | c=69.3 rankC=69.3 need=347829 tD=0.60 人 | safe=112710 keep=217165 avail=22140 chunkB=48428 pulseB=48428 不够一条(x=22140)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=207164 dq=41.2 cnt=21 | c=100.3 rankC=100.3 need=376822 tD=1.61 人 | safe=112710 keep=Inf avail=-Inf chunkB=48428 pulseB=48428 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1555 zexos1 B=242142 L=4360 d=55.5 nb=3 neut=0 cmds=33 noFull=1 shQ=60535 | m=1.492 worth=82.8 cheap=4.7 over=0 dMedOther=25.5 safe(-1)=112710
+    → Player 811#53[T3] terr=6092 bal=154832 dq=25.4 cnt=77 | c=62.7 rankC=62.7 need=285105 tD=0.99 人 | safe=112710 keep=205677 avail=33628 chunkB=48428 pulseB=48428 不够一条(x=33628)→continue hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=184925 dq=15.2 cnt=10 | c=69.3 rankC=69.3 need=347829 tD=0.60 人 | safe=112710 keep=217230 avail=22075 chunkB=48428 pulseB=48428 不够一条(x=22075)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=207164 dq=41.2 cnt=21 | c=100.3 rankC=100.3 need=376822 tD=1.61 人 | safe=112710 keep=Inf avail=-Inf chunkB=48428 pulseB=48428 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1560 zexos1 B=247275 L=4360 d=56.7 nb=3 neut=0 cmds=33 noFull=1 shQ=61818 | m=1.491 worth=84.6 cheap=4.7 over=0 dMedOther=26.1 safe(-1)=115177
+    → Player 811#53[T3] terr=6092 bal=158114 dq=26.0 cnt=77 | c=63.9 rankC=63.9 need=290954 tD=0.99 人 | safe=115177 keep=210026 avail=34352 chunkB=49455 pulseB=49455 不够一条(x=34352)→continue hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=188845 dq=15.6 cnt=10 | c=70.7 rankC=70.7 need=354816 tD=0.60 人 | safe=115177 keep=221769 avail=22609 chunkB=49455 pulseB=49455 不够一条(x=22609)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=211555 dq=42.0 cnt=21 | c=102.4 rankC=102.4 need=384649 tD=1.61 人 | safe=115177 keep=Inf avail=-Inf chunkB=49455 pulseB=49455 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1565 zexos1 B=247275 L=4360 d=56.7 nb=3 neut=0 cmds=33 noFull=1 shQ=61818 | m=1.490 worth=84.5 cheap=4.7 over=0 dMedOther=26.1 safe(-1)=115177
+    → [Off] Skull#2[T5] terr=12139 bal=188845 dq=15.6 cnt=10 | c=70.7 rankC=70.7 need=354816 tD=0.60 人 | safe=115177 keep=221835 avail=22543 chunkB=49455 pulseB=49455 不够一条(x=22543)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=211555 dq=42.0 cnt=21 | c=102.4 rankC=102.4 need=384649 tD=1.61 人 | safe=115177 keep=Inf avail=-Inf chunkB=49455 pulseB=49455 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=158114 dq=26.0 cnt=77 | c=92.7 rankC=134.4 need=290954 tD=0.99 人 | safe=115177 keep=Inf avail=-Inf chunkB=49455 pulseB=49455 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1570 zexos1 B=252443 L=4360 d=57.9 nb=3 neut=0 cmds=33 noFull=1 shQ=63110 | m=1.490 worth=86.2 cheap=4.8 over=0 dMedOther=26.6 safe(-1)=117661
+    → [Off] Skull#2[T5] terr=12139 bal=192791 dq=15.9 cnt=10 | c=72.1 rankC=72.1 need=361850 tD=0.60 人 | safe=117661 keep=226408 avail=23077 chunkB=50489 pulseB=50489 不够一条(x=23077)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=215976 dq=42.9 cnt=21 | c=104.5 rankC=104.5 need=392529 tD=1.61 人 | safe=117661 keep=Inf avail=-Inf chunkB=50489 pulseB=50489 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=161418 dq=26.5 cnt=77 | c=94.6 rankC=137.2 need=296843 tD=0.99 人 | safe=117661 keep=Inf avail=-Inf chunkB=50489 pulseB=50489 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1575 zexos1 B=252443 L=4360 d=57.9 nb=3 neut=0 cmds=33 noFull=1 shQ=63110 | m=1.489 worth=86.2 cheap=4.8 over=0 dMedOther=26.6 safe(-1)=117661
+    → [Off] Skull#2[T5] terr=12139 bal=192791 dq=15.9 cnt=10 | c=72.1 rankC=72.1 need=361850 tD=0.60 人 | safe=117661 keep=226476 avail=23009 chunkB=50489 pulseB=50489 不够一条(x=23009)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=215976 dq=42.9 cnt=21 | c=104.5 rankC=104.5 need=392529 tD=1.61 人 | safe=117661 keep=Inf avail=-Inf chunkB=50489 pulseB=50489 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=161418 dq=26.5 cnt=77 | c=94.6 rankC=137.2 need=296843 tD=0.99 人 | safe=117661 keep=Inf avail=-Inf chunkB=50489 pulseB=50489 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1580 zexos1 B=257643 L=4360 d=59.1 nb=3 neut=0 cmds=33 noFull=1 shQ=64410 | m=1.488 worth=87.9 cheap=4.8 over=0 dMedOther=27.2 safe(-1)=120160
+    → [Off] Skull#2[T5] terr=12139 bal=196762 dq=16.2 cnt=10 | c=73.5 rankC=73.5 need=368928 tD=0.60 人 | safe=120160 keep=231081 avail=23543 chunkB=51529 pulseB=51529 不够一条(x=23543)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=220425 dq=43.8 cnt=21 | c=106.6 rankC=106.6 need=400460 tD=1.61 人 | safe=120160 keep=Inf avail=-Inf chunkB=51529 pulseB=51529 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=164743 dq=27.0 cnt=77 | c=96.5 rankC=139.9 need=302770 tD=1.00 人 | safe=120160 keep=Inf avail=-Inf chunkB=51529 pulseB=51529 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1585 zexos1 B=257643 L=4360 d=59.1 nb=3 neut=0 cmds=33 noFull=1 shQ=64410 | m=1.487 worth=87.9 cheap=4.9 over=0 dMedOther=27.2 safe(-1)=120160
+    → [Off] Skull#2[T5] terr=12139 bal=196762 dq=16.2 cnt=10 | c=73.5 rankC=73.5 need=368928 tD=0.60 人 | safe=120160 keep=231151 avail=23473 chunkB=51529 pulseB=51529 不够一条(x=23473)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=220425 dq=43.8 cnt=21 | c=106.6 rankC=106.6 need=400460 tD=1.61 人 | safe=120160 keep=Inf avail=-Inf chunkB=51529 pulseB=51529 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=164743 dq=27.0 cnt=77 | c=96.5 rankC=139.9 need=302770 tD=1.00 人 | safe=120160 keep=Inf avail=-Inf chunkB=51529 pulseB=51529 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1590 zexos1 B=262873 L=4360 d=60.3 nb=3 neut=0 cmds=33 noFull=1 shQ=65718 | m=1.486 worth=89.6 cheap=4.9 over=0 dMedOther=27.7 safe(-1)=109110
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=186245 dq=37.0 cnt=21 | c=67.9 rankC=47.5 need=339534 tD=1.33 人 | safe=109110 keep=223513 avail=36280 chunkB=52575 pulseB=52575 不够一条(x=36280)→continue hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=200756 dq=16.5 cnt=10 | c=74.9 rankC=74.9 need=376047 tD=0.60 人 | safe=109110 keep=235786 avail=24007 chunkB=52575 pulseB=52575 不够一条(x=24007)→continue hNb=3
+    → Player 811#53[T3] terr=6092 bal=168087 dq=27.6 cnt=77 | c=98.4 rankC=142.7 need=308730 tD=1.00 人 | safe=109110 keep=Inf avail=-Inf chunkB=52575 pulseB=52575 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1595 zexos1 B=262873 L=4360 d=60.3 nb=3 neut=0 cmds=33 noFull=1 shQ=65718 | m=1.486 worth=89.6 cheap=5.0 over=0 dMedOther=27.7 safe(-1)=109110
+    → [CN]GCAntiaktis#16[T5] terr=5034 bal=186245 dq=37.0 cnt=21 | c=67.9 rankC=47.5 need=339534 tD=1.33 人 | safe=109110 keep=223580 avail=36213 chunkB=52575 pulseB=52575 不够一条(x=36213)→continue hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=200756 dq=16.5 cnt=10 | c=74.9 rankC=74.9 need=376047 tD=0.60 人 | safe=109110 keep=235857 avail=23936 chunkB=52575 pulseB=52575 不够一条(x=23936)→continue hNb=3
+    → Player 811#53[T3] terr=6092 bal=168087 dq=27.6 cnt=77 | c=98.4 rankC=142.7 need=308730 tD=1.00 人 | safe=109110 keep=Inf avail=-Inf chunkB=52575 pulseB=52575 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1600 zexos1 B=272490 L=4360 d=62.5 nb=3 neut=0 cmds=33 noFull=1 shQ=67080 | m=1.485 worth=92.8 cheap=5.0 over=0 dMedOther=29.1 safe(-1)=118185
+    → [CN]GCAntiaktis#16[T5] terr=5287 bal=195132 dq=36.9 cnt=24 | c=67.7 rankC=47.4 need=355766 tD=1.27 人 | safe=118185 keep=227131 avail=42166 chunkB=54498 pulseB=54498 不够一条(x=42166)→continue hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=216910 dq=17.9 cnt=10 | c=80.6 rankC=80.6 need=404841 tD=0.61 人 | safe=118185 keep=249770 avail=19527 chunkB=54498 pulseB=54498 不够一条(x=19527)→continue hNb=3
+    → Player 811#53[T3] terr=6092 bal=177540 dq=29.1 cnt=77 | c=103.7 rankC=150.4 need=325579 tD=1.00 人 | safe=118185 keep=Inf avail=-Inf chunkB=54498 pulseB=54498 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1605 zexos1 B=272490 L=4360 d=62.5 nb=3 neut=0 cmds=33 noFull=1 shQ=68122 | m=1.484 worth=92.8 cheap=5.0 over=0 dMedOther=29.1 safe(-1)=118185
+    → [CN]GCAntiaktis#16[T5] terr=5410 bal=195132 dq=36.1 cnt=24 | c=66.2 rankC=46.3 need=355937 tD=1.24 人 | safe=118185 keep=224564 avail=44733 chunkB=54498 pulseB=54498 不够一条(x=44733)→continue hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=216910 dq=17.9 cnt=10 | c=80.6 rankC=80.6 need=404841 tD=0.61 人 | safe=118185 keep=249845 avail=19452 chunkB=54498 pulseB=54498 不够一条(x=19452)→continue hNb=3
+    → Player 811#53[T3] terr=6092 bal=177540 dq=29.1 cnt=77 | c=103.7 rankC=150.4 need=325579 tD=1.00 人 | safe=118185 keep=Inf avail=-Inf chunkB=54498 pulseB=54498 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1610 zexos1 B=277858 L=4360 d=63.7 nb=3 neut=0 cmds=33 noFull=1 shQ=69464 | m=1.484 worth=94.5 cheap=5.1 over=0 dMedOther=29.7 safe(-1)=120586
+    → [Off] Skull#2[T5] terr=12139 bal=221183 dq=18.2 cnt=10 | c=82.1 rankC=82.1 need=412457 tD=0.61 人 | safe=120586 keep=254720 avail=19882 chunkB=55572 pulseB=55572 不够一条(x=19882)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5664 bal=198976 dq=35.1 cnt=26 | c=86.0 rankC=86.0 need=363143 tD=1.18 人 | safe=120586 keep=261541 avail=13061 chunkB=55572 pulseB=55572 不够一条(x=13061)→continue hNb=3
+    → Player 811#53[T3] terr=6092 bal=181037 dq=29.7 cnt=77 | c=105.7 rankC=153.3 need=331812 tD=1.00 人 | safe=120586 keep=Inf avail=-Inf chunkB=55572 pulseB=55572 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1615 zexos1 B=277858 L=4360 d=63.7 nb=3 neut=0 cmds=33 noFull=1 shQ=69464 | m=1.483 worth=94.5 cheap=5.1 over=0 dMedOther=29.5 safe(-1)=120586
+    → [Off] Skull#2[T5] terr=12139 bal=221183 dq=18.2 cnt=10 | c=82.1 rankC=82.1 need=412457 tD=0.62 人 | safe=120586 keep=254797 avail=19805 chunkB=55572 pulseB=55572 不够一条(x=19805)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5664 bal=199038 dq=35.1 cnt=26 | c=86.0 rankC=86.0 need=363254 tD=1.19 人 | safe=120586 keep=261666 avail=12936 chunkB=55572 pulseB=55572 不够一条(x=12936)→continue hNb=3
+    → Player 811#53[T3] terr=6092 bal=181037 dq=29.7 cnt=77 | c=105.7 rankC=153.3 need=331812 tD=1.01 人 | safe=120586 keep=Inf avail=-Inf chunkB=55572 pulseB=55572 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1620 zexos1 B=283248 L=4360 d=65.0 nb=3 neut=0 cmds=33 noFull=1 shQ=70812 | m=1.482 worth=96.3 cheap=5.2 over=0 dMedOther=30.0 safe(-1)=122996
+    → [Off] Skull#2[T5] terr=12139 bal=225473 dq=18.6 cnt=10 | c=83.6 rankC=83.6 need=420104 tD=0.62 人 | safe=122996 keep=259695 avail=20234 chunkB=56650 pulseB=56650 不够一条(x=20234)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5664 bal=202899 dq=35.8 cnt=26 | c=87.7 rankC=87.7 need=370136 tD=1.19 人 | safe=122996 keep=266754 avail=13175 chunkB=56650 pulseB=56650 不够一条(x=13175)→continue hNb=3
+    → Player 811#53[T3] terr=6092 bal=184549 dq=30.3 cnt=77 | c=107.7 rankC=156.2 need=338071 tD=1.01 人 | safe=122996 keep=Inf avail=-Inf chunkB=56650 pulseB=56650 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1625 zexos1 B=283248 L=4360 d=65.0 nb=3 neut=0 cmds=33 noFull=1 shQ=70812 | m=1.481 worth=96.2 cheap=5.2 over=0 dMedOther=29.5 safe(-1)=122996
+    → [Off] Skull#2[T5] terr=12139 bal=225473 dq=18.6 cnt=10 | c=83.6 rankC=83.6 need=420104 tD=0.63 人 | safe=122996 keep=259773 avail=20156 chunkB=56650 pulseB=56650 不够一条(x=20156)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5664 bal=202899 dq=35.8 cnt=26 | c=87.7 rankC=87.7 need=370136 tD=1.21 人 | safe=122996 keep=266835 avail=13094 chunkB=56650 pulseB=56650 不够一条(x=13094)→continue hNb=3
+    → Player 811#53[T3] terr=6092 bal=184549 dq=30.3 cnt=77 | c=107.7 rankC=156.2 need=338071 tD=1.03 人 | safe=122996 keep=Inf avail=-Inf chunkB=56650 pulseB=56650 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1630 zexos1 B=288629 L=4360 d=66.2 nb=3 neut=0 cmds=33 noFull=1 shQ=72157 | m=1.480 worth=98.0 cheap=5.2 over=0 dMedOther=30.4 safe(-1)=125402
+    → [Off] Skull#2[T5] terr=12139 bal=229756 dq=18.9 cnt=10 | c=85.2 rankC=85.2 need=427738 tD=0.62 人 | safe=125402 keep=264668 avail=20579 chunkB=57726 pulseB=57726 不够一条(x=20579)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5664 bal=206754 dq=36.5 cnt=26 | c=89.3 rankC=89.3 need=377007 tD=1.20 人 | safe=125402 keep=271920 avail=13327 chunkB=57726 pulseB=57726 不够一条(x=13327)→continue hNb=3
+    → Player 811#53[T3] terr=6092 bal=188055 dq=30.9 cnt=77 | c=109.7 rankC=159.1 need=344320 tD=1.02 人 | safe=125402 keep=Inf avail=-Inf chunkB=57726 pulseB=57726 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1635 zexos1 B=288629 L=4360 d=66.2 nb=3 neut=0 cmds=33 noFull=1 shQ=72157 | m=1.480 worth=98.0 cheap=5.3 over=0 dMedOther=30.4 safe(-1)=125402
+    → [Off] Skull#2[T5] terr=12139 bal=229756 dq=18.9 cnt=10 | c=85.2 rankC=85.2 need=427738 tD=0.62 人 | safe=125402 keep=264748 avail=20499 chunkB=57726 pulseB=57726 不够一条(x=20499)→continue hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5664 bal=206754 dq=36.5 cnt=26 | c=89.3 rankC=89.3 need=377007 tD=1.20 人 | safe=125402 keep=272002 avail=13245 chunkB=57726 pulseB=57726 不够一条(x=13245)→continue hNb=3
+    → Player 811#53[T3] terr=6092 bal=188055 dq=30.9 cnt=77 | c=109.7 rankC=159.1 need=344320 tD=1.01 人 | safe=125402 keep=Inf avail=-Inf chunkB=57726 pulseB=57726 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1640 zexos1 B=294026 L=4360 d=67.4 nb=3 neut=0 cmds=34 noFull=1 shQ=73506 | m=1.479 worth=99.7 cheap=5.3 over=0 dMedOther=30.8 safe(-1)=127816
+    → [CN]GCAntiaktis#16[T5] terr=5664 bal=174421 dq=30.8 cnt=26 | c=56.8 rankC=39.8 need=319377 tD=1.00 人 | safe=127816 keep=217160 avail=73421 chunkB=58805 pulseB=58805  x=73421 hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=234052 dq=19.3 cnt=10 | c=86.7 rankC=86.7 need=435396 tD=0.63 人 | safe=127816 keep=269662 avail=20919 chunkB=58805 pulseB=58805 不够一条(x=20919)→continue hNb=3
+    → Player 811#53[T3] terr=6092 bal=191877 dq=31.5 cnt=77 | c=111.9 rankC=162.2 need=351132 tD=1.02 人 | safe=127816 keep=Inf avail=-Inf chunkB=58805 pulseB=58805 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=255 → [CN]GCAntiaktis#16[T5]（约 73506 兵） 〔send:484<send:1827<send:3865<buyLand:5615〕
+t=1645 zexos1 B=294026 L=4360 d=67.4 nb=3 neut=0 cmds=35 noFull=1 shQ=73506 | m=1.478 worth=99.7 cheap=5.4 over=0 dMedOther=30.8 safe(-1)=127816
+    → [CN]GCAntiaktis#16[T5] terr=5664 bal=174421 dq=30.8 cnt=26 | c=44.3 rankC=31.0 need=319377 tD=1.00 人 | safe=127816 keep=195231 avail=95350 chunkB=58805 pulseB=58805  x=95350 hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=234052 dq=19.3 cnt=10 | c=86.7 rankC=86.7 need=435396 tD=0.63 人 | safe=127816 keep=269744 avail=20837 chunkB=58805 pulseB=58805 不够一条(x=20837)→continue hNb=3
+    → Player 811#53[T3] terr=6092 bal=191877 dq=31.5 cnt=77 | c=111.9 rankC=162.2 need=351132 tD=1.02 人 | safe=127816 keep=Inf avail=-Inf chunkB=58805 pulseB=58805 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=332 → [CN]GCAntiaktis#16[T5]（约 95615 兵） 〔send:484<send:1827<send:3865<buyLand:5615〕
+t=1650 zexos1 B=299436 L=4360 d=68.7 nb=3 neut=0 cmds=36 noFull=1 shQ=74859 | m=1.478 worth=101.5 cheap=5.4 over=0 dMedOther=30.0 safe(-1)=130235
+    → [CN]GCAntiaktis#16[T5] terr=5923 bal=177630 dq=30.0 cnt=28 | c=43.2 rankC=30.2 need=325518 tD=1.00 人 | safe=130235 keep=195446 avail=100481 chunkB=59887 pulseB=59887  x=100481 hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=238358 dq=19.6 cnt=10 | c=88.2 rankC=88.2 need=443071 tD=0.65 人 | safe=130235 keep=274673 avail=21254 chunkB=59887 pulseB=59887 不够一条(x=21254)→continue hNb=3
+    → Player 811#53[T3] terr=6092 bal=195407 dq=32.1 cnt=77 | c=113.9 rankC=165.1 need=357424 tD=1.07 人 | safe=130235 keep=Inf avail=-Inf chunkB=59887 pulseB=59887 价高(c>=worth)→break hNb=3
+    ⇒ 影子指令 attack pct=343 → [CN]GCAntiaktis#16[T5]（约 100591 兵） 〔send:484<send:1827<send:3865<buyLand:5615〕
+t=1655 zexos1 B=221068 L=4360 d=50.7 nb=3 neut=0 cmds=36 noFull=1 shQ=2022 | m=1.477 worth=74.9 cheap=5.5 over=0 dMedOther=29.0 safe(-1)=130235
+    → [CN]GCAntiaktis#16[T5] terr=6193 bal=177630 dq=28.7 cnt=30 | c=42.5 rankC=42.5 need=251042 tD=0.99 人 | safe=130235 keep=162940 avail=55538 chunkB=44214 pulseB=44214  x=55538 hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=238358 dq=19.6 cnt=10 | c=88.0 rankC=88.0 need=443071 tD=0.68 人 | safe=130235 keep=Inf avail=-Inf chunkB=44214 pulseB=44214 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=195407 dq=32.1 cnt=77 | c=113.6 rankC=164.7 need=357424 tD=1.11 人 | safe=130235 keep=Inf avail=-Inf chunkB=44214 pulseB=44214 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1660 zexos1 B=97357 L=4390 d=22.2 nb=3 neut=0 cmds=36 noFull=1 shQ=6488 | m=1.476 worth=32.7 cheap=5.5 over=0 dMedOther=29.5 safe(-1)=132633
+    → [CN]GCAntiaktis#16[T5] terr=6163 bal=179579 dq=29.1 cnt=29 | c=23.1 rankC=23.1 need=135853 tD=0.99 人 | safe=132633 keep=132633 avail=-36416 chunkB=19471 pulseB=19471 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=242672 dq=20.0 cnt=10 | c=89.3 rankC=89.3 need=450760 tD=0.68 人 | safe=132633 keep=Inf avail=-Inf chunkB=19471 pulseB=19471 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=198943 dq=32.7 cnt=77 | c=124.3 rankC=180.3 need=363727 tD=1.11 人 crowdedHard | safe=132633 keep=Inf avail=-Inf chunkB=19471 pulseB=19471 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1665 zexos1 B=97357 L=4419 d=22.0 nb=3 neut=0 cmds=36 noFull=1 shQ=8682 | m=1.475 worth=32.5 cheap=5.6 over=0 dMedOther=29.5 safe(-1)=132609
+    → [CN]GCAntiaktis#16[T5] terr=6134 bal=178228 dq=29.1 cnt=27 | c=23.2 rankC=23.2 need=135939 tD=0.98 人 | safe=132609 keep=132609 avail=-36392 chunkB=19471 pulseB=19471 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=242672 dq=20.0 cnt=11 | c=89.2 rankC=89.2 need=450760 tD=0.68 人 | safe=132609 keep=Inf avail=-Inf chunkB=19471 pulseB=19471 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=198943 dq=32.7 cnt=77 | c=124.3 rankC=180.3 need=363727 tD=1.11 人 crowdedHard | safe=132609 keep=Inf avail=-Inf chunkB=19471 pulseB=19471 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1670 zexos1 B=99089 L=4473 d=22.2 nb=3 neut=0 cmds=36 noFull=1 shQ=10860 | m=1.474 worth=32.7 cheap=5.6 over=0 dMedOther=30.1 safe(-1)=134990
+    → [CN]GCAntiaktis#16[T5] terr=6080 bal=178849 dq=29.4 cnt=27 | c=21.5 rankC=21.5 need=141537 tD=0.98 人 | safe=134990 keep=134990 avail=-37062 chunkB=19818 pulseB=19818 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=246991 dq=20.3 cnt=12 | c=90.8 rankC=90.8 need=458459 tD=0.68 人 | safe=134990 keep=Inf avail=-Inf chunkB=19818 pulseB=19818 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=202484 dq=33.2 cnt=77 | c=126.5 rankC=183.4 need=370038 tD=1.11 人 crowdedHard | safe=134990 keep=Inf avail=-Inf chunkB=19818 pulseB=19818 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1675 zexos1 B=99089 L=4527 d=21.9 nb=3 neut=0 cmds=36 noFull=1 shQ=13052 | m=1.474 worth=32.3 cheap=5.7 over=0 dMedOther=30.0 safe(-1)=134944
+    → [CN]GCAntiaktis#16[T5] terr=6026 bal=176312 dq=29.3 cnt=26 | c=21.8 rankC=21.8 need=141581 tD=0.97 人 | safe=134944 keep=134944 avail=-37016 chunkB=19818 pulseB=19818 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=246991 dq=20.3 cnt=13 | c=85.7 rankC=85.7 need=458459 tD=0.68 人 | safe=134944 keep=Inf avail=-Inf chunkB=19818 pulseB=19818 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=202484 dq=33.2 cnt=77 | c=126.5 rankC=183.4 need=370038 tD=1.11 人 crowdedHard | safe=134944 keep=Inf avail=-Inf chunkB=19818 pulseB=19818 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1680 zexos1 B=100823 L=4553 d=22.1 nb=3 neut=0 cmds=36 noFull=1 shQ=15231 | m=1.473 worth=32.6 cheap=5.7 over=0 dMedOther=30.6 safe(-1)=137350
+    → [CN]GCAntiaktis#16[T5] terr=6000 bal=178160 dq=29.7 cnt=25 | c=22.8 rankC=22.8 need=147055 tD=0.97 人 | safe=137350 keep=137350 avail=-37708 chunkB=20165 pulseB=20165 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=251313 dq=20.7 cnt=13 | c=87.2 rankC=87.2 need=466162 tD=0.68 人 | safe=137350 keep=Inf avail=-Inf chunkB=20165 pulseB=20165 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=206027 dq=33.8 cnt=77 | c=128.7 rankC=186.5 need=376353 tD=1.11 人 crowdedHard | safe=137350 keep=Inf avail=-Inf chunkB=20165 pulseB=20165 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1685 zexos1 B=100823 L=4601 d=21.9 nb=3 neut=0 cmds=36 noFull=1 shQ=17422 | m=1.472 worth=32.3 cheap=5.8 over=0 dMedOther=30.5 safe(-1)=137310
+    → [CN]GCAntiaktis#16[T5] terr=5952 bal=175884 dq=29.6 cnt=24 | c=31.9 rankC=31.9 need=147143 tD=0.97 人 crowdedHard | safe=137310 keep=137310 avail=-37668 chunkB=20165 pulseB=20165 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=251313 dq=20.7 cnt=14 | c=82.1 rankC=82.1 need=466162 tD=0.68 人 | safe=137310 keep=Inf avail=-Inf chunkB=20165 pulseB=20165 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=206027 dq=33.8 cnt=77 | c=128.7 rankC=186.5 need=376353 tD=1.11 人 crowdedHard | safe=137310 keep=Inf avail=-Inf chunkB=20165 pulseB=20165 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1690 zexos1 B=102557 L=4647 d=22.1 nb=3 neut=0 cmds=36 noFull=1 shQ=19603 | m=1.472 worth=32.5 cheap=5.8 over=0 dMedOther=31.3 safe(-1)=139699
+    → [CN]GCAntiaktis#16[T5] terr=5906 bal=176700 dq=29.9 cnt=20 | c=33.4 rankC=33.4 need=152502 tD=0.96 人 crowdedHard | safe=139699 keep=Inf avail=-Inf chunkB=20511 pulseB=20511 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=255635 dq=21.1 cnt=16 | c=74.9 rankC=74.9 need=473866 tD=0.67 人 | safe=139699 keep=Inf avail=-Inf chunkB=20511 pulseB=20511 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=209570 dq=34.4 cnt=77 | c=130.8 rankC=189.7 need=382668 tD=1.10 人 crowdedHard | safe=139699 keep=Inf avail=-Inf chunkB=20511 pulseB=20511 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1695 zexos1 B=102557 L=4667 d=22.0 nb=3 neut=0 cmds=36 noFull=1 shQ=21792 | m=1.471 worth=32.3 cheap=5.9 over=0 dMedOther=31.3 safe(-1)=139682
+    → [CN]GCAntiaktis#16[T5] terr=5886 bal=175743 dq=29.9 cnt=20 | c=33.5 rankC=33.5 need=152547 tD=0.95 人 crowdedHard | safe=139682 keep=Inf avail=-Inf chunkB=20511 pulseB=20511 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=255635 dq=21.1 cnt=16 | c=74.9 rankC=74.9 need=473866 tD=0.67 人 | safe=139682 keep=Inf avail=-Inf chunkB=20511 pulseB=20511 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=209570 dq=34.4 cnt=77 | c=130.8 rankC=189.7 need=382668 tD=1.10 人 crowdedHard | safe=139682 keep=Inf avail=-Inf chunkB=20511 pulseB=20511 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1700 zexos1 B=108996 L=4706 d=23.2 nb=3 neut=0 cmds=36 noFull=1 shQ=23988 | m=1.470 worth=34.0 cheap=5.9 over=0 dMedOther=32.8 safe(-1)=148896
+    → [CN]GCAntiaktis#16[T5] terr=5847 bal=182668 dq=31.2 cnt=19 | c=37.3 rankC=37.3 need=168088 tD=0.95 人 crowdedHard | safe=148896 keep=Inf avail=-Inf chunkB=21799 pulseB=21799 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=272094 dq=22.4 cnt=17 | c=75.9 rankC=75.9 need=503204 tD=0.68 人 | safe=148896 keep=Inf avail=-Inf chunkB=21799 pulseB=21799 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=219203 dq=36.0 cnt=77 | c=136.7 rankC=198.2 need=399837 tD=1.10 人 crowdedHard | safe=148896 keep=Inf avail=-Inf chunkB=21799 pulseB=21799 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1705 zexos1 B=108996 L=4743 d=23.0 nb=3 neut=0 cmds=36 noFull=1 shQ=26271 | m=1.469 worth=33.8 cheap=6.0 over=0 dMedOther=32.7 safe(-1)=148865
+    → [CN]GCAntiaktis#16[T5] terr=5810 bal=180822 dq=31.1 cnt=19 | c=37.6 rankC=37.6 need=168182 tD=0.95 人 crowdedHard | safe=148865 keep=Inf avail=-Inf chunkB=21799 pulseB=21799 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=272094 dq=22.4 cnt=18 | c=72.6 rankC=72.6 need=503204 tD=0.68 人 | safe=148865 keep=Inf avail=-Inf chunkB=21799 pulseB=21799 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=219203 dq=36.0 cnt=77 | c=136.7 rankC=198.2 need=399837 tD=1.10 人 crowdedHard | safe=148865 keep=Inf avail=-Inf chunkB=21799 pulseB=21799 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1710 zexos1 B=110794 L=4762 d=23.3 nb=3 neut=0 cmds=36 noFull=1 shQ=27698 | m=1.468 worth=34.2 cheap=6.0 over=0 dMedOther=33.2 safe(-1)=151371
+    → [CN]GCAntiaktis#16[T5] terr=5791 bal=154990 dq=26.8 cnt=18 | c=23.4 rankC=16.4 need=149697 tD=0.80 人 pulse onMe | safe=151371 keep=151371 avail=-41875 chunkB=22159 pulseB=22159 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=276583 dq=22.8 cnt=19 | c=70.7 rankC=70.7 need=511205 tD=0.69 人 | safe=151371 keep=Inf avail=-Inf chunkB=22159 pulseB=22159 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=222819 dq=36.6 cnt=77 | c=138.9 rankC=201.4 need=406282 tD=1.10 人 crowdedHard | safe=151371 keep=Inf avail=-Inf chunkB=22159 pulseB=22159 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1715 zexos1 B=110794 L=4799 d=23.1 nb=3 neut=0 cmds=36 noFull=1 shQ=27698 | m=1.468 worth=33.9 cheap=6.1 over=0 dMedOther=33.2 safe(-1)=151340
+    → [CN]GCAntiaktis#16[T5] terr=5754 bal=153409 dq=26.7 cnt=18 | c=33.9 rankC=33.9 need=149738 tD=0.80 人 crowdedHard | safe=151340 keep=Inf avail=-Inf chunkB=22159 pulseB=22159 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=276583 dq=22.8 cnt=20 | c=68.0 rankC=68.0 need=511205 tD=0.69 人 | safe=151340 keep=Inf avail=-Inf chunkB=22159 pulseB=22159 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=222819 dq=36.6 cnt=77 | c=138.9 rankC=201.4 need=406282 tD=1.10 人 crowdedHard | safe=151340 keep=Inf avail=-Inf chunkB=22159 pulseB=22159 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1720 zexos1 B=112588 L=4835 d=23.3 nb=3 neut=0 cmds=36 noFull=1 shQ=28147 | m=1.467 worth=34.2 cheap=6.2 over=0 dMedOther=33.7 safe(-1)=153826
+    → [CN]GCAntiaktis#16[T5] terr=5718 bal=154336 dq=27.0 cnt=18 | c=35.2 rankC=35.2 need=154124 tD=0.80 人 crowdedHard | safe=153826 keep=Inf avail=-Inf chunkB=22518 pulseB=22518 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=281063 dq=23.2 cnt=21 | c=66.6 rankC=66.6 need=519190 tD=0.69 人 | safe=153826 keep=Inf avail=-Inf chunkB=22518 pulseB=22518 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=226428 dq=37.2 cnt=77 | c=141.1 rankC=204.6 need=412715 tD=1.10 人 crowdedHard | safe=153826 keep=Inf avail=-Inf chunkB=22518 pulseB=22518 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1725 zexos1 B=112588 L=4853 d=23.2 nb=3 neut=0 cmds=36 noFull=1 shQ=28147 | m=1.466 worth=34.0 cheap=6.2 over=0 dMedOther=33.7 safe(-1)=153811
+    → [CN]GCAntiaktis#16[T5] terr=5700 bal=153559 dq=26.9 cnt=18 | c=35.4 rankC=35.4 need=154206 tD=0.80 人 crowdedHard | safe=153811 keep=Inf avail=-Inf chunkB=22518 pulseB=22518 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=281063 dq=23.2 cnt=21 | c=66.6 rankC=66.6 need=519190 tD=0.69 人 | safe=153811 keep=Inf avail=-Inf chunkB=22518 pulseB=22518 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=226428 dq=37.2 cnt=77 | c=141.1 rankC=204.6 need=412715 tD=1.10 人 crowdedHard | safe=153811 keep=Inf avail=-Inf chunkB=22518 pulseB=22518 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1730 zexos1 B=114378 L=4888 d=23.4 nb=3 neut=0 cmds=36 noFull=1 shQ=28594 | m=1.466 worth=34.3 cheap=6.3 over=0 dMedOther=34.8 safe(-1)=157493
+    → [CN]GCAntiaktis#16[T5] terr=5665 bal=154470 dq=27.3 cnt=17 | c=36.7 rankC=36.7 need=158486 tD=0.78 人 crowdedHard | safe=157493 keep=Inf avail=-Inf chunkB=22876 pulseB=22876 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=287670 dq=23.7 cnt=22 | c=65.8 rankC=65.8 need=530967 tD=0.68 人 | safe=157493 keep=Inf avail=-Inf chunkB=22876 pulseB=22876 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=230028 dq=37.8 cnt=77 | c=143.3 rankC=207.8 need=419131 tD=1.08 人 crowdedHard | safe=157493 keep=Inf avail=-Inf chunkB=22876 pulseB=22876 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1735 zexos1 B=114378 L=4921 d=23.2 nb=3 neut=0 cmds=36 noFull=1 shQ=28594 | m=1.465 worth=34.0 cheap=6.3 over=0 dMedOther=34.8 safe(-1)=157465
+    → [CN]GCAntiaktis#16[T5] terr=5632 bal=153033 dq=27.2 cnt=15 | c=37.0 rankC=37.0 need=158528 tD=0.78 人 crowdedHard | safe=157465 keep=Inf avail=-Inf chunkB=22876 pulseB=22876 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=287670 dq=23.7 cnt=24 | c=61.8 rankC=61.8 need=530967 tD=0.68 人 | safe=157465 keep=Inf avail=-Inf chunkB=22876 pulseB=22876 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=230028 dq=37.8 cnt=77 | c=143.3 rankC=207.8 need=419131 tD=1.09 人 crowdedHard | safe=157465 keep=Inf avail=-Inf chunkB=22876 pulseB=22876 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1740 zexos1 B=116162 L=4936 d=23.5 nb=3 neut=0 cmds=36 noFull=1 shQ=29040 | m=1.464 worth=34.5 cheap=6.4 over=0 dMedOther=34.9 safe(-1)=159974
+    → [CN]GCAntiaktis#16[T5] terr=5617 bal=154759 dq=27.6 cnt=15 | c=38.1 rankC=38.1 need=162731 tD=0.79 人 crowdedHard | safe=159974 keep=Inf avail=-Inf chunkB=23232 pulseB=23232 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=292157 dq=24.1 cnt=24 | c=62.7 rankC=62.7 need=538965 tD=0.69 人 | safe=159974 keep=Inf avail=-Inf chunkB=23232 pulseB=23232 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=233616 dq=38.3 cnt=77 | c=145.5 rankC=210.9 need=425526 tD=1.10 人 crowdedHard | safe=159974 keep=Inf avail=-Inf chunkB=23232 pulseB=23232 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1745 zexos1 B=116162 L=4967 d=23.4 nb=3 neut=0 cmds=36 noFull=1 shQ=29040 | m=1.463 worth=34.2 cheap=6.5 over=0 dMedOther=35.2 safe(-1)=159947
+    → [CN]GCAntiaktis#16[T5] terr=5586 bal=132124 dq=23.7 cnt=15 | c=31.7 rankC=31.7 need=144978 tD=0.67 人 | safe=159947 keep=159947 avail=-45146 chunkB=23232 pulseB=23232 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=292157 dq=24.1 cnt=25 | c=59.2 rankC=59.2 need=538965 tD=0.68 人 | safe=159947 keep=Inf avail=-Inf chunkB=23232 pulseB=23232 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=233616 dq=38.3 cnt=77 | c=145.5 rankC=210.9 need=425526 tD=1.09 人 crowdedHard | safe=159947 keep=Inf avail=-Inf chunkB=23232 pulseB=23232 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1750 zexos1 B=117939 L=4998 d=23.6 nb=3 neut=0 cmds=36 noFull=1 shQ=29484 | m=1.462 worth=34.5 cheap=6.5 over=0 dMedOther=35.8 safe(-1)=162433
+    → [CN]GCAntiaktis#16[T5] terr=5555 bal=132956 dq=23.9 cnt=16 | c=32.7 rankC=32.7 need=148532 tD=0.67 人 | safe=162433 keep=162433 avail=-45876 chunkB=23588 pulseB=23588 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=296627 dq=24.4 cnt=26 | c=60.1 rankC=60.1 need=546932 tD=0.68 人 | safe=162433 keep=Inf avail=-Inf chunkB=23588 pulseB=23588 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6092 bal=237190 dq=38.9 cnt=77 | c=147.6 rankC=214.1 need=431897 tD=1.09 人 crowdedHard | safe=162433 keep=Inf avail=-Inf chunkB=23588 pulseB=23588 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1755 zexos1 B=117939 L=5014 d=23.5 nb=3 neut=0 cmds=36 noFull=1 shQ=29484 | m=1.462 worth=34.4 cheap=6.6 over=0 dMedOther=35.1 safe(-1)=162419
+    → [CN]GCAntiaktis#16[T5] terr=5539 bal=132344 dq=23.9 cnt=18 | c=32.8 rankC=32.8 need=148570 tD=0.68 人 | safe=162419 keep=162419 avail=-45862 chunkB=23588 pulseB=23588 无可用(avail<=0) hNb=3
+    → Player 811#53[T3] terr=6092 bal=189475 dq=31.1 cnt=77 | c=64.2 rankC=44.9 need=391787 tD=0.89 人 pulse onMe | safe=162419 keep=Inf avail=-Inf chunkB=23588 pulseB=23588 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=296627 dq=24.4 cnt=26 | c=60.1 rankC=60.1 need=546932 tD=0.70 人 | safe=162419 keep=Inf avail=-Inf chunkB=23588 pulseB=23588 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1760 zexos1 B=116778 L=4973 d=23.5 nb=3 neut=0 cmds=36 noFull=1 shQ=29194 | m=1.461 worth=34.3 cheap=6.7 over=0 dMedOther=35.6 safe(-1)=164953
+    → [CN]GCAntiaktis#16[T5] terr=5503 bal=132934 dq=24.2 cnt=20 | c=33.8 rankC=33.8 need=152032 tD=0.68 人 | safe=164953 keep=164953 avail=-49543 chunkB=23356 pulseB=23356 无可用(avail<=0) hNb=3
+    → Player 811#53[T3] terr=6169 bal=192317 dq=31.2 cnt=76 | c=63.2 rankC=44.3 need=391053 tD=0.88 人 pulse onMe | safe=164953 keep=Inf avail=-Inf chunkB=23356 pulseB=23356 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=301076 dq=24.8 cnt=27 | c=60.9 rankC=60.9 need=554862 tD=0.70 人 | safe=164953 keep=Inf avail=-Inf chunkB=23356 pulseB=23356 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1765 zexos1 B=111033 L=4860 d=22.8 nb=3 neut=0 cmds=36 noFull=1 shQ=27758 | m=1.460 worth=33.4 cheap=6.7 over=0 dMedOther=33.5 safe(-1)=165048
+    → [CN]GCAntiaktis#16[T5] terr=5462 bal=131353 dq=24.0 cnt=24 | c=34.1 rankC=34.1 need=152108 tD=0.72 人 | safe=165048 keep=Inf avail=-Inf chunkB=22207 pulseB=22207 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6323 bal=192317 dq=30.4 cnt=76 | c=59.9 rankC=41.9 need=379508 tD=0.91 人 pulse onMe | safe=165048 keep=Inf avail=-Inf chunkB=22207 pulseB=22207 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=301076 dq=24.8 cnt=26 | c=65.8 rankC=65.8 need=554862 tD=0.74 人 crowdedHard | safe=165048 keep=Inf avail=-Inf chunkB=22207 pulseB=22207 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1770 zexos1 B=107034 L=4731 d=22.6 nb=3 neut=0 cmds=36 noFull=1 shQ=26758 | m=1.460 worth=33.0 cheap=6.8 over=0 dMedOther=34.0 safe(-1)=167643
+    → [CN]GCAntiaktis#16[T5] terr=5438 bal=132347 dq=24.3 cnt=25 | c=24.1 rankC=24.1 need=155481 tD=0.71 人 agg | safe=167643 keep=167643 avail=-61863 chunkB=21407 pulseB=21407 无可用(avail<=0) hNb=3
+    → Player 811#53[T3] terr=6476 bal=195144 dq=30.1 cnt=76 | c=57.5 rankC=40.3 need=373257 tD=0.89 人 pulse onMe | safe=167643 keep=Inf avail=-Inf chunkB=21407 pulseB=21407 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=305501 dq=25.2 cnt=26 | c=66.7 rankC=66.7 need=562750 tD=0.74 人 crowdedHard | safe=167643 keep=Inf avail=-Inf chunkB=21407 pulseB=21407 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1775 zexos1 B=104370 L=4710 d=22.2 nb=3 neut=0 cmds=36 noFull=1 shQ=26092 | m=1.459 worth=32.3 cheap=6.9 over=0 dMedOther=33.0 safe(-1)=167661
+    → [CN]GCAntiaktis#16[T5] terr=5385 bal=101025 dq=18.8 cnt=31 | c=20.8 rankC=20.8 need=132199 tD=0.57 人 agg | safe=167661 keep=167661 avail=-64514 chunkB=20874 pulseB=20874 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=305501 dq=25.2 cnt=26 | c=66.7 rankC=66.7 need=562750 tD=0.76 人 crowdedHard | safe=167661 keep=Inf avail=-Inf chunkB=20874 pulseB=20874 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6550 bal=195144 dq=29.8 cnt=72 | c=74.7 rankC=74.7 need=367914 tD=0.90 人 pulse onMe | safe=167661 keep=Inf avail=-Inf chunkB=20874 pulseB=20874 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1780 zexos1 B=100847 L=4702 d=21.4 nb=3 neut=0 cmds=36 noFull=1 shQ=25211 | m=1.458 worth=31.3 cheap=7.0 over=0 dMedOther=32.9 safe(-1)=170139
+    → [CN]GCAntiaktis#16[T5] terr=5319 bal=100475 dq=18.9 cnt=37 | c=21.5 rankC=21.5 need=134728 tD=0.57 人 agg | safe=170139 keep=170139 avail=-70473 chunkB=20169 pulseB=20169 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=309900 dq=25.5 cnt=26 | c=67.7 rankC=67.7 need=570591 tD=0.78 人 crowdedHard | safe=170139 keep=Inf avail=-Inf chunkB=20169 pulseB=20169 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=198000 dq=29.9 cnt=74 | c=114.1 rankC=165.5 need=362844 tD=0.91 人 crowdedHard | safe=170139 keep=Inf avail=-Inf chunkB=20169 pulseB=20169 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1785 zexos1 B=100847 L=4739 d=21.3 nb=3 neut=0 cmds=36 noFull=1 shQ=25211 | m=1.457 worth=31.0 cheap=7.0 over=0 dMedOther=32.2 safe(-1)=170108
+    → [CN]GCAntiaktis#16[T5] terr=5282 bal=99357 dq=18.8 cnt=41 | c=21.7 rankC=21.7 need=134790 tD=0.58 人 agg | safe=170108 keep=170108 avail=-70442 chunkB=20169 pulseB=20169 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=309900 dq=25.5 cnt=26 | c=67.7 rankC=67.7 need=570591 tD=0.79 人 crowdedHard | safe=170108 keep=Inf avail=-Inf chunkB=20169 pulseB=20169 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=198000 dq=29.9 cnt=74 | c=114.1 rankC=165.5 need=362844 tD=0.93 人 crowdedHard | safe=170108 keep=Inf avail=-Inf chunkB=20169 pulseB=20169 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1790 zexos1 B=102258 L=4824 d=21.2 nb=3 neut=0 cmds=36 noFull=1 shQ=25564 | m=1.457 worth=30.9 cheap=7.1 over=0 dMedOther=32.6 safe(-1)=172473
+    → [CN]GCAntiaktis#16[T5] terr=5197 bal=98162 dq=18.9 cnt=31 | c=22.6 rankC=22.6 need=137154 tD=0.58 人 agg | safe=172473 keep=172473 avail=-71413 chunkB=20452 pulseB=20452 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=314238 dq=25.9 cnt=43 | c=68.5 rankC=68.5 need=578323 tD=0.79 人 crowdedHard | safe=172473 keep=Inf avail=-Inf chunkB=20452 pulseB=20452 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=200772 dq=30.3 cnt=74 | c=115.7 rankC=167.7 need=367784 tD=0.93 人 crowdedHard | safe=172473 keep=Inf avail=-Inf chunkB=20452 pulseB=20452 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1795 zexos1 B=102258 L=4887 d=20.9 nb=3 neut=0 cmds=36 noFull=1 shQ=25564 | m=1.456 worth=30.5 cheap=7.2 over=0 dMedOther=32.6 safe(-1)=172420
+    → [CN]GCAntiaktis#16[T5] terr=5134 bal=96263 dq=18.8 cnt=34 | c=23.0 rankC=23.0 need=137186 tD=0.58 人 agg | safe=172420 keep=172420 avail=-71360 chunkB=20452 pulseB=20452 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=314238 dq=25.9 cnt=44 | c=68.5 rankC=68.5 need=578323 tD=0.79 人 crowdedHard | safe=172420 keep=Inf avail=-Inf chunkB=20452 pulseB=20452 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=200772 dq=30.3 cnt=74 | c=115.7 rankC=167.7 need=367784 tD=0.93 人 crowdedHard | safe=172420 keep=Inf avail=-Inf chunkB=20452 pulseB=20452 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1800 zexos1 B=108579 L=4921 d=22.1 nb=3 neut=0 cmds=36 noFull=1 shQ=25938 | m=1.455 worth=32.1 cheap=7.3 over=0 dMedOther=34.0 safe(-1)=181629
+    → [CN]GCAntiaktis#16[T5] terr=5100 bal=101648 dq=19.9 cnt=35 | c=25.0 rankC=25.0 need=148192 tD=0.59 人 agg | safe=181629 keep=181629 avail=-74322 chunkB=21716 pulseB=21716 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=330682 dq=27.2 cnt=45 | c=71.9 rankC=71.9 need=607634 tD=0.80 人 crowdedHard | safe=181629 keep=Inf avail=-Inf chunkB=21716 pulseB=21716 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=210146 dq=31.7 cnt=74 | c=120.9 rankC=175.4 need=384492 tD=0.93 人 crowdedHard | safe=181629 keep=Inf avail=-Inf chunkB=21716 pulseB=21716 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1805 zexos1 B=108579 L=4992 d=21.8 nb=3 neut=0 cmds=36 noFull=1 shQ=27144 | m=1.454 worth=31.6 cheap=7.4 over=0 dMedOther=34.0 safe(-1)=181570
+    → [CN]GCAntiaktis#16[T5] terr=5029 bal=99390 dq=19.8 cnt=37 | c=25.5 rankC=25.5 need=148258 tD=0.58 人 agg | safe=181570 keep=181570 avail=-74263 chunkB=21716 pulseB=21716 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=330682 dq=27.2 cnt=46 | c=71.9 rankC=71.9 need=607634 tD=0.80 人 crowdedHard | safe=181570 keep=Inf avail=-Inf chunkB=21716 pulseB=21716 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=210146 dq=31.7 cnt=74 | c=120.9 rankC=175.4 need=384492 tD=0.93 人 crowdedHard | safe=181570 keep=Inf avail=-Inf chunkB=21716 pulseB=21716 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1810 zexos1 B=110033 L=5067 d=21.7 nb=3 neut=0 cmds=36 noFull=1 shQ=27508 | m=1.454 worth=31.6 cheap=7.4 over=0 dMedOther=34.5 safe(-1)=183996
+    → [CN]GCAntiaktis#16[T5] terr=4954 bal=98326 dq=19.8 cnt=39 | c=26.5 rankC=26.5 need=150536 tD=0.58 人 agg | safe=183996 keep=183996 avail=-75252 chunkB=22007 pulseB=22007 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=335113 dq=27.6 cnt=47 | c=72.9 rankC=72.9 need=615532 tD=0.80 人 crowdedHard | safe=183996 keep=Inf avail=-Inf chunkB=22007 pulseB=22007 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=212961 dq=32.1 cnt=74 | c=122.5 rankC=177.6 need=389510 tD=0.93 人 crowdedHard | safe=183996 keep=Inf avail=-Inf chunkB=22007 pulseB=22007 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1815 zexos1 B=110033 L=5106 d=21.5 nb=3 neut=0 cmds=36 noFull=1 shQ=27508 | m=1.453 worth=31.3 cheap=7.5 over=0 dMedOther=34.5 safe(-1)=183963
+    → [CN]GCAntiaktis#16[T5] terr=4915 bal=69120 dq=14.1 cnt=41 | c=13.8 rankC=9.7 need=129920 tD=0.41 人 pulse onMe agg | safe=183963 keep=183963 avail=-75219 chunkB=22007 pulseB=22007 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=335113 dq=27.6 cnt=47 | c=72.9 rankC=72.9 need=615532 tD=0.80 人 crowdedHard | safe=183963 keep=Inf avail=-Inf chunkB=22007 pulseB=22007 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=212961 dq=32.1 cnt=74 | c=122.5 rankC=177.6 need=389510 tD=0.93 人 crowdedHard | safe=183963 keep=Inf avail=-Inf chunkB=22007 pulseB=22007 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1820 zexos1 B=111506 L=5106 d=21.8 nb=3 neut=0 cmds=36 noFull=1 shQ=27876 | m=1.452 worth=31.7 cheap=7.6 over=0 dMedOther=34.9 safe(-1)=186429
+    → [CN]GCAntiaktis#16[T5] terr=4915 bal=70025 dq=14.2 cnt=41 | c=16.8 rankC=11.7 need=131595 tD=0.41 人 pulse onMe agg | safe=186429 keep=186429 avail=-76229 chunkB=22301 pulseB=22301 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=339502 dq=28.0 cnt=47 | c=73.8 rankC=73.8 need=623355 tD=0.80 人 crowdedHard | safe=186429 keep=Inf avail=-Inf chunkB=22301 pulseB=22301 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=215750 dq=32.6 cnt=74 | c=85.6 rankC=85.6 need=394481 tD=0.93 人 crowdedHard | safe=186429 keep=Inf avail=-Inf chunkB=22301 pulseB=22301 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1825 zexos1 B=108823 L=5029 d=21.6 nb=3 neut=0 cmds=36 noFull=1 shQ=27205 | m=1.451 worth=31.4 cheap=7.7 over=0 dMedOther=34.9 safe(-1)=186494
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=70025 dq=14.0 cnt=38 | c=19.6 rankC=19.6 need=126796 tD=0.40 人 pulse onMe agg | safe=186494 keep=186494 avail=-78946 chunkB=21765 pulseB=21765 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=339502 dq=28.0 cnt=46 | c=73.8 rankC=73.8 need=623355 tD=0.80 人 crowdedHard | safe=186494 keep=Inf avail=-Inf chunkB=21765 pulseB=21765 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=215750 dq=32.6 cnt=74 | c=85.6 rankC=85.6 need=394481 tD=0.93 人 crowdedHard | safe=186494 keep=Inf avail=-Inf chunkB=21765 pulseB=21765 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1830 zexos1 B=110085 L=5029 d=21.9 nb=3 neut=0 cmds=36 noFull=1 shQ=27521 | m=1.451 worth=31.8 cheap=7.8 over=0 dMedOther=35.4 safe(-1)=188935
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=70948 dq=14.2 cnt=38 | c=19.7 rankC=19.7 need=128035 tD=0.40 人 agg | safe=188935 keep=188935 avail=-80140 chunkB=22017 pulseB=22017 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=343847 dq=28.3 cnt=46 | c=74.7 rankC=74.7 need=631100 tD=0.80 人 crowdedHard | safe=188935 keep=Inf avail=-Inf chunkB=22017 pulseB=22017 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=218511 dq=33.0 cnt=74 | c=86.6 rankC=86.6 need=399402 tD=0.93 人 crowdedHard | safe=188935 keep=Inf avail=-Inf chunkB=22017 pulseB=22017 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1835 zexos1 B=110085 L=5029 d=21.9 nb=3 neut=0 cmds=36 noFull=1 shQ=27521 | m=1.450 worth=31.7 cheap=7.9 over=0 dMedOther=35.4 safe(-1)=188935
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=70948 dq=14.2 cnt=38 | c=19.7 rankC=19.7 need=128059 tD=0.40 人 agg | safe=188935 keep=188935 avail=-80140 chunkB=22017 pulseB=22017 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=343847 dq=28.3 cnt=46 | c=74.7 rankC=74.7 need=631100 tD=0.80 人 crowdedHard | safe=188935 keep=Inf avail=-Inf chunkB=22017 pulseB=22017 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=218511 dq=33.0 cnt=74 | c=86.6 rankC=86.6 need=399402 tD=0.93 人 crowdedHard | safe=188935 keep=Inf avail=-Inf chunkB=22017 pulseB=22017 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1840 zexos1 B=111461 L=5029 d=22.2 nb=3 neut=0 cmds=36 noFull=1 shQ=27865 | m=1.449 worth=32.1 cheap=8.0 over=0 dMedOther=35.8 safe(-1)=191349
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=71834 dq=14.4 cnt=38 | c=20.0 rankC=20.0 need=129596 tD=0.40 人 agg | safe=191349 keep=191349 avail=-81194 chunkB=22292 pulseB=22292 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=348145 dq=28.7 cnt=46 | c=75.6 rankC=75.6 need=638761 tD=0.80 人 crowdedHard | safe=191349 keep=Inf avail=-Inf chunkB=22292 pulseB=22292 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=221242 dq=33.4 cnt=74 | c=87.7 rankC=87.7 need=404269 tD=0.93 人 crowdedHard | safe=191349 keep=Inf avail=-Inf chunkB=22292 pulseB=22292 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1845 zexos1 B=111461 L=5029 d=22.2 nb=3 neut=0 cmds=36 noFull=1 shQ=27865 | m=1.448 worth=32.1 cheap=8.1 over=0 dMedOther=35.8 safe(-1)=191349
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=71834 dq=14.4 cnt=38 | c=20.0 rankC=20.0 need=129645 tD=0.40 人 agg | safe=191349 keep=191349 avail=-81194 chunkB=22292 pulseB=22292 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=348145 dq=28.7 cnt=46 | c=75.6 rankC=75.6 need=638761 tD=0.80 人 crowdedHard | safe=191349 keep=Inf avail=-Inf chunkB=22292 pulseB=22292 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=221242 dq=33.4 cnt=74 | c=87.7 rankC=87.7 need=404269 tD=0.93 人 crowdedHard | safe=191349 keep=Inf avail=-Inf chunkB=22292 pulseB=22292 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1850 zexos1 B=112820 L=5029 d=22.4 nb=3 neut=0 cmds=36 noFull=1 shQ=28205 | m=1.448 worth=32.5 cheap=8.2 over=0 dMedOther=36.3 safe(-1)=193755
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=72710 dq=14.6 cnt=38 | c=20.2 rankC=20.2 need=131165 tD=0.40 人 agg | safe=193755 keep=193755 avail=-82257 chunkB=22564 pulseB=22564 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=352427 dq=29.0 cnt=46 | c=76.5 rankC=76.5 need=646393 tD=0.80 人 crowdedHard | safe=193755 keep=Inf avail=-Inf chunkB=22564 pulseB=22564 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=223941 dq=33.8 cnt=74 | c=88.7 rankC=88.7 need=409080 tD=0.93 人 crowdedHard | safe=193755 keep=Inf avail=-Inf chunkB=22564 pulseB=22564 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1855 zexos1 B=112820 L=5029 d=22.4 nb=3 neut=0 cmds=36 noFull=1 shQ=28205 | m=1.447 worth=32.5 cheap=8.3 over=0 dMedOther=36.3 safe(-1)=193755
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=72710 dq=14.6 cnt=38 | c=20.2 rankC=20.2 need=131190 tD=0.40 人 agg | safe=193755 keep=193755 avail=-82257 chunkB=22564 pulseB=22564 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=352427 dq=29.0 cnt=46 | c=76.5 rankC=76.5 need=646393 tD=0.80 人 crowdedHard | safe=193755 keep=Inf avail=-Inf chunkB=22564 pulseB=22564 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=223941 dq=33.8 cnt=74 | c=88.7 rankC=88.7 need=409080 tD=0.93 人 crowdedHard | safe=193755 keep=Inf avail=-Inf chunkB=22564 pulseB=22564 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1860 zexos1 B=114162 L=5029 d=22.7 nb=3 neut=0 cmds=36 noFull=1 shQ=28540 | m=1.446 worth=32.8 cheap=8.4 over=0 dMedOther=36.8 safe(-1)=196190
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=73575 dq=14.7 cnt=38 | c=20.4 rankC=20.4 need=132692 tD=0.40 人 agg | safe=196190 keep=196190 avail=-83365 chunkB=22832 pulseB=22832 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=356761 dq=29.4 cnt=46 | c=77.4 rankC=77.4 need=654118 tD=0.80 人 crowdedHard | safe=196190 keep=Inf avail=-Inf chunkB=22832 pulseB=22832 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=226605 dq=34.2 cnt=74 | c=89.8 rankC=89.8 need=413828 tD=0.93 人 crowdedHard | safe=196190 keep=Inf avail=-Inf chunkB=22832 pulseB=22832 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1865 zexos1 B=114162 L=5029 d=22.7 nb=3 neut=0 cmds=36 noFull=1 shQ=28540 | m=1.445 worth=32.8 cheap=8.5 over=0 dMedOther=36.8 safe(-1)=196190
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=73575 dq=14.7 cnt=38 | c=20.4 rankC=20.4 need=132742 tD=0.40 人 agg | safe=196190 keep=196190 avail=-83365 chunkB=22832 pulseB=22832 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=356761 dq=29.4 cnt=46 | c=77.4 rankC=77.4 need=654118 tD=0.80 人 crowdedHard | safe=196190 keep=Inf avail=-Inf chunkB=22832 pulseB=22832 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=226605 dq=34.2 cnt=74 | c=89.8 rankC=89.8 need=413828 tD=0.93 人 crowdedHard | safe=196190 keep=Inf avail=-Inf chunkB=22832 pulseB=22832 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1870 zexos1 B=115474 L=5029 d=23.0 nb=3 neut=0 cmds=36 noFull=1 shQ=28868 | m=1.445 worth=33.2 cheap=8.6 over=0 dMedOther=37.2 safe(-1)=198655
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=74421 dq=14.9 cnt=38 | c=20.6 rankC=20.6 need=134213 tD=0.40 人 agg | safe=198655 keep=198655 avail=-84534 chunkB=23095 pulseB=23095 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=361149 dq=29.8 cnt=46 | c=78.3 rankC=78.3 need=661939 tD=0.80 人 crowdedHard | safe=198655 keep=Inf avail=-Inf chunkB=23095 pulseB=23095 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=229256 dq=34.6 cnt=74 | c=90.8 rankC=90.8 need=418553 tD=0.93 人 crowdedHard | safe=198655 keep=Inf avail=-Inf chunkB=23095 pulseB=23095 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1875 zexos1 B=115474 L=5029 d=23.0 nb=3 neut=0 cmds=36 noFull=1 shQ=28868 | m=1.444 worth=33.2 cheap=8.8 over=0 dMedOther=37.2 safe(-1)=198655
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=74421 dq=14.9 cnt=38 | c=20.6 rankC=20.6 need=134238 tD=0.40 人 agg | safe=198655 keep=198655 avail=-84534 chunkB=23095 pulseB=23095 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=361149 dq=29.8 cnt=46 | c=78.3 rankC=78.3 need=661939 tD=0.80 人 crowdedHard | safe=198655 keep=Inf avail=-Inf chunkB=23095 pulseB=23095 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=229256 dq=34.6 cnt=74 | c=90.8 rankC=90.8 need=418553 tD=0.93 人 crowdedHard | safe=198655 keep=Inf avail=-Inf chunkB=23095 pulseB=23095 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1880 zexos1 B=116790 L=5029 d=23.2 nb=3 neut=0 cmds=36 noFull=1 shQ=29197 | m=1.443 worth=33.5 cheap=8.8 over=0 dMedOther=37.7 safe(-1)=201150
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=75269 dq=15.1 cnt=38 | c=20.9 rankC=20.9 need=135714 tD=0.40 人 agg | safe=201150 keep=201150 avail=-85728 chunkB=23358 pulseB=23358 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=365591 dq=30.1 cnt=46 | c=79.3 rankC=79.3 need=669857 tD=0.80 人 crowdedHard | safe=201150 keep=Inf avail=-Inf chunkB=23358 pulseB=23358 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=231938 dq=35.0 cnt=74 | c=91.8 rankC=91.8 need=423334 tD=0.93 人 crowdedHard | safe=201150 keep=Inf avail=-Inf chunkB=23358 pulseB=23358 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1885 zexos1 B=116790 L=5029 d=23.2 nb=3 neut=0 cmds=36 noFull=1 shQ=29197 | m=1.442 worth=33.5 cheap=8.8 over=0 dMedOther=37.7 safe(-1)=201150
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=75269 dq=15.1 cnt=38 | c=30.2 rankC=43.8 need=135764 tD=0.40 人 agg | safe=201150 keep=201150 avail=-85728 chunkB=23358 pulseB=23358 无可用(avail<=0) hNb=3
+    → Player 811#53[T3] terr=6624 bal=231938 dq=35.0 cnt=74 | c=91.8 rankC=91.8 need=423334 tD=0.93 人 crowdedHard | safe=201150 keep=Inf avail=-Inf chunkB=23358 pulseB=23358 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=365591 dq=30.1 cnt=46 | c=115.0 rankC=166.7 need=669857 tD=0.80 人 crowdedHard | safe=201150 keep=Inf avail=-Inf chunkB=23358 pulseB=23358 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1890 zexos1 B=118121 L=5029 d=23.5 nb=3 neut=0 cmds=36 noFull=1 shQ=29530 | m=1.442 worth=33.9 cheap=8.8 over=0 dMedOther=38.1 safe(-1)=203676
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=76127 dq=15.2 cnt=38 | c=30.6 rankC=44.3 need=137258 tD=0.40 人 agg | safe=203676 keep=203676 avail=-86939 chunkB=23624 pulseB=23624 无可用(avail<=0) hNb=3
+    → Player 811#53[T3] terr=6624 bal=234651 dq=35.4 cnt=74 | c=92.9 rankC=92.9 need=428169 tD=0.93 人 crowdedHard | safe=203676 keep=Inf avail=-Inf chunkB=23624 pulseB=23624 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=370087 dq=30.5 cnt=46 | c=116.3 rankC=168.7 need=677871 tD=0.80 人 crowdedHard | safe=203676 keep=Inf avail=-Inf chunkB=23624 pulseB=23624 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1895 zexos1 B=118121 L=5029 d=23.5 nb=3 neut=0 cmds=36 noFull=1 shQ=29530 | m=1.441 worth=33.8 cheap=8.8 over=0 dMedOther=40.6 safe(-1)=203676
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=76127 dq=15.2 cnt=38 | c=30.5 rankC=44.3 need=137283 tD=0.38 人 agg | safe=203676 keep=203676 avail=-86939 chunkB=23624 pulseB=23624 无可用(avail<=0) hNb=3
+    → Player 811#53[T3] terr=6624 bal=234651 dq=35.4 cnt=74 | c=92.9 rankC=92.9 need=428169 tD=0.87 人 crowdedHard | safe=203676 keep=Inf avail=-Inf chunkB=23624 pulseB=23624 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=370087 dq=30.5 cnt=46 | c=116.3 rankC=168.7 need=677871 tD=0.75 人 crowdedHard | safe=203676 keep=Inf avail=-Inf chunkB=23624 pulseB=23624 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1900 zexos1 B=124496 L=5029 d=24.8 nb=3 neut=0 cmds=36 noFull=1 shQ=29884 | m=1.440 worth=35.6 cheap=8.8 over=0 dMedOther=42.1 safe(-1)=213053
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=81986 dq=16.4 cnt=38 | c=37.0 rankC=53.6 need=147337 tD=0.39 人 agg | safe=213053 keep=Inf avail=-Inf chunkB=24899 pulseB=24899 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=244020 dq=36.8 cnt=74 | c=96.5 rankC=96.5 need=444868 tD=0.88 人 crowdedHard | safe=213053 keep=Inf avail=-Inf chunkB=24899 pulseB=24899 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=386778 dq=31.9 cnt=46 | c=121.4 rankC=176.1 need=707622 tD=0.76 人 crowdedHard | safe=213053 keep=Inf avail=-Inf chunkB=24899 pulseB=24899 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1905 zexos1 B=124496 L=5029 d=24.8 nb=3 neut=0 cmds=36 noFull=1 shQ=31124 | m=1.439 worth=35.6 cheap=8.8 over=0 dMedOther=42.1 safe(-1)=213053
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=81986 dq=16.4 cnt=38 | c=37.0 rankC=53.6 need=147392 tD=0.39 人 agg | safe=213053 keep=Inf avail=-Inf chunkB=24899 pulseB=24899 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=244020 dq=36.8 cnt=74 | c=96.5 rankC=96.5 need=444868 tD=0.88 人 crowdedHard | safe=213053 keep=Inf avail=-Inf chunkB=24899 pulseB=24899 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=386778 dq=31.9 cnt=46 | c=121.4 rankC=176.1 need=707622 tD=0.76 人 crowdedHard | safe=213053 keep=Inf avail=-Inf chunkB=24899 pulseB=24899 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1910 zexos1 B=125915 L=5029 d=25.0 nb=3 neut=0 cmds=36 noFull=1 shQ=31478 | m=1.439 worth=36.0 cheap=8.8 over=0 dMedOther=42.6 safe(-1)=215726
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=82920 dq=16.6 cnt=38 | c=37.4 rankC=54.2 need=149019 tD=0.39 人 agg | safe=215726 keep=Inf avail=-Inf chunkB=25183 pulseB=25183 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=246875 dq=37.3 cnt=74 | c=97.6 rankC=97.6 need=449957 tD=0.88 人 crowdedHard | safe=215726 keep=Inf avail=-Inf chunkB=25183 pulseB=25183 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=391535 dq=32.3 cnt=46 | c=122.9 rankC=178.2 need=716101 tD=0.76 人 crowdedHard | safe=215726 keep=Inf avail=-Inf chunkB=25183 pulseB=25183 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1915 zexos1 B=125915 L=5029 d=25.0 nb=3 neut=0 cmds=36 noFull=1 shQ=31478 | m=1.438 worth=36.0 cheap=8.8 over=0 dMedOther=42.6 safe(-1)=215726
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=82920 dq=16.6 cnt=38 | c=37.4 rankC=54.2 need=149047 tD=0.39 人 agg | safe=215726 keep=Inf avail=-Inf chunkB=25183 pulseB=25183 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=246875 dq=37.3 cnt=74 | c=97.6 rankC=97.6 need=449957 tD=0.88 人 crowdedHard | safe=215726 keep=Inf avail=-Inf chunkB=25183 pulseB=25183 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=391535 dq=32.3 cnt=46 | c=122.9 rankC=178.2 need=716101 tD=0.76 人 crowdedHard | safe=215726 keep=Inf avail=-Inf chunkB=25183 pulseB=25183 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1920 zexos1 B=127350 L=5029 d=25.3 nb=3 neut=0 cmds=36 noFull=1 shQ=31837 | m=1.437 worth=36.4 cheap=8.8 over=0 dMedOther=43.1 safe(-1)=218431
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=83865 dq=16.8 cnt=38 | c=37.8 rankC=54.8 need=150693 tD=0.39 人 agg | safe=218431 keep=Inf avail=-Inf chunkB=25470 pulseB=25470 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=249763 dq=37.7 cnt=74 | c=98.7 rankC=98.7 need=455104 tD=0.88 人 crowdedHard | safe=218431 keep=Inf avail=-Inf chunkB=25470 pulseB=25470 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=396350 dq=32.7 cnt=46 | c=124.4 rankC=180.3 need=724683 tD=0.76 人 crowdedHard | safe=218431 keep=Inf avail=-Inf chunkB=25470 pulseB=25470 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1925 zexos1 B=127350 L=5029 d=25.3 nb=3 neut=0 cmds=36 noFull=1 shQ=31837 | m=1.436 worth=36.4 cheap=8.8 over=0 dMedOther=43.1 safe(-1)=218431
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=83865 dq=16.8 cnt=38 | c=37.8 rankC=54.7 need=150749 tD=0.39 人 agg | safe=218431 keep=Inf avail=-Inf chunkB=25470 pulseB=25470 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=249763 dq=37.7 cnt=74 | c=98.7 rankC=98.7 need=455104 tD=0.88 人 crowdedHard | safe=218431 keep=Inf avail=-Inf chunkB=25470 pulseB=25470 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=396350 dq=32.7 cnt=46 | c=124.4 rankC=180.3 need=724683 tD=0.76 人 crowdedHard | safe=218431 keep=Inf avail=-Inf chunkB=25470 pulseB=25470 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1930 zexos1 B=128801 L=5029 d=25.6 nb=3 neut=0 cmds=36 noFull=1 shQ=32200 | m=1.435 worth=36.8 cheap=8.8 over=0 dMedOther=42.4 safe(-1)=221169
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=84821 dq=17.0 cnt=38 | c=26.3 rankC=26.3 need=152416 tD=0.40 人 agg | safe=221169 keep=221169 avail=-93877 chunkB=25760 pulseB=25760 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=401225 dq=33.1 cnt=46 | c=86.8 rankC=86.8 need=733373 tD=0.78 人 crowdedHard | safe=221169 keep=Inf avail=-Inf chunkB=25760 pulseB=25760 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=252685 dq=38.1 cnt=74 | c=99.9 rankC=99.9 need=460312 tD=0.90 人 crowdedHard | safe=221169 keep=Inf avail=-Inf chunkB=25760 pulseB=25760 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1935 zexos1 B=128801 L=5029 d=25.6 nb=3 neut=0 cmds=36 noFull=1 shQ=32200 | m=1.435 worth=36.7 cheap=8.8 over=0 dMedOther=42.2 safe(-1)=221169
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=84821 dq=17.0 cnt=38 | c=26.3 rankC=26.3 need=152444 tD=0.40 人 agg | safe=221169 keep=221169 avail=-93877 chunkB=25760 pulseB=25760 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=401225 dq=33.1 cnt=46 | c=86.8 rankC=86.8 need=733373 tD=0.78 人 crowdedHard | safe=221169 keep=Inf avail=-Inf chunkB=25760 pulseB=25760 价高(c>=worth)→break hNb=3
+    → Player 811#53[T3] terr=6624 bal=252685 dq=38.1 cnt=74 | c=99.9 rankC=99.9 need=460312 tD=0.90 人 crowdedHard | safe=221169 keep=Inf avail=-Inf chunkB=25760 pulseB=25760 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1940 zexos1 B=130269 L=5029 d=25.9 nb=3 neut=0 cmds=36 noFull=1 shQ=32567 | m=1.434 worth=37.1 cheap=8.8 over=0 dMedOther=42.3 safe(-1)=223942
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=85787 dq=17.2 cnt=38 | c=26.6 rankC=26.6 need=154129 tD=0.41 人 agg | safe=223942 keep=223942 avail=-95199 chunkB=26054 pulseB=26054 无可用(avail<=0) hNb=3
+    → Player 811#53[T3] terr=6624 bal=204214 dq=30.8 cnt=74 | c=63.6 rankC=44.5 need=421790 tD=0.73 人 pulse onMe | safe=223942 keep=Inf avail=-Inf chunkB=26054 pulseB=26054 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=406160 dq=33.5 cnt=46 | c=87.8 rankC=87.8 need=742169 tD=0.79 人 crowdedHard | safe=223942 keep=Inf avail=-Inf chunkB=26054 pulseB=26054 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1945 zexos1 B=130269 L=5029 d=25.9 nb=3 neut=0 cmds=36 noFull=1 shQ=32567 | m=1.433 worth=37.1 cheap=8.8 over=0 dMedOther=41.9 safe(-1)=223942
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=85787 dq=17.2 cnt=38 | c=26.6 rankC=26.6 need=154186 tD=0.41 人 agg | safe=223942 keep=223942 avail=-95199 chunkB=26054 pulseB=26054 无可用(avail<=0) hNb=3
+    → Player 811#53[T3] terr=6624 bal=204214 dq=30.8 cnt=74 | c=63.6 rankC=44.5 need=421790 tD=0.74 人 pulse onMe | safe=223942 keep=Inf avail=-Inf chunkB=26054 pulseB=26054 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=406160 dq=33.5 cnt=46 | c=87.8 rankC=87.8 need=742169 tD=0.80 人 crowdedHard | safe=223942 keep=Inf avail=-Inf chunkB=26054 pulseB=26054 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1950 zexos1 B=125496 L=4879 d=25.7 nb=3 neut=0 cmds=36 noFull=1 shQ=31374 | m=1.433 worth=36.8 cheap=8.8 over=0 dMedOther=42.2 safe(-1)=226874
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=86764 dq=17.4 cnt=38 | c=26.9 rankC=26.9 need=155890 tD=0.41 人 agg | safe=226874 keep=226874 avail=-102848 chunkB=25099 pulseB=25099 无可用(avail<=0) hNb=3
+    → Player 811#53[T3] terr=6774 bal=206603 dq=30.5 cnt=76 | c=60.9 rankC=42.6 need=413550 tD=0.72 人 pulse onMe | safe=226874 keep=Inf avail=-Inf chunkB=25099 pulseB=25099 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=411155 dq=33.9 cnt=45 | c=88.9 rankC=88.9 need=751073 tD=0.80 人 crowdedHard | safe=226874 keep=Inf avail=-Inf chunkB=25099 pulseB=25099 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1955 zexos1 B=122328 L=4802 d=25.5 nb=3 neut=0 cmds=36 noFull=1 shQ=30582 | m=1.432 worth=36.5 cheap=8.8 over=0 dMedOther=42.0 safe(-1)=226939
+    → Player 811#53[T3] terr=6851 bal=206603 dq=30.2 cnt=75 | c=36.0 rankC=18.0 need=407186 tD=0.72 人 pulse bleeding onMe | safe=226939 keep=226939 avail=-106044 chunkB=24466 pulseB=24466 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=86764 dq=17.4 cnt=38 | c=38.9 rankC=56.5 need=155919 tD=0.41 人 agg | safe=226939 keep=Inf avail=-Inf chunkB=24466 pulseB=24466 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=411155 dq=33.9 cnt=45 | c=128.9 rankC=186.9 need=751073 tD=0.81 人 crowdedHard | safe=226939 keep=Inf avail=-Inf chunkB=24466 pulseB=24466 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1960 zexos1 B=117897 L=4660 d=25.3 nb=3 neut=0 cmds=36 noFull=1 shQ=29474 | m=1.431 worth=36.2 cheap=8.8 over=0 dMedOther=42.5 safe(-1)=229900
+    → Player 811#53[T3] terr=6993 bal=209020 dq=29.9 cnt=67 | c=34.5 rankC=17.2 need=399883 tD=0.70 人 pulse bleeding onMe | safe=229900 keep=229900 avail=-113384 chunkB=23579 pulseB=23579 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=87753 dq=17.6 cnt=38 | c=39.3 rankC=57.1 need=157645 tD=0.41 人 agg | safe=229900 keep=Inf avail=-Inf chunkB=23579 pulseB=23579 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=416212 dq=34.3 cnt=44 | c=130.4 rankC=189.1 need=760086 tD=0.81 人 crowdedHard | safe=229900 keep=Inf avail=-Inf chunkB=23579 pulseB=23579 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1965 zexos1 B=112539 L=4527 d=24.9 nb=3 neut=0 cmds=36 noFull=1 shQ=28134 | m=1.430 worth=35.6 cheap=8.8 over=0 dMedOther=41.9 safe(-1)=230012
+    → Player 811#53[T3] terr=7010 bal=203515 dq=29.0 cnt=66 | c=33.2 rankC=16.6 need=379125 tD=0.69 人 pulse bleeding onMe | safe=230012 keep=230012 avail=-118791 chunkB=22508 pulseB=22508 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=87753 dq=17.6 cnt=38 | c=39.3 rankC=57.0 need=157703 tD=0.42 人 agg | safe=230012 keep=Inf avail=-Inf chunkB=22508 pulseB=22508 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=416212 dq=34.3 cnt=43 | c=130.4 rankC=189.1 need=760086 tD=0.82 人 crowdedHard | safe=230012 keep=Inf avail=-Inf chunkB=22508 pulseB=22508 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1970 zexos1 B=111208 L=4462 d=24.9 nb=3 neut=0 cmds=36 noFull=1 shQ=27802 | m=1.429 worth=35.6 cheap=8.8 over=0 dMedOther=42.1 safe(-1)=232943
+    → Player 811#53[T3] terr=6953 bal=200206 dq=28.8 cnt=63 | c=33.3 rankC=16.7 need=367200 tD=0.68 人 pulse bleeding onMe | safe=232943 keep=232943 avail=-123038 chunkB=22242 pulseB=22242 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=88753 dq=17.8 cnt=38 | c=45.2 rankC=65.5 need=159450 tD=0.42 人 | safe=232943 keep=Inf avail=-Inf chunkB=22242 pulseB=22242 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=421331 dq=34.7 cnt=42 | c=132.0 rankC=191.4 need=769211 tD=0.83 人 crowdedHard | safe=232943 keep=Inf avail=-Inf chunkB=22242 pulseB=22242 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1975 zexos1 B=111022 L=4462 d=24.9 nb=3 neut=0 cmds=36 noFull=1 shQ=27755 | m=1.429 worth=35.5 cheap=8.8 over=0 dMedOther=41.5 safe(-1)=232943
+    → Player 811#53[T3] terr=6889 bal=197314 dq=28.6 cnt=63 | c=33.6 rankC=16.8 need=360766 tD=0.69 人 pulse bleeding | safe=232943 keep=232943 avail=-123222 chunkB=22204 pulseB=22204 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=88753 dq=17.8 cnt=38 | c=45.2 rankC=65.5 need=159479 tD=0.43 人 | safe=232943 keep=Inf avail=-Inf chunkB=22204 pulseB=22204 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=421331 dq=34.7 cnt=42 | c=132.0 rankC=191.4 need=769211 tD=0.84 人 crowdedHard | safe=232943 keep=Inf avail=-Inf chunkB=22204 pulseB=22204 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1980 zexos1 B=112287 L=4462 d=25.2 nb=3 neut=0 cmds=36 noFull=1 shQ=28071 | m=1.428 worth=35.9 cheap=8.8 over=0 dMedOther=41.7 safe(-1)=235854
+    → Player 811#53[T3] terr=6759 bal=193614 dq=28.6 cnt=59 | c=34.7 rankC=17.3 need=352636 tD=0.69 人 pulse bleeding | safe=235854 keep=235854 avail=-124882 chunkB=22457 pulseB=22457 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=89764 dq=18.0 cnt=38 | c=45.6 rankC=66.2 need=161245 tD=0.43 人 | safe=235854 keep=Inf avail=-Inf chunkB=22457 pulseB=22457 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=426513 dq=35.1 cnt=42 | c=133.6 rankC=193.7 need=778447 tD=0.84 人 crowdedHard | safe=235854 keep=Inf avail=-Inf chunkB=22457 pulseB=22457 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1985 zexos1 B=112287 L=4462 d=25.2 nb=3 neut=0 cmds=36 noFull=1 shQ=28071 | m=1.427 worth=35.9 cheap=8.8 over=0 dMedOther=41.2 safe(-1)=233046
+    → Player 811#53[T3] terr=6628 bal=187629 dq=28.3 cnt=58 | c=18.6 rankC=9.3 need=340493 tD=0.69 人 pulse nearCollapse bleeding | safe=233046 keep=233046 avail=-122074 chunkB=22457 pulseB=22457 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12139 bal=371117 dq=30.6 cnt=42 | c=60.0 rankC=42.0 need=730105 tD=0.74 人 pulse onMe | safe=233046 keep=Inf avail=-Inf chunkB=22457 pulseB=22457 价高(c>=worth)→break hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=89764 dq=18.0 cnt=38 | c=45.6 rankC=66.2 need=161304 tD=0.44 人 | safe=233046 keep=Inf avail=-Inf chunkB=22457 pulseB=22457 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1990 zexos1 B=111898 L=4421 d=25.3 nb=3 neut=0 cmds=36 noFull=1 shQ=27974 | m=1.427 worth=36.1 cheap=8.8 over=0 dMedOther=41.2 safe(-1)=233765
+    → Player 811#53[T3] terr=6440 bal=181245 dq=28.1 cnt=58 | c=18.3 rankC=9.1 need=326881 tD=0.68 人 pulse nearCollapse bleeding | safe=233765 keep=233765 avail=-123178 chunkB=22380 pulseB=22380 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12180 bal=375718 dq=30.8 cnt=41 | c=60.2 rankC=42.2 need=734952 tD=0.75 人 pulse onMe | safe=233765 keep=Inf avail=-Inf chunkB=22380 pulseB=22380 价高(c>=worth)→break hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=90787 dq=18.2 cnt=38 | c=46.1 rankC=66.9 need=163092 tD=0.44 人 | safe=233765 keep=Inf avail=-Inf chunkB=22380 pulseB=22380 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=1995 zexos1 B=107068 L=4301 d=24.9 nb=3 neut=0 cmds=36 noFull=1 shQ=26767 | m=1.426 worth=35.5 cheap=8.8 over=0 dMedOther=41.0 safe(-1)=228305
+    → Player 811#53[T3] terr=6060 bal=164363 dq=27.1 cnt=55 | c=16.6 rankC=8.3 need=292421 tD=0.66 人 pulse nearCollapse bleeding | safe=228305 keep=228305 avail=-122491 chunkB=21414 pulseB=21414 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12300 bal=375718 dq=30.5 cnt=37 | c=58.9 rankC=41.2 need=725232 tD=0.75 人 pulse onMe | safe=228305 keep=Inf avail=-Inf chunkB=21414 pulseB=21414 价高(c>=worth)→break hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=90787 dq=18.2 cnt=36 | c=46.1 rankC=66.9 need=163122 tD=0.44 人 | safe=228305 keep=Inf avail=-Inf chunkB=21414 pulseB=21414 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2000 zexos1 B=109584 L=4228 d=25.9 nb=3 neut=0 cmds=36 noFull=1 shQ=26354 | m=1.425 worth=36.9 cheap=8.8 over=0 dMedOther=42.0 safe(-1)=234595
+    → Player 811#53[T3] terr=5802 bal=129600 dq=22.3 cnt=52 | c=13.7 rankC=6.8 need=229365 tD=0.53 人 pulse nearCollapse bleeding agg | safe=234595 keep=234595 avail=-126295 chunkB=21917 pulseB=21917 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12373 bal=392749 dq=31.7 cnt=37 | c=60.5 rankC=42.3 need=749764 tD=0.76 人 pulse onMe | safe=234595 keep=Inf avail=-Inf chunkB=21917 pulseB=21917 价高(c>=worth)→break hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=96813 dq=19.4 cnt=35 | c=49.0 rankC=71.1 need=173512 tD=0.46 人 | safe=234595 keep=Inf avail=-Inf chunkB=21917 pulseB=21917 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2005 zexos1 B=105090 L=4119 d=25.5 nb=3 neut=0 cmds=36 noFull=1 shQ=26272 | m=1.420 worth=36.2 cheap=8.8 over=0 dMedOther=41.7 safe(-1)=229515
+    → Player 811#53[T3] terr=5734 bal=125093 dq=21.8 cnt=50 | c=13.3 rankC=6.6 need=220909 tD=0.52 人 pulse nearCollapse bleeding agg | safe=229515 keep=229515 avail=-125656 chunkB=21018 pulseB=21018 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=96813 dq=19.4 cnt=34 | c=49.0 rankC=71.1 need=173576 tD=0.46 人 | safe=229515 keep=Inf avail=-Inf chunkB=21018 pulseB=21018 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12482 bal=392749 dq=31.5 cnt=36 | c=79.0 rankC=79.0 need=740733 tD=0.75 人 pulse onMe | safe=229515 keep=Inf avail=-Inf chunkB=21018 pulseB=21018 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2010 zexos1 B=103262 L=4046 d=25.5 nb=3 neut=0 cmds=36 noFull=1 shQ=25815 | m=1.415 worth=36.1 cheap=8.9 over=0 dMedOther=42.2 safe(-1)=228892
+    → Player 811#53[T3] terr=5595 bal=121642 dq=21.7 cnt=47 | c=13.9 rankC=6.9 need=213343 tD=0.51 人 pulse nearCollapse bleeding agg | safe=228892 keep=228892 avail=-126840 chunkB=20652 pulseB=20652 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=96674 dq=19.4 cnt=33 | c=33.8 rankC=33.8 need=173462 tD=0.46 人 pulse onMe | safe=228892 keep=228892 avail=-126840 chunkB=20652 pulseB=20652 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12555 bal=397619 dq=31.7 cnt=36 | c=78.8 rankC=78.8 need=743446 tD=0.75 人 pulse onMe | safe=228892 keep=Inf avail=-Inf chunkB=20652 pulseB=20652 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2015 zexos1 B=98798 L=3936 d=25.1 nb=3 neut=0 cmds=36 noFull=1 shQ=24699 | m=1.409 worth=35.4 cheap=8.9 over=0 dMedOther=42.2 safe(-1)=223846
+    → Player 811#53[T3] terr=5450 bal=116619 dq=21.4 cnt=43 | c=14.2 rankC=7.1 need=203049 tD=0.51 人 pulse nearCollapse bleeding agg | safe=223846 keep=223846 avail=-126205 chunkB=19760 pulseB=19760 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=4992 bal=96674 dq=19.4 cnt=31 | c=33.8 rankC=33.8 need=173494 tD=0.46 人 pulse onMe | safe=223846 keep=223846 avail=-126205 chunkB=19760 pulseB=19760 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12665 bal=397619 dq=31.4 cnt=37 | c=77.2 rankC=77.2 need=734440 tD=0.74 人 pulse onMe | safe=223846 keep=Inf avail=-Inf chunkB=19760 pulseB=19760 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2020 zexos1 B=95785 L=3834 d=25.0 nb=3 neut=0 cmds=36 noFull=1 shQ=23946 | m=1.404 worth=35.1 cheap=8.9 over=0 dMedOther=42.8 safe(-1)=223397
+    → Player 811#53[T3] terr=5375 bal=115363 dq=21.5 cnt=42 | c=14.7 rankC=7.4 need=199995 tD=0.50 人 pulse bleeding agg | safe=223397 keep=223397 avail=-128734 chunkB=19157 pulseB=19157 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5022 bal=95373 dq=19.0 cnt=30 | c=48.0 rankC=69.6 need=171507 tD=0.44 人 | safe=223397 keep=Inf avail=-Inf chunkB=19157 pulseB=19157 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12737 bal=402549 dq=31.6 cnt=36 | c=77.1 rankC=77.1 need=737453 tD=0.74 人 pulse onMe | safe=223397 keep=Inf avail=-Inf chunkB=19157 pulseB=19157 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2025 zexos1 B=95415 L=3834 d=24.9 nb=3 neut=0 cmds=36 noFull=1 shQ=23853 | m=1.399 worth=34.8 cheap=8.9 over=0 dMedOther=42.7 safe(-1)=222939
+    → Player 811#53[T3] terr=5221 bal=110099 dq=21.1 cnt=41 | c=15.1 rankC=7.5 need=189240 tD=0.49 人 pulse bleeding agg | safe=222939 keep=222939 avail=-128642 chunkB=19083 pulseB=19083 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5022 bal=95373 dq=19.0 cnt=30 | c=48.0 rankC=69.6 need=171569 tD=0.44 人 | safe=222939 keep=Inf avail=-Inf chunkB=19083 pulseB=19083 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12737 bal=402583 dq=31.6 cnt=36 | c=120.6 rankC=174.8 need=736666 tD=0.74 人 crowdedHard | safe=222939 keep=Inf avail=-Inf chunkB=19083 pulseB=19083 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2030 zexos1 B=96483 L=3834 d=25.2 nb=3 neut=0 cmds=36 noFull=1 shQ=24120 | m=1.393 worth=35.1 cheap=8.9 over=0 dMedOther=43.2 safe(-1)=225744
+    → Player 811#53[T3] terr=5059 bal=105865 dq=20.9 cnt=39 | c=15.9 rankC=7.9 need=180058 tD=0.48 人 pulse bleeding agg | safe=225744 keep=225744 avail=-130391 chunkB=19297 pulseB=19297 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5022 bal=96460 dq=19.2 cnt=30 | c=48.5 rankC=70.3 need=173474 tD=0.44 人 | safe=225744 keep=Inf avail=-Inf chunkB=19297 pulseB=19297 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12737 bal=407575 dq=32.0 cnt=36 | c=122.0 rankC=176.9 need=745563 tD=0.74 人 crowdedHard | safe=225744 keep=Inf avail=-Inf chunkB=19297 pulseB=19297 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2035 zexos1 B=96483 L=3834 d=25.2 nb=3 neut=0 cmds=36 noFull=1 shQ=24120 | m=1.388 worth=34.9 cheap=8.9 over=0 dMedOther=43.1 safe(-1)=225744
+    → Player 811#53[T3] terr=4976 bal=82350 dq=16.5 cnt=39 | c=13.0 rankC=6.5 need=140603 tD=0.38 人 pulse bleeding agg | safe=225744 keep=225744 avail=-130391 chunkB=19297 pulseB=19297 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5022 bal=96460 dq=19.2 cnt=30 | c=48.5 rankC=70.3 need=173505 tD=0.45 人 | safe=225744 keep=Inf avail=-Inf chunkB=19297 pulseB=19297 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12737 bal=407575 dq=32.0 cnt=36 | c=122.0 rankC=176.9 need=745563 tD=0.74 人 crowdedHard | safe=225744 keep=Inf avail=-Inf chunkB=19297 pulseB=19297 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2040 zexos1 B=97563 L=3834 d=25.4 nb=3 neut=0 cmds=36 noFull=1 shQ=24390 | m=1.383 worth=35.2 cheap=8.9 over=0 dMedOther=43.6 safe(-1)=228583
+    → Player 811#53[T3] terr=4803 bal=78682 dq=16.4 cnt=35 | c=13.7 rankC=6.9 need=132673 tD=0.38 人 pulse bleeding agg | safe=228583 keep=228583 avail=-132163 chunkB=19513 pulseB=19513 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5022 bal=97559 dq=19.4 cnt=30 | c=49.0 rankC=71.1 need=175432 tD=0.45 人 | safe=228583 keep=Inf avail=-Inf chunkB=19513 pulseB=19513 价高(c>=worth)→break hNb=3
+    → [Off] Skull#2[T5] terr=12737 bal=412628 dq=32.4 cnt=36 | c=123.5 rankC=179.1 need=754570 tD=0.74 人 crowdedHard | safe=228583 keep=Inf avail=-Inf chunkB=19513 pulseB=19513 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2045 zexos1 B=97563 L=3834 d=25.4 nb=3 neut=0 cmds=36 noFull=1 shQ=24390 | m=1.378 worth=35.1 cheap=8.9 over=0 dMedOther=45.2 safe(-1)=228583
+    → Player 811#53[T3] terr=4630 bal=74174 dq=16.0 cnt=34 | c=14.3 rankC=7.1 need=123381 tD=0.35 人 pulse bleeding agg | safe=228583 keep=228583 avail=-132163 chunkB=19513 pulseB=19513 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5022 bal=96321 dq=19.2 cnt=30 | c=33.4 rankC=33.4 need=173454 tD=0.42 人 pulse onMe | safe=228583 keep=228583 avail=-132163 chunkB=19513 pulseB=19513 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12737 bal=412628 dq=32.4 cnt=36 | c=123.5 rankC=179.1 need=754570 tD=0.72 人 crowdedHard | safe=228583 keep=Inf avail=-Inf chunkB=19513 pulseB=19513 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2050 zexos1 B=98655 L=3834 d=25.7 nb=3 neut=0 cmds=36 noFull=1 shQ=24663 | m=1.373 worth=35.3 cheap=8.9 over=0 dMedOther=45.7 safe(-1)=231457
+    → Player 811#53[T3] terr=4542 bal=72738 dq=16.0 cnt=34 | c=14.9 rankC=7.4 need=120080 tD=0.35 人 pulse bleeding agg | safe=231457 keep=231457 avail=-133958 chunkB=19731 pulseB=19731 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5022 bal=97419 dq=19.4 cnt=30 | c=33.8 rankC=33.8 need=175380 tD=0.42 人 pulse onMe | safe=231457 keep=231457 avail=-133958 chunkB=19731 pulseB=19731 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12737 bal=417744 dq=32.8 cnt=36 | c=125.0 rankC=181.2 need=763689 tD=0.72 人 crowdedHard | safe=231457 keep=Inf avail=-Inf chunkB=19731 pulseB=19731 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2055 zexos1 B=97503 L=3806 d=25.6 nb=3 neut=0 cmds=36 noFull=1 shQ=24375 | m=1.367 worth=35.0 cheap=8.9 over=0 dMedOther=45.7 safe(-1)=231480
+    → Player 811#53[T3] terr=4453 bal=345 dq=0.1 cnt=33 | c=1.5 rankC=1.1 need=5990 tD=0.00 人 pulse agg | safe=231480 keep=231480 avail=-135119 chunkB=19501 pulseB=19501 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5050 bal=95153 dq=18.8 cnt=28 | c=32.8 rankC=32.8 need=171692 tD=0.41 人 | safe=231480 keep=231480 avail=-135119 chunkB=19501 pulseB=19501 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12737 bal=417744 dq=32.8 cnt=36 | c=86.2 rankC=86.2 need=763689 tD=0.72 人 crowdedHard | safe=231480 keep=Inf avail=-Inf chunkB=19501 pulseB=19501 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2060 zexos1 B=98595 L=3806 d=25.9 nb=3 neut=0 cmds=36 noFull=1 shQ=24648 | m=1.362 worth=35.3 cheap=8.9 over=0 dMedOther=46.2 safe(-1)=234390
+    → Player 811#53[T3] terr=4542 bal=348 dq=0.1 cnt=34 | c=1.5 rankC=1.1 need=6184 tD=0.00 人 pulse agg | safe=234390 keep=234390 avail=-136950 chunkB=19719 pulseB=19719 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5050 bal=96237 dq=19.1 cnt=28 | c=33.2 rankC=33.2 need=173596 tD=0.41 人 | safe=234390 keep=234390 avail=-136950 chunkB=19719 pulseB=19719 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12737 bal=422924 dq=33.2 cnt=36 | c=87.2 rankC=87.2 need=772921 tD=0.72 人 crowdedHard | safe=234390 keep=Inf avail=-Inf chunkB=19719 pulseB=19719 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2065 zexos1 B=98595 L=3806 d=25.9 nb=3 neut=0 cmds=36 noFull=1 shQ=24648 | m=1.357 worth=35.1 cheap=8.9 over=0 dMedOther=46.2 safe(-1)=234390
+    → Player 811#53[T3] terr=4630 bal=411 dq=0.1 cnt=34 | c=2.0 rankC=2.0 need=6469 tD=0.00 人 pulse agg | safe=234390 keep=234390 avail=-136950 chunkB=19719 pulseB=19719 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5050 bal=96237 dq=19.1 cnt=28 | c=33.2 rankC=33.2 need=173658 tD=0.41 人 | safe=234390 keep=234390 avail=-136950 chunkB=19719 pulseB=19719 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12737 bal=422924 dq=33.2 cnt=36 | c=87.2 rankC=87.2 need=772921 tD=0.72 人 crowdedHard | safe=234390 keep=Inf avail=-Inf chunkB=19719 pulseB=19719 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令
+t=2070 zexos1 B=100689 L=3806 d=26.5 nb=3 neut=0 cmds=36 noFull=1 shQ=25082 | m=1.352 worth=35.8 cheap=8.9 over=0 dMedOther=46.8 safe(-1)=237337
+    → Player 811#53[T3] terr=4630 bal=415 dq=0.1 cnt=34 | c=2.0 rankC=2.0 need=6482 tD=0.00 人 pulse agg | safe=237337 keep=237337 avail=-137827 chunkB=20138 pulseB=20138 无可用(avail<=0) hNb=3
+    → [CN]GCAntiaktis#16[T5] terr=5050 bal=97334 dq=19.3 cnt=28 | c=33.5 rankC=33.5 need=175586 tD=0.41 人 | safe=237337 keep=237337 avail=-137827 chunkB=20138 pulseB=20138 无可用(avail<=0) hNb=3
+    → [Off] Skull#2[T5] terr=12737 bal=428168 dq=33.6 cnt=36 | c=88.3 rankC=88.3 need=782268 tD=0.72 人 crowdedHard | safe=237337 keep=Inf avail=-Inf chunkB=20138 pulseB=20138 价高(c>=worth)→break hNb=3
+    ⇒ 本拍没有指令

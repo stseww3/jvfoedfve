@@ -1,0 +1,1191 @@
+# A053 alex_k 影子决策明细 t=1400~2900（策略 v27-team-c116-vb.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没走到 buyLand: 20 拍（t=1400~1495）
+#   首选目标可用兵不够一条指令（avail<chunk*B）: 14 拍（t=1500~1585）；可用兵 5499~33478，一条指令下限(20%余额) 30185~41842，比值 18%~89%
+#   出手打人/bot: 4 拍（t=1565~1580）；可用兵 46809~65225，一条指令下限(20%余额) 41842~43596，比值 107%~153%
+#   首选目标价高（c>=worth）: 263 拍（t=1590~2900）
+#   └ 「出手打人/bot」里：4 条对人/bot 的出兵共约 237843 兵；其中超过软上限（over=1）时发的 0 条；目标每格成本 ≥ 自己的出价（c>=worth，只因 over 才放行）的 0 条约 0 兵
+t=1400 alex_k B=141064 L=3880 d=36.4 nb=2 neut=0 cmds=83 noFull=1 shQ=34347 | m=1.400 worth=50.9 cheap=3.8 over=0 dMedOther=13.6 safe(-1)=94360
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1405 alex_k B=141064 L=3880 d=36.4 nb=2 neut=0 cmds=83 noFull=1 shQ=35266 | m=1.405 worth=51.1 cheap=3.8 over=0 dMedOther=13.6 safe(-1)=94360
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1410 alex_k B=144717 L=3880 d=37.3 nb=2 neut=0 cmds=83 noFull=1 shQ=36179 | m=1.410 worth=52.6 cheap=3.9 over=0 dMedOther=13.9 safe(-1)=96888
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1415 alex_k B=144717 L=3880 d=37.3 nb=2 neut=0 cmds=83 noFull=1 shQ=36179 | m=1.415 worth=52.8 cheap=3.9 over=0 dMedOther=13.9 safe(-1)=96888
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1420 alex_k B=148421 L=3880 d=38.3 nb=2 neut=0 cmds=83 noFull=1 shQ=37105 | m=1.420 worth=54.3 cheap=3.9 over=0 dMedOther=14.4 safe(-1)=99452
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1425 alex_k B=148421 L=3880 d=38.3 nb=2 neut=0 cmds=83 noFull=1 shQ=37105 | m=1.425 worth=54.5 cheap=3.9 over=0 dMedOther=14.4 safe(-1)=99452
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1430 alex_k B=152176 L=3880 d=39.2 nb=2 neut=0 cmds=83 noFull=1 shQ=38044 | m=1.430 worth=56.1 cheap=4.0 over=0 dMedOther=14.8 safe(-1)=102050
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1435 alex_k B=152176 L=3880 d=39.2 nb=2 neut=0 cmds=83 noFull=1 shQ=38044 | m=1.435 worth=56.3 cheap=4.0 over=0 dMedOther=14.8 safe(-1)=102050
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1440 alex_k B=155980 L=3880 d=40.2 nb=2 neut=0 cmds=83 noFull=1 shQ=38995 | m=1.440 worth=57.9 cheap=4.0 over=0 dMedOther=15.0 safe(-1)=104683
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1445 alex_k B=155980 L=3880 d=40.2 nb=2 neut=0 cmds=83 noFull=1 shQ=38995 | m=1.445 worth=58.1 cheap=4.0 over=0 dMedOther=14.9 safe(-1)=104683
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1450 alex_k B=159832 L=3880 d=41.2 nb=2 neut=0 cmds=83 noFull=1 shQ=39958 | m=1.450 worth=59.7 cheap=4.1 over=0 dMedOther=15.2 safe(-1)=107349
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1455 alex_k B=159832 L=3880 d=41.2 nb=2 neut=0 cmds=83 noFull=1 shQ=39958 | m=1.455 worth=59.9 cheap=4.1 over=0 dMedOther=15.0 safe(-1)=106112
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1460 alex_k B=163731 L=3880 d=42.2 nb=2 neut=0 cmds=83 noFull=1 shQ=40932 | m=1.460 worth=61.6 cheap=4.1 over=0 dMedOther=15.3 safe(-1)=108781
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1465 alex_k B=163731 L=3880 d=42.2 nb=2 neut=0 cmds=83 noFull=1 shQ=40932 | m=1.465 worth=61.8 cheap=4.1 over=0 dMedOther=15.2 safe(-1)=108781
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1470 alex_k B=167660 L=3880 d=43.2 nb=2 neut=0 cmds=83 noFull=1 shQ=41915 | m=1.470 worth=63.5 cheap=4.2 over=0 dMedOther=15.4 safe(-1)=111470
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1475 alex_k B=167660 L=3880 d=43.2 nb=2 neut=0 cmds=83 noFull=1 shQ=41915 | m=1.475 worth=63.7 cheap=4.2 over=0 dMedOther=15.3 safe(-1)=111470
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1480 alex_k B=171633 L=3880 d=44.2 nb=2 neut=0 cmds=83 noFull=1 shQ=42908 | m=1.480 worth=65.5 cheap=4.2 over=0 dMedOther=15.6 safe(-1)=114189
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1485 alex_k B=171633 L=3880 d=44.2 nb=2 neut=0 cmds=83 noFull=1 shQ=42908 | m=1.485 worth=65.7 cheap=4.2 over=0 dMedOther=15.3 safe(-1)=114189
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1490 alex_k B=175649 L=3880 d=45.3 nb=2 neut=0 cmds=83 noFull=1 shQ=43912 | m=1.490 worth=67.5 cheap=4.3 over=0 dMedOther=15.6 safe(-1)=116937
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1495 alex_k B=175649 L=3880 d=45.3 nb=2 neut=0 cmds=83 noFull=1 shQ=43912 | m=1.495 worth=67.7 cheap=4.3 over=0 dMedOther=15.4 safe(-1)=116937
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=1500 alex_k B=183586 L=3880 d=47.3 nb=2 neut=0 cmds=83 noFull=1 shQ=44972 | m=1.500 worth=71.0 cheap=4.3 over=0 dMedOther=16.7 safe(-1)=126259
+    → F[eu]dal Empire#17[T2] terr=11651 bal=230561 dq=19.8 cnt=57 | c=49.0 rankC=49.0 need=428176 tD=1.19 人 | safe=126259 keep=148693 avail=32742 chunkB=36717 pulseB=22030 不够一条(x=32742)→continue hNb=2
+    → [VOID] Soviet onion#76[T5] terr=8415 bal=185966 dq=22.1 cnt=155 | c=54.3 rankC=54.3 need=344106 tD=1.33 人 | safe=126259 keep=156903 avail=24532 chunkB=36717 pulseB=22030 不够一条(x=24532)→continue hNb=2
+    ⇒ 本拍没有指令
+t=1505 alex_k B=183586 L=3880 d=47.3 nb=2 neut=0 cmds=83 noFull=1 shQ=45896 | m=1.499 worth=70.9 cheap=4.4 over=0 dMedOther=16.6 safe(-1)=126259
+    → F[eu]dal Empire#17[T2] terr=11651 bal=230561 dq=19.8 cnt=57 | c=49.0 rankC=49.0 need=428205 tD=1.19 人 | safe=126259 keep=148734 avail=32701 chunkB=36717 pulseB=22030 不够一条(x=32701)→continue hNb=2
+    → [VOID] Soviet onion#76[T5] terr=8415 bal=185966 dq=22.1 cnt=155 | c=54.3 rankC=54.3 need=344106 tD=1.33 人 | safe=126259 keep=156950 avail=24485 chunkB=36717 pulseB=22030 不够一条(x=24485)→continue hNb=2
+    ⇒ 本拍没有指令
+t=1510 alex_k B=187771 L=3880 d=48.4 nb=2 neut=0 cmds=83 noFull=1 shQ=46942 | m=1.498 worth=72.5 cheap=4.4 over=0 dMedOther=16.8 safe(-1)=129212
+    → F[eu]dal Empire#17[T2] terr=11651 bal=235817 dq=20.2 cnt=57 | c=50.1 rankC=50.1 need=437629 tD=1.20 人 | safe=129212 keep=152093 avail=33478 chunkB=37554 pulseB=22533 不够一条(x=33478)→continue hNb=2
+    → [VOID] Soviet onion#76[T5] terr=8415 bal=190206 dq=22.6 cnt=155 | c=55.5 rankC=55.5 need=351664 tD=1.34 人 | safe=129212 keep=160506 avail=25065 chunkB=37554 pulseB=22533 不够一条(x=25065)→continue hNb=2
+    ⇒ 本拍没有指令
+t=1515 alex_k B=187771 L=3880 d=48.4 nb=2 neut=0 cmds=83 noFull=1 shQ=46942 | m=1.498 worth=72.5 cheap=4.4 over=0 dMedOther=16.8 safe(-1)=129212
+    → [VOID] Soviet onion#76[T5] terr=8415 bal=190206 dq=22.6 cnt=155 | c=55.5 rankC=55.5 need=351664 tD=1.35 人 | safe=129212 keep=160555 avail=25016 chunkB=37554 pulseB=22533 不够一条(x=25016)→continue hNb=2
+    → F[eu]dal Empire#17[T2] terr=11651 bal=235817 dq=20.2 cnt=57 | c=72.7 rankC=105.4 need=437659 tD=1.21 人 | safe=129212 keep=Inf avail=-Inf chunkB=37554 pulseB=22533 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1520 alex_k B=191995 L=3880 d=49.5 nb=2 neut=0 cmds=83 noFull=1 shQ=47998 | m=1.497 worth=74.1 cheap=4.4 over=0 dMedOther=17.2 safe(-1)=132192
+    → [VOID] Soviet onion#76[T5] terr=8415 bal=194485 dq=23.1 cnt=155 | c=56.7 rankC=56.7 need=359291 tD=1.35 人 | safe=132192 keep=164147 avail=25599 chunkB=38399 pulseB=23039 不够一条(x=25599)→continue hNb=2
+    → F[eu]dal Empire#17[T2] terr=11651 bal=241122 dq=20.7 cnt=57 | c=74.2 rankC=107.6 need=447143 tD=1.21 人 | safe=132192 keep=Inf avail=-Inf chunkB=38399 pulseB=23039 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1525 alex_k B=191995 L=3880 d=49.5 nb=2 neut=0 cmds=83 noFull=1 shQ=47998 | m=1.496 worth=74.0 cheap=4.5 over=0 dMedOther=17.2 safe(-1)=132192
+    → [VOID] Soviet onion#76[T5] terr=8415 bal=194485 dq=23.1 cnt=155 | c=56.7 rankC=56.7 need=359291 tD=1.35 人 | safe=132192 keep=164196 avail=25550 chunkB=38399 pulseB=23039 不够一条(x=25550)→continue hNb=2
+    → F[eu]dal Empire#17[T2] terr=11651 bal=241122 dq=20.7 cnt=57 | c=74.2 rankC=107.6 need=447174 tD=1.21 人 | safe=132192 keep=Inf avail=-Inf chunkB=38399 pulseB=23039 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1530 alex_k B=196257 L=3880 d=50.6 nb=2 neut=0 cmds=83 noFull=1 shQ=49064 | m=1.496 worth=75.6 cheap=4.5 over=0 dMedOther=17.5 safe(-1)=135199
+    → [VOID] Soviet onion#76[T5] terr=8415 bal=198802 dq=23.6 cnt=155 | c=57.9 rankC=57.9 need=366986 tD=1.35 人 | safe=135199 keep=167823 avail=26135 chunkB=39251 pulseB=23551 不够一条(x=26135)→continue hNb=2
+    → F[eu]dal Empire#17[T2] terr=11651 bal=246474 dq=21.2 cnt=57 | c=75.8 rankC=109.9 need=456775 tD=1.21 人 | safe=135199 keep=Inf avail=-Inf chunkB=39251 pulseB=23551 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1535 alex_k B=196257 L=3880 d=50.6 nb=2 neut=0 cmds=83 noFull=1 shQ=49064 | m=1.495 worth=75.6 cheap=4.5 over=0 dMedOther=17.5 safe(-1)=133830
+    → [VOID] Soviet onion#76[T5] terr=8415 bal=198802 dq=23.6 cnt=155 | c=57.9 rankC=57.9 need=366986 tD=1.35 人 | safe=133830 keep=167873 avail=26085 chunkB=39251 pulseB=23551 不够一条(x=26085)→continue hNb=2
+    → F[eu]dal Empire#17[T2] terr=11579 bal=244038 dq=21.1 cnt=57 | c=75.6 rankC=109.6 need=451791 tD=1.20 人 | safe=133830 keep=196210 avail=-2252 chunkB=39251 pulseB=23551 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1540 alex_k B=200555 L=3880 d=51.7 nb=2 neut=0 cmds=83 noFull=1 shQ=50138 | m=1.494 worth=77.2 cheap=4.6 over=0 dMedOther=17.9 safe(-1)=136833
+    → [VOID] Soviet onion#76[T5] terr=8415 bal=203155 dq=24.1 cnt=155 | c=59.2 rankC=59.2 need=374745 tD=1.35 人 | safe=136833 keep=171533 avail=26672 chunkB=40111 pulseB=24067 不够一条(x=26672)→continue hNb=2
+    → F[eu]dal Empire#17[T2] terr=11579 bal=249382 dq=21.5 cnt=57 | c=77.2 rankC=111.9 need=461337 tD=1.20 人 | safe=136833 keep=200435 avail=-2230 chunkB=40111 pulseB=24067 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1545 alex_k B=200555 L=3880 d=51.7 nb=2 neut=0 cmds=83 noFull=1 shQ=50138 | m=1.493 worth=77.2 cheap=4.6 over=0 dMedOther=19.7 safe(-1)=136833
+    → [VOID] Soviet onion#76[T5] terr=8415 bal=203155 dq=24.1 cnt=155 | c=59.2 rankC=59.2 need=374745 tD=1.23 人 | safe=136833 keep=171585 avail=26620 chunkB=40111 pulseB=24067 不够一条(x=26620)→continue hNb=2
+    → F[eu]dal Empire#17[T2] terr=11579 bal=249382 dq=21.5 cnt=57 | c=77.2 rankC=111.9 need=461369 tD=1.10 人 | safe=136833 keep=200527 avail=-2322 chunkB=40111 pulseB=24067 无可用(avail<=0) hNb=2
+    ⇒ 本拍没有指令
+t=1550 alex_k B=204866 L=3880 d=52.8 nb=2 neut=0 cmds=83 noFull=1 shQ=51216 | m=1.492 worth=78.8 cheap=4.6 over=0 dMedOther=20.0 safe(-1)=129643
+    → [VOID] Soviet onion#76[T5] terr=8415 bal=207522 dq=24.7 cnt=155 | c=60.4 rankC=60.4 need=382529 tD=1.23 人 | safe=129643 keep=175260 avail=27206 chunkB=40973 pulseB=24584 不够一条(x=27206)→continue hNb=2
+    → F[eu]dal Empire#17[T2] terr=11579 bal=236584 dq=20.4 cnt=57 | c=73.4 rankC=106.4 need=438643 tD=1.02 人 | safe=129643 keep=195465 avail=7001 chunkB=40973 pulseB=24584 不够一条(x=7001)→continue hNb=2
+    ⇒ 本拍没有指令
+t=1555 alex_k B=204866 L=3880 d=52.8 nb=2 neut=0 cmds=83 noFull=1 shQ=51216 | m=1.492 worth=78.8 cheap=4.7 over=0 dMedOther=19.3 safe(-1)=129643
+    → [VOID] Soviet onion#76[T5] terr=8415 bal=207522 dq=24.7 cnt=155 | c=60.4 rankC=60.4 need=382529 tD=1.28 人 | safe=129643 keep=175312 avail=27154 chunkB=40973 pulseB=24584 不够一条(x=27154)→continue hNb=2
+    → F[eu]dal Empire#17[T2] terr=11643 bal=236584 dq=20.3 cnt=57 | c=73.0 rankC=105.8 need=439166 tD=1.05 人 | safe=129643 keep=194849 avail=7617 chunkB=40973 pulseB=24584 不够一条(x=7617)→continue hNb=2
+    ⇒ 本拍没有指令
+t=1560 alex_k B=209209 L=3880 d=53.9 nb=2 neut=0 cmds=83 noFull=1 shQ=52302 | m=1.491 worth=80.4 cheap=4.7 over=0 dMedOther=19.7 safe(-1)=132460
+    → [VOID] Soviet onion#76[T5] terr=8415 bal=211921 dq=25.2 cnt=155 | c=61.6 rankC=61.6 need=390370 tD=1.28 人 | safe=132460 keep=179017 avail=27741 chunkB=41842 pulseB=25105 不够一条(x=27741)→continue hNb=2
+    → F[eu]dal Empire#17[T2] terr=11760 bal=241599 dq=20.5 cnt=57 | c=73.7 rankC=106.9 need=448257 tD=1.04 人 | safe=132460 keep=197827 avail=8931 chunkB=41842 pulseB=25105 不够一条(x=8931)→continue hNb=2
+    ⇒ 本拍没有指令
+t=1565 alex_k B=209209 L=3880 d=53.9 nb=2 neut=0 cmds=84 noFull=1 shQ=52302 | m=1.490 worth=80.4 cheap=4.7 over=0 dMedOther=19.0 safe(-1)=132460
+    → [VOID] Soviet onion#76[T5] terr=8415 bal=181086 dq=21.5 cnt=155 | c=39.8 rankC=27.8 need=335407 tD=1.13 人 | safe=132460 keep=144981 avail=61777 chunkB=41842 pulseB=25105  x=61777 hNb=2
+    → F[eu]dal Empire#17[T2] terr=11892 bal=241599 dq=20.3 cnt=57 | c=72.9 rankC=105.7 need=448455 tD=1.07 人 | safe=132460 keep=196654 avail=10104 chunkB=41842 pulseB=25105 不够一条(x=10104)→continue hNb=2
+    ⇒ 影子指令 attack pct=302 → [VOID] Soviet onion#76[T5]（约 61904 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1570 alex_k B=213581 L=3880 d=55.0 nb=2 neut=0 cmds=85 noFull=1 shQ=53395 | m=1.490 worth=82.0 cheap=4.8 over=0 dMedOther=19.5 safe(-1)=135297
+    → [VOID] Soviet onion#76[T5] terr=8518 bal=184870 dq=21.7 cnt=156 | c=40.1 rankC=28.1 need=342298 tD=1.12 人 | safe=135297 keep=147271 avail=63808 chunkB=42716 pulseB=25630  x=63808 hNb=2
+    → F[eu]dal Empire#17[T2] terr=11962 bal=246648 dq=20.6 cnt=57 | c=74.0 rankC=107.3 need=457574 tD=1.06 人 | safe=135297 keep=200074 avail=11005 chunkB=42716 pulseB=25630 不够一条(x=11005)→continue hNb=2
+    ⇒ 影子指令 attack pct=305 → [VOID] Soviet onion#76[T5]（约 63824 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1575 alex_k B=213581 L=3880 d=55.0 nb=2 neut=0 cmds=86 noFull=1 shQ=53395 | m=1.489 worth=82.0 cheap=4.8 over=0 dMedOther=19.5 safe(-1)=135297
+    → [VOID] Soviet onion#76[T5] terr=8730 bal=184870 dq=21.2 cnt=157 | c=39.2 rankC=27.4 need=342616 tD=1.09 人 | safe=135297 keep=145854 avail=65225 chunkB=42716 pulseB=25630  x=65225 hNb=2
+    → F[eu]dal Empire#17[T2] terr=12026 bal=246648 dq=20.5 cnt=57 | c=73.6 rankC=106.7 need=457670 tD=1.05 人 | safe=135297 keep=199540 avail=11539 chunkB=42716 pulseB=25630 不够一条(x=11539)→continue hNb=2
+    ⇒ 影子指令 attack pct=312 → [VOID] Soviet onion#76[T5]（约 65284 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1580 alex_k B=217980 L=3880 d=56.2 nb=2 neut=0 cmds=87 noFull=1 shQ=54495 | m=1.488 worth=83.6 cheap=4.8 over=0 dMedOther=19.9 safe(-1)=138151
+    → [VOID] Soviet onion#76[T5] terr=8839 bal=188678 dq=21.3 cnt=158 | c=52.6 rankC=52.6 need=349575 tD=1.08 人 | safe=138151 keep=168617 avail=46809 chunkB=43596 pulseB=26158  x=46809 hNb=2
+    → F[eu]dal Empire#17[T2] terr=12053 bal=251728 dq=20.9 cnt=57 | c=74.9 rankC=108.6 need=466758 tD=1.05 人 | safe=138151 keep=203370 avail=12056 chunkB=43596 pulseB=26158 不够一条(x=12056)→continue hNb=2
+    ⇒ 影子指令 attack pct=219 → [VOID] Soviet onion#76[T5]（约 46831 兵） 〔send:484<send:1827<send:3865<buyLand:5616〕
+t=1585 alex_k B=150927 L=3880 d=38.9 nb=2 neut=0 cmds=87 noFull=1 shQ=1546 | m=1.487 worth=57.9 cheap=4.9 over=0 dMedOther=19.9 safe(-1)=143660
+    → [VOID] Soviet onion#76[T5] terr=9048 bal=188678 dq=20.9 cnt=161 | c=41.9 rankC=41.9 need=285366 tD=1.05 人 | safe=143660 keep=143660 avail=5499 chunkB=30185 pulseB=18111 不够一条(x=5499)→continue hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=261535 dq=21.7 cnt=57 | c=77.5 rankC=112.4 need=484240 tD=1.09 人 | safe=143660 keep=Inf avail=-Inf chunkB=30185 pulseB=18111 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1590 alex_k B=56056 L=4041 d=13.9 nb=2 neut=0 cmds=87 noFull=1 shQ=4902 | m=1.486 worth=20.6 cheap=4.9 over=0 dMedOther=20.3 safe(-1)=146507
+    → [VOID] Soviet onion#76[T5] terr=8887 bal=187175 dq=21.1 cnt=159 | c=40.6 rankC=40.6 need=200581 tD=1.04 人 crowdedHard | safe=146507 keep=Inf avail=-Inf chunkB=11211 pulseB=6727 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=266844 dq=22.1 cnt=57 | c=106.4 rankC=154.3 need=493703 tD=1.09 人 crowdedHard | safe=146507 keep=Inf avail=-Inf chunkB=11211 pulseB=6727 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1595 alex_k B=56056 L=4200 d=13.3 nb=2 neut=0 cmds=87 noFull=1 shQ=6319 | m=1.486 worth=19.8 cheap=5.0 over=0 dMedOther=20.3 safe(-1)=146373
+    → [VOID] Soviet onion#76[T5] terr=8728 bal=181818 dq=20.8 cnt=157 | c=41.6 rankC=41.6 need=200619 tD=1.03 人 crowdedHard | safe=146373 keep=Inf avail=-Inf chunkB=11211 pulseB=6727 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=266844 dq=22.1 cnt=58 | c=106.4 rankC=154.3 need=493703 tD=1.09 人 crowdedHard | safe=146373 keep=Inf avail=-Inf chunkB=11211 pulseB=6727 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1600 alex_k B=61689 L=4512 d=13.7 nb=2 neut=0 cmds=87 noFull=1 shQ=7750 | m=1.485 worth=20.3 cheap=5.0 over=0 dMedOther=21.5 safe(-1)=155883
+    → [VOID] Soviet onion#76[T5] terr=8416 bal=183323 dq=21.8 cnt=151 | c=48.2 rankC=48.2 need=221465 tD=1.01 人 crowdedHard | safe=155883 keep=Inf avail=-Inf chunkB=12338 pulseB=7403 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=284240 dq=23.6 cnt=59 | c=113.1 rankC=164.0 need=524709 tD=1.10 人 crowdedHard | safe=155883 keep=Inf avail=-Inf chunkB=12338 pulseB=7403 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1605 alex_k B=61689 L=4810 d=12.8 nb=2 neut=0 cmds=87 noFull=1 shQ=9281 | m=1.484 worth=19.0 cheap=5.0 over=0 dMedOther=21.3 safe(-1)=155632
+    → [VOID] Soviet onion#76[T5] terr=8118 bal=172996 dq=21.3 cnt=143 | c=50.7 rankC=50.7 need=221512 tD=1.00 人 crowdedHard | safe=155632 keep=Inf avail=-Inf chunkB=12338 pulseB=7403 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=284240 dq=23.6 cnt=61 | c=113.1 rankC=164.0 need=524709 tD=1.11 人 crowdedHard | safe=155632 keep=Inf avail=-Inf chunkB=12338 pulseB=7403 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1610 alex_k B=62904 L=4953 d=12.7 nb=2 neut=0 cmds=87 noFull=1 shQ=10808 | m=1.484 worth=18.8 cheap=5.1 over=0 dMedOther=21.5 safe(-1)=158657
+    → [VOID] Soviet onion#76[T5] terr=7975 bal=171432 dq=21.5 cnt=138 | c=53.3 rankC=53.3 need=227330 tD=1.00 人 crowdedHard | safe=158657 keep=Inf avail=-Inf chunkB=12581 pulseB=7548 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=289839 dq=24.0 cnt=62 | c=115.2 rankC=167.1 need=534688 tD=1.12 人 crowdedHard | safe=158657 keep=Inf avail=-Inf chunkB=12581 pulseB=7548 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1615 alex_k B=62904 L=5217 d=12.1 nb=2 neut=0 cmds=87 noFull=1 shQ=12347 | m=1.483 worth=17.9 cheap=5.1 over=0 dMedOther=21.7 safe(-1)=158435
+    → [VOID] Soviet onion#76[T5] terr=7711 bal=162400 dq=21.1 cnt=118 | c=55.9 rankC=55.9 need=227376 tD=0.97 人 crowdedHard | safe=158435 keep=Inf avail=-Inf chunkB=12581 pulseB=7548 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=289839 dq=24.0 cnt=64 | c=115.2 rankC=167.0 need=534688 tD=1.11 人 crowdedHard | safe=158435 keep=Inf avail=-Inf chunkB=12581 pulseB=7548 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1620 alex_k B=64124 L=5446 d=11.8 nb=2 neut=0 cmds=87 noFull=1 shQ=13880 | m=1.482 worth=17.4 cheap=5.2 over=0 dMedOther=22.1 safe(-1)=161400
+    → [VOID] Soviet onion#76[T5] terr=7482 bal=157721 dq=21.1 cnt=102 | c=59.7 rankC=59.7 need=232686 tD=0.95 人 crowdedHard | safe=161400 keep=Inf avail=-Inf chunkB=12825 pulseB=7695 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=295461 dq=24.5 cnt=64 | c=117.4 rankC=170.2 need=544709 tD=1.11 人 crowdedHard | safe=161400 keep=Inf avail=-Inf chunkB=12825 pulseB=7695 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1625 alex_k B=64124 L=5548 d=11.6 nb=2 neut=0 cmds=87 noFull=1 shQ=15423 | m=1.481 worth=17.1 cheap=5.2 over=0 dMedOther=22.1 safe(-1)=161314
+    → [VOID] Soviet onion#76[T5] terr=7380 bal=154282 dq=20.9 cnt=95 | c=60.9 rankC=60.9 need=232724 tD=0.95 人 crowdedHard | safe=161314 keep=Inf avail=-Inf chunkB=12825 pulseB=7695 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=295461 dq=24.5 cnt=64 | c=117.4 rankC=170.2 need=544709 tD=1.11 人 crowdedHard | safe=161314 keep=Inf avail=-Inf chunkB=12825 pulseB=7695 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1630 alex_k B=65342 L=5733 d=11.4 nb=2 neut=0 cmds=87 noFull=1 shQ=16335 | m=1.480 worth=16.9 cheap=5.2 over=0 dMedOther=22.5 safe(-1)=164312
+    → [VOID] Soviet onion#76[T5] terr=7195 bal=150933 dq=21.0 cnt=88 | c=64.5 rankC=64.5 need=237552 tD=0.93 人 crowdedHard | safe=164312 keep=Inf avail=-Inf chunkB=13068 pulseB=7841 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=301074 dq=25.0 cnt=64 | c=119.5 rankC=173.3 need=554713 tD=1.11 人 crowdedHard | safe=164312 keep=Inf avail=-Inf chunkB=13068 pulseB=7841 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1635 alex_k B=65342 L=5906 d=11.1 nb=2 neut=0 cmds=87 noFull=1 shQ=16335 | m=1.480 worth=16.4 cheap=5.3 over=0 dMedOther=22.5 safe(-1)=164166
+    → [VOID] Soviet onion#76[T5] terr=7022 bal=145149 dq=20.7 cnt=79 | c=66.8 rankC=66.8 need=237594 tD=0.92 人 crowdedHard | safe=164166 keep=Inf avail=-Inf chunkB=13068 pulseB=7841 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=301074 dq=25.0 cnt=64 | c=119.5 rankC=173.3 need=554713 tD=1.11 人 crowdedHard | safe=164166 keep=Inf avail=-Inf chunkB=13068 pulseB=7841 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1640 alex_k B=66563 L=5985 d=11.1 nb=2 neut=0 cmds=87 noFull=1 shQ=16640 | m=1.479 worth=16.4 cheap=5.3 over=0 dMedOther=22.9 safe(-1)=167262
+    → [VOID] Soviet onion#76[T5] terr=6943 bal=145202 dq=20.9 cnt=71 | c=69.3 rankC=69.3 need=242120 tD=0.91 人 crowdedHard | safe=167262 keep=Inf avail=-Inf chunkB=13313 pulseB=7988 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=306704 dq=25.4 cnt=64 | c=121.7 rankC=176.4 need=564748 tD=1.11 人 crowdedHard | safe=167262 keep=Inf avail=-Inf chunkB=13313 pulseB=7988 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1645 alex_k B=66563 L=6120 d=10.9 nb=2 neut=0 cmds=87 noFull=1 shQ=16640 | m=1.478 worth=16.1 cheap=5.4 over=0 dMedOther=22.9 safe(-1)=167148
+    → [VOID] Soviet onion#76[T5] terr=6808 bal=140700 dq=20.7 cnt=61 | c=71.4 rankC=71.4 need=242196 tD=0.90 人 crowdedHard | safe=167148 keep=Inf avail=-Inf chunkB=13313 pulseB=7988 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=306704 dq=25.4 cnt=64 | c=121.7 rankC=176.4 need=564748 tD=1.11 人 crowdedHard | safe=167148 keep=Inf avail=-Inf chunkB=13313 pulseB=7988 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1650 alex_k B=67842 L=6120 d=11.1 nb=2 neut=0 cmds=87 noFull=1 shQ=16960 | m=1.478 worth=16.4 cheap=5.4 over=0 dMedOther=23.0 safe(-1)=170319
+    → [VOID] Soviet onion#76[T5] terr=6808 bal=143071 dq=21.0 cnt=61 | c=72.7 rankC=72.7 need=246846 tD=0.91 人 crowdedHard | safe=170319 keep=Inf avail=-Inf chunkB=13568 pulseB=8141 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=312347 dq=25.9 cnt=64 | c=123.8 rankC=179.6 need=574806 tD=1.12 人 crowdedHard | safe=170319 keep=Inf avail=-Inf chunkB=13568 pulseB=8141 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1655 alex_k B=67842 L=6120 d=11.1 nb=2 neut=0 cmds=87 noFull=1 shQ=16960 | m=1.477 worth=16.4 cheap=5.5 over=0 dMedOther=21.7 safe(-1)=170319
+    → [VOID] Soviet onion#76[T5] terr=6808 bal=143071 dq=21.0 cnt=61 | c=72.7 rankC=72.7 need=246919 tD=0.97 人 crowdedHard | safe=170319 keep=Inf avail=-Inf chunkB=13568 pulseB=8141 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=312347 dq=25.9 cnt=64 | c=123.8 rankC=179.6 need=574806 tD=1.19 人 crowdedHard | safe=170319 keep=Inf avail=-Inf chunkB=13568 pulseB=8141 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1660 alex_k B=69069 L=6120 d=11.3 nb=2 neut=0 cmds=87 noFull=1 shQ=17267 | m=1.476 worth=16.7 cheap=5.5 over=0 dMedOther=22.1 safe(-1)=173494
+    → [VOID] Soviet onion#76[T5] terr=6808 bal=145660 dq=21.4 cnt=61 | c=73.9 rankC=73.9 need=251334 tD=0.97 人 crowdedHard | safe=173494 keep=Inf avail=-Inf chunkB=13814 pulseB=8288 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=318000 dq=26.4 cnt=64 | c=126.0 rankC=182.7 need=584881 tD=1.19 人 crowdedHard | safe=173494 keep=Inf avail=-Inf chunkB=13814 pulseB=8288 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1665 alex_k B=69069 L=6120 d=11.3 nb=2 neut=0 cmds=87 noFull=1 shQ=17267 | m=1.475 worth=16.6 cheap=5.6 over=0 dMedOther=23.8 safe(-1)=173494
+    → [VOID] Soviet onion#76[T5] terr=6808 bal=145660 dq=21.4 cnt=61 | c=73.9 rankC=73.9 need=251408 tD=0.90 人 crowdedHard | safe=173494 keep=Inf avail=-Inf chunkB=13814 pulseB=8288 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=318000 dq=26.4 cnt=64 | c=126.0 rankC=182.7 need=584881 tD=1.11 人 crowdedHard | safe=173494 keep=Inf avail=-Inf chunkB=13814 pulseB=8288 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1670 alex_k B=70298 L=6120 d=11.5 nb=2 neut=0 cmds=87 noFull=1 shQ=17574 | m=1.474 worth=16.9 cheap=5.6 over=0 dMedOther=24.2 safe(-1)=176674
+    → [VOID] Soviet onion#76[T5] terr=6808 bal=148252 dq=21.8 cnt=61 | c=75.2 rankC=75.2 need=255832 tD=0.90 人 crowdedHard | safe=176674 keep=Inf avail=-Inf chunkB=14060 pulseB=8436 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=323660 dq=26.8 cnt=64 | c=128.2 rankC=185.9 need=594969 tD=1.11 人 crowdedHard | safe=176674 keep=Inf avail=-Inf chunkB=14060 pulseB=8436 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1675 alex_k B=70298 L=6120 d=11.5 nb=2 neut=0 cmds=87 noFull=1 shQ=17574 | m=1.474 worth=16.9 cheap=5.7 over=0 dMedOther=24.2 safe(-1)=176674
+    → [VOID] Soviet onion#76[T5] terr=6808 bal=148252 dq=21.8 cnt=61 | c=75.2 rankC=75.2 need=255907 tD=0.90 人 crowdedHard | safe=176674 keep=Inf avail=-Inf chunkB=14060 pulseB=8436 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=323660 dq=26.8 cnt=64 | c=128.2 rankC=185.9 need=594969 tD=1.11 人 crowdedHard | safe=176674 keep=Inf avail=-Inf chunkB=14060 pulseB=8436 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1680 alex_k B=71528 L=6120 d=11.7 nb=2 neut=0 cmds=87 noFull=1 shQ=17882 | m=1.473 worth=17.2 cheap=5.7 over=0 dMedOther=24.7 safe(-1)=179856
+    → [VOID] Soviet onion#76[T5] terr=6808 bal=150846 dq=22.2 cnt=61 | c=76.4 rankC=76.4 need=260340 tD=0.90 人 crowdedHard | safe=179856 keep=Inf avail=-Inf chunkB=14306 pulseB=8583 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=329324 dq=27.3 cnt=64 | c=89.9 rankC=89.9 need=605065 tD=1.11 人 crowdedHard | safe=179856 keep=Inf avail=-Inf chunkB=14306 pulseB=8583 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1685 alex_k B=71528 L=6120 d=11.7 nb=2 neut=0 cmds=87 noFull=1 shQ=17882 | m=1.472 worth=17.2 cheap=5.8 over=0 dMedOther=24.7 safe(-1)=179856
+    → [VOID] Soviet onion#76[T5] terr=6808 bal=150846 dq=22.2 cnt=61 | c=76.4 rankC=76.4 need=260416 tD=0.90 人 crowdedHard | safe=179856 keep=Inf avail=-Inf chunkB=14306 pulseB=8583 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=329324 dq=27.3 cnt=64 | c=89.9 rankC=89.9 need=605065 tD=1.11 人 crowdedHard | safe=179856 keep=Inf avail=-Inf chunkB=14306 pulseB=8583 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1690 alex_k B=72758 L=6120 d=11.9 nb=2 neut=0 cmds=87 noFull=1 shQ=18189 | m=1.472 worth=17.5 cheap=5.8 over=0 dMedOther=25.1 safe(-1)=183038
+    → [VOID] Soviet onion#76[T5] terr=6808 bal=153440 dq=22.5 cnt=61 | c=77.6 rankC=77.6 need=264853 tD=0.90 人 crowdedHard | safe=183038 keep=Inf avail=-Inf chunkB=14552 pulseB=8731 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=334988 dq=27.8 cnt=64 | c=91.4 rankC=91.4 need=615160 tD=1.11 人 crowdedHard | safe=183038 keep=Inf avail=-Inf chunkB=14552 pulseB=8731 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1695 alex_k B=72758 L=6120 d=11.9 nb=2 neut=0 cmds=87 noFull=1 shQ=18189 | m=1.471 worth=17.5 cheap=5.9 over=0 dMedOther=25.1 safe(-1)=183038
+    → [VOID] Soviet onion#76[T5] terr=6808 bal=153440 dq=22.5 cnt=61 | c=77.6 rankC=77.6 need=264931 tD=0.90 人 crowdedHard | safe=183038 keep=Inf avail=-Inf chunkB=14552 pulseB=8731 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=334988 dq=27.8 cnt=64 | c=91.4 rankC=91.4 need=615160 tD=1.11 人 crowdedHard | safe=183038 keep=Inf avail=-Inf chunkB=14552 pulseB=8731 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1700 alex_k B=80107 L=6120 d=13.1 nb=2 neut=0 cmds=87 noFull=1 shQ=18527 | m=1.470 worth=19.2 cheap=5.9 over=0 dMedOther=26.5 safe(-1)=192994
+    → [VOID] Soviet onion#76[T5] terr=6808 bal=162841 dq=23.9 cnt=61 | c=82.2 rankC=82.2 need=280724 tD=0.90 人 crowdedHard | safe=192994 keep=Inf avail=-Inf chunkB=16021 pulseB=9613 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=352709 dq=29.2 cnt=64 | c=96.1 rankC=96.1 need=646745 tD=1.10 人 crowdedHard | safe=192994 keep=Inf avail=-Inf chunkB=16021 pulseB=9613 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1705 alex_k B=80107 L=6120 d=13.1 nb=2 neut=0 cmds=87 noFull=1 shQ=20026 | m=1.469 worth=19.2 cheap=6.0 over=0 dMedOther=24.9 safe(-1)=192994
+    → [VOID] Soviet onion#76[T5] terr=6808 bal=139147 dq=20.4 cnt=61 | c=42.8 rankC=30.0 need=263070 tD=0.82 人 pulse onMe | safe=192994 keep=Inf avail=-Inf chunkB=16021 pulseB=9613 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=352709 dq=29.2 cnt=64 | c=96.1 rankC=96.1 need=646745 tD=1.18 人 crowdedHard | safe=192994 keep=Inf avail=-Inf chunkB=16021 pulseB=9613 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1710 alex_k B=80130 L=6059 d=13.2 nb=2 neut=0 cmds=87 noFull=1 shQ=20032 | m=1.468 worth=19.4 cheap=6.0 over=0 dMedOther=25.3 safe(-1)=196314
+    → [VOID] Soviet onion#76[T5] terr=6869 bal=141442 dq=20.6 cnt=61 | c=42.5 rankC=29.8 need=265080 tD=0.81 人 pulse onMe | safe=196314 keep=Inf avail=-Inf chunkB=16026 pulseB=9616 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=358528 dq=29.7 cnt=64 | c=97.6 rankC=97.6 need=657117 tD=1.18 人 crowdedHard | safe=196314 keep=Inf avail=-Inf chunkB=16026 pulseB=9616 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1715 alex_k B=77537 L=5936 d=13.1 nb=2 neut=0 cmds=87 noFull=1 shQ=19384 | m=1.468 worth=19.2 cheap=6.1 over=0 dMedOther=25.3 safe(-1)=196418
+    → [VOID] Soviet onion#76[T5] terr=6992 bal=141442 dq=20.2 cnt=62 | c=40.8 rankC=28.6 need=261258 tD=0.80 人 pulse onMe | safe=196418 keep=Inf avail=-Inf chunkB=15507 pulseB=9304 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=358528 dq=29.7 cnt=64 | c=97.6 rankC=97.6 need=657117 tD=1.18 人 crowdedHard | safe=196418 keep=Inf avail=-Inf chunkB=15507 pulseB=9304 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1720 alex_k B=77455 L=5873 d=13.2 nb=2 neut=0 cmds=87 noFull=1 shQ=19363 | m=1.467 worth=19.3 cheap=6.2 over=0 dMedOther=25.7 safe(-1)=199734
+    → [VOID] Soviet onion#76[T5] terr=7055 bal=143733 dq=20.4 cnt=63 | c=40.6 rankC=28.4 need=263165 tD=0.79 人 pulse onMe | safe=199734 keep=Inf avail=-Inf chunkB=15491 pulseB=9295 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=364336 dq=30.2 cnt=64 | c=99.2 rankC=99.2 need=667469 tD=1.18 人 crowdedHard | safe=199734 keep=Inf avail=-Inf chunkB=15491 pulseB=9295 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1725 alex_k B=74743 L=5744 d=13.0 nb=2 neut=0 cmds=87 noFull=1 shQ=18685 | m=1.466 worth=19.1 cheap=6.2 over=0 dMedOther=25.7 safe(-1)=199843
+    → [VOID] Soviet onion#76[T5] terr=7184 bal=143733 dq=20.0 cnt=65 | c=51.9 rankC=51.9 need=259058 tD=0.78 人 pulse onMe | safe=199843 keep=Inf avail=-Inf chunkB=14949 pulseB=8969 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=364336 dq=30.2 cnt=64 | c=99.2 rankC=99.2 need=667469 tD=1.18 人 crowdedHard | safe=199843 keep=Inf avail=-Inf chunkB=14949 pulseB=8969 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1730 alex_k B=73431 L=5678 d=12.9 nb=2 neut=0 cmds=87 noFull=1 shQ=18357 | m=1.466 worth=19.0 cheap=6.3 over=0 dMedOther=25.8 safe(-1)=203152
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=146033 dq=20.1 cnt=66 | c=69.0 rankC=69.0 need=258531 tD=0.78 人 crowdedHard | safe=203152 keep=Inf avail=-Inf chunkB=14686 pulseB=8812 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=370128 dq=30.7 cnt=64 | c=100.7 rankC=100.7 need=677792 tD=1.19 人 crowdedHard | safe=203152 keep=Inf avail=-Inf chunkB=14686 pulseB=8812 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1735 alex_k B=73431 L=5678 d=12.9 nb=2 neut=0 cmds=87 noFull=1 shQ=18357 | m=1.465 worth=18.9 cheap=6.3 over=0 dMedOther=25.1 safe(-1)=203152
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=146033 dq=20.1 cnt=66 | c=69.0 rankC=69.0 need=258598 tD=0.80 人 crowdedHard | safe=203152 keep=Inf avail=-Inf chunkB=14686 pulseB=8812 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=370128 dq=30.7 cnt=64 | c=100.7 rankC=100.7 need=677792 tD=1.22 人 crowdedHard | safe=203152 keep=Inf avail=-Inf chunkB=14686 pulseB=8812 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1740 alex_k B=74576 L=5678 d=13.1 nb=2 neut=0 cmds=87 noFull=1 shQ=18644 | m=1.464 worth=19.2 cheap=6.4 over=0 dMedOther=25.5 safe(-1)=206396
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=148311 dq=20.5 cnt=66 | c=101.5 rankC=147.2 need=262509 tD=0.80 人 crowdedHard | safe=206396 keep=Inf avail=-Inf chunkB=14915 pulseB=8949 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=375901 dq=31.2 cnt=64 | c=148.2 rankC=214.9 need=688082 tD=1.22 人 crowdedHard | safe=206396 keep=Inf avail=-Inf chunkB=14915 pulseB=8949 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1745 alex_k B=74576 L=5678 d=13.1 nb=2 neut=0 cmds=87 noFull=1 shQ=18644 | m=1.463 worth=19.2 cheap=6.5 over=0 dMedOther=25.5 safe(-1)=206396
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=148311 dq=20.5 cnt=66 | c=101.5 rankC=147.1 need=262543 tD=0.80 人 crowdedHard | safe=206396 keep=Inf avail=-Inf chunkB=14915 pulseB=8949 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=375901 dq=31.2 cnt=64 | c=148.2 rankC=214.9 need=688082 tD=1.22 人 crowdedHard | safe=206396 keep=Inf avail=-Inf chunkB=14915 pulseB=8949 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1750 alex_k B=75717 L=5678 d=13.3 nb=2 neut=0 cmds=87 noFull=1 shQ=18929 | m=1.462 worth=19.5 cheap=6.5 over=0 dMedOther=25.9 safe(-1)=209626
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=150580 dq=20.8 cnt=66 | c=103.0 rankC=149.3 need=266440 tD=0.80 人 crowdedHard | safe=209626 keep=Inf avail=-Inf chunkB=15143 pulseB=9086 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=381652 dq=31.6 cnt=64 | c=150.4 rankC=218.1 need=698332 tD=1.22 人 crowdedHard | safe=209626 keep=Inf avail=-Inf chunkB=15143 pulseB=9086 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1755 alex_k B=75717 L=5678 d=13.3 nb=2 neut=0 cmds=87 noFull=1 shQ=18929 | m=1.462 worth=19.5 cheap=6.6 over=0 dMedOther=25.9 safe(-1)=209626
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=150580 dq=20.8 cnt=66 | c=103.0 rankC=149.3 need=266509 tD=0.80 人 crowdedHard | safe=209626 keep=Inf avail=-Inf chunkB=15143 pulseB=9086 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=381652 dq=31.6 cnt=64 | c=150.4 rankC=218.1 need=698332 tD=1.22 人 crowdedHard | safe=209626 keep=Inf avail=-Inf chunkB=15143 pulseB=9086 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1760 alex_k B=76852 L=5678 d=13.5 nb=2 neut=0 cmds=87 noFull=1 shQ=19213 | m=1.461 worth=19.8 cheap=6.7 over=0 dMedOther=26.3 safe(-1)=212842
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=152838 dq=21.1 cnt=66 | c=104.4 rankC=151.4 need=270389 tD=0.80 人 crowdedHard | safe=212842 keep=Inf avail=-Inf chunkB=15370 pulseB=9222 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=387376 dq=32.1 cnt=64 | c=152.6 rankC=221.3 need=708534 tD=1.22 人 crowdedHard | safe=212842 keep=Inf avail=-Inf chunkB=15370 pulseB=9222 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1765 alex_k B=76852 L=5678 d=13.5 nb=2 neut=0 cmds=87 noFull=1 shQ=19213 | m=1.460 worth=19.8 cheap=6.7 over=0 dMedOther=26.3 safe(-1)=212842
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=152838 dq=21.1 cnt=66 | c=104.4 rankC=151.4 need=270424 tD=0.80 人 crowdedHard | safe=212842 keep=Inf avail=-Inf chunkB=15370 pulseB=9222 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=387376 dq=32.1 cnt=64 | c=152.6 rankC=221.3 need=708534 tD=1.22 人 crowdedHard | safe=212842 keep=Inf avail=-Inf chunkB=15370 pulseB=9222 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1770 alex_k B=77981 L=5678 d=13.7 nb=2 neut=0 cmds=87 noFull=1 shQ=19495 | m=1.460 worth=20.0 cheap=6.8 over=0 dMedOther=26.6 safe(-1)=216041
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=155084 dq=21.4 cnt=66 | c=105.9 rankC=153.6 need=274285 tD=0.80 人 crowdedHard | safe=216041 keep=Inf avail=-Inf chunkB=15596 pulseB=9358 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=393070 dq=32.6 cnt=64 | c=154.8 rankC=224.5 need=718683 tD=1.22 人 crowdedHard | safe=216041 keep=Inf avail=-Inf chunkB=15596 pulseB=9358 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1775 alex_k B=77981 L=5678 d=13.7 nb=2 neut=0 cmds=87 noFull=1 shQ=19495 | m=1.459 worth=20.0 cheap=6.9 over=0 dMedOther=26.6 safe(-1)=216041
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=155084 dq=21.4 cnt=66 | c=105.9 rankC=153.5 need=274356 tD=0.80 人 crowdedHard | safe=216041 keep=Inf avail=-Inf chunkB=15596 pulseB=9358 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=393070 dq=32.6 cnt=64 | c=154.8 rankC=224.5 need=718683 tD=1.22 人 crowdedHard | safe=216041 keep=Inf avail=-Inf chunkB=15596 pulseB=9358 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1780 alex_k B=79103 L=5678 d=13.9 nb=2 neut=0 cmds=87 noFull=1 shQ=19775 | m=1.458 worth=20.3 cheap=7.0 over=0 dMedOther=27.0 safe(-1)=219221
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=157317 dq=21.7 cnt=66 | c=107.3 rankC=155.6 need=278197 tD=0.80 人 crowdedHard | safe=219221 keep=Inf avail=-Inf chunkB=15821 pulseB=9492 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=398730 dq=33.1 cnt=64 | c=157.0 rankC=227.6 need=728771 tD=1.22 人 crowdedHard | safe=219221 keep=Inf avail=-Inf chunkB=15821 pulseB=9492 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1785 alex_k B=79103 L=5678 d=13.9 nb=2 neut=0 cmds=87 noFull=1 shQ=19775 | m=1.457 worth=20.3 cheap=7.0 over=0 dMedOther=27.0 safe(-1)=219221
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=157317 dq=21.7 cnt=66 | c=107.3 rankC=155.6 need=278233 tD=0.80 人 crowdedHard | safe=219221 keep=Inf avail=-Inf chunkB=15821 pulseB=9492 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=398730 dq=33.1 cnt=64 | c=157.0 rankC=227.6 need=728771 tD=1.22 人 crowdedHard | safe=219221 keep=Inf avail=-Inf chunkB=15821 pulseB=9492 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1790 alex_k B=99927 L=5678 d=17.6 nb=2 neut=0 cmds=87 noFull=1 shQ=21519 | m=1.457 worth=25.6 cheap=7.1 over=0 dMedOther=27.4 safe(-1)=222357
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=159519 dq=22.0 cnt=66 | c=108.9 rankC=157.9 need=282022 tD=0.80 人 crowdedHard | safe=222357 keep=Inf avail=-Inf chunkB=19985 pulseB=11991 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=404312 dq=33.5 cnt=64 | c=159.2 rankC=230.8 need=738720 tD=1.22 人 crowdedHard | safe=222357 keep=Inf avail=-Inf chunkB=19985 pulseB=11991 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1795 alex_k B=99927 L=5678 d=17.6 nb=2 neut=0 cmds=87 noFull=1 shQ=23260 | m=1.456 worth=25.6 cheap=7.2 over=0 dMedOther=27.4 safe(-1)=222357
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=159519 dq=22.0 cnt=66 | c=108.9 rankC=157.8 need=282095 tD=0.80 人 crowdedHard | safe=222357 keep=Inf avail=-Inf chunkB=19985 pulseB=11991 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=404312 dq=33.5 cnt=64 | c=159.2 rankC=230.8 need=738720 tD=1.22 人 crowdedHard | safe=222357 keep=Inf avail=-Inf chunkB=19985 pulseB=11991 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1800 alex_k B=106973 L=5678 d=18.8 nb=2 neut=0 cmds=87 noFull=1 shQ=25008 | m=1.455 worth=27.4 cheap=7.3 over=0 dMedOther=28.8 safe(-1)=232244
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=168954 dq=23.3 cnt=66 | c=115.1 rankC=166.8 need=298220 tD=0.81 人 crowdedHard | safe=232244 keep=Inf avail=-Inf chunkB=21395 pulseB=12837 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=421911 dq=35.0 cnt=64 | c=166.0 rankC=240.6 need=770088 tD=1.22 人 crowdedHard | safe=232244 keep=Inf avail=-Inf chunkB=21395 pulseB=12837 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1805 alex_k B=106973 L=5678 d=18.8 nb=2 neut=0 cmds=87 noFull=1 shQ=26743 | m=1.454 worth=27.4 cheap=7.4 over=0 dMedOther=28.8 safe(-1)=232244
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=168954 dq=23.3 cnt=66 | c=115.1 rankC=166.8 need=298258 tD=0.81 人 crowdedHard | safe=232244 keep=Inf avail=-Inf chunkB=21395 pulseB=12837 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=421911 dq=35.0 cnt=64 | c=166.0 rankC=240.6 need=770088 tD=1.22 人 crowdedHard | safe=232244 keep=Inf avail=-Inf chunkB=21395 pulseB=12837 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1810 alex_k B=108406 L=5678 d=19.1 nb=2 neut=0 cmds=87 noFull=1 shQ=27101 | m=1.454 worth=27.8 cheap=7.4 over=0 dMedOther=28.9 safe(-1)=235420
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=171217 dq=23.6 cnt=66 | c=116.5 rankC=169.0 need=302156 tD=0.82 人 crowdedHard | safe=235420 keep=Inf avail=-Inf chunkB=21681 pulseB=13009 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=427564 dq=35.5 cnt=64 | c=168.1 rankC=243.8 need=780164 tD=1.22 人 crowdedHard | safe=235420 keep=Inf avail=-Inf chunkB=21681 pulseB=13009 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1815 alex_k B=108406 L=5678 d=19.1 nb=2 neut=0 cmds=87 noFull=1 shQ=27101 | m=1.453 worth=27.7 cheap=7.5 over=0 dMedOther=28.9 safe(-1)=235420
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=171217 dq=23.6 cnt=66 | c=116.5 rankC=169.0 need=302234 tD=0.82 人 crowdedHard | safe=235420 keep=Inf avail=-Inf chunkB=21681 pulseB=13009 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=427564 dq=35.5 cnt=64 | c=168.1 rankC=243.8 need=780164 tD=1.22 人 crowdedHard | safe=235420 keep=Inf avail=-Inf chunkB=21681 pulseB=13009 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1820 alex_k B=109826 L=5678 d=19.3 nb=2 neut=0 cmds=87 noFull=1 shQ=27456 | m=1.452 worth=28.1 cheap=7.6 over=0 dMedOther=29.3 safe(-1)=238566
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=173459 dq=23.9 cnt=66 | c=118.0 rankC=171.1 need=306098 tD=0.82 人 crowdedHard | safe=238566 keep=Inf avail=-Inf chunkB=21965 pulseB=13179 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=433165 dq=35.9 cnt=64 | c=170.3 rankC=246.9 need=790147 tD=1.22 人 crowdedHard | safe=238566 keep=Inf avail=-Inf chunkB=21965 pulseB=13179 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1825 alex_k B=109826 L=5678 d=19.3 nb=2 neut=0 cmds=87 noFull=1 shQ=27456 | m=1.451 worth=28.1 cheap=7.7 over=0 dMedOther=29.3 safe(-1)=238566
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=173459 dq=23.9 cnt=66 | c=81.4 rankC=81.4 need=306137 tD=0.82 人 crowdedHard | safe=238566 keep=Inf avail=-Inf chunkB=21965 pulseB=13179 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=433165 dq=35.9 cnt=64 | c=117.4 rankC=117.4 need=790147 tD=1.22 人 crowdedHard | safe=238566 keep=Inf avail=-Inf chunkB=21965 pulseB=13179 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1830 alex_k B=111231 L=5678 d=19.6 nb=2 neut=0 cmds=87 noFull=1 shQ=27807 | m=1.451 worth=28.4 cheap=7.8 over=0 dMedOther=29.7 safe(-1)=241681
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=175679 dq=24.2 cnt=66 | c=82.4 rankC=82.4 need=309966 tD=0.82 人 crowdedHard | safe=241681 keep=Inf avail=-Inf chunkB=22246 pulseB=13348 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=438709 dq=36.4 cnt=64 | c=118.9 rankC=118.9 need=800028 tD=1.22 人 crowdedHard | safe=241681 keep=Inf avail=-Inf chunkB=22246 pulseB=13348 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1835 alex_k B=111231 L=5678 d=19.6 nb=2 neut=0 cmds=87 noFull=1 shQ=27807 | m=1.450 worth=28.4 cheap=7.9 over=0 dMedOther=29.7 safe(-1)=241681
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=175679 dq=24.2 cnt=66 | c=82.4 rankC=82.4 need=310045 tD=0.82 人 crowdedHard | safe=241681 keep=Inf avail=-Inf chunkB=22246 pulseB=13348 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=438709 dq=36.4 cnt=64 | c=118.9 rankC=118.9 need=800028 tD=1.22 人 crowdedHard | safe=241681 keep=Inf avail=-Inf chunkB=22246 pulseB=13348 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1840 alex_k B=112621 L=5678 d=19.8 nb=2 neut=0 cmds=87 noFull=1 shQ=28155 | m=1.449 worth=28.7 cheap=8.0 over=0 dMedOther=30.1 safe(-1)=244761
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=177874 dq=24.5 cnt=66 | c=83.3 rankC=83.3 need=313832 tD=0.82 人 crowdedHard | safe=244761 keep=Inf avail=-Inf chunkB=22524 pulseB=13515 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=444192 dq=36.8 cnt=64 | c=120.4 rankC=120.4 need=809801 tD=1.22 人 crowdedHard | safe=244761 keep=Inf avail=-Inf chunkB=22524 pulseB=13515 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1845 alex_k B=112621 L=5678 d=19.8 nb=2 neut=0 cmds=87 noFull=1 shQ=28155 | m=1.448 worth=28.7 cheap=8.1 over=0 dMedOther=30.1 safe(-1)=244761
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=177874 dq=24.5 cnt=66 | c=83.3 rankC=83.3 need=313873 tD=0.82 人 crowdedHard | safe=244761 keep=Inf avail=-Inf chunkB=22524 pulseB=13515 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=444192 dq=36.8 cnt=64 | c=120.4 rankC=120.4 need=809801 tD=1.22 人 crowdedHard | safe=244761 keep=Inf avail=-Inf chunkB=22524 pulseB=13515 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1850 alex_k B=113994 L=5678 d=20.1 nb=2 neut=0 cmds=87 noFull=1 shQ=28498 | m=1.448 worth=29.1 cheap=8.2 over=0 dMedOther=30.6 safe(-1)=247830
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=180044 dq=24.8 cnt=66 | c=122.3 rankC=177.3 need=317619 tD=0.81 人 crowdedHard | safe=247830 keep=Inf avail=-Inf chunkB=22799 pulseB=13679 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=449655 dq=37.3 cnt=64 | c=176.6 rankC=256.1 need=819538 tD=1.22 人 crowdedHard | safe=247830 keep=Inf avail=-Inf chunkB=22799 pulseB=13679 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1855 alex_k B=113994 L=5678 d=20.1 nb=2 neut=0 cmds=87 noFull=1 shQ=28498 | m=1.447 worth=29.0 cheap=8.3 over=0 dMedOther=30.6 safe(-1)=247830
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=180044 dq=24.8 cnt=66 | c=122.2 rankC=177.3 need=317700 tD=0.81 人 crowdedHard | safe=247830 keep=Inf avail=-Inf chunkB=22799 pulseB=13679 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=449655 dq=37.3 cnt=64 | c=176.6 rankC=256.1 need=819538 tD=1.22 人 crowdedHard | safe=247830 keep=Inf avail=-Inf chunkB=22799 pulseB=13679 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1860 alex_k B=115350 L=5678 d=20.3 nb=2 neut=0 cmds=87 noFull=1 shQ=28837 | m=1.446 worth=29.4 cheap=8.4 over=0 dMedOther=31.6 safe(-1)=250937
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=182186 dq=25.1 cnt=66 | c=123.6 rankC=179.3 need=321400 tD=0.79 人 crowdedHard | safe=250937 keep=Inf avail=-Inf chunkB=23070 pulseB=13842 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=455185 dq=37.7 cnt=64 | c=178.7 rankC=259.2 need=829395 tD=1.19 人 crowdedHard | safe=250937 keep=Inf avail=-Inf chunkB=23070 pulseB=13842 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1865 alex_k B=115350 L=5678 d=20.3 nb=2 neut=0 cmds=87 noFull=1 shQ=28837 | m=1.445 worth=29.4 cheap=8.5 over=0 dMedOther=31.6 safe(-1)=250937
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=182186 dq=25.1 cnt=66 | c=123.6 rankC=179.3 need=321441 tD=0.79 人 crowdedHard | safe=250937 keep=Inf avail=-Inf chunkB=23070 pulseB=13842 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=455185 dq=37.7 cnt=64 | c=178.7 rankC=259.2 need=829395 tD=1.19 人 crowdedHard | safe=250937 keep=Inf avail=-Inf chunkB=23070 pulseB=13842 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1870 alex_k B=116676 L=5678 d=20.5 nb=2 neut=0 cmds=87 noFull=1 shQ=29169 | m=1.445 worth=29.7 cheap=8.6 over=0 dMedOther=32.0 safe(-1)=254082
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=184335 dq=25.4 cnt=66 | c=125.0 rankC=181.3 need=325154 tD=0.79 人 crowdedHard | safe=254082 keep=Inf avail=-Inf chunkB=23335 pulseB=14001 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=460783 dq=38.2 cnt=64 | c=180.9 rankC=262.3 need=839372 tD=1.19 人 crowdedHard | safe=254082 keep=Inf avail=-Inf chunkB=23335 pulseB=14001 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1875 alex_k B=116676 L=5678 d=20.5 nb=2 neut=0 cmds=87 noFull=1 shQ=29169 | m=1.444 worth=29.7 cheap=8.6 over=0 dMedOther=32.0 safe(-1)=254082
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=184335 dq=25.4 cnt=66 | c=86.2 rankC=86.2 need=325237 tD=0.79 人 crowdedHard | safe=254082 keep=Inf avail=-Inf chunkB=23335 pulseB=14001 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=460783 dq=38.2 cnt=64 | c=180.9 rankC=262.3 need=839372 tD=1.19 人 crowdedHard | safe=254082 keep=Inf avail=-Inf chunkB=23335 pulseB=14001 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1880 alex_k B=118017 L=5678 d=20.8 nb=2 neut=0 cmds=87 noFull=1 shQ=29504 | m=1.443 worth=30.0 cheap=8.6 over=0 dMedOther=32.4 safe(-1)=257266
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=186510 dq=25.7 cnt=66 | c=87.2 rankC=87.2 need=328997 tD=0.79 人 crowdedHard | safe=257266 keep=Inf avail=-Inf chunkB=23603 pulseB=14162 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=466450 dq=38.7 cnt=64 | c=183.1 rankC=265.4 need=849473 tD=1.19 人 crowdedHard | safe=257266 keep=Inf avail=-Inf chunkB=23603 pulseB=14162 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1885 alex_k B=118017 L=5678 d=20.8 nb=2 neut=0 cmds=87 noFull=1 shQ=29504 | m=1.442 worth=30.0 cheap=8.6 over=0 dMedOther=32.4 safe(-1)=257266
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=186510 dq=25.7 cnt=66 | c=87.2 rankC=87.2 need=329039 tD=0.79 人 crowdedHard | safe=257266 keep=Inf avail=-Inf chunkB=23603 pulseB=14162 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=466450 dq=38.7 cnt=64 | c=183.1 rankC=265.4 need=849473 tD=1.19 人 crowdedHard | safe=257266 keep=Inf avail=-Inf chunkB=23603 pulseB=14162 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1890 alex_k B=119374 L=5678 d=21.0 nb=2 neut=0 cmds=87 noFull=1 shQ=29843 | m=1.442 worth=30.3 cheap=8.6 over=0 dMedOther=32.8 safe(-1)=260489
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=188710 dq=26.0 cnt=66 | c=127.9 rankC=185.4 need=332843 tD=0.79 人 crowdedHard | safe=260489 keep=Inf avail=-Inf chunkB=23875 pulseB=14325 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=472187 dq=39.2 cnt=64 | c=185.3 rankC=268.6 need=859698 tD=1.19 人 crowdedHard | safe=260489 keep=Inf avail=-Inf chunkB=23875 pulseB=14325 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1895 alex_k B=119374 L=5678 d=21.0 nb=2 neut=0 cmds=87 noFull=1 shQ=29843 | m=1.441 worth=30.3 cheap=8.6 over=0 dMedOther=32.8 safe(-1)=260489
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=188710 dq=26.0 cnt=66 | c=127.9 rankC=185.4 need=332927 tD=0.79 人 crowdedHard | safe=260489 keep=Inf avail=-Inf chunkB=23875 pulseB=14325 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=472187 dq=39.2 cnt=64 | c=185.3 rankC=268.6 need=859698 tD=1.19 人 crowdedHard | safe=260489 keep=Inf avail=-Inf chunkB=23875 pulseB=14325 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1900 alex_k B=126424 L=5678 d=22.3 nb=2 neut=0 cmds=87 noFull=1 shQ=30209 | m=1.440 worth=32.1 cheap=8.6 over=0 dMedOther=34.0 safe(-1)=270526
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=198186 dq=27.3 cnt=66 | c=134.1 rankC=194.4 need=349179 tD=0.80 人 crowdedHard | safe=270526 keep=Inf avail=-Inf chunkB=25285 pulseB=15171 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=490054 dq=40.6 cnt=64 | c=192.1 rankC=278.6 need=891544 tD=1.19 人 crowdedHard | safe=270526 keep=Inf avail=-Inf chunkB=25285 pulseB=15171 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1905 alex_k B=126424 L=5678 d=22.3 nb=2 neut=0 cmds=87 noFull=1 shQ=31606 | m=1.439 worth=32.0 cheap=8.6 over=0 dMedOther=33.7 safe(-1)=270526
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=198186 dq=27.3 cnt=66 | c=134.1 rankC=194.4 need=349224 tD=0.81 人 crowdedHard | safe=270526 keep=Inf avail=-Inf chunkB=25285 pulseB=15171 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=490054 dq=40.6 cnt=64 | c=192.1 rankC=278.6 need=891544 tD=1.21 人 crowdedHard | safe=270526 keep=Inf avail=-Inf chunkB=25285 pulseB=15171 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1910 alex_k B=127877 L=5678 d=22.5 nb=2 neut=0 cmds=87 noFull=1 shQ=31969 | m=1.439 worth=32.4 cheap=8.6 over=0 dMedOther=34.1 safe(-1)=273912
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=200524 dq=27.7 cnt=66 | c=135.6 rankC=196.6 need=353268 tD=0.81 人 crowdedHard | safe=273912 keep=Inf avail=-Inf chunkB=25575 pulseB=15345 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=496081 dq=41.1 cnt=64 | c=194.5 rankC=282.0 need=902286 tD=1.21 人 crowdedHard | safe=273912 keep=Inf avail=-Inf chunkB=25575 pulseB=15345 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1915 alex_k B=127877 L=5678 d=22.5 nb=2 neut=0 cmds=87 noFull=1 shQ=31969 | m=1.438 worth=32.4 cheap=8.6 over=0 dMedOther=33.7 safe(-1)=273912
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=200524 dq=27.7 cnt=66 | c=135.6 rankC=196.6 need=353358 tD=0.82 人 crowdedHard | safe=273912 keep=Inf avail=-Inf chunkB=25575 pulseB=15345 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=496081 dq=41.1 cnt=64 | c=194.5 rankC=282.0 need=902286 tD=1.22 人 crowdedHard | safe=273912 keep=Inf avail=-Inf chunkB=25575 pulseB=15345 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1920 alex_k B=129347 L=5678 d=22.8 nb=2 neut=0 cmds=87 noFull=1 shQ=32336 | m=1.437 worth=32.7 cheap=8.6 over=0 dMedOther=34.1 safe(-1)=277340
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=202890 dq=28.0 cnt=66 | c=137.1 rankC=198.8 need=357452 tD=0.82 人 crowdedHard | safe=277340 keep=Inf avail=-Inf chunkB=25869 pulseB=15522 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=502182 dq=41.6 cnt=64 | c=196.8 rankC=285.4 need=913160 tD=1.22 人 crowdedHard | safe=277340 keep=Inf avail=-Inf chunkB=25869 pulseB=15522 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1925 alex_k B=129347 L=5678 d=22.8 nb=2 neut=0 cmds=87 noFull=1 shQ=32336 | m=1.436 worth=32.7 cheap=8.6 over=0 dMedOther=34.1 safe(-1)=277340
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=202890 dq=28.0 cnt=66 | c=94.6 rankC=94.6 need=357498 tD=0.82 人 crowdedHard | safe=277340 keep=Inf avail=-Inf chunkB=25869 pulseB=15522 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=502182 dq=41.6 cnt=64 | c=135.7 rankC=135.7 need=913160 tD=1.22 人 crowdedHard | safe=277340 keep=Inf avail=-Inf chunkB=25869 pulseB=15522 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1930 alex_k B=130834 L=5678 d=23.0 nb=2 neut=0 cmds=87 noFull=1 shQ=32708 | m=1.435 worth=33.1 cheap=8.6 over=0 dMedOther=34.5 safe(-1)=280810
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=205284 dq=28.3 cnt=66 | c=95.6 rankC=95.6 need=361642 tD=0.82 人 crowdedHard | safe=280810 keep=Inf avail=-Inf chunkB=26167 pulseB=15700 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=508358 dq=42.2 cnt=64 | c=137.4 rankC=137.4 need=924168 tD=1.22 人 crowdedHard | safe=280810 keep=Inf avail=-Inf chunkB=26167 pulseB=15700 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1935 alex_k B=130834 L=5678 d=23.0 nb=2 neut=0 cmds=87 noFull=1 shQ=32708 | m=1.435 worth=33.1 cheap=8.6 over=0 dMedOther=34.5 safe(-1)=280810
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=205284 dq=28.3 cnt=66 | c=95.6 rankC=95.6 need=361733 tD=0.82 人 crowdedHard | safe=280810 keep=Inf avail=-Inf chunkB=26167 pulseB=15700 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=508358 dq=42.2 cnt=64 | c=137.4 rankC=137.4 need=924168 tD=1.22 人 crowdedHard | safe=280810 keep=Inf avail=-Inf chunkB=26167 pulseB=15700 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1940 alex_k B=132338 L=5678 d=23.3 nb=2 neut=0 cmds=87 noFull=1 shQ=33084 | m=1.434 worth=33.4 cheap=8.6 over=0 dMedOther=34.9 safe(-1)=284322
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=207706 dq=28.6 cnt=66 | c=96.7 rankC=96.7 need=365927 tD=0.82 人 crowdedHard | safe=284322 keep=Inf avail=-Inf chunkB=26468 pulseB=15881 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=514610 dq=42.7 cnt=64 | c=139.0 rankC=139.0 need=935311 tD=1.22 人 crowdedHard | safe=284322 keep=Inf avail=-Inf chunkB=26468 pulseB=15881 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1945 alex_k B=132338 L=5678 d=23.3 nb=2 neut=0 cmds=87 noFull=1 shQ=33084 | m=1.433 worth=33.4 cheap=8.6 over=0 dMedOther=34.9 safe(-1)=284322
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=207706 dq=28.6 cnt=66 | c=96.7 rankC=96.7 need=365974 tD=0.82 人 crowdedHard | safe=284322 keep=Inf avail=-Inf chunkB=26468 pulseB=15881 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=514610 dq=42.7 cnt=64 | c=139.0 rankC=139.0 need=935311 tD=1.22 人 crowdedHard | safe=284322 keep=Inf avail=-Inf chunkB=26468 pulseB=15881 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1950 alex_k B=133859 L=5678 d=23.6 nb=2 neut=0 cmds=87 noFull=1 shQ=33464 | m=1.433 worth=33.8 cheap=8.6 over=0 dMedOther=35.4 safe(-1)=287878
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=210156 dq=29.0 cnt=66 | c=97.8 rankC=97.8 need=370217 tD=0.82 人 crowdedHard | safe=287878 keep=Inf avail=-Inf chunkB=26772 pulseB=16063 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=520939 dq=43.2 cnt=64 | c=140.7 rankC=140.7 need=946592 tD=1.22 人 crowdedHard | safe=287878 keep=Inf avail=-Inf chunkB=26772 pulseB=16063 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1955 alex_k B=133859 L=5678 d=23.6 nb=2 neut=0 cmds=87 noFull=1 shQ=33464 | m=1.432 worth=33.8 cheap=8.6 over=0 dMedOther=35.4 safe(-1)=287878
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=210156 dq=29.0 cnt=66 | c=97.8 rankC=97.8 need=370310 tD=0.82 人 crowdedHard | safe=287878 keep=Inf avail=-Inf chunkB=26772 pulseB=16063 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=520939 dq=43.2 cnt=64 | c=140.7 rankC=140.7 need=946592 tD=1.22 人 crowdedHard | safe=287878 keep=Inf avail=-Inf chunkB=26772 pulseB=16063 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1960 alex_k B=135398 L=5678 d=23.8 nb=2 neut=0 cmds=87 noFull=1 shQ=33849 | m=1.431 worth=34.1 cheap=8.6 over=0 dMedOther=35.8 safe(-1)=291477
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=212635 dq=29.3 cnt=66 | c=98.9 rankC=98.9 need=374606 tD=0.82 人 crowdedHard | safe=291477 keep=Inf avail=-Inf chunkB=27080 pulseB=16248 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=527346 dq=43.7 cnt=64 | c=142.4 rankC=142.4 need=958012 tD=1.22 人 crowdedHard | safe=291477 keep=Inf avail=-Inf chunkB=27080 pulseB=16248 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1965 alex_k B=135398 L=5678 d=23.8 nb=2 neut=0 cmds=87 noFull=1 shQ=33849 | m=1.430 worth=34.1 cheap=8.6 over=0 dMedOther=30.0 safe(-1)=291477
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=212635 dq=29.3 cnt=66 | c=98.9 rankC=98.9 need=374653 tD=0.98 人 crowdedHard | safe=291477 keep=Inf avail=-Inf chunkB=27080 pulseB=16248 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=527346 dq=43.7 cnt=64 | c=142.4 rankC=142.4 need=958012 tD=1.46 人 crowdedHard | safe=291477 keep=Inf avail=-Inf chunkB=27080 pulseB=16248 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1970 alex_k B=136955 L=5678 d=24.1 nb=2 neut=0 cmds=87 noFull=1 shQ=34238 | m=1.429 worth=34.5 cheap=8.6 over=0 dMedOther=30.3 safe(-1)=295121
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=215144 dq=29.7 cnt=66 | c=100.0 rankC=100.0 need=379001 tD=0.98 人 crowdedHard | safe=295121 keep=Inf avail=-Inf chunkB=27391 pulseB=16435 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=533832 dq=44.3 cnt=64 | c=144.1 rankC=144.1 need=969572 tD=1.46 人 crowdedHard | safe=295121 keep=Inf avail=-Inf chunkB=27391 pulseB=16435 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1975 alex_k B=136955 L=5678 d=24.1 nb=2 neut=0 cmds=87 noFull=1 shQ=34238 | m=1.429 worth=34.5 cheap=8.6 over=0 dMedOther=30.3 safe(-1)=295121
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=215144 dq=29.7 cnt=66 | c=100.0 rankC=100.0 need=379097 tD=0.98 人 crowdedHard | safe=295121 keep=Inf avail=-Inf chunkB=27391 pulseB=16435 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=533832 dq=44.3 cnt=64 | c=144.1 rankC=144.1 need=969572 tD=1.46 人 crowdedHard | safe=295121 keep=Inf avail=-Inf chunkB=27391 pulseB=16435 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1980 alex_k B=138529 L=5678 d=24.4 nb=2 neut=0 cmds=87 noFull=1 shQ=34632 | m=1.428 worth=34.8 cheap=8.6 over=0 dMedOther=30.7 safe(-1)=298810
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=217682 dq=30.0 cnt=66 | c=101.2 rankC=101.2 need=383497 tD=0.98 人 crowdedHard | safe=298810 keep=Inf avail=-Inf chunkB=27706 pulseB=16623 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=540398 dq=44.8 cnt=64 | c=145.8 rankC=145.8 need=981275 tD=1.46 人 crowdedHard | safe=298810 keep=Inf avail=-Inf chunkB=27706 pulseB=16623 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1985 alex_k B=138529 L=5678 d=24.4 nb=2 neut=0 cmds=87 noFull=1 shQ=34632 | m=1.427 worth=34.8 cheap=8.6 over=0 dMedOther=30.7 safe(-1)=298810
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=217682 dq=30.0 cnt=66 | c=101.2 rankC=101.2 need=383545 tD=0.98 人 crowdedHard | safe=298810 keep=Inf avail=-Inf chunkB=27706 pulseB=16623 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=540398 dq=44.8 cnt=64 | c=145.8 rankC=145.8 need=981275 tD=1.46 人 crowdedHard | safe=298810 keep=Inf avail=-Inf chunkB=27706 pulseB=16623 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1990 alex_k B=140122 L=5678 d=24.7 nb=2 neut=0 cmds=87 noFull=1 shQ=35030 | m=1.427 worth=35.2 cheap=8.6 over=0 dMedOther=31.0 safe(-1)=302543
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=220250 dq=30.4 cnt=66 | c=102.3 rankC=102.3 need=387998 tD=0.98 人 crowdedHard | safe=302543 keep=Inf avail=-Inf chunkB=28024 pulseB=16815 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=547044 dq=45.4 cnt=64 | c=147.6 rankC=147.6 need=993121 tD=1.46 人 crowdedHard | safe=302543 keep=Inf avail=-Inf chunkB=28024 pulseB=16815 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=1995 alex_k B=140122 L=5678 d=24.7 nb=2 neut=0 cmds=87 noFull=1 shQ=35030 | m=1.426 worth=35.2 cheap=8.6 over=0 dMedOther=31.0 safe(-1)=302543
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=220250 dq=30.4 cnt=66 | c=102.3 rankC=102.3 need=388096 tD=0.98 人 crowdedHard | safe=302543 keep=Inf avail=-Inf chunkB=28024 pulseB=16815 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=547044 dq=45.4 cnt=64 | c=147.6 rankC=147.6 need=993121 tD=1.46 人 crowdedHard | safe=302543 keep=Inf avail=-Inf chunkB=28024 pulseB=16815 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2000 alex_k B=147411 L=5678 d=26.0 nb=2 neut=0 cmds=87 noFull=1 shQ=35457 | m=1.425 worth=37.0 cheap=8.6 over=0 dMedOther=32.4 safe(-1)=313098
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=230098 dq=31.7 cnt=66 | c=106.8 rankC=106.8 need=405042 tD=0.98 人 crowdedHard | safe=313098 keep=Inf avail=-Inf chunkB=29482 pulseB=17689 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=565832 dq=46.9 cnt=64 | c=152.6 rankC=152.6 need=1026608 tD=1.45 人 crowdedHard | safe=313098 keep=Inf avail=-Inf chunkB=29482 pulseB=17689 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2005 alex_k B=147411 L=5678 d=26.0 nb=2 neut=0 cmds=87 noFull=1 shQ=36852 | m=1.420 worth=36.9 cheap=8.6 over=0 dMedOther=32.4 safe(-1)=313098
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=230098 dq=31.7 cnt=66 | c=106.7 rankC=106.7 need=405093 tD=0.98 人 crowdedHard | safe=313098 keep=Inf avail=-Inf chunkB=29482 pulseB=17689 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=565832 dq=46.9 cnt=64 | c=152.6 rankC=152.6 need=1026608 tD=1.45 人 crowdedHard | safe=313098 keep=Inf avail=-Inf chunkB=29482 pulseB=17689 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2010 alex_k B=149106 L=5678 d=26.3 nb=2 neut=0 cmds=87 noFull=1 shQ=37276 | m=1.415 worth=37.1 cheap=8.6 over=0 dMedOther=32.7 safe(-1)=317008
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=232813 dq=32.1 cnt=66 | c=108.0 rankC=108.0 need=409804 tD=0.98 人 crowdedHard | safe=317008 keep=Inf avail=-Inf chunkB=29821 pulseB=17893 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=572791 dq=47.5 cnt=64 | c=154.4 rankC=154.4 need=1039011 tD=1.45 人 crowdedHard | safe=317008 keep=Inf avail=-Inf chunkB=29821 pulseB=17893 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2015 alex_k B=149106 L=5678 d=26.3 nb=2 neut=0 cmds=87 noFull=1 shQ=37276 | m=1.409 worth=37.0 cheap=8.6 over=0 dMedOther=32.7 safe(-1)=317008
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=232813 dq=32.1 cnt=66 | c=108.0 rankC=108.0 need=409907 tD=0.98 人 crowdedHard | safe=317008 keep=Inf avail=-Inf chunkB=29821 pulseB=17893 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=572791 dq=47.5 cnt=64 | c=154.4 rankC=154.4 need=1039011 tD=1.45 人 crowdedHard | safe=317008 keep=Inf avail=-Inf chunkB=29821 pulseB=17893 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2020 alex_k B=150820 L=5678 d=26.6 nb=2 neut=0 cmds=87 noFull=1 shQ=37705 | m=1.404 worth=37.3 cheap=8.6 over=0 dMedOther=33.3 safe(-1)=320966
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=235560 dq=32.5 cnt=66 | c=109.2 rankC=109.2 need=414675 tD=0.98 人 crowdedHard | safe=320966 keep=Inf avail=-Inf chunkB=30164 pulseB=18098 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=579836 dq=48.1 cnt=64 | c=156.3 rankC=156.3 need=1051568 tD=1.44 人 crowdedHard | safe=320966 keep=Inf avail=-Inf chunkB=30164 pulseB=18098 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2025 alex_k B=150820 L=5678 d=26.6 nb=2 neut=0 cmds=87 noFull=1 shQ=37705 | m=1.399 worth=37.2 cheap=8.6 over=0 dMedOther=33.3 safe(-1)=320966
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=235560 dq=32.5 cnt=66 | c=109.2 rankC=109.2 need=414727 tD=0.98 人 crowdedHard | safe=320966 keep=Inf avail=-Inf chunkB=30164 pulseB=18098 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=579836 dq=48.1 cnt=64 | c=156.3 rankC=156.3 need=1051568 tD=1.44 人 crowdedHard | safe=320966 keep=Inf avail=-Inf chunkB=30164 pulseB=18098 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2030 alex_k B=152554 L=5678 d=26.9 nb=2 neut=0 cmds=87 noFull=1 shQ=38138 | m=1.393 worth=37.4 cheap=8.6 over=0 dMedOther=33.7 safe(-1)=324972
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=238339 dq=32.9 cnt=66 | c=110.4 rankC=110.4 need=419551 tD=0.98 人 crowdedHard | safe=324972 keep=Inf avail=-Inf chunkB=30511 pulseB=18306 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=586967 dq=48.7 cnt=64 | c=229.4 rankC=332.6 need=1064278 tD=1.44 人 crowdedHard | safe=324972 keep=Inf avail=-Inf chunkB=30511 pulseB=18306 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2035 alex_k B=152554 L=5678 d=26.9 nb=2 neut=0 cmds=87 noFull=1 shQ=38138 | m=1.388 worth=37.3 cheap=8.6 over=0 dMedOther=33.6 safe(-1)=324972
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=238339 dq=32.9 cnt=66 | c=110.4 rankC=110.4 need=419656 tD=0.98 人 crowdedHard | safe=324972 keep=Inf avail=-Inf chunkB=30511 pulseB=18306 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=586967 dq=48.7 cnt=64 | c=229.4 rankC=332.6 need=1064278 tD=1.45 人 crowdedHard | safe=324972 keep=Inf avail=-Inf chunkB=30511 pulseB=18306 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2040 alex_k B=154308 L=5678 d=27.2 nb=2 neut=0 cmds=87 noFull=1 shQ=38577 | m=1.383 worth=37.6 cheap=8.6 over=0 dMedOther=33.9 safe(-1)=329028
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=241151 dq=33.3 cnt=66 | c=111.7 rankC=111.7 need=424540 tD=0.98 人 crowdedHard | safe=329028 keep=Inf avail=-Inf chunkB=30862 pulseB=18517 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=594186 dq=49.3 cnt=64 | c=232.1 rankC=336.6 need=1077145 tD=1.45 人 crowdedHard | safe=329028 keep=Inf avail=-Inf chunkB=30862 pulseB=18517 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2045 alex_k B=154308 L=5678 d=27.2 nb=2 neut=0 cmds=87 noFull=1 shQ=38577 | m=1.378 worth=37.4 cheap=8.6 over=0 dMedOther=33.9 safe(-1)=329028
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=241151 dq=33.3 cnt=66 | c=111.7 rankC=111.7 need=424593 tD=0.98 人 crowdedHard | safe=329028 keep=Inf avail=-Inf chunkB=30862 pulseB=18517 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=594186 dq=49.3 cnt=64 | c=232.1 rankC=336.6 need=1077145 tD=1.45 人 crowdedHard | safe=329028 keep=Inf avail=-Inf chunkB=30862 pulseB=18517 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2050 alex_k B=156082 L=5678 d=27.5 nb=2 neut=0 cmds=87 noFull=1 shQ=39020 | m=1.373 worth=37.7 cheap=8.6 over=0 dMedOther=34.2 safe(-1)=333133
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=243996 dq=33.7 cnt=66 | c=112.9 rankC=112.9 need=429535 tD=0.98 人 crowdedHard | safe=333133 keep=Inf avail=-Inf chunkB=31216 pulseB=18730 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=601494 dq=49.9 cnt=64 | c=235.0 rankC=340.7 need=1090170 tD=1.46 人 crowdedHard | safe=333133 keep=Inf avail=-Inf chunkB=31216 pulseB=18730 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2055 alex_k B=156082 L=5678 d=27.5 nb=2 neut=0 cmds=87 noFull=1 shQ=39020 | m=1.367 worth=37.6 cheap=8.6 over=0 dMedOther=34.0 safe(-1)=333133
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=243996 dq=33.7 cnt=66 | c=112.9 rankC=112.9 need=429642 tD=0.99 人 crowdedHard | safe=333133 keep=Inf avail=-Inf chunkB=31216 pulseB=18730 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=601494 dq=49.9 cnt=64 | c=162.0 rankC=162.0 need=1090170 tD=1.47 人 crowdedHard | safe=333133 keep=Inf avail=-Inf chunkB=31216 pulseB=18730 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2060 alex_k B=157876 L=5678 d=27.8 nb=2 neut=0 cmds=87 noFull=1 shQ=39469 | m=1.362 worth=37.9 cheap=8.6 over=0 dMedOther=34.3 safe(-1)=337289
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=246875 dq=34.1 cnt=66 | c=114.2 rankC=114.2 need=434645 tD=0.99 人 crowdedHard | safe=337289 keep=Inf avail=-Inf chunkB=31575 pulseB=18945 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=608892 dq=50.5 cnt=64 | c=164.0 rankC=164.0 need=1103356 tD=1.47 人 crowdedHard | safe=337289 keep=Inf avail=-Inf chunkB=31575 pulseB=18945 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2065 alex_k B=157876 L=5678 d=27.8 nb=2 neut=0 cmds=87 noFull=1 shQ=39469 | m=1.357 worth=37.7 cheap=8.6 over=0 dMedOther=34.2 safe(-1)=337289
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=246875 dq=34.1 cnt=66 | c=114.2 rankC=114.2 need=434699 tD=1.00 人 crowdedHard | safe=337289 keep=Inf avail=-Inf chunkB=31575 pulseB=18945 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=608892 dq=50.5 cnt=64 | c=164.0 rankC=164.0 need=1103356 tD=1.48 人 crowdedHard | safe=337289 keep=Inf avail=-Inf chunkB=31575 pulseB=18945 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2070 alex_k B=159691 L=5678 d=28.1 nb=2 neut=0 cmds=87 noFull=1 shQ=39922 | m=1.352 worth=38.0 cheap=8.6 over=0 dMedOther=34.5 safe(-1)=341497
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=249788 dq=34.5 cnt=66 | c=115.5 rankC=115.5 need=439762 tD=1.00 人 crowdedHard | safe=341497 keep=Inf avail=-Inf chunkB=31938 pulseB=19163 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=616381 dq=51.1 cnt=64 | c=166.0 rankC=166.0 need=1116704 tD=1.48 人 crowdedHard | safe=341497 keep=Inf avail=-Inf chunkB=31938 pulseB=19163 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2075 alex_k B=159691 L=5678 d=28.1 nb=2 neut=0 cmds=87 noFull=1 shQ=39922 | m=1.346 worth=37.9 cheap=8.6 over=0 dMedOther=34.7 safe(-1)=341497
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=249788 dq=34.5 cnt=66 | c=115.5 rankC=115.5 need=439871 tD=0.99 人 crowdedHard | safe=341497 keep=Inf avail=-Inf chunkB=31938 pulseB=19163 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=616381 dq=51.1 cnt=64 | c=166.0 rankC=166.0 need=1116704 tD=1.47 人 crowdedHard | safe=341497 keep=Inf avail=-Inf chunkB=31938 pulseB=19163 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2080 alex_k B=161527 L=5678 d=28.4 nb=2 neut=0 cmds=87 noFull=1 shQ=40381 | m=1.341 worth=38.1 cheap=8.6 over=0 dMedOther=35.1 safe(-1)=345756
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=252735 dq=34.9 cnt=66 | c=116.8 rankC=116.8 need=444995 tD=0.99 人 crowdedHard | safe=345756 keep=Inf avail=-Inf chunkB=32305 pulseB=19383 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=623962 dq=51.7 cnt=64 | c=168.0 rankC=168.0 need=1130216 tD=1.47 人 crowdedHard | safe=345756 keep=Inf avail=-Inf chunkB=32305 pulseB=19383 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2085 alex_k B=161527 L=5678 d=28.4 nb=2 neut=0 cmds=87 noFull=1 shQ=40381 | m=1.336 worth=38.0 cheap=8.6 over=0 dMedOther=35.1 safe(-1)=345756
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=252735 dq=34.9 cnt=66 | c=116.8 rankC=116.8 need=445051 tD=0.99 人 crowdedHard | safe=345756 keep=Inf avail=-Inf chunkB=32305 pulseB=19383 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=623962 dq=51.7 cnt=64 | c=168.0 rankC=168.0 need=1130216 tD=1.47 人 crowdedHard | safe=345756 keep=Inf avail=-Inf chunkB=32305 pulseB=19383 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2090 alex_k B=163384 L=5678 d=28.8 nb=2 neut=0 cmds=87 noFull=1 shQ=40846 | m=1.331 worth=38.3 cheap=8.6 over=0 dMedOther=35.5 safe(-1)=350067
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=255717 dq=35.3 cnt=66 | c=118.2 rankC=118.2 need=450237 tD=0.99 人 crowdedHard | safe=350067 keep=Inf avail=-Inf chunkB=32677 pulseB=19606 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=631636 dq=52.4 cnt=64 | c=170.0 rankC=170.0 need=1143894 tD=1.48 人 crowdedHard | safe=350067 keep=Inf avail=-Inf chunkB=32677 pulseB=19606 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2095 alex_k B=163384 L=5678 d=28.8 nb=2 neut=0 cmds=87 noFull=1 shQ=40846 | m=1.325 worth=38.1 cheap=8.6 over=0 dMedOther=35.5 safe(-1)=350067
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=255717 dq=35.3 cnt=66 | c=118.1 rankC=118.1 need=450349 tD=0.99 人 crowdedHard | safe=350067 keep=Inf avail=-Inf chunkB=32677 pulseB=19606 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=631636 dq=52.4 cnt=64 | c=170.0 rankC=170.0 need=1143894 tD=1.48 人 crowdedHard | safe=350067 keep=Inf avail=-Inf chunkB=32677 pulseB=19606 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2100 alex_k B=170940 L=5678 d=30.1 nb=2 neut=0 cmds=87 noFull=1 shQ=41341 | m=1.320 worth=39.7 cheap=8.6 over=0 dMedOther=36.9 safe(-1)=361207
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=265984 dq=36.7 cnt=66 | c=122.8 rankC=122.8 need=468076 tD=0.99 人 crowdedHard | safe=361207 keep=Inf avail=-Inf chunkB=34188 pulseB=20513 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=651465 dq=54.0 cnt=64 | c=175.3 rankC=175.3 need=1179237 tD=1.46 人 crowdedHard | safe=361207 keep=Inf avail=-Inf chunkB=34188 pulseB=20513 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2105 alex_k B=170940 L=5678 d=30.1 nb=2 neut=0 cmds=87 noFull=1 shQ=42735 | m=1.315 worth=39.6 cheap=8.6 over=0 dMedOther=36.9 safe(-1)=361207
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=265984 dq=36.7 cnt=66 | c=122.8 rankC=122.8 need=468134 tD=0.99 人 crowdedHard | safe=361207 keep=Inf avail=-Inf chunkB=34188 pulseB=20513 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=651465 dq=54.0 cnt=64 | c=175.3 rankC=175.3 need=1179237 tD=1.46 人 crowdedHard | safe=361207 keep=Inf avail=-Inf chunkB=34188 pulseB=20513 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2110 alex_k B=172905 L=5678 d=30.5 nb=2 neut=0 cmds=87 noFull=1 shQ=43226 | m=1.310 worth=39.9 cheap=8.6 over=0 dMedOther=37.3 safe(-1)=365708
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=269122 dq=37.1 cnt=66 | c=124.2 rankC=124.2 need=473595 tD=0.99 人 crowdedHard | safe=365708 keep=Inf avail=-Inf chunkB=34581 pulseB=20749 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=659478 dq=54.7 cnt=64 | c=177.4 rankC=177.4 need=1193519 tD=1.46 人 crowdedHard | safe=365708 keep=Inf avail=-Inf chunkB=34581 pulseB=20749 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2115 alex_k B=172905 L=5678 d=30.5 nb=2 neut=0 cmds=87 noFull=1 shQ=43226 | m=1.304 worth=39.7 cheap=8.6 over=0 dMedOther=37.3 safe(-1)=365708
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=269122 dq=37.1 cnt=66 | c=124.2 rankC=124.2 need=473712 tD=0.99 人 crowdedHard | safe=365708 keep=Inf avail=-Inf chunkB=34581 pulseB=20749 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=659478 dq=54.7 cnt=64 | c=177.4 rankC=177.4 need=1193519 tD=1.46 人 crowdedHard | safe=365708 keep=Inf avail=-Inf chunkB=34581 pulseB=20749 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2120 alex_k B=174893 L=5678 d=30.8 nb=2 neut=0 cmds=87 noFull=1 shQ=43723 | m=1.299 worth=40.0 cheap=8.6 over=0 dMedOther=37.8 safe(-1)=370265
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=272297 dq=37.6 cnt=66 | c=125.6 rankC=125.6 need=479239 tD=0.99 人 crowdedHard | safe=370265 keep=Inf avail=-Inf chunkB=34979 pulseB=20987 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=667589 dq=55.4 cnt=64 | c=179.5 rankC=179.5 need=1207976 tD=1.47 人 crowdedHard | safe=370265 keep=Inf avail=-Inf chunkB=34979 pulseB=20987 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2125 alex_k B=174893 L=5678 d=30.8 nb=2 neut=0 cmds=87 noFull=1 shQ=43723 | m=1.294 worth=39.8 cheap=8.6 over=0 dMedOther=37.8 safe(-1)=370265
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=272297 dq=37.6 cnt=66 | c=125.6 rankC=125.6 need=479298 tD=0.99 人 crowdedHard | safe=370265 keep=Inf avail=-Inf chunkB=34979 pulseB=20987 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=667589 dq=55.4 cnt=64 | c=179.5 rankC=179.5 need=1207976 tD=1.47 人 crowdedHard | safe=370265 keep=Inf avail=-Inf chunkB=34979 pulseB=20987 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2130 alex_k B=176904 L=5678 d=31.2 nb=2 neut=0 cmds=87 noFull=1 shQ=44226 | m=1.288 worth=40.1 cheap=8.6 over=0 dMedOther=38.2 safe(-1)=374878
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=275510 dq=38.0 cnt=66 | c=127.0 rankC=127.0 need=484892 tD=1.00 人 crowdedHard | safe=374878 keep=Inf avail=-Inf chunkB=35381 pulseB=21228 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=675800 dq=56.0 cnt=64 | c=181.7 rankC=181.7 need=1222610 tD=1.47 人 crowdedHard | safe=374878 keep=Inf avail=-Inf chunkB=35381 pulseB=21228 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2135 alex_k B=176904 L=5678 d=31.2 nb=2 neut=0 cmds=87 noFull=1 shQ=44226 | m=1.283 worth=40.0 cheap=8.6 over=0 dMedOther=38.2 safe(-1)=374878
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=275510 dq=38.0 cnt=66 | c=127.0 rankC=127.0 need=485012 tD=1.00 人 crowdedHard | safe=374878 keep=Inf avail=-Inf chunkB=35381 pulseB=21228 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=675800 dq=56.0 cnt=64 | c=181.7 rankC=181.7 need=1222610 tD=1.47 人 crowdedHard | safe=374878 keep=Inf avail=-Inf chunkB=35381 pulseB=21228 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2140 alex_k B=178938 L=5678 d=31.5 nb=2 neut=0 cmds=87 noFull=1 shQ=44734 | m=1.278 worth=40.3 cheap=8.6 over=0 dMedOther=38.6 safe(-1)=379548
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=278761 dq=38.4 cnt=66 | c=128.5 rankC=128.5 need=490674 tD=1.00 人 crowdedHard | safe=379548 keep=Inf avail=-Inf chunkB=35788 pulseB=21473 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=684112 dq=56.7 cnt=64 | c=183.9 rankC=183.9 need=1237425 tD=1.47 人 crowdedHard | safe=379548 keep=Inf avail=-Inf chunkB=35788 pulseB=21473 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2145 alex_k B=178938 L=5678 d=31.5 nb=2 neut=0 cmds=87 noFull=1 shQ=44734 | m=1.273 worth=40.1 cheap=8.6 over=0 dMedOther=38.6 safe(-1)=379548
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=278761 dq=38.4 cnt=66 | c=128.5 rankC=128.5 need=490735 tD=1.00 人 crowdedHard | safe=379548 keep=Inf avail=-Inf chunkB=35788 pulseB=21473 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=684112 dq=56.7 cnt=64 | c=183.9 rankC=183.9 need=1237425 tD=1.47 人 crowdedHard | safe=379548 keep=Inf avail=-Inf chunkB=35788 pulseB=21473 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2150 alex_k B=180995 L=5678 d=31.9 nb=2 neut=0 cmds=87 noFull=1 shQ=45248 | m=1.268 worth=40.4 cheap=8.6 over=0 dMedOther=39.1 safe(-1)=384275
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=282050 dq=38.9 cnt=66 | c=129.9 rankC=129.9 need=496465 tD=1.00 人 crowdedHard | safe=384275 keep=Inf avail=-Inf chunkB=36199 pulseB=21719 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=692526 dq=57.4 cnt=64 | c=186.2 rankC=186.2 need=1252422 tD=1.47 人 crowdedHard | safe=384275 keep=Inf avail=-Inf chunkB=36199 pulseB=21719 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2155 alex_k B=180995 L=5678 d=31.9 nb=2 neut=0 cmds=87 noFull=1 shQ=45248 | m=1.262 worth=40.2 cheap=8.6 over=0 dMedOther=39.1 safe(-1)=384275
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=282050 dq=38.9 cnt=66 | c=129.9 rankC=129.9 need=496587 tD=1.00 人 crowdedHard | safe=384275 keep=Inf avail=-Inf chunkB=36199 pulseB=21719 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=692526 dq=57.4 cnt=64 | c=186.2 rankC=186.2 need=1252422 tD=1.47 人 crowdedHard | safe=384275 keep=Inf avail=-Inf chunkB=36199 pulseB=21719 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2160 alex_k B=183076 L=5678 d=32.2 nb=2 neut=0 cmds=87 noFull=1 shQ=45769 | m=1.257 worth=40.5 cheap=8.6 over=0 dMedOther=39.5 safe(-1)=389060
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=285378 dq=39.4 cnt=66 | c=131.4 rankC=131.4 need=502387 tD=1.00 人 crowdedHard | safe=389060 keep=Inf avail=-Inf chunkB=36615 pulseB=21969 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=701044 dq=58.1 cnt=64 | c=188.4 rankC=188.4 need=1267604 tD=1.47 人 crowdedHard | safe=389060 keep=Inf avail=-Inf chunkB=36615 pulseB=21969 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2165 alex_k B=183076 L=5678 d=32.2 nb=2 neut=0 cmds=87 noFull=1 shQ=45769 | m=1.252 worth=40.4 cheap=8.6 over=0 dMedOther=39.4 safe(-1)=389060
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=285378 dq=39.4 cnt=66 | c=131.4 rankC=131.4 need=502449 tD=1.00 人 crowdedHard | safe=389060 keep=Inf avail=-Inf chunkB=36615 pulseB=21969 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=701044 dq=58.1 cnt=64 | c=188.4 rankC=188.4 need=1267604 tD=1.48 人 crowdedHard | safe=389060 keep=Inf avail=-Inf chunkB=36615 pulseB=21969 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2170 alex_k B=185181 L=5678 d=32.6 nb=2 neut=0 cmds=87 noFull=1 shQ=46295 | m=1.247 worth=40.7 cheap=8.6 over=0 dMedOther=39.8 safe(-1)=393904
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=288745 dq=39.8 cnt=66 | c=132.9 rankC=132.9 need=508318 tD=1.00 人 crowdedHard | safe=393904 keep=Inf avail=-Inf chunkB=37036 pulseB=22222 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=709666 dq=58.8 cnt=64 | c=190.7 rankC=190.7 need=1282972 tD=1.48 人 crowdedHard | safe=393904 keep=Inf avail=-Inf chunkB=37036 pulseB=22222 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2175 alex_k B=185181 L=5678 d=32.6 nb=2 neut=0 cmds=87 noFull=1 shQ=46295 | m=1.241 worth=40.5 cheap=8.6 over=0 dMedOther=39.8 safe(-1)=393904
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=288745 dq=39.8 cnt=66 | c=132.9 rankC=132.9 need=508443 tD=1.00 人 crowdedHard | safe=393904 keep=Inf avail=-Inf chunkB=37036 pulseB=22222 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=709666 dq=58.8 cnt=64 | c=190.7 rankC=190.7 need=1282972 tD=1.48 人 crowdedHard | safe=393904 keep=Inf avail=-Inf chunkB=37036 pulseB=22222 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2180 alex_k B=187310 L=5678 d=33.0 nb=2 neut=0 cmds=87 noFull=1 shQ=46827 | m=1.236 worth=40.8 cheap=8.6 over=0 dMedOther=39.8 safe(-1)=398807
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=292152 dq=40.3 cnt=66 | c=134.4 rankC=134.4 need=514384 tD=1.01 人 crowdedHard | safe=398807 keep=Inf avail=-Inf chunkB=37462 pulseB=22477 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=718394 dq=59.6 cnt=64 | c=193.0 rankC=193.0 need=1298528 tD=1.50 人 crowdedHard | safe=398807 keep=Inf avail=-Inf chunkB=37462 pulseB=22477 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2185 alex_k B=187310 L=5678 d=33.0 nb=2 neut=0 cmds=87 noFull=1 shQ=46827 | m=1.231 worth=40.6 cheap=8.6 over=0 dMedOther=39.8 safe(-1)=398807
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=292152 dq=40.3 cnt=66 | c=134.4 rankC=134.4 need=514448 tD=1.01 人 crowdedHard | safe=398807 keep=Inf avail=-Inf chunkB=37462 pulseB=22477 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=718394 dq=59.6 cnt=64 | c=193.0 rankC=193.0 need=1298528 tD=1.50 人 crowdedHard | safe=398807 keep=Inf avail=-Inf chunkB=37462 pulseB=22477 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2190 alex_k B=189464 L=5678 d=33.4 nb=2 neut=0 cmds=87 noFull=1 shQ=47366 | m=1.226 worth=40.9 cheap=8.6 over=0 dMedOther=40.3 safe(-1)=403771
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=295599 dq=40.8 cnt=66 | c=135.9 rankC=135.9 need=520460 tD=1.01 人 crowdedHard | safe=403771 keep=Inf avail=-Inf chunkB=37893 pulseB=22736 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=727230 dq=60.3 cnt=64 | c=195.3 rankC=195.3 need=1314277 tD=1.50 人 crowdedHard | safe=403771 keep=Inf avail=-Inf chunkB=37893 pulseB=22736 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2195 alex_k B=189464 L=5678 d=33.4 nb=2 neut=0 cmds=87 noFull=1 shQ=47366 | m=1.220 worth=40.7 cheap=8.6 over=0 dMedOther=40.3 safe(-1)=403771
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=295599 dq=40.8 cnt=66 | c=135.9 rankC=135.9 need=520587 tD=1.01 人 crowdedHard | safe=403771 keep=Inf avail=-Inf chunkB=37893 pulseB=22736 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=727230 dq=60.3 cnt=64 | c=195.3 rankC=195.3 need=1314277 tD=1.50 人 crowdedHard | safe=403771 keep=Inf avail=-Inf chunkB=37893 pulseB=22736 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2200 alex_k B=197320 L=5678 d=34.8 nb=2 neut=0 cmds=87 noFull=1 shQ=47938 | m=1.215 worth=42.2 cheap=8.6 over=0 dMedOther=41.8 safe(-1)=415571
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=306337 dq=42.3 cnt=66 | c=204.1 rankC=296.0 need=539190 tD=1.01 人 crowdedHard | safe=415571 keep=Inf avail=-Inf chunkB=39464 pulseB=23678 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=748234 dq=62.0 cnt=64 | c=291.3 rankC=422.4 need=1351714 tD=1.48 人 crowdedHard | safe=415571 keep=Inf avail=-Inf chunkB=39464 pulseB=23678 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2205 alex_k B=197320 L=5678 d=34.8 nb=2 neut=0 cmds=87 noFull=1 shQ=49330 | m=1.210 worth=42.0 cheap=8.6 over=0 dMedOther=42.3 safe(-1)=415571
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=306337 dq=42.3 cnt=66 | c=204.1 rankC=295.9 need=539256 tD=1.00 人 crowdedHard | safe=415571 keep=Inf avail=-Inf chunkB=39464 pulseB=23678 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=748234 dq=62.0 cnt=64 | c=291.3 rankC=422.4 need=1351714 tD=1.47 人 crowdedHard | safe=415571 keep=Inf avail=-Inf chunkB=39464 pulseB=23678 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2210 alex_k B=199589 L=5678 d=35.2 nb=2 neut=0 cmds=87 noFull=1 shQ=49897 | m=1.205 worth=42.3 cheap=8.6 over=0 dMedOther=42.3 safe(-1)=420742
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=309951 dq=42.8 cnt=66 | c=206.4 rankC=299.3 need=545563 tD=1.01 人 crowdedHard | safe=420742 keep=Inf avail=-Inf chunkB=39918 pulseB=23951 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=757437 dq=62.8 cnt=64 | c=294.9 rankC=427.6 need=1368117 tD=1.48 人 crowdedHard | safe=420742 keep=Inf avail=-Inf chunkB=39918 pulseB=23951 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2215 alex_k B=199589 L=5678 d=35.2 nb=2 neut=0 cmds=87 noFull=1 shQ=49897 | m=1.199 worth=42.2 cheap=8.6 over=0 dMedOther=41.2 safe(-1)=420742
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=309951 dq=42.8 cnt=66 | c=206.4 rankC=299.3 need=545697 tD=1.04 人 crowdedHard | safe=420742 keep=Inf avail=-Inf chunkB=39918 pulseB=23951 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=757437 dq=62.8 cnt=64 | c=294.9 rankC=427.6 need=1368117 tD=1.52 人 crowdedHard | safe=420742 keep=Inf avail=-Inf chunkB=39918 pulseB=23951 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2220 alex_k B=201884 L=5678 d=35.6 nb=2 neut=0 cmds=87 noFull=1 shQ=50471 | m=1.194 worth=42.5 cheap=8.6 over=0 dMedOther=41.7 safe(-1)=425975
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=313608 dq=43.3 cnt=66 | c=208.8 rankC=302.7 need=552081 tD=1.04 人 crowdedHard | safe=425975 keep=Inf avail=-Inf chunkB=40377 pulseB=24226 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=766753 dq=63.6 cnt=64 | c=298.4 rankC=432.7 need=1384722 tD=1.53 人 crowdedHard | safe=425975 keep=Inf avail=-Inf chunkB=40377 pulseB=24226 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2225 alex_k B=201884 L=5678 d=35.6 nb=2 neut=0 cmds=87 noFull=1 shQ=50471 | m=1.189 worth=42.3 cheap=8.6 over=0 dMedOther=41.7 safe(-1)=425975
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=313608 dq=43.3 cnt=66 | c=144.0 rankC=144.0 need=552148 tD=1.04 人 crowdedHard | safe=425975 keep=Inf avail=-Inf chunkB=40377 pulseB=24226 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=766753 dq=63.6 cnt=64 | c=205.8 rankC=205.8 need=1384722 tD=1.53 人 crowdedHard | safe=425975 keep=Inf avail=-Inf chunkB=40377 pulseB=24226 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2230 alex_k B=204205 L=5678 d=36.0 nb=2 neut=0 cmds=87 noFull=1 shQ=51051 | m=1.183 worth=42.6 cheap=8.6 over=0 dMedOther=42.2 safe(-1)=431274
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=317308 dq=43.8 cnt=66 | c=145.6 rankC=145.6 need=558609 tD=1.04 人 crowdedHard | safe=431274 keep=Inf avail=-Inf chunkB=40841 pulseB=24505 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=776184 dq=64.4 cnt=64 | c=208.3 rankC=208.3 need=1401531 tD=1.53 人 crowdedHard | safe=431274 keep=Inf avail=-Inf chunkB=40841 pulseB=24505 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2235 alex_k B=204205 L=5678 d=36.0 nb=2 neut=0 cmds=87 noFull=1 shQ=51051 | m=1.178 worth=42.4 cheap=8.6 over=0 dMedOther=42.2 safe(-1)=431274
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=317308 dq=43.8 cnt=66 | c=145.6 rankC=145.6 need=558746 tD=1.04 人 crowdedHard | safe=431274 keep=Inf avail=-Inf chunkB=40841 pulseB=24505 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=776184 dq=64.4 cnt=64 | c=208.3 rankC=208.3 need=1401531 tD=1.53 人 crowdedHard | safe=431274 keep=Inf avail=-Inf chunkB=40841 pulseB=24505 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2240 alex_k B=206553 L=5678 d=36.4 nb=2 neut=0 cmds=87 noFull=1 shQ=51638 | m=1.173 worth=42.7 cheap=8.6 over=0 dMedOther=42.7 safe(-1)=436637
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=321052 dq=44.3 cnt=66 | c=147.3 rankC=147.3 need=565285 tD=1.04 人 crowdedHard | safe=436637 keep=Inf avail=-Inf chunkB=41311 pulseB=24786 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=785731 dq=65.2 cnt=64 | c=210.8 rankC=210.8 need=1418547 tD=1.53 人 crowdedHard | safe=436637 keep=Inf avail=-Inf chunkB=41311 pulseB=24786 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2245 alex_k B=206553 L=5678 d=36.4 nb=2 neut=0 cmds=87 noFull=1 shQ=51638 | m=1.168 worth=42.5 cheap=8.6 over=0 dMedOther=42.7 safe(-1)=436637
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=321052 dq=44.3 cnt=66 | c=147.3 rankC=147.3 need=565354 tD=1.04 人 crowdedHard | safe=436637 keep=Inf avail=-Inf chunkB=41311 pulseB=24786 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=785731 dq=65.2 cnt=64 | c=210.8 rankC=210.8 need=1418547 tD=1.53 人 crowdedHard | safe=436637 keep=Inf avail=-Inf chunkB=41311 pulseB=24786 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2250 alex_k B=208928 L=5678 d=36.8 nb=2 neut=0 cmds=87 noFull=1 shQ=52232 | m=1.163 worth=42.8 cheap=8.6 over=0 dMedOther=43.2 safe(-1)=442066
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=324840 dq=44.8 cnt=66 | c=149.0 rankC=149.0 need=571973 tD=1.04 人 crowdedHard | safe=442066 keep=Inf avail=-Inf chunkB=41786 pulseB=25071 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=795395 dq=66.0 cnt=64 | c=213.4 rankC=213.4 need=1435772 tD=1.53 人 crowdedHard | safe=442066 keep=Inf avail=-Inf chunkB=41786 pulseB=25071 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2255 alex_k B=208928 L=5678 d=36.8 nb=2 neut=0 cmds=87 noFull=1 shQ=52232 | m=1.157 worth=42.6 cheap=8.6 over=0 dMedOther=43.2 safe(-1)=442066
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=324840 dq=44.8 cnt=66 | c=149.0 rankC=149.0 need=572112 tD=1.04 人 crowdedHard | safe=442066 keep=Inf avail=-Inf chunkB=41786 pulseB=25071 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=795395 dq=66.0 cnt=64 | c=213.4 rankC=213.4 need=1435772 tD=1.53 人 crowdedHard | safe=442066 keep=Inf avail=-Inf chunkB=41786 pulseB=25071 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2260 alex_k B=211330 L=5678 d=37.2 nb=2 neut=0 cmds=87 noFull=1 shQ=52832 | m=1.152 worth=42.9 cheap=8.6 over=0 dMedOther=43.8 safe(-1)=447562
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=328673 dq=45.3 cnt=66 | c=150.7 rankC=150.7 need=578811 tD=1.04 人 crowdedHard | safe=447562 keep=Inf avail=-Inf chunkB=42266 pulseB=25360 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=805178 dq=66.8 cnt=64 | c=216.0 rankC=216.0 need=1453209 tD=1.53 人 crowdedHard | safe=447562 keep=Inf avail=-Inf chunkB=42266 pulseB=25360 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2265 alex_k B=211330 L=5678 d=37.2 nb=2 neut=0 cmds=87 noFull=1 shQ=52832 | m=1.147 worth=42.7 cheap=8.6 over=0 dMedOther=43.8 safe(-1)=447562
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=328673 dq=45.3 cnt=66 | c=150.7 rankC=150.7 need=578882 tD=1.04 人 crowdedHard | safe=447562 keep=Inf avail=-Inf chunkB=42266 pulseB=25360 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=805178 dq=66.8 cnt=64 | c=216.0 rankC=216.0 need=1453209 tD=1.53 人 crowdedHard | safe=447562 keep=Inf avail=-Inf chunkB=42266 pulseB=25360 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2270 alex_k B=213760 L=5678 d=37.6 nb=2 neut=0 cmds=87 noFull=1 shQ=53440 | m=1.142 worth=43.0 cheap=8.6 over=0 dMedOther=44.3 safe(-1)=453126
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=332551 dq=45.9 cnt=66 | c=152.4 rankC=152.4 need=585661 tD=1.04 人 crowdedHard | safe=453126 keep=Inf avail=-Inf chunkB=42752 pulseB=25651 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=815081 dq=67.6 cnt=64 | c=218.6 rankC=218.6 need=1470860 tD=1.53 人 crowdedHard | safe=453126 keep=Inf avail=-Inf chunkB=42752 pulseB=25651 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2275 alex_k B=213760 L=5678 d=37.6 nb=2 neut=0 cmds=87 noFull=1 shQ=53440 | m=1.136 worth=42.8 cheap=8.6 over=0 dMedOther=45.5 safe(-1)=453126
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=332551 dq=45.9 cnt=66 | c=152.4 rankC=152.4 need=585804 tD=1.01 人 crowdedHard | safe=453126 keep=Inf avail=-Inf chunkB=42752 pulseB=25651 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=815081 dq=67.6 cnt=64 | c=218.6 rankC=218.6 need=1470860 tD=1.49 人 crowdedHard | safe=453126 keep=Inf avail=-Inf chunkB=42752 pulseB=25651 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2280 alex_k B=216218 L=5678 d=38.1 nb=2 neut=0 cmds=87 noFull=1 shQ=54054 | m=1.131 worth=43.1 cheap=8.6 over=0 dMedOther=46.0 safe(-1)=458758
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=336475 dq=46.4 cnt=66 | c=154.1 rankC=154.1 need=592666 tD=1.01 人 crowdedHard | safe=458758 keep=Inf avail=-Inf chunkB=43244 pulseB=25946 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=825106 dq=68.4 cnt=64 | c=221.3 rankC=221.3 need=1488728 tD=1.49 人 crowdedHard | safe=458758 keep=Inf avail=-Inf chunkB=43244 pulseB=25946 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2285 alex_k B=216218 L=5678 d=38.1 nb=2 neut=0 cmds=87 noFull=1 shQ=54054 | m=1.126 worth=42.9 cheap=8.6 over=0 dMedOther=46.0 safe(-1)=458758
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=336475 dq=46.4 cnt=66 | c=154.1 rankC=154.1 need=592738 tD=1.01 人 crowdedHard | safe=458758 keep=Inf avail=-Inf chunkB=43244 pulseB=25946 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=825106 dq=68.4 cnt=64 | c=221.3 rankC=221.3 need=1488728 tD=1.49 人 crowdedHard | safe=458758 keep=Inf avail=-Inf chunkB=43244 pulseB=25946 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2290 alex_k B=218704 L=5678 d=38.5 nb=2 neut=0 cmds=87 noFull=1 shQ=54676 | m=1.121 worth=43.2 cheap=8.6 over=0 dMedOther=46.6 safe(-1)=464459
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=340445 dq=47.0 cnt=66 | c=155.9 rankC=155.9 need=599682 tD=1.01 人 crowdedHard | safe=464459 keep=Inf avail=-Inf chunkB=43741 pulseB=26244 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=835254 dq=69.3 cnt=64 | c=224.0 rankC=224.0 need=1506815 tD=1.49 人 crowdedHard | safe=464459 keep=Inf avail=-Inf chunkB=43741 pulseB=26244 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2295 alex_k B=218704 L=5678 d=38.5 nb=2 neut=0 cmds=87 noFull=1 shQ=54676 | m=1.115 worth=43.0 cheap=8.6 over=0 dMedOther=46.6 safe(-1)=464459
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=340445 dq=47.0 cnt=66 | c=155.9 rankC=155.9 need=599828 tD=1.01 人 crowdedHard | safe=464459 keep=Inf avail=-Inf chunkB=43741 pulseB=26244 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=835254 dq=69.3 cnt=64 | c=224.0 rankC=224.0 need=1506815 tD=1.49 人 crowdedHard | safe=464459 keep=Inf avail=-Inf chunkB=43741 pulseB=26244 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2300 alex_k B=226897 L=5678 d=40.0 nb=2 neut=0 cmds=87 noFull=1 shQ=55333 | m=1.110 worth=44.4 cheap=8.6 over=0 dMedOther=48.2 safe(-1)=477006
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=351712 dq=48.5 cnt=66 | c=160.9 rankC=160.9 need=619411 tD=1.01 人 crowdedHard | safe=477006 keep=Inf avail=-Inf chunkB=45379 pulseB=27228 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=857587 dq=71.1 cnt=64 | c=229.9 rankC=229.9 need=1546621 tD=1.48 人 crowdedHard | safe=477006 keep=Inf avail=-Inf chunkB=45379 pulseB=27228 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2305 alex_k B=226897 L=5678 d=40.0 nb=2 neut=0 cmds=87 noFull=1 shQ=56724 | m=1.105 worth=44.1 cheap=8.6 over=0 dMedOther=47.0 safe(-1)=477006
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=351712 dq=48.5 cnt=66 | c=160.9 rankC=160.9 need=619486 tD=1.03 人 crowdedHard | safe=477006 keep=Inf avail=-Inf chunkB=45379 pulseB=27228 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=857587 dq=71.1 cnt=64 | c=229.9 rankC=229.9 need=1546621 tD=1.51 人 crowdedHard | safe=477006 keep=Inf avail=-Inf chunkB=45379 pulseB=27228 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2310 alex_k B=229506 L=5678 d=40.4 nb=2 neut=0 cmds=87 noFull=1 shQ=57376 | m=1.099 worth=44.4 cheap=8.6 over=0 dMedOther=47.6 safe(-1)=482931
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=355862 dq=49.1 cnt=66 | c=162.8 rankC=162.8 need=626749 tD=1.03 人 crowdedHard | safe=482931 keep=Inf avail=-Inf chunkB=45901 pulseB=27541 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=868135 dq=72.0 cnt=64 | c=232.7 rankC=232.7 need=1565421 tD=1.51 人 crowdedHard | safe=482931 keep=Inf avail=-Inf chunkB=45901 pulseB=27541 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2315 alex_k B=229506 L=5678 d=40.4 nb=2 neut=0 cmds=87 noFull=1 shQ=57376 | m=1.094 worth=44.2 cheap=8.6 over=0 dMedOther=47.6 safe(-1)=482931
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=355862 dq=49.1 cnt=66 | c=162.8 rankC=162.8 need=626901 tD=1.03 人 crowdedHard | safe=482931 keep=Inf avail=-Inf chunkB=45901 pulseB=27541 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=868135 dq=72.0 cnt=64 | c=232.7 rankC=232.7 need=1565421 tD=1.51 人 crowdedHard | safe=482931 keep=Inf avail=-Inf chunkB=45901 pulseB=27541 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2320 alex_k B=232145 L=5678 d=40.9 nb=2 neut=0 cmds=87 noFull=1 shQ=58036 | m=1.089 worth=44.5 cheap=8.6 over=0 dMedOther=48.2 safe(-1)=488930
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=360061 dq=49.7 cnt=66 | c=164.6 rankC=164.6 need=634252 tD=1.03 人 crowdedHard | safe=488930 keep=Inf avail=-Inf chunkB=46429 pulseB=27857 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=878813 dq=72.9 cnt=64 | c=235.5 rankC=235.5 need=1584453 tD=1.51 人 crowdedHard | safe=488930 keep=Inf avail=-Inf chunkB=46429 pulseB=27857 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2325 alex_k B=232145 L=5678 d=40.9 nb=2 neut=0 cmds=87 noFull=1 shQ=58036 | m=1.084 worth=44.3 cheap=8.6 over=0 dMedOther=48.2 safe(-1)=488930
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=360061 dq=49.7 cnt=66 | c=164.6 rankC=164.6 need=634329 tD=1.03 人 crowdedHard | safe=488930 keep=Inf avail=-Inf chunkB=46429 pulseB=27857 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=878813 dq=72.9 cnt=64 | c=235.5 rankC=235.5 need=1584453 tD=1.51 人 crowdedHard | safe=488930 keep=Inf avail=-Inf chunkB=46429 pulseB=27857 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2330 alex_k B=234814 L=5678 d=41.4 nb=2 neut=0 cmds=87 noFull=1 shQ=58703 | m=1.079 worth=44.6 cheap=8.6 over=0 dMedOther=48.8 safe(-1)=495003
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=364309 dq=50.2 cnt=66 | c=166.5 rankC=166.5 need=641768 tD=1.03 人 crowdedHard | safe=495003 keep=Inf avail=-Inf chunkB=46963 pulseB=28178 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=889622 dq=73.8 cnt=64 | c=238.4 rankC=238.4 need=1603719 tD=1.51 人 crowdedHard | safe=495003 keep=Inf avail=-Inf chunkB=46963 pulseB=28178 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2335 alex_k B=234814 L=5678 d=41.4 nb=2 neut=0 cmds=87 noFull=1 shQ=58703 | m=1.073 worth=44.4 cheap=8.6 over=0 dMedOther=48.3 safe(-1)=495003
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=364309 dq=50.2 cnt=66 | c=166.5 rankC=166.5 need=641923 tD=1.04 人 crowdedHard | safe=495003 keep=Inf avail=-Inf chunkB=46963 pulseB=28178 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=889622 dq=73.8 cnt=64 | c=238.4 rankC=238.4 need=1603719 tD=1.53 人 crowdedHard | safe=495003 keep=Inf avail=-Inf chunkB=46963 pulseB=28178 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2340 alex_k B=237514 L=5678 d=41.8 nb=2 neut=0 cmds=87 noFull=1 shQ=59378 | m=1.068 worth=44.7 cheap=8.6 over=0 dMedOther=48.8 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=368607 dq=50.8 cnt=66 | c=168.4 rankC=168.4 need=649452 tD=1.04 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=47503 pulseB=28502 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=900564 dq=74.7 cnt=64 | c=241.3 rankC=241.3 need=1623221 tD=1.53 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=47503 pulseB=28502 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2345 alex_k B=237514 L=5678 d=41.8 nb=2 neut=0 cmds=87 noFull=1 shQ=59378 | m=1.063 worth=44.5 cheap=8.6 over=0 dMedOther=48.8 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=368607 dq=50.8 cnt=66 | c=168.4 rankC=168.4 need=649530 tD=1.04 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=47503 pulseB=28502 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=900564 dq=74.7 cnt=64 | c=241.3 rankC=241.3 need=1623221 tD=1.53 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=47503 pulseB=28502 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2350 alex_k B=240245 L=5678 d=42.3 nb=2 neut=0 cmds=87 noFull=1 shQ=60061 | m=1.058 worth=44.7 cheap=8.6 over=0 dMedOther=49.4 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=372956 dq=51.4 cnt=66 | c=170.4 rankC=170.4 need=657151 tD=1.04 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=48049 pulseB=28829 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=911640 dq=75.6 cnt=64 | c=244.2 rankC=244.2 need=1642963 tD=1.53 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=48049 pulseB=28829 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2355 alex_k B=240245 L=5678 d=42.3 nb=2 neut=0 cmds=87 noFull=1 shQ=60061 | m=1.052 worth=44.5 cheap=8.6 over=0 dMedOther=49.4 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=372956 dq=51.4 cnt=66 | c=170.3 rankC=170.3 need=657309 tD=1.04 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=48049 pulseB=28829 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=911640 dq=75.6 cnt=64 | c=244.2 rankC=244.2 need=1642963 tD=1.53 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=48049 pulseB=28829 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2360 alex_k B=243007 L=5678 d=42.8 nb=2 neut=0 cmds=87 noFull=1 shQ=60751 | m=1.047 worth=44.8 cheap=8.6 over=0 dMedOther=49.9 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=377356 dq=52.0 cnt=66 | c=172.3 rankC=172.3 need=665021 tD=1.04 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=48601 pulseB=29161 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=922853 dq=76.5 cnt=64 | c=247.2 rankC=247.2 need=1662948 tD=1.53 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=48601 pulseB=29161 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2365 alex_k B=243007 L=5678 d=42.8 nb=2 neut=0 cmds=87 noFull=1 shQ=60751 | m=1.042 worth=44.6 cheap=8.6 over=0 dMedOther=49.9 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=377356 dq=52.0 cnt=66 | c=172.3 rankC=172.3 need=665101 tD=1.04 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=48601 pulseB=29161 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=922853 dq=76.5 cnt=64 | c=247.2 rankC=247.2 need=1662948 tD=1.53 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=48601 pulseB=29161 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2370 alex_k B=245801 L=5678 d=43.3 nb=2 neut=0 cmds=87 noFull=1 shQ=61450 | m=1.036 worth=44.9 cheap=8.6 over=0 dMedOther=45.5 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=381808 dq=52.7 cnt=66 | c=174.3 rankC=174.3 need=672906 tD=1.16 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=49160 pulseB=29496 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=934204 dq=77.5 cnt=64 | c=250.2 rankC=250.2 need=1683180 tD=1.70 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=49160 pulseB=29496 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2375 alex_k B=245801 L=5678 d=43.3 nb=2 neut=0 cmds=87 noFull=1 shQ=61450 | m=1.031 worth=44.6 cheap=8.6 over=0 dMedOther=45.1 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=381808 dq=52.7 cnt=66 | c=174.3 rankC=174.3 need=673068 tD=1.17 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=49160 pulseB=29496 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=934204 dq=77.5 cnt=64 | c=250.2 rankC=250.2 need=1683180 tD=1.72 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=49160 pulseB=29496 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2380 alex_k B=248627 L=5678 d=43.8 nb=2 neut=0 cmds=87 noFull=1 shQ=62156 | m=1.026 worth=44.9 cheap=8.6 over=0 dMedOther=45.4 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=386313 dq=53.3 cnt=66 | c=176.3 rankC=176.3 need=680969 tD=1.17 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=49725 pulseB=29835 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=945694 dq=78.4 cnt=64 | c=253.2 rankC=253.2 need=1703659 tD=1.73 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=49725 pulseB=29835 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2385 alex_k B=248627 L=5678 d=43.8 nb=2 neut=0 cmds=87 noFull=1 shQ=62156 | m=1.021 worth=44.7 cheap=8.6 over=0 dMedOther=44.9 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=386313 dq=53.3 cnt=66 | c=176.3 rankC=176.3 need=681051 tD=1.19 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=49725 pulseB=29835 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=945694 dq=78.4 cnt=64 | c=253.2 rankC=253.2 need=1703659 tD=1.74 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=49725 pulseB=29835 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2390 alex_k B=251486 L=5678 d=44.3 nb=2 neut=0 cmds=87 noFull=1 shQ=62871 | m=1.016 worth=45.0 cheap=8.6 over=0 dMedOther=45.3 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=390871 dq=53.9 cnt=66 | c=178.3 rankC=178.3 need=689046 tD=1.19 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=50297 pulseB=30178 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=957326 dq=79.4 cnt=64 | c=256.3 rankC=256.3 need=1724392 tD=1.75 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=50297 pulseB=30178 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2395 alex_k B=251486 L=5678 d=44.3 nb=2 neut=0 cmds=87 noFull=1 shQ=62871 | m=1.010 worth=44.7 cheap=8.6 over=0 dMedOther=47.8 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=390871 dq=53.9 cnt=66 | c=178.3 rankC=178.3 need=689211 tD=1.13 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=50297 pulseB=30178 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=957326 dq=79.4 cnt=64 | c=256.3 rankC=256.3 need=1724392 tD=1.66 人 crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=50297 pulseB=30178 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2400 alex_k B=260056 L=5678 d=45.8 nb=2 neut=0 cmds=87 noFull=1 shQ=63625 | m=1.005 worth=46.0 cheap=8.6 over=0 dMedOther=49.3 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=402733 dq=55.5 cnt=66 | c=183.6 rankC=183.6 need=709896 tD=1.13 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=52011 pulseB=31207 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=981161 dq=81.4 cnt=64 | c=262.6 rankC=262.6 need=1766874 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=52011 pulseB=31207 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2405 alex_k B=260056 L=5678 d=45.8 nb=2 neut=0 cmds=87 noFull=1 shQ=65014 | m=1.000 worth=45.8 cheap=8.6 over=0 dMedOther=49.3 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=402733 dq=55.5 cnt=66 | c=183.6 rankC=183.6 need=709981 tD=1.13 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=52011 pulseB=31207 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=981161 dq=81.4 cnt=64 | c=262.6 rankC=262.6 need=1766874 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=52011 pulseB=31207 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2410 alex_k B=263046 L=5678 d=46.3 nb=2 neut=0 cmds=87 noFull=1 shQ=65761 | m=0.995 worth=46.1 cheap=8.6 over=0 dMedOther=49.9 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=407485 dq=56.2 cnt=66 | c=185.7 rankC=185.7 need=718322 tD=1.13 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=52609 pulseB=31566 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=993229 dq=82.4 cnt=64 | c=385.4 rankC=558.9 need=1788384 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=52609 pulseB=31566 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2415 alex_k B=263046 L=5678 d=46.3 nb=2 neut=0 cmds=87 noFull=1 shQ=65761 | m=0.989 worth=45.8 cheap=8.6 over=0 dMedOther=49.9 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=407485 dq=56.2 cnt=66 | c=185.7 rankC=185.7 need=718494 tD=1.13 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=52609 pulseB=31566 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=993229 dq=82.4 cnt=64 | c=385.4 rankC=558.9 need=1788384 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=52609 pulseB=31566 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2420 alex_k B=266071 L=5678 d=46.9 nb=2 neut=0 cmds=87 noFull=1 shQ=66517 | m=0.984 worth=46.1 cheap=8.6 over=0 dMedOther=43.6 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=412293 dq=56.9 cnt=66 | c=187.8 rankC=187.8 need=726935 tD=1.30 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=53214 pulseB=31929 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1005445 dq=83.4 cnt=64 | c=390.1 rankC=565.7 need=1810157 tD=1.91 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=53214 pulseB=31929 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2425 alex_k B=266071 L=5678 d=46.9 nb=2 neut=0 cmds=87 noFull=1 shQ=66517 | m=0.979 worth=45.9 cheap=8.6 over=0 dMedOther=43.6 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=412293 dq=56.9 cnt=66 | c=187.8 rankC=187.8 need=727022 tD=1.31 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=53214 pulseB=31929 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1005445 dq=83.4 cnt=64 | c=390.1 rankC=565.7 need=1810157 tD=1.91 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=53214 pulseB=31929 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2430 alex_k B=269130 L=5678 d=47.4 nb=2 neut=0 cmds=87 noFull=1 shQ=67282 | m=0.974 worth=46.1 cheap=8.6 over=0 dMedOther=51.1 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=417158 dq=57.5 cnt=66 | c=190.0 rankC=190.0 need=735566 tD=1.13 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=53826 pulseB=32296 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1017811 dq=84.4 cnt=64 | c=394.9 rankC=572.6 need=1832198 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=53826 pulseB=32296 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2435 alex_k B=269130 L=5678 d=47.4 nb=2 neut=0 cmds=87 noFull=1 shQ=67282 | m=0.968 worth=45.9 cheap=8.6 over=0 dMedOther=51.1 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=417158 dq=57.5 cnt=66 | c=190.0 rankC=190.0 need=735742 tD=1.13 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=53826 pulseB=32296 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1017811 dq=84.4 cnt=64 | c=394.9 rankC=572.6 need=1832198 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=53826 pulseB=32296 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2440 alex_k B=272224 L=5678 d=47.9 nb=2 neut=0 cmds=87 noFull=1 shQ=68056 | m=0.963 worth=46.2 cheap=8.6 over=0 dMedOther=51.8 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=422080 dq=58.2 cnt=66 | c=192.2 rankC=192.2 need=744388 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=54445 pulseB=32667 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1030330 dq=85.4 cnt=64 | c=399.7 rankC=579.6 need=1854511 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=54445 pulseB=32667 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2445 alex_k B=272224 L=5678 d=47.9 nb=2 neut=0 cmds=87 noFull=1 shQ=68056 | m=0.958 worth=45.9 cheap=8.6 over=0 dMedOther=51.8 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=422080 dq=58.2 cnt=66 | c=192.1 rankC=192.1 need=744477 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=54445 pulseB=32667 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1030330 dq=85.4 cnt=64 | c=399.7 rankC=579.6 need=1854511 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=54445 pulseB=32667 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2450 alex_k B=275354 L=5678 d=48.5 nb=2 neut=0 cmds=87 noFull=1 shQ=68838 | m=0.953 worth=46.2 cheap=8.6 over=0 dMedOther=52.4 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=427060 dq=58.9 cnt=66 | c=194.4 rankC=194.4 need=753228 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=55071 pulseB=33042 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1043003 dq=86.5 cnt=64 | c=404.6 rankC=586.6 need=1877099 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=55071 pulseB=33042 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2455 alex_k B=275354 L=5678 d=48.5 nb=2 neut=0 cmds=87 noFull=1 shQ=68838 | m=0.947 worth=45.9 cheap=8.6 over=0 dMedOther=52.4 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=427060 dq=58.9 cnt=66 | c=194.3 rankC=194.3 need=753407 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=55071 pulseB=33042 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1043003 dq=86.5 cnt=64 | c=404.6 rankC=586.6 need=1877099 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=55071 pulseB=33042 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2460 alex_k B=278520 L=5678 d=49.1 nb=2 neut=0 cmds=87 noFull=1 shQ=69630 | m=0.942 worth=46.2 cheap=8.6 over=0 dMedOther=53.0 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=432099 dq=59.6 cnt=66 | c=196.6 rankC=196.6 need=762264 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=55704 pulseB=33422 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1055831 dq=87.5 cnt=64 | c=282.4 rankC=282.4 need=1899963 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=55704 pulseB=33422 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2465 alex_k B=278520 L=5678 d=49.1 nb=2 neut=0 cmds=87 noFull=1 shQ=69630 | m=0.937 worth=45.9 cheap=8.6 over=0 dMedOther=53.0 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=432099 dq=59.6 cnt=66 | c=196.6 rankC=196.6 need=762355 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=55704 pulseB=33422 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1055831 dq=87.5 cnt=64 | c=282.4 rankC=282.4 need=1899963 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=55704 pulseB=33422 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2470 alex_k B=281722 L=5678 d=49.6 nb=2 neut=0 cmds=87 noFull=1 shQ=70430 | m=0.931 worth=46.2 cheap=8.6 over=0 dMedOther=53.6 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=437197 dq=60.3 cnt=66 | c=198.8 rankC=198.8 need=771318 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=56344 pulseB=33807 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1068817 dq=88.6 cnt=64 | c=285.8 rankC=285.8 need=1923109 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=56344 pulseB=33807 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2475 alex_k B=281722 L=5678 d=49.6 nb=2 neut=0 cmds=87 noFull=1 shQ=70430 | m=0.926 worth=46.0 cheap=8.6 over=0 dMedOther=53.6 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=437197 dq=60.3 cnt=66 | c=198.8 rankC=198.8 need=771501 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=56344 pulseB=33807 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1068817 dq=88.6 cnt=64 | c=285.8 rankC=285.8 need=1923109 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=56344 pulseB=33807 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2480 alex_k B=284961 L=5678 d=50.2 nb=2 neut=0 cmds=87 noFull=1 shQ=71240 | m=0.921 worth=46.2 cheap=8.6 over=0 dMedOther=54.3 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=442355 dq=61.0 cnt=66 | c=201.1 rankC=201.1 need=780573 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=56992 pulseB=34195 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1081963 dq=89.7 cnt=64 | c=289.3 rankC=289.3 need=1946540 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=56992 pulseB=34195 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2485 alex_k B=284961 L=5678 d=50.2 nb=2 neut=0 cmds=87 noFull=1 shQ=71240 | m=0.916 worth=46.0 cheap=8.6 over=0 dMedOther=54.3 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=442355 dq=61.0 cnt=66 | c=201.1 rankC=201.1 need=780666 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=56992 pulseB=34195 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1081963 dq=89.7 cnt=64 | c=289.3 rankC=289.3 need=1946540 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=56992 pulseB=34195 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2490 alex_k B=288238 L=5678 d=50.8 nb=2 neut=0 cmds=87 noFull=1 shQ=72059 | m=0.911 worth=46.2 cheap=8.6 over=0 dMedOther=54.9 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=447574 dq=61.7 cnt=66 | c=203.4 rankC=203.4 need=789846 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=57648 pulseB=34589 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1095271 dq=90.8 cnt=64 | c=292.9 rankC=292.9 need=1970260 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=57648 pulseB=34589 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2495 alex_k B=288238 L=5678 d=50.8 nb=2 neut=0 cmds=87 noFull=1 shQ=72059 | m=0.905 worth=46.0 cheap=8.6 over=0 dMedOther=54.9 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=447574 dq=61.7 cnt=66 | c=203.4 rankC=203.4 need=790034 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=57648 pulseB=34589 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1095271 dq=90.8 cnt=64 | c=292.9 rankC=292.9 need=1970260 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=57648 pulseB=34589 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2500 alex_k B=297230 L=5678 d=52.3 nb=2 neut=0 cmds=87 noFull=1 shQ=72920 | m=0.900 worth=47.1 cheap=8.6 over=0 dMedOther=56.6 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=460105 dq=63.5 cnt=66 | c=209.0 rankC=209.0 need=811956 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=59446 pulseB=35668 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1120802 dq=92.9 cnt=64 | c=299.6 rankC=299.6 need=2015765 tD=1.64 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=59446 pulseB=35668 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2505 alex_k B=297230 L=5678 d=52.3 nb=2 neut=0 cmds=87 noFull=1 shQ=74307 | m=0.900 worth=47.1 cheap=8.6 over=0 dMedOther=56.6 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=460105 dq=63.5 cnt=66 | c=209.0 rankC=209.0 need=812052 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=59446 pulseB=35668 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1120802 dq=92.9 cnt=64 | c=299.6 rankC=299.6 need=2015765 tD=1.64 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=59446 pulseB=35668 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2510 alex_k B=300648 L=5678 d=52.9 nb=2 neut=0 cmds=87 noFull=1 shQ=75162 | m=0.900 worth=47.7 cheap=8.6 over=0 dMedOther=57.3 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=465534 dq=64.2 cnt=66 | c=211.4 rankC=211.4 need=821608 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=60130 pulseB=36078 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1134587 dq=94.1 cnt=64 | c=303.3 rankC=303.3 need=2040335 tD=1.64 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=60130 pulseB=36078 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2515 alex_k B=300648 L=5678 d=52.9 nb=2 neut=0 cmds=87 noFull=1 shQ=75162 | m=0.900 worth=47.7 cheap=8.6 over=0 dMedOther=57.3 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=465534 dq=64.2 cnt=66 | c=211.4 rankC=211.4 need=821802 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=60130 pulseB=36078 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1134587 dq=94.1 cnt=64 | c=303.3 rankC=303.3 need=2040335 tD=1.64 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=60130 pulseB=36078 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2520 alex_k B=304105 L=5678 d=53.6 nb=2 neut=0 cmds=87 noFull=1 shQ=76026 | m=0.900 worth=48.2 cheap=8.6 over=0 dMedOther=58.0 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=471027 dq=65.0 cnt=66 | c=213.8 rankC=213.8 need=831474 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=60821 pulseB=36493 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1148542 dq=95.2 cnt=64 | c=307.0 rankC=307.0 need=2065208 tD=1.64 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=60821 pulseB=36493 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2525 alex_k B=304105 L=5678 d=53.6 nb=2 neut=0 cmds=87 noFull=1 shQ=76026 | m=0.900 worth=48.2 cheap=8.6 over=0 dMedOther=58.0 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=471027 dq=65.0 cnt=66 | c=213.8 rankC=213.8 need=831572 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=60821 pulseB=36493 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1148542 dq=95.2 cnt=64 | c=307.0 rankC=307.0 need=2065208 tD=1.64 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=60821 pulseB=36493 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2530 alex_k B=307602 L=5678 d=54.2 nb=2 neut=0 cmds=87 noFull=1 shQ=76900 | m=0.900 worth=48.8 cheap=8.6 over=0 dMedOther=58.7 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=476585 dq=65.7 cnt=66 | c=216.3 rankC=216.3 need=841360 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=61520 pulseB=36912 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1162669 dq=96.4 cnt=64 | c=310.7 rankC=310.7 need=2090387 tD=1.64 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=61520 pulseB=36912 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2535 alex_k B=307602 L=5678 d=54.2 nb=2 neut=0 cmds=87 noFull=1 shQ=76900 | m=0.900 worth=48.8 cheap=8.6 over=0 dMedOther=58.7 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=476585 dq=65.7 cnt=66 | c=216.3 rankC=216.3 need=841559 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=61520 pulseB=36912 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1162669 dq=96.4 cnt=64 | c=310.7 rankC=310.7 need=2090387 tD=1.64 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=61520 pulseB=36912 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2540 alex_k B=311139 L=5678 d=54.8 nb=2 neut=0 cmds=87 noFull=1 shQ=77784 | m=0.900 worth=49.3 cheap=8.6 over=0 dMedOther=59.4 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=482208 dq=66.5 cnt=66 | c=218.8 rankC=218.8 need=851465 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=62228 pulseB=37337 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1176969 dq=97.6 cnt=64 | c=314.5 rankC=314.5 need=2115875 tD=1.64 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=62228 pulseB=37337 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2545 alex_k B=311139 L=5678 d=54.8 nb=2 neut=0 cmds=87 noFull=1 shQ=77784 | m=0.900 worth=49.3 cheap=8.6 over=0 dMedOther=59.4 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=482208 dq=66.5 cnt=66 | c=218.8 rankC=218.8 need=851565 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=62228 pulseB=37337 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1176969 dq=97.6 cnt=64 | c=314.5 rankC=314.5 need=2115875 tD=1.64 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=62228 pulseB=37337 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2550 alex_k B=314717 L=5678 d=55.4 nb=2 neut=0 cmds=87 noFull=1 shQ=78679 | m=0.900 worth=49.9 cheap=8.6 over=0 dMedOther=60.1 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=487898 dq=67.3 cnt=66 | c=221.3 rankC=221.3 need=861591 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=62943 pulseB=37766 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1191445 dq=98.8 cnt=64 | c=318.3 rankC=318.3 need=2141677 tD=1.64 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=62943 pulseB=37766 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2555 alex_k B=314717 L=5678 d=55.4 nb=2 neut=0 cmds=87 noFull=1 shQ=78679 | m=0.900 worth=49.9 cheap=8.6 over=0 dMedOther=60.1 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=487898 dq=67.3 cnt=66 | c=221.3 rankC=221.3 need=861794 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=62943 pulseB=37766 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1191445 dq=98.8 cnt=64 | c=318.3 rankC=318.3 need=2141677 tD=1.64 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=62943 pulseB=37766 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2560 alex_k B=318336 L=5678 d=56.1 nb=2 neut=0 cmds=87 noFull=1 shQ=79584 | m=0.900 worth=50.5 cheap=8.6 over=0 dMedOther=60.8 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=493655 dq=68.1 cnt=66 | c=223.8 rankC=223.8 need=871942 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=63667 pulseB=38200 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1206099 dq=100.0 cnt=64 | c=322.2 rankC=322.2 need=2167795 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=63667 pulseB=38200 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2565 alex_k B=318336 L=5678 d=56.1 nb=2 neut=0 cmds=87 noFull=1 shQ=79584 | m=0.900 worth=50.5 cheap=8.6 over=0 dMedOther=60.8 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=493655 dq=68.1 cnt=66 | c=223.8 rankC=223.8 need=872045 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=63667 pulseB=38200 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1206099 dq=100.0 cnt=64 | c=322.2 rankC=322.2 need=2167795 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=63667 pulseB=38200 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2570 alex_k B=321996 L=5678 d=56.7 nb=2 neut=0 cmds=87 noFull=1 shQ=80499 | m=0.900 worth=51.0 cheap=8.6 over=0 dMedOther=61.5 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=499480 dq=68.9 cnt=66 | c=226.4 rankC=226.4 need=882315 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=64399 pulseB=38640 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1220934 dq=101.2 cnt=64 | c=326.1 rankC=326.1 need=2194237 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=64399 pulseB=38640 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2575 alex_k B=321996 L=5678 d=56.7 nb=2 neut=0 cmds=87 noFull=1 shQ=80499 | m=0.900 worth=51.0 cheap=8.6 over=0 dMedOther=61.5 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=499480 dq=68.9 cnt=66 | c=226.4 rankC=226.4 need=882522 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=64399 pulseB=38640 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1220934 dq=101.2 cnt=64 | c=326.1 rankC=326.1 need=2194237 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=64399 pulseB=38640 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2580 alex_k B=351446 L=5678 d=61.9 nb=2 neut=0 cmds=87 noFull=1 shQ=84539 | m=0.900 worth=55.7 cheap=8.6 over=0 dMedOther=62.3 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=505373 dq=69.7 cnt=66 | c=229.1 rankC=229.1 need=892915 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=70289 pulseB=42174 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1235585 dq=102.5 cnt=64 | c=330.1 rankC=330.1 need=2220350 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=70289 pulseB=42174 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2585 alex_k B=351446 L=5678 d=61.9 nb=2 neut=0 cmds=87 noFull=1 shQ=87861 | m=0.900 worth=55.7 cheap=8.6 over=0 dMedOther=62.3 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=505373 dq=69.7 cnt=66 | c=229.0 rankC=229.0 need=893020 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=70289 pulseB=42174 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1235585 dq=102.5 cnt=64 | c=330.1 rankC=330.1 need=2220350 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=70289 pulseB=42174 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2590 alex_k B=355487 L=5678 d=62.6 nb=2 neut=0 cmds=87 noFull=1 shQ=88871 | m=0.900 worth=56.3 cheap=8.6 over=0 dMedOther=63.0 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=511336 dq=70.5 cnt=66 | c=231.7 rankC=231.7 need=903539 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=71097 pulseB=42658 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1250041 dq=103.7 cnt=64 | c=333.9 rankC=333.9 need=2246116 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=71097 pulseB=42658 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2595 alex_k B=355487 L=5678 d=62.6 nb=2 neut=0 cmds=87 noFull=1 shQ=88871 | m=0.900 worth=56.3 cheap=8.6 over=0 dMedOther=63.0 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=511336 dq=70.5 cnt=66 | c=231.7 rankC=231.7 need=903751 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=71097 pulseB=42658 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1250041 dq=103.7 cnt=64 | c=333.9 rankC=333.9 need=2246116 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=71097 pulseB=42658 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2600 alex_k B=365253 L=5678 d=64.3 nb=2 neut=0 cmds=87 noFull=1 shQ=89930 | m=0.900 worth=57.9 cheap=8.6 over=0 dMedOther=64.8 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=524619 dq=72.4 cnt=66 | c=237.6 rankC=237.6 need=927063 tD=1.12 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=73051 pulseB=43830 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1276476 dq=105.8 cnt=64 | c=340.9 rankC=340.9 need=2293233 tD=1.63 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=73051 pulseB=43830 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2605 alex_k B=365253 L=5678 d=64.3 nb=2 neut=0 cmds=87 noFull=1 shQ=91313 | m=0.900 worth=57.9 cheap=8.6 over=0 dMedOther=62.9 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=524619 dq=72.4 cnt=66 | c=237.6 rankC=237.6 need=927172 tD=1.15 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=73051 pulseB=43830 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1276476 dq=105.8 cnt=64 | c=340.9 rankC=340.9 need=2293233 tD=1.68 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=73051 pulseB=43830 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2610 alex_k B=369453 L=5678 d=65.1 nb=2 neut=0 cmds=87 noFull=1 shQ=92363 | m=0.900 worth=58.6 cheap=8.6 over=0 dMedOther=63.7 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=530809 dq=73.2 cnt=66 | c=240.3 rankC=240.3 need=938097 tD=1.15 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=73891 pulseB=44334 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1290389 dq=107.0 cnt=64 | c=344.6 rankC=344.6 need=2318031 tD=1.68 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=73891 pulseB=44334 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2615 alex_k B=369453 L=5678 d=65.1 nb=2 neut=0 cmds=87 noFull=1 shQ=92363 | m=0.900 worth=58.6 cheap=8.6 over=0 dMedOther=62.1 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=530809 dq=73.2 cnt=66 | c=240.3 rankC=240.3 need=938317 tD=1.18 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=73891 pulseB=44334 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1290389 dq=107.0 cnt=64 | c=344.6 rankC=344.6 need=2318031 tD=1.72 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=73891 pulseB=44334 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2620 alex_k B=373701 L=5678 d=65.8 nb=2 neut=0 cmds=87 noFull=1 shQ=93425 | m=0.900 worth=59.2 cheap=8.6 over=0 dMedOther=60.7 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=537072 dq=74.1 cnt=66 | c=243.1 rankC=243.1 need=949375 tD=1.22 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=74740 pulseB=44844 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1304067 dq=108.1 cnt=64 | c=348.2 rankC=348.2 need=2342410 tD=1.78 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=74740 pulseB=44844 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2625 alex_k B=373701 L=5678 d=65.8 nb=2 neut=0 cmds=87 noFull=1 shQ=93425 | m=0.900 worth=59.2 cheap=8.6 over=0 dMedOther=59.4 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=537072 dq=74.1 cnt=66 | c=243.1 rankC=243.1 need=949486 tD=1.25 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=74740 pulseB=44844 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1304067 dq=108.1 cnt=64 | c=348.2 rankC=348.2 need=2342410 tD=1.82 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=74740 pulseB=44844 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2630 alex_k B=377998 L=5678 d=66.6 nb=2 neut=0 cmds=87 noFull=1 shQ=94499 | m=0.900 worth=59.9 cheap=8.6 over=0 dMedOther=58.4 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=543409 dq=75.0 cnt=66 | c=245.9 rankC=245.9 need=960677 tD=1.28 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=75600 pulseB=45360 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1317498 dq=109.2 cnt=64 | c=351.8 rankC=351.8 need=2366349 tD=1.87 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=75600 pulseB=45360 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2635 alex_k B=380564 L=5678 d=67.0 nb=2 neut=0 cmds=87 noFull=1 shQ=95141 | m=0.900 worth=60.3 cheap=8.6 over=0 dMedOther=57.4 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=543409 dq=75.0 cnt=66 | c=245.9 rankC=245.9 need=960901 tD=1.31 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=76113 pulseB=45668 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1317498 dq=109.2 cnt=64 | c=351.8 rankC=351.8 need=2366349 tD=1.90 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=76113 pulseB=45668 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2640 alex_k B=384940 L=5678 d=67.8 nb=2 neut=0 cmds=87 noFull=1 shQ=96235 | m=0.900 worth=61.0 cheap=8.6 over=0 dMedOther=56.7 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=549821 dq=75.8 cnt=66 | c=248.7 rankC=248.7 need=972229 tD=1.34 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=76988 pulseB=46193 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1330804 dq=110.3 cnt=64 | c=355.3 rankC=355.3 need=2390065 tD=1.94 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=76988 pulseB=46193 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2645 alex_k B=384940 L=5678 d=67.8 nb=2 neut=0 cmds=87 noFull=1 shQ=96235 | m=0.900 worth=61.0 cheap=8.6 over=0 dMedOther=56.0 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=549821 dq=75.8 cnt=66 | c=248.7 rankC=248.7 need=972342 tD=1.36 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=76988 pulseB=46193 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1330804 dq=110.3 cnt=64 | c=355.3 rankC=355.3 need=2390065 tD=1.97 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=76988 pulseB=46193 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2650 alex_k B=389366 L=5678 d=68.6 nb=2 neut=0 cmds=87 noFull=1 shQ=97341 | m=0.900 worth=61.7 cheap=8.6 over=0 dMedOther=55.6 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=556308 dq=76.7 cnt=66 | c=251.6 rankC=251.6 need=983805 tD=1.38 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=77873 pulseB=46724 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1343845 dq=111.4 cnt=64 | c=358.8 rankC=358.8 need=2413309 tD=2.00 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=77873 pulseB=46724 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2655 alex_k B=389366 L=5678 d=68.6 nb=2 neut=0 cmds=87 noFull=1 shQ=97341 | m=0.900 worth=61.7 cheap=8.6 over=0 dMedOther=55.0 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=556308 dq=76.7 cnt=66 | c=251.6 rankC=251.6 need=984034 tD=1.39 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=77873 pulseB=46724 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1343845 dq=111.4 cnt=64 | c=358.8 rankC=358.8 need=2413309 tD=2.02 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=77873 pulseB=46724 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2660 alex_k B=393843 L=5678 d=69.4 nb=2 neut=0 cmds=87 noFull=1 shQ=98460 | m=0.900 worth=62.4 cheap=8.6 over=0 dMedOther=55.6 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=562872 dq=77.6 cnt=66 | c=254.5 rankC=254.5 need=995636 tD=1.40 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=78769 pulseB=47261 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1356611 dq=112.5 cnt=64 | c=362.2 rankC=362.2 need=2436062 tD=2.02 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=78769 pulseB=47261 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2665 alex_k B=393843 L=5678 d=69.4 nb=2 neut=0 cmds=87 noFull=1 shQ=98460 | m=0.900 worth=62.4 cheap=8.6 over=0 dMedOther=55.6 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=562872 dq=77.6 cnt=66 | c=254.5 rankC=254.5 need=995752 tD=1.40 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=78769 pulseB=47261 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1356611 dq=112.5 cnt=64 | c=362.2 rankC=362.2 need=2436062 tD=2.02 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=78769 pulseB=47261 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2670 alex_k B=398372 L=5678 d=70.2 nb=2 neut=0 cmds=87 noFull=1 shQ=99593 | m=0.900 worth=63.1 cheap=8.6 over=0 dMedOther=56.2 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=569513 dq=78.6 cnt=66 | c=257.4 rankC=257.4 need=1007493 tD=1.40 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=79674 pulseB=47805 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1369227 dq=113.5 cnt=64 | c=365.5 rankC=365.5 need=2458549 tD=2.02 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=79674 pulseB=47805 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2675 alex_k B=398372 L=5678 d=70.2 nb=2 neut=0 cmds=87 noFull=1 shQ=99593 | m=0.900 worth=63.1 cheap=8.6 over=0 dMedOther=56.2 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=569513 dq=78.6 cnt=66 | c=257.4 rankC=257.4 need=1007727 tD=1.40 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=79674 pulseB=47805 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1369227 dq=113.5 cnt=64 | c=365.5 rankC=365.5 need=2458549 tD=2.02 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=79674 pulseB=47805 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2680 alex_k B=402953 L=5678 d=71.0 nb=2 neut=0 cmds=87 noFull=1 shQ=100738 | m=0.900 worth=63.9 cheap=8.6 over=0 dMedOther=56.9 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=576233 dq=79.5 cnt=66 | c=260.4 rankC=260.4 need=1019612 tD=1.40 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=80591 pulseB=48354 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1381550 dq=114.6 cnt=64 | c=368.8 rankC=368.8 need=2480513 tD=2.01 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=80591 pulseB=48354 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2685 alex_k B=402953 L=5678 d=71.0 nb=2 neut=0 cmds=87 noFull=1 shQ=100738 | m=0.900 worth=63.9 cheap=8.6 over=0 dMedOther=56.9 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=576233 dq=79.5 cnt=66 | c=260.3 rankC=260.3 need=1019730 tD=1.40 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=80591 pulseB=48354 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1381550 dq=114.6 cnt=64 | c=368.8 rankC=368.8 need=2480513 tD=2.01 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=80591 pulseB=48354 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2690 alex_k B=407586 L=5678 d=71.8 nb=2 neut=0 cmds=87 noFull=1 shQ=101896 | m=0.900 worth=64.6 cheap=8.6 over=0 dMedOther=57.6 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=583032 dq=80.4 cnt=66 | c=263.4 rankC=263.4 need=1031757 tD=1.40 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=81517 pulseB=48910 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1393707 dq=115.6 cnt=64 | c=372.0 rankC=372.0 need=2502181 tD=2.01 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=81517 pulseB=48910 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2695 alex_k B=407586 L=5678 d=71.8 nb=2 neut=0 cmds=87 noFull=1 shQ=101896 | m=0.900 worth=64.6 cheap=8.6 over=0 dMedOther=57.6 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=583032 dq=80.4 cnt=66 | c=263.3 rankC=263.3 need=1031997 tD=1.40 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=81517 pulseB=48910 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1393707 dq=115.6 cnt=64 | c=372.0 rankC=372.0 need=2502181 tD=2.01 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=81517 pulseB=48910 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2700 alex_k B=417951 L=5678 d=73.6 nb=2 neut=0 cmds=87 noFull=1 shQ=103108 | m=0.900 worth=66.2 cheap=8.6 over=0 dMedOther=59.2 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=597161 dq=82.4 cnt=66 | c=269.6 rankC=269.6 need=1056872 tD=1.39 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=83590 pulseB=50154 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1417613 dq=117.5 cnt=64 | c=378.3 rankC=378.3 need=2544790 tD=1.98 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=83590 pulseB=50154 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2705 alex_k B=417951 L=5678 d=73.6 nb=2 neut=0 cmds=87 noFull=1 shQ=104487 | m=0.900 worth=66.2 cheap=8.6 over=0 dMedOther=59.2 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=597161 dq=82.4 cnt=66 | c=269.6 rankC=269.6 need=1056995 tD=1.39 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=83590 pulseB=50154 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1175346 dq=97.5 cnt=64 | c=314.3 rankC=314.3 need=2112982 tD=1.64 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=83590 pulseB=50154 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2710 alex_k B=422757 L=5678 d=74.5 nb=2 neut=0 cmds=87 noFull=1 shQ=105689 | m=0.900 worth=67.0 cheap=8.6 over=0 dMedOther=59.9 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=604207 dq=83.3 cnt=66 | c=272.7 rankC=272.7 need=1069465 tD=1.39 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=84551 pulseB=50731 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1189802 dq=98.7 cnt=64 | c=318.1 rankC=318.1 need=2138748 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=84551 pulseB=50731 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2715 alex_k B=422757 L=5678 d=74.5 nb=2 neut=0 cmds=87 noFull=1 shQ=105689 | m=0.900 worth=67.0 cheap=8.6 over=0 dMedOther=59.9 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=604207 dq=83.3 cnt=66 | c=272.7 rankC=272.7 need=1069713 tD=1.39 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=84551 pulseB=50731 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1189802 dq=98.7 cnt=64 | c=318.1 rankC=318.1 need=2138748 tD=1.65 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=84551 pulseB=50731 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2720 alex_k B=427618 L=5678 d=75.3 nb=2 neut=0 cmds=87 noFull=1 shQ=106904 | m=0.900 worth=67.8 cheap=8.6 over=0 dMedOther=61.7 safe(-1)=499664
+    → F[eu]dal Empire#17[T2] terr=12060 bal=1204436 dq=99.9 cnt=64 | c=180.0 rankC=90.0 need=2164831 tD=1.62 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=85524 pulseB=51314 价高(c>=worth)→break hNb=2
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=611336 dq=84.3 cnt=66 | c=400.0 rankC=580.0 need=1082335 tD=1.37 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=85524 pulseB=51314 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2725 alex_k B=427618 L=5678 d=75.3 nb=2 neut=0 cmds=87 noFull=1 shQ=106904 | m=0.900 worth=67.8 cheap=8.6 over=0 dMedOther=61.4 safe(-1)=499664
+    → F[eu]dal Empire#17[T2] terr=11941 bal=1185422 dq=99.3 cnt=63 | c=125.7 rankC=62.9 need=2126719 tD=1.62 人 pulse bleeding | safe=499664 keep=Inf avail=-Inf chunkB=85524 pulseB=51314 价高(c>=worth)→break hNb=2
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=611336 dq=84.3 cnt=66 | c=400.0 rankC=580.0 need=1082460 tD=1.37 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=85524 pulseB=51314 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2730 alex_k B=432535 L=5678 d=76.2 nb=2 neut=0 cmds=87 noFull=1 shQ=108133 | m=0.900 worth=68.6 cheap=8.6 over=0 dMedOther=61.9 safe(-1)=499664
+    → F[eu]dal Empire#17[T2] terr=11703 bal=1161854 dq=99.3 cnt=61 | c=175.6 rankC=87.8 need=2076052 tD=1.60 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=86507 pulseB=51904 价高(c>=worth)→break hNb=2
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=618549 dq=85.3 cnt=66 | c=404.6 rankC=586.7 need=1095233 tD=1.38 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=86507 pulseB=51904 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2735 alex_k B=432535 L=5678 d=76.2 nb=2 neut=0 cmds=87 noFull=1 shQ=108133 | m=0.900 worth=68.6 cheap=8.6 over=0 dMedOther=61.6 safe(-1)=499664
+    → F[eu]dal Empire#17[T2] terr=11584 bal=1142954 dq=98.7 cnt=60 | c=177.5 rankC=88.8 need=2038170 tD=1.60 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=86507 pulseB=51904 价高(c>=worth)→break hNb=2
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=618549 dq=85.3 cnt=66 | c=404.6 rankC=586.6 need=1095486 tD=1.38 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=86507 pulseB=51904 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2740 alex_k B=437509 L=5678 d=77.1 nb=2 neut=0 cmds=87 noFull=1 shQ=109377 | m=0.900 worth=69.3 cheap=8.6 over=0 dMedOther=62.1 safe(-1)=499664
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1119578 dq=98.6 cnt=58 | c=183.7 rankC=91.9 need=1988004 tD=1.59 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=87502 pulseB=52501 价高(c>=worth)→break hNb=2
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=625847 dq=86.3 cnt=66 | c=282.3 rankC=282.3 need=1108414 tD=1.39 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=87502 pulseB=52501 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2745 alex_k B=437509 L=5678 d=77.1 nb=2 neut=0 cmds=87 noFull=1 shQ=109377 | m=0.900 worth=69.3 cheap=8.6 over=0 dMedOther=62.1 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=625847 dq=86.3 cnt=66 | c=282.2 rankC=282.2 need=1108542 tD=1.39 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=87502 pulseB=52501 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1104946 dq=97.4 cnt=58 | c=459.1 rankC=665.7 need=1962383 tD=1.57 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=87502 pulseB=52501 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2750 alex_k B=442540 L=5678 d=77.9 nb=2 neut=0 cmds=87 noFull=1 shQ=110635 | m=0.900 worth=70.1 cheap=8.6 over=0 dMedOther=62.8 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=633231 dq=87.3 cnt=66 | c=285.5 rankC=285.5 need=1121626 tD=1.39 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=88508 pulseB=53105 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1118536 dq=98.6 cnt=58 | c=464.7 rankC=673.8 need=1986458 tD=1.57 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=88508 pulseB=53105 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2755 alex_k B=442540 L=5678 d=77.9 nb=2 neut=0 cmds=87 noFull=1 shQ=110635 | m=0.900 worth=70.1 cheap=8.6 over=0 dMedOther=62.8 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=633231 dq=87.3 cnt=66 | c=285.5 rankC=285.5 need=1121884 tD=1.39 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=88508 pulseB=53105 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1118536 dq=98.6 cnt=58 | c=464.6 rankC=673.7 need=1986602 tD=1.57 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=88508 pulseB=53105 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2760 alex_k B=447629 L=5678 d=78.8 nb=2 neut=0 cmds=87 noFull=1 shQ=111907 | m=0.900 worth=71.0 cheap=8.6 over=0 dMedOther=63.6 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=640703 dq=88.4 cnt=66 | c=288.8 rankC=288.8 need=1135128 tD=1.39 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=89526 pulseB=53715 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1132293 dq=99.8 cnt=58 | c=470.3 rankC=681.9 need=2011122 tD=1.57 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=89526 pulseB=53715 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2765 alex_k B=447629 L=5678 d=78.8 nb=2 neut=0 cmds=87 noFull=1 shQ=111907 | m=0.900 worth=71.0 cheap=8.6 over=0 dMedOther=63.6 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=640703 dq=88.4 cnt=66 | c=288.8 rankC=288.8 need=1135258 tD=1.39 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=89526 pulseB=53715 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1132293 dq=99.8 cnt=58 | c=470.2 rankC=681.8 need=2011268 tD=1.57 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=89526 pulseB=53715 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2770 alex_k B=452776 L=5678 d=79.7 nb=2 neut=0 cmds=87 noFull=1 shQ=113194 | m=0.900 worth=71.8 cheap=8.6 over=0 dMedOther=64.3 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=648263 dq=89.4 cnt=66 | c=292.1 rankC=292.1 need=1148661 tD=1.39 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=90555 pulseB=54333 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1146220 dq=101.0 cnt=58 | c=476.0 rankC=690.1 need=2035949 tD=1.57 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=90555 pulseB=54333 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2775 alex_k B=452776 L=5678 d=79.7 nb=2 neut=0 cmds=87 noFull=1 shQ=113194 | m=0.900 worth=71.8 cheap=8.6 over=0 dMedOther=64.3 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=648263 dq=89.4 cnt=66 | c=292.1 rankC=292.1 need=1148925 tD=1.39 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=90555 pulseB=54333 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1146220 dq=101.0 cnt=58 | c=475.9 rankC=690.1 need=2036096 tD=1.57 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=90555 pulseB=54333 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2780 alex_k B=457982 L=5678 d=80.7 nb=2 neut=0 cmds=87 noFull=1 shQ=114495 | m=0.900 worth=72.6 cheap=8.6 over=0 dMedOther=65.1 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=655912 dq=90.5 cnt=66 | c=295.5 rankC=295.5 need=1162490 tD=1.39 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=91596 pulseB=54958 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1160089 dq=102.2 cnt=58 | c=481.6 rankC=698.3 need=2060829 tD=1.57 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=91596 pulseB=54958 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2785 alex_k B=457982 L=5678 d=80.7 nb=2 neut=0 cmds=87 noFull=1 shQ=114495 | m=0.900 worth=72.6 cheap=8.6 over=0 dMedOther=65.1 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=655912 dq=90.5 cnt=66 | c=295.5 rankC=295.5 need=1162623 tD=1.39 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=91596 pulseB=54958 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1160089 dq=102.2 cnt=58 | c=481.6 rankC=698.3 need=2060978 tD=1.57 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=91596 pulseB=54958 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2790 alex_k B=463248 L=5678 d=81.6 nb=2 neut=0 cmds=87 noFull=1 shQ=115812 | m=0.900 worth=73.4 cheap=8.6 over=0 dMedOther=65.8 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=663651 dq=91.5 cnt=66 | c=298.9 rankC=298.9 need=1176351 tD=1.39 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=92650 pulseB=55590 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1173778 dq=103.4 cnt=58 | c=487.2 rankC=706.4 need=2085251 tD=1.57 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=92650 pulseB=55590 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2795 alex_k B=463248 L=5678 d=81.6 nb=2 neut=0 cmds=87 noFull=1 shQ=115812 | m=0.900 worth=73.4 cheap=8.6 over=0 dMedOther=65.8 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=663651 dq=91.5 cnt=66 | c=298.8 rankC=298.8 need=1176620 tD=1.39 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=92650 pulseB=55590 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1173778 dq=103.4 cnt=58 | c=487.2 rankC=706.4 need=2085402 tD=1.57 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=92650 pulseB=55590 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2800 alex_k B=474253 L=5678 d=83.5 nb=2 neut=0 cmds=87 noFull=1 shQ=117187 | m=0.900 worth=75.2 cheap=8.6 over=0 dMedOther=67.6 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=678732 dq=93.6 cnt=66 | c=305.6 rankC=305.6 need=1203255 tD=1.38 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=94851 pulseB=56910 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1198625 dq=105.6 cnt=58 | c=497.4 rankC=721.2 need=2129501 tD=1.56 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=94851 pulseB=56910 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2805 alex_k B=474253 L=5678 d=83.5 nb=2 neut=0 cmds=87 noFull=1 shQ=118563 | m=0.900 worth=75.2 cheap=8.6 over=0 dMedOther=67.6 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=678732 dq=93.6 cnt=66 | c=305.5 rankC=305.5 need=1203393 tD=1.38 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=94851 pulseB=56910 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1198625 dq=105.6 cnt=58 | c=497.3 rankC=721.1 need=2129655 tD=1.56 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=94851 pulseB=56910 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2810 alex_k B=479706 L=5678 d=84.5 nb=2 neut=0 cmds=87 noFull=1 shQ=119926 | m=0.900 worth=76.0 cheap=8.6 over=0 dMedOther=68.4 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=686741 dq=94.7 cnt=66 | c=309.1 rankC=309.1 need=1217607 tD=1.38 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=95941 pulseB=57565 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1006005 dq=88.6 cnt=58 | c=309.8 rankC=449.2 need=1790233 tD=1.30 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=95941 pulseB=57565 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2815 alex_k B=479706 L=5678 d=84.5 nb=2 neut=0 cmds=87 noFull=1 shQ=119926 | m=0.900 worth=76.0 cheap=8.6 over=0 dMedOther=68.4 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=686741 dq=94.7 cnt=66 | c=309.0 rankC=309.0 need=1217886 tD=1.38 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=95941 pulseB=57565 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1006005 dq=88.6 cnt=58 | c=309.8 rankC=449.2 need=1790362 tD=1.30 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=95941 pulseB=57565 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2820 alex_k B=485222 L=5678 d=85.5 nb=2 neut=0 cmds=87 noFull=1 shQ=121305 | m=0.900 worth=76.9 cheap=8.6 over=0 dMedOther=69.2 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=694844 dq=95.8 cnt=66 | c=312.6 rankC=312.6 need=1232271 tD=1.38 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=97044 pulseB=58227 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1018378 dq=89.7 cnt=58 | c=313.5 rankC=454.6 need=1812439 tD=1.30 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=97044 pulseB=58227 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2825 alex_k B=485222 L=5678 d=85.5 nb=2 neut=0 cmds=87 noFull=1 shQ=121305 | m=0.900 worth=76.9 cheap=8.6 over=0 dMedOther=69.2 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=694844 dq=95.8 cnt=66 | c=312.6 rankC=312.6 need=1232412 tD=1.38 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=97044 pulseB=58227 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1018378 dq=89.7 cnt=58 | c=313.5 rankC=454.6 need=1812570 tD=1.30 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=97044 pulseB=58227 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2830 alex_k B=490802 L=5678 d=86.4 nb=2 neut=0 cmds=87 noFull=1 shQ=122700 | m=0.900 worth=77.8 cheap=8.6 over=0 dMedOther=70.0 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=703043 dq=97.0 cnt=66 | c=316.2 rankC=316.2 need=1246971 tD=1.38 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=98160 pulseB=58896 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1030904 dq=90.8 cnt=58 | c=317.3 rankC=460.1 need=1834791 tD=1.30 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=98160 pulseB=58896 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2835 alex_k B=490802 L=5678 d=86.4 nb=2 neut=0 cmds=87 noFull=1 shQ=122700 | m=0.900 worth=77.8 cheap=8.6 over=0 dMedOther=70.0 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=703043 dq=97.0 cnt=66 | c=316.2 rankC=316.2 need=1247256 tD=1.38 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=98160 pulseB=58896 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1030904 dq=90.8 cnt=58 | c=317.3 rankC=460.1 need=1834924 tD=1.30 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=98160 pulseB=58896 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2840 alex_k B=496446 L=5678 d=87.4 nb=2 neut=0 cmds=87 noFull=1 shQ=124111 | m=0.900 worth=78.7 cheap=8.6 over=0 dMedOther=70.9 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=711338 dq=98.1 cnt=66 | c=319.9 rankC=319.9 need=1261991 tD=1.38 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=99289 pulseB=59574 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1043584 dq=92.0 cnt=58 | c=321.2 rankC=465.7 need=1857555 tD=1.30 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=99289 pulseB=59574 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2845 alex_k B=496446 L=5678 d=87.4 nb=2 neut=0 cmds=87 noFull=1 shQ=124111 | m=0.900 worth=78.7 cheap=8.6 over=0 dMedOther=70.9 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=711338 dq=98.1 cnt=66 | c=319.9 rankC=319.9 need=1262134 tD=1.38 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=99289 pulseB=59574 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1043584 dq=92.0 cnt=58 | c=321.1 rankC=465.7 need=1857689 tD=1.30 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=99289 pulseB=59574 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2850 alex_k B=502155 L=5678 d=88.4 nb=2 neut=0 cmds=87 noFull=1 shQ=125538 | m=0.900 worth=79.6 cheap=8.6 over=0 dMedOther=71.2 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=719731 dq=99.3 cnt=66 | c=323.6 rankC=323.6 need=1277046 tD=1.39 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=100431 pulseB=60259 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1056420 dq=93.1 cnt=58 | c=325.0 rankC=471.3 need=1880469 tD=1.31 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=100431 pulseB=60259 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2855 alex_k B=502155 L=5678 d=88.4 nb=2 neut=0 cmds=87 noFull=1 shQ=125538 | m=0.900 worth=79.6 cheap=8.6 over=0 dMedOther=70.1 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=719731 dq=99.3 cnt=66 | c=323.5 rankC=323.5 need=1277337 tD=1.42 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=100431 pulseB=60259 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1056420 dq=93.1 cnt=58 | c=325.0 rankC=471.3 need=1880604 tD=1.33 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=100431 pulseB=60259 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2860 alex_k B=507929 L=5678 d=89.5 nb=2 neut=0 cmds=87 noFull=1 shQ=126982 | m=0.900 worth=80.5 cheap=8.6 over=0 dMedOther=69.4 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=728223 dq=100.4 cnt=66 | c=327.3 rankC=327.3 need=1292430 tD=1.45 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=101586 pulseB=60951 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1069413 dq=94.2 cnt=58 | c=329.0 rankC=477.0 need=1903802 tD=1.36 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=101586 pulseB=60951 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2865 alex_k B=507929 L=5678 d=89.5 nb=2 neut=0 cmds=87 noFull=1 shQ=126982 | m=0.900 worth=80.5 cheap=8.6 over=0 dMedOther=68.4 safe(-1)=499664
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=728223 dq=100.4 cnt=66 | c=327.3 rankC=327.3 need=1292577 tD=1.47 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=101586 pulseB=60951 价高(c>=worth)→break hNb=2
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1069413 dq=94.2 cnt=58 | c=328.9 rankC=477.0 need=1903940 tD=1.38 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=101586 pulseB=60951 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2870 alex_k B=513770 L=5678 d=90.5 nb=2 neut=0 cmds=87 noFull=1 shQ=128442 | m=0.900 worth=81.4 cheap=8.6 over=0 dMedOther=76.4 safe(-1)=499664
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1082566 dq=95.4 cnt=58 | c=332.9 rankC=482.8 need=1927290 tD=1.25 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=102754 pulseB=61652 价高(c>=worth)→break hNb=2
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=736743 dq=101.6 cnt=66 | c=480.0 rankC=696.0 need=1307724 tD=1.33 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=102754 pulseB=61652 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2875 alex_k B=513770 L=5678 d=90.5 nb=2 neut=0 cmds=87 noFull=1 shQ=128442 | m=0.900 worth=81.4 cheap=8.6 over=0 dMedOther=76.4 safe(-1)=499664
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1082566 dq=95.4 cnt=58 | c=332.9 rankC=482.7 need=1927428 tD=1.25 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=102754 pulseB=61652 价高(c>=worth)→break hNb=2
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=736743 dq=101.6 cnt=66 | c=479.9 rankC=695.9 need=1308021 tD=1.33 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=102754 pulseB=61652 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2880 alex_k B=519678 L=5678 d=91.5 nb=2 neut=0 cmds=87 noFull=1 shQ=129919 | m=0.900 worth=82.4 cheap=8.6 over=0 dMedOther=77.4 safe(-1)=499664
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1095881 dq=96.6 cnt=58 | c=337.0 rankC=488.6 need=1951210 tD=1.25 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=103936 pulseB=62361 价高(c>=worth)→break hNb=2
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=745215 dq=102.8 cnt=66 | c=485.4 rankC=703.8 need=1323090 tD=1.33 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=103936 pulseB=62361 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2885 alex_k B=519678 L=5678 d=91.5 nb=2 neut=0 cmds=87 noFull=1 shQ=129919 | m=0.900 worth=82.4 cheap=8.6 over=0 dMedOther=77.4 safe(-1)=499664
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1095881 dq=96.6 cnt=58 | c=336.9 rankC=488.6 need=1951350 tD=1.25 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=103936 pulseB=62361 价高(c>=worth)→break hNb=2
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=745215 dq=102.8 cnt=66 | c=485.3 rankC=703.8 need=1323240 tD=1.33 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=103936 pulseB=62361 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2890 alex_k B=525654 L=5678 d=92.6 nb=2 neut=0 cmds=87 noFull=1 shQ=131413 | m=0.900 worth=83.3 cheap=8.6 over=0 dMedOther=78.4 safe(-1)=499664
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1109360 dq=97.7 cnt=58 | c=341.0 rankC=494.5 need=1975287 tD=1.25 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=105131 pulseB=63078 价高(c>=worth)→break hNb=2
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=753561 dq=103.9 cnt=66 | c=490.7 rankC=711.5 need=1338092 tD=1.33 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=105131 pulseB=63078 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2895 alex_k B=525654 L=5678 d=92.6 nb=2 neut=0 cmds=87 noFull=1 shQ=131413 | m=0.900 worth=83.3 cheap=8.6 over=0 dMedOther=78.4 safe(-1)=499664
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1109360 dq=97.7 cnt=58 | c=341.0 rankC=494.5 need=1975429 tD=1.25 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=105131 pulseB=63078 价高(c>=worth)→break hNb=2
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=753561 dq=103.9 cnt=66 | c=490.6 rankC=711.4 need=1338396 tD=1.33 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=105131 pulseB=63078 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
+t=2900 alex_k B=537377 L=5678 d=94.6 nb=2 neut=0 cmds=87 noFull=1 shQ=132971 | m=0.900 worth=85.2 cheap=8.6 over=0 dMedOther=70.9 safe(-1)=499664
+    → F[eu]dal Empire#17[T2] terr=11349 bal=1134354 dq=100.0 cnt=58 | c=348.6 rankC=505.5 need=2019848 tD=1.41 人 pulse | safe=499664 keep=Inf avail=-Inf chunkB=107475 pulseB=64485 价高(c>=worth)→break hNb=2
+    → [VOID] Soviet onion#76[T5] terr=7250 bal=769024 dq=106.1 cnt=66 | c=500.6 rankC=725.9 need=1365796 tD=1.50 人 pulse crowdedHard | safe=499664 keep=Inf avail=-Inf chunkB=107475 pulseB=64485 价高(c>=worth)→break hNb=2
+    ⇒ 本拍没有指令
