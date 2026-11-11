@@ -1,0 +1,68 @@
+{
+ "matchId": "B035",
+ "W": 1050,
+ "H": 1392,
+ "edgeLimit": 126,
+ "squad": {
+  "n": 10,
+  "edgeMedian": 328.0,
+  "nearEdge": 1,
+  "nnAny": 133.67994565691544,
+  "nnMate": 175.02913973691275,
+  "nnWild": 148.03531622235639,
+  "nearestIsMate": 5
+ },
+ "others": {
+  "n": 10,
+  "edgeMedian": 265.5,
+  "nearEdge": 1,
+  "nnAny": 119.74606447961868
+ },
+ "groups": [
+  {
+   "n": 8,
+   "bots": [
+    "Afsharid",
+    "Panzergrenadier",
+    "Wales",
+    "Sicilian",
+    "Maurya",
+    "Alaska",
+    "Turenne",
+    "Impostor"
+   ],
+   "teams": {
+    "4": 3,
+    "6": 2,
+    "2": 2,
+    "3": 1
+   },
+   "crossPairs": 6,
+   "samePairs": 2
+  },
+  {
+   "n": 1,
+   "bots": [
+    "San Marino"
+   ],
+   "teams": {
+    "5": 1
+   },
+   "crossPairs": 0,
+   "samePairs": 0
+  },
+  {
+   "n": 1,
+   "bots": [
+    "Lucario"
+   ],
+   "teams": {
+    "6": 1
+   },
+   "crossPairs": 0,
+   "samePairs": 0
+  }
+ ],
+ "edgeRows": [],
+ "nn3CrossTeamMates": 14
+}

@@ -1,0 +1,23 @@
+# M6 第一批：13 局的好地账（voronoi_share）+ 9 局的实际出生点（spawn_actual）。每行：输出文件 命令
+out/A057/batch/voronoi.txt node scripts/voronoi_share.mjs A057
+out/A059/batch/voronoi.txt node scripts/voronoi_share.mjs A059
+out/A094/batch/voronoi.txt node scripts/voronoi_share.mjs A094 --bots ryan_m,zexos1,noah88
+out/A055/batch/voronoi.txt node scripts/voronoi_share.mjs A055
+out/A075/batch/voronoi.txt node scripts/voronoi_share.mjs A075
+out/A054/batch/voronoi.txt node scripts/voronoi_share.mjs A054
+out/A031/batch/voronoi.txt node scripts/voronoi_share.mjs A031
+out/A019/batch/voronoi.txt node scripts/voronoi_share.mjs A019
+out/A009/batch/voronoi.txt node scripts/voronoi_share.mjs A009
+out/A023/batch/voronoi.txt node scripts/voronoi_share.mjs A023
+out/A050/batch/voronoi.txt node scripts/voronoi_share.mjs A050
+out/A003/batch/voronoi.txt node scripts/voronoi_share.mjs A003
+out/A005/batch/voronoi.txt node scripts/voronoi_share.mjs A005 --ai-to 1710
+out/A057/batch/spawn_actual.txt node scripts/spawn_actual.mjs A057
+out/A059/batch/spawn_actual.txt node scripts/spawn_actual.mjs A059
+out/A094/batch/spawn_actual.txt node scripts/spawn_actual.mjs A094 --bots ryan_m,zexos1,noah88
+out/A055/batch/spawn_actual.txt node scripts/spawn_actual.mjs A055
+out/A075/batch/spawn_actual.txt node scripts/spawn_actual.mjs A075
+out/A054/batch/spawn_actual.txt node scripts/spawn_actual.mjs A054
+out/A031/batch/spawn_actual.txt node scripts/spawn_actual.mjs A031
+out/A019/batch/spawn_actual.txt node scripts/spawn_actual.mjs A019
+out/A023/batch/spawn_actual.txt node scripts/spawn_actual.mjs A023

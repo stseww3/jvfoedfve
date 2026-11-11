@@ -77,11 +77,32 @@ def lines(mid):
             s9 = '慢拍（[HL-SLOW-TICK]，一次决策 ≥25 毫秒）%d 行：' % sl['lines'] + '、'.join('%s %d 行（%d 拍起，中位 %.0f 最大 %.0f 毫秒）' % (b, v['n'], v['first'], v['med'], v['max']) for b, v in worst)
             if sl.get('lagIn', {}).get('n'):
                 s9 += '；决策拍落在慢拍密集段里的指令延迟 P50 %s 拍，段外 %s 拍' % (sl['lagIn']['p50'], sl['lagOut']['p50'])
+    s10 = s11 = ''
+    cp_ = os.path.join(ROOT, 'tmp', 'chunks', mid + '.json')
+    if os.path.exists(cp_):
+        ck = json.load(open(cp_, encoding='utf8'))
+        if ck.get('big'):
+            tails = sum(v.get('tailSum', 0) for v in ck['bands'].values())
+            s10 = '成批落地的前后（`burst_chunks.py`）：装满的批（8~9 条）%d 个里 %d 个后面紧跟着的意图一条没落地（合计 %d 条），不到 8 条的批 %d 个里 %d 个' % (
+                ck['big']['n'], ck['big']['withTail'], tails, ck['small']['n'], ck['small']['withTail'])
+            b6 = ck['bands'].get('600~1499')
+            if b6 and b6.get('matched'):
+                s10 += '；600~1499 拍每补完一截离落地拍还差 中位 %s 拍' % b6['shortP50']
+    wp_ = os.path.join(ROOT, 'tmp', 'wall', mid + '.json')
+    if os.path.exists(wp_):
+        wl = json.load(open(wp_, encoding='utf8'))
+        late = sorted([x for x in wl['bots'] if x['lag'] >= 35], key=lambda x: -x['lag'])
+        if late:
+            s11 = '墙上时钟（results.csv 的 at）：报告出局时客户端落后服务器 ≥35 拍的号 %d 个（%s）' % (len(late), '、'.join(
+                '%s %d 拍' % (x['bot'], round(x['lag'])) + ('〔另一局〕' if x.get('group') == 'rep=N' else '')
+                + ('，它最后几条指令晚 %d 拍' % x['lastCmdDelayP50'] if 'lastCmdDelayP50' in x else '') for x in late[:5]))
+        else:
+            s11 = '墙上时钟（results.csv 的 at）：%d 个号报告出局时客户端都跟得上服务器（最大落后 %d 拍）' % (wl['n'], round(wl['max']))
     notes = {}
     hp = os.path.join(ROOT, 'review-src', mid + '.json')
     if os.path.exists(hp):
         notes = json.load(open(hp, encoding='utf8')).get('hub0007Notes', {})
-    L1 = M1 + '：' + '；'.join(x for x in (s1, s2, s3, s4, s8, s9, s5, s6, s7) if x) + '。' + (notes.get('latency', '') or '')
+    L1 = M1 + '：' + '；'.join(x for x in (s1, s2, s3, s4, s8, s9, s10, s11, s5, s6, s7) if x) + '。' + (notes.get('latency', '') or '')
 
     ve, vl = land['voronoi']['euclid'], land['voronoi']['landpath']
     g1 = '天然地盘（按出生点把陆地分给最近的真人）我方 %s 格 = 全图陆地的 %.1f%%，人头占到场真人的 %.1f%% → 人均天然地盘是全场人均的 %.2f 倍（只走陆路的口径 %.2f 倍）；单号中位 %s 格，其他真人中位 %s 格' % (

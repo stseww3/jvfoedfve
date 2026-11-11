@@ -5,7 +5,7 @@
 //   2) 拿到率：指定拍（默认 630、1500）每个真人的 领土 ÷ 天然份额；本队中位对各队其他真人中位。
 //   3) 自家圈里的地归了谁：本队各号天然多边形里的陆地格，在指定拍归 自己 / 本队别的号(同队) / 本队别的号(别队) / 同队路人 / 敌队真人 / 内置 AI / 无主。
 //   4) 身边的 AI 地去向：--ai-from 拍（默认 600）时归内置 AI 的陆地格，到 --ai-to 拍（默认 1800）归了谁；分“落在本队天然多边形里的”和“全图”。
-// 用法（套 run-heavy.sh）：node scripts/voronoi_share.mjs <局号> [--replay 同局另一个包] [--log id1,id2] [--ticks 630,1500] [--ai-from 600] [--ai-to 1800]
+// 用法（套 run-heavy.sh）：node scripts/voronoi_share.mjs <局号> [--replay 同局另一个包] [--log id1,id2] [--bots a,b] [--ticks 630,1500] [--ai-from 600] [--ai-to 1800]
 // 输出：标准输出 + out/<局号>/voronoi_seats.csv（每个真人一行）、voronoi_region.csv、voronoi_ai.csv、voronoi_summary.json（给 M6 汇总用）
 // 说明：分类里的“同队/敌队”都相对于那块多边形的天然主人（B 组一个编队分在几个队里，不能用一个 myTeam）。
 //       离场壳（state=2）单列：壳名下的地算“壳”。出生点没有落地指令的号由引擎随机安放，同样取第 1 拍的包围盒中心。
@@ -27,8 +27,10 @@ fs.mkdirSync(OUT, { recursive: true });
 const m = openMatch(mid, { replay: rmid });
 const { g, H } = m;
 const squad = {};
+// --bots a,b,c：只把这几个号当本队（A094 一个包里混着两个实例，录像只有其中一个）
+const onlyBots = opt('bots', null) ? new Set(opt('bots', '').split(',')) : null;
 for (const lb of opt('log', mid).split(',')) {
-  const { me } = readLogSnaps(lb);
+  const { me } = readLogSnaps(lb, '', onlyBots);
   for (const [b, p] of Object.entries(me)) if (squad[b] === undefined) squad[b] = p;
 }
 const sqIds = new Set(Object.values(squad));

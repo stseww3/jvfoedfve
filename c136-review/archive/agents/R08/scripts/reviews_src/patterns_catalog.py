@@ -359,6 +359,41 @@ CATALOG = [
          definition="影子瞄的是内置 AI 或真人、录像里这一条的目标记成 512（无主地）的陆攻：600~1500 这样的条数 ≥ 该段落地陆攻的 10% 算命中；"
                     "记改打无主地的条数 / 兵、作废的条数 / 本意的兵，以及『按时到』和『晚 ≥35 拍』两组的落空率",
          detect="scripts/atkfate.mjs + scripts/lagledger.py [GE]"),
+    # ---- B029（5 队局，18 个号分在 4 个队；互围账 / 兵的总账 / 捐款对子账 / 死因卷宗 / 全程门槛普查 / 出生点几何账）新增 ----
+    dict(id="NEW-MT-09", prefix="MT", name="异队编队友互围：陆上边界只剩受保护的异队编队友，保护开着，没有可打的目标——地不动、兵涨到上限，出路只剩捐款和船",
+         definition="真值逐 30 拍看每个在线编队号的陆上边界：接壤的全是异队编队友（c110 analyze L440 把受保护的号排除在 nb 之外，isProtectedSquadMate L3993-3996）、没有无主地、"
+                    "没有别的敌邻，且当拍 hasWildOutsidersAlive 为真（保护开着）= A 类封死。≥3 个号各被封 ≥300 拍，或 A 类封死占编队在线号·拍 ≥15% 算命中；"
+                    "记号数、号·拍占比、最长一段、这些号合占的编队领土 / 兵力，以及封死期间的陆攻 / 船 / 捐款条数和船费、税",
+         detect="scripts/enclose.py [EA][EB][ED][EE]"),
+    dict(id="NEW-DN-16", prefix="DN", name="队内捐款净转移不到一半：同一队的编队号互相捐，来回倒掉的比净流向多，税 ≥ 净转移",
+         definition="真值成交捐款按（捐出方, 收款方）对子轧差：净转移 = 各对子净额绝对值之和；来回倒掉 = 到账 − 净转移。全编队税 ÷ 净转移 ≥ 1，或净转移 ÷ 到账 < 50% 算命中；"
+                    "记到账、税、净转移、双向对子数、600 拍内来回的次数，以及（税 + 船费）÷ 产兵的分时段读数",
+         detect="scripts/donpairs.py [YB][YC]；scripts/econ.py [NC]"),
+    dict(id="NEW-IO-15", prefix="IO", name="终局第二波卡顿：3000 拍以后又出现时延中位 ≥100 拍的窗，落在全房换手最密的收尾阶段；旧决策的船和陆攻落在已经换主的地上",
+         definition="shadowcmp [SF] / lagload [LL-A] 的 180 拍窗里，t ≥3000 之后有 ≥2 个窗的时延中位 ≥100 拍；记起止、时延峰值、这些窗的全房换手格数，"
+                    "以及波里落地的指令中落点 / 目标已经换主的条数（船靠在同队或编队友的地上、陆攻作废）和兵数",
+         detect="scripts/lagload.py [LL-A][LL-D]；scripts/shadowcmp.py [SF]；scripts/truth.py --cmds"),
+    dict(id="NEW-MT-10", prefix="MT", name="胜方里的编队号是乘客：分到赢的那一队的编队号，终局领土合计不到该队的 10%，赢是队里的野人打出来的",
+         definition="真值终局：赢的队里编队号领土合计 ÷ 该队领土 < 10%，且该队领土最多的是不在名字池里的真人；记编队号数、合计格数、该队格数、头号野人的格数和兵力",
+         detect="scripts/truth.py [TA][TC]（终局各队构成）；scripts/top.py"),
+    dict(id="NEW-SP-08", prefix="SP", name="贴边排成一排：各算各的出生槽位把大半个编队排在地图上下沿，最近的真人多是异队编队友",
+         definition="真值落点：编队号离地图边 ≤ 短边 12% 的占 ≥50%（其他真人 <20%），且 ≥60% 的号最近的真人是编队友；记离边中位（编队 / 其他）、相距 ≤260 像素的团的构成、"
+                    "团里异队的号对数、沿同一条边排成一排的号数",
+         detect="scripts/spawngeo.py [QA][QB][QC][QD]"),
+    dict(id="NEW-DF-06", prefix="DF", name="挨打时价格门先截断：对进攻者按『把它整个打出局』报价（≈2.4×对方密度），没过软上限时报价 ≥ worth（≈0.9×自己密度）就整轮停，一兵不还",
+         definition="全程买地门槛普查（影子每 30 拍把 buyLand 的报价循环重走一遍）：正被真人压着兵的采样点里，对压兵最多的进攻者的结论是 break:price>=worth 的占 ≥40% 算命中"
+                    "（c110 offers L5031-5036 的报价 c = (elimCost + 对方压在我身上的兵 − 我压在它身上的兵 + 手续费) ÷ 打出局能拿到的地；buyLand L5258-5267 的 worth 与截断）；"
+                    "记点数、占比、报价 ÷ worth 的中位，以及按真值逐对战损账分摊到这一结论上的丢地格数。同一张表里 skip:avail<=0(safe)（NEW-DF-04）、skip:siegeShrink、skip:soleBuffer、skip:crowdedHard、skip:x<chunk 分别计数",
+         detect="scripts/shadow.mjs --walk-every 30 --tag walk + scripts/gatecensus.py [WC][WE][WG]"),
+    dict(id="NEW-DN-17", prefix="DN", name="救援捐款把快出局的队友顶到 150 倍硬上限，对方转手按盈余分支捐回来：两头各付一次 6.25% 的税，兵在两个号之间打转",
+         definition="日志 [HL-DONATE]：A 对 B 发 squad rescue donate 之后 ≤60 拍内，B 发 surplus donate 且当拍 dMe ≥140（myBal ≥ 140×领土；=150 即正好顶在引擎硬上限），"
+                    "收款方是 A 或同队另一个编队号；记两笔的 myBal、pct、税（= myBal×64/1024），以及 B 之后多少拍出局。"
+                    "（c110 tryDonateToTeammate L4436-4437 救援不看对方还装得下多少；L4462-4489 盈余分支不看对方刚才是不是捐过来；game.js receiverRoom L340-345 把到账夹在 150×领土 − 余额）",
+         detect="scripts/donlogpairs.py [LF][LG] + bundles/<局>/in_game.log 的 [HL-DONATE] 行（rescue 之后 60 拍内的 surplus，dMe ≥140）"),
+    dict(id="NEW-DF-07", prefix="DF", name="满仓速死：密度 ≥60、余额过百万的号，从领土还在峰值九成的那个快照到出局不到 360 拍，下坡里自己的指令 ≤4 条",
+         definition="日志 HL-TICK + 结果行：阵亡号最后一个『领土 ≥ 最后一轮峰值的 90%』的快照密度 ≥60、余额 ≥100 万，该快照到阵亡拍 ≤360 拍，期间 cmds 增量 ≤4；"
+                    "记起点的领土 / 余额 / 密度、下坡拍数、cmds 增量（其中捐款几条）、nb。有真值时并记进攻者是谁、压上来多少兵、对它的买地结论（NEW-DF-04 / NEW-DF-06）",
+         detect="scripts/logstats.py [QD]（峰值 → 阵亡的指令数）；scripts/flow.py [VE]（挨打窗）；有录像时 scripts/dossier.py + gatecensus.py [WC]"),
 ]
 
 BY_ID = {p["id"]: p for p in CATALOG}

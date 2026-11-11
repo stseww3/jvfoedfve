@@ -16,6 +16,7 @@
 #   14 捐兵之后 300 拍   15 多号打同一人   16 各号每 300 拍   17 时间线与谁先动手   18 影子决策构成   19 影子里打真人的出手段
 #   23 指令对账   25 除名时的存兵   26 窗口合计   28 放行轮与捐兵去向
 #   29 被围：每 300 拍各号边界构成、被围的号握兵占比   30 本队路人队友 对 编队 对 敌队   31 路人队友逐个的下场
+import os
 import json, bisect, statistics, sys, math, csv
 from collections import defaultdict, Counter
 
@@ -434,7 +435,7 @@ if on(23):
                     squeezed[f[i]] = int(f[i + 1])
     except FileNotFoundError:
         print(f'   （缺 {M}-match.txt：先跑 shadow.mjs {M} --quiet --match）')
-    res = {r['bot']: r for r in csv.DictReader(open(f'/agent/repos/c136-data/bundles/{M}/results.csv'))}
+    res = {r['bot']: r for r in csv.DictReader(open(os.environ.get('C136_DATA', '/agent/repos/c136-data') + f'/bundles/{M}/results.csv'))}
     inrep = Counter(); spawn_rep = Counter(); inrep_don = Counter()
     try:
         for ln in open(f'/tmp/c136-r05/work/{M}-cmds.tsv'):

@@ -4,10 +4,11 @@
 # 其余数字逐条来自 scripts 字段里列的脚本输出。用法：python3 scripts/review_build/A017.py
 import os, sys
 sys.path.insert(0, os.path.dirname(__file__))
-from common import skel, pick_timeline, dump, check
+from common import skel, pick_timeline, dump, check, accounts, account_scripts
 
 M = 'A017'
 S = skel(M)
+ACC = accounts(M)   # 广播 0007 的三本账（延迟 / 好地 / 600–1500 决策拍归因）+ 配额闸计数，原样取自脚本输出
 SRC = 'src/strategy/v27-team-c116-va.js'
 SPAWN = 'src/strategy/spawn-coordinator-c116-va.mjs'
 SIM = 'src/sim/sim/game.js'
@@ -131,7 +132,7 @@ turning = [
              'codePath': f'{SRC}: Strategy.send L479-487；{LIVE}: sbSendAttack（qs，直接写 websocket）；{SIM}: attack L1263-1285'},
         ],
         'statementType': 'inferred',
-        'note': '三件事各自是量出来的；各占多少分不开。留底锁在 500–750 拍（指令还准时）是唯一的约束；750 拍以后锁和迟到同时存在。',
+        'note': '三件事各自是量出来的；各自少拿多少地分不开（X 盘 ryan_m 按决策拍的占比见 tickAttribution）。留底锁在 500–750 拍（指令还准时）是唯一的约束；750 拍以后锁和迟到同时存在。',
     },
     {
         'id': 'TP3', 't0': 1500, 't1': 2751, 'shareBefore': 1.1, 'shareAfter': 0.0, 'shareOf': 'X 盘 ryan_m',
@@ -470,6 +471,8 @@ doc = {
         'results': 'leo_tx 3185（机器人 13.4%/T1 70.2%/T2 14.1%）、alex_k 3297（12.8/72.7/12.3）、zexos1 3437（11.2/75.8/11.4）、sora_w 3529（8.8/78.7/10.3）、riku_x 3696（8.3/81.5/8.1；存兵 174k）、kaito9 3871（4.4/87.5/6.6；120k）、noah88 4183（0.3/92.4/5.5）、zero_7 4290（0.3/96.5/0.0）、talon5 4432 结束（0.1/98.3/0.0）',
         'aiBotsLingered': 'Y 盘机器人 3185 拍还有 13.4%、3696 拍 8.3%；X 盘 2700 拍已是 2.7%',
     },
+    **ACC,
+    'accountsNote': '这三本账只覆盖 X 盘（有录像的那一盘）的 ryan_m 一个号；Y 盘的九个号没有录像，做不了延迟配对、好地账和决策拍归因（它们的发令窗、清仓窗见第 6 节）。',
     'squadVsRealHumans': S['cmp'],
     'bursts': S['bursts'],
     'delivery': S['delivery'],
@@ -519,6 +522,7 @@ doc = {
         '结果行的 peak、lastTerritory、balance 的采样间隔是多少（别的局 peak 都 ≥ 快照最大地，本局多个号小于）。',
     ],
     'scripts': [
+        *account_scripts(M),
         'scripts/sim_replay.mjs A017 --check（X 盘逐拍重放；与 ryan_m 的 30 条 [HL-TICK] 逐条相等）', 'scripts/match_truth.mjs A017 → /tmp/c136-r05/truth/A017.json', 'scripts/review_skel.py A017 → /tmp/c136-r05/skel/A017.json',
         'scripts/truth_digest.py A017；scripts/game_facts.py A017', 'scripts/instance_split.mjs A017；scripts/split_logs.py A017 --sec tl,sum,res,disp,quota,box,cmds,lag',
         'scripts/review_build/A017_facts.py [--sec A…M]（A 阵形；B Y 盘地对 X 盘真人；C 纯收入检验；D 清仓窗及按引擎公式的分类；E Y 盘合计与结果行；F X 盘同口径校准；G 落地批对影子决策；H ryan_m 对 TRABZONSPOR；I 结果行时钟；J 日志行序；K 分段合计与不发令长窗；L 逐窗自己花掉与末段；M 采样空档）',

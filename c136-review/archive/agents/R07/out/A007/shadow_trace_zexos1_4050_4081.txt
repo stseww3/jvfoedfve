@@ -1,0 +1,21 @@
+# A007 zexos1 影子决策明细 t=4050~4081（策略 v27-team-c116-va.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   首选目标价高（c>=worth）: 6 拍（t=4050~4075）
+t=4050 zexos1 B=106653 L=2008 d=53.1 nb=1 neut=0 cmds=49 noFull=1 shQ=26663 | m=0.900 worth=86.8 cheap=9.3 over=0 dMedOther=113.4 safe(-1)=156624
+    → [Off] Skull#2[T5] terr=21668 bal=2125580 dq=98.1 cnt=66 | c=187.1 rankC=130.9 need=4065006 tD=0.86 人 pulse onMe | safe=156624 keep=Inf avail=-Inf chunkB=21331 pulseB=21331 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4055 zexos1 B=95473 L=1875 d=50.9 nb=1 neut=0 cmds=49 noFull=1 shQ=23868 | m=0.900 worth=86.8 cheap=9.3 over=0 dMedOther=113.4 safe(-1)=146250
+    → [Off] Skull#2[T5] terr=21801 bal=2125580 dq=97.5 cnt=67 | c=184.9 rankC=129.4 need=4042614 tD=0.86 人 pulse onMe | safe=146250 keep=Inf avail=-Inf chunkB=19095 pulseB=19095 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4060 zexos1 B=80322 L=1674 d=48.0 nb=1 neut=0 cmds=49 noFull=1 shQ=20080 | m=0.900 worth=87.6 cheap=9.3 over=0 dMedOther=114.5 safe(-1)=130572
+    → [Off] Skull#2[T5] terr=22002 bal=2153637 dq=97.9 cnt=64 | c=184.0 rankC=128.8 need=4060444 tD=0.86 人 pulse onMe | safe=130572 keep=Inf avail=-Inf chunkB=16064 pulseB=16064 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4065 zexos1 B=70621 L=1546 d=45.7 nb=1 neut=0 cmds=49 noFull=1 shQ=17655 | m=0.900 worth=87.6 cheap=9.3 over=0 dMedOther=114.5 safe(-1)=120588
+    → [Off] Skull#2[T5] terr=22130 bal=2153637 dq=97.3 cnt=64 | c=136.1 rankC=68.0 need=4040977 tD=0.85 人 pulse onMe | safe=120588 keep=Inf avail=-Inf chunkB=14124 pulseB=14124 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4070 zexos1 B=57574 L=1354 d=42.5 nb=1 neut=0 cmds=49 noFull=1 shQ=14393 | m=0.900 worth=87.5 cheap=9.3 over=0 dMedOther=114.4 safe(-1)=105612
+    → [Off] Skull#2[T5] terr=22188 bal=2161037 dq=97.4 cnt=64 | c=136.5 rankC=68.2 need=4026395 tD=0.85 人 pulse onMe | safe=105612 keep=Inf avail=-Inf chunkB=11515 pulseB=11515 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=4075 zexos1 B=49512 L=1226 d=40.4 nb=1 neut=0 cmds=49 noFull=1 shQ=12378 | m=0.900 worth=86.5 cheap=9.3 over=0 dMedOther=113.1 safe(-1)=95628
+    → [Off] Skull#2[T5] terr=22174 bal=2138963 dq=96.5 cnt=64 | c=131.5 rankC=65.7 need=3969205 tD=0.85 人 pulse onMe | safe=95628 keep=Inf avail=-Inf chunkB=9902 pulseB=9902 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令

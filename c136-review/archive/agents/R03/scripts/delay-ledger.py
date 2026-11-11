@@ -111,7 +111,12 @@ class Ledger:
                         e = ENTRY_RE.match(ent.strip())
                         if e:
                             sol[e.group(1).strip()] = (int(e.group(3)), int(e.group(4)))
-                    rounds.append({"line": int(m.group(1)), "n": int(m.group(2)), "ms": float(m.group(3)), "minSep": int(m.group(6)), "boss": m.group(7), "sol": sol})
+                    rounds.append({"line": int(m.group(1)), "n": int(m.group(2)), "ms": float(m.group(3)), "map": (int(m.group(4)), int(m.group(5))),
+                                   "minSep": int(m.group(6)), "boss": m.group(7), "sol": sol})
+        # 求解行写着它用的地图尺寸。和本房间录像的地图尺寸不同 = 这些求解属于另一个房间（编队里有号进了别的局），不能拿来对账。
+        here = (self.W, self.R.get("Hh"))
+        foreign_rounds = [r for r in rounds if here[1] and r["map"] != here]
+        rounds = [r for r in rounds if r not in foreign_rounds]
         spawn_rows = defaultdict(list)
         try:
             for r in L.load_spawn(self.mid):
@@ -124,8 +129,8 @@ class Ledger:
             if bx and bx[2] >= bx[0] and self.R["snapTerr"][0][p] > 0:
                 cen[p] = ((bx[0] + bx[2]) / 2, (bx[1] + bx[3]) / 2)
         execd = defaultdict(list)   # p -> [(tick, x, y)]，发令顺序（同拍内倒序）
+        by_tick = defaultdict(lambda: defaultdict(list))   # p -> 步 -> 录像里列出的顺序（= 引擎处理顺序）
         if self.rep:
-            by_tick = defaultdict(lambda: defaultdict(list))
             for t, cid, pl, a, b in self.rep["cmds"]:
                 if cid == 0:
                     by_tick[pl][t].append((a % self.W, a // self.W))
@@ -135,6 +140,11 @@ class Ledger:
                         execd[pl].append((t, xy[0], xy[1]))
         steps = self.rep.get("spawnSteps") if self.rep else None
         fr = {"rounds": len(rounds), "spawnSteps": steps, "bots": {}}
+        if foreign_rounds:
+            fm = foreign_rounds[0]["map"]
+            fr["foreignRounds"] = {"rounds": len(foreign_rounds), "map": list(fm), "roomMap": list(here)}
+            self.w(f"  日志里有 {len(foreign_rounds)} 轮 [BACKEND-SPAWN-COORD] 求解是在 {fm[0]}x{fm[1]} 的地图上做的，本房间的地图是 {here[0]}x{here[1]}"
+                   f"——它们属于另一个房间（不在本房间的号那一局），下面不拿来对账")
         if rounds:
             distinct = len({tuple(sorted(r["sol"].items())) for r in rounds})
             names_solved = sorted(rounds[-1]["sol"])
@@ -166,15 +176,29 @@ class Ledger:
                     j = jj - 1
             trailing = (len(A) - 1 - last_idx) if last_idx is not None else len(A)
             fin = final.get(bot)
-            act = cen.get(p)
+            box = cen.get(p)
+            # 生效的那条 = 最后一步里引擎最后处理的那条（录像里同一步内排在最后的）；同一步落地多条时它是「先发的」
+            eff = None
+            inverted = False
+            if E:
+                tl = E[-1][0]
+                lst = by_tick[p][tl]
+                eff = lst[-1]
+                inverted = len(lst) >= 2 and eff != (E[-1][1], E[-1][2])
+            act = eff if eff else box
             row = {"assigned": len(A), "executed": len(E), "executedMatched": matched, "trailingUnexecuted": trailing,
-                   "final": list(fin) if fin else None, "actual": [round(act[0]), round(act[1])] if act else None}
+                   "final": list(fin) if fin else None, "actual": [round(act[0]), round(act[1])] if act else None,
+                   "startBoxCentre": [round(box[0]), round(box[1])] if box else None,
+                   "sameStepInverted": inverted, "lastStepCmds": len(by_tick[p][E[-1][0]]) if E else 0}
             desc = f"  {bot:<7}#{p:<3} 指派 {len(A):2d} 条、落地 {len(E):2d} 条（对上指派 {matched}）"
             if not E:
                 zero += 1
                 desc += "；0 条落地"
-            if act is None:
+            if box is None:
                 desc += "；开局没有地"
+            elif eff and math.hypot(box[0] - eff[0], box[1] - eff[1]) > 3:
+                row["displaced"] = round(math.hypot(box[0] - eff[0], box[1] - eff[1]), 1)
+                desc += f"；生效坐标 ({eff[0]},{eff[1]}) 上已有别人，引擎把它放到 ({box[0]:.0f},{box[1]:.0f})"
             if fin and act:
                 d = math.hypot(act[0] - fin[0], act[1] - fin[1])
                 row["distToFinal"] = round(d, 1)
@@ -195,16 +219,29 @@ class Ledger:
                     row["staleRound"] = (old + 1) if old is not None else None
                     owner = [b2 for b2, c in final.items() if b2 != bot and math.hypot(act[0] - c[0], act[1] - c[1]) <= 6]
                     row["finalOwnerOfMySpot"] = owner
-                    desc += (f"；终解要它去 ({fin[0]},{fin[1]})，实际在 ({act[0]:.0f},{act[1]:.0f})（差 {d:.0f} 像素）"
+                    if inverted and (fin[0], fin[1]) in by_tick[p][E[-1][0]]:
+                        why = f"终解那条也落地了，但和上一条挤在同一步（第 {E[-1][0]} 步，{len(by_tick[p][E[-1][0]])} 条），引擎先处理后发的、后处理先发的，旧坐标盖掉了终解"
+                        row["reason"] = "same-step-inversion"
+                    elif trailing:
+                        why = f"末尾 {trailing} 条指派没落地（选点期先结束）"
+                        row["reason"] = "trailing-unexecuted"
+                        if inverted:
+                            why += (f"；它最后落地的两条挤在同一步（第 {E[-1][0]} 步，{len(by_tick[p][E[-1][0]])} 条），引擎后处理先发的那条，"
+                                    f"所以生效的也不是最后落地的指派 ({E[-1][1]},{E[-1][2]})")
+                            row["reason"] = "trailing-unexecuted+same-step-inversion"
+                    else:
+                        why = "末尾 0 条指派没落地"
+                        row["reason"] = "other"
+                    desc += (f"；终解要它去 ({fin[0]},{fin[1]})，生效的是 ({act[0]:.0f},{act[1]:.0f})（差 {d:.0f} 像素）"
                              + (f"＝第 {old + 1} 轮（倒数第 {len(rounds) - old} 轮）给它的坐标" if old is not None else "，不是任何一轮给它的坐标")
                              + (f"；这个点在终解里归 {'、'.join(owner)}" if owner else "")
-                             + f"；末尾 {trailing} 条指派没落地")
-            if act:
+                             + f"；{why}")
+            if box:
                 near = None
                 for b2, p2 in self.sq.items():
                     if p2 == p or p2 not in cen:
                         continue
-                    d2 = math.hypot(cen[p2][0] - act[0], cen[p2][1] - act[1])
+                    d2 = math.hypot(cen[p2][0] - box[0], cen[p2][1] - box[1])
                     if near is None or d2 < near[0]:
                         near = (d2, b2)
                 if near:
@@ -221,10 +258,17 @@ class Ledger:
             ns = row.get("nearestSquad")
             if ns and ns[1] <= 12:
                 stacks.add(tuple(sorted((bot, ns[0]))))
+        inv = [b for b, r in fr["bots"].items() if r.get("sameStepInverted")]
+        multi = [b for b, r in fr["bots"].items() if r.get("lastStepCmds", 0) >= 2]
         fr.update({"onFinal": on_final, "notOnFinal": stale, "zeroExecuted": zero, "stackPairs": [list(s) for s in sorted(stacks)],
-                   "trailingUnexecutedBots": sum(1 for r in fr["bots"].values() if r["trailingUnexecuted"] > 0)})
-        self.w(f"  小结：在场 {len(self.sq)} 个号——在终解坐标上 {on_final} 个，不在 {stale} 个，0 条落地 {zero} 个；"
-               f"末尾有指派没落地的 {fr['trailingUnexecutedBots']} 个；开局叠点 {len(stacks)} 对" + ("（" + "、".join("+".join(s) for s in sorted(stacks)) + "）" if stacks else ""))
+                   "trailingUnexecutedBots": sum(1 for r in fr["bots"].values() if r["trailingUnexecuted"] > 0),
+                   "sameStepInversionBots": inv, "lastStepMultiCmdBots": multi})
+        fr["comparable"] = bool(rounds) and any(r["assigned"] for r in fr["bots"].values())
+        head = (f"生效坐标是终解的 {on_final} 个，不是的 {stale} 个，0 条落地 {zero} 个；末尾有指派没落地的 {fr['trailingUnexecutedBots']} 个"
+                if fr["comparable"] else f"本包日志里没有这些号的指派（无法和终解对账），0 条落地 {zero} 个")
+        self.w(f"  小结：在场 {len(self.sq)} 个号——{head}；最后一步落地 ≥2 条的 {len(multi)} 个" + (f"（{'、'.join(multi)}）" if multi else "")
+               + f"，其中先发的旧坐标盖掉后发的新坐标的 {len(inv)} 个" + (f"（{'、'.join(inv)}）" if inv else "")
+               + f"；开局叠点 {len(stacks)} 对" + ("（" + "、".join("+".join(s) for s in sorted(stacks)) + "）" if stacks else ""))
         self.facts["spawn"] = fr
         self.w()
 
@@ -382,6 +426,9 @@ class Ledger:
         for bot, b in self.S["bots"].items():
             rows = self.join_rows(b)
             for p, r in zip(b["match"]["pairs"], rows):
+                if p[2] == 3 and p[1] >= 0 and r[5] and len(r) > 10 and r[10] >= NEUTRAL:
+                    st[period_of(p[1])]["boatNeutralTroops"] += r[6]
+                    st[period_of(p[1])]["boatNeutralN"] += 1
                 if p[2] != 1 or p[1] < 0:
                     continue
                 c = st[period_of(p[1])]
@@ -428,7 +475,8 @@ class Ledger:
                    "deadTarget": c["dead"], "deadTargetAI": c["dead_ai"], "deadTargetHuman": c["dead_human"], "deadTargetTroops": c["deadTroops"],
                    "deadTargetNoop": c["deadNoop"], "deadTargetLate30": c["deadLate30"],
                    "noopOther": c["noop_ai"] + c["noop_human"] + c["noop_neutral"] - c["deadNoop"],
-                   "neutralSentTroops": c["toNeutralTroops"], "neutralBurnt": burnt[i], "neutralTiles": tiles[i]}
+                   "neutralSentTroops": c["toNeutralTroops"], "neutralBoatTroops": c["boatNeutralTroops"], "neutralBoats": c["boatNeutralN"],
+                   "neutralBurnt": burnt[i], "neutralTiles": tiles[i]}
             out.append(row)
             if not n_all:
                 self.w(f"  {name:<10} 没有落地的陆攻")
@@ -437,8 +485,12 @@ class Ledger:
                    f"延迟 >30 拍 {c['late30']} 条 {k(c['late30Troops'])} 兵；"
                    f"落地时目标已死被改成打无主地 {c['dead']} 条（AI {c['dead_ai']}、真人 {c['dead_human']}；{k(c['deadTroops'])} 兵，占这一段瞄准 AI/真人兵力的 {100 * c['deadTroops'] / max(1, c['troops_ai'] + c['troops_human']):.1f}%；其中空令 {c['deadNoop']}、延迟 >30 拍的 {c['deadLate30']}）；"
                    f"其它空令 {row['noopOther']}")
-            self.w(f"             对无主地：实际送出 {k(c['toNeutralTroops'])} 兵（含上面改道的），pairLog 记烧掉 {k(burnt[i])} 兵、得 {tiles[i]} 格"
-                   + (f" → 至少 {k(c['toNeutralTroops'] - burnt[i])} 兵没烧掉、退回余额（{100 * (c['toNeutralTroops'] - burnt[i]) / max(1, c['toNeutralTroops']):.0f}%）" if c["toNeutralTroops"] > burnt[i] else ""))
+            sent_all = c["toNeutralTroops"] + c["boatNeutralTroops"]
+            self.w(f"             对无主地：陆攻实际送出 {k(c['toNeutralTroops'])} 兵（含上面改道的）"
+                   + (f"，另有 {c['boatNeutralN']} 条船 {k(c['boatNeutralTroops'])} 兵发往无主地" if c["boatNeutralN"] else "")
+                   + f"；pairLog 记烧掉 {k(burnt[i])} 兵、得 {tiles[i]} 格"
+                   + (f" → 至少 {k(sent_all - burnt[i])} 兵没烧掉、退回余额（{100 * (sent_all - burnt[i]) / max(1, sent_all):.0f}%）" if sent_all > burnt[i]
+                      else "（烧掉的不少于发出的：船到岸时目的地易主、跨段落地都会记到这里，这一段算不出退回多少）"))
         ex_list.sort(key=lambda e: -e["troops"])
         if ex_list:
             self.w("  目标已死改道的指令（按兵力前 8）：" + "；".join(f"{e['bot']} 发 {e['intent']} 落 {e['exec']}（+{e['lag']}）→{e['want']} {k(e['troops'])}{'' if e['ok'] else ' 空令'}" for e in ex_list[:8]))

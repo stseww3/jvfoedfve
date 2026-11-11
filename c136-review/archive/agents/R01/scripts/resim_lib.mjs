@@ -135,7 +135,37 @@ export function logAliases(bundleId, me) {
     const orig = bySeat[+c[iM]];
     if (orig !== undefined) alias[c[iB]] = orig;
   }
+  midAliases(bundleId, me, alias);
   return alias;
+}
+
+// 中间名：一个席位轮换两次以上时（B043 的 Trajan → Geralt → Heisenberg），中间那个名字既没有 me= 行也没有 RESULT 行。
+// 认法：这个名字的第一条 [HL-TICK] 接在某个已认出的号的最后一条之后（隔不超过 180 拍），
+// 而且 maxMs（开局以来单次决策的最大耗时，只增不减）、cmds、boats 都不比那一条小；这样的号正好一个才认。
+function midAliases(bundleId, me, alias) {
+  const logp = `${BUNDLES}/${bundleId}/in_game.log`;
+  if (!fs.existsSync(logp)) return;
+  const ser = {}; // label -> [{t, cmds, boats, maxMs}]
+  for (const line of fs.readFileSync(logp, 'utf8').split('\n')) {
+    const m = line.match(/\[([^\]]+)\] \[HL-TICK\] t=(\d+) .*?cmds=(\d+) boats=(\d+) avgMs=[\d.]+ maxMs=([\d.]+)/);
+    if (m) (ser[m[1]] = ser[m[1]] || []).push({ t: +m[2], cmds: +m[3], boats: +m[4], maxMs: +m[5] });
+  }
+  const origOf = (lb) => (me[lb] !== undefined ? lb : alias[lb]);
+  const unknown = Object.keys(ser).filter((lb) => origOf(lb) === undefined).sort((a, b) => ser[a][0].t - ser[b][0].t);
+  for (const u of unknown) {
+    const f = ser[u][0], last = ser[u][ser[u].length - 1];
+    const cands = [];
+    for (const orig of new Set(Object.keys(ser).map(origOf).filter((x) => x !== undefined))) {
+      const rows = Object.keys(ser).filter((lb) => origOf(lb) === orig).flatMap((lb) => ser[lb]).sort((a, b) => a.t - b.t);
+      if (rows.some((r) => r.t >= f.t && r.t <= last.t)) continue;
+      const prev = rows.filter((r) => r.t < f.t).pop();
+      if (!prev || f.t - prev.t > 180) continue;
+      if (prev.maxMs > f.maxMs || prev.cmds > f.cmds || prev.boats > f.boats) continue;
+      cands.push({ orig, same: prev.maxMs === f.maxMs });
+    }
+    const pick = cands.length === 1 ? cands[0] : (cands.filter((c) => c.same).length === 1 ? cands.find((c) => c.same) : null);
+    if (pick) alias[u] = pick.orig;
+  }
 }
 
 export function readLogSnaps(bundleId, label = '', only = null) {

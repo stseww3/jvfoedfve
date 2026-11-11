@@ -60,6 +60,13 @@ class Truth:
             return self.teams[p]
         return 1 + (p % self.nTeams) if self.botsTeamed and self.nTeams else 0
 
+    def same(self, a, b):
+        """引擎口径的「同队」（game.js isEnemy 取反）：队号 0 = 没有队（自由混战），谁和谁都不同队。"""
+        if a == b:
+            return True
+        ta = self.team(a)
+        return ta != 0 and ta == self.team(b)
+
     def nm(self, p, t=None):
         if p >= NEUTRAL:
             return "空地"
@@ -173,9 +180,9 @@ def sec_TB(T, out):
             a, b = pts[i], pts[j]
             dd = ((a[2][0] - b[2][0]) ** 2 + (a[2][1] - b[2][1]) ** 2) ** 0.5
             if dd < 60:
-                close.append((dd, a[0], b[0], T.team(a[1]), T.team(b[1])))
-    for dd, a, b, ta, tb in sorted(close):
-        out.append(f"     出生点相距 {dd:.0f} 格：{a}(T{ta}) 与 {b}(T{tb})" + ("（不同队）" if ta != tb else ""))
+                close.append((dd, a[0], b[0], T.team(a[1]), T.team(b[1]), T.same(a[1], b[1])))
+    for dd, a, b, ta, tb, sm in sorted(close):
+        out.append(f"     出生点相距 {dd:.0f} 格：{a}(T{ta}) 与 {b}(T{tb})" + ("" if sm else "（不同队）" if T.nTeams else "（自由混战，互为敌人）"))
 
 
 def checkpoints(end):
@@ -276,12 +283,12 @@ def sec_TE(T, out):
             g = sum(r[0] for _, r in ai); b = sum(r[1] for _, r in ai)
             out.append(f"        →内置 AI（{len(ai)} 个）{g} 格 耗兵 {b}（{b / max(g, 1):.1f}/格）")
         for d, r in hm[:8]:
-            same = "【同队】" if T.team(d) == T.team(p) else ""
+            same = "【同队】" if T.same(d, p) else ""
             out.append(f"        →{T.nm(d)}{same} {r[0]} 格 耗兵 {r[1]}（{r[1] / max(r[0], 1):.1f}/格）对方余额被打掉 {r[2]}")
         for a, r in ins[:8]:
             if r[0] <= 0 and r[2] <= 0:
                 continue
-            same = "【同队】" if T.team(a) == T.team(p) and a < T.H else ""
+            same = "【同队】" if a < T.H and T.same(a, p) else ""
             out.append(f"        ←{T.nm(a)}{same} 丢 {r[0]} 格 对方耗兵 {r[1]}（{r[1] / max(r[0], 1):.1f}/格）自己余额被打掉 {r[2]}")
 
 
@@ -379,7 +386,7 @@ def sec_TH(T, out):
                 n_ok += 1; got_sum += c[6]; tax_sum += c[7]
             else:
                 n_bad += 1
-        cross = "" if q >= NEUTRAL or T.team(p) == T.team(q) else "【不同队】"
+        cross = "" if q >= NEUTRAL or T.same(p, q) else "【不同队】"
         out.append(f"     {c[0]:>5} {T.nm(p, c[0])}→{T.nm(min(q, NEUTRAL), c[0])}{cross} pct={c[3]} | {'成交' if ok else '没成交'} | {c[6]} | {c[7]} | {c[8]}/{c[9]} | "
                    + (f"{c[13]}/{c[14]} | {c[10]}/{c[11]}" if len(c) > 14 else ""))
     out.append(f"     本编队捐出：成交 {n_ok} 笔，到账合计 {got_sum}，税合计 {tax_sum}；没成交 {n_bad} 笔")
@@ -408,7 +415,7 @@ def sec_TI(T, out):
 
 def sec_TJ(T, out):
     R = T.R
-    rows = [l for l in R["landings"] if l[1] in T.sqIds and l[2] < T.H and l[2] != l[1] and T.team(l[1]) == T.team(l[2])]
+    rows = [l for l in R["landings"] if l[1] in T.sqIds and l[2] < T.H and l[2] != l[1] and T.same(l[1], l[2])]
     out.append(f"[TJ] 本编队的船靠岸在同队真人身上：{len(rows)} 次：拍 船主→地主 船上兵 | 地主到账 | 地主额度已用/上限")
     for l in rows[:20]:
         out.append(f"     {l[0]} {T.nm(l[1], l[0])}→{T.nm(l[2], l[0])} {l[3]} | {l[4]} | {l[5]}/{l[6]}")
@@ -463,7 +470,7 @@ def sec_TN(T, out, min_cells=100):
 
 def sec_TO(T, out):
     """本编队的船靠岸在异队编队友的地上：引擎按对地主的进攻结算（boats.js 靠岸 → attack）。"""
-    rows = [l for l in T.R.get("landings", []) if l[1] in T.sqIds and l[2] in T.sqIds and l[2] != l[1] and T.team(l[1]) != T.team(l[2])]
+    rows = [l for l in T.R.get("landings", []) if l[1] in T.sqIds and l[2] in T.sqIds and l[2] != l[1] and not T.same(l[1], l[2])]
     out.append(f"[TO] 本编队的船靠岸在异队编队友的地上：{len(rows)} 次，船上兵合计 {sum(l[3] for l in rows)}：拍 船主→地主 船上兵 | 地主当时是不是空壳")
     for l in rows[:20]:
         out.append(f"     {l[0]} {T.nm(l[1], l[0])}→{T.nm(l[2], l[0])} {l[3]} | {'空壳' if T.is_husk(l[2], l[0]) else '在线'}")
@@ -492,7 +499,7 @@ def boat_ledger(T, ids=None):
             k = "neutral"
         elif tg == p:
             k = "own"
-        elif tg < T.H and T.team(tg) == T.team(p):
+        elif tg < T.H and T.same(tg, p):
             if got <= 0:
                 d["evap"][0] += 1
                 d["evap"][1] += troops

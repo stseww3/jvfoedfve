@@ -59,7 +59,8 @@ def main():
     doc['newPatterns'] = np_ + list(hand.get('newPatterns', []))
     # hub 0007 的两本账：有就原样挂进去（延迟账 latency_ledger.py、好地账 good_land.mjs、三层归因 capture_attrib.py）
     for key, rel in (('latencyLedger', ('tmp', 'latency', mid + '.json')), ('goodLand', ('tmp', 'land', mid, 'good_land.json')), ('captureAttrib', ('tmp', 'attrib', mid + '.json')),
-                     ('delayVsRate', ('tmp', 'rate', mid + '.json')), ('slowTicks', ('tmp', 'slow', mid + '.json'))):
+                     ('delayVsRate', ('tmp', 'rate', mid + '.json')), ('slowTicks', ('tmp', 'slow', mid + '.json')),
+                     ('burstChunks', ('tmp', 'chunks', mid + '.json')), ('wallLag', ('tmp', 'wall', mid + '.json'))):
         fp = os.path.join(ROOT, *rel)
         if os.path.exists(fp):
             doc[key] = json.load(open(fp, encoding='utf8'))

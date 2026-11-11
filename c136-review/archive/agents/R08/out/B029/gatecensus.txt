@@ -1,0 +1,69 @@
+[WA] B029 全程买地门槛普查（影子每 30 拍重走一遍 buyLand）：采样点 4120 个（号·拍），其中有真人敌邻的 2215 个（54%），正被真人压着兵的 321 个（8%）；没有真人敌邻的 1905 个
+  时段 | 采样点 | 有真人敌邻 | 正在挨真人打 | 过软上限（余额 > 100×领土）的点
+    1500~3000 | 837 | 535 | 65 | 26
+    3000~4284 | 642 | 364 | 33 | 212
+    4284~6300 | 916 | 599 | 99 | 320
+    6300~8100 | 687 | 329 | 90 | 193
+    8100~终 | 1038 | 388 | 34 | 355
+
+[WB] 有真人敌邻时的整轮结论：时段 | 点数 | SEND→真人 | SEND→人机 | 价格截断 break:price>=worth | 全部跳过（其中最便宜的真人报价的结论）
+    1500~3000 | 535 | 27（5.0%）| 0（0.0%）| 426（79.6%）| 79（14.8%：skip:x<chunk 33（42%）；skip:avail<=0(safe) 28（35%）；skip:soleBuffer 11（14%）；skip:pulseB:alreadyOn 4（5%）；skip:pulseC:alreadyOn 3（4%））
+    3000~4284 | 364 | 4（1.1%）| 0（0.0%）| 206（56.6%）| 150（41.2%：skip:avail<=0(safe) 79（53%）；skip:soleBuffer 52（35%）；skip:x<chunk 18（12%）；skip:pulseC:<min 1（1%））
+    4284~6300 | 599 | 9（1.5%）| 0（0.0%）| 350（58.4%）| 238（39.7%：skip:avail<=0(safe) 83（35%）；skip:soleBuffer 70（29%）；skip:x<chunk 63（26%）；skip:crowdedHard 9（4%）；skip:siegeShrink 7（3%））
+    6300~8100 | 329 | 5（1.5%）| 1（0.3%）| 161（48.9%）| 149（45.3%：skip:avail<=0(safe) 56（38%）；skip:soleBuffer 43（29%）；skip:x<chunk 27（18%）；skip:siegeShrink 18（12%）；skip:crowdedHard 4（3%））
+    8100~终 | 388 | 19（4.9%）| 0（0.0%）| 204（52.6%）| 164（42.3%：skip:avail<=0(safe) 105（64%）；skip:soleBuffer 37（23%）；skip:crowdedHard 7（4%）；skip:x<chunk 6（4%）；skip:siegeShrink 5（3%））
+    合计 | 2215 | 64（2.9%）| 1（0.0%）| 1347（60.8%）| 780（35.2%：skip:avail<=0(safe) 351（45%）；skip:soleBuffer 213（27%）；skip:x<chunk 147（19%）；skip:siegeShrink 30（4%）；skip:crowdedHard 20（3%））
+
+[WC] 正在挨真人打时，对压兵最多的那个进攻者的结论：时段 | 点数 | 会打它（SEND）| 各门槛
+    1500~3000 | 65 | 2（3.1%）| break:price>=worth 31（48%）；break:price>=worth（更便宜的报价已截断） 11（17%）；skip:avail<=0(safe) 11（17%）；不在报价表里（不接壤 / 受保护） 10（15%）
+    3000~4284 | 33 | 0（0.0%）| break:price>=worth 13（39%）；skip:avail<=0(safe) 8（24%）；不在报价表里（不接壤 / 受保护） 5（15%）；break:price>=worth（更便宜的报价已截断） 3（9%）；skip:chunk 2（6%）；skip:pulseC:<min 1（3%）；skip:x<chunk 1（3%）
+    4284~6300 | 99 | 3（3.0%）| break:price>=worth 39（39%）；break:price>=worth（更便宜的报价已截断） 25（25%）；skip:avail<=0(safe) 22（22%）；skip:siegeShrink 6（6%）；skip:x<chunk 2（2%）；不在报价表里（不接壤 / 受保护） 2（2%）
+    6300~8100 | 90 | 3（3.3%）| break:price>=worth 32（36%）；skip:avail<=0(safe) 26（29%）；skip:siegeShrink 8（9%）；不在报价表里（不接壤 / 受保护） 8（9%）；break:price>=worth（更便宜的报价已截断） 6（7%）；skip:x<chunk 4（4%）；skip:pulseA:<min 2（2%）
+    8100~终 | 34 | 1（2.9%）| break:price>=worth 13（38%）；skip:avail<=0(safe) 6（18%）；break:price>=worth（更便宜的报价已截断） 6（18%）；不在报价表里（不接壤 / 受保护） 4（12%）；skip:siegeShrink 4（12%）
+    合计 | 321 | 9（2.8%）| break:price>=worth 128（40%）；skip:avail<=0(safe) 73（23%）；break:price>=worth（更便宜的报价已截断） 51（16%）；不在报价表里（不接壤 / 受保护） 29（9%）；skip:siegeShrink 18（6%）；skip:x<chunk 7（2%）；skip:chunk 2（1%）
+
+[WD] 同上，按自己当拍的密度分档：密度 | 点数 | 会打它 | 各门槛 | 余额合计（千）
+    <60 | 78 | 2（2.6%）| break:price>=worth 36（46%）；break:price>=worth（更便宜的报价已截断） 17（22%）；skip:avail<=0(safe) 13（17%）；不在报价表里（不接壤 / 受保护） 10（13%） | 5804
+    60~100 | 151 | 2（1.3%）| break:price>=worth 92（61%）；break:price>=worth（更便宜的报价已截断） 34（23%）；不在报价表里（不接壤 / 受保护） 14（9%）；skip:avail<=0(safe) 4（3%）；skip:chunk 2（1%）；skip:pulseA:<min 2（1%） | 108541
+    100~126 | 69 | 1（1.4%）| skip:avail<=0(safe) 40（58%）；skip:siegeShrink 18（26%）；skip:x<chunk 7（10%）；不在报价表里（不接壤 / 受保护） 3（4%） | 56035
+    ≥126 | 23 | 4（17.4%）| skip:avail<=0(safe) 16（70%）；不在报价表里（不接壤 / 受保护） 2（9%）；先发给了更便宜的目标 1（4%） | 20789
+
+[WE] 价格门的细节（正在挨打、对进攻者的结论是 break:price>=worth 的 179 个点；其中进攻者自己就是截断那一行的 128 个）
+  进攻者的每格报价 ÷ worth：中位 2.38、下四分位 1.85、上四分位 3.00；≤1.25 的 6 个、≤1.5 的 10 个、≤2 的 41 个、>3 的 32 个
+  每格报价 中位 180｜worth 中位 86｜自己的密度 中位 82｜进攻者的密度 中位 82｜worth ÷ 自己的密度 中位 1.04｜进攻者余额 ÷ 自己余额 中位 4.70
+    密度 <60：36 个点，报价 ÷ worth 中位 2.65，报价 中位 42，worth 中位 21
+    密度 60~100：92 个点，报价 ÷ worth 中位 2.28，报价 中位 206，worth 中位 88
+
+[WF] 留底门的细节（正在挨打、对进攻者的结论是 skip:avail<=0(safe) 的 73 个点）
+  safe 原值 ÷ 自己的余额：中位 2.91、下四分位 1.85、上四分位 9.78；≥2 的 54 个、≥5 的 26 个｜进攻者余额 ÷ 自己余额 中位 4.43｜自己的密度 中位 106
+
+[WG] 丢给真人的格数，按丢地那 30 拍开头时对这个进攻者的结论分摊（真值逐对战损账；窗口对不上采样点的记『没有采样点』）
+  全场丢给真人 188554 格：break:price>=worth 107908（57%）；skip:avail<=0(safe) 38747（21%）；skip:siegeShrink 8820（5%）；skip:soleBuffer 7243（4%）；不在报价表里（当拍不接壤） 7100（4%）；进攻者是异队编队友（受保护，不在报价表里） 5434（3%）；skip:x<chunk 4992（3%）；没有采样点（1500 拍前 / 已不在线） 4281（2%）；SEND（会打它） 1599（1%）；skip:pulseA:<min 1482（1%）
+    <1500：422 格｜进攻者是异队编队友（受保护，不在报价表里） 421（100%）；没有采样点（1500 拍前 / 已不在线） 1（0%）
+    1500~3000：29611 格｜break:price>=worth 22297（75%）；skip:avail<=0(safe) 4284（14%）；进攻者是异队编队友（受保护，不在报价表里） 2791（9%）；SEND（会打它） 192（1%）；不在报价表里（当拍不接壤） 47（0%）
+    3000~4284：14674 格｜break:price>=worth 8201（56%）；skip:avail<=0(safe) 5693（39%）；skip:chunk 198（1%）；skip:x<chunk 151（1%）；进攻者是异队编队友（受保护，不在报价表里） 125（1%）；skip:soleBuffer 120（1%）
+    4284~6300：50485 格｜break:price>=worth 33721（67%）；skip:avail<=0(safe) 9017（18%）；skip:siegeShrink 3385（7%）；skip:x<chunk 1538（3%）；没有采样点（1500 拍前 / 已不在线） 1121（2%）；skip:soleBuffer 872（2%）
+    6300~8100：48240 格｜break:price>=worth 24505（51%）；skip:avail<=0(safe) 10330（21%）；skip:x<chunk 3303（7%）；skip:siegeShrink 2911（6%）；没有采样点（1500 拍前 / 已不在线） 2589（5%）；skip:pulseA:<min 1482（3%）
+    8100~终：45122 格｜break:price>=worth 19184（43%）；skip:avail<=0(safe) 9423（21%）；skip:soleBuffer 5869（13%）；不在报价表里（当拍不接壤） 5799（13%）；skip:siegeShrink 2524（6%）；进攻者是异队编队友（受保护，不在报价表里） 1178（3%）
+
+[WH] 逐号：号 | 采样点 | 有真人敌邻 | 正在挨打 | 挨打时会打进攻者（SEND）| 挨打时最多的两个门槛 | 挨打的点里过软上限的
+    Erwin            | 15 | 15 | 6 | 0（0%）| break:price>=worth（更便宜的报价已截断） 6（100%） | 0
+    Anya             | 340 | 244 | 36 | 0（0%）| break:price>=worth 14（39%）；skip:avail<=0(safe) 11（31%） | 14
+    Interpol         | 318 | 38 | 7 | 0（0%）| 不在报价表里（不接壤 / 受保护） 5（71%）；skip:avail<=0(safe) 1（14%） | 1
+    Angkor           | 315 | 277 | 22 | 0（0%）| skip:avail<=0(safe) 8（36%）；break:price>=worth 8（36%） | 12
+    Moldavia         | 249 | 249 | 28 | 0（0%）| break:price>=worth 12（43%）；skip:avail<=0(safe) 6（21%） | 11
+    Scorpion         | 273 | 199 | 30 | 1（3%）| skip:avail<=0(safe) 17（57%）；break:price>=worth 9（30%） | 12
+    Cumania          | 148 | 98 | 19 | 0（0%）| break:price>=worth 12（63%）；skip:siegeShrink 4（21%） | 6
+    Tomato           | 142 | 142 | 23 | 0（0%）| skip:avail<=0(safe) 8（35%）；break:price>=worth（更便宜的报价已截断） 6（26%） | 9
+    Conde            | 122 | 122 | 13 | 0（0%）| break:price>=worth 8（62%）；break:price>=worth（更便宜的报价已截断） 5（38%） | 0
+    Marlborough      | 273 | 44 | 11 | 0（0%）| 不在报价表里（不接壤 / 受保护） 5（45%）；break:price>=worth 5（45%） | 1
+    Goku             | 325 | 31 | 7 | 0（0%）| skip:avail<=0(safe) 4（57%）；不在报价表里（不接壤 / 受保护） 3（43%） | 4
+    Lelouch          | 276 | 39 | 9 | 0（0%）| break:price>=worth 6（67%）；不在报价表里（不接壤 / 受保护） 1（11%） | 2
+    DioBrando        | 65 | 65 | 8 | 0（0%）| break:price>=worth 3（38%）；break:price>=worth（更便宜的报价已截断） 3（38%） | 0
+    Senna            | 279 | 235 | 21 | 1（5%）| break:price>=worth 12（57%）；不在报价表里（不接壤 / 受保护） 2（10%） | 7
+    SyntaxError      | 324 | 76 | 27 | 5（19%）| 不在报价表里（不接壤 / 受保护） 7（26%）；break:price>=worth 6（22%） | 10
+    Two Sicilies     | 316 | 117 | 10 | 0（0%）| break:price>=worth 7（70%）；skip:avail<=0(safe) 3（30%） | 3
+    Khazar           | 298 | 186 | 31 | 0（0%）| break:price>=worth（更便宜的报价已截断） 18（58%）；break:price>=worth 12（39%） | 0
+    Iceland          | 42 | 38 | 13 | 2（15%）| break:price>=worth 7（54%）；skip:avail<=0(safe) 4（31%） | 0
+
+[WI] 自检：整轮结论是 SEND 的 77 个点里，影子在这一拍到下一个采样点之前真的发了陆攻的 68 个（88%）；其余是 buyLand 之外的关（驱动层 8 拍静默、进攻槽占满、先做了捐款 / 发船等）或采样拍在策略出手之后（余额已经变了）

@@ -100,6 +100,7 @@ function parseDispatch(matchId) {
 }
 
 // 同房间的另一支编队（card.sameMatchPeer）：按 identity-map-discovery.csv 的 me 列找出它在本盘录像里的玩家号
+const A_ROSTER = ['ryan_m', 'sora_w', 'zexos1', 'noah88', 'alex_k', 'talon5', 'leo_tx', 'zero_7', 'kaito9', 'riku_x'];
 export function peerBots(matchId, names, H) {
   try {
     const card = JSON.parse(fs.readFileSync(path.join(DATA, 'bundles', matchId, 'card.json'), 'utf8'));
@@ -117,6 +118,10 @@ export function peerBots(matchId, names, H) {
       const chain = (c[ci('nameChain')] || '').split('→');
       const nmReplay = String(names[me] || '');
       bots.push({ p: me, name: nmReplay, logTeam: c[ci('team')] ? +c[ci('team')] : null, event: c[ci('event')] || '', resultTick: c[ci('resultTick')] ? +c[ci('resultTick')] : null, nameOk: chain.some((x) => x && nmReplay.includes(x)) });
+    }
+    if (!bots.length && card.sameMatchPeer.peerCohort === 'squad10') {
+      // identity map 里没有这一局的行（对局包不在本数据包里）：按 A 系的十个固定号名在录像名单里找（去掉战队标签后全等且唯一）
+      for (const [b, p] of botIds(names, H, A_ROSTER)) if (p >= 0) bots.push({ p, name: String(names[p] || ''), logTeam: null, event: '', resultTick: null, nameOk: true, how: 'roster' });
     }
     return { matchId: peerId, cohort: card.sameMatchPeer.peerCohort, bots };
   } catch (e) { return { matchId: null, cohort: null, bots: [], err: e.message }; }
@@ -303,7 +308,11 @@ export function truth(matchId) {
   return {
     matchId, map: { idx: R.mapIdx, seed: R.mapSeed, W: g.W, H: g.H, land: g.land }, humans: H, humanTeams: R.T ? R.T.humanTeams : 0, teamSizes: R.T ? R.T.counts : [],
     teamColor: R.T ? Array.from({ length: R.T.humanTeams + 1 }, (_, i) => TEAM_COLOR_NAME[R.T.lH[i]]) : [], headerTeams: R.vu.numberTeams,
-    ourTeam: sq.squad.size ? g.teams[[...sq.squad.keys()][0]] : 0, squad: [...sq.squad.entries()].map(([p, b]) => ({ p, bot: b, team: g.teams[p] })), logBots: sq.prefixes,
+    ourTeam: (() => { // 我方号最多的那个队（并列取名单里靠前的号所在的队；所有号同队时与旧口径相同）
+      const c = new Map(); for (const p of sq.squad.keys()) c.set(g.teams[p], (c.get(g.teams[p]) || 0) + 1);
+      let best = 0, bn = 0; for (const p of sq.squad.keys()) { const n = c.get(g.teams[p]); if (n > bn) { bn = n; best = g.teams[p]; } }
+      return best;
+    })(), squad: [...sq.squad.entries()].map(([p, b]) => ({ p, bot: b, team: g.teams[p] })), logBots: sq.prefixes,
     endTick: R.endTick, overAt: R.overAt, stats: R.stats, cats: CAT, tickLines: ticks.length,
     players, T30, HS, S10, C30, F30, events: REC.events, allDon: REC.allDon,
     pairAll: [...REC.pairAll.entries()].map(([k, v]) => [Math.floor(k / 1048576), Math.floor((k % 1048576) / 1024), k % 1024, v]), pairs, pairsW, teamFlow, dispatch: disp,

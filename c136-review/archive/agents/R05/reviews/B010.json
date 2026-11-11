@@ -1,0 +1,6938 @@
+{
+ "matchId": "B010",
+ "reviewer": "R05",
+ "protocol": "v2.0",
+ "context": {
+  "cohort": "squad20",
+  "strategyVersion": "c110(v27-team-c110.js)",
+  "timeUtc": "2026-11-09T15:27:20Z",
+  "map": "22(1541x1080)",
+  "mapLand": 664497,
+  "humans": 95,
+  "headerTeams": 8,
+  "actualTeams": 8,
+  "teamSizes": [
+   12,
+   12,
+   12,
+   12,
+   12,
+   11,
+   12,
+   12
+  ],
+  "baseWinExpectation": 0.125,
+  "ourTeam": 8,
+  "ourTeamSize": 12,
+  "squadBotsInReplay": [
+   "Angkor#70",
+   "Enderman#77",
+   "Cleopatra#63",
+   "BlackRock#65",
+   "Bowser#64",
+   "AltF4#59",
+   "TaxCollector#78",
+   "Chicago#69",
+   "Mansa Musa#62",
+   "Chosokabe#61",
+   "Khiva#94",
+   "Afsharid#71",
+   "Frieren#60"
+  ],
+  "squadBotsNotInReplay": [],
+  "teamSplit": {
+   "2": 1,
+   "5": 1,
+   "7": 2,
+   "8": 3
+  },
+  "sameRoomPeer": {
+   "matchId": "A012",
+   "cohort": "squad10",
+   "botsByTeam": {
+    "1": 10,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 0,
+    "6": 0,
+    "7": 0,
+    "8": 0
+   }
+  },
+  "realHumansExcludingBothSquads": 72,
+  "leftByT1000": {
+   "squad": 0,
+   "peer": 0,
+   "real": 5
+  },
+  "leftByT2000": {
+   "squad": 6,
+   "peer": 3,
+   "real": 12
+  },
+  "classSizes": {
+   "squad": 13,
+   "peer": 10,
+   "real": 72
+  },
+  "replayEndTick": 6705,
+  "simCheck": null,
+  "squadTeamsAll": {
+   "T8": [
+    "Enderman",
+    "AltF4",
+    "Chicago",
+    "Chosokabe",
+    "Khiva"
+   ],
+   "T7": [
+    "Angkor",
+    "Bowser",
+    "Mansa Musa",
+    "Frieren"
+   ],
+   "T2": [
+    "BlackRock"
+   ],
+   "T5": [
+    "Cleopatra"
+   ],
+   "T6": [
+    "TaxCollector"
+   ],
+   "T3": [
+    "Afsharid"
+   ]
+  },
+  "aiBots": {
+   "n": 417,
+   "onTeams": true,
+   "perTeam": "52–53"
+  },
+  "note": "13 个 c110 客户端都在这一盘录像里，分在 6 个队；ourTeam 取我方号最多的 T8。骨架里的 teamSplit 只数了有结果行的 7 个号（对局卡 squadBots=7）；另 6 个号 1331–1695 拍离场、没有结果行。同房另一支编队（A012，Va）10 个号全在 T1。8 队模式里 AI 机器人被分进各队，各队的地包含同队机器人（时间线的 botsShare 因此是 0）。日志里号的标签按计时器轮换，先用 alias_overlay.py 归并到录像里的名字。sim_replay.mjs --check：370 条 [HL-TICK] 逐条相等。"
+ },
+ "outcome": {
+  "result": "lost",
+  "endTick": 6128,
+  "replayEndTick": 6705,
+  "winnerTeam": 3,
+  "winnerTeamByReplay": 3,
+  "ourTeamPeakShare": 12.2,
+  "ourTeamPeakT": 1200,
+  "squadPeakShare": 9.5,
+  "squadPeakT": 2190,
+  "finalShares": {
+   "T1": 7.5,
+   "T2": 14.1,
+   "T3": 36.0,
+   "T4": 0.0,
+   "T5": 21.6,
+   "T6": 11.2,
+   "T7": 3.4,
+   "T8": 5.8
+  },
+  "note": "endTick 6128 是最后一个号 BlackRock 的结果行（6123 拍阵亡）；7 个有结果行的号全部 lost/died，名次 106、85、82、40、31、29、28（95 人 + 机器人）。录像到 6705 拍：T3 36.0%、T5 21.6%、T2 14.1%。赢的 T3 里有我方的 Afsharid，但它 1331 拍已离场、2459 拍被吃掉。"
+ },
+ "timeline": [
+  {
+   "t": 90,
+   "teamShare": {
+    "T1": 0.3,
+    "T2": 0.4,
+    "T3": 0.3,
+    "T4": 0.3,
+    "T5": 0.4,
+    "T6": 0.4,
+    "T7": 0.4,
+    "T8": 0.4
+   },
+   "ourTeamRank": 1,
+   "botsShare": 0.0,
+   "squadShare": 0.1,
+   "squadBal": 7514,
+   "squadDens": 14.6,
+   "squadActive": 13,
+   "squadAlive": 13,
+   "ourTeamActiveHumans": 12,
+   "note": "选点期 −51…−1 拍：没有后端协调（日志 186 行 [HL-SPAWN]、0 行 [HL-SPAWN-BACKEND]），13 个号各自换了 5–24 次坐标（中位 13 次，相邻两次跳 647 格）。落地：Enderman 与 Frieren 同一格、Khiva 在 27 格外，Angkor 与 BlackRock 相距 16 格。13 个号分在 6 个队（T8 5、T7 4、T2/T3/T5/T6 各 1）"
+  },
+  {
+   "t": 180,
+   "teamShare": {
+    "T1": 0.8,
+    "T2": 0.8,
+    "T3": 0.7,
+    "T4": 0.7,
+    "T5": 0.8,
+    "T6": 0.8,
+    "T7": 0.8,
+    "T8": 0.8
+   },
+   "ourTeamRank": 1,
+   "botsShare": 0.0,
+   "squadShare": 0.3,
+   "squadBal": 12311,
+   "squadDens": 6.1,
+   "squadActive": 13,
+   "squadAlive": 13,
+   "ourTeamActiveHumans": 12,
+   "note": "11 个号 DP 开局正常（第一条落地 − 第一条决策 6–36 拍）。AltF4 的开局指令一条没落地（地一直 12 格），Chosokabe 也是（9 格）"
+  },
+  {
+   "t": 360,
+   "teamShare": {
+    "T1": 2.4,
+    "T2": 2.2,
+    "T3": 2.2,
+    "T4": 1.9,
+    "T5": 2.1,
+    "T6": 2.1,
+    "T7": 2.0,
+    "T8": 2.4
+   },
+   "ourTeamRank": 1,
+   "botsShare": 0.0,
+   "squadShare": 1.1,
+   "squadBal": 21179,
+   "squadDens": 2.9,
+   "squadActive": 13,
+   "squadAlive": 13,
+   "ourTeamActiveHumans": 12,
+   "note": "T8 2.4% 并列第一。指令延迟中位 13 拍，是全局的基线。AltF4 仍是 12 格（本地已受理 4 条）"
+  },
+  {
+   "t": 600,
+   "teamShare": {
+    "T1": 7.6,
+    "T2": 7.2,
+    "T3": 7.0,
+    "T4": 5.5,
+    "T5": 7.5,
+    "T6": 6.6,
+    "T7": 6.8,
+    "T8": 7.4
+   },
+   "ourTeamRank": 3,
+   "botsShare": 0.0,
+   "squadShare": 3.8,
+   "squadBal": 71588,
+   "squadDens": 2.8,
+   "squadActive": 13,
+   "squadAlive": 13,
+   "ourTeamActiveHumans": 12,
+   "note": "我方号地中位 2,191，其余在场真人 2,409（0.91 倍）；实际地 ÷ 名下份额 0.38 对 0.36。AltF4 420 拍才落地 3 条，510 格（89 人里第 83）；叠点的 BlackRock 1,144 格（第 77）"
+  },
+  {
+   "t": 900,
+   "teamShare": {
+    "T1": 12.3,
+    "T2": 12.6,
+    "T3": 12.1,
+    "T4": 9.8,
+    "T5": 14.9,
+    "T6": 11.3,
+    "T7": 10.0,
+    "T8": 11.6
+   },
+   "ourTeamRank": 5,
+   "botsShare": 0.0,
+   "squadShare": 6.3,
+   "squadBal": 287134,
+   "squadDens": 6.8,
+   "squadActive": 13,
+   "squadAlive": 13,
+   "ourTeamActiveHumans": 11,
+   "note": "编队 6.3%。600–899 拍落地的指令延迟中位 72 拍；我方号地中位 3,207 对 4,257。13 个号里已有 8 个把 isNoFullSend 置位（本局不是限额局）"
+  },
+  {
+   "t": 1200,
+   "teamShare": {
+    "T1": 10.4,
+    "T2": 13.9,
+    "T3": 12.4,
+    "T4": 11.3,
+    "T5": 16.3,
+    "T6": 11.2,
+    "T7": 8.9,
+    "T8": 12.2
+   },
+   "ourTeamRank": 4,
+   "botsShare": 0.0,
+   "squadShare": 7.7,
+   "squadBal": 835594,
+   "squadDens": 16.2,
+   "squadActive": 13,
+   "squadAlive": 13,
+   "ourTeamActiveHumans": 11,
+   "note": "T8 12.2%（全程峰值，8 队第 4）。900–1199 拍延迟中位 186 拍；地中位 4,444 对 5,980。Afsharid、Frieren 的日志停在本地 810 拍"
+  },
+  {
+   "t": 1500,
+   "teamShare": {
+    "T1": 9.0,
+    "T2": 15.4,
+    "T3": 13.3,
+    "T4": 12.4,
+    "T5": 17.0,
+    "T6": 11.4,
+    "T7": 8.2,
+    "T8": 10.9
+   },
+   "ourTeamRank": 6,
+   "botsShare": 0.0,
+   "squadShare": 8.5,
+   "squadBal": 1654774,
+   "squadDens": 29.3,
+   "squadActive": 11,
+   "squadAlive": 13,
+   "ourTeamActiveHumans": 10,
+   "note": "T8 10.9%（第 6）。1200–1499 拍延迟中位 348 拍；地中位 4,996 对 7,799，实际地 ÷ 名下份额 0.76 对 1.03。Afsharid、Frieren 1331 拍离场（空壳由引擎 AI 接手）"
+  },
+  {
+   "t": 1800,
+   "teamShare": {
+    "T1": 9.4,
+    "T2": 14.6,
+    "T3": 13.6,
+    "T4": 13.5,
+    "T5": 17.5,
+    "T6": 11.6,
+    "T7": 8.6,
+    "T8": 9.8
+   },
+   "ourTeamRank": 6,
+   "botsShare": 0.0,
+   "squadShare": 8.9,
+   "squadBal": 2022541,
+   "squadDens": 34.2,
+   "squadActive": 6,
+   "squadAlive": 12,
+   "ourTeamActiveHumans": 7,
+   "note": "13 个客户端只剩 6 个在线：TaxCollector、Khiva 1604，Angkor 1625，Chicago 1695 离场；Chosokabe 1558 阵亡。1500–1799 拍延迟中位 476 拍。Enderman 被空壳和队友围住，1708–1925 拍 8 条船 330k。Bowser 1575 拍 4 条迟到的船登陆 T5 的两个真人，1603 拍起被打回来"
+  },
+  {
+   "t": 2100,
+   "teamShare": {
+    "T1": 10.2,
+    "T2": 13.5,
+    "T3": 15.8,
+    "T4": 13.8,
+    "T5": 15.3,
+    "T6": 11.3,
+    "T7": 8.1,
+    "T8": 10.6
+   },
+   "ourTeamRank": 6,
+   "botsShare": 0.0,
+   "squadShare": 8.9,
+   "squadBal": 1525716,
+   "squadDens": 25.8,
+   "squadActive": 6,
+   "squadAlive": 12,
+   "ourTeamActiveHumans": 7,
+   "note": "延迟中位 286 拍。BlackRock 2100 拍 9 条同拍把 302k 打到 73k（Player 802，+1,664 格）。空壳 TaxCollector、Angkor 在打 Mansa Musa、BlackRock，后两者没有还手"
+  },
+  {
+   "t": 2400,
+   "teamShare": {
+    "T1": 9.7,
+    "T2": 14.5,
+    "T3": 16.3,
+    "T4": 14.4,
+    "T5": 14.4,
+    "T6": 11.5,
+    "T7": 8.1,
+    "T8": 10.0
+   },
+   "ourTeamRank": 6,
+   "botsShare": 0.0,
+   "squadShare": 8.2,
+   "squadBal": 1463954,
+   "squadDens": 27.0,
+   "squadActive": 4,
+   "squadAlive": 9,
+   "ourTeamActiveHumans": 5,
+   "note": "Bowser 2251、Frieren（空壳）2260、AltF4 2290 阵亡；在线只剩 Enderman、Cleopatra、Mansa Musa、BlackRock，延迟回到 7–16 拍。编队 8.2%（峰值 9.5%@2190）"
+  },
+  {
+   "t": 2700,
+   "teamShare": {
+    "T1": 8.3,
+    "T2": 16.1,
+    "T3": 16.1,
+    "T4": 14.8,
+    "T5": 13.9,
+    "T6": 13.2,
+    "T7": 8.4,
+    "T8": 8.5
+   },
+   "ourTeamRank": 6,
+   "botsShare": 0.0,
+   "squadShare": 6.0,
+   "squadBal": 1491764,
+   "squadDens": 37.6,
+   "squadActive": 4,
+   "squadAlive": 6,
+   "ourTeamActiveHumans": 5,
+   "note": "空壳 Afsharid 2459、Chicago 2542、Khiva 2583 被外人吃掉。编队 6.0%、兵 1.49M"
+  },
+  {
+   "t": 3000,
+   "teamShare": {
+    "T1": 7.1,
+    "T2": 16.0,
+    "T3": 15.9,
+    "T4": 15.4,
+    "T5": 13.9,
+    "T6": 13.9,
+    "T7": 8.6,
+    "T8": 8.5
+   },
+   "ourTeamRank": 7,
+   "botsShare": 0.0,
+   "squadShare": 5.5,
+   "squadBal": 1866653,
+   "squadDens": 51.0,
+   "squadActive": 4,
+   "squadAlive": 6,
+   "ourTeamActiveHumans": 5,
+   "note": "编队 5.5%（密度 51）；T8 8.5%（第 7）。Enderman 的地从 2700 拍到 4800 拍停在 6,646–6,667 格，贴着敌方真人的边界 213–250 格"
+  },
+  {
+   "t": 3600,
+   "teamShare": {
+    "T1": 6.9,
+    "T2": 16.5,
+    "T3": 14.7,
+    "T4": 15.5,
+    "T5": 12.4,
+    "T6": 15.3,
+    "T7": 9.1,
+    "T8": 9.1
+   },
+   "ourTeamRank": 6,
+   "botsShare": 0.0,
+   "squadShare": 5.0,
+   "squadBal": 2368041,
+   "squadDens": 70.9,
+   "squadActive": 4,
+   "squadAlive": 5,
+   "ourTeamActiveHumans": 5,
+   "note": "BlackRock 3374–3640 拍 4 条 404k 戳 Player 914「救」Angkor（1625 拍起已是空壳，3701 拍被吃掉）。Mansa Musa 3339–3409 拍 3 条 158k 从 UZBEKISTAN 手里拿 5,504 格（它刚吃完 TaxCollector 的空壳）。Cleopatra 3660 拍地掉到峰值的 1/4 以下，剩下的地和存兵被引擎清零，靠在途的船续命"
+  },
+  {
+   "t": 4200,
+   "teamShare": {
+    "T1": 7.1,
+    "T2": 17.5,
+    "T3": 19.3,
+    "T4": 11.9,
+    "T5": 12.5,
+    "T6": 12.2,
+    "T7": 9.2,
+    "T8": 9.5
+   },
+   "ourTeamRank": 6,
+   "botsShare": 0.0,
+   "squadShare": 5.1,
+   "squadBal": 3379079,
+   "squadDens": 99.7,
+   "squadActive": 4,
+   "squadAlive": 4,
+   "ourTeamActiveHumans": 5,
+   "note": "四个号合计 3.38M、密度 100；Mansa Musa 14,171 格、BlackRock 12,801 格。Enderman 密度 142，影子里 4100–4700 拍 11 条出船决策线上一条没发出"
+  },
+  {
+   "t": 4800,
+   "teamShare": {
+    "T1": 8.6,
+    "T2": 15.9,
+    "T3": 21.9,
+    "T4": 6.4,
+    "T5": 15.3,
+    "T6": 11.9,
+    "T7": 9.3,
+    "T8": 10.0
+   },
+   "ourTeamRank": 5,
+   "botsShare": 0.0,
+   "squadShare": 4.9,
+   "squadBal": 4187617,
+   "squadDens": 129.7,
+   "squadActive": 4,
+   "squadAlive": 4,
+   "ourTeamActiveHumans": 5,
+   "note": "密度 130。Enderman 4600 拍起存兵停在 996,900（= 150 × 6,646 格，封顶）。Full send 4802 拍 596k 打 Enderman；Mansa Musa 4823 拍 200k 戳 Full send"
+  },
+  {
+   "t": 5400,
+   "teamShare": {
+    "T1": 8.1,
+    "T2": 16.5,
+    "T3": 24.8,
+    "T4": 5.5,
+    "T5": 15.8,
+    "T6": 10.9,
+    "T7": 9.3,
+    "T8": 8.7
+   },
+   "ourTeamRank": 6,
+   "botsShare": 0.0,
+   "squadShare": 4.5,
+   "squadBal": 3854170,
+   "squadDens": 127.7,
+   "squadActive": 4,
+   "squadAlive": 4,
+   "ourTeamActiveHumans": 3,
+   "note": "Mansa Musa 5075 拍一条船 280k（手续费 63k）登陆 Skandan；Full send 5313 拍起打 Mansa Musa。Enderman 5327–5404 拍 4 条 278k 戳 Full send、Skandan；Skandan 5404 拍 503k 回推。BlackRock 5215 拍起连发 8 条船 1.70M 打机器人#168 的岛"
+  },
+  {
+   "t": 6000,
+   "teamShare": {
+    "T1": 8.0,
+    "T2": 14.1,
+    "T3": 31.2,
+    "T4": 4.2,
+    "T5": 20.9,
+    "T6": 10.0,
+    "T7": 4.9,
+    "T8": 5.8
+   },
+   "ourTeamRank": 6,
+   "botsShare": 0.0,
+   "squadShare": 1.7,
+   "squadBal": 834072,
+   "squadDens": 73.8,
+   "squadActive": 2,
+   "squadAlive": 2,
+   "ourTeamActiveHumans": 2,
+   "note": "Enderman 5530、Cleopatra 5983 阵亡。Mansa Musa 被 Full send（3.27M）和 Player 887（1.99M）推到 3,608 格；BlackRock 被 Suuiiiii 950k、Player 914 560k 推到 7,693 格"
+  },
+  {
+   "t": 6120,
+   "teamShare": {
+    "T1": 8.0,
+    "T2": 13.2,
+    "T3": 32.3,
+    "T4": 3.4,
+    "T5": 21.7,
+    "T6": 10.3,
+    "T7": 4.2,
+    "T8": 6.1
+   },
+   "ourTeamRank": 6,
+   "botsShare": 0.0,
+   "squadShare": 0.5,
+   "squadBal": 142987,
+   "squadDens": 44.5,
+   "squadActive": 1,
+   "squadAlive": 1,
+   "ourTeamActiveHumans": 2,
+   "note": "Mansa Musa 6061、BlackRock 6123 阵亡（名次 29、28）。T3 32.3%"
+  }
+ ],
+ "phases": {
+  "spawn_0_90": {
+   "facts": [
+    "8 队混战（map 22，1541×1080，陆地 664,497 格；95 名真人，每队 11–12 人；AI 机器人 417 个，被分进 8 个队，每队 52–53 个，同队机器人不能打）。13 个 c110 客户端被分到 6 个队：T8 = Enderman、AltF4、Chicago、Chosokabe、Khiva；T7 = Angkor、Bowser、Mansa Musa、Frieren；T2 = BlackRock；T5 = Cleopatra；T6 = TaxCollector；T3 = Afsharid。同房另一支编队（A012，Va）10 个号全在 T1。真人「russian empire」#75（T8）名字在名单里，被 13 个号当成兄弟（日志 squad=14）。",
+    "没有后端协调：日志里 186 行 [HL-SPAWN]、0 行 [HL-SPAWN-BACKEND]、0 行求解日志。VERSION-TIMELINE.md 记 2026-11-10T14:08:38Z 才把 `if (bossId >= 0)` 放开，本局是 11-09T15:27:20Z，走的是 chooseSpawn 的自治分支。",
+    "自治分支的做法：每个号先把已出生的兄弟从地图上抹掉，再自己算一张候选表，取表里第 slot 个互相隔开 145 格的点（slot = 客户端编号 % 20，本局 1、5–14、17、18）。候选表每 2.2 秒以上重算一次，别人一动表就变。结果：每个号的坐标换了 5–24 次（中位 13 次），相邻两次相距中位 647 格，173 次换点里 139 次跳了 300 格以上；38 个坐标出现在两个以上号的序列里（(386,1026)、(1314,610) 各有 6 个号选过）。",
+    "落地：我方出生指令 −49…−1 拍都有落地。10 个号最后生效的是日志序列里倒数第 2 个坐标（最后一次换点没赶上）；AltF4 是倒数第 13 个（−20 拍以后的发送全部没落地），Chosokabe 倒数第 9 个（−18 拍以后），Mansa Musa 倒数第 3 个；Khiva 是最后一个。每个号序列最前面的 1–2 个坐标都没落地（13 局的共同现象）。",
+    "出生点相距不到 145 格的有 4 对：Enderman–Frieren 同一格（两条指令 −1、−4 拍落地）、Angkor–BlackRock 16 格、Enderman–Khiva 27 格、Frieren–Khiva 27 格。到最近我方号的距离中位 161 格（0–462）。",
+    "名下陆地（每格归最近的真人出生点，90 个出生点，人均 7,383 格）：13 个号合计 74,474 格 = 全图 11.2%，人数占 14.4% → 0.78；每号中位 5,067 格，其余真人 6,782 格。Frieren 1,822、AltF4 2,377、Chosokabe 3,274、BlackRock 4,930；最大的 Afsharid 12,760。"
+   ],
+   "problems": [
+    "各号的候选表互不相通，又把兄弟从图上抹掉：同一个坐标会被不同序号的号选中，也不会避开已经站了兄弟的地方。选点期结束那一刻各号「当前的坐标」就是出生点，等于抽签。",
+    "13 个号分在 6 个队是匹配结果（外因）：能互相捐兵的只有同队的号，其余只剩「不打名单里的名字」这一条约定。"
+   ]
+  },
+  "opening_90_630": {
+   "facts": [
+    "11 个号的 DP 开局逐条按影子的比例落地（例 Chicago：77/189/280/378/476/560/630 拍，延迟 14–20 拍）。0–600 拍落地 91 条，延迟 P50 13、P90 31；≥90 拍的 5 条全在 AltF4、Chosokabe。",
+    "t=600 我方号地中位 2,191，其余在场真人 2,409（0.91 倍）；t=630 实际地 ÷ 名下份额：编队 0.38（每号中位 0.44），其余真人中位 0.36。",
+    "AltF4：[HL-OPENING] 在 60/135/200/300/400 拍做了 5 次开局决策，日志里 cmds=1→5、地一直 12 格、兵停在 1,753–1,793（12 格的封顶）；录像里它 −20 拍之后的第一条指令是 420 拍同拍执行的 3 条（pct 422/489/483，把 1,800 打掉 85%）。t=600 510 格（89 人里第 83）。Chosokabe：50/135 拍的决策 210/238 拍才落地，t=600 1,325 格（第 74）。",
+    "叠点的号开局只有半块地：BlackRock t=600 1,144 格（第 77）、Frieren 1,353 格（第 73）。"
+   ],
+   "problems": [
+    "AltF4、Chosokabe 的上行在选点期末尾断了（−20、−18 拍以后不落地），一直断到 420、210 拍。策略这头只看本地受理（cmds 加一），不知道指令没到；开局每一步都按「上一步已经生效」来算，实际一步没走。"
+   ]
+  },
+  "midgame_630_3500": {
+   "facts": [
+    "延迟（落地拍 − 影子决策拍）按 300 拍的中位：600 起 72、186、348、476、286、142，2400 拍起回到 10。13 个号都慢（600–1500 拍各号中位比基线多 83–459 拍）。同一时段策略自己每拍只花 1.09 毫秒（最大单拍 27.6 毫秒、skip=0）。",
+    "600–1500 拍影子想发 325 条：照原目标打出 94 条（29%）；到达时目标已死 124 条（94 条作废、30 条改打中立）；7 条不接壤作废；100 条始终没落地（31%）。落地的 195 条里 114 条（58%）是同号同拍 ≥3 条的批，共 21 批，其中 5 批整批作废、6 批一拍打掉存兵一半以上。",
+    "c110 对同一个非中立目标有 15 拍发送冷却（Strategy.send L529-533），冷却期内 pickTarget 仍选中它、send 返回 false、General.act 在 L833 直接 return：600–1500 拍 1,782 个决策拍里 440 个（24.7%）这样空过。冷却 15 拍对 184 拍的延迟不够长：陆攻决策里 183/303（60%）下在上一条同目标指令还没落地的时候。",
+    "isNoFullSend 误置位：本局不是限额局（引擎 noFullSend=0，重放 370 行逐条相等），12 个号在 561–2056 拍被置位（9 个在 1000 拍前），之后不再复位；全程 Policy.send 因它拒发 35 次。对照影子（每拍把标志清回去）全程只多 1 条决策（569 对 568），本局它对出手几乎没有影响。",
+    "到 1500 拍：我方号地中位 4,996，其余真人 7,799；实际地 ÷ 名下份额 0.76 对 1.03。600 拍时贴着我方号、可以打的 28 个机器人（10,021 格）到 1500 拍 72.3% 归了我方；全图机器人地 175,781 格里我方到 1800 拍拿到 8.2%（每号 1,103 格），其余各队真人每人 916–2,829 格。名下份额内还有 14.2% 的机器人地是同队机器人，打不了。",
+    "6 个客户端掉线：日志最后一条 [HL-TICK] 停在本地 810（Afsharid、Frieren）、900（Khiva）、990（Chicago）、1080（TaxCollector、Angkor）拍，录像里的 leave 指令在 1330、1330、1603、1694、1603、1624 拍。离场时合计 24,867 格、1.11M 兵，之后由引擎 AI 接手（每 80 拍随机打一个邻居）。",
+    "空壳打在线的兄弟：离场后的空壳对在线的 Mansa Musa、BlackRock、Enderman、Bowser 陆攻 293k 兵、拿走 3,242 格、打掉 148k 存兵（TaxCollector → Mansa Musa 146k/2,166 格；Angkor → BlackRock 136k/856 格）；算上空壳之间互打（Frieren ↔ Khiva）是 324k 兵 / 6,184 格 / 217k。在线的号对空壳 0 条陆攻指令。6 个空壳的地最后 28,379 格归了外人（UZBEKISTAN 4,991、Skandan 4,458、Playa 3,540、Player 914 3,292 …），其中兵数对得上的几家每格花 43–147 兵。",
+    "Enderman 1500–2100 拍边界上只有离场敌人的空壳（45–48 格，同格出生的 Frieren）和队友（我方号 123–125 格、路人 38 格），没有可打的邻居，1708–1925 拍 8 条船 330k（含手续费 38k），目的地是机器人#439 的地；2070 拍登陆时那块地已被 Mansa Musa 吃下（45.6k 兵，拿 1,020 格，打掉对方 21.7k）。Angkor 被围住后 755–880 拍 6 条出船决策（当时目的地是中立）910–1057 拍才执行，后 4 条执行时目的地已是 16 格外的 BlackRock 的地，登陆 11.8k 兵、拿 311 格。",
+    "Bowser 被围住后 1160–1525 拍 9 次出船决策（目的地当时是中立或机器人）；1575 拍 4 条同拍执行（配上的 2 条晚 355–410 拍），送走存兵的 69%（120k），执行时目的地已是 T5 的 jfabri03、No attack me pls 的地，1587–1610 拍登陆 100k。这两家此前没有打过 Bowser；1603 拍起它们和同队的 Bruh Union 8 条 296k 打回来，Bowser 1920–1930 拍之间地掉到峰值的 1/4、被引擎清零。",
+    "1500–3000 拍：落地 97 条，延迟 P50 388、P90 514；影子想发 90 条，落地 39 条。Bowser 1575、1827 拍两批迟到的船（4 条、5 条）各送走存兵的 69%、81%；BlackRock 1500–1799 拍 3 条打 Player 802 的决策（180k）被同拍的中立补兵挤掉。"
+   ],
+   "problems": [
+    "600–1500 拍决策拍的去向（1,782 个，客户端跑到的拍）：有效 5.3%；发了但迟到/没落地 13.0%；冷却空过 24.7% + 配额闸拒发 1.0%；在途已够、等结果 9.0%；留底锁 27.9%；只剩中立边 5.9%；没有可打的邻居 13.2%。",
+    "留底有一半是按相邻我方号的存兵定的：留底 ≥ 一半存兵的 256 个决策拍里，定值的是我方号 126 个（Khiva 44、Enderman 41、Mansa Musa 32、Frieren 9——叠点的三个号互相当威胁，Mansa Musa 旁边是握着 248k–310k 的 TaxCollector）、敌方真人 105 个（Chosokabe 81）、路人队友 25 个。",
+    "认兄弟只看名字：isOurSquadBot 不看对方是不是已经离场，空壳照样受保护（analyze L440 不把它算作邻居），空壳自己却是引擎 AI，照打不误。",
+    "同一目标的重复下单、整批同拍到达、目标已死改打中立，都是延迟的后果；策略发出的指令只带比例和目标编号，落地时按当时的存兵和局面执行。"
+   ]
+  },
+  "endgame_3500_plus": {
+   "facts": [
+    "3500 拍以后在线的 4 个号分在 4 个队（Enderman T8、Mansa Musa T7、BlackRock T2、Cleopatra T5），互相不能捐兵（捐兵要求同队，L4436/L4467）；跨队唯一的配合是 10% 的「救援戳」（L4448-4450）。延迟在基线（P50 11、最大 23）。",
+    "四个号一路攒兵：编队密度 71@3600 → 100@4200 → 130@4800。Enderman 2700–4800 拍的地停在 6,646–6,667 格，1500–5326 拍对真人 0 条陆攻；buyLand 在 3000–5530 拍调用 506 次全部空手返回，途中 322 次碰到留底（L5361 avail ≤ 0）、154 次碰到价格门（L5267）、100 次碰到拥挤封顶（L5281）；tryDonateToTeammate 有 305 次过了前面的门槛、找不到同队的号（L4487）。4600–4760 拍存兵恒为 996,900（150 × 6,646 格）。",
+    "9 条救援戳（[HL-ASSIST]，每条存兵的 10%）：BlackRock 3374–3640 拍 4 条 404k 打 Player 914（22.5k 格/1.66M，自己 8,950 格/1.04M），被救的 Angkor 1625 拍起就是空壳；Mansa Musa 4823 拍 200k 打 Full send（25.2k 格/3.02M）；Enderman 5327 拍 80k 打 Full send、5348–5404 拍 3 条 198k 打 Skandan（30.8k 格/3.3M，自己 5.5k 格/712k）。",
+    "被戳的人随后的动作：Player 914 此前没有打过 BlackRock，3780 拍起 8 条 3.62M；Full send 此前没打过 Mansa Musa，5313 拍起 6 条 3.27M；Skandan 此前只在 2597 拍打过 Enderman 18k，5404–5502 拍 3 条 1.41M，Enderman 5530 拍阵亡。Full send 在被戳之前已经两次打过 Enderman（4242 拍 204k、4802 拍 596k）。",
+    "BlackRock 5215–5831 拍 8 条船 1.70M 打机器人#168 的岛，另付手续费 332k（每条船收存兵的 3.1%），登陆 875k、拿到 647 格；5824 拍 490k 打 Suuiiiii（50.2k 格/3.95M）。5929 拍 Suuiiiii 950k 打来时它在家的兵 789k。",
+    "敌人吃这几个号的代价：Skandan → Enderman 310 兵/格，Full send → Mansa Musa 434，Player 887 → Mansa Musa 389，Player 914 → BlackRock 345。我方出手：Mansa Musa → UZBEKISTAN 29 兵/格（5,504 格），BlackRock → sora_w 99（2,392 格）、→ Player 802 137（1,664 格）。",
+    "Cleopatra：1946–2100 拍 4 条 173k 打 Kingdom of Kent，之后陆地被 United Kingdom（13 条 895k，其中 10 条船）和 fegrze（551k）从 2398 拍起蚕食，丢地时握着 282k–388k（密度 68–124）；3650–3660 拍之间地掉到峰值的 1/4 以下，引擎清空剩下的 1,022 格和约 66k 存兵（海上有 2 条船，所以没有除名），之后靠船在小岛上活到 5983 拍。",
+    "除名规则（重放引擎 aliveTick/collapse）：地 ≤ 峰值的 1/4 就除名，剩下的存兵作废；海上有船的只清空地和存兵。13 个号除名前最后一个采样的存兵合计 567k（Mansa Musa 246k、BlackRock 143k、Enderman 78k、Chicago 的空壳 55k）。"
+   ],
+   "problems": [
+    "四个号各在一个队里单打独斗，邻居是 2.5–5 倍大的真人；留底按邻居的存兵算，自己的兵再多也「不够留」，兵攒到封顶。",
+    "救援戳不看对方多大、也不看被救的是不是空壳：10% 的兵打不动 3M 的对手，却给自己开了一条新战线。"
+   ]
+  }
+ },
+ "turningPoints": [
+  {
+   "id": "TP1",
+   "t0": -51,
+   "t1": 0,
+   "shareBefore": 0.0,
+   "shareAfter": 7.4,
+   "shareOf": "T8（after 取 t=600；8 队第 3）",
+   "rankBefore": null,
+   "rankAfter": 3,
+   "squadShareBefore": 0.0,
+   "squadShareAfter": 3.8,
+   "what": "匹配把 13 个客户端分进 6 个队；选点期没有后端协调，各号按序号在各自的候选表里取点，坐标换了 5–24 次，结束时 4 对出生点相距不到 145 格（一对同格），名下陆地只有人均的 0.78。",
+   "evidence": [
+    "match_truth.mjs B010：13 个号的队 T8×5、T7×4、T2/T5/T6/T3 各 1；95 名真人 8 队；AI 机器人 417 个也在队里（land_account.mjs 的 botTeams）。",
+    "in_game.log：[HL-SPAWN] 186 行、[HL-SPAWN-BACKEND] 0 行、求解日志 0 行；VERSION-TIMELINE.md 第 20 行（11-10 14:08 才启用无 Boss 的后端选点）。",
+    "spawn_exec.py B010 --hops：每号坐标 5–24 个（中位 13），相邻跳距中位 647 格、≥300 格的 139/173；38 个坐标被 ≥2 个号选过；出生点 <145 格的 4 对（Enderman–Frieren 0、Angkor–BlackRock 16、Enderman–Khiva 27、Frieren–Khiva 27）。",
+    "spawn_exec.py B010 --seq / delay_account.py：12 个号停在旧坐标（10 个是倒数第 2 个，AltF4 倒数第 13、Chosokabe 倒数第 9、Mansa Musa 倒数第 3），1 个号最终坐标落地；每号序列开头 1–2 个坐标没落地。",
+    "land_account.mjs B010：我方名下 74,474 格 = 11.2%，人数 14.4% → 0.78；每号中位 5,067 对其余真人 6,782；Frieren 1,822、AltF4 2,377、Chosokabe 3,274。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "−51…−1",
+     "bot": "全部 13 个号",
+     "what": "自治选点：把已出生的兄弟从图上抹掉（withoutPlayer），自己算候选表（至少隔 2.2 秒重算），取第 slot 个隔开 minSep=145 的点；候选不够时放宽到 0.62 倍，再不够用最远点补位。各号的表互不相通。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.chooseSpawn L4007-4153（slot L4019；抹兄弟 L4066-4072；重算节流 L4074-4085；取点 L4090-4117；最远点补位 L4118-4144；日志 L4147-4150）"
+    },
+    {
+     "t": "−51…−1",
+     "bot": "全部 13 个号",
+     "what": "后端协调分支在本局的版本里要求场上有 Boss 才进（数据包里的源码已是之后放开的版本，L4023 `if (true)`）；本局没有 Boss，所以没有任何一处让各号拿到同一份分配。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.chooseSpawn L4021-4063（后端分支）；src/strategy/VERSION-TIMELINE.md 第 20 行"
+    }
+   ],
+   "statementType": "observed",
+   "note": "队伍分配是匹配结果，不是策略能决定的。坐标序列、落地拍、间距、名下陆地都是量出来的。「最后一次换点没赶上」是从「落地的是倒数第 2 个坐标、最后一条指令在 −4…−1 拍」读出来的。"
+  },
+  {
+   "id": "TP2",
+   "t0": 600,
+   "t1": 1500,
+   "shareBefore": 7.4,
+   "shareAfter": 10.9,
+   "shareOf": "T8（8 队第 3 → 第 6；峰值 12.2%@1200）",
+   "rankBefore": 3,
+   "rankAfter": 6,
+   "squadShareBefore": 3.8,
+   "squadShareAfter": 8.5,
+   "what": "机器人地被分完的 900 拍里，13 个客户端一起落后服务器：指令延迟中位 184 拍（P90 421），325 条决策只有 29% 照原目标打出。t=630 时每号的地 ÷ 名下份额还和别人一样（0.38 对 0.36），到 1500 拍是 0.76 对 1.03，地中位 4,996 对 7,799。",
+   "evidence": [
+    "delay_account.py B010：600–1500 拍落地 195 条，延迟 P50 184 / P90 421 / 最大 547；按 300 拍中位 72、186、348；各号比基线多 83–459 拍。0–600 拍 P50 13。",
+    "delay_account.py 漏斗：想发 325 → 照原目标 94（29%）、目标已死 124（作废 94、改打中立 30）、不接壤作废 7、始终没落地 100（31%）。打机器人的 145 条落地指令里 79 条到达时目标已死（延迟中位 269 拍）。",
+    "delay_account.py --list-batches：21 批 114 条（落地指令的 58%），5 批整批作废，6 批一拍打掉 ≥50% 存兵（263k 里打出 193k）；29 个全配上的批名义 1.14M → 实际 841k。",
+    "tick_attrib.py B010 --exits（1,782 个决策拍）：有效 94；迟到/没落地 231；冷却空过 440（Policy.send L3934 → Strategy.send L531）；配额闸拒发 17（L3871）；在途已够 161（pickTarget L1199/L1200）；留底 498（pickTarget L1197）；只剩中立边 106；没有可打的邻居 235。",
+    "land_account.mjs：t=630 编队 0.38、其余真人中位 0.36；t=1500 编队 0.76、其余 1.03（T2 1.10、T5 1.00、T3 1.00）。全图机器人地到 1800 拍我方每号 1,103 格，T5/T3/T6 的真人每人 2,829/2,574/2,015 格。",
+    "perf_fields.py B010：600–1500 拍 92 行 [HL-TICK]，avgMs 中位 1.09、最大 1.52，maxMs 最大 27.6，skip 全 0。result_clock.py B010：Chosokabe 上报阵亡时本地 1792 拍，按墙上时间推算服务器已到 2081 拍（落后 289 拍 = 16.2 秒）。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "600–1500",
+     "bot": "全部 13 个号",
+     "what": "1500 拍前走通用出手路径：每 5 拍一次决策，pickTarget 选分数最好的邻居。同一目标 15 拍内不重发（冷却），但 pickTarget 不知道冷却，仍选它；send 返回 false 后 General.act 直接 return，这一拍不再看别的目标、也不出船。",
+     "codePath": "src/strategy/v27-team-c110.js: General.act L804-846（L830-833 选中即 send 并 return）；Style.pickTarget L1180-1213；Strategy.send L526-539（冷却 L529-533）；Policy.send L3848-3935"
+    },
+    {
+     "t": "600–1500",
+     "bot": "全部 13 个号",
+     "what": "「这个机器人我已经在打」只看本地局面里有没有在途进攻（L1199 need ≤ 0、L1200）；指令没落地时本地看不到，冷却一过就对同一目标再下一条。",
+     "codePath": "src/strategy/v27-team-c110.js: Style.pickTarget L1198-1200；Strategy.send L529-533"
+    },
+    {
+     "t": "561–2056",
+     "bot": "除 Enderman 外的 12 个号",
+     "what": "出手后 1–7 拍内存兵变少就按「这一条被限额」处理：isNoFullSend 置位、影子配额清零。基线延迟 13 拍，这个窗口里看到的扣款只能是更早的指令落地。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.updateShadowQuota L3810-3845（L3831-3844）；Policy.send L3854-3872、L3886"
+    }
+   ],
+   "statementType": "observed",
+   "note": "延迟、漏斗、批、份额都是逐条对账量出来的（影子 568 条对客户端自报 517 条，影子偏多约 10%，「想发」是上界）。客户端为什么落后看不到：策略每拍 1 毫秒说明不是策略算得慢；慢在哪一层（页面追帧、外层程序、网络）日志里没有。"
+  },
+  {
+   "id": "TP3",
+   "t0": 1330,
+   "t1": 2600,
+   "shareBefore": 10.9,
+   "shareAfter": 8.5,
+   "shareOf": "T8（before 取 t=1500，after 取 t=2700）",
+   "rankBefore": 6,
+   "rankAfter": 6,
+   "squadShareBefore": 8.5,
+   "squadShareAfter": 6.0,
+   "what": "6 个客户端在延迟最大的时候掉线（日志停在本地 810–1080 拍，leave 在 1330–1694 拍），空壳由引擎 AI 接手。认兄弟只看名字：在线的号不打空壳，空壳照打在线的号（293k 兵、3,242 格；算上空壳互打 324k、6,184 格），空壳的 28,379 格最后归了外人。同一段里 Chosokabe、Bowser、AltF4 阵亡，在线的号从 13 个变成 4 个。",
+   "evidence": [
+    "B010_facts.py --sec C：日志最后一条 [HL-TICK] Afsharid 810、Frieren 810、Khiva 900、Chicago 990、TaxCollector 1080、Angkor 1080；leave 指令 1330、1330、1603、1694、1603、1624 拍；离场时合计 24,867 格/1.11M。",
+    "delay_account.py：这 6 个号最后一条落地指令的延迟 126–347 拍（Chicago 1060→1407，Angkor 1115→1414，Khiva 980→1225，Afsharid 735→938，Frieren 700→903，TaxCollector 1155→1281）；Afsharid 本地 750–890 拍的 13 条、Khiva 850–965 拍的 11 条决策始终没落地。影子在它们没跑到的拍上还有 144 条决策，不计入漏斗。",
+    "squad_cross.py B010：空壳（已离场）→ 我方号 324,102 兵 / 6,184 格 / 打掉 216,616，其中打在线的四个号 292,648 / 3,242 / 147,919；离场当窗 15,997 / 225 / 15,212。TaxCollector → Mansa Musa 145,673 兵 2,166 格；Angkor → BlackRock 136,366 兵 856 格。反方向的陆攻指令 0 条。",
+    "game_facts.py §13 / B010_facts.py 成对账：空壳的地归 UZBEKISTAN 4,991（308k）、Skandan 4,458（191k）、Playa 3,540、Player 914 3,292（485k）、No attack me pls 2,490、Prime 2,190（136k）、Player 484 1,922、Vanpedro 1,831（179k）、Player 752 1,526、777[RU] 1,073、me 950 … 合计 28,379 格。",
+    "game_facts.py §16：Enderman t=1500–2100 敌邻 0、离场敌邻 45–48、队友邻 123–125+38；1708–1925 拍 8 条船 330k（drop30：1800–1890 −82%）。",
+    "review_skel.py 时间线：在线的号 13@1200 → 11@1500 → 6@1800 → 4@2400；编队地 8.5%@1500、8.9%@1800–2100、6.0%@2700。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "1330–3700",
+     "bot": "BlackRock、Mansa Musa、Enderman、Bowser",
+     "what": "名字在名单里（或带 [NPL]/[NOPE]）就算兄弟；场上还有 ≥80 格的外人时，跨队的兄弟也受保护。判断里没有「对方是否已离场」这一项，受保护的兄弟不进邻居表，pickTarget、offers、出船选点都看不到它。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.isOurSquadBot L3973-3976；hasWildOutsidersAlive L3978-3989；isProtectedSquadMate L3993-3996；Strategy.analyze L432-446（L440）；General.pickTarget L1104；V13 出船选点 L1953；src/sim/sim/game.js: leave L229-233、isBot L215"
+    },
+    {
+     "t": "755–1925",
+     "bot": "Angkor、Enderman、Bowser",
+     "what": "出船只在决策那一刻避开兄弟的地；船在路上（加上 116–237 拍的延迟）目的地换了主人，登陆就是一次进攻：Angkor → BlackRock 311 格，Enderman → Mansa Musa 1,020 格，Bowser → Afsharid（空壳）172 格。",
+     "codePath": "src/strategy/v27-team-c110.js: General.act L839-845（围住或兵过封顶时出船）；V13.boatFood L2038-2057；V13.boatOut L2362；General.boatOut L1037-1050；Policy.boatFood L5536-5538"
+    }
+   ],
+   "statementType": "inferred",
+   "note": "掉线本身是外因：日志里没有掉线原因，6 个号没有结果行。「延迟最大的时候掉线」是把日志停止的本地拍、最后几条指令的延迟和 leave 拍对在一起读出来的。空壳攻防的兵数、格数是重放量的。「在线的号本来能吃下空壳」是推断：BlackRock 2400–3300 拍握 340k–982k，隔壁 Angkor 的空壳 6,176–6,569 格只有 66k–106k 兵；TaxCollector 的空壳 1700–2400 拍握 295k–214k，比隔壁的 Mansa Musa（241k–183k）多，2700 拍才是 130k 对 256k。"
+  },
+  {
+   "id": "TP4",
+   "t0": 3300,
+   "t1": 6128,
+   "shareBefore": 5.1,
+   "shareAfter": 0.0,
+   "shareOf": "编队在线的 4 个号合计（before 取 t=3300；T8 同期 8.8% → 6.1%@6120）",
+   "rankBefore": 7,
+   "rankAfter": 6,
+   "squadShareBefore": 5.1,
+   "squadShareAfter": 0.0,
+   "what": "剩下的 4 个号分在 4 个队，延迟已经正常。各自攒到密度 130–148（Enderman 攒到封顶），对 2.5–5 倍大的邻居只发过 9 条 10% 的救援戳和几条船；5404–6123 拍被 Skandan、Full send、Player 887、Player 914、Suuiiiii 逐个推平（名次 40、31、29、28）。",
+   "evidence": [
+    "game_facts.py §16：Enderman 2700–4800 拍地 6,646–6,667 格、敌邻 213–250 格、对真人出兵 0；密度 29 → 148。Mansa Musa 14,080 格/1.98M@4800（密度 140），BlackRock 10,354 格/1.47M@5400（密度 142）。",
+    "shadow.mjs B010 --mids buyLand,tryDonateToTeammate --win 1500：Enderman 3000–5999 拍 buyLand 506 次全部从 L5533 出来，途中 L5361×322、L5267×154、L5281×100；tryDonateToTeammate L4487×305。Mansa Musa 1500–4499 拍 L5367×385（打机器人的预算不够一口吃下）。",
+    "B010_facts.py --sec A：9 条 [HL-ASSIST] 逐条对上录像（BlackRock 3374/3402/3521/3640；Mansa Musa 4823；Enderman 5327/5348/5376/5404），被戳的人当时 22.5k–30.8k 格、1.66M–3.3M；其后 600 拍内的回推 251k、620k、1.41M。",
+    "B010_facts.py --sec B / 成对账：Skandan → Enderman 1.43M/4,621 格；Full send → Mansa Musa 3.27M/7,545 格；Player 887 → Mansa Musa 1.99M/5,119 格；Player 914 → BlackRock 3.62M/10,478 格；Suuiiiii → BlackRock 1.85M/4,855 格。",
+    "重放事件：BlackRock 5215–5831 拍 8 条船 1.70M + 手续费 331,874，登陆 5 次 875k，从机器人#168 拿 647 格；Enderman 4600–4760 拍存兵恒为 996,900。",
+    "delay_account.py：3000 拍以后落地 63 条，延迟 P50 11、最大 23。"
+   ],
+   "priorDecisions": [
+    {
+     "t": "3000–5530",
+     "bot": "Enderman、Mansa Musa、BlackRock、Cleopatra",
+     "what": "1500 拍以后 buyLand 给每个邻居算留底：keep 不低于 safe（按邻居里能打过来的兵算），avail = 存兵 − 手续费 − keep ≤ 0 就跳过；价格高于自己估值且密度没过 100 时整轮不买；人多的邻居有拥挤封顶。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5533（价格门 L5267；唯一缓冲 L5269-5272；拥挤封顶 L5279-5281；留底 L5358-5361；机器人预算 L5363-5368；L5526-5531）；Policy.safeAt L4524-4560"
+    },
+    {
+     "t": "3000–6000",
+     "bot": "Enderman、BlackRock、Mansa Musa",
+     "what": "捐兵只给同队的 Boss 或同队的兄弟；没有这样的人就返回。跨队的兄弟被真人打（来袭 ≥ 它存兵的 8% 或它密度 <75）时，只要自己贴着进攻方、密度 ≥65，就发一条 102/1024 的进攻，不比较双方大小，也不看被救的号是否在线。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.tryDonateToTeammate L4369-4498（救援 L4420-4459：选人 L4424、捐兵 L4436-4445、戳 L4448-4457；找不到受赠人 L4465-4487）"
+    },
+    {
+     "t": "5215–5831",
+     "bot": "BlackRock",
+     "what": "兵过了 idleCap（1.25 × 封顶）或没有可买的地时，每 60 拍出一条船去水对面的机器人地；每条船收存兵的 32/1024 手续费。",
+     "codePath": "src/strategy/v27-team-c110.js: Policy.idleBoats L4979-5006；Policy.boatFood L5536-5565；V13.boatFood L2038-2057；V13.boatOut L2362；General.boatOut L1037-1050"
+    }
+   ],
+   "statementType": "inferred",
+   "note": "兵力、出手、回推的时间先后是量出来的。「戳招来了回推」是推断：三次都是先戳后被打，但 Full send 在被戳前已经打过 Enderman 两次，8 队混战里 2.5–5 倍大的邻居迟早会打过来；没有做反事实重放。"
+  }
+ ],
+ "deaths": [
+  {
+   "bot": "Chosokabe",
+   "pid": 61,
+   "leftT": null,
+   "diedT": 1558,
+   "lastCmdT": 1435,
+   "lastLogT": 1530,
+   "terrAtLeave": null,
+   "balAtLeave": null,
+   "peakTerr": 2201,
+   "peakT": 776,
+   "logOrderLagMax": 360,
+   "logOrderLagMaxAtT": 1440,
+   "tickLinesLagGE90": "10/17",
+   "takers": [
+    {
+     "who": "Player 123(#36,T5)",
+     "tiles": 1023,
+     "sent": 83853
+    },
+    {
+     "who": "Bruh Union(#20,T5)",
+     "tiles": 492,
+     "sent": 35452
+    },
+    {
+     "who": "机器人#97",
+     "tiles": 447,
+     "sent": 2251
+    }
+   ],
+   "cause": "名下 3,274 格，开局指令 210 拍才落地，峰值 2,201 格@776；600–1500 拍 85.6% 的决策拍被留底锁住、落地的指令比基线晚 459 拍。1267 拍一批迟到 427–547 拍的 7 条指令打掉存兵的 80%，1288 拍只剩 7.6k。Player 123（T5，7.3k–8.1k 格）1211–1526 拍 4 条 82k 拿走 1,023 格，Bruh Union 另拿 492 格；1558 拍地掉到峰值的 1/4 以下被除名（当时 438 格/8k 兵）。",
+   "chain": [
+    "出生 (306,386)，−18 拍以后的出生发送和 50/135 拍的开局指令都没按时落地",
+    "t=600 1,325 格（第 74），t=900 2,081 格",
+    "600–1500 拍 180 个决策拍：留底 154（定值的多是敌方真人）、有效 5",
+    "1211 拍 Player 123 19k；1267 拍自己的迟到批 7 条打出 29k（存兵 37k）；1288/1379/1526 拍 Player 123 再 18k/19k/26k",
+    "1558 拍阵亡（上报时本地 1792 拍，服务器约 2081 拍）"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "Bowser",
+   "pid": 64,
+   "leftT": null,
+   "diedT": 2251,
+   "lastCmdT": 1869,
+   "lastLogT": 2250,
+   "terrAtLeave": null,
+   "balAtLeave": null,
+   "peakTerr": 5950,
+   "peakT": 1663,
+   "logOrderLagMax": 0,
+   "logOrderLagMaxAtT": 0,
+   "tickLinesLagGE90": "0/22",
+   "takers": [
+    {
+     "who": "Bruh Union(#20,T5)",
+     "tiles": 3286,
+     "sent": 85823
+    },
+    {
+     "who": "No attack me pls(#45,T5)",
+     "tiles": 1330,
+     "sent": 142522
+    },
+    {
+     "who": "jfabri03(#38,T5)",
+     "tiles": 355,
+     "sent": 204877
+    }
+   ],
+   "cause": "600–1500 拍 40% 的决策拍没有可打的邻居，1160 拍起改出船。1575 拍 4 条迟到的船（配上的 2 条决策在本地 1165、1220 拍，晚 410、355 拍；决策时目的地无主）一拍送走 120k（存兵的 69%），执行时目的地已是 T5 的 jfabri03、No attack me pls 的地，1587–1610 拍登陆 100k。这两家此前没有打过它；1603 拍起它们和 Bruh Union 8 条 296k（3 条是船）打回来，1827 拍它又 5 条船 47k（81%）；三家拿走 4,971 格（Bruh Union 3,286、No attack me pls 1,330、jfabri03 355），1920–1930 拍之间地掉到峰值的 1/4（1,481 格），引擎清空剩下的地和存兵，靠在途的 6 条船拖到 2251 拍。",
+   "chain": [
+    "出生 (474,159)，名下 9,236 格；t=1500 5,589 格（份额的 0.61）",
+    "600–1500 拍 40% 的决策拍没有可打的邻居（只贴敌方真人 40、围住 32）",
+    "1160–1525 拍 9 次出船决策；1575 拍 4 条同拍执行，登陆 jfabri03 43k、No attack me pls 57k",
+    "1603 拍 jfabri03 第一条 30k（当时 5,608 格/64k），1631 拍 68k，1659 拍 No attack me pls 32k，1729 拍 Bruh Union 的船 49k",
+    "1827 拍 5 条船 47k，一条登陆 Afsharid 的空壳（172 格）",
+    "1920–1930 拍之间地 ≤ 峰值的 1/4（1,481 格/3k 兵），引擎清空剩下的地；海上有 6 条船所以没有除名，2251 拍阵亡"
+   ],
+   "statementType": "inferred"
+  },
+  {
+   "bot": "AltF4",
+   "pid": 59,
+   "leftT": null,
+   "diedT": 2290,
+   "lastCmdT": 2163,
+   "lastLogT": 2250,
+   "terrAtLeave": null,
+   "balAtLeave": null,
+   "peakTerr": 2944,
+   "peakT": 1054,
+   "logOrderLagMax": 180,
+   "logOrderLagMaxAtT": 90,
+   "tickLinesLagGE90": "3/23",
+   "takers": [
+    {
+     "who": "Player 802(#15,T1)",
+     "tiles": 2870,
+     "sent": 71846
+    },
+    {
+     "who": "Player 914(#55,T3)",
+     "tiles": 821,
+     "sent": 35112
+    },
+    {
+     "who": "机器人#491",
+     "tiles": 62,
+     "sent": 580
+    }
+   ],
+   "cause": "选点期末尾到 420 拍上行不通，开局晚了 360 拍，t=600 只有 510 格；峰值 2,944 格@1054。Player 802（T1）980–1911 拍 6 条 72k 拿走 2,870 格，Player 914 拿走 821 格。",
+   "chain": [
+    "出生 (1170,562)，名下 2,377 格（全队第二小）",
+    "60–400 拍 5 次开局决策，420 拍才落地 3 条（同拍，打掉 85%）",
+    "600–1500 拍留底 47.8%、延迟比基线多 286 拍；1500–3000 拍多 451 拍",
+    "980 拍起被 Player 802 蚕食，2290 拍阵亡"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "Frieren",
+   "pid": 60,
+   "leftT": 1331,
+   "diedT": 2260,
+   "lastCmdT": 903,
+   "lastLogT": 810,
+   "terrAtLeave": 1823,
+   "balAtLeave": 147568,
+   "peakTerr": 2516,
+   "peakT": 2110,
+   "logOrderLagMax": 90,
+   "logOrderLagMaxAtT": 810,
+   "tickLinesLagGE90": "1/8",
+   "takers": [
+    {
+     "who": "Khiva",
+     "tiles": 2209,
+     "sent": 18659
+    },
+    {
+     "who": "机器人#423",
+     "tiles": 14,
+     "sent": 692
+    }
+   ],
+   "cause": "和 Enderman 出生在同一格、Khiva 在 27 格外，名下 1,822 格，900 拍起地停在 1,823 格。客户端日志停在本地 810 拍，1331 拍离场；空壳（148k 兵）被引擎 AI 拿去打 Khiva、Enderman，地被 Khiva 的空壳拿走 2,209 格。",
+   "chain": [
+    "出生指令 (1138,1058) −4 拍落地；Enderman 的指令 −1 拍落在同一个坐标",
+    "600–1500 拍 60 个决策拍里 30 个被围住",
+    "1331 拍 leave（离场时 1,823 格/148k）",
+    "空壳 1300–2199 拍打 Khiva 18k、Enderman 3k；2260 拍除名"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "Afsharid",
+   "pid": 71,
+   "leftT": 1331,
+   "diedT": 2459,
+   "lastCmdT": 938,
+   "lastLogT": 810,
+   "terrAtLeave": 5735,
+   "balAtLeave": 140289,
+   "peakTerr": 7916,
+   "peakT": 2205,
+   "logOrderLagMax": 90,
+   "logOrderLagMaxAtT": 810,
+   "tickLinesLagGE90": "1/8",
+   "takers": [
+    {
+     "who": "Playa(#56,T7)",
+     "tiles": 3540,
+     "sent": 157846
+    },
+    {
+     "who": "No attack me pls(#45,T5)",
+     "tiles": 2490,
+     "sent": 158957
+    },
+    {
+     "who": "机器人#212",
+     "tiles": 433,
+     "sent": 8021
+    }
+   ],
+   "cause": "名下最大的一块（12,760 格），t=1500 6,412 格只是份额的 0.50。客户端日志停在本地 810 拍，1331 拍离场（5,735 格/140k）；空壳长到 7,916 格@2205，被 Playa（T7）3,540 格、No attack me pls（T5）2,490 格吃掉。它所在的 T3 最后赢了。",
+   "chain": [
+    "出生 (298,98) 西北角",
+    "600–1500 拍落地 7 条，延迟中位 101、最大 252 拍；本地 750–890 拍的 13 条决策没有落地",
+    "1331 拍 leave",
+    "2205 拍起被两家吃掉，2459 拍除名"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "Khiva",
+   "pid": 94,
+   "leftT": 1604,
+   "diedT": 2583,
+   "lastCmdT": 1225,
+   "lastLogT": 900,
+   "terrAtLeave": 2729,
+   "balAtLeave": 220871,
+   "peakTerr": 6475,
+   "peakT": 2290,
+   "logOrderLagMax": 180,
+   "logOrderLagMaxAtT": 900,
+   "tickLinesLagGE90": "2/10",
+   "takers": [
+    {
+     "who": "[IND] Skandan(#40,T2)",
+     "tiles": 4458,
+     "sent": 190596
+    },
+    {
+     "who": "[OG] Prime(#9,T2)",
+     "tiles": 2190,
+     "sent": 135787
+    },
+    {
+     "who": "Frieren",
+     "tiles": 911,
+     "sent": 18125
+    }
+   ],
+   "cause": "出生在 Enderman、Frieren 旁边 27 格，t=1500 2,784 格（份额的 0.50），600–1500 拍留底 56.4%。客户端日志停在本地 900 拍，1604 拍离场（2,729 格/221k）；空壳吃了 Frieren 的 2,209 格后被 Skandan（191k）、Prime（136k）拿走 6,648 格。",
+   "chain": [
+    "出生 (1150,1035)，唯一最终坐标落地的号（只换过 5 次）",
+    "750→1176、980→1225 拍：最后几条落地指令延迟 245–426 拍；本地 850–965 拍的 11 条决策没有落地",
+    "1604 拍 leave；Frieren 的空壳打掉它 70k 兵",
+    "2121 拍起被 T2 两家吃掉，2583 拍除名"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "Chicago",
+   "pid": 69,
+   "leftT": 1695,
+   "diedT": 2542,
+   "lastCmdT": 1428,
+   "lastLogT": 990,
+   "terrAtLeave": 5555,
+   "balAtLeave": 177083,
+   "peakTerr": 7143,
+   "peakT": 2359,
+   "logOrderLagMax": 0,
+   "logOrderLagMaxAtT": 0,
+   "tickLinesLagGE90": "0/9",
+   "takers": [
+    {
+     "who": "Player 484(#39,T2)",
+     "tiles": 1922,
+     "sent": 167657
+    },
+    {
+     "who": "Player 752(#17,T3)",
+     "tiles": 1526,
+     "sent": 84608
+    },
+    {
+     "who": "777[RU](#5,T3)",
+     "tiles": 1073,
+     "sent": 93142
+    }
+   ],
+   "cause": "600–1500 拍有效决策拍 13.5%（全队最高），t=1500 5,555 格（份额的 1.17）。客户端日志停在本地 990 拍，1695 拍离场（5,555 格/177k）；空壳被 Player 484、Player 752、777[RU]、me 四家分掉 5,471 格。",
+   "chain": [
+    "出生 (938,162)，离 russian empire 75 格",
+    "896×4、1092×6、1407×7 三批迟到指令（最后一批延迟 347–427 拍，打掉存兵的 73%）",
+    "1695 拍 leave",
+    "2359 拍空壳峰值 7,143 格，2542 拍除名；2534 拍 Broski 还给空壳捐了 54k"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "TaxCollector",
+   "pid": 78,
+   "leftT": 1604,
+   "diedT": 3182,
+   "lastCmdT": 1281,
+   "lastLogT": 1080,
+   "terrAtLeave": 3681,
+   "balAtLeave": 309524,
+   "peakTerr": 5576,
+   "peakT": 2522,
+   "logOrderLagMax": 0,
+   "logOrderLagMaxAtT": 0,
+   "tickLinesLagGE90": "0/11",
+   "takers": [
+    {
+     "who": "[☪️]UZBEKISTAN🇺🇿(#50,T4)",
+     "tiles": 4991,
+     "sent": 307779
+    },
+    {
+     "who": "机器人#466",
+     "tiles": 6,
+     "sent": 330
+    }
+   ],
+   "cause": "T6 里唯一的我方号，t=900 起地停在 3,633–3,681 格、兵攒到 310k（密度 84）。客户端日志停在本地 1080 拍，1604 拍离场；空壳打了 Mansa Musa 156k，自己被 UZBEKISTAN（T4）308k 吃掉 4,991 格。",
+   "chain": [
+    "出生 (482,1042)",
+    "600–1500 拍 114 个决策拍里 80 个「有目标没发」（冷却空过 45、在途已够 35）；本地 850–960 拍的 10 条决策没落地，1281 拍一批 9 条全部作废",
+    "1604 拍 leave（3,681 格/310k）",
+    "2500–3182 拍被 UZBEKISTAN 吃掉"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "Angkor",
+   "pid": 70,
+   "leftT": 1625,
+   "diedT": 3701,
+   "lastCmdT": 1414,
+   "lastLogT": 1080,
+   "terrAtLeave": 5344,
+   "balAtLeave": 109035,
+   "peakTerr": 6595,
+   "peakT": 3345,
+   "logOrderLagMax": 0,
+   "logOrderLagMaxAtT": 0,
+   "tickLinesLagGE90": "0/11",
+   "takers": [
+    {
+     "who": "Player 914(#55,T3)",
+     "tiles": 3292,
+     "sent": 484598
+    },
+    {
+     "who": "Vanpedro(#16,T6)",
+     "tiles": 1831,
+     "sent": 179250
+    },
+    {
+     "who": "机器人#163",
+     "tiles": 254,
+     "sent": 9243
+    }
+   ],
+   "cause": "出生离 BlackRock 16 格，600–1500 拍 44.7% 的决策拍被围住，只能出船（910–1057 拍 6 条，晚 116–237 拍；1057 拍 3 条同拍送走存兵的 74%；后 4 条执行时目的地已是 BlackRock 的地，登陆 11.8k 兵）。客户端日志停在本地 1080 拍，1625 拍离场（5,344 格/109k）；空壳打了 BlackRock 136k，3300–3701 拍被 Player 914（485k）、Vanpedro（179k）吃掉 5,123 格。",
+   "chain": [
+    "出生 (1318,614)，名下 7,597 格，t=1500 4,944 格（0.65）",
+    "755–880 拍 6 条出船决策 910–1057 拍才落地（延迟 116–237 拍）",
+    "1625 拍 leave",
+    "空壳 6,569 格@3340 只有 58k 兵（峰值 6,595 格@3345）；3701 拍除名"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "Enderman",
+   "pid": 77,
+   "leftT": null,
+   "diedT": 5530,
+   "lastCmdT": 5404,
+   "lastLogT": 5490,
+   "terrAtLeave": null,
+   "balAtLeave": null,
+   "peakTerr": 6875,
+   "peakT": 2555,
+   "logOrderLagMax": 0,
+   "logOrderLagMaxAtT": 0,
+   "tickLinesLagGE90": "0/60",
+   "takers": [
+    {
+     "who": "[IND] Skandan(#40,T2)",
+     "tiles": 4621,
+     "sent": 1431616
+    },
+    {
+     "who": "Full send(#74,T2)",
+     "tiles": 1306,
+     "sent": 800187
+    },
+    {
+     "who": "机器人#243",
+     "tiles": 79,
+     "sent": 724
+    }
+   ],
+   "cause": "和 Frieren 同格出生；1500–2100 拍被空壳和队友围住，1708–1925 拍 8 条船 330k。2700–4800 拍的地停在 6,646–6,667 格，兵攒到封顶 996,900（密度 148–150）。Full send 4242、4802 拍 800k 打掉它 1,306 格；5327–5404 拍它 4 条 278k 戳 Full send 和 Skandan，Skandan 5404–5502 拍 3 条 1.41M 推平。",
+   "chain": [
+    "出生 (1138,1058)，名下 7,326 格；600–1500 拍延迟比基线多 298 拍",
+    "1708–1925 拍 8 条船 330k（2070 拍一条登陆 Mansa Musa）",
+    "3000–5530 拍 buyLand 506 次无一出手：留底 322、价格门 154、拥挤封顶 100；想捐 305 次没有同队的号",
+    "5404 拍起 Skandan（30.8k 格/3.5M）三条 503k/448k/462k，5530 拍阵亡（第 40 名）"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "Cleopatra",
+   "pid": 63,
+   "leftT": null,
+   "diedT": 5983,
+   "lastCmdT": 5929,
+   "lastLogT": 5940,
+   "terrAtLeave": null,
+   "balAtLeave": null,
+   "peakTerr": 5534,
+   "peakT": 2014,
+   "logOrderLagMax": 0,
+   "logOrderLagMaxAtT": 0,
+   "tickLinesLagGE90": "0/61",
+   "takers": [
+    {
+     "who": "United Kingdom(#57,T4)",
+     "tiles": 1894,
+     "sent": 895338
+    },
+    {
+     "who": "fegrze(#8,T1)",
+     "tiles": 1869,
+     "sent": 550934
+    },
+    {
+     "who": "Mittelfranken[Corg(#72,T4)",
+     "tiles": 1770,
+     "sent": 82921
+    }
+   ],
+   "cause": "T5 里唯一的我方号，出生在西岸 (131,438)。1946–2100 拍 4 条 173k 打 Kingdom of Kent（+538 格），之后陆地被 United Kingdom（13 条 895k，10 条是船）和 fegrze（551k）从 2398 拍起蚕食，丢地的时候握着 282k–388k（密度 68–124）没有还手；3650–3660 拍之间地掉到峰值的 1/4 以下，引擎清空剩下的 1,022 格和约 66k 存兵，之后靠船在小岛上活到 5983 拍。",
+   "chain": [
+    "名下 4,468 格；600–1500 拍 38.3% 的决策拍没有可打的邻居（只贴敌方真人 69）",
+    "2030 拍 Kingdom of Kent 214k 回推；1500–2999 拍 buyLand 300 次：价格门 245、留底 154",
+    "3300–3660 拍被打掉 372k 兵；3660 拍剩下的 1,022 格和存兵被引擎清零（3900 拍 122 格/606 兵）",
+    "4053–5495 拍 14 条小船（98–3,612 兵）上岛，地 122–607 格；5923 拍长到 2,283 格，随后被 Mittelfranken 拿走 1,770 格，5983 拍阵亡（第 31 名）"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "Mansa Musa",
+   "pid": 62,
+   "leftT": null,
+   "diedT": 6061,
+   "lastCmdT": 5558,
+   "lastLogT": 6030,
+   "terrAtLeave": null,
+   "balAtLeave": null,
+   "peakTerr": 15046,
+   "peakT": 5319,
+   "logOrderLagMax": 0,
+   "logOrderLagMaxAtT": 0,
+   "tickLinesLagGE90": "0/65",
+   "takers": [
+    {
+     "who": "Full send(#74,T2)",
+     "tiles": 7545,
+     "sent": 3274699
+    },
+    {
+     "who": "Player 887(#49,T5)",
+     "tiles": 5119,
+     "sent": 1992168
+    },
+    {
+     "who": "TaxCollector",
+     "tiles": 2213,
+     "sent": 156340
+    }
+   ],
+   "cause": "T7 里活到最后的号，峰值 15,046 格@5319、1.98M（密度 140）。4823 拍 200k 戳 Full send，5075 拍一条船 280k 登陆 Skandan；Full send 5313–6048 拍 6 条 3.27M、Player 887 5498–5992 拍 5 条 1.99M 把它推平（434、389 兵/格）。",
+   "chain": [
+    "出生 (642,1058)；TaxCollector 的空壳 1600–3099 拍打它 156k，没有还手",
+    "1500–4499 拍贴着机器人 26–46 格边界一直没吃（L5367 ×385）",
+    "3339–3409 拍 158k 从 UZBEKISTAN 拿 5,504 格（29 兵/格）",
+    "5313 拍起两家 5.26M，6061 拍阵亡（第 29 名）"
+   ],
+   "statementType": "observed"
+  },
+  {
+   "bot": "BlackRock",
+   "pid": 65,
+   "leftT": null,
+   "diedT": 6123,
+   "lastCmdT": 5831,
+   "lastLogT": 6120,
+   "terrAtLeave": null,
+   "balAtLeave": null,
+   "peakTerr": 13879,
+   "peakT": 4496,
+   "logOrderLagMax": 0,
+   "logOrderLagMaxAtT": 0,
+   "tickLinesLagGE90": "0/65",
+   "takers": [
+    {
+     "who": "Player 914(#55,T3)",
+     "tiles": 10478,
+     "sent": 3616778
+    },
+    {
+     "who": "Suuiiiii(#48,T3)",
+     "tiles": 4855,
+     "sent": 1854090
+    },
+    {
+     "who": "Angkor",
+     "tiles": 1167,
+     "sent": 148154
+    }
+   ],
+   "cause": "T2 里唯一的我方号，全队长得最好（峰值 13,879 格@4496）。3374–3640 拍 4 条 404k 戳 Player 914（救 Angkor 的空壳），3780 拍起 Player 914 8 条 3.62M；5215–5831 拍 8 条船 1.70M + 手续费 332k 打机器人#168（647 格）、5824 拍 490k 打 Suuiiiii，5929 拍 Suuiiiii 950k 打来时在家只有 789k。",
+   "chain": [
+    "出生 (1314,594) 离 Angkor 16 格，t=600 1,144 格（第 77）；t=1500 6,274 格（份额的 1.27）",
+    "2100 拍 9 条同拍 228k 吃掉 Player 802 1,664 格；3997 拍 237k 吃掉 sora_w 2,392 格",
+    "Angkor 的空壳 1800–3599 拍打它 136k，没有还手；空壳的地归了 Player 914",
+    "5929–6104 拍 Suuiiiii 1.85M、Player 914 1.71M，6123 拍阵亡（第 28 名）"
+   ],
+   "statementType": "observed"
+  }
+ ],
+ "drop30": {
+  "windows": [
+   {
+    "bot": "Angkor",
+    "t0": 900,
+    "t1": 990,
+    "bal0": 30028,
+    "bal1": 17274,
+    "terr0": 2357,
+    "terr1": 2393,
+    "mainSink": "boat",
+    "flows": {
+     "eco": 6414,
+     "boat": -19168
+    },
+    "residual": 0
+   },
+   {
+    "bot": "Angkor",
+    "t0": 990,
+    "t1": 1080,
+    "bal0": 17274,
+    "bal1": 7130,
+    "terr0": 2393,
+    "terr1": 3203,
+    "mainSink": "boat",
+    "flows": {
+     "eco": 7979,
+     "boat": -18123
+    },
+    "residual": 0
+   },
+   {
+    "bot": "Enderman",
+    "t0": 1800,
+    "t1": 1890,
+    "bal0": 240681,
+    "bal1": 43499,
+    "terr0": 5638,
+    "terr1": 5638,
+    "mainSink": "boat",
+    "flows": {
+     "eco": 9608,
+     "boat": -206790
+    },
+    "residual": 0
+   },
+   {
+    "bot": "Enderman",
+    "t0": 5400,
+    "t1": 5490,
+    "bal0": 601939,
+    "bal1": 120548,
+    "terr0": 5855,
+    "terr1": 2299,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 27650,
+     "atkHuman": -67599,
+     "dmg": -441442
+    },
+    "residual": 0
+   },
+   {
+    "bot": "Cleopatra",
+    "t0": 3420,
+    "t1": 3510,
+    "bal0": 312589,
+    "bal1": 187957,
+    "terr0": 2538,
+    "terr1": 1784,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 18644,
+     "dmg": -143276
+    },
+    "residual": 0
+   },
+   {
+    "bot": "Cleopatra",
+    "t0": 3600,
+    "t1": 3690,
+    "bal0": 155570,
+    "bal1": 0,
+    "terr0": 1595,
+    "terr1": 0,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 6070,
+     "dmg": -95759
+    },
+    "residual": -65881
+   },
+   {
+    "bot": "Cleopatra",
+    "t0": 5490,
+    "t1": 5580,
+    "bal0": 8131,
+    "bal1": 5062,
+    "terr0": 371,
+    "terr1": 371,
+    "mainSink": "boat",
+    "flows": {
+     "eco": 797,
+     "boat": -3866
+    },
+    "residual": 0
+   },
+   {
+    "bot": "Cleopatra",
+    "t0": 5760,
+    "t1": 5850,
+    "bal0": 9461,
+    "bal1": 4517,
+    "terr0": 928,
+    "terr1": 1557,
+    "mainSink": "atkHuman",
+    "flows": {
+     "eco": 1618,
+     "atkHuman": -6568
+    },
+    "residual": 0
+   },
+   {
+    "bot": "Cleopatra",
+    "t0": 5850,
+    "t1": 5940,
+    "bal0": 4517,
+    "bal1": 2672,
+    "terr0": 1557,
+    "terr1": 1927,
+    "mainSink": "atkBot",
+    "flows": {
+     "eco": 2223,
+     "atkNeutral": -1076,
+     "atkBot": -2125,
+     "dmg": -950
+    },
+    "residual": 0
+   },
+   {
+    "bot": "BlackRock",
+    "t0": 1080,
+    "t1": 1170,
+    "bal0": 47959,
+    "bal1": 15224,
+    "terr0": 3926,
+    "terr1": 4482,
+    "mainSink": "atkBot",
+    "flows": {
+     "eco": 9869,
+     "atkBot": -40590,
+     "dmg": -2014
+    },
+    "residual": 0
+   },
+   {
+    "bot": "BlackRock",
+    "t0": 2070,
+    "t1": 2160,
+    "bal0": 285245,
+    "bal1": 57246,
+    "terr0": 7062,
+    "terr1": 8347,
+    "mainSink": "atkHuman",
+    "flows": {
+     "eco": 20962,
+     "atkHuman": -246668
+    },
+    "residual": 0
+   },
+   {
+    "bot": "BlackRock",
+    "t0": 5940,
+    "t1": 6030,
+    "bal0": 774817,
+    "bal1": 354047,
+    "terr0": 12334,
+    "terr1": 6076,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 73853,
+     "ret": 220386,
+     "dmg": -715009
+    },
+    "residual": 0
+   },
+   {
+    "bot": "BlackRock",
+    "t0": 6030,
+    "t1": 6120,
+    "bal0": 354047,
+    "bal1": 142987,
+    "terr0": 6076,
+    "terr1": 3213,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 34718,
+     "dmg": -245778
+    },
+    "residual": 0
+   },
+   {
+    "bot": "Bowser",
+    "t0": 990,
+    "t1": 1080,
+    "bal0": 31487,
+    "bal1": 10979,
+    "terr0": 3002,
+    "terr1": 5532,
+    "mainSink": "atkBot",
+    "flows": {
+     "eco": 6019,
+     "atkBot": -26527
+    },
+    "residual": 0
+   },
+   {
+    "bot": "Bowser",
+    "t0": 1530,
+    "t1": 1620,
+    "bal0": 160299,
+    "bal1": 66249,
+    "terr0": 5589,
+    "terr1": 5663,
+    "mainSink": "boat",
+    "flows": {
+     "eco": 25660,
+     "boat": -119710
+    },
+    "residual": 0
+   },
+   {
+    "bot": "Bowser",
+    "t0": 1800,
+    "t1": 1890,
+    "bal0": 74936,
+    "bal1": 4344,
+    "terr0": 4945,
+    "terr1": 2440,
+    "mainSink": "boat",
+    "flows": {
+     "eco": 2348,
+     "boat": -48343,
+     "dmg": -24597
+    },
+    "residual": 0
+   },
+   {
+    "bot": "Bowser",
+    "t0": 1890,
+    "t1": 1980,
+    "bal0": 4344,
+    "bal1": 0,
+    "terr0": 2440,
+    "terr1": 0,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 2246,
+     "dmg": -3783
+    },
+    "residual": -2807
+   },
+   {
+    "bot": "AltF4",
+    "t0": 990,
+    "t1": 1080,
+    "bal0": 6429,
+    "bal1": 4466,
+    "terr0": 2421,
+    "terr1": 2714,
+    "mainSink": "atkBot",
+    "flows": {
+     "eco": 3894,
+     "atkNeutral": -2371,
+     "atkBot": -4050,
+     "ret": 2352,
+     "dmg": -1788
+    },
+    "residual": 0
+   },
+   {
+    "bot": "AltF4",
+    "t0": 1890,
+    "t1": 1980,
+    "bal0": 23039,
+    "bal1": 8899,
+    "terr0": 1425,
+    "terr1": 725,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 2977,
+     "dmg": -17117
+    },
+    "residual": 0
+   },
+   {
+    "bot": "Chicago",
+    "t0": 1350,
+    "t1": 1440,
+    "bal0": 91235,
+    "bal1": 24944,
+    "terr0": 4508,
+    "terr1": 5410,
+    "mainSink": "atkBot",
+    "flows": {
+     "eco": 20128,
+     "atkBot": -80904,
+     "dmg": -3740
+    },
+    "residual": 0
+   },
+   {
+    "bot": "Mansa Musa",
+    "t0": 2070,
+    "t1": 2160,
+    "bal0": 177716,
+    "bal1": 104257,
+    "terr0": 8532,
+    "terr1": 8549,
+    "mainSink": "atkBot",
+    "flows": {
+     "eco": 20325,
+     "atkBot": -48675,
+     "boat": -20162,
+     "dmg": -24947
+    },
+    "residual": 0
+   },
+   {
+    "bot": "Mansa Musa",
+    "t0": 5760,
+    "t1": 5850,
+    "bal0": 1029412,
+    "bal1": 651193,
+    "terr0": 8885,
+    "terr1": 6312,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 78469,
+     "dmg": -456688
+    },
+    "residual": 0
+   },
+   {
+    "bot": "Mansa Musa",
+    "t0": 5850,
+    "t1": 5940,
+    "bal0": 651193,
+    "bal1": 371997,
+    "terr0": 6312,
+    "terr1": 4175,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 52935,
+     "dmg": -332131
+    },
+    "residual": 0
+   },
+   {
+    "bot": "Chosokabe",
+    "t0": 1260,
+    "t1": 1350,
+    "bal0": 36556,
+    "bal1": 24201,
+    "terr0": 1592,
+    "terr1": 1150,
+    "mainSink": "atkNeutral",
+    "flows": {
+     "eco": 6849,
+     "atkNeutral": -19459,
+     "atkBot": -9922,
+     "ret": 27507,
+     "dmg": -17330
+    },
+    "residual": 0
+   },
+   {
+    "bot": "Chosokabe",
+    "t0": 1350,
+    "t1": 1440,
+    "bal0": 24201,
+    "bal1": 16491,
+    "terr0": 1150,
+    "terr1": 777,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 4838,
+     "dmg": -12548
+    },
+    "residual": 0
+   },
+   {
+    "bot": "Chosokabe",
+    "t0": 1440,
+    "t1": 1530,
+    "bal0": 16491,
+    "bal1": 11109,
+    "terr0": 777,
+    "terr1": 534,
+    "mainSink": "dmg",
+    "flows": {
+     "eco": 3037,
+     "dmg": -8419
+    },
+    "residual": 0
+   }
+  ],
+  "mainSinkCounts": {
+   "boat": 6,
+   "dmg": 11,
+   "atkHuman": 2,
+   "atkBot": 6,
+   "atkNeutral": 1
+  },
+  "note": "26 个窗口。最大的几个：Enderman 1800–1890 −82%（出船 207k）、5400–5490 −80%（被打掉 441k）；BlackRock 2070–2160 −80%（9 条同拍打 Player 802 247k）、5940–6030 −54%（被打掉 715k）；Chicago 1350–1440 −73%（迟到批打机器人 81k）；Bowser 1530–1620（出船 120k）。"
+ },
+ "delayAccount": {
+  "source": "scripts/delay_account.py B010（口径见脚本头；延迟 = 录像里的执行拍 − 影子策略做出同一条决策的拍）",
+  "spawnExecution": {
+   "solveRounds": 0,
+   "distinctSolutions": 0,
+   "phaseStart": -51,
+   "verdicts": {
+    "停在旧坐标": 12,
+    "最终坐标落地": 1
+   },
+   "nearestAllyMedian": 161,
+   "othersWithSpawnCmd": 73,
+   "others": 82,
+   "stackPairs": 1,
+   "bots": [
+    {
+     "bot": "AltF4",
+     "assignN": 21,
+     "final": [
+      386,
+      1026
+     ],
+     "replaySpawnN": 8,
+     "actual": [
+      1170,
+      562
+     ],
+     "verdict": "停在旧坐标",
+     "distActualToFinal": 911,
+     "localSendsApprox": 21
+    },
+    {
+     "bot": "Frieren",
+     "assignN": 12,
+     "final": [
+      1018,
+      398
+     ],
+     "replaySpawnN": 10,
+     "actual": [
+      1142,
+      1062
+     ],
+     "verdict": "停在旧坐标",
+     "distActualToFinal": 675,
+     "localSendsApprox": null
+    },
+    {
+     "bot": "Chosokabe",
+     "assignN": 24,
+     "final": [
+      1314,
+      1058
+     ],
+     "replaySpawnN": 15,
+     "actual": [
+      306,
+      386
+     ],
+     "verdict": "停在旧坐标",
+     "distActualToFinal": 1211,
+     "localSendsApprox": 24
+    },
+    {
+     "bot": "Mansa Musa",
+     "assignN": 18,
+     "final": [
+      806,
+      310
+     ],
+     "replaySpawnN": 15,
+     "actual": [
+      642,
+      1058
+     ],
+     "verdict": "停在旧坐标",
+     "distActualToFinal": 766,
+     "localSendsApprox": 18
+    },
+    {
+     "bot": "Cleopatra",
+     "assignN": 11,
+     "final": [
+      214,
+      102
+     ],
+     "replaySpawnN": 9,
+     "actual": [
+      131,
+      438
+     ],
+     "verdict": "停在旧坐标",
+     "distActualToFinal": 346,
+     "localSendsApprox": 11
+    },
+    {
+     "bot": "Bowser",
+     "assignN": 10,
+     "final": [
+      1018,
+      398
+     ],
+     "replaySpawnN": 8,
+     "actual": [
+      474,
+      159
+     ],
+     "verdict": "停在旧坐标",
+     "distActualToFinal": 594,
+     "localSendsApprox": 10
+    },
+    {
+     "bot": "BlackRock",
+     "assignN": 20,
+     "final": [
+      1314,
+      1058
+     ],
+     "replaySpawnN": 18,
+     "actual": [
+      1314,
+      594
+     ],
+     "verdict": "停在旧坐标",
+     "distActualToFinal": 464,
+     "localSendsApprox": 20
+    },
+    {
+     "bot": "Chicago",
+     "assignN": 12,
+     "final": [
+      286,
+      658
+     ],
+     "replaySpawnN": 10,
+     "actual": [
+      938,
+      162
+     ],
+     "verdict": "停在旧坐标",
+     "distActualToFinal": 819,
+     "localSendsApprox": null
+    },
+    {
+     "bot": "Angkor",
+     "assignN": 13,
+     "final": [
+      946,
+      1058
+     ],
+     "replaySpawnN": 11,
+     "actual": [
+      1318,
+      614
+     ],
+     "verdict": "停在旧坐标",
+     "distActualToFinal": 579,
+     "localSendsApprox": null
+    },
+    {
+     "bot": "Afsharid",
+     "assignN": 11,
+     "final": [
+      814,
+      802
+     ],
+     "replaySpawnN": 9,
+     "actual": [
+      298,
+      98
+     ],
+     "verdict": "停在旧坐标",
+     "distActualToFinal": 873,
+     "localSendsApprox": null
+    },
+    {
+     "bot": "Enderman",
+     "assignN": 13,
+     "final": [
+      1314,
+      610
+     ],
+     "replaySpawnN": 11,
+     "actual": [
+      1138,
+      1058
+     ],
+     "verdict": "停在旧坐标",
+     "distActualToFinal": 481,
+     "localSendsApprox": 13
+    },
+    {
+     "bot": "TaxCollector",
+     "assignN": 16,
+     "final": [
+      1138,
+      1058
+     ],
+     "replaySpawnN": 14,
+     "actual": [
+      482,
+      1042
+     ],
+     "verdict": "停在旧坐标",
+     "distActualToFinal": 656,
+     "localSendsApprox": null
+    },
+    {
+     "bot": "Khiva",
+     "assignN": 5,
+     "final": [
+      1150,
+      1034
+     ],
+     "replaySpawnN": 4,
+     "actual": [
+      1150,
+      1035
+     ],
+     "verdict": "最终坐标落地",
+     "distActualToFinal": 1.0,
+     "localSendsApprox": null
+    }
+   ]
+  },
+  "baselineTicks": 13,
+  "delayByPeriod": [
+   {
+    "period": "0–600",
+    "landed": 91,
+    "matched": 87,
+    "unique": 87,
+    "p50": 13,
+    "p90": 31,
+    "max": 285,
+    "uP50": 13,
+    "uP90": 31,
+    "uMax": 285,
+    "hiP50": 13,
+    "ge35": 6,
+    "ge90": 5,
+    "ge300": 0
+   },
+   {
+    "period": "600–1500",
+    "landed": 195,
+    "matched": 176,
+    "unique": 155,
+    "p50": 184,
+    "p90": 421,
+    "max": 547,
+    "uP50": 182,
+    "uP90": 423,
+    "uMax": 547,
+    "hiP50": 184,
+    "ge35": 161,
+    "ge90": 132,
+    "ge300": 50
+   },
+   {
+    "period": "1500–3000",
+    "landed": 97,
+    "matched": 91,
+    "unique": 84,
+    "p50": 388,
+    "p90": 514,
+    "max": 556,
+    "uP50": 400,
+    "uP90": 517,
+    "uMax": 556,
+    "hiP50": 393,
+    "ge35": 86,
+    "ge90": 80,
+    "ge300": 56
+   },
+   {
+    "period": "3000+",
+    "landed": 63,
+    "matched": 58,
+    "unique": 42,
+    "p50": 11.0,
+    "p90": 19,
+    "max": 23,
+    "uP50": 12.0,
+    "uP90": 15,
+    "uMax": 21,
+    "hiP50": 12.0,
+    "ge35": 0,
+    "ge90": 0,
+    "ge300": 0
+   }
+  ],
+  "delayBy300": [
+   {
+    "t": 0,
+    "p50": 12.0,
+    "max": 160,
+    "n": 38
+   },
+   {
+    "t": 300,
+    "p50": 13,
+    "max": 285,
+    "n": 49
+   },
+   {
+    "t": 600,
+    "p50": 72.5,
+    "max": 174,
+    "n": 58
+   },
+   {
+    "t": 900,
+    "p50": 186,
+    "max": 426,
+    "n": 52
+   },
+   {
+    "t": 1200,
+    "p50": 348,
+    "max": 547,
+    "n": 66
+   },
+   {
+    "t": 1500,
+    "p50": 476,
+    "max": 556,
+    "n": 38
+   },
+   {
+    "t": 1800,
+    "p50": 286,
+    "max": 494,
+    "n": 40
+   },
+   {
+    "t": 2100,
+    "p50": 142,
+    "max": 225,
+    "n": 12
+   },
+   {
+    "t": 2400,
+    "p50": 10,
+    "max": 10,
+    "n": 1
+   },
+   {
+    "t": 3000,
+    "p50": 12.5,
+    "max": 23,
+    "n": 4
+   },
+   {
+    "t": 3300,
+    "p50": 12.5,
+    "max": 19,
+    "n": 6
+   },
+   {
+    "t": 3600,
+    "p50": 10,
+    "max": 14,
+    "n": 3
+   },
+   {
+    "t": 3900,
+    "p50": 7,
+    "max": 15,
+    "n": 5
+   },
+   {
+    "t": 4200,
+    "p50": 10.0,
+    "max": 20,
+    "n": 8
+   },
+   {
+    "t": 4500,
+    "p50": 10.0,
+    "max": 16,
+    "n": 8
+   },
+   {
+    "t": 4800,
+    "p50": 16.5,
+    "max": 18,
+    "n": 2
+   },
+   {
+    "t": 5100,
+    "p50": 11.5,
+    "max": 15,
+    "n": 4
+   },
+   {
+    "t": 5400,
+    "p50": 14,
+    "max": 23,
+    "n": 9
+   },
+   {
+    "t": 5700,
+    "p50": 11,
+    "max": 14,
+    "n": 9
+   }
+  ],
+  "lagByBotP50": {
+   "AltF4": [
+    120,
+    299,
+    464,
+    null
+   ],
+   "Frieren": [
+    13,
+    108,
+    null,
+    null
+   ],
+   "Chosokabe": [
+    15,
+    472,
+    null,
+    null
+   ],
+   "Mansa Musa": [
+    15,
+    124,
+    266,
+    15
+   ],
+   "Cleopatra": [
+    8.5,
+    96,
+    44,
+    10
+   ],
+   "Bowser": [
+    9.5,
+    266,
+    199,
+    null
+   ],
+   "BlackRock": [
+    12,
+    172,
+    381,
+    11
+   ],
+   "Chicago": [
+    15,
+    230,
+    null,
+    null
+   ],
+   "Angkor": [
+    19.0,
+    155,
+    null,
+    null
+   ],
+   "Afsharid": [
+    9.5,
+    101,
+    null,
+    null
+   ],
+   "Enderman": [
+    12.5,
+    312,
+    414,
+    12
+   ],
+   "TaxCollector": [
+    10,
+    126,
+    null,
+    null
+   ],
+   "Khiva": [
+    11.0,
+    192,
+    null,
+    null
+   ]
+  },
+  "funnel": [
+   {
+    "period": "0–600",
+    "intended": 98,
+    "intendedTroops": 71783,
+    "landed": 90,
+    "asIntended": 89,
+    "deadToNeutral": 0,
+    "deadVoid": 0,
+    "void": 1,
+    "neverLanded": 8,
+    "neverLandedTroops": 6218
+   },
+   {
+    "period": "600–1500",
+    "intended": 325,
+    "intendedTroops": 1308552,
+    "landed": 225,
+    "asIntended": 94,
+    "deadToNeutral": 30,
+    "deadVoid": 94,
+    "void": 7,
+    "neverLanded": 100,
+    "neverLandedTroops": 554953
+   },
+   {
+    "period": "1500–3000",
+    "intended": 90,
+    "intendedTroops": 1937543,
+    "landed": 39,
+    "asIntended": 34,
+    "deadToNeutral": 0,
+    "deadVoid": 2,
+    "void": 3,
+    "neverLanded": 51,
+    "neverLandedTroops": 907640
+   },
+   {
+    "period": "3000+",
+    "intended": 86,
+    "intendedTroops": 6923170,
+    "landed": 58,
+    "asIntended": 58,
+    "deadToNeutral": 0,
+    "deadVoid": 0,
+    "void": 0,
+    "neverLanded": 28,
+    "neverLandedTroops": 2725316
+   }
+  ],
+  "selfReport": {
+   "shadow": 568,
+   "cmds": 517,
+   "landed": 412
+  },
+  "phantomDecisions": {
+   "TaxCollector": {
+    "lastLocalTick": 1169,
+    "n": 14
+   },
+   "Angkor": {
+    "lastLocalTick": 1169,
+    "n": 27
+   },
+   "Khiva": {
+    "lastLocalTick": 989,
+    "n": 38
+   },
+   "Chicago": {
+    "lastLocalTick": 1079,
+    "n": 39
+   },
+   "Afsharid": {
+    "lastLocalTick": 899,
+    "n": 26
+   }
+  },
+  "lateVoid": [
+   {
+    "period": "0–600",
+    "B": {
+     "landed": 10,
+     "hit": 10,
+     "hitOut": 4667,
+     "hitRet": 341,
+     "hitTiles": 1284,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 0,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    },
+    "N": {
+     "landed": 75,
+     "hit": 74,
+     "hitOut": 59772,
+     "hitRet": 9711,
+     "hitTiles": 25031,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 1,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    },
+    "unmatched": {
+     "n": 4,
+     "void": 0,
+     "toNeutral": 1,
+     "out": 2973,
+     "ret": 66.705
+    }
+   },
+   {
+    "period": "600–1500",
+    "B": {
+     "landed": 145,
+     "hit": 65,
+     "hitOut": 279418,
+     "hitRet": 117509,
+     "hitTiles": 18438,
+     "rewrittenOk": 21,
+     "rewrittenOut": 49145,
+     "rewrittenFee": 6868,
+     "rewrittenRet": 46163,
+     "rewrittenTiles": 1057,
+     "rewrittenVoid": 58,
+     "void": 1,
+     "intendedTroopsDead": 192360,
+     "staleRewrittenP50": 269
+    },
+    "N": {
+     "landed": 23,
+     "hit": 17,
+     "hitOut": 36554,
+     "hitRet": 19974,
+     "hitTiles": 8210,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 6,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    },
+    "unmatched": {
+     "n": 19,
+     "void": 8,
+     "toNeutral": 8,
+     "out": 39649,
+     "ret": 12432
+    }
+   },
+   {
+    "period": "1500–3000",
+    "B": {
+     "landed": 57,
+     "hit": 10,
+     "hitOut": 191167,
+     "hitRet": 71663,
+     "hitTiles": 5744,
+     "rewrittenOk": 9,
+     "rewrittenOut": 11461,
+     "rewrittenFee": 708,
+     "rewrittenRet": 11457,
+     "rewrittenTiles": 2.0,
+     "rewrittenVoid": 38,
+     "void": 0,
+     "intendedTroopsDead": 236822,
+     "staleRewrittenP50": 466
+    },
+    "H": {
+     "landed": 15,
+     "hit": 15,
+     "hitOut": 452530,
+     "hitRet": 262567,
+     "hitTiles": 3611,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 0,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    },
+    "N": {
+     "landed": 4,
+     "hit": 1,
+     "hitOut": 4630,
+     "hitRet": 4270,
+     "hitTiles": 180,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 3,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    },
+    "unmatched": {
+     "n": 1,
+     "void": 0,
+     "toNeutral": 0,
+     "out": 18840,
+     "ret": 0.0
+    }
+   },
+   {
+    "period": "3000+",
+    "B": {
+     "landed": 1,
+     "hit": 1,
+     "hitOut": 2073,
+     "hitRet": 13.0,
+     "hitTiles": 421,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 0,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    },
+    "H": {
+     "landed": 16,
+     "hit": 16,
+     "hitOut": 2052923,
+     "hitRet": 15557,
+     "hitTiles": 13854,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 0,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    },
+    "N": {
+     "landed": 20,
+     "hit": 20,
+     "hitOut": 649978,
+     "hitRet": 642601,
+     "hitTiles": 3689,
+     "rewrittenOk": 0,
+     "rewrittenOut": 0,
+     "rewrittenFee": 0,
+     "rewrittenRet": 0,
+     "rewrittenTiles": 0,
+     "rewrittenVoid": 0,
+     "void": 0,
+     "intendedTroopsDead": 0,
+     "staleRewrittenP50": null
+    }
+   }
+  ],
+  "batches": [
+   {
+    "period": "0–600",
+    "batches": 1,
+    "cmds": 3,
+    "void": 0,
+    "allVoidBatches": 0,
+    "out": 1488,
+    "fee": 39,
+    "ret": 40.547,
+    "burnt": 0.0,
+    "tiles": 724,
+    "drain50": 1,
+    "drain50Out": 1527,
+    "drain50Bank": 1800,
+    "landedAll": 91
+   },
+   {
+    "period": "600–1500",
+    "batches": 21,
+    "cmds": 114,
+    "void": 58,
+    "allVoidBatches": 5,
+    "out": 260581,
+    "fee": 20599,
+    "ret": 106150,
+    "burnt": 0.0,
+    "tiles": 10647,
+    "drain50": 6,
+    "drain50Out": 192686,
+    "drain50Bank": 262761,
+    "landedAll": 195
+   },
+   {
+    "period": "1500–3000",
+    "batches": 12,
+    "cmds": 81,
+    "void": 41,
+    "allVoidBatches": 5,
+    "out": 669074,
+    "fee": 87729,
+    "ret": 245628,
+    "burnt": 0.0,
+    "tiles": 6488,
+    "drain50": 5,
+    "drain50Out": 592769,
+    "drain50Bank": 793086,
+    "landedAll": 97
+   },
+   {
+    "period": "3000+",
+    "batches": 0,
+    "cmds": 0,
+    "void": 0,
+    "allVoidBatches": 0,
+    "out": 0,
+    "fee": 0,
+    "ret": 0,
+    "burnt": 0,
+    "tiles": 0,
+    "drain50": 0,
+    "drain50Out": 0,
+    "drain50Bank": 0,
+    "landedAll": 63
+   }
+  ],
+  "batchSizes": {
+   "3": 9,
+   "8": 7,
+   "9": 6,
+   "7": 2,
+   "4": 5,
+   "5": 3,
+   "6": 2
+  },
+  "inflightRepeats": [
+   {
+    "period": "0–600",
+    "attackDecisions": 96,
+    "repeatDecisions": 6,
+    "landedRepeats": 4,
+    "landedMatched": 85,
+    "repeatOut": 1712,
+    "repeatFee": 45,
+    "repeatRet": 47.08,
+    "repeatTiles": 832,
+    "allOut": 64439
+   },
+   {
+    "period": "600–1500",
+    "attackDecisions": 303,
+    "repeatDecisions": 183,
+    "landedRepeats": 102,
+    "landedMatched": 168,
+    "repeatOut": 200581,
+    "repeatFee": 16757,
+    "repeatRet": 87727,
+    "repeatTiles": 9602,
+    "allOut": 365117
+   },
+   {
+    "period": "1500–3000",
+    "attackDecisions": 75,
+    "repeatDecisions": 46,
+    "landedRepeats": 64,
+    "landedMatched": 76,
+    "repeatOut": 364220,
+    "repeatFee": 41021,
+    "repeatRet": 210304,
+    "repeatTiles": 4851,
+    "allOut": 659788
+   },
+   {
+    "period": "3000+",
+    "attackDecisions": 48,
+    "repeatDecisions": 13,
+    "landedRepeats": 11,
+    "landedMatched": 37,
+    "repeatOut": 393656,
+    "repeatFee": 89132,
+    "repeatRet": 334967,
+    "repeatTiles": 3967,
+    "allOut": 2704974
+   }
+  ],
+  "neverLanded": [
+   {
+    "period": "0–600",
+    "N": {
+     "n": 2,
+     "troops": 2075
+    },
+    "B": {
+     "n": 6,
+     "troops": 4143
+    },
+    "H": {
+     "n": 0,
+     "troops": 0
+    },
+    "S": {
+     "n": 0,
+     "troops": 0
+    }
+   },
+   {
+    "period": "600–1500",
+    "N": {
+     "n": 2,
+     "troops": 2316
+    },
+    "B": {
+     "n": 90,
+     "troops": 346112
+    },
+    "H": {
+     "n": 0,
+     "troops": 0
+    },
+    "S": {
+     "n": 8,
+     "troops": 206525
+    }
+   },
+   {
+    "period": "1500–3000",
+    "N": {
+     "n": 27,
+     "troops": 82127
+    },
+    "B": {
+     "n": 1,
+     "troops": 6798
+    },
+    "H": {
+     "n": 17,
+     "troops": 605066
+    },
+    "S": {
+     "n": 6,
+     "troops": 213649
+    }
+   },
+   {
+    "period": "3000+",
+    "N": {
+     "n": 11,
+     "troops": 424892
+    },
+    "B": {
+     "n": 0,
+     "troops": 0
+    },
+    "H": {
+     "n": 0,
+     "troops": 0
+    },
+    "S": {
+     "n": 17,
+     "troops": 2300424
+    }
+   }
+  ],
+  "lastLocalTick": {
+   "Cleopatra": 5984,
+   "TaxCollector": 1169,
+   "Chosokabe": 1792,
+   "Angkor": 1169,
+   "Bowser": 2256,
+   "Khiva": 989,
+   "AltF4": 2293,
+   "Chicago": 1079,
+   "Mansa Musa": 6066,
+   "Enderman": 5533,
+   "BlackRock": 6128,
+   "Afsharid": 899,
+   "Frieren": 899
+  }
+ },
+ "landAccount": {
+  "source": "scripts/land_account.mjs B010（每格陆地归离它最近的真人出生点；出生点 = 重放第 0 拍各人领地外接框中心）",
+  "voronoi": {
+   "land": 664497,
+   "humans": 90,
+   "squad": 13,
+   "squadCells": 74474,
+   "landShare": 0.112,
+   "headShare": 0.144,
+   "ratio": 0.776,
+   "squadMedian": 5067,
+   "othersMedian": 6782,
+   "groups": {
+    "T4真人": {
+     "n": 11,
+     "cells": 88583
+    },
+    "T3真人": {
+     "n": 10,
+     "cells": 75431
+    },
+    "T6真人": {
+     "n": 9,
+     "cells": 68789
+    },
+    "T1真人": {
+     "n": 12,
+     "cells": 70241
+    },
+    "T2真人": {
+     "n": 11,
+     "cells": 76578
+    },
+    "T7真人": {
+     "n": 7,
+     "cells": 53199
+    },
+    "T5真人": {
+     "n": 10,
+     "cells": 90387
+    },
+    "T8真人": {
+     "n": 7,
+     "cells": 66815
+    },
+    "我方号": {
+     "n": 13,
+     "cells": 74474
+    }
+   },
+   "perBot": [
+    {
+     "bot": "AltF4",
+     "x": 1170,
+     "y": 562,
+     "cells": 2377
+    },
+    {
+     "bot": "Frieren",
+     "x": 1142,
+     "y": 1062,
+     "cells": 1822
+    },
+    {
+     "bot": "Chosokabe",
+     "x": 306,
+     "y": 386,
+     "cells": 3274
+    },
+    {
+     "bot": "Mansa Musa",
+     "x": 642,
+     "y": 1058,
+     "cells": 5295
+    },
+    {
+     "bot": "Cleopatra",
+     "x": 131,
+     "y": 438,
+     "cells": 4468
+    },
+    {
+     "bot": "Bowser",
+     "x": 474,
+     "y": 159,
+     "cells": 9236
+    },
+    {
+     "bot": "BlackRock",
+     "x": 1314,
+     "y": 594,
+     "cells": 4930
+    },
+    {
+     "bot": "Chicago",
+     "x": 938,
+     "y": 162,
+     "cells": 4766
+    },
+    {
+     "bot": "Angkor",
+     "x": 1318,
+     "y": 614,
+     "cells": 7597
+    },
+    {
+     "bot": "Afsharid",
+     "x": 298,
+     "y": 98,
+     "cells": 12760
+    },
+    {
+     "bot": "Enderman",
+     "x": 1138,
+     "y": 1058,
+     "cells": 7326
+    },
+    {
+     "bot": "TaxCollector",
+     "x": 482,
+     "y": 1042,
+     "cells": 5067
+    },
+    {
+     "bot": "Khiva",
+     "x": 1150,
+     "y": 1035,
+     "cells": 5556
+    }
+   ]
+  },
+  "capture": [
+   {
+    "t": 630,
+    "groups": {
+     "T4真人": {
+      "n": 11,
+      "alive": 10,
+      "land": 19384,
+      "cells": 88583,
+      "ratio": 0.219,
+      "medianRatio": 0.202,
+      "medianLand": 1830
+     },
+     "T3真人": {
+      "n": 10,
+      "alive": 10,
+      "land": 24883,
+      "cells": 75431,
+      "ratio": 0.33,
+      "medianRatio": 0.354,
+      "medianLand": 2250
+     },
+     "T6真人": {
+      "n": 9,
+      "alive": 9,
+      "land": 21540,
+      "cells": 68789,
+      "ratio": 0.313,
+      "medianRatio": 0.384,
+      "medianLand": 2937
+     },
+     "T1真人": {
+      "n": 12,
+      "alive": 12,
+      "land": 32106,
+      "cells": 70241,
+      "ratio": 0.457,
+      "medianRatio": 0.541,
+      "medianLand": 2596
+     },
+     "T2真人": {
+      "n": 11,
+      "alive": 11,
+      "land": 26725,
+      "cells": 76578,
+      "ratio": 0.349,
+      "medianRatio": 0.539,
+      "medianLand": 2527
+     },
+     "T7真人": {
+      "n": 7,
+      "alive": 7,
+      "land": 17301,
+      "cells": 53199,
+      "ratio": 0.325,
+      "medianRatio": 0.33,
+      "medianLand": 2754
+     },
+     "T5真人": {
+      "n": 10,
+      "alive": 10,
+      "land": 28087,
+      "cells": 90387,
+      "ratio": 0.311,
+      "medianRatio": 0.33,
+      "medianLand": 2852
+     },
+     "T8真人": {
+      "n": 7,
+      "alive": 7,
+      "land": 18645,
+      "cells": 66815,
+      "ratio": 0.279,
+      "medianRatio": 0.375,
+      "medianLand": 2601
+     },
+     "我方号": {
+      "n": 13,
+      "alive": 13,
+      "land": 28353,
+      "cells": 74474,
+      "ratio": 0.381,
+      "medianRatio": 0.436,
+      "medianLand": 2405
+     }
+    },
+    "othersMedianRatio": 0.357,
+    "othersMedianLand": 2592,
+    "perBot": [
+     {
+      "bot": "AltF4",
+      "land": 630,
+      "cells": 2377,
+      "ratio": 0.265
+     },
+     {
+      "bot": "Frieren",
+      "land": 1428,
+      "cells": 1822,
+      "ratio": 0.784
+     },
+     {
+      "bot": "Chosokabe",
+      "land": 1428,
+      "cells": 3274,
+      "ratio": 0.436
+     },
+     {
+      "bot": "Mansa Musa",
+      "land": 2405,
+      "cells": 5295,
+      "ratio": 0.454
+     },
+     {
+      "bot": "Cleopatra",
+      "land": 2855,
+      "cells": 4468,
+      "ratio": 0.639
+     },
+     {
+      "bot": "Bowser",
+      "land": 2423,
+      "cells": 9236,
+      "ratio": 0.262
+     },
+     {
+      "bot": "BlackRock",
+      "land": 1381,
+      "cells": 4930,
+      "ratio": 0.28
+     },
+     {
+      "bot": "Chicago",
+      "land": 2731,
+      "cells": 4766,
+      "ratio": 0.573
+     },
+     {
+      "bot": "Angkor",
+      "land": 2157,
+      "cells": 7597,
+      "ratio": 0.284
+     },
+     {
+      "bot": "Afsharid",
+      "land": 3321,
+      "cells": 12760,
+      "ratio": 0.26
+     },
+     {
+      "bot": "Enderman",
+      "land": 2697,
+      "cells": 7326,
+      "ratio": 0.368
+     },
+     {
+      "bot": "TaxCollector",
+      "land": 2312,
+      "cells": 5067,
+      "ratio": 0.456
+     },
+     {
+      "bot": "Khiva",
+      "land": 2585,
+      "cells": 5556,
+      "ratio": 0.465
+     }
+    ]
+   },
+   {
+    "t": 1500,
+    "groups": {
+     "T4真人": {
+      "n": 11,
+      "alive": 9,
+      "land": 77408,
+      "cells": 88583,
+      "ratio": 0.874,
+      "medianRatio": 0.935,
+      "medianLand": 7721
+     },
+     "T3真人": {
+      "n": 10,
+      "alive": 9,
+      "land": 75538,
+      "cells": 75431,
+      "ratio": 1.001,
+      "medianRatio": 1.161,
+      "medianLand": 8680
+     },
+     "T6真人": {
+      "n": 9,
+      "alive": 7,
+      "land": 67273,
+      "cells": 68789,
+      "ratio": 0.978,
+      "medianRatio": 1.215,
+      "medianLand": 7301
+     },
+     "T1真人": {
+      "n": 12,
+      "alive": 12,
+      "land": 55286,
+      "cells": 70241,
+      "ratio": 0.787,
+      "medianRatio": 0.799,
+      "medianLand": 3822
+     },
+     "T2真人": {
+      "n": 11,
+      "alive": 10,
+      "land": 84374,
+      "cells": 76578,
+      "ratio": 1.102,
+      "medianRatio": 1.531,
+      "medianLand": 7856
+     },
+     "T7真人": {
+      "n": 7,
+      "alive": 5,
+      "land": 34019,
+      "cells": 53199,
+      "ratio": 0.639,
+      "medianRatio": 0.666,
+      "medianLand": 8879
+     },
+     "T5真人": {
+      "n": 10,
+      "alive": 8,
+      "land": 90733,
+      "cells": 90387,
+      "ratio": 1.004,
+      "medianRatio": 1.255,
+      "medianLand": 11483
+     },
+     "T8真人": {
+      "n": 7,
+      "alive": 5,
+      "land": 39318,
+      "cells": 66815,
+      "ratio": 0.588,
+      "medianRatio": 0.965,
+      "medianLand": 6351
+     },
+     "我方号": {
+      "n": 13,
+      "alive": 13,
+      "land": 56395,
+      "cells": 74474,
+      "ratio": 0.757,
+      "medianRatio": 0.726,
+      "medianLand": 4996
+     }
+    },
+    "othersMedianRatio": 1.032,
+    "othersMedianLand": 7799,
+    "perBot": [
+     {
+      "bot": "AltF4",
+      "land": 1716,
+      "cells": 2377,
+      "ratio": 0.722
+     },
+     {
+      "bot": "Frieren",
+      "land": 1999,
+      "cells": 1822,
+      "ratio": 1.097
+     },
+     {
+      "bot": "Chosokabe",
+      "land": 534,
+      "cells": 3274,
+      "ratio": 0.163
+     },
+     {
+      "bot": "Mansa Musa",
+      "land": 6225,
+      "cells": 5295,
+      "ratio": 1.176
+     },
+     {
+      "bot": "Cleopatra",
+      "land": 4996,
+      "cells": 4468,
+      "ratio": 1.118
+     },
+     {
+      "bot": "Bowser",
+      "land": 5589,
+      "cells": 9236,
+      "ratio": 0.605
+     },
+     {
+      "bot": "BlackRock",
+      "land": 6274,
+      "cells": 4930,
+      "ratio": 1.273
+     },
+     {
+      "bot": "Chicago",
+      "land": 5555,
+      "cells": 4766,
+      "ratio": 1.166
+     },
+     {
+      "bot": "Angkor",
+      "land": 4944,
+      "cells": 7597,
+      "ratio": 0.651
+     },
+     {
+      "bot": "Afsharid",
+      "land": 6412,
+      "cells": 12760,
+      "ratio": 0.503
+     },
+     {
+      "bot": "Enderman",
+      "land": 5686,
+      "cells": 7326,
+      "ratio": 0.776
+     },
+     {
+      "bot": "TaxCollector",
+      "land": 3681,
+      "cells": 5067,
+      "ratio": 0.726
+     },
+     {
+      "bot": "Khiva",
+      "land": 2784,
+      "cells": 5556,
+      "ratio": 0.501
+     }
+    ]
+   }
+  ],
+  "cellOwners": [
+   {
+    "t": 600,
+    "自己": 23956,
+    "我方别的号": 582,
+    "路人队友": 0,
+    "敌方真人": 79,
+    "机器人": 13700,
+    "中立": 33353,
+    "异队我方号": 541,
+    "同队机器人": 2263,
+    "total": 74474
+   },
+   {
+    "t": 630,
+    "自己": 26070,
+    "我方别的号": 646,
+    "路人队友": 0,
+    "敌方真人": 79,
+    "机器人": 14862,
+    "中立": 29699,
+    "异队我方号": 549,
+    "同队机器人": 2569,
+    "total": 74474
+   },
+   {
+    "t": 900,
+    "自己": 34751,
+    "我方别的号": 1090,
+    "路人队友": 49,
+    "敌方真人": 287,
+    "机器人": 19895,
+    "中立": 15179,
+    "异队我方号": 900,
+    "同队机器人": 2323,
+    "total": 74474
+   },
+   {
+    "t": 1200,
+    "自己": 40629,
+    "我方别的号": 1090,
+    "路人队友": 1317,
+    "敌方真人": 2754,
+    "机器人": 14810,
+    "中立": 10059,
+    "异队我方号": 1219,
+    "同队机器人": 2596,
+    "total": 74474
+   },
+   {
+    "t": 1500,
+    "自己": 44127,
+    "我方别的号": 1088,
+    "路人队友": 2177,
+    "敌方真人": 7125,
+    "机器人": 9507,
+    "中立": 7340,
+    "异队我方号": 1221,
+    "同队机器人": 1889,
+    "total": 74474
+   },
+   {
+    "t": 1800,
+    "自己": 44583,
+    "我方别的号": 1086,
+    "路人队友": 2389,
+    "敌方真人": 10664,
+    "机器人": 5905,
+    "中立": 5107,
+    "异队我方号": 1454,
+    "同队机器人": 3286,
+    "total": 74474
+   }
+  ],
+  "botLand": {
+   "A": {
+    "tiles": 15963,
+    "neutralInCells": 33353,
+    "sameTeamBotTiles": 2263
+   },
+   "B": {
+    "tiles": 10021,
+    "bots": 28
+   },
+   "C": {
+    "tiles": 175781
+   },
+   "fate": {
+    "A": [
+     {
+      "t": 900,
+      "我方号": 4536,
+      "路人队友": 0,
+      "敌方真人": 0,
+      "机器人": 9763,
+      "同队机器人": 1664,
+      "中立": 0,
+      "byHuman": {
+       "60": 400,
+       "61": 298,
+       "62": 1054,
+       "63": 581,
+       "64": 166,
+       "65": 606,
+       "69": 64,
+       "70": 133,
+       "71": 345,
+       "77": 161,
+       "78": 510,
+       "94": 218
+      }
+     },
+     {
+      "t": 1200,
+      "我方号": 7245,
+      "路人队友": 15,
+      "敌方真人": 685,
+      "机器人": 6561,
+      "同队机器人": 1455,
+      "中立": 2,
+      "byHuman": {
+       "20": 72,
+       "45": 126,
+       "57": 487,
+       "59": 308,
+       "60": 400,
+       "61": 286,
+       "62": 1069,
+       "63": 581,
+       "64": 1051,
+       "65": 501,
+       "69": 591,
+       "70": 900,
+       "71": 650,
+       "75": 15,
+       "77": 180,
+       "78": 510,
+       "94": 218
+      }
+     },
+     {
+      "t": 1500,
+      "我方号": 9586,
+      "路人队友": 714,
+      "敌方真人": 1602,
+      "机器人": 3351,
+      "同队机器人": 708,
+      "中立": 2,
+      "byHuman": {
+       "20": 72,
+       "36": 17,
+       "38": 204,
+       "45": 126,
+       "56": 345,
+       "57": 838,
+       "59": 414,
+       "60": 400,
+       "61": 264,
+       "62": 1069,
+       "63": 581,
+       "64": 1051,
+       "65": 501,
+       "69": 853,
+       "70": 1055,
+       "71": 667,
+       "77": 2003,
+       "78": 510,
+       "90": 714,
+       "94": 218
+      }
+     },
+     {
+      "t": 1800,
+      "我方号": 10423,
+      "路人队友": 714,
+      "敌方真人": 2231,
+      "机器人": 1886,
+      "同队机器人": 708,
+      "中立": 1,
+      "byHuman": {
+       "20": 162,
+       "36": 562,
+       "38": 204,
+       "45": 120,
+       "56": 345,
+       "57": 838,
+       "59": 416,
+       "60": 400,
+       "62": 1069,
+       "63": 581,
+       "64": 969,
+       "65": 501,
+       "69": 853,
+       "70": 1543,
+       "71": 1360,
+       "77": 2003,
+       "78": 510,
+       "90": 714,
+       "94": 218
+      }
+     }
+    ],
+    "B": [
+     {
+      "t": 900,
+      "我方号": 4819,
+      "路人队友": 200,
+      "敌方真人": 0,
+      "机器人": 5002,
+      "同队机器人": 0,
+      "中立": 0,
+      "byHuman": {
+       "60": 400,
+       "61": 298,
+       "62": 1054,
+       "63": 1052,
+       "64": 166,
+       "65": 482,
+       "70": 133,
+       "71": 345,
+       "75": 200,
+       "77": 161,
+       "78": 510,
+       "94": 218
+      }
+     },
+     {
+      "t": 1200,
+      "我方号": 6738,
+      "路人队友": 454,
+      "敌方真人": 271,
+      "机器人": 2556,
+      "同队机器人": 0,
+      "中立": 2,
+      "byHuman": {
+       "57": 271,
+       "59": 308,
+       "60": 400,
+       "61": 286,
+       "62": 1069,
+       "63": 1052,
+       "64": 1051,
+       "65": 482,
+       "69": 418,
+       "70": 133,
+       "71": 650,
+       "75": 454,
+       "77": 161,
+       "78": 510,
+       "94": 218
+      }
+     },
+     {
+      "t": 1500,
+      "我方号": 7243,
+      "路人队友": 1049,
+      "敌方真人": 529,
+      "机器人": 1198,
+      "同队机器人": 0,
+      "中立": 2,
+      "byHuman": {
+       "36": 55,
+       "39": 280,
+       "57": 529,
+       "59": 414,
+       "60": 400,
+       "61": 264,
+       "62": 1069,
+       "63": 1052,
+       "64": 1051,
+       "65": 482,
+       "69": 839,
+       "70": 133,
+       "71": 650,
+       "77": 161,
+       "78": 510,
+       "90": 714,
+       "94": 218
+      }
+     },
+     {
+      "t": 1800,
+      "我方号": 7319,
+      "路人队友": 1684,
+      "敌方真人": 529,
+      "机器人": 488,
+      "同队机器人": 0,
+      "中立": 1,
+      "byHuman": {
+       "20": 90,
+       "36": 600,
+       "39": 280,
+       "57": 529,
+       "59": 416,
+       "60": 400,
+       "62": 1069,
+       "63": 1052,
+       "64": 961,
+       "65": 482,
+       "69": 839,
+       "70": 133,
+       "71": 1078,
+       "77": 161,
+       "78": 510,
+       "90": 714,
+       "94": 218
+      }
+     }
+    ],
+    "C": [
+     {
+      "t": 900,
+      "我方号": 5320,
+      "路人队友": 30670,
+      "敌方真人": 7451,
+      "机器人": 131079,
+      "同队机器人": 0,
+      "中立": 1261,
+      "byHuman": {
+       "4": 697,
+       "5": 555,
+       "6": 1635,
+       "7": 421,
+       "8": 878,
+       "9": 845,
+       "10": 700,
+       "11": 64,
+       "14": 1450,
+       "15": 821,
+       "16": 237,
+       "17": 711,
+       "18": 198,
+       "19": 544,
+       "20": 720,
+       "21": 730,
+       "22": 767,
+       "23": 121,
+       "24": 955,
+       "25": 234,
+       "26": 447,
+       "28": 206,
+       "29": 8,
+       "30": 122,
+       "31": 711,
+       "32": 88,
+       "33": 1152,
+       "35": 281,
+       "36": 2025,
+       "37": 480,
+       "38": 428,
+       "39": 1067,
+       "40": 229,
+       "41": 698,
+       "42": 357,
+       "43": 769,
+       "44": 22,
+       "45": 587,
+       "46": 145,
+       "47": 109,
+       "48": 59,
+       "49": 1573,
+       "50": 252,
+       "52": 1174,
+       "54": 208,
+       "55": 648,
+       "56": 369,
+       "58": 343,
+       "60": 400,
+       "61": 298,
+       "62": 1054,
+       "63": 1052,
+       "64": 166,
+       "65": 819,
+       "67": 94,
+       "69": 164,
+       "70": 133,
+       "71": 345,
+       "72": 191,
+       "75": 1281,
+       "77": 161,
+       "78": 510,
+       "79": 1189,
+       "81": 461,
+       "83": 546,
+       "85": 873,
+       "86": 1275,
+       "87": 1327,
+       "88": 992,
+       "90": 341,
+       "91": 439,
+       "93": 1272,
+       "94": 218
+      }
+     },
+     {
+      "t": 1200,
+      "我方号": 9085,
+      "路人队友": 76674,
+      "敌方真人": 21563,
+      "机器人": 67480,
+      "同队机器人": 0,
+      "中立": 979,
+      "byHuman": {
+       "1": 1406,
+       "3": 74,
+       "4": 1460,
+       "5": 759,
+       "6": 2394,
+       "7": 3319,
+       "8": 2048,
+       "9": 1304,
+       "10": 2575,
+       "11": 2200,
+       "14": 2748,
+       "15": 985,
+       "16": 1088,
+       "17": 1863,
+       "18": 856,
+       "19": 1702,
+       "20": 1307,
+       "21": 1833,
+       "22": 277,
+       "23": 636,
+       "24": 3556,
+       "25": 234,
+       "26": 962,
+       "28": 273,
+       "29": 8,
+       "30": 70,
+       "31": 711,
+       "32": 325,
+       "33": 1165,
+       "35": 1232,
+       "36": 2028,
+       "37": 3949,
+       "38": 1918,
+       "39": 1327,
+       "40": 1385,
+       "41": 957,
+       "42": 1245,
+       "43": 1684,
+       "44": 39,
+       "45": 1900,
+       "46": 1506,
+       "47": 749,
+       "48": 2142,
+       "49": 3137,
+       "50": 1059,
+       "52": 3471,
+       "54": 556,
+       "55": 1974,
+       "56": 2225,
+       "57": 520,
+       "58": 365,
+       "59": 308,
+       "60": 400,
+       "61": 286,
+       "62": 1069,
+       "63": 1052,
+       "64": 1350,
+       "65": 970,
+       "67": 1059,
+       "69": 1192,
+       "70": 900,
+       "71": 650,
+       "72": 3254,
+       "74": 525,
+       "75": 1517,
+       "77": 180,
+       "78": 510,
+       "79": 3061,
+       "80": 234,
+       "81": 679,
+       "83": 2790,
+       "85": 1107,
+       "86": 3101,
+       "87": 1327,
+       "88": 2607,
+       "90": 466,
+       "91": 1732,
+       "93": 1272,
+       "94": 218
+      }
+     },
+     {
+      "t": 1500,
+      "我方号": 12553,
+      "路人队友": 106858,
+      "敌方真人": 27804,
+      "机器人": 27639,
+      "同队机器人": 0,
+      "中立": 927,
+      "byHuman": {
+       "1": 1654,
+       "3": 831,
+       "4": 1773,
+       "5": 1967,
+       "6": 2810,
+       "7": 5213,
+       "8": 2048,
+       "9": 1304,
+       "10": 3515,
+       "11": 3386,
+       "14": 2748,
+       "15": 1507,
+       "16": 1673,
+       "17": 2527,
+       "18": 856,
+       "19": 2465,
+       "20": 1674,
+       "21": 1833,
+       "24": 4512,
+       "25": 234,
+       "26": 1116,
+       "27": 20,
+       "28": 1207,
+       "29": 8,
+       "30": 93,
+       "31": 711,
+       "32": 312,
+       "33": 1165,
+       "36": 2083,
+       "37": 5552,
+       "38": 2864,
+       "39": 1611,
+       "40": 1799,
+       "41": 1845,
+       "42": 2315,
+       "43": 2146,
+       "45": 2207,
+       "46": 2991,
+       "47": 972,
+       "48": 2837,
+       "49": 3921,
+       "50": 1676,
+       "52": 4377,
+       "54": 640,
+       "55": 4835,
+       "56": 3202,
+       "57": 1011,
+       "58": 377,
+       "59": 414,
+       "60": 400,
+       "61": 264,
+       "62": 1069,
+       "63": 1052,
+       "64": 1350,
+       "65": 1938,
+       "67": 3105,
+       "69": 1613,
+       "70": 1055,
+       "71": 667,
+       "72": 4010,
+       "74": 4407,
+       "77": 2003,
+       "78": 510,
+       "79": 2662,
+       "81": 1567,
+       "83": 4696,
+       "85": 1107,
+       "86": 4707,
+       "87": 3452,
+       "88": 3136,
+       "90": 1180,
+       "91": 925,
+       "93": 1285,
+       "94": 218
+      }
+     },
+     {
+      "t": 1800,
+      "我方号": 14342,
+      "路人队友": 116968,
+      "敌方真人": 31362,
+      "机器人": 13107,
+      "同队机器人": 0,
+      "中立": 2,
+      "byHuman": {
+       "1": 1654,
+       "3": 607,
+       "4": 1940,
+       "5": 2358,
+       "6": 2436,
+       "7": 6720,
+       "8": 2048,
+       "9": 1304,
+       "10": 5683,
+       "11": 3259,
+       "14": 2748,
+       "15": 1469,
+       "16": 1673,
+       "17": 4297,
+       "18": 856,
+       "19": 2451,
+       "20": 1764,
+       "21": 1833,
+       "24": 5777,
+       "25": 234,
+       "26": 1883,
+       "27": 464,
+       "28": 2242,
+       "29": 8,
+       "30": 93,
+       "31": 711,
+       "32": 673,
+       "33": 1165,
+       "35": 12,
+       "36": 2628,
+       "37": 5558,
+       "38": 2864,
+       "39": 1611,
+       "40": 1915,
+       "41": 1743,
+       "42": 998,
+       "43": 2200,
+       "45": 2302,
+       "46": 2860,
+       "47": 972,
+       "48": 2837,
+       "49": 4065,
+       "50": 1689,
+       "52": 4655,
+       "54": 679,
+       "55": 5764,
+       "56": 3333,
+       "57": 1011,
+       "58": 352,
+       "59": 416,
+       "60": 400,
+       "62": 1417,
+       "63": 1052,
+       "64": 1161,
+       "65": 2575,
+       "67": 4547,
+       "69": 1630,
+       "70": 1543,
+       "71": 1417,
+       "72": 4629,
+       "74": 4781,
+       "77": 2003,
+       "78": 510,
+       "79": 2546,
+       "80": 70,
+       "81": 1574,
+       "83": 4696,
+       "85": 1107,
+       "86": 6015,
+       "87": 3884,
+       "88": 3163,
+       "90": 1180,
+       "93": 1740,
+       "94": 218
+      }
+     }
+    ]
+   },
+   "perBotAdj": [
+    {
+     "bot": "Angkor",
+     "team": 7,
+     "bots": 1,
+     "tiles": 133,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 133,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 133,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 133,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 133,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "Enderman",
+     "team": 8,
+     "bots": 1,
+     "tiles": 379,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 161,
+       "同队真人": 218,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 161,
+       "同队真人": 218,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 161,
+       "同队真人": 218,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 161,
+       "同队真人": 218,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "Cleopatra",
+     "team": 5,
+     "bots": 2,
+     "tiles": 1124,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 1052,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 72,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 1052,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 52,
+       "机器人": 20,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 1052,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 72,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 1052,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 72,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "BlackRock",
+     "team": 2,
+     "bots": 1,
+     "tiles": 482,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 482,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 482,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 482,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 482,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "Bowser",
+     "team": 7,
+     "bots": 3,
+     "tiles": 1051,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 166,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 885,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 1051,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 1051,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 961,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 90,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "AltF4",
+     "team": 8,
+     "bots": 1,
+     "tiles": 416,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 0,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 416,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 308,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 108,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 414,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 2
+      },
+      {
+       "t": 1800,
+       "自己": 416,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "TaxCollector",
+     "team": 6,
+     "bots": 2,
+     "tiles": 510,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 510,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 510,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 510,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 510,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "Chicago",
+     "team": 8,
+     "bots": 5,
+     "tiles": 1833,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 0,
+       "同队真人": 200,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 1633,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 418,
+       "同队真人": 454,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 961,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 839,
+       "同队真人": 714,
+       "异队我方号": 0,
+       "其他队真人": 280,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 839,
+       "同队真人": 714,
+       "异队我方号": 0,
+       "其他队真人": 280,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "Mansa Musa",
+     "team": 7,
+     "bots": 3,
+     "tiles": 1069,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 1054,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 15,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 1069,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 1069,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 1069,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "Chosokabe",
+     "team": 8,
+     "bots": 3,
+     "tiles": 1058,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 298,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 760,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 286,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 219,
+       "机器人": 551,
+       "中立": 2
+      },
+      {
+       "t": 1500,
+       "自己": 264,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 512,
+       "机器人": 282,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 0,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 1057,
+       "机器人": 0,
+       "中立": 1
+      }
+     ]
+    },
+    {
+     "bot": "Khiva",
+     "team": 8,
+     "bots": 3,
+     "tiles": 1153,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 218,
+       "同队真人": 161,
+       "异队我方号": 286,
+       "其他队真人": 0,
+       "机器人": 488,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 218,
+       "同队真人": 161,
+       "异队我方号": 286,
+       "其他队真人": 0,
+       "机器人": 488,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 218,
+       "同队真人": 161,
+       "异队我方号": 286,
+       "其他队真人": 0,
+       "机器人": 488,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 218,
+       "同队真人": 161,
+       "异队我方号": 286,
+       "其他队真人": 0,
+       "机器人": 488,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "Afsharid",
+     "team": 3,
+     "bots": 3,
+     "tiles": 1078,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 345,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 733,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 650,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 428,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 650,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 428,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 1078,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    },
+    {
+     "bot": "Frieren",
+     "team": 7,
+     "bots": 2,
+     "tiles": 400,
+     "rows": [
+      {
+       "t": 900,
+       "自己": 400,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1200,
+       "自己": 400,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1500,
+       "自己": 400,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      },
+      {
+       "t": 1800,
+       "自己": 400,
+       "同队真人": 0,
+       "异队我方号": 0,
+       "其他队真人": 0,
+       "机器人": 0,
+       "中立": 0
+      }
+     ]
+    }
+   ],
+   "perGroupLast": {
+    "T4真人": {
+     "n": 11,
+     "tiles": 20372,
+     "median": 1654
+    },
+    "T3真人": {
+     "n": 10,
+     "tiles": 25744,
+     "median": 2491
+    },
+    "T6真人": {
+     "n": 9,
+     "tiles": 18139,
+     "median": 1673
+    },
+    "T1真人": {
+     "n": 12,
+     "tiles": 10990,
+     "median": 692
+    },
+    "T2真人": {
+     "n": 11,
+     "tiles": 20187,
+     "median": 1611
+    },
+    "T7真人": {
+     "n": 7,
+     "tiles": 12900,
+     "median": 0
+    },
+    "T5真人": {
+     "n": 10,
+     "tiles": 28287,
+     "median": 2744
+    },
+    "T8真人": {
+     "n": 7,
+     "tiles": 11711,
+     "median": 1180
+    },
+    "我方号": {
+     "n": 13,
+     "tiles": 14342,
+     "median": 1161
+    }
+   }
+  },
+  "multiTeam": true,
+  "squadTeams": {
+   "2": [
+    "BlackRock"
+   ],
+   "3": [
+    "Afsharid"
+   ],
+   "5": [
+    "Cleopatra"
+   ],
+   "6": [
+    "TaxCollector"
+   ],
+   "7": [
+    "Angkor",
+    "Bowser",
+    "Mansa Musa",
+    "Frieren"
+   ],
+   "8": [
+    "Enderman",
+    "AltF4",
+    "Chicago",
+    "Chosokabe",
+    "Khiva"
+   ]
+  },
+  "botTeams": true
+ },
+ "tickAttribution": {
+  "source": "scripts/shadow.mjs B010 --quiet --tc 600:1500 → scripts/tick_attrib.py B010（每个决策拍归一类，类别互斥）",
+  "window": [
+   600,
+   1500
+  ],
+  "rows": 1782,
+  "cats": {
+   "有效": 94,
+   "迟到·目标已死": 124,
+   "迟到·不接壤": 7,
+   "没落地": 100,
+   "留底锁·无在途": 225,
+   "留底·有在途": 273,
+   "有目标没发": 618,
+   "只剩中立边": 106,
+   "只贴敌方真人": 109,
+   "围在里面": 126
+  },
+  "layers": {
+   "②留底": 498,
+   "有效": 94,
+   "其余": 724,
+   "③执行": 231,
+   "①结构": 235
+  },
+  "floorSetter": {
+   "我方号": 126,
+   "敌方真人": 105,
+   "路人队友": 25
+  },
+  "safeFiniteHalf": {
+   "留底·有在途": 121,
+   "留底锁·无在途": 135
+  },
+  "issuedByClass": {
+   "有效": {
+    "N": 17,
+    "B": 63,
+    "S": 14
+   },
+   "迟到·目标已死": {
+    "B": 124
+   },
+   "没落地": {
+    "B": 90,
+    "N": 2,
+    "S": 8
+   },
+   "迟到·不接壤": {
+    "N": 6,
+    "B": 1
+   }
+  },
+  "byBot": {
+   "Angkor": {
+    "有效": 8,
+    "迟到·目标已死": 1,
+    "迟到·不接壤": 0,
+    "没落地": 5,
+    "留底锁·无在途": 0,
+    "留底·有在途": 11,
+    "有目标没发": 35,
+    "只剩中立边": 3,
+    "只贴敌方真人": 0,
+    "围在里面": 51
+   },
+   "Enderman": {
+    "有效": 10,
+    "迟到·目标已死": 17,
+    "迟到·不接壤": 0,
+    "没落地": 9,
+    "留底锁·无在途": 20,
+    "留底·有在途": 26,
+    "有目标没发": 76,
+    "只剩中立边": 9,
+    "只贴敌方真人": 0,
+    "围在里面": 13
+   },
+   "Cleopatra": {
+    "有效": 8,
+    "迟到·目标已死": 3,
+    "迟到·不接壤": 0,
+    "没落地": 0,
+    "留底锁·无在途": 2,
+    "留底·有在途": 20,
+    "有目标没发": 21,
+    "只剩中立边": 57,
+    "只贴敌方真人": 69,
+    "围在里面": 0
+   },
+   "BlackRock": {
+    "有效": 13,
+    "迟到·目标已死": 26,
+    "迟到·不接壤": 1,
+    "没落地": 8,
+    "留底锁·无在途": 5,
+    "留底·有在途": 1,
+    "有目标没发": 115,
+    "只剩中立边": 11,
+    "只贴敌方真人": 0,
+    "围在里面": 0
+   },
+   "Bowser": {
+    "有效": 6,
+    "迟到·目标已死": 7,
+    "迟到·不接壤": 1,
+    "没落地": 20,
+    "留底锁·无在途": 1,
+    "留底·有在途": 22,
+    "有目标没发": 43,
+    "只剩中立边": 8,
+    "只贴敌方真人": 40,
+    "围在里面": 32
+   },
+   "AltF4": {
+    "有效": 6,
+    "迟到·目标已死": 21,
+    "迟到·不接壤": 1,
+    "没落地": 4,
+    "留底锁·无在途": 43,
+    "留底·有在途": 43,
+    "有目标没发": 46,
+    "只剩中立边": 16,
+    "只贴敌方真人": 0,
+    "围在里面": 0
+   },
+   "TaxCollector": {
+    "有效": 5,
+    "迟到·目标已死": 12,
+    "迟到·不接壤": 0,
+    "没落地": 13,
+    "留底锁·无在途": 0,
+    "留底·有在途": 4,
+    "有目标没发": 80,
+    "只剩中立边": 0,
+    "只贴敌方真人": 0,
+    "围在里面": 0
+   },
+   "Chicago": {
+    "有效": 13,
+    "迟到·目标已死": 8,
+    "迟到·不接壤": 1,
+    "没落地": 1,
+    "留底锁·无在途": 0,
+    "留底·有在途": 39,
+    "有目标没发": 34,
+    "只剩中立边": 0,
+    "只贴敌方真人": 0,
+    "围在里面": 0
+   },
+   "Mansa Musa": {
+    "有效": 11,
+    "迟到·目标已死": 15,
+    "迟到·不接壤": 1,
+    "没落地": 16,
+    "留底锁·无在途": 7,
+    "留底·有在途": 36,
+    "有目标没发": 94,
+    "只剩中立边": 0,
+    "只贴敌方真人": 0,
+    "围在里面": 0
+   },
+   "Chosokabe": {
+    "有效": 5,
+    "迟到·目标已死": 5,
+    "迟到·不接壤": 1,
+    "没落地": 0,
+    "留底锁·无在途": 129,
+    "留底·有在途": 25,
+    "有目标没发": 15,
+    "只剩中立边": 0,
+    "只贴敌方真人": 0,
+    "围在里面": 0
+   },
+   "Khiva": {
+    "有效": 2,
+    "迟到·目标已死": 3,
+    "迟到·不接壤": 1,
+    "没落地": 11,
+    "留底锁·无在途": 18,
+    "留底·有在途": 26,
+    "有目标没发": 17,
+    "只剩中立边": 0,
+    "只贴敌方真人": 0,
+    "围在里面": 0
+   },
+   "Afsharid": {
+    "有效": 6,
+    "迟到·目标已死": 1,
+    "迟到·不接壤": 0,
+    "没落地": 13,
+    "留底锁·无在途": 0,
+    "留底·有在途": 11,
+    "有目标没发": 29,
+    "只剩中立边": 0,
+    "只贴敌方真人": 0,
+    "围在里面": 0
+   },
+   "Frieren": {
+    "有效": 1,
+    "迟到·目标已死": 5,
+    "迟到·不接壤": 0,
+    "没落地": 0,
+    "留底锁·无在途": 0,
+    "留底·有在途": 9,
+    "有目标没发": 13,
+    "只剩中立边": 2,
+    "只贴敌方真人": 0,
+    "围在里面": 30
+   }
+  },
+  "exits": {
+   "留底·有在途": {
+    "V13.boatFood:2040": 226,
+    "V13.boatFood:2042": 35,
+    "V13.boatFood:2041": 12
+   },
+   "有目标没发": {
+    "V13.boatFood:2042": 304,
+    "V13.boatFood:2040": 270,
+    "V13.boatFood:2041": 44
+   },
+   "留底锁·无在途": {
+    "V13.boatFood:2042": 116,
+    "V13.boatFood:2040": 89,
+    "V13.boatFood:2041": 20
+   },
+   "只剩中立边": {
+    "V13.boatFood:2040": 106
+   },
+   "围在里面": {
+    "V13.boatFood:2040": 86,
+    "V13.boatFood:2041": 38,
+    "V13.botOk:2504": 2
+   },
+   "只贴敌方真人": {
+    "V13.boatFood:2040": 104,
+    "V13.botOk:2504": 4,
+    "isMopUp:4513": 1
+   }
+  },
+  "ptGates": {
+   "留底·有在途": {
+    "1193,1197": 102,
+    "1197": 94,
+    "1193": 77
+   },
+   "有目标没发": {
+    "(循环里没有 continue)": 242,
+    "1199": 157,
+    "1197": 94,
+    "1200": 28,
+    "1193": 23,
+    "1193,1197": 20,
+    "1197,1199": 19,
+    "1193,1199": 9,
+    "1197,1200": 8,
+    "1193,1197,1199": 6,
+    "1193,1197,1200": 6,
+    "1202": 5
+   },
+   "留底锁·无在途": {
+    "1197": 193,
+    "1193": 20,
+    "1193,1197": 12
+   },
+   "只剩中立边": {
+    "1197": 73,
+    "(循环里没有 continue)": 33
+   },
+   "围在里面": {
+    "(循环里没有 continue)": 126
+   },
+   "只贴敌方真人": {
+    "1197": 108,
+    "1197,1202": 1
+   }
+  },
+  "gaExit": {
+   "留底·有在途": {
+    "835": 226,
+    "end": 47
+   },
+   "有目标没发": {
+    "833": 457,
+    "835": 68,
+    "end": 93
+   },
+   "留底锁·无在途": {
+    "835": 89,
+    "end": 136
+   },
+   "只剩中立边": {
+    "835": 106
+   },
+   "围在里面": {
+    "end": 126
+   },
+   "只贴敌方真人": {
+    "end": 109
+   }
+  },
+  "notSentSplit": {
+   "rows": 618,
+   "split": {
+    "冷却空过": 440,
+    "在途已够": 161,
+    "配额闸拒发": 17
+   },
+   "lines": {
+    "cooldown": [
+     531
+    ],
+    "guard": [
+     3868,
+     3871
+    ],
+    "enough": [
+     1014,
+     1199,
+     1200
+    ]
+   },
+   "byBot": {
+    "Frieren": {
+     "冷却空过": 9,
+     "配额闸拒发": 1,
+     "在途已够": 3
+    },
+    "BlackRock": {
+     "在途已够": 32,
+     "冷却空过": 82,
+     "配额闸拒发": 1
+    },
+    "Afsharid": {
+     "冷却空过": 26,
+     "在途已够": 2,
+     "配额闸拒发": 1
+    },
+    "Angkor": {
+     "冷却空过": 6,
+     "在途已够": 29
+    },
+    "TaxCollector": {
+     "冷却空过": 45,
+     "在途已够": 35
+    },
+    "Mansa Musa": {
+     "冷却空过": 75,
+     "在途已够": 19
+    },
+    "Chosokabe": {
+     "冷却空过": 10,
+     "在途已够": 4,
+     "配额闸拒发": 1
+    },
+    "Khiva": {
+     "冷却空过": 17
+    },
+    "Cleopatra": {
+     "冷却空过": 15,
+     "在途已够": 6
+    },
+    "Bowser": {
+     "配额闸拒发": 2,
+     "冷却空过": 29,
+     "在途已够": 12
+    },
+    "Chicago": {
+     "配额闸拒发": 3,
+     "冷却空过": 31
+    },
+    "Enderman": {
+     "冷却空过": 57,
+     "在途已够": 19
+    },
+    "AltF4": {
+     "冷却空过": 38,
+     "配额闸拒发": 8
+    }
+   }
+  },
+  "sendRefused": {
+   "rows": 457,
+   "share": 0.256,
+   "byCat": {
+    "有目标没发": {
+     "Policy.send 3934 → Strategy.send 531｜isNoFullSend=0": 132,
+     "Policy.send 3871 → 没到 Strategy.send｜isNoFullSend=1": 17,
+     "Policy.send 3934 → Strategy.send 531｜isNoFullSend=1": 308
+    }
+   },
+   "byBot": {
+    "Frieren": 10,
+    "Afsharid": 27,
+    "Angkor": 6,
+    "TaxCollector": 45,
+    "Mansa Musa": 75,
+    "Chosokabe": 11,
+    "Khiva": 17,
+    "BlackRock": 83,
+    "Cleopatra": 15,
+    "Bowser": 31,
+    "Chicago": 34,
+    "Enderman": 57,
+    "AltF4": 46
+   }
+  },
+  "noFullSendRows": {
+   "all": 1782,
+   "nfs1": 1013,
+   "nfs1_nocmd": 806
+  }
+ },
+ "spawnHops": {
+  "source": "scripts/spawn_exec.py B010 --hops --seq（坐标序列来自 [HL-SPAWN]，落地来自录像的出生指令）",
+  "mapW": 1541,
+  "minSep": 145,
+  "solverRounds": 0,
+  "spawnBackendLines": 0,
+  "spawnLines": 186,
+  "phase": "−51…−1",
+  "perBot": {
+   "Afsharid": {
+    "slot": 8,
+    "coords": 11,
+    "jumpMedian": 790,
+    "landed": 9,
+    "landedTicks": "−48…−4",
+    "final": "(298,98) 倒数第 2 个"
+   },
+   "AltF4": {
+    "slot": 18,
+    "coords": 21,
+    "jumpMedian": 832,
+    "landed": 8,
+    "landedTicks": "−48…−20",
+    "final": "(1170,562) 倒数第 13 个"
+   },
+   "Angkor": {
+    "slot": 12,
+    "coords": 13,
+    "jumpMedian": 641,
+    "landed": 11,
+    "landedTicks": "−48…−13",
+    "final": "(1314,610) 倒数第 2 个"
+   },
+   "BlackRock": {
+    "slot": 13,
+    "coords": 20,
+    "jumpMedian": 850,
+    "landed": 18,
+    "landedTicks": "−48…−2",
+    "final": "(1314,594) 倒数第 2 个"
+   },
+   "Bowser": {
+    "slot": 7,
+    "coords": 10,
+    "jumpMedian": 623,
+    "landed": 8,
+    "landedTicks": "−49…−4",
+    "final": "(470,154) 倒数第 2 个"
+   },
+   "Chicago": {
+    "slot": 6,
+    "coords": 12,
+    "jumpMedian": 460,
+    "landed": 10,
+    "landedTicks": "−48…−3",
+    "final": "(938,162) 倒数第 2 个"
+   },
+   "Chosokabe": {
+    "slot": 17,
+    "coords": 24,
+    "jumpMedian": 627,
+    "landed": 15,
+    "landedTicks": "−48…−18",
+    "final": "(306,386) 倒数第 9 个"
+   },
+   "Cleopatra": {
+    "slot": 5,
+    "coords": 11,
+    "jumpMedian": 646,
+    "landed": 9,
+    "landedTicks": "−49…−4",
+    "final": "(130,438) 倒数第 2 个"
+   },
+   "Enderman": {
+    "slot": 10,
+    "coords": 13,
+    "jumpMedian": 599,
+    "landed": 11,
+    "landedTicks": "−49…−1",
+    "final": "(1138,1058) 倒数第 2 个"
+   },
+   "Frieren": {
+    "slot": 9,
+    "coords": 12,
+    "jumpMedian": 490,
+    "landed": 10,
+    "landedTicks": "−49…−4",
+    "final": "(1138,1058) 倒数第 2 个"
+   },
+   "Khiva": {
+    "slot": 1,
+    "coords": 5,
+    "jumpMedian": 898,
+    "landed": 4,
+    "landedTicks": "−43…−26",
+    "final": "(1150,1034) 最后一个"
+   },
+   "Mansa Musa": {
+    "slot": 11,
+    "coords": 18,
+    "jumpMedian": 515,
+    "landed": 15,
+    "landedTicks": "−48…−3",
+    "final": "(642,1058) 倒数第 3 个"
+   },
+   "TaxCollector": {
+    "slot": 14,
+    "coords": 16,
+    "jumpMedian": 656,
+    "landed": 14,
+    "landedTicks": "−48…−1",
+    "final": "(482,1042) 倒数第 2 个"
+   }
+  },
+  "totals": {
+   "coordsMedian": 13,
+   "coordsMin": 5,
+   "coordsMax": 24,
+   "jumpMedian": 647,
+   "jumpsGE300": "139/173",
+   "sharedCoords": 38,
+   "sharedBy3plus": 9
+  },
+  "sharedExamples": {
+   "(386,1026)": [
+    "AltF4",
+    "Angkor",
+    "BlackRock",
+    "Enderman",
+    "Mansa Musa",
+    "TaxCollector"
+   ],
+   "(1314,610)": [
+    "Angkor",
+    "BlackRock",
+    "Chosokabe",
+    "Enderman",
+    "Mansa Musa",
+    "TaxCollector"
+   ],
+   "(1138,1058)": [
+    "Enderman",
+    "Frieren",
+    "Mansa Musa",
+    "TaxCollector"
+   ]
+  },
+  "stackPairs": [
+   [
+    "Enderman",
+    "Frieren",
+    0
+   ],
+   [
+    "Angkor",
+    "BlackRock",
+    16
+   ],
+   [
+    "Enderman",
+    "Khiva",
+    27
+   ],
+   [
+    "Frieren",
+    "Khiva",
+    27
+   ]
+  ],
+  "nearestSquadMedian": 161,
+  "leadingLost": "每号序列开头 1–2 个坐标没落地（最小/中位/最大 1/1/2）；结尾没落地的中位 1 个、最大 12 个（AltF4）"
+ },
+ "clientDrops": {
+  "source": "scripts/review_build/B010_facts.py --sec C；scripts/delay_account.py（lastLocalTick、phantom）；scripts/result_clock.py B010",
+  "list": [
+   {
+    "bot": "Afsharid",
+    "team": 3,
+    "lastLogTick": 810,
+    "lastLocalTick": 899,
+    "lastLanded": "735→938（延迟 203）",
+    "leaveTick": 1330,
+    "atLeave": "5,735 格/140k",
+    "shellPeak": "7,916@2205",
+    "died": 2459
+   },
+   {
+    "bot": "Frieren",
+    "team": 7,
+    "lastLogTick": 810,
+    "lastLocalTick": 899,
+    "lastLanded": "700→903（203）",
+    "leaveTick": 1330,
+    "atLeave": "1,823 格/148k",
+    "shellPeak": "2,516@2110",
+    "died": 2260
+   },
+   {
+    "bot": "Khiva",
+    "team": 8,
+    "lastLogTick": 900,
+    "lastLocalTick": 989,
+    "lastLanded": "980→1225（245）",
+    "leaveTick": 1603,
+    "atLeave": "2,729 格/221k",
+    "shellPeak": "6,475@2290",
+    "died": 2583
+   },
+   {
+    "bot": "Chicago",
+    "team": 8,
+    "lastLogTick": 990,
+    "lastLocalTick": 1079,
+    "lastLanded": "1060→1407（347）",
+    "leaveTick": 1694,
+    "atLeave": "5,555 格/177k",
+    "shellPeak": "7,143@2359",
+    "died": 2542
+   },
+   {
+    "bot": "TaxCollector",
+    "team": 6,
+    "lastLogTick": 1080,
+    "lastLocalTick": 1169,
+    "lastLanded": "1155→1281（126）",
+    "leaveTick": 1603,
+    "atLeave": "3,681 格/310k",
+    "shellPeak": "5,576@2522",
+    "died": 3182
+   },
+   {
+    "bot": "Angkor",
+    "team": 7,
+    "lastLogTick": 1080,
+    "lastLocalTick": 1169,
+    "lastLanded": "1115→1414（299）",
+    "leaveTick": 1624,
+    "atLeave": "5,344 格/109k",
+    "shellPeak": "6,595@3345",
+    "died": 3701
+   }
+  ],
+  "atLeaveTotal": {
+   "tiles": 24867,
+   "troops": 1105000
+  },
+  "resultClock": "Chosokabe 上报阵亡：本地 1792 拍，墙上时间比 Bowser 的上报早 9.8 秒；按 56 毫秒一拍推算服务器在 2081 拍 → 落后 289 拍（16.2 秒），上报拍比录像阵亡拍（1558）晚 234 拍。其余 6 行（2256–6128 拍）落后 0–3 拍，相邻两行换算 54.4–58.3 毫秒/拍。",
+  "perf": "perf_fields.py B010：[HL-TICK] 370 行都带 avgMs/maxMs/skip；avgMs 中位 0.72（0–600）、1.09（600–1500）、1.15（1500–3000）、1.05（3000+），最大 1.52；maxMs 最大 49.5；skip 全 0。掉线的 6 个号最后一行 avgMs 1.11–1.47、maxMs 10.9–22.1。",
+  "note": "6 个号没有结果行，日志里没有掉线原因。本地最后一拍到 leave 之间服务器走了 165–620 拍。"
+ },
+ "squadVsSquad": {
+  "source": "scripts/squad_cross.py B010（truth 的 pairsW：引擎层的陆攻，含离场后引擎 AI 的出手）",
+  "rows": [
+   {
+    "from": "TaxCollector（T6，离场 1604）",
+    "to": "Mansa Musa（T7）",
+    "state": "已离场",
+    "troops": 145673,
+    "tiles": 2166,
+    "destroyed": 74257,
+    "window": "1700–3099",
+    "cmds": 0
+   },
+   {
+    "from": "Angkor（T7，离场 1625）",
+    "to": "BlackRock（T2）",
+    "state": "已离场",
+    "troops": 136366,
+    "tiles": 856,
+    "destroyed": 70397,
+    "window": "1800–3599",
+    "cmds": 0
+   },
+   {
+    "from": "Angkor（T7）",
+    "to": "BlackRock（T2）",
+    "state": "在线（船登陆）",
+    "troops": 11788,
+    "tiles": 311,
+    "destroyed": 2047,
+    "window": "1000–1199",
+    "cmds": "出船 4 条，登陆 2 次"
+   },
+   {
+    "from": "Enderman（T8）",
+    "to": "Mansa Musa（T7）",
+    "state": "在线（船登陆）",
+    "troops": 45598,
+    "tiles": 1020,
+    "destroyed": 21685,
+    "window": "2000–2199",
+    "cmds": "登陆 1 次"
+   },
+   {
+    "from": "Bowser（T7）",
+    "to": "Afsharid（T3，离场 1331）",
+    "state": "在线（船登陆）",
+    "troops": 15202,
+    "tiles": 172,
+    "destroyed": 4441,
+    "window": "2000–2199",
+    "cmds": "1827 拍出船，登陆 1 次"
+   },
+   {
+    "from": "Khiva（T8，离场 1604）",
+    "to": "Frieren（T7，离场 1331）",
+    "state": "已离场",
+    "troops": 18659,
+    "tiles": 2209,
+    "destroyed": 11915,
+    "window": "1600–2299",
+    "cmds": 0
+   },
+   {
+    "from": "Frieren（T7，离场 1331）",
+    "to": "Khiva（T8）",
+    "state": "离场当窗 + 已离场",
+    "troops": 18125,
+    "tiles": 911,
+    "destroyed": 69739,
+    "window": "1300–2199",
+    "cmds": 0
+   },
+   {
+    "from": "Frieren（空壳）",
+    "to": "Enderman（T8）",
+    "state": "已离场",
+    "troops": 2897,
+    "tiles": 48,
+    "destroyed": 3149,
+    "window": "1500–1599",
+    "cmds": 0
+   },
+   {
+    "from": "Afsharid（空壳）",
+    "to": "Bowser（T7）",
+    "state": "已离场",
+    "troops": 7712,
+    "tiles": 172,
+    "destroyed": 116,
+    "window": "2100–2199",
+    "cmds": 0
+   }
+  ],
+  "totals": {
+   "leaverAfter": {
+    "troops": 324102,
+    "tiles": 6184,
+    "destroyed": 216616
+   },
+   "leaveWindow": {
+    "troops": 15997,
+    "tiles": 225,
+    "destroyed": 15212
+   },
+   "online": {
+    "troops": 72588,
+    "tiles": 1503,
+    "destroyed": 28173
+   }
+  },
+  "onlineToShellCommands": 0,
+  "shellLandWentTo": {
+   "UZBEKISTAN(T4)←TaxCollector": "4,991 格 / 308k",
+   "Skandan(T2)←Khiva": "4,458 / 191k",
+   "Playa(T7)←Afsharid": 3540,
+   "Player 914(T3)←Angkor": "3,292 / 485k",
+   "No attack me pls(T5)←Afsharid": 2490,
+   "Prime(T2)←Khiva": "2,190 / 136k",
+   "Player 484(T2)←Chicago": 1922,
+   "Vanpedro(T6)←Angkor": "1,831 / 179k",
+   "Player 752(T3)←Chicago": 1526,
+   "777[RU](T3)←Chicago": 1073,
+   "me(T2)←Chicago": 950,
+   "jfabri03(T5)←Afsharid": 90,
+   "SARPİMP(T2)←Chicago": 26,
+   "total": 28379
+  }
+ },
+ "cooldownAndQuota": {
+  "source": "scripts/tick_attrib.py B010 --exits；scripts/quota_guard.py B010；/tmp/c136-r05/work/b010/nfs.mjs（引擎 noFullSend）",
+  "engineNoFullSend": 0,
+  "cooldown": {
+   "codePath": "src/strategy/v27-team-c110.js: Strategy.send L529-533；General.act L830-833",
+   "ticks600_1500": 440,
+   "shareOfDecisionTicks": 0.247,
+   "strategySendExitsByPeriod": {
+    "300–600": {
+     "L531": 21,
+     "L538": 56
+    },
+    "600–1500": {
+     "L531": 629,
+     "L538": 413
+    },
+    "1500–3000": {
+     "L531": 116,
+     "L538": 101
+    },
+    "3000+": {
+     "L531": 8,
+     "L538": 39
+    }
+   },
+   "note": "strategySendExitsByPeriod 含掉线号在客户端没跑到的拍上的影子决策；440 只数客户端跑到的拍。Va/Vb 没有这段冷却。"
+  },
+  "quotaGuard": {
+   "ver": "c110",
+   "okLine": 3934,
+   "calls": 1458,
+   "refused": 35,
+   "nfsAt": {
+    "Angkor": 1254,
+    "Enderman": null,
+    "Cleopatra": 2056,
+    "BlackRock": 596,
+    "Bowser": 729,
+    "AltF4": 988,
+    "TaxCollector": 561,
+    "Chicago": 739,
+    "Mansa Musa": 582,
+    "Chosokabe": 787,
+    "Khiva": 1287,
+    "Afsharid": 822,
+    "Frieren": 610
+   },
+   "byPeriod": [
+    {
+     "period": "0–600",
+     "calls": 117,
+     "refused": 0
+    },
+    {
+     "period": "600–1500",
+     "calls": 1071,
+     "refused": 29
+    },
+    {
+     "period": "1500–3000",
+     "calls": 223,
+     "refused": 6
+    },
+    {
+     "period": "3000+",
+     "calls": 47,
+     "refused": 0
+    }
+   ],
+   "by300": [
+    {
+     "w": 0,
+     "calls": 40
+    },
+    {
+     "w": 300,
+     "calls": 77,
+     "nfs1": 3
+    },
+    {
+     "w": 600,
+     "calls": 330,
+     "nfs1": 205,
+     "refused": 8,
+     "L3871": 8
+    },
+    {
+     "w": 900,
+     "calls": 418,
+     "nfs1": 269,
+     "refused": 11,
+     "L3871": 11
+    },
+    {
+     "w": 1200,
+     "calls": 323,
+     "nfs1": 279,
+     "refused": 10,
+     "L3871": 10
+    },
+    {
+     "w": 1500,
+     "calls": 148,
+     "nfs1": 146,
+     "refused": 2,
+     "L3871": 2
+    },
+    {
+     "w": 1800,
+     "calls": 64,
+     "nfs1": 59,
+     "refused": 4,
+     "L3871": 4
+    },
+    {
+     "w": 2100,
+     "calls": 8,
+     "nfs1": 6
+    },
+    {
+     "w": 2400,
+     "calls": 3,
+     "nfs1": 3
+    },
+    {
+     "w": 3000,
+     "calls": 3,
+     "nfs1": 3
+    },
+    {
+     "w": 3300,
+     "calls": 6,
+     "nfs1": 6
+    },
+    {
+     "w": 3600,
+     "calls": 3,
+     "nfs1": 3
+    },
+    {
+     "w": 3900,
+     "calls": 5,
+     "nfs1": 5
+    },
+    {
+     "w": 4200,
+     "calls": 5,
+     "nfs1": 5
+    },
+    {
+     "w": 4500,
+     "calls": 7,
+     "nfs1": 4
+    },
+    {
+     "w": 5400,
+     "calls": 3,
+     "nfs1": 3
+    },
+    {
+     "w": 5700,
+     "calls": 15,
+     "nfs1": 15
+    }
+   ],
+   "byBot": {
+    "Cleopatra": {
+     "calls": 58,
+     "refused": 3
+    },
+    "TaxCollector": {
+     "calls": 84
+    },
+    "Chosokabe": {
+     "calls": 30,
+     "refused": 1
+    },
+    "Angkor": {
+     "calls": 106,
+     "refused": 5
+    },
+    "Bowser": {
+     "calls": 66,
+     "refused": 2
+    },
+    "Khiva": {
+     "calls": 150,
+     "refused": 4
+    },
+    "AltF4": {
+     "calls": 113,
+     "refused": 8
+    },
+    "Chicago": {
+     "calls": 180,
+     "refused": 7
+    },
+    "Mansa Musa": {
+     "calls": 170,
+     "refused": 1
+    },
+    "Enderman": {
+     "calls": 100
+    },
+    "BlackRock": {
+     "calls": 251,
+     "refused": 2
+    },
+    "Afsharid": {
+     "calls": 118,
+     "refused": 1
+    },
+    "Frieren": {
+     "calls": 32,
+     "refused": 1
+    }
+   }
+  },
+  "unlockShadow": {
+   "source": "scripts/shadow.mjs B010 --quiet --match（原样）与 --match --unlock（对照）",
+   "asPlayed": {
+    "shadowIssued": 568,
+    "selfReported": 517,
+    "landed": 412,
+    "guardRefusals": 35
+   },
+   "unlocked": {
+    "shadowIssued": 569,
+    "selfReported": 517,
+    "landed": 412,
+    "guardRefusals": 0
+   },
+   "note": "「影子想发」数到各号最后一条日志为止。清掉标志以后只多 1 条决策：本局的误置位几乎没有改变出手。"
+  }
+ },
+ "lateGame": {
+  "source": "scripts/shadow.mjs B010 --bots … --t0 1500 --t1 6200 --win 1500 --mids buyLand,tryDonateToTeammate；scripts/game_facts.py B010（§16）；scripts/review_build/B010_facts.py --sec A,B",
+  "buyLandLines": {
+   "L5267": "价格 ≥ 估值且密度 ≤100 → break",
+   "L5272": "唯一健康缓冲不打",
+   "L5281": "拥挤封顶",
+   "L5361": "留底后可用兵 ≤0",
+   "L5364": "机器人已在打",
+   "L5367": "机器人：预算不够一口吃下且不到存兵的 20%",
+   "L5528": "真人：不够吃下",
+   "L5368/L5507/L5522/L5531": "出手",
+   "L5533": "空手返回"
+  },
+  "buyLand": {
+   "Enderman": {
+    "1500–2999": {
+     "calls": 300,
+     "L5533": 300,
+     "L5267": 108,
+     "noOffers": 192
+    },
+    "3000–4499": {
+     "calls": 300,
+     "L5533": 300,
+     "L5361": 172,
+     "L5267": 128,
+     "L5281": 20
+    },
+    "4500–5999": {
+     "calls": 206,
+     "L5533": 206,
+     "L5361": 150,
+     "L5281": 80,
+     "L5267": 26
+    }
+   },
+   "Mansa Musa": {
+    "1500–2999": {
+     "calls": 300,
+     "L5533": 278,
+     "L5368": 22,
+     "L5367": 176,
+     "L5364": 29
+    },
+    "3000–4499": {
+     "calls": 300,
+     "L5533": 294,
+     "L5522": 6,
+     "L5367": 209,
+     "L5361": 97,
+     "L5511": 16,
+     "L5267": 11
+    },
+    "4500–5999": {
+     "calls": 300,
+     "L5533": 300,
+     "L5361": 130,
+     "L5367": 51,
+     "L5528": 48,
+     "L5272": 45,
+     "L5281": 31,
+     "L5267": 27
+    }
+   },
+   "BlackRock": {
+    "1500–2999": {
+     "calls": 300,
+     "L5533": 211,
+     "L5531": 42,
+     "L5522": 38,
+     "L5368": 9,
+     "L5267": 211,
+     "L5367": 62,
+     "L5528": 37,
+     "L5361": 10
+    },
+    "3000–4499": {
+     "calls": 300,
+     "L5533": 297,
+     "L5531": 3,
+     "L5267": 205,
+     "L5361": 69,
+     "L5528": 66,
+     "L5281": 23
+    },
+    "4500–5999": {
+     "calls": 300,
+     "L5533": 298,
+     "L5531": 2,
+     "L5361": 200,
+     "L5267": 97,
+     "L5281": 63
+    }
+   },
+   "Cleopatra": {
+    "1500–2999": {
+     "calls": 300,
+     "L5533": 289,
+     "L5507": 9,
+     "L5531": 2,
+     "L5267": 245,
+     "L5361": 154,
+     "L5528": 85
+    },
+    "3000–4499": {
+     "calls": 300,
+     "L5533": 300,
+     "L5361": 104,
+     "L5267": 28
+    }
+   }
+  },
+  "donateLines": {
+   "L4385": "自己正被真人打或兵 ≤ 1.1×留底",
+   "L4389": "可捐比例 <55/1024",
+   "L4456": "救援戳",
+   "L4462": "密度 <112",
+   "L4487": "没有同队的 Boss/兄弟"
+  },
+  "donate": {
+   "Enderman": {
+    "3000–4499": {
+     "L4487": 149,
+     "L4385": 125,
+     "L4462": 20,
+     "L4389": 6
+    },
+    "4500–5999": {
+     "L4487": 156,
+     "L4385": 39,
+     "L4456": 4,
+     "L4462": 3,
+     "L4389": 1
+    }
+   },
+   "BlackRock": {
+    "3000–4499": {
+     "L4385": 182,
+     "L4462": 74,
+     "L4487": 18,
+     "L4389": 14,
+     "L4456": 4
+    },
+    "4500–5999": {
+     "L4487": 175,
+     "L4385": 95,
+     "L4462": 23,
+     "L4389": 6
+    }
+   },
+   "Mansa Musa": {
+    "3000–4499": {
+     "L4385": 208,
+     "L4462": 58,
+     "L4487": 22,
+     "L4389": 6
+    },
+    "4500–5999": {
+     "L4487": 162,
+     "L4385": 130,
+     "L4456": 1
+    }
+   }
+  },
+  "assistPokes": [
+   {
+    "t": 3374,
+    "bot": "BlackRock",
+    "troops": 105000,
+    "target": "Player 914(T3) 22,565 格/1.66M",
+    "self": "8,950 格/1.04M",
+    "for": "Angkor（空壳，离场 1625）"
+   },
+   {
+    "t": 3402,
+    "bot": "BlackRock",
+    "troops": 97000,
+    "target": "Player 914",
+    "for": "Angkor（空壳）"
+   },
+   {
+    "t": 3521,
+    "bot": "BlackRock",
+    "troops": 100000,
+    "target": "Player 914",
+    "for": "Angkor（空壳）"
+   },
+   {
+    "t": 3640,
+    "bot": "BlackRock",
+    "troops": 103000,
+    "target": "Player 914 23,965 格/1.67M",
+    "for": "Angkor（空壳）",
+    "after": "Player 914 3780 拍 251k，其后共 8 条 3.62M"
+   },
+   {
+    "t": 4823,
+    "bot": "Mansa Musa",
+    "troops": 200000,
+    "target": "Full send(T2) 25,160 格/3.02M",
+    "self": "14,080 格/1.99M",
+    "for": "Enderman（在线）",
+    "after": "Full send 5313 拍 620k，其后共 6 条 3.27M"
+   },
+   {
+    "t": 5327,
+    "bot": "Enderman",
+    "troops": 80000,
+    "target": "Full send 25,802 格/3.12M",
+    "self": "5,362 格/796k",
+    "for": "Mansa Musa（在线）"
+   },
+   {
+    "t": 5348,
+    "bot": "Enderman",
+    "troops": 72000,
+    "target": "Skandan(T2) 30,830 格/3.30M",
+    "self": "5,530 格/712k",
+    "for": "Mansa Musa"
+   },
+   {
+    "t": 5376,
+    "bot": "Enderman",
+    "troops": 65000,
+    "target": "Skandan",
+    "for": "Mansa Musa"
+   },
+   {
+    "t": 5404,
+    "bot": "Enderman",
+    "troops": 61000,
+    "target": "Skandan",
+    "for": "Mansa Musa",
+    "after": "Skandan 5404/5446/5502 拍 503k/448k/462k；Enderman 5530 拍阵亡"
+   }
+  ],
+  "exchange": {
+   "Skandan→Enderman": "1.43M / 4,621 格（310 兵/格）",
+   "Full send→Mansa Musa": "3.27M / 7,545（434）",
+   "Player 887→Mansa Musa": "1.99M / 5,119（389）",
+   "Player 914→BlackRock": "3.62M / 10,478（345）",
+   "Suuiiiii→BlackRock": "1.85M / 4,855（382）",
+   "Mansa Musa→UZBEKISTAN": "158k / 5,504（29）",
+   "BlackRock→sora_w": "237k / 2,392（99）",
+   "BlackRock→Player 802": "228k / 1,664（137）",
+   "BlackRock→Player 914": "404k / 1,434（282）",
+   "BlackRock→Suuiiiii": "770k / 2,987（258）",
+   "Enderman→Skandan": "200k / 341（586）",
+   "Enderman→Full send": "82k / 189（433）",
+   "Mansa Musa→Full send": "200k / 495（403）"
+  },
+  "blackRockBoats": {
+   "ticks": [
+    5215,
+    5425,
+    5607,
+    5621,
+    5663,
+    5726,
+    5733,
+    5831
+   ],
+   "troops": 1705000,
+   "fees": 331874,
+   "landings": 5,
+   "landedTroops": 875000,
+   "tilesFromBot168": 647
+  },
+  "endermanCap": "4600–4760 拍存兵恒为 996,900（= 150 × 6,646 格）；影子里 4100–4700 拍 11 条出船决策（各约 12 万）客户端没有受理（自报 56 条对影子 71 条），录像里也没有"
+ },
+ "squadVsRealHumans": [
+  {
+   "t": 300,
+   "realHumansActive": 67,
+   "realTerrMedian": 480,
+   "realTerrUpperQ": 676,
+   "realDensMedian": 3.6,
+   "squadActive": 13,
+   "squadTerrMedianActive": 516,
+   "squadTerrMedianAllAlive": 516,
+   "squadDensMedianActive": 2.7
+  },
+  {
+   "t": 600,
+   "realHumansActive": 64,
+   "realTerrMedian": 2310,
+   "realTerrUpperQ": 2936,
+   "realDensMedian": 2.2,
+   "squadActive": 13,
+   "squadTerrMedianActive": 2191,
+   "squadTerrMedianAllAlive": 2191,
+   "squadDensMedianActive": 2.3
+  },
+  {
+   "t": 900,
+   "realHumansActive": 61,
+   "realTerrMedian": 4554,
+   "realTerrUpperQ": 5885,
+   "realDensMedian": 3.6,
+   "squadActive": 13,
+   "squadTerrMedianActive": 3207,
+   "squadTerrMedianAllAlive": 3207,
+   "squadDensMedianActive": 6.1
+  },
+  {
+   "t": 1200,
+   "realHumansActive": 59,
+   "realTerrMedian": 6745,
+   "realTerrUpperQ": 9091,
+   "realDensMedian": 7.4,
+   "squadActive": 13,
+   "squadTerrMedianActive": 4444,
+   "squadTerrMedianAllAlive": 4444,
+   "squadDensMedianActive": 15.7
+  },
+  {
+   "t": 1500,
+   "realHumansActive": 54,
+   "realTerrMedian": 8318,
+   "realTerrUpperQ": 11200,
+   "realDensMedian": 13.7,
+   "squadActive": 11,
+   "squadTerrMedianActive": 4996,
+   "squadTerrMedianAllAlive": 4996,
+   "squadDensMedianActive": 21.0
+  },
+  {
+   "t": 1800,
+   "realHumansActive": 54,
+   "realTerrMedian": 8654,
+   "realTerrUpperQ": 12388,
+   "realDensMedian": 19.8,
+   "squadActive": 6,
+   "squadTerrMedianActive": 5317,
+   "squadTerrMedianAllAlive": 5317,
+   "squadDensMedianActive": 33.3
+  },
+  {
+   "t": 2100,
+   "realHumansActive": 49,
+   "realTerrMedian": 9174,
+   "realTerrUpperQ": 14646,
+   "realDensMedian": 22.8,
+   "squadActive": 6,
+   "squadTerrMedianActive": 5373,
+   "squadTerrMedianAllAlive": 5719,
+   "squadDensMedianActive": 14.8
+  },
+  {
+   "t": 2400,
+   "realHumansActive": 44,
+   "realTerrMedian": 11213,
+   "realTerrUpperQ": 16189,
+   "realDensMedian": 34.6,
+   "squadActive": 4,
+   "squadTerrMedianActive": 7928,
+   "squadTerrMedianAllAlive": 6176,
+   "squadDensMedianActive": 28.8
+  },
+  {
+   "t": 3000,
+   "realHumansActive": 40,
+   "realTerrMedian": 13499,
+   "realTerrUpperQ": 18235,
+   "realDensMedian": 58.0,
+   "squadActive": 4,
+   "squadTerrMedianActive": 7664,
+   "squadTerrMedianAllAlive": 6563,
+   "squadDensMedianActive": 60.1
+  },
+  {
+   "t": 3600,
+   "realHumansActive": 39,
+   "realTerrMedian": 13806,
+   "realTerrUpperQ": 19352,
+   "realDensMedian": 90.7,
+   "squadActive": 4,
+   "squadTerrMedianActive": 8330,
+   "squadTerrMedianAllAlive": 6667,
+   "squadDensMedianActive": 96.8
+  },
+  {
+   "t": 4500,
+   "realHumansActive": 30,
+   "realTerrMedian": 16385,
+   "realTerrUpperQ": 25917,
+   "realDensMedian": 100.1,
+   "squadActive": 4,
+   "squadTerrMedianActive": 10262,
+   "squadTerrMedianAllAlive": 10262,
+   "squadDensMedianActive": 104.8
+  }
+ ],
+ "bursts": {
+  "Angkor": {
+   "cmds": 19,
+   "burstTicks": 1,
+   "cmdsInBursts": 3,
+   "list": [
+    {
+     "t": 1057,
+     "n": 3,
+     "targets": {
+      "BlackRock": 3
+     },
+     "spentPctOfBal": 74,
+     "firstCmdPctOfBal": 35,
+     "noFront": 0
+    }
+   ]
+  },
+  "Enderman": {
+   "cmds": 45,
+   "burstTicks": 3,
+   "cmdsInBursts": 23,
+   "list": [
+    {
+     "t": 1274,
+     "n": 9,
+     "targets": {
+      "中立": 8,
+      "机器人#106": 1
+     },
+     "spentPctOfBal": 9,
+     "firstCmdPctOfBal": 0,
+     "noFront": 8
+    },
+    {
+     "t": 1596,
+     "n": 9,
+     "targets": {
+      "中立": 9
+     },
+     "spentPctOfBal": 0,
+     "firstCmdPctOfBal": 0,
+     "noFront": 9
+    },
+    {
+     "t": 1813,
+     "n": 5,
+     "targets": {
+      "Full send(#74,T2)": 1,
+      "机器人#439": 4
+     },
+     "spentPctOfBal": 68,
+     "firstCmdPctOfBal": 12,
+     "noFront": 0
+    }
+   ]
+  },
+  "Cleopatra": {
+   "cmds": 47,
+   "burstTicks": 2,
+   "cmdsInBursts": 6,
+   "list": [
+    {
+     "t": 791,
+     "n": 3,
+     "targets": {
+      "机器人#321": 2,
+      "机器人#157": 1
+     },
+     "spentPctOfBal": 55,
+     "firstCmdPctOfBal": 22,
+     "noFront": 0
+    },
+    {
+     "t": 896,
+     "n": 3,
+     "targets": {
+      "中立": 3
+     },
+     "spentPctOfBal": 43,
+     "firstCmdPctOfBal": 13,
+     "noFront": 0
+    }
+   ]
+  },
+  "BlackRock": {
+   "cmds": 79,
+   "burstTicks": 7,
+   "cmdsInBursts": 44,
+   "list": [
+    {
+     "t": 2100,
+     "n": 9,
+     "targets": {
+      "Player 802(#15,T1)": 9
+     },
+     "spentPctOfBal": 82,
+     "firstCmdPctOfBal": 12,
+     "noFront": 0
+    },
+    {
+     "t": 1393,
+     "n": 8,
+     "targets": {
+      "中立": 8
+     },
+     "spentPctOfBal": 0,
+     "firstCmdPctOfBal": 0,
+     "noFront": 8
+    },
+    {
+     "t": 1708,
+     "n": 8,
+     "targets": {
+      "中立": 8
+     },
+     "spentPctOfBal": 0,
+     "firstCmdPctOfBal": 0,
+     "noFront": 8
+    },
+    {
+     "t": 1876,
+     "n": 8,
+     "targets": {
+      "中立": 8
+     },
+     "spentPctOfBal": 0,
+     "firstCmdPctOfBal": 0,
+     "noFront": 8
+    },
+    {
+     "t": 903,
+     "n": 4,
+     "targets": {
+      "中立": 4
+     },
+     "spentPctOfBal": 0,
+     "firstCmdPctOfBal": 0,
+     "noFront": 4
+    },
+    {
+     "t": 1092,
+     "n": 4,
+     "targets": {
+      "机器人#159": 4
+     },
+     "spentPctOfBal": 70,
+     "firstCmdPctOfBal": 28,
+     "noFront": 0
+    },
+    {
+     "t": 791,
+     "n": 3,
+     "targets": {
+      "中立": 1,
+      "机器人#101": 2
+     },
+     "spentPctOfBal": 38,
+     "firstCmdPctOfBal": 12,
+     "noFront": 0
+    }
+   ]
+  },
+  "Bowser": {
+   "cmds": 40,
+   "burstTicks": 4,
+   "cmdsInBursts": 24,
+   "list": [
+    {
+     "t": 1239,
+     "n": 9,
+     "targets": {
+      "中立": 9
+     },
+     "spentPctOfBal": 0,
+     "firstCmdPctOfBal": 0,
+     "noFront": 9
+    },
+    {
+     "t": 994,
+     "n": 6,
+     "targets": {
+      "中立": 1,
+      "机器人#444": 3,
+      "机器人#309": 2
+     },
+     "spentPctOfBal": 81,
+     "firstCmdPctOfBal": 17,
+     "noFront": 1
+    },
+    {
+     "t": 1827,
+     "n": 5,
+     "targets": {
+      "机器人#306": 1,
+      "No attack me pls(#45,T5)": 1,
+      "jfabri03(#38,T5)": 2,
+      "Afsharid": 1
+     },
+     "spentPctOfBal": 81,
+     "firstCmdPctOfBal": 12,
+     "noFront": 0
+    },
+    {
+     "t": 1575,
+     "n": 4,
+     "targets": {
+      "No attack me pls(#45,T5)": 2,
+      "jfabri03(#38,T5)": 2
+     },
+     "spentPctOfBal": 69,
+     "firstCmdPctOfBal": 15,
+     "noFront": 0
+    }
+   ]
+  },
+  "AltF4": {
+   "cmds": 38,
+   "burstTicks": 4,
+   "cmdsInBursts": 28,
+   "list": [
+    {
+     "t": 1624,
+     "n": 9,
+     "targets": {
+      "中立": 9
+     },
+     "spentPctOfBal": 87,
+     "firstCmdPctOfBal": 24,
+     "noFront": 0
+    },
+    {
+     "t": 1302,
+     "n": 8,
+     "targets": {
+      "中立": 7,
+      "机器人#491": 1
+     },
+     "spentPctOfBal": 23,
+     "firstCmdPctOfBal": 0,
+     "noFront": 7
+    },
+    {
+     "t": 1834,
+     "n": 8,
+     "targets": {
+      "中立": 8
+     },
+     "spentPctOfBal": 0,
+     "firstCmdPctOfBal": 0,
+     "noFront": 8
+    },
+    {
+     "t": 420,
+     "n": 3,
+     "targets": {
+      "中立": 3
+     },
+     "spentPctOfBal": 85,
+     "firstCmdPctOfBal": 41,
+     "noFront": 0
+    }
+   ]
+  },
+  "TaxCollector": {
+   "cmds": 25,
+   "burstTicks": 1,
+   "cmdsInBursts": 9,
+   "list": [
+    {
+     "t": 1281,
+     "n": 9,
+     "targets": {
+      "中立": 9
+     },
+     "spentPctOfBal": 0,
+     "firstCmdPctOfBal": 0,
+     "noFront": 9
+    }
+   ]
+  },
+  "Chicago": {
+   "cmds": 31,
+   "burstTicks": 3,
+   "cmdsInBursts": 17,
+   "list": [
+    {
+     "t": 1407,
+     "n": 7,
+     "targets": {
+      "中立": 1,
+      "机器人#341": 6
+     },
+     "spentPctOfBal": 73,
+     "firstCmdPctOfBal": 15,
+     "noFront": 0
+    },
+    {
+     "t": 1092,
+     "n": 6,
+     "targets": {
+      "中立": 6
+     },
+     "spentPctOfBal": 34,
+     "firstCmdPctOfBal": 5,
+     "noFront": 0
+    },
+    {
+     "t": 896,
+     "n": 4,
+     "targets": {
+      "机器人#187": 2,
+      "机器人#229": 2
+     },
+     "spentPctOfBal": 40,
+     "firstCmdPctOfBal": 10,
+     "noFront": 0
+    }
+   ]
+  },
+  "Mansa Musa": {
+   "cmds": 64,
+   "burstTicks": 7,
+   "cmdsInBursts": 34,
+   "list": [
+    {
+     "t": 1120,
+     "n": 8,
+     "targets": {
+      "中立": 6,
+      "机器人#466": 2
+     },
+     "spentPctOfBal": 11,
+     "firstCmdPctOfBal": 5,
+     "noFront": 6
+    },
+    {
+     "t": 1722,
+     "n": 8,
+     "targets": {
+      "中立": 8
+     },
+     "spentPctOfBal": 0,
+     "firstCmdPctOfBal": 0,
+     "noFront": 8
+    },
+    {
+     "t": 1876,
+     "n": 5,
+     "targets": {
+      "机器人#439": 5
+     },
+     "spentPctOfBal": 32,
+     "firstCmdPctOfBal": 6,
+     "noFront": 0
+    },
+    {
+     "t": 1428,
+     "n": 4,
+     "targets": {
+      "中立": 3,
+      "机器人#509": 1
+     },
+     "spentPctOfBal": 21,
+     "firstCmdPctOfBal": 0,
+     "noFront": 3
+    },
+    {
+     "t": 798,
+     "n": 3,
+     "targets": {
+      "机器人#144": 3
+     },
+     "spentPctOfBal": 39,
+     "firstCmdPctOfBal": 18,
+     "noFront": 0
+    },
+    {
+     "t": 917,
+     "n": 3,
+     "targets": {
+      "中立": 1,
+      "机器人#257": 2
+     },
+     "spentPctOfBal": 17,
+     "firstCmdPctOfBal": 5,
+     "noFront": 0
+    },
+    {
+     "t": 2072,
+     "n": 3,
+     "targets": {
+      "机器人#247": 1,
+      "机器人#439": 2
+     },
+     "spentPctOfBal": 39,
+     "firstCmdPctOfBal": 10,
+     "noFront": 0
+    }
+   ]
+  },
+  "Chosokabe": {
+   "cmds": 18,
+   "burstTicks": 1,
+   "cmdsInBursts": 7,
+   "list": [
+    {
+     "t": 1267,
+     "n": 7,
+     "targets": {
+      "中立": 4,
+      "机器人#238": 3
+     },
+     "spentPctOfBal": 80,
+     "firstCmdPctOfBal": 17,
+     "noFront": 0
+    }
+   ]
+  },
+  "Frieren": {
+   "cmds": 15,
+   "burstTicks": 1,
+   "cmdsInBursts": 3,
+   "list": [
+    {
+     "t": 903,
+     "n": 3,
+     "targets": {
+      "中立": 3
+     },
+     "spentPctOfBal": 0,
+     "firstCmdPctOfBal": 0,
+     "noFront": 3
+    }
+   ]
+  },
+  "_total": {
+   "squadCmds": 446,
+   "cmdsInBursts": 198
+  }
+ },
+ "delivery": {
+  "Cleopatra": {
+   "lastLogT": 5940,
+   "atkBoatIssued": 47,
+   "atkBoatExecuted": 47,
+   "atkBoatRate": 1.0,
+   "donIssued": 0,
+   "donExecuted": 0,
+   "deadWindows": [],
+   "issuedInDeadWindows": 0
+  },
+  "Enderman": {
+   "lastLogT": 5490,
+   "atkBoatIssued": 56,
+   "atkBoatExecuted": 45,
+   "atkBoatRate": 0.8,
+   "donIssued": 0,
+   "donExecuted": 0,
+   "deadWindows": [],
+   "issuedInDeadWindows": 0
+  },
+  "TaxCollector": {
+   "lastLogT": 1080,
+   "atkBoatIssued": 30,
+   "atkBoatExecuted": 16,
+   "atkBoatRate": 0.53,
+   "donIssued": 0,
+   "donExecuted": 0,
+   "deadWindows": [],
+   "issuedInDeadWindows": 0
+  },
+  "Afsharid": {
+   "lastLogT": 810,
+   "atkBoatIssued": 19,
+   "atkBoatExecuted": 10,
+   "atkBoatRate": 0.53,
+   "donIssued": 0,
+   "donExecuted": 0,
+   "deadWindows": [],
+   "issuedInDeadWindows": 0
+  },
+  "Frieren": {
+   "lastLogT": 810,
+   "atkBoatIssued": 15,
+   "atkBoatExecuted": 12,
+   "atkBoatRate": 0.8,
+   "donIssued": 0,
+   "donExecuted": 0,
+   "deadWindows": [],
+   "issuedInDeadWindows": 0
+  },
+  "Bowser": {
+   "lastLogT": 2250,
+   "atkBoatIssued": 42,
+   "atkBoatExecuted": 40,
+   "atkBoatRate": 0.95,
+   "donIssued": 0,
+   "donExecuted": 0,
+   "deadWindows": [],
+   "issuedInDeadWindows": 0
+  },
+  "Khiva": {
+   "lastLogT": 900,
+   "atkBoatIssued": 16,
+   "atkBoatExecuted": 9,
+   "atkBoatRate": 0.56,
+   "donIssued": 0,
+   "donExecuted": 0,
+   "deadWindows": [],
+   "issuedInDeadWindows": 0
+  },
+  "BlackRock": {
+   "lastLogT": 6120,
+   "atkBoatIssued": 107,
+   "atkBoatExecuted": 79,
+   "atkBoatRate": 0.74,
+   "donIssued": 0,
+   "donExecuted": 0,
+   "deadWindows": [],
+   "issuedInDeadWindows": 0
+  },
+  "Mansa Musa": {
+   "lastLogT": 6030,
+   "atkBoatIssued": 73,
+   "atkBoatExecuted": 64,
+   "atkBoatRate": 0.88,
+   "donIssued": 0,
+   "donExecuted": 0,
+   "deadWindows": [],
+   "issuedInDeadWindows": 0
+  },
+  "Chicago": {
+   "lastLogT": 990,
+   "atkBoatIssued": 25,
+   "atkBoatExecuted": 16,
+   "atkBoatRate": 0.64,
+   "donIssued": 0,
+   "donExecuted": 0,
+   "deadWindows": [],
+   "issuedInDeadWindows": 0
+  },
+  "Angkor": {
+   "lastLogT": 1080,
+   "atkBoatIssued": 18,
+   "atkBoatExecuted": 18,
+   "atkBoatRate": 1.0,
+   "donIssued": 0,
+   "donExecuted": 0,
+   "deadWindows": [],
+   "issuedInDeadWindows": 0
+  },
+  "Chosokabe": {
+   "lastLogT": 1530,
+   "atkBoatIssued": 18,
+   "atkBoatExecuted": 18,
+   "atkBoatRate": 1.0,
+   "donIssued": 0,
+   "donExecuted": 0,
+   "deadWindows": [],
+   "issuedInDeadWindows": 0
+  },
+  "AltF4": {
+   "lastLogT": 2250,
+   "atkBoatIssued": 51,
+   "atkBoatExecuted": 38,
+   "atkBoatRate": 0.75,
+   "donIssued": 0,
+   "donExecuted": 0,
+   "deadWindows": [
+    {
+     "t0": 1080,
+     "t1": 1260,
+     "issued": 9,
+     "executed": 0
+    }
+   ],
+   "issuedInDeadWindows": 9
+  },
+  "_total": {
+   "atkBoatIssued": 517,
+   "atkBoatExecuted": 412,
+   "atkBoatRate": 0.8,
+   "donIssued": 0,
+   "donExecuted": 0,
+   "issuedInDeadWindows": 9
+  }
+ },
+ "dispatchAudit": {
+  "logged": 0,
+  "executed": 0,
+  "notExecuted": 0,
+  "notExecutedReasons": {},
+  "perBotLoggedExecuted": {},
+  "execLagMedian": null,
+  "execLagMax": null,
+  "execLagGE25": 0,
+  "squadDonationsExecuted": 0,
+  "arrived": 0,
+  "tax": 0,
+  "toSquadMates": 0,
+  "toOtherTeammates": 0,
+  "fromOtherTeammates": {
+   "n": 2,
+   "arrived": 117856
+  },
+  "sameTickBatches": [],
+  "cardLikelyRejected": 0,
+  "cardTotalTransfers": 0,
+  "note": "日志 0 条 [HL-DISPATCH]/[HL-DONATE]，我方 0 笔捐兵。收到外人 2 笔：Bruh Union → Cleopatra 63k（2142 拍）、Broski → Chicago 54k（2534 拍，当时 Chicago 已是空壳）。"
+ },
+ "hubReconciliation": {
+  "note": "与广播 0004、0005、0007 的逐条对账",
+  "botLock(R01/R04)": "成立但不是最大的一项：600–1500 拍 1,782 个决策拍里留底 498 个（27.9%），其中当拍没有在途进攻的 225 个；留底 ≥ 一半存兵的 256 拍里定值的是我方号 126、敌方真人 105、路人队友 25、机器人 0。",
+  "oneCmdPerTick(R01)": "本局很少：全程 8 条被挤掉（600–899 拍 2、900–1199 拍 1、1500–1799 拍 5）；BlackRock 3 条打 Player 802 的决策（180k）被 pct=47 的中立补兵挤掉。c110 的 15 拍冷却让同拍第 2 条本来就少。",
+  "repeatWhileInTransit(R07/R08)": "成立：600–1500 拍 60%、1500–3000 拍 61% 的陆攻决策下在上一条同目标指令的在途期间；c110 有 15 拍冷却，重复的间隔是 15 拍而不是 5 拍。",
+  "R10-1 quota / R10-2 clamp": "不适用：0 笔捐兵。配额闸（isNoFullSend）另见 cooldownAndQuota。",
+  "R10-7 drop30": "26 个窗口；主因 被打掉 11、出船 6、打机器人 6、打真人 2、打中立 1。24 个窗口残差为 0；另 2 个是地 ≤ 峰值 1/4 时引擎清空存兵（Cleopatra 3600–3690 拍 66k，Bowser 1890–1980 拍 3k；game.js collapse L1314-1332）。",
+  "0005-1 t≥1500 队友互锁": "本局是另一种形态：受保护的不是队友而是「名单里的名字」，包括已离场的空壳（见 squadVsSquad）。",
+  "0005-3 over 跳过价格门": "成立的例子：BlackRock 密度 138 时 5824 拍 490k 打 Suuiiiii（50.2k 格/3.95M）；Enderman 密度过 100 后价格门不再拦（L5267 ×26），拦它的是留底（L5361 ×150）和拥挤封顶（L5281 ×80）。",
+  "0005-4 yield_opt": "没有发生（0 条捐兵决策落地）。",
+  "0005-6 船": "BlackRock 5215–5831 拍 8 条船 1.70M + 手续费 332k；Enderman 1708–1925 拍 8 条 330k；Bowser 1575–1869 拍 10 条 168k（前 4 条登陆两个敌方真人）；Angkor 全程 8 条（910–1057 拍 6 条）。3 次登陆在兄弟身上。",
+  "0007 延迟/执行延迟/好地": "见 delayAccount、landAccount、tickAttribution、spawnHops、clientDrops 五个字段和 .md 的两本账。"
+ },
+ "decisions": [
+  {
+   "id": "D01",
+   "t": "−51…−1",
+   "bots": [
+    "全部 13 个号"
+   ],
+   "what": "自治选点：各号按自己的序号在自己的候选表里取点，表里不含兄弟（先抹掉），表随别人落子而变。每号换 5–24 次坐标，38 个坐标被两个以上的号选过；结束时 Enderman 与 Frieren 同格、Khiva 27 格、Angkor–BlackRock 16 格。",
+   "why": "各号的候选表不同步，序号不同也会取到同一个点；把兄弟抹掉以后，已经站了人的地方照样是候选。叠点的三个号 t=1500 的地是 5,686、1,999、2,784。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.chooseSpawn L4007-4153（L4019、L4066-4072、L4074-4085、L4090-4117、L4118-4144）",
+   "evidence": "spawn_exec.py B010 --hops；land_account.mjs（名下 0.78；Frieren 1,822、BlackRock 4,930、Khiva 5,556）；in_game.log 186 行 [HL-SPAWN]。",
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "SP-HOP-STACK",
+   "statementType": "observed"
+  },
+  {
+   "id": "D02",
+   "t": "−20…420",
+   "bots": [
+    "AltF4",
+    "Chosokabe"
+   ],
+   "what": "上行不通期间照常做开局决策：AltF4 60/135/200/300/400 拍 5 次（本地 cmds=1→5，地一直 12 格、兵封顶在 1,793），420 拍 3 条同拍落地；Chosokabe 50/135 拍的决策 210/238 拍落地。",
+   "why": "指令卡在哪一层看不到。策略这头没有「上一条生效了没有」的检查，5 次决策都按 12 格的局面算。AltF4 t=600 510 格，是全队最小。",
+   "codePath": "src/strategy/v27-team-c110.js: V17.act L2722-2726 → V13.act L1850-1860 → General.act L804-828（L828 expandNeutral）；Strategy.send L526-539（L537 本地受理即 cmds++）",
+   "evidence": "B010_facts.py --sec D；replay_cmds.mjs（AltF4 −20 拍后第一条在 420 拍）；delay_account.py（AltF4 0–600 拍比基线多 107 拍、最大 285）；in_game.log 第 273–309 行。",
+   "verdict": "unclear",
+   "patternId": "NEW",
+   "patternKey": "OP-UPLINK-STALL",
+   "statementType": "observed"
+  },
+  {
+   "id": "D03",
+   "t": "0–630",
+   "bots": [
+    "其余 11 个号"
+   ],
+   "what": "DP 开局逐条按时落地：t=600 我方号地中位 2,191 对其余真人 2,409；t=630 实际地 ÷ 名下份额 0.38 对 0.36。名下份额小、叠点的号也按份额吃到了地。",
+   "why": "",
+   "codePath": "src/strategy/v27-team-c110.js: V17.act L2722-2726 → General.act L804-828（L828 中立扩张）；V13.expandNeutral L2408",
+   "evidence": "land_account.mjs（t=630）；delay_account.py：0–600 拍 98 条决策落地 90 条、照原意 89 条，P50 13；B010_facts.py --sec D。",
+   "verdict": "good",
+   "patternId": "NEW",
+   "patternKey": "OP-DP-PAR",
+   "statementType": "observed"
+  },
+  {
+   "id": "D04",
+   "t": "600–1500",
+   "bots": [
+    "全部 13 个号"
+   ],
+   "what": "对同一个机器人反复下单：冷却 15 拍一过、上一条还没落地就再下一条。303 条陆攻决策里 183 条（60%）是在途重复；落地的重复指令 102 条打出 201k（占打出兵数的 55%）另付手续费 17k，退回 44%。",
+   "why": "冷却是按 13 拍左右的正常延迟设的；延迟 184 拍时一条指令落地前同一目标能再下 10 条以上。Vb 没有冷却（A026 同一口径 73%）。",
+   "codePath": "src/strategy/v27-team-c110.js: Style.pickTarget L1198-1200（只看本地在途）；Strategy.send L529-533（15 拍冷却）；General.act L830-833",
+   "evidence": "delay_account.py B010（在途重复段）；tick_attrib.py（冷却空过 440 拍）；shadow JSON baseSendExits：600–1500 拍 Strategy.send L531 ×629、L538 ×413。",
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "AT-PULSE-REPEAT",
+   "statementType": "observed"
+  },
+  {
+   "id": "D05",
+   "t": "600–1500",
+   "bots": [
+    "全部 13 个号"
+   ],
+   "what": "冷却期内 pickTarget 仍然选中同一个目标，send 返回 false 后 General.act 直接 return：1,782 个决策拍里 440 个（24.7%）这样空过，这些拍上别的可打的机器人、出船都没有轮到。",
+   "why": "正常延迟（13 拍）下每次出手后也有 2 个决策拍这样空过；延迟大时上一条迟迟不落地，同一个目标一直排第一，其余邻居排不上。send 失败后 V13.act 还会调 boatFood，也因为贴着便宜的机器人（L2042）或还有中立边（L2040）返回。",
+   "codePath": "src/strategy/v27-team-c110.js: General.act L830-833（`if (target) { this.send(...); return; }`）；Strategy.send L529-533；Style.pickTarget L1188-1211（不知道冷却）",
+   "evidence": "tick_attrib.py B010 --exits：「有目标没发」618 拍 = 冷却空过 440（Policy.send L3934 → Strategy.send L531）+ 在途已够 161 + 配额闸拒发 17；冷却空过逐号 BlackRock 82、Mansa Musa 75、Enderman 57、TaxCollector 45、AltF4 38。440 拍里 250 拍当拍至少还有一个过得了留底的机器人邻居，368 拍本地没有任何打机器人的进攻在途。",
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "AT-COOLDOWN-IDLE",
+   "statementType": "observed"
+  },
+  {
+   "id": "D06",
+   "t": "600–3000",
+   "bots": [
+    "全部 13 个号"
+   ],
+   "what": "迟到的指令成批同拍到达、按落地时的存兵执行：600–1500 拍 21 批 114 条（5 批整批作废，6 批一拍打掉 ≥50% 存兵），1500–3000 拍 12 批 81 条（5 批整批作废，5 批打掉 ≥50%：793k 里打出 593k，手续费 88k）。全配上的 29 批名义 1.14M → 实际 841k。",
+   "why": "一批最多 9 条。目标还在的批把存兵一次打空（Bowser、AltF4、Chosokabe 都在批后被吃）；目标已死的批只赔手续费。",
+   "codePath": "src/strategy/v27-team-c110.js: Strategy.send L534-536（指令只带 pct 和目标编号）；src/sim/sim/game.js: attack L1263-1285、quote L1239-1248（按落地时存兵算兵数和手续费）",
+   "evidence": "delay_account.py B010 --list-batches（整批作废的 10 批：Frieren 903×3、BlackRock 903×4/1393×8/1708×8/1876×8、Bowser 1239×9、TaxCollector 1281×9、Enderman 1596×9、Mansa Musa 1722×8、AltF4 1834×8；一拍打掉 ≥50% 的 11 批：Bowser 994×6 81%、1575×4 69%、1827×5 81%，Chosokabe 1267×7 80%，Angkor 1057×3 74%，Chicago 1407×7 73%，BlackRock 1092×4 70%、2100×9 82%，Enderman 1813×5 68%，AltF4 1624×9 87%，Cleopatra 791×3 55%）。",
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "IO-BATCH9",
+   "statementType": "observed"
+  },
+  {
+   "id": "D07",
+   "t": "600–3000",
+   "bots": [
+    "全部 13 个号"
+   ],
+   "what": "到达时目标已死：600–1500 拍打机器人的 145 条落地指令里 79 条（延迟中位 269 拍），58 条作废、21 条改打中立（49k + 手续费 7k，退回 94%，拿 1,057 格）；1500–3000 拍 57 条里 47 条（延迟中位 466 拍）。另有 151 条始终没落地（600–3000 拍）。迟到的船落在换了主人的地上：Bowser 1575 拍 4 条（决策时目的地无主）登陆两个从没打过它的 T5 真人 100k（1587–1610 拍），1603 拍对方第一条打回来。",
+   "why": "指令里没有决策拍，服务器不知道它过期。没落地的 151 条丢在哪一层看不到。",
+   "codePath": "src/strategy/v27-team-c110.js: Strategy.send L526-539；src/sim/sim/game.js: attack L1263-1285（目标已死记成 512）",
+   "evidence": "delay_account.py B010（③(a) 段、没落地段：600–1500 拍 100 条 = 打机器人 90 条 346k + 船 8 条 207k + 中立 2 条；1500–3000 拍 51 条 = 中立 27 条 82k + 打真人 17 条 605k + 船 6 条 214k + 机器人 1 条）。",
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "IO-STALE-TARGET",
+   "statementType": "observed"
+  },
+  {
+   "id": "D08",
+   "t": "600–1500",
+   "bots": [
+    "Chosokabe",
+    "Khiva",
+    "AltF4",
+    "Chicago",
+    "其余号"
+   ],
+   "what": "有可打的机器人、但存兵扣掉留底后不到存兵的 21.4%（minSend）或不到最小指令：498 个决策拍（27.9%），其中 225 个当拍没有任何在途进攻。Chosokabe 85.6%、Khiva 56.4%、AltF4 47.8%、Chicago 40.6%。",
+   "why": "地小的号（Chosokabe 2,081 格、AltF4 1,788 格）存兵本来就少；留底里有一半是按相邻「我方号」的存兵定的——异队的兄弟不能打，却照样算威胁（叠点的 Enderman、Khiva、Frieren 互相锁；Mansa Musa 被 TaxCollector 的 248k–310k 锁）。延迟让已经花掉的兵晚回来，也放大这个比例，分不开各占多少。",
+   "codePath": "src/strategy/v27-team-c110.js: Style.pickTarget L1196-1197；General.floors L855-867（留底 = max(封顶×reserve, 邻居存兵×ref, 安全值)）；Style.minShare L1170-1172",
+   "evidence": "tick_attrib.py B010 --exits：留底锁·无在途 225（continue 行 [1197] ×193）、留底·有在途 273；留底 ≥ 一半存兵的 256 拍里定值的是我方号 126（Khiva 44、Enderman 41、Mansa Musa 32、Frieren 9）、敌方真人 105（Chosokabe 81）、路人队友 25。",
+   "verdict": "unclear",
+   "patternId": "NEW",
+   "patternKey": "AT-BOTLOCK",
+   "statementType": "observed"
+  },
+  {
+   "id": "D09",
+   "t": "561–2056",
+   "bots": [
+    "除 Enderman 外的 12 个号"
+   ],
+   "what": "isNoFullSend 被误置位：本局不是限额局，12 个号却在 561–2056 拍（9 个在 1000 拍前）认定自己被限额，之后不复位。全程 Policy.send 因此拒发 35 次（600–1500 拍 29 次）；带 !isNoFullSend 的后期判断（4800 拍后的巨头回避、5000 拍后的堡垒判断等）对这 12 个号恒假。",
+   "why": "检查窗 1–7 拍比 13 拍的基线延迟短：窗口里看到的扣款不可能是正在检查的这一条，只能是更早的指令落地或被人打。A014、A058、A065、A095 是同一件事。本局的实际影响很小：对照影子（shadow.mjs --match --unlock，每拍把标志清回去）全程想发 569 条，对比 568 条，只多 1 条；后期在线的四个号决策条数相同。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.updateShadowQuota L3810-3845（检查窗 L3831-3844：出手后 1–7 拍）；Policy.send L3854-3872、L3886；用到 !isNoFullSend 的 L4529、L5096、L5170-5174、L5338",
+   "evidence": "quota_guard.py B010：置位拍 TaxCollector 561、Mansa Musa 582、BlackRock 596、Frieren 610、Bowser 729、Chicago 739、Chosokabe 787、Afsharid 822、AltF4 988、Angkor 1254、Khiva 1287、Cleopatra 2056；拒发 35/1,458。b010/nfs.mjs：引擎 noFullSend=0。tick_attrib.py：600–1500 拍 56.8% 的决策拍 isNoFullSend=1。",
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "EC-NOFULLSEND-LOCK",
+   "statementType": "observed"
+  },
+  {
+   "id": "D10",
+   "t": "1330–3700",
+   "bots": [
+    "BlackRock",
+    "Mansa Musa",
+    "Enderman",
+    "Bowser"
+   ],
+   "what": "不打离场兄弟的空壳：空壳对在线的四个号陆攻 293k 兵、拿走 3,242 格、打掉 148k 存兵，在线的号 0 条还手；6 个空壳的 28,379 格最后被外人以 43–147 兵/格吃走。",
+   "why": "c110 的 isOurSquadBot 没有「对方已变成机器人」的判断（Vb 的名单里有 7 个名字带 !g.isBot(p)）。Angkor 的空壳 2400–3300 拍 6,176–6,569 格只有 66k–106k 兵（密度 10–17），隔壁 BlackRock 握 340k–982k；TaxCollector 的空壳不一样：1700–2400 拍它握 295k–214k，比隔壁的 Mansa Musa（241k–183k）还多，2700 拍才变成 5,022 格/130k 对 256k。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.isOurSquadBot L3973-3976（只看名字）；isProtectedSquadMate L3993-3996；Strategy.analyze L440；General.pickTarget L1104；src/sim/sim/game.js: leave L229-233、isBot L215",
+   "evidence": "squad_cross.py B010（空壳 → 在线的四个号 293k 兵 / 3,242 格 / 打掉 148k；含空壳互打 324k / 6,184 格 / 217k）；game_facts.py §13；B010_facts.py --sec C（空壳期的地与兵：Angkor 6,515 格/72k@3120，TaxCollector 5,408 格/187k@2500，Khiva 5,945 格/117k@2200）。",
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "DF-LEAVER-SHELL-IMMUNE",
+   "statementType": "observed"
+  },
+  {
+   "id": "D11",
+   "t": "755–1925",
+   "bots": [
+    "Angkor",
+    "Enderman",
+    "Bowser"
+   ],
+   "what": "船登陆在兄弟身上：Angkor 931–1057 拍 4 条船执行时目的地已是 BlackRock 的地（登陆 2 次 11.8k 兵，311 格）；Enderman 打机器人#439 的船 2070 拍登陆时那块地已是 Mansa Musa 的（45.6k 兵，1,020 格，打掉 21.7k）；Bowser 一条登陆 Afsharid 的空壳（15k，172 格）。",
+   "why": "Angkor 的船晚了 116–237 拍，目的地已被 16 格外的 BlackRock 占了。跨队的兄弟引擎不拦。",
+   "codePath": "src/strategy/v27-team-c110.js: V13 出船选点 L1953（只在决策时避开兄弟）；General.act L839-845；V13.boatFood L2038-2057；General.boatOut L1037-1050",
+   "evidence": "squad_cross.py B010（在线互打 72,588 兵 / 1,503 格 / 28,173）；delay_account.py decisions + shadow JSON（Angkor 755–880 拍 6 条出船决策，决策当拍目的地无主，910–1057 拍执行）；重放事件（出船时目的地的主人：910 拍机器人#484，931/1057 拍 BlackRock）；成对账 Mansa Musa → 机器人#439 151k/3,771 格。",
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "SE-LAND-ON-MATE",
+   "statementType": "observed"
+  },
+  {
+   "id": "D12",
+   "t": "600–1800",
+   "bots": [
+    "全部 13 个号"
+   ],
+   "what": "贴身的机器人吃得干净：600 拍时贴着我方号、可以打的 28 个机器人（10,021 格）到 1500 拍 72.3%、到 1800 拍 73.0% 归了我方；Angkor、BlackRock、AltF4、TaxCollector、Mansa Musa、Afsharid、Frieren 各自贴身的机器人 100% 自己吃掉。",
+   "why": "",
+   "codePath": "src/strategy/v27-team-c110.js: General.act L830-833；Style.pickTarget L1180-1213（按 elimW×吃掉成本÷收益 + 价格选）",
+   "evidence": "land_account.mjs B010（perBotAdj、fate.B）；delay_account.py：600–1500 拍照打的 65 条打机器人指令 279k 拿 18,438 格（15 兵/格）。",
+   "verdict": "good",
+   "patternId": "NEW",
+   "patternKey": "AT-BOT-HARVEST",
+   "statementType": "observed"
+  },
+  {
+   "id": "D13",
+   "t": "2100 / 3339–3409 / 3997",
+   "bots": [
+    "BlackRock",
+    "Mansa Musa"
+   ],
+   "what": "挑兵少的真人下手：BlackRock 2100 拍 228k 吃 Player 802（5,857 格只有 32k 兵）1,664 格，对方 2170 拍阵亡；Mansa Musa 3339–3409 拍 158k 吃 UZBEKISTAN 5,504 格（29 兵/格）；BlackRock 3997 拍 237k 吃 sora_w 2,392 格（99 兵/格）。",
+   "why": "三次都是对方刚打完别人、兵见底的时候。BlackRock 那一批是迟到 142–225 拍的 9 条同拍到达，方向没错，只是把自己的 302k 一次打到 73k。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5250-5533（L5372 pulse、L5507/L5522/L5531 出手）；Policy.offers L5008-5245",
+   "evidence": "B010_facts.py --sec B；game_facts.py §12（交换比）、§15；成对账（pairsW）。",
+   "verdict": "good",
+   "patternId": "NEW",
+   "patternKey": "AT-THIN-KILL",
+   "statementType": "observed"
+  },
+  {
+   "id": "D14",
+   "t": "3374–5404",
+   "bots": [
+    "BlackRock",
+    "Mansa Musa",
+    "Enderman"
+   ],
+   "what": "跨队救援戳不看大小：9 条各 10% 存兵，对象是 22.5k–30.8k 格、1.66M–3.3M 的 Player 914、Full send、Skandan；BlackRock 的 4 条救的是已离场 1,750 拍的 Angkor 空壳。Enderman 戳 Skandan 的 198k 只拿到 341 格，56 拍后对方第一条 503k 打回来。",
+   "why": "被戳的三家随后都对戳人的号下了重手（3.62M、3.27M、1.41M）。是不是戳招来的没法证明：它们本来就在扩张。能确定的是 10% 的兵对这种体量没有用，而救的对象有一个是空壳。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.tryDonateToTeammate L4420-4459（L4424 选人只看名字和地 ≥300；L4434 来袭 ≥8% 或密度 <75；L4448-4450 `g.attack(102, mainAttacker, me)`）",
+   "evidence": "B010_facts.py --sec A（9 条 [HL-ASSIST] 对上录像）；成对账：Enderman → Skandan 200k/341 格、→ Full send 82k/189 格；BlackRock → Player 914 404k/1,434 格。",
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "EG-GIANT-POKE",
+   "statementType": "inferred"
+  },
+  {
+   "id": "D15",
+   "t": "2700–5326",
+   "bots": [
+    "Enderman"
+   ],
+   "what": "握着密度 29 → 150 的兵 2,600 拍不出手：buyLand 506 次全部空手而回（留底 L5361 ×322、价格门 L5267 ×154、拥挤封顶 L5281 ×100）；想捐兵 305 次没有同队的号；4600–4760 拍存兵封顶在 996,900。",
+   "why": "邻居是 Skandan（3.3M）、Full send（3.0–3.6M），留底按它们能打过来的兵算，自己不到 1M 的兵永远「不够留」。在这个位置上有没有更好的走法没有验证；确定的是越接近封顶利息越少：每 300 拍的利息地租 211k（3600 起）→ 121k → 52k → 16k（4500 起）。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5264-5281、L5358-5361；Policy.safeAt L4524-4560；Policy.tryDonateToTeammate L4462-4487；src/sim/sim/game.js: interestRate（过封顶利息递减）",
+   "evidence": "shadow.mjs B010 --mids buyLand,tryDonateToTeammate --win 1500；game_facts.py §16（Enderman 各窗）；重放 S10：4600–4760 拍 17 个采样存兵恒为 996,900。",
+   "verdict": "unclear",
+   "patternId": "NEW",
+   "patternKey": "EC-BANK-IDLE",
+   "statementType": "observed"
+  },
+  {
+   "id": "D16",
+   "t": "5215–5831",
+   "bots": [
+    "BlackRock"
+   ],
+   "what": "被两个巨头夹着的时候连发 8 条船 1.70M 去打机器人#168 的小岛：手续费 332k，登陆 875k，拿到 647 格。5929 拍 Suuiiiii 950k 打来时在家 789k。",
+   "why": "密度过了 100 以后「闲兵」每 60 拍一条船；每条船按存兵收 3.1%，8 条收走 332k。登陆的兵大半会退回来，但在路上的那几百拍不在家。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.idleBoats L4979-5006；Policy.boatFood L5536-5565；V13.boatFood L2038-2057；V13.boatOut L2362；General.boatOut L1037-1050；src/sim/sim/game.js: 出船手续费 32/1024",
+   "evidence": "B010_facts 用的重放事件（5215、5425、5607、5621、5663、5726、5733、5831 拍；pct 127–319）；成对账 BlackRock → 机器人#168 873,648 兵 / 647 格；game_facts.py §16（出船 220k、962k、855k 三窗，含手续费）。",
+   "verdict": "error",
+   "patternId": "NEW",
+   "patternKey": "SE-SCOUT-FEE",
+   "statementType": "observed"
+  },
+  {
+   "id": "D17",
+   "t": "4242–6123",
+   "bots": [
+    "Enderman",
+    "Mansa Musa",
+    "BlackRock"
+   ],
+   "what": "高密度防守让对手付出 310–434 兵/格：Skandan → Enderman 1.43M/4,621 格，Full send → Mansa Musa 3.27M/7,545 格，Player 887 → Mansa Musa 1.99M/5,119 格，Player 914 → BlackRock 3.62M/10,478 格。",
+   "why": "这是留底的另一面：没有出手，但也没有被便宜地吃掉。三个号的名次是 40、29、28（95 人）。",
+   "codePath": "src/strategy/v27-team-c110.js: Policy.buyLand L5358-5361（留底）；Policy.safeAt L4524-4560",
+   "evidence": "成对账（pairsW 全程合计）；game_facts.py §12：真人 → 编队 227 兵/格，编队 → 真人 151 兵/格。",
+   "verdict": "good",
+   "patternId": "NEW",
+   "patternKey": "DF-DENSE-HOLD",
+   "statementType": "observed"
+  }
+ ],
+ "newPatterns": [
+  {
+   "key": "SP-HOP-STACK",
+   "prefix": "SP",
+   "name": "自治选点：各号各算各的表，来回跳、叠在一起",
+   "definition": "选点期没有后端分配；同一局里 ≥2 个我方号的日志坐标序列出现同一个坐标（±8 格），或最终出生点相距 < minSep。记每号换点次数、跳距中位、叠点对数。",
+   "detector": "scripts/spawn_exec.py <局…> --hops（全部对局包可跑）"
+  },
+  {
+   "key": "OP-UPLINK-STALL",
+   "prefix": "OP",
+   "name": "开局上行不通",
+   "definition": "0–600 拍某号第一条落地指令比第一条开局决策晚 ≥90 拍，其间 [HL-OPENING] 的 terr 不变而 cmds 在涨。",
+   "detector": "scripts/review_build/B010_facts.py --sec D；scripts/delay_account.py <局>（0–600 拍各号比基线多的拍数）"
+  },
+  {
+   "key": "AT-COOLDOWN-IDLE",
+   "prefix": "AT",
+   "name": "冷却期内选中同一目标，整拍空过（c110）",
+   "definition": "决策拍上 pickTarget 选了目标、Strategy.send 因 15 拍冷却返回 false、General.act 随即 return；记这样的决策拍占比。",
+   "detector": "scripts/shadow.mjs <局> --quiet --tc 600:1500 --json … → scripts/tick_attrib.py <局> --exits（Policy.send → Strategy.send 出口行）"
+  },
+  {
+   "key": "DF-LEAVER-SHELL-IMMUNE",
+   "prefix": "DF",
+   "name": "离场兄弟的空壳受保护",
+   "definition": "我方号离场（state=2，由引擎 AI 接手）之后，它对在线我方号的陆攻兵数/格数 > 0，而在线我方号对它的陆攻指令为 0；记空壳的地最后归谁。",
+   "detector": "scripts/squad_cross.py <局>；scripts/game_facts.py <局>（§13）"
+  },
+  {
+   "key": "AT-PULSE-REPEAT",
+   "prefix": "AT",
+   "name": "在途重复下单",
+   "definition": "陆攻决策下在上一条同目标指令还没落地的时候；记占比、落地的重复指令打出的兵和手续费。",
+   "detector": "scripts/delay_account.py <局>（在途重复段）"
+  },
+  {
+   "key": "IO-BATCH9",
+   "prefix": "IO",
+   "name": "同拍批（一拍最多 9 条）",
+   "definition": "同一号同一拍执行 ≥3 条陆攻/出船；记批数、整批作废的批、一拍打掉 ≥50% 存兵的批、手续费。",
+   "detector": "scripts/delay_account.py <局> --list-batches"
+  },
+  {
+   "key": "IO-STALE-TARGET",
+   "prefix": "IO",
+   "name": "到达时目标已死",
+   "definition": "决策目标是机器人/真人，执行时目标编号被记成 512 或指令作废；记条数、改打中立的兵、手续费、退回比例。",
+   "detector": "scripts/delay_account.py <局>"
+  },
+  {
+   "key": "EC-NOFULLSEND-LOCK",
+   "prefix": "EC",
+   "name": "isNoFullSend 误置位",
+   "definition": "引擎 noFullSend=0 的局里影子策略的 isNoFullSend 变成 true；记各号置位拍、其后 Policy.send 拒发次数。",
+   "detector": "scripts/quota_guard.py <局>；scripts/shadow.mjs <局> --quiet --match [--unlock]"
+  },
+  {
+   "key": "SE-LAND-ON-MATE",
+   "prefix": "SE",
+   "name": "船登陆在兄弟身上",
+   "definition": "我方号的船登陆时目的地属于另一个我方号（跨队），形成进攻；记兵数、格数、打掉的存兵。",
+   "detector": "scripts/squad_cross.py <局>（指令 0 条、登陆 ≥1 次的行）"
+  },
+  {
+   "key": "EG-GIANT-POKE",
+   "prefix": "EG",
+   "name": "戳比自己大得多的真人",
+   "definition": "我方号对一个真人出手时对方存兵 ≥ 自己的 1.3 倍；记出手兵数、拿到的格数、其后 600 拍对方的回推。",
+   "detector": "scripts/review_build/B010_facts.py --sec A,B；scripts/game_facts.py <局>（§28）"
+  },
+  {
+   "key": "EC-BANK-IDLE",
+   "prefix": "EC",
+   "name": "握兵不动直到封顶",
+   "definition": "某号 ≥600 拍地不变、对真人 0 条陆攻、密度从 <50 涨到 >100；记 buyLand 各出口行。",
+   "detector": "scripts/game_facts.py <局>（§16）；scripts/shadow.mjs <局> --mids buyLand --win 1500"
+  },
+  {
+   "key": "SE-SCOUT-FEE",
+   "prefix": "SE",
+   "name": "大额存兵连续出船（手续费按存兵收）",
+   "definition": "600 拍内同一号 ≥5 条船且手续费合计 ≥ 存兵的 10%；记船的兵、手续费、登陆的兵、拿到的格。",
+   "detector": "scripts/match_truth.mjs 的 events（boat / boat-land）；scripts/game_facts.py <局>（§16 出船列）"
+  },
+  {
+   "key": "DF-DENSE-HOLD",
+   "prefix": "DF",
+   "name": "高密度死守（敌方每格付出 ≥200 兵）",
+   "definition": "敌方真人打某个我方号的已执行陆攻兵数 ÷ 拿走的格数 ≥200。",
+   "detector": "scripts/game_facts.py <局>（§12、§13）"
+  },
+  {
+   "key": "AT-BOTLOCK",
+   "prefix": "AT",
+   "name": "有机器人可打但被留底挡住",
+   "definition": "决策拍上邻居里有机器人，pickTarget 对每一个都在留底那一行 continue；记占比、留底由谁的兵力定。",
+   "detector": "scripts/tick_attrib.py <局> --exits"
+  },
+  {
+   "key": "OP-DP-PAR",
+   "prefix": "OP",
+   "name": "DP 开局与真人持平或更好",
+   "definition": "t=600 我方号地中位 ÷ 其余真人中位 ≥0.9，且实际地 ÷ 名下份额不低于其余真人。",
+   "detector": "scripts/land_account.mjs <局>；scripts/review_skel.py（cmp）"
+  },
+  {
+   "key": "AT-BOT-HARVEST",
+   "prefix": "AT",
+   "name": "贴身机器人吃得干净",
+   "definition": "t=600 贴着我方号的机器人的地，到 1500 拍 ≥70% 归我方。",
+   "detector": "scripts/land_account.mjs <局>（fate.B、perBotAdj）"
+  },
+  {
+   "key": "AT-THIN-KILL",
+   "prefix": "AT",
+   "name": "挑兵少的真人下手",
+   "definition": "我方号对一个真人的一轮陆攻每格花费 ≤150 兵且拿到 ≥1,500 格。",
+   "detector": "scripts/game_facts.py <局>（§12、§15）"
+  }
+ ],
+ "lossArchetype": "external",
+ "archetypeNote": "按 external 记，三条外因叠在一起：匹配把 13 个客户端分进 6 个队（各队 1–5 个号，T8 全程没有进过前三）；600–2400 拍客户端一起落后服务器（指令延迟中位 184–476 拍）；6 个客户端在 1331–1695 拍掉线。策略自身放大外因的有五处：自治选点叠点；冷却期内整拍空过和在途重复下单；isNoFullSend 误置位；只看名字的兄弟保护让空壳白白送人、还挨空壳的打；救援戳不看大小。never-grew 也说得通（T8 峰值 12.2%，编队 9.5%），但 t=630 时我方号并不比别人差，差距是 600–1500 拍拉开的。",
+ "winnerNotes": "T3 赢（36.0%）：777[RU] 12.1%、Suuiiiii 8.7%、Player 914 7.7%、Player 752 7.5%。Player 914 的地里有 Angkor 空壳的 3,292 格和 BlackRock 的 10,478 格，Suuiiiii 吃了 BlackRock 4,855 格；777[RU] 收到队友 Player 752 三笔共 984k 捐兵。T5 第二（21.6%），600–1500 拍人均吃到的机器人地最多（2,829 格）。T2（14.1%）的 Skandan、Full send 吃掉了 Khiva 的空壳、Enderman 和 Mansa Musa 的一半——它们是 BlackRock 的队友。各队真人 1500 拍的实际地 ÷ 名下份额：T2 1.10、T5 1.00、T3 1.00、T6 0.98、T4 0.87、T1 0.79、T7 0.64、T8 0.59。",
+ "wentWell": [
+  "开局：t=630 编队的实际地 ÷ 名下份额 0.38（每号中位 0.44），其余真人中位 0.36；13 个号里 11 个的开局指令逐条按时落地。",
+  "贴身机器人：600 拍时贴着我方号的 28 个可打的机器人，地的 72–73% 归了我方，7 个号把贴身的机器人 100% 吃掉。",
+  "挑兵少的真人：Mansa Musa 29 兵/格吃 UZBEKISTAN 5,504 格，BlackRock 99–137 兵/格吃 sora_w、Player 802 共 4,056 格。",
+  "高密度防守：最后三个号让对手付了 310–434 兵/格，名次 40、29、28。",
+  "重放与 370 条 [HL-TICK] 逐条相等；延迟恢复以后（2400 拍起）落地指令 P50 11 拍、照原意落地。"
+ ],
+ "unknowns": [
+  "客户端为什么从 600 拍起落后服务器、2100–2400 拍又追上：策略每拍 1 毫秒，不是策略慢；13 个号一起慢，像是同一台机器或同一条链路的事，日志里没有墙上时间（只有结果行有）。",
+  "6 个客户端为什么掉线：没有结果行、没有错误日志。日志停止到 leave 之间服务器走了 165–620 拍。",
+  "没落地的指令（600–3000 拍 151 条）丢在哪一层；AltF4、Chosokabe 选点期末尾到 420/210 拍的发送去了哪里。",
+  "影子比客户端自报多约 10%（568 对 517），主要是出船（Enderman 4100–4700 拍 11 条）：重放引擎的 boatTo 能走通的路线线上没有受理，原因不明。",
+  "救援戳和其后的回推之间有没有因果；在线的号如果吃掉隔壁的空壳，结果会差多少。都没有做反事实重放。",
+  "8 队模式下 AI 机器人分队的规则是从重放引擎读的（setupTeams 轮流分），线上是否完全一样只由 370 行逐条相等间接保证。"
+ ],
+ "mechanicsQuestions": [
+  "8 队模式里同队的 AI 机器人不能打：线上客户端的 g.teams 是否给机器人也填了队号（策略的 isTeammate 用的就是它）？",
+  "真人离场后变成引擎 AI（state=2）：线上客户端能不能读到这个状态（重放引擎的 isBot 把它算作机器人）？",
+  "客户端落后服务器时，它发出的指令是按到达服务器的拍执行、还是有过期丢弃的规则？本局 600–1500 拍 31% 的决策没有落地。",
+  "出船手续费 32/1024 按存兵收、和船上带多少兵无关：线上是否相同（BlackRock 8 条船 332k；Enderman 3955 拍一条 852 兵的船收了 27k）？",
+  "同一拍一个号最多执行 9 条指令：是服务器的上限还是客户端发送队列的上限？"
+ ],
+ "scripts": [
+  "scripts/alias_overlay.py B010（日志标签归并；其后所有命令带 C136_DATA=/tmp/c136-r05/overlay）",
+  "scripts/sim_replay.mjs B010 --check（370/370）",
+  "scripts/match_truth.mjs B010 → /tmp/c136-r05/truth/B010.json",
+  "scripts/review_skel.py B010 → /tmp/c136-r05/skel/B010.json",
+  "scripts/truth_digest.py B010；scripts/game_facts.py B010",
+  "scripts/replay_cmds.mjs B010 --out /tmp/c136-r05/work/B010-cmds.tsv",
+  "scripts/shadow_prep.cjs c110；scripts/shadow.mjs B010 --quiet --tc 600:1500 --json /tmp/c136-r05/work/B010-shadow.json",
+  "scripts/atk_fate.mjs B010 --json /tmp/c136-r05/work/B010-atkfate.json",
+  "scripts/delay_account.py B010 --json /tmp/c136-r05/work/B010-delay.json --list-batches（延迟硬账）",
+  "scripts/land_account.mjs B010 --json /tmp/c136-r05/work/B010-land.json（好地账；多队、机器人分队口径）",
+  "scripts/tick_attrib.py B010 --json /tmp/c136-r05/work/B010-attrib.json --by-bot --exits（600–1500 拍决策拍归因 + 出口行）",
+  "scripts/quota_guard.py B010 --by-bot --json /tmp/c136-r05/work/B010-quota.json",
+  "scripts/spawn_exec.py B010 --hops --seq --detail",
+  "scripts/squad_cross.py B010",
+  "scripts/perf_fields.py B010 --by-bot",
+  "scripts/result_clock.py B010",
+  "scripts/client_clock.py B010",
+  "scripts/review_build/B010_facts.py [--sec A,B,C,D,E]",
+  "scripts/shadow.mjs B010 --bots \"Enderman,BlackRock,Mansa Musa,Cleopatra,Bowser,AltF4,Chosokabe\" --t0 1500 --t1 6200 --win 1500 --mids buyLand,tryDonateToTeammate",
+  "scripts/shadow.mjs B010 --quiet --match [--unlock]",
+  "scripts/review_build/B010.py（本文件的组装脚本）"
+ ],
+ "confidenceOverall": {
+  "level": "high",
+  "note": "13 个号都在录像里：时间线、兵账、每条指令的落地拍和金额来自逐拍精确重放（370/370）；决策来自影子策略（568 条对自报 517 条，影子偏多约 10%，多在出船）。延迟逐条对账，600–1500 拍 176 条配上、其中 155 条唯一。代码行号都对着数据包里的 v27-team-c110.js 读过；该文件比本局晚一个改动（L4023），其余与本局一致（VERSION-TIMELINE.md）。外因（落后、掉线、分队）的原因看不到；因果性的判断（戳招来回推、能否吃下空壳）标了 inferred，没有反事实重放。"
+ }
+}

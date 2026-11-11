@@ -1,0 +1,333 @@
+# A007 kaito9 影子决策明细 t=2700~3240（策略 v27-team-c116-va.js；worth/safe/keep/avail 按 buyLand 源码公式重算）
+# 决策拍分类统计（区间内每个决策拍都计入，不受抽样间隔影响；可用兵 / 下限 取首选目标）：
+#   没有可打的邻居: 89 拍（t=2700~3230）
+#   捐兵: 17 拍（t=2825~3225）
+#   其他指令: 1 拍（t=3180~3180）
+#   首选目标价高（c>=worth）: 2 拍（t=3235~3240）
+t=2700 kaito9 B=639490 L=9022 d=70.9 nb=0 neut=0 cmds=33 noFull=1 shQ=157666 | m=0.900 worth=63.8 cheap=8.3 over=0 dMedOther=81.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2705 kaito9 B=639490 L=9022 d=70.9 nb=0 neut=0 cmds=33 noFull=1 shQ=159872 | m=0.900 worth=63.8 cheap=8.3 over=0 dMedOther=79.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2710 kaito9 B=647163 L=9022 d=71.7 nb=0 neut=0 cmds=33 noFull=1 shQ=161790 | m=0.900 worth=64.6 cheap=8.3 over=0 dMedOther=80.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2715 kaito9 B=647163 L=9022 d=71.7 nb=0 neut=0 cmds=33 noFull=1 shQ=161790 | m=0.900 worth=64.6 cheap=8.3 over=0 dMedOther=80.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2720 kaito9 B=654928 L=9022 d=72.6 nb=0 neut=0 cmds=33 noFull=1 shQ=163732 | m=0.900 worth=65.3 cheap=8.3 over=0 dMedOther=81.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2725 kaito9 B=654928 L=9022 d=72.6 nb=0 neut=0 cmds=33 noFull=1 shQ=163732 | m=0.900 worth=65.3 cheap=8.3 over=0 dMedOther=81.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2730 kaito9 B=662787 L=9022 d=73.5 nb=0 neut=0 cmds=33 noFull=1 shQ=165696 | m=0.900 worth=66.1 cheap=8.3 over=0 dMedOther=82.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2735 kaito9 B=663387 L=9022 d=73.5 nb=0 neut=0 cmds=33 noFull=1 shQ=165846 | m=0.900 worth=66.2 cheap=8.3 over=0 dMedOther=82.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2740 kaito9 B=671347 L=9022 d=74.4 nb=0 neut=0 cmds=33 noFull=1 shQ=167836 | m=0.900 worth=67.0 cheap=8.3 over=0 dMedOther=82.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2745 kaito9 B=671347 L=9022 d=74.4 nb=0 neut=0 cmds=33 noFull=1 shQ=167836 | m=0.900 worth=67.0 cheap=8.3 over=0 dMedOther=81.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2750 kaito9 B=679403 L=9022 d=75.3 nb=0 neut=0 cmds=33 noFull=1 shQ=169850 | m=0.900 worth=67.8 cheap=8.3 over=0 dMedOther=82.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2755 kaito9 B=679403 L=9022 d=75.3 nb=0 neut=0 cmds=33 noFull=1 shQ=169850 | m=0.900 worth=67.8 cheap=8.3 over=0 dMedOther=82.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2760 kaito9 B=687555 L=9022 d=76.2 nb=0 neut=0 cmds=33 noFull=1 shQ=171888 | m=0.900 worth=68.6 cheap=8.3 over=0 dMedOther=83.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2765 kaito9 B=687555 L=9022 d=76.2 nb=0 neut=0 cmds=33 noFull=1 shQ=171888 | m=0.900 worth=68.6 cheap=8.3 over=0 dMedOther=83.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2770 kaito9 B=695805 L=9022 d=77.1 nb=0 neut=0 cmds=33 noFull=1 shQ=173951 | m=0.900 worth=69.4 cheap=8.3 over=0 dMedOther=84.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2775 kaito9 B=695805 L=9022 d=77.1 nb=0 neut=0 cmds=33 noFull=1 shQ=173951 | m=0.900 worth=69.4 cheap=8.3 over=0 dMedOther=84.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2780 kaito9 B=704154 L=9022 d=78.0 nb=0 neut=0 cmds=33 noFull=1 shQ=176038 | m=0.900 worth=70.2 cheap=8.3 over=0 dMedOther=85.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2785 kaito9 B=704154 L=9022 d=78.0 nb=0 neut=0 cmds=33 noFull=1 shQ=176038 | m=0.900 worth=70.2 cheap=8.3 over=0 dMedOther=85.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2790 kaito9 B=712603 L=9022 d=79.0 nb=0 neut=0 cmds=33 noFull=1 shQ=178150 | m=0.900 worth=71.1 cheap=8.3 over=0 dMedOther=86.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2795 kaito9 B=712603 L=9022 d=79.0 nb=0 neut=0 cmds=33 noFull=1 shQ=178150 | m=0.900 worth=71.1 cheap=8.3 over=0 dMedOther=86.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2800 kaito9 B=730176 L=9022 d=80.9 nb=0 neut=0 cmds=33 noFull=1 shQ=180340 | m=0.900 worth=72.8 cheap=8.3 over=0 dMedOther=88.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2805 kaito9 B=730176 L=9022 d=80.9 nb=0 neut=0 cmds=33 noFull=1 shQ=182544 | m=0.900 worth=72.8 cheap=8.3 over=0 dMedOther=88.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2810 kaito9 B=738938 L=9022 d=81.9 nb=0 neut=0 cmds=33 noFull=1 shQ=184734 | m=0.900 worth=73.7 cheap=8.3 over=0 dMedOther=89.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2815 kaito9 B=738938 L=9022 d=81.9 nb=0 neut=0 cmds=33 noFull=1 shQ=184734 | m=0.900 worth=73.7 cheap=8.3 over=0 dMedOther=89.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2820 kaito9 B=747805 L=9022 d=82.9 nb=0 neut=0 cmds=33 noFull=1 shQ=186951 | m=0.900 worth=74.6 cheap=8.3 over=0 dMedOther=90.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2825 kaito9 B=747805 L=9022 d=82.9 nb=0 neut=0 cmds=34 noFull=1 shQ=186951 | m=0.900 worth=74.6 cheap=8.3 over=0 dMedOther=90.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=134 → [APEX] riku_x#78[T1]（约 98587 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=2830 kaito9 B=756778 L=9022 d=83.9 nb=0 neut=0 cmds=34 noFull=1 shQ=189194 | m=0.900 worth=75.5 cheap=8.3 over=0 dMedOther=91.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2835 kaito9 B=756778 L=9022 d=83.9 nb=0 neut=0 cmds=34 noFull=1 shQ=189194 | m=0.900 worth=75.5 cheap=8.3 over=0 dMedOther=91.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2840 kaito9 B=765859 L=9022 d=84.9 nb=0 neut=0 cmds=34 noFull=1 shQ=191464 | m=0.900 worth=76.4 cheap=8.3 over=0 dMedOther=92.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2845 kaito9 B=765859 L=9022 d=84.9 nb=0 neut=0 cmds=34 noFull=1 shQ=191464 | m=0.900 worth=76.4 cheap=8.3 over=0 dMedOther=90.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2850 kaito9 B=775049 L=9022 d=85.9 nb=0 neut=0 cmds=35 noFull=1 shQ=193762 | m=0.900 worth=77.3 cheap=8.3 over=0 dMedOther=91.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=260 → [APEX] talon5#86[T1]（约 197546 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=2855 kaito9 B=775049 L=9022 d=85.9 nb=0 neut=0 cmds=35 noFull=1 shQ=193762 | m=0.900 worth=77.3 cheap=8.3 over=0 dMedOther=91.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2860 kaito9 B=784349 L=9022 d=86.9 nb=0 neut=0 cmds=35 noFull=1 shQ=196087 | m=0.900 worth=78.2 cheap=8.3 over=0 dMedOther=92.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2865 kaito9 B=784349 L=9022 d=86.9 nb=0 neut=0 cmds=35 noFull=1 shQ=196087 | m=0.900 worth=78.2 cheap=8.3 over=0 dMedOther=92.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2870 kaito9 B=793761 L=9022 d=88.0 nb=0 neut=0 cmds=35 noFull=1 shQ=198440 | m=0.900 worth=79.2 cheap=8.3 over=0 dMedOther=93.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2875 kaito9 B=793761 L=9022 d=88.0 nb=0 neut=0 cmds=36 noFull=1 shQ=198440 | m=0.900 worth=79.2 cheap=8.3 over=0 dMedOther=93.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=260 → [APEX] talon5#86[T1]（约 202316 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=2880 kaito9 B=803286 L=9022 d=89.0 nb=0 neut=0 cmds=36 noFull=1 shQ=200821 | m=0.900 worth=80.1 cheap=8.3 over=0 dMedOther=94.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2885 kaito9 B=803286 L=9022 d=89.0 nb=0 neut=0 cmds=36 noFull=1 shQ=200821 | m=0.900 worth=80.1 cheap=8.3 over=0 dMedOther=94.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2890 kaito9 B=812925 L=9022 d=90.1 nb=0 neut=0 cmds=36 noFull=1 shQ=203231 | m=0.900 worth=81.1 cheap=8.3 over=0 dMedOther=96.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2895 kaito9 B=812925 L=9022 d=90.1 nb=0 neut=0 cmds=36 noFull=1 shQ=203231 | m=0.900 worth=81.1 cheap=8.3 over=0 dMedOther=96.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2900 kaito9 B=831702 L=9022 d=92.2 nb=0 neut=0 cmds=37 noFull=1 shQ=205726 | m=0.900 worth=83.0 cheap=8.3 over=0 dMedOther=98.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=260 → [APEX] alex_k#81[T1]（约 211986 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=2905 kaito9 B=831702 L=9022 d=92.2 nb=0 neut=0 cmds=37 noFull=1 shQ=207925 | m=0.900 worth=83.0 cheap=8.3 over=0 dMedOther=98.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2910 kaito9 B=841682 L=9022 d=93.3 nb=0 neut=0 cmds=37 noFull=1 shQ=210420 | m=0.900 worth=84.0 cheap=8.3 over=0 dMedOther=95.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2915 kaito9 B=841682 L=9022 d=93.3 nb=0 neut=0 cmds=37 noFull=1 shQ=210420 | m=0.900 worth=84.0 cheap=8.3 over=0 dMedOther=95.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2920 kaito9 B=851782 L=9022 d=94.4 nb=0 neut=0 cmds=37 noFull=1 shQ=212945 | m=0.900 worth=85.0 cheap=8.3 over=0 dMedOther=95.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2925 kaito9 B=851782 L=9022 d=94.4 nb=0 neut=0 cmds=38 noFull=1 shQ=212945 | m=0.900 worth=85.0 cheap=8.3 over=0 dMedOther=94.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=225 → [APEX] sora_w#80[T1]（约 187990 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=2930 kaito9 B=862003 L=9022 d=95.5 nb=0 neut=0 cmds=38 noFull=1 shQ=215500 | m=0.900 worth=86.0 cheap=8.3 over=0 dMedOther=93.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2935 kaito9 B=862003 L=9022 d=95.5 nb=0 neut=0 cmds=38 noFull=1 shQ=215500 | m=0.900 worth=86.0 cheap=8.3 over=0 dMedOther=93.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2940 kaito9 B=872347 L=9022 d=96.7 nb=0 neut=0 cmds=38 noFull=1 shQ=218086 | m=0.900 worth=87.0 cheap=8.3 over=0 dMedOther=94.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2945 kaito9 B=872347 L=9022 d=96.7 nb=0 neut=0 cmds=38 noFull=1 shQ=218086 | m=0.900 worth=87.0 cheap=8.3 over=0 dMedOther=94.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2950 kaito9 B=882815 L=9022 d=97.9 nb=0 neut=0 cmds=39 noFull=1 shQ=220703 | m=0.900 worth=88.1 cheap=8.3 over=0 dMedOther=95.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=225 → [APEX] sora_w#80[T1]（约 194840 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=2955 kaito9 B=882815 L=9022 d=97.9 nb=0 neut=0 cmds=39 noFull=1 shQ=220703 | m=0.900 worth=88.1 cheap=8.3 over=0 dMedOther=95.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2960 kaito9 B=893408 L=9022 d=99.0 nb=0 neut=0 cmds=39 noFull=1 shQ=223352 | m=0.900 worth=89.1 cheap=8.3 over=0 dMedOther=96.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2965 kaito9 B=893408 L=9022 d=99.0 nb=0 neut=0 cmds=39 noFull=1 shQ=223352 | m=0.900 worth=89.1 cheap=8.3 over=0 dMedOther=95.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2970 kaito9 B=904128 L=9022 d=100.2 nb=0 neut=0 cmds=39 noFull=1 shQ=226032 | m=0.900 worth=90.2 cheap=8.3 over=1 dMedOther=95.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2975 kaito9 B=904128 L=9022 d=100.2 nb=0 neut=0 cmds=40 noFull=1 shQ=226032 | m=0.900 worth=90.2 cheap=8.3 over=1 dMedOther=94.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=260 → [APEX] talon5#86[T1]（约 230446 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=2980 kaito9 B=914977 L=9022 d=101.4 nb=0 neut=0 cmds=40 noFull=1 shQ=228708 | m=0.900 worth=91.3 cheap=8.3 over=1 dMedOther=95.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2985 kaito9 B=914977 L=9022 d=101.4 nb=0 neut=0 cmds=40 noFull=1 shQ=228744 | m=0.900 worth=91.3 cheap=8.3 over=1 dMedOther=94.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2990 kaito9 B=925682 L=9022 d=102.6 nb=0 neut=0 cmds=40 noFull=1 shQ=231382 | m=0.900 worth=92.3 cheap=8.3 over=1 dMedOther=95.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=2995 kaito9 B=925682 L=9022 d=102.6 nb=0 neut=0 cmds=40 noFull=1 shQ=231420 | m=0.900 worth=92.3 cheap=8.3 over=1 dMedOther=95.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3000 kaito9 B=945256 L=9022 d=104.8 nb=0 neut=0 cmds=41 noFull=1 shQ=233995 | m=0.900 worth=94.3 cheap=8.3 over=1 dMedOther=98.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=260 → [APEX] talon5#86[T1]（约 240929 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=3005 kaito9 B=945256 L=9022 d=104.8 nb=0 neut=0 cmds=41 noFull=1 shQ=236314 | m=0.900 worth=94.3 cheap=8.3 over=1 dMedOther=98.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3010 kaito9 B=955559 L=9022 d=105.9 nb=0 neut=0 cmds=41 noFull=1 shQ=238846 | m=0.900 worth=95.3 cheap=8.3 over=1 dMedOther=99.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3015 kaito9 B=955559 L=9022 d=105.9 nb=0 neut=0 cmds=41 noFull=1 shQ=238889 | m=0.900 worth=95.3 cheap=8.3 over=1 dMedOther=98.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3020 kaito9 B=965687 L=9022 d=107.0 nb=0 neut=0 cmds=41 noFull=1 shQ=241375 | m=0.900 worth=96.3 cheap=8.3 over=1 dMedOther=100.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3025 kaito9 B=965687 L=9022 d=107.0 nb=0 neut=0 cmds=42 noFull=1 shQ=241421 | m=0.900 worth=96.3 cheap=8.3 over=1 dMedOther=100.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=225 → [APEX] alex_k#81[T1]（约 213130 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=3030 kaito9 B=975730 L=9022 d=108.2 nb=0 neut=0 cmds=42 noFull=1 shQ=243884 | m=0.900 worth=97.3 cheap=8.3 over=1 dMedOther=101.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3035 kaito9 B=976846 L=9022 d=108.3 nb=0 neut=0 cmds=42 noFull=1 shQ=244211 | m=0.900 worth=97.4 cheap=8.3 over=1 dMedOther=101.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3040 kaito9 B=986712 L=9022 d=109.4 nb=0 neut=0 cmds=42 noFull=1 shQ=246677 | m=0.900 worth=98.4 cheap=8.3 over=1 dMedOther=102.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3045 kaito9 B=986712 L=9022 d=109.4 nb=0 neut=0 cmds=42 noFull=1 shQ=246678 | m=0.900 worth=98.4 cheap=8.3 over=1 dMedOther=101.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3050 kaito9 B=996381 L=9022 d=110.4 nb=0 neut=0 cmds=43 noFull=1 shQ=249095 | m=0.900 worth=99.4 cheap=8.3 over=1 dMedOther=102.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=260 → [APEX] alex_k#81[T1]（约 253960 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=3055 kaito9 B=996381 L=9022 d=110.4 nb=0 neut=0 cmds=43 noFull=1 shQ=249095 | m=0.900 worth=99.4 cheap=8.3 over=1 dMedOther=101.7 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3060 kaito9 B=1005846 L=9022 d=111.5 nb=0 neut=0 cmds=43 noFull=1 shQ=251461 | m=0.900 worth=100.3 cheap=8.3 over=1 dMedOther=102.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3065 kaito9 B=1005846 L=9022 d=111.5 nb=0 neut=0 cmds=43 noFull=1 shQ=251461 | m=0.900 worth=100.3 cheap=8.3 over=1 dMedOther=103.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3070 kaito9 B=1015200 L=9022 d=112.5 nb=0 neut=0 cmds=43 noFull=1 shQ=253800 | m=0.900 worth=101.3 cheap=8.3 over=1 dMedOther=104.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3075 kaito9 B=1015200 L=9022 d=112.5 nb=0 neut=0 cmds=44 noFull=1 shQ=253800 | m=0.900 worth=101.3 cheap=8.3 over=1 dMedOther=104.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=225 → [APEX] alex_k#81[T1]（约 224057 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=3080 kaito9 B=1024336 L=9022 d=113.5 nb=0 neut=0 cmds=44 noFull=1 shQ=256084 | m=0.900 worth=102.2 cheap=8.3 over=1 dMedOther=105.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3085 kaito9 B=1024336 L=9022 d=113.5 nb=0 neut=0 cmds=44 noFull=1 shQ=256084 | m=0.900 worth=102.2 cheap=8.3 over=1 dMedOther=104.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3090 kaito9 B=1033350 L=9022 d=114.5 nb=0 neut=0 cmds=44 noFull=1 shQ=258337 | m=0.900 worth=103.1 cheap=8.3 over=1 dMedOther=106.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3095 kaito9 B=1033350 L=9022 d=114.5 nb=0 neut=0 cmds=44 noFull=1 shQ=258337 | m=0.900 worth=103.1 cheap=8.3 over=1 dMedOther=103.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3100 kaito9 B=1051258 L=9022 d=116.5 nb=0 neut=0 cmds=45 noFull=1 shQ=260965 | m=0.900 worth=104.9 cheap=8.3 over=1 dMedOther=106.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=225 → [APEX] zexos1#79[T1]（约 232015 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=3105 kaito9 B=1051258 L=9022 d=116.5 nb=0 neut=0 cmds=45 noFull=1 shQ=262814 | m=0.900 worth=104.9 cheap=8.3 over=1 dMedOther=96.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3110 kaito9 B=1059773 L=9022 d=117.5 nb=0 neut=0 cmds=45 noFull=1 shQ=264943 | m=0.900 worth=105.7 cheap=8.3 over=1 dMedOther=96.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3115 kaito9 B=1059773 L=9022 d=117.5 nb=0 neut=0 cmds=45 noFull=1 shQ=264943 | m=0.900 worth=105.7 cheap=8.3 over=1 dMedOther=95.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3120 kaito9 B=1068145 L=9022 d=118.4 nb=0 neut=0 cmds=45 noFull=1 shQ=267036 | m=0.900 worth=106.6 cheap=8.3 over=1 dMedOther=97.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3125 kaito9 B=1068145 L=9022 d=118.4 nb=0 neut=0 cmds=46 noFull=1 shQ=267036 | m=0.900 worth=106.6 cheap=8.3 over=1 dMedOther=97.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=260 → [APEX] alex_k#81[T1]（约 272251 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=3130 kaito9 B=1076262 L=9022 d=119.3 nb=0 neut=0 cmds=46 noFull=1 shQ=269065 | m=0.900 worth=107.4 cheap=8.3 over=1 dMedOther=98.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3135 kaito9 B=1076262 L=9022 d=119.3 nb=0 neut=0 cmds=46 noFull=1 shQ=269065 | m=0.900 worth=107.4 cheap=8.3 over=1 dMedOther=97.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3140 kaito9 B=1084226 L=9022 d=120.2 nb=0 neut=0 cmds=46 noFull=1 shQ=271056 | m=0.900 worth=108.2 cheap=8.3 over=1 dMedOther=99.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3145 kaito9 B=1084226 L=9022 d=120.2 nb=0 neut=0 cmds=46 noFull=1 shQ=271056 | m=0.900 worth=108.2 cheap=8.3 over=1 dMedOther=99.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3150 kaito9 B=1092032 L=9022 d=121.0 nb=0 neut=0 cmds=47 noFull=1 shQ=273008 | m=0.900 worth=108.9 cheap=8.3 over=1 dMedOther=100.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=260 → [APEX] sora_w#80[T1]（约 278340 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=3155 kaito9 B=1092032 L=9022 d=121.0 nb=0 neut=0 cmds=47 noFull=1 shQ=273008 | m=0.900 worth=108.9 cheap=8.3 over=1 dMedOther=98.4 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3160 kaito9 B=1099676 L=9022 d=121.9 nb=0 neut=0 cmds=47 noFull=1 shQ=274919 | m=0.900 worth=109.7 cheap=8.3 over=1 dMedOther=106.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3165 kaito9 B=1099676 L=9022 d=121.9 nb=0 neut=0 cmds=47 noFull=1 shQ=274919 | m=0.900 worth=109.7 cheap=8.3 over=1 dMedOther=105.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3170 kaito9 B=1107153 L=9022 d=122.7 nb=0 neut=0 cmds=47 noFull=1 shQ=276788 | m=0.900 worth=110.4 cheap=8.3 over=1 dMedOther=105.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3175 kaito9 B=1107153 L=9022 d=122.7 nb=0 neut=0 cmds=48 noFull=1 shQ=276788 | m=0.900 worth=110.4 cheap=8.3 over=1 dMedOther=101.8 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=225 → [APEX] riku_x#78[T1]（约 244352 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=3180 kaito9 B=1114460 L=9022 d=123.5 nb=0 neut=0 cmds=49 noFull=1 shQ=278615 | m=0.900 worth=111.2 cheap=8.3 over=1 dMedOther=103.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 boatTo pct=130 → 水/岸#1012929（约 142572 兵） 〔boatOut:1011<boatOut:2327<idleBoats:5039<act:4962〕
+t=3185 kaito9 B=1114460 L=9022 d=123.5 nb=0 neut=0 cmds=49 noFull=1 shQ=278615 | m=0.900 worth=111.2 cheap=8.3 over=1 dMedOther=103.0 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3190 kaito9 B=1121592 L=9022 d=124.3 nb=0 neut=0 cmds=49 noFull=1 shQ=280398 | m=0.900 worth=111.9 cheap=8.3 over=1 dMedOther=104.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3195 kaito9 B=943059 L=9022 d=104.5 nb=0 neut=0 cmds=49 noFull=1 shQ=235764 | m=0.900 worth=94.1 cheap=8.3 over=1 dMedOther=104.2 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3200 kaito9 B=962454 L=9022 d=106.7 nb=0 neut=0 cmds=50 noFull=1 shQ=238266 | m=0.900 worth=96.0 cheap=8.3 over=1 dMedOther=106.1 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=225 → [APEX] zero_7#83[T1]（约 212416 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=3205 kaito9 B=962454 L=9022 d=106.7 nb=0 neut=0 cmds=50 noFull=1 shQ=240613 | m=0.900 worth=96.0 cheap=8.3 over=1 dMedOther=105.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3210 kaito9 B=972463 L=9022 d=107.8 nb=0 neut=0 cmds=50 noFull=1 shQ=243068 | m=0.900 worth=97.0 cheap=8.3 over=1 dMedOther=106.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3215 kaito9 B=697060 L=9022 d=77.3 nb=0 neut=0 cmds=50 noFull=1 shQ=174265 | m=0.900 worth=81.3 cheap=8.3 over=0 dMedOther=106.3 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3220 kaito9 B=705424 L=9022 d=78.2 nb=0 neut=0 cmds=50 noFull=1 shQ=176356 | m=0.900 worth=82.5 cheap=8.3 over=0 dMedOther=107.9 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3225 kaito9 B=705424 L=9022 d=78.2 nb=0 neut=0 cmds=51 noFull=1 shQ=176356 | m=0.900 worth=82.2 cheap=8.3 over=0 dMedOther=107.5 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 影子指令 donate pct=260 → [APEX] alex_k#81[T1]（约 179800 兵） 〔tryDonateToTeammate:4507<act:4961〕
+t=3230 kaito9 B=713889 L=9022 d=79.1 nb=0 neut=0 cmds=51 noFull=1 shQ=178472 | m=0.900 worth=83.1 cheap=8.3 over=0 dMedOther=108.6 safe(-1)=0
+    （offers 为空：没有可打的邻居）
+    ⇒ 本拍没有指令
+t=3235 kaito9 B=713889 L=9023 d=79.1 nb=1 neut=0 cmds=51 noFull=1 shQ=178472 | m=0.900 worth=83.1 cheap=8.3 over=0 dMedOther=108.6 safe(-1)=703794
+    → Pilof empire#1[T6] terr=25199 bal=1549128 dq=61.5 cnt=1 | c=251.6 rankC=251.6 need=2664408 tD=0.57 人 pulse | safe=703794 keep=Inf avail=-Inf chunkB=142778 pulseB=142778 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令
+t=3240 kaito9 B=722455 L=9024 d=80.1 nb=1 neut=0 cmds=51 noFull=1 shQ=180613 | m=0.900 worth=83.9 cheap=8.3 over=0 dMedOther=109.7 safe(-1)=703872
+    → Pilof empire#1[T6] terr=25198 bal=1569787 dq=62.3 cnt=2 | c=253.6 rankC=253.6 need=2701405 tD=0.57 人 pulse | safe=703872 keep=Inf avail=-Inf chunkB=144491 pulseB=144491 价高(c>=worth)→break hNb=1
+    ⇒ 本拍没有指令

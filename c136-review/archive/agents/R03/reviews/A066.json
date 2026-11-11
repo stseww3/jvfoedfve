@@ -465,7 +465,7 @@
    "facts": [
     "10 个号全部在队1，出生在地图东北部 x 670~908、y 170~314 的一块里，最近的编队号距离 6~75 像素；最近的敌方真人 112~253 像素，150 像素内有敌人的只有 noah88（[OG]69#28 112 像素）和 zero_7（France#30 139 像素）",
     "选点期 41 步，编队发了 208 条出生指令（单号 15~27 条）；选点器重解 36 轮，minSep 从 69 降到 58 像素",
-    "最后 5 轮里 (879,209)、(907,263)、(837,294) 三个点在 ryan_m、riku_x、sora_w 之间来回换（日志行 7142310 → 321 → 327 → 330 → 334 轮流是甲、乙、乙、甲、乙两种排法）。录像最后一步：riku_x 落实了第 334 轮的 (837,294)，sora_w 最后成交的还是第 330 轮的 (837,294)，它第 334 轮的 (879,209) 页面 7142336 行才收到、没赶上；结果两个号出生框中心 (842,298) 与 (838,294) 只隔 6 像素，(879,209) 空着。之后第 338、349 轮的指派（另一组点）都没有执行"
+    "最后 5 轮里 (879,209)、(907,263)、(837,294) 三个点在 ryan_m、riku_x、sora_w 之间来回换（日志行 7142310 → 321 → 327 → 330 → 334 轮流是甲、乙、乙、甲、乙两种排法）。录像最后一步：riku_x 落实了第 334 轮的 (837,294)；sora_w 第 330 轮的 (837,294)（行 7142333）和第 334 轮的 (879,209)（行 7142336）在这一步同时落地，引擎后处理的是先发的那条，生效的是 (837,294)（A066-delay.txt [L1]）；结果两个号出生框中心 (842,298) 与 (838,294) 只隔 6 像素，(879,209) 空着。之后第 338、349 轮的指派（另一组点）都没有执行"
    ],
    "problems": [
     "两个号出生在同一个像素上；选点器相邻两轮在同一组点上换人，各页面落实的轮次不同",
@@ -1248,7 +1248,7 @@
    "verdict": "error",
    "state": "三队图，10 个号同在队1；选点器 36 轮重解，208 条出生指令",
    "codePath": "src/strategy/spawn-coordinator-c116-vb.mjs L1344-1369（每轮重解后重新配对；L1360-1368 只有新旧点相距 ≤6 像素才沿用）、L1431-1493 matchBotsToTargets（按上报的当前位置做最小总距离指派）；阵型本身是 L1065-1170 的角落扇面",
-   "why": "相邻两轮在同一组三个点上换人（日志 7142310~7142334 五轮）；录像最后一步 riku_x 落实了第 334 轮、sora_w 还停在第 330 轮，两个号的最后一条出生指令都是 (837,294)",
+   "why": "相邻两轮在同一组三个点上换人（日志 7142310~7142334 五轮）；录像最后一步 riku_x 落实了第 334 轮；sora_w 第 330、334 轮的两条在同一步落地，引擎后处理先发的那条，两个号生效的出生指令都是 (837,294)",
    "estCost": "两个号出生框只隔 6 像素、(879,209) 空着；10 个号互相 6~75 像素，5 个号 1600~1760 拍起被围在 3,180~6,256 格",
    "patternId": "R07-SP-OVERLAP",
    "evidenceRef": "in_game.log 的 BACKEND-SPAWN-COORD 36 行与 HL-SPAWN-BACKEND 行（7142331~7142346）；replay 缓存里三个号最后 6 条出生指令；卷宗[D]"
@@ -7664,6 +7664,2553 @@
    ]
   }
  ],
+ "latencyAndLand": {
+  "brief": [
+   "[B1] 选点落地：重解 36 轮（31 套不同的解），最小间距 69→58 像素，boss=none；10 个号里 0 个落在最后一轮的坐标上，10 个没落到（ryan_m 差 100 像素（停在第 34 轮的坐标），原因：终解那条没落地；sora_w 差 107 像素（停在第 33 轮的坐标），原因：终解那条没落地，且最后落地的两条在同一步、旧的后处理；zexos1 差 34 像素（停在第 34 轮的坐标），原因：终解那条没落地；noah88 差 139 像素（停在第 34 轮的坐标），原因：终解那条没落地；leo_tx 差 114 像素（停在第 34 轮的坐标），原因：终解那条没落地；alex_k 差 9 像素（停在第 34 轮的坐标），原因：终解那条没落地；talon5 差 13 像素（停在第 34 轮的坐标），原因：终解那条没落地；zero_7 差 36 像素（停在第 34 轮的坐标），原因：终解那条没落地；kaito9 差 26 像素（停在第 34 轮的坐标），原因：终解那条没落地；riku_x 差 39 像素（停在第 34 轮的坐标），原因：终解那条没落地），0 个一条选点指令都没落地；10 个号最后的指派没落地（ryan_m、sora_w、zexos1、noah88、leo_tx、alex_k、talon5、zero_7、kaito9、riku_x）；最后一步落地 ≥2 条、先发的旧坐标生效的 1 个（sora_w）；叠点 1 对（riku_x+sora_w）",
+   "[B2] 指令延迟（发令拍→服务器处理拍，按发令拍分段，n 条 P50/P90/最大）：0~600 87 条 12/18/38（>30 拍 2 条、>90 拍 0 条）｜600~1500 318 条 175/456/667（>30 拍 273 条、>90 拍 215 条）｜1500~3000 121 条 203/358/439（>30 拍 82 条、>90 拍 73 条）｜3000+ 249 条 14/33/142（>30 拍 30 条、>90 拍 3 条）｜全局 775 条 30/331/667，>30 拍 387 条",
+   "     各号相对队友的时钟：ryan_m 最多落后 360 拍（1350 拍前后），落后 ≥90 拍的日志行 9 行；sora_w 最多落后 360 拍（1260 拍前后），落后 ≥90 拍的日志行 10 行；alex_k 最多落后 90 拍（1530 拍前后），落后 ≥90 拍的日志行 2 行；talon5 最多落后 450 拍（1260 拍前后），落后 ≥90 拍的日志行 10 行；kaito9 最多落后 270 拍（1350 拍前后），落后 ≥90 拍的日志行 8 行；noah88 最多落后 360 拍（1350 拍前后），落后 ≥90 拍的日志行 9 行；zexos1 最多落后 360 拍（1350 拍前后），落后 ≥90 拍的日志行 9 行；zero_7 最多落后 360 拍（1350 拍前后），落后 ≥90 拍的日志行 9 行；出局时页面拍号 − 服务器拍号 +1~+42",
+   "[B3] 漏斗（策略想发 → 页面受理 → 录像落地 → 生效）：全局 2124 → 2035 → 775 → 624；0~600 93→87→87→87｜600~1500 781→780→318→203｜1500~3000 693→611→121→85｜3000+ 557→557→249→249；其中陆攻+船 1481→1392→646→495，捐款 受理 643 → 落地 129（没落地的主要是撞额度）",
+   "[B4] 晚到与落空：0~600 打 AI/真人 27 条 8,925兵，目标已死改打无主地 0 条 0兵（0.0%），其中作废 0 条，延迟 >30 拍 2 条；打无主地发出 6.14 万、烧掉 4.69 万（拿 23444 格，至少 24% 回到余额）｜600~1500 打 AI/真人 301 条 82.8 万兵，目标已死改打无主地 174 条 33.9 万兵（40.9%），其中作废 108 条，延迟 >30 拍 273 条；打无主地发出 37.8 万、烧掉 3.40 万（拿 17008 格，至少 91% 回到余额）｜1500~3000 打 AI/真人 75 条 293.3 万兵，目标已死改打无主地 27 条 2.63 万兵（0.9%），其中作废 15 条，延迟 >30 拍 82 条；打无主地发出 23.5 万（含船 2.34 万）、烧掉 1,854（拿 927 格，至少 99% 回到余额）｜3000+ 打 AI/真人 106 条 3348.8 万兵，目标已死改打无主地 0 条 0兵（0.0%），其中作废 0 条，延迟 >30 拍 16 条；打无主地发出 18.3 万、烧掉 2.17 万（拿 10831 格，至少 88% 回到余额）",
+   "[B5] 落地前对同一目标重发：全局 54 串 167 条，首条 1158.6 万、后续 113 条 2295.2 万（后续÷首条 1.98）；0~600 8 串 21 条 首 3,728 后 3,997｜600~1500 10 串 28 条 首 1.37 万 后 1.71 万｜1500~3000 9 串 26 条 首 75.2 万 后 123.4 万｜3000+ 27 串 92 条 首 1081.7 万 后 2169.7 万；延迟 >45 拍后的补发串 69 串（发 492 落 302，花 549.9 万）",
+   "     同一拍落地：两条的 50 次，≥3 条的批 31 批（最多 9 条；一批花掉余额 ≥50% 的 9 批 732.9 万兵，≥80% 的 2 批）；最重的：zexos1 1981 拍 9 条花掉余额 100%（44.2 万/44.3 万）、noah88 1988 拍 9 条花掉余额 100%（46.2 万/46.4 万）、riku_x 1001 拍 9 条花掉余额 74%（1.79 万/2.42 万）、zero_7 469 拍 4 条花掉余额 73%（2,572/3,538）、zero_7 1036 拍 7 条花掉余额 70%（1.98 万/2.80 万）、zero_7 6594 拍 9 条花掉余额 70%（307.4 万/439.4 万）",
+   "[B6] 出生份额：49 个真人、编队 10 个号；编队名下 68,374 格 = 全图 12.52%，人头占 20.41% → 份额÷人头 0.61；每号名下中位 7,719（2,137~10,408）对其他真人中位 10,787；名下比编队中位还小的其他真人 4/39 个",
+   "[B7] 实际领土 ÷ 出生份额：630 拍 编队 0.43（10 个号，单号地中位 2,904）对其他真人 0.20（中位 0.23，单人地中位 2,387），人头口径 0.26｜900 拍 编队 0.66（10 个号，单号地中位 4,602）对其他真人 0.41（中位 0.44，单人地中位 5,088），人头口径 0.40｜1200 拍 编队 0.78（10 个号，单号地中位 5,624）对其他真人 0.77（中位 0.88，单人地中位 9,413），人头口径 0.46｜1500 拍 编队 0.85（10 个号，单号地中位 6,046）对其他真人 0.98（中位 1.07，单人地中位 12,302），人头口径 0.50｜1530 拍 编队 0.86（10 个号，单号地中位 6,046）对其他真人 0.99（中位 1.07，单人地中位 12,302），人头口径 0.51｜1800 拍 编队 0.89（10 个号，单号地中位 6,046）对其他真人 1.06（中位 1.08，单人地中位 13,616），人头口径 0.51",
+   "     我方名下范围归谁：630 拍 编队 42.7%、同队路人 0.0%、敌方真人 0.0%、AI 33.6%、无主 23.7%，编队范围外的地 0｜1500 拍 编队 77.2%、同队路人 10.2%、敌方真人 6.2%、AI 5.2%、无主 1.2%，编队范围外的地 5,443｜1800 拍 编队 80.6%、同队路人 11.8%、敌方真人 7.6%、AI 0.0%、无主 0.0%，编队范围外的地 5,488",
+   "[B8] 身边 AI 的地去向（600 拍定格）：与编队接壤的 33 个 AI 共 12,337 格 → 1800 拍 编队 82.3%、同队路人 11.6%、敌方真人 6.1%、仍属 AI 0.0%；我方名下范围内的 AI 地 19,970 格 → 1800 拍 编队 64.1%、同队路人 20.9%、敌方真人 14.9%、仍属 AI 0.0%；出生在我方名下范围内的 54 个 AI 共 19,188 格 → 1800 拍 编队 65.9%、同队路人 19.8%、敌方真人 14.4%、仍属 AI 0.0%",
+   "     接壤 AI 的地被谁拿走（前 6）：*riku_x#21(队1) 2,289、*sora_w#12(队1) 2,187、*zero_7#18(队1) 1,770、*talon5#17(队1) 1,042、*alex_k#16(队1) 946、France 🇨🇵#30(队2) 758（* = 编队的号）",
+   "[B9] 600~1500 三层对账（1500 拍，在场的号）：人均地 编队 5,822 对其他真人 12,262 = 0.47 倍 = 出生份额（人均名下 6,837 对 12,516 = 0.55 倍）× 转化（地÷名下 0.85 对 0.98 = 0.87 倍）",
+   "     按其他真人的 地÷名下（0.9797）算，编队这些号该有 66,983 格，实际 58,220 格，少 8,763 格（算术，不是反事实重放）",
+   "     ② 留底冻结（600~1500 拍买 AI 地的决策拍）：共 1800 拍 → 选到目标 777、扩无主地 490、没有 AI 邻居 49、被 safeFinite 冻结 463（25.7%；卡在编队友 436、同队路人 2、敌方真人 25；去掉这一项当拍就能出手的 432）、其它 21",
+   "     ③ 晚到（600~1500 拍）：打 AI/真人 82.8 万兵里 33.9 万（40.9%）落地时目标已死、改打无主地；作废 108 条；延迟 >30 拍的 273 条"
+  ],
+  "threeLayer": {
+   "t": 1500,
+   "squadAlive": 10,
+   "othersAlive": 37,
+   "landPerHeadSquad": 5822,
+   "landPerHeadOthers": 12262,
+   "landRatio": 0.475,
+   "cellsPerHeadSquad": 6837,
+   "cellsPerHeadOthers": 12516,
+   "layer1SpawnFactor": 0.546,
+   "convSquad": 0.85149,
+   "convOthers": 0.97966,
+   "layer23ConversionFactor": 0.869,
+   "squadBotsAtStart": 10,
+   "squadTerrOverAllCells": 0.851,
+   "squadTerr": 58220,
+   "expectedAtOthersConversion": 66983,
+   "gapAtOthersConversion": 8763,
+   "layer2": {
+    "window": [
+     600,
+     1500
+    ],
+    "decisionTicks": 1800,
+    "target": 777,
+    "neutral": 490,
+    "noAi": 49,
+    "frozenBySafeFinite": 463,
+    "frozenBy": {
+     "squad": 436,
+     "mate": 2,
+     "enemy": 25,
+     "ai": 0
+    },
+    "frozenWouldSend": 432,
+    "other": 21
+   },
+   "layer3": {
+    "attacksAtAIorHuman": 301,
+    "troops": 827608,
+    "deadTargetCmds": 174,
+    "deadTargetTroops": 338856,
+    "deadTargetTroopsPct": 40.9,
+    "void": 108,
+    "late30": 273,
+    "neutralSent": 377531,
+    "neutralBurnt": 34016
+   }
+  },
+  "notes": {
+   "statementType": "observed",
+   "sources": "out/dossier/A066-delay.txt [L1]~[L5]；A066-land.txt [G1]~[G4]；A066-ledger-brief.txt [B1]~[B9]；A066-freeze.txt",
+   "spawn": "选点器重解 36 轮（31 套不同的解）。10 个号没有一个的生效坐标是终解：最后两轮的指派全部赶不上选点期结束，各号停在第 34 轮的坐标上，离终解 9~139 像素（noah88 139、leo_tx 114、sora_w 107、ryan_m 100）。sora_w 与 riku_x 的叠点另有原因：sora_w 第 33 轮的 (837,294)（日志行 7142333）和第 34 轮的 (879,209)（行 7142336）在选点期最后一步同时落地，录像里同一步内先列后发的、引擎按列出的顺序处理，先发的 (837,294) 盖掉了后发的 (879,209)；而 (837,294) 第 34 轮给了 riku_x（行 7142337），于是两个号相距 6 像素，(879,209) 空着。没有号是一条选点指令都没落地的。",
+   "latency": "发令→落地延迟 P50/P90/最大：0~600 拍 12/18/38，600~1500 拍 175/456/667（318 条里 273 条超过 30 拍、215 条超过 90 拍），1500~3000 拍 203/358/439，3000 拍后 14/33/142（249 条里 30 条超过 30 拍）。600~1500 拍各号中位：noah88 259、zexos1 257、leo_tx 254、alex_k 214、talon5 176、sora_w 165、zero_7 146、kaito9 137、riku_x 92、ryan_m 58；队内相对时钟 talon5 最多落后队友 450 拍，另有 6 个号落后过 360 拍。漏斗：600~1500 拍想发 781 → 受理 780 → 落地 318（41%）→ 生效 203；整局陆攻+船 1,481→1,392→646→495。",
+   "lateAndReissue": "600~1500 拍打 AI/真人 301 条 82.8 万兵里，174 条 33.9 万兵（40.9%）落地时目标已死、被改成打无主地，其中 108 条作废；这一段陆攻对无主地一共送出 37.8 万兵，只烧掉 3.40 万（拿 17,008 格），至少 91% 退回余额。延迟 >45 拍后的补发串 69 串：发 492 条、落 302 条，共花 549.9 万兵。同一拍落 ≥3 条的有 31 批（最多 9 条），其中 9 批一拍抽走余额的一半以上，合计 732.9 万兵：zexos1 1981 拍 9 条（44.3 万里花掉 44.2 万）、noah88 1988 拍 9 条（46.4 万里 46.2 万）是延迟期的；zero_7 6594 拍 9 条（439.4 万里 307.4 万）在延迟已恢复的收官期。落地前重发 54 串 167 条，首条 1,158.6 万、后续 113 条 2,295.2 万（1.98 倍），3000 拍后占 2,169.7 万，主要是 zero_7。",
+   "land": "出生份额：编队名下 68,374 格 = 全图 12.5%，人头占 20.4%，份额÷人头 0.61；每号名下中位 7,719 格，其他真人中位 10,787 格（39 个里 4 个比编队中位小）。实际÷份额：630 拍编队 0.43 对其他真人 0.20；900 拍 0.66 对 0.41；1200 拍 0.79 对 0.78；1500 拍 0.85 对 0.98；1800 拍 0.89 对 1.06。600 拍与编队接壤的 33 个 AI 共 12,337 格，到 1800 拍编队拿到 82.3%、同队路人 11.6%、敌方真人 6.1%；我方名下范围里的 AI 地 19,970 格，编队拿到 64.1%、同队路人 20.9%、敌方真人 14.9%。",
+   "threeLayer": "1500 拍人均地 编队 5,822 对其他真人 12,262 = 0.47 倍 = 出生份额 0.55 倍 × 转化 0.87 倍。主要掉在第①层（选点太挤，份额÷人头 0.61）；第②层 600~1500 拍 1,800 个决策拍里 463 个（25.7%）被 safeFinite 冻结，436 个卡在编队友，去掉这一项当拍能出手的 432 个；第③层发出去的兵 40.9% 落地时目标已死。按其他真人的 地÷名下（0.9797）算，编队 1500 拍该有 66,983 格，实际 58,220 格，少 8,763 格（算术）；②③ 各占多少没有做去掉其一的反事实重放，分不开。"
+  },
+  "delay": {
+   "matchId": "A066",
+   "strategy": "v27-team-c116-vb.js",
+   "periods": [
+    "0~600",
+    "600~1500",
+    "1500~3000",
+    "3000+"
+   ],
+   "spawn": {
+    "rounds": 36,
+    "spawnSteps": 41,
+    "bots": {
+     "ryan_m": {
+      "assigned": 30,
+      "executed": 27,
+      "executedMatched": 27,
+      "trailingUnexecuted": 1,
+      "final": [
+       878,
+       167
+      ],
+      "actual": [
+       907,
+       263
+      ],
+      "startBoxCentre": [
+       908,
+       264
+      ],
+      "sameStepInverted": false,
+      "lastStepCmds": 1,
+      "distToFinal": 100.3,
+      "staleRound": 34,
+      "finalOwnerOfMySpot": [],
+      "reason": "trailing-unexecuted",
+      "nearestSquad": [
+       "sora_w",
+       74.7
+      ],
+      "lastExecStep": -1
+     },
+     "sora_w": {
+      "assigned": 28,
+      "executed": 26,
+      "executedMatched": 26,
+      "trailingUnexecuted": 1,
+      "final": [
+       912,
+       218
+      ],
+      "actual": [
+       837,
+       294
+      ],
+      "startBoxCentre": [
+       842,
+       298
+      ],
+      "sameStepInverted": true,
+      "lastStepCmds": 2,
+      "displaced": 6.4,
+      "distToFinal": 106.8,
+      "staleRound": 33,
+      "finalOwnerOfMySpot": [],
+      "reason": "trailing-unexecuted+same-step-inversion",
+      "nearestSquad": [
+       "riku_x",
+       5.7
+      ],
+      "lastExecStep": -1
+     },
+     "zexos1": {
+      "assigned": 20,
+      "executed": 17,
+      "executedMatched": 17,
+      "trailingUnexecuted": 2,
+      "final": [
+       670,
+       200
+      ],
+      "actual": [
+       672,
+       234
+      ],
+      "startBoxCentre": [
+       672,
+       234
+      ],
+      "sameStepInverted": false,
+      "lastStepCmds": 1,
+      "distToFinal": 34.1,
+      "staleRound": 34,
+      "finalOwnerOfMySpot": [],
+      "reason": "trailing-unexecuted",
+      "nearestSquad": [
+       "talon5",
+       64.1
+      ],
+      "lastExecStep": -5
+     },
+     "noah88": {
+      "assigned": 19,
+      "executed": 16,
+      "executedMatched": 16,
+      "trailingUnexecuted": 1,
+      "final": [
+       808,
+       159
+      ],
+      "actual": [
+       669,
+       170
+      ],
+      "startBoxCentre": [
+       670,
+       170
+      ],
+      "sameStepInverted": false,
+      "lastStepCmds": 1,
+      "distToFinal": 139.4,
+      "staleRound": 34,
+      "finalOwnerOfMySpot": [],
+      "reason": "trailing-unexecuted",
+      "nearestSquad": [
+       "zexos1",
+       64.5
+      ],
+      "lastExecStep": -5
+     },
+     "leo_tx": {
+      "assigned": 21,
+      "executed": 18,
+      "executedMatched": 18,
+      "trailingUnexecuted": 1,
+      "final": [
+       912,
+       120
+      ],
+      "actual": [
+       814,
+       178
+      ],
+      "startBoxCentre": [
+       814,
+       178
+      ],
+      "sameStepInverted": false,
+      "lastStepCmds": 1,
+      "distToFinal": 113.9,
+      "staleRound": 34,
+      "finalOwnerOfMySpot": [],
+      "reason": "trailing-unexecuted",
+      "nearestSquad": [
+       "kaito9",
+       59.0
+      ],
+      "lastExecStep": -5
+     },
+     "alex_k": {
+      "assigned": 17,
+      "executed": 15,
+      "executedMatched": 15,
+      "trailingUnexecuted": 1,
+      "final": [
+       760,
+       210
+      ],
+      "actual": [
+       751,
+       211
+      ],
+      "startBoxCentre": [
+       752,
+       212
+      ],
+      "sameStepInverted": false,
+      "lastStepCmds": 1,
+      "distToFinal": 9.1,
+      "staleRound": 34,
+      "finalOwnerOfMySpot": [],
+      "reason": "trailing-unexecuted",
+      "nearestSquad": [
+       "talon5",
+       60.9
+      ],
+      "lastExecStep": -5
+     },
+     "talon5": {
+      "assigned": 21,
+      "executed": 18,
+      "executedMatched": 18,
+      "trailingUnexecuted": 1,
+      "final": [
+       721,
+       255
+      ],
+      "actual": [
+       727,
+       267
+      ],
+      "startBoxCentre": [
+       728,
+       268
+      ],
+      "sameStepInverted": false,
+      "lastStepCmds": 1,
+      "distToFinal": 13.4,
+      "staleRound": 34,
+      "finalOwnerOfMySpot": [],
+      "reason": "trailing-unexecuted",
+      "nearestSquad": [
+       "alex_k",
+       60.9
+      ],
+      "lastExecStep": -5
+     },
+     "zero_7": {
+      "assigned": 28,
+      "executed": 25,
+      "executedMatched": 25,
+      "trailingUnexecuted": 1,
+      "final": [
+       791,
+       277
+      ],
+      "actual": [
+       775,
+       309
+      ],
+      "startBoxCentre": [
+       780,
+       314
+      ],
+      "sameStepInverted": false,
+      "lastStepCmds": 1,
+      "displaced": 6.4,
+      "distToFinal": 35.8,
+      "staleRound": 34,
+      "finalOwnerOfMySpot": [],
+      "reason": "trailing-unexecuted",
+      "nearestSquad": [
+       "riku_x",
+       61.0
+      ],
+      "lastExecStep": -3
+     },
+     "kaito9": {
+      "assigned": 25,
+      "executed": 23,
+      "executedMatched": 23,
+      "trailingUnexecuted": 1,
+      "final": [
+       828,
+       214
+      ],
+      "actual": [
+       815,
+       237
+      ],
+      "startBoxCentre": [
+       816,
+       238
+      ],
+      "sameStepInverted": false,
+      "lastStepCmds": 1,
+      "distToFinal": 26.4,
+      "staleRound": 34,
+      "finalOwnerOfMySpot": [],
+      "reason": "trailing-unexecuted",
+      "nearestSquad": [
+       "leo_tx",
+       59.0
+      ],
+      "lastExecStep": -3
+     },
+     "riku_x": {
+      "assigned": 26,
+      "executed": 23,
+      "executedMatched": 23,
+      "trailingUnexecuted": 1,
+      "final": [
+       861,
+       263
+      ],
+      "actual": [
+       837,
+       294
+      ],
+      "startBoxCentre": [
+       838,
+       294
+      ],
+      "sameStepInverted": false,
+      "lastStepCmds": 1,
+      "distToFinal": 39.2,
+      "staleRound": 34,
+      "finalOwnerOfMySpot": [],
+      "reason": "trailing-unexecuted",
+      "nearestSquad": [
+       "sora_w",
+       5.7
+      ],
+      "lastExecStep": -1
+     }
+    },
+    "distinctSolutions": 31,
+    "solvedBots": 10,
+    "minSepFirst": 69,
+    "minSepLast": 58,
+    "boss": "none",
+    "absentNames": [],
+    "solveMsMedian": 34.43,
+    "onFinal": 0,
+    "notOnFinal": 10,
+    "zeroExecuted": 0,
+    "stackPairs": [
+     [
+      "riku_x",
+      "sora_w"
+     ]
+    ],
+    "trailingUnexecutedBots": 10,
+    "sameStepInversionBots": [
+     "sora_w"
+    ],
+    "lastStepMultiCmdBots": [
+     "sora_w"
+    ]
+   },
+   "lag": {
+    "byPeriod": [
+     {
+      "period": "0~600",
+      "n": 87,
+      "p50": 12,
+      "p90": 18,
+      "max": 38,
+      "min": 6,
+      "gt30": 2,
+      "gt90": 0
+     },
+     {
+      "period": "600~1500",
+      "n": 318,
+      "p50": 175,
+      "p90": 456,
+      "max": 667,
+      "min": 7,
+      "gt30": 273,
+      "gt90": 215
+     },
+     {
+      "period": "1500~3000",
+      "n": 121,
+      "p50": 203,
+      "p90": 358,
+      "max": 439,
+      "min": 8,
+      "gt30": 82,
+      "gt90": 73
+     },
+     {
+      "period": "3000+",
+      "n": 249,
+      "p50": 14,
+      "p90": 33,
+      "max": 142,
+      "min": 6,
+      "gt30": 30,
+      "gt90": 3
+     }
+    ],
+    "total": {
+     "n": 775,
+     "p50": 30,
+     "p90": 331,
+     "max": 667,
+     "gt30": 387,
+     "gt90": 291
+    },
+    "byBot": {
+     "ryan_m": [
+      {
+       "n": 8,
+       "p50": 9,
+       "p90": 14,
+       "max": 14
+      },
+      {
+       "n": 21,
+       "p50": 58,
+       "p90": 251,
+       "max": 484
+      },
+      {
+       "n": 20,
+       "p50": 285,
+       "p90": 429,
+       "max": 439
+      },
+      {
+       "n": 16,
+       "p50": 9,
+       "p90": 17,
+       "max": 31
+      }
+     ],
+     "sora_w": [
+      {
+       "n": 9,
+       "p50": 12,
+       "p90": 15,
+       "max": 15
+      },
+      {
+       "n": 45,
+       "p50": 165,
+       "p90": 487,
+       "max": 507
+      },
+      {
+       "n": 9,
+       "p50": 11,
+       "p90": 18,
+       "max": 18
+      },
+      {
+       "n": 34,
+       "p50": 11,
+       "p90": 16,
+       "max": 23
+      }
+     ],
+     "alex_k": [
+      {
+       "n": 9,
+       "p50": 11,
+       "p90": 16,
+       "max": 16
+      },
+      {
+       "n": 28,
+       "p50": 214,
+       "p90": 393,
+       "max": 403
+      },
+      {
+       "n": 5,
+       "p50": 95,
+       "p90": 185,
+       "max": 185
+      },
+      {
+       "n": 14,
+       "p50": 11,
+       "p90": 13,
+       "max": 17
+      }
+     ],
+     "talon5": [
+      {
+       "n": 10,
+       "p50": 11,
+       "p90": 13,
+       "max": 16
+      },
+      {
+       "n": 25,
+       "p50": 176,
+       "p90": 481,
+       "max": 496
+      },
+      {
+       "n": 1,
+       "p50": 8,
+       "p90": 8,
+       "max": 8
+      },
+      {
+       "n": 14,
+       "p50": 11,
+       "p90": 30,
+       "max": 33
+      }
+     ],
+     "kaito9": [
+      {
+       "n": 10,
+       "p50": 10,
+       "p90": 14,
+       "max": 15
+      },
+      {
+       "n": 36,
+       "p50": 137,
+       "p90": 341,
+       "max": 356
+      },
+      {
+       "n": 13,
+       "p50": 348,
+       "p90": 398,
+       "max": 403
+      },
+      {
+       "n": 16,
+       "p50": 10,
+       "p90": 14,
+       "max": 17
+      }
+     ],
+     "noah88": [
+      {
+       "n": 9,
+       "p50": 10,
+       "p90": 14,
+       "max": 14
+      },
+      {
+       "n": 15,
+       "p50": 259,
+       "p90": 289,
+       "max": 324
+      },
+      {
+       "n": 34,
+       "p50": 198,
+       "p90": 236,
+       "max": 246
+      },
+      {
+       "n": 25,
+       "p50": 14,
+       "p90": 31,
+       "max": 59
+      }
+     ],
+     "zexos1": [
+      {
+       "n": 6,
+       "p50": 15,
+       "p90": 38,
+       "max": 38
+      },
+      {
+       "n": 24,
+       "p50": 257,
+       "p90": 495,
+       "max": 505
+      },
+      {
+       "n": 13,
+       "p50": 286,
+       "p90": 311,
+       "max": 316
+      },
+      {
+       "n": 21,
+       "p50": 18,
+       "p90": 100,
+       "max": 142
+      }
+     ],
+     "zero_7": [
+      {
+       "n": 11,
+       "p50": 16,
+       "p90": 28,
+       "max": 29
+      },
+      {
+       "n": 40,
+       "p50": 146,
+       "p90": 642,
+       "max": 667
+      },
+      {
+       "n": 6,
+       "p50": 16,
+       "p90": 21,
+       "max": 21
+      },
+      {
+       "n": 72,
+       "p50": 16,
+       "p90": 54,
+       "max": 79
+      }
+     ],
+     "leo_tx": [
+      {
+       "n": 9,
+       "p50": 15,
+       "p90": 18,
+       "max": 18
+      },
+      {
+       "n": 29,
+       "p50": 254,
+       "p90": 335,
+       "max": 345
+      },
+      {
+       "n": 9,
+       "p50": 237,
+       "p90": 257,
+       "max": 257
+      },
+      {
+       "n": 18,
+       "p50": 15,
+       "p90": 18,
+       "max": 28
+      }
+     ],
+     "riku_x": [
+      {
+       "n": 6,
+       "p50": 16,
+       "p90": 19,
+       "max": 19
+      },
+      {
+       "n": 55,
+       "p50": 92,
+       "p90": 222,
+       "max": 239
+      },
+      {
+       "n": 11,
+       "p50": 186,
+       "p90": 206,
+       "max": 211
+      },
+      {
+       "n": 19,
+       "p50": 18,
+       "p90": 45,
+       "max": 48
+      }
+     ]
+    },
+    "relativeClock": {
+     "ryan_m": {
+      "max": 360,
+      "at": 1350,
+      "rows": 80,
+      "ge90": 9
+     },
+     "sora_w": {
+      "max": 360,
+      "at": 1260,
+      "rows": 79,
+      "ge90": 10
+     },
+     "alex_k": {
+      "max": 90,
+      "at": 1530,
+      "rows": 80,
+      "ge90": 2
+     },
+     "talon5": {
+      "max": 450,
+      "at": 1260,
+      "rows": 78,
+      "ge90": 10
+     },
+     "kaito9": {
+      "max": 270,
+      "at": 1350,
+      "rows": 80,
+      "ge90": 8
+     },
+     "noah88": {
+      "max": 360,
+      "at": 1350,
+      "rows": 86,
+      "ge90": 9
+     },
+     "zexos1": {
+      "max": 360,
+      "at": 1350,
+      "rows": 84,
+      "ge90": 9
+     },
+     "zero_7": {
+      "max": 360,
+      "at": 1350,
+      "rows": 77,
+      "ge90": 9
+     },
+     "leo_tx": {
+      "max": 0,
+      "at": null,
+      "rows": 82,
+      "ge90": 0
+     },
+     "riku_x": {
+      "max": 0,
+      "at": null,
+      "rows": 79,
+      "ge90": 0
+     }
+    },
+    "localMinusServerAtDeath": {
+     "ryan_m": 7,
+     "sora_w": 5,
+     "alex_k": 5,
+     "talon5": 1,
+     "kaito9": 3,
+     "noah88": 30,
+     "zexos1": 42,
+     "zero_7": 7,
+     "leo_tx": 16,
+     "riku_x": 2
+    }
+   },
+   "funnel": {
+    "byPeriod": [
+     {
+      "period": "0~600",
+      "want": {
+       "total": 93,
+       "attack": 93,
+       "donate": 0,
+       "boat": 0
+      },
+      "acc": {
+       "total": 87,
+       "attack": 87,
+       "donate": 0,
+       "boat": 0
+      },
+      "land": {
+       "total": 87,
+       "attack": 87,
+       "donate": 0,
+       "boat": 0
+      },
+      "eff": {
+       "total": 87,
+       "attack": 87,
+       "donate": 0,
+       "boat": 0
+      }
+     },
+     {
+      "period": "600~1500",
+      "want": {
+       "total": 781,
+       "attack": 781,
+       "donate": 0,
+       "boat": 0
+      },
+      "acc": {
+       "total": 780,
+       "attack": 780,
+       "donate": 0,
+       "boat": 0
+      },
+      "land": {
+       "total": 318,
+       "attack": 318,
+       "donate": 0,
+       "boat": 0
+      },
+      "eff": {
+       "total": 203,
+       "attack": 203,
+       "donate": 0,
+       "boat": 0
+      }
+     },
+     {
+      "period": "1500~3000",
+      "want": {
+       "total": 693,
+       "attack": 448,
+       "donate": 243,
+       "boat": 2
+      },
+      "acc": {
+       "total": 611,
+       "attack": 366,
+       "donate": 243,
+       "boat": 2
+      },
+      "land": {
+       "total": 121,
+       "attack": 111,
+       "donate": 8,
+       "boat": 2
+      },
+      "eff": {
+       "total": 85,
+       "attack": 75,
+       "donate": 8,
+       "boat": 2
+      }
+     },
+     {
+      "period": "3000+",
+      "want": {
+       "total": 557,
+       "attack": 148,
+       "donate": 400,
+       "boat": 9
+      },
+      "acc": {
+       "total": 557,
+       "attack": 148,
+       "donate": 400,
+       "boat": 9
+      },
+      "land": {
+       "total": 249,
+       "attack": 119,
+       "donate": 121,
+       "boat": 9
+      },
+      "eff": {
+       "total": 249,
+       "attack": 119,
+       "donate": 121,
+       "boat": 9
+      }
+     }
+    ],
+    "total": {
+     "want": 2124,
+     "acc": 2035,
+     "land": 775,
+     "eff": 624
+    },
+    "byBot": {
+     "ryan_m": {
+      "shadowAccepted": 104,
+      "logCmdsMax": 104,
+      "replayLanded": 65
+     },
+     "sora_w": {
+      "shadowAccepted": 186,
+      "logCmdsMax": 186,
+      "replayLanded": 97
+     },
+     "alex_k": {
+      "shadowAccepted": 180,
+      "logCmdsMax": 180,
+      "replayLanded": 56
+     },
+     "talon5": {
+      "shadowAccepted": 232,
+      "logCmdsMax": 232,
+      "replayLanded": 50
+     },
+     "kaito9": {
+      "shadowAccepted": 196,
+      "logCmdsMax": 196,
+      "replayLanded": 75
+     },
+     "noah88": {
+      "shadowAccepted": 295,
+      "logCmdsMax": 295,
+      "replayLanded": 83
+     },
+     "zexos1": {
+      "shadowAccepted": 277,
+      "logCmdsMax": 277,
+      "replayLanded": 64
+     },
+     "zero_7": {
+      "shadowAccepted": 139,
+      "logCmdsMax": 139,
+      "replayLanded": 129
+     },
+     "leo_tx": {
+      "shadowAccepted": 225,
+      "logCmdsMax": 225,
+      "replayLanded": 65
+     },
+     "riku_x": {
+      "shadowAccepted": 201,
+      "logCmdsMax": 201,
+      "replayLanded": 91
+     }
+    }
+   },
+   "late": {
+    "byPeriod": [
+     {
+      "period": "0~600",
+      "attacks": 87,
+      "toAI": 27,
+      "toHuman": 0,
+      "toNeutral": 60,
+      "troopsAI": 8925,
+      "troopsHuman": 0,
+      "troopsNeutral": 61414,
+      "late30": 2,
+      "late30Troops": 4070,
+      "deadTarget": 0,
+      "deadTargetAI": 0,
+      "deadTargetHuman": 0,
+      "deadTargetTroops": 0,
+      "deadTargetNoop": 0,
+      "deadTargetLate30": 0,
+      "noopOther": 0,
+      "neutralSentTroops": 61414,
+      "neutralBoatTroops": 0,
+      "neutralBoats": 0,
+      "neutralBurnt": 46888,
+      "neutralTiles": 23444
+     },
+     {
+      "period": "600~1500",
+      "attacks": 318,
+      "toAI": 301,
+      "toHuman": 0,
+      "toNeutral": 17,
+      "troopsAI": 827608,
+      "troopsHuman": 0,
+      "troopsNeutral": 38675,
+      "late30": 273,
+      "late30Troops": 802608,
+      "deadTarget": 174,
+      "deadTargetAI": 174,
+      "deadTargetHuman": 0,
+      "deadTargetTroops": 338856,
+      "deadTargetNoop": 108,
+      "deadTargetLate30": 174,
+      "noopOther": 7,
+      "neutralSentTroops": 377531,
+      "neutralBoatTroops": 0,
+      "neutralBoats": 0,
+      "neutralBurnt": 34016,
+      "neutralTiles": 17008
+     },
+     {
+      "period": "1500~3000",
+      "attacks": 111,
+      "toAI": 28,
+      "toHuman": 47,
+      "toNeutral": 36,
+      "troopsAI": 29100,
+      "troopsHuman": 2903730,
+      "troopsNeutral": 185393,
+      "late30": 82,
+      "late30Troops": 1097093,
+      "deadTarget": 27,
+      "deadTargetAI": 27,
+      "deadTargetHuman": 0,
+      "deadTargetTroops": 26299,
+      "deadTargetNoop": 15,
+      "deadTargetLate30": 27,
+      "noopOther": 21,
+      "neutralSentTroops": 211692,
+      "neutralBoatTroops": 23412,
+      "neutralBoats": 2,
+      "neutralBurnt": 1854,
+      "neutralTiles": 927
+     },
+     {
+      "period": "3000+",
+      "attacks": 119,
+      "toAI": 0,
+      "toHuman": 106,
+      "toNeutral": 13,
+      "troopsAI": 0,
+      "troopsHuman": 33488368,
+      "troopsNeutral": 182994,
+      "late30": 16,
+      "late30Troops": 4918049,
+      "deadTarget": 0,
+      "deadTargetAI": 0,
+      "deadTargetHuman": 0,
+      "deadTargetTroops": 0,
+      "deadTargetNoop": 0,
+      "deadTargetLate30": 0,
+      "noopOther": 0,
+      "neutralSentTroops": 182994,
+      "neutralBoatTroops": 0,
+      "neutralBoats": 0,
+      "neutralBurnt": 21662,
+      "neutralTiles": 10831
+     }
+    ],
+    "deadTargetTop": [
+     {
+      "bot": "zexos1",
+      "intent": 1415,
+      "exec": 1652,
+      "lag": 237,
+      "want": "AI476",
+      "troops": 15056,
+      "ok": true
+     },
+     {
+      "bot": "zexos1",
+      "intent": 1410,
+      "exec": 1652,
+      "lag": 242,
+      "want": "AI476",
+      "troops": 14173,
+      "ok": true
+     },
+     {
+      "bot": "zexos1",
+      "intent": 1405,
+      "exec": 1652,
+      "lag": 247,
+      "want": "AI476",
+      "troops": 13343,
+      "ok": true
+     },
+     {
+      "bot": "zexos1",
+      "intent": 1400,
+      "exec": 1652,
+      "lag": 252,
+      "want": "AI476",
+      "troops": 12561,
+      "ok": true
+     },
+     {
+      "bot": "alex_k",
+      "intent": 1475,
+      "exec": 1659,
+      "lag": 184,
+      "want": "AI177",
+      "troops": 12525,
+      "ok": true
+     },
+     {
+      "bot": "zero_7",
+      "intent": 1050,
+      "exec": 1316,
+      "lag": 266,
+      "want": "AI311",
+      "troops": 12356,
+      "ok": true
+     },
+     {
+      "bot": "zexos1",
+      "intent": 1395,
+      "exec": 1652,
+      "lag": 257,
+      "want": "AI441",
+      "troops": 11825,
+      "ok": true
+     },
+     {
+      "bot": "alex_k",
+      "intent": 1470,
+      "exec": 1659,
+      "lag": 189,
+      "want": "AI177",
+      "troops": 11791,
+      "ok": true
+     },
+     {
+      "bot": "zexos1",
+      "intent": 1390,
+      "exec": 1652,
+      "lag": 262,
+      "want": "AI441",
+      "troops": 11132,
+      "ok": true
+     },
+     {
+      "bot": "alex_k",
+      "intent": 1455,
+      "exec": 1659,
+      "lag": 204,
+      "want": "AI212",
+      "troops": 11100,
+      "ok": true
+     },
+     {
+      "bot": "zexos1",
+      "intent": 1385,
+      "exec": 1652,
+      "lag": 267,
+      "want": "AI441",
+      "troops": 10480,
+      "ok": true
+     },
+     {
+      "bot": "alex_k",
+      "intent": 1450,
+      "exec": 1659,
+      "lag": 209,
+      "want": "AI212",
+      "troops": 10450,
+      "ok": true
+     }
+    ]
+   },
+   "reissue": {
+    "byPeriod": [
+     {
+      "period": "0~600",
+      "strings": 13,
+      "cmds": 27,
+      "syncStrings": 8,
+      "syncCmds": 21,
+      "syncFirst": 3728,
+      "syncExtra": 3997,
+      "syncExtraCmds": 13,
+      "lagStrings": 0,
+      "lagIssued": 0,
+      "lagExecuted": 0,
+      "lagSpent": 0,
+      "deadStrings": 0,
+      "deadCmds": 0
+     },
+     {
+      "period": "600~1500",
+      "strings": 161,
+      "cmds": 763,
+      "syncStrings": 10,
+      "syncCmds": 28,
+      "syncFirst": 13663,
+      "syncExtra": 17115,
+      "syncExtraCmds": 18,
+      "lagStrings": 60,
+      "lagIssued": 321,
+      "lagExecuted": 246,
+      "lagSpent": 937018,
+      "deadStrings": 46,
+      "deadCmds": 368
+     },
+     {
+      "period": "1500~3000",
+      "strings": 29,
+      "cmds": 273,
+      "syncStrings": 9,
+      "syncCmds": 26,
+      "syncFirst": 752182,
+      "syncExtra": 1233921,
+      "syncExtraCmds": 17,
+      "lagStrings": 8,
+      "lagIssued": 160,
+      "lagExecuted": 46,
+      "lagSpent": 958476,
+      "deadStrings": 9,
+      "deadCmds": 82
+     },
+     {
+      "period": "3000+",
+      "strings": 33,
+      "cmds": 129,
+      "syncStrings": 27,
+      "syncCmds": 92,
+      "syncFirst": 10816817,
+      "syncExtra": 21696875,
+      "syncExtraCmds": 65,
+      "lagStrings": 1,
+      "lagIssued": 11,
+      "lagExecuted": 10,
+      "lagSpent": 3603771,
+      "deadStrings": 1,
+      "deadCmds": 17
+     }
+    ],
+    "total": {
+     "strings": 236,
+     "cmds": 1192,
+     "syncStrings": 54,
+     "syncCmds": 167,
+     "syncFirst": 11586390,
+     "syncExtra": 22951908,
+     "syncExtraCmds": 113,
+     "lagStrings": 69,
+     "lagIssued": 492,
+     "lagExecuted": 302,
+     "lagSpent": 5499265,
+     "deadStrings": 56,
+     "deadCmds": 467
+    },
+    "top": [
+     {
+      "bot": "zero_7",
+      "t0": 6190,
+      "target": "Full send#8",
+      "site": "buyLand:5607",
+      "n": 4,
+      "first": 1019044,
+      "extra": 2400004,
+      "B0": 7729646,
+      "fracOfB0": 0.442
+     },
+     {
+      "bot": "zero_7",
+      "t0": 5000,
+      "target": "[Fr] Vanquélô#44",
+      "site": "buyLand:5607",
+      "n": 6,
+      "first": 621713,
+      "extra": 2199815,
+      "B0": 4715818,
+      "fracOfB0": 0.598
+     },
+     {
+      "bot": "zero_7",
+      "t0": 5500,
+      "target": "[Fr] Vanquélô#44",
+      "site": "buyLand:5607",
+      "n": 6,
+      "first": 658780,
+      "extra": 2161847,
+      "B0": 5668843,
+      "fracOfB0": 0.498
+     },
+     {
+      "bot": "zero_7",
+      "t0": 4310,
+      "target": "autistic[af]#37",
+      "site": "buyLand:5607",
+      "n": 5,
+      "first": 502030,
+      "extra": 1473540,
+      "B0": 3807998,
+      "fracOfB0": 0.519
+     },
+     {
+      "bot": "zero_7",
+      "t0": 6050,
+      "target": "[TC]Tory Cell#35",
+      "site": "buyLand:5607",
+      "n": 3,
+      "first": 690857,
+      "extra": 1333438,
+      "B0": 6802289,
+      "fracOfB0": 0.298
+     },
+     {
+      "bot": "zero_7",
+      "t0": 5790,
+      "target": "Full send#8",
+      "site": "buyLand:5607",
+      "n": 3,
+      "first": 655828,
+      "extra": 1243147,
+      "B0": 6335563,
+      "fracOfB0": 0.3
+     },
+     {
+      "bot": "zero_7",
+      "t0": 5320,
+      "target": "[TC]Tory Cell#35",
+      "site": "buyLand:5607",
+      "n": 3,
+      "first": 549604,
+      "extra": 1056781,
+      "B0": 5211065,
+      "fracOfB0": 0.308
+     },
+     {
+      "bot": "zero_7",
+      "t0": 4485,
+      "target": "autistic[af]#37",
+      "site": "buyLand:5585",
+      "n": 4,
+      "first": 361968,
+      "extra": 968193,
+      "B0": 2745600,
+      "fracOfB0": 0.484
+     },
+     {
+      "bot": "zero_7",
+      "t0": 5210,
+      "target": "[Fr] Vanquélô#44",
+      "site": "buyLand:5607",
+      "n": 3,
+      "first": 511810,
+      "extra": 963369,
+      "B0": 4852733,
+      "fracOfB0": 0.304
+     },
+     {
+      "bot": "zero_7",
+      "t0": 4760,
+      "target": "[TC]Tory Cell#35",
+      "site": "buyLand:5607",
+      "n": 3,
+      "first": 553784,
+      "extra": 910832,
+      "B0": 4200563,
+      "fracOfB0": 0.349
+     }
+    ]
+   },
+   "sameTickBatches": {
+    "byPeriod": [
+     {
+      "period": "0~600",
+      "pairs": 9,
+      "batches": 1,
+      "cmds": 4,
+      "spent": 2572,
+      "maxN": 4,
+      "drain50": 1,
+      "drain50Spent": 2572,
+      "drain80": 0
+     },
+     {
+      "period": "600~1500",
+      "pairs": 12,
+      "batches": 14,
+      "cmds": 88,
+      "spent": 391806,
+      "maxN": 9,
+      "drain50": 4,
+      "drain50Spent": 55304,
+      "drain80": 0
+     },
+     {
+      "period": "1500~3000",
+      "pairs": 6,
+      "batches": 10,
+      "cmds": 82,
+      "spent": 1861397,
+      "maxN": 9,
+      "drain50": 2,
+      "drain50Spent": 903896,
+      "drain80": 2
+     },
+     {
+      "period": "3000+",
+      "pairs": 23,
+      "batches": 6,
+      "cmds": 30,
+      "spent": 11291080,
+      "maxN": 9,
+      "drain50": 2,
+      "drain50Spent": 6366969,
+      "drain80": 0
+     }
+    ],
+    "worst": [
+     {
+      "bot": "zexos1",
+      "t": 1981,
+      "n": 9,
+      "spent": 442033,
+      "B0": 442747,
+      "frac": 0.998
+     },
+     {
+      "bot": "noah88",
+      "t": 1988,
+      "n": 9,
+      "spent": 461863,
+      "B0": 463651,
+      "frac": 0.996
+     },
+     {
+      "bot": "riku_x",
+      "t": 1001,
+      "n": 9,
+      "spent": 17921,
+      "B0": 24201,
+      "frac": 0.741
+     },
+     {
+      "bot": "zero_7",
+      "t": 469,
+      "n": 4,
+      "spent": 2572,
+      "B0": 3538,
+      "frac": 0.727
+     },
+     {
+      "bot": "zero_7",
+      "t": 1036,
+      "n": 7,
+      "spent": 19750,
+      "B0": 28023,
+      "frac": 0.705
+     },
+     {
+      "bot": "zero_7",
+      "t": 6594,
+      "n": 9,
+      "spent": 3073806,
+      "B0": 4394450,
+      "frac": 0.699
+     },
+     {
+      "bot": "zero_7",
+      "t": 5537,
+      "n": 7,
+      "spent": 3293163,
+      "B0": 5668843,
+      "frac": 0.581
+     },
+     {
+      "bot": "zero_7",
+      "t": 917,
+      "n": 6,
+      "spent": 11735,
+      "B0": 21750,
+      "frac": 0.54
+     },
+     {
+      "bot": "sora_w",
+      "t": 812,
+      "n": 3,
+      "spent": 5898,
+      "B0": 11542,
+      "frac": 0.511
+     },
+     {
+      "bot": "riku_x",
+      "t": 917,
+      "n": 8,
+      "spent": 11013,
+      "B0": 23420,
+      "frac": 0.47
+     }
+    ]
+   }
+  },
+  "land": {
+   "matchId": "A066",
+   "freezeTick": 600,
+   "at": [
+    630,
+    900,
+    1200,
+    1500,
+    1530,
+    1800
+   ],
+   "voronoi": {
+    "land": 546152,
+    "humans": 49,
+    "squadBots": 10,
+    "squadCells": 68374,
+    "squadCellsPct": 12.52,
+    "headPct": 20.41,
+    "shareOverHead": 0.61344,
+    "perBot": {
+     "ryan_m": {
+      "x": 908,
+      "y": 264,
+      "cells": 9144,
+      "nearestHuman": 75,
+      "nearestNonSquad": 206
+     },
+     "sora_w": {
+      "x": 842,
+      "y": 299,
+      "cells": 7937,
+      "nearestHuman": 6,
+      "nearestNonSquad": 159
+     },
+     "zexos1": {
+      "x": 673,
+      "y": 235,
+      "cells": 7822,
+      "nearestHuman": 64,
+      "nearestNonSquad": 106
+     },
+     "noah88": {
+      "x": 670,
+      "y": 170,
+      "cells": 8242,
+      "nearestHuman": 65,
+      "nearestNonSquad": 88
+     },
+     "leo_tx": {
+      "x": 815,
+      "y": 179,
+      "cells": 10408,
+      "nearestHuman": 59,
+      "nearestNonSquad": 80
+     },
+     "alex_k": {
+      "x": 752,
+      "y": 212,
+      "cells": 4830,
+      "nearestHuman": 61,
+      "nearestNonSquad": 80
+     },
+     "talon5": {
+      "x": 728,
+      "y": 268,
+      "cells": 5189,
+      "nearestHuman": 61,
+      "nearestNonSquad": 101
+     },
+     "zero_7": {
+      "x": 780,
+      "y": 314,
+      "cells": 7616,
+      "nearestHuman": 61,
+      "nearestNonSquad": 110
+     },
+     "kaito9": {
+      "x": 816,
+      "y": 238,
+      "cells": 5049,
+      "nearestHuman": 59,
+      "nearestNonSquad": 125
+     },
+     "riku_x": {
+      "x": 838,
+      "y": 295,
+      "cells": 2137,
+      "nearestHuman": 6,
+      "nearestNonSquad": 159
+     }
+    },
+    "squadMedian": 7719,
+    "squadMin": 2137,
+    "squadMax": 10408,
+    "othersMedian": 10787,
+    "othersQ1": 9150,
+    "othersSmallerThanSquadMedian": 4,
+    "others": 39,
+    "groups": {
+     "队1路人": {
+      "n": 7,
+      "cells": 83447
+     },
+     "队3": {
+      "n": 16,
+      "cells": 210363
+     },
+     "队2": {
+      "n": 16,
+      "cells": 183968
+     },
+     "编队": {
+      "n": 10,
+      "cells": 68374
+     }
+    },
+    "bornAIInSquadCells": 54
+   },
+   "aiFate": {
+    "freezeTick": 600,
+    "A": {
+     "cells": 19970,
+     "rows": [
+      {
+       "t": 630,
+       "squad": 19,
+       "mate": 0,
+       "enemy": 0,
+       "ai": 19951,
+       "neutral": 0,
+       "n": 19970
+      },
+      {
+       "t": 900,
+       "squad": 4514,
+       "mate": 0,
+       "enemy": 0,
+       "ai": 15440,
+       "neutral": 16,
+       "n": 19970
+      },
+      {
+       "t": 1200,
+       "squad": 8544,
+       "mate": 726,
+       "enemy": 609,
+       "ai": 9978,
+       "neutral": 113,
+       "n": 19970
+      },
+      {
+       "t": 1500,
+       "squad": 11155,
+       "mate": 3603,
+       "enemy": 2814,
+       "ai": 1892,
+       "neutral": 506,
+       "n": 19970
+      },
+      {
+       "t": 1530,
+       "squad": 11502,
+       "mate": 3857,
+       "enemy": 2944,
+       "ai": 1451,
+       "neutral": 216,
+       "n": 19970
+      },
+      {
+       "t": 1800,
+       "squad": 12810,
+       "mate": 4178,
+       "enemy": 2982,
+       "ai": 0,
+       "neutral": 0,
+       "n": 19970
+      }
+     ]
+    },
+    "B": {
+     "cells": 12337,
+     "ais": 33,
+     "rows": [
+      {
+       "t": 630,
+       "squad": 19,
+       "mate": 0,
+       "enemy": 0,
+       "ai": 12318,
+       "neutral": 0,
+       "n": 12337
+      },
+      {
+       "t": 900,
+       "squad": 3723,
+       "mate": 135,
+       "enemy": 0,
+       "ai": 8467,
+       "neutral": 12,
+       "n": 12337
+      },
+      {
+       "t": 1200,
+       "squad": 6544,
+       "mate": 318,
+       "enemy": 0,
+       "ai": 5369,
+       "neutral": 106,
+       "n": 12337
+      },
+      {
+       "t": 1500,
+       "squad": 8706,
+       "mate": 984,
+       "enemy": 758,
+       "ai": 1383,
+       "neutral": 506,
+       "n": 12337
+      },
+      {
+       "t": 1530,
+       "squad": 9073,
+       "mate": 1238,
+       "enemy": 758,
+       "ai": 1052,
+       "neutral": 216,
+       "n": 12337
+      },
+      {
+       "t": 1800,
+       "squad": 10150,
+       "mate": 1429,
+       "enemy": 758,
+       "ai": 0,
+       "neutral": 0,
+       "n": 12337
+      }
+     ]
+    },
+    "C": {
+     "cells": 19188,
+     "ais": 54,
+     "rows": [
+      {
+       "t": 630,
+       "squad": 19,
+       "mate": 0,
+       "enemy": 0,
+       "ai": 19169,
+       "neutral": 0,
+       "n": 19188
+      },
+      {
+       "t": 900,
+       "squad": 4418,
+       "mate": 0,
+       "enemy": 0,
+       "ai": 14754,
+       "neutral": 16,
+       "n": 19188
+      },
+      {
+       "t": 1200,
+       "squad": 8398,
+       "mate": 504,
+       "enemy": 592,
+       "ai": 9581,
+       "neutral": 113,
+       "n": 19188
+      },
+      {
+       "t": 1500,
+       "squad": 10981,
+       "mate": 3216,
+       "enemy": 2761,
+       "ai": 1724,
+       "neutral": 506,
+       "n": 19188
+      },
+      {
+       "t": 1530,
+       "squad": 11328,
+       "mate": 3470,
+       "enemy": 2761,
+       "ai": 1413,
+       "neutral": 216,
+       "n": 19188
+      },
+      {
+       "t": 1800,
+       "squad": 12636,
+       "mate": 3791,
+       "enemy": 2761,
+       "ai": 0,
+       "neutral": 0,
+       "n": 19188
+      }
+     ]
+    },
+    "takersB": [
+     {
+      "id": 21,
+      "name": "riku_x#21",
+      "squad": true,
+      "team": 1,
+      "cells": 2289
+     },
+     {
+      "id": 12,
+      "name": "sora_w#12",
+      "squad": true,
+      "team": 1,
+      "cells": 2187
+     },
+     {
+      "id": 18,
+      "name": "zero_7#18",
+      "squad": true,
+      "team": 1,
+      "cells": 1770
+     },
+     {
+      "id": 17,
+      "name": "talon5#17",
+      "squad": true,
+      "team": 1,
+      "cells": 1042
+     },
+     {
+      "id": 16,
+      "name": "alex_k#16",
+      "squad": true,
+      "team": 1,
+      "cells": 946
+     },
+     {
+      "id": 30,
+      "name": "France 🇨🇵#30",
+      "squad": false,
+      "team": 2,
+      "cells": 758
+     },
+     {
+      "id": 14,
+      "name": "noah88#14",
+      "squad": true,
+      "team": 1,
+      "cells": 635
+     },
+     {
+      "id": 11,
+      "name": "ryan_m#11",
+      "squad": true,
+      "team": 1,
+      "cells": 582
+     },
+     {
+      "id": 32,
+      "name": "J#32",
+      "squad": false,
+      "team": 1,
+      "cells": 577
+     },
+     {
+      "id": 38,
+      "name": "Player 677#38",
+      "squad": false,
+      "team": 1,
+      "cells": 376
+     }
+    ]
+   },
+   "capture": [
+    {
+     "t": 630,
+     "squadAlive": 10,
+     "humansAlive": 48,
+     "squadTerr": 29196,
+     "squadCells": 68374,
+     "squadRatio": 0.427,
+     "squadMedianRatio": 0.38738,
+     "squadMinRatio": 0.27623,
+     "squadMaxRatio": 1.00094,
+     "othersTerr": 95702,
+     "othersCells": 468706,
+     "othersRatio": 0.20418,
+     "othersMedianRatio": 0.23004,
+     "othersQ1": 0.15554,
+     "othersQ3": 0.27027,
+     "squadMedianTerr": 2904,
+     "othersMedianTerr": 2387,
+     "vsFair": 0.2566,
+     "squadSharePct": 5.35,
+     "teams": {
+      "队1路人": {
+       "n": 7,
+       "terr": 16663,
+       "cells": 83447,
+       "ratio": 0.19968
+      },
+      "队3": {
+       "n": 16,
+       "terr": 40090,
+       "cells": 210363,
+       "ratio": 0.19058
+      },
+      "队2": {
+       "n": 15,
+       "terr": 38949,
+       "cells": 174896,
+       "ratio": 0.2227
+      },
+      "编队": {
+       "n": 10,
+       "terr": 29196,
+       "cells": 68374,
+       "ratio": 0.427
+      }
+     },
+     "perBot": {
+      "ryan_m": {
+       "terr": 2931,
+       "cells": 9144,
+       "ratio": 0.32
+      },
+      "sora_w": {
+       "terr": 3076,
+       "cells": 7937,
+       "ratio": 0.39
+      },
+      "zexos1": {
+       "terr": 2877,
+       "cells": 7822,
+       "ratio": 0.37
+      },
+      "noah88": {
+       "terr": 2816,
+       "cells": 8242,
+       "ratio": 0.34
+      },
+      "leo_tx": {
+       "terr": 2875,
+       "cells": 10408,
+       "ratio": 0.28
+      },
+      "alex_k": {
+       "terr": 3265,
+       "cells": 4830,
+       "ratio": 0.68
+      },
+      "talon5": {
+       "terr": 3622,
+       "cells": 5189,
+       "ratio": 0.7
+      },
+      "zero_7": {
+       "terr": 2949,
+       "cells": 7616,
+       "ratio": 0.39
+      },
+      "kaito9": {
+       "terr": 2646,
+       "cells": 5049,
+       "ratio": 0.52
+      },
+      "riku_x": {
+       "terr": 2139,
+       "cells": 2137,
+       "ratio": 1
+      }
+     }
+    },
+    {
+     "t": 900,
+     "squadAlive": 10,
+     "humansAlive": 48,
+     "squadTerr": 45073,
+     "squadCells": 68374,
+     "squadRatio": 0.65921,
+     "squadMedianRatio": 0.64431,
+     "squadMinRatio": 0.40478,
+     "squadMaxRatio": 1.59523,
+     "othersTerr": 191019,
+     "othersCells": 468706,
+     "othersRatio": 0.40755,
+     "othersMedianRatio": 0.44238,
+     "othersQ1": 0.29579,
+     "othersQ3": 0.55509,
+     "squadMedianTerr": 4602,
+     "othersMedianTerr": 5088,
+     "vsFair": 0.39614,
+     "squadSharePct": 8.25,
+     "teams": {
+      "队1路人": {
+       "n": 7,
+       "terr": 29025,
+       "cells": 83447,
+       "ratio": 0.34783
+      },
+      "队3": {
+       "n": 16,
+       "terr": 76461,
+       "cells": 210363,
+       "ratio": 0.36347
+      },
+      "队2": {
+       "n": 15,
+       "terr": 85533,
+       "cells": 174896,
+       "ratio": 0.48905
+      },
+      "编队": {
+       "n": 10,
+       "terr": 45073,
+       "cells": 68374,
+       "ratio": 0.65921
+      }
+     },
+     "perBot": {
+      "ryan_m": {
+       "terr": 5511,
+       "cells": 9144,
+       "ratio": 0.6
+      },
+      "sora_w": {
+       "terr": 5188,
+       "cells": 7937,
+       "ratio": 0.65
+      },
+      "zexos1": {
+       "terr": 4528,
+       "cells": 7822,
+       "ratio": 0.58
+      },
+      "noah88": {
+       "terr": 5492,
+       "cells": 8242,
+       "ratio": 0.67
+      },
+      "leo_tx": {
+       "terr": 4213,
+       "cells": 10408,
+       "ratio": 0.4
+      },
+      "alex_k": {
+       "terr": 3939,
+       "cells": 4830,
+       "ratio": 0.82
+      },
+      "talon5": {
+       "terr": 4911,
+       "cells": 5189,
+       "ratio": 0.95
+      },
+      "zero_7": {
+       "terr": 4676,
+       "cells": 7616,
+       "ratio": 0.61
+      },
+      "kaito9": {
+       "terr": 3206,
+       "cells": 5049,
+       "ratio": 0.63
+      },
+      "riku_x": {
+       "terr": 3409,
+       "cells": 2137,
+       "ratio": 1.6
+      }
+     }
+    },
+    {
+     "t": 1200,
+     "squadAlive": 10,
+     "humansAlive": 47,
+     "squadTerr": 53653,
+     "squadCells": 68374,
+     "squadRatio": 0.7847,
+     "squadMedianRatio": 0.79002,
+     "squadMinRatio": 0.527,
+     "squadMaxRatio": 2.00702,
+     "othersTerr": 358741,
+     "othersCells": 463099,
+     "othersRatio": 0.77465,
+     "othersMedianRatio": 0.88229,
+     "othersQ1": 0.57906,
+     "othersQ3": 1.02573,
+     "squadMedianTerr": 5624,
+     "othersMedianTerr": 9413,
+     "vsFair": 0.46172,
+     "squadSharePct": 9.82,
+     "teams": {
+      "队1路人": {
+       "n": 7,
+       "terr": 55167,
+       "cells": 83447,
+       "ratio": 0.6611
+      },
+      "队3": {
+       "n": 15,
+       "terr": 148279,
+       "cells": 204756,
+       "ratio": 0.72417
+      },
+      "队2": {
+       "n": 15,
+       "terr": 155295,
+       "cells": 174896,
+       "ratio": 0.88793
+      },
+      "编队": {
+       "n": 10,
+       "terr": 53653,
+       "cells": 68374,
+       "ratio": 0.7847
+      }
+     },
+     "perBot": {
+      "ryan_m": {
+       "terr": 5995,
+       "cells": 9144,
+       "ratio": 0.66
+      },
+      "sora_w": {
+       "terr": 6418,
+       "cells": 7937,
+       "ratio": 0.81
+      },
+      "zexos1": {
+       "terr": 6376,
+       "cells": 7822,
+       "ratio": 0.82
+      },
+      "noah88": {
+       "terr": 5763,
+       "cells": 8242,
+       "ratio": 0.7
+      },
+      "leo_tx": {
+       "terr": 5485,
+       "cells": 10408,
+       "ratio": 0.53
+      },
+      "alex_k": {
+       "terr": 3726,
+       "cells": 4830,
+       "ratio": 0.77
+      },
+      "talon5": {
+       "terr": 4932,
+       "cells": 5189,
+       "ratio": 0.95
+      },
+      "zero_7": {
+       "terr": 7419,
+       "cells": 7616,
+       "ratio": 0.97
+      },
+      "kaito9": {
+       "terr": 3250,
+       "cells": 5049,
+       "ratio": 0.64
+      },
+      "riku_x": {
+       "terr": 4289,
+       "cells": 2137,
+       "ratio": 2.01
+      }
+     }
+    },
+    {
+     "t": 1500,
+     "squadAlive": 10,
+     "humansAlive": 47,
+     "squadTerr": 58220,
+     "squadCells": 68374,
+     "squadRatio": 0.85149,
+     "squadMedianRatio": 0.8977,
+     "squadMinRatio": 0.60108,
+     "squadMaxRatio": 2.00702,
+     "othersTerr": 453678,
+     "othersCells": 463099,
+     "othersRatio": 0.97966,
+     "othersMedianRatio": 1.07001,
+     "othersQ1": 0.8597,
+     "othersQ3": 1.21273,
+     "squadMedianTerr": 6046.5,
+     "othersMedianTerr": 12302,
+     "vsFair": 0.50102,
+     "squadSharePct": 10.66,
+     "teams": {
+      "队1路人": {
+       "n": 7,
+       "terr": 74037,
+       "cells": 83447,
+       "ratio": 0.88723
+      },
+      "队3": {
+       "n": 15,
+       "terr": 194233,
+       "cells": 204756,
+       "ratio": 0.94861
+      },
+      "队2": {
+       "n": 15,
+       "terr": 185408,
+       "cells": 174896,
+       "ratio": 1.0601
+      },
+      "编队": {
+       "n": 10,
+       "terr": 58220,
+       "cells": 68374,
+       "ratio": 0.85149
+      }
+     },
+     "perBot": {
+      "ryan_m": {
+       "terr": 5837,
+       "cells": 9144,
+       "ratio": 0.64
+      },
+      "sora_w": {
+       "terr": 8415,
+       "cells": 7937,
+       "ratio": 1.06
+      },
+      "zexos1": {
+       "terr": 6262,
+       "cells": 7822,
+       "ratio": 0.8
+      },
+      "noah88": {
+       "terr": 7137,
+       "cells": 8242,
+       "ratio": 0.87
+      },
+      "leo_tx": {
+       "terr": 6256,
+       "cells": 10408,
+       "ratio": 0.6
+      },
+      "alex_k": {
+       "terr": 4582,
+       "cells": 4830,
+       "ratio": 0.95
+      },
+      "talon5": {
+       "terr": 4823,
+       "cells": 5189,
+       "ratio": 0.93
+      },
+      "zero_7": {
+       "terr": 7446,
+       "cells": 7616,
+       "ratio": 0.98
+      },
+      "kaito9": {
+       "terr": 3173,
+       "cells": 5049,
+       "ratio": 0.63
+      },
+      "riku_x": {
+       "terr": 4289,
+       "cells": 2137,
+       "ratio": 2.01
+      }
+     }
+    },
+    {
+     "t": 1530,
+     "squadAlive": 10,
+     "humansAlive": 47,
+     "squadTerr": 58698,
+     "squadCells": 68374,
+     "squadRatio": 0.85848,
+     "squadMedianRatio": 0.8977,
+     "squadMinRatio": 0.60108,
+     "squadMaxRatio": 2.00702,
+     "othersTerr": 460654,
+     "othersCells": 463099,
+     "othersRatio": 0.99472,
+     "othersMedianRatio": 1.07001,
+     "othersQ1": 0.86719,
+     "othersQ3": 1.22661,
+     "squadMedianTerr": 6046.5,
+     "othersMedianTerr": 12302,
+     "vsFair": 0.50514,
+     "squadSharePct": 10.75,
+     "teams": {
+      "队1路人": {
+       "n": 7,
+       "terr": 75194,
+       "cells": 83447,
+       "ratio": 0.9011
+      },
+      "队3": {
+       "n": 15,
+       "terr": 198453,
+       "cells": 204756,
+       "ratio": 0.96922
+      },
+      "队2": {
+       "n": 15,
+       "terr": 187007,
+       "cells": 174896,
+       "ratio": 1.06925
+      },
+      "编队": {
+       "n": 10,
+       "terr": 58698,
+       "cells": 68374,
+       "ratio": 0.85848
+      }
+     },
+     "perBot": {
+      "ryan_m": {
+       "terr": 5837,
+       "cells": 9144,
+       "ratio": 0.64
+      },
+      "sora_w": {
+       "terr": 8415,
+       "cells": 7937,
+       "ratio": 1.06
+      },
+      "zexos1": {
+       "terr": 6262,
+       "cells": 7822,
+       "ratio": 0.8
+      },
+      "noah88": {
+       "terr": 7137,
+       "cells": 8242,
+       "ratio": 0.87
+      },
+      "leo_tx": {
+       "terr": 6256,
+       "cells": 10408,
+       "ratio": 0.6
+      },
+      "alex_k": {
+       "terr": 5044,
+       "cells": 4830,
+       "ratio": 1.04
+      },
+      "talon5": {
+       "terr": 4823,
+       "cells": 5189,
+       "ratio": 0.93
+      },
+      "zero_7": {
+       "terr": 7446,
+       "cells": 7616,
+       "ratio": 0.98
+      },
+      "kaito9": {
+       "terr": 3189,
+       "cells": 5049,
+       "ratio": 0.63
+      },
+      "riku_x": {
+       "terr": 4289,
+       "cells": 2137,
+       "ratio": 2.01
+      }
+     }
+    },
+    {
+     "t": 1800,
+     "squadAlive": 10,
+     "humansAlive": 46,
+     "squadTerr": 60595,
+     "squadCells": 68374,
+     "squadRatio": 0.88623,
+     "squadMedianRatio": 0.92259,
+     "squadMinRatio": 0.60108,
+     "squadMaxRatio": 2.54937,
+     "othersTerr": 479594,
+     "othersCells": 453237,
+     "othersRatio": 1.05815,
+     "othersMedianRatio": 1.07703,
+     "othersQ1": 0.8597,
+     "othersQ3": 1.35005,
+     "squadMedianTerr": 6046.5,
+     "othersMedianTerr": 13616.5,
+     "vsFair": 0.51037,
+     "squadSharePct": 11.09,
+     "teams": {
+      "队1路人": {
+       "n": 6,
+       "terr": 74122,
+       "cells": 73585,
+       "ratio": 1.0073
+      },
+      "队3": {
+       "n": 15,
+       "terr": 208697,
+       "cells": 204756,
+       "ratio": 1.01925
+      },
+      "队2": {
+       "n": 15,
+       "terr": 196775,
+       "cells": 174896,
+       "ratio": 1.1251
+      },
+      "编队": {
+       "n": 10,
+       "terr": 60595,
+       "cells": 68374,
+       "ratio": 0.88623
+      }
+     },
+     "perBot": {
+      "ryan_m": {
+       "terr": 5837,
+       "cells": 9144,
+       "ratio": 0.64
+      },
+      "sora_w": {
+       "terr": 8415,
+       "cells": 7937,
+       "ratio": 1.06
+      },
+      "zexos1": {
+       "terr": 6274,
+       "cells": 7822,
+       "ratio": 0.8
+      },
+      "noah88": {
+       "terr": 7150,
+       "cells": 8242,
+       "ratio": 0.87
+      },
+      "leo_tx": {
+       "terr": 6256,
+       "cells": 10408,
+       "ratio": 0.6
+      },
+      "alex_k": {
+       "terr": 5057,
+       "cells": 4830,
+       "ratio": 1.05
+      },
+      "talon5": {
+       "terr": 5532,
+       "cells": 5189,
+       "ratio": 1.07
+      },
+      "zero_7": {
+       "terr": 7446,
+       "cells": 7616,
+       "ratio": 0.98
+      },
+      "kaito9": {
+       "terr": 3180,
+       "cells": 5049,
+       "ratio": 0.63
+      },
+      "riku_x": {
+       "terr": 5448,
+       "cells": 2137,
+       "ratio": 2.55
+      }
+     }
+    }
+   ],
+   "region": [
+    {
+     "t": 630,
+     "squad": 29196,
+     "mate": 0,
+     "enemy": 0,
+     "ai": 22987,
+     "neutral": 16191,
+     "n": 68374,
+     "squadTerr": 29196,
+     "squadInside": 29196,
+     "squadOutside": 0
+    },
+    {
+     "t": 900,
+     "squad": 43223,
+     "mate": 94,
+     "enemy": 2,
+     "ai": 24939,
+     "neutral": 116,
+     "n": 68374,
+     "squadTerr": 45073,
+     "squadInside": 43223,
+     "squadOutside": 1850
+    },
+    {
+     "t": 1200,
+     "squad": 48698,
+     "mate": 1285,
+     "enemy": 760,
+     "ai": 17458,
+     "neutral": 173,
+     "n": 68374,
+     "squadTerr": 53653,
+     "squadInside": 48698,
+     "squadOutside": 4955
+    },
+    {
+     "t": 1500,
+     "squad": 52777,
+     "mate": 6991,
+     "enemy": 4236,
+     "ai": 3544,
+     "neutral": 826,
+     "n": 68374,
+     "squadTerr": 58220,
+     "squadInside": 52777,
+     "squadOutside": 5443
+    },
+    {
+     "t": 1530,
+     "squad": 53223,
+     "mate": 7393,
+     "enemy": 4637,
+     "ai": 2745,
+     "neutral": 376,
+     "n": 68374,
+     "squadTerr": 58698,
+     "squadInside": 53223,
+     "squadOutside": 5475
+    },
+    {
+     "t": 1800,
+     "squad": 55107,
+     "mate": 8053,
+     "enemy": 5206,
+     "ai": 0,
+     "neutral": 8,
+     "n": 68374,
+     "squadTerr": 60595,
+     "squadInside": 55107,
+     "squadOutside": 5488
+    }
+   ],
+   "endTick": 1800
+  },
+  "legend": "延迟 = 服务器处理拍 − 页面发令拍；名下 = 每格陆地归直线最近的真人出生点（Voronoi）后落到该号头上的格数；三层对账恒等式：编队人均地÷其他真人人均地 = 出生份额（人均名下之比）× 转化（地÷名下 之比）。详见 scripts/ledger-brief.py 文件头"
+ },
  "scripts": [
   "scripts/resim.mjs（整局精确重放，traj 逐行核对）",
   "scripts/shadow.mjs（影子策略：同一份源码在重放状态上逐拍运行，对日志计数器与录像成交）",
@@ -7672,6 +10219,9 @@
   "scripts/freeze-scan.mjs（t<1500：safeFinite 冻结计数与反事实；t≥1500：buyLand 每个决策拍为什么没出手的九类计数）",
   "scripts/donate-why.mjs（tryDonateToTeammate 每次调用卡在哪一道闸；照抄判定与真调用逐次对账）",
   "scripts/dbg/act-trace.mjs（逐决策拍打印各分支的输入与返回值）",
+  "scripts/delay-ledger.py（延迟账：选点落地、发令→落地延迟分段、漏斗、目标已死改道、落地前重发与同拍成批落地）",
+  "scripts/land-ledger.mjs（抢地账：出生份额 Voronoi、各拍 实际领土÷出生份额、名下范围归谁、身边内置 AI 的地去向）",
+  "scripts/ledger-brief.py（两套账的摘要与 600~1500 拍三层对账恒等式）",
   "scripts/mkreview.py（合成本文件并自检）",
   "node scripts/shadow.mjs A066 --quiet --maps 630,1170,1530,3000,4500,6000 → out/cache/A066-{resim,shadow}.json（resim 新增 botGifts：挂在引擎 botGive 上记空壳/内置 AI 的送兵）",
   "python3 scripts/dossier.py A066 --quiet --map … → out/dossier/A066.txt（[L] 新增「表外进项」、[N] 新增「表外」两段）",

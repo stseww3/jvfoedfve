@@ -62,7 +62,7 @@ def main():
             P(f"{b}\t{r['t0']}~{r['t1']}\t{f(r['bal0'])}→{f(r['bal1'])}\t{f(r['terr0'])}→{f(r['terr1'])}\t{r['atkN']}/{f(r['atkTroops'])}/{f(r['atkFee'])}\t"
               f"{f(r['eco'])}\t{f(r['refund'])}\t{f(r['hit'])}\t{r['donN']}/{f(r['donAmt'])}/{f(r['donFee'])}\t{r['recvN']}/{f(r['recv'])}")
     if spans:
-        cuts = sorted(set([r['t0'] for r in per[names[0]]] + [r['t1'] for r in per[names[0]]]))
+        cuts = sorted(set(r[k] for b in names for r in per[b] for k in ('t0', 't1')))
         P('')
         P('B. 指定时间段的逐号合计')
         for (t0, t1) in spans:

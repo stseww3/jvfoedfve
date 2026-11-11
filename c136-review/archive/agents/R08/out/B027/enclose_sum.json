@@ -1,0 +1,542 @@
+{
+ "matchId": "B027",
+ "step": 30,
+ "perBot": {
+  "King": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 25,
+   "sealedB": 0,
+   "sealedC": 0,
+   "longestA": {
+    "t0": 690,
+    "t1": 1410,
+    "ticks": 750,
+    "terr0": 2400,
+    "terr1": 2577,
+    "bal0": 9144,
+    "bal1": 71676,
+    "densMax": 49.3,
+    "landAtk": 0,
+    "boats": 5,
+    "donations": 0,
+    "mates": [
+     "Hashashin",
+     "Liao",
+     "Phoenicia",
+     "New England"
+    ]
+   },
+   "inSealA": {
+    "botTicks": 750,
+    "boats": 5,
+    "boatTroops": 96699,
+    "boatFees": 7350,
+    "boatsFeeOverTroops": 0,
+    "donations": 0,
+    "donArrived": 0,
+    "donTax": 0,
+    "landAtk": 3,
+    "landAtkOk": 3,
+    "landAtkTroops": 1329,
+    "over100": 0,
+    "hardCap": 0
+   }
+  },
+  "Phoenicia": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 6,
+   "sealedB": 0,
+   "sealedC": 0,
+   "longestA": {
+    "t0": 1260,
+    "t1": 1410,
+    "ticks": 180,
+    "terr0": 5681,
+    "terr1": 5681,
+    "bal0": 93463,
+    "bal1": 23677,
+    "densMax": 20.6,
+    "landAtk": 6,
+    "boats": 5,
+    "donations": 0,
+    "mates": [
+     "New England",
+     "Hashashin",
+     "King"
+    ]
+   }
+  },
+  "Hashashin": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 3,
+   "sealedB": 0,
+   "sealedC": 0,
+   "longestA": {
+    "t0": 1350,
+    "t1": 1410,
+    "ticks": 90,
+    "terr0": 4737,
+    "terr1": 4737,
+    "bal0": 95027,
+    "bal1": 116159,
+    "densMax": 24.5,
+    "landAtk": 5,
+    "boats": 0,
+    "donations": 0,
+    "mates": [
+     "Liao",
+     "King",
+     "Phoenicia"
+    ]
+   }
+  },
+  "New England": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 3,
+   "sealedB": 0,
+   "sealedC": 0,
+   "longestA": {
+    "t0": 1350,
+    "t1": 1410,
+    "ticks": 90,
+    "terr0": 6402,
+    "terr1": 6266,
+    "bal0": 91326,
+    "bal1": 109739,
+    "densMax": 17.5,
+    "landAtk": 0,
+    "boats": 0,
+    "donations": 0,
+    "mates": [
+     "Phoenicia",
+     "King"
+    ]
+   }
+  },
+  "player_007": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "SyntaxError": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Mewtwo": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Sparta": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Tripoli": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Liao": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Savoy": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Ronin": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Davout": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Vinland": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Doge": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Habsburg": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Raeder": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Kuban": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  },
+  "Cringe": {
+   "team": 0,
+   "samples": 48,
+   "sealedA": 0,
+   "sealedB": 0,
+   "sealedC": 0
+  }
+ },
+ "timeline": [
+  {
+   "t": 0,
+   "bots": 19,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 208,
+   "balA": 0,
+   "balAll": 9728,
+   "over100": 0,
+   "protect": false
+  },
+  {
+   "t": 270,
+   "bots": 19,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 7080,
+   "balA": 0,
+   "balAll": 22391,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 540,
+   "bots": 19,
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "terrA": 0,
+   "terrAll": 35022,
+   "balA": 0,
+   "balAll": 64161,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 810,
+   "bots": 19,
+   "A": 1,
+   "B": 0,
+   "C": 0,
+   "terrA": 2400,
+   "terrAll": 67996,
+   "balA": 13071,
+   "balAll": 285855,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 1080,
+   "bots": 19,
+   "A": 1,
+   "B": 0,
+   "C": 0,
+   "terrA": 2413,
+   "terrAll": 87145,
+   "balA": 45956,
+   "balAll": 733843,
+   "over100": 0,
+   "protect": true
+  },
+  {
+   "t": 1350,
+   "bots": 19,
+   "A": 4,
+   "B": 0,
+   "C": 0,
+   "terrA": 19261,
+   "terrAll": 97426,
+   "balA": 380101,
+   "balAll": 1718155,
+   "over100": 0,
+   "protect": true
+  }
+ ],
+ "pairs": [
+  {
+   "a": "Ronin",
+   "b": "SyntaxError",
+   "samples": 45,
+   "t0": 90,
+   "t1": 1410,
+   "maxCells": 119,
+   "sealedA": 0,
+   "sealedB": 0,
+   "aToB": [
+    0,
+    0
+   ],
+   "bToA": [
+    0,
+    0
+   ]
+  },
+  {
+   "a": "Liao",
+   "b": "King",
+   "samples": 45,
+   "t0": 90,
+   "t1": 1410,
+   "maxCells": 44,
+   "sealedA": 0,
+   "sealedB": 25,
+   "aToB": [
+    0,
+    0
+   ],
+   "bToA": [
+    0,
+    0
+   ]
+  },
+  {
+   "a": "Davout",
+   "b": "Cringe",
+   "samples": 44,
+   "t0": 120,
+   "t1": 1410,
+   "maxCells": 199,
+   "sealedA": 0,
+   "sealedB": 0,
+   "aToB": [
+    0,
+    0
+   ],
+   "bToA": [
+    0,
+    0
+   ]
+  },
+  {
+   "a": "Liao",
+   "b": "Hashashin",
+   "samples": 35,
+   "t0": 390,
+   "t1": 1410,
+   "maxCells": 152,
+   "sealedA": 0,
+   "sealedB": 3,
+   "aToB": [
+    0,
+    0
+   ],
+   "bToA": [
+    0,
+    0
+   ]
+  },
+  {
+   "a": "Hashashin",
+   "b": "King",
+   "samples": 34,
+   "t0": 420,
+   "t1": 1410,
+   "maxCells": 89,
+   "sealedA": 3,
+   "sealedB": 25,
+   "aToB": [
+    0,
+    0
+   ],
+   "bToA": [
+    0,
+    0
+   ]
+  },
+  {
+   "a": "Raeder",
+   "b": "SyntaxError",
+   "samples": 30,
+   "t0": 540,
+   "t1": 1410,
+   "maxCells": 7,
+   "sealedA": 0,
+   "sealedB": 0,
+   "aToB": [
+    0,
+    0
+   ],
+   "bToA": [
+    0,
+    0
+   ]
+  },
+  {
+   "a": "Phoenicia",
+   "b": "King",
+   "samples": 28,
+   "t0": 600,
+   "t1": 1410,
+   "maxCells": 39,
+   "sealedA": 6,
+   "sealedB": 25,
+   "aToB": [
+    0,
+    0
+   ],
+   "bToA": [
+    13,
+    386
+   ]
+  },
+  {
+   "a": "Phoenicia",
+   "b": "Hashashin",
+   "samples": 27,
+   "t0": 630,
+   "t1": 1410,
+   "maxCells": 49,
+   "sealedA": 6,
+   "sealedB": 3,
+   "aToB": [
+    0,
+    0
+   ],
+   "bToA": [
+    0,
+    0
+   ]
+  },
+  {
+   "a": "Phoenicia",
+   "b": "New England",
+   "samples": 22,
+   "t0": 780,
+   "t1": 1410,
+   "maxCells": 74,
+   "sealedA": 6,
+   "sealedB": 3,
+   "aToB": [
+    0,
+    0
+   ],
+   "bToA": [
+    0,
+    0
+   ]
+  },
+  {
+   "a": "King",
+   "b": "New England",
+   "samples": 4,
+   "t0": 1320,
+   "t1": 1410,
+   "maxCells": 29,
+   "sealedA": 4,
+   "sealedB": 3,
+   "aToB": [
+    343,
+    19218
+   ],
+   "bToA": [
+    0,
+    0
+   ]
+  }
+ ],
+ "border": [
+  {
+   "t": 0,
+   "bots": 19,
+   "neutral": 192,
+   "ai": 0,
+   "foe": 0,
+   "mateX": 0,
+   "own": 0,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 540,
+   "bots": 19,
+   "neutral": 832,
+   "ai": 1591,
+   "foe": 90,
+   "mateX": 451,
+   "own": 0,
+   "teamAi": 0,
+   "peer": 0
+  },
+  {
+   "t": 1080,
+   "bots": 19,
+   "neutral": 145,
+   "ai": 1998,
+   "foe": 1408,
+   "mateX": 1347,
+   "own": 0,
+   "teamAi": 0,
+   "peer": 0
+  }
+ ],
+ "total": {
+  "samples": 912,
+  "sealedA": 37,
+  "botTicksA": 1110,
+  "botsEverA": 1
+ },
+ "pairCount": 10,
+ "inSealA": {
+  "botTicks": 750,
+  "boats": 5,
+  "boatTroops": 96699,
+  "boatFees": 7350,
+  "boatsFeeOverTroops": 0,
+  "donations": 0,
+  "donArrived": 0,
+  "donTax": 0,
+  "over100": 0,
+  "hardCap": 0
+ }
+}
