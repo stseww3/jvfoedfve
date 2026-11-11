@@ -280,6 +280,8 @@ function collector(cfg) {
   var fX = bj.fX;
   var nT = 0;
   var ticks = [], teamLand = [], teamBal = [], teamHumans = [], teamHusk = [], quotaY = [];
+  // 全部内置 AI 的合计（8 队局里 AI 分进各队，teamLand[0] 恒为 0，要单独留一条）
+  var aiLand = [], aiBal = [], aiAlive = [];
   var hum = [], quotaX = {};
   for (var h0 = 0; h0 < H; h0++) { hum.push({ terr: [], bal: [] }); quotaX[h0] = []; }
   // 名字撞进编队名字池的内置 AI（策略按名字认编队号，这些 AI 会被当成编队号）：单独留一条领土/兵力序列
@@ -295,13 +297,16 @@ function collector(cfg) {
     var tl = [], tb = [], th = [], tk = [];
     for (var k = 0; k <= nT; k++) { tl.push(0); tb.push(0); th.push(0); tk.push(0); }
     var lV = am.lV;
+    var aL = 0, aB = 0, aN = 0;
     for (var i = am.lQ - 1; i >= 0; i--) {
       var p = lV[i], tm = fX[p];
       tl[tm] += ah.hN[p];
       tb[tm] += ah.hb[p];
       if (p < H) { if (ah.a6S[p] === 2) tk[tm] += ah.hN[p]; else th[tm]++; }
+      else { aL += ah.hN[p]; aB += ah.hb[p]; aN++; }
     }
     teamLand.push(tl); teamBal.push(tb); teamHumans.push(th); teamHusk.push(tk);
+    aiLand.push(aL); aiBal.push(aB); aiAlive.push(aN);
     var q = ao.__q();
     quotaY.push(q[1]);
     for (var p2 = 0; p2 < H; p2++) {
@@ -502,7 +507,7 @@ function collector(cfg) {
     rejectedCmds: noEffect,
     check: { points: checkRows.length, exact: exact, firstBad: bad.length ? bad[0].t : -1, bad: bad.slice(0, 400) },
     lineId: lineId, lineAmb: lineAmb,
-    every: EVERY, ticks: ticks, teamLand: teamLand, teamBal: teamBal, teamHumans: teamHumans, teamHusk: teamHusk, hum: hum,
+    every: EVERY, ticks: ticks, teamLand: teamLand, teamBal: teamBal, teamHumans: teamHumans, teamHusk: teamHusk, aiLand: aiLand, aiBal: aiBal, aiAlive: aiAlive, hum: hum,
     teams: teams, engineNames: names, allNames: allNames, poolAi: poolAi,
     deathT: deathT, deaths: deaths, leaveT: leaveT, donations: donations, squadCmds: squadCmds, spawnBox: spawnBox,
     ledgerWindow: LW, ledger: led, neighEvery: NE, neigh: neigh, finalBots: finalBots,

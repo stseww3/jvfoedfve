@@ -1332,7 +1332,7 @@ def sec_poolai(X):
     tot = []
     for t in [t for t in PROTO if t <= X.endT]:
         i = X.ix(t)
-        tot.append((S['ticks'][i], sum(v['terr'][i] for v in S['poolAi'].values()), S['teamLand'][i][0]))
+        tot.append((S['ticks'][i], sum(v['terr'][i] for v in S['poolAi'].values()), S['aiLand'][i] if S.get('aiLand') else S['teamLand'][i][0]))
     print('   各拍合计占地（格）/ 全部内置 AI 占地：' + ' '.join(f"t{t}:{a}/{b}" for t, a, b in tot))
     if not touch:
         print('   我方在场号没有和它们接壤过')
@@ -1393,8 +1393,12 @@ def sec_medians(X, prefix=None):
         print(f"   t={r['t']:5d} 我方 {len(r['ours']):2d} 个 中位 {median(r['ours'])} 最小 {min(r['ours']) if r['ours'] else '-'} 最大 {max(r['ours']) if r['ours'] else '-'}{g}"
               f" ｜ 其余真人 {len(r['rest'])} 个 中位 {median(r['rest'])}")
     S = X.S
-    ai = [(S['ticks'][i], round(100 * S['teamLand'][i][0] / X.land, 1)) for i in range(len(S['ticks'])) if S['ticks'][i] % 90 == 0 and S['ticks'][i] <= 2700]
-    print('   内置 AI 占地%：' + ' '.join(f"t{t}:{v}" for t, v in ai if t % 180 == 0 or t in (630, 1170, 1530)))
+    al = S.get('aiLand')
+    ai = [(S['ticks'][i], round(100 * (al[i] if al else S['teamLand'][i][0]) / X.land, 1)) for i in range(len(S['ticks'])) if S['ticks'][i] % 90 == 0 and S['ticks'][i] <= 2700]
+    print('   内置 AI 占地%' + ('' if al or not any(X.team[p] for p in range(X.H, 512)) else '（旧重放文件没有 AI 合计，8 队局这里恒为 0，重跑 run_truth.sh）') + '：' + ' '.join(f"t{t}:{v}" for t, v in ai if t % 180 == 0 or t in (630, 1170, 1530)))
+    if al:
+        ab, an = S['aiBal'], S['aiAlive']
+        print('   内置 AI 存活数/兵：' + ' '.join(f"t{S['ticks'][i]}:{an[i]}/{fmt(ab[i])}" for i in range(len(S['ticks'])) if S['ticks'][i] in (270, 630, 900, 1170, 1530, 2070, 3060)))
 
 
 # ------------------------------------------------------------------ landings（登陆：谁的船靠上了我方号的岸）
