@@ -16,7 +16,7 @@
   · 对不上或分不清的段（段内有陆攻、发船、挨打、收款）里的在途捐款记「定不了」。
   · 归属（2026-11 改）：余额只认得出「落地了几笔、pct 多少」，认不出是哪一笔。默认先取过得了引擎受捐额度（B3/B4/B5：
     受捐方累计点数 ≤ 全场额度，t≥4284 不查）的，再取发令最晚的；--fifo 换回旧口径（在途队列队首优先，会把时延估大、把归属推给旧单）。
-  · 段所在的快照窗（或前一个窗）里有陆攻 / 发船时（cmds 增量 > 日志里的捐款 + 戳刺条数），只留「足额对上且过得了额度」的，其余记「定不了」。
+  · 段所在的快照窗（或前一个窗）里有陆攻 / 发船 / 协防戳刺时（cmds 增量 > 日志里的捐款条数），只留「足额对到 1.5% 以内且过得了额度」的，其余记「定不了」。
   · 一笔捐款发令后 150 拍内每一段都对得上、且都明确不含它 → 记「没成交」。
   · 时延区间：(最后一次确认还没落地的观测拍 − 发令拍, 第一次确认已落地的观测拍 − 发令拍]。
 产物：out/<局>/donfit[_room<N>].txt 与 donfit[_room<N>].json
@@ -34,6 +34,7 @@ import r08lib as L  # noqa: E402
 
 TOL_FIT = 0.045     # 足额组合允许的相对误差（捐出方挨打、领土微变带来的噪声 ≈3%）
 TOL_CLIP = 0.01     # 「只扣税」上界的容差
+TOL_MIXED = 0.015   # 同窗有陆攻 / 发船 / 戳刺时，足额组合要对到这个精度才收（一条 10% 戳刺 ≈ 余额的 11%，和一笔捐款的 15%~33% 差得不远）
 HORIZON = 150
 
 
@@ -171,13 +172,12 @@ class Donor:
         self.pending = []
         self.last_terr = None
         self.segs = []
-        # 每个快照窗 (a.t, c.t] 里「不是捐款也不是戳刺」的指令数（陆攻 / 发船）：cmds 的增量 − 日志里的捐款条数 − 戳刺条数
+        # 每个快照窗 (a.t, c.t] 里「不是捐款」的指令数（陆攻 / 发船 / 协防戳刺——戳刺也是一条陆攻，要花兵）：cmds 的增量 − 日志里的捐款条数
         self.win = []
         tk = b["ticks"]
         for a_, c_ in zip(tk, tk[1:]):
             nd = sum(1 for d in self.dons if a_["t"] <= d["t"] < c_["t"])
-            na = sum(1 for x in (b.get("assists") or []) if a_["t"] <= x["t"] < c_["t"])
-            self.win.append((a_["t"], c_["t"], (c_["cmds"] - a_["cmds"]) - nd - na))
+            self.win.append((a_["t"], c_["t"], (c_["cmds"] - a_["cmds"]) - nd))
 
     def mixed(self, t0, t1):
         """(t0, t1] 碰到的快照窗、以及它前面那个窗（指令可能晚到）里有没有别的指令。"""
@@ -205,7 +205,7 @@ class Donor:
                 f = fit_segment(bal0, t0, bal1, t1, terr_opts, land, cand, qok)
                 # 段里（或前一个快照窗）有陆攻 / 发船：余额的落差可能是它们的，不是捐款的。
                 # 只留「足额对上、且过得了额度」的；夹小的、过不了额度的一律算分不清。
-                if qok is not None and f["sub"] and self.mixed(t0, t1) and (f["kind"] == "clip" or not qok(f["sub"], f["parts"])):
+                if qok is not None and f["sub"] and self.mixed(t0, t1) and (f["kind"] == "clip" or f["err"] > TOL_MIXED or not qok(f["sub"], f["parts"])):
                     f = dict(kind="dirty", sub=(), parts=[], err=f["err"])
                     for d in cand:
                         res[id(d)]["mixed"] = True

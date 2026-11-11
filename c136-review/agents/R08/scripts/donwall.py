@@ -22,6 +22,8 @@
   [WE] 额度本身给每个受捐方留的上限（纯引擎公式，不依赖拟合）
   [WF] 阵亡的编队号整局和阵亡前 600 拍收到的捐款
   [WG] 成交的捐款按受捐方当时的密度分档（≥100 = 受捐方自己已经超软上限）
+  [WH] 按捐出方所在的队汇总
+  [WI] 集中补给窗：一个受捐方 360 拍内从 ≥5 个捐出方收到的成交捐款
 """
 import collections
 import json
@@ -187,6 +189,40 @@ def main():
         t0 = [s for s in b["ticks"] if s["t"] <= x[3]]
         t1 = [s for s in b["ticks"] if s["t"] <= x[4] + 90]
         P.append(f"     {n} | {x[0]} | {x[1]} | {x[2]} | {x[3]}~{x[4]} | {t0[-1]['terr'] if t0 else '-'}→{t1[-1]['terr'] if t1 else '-'}")
+    P.append("[WH] 按队：队 | 日志笔数 | 成交 / 没成交 / 判不了 | 到账 | 税 | t<4284 日志笔数 → 成交笔数 / 到账 | t≥4284 日志笔数 → 成交笔数 / 到账 | 收得最多的 3 个号（笔数 / 到账）")
+    team_of = {b["name"]: b["team"] for b in F["bots"].values()}
+    for tm in sorted({team_of.get(r["donor"]) for r in rows}, key=lambda x: (x is None, x)):
+        g = [r for r in rows if team_of.get(r["donor"]) == tm]
+        ex = [r for r in g if r["status"] == "EXEC"]
+        e0 = [r for r in ex if r["t"] < 4284]
+        e1 = [r for r in ex if r["t"] >= 4284]
+        top = collections.defaultdict(lambda: [0, 0])
+        for r in ex:
+            top[r["recv"]][0] += 1
+            top[r["recv"]][1] += r["amt"]
+        tops = "、".join(f"{n} {v[0]} / {v[1]}" for n, v in sorted(top.items(), key=lambda kv: -kv[1][1])[:3])
+        P.append(f"     T{tm} | {len(g)} | {len(ex)} / {sum(1 for r in g if r['status'] == 'NOEXEC')} / {sum(1 for r in g if r['status'] == 'AMB')} | {sum(r['amt'] for r in ex)} | {sum(r['fee'] for r in ex)} | "
+                 f"{sum(1 for r in g if r['t'] < 4284)} → {len(e0)} / {sum(r['amt'] for r in e0)} | {sum(1 for r in g if r['t'] >= 4284)} → {len(e1)} / {sum(r['amt'] for r in e1)} | {tops}")
+    P.append("[WI] 集中补给窗（一个受捐方 360 拍内成交到账最多的窗；只列捐出方 ≥5 个的）：受捐方 | 窗 | 捐出方数 / 笔数 | 到账 | 税 | 占窗前余额 % | 领土 窗前→窗后 | 窗内受捐方自己的指令数 | 同一拍成交最多的笔数@拍")
+    for n in sorted({r["recv"] for r in rows}):
+        ex = sorted([r for r in rows if r["recv"] == n and r["status"] == "EXEC"], key=lambda r: r["t"])
+        best = None
+        for i, r0 in enumerate(ex):
+            w = [r for r in ex[i:] if r["t"] < r0["t"] + 360]
+            tot_w = sum(r["amt"] for r in w)
+            if best is None or tot_w > best[0]:
+                best = (tot_w, w)
+        if not best or len({r["donor"] for r in best[1]}) < 5:
+            continue
+        w = best[1]
+        b = bn.get(n)
+        pre = [x for x in (b["ticks"] if b else []) if x["t"] <= w[0]["t"]]
+        aft = [x for x in (b["ticks"] if b else []) if x["t"] <= w[0]["t"] + 360]
+        if not pre or not aft:
+            continue
+        same = collections.Counter(r["t"] for r in w).most_common(1)[0]
+        P.append(f"     {n} | {w[0]['t']}~{w[0]['t'] + 360} | {len({r['donor'] for r in w})} / {len(w)} | {best[0]} | {sum(r['fee'] for r in w)} | {100 * best[0] / max(1, pre[-1]['bal']):.1f} | "
+                 f"{pre[-1]['terr']}→{aft[-1]['terr']} | {aft[-1]['cmds'] - pre[-1]['cmds']} | {same[1]}@{same[0]}")
     with open(os.path.join(OUT, mid, f"donwall{suf}.txt"), "w", encoding="utf-8") as f:
         f.write("\n".join(P) + "\n")
     print("\n".join(P))

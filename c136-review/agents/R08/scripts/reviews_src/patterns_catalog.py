@@ -294,6 +294,9 @@ CATALOG = [
     dict(id="NEW-DF-G1", prefix="DF", name="（正面）协防戳刺后队友不再丢地",
          definition="HL-ASSIST 之后 270 拍内受益的队友领土不再下降（此前 180 拍内掉过 ≥10%）",
          detect="scripts/logstats.py [QC]；scripts/facts.py [E]"),
+    dict(id="NEW-DN-G3", prefix="DN", name="（正面）前线号一出手，银行集中补给：一个受捐方 360 拍内从 ≥5 个捐出方收到的成交捐款 ≥ 窗前余额的 40%，同期领土 +≥25%",
+         definition="donwall [WI] 的窗：捐出方 ≥5 个、到账 ÷ 受捐方窗前余额 ≥40%、受捐方窗内自己发过指令、窗后领土 ≥ 窗前的 1.25 倍；记到账、税、领土前后",
+         detect="scripts/donwall.py [WI]"),
 ]
 
 BY_ID = {p["id"]: p for p in CATALOG}

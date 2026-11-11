@@ -444,13 +444,14 @@
   {
    "t": 180,
    "src": "HL-TICK",
-   "botsWithSnapshot": 5,
-   "sqTerr": 857,
-   "sqSharePct": 0.18,
-   "sqBal": 4490,
-   "sqDens": 5.2,
+   "botsWithSnapshot": 13,
+   "sqTerr": 1116,
+   "sqSharePct": 0.23,
+   "sqBal": 9508,
+   "sqDens": 8.5,
    "boxedIn": 0,
    "overSoftCap": 0,
+   "botsCarriedForward": 8,
    "truth": {
     "snapT": 180,
     "teamSharePct": {
@@ -547,13 +548,14 @@
   {
    "t": 270,
    "src": "HL-TICK",
-   "botsWithSnapshot": 10,
-   "sqTerr": 3657,
-   "sqSharePct": 0.76,
-   "sqBal": 14033,
-   "sqDens": 3.8,
+   "botsWithSnapshot": 13,
+   "sqTerr": 3881,
+   "sqSharePct": 0.8,
+   "sqBal": 15975,
+   "sqDens": 4.1,
    "boxedIn": 0,
    "overSoftCap": 0,
+   "botsCarriedForward": 3,
    "truth": {
     "snapT": 270,
     "teamSharePct": {
@@ -600,13 +602,14 @@
   {
    "t": 450,
    "src": "HL-TICK",
-   "botsWithSnapshot": 12,
-   "sqTerr": 13466,
-   "sqSharePct": 2.79,
-   "sqBal": 36548,
-   "sqDens": 2.7,
+   "botsWithSnapshot": 13,
+   "sqTerr": 14128,
+   "sqSharePct": 2.92,
+   "sqBal": 38959,
+   "sqDens": 2.8,
    "boxedIn": 0,
    "overSoftCap": 0,
+   "botsCarriedForward": 1,
    "truth": {
     "snapT": 450,
     "teamSharePct": {
@@ -653,13 +656,14 @@
   {
    "t": 518,
    "src": "RESULT L8610207 + 最近快照 t=450",
-   "botsWithSnapshot": 12,
-   "sqTerr": 13466,
-   "sqSharePct": 2.79,
-   "sqBal": 36548,
-   "sqDens": 2.7,
+   "botsWithSnapshot": 13,
+   "sqTerr": 14128,
+   "sqSharePct": 2.92,
+   "sqBal": 38959,
+   "sqDens": 2.8,
    "boxedIn": 0,
    "overSoftCap": 0,
+   "botsCarriedForward": 1,
    "event": "Cataphract left",
    "truth": {
     "snapT": 510,
@@ -708,13 +712,14 @@
   {
    "t": 630,
    "src": "HL-TICK",
-   "botsWithSnapshot": 11,
-   "sqTerr": 29266,
-   "sqSharePct": 6.06,
-   "sqBal": 56480,
+   "botsWithSnapshot": 12,
+   "sqTerr": 31066,
+   "sqSharePct": 6.43,
+   "sqBal": 60475,
    "sqDens": 1.9,
    "boxedIn": 0,
    "overSoftCap": 0,
+   "botsCarriedForward": 1,
    "truth": {
     "snapT": 630,
     "teamSharePct": {
@@ -812,26 +817,27 @@
    }
   },
   {
-   "t": 990,
+   "t": 1080,
    "src": "HL-TICK",
    "botsWithSnapshot": 12,
-   "sqTerr": 57733,
-   "sqSharePct": 11.95,
-   "sqBal": 291209,
-   "sqDens": 5.0,
+   "sqTerr": 59992,
+   "sqSharePct": 12.41,
+   "sqBal": 366302,
+   "sqDens": 6.1,
    "boxedIn": 0,
    "overSoftCap": 0,
+   "botsCarriedForward": 4,
    "note": "编队领土份额峰值",
    "truth": {
-    "snapT": 990,
+    "snapT": 1080,
     "teamSharePct": {
-     "T1": 11.0,
-     "T2": 6.7,
-     "T3": 9.9,
-     "T4": 9.6,
-     "T5": 8.9
+     "T1": 12.2,
+     "T2": 6.9,
+     "T3": 11.9,
+     "T4": 11.7,
+     "T5": 10.0
     },
-    "builtInAiSharePct": 51.8,
+    "builtInAiSharePct": 45.4,
     "activeHumansByTeam": {
      "T1": 10,
      "T2": 10,
@@ -840,41 +846,42 @@
      "T5": 8
     },
     "squadActive": 12,
-    "squadActiveSharePct": 11.95,
-    "squadHuskSharePct": 0.4,
-    "squadPerCapitaVsRoomActive": 0.98,
+    "squadActiveSharePct": 13.16,
+    "squadHuskSharePct": 0.41,
+    "squadPerCapitaVsRoomActive": 0.94,
     "squadByTeam": {
      "T1": {
       "bots": 5,
-      "sharePct": 5.07
+      "sharePct": 5.47
      },
      "T3": {
       "bots": 2,
-      "sharePct": 2.21
+      "sharePct": 2.43
      },
      "T4": {
       "bots": 3,
-      "sharePct": 2.7
+      "sharePct": 3.25
      },
      "T5": {
       "bots": 2,
-      "sharePct": 1.97
+      "sharePct": 2.02
      }
     },
     "peerActive": 10,
-    "peerActiveSharePct": 6.69
+    "peerActiveSharePct": 6.87
    }
   },
   {
    "t": 1260,
    "src": "HL-TICK",
-   "botsWithSnapshot": 8,
-   "sqTerr": 44073,
-   "sqSharePct": 9.12,
-   "sqBal": 529962,
-   "sqDens": 12.0,
+   "botsWithSnapshot": 10,
+   "sqTerr": 54892,
+   "sqSharePct": 11.36,
+   "sqBal": 615363,
+   "sqDens": 11.2,
    "boxedIn": 0,
    "overSoftCap": 0,
+   "botsCarriedForward": 2,
    "truth": {
     "snapT": 1260,
     "teamSharePct": {
@@ -921,13 +928,14 @@
   {
    "t": 1530,
    "src": "HL-TICK",
-   "botsWithSnapshot": 9,
-   "sqTerr": 51594,
-   "sqSharePct": 10.68,
-   "sqBal": 1380916,
-   "sqDens": 26.8,
+   "botsWithSnapshot": 10,
+   "sqTerr": 58098,
+   "sqSharePct": 12.02,
+   "sqBal": 1514087,
+   "sqDens": 26.1,
    "boxedIn": 2,
    "overSoftCap": 0,
+   "botsCarriedForward": 1,
    "truth": {
     "snapT": 1530,
     "teamSharePct": {
@@ -974,13 +982,14 @@
   {
    "t": 1540,
    "src": "RESULT LNone + 最近快照 t=1530",
-   "botsWithSnapshot": 9,
-   "sqTerr": 51594,
-   "sqSharePct": 10.68,
-   "sqBal": 1380916,
-   "sqDens": 26.8,
+   "botsWithSnapshot": 10,
+   "sqTerr": 58098,
+   "sqSharePct": 12.02,
+   "sqBal": 1514087,
+   "sqDens": 26.1,
    "boxedIn": 2,
    "overSoftCap": 0,
+   "botsCarriedForward": 1,
    "event": "Redcoat left",
    "truth": {
     "snapT": 1540,

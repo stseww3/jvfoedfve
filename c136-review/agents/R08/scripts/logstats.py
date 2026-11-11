@@ -10,6 +10,7 @@
        余额 > 100×领土（软上限）的快照数、「有敌邻（nb≥1）且密度 ≥95 且指令数没变」的最长连续段。
        硬上限段里被截掉的利息 = 按公式不封顶应得的利息（r08lib.interest_rate），逐窗累加。
   [QC] 协防戳刺：谁、为谁、打谁、几次；戳刺那一拍前后的快照余额 ×(102+1)/1024 估出每次的兵。
+  [QG] 中后期（t≥2250）各号的指令构成：陆攻 / 船 / 捐款 / 戳刺各多少条，最长一段没有陆攻也没有船的窗。
   [QF] 单邻门槛：只有 1 个敌邻、没有中立地的窗按起点密度分档（<100 / 100~128 / ≥128），数没有任何非捐款指令的窗；128 = overHumanCap×100。
   [QD] 挨打不还手：领土从局部峰值掉 ≥30% 的过程（到谷底或阵亡），期间的指令数、发船数、余额前后。
   [QE] 发船：boats 计数涨了的快照窗；「纯船窗」（这一窗新增指令全是船）里少掉的兵和领土变化。没有录像时看不到船靠没靠岸，只能看地涨没涨。
@@ -144,13 +145,14 @@ def analyse(mid, room=None):
                     low = tk[j]
                     jl = j
                 j += 1
-            end_t = b.get("deathTick") if j >= len(tk) and b.get("deathTick") else (low["t"] if low else None)
-            end_terr = 0 if j >= len(tk) and b.get("deathTick") else (low["terr"] if low else pk["terr"])
+            dead = b.get("event") == "died" and bool(b.get("deathTick"))   # 活到终局的号也有结果行的拍，不能当阵亡
+            end_t = b.get("deathTick") if j >= len(tk) and dead else (low["t"] if low else None)
+            end_terr = 0 if j >= len(tk) and dead else (low["terr"] if low else pk["terr"])
             if low is not None and pk["terr"] >= 3000 and end_terr <= 0.7 * pk["terr"]:
-                last = tk[-1] if j >= len(tk) else low
+                last = tk[-1] if (j >= len(tk) and dead) else low
                 out["nofight"].append(dict(me=me, name=b["name"], team=b["team"], t0=pk["t"], t1=end_t, terr0=pk["terr"], terr1=end_terr, bal0=pk["bal"], balLast=last["bal"],
                                            dens0=round(pk["bal"] / max(1, pk["terr"]), 1), densLast=round(last["bal"] / max(1, last["terr"]), 1),
-                                           cmds=last["cmds"] - pk["cmds"], boats=last["boats"] - pk["boats"], lastSnapT=last["t"], died=j >= len(tk) and bool(b.get("deathTick"))))
+                                           cmds=last["cmds"] - pk["cmds"], boats=last["boats"] - pk["boats"], lastSnapT=last["t"], died=j >= len(tk) and dead))
                 i = (jl + 1) if j < len(tk) else len(tk)
             else:
                 i += 1
@@ -209,6 +211,29 @@ def analyse(mid, room=None):
         if row["lo"][0] + row["mid"][0] + row["hi"][0]:
             gates.append(row)
     out["gates"] = gates
+    # [QG] 中后期（t≥2250，各号本地拍已经对齐）的指令构成：陆攻 = Δcmds − Δboats − HL-DONATE 条数 − HL-ASSIST 条数。
+    mix = []
+    for me, b in F["bots"].items():
+        tk = [x for x in b["ticks"] if x["t"] >= 2250]
+        if len(tk) < 2:
+            continue
+        a, z = tk[0], tk[-1]
+        dons = sum(1 for d in b["donations"] if a["t"] <= d["t"] < z["t"])
+        pokes = sum(1 for d in b["assists"] if a["t"] <= d["t"] < z["t"])
+        dc, db = z["cmds"] - a["cmds"], z["boats"] - a["boats"]
+        # 最长一段「没有陆攻也没有船」的连续快照窗
+        best, cur = None, None
+        for x, y in zip(tk, tk[1:]):
+            dd = sum(1 for d in b["donations"] if x["t"] <= d["t"] < y["t"]) + sum(1 for d in b["assists"] if x["t"] <= d["t"] < y["t"])
+            if (y["cmds"] - x["cmds"]) - dd <= 0:
+                cur = [x["t"], y["t"], x["terr"], y["terr"]] if cur is None else [cur[0], y["t"], cur[2], y["terr"]]
+                if best is None or cur[1] - cur[0] > best[1] - best[0]:
+                    best = list(cur)
+            else:
+                cur = None
+        mix.append(dict(name=b["name"], me=me, team=b["team"], t0=a["t"], t1=z["t"], cmds=dc, boats=db, dons=dons, pokes=pokes, land=dc - db - dons - pokes,
+                        terr0=a["terr"], terr1=z["terr"], died=b.get("event") == "died", idle=best))
+    out["mix"] = mix
     return F, out
 
 
@@ -276,6 +301,23 @@ def main():
             tot[2 * i + 1] += x[k][1]
         tot[6] += x["hiLost"]
     P.append(f"     合计：<100 {tot[0]} 窗 / 没指令 {tot[1]}；100~128 {tot[2]} / {tot[3]}；≥128 {tot[4]} / {tot[5]}（这些窗里共丢 {tot[6]} 格）")
+    P.append("[QG] 中后期（t≥2250）各号的指令构成：号 队 | 起止拍 | 指令数 = 陆攻 + 船 + 捐款 + 戳刺 | 领土 前→后 | 阵亡? | 最长一段没有陆攻也没有船的窗（拍数，领土 前→后）")
+    tt = defaultdict(lambda: [0, 0, 0, 0, 0, 0])
+    for x in sorted(o["mix"], key=lambda x: (x["team"] if x["team"] is not None else 9, x["land"] + x["boats"], x["name"])):
+        r = x["idle"]
+        P.append(f"     {x['name']}({x['me']}) T{x['team']} | {x['t0']}~{x['t1']} | {x['cmds']} = {x['land']} + {x['boats']} + {x['dons']} + {x['pokes']} | {x['terr0']}→{x['terr1']} | {'是' if x['died'] else '否'} | "
+                 + (f"{r[0]}~{r[1]}（{r[1] - r[0]} 拍，{r[2]}→{r[3]}）" if r else "-"))
+        v = tt[x["team"]]
+        v[0] += 1
+        v[1] += x["cmds"]
+        v[2] += x["land"]
+        v[3] += x["boats"]
+        v[4] += x["dons"]
+        v[5] += x["t1"] - x["t0"]
+    for k, v in sorted(tt.items(), key=lambda kv: (kv[0] is None, kv[0])):
+        P.append(f"     合计 T{k}：{v[0]} 个号，共 {v[5]} 号·拍，指令 {v[1]} 条 = 陆攻 {v[2]} + 船 {v[3]} + 捐款 {v[4]} + 戳刺 {v[1] - v[2] - v[3] - v[4]}；每 1000 号·拍陆攻 {1000 * v[2] / max(1, v[5]):.1f} 条")
+    z0 = [x for x in o["mix"] if x["land"] + x["boats"] == 0]
+    P.append(f"     t≥2250 一条陆攻、一条船都没发的号 {len(z0)} 个：" + "、".join(f"{x['name']}（{x['t1'] - x['t0']} 拍，{x['terr0']}→{x['terr1']}）" for x in z0))
     txt = "\n".join(P)
     suffix = "" if room is None else f"_room{room}"
     od = os.path.join(HERE, "..", "out", mid)

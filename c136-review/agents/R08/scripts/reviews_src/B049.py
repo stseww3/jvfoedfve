@@ -91,10 +91,10 @@ R = dict(
                 "编队（有日志的号）占陆地：t=3600 10.99%（7 个号）→t=5490 14.45%→t=7650 18.23%→t=8730 26.02%→峰值 t=9540 31.12%（6 个号，237347 格，余额 2772 万，密度 116.8）→"
                 "t=10080 23.02%→t=10890 10.57%→t=11430 0.85%（digest [C]）。",
                 "长大的两个号：Dzungar（T2）9216 格（t=4230）→103429 格（t=9720，13.6%，余额 1231 万）；Golden Horde（T3）19180 格（t=4770）→65839 格（t=9450）→82308 格（t=11070）。",
-                "捐款（donfit [FA]~[FC]）：日志 124 笔，成交 113、没成交 4、定不了 7；到账 1843.1 万，税 890.7 万（占捐出方付出的 32.6%）。"
-                "Portugal→Dzungar 35 笔，到账 966.1 万、税 340.9 万；Golden Horde 收 22 笔 240.7 万；EnPassant 收 10 笔 238.1 万（税 199.9 万）；"
-                "断流的 4 个 T3 号收 43 笔，到账 368.9 万、税 240.8 万（t=3060~4875）。",
-                "连发 24 笔（同一个号 ≤25 拍内对同一人再捐一笔，发令时前一笔还没扣款，两笔都成交）：多付到账 376.3 万 + 税 171.1 万；其中 Portugal 11 笔。成交的 113 笔里 25 笔在发令 20 拍后还没扣款。",
+                "捐款（donfit [FA]~[FC]）：日志 124 笔，成交 109、没成交 4、定不了 11；到账 1778.8 万，税 862.1 万（占捐出方付出的 32.6%）。"
+                "Portugal→Dzungar 成交 34 笔，到账 937.0 万、税 330.9 万；Golden Horde 收 20 笔 215.8 万；EnPassant 收 10 笔 238.1 万（税 199.9 万）；"
+                "日志里对断流的 4 个 T3 号捐了 43 笔，成交 42 笔，到账 358.7 万、税 231.1 万（t=3060~4875）。",
+                "连发 24 笔（同一个号 ≤25 拍内对同一人再捐一笔，发令时前一笔还没扣款，两笔都成交）：多付到账 376.3 万 + 税 171.1 万；其中 Portugal 11 笔。成交的 109 笔里 25 笔在发令 20 拍后还没扣款。",
                 "跨队协防戳刺 17 次（logstats [QC]），每次约 10% 余额：GalaxyBrain（T1）为 T3 的 Brittany / Golden Horde 打 [FR] 9 次、打 Player [og]69 1 次，估计出兵 137.8 万；"
                 "Golden Horde（T3）为 T1 的 GalaxyBrain 打 [FR] 3 次、Player 631 1 次、Player [og]69 3 次，估计出兵 326.6 万。",
                 "GalaxyBrain t=8730~10170 cmds=118 不变（1440 拍），敌邻 1 个，密度 91→150.0；t=9540、9630、10170 三条快照余额正好等于 150×领土（4129950 / 4129950 / 3577200）。"
@@ -106,8 +106,8 @@ R = dict(
                 "被 Player 676 吃走 6543 格、Player 582 2090 格。T1 在 t=5220 清零，T3 50.0%（t=3600）→76.3%（t=5400）→92.9%（t=6099）。",
             ],
             problems=[
-                "T3 的 4 个断流号在 t=3060~4875 被打时，T3 在线的 4 个号给它们捐了 43 笔（付出 609.7 万，其中税 240.8 万）；受捐方读数里的密度一直是 0~19。",
-                "盈余捐款的比例是固定的 153/185/280，不看捐出方自己的留底：Portugal 35 笔成交，发令时密度中位 79.7，捐后中位 58.6、最低 44.7，30 笔捐完低于 68（donfit [FE]）。",
+                "T3 的 4 个断流号在 t=3060~4875 被打时，T3 在线的 4 个号给它们捐了 43 笔（成交 42 笔，付出 589.7 万，其中税 231.1 万）；受捐方读数里的密度一直是 0~19。",
+                "盈余捐款的比例是固定的 153/185/280，不看捐出方自己的留底：Portugal 34 笔成交，发令时密度中位 80.0，捐后中位 58.6、最低 44.7，29 笔捐完低于 68（donfit [FE]）。",
                 "三个最大的号（Dzungar、GalaxyBrain、Golden Horde）最后都是高密度挨打、几乎不发指令地被吃完；阵亡前最后一条快照的余额合计 722 万。",
             ],
         ),
@@ -165,14 +165,14 @@ R = dict(
                 "t=9682 T3 共 72892 格，其中 Golden Horde 65839、Lannes 6512，其余不到 600 格。t=5302 T3 约 22.7 万格，其中有日志的编队号（Golden Horde、EnPassant、Lannes）约 4.6 万格。",
                 "断流的 4 个 T3 号在 t=3060~4875 还活着并且在挨打：43 条 HL-DONATE 写着 squad rescue（35 条）/ surplus（8 条）→ ally=48/44/37/40，dAlly 读数 0~19。"
                 "Tomato 在 t=3840~3865 连收 3 笔（约 28 万兵）后密度从 1 变成 12，按此估它当时约 2.5 万格（推断）。t=4875 之后日志里再没有以它们为对象的捐款。",
-                "donfit [FC]：这 4 个号共收 43 笔，到账 3688937，捐出方付税 2408321；捐出方是 EnPassant 12 笔、Lannes 11、Brittany 10、Golden Horde 10。",
+                "donfit [FC]：这 4 个号日志 43 笔、成交 42 笔，到账 3586664，捐出方付税 2310627；日志里的捐出方是 EnPassant 12 笔、Lannes 11、Brittany 10、Golden Horde 10。",
                 "同一时期在线的 T3 号都停着：Brittany 9558 格（t=2340~4950）密度 33→93，t=5302 被 [FR]（T2）吃光；EnPassant 9656 格（t=3690~6750）；Lannes 2158~6512 格。",
-                "t=5470 起 EnPassant、Lannes 给 Golden Horde 捐了 22 笔 240.7 万，Golden Horde 活下来并长到 65839 格（t=9450）。",
+                "t=5470 起 EnPassant、Lannes 给 Golden Horde 捐成 20 笔 215.8 万，Golden Horde 活下来并长到 65839 格（t=9450）。",
             ],
             priorDecisions=[
                 dict(t="3060~4875", bot="EnPassant / Lannes / Brittany / Golden Horde", decision="按名字池认出『编队兄弟』正在被真人打，就捐；不看对方是不是还在线。受捐方密度 0~19，捐进去的兵留不住。",
                      codePath=f"{C110}: tryDonateToTeammate L4419-4445（isOurSquadBot 只查名字 L3973；救援条件 inHumanAtk>0 且 (≥8% 余额 或 dAlly<75)）",
-                     judgement="error", why="43 笔付出 609.7 万（税 240.8 万），受捐方之后还是没了"),
+                     judgement="error", why="成交的 42 笔付出 589.7 万（税 231.1 万），受捐方之后还是没了"),
                 dict(t="2340~4950", bot="Brittany / Golden Horde / EnPassant / Portugal", decision="清仓后各号停在 1 万~2 万格上囤兵，密度涨到 90 以上才通过捐款或零星出手放出去。",
                      codePath=f"{C110}: Policy.buyLand L5250+（对真人：c ≥ worth 且没超软上限就 break；拥挤门槛、唯一缓冲门槛）",
                      judgement="unclear", why="房间 0 没有录像，跑不了影子，哪一道门槛在挡只能参照房间 1 的 BlackRock"),
@@ -232,13 +232,13 @@ R = dict(
                    "t=10440 27554 格", "t=10710 10456 格 / 845528 兵", "t=10766 阵亡"],
             statementType="observed"),
         "Dzungar": dict(
-            cause="编队最大的号（T2）。靠 Portugal 的 35 笔捐款（966.1 万）从 9216 格（t=4230）长到 103429 格（t=9720，占陆地 13.6%）。之后 1080 拍丢掉 83134 格，只发了 2 条指令（cmds 111→113），"
+            cause="编队最大的号（T2）。靠 Portugal 成交的 34 笔捐款（937.0 万）从 9216 格（t=4230）长到 103429 格（t=9720，占陆地 13.6%）。之后 1080 拍丢掉 83134 格，只发了 2 条指令（cmds 111→113），"
                   "密度一直 92~133；t=10871 阵亡，最后一条快照 20295 格 / 2700420 兵。打它的是谁看不到；同期 T1 从 56.2% 涨到 79.3%。",
             chain=["t=9720 103429 格 / 12307936 兵（密度 119.0）", "t=9900 87477 格 / 8556525 兵（1 条指令）", "t=10080 59204 格", "t=10170 49375 格（1 条指令）", "t=10530 41287 格 / 密度 131.9",
                    "t=10710 20295 格 / 2554088 兵", "t=10871 阵亡"],
             statementType="observed"),
         "Portugal": dict(
-            cause="t=2250 起被围在 20168 格上（112 条快照里 92 条 nb=0），整局当银行：35 笔盈余捐全部给 Dzungar。Dzungar 阵亡（t=10871）后 175 拍，t=11046 阵亡——t=10980 还有 20107 格 / 1429631 兵，66 拍内被吃光；当时 T1 占 85.6%。",
+            cause="t=2250 起被围在 20168 格上（112 条快照里 92 条 nb=0），整局当银行：35 笔盈余捐全部给 Dzungar（成交 34 笔）。Dzungar 阵亡（t=10871）后 175 拍，t=11046 阵亡——t=10980 还有 20107 格 / 1429631 兵，66 拍内被吃光；当时 T1 占 85.6%。",
             chain=["t=2250 19921 格 / 14025 兵", "t=4040~10660 捐 35 笔", "t=10980 20107 格 / 1429631 兵 / 敌邻 1", "t=11046 阵亡"],
             statementType="observed"),
         "Golden Horde": dict(
@@ -247,7 +247,7 @@ R = dict(
             chain=["t=9450 65839 格", "t=9555~9655 给 EnPassant 捐 5 笔（付出 375 万）", "t=10530~10740 3 次戳刺", "t=11070 82308 格 / 3877278 兵", "t=11340 50826 格 / 3678981 兵", "t=11403 阵亡"],
             statementType="observed"),
         "Lannes": dict(
-            cause="整局没超过 6512 格：t=1080 5844 格，清仓窗只多 49 格，t=6570 掉到 2158 格，t=6840 回到 6512 格后被围到最后。给队友捐了 33 笔（成交 31，到账 184 万）。t=11430 重新接壤（nb=1），t=11510 最后一个阵亡（第 6 名）。",
+            cause="整局没超过 6512 格：t=1080 5844 格，清仓窗只多 49 格，t=6570 掉到 2158 格，t=6840 回到 6512 格后被围到最后。给队友捐了 33 笔（成交 30，到账 181 万）。t=11430 重新接壤（nb=1），t=11510 最后一个阵亡（第 6 名）。",
             chain=["t=2160 5606 格 / 8775 兵", "t=6570 2158 格", "t=6840 6512 格", "t=11430 6512 格 / 519476 兵 / 敌邻 1", "t=11510 阵亡"],
             statementType="observed"),
         "Tomato": dict(cause="没有阵亡记录：日志停在本地拍 990（7372 格 / 17543 兵），之后没有任何行、也没有结果行。t=3400~4540 它还活着并在挨打（18 笔捐款以它为对象，到账 1657647，dAlly 读数 1~17）。之后去向不明。",
@@ -256,7 +256,7 @@ R = dict(
                       chain=["t=1080 最后一条 HL-TICK", "t=3060~4710 收 6 笔捐款"], statementType="observed"),
         "Palmyra": dict(cause="没有阵亡记录：日志停在本地拍 990（9088 格 / 33829 兵）。t=4015~4875 收 11 笔捐款（到账 916605，dAlly 读数 0~19）。之后去向不明。",
                         chain=["t=990 最后一条 HL-TICK", "t=4015 dAlly=0", "t=4015~4875 收 11 笔捐款"], statementType="observed"),
-        "SmurfAccount": dict(cause="没有阵亡记录：日志停在本地拍 990（6577 格 / 27262 兵）。t=3630~4835 收 8 笔捐款（到账 711515）。之后去向不明。",
+        "SmurfAccount": dict(cause="没有阵亡记录：日志停在本地拍 990（6577 格 / 27262 兵）。t=3630~4835 日志里 8 笔捐款以它为对象（成交 7 笔，到账 609242）。之后去向不明。",
                              chain=["t=990 最后一条 HL-TICK", "t=3630~4835 收 8 笔捐款"], statementType="observed"),
         "SonHeungMin": dict(cause="没有阵亡记录：日志停在本地拍 1170（8882 格 / 48251 兵），没有结果行，也从没出现在别的号的捐款或戳刺日志里；队号不明。",
                             chain=["t=1170 最后一条 HL-TICK"], statementType="observed"),
@@ -327,26 +327,26 @@ R = dict(
              codePath=f"{C110}: Strategy.send L526-540；文件头 L19-31", verdict="error", patternId="NEW-EX-02",
              evidence=["logstats [QA]：7 起清仓，最密的 360 拍窗里 7 个号", "noeffect [NA][NB]：1080~1890 的 203 条指令 107 条没生效；Portugal 清仓前累计 28 条没生效、GalaxyBrain 18、Dzungar 13、Satoshi 8",
                        "clockskew [KA]：房间 0 多落后 333 拍（本地拍 ≈1323），本地拍 ≈2022 追平", "truth [TG]（房间 1 实证）：同一机制下本意 28% 的单子实发 60%"], statementType="inferred"),
-        dict(id="D11", t="3060~4875", bot="房间 0：EnPassant / Lannes / Brittany / Golden Horde", decision="给 4 个日志早已停掉的 T3 号捐了 43 笔（救援 35、盈余 8）：到账 3688937、税 2408321。受捐方读数里的密度 0~19，捐进去的兵没有留下来。",
+        dict(id="D11", t="3060~4875", bot="房间 0：EnPassant / Lannes / Brittany / Golden Horde", decision="给 4 个日志早已停掉的 T3 号捐了 43 笔（救援 35、盈余 8），成交 42 笔：到账 3586664、税 2310627。受捐方读数里的密度 0~19，捐进去的兵没有留下来。",
              codePath=f"{C110}: tryDonateToTeammate L4419-4445（救援）/ L4460-4489（盈余）；isOurSquadBot L3973（只查名字池，不查对方是否还由策略控制）", verdict="error", patternId="NEW-DN-04",
-             evidence=["donfit [FC]：Tomato 18 笔 1657647 / 税 969791；Palmyra 11 笔 916605 / 653604；SmurfAccount 8 笔 711515 / 460081；Ghana 6 笔 403170 / 324845",
+             evidence=["donfit [FC]：Tomato 18 笔 1657647 / 税 969791；Palmyra 11 笔 916605 / 653604；SmurfAccount 7 笔 609242 / 362387；Ghana 6 笔 403170 / 324845",
                        "L8648906 t=3840 Golden Horde→Tomato dAlly=1；L8648910 t=3865 dAlly=12；L8648931 t=4015 Golden Horde→Palmyra dAlly=0",
                        "digest [B]：这 4 个号的 HL-TICK 停在 t=990~1080，没有结果行"], statementType="observed"),
         dict(id="D12", t="4040~10660", bot="房间 0：Portugal 等", decision="捐款冷却 18 拍，短于指令时延：前一笔还没扣款，同一个号又对同一人捐一笔，两笔都成交。24 笔连发多付到账 3763031 + 税 1711034。",
              codePath=f"{C110}: tryDonateToTeammate L4372（g.t − lastDonateTick < 18 才拦）", verdict="error", patternId="NEW-DN-10",
-             evidence=["donfit [FA]：连发 24 笔；成交的 113 笔里 25 笔发令 20 拍后还没扣款，时延上界中位 55 拍", "donfit [FB]：Portugal 11 笔连发、Lannes 7、Brittany 4、Golden Horde 1、EnPassant 1",
+             evidence=["donfit [FA]：连发 24 笔；成交的 109 笔里 25 笔发令 20 拍后还没扣款，时延上界中位 55 拍", "donfit [FB]：Portugal 11 笔连发、Lannes 7、Brittany 4、Golden Horde 1、EnPassant 1",
                        "L 行：Portugal t=10240 myBal=1575585、t=10260 myBal=1615219（余额没少反而多了，第一笔还没落地）；t=10710 快照密度 49.9"], statementType="observed"),
-        dict(id="D13", t="4040~10660", bot="房间 0：Portugal", decision="被围后密度一到 78 就按固定比例 185/1024 捐给 Dzungar，连税付出 24.3% 的余额：捐后密度中位 58.6、最低 44.7，35 笔里 30 笔捐完低于同一函数自己用的留底 68。",
+        dict(id="D13", t="4040~10660", bot="房间 0：Portugal", decision="被围后密度一到 78 就按固定比例 185/1024 捐给 Dzungar，连税付出 24.3% 的余额：捐后密度中位 58.6、最低 44.7，成交的 34 笔里 29 笔捐完低于同一函数自己用的留底 68。",
              codePath=f"{C110}: tryDonateToTeammate L4380-4388（coastGuardFloor 68×领土、maxSafePct）对 L4488（pct = boxedIn ? (dMe>110 ? 280 : 185) : 153，没有用 maxSafePct）", verdict="error", patternId="NEW-DN-11",
-             evidence=["donfit [FE]：Portugal 35 笔，发令时密度中位 79.7，捐后中位 58.6 / 最低 44.7，<68 的 30 笔、<55 的 10 笔；Lannes 16 笔里 10 笔、Brittany 5 笔里 5 笔捐后 <68",
+             evidence=["donfit [FE]：Portugal 34 笔，发令时密度中位 80.0，捐后中位 58.6 / 最低 44.7，<68 的 29 笔、<55 的 10 笔；Lannes 16 笔里 10 笔、Brittany 5 笔里 5 笔捐后 <68",
                        "HL-DONATE：Portugal 35 笔里 24 笔的 dMe 是 78~80（68×领土的留底乘 1.08 再留出 55/1024，正好是 77.6）；连发的第二笔读数比第一笔高 2", "digest [I]：Portugal t=10710 密度 49.9，t=11046 阵亡"], statementType="observed"),
-        dict(id="D14", t="4040~9720", bot="房间 0：Portugal → Dzungar", decision="被围的 Portugal 把 35 笔、966.1 万兵输给同队的 Dzungar；Dzungar 从 9216 格长到 103429 格（占陆地 13.6%），是编队整局最大的号。代价是税 340.9 万（26%）。",
+        dict(id="D14", t="4040~9720", bot="房间 0：Portugal → Dzungar", decision="被围的 Portugal 把 34 笔、937.0 万兵输给同队的 Dzungar；Dzungar 从 9216 格长到 103429 格（占陆地 13.6%），是编队整局最大的号。代价是税 330.9 万（26%）。",
              codePath=f"{C110}: tryDonateToTeammate L4457-4489（boxedIn 且 dMe ≥ 55 → 盈余捐给同队编队号）", verdict="good", patternId="NEW-DN-G2",
-             evidence=["donfit [FB][FC]：Portugal 35 / 35 成交，到账 9661249，税 3409018；收款方全是 Dzungar（t=4040~10660）", "digest [E]：Dzungar t=4230 9216 格 → t=8730 68811 → t=9720 103429",
+             evidence=["donfit [FB][FC]：Portugal 日志 35 笔、成交 34 笔（1 笔定不了），到账 9369932，税 3308780；收款方全是 Dzungar（t=4040~10660）", "digest [E]：Dzungar t=4230 9216 格 → t=8730 68811 → t=9720 103429",
                        "digest [J]：Portugal 112 条快照里 92 条被围"], statementType="observed"),
-        dict(id="D15", t="5470~10820", bot="房间 0：EnPassant / Lannes → Golden Horde", decision="T3 的两个小号把 22 笔、240.7 万兵捐给 Golden Horde；Golden Horde 从 19180 格（t=4770）长到 82308 格（t=11070），活到 t=11403。",
+        dict(id="D15", t="5470~10820", bot="房间 0：EnPassant / Lannes → Golden Horde", decision="T3 的两个小号把 20 笔、215.8 万兵捐给 Golden Horde；Golden Horde 从 19180 格（t=4770）长到 82308 格（t=11070），活到 t=11403。",
              codePath=f"{C110}: tryDonateToTeammate L4419-4445 / L4457-4489", verdict="good", patternId="NEW-DN-G1",
-             evidence=["donfit [FC]：Golden Horde 收 22 笔（Lannes 14、EnPassant 8），到账 2407428，税 940092（t=5470~10820）；另有 5 笔定不了", "digest [E]：Golden Horde t=4770 19180 格 → t=5400 33241 → t=9000 60461 → t=9450 65839", "digest [N]：t=5400~5490、t=8460~8550 的额外入账与捐款对上"],
+             evidence=["donfit [FC]：Golden Horde 收 20 笔（Lannes 13、EnPassant 7），到账 2158131，税 852194（t=5470~10820）；另有 7 笔定不了", "digest [E]：Golden Horde t=4770 19180 格 → t=5400 33241 → t=9000 60461 → t=9450 65839", "digest [N]：t=5400~5490、t=8460~8550 的额外入账与捐款对上"],
              statementType="observed"),
         dict(id="D16", t="9555~9655", bot="房间 0：Golden Horde", decision="被围、密度 130，按固定比例 280 / 280 / 185 / 280 / 185 给正在崩的 EnPassant 连捐 5 笔：4 笔成交，到账被受捐方的 150 倍上限夹到 191.6 万，税按自己的余额全额收 181.8 万；EnPassant 27 拍后阵亡。",
              codePath=f"{C110}: tryDonateToTeammate L4460-4489（bestAlly 打分 (outAtk+inAtk)/500 + (135−dAlly)×3；不看收款方剩余容量）；{SIM}/game.js L340-425", verdict="error", patternId="NEW-DN-12",
@@ -406,8 +406,8 @@ R = dict(
                    "到终局它们分属互相敌对的三方：T1 获胜意味着 Dzungar、Golden Horde 必须被吃掉，GalaxyBrain 又先被 T2 吃了。编队号之间有没有直接交战，没有录像看不到。"
                    "房间 1：2 个号同在 T2，相距 451 像素，不接壤；编队内部互打 0 格（truth [TF]）。",
     ledgerExtra=dict(
-        room0DonationsByKind=dict(rescue=dict(executed=44, delivered=3337449, tax=2357751), surplus=dict(executed=69, delivered=15093677, tax=6548901), src="scripts/donfit.py + out/B049/donfit.json"),
-        room0DonationsToUnloggedBots=dict(count=43, delivered=3688937, tax=2408321, window="3060~4875", src="scripts/donfit.py [FC]"),
+        room0DonationsByKind=dict(rescue=dict(executed=42, delivered=3203138, tax=2246914), surplus=dict(executed=67, delivered=14585101, tax=6373908), src="scripts/donfit.py + out/B049/donfit.json"),
+        room0DonationsToUnloggedBots=dict(logged=43, executed=42, delivered=3586664, tax=2310627, window="3060~4875", src="scripts/donfit.py [FC]"),
         room0Refires=dict(count=24, extraDelivered=3763031, extraTax=1711034, src="scripts/donfit.py [FA]"),
         room0ClippedIntoCollapsingAlly=dict(count=4, delivered=1949230, tax=1804586, donor="Golden Horde", ally="EnPassant", src="scripts/donfit.py [FD]",
                                             caveat="『夹小』是按捐出方余额序列反推的；捐出方同窗有别的开销时会偏（EnPassant t=8825→Golden Horde 那一笔被误判成夹小，收款方入账其实是足额的）"),
@@ -421,7 +421,7 @@ R = dict(
         room0Drop30ByClassNote="DROP30 53 段：DONATE 19、ATTACK-GAIN 12、LOST-LAND 10、SPEND-NO-LAND 7、BOAT 3、PASSIVE-LOSS 2（digest [F]，按旧的捐款判定归类）。SPEND-NO-LAND 的 7 段：Portugal t=1800~1890、Lannes t=2070~2160（下一窗回流 265709）属于清仓波；"
                                "Brittany t=3420~3510 / 3870~3960 其实是连发捐款（旧判定当成被拒）；GalaxyBrain 和 Golden Horde 同在 t=10170~10260 各花掉 135 万 / 308 万只多出 276 / 1145 格；Lannes t=10800~10890。",
         cardLikelyRejectedNote="对局卡的『疑似被拒 27/124』和 facts.py 旧口径的 REJ=31 都是只看发令 20 拍后那一条余额得出的；按余额序列拟合，旧口径判拒的 31 笔里 26 笔其实晚落地成交了，1 笔定不了，真正没成交的 4 笔"
-                               "（Brittany→EnPassant t=2980 / 3000 / 3080，Golden Horde→EnPassant t=9555），另有 7 笔定不了。",
+                               "（Brittany→EnPassant t=2980 / 3000 / 3080，Golden Horde→EnPassant t=9555）；全部 124 笔里定不了的 11 笔（多数是捐出方同一个快照窗里还有陆攻或发船，余额落差分不清是谁的）。",
         room1Truth=dict(donationsExecuted=0, drop30=dict(windows=7, byCause={"陆攻": 4, "挨打": 3}, src="truth.txt [TK]"),
                         boats=dict(count=3, troops=246147, fees=61535, landedOnOwnLand=6564, landedOnTeammate=9214, neverLanded=230369,
                                    neverLandedNote="= 第 3 条船 226629（t=5747 发往空地，录像结束时还在海上）+ 前两条船在海上损耗的 3740", src="truth.txt [TL][TJ]；truth.py --cmds BlackRock"),
@@ -437,11 +437,11 @@ R = dict(
         ),
     },
     wentWell=[
-        "房间 0 的『银行→前线』捐款链跑通了：被围的 Portugal 给 Dzungar 输了 966.1 万兵，Dzungar 从 9216 格长到 103429 格（占陆地 13.6%）；Golden Horde 靠 22 笔 240.7 万长到 82308 格。编队在 t=9540 合计占到 31.1%。",
+        "房间 0 的『银行→前线』捐款链跑通了：被围的 Portugal 给 Dzungar 输了 937.0 万兵，Dzungar 从 9216 格长到 103429 格（占陆地 13.6%）；Golden Horde 靠 20 笔 215.8 万长到 82308 格。编队在 t=9540 合计占到 31.1%。",
         "房间 0 开局正常：13 个号 t=900 合计 10.43%，全部在长；清仓那一波虽然不是本意，编队领土从 77010 涨到 107485 格。",
         "房间 1 的 BlackRock 活到终局（45 人里第 8 名），t=3717 之后踩着 T1 崩盘的节奏吃到 25596 格；两个房间里编队号之间没有录到互打（房间 1 真值 0 格）。",
         "房间 1 开局 (270,630] 人均吃空地和人机都高于其它真人（2289 对 1924、232 对 99）。",
-        "余额序列拟合把 124 笔捐款定案到 113 成交 / 4 没成交 / 7 定不了；房间 1 的真引擎重演 67/67 条快照逐兵一致。",
+        "余额序列拟合把 124 笔捐款定案到 109 成交 / 4 没成交 / 11 定不了；房间 1 的真引擎重演 67/67 条快照逐兵一致。",
     ],
     unknowns=[
         "房间 0 没有录像：谁打的 Dzungar / EnPassant / Golden Horde，T3 的野人和 4 个断流号的地是被谁、在什么时候吃掉的，T1 的头部是谁，都看不到。",
@@ -475,5 +475,5 @@ R = dict(
     ],
     confidenceOverall="medium",
     confidenceNote="房间 1（2 个号）的所有数字来自逐兵对上的真引擎重演和影子追踪，可信度高。房间 0（13 个号，本文正文）只有日志：各号自己的地、兵、指令数、捐款和结果行的全队份额是直接读数；"
-                   "捐款的成交与到账是余额序列拟合（115 笔里 8 笔『夹小』的金额可能有出入）；清仓波的成因、断流号的状态、末段不还手的原因是推断或没查清，所以整体标 medium。",
+                   "捐款的成交与到账是余额序列拟合（成交的 109 笔里 6 笔『夹小』的金额可能有出入，另有 11 笔定不了）；清仓波的成因、断流号的状态、末段不还手的原因是推断或没查清，所以整体标 medium。",
 )
