@@ -12,6 +12,8 @@
   [KC] 名下的地在谁手里（t=630、1500）：自己 / 编队友 / 同队野人 / 敌队真人 / 内置 AI / 无主。
   [KD] 身边内置 AI 的地的去向：t0（600）属于内置 AI 的格，到 1500 / 1800 第一个拿到它的真人是谁。
        三个范围：全图；编队名下（vorE）的；t0 时和编队号接壤的那批 AI 的。
+       另记 t0 之后才被 AI 占的格（AI 在 t0 之后还在长）的去向、两类合计，以及按 150 拍窗的编队占比。
+  [KA] 里另有反事实：编队号都站到各自日志里最后一条出生指派上时的份额（要先跑 spawncheck.py 写出 spawnlast.json，再跑 landcap.mjs）。
   [KE] 没抢到的三层归因（(600,1500] 被真人吃掉的内置 AI 地）：
        应得（按人头）− 实得 = ① 名下先天就少 + 名下的被别人吃掉 − 到别人名下吃的；
        「名下的被别人吃掉」逐格归到：同队 AI 不能打 / 号不在了 / 够不着 / ② 门槛挡住（哪一关、sb 由谁定）/ ③ 迟到落空 / 出手了被分走 / 过了门槛没发。
@@ -66,7 +68,9 @@ def main():
     args = sys.argv[1:]
     mid = args[0]
     quiet = "--quiet" in args
-    LC = json.load(open(os.path.join(OUT, mid, "landcap.json"), encoding="utf-8"))
+    tag = args[args.index("--tag") + 1] if "--tag" in args else None
+    suf = f"_{tag}" if tag else ""
+    LC = json.load(open(os.path.join(OUT, mid, f"landcap{suf}.json"), encoding="utf-8"))
     T = Truth(mid)
     R = T.R
     sp = os.path.join(OUT, mid, "shadow.json")
@@ -126,12 +130,40 @@ def main():
     low = sum(1 for h in sq if pos[h["id"]] < len(rk) / 4)
     w(f"  直线份额排在全房最小四分之一里的编队号 {low}/{len(sq)} 个（按人头应是 {len(sq) / 4:.1f} 个）")
     SUM["squadInLowestQuartile"] = low
+    cf = LC.get("cf")
+    if cf:
+        cv = {h["id"]: h for h in cf["humans"]}
+        tot = sum(h["vorE"] for h in cf["humans"])
+        s_cf = sum(cv[h["id"]]["vorE"] for h in sq)
+        s_now = sum(h["vorE"] for h in sq)
+        hs = len(sq) / max(1, len(hum))
+        rk2 = sorted(cf["humans"], key=lambda h: h["vorE"])
+        pos2 = {h["id"]: i for i, h in enumerate(rk2)}
+        low2 = sum(1 for h in sq if pos2[h["id"]] < len(rk2) / 4)
+        o_now = med([h["vorE"] for h in oth]); o_cf = med([cv[h["id"]]["vorE"] for h in oth])
+        w(f"  反事实（编队号都站到各自日志里最后一条出生指派上，别的真人不动；挪了 {cf['moved']} 个号）：编队名下 {s_cf} 格 = {pct(s_cf, tot)}（份额÷人头 {(s_cf / tot) / hs:.2f}；实际 {s_now} 格 = {pct(s_now, tot)}，差 {s_cf - s_now:+d} 格）；"
+          f"每号 中位 {med([cv[h['id']]['vorE'] for h in sq])}（实际 {med([h['vorE'] for h in sq])}）、最小 {min(cv[h['id']]['vorE'] for h in sq)}；排在最小四分之一里的 {low2} 个（实际 {low}）；其他真人每人中位 {o_cf}（实际 {o_now}）")
+
+        def nn2(h):
+            a = cv[h["id"]]
+            ds = [((a["x"] - o["x"]) ** 2 + (a["y"] - o["y"]) ** 2) ** 0.5 for o in cf["humans"] if o["id"] != h["id"]]
+            ds2 = [((a["x"] - cv[o["id"]]["x"]) ** 2 + (a["y"] - cv[o["id"]]["y"]) ** 2) ** 0.5 for o in sq if o["id"] != h["id"]]
+            return (round(min(ds)) if ds else -1, round(min(ds2)) if ds2 else -1)
+        w("  反事实逐号：号 | 实际落点 → 最后一条指派 | 直线份额 实际 → 反事实 | 反事实下最近的真人 / 最近的编队友（像素）")
+        for h in sorted(sq, key=lambda h: cv[h["id"]]["vorE"] - h["vorE"]):
+            a = cv[h["id"]]
+            d1, d2 = nn2(h)
+            mv = "（没挪）" if (abs(a["x"] - h["x"]) <= 4 and abs(a["y"] - h["y"]) <= 4) else ""
+            w(f"    {name(h['id']):22s} | ({h['x']},{h['y']}) → ({a['x']},{a['y']}){mv} | {h['vorE']} → {a['vorE']}（{a['vorE'] - h['vorE']:+d}）| {d1} / {d2}")
+        SUM["cf"] = {"moved": cf["moved"], "vorEShare": round(s_cf / tot, 4), "vorEPerHead": round((s_cf / tot) / hs, 3), "squadCells": s_cf, "actualCells": s_now,
+                     "medSquad": med([cv[h["id"]]["vorE"] for h in sq]), "lowQuartile": low2}
 
     # ---------- [KB]
     w("")
     w("[KB] 实际拿到率 = 实际领土 ÷ 名下份额（直线口径；阵亡 / 离开的按当时的格数算，没地就是 0）")
     w("  拍 | 编队：领土合计 ÷ 名下合计 = 拿到率（每号中位）| 其他真人：合计拿到率（每人中位、下四分位）| 编队人均领土 ÷ 其他真人人均领土" + ("｜另一支编队" if peer else ""))
     SUM["capture"] = {}
+    ident = []
     for ts in sorted(LC["at"], key=int):
         A = LC["at"][ts]["terr"]
         def grp_stat(g, key="vorE"):
@@ -148,8 +180,12 @@ def main():
             extra = f"｜{c[0]} ÷ {c[1]} = {c[2]:.2f}（中位 {c[3]:.2f}）"
         w(f"  {ts} | {a[0]} ÷ {a[1]} = {a[2]:.2f}（中位 {a[3]:.2f}）| {b[0]} ÷ {b[1]} = {b[2]:.2f}（中位 {b[3]:.2f}、下四分位 {b[4]:.2f}）| {pc:.2f}{extra}")
         ab = grp_stat(sq, "vorB"); bb = grp_stat(oth, "vorB")
+        vr = (a[1] / max(1, len(sq))) / max(1e-9, b[1] / max(1, len(oth)))   # 人均名下份额之比
+        cr = a[2] / b[2] if b[2] else 0                                        # 拿到率之比
+        ident.append(f"t={ts} {pc:.2f} = {vr:.2f} × {cr:.2f}")
         SUM["capture"][ts] = {"squad": round(a[2], 3), "squadMed": round(a[3], 3), "other": round(b[2], 3), "otherMed": round(b[3], 3), "perHeadRatio": round(pc, 3),
-                              "squadB": round(ab[2], 3), "otherB": round(bb[2], 3), "squadTerr": a[0], "otherTerr": b[0]}
+                              "squadB": round(ab[2], 3), "otherB": round(bb[2], 3), "squadTerr": a[0], "otherTerr": b[0], "vorRatio": round(vr, 3), "captureRatio": round(cr, 3)}
+    w("  拆开看（恒等式）：编队人均领土 ÷ 其他真人人均领土 = 人均名下份额之比 × 拿到率之比：" + "；".join(ident))
     if tg:
         for ts in ("630", "1500"):
             if ts not in LC["at"]:
@@ -245,6 +281,34 @@ def main():
               + (f"、另一支编队 {c['另一支编队']}（{pct(c['另一支编队'], eaten)}）" if peer else "")
               + f"、其他真人 {c['其他真人']}（{pct(c['其他真人'], eaten)}）｜没被吃：还在内置 AI 手里 {c['还在内置 AI 手里'] + c['之后才被拿走']}、无主 {c['无主']}")
             SUM["aiFate"][f"{label}:{upto}"] = {"cells": tot, "eaten": eaten, "squad": c["编队"], "peer": c["另一支编队"], "other": c["其他真人"]}
+    fl = LC.get("fateLate")
+    if fl is not None:
+        for label, rows in (("全图", fl), ("编队名下的（直线口径）", [r for r in fl if r[0] in sqid])):
+            tot = sum(r[4] for r in rows)
+            for upto in (1500, t1):
+                c = tally(rows, upto)
+                eaten = c["编队"] + c["另一支编队"] + c["其他真人"]
+                w(f"  t={t0} 之后才被内置 AI 占的格（AI 还在往无主地里长；每 10 拍扫一遍）· {label}：{tot} 格｜到 t={upto} 被真人吃掉 {eaten}（{pct(eaten, tot)}）：编队 {c['编队']}（占被吃的 {pct(c['编队'], eaten)}）"
+                  + (f"、另一支编队 {c['另一支编队']}（{pct(c['另一支编队'], eaten)}）" if peer else "")
+                  + f"、其他真人 {c['其他真人']}（{pct(c['其他真人'], eaten)}）")
+                SUM["aiFate"][f"late:{label}:{upto}"] = {"cells": tot, "eaten": eaten, "squad": c["编队"], "peer": c["另一支编队"], "other": c["其他真人"]}
+        for upto in (1500, t1):
+            a = SUM["aiFate"][f"全图:{upto}"]; b = SUM["aiFate"][f"late:全图:{upto}"]
+            e = a["eaten"] + b["eaten"]; sqe = a["squad"] + b["squad"]
+            w(f"  合计（({t0},{t1}] 里属于过内置 AI 的全部格 {a['cells'] + b['cells']}）：到 t={upto} 被真人吃掉 {e}，编队 {sqe}（{pct(sqe, e)}；人头 {100 * hshare:.1f}% → 应得 {hshare * e:.0f}，差 {hshare * e - sqe:+.0f}）")
+            SUM["aiFate"][f"ever:全图:{upto}"] = {"cells": a["cells"] + b["cells"], "eaten": e, "squad": sqe, "par": round(hshare * e)}
+        # 按 150 拍窗看编队吃到的份额（两类格合在一起）
+        win = defaultdict(lambda: [0, 0])
+        for rows in (fate, fl):
+            for reg, q, tk, be, n in rows:
+                if tk < 0:
+                    continue
+                k = ((be - 1) // 150) * 150
+                win[k][0] += n
+                if tk in sqid:
+                    win[k][1] += n
+        w("  按窗（150 拍）全房真人吃到的 AI 格 / 编队吃到（占比）：" + "；".join(f"{k}~{k + 150} {v[0]} / {v[1]}（{pct(v[1], v[0])}）" for k, v in sorted(win.items())))
+        SUM["aiFateWin"] = {str(k): v for k, v in sorted(win.items())}
     # 编队名下的：按拿走的人和名下那个号的关系细分
     rows = [r for r in fate if r[0] in sqid and r[2] >= 0 and r[3] <= 1500]
     rel = defaultdict(int)
@@ -280,7 +344,8 @@ def main():
 
     # ---------- [KE]
     w("")
-    U = [r for r in fate if r[2] >= 0 and r[3] <= 1500]
+    U0 = [r for r in fate if r[2] >= 0 and r[3] <= 1500]
+    U = U0 + [r for r in (fl or []) if r[2] >= 0 and r[3] <= 1500]
     nU = sum(r[4] for r in U)
     A = sum(r[4] for r in U if r[2] in sqid)
     Us = sum(r[4] for r in U if r[0] in sqid)
@@ -288,9 +353,12 @@ def main():
     Aout = A - Ain
     lost = Us - Ain
     par = hshare * nU
-    w(f"[KE] 没抢到的三层归因：({t0},1500] 全房真人从内置 AI 手里吃掉 {nU} 格；编队按人头（{100 * hshare:.1f}%）应得 {par:.0f} 格，实得 {A} 格（{pct(A, nU)}），差 {par - A:+.0f} 格")
+    w(f"[KE] 没抢到的三层归因：({t0},1500] 全房真人吃掉的『属于过内置 AI 的格』（t={t0} 时就是 AI 的 + 之后 AI 才占的）共 {nU} 格；编队按人头（{100 * hshare:.1f}%）应得 {par:.0f} 格，实得 {A} 格（{pct(A, nU)}），差 {par - A:+.0f} 格")
+    n0 = sum(r[4] for r in U0); a0 = sum(r[4] for r in U0 if r[2] in sqid); us0 = sum(r[4] for r in U0 if r[0] in sqid)
+    w(f"  其中只算 t={t0} 时就是 AI 的格：{n0} 格，应得 {hshare * n0:.0f}，实得 {a0}（{pct(a0, n0)}），差 {hshare * n0 - a0:+.0f}；名下的 {us0} 格")
     w(f"  拆开：① 名下先天就少 = 应得 {par:.0f} − 名下的 {Us} = {par - Us:+.0f} 格｜名下的被别人吃掉 {lost} 格（名下的 {pct(lost, Us)}）｜到别人名下吃到 {Aout} 格（抵掉）")
-    SUM["attr"] = {"U": nU, "par": round(par), "got": A, "ownRegion": Us, "gotInOwn": Ain, "gotOutside": Aout, "lost": lost, "geomDeficit": round(par - Us)}
+    SUM["attr"] = {"U": nU, "par": round(par), "got": A, "ownRegion": Us, "gotInOwn": Ain, "gotOutside": Aout, "lost": lost, "geomDeficit": round(par - Us),
+                   "base": {"U": n0, "par": round(hshare * n0), "got": a0, "ownRegion": us0}}
     # 逐格归因
     census = {}   # (bot id, t) -> {q: why}, src
     shadow_cmds = defaultdict(list)
@@ -421,14 +489,14 @@ def main():
         SUM["attr"].update({"censusPts": n_pts, "censusBlocked": n_blk})
 
     text = "\n".join(lines) + "\n"
-    with open(os.path.join(OUT, mid, "landcap.txt"), "w", encoding="utf-8") as f:
+    with open(os.path.join(OUT, mid, f"landcap{suf}.txt"), "w", encoding="utf-8") as f:
         f.write(text)
-    with open(os.path.join(OUT, mid, "landcap_sum.json"), "w", encoding="utf-8") as f:
+    with open(os.path.join(OUT, mid, f"landcap_sum{suf}.json"), "w", encoding="utf-8") as f:
         json.dump(SUM, f, ensure_ascii=False)
     if not quiet:
         print(text)
     else:
-        print(f"{mid}: landcap.txt {len(lines)} 行")
+        print(f"{mid}: landcap{suf}.txt {len(lines)} 行")
 
 
 if __name__ == "__main__":

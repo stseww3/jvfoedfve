@@ -2,8 +2,8 @@
 // landcap.mjs — 「好地实际抢到多少」的底账：真引擎重演（resim_r08.mjs 的钩子，只读）+ 逐格跟踪。
 //
 //   bash c136-review/tools/run-heavy.sh node c136-review/agents/R08/scripts/landcap.mjs <局>
-//        [--replay-from <局2>] [--peer <局2> | --peer-tag <标签>] [--t0 600] [--t1 1800] [--quiet]
-// 输出：out/<局>/landcap.json（landcap.py 把它和 shadow.json / resim.json 合起来出表）
+//        [--replay-from <局2>] [--peer <局2> | --peer-tag <标签>] [--t0 600] [--t1 1800] [--tag <标签>] [--quiet]
+// 输出：out/<局>/landcap.json（带 --tag 时是 landcap_<标签>.json；landcap.py 把它和 shadow.json / resim.json 合起来出表）
 //
 // 记下的东西：
 //   1. 出生份额：开局拍每个真人的出生点（初始地块的质心）；把全图每一格陆地分给
@@ -15,6 +15,10 @@
 //      按（名下是谁、t0 时属于哪个 AI、第一个拿到它的真人、哪个 30 拍窗）汇总。到 t1 还没被真人拿走的记成：仍在原 AI / 别的 AI / 无主。
 //   4. 接壤采样：t0~t1 每 10 拍，每个编队号贴着哪些内置 AI（接触格数）、贴不贴无主地。
 //   5. t0 时每个内置 AI 的地、兵、队；之后哪一拍出局。
+//   6. t0 之后才被内置 AI 占的格（AI 在 t0 之后还在往无主地里长）：每 10 拍全图扫一遍，新出现的 AI 格也跟到 t1，
+//      去向单独记在 fateLate（口径同 fate；q = 第一次看到它时的那个 AI）。
+//   7. 反事实出生份额：有 out/<局>/spawnlast.json（spawncheck.py 写的「各号日志里最后一条出生指派」）时，
+//      把编队号挪到各自最后一条指派的坐标上、别的真人不动，重算直线最近的份额（cf）。
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -28,6 +32,7 @@ if (!mid) { console.error('用法见文件头'); process.exit(2); }
 const opt = (k, d) => (args.includes(`--${k}`) ? args[args.indexOf(`--${k}`) + 1] : d);
 const T0 = +opt('t0', 600), T1 = +opt('t1', 1800);
 const TS = String(opt('at', '300,630,900,1260,1500,1800')).split(',').map(Number);
+const TAG = opt('tag', null);
 const { resim } = await import(path.join(HERE, 'resim_r08.mjs'));
 
 let S = null;
@@ -60,6 +65,30 @@ function init(g, ctx) {
     regE[c] = best;
     vorE[best]++;
   }
+  // 反事实：编队号都站到日志里最后一条出生指派上
+  let cf = null;
+  const slp = path.join(OUT, mid, 'spawnlast.json');
+  if (fs.existsSync(slp)) {
+    const SL = JSON.parse(fs.readFileSync(slp, 'utf8'));
+    const pts2 = pts.map((p) => ({ ...p }));
+    let moved = 0;
+    for (const p of pts2) {
+      const r = SL[p.id];
+      if (r && r.last && (Math.abs(r.last[0] - p.x) > 4 || Math.abs(r.last[1] - p.y) > 4)) { p.x = r.last[0]; p.y = r.last[1]; moved++; }
+    }
+    const v2 = new Int32Array(H);
+    for (let c = 0; c < N; c++) {
+      if (!land[c]) continue;
+      const x = c % W, y = Math.floor(c / W);
+      let best = -1, bd = Infinity;
+      for (let i = 0; i < pts2.length; i++) {
+        const dx = pts2[i].x - x, dy = pts2[i].y - y, d = dx * dx + dy * dy;
+        if (d < bd) { bd = d; best = pts2[i].id; }
+      }
+      v2[best]++;
+    }
+    cf = { moved, humans: pts2.map((p) => ({ id: p.id, x: p.x, y: p.y, vorE: v2[p.id] })) };
+  }
   // (b) 陆路最先到：多源广度优先，源 = 各真人的初始地块
   const regB = new Int16Array(N).fill(-1);
   const vorB = new Int32Array(H);
@@ -79,8 +108,9 @@ function init(g, ctx) {
   }
   let unreach = 0;
   for (let c = 0; c < N; c++) if (land[c] && regB[c] < 0) unreach++;
-  S = { N, W, H, land, nLand, pts, regE, regB, vorE, vorB, unreach, at: {}, occ: {}, trk: null, trkQ: null, pend: null, nPend: 0,
-    fate: new Map(), contact: new Map(), neutContact: new Map(), ai0: [], aiDeath: {}, aiAlive: [] };
+  S = { N, W, H, land, nLand, pts, regE, regB, vorE, vorB, unreach, cf, at: {}, occ: {}, trk: null, trkQ: null, pend: null, nPend: 0,
+    fate: new Map(), fateLate: new Map(), seen: null, lateQ: null, pendL: null, nPendL: 0, nLate: 0,
+    contact: new Map(), neutContact: new Map(), ai0: [], aiDeath: {}, aiAlive: [] };
 }
 
 function occAt(g) {
@@ -121,6 +151,10 @@ function tick(g, ctx) {
     S.pend = new Int32Array(cells.length);
     for (let i = 0; i < cells.length; i++) { S.trkQ[i] = own[cells[i]]; S.pend[i] = i; }
     S.nPend = cells.length;
+    S.seen = new Uint8Array(S.N);
+    for (let i = 0; i < cells.length; i++) S.seen[cells[i]] = 1;
+    S.lateQ = new Int16Array(S.N).fill(-1);
+    S.pendL = new Int32Array(S.N);
     for (let q = H; q < NEUTRAL; q++) if (g.alive[q] && g.terr[q] > 0) { S.ai0.push([q, g.terr[q], g.bal[q], g.teams ? g.teams[q] : 0]); S.aiAlive.push(q); }
   }
   if (t > T0 && t <= T1 && S.trk) {
@@ -137,6 +171,29 @@ function tick(g, ctx) {
       pend[j] = pend[--n];
     }
     S.nPend = n;
+    // t0 之后才被 AI 占的格：先看已在跟的有没有落到真人手里，再（每 10 拍）把新出现的 AI 格收进来
+    {
+      const { pendL, lateQ, fateLate, seen } = S;
+      let m = S.nPendL;
+      for (let j = m - 1; j >= 0; j--) {
+        const c = pendL[j];
+        if (px[c] < P_INNER) continue;
+        const o = own[c];
+        if (o >= H) continue;
+        const key = `${regE[c]}|${lateQ[c]}|${o}|${bucket}`;
+        fateLate.set(key, (fateLate.get(key) || 0) + 1);
+        pendL[j] = pendL[--m];
+      }
+      if (t % 10 === 0 && t < T1) {
+        for (let c = 0; c < S.N; c++) {
+          if (seen[c] || px[c] < P_INNER) continue;
+          const o = own[c];
+          if (o < H || o >= NEUTRAL) continue;
+          seen[c] = 1; lateQ[c] = o; pendL[m++] = c; S.nLate++;
+        }
+      }
+      S.nPendL = m;
+    }
     for (let k = S.aiAlive.length - 1; k >= 0; k--) {
       const q = S.aiAlive[k];
       if (g.alive[q] === 0 || g.terr[q] === 0) { S.aiDeath[q] = t; S.aiAlive[k] = S.aiAlive[S.aiAlive.length - 1]; S.aiAlive.pop(); }
@@ -163,6 +220,12 @@ function tick(g, ctx) {
       const key = `${regE[c]}|${trkQ[i]}|${code}|0`;
       fate.set(key, (fate.get(key) || 0) + 1);
     }
+    for (let j = S.nPendL - 1; j >= 0; j--) {
+      const c = S.pendL[j];
+      const code = px[c] < P_INNER ? -1 : own[c] === S.lateQ[c] ? -2 : -3;
+      const key = `${regE[c]}|${S.lateQ[c]}|${code}|0`;
+      S.fateLate.set(key, (S.fateLate.get(key) || 0) + 1);
+    }
   }
 }
 
@@ -179,11 +242,15 @@ const out = {
   teamGame: R.nTeams >= 2, nTeams: R.nTeams, botsTeamed: R.botsTeamed, unreach: S.unreach, humans, at: S.at, occ: S.occ,
   ai0: S.ai0, aiDeath: S.aiDeath, nTracked: S.trk ? S.trk.length : 0,
   fate: [...S.fate.entries()].map(([k, n]) => [...k.split('|').map(Number), n]),
+  nTrackedLate: S.nLate, fateLate: [...S.fateLate.entries()].map(([k, n]) => [...k.split('|').map(Number), n]),
+  cf: S.cf,
   contact: Object.fromEntries(S.contact), neutContact: Object.fromEntries(S.neutContact),
 };
 fs.mkdirSync(path.join(OUT, mid), { recursive: true });
-fs.writeFileSync(path.join(OUT, mid, 'landcap.json'), JSON.stringify(out));
+const outName = TAG ? `landcap_${TAG}.json` : 'landcap.json';
+fs.writeFileSync(path.join(OUT, mid, outName), JSON.stringify(out));
 if (!args.includes('--quiet') || true) {
-  console.log(`${mid}: landcap.json 写出｜陆地 ${S.nLand}（引擎 ${R.land}）｜出生的真人 ${humans.length}/${S.H}（编队 ${[...ownIds].length}，同房另一支 ${[...peerIds].length}）｜走陆路到不了的格 ${S.unreach}`
-    + `｜t=${T0} 属于内置 AI 的格 ${out.nTracked}，到 t=${T1} 被真人拿走 ${out.fate.filter((r) => r[2] >= 0).reduce((s, r) => s + r[4], 0)}｜重演到 t=${R.endTick}｜${((Date.now() - t0) / 1000).toFixed(1)}s`);
+  console.log(`${mid}: ${outName} 写出｜陆地 ${S.nLand}（引擎 ${R.land}）｜出生的真人 ${humans.length}/${S.H}（编队 ${[...ownIds].length}，同房另一支 ${[...peerIds].length}）｜走陆路到不了的格 ${S.unreach}`
+    + `｜t=${T0} 属于内置 AI 的格 ${out.nTracked}，到 t=${T1} 被真人拿走 ${out.fate.filter((r) => r[2] >= 0).reduce((s, r) => s + r[4], 0)}｜之后才被 AI 占的格 ${out.nTrackedLate}，被真人拿走 ${out.fateLate.filter((r) => r[2] >= 0).reduce((s, r) => s + r[4], 0)}`
+    + `｜反事实出生份额 ${S.cf ? `有（挪了 ${S.cf.moved} 个号）` : '无（没有 spawnlast.json）'}｜重演到 t=${R.endTick}｜${((Date.now() - t0) / 1000).toFixed(1)}s`);
 }

@@ -9,6 +9,7 @@
   [PB] 落在同一像素 / 相距 <40 像素的号对；最后一条指派相同的号对
   [PC] 汇总（M7 的模式计数直接读这一行）
 """
+import json
 import math
 import os
 import re
@@ -102,6 +103,10 @@ def main():
     if "--no-write" not in args:
         with open(os.path.join(OUT, mid, "spawncheck.txt"), "w", encoding="utf-8") as f:
             f.write(txt + "\n")
+        # landcap.mjs 用它算「最后一条指派都落地」的反事实出生份额
+        with open(os.path.join(OUT, mid, "spawnlast.json"), "w", encoding="utf-8") as f:
+            json.dump({str(r["p"]): {"name": r["name"], "engine": list(r["engine"]) if r["engine"] else None,
+                                     "last": list(r["last"]) if r["last"] else None, "n": r["n"], "lastExecuted": r["lastExecuted"]} for r in rows}, f, ensure_ascii=False)
     if "--quiet" not in args:
         print(txt)
     else:

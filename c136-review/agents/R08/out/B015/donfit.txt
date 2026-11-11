@@ -1,0 +1,81 @@
+[FA] B015 捐款定案（余额序列拟合）：日志 43 笔；成交 28，没成交 2，定不了 13
+     成交的到账合计 4739168，税合计 2508821（税占捐出方付出的 34.6%）
+     其中到账被收款方 150 倍上限夹小的 2 笔：到账 70732，税 204954（税占 74%）
+     与 facts.py [G]「只看发令 20 拍后那条余额」的判定对照（旧判定→新定案：笔数）：ACC→EXEC:27；?→AMB:5；ACC→AMB:4；REJ→AMB:4；REJ→NOEXEC:1；REJ→EXEC:1；ACC→NOEXEC:1
+     成交的 28 笔里，发令 20 拍后的观测仍未扣款（时延 ≥20 拍）的 0 笔（0%）；时延上界 中位 50 拍
+     连发（同号 ≤25 拍内第二笔，发令时前一笔还没落地，两笔都成交）：0 笔，多付出 到账 0 + 税 0
+     没成交的 2 笔里，收款方在这笔捐款落地前已经出局的 2 笔：t=3915 Luigi→Don；t=5270 Cataphract→Luigi
+[FB] 按捐出方：号 | 日志笔数 | 成交 / 没成交 / 定不了 | 到账合计 | 税合计 | 连发笔数 | 时延≥20 的成交笔数
+     Yi Sun-sin     |  13 | 9 / 0 / 4 |   2476818 |  1265556 | 0 | 0
+     Luigi          |   7 | 4 / 1 / 2 |    358089 |   175536 | 0 | 0
+     Cataphract     |   7 | 4 / 1 / 2 |     78668 |    30962 | 0 | 0
+     Darius         |   7 | 6 / 0 / 1 |    692735 |   464508 | 0 | 0
+     Kaiser         |   5 | 2 / 0 / 3 |    953458 |   396242 | 0 | 0
+     Don            |   3 | 3 / 0 / 0 |    179400 |   176017 | 0 | 0
+     System32       |   1 | 0 / 0 / 1 |         0 |        0 | 0 | 0
+[FC] 按收款方：号 | 成交笔数 | 到账合计 | 捐出方付的税 | 首末拍
+     Kaiser(31)         |   9 |   2476818 |  1265556 | 3165~6990
+     Yi Sun-sin(38)     |   2 |    953458 |   396242 | 4100~6085
+     System32(35)       |   6 |    692735 |   464508 | 4385~4840
+     Cataphract(34)     |   4 |    258951 |   202234 | 3240~4600
+     Don(39)            |   3 |    230839 |    98633 | 3660~3800
+     Luigi(37)          |   4 |    126367 |    81648 | 3620~4980
+[FQ] 引擎受捐额度对账（归属口径：先取过得了额度的，再取发令最晚的；--fifo 可换回旧的队首口径）：成交的 28 笔里记账后超出额度的 0 笔（编队外队友的捐款看不到，已用点数是下限；超出 = 余额拟合和额度模型对不上，这几笔的到账额或归属存疑）
+     受捐方 | t<2142 成交 笔数 / 到账 / 点数 | 2142~3212 | 3213~4283 | t≥4284 笔数 / 到账（不查额度）| t=4283 累计点数（额度 309）
+     Kaiser         | 0 / 0 / 0 | 0 / 0 / 0 | 1 / 150467 / 69 | 8 / 2326351 | 69
+     Yi Sun-sin     | 0 / 0 / 0 | 0 / 0 / 0 | 1 / 310434 / 22 | 1 / 643024 | 22
+     System32       | 0 / 0 / 0 | 0 / 0 / 0 | 0 / 0 / 0 | 6 / 692735 | 0
+     Cataphract     | 0 / 0 / 0 | 0 / 0 / 0 | 3 / 146804 / 48 | 1 / 112147 | 48
+     Don            | 0 / 0 / 0 | 0 / 0 / 0 | 3 / 230839 / 41 | 0 / 0 | 41
+     Luigi          | 0 / 0 / 0 | 0 / 0 / 0 | 1 / 70732 / 15 | 3 / 55635 | 15
+[FE] 盈余捐款成交后的密度（捐后余额 = 发令时余额 − 到账 − 税；连发的第二笔再减去第一笔）：号 | 成交笔数 | 发令时密度 中位 | 捐后密度 中位 / 最低 | 捐后 <68 的笔数 | 捐后 <55 的笔数
+     Yi Sun-sin     |   7 | 117.1 | 92.0 / 59.0 | 1 | 0
+     Cataphract     |   3 | 110.9 | 83.8 / 58.9 | 1 | 0
+     Kaiser         |   2 | 130.1 | 102.4 / 94.6 | 0 | 0
+     Don            |   1 | 113.1 | 97.8 / 97.8 | 0 | 0
+     Darius         |   1 | 117.0 | 91.9 / 91.9 | 0 | 0
+     Luigi          |   1 | 112.3 | 88.4 / 88.4 | 0 | 0
+[FD] 逐笔：拍 捐出→收款 类型 pct | 发令时余额 | 定案 | 时延区间(拍) | 到账 / 税 | 旧判定 | 连发
+      3165 Yi Sun-sin→Kaiser(31) squad rescue 110 | 1371095 | EXEC | (0,75] | 150467 / 86756 | ACC |  L8577158
+      3240 Luigi→Cataphract(34) squad rescue 59 | 650858 | EXEC | (0,90] | 38136 / 40678 | ACC |  L8577167
+      3280 Don→Cataphract(34) squad rescue 61 | 921094 | EXEC | (0,50] | 55769 / 57568 | ACC |  L8577177
+      3380 Don→Cataphract(34) squad rescue 58 | 918120 | EXEC | (0,40] | 52899 / 57382 | ACC |  L8577194
+      3410 Luigi→Cataphract(34) squad rescue 73 | 590256 | AMB | (>10) | None / None | ? |  L8577199
+      3425 Cataphract→Luigi(37) surplus 153 | 290609 | AMB | (>0) | None / None | ACC |  L8577210
+      3620 Don→Luigi(37) surplus 153 | 977086 | EXEC(夹小) | (0,70] | 70732 / 61067 | ACC |  L8577240
+      3660 Luigi→Don(39) squad rescue 155 | 731513 | EXEC | (0,30] | 111441 / 45719 | ACC |  L8577241
+      3800 Cataphract→Don(39) squad rescue 141 | 166101 | EXEC | (0,70] | 23033 / 10381 | ACC |  L8577265
+      3800 Luigi→Don(39) squad rescue 144 | 680541 | EXEC | (0,70] | 96365 / 42533 | ACC |  L8577266
+      3915 Luigi→Don(39) squad rescue 57 | 619789 | NOEXEC(收款方已出局) | (>45) | None / None | REJ |  L8577286
+      4095 Luigi→Cataphract(34) surplus 153 | 736579 | AMB | (>225) | None / None | ? |  L8577320
+      4100 Kaiser→Yi Sun-sin(38) surplus 153 | 2064187 | EXEC | (0,40] | 310434 / 129011 | ACC |  L8577321
+      4190 Darius→System32(35) surplus 153 | 1406346 | AMB | (>195) | None / None | ACC |  L8577335
+      4240 Yi Sun-sin→Kaiser(31) surplus 153 | 2128301 | EXEC | (0,80] | 320076 / 133018 | ACC |  L8577345
+      4385 Darius→System32(35) surplus 153 | 1320502 | EXEC | (0,25] | 200179 / 83191 | ACC |  L8577363
+      4440 System32→Darius(41) surplus 153 | 1860065 | AMB | (>0) | None / None | ACC |  L8577377
+      4490 Darius→System32(35) squad rescue 155 | 1454421 | EXEC | (10,45] | 217620 / 89280 | ACC |  L8577380
+      4505 Yi Sun-sin→Kaiser(31) surplus 153 | 2285509 | EXEC(夹小) | (0,25] | 0 / 143887 | REJ |  L8577389
+      4520 Kaiser→Yi Sun-sin(38) surplus 153 | 2388906 | AMB | (>0) | None / None | ? |  L8577391
+      4530 Yi Sun-sin→Kaiser(31) surplus 153 | 2213048 | EXEC | (0,60] | 332821 / 138315 | ACC |  L8577392
+      4535 Darius→System32(35) squad rescue 61 | 1162443 | EXEC | (0,55] | 71212 / 73509 | ACC |  L8577395
+      4600 Luigi→Cataphract(34) surplus 153 | 745710 | EXEC | (0,80] | 112147 / 46606 | ACC |  L8577409
+      4615 Cataphract→Luigi(37) surplus 153 | 132213 | EXEC | (0,65] | 20129 / 8365 | ACC |  L8577411
+      4630 Darius→System32(35) squad rescue 58 | 1159679 | EXEC | (0,50] | 66817 / 72479 | ACC |  L8577414
+      4710 Cataphract→Luigi(37) surplus 185 | 113466 | EXEC | (0,20] | 20610 / 7091 | ACC |  L8577428
+      4715 Yi Sun-sin→Kaiser(31) surplus 153 | 2170951 | EXEC | (0,55] | 329396 / 136892 | ACC |  L8577429
+      4730 Cataphract→Luigi(37) surplus 185 | 88505 | AMB | (>220) | None / None | ACC |  L8577430
+      4730 Darius→System32(35) squad rescue 60 | 1161457 | EXEC | (0,40] | 69188 / 72591 | ACC |  L8577431
+      4840 Darius→System32(35) squad rescue 58 | 1175336 | EXEC | (0,20] | 67719 / 73458 | ACC |  L8577444
+      4980 Cataphract→Luigi(37) surplus 185 | 82010 | EXEC | (0,60] | 14896 / 5125 | ACC |  L8577471
+      5150 Yi Sun-sin→Kaiser(31) surplus 153 | 2310311 | AMB | (>160) | None / None | ? |  L8577491
+      5270 Cataphract→Luigi(37) surplus 185 | 84192 | NOEXEC(收款方已出局) | (>130) | None / None | ACC |  L8577509
+      5625 Yi Sun-sin→Kaiser(31) surplus 153 | 2604381 | EXEC | (0,45] | 395003 / 164157 | ACC |  L8577550
+      5895 Yi Sun-sin→Kaiser(31) surplus 153 | 2755785 | EXEC | (0,45] | 420606 / 174797 | ACC |  L8577577
+      6085 Kaiser→Yi Sun-sin(38) surplus 153 | 4241343 | EXEC | (0,35] | 643024 / 267231 | ACC |  L8577596
+      6210 Kaiser→Yi Sun-sin(38) surplus 153 | 3978793 | AMB | (>0) | None / None | REJ |  L8577609
+      6260 Yi Sun-sin→Kaiser(31) surplus 185 | 2375550 | AMB | (>130) | None / None | REJ |  L8577616
+      6280 Yi Sun-sin→Kaiser(31) surplus 185 | 2373634 | AMB | (>110) | None / None | ? |  L8577621
+      6315 Kaiser→Yi Sun-sin(38) surplus 153 | 3912627 | AMB | (>0) | None / None | REJ |  L8577629
+      6325 Yi Sun-sin→Kaiser(31) surplus 185 | 1979466 | AMB | (>65) | None / None | REJ |  L8577631
+      6345 Yi Sun-sin→Kaiser(31) surplus 185 | 1994501 | EXEC | (0,45] | 366991 / 126276 | ACC |  L8577633
+      6990 Yi Sun-sin→Kaiser(31) squad rescue 63 | 2583336 | EXEC | (0,30] | 161458 / 161458 | ACC |  L8577718
