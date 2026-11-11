@@ -7,7 +7,9 @@
 
   1. 大厅：真人数、有真人的队数、本队所在的队有多少真人、本队席位占所在队和占全场的比例；
   2. 其他真人到 630 / 1500 拍的去向：在场、已离场（席位成了壳）、已阵亡；
-  3. 决策耗时：把累计平均还原成各时段的增量平均，按 600–1500 拍的落地率分三组；和落地率的秩相关。
+  3. 决策耗时：把累计平均还原成各时段的增量平均，按 600–1500 拍的落地率分三组；和落地率的秩相关；
+  4. 给模拟器对账用的一张表：按通道分三组，线上跑的版本的批次占比、重复占比、天然份额、吃到率、人均相对值、被移出的席位；
+  5. 协调器三个版本（扇形半径改过两次）的天然份额：一组现成的自然对照。
 
 用法：python3 scripts/m6_all_lobby.py
 """
@@ -143,6 +145,92 @@ def main():
     lo = [x for x in X if x[1] < 0.5]
     hi = [x for x in X if x[1] >= 0.7]
     print(f"# 90–450 拍决策耗时 < 0.5 毫秒的 {len(lo)} 局里通道差的 {sum(1 for x in lo if x[0] < 0.7)} 局；≥ 0.7 毫秒的 {len(hi)} 局里通道差的 {sum(1 for x in hi if x[0] < 0.7)} 局")
+
+    print()
+    print('== 4. 给模拟器对账用：squad10 按通道分三组，线上跑的版本的各项中位数（各局的值取中位）')
+    print('分组 | 局数 | 600–1500 落地/放行 | 同拍 ≥3 条的批次占落地陆攻 | 21 拍内重复占落地陆攻 | 天然份额/人头占比 | 630 拍吃到率 | 1500 拍吃到率 | AI 地份额/人头占比 | 人均相对值 630 / 1530 / 3060 | 1500 拍前被移出的席位')
+    RF = {r['mid']: r for r in csv.DictReader(open(os.path.join(R, 'out', '_all', 'replay_facts.csv'), encoding='utf8'))}
+    LD = {r['mid']: r for r in csv.DictReader(open(os.path.join(R, 'out', '_all', 'land.csv'), encoding='utf8'))}
+
+    def fl(x):
+        try:
+            return float(x)
+        except (TypeError, ValueError):
+            return None
+
+    def m(v, nd=2):
+        v = sorted(x for x in v if x is not None)
+        return f"{v[len(v) // 2]:.{nd}f}" if v else '-'
+
+    for key, cond in (('≥ 0.9（通道干净）', lambda x: 0.9 <= x <= 1.15), ('0.7–0.9', lambda x: 0.7 <= x < 0.9), ('< 0.7（通道差）', lambda x: x < 0.7)):
+        S = [r for r in J if r['cohort'] == 'squad10' and fl(r['nd600_1500']) is not None and cond(fl(r['nd600_1500']))]
+        rep, left, seats = [], 0, 0
+        for r in S:
+            x = RF.get(r['mid'])
+            if x and fl(x.get('atkLanded')):
+                rep.append(fl(x['repeats']) / fl(x['atkLanded']))
+            if x and fl(x.get('squad')):
+                left += int(fl(x.get('left1500') or 0))
+                seats += int(fl(x['squad']))
+        L = [LD[r['mid']] for r in S if r['mid'] in LD]
+        print(f"{key} | {len(S)} | {m([fl(r['nd600_1500']) for r in S])} | {m([fl(r['batchShare']) for r in S])} | {m(rep)} | "
+              f"{m([fl(x['natRatio']) for x in L])} | {m([fl(x['cap630s']) for x in L])} | {m([fl(x['cap1500s']) for x in L])} | {m([fl(x['aiShare']) for x in L])} | "
+              f"{m([fl(r['rel630']) for r in S])} / {m([fl(r['rel1530']) for r in S])} / {m([fl(r['rel3060']) for r in S])} | {left}/{seats}")
+
+    # 5. 协调器换过两次扇形半径：三个版本的天然份额。版本按包号分（src/strategy/VERSION-TIMELINE.md：
+    #    A001–A017 是 Va，A018–A095 是 Vb，A097–A099 是 Vc）；扇形的两行在 spawn-coordinator-c116*.mjs 的 L1076–1077。
+    print()
+    print('== 5. 协调器三个版本的扇形半径和天然份额（squad10，是同一场对局的局；天然份额在出生阶段结束时就定了，和策略参数无关）')
+    print('版本（包号）| 外圈半径 r2（封顶，像素）| 局数 | 天然份额 ÷ 人头占比 P25 / 中位 / P75 | ≥ 0.75 的局 | 大厅真人数中位 | 通道干净（≥ 0.9）的局：局数；天然份额、630 / 1530 拍人均相对值的中位')
+
+    def ver(mid):
+        n = int(mid[1:])
+        return 'Va' if n <= 17 else ('Vb' if n <= 95 else 'Vc')
+
+    def qq(v, p):
+        v = sorted(x for x in v if x is not None)
+        if not v:
+            return None
+        k = (len(v) - 1) * p
+        lo = int(k)
+        hi = min(lo + 1, len(v) - 1)
+        return v[lo] + (v[hi] - v[lo]) * (k - lo)
+
+    def ranksum(a, b):
+        allv = sorted([(x, 0) for x in a] + [(x, 1) for x in b])
+        rk = [0.0] * len(allv)
+        i = 0
+        while i < len(allv):
+            j = i
+            while j < len(allv) and allv[j][0] == allv[i][0]:
+                j += 1
+            for k in range(i, j):
+                rk[k] = (i + j + 1) / 2
+            i = j
+        n1, n2 = len(a), len(b)
+        u = sum(rk[k] for k in range(len(allv)) if allv[k][1] == 0) - n1 * (n1 + 1) / 2
+        z = (u - n1 * n2 / 2) / (n1 * n2 * (n1 + n2 + 1) / 12) ** 0.5
+        import math
+        return z, math.erfc(abs(z) / 2 ** 0.5)
+
+    FAN = {'Va': '2.35 × rCell（225）', 'Vb': '1.88 × rCell（182）', 'Vc': '2.28 × rCell（220），内圈至多 2 个号'}
+    NAT = {}
+    for v in ('Va', 'Vb', 'Vc'):
+        S = [r for r in J if r['cohort'] == 'squad10' and ver(r['mid']) == v and r['mid'] in LD and fl(LD[r['mid']]['natRatio']) is not None]
+        nat = [fl(LD[r['mid']]['natRatio']) for r in S]
+        NAT[v] = nat
+        C = [r for r in S if fl(r['nd600_1500']) is not None and 0.9 <= fl(r['nd600_1500']) <= 1.15]
+        hum = sorted(fl(r['humans']) for r in S)
+        if len(C) <= 3:
+            clean = f"{len(C)} 局；" + '；'.join(
+                f"{r['mid']} {fl(LD[r['mid']]['natRatio']):.2f}、{fl(r['rel630']):.2f} / {fl(r['rel1530']):.2f}" for r in C)
+        else:
+            clean = (f"{len(C)} 局；{qq([fl(LD[r['mid']]['natRatio']) for r in C], .5):.2f}、"
+                     f"{qq([fl(r['rel630']) for r in C], .5):.2f} / {qq([fl(r['rel1530']) for r in C], .5):.2f}")
+        print(f"{v}（{S[0]['mid']}–{S[-1]['mid']}）| {FAN[v]} | {len(S)} | {qq(nat, .25):.2f} / {qq(nat, .5):.2f} / {qq(nat, .75):.2f} | {sum(1 for x in nat if x >= 0.75)} | {hum[len(hum) // 2]:.0f} | {clean}")
+    z1, p1 = ranksum(NAT['Va'], NAT['Vb'])
+    z2, p2 = ranksum(NAT['Va'] + NAT['Vc'], NAT['Vb'])
+    print(f"# 天然份额的秩和检验：Va 对 Vb z = {z1:.2f}（双侧 p ≈ {p1:.3f}）；Va 和 Vc 合起来对 Vb z = {z2:.2f}（p ≈ {p2:.3f}）。三个版本不在同一个时段跑，大厅不同，只能算自然对照")
 
 
 if __name__ == '__main__':

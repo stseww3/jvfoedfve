@@ -385,6 +385,30 @@ def main():
         ok = sorted(x for x in first if x is not None)
         print(f"{o['mid']} | {len(by_bot)} | {' '.join(map(str, ok)) or '-'} | {sum(1 for x in first if x is None)} | {' '.join(map(str, sorted(meds)))}")
 
+    print()
+    print('== 6. 每局的通道深浅：决策拍在 600–1500 的陆攻令（按落地 ÷ 放行从大到小）')
+    print('局 | 放行 | 落地 | 落地 ÷ 放行 | 落地的令延迟中位（拍） | 各号延迟中位的最小–最大 | 档')
+    tier_rows = []
+    for o in res:
+        rel = lan = 0
+        by_bot = defaultdict(list)
+        for row in o['trace']:
+            if row[4] != 'attack' or not (600 <= row[3] < 1500):
+                continue
+            rel += 1
+            if row[6] != '':
+                lan += 1
+                by_bot[row[1]].append(row[6] - row[3])
+        allv = [d for v in by_bot.values() for d in v]
+        meds = sorted(med(v) for v in by_bot.values())
+        ratio = lan / rel if rel else 0
+        tier = '正常' if ratio >= 0.95 else ('浅掉队' if ratio >= 0.7 else '深掉队')
+        tier_rows.append((-ratio, o['mid'], rel, lan, ratio, med(allv) if allv else '-', meds, tier))
+    for _, mid, rel, lan, ratio, m, meds, tier in sorted(tier_rows):
+        rng = f"{meds[0]:g}–{meds[-1]:g}" if meds else '-'
+        print(f"{mid} | {rel} | {lan} | {ratio:.2f} | {m if m == '-' else format(m, 'g')} | {rng} | {tier}")
+    print('# 档只是为了给模拟器挑轨迹：落地 ÷ 放行 ≥ 0.95 记正常，0.7–0.95 记浅掉队，< 0.7 记深掉队')
+
     if '--no-trace' not in sys.argv:
         dst = os.path.join(R, 'reports', 'm6-data', 'channel_trace.csv')
         n = 0
