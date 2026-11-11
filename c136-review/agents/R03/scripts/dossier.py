@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""dossier.py <matchId> [--map T[,T2..]] [--full] — 一局的「卷宗」。
+"""dossier.py <matchId> [--map T[,T2..]] [--tl T[,T2..]] [--full] — 一局的「卷宗」。
+（--tl：给 facts.json 的 timeline 额外加几个时间点，比如编队峰值拍；必须是 10 的倍数）
 
 把 resim.mjs 的全量重放账本（out/cache/<mid>-resim.json，逐拍精确）和对局包（card/results/traj/
 events/anomalies/in_game.log）拼成一份可读事实表，写到 out/dossier/<mid>.txt 并打印。
@@ -1037,7 +1038,7 @@ class Dossier:
         end = oc.get("endTick") or R["endTick"]
         f = {"matchId": self.mid, "land": self.land, "humans": self.H, "nTeams": R["nTeams"], "nTeamsHeader": R["nTeamsHeader"], "teamSizes": R["teamSizes"], "myTeam": self.my_team, "squadInRoom": sorted(self.sq), "foreign": self.foreign, "version": version_of(self.mid)}
         tl = []
-        for t in sorted(set([90, 180, 270, 630, 1080, 1530, 2130, 2700, 3060, 3600, 4500, 5400, 6300, 7200, 8100, 9000, 10800, 12600] + [end])):
+        for t in sorted(set([90, 180, 270, 630, 1080, 1530, 2130, 2700, 3060, 3600, 4500, 5400, 6300, 7200, 8100, 9000, 10800, 12600] + list(getattr(self, "extra_tl", [])) + [end])):
             if t > end:
                 continue
             (tt, tland, bl, neu, ta, tb, sq_t, sq_b, sq_n, husk) = self.team_rows([t])[0]
@@ -1118,6 +1119,8 @@ def main():
         maps = [int(x) for x in args[args.index("--map") + 1].split(",")]
     step = int(args[args.index("--step") + 1]) if "--step" in args else 300
     d = Dossier(mid)
+    if "--tl" in args:
+        d.extra_tl = [int(x) for x in args[args.index("--tl") + 1].split(",")]
     text = d.run(maps, step)
     os.makedirs(OUTDIR, exist_ok=True)
     open(os.path.join(OUTDIR, f"{mid}.txt"), "w").write(text)
