@@ -101,7 +101,7 @@ def one(mid, cards, replays):
     S = set(seats.values())
     r = {'mid': mid, 'cohort': card['cohort'], 'result': card['outcome']['resultLabel'], 'won': int(bool(card['outcome']['primaryTeamWon'])),
          'replay': meta.get('replayOf') or best, 'endTick': card['outcome']['endTick'], 'lastTick': L, 'humans': H, 'squad': len(S), 'multi': int(multi)}
-    r['teams'] = card.get('actualTeams')
+    r['teams'] = 0 if card.get('mode') in (7, 8) else card.get('nominalTeams')   # 引擎的队数（含没有真人的队）；有真人的队数见 joined.csv 的 teams
 
     by_seat = defaultdict(list)
     leave = {}

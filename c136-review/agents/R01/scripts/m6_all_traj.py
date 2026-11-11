@@ -72,7 +72,7 @@ def one(mid):
                 except ValueError:
                     pass
     out = {'mid': mid, 'cohort': card['cohort'], 'result': card['outcome']['resultLabel'], 'won': int(bool(card['outcome']['primaryTeamWon'])),
-           'teams': card.get('actualTeams'), 'drop30': card['anomaliesSummary'].get('drop30Count')}
+           'teams': 0 if card.get('mode') in (7, 8) else card.get('nominalTeams'), 'drop30': card['anomaliesSummary'].get('drop30Count')}
     acc = {k: defaultdict(float) for k, _, _ in PHASES}
     d30 = {k: defaultdict(int) for k in ('d1', 'd2', 'd3')}
     for bot, L in snaps.items():

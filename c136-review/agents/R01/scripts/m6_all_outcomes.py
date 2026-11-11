@@ -13,10 +13,11 @@
   B 页面：pages.csv 的掉队口径（落后中位峰值 ≥ 180 拍，或第一条 RESULT 时已有停住的页面，或 2500 拍前 ≥3 个号 left）
   C 被围：1500–3000 拍“没有任何可打对象”的快照对占比 ≥ 40% / < 40%
   D 出生：收场时有同像素的一对号 / 没有；有号没有任何出生指令落地 / 没有
-  E 队数：2 队 / 3 队 / 4 队及以上（基准胜率不同）
+  E 队数：2 队 / 3 队 / 4–5 队 / 6 队及以上（基准胜率不同）。队数 = 开局有真人席位的队数（好地账的席位表 voronoi_seats.csv；没有这张表的包取 card.actualTeams）。
+    引擎的队数（numberTeams = card.nominalTeams）把没有真人、只有内置 AI 的队也算上；card.actualTeams 在 97 个能核对的包里有 14 个和席位表不一样。mode 7、8 不分队，不计基准。
   F 1530 拍人均相对值三分位
 决策耗时 = traj.csv 的 avgMs（页面自己记的每拍决策耗时的累计平均），取各号在本地 600–1500 拍最后一个快照的值的中位数；一拍的时长是 56 毫秒。
-每组给：局数、主队赢的局数、按队数的基准（各局 card.baseWinExpectation = 1/队数 相加，即“一支平均水平的队”该赢的局数）、
+每组给：局数、主队赢的局数、按队数的基准（各局 1/队数 相加，即“一支平均水平的队”该赢的局数）、
   rel630 / rel1530 / rel3060 的中位数、峰值份额相对值（card.peakSquadLandShare ÷ 人头占比）的中位数。
 一个包里混了两场的（replay_facts 的 multi、或同一个号的快照拍号倒退、或 seededPlayers < 10）不进分组。
 这是描述统计：赢局只有 16 局，组间差别大多在随机波动以内，脚本只列数，不做检验。
@@ -75,12 +76,29 @@ def main():
                     share[int(x['t'])] = float(x['squadShare'])
                 except (ValueError, KeyError):
                     pass
-        r = {'mid': mid, 'cohort': card['cohort'], 'teams': card.get('actualTeams'), 'won': int(bool(card['outcome']['primaryTeamWon'])),
+        # 队数 = 开局有真人席位的队数：从好地账的席位表（out/<局>/voronoi_seats.csv，录像头里每个真人席位的队号）数；
+        # 没有这张表的包（没有录像、混了两场、B023）退回 card.actualTeams。
+        # 三种口径不一样：引擎的 numberTeams（= card.nominalTeams）把只有内置 AI、没有真人的队也算上（A019 引擎 5 队、有真人的 4 队）；
+        # card.actualTeams 在 97 个能核对的包里有 14 个和席位表不一样（A075 有真人的 5 队、card 记 2）。
+        # mode 7、8 是不分队的模式（引擎 teams 全为 0），队数记 0、不计基准。
+        engine_teams = card.get('nominalTeams')
+        teams, src = card.get('actualTeams'), 'card'
+        vp = os.path.join(HERE, '..', 'out', mid, 'voronoi_seats.csv')
+        if os.path.exists(vp) and not multi:
+            kh = len({x['team'] for x in csv.DictReader(open(vp)) if x['team'] not in ('', '0')})
+            if kh >= 2:
+                teams, src = kh, 'seats'
+        if card.get('mode') in (7, 8):
+            teams, src = 0, 'ffa'
+        r = {'mid': mid, 'cohort': card['cohort'], 'teams': teams, 'teamsSrc': src, 'engineTeams': engine_teams, 'cardTeams': card.get('actualTeams'), 'won': int(bool(card['outcome']['primaryTeamWon'])),
              'result': card['outcome']['resultLabel'], 'split': int(bool(card['anomaliesSummary'].get('teamSplit'))), 'multi': multi,
-             'base': card.get('baseWinExpectation'), 'squadN': n_squad, 'head': round(head, 4) if head else None}
+             'base': round(1 / teams, 4) if teams and teams >= 2 else None, 'cardBase': card.get('baseWinExpectation'),
+             'squadN': n_squad, 'head': round(head, 4) if head else None}
         for t in (630, 1530, 3060):
             r[f'rel{t}'] = round(share[t] / head, 3) if head and t in share else None
         r['relPeak'] = round(card['outcome']['peakSquadLandShare'] / head, 3) if head and card['outcome'].get('peakSquadLandShare') is not None else None
+        r['humans'] = card.get('seededPlayers')
+        r['lastShare'] = round(share[max(share)], 4) if share else None      # timeline.csv 最后一行的编队领土占比
         r['avgMs'] = round(statistics.median(v[0] for v in ms.values()), 2) if ms else None
         r['maxMs'] = round(max(v[1] for v in ms.values()), 1) if ms else None
         p, q, s = pages.get(mid, {}), rep.get(mid, {}), traj.get(mid, {})
@@ -121,7 +139,10 @@ def main():
     for co in ('squad10', 'squad20', 'squad8', None):
         R0 = [r for r in rows if co is None or r['cohort'] == co]
         R = [r for r in R0 if not r['multi']]
-        print(f"\n#### {co or '全部'}：{len(R0)} 局里主队赢 {sum(r['won'] for r in R0)} 局（各局 1/队数 相加的基准 {sum(r['base'] or 0 for r in R0):.1f} 局）；进分组的 {len(R)} 局里赢 {sum(r['won'] for r in R)} 局")
+        T0 = [r for r in R0 if r['base'] is not None]
+        ffa = [r for r in R0 if r['base'] is None]
+        print(f"\n#### {co or '全部'}：{len(R0)} 个包。分队的 {len(T0)} 局里主队赢 {sum(r['won'] for r in T0)} 局，各局 1/队数 相加的基准 {sum(r['base'] for r in T0):.1f} 局（队数 = 有真人的队数，{sum(1 for r in T0 if r['teamsSrc'] == 'seats')} 局取自席位表、其余取 card；全按 card.actualTeams 算是 {sum(r['cardBase'] or 0 for r in T0):.1f}，全按引擎队数算是 {sum(1 / r['engineTeams'] for r in T0 if r['engineTeams']):.1f}）；"
+              f"不分队的 {len(ffa)} 局（{' '.join(r['mid'] for r in ffa) or '无'}）不计基准，其中记为赢的 {sum(r['won'] for r in ffa)} 局；进分组的 {len(R)} 局里赢 {sum(r['won'] for r in R)} 局")
         show('A 指令通道（600–1500 拍 陆攻+船 落地/放行）', [
             ('< 0.5', [r for r in R if r['nd600_1500'] is not None and r['nd600_1500'] < 0.5]),
             ('0.5–0.7', [r for r in R if r['nd600_1500'] is not None and 0.5 <= r['nd600_1500'] < 0.7]),
@@ -134,7 +155,8 @@ def main():
                                                  ('< 20%', [r for r in R if r['p2_boxed'] is not None and r['p2_boxed'] < 0.2])])
         show('D 出生', [('收场有同像素的一对号', [r for r in R if r['samePixel']]), ('没有同像素', [r for r in R if r['samePixel'] == 0]),
                       ('有号 0 条出生指令落地', [r for r in R if r['noSpawn']]), ('每个号都有出生指令落地', [r for r in R if r['noSpawn'] == 0])])
-        show('E 队数', [('2 队', [r for r in R if r['teams'] == 2]), ('3 队', [r for r in R if r['teams'] == 3]), ('4 队及以上', [r for r in R if (r['teams'] or 0) >= 4])])
+        show('E 队数（有真人的队）', [('2 队', [r for r in R if r['teams'] == 2]), ('3 队', [r for r in R if r['teams'] == 3]), ('4–5 队', [r for r in R if r['teams'] in (4, 5)]),
+                           ('6 队及以上', [r for r in R if (r['teams'] or 0) >= 6]), ('不分队（mode 7、8）', [r for r in R if r['teams'] == 0])])
         v = sorted(r['rel1530'] for r in R if r['rel1530'] is not None)
         if len(v) >= 6:
             a, b = v[len(v) // 3], v[2 * len(v) // 3]
@@ -143,6 +165,13 @@ def main():
                 ('中', [r for r in R if r['rel1530'] is not None and a <= r['rel1530'] < b]),
                 ('高', [r for r in R if r['rel1530'] is not None and r['rel1530'] >= b])])
         show('G 拆队', [('编队拆在几个队里', [r for r in R if r['split']]), ('同在一个队', [r for r in R if not r['split']])])
+    print('\n#### 主队赢的局（收场时编队自己占全图多少）')
+    print('   局 | 编队 | 真人 · 队数 · 编队号数（人头占比）| 600–1500 落地/放行 | 人均相对值 1530 / 峰值 | 最后一个快照编队领土占全图')
+    for r in rows:
+        if r['won']:
+            fx = lambda v, d=2: '-' if v is None else f'{v:.{d}f}'
+            print(f"   {r['mid']} | {r['cohort']}{'（包里混了两场）' if r['multi'] else ''} | {r['humans']} · {r['teams']} · {r['squadN']}（{'-' if r['head'] is None else format(100 * r['head'], '.1f') + '%'}）| "
+                  f"{fx(r['nd600_1500'])} | {fx(r['rel1530'])} / {fx(r['relPeak'])} | {'-' if r['lastShare'] is None else format(100 * r['lastShare'], '.1f') + '%'}")
 
 
 if __name__ == '__main__':

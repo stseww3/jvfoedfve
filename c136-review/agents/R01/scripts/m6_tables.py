@@ -34,7 +34,7 @@ def pct(a, b, d=0):
 
 def overview():
     jo, pg, rf = allcsv('joined.csv'), allcsv('pages.csv'), allcsv('replay_facts.csv')
-    print('| 局 | 版本·编队 | 图（陆地格）· 真人 · 队数 | 结局（终局拍） | 归类 | 编队人均相对值 630 / 1530 / 3060 / 峰值 | 600–1500 落地/放行 | 页面落后峰值（拍 @ 服务器拍；RESULT 锚点口径） | 1500 拍前被移出 | 判定 错/对/不清 |')
+    print('| 局 | 版本·编队 | 图（陆地格）· 真人 · 有真人的队数 | 结局（终局拍） | 归类 | 编队人均相对值 630 / 1530 / 3060 / 峰值 | 600–1500 落地/放行 | 页面落后峰值（拍 @ 服务器拍；RESULT 锚点口径） | 1500 拍前被移出 | 判定 错/对/不清 |')
     print('|---|---|---|---|---|---|---|---|---|---|')
     for m in MIDS:
         a = json.load(open(os.path.join(R, 'analysis', m + '.json')))
@@ -52,7 +52,7 @@ def overview():
             lagtxt = f"{p['lagPeak']} @ {p['srvPeak']}" if float(p['lagPeak']) >= 30 else '不到 30 拍'
         except (KeyError, ValueError):
             lagtxt = '没有锚点'
-        print(f"| {m} | {ver} · {v['squadN']} 个号 | {card['mapId']}（{card['mapLand']}）· {v['humans']} · {card['actualTeams']} | {card['outcome']['resultLabel']}（{card['outcome']['endTick']}） | {a['lossArchetype']} | "
+        print(f"| {m} | {ver} · {v['squadN']} 个号 | {card['mapId']}（{card['mapLand']}）· {v['humans']} · {j.get('teams') or card['actualTeams']} | {card['outcome']['resultLabel']}（{card['outcome']['endTick']}） | {a['lossArchetype']} | "
               f"{rel} | {nd} | {lagtxt} | {lv} | {vd.count('error')}/{vd.count('good')}/{vd.count('unclear')} |")
 
 
@@ -75,7 +75,7 @@ def delay():
             agg[p][0] += x['aAcc']; agg[p][1] += x['aLand']; agg[p][2] += x['dAcc']; agg[p][3] += x['dLand']
         t = d['total']
         print(f"| {m} | " + ' | '.join(cells) + f" | {t['want']} / {t['ok']} / {t['logCmds']} / {t['replayLanded']} |")
-    print('| 15 局合计 | ' + ' | '.join(f"{a[0]}→{a[1]}（{pct(a[1], a[0])}）；捐 {a[2]}→{a[3]}（{pct(a[3], a[2])}）" for a in agg.values()) + ' | |')
+    print('| 15 局合计 | ' + ' | '.join(f"{a[0]}→{a[1]}（{pct(a[1], a[0])}）" + (f"；捐 {a[2]}→{a[3]}（{pct(a[3], a[2])}）" if a[2] else '') for a in agg.values()) + ' | |')
     # 迟到的代价（600–1500）
     print()
     print('| 局 | 落地拍在 600–1500 的陆攻 | 落地时目标已不在 | 一兵未扣 | 同拍 ≥3 条的批次（条数）| 批次里最重的一拍扣掉余额的 | 21 拍内对同一目标重复 |')

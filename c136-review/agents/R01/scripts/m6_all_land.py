@@ -35,7 +35,7 @@ def main():
         if j.get('multi') == '1' and mid != 'A094':
             continue
         card = json.load(open(os.path.join(DATA, mid, 'card.json')))
-        r = {'mid': mid, 'cohort': card['cohort'], 'won': int(bool(card['outcome']['primaryTeamWon'])), 'teams': card.get('actualTeams'),
+        r = {'mid': mid, 'cohort': card['cohort'], 'won': int(bool(card['outcome']['primaryTeamWon'])), 'teams': joined.get(mid, {}).get('teams') or card.get('nominalTeams'),
              'humans': v['humans'], 'squadN': v['squadN'], 'headPct': round(v['headPct'], 2), 'natPct': round(v['squadNatPct'], 2),
              'natRatio': round(v['squadNatPct'] / v['headPct'], 3) if v['headPct'] else None,
              'natMed': round(v['natMedSquad'] / v['natMedOther'], 3) if v.get('natMedOther') else None}
@@ -90,6 +90,24 @@ def main():
               f"630 拍拿到率 本队 {med(L, 'cap630s')} / 其他 {med(L, 'cap630o')}（本队 ≥ 其他的 {sum(1 for r in b6 if r['cap630s'] >= r['cap630o'])}/{len(b6)} 局）| "
               f"1500 拍 本队 {med(L, 'cap1500s')} / 其他 {med(L, 'cap1500o')}（本队 ≥ 其他的 {sum(1 for r in b15 if r['cap1500s'] >= r['cap1500o'])}/{len(b15)} 局）| "
               f"自家多边形 1500 拍归本队 {med(L, 'self1500')}、敌方 {med(L, 'enemy1500')}、壳 {med(L, 'husk1500')} | AI 地份额/人头 {med(L, 'aiShare')}（≥ 1 的 {sum(1 for r in ai if r['aiShare'] >= 1)}/{len(ai)} 局）| 1530 拍人均相对值 {med(L, 'rel1530')}")
+
+    if '--md' in sys.argv:
+        print('| 组 | 局数（主队赢） | 天然份额 ÷ 人头占比 | 每号天然地盘：本队 ÷ 其他真人 | 630 拍吃到率：本队 / 其他真人 | 1500 拍吃到率：本队 / 其他真人（本队不低于其他的局数） | 1500 拍本队多边形里归本队的 | 本队拿到的 AI 地份额 ÷ 人头占比 | 1530 拍人均相对值 |')
+        print('|---|---|---|---|---|---|---|---|---|')
+        for co in ('squad10', 'squad20'):
+            L = [r for r in rows if r['cohort'] == co]
+            for name, G in ((f'{co} 全部', L),
+                            ('　通道干净（600–1500 落地/放行 ≥ 0.9）', [r for r in L if r['nd600_1500'] is not None and r['nd600_1500'] >= 0.9]),
+                            ('　中间（0.7–0.9）', [r for r in L if r['nd600_1500'] is not None and 0.7 <= r['nd600_1500'] < 0.9]),
+                            ('　通道差（< 0.7）', [r for r in L if r['nd600_1500'] is not None and r['nd600_1500'] < 0.7]),
+                            ('　主队赢', [r for r in L if r['won']]),
+                            ('　主队没赢', [r for r in L if not r['won']])):
+                if not G:
+                    continue
+                b15 = [r for r in G if r['cap1500s'] is not None and r['cap1500o'] is not None]
+                print(f"| {name} | {len(G)}（{sum(r['won'] for r in G)}） | {med(G, 'natRatio')} | {med(G, 'natMed')} | {med(G, 'cap630s')} / {med(G, 'cap630o')} | "
+                      f"{med(G, 'cap1500s')} / {med(G, 'cap1500o')}（{sum(1 for r in b15 if r['cap1500s'] >= r['cap1500o'])}/{len(b15)}） | {med(G, 'self1500')} | {med(G, 'aiShare')} | {med(G, 'rel1530')} |")
+        return
 
     for co in ('squad10', 'squad20'):
         L = [r for r in rows if r['cohort'] == co]
