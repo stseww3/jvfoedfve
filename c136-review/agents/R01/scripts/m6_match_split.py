@@ -17,6 +17,8 @@
      = 不在录像这一场；在池子里但不等于标签的只记数（relabel）。席位号 ≥ 录像头的人数也算不在这一场。
      E2 不受 GAP 限制：A086（差 2.4 秒）、B050（差 1.9 秒）靠这一条判出。
   E3 队伍：results.csv 的 teamTotals 里出现过的队号集合，按 E1 的分组列出，作旁证（A043：一组只见过 1、2 队，另一组见过 1、3、4、5 队）。
+  E5 本队人数：日志 `[HL-SPAWN] me=N … (squad=K,…)` 是页面在自己那间房里数到的本队人数（c116、c110 都有，g09 没有）。A043：6 个页面数到 8、2 个页面数到 2；
+     B011：8 个页面数到 8、5 个页面数到 5。不依赖录像和 RESULT 行，末尾单列作旁证。
   E4 收场拍：一场对局只有一个收场拍；RESULT 行里 event=end 的拍号不止一个的包末尾单列（A025：3 个页面 6952 拍收场，4 个页面 14689 拍）。
 另外沿用原来的“先后两场”判据（seq）：同一个号先后对上两个席位、开局行参数不止一种、card.seededPlayers 和录像头人数不同、
 某个号的快照拍号倒退、seededPlayers < 10。
@@ -35,6 +37,7 @@ OUT = os.path.join(HERE, '..', 'out')
 DATA = '/agent/repos/c136-data/bundles'
 C110 = '/agent/repos/c136-data/src/strategy/v27-team-c110.js'
 PAT_ME = re.compile(r'^\d+\t\[([^\]]+)\] \[HL-(?:GAME-INIT|SPAWN|SPAWN-BACKEND)\].*?\bme=(\d+)')
+PAT_SQ = re.compile(r'^\d+\t\[([^\]]+)\] \[HL-SPAWN\] me=(\d+) slot=-?\d+ \(squad=(\d+),')
 PAT_INIT = re.compile(r'\[HL-GAME-INIT\] mode=(\d+) map=(\d+) mapSeed=(\d+) seeded=(\d+)')
 
 
@@ -53,10 +56,15 @@ def ts(s):
 def one(mid, POOL, gap):
     card = json.load(open(os.path.join(DATA, mid, 'card.json')))
     r = {'mid': mid, 'cohort': card['cohort'], 'kind': 'single', 'pages': 0, 'main': 0, 'foreign': 0, 'gap': None,
-         'e1': '', 'e2': '', 'relabel': 0, 'teams': '', 'foreignBots': '', 'resTicks': '', 'endTicks': ''}
+         'e1': '', 'e2': '', 'relabel': 0, 'teams': '', 'foreignBots': '', 'resTicks': '', 'endTicks': '', 'e5': '', 'e5max': ''}
     # —— 日志：席位号、开局行 ——
     seats, inits, seq = {}, set(), []
+    sqn = {}   # E5：每个页面自己数到的本队人数（c110 按席位号，标签会换）
     for line in open(os.path.join(DATA, mid, 'in_game.log'), errors='replace'):
+        q = PAT_SQ.match(line)
+        if q:
+            key = int(q.group(2)) if card['cohort'] == 'squad20' else q.group(1)
+            sqn[key] = max(sqn.get(key, 0), int(q.group(3)))
         g = PAT_INIT.search(line)
         if g:
             inits.add(g.groups())
@@ -198,6 +206,12 @@ def one(mid, POOL, gap):
     r['main'] = r['pages'] - r['foreign']
     r['foreignBots'] = ' '.join(sorted(foreign))
     r['endTicks'] = ' '.join(str(t) for t in sorted(ends))
+    if sqn:
+        cnt = defaultdict(int)
+        for v in sqn.values():
+            cnt[v] += 1
+        r['e5'] = ' '.join(f'{k}人×{n}页' for k, n in sorted(cnt.items(), reverse=True))
+        r['e5max'] = max(sqn.values())
     if foreign and res_tick:
         # 两组各自的 RESULT 行：拍号范围和 event 计数（另一间房的页面收场的拍和主组不同）
         def grp(bots):
@@ -253,6 +267,12 @@ def main():
         print(f"# {co}：{len(L)} 个包；平行两场 {len(par)} 个（{' '.join(r['mid'] for r in par) or '-'}），页面 {sum(r['pages'] for r in par)} 个里不在主组的 {sum(r['foreign'] for r in par)} 个；"
               f"先后两场或录像对不上 {len(sq)} 个（{' '.join(r['mid'] for r in sq) or '-'}）；"
               f"c110 页面标签和进图名字不同的席位 {sum(r['relabel'] for r in L)} 个")
+    # E5：页面自己数到的本队人数
+    e5 = [r for r in rows if r['e5max'] != '']
+    bad5 = [r for r in e5 if r['kind'] == 'single' and r['pages'] > r['e5max']]
+    print(f"# E5 旁证：日志 [HL-SPAWN] 行里页面自己数到的本队人数（squad=K）。有这种行的包 {len(e5)} 个；判为同一场的包里，页面数比任何一个页面数到的人数都多的 {len(bad5)} 个"
+          + (('：' + ' '.join(r['mid'] for r in bad5)) if bad5 else '') + '；不是同一场的包：'
+          + '；'.join(f"{r['mid']}（{r['pages']} 个页面：{r['e5']}）" for r in e5 if r['kind'] != 'single'))
     # E4：一场对局只有一个收场拍
     me = [r for r in rows if len(r['endTicks'].split()) > 1]
     print(f"# E4 旁证：RESULT 行里 event=end 的拍号不止一个的包 {len(me)} 个：" + '；'.join(f"{r['mid']}（{r['endTicks']}，判定 {r['kind']}）" for r in me))

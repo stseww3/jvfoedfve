@@ -103,6 +103,8 @@ def check_text(label, prose, hay_digits=None):
     prose = re.sub(r'```.*?```', '', prose, flags=re.S)   # 代码块（命令）不查
     prose = re.sub(r'`[^`]*`', '', prose)                 # 路径、命令、标识符里的数字不查
     prose = re.sub(r'L\d+(?:[–-]\d+)?', '', prose)        # 代码行号不查
+    prose = re.sub(r'广播 \d{4}', '', prose)               # 总部广播的编号不查
+    prose = re.sub(r'`[^`\n]*`', '', prose)                # 行内代码（源码常数、命令）不查
     nums = set(re.findall(r'(?<![\d.])\d{4,}(?![\d.])', prose.replace(',', '')))
     miss = sorted({x for x in nums if x not in hay_digits}, key=int)
     print(f'{label}：≥4 位的整数 {len(nums)} 个，在数据文件、逐局报告、analysis 里找不到的 {len(miss)} 个：{" ".join(miss)}')
