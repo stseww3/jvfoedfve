@@ -12,10 +12,18 @@
 //
 // 用法：node shadow.mjs <matchId> [--replay other] [--log id1,id2] [--bots a,b|all] [--strategy va|vb|c110|c116|g09]
 //                        [--to T] [--accept always|sim] [--per-tick 1] [--quit 1|0] [--probe bot:t0:t1] [--tag x] [--nocut] [--pin-no-full] [--quiet]
-//   --pc-shift auto（默认）| 0 | 1：Policy.send 记下的 pendingQuotaCheck（isNoFullSend 的核对记录）从哪一拍开始核对。
+//   --pc-shift cause（默认）| auto | 0 | 1 | slot：Policy.send 记下的 pendingQuotaCheck（isNoFullSend 的核对记录）从哪一拍开始核对。
 //       0    = 代码原样：发令拍 +1 到 +7。
 //       1    = 一律晚 1 拍：发令拍 +2 到 +7（--pc-end shift 则到 +8）。
-//       auto = 代码原样，但“本拍受理了一条、同一拍策略又下了第二条被适配层拒掉”时，这条记录晚 1 拍才开始核对。
+//       auto = 代码原样，但“本拍受理了一条、同一拍策略又下了第二条被适配层拒掉”时，这条记录晚 1 拍才开始核对（A050 之前的默认）。
+//       cause = 发令拍 +1 那一拍只有“上一拍执行过本号自己的指令（陆攻/捐款/船落地）”才核对，否则晚 1 拍。
+//       slot  = 对照：同样的条件下整次 act 不跑（假设外壳的 canAct 在这一拍返回假）。A050 上与 cause 的 HL-TICK 结果相同，分不出来。
+//       11 局对照（HL-TICK 的 cmds 逐点对比）：cause 是唯一一种全部对得上的口径——
+//         A050：auto 下 riku_x 990 拍起 cmds 多 1（965 拍发令，966 拍余额被 AI#129 打掉 947，影子在 966 拍核对并清额度，970 拍的下一条放行；
+//               日志是 18 条 = 970 拍那条被拦，即核对不早于 967 拍）；1 下 zero_7 990 拍起少 1（945 拍发令，946 拍余额因 850 拍那条旧令落地而下降，
+//               日志要求 946 拍就核对）；cause 下 10 个号 502/502 点全同。
+//         A055 539/539、A057 全同且 riku_x 53/53 条配上、A059、A094-Y 86/86、A075、A054、A031、A009、A023 516/516 全同；A019 与 auto 相同（只差船指令受理，见 PROGRESS）。
+//       机制不明（线上外壳源码不在镜像里）：现象是“自己指令的扣款在 +1 拍就被核对，别人打掉的余额要到 +2 拍才被核对”。
 //       四局的对照（都是机械对比，命令见 notes/PROGRESS.md）：
 //         A055：0 → 539/539 个 HL-TICK 点全同；1 → kaito9（900 拍起）、riku_x（1260 拍起）、alex_k（4140 拍起）的 cmds 各少 1；auto → 539/539。
 //               例：kaito9 875 拍发令，876 拍余额因更早一条指令落地而下降 → 876 拍额度清零，到 880 拍回到 727，下一条（门槛 697）放行；
@@ -281,7 +289,10 @@ export async function runShadow(mid, o = {}) {
   const exec = [];
   let pre = null;
   m.preCmd = (c) => { pre = (c.id === 1 || c.id === 2) ? { bal: g.bal[c.player], t: g.t } : null; };
+  // 每个席位最近一次“自己的指令被执行”的引擎拍（--pc-shift cause 用）：指令在局面 t 上执行，效果出现在局面 t+1。
+  const ownCmdStep = new Int32Array(512).fill(-10);
   m.onCmd = (c, res) => {
+    if ((c.id === 1 || c.id === 2 || c.id === 3) && res && !g.spawnPhase) ownCmdStep[c.player] = g.t;
     if ((c.id === 8 || c.id === 9) && c.player < H) quit.add(c.player);
     if (pre && !g.spawnPhase) exec.push({ player: c.player, id: c.id, dX: c.dX, dZ: c.dZ, t: pre.t, bal: pre.bal, ok: res ? 1 : 0, spent: pre.bal - g.bal[c.player] });
   };
@@ -365,6 +376,10 @@ export async function runShadow(mid, o = {}) {
       if (o.pinNoFull) { s.pol.isNoFullSend = false; s.pol.pendingQuotaCheck = null; }
       // --pc-end keep：核对窗口的起点按 --pc-shift 后移，终点仍是“发令拍 + 7”（原代码的终点），即窗口 = [发令拍+1+shift, 发令拍+7]。
       if (o.pcEnd === 'keep' && s.pol.pendingQuotaCheck?._sh && g.t > s.pol.pendingQuotaCheck.t + 6 - s.pol.pendingQuotaCheck._sh) s.pol.pendingQuotaCheck = null;
+      // --pc-shift cause：待检记录第一次到期的那一拍（发令拍 +1），只有“上一拍执行过本号自己的指令”才核对；否则晚 1 拍。
+      if (o.pcCause && s.pol.pendingQuotaCheck && s.pol.pendingQuotaCheck.t === g.t && !s.pol.pendingQuotaCheck._sh && ownCmdStep[p] !== g.t - 1) { s.pol.pendingQuotaCheck.t += 1; s.pol.pendingQuotaCheck._sh = 1; }
+      // --pc-shift slot（对照用）：假设外壳在“上一拍刚发过令、且上一拍没有本号自己的指令被执行”时让 canAct 返回假，整次 act 不跑。
+      if (o.pcSlot && s.lastOkT === g.t - 1 && ownCmdStep[p] !== g.t - 1) continue;
       const nf0 = !!s.pol.isNoFullSend, pc0 = s.pol.pendingQuotaCheck ? { ...s.pol.pendingQuotaCheck } : null, bal0 = g.bal[p];
       const nCmd0 = cmds.length;
       try { s.pol.act(s.gv);
@@ -373,6 +388,7 @@ export async function runShadow(mid, o = {}) {
         if (o.pcAuto) { let nOk = 0, nNo = 0; for (let k = nCmd0; k < cmds.length; k++) { if (cmds[k].ok) nOk++; else nNo++; } shiftBy = nOk > 0 && nNo > 0 ? 1 : 0; }
         if (shiftBy && s.pol.pendingQuotaCheck && s.pol.pendingQuotaCheck.t === g.t + 1 && !s.pol.pendingQuotaCheck._sh && !s.pol.pendingQuotaCheck._seen) { s.pol.pendingQuotaCheck.t += shiftBy; s.pol.pendingQuotaCheck._sh = shiftBy; }
         if (s.pol.pendingQuotaCheck) s.pol.pendingQuotaCheck._seen = 1;
+        for (let k = nCmd0; k < cmds.length; k++) if (cmds[k].ok) s.lastOkT = g.t;
         if (s.probeState) s.probeState(); idleAudit(s, cmds.length - nCmd0); } catch (e) { if (errN++ < 5) console.error(`影子出错 t=${g.t} ${s.label}: ${e.stack.split('\n').slice(0, 3).join(' | ')}`); }
       // 待检记录的去向（--pc-trace 才记，量大）：pcEval = 本拍被核对（置真或扣额度）；pcDrop = 超过 6 拍作废；pcOver = 没等到核对就被下一条指令的记录覆盖。
       if (o.pcTrace && pc0) {
@@ -515,7 +531,7 @@ if (IS_MAIN) {
   const t0 = Date.now();
   const r = await runShadow(mid, {
     replay: opt('replay', mid), log: opt('log', mid).split(','), bots: opt('bots', 'all'), strategy: opt('strategy', null),
-    nocut: argv.includes('--nocut'), pinNoFull: argv.includes('--pin-no-full'), to: opt('to', null) ? +opt('to') : undefined, accept: opt('accept', 'always'), perTick: +opt('per-tick', 1), actEvery: +opt('act-every', 1), pcShift: opt('pc-shift', 'auto') === 'auto' ? 0 : +opt('pc-shift', 0), pcAuto: opt('pc-shift', 'auto') === 'auto', pcTrace: argv.includes('--pc-trace'), pcEnd: opt('pc-end', 'keep'), quit: +opt('quit', 1), probe: opt('probe', null),
+    nocut: argv.includes('--nocut'), pinNoFull: argv.includes('--pin-no-full'), to: opt('to', null) ? +opt('to') : undefined, accept: opt('accept', 'always'), perTick: +opt('per-tick', 1), actEvery: +opt('act-every', 1), pcShift: ['auto', 'cause', 'slot'].includes(opt('pc-shift', 'cause')) ? 0 : +opt('pc-shift', 0), pcAuto: opt('pc-shift', 'cause') === 'auto', pcCause: opt('pc-shift', 'cause') === 'cause', pcSlot: opt('pc-shift', 'cause') === 'slot', pcTrace: argv.includes('--pc-trace'), pcEnd: opt('pc-end', 'keep'), quit: +opt('quit', 1), probe: opt('probe', null),
   });
   const { m, sh, cmds, slog, check, probeOut, idleAgg } = r;
   const dir = path.join(OUT_ROOT, mid);
