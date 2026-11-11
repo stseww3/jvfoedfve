@@ -3,7 +3,7 @@
 ## 状态
 - M1 完成：A057、A059、A094；M2 完成：A055、A075、A054。全部通过本地机械检查（`python3 scripts/check_my_review.py`）。
 - M3 完成：A031（never-grew）、A019（mid-collapse）、A009（never-grew，Va）；m3-reviews 报告已发（里面更正了 A075 的判定数：错 10 / 不清 5 / 对 5）。
-- M4 进行中：A023 完成（never-grew；错 9 / 不清 8 / 对 3；新模式 AT12、AT13）；接着 A050（Vb）、A003（Va），三局做完发 m4-reviews。
+- M4 进行中：A023 完成（never-grew；错 9 / 不清 8 / 对 3；新模式 AT12、AT13）；A050 完成（external；错 9 / 不清 5 / 对 6；新模式 EG03）；接着 A003（Va），做完发 m4-reviews。
 - 总部 0006：所有 node 重演/影子命令必须 `bash ../../tools/run-heavy.sh node scripts/...`（在 agents/R01 下），串行、一次一局，结果缓存在 out/。
   **一次 Shell 调用只跑一条 node 命令**（机器 load 高时一条 shadow 就要 30–90 秒，两条串在一起会被 timeout 120 杀掉）。
 
@@ -35,6 +35,13 @@
 - A023 新增：`seats.py <mid> [--t 拍]`（席位号 ↔ 名字 ↔ 队，带某一拍的领土/余额）；`probe_view.py --pick`（1500 拍前 Style.pickTarget 的逐目标复算：allow、每格价、
   floorAt、floorFor、avail、minShare×余额、卡在哪一关，末尾按目标汇总）；`probe_view.py --gate` 汇总多一行“余额过 100 倍的决策拍里按唯一健康真人邻居 / isCrowdedHard 跳过各几拍”。
   shadow_flags.csv 的 targetName 对 AI 席位（target ≥ 人类席位数）不可靠（A023 全显示成 rubysta），看 target 列。sea_landings.csv 可以直接用 q.py（列 t,owner,troops,bot,hadLandBorder…）。
+- A050 新增：`mass_leave.py [mid ...] [--win 30] [--min 3]`（全数据集 RESULT=left 的行按墙上时间成簇：123 局 204 行 left，113 行在 ≥3 行的簇里，17 局有簇，4 局整队同簇）；
+  `tick_clock.py [mid ...] [--per-match]`（全量非 left 的 RESULT 行拟合 秒 = 23.0 + 0.05598×拍；每条 left 行“晚了几秒”）；
+  `tail_sync.py <mid>`（一局收尾：各号 RESULT 的 tick/at、名义时刻、日志最后一行、录像 leave 拍、最后落地指令；快进下限；停拍后的调度；**行序**（最后一个全队都写了快照的拍之后谁连着补行）；
+  停拍前后 avgMs/maxMs；录像里停拍后本队/其他席位落地的指令）；`overlap.py <mid>`（第一行 left 前后还有哪些数据集对局在跑）；
+  `step_cost.cjs <mid> --around T --span N --top K`（总部真引擎 engine_replay.cjs 逐拍耗时，要经 run-heavy.sh）；`boxed_coast.py <mid>`（围死快照里有没有水边）；
+  `landed_stats.py <mid> --windows a-b,...`（落地指令：目标已不在/一兵未扣/≥3 条同拍批次/延迟中位）。
+- in_game.log 第一列是全局递增的行号（不是时间）；RESULT 行才有 at。results.csv 的 seconds = at − card.timestampMs。
 - q.py 的坑：数字样子的字符串会被当成数（`toName==777`）；dispatch_audit 的 would 是 'accept'/'quota'，executed 是 0/1；resim_transfers 的 `from` 列不能写进 --where。
 - 影子对 boatTo 的受理比真实客户端宽（A019：影子 42 条、日志 10 条），**船指令的“受理”不能引用**；进攻、捐兵两类与日志 cmds 计数一致。cmd_gaps、lagcurve、flow 都不含船。
 - 批次落地的兵不都是净损失：打无主地（目标已死改打无主地、pct=47 中立令成批）的兵在进攻结束后流回余额；写“实扣”时要分开打真人和打无主地
@@ -98,6 +105,10 @@ DF03 有两处：sora_w（挨打中，不清）、kaito9（3800–4580 拍 143/1
 A009 的主因是客户端落后服务器（300–2400 拍，延迟中位到 764 拍，每号每次最多落地 9 条，其余丢失），不在策略文件里；M6 要做“每局指令延迟”的全量计数。
 A023 新增：AT12 余额过 100 倍后溢出的兵脉冲打给杀不动的大邻居、够杀的邻居被跳过（ryan_m 3405 拍 DARK vs Fagner）；AT13 只有一个健康真人邻居：128 倍才打、108 倍就捐，
 两个门槛互锁（talon5 对 Tenekld 1668 拍不出手）。A023 的主线：出生挤成一团 → 7 个号被队友围死 → 八成的兵 1000 拍没有敌方接壤 → 调度 348 条落地 40 条（配额）。
+A050 新增：EG03 全队客户端在同一个回合停住、随后成簇被记 left（不出自策略）。A050 的主线：10 个客户端 4354–4361 拍同时停住（六个再没动过，四个恢复追帧），
+RESULT 全是 left，7 条 leave 同在 4802 拍；停住前本队 30.05%、全场领土第 1、2。场上的问题：5 个号同像素出生、600–1800 拍指令晚 65–208 拍、OP02 保底线跟着队友余额、
+3213 拍前调度 242 条落地 9 条；翻盘靠 zexos1 打垮 Tennessee、talon5 吃壳 + 过 100 倍后脉冲连杀（AT08 判对）、3213 拍后后排输血（DN01 判对）。
+A050 里 safeFinite（threatOf L417–445）读清楚了：对一块 AI 地取它其他邻居（不排除队友）里余额最小的一个减去我在它身上的在途兵；密集出生时就是围在旁边的队友。
 M6 可做的全量计数：调度落地率（日志 HL-DISPATCH 行数 vs 录像 donate 条数）、被围死快照占比（card 的 boxedHighDensSnapshots）、船落在队友岸上的条数。
 
 ## 逐局进度
@@ -106,6 +117,6 @@ M6 可做的全量计数：调度落地率（日志 HL-DISPATCH 行数 vs 录像
 - [x] A094（lead-thrown；两个实例）
 - [x] A055（outscaled）  - [x] A075（win）  - [x] A054（mid-collapse）   （M2）
 - [x] A031（never-grew）  - [x] A019（mid-collapse）  - [x] A009（never-grew）   （M3）
-- [x] A023（never-grew）  - [ ] A050  - [ ] A003   （M4）
+- [x] A023（never-grew）  - [x] A050（external）  - [ ] A003   （M4）
 - [ ] A005  - [ ] B039  - [ ] B043   （M5）
 - [ ] M6：reports/CROSS-MATCH-SUMMARY.md、全量模式计数脚本、cards/
